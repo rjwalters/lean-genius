@@ -1,0 +1,185 @@
+[
+  {
+    "id": "atcg-oq01oq02-header",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 46
+    },
+    "type": "context",
+    "title": "Cyclotomic Framework: |Gal(minpoly(cos(π/n))/ℚ)| = φ(2n)/2",
+    "content": "The module header lays out the cyclotomic field theory behind the general formula $|\\text{Gal}(\\text{minpoly}(\\cos(\\pi/n))/\\mathbb{Q})| = \\varphi(2n)/2$. The key chain of identities is:\n\n1. $\\cos(\\pi/n) = (\\zeta_{2n} + \\zeta_{2n}^{-1})/2$ where $\\zeta_{2n} = e^{i\\pi/n}$ is a primitive $2n$-th root of unity.\n2. $\\mathbb{Q}(\\cos(\\pi/n)) = \\mathbb{Q}(\\zeta_{2n})^+$, the maximal real subfield of $\\mathbb{Q}(\\zeta_{2n})$.\n3. $\\text{Gal}(\\mathbb{Q}(\\zeta_{2n})/\\mathbb{Q}) \\cong (\\mathbb{Z}/2n\\mathbb{Z})^\\times$ via $\\sigma_a(\\zeta_{2n}) = \\zeta_{2n}^a$.\n4. Complex conjugation corresponds to $\\sigma_{-1}$, so $\\text{Gal}(\\mathbb{Q}(\\cos(\\pi/n))/\\mathbb{Q}) \\cong (\\mathbb{Z}/2n\\mathbb{Z})^\\times / \\langle -1 \\rangle$, which has order $\\varphi(2n)/2$.\n\nThe table at lines 14-19 cross-references three gallery cases: $n=5$ (proved here, $|\\text{Gal}|=2$), $n=7$ (OQ-01, $|\\text{Gal}|=3$), and $n=9$ (Cos20Gal, $|\\text{Gal}|=3$). This entry adds the $n=5$ (quadratic) case, which is structurally simpler than the cubic cases because the second root is a linear expression in the first root via Vieta's formula.",
+    "mathContext": "$\\cos(\\pi/5) = (1+\\sqrt{5})/4$ is the golden ratio divided by 2. Its minimal polynomial $4X^2 - 2X - 1$ has discriminant $\\Delta = 4 + 16 = 20 = 4 \\cdot 5$, confirming $\\cos(\\pi/5) = (2 \\pm 2\\sqrt{5})/8 = (1 \\pm \\sqrt{5})/4$. The Galois group formula $\\varphi(10)/2 = 4/2 = 2$ is confirmed.",
+    "significance": "context",
+    "relatedConcepts": [
+      "cyclotomic fields",
+      "Euler totient function",
+      "maximal real subfield",
+      "primitive roots of unity",
+      "complex conjugation"
+    ],
+    "prerequisites": [
+      "cyclotomic field theory",
+      "Galois theory",
+      "Euler totient function",
+      "primitive roots of unity"
+    ]
+  },
+  {
+    "id": "atcg-oq01oq02-poly-props",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-02",
+    "range": {
+      "startLine": 48,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "The Polynomial 4X²-2X-1: Definition and Basic Properties",
+    "content": "Defines `pCos5 := 4X² - 2X - 1` as a private abbreviation and proves three basic properties: `pCos5_ne_zero` (by evaluating at 0 to get $-1 \\neq 0$), `pCos5_natDegree = 2` (via `norm_num` with `natDegree_sub_eq_left_of_natDegree_lt` lemmas), and `pCos5_degree_ne_zero` (lifting the natural number degree to `WithBot ℕ`). These three lemmas are prerequisites for the splitting field machinery — `rootOfSplits` requires `degree ≠ 0`, and the finrank computation needs `natDegree = 2`.\n\nThe polynomial $4X^2 - 2X - 1$ is 4 times the minimal polynomial $(X - \\cos(36°))(X - \\cos(108°))$. The leading coefficient 4 (not 1) avoids fractions: the monic form would be $X^2 - X/2 - 1/4$. The choice of non-monic form is a common Lean pattern that simplifies `norm_num` computations.",
+    "mathContext": "$4X^2 - 2X - 1$: roots $(1 \\pm \\sqrt{5})/4$, discriminant $4 + 16 = 20$, $\\text{natDegree} = 2$. Non-zero since $p(0) = -1 \\neq 0$. The polynomial equals $4(X - \\cos(\\pi/5))(X - \\cos(4\\pi/5))$ over $\\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "natDegree",
+      "WithBot ℕ",
+      "rootOfSplits",
+      "norm_num",
+      "minimal polynomial"
+    ],
+    "prerequisites": [
+      "Polynomial.natDegree",
+      "Polynomial.degree",
+      "norm_num tactic"
+    ]
+  },
+  {
+    "id": "atcg-oq01oq02-vieta",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-02",
+    "range": {
+      "startLine": 66,
+      "endLine": 103
+    },
+    "type": "insight",
+    "title": "Vieta Identity and Irreducibility of 4X²-2X-1",
+    "content": "Two key results: the **Vieta identity** `root_image_beta` and the **irreducibility** `pCos5_irreducible` (sorry).\n\n**Vieta identity** (lines 80-86): For any field $F$ with $\\text{char}(F) = 0$ and any root $\\alpha$ of $4X^2-2X-1=0$, the element $\\beta = 1/2 - \\alpha$ is also a root. The proof is a single `ring` computation: $4(1/2-a)^2 - 2(1/2-a) - 1 = 4a^2 - 2a - 1$. This algebraic identity encodes Vieta's formula: the roots sum to $-(-2)/4 = 1/2$, so $\\beta = 1/2 - \\alpha$. Crucially, $\\beta$ is a **linear** expression in $\\alpha$, immediately placing $\\beta \\in \\mathbb{Q}(\\alpha)$. Compare this to the cubic cases ($n=7,9$) where the root images require degree-2 polynomial expressions.\n\n**Irreducibility** (lines 92-99): The sorry is for proving $4X^2 - 2X - 1$ irreducible over $\\mathbb{Q}$. The comment outlines the proof via the rational root theorem: possible rational roots are $\\{\\pm 1, \\pm 1/2, \\pm 1/4\\}$ (divisors of constant term $\\pm 1$ over divisors of leading coefficient $4$). All six evaluate to non-zero values. For a degree-2 polynomial over a field, no roots implies irreducible.\n\n**Separability** (lines 101-102): Follows immediately from irreducibility — irreducible polynomials over $\\mathbb{Q}$ (characteristic 0) are always separable.",
+    "mathContext": "Vieta's formulas for $4X^2 - 2X - 1$: sum of roots $= 2/4 = 1/2$, product of roots $= -1/4$. So $\\alpha + \\beta = 1/2$ gives $\\beta = 1/2 - \\alpha$. The identity $4(1/2-a)^2 - 2(1/2-a) - 1 = 4a^2 - 2a - 1$ is the **palindromic symmetry** of the polynomial under $X \\mapsto 1/2 - X$. Irreducibility: $\\sqrt{5} \\notin \\mathbb{Q}$ means neither root $(1 \\pm \\sqrt{5})/4$ is rational.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Vieta's formulas",
+      "palindromic polynomial",
+      "rational root theorem",
+      "irreducible polynomial",
+      "separable polynomial",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "Vieta's formulas",
+      "rational root theorem",
+      "irreducibility of degree-2 polynomials",
+      "characteristic zero separability"
+    ]
+  },
+  {
+    "id": "atcg-oq01oq02-splitting",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-02",
+    "range": {
+      "startLine": 104,
+      "endLine": 203
+    },
+    "type": "technique",
+    "title": "Splitting Field Analysis: All Roots Lie in ℚ(α)",
+    "content": "The central technical section proves that the splitting field of $4X^2 - 2X - 1$ equals $\\mathbb{Q}(\\alpha)$ for any root $\\alpha$. The argument proceeds in four steps:\n\n1. **Root construction** (`root_in_sf`, lines 123-124): Constructs a root $\\alpha$ in `SplittingField` via `rootOfSplits`, which extracts a root from the splitting field by the definition of splitting.\n\n2. **Beta is a root** (`beta_is_root`, lines 137-143): Shows $\\beta = 1/2 - \\alpha$ is also a root of `pCos5`, using the Vieta identity.\n\n3. **Beta lies in ℚ(α)** (`beta_in_adjoin`, lines 146-155): Since $\\beta = 1/2 - \\alpha$ and both $1/2 \\in \\mathbb{Q} \\subset \\mathbb{Q}(\\alpha)$ and $\\alpha \\in \\mathbb{Q}(\\alpha)$, subtraction closure gives $\\beta \\in \\mathbb{Q}(\\alpha)$. This is the key simplification over the cubic cases.\n\n4. **All roots in ℚ(α)** (`rootSet_subset_adjoin`, lines 169-187): Uses the factored form $4X^2-2X-1 = 4(X-\\alpha)(X-\\beta)$ to show any root $r$ satisfies $r = \\alpha$ or $r = \\beta$. The factorization `factored_eval_eq` (lines 159-166) is proved by `ring` after subtracting and using $4\\alpha^2 - 2\\alpha - 1 = 0$. Then `rcases mul_eq_zero` splits on whether $r = \\alpha$ or $r = \\beta$.\n\n5. **Adjoin equals top** (`adjoin_root_eq_top`, lines 190-202): Since all roots lie in $\\mathbb{Q}(\\alpha)$ and the splitting field is generated by all roots (`adjoin_rootSet`), we get $\\mathbb{Q}(\\alpha) = \\text{SplittingField}$.",
+    "mathContext": "For irreducible $f \\in \\mathbb{Q}[X]$ of degree $d$: $[\\text{SplittingField}(f) : \\mathbb{Q}]$ divides $d!$, and equals $d$ iff every root of $f$ is a polynomial expression in any single root. For $d=2$: $\\text{SplittingField} = \\mathbb{Q}(\\alpha)$ always (since $\\beta = (s - \\alpha)$ where $s$ is the root sum). For $d=3$: this is not automatic — the cubic resolvent may require a separate extension. The simplicity of degree 2 is why this proof avoids the complex root-image identities needed in the $n=7,9$ cases.",
+    "significance": "key",
+    "relatedConcepts": [
+      "SplittingField",
+      "rootOfSplits",
+      "IntermediateField.adjoin",
+      "adjoin_rootSet",
+      "factored polynomial",
+      "mul_eq_zero"
+    ],
+    "prerequisites": [
+      "splitting fields",
+      "intermediate fields",
+      "polynomial factorization",
+      "Vieta identity for this polynomial"
+    ]
+  },
+  {
+    "id": "atcg-oq01oq02-finrank",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-02",
+    "range": {
+      "startLine": 204,
+      "endLine": 238
+    },
+    "type": "technique",
+    "title": "Degree Computation: [SplittingField:ℚ] = 2",
+    "content": "Computes the extension degree $[\\text{SplittingField}(4X^2-2X-1) : \\mathbb{Q}] = 2$ via a chain of equalities:\n\n1. **Root is integral** (`root_integral`, line 205): $\\alpha$ is integral over $\\mathbb{Q}$ since $\\text{SplittingField}$ is finite-dimensional over $\\mathbb{Q}$ (`.of_finite`).\n\n2. **Minpoly has natDegree 2** (`minpoly_natDegree`, lines 208-220): The minimal polynomial of $\\alpha$ over $\\mathbb{Q}$ divides `pCos5` (since $\\alpha$ is a root) and is irreducible. Since `pCos5` is also irreducible, they are associates — so they have equal degree. The proof bounds both directions: `natDegree_le_of_dvd` gives $\\deg(\\text{minpoly}) \\leq \\deg(\\text{pCos5}) = 2$ and $\\deg(\\text{pCos5}) \\leq \\deg(\\text{minpoly})$.\n\n3. **Adjoin finrank** (`adjoin_finrank`, line 223-226): $[\\mathbb{Q}(\\alpha) : \\mathbb{Q}] = \\text{natDegree}(\\text{minpoly}(\\alpha)) = 2$, via `IntermediateField.adjoin.finrank`.\n\n4. **Splitting finrank** (`pCos5_splitting_finrank`, lines 229-238): Since $\\mathbb{Q}(\\alpha) = \\text{SplittingField}$ (from `adjoin_root_eq_top`), the finrank equals 2. The bridge uses `IntermediateField.topEquiv.toLinearEquiv` to equate the finrank of the top intermediate field with the ambient splitting field.",
+    "mathContext": "For an irreducible polynomial $f$ over $\\mathbb{Q}$ with root $\\alpha$: $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\deg(f) = \\deg(\\text{minpoly}(\\alpha/\\mathbb{Q}))$. The minpoly divides $f$ (root property) and $f$ divides the minpoly (both irreducible, so associates). This gives $\\deg(\\text{minpoly}) = \\deg(f)$. For splitting fields: $[\\text{SF}(f):\\mathbb{Q}] = [\\mathbb{Q}(\\alpha):\\mathbb{Q}]$ when all roots lie in $\\mathbb{Q}(\\alpha)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Module.finrank",
+      "minpoly",
+      "IsIntegral",
+      "IntermediateField.adjoin.finrank",
+      "IntermediateField.topEquiv",
+      "natDegree_le_of_dvd"
+    ],
+    "prerequisites": [
+      "minimal polynomial",
+      "extension degree",
+      "finrank",
+      "adjoin_root_eq_top from previous section"
+    ]
+  },
+  {
+    "id": "atcg-oq01oq02-main",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-02",
+    "range": {
+      "startLine": 240,
+      "endLine": 259
+    },
+    "type": "insight",
+    "title": "Main Theorem: |Gal(4X²-2X-1/ℚ)| = 2",
+    "content": "The main theorem `cos_36_gal_card` (lines 250-254) proves $|\\text{Gal}(4X^2-2X-1/\\mathbb{Q})| = 2$. The proof is a two-line chain:\n\n1. `Polynomial.Gal.card_of_separable pCos5_separable` gives $\\text{Nat.card}(\\text{Gal}) = \\text{finrank}(\\mathbb{Q}, \\text{SplittingField})$.\n2. `pCos5_splitting_finrank` gives $\\text{finrank} = 2$.\n\nThe theorem `Gal.card_of_separable` is the Lean formalization of the fundamental theorem of Galois theory (numerical form): for a separable polynomial, $|\\text{Gal}(f/\\mathbb{Q})| = [\\text{SplittingField}(f):\\mathbb{Q}]$. All the work was in proving $\\text{finrank} = 2$; the Galois cardinality follows immediately.\n\nThe companion theorem `cos_36_poly_irreducible` (lines 257-259) exports the irreducibility result as a public interface, allowing other gallery entries to import it.",
+    "mathContext": "$|\\text{Gal}(f/\\mathbb{Q})| = [\\text{SplittingField}(f):\\mathbb{Q}]$ for separable $f$ (fundamental theorem of Galois theory, numerical form). Here: $|\\text{Gal}(4X^2-2X-1/\\mathbb{Q})| = 2 = \\varphi(10)/2$, confirming the $n=5$ case of the general formula. The Galois group is $\\mathbb{Z}/2\\mathbb{Z}$, generated by the automorphism $\\alpha \\mapsto 1/2 - \\alpha$ (swapping the two roots).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Polynomial.Gal",
+      "Gal.card_of_separable",
+      "fundamental theorem of Galois theory",
+      "Fintype.card",
+      "SplittingField finrank"
+    ],
+    "prerequisites": [
+      "pCos5_separable",
+      "pCos5_splitting_finrank",
+      "Gal.card_of_separable"
+    ]
+  },
+  {
+    "id": "atcg-oq01oq02-general",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-02",
+    "range": {
+      "startLine": 261,
+      "endLine": 323
+    },
+    "type": "context",
+    "title": "General Formula and Cross-Verification with n=7,9 Cases",
+    "content": "Part IV states the general formula and cross-verifies it against known cases.\n\n**General formula** (`gal_order_eq_totient_div2_general`, lines 284-288): Stated as a placeholder tautology (`rfl`) rather than a sorry — the theorem statement is $\\varphi(2n)/2 = \\varphi(2n)/2$ rather than the actual content (which would require `IsCyclotomicExtension` API to connect $\\cos(\\pi/n)$ to cyclotomic fields).\n\n**Consistency checks** (lines 291-293): Three `decide` proofs verify $\\varphi(10)/2 = 2$, $\\varphi(14)/2 = 3$, and $\\varphi(18)/2 = 3$, confirming the formula for $n=5,7,9$.\n\n**Cross-verification** (lines 296-307): Two theorems import the main results from sibling gallery entries — `AngleTrisectionCos20GalOQ01.cos_pi_7_gal_card` (n=7) and `AngleTrisectionCos20Gal.cos20_gal_card` (n=9) — and verify they match $\\varphi(2n)/2$. This creates a web of formal cross-references confirming the general pattern.\n\nThe closing summary (lines 309-321) inventories all three cases and notes the key quadratic simplification: $\\beta = 1/2 - \\alpha$ (Vieta) avoids the complex algebraic identities needed for cubic cases.",
+    "mathContext": "Cross-verification: $\\varphi(10)/2 = 2$, $\\varphi(14)/2 = 3$, $\\varphi(18)/2 = 3$. General: $|\\text{Gal}(\\text{minpoly}(\\cos(\\pi/n))/\\mathbb{Q})| = \\varphi(2n)/2$ from $\\text{Gal}(\\mathbb{Q}(\\zeta_{2n})/\\mathbb{Q}) \\cong (\\mathbb{Z}/2n\\mathbb{Z})^\\times$ and $\\text{Gal}(\\mathbb{Q}(\\cos(\\pi/n))/\\mathbb{Q}) \\cong (\\mathbb{Z}/2n\\mathbb{Z})^\\times / \\langle -1 \\rangle$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.totient",
+      "IsCyclotomicExtension",
+      "cross-verification",
+      "decide tactic",
+      "inter-file imports"
+    ],
+    "prerequisites": [
+      "cos_36_gal_card (this file)",
+      "AngleTrisectionCos20GalOQ01.cos_pi_7_gal_card",
+      "AngleTrisectionCos20Gal.cos20_gal_card",
+      "Nat.totient computation"
+    ]
+  }
+]

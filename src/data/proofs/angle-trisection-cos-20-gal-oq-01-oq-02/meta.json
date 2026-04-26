@@ -1,6 +1,8 @@
 {
+  "id": "angle-trisection-cos-20-gal-oq-01-oq-02",
+  "title": "Galois Group of cos(π/5): |Gal| = φ(10)/2 = 2",
   "slug": "angle-trisection-cos-20-gal-oq-01-oq-02",
-  "description": "Proves |Gal(4X²-2X-1/ℚ)| = 2 for the minimal polynomial of cos(π/5) = cos(36°), establishing the φ(2n)/2 = φ(10)/2 = 2 formula for the n=5 case. Introduces the key Vieta identity: the second root of 4X²-2X-1 is β = 1/2-α (proved by showing 4X²-2X-1 is symmetric under X ↦ 1/2-X). States the general cyclotomic formula |Gal(minpoly(cos(π/n))/ℚ)| = φ(2n)/2 and cross-verifies with the n=7,9 cases from sibling proofs.",
+  "description": "Proves |Gal(4X²-2X-1/ℚ)| = 2 for the minimal polynomial of cos(π/5) = cos(36°), establishing the φ(2n)/2 = φ(10)/2 = 2 formula for the n=5 case. Introduces the key Vieta identity: the second root of 4X²-2X-1 is β = 1/2-α (proved by showing 4X²-2X-1 is symmetric under X ↦ 1/2-X). States the general cyclotomic formula |Gal(minpoly(cos(π/n))/ℚ)| = φ(2n)/2 and cross-verifies with the n=7,9 cases from sibling proofs. 27 theorems, 2 definitions, 1 sorry.",
   "meta": {
     "author": "researcher-10",
     "date": "2026",
@@ -18,7 +20,10 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 310,
+    "lineCount": 323,
+    "theoremCount": 27,
+    "definitionCount": 2,
+    "dateAdded": "2026-04-26",
     "assumptions": "1 sorry: irreducibility of 4X²-2X-1 over ℚ (routine, provable via rational root theorem checking all candidates ±1, ±1/2, ±1/4). All other theorems (splitting field degree 2, Galois order 2, Vieta identity, general formula consistency checks) are sorry-free.",
     "mathlib_version": "4.26.0",
     "historicalContext": "The angle trisection impossibility proof reduces to computing Galois groups of minimal polynomials of cosines. While the cubic cases (n=7, n=9) have been formalized, the quadratic case n=5 reveals a simplification: cos(π/5) has degree 2 over ℚ, and the Galois group formula φ(2n)/2 gives the correct answer 2. The proof is simpler than the cubic cases because the second root is just β = 1/2 - α (Vieta's: sum of roots = 1/2), avoiding the complex algebraic identities needed for cubics.",
@@ -79,7 +84,7 @@
       "id": "general-formula",
       "title": "General Formula and Cross-Verification",
       "startLine": 266,
-      "endLine": 310,
+      "endLine": 323,
       "summary": "States the general conjecture gal_order_eq_totient_div2_general (sorry), verifies φ(2n)/2 for n=5,7,9 by decide, and cross-verifies with sibling gallery results.",
       "mathContext": "For $n\\geq 3$: $|\\text{Gal}(\\text{minpoly}(\\cos(\\pi/n))/\\mathbb{Q})| = \\phi(2n)/2$. Cross-checked: $\\phi(10)/2=2$, $\\phi(14)/2=3$, $\\phi(18)/2=3$."
     }
@@ -91,9 +96,9 @@
       "Proofs.AngleTrisectionCos20GalOQ01"
     ],
     "namespace": "AngleTrisectionCos20GalOQ01OQ02",
-    "lineCount": 310,
+    "lineCount": 323,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 27,
     "definitionCount": 2,
     "path": "Proofs/AngleTrisectionCos20GalOQ01OQ02.lean",
     "sorries": 1
@@ -131,14 +136,14 @@
   },
   "references": [
     {
-      "authors": "Washington, Lawrence C.",
+      "authors": ["Washington, Lawrence C."],
       "title": "Introduction to Cyclotomic Fields, 2nd Edition",
       "year": "1997",
       "venue": "Springer",
       "note": "Chapter 2: The Maximal Real Subfield and its Galois group."
     },
     {
-      "authors": "Lang, Serge",
+      "authors": ["Lang, Serge"],
       "title": "Algebra, 3rd Edition",
       "year": "2002",
       "venue": "Springer",
