@@ -96,9 +96,17 @@
       "id": "main-theorem",
       "title": "IV. Main Theorem — Prime Power Case",
       "startLine": 162,
-      "endLine": 235,
+      "endLine": 238,
       "summary": "Proves nonderogatory_pw_has_cyclic_vector: for nonderogatory M with minpoly = p^e (p monic irreducible, e ≥ 1), M has a cyclic vector over any field K.",
       "mathContext": "Pick v with p^(e-1)(M)v ≠ 0 (possible since deg(p^(e-1)) < n = deg(minpoly) implies p^(e-1)(M) ≠ 0). Then p^e(M)v = 0. For any r with r(M)v = 0 and deg(r) < n: pow_irred_dvd_of_annihilated gives p^e | r, so deg(r) ≥ e·deg(p) = n, contradicting deg(r) < n. Hence r = 0."
+    },
+    {
+      "id": "finite-corollary",
+      "title": "V. Finite Field Corollary",
+      "startLine": 240,
+      "endLine": 253,
+      "summary": "Specializes the main theorem to finite fields, showing no cardinality restriction on K is needed. The corollary is a direct application — the proof works uniformly over all fields.",
+      "mathContext": "For any finite field 𝔽_q and nonderogatory M ∈ 𝔽_q^{n×n} with minpoly = p^e, the cyclic vector exists regardless of q versus n."
     }
   ],
   "conclusion": {
