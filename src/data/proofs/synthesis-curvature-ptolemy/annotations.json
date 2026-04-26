@@ -135,5 +135,17 @@
       "Möbius group",
       "complex analysis"
     ]
+  },
+  {
+    "id": "ann-summary-checks",
+    "proofId": "synthesis-curvature-ptolemy",
+    "range": { "startLine": 259, "endLine": 270 },
+    "type": "technique",
+    "title": "Final Verification: Seven #check Declarations",
+    "content": "The file closes with seven `#check` commands serving as a compilation-time sanity check for all main declarations:\n\n- `@curvatureSin`: the main definition (curvature → time → ℝ)\n- `@curvatureSin_zero`, `@curvatureSin_one`, `@curvatureSin_neg_one`: the three geometry cases\n- `@curvatureSin_zero_right`: the t=0 boundary condition\n- `@spherical_ptolemy_eq_curvatureSin`: the equality theorem (requires Cospherical)\n- `@spherical_ptolemy_ineq_curvatureSin`: the inequality theorem (unconditional)\n\nThe `@` prefix requests the fully elaborated type (with all implicit arguments explicit), making the #check output useful for verifying the exact type signatures. This practice — closing a proof file with `#check` statements for all exported names — is a common style in Lean 4 for confirming that the public API is correctly typed before creating a PR.",
+    "mathContext": "The seven checks confirm the complete API of the `SynthesisCurvaturePtolemy` module:\n1. $\\text{curvatureSin} : \\mathbb{R} \\to \\mathbb{R} \\to \\mathbb{R}$\n2. $\\text{curvatureSin\\_zero} : \\text{curvatureSin}\\, 0\\, t = t$\n3. $\\text{curvatureSin\\_one} : \\text{curvatureSin}\\, 1 = \\sin$\n4. $\\text{curvatureSin\\_neg\\_one} : \\text{curvatureSin}\\, (-1) = \\sinh$\n5. $\\text{curvatureSin\\_zero\\_right} : \\text{curvatureSin}\\, K\\, 0 = 0$\n6. Spherical Ptolemy equality (cyclic hypothesis)\n7. Spherical Ptolemy inequality (unconditional)",
+    "significance": "technical",
+    "relatedConcepts": ["#check command", "Lean 4 API verification", "fully elaborated types", "module public API"],
+    "prerequisites": ["all preceding declarations in the file"]
   }
 ]
