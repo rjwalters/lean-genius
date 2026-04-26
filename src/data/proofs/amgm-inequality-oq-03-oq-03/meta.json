@@ -1,10 +1,10 @@
 {
   "id": "amgm-inequality-oq-03-oq-03",
-  "title": "Power Mean Extreme Cases: Limits as r → ±∞",
+  "title": "Power Mean Extreme Cases: Limits as r \u2192 \u00b1\u221e",
   "slug": "amgm-inequality-oq-03-oq-03",
-  "description": "Formalizes the power mean family and proves special cases: M₁ = arithmetic mean, M₋₁ = harmonic mean. Documents the extreme cases M_r → max as r → +∞ and M_r → min as r → -∞, completing the continuous interpolation from min to max.",
+  "description": "Formalizes the power mean family and proves special cases: M\u2081 = arithmetic mean, M\u208b\u2081 = harmonic mean. Documents the extreme cases M_r \u2192 max as r \u2192 +\u221e and M_r \u2192 min as r \u2192 -\u221e, completing the continuous interpolation from min to max.",
   "meta": {
-    "author": "Hardy-Littlewood-Pólya (1934)",
+    "author": "Hardy-Littlewood-P\u00f3lya (1934)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Generalized_mean",
     "date": "1934",
     "status": "verified",
@@ -22,7 +22,7 @@
     "lineCount": 65
   },
   "overview": {
-    "historicalContext": "The classical means — harmonic, geometric, and arithmetic — were studied since antiquity. Pythagoras and his school recognized all three; they appear in Euclid's *Elements* and in the music theory of ancient Greece. Cauchy gave the first rigorous proof of the AM-GM inequality in his 1821 *Cours d'analyse*. The unification of all these means under a single parametric family — the power mean $M_r$ — was systematically developed by Hardy, Littlewood, and Pólya in their landmark 1934 monograph *Inequalities*, which remains a standard reference in mathematical analysis. The extreme cases ($M_r \\to \\max$ as $r \\to +\\infty$, $M_r \\to \\min$ as $r \\to -\\infty$) complete this family geometrically: the power mean traces a continuous, monotone path from the minimum value through the geometric mean, arithmetic mean, and beyond, ultimately converging to the maximum. This perspective reveals the AM-GM inequality ($M_0 \\leq M_1$) as just one instance of a much richer monotonicity principle.",
+    "historicalContext": "The classical means \u2014 harmonic, geometric, and arithmetic \u2014 were studied since antiquity. Pythagoras and his school recognized all three; they appear in Euclid's *Elements* and in the music theory of ancient Greece. Cauchy gave the first rigorous proof of the AM-GM inequality in his 1821 *Cours d'analyse*. The unification of all these means under a single parametric family \u2014 the power mean $M_r$ \u2014 was systematically developed by Hardy, Littlewood, and P\u00f3lya in their landmark 1934 monograph *Inequalities*, which remains a standard reference in mathematical analysis. The extreme cases ($M_r \\to \\max$ as $r \\to +\\infty$, $M_r \\to \\min$ as $r \\to -\\infty$) complete this family geometrically: the power mean traces a continuous, monotone path from the minimum value through the geometric mean, arithmetic mean, and beyond, ultimately converging to the maximum. This perspective reveals the AM-GM inequality ($M_0 \\leq M_1$) as just one instance of a much richer monotonicity principle.",
     "problemStatement": "For positive reals $x_1, \\ldots, x_n > 0$, the power mean at exponent $r \\in \\mathbb{R}$ is defined as:\n$$M_r(x) = \\begin{cases} \\left(\\frac{1}{n}\\sum_{i=1}^n x_i^r\\right)^{1/r} & r \\neq 0 \\\\ \\left(\\prod_{i=1}^n x_i\\right)^{1/n} & r = 0 \\end{cases}$$\nSpecial cases include: $M_{-1}$ (harmonic mean), $M_0$ (geometric mean), $M_1$ (arithmetic mean), $M_2$ (quadratic/RMS mean). The extreme cases assert $\\lim_{r \\to +\\infty} M_r = \\max_i x_i$ and $\\lim_{r \\to -\\infty} M_r = \\min_i x_i$.",
     "proofStrategy": "The Lean formalization defines `powerMean` as a noncomputable function using a conditional branch: when $r = 0$, it computes the geometric mean via the product formula; otherwise it uses the standard power mean formula. Two concrete instances are fully proved: the arithmetic mean identity $M_1(a,b) = (a+b)/2$ and the harmonic mean identity $M_{-1}(a,b) = 2ab/(a+b)$. The limit cases ($r \\to \\pm\\infty$) and full monotonicity are documented as docstring outlines. The key squeeze argument for the $r \\to +\\infty$ limit exploits $\\max x_i \\leq M_r \\leq n^{1/r} \\cdot \\max x_i$ with $n^{1/r} \\to 1$; the $r \\to -\\infty$ case follows by duality via $M_{-r}(x) = 1/M_r(1/x)$.",
     "keyInsights": [
@@ -30,7 +30,8 @@
       "The extreme limit $M_r \\to \\max x_i$ as $r \\to +\\infty$ follows from a tight squeeze: $\\max x_i \\leq M_r = \\left(\\frac{\\sum x_i^r}{n}\\right)^{1/r} \\leq n^{1/r} \\cdot \\max x_i$, since $n^{1/r} \\to 1$.",
       "The duality $M_{-r}(x) = 1/M_r(1/x)$ reduces the $r \\to -\\infty$ case to the $r \\to +\\infty$ case, eliminating redundant proof work and revealing a symmetry between max and min dominance.",
       "Monotonicity of power means ($r \\leq s \\Rightarrow M_r \\leq M_s$) is a deep generalization of AM-GM and follows from Jensen's inequality applied to the strictly convex function $t \\mapsto t^{s/r}$ when $s/r > 1$.",
-      "The Lean definition is `noncomputable` because real exponentiation (rpow) is not computationally decidable in Lean's type theory — this illustrates the distinction between mathematical existence and computational realizability."
+      "The Lean definition is `noncomputable` because real exponentiation (rpow) is not computationally decidable in Lean's type theory \u2014 this illustrates the distinction between mathematical existence and computational realizability.",
+      "The noncomputability of power means ($ is \\texttt{noncomputable} in Lean) reflects a fundamental distinction between computable and mathematical analysis: \\texttt{Real.rpow} (real exponentiation) uses choice and real number completeness in ways that cannot be computed. This is not a limitation of the formalization \u2014 it reflects that the power mean 'value' for general $ is a real number defined by an analytic limit, not a formula that can be executed. The \\texttt{noncomputable} annotation is thus mathematically honest: power means exist as mathematical objects but not as programs."
     ],
     "prerequisites": [
       "Real analysis: power functions, limits at infinity, squeeze theorem",
@@ -52,7 +53,7 @@
       "title": "Power Mean Definition",
       "startLine": 21,
       "endLine": 32,
-      "summary": "Defines `powerMean x r` for a Fintype-indexed family `x : ι → ℝ` at exponent `r : ℝ`. The $r = 0$ branch uses the product formula (geometric mean); the $r \\neq 0$ branch uses the standard power mean formula."
+      "summary": "Defines `powerMean x r` for a Fintype-indexed family `x : \u03b9 \u2192 \u211d` at exponent `r : \u211d`. The $r = 0$ branch uses the product formula (geometric mean); the $r \\neq 0$ branch uses the standard power mean formula."
     },
     {
       "id": "extreme-cases-docs",
@@ -78,7 +79,7 @@
   ],
   "conclusion": {
     "summary": "This entry defines the power mean function in Lean 4 across the full real exponent range, handling the geometric mean boundary case at $r = 0$. Two special cases are fully proved with 0 sorries: the arithmetic mean ($M_1$) and harmonic mean ($M_{-1}$) for two positive reals. The limit behaviors at $r = \\pm\\infty$ and monotonicity are documented with detailed proof sketches for future formalization.",
-    "implications": "Power means are fundamental throughout analysis, probability, and applied mathematics. The full monotonicity chain $M_r \\leq M_s$ for $r \\leq s$ subsumes AM-GM, Cauchy-Schwarz (via $M_1 \\leq M_2$), and the classical harmonic-geometric-arithmetic-quadratic chain $H \\leq G \\leq A \\leq Q$. In functional analysis, power means correspond to $L^p$ norms of the empirical measure, connecting to Hölder's inequality. The extreme cases have applications in optimization (worst-case analysis), approximation theory, and the theory of entropy in information theory.",
+    "implications": "Power means are fundamental throughout analysis, probability, and applied mathematics. The full monotonicity chain $M_r \\leq M_s$ for $r \\leq s$ subsumes AM-GM, Cauchy-Schwarz (via $M_1 \\leq M_2$), and the classical harmonic-geometric-arithmetic-quadratic chain $H \\leq G \\leq A \\leq Q$. In functional analysis, power means correspond to $L^p$ norms of the empirical measure, connecting to H\u00f6lder's inequality. The extreme cases have applications in optimization (worst-case analysis), approximation theory, and the theory of entropy in information theory.",
     "openQuestions": [
       "Can the limit cases $\\lim_{r \\to \\pm\\infty} M_r = \\max/\\min$ be fully formalized in Lean using Mathlib's `Filter.Tendsto` framework and `Real.rpow` continuity lemmas?",
       "Can the full monotonicity theorem $r \\leq s \\Rightarrow M_r \\leq M_s$ be proved in Lean for arbitrary finite families, leveraging Mathlib's `ConvexOn` and Jensen's inequality?",
@@ -89,7 +90,7 @@
     {
       "targetId": "amgm-inequality",
       "relationship": "extends",
-      "description": "Parent AM-GM inequality — power means generalize AM-GM as M₀ ≤ M₁ (geometric ≤ arithmetic)"
+      "description": "Parent AM-GM inequality \u2014 power means generalize AM-GM as M\u2080 \u2264 M\u2081 (geometric \u2264 arithmetic)"
     },
     {
       "targetId": "amgm-inequality-oq-03-oq-02",
@@ -99,17 +100,27 @@
     {
       "targetId": "cauchy-schwarz",
       "relationship": "related",
-      "description": "Cauchy-Schwarz follows from power mean monotonicity: M₁ ≤ M₂ gives (Σxᵢ/n)² ≤ Σxᵢ²/n"
+      "description": "Cauchy-Schwarz follows from power mean monotonicity: M\u2081 \u2264 M\u2082 gives (\u03a3x\u1d62/n)\u00b2 \u2264 \u03a3x\u1d62\u00b2/n"
     },
     {
       "targetId": "amgm-inequality-oq-02-oq-01",
       "relationship": "related",
-      "description": "Newton-Girard identity (Σxᵢ)² = Σxᵢ² + 2e₂ — the algebraic identity underlying the M₁ vs M₂ comparison"
+      "description": "Newton-Girard identity (\u03a3x\u1d62)\u00b2 = \u03a3x\u1d62\u00b2 + 2e\u2082 \u2014 the algebraic identity underlying the M\u2081 vs M\u2082 comparison"
+    },
+    {
+      "targetId": "amgm-inequality-oq-03-oq-02-oq-04",
+      "relationship": "extends",
+      "description": "Proves the extreme limits  \to \\max$ and  \to \\min$ in greater detail, with the duality argument ({-r}(x) = 1/M_r(1/x)$) fully formalized. This entry states the extreme cases; OQ-02-OQ-04 provides the squeeze proof and the inversion duality that handles the  \to -\\infty$ case via the  \to +\\infty$ case."
+    },
+    {
+      "targetId": "amgm-inequality-oq-03-oq-01",
+      "relationship": "related",
+      "description": "Negative Power Mean Monotonicity ( \\leq M_s$ for  \\leq s < 0$) is the interior monotonicity result for the left half of the power mean spectrum. This entry focuses on the extreme limits; OQ-01 proves the monotone ordering within  < 0$. Together they characterize the full negative half of the power mean spectrum."
     }
   ],
   "references": [
     {
-      "authors": "Hardy, G. H.; Littlewood, J. E.; Pólya, G.",
+      "authors": "Hardy, G. H.; Littlewood, J. E.; P\u00f3lya, G.",
       "title": "Inequalities",
       "year": "1934",
       "venue": "Cambridge University Press"
@@ -126,18 +137,18 @@
       "name": "powerMean",
       "type": "supporting",
       "description": "Definition of the power mean M_r for any real exponent r, with geometric mean at r=0",
-      "leanType": "noncomputable def powerMean (x : ι → ℝ) (r : ℝ) : ℝ"
+      "leanType": "noncomputable def powerMean (x : \u03b9 \u2192 \u211d) (r : \u211d) : \u211d"
     },
     {
       "name": "powerMean_1_is_am",
       "type": "core",
-      "description": "M₁(a,b) = (a+b)/2 — power mean at r=1 is the arithmetic mean",
+      "description": "M\u2081(a,b) = (a+b)/2 \u2014 power mean at r=1 is the arithmetic mean",
       "leanType": "powerMean (![a, b]) 1 = (a + b) / 2"
     },
     {
       "name": "powerMean_neg1_is_hm",
       "type": "core",
-      "description": "M₋₁(a,b) = 2ab/(a+b) — power mean at r=-1 is the harmonic mean",
+      "description": "M\u208b\u2081(a,b) = 2ab/(a+b) \u2014 power mean at r=-1 is the harmonic mean",
       "leanType": "powerMean (![a, b]) (-1) = 2 * a * b / (a + b)"
     }
   ],
