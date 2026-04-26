@@ -252,3 +252,53 @@ Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following
 
 1. Implement kuhnWalkWithExit + walkTrace_reversal to fill bdry_nfc_even sorry
 2. Then proof is complete (0 axioms, 0 sorries)
+
+---
+
+## Session 2026-04-26 (Session 11) — bdry_nfc_even is FALSE; Correct Strategy
+
+**Mode**: REVISIT
+**Outcome**: progress — falsity of bdry_nfc_even discovered; proof restructured
+
+### What I Did
+
+1. Analyzed `bdry_nfc_even` (claiming |B_nfc| is even) more carefully
+2. Constructed an explicit counterexample:
+   - d=1, N=2, abstract SpernerTriangulation with 2 simplices s₀, s₁
+   - s₀.vertices = (0↦v₁[coords=1], 1↦v₀[coords=0]), adj s₀ 0 = none, adj s₀ 1 = some(s₁,0)
+   - s₁.vertices = (0↦v₂[coords=2], 1↦v₁[coords=1]), adj s₁ 0 = some(s₀,1), adj s₁ 1 = none
+   - c(v₀)=1, c(v₁)=0, c(v₂)=0
+   - IsKuhnCompatible ✓, IsSperner ✓, all SpernerTriangulation axioms ✓
+   - s₀ is FC (colors {0,1}), s₁ is non-FC (colors {0,0})
+   - B = {(s₁,1)}: only boundary door at s₁ face 1 (adj s₁ 1 = none, k=Fin.last 1=1)
+   - B_fc = ∅ (s₀ has no boundary door — its boundary face is face 0, adj s₀ 0 = none,
+     but face 0 is NOT the last face, so it's excluded from B)
+   - B_nfc = {(s₁,1)}, |B_nfc| = 1 (ODD) — contradicts bdry_nfc_even
+3. Removed `bdry_nfc_even` private lemma entirely from SpernerNDimOQ04.lean
+4. Replaced `kuhn_path_existential` broken proof body with direct `sorry` + corrected docstring
+5. Updated file header to note bdry_nfc_even removal
+
+### Key Findings
+
+- **bdry_nfc_even is FALSE**: B_nfc can have odd cardinality. The involution argument must
+  be applied to ALL of B (not just B_nfc), or use a case split on B_fc = ∅ vs B_fc ≠ ∅.
+- **Correct strategy**: Case 1: B_fc ≠ ∅ → use any element directly. Case 2: B_fc = ∅ →
+  B = B_nfc has odd cardinality; define τ on B_nfc; since τ pairs elements up (FPF involution),
+  odd |B_nfc| forces ≥1 unpaired element, but the walk from an unpaired element must end at
+  FC (not another boundary non-FC), giving the required FC-start door.
+- **Pending** (~150 lines): kuhnWalkWithExit definition + walkTrace_reversal induction
+  showing τ∘τ=id on the walk trace.
+
+### Files Modified
+
+- `proofs/Proofs/SpernerNDimOQ04.lean` (-59 net lines: removed bdry_nfc_even + long proof body)
+- `research/problems/sperner-ndim-oq-04/knowledge.md` (this session)
+- `src/data/research/problems/sperner-ndim-oq-04.json` (progressSummary, insights, nextSteps)
+
+### Next Steps
+
+1. Case 2 needs careful formalization: when B_fc = ∅, every walk from B_nfc either pairs
+   with another B_nfc element (τ involution) or reaches an FC simplex. Since |B| is odd
+   and τ is FPF, ≥1 element reaches FC. The Lean gap is defining kuhnWalkWithExit properly.
+2. Alternative strategy: instead of involution on B_nfc, directly apply sperner_ndim's
+   parity result to deduce FC existence, bypassing the walk argument. This may be simpler.
