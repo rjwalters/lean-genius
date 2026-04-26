@@ -24,7 +24,9 @@
     "axiomCount": 0,
     "lineCount": 182,
     "assumptions": "No axioms, no sorries. Imports AngleTrisectionCos20Gal and AngleTrisectionCos20GalOQ01; all key theorems reduce to those parent results via case-splitting.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "historicalContext": "This entry answers the natural question raised by two near-identical proofs in the gallery: both AngleTrisectionCos20Gal (8X³−6X−1, the minimal polynomial of cos(20°)) and AngleTrisectionCos20GalOQ01 (8X³−4X²−4X+1, the minimal polynomial of cos(π/7)) have Galois groups of order 3, but each proof uses a different Eisenstein prime (p=2 vs p=7). The parameterized unification reveals the common structure: both belong to a family of cyclic cubics over ℚ reducible to Eisenstein form by a suitable linear substitution. The CyclicCubicData typeclass captures the common interface, providing a template extensible to other angles whose minimal polynomials are cyclic cubics.",
+    "proofStrategy": "The unification abstracts the shared structure into a trisectionPoly family and CyclicCubicData typeclass. Two instances are given: one for cos(20°) with Eisenstein prime p=2, one for cos(π/7) with p=7. Unified theorems (unified_galois_order, unified_splitting_field) are proved by rcases case splitting, reducing each case to the already-established individual results. The eisensteinConnection section explicitly identifies the Eisenstein prime for each instance."
   },
   "overview": {
     "historicalContext": "The question of which angles can be trisected by compass and straightedge — one of the three classical Greek problems — was resolved by Pierre Wantzel in 1837, who proved that only angles whose cosine satisfies a rational polynomial of 2-power degree are constructible. Trisecting 60° requires that cos(20°) satisfy a degree-3 polynomial 8X³−6X−1 (its minimal polynomial over ℚ), which is irreducible and not of 2-power degree.\n\nThe Galois theory viewpoint clarifies the impossibility: irreducible degree-3 polynomials over ℚ have Galois groups of order divisible by 3, while constructibility requires 2-power order. Computing that |Gal| = 3 for both cos(20°) and cos(π/7) proves their non-constructibility.\n\nBoth minimal polynomials arise from the same algebraic pattern: an Eisenstein cubic (primitive with prime-p divisibility conditions) composed with a linear shift. This common structure — recognized independently for p=3 and p=7 in separate proofs — is unified here into a single parameterized theorem.",
@@ -124,6 +126,26 @@
       "targetId": "angle-trisection",
       "relationship": "ancestor",
       "description": "The root angle trisection proof establishing impossibility via Galois theory — the original context motivating these specific Galois group computations."
+    },
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "related",
+      "description": "Both unified polynomials are cyclic cubics solvable by Cardano's formula (casus irreducibilis applies since all roots are real)."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-03",
+      "relationship": "related",
+      "description": "Galois's solvability criterion: both families have solvable Galois group ℤ/3ℤ, instantiating the forward direction uniformly across the CyclicCubicData typeclass."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "related",
+      "description": "The general Galois extension theory used to conclude |Gal(K/ℚ)| = [K:ℚ] = 3 from the splitting field computations."
+    },
+    {
+      "targetId": "angle-trisection-cos-20-gal-oq-03",
+      "relationship": "sibling",
+      "description": "Another sibling cubic Galois computation, extending the family unified here to a third angle."
     }
   ],
   "conclusion": {
