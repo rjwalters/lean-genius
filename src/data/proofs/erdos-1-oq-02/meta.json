@@ -18,10 +18,10 @@
       "berry-esseen"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 194,
-    "assumptions": "One axiom: anticoncentration_bound (Berry-Esseen). 1 sorry: dfx_lower_bound (statement may need correction for base cases). sum_sq_cauchy_schwarz proved via induction in Z.",
+    "lineCount": 268,
+    "assumptions": "One axiom: anticoncentration_bound (Berry-Esseen anticoncentration for subset sums). dfx_lower_bound and pow2_dss proved in 2026-04-26 commit. sum_sq_cauchy_schwarz proved via induction in Z.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -209,12 +209,12 @@
       "Mathlib"
     ],
     "namespace": "Erdos1OQ02",
-    "lineCount": 194,
+    "lineCount": 268,
     "axiomCount": 1,
     "theoremCount": 8,
     "definitionCount": 0,
     "path": "Proofs/Erdos1OQ02.lean",
-    "sorries": 1
+    "sorries": 0
   },
-  "sorries": 1
+  "sorries": 0
 }
