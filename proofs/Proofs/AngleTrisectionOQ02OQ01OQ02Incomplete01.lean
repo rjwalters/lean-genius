@@ -94,53 +94,147 @@ theorem isConstructible_sqrt2 : IsConstructible (Real.sqrt 2 : ℂ) := by
   simpa using IsConstructible.sqrt_ext (Real.sqrt 2 : ℂ) 2 0 h2 h0 hsq
 
 -- ============================================================
--- PART 2: Key Structural Lemma (SORRY — tower degree property)
+-- PART 2: Key Structural Lemmas (tower degree property)
 -- ============================================================
+
+/-- **Strong induction hypothesis**: every constructible α lives in a 2-power
+    extension of any given 2-power base field F.
+
+    The direct induction fails because in the `sqrt_ext` case the compositum degree
+    over ℚ cannot be controlled from the IH finranks alone. This stronger statement
+    threads a single growing 2-power field through the recursion.
+
+    **Proof** (sqrt_ext case α = b+β, β²=a):
+    1. Apply ih_a to F → Ka ≥ F, a ∈ Ka, finrank ℚ Ka = 2^ja
+    2. β integral over ↥Ka (satisfies X²-a, a ∈ Ka); form Kβ := (↥Ka)⟮β⟯
+       as `IntermediateField ↥Ka ℂ` (base field = ↥Ka, NOT ℚ)
+    3. finrank ↥Ka ↥Kβ = natDegree(minpoly ↥Ka β) ≤ 2 → divides 2
+    4. Tower: finrank ℚ ↥Kβ = finrank ℚ ↥Ka · finrank ↥Ka ↥Kβ
+       (instances automatic since Kβ : IntermediateField ↥Ka ℂ)
+       = 2^ja · 2^e = 2^(ja+e) for some e ≤ 1
+    5. Apply ih_b to Kβ.restrictScalars ℚ → Kb, b ∈ Kb, finrank Kb = 2^jb
+    6. G = Kb: β ∈ Kβ ≤ Kb, b ∈ Kb → b+β ∈ Kb -/
+private lemma isConstructible_exists_2power_ext (α : ℂ) (h : IsConstructible α) :
+    ∀ (F : IntermediateField ℚ ℂ) (n : ℕ), Module.finrank ℚ ↥F = 2 ^ n →
+    ∃ (G : IntermediateField ℚ ℂ) (m : ℕ),
+      F ≤ G ∧ (α : ℂ) ∈ (G : Set ℂ) ∧ Module.finrank ℚ ↥G = 2 ^ m := by
+  induction h with
+  | rational _ h_mem =>
+    -- α = algebraMap ℚ ℂ q ∈ F already (every intermediate field contains ℚ)
+    intro F n hF
+    obtain ⟨q, rfl⟩ := h_mem
+    exact ⟨F, n, le_refl F, IntermediateField.algebraMap_mem F q, hF⟩
+  | sqrt_ext β a b _ _ hβ2 ih_a ih_b =>
+    intro F n hF
+    -- Step 1: Ka ≥ F with a ∈ Ka and finrank ℚ Ka = 2^ja
+    obtain ⟨Ka, ja, hF_Ka, ha_Ka, hKa⟩ := ih_a F n hF
+    -- Step 2: β is integral over ↥Ka (β² = a ∈ Ka)
+    have hβ_sq : β ^ 2 = a := by rw [sq]; exact hβ2
+    have hβ_integral : IsIntegral ↥Ka (β : ℂ) := by
+      -- β² = a ∈ Ka, so β² is integral over ↥Ka; then β is integral
+      apply IsIntegral.of_pow (n := 2) (by norm_num)
+      have : (β ^ 2 : ℂ) = algebraMap ↥Ka ℂ ⟨a, ha_Ka⟩ := by
+        simp only [hβ_sq, IntermediateField.algebraMap_apply]
+      rw [this]; exact isIntegral_algebraMap
+    -- Step 3: form Kβ := (↥Ka)⟮β⟯ : IntermediateField ↥Ka ℂ
+    -- finrank ↥Ka ↥Kβ ≤ 2 via natDegree(minpoly ↥Ka β) bound
+    let Kβ : IntermediateField ↥Ka ℂ := (↥Ka)⟮β⟯
+    have hKβ_finrank_le : Module.finrank ↥Ka ↥Kβ ≤ 2 := by
+      show Module.finrank ↥Ka ↥((↥Ka)⟮β⟯) ≤ 2
+      rw [IntermediateField.adjoin.finrank hβ_integral]
+      have hdvd : minpoly ↥Ka β ∣ X ^ 2 - C ⟨a, ha_Ka⟩ :=
+        minpoly.dvd ↥Ka β (by
+          simp only [map_sub, map_pow, aeval_X, aeval_C]
+          show β ^ 2 - algebraMap ↥Ka ℂ ⟨a, ha_Ka⟩ = 0
+          simp [hβ_sq, IntermediateField.algebraMap_apply])
+      have hne : (X ^ 2 - C (⟨a, ha_Ka⟩ : ↥Ka) : (↥Ka)[X]) ≠ 0 :=
+        (monic_X_pow_sub_C _ (by norm_num)).ne_zero
+      calc (minpoly ↥Ka β).natDegree
+          ≤ (X ^ 2 - C (⟨a, ha_Ka⟩ : ↥Ka)).natDegree :=
+            Polynomial.natDegree_le_of_dvd hdvd hne
+        _ = 2 := by simp
+    -- FiniteDimensional instances required for finrank_pos and finrank_mul_finrank
+    haveI hKa_finite : FiniteDimensional ℚ ↥Ka :=
+      Module.finite_of_finrank_pos (hKa ▸ pow_pos (by norm_num : (0:ℕ) < 2) ja)
+    haveI hKβ_fd : FiniteDimensional ↥Ka ↥Kβ :=
+      adjoin.finiteDimensional hβ_integral
+    -- Step 4: extract e with finrank ↥Ka ↥Kβ = 2^e (e ≤ 1)
+    have hKβ_pos : 0 < Module.finrank ↥Ka ↥Kβ := Module.finrank_pos
+    have hKβ_dvd : Module.finrank ↥Ka ↥Kβ ∣ 2 ^ 1 := by
+      rw [pow_one]
+      have hlo : 1 ≤ Module.finrank ↥Ka ↥Kβ := hKβ_pos
+      have hhi : Module.finrank ↥Ka ↥Kβ ≤ 2 := hKβ_finrank_le
+      interval_cases (Module.finrank ↥Ka ↥Kβ) <;> norm_num
+    obtain ⟨e, he_le, hKβ_rel⟩ :=
+      (Nat.dvd_prime_pow (by norm_num : Nat.Prime 2)).mp hKβ_dvd
+    -- Step 5: tower law — instances are automatic from Kβ : IntermediateField ↥Ka ℂ
+    -- finrank ℚ ↥Kβ = finrank ℚ ↥Ka · finrank ↥Ka ↥Kβ = 2^ja · 2^e = 2^(ja+e)
+    have hKβ_finrank : Module.finrank ℚ ↥Kβ = 2 ^ (ja + e) :=
+      calc Module.finrank ℚ ↥Kβ
+          = Module.finrank ℚ ↥Ka * Module.finrank ↥Ka ↥Kβ :=
+            (Module.finrank_mul_finrank ℚ ↥Ka ↥Kβ).symm
+        _ = 2 ^ ja * 2 ^ e := by rw [hKa, hKβ_rel]
+        _ = 2 ^ (ja + e) := (pow_add 2 ja e).symm
+    -- Step 5b: Kβ.restrictScalars ℚ : IntermediateField ℚ ℂ
+    -- has finrank ℚ = finrank ℚ ↥Kβ = 2^(ja+e)
+    have hKβRS_finrank : Module.finrank ℚ ↥(Kβ.restrictScalars ℚ) = 2 ^ (ja + e) :=
+      hKβ_finrank
+    -- Ka ≤ Kβ.restrictScalars ℚ (↥Ka is the base field of Kβ, hence every element of Ka ∈ Kβ)
+    have hKa_KβRS : Ka ≤ Kβ.restrictScalars ℚ := by
+      intro x hx
+      simp only [IntermediateField.mem_restrictScalars]
+      show x ∈ (↥Ka)⟮β⟯
+      -- x ∈ Ka → algebraMap ↥Ka ℂ ⟨x,hx⟩ = x ∈ (↥Ka)⟮β⟯ (base field is always contained)
+      have hmem := ((↥Ka)⟮β⟯).algebraMap_mem (⟨x, hx⟩ : ↥Ka)
+      simp only [IntermediateField.algebraMap_apply] at hmem
+      exact hmem
+    -- β ∈ Kβ.restrictScalars ℚ
+    have hβ_KβRS : (β : ℂ) ∈ (Kβ.restrictScalars ℚ : Set ℂ) := by
+      change β ∈ Kβ
+      exact IntermediateField.mem_adjoin_simple_self ↥Ka β
+    -- Step 6: apply ih_b to Kβ.restrictScalars ℚ
+    obtain ⟨Kb, jb, hKβRS_Kb, hb_Kb, hKb⟩ :=
+      ih_b (Kβ.restrictScalars ℚ) (ja + e) hKβRS_finrank
+    -- b + β ∈ Kb
+    have hβ_Kb : (β : ℂ) ∈ (Kb : Set ℂ) := hKβRS_Kb hβ_KβRS
+    exact ⟨Kb, jb,
+           le_trans (le_trans hF_Ka hKa_KβRS) hKβRS_Kb,
+           add_mem hb_Kb hβ_Kb, hKb⟩
 
 /-- Constructible numbers are algebraic of 2-power degree.
 
-    If α is constructible (under the FIXED definition), then:
-    1. α is algebraic over ℚ
-    2. finrank ℚ ℚ⟮α⟯ = 2^n for some n
-
-    **Proof**: Induction on IsConstructible.
-    - `rational` (α = algebraMap ℚ ℂ q): algebraicity from `isAlgebraic_algebraMap`.
-      finrank = 1 = 2^0 since q ∈ ⊥ implies ℚ⟮q⟯ = ⊥.
-    - `sqrt_ext` (α = b + β, β² = a):
-      · β algebraic: `IsAlgebraic.of_pow` from β^2 = a algebraic (IH on a).
-      · b + β algebraic: `IsIntegral.add` (over a field, algebraic ↔ integral).
-      · finrank: shown to divide 2^(j+k+1) via tower argument (sorry below),
-        then `Nat.dvd_prime_pow` extracts the exact power.
-
-    Remaining sorry: finrank ℚ ℚ⟮b+β⟯ ∣ 2^(j+k+1) (tower bound).
-    Tower: ℚ ⊆ ℚ⟮a⟯ (2^j) ⊆ ℚ⟮a⟯⊔ℚ⟮β⟯ (×2, β²=a∈ℚ⟮a⟯) ⊆ (...)⊔ℚ⟮b⟯ (×2^k); b+β in top. -/
+    **Proof**: Apply `isConstructible_exists_2power_ext` with F = ⊥ (finrank = 1 = 2^0)
+    to get G ≥ ⊥ with α ∈ G and finrank ℚ G = 2^m. Then:
+    - FiniteDimensional ℚ ↥G → α algebraic (every element of a fin-dim extension is algebraic)
+    - ℚ⟮α⟯ ≤ G → finrank ℚ ℚ⟮α⟯ ∣ 2^m → Nat.dvd_prime_pow gives exact power -/
 private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible α) :
     IsAlgebraic ℚ α ∧ ∃ n : ℕ, Module.finrank ℚ ℚ⟮α⟯ = 2 ^ n := by
-  induction h with
-  | rational _ h_mem =>
-    obtain ⟨q, rfl⟩ := h_mem
-    refine ⟨isAlgebraic_algebraMap q, 0, ?_⟩
-    rw [pow_zero]
-    exact IntermediateField.finrank_adjoin_simple_eq_one_iff.mpr
-      (IntermediateField.mem_bot.mpr ⟨q, rfl⟩)
-  | sqrt_ext β a b _ _ hβ2 ih_a ih_b =>
-    obtain ⟨halg_a, j, _hj⟩ := ih_a
-    obtain ⟨halg_b, k, _hk⟩ := ih_b
-    -- β is algebraic: β^2 = a with a algebraic
-    have hβ_sq : β ^ 2 = a := by rw [sq]; exact hβ2
-    have halg_β : IsAlgebraic ℚ β :=
-      IsAlgebraic.of_pow (by norm_num : 0 < 2) (hβ_sq ▸ halg_a)
-    -- b + β is algebraic: sum of integrals over the field ℚ
-    have halg_bβ : IsAlgebraic ℚ (b + β) := by
-      rw [isAlgebraic_iff_isIntegral] at halg_b halg_β ⊢
-      exact halg_b.add halg_β
-    refine ⟨halg_bβ, ?_⟩
-    -- Show Module.finrank ℚ ℚ⟮b+β⟯ ∣ 2^(j+k+1), then Nat.dvd_prime_pow gives exact power
-    suffices hdvd : Module.finrank ℚ ℚ⟮(b + β)⟯ ∣ 2 ^ (j + k + 1) by
-      obtain ⟨m, _, hm⟩ := (Nat.dvd_prime_pow (by norm_num : Nat.Prime 2)).mp hdvd
-      exact ⟨m, hm⟩
-    -- [SORRY] Tower: ℚ⟮b+β⟯ ⊆ (ℚ⟮a⟯ ⊔ ℚ⟮β⟯) ⊔ ℚ⟮b⟯ with finrank | 2^j * 2 * 2^k
-    sorry
+  obtain ⟨G, m, _, hα_G, hGm⟩ :=
+    isConstructible_exists_2power_ext α h ⊥ 0 (by
+      simp [IntermediateField.finrank_bot])
+  -- G is finite-dimensional over ℚ
+  haveI hGfin : FiniteDimensional ℚ ↥G :=
+    Module.finite_of_finrank_pos (hGm ▸ pow_pos (by norm_num : (0:ℕ) < 2) m)
+  -- α ∈ G → α algebraic: every element of a fin-dim extension is integral
+  have halg : IsAlgebraic ℚ α := by
+    obtain ⟨p, hp_ne, hp_eval⟩ :=
+      (Algebra.IsAlgebraic.of_finite ℚ ↥G).isAlgebraic (⟨α, hα_G⟩ : ↥G)
+    refine ⟨p, hp_ne, ?_⟩
+    -- G.val is the IntermediateField AlgHom (G.subtype resolves to Subsemiring.subtype)
+    let φ : ↥G →ₐ[ℚ] ℂ := G.val
+    -- aeval_algHom_apply : aeval (f x) p = f (aeval x p)
+    have key := Polynomial.aeval_algHom_apply φ (⟨α, hα_G⟩ : ↥G) p
+    -- key : aeval (φ ⟨α, hα_G⟩) p = φ (aeval ⟨α, hα_G⟩ p)
+    rw [hp_eval, map_zero] at key
+    -- key : aeval (φ ⟨α, hα_G⟩) p = 0; val_mk : G.val ⟨α, hα_G⟩ = α
+    simp only [φ, IntermediateField.val_mk] at key
+    exact key
+  refine ⟨halg, ?_⟩
+  -- ℚ⟮α⟯ ≤ G → finrank ℚ ℚ⟮α⟯ ∣ 2^m → extract power
+  have hle : ℚ⟮α⟯ ≤ G := IntermediateField.adjoin_simple_le_iff.mpr hα_G
+  have hdvd := hGm ▸ IntermediateField.finrank_dvd_of_le_right hle
+  obtain ⟨k, _, hk⟩ := (Nat.dvd_prime_pow (by norm_num : Nat.Prime 2)).mp hdvd
+  exact ⟨k, hk⟩
 
 -- ============================================================
 -- PART 3: Eisenstein Criterion — X³ - 2 is Irreducible
