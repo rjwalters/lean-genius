@@ -110,7 +110,7 @@
       "id": "summary",
       "title": "Summary #check Statements",
       "startLine": 259,
-      "endLine": 271,
+      "endLine": 270,
       "summary": "Seven #check commands verifying all main declarations are well-typed: curvatureSin, curvatureSin_zero, curvatureSin_one, curvatureSin_neg_one, curvatureSin_zero_right, spherical_ptolemy_eq_curvatureSin, spherical_ptolemy_ineq_curvatureSin.",
       "mathContext": "The #check statements serve as a final type-checking sanity check, confirming all seven declarations compile without errors and their types are as expected."
     }
