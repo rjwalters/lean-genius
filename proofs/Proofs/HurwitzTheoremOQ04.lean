@@ -40,21 +40,17 @@ These four algebras are deeply connected to the exceptional Lie groups through:
   - `alg_aut_preserves_inner`: Aut(𝕆) preserves the inner product (by polarization)
   - `imag_closed_under_aut`: Aut(𝕆) maps Im(𝕆) to Im(𝕆) — Aut(𝕆) ⊆ O(7)
   - `OctonionDer`: structure of octonion derivations (Leibniz rule)
-  - `zeroDer`, `addDer`, `smulDer`: Der(𝕆) is a vector space
+  - `zeroDer`, `addDer`, `smulDer`: Der(𝕆) operations
   - `commDer`: commutator of two derivations is a derivation
   - `commDer_antisymm`, `commDer_jacobi`: Der(𝕆) is a Lie algebra
+  - `OctonionDerSubmodule`: Der(𝕆) as a Submodule of End_ℝ(ℝ⁸)
   - `freudenthal_tits_f4/e6/e7/e8`: ExceptionalType dims match definitions (proved by rfl)
   - All exceptional type dimension computations
   - `G2_unique_low_rank`: G₂ is the only exceptional Lie algebra of rank < 4
   - `E8_is_largest`: E₈ has the highest dimension (248)
 
-- **Computational (sorry, provable by ring)**:
-  - `eightMul_right_unit`: e₀ is the right identity
-  - `eightMul_left_unit`: e₀ is the left identity
-  - `normSq_octUnit_mul`: normSq norm-product identity with octUnit
-
 - **Axiomatized** (1 genuinely deep result):
-  - `G2_is_octonion_aut`: G₂ = Aut(𝕆) (requires Lie group theory not in Mathlib)
+  - `G2_der_dimension`: finrank ℝ Der(𝕆) = 14 (requires 14 lin. indep. derivations)
 
 ## References
 - John Baez, "The Octonions", Bull. AMS 39 (2002) — comprehensive survey
@@ -415,13 +411,9 @@ def ExceptionalType.rank : ExceptionalType → ℕ
   | .E7 => 7
   | .E8 => 8
 
-/-- **G₂ is the automorphism group of the octonions.**
-
-    Axiomatized: the formal proof requires Lie group theory and an explicit
-    identification of the automorphism group with the 14-dimensional compact
-    simple Lie group of type G₂. -/
-axiom G2_is_octonion_aut :
-    ExceptionalType.G2.dim = Nat.card (OctonionAut)
+/-! **G₂ and the derivation algebra**: At the Lie algebra level, 𝔤₂ ≅ Der(𝕆):
+    the derivation algebra of the octonions has dimension 14.
+    Formalized in PART IV-c as `G2_der_dimension`. -/
 
 -- ============================================================
 -- PART IV-b: Derivation Algebra of the Octonions
@@ -559,6 +551,40 @@ theorem commDer_jacobi (D₁ D₂ D₃ : OctonionDer) (x : Fin 8 → ℝ) :
     (commDer (commDer D₃ D₁) D₂).map x = 0 := by
   simp only [commDer, Pi.sub_apply]
   ring
+
+-- ============================================================
+-- PART IV-c: Der(𝕆) as a Vector Subspace — Dimension Axiom
+-- ============================================================
+
+/-!
+### Der(𝕆) as a Submodule of End_ℝ(ℝ⁸)
+
+The derivation algebra Der(𝕆) is a subspace of the space of ℝ-linear endomorphisms
+of ℝ⁸. This formulation gives Der(𝕆) an inherited vector space structure and enables
+`FiniteDimensional.finrank` to measure its dimension.
+-/
+
+private lemma eightMul_zero_left (b : Fin 8 → ℝ) : eightMul (0 : Fin 8 → ℝ) b = 0 := by
+  have h := eightMul_smul_left (0 : ℝ) b b; simp at h; simpa using h
+
+private lemma eightMul_zero_right (a : Fin 8 → ℝ) : eightMul a (0 : Fin 8 → ℝ) = 0 := by
+  have h := eightMul_smul_right (0 : ℝ) a a; simp at h; simpa using h
+
+/-- Der(𝕆) as a submodule of End_ℝ(ℝ⁸): ℝ-linear maps satisfying the Leibniz rule.
+    Inherits the vector space structure from the ambient finite-dimensional space. -/
+def OctonionDerSubmodule : Submodule ℝ ((Fin 8 → ℝ) →ₗ[ℝ] (Fin 8 → ℝ)) where
+  carrier := {f | ∀ a b, f (eightMul a b) = eightMul (f a) b + eightMul a (f b)}
+  zero_mem' a b := by simp [eightMul_zero_left, eightMul_zero_right]
+  add_mem' {f g} hf hg a b := by
+    simp only [LinearMap.add_apply, hf a b, hg a b, eightMul_add_left, eightMul_add_right]; abel
+  smul_mem' r f hf a b := by
+    simp only [LinearMap.smul_apply, hf a b, smul_add, eightMul_smul_left, eightMul_smul_right]
+
+/-- **Der(𝕆) has dimension 14** over ℝ — identifying the Lie algebra 𝔤₂ ≅ Der(𝕆).
+    Axiomatized: a complete proof requires exhibiting 14 linearly independent derivations
+    D_{ij} for pairs 1 ≤ i < j ≤ 7 of imaginary octonion basis elements. -/
+axiom G2_der_dimension :
+    FiniteDimensional.finrank ℝ OctonionDerSubmodule = ExceptionalType.G2.dim
 
 -- ============================================================
 -- PART V: The Freudenthal-Tits Magic Square
@@ -728,6 +754,8 @@ were admissible, there would be a 6th exceptional type.
 #check @commDer_self_eq_zero
 #check @commDer_antisymm
 #check @commDer_jacobi
+#check @OctonionDerSubmodule
+#check @G2_der_dimension
 #check @freudenthal_tits_f4
 #check @freudenthal_tits_e6
 #check @freudenthal_tits_e7

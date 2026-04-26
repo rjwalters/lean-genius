@@ -139,3 +139,45 @@ For a true proof:
 2. **Archive sessions 1-3**: Move to sessions/ subdirectory (knowledge.md now >100 lines).
 3. **G2_is_octonion_aut**: Still axiom. Proving it formally requires Lie group theory not in Mathlib.
    Could reformulate it as a dim(Der(𝕆)) = 14 statement once explicit derivations are exhibited.
+
+---
+
+## Session 2026-04-26 (Session 5) — Axiom Correction + OctonionDerSubmodule
+
+**Mode**: REVISIT (RICH knowledge tier, score 31)
+**Outcome**: PROGRESS — axiom replaced with mathematically correct formulation
+
+### What I Did
+
+1. **Fixed mathematically incorrect axiom**: `G2_is_octonion_aut : G2.dim = Nat.card OctonionAut`
+   asserts `14 = Nat.card OctonionAut`. Since OctonionAut is infinite (G₂ is a continuous
+   Lie group), `Nat.card OctonionAut = 0` in Lean. The axiom was effectively `14 = 0`.
+   Replaced with `G2_der_dimension : finrank ℝ OctonionDerSubmodule = G2.dim` — mathematically
+   correct statement about the Lie ALGEBRA dimension.
+
+2. **Added PART IV-c: OctonionDerSubmodule** (~30 lines, 0 sorries):
+   - `eightMul_zero_left/right`: zero · b = 0 and a · 0 = 0 (private lemmas)
+   - `OctonionDerSubmodule`: Der(𝕆) as a `Submodule ℝ ((Fin 8 → ℝ) →ₗ[ℝ] (Fin 8 → ℝ))`
+   - Membership: zero_mem (trivial), add_mem (bilinearity + abel), smul_mem (bilinearity)
+   - `G2_der_dimension`: axiom finrank ℝ OctonionDerSubmodule = 14
+
+### Key Findings
+
+- **Nat.card vs finrank**: `Nat.card` of an infinite type returns 0. `FiniteDimensional.finrank`
+  is the right tool for Lie algebra dimension, requiring Module + FiniteDimensional instances.
+- **Submodule approach**: Der(𝕆) as a `Submodule ℝ (LinMap)` automatically inherits all
+  module structure from the ambient finite-dimensional End_ℝ(ℝ⁸) (dim 64).
+- **Previous formulation was inconsistent**: If Lean ever proves `Infinite OctonionAut`,
+  the old axiom `14 = 0` would give `False`. The new axiom avoids this.
+
+### Files Modified
+
+- `proofs/Proofs/HurwitzTheoremOQ04.lean` (736 → 764 lines; PART IV-c added, axiom fixed)
+- `src/data/research/problems/hurwitz-theorem-oq-04.json` (knowledge updated)
+- `src/data/proofs/hurwitz-theorem-oq-04/meta.json` (lineCount, theoremCount, assumptions)
+
+### Next Steps
+
+1. **Exhibit 14 derivations**: D_{ij}(x) for 1 ≤ i < j ≤ 7 to PROVE G2_der_dimension
+2. **Linear independence**: 14×14 matrix argument (decide-based)
+3. **Archive sessions 1-4** to sessions/ directory
