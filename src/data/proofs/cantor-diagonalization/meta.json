@@ -298,22 +298,56 @@
     "lineCount": 175,
     "axiomCount": 0,
     "theoremCount": 6,
+    "substantiveTheoremCount": 4,
+    "trivialSpecializations": 2,
     "definitionCount": 2,
+    "mainTheorems": [
+      {
+        "name": "cantor_diagonalization",
+        "type": "original",
+        "description": "No surjection from N to binary sequences (N -> Bool)",
+        "leanType": "\u00ac Function.Surjective f (where f : \u2115 \u2192 BinarySeq)"
+      },
+      {
+        "name": "cantor_powerset",
+        "type": "original",
+        "description": "Cantor's theorem: no surjection from S to P(S) for any type S",
+        "leanType": "(S : Type*) \u2192 \u00ac \u2203 f : S \u2192 Set S, Function.Surjective f"
+      },
+      {
+        "name": "reals_uncountable",
+        "type": "original",
+        "description": "The real numbers are uncountable",
+        "leanType": "\u00ac Countable \u211d"
+      },
+      {
+        "name": "diagonal_set_paradox",
+        "type": "original",
+        "description": "Russell-Cantor diagonal set paradox: the anti-diagonal set is not in range of any f",
+        "leanType": "(S : Type*) \u2192 (f : S \u2192 Set S) \u2192 \u2203 T : Set S, T \u2209 Set.range f"
+      }
+    ],
     "path": "Proofs/CantorDiagonalization.lean",
     "sorries": 0
   },
   "mainTheorems": [
     {
-      "name": "cantor_diagonal",
+      "name": "cantor_diagonalization",
       "type": "core",
-      "description": "The reals are uncountable: no surjection from N to R exists",
-      "leanType": "not (exists f : Nat -> R, Function.Surjective f)"
+      "description": "No surjection from \u2115 to binary sequences \u2014 the canonical diagonal argument",
+      "leanType": "\u00ac Function.Surjective f (where f : \u2115 \u2192 BinarySeq)"
     },
     {
-      "name": "power_set_larger",
+      "name": "cantor_powerset",
       "type": "key",
-      "description": "For any set A, |A| < |P(A)| (no surjection A -> P(A))",
-      "leanType": "not (exists f : A -> Set A, Function.Surjective f)"
+      "description": "Cantor's theorem: no surjection from any type S to its power set P(S)",
+      "leanType": "(S : Type*) \u2192 \u00ac \u2203 f : S \u2192 Set S, Function.Surjective f"
+    },
+    {
+      "name": "reals_uncountable",
+      "type": "key",
+      "description": "The real numbers are uncountable (\u211d is not Countable)",
+      "leanType": "\u00ac Countable \u211d"
     }
   ],
   "sorries": 0
