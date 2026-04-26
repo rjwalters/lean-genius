@@ -158,5 +158,30 @@
       "Divisibility truncation rule",
       "norm_num for arithmetic"
     ]
+  },
+  {
+    "id": "ann-divtrunc-oq03-canonical-pipeline",
+    "proofId": "divisibility-truncation-general-oq-03",
+    "range": {
+      "startLine": 204,
+      "endLine": 221
+    },
+    "type": "theorem",
+    "title": "canonical_divisibility_test: The Complete Pipeline and Summary",
+    "content": "`osculator_seventeen` completes the suite of concrete examples: `IsOsculator 17 (−5)` means 17 | 10·(−5) − 1 = −51 = −3·17, verified instantly by `norm_num`. Its osculator (−5) is the most surprising in the collection, since the 'naïve' inverse of 10 mod 17 might suggest a positive value, but 10·(−5) ≡ −50 ≡ 1 (mod 17) works equally well.\n\n`canonical_divisibility_test` (Part VI, the capstone theorem) is a deliberate one-liner:\n```lean\ntheorem canonical_divisibility_test (d : ℕ) (n : ℕ) (hcop : Nat.Coprime 10 d) :\n    (d : ℤ) ∣ n ↔ (d : ℤ) ∣ (↑(n / 10) + Nat.gcdA 10 d * ↑(n % 10)) :=\n  bezout_osculator_rule d n hcop\n```\nThis one-line proof by `bezout_osculator_rule` is the visible payoff of the entire module's architecture. All the mathematics — Bézout identity, osculator uniqueness, canonical reduction — has been factored into the building blocks, and the final statement is their composition. The name `canonical_divisibility_test` signals the result is ready for external use: given any d coprime to 10, evaluate `Nat.gcdA 10 d` to get the osculator automatically.\n\nThe `#check` summary block (lines 217-219) lists the three key theorems for library users:\n- `bezout_gives_osculator`: Bézout coefficients produce valid osculators\n- `osculator_unique_mod`: uniqueness mod d\n- `canonical_divisibility_test`: the complete general divisibility test\n\nThis pattern — naming a capstone one-liner and summarizing the interface with `#check` — is good Lean library design: the rest of the module is implementation detail, and these three theorems are the API.",
+    "mathContext": "For $d = 17$: the osculator is $c = -5$ since $10(-5) - 1 = -51 = -3 \\times 17$. Equivalently, $10^{-1} \\equiv 12 \\pmod{17}$ (the positive representative), and $-5 \\equiv 12 \\pmod{17}$. Using $c = -5$ gives a rule that decreases the number faster: $17 \\mid n \\iff 17 \\mid \\lfloor n/10 \\rfloor - 5(n \\bmod 10)$.\n\nThe final statement is: for ALL $d$ coprime to 10, the canonical test $d \\mid n \\iff d \\mid \\lfloor n/10 \\rfloor + \\gcd_A(10,d) \\cdot (n \\bmod 10)$ holds, where $\\gcd_A(10,d)$ is computed by the extended Euclidean algorithm. No ad-hoc rule construction is needed — one formula covers every such $d$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "canonical_divisibility_test",
+      "bezout_osculator_rule",
+      "Nat.gcdA",
+      "osculator_seventeen",
+      "library API design"
+    ],
+    "prerequisites": [
+      "bezout_gives_osculator",
+      "unified_osculator from OQ-01",
+      "Nat.Coprime 10 d"
+    ]
   }
 ]
