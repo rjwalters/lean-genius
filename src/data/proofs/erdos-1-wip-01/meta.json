@@ -82,28 +82,44 @@
   },
   "sections": [
     {
-      "id": "auxiliary-lemmas",
-      "title": "Auxiliary Lemmas for Binary Injectivity",
+      "id": "imports-setup",
+      "title": "Part I: Imports and Module Setup",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Imports Proofs.Erdos1Problem (hasDistinctSubsetSums definition) and Mathlib; opens Finset namespace; declares namespace Erdos1Wip01.",
+      "mathContext": "`hasDistinctSubsetSums A` defined in Erdos1Problem: $\\forall S, T \\subseteq A,\\ \\text{sum}(S) = \\text{sum}(T) \\Rightarrow S = T$"
+    },
+    {
+      "id": "quantitative-lemmas",
+      "title": "Part II: Quantitative Lemmas (Geometric Sum and Subset Bound)",
       "startLine": 33,
+      "endLine": 58,
+      "summary": "Three lemmas: geom_sum_pow2 (∑_{i<n} 2^i + 1 = 2^n), sum_pow2_lt_of_subset_range (any subset has sum < 2^n), and subset_range_pred (bookkeeping for range shrinkage).",
+      "mathContext": "$\\sum_{i<n} 2^i + 1 = 2^n$; $S \\subseteq \\{0,\\ldots,n-1\\} \\Rightarrow \\sum_{i \\in S} 2^i < 2^n$; $n \\notin S, S \\subseteq \\{0,\\ldots,n\\} \\Rightarrow S \\subseteq \\{0,\\ldots,n-1\\}$"
+    },
+    {
+      "id": "binary-uniqueness",
+      "title": "Part III: Binary Representation Uniqueness (pow2_sum_inj)",
+      "startLine": 59,
       "endLine": 106,
-      "summary": "Three supporting lemmas: geometric sum identity, subset sum bound, and binary representation uniqueness by strong induction.",
-      "mathContext": "$\\sum_{i<n} 2^i + 1 = 2^n$; any $S \\subseteq \\{0,\\ldots,n-1\\}$ has $\\sum_{i \\in S} 2^i < 2^n$; $S, T \\subseteq \\{0,\\ldots,n-1\\}$, $\\sum_S 2^i = \\sum_T 2^i \\Rightarrow S = T$"
+      "summary": "Proves pow2_sum_inj by strong induction: if S, T ⊆ {0,...,n-1} have equal power-of-2 sums, then S = T. Four-case split on membership of n-1.",
+      "mathContext": "$S, T \\subseteq \\{0,\\ldots,n-1\\},\\ \\sum_S 2^i = \\sum_T 2^i \\Rightarrow S = T$ — the Lean proof of binary numeral uniqueness"
     },
     {
       "id": "dss-powers",
-      "title": "The DSS Property of Powers of Two",
+      "title": "Part IV: DSS Property of Powers of Two",
       "startLine": 107,
       "endLine": 156,
-      "summary": "Proves that {2^i : i < n} has distinct subset sums using the preimage index trick and binary uniqueness.",
-      "mathContext": "$\\forall S, T \\subseteq \\{2^0,\\ldots,2^{n-1}\\},\\ \\sum S = \\sum T \\Rightarrow S = T$"
+      "summary": "Proves powersOfTwo_hasDistinctSubsetSums: {2^i : i < n} has distinct subset sums using the preimage index trick and binary uniqueness.",
+      "mathContext": "$\\forall S, T \\subseteq \\{2^0,\\ldots,2^{n-1}\\},\\ \\sum S = \\sum T \\Rightarrow S = T$ — bridge from index level to value level via Finset.sum_image"
     },
     {
       "id": "dss-existence",
-      "title": "Existence of n-Element DSS Sets (Main Theorem)",
-      "startLine": 158,
+      "title": "Part V: Existence of n-Element DSS Sets (Main Theorem)",
+      "startLine": 157,
       "endLine": 187,
-      "summary": "For any n, constructs an n-element set with all elements ≤ n·2^n and distinct subset sums. Used as Nat.find witness in minDSSBound.",
-      "mathContext": "$\\forall n,\\ \\exists A,\\ |A|=n \\wedge (\\forall a \\in A,\\ a \\leq n \\cdot 2^n) \\wedge \\text{DSS}(A)$"
+      "summary": "For any n, constructs an n-element set with all elements ≤ n·2^n and distinct subset sums. Used as Nat.find witness in minDSSBound (Erdos1OQ03.lean).",
+      "mathContext": "$\\forall n,\\ \\exists A : \\text{Finset}\\,\\mathbb{N},\\ |A| = n \\wedge (\\forall a \\in A,\\ a \\leq n \\cdot 2^n) \\wedge \\text{DSS}(A)$"
     }
   ],
   "crossReferences": [
