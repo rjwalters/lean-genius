@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-erdos-1-wip-01-geom-sum",
+    "proofId": "erdos-1-wip-01",
+    "range": { "startLine": 37, "endLine": 42 },
+    "type": "technique",
+    "title": "Geometric Sum Identity",
+    "content": "The lemma `geom_sum_pow2` establishes $\\sum_{i=0}^{n-1} 2^i + 1 = 2^n$ by induction on $n$. The base case ($n=0$) is trivially $0 + 1 = 1$. For the inductive step, `Finset.sum_range_succ` unfolds the sum to include the $n$-th term, and `pow_succ` rewrites $2^{n+1} = 2 \\cdot 2^n$, after which `omega` closes the arithmetic. This is a quantitative companion to the geometric series formula, specialized to powers of 2.",
+    "mathContext": "$\\sum_{i=0}^{n-1} 2^i = 2^n - 1$; equivalently $\\sum_{i<n} 2^i + 1 = 2^n$",
+    "significance": "supporting",
+    "relatedConcepts": ["geometric series", "binary representation", "strong induction"],
+    "prerequisites": ["Finset.sum_range_succ", "natural number arithmetic"]
+  },
+  {
+    "id": "ann-erdos-1-wip-01-sum-bound",
+    "proofId": "erdos-1-wip-01",
+    "range": { "startLine": 44, "endLine": 50 },
+    "type": "technique",
+    "title": "Subset Sum Bound: Key Quantitative Lemma",
+    "content": "The lemma `sum_pow2_lt_of_subset_range` proves that any subset $S \\subseteq \\{0, \\ldots, n-1\\}$ satisfies $\\sum_{i \\in S} 2^i < 2^n$. The proof uses `Finset.sum_le_sum_of_subset_of_nonneg` to bound $S$'s sum by the full range sum, then `linarith` with the geometric identity. This strict inequality is the tool that makes the cross-cases in the induction contradictory: if one subset contains $n-1$ and the other does not, their sums land on opposite sides of $2^{n-1}$.",
+    "mathContext": "For $S \\subseteq \\{0,\\ldots,n-1\\}$: $\\sum_{i \\in S} 2^i \\leq \\sum_{i<n} 2^i = 2^n - 1 < 2^n$",
+    "significance": "key",
+    "relatedConcepts": ["monotonicity of sums", "strict inequality", "binary representation uniqueness"],
+    "prerequisites": ["Finset.sum_le_sum_of_subset_of_nonneg", "geom_sum_pow2"]
+  },
+  {
+    "id": "ann-erdos-1-wip-01-subset-pred",
+    "proofId": "erdos-1-wip-01",
+    "range": { "startLine": 52, "endLine": 58 },
+    "type": "technique",
+    "title": "Range Shrinkage: Restricting Subsets When Largest Element Is Absent",
+    "content": "`subset_range_pred` is a small bookkeeping lemma: if $S \\subseteq \\{0,\\ldots,n\\}$ and $n \\notin S$, then $S \\subseteq \\{0,\\ldots,n-1\\}$. The proof is straightforward: any $x \\in S$ satisfies $x < n+1$, but $x \\neq n$ (since $n \\notin S$), so $x < n$. `omega` closes this from the two facts. This lemma appears in all four branches of the `pow2_sum_inj` induction, enabling restriction to the smaller range for the inductive hypothesis.",
+    "mathContext": "$S \\subseteq \\{0,\\ldots,n\\} \\wedge n \\notin S \\Rightarrow S \\subseteq \\{0,\\ldots,n-1\\}$",
+    "significance": "technical",
+    "relatedConcepts": ["Finset membership", "range shrinkage", "inductive step bookkeeping"],
+    "prerequisites": ["Finset.mem_range", "omega tactic"]
+  },
+  {
+    "id": "ann-erdos-1-wip-01-pow2-sum-inj-both",
+    "proofId": "erdos-1-wip-01",
+    "range": { "startLine": 60, "endLine": 96 },
+    "type": "insight",
+    "title": "Binary Uniqueness by Strong Induction: Four-Case Analysis",
+    "content": "This is the mathematical heart of the proof. `pow2_sum_inj` establishes that if $S, T \\subseteq \\{0,\\ldots,n-1\\}$ satisfy $\\sum_{i \\in S} 2^i = \\sum_{i \\in T} 2^i$, then $S = T$. The proof proceeds by strong induction on $n$, splitting on whether $n-1$ belongs to $S$ and $T$ independently.\n\n**Case (both contain $n-1$)**: `Finset.add_sum_erase` separates out the $2^{n-1}$ contribution from each sum. Canceling it gives equal sums over $S \\setminus \\{n-1\\}$ and $T \\setminus \\{n-1\\}$, and the IH closes.\n\n**Case ($n-1 \\in S$, $n-1 \\notin T$)**: `Finset.single_le_sum` gives $\\sum_S 2^i \\geq 2^{n-1}$, while `sum_pow2_lt_of_subset_range` gives $\\sum_T 2^i < 2^{n-1}$ — contradiction by `omega`.\n\n**Case ($n-1 \\notin S$, $n-1 \\in T$)**: symmetric.\n\n**Case (neither contains $n-1$)**: `subset_range_pred` shrinks both to $\\{0,\\ldots,n-2\\}$ and IH closes directly.",
+    "mathContext": "$S, T \\subseteq \\{0,\\ldots,n-1\\},\\ \\sum_S 2^i = \\sum_T 2^i \\Rightarrow S = T$",
+    "significance": "key",
+    "relatedConcepts": ["binary representation uniqueness", "strong induction", "Finset.add_sum_erase"],
+    "prerequisites": ["sum_pow2_lt_of_subset_range", "subset_range_pred", "Finset.single_le_sum"]
+  },
+  {
+    "id": "ann-erdos-1-wip-01-preimage-trick",
+    "proofId": "erdos-1-wip-01",
+    "range": { "startLine": 111, "endLine": 156 },
+    "type": "technique",
+    "title": "Preimage Index Trick: Lifting DSS to the Value Level",
+    "content": "The theorem `powersOfTwo_hasDistinctSubsetSums` proves that $A = \\{2^0, 2^1, \\ldots, 2^{n-1}\\}$ has distinct subset sums. The challenge is that the DSS property lives at the *value* level (sums of actual elements like 1, 2, 4, …), while `pow2_sum_inj` works at the *index* level (sums of $2^i$ for indices $i$). The bridge is the **preimage index trick**:\n\n1. Given $S, T \\subseteq A$ with equal sums, define index preimages $S' = \\{i < n : 2^i \\in S\\}$ and $T' = \\{i < n : 2^i \\in T\\}$.\n2. Show $S = S'.\\text{image}(2^{\\cdot})$ and $T = T'.\\text{image}(2^{\\cdot})$.\n3. Use `Finset.sum_image` (with injectivity of $2^{\\cdot}$) to convert: $\\text{sum}(S) = S'.\\text{sum}(2^{\\cdot})$.\n4. Apply `pow2_sum_inj` to get $S' = T'$, hence $S = T$.\n\nThis pattern — lifting a value-level property to an index-level property via a preimage — recurs throughout combinatorics formalizations.",
+    "mathContext": "$S \\subseteq A,\\ S' = \\{i < n : 2^i \\in S\\} \\Rightarrow S.\\text{sum}(\\text{id}) = S'.\\text{sum}(2^{\\cdot})$ via `Finset.sum_image`",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_image", "preimage", "injectivity", "additive combinatorics"],
+    "prerequisites": ["pow2_sum_inj", "Finset.filter", "Nat.pow_right_injective"]
+  },
+  {
+    "id": "ann-erdos-1-wip-01-injectivity",
+    "proofId": "erdos-1-wip-01",
+    "range": { "startLine": 141, "endLine": 150 },
+    "type": "definition",
+    "title": "Injectivity of the Powering Map",
+    "content": "`Nat.pow_right_injective` asserts that if $b > 1$, then $b^a = b^b \\Rightarrow a = b$. Here it justifies that the map $i \\mapsto 2^i$ is injective on natural numbers, which in turn justifies `Finset.sum_image`: the sum over an image equals the sum over the preimage when the map is injective on that set. This injectivity is also what guarantees $|\\{2^i : i < n\\}| = n$ in `dss_existence`.",
+    "mathContext": "$2^a = 2^b \\Rightarrow a = b$ (for $a, b \\in \\mathbb{N}$); i.e., $i \\mapsto 2^i$ is injective on $\\mathbb{N}$",
+    "significance": "technical",
+    "relatedConcepts": ["Nat.pow_right_injective", "Finset.sum_image", "Finset.card_image_of_injective"],
+    "prerequisites": ["natural number exponential", "injectivity"]
+  },
+  {
+    "id": "ann-erdos-1-wip-01-dss-existence",
+    "proofId": "erdos-1-wip-01",
+    "range": { "startLine": 162, "endLine": 187 },
+    "type": "insight",
+    "title": "Existence Theorem: Filling the minDSSBound Sorry",
+    "content": "The theorem `dss_existence` is the payoff: for every $n$, there exists an $n$-element set $A \\subseteq \\mathbb{N}$ with all elements $\\leq n \\cdot 2^n$ and with distinct subset sums. The construction is $A = \\{2^i : i < n\\}$.\n\nThe proof has three obligations handled by `refine`:\n1. **Cardinality**: `Finset.card_image_of_injective` + injectivity of $2^{\\cdot}$ + `Finset.card_range` give $|A| = n$.\n2. **Bound**: For each $i < n$, we have $2^i < 2^n \\leq n \\cdot 2^n$ (the second step uses `Nat.le_mul_of_pos_left` with $n > 0$, and `linarith` closes).\n3. **DSS**: `powersOfTwo_hasDistinctSubsetSums n` provides the distinct subset sum property.\n\nThis theorem is directly used as the `Nat.find` witness in `Erdos1OQ03.lean`, making `minDSSBound` — the minimum $N$ for an $n$-element DSS set — a well-defined noncomputable function.",
+    "mathContext": "$\\forall n,\\ \\exists A : \\text{Finset}\\, \\mathbb{N},\\ |A| = n \\wedge (\\forall a \\in A,\\ a \\leq n \\cdot 2^n) \\wedge \\text{DSS}(A)$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.find", "distinct subset sums", "Erdős Problem #1", "Conway-Guy sequence"],
+    "prerequisites": ["powersOfTwo_hasDistinctSubsetSums", "Finset.card_image_of_injective", "Nat.le_mul_of_pos_left"]
+  },
+  {
+    "id": "ann-erdos-1-wip-01-imports",
+    "proofId": "erdos-1-wip-01",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "context",
+    "title": "Module Setup: Importing the Erdős #1 Problem Definition",
+    "content": "The file imports `Proofs.Erdos1Problem`, which defines the `hasDistinctSubsetSums` predicate used throughout. It also imports all of Mathlib for access to `Finset` APIs, arithmetic lemmas, and `Nat.pow_right_injective`. Opening `Finset` avoids the need to prefix `Finset.range`, `Finset.filter`, etc. The `namespace Erdos1Wip01` groups all definitions under a single namespace, preventing name collisions with other Erdős #1 companion files.",
+    "mathContext": "`hasDistinctSubsetSums A` is defined in `Erdos1Problem` as: $\\forall S, T \\subseteq A,\\ S.\\text{sum}(\\text{id}) = T.\\text{sum}(\\text{id}) \\Rightarrow S = T$",
+    "significance": "context",
+    "relatedConcepts": ["Lean 4 imports", "Mathlib", "namespace", "hasDistinctSubsetSums"],
+    "prerequisites": ["Lean 4 module system", "Proofs.Erdos1Problem"]
+  }
+]
