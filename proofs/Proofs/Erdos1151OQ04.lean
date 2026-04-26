@@ -917,7 +917,10 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
                    Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) := by
     let g : Fin m → Fin n := fun j => ⟨n - 1 - j.val, hg_lt j⟩
     have hg_inj : Function.Injective g := fun ⟨j, hj⟩ ⟨j', hj'⟩ h => by
-      simp only [g, Fin.mk.injEq] at h; omega
+      simp only [g, Fin.mk.injEq] at h
+      have hjn : j < n := Nat.lt_of_lt_of_le hj hm_le_n
+      have hj'n : j' < n := Nat.lt_of_lt_of_le hj' hm_le_n
+      omega
     let f : Fin n → ℝ := fun k =>
       Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) /
       Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n))
@@ -956,7 +959,7 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
         -- 4m²-6m+3 = 4*(m-1)²+2*(m-1)+1 ≥ 0 via sq_nonneg (m-1)
         nlinarith [sq_nonneg ((m : ℤ) - 1)]
       have h3' : (3 : ℝ) * (2 * (j : ℝ) + 1) ≤ 4 * (n : ℝ) := by exact_mod_cast h3
-      rw [div_le_div_iff (by positivity) (by norm_num)]
+      rw [div_le_div_iff₀ (by positivity) (by norm_num)]
       -- Goal: (2j+1)*π*3 ≤ π*(4n); factor as π*(4n-3*(2j+1)) ≥ 0
       have hd : (0 : ℝ) ≤ 4 * n - 3 * (2 * (j : ℝ) + 1) := by linarith [h3']
       nlinarith [mul_nonneg hpi_pos.le hd]
@@ -976,7 +979,7 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
       fun j => by
         have hj_pos : (0 : ℝ) < (j.val : ℝ) + 1 := by positivity
         have h2j_pos : (0 : ℝ) < 2 * (j.val : ℝ) + 1 := by positivity
-        apply (div_le_div_iff (mul_pos hpi_pos hj_pos) (mul_pos hpi_pos h2j_pos)).mpr
+        apply (div_le_div_iff₀ (mul_pos hpi_pos hj_pos) (mul_pos hpi_pos h2j_pos)).mpr
         -- Goal: n * (π*(2j+1)) ≤ 2n * (π*(j+1)); difference = nπ ≥ 0
         have h_diff : 2 * (n : ℝ) * (Real.pi * ((j.val : ℝ) + 1)) -
                       (n : ℝ) * (Real.pi * (2 * (j.val : ℝ) + 1)) = (n : ℝ) * Real.pi := by ring
