@@ -89,5 +89,28 @@
       "Gowers U^k norms (not in Mathlib 4.26)",
       "AP counting lemma"
     ]
+  },
+  {
+    "id": "ann-density-full-axiom",
+    "proofId": "szemeredi-full-oq-02",
+    "range": { "startLine": 95, "endLine": 103 },
+    "type": "insight",
+    "title": "szemeredi_density_full: Axiom Transparency at the Assembly Point",
+    "content": "**Theorem** `szemeredi_density_full` is a one-line alias for `szemeredi_vanishing_density` — its body is simply `szemeredi_vanishing_density k hk A hA_sub hA_free`. The theorem exists as a named assembly point for the full Szemerédi density result, collating the three cases (k=1,2 trivial; k=3 Mathlib; k≥4 axiom) under a single clean name.\n\nThis design is pedagogically important: the proof is definitionally transparent about where the axiom enters. Any user who asks `#check @szemeredi_density_full` will see the statement is unconditional (∀ k ≥ 1), but `#print axioms szemeredi_density_full` reveals the dependency tree bottoming out at `szemeredi_k_ge_4` (the hypergraph regularity axiom from SzemerediTheorem.lean). The CLAUDE.md **Axiom Integrity Policy** requires that `axiomCount: 1` accurately reflects this — and it does.\n\nThe choice to route through `szemeredi_vanishing_density` rather than making `szemeredi_density_full` the primary theorem reflects a design principle: the ε-N₀ → Tendsto conversion logic lives in exactly one place, and the 'full' theorem is just its canonical public name. This prevents duplication of the `Metric.tendsto_atTop` unfolding logic.",
+    "mathContext": "The theorem statement: $\\forall k \\geq 1,\\; A : \\mathbb{N} \\to \\text{Finset}\\,\\mathbb{N}$ with $A_N \\subseteq \\{0,\\ldots,N-1\\}$ and each $A_N$ k-AP-free $\\Rightarrow$ `Filter.Tendsto` $(N \\mapsto |A_N|/N)$ `atTop` $(\\text{nhds}\\,0)$.\n\nAxiom footprint (from `#print axioms`):\n- `szemeredi_k_ge_4` — the single axiom, stating that for $k \\geq 4$ and any $\\varepsilon > 0$, k-AP-free sets in $[N]$ have cardinality $< \\varepsilon N$ for large enough $N$.\n- All other dependencies are Mathlib theorems or kernel axioms (propext, funext, choice).",
+    "significance": "key",
+    "relatedConcepts": [
+      "szemeredi_vanishing_density",
+      "szemeredi_k_ge_4 axiom",
+      "hypergraph regularity",
+      "Axiom Integrity Policy",
+      "Filter.Tendsto",
+      "#print axioms transparency"
+    ],
+    "prerequisites": [
+      "szemeredi_vanishing_density",
+      "szemeredi_k_ge_4 from SzemerediTheorem.lean",
+      "Lean 4 axiom footprint (#print axioms)"
+    ]
   }
 ]
