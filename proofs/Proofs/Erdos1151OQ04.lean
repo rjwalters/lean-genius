@@ -877,14 +877,25 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
   have hf_nn : ∀ k : Fin n, 0 ≤ Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) /
                                    Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) := by
     intro k
-    have hk_cast : (k.val : ℝ) < n := by exact_mod_cast k.isLt
+    have hk_lt : (k : ℝ) + 1 ≤ n := by exact_mod_cast Nat.succ_le_of_lt k.isLt
     apply div_nonneg
     · apply Real.sin_nonneg_of_nonneg_of_le_pi
       · positivity
-      · nlinarith [Real.pi_pos]
+      · -- (2k+1)π/(4n) ≤ π ↔ 2k+1 ≤ 4n; follows from k+1 ≤ n
+        have h_gap : (0 : ℝ) < 4 * n - (2 * (k : ℝ) + 1) := by linarith
+        rw [div_le_iff (by positivity : (0:ℝ) < 4 * n)]
+        linarith [mul_pos Real.pi_pos h_gap]
     · apply le_of_lt
       apply Real.cos_pos_of_mem_Ioo
-      constructor <;> nlinarith [Real.pi_pos]
+      refine ⟨?_, ?_⟩
+      · -- -(π/2) < angle: angle is positive
+        linarith [div_pos (mul_pos (by linarith : (0:ℝ) < 2*(k:ℝ)+1) Real.pi_pos)
+                          (by positivity : (0:ℝ) < 4*(n:ℝ)),
+                  Real.pi_pos]
+      · -- angle < π/2: ↔ (2k+1)*2 < 4n
+        rw [div_lt_div_iff (by positivity : (0:ℝ) < 4*(n:ℝ)) two_pos]
+        have h_gap2 : (0 : ℝ) < 4 * n - (2 * (k : ℝ) + 1) * 2 := by linarith
+        linarith [mul_pos Real.pi_pos h_gap2]
   -- Sub-sum via m = Nat.sqrt n
   set m := Nat.sqrt n with hm_def
   have hm_pos : 0 < m := Nat.sqrt_pos.mpr hn
