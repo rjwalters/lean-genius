@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 213,
+    "lineCount": 201,
     "assumptions": "1 axiom: nonderogatory_similar_companion (RCF similarity theorem — every nonderogatory matrix is similar to its companion matrix). Requires the structure theorem for f.g. modules over K[X], not yet in Mathlib 4. All other lemmas are fully proved.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -127,9 +127,9 @@
     ],
     "opens": ["Matrix", "Polynomial"],
     "namespace": "CayleyHamiltonCyclicVectorAllFields",
-    "lineCount": 213,
+    "lineCount": 201,
     "axiomCount": 1,
-    "theoremCount": 5,
+    "theoremCount": 3,
     "definitionCount": 2,
     "path": "Proofs/CayleyHamiltonCyclicVectorAllFields.lean",
     "sorries": 0
