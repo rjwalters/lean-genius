@@ -22,10 +22,32 @@
     ]
   },
   {
+    "id": "ann-amgm-ng45-setup",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 31, "endLine": 37 },
+    "type": "context",
+    "title": "Setup: import Mathlib, MvPolynomial Opens, and CommRing Variable",
+    "content": "Three declarations set up the proof environment. `import Mathlib` loads all of Mathlib rather than a targeted module — appropriate for a file that is primarily a collection of instantiations, where the critical path is `Mathlib.RingTheory.MvPolynomial.Symmetric.NewtonIdentities`. The namespace `AmgmInequalityOQ02OQ01OQ02OQ01OQ01` scopes all four theorems locally, preventing name collisions with the parent file's declarations. The `open MvPolynomial Finset BigOperators Set` opens four namespaces: `MvPolynomial` (for `psum`, `esymm`, and `psum_eq_mul_esymm_sub_sum`), `Finset` (for `antidiagonal`, `sum_insert`, `sum_singleton`), `BigOperators` (for `∑` notation), and `Set` (for `Ioo` used in the antidiagonal filter). The `variable (σ R) [CommRing R] [Fintype σ]` line binds the type parameters: `σ` is the index type (any finite type), `R` is the coefficient ring (any commutative ring). All four theorems are automatically universally quantified over `σ` and `R` — Lean inserts implicit arguments from the `variable` context.",
+    "mathContext": "The `variable` declaration introduces the universality of the theorems: each `theorem psum_four_eq` is secretly `theorem psum_four_eq (σ : Type*) (R : Type*) [CommRing R] [Fintype σ]`. This means the statement holds for $R = \\mathbb{Z}$, $\\mathbb{Q}$, $\\mathbb{Z}/p\\mathbb{Z}$, any polynomial ring, or any other commutative ring with a finite index type $\\sigma$ (e.g., `Fin n` for $n$-variable polynomials, or any other `Fintype`). The `BigOperators` open is needed because Newton-Girard involves $\\sum$-notation over `Finset`s, and Lean uses `∑ x in S, f x` as a notation provided by the `BigOperators` open.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "MvPolynomial namespace",
+      "CommRing typeclass",
+      "Fintype typeclass",
+      "variable declaration",
+      "BigOperators notation"
+    ],
+    "prerequisites": [
+      "Lean 4 namespace and variable declarations",
+      "MvPolynomial basics",
+      "CommRing and Fintype typeclasses"
+    ]
+  },
+  {
     "id": "ann-psum-four",
     "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-01",
     "range": { "startLine": 39, "endLine": 66 },
-    "type": "theorem",
+    "type": "insight",
     "title": "p₄ = e₁p₃ − e₂p₂ + e₃p₁ − 4e₄: Three-Element Antidiagonal",
     "content": "**Theorem** `psum_four_eq`: The fourth power sum satisfies $p_4 = e_1 p_3 - e_2 p_2 + e_3 p_1 - 4e_4$ over any `CommRing R` with any `Fintype σ`.\n\nThe proof has three phases:\n\n1. **Rewrite**: `rw [psum_eq_mul_esymm_sub_sum σ R 4 (by norm_num)]` transforms the LHS into a sum over the antidiagonal filter.\n\n2. **Filter proof** (`have hfilt`): The set `{(a,b) ∈ antidiagonal 4 | 0 < a < 4}` equals `{(1,3),(2,2),(3,1)}`. This is proved via `ext ⟨a,b⟩ / simp [...] / omega` — `omega` handles the arithmetic constraint `a + b = 4 ∧ 0 < a < 4` exhaustively.\n\n3. **Sum expansion + ring**: `sum_insert` unfolds the three-element set one step at a time (each with a `by decide` disjointness proof), `sum_singleton` handles the base, and `ring` closes the resulting polynomial identity over `CommRing R`.\n\nThe `by decide` proofs (e.g., `(1,3) ∉ {(2,2),(3,1)}`) succeed because the membership in finite literal sets is decidable — Lean can verify these in compile time without elaborating the types.",
     "mathContext": "$p_4 = e_1 p_3 - e_2 p_2 + e_3 p_1 - 4e_4$ in `MvPolynomial σ R`.\n\nFrom `psum_eq_mul_esymm_sub_sum` at $n=4$:\n$$p_4 = (-1)^{4+1} \\cdot 4 \\cdot e_4 - \\sum_{a \\in \\{1,2,3\\}} (-1)^a e_a p_{4-a}$$\n$$= -4e_4 - ((-1)^1 e_1 p_3 + (-1)^2 e_2 p_2 + (-1)^3 e_3 p_1)$$\n$$= -4e_4 + e_1 p_3 - e_2 p_2 + e_3 p_1$$\nThe `ring` tactic verifies the resulting equality holds universally in any `CommRing`.",
@@ -48,7 +70,7 @@
     "id": "ann-psum-five",
     "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-01",
     "range": { "startLine": 68, "endLine": 104 },
-    "type": "theorem",
+    "type": "insight",
     "title": "p₅ = e₁p₄ − e₂p₃ + e₃p₂ − e₄p₁ + 5e₅: Explicit Iff Constructor for Four-Element Antidiagonal",
     "content": "**Theorem** `psum_five_eq`: The fifth power sum satisfies $p_5 = e_1 p_4 - e_2 p_3 + e_3 p_2 - e_4 p_1 + 5e_5$.\n\nThe k=5 proof requires more explicit handling of `hfilt` compared to k=4. The antidiagonal filter at n=5 has **four** elements `{(1,4),(2,3),(3,2),(4,1)}`, and the set equality proof cannot be closed by `simp+omega` in one shot — the larger disjunction in the membership goal requires an explicit `constructor` approach:\n\n```lean\nconstructor\n· intro h  -- forward: antidiagonal filter → Finset literal\n  simp [...] at h; obtain ⟨hab, ha_pos, ha_lt⟩ := h; simp [...]; omega\n· intro h  -- backward: Finset literal → antidiagonal filter\n  simp [...] at h; simp [...]; omega\n```\n\nThis pattern — splitting the iff into two implications and using `omega` to close each — is the standard approach when the disjunction has more cases than the `simp+omega` combination can handle in a single pass.\n\nThe sum expansion uses four `sum_insert` applications with `by decide` disjointness proofs (verifying `(1,4) ∉ {(2,3),(3,2),(4,1)}` etc.), then one `sum_singleton`, and a final `ring`.",
     "mathContext": "$p_5 = e_1 p_4 - e_2 p_3 + e_3 p_2 - e_4 p_1 + 5e_5$ in `MvPolynomial σ R`.\n\nFrom `psum_eq_mul_esymm_sub_sum` at $n=5$:\n$$p_5 = (-1)^{6} \\cdot 5 e_5 - \\sum_{a=1}^{4} (-1)^a e_a p_{5-a}$$\n$$= 5e_5 - (-e_1 p_4 + e_2 p_3 - e_3 p_2 + e_4 p_1)$$\n$$= 5e_5 + e_1 p_4 - e_2 p_3 + e_3 p_2 - e_4 p_1$$\nNote $(-1)^{5+1} = (-1)^6 = +1$, so the leading term $5e_5$ has a positive sign, unlike the $-4e_4$ in k=4.",
