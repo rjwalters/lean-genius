@@ -1,7 +1,7 @@
 {
   "slug": "szemeredi-full-oq-01",
   "title": "Szemerédi Theorem: Furstenberg Ergodic-Theoretic Proof Formalization",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "S",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-04-22T13:03:46.383Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Building Cesaro measure infrastructure toward furstenberg_correspondence proof",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,25 +29,39 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ORIENT: Survey complete (Session 1, 2026-04-26). FurstenbergCorrespondence.lean exists with k=2 proved. Two axioms block full proof: furstenberg_correspondence (~500 lines) and multiple_recurrence_ge3 (~2000+ lines, blocked).",
-    "builtItems": [],
+    "progressSummary": "ACT: Session 2 (2026-04-26) built complete Cesaro measure infrastructure. FurstenbergCorrespondenceOQ01.lean extended 285→529 lines with 6 new theorems all proved. furstenberg_correspondence axiom now reduces to Prokhorov (~150-200 lines) + ~80 lines analysis.",
+    "builtItems": [
+      "finsetDirac_apply: sum of Dirac measures on measurable set = filter cardinality (OQ01.lean:316)",
+      "cesaroMeasure: N-step Cesaro probability measure definition (OQ01.lean:334)",
+      "cesaroMeasure_isProbability: proved probability measure for N≥1 (OQ01.lean:340)",
+      "mem_cylinderZero_shifted: orbit membership criterion for indicator (OQ01.lean:364)",
+      "cesaroMeasure_cylinderZero: orbit-density formula connecting μ(B₀) to density in [a,a+N) (OQ01.lean:372)",
+      "density_lower_bound: elementary half of Furstenberg correspondence, no compactness needed (OQ01.lean:404)",
+      "seqCompact_probabilityMeasure_cantor: local axiom for Prokhorov sequential compactness (OQ01.lean:484)"
+    ],
     "insights": [
       "FurstenbergCorrespondence.lean already exists with szemeredi_k2_ergodic proved via Poincaré recurrence",
       "k=2 case works today: MeasurePreserving.conservative gives Poincaré recurrence in Mathlib",
       "furstenberg_correspondence needs Cesàro averages + Prokhorov theorem (~500 lines); borderline BUILD",
       "multiple_recurrence_ge3 needs ergodic decomposition + compact extension/weak mixing (~2000+ lines); BLOCKED",
-      "Van der Waerden theorem could be proved combinatorially (~300 lines) as infrastructure for k≥3"
+      "Van der Waerden theorem could be proved combinatorially (~300 lines) as infrastructure for k≥3",
+      "furstenberg_correspondence axiom now reduces to: seqCompact_probabilityMeasure_cantor + ~80 lines of T-invariance + density lower semi-continuity analysis",
+      "density_lower_bound proved without compactness: Cesaro measure of B₀ ≥ δ for good windows, via ENNReal arithmetic",
+      "ENNReal API lesson: use ENNReal.le_div_iff_mul_le (not le_div_iff₀), ENNReal.ofReal_mul, ENNReal.ofReal_natCast",
+      "Bijection for Ico→range filter cardinality: use n↦n-a (not n↦n+a), proved via Finset.card_bij",
+      "open Classical needed for DecidablePred in Finset.filter with set membership predicates"
     ],
     "mathlibGaps": [
-      "Prokhorov theorem / weak-* compactness for probability measures on Polish spaces",
-      "Cesàro averages of probability measures for shift system construction",
-      "Ergodic decomposition theorem (reduce to ergodic components)",
-      "Compact extension / weak mixing tower structure for m.p. systems"
+      "Prokhorov theorem: sequential compactness of ProbabilityMeasure on compact metrizable space (~150-200 lines to assemble from Mathlib v4.26 ingredients)",
+      "Ergodic decomposition theorem (for multiple_recurrence_ge3, BLOCKED)",
+      "Compact extension / weak mixing tower structure for m.p. systems (BLOCKED)",
+      "Van der Waerden theorem (combinatorial, ~300 lines, buildable as infrastructure for k≥3)"
     ],
     "nextSteps": [
-      "Check Mathlib 2025/2026 for Prokhorov theorem or ergodic decomposition additions",
-      "If Prokhorov available, build furstenberg_correspondence in dedicated session",
-      "Consider proving Van der Waerden combinatorially as standalone infrastructure"
+      "Prove T-invariance of Cesaro limit measures: |∫f d(T_*(μ_{a,N})) - ∫f dμ_{a,N}| ≤ 2||f||/N → 0 (~50 lines)",
+      "Prove density lower semi-continuity: μ(B₀) ≥ δ for any limit point via density_lower_bound (~30 lines)",
+      "Prove seqCompact_probabilityMeasure_cantor via Mathlib Prokhorov ingredients: IsTightMeasureSet.of_compactSpace + LevyProkhorov metrization (~150-200 lines)",
+      "Assemble full furstenberg_correspondence proof eliminating the axiom in FurstenbergCorrespondence.lean"
     ]
   },
   "tags": [
@@ -66,7 +80,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.383Z",
-  "lastUpdate": "2026-04-22T13:03:46.383Z",
+  "lastUpdate": "2026-04-26T00:00:00.000Z",
   "significance": 9,
   "tractability": 4
 }
