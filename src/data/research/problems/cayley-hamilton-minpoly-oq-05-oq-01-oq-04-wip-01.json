@@ -49,14 +49,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "NEW: Selected by Seeker. Prior work (oq-05-oq-01 through incomplete-01) has proved all auxiliary lemmas; only the main sorry remains. The direct PID route is blocked; alternative routes (companion matrix, span argument) need Mathlib survey.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: WIP04 proves binary prime-power case axiom-free (421 lines). WIP02 squarefree + WIP03 prime-power + WIP04 binary prime-power all done. WIP01 has 1 axiom (rational canonical form). k-factor (k≥3) is next.",
+    "builtItems": [
+      "WIP04 nonderogatory_bipow_has_cyclic_vector: binary p^a*q^b case proved axiom-free (421 lines, CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean)"
+    ],
     "insights": [
       "The blocking step is the PID structure theorem: K^n ≅ K[X]/(d1) ⊕ … ⊕ K[X]/(dr) as K[X]-modules",
       "nonderogatory forces r=1 in the cyclic decomposition, giving K^n ≅ K[X]/(minpoly)",
       "cyclic_iff_ann_eq_minpoly (already proven) reduces the problem to: ∃ v, ann(v) = (minpoly)",
       "companion matrix approach: if M ~ companion(charpoly), then e1 is a cyclic vector for companion, and cyclic_vector_of_similar transfers it to M",
-      "Whether rational canonical form / companion similarity exists in Mathlib is the key unknown"
+      "Whether rational canonical form / companion similarity exists in Mathlib is the key unknown",
+      "Binary prime-power case: IsCoprime.pow_pow + pow_irred_dvd_of_annihilated + CRT projections = complete proof without PID",
+      "Construction: v₁ = q^b(M)·w₁ where (p^(a-1)*q^b)(M)·w₁≠0 gives the primary cyclic vector for the p^a component",
+      "IsCoprime.mul_dvd combines p^a|r and q^b|r into p^a*q^b|r for the degree contradiction"
     ],
     "mathlibGaps": [
       "Module.InvariantFactors or PID cyclic decomposition theorem",
@@ -64,10 +69,8 @@
       "Finrank-based argument for span of orbit: does LinearMap.span_orbit_eq_top exist?"
     ],
     "nextSteps": [
-      "Search Mathlib for 'companion' in Matrix namespace",
-      "Search Mathlib for 'rationaCanonicalForm' or 'invariantFactors'",
-      "Check if primary decomposition approach is feasible: Module.primaryDecomposition in Mathlib",
-      "Try dimension argument: span{v, Mv, …, M^(n-1)v} has dim n iff ann(v) = (minpoly) — use rank-nullity"
+      "Generalize WIP04 to k≥3 factors by induction on number of prime power factors",
+      "Check Mathlib 4.27+ for rational canonical form (would close WIP01 axiom)"
     ]
   },
   "tags": [
