@@ -1,62 +1,149 @@
 /-
-  Aristotle targets for Erdős Problem #179
+  Aristotle targets for Erdős Problem #179 (AP Supersaturation)
   Routine supporting lemmas for automated proof search.
-  See Stubs/Erdos179Problem.lean for the main formalization.
+  See Erdos179Problem.lean for the main formalization.
 
   Criteria for inclusion:
-  - NOT the main theorems (Fox-Pohoata, Question1, Question2)
-  - NOT theorems depending on F (def-sorry in supersaturation_exists)
-  - Routine facts about arithmetic progressions and Finset operations
-  - No definition sorries
-  - No axioms
+  - NOT the main supersaturation function F (which has sorry in its existence proof)
+  - Does NOT depend on F, Question1, Question2, or related problematic definitions
+  - Pure analytical lemmas (asymptotic comparisons) and combinatorial facts
+  - Clean theorem statements with no definition sorries
+  - No axiom declarations
 
-  Included targets (5):
-  - ap_range_subset: image of range is a Finset ℕ
-  - ap_length_one: length-1 AP equals {a}
-  - ap_contains_start: start element a ∈ arithmeticProgression a d k for k ≥ 1
-  - contains_ap_superset: ContainsAP is upward-closed under ⊆
-  - super_prop_mono: SupersaturationProperty is monotone in M (decreasing)
+  Key Aristotle targets:
+  - rpow_eventually_gt_const_mul_log: y^c > C * log y eventually
+  - exp_rpow_gt_rpow_of_gt_mul_log: helper for improvement_significant
+  - improvement_significant: exp((log log N)^c) > (log log N)^C eventually
+  - all_pairs_are_2APs: every 2-element subset of A is a 2-AP
 -/
 import Mathlib
 
+open Real Filter Finset
+
 namespace Erdos179Aristotle
 
-open Finset
+/-
+## Section 1: Arithmetic Progressions — Combinatorial Helpers
 
-def arithmeticProgression (a d : ℕ) (k : ℕ) : Finset ℕ :=
+A k-term arithmetic progression is {a, a+d, ..., a+(k-1)d} for d > 0.
+-/
+
+/-- A k-AP with first term a and common difference d. -/
+def arithmeticProgression (a d k : ℕ) : Finset ℕ :=
   Finset.image (fun i => a + i * d) (Finset.range k)
 
-def ContainsAP (A : Finset ℕ) (k : ℕ) : Prop :=
-  ∃ a d : ℕ, d > 0 ∧ arithmeticProgression a d k ⊆ A
+/-- A 2-AP is a 2-element set {a, a+d}. -/
+theorem arithmeticProgression_two (a d : ℕ) (hd : d > 0) :
+    (arithmeticProgression a d 2).card = 2 := by
+  simp [arithmeticProgression]
+  omega
 
--- Routine: A length-1 AP is a singleton.
--- image (fun i => a + i * d) (range 1) = {a + 0 * d} = {a}.
-theorem ap_length_one (a d : ℕ) :
-    arithmeticProgression a d 1 = {a} := by
+/-- A 2-AP {a, a+d} contains a and a+d. -/
+theorem mem_arithmeticProgression_two (a d : ℕ) :
+    a ∈ arithmeticProgression a d 2 ∧ a + d ∈ arithmeticProgression a d 2 := by
+  simp [arithmeticProgression]
+
+/-- For any two distinct naturals a < b, {a, b} = arithmeticProgression a (b-a) 2. -/
+theorem pair_is_2AP (a b : ℕ) (hab : a < b) :
+    ({a, b} : Finset ℕ) = arithmeticProgression a (b - a) 2 := by
+  simp [arithmeticProgression, Finset.ext_iff]
+  omega
+
+/-- In a 2-AP, the two elements are distinct. -/
+theorem two_AP_distinct (a d : ℕ) (hd : d > 0) :
+    a ≠ a + d := by omega
+
+/-
+## Section 2: Counting 2-APs
+
+Every pair of distinct naturals forms a 2-AP.
+So any set of size N has exactly C(N,2) two-term APs.
+-/
+
+/-- Count of k-APs in A: number of k-element subsets that form a k-AP. -/
+noncomputable def countAPs (A : Finset ℕ) (k : ℕ) : ℕ :=
+  (A.powerset.filter fun S => ∃ a d, d > 0 ∧ S = arithmeticProgression a d k).card
+
+/-- Every 2-element Finset of naturals {a, b} with a < b is a 2-AP. -/
+theorem pair_subset_is_2AP (A : Finset ℕ) (S : Finset ℕ) (hS : S ⊆ A)
+    (hcard : S.card = 2) :
+    ∃ a d : ℕ, d > 0 ∧ S = arithmeticProgression a d 2 := by
+  rw [Finset.card_eq_two] at hcard
+  obtain ⟨a, b, hab, rfl⟩ := hcard
+  rcases Nat.lt_or_gt_of_ne hab with h | h
+  · exact ⟨a, b - a, by omega, by simp [arithmeticProgression, Finset.ext_iff]; omega⟩
+  · exact ⟨b, a - b, by omega, by simp [arithmeticProgression, Finset.ext_iff]; omega⟩
+
+/-- Any set A has exactly C(|A|, 2) two-term arithmetic progressions.
+    (Every pair of distinct elements forms a 2-AP.) -/
+theorem all_pairs_are_2APs (A : Finset ℕ) :
+    countAPs A 2 = A.card.choose 2 := by
   sorry
 
--- Routine: The start element is in the AP.
--- For k ≥ 1, 0 ∈ range k, so a = a + 0 * d ∈ image.
-theorem ap_contains_start (a d k : ℕ) (hk : k ≥ 1) :
-    a ∈ arithmeticProgression a d k := by
+/-
+## Section 3: Asymptotic Analysis Helpers
+
+Supporting lemmas for improvement_significant.
+The key comparison: for c > 0, exp(y^c) grows much faster than y^C.
+-/
+
+/-- For any C > 0 and c > 0, x^c / log x → ∞ as x → ∞. -/
+theorem rpow_div_log_tendsto_atTop (c : ℝ) (hc : c > 0) :
+    Filter.Tendsto (fun x : ℝ => x ^ c / Real.log x) Filter.atTop Filter.atTop := by
   sorry
 
--- Routine: ContainsAP is upward-closed under set inclusion.
--- If A ⊆ B and A contains a k-AP, then B contains a k-AP.
-theorem contains_ap_superset (A B : Finset ℕ) (k : ℕ)
-    (hA : ContainsAP A k) (hAB : A ⊆ B) : ContainsAP B k := by
+/-- For c, C > 0, eventually x^c > C * log x (x : ℝ, x → ∞).
+    (Follows from rpow_div_log_tendsto_atTop: x^c / log x → ∞.) -/
+theorem rpow_eventually_gt_const_mul_log (c C : ℝ) (hc : c > 0) (hC : C > 0) :
+    ∀ᶠ x in (Filter.atTop : Filter ℝ), x ^ c > C * Real.log x := by
   sorry
 
--- Routine: If d > 0, all elements of the AP are ≥ a.
--- a + i * d ≥ a for all i ≥ 0.
-theorem ap_ge_start (a d k : ℕ) (hd : d > 0) (i : ℕ) (hi : i < k) :
-    a ≤ a + i * d := by
+/-- If y > 1 and y^c > C * log y, then exp(y^c) > y^C.
+    (Uses: y^C = exp(C * log y) and exp is strictly monotone.) -/
+theorem exp_rpow_gt_rpow_of_gt_mul_log (y C c : ℝ) (hy : y > 1)
+    (h : y ^ c > C * Real.log y) :
+    Real.exp (y ^ c) > y ^ C := by
   sorry
 
--- Routine: Length-0 AP is empty.
--- range 0 = ∅, so image of range 0 is ∅.
-theorem ap_length_zero (a d : ℕ) :
-    arithmeticProgression a d 0 = ∅ := by
+/-
+## Section 4: The Main Comparison Theorem
+-/
+
+/-- For any C, c > 0, exp((log(log N))^c) > (log(log N))^C for large N : ℝ. -/
+theorem improvement_significant_real (C c : ℝ) (hC : C > 0) (hc : c > 0) :
+    ∀ᶠ N in (Filter.atTop : Filter ℝ),
+      Real.exp ((Real.log (Real.log N)) ^ c) > (Real.log (Real.log N)) ^ C := by
+  sorry
+
+/-- For any C, c > 0, exp((log(log N))^c) > (log(log N))^C for large N : ℕ. -/
+theorem improvement_significant (C c : ℝ) (hC : C > 0) (hc : c > 0) :
+    ∀ᶠ N in (Filter.atTop : Filter ℕ),
+      Real.exp ((Real.log (Real.log N)) ^ c) > (Real.log (Real.log N)) ^ C := by
+  sorry
+
+/-
+## Section 5: Logarithmic Upper Bound Helpers
+
+The sorry inside question1_solved:
+  N^2 / (log log N)^C ≤ ε * N^2   [for large N]
+  ⟺ (log log N)^C ≥ 1/ε             [for large N]
+-/
+
+/-- For C > 0, (log(log N))^C → ∞ as N → ∞ (N : ℝ). -/
+theorem loglog_rpow_tendsto_atTop (C : ℝ) (hC : C > 0) :
+    Filter.Tendsto (fun N : ℝ => (Real.log (Real.log N)) ^ C)
+      Filter.atTop Filter.atTop := by
+  sorry
+
+/-- For C > 0 and any M, eventually (log log N)^C ≥ M. -/
+theorem loglog_rpow_eventually_large (C M : ℝ) (hC : C > 0) :
+    ∀ᶠ N in (Filter.atTop : Filter ℝ), (Real.log (Real.log N)) ^ C ≥ M := by
+  sorry
+
+/-- For ε > 0 and C > 0: N^2 / (log log N)^C ≤ ε * N^2 for large N. -/
+theorem div_loglog_rpow_le (ε C : ℝ) (hε : ε > 0) (hC : C > 0) :
+    ∀ᶠ N in (Filter.atTop : Filter ℝ),
+      N ^ 2 / (Real.log (Real.log N)) ^ C ≤ ε * N ^ 2 := by
   sorry
 
 end Erdos179Aristotle
