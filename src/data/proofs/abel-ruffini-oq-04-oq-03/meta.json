@@ -206,6 +206,36 @@
       "targetId": "abel-ruffini-oq-04-oq-07",
       "relationship": "complementary",
       "description": "Bring-Jerrard reduction and the Bring radical: the constructive complement to this criterion's impossibility. While Galois's criterion (this entry) establishes that quintics with non-solvable Galois groups cannot be solved by radicals, the Bring radical provides a constructive alternative — the Bring-Jerrard form $y^5 + py + q = 0$ is solvable using BR$(t)$, the unique real root of $x^5 + x + t = 0$. Together, this entry and `abel-ruffini-oq-04-oq-07` establish the complete picture: the quintic is not solvable in the class of radical expressions, but IS solvable in the larger class of Bring-radical expressions."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-02",
+      "relationship": "complementary",
+      "description": "Proves $A_n$ solvable $\\iff n \\leq 4$ — the alternating-group analogue of the symmetric group threshold. This entry's `galois_criterion` gives the forward direction meaning: for degree-$n$ polynomials ($n \\leq 4$) whose Galois groups are subgroups of $S_n$ (hence of $A_n$ after passing to the alternating part), solvability of $A_n$ guarantees radical expressibility. The sharp threshold $n = 5$ where $A_5$ becomes the non-abelian simple obstruction is the group-theoretic keystone used in the Abel-Ruffini special case of this entry."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-04",
+      "relationship": "foundational",
+      "description": "Proves the Jordan-Hölder uniqueness theorem for groups (filling a Mathlib TODO). The reverse direction of Galois's criterion requires building a radical tower from a composition series $1 = G_k \\trianglelefteq \\cdots \\trianglelefteq G_0 = \\text{Gal}(q)$ with cyclic quotients. Jordan-Hölder guarantees this composition series is unique — so the radical tower constructed from it is the canonical one. For the forward direction, Jordan-Hölder ensures the Galois group's composition factors are intrinsic invariants, making the solvability criterion well-defined and independent of the choice of subnormal series."
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "complementary",
+      "description": "The angle trisection impossibility uses the same Galois framework with 2-groups instead of solvable groups: a real number $\\alpha$ is constructible by compass and straightedge iff its minimal polynomial has degree a power of 2 (the Galois group is a 2-group, a special case of solvable). The parallel is exact: $\\alpha$ solvable by radicals $\\iff$ $\\text{Gal}(\\text{minpoly}(\\alpha))$ is solvable (this entry); $\\alpha$ constructible $\\iff$ $\\text{Gal}(\\text{minpoly}(\\alpha))$ is a 2-group ($\\iff$ constructibility by $\\sqrt{\\cdot}$ alone). Both use the same Galois-theoretic machinery, differing only in which subclass of solvable groups is relevant."
+    },
+    {
+      "targetId": "inverse-galois-oq-01",
+      "relationship": "related",
+      "description": "Addresses the open question in this entry: which finite groups occur as Galois groups over $\\mathbb{Q}$? Shafarevich's theorem (mentioned in this entry's open questions) proves every finite solvable group is a Galois group over $\\mathbb{Q}$ — a partial converse to the Galois criterion's direction that solvable Galois groups imply radical solvability. The Inverse Galois Problem for non-solvable groups (like $A_5$, $S_5$) remains open in general, making the abstract criterion here the foundational theorem and `inverse-galois-oq-01` its concrete frontier."
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "The primitive root theorem — $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p-1$ — is the algebraic engine behind Kummer theory, the missing ingredient in the reverse direction of this criterion. The $n$-th roots of unity $\\{\\zeta_n^k : k = 0,\\ldots,n-1\\}$ form a cyclic group under multiplication; the cyclotomic extension $\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}$ has Galois group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$, abelian (hence solvable). Kummer's theorem requires $\\zeta_n \\in F$ precisely to ensure the $n$-th roots of unity are already available, allowing $F(\\sqrt[n]{a})/F$ to be a cyclic Galois extension — the building block for constructing the radical tower from a solvable composition series."
+    },
+    {
+      "targetId": "kroneckers-jugendtraum",
+      "relationship": "related",
+      "description": "The Kronecker-Weber theorem — every abelian extension of $\\mathbb{Q}$ is cyclotomic — is the positive counterpart to Galois's criterion: it classifies all abelian Galois extensions (the 'fully solvable' case where each composition factor is cyclic) as exactly the subfields of cyclotomic fields $\\mathbb{Q}(\\zeta_n)$. Galois's criterion (this entry) says abelian-factor Galois groups correspond to radical solvability; Kronecker-Weber says abelian Galois groups over $\\mathbb{Q}$ correspond to roots of unity. Together they give a complete picture of radical-solvable polynomials over $\\mathbb{Q}$ whose Galois group is abelian: they are polynomials whose splitting fields are cyclotomic fields."
     }
   ],
   "references": [
