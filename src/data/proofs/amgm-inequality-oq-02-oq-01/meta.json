@@ -100,6 +100,11 @@
       "targetId": "amgm-inequality-oq-03",
       "relationship": "related",
       "description": "Power mean interpolation between AM and GM — a different approach to the same family of inequalities, using weighted power means rather than symmetric polynomials"
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01-oq-02",
+      "relationship": "child",
+      "description": "Completes the off-diagonal symmetry step left open here: proves Σ_{i≠j} xᵢxⱼ = 2·Σ_{i<j} xᵢxⱼ = 2e₂ via the Prod.swap bijection between lower and upper triangular pairs. This step requires a LinearOrder on ι that this CommRing-only file deliberately avoids."
     }
   ],
   "references": [
