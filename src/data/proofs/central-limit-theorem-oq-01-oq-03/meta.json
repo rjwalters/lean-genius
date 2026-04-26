@@ -99,7 +99,22 @@
     {
       "targetId": "central-limit-theorem-oq-01",
       "relationship": "extends",
-      "description": "Free probability analog of CLT"
+      "description": "Parent entry: classical $\\alpha$-stable distributions and the generalized CLT with infinite variance. The current entry extends this to free probability: the Bercovici-Pata bijection maps each classical stable law to a free analog with the same stability index $\\alpha$, showing the free world mirrors the classical one systematically"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "The classical CLT — the Gaussian limit for finite-variance i.i.d. sums — is the $\\alpha = 2$ case of the stable laws formalized in the parent. The free analog (Voiculescu's free CLT, 1985) shows that normalized sums of freely independent variables converge to the Wigner semicircle $d\\mu_{\\text{sc}} = \\frac{2}{\\pi}\\sqrt{1-x^2}\\,dx$, which is the free Gaussian. The semicircle replaces the classical normal distribution as the universal limit in the non-commutative world"
+    },
+    {
+      "targetId": "central-limit-theorem-oq-01-oq-01",
+      "relationship": "complementary",
+      "description": "Formalizes the Gnedenko-Kolmogorov domain of attraction theorem: which distributions have $\\alpha$-stable laws as their CLT limit. The stability index $\\alpha \\in (0, 2]$ formalized in this entry's `IsStabilityIndex` corresponds exactly to the $\\alpha$-stable characteristic function in OQ-01-OQ-01. The $\\alpha = 2$ case (Gaussian stability) corresponds to the classical CLT; each $\\alpha$ gives a different non-commutative limit in free probability"
+    },
+    {
+      "targetId": "central-limit-theorem-oq-01-oq-02",
+      "relationship": "foundational",
+      "description": "Formalizes the Lévy-Khintchine representation: every infinitely divisible distribution corresponds to a triplet $(\\gamma, \\sigma^2, \\nu)$ where $\\nu$ is the Lévy measure. The Bercovici-Pata bijection $\\Lambda$ maps classical Lévy-Khintchine triplets to free Lévy-Khintchine triplets, preserving $\\sigma^2$ (the Gaussian component) and transforming $\\nu$ via the free Lévy-Khintchine formula. The classical framework formalized in OQ-02 is precisely what $\\Lambda$ acts on to produce the free stable distributions cataloged here"
     }
   ],
   "sorries": 0
