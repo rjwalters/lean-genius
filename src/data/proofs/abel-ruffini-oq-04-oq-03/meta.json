@@ -236,6 +236,21 @@
       "targetId": "kroneckers-jugendtraum",
       "relationship": "related",
       "description": "The Kronecker-Weber theorem — every abelian extension of $\\mathbb{Q}$ is cyclotomic — is the positive counterpart to Galois's criterion: it classifies all abelian Galois extensions (the 'fully solvable' case where each composition factor is cyclic) as exactly the subfields of cyclotomic fields $\\mathbb{Q}(\\zeta_n)$. Galois's criterion (this entry) says abelian-factor Galois groups correspond to radical solvability; Kronecker-Weber says abelian Galois groups over $\\mathbb{Q}$ correspond to roots of unity. Together they give a complete picture of radical-solvable polynomials over $\\mathbb{Q}$ whose Galois group is abelian: they are polynomials whose splitting fields are cyclotomic fields."
+    },
+    {
+      "targetId": "inverse-galois-oq-06",
+      "relationship": "complementary",
+      "description": "Inverse Galois OQ-06 constructs a specific quintic x^5-5x^4+... over Q whose Galois group is A_5, providing a concrete instantiation of the non-solvable direction of Galois's criterion: since A_5 is not solvable, that polynomial is not solvable by radicals."
+    },
+    {
+      "targetId": "angle-trisection-cos-20-gal",
+      "relationship": "complementary",
+      "description": "The minimal polynomial of cos(20°) has Galois group of order 3 (cyclic, hence solvable), so by Galois's criterion it is solvable by radicals — yet cos(20°) is not constructible by straightedge and compass. This contrast illustrates that radical solvability and constructibility are distinct notions that Galois's criterion cleanly separates."
+    },
+    {
+      "targetId": "puiseux-theorem",
+      "relationship": "complementary",
+      "description": "Puiseux series provide the next expressibility level above radicals: every algebraic function over C can be expressed as a Puiseux series. For polynomials whose Galois group fails Galois's solvability criterion (hence not solvable by radicals), Puiseux series characterize the broader class of functions that can represent their roots, contextualizing what lies beyond the radical barrier."
     }
   ],
   "references": [
