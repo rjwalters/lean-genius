@@ -62,16 +62,18 @@
     "lineCount": 415
   },
   "overview": {
-    "historicalContext": "Liouville's 1844 theorem — that algebraic irrationals resist rational approximation — has natural analogs in non-Archimedean settings. The p-adic version, developed in the 20th century alongside p-adic analysis, reveals a striking structural difference: the Archimedean property that powers the classical proof (|nonzero integer| ≥ 1) fails completely in the p-adic world. Instead, p-adic norms of integers can be arbitrarily small (p^k | n makes |n|_p ≤ p^{-k}). The fix, known as the **Archimedean Complement Lemma** |N|_p ≥ 1/|N|, replaces the Archimedean lower bound with a hybrid estimate combining both metrics. This forces the rational approximation theory to use the **naive height** H(r/s) = max(|r|, |s|) rather than just the denominator.",
+    "historicalContext": "Liouville's 1844 theorem — the first proof that specific transcendental numbers exist — uses the Archimedean property $|N|_{\\infty} \\geq 1$ for nonzero integers. The p-adic number system was developed by Kurt Hensel around 1897, motivated by the analogy between number fields and function fields. P-adic Liouville-type results appear in Mahler's work (1930s–1950s) on p-adic transcendence and in the theory of p-adic Diophantine approximation. The Archimedean Complement Lemma $|N|_p \\geq 1/|N|$ is a weak form of the **adelic product formula** $\\prod_v |N|_v = 1$ (Artin-Whaples, 1945), which underlies all of modern algebraic number theory — the product over all places (one Archimedean + one p-adic for each prime) equals 1. The p-adic Liouville theorem belongs to the broader program of Diophantine approximation in non-Archimedean metrics, developed by Mahler, Ridout, and Roth (Roth's theorem, 1955, Fields Medal). The use of **naive height** $H(r/s) = \\max(|r|, |s|)$ — rather than just the denominator — is the key departure from the classical theory, forced by the non-Archimedean structure where the numerator's p-adic content cannot be ignored.",
     "problemStatement": "**P-adic Liouville Theorem**: If α ∈ ℚ_[p] is algebraic of degree d over ℚ, then there exists C > 0 such that for all r, s ∈ ℤ with s ≠ 0:\n\n  ‖α - r/s‖_p ≥ C / max(|r|, |s|)^d\n\n**Archimedean Complement Lemma** (proved): For any nonzero n : ℕ and prime p:\n\n  padicNorm p n ≥ 1/n\n\nThis is equivalent to: the product `|n|_p · |n|` (p-adic norm times Archimedean norm) satisfies `|n|_p · |n| ≥ 1`. In other words, what one metric loses, the other compensates.",
     "text": "The p-adic Liouville theorem extends rational approximation theory to p-adic numbers, with the key insight that height (not denominator) controls approximation quality in the p-adic setting.",
     "proofStrategy": "**Step 1** (proved): Archimedean Complement Lemma. For n : ℕ nonzero, p^(v_p(n)) | n by `pow_padicValNat_dvd`, so n ≥ p^(v_p(n)), hence padicNorm p n = p^(-v_p(n)) = 1/p^(v_p(n)) ≥ 1/n.\n\n**Step 2** (sorry): Polynomial evaluation bound. For f ∈ ℤ[X] irreducible of degree d and r/s ∈ ℚ not a root: combining step 1 with the fact that s^d·f(r/s) is a nonzero integer bounded by C_f·H(r/s)^d gives |f(r/s)|_p ≥ 1/(C_f·H^d).\n\n**Step 3** (axiom): Taylor expansion in ℚ_[p]. Write f(r/s) = (r/s - α)·h(r/s) over ℚ_[p] using f(α) = 0. The non-Archimedean property bounds h, giving ‖α - r/s‖_p ≥ C/H^d.",
     "keyInsights": [
-      "The Archimedean Complement Lemma: |N|_p · |N| ≥ 1 for nonzero integer N — p-adic and Archimedean norms are complementary",
-      "Height H(r/s) = max(|r|, |s|) must replace denominator s because p-adic valuation of r/s depends on BOTH r and s",
-      "The equality case padicNorm 5 25 = 1/25 occurs exactly when n = p^k (all p-adic content, no coprime part)",
-      "Same argument works over function fields F_q(t) with t-adic absolute value — a structural universality",
-      "The p-adic Liouville condition is HARDER to satisfy than the real one: height grows faster than denominator"
+      "The Archimedean Complement Lemma $|N|_p \\cdot |N|_{\\infty} \\geq 1$ for nonzero $N \\in \\mathbb{Z}$ is the core bridge between the two metric structures: what the p-adic norm 'loses' (by being $< 1$ for divisible integers), the Archimedean norm 'compensates for'. It replaces the Archimedean lower bound $|N|_{\\infty} \\geq 1$ that drives the classical proof.",
+      "Height $H(r/s) = \\max(|r|, |s|)$ must replace denominator $s$ because the p-adic norm $|r/s|_p = p^{v_p(r) - v_p(s)}$ depends symmetrically on both numerator and denominator. If $p \\mid r$, then $v_p(r) > 0$ reduces $|r/s|_p$ independently of $|s|$, so the denominator alone cannot measure p-adic closeness.",
+      "The equality case $|n|_p = 1/n$ occurs exactly when $n = p^k$: then $v_p(n) = k = \\log_p(n)$, so $|n|_p = p^{-k} = 1/p^k = 1/n$. This is the unique case where the complement bound is tight — when the integer is 'purely p-adic content' with no coprime factor. In contrast, when $\\gcd(n, p) = 1$, $|n|_p = 1$ while $1/n$ is very small: the bound is far from tight.",
+      "The same proof works over function fields $\\mathbb{F}_q(t)$ with the $t$-adic absolute value, where polynomial degree plays the role of Archimedean absolute value: $|P|_t \\geq q^{-\\deg P}$ for nonzero $P \\in \\mathbb{F}_q[t]$. This structural universality reflects that any non-Archimedean valued field with a Euclidean algorithm on its ring of integers admits an analogous complement lemma.",
+      "The p-adic Liouville condition is *harder* to satisfy than the classical real condition: since $H(r/s) = \\max(|r|, |s|) \\geq |s|$, the threshold $1/H^n \\leq 1/|s|^n$, so p-adic Liouville approximations must converge faster than classically Liouville ones. A real Liouville number need not be p-adically Liouville for any prime $p$.",
+      "The axiom `padic_liouville_estimate` requires working in $\\mathbb{Q}_p$ (the p-adic completion of $\\mathbb{Q}$), not just in $\\mathbb{Q}$ with the `padicNorm` function. The Taylor factorization $f(x) = (x - \\alpha) \\cdot g(x, \\alpha)$ and continuity bound on $g$ require the full metric completion — this is the infrastructure gap separating the proved lemmas (all over $\\mathbb{Q}$) from the full theorem (over $\\mathbb{Q}_p$).",
+      "The product formula perspective: the Archimedean Complement Lemma $|N|_p \\cdot |N|_{\\infty} \\geq 1$ is a weak form of the adelic product formula $\\prod_{v} |N|_v = 1$ (over all places $v$ of $\\mathbb{Q}$: one Archimedean and one p-adic for each prime $p$). The product formula says the product of ALL norms equals 1; the complement lemma says the product of just two (one Archimedean, one p-adic) is $\\geq 1$."
     ],
     "prerequisites": [
       "p-adic numbers and the p-adic norm (padicNorm in Mathlib)",
@@ -150,7 +152,22 @@
     {
       "targetId": "liouville-theorem",
       "relationship": "extends",
-      "description": "Extends the classical Liouville theorem (Wiedijk #18) to the p-adic setting; the Archimedean Complement Lemma replaces |integer| ≥ 1"
+      "description": "Extends the classical Liouville theorem (Wiedijk #18) to the p-adic setting. The classical proof uses $|N|_{\\infty} \\geq 1$ (Archimedean lower bound) to get $|f(r/q)| \\geq 1/q^d$; this entry replaces it with the Archimedean Complement Lemma $|N|_p \\cdot |N|_{\\infty} \\geq 1$ to get $|f(r/s)|_p \\geq 1/(C_f \\cdot H^d)$, using height $H = \\max(|r|, |s|)$ instead of denominator $q$ alone."
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Hermite's 1873 proof that $e$ is transcendental uses auxiliary polynomial methods rather than Diophantine approximation. Both entries prove algebraic numbers resist efficient rational approximation — this entry does so in the p-adic metric, while the $e$-transcendental proof establishes that $e$ is not algebraic by showing it cannot be approximated by integer-coefficient polynomial roots."
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "Lindemann's 1882 proof that $\\pi$ is transcendental builds on the Hermite-Lindemann theorem. Both this entry and the $\\pi$-transcendental entry work within the hierarchy: transcendental numbers (like $\\pi$ and $e$) lie above all algebraic numbers, while algebraic numbers that are not radical-expressible lie below transcendentals but above the radical-expressible algebraics. The p-adic Liouville theorem characterizes the algebraic portion of this hierarchy from the perspective of p-adic approximation."
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "foundational",
+      "description": "Countability of algebraic numbers establishes that the set of algebraic numbers is small (countable) while the reals are uncountable — so most real numbers are transcendental. The p-adic Liouville theorem gives a quantitative refinement: not only are most reals transcendental, but algebraic numbers are precisely those resisting efficient rational approximation in EVERY metric simultaneously (real and p-adic). The Archimedean Complement Lemma in this entry is the bridge: it links the p-adic and Archimedean norms."
     }
   ],
   "conclusion": {
