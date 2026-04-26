@@ -762,7 +762,7 @@ private lemma cot_ge_inv_two_mul {t : ℝ} (ht : 0 < t) (ht_le : t ≤ Real.pi /
   have hpi_pos := Real.pi_pos
   have hsin_pos : 0 < Real.sin t :=
     Real.sin_pos_of_pos_of_lt_pi ht (by linarith)
-  rw [div_le_div_iff (by positivity) hsin_pos]
+  rw [div_le_div_iff₀ (by positivity) hsin_pos]
   -- Goal: 1 * Real.sin t ≤ Real.cos t * (2 * t)
   have hsin_le : Real.sin t ≤ t := (Real.sin_lt ht).le
   have hcos_ge : (1 : ℝ) / 2 ≤ Real.cos t :=
@@ -799,7 +799,6 @@ private lemma sin_div_one_add_cos {φ : ℝ} (hφ : 0 < φ) (hφ_lt : φ < Real.
   rw [hsin, h1cos]
   have h2cos_ne : 2 * Real.cos (φ / 2) ^ 2 ≠ 0 := by positivity
   field_simp [h2cos_ne, hcos_half_pos.ne']
-  ring
 
 /-- The Chebyshev node angle φₖ = (2k+1)π/(2n) ∈ (0, π) for k < n. -/
 private lemma chebyshevAngle_pos_lt_pi (n : ℕ) (hn : 0 < n) (k : Fin n) :
@@ -811,7 +810,7 @@ private lemma chebyshevAngle_pos_lt_pi (n : ℕ) (hn : 0 < n) (k : Fin n) :
   · rw [div_lt_iff₀ (by positivity)]
     have hlt : 2 * k.val + 1 < 2 * n := by omega
     have hlt' : (2 * k.val + 1 : ℝ) < 2 * n := by exact_mod_cast hlt
-    nlinarith
+    nlinarith [Real.pi_pos]
 
 /-- For x = -1 (e.g., p = q = 1) and the Chebyshev node formula:
     sin(φₖ) / |(-1) - cos φₖ| = sin(φₖ) / (1 + cos φₖ) = tan(φₖ/2) = sin(φₖ/2)/cos(φₖ/2).
@@ -883,7 +882,7 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
       · positivity
       · -- (2k+1)π/(4n) ≤ π ↔ 2k+1 ≤ 4n; follows from k+1 ≤ n
         have h_gap : (0 : ℝ) < 4 * n - (2 * (k : ℝ) + 1) := by linarith
-        rw [div_le_iff (by positivity : (0:ℝ) < 4 * n)]
+        rw [div_le_iff₀ (by positivity : (0:ℝ) < 4 * n)]
         linarith [mul_pos Real.pi_pos h_gap]
     · apply le_of_lt
       apply Real.cos_pos_of_mem_Ioo
@@ -893,7 +892,7 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
                           (by positivity : (0:ℝ) < 4*(n:ℝ)),
                   Real.pi_pos]
       · -- angle < π/2: ↔ (2k+1)*2 < 4n
-        rw [div_lt_div_iff (by positivity : (0:ℝ) < 4*(n:ℝ)) two_pos]
+        rw [div_lt_div_iff₀ (by positivity : (0:ℝ) < 4*(n:ℝ)) two_pos]
         have h_gap2 : (0 : ℝ) < 4 * n - (2 * (k : ℝ) + 1) * 2 := by linarith
         linarith [mul_pos Real.pi_pos h_gap2]
   -- Sub-sum via m = Nat.sqrt n
