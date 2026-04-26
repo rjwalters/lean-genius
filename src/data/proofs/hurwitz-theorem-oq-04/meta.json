@@ -22,7 +22,7 @@
     "dateAdded": "2026-04-24",
     "axiomCount": 1,
     "assumptions": "1 axiom: G2_der_dimension (finrank ℝ OctonionDerSubmodule = 14). Previous G2_is_octonion_aut (Nat.card OctonionAut = 14) was replaced: Nat.card of an infinite Lie group equals 0 in type theory, making it mathematically incorrect. G2_der_dimension targets the Lie algebra dimension directly. All supporting lemmas fully proved.",
-    "lineCount": 764,
+    "lineCount": 1030,
     "theoremCount": 32,
     "definitionCount": 15,
     "originalContributions": [
@@ -95,11 +95,27 @@
     },
     {
       "id": "exceptional-lie-algebras",
-      "title": "§IV-VI: G₂, Magic Square, and Structural Consequences",
+      "title": "§IV: G₂, ExceptionalType, and Der(𝕆) Lie Algebra",
       "startLine": 359,
-      "endLine": 583,
-      "summary": "Introduces ExceptionalType inductive type for G₂,F₄,E₆,E₇,E₈ with dimensions (14,52,78,133,248) and ranks (2,4,6,7,8). Axiomatizes G2_is_octonion_aut (G₂=Aut(𝕆)) and freudenthal_tits_f4/e6/e7/e8. Proves exceptional_dims_strict_mono, G2_unique_low_rank, E8_is_largest, magic_square_corners_distinct, exceptional_chain by decidability. Closes with the Hurwitz-exceptional correspondence explaining why exactly 5 exceptional types exist.",
-      "mathContext": "G₂ has dimension 14 = dim(SO(7)) − 7 = 21 − 7 (Aut(𝕆) acts on Im(𝕆)≅ℝ⁷ and is constrained by the cross-product structure). The Freudenthal-Tits magic square: 𝔏(A,B) = Der(A) ⊕ (ImA⊗ImB) ⊕ Der(B). Corners: 𝔏(𝕆,ℝ)=F₄(52), 𝔏(𝕆,ℂ)=E₆(78), 𝔏(𝕆,ℍ)=E₇(133), 𝔏(𝕆,𝕆)=E₈(248)."
+      "endLine": 587,
+      "summary": "Introduces ExceptionalType inductive type for G₂,F₄,E₆,E₇,E₈ with dimensions (14,52,78,133,248) and ranks (2,4,6,7,8). Defines Der(𝕆) via the OctonionDer structure (zeroDer, addDer, smulDer, commDer with proved Jacobi identity), formalizing the Lie algebra structure. Defines OctonionDerSubmodule as a Submodule of End_ℝ(ℝ⁸) carrying the inherited finite-dimensional vector space structure.",
+      "mathContext": "G₂ has dimension 14 = dim(SO(7)) − 7 = 21 − 7 (Aut(𝕆) acts on Im(𝕆)≅ℝ⁷ constrained by cross-product). Der(𝕆) = {D : 𝕆 →ₗ ℝ 𝕆 | D(ab) = D(a)b + aD(b)}. Lie bracket: [D₁,D₂] = D₁∘D₂ − D₂∘D₁ (proved to be a derivation via cancellation of cross terms)."
+    },
+    {
+      "id": "explicit-g2-derivations",
+      "title": "§VIII: Explicit G₂ Derivation Basis (octDer0–octDer13)",
+      "startLine": 588,
+      "endLine": 854,
+      "summary": "Exhibits 14 explicit ℝ-linear derivations (octDer0-octDer13) as concrete LinearMaps with {−1,0,1} matrix entries. Each is proved to satisfy the Leibniz rule via fin_cases + ring. The bundle octDerElems packages all 14. The axiom G2_der_dimension asserts Module.finrank ℝ OctonionDerSubmodule = 14 (G₂.dim), completing the identification 𝔤₂ ≅ Der(𝕆).",
+      "mathContext": "Each $\\mathrm{octDer}_k : \\mathbb{R}^8 \\to \\mathbb{R}^8$ is a $\\{-1,0,1\\}$-matrix linear map satisfying the Leibniz rule. Example: $\\mathrm{octDer}_0(x) = (0, 0, -x_5, x_4, -x_3, x_2, 0, 0)$. The $14 \\times 14$ evaluation matrix at witness pairs has $\\det = 1$, proving linear independence. Axiom: $\\mathrm{finrank}_\\mathbb{R}(\\mathrm{Der}(\\mathbb{O})) = 14 = \\dim G_2$."
+    },
+    {
+      "id": "magic-square-structural-summary",
+      "title": "§V-VII: Magic Square, Structural Consequences, and Hurwitz Correspondence",
+      "startLine": 855,
+      "endLine": 1030,
+      "summary": "Part V axiomatizes the magic square dimensions: freudenthal_tits_f4/e6/e7/e8 (F₄=52, E₆=78, E₇=133, E₈=248) as definitional equalities. Part VI proves structural properties by decidability: exceptional_dims_strict_mono, G2_unique_low_rank, E8_is_largest, magic_square_corners_distinct, exceptional_chain. Part VII synthesizes the Hurwitz-exceptional correspondence. Closes with #check summary of all main results.",
+      "mathContext": "Structural: $14 < 52 < 78 < 133 < 248$ (dimensions), $2 < 4 < 6 < 7 < 8$ (ranks), $G_2$ is the unique exceptional type with rank $< 4$. Magic square: $\\mathfrak{L}(\\mathbb{O},\\mathbb{R})=F_4$, $\\mathfrak{L}(\\mathbb{O},\\mathbb{C})=E_6$, $\\mathfrak{L}(\\mathbb{O},\\mathbb{H})=E_7$, $\\mathfrak{L}(\\mathbb{O},\\mathbb{O})=E_8$. Physical: $E_8 \\times E_8$ heterotic string dim $= 2 \\times 248 = 496$."
     }
   ],
   "conclusion": {
@@ -123,7 +139,7 @@
       "HurwitzTheorem"
     ],
     "namespace": "HurwitzTheoremOQ04",
-    "lineCount": 764,
+    "lineCount": 1030,
     "axiomCount": 1,
     "theoremCount": 32,
     "definitionCount": 15,
@@ -134,22 +150,27 @@
     {
       "targetId": "hurwitz-theorem",
       "relationship": "extends",
-      "description": "Extends the main Hurwitz theorem formalization with the connection to exceptional Lie groups"
+      "description": "Parent: the main Hurwitz theorem formalization (normed division algebras in dimensions 1, 2, 4, 8). This file adds the connection to exceptional Lie groups."
     },
     {
       "targetId": "hurwitz-theorem-oq-03",
       "relationship": "sibling",
-      "description": "Sibling open question: n-square identities and normed division algebras"
+      "description": "Sibling open question: n-square identities and normed division algebras — another face of the Hurwitz series"
     },
     {
-      "targetId": "hurwitz-theorem-oq-01",
-      "relationship": "sibling",
-      "description": "Sibling open question in the Hurwitz series — the full family collectively formalizes the structure theory of normed composition algebras"
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both involve the deep interplay between algebraic structure and group theory. Abel-Ruffini uses S₅ simple (via A₅) to obstruct radical solvability; this file uses Aut(𝕆) = G₂ simple to establish the exceptional hierarchy."
     },
     {
-      "targetId": "hurwitz-theorem-oq-02",
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "Fundamental theorem of algebra establishes ℂ as algebraically closed — the starting point for understanding why ℝ, ℂ, ℍ, 𝕆 are the only normed division algebras over ℝ. The Hurwitz series builds directly on this algebraic distinction."
+    },
+    {
+      "targetId": "hurwitz-theorem-oq-03-oq-01",
       "relationship": "sibling",
-      "description": "Sibling open question: another aspect of the Hurwitz–octonion–exceptional algebra connection"
+      "description": "Sub-question of the Hurwitz series: further exploration of n-square identity consequences and their Lean formalization"
     }
   ],
   "sorries": 0
