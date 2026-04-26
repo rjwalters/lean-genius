@@ -170,5 +170,5 @@
       "mathContext": "SSYTFin n k sh = subtype of ((i:Fin k)×Fin(sh i)→Fin n) satisfying row-weak (weakly increasing rows) and col-strict (strictly increasing columns). Fintype instance via Subtype.fintype (decidable predicates over finite types). ssytSchurFin = ∑_T T.weight where T.weight = ∏_p X(T p). k=0 proved by Unique (empty SSYT, both conditions vacuous) + IsEmpty (empty product = 1). k=1 proved via Fintype.sum_equiv with bijection ψ: SSYTFin n 1 ≃ Sym (Fin n) m using List.sortedLE_ofFn_iff (Monotone ↔ SortedLE). General case (k ≥ 2): RSK correspondence (~300 lines), 2 sorries remain (ssytSchurFin_two_row + jacobi_trudi_ssyt_eq k≥3)."
     }
   ],
-  "sorries": 2
+  "sorries": 4
 }
