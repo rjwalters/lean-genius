@@ -1767,6 +1767,7 @@ import Proofs.Erdos818Aristotle
 import Proofs.Erdos818Problem
 import Proofs.Erdos819Problem
 import Proofs.Erdos81Problem
+import Proofs.Erdos820Aristotle
 import Proofs.Erdos820Problem
 import Proofs.Erdos821Problem
 import Proofs.Erdos822Problem
