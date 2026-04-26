@@ -7,7 +7,7 @@
     "author": "Lean Genius",
     "sourceUrl": "https://en.wikipedia.org/wiki/Dehn_invariant",
     "date": "1900",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/DissectionOfCubesOQ04.lean",
     "tags": [
       "geometry",
@@ -18,11 +18,11 @@
       "scissors-congruence",
       "irrational-angles"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "dateAdded": "2026-04-22",
-    "axiomCount": 1,
-    "assumptions": "1 axiom: tmul_infinite_order_ne_zero (from OQ02OQ02): ℝ is flat over ℤ — needed to show nonzero tensor products. icoAngle_irrational is now a proved theorem (Chebyshev ℤ[√5] argument), reducing the axiom count from 2 to 1.",
+    "axiomCount": 0,
+    "assumptions": "0 axioms. tmul_infinite_order_ne_zero (flatness of ℝ over ℤ) was proved in DissectionOfCubesOQ02OQ02.lean via Module.Flat infrastructure. icoAngle_irrational (arccos(-√5/3)/π irrational) was proved in a prior session via Chebyshev integer sequence for arccos(1/9).",
     "lineCount": 581,
     "theoremCount": 22,
     "definitionCount": 5,
@@ -150,8 +150,8 @@
     "summary": "Among the five Platonic solids, the cube is uniquely characterized by having zero Dehn invariant. This extends Hilbert's Third Problem from the single pair (cube, tetrahedron) to the complete classification of all Platonic solids under scissors congruence.",
     "implications": "The complete classification shows that the cube is the unique Platonic solid that can potentially be scissors congruent to a non-Platonic polyhedron of equal volume. All other four Platonic solids have D ≠ 0 and so cannot be dissected and reassembled into any shape with D = 0 (in particular, not into a cube). The new irrationality result arccos(1/√5)/π ∉ ℚ is itself a contribution to the theory of irrational angles, extending the Niven-style Chebyshev technique to a new cosine value.",
     "openQuestions": [
-      "Can the remaining axiom (tmul_infinite_order_ne_zero — flatness of ℝ over ℤ) be proved using Mathlib's Module.Flat infrastructure?",
-      "Can icoAngle_irrational be proved by extending the Chebyshev argument to ℤ[√5], completing the proof for all five Platonic solids with 0 axioms?"
+      "RESOLVED: The flatness axiom (tmul_infinite_order_ne_zero) was proved in DissectionOfCubesOQ02OQ02.lean using Module.Flat and NoZeroSMulDivisors.",
+      "Can this technique be applied to prove irrationality results for other dihedral angles arising in higher-dimensional polytopes?"
     ]
   },
   "crossReferences": [
