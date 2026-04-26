@@ -33,6 +33,8 @@ These four algebras are deeply connected to the exceptional Lie groups through:
 
 - **Proved** (0 sorries, 1 axiom):
   - `normSq_octUnit`: the unit e₀ has norm 1
+  - `eightMul_right_unit`, `eightMul_left_unit`: e₀ is the two-sided identity
+  - `normSq_mul_octUnit`: normSq identity with octUnit
   - `OctonionAlgHom` forms a monoid (identity, composition)
   - `alg_hom_preserves_norm_product`: φ preserves products of norms
   - `alg_aut_preserves_norm`: Aut(𝕆) preserves norm (via imaginary decomposition)
@@ -43,15 +45,13 @@ These four algebras are deeply connected to the exceptional Lie groups through:
   - `zeroDer`, `addDer`, `smulDer`: Der(𝕆) is a vector space
   - `commDer`: commutator of two derivations is a derivation
   - `commDer_antisymm`, `commDer_jacobi`: Der(𝕆) is a Lie algebra
+  - `der_kills_unit`: every derivation kills the unit element D(e₀) = 0
+  - `der_antinorm`: D(w)·w + w·D(w) = 0 for w ∈ Im(𝕆) (skew-norm identity)
+  - `der_inner_zero`: ⟨D(w), w⟩ = 0 for w ∈ Im(𝕆) (derivations are skew-symmetric)
   - `freudenthal_tits_f4/e6/e7/e8`: ExceptionalType dims match definitions (proved by rfl)
   - All exceptional type dimension computations
   - `G2_unique_low_rank`: G₂ is the only exceptional Lie algebra of rank < 4
   - `E8_is_largest`: E₈ has the highest dimension (248)
-
-- **Computational (sorry, provable by ring)**:
-  - `eightMul_right_unit`: e₀ is the right identity
-  - `eightMul_left_unit`: e₀ is the left identity
-  - `normSq_octUnit_mul`: normSq norm-product identity with octUnit
 
 - **Axiomatized** (1 genuinely deep result):
   - `G2_is_octonion_aut`: G₂ = Aut(𝕆) (requires Lie group theory not in Mathlib)
@@ -85,7 +85,7 @@ theorem normSq_octUnit : normSq octUnit = 1 := normSq_stdBasis 0
     Proof: each component of eightMul a (stdBasis 0) equals a i since
     (stdBasis 0) 0 = 1, (stdBasis 0) j = 0 for j ≠ 0, so each formula reduces to a i.
     This is a ring identity that follows by expanding all 8 components.
-    [Computational sorry — provable by: funext i; fin_cases i; simp [eightMul, stdBasis]; ring] -/
+    Proof: fin_cases on each component i, using simp [eightMul, stdBasis] + ring. -/
 set_option maxHeartbeats 800000 in
 theorem eightMul_right_unit (a : Fin 8 → ℝ) : eightMul a octUnit = a := by
   funext i
@@ -97,7 +97,7 @@ theorem eightMul_right_unit (a : Fin 8 → ℝ) : eightMul a octUnit = a := by
   ring
 
 /-- e₀ is the left identity under octonion multiplication.
-    [Computational sorry — provable by: funext i; fin_cases i; simp [eightMul, stdBasis]; ring] -/
+    Proof: fin_cases on each component i, using simp [eightMul, stdBasis] + ring. -/
 set_option maxHeartbeats 800000 in
 theorem eightMul_left_unit (a : Fin 8 → ℝ) : eightMul octUnit a = a := by
   funext i
@@ -561,6 +561,75 @@ theorem commDer_jacobi (D₁ D₂ D₃ : OctonionDer) (x : Fin 8 → ℝ) :
   ring
 
 -- ============================================================
+-- PART IV-c: Derivation Structural Properties
+-- ============================================================
+
+/-!
+### Key Properties of Der(𝕆)
+
+1. **Derivations kill the unit**: D(e₀) = 0 for all D ∈ Der(𝕆).
+   This follows from the Leibniz rule and the fact that e₀ is a two-sided identity.
+
+2. **Anti-norm identity on Im(𝕆)**: D(w)·w + w·D(w) = 0 for w ∈ Im(𝕆).
+   Proof: w² = -‖w‖²·e₀ (since w is purely imaginary), so D(w²) = -‖w‖²·D(e₀) = 0.
+
+3. **Skew-symmetry on Im(𝕆)**: ⟨D(w), w⟩ = 0 for w ∈ Im(𝕆).
+   Proof: Extract component 0 of (2), using (a·b)₀ = 2a₀b₀ - ⟨a,b⟩.
+   Since w₀ = 0, this gives -2·⟨D(w), w⟩ = 0.
+
+   This means derivations act as antisymmetric (skew-adjoint) linear maps on Im(𝕆) ≅ ℝ⁷,
+   consistent with Der(𝕆) ≅ 𝔤₂ ⊆ 𝔰𝔬(7).
+-/
+
+/-- Every derivation kills the unit element: D(e₀) = 0.
+    Proof: D(e₀·e₀) = D(e₀)·e₀ + e₀·D(e₀) by Leibniz. Since e₀ is the two-sided identity,
+    D(e₀) = D(e₀) + D(e₀), which forces D(e₀) = 0. -/
+theorem der_kills_unit (D : OctonionDer) : D.map octUnit = 0 := by
+  have h := D.leibniz octUnit octUnit
+  rw [eightMul_right_unit, eightMul_right_unit, eightMul_left_unit] at h
+  -- h : D.map octUnit = D.map octUnit + D.map octUnit
+  funext i
+  have hi := congr_fun h i
+  simp only [Pi.add_apply, Pi.zero_apply] at *
+  linarith
+
+/-- Component-0 of the octonion product: (a·b)₀ = 2·a₀·b₀ − ⟨a, b⟩.
+    This is the "real part" formula; it is symmetric in a and b. -/
+private lemma eightMul_bilinear_zero (a b : Fin 8 → ℝ) :
+    (eightMul a b) 0 = 2 * a 0 * b 0 - innerProd a b := by
+  simp only [eightMul, Fin.isValue, Matrix.cons_val_zero,
+             innerProd, Fin.sum_univ_succ, Fin.sum_univ_zero]
+  ring
+
+/-- For w ∈ Im(𝕆), D(w) · w + w · D(w) = 0 (the "anti-norm identity").
+    Proof: Apply D to w² = −‖w‖²·e₀; the RHS is −‖w‖²·D(e₀) = 0 by `der_kills_unit`. -/
+theorem der_antinorm (D : OctonionDer) (w : Fin 8 → ℝ) (hw : w 0 = 0) :
+    eightMul (D.map w) w + eightMul w (D.map w) = 0 := by
+  have h := D.leibniz w w
+  rw [imag_sq_eq_neg_norm w hw, D.map_smul, der_kills_unit D, smul_zero] at h
+  -- h : 0 = eightMul (D.map w) w + eightMul w (D.map w)
+  exact h.symm
+
+/-- Derivations are skew-symmetric on Im(𝕆): ⟨D(w), w⟩ = 0 for all w ∈ Im(𝕆).
+    Equivalently, D acts as a skew-adjoint linear map on Im(𝕆) ≅ ℝ⁷.
+    This is consistent with Der(𝕆) ≅ 𝔤₂ ⊆ 𝔰𝔬(7). -/
+theorem der_inner_zero (D : OctonionDer) (w : Fin 8 → ℝ) (hw : w 0 = 0) :
+    innerProd (D.map w) w = 0 := by
+  -- Take component 0 of der_antinorm
+  have hanti := congr_fun (der_antinorm D w hw) (0 : Fin 8)
+  simp only [Pi.add_apply, Pi.zero_apply] at hanti
+  -- Expand both eightMul terms using the component-0 formula
+  have hL := eightMul_bilinear_zero (D.map w) w
+  have hR := eightMul_bilinear_zero w (D.map w)
+  -- Inner product is symmetric: ⟨w, D(w)⟩ = ⟨D(w), w⟩
+  have hcomm : innerProd w (D.map w) = innerProd (D.map w) w :=
+    Finset.sum_congr rfl (fun i _ => mul_comm _ _)
+  -- Products with w₀ = 0 vanish
+  have hprod1 : 2 * (D.map w) 0 * w 0 = 0 := by rw [hw]; ring
+  have hprod2 : 2 * w 0 * (D.map w) 0 = 0 := by rw [hw]; ring
+  linarith
+
+-- ============================================================
 -- PART V: The Freudenthal-Tits Magic Square
 -- ============================================================
 
@@ -728,6 +797,9 @@ were admissible, there would be a 6th exceptional type.
 #check @commDer_self_eq_zero
 #check @commDer_antisymm
 #check @commDer_jacobi
+#check @der_kills_unit
+#check @der_antinorm
+#check @der_inner_zero
 #check @freudenthal_tits_f4
 #check @freudenthal_tits_e6
 #check @freudenthal_tits_e7

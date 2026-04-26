@@ -22,8 +22,8 @@
     "dateAdded": "2026-04-24",
     "axiomCount": 1,
     "assumptions": "1 axiom: G2_is_octonion_aut (G₂ ≅ Aut(𝕆), requires Lie group theory not yet in Mathlib). The 4 Freudenthal-Tits dimension statements (freudenthal_tits_f4/e6/e7/e8) were de-axiomatized: they are definitional equalities proved by rfl. All supporting lemmas (norm preservation, real-part preservation, imaginary-subspace closure, derivation algebra) are fully proved.",
-    "lineCount": 730,
-    "theoremCount": 31,
+    "lineCount": 808,
+    "theoremCount": 34,
     "definitionCount": 14,
     "originalContributions": [
       "OctonionAlgHom / OctonionAut: structures for octonion algebra homomorphisms and automorphisms",
@@ -35,7 +35,10 @@
       "G2_unique_low_rank: G₂ is the unique exceptional algebra of rank < 4",
       "E8_is_largest: E₈ has dimension 248, the largest of all exceptional types",
       "exceptional_dims_strict_mono / exceptional_chain: ordering properties of exceptional types",
-      "Connection between Hurwitz's four admissible dimensions and the five exceptional Lie algebras"
+      "Connection between Hurwitz's four admissible dimensions and the five exceptional Lie algebras",
+      "der_kills_unit: every derivation of 𝕆 kills the unit element D(e₀) = 0",
+      "der_antinorm: anti-norm identity D(w)·w + w·D(w) = 0 for w ∈ Im(𝕆)",
+      "der_inner_zero: derivations are skew-symmetric on Im(𝕆) — ⟨D(w), w⟩ = 0"
     ]
   },
   "overview": {
@@ -121,9 +124,9 @@
       "HurwitzTheorem"
     ],
     "namespace": "HurwitzTheoremOQ04",
-    "lineCount": 736,
+    "lineCount": 808,
     "axiomCount": 1,
-    "theoremCount": 31,
+    "theoremCount": 34,
     "definitionCount": 14,
     "sorries": 0,
     "path": "Proofs/HurwitzTheoremOQ04.lean"
