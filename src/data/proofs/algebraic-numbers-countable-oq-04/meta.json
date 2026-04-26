@@ -123,6 +123,29 @@
       "description": "Sibling: Cantor's 1874 height function proof. Both the height function (for countability) and Baker's theorem (for transcendence) use degree-based measures of algebraic numbers."
     }
   ],
+  "references": [
+    {
+      "authors": ["A. Baker"],
+      "title": "Linear forms in the logarithms of algebraic numbers",
+      "year": "1966",
+      "venue": "Mathematika, vol. 13, pp. 204–216",
+      "note": "The foundational paper establishing effective lower bounds for linear forms in logarithms of algebraic numbers, proving the transcendence of many explicit numbers and resolving several classical Diophantine equations."
+    },
+    {
+      "authors": ["A. Baker"],
+      "title": "Transcendental Number Theory",
+      "year": "1975",
+      "venue": "Cambridge University Press",
+      "note": "Baker's comprehensive monograph on transcendence theory, including his theorem on linear independence of logarithms, effective irrationality measures, and applications to Diophantine equations."
+    },
+    {
+      "authors": ["A. Baker", "G. Wüstholz"],
+      "title": "Logarithmic forms and group varieties",
+      "year": "1993",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 442, pp. 19–62",
+      "note": "The sharpened Baker-Wüstholz bound with explicit constant C(n,d), improving Baker's 1966 result. The quantitative form is essential for computational applications to Thue equations and S-unit equations."
+    }
+  ],
   "sorries": 0,
   "leanFile": {
     "path": "Proofs/AlgebraicNumbersCountableOQ04.lean",
