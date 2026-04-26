@@ -49,7 +49,10 @@ Strategy: unfold edgeTerm → apply tmul_infinite_order_ne_zero with
 -/
 theorem oct_dehn_ne_zero_gen (a : ℝ) (ha : a > 0) (n : ℕ) (hn : 0 < n) :
     edgeTerm (↑n * a) octAngle ≠ 0 := by
-  sorry
+  unfold edgeTerm
+  exact tmul_infinite_order_ne_zero _ _
+    (mul_ne_zero (Nat.cast_pos.mpr hn).ne' ha.ne')
+    octAngle_infinite_order
 
 /-
 TARGET 2
@@ -62,7 +65,10 @@ Strategy: unfold edgeTerm → apply tmul_infinite_order_ne_zero with
 -/
 theorem dod_dehn_ne_zero_gen (a : ℝ) (ha : a > 0) (n : ℕ) (hn : 0 < n) :
     edgeTerm (↑n * a) dodAngle ≠ 0 := by
-  sorry
+  unfold edgeTerm
+  exact tmul_infinite_order_ne_zero _ _
+    (mul_ne_zero (Nat.cast_pos.mpr hn).ne' ha.ne')
+    dodAngle_infinite_order
 
 /-
 TARGET 3
@@ -75,6 +81,9 @@ Strategy: unfold edgeTerm → apply tmul_infinite_order_ne_zero with
 -/
 theorem ico_dehn_ne_zero_gen (a : ℝ) (ha : a > 0) (n : ℕ) (hn : 0 < n) :
     edgeTerm (↑n * a) icoAngle ≠ 0 := by
-  sorry
+  unfold edgeTerm
+  exact tmul_infinite_order_ne_zero _ _
+    (mul_ne_zero (Nat.cast_pos.mpr hn).ne' ha.ne')
+    icoAngle_infinite_order
 
 end DissectionOfCubesOQ04Aristotle
