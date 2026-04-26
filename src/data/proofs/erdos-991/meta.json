@@ -56,7 +56,7 @@
       "normalizedCapArea: cap area normalized to [0,1]",
       "capCount: count of points in a cap",
       "HasSmallDiscrepancy: o(n) discrepancy property",
-      "brauchart_bound axiom: O(n^{3/4}) discrepancy bound",
+      "Brauchart (2008) O(n^{3/4}) bound documented in comments (not formalized as axiom)",
       "marzo_mas_bound axiom: improved O(n^{2/3}) bound",
       "erdos_991 theorem: main qualitative result",
       "FeketePoints: optimal configurations for n points",
@@ -122,10 +122,10 @@
     {
       "id": "brauchart-bound",
       "title": "Brauchart's Bound (2008)",
-      "summary": "brauchart_bound axiom: O(n^{3/4}) discrepancy",
+      "summary": "Brauchart (2008) O(n^{3/4}) discrepancy bound (documented in comments)",
       "startLine": 140,
       "endLine": 160,
-      "mathContext": "brauchart_bound axiom: $O(n^{3/4})$ discrepancy"
+      "mathContext": "Brauchart (2008) $O(n^{3/4})$ discrepancy bound — documented in comments, not formalized as axiom"
     },
     {
       "id": "marzo-mas-bound",
