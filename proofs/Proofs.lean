@@ -2325,10 +2325,12 @@ import Proofs.ProductOfSegmentsOfChords
 import Proofs.ProductOfSegmentsOfChordsOQ01
 import Proofs.PtolemysComplexProof
 import Proofs.PtolemysComplexProofOQ01
+import Proofs.PtolemysComplexProofOQ02
 import Proofs.PtolemysTheorem
 import Proofs.PtolemysTheoremOQ01
 import Proofs.PtolemysTheoremOQ01Incomplete01
 import Proofs.PtolemysTheoremOQ01OQ01
+import Proofs.PtolemysTheoremOQ01OQ02
 import Proofs.PuiseuxTheorem
 import Proofs.PuiseuxTheoremOQ02
 import Proofs.PvsNP
@@ -2448,6 +2450,7 @@ import Proofs.SylowTheoremOQ01
 import Proofs.SylowTheoremOQ02
 import Proofs.SylowTheoremOQ02Orbit
 import Proofs.SylowTheoremOQ04
+import Proofs.SynthesisCurvaturePtolemy
 import Proofs.SzemerediCore
 import Proofs.SzemerediCoreOQ01
 import Proofs.SzemerediCoreOQ01Aristotle
