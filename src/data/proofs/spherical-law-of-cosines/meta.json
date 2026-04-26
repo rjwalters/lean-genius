@@ -135,6 +135,11 @@
       "targetId": "law-of-sines-oq-06",
       "relationship": "related",
       "description": "The planar law of sines formalized via InnerProductGeometry.angle — the Euclidean counterpart to the spherical law of sines, which together with the spherical law of cosines forms the complete spherical triangle toolkit"
+    },
+    {
+      "targetId": "synthesis-curvature-ptolemy",
+      "relationship": "related",
+      "description": "synthesis-curvature-ptolemy introduces curvatureSin K as the constant-curvature generalization of the sine function, satisfying the ODE d²y/dx² + K·y = 0. At K=1, curvatureSin 1(d) = sin(d) — the same sine function appearing in the spherical law of cosines cos(c) = cos(a)cos(b) + sin(a)sin(b)cos(C). Both proofs use the inner-product distance formula ⟨u,v⟩ = cos(d_S(u,v)) for unit vectors and the chord-arc identity connecting Euclidean chords to spherical arc lengths. The curvatureSin framework directly generalizes the spherical law of cosines to all constant-curvature geometries."
     }
   ],
   "leanFile": {
