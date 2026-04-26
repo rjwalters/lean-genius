@@ -88,7 +88,22 @@
     {
       "targetId": "de-moivre",
       "relationship": "extends",
-      "description": "Extends integer-exponent De Moivre to real and irrational exponents"
+      "description": "Root De Moivre's theorem: (cosθ + i sinθ)^n = cos(nθ) + i sin(nθ) for integer n, formalized via Euler's formula e^{iθ} and induction. This entry extends that integer-exponent result to real α via `Complex.cpow = exp(α · log z)` with the principal branch restriction θ ∈ (-π, π], and to irrational α via Weyl equidistribution. The continuous group homomorphism θ ↦ exp(iαθ) characterizes all cases uniformly"
+    },
+    {
+      "targetId": "de-moivre-oq-03",
+      "relationship": "extends",
+      "description": "Immediate parent entry: extends De Moivre to fractional exponents z^{p/q}, proving root enumeration (q distinct values), their distinctness, and principal value consistency via Mathlib's cpow. This entry builds further by addressing real (irrational) exponents: `de_moivre_real_exponent` is the generalization of OQ-03's rational formula to arbitrary α ∈ ℝ, and `weyl_equidistribution` addresses the density phenomenon invisible for rational exponents"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "foundational",
+      "description": "Weyl's equidistribution theorem (1916), axiomatized in this entry, is proved via Weyl sums: for irrational α, the sum Σ_{n=1}^N exp(2πiαn) is O(1/||{1 - exp(2πiα)|}), which goes to zero. This is Fourier analysis on the circle group S¹: the Fourier coefficients of the uniform measure on the orbit {exp(2πiαn) : n ∈ ℤ} are the Weyl sums. The Fourier series entry provides the underlying framework (circle group harmonics, L² convergence) needed to formalize the axiom"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "foundational",
+      "description": "Euler's identity e^{iπ} + 1 = 0 is the θ = π instance of Euler's formula e^{iθ} = cosθ + i sinθ, which is the foundation of De Moivre's theorem. The `Complex.cpow` definition used throughout this entry is z^α = exp(α · log z), and the real-exponent De Moivre formula reduces to: (exp(iθ))^α = exp(α · log(exp(iθ))) = exp(α · iθ) by `Complex.log_exp`, completing the circle back to Euler's formula"
     }
   ],
   "sections": [
