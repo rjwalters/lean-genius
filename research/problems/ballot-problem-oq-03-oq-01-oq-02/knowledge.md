@@ -530,6 +530,34 @@ by_cases h4 : μ.rowLen 4 = 0
 
 ### Next Steps
 
-1. Commit PART XIX + PART XX and push to `feature/ballot-fourrow-part18`
-2. 7-row case (PART XXI): extract from git history if available
+1. Commit PART XIX + PART XX and push to `feature/ballot-fourrow-part18` ✓ (PR #12775)
+2. 7-row case (PART XXI): extract from git history ✓ (applied in same session)
 3. Fix `BallotProblemOQ03.lean` pre-existing errors to enable full chain build
+
+---
+
+## Session 2026-04-26 (Session 26) — PART XXI: 7-row recovery
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: PROGRESS — applied PART XXI (7-row) from commit `28fa7e7baeb`
+
+### What I Did
+
+1. Located `28fa7e7baeb` containing PARTS XVIII-XXI (3-7 row cases)
+2. Extracted PART XXI (lines 8682-9995) → 1315 lines with sevenRow content
+3. Applied PART XXI: inserted 1311 lines before dispatcher + updated 7+ rows sorry with sevenRow dispatch
+4. Dispatcher now covers ≤7-row; sorry scoped to ≥8-row
+5. Updated meta.json: lineCount 8815→10130, theoremCount 230→260, assumptions ≥8-row
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (8815 → 10130 lines)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json`
+
+### Sorry Count: 4 (3 LGV + 1 for ≥8-row dispatcher)
+
+### Next Steps
+
+1. Check git history for PART XXII (8-row) — `28fa7e7baeb` may have ended at 7 rows
+2. Fix `BallotProblemOQ03.lean` pre-existing errors to enable full chain build
+3. Consider Aristotle for LGV sorries (RSK, det-factorization)
