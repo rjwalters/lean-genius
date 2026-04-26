@@ -160,7 +160,9 @@ The key insight of Galois theory is that degree 5 is precisely the threshold:
 This is because A₅ is the smallest non-abelian simple group (with 60 elements).
 A₄ has the Klein four-group V₄ as a normal subgroup, so A₄ is solvable.
 A₅ has NO proper normal subgroups at all (it is simple), so A₅ is not solvable.
+-/
 
+/-!
 ## Part VII: Historical Significance
 
 The Abel-Ruffini theorem was revolutionary:

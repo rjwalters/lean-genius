@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: k=0,1,2 SSYT equality proved. 2 sorries: jdt_weight_sum (JDT bijection) + jacobi_trudi_ssyt_eq k≥3 (LGV+RSK)",
+    "progressSummary": "PROGRESS: jdt_weight_sum b=0 case proved (vacuously true). 2 sorries remain: jdt_weight_sum b>=1 (JDT bijection ~100 lines) + jacobi_trudi_ssyt_eq k>=3 (LGV+RSK ~300 lines).",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -65,7 +65,8 @@
       "ssytFin_row_sort_eq_ofFn: sort of ↑(ofFn T.rowi) = ofFn T.rowi when row is monotone (file:BallotProblemOQ03OQ01OQ01OQ01.lean, ~10 lines)",
       "ColStrictSym def + Decidable instance (file:BallotProblemOQ03OQ01OQ01OQ01.lean)",
       "sum_all_sym_pairs: ∑ PQ : Sym n a × Sym n b, prod*prod = h_a * h_b (file:BallotProblemOQ03OQ01OQ01OQ01.lean)",
-      "ssytFin_two_row_eq_sum_colstrict (file:BallotProblemOQ03OQ01OQ01OQ01.lean, ~90 lines)"
+      "ssytFin_two_row_eq_sum_colstrict (file:BallotProblemOQ03OQ01OQ01OQ01.lean, ~90 lines)",
+      "jdt_weight_sum b=0 case: proved ColStrictSym a 0 P Q is vacuously true (Fin 0 empty), non-cs subtype empty, sum = 0"
     ],
     "insights": [
       "Mathlib has hsymm σ R n (complete homogeneous symmetric polynomials) in RingTheory.MvPolynomial.Symmetric.Defs — directly usable for Jacobi-Trudi matrix entries",

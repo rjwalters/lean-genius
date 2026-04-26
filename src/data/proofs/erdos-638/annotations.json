@@ -138,49 +138,119 @@
     ]
   },
   {
-    "id": "erdos-638-ann-classical",
+    "id": "erdos-638-ann-base-case",
     "proofId": "erdos-638",
     "range": {
-      "startLine": 67,
-      "endLine": 77
+      "startLine": 69,
+      "endLine": 82
     },
     "type": "concept",
-    "title": "Classical Ramsey Theorem and Complete Graph Family",
-    "content": "The classical Ramsey theorem for triangles: for every n ≥ 1, there exists N such that K_N (represented as ⊤ : SimpleGraph (Fin N)) has the n-colour triangle Ramsey property. As a corollary, the family of complete graphs {K_m : m ∈ ℕ} forms a Ramsey family. This is Ramsey's theorem (1930) specialized to triangles and multiple colors.",
-    "mathContext": "Ramsey's theorem (1930): $\\forall n \\ge 1$, $\\exists N = R_n(3)$ such that $K_N \\to (K_3)^2_n$. The known bounds are $R_2(3) = 6$ (Ramsey), $R_3(3) = 17$ (Greenwood–Gleason 1955), and $R_n(3)$ grows exponentially in $n$.",
-    "significance": "key",
+    "title": "Base Case and 1-Colour Ramsey",
+    "content": "Two base case results: ramsey_triangle_base proves K_3 has the 1-colour triangle Ramsey property (every 1-colouring trivially yields a monochromatic triangle since Fin 1 is a subsingleton), and ramsey_triangle_one_proved wraps this as an existential. These serve as the base case for the inductive proof of the full Ramsey theorem.",
+    "mathContext": "$R_1(3) = 3$: $K_3 \\to (K_3)^2_1$ is trivial since with one colour, all edges are monochromatic. This is the anchor for the induction $R_{n+1}(3) \\le (n+1)(R_n(3) - 1) + 2$.",
+    "significance": "supporting",
     "relatedConcepts": [
-      "Ramsey's theorem",
-      "complete graphs",
-      "Greenwood–Gleason"
+      "Subsingleton",
+      "induction base case",
+      "trivial coloring"
     ],
     "prerequisites": [
-      "SimpleGraph.top",
-      "Fin N",
-      "HasTriangleRamsey"
+      "SimpleGraph.top_adj",
+      "Fin 1",
+      "Subsingleton.elim"
     ]
   },
   {
     "id": "erdos-638-ann-monotonicity",
     "proofId": "erdos-638",
     "range": {
-      "startLine": 79,
-      "endLine": 84
+      "startLine": 84,
+      "endLine": 93
     },
     "type": "concept",
     "title": "Monotonicity of the Ramsey Property",
-    "content": "If a graph G has the n-colour triangle Ramsey property and m ≤ n, then G also has the m-colour property. This follows because any m-colouring is a special case of an n-colouring (embed Fin m into Fin n). Monotonicity means the Ramsey family condition only needs to be checked at each n individually.",
-    "mathContext": "If $G \\to (K_3)^2_n$ and $m \\le n$, then $G \\to (K_3)^2_m$. This follows from the injection $\\mathrm{Fin}\\,m \\hookrightarrow \\mathrm{Fin}\\,n$: any $m$-colouring $c: E(G) \\to [m]$ can be viewed as an $n$-colouring.",
+    "content": "Two monotonicity results. triangle_ramsey_mono: if G has the n-colour property and m ≤ n, then G has the m-colour property (embed Fin m into Fin n via castLE; injectivity preserves monochromaticity). ramsey_mono: if K_N has the n-colour property and M ≥ N, then K_M also does (embed Fin N into Fin M). These are used in the inductive step.",
+    "mathContext": "Colour monotonicity: $G \\to (K_3)^2_n \\wedge m \\le n \\implies G \\to (K_3)^2_m$. Vertex monotonicity: $K_N \\to (K_3)^2_n \\wedge M \\ge N \\implies K_M \\to (K_3)^2_n$. Both follow from injection arguments.",
     "significance": "supporting",
     "relatedConcepts": [
+      "Fin.castLE injection",
       "color monotonicity",
-      "Fin embedding",
       "Ramsey monotonicity"
     ],
     "prerequisites": [
-      "Fin m ≤ Fin n",
+      "Fin.castLE_injective",
       "HasTriangleRamsey",
-      "function composition"
+      "SimpleGraph.top_adj"
+    ]
+  },
+  {
+    "id": "erdos-638-ann-shrinkfin",
+    "proofId": "erdos-638",
+    "range": {
+      "startLine": 95,
+      "endLine": 118
+    },
+    "type": "technique",
+    "title": "shrinkFin: Colour Elimination Helper",
+    "content": "shrinkFin removes one element i₀ from Fin (m+1), mapping to Fin m. Given j ≠ i₀, it returns j if j < i₀, otherwise j-1. This is used in the inductive step to reduce the colour count: when edges within a monochromatic neighborhood avoid colour i₀, shrinkFin maps the remaining n+1 colours to Fin n. The key property shrinkFin_injective ensures distinct colours remain distinct after reduction.",
+    "mathContext": "The colour-shrinking map $\\sigma_{i_0}: [n+2] \\setminus \\{i_0\\} \\to [n+1]$ defined by $\\sigma(j) = j$ if $j < i_0$, $\\sigma(j) = j-1$ if $j > i_0$. Injectivity is straightforward by case analysis.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fin arithmetic",
+      "colour reduction",
+      "injection"
+    ],
+    "prerequisites": [
+      "Fin.val",
+      "Fin.ext",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "erdos-638-ann-inductive-step",
+    "proofId": "erdos-638",
+    "range": {
+      "startLine": 120,
+      "endLine": 216
+    },
+    "type": "technique",
+    "title": "Ramsey Inductive Step via Pigeonhole",
+    "content": "The core lemma ramsey_inductive_step: given a colouring of K_N with n+2 colours and a Ramsey bound M for n+1 colours, if N ≥ (n+2)(M-1)+2, then there is a monochromatic triangle. The proof fixes vertex v₀, applies pigeonhole (Finset.exists_lt_card_fiber_of_mul_lt_card_of_maps_to) to find a colour class A of size ≥ M among v₀'s neighbours. Case split: if any edge within A has the same colour as v₀'s edges to A, we get a triangle through v₀. Otherwise, edges within A avoid that colour, so shrinkFin reduces to n+1 colours and the IH (via ramsey_mono + Finset.orderIsoOfFin embedding) yields a triangle.",
+    "mathContext": "Inductive step: $R_{n+2}(3) \\le (n+2)(R_{n+1}(3) - 1) + 2$. Fix $v_0 \\in K_N$. By pigeonhole, $\\exists$ colour $i_0$ with $|\\{v : c(v_0,v) = i_0\\}| \\ge M = R_{n+1}(3)$. Case 1: $\\exists u,w$ in this set with $c(u,w) = i_0$ → triangle $(v_0, u, w)$. Case 2: edges among these $M$ vertices avoid colour $i_0$ → restrict to $n+1$ colours, apply IH.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "Ramsey induction",
+      "colour avoidance"
+    ],
+    "prerequisites": [
+      "Finset.exists_lt_card_fiber_of_mul_lt_card_of_maps_to",
+      "Finset.orderIsoOfFin",
+      "shrinkFin",
+      "ramsey_mono"
+    ]
+  },
+  {
+    "id": "erdos-638-ann-ramsey-theorem",
+    "proofId": "erdos-638",
+    "range": {
+      "startLine": 218,
+      "endLine": 243
+    },
+    "type": "insight",
+    "title": "Classical Ramsey Theorem (Fully Proved)",
+    "content": "ramsey_triangle proves the full n-colour Ramsey theorem for triangles by induction on n. Base: K_3 for 1 colour. Step: given R(n+1), set N = (n+2)(R(n+1)-1)+2 and apply ramsey_inductive_step. As a corollary, complete_graphs_ramsey shows the family of complete graphs forms a Ramsey family. This is a complete machine-checked proof with 0 axioms and 0 sorries — the finite foundation for Erdős Problem #638.",
+    "mathContext": "The multicolour Ramsey theorem for triangles: $\\forall n \\ge 1$, $R_n(3) < \\infty$. The constructive bound $R_1(3) = 3$, $R_{n+1}(3) \\le (n+1)(R_n(3)-1)+2$ gives $R_n(3) \\le (n+1)! \\cdot 2 + 1$. This is a weak bound compared to known results ($R_n(3) \\le n^{cn}$ for some constant $c$), but it is fully machine-checked.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey's theorem (1930)",
+      "multicolour Ramsey numbers",
+      "complete graph Ramsey family"
+    ],
+    "prerequisites": [
+      "ramsey_triangle_base",
+      "ramsey_inductive_step",
+      "strong induction"
     ]
   }
 ]

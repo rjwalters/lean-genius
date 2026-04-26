@@ -166,7 +166,24 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
     --   the simple extension of ↥ℚ⟮a⟯ by β (β generates ℚ⟮β⟯ over the larger ↥ℚ⟮a⟯).
     --   Hence finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2, giving finrank ℚ ℚ⟮β⟯ ∣ 2 * 2^j = 2^(j+1).
     have hβ_dvd : Module.finrank ℚ ↥(ℚ⟮β⟯) ∣ 2 ^ (j + 1) := by
-      sorry
+      -- Tower: ℚ → ℚ⟮a⟯ → ℚ⟮β⟯
+      haveI hAlg_aβ : Algebra ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) :=
+        (IntermediateField.inclusion ha_le_β).toAlgebra
+      haveI hST_aβ : IsScalarTower ℚ ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) :=
+        IsScalarTower.of_algebraMap_eq (fun r =>
+          Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
+      -- Tower law: finrank ℚ ℚ⟮β⟯ = finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ * finrank ℚ ↥ℚ⟮a⟯
+      rw [Module.finrank_mul_finrank ℚ ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯)]
+      rw [pow_succ]
+      -- Suffices: finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2 and finrank ℚ ↥ℚ⟮a⟯ ∣ 2^j
+      exact Nat.mul_dvd_mul
+        (by -- finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2
+         -- β satisfies X² - a over ℚ⟮a⟯ (since β² = a ∈ ℚ⟮a⟯)
+         -- So minpoly ↥ℚ⟮a⟯ β divides X² - a, giving degree ≤ 2
+         -- For simple extension: finrank = natDegree(minpoly)
+         -- Hence finrank ∣ 2
+         sorry)
+        hj_dvd
     -- Step D (sorry): finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+k+1)
     -- Proof plan: tower through ℚ⟮β⟯:
     --   finrank_join = finrank ↥ℚ⟮β⟯ ↥(join) * finrank ℚ ↥ℚ⟮β⟯

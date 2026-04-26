@@ -9,7 +9,13 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import key Mathlib modules: `Finset.Basic` for finite set operations and summation, `SimpleGraph.Basic` and `SimpleGraph.Finite` for graph structure and edge sets, and `Data.Real.Basic` for real number arithmetic in probability calculations.",
+    "mathContext": "The proof uses `SimpleGraph V` (symmetric irreflexive relation on $V$), `Sym2 V` (unordered pairs for edges), `Finset.sum` for $\\sum_{f \\in 2^V}$ and $\\sum_{e \\in E}$, and real number division for $|E|/2$.",
     "significance": "supporting",
+    "prerequisites": [
+      "Lean 4 and Mathlib library",
+      "finite set summation",
+      "simple graph theory"
+    ],
     "relatedConcepts": [
       "Mathlib",
       "SimpleGraph",
@@ -28,6 +34,11 @@
     "content": "**The Combinatorial Heart**: For distinct vertices $u \\neq v$, exactly half of all $2^{|V|}$ boolean assignments satisfy $f(u) \\neq f(v)$.",
     "mathContext": "The proof constructs a bijection via the toggle operation: flipping $u$'s assignment swaps 'same' and 'different' cases. Since toggle is an involution (self-inverse), the two sets have equal size. Together they partition all assignments, so each has exactly half.",
     "significance": "key",
+    "prerequisites": [
+      "finite set cardinality",
+      "involution and bijection arguments",
+      "boolean function spaces"
+    ],
     "relatedConcepts": [
       "bijection",
       "involution",
@@ -86,7 +97,13 @@
     "type": "tactic",
     "title": "Sym2 Induction",
     "content": "To prove something about an unordered pair $e$, we use `induction e using Sym2.ind` to get representatives $u, v$. The hypothesis `h : ¬e.IsDiag` ensures $u \\neq v$ (edges don't have both endpoints the same).",
+    "mathContext": "$\\text{Sym2}(V) = V \\times V / \\sim$ where $(u,v) \\sim (v,u)$. An edge $e \\in E(G)$ satisfies $\\neg e.\\text{IsDiag}$, meaning $e = \\{u, v\\}$ with $u \\neq v$. Induction on the quotient gives representatives.",
     "significance": "supporting",
+    "prerequisites": [
+      "quotient types in Lean 4",
+      "Sym2 (unordered pairs)",
+      "simple graph irreflexivity"
+    ],
     "relatedConcepts": [
       "quotient induction",
       "Sym2",
@@ -148,6 +165,11 @@
     "content": "The maximum cut value is the supremum (maximum) over all possible boolean assignments. We iterate over all $2^{|V|}$ functions and take the largest cut size.",
     "mathContext": "$$\\text{MaxCut}(G) = \\max_{f : V \\to \\text{Bool}} |C_f|$$\n\nThe `Finset.univ.sup` computes the maximum over the finite set of all assignments.",
     "significance": "key",
+    "prerequisites": [
+      "finite supremum (Finset.sup)",
+      "MAX-CUT problem definition",
+      "graph cut combinatorics"
+    ],
     "relatedConcepts": [
       "supremum",
       "optimization",

@@ -34,9 +34,12 @@ The Ptolemy **inequality** (≤) holds for ALL quadrilaterals (not just cyclic o
 2. `curvatureSin_one`: curvatureSin 1 t = sin t (unit sphere)
 3. `curvatureSin_neg_one`: curvatureSin (-1) t = sinh t (unit hyperbolic plane)
 4. `curvatureSin_zero_right`: curvatureSin K 0 = 0 for any K
-5. `spherical_ptolemy_eq_curvatureSin`: Spherical Ptolemy equality (K=1)
+5. `curvatureSin_odd`: curvatureSin K (-t) = -curvatureSin K t (odd function)
+6. `curvatureSin_hasDerivAt_zero`: HasDerivAt (curvatureSin K) 1 0 (normalization)
+7. `curvatureSin_deriv_zero`: deriv (curvatureSin K) 0 = 1
+8. `spherical_ptolemy_eq_curvatureSin`: Spherical Ptolemy equality (K=1)
    restated in curvatureSin language — valid for concyclic unit-sphere points
-6. **`spherical_ptolemy_ineq_curvatureSin`** (NEW): Spherical Ptolemy INEQUALITY (K=1)
+9. `spherical_ptolemy_ineq_curvatureSin`: Spherical Ptolemy INEQUALITY (K=1)
    for ALL four unit-circle points in ℂ — no concyclicity needed
 
 ## What's New
@@ -128,6 +131,91 @@ odd function with curvatureSin K 0 = 0 in all three geometries. -/
 lemma curvatureSin_zero_right (K : ℝ) : curvatureSin K 0 = 0 := by
   unfold curvatureSin
   split_ifs <;> simp [Real.sin_zero, Real.sinh_zero]
+
+-- ============================================================
+-- PART 2b: Structural Properties
+-- ============================================================
+
+/-- **Oddness**: curvatureSin K is an odd function of t.
+
+Since sin and sinh are both odd, and the K=0 case is the identity (also odd),
+curvatureSin K (-t) = -curvatureSin K t for all K and t. -/
+lemma curvatureSin_odd (K t : ℝ) : curvatureSin K (-t) = -curvatureSin K t := by
+  unfold curvatureSin
+  split_ifs with hK0 hKpos
+  · ring
+  · rw [mul_neg, Real.sin_neg, neg_div]
+  · rw [mul_neg, Real.sinh_neg, neg_div]
+
+/-- Auxiliary: HasDerivAt for Real.sinh. The derivative of sinh is cosh. -/
+private theorem hasDerivAt_sinh (x : ℝ) : HasDerivAt Real.sinh (Real.cosh x) x := by
+  have h1 := Real.hasDerivAt_exp x
+  have h2 := (Real.hasDerivAt_exp (-x)).comp x (hasDerivAt_neg x)
+  have hsinhDef : Real.sinh = fun y => (Real.exp y - Real.exp (-y)) / 2 := by
+    ext y; exact Real.sinh_eq y
+  rw [hsinhDef]
+  have hcoshEq : Real.cosh x = (Real.exp x + Real.exp (-x)) / 2 := Real.cosh_eq x
+  rw [hcoshEq]
+  convert (h1.sub h2).div_const 2 using 1
+  ring
+
+/-- **Normalization**: The derivative of curvatureSin K at t = 0 is 1 for all K.
+
+This is the defining normalization condition for the sn_K function:
+- K = 0: d/dt [t] |₀ = 1
+- K > 0: d/dt [sin(√K·t)/√K] |₀ = cos(0) = 1
+- K < 0: d/dt [sinh(√|K|·t)/√|K|] |₀ = cosh(0) = 1
+
+Together with curvatureSin K 0 = 0, this characterizes curvatureSin K as the
+unique solution to y'' + K·y = 0 with y(0) = 0, y'(0) = 1. -/
+theorem curvatureSin_hasDerivAt_zero (K : ℝ) : HasDerivAt (curvatureSin K) 1 0 := by
+  by_cases hK0 : K = 0
+  · -- K = 0: curvatureSin 0 = id, derivative is 1
+    subst hK0
+    have hfun : curvatureSin 0 = id := by ext t; simp [curvatureSin]
+    rw [hfun]
+    exact hasDerivAt_id 0
+  · by_cases hKpos : 0 < K
+    · -- K > 0: d/dt [sin(√K·t)/√K] |₀ = cos(0)·√K/√K = 1
+      have hS : (Real.sqrt K : ℝ) ≠ 0 := Real.sqrt_ne_zero'.mpr hKpos
+      have hfun : curvatureSin K = fun t => Real.sin (Real.sqrt K * t) / Real.sqrt K := by
+        ext t; simp [curvatureSin, if_neg hK0, if_pos hKpos]
+      rw [hfun]
+      have h1 : HasDerivAt (fun t => Real.sqrt K * t) (Real.sqrt K) 0 :=
+        (hasDerivAt_id 0).const_mul (Real.sqrt K)
+      have h2 : HasDerivAt Real.sin (Real.cos (Real.sqrt K * 0)) (Real.sqrt K * 0) :=
+        Real.hasDerivAt_sin (Real.sqrt K * 0)
+      have h3 : HasDerivAt (fun t => Real.sin (Real.sqrt K * t))
+          (Real.cos (Real.sqrt K * 0) * Real.sqrt K) 0 :=
+        h2.comp 0 h1
+      have h4 : HasDerivAt (fun t => Real.sin (Real.sqrt K * t) / Real.sqrt K)
+          (Real.cos (Real.sqrt K * 0) * Real.sqrt K / Real.sqrt K) 0 :=
+        h3.div_const (Real.sqrt K)
+      simp only [mul_zero, Real.cos_zero, one_mul, div_self hS] at h4
+      exact h4
+    · -- K < 0: d/dt [sinh(√|K|·t)/√|K|] |₀ = cosh(0)·√|K|/√|K| = 1
+      have hKneg : K < 0 := lt_of_le_of_ne (not_lt.mp hKpos) hK0
+      have hNK : (0 : ℝ) < -K := neg_pos.mpr hKneg
+      have hS : (Real.sqrt (-K) : ℝ) ≠ 0 := Real.sqrt_ne_zero'.mpr hNK
+      have hfun : curvatureSin K = fun t => Real.sinh (Real.sqrt (-K) * t) / Real.sqrt (-K) := by
+        ext t; simp [curvatureSin, if_neg hK0, if_neg (not_lt.mpr (le_of_lt hKneg))]
+      rw [hfun]
+      have h1 : HasDerivAt (fun t => Real.sqrt (-K) * t) (Real.sqrt (-K)) 0 :=
+        (hasDerivAt_id 0).const_mul (Real.sqrt (-K))
+      have h2 : HasDerivAt Real.sinh (Real.cosh (Real.sqrt (-K) * 0)) (Real.sqrt (-K) * 0) :=
+        hasDerivAt_sinh (Real.sqrt (-K) * 0)
+      have h3 : HasDerivAt (fun t => Real.sinh (Real.sqrt (-K) * t))
+          (Real.cosh (Real.sqrt (-K) * 0) * Real.sqrt (-K)) 0 :=
+        h2.comp 0 h1
+      have h4 : HasDerivAt (fun t => Real.sinh (Real.sqrt (-K) * t) / Real.sqrt (-K))
+          (Real.cosh (Real.sqrt (-K) * 0) * Real.sqrt (-K) / Real.sqrt (-K)) 0 :=
+        h3.div_const (Real.sqrt (-K))
+      simp only [mul_zero, Real.cosh_zero, one_mul, div_self hS] at h4
+      exact h4
+
+/-- The derivative of curvatureSin K at 0 equals 1 (corollary using `deriv`). -/
+theorem curvatureSin_deriv_zero (K : ℝ) : deriv (curvatureSin K) 0 = 1 :=
+  (curvatureSin_hasDerivAt_zero K).deriv
 
 -- ============================================================
 -- PART 3: Spherical Ptolemy Equality in curvatureSin 1 Language
@@ -265,6 +353,9 @@ See the Hyperbolic Case Survey in PtolemysTheoremOQ01OQ02.lean for details.
 #check @curvatureSin_one
 #check @curvatureSin_neg_one
 #check @curvatureSin_zero_right
+#check @curvatureSin_odd
+#check @curvatureSin_hasDerivAt_zero
+#check @curvatureSin_deriv_zero
 #check @spherical_ptolemy_eq_curvatureSin
 #check @spherical_ptolemy_ineq_curvatureSin
 

@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: PARTS I-XXIII complete (3..9 row shapes); BallotProblemOQ03.lean:2541 omega regression blocks full compile; 10+ rows pending",
+    "progressSummary": "BLOCKED: dependency regression (omega failure in BallotProblemOQ03.lean) + ≥10×≥10 sorry needs algebraic proof of arm/leg product identity",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -196,11 +196,17 @@
       "hook_walk_identity sorry scope: now covers only ≥5-row shapes (rowLen 4 ≠ 0); all other cases proved",
       "PART XXII: hook_walk_identity_eightRow proved for all 8-row shapes [a,b,c,d,e,f,g,h] via 7 colLen zones + 36 hookLen + 8 arm lemmas + field_simp/ring; 1612 lines, 0 sorries",
       "9-row hook_walk_identity closes mechanically: same field_simp+ring approach as 3..8 row cases, with C(9,2)=36 hne_ denominator conditions",
-      "Pre-existing omega regression at BallotProblemOQ03.lean:2541 blocks full compile — not introduced by PART XXIII; fix tracked separately"
+      "Pre-existing omega regression at BallotProblemOQ03.lean:2541 blocks full compile — not introduced by PART XXIII; fix tracked separately",
+      "hook_walk_identity ↔ hook_length_formula are EQUIVALENT given corner recursion; cannot prove one from other without GNW or NPS",
+      "ni_count_eq_syt_count and lgv_det_factors_as_hook_quotient are INCORRECTLY STATED — need canonical youngLGVConfigOf μ",
+      "Build regression in BallotProblemOQ03.lean: omega failure near minSharedStepIdx_preserved (not OOM — actual compilation error)",
+      "hookProd(μ)/hookProd(μ\\c) = H(c) × ∏_{j<s} H(r,j)/(H(r,j)-1) × ∏_{i<r} H(i,s)/(H(i,s)-1) — verified algebraically for [3,2], hook shapes, rectangles",
+      "For rectangles (1 corner): arm product telescopes to rowLen, leg product to colLen, giving R = rowLen × colLen = |μ|; key evidence the algebraic proof works"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
-      "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux"
+      "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux",
+      "BallotProblemOQ03.lean regression (omega failure near minSharedStepIdx_preserved) blocks all builds"
     ],
     "nextSteps": [
       "Fix pre-existing omega regression in BallotProblemOQ03.lean:2541 (lindstromSwapPreservesMinStep) to unblock compilation",

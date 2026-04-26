@@ -48,11 +48,13 @@
       "curvatureSin_one: curvatureSin 1 t = sin t (unit sphere case)",
       "curvatureSin_neg_one: curvatureSin (-1) t = sinh t (unit hyperbolic case)",
       "spherical_ptolemy_ineq_curvatureSin: Spherical Ptolemy INEQUALITY for all four unit-circle points in ℂ (no concyclicity assumption)",
-      "Proof chain: chord-arc identity + complex Ptolemy inequality → spherical inequality by dividing by 4"
+      "Proof chain: chord-arc identity + complex Ptolemy inequality → spherical inequality by dividing by 4",
+      "curvatureSin_odd: curvatureSin K (-t) = -curvatureSin K t (odd function property)",
+      "curvatureSin_hasDerivAt_zero / curvatureSin_deriv_zero: derivative normalization d/dt[curvatureSin K t]|₀ = 1 for all K"
     ],
     "dateAdded": "2026-04-26",
     "axiomCount": 0,
-    "lineCount": 270,
+    "lineCount": 358,
     "assumptions": "0 axioms. 0 sorries. All results are fully machine-verified. The hyperbolic Ptolemy theorem (K<0) is stated as a conjecture in comments only — it is NOT claimed as a theorem in this file.",
     "mathlib_version": "4.26.0",
     "parentProof": "ptolemys-theorem-oq-01-oq-02"
@@ -77,18 +79,27 @@
       "mathContext": "For K=1: sin(√1·t)/√1 = sin(1·t)/1 = sin(t). For K=-1: sinh(√1·t)/√1 = sinh(t). The K=0 case is the definition. All three geometries satisfy sn_K(0) = 0."
     },
     {
+      "title": "Structural Properties",
+      "startLine": 132,
+      "endLine": 216,
+      "description": "Proves curvatureSin_odd (antisymmetry), hasDerivAt_sinh (auxiliary: derivative of sinh), curvatureSin_hasDerivAt_zero (normalization: derivative at 0 is 1 for all K), curvatureSin_deriv_zero (deriv form).",
+      "summary": "Oddness + derivative normalization: curvatureSin K is odd and y'(0) = 1",
+      "id": "structural-props",
+      "mathContext": "The oddness property curvatureSin K (-t) = -curvatureSin K t holds because sin and sinh are odd. The normalization d/dt[curvatureSin K t]|₀ = 1 is the initial condition that uniquely determines curvatureSin K as the solution to y'' + Ky = 0 with y(0) = 0, y'(0) = 1. Together these characterize curvatureSin K up to the ODE."
+    },
+    {
       "title": "Spherical Ptolemy Equality (curvatureSin 1)",
-      "startLine": 155,
-      "endLine": 175,
+      "startLine": 240,
+      "endLine": 252,
       "description": "Restates the spherical Ptolemy equality (from PtolemysTheoremOQ01OQ02.lean) using curvatureSin 1 for concyclic unit-sphere points.",
       "summary": "Spherical Ptolemy equality via curvatureSin 1 — requires concyclicity",
       "id": "spherical-equality",
       "mathContext": "For four concyclic unit-sphere points a,b,c,d with diagonals crossing at p, curvatureSin 1 (d(a,c)/2)·curvatureSin 1 (d(b,d)/2) = curvatureSin 1 (d(a,b)/2)·curvatureSin 1 (d(c,d)/2) + curvatureSin 1 (d(a,d)/2)·curvatureSin 1 (d(b,c)/2). Follows directly from spherical_ptolemy since curvatureSin 1 = sin."
     },
     {
-      "title": "Spherical Ptolemy Inequality (New)",
-      "startLine": 178,
-      "endLine": 229,
+      "title": "Spherical Ptolemy Inequality",
+      "startLine": 255,
+      "endLine": 315,
       "description": "Proves the spherical Ptolemy INEQUALITY for any four unit-circle points in ℂ. No concyclicity assumption needed. Proof: chord-arc + complex Ptolemy inequality / 4.",
       "summary": "Spherical Ptolemy ≤ for all unit-circle points — unconditional inequality",
       "id": "spherical-inequality",
@@ -96,8 +107,8 @@
     },
     {
       "title": "Hyperbolic Case Conjecture",
-      "startLine": 231,
-      "endLine": 257,
+      "startLine": 318,
+      "endLine": 343,
       "description": "Documents the K=-1 hyperbolic Ptolemy theorem as a conjecture, with a precise estimate of the Mathlib infrastructure needed: ~300 lines for Poincaré disk metric, ~400-500 for Möbius isometries, ~200 for circle-to-circle correspondence.",
       "summary": "Hyperbolic Ptolemy (K=-1): blocked by missing Poincaré disk infrastructure (~800-1200 lines)",
       "id": "hyperbolic-conjecture",
@@ -114,7 +125,7 @@
       "The Ptolemy INEQUALITY (≤) holds unconditionally for four points in spherical geometry, while the EQUALITY requires the concyclicity condition. This mirrors the Euclidean case where ptolemy_inequality (≤) holds for all four complex numbers.",
       "The proof strategy 'complex Ptolemy inequality divided by 4' is enabled by the chord-arc identity ‖z-w‖ = 2·sin(d(z,w)/2) for unit-circle points, which converts norms into curvatureSin 1 values.",
       "The K<0 (hyperbolic) case is blocked by the absence of Poincaré disk metric infrastructure in Mathlib. The conformal factors (1-|z|²) that appear in the hyperbolic chord-arc identity do not cancel for general interior points, unlike the spherical case.",
-      "The normalization curvatureSin_K'(0) = 1 for all K (provable but not proved in this file) is what makes the Ptolemy equality hold in the same algebraic form across all curvatures — without this normalization, scaling factors would differ between geometries and the unified theorem would not be a schema.",
+      "The normalization curvatureSin_K'(0) = 1 for all K (NOW PROVED: curvatureSin_hasDerivAt_zero) is what makes the Ptolemy equality hold in the same algebraic form across all curvatures — without this normalization, scaling factors would differ between geometries and the unified theorem would not be a schema.",
       "**curvatureSin K as the Jacobi field and solution to the Jacobi ODE**: The function `curvatureSin K` is the unique solution to the Sturm-Liouville equation $y'' + K\\,y = 0$ with initial conditions $y(0)=0$, $y'(0)=1$. In Riemannian geometry, this equation governs Jacobi fields — vector fields $J(t)$ along a geodesic $\\gamma(t)$ that encode how nearby geodesics spread. In a constant-curvature $K$ space form, $J(t) = J'(0)\\cdot\\text{curvatureSin}_K(t)$. This is the deep geometric reason why curvatureSin appears in Ptolemy-type theorems: chord lengths in $K$-space forms are exactly the integrals of Jacobi fields. The formula $\\|z_i - z_j\\| = 2\\cdot\\text{curvatureSin}_1(d_{ij}/2)$ (the chord-arc identity used in the spherical inequality proof) is a direct consequence of this Jacobi field interpretation: the chord is twice the Jacobi field evaluated at half the geodesic arc length.",
       "**The Ptolemy inequality characterizes CAT(0) spaces**: Foertsch, Lytchak, and Schroeder (2007) proved that a geodesic metric space $(X, d)$ is CAT(0) — i.e., its triangles are 'thinner than Euclidean' — if and only if the Ptolemy inequality holds for all four points: $d(x_1,x_3)\\cdot d(x_2,x_4) \\leq d(x_1,x_2)\\cdot d(x_3,x_4) + d(x_2,x_3)\\cdot d(x_1,x_4)$. The Euclidean Ptolemy inequality (`ptolemy_inequality` in this file) thus characterizes $\\mathbb{C}$ as a CAT(0) space. The spherical Ptolemy inequality (`spherical_ptolemy_ineq_curvatureSin`) is the CAT(1) analog: it holds for all unit-circle points precisely because the unit sphere is a CAT(1) space (sectional curvature = 1). The hyperbolic Ptolemy inequality (K<0 case, currently a conjecture) would characterize the Poincaré disk as a CAT(-1) space. This metric characterization gives the Ptolemy inequality a role far beyond circle geometry: it becomes a defining property of non-positive curvature in the purely metric category."
     ],
@@ -126,18 +137,18 @@
     ],
     "openQuestions": [
       "Can the hyperbolic Ptolemy theorem be formalized once Mathlib gains Poincaré disk metric infrastructure?",
-      "Does curvatureSin have a clean derivative formula: d/dt[curvatureSin K t]|_{t=0} = 1 for all K?",
       "Can the Ptolemy inequality be extended to all four points on a sphere in an inner product space (not just unit circle in ℂ)?",
-      "Is there a unified proof of the Ptolemy EQUALITY for all K using the curvatureSin framework?"
+      "Is there a unified proof of the Ptolemy EQUALITY for all K using the curvatureSin framework?",
+      "Can curvatureSin K be shown to satisfy the ODE y'' + K·y = 0 (completing the characterization)?"
     ]
   },
   "conclusion": {
     "summary": "The curvatureSin K function is defined and its special cases (K=1: sin, K=-1: sinh) are proved. The spherical Ptolemy equality is restated in curvatureSin 1 language. The new result is the spherical Ptolemy INEQUALITY for all four unit-circle points in ℂ, proved via chord-arc identity and the complex Ptolemy inequality.",
     "implications": "This provides the K=1 case of the unified curvature-parametrized Ptolemy theorem and the first Lean formalization of the spherical Ptolemy inequality (unconditional, no concyclicity needed). The curvatureSin definition is reusable infrastructure for future constant-curvature geometry formalizations.\n\n**For comparison geometry**: The `curvatureSin K` function is the fundamental object in Toponogov's comparison theorem and the Bishop-Gromov volume comparison. Future Lean formalizations of CAT(K) space theory or volume comparison will need exactly this function, ready-made from this entry.\n\n**For CAT(K) theory**: By Foertsch-Lytchak-Schroeder (2007), a geodesic metric space is CAT(0) iff it satisfies the Ptolemy inequality for all four points. Formalizing this characterization in Lean — using `ptolemy_inequality` from `PtolemysComplexProof.lean` — would give a purely metric definition of non-positive curvature, complementing the angle-comparison definition in standard references.\n\n**For differential equations**: The `curvatureSin K` function — as the fundamental solution of $y'' + Ky = 0$ — connects Ptolemy to Sturm-Liouville oscillation theory and Floquet theory for periodic ODEs. The threshold behavior (oscillatory for K>0, polynomial for K=0, exponential for K<0) is reflected in the three cases of the definition and mirrors the qualitative classification of second-order linear ODEs.",
     "openQuestions": [
-      "Prove d/dt[curvatureSin K t]|_{t=0} = 1 (normalization lemma for all K)",
-      "Prove curvatureSin K is odd: curvatureSin K (-t) = -curvatureSin K t",
-      "Formalize the hyperbolic Ptolemy theorem (K=-1) once Poincaré disk infrastructure is available"
+      "Prove curvatureSin K satisfies the ODE y'' + K·y = 0 (second derivative characterization)",
+      "Formalize the hyperbolic Ptolemy theorem (K=-1) once Poincaré disk infrastructure is available",
+      "Prove continuity of curvatureSin K in both K and t (joint continuity)"
     ]
   },
   "crossReferences": [
@@ -190,9 +201,9 @@
       "EuclideanGeometry"
     ],
     "namespace": null,
-    "lineCount": 270,
+    "lineCount": 358,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 11,
     "sorries": 0,
     "path": "Proofs/SynthesisCurvaturePtolemy.lean"
   }
