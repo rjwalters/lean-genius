@@ -52,6 +52,10 @@ the unique other door (if any), repeating until reaching an FC simplex.
 12. `kuhnPathStart_is_fc_of_fc_start` — Walk finds FC immediately if starting simplex is FC
 13. `kuhnPathStart_finds_fc_existential` — ∃ boundary door whose walk finds FC (axiomatized)
 
+### Proved (Section XI — Termination Dichotomy)
+13. `all_visited_forces_bdry` — When all simplices visited, non-FC exit must be boundary
+14. `kuhnWalk_fc_or_bdry` — With |K.Simplex| fuel, walk terminates at FC or boundary door
+
 ### Axiomatized
 - `bdry_nfc_even` (sorry) — Walk-reversal involution τ∘τ=id pending; non-revisiting proved
 - `kuhn_path_existential` — Proved from bdry_nfc_even; replaces the former axiom
@@ -690,7 +694,126 @@ theorem kuhnPathStart_is_fc_of_fc_start {c : Coloring d N} {K : SpernerTriangula
   kuhnWalk_fc_if_started_fc hKuhn _ _ hfc₀
 
 -- ============================================================
--- SECTION XI: Walk Pairing Parity and Main Existential
+-- SECTION XI: Termination Dichotomy
+-- ============================================================
+
+/-- When all simplices except current are visited, any non-FC exit must be a boundary door.
+    The exit door can't lead to a new simplex (none left), so K.adj = none. -/
+private lemma all_visited_forces_bdry {c : Coloring d N} {K : SpernerTriangulation d N}
+    {hKuhn : IsKuhnCompatible c K} {state : KuhnState d N c K}
+    {rec : DoorRecord d N K} {pred : Option K.Simplex}
+    (hvalid : WalkValid hKuhn state rec pred)
+    (hfull : state.visited.card + 1 = Fintype.card K.Simplex)
+    (hnonfc : ¬IsFC c K state.current) :
+    ∃ k_out, isDoorAt c K state.current k_out ∧ K.adj state.current k_out = none := by
+  -- Get the unique exit door k_out ≠ state.entry
+  obtain ⟨k_out, ⟨hne, hdoor_out⟩, _⟩ :=
+    nonfc_with_door_has_unique_exit hKuhn state.current hnonfc state.entry state.entry_is_door
+  refine ⟨k_out, hdoor_out, ?_⟩
+  -- If K.adj = some (s', k'), then s' must be new, but all simplices are visited ∪ {current}
+  cases hadj : K.adj state.current k_out with
+  | none => rfl
+  | some sk =>
+    obtain ⟨s', k'⟩ := sk
+    exfalso
+    -- s' ∉ visited ∪ {current} by non-revisiting
+    have hs'_not := kuhn_step_nonrevisit hvalid hne hdoor_out hadj
+    -- but visited ∪ {current} covers all simplices
+    have huniv : state.visited ∪ {state.current} = Finset.univ := by
+      apply Finset.eq_univ_of_card
+      have hdisj : Disjoint state.visited {state.current} := by
+        simp [Finset.disjoint_left, state.current_not_visited]
+      rw [Finset.card_union_of_disjoint hdisj, Finset.card_singleton]
+      exact hfull
+    exact hs'_not (huniv ▸ Finset.mem_univ s')
+
+/-- kuhnWalk is proof-irrelevant in the KuhnState Prop fields: only current, entry, visited matter.
+    Proof: reduce to KuhnState equality, then use proof_irrel for the two Prop fields. -/
+private lemma kuhnWalk_congr {c : Coloring d N} {K : SpernerTriangulation d N}
+    (hKuhn : IsKuhnCompatible c K) (fuel : ℕ) (s₁ s₂ : KuhnState d N c K)
+    (hcur : s₁.current = s₂.current) (hent : s₁.entry = s₂.entry) (hvis : s₁.visited = s₂.visited) :
+    kuhnWalk c K hKuhn fuel s₁ = kuhnWalk c K hKuhn fuel s₂ := by
+  suffices h : s₁ = s₂ from congrArg (kuhnWalk c K hKuhn fuel) h
+  obtain ⟨cur₁, ent₁, ed₁, vis₁, cnv₁⟩ := s₁
+  obtain ⟨cur₂, ent₂, ed₂, vis₂, cnv₂⟩ := s₂
+  -- hcur, hent, hvis are now field equalities after obtain
+  simp only at hcur hent hvis
+  subst hcur; subst hent; subst hvis
+  -- ed₁ ed₂ : isDoorAt c K cur₁ ent₁ (same type); cnv₁ cnv₂ : cur₁ ∉ vis₁ (same type)
+  have h1 : ed₁ = ed₂ := proof_irrel _ _
+  have h2 : cnv₁ = cnv₂ := proof_irrel _ _
+  rw [h1, h2]
+
+/-- With fuel = (Fintype.card K.Simplex - visited.card), kuhnWalk terminates at FC or boundary.
+    Proof: by induction on fuel. Non-revisiting ensures each step visits a fresh simplex;
+    when all simplices are claimed, the exit must be a boundary door. -/
+theorem kuhnWalk_fc_or_bdry {c : Coloring d N} {K : SpernerTriangulation d N}
+    {hKuhn : IsKuhnCompatible c K} (fuel : ℕ) :
+    ∀ (state : KuhnState d N c K) (rec : DoorRecord d N K) (pred : Option K.Simplex),
+      WalkValid hKuhn state rec pred →
+      fuel + state.visited.card = Fintype.card K.Simplex →
+      IsFC c K (kuhnWalk c K hKuhn fuel state) ∨
+      ∃ k, isDoorAt c K (kuhnWalk c K hKuhn fuel state) k ∧
+           K.adj (kuhnWalk c K hKuhn fuel state) k = none := by
+  induction fuel with
+  | zero =>
+    intro state rec pred hvalid hn
+    -- fuel = 0 ⟹ visited.card = |K.Simplex|, but current ∉ visited — impossible
+    exfalso
+    simp only [Nat.zero_add] at hn
+    have hdisj : Disjoint state.visited {state.current} := by
+      rw [Finset.disjoint_left]; intro x hx hmem
+      exact state.current_not_visited (Finset.mem_singleton.mp hmem ▸ hx)
+    have hcard : (state.visited ∪ {state.current}).card = state.visited.card + 1 := by
+      rw [Finset.card_union_of_disjoint hdisj, Finset.card_singleton]
+    linarith [Finset.card_le_univ (state.visited ∪ {state.current})]
+  | succ n ih =>
+    intro state rec pred hvalid hn
+    by_cases hfc : IsFC c K state.current
+    · -- FC: walk returns current immediately
+      left; rw [kuhnWalk_succ_eq_current_of_fc hKuhn n state hfc]; exact hfc
+    · -- Non-FC: take one step
+      -- Use kuhnStep to identify the exit door and next simplex
+      set exit_doors := Finset.univ.filter (fun k => isDoorAt c K state.current k ∧ k ≠ state.entry)
+      -- Exit doors are nonempty (non-FC with entry door has a unique other door)
+      have hnonempty : exit_doors.Nonempty := by
+        obtain ⟨k_u, ⟨hne_u, hdoor_u⟩, _⟩ :=
+          nonfc_with_door_has_unique_exit hKuhn state.current hfc state.entry state.entry_is_door
+        exact ⟨k_u, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hdoor_u, hne_u⟩⟩
+      set k_out := exit_doors.min' hnonempty
+      have hk_prop := (Finset.mem_filter.mp (Finset.min'_mem exit_doors hnonempty)).2
+      -- Non-revisiting: the next simplex (if any) is fresh
+      cases hadj : K.adj state.current k_out with
+      | none =>
+        -- Boundary exit
+        have heq : kuhnWalk c K hKuhn (n + 1) state = state.current := by
+          simp only [kuhnWalk, if_neg hfc, dif_pos hnonempty, hadj]
+        rw [heq]; right; exact ⟨k_out, hk_prop.1, hadj⟩
+      | some sk =>
+        obtain ⟨s', k'⟩ := sk
+        have hs'_fresh := kuhn_step_nonrevisit hvalid hk_prop.2 hk_prop.1 hadj
+        -- Walk steps to s' (the hs' guard never triggers)
+        -- LHS: unfold kuhnWalk (n+1) with all guards discharged
+        -- RHS: kuhnWalk n with explicitly-named proof terms
+        -- After unfolding, both states have same data fields; kuhnWalk_congr handles Prop fields.
+        have heq : kuhnWalk c K hKuhn (n + 1) state =
+            kuhnWalk c K hKuhn n
+              { current := s', entry := k', entry_is_door := (door_transfer hadj).mp hk_prop.1,
+                visited := state.visited ∪ {state.current},
+                current_not_visited := hs'_fresh } := by
+          conv_lhs => simp only [kuhnWalk, if_neg hfc, dif_pos hnonempty, hadj, dif_neg hs'_fresh]
+          apply kuhnWalk_congr <;> rfl
+        rw [heq]
+        have hvalid_new := walkValid_step hvalid hk_prop.2 hk_prop.1 hadj hs'_fresh
+        have hn_new : n + (state.visited ∪ {state.current}).card = Fintype.card K.Simplex := by
+          have hdisj : Disjoint state.visited {state.current} := by
+            rw [Finset.disjoint_left]; intro x hx hmem
+            exact state.current_not_visited (Finset.mem_singleton.mp hmem ▸ hx)
+          rw [Finset.card_union_of_disjoint hdisj, Finset.card_singleton]; omega
+        exact ih _ _ _ hvalid_new hn_new
+
+-- ============================================================
+-- SECTION XII: Walk Pairing Parity and Main Existential
 -- ============================================================
 
 /-- The non-FC boundary doors have even cardinality.
@@ -711,7 +834,8 @@ theorem kuhnPathStart_is_fc_of_fc_start {c : Coloring d N} {K : SpernerTriangula
         contradicting kuhn_step_nonrevisit + WalkValid (non-revisiting is FULLY PROVED)
 
     **Proved ingredients**: nonfc_with_door_has_unique_exit ✓, WalkValid ✓,
-    kuhn_step_nonrevisit ✓, adj_symm ✓, even_card_fpf_invol ✓.
+    kuhn_step_nonrevisit ✓, adj_symm ✓, even_card_fpf_invol ✓,
+    kuhnWalk_fc_or_bdry ✓ (termination dichotomy).
     **Pending (this sorry)**: kuhnWalkWithExit definition + walkTrace_reversal induction. -/
 private lemma bdry_nfc_even {c : Coloring d N} {K : SpernerTriangulation d N}
     (hKuhn : IsKuhnCompatible c K) (hc : IsSperner c) :
@@ -801,7 +925,8 @@ theorem kuhn_path_existential {c : Coloring d N} {K : SpernerTriangulation d N}
     boundary door set B_fc has odd cardinality ≥ 1.
 
     Proved: non-revisiting (kuhn_step_nonrevisit + WalkValid), unique exit
-    (nonfc_with_door_has_unique_exit), parity structure, main theorem body.
+    (nonfc_with_door_has_unique_exit), parity structure, main theorem body,
+    termination dichotomy (kuhnWalk_fc_or_bdry).
     Pending (bdry_nfc_even sorry): walk reversal τ∘τ=id via walkTrace_reversal induction. -/
 theorem kuhnPathStart_finds_fc_existential {c : Coloring d N} {K : SpernerTriangulation d N}
     (hKuhn : IsKuhnCompatible c K)
