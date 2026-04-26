@@ -2,7 +2,7 @@
   "id": "friendship-theorem-oq-01",
   "title": "Friendship Theorem: Spectral Proof via Characteristic Polynomials",
   "slug": "friendship-theorem-oq-01",
-  "description": "Axiom-free spectral proof that every k-regular friendship graph has k=2, using adjacency matrix characteristic polynomial techniques, the Weinstein-Aronszajn determinant identity, and UFD factorization in \u2124[X]. Proves the core regularity step: if no universal vertex exists, the friendship graph must be a triangle.",
+  "description": "Axiom-free spectral proof that every k-regular friendship graph has k=2, using adjacency matrix characteristic polynomial techniques, the Weinstein-Aronszajn determinant identity, and UFD factorization in ℤ[X]. Proves the core regularity step: if no universal vertex exists, the friendship graph must be a triangle.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-02",
@@ -26,52 +26,54 @@
     "theoremCount": 74,
     "definitionCount": 3,
     "originalContributions": [
-      "k_eq_two_no_axiom: k-regular friendship graph \u27f9 k=2, fully axiom-free",
-      "regular_friendship_is_triangle: k-regular friendship \u27f9 n=3 (the triangle K\u2083)",
-      "regular_friendship_has_universal: k-regular friendship \u27f9 universal vertex",
-      "adjMatrix_sq_eq: A\u00b2 = (k-1)I + J (adjacency matrix identity for friendship graphs)",
-      "adjMatrix_functional_eq: (A-kI)(A\u00b2-(k-1)I) = 0 (degree-3 annihilating polynomial)",
-      "det_one_sub_smul_onesMatrix: det(I - t\u00b7J) = 1 - n\u00b7t (Weinstein-Aronszajn identity)",
-      "charpoly_quotient_product: f\u00b7f(-X) = (X\u00b2-(k-1))^{n-1} (product identity in \u2124[X])",
+      "k_eq_two_no_axiom: k-regular friendship graph ⟹ k=2, fully axiom-free",
+      "regular_friendship_is_triangle: k-regular friendship ⟹ n=3 (the triangle K₃)",
+      "regular_friendship_has_universal: k-regular friendship ⟹ universal vertex",
+      "adjMatrix_sq_eq: A² = (k-1)I + J (adjacency matrix identity for friendship graphs)",
+      "adjMatrix_functional_eq: (A-kI)(A²-(k-1)I) = 0 (degree-3 annihilating polynomial)",
+      "det_one_sub_smul_onesMatrix: det(I - t·J) = 1 - n·t (Weinstein-Aronszajn identity)",
+      "charpoly_quotient_product: f·f(-X) = (X²-(k-1))^{n-1} (product identity in ℤ[X])",
       "k_sub_one_is_perfect_square: k-1 is a perfect square (from charpoly UFD analysis)",
-      "sqrt_k_sub_one_dvd_k: \u221a(k-1) divides k (mod-p prime contradiction argument)",
-      "dvd_sq_add_one_imp_one: s | s\u00b2+1 \u27f9 s = 1 (number theory lemma)",
-      "monic_factor_of_symmetric_irreducible_pow: UFD factorization lemma in \u2124[X]",
-      "sq_sub_irreducible_of_not_square: X\u00b2-d irreducible over \u2124 when d is not a perfect square",
+      "sqrt_k_sub_one_dvd_k: √(k-1) divides k (mod-p prime contradiction argument)",
+      "dvd_sq_add_one_imp_one: s | s²+1 ⟹ s = 1 (number theory lemma)",
+      "monic_factor_of_symmetric_irreducible_pow: UFD factorization lemma in ℤ[X]",
+      "sq_sub_irreducible_of_not_square: X²-d irreducible over ℤ when d is not a perfect square",
       "ucn + ucn_spec: unique common neighbor extraction and characterization",
-      "counting_identity: n-1 = \u03a3_{v\u2208N(u)} (deg(v)-1) (partition of V \\ {u} into fibers)"
+      "counting_identity: n-1 = Σ_{v∈N(u)} (deg(v)-1) (partition of V \\ {u} into fibers)"
     ]
   },
   "overview": {
-    "historicalContext": "The Friendship Theorem (Erd\u0151s\u2013R\u00e9nyi\u2013S\u00f3s, 1966) states that in any finite simple graph where every pair of distinct vertices has exactly one common neighbor, there exists a 'politician' vertex adjacent to all others. The classical proof has two parts: (1) show that if no universal vertex exists, the graph must be regular, and (2) show a k-regular friendship graph forces k=2, leaving only the triangle K\u2083. Step (2) classically uses the spectral theorem for real symmetric matrices. This formalization replaces the spectral theorem with a more elementary characteristic polynomial approach, avoiding eigenvalue decomposition entirely.",
-    "problemStatement": "In a k-regular friendship graph (every pair of vertices has exactly one common neighbor, every vertex has degree k), prove k = 2. This forces n = 3 (the graph is K\u2083) and hence a universal vertex exists.",
-    "text": "The key insight is that the adjacency matrix A of a k-regular friendship graph satisfies A\u00b2 = (k-1)I + J, where J is the all-ones matrix. Instead of using the spectral theorem to decompose eigenvalues, we use: (1) the characteristic polynomial charpoly(A) = det(XI - A) has X-k as a factor (since A\u00b7\ud835\udfd9 = k\u00b7\ud835\udfd9); (2) via a product identity g(x)\u00b7g(-x) = (x\u00b2-(k-1))^{n-1} for the quotient polynomial g; (3) UFD analysis of \u2124[X] shows that if k-1 is not a perfect square then X\u00b2-(k-1) is irreducible, forcing charpoly to have specific structure; (4) if k-1 = s\u00b2, then a mod-p argument shows s|k, and s|s\u00b2+1 forces s=1; (5) s=1 gives k=2.",
-    "proofStrategy": "The proof proceeds through 18 numbered parts. Parts I-V develop combinatorial infrastructure (unique common neighbor ucn, counting identity, regular friendship card n=k(k-1)+1). Part V proves dvd_sq_add_one_imp_one: s|s\u00b2+1\u27f9s=1. Parts VIII-X prove adjacency matrix properties (A\u00b2=(k-1)I+J, det formulas). Parts XI-XVII develop the characteristic polynomial machinery: X_sub_k_dvd, Weinstein-Aronszajn det identity, charpoly_quotient_product identity, UFD irreducibility lemma, monic_factor_of_symmetric_irreducible_pow. Part XVIII proves k_sub_one_is_perfect_square and sqrt_k_sub_one_dvd_k. Part XVIII-B assembles the final k_eq_two_no_axiom and the main theorems.",
+    "historicalContext": "The Friendship Theorem (Erdős–Rényi–Sós, 1966) states that in any finite simple graph where every pair of distinct vertices has exactly one common neighbor, there exists a 'politician' vertex adjacent to all others. The classical proof has two parts: (1) show that if no universal vertex exists, the graph must be regular, and (2) show a k-regular friendship graph forces k=2, leaving only the triangle K₃. Step (2) classically uses the spectral theorem for real symmetric matrices. This formalization replaces the spectral theorem with a more elementary characteristic polynomial approach, avoiding eigenvalue decomposition entirely.",
+    "problemStatement": "In a k-regular friendship graph (every pair of vertices has exactly one common neighbor, every vertex has degree k), prove k = 2. This forces n = 3 (the graph is K₃) and hence a universal vertex exists.",
+    "text": "The key insight is that the adjacency matrix A of a k-regular friendship graph satisfies A² = (k-1)I + J, where J is the all-ones matrix. Instead of using the spectral theorem to decompose eigenvalues, we use: (1) the characteristic polynomial charpoly(A) = det(XI - A) has X-k as a factor (since A·𝟙 = k·𝟙); (2) via a product identity g(x)·g(-x) = (x²-(k-1))^{n-1} for the quotient polynomial g; (3) UFD analysis of ℤ[X] shows that if k-1 is not a perfect square then X²-(k-1) is irreducible, forcing charpoly to have specific structure; (4) if k-1 = s², then a mod-p argument shows s|k, and s|s²+1 forces s=1; (5) s=1 gives k=2.",
+    "proofStrategy": "The proof proceeds through 18 numbered parts. Parts I-V develop combinatorial infrastructure (unique common neighbor ucn, counting identity, regular friendship card n=k(k-1)+1). Part V proves dvd_sq_add_one_imp_one: s|s²+1⟹s=1. Parts VIII-X prove adjacency matrix properties (A²=(k-1)I+J, det formulas). Parts XI-XVII develop the characteristic polynomial machinery: X_sub_k_dvd, Weinstein-Aronszajn det identity, charpoly_quotient_product identity, UFD irreducibility lemma, monic_factor_of_symmetric_irreducible_pow. Part XVIII proves k_sub_one_is_perfect_square and sqrt_k_sub_one_dvd_k. Part XVIII-B assembles the final k_eq_two_no_axiom and the main theorems.",
     "keyInsights": [
       "No spectral theorem needed! Characteristic polynomial approach sidesteps eigenvalue decomposition entirely",
       "Weinstein-Aronszajn identity: det(I - AB) = det(I - BA) gives det(I - tJ) = 1 - nt for the all-ones matrix",
-      "Product identity: f(x)\u00b7f(-x) = (x\u00b2-(k-1))^{n-1} where f = charpoly/(X-k), proved via polynomial extensionality",
-      "UFD in \u2124[X]: if X\u00b2-(k-1) is irreducible (k-1 not a square), its powers force the factorization of f",
-      "Parity argument: n = k(k-1)+1 is odd, so n-1 is even \u2014 this forces f to have even degree",
-      "Mod-p argument for s|k: any prime p|s gives p|k and p|k-s\u00b2 = 1, contradiction",
-      "dvd_sq_add_one_imp_one is the key number theory lemma: s|s\u00b2+1 \u27f9 s|1 \u27f9 s=1",
-      "The characteristic polynomial approach is more elementary than spectral methods and fully formalizable in Lean 4"
+      "Product identity: f(x)·f(-x) = (x²-(k-1))^{n-1} where f = charpoly/(X-k), proved via polynomial extensionality",
+      "UFD in ℤ[X]: if X²-(k-1) is irreducible (k-1 not a square), its powers force the factorization of f",
+      "Parity argument: n = k(k-1)+1 is odd, so n-1 is even — this forces f to have even degree",
+      "Mod-p argument for s|k: any prime p|s gives p|k and p|k-s² = 1, contradiction",
+      "dvd_sq_add_one_imp_one is the key number theory lemma: s|s²+1 ⟹ s|1 ⟹ s=1",
+      "The characteristic polynomial approach is more elementary than spectral methods and fully formalizable in Lean 4",
+      "**Non-Regularity via A³ Commutativity**: `nonadj_same_degree` uses a clever trick: associativity $A \\cdot A^2 = A^2 \\cdot A$ combined with $A^2 = (k-1)I+J$ gives two expressions for $(A^3)_{uv}$ when $u,v$ are non-adjacent: $\\deg(u)$ from one order, $\\deg(v)$ from the other. Hence $\\deg(u) = \\deg(v)$ for any non-adjacent pair. This is the key structural result eliminating the second axiom (friendship_has_universal_or_regular) from the base file.",
+      "**Bipartite Degree-Class Obstruction**: `friendship_regular_of_no_universal` proves regularity by contradiction via degree classes. If degree classes $S_1 = \\{v : \\deg v = d_1\\}$ and $S_2 = \\{v : \\deg v = d_2\\}$ with $d_1 \\neq d_2$ both have $\\geq 2$ elements, then every element of $S_1$ is adjacent to every element of $S_2$ (by `diff_degree_implies_adj`). Any two elements of $S_2$ then have all of $S_1$ as common neighbors, but the friendship property demands exactly 1 common neighbor. This is a direct graph-theoretic contradiction, establishing that at most one degree class can have $\\geq 2$ elements, forcing regularity."
     ],
     "prerequisites": [
       "Graph theory: simple graphs, adjacency, degree, friendship graphs",
       "Linear algebra: adjacency matrix, characteristic polynomial, determinants",
-      "Polynomial algebra: UFD of \u2124[X], irreducibility, Polynomial.funext",
+      "Polynomial algebra: UFD of ℤ[X], irreducibility, Polynomial.funext",
       "Number theory: divisibility, prime arguments, perfect squares"
     ]
   },
   "conclusion": {
-    "summary": "A complete, axiom-free formal proof of the key spectral step in the Friendship Theorem: every k-regular friendship graph satisfies k=2, hence is the triangle K\u2083 with a universal vertex. The proof avoids the spectral theorem for real symmetric matrices, instead using characteristic polynomial identities, Weinstein-Aronszajn determinant formula, UFD factorization in \u2124[X], and a prime divisibility argument. All 74 theorems are proved with 0 axioms and 0 sorries.",
-    "implications": "This formalization shows that the spectral step of the Friendship Theorem can be proved in Lean 4 without formalizing the full spectral theorem for real symmetric matrices, which remains unavailable in Mathlib at the required generality. The characteristic polynomial approach is a significant contribution: it replaces an appeal to eigenvalue decomposition with elementary polynomial algebra over \u2124, which is fully supported by Mathlib's ring theory. This technique may be applicable to other theorems that classically use eigenvalue arguments.",
+    "summary": "A complete, axiom-free formal proof of the key spectral step in the Friendship Theorem: every k-regular friendship graph satisfies k=2, hence is the triangle K₃ with a universal vertex. The proof avoids the spectral theorem for real symmetric matrices, instead using characteristic polynomial identities, Weinstein-Aronszajn determinant formula, UFD factorization in ℤ[X], and a prime divisibility argument. All 74 theorems are proved with 0 axioms and 0 sorries.",
+    "implications": "This formalization shows that the spectral step of the Friendship Theorem can be proved in Lean 4 without formalizing the full spectral theorem for real symmetric matrices, which remains unavailable in Mathlib at the required generality. The characteristic polynomial approach is a significant contribution: it replaces an appeal to eigenvalue decomposition with elementary polynomial algebra over ℤ, which is fully supported by Mathlib's ring theory. This technique may be applicable to other theorems that classically use eigenvalue arguments.",
     "openQuestions": [
       "Formalize the non-regularity step: if no universal vertex exists in a friendship graph, the graph must be regular. This classically uses the fact that the non-universal-vertex induced subgraph has all vertices with equal degree. A Lean proof would need the argument that any two non-universal vertices have the same degree via a counting argument on their common neighbor.",
-      "Combine FriendshipTheoremOQ01 with FriendshipTheorem.lean to give a complete proof of the full Friendship Theorem. The missing piece is the non-regularity step \u2014 once regular \u27f9 k=2 is established (done here), the full theorem follows by case analysis on whether a universal vertex exists.",
+      "Combine FriendshipTheoremOQ01 with FriendshipTheorem.lean to give a complete proof of the full Friendship Theorem. The missing piece is the non-regularity step — once regular ⟹ k=2 is established (done here), the full theorem follows by case analysis on whether a universal vertex exists.",
       "Can the `monic_factor_of_symmetric_irreducible_pow` UFD lemma be extracted and contributed to Mathlib? It is a general result about factorizations of symmetric polynomials in a UFD that has applications beyond this specific proof.",
-      "Does this characteristic polynomial approach generalize to other regularity problems? For instance, strongly regular graphs satisfy A\u00b2 = (k-\u03bb)I + \u03bbJ + (\u03bc-\u03bb)A, and similar polynomial/UFD arguments might yield constraints on their parameters without the full spectral theorem."
+      "Does this characteristic polynomial approach generalize to other regularity problems? For instance, strongly regular graphs satisfy A² = (k-λ)I + λJ + (μ-λ)A, and similar polynomial/UFD arguments might yield constraints on their parameters without the full spectral theorem."
     ]
   },
   "leanFile": {
@@ -92,7 +94,7 @@
     {
       "targetId": "friendship-theorem-oq-03",
       "relationship": "related",
-      "description": "OQ03 explores the uniqueness and structure of friendship graphs beyond K\u2083"
+      "description": "OQ03 explores the uniqueness and structure of friendship graphs beyond K₃"
     },
     {
       "targetId": "ramseys-theorem",
@@ -102,34 +104,88 @@
   ],
   "sections": [
     {
+      "id": "imports-header",
+      "title": "Imports and Module Overview",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Nine Mathlib imports covering SimpleGraph, adjacency matrices, characteristic polynomials, and tactics. The module docstring outlines the six-part proof architecture: UCN extraction, A² identity, counting, number theory, spectral framework, and characteristic polynomial machinery."
+    },
+    {
       "id": "ucn-infrastructure",
       "title": "Unique Common Neighbor and Partition",
-      "summary": "Extracts ucn via Set.ncard_eq_one, proves ucn is an involution on N(u) (partner swapping), and establishes the partition V\\{u} = \u2294_{v\u2208N(u)} (N(v)\\{u}). The counting identity n-1 = \u03a3 (deg(v)-1) and n = k(k-1)+1 follow."
+      "startLine": 59,
+      "endLine": 295,
+      "summary": "Extracts ucn via Set.ncard_eq_one, proves ucn is an involution on N(u) (partner swapping), and establishes the partition V\\{u} = ⊔_{v∈N(u)} (N(v)\\{u}). The counting identity n-1 = Σ (deg(v)-1) and n = k(k-1)+1 follow."
     },
     {
       "id": "number-theory-core",
-      "title": "Core Number Theory: s | s\u00b2+1 \u27f9 s = 1",
-      "summary": "dvd_sq_add_one_imp_one is proved by lifting to \u2124: s(c-s)=1 forces s=1 via nlinarith. This lemma is the final step in the chain k-1=s\u00b2, s|k, s|s\u00b2+1 \u27f9 s=1 \u27f9 k=2."
+      "title": "Core Number Theory: s | s²+1 ⟹ s = 1",
+      "startLine": 302,
+      "endLine": 320,
+      "summary": "dvd_sq_add_one_imp_one is proved by lifting to ℤ: s(c-s)=1 forces s=1 via nlinarith. This lemma is the final step in the chain k-1=s², s|k, s|s²+1 ⟹ s=1 ⟹ k=2."
+    },
+    {
+      "id": "spectral-framework-summary",
+      "title": "Spectral Framework: Axiom Elimination and Adjacency Infrastructure",
+      "startLine": 321,
+      "endLine": 492,
+      "summary": "Part VI announces the spectral axiom has been eliminated. Part VII is a 20-entry theorem table. Parts VIII-IX prove adjMatrix_trace_zero (tr(A)=0), adjMatrix_sq_off_diag ((A²)ᵢⱼ=1 for i≠j), adjMatrix_sq_diag ((A²)ᵢᵢ=k). A #check block confirms all Part I-V results are accessible."
     },
     {
       "id": "adjacency-matrix",
-      "title": "Adjacency Matrix Identity A\u00b2 = (k-1)I + J",
-      "summary": "The friendship condition gives (A\u00b2)\u1d62\u2c7c = 1 for i\u2260j (unique common neighbor) and (A\u00b2)\u1d62\u1d62 = k (regularity). The functional equation (A-kI)(A\u00b2-(k-1)I) = 0 follows from AJ = kJ."
+      "title": "Adjacency Matrix Identity A² = (k-1)I + J",
+      "startLine": 493,
+      "endLine": 710,
+      "summary": "The friendship condition gives (A²)ᵢⱼ = 1 for i≠j (unique common neighbor) and (A²)ᵢᵢ = k (regularity). The functional equation (A-kI)(A²-(k-1)I) = 0 follows from AJ = kJ. Includes onesMatrix definition, adjMatrix_mulVec_ones, and helper lemmas."
+    },
+    {
+      "id": "onesmatrix-charpoly-infra",
+      "title": "onesMatrix Algebra, Annihilating Polynomial, and Charpoly Factor Theorem",
+      "startLine": 711,
+      "endLine": 1023,
+      "summary": "Three layers: (1) onesMatrix_sq (J²=nJ), trace_adjMatrix_sq (tr(A²)=nk); (2) annihilating_polynomial wraps (A-kI)(A²-(k-1)I)=0 as Polynomial.aeval; (3) det_eq_zero_of_kernel (adjugate argument), adjMatrix_charpoly_eval_k, X_sub_k_dvd_adjMatrix_charpoly, charpoly_subleading_coeff_zero."
     },
     {
       "id": "determinant-identity",
       "title": "Weinstein-Aronszajn: det(I-tJ) = 1-nt",
-      "summary": "Proved via Matrix.det_one_sub_mul_comm with a rank-1 factorization J = AB. The generalized version over any CommRing enables the characteristic polynomial computation over \u2124[X]."
+      "startLine": 1024,
+      "endLine": 1160,
+      "summary": "Proved via Matrix.det_one_sub_mul_comm with a rank-1 factorization J = AB. The generalized version over any CommRing enables the characteristic polynomial computation over ℤ[X]."
+    },
+    {
+      "id": "det-scalar-sub-onesmatrix",
+      "title": "det(cI - J) = c^{n-1}(c-n): Key Determinant Identity",
+      "startLine": 1161,
+      "endLine": 1267,
+      "summary": "det_scalar_sub_onesMatrix proves det(cI-J)=c^{n-1}(c-n) over ℤ: for c≠0 lift to ℚ and use Weinstein-Aronszajn; for c=0 use det(J)=0 (J has rank 1). Polynomial version via Polynomial.funext lifts to ℤ[X]."
     },
     {
       "id": "charpoly-product",
       "title": "Characteristic Polynomial Product Identity",
-      "summary": "If charpoly(A) = (X-k)\u00b7f, then f(x)\u00b7f(-x) = (x\u00b2-(k-1))^{n-1}. Proved via Polynomial.funext by evaluating det(mI-A)\u00b7det(-mI-A) using A\u00b2=(k-1)I+J and Weinstein-Aronszajn."
+      "startLine": 1268,
+      "endLine": 1530,
+      "summary": "If charpoly(A) = (X-k)·f, then f(x)·f(-x) = (x²-(k-1))^{n-1}. Proved via Polynomial.funext by evaluating det(mI-A)·det(-mI-A) using A²=(k-1)I+J and Weinstein-Aronszajn."
+    },
+    {
+      "id": "ufd-factorization-lemma",
+      "title": "UFD Factorization Lemma: monic_factor_of_symmetric_irreducible_pow",
+      "startLine": 1531,
+      "endLine": 1616,
+      "summary": "If p is irreducible, monic, and symmetric (p(-X)=p), and f is monic with f·f(-X)=p^{2m}, then f=p^m. Inductive proof: primality of p forces p|f (the symmetry hypothesis handles p|f(-X)); then f=p·f₁ and IH applies."
     },
     {
       "id": "ufd-assembly",
       "title": "UFD Factorization and Final k=2 Proof",
-      "summary": "UFD analysis of \u2124[X] forces k-1 to be a perfect square s\u00b2. A mod-p argument gives s|k. Since k=s\u00b2+1, s|s\u00b2+1 \u27f9 s=1 \u27f9 k=2. The main theorems (n=3, universal vertex) follow immediately."
+      "startLine": 1617,
+      "endLine": 1869,
+      "summary": "k_sub_one_is_perfect_square: if k-1 not a perfect square, UFD lemma forces f=(X²-(k-1))^{(n-1)/2} with zero odd-degree coefficients, contradicting the nonzero X^{n-2} coefficient. sqrt_k_sub_one_dvd_k: s|k via mod-p. Assembly: s|s²+1 ⟹ s=1 ⟹ k=2."
+    },
+    {
+      "id": "matrix-symmetry-nonregularity",
+      "title": "Part XVIII-XIX: Matrix Symmetry and Non-Regularity Proof",
+      "startLine": 1870,
+      "endLine": 2276,
+      "summary": "Part XVIII: adjMatrix_symmetric (A=Aᵀ), JA=AJ=kJ commutativity, friendship_card_ge_three. Part XIX: nonadj_same_degree (from A³ associativity), friendship_regular_of_no_universal (degree-class bipartite structure contradicts friendship), and concluding axiom-free Friendship Theorem theorems."
     }
   ],
   "sorries": 0
