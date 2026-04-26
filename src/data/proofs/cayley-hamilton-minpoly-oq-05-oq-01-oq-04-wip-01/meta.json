@@ -20,7 +20,10 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 197,
+    "lineCount": 290,
+    "theoremCount": 11,
+    "definitionCount": 3,
+    "dateAdded": "2026-04-26",
     "assumptions": "1 axiom: nonderogatory_similar_to_companion (nonderogatory matrix is similar to its companion matrix; requires rational canonical form / PID structure theorem, not yet in Mathlib 4.26).",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -62,50 +65,50 @@
     {
       "id": "definitions",
       "title": "I. Definitions",
-      "startLine": 38,
+      "startLine": 1,
       "endLine": 47,
-      "summary": "Defines IsCyclicVector and IsNonderogatory, consistent with the parent OQ-05-OQ-01-OQ-04 file.",
+      "summary": "Module docstring explaining the decomposition strategy, followed by definitions of IsCyclicVector and IsNonderogatory consistent with the parent file.",
       "mathContext": "A vector v is cyclic for M if no nonzero polynomial of degree < n annihilates v via M. A matrix is nonderogatory if its minimal polynomial equals its characteristic polynomial."
     },
     {
       "id": "companion-matrix",
-      "title": "II. Local Companion Matrix",
-      "startLine": 52,
-      "endLine": 99,
-      "summary": "Defines companionMat(p) and proves the Krylov orbit theorem: C^k e0 = e_k for k < n.",
+      "title": "II. Companion Matrix and Krylov Orbit",
+      "startLine": 49,
+      "endLine": 105,
+      "summary": "Defines companionMat(p) and proves the Krylov orbit theorem: C^k e0 = e_k for k < n via induction on the subdiagonal shift.",
       "mathContext": "The companion matrix of a monic degree-n polynomial p has 1s on the subdiagonal, negated coefficients in the last column, and 0s elsewhere. Its powers shift the standard basis: C^k e0 = e_k."
     },
     {
       "id": "computation-lemmas",
       "title": "III. Key Computation Lemmas",
-      "startLine": 104,
-      "endLine": 137,
+      "startLine": 107,
+      "endLine": 157,
       "summary": "Proves sum_mulVec (distribution of mulVec over sums) and companion_orbit_eval (evaluating q(C)e0 at index natDegree(q) gives q.leadingCoeff).",
-      "mathContext": "The sum distribution lemma allows expanding aeval C q as a sum over the support of q. The orbit evaluation lemma is the key technical step: it shows evaluating q(C)e0 at coordinate natDegree(q) extracts the leading coefficient."
+      "mathContext": "The sum distribution lemma allows expanding aeval C q as a sum over the support of q. The orbit evaluation lemma extracts the leading coefficient from a specific coordinate of q(C)e0."
     },
     {
       "id": "main-cyclic",
       "title": "IV. Main Result: e0 is Cyclic",
-      "startLine": 142,
-      "endLine": 157,
-      "summary": "Proves companionMat_e0_cyclic: e0 is a cyclic vector for companionMat(p) when p is monic of degree n. This is the main new verified result.",
-      "mathContext": "If q(C)e0 = 0 and deg(q) < n, then evaluating at index natDegree(q) gives q.leadingCoeff = 0, so q = 0. This is the contrapositive: cyclicity follows because no nonzero low-degree polynomial can annihilate e0."
+      "startLine": 159,
+      "endLine": 180,
+      "summary": "Proves companionMat_e0_cyclic: e0 is a cyclic vector for companionMat(p) when p is monic of degree n. The main new verified result.",
+      "mathContext": "If q(C)e0 = 0 and deg(q) < n, then evaluating at index natDegree(q) gives q.leadingCoeff = 0, so q = 0."
     },
     {
       "id": "similarity-transfer",
-      "title": "V. Similarity Transfer",
-      "startLine": 162,
-      "endLine": 200,
-      "summary": "Proves cyclic_vector_similar_transfer and states nonderogatory_similar_to_companion as an axiom.",
-      "mathContext": "If M = P^{-1}NP, then aeval M q = P^{-1} (aeval N q) P by the conjugation formula, so q(M)(P^{-1}v) = P^{-1}(q(N)v). The axiom states that nonderogatory M is similar to companion(charpoly M)."
+      "title": "V. Similarity Transfer and Axiom",
+      "startLine": 182,
+      "endLine": 245,
+      "summary": "Proves cyclic_vector_similar_transfer (cyclic vectors transfer under similarity) and states nonderogatory_similar_to_companion as an axiom pending rational canonical form.",
+      "mathContext": "If M = P⁻¹NP, then aeval M q = P⁻¹(aeval N q)P. The axiom states nonderogatory M is similar to companion(charpoly M)."
     },
     {
       "id": "main-theorem",
-      "title": "VI. Main Theorem",
-      "startLine": 205,
-      "endLine": 233,
-      "summary": "Proves nonderogatory_has_cyclic_vector_any_field by combining the three pieces: companion cyclic vector (proved), similarity (axiom), and transfer (proved).",
-      "mathContext": "For n > 0: companionMat(charpoly M) has e0 as a cyclic vector (Section IV); M is similar to it (axiom); similarity transfers cyclic vectors (Section V). Therefore M has a cyclic vector."
+      "title": "VI. Main Theorem and Corollary",
+      "startLine": 247,
+      "endLine": 290,
+      "summary": "Proves nonderogatory_has_cyclic_vector_any_field by combining all three pieces, plus a corollary for finite fields.",
+      "mathContext": "For n > 0: e0 is cyclic for C(charpoly M) (proved); M is similar to C(charpoly M) (axiom); similarity transfers cyclic vectors (proved). Works over any field."
     }
   ],
   "conclusion": {
@@ -127,10 +130,10 @@
       "BigOperators"
     ],
     "namespace": "CompanionCyclicVector",
-    "lineCount": 197,
+    "lineCount": 290,
     "axiomCount": 1,
-    "theoremCount": 5,
-    "definitionCount": 2,
+    "theoremCount": 11,
+    "definitionCount": 3,
     "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean",
     "sorries": 0
   },

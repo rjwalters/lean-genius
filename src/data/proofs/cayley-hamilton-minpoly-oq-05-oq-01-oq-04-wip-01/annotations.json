@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ccv-header-defs",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+    "range": { "startLine": 1, "endLine": 47 },
+    "type": "context",
+    "title": "Problem Setup: Decomposing the Nonderogatory Cyclic Vector Theorem",
+    "content": "The module decomposes the proof into three pieces: (1) PROVED: e₀ is cyclic for companion matrices via the Krylov orbit, (2) AXIOM: nonderogatory matrices are similar to their companion matrices, (3) PROVED: cyclic vectors transfer under similarity. Definitions: IsCyclicVector says no nonzero polynomial of degree < n annihilates v under M; IsNonderogatory says minpoly = charpoly.",
+    "mathContext": "A vector $v$ is cyclic for $M \\in M_n(K)$ iff $\\{v, Mv, \\ldots, M^{n-1}v\\}$ spans $K^n$. A matrix is nonderogatory iff $\\text{minpoly}(M) = \\text{charpoly}(M)$, i.e., it has a single invariant factor.",
+    "significance": "context",
+    "relatedConcepts": ["cyclic vector", "nonderogatory matrix", "minimal polynomial", "rational canonical form"],
+    "prerequisites": ["minimal polynomial", "characteristic polynomial", "Cayley-Hamilton theorem"]
+  },
+  {
+    "id": "ccv-companion",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+    "range": { "startLine": 49, "endLine": 105 },
+    "type": "definition",
+    "title": "Companion Matrix and Krylov Orbit: C^k e₀ = e_k",
+    "content": "Defines companionMat(p) with 1s on the subdiagonal, negated coefficients in the last column, and 0s elsewhere. Three structural lemmas characterize entries. The key orbit lemma companionMat_pow_e0 (line 96) proves C^k e₀ = e_k for k < n by induction: the subdiagonal shift C·e_j = e_{j+1} is the single step, composed k times.",
+    "mathContext": "The companion matrix $C(p)$ of monic degree-$n$ polynomial $p$ satisfies $C^k e_0 = e_k$ for $k < n$. This means the Krylov subspace $\\text{span}\\{e_0, Ce_0, \\ldots, C^{n-1}e_0\\} = K^n$.",
+    "significance": "key",
+    "relatedConcepts": ["companion matrix", "Krylov subspace", "standard basis", "subdiagonal shift"],
+    "prerequisites": ["companion matrix definition", "matrix-vector multiplication", "induction"]
+  },
+  {
+    "id": "ccv-computation",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+    "range": { "startLine": 107, "endLine": 157 },
+    "type": "technique",
+    "title": "Leading Coefficient Extraction via Orbit Evaluation",
+    "content": "companion_orbit_eval (line 122): for nonzero q with deg(q) < n, evaluating (q(C)·e₀) at coordinate natDegree(q) gives q.leadingCoeff. Expands aeval as a sum over support, distributes mulVec (via sum_mulVec), substitutes C^k e₀ = e_k, then collapses to the single surviving term at k = natDegree(q) using Finset.sum_eq_single. This extraction trick avoids dimension/rank arguments.",
+    "mathContext": "Key identity: $(q(C) \\cdot e_0)_{\\deg(q)} = \\text{lc}(q)$. Since $C^k e_0 = e_k$, we get $(q(C)e_0)_j = q_j$ for $j \\leq \\deg(q)$. At $j = \\deg(q)$, this is the leading coefficient.",
+    "significance": "key",
+    "relatedConcepts": ["leading coefficient", "polynomial support", "aeval as sum", "Finset.sum_eq_single"],
+    "prerequisites": ["companionMat_pow_e0", "Polynomial.leadingCoeff", "Polynomial.support"]
+  },
+  {
+    "id": "ccv-cyclic-main",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+    "range": { "startLine": 159, "endLine": 180 },
+    "type": "insight",
+    "title": "Main Verified Result: e₀ is Cyclic for Companion Matrices",
+    "content": "companionMat_e0_cyclic (line 169): for any monic polynomial p of degree n > 0, e₀ is cyclic for C(p). Proof by contrapositive: if q ≠ 0 with deg(q) < n and q(C)e₀ = 0, then evaluating at coordinate natDegree(q) gives q.leadingCoeff = 0, contradicting q ≠ 0. This elegantly avoids linear independence or dimension arguments.",
+    "mathContext": "If $q(C(p))e_0 = 0$ and $\\deg(q) < n$, then $(q(C)e_0)_{\\deg(q)} = 0$. But $(q(C)e_0)_{\\deg(q)} = \\text{lc}(q) \\neq 0$ for $q \\neq 0$. Contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["cyclic vector", "companion matrix", "Krylov subspace", "proof by contradiction"],
+    "prerequisites": ["companion_orbit_eval", "Polynomial.leadingCoeff_ne_zero"]
+  },
+  {
+    "id": "ccv-similarity",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+    "range": { "startLine": 182, "endLine": 245 },
+    "type": "technique",
+    "title": "Similarity Transfer and the Nonderogatory Axiom",
+    "content": "cyclic_vector_similar_transfer (line 188): if M = P⁻¹NP and v is cyclic for N, then P⁻¹v is cyclic for M. Uses the conjugation formula q(P⁻¹NP) = P⁻¹q(N)P, proved by induction on monomials.\n\nnonderogatory_similar_to_companion (line 242): the axiom that nonderogatory M is similar to C(charpoly(M)). This is the classical single-invariant-factor theorem requiring rational canonical form (PID structure theorem), absent from Mathlib. Precisely stated rather than left as a vague sorry.",
+    "mathContext": "Conjugation: $q(P^{-1}NP) = P^{-1}q(N)P$. The axiom: $\\text{minpoly}(M) = \\text{charpoly}(M) \\Rightarrow \\exists P: M = P^{-1}C(\\chi_M)P$.",
+    "significance": "key",
+    "relatedConcepts": ["matrix similarity", "conjugation formula", "rational canonical form", "PID structure theorem"],
+    "prerequisites": ["matrix similarity", "aeval", "Units (invertible matrices)"]
+  },
+  {
+    "id": "ccv-main-theorem",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+    "range": { "startLine": 247, "endLine": 290 },
+    "type": "insight",
+    "title": "Main Theorem: Nonderogatory Matrices Have Cyclic Vectors (Any Field)",
+    "content": "nonderogatory_has_cyclic_vector_any_field (line 266): combines e₀ cyclic for C(charpoly M) (proved), M similar to C(charpoly M) (axiom), and similarity transfers cyclic vectors (proved). The n=0 case is trivial. Corollary nonderogatory_has_cyclic_vector_finite (line 283) specializes to finite fields, removing the [Infinite K] hypothesis. The companion matrix approach is purely algebraic — no cardinality/density assumptions needed.",
+    "mathContext": "For $n > 0$: $e_0$ is cyclic for $C(\\chi_M)$ (orbit argument); $M \\sim C(\\chi_M)$ (axiom); $P^{-1}e_0$ is cyclic for $M$ (transfer). Works over any field $K$.",
+    "significance": "key",
+    "relatedConcepts": ["nonderogatory matrix", "cyclic vector existence", "companion matrix", "field-independent proof"],
+    "prerequisites": ["companionMat_e0_cyclic", "nonderogatory_similar_to_companion", "cyclic_vector_similar_transfer"]
+  }
+]
