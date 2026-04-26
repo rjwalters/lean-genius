@@ -19,11 +19,11 @@
       "ssyt"
     ],
     "badge": "formalized",
-    "sorries": 4,
+    "sorries": 3,
     "dateAdded": "2026-04-23",
     "axiomCount": 0,
     "assumptions": "4 sorries: (1) twoRow_equiv (mechanical row decomp bijection, Aristotle candidate); (2) twoRow_equiv_weight (weight compat, mechanical); (3) nonColStrict_sum_weight (jdt bijection, math core); (4) jacobi_trudi_ssyt_eq k≥3 (algebraic LGV + RSK ~300 lines). ssytSchurFin_two_row main theorem PROVED from helpers. k=0,1 proved.",
-    "lineCount": 438,
+    "lineCount": 457,
     "theoremCount": 14,
     "definitionCount": 8,
     "originalContributions": [
@@ -78,12 +78,12 @@
       "Finset"
     ],
     "namespace": "JacobiTrudi",
-    "lineCount": 438,
+    "lineCount": 457,
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 8,
     "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
-    "sorries": 4
+    "sorries": 3
   },
   "crossReferences": [
     {
@@ -170,5 +170,5 @@
       "mathContext": "SSYTFin n k sh = subtype of ((i:Fin k)×Fin(sh i)→Fin n) satisfying row-weak (weakly increasing rows) and col-strict (strictly increasing columns). Fintype instance via Subtype.fintype (decidable predicates over finite types). ssytSchurFin = ∑_T T.weight where T.weight = ∏_p X(T p). k=0 proved by Unique (empty SSYT, both conditions vacuous) + IsEmpty (empty product = 1). k=1 proved via Fintype.sum_equiv with bijection ψ: SSYTFin n 1 ≃ Sym (Fin n) m using List.sortedLE_ofFn_iff (Monotone ↔ SortedLE). General case (k ≥ 2): RSK correspondence (~300 lines), 2 sorries remain (ssytSchurFin_two_row + jacobi_trudi_ssyt_eq k≥3)."
     }
   ],
-  "sorries": 2
+  "sorries": 3
 }
