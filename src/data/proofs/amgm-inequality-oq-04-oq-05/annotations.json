@@ -1,5 +1,25 @@
 [
   {
+    "id": "ann-bs-preamble",
+    "proofId": "amgm-inequality-oq-04-oq-05",
+    "range": { "startLine": 1, "endLine": 65 },
+    "type": "concept",
+    "title": "Module Preamble: Full Algebraic Derivation of the Brent-Salamin Formula",
+    "content": "The module docstring (lines 1-54) gives the complete mathematical derivation before any Lean code appears. It presents the three ingredients — Gauss's AGM theorem ($M = \\pi/(2K)$), Legendre's relation ($2KE - K^2 = \\pi/2$ for the lemniscate case), and the E-via-AGM formula ($E = K(3/4 - S/2)$) — and shows explicitly how they combine: substituting the E formula into Legendre gives $K^2(1-2S) = \\pi$; substituting Gauss gives $K^2 = \\pi^2/(4M^2)$; combining yields $\\pi = 4M^2/(1-2S)$. The `## Status` checklist (lines 40-48) documents which steps are axiomatized and which are proved, providing a transparent accounting of the 5 analytic axioms. This is the blueprint pattern for large axiomatized formalizations: the derivation is fully legible in comments, and the Lean code implements exactly what the math says.",
+    "mathContext": "The E-via-AGM derivation in the preamble (lines 28-31) uses: $E/K = 1 - \\sum_{n=0}^{\\infty} 2^{n-1} c_n^2$ where $c_n^2 = a_n^2 - b_n^2$. The $n=0$ term contributes $2^{-1} \\cdot c_0^2 = (1/2)/2 = 1/4$ (since $c_0 = a_0 - b_0 = 1 - 1/\\sqrt{2}$ and $c_0^2 = 1/2$ after normalization); the $n \\geq 1$ terms contribute $S/2$. So $E/K = 1 - 1/4 - S/2 = 3/4 - S/2$, giving $E = K(3/4 - S/2)$. The lemniscate condition for Legendre's relation is $(1/\\sqrt{2})^2 + (1/\\sqrt{2})^2 = 1/2 + 1/2 = 1$, confirming $k = k' = 1/\\sqrt{2}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Legendre's relation for elliptic integrals",
+      "Gauss AGM theorem",
+      "Landen transformation",
+      "lemniscate constant"
+    ],
+    "prerequisites": [
+      "complete elliptic integrals K(k) and E(k)",
+      "arithmetic-geometric mean and convergence"
+    ]
+  },
+  {
     "id": "ann-agm-setup",
     "proofId": "amgm-inequality-oq-04-oq-05",
     "range": { "startLine": 67, "endLine": 91 },
