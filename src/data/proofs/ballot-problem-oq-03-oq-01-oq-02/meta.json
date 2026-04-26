@@ -73,13 +73,12 @@
     ]
   },
   "conclusion": {
-    "summary": "Hook-length formula fully proved for five infinite families: 1×n (direct), n×1 (direct), hook-shape (m+1,1) (bijection), 2×m rect (Lindstrom reflection), and general 2-row [a,b] (conditional on ballot bijection, 1 sorry). hookProd for [a,b] = (a+1).descFactorial(b) × (a-b)! × b! proved with 0 sorries. Part XIV adds hook_length_formula_general as the primary result, proved via corner induction modulo hook_walk_identity. Total: 5 sorries (3 LGV path + 2 corner induction: hookProd_ratio_formula + hook_walk_identity ≥3-row).",
+    "summary": "Hook-length formula fully proved for six infinite families: 1×n (direct), n×1 (direct), hook-shape (m+1,1) (bijection), 2×m rect (Lindstrom reflection), general 2-row [a,b] (0 sorries), and all gHookYD [a,1^b] (0 sorries). hookProd_ratio_formula proved with 0 sorries (session 18). hook_walk_identity proved for ≤2-row, ≤2-col, exactly 3-row, exactly 4-row, exactly 5-row; open only for ≥6-row shapes. hook_length_formula_general proved via corner induction modulo hook_walk_identity. Total: 4 sorries (3 LGV approach + 1 hook_walk_identity ≥6-row).",
     "implications": "A complete formalization would be the first Lean 4 proof of the hook-length formula, a milestone in formal combinatorics. The LGV approach connects our existing ballot problem proofs to representation theory via the Specht module dimension formula f^λ = dim S^λ.",
     "openQuestions": [
       "Formalize the SYT ↔ NI bijection via Fomin's growth diagrams or the RSK correspondence (~200 lines, the main open sorry)",
       "Prove the det factorization det[C(m+σⱼ+j-i,m)] = n!/hookProd for general partitions via a Vandermonde-type identity (~200 lines)",
-      "Complete the hook_walk_identity for 3-row Young diagrams (1 sorry, combinatorially tractable)",
-      "Complete the hook_walk_identity for ≥4-row Young diagrams via GNW or RSK (~300 lines, the hardest open problem)",
+      "Complete the hook_walk_identity for ≥6-row Young diagrams via GNW or RSK (~300 lines, the hardest open problem; 3-row, 4-row, 5-row cases proved in sessions 17-19)",
       "Add Fintype instance for StandardYoungTableau via column-reading bijection with Fin μ.card permutations",
       "Formalize the connection to representation theory: f^λ = dim S^λ, where S^λ is the Specht module of the symmetric group Sₙ"
     ]
@@ -95,7 +94,7 @@
       "LGV"
     ],
     "namespace": "HookLengthFormula",
-    "lineCount": 5452,
+    "lineCount": 8109,
     "axiomCount": 0,
     "sorries": 4,
     "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
