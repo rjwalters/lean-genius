@@ -29,7 +29,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-21",
-    "iteration": 1,
+    "iteration": 2,
     "focus": "Read Erdos1151Problem.lean, assess Mathlib for Chebyshev polynomial theory",
     "blockers": [],
     "nextAction": "Read proofs/Proofs/Erdos1151Problem.lean, search Mathlib for ChebyshevPolynomial",
@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "2 sorries remain: chebyshev_trig_sum_lb (tractable, ~200 lines) and divergence_from_lebesgue_growth (fundamental gap: lim vs lim sup)",
+    "progressSummary": "3 sorries remain (same count but better structure). Session added 6 helper lemmas: chebyshevHalfAngle_pos_lt, tan_half_angle_nonneg, tan_half_angle_cot_lb, odd_harmonic_sum_lb (with telescoping proof of harmonic bound), sub_sum_eq_odd_harmonic (Finset bijection via sum_nbij), n=1 case proved. Remaining sorry: n>=2 assembly (Steps A-E documented).",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -55,7 +55,13 @@
       "cos_rational_pi_pos_min: ∃ δ > 0 s.t. |cos(nπp/q)| ≥ δ for all n (parity argument)",
       "x_not_chebyshev_node: cos(πp/q) ≠ chebyshevNode n k for all n,k when p,q odd",
       "chebyshev_trig_sum_lb: sorry (isolated harmonic sum lower bound: S_n ≥ C₂·n·log(n+1))",
-      "chebyshev_lebesgue_lb: proved modulo chebyshev_trig_sum_lb via mul_le_mul chain (δ/n · C₂·n·log(n+1) ≤ |cos(nθ)|/n · S_n)"
+      "chebyshev_lebesgue_lb: proved modulo chebyshev_trig_sum_lb via mul_le_mul chain (δ/n · C₂·n·log(n+1) ≤ |cos(nθ)|/n · S_n)",
+      "chebyshevHalfAngle_pos_lt: half-angle B_k in (0, pi/2) — Erdos1151OQ04.lean:846",
+      "tan_half_angle_nonneg: each tan(B_k) >= 0 — Erdos1151OQ04.lean:858",
+      "tan_half_angle_cot_lb: for k >= ceil(n/2), tan(B_k) >= 2n/(pi(2(n-k)-1)) — Erdos1151OQ04.lean:869",
+      "odd_harmonic_sum_lb: Sigma 1/(2j+1) >= (1/2)*log(m+1) via telescoping — Erdos1151OQ04.lean:923",
+      "sub_sum_eq_odd_harmonic: Finset reindex via sum_nbij — Erdos1151OQ04.lean:983",
+      "n=1 case of trig_sum_lb: tan(pi/4) = 1 >= log(2)/(2pi) — Erdos1151OQ04.lean:1027"
     ],
     "insights": [
       "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
@@ -75,14 +81,18 @@
       "Filter.tendsto_atTop_mono pattern: if f ≤ g pointwise and f → ∞ then g → ∞",
       "let binding in Lean 4 requires explicit unfolding in simp: simp only [vals, ...]",
       "chebyshev_lebesgue_growth is PROVED (not sorry) — wraps chebyshev_lebesgue_lb which assumes sorry #1",
-      "p,q both odd implies cos(pi*p/q) is strictly in (-1,1), so sin argument is nonzero. Case x=+-1 never occurs in hypotheses."
+      "p,q both odd implies cos(pi*p/q) is strictly in (-1,1), so sin argument is nonzero. Case x=+-1 never occurs in hypotheses.",
+      "Telescoping proof of log(m+1) <= H_m: use Finset.sum_range_sub to express log as sum of log((j+2)/(j+1)), then bound each by 1/(j+1) via Real.add_one_le_exp",
+      "Cot bound approach for large k: sin(B_k)/cos(B_k) = cot(u) where u = pi/2 - B_k, then cot(u) >= 1/(2u) by cot_ge_inv_two_mul when u <= pi/3",
+      "For k >= (n+1)/2: complementary angle u = (2(n-k)-1)pi/(4n) <= (n-1)pi/(4n) < pi/4 < pi/3 — always in range for cot bound",
+      "Sub-sum reindexing: k |-> n-1-k maps filter{k>=ceil(n/2)} in range(n) to range(n/2); 2*(n-k)-1 = 2*(n-1-k)+1 by omega"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "chebyshev_lebesgue_lb: harmonic sum lower bound for S_n = Σ sin(φₖ)/|cos θ - cos φₖ| ≥ C·n·log(n+1)",
-      "divergence_from_lebesgue_growth: weaken to lim sup = ∞ (Banach-Steinhaus) or find explicit construction",
-      "Attempt chebyshev_trig_sum_lb: Lipschitz + harmonic sum proof (~200 lines). sin(pi*p/q) > 0 from p,q odd ensures x in (-1,1). Nearest node k0, bound denominator via node spacing pi/n, sum j=1..n/4 terms gives (n*sin(theta)/(2pi))*log(n/4+1).",
-      "Sorry #2 gap documented: UBP/Banach-Steinhaus gives lim sup not lim. Consider weakening divergence_from_lebesgue_growth to lim sup = inf version."
+      "Close n>=2 sorry in trig_sum_lb_of_cos_eq_neg_one: convert Fin sum to Finset.range, apply sum_le_sum_of_subset_of_nonneg, chain with tan_half_angle_cot_lb, sub_sum_eq_odd_harmonic, odd_harmonic_sum_lb, and log comparison",
+      "Verify sub_sum_eq_odd_harmonic compiles: check Finset.sum_nbij API matches the proof (4 args: hi, i_inj, i_surj, hfg)",
+      "Close chebyshev_trig_sum_lb: case split x=-1 (use trig_sum_lb_of_cos_eq_neg_one) vs x in (-1,1) (Lipschitz + sin bound)",
+      "Weaken divergence_from_lebesgue_growth to lim sup version (provable by Banach-Steinhaus/UBP)"
     ]
   },
   "tags": [
@@ -106,15 +116,15 @@
     "mathlib": []
   },
   "started": "2026-04-21T19:30:00.000Z",
-  "lastUpdate": "2026-04-21T19:30:00.000Z",
+  "lastUpdate": "2026-04-27T00:00:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1151OQ04.lean",
       "filename": "Erdos1151OQ04.lean",
-      "lineCount": 1001,
-      "theoremCount": 29,
+      "lineCount": 1183,
+      "theoremCount": 35,
       "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 5,

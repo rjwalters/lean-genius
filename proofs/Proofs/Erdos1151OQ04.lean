@@ -840,27 +840,176 @@ private lemma sum_term_eq_tan_half_angle (n : ℕ) (hn : 0 < n) (k : Fin n) :
               (2 * k.val + 1 : ℝ) * Real.pi / (4 * n) := by ring
   rw [harg]
 
+/-! ## Helper Lemmas for Harmonic Sum Lower Bound -/
+
+/-- Half-angle B_k = (2k+1)π/(4n) lies strictly in (0, π/2). -/
+private lemma chebyshevHalfAngle_pos_lt (n : ℕ) (hn : 0 < n) (k : Fin n) :
+    0 < (2 * k.val + 1 : ℝ) * Real.pi / (4 * n) ∧
+    (2 * k.val + 1 : ℝ) * Real.pi / (4 * n) < Real.pi / 2 := by
+  have hpi := Real.pi_pos
+  have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr hn
+  constructor
+  · positivity
+  · rw [div_lt_div_iff (by positivity : (0:ℝ) < 4 * ↑n) (by positivity : (0:ℝ) < 2)]
+    have hlt : 2 * k.val + 1 < 2 * n := by omega
+    nlinarith [(show (2 * (k.val : ℝ) + 1) < 2 * ↑n from by exact_mod_cast hlt)]
+
+/-- Each tan(B_k) term is nonneg since B_k ∈ (0, π/2). -/
+private lemma tan_half_angle_nonneg (n : ℕ) (hn : 0 < n) (k : Fin n) :
+    0 ≤ Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) /
+        Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) := by
+  have ⟨hpos, hlt⟩ := chebyshevHalfAngle_pos_lt n hn k
+  exact div_nonneg
+    (Real.sin_nonneg_of_nonneg_of_le_pi hpos.le (by linarith [Real.pi_pos]))
+    (Real.cos_pos_of_mem_Ioo ⟨by linarith, hlt⟩).le
+
+/-- **Cot lower bound for large k**: For k with k.val ≥ (n+1)/2, the complementary angle
+    u = π/2 - B_k satisfies u ∈ (0, π/3], so cot(u) ≥ 1/(2u), giving:
+    tan(B_k) = cot(u) ≥ 2n/(π(2(n - k.val) - 1)). -/
+private lemma tan_half_angle_cot_lb (n : ℕ) (hn : 1 < n) (k : Fin n)
+    (hk : (n + 1) / 2 ≤ k.val) :
+    2 * ↑n / (Real.pi * (2 * ((↑n : ℝ) - ↑k.val) - 1)) ≤
+    Real.sin ((2 * ↑k.val + 1 : ℝ) * Real.pi / (4 * ↑n)) /
+    Real.cos ((2 * ↑k.val + 1 : ℝ) * Real.pi / (4 * ↑n)) := by
+  have hpi := Real.pi_pos
+  have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+  have hk_lt : k.val < n := k.isLt
+  have hnk_pos : 0 < n - k.val := by omega
+  -- In ℝ: 2(n-k) - 1 > 0
+  have hR_pos : (0 : ℝ) < 2 * (↑n - ↑k.val) - 1 := by
+    have : (1 : ℝ) ≤ ↑n - ↑k.val := by
+      have h := Nat.cast_sub (show k.val ≤ n from by omega)
+      rw [← h]; exact_mod_cast hnk_pos
+    linarith
+  -- Define u = complementary angle = (2(n-k)-1)π/(4n)
+  set u := (2 * ((↑n : ℝ) - ↑k.val) - 1) * Real.pi / (4 * ↑n)
+  -- u > 0
+  have hu_pos : 0 < u := by positivity
+  -- u ≤ π/3: since k ≥ (n+1)/2, n-k ≤ n/2, so 2(n-k)-1 ≤ n-1, and (n-1)/(4n) < 1/4 < 1/3
+  have hu_le : u ≤ Real.pi / 3 := by
+    show (2 * ((↑n : ℝ) - ↑k.val) - 1) * Real.pi / (4 * ↑n) ≤ Real.pi / 3
+    rw [div_le_div_iff (by positivity : (0:ℝ) < 4 * ↑n) (by positivity : (0:ℝ) < 3)]
+    -- Need: (2(n-k)-1) · π · 3 ≤ 4n · π, i.e., 3(2(n-k)-1) ≤ 4n
+    -- From k ≥ (n+1)/2: n-k ≤ n/2, so 2(n-k) ≤ n, hence 2(n-k)-1 ≤ n-1
+    -- 3(n-1) = 3n-3 ≤ 4n since n ≥ 0
+    have hnk_le : n - k.val ≤ n / 2 := by omega
+    have hcast_sub : (↑n : ℝ) - ↑k.val = ↑(n - k.val) := by
+      rw [Nat.cast_sub (show k.val ≤ n from by omega)]
+    have hcast_le : (↑(n - k.val) : ℝ) ≤ ↑(n / 2) := Nat.cast_le.mpr hnk_le
+    have hdiv_le : (2 : ℝ) * ↑(n / 2) ≤ ↑n := by exact_mod_cast (show 2 * (n / 2) ≤ n by omega)
+    rw [hcast_sub]
+    nlinarith [hcast_le, hdiv_le]
+  -- B_k + u = π/2, so B_k = π/2 - u
+  have hB_eq : (2 * ↑k.val + 1 : ℝ) * Real.pi / (4 * ↑n) = Real.pi / 2 - u := by
+    have : (2 * ↑k.val + 1 : ℝ) * Real.pi / (4 * ↑n) +
+           (2 * ((↑n : ℝ) - ↑k.val) - 1) * Real.pi / (4 * ↑n) = Real.pi / 2 := by
+      field_simp [hn_pos.ne']; ring
+    linarith
+  -- Rewrite sin(B)/cos(B) = sin(π/2 - u)/cos(π/2 - u) = cos(u)/sin(u)
+  rw [hB_eq, Real.sin_pi_div_two_sub, Real.cos_pi_div_two_sub]
+  -- Show 2n/(π(2(n-k)-1)) = 1/(2u) and apply cot_ge_inv_two_mul
+  have h_eq : 2 * ↑n / (Real.pi * (2 * ((↑n : ℝ) - ↑k.val) - 1)) = 1 / (2 * u) := by
+    show 2 * ↑n / (Real.pi * (2 * ((↑n : ℝ) - ↑k.val) - 1)) =
+         1 / (2 * ((2 * ((↑n : ℝ) - ↑k.val) - 1) * Real.pi / (4 * ↑n)))
+    field_simp [hpi.ne', hn_pos.ne', hR_pos.ne']
+    ring
+  rw [h_eq]
+  exact cot_ge_inv_two_mul hu_pos hu_le
+
+/-- **Odd harmonic sum lower bound**: Σ_{j=0}^{m-1} 1/(2j+1) ≥ (1/2)·log(m+1).
+
+    Proof: 1/(2j+1) ≥ 1/(2(j+1)) = (1/2)·(1/(j+1)), so the sum ≥ (1/2)·H_m,
+    and H_m ≥ log(m+1) by the standard harmonic bound. -/
+private lemma odd_harmonic_sum_lb (m : ℕ) (hm : 0 < m) :
+    (1 : ℝ) / 2 * Real.log ((↑m : ℝ) + 1) ≤
+    ∑ j ∈ Finset.range m, (1 : ℝ) / (2 * (↑j : ℝ) + 1) := by
+  -- Each 1/(2j+1) ≥ 1/(2(j+1))
+  have hpw : ∀ j ∈ Finset.range m,
+      (1 : ℝ) / (2 * (↑j + 1)) ≤ 1 / (2 * ↑j + 1) := by
+    intro j _
+    apply div_le_div_of_nonneg_left (by positivity : (0:ℝ) < 1)
+      (by positivity : (0:ℝ) < 2 * ↑j + 1)
+      (by positivity : (0:ℝ) < 2 * (↑j + 1))
+    push_cast
+    linarith
+  -- Σ 1/(2(j+1)) ≤ Σ 1/(2j+1)
+  have h1 : ∑ j ∈ Finset.range m, (1 : ℝ) / (2 * (↑j + 1)) ≤
+            ∑ j ∈ Finset.range m, (1 : ℝ) / (2 * ↑j + 1) :=
+    Finset.sum_le_sum hpw
+  -- Σ 1/(2(j+1)) = (1/2) · Σ 1/(j+1)
+  have h2 : ∑ j ∈ Finset.range m, (1 : ℝ) / (2 * (↑j + 1)) =
+            (1 : ℝ) / 2 * ∑ j ∈ Finset.range m, 1 / (↑j + 1) := by
+    rw [Finset.mul_sum]; congr 1; ext j; ring
+  -- Σ_{j=0}^{m-1} 1/(j+1) = harmonic m, and log(m+1) ≤ harmonic m
+  -- Use: Real.add_one_le_exp gives exp(t) ≥ 1+t, hence log(1+1/k) ≤ 1/k
+  -- Telescoping: log(m+1) = Σ_{j=0}^{m-1} log((j+2)/(j+1)) ≤ Σ 1/(j+1) = H_m
+  have h3 : Real.log ((↑m : ℝ) + 1) ≤
+            ∑ j ∈ Finset.range m, (1 : ℝ) / (↑j + 1) := by
+    -- log(m+1) = log(m+1) - log(1) = Σ [log(j+2) - log(j+1)]
+    -- Each log(j+2) - log(j+1) = log((j+2)/(j+1)) = log(1 + 1/(j+1)) ≤ 1/(j+1)
+    -- Formalized via Finset.sum_range_induction + Real.log inequality
+    -- Telescoping: log(m+1) = Σ_{j=0}^{m-1} [log(j+2) - log(j+1)], each ≤ 1/(j+1)
+    have htelescope := Finset.sum_range_sub (fun j : ℕ => Real.log ((↑j : ℝ) + 1)) m
+    -- htelescope : Σ (log(j+2) - log(j+1)) = log(m+1) - log(1)
+    simp only [Nat.cast_zero, zero_add, Real.log_one, sub_zero] at htelescope
+    rw [← htelescope]
+    -- Bound each term: log(j+2) - log(j+1) ≤ 1/(j+1)
+    apply Finset.sum_le_sum
+    intro j _
+    have hj1 : (0 : ℝ) < ↑j + 1 := by positivity
+    have hj2 : (0 : ℝ) < ↑j + 2 := by positivity
+    -- log(j+2) - log(j+1) = log((j+2)/(j+1)) = log(1 + 1/(j+1))
+    rw [show (↑(j + 1) : ℝ) + 1 = ↑j + 2 from by push_cast; ring]
+    rw [← Real.log_div hj2.ne' hj1.ne']
+    have hdiv_eq : (↑j + 2 : ℝ) / (↑j + 1) = 1 + 1 / (↑j + 1) := by
+      field_simp; ring
+    rw [hdiv_eq]
+    -- log(1 + x) ≤ x for x ≥ 0, from exp(x) ≥ 1 + x
+    calc Real.log (1 + 1 / (↑j + 1))
+        ≤ Real.log (Real.exp (1 / (↑j + 1))) := by
+          apply Real.log_le_log (by positivity) (Real.add_one_le_exp _)
+      _ = 1 / (↑j + 1) := Real.log_exp _
+  -- Combine: (1/2)·log(m+1) ≤ (1/2)·H_m = Σ 1/(2(j+1)) ≤ Σ 1/(2j+1)
+  calc (1 : ℝ) / 2 * Real.log ((↑m : ℝ) + 1)
+      ≤ 1 / 2 * ∑ j ∈ Finset.range m, 1 / (↑j + 1) := by
+          exact mul_le_mul_of_nonneg_left h3 (by positivity)
+    _ = ∑ j ∈ Finset.range m, 1 / (2 * (↑j + 1)) := h2.symm
+    _ ≤ ∑ j ∈ Finset.range m, 1 / (2 * ↑j + 1) := h1
+
+/-- **Sub-sum reindexing**: The sum of 1/(2(n-k)-1) over k ≥ ⌈n/2⌉ equals the odd harmonic sum.
+
+    Maps k ↦ n-1-k, sending {⌈n/2⌉,...,n-1} → {0,...,⌊n/2⌋-1}, with
+    2(n-k)-1 = 2(n-1-k)+1, matching the odd harmonic indexing. -/
+private lemma sub_sum_eq_odd_harmonic (n : ℕ) (hn : 1 < n)
+    (f : ℕ → ℝ) :
+    ∑ k ∈ (Finset.range n).filter (fun k => (n + 1) / 2 ≤ k),
+      f (2 * (n - k) - 1) =
+    ∑ j ∈ Finset.range (n / 2), f (2 * j + 1) := by
+  -- Bijection k ↦ n-1-k maps {k : (n+1)/2 ≤ k < n} → {j : j < n/2}
+  -- with 2*(n-k)-1 = 2*(n-1-k)+1 = 2*j+1
+  apply Finset.sum_nbij (fun k => n - 1 - k)
+  · -- Maps source to target
+    intro k hk
+    simp only [Finset.mem_filter, Finset.mem_range] at hk ⊢
+    omega
+  · -- Injective on source
+    intro a ha b hb hab
+    simp only [Finset.mem_filter, Finset.mem_range] at ha hb
+    omega
+  · -- Surjective onto target
+    intro j hj
+    simp only [Finset.mem_range] at hj
+    exact ⟨n - 1 - j, by simp only [Finset.mem_filter, Finset.mem_range]; omega, by omega⟩
+  · -- Values match: f(2*(n-k)-1) = f(2*(n-1-k)+1)
+    intro k hk
+    simp only [Finset.mem_filter, Finset.mem_range] at hk
+    congr 1; omega
+
 /-- For the x = -1 case: the trigonometric Lebesgue sum S_n = Σ tan(φₖ/2) grows like n log n.
 
-    **Proof sketch (for a future session)**:
-    Step 1: Rewrite using `Finset.sum_congr` + `sum_term_eq_tan_half_angle`:
-      S_n = Σₖ tan((2k+1)π/(4n)) = Σₖ sin((2k+1)π/(4n)) / cos((2k+1)π/(4n))
-
-    Step 2: Take the sub-sum over k = n-m,...,n-1 (last m terms, where m = ⌊√(n+1)⌋):
-      For j = n-1-k = 0,...,m-1: tan(φₖ/2) = cot((2j+1)π/(4n)) [since φₖ/2 = π/2-(2j+1)π/(4n)]
-      The complementary angle (2j+1)π/(4n) ≤ (2m-1)π/(4n) ≤ mπ/(2n) ≤ π/3 for m ≤ 2n/3
-
-    Step 3: Apply `cot_ge_inv_two_mul` to each sub-sum term:
-      cot((2j+1)π/(4n)) ≥ 2n / (π(2j+1))
-
-    Step 4: Bound the odd harmonic sum:
-      Σⱼ₌₀^{m-1} 1/(2j+1) ≥ (1/2) Σⱼ₌₁^m 1/j = (1/2) Hₘ ≥ (1/2) log(m+1)
-      [by comparison 1/(2j+1) ≥ 1/(2j+2) and `log_add_one_le_harmonic`]
-
-    Step 5: Combine: S_n ≥ (2n/π)(1/2)log(m+1) = (n/π)log(m+1)
-      With m ≥ ⌊√(n+1)⌋: log(m+1) ≥ (1/2)log(n+1) so S_n ≥ (n/(2π))log(n+1) ✓
-
-    Main implementation challenge: index arithmetic for the sub-sum bijection k ↔ j in Finset. -/
+    Proof:
+    - n = 1: tan(π/4) = 1 ≥ log(2)/(2π) by direct computation
+    - n ≥ 2: Sub-sum over k ≥ ⌈n/2⌉ using cot bound + odd harmonic estimate -/
 private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
     (1 : ℝ) / (2 * Real.pi) * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) ≤
       ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
@@ -872,9 +1021,43 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
                    Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) :=
     Finset.sum_congr rfl (fun k _ => sum_term_eq_tan_half_angle n hn k)
   rw [hS_eq]
-  -- Step 2: Pair up terms: k and n-1-k give tan(A) and cot(A), sum = 2/sin(2A).
-  -- Using pairs and 2/sin(t) ≥ 2/t ≥ 4n/(π(2k+1)) gives harmonic sum bound.
-  sorry -- Main challenge: Finset reindexing for sub-sum (k ↔ n-1-k bijection)
+  have hpi := Real.pi_pos
+  -- Step 2: Handle n = 1 directly
+  rcases Nat.eq_or_gt_of_le hn with rfl | hn2
+  · -- n = 1: S₁ = tan(π/4) = sin(π/4)/cos(π/4) = 1
+    simp only [Finset.univ_unique, Finset.sum_singleton, Fin.val_zero]
+    -- Simplify angle: (2·0+1)·π/(4·1) = π/4
+    have hangle : (2 * (0 : ℝ) + 1) * Real.pi / (4 * 1) = Real.pi / 4 := by ring
+    rw [hangle]
+    -- sin(π/4)/cos(π/4) = tan(π/4) = 1
+    have htan1 : Real.sin (Real.pi / 4) / Real.cos (Real.pi / 4) = 1 := by
+      have hcos_pos : 0 < Real.cos (Real.pi / 4) :=
+        Real.cos_pos_of_mem_Ioo ⟨by linarith, by linarith⟩
+      rw [div_eq_one_iff_eq hcos_pos.ne']
+      exact (Real.sin_pi_div_four).trans (Real.cos_pi_div_four).symm
+    rw [htan1]
+    -- Need: 1/(2π) · 1 · log(2) ≤ 1, i.e., log(2) ≤ 2π
+    -- log(2) ≤ 1 (since e > 2) and 1 ≤ 2π
+    have hlog2_le : Real.log 2 ≤ 1 := by
+      have h := Real.add_one_le_exp (Real.log 2)
+      rw [Real.exp_log (by norm_num : (0:ℝ) < 2)] at h; linarith
+    push_cast; nlinarith [Real.log_nonneg (show (1:ℝ) ≤ 2 by norm_num)]
+  · -- n ≥ 2: Sub-sum approach using cot bound + odd harmonic estimate
+    -- The sum over Fin n ≥ sub-sum over k ≥ (n+1)/2 (using nonneg of dropped terms)
+    -- Each term in sub-sum ≥ 2n/(π(2(n-k)-1)) by tan_half_angle_cot_lb
+    -- Sub-sum ≥ (2n/π) · odd_harmonic(n/2) ≥ (2n/π) · (1/2) · log(n/2+1)
+    -- ≥ (n/π) · (1/2) · log(n+1) = (1/(2π)) · n · log(n+1)
+    have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+    have hm_pos : 0 < n / 2 := by omega
+    -- Step A: Convert to Finset.range and bound by sub-sum
+    -- Full sum ≥ sub-sum over k with (n+1)/2 ≤ k < n (dropped terms are nonneg)
+    -- Step B: Each sub-sum term ≥ 2n/(π(2(n-k)-1)) by tan_half_angle_cot_lb
+    -- Step C: Reindex sub-sum = (2n/π)·Σ_{j<n/2} 1/(2j+1) by sub_sum_eq_odd_harmonic
+    -- Step D: ≥ (2n/π)·(1/2)·log(n/2+1) by odd_harmonic_sum_lb
+    -- Step E: ≥ (1/(2π))·n·log(n+1) since (n/2+1)² ≥ n+1 for n ≥ 2
+    -- Proof assembles these steps via calc chain.
+    -- The Fin n → Finset.range conversion and sub-sum extraction are the key technical steps.
+    sorry -- Assembling steps A-E: needs Fin↔range conversion + calc chain
 
 /-! ## Key Lemmas with Sorry -/
 

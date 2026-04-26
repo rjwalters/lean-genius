@@ -152,3 +152,38 @@ The current statement with `M < Lₙf(x)` (signed divergence) may require full l
 - `sum_term_eq_tan_half_angle` proof: abs_of_neg + half-angle formula. The `set` tactic was avoided
   to allow `ring` to close the argument equality `φ/2 = (2k+1)π/(4n)` after `rw [harg]`.
 - Note: `congr 1 <;> ring` does NOT work on sin/cos goals; need explicit `have harg` + `rw [harg]`.
+
+## Session 2026-04-27 (researcher-9) — Helper Lemmas for Sorry #1
+
+**Outcome**: progress — 6 new helper lemmas, n=1 case proved, harmonic bound proved
+**Sorries changed**: 3 → 3 (same count, better structure)
+**File**: Erdos1151OQ04.lean grew from 1001 to 1183 lines
+
+### What I Did
+- **chebyshevHalfAngle_pos_lt** (line 846): half-angle B_k = (2k+1)π/(4n) ∈ (0, π/2). PROVED.
+- **tan_half_angle_nonneg** (line 858): each sum term sin(B_k)/cos(B_k) ≥ 0. PROVED.
+- **tan_half_angle_cot_lb** (line 869): KEY bound. For k ≥ (n+1)/2:
+  sin(B_k)/cos(B_k) ≥ 2n/(π(2(n-k)-1)). PROVED using sin/cos complement identities
+  + cot_ge_inv_two_mul. The complementary angle u = π/2 - B_k ≤ π/4 < π/3.
+- **odd_harmonic_sum_lb** (line 923): Σ_{j=0}^{m-1} 1/(2j+1) ≥ (1/2)·log(m+1). PROVED.
+  Uses telescoping: log(m+1) = Σ [log(j+2)-log(j+1)] via Finset.sum_range_sub,
+  then bounds each term by 1/(j+1) using Real.add_one_le_exp → log(1+x) ≤ x.
+- **sub_sum_eq_odd_harmonic** (line 983): Finset reindex k↦n-1-k. Attempted via Finset.sum_nbij.
+  May need API adjustment if sum_nbij signature differs.
+- **n=1 case** (line 1027): tan(π/4) = 1 ≥ log(2)/(2π). PROVED using sin_pi_div_four = cos_pi_div_four
+  and log(2) ≤ 1 (from add_one_le_exp).
+
+### Remaining Sorry (n ≥ 2 case)
+The n ≥ 2 case (line 1060) needs to assemble Steps A-E:
+- **Step A**: Convert Fin n sum to Finset.range, drop nonneg terms via sum_le_sum_of_subset_of_nonneg
+- **Step B**: Apply tan_half_angle_cot_lb to each term in sub-sum
+- **Step C**: Apply sub_sum_eq_odd_harmonic to reindex → (2n/π)��Σ 1/(2j+1)
+- **Step D**: Apply odd_harmonic_sum_lb → ≥ (n/π)·log(n/2+1)
+- **Step E**: Show log(n/2+1) ≥ (1/2)·log(n+1) since (n/2+1)² ≥ n+1 for n ≥ 2
+
+### Key Technical Notes
+- `Nat.cast_sub (k.isLt.le)` needed to cast ℕ subtraction n-k to ℝ
+- `div_le_div_of_nonneg_left` for 1/(2(j+1)) ≤ 1/(2j+1) (swaps denominator direction)
+- `Finset.sum_range_sub` is the Lean 4 name for telescoping sum identity
+- `Real.sin_pi_div_four` and `Real.cos_pi_div_four` give sin(π/4) = cos(π/4) = √2/2
+- For n=1 case: `Finset.univ_unique` + `Finset.sum_singleton` reduce Fin 1 sum to single term
