@@ -56,7 +56,9 @@
       "The per-pair lemma needs two cases: 'large' A,B (where ε-regularity applies directly) and 'small' A,B (where the trivial bound |e| ≤ |A||B| ≤ ε|P||Q| gives 2ε|P||Q|)",
       "The crucial partition identity Σᵢⱼ|Pᵢ||Pⱼ| = n² allows converting per-pair bounds to a global bound on the cut approximation quality",
       "Szemerédi's stepBound n = n·4^n grows tower-type over iterations, while FK's 4^(1/ε²) bound is singly exponential — this quantitative gap is explicit in the formalization",
-      "The converse (FK ⟹ Szemerédi) fails: a cut-approximation partition need not be ε-regular; the FK condition is strictly weaker"
+      "The converse (FK ⟹ Szemerédi) fails: a cut-approximation partition need not be ε-regular; the FK condition is strictly weaker",
+      "The factor-of-2 in the main theorem (ε-regular ⟹ 2ε-cut-approx) is sharp: it arises from bounding both e(A,B) and d|A||B| each by ε|P||Q| in the small-set case, and cannot be reduced to 1 with this proof strategy",
+      "FK regularity is algorithmically favorable: Frieze-Kannan (1999) showed it can be computed in polynomial time O(n^{2+1/ε²}), whereas Szemerédi regularity requires exponential time in the worst case (Alon et al. 2007); for graph approximation and property testing, FK often suffices"
     ],
     "prerequisites": [
       "Szemerédi regularity lemma and ε-regular pairs (SzemerediRegularity.lean)",
