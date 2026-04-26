@@ -16,25 +16,30 @@ Under the fixed definition:
 - `isConstructible_mem_range` is no longer provable (correct!)
 - `wantzel_galois_iff` is now a TRUE statement (not false as before)
 
-## Progress: 1 false sorry → 2 true sorries
+## Progress: Session 28 — eliminated tower divisibility sorry
 
-1. `isConstructible_algebraic_degree` — tower degree property (TRUE, needs ~120 lines)
-2. `wantzel_galois_iff`               — full Galois correspondence (TRUE, needs 500+ lines)
+1. `isConstructible_algebraic_degree` — PROVED (via `pow2_containing_field` sequential tower)
+2. `wantzel_galois_iff`               — SORRY (full Galois correspondence, 500+ lines)
+
+## Session 28 Changes
+
+Added two helper lemmas before the structural theorem:
+- `isConstructible_algebraic`: standalone algebraicity proof by induction
+- `pow2_containing_field`: sequential tower — given IsConstructible α and a 2-power
+  intermediate field F, extends F to a 2-power field G containing α. Uses the tower
+  ℚ ≤ G_a ≤ G_ab ≤ G_ab(β) where [G_ab(β):G_ab] ∈ {1,2} → 2-power rank.
+
+Replaced the sorry in `isConstructible_algebraic_degree` with: apply
+`pow2_containing_field` starting from ⊥, get G with b+β ∈ G and [G:ℚ] = 2^n_G,
+use `finrank_dvd_of_le_right` to get [ℚ(b+β):ℚ] ∣ 2^n_G, extract power via
+`Nat.dvd_prime_pow`.
 
 ## Remaining Sorries
 
-1. `isConstructible_algebraic_degree`: IsConstructible α → IsAlgebraic ℚ α ∧ ∃ n, finrank ℚ ℚ⟮α⟯ = 2^n
-   Proof sketch: Induction on IsConstructible.
-   - rational case: algebraic (minpoly = X - C q), finrank = 1 = 2^0
-   - sqrt_ext case: β² = a, a constructible (IH: finrank ℚ ℚ⟮a⟯ = 2^j), b constructible
-     (IH: finrank ℚ ℚ⟮b⟯ = 2^k). β satisfies X² - a over ℚ(a), so [ℚ(β):ℚ(a)] ≤ 2.
-     Tower law: finrank ℚ ℚ⟮b+β⟯ | finrank ℚ ℚ(b,β) ≤ finrank ℚ ℚ⟮b⟯ * finrank ℚ ℚ⟮β⟯ | 2^(k+j+1).
-   Estimated: ~120 lines. Needs tower law lemmas from Mathlib.
-
-2. `wantzel_galois_iff`: Requires full Galois correspondence + 2-group structure.
+1. `wantzel_galois_iff`: Requires full Galois correspondence + 2-group structure.
    Estimated: 500+ lines of new Galois theory infrastructure. Out of scope.
 
-## Status: 2 sorries (both TRUE), 0 axioms
+## Status: 1 sorry (TRUE but out of scope), 0 axioms
 -/
 
 import Mathlib.FieldTheory.Galois.Basic
@@ -94,7 +99,116 @@ theorem isConstructible_sqrt2 : IsConstructible (Real.sqrt 2 : ℂ) := by
   simpa using IsConstructible.sqrt_ext (Real.sqrt 2 : ℂ) 2 0 h2 h0 hsq
 
 -- ============================================================
--- PART 2: Key Structural Lemma (SORRY — tower degree property)
+-- PART 2: Helper Lemmas for Tower Degree
+-- ============================================================
+
+/-- Constructible numbers are algebraic over ℚ. -/
+private lemma isConstructible_algebraic (α : ℂ) (h : IsConstructible α) :
+    IsAlgebraic ℚ α := by
+  induction h with
+  | rational _ h_mem =>
+    obtain ⟨q, rfl⟩ := h_mem
+    exact isAlgebraic_algebraMap q
+  | sqrt_ext β a b _ _ hβ2 ih_a ih_b =>
+    have hβ_sq : β ^ 2 = a := by rw [sq]; exact hβ2
+    have halg_β : IsAlgebraic ℚ β :=
+      IsAlgebraic.of_pow (by norm_num : 0 < 2) (hβ_sq ▸ ih_a)
+    rw [isAlgebraic_iff_isIntegral] at ih_b halg_β ⊢
+    exact ih_b.add halg_β
+
+/-- Sequential tower lemma: given a constructible α and a 2-power degree
+    intermediate field F, there exists a 2-power degree extension G ≥ F with α ∈ G.
+
+    **Proof**: Induction on IsConstructible, building the tower sequentially:
+    - rational: α ∈ F already (rationals are in every intermediate field)
+    - sqrt_ext (α = b+β, β²=a): extend F → G_a ∋ a → G_ab ∋ b → G_abβ ∋ β,
+      using the tower law: [G_abβ : ℚ] = [G_abβ : G_ab] * [G_ab : ℚ] = d * 2^n_ab,
+      where d = [G_ab(β) : G_ab] ≤ 2, so d ∈ {1,2} and [G_abβ : ℚ] = 2^l. -/
+private lemma pow2_containing_field (α : ℂ) (h : IsConstructible α) :
+    ∀ (F : IntermediateField ℚ ℂ) (m : ℕ),
+    Module.finrank ℚ F = 2 ^ m →
+    ∃ (G : IntermediateField ℚ ℂ) (n : ℕ),
+      F ≤ G ∧ α ∈ G ∧ Module.finrank ℚ G = 2 ^ n := by
+  induction h with
+  | rational _ h_mem =>
+    intro F m hFm
+    obtain ⟨q, rfl⟩ := h_mem
+    exact ⟨F, m, le_refl F, F.algebraMap_mem q, hFm⟩
+  | sqrt_ext β a b ha hb hβ2 ih_a ih_b =>
+    intro F m hFm
+    -- Step 1: extend F to G_a containing a
+    obtain ⟨G_a, n_a, hFGa, ha_in_Ga, hn_a⟩ := ih_a F m hFm
+    -- Step 2: extend G_a to G_ab containing b
+    obtain ⟨G_ab, n_ab, hGaGab, hb_in_Gab, hn_ab⟩ := ih_b G_a n_a hn_a
+    -- a ∈ G_ab since a ∈ G_a and G_a ≤ G_ab
+    have ha_in_Gab : a ∈ G_ab := hGaGab ha_in_Ga
+    -- β² = a
+    have hβ_sq : β ^ 2 = a := by rw [sq]; exact hβ2
+    -- β satisfies X² - C(⟨a, ha_in_Gab⟩) over G_ab
+    have hβ_root : Polynomial.aeval β
+        (X ^ 2 - C (⟨a, ha_in_Gab⟩ : ↥G_ab) : (↥G_ab)[X]) = 0 := by
+      have hcast : (algebraMap (↥G_ab) ℂ) ⟨a, ha_in_Gab⟩ = a := rfl
+      simp only [map_sub, map_pow, aeval_X, aeval_C, hcast]
+      rw [show β ^ 2 = a from hβ_sq, sub_self]
+    have hXsq_ne : (X ^ 2 - C (⟨a, ha_in_Gab⟩ : ↥G_ab) : (↥G_ab)[X]) ≠ 0 :=
+      X_pow_sub_C_ne_zero (by norm_num) _
+    -- β is integral over G_ab (direct polynomial witness: β² - a = 0 over G_ab)
+    have hint_β : IsIntegral (↥G_ab) β :=
+      ⟨X ^ 2 - C (⟨a, ha_in_Gab⟩ : ↥G_ab),
+       monic_X_pow_sub_C (⟨a, ha_in_Gab⟩ : ↥G_ab) (by norm_num), hβ_root⟩
+    -- Establish FiniteDimensional and Module.Free instances explicitly (avoid typeclass timeouts)
+    haveI hfin : FiniteDimensional (↥G_ab) ↥((↥G_ab)⟮β⟯) :=
+      adjoin.finiteDimensional hint_β
+    haveI hfree : Module.Free (↥G_ab) ↥((↥G_ab)⟮β⟯) := inferInstance
+    -- minpoly(G_ab, β) ∣ X² - C(a), so natDegree ≤ 2
+    have hminpoly_dvd : minpoly (↥G_ab) β ∣ X ^ 2 - C (⟨a, ha_in_Gab⟩ : ↥G_ab) :=
+      minpoly.dvd (↥G_ab) β hβ_root
+    have hdeg_le : (minpoly (↥G_ab) β).natDegree ≤ 2 :=
+      (Polynomial.natDegree_le_of_dvd hminpoly_dvd hXsq_ne).trans
+        (natDegree_X_pow_sub_C.le)
+    -- Step 3: adjoin β to G_ab at the (↥G_ab)-level
+    -- finrank(G_ab, (↥G_ab)⟮β⟯) = natDegree(minpoly) ≤ 2
+    have hd_le : Module.finrank (↥G_ab) ↥((↥G_ab)⟮β⟯) ≤ 2 := by
+      rw [adjoin.finrank hint_β]; exact hdeg_le
+    have hd_pos : 0 < Module.finrank (↥G_ab) ↥((↥G_ab)⟮β⟯) := by
+      rw [adjoin.finrank hint_β]; exact minpoly.natDegree_pos hint_β
+    -- finrank(G_ab, (↥G_ab)⟮β⟯) ∈ {1, 2}, hence is a power of 2
+    set d := Module.finrank (↥G_ab) ↥((↥G_ab)⟮β⟯) with hd_def
+    have hd_pow2 : ∃ l : ℕ, d = 2 ^ l := by
+      interval_cases d
+      · exact ⟨0, rfl⟩
+      · exact ⟨1, rfl⟩
+    obtain ⟨l, hl⟩ := hd_pow2
+    -- Tower law: finrank ℚ (↥G_ab)⟮β⟯ = 2^n_ab * 2^l = 2^(n_ab + l)
+    have htower_type : Module.finrank ℚ ↥((↥G_ab)⟮β⟯) = 2 ^ (n_ab + l) := by
+      have h := Module.finrank_mul_finrank ℚ (↥G_ab) ↥((↥G_ab)⟮β⟯)
+      rw [hn_ab, ← hd_def, hl, ← pow_add] at h
+      exact h.symm
+    -- Build G_abβ as the ℚ-intermediate field obtained by restricting scalars
+    let G_abβ : IntermediateField ℚ ℂ := ((↥G_ab)⟮β⟯).restrictScalars ℚ
+    -- finrank ℚ G_abβ = finrank ℚ (↥G_ab)⟮β⟯ (same type, same module structure)
+    have htower : Module.finrank ℚ ↥G_abβ = 2 ^ (n_ab + l) := htower_type
+    -- G_ab ≤ G_abβ (base field of (↥G_ab)⟮β⟯ is contained in it)
+    have hGab_le_Gabβ : G_ab ≤ G_abβ := fun x hx => by
+      change x ∈ ((↥G_ab)⟮β⟯).restrictScalars ℚ
+      rw [mem_restrictScalars]
+      have hcast : (algebraMap (↥G_ab) ℂ) ⟨x, hx⟩ = x := rfl
+      rw [← hcast]
+      exact ((↥G_ab)⟮β⟯).algebraMap_mem ⟨x, hx⟩
+    -- β ∈ G_abβ (β is the generator of the adjunction)
+    have hβ_in_Gabβ : β ∈ G_abβ := by
+      change β ∈ ((↥G_ab)⟮β⟯).restrictScalars ℚ
+      rw [mem_restrictScalars]
+      exact mem_adjoin_simple_self (↥G_ab) β
+    -- b + β ∈ G_abβ
+    have hbβ_in_Gabβ : b + β ∈ G_abβ :=
+      G_abβ.add_mem (hGab_le_Gabβ hb_in_Gab) hβ_in_Gabβ
+    -- F ≤ G_abβ (via F ≤ G_a ≤ G_ab ≤ G_abβ)
+    have hF_le_Gabβ : F ≤ G_abβ := hFGa.trans (hGaGab.trans hGab_le_Gabβ)
+    exact ⟨G_abβ, n_ab + l, hF_le_Gabβ, hbβ_in_Gabβ, htower⟩
+
+-- ============================================================
+-- PART 2b: Key Structural Lemma (tower degree property)
 -- ============================================================
 
 /-- Constructible numbers are algebraic of 2-power degree.
@@ -123,9 +237,9 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
     rw [pow_zero]
     exact IntermediateField.finrank_adjoin_simple_eq_one_iff.mpr
       (IntermediateField.mem_bot.mpr ⟨q, rfl⟩)
-  | sqrt_ext β a b _ _ hβ2 ih_a ih_b =>
-    obtain ⟨halg_a, j, _hj⟩ := ih_a
-    obtain ⟨halg_b, k, _hk⟩ := ih_b
+  | sqrt_ext β a b ha hb hβ2 ih_a ih_b =>
+    obtain ⟨halg_a, -⟩ := ih_a
+    obtain ⟨halg_b, -⟩ := ih_b
     -- β is algebraic: β^2 = a with a algebraic
     have hβ_sq : β ^ 2 = a := by rw [sq]; exact hβ2
     have halg_β : IsAlgebraic ℚ β :=
@@ -135,12 +249,21 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
       rw [isAlgebraic_iff_isIntegral] at halg_b halg_β ⊢
       exact halg_b.add halg_β
     refine ⟨halg_bβ, ?_⟩
-    -- Show Module.finrank ℚ ℚ⟮b+β⟯ ∣ 2^(j+k+1), then Nat.dvd_prime_pow gives exact power
-    suffices hdvd : Module.finrank ℚ ℚ⟮(b + β)⟯ ∣ 2 ^ (j + k + 1) by
-      obtain ⟨m, _, hm⟩ := (Nat.dvd_prime_pow (by norm_num : Nat.Prime 2)).mp hdvd
-      exact ⟨m, hm⟩
-    -- [SORRY] Tower: ℚ⟮b+β⟯ ⊆ (ℚ⟮a⟯ ⊔ ℚ⟮β⟯) ⊔ ℚ⟮b⟯ with finrank | 2^j * 2 * 2^k
-    sorry
+    -- Use pow2_containing_field: find G with b+β ∈ G and finrank ℚ G = 2^n_G
+    -- Starting from ⊥ (finrank ℚ ⊥ = 1 = 2^0), then ℚ⟮b+β⟯ ≤ G
+    obtain ⟨G, n_G, _, hbβ_in_G, hn_G⟩ :=
+      pow2_containing_field (b + β) (IsConstructible.sqrt_ext β a b ha hb hβ2)
+        (⊥ : IntermediateField ℚ ℂ) 0
+        (by simp [IntermediateField.finrank_bot])
+    -- ℚ⟮b+β⟯ ≤ G (since b+β ∈ G)
+    have hle : ℚ⟮(b + β)⟯ ≤ G :=
+      adjoin_le_iff.mpr (Set.singleton_subset_iff.mpr hbβ_in_G)
+    -- finrank ℚ ℚ⟮b+β⟯ ∣ finrank ℚ G = 2^n_G
+    have hdvd : Module.finrank ℚ ℚ⟮(b + β)⟯ ∣ 2 ^ n_G :=
+      hn_G ▸ finrank_dvd_of_le_right hle
+    -- Extract the exact 2-power
+    obtain ⟨m, _, hm⟩ := (Nat.dvd_prime_pow (by norm_num : Nat.Prime 2)).mp hdvd
+    exact ⟨m, hm⟩
 
 -- ============================================================
 -- PART 3: Eisenstein Criterion — X³ - 2 is Irreducible

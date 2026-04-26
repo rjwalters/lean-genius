@@ -118,13 +118,55 @@ Now:
 - `norm_cast` + `Real.mul_self_sqrt` is the right approach for ℝ→ℂ cast goals
 - Tower sorry reduced from "120 lines" to a single divisibility claim
 
-### Remaining Sorries (2)
-1. **Tower divisibility**: `Module.finrank ℚ ℚ⟮(b + β)⟯ ∣ 2 ^ (j + k + 1)`
-2. **`wantzel_galois_iff`**: full Galois characterization — out-of-scope
+### Remaining Sorries (1 as of Session 28)
+1. **`wantzel_galois_iff`**: full Galois characterization — out-of-scope
+
+(Tower divisibility sorry ELIMINATED in Session 28 via `pow2_containing_field` lemma)
 
 ### Files Modified
 - `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean` (in worktree, PR #12712)
 
 ### Next Steps
-1. Prove the tower divisibility sorry: `Module.finrank ℚ ℚ⟮b+β⟯ ∣ 2^(j+k+1)`
-   - Key: ℚ⟮b+β⟯ ≤ ℚ⟮a,β,b⟯; each adjoin step multiplies finrank by ≤ 2^k
+→ Session 28 eliminated the tower divisibility sorry.
+
+## Session 28 (2026-04-26) — Tower Divisibility Sorry Eliminated
+
+**Mode**: REVISIT (continued from Session 27)
+**Outcome**: PROGRESS — tower sorry eliminated; file now has 1 sorry (wantzel_galois_iff only)
+
+### What I Did
+- Diagnosed why the compositum approach fails: `finrank_sup_le` gives `≤` not `∣`
+- Designed sequential tower approach: `pow2_containing_field` lemma
+- Implemented two new helper lemmas:
+  1. `isConstructible_algebraic`: standalone algebraicity by induction (~15 lines)
+  2. `pow2_containing_field`: given constructible α and 2-power field F, extends F to
+     a 2-power field G containing α (~90 lines)
+- Replaced sorry in `isConstructible_algebraic_degree` with call to `pow2_containing_field`
+
+### Key Mathematical Structure
+The `pow2_containing_field` proof:
+- rational case: α = algebraMap ℚ ℂ q ∈ F already → take G = F
+- sqrt_ext case: α = b+β, β² = a
+  1. Apply IH_a to F → G_a (2-power rank, contains a)
+  2. Apply IH_b to G_a → G_ab (2-power rank, contains b)
+  3. Adjoin β to G_ab: β satisfies X² - C(⟨a,ha_in_Gab⟩) over G_ab
+     - minpoly(G_ab, β) ∣ X²-a → natDegree ≤ 2
+     - finrank(G_ab, G_ab⟮β⟯) ∈ {1,2} → is a power of 2 (l ∈ {0,1})
+     - Tower law: finrank ℚ G_ab⟮β⟯ = 2^n_ab * 2^l = 2^(n_ab+l)
+  4. G_abβ = G_ab⟮β⟯.restrictScalars ℚ contains b+β, has finrank 2^(n_ab+l)
+
+### Key API Used
+- `IntermediateField.adjoin.finrank`: `finrank K K⟮x⟯ = natDegree(minpoly K x)`
+- `Polynomial.natDegree_le_of_dvd`: natDegree bound from divisibility
+- `Module.finrank_mul_finrank`: tower law ℚ → G_ab → G_ab⟮β⟯
+- `IntermediateField.finrank_dvd_of_le_right`: divisibility from containment
+- `IntermediateField.mem_restrictScalars`: membership in restrictScalars field
+- `IntermediateField.algebraMap_mem`: base field is contained in any IF
+- `IntermediateField.mem_adjoin_simple_self`: β ∈ K⟮β⟯
+
+### Files Modified
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean`
+
+### Remaining Sorries
+1. `wantzel_galois_iff`: full Galois theory + 2-group tower characterization (500+ lines)
+   → Keep as sorry, out of scope
