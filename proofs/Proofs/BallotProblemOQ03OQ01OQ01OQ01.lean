@@ -370,7 +370,7 @@ Lean estimate: ~200 lines for steps (1)-(3). The bijection proof is the hard cor
       Q' := Q.underlying - {Q.sort[c]}  (multiset-erase)
     Weight-preserved: wt(P)*wt(Q) = wt(P+{v})*wt(Q-{v}) by Multiset.prod_erase.
     Surjective: every (P', Q') has a unique preimage (find the "seam" element in P'.sort). -/
-private lemma jdt_weight_sum (n a b : ℕ) :
+private lemma jdt_weight_sum (n a b : ℕ) (hba : b ≤ a) :
     ∑ PQ : { PQ : Sym (Fin n) a × Sym (Fin n) b // ¬ColStrictSym a b PQ.1 PQ.2 },
       (PQ.1.1.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
       (PQ.1.2.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod =
@@ -529,7 +529,7 @@ private lemma sym_pair_sum_partition (n a b : ℕ) :
     2. ∑_{col-strict} + ∑_{¬col-strict} = h_a*h_b  [sym_pair_sum_partition]
     3. ∑_{¬col-strict} = h_{a+1}*h_{b-1}         [jdt_weight_sum]
     4. ∑_{col-strict} = h_a*h_b - h_{a+1}*h_{b-1} = schurPolynomial 2 sh [algebra] -/
-theorem ssytSchurFin_two_row (n : ℕ) (sh : Fin 2 → ℕ) :
+theorem ssytSchurFin_two_row (n : ℕ) (sh : Fin 2 → ℕ) (hsh : sh 1 ≤ sh 0) :
     ssytSchurFin (R := R) n 2 sh =
     schurPolynomial (σ := Fin n) (R := R) 2 sh := by
   set a := sh 0 with ha
@@ -549,7 +549,7 @@ theorem ssytSchurFin_two_row (n : ℕ) (sh : Fin 2 → ℕ) :
   -- jdt_weight_sum:         ∑_{¬col-strict} = h_{a+1} * (if 1 ≤ b then h_{b-1} else 0)
   -- Therefore:              ∑_{col-strict} = h_a * h_b - h_{a+1} * ...
   exact eq_sub_of_add_eq
-    (jdt_weight_sum (R := R) n a b ▸ sym_pair_sum_partition (R := R) n a b)
+    (jdt_weight_sum (R := R) n a b hsh ▸ sym_pair_sum_partition (R := R) n a b)
 
 /-
 ### Main Theorem: Jacobi-Trudi = SSYT Sum (Open for k ≥ 3)
@@ -567,26 +567,27 @@ theorem ssytSchurFin_two_row (n : ℕ) (sh : Fin 2 → ℕ) :
         (1) algebraic_lgv: for ring-valued weighted DAG, det(weight_matrix) = ∑_NI ∏ weights
         (2) RSK: SSYTFin n k sh ↔ NI tuples of 1-row SSYTs (the Jacobi-Trudi LGV config)
         (3) Weight match: SSYT weight = NI-tuple weight -/
-theorem jacobi_trudi_ssyt_eq (n k : ℕ) (sh : Fin k → ℕ) :
+theorem jacobi_trudi_ssyt_eq (n k : ℕ) (sh : Fin k → ℕ) (hsh : Antitone sh) :
     JacobiTrudi.schurPolynomial (σ := Fin n) (R := R) k sh =
     ssytSchurFin (R := R) n k sh := by
   cases k with
   | zero =>
     -- k = 0: empty partition; both sides = 1.
-    have hsh : sh = Fin.elim0 := funext (fun i => i.elim0)
-    rw [hsh, schurPolynomial_empty, ssytSchurFin_empty]
+    have hsh0 : sh = Fin.elim0 := funext (fun i => i.elim0)
+    rw [hsh0, schurPolynomial_empty, ssytSchurFin_empty]
   | succ k =>
     cases k with
     | zero =>
       -- k = 1: one-row partition.
-      have hsh : sh = fun _ => sh ⟨0, Nat.lt_succ_self 0⟩ :=
+      have hsh1 : sh = fun _ => sh ⟨0, Nat.lt_succ_self 0⟩ :=
         funext (fun i => by fin_cases i <;> rfl)
-      rw [hsh, schurPolynomial_one_row, ssytSchurFin_one_row]
+      rw [hsh1, schurPolynomial_one_row, ssytSchurFin_one_row]
     | succ k =>
       cases k with
       | zero =>
         -- k = 2: two-row case, proved by jdt bijection.
-        exact (ssytSchurFin_two_row n sh).symm
+        -- hsh : Antitone sh gives sh 1 ≤ sh 0 (the partition condition).
+        exact (ssytSchurFin_two_row n sh (hsh (by decide : (0 : Fin 2) ≤ 1))).symm
       | succ k =>
         -- k ≥ 3: requires algebraic LGV + RSK (~300 lines).
         --

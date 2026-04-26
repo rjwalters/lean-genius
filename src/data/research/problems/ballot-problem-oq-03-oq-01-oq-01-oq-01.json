@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: k=0,1,2 SSYT equality proved. 2 sorries: jdt_weight_sum (JDT bijection) + jacobi_trudi_ssyt_eq k≥3 (LGV+RSK)",
+    "progressSummary": "PROGRESS: jdt_weight_sum false statement fixed (b≤a added); hypothesis propagated; BallotProblemOQ03OQ02 regression fixed; 2 sorries remain (jdt_weight_sum open + k≥3 open)",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -65,7 +65,10 @@
       "ssytFin_row_sort_eq_ofFn: sort of ↑(ofFn T.rowi) = ofFn T.rowi when row is monotone (file:BallotProblemOQ03OQ01OQ01OQ01.lean, ~10 lines)",
       "ColStrictSym def + Decidable instance (file:BallotProblemOQ03OQ01OQ01OQ01.lean)",
       "sum_all_sym_pairs: ∑ PQ : Sym n a × Sym n b, prod*prod = h_a * h_b (file:BallotProblemOQ03OQ01OQ01OQ01.lean)",
-      "ssytFin_two_row_eq_sum_colstrict (file:BallotProblemOQ03OQ01OQ01OQ01.lean, ~90 lines)"
+      "ssytFin_two_row_eq_sum_colstrict (file:BallotProblemOQ03OQ01OQ01OQ01.lean, ~90 lines)",
+      "jdt_weight_sum (hba : b ≤ a): correct statement with partition hypothesis",
+      "ssytSchurFin_two_row (hsh : sh 1 ≤ sh 0): partition-aware 2-row theorem",
+      "jacobi_trudi_ssyt_eq (hsh : Antitone sh): partition-aware main theorem"
     ],
     "insights": [
       "Mathlib has hsymm σ R n (complete homogeneous symmetric polynomials) in RingTheory.MvPolynomial.Symmetric.Defs — directly usable for Jacobi-Trudi matrix entries",
@@ -96,7 +99,10 @@
       "rowPair_sum_weight proof: Fintype.sum_prod_type + simp_rw [← Finset.mul_sum] + ← Finset.sum_mul + ssytSchurFin_one_row cleanly factors sum over product type into product of sums",
       "ssytSchurFin_two_row proof pattern: cs = total - ncs; Fintype.sum_subtype_add_sum_subtype splits into cs+ncs=total; eq_sub_of_add_eq closes after substituting rowPair_sum_weight and nonColStrict_sum_weight",
       "ssytFin_two_row_eq_sum_colstrict proved via explicit SSYTFin ≃ colstrict-pair Equiv; uses ssytFin_row_sort_eq_ofFn helper that shows sort of sorted row = same row via mergeSort_eq_self",
-      "ColStrictSym definition: P.sort[j] < Q.sort[j] for all j < min(a,b); Decidable via Fintype.decidableForallFintype; key for separating SSYT contributions by column-strict pairs"
+      "ColStrictSym definition: P.sort[j] < Q.sort[j] for all j < min(a,b); Decidable via Fintype.decidableForallFintype; key for separating SSYT contributions by column-strict pairs",
+      "jdt_weight_sum was FALSE: needs b ≤ a (partition) hypothesis; for a=0,b=1 LHS=0 but RHS=h₁≠0; for a=1,b=2 coefficient differs by X₀X₁²",
+      "jacobi_trudi_ssyt_eq is false for non-partition shapes (e.g. sh=[1,2]: determinant=0 but ssytSchurFin≠0); Antitone hypothesis required",
+      "BallotProblemOQ03OQ02 regression: nth_rw 2 vs rw fixes List.drop_length unification failure (rw rewrites kj inside take kj too)"
     ],
     "mathlibGaps": [
       "No Mathlib SchurPolynomial definition — we provide one via Jacobi-Trudi formula",
@@ -104,10 +110,9 @@
       "RSK correspondence not formalized in Mathlib — needed for jacobiTrudi_lgv_proof"
     ],
     "nextSteps": [
-      "Submit twoRow_equiv and twoRow_equiv_weight to Aristotle (mechanical sorries)",
-      "Implement nonColStrict_sum_weight via jdt bijection: define jdtForward (insert Q[c] into P at violation c), prove it is an Equiv to RowPair (a+1)(b-1), show weight-preserving, apply rowPair_sum_weight",
-      "Once nonColStrict_sum_weight proved, ssytSchurFin_two_row has 0 sorries — only k>=3 remains",
-      "Prove jdt_weight_sum: construct explicit weight-preserving bijection {non-col-strict (a,b)} ≃ {all (a+1,b-1)} via multiset insert/erase; inverse is the seam-finding operation"
+      "Prove jdt_weight_sum via JDT bijection (~120 lines): firstViolIdx + Equiv construction",
+      "Submit jdt_weight_sum to Aristotle as HARD sorry",
+      "jacobi_trudi_ssyt_eq k≥3 requires algebraic LGV + RSK (~300 lines)"
     ],
     "markdown": "# Knowledge Base: LGV Lemma → Jacobi-Trudi Identity\n\n**Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01\n**Last Updated**: 2026-04-23\n**Knowledge Items**: 0\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nNewly selected. Jacobi-Trudi identity expresses Schur polynomials as determinants of\ncomplete homogeneous symmetric polynomials. The LGV lemma (in parent gallery proof)\nprovides the combinatorial proof route via non-intersecting lattice paths.\n\n---\n\n## Insights\n\n_None yet — begin with OBSERVE phase: check Mathlib for SSYT formalization._\n\n---\n\n## Dead Ends\n\n_None identified yet._\n"
   },
@@ -300,22 +305,22 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
       "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 458,
+      "lineCount": 606,
       "theoremCount": 10,
       "axiomCount": 0,
-      "defCount": 5,
-      "sorryCount": 3,
+      "defCount": 6,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "filename": "BallotProblemOQ03OQ01OQ02.lean",
-      "lineCount": 13639,
+      "lineCount": 14006,
       "theoremCount": 64,
       "axiomCount": 0,
       "defCount": 10,
-      "sorryCount": 10,
+      "sorryCount": 11,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
     },
