@@ -1123,9 +1123,9 @@
       "result": "clean"
     },
     "central-limit-theorem-oq-01-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-03T17:36:12Z",
+      "lastAudited": "2026-04-26T01:19:44Z",
       "result": "clean"
     },
     "central-limit-theorem-oq-02": {
@@ -2679,9 +2679,9 @@
       "result": "clean"
     },
     "erdos-1118-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-05T17:42:02Z",
+      "lastAudited": "2026-04-26T01:19:44Z",
       "result": "clean"
     },
     "erdos-1119": {
@@ -9203,9 +9203,9 @@
       "result": "clean"
     },
     "euler-polyhedral-formula-oq-01-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-03T17:36:10Z",
+      "lastAudited": "2026-04-26T01:19:44Z",
       "result": "clean"
     },
     "euler-polyhedral-formula-oq-02": {
@@ -10167,13 +10167,13 @@
       "result": "issues-fixed"
     },
     "newton-inductive-step-oq-03": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [
         "meta.json claimed status:verified but build verification was pending (Docker unavailable); downgraded to status:formalized badge:wip",
         "gaussBinom_ratio_mul: added explicit hdk1 nonzero hypothesis for field_simp"
       ],
-      "lastAudited": "2026-04-25T00:00:00Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-26T01:19:44Z",
+      "result": "clean"
     },
     "nth-root-irrational": {
       "agentId": "auditor-cycle-20-batch",
@@ -11258,8 +11258,8 @@
       "issues": []
     },
     "area-of-circle-oq-01-oq-03-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-03T09:33:04Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-26T01:19:44Z",
       "result": "clean",
       "issues": []
     },
@@ -12679,9 +12679,9 @@
       "issues": []
     },
     "dissection-of-cubes-oq-04": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-23T18:43:25Z",
-      "result": "issues-fixed",
+      "auditCount": 2,
+      "lastAudited": "2026-04-26T01:19:44Z",
+      "result": "clean",
       "issues": []
     },
     "gcd-algorithm-oq-04": {
@@ -12721,8 +12721,8 @@
       "issues": []
     },
     "konigsberg-oq-04": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-23T18:43:26Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-26T01:19:44Z",
       "result": "clean",
       "issues": []
     },
@@ -12763,8 +12763,8 @@
       "issues": []
     },
     "lebesgue-measure-oq-06": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-23T18:43:28Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-26T01:19:44Z",
       "result": "clean",
       "issues": []
     },
@@ -13027,14 +13027,14 @@
       "issues": []
     },
     "divisibility-truncation-general-oq-03": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-24T18:19:59Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-26T01:19:44Z",
       "result": "clean",
       "issues": []
     },
     "hurwitz-theorem-oq-04": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-24T20:39:10Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-26T01:19:44Z",
       "result": "clean",
       "issues": []
     },
@@ -13045,16 +13045,20 @@
       "issues": []
     },
     "abel-ruffini-galois-extensions-oq-04": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-25T10:56:32Z",
-      "result": "clean",
+      "auditCount": 2,
+      "lastAudited": "2026-04-26T01:19:37Z",
+      "result": "issues-found",
       "issues": []
     },
     "amgm-inequality-oq-02-oq-01-oq-02-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "lastAudited": "2026-04-26T00:10:00Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [
+        "status incorrectly set to verified (fixed: changed to formalized)",
+        "stale sorries:0 field removed (fixed: corrected to 3)",
+        "missing lean stub (fixed: stub created)"
+      ]
     }
   },
   "erdos-1097-oq-01": {
