@@ -22,6 +22,7 @@
     "axiomCount": 0,
     "theoremCount": 13,
     "lineCount": 210,
+    "assumptions": "None. Fully verified with 0 sorries and 0 axioms. All 13 theorems are proved from Mathlib using only pi_lt_d2 (π < 3.15), pi_gt_three (π > 3), Gamma_add_one, and rpow_pos_of_pos as numerical/analytic facts.",
     "mathlibDependencies": [
       {
         "theorem": "Gamma_add_one",
@@ -43,7 +44,7 @@
   "parent": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
   "openQuestion": "Which dimension n maximizes the volume of the unit n-ball?",
   "overview": {
-    "historicalContext": "The volume of the unit n-ball, ω_n = π^(n/2)/Γ(n/2+1), is a fundamental quantity in high-dimensional geometry. It satisfies the two-step recurrence ω_{n+2} = (2π/(n+2))·ω_n, which shows the sequence first increases then decreases. The maximum was noted by Hermann Weyl and others; the crossover occurs at n+2 = 2π ≈ 6.28, so n=5 (giving n+2=7) is the first dimension with ratio < 1.",
+    "historicalContext": "The volume formula ω_n = π^(n/2)/Γ(n/2+1) for the unit n-ball was established through the development of the Gamma function by Euler and Legendre in the early 19th century. The generalization of ball volumes to arbitrary dimensions became natural with Riemann's work on n-dimensional geometry and was made explicit through the theory of spherical coordinates in ℝⁿ, where the n-sphere surface area Σ_n = 2π^(n/2)/Γ(n/2) and ball volume ω_n = Σ_n/n are computed by the standard substitution.\n\nThe observation that ω_n achieves its maximum at n=5 appears in 20th-century treatments of high-dimensional geometry. The two-step recurrence ω_{n+2} = (2π/(n+2))·ω_n, immediately showing the crossover at n+2 = 2π ≈ 6.28, is a standard result in textbooks on geometric measure theory. The values ω_0=1, ω_1=2, ω_2=π, ω_3=4π/3, ω_4=π²/2, ω_5=8π²/15 ≈ 5.264 exhibit the peak clearly.\n\nThe phenomenon ω_n → 0 as n → ∞ (despite the radius staying fixed at 1) is a cornerstone example of 'concentration of measure': as dimension grows, almost all the volume of a ball concentrates in a thin shell near the boundary. This is connected to the Gaussian isoperimetric inequality and Milman's work on Banach spaces, where understanding ball volumes is essential to the local theory of Banach spaces (Dvoretzky's theorem, the Blaschke-Santaló inequality).",
     "problemStatement": "Which natural number n maximizes ω_n = π^(n/2)/Γ(n/2+1)?",
     "proofStrategy": "The recurrence ω_{n+2} = (2π/(n+2))·ω_n shows ω is increasing when 2π/(n+2) > 1 (i.e., n < 2π-2 ≈ 4.28) and decreasing when 2π/(n+2) < 1 (i.e., n > 4.28). Since 2π < 7, n=5 (ratio 2π/7 < 1) is the first decreasing step. The maximum at n=5 is verified by: (1) explicit comparison ω_n ≤ ω_5 for n ∈ {0,...,5} using pi_gt_three, and (2) induction via even/odd parity for n ≥ 6, bounding each subsequence by ω_6 or ω_7, both < ω_5.",
     "keyInsights": [
@@ -57,32 +58,44 @@
   },
   "sections": [
     {
+      "id": "intro",
+      "title": "Setup: Definition and Basic Properties",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Header documentation, imports, namespace, ω_n definition, and positivity lemmas omega_pos and omega_nonneg.",
+      "mathContext": "Defines $\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$ as a noncomputable real function. Proves $\\omega_n > 0$ from `rpow_pos_of_pos pi_pos` (numerator) and `Gamma_pos_of_pos` (denominator > 0 since $n/2+1 > 0$)."
+    },
+    {
       "id": "recurrence",
       "title": "Recurrence and Explicit Values",
       "startLine": 43,
-      "endLine": 84,
-      "summary": "Proves ω_{n+2} = 2π/(n+2)·ω_n using Gamma_add_one, and computes ω_0=1 through ω_5=8π²/15."
+      "endLine": 83,
+      "summary": "Proves ω_{n+2} = 2π/(n+2)·ω_n using Gamma_add_one, and computes ω_0=1 through ω_5=8π²/15.",
+      "mathContext": "$\\omega_{n+2} = \\frac{2\\pi}{n+2}\\omega_n$ from $\\Gamma(z+1)=z\\Gamma(z)$. Chain: $\\omega_5 = \\frac{2\\pi}{5}\\cdot\\frac{4\\pi}{3} = \\frac{8\\pi^2}{15}$."
     },
     {
       "id": "decrease",
       "title": "Strict Decrease for n ≥ 5",
-      "startLine": 87,
-      "endLine": 120,
-      "summary": "Proves 2π/(n+2) < 1 for n ≥ 5 (using π < 3.15 < 3.5 so 2π < 7 ≤ n+2), then that ω(n+2) < ω(n). Builds even/odd subsequence bounds."
+      "startLine": 84,
+      "endLine": 119,
+      "summary": "Proves 2π/(n+2) < 1 for n ≥ 5 (using π < 3.15 so 2π < 7 ≤ n+2), then that ω(n+2) < ω(n). Builds even/odd subsequence bounds by induction.",
+      "mathContext": "$n \\geq 5 \\Rightarrow n+2 \\geq 7 > 2\\pi$ (since $\\pi < 3.15$) $\\Rightarrow \\frac{2\\pi}{n+2} < 1 \\Rightarrow \\omega_{n+2} < \\omega_n$. Even subsequence: $\\omega_{6+2k} \\leq \\omega_6$. Odd: $\\omega_{7+2k} \\leq \\omega_7$."
     },
     {
       "id": "maximum",
       "title": "n=5 is the Global Maximum",
-      "startLine": 122,
+      "startLine": 120,
       "endLine": 180,
-      "summary": "Proves ω_n ≤ ω_5 for all n: finite cases n≤5 by explicit comparison, n≥6 by even/odd parity + monotone decrease."
+      "summary": "Proves ω_6 < ω_5 (via 15π < 48 using pi_lt_d2) and ω_7 < ω_5 (direct from omega_strict_decrease), then omega_five_is_max: ω_n ≤ ω_5 for all n, via interval_cases (n ≤ 5) and parity+subsequence (n ≥ 6).",
+      "mathContext": "$\\omega_6 < \\omega_5 \\iff \\pi < 3.2$ (uses `pi_lt_d2`). Main: $\\forall n,\\;\\omega_n \\leq \\omega_5 = 8\\pi^2/15$. Cases $n \\leq 5$ by `interval_cases`; $n \\geq 6$ by even/odd parity split."
     },
     {
       "id": "uniqueness",
       "title": "Uniqueness of the Maximum",
       "startLine": 182,
       "endLine": 210,
-      "summary": "Proves n=5 is the unique maximizer: ω_5 ≤ ω_n implies n=5."
+      "summary": "Proves n=5 is the unique maximizer: omega_five_unique_max shows ω_5 ≤ ω_n implies n=5 (by contradiction), and omega_max_value gives the explicit bound ω_n ≤ 8π²/15.",
+      "mathContext": "$\\omega_5 \\leq \\omega_n \\Rightarrow n=5$. Proof: $n \\neq 5 \\Rightarrow \\omega_n < \\omega_5$ (by same case analysis as maximum), contradicting hypothesis."
     }
   ],
   "conclusion": {

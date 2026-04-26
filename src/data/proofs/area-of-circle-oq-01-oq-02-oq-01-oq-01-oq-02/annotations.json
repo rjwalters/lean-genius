@@ -1,1 +1,153 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "The n=5 Ball Volume Maximum",
+    "content": "The unit n-ball (the set {x ∈ ℝⁿ : ‖x‖ ≤ 1}) has volume ω_n = π^(n/2)/Γ(n/2+1). This quantity is familiar in low dimensions: ω_1 = 2 (length of [-1,1]), ω_2 = π (area of the unit disk), ω_3 = 4π/3 (volume of the unit ball in ℝ³). The sequence is not monotone: it peaks at n=5 with ω_5 = 8π²/15 ≈ 5.2638, then decreases to 0 as n → ∞ (the 'concentration of measure' phenomenon).\n\nThe turning point is governed by the recurrence ratio 2π/(n+2), which crosses 1 at n+2 = 2π ≈ 6.28. Since n must be a natural number, the crossover occurs between n=4 (ratio 2π/6 ≈ 1.047 > 1, still increasing) and n=6 (ratio 2π/8 ≈ 0.785 < 1, now decreasing). This makes n=5 the unique global maximizer.\n\nThis file proves the maximality and uniqueness in 210 lines with 0 sorries and 0 axioms, using Mathlib's `pi_lt_d2` (π < 3.15) and `pi_gt_three` (π > 3) as the only numerical bounds needed.",
+    "mathContext": "$\\omega_n = \\frac{\\pi^{n/2}}{\\Gamma(n/2+1)}$. First values: $\\omega_0=1,\\; \\omega_1=2,\\; \\omega_2=\\pi,\\; \\omega_3=\\frac{4\\pi}{3},\\; \\omega_4=\\frac{\\pi^2}{2},\\; \\omega_5=\\frac{8\\pi^2}{15},\\; \\omega_6=\\frac{\\pi^3}{6},\\ldots$\n\nThe ratio $\\frac{\\omega_{n+2}}{\\omega_n} = \\frac{2\\pi}{n+2}$. This is $>1$ for $n \\leq 4$ (sequence increasing) and $<1$ for $n \\geq 5$ (sequence decreasing two steps at a time).",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit ball",
+      "Gamma function",
+      "concentration of measure",
+      "high-dimensional geometry",
+      "thin shell phenomenon"
+    ],
+    "prerequisites": [
+      "Gamma function (Euler's definition)",
+      "unit n-ball definition",
+      "Real.rpow"
+    ]
+  },
+  {
+    "id": "ann-definition",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 29, "endLine": 42 },
+    "type": "definition",
+    "title": "Defining ω_n and Proving Positivity",
+    "content": "`ω (n : ℕ) : ℝ` is defined as `π ^ ((n : ℝ) / 2) / Gamma ((n : ℝ) / 2 + 1)`. The cast `(n : ℝ)` converts the natural number dimension to a real, enabling real-valued exponentiation π^(n/2) via `rpow` and passing n/2+1 to the Gamma function.\n\n`omega_pos` proves ω_n > 0 by `div_pos`: the numerator π^(n/2) > 0 follows from `rpow_pos_of_pos pi_pos`, and the denominator Γ(n/2+1) > 0 follows from `Gamma_pos_of_pos` (valid for positive argument: n/2+1 > 0 by `positivity`). `omega_nonneg` is immediate via `le_of_lt`.\n\nPositivity is used throughout: the recurrence multiplies by 2π/(n+2) · ω(n), and establishing strict inequalities ω(n+2) < ω(n) requires ω(n) > 0 (so the multiplication by a factor < 1 yields a strict decrease).",
+    "mathContext": "$\\omega_n > 0$ since: $\\pi > 0 \\Rightarrow \\pi^{n/2} > 0$ (`rpow_pos_of_pos`); $n/2+1 > 0 \\Rightarrow \\Gamma(n/2+1) > 0$ (`Gamma_pos_of_pos`). For integer $n$: $\\Gamma(n/2+1) = (n/2)!$ (even $n$) or $= \\frac{(n-1)!!}{2^{(n-1)/2}}\\sqrt{\\pi}$ (odd $n$).",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Gamma_pos_of_pos",
+      "rpow_pos_of_pos",
+      "div_pos",
+      "Nat.cast"
+    ],
+    "prerequisites": [
+      "Real.Gamma",
+      "Real.rpow",
+      "pi_pos"
+    ]
+  },
+  {
+    "id": "ann-recurrence",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 43, "endLine": 83 },
+    "type": "technique",
+    "title": "Two-Step Recurrence and Explicit Values ω₀–ω₅",
+    "content": "`omega_recurrence` proves ω(n+2) = (2π/(n+2))·ω(n) — the central tool for both computing explicit values and proving monotonicity.\n\n**Proof strategy**: Two cast lemmas (`hcast1`, `hcast2`) express `(n+2)/2 = n/2+1` and `(n+2)/2+1 = n/2+2` as real-number equalities. Then `rpow_add pi_pos` factors π^(n/2+1) = π^(n/2)·π^1, and `Gamma_add_one hpos.ne'` applies the recurrence Γ(z+1) = z·Γ(z) with z = n/2+1. A `field_simp` clears denominators (needing positivity of n/2+1 and Γ(n/2+1)).\n\n**Explicit values** (lines 58-83): ω_0=1 (by `simp [Gamma_one]`), ω_1=2 (needs Γ(3/2)=√π/2 via `Gamma_add_one` and `Gamma_one_half_eq`), and ω_2 through ω_5 each computed by `rw [omega_recurrence k, omega_prev]; push_cast; ring`. The value ω_5 = 8π²/15 is proved in one line: `rw [omega_recurrence 3, omega_three]; push_cast; ring`.",
+    "mathContext": "Recurrence derivation: $\\omega_{n+2} = \\frac{\\pi^{n/2}\\cdot\\pi}{(n/2+1)\\cdot\\Gamma(n/2+1)} = \\frac{2\\pi}{n+2}\\cdot\\omega_n$, using $\\Gamma(z+1)=z\\Gamma(z)$ with $z=n/2+1$.\n\nChain: $\\omega_5 = \\frac{2\\pi}{5}\\omega_3 = \\frac{2\\pi}{5}\\cdot\\frac{4\\pi}{3} = \\frac{8\\pi^2}{15}$.\n\nSpecial value: $\\Gamma(\\frac{3}{2}) = \\frac{1}{2}\\Gamma(\\frac{1}{2}) = \\frac{\\sqrt{\\pi}}{2}$, giving $\\omega_1 = \\frac{\\sqrt{\\pi}}{\\sqrt{\\pi}/2} = 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gamma_add_one (Γ(z+1)=z·Γ(z))",
+      "rpow_add",
+      "Gamma_one_half_eq",
+      "field_simp"
+    ],
+    "prerequisites": [
+      "omega_pos",
+      "Gamma_add_one",
+      "rpow_add pi_pos"
+    ]
+  },
+  {
+    "id": "ann-decrease",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 84, "endLine": 119 },
+    "type": "technique",
+    "title": "Strict Decrease for n ≥ 5 and Parity Subsequences",
+    "content": "**ratio_lt_one** (lines 86-91): For n ≥ 5, the recurrence ratio 2π/(n+2) < 1. Since π < 3.15 (`pi_lt_d2`), we have 2π < 6.3 < 7 ≤ n+2 (since n ≥ 5 → n+2 ≥ 7). The bound `div_lt_one (by positivity)` converts the goal to n+2 > 2π, then `linarith` closes with `h := pi_lt_d2` and `hn' := (n : ℝ) ≥ 5`.\n\n**omega_strict_decrease** (lines 93-98): ω(n+2) < ω(n) for n ≥ 5. Via `omega_recurrence` and `mul_lt_mul_of_pos_right`: since the multiplier 2π/(n+2) < 1 and ω(n) > 0, the product is strictly less than 1·ω(n) = ω(n).\n\n**Parity subsequences** (lines 100-119): Two inductive lemmas:\n- `omega_even_le_six (k)`: ω(6+2k) ≤ ω(6) — by induction, using `omega_strict_decrease` at n = 6+2k ≥ 6 ≥ 5\n- `omega_odd_le_seven (k)`: ω(7+2k) ≤ ω(7) — same structure at n = 7+2k ≥ 7 ≥ 5\n\nThese decouple the even and odd parity classes, which do not interact through the recurrence.",
+    "mathContext": "$n \\geq 5 \\Rightarrow n+2 \\geq 7$. Since $\\pi < 3.15$: $2\\pi < 6.3 < 7 \\leq n+2 \\Rightarrow \\frac{2\\pi}{n+2} < 1 \\Rightarrow \\omega_{n+2} < \\omega_n$.\n\nThe parity split is necessary because the recurrence $\\omega_{n+2} = \\frac{2\\pi}{n+2}\\omega_n$ skips every other dimension — even and odd subsequences are completely decoupled.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pi_lt_d2 (π < 3.15 from Mathlib)",
+      "mul_lt_mul_of_pos_right",
+      "Nat.even_or_odd",
+      "parity induction"
+    ],
+    "prerequisites": [
+      "omega_recurrence",
+      "omega_pos",
+      "pi_lt_d2"
+    ]
+  },
+  {
+    "id": "ann-key-bounds",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 120, "endLine": 139 },
+    "type": "theorem",
+    "title": "Critical Bounds: ω₆ < ω₅ and ω₇ < ω₅",
+    "content": "These two bounds are the essential comparisons connecting the global structure (all n ≥ 6 have ω_n ≤ ω_5) to the specific values at the maximum.\n\n**omega_six_lt_five** (lines 123-136): ω_6 = π³/6 < 8π²/15 = ω_5. The proof reduces to showing `15π < 48` (equivalently π < 3.2), then applies a `calc` chain:\n- Step 1: `15π < 48` from `linarith [pi_lt_d2]` (since 15 × 3.15 = 47.25 < 48)\n- Step 2: `15π³ < 48π²` by multiplying by π² > 0 via `mul_lt_mul_of_pos_right`\n- Step 3: π³/6 < 8π²/15 by common-denominator conversion via `gcongr` and `ring`\n\n**omega_seven_lt_five** (line 139): One-liner — ω_7 = ω(5+2) < ω(5) directly from `omega_strict_decrease 5 le_rfl`.",
+    "mathContext": "$\\omega_6 < \\omega_5 \\iff \\frac{\\pi^3}{6} < \\frac{8\\pi^2}{15} \\iff 15\\pi^3 < 48\\pi^2 \\iff 15\\pi < 48 \\iff \\pi < \\frac{48}{15} = 3.2$.\n\nSince $\\pi < 3.15 < 3.2$, the bound holds. The odd case is free: $\\omega_7 = \\frac{2\\pi}{7}\\omega_5 < \\omega_5$ since $\\frac{2\\pi}{7} < 1$ (as $2\\pi < 7$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "pi_lt_d2",
+      "gcongr tactic",
+      "mul_lt_mul_of_pos_right",
+      "omega_strict_decrease"
+    ],
+    "prerequisites": [
+      "omega_five",
+      "omega_recurrence (for ω_6 = π³/6)",
+      "omega_strict_decrease"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 141, "endLine": 180 },
+    "type": "theorem",
+    "title": "Main Theorem: ω₅ is the Global Maximum",
+    "content": "`omega_five_is_max (n : ℕ) : ω n ≤ ω 5` proves that n=5 achieves the global maximum over all natural number dimensions.\n\n**Case n ≤ 5** (lines 150-163): `interval_cases n` generates 6 subgoals for n ∈ {0,1,2,3,4,5}:\n- n=0: 1 ≤ 8π²/15 — from π > 3 → π² > 9 → 8π² > 72 > 15, by `nlinarith [pi_gt_three, pow_pos pi_pos 2]`\n- n=1: 2 ≤ 8π²/15 — from 8π² > 8·9 = 72 > 30\n- n=2: π ≤ 8π²/15 — from 15 ≤ 8π (holds since π > 3 > 15/8)\n- n=3: 4π/3 ≤ 8π²/15 — from 5/2 ≤ π (holds since π > 3)\n- n=4: π²/2 ≤ 8π²/15 — from 15 ≤ 16, purely arithmetic, no π bound\n- n=5: `le_refl`\n\n**Case n ≥ 6** (lines 164-176): `Nat.even_or_odd n` splits into:\n- Even n ≥ 6: write n = 6+2(m-3), apply `omega_even_le_six (m-3)` then `le_of_lt omega_six_lt_five`\n- Odd n ≥ 7: write n = 7+2(m-3), apply `omega_odd_le_seven (m-3)` then `le_of_lt omega_seven_lt_five`",
+    "mathContext": "$\\forall n \\in \\mathbb{N},\\; \\omega_n \\leq \\frac{8\\pi^2}{15} = \\omega_5$.\n\nThe finite cases use only $\\pi > 3$ (weak bound). The infinite cases use the parity-split induction: $n \\geq 6$ even $\\Rightarrow \\omega_n \\leq \\omega_6 < \\omega_5$; $n \\geq 7$ odd $\\Rightarrow \\omega_n \\leq \\omega_7 < \\omega_5$. The `omega` tactic handles the arithmetic of expressing $n$ in the required form.",
+    "significance": "key",
+    "relatedConcepts": [
+      "interval_cases tactic",
+      "Nat.even_or_odd",
+      "le_trans",
+      "nlinarith",
+      "pi_gt_three"
+    ],
+    "prerequisites": [
+      "omega_five",
+      "omega_even_le_six",
+      "omega_odd_le_seven",
+      "omega_six_lt_five",
+      "omega_seven_lt_five"
+    ]
+  },
+  {
+    "id": "ann-uniqueness",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 182, "endLine": 210 },
+    "type": "theorem",
+    "title": "Uniqueness and Maximum Value",
+    "content": "`omega_five_unique_max (n : ℕ) (h : ω 5 ≤ ω n) : n = 5` proves that n=5 is the only natural number achieving the maximum. The proof is by contradiction: assume n ≠ 5, then establish ω_n < ω_5 via the same case analysis as the main theorem (with strict inequalities for n ≠ 5). Then `linarith` derives a contradiction from `h : ω 5 ≤ ω n` and `hlt : ω n < ω 5`.\n\nFor n < 5: each of n=0,1,2,3,4 satisfies ω_n < ω_5 (proved by `nlinarith` with the same pi bounds as the main theorem but yielding strict inequalities). For n > 5: `lt_of_le_of_lt` chains the subsequence bound (ω_n ≤ ω_6 or ω_n ≤ ω_7) with the strict comparison (ω_6 < ω_5 or ω_7 < ω_5).\n\n`omega_max_value` (lines 179-180) provides the explicit maximum value: ∀ n, ω_n ≤ 8π²/15, proved by rewriting with `omega_five.symm` and applying `omega_five_is_max`.",
+    "mathContext": "$\\omega_5 \\leq \\omega_n \\Rightarrow n = 5$. Equivalently: the set $\\{n \\in \\mathbb{N} : \\omega_n = \\max_k \\omega_k\\} = \\{5\\}$.\n\nThe pair (`omega_five_is_max`, `omega_five_unique_max`) together state: $5 = \\arg\\max_{n \\in \\mathbb{N}} \\omega_n$ and the max is unique. Combined with `omega_five`: $\\max_{n \\in \\mathbb{N}} \\omega_n = \\omega_5 = 8\\pi^2/15$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unique maximizer",
+      "proof by contradiction",
+      "linarith",
+      "lt_of_le_of_lt"
+    ],
+    "prerequisites": [
+      "omega_five_is_max",
+      "omega_six_lt_five",
+      "omega_seven_lt_five"
+    ]
+  }
+]
