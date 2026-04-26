@@ -84,6 +84,14 @@
   ],
   "sections": [
     {
+      "id": "sec-preamble",
+      "title": "Preamble: Derivation Narrative and Proof Blueprint",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Module docstring with full algebraic derivation (three ingredients → Brent-Salamin formula), imports, namespace declaration, and `open Real`. The §Status checklist tracks which steps are axiomatized vs. proved.",
+      "mathContext": "The derivation in the docstring reduces to three substitutions: $E = K(3/4 - S/2)$ into $2KE - K^2 = \\pi/2$ gives $K^2(1-2S) = \\pi$; $K = \\pi/(2M)$ gives $K^2 = \\pi^2/(4M^2)$; combining gives $\\pi = 4M^2/(1-2S)$. The E/K ratio derivation uses $E/K = 1 - \\sum_{n \\geq 0} 2^{n-1} c_n^2$: the $n=0$ term is $2^{-1} c_0^2 = 1/4$ (since $c_0^2 = a_0^2 - b_0^2 = 1 - 1/2 = 1/2$ after normalization), giving $E/K = 3/4 - S/2$."
+    },
+    {
       "id": "sec-setup",
       "title": "§ 1: Setup — AGM Sequences and Limit",
       "startLine": 67,
