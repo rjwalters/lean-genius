@@ -107,6 +107,16 @@
   },
   "crossReferences": [
     {
+      "targetId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
+      "relationship": "child",
+      "description": "Vandermonde's convolution in falling factorial form: $\\sum_{j=0}^{k} \\binom{m}{j}\\binom{n}{k-j} = \\binom{m+n}{k}$. The open question in this entry was to prove this identity; the child entry delivers it."
+    },
+    {
+      "targetId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02",
+      "relationship": "child",
+      "description": "Multiset Vandermonde identity: extends Vandermonde convolution to multiset coefficients $\\binom{n+k-1}{k}$, the analog for unordered selection with repetition."
+    },
+    {
       "targetId": "arithmetic-series-oq-02-oq-04",
       "relationship": "extends",
       "description": "Parent: ascending factorial identity C(n+k,k)*k! = ascFactorial(n+1,k)"
