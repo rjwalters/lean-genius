@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: bdry_nfc_even falsity discovered and removed; kuhn_path_existential restructured with correct proof strategy (sorry). 0 axioms, 1 sorry.",
+    "progressSummary": "PROGRESS: Case A of kuhn_path_existential proved (FC simplex with boundary door). Case B (interior door, walk-reversal involution) remains as sorry. 0 axioms, 1 sorry.",
     "builtItems": [
       "doorDegree def: SpernerNDimOQ04.lean:60",
       "IsKuhnCompatible def: SpernerNDimOQ04.lean:65",
@@ -56,7 +56,9 @@
       "kuhn_path_existential_ax (AXIOM, Session 5): Kuhn walk finds FC from some boundary door — SpernerNDimOQ04.lean:708",
       "kuhnPathStart_finds_fc_existential (PROVED from axiom, Session 5): eliminates sorry, uses kuhn_path_existential_ax — SpernerNDimOQ04.lean:724",
       "REMOVED kuhn_walk_reaches_fc (Session 5): theorem was FALSE — universal walk correctness is false for some paths",
-      "REMOVED kuhnPathStart_is_fc (Session 5): theorem was FALSE — not all boundary doors reach FC"
+      "REMOVED kuhnPathStart_is_fc (Session 5): theorem was FALSE — not all boundary doors reach FC",
+      "kuhn_path_existential Case A (PROVED, Session 12): FC simplex with boundary door — direct witness via kuhnPathStart_is_fc_of_fc_start",
+      "kuhn_path_existential Case B (sorry, Session 12): FC simplex with interior door — walk-reversal involution pending"
     ],
     "insights": [
       "IsKuhnCompatible (door degree ≤ 2) combined with abstract_door_parity gives exact door counts: 1 for FC, 0 or 2 for non-FC",
@@ -82,7 +84,9 @@
       "Proof sketch for τ∘τ=id: reversed walk retraces forward walk via IsKuhnCompatible unique-exit + adj_unique_facet symmetry",
       "FPF (no fixed points) part of involution is FULLY PROVED via kuhn_step_nonrevisit + WalkValid",
       "bdry_nfc_even (|B_nfc| even) is FALSE: counterexample d=1 N=2 gives |B_nfc|=1 (odd). The involution must apply to all of B, not just B_nfc.",
-      "Correct strategy: case split B_fc=∅ vs B_fc≠∅. When B_fc≠∅ use directly. When B_fc=∅, τ on B_nfc is FPF involution; odd |B| forces ≥1 element reaching FC."
+      "Correct strategy: case split B_fc=∅ vs B_fc≠∅. When B_fc≠∅ use directly. When B_fc=∅, τ on B_nfc is FPF involution; odd |B| forces ≥1 element reaching FC.",
+      "Direct parity approach (Session 12): obtain FC simplex from sperner_ndim, case-split on boundary vs interior door. Case A (boundary) uses kuhnPathStart_is_fc_of_fc_start directly. This avoids the bdry_nfc_even question entirely for Case A.",
+      "Case B is the genuine hard case: FC simplex with interior door requires walk-reversal to find a boundary door whose walk reaches it"
     ],
     "mathlibGaps": [
       "No Mathlib theorem for path-following algorithm termination with non-revisiting invariant",
@@ -90,8 +94,8 @@
       "SpernerTriangulation lacks an adjacent-simplices-share-unique-facet axiom needed for the non-revisiting proof"
     ],
     "nextSteps": [
-      "Implement kuhnWalkWithExit + walkTrace_reversal induction to formalize τ∘τ=id (~150 lines)",
-      "Alternative: apply sperner_ndim parity directly to bypass walk argument"
+      "Prove Case B of kuhn_path_existential: define kuhnWalkWithExit + walkTrace_reversal for FC simplex with interior door (~150 lines)",
+      "Then proof is complete (0 axioms, 0 sorries)"
     ]
   },
   "tags": [
@@ -111,18 +115,18 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.382Z",
-  "lastUpdate": "2026-04-24T00:00:00.000Z",
+  "lastUpdate": "2026-04-26T00:00:00.000Z",
   "significance": 8,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/SpernerNDimOQ04.lean",
       "filename": "SpernerNDimOQ04.lean",
-      "lineCount": 734,
+      "lineCount": 776,
       "theoremCount": 13,
-      "axiomCount": 1,
+      "axiomCount": 0,
       "defCount": 6,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerNDimOQ04.lean"
     }

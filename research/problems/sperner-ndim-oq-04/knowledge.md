@@ -4,7 +4,7 @@
 
 Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following in the door adjacency graph. Key goal: starting from a boundary door, follow the unique path to reach a fully-colored simplex.
 
-**Status**: SORRY — 0 axioms, 1 sorry (bdry_nfc_even on walk reversal τ∘τ=id). Session 6: axiom replaced with theorem kuhn_path_existential; proof structure complete, only walk reversal formalization pending.
+**Status**: SORRY — 0 axioms, 1 sorry (Case B of kuhn_path_existential: walk-reversal involution). Session 12: Case A proved; Case B pending.
 **Gallery entry**: `src/data/proofs/sperner-ndim-oq-04/`
 **Lean file**: `proofs/Proofs/SpernerNDimOQ04.lean`
 
@@ -302,3 +302,57 @@ Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following
    and τ is FPF, ≥1 element reaches FC. The Lean gap is defining kuhnWalkWithExit properly.
 2. Alternative strategy: instead of involution on B_nfc, directly apply sperner_ndim's
    parity result to deduce FC existence, bypassing the walk argument. This may be simpler.
+
+---
+
+## Session 2026-04-26 (Session 12) — Case A of kuhn_path_existential Proved
+
+**Mode**: REVISIT
+**Outcome**: progress — Case A proved; sorry reduced to Case B only
+
+### What I Did
+
+1. Applied the "alternative strategy" from Session 11: use `sperner_ndim` directly to obtain
+   an FC simplex `t`, then case-split on whether `t`'s unique door is boundary or interior.
+2. Proved Case A (FC simplex has boundary door):
+   - Obtain FC simplex `t` from `sperner_ndim c K hc hbdry_odd`
+   - Extract unique door `k_t` via `fc_door_count_eq_one` + `Finset.card_eq_one`
+   - Case split: `K.adj t k_t = none` (boundary) vs interior
+   - When boundary: `kuhnPathStart_is_fc_of_fc_start` immediately gives the witness
+3. Case B (FC simplex has interior door) remains as sorry:
+   - When `K.adj t k_t = some(s', k')`, the walk-reversal involution argument is needed
+   - The walk from the boundary must reach `t` via some boundary door; formalizing this
+     requires `kuhnWalkWithExit` + `walkTrace_reversal` (~150 lines)
+4. Updated file header comment: `kuhn_path_existential` now documented as "partial sorry"
+
+### Key Findings
+
+- **Direct parity approach works for Case A**: Instead of the complex involution on boundary
+  doors, simply obtain an FC simplex from `sperner_ndim` and check if its door is on the
+  boundary. This completely avoids the bdry_nfc_even question for this case.
+- **Case B is the genuine hard case**: When the FC simplex's unique door is interior, we
+  cannot directly construct the boundary-door witness. Need to show that some boundary door's
+  walk reaches this FC simplex, which requires walk-reversal (tracing the path backwards
+  from the FC simplex to a boundary door).
+- **Lean file grew from 734 to 776 lines**: +21 lines net for the Case A proof body
+
+### Files Modified
+
+- `proofs/Proofs/SpernerNDimOQ04.lean` (+21 lines net: Case A proof in kuhn_path_existential)
+- `research/problems/sperner-ndim-oq-04/knowledge.md` (this session)
+- `src/data/research/problems/sperner-ndim-oq-04.json` (progressSummary, insights, nextSteps)
+
+### Proved This Session
+
+10. Case A of `kuhn_path_existential` — When FC simplex's unique door is on the boundary,
+    directly construct witness using `kuhnPathStart_is_fc_of_fc_start`
+
+### Remaining Sorries (1)
+
+1. Case B of `kuhn_path_existential` — FC simplex's unique door is interior; requires
+   walk-reversal involution to find a boundary door whose walk reaches the FC simplex
+
+### Next Steps
+
+1. Define `kuhnWalkWithExit` and prove `walkTrace_reversal` to fill Case B sorry (~150 lines)
+2. Then proof is complete (0 axioms, 0 sorries)
