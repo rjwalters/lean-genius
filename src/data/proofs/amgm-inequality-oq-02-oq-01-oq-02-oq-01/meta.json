@@ -64,12 +64,20 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Module Header: Newton-Girard Setup",
+      "id": "docstring",
+      "title": "Mathematical Documentation: Newton-Girard Statement",
       "startLine": 1,
+      "endLine": 22,
+      "summary": "Module docstring (lines 1–22) states the Newton-Girard recurrence $p_n = (-1)^{n+1} \\cdot n \\cdot e_n - \\sum_{a \\in \\text{antidiag}\\,n,\\, 0<a_1<n} (-1)^{a_1} e_{a_1} p_{a_2}$ and the three corollaries to be proved: p₁ = e₁, p₂ = e₁² − 2e₂, p₃ = e₁p₂ − e₂p₁ + 3e₃. Cites Mathlib's `MvPolynomial.psum_eq_mul_esymm_sub_sum` as the core dependency.",
+      "mathContext": "The docstring introduces the Newton-Girard recurrence in Lean notation. Power sums $p_k = \\text{psum}\\,\\sigma\\,R\\,k = \\sum_{i : \\sigma} (X_i)^k$ and elementary symmetric polynomials $e_k = \\text{esymm}\\,\\sigma\\,R\\,k = \\sum_{|S|=k} \\prod_{i \\in S} X_i$ are elements of the multivariate polynomial ring `MvPolynomial σ R` over a `CommRing R` with `Fintype σ`. The general recurrence expresses $p_k$ as a linear combination of $e_1, \\ldots, e_k$ and $p_1, \\ldots, p_{k-1}$, with coefficients given by an antidiagonal sum."
+    },
+    {
+      "id": "lean-setup",
+      "title": "Lean Preamble: Imports and Variable Declarations",
+      "startLine": 23,
       "endLine": 31,
-      "summary": "Module docstring states the Newton-Girard recurrence and the three corollaries to be proved (k=1,2,3). Imports Mathlib, opens MvPolynomial, Finset, BigOperators, Set. Declares variable (σ : Type*) (R : Type*) [CommRing R] [Fintype σ] — the general setting of multivariate polynomials over a commutative ring.",
-      "mathContext": "Setting: $\\sigma$ is a finite type (index set), $R$ a commutative ring. Power sums $p_k = \\text{psum}\\, \\sigma\\, R\\, k$ and elementary symmetric polynomials $e_k = \\text{esymm}\\, \\sigma\\, R\\, k$ are defined in `Mathlib.RingTheory.MvPolynomial.Symmetric`."
+      "summary": "Import `Mathlib` (full library import for access to `MvPolynomial.psum_eq_mul_esymm_sub_sum`). Open namespaces `MvPolynomial`, `Finset`, `BigOperators`, `Set`. Declare `variable (σ : Type*) (R : Type*) [CommRing R] [Fintype σ]` — universe-polymorphic setup making all three corollaries valid for any finite type σ and any commutative ring R.",
+      "mathContext": "The `variable` declaration fixes the ambient algebra: $\\sigma$ is a finite index set (any `Fintype`), $R$ is a commutative ring (any `CommRing`). The three identities proved (p₁=e₁, p₂=e₁²−2e₂, p₃=e₁p₂−e₂p₁+3e₃) are therefore polynomial identities over any commutative ring — not just $\\mathbb{R}$ or $\\mathbb{Q}$. In particular they hold for $R = \\mathbb{Z}$ (integer coefficients), $R = \\mathbb{Z}/n\\mathbb{Z}$ (mod-$n$ arithmetic), and any field $k$."
     },
     {
       "id": "corollary-k1",
