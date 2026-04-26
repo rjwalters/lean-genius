@@ -16,25 +16,39 @@ Under the fixed definition:
 - `isConstructible_mem_range` is no longer provable (correct!)
 - `wantzel_galois_iff` is now a TRUE statement (not false as before)
 
-## Progress: 1 false sorry → 2 true sorries
+## Progress: 1 false sorry → 3 true sorries (2 targeted + 1 out-of-scope)
 
-1. `isConstructible_algebraic_degree` — tower degree property (TRUE, needs ~120 lines)
-2. `wantzel_galois_iff`               — full Galois correspondence (TRUE, needs 500+ lines)
+Session update: The single sorry in `isConstructible_algebraic_degree` has been replaced
+with a structured proof skeleton (Steps A–E) that:
+1. Proves a ∈ ℚ⟮β⟯ and ℚ⟮a⟯ ≤ ℚ⟮β⟯ (Step A)
+2. Proves b+β ∈ ℚ⟮b⟯ ⊔ ℚ⟮β⟯ and ℚ⟮b+β⟯ ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯ (Step B)
+3. Reduces the finrank ∣ 2^(j+k+1) claim to two targeted sorries (Steps C, D)
+4. Attempts to prove finrank ℚ⟮b+β⟯ ∣ finrank (join) via algebra instances (Step E)
 
 ## Remaining Sorries
 
-1. `isConstructible_algebraic_degree`: IsConstructible α → IsAlgebraic ℚ α ∧ ∃ n, finrank ℚ ℚ⟮α⟯ = 2^n
-   Proof sketch: Induction on IsConstructible.
-   - rational case: algebraic (minpoly = X - C q), finrank = 1 = 2^0
-   - sqrt_ext case: β² = a, a constructible (IH: finrank ℚ ℚ⟮a⟯ = 2^j), b constructible
-     (IH: finrank ℚ ℚ⟮b⟯ = 2^k). β satisfies X² - a over ℚ(a), so [ℚ(β):ℚ(a)] ≤ 2.
-     Tower law: finrank ℚ ℚ⟮b+β⟯ | finrank ℚ ℚ(b,β) ≤ finrank ℚ ℚ⟮b⟯ * finrank ℚ ℚ⟮β⟯ | 2^(k+j+1).
-   Estimated: ~120 lines. Needs tower law lemmas from Mathlib.
+1. `hβ_dvd` (line ~162): finrank ℚ ℚ⟮β⟯ ∣ 2^(j+1)
+   Proof plan: ℚ⟮a⟯ ≤ ℚ⟮β⟯, tower law gives finrank_β = [ℚ⟮β⟯:ℚ⟮a⟯] * 2^j.
+   β satisfies X²-a over ℚ⟮a⟯ → [ℚ⟮β⟯:ℚ⟮a⟯] ≤ 2 → [ℚ⟮β⟯:ℚ⟮a⟯] ∣ 2 → finrank_β ∣ 2^(j+1).
+   Needs: Algebra (↥ℚ⟮a⟯) (↥ℚ⟮β⟯) instance from ha_le_β, bound on [ℚ⟮β⟯:ℚ⟮a⟯] via minpoly.
 
-2. `wantzel_galois_iff`: Requires full Galois correspondence + 2-group structure.
+2. `hjoin_dvd` (line ~169): finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+k+1)
+   Proof plan: tower via ℚ⟮β⟯ gives finrank_join = [join:ℚ⟮β⟯] * finrank_β.
+   Need [join:ℚ⟮β⟯] ∣ 2^k. This requires STRONGER IH for b: not just finrank ℚ ℚ⟮b⟯ = 2^k,
+   but "for any K/ℚ, finrank K K⟮b⟯ divides a power of 2". Current IH is too weak.
+   Alternative: reformulate `isConstructible_algebraic_degree` with stronger induction.
+
+3. `wantzel_galois_iff` (out-of-scope): Requires full Galois correspondence + 2-group structure.
    Estimated: 500+ lines of new Galois theory infrastructure. Out of scope.
 
-## Status: 2 sorries (both TRUE), 0 axioms
+## Key Mathematical Gap
+
+The `hjoin_dvd` sorry reveals that the induction in `isConstructible_algebraic_degree` is
+too weak. The statement "finrank ℚ ℚ⟮b⟯ = 2^k" does not imply that b's degree over any
+extension of ℚ divides a power of 2. A STRONGER induction is needed, e.g.:
+  "For all IsConstructible b and for any K/ℚ with 2-power degree, finrank K K⟮b⟯ ∣ 2^k"
+
+## Status: 3 sorries (2 targeted tower + 1 out-of-scope Galois), 0 axioms
 -/
 
 import Mathlib.FieldTheory.Galois.Basic
@@ -139,8 +153,46 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
     suffices hdvd : Module.finrank ℚ ℚ⟮(b + β)⟯ ∣ 2 ^ (j + k + 1) by
       obtain ⟨m, _, hm⟩ := (Nat.dvd_prime_pow (by norm_num : Nat.Prime 2)).mp hdvd
       exact ⟨m, hm⟩
-    -- [SORRY] Tower: ℚ⟮b+β⟯ ⊆ (ℚ⟮a⟯ ⊔ ℚ⟮β⟯) ⊔ ℚ⟮b⟯ with finrank | 2^j * 2 * 2^k
-    sorry
+    -- Tower argument: show finrank ℚ ℚ⟮b+β⟯ ∣ 2^(j+k+1)
+    --
+    -- Step A: β² = a ∈ ℚ⟮a⟯ ⟹ a ∈ ℚ⟮β⟯ (close under ·), so ℚ⟮a⟯ ≤ ℚ⟮β⟯
+    have ha_in_β : a ∈ (ℚ⟮β⟯ : IntermediateField ℚ ℂ) := by
+      rw [← hβ2]
+      exact mul_mem (mem_adjoin_simple_self ℚ β) (mem_adjoin_simple_self ℚ β)
+    have ha_le_β : (ℚ⟮a⟯ : IntermediateField ℚ ℂ) ≤ ℚ⟮β⟯ :=
+      adjoin_simple_le_iff.mpr ha_in_β
+    -- Step B: b + β ∈ ℚ⟮b⟯ ⊔ ℚ⟮β⟯, hence ℚ⟮b+β⟯ ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯
+    have hmem : b + β ∈ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯ : IntermediateField ℚ ℂ) :=
+      add_mem (mem_sup_left (mem_adjoin_simple_self ℚ b))
+              (mem_sup_right (mem_adjoin_simple_self ℚ β))
+    have hle : (ℚ⟮(b + β)⟯ : IntermediateField ℚ ℂ) ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯ :=
+      adjoin_simple_le_iff.mpr hmem
+    -- Step C: finrank ℚ ℚ⟮β⟯ ∣ 2^(j+1)
+    -- Proof: ℚ⟮a⟯ ≤ ℚ⟮β⟯ gives tower law
+    --   finrank ℚ ℚ⟮β⟯ = [ℚ⟮β⟯:ℚ⟮a⟯] * finrank ℚ ℚ⟮a⟯ = [ℚ⟮β⟯:ℚ⟮a⟯] * 2^j
+    -- β satisfies X² - a over ℚ⟮a⟯ (since a = β² ∈ ℚ⟮a⟯), so [ℚ⟮β⟯:ℚ⟮a⟯] ≤ 2
+    -- Therefore [ℚ⟮β⟯:ℚ⟮a⟯] ∣ 2, giving finrank ℚ ℚ⟮β⟯ ∣ 2 * 2^j = 2^(j+1)
+    have hβ_dvd : Module.finrank ℚ ↥(ℚ⟮β⟯) ∣ 2 ^ (j + 1) := by
+      sorry -- tower via ℚ⟮a⟯: [ℚ⟮β⟯:ℚ⟮a⟯] ≤ 2 from β²=a, [ℚ⟮β⟯:ℚ⟮a⟯] ∣ 2, finrank_β = [ℚ⟮β⟯:ℚ⟮a⟯] * 2^j
+    -- Step D: finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+k+1)
+    -- Proof: tower through ℚ⟮β⟯
+    --   finrank_join = [join:ℚ⟮β⟯] * finrank_β ∣ 2^k * 2^(j+1) = 2^(j+k+1)
+    -- where [join:ℚ⟮β⟯] ∣ 2^k because b has 2^k-power degree over ℚ
+    -- (this uses the stronger IH: for any K/ℚ, finrank K K⟮b⟯ divides a power of 2)
+    have hjoin_dvd : Module.finrank ℚ ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2 ^ (j + k + 1) := by
+      sorry -- tower via ℚ⟮β⟯: [join:ℚ⟮β⟯] ∣ 2^k (needs stronger IH on b), finrank_β ∣ 2^(j+1)
+    -- Step E: finrank ℚ⟮b+β⟯ ∣ finrank (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) via hle (tower law for inclusions)
+    -- ℚ⟮b+β⟯ ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯ gives: finrank_join = [join:ℚ⟮b+β⟯] * finrank_{b+β}
+    have hdvd_le : Module.finrank ℚ ↥(ℚ⟮b + β⟯) ∣
+        Module.finrank ℚ ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) := by
+      haveI hAlg : Algebra ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) :=
+        (IntermediateField.inclusion hle).toAlgebra
+      haveI hST : IsScalarTower ℚ ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) :=
+        IsScalarTower.of_algebraMap_eq (fun r =>
+          Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
+      exact ⟨Module.finrank ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯),
+             (Module.finrank_mul_finrank ℚ ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯)).symm⟩
+    exact hdvd_le.trans hjoin_dvd
 
 -- ============================================================
 -- PART 3: Eisenstein Criterion — X³ - 2 is Irreducible
