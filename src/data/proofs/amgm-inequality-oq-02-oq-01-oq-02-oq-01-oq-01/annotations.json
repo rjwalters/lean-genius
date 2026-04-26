@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-namespace-setup",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 31, "endLine": 37 },
+    "type": "context",
+    "title": "Universal Generality: CommRing over Any Fintype",
+    "content": "The three lines `open MvPolynomial Finset BigOperators Set` and `variable (σ : Type*) (R : Type*) [CommRing R] [Fintype σ]` establish the full generality under which Newton-Girard is proved in this file.\n\n- **`σ : Type*`** is the **index type** — an arbitrary finite set that indexes the polynomial variables. In the classical setting σ = Fin n (n variables x₁,...,xₙ), but the formalization works for any `Fintype`, including `Fin 3`, `Bool`, or a custom finite type.\n- **`R : Type*` with `[CommRing R]`** is the coefficient ring — no ordering, no characteristic zero, no field structure required. The Newton-Girard identities are purely ring-theoretic.\n- **`[Fintype σ]`** enables Lean to compute sums `∑ i : σ, f i` over all elements of σ (needed for defining `psum` and `esymm`).\n\nThis choice of hypotheses is tight: `CommRing` cannot be weakened to `CommSemiring` because the proof uses subtraction (e.g., `e₁p₃ - e₂p₂ + e₃p₁ - 4e₄`), and `Fintype` cannot be removed because `psum` and `esymm` are defined as finite sums over σ.\n\nCompared to the classical Newton-Girard in analysis textbooks (stated for real polynomials $\\mathbb{R}[x_1,\\ldots,x_n]$), this Lean formulation generalizes in two directions simultaneously: arbitrary coefficient rings and arbitrary index types.",
+    "mathContext": "The multivariate polynomial ring is `MvPolynomial σ R` — the ring of polynomials in variables indexed by σ over R. The power sum $p_k = \\sum_{i : \\sigma} X_i^k$ and elementary symmetric polynomial $e_k = \\sum_{\\{i_1,\\ldots,i_k\\} \\subseteq \\sigma} X_{i_1} \\cdots X_{i_k}$ are both elements of `MvPolynomial σ R`. The Newton-Girard identity holds universally: $\\forall (\\sigma : \\text{Fintype})\\ (R : \\text{CommRing}),\\ p_k = \\sum_{a=1}^{k-1}(-1)^{a+1} e_a p_{k-a} + (-1)^{k+1} k e_k$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "CommRing",
+      "Fintype",
+      "MvPolynomial σ R",
+      "power sum psum",
+      "elementary symmetric polynomial esymm",
+      "type class hierarchy"
+    ],
+    "prerequisites": [
+      "Lean 4 type class system",
+      "MvPolynomial definition",
+      "Finset.sum over Fintype"
+    ]
+  },
+  {
     "id": "ann-docstring",
     "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-01",
     "range": { "startLine": 1, "endLine": 29 },
