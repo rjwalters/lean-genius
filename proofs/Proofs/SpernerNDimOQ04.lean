@@ -53,7 +53,8 @@ the unique other door (if any), repeating until reaching an FC simplex.
 13. `kuhnPathStart_finds_fc_existential` — ∃ boundary door whose walk finds FC (axiomatized)
 
 ### Axiomatized
-- `kuhn_path_existential` (sorry) — Walk-reversal involution τ∘τ=id pending; non-revisiting proved
+- `kuhn_path_existential` (partial sorry) — Case A (FC has boundary door) proved;
+  Case B (FC has interior door, walk-reversal involution τ∘τ=id) pending
   NOTE: former sub-lemma `bdry_nfc_even` was FALSE (see counterexample in theorem docstring)
 
 ### Removed (false as stated)
@@ -736,7 +737,25 @@ theorem kuhn_path_existential {c : Coloring d N} {K : SpernerTriangulation d N}
     ∃ (s₀ : K.Simplex) (k₀ : Fin (d + 1)) (hdoor₀ : isDoorAt c K s₀ k₀)
       (hbdry₀ : K.adj s₀ k₀ = none),
       IsFC c K (kuhnPathStart c K hKuhn s₀ k₀ hdoor₀ hbdry₀) := by
-  sorry
+  -- Step 1: Get an FC simplex t from the parity theorem
+  obtain ⟨t, hfc_t⟩ := sperner_ndim c K hc hbdry_odd
+  -- Step 2: t has exactly 1 door under Kuhn compatibility
+  have h1 : doorDegree c K t = 1 := fc_door_count_eq_one hKuhn t hfc_t
+  -- Step 3: Extract the unique door k_t
+  have hcard1 : (Finset.univ.filter (fun k => isDoorAt c K t k)).card = 1 := h1
+  obtain ⟨k_t, hkt_singleton⟩ := Finset.card_eq_one.mp hcard1
+  have hk_t_mem : k_t ∈ Finset.univ.filter (fun k => isDoorAt c K t k) := by
+    rw [hkt_singleton]; exact Finset.mem_singleton_self _
+  have hdoor_t : isDoorAt c K t k_t := (Finset.mem_filter.mp hk_t_mem).2
+  -- Step 4: Case split on whether k_t is a boundary door
+  by_cases hbdry_t : K.adj t k_t = none
+  · -- Case A: t is FC and its unique door is on the boundary
+    -- kuhnPathStart from (t, k_t) returns t itself since t is FC
+    exact ⟨t, k_t, hdoor_t, hbdry_t,
+      kuhnPathStart_is_fc_of_fc_start hKuhn t k_t hdoor_t hbdry_t hfc_t⟩
+  · -- Case B: t's unique door is interior; need walk-reversal involution argument
+    -- The full proof requires formalizing τ and showing τ∘τ=id on walk traces (~150 lines).
+    sorry
 
 /-- EXISTENTIAL: There exists a boundary door from which kuhnPathStart finds FC.
 
