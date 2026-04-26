@@ -124,5 +124,30 @@
       "Polynomial.Gal.galActionHom_injective",
       "Polynomial.card_rootSet_eq_natDegree"
     ]
+  },
+  {
+    "id": "ann-at-cos72-gal-06-constructibility",
+    "proofId": "angle-trisection-cos-20-gal-oq-03-oq-01",
+    "range": {
+      "startLine": 436,
+      "endLine": 462
+    },
+    "type": "insight",
+    "title": "Constructibility of the Regular Pentagon: |Gal|=2 vs |Gal|=3",
+    "content": "The summary comment at lines 436-462 draws the key distinction between this entry and its sibling cubic cases. The degree-2 result |Gal|=2 has a direct geometric implication via Gauss's constructibility criterion (1801): a real algebraic number α is constructible by ruler and compass if and only if [ℚ(α):ℚ] is a power of 2. Since [ℚ(cos(72°)):ℚ] = 2 = 2¹, cos(72°) is constructible, and therefore the regular pentagon (5-gon) is constructible by compass and straightedge.\n\nIn contrast, the sibling entries in this family (AngleTrisectionCos20GalOQ03 for cos(40°), AngleTrisectionCos20GalOQ01 for cos(π/7)) give |Gal|=3, meaning [ℚ(cos):ℚ]=3 is NOT a power of 2. This is Wantzel's (1837) proof of the impossibility of angle trisection: to trisect 60°, one would need cos(20°) to be constructible, but [ℚ(cos(20°)):ℚ]=3.\n\nThe general pattern: |Gal(ℚ(cos(2π/p))/ℚ)| = (p−1)/2 for prime p. This equals a power of 2 exactly when (p−1)/2 = 2^k, i.e., p = 2^{k+1}+1 is a Fermat prime. The known Fermat primes are 3, 5, 17, 257, 65537 — and the corresponding regular polygons (triangle, pentagon, 17-gon, 257-gon, 65537-gon) are constructible.",
+    "mathContext": "Gauss's criterion (1801): A regular $n$-gon is constructible iff $\\phi(n) = 2^k$ for some $k$. For $n=p$ prime: $\\phi(p)=p-1$, so the $p$-gon is constructible iff $p-1$ is a power of 2, i.e., $p$ is a Fermat prime. The formalization gives $[\\mathbb{Q}(\\cos(2\\pi/5)):\\mathbb{Q}] = 2$, which is a power of 2. The comparison table: $p=5$: $|\\text{Gal}|=2$, constructible; $p=7$: $|\\text{Gal}|=3$, NOT constructible; $p=9$ (not prime, but $\\cos(40°)$): $|\\text{Gal}|=3$, NOT constructible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gauss constructibility criterion",
+      "Fermat primes",
+      "regular pentagon construction",
+      "Wantzel 1837",
+      "angle trisection impossibility"
+    ],
+    "prerequisites": [
+      "Gauss's constructibility criterion (Disquisitiones Arithmeticae §366)",
+      "Wantzel's impossibility theorem (1837)",
+      "cos72_gal_card (main theorem of this file)"
+    ]
   }
 ]
