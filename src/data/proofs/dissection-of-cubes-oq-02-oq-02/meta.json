@@ -7,7 +7,7 @@
     "author": "Dehn (1900), Sydler (1965), Jessen (1968)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Dehn%E2%80%93Sydler_theorem",
     "date": "1965",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/DissectionOfCubesOQ02OQ02.lean",
     "tags": [
       "geometry",
@@ -18,9 +18,9 @@
       "wiedijk-100",
       "research"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "dateAdded": "2026-03-25",
     "mathlibDependencies": [
       {
@@ -55,7 +55,7 @@
       "Dehn-Sydler completeness theorem statement"
     ],
     "lineCount": 413,
-    "assumptions": "1 axiom: tmul_infinite_order_ne_zero (flatness of ℝ over ℤ — torsion-free over PID implies flat). Previously 6 axioms; 5 eliminated: niven_arccos_third (cross-referenced from parent file), arccos_neg_third (proved via Real.arccos_neg), and 3 placeholder axioms (dehn_preserved_by_scissors, volume_preserved_by_scissors, dehn_sydler_theorem).",
+    "assumptions": "0 axioms. tmul_infinite_order_ne_zero is now a proved theorem using Module.Flat ℤ ℝ (flatness from IsBezout ℤ via EuclideanDomain and NoZeroSMulDivisors ℤ ℝ via CharZero). Previously reduced from 6 axioms to 1 (5 eliminated); final axiom now proved via lTensor injectivity under flatness.",
     "mathlib_version": "4.26.0",
     "wiedijkNumber": 37,
     "relatedProblems": [

@@ -7,7 +7,7 @@
     "author": "Lean Genius",
     "sourceUrl": "https://en.wikipedia.org/wiki/Dehn_invariant",
     "date": "1900",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/DissectionOfCubesOQ04.lean",
     "tags": [
       "geometry",
@@ -18,11 +18,11 @@
       "scissors-congruence",
       "irrational-angles"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-04-22",
-    "axiomCount": 1,
-    "assumptions": "1 axiom: tmul_infinite_order_ne_zero (from OQ02OQ02): ℝ is flat over ℤ — needed to show nonzero tensor products. icoAngle_irrational is now a proved theorem (Chebyshev ℤ[√5] argument), reducing the axiom count from 2 to 1.",
+    "axiomCount": 0,
+    "assumptions": "0 axioms. All previously axiomatized results are now proved: icoAngle_irrational via coupled Chebyshev sequences over ℤ[√5], tmul_infinite_order_ne_zero via Module.Flat ℤ ℝ (proved in OQ02OQ02).",
     "lineCount": 581,
     "theoremCount": 22,
     "definitionCount": 5,

@@ -545,10 +545,11 @@ theorem cube_unique_zero_dehn (a : ℝ) (ha : a > 0) :
 ### New axioms introduced in this file: 0
 - `icoAngle_irrational` is now a proved theorem (Chebyshev ℤ[√5] argument).
 
-### Inherited axioms (from OQ02OQ02): 1
-1. `tmul_infinite_order_ne_zero` — ℝ flat over ℤ
+### Inherited axioms (from OQ02OQ02): 0
+- `tmul_infinite_order_ne_zero` is now a proved theorem in OQ02OQ02
+  (Module.Flat ℤ ℝ via Bezout + torsion-free, then lTensor injectivity)
 
-### Total axiom count: 1
+### Total axiom count: 0
 
 ### New theorems proved (0 sorries):
 - `five_ndvd_cosThreeFifthsSeq` — 5 ∤ d_n for the new sequence
