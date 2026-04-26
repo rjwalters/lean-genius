@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: Automaton infrastructure fully compiled (0 sorries in lines 1-517). Remaining: bridge lemma (line 728) + banach_tarski axiomatized (line 785).",
+    "progressSummary": "PROGRESS: orbit_ne proved (sorries 2 to 1). Bridge sorry eliminated via inductive ℤ-sqrt2 encoding with correct composition-order reversal.",
     "builtItems": [
       "Equidecomposable (G-equidecomposability, with notation ≃ᴳ[G]) — proofs/Proofs/LebesgueMeasureOQ06.lean:43",
       "IsParadoxical — proofs/Proofs/LebesgueMeasureOQ06.lean:81",
@@ -54,7 +54,9 @@
       "evalWord_nonempty_anyInv: main automaton theorem :499",
       "orbit_ne: structured proof replacing big sorry :639",
       "evalWord_nonempty_labeledInv: automaton induction (0 sorries) — fixed e2Int_no_inv, base_psi, base_psi_inv, hnocancel proofs :465",
-      "getLast!_mem_getLast?: helper lemma (induction, 0 sorries) connecting getLast! to getLast? for nonempty lists :473"
+      "getLast!_mem_getLast?: helper lemma (induction, 0 sorries) connecting getLast! to getLast? for nonempty lists :473",
+      "applyGen_decode: algebraic lemma — applyGen(g,v) decoded = 3 * M_g(decoded v), 12 cases by fin_cases, closed by nlinarith",
+      "enc_ind: induction on word lists — evalWord l v decodes to 3^(n+|l|) * liftF(mk l.reverse)(p) when decode(v)=3^n*p"
     ],
     "insights": [
       "Banach-Tarski NOT in Mathlib as of 2026-04 — confirmed via search. Available Mathlib pieces: Matrix.orthogonalGroup, FreeGroup, IsometryEquiv, EuclideanSpace.",
@@ -75,7 +77,9 @@
       "Automaton invariant (anyInv) is preserved by all 12 valid transitions and violated by e2Int, giving the orbit separation",
       "The orbit_ne sorry decomposes into 3 sub-sorries: (a) FreeGroup.Reduced->Chain trivial, (b) anyInv+encoding contradiction ~20 lines via sqrt2 irrationality, (c) integer-real bridge ~60 lines induction on toWord",
       "labeledInv tracks the SPECIFIC last-generator invariant, which is needed for the no-cancel step in the induction",
-      "Automaton section (lines 1-517) is now fully sorry-free. Key fixes: (1) full simp beats simp only + dsimp + norm_num for Zsqrtd projections; (2) refine-split + simp per conjunct works for multi-conjunct goals; (3) custom induction on getLast! vs getLast? avoids missing API; (4) direct application of chain_append junction avoids simp on head?_nil"
+      "Automaton section (lines 1-517) is now fully sorry-free. Key fixes: (1) full simp beats simp only + dsimp + norm_num for Zsqrtd projections; (2) refine-split + simp per conjunct works for multi-conjunct goals; (3) custom induction on getLast! vs getLast? avoids missing API; (4) direct application of chain_append junction avoids simp on head?_nil",
+      "Composition order mismatch: evalWord l applies letters left-to-right (leftmost=innermost), while liftF(mk l) applies leftmost last. Fix: use l.reverse so evalWord l.reverse encodes liftF(mk l)",
+      "Reversing a reduced word preserves reducedness: the no-cancel condition is symmetric since a.2=!b.2 iff b.2=!a.2"
     ],
     "mathlibGaps": [
       "Banach-Tarski theorem itself not in Mathlib (no formalization as of 2026-04)",
@@ -84,9 +88,7 @@
       "Amenability for infinite groups not in Mathlib (FolnerCondition exists but Cesaro mean construction not)"
     ],
     "nextSteps": [
-      "Prove bridge sorry (line 728): evalWord (toWord w) e2Int scaled by 3^n = liftF w applied to e2 — induction on toWord length with scaledAct = 3 * M_L",
-      "Prove hred_word (sorry in orbit_ne): FreeGroup.toWord_reduced gives Reduced, convert to Chain",
-      "banach_tarski (line 785) remains axiomatized — full proof requires F2 paradoxical decomposition + SO(3) orbit lift"
+      "Only remaining sorry: banach_tarski main theorem (~800 lines via Hausdorff paradox + AC — intentionally axiomatized)"
     ]
   },
   "tags": [
@@ -184,11 +186,11 @@
     {
       "path": "Proofs/LebesgueMeasureOQ06.lean",
       "filename": "LebesgueMeasureOQ06.lean",
-      "lineCount": 1287,
+      "lineCount": 1429,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 7,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ06.lean"
     },
