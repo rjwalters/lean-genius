@@ -6,41 +6,39 @@ Insights accumulated during research on this problem.
 
 ## Problem Understanding
 
-The Frieze-Kannan weak regularity lemma (1999) is a simplified variant of Szemerédi's regularity
-lemma that achieves exponential partition size (2^O(ε⁻²)) instead of the tower-type bound.
-The key difference: Frieze-Kannan approximates edge density in the cut-norm sense, while full
-Szemerédi achieves ε-regularity for all pairs.
+Szemerédi Regularity: Frieze-Kannan Weak Regularity Comparison.
 
-**Research goal**: Formalize Frieze-Kannan in Lean 4 and prove the strict gap from full regularity.
-
----
-
-## Key Definitions Needed
-
-- **Cut norm**: `‖f‖_□ = max_{S,T ⊆ V} |∑_{i∈S, j∈T} f(i,j)|`
-- **Step function / density function**: bipartite density between partition parts
-- **Weak regularity**: cut-norm approximation by step function ≤ ε·|V|²
-- **IsWeaklyRegular**: Lean predicate capturing the approximation bound
+Prove that Szemerédi ε-regularity implies Frieze-Kannan 2ε-cut-approximation,
+and quantify the bound gap: Szemerédi uses tower-type parts while FK uses at
+most 4^(1/ε²) parts.
 
 ---
 
-## Mathlib Status
+## Session 1 (2026-04-26)
 
-The parent gallery proof `szemeredi-regularity` already provides:
-- `Finpartition` API in Mathlib
-- `SimpleGraph.regularity` lemmas (ε-regular pairs)
-- `Mathlib.Combinatorics.SimpleGraph.Regularity.Energy` for energy increment
+**Mode**: FRESH
+**Outcome**: COMPLETED — Lean file already fully proved (0 sorries, 0 axioms); created gallery entry
 
-Check: does Mathlib have `cutNorm` or related supremum over bipartite subsets? Likely not yet.
+### What I Did
 
----
+1. Discovered SzemerediRegularityOQ02.lean (399 lines) already fully proved with 0 sorries
+2. Confirmed key theorems: IsCutApproximation, pair_cut_error_bound, szemeredi_implies_fk,
+   sz_stepBound_ge_power, sz_two_steps_tower, fk_bound_at_half
+3. Created gallery entry in src/data/proofs/szemeredi-regularity-oq-02/ (meta.json, annotations.json, index.ts)
 
-## Insights
+### Key Insights
 
-[Insights from research attempts will be accumulated here]
+- Per-pair proof needs two cases: large A,B (ε-regularity) and small A,B (trivial bound)
+- Partition identity: sum_ij |Pi||Pj| = n^2 converts per-pair to global bound
+- FK's bound 4^(1/eps^2) is singly exponential vs Szemerédi's tower-type
+- The converse (FK implies Szemerédi) fails — FK is strictly weaker
+
+### Files Modified
+
+- src/data/proofs/szemeredi-regularity-oq-02/ (new gallery entry)
 
 ---
 
 ## Dead Ends
 
-[Approaches known not to work will be documented here]
+None — the Lean file was already complete when discovered.
