@@ -59,49 +59,60 @@
   },
   "sections": [
     {
-      "title": "curvatureSin Definition",
-      "startLine": 87,
-      "endLine": 91,
-      "description": "Defines curvatureSin K t as sin(√K·t)/√K for K>0, t for K=0, sinh(√|K|·t)/√|K| for K<0.",
-      "summary": "curvatureSin K t: unified trigonometric function for κ-geometry",
+      "id": "module-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "Five imports (PtolemysComplexProof, PtolemysTheoremOQ01OQ02, Mathlib.Analysis.Complex.Trigonometric, InnerProductSpace.Basic, Tactic), followed by a comprehensive docstring outlining the curvatureSin function, unified Ptolemy theorem, six results proved, the proof chain for the inequality, and the hyperbolic conjecture. Setup: set_option linter.unusedVariables false, open Real EuclideanGeometry.",
+      "mathContext": "The synthesis combines two parent gallery proofs: `PtolemysComplexProof` (complex Ptolemy inequality $\\|z_1-z_3\\|\\cdot\\|z_2-z_4\\| \\leq \\|z_1-z_2\\|\\cdot\\|z_3-z_4\\| + \\|z_2-z_3\\|\\cdot\\|z_1-z_4\\|$) and `PtolemysTheoremOQ01OQ02` (spherical Ptolemy equality + chord-arc identity)."
+    },
+    {
       "id": "curvaturesin-def",
-      "mathContext": "The `sn_K` function from constant-curvature geometry: `sn_K(t) = sin(√K·t)/√K` for positive curvature K, `sn_0(t) = t` for zero curvature, `sn_K(t) = sinh(√|K|·t)/√|K|` for negative curvature. In the limit K→0, sin(√K·t)/√K → t (L'Hôpital). The K=1 case gives sin, the K=-1 case gives sinh."
+      "title": "Part 1: curvatureSin Definition",
+      "startLine": 71,
+      "endLine": 91,
+      "summary": "Defines the noncomputable function curvatureSin K t as sin(√K·t)/√K for K>0, t for K=0, sinh(√|K|·t)/√|K| for K<0. The three-case if-then-else matches the classical sn_K function from constant-curvature geometry.",
+      "mathContext": "The `sn_K` function: unique solution of the Jacobi ODE $y'' + Ky = 0$ with $y(0)=0$, $y'(0)=1$. In the limit $K \\to 0$, $\\sin(\\sqrt{K}\\cdot t)/\\sqrt{K} \\to t$ by L'Hôpital."
     },
     {
-      "title": "Basic Properties",
-      "startLine": 96,
-      "endLine": 130,
-      "description": "Proves curvatureSin_zero (K=0 identity), curvatureSin_one (K=1 gives sin), curvatureSin_neg_one (K=-1 gives sinh), curvatureSin_zero_right (always 0 at t=0).",
-      "summary": "curvatureSin 0=id, 1=sin, -1=sinh, always 0 at t=0",
       "id": "basic-props",
-      "mathContext": "For K=1: sin(√1·t)/√1 = sin(1·t)/1 = sin(t). For K=-1: sinh(√1·t)/√1 = sinh(t). The K=0 case is the definition. All three geometries satisfy sn_K(0) = 0."
+      "title": "Part 2: Basic Properties",
+      "startLine": 92,
+      "endLine": 130,
+      "summary": "Six lemmas: curvatureSin_zero (@[simp], K=0 gives identity), curvatureSin_pos (K>0 formula), curvatureSin_neg (K<0 formula), curvatureSin_one (K=1 gives sin), curvatureSin_neg_one (K=-1 gives sinh), curvatureSin_zero_right (@[simp], always 0 at t=0).",
+      "mathContext": "For $K=1$: $\\sin(\\sqrt{1} \\cdot t)/\\sqrt{1} = \\sin(t)$. For $K=-1$: $\\sinh(\\sqrt{1} \\cdot t)/\\sqrt{1} = \\sinh(t)$. The normalization $\\text{curvatureSin}_K'(0) = 1$ for all $K$ (motivates the formula)."
     },
     {
-      "title": "Spherical Ptolemy Equality (curvatureSin 1)",
-      "startLine": 155,
-      "endLine": 175,
-      "description": "Restates the spherical Ptolemy equality (from PtolemysTheoremOQ01OQ02.lean) using curvatureSin 1 for concyclic unit-sphere points.",
-      "summary": "Spherical Ptolemy equality via curvatureSin 1 — requires concyclicity",
       "id": "spherical-equality",
-      "mathContext": "For four concyclic unit-sphere points a,b,c,d with diagonals crossing at p, curvatureSin 1 (d(a,c)/2)·curvatureSin 1 (d(b,d)/2) = curvatureSin 1 (d(a,b)/2)·curvatureSin 1 (d(c,d)/2) + curvatureSin 1 (d(a,d)/2)·curvatureSin 1 (d(b,c)/2). Follows directly from spherical_ptolemy since curvatureSin 1 = sin."
+      "title": "Part 3: Spherical Ptolemy Equality",
+      "startLine": 131,
+      "endLine": 165,
+      "summary": "Introduces the variable V (real inner product space) and restates the spherical Ptolemy equality from PtolemysTheoremOQ01OQ02 in curvatureSin 1 language. Proof: simp [curvatureSin_one] + exact SphericalPtolemy.spherical_ptolemy. Requires Cospherical + diagonal crossing conditions.",
+      "mathContext": "For concyclic unit-sphere points: $\\text{curvatureSin}_1(d_{ac}/2) \\cdot \\text{curvatureSin}_1(d_{bd}/2) = \\text{curvatureSin}_1(d_{ab}/2) \\cdot \\text{curvatureSin}_1(d_{cd}/2) + \\text{curvatureSin}_1(d_{ad}/2) \\cdot \\text{curvatureSin}_1(d_{bc}/2)$."
     },
     {
-      "title": "Spherical Ptolemy Inequality (New)",
-      "startLine": 178,
-      "endLine": 229,
-      "description": "Proves the spherical Ptolemy INEQUALITY for any four unit-circle points in ℂ. No concyclicity assumption needed. Proof: chord-arc + complex Ptolemy inequality / 4.",
-      "summary": "Spherical Ptolemy ≤ for all unit-circle points — unconditional inequality",
       "id": "spherical-inequality",
-      "mathContext": "For any z₁,z₂,z₃,z₄ on the unit circle in ℂ (‖z_i‖=1), not necessarily concyclic: sin(d_ac/2)·sin(d_bd/2) ≤ sin(d_ab/2)·sin(d_cd/2) + sin(d_bc/2)·sin(d_ad/2). Proof: chord-arc gives ‖z_i-z_j‖ = 2·sin(d_ij/2), so sin(d_ij/2) = ‖z_i-z_j‖/2. The inequality becomes (‖z₁-z₃‖/2)·(‖z₂-z₄‖/2) ≤ ..., which is ptolemy_inequality divided by 4."
+      "title": "Part 4: Spherical Ptolemy Inequality (New Result)",
+      "startLine": 167,
+      "endLine": 229,
+      "summary": "The key new contribution: proves the spherical Ptolemy INEQUALITY for any four unit-circle points in ℂ with NO concyclicity assumption. Four-step proof: (1) curvatureSin 1 = sin, (2) chord-arc identity gives ‖z_i-z_j‖ = 2·sin(d_ij/2), (3) rewrite goal in chord lengths, (4) apply ptolemy_inequality / 4.",
+      "mathContext": "For any $z_1,z_2,z_3,z_4 \\in S^1 \\subset \\mathbb{C}$: $\\sin(d_{13}/2) \\cdot \\sin(d_{24}/2) \\leq \\sin(d_{12}/2) \\cdot \\sin(d_{34}/2) + \\sin(d_{23}/2) \\cdot \\sin(d_{14}/2)$. Equality iff concyclic in order."
     },
     {
-      "title": "Hyperbolic Case Conjecture",
+      "id": "hyperbolic-conjecture",
+      "title": "Part 5: Hyperbolic Case Conjecture",
       "startLine": 231,
       "endLine": 257,
-      "description": "Documents the K=-1 hyperbolic Ptolemy theorem as a conjecture, with a precise estimate of the Mathlib infrastructure needed: ~300 lines for Poincaré disk metric, ~400-500 for Möbius isometries, ~200 for circle-to-circle correspondence.",
-      "summary": "Hyperbolic Ptolemy (K=-1): blocked by missing Poincaré disk infrastructure (~800-1200 lines)",
-      "id": "hyperbolic-conjecture",
-      "mathContext": "Key identity needed: $\\sinh(d_H(z,w)/2) = |z-w|/\\sqrt{(1-|z|^2)(1-|w|^2)}$, replacing the spherical chord-arc identity. The conformal factors $(1-|z|^2)$ cancel for unit-circle points (spherical case) but not for general Poincaré disk points (hyperbolic case)."
+      "summary": "Documents the K=-1 hyperbolic Ptolemy theorem as a conjecture, with a precise estimate of the missing Mathlib infrastructure: ~300 lines for Poincaré disk metric, ~400-500 for Möbius isometries, ~200 for circle-to-circle correspondence (~800-1200 total).",
+      "mathContext": "Key identity needed: $\\sinh(d_H(z,w)/2) = |z-w|/\\sqrt{(1-|z|^2)(1-|w|^2)}$. The conformal factors $(1-|z|^2)$ cancel for unit-circle points (spherical case) but not for general Poincaré disk points."
+    },
+    {
+      "id": "summary",
+      "title": "Module Summary",
+      "startLine": 258,
+      "endLine": 270,
+      "summary": "Seven #check declarations enumerate the complete public API: curvatureSin (definition), four basic lemmas (zero, one, neg_one, zero_right), and two Ptolemy theorems (equality and inequality). All are noncomputable.",
+      "mathContext": "Three-tier API: (1) core function $\\text{curvatureSin}_K$, (2) four evaluation lemmas at $K = 0, 1, -1$ and $t = 0$, (3) two Ptolemy results at $K = 1$ — equality (concyclic) and inequality (unconditional)."
     }
   ],
   "overview": {
@@ -169,11 +180,39 @@
   ],
   "references": [
     {
-      "authors": ["A. F. Beardon", "D. Minda"],
+      "authors": "Ptolemy, Claudius",
+      "title": "Almagest (Μαθηματικὴ Σύνταξις)",
+      "year": "~150",
+      "venue": "Translated by G. J. Toomer, Princeton University Press (1998)",
+      "note": "Original statement and proof of Ptolemy's theorem for cyclic quadrilaterals inscribed in a circle, used to construct chord tables for astronomical calculations"
+    },
+    {
+      "authors": "Beardon, Alan F.; Minda, David",
       "title": "A multi-point Schwarz-Pick lemma",
       "year": "2007",
       "venue": "Journal d'Analyse Mathématique, vol. 92, pp. 81-104",
-      "note": "Establishes the sn_K framework for Ptolemy-type inequalities in constant-curvature spaces."
+      "note": "Establishes the sn_K framework for Ptolemy-type inequalities in constant-curvature spaces — the mathematical source for the curvatureSin function"
+    },
+    {
+      "authors": "Foertsch, Thomas; Lytchak, Alexander; Schroeder, Viktor",
+      "title": "Nonpositive curvature and the Ptolemy inequality",
+      "year": "2007",
+      "venue": "International Mathematics Research Notices, vol. 2007, rnm100",
+      "note": "Proves that a geodesic metric space is CAT(0) if and only if it satisfies the Ptolemy inequality for all four points — the metric characterization referenced in the keyInsights"
+    },
+    {
+      "authors": "Toponogov, Victor A.",
+      "title": "Riemannian spaces which contain straight lines",
+      "year": "1959",
+      "venue": "Doklady Akademii Nauk SSSR, vol. 127, pp. 977-979",
+      "note": "The Toponogov comparison theorem for triangles in spaces of bounded curvature, using the sn_K function as the comparison model"
+    },
+    {
+      "authors": "do Carmo, Manfredo P.",
+      "title": "Riemannian Geometry",
+      "year": "1992",
+      "venue": "Birkhäuser, Chapter 10",
+      "note": "Standard reference for Jacobi fields and comparison geometry; the Jacobi ODE y'' + Ky = 0 whose solution is curvatureSin K (Section 10.2)"
     }
   ],
   "sorries": 0,
