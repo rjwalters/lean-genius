@@ -128,6 +128,31 @@
       "targetId": "hilbert-15",
       "relationship": "extends",
       "description": "Parent: Hilbert's 15th problem with axiomatized four lines theorem. This file proves it computationally with 0 axioms."
+    },
+    {
+      "targetId": "hilbert-15-oq-02",
+      "relationship": "related",
+      "description": "Sibling: studies the computational complexity of Littlewood–Richardson coefficients — the same LR rule used to build the multiplication table here, and verifies the Gr(2,4) structure constants computationally."
+    },
+    {
+      "targetId": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Schur polynomials represent Schubert classes in the cohomology of Grassmannians: σ_λ corresponds to the Schur polynomial s_λ(x₁,...,xₖ) under the characteristic map. The Jacobi-Trudi determinants formalize this correspondence."
+    },
+    {
+      "targetId": "ballot-problem-oq-03-oq-01-oq-02",
+      "relationship": "related",
+      "description": "The hook-length formula counts standard Young tableaux, which appear as the building blocks of Littlewood–Richardson tableaux: LR coefficients c^μ_{λ,ν} count LR tableaux whose content is a Young tableau."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Newton-Girard identities convert between power sums {pₖ} and elementary symmetric polynomials {eₖ}, which represent Chern roots. In K-theory, Chern characters are expressed in terms of power sums of Chern roots, while Schubert classes correspond to Chern polynomials — connecting Schubert calculus to symmetric function theory."
+    },
+    {
+      "targetId": "motivic-flag-maps-oq-02",
+      "relationship": "generalization",
+      "description": "Grassmannians Gr(k,n) are special cases of partial flag varieties. The motivic Euler characteristic framework extends Schubert calculus to motivic cohomology, generalizing the intersection numbers computed here."
     }
   ],
   "references": [

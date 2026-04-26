@@ -1,0 +1,126 @@
+{
+  "slug": "algebraic-numbers-countable-oq-02-oq-03",
+  "title": "Formalize the independence of the Continuum Hypothesis from ZFC — this entry ...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formalize the independence of the Continuum Hypothesis from ZFC — this entry proves $\\aleph_0 < 2^{\\aleph_0}$ but cannot establish where $2^{\\aleph_0}$ sits in the $\\aleph$-hierarchy without additiona.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-26T08:56:57.648Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "challenging",
+    "extension",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "algebraic-numbers-countable",
+    "algebraic-numbers-countable-oq-02",
+    "algebraic-numbers-countable-oq-02-oq-02",
+    "algebraic-numbers-countable-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-26T08:56:57.648Z",
+  "lastUpdate": "2026-04-26T08:56:57.648Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/AlgebraicNumbersCountable.lean",
+      "filename": "AlgebraicNumbersCountable.lean",
+      "lineCount": 255,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountable.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableAristotle.lean",
+      "filename": "AlgebraicNumbersCountableAristotle.lean",
+      "lineCount": 46,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableAristotle.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02.lean",
+      "filename": "AlgebraicNumbersCountableOQ02.lean",
+      "lineCount": 193,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ02.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ02.lean",
+      "lineCount": 286,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ02OQ01.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ02OQ01.lean",
+      "lineCount": 134,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ04.lean",
+      "filename": "AlgebraicNumbersCountableOQ04.lean",
+      "lineCount": 641,
+      "theoremCount": 12,
+      "axiomCount": 4,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ04.lean"
+    }
+  ]
+}

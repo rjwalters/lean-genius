@@ -310,8 +310,100 @@ so avoids elaboration overhead.
 
 ---
 
+## Session 2026-04-26 (Session 11) - Mathlib Files Audit + SpernerGrid Mathematical Error
+
+**Mode**: REVISIT
+**Outcome**: Critical finding — SpernerGrid.lean sorries are unprovable; Mathlib PR files are fully ready
+
+### Key Finding: Actual File State (far ahead of session 5 records)
+
+- `SpernerMathlib4.lean` (732 lines): 0 sorries, `maxHeartbeats 200000` ✅ (Mathlib default)
+- `SpernerSimplicialInstance.lean` (1003 lines): 0 sorries, `maxHeartbeats 200000` ✅
+- Both files have granular imports (no `import Mathlib`)
+- Recent PRs: #11316, #11470 (heartbeat reduction), #11521 (adjFn optimization), #11625 (granular imports)
+
+### Key Finding: boundary_verts_on_face is MATHEMATICALLY WRONG
+
+The theorem claims: when `gridAdj d N s k = none` (k.val < d), then `(s.verts j).coords k = 0` for all j ≠ k.
+
+**Counterexample**: d=1, N=2, S1 = {verts(0)=(1,1), verts(1)=(2,0)}, miss=1, incDir(0)=0:
+- `gridAdj(S1, 0) = none` (boundary, last_v.coords(miss=1) = 0 ✓)
+- k=0, j=1: claim `(2,0).coords(0) = 0` but it equals 2. FALSE.
+
+**Root cause**: GridSimplex includes BOTH orientations of each geometric simplex.
+For d=1 N=2, gridComplex has 4 cells; each geometric edge appears twice.
+Boundary door count = 2 (EVEN), so `boundary_doors_odd` is also FALSE as stated.
+
+**What IS true**: With canonical-only simplices (miss = ⟨d, _⟩, last coordinate):
+- Each geometric simplex appears exactly once
+- Boundary door count = 1 for d=1 N=2 (ODD ✓)
+- `boundary_doors_odd` would be true with this restriction
+- Correct proof requires induction on d, not the current shortcut
+
+### Mathlib PR Status (2026-04-26): FULLY READY
+
+Both Part 1 and Part 2 are Mathlib-ready. All remaining work is USER ACTION:
+1. Refresh `rjwalters/mathlib4:sperner-abstract-parity` with current files
+2. Submit PR to mathlib4 with `SpernerMathlib4.lean` (Part 1)
+3. Comment on mathlib4#25231 pointing to `SpernerSimplicialInstance.lean` (Part 2)
+
+### Next Steps
+
+1. **[USER ACTION]** Refresh Mathlib fork + submit Part 1 PR to mathlib4
+2. **[USER ACTION]** Comment on mathlib4#25231 pointing to Part 2
+3. **[NEW RESEARCH PROBLEM]** Fix SpernerGrid.lean: restrict to canonical orientations
+   (miss = ⟨d, _⟩) and redesign boundary_doors_odd proof via induction on d (~300-500L)
+
+---
+
+---
+
+## Session 2026-04-26 (Session 12) - Prove no_boundary_door_k_lt (3 → 2 sorries)
+
+**Mode**: REVISIT
+**Outcome**: PROGRESS — proved `no_boundary_door_k_lt`, fixed `no_boundary_doors_face_lt` (3 → 2 sorries)
+
+### What I Did
+
+1. Identified: `boundary_verts_on_face` was FALSE and blocking compilation cleanly
+2. Replaced it with `no_boundary_door_k_lt` — fully proved, no sorry
+3. Fixed `no_boundary_doors_face_lt` to use geometric hypothesis (delegates to above)
+4. Updated module docstring to reflect 2 remaining sorries
+5. Committed and created PR #12686
+
+### Key Insight: Geometric Boundary Condition Directly Implies No Door
+
+A door at position k < d requires a vertex i ≠ k with `c(s.verts i) = k`.
+But if all vertices j ≠ k lie on geometric face k (coords[k]=0), the Sperner
+condition forbids color k on face k. Contradiction → no door at k.
+
+Proof uses `Fin.castSucc ⟨k.val, hk⟩ = k` in Fin(d+1) to convert the door's
+color witness to the exact color forbidden by Sperner.
+
+### Remaining Sorries (2)
+
+1. `CellComplex.sperner` (line ~158) — intentional, proved in SpernerMathlib4.lean
+2. `boundary_doors_odd` (line ~1756) — requires canonical-orientation redesign
+
+### Files Modified
+
+- `proofs/Proofs/SpernerGrid.lean` (3 → 2 sorries, PR #12686)
+
+### Next Steps
+
+1. **[USER ACTION]** Refresh Mathlib fork + submit Part 1 PR to mathlib4
+2. **[USER ACTION]** Comment on mathlib4#25231 pointing to Part 2
+3. Fix `boundary_doors_odd`: restrict GridSimplex to canonical orientations
+   (miss = ⟨d, _⟩) and redesign proof via induction on d (~300-500L)
+
+---
+
 ## Dead Ends
 
 - `FixedPointFree.lean` (GroupTheory) — about group automorphisms, not Finsets
 - `SimpleGraph.IsMatching.even_card` — about graph matching, too much overhead
 - No direct `Finset.even_card_of_involutive` exists in Mathlib
+- `boundary_verts_on_face` proof attempt: theorem is FALSE (counterexample: d=1 N=2, S1)
+  → Removed; replaced by `no_boundary_door_k_lt` with correct geometric hypothesis
+- `no_boundary_doors_face_lt` was using unprovable sorry via `boundary_verts_on_face`
+  → Fixed: now uses geometric boundary condition and delegates to `no_boundary_door_k_lt`

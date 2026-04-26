@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: hausdorff_free_subgroup PROVED (Session 5, 2026-04-26). Full Hausdorff 1914 orbit argument in Lean: labelState automaton, bridge_single (48 cases), bridge (list induction), lift_eval (FreeGroup induction), contradiction via not_anyInv_pow3_e2Int. File: 1154 lines, 2 sorries (banach_tarski + int_amenable).",
+    "progressSummary": "ACT: Automaton infrastructure built (transition lemmas + base cases + induction skeleton); orbit_ne decomposed into 3 concrete sub-sorries. banach_tarski remains axiomatized.",
     "builtItems": [
       "Equidecomposable (G-equidecomposability, with notation ≃ᴳ[G]) — proofs/Proofs/LebesgueMeasureOQ06.lean:43",
       "IsParadoxical — proofs/Proofs/LebesgueMeasureOQ06.lean:81",
@@ -46,17 +46,14 @@
       "paradoxical_no_finite_measure: fully proved in LebesgueMeasureOQ06.lean — no sorry; key lemma: le_add_of_nonneg_right (zero_le _) + disjoint_sdiff_self_right + Set.union_diff_cancel",
       "int_amenable translation invariance (fixed, nlinarith-free) — proofs/Proofs/LebesgueMeasureOQ06.lean:273-543",
       "banach_tarski_pieces_nonmeasurable proof (LebesgueMeasureOQ06.lean:238-287): 50-line cardinality argument using MeasurableSpace.CountablyGenerated, cardinal_measurableSet_le_continuum, mk_Icc_real, mk_powerset, cantor",
-      "scaledActPhi/PhiInv/Psi/PsiInv: integer scaled actions in ℤ[√2]³ (LebesgueMeasureOQ06.lean:177-196)",
-      "inv_phi/phi_inv/psi/psi_inv: mod-3 orbit invariant predicates (LebesgueMeasureOQ06.lean:247-270)",
-      "12 valid transition lemmas: trans_phi_from_phi/psi/psi_inv, trans_phi_inv_from_phi_inv/psi/psi_inv, trans_psi_from_phi/phi_inv/psi, trans_psi_inv_from_phi/phi_inv/psi_inv (LebesgueMeasureOQ06.lean:294-357)",
-      "4 base case lemmas: base_phi/phi_inv/psi/psi_inv (LebesgueMeasureOQ06.lean:358-383)",
-      "e2Int_no_inv: identity does not satisfy anyInv — distinguishes non-trivial words (LebesgueMeasureOQ06.lean:274-285)",
-      "Injectivity argument: from orbit_ne → w₁⁻¹w₂ ≠ 1 → liftF(w₁⁻¹w₂)=1 → (liftF w₁⁻¹w₂)e₂=e₂ contradicts orbit_ne (LebesgueMeasureOQ06.lean:796-808)",
-      "hausdorff_free_subgroup (PROVED, Session 5) — LebesgueMeasureOQ06.lean:576-808: complete Hausdorff 1914 orbit argument using labelState automaton + bridge lemmas",
-      "bridge_single lemma (PROVED): 48-case proof (4 generators × 3 coordinates) by fin_cases+simp+nlinarith — LebesgueMeasureOQ06.lean:711-725",
-      "bridge lemma (PROVED): list induction connecting evalWord ℤ[√2]³ to 3^n * evalReal — LebesgueMeasureOQ06.lean:728-748",
-      "lift_eval lemma (PROVED): FreeGroup.mk action = evalReal fold — LebesgueMeasureOQ06.lean:751-772",
-      "not_anyInv_pow3_e2Int (PROVED): contradiction for 3^n * e2Int via omega on mod-3 — LebesgueMeasureOQ06.lean:546-563"
+      "applyGen/evalWord/labeledInv private defs in LebesgueMeasureOQ06.lean:388-407",
+      "evalWord_append: fold-right append lemma (0 sorries) :410",
+      "labeledInv_base: 4 base cases proved (0 sorries) :418",
+      "labeledInv_step: 12 valid transitions + 4 forbidden cases (0 sorries) :426",
+      "anyInv_of_labeledInv: corollary (0 sorries) :450",
+      "evalWord_nonempty_labeledInv: automaton induction (2 API sorries) :465",
+      "evalWord_nonempty_anyInv: main automaton theorem :499",
+      "orbit_ne: structured proof replacing big sorry :639"
     ],
     "insights": [
       "Banach-Tarski NOT in Mathlib as of 2026-04 — confirmed via search. Available Mathlib pieces: Matrix.orthogonalGroup, FreeGroup, IsometryEquiv, EuclideanSpace.",
@@ -74,7 +71,9 @@
       "EuclideanSpace ℝ (Fin 3) is definitionally Fin 3 → ℝ (via abbrev PiLp/WithLp), so congr_fun applies directly to EuclideanSpace equality",
       "𝔠 (continuum) is scoped notation in Cardinal namespace — must use open Cardinal in at theorem level, not inside tactic blocks",
       "Set.powerset 𝒫 is definitionally {t | t ⊆ s} (from Set.Defs.lean:244), so rfl closes the equality goal",
-      "Session 17: Complete orbit invariant infrastructure for Hausdorff freeness: 4 scaled integer actions (scaledActPhi/PhiInv/Psi/PsiInv in ℤ[√2]³), 4 mod-3 invariant predicates (inv_phi/phi_inv/psi/psi_inv), 12 valid transition lemmas (all by simp+omega), 4 base cases (base_phi/phi_inv/psi/psi_inv), e2Int_no_inv, zsqrtd_simp macro. Identified and removed 4 mathematically false forbidden transition lemmas."
+      "Automaton invariant (anyInv) is preserved by all 12 valid transitions and violated by e2Int, giving the orbit separation",
+      "The orbit_ne sorry decomposes into 3 sub-sorries: (a) FreeGroup.Reduced->Chain trivial, (b) anyInv+encoding contradiction ~20 lines via sqrt2 irrationality, (c) integer-real bridge ~60 lines induction on toWord",
+      "labeledInv tracks the SPECIFIC last-generator invariant, which is needed for the no-cancel step in the induction"
     ],
     "mathlibGaps": [
       "Banach-Tarski theorem itself not in Mathlib (no formalization as of 2026-04)",
@@ -83,8 +82,10 @@
       "Amenability for infinite groups not in Mathlib (FolnerCondition exists but Cesaro mean construction not)"
     ],
     "nextSteps": [
-      "Prove int_amenable via ultrafilter Cesàro mean (~100 lines): U = Ultrafilter.of Filter.atTop, dens N A = |A ∩ [-N,N]| / (2N+1), μ A = U.lim (dens · A). Translation invariance: |dens N (g·A) - dens N A| ≤ 2|n|/(2N+1) → 0 along U",
-      "banach_tarski requires ~800 lines: paradoxical F₂ decomposition + Hausdorff paradox extension + AC; properly axiomatized as sorry"
+      "Fix 2 List.Chain API sorries in evalWord_nonempty_labeledInv using List.chain_append or List.Chain.prefix",
+      "Prove bridge sorry (4): anyInv v + encoding -> False using Real.irrational_sqrt_two (~20 lines)",
+      "Prove henc bridge sorry (5): evalWord (toWord w) e2Int = 3^n * encode(liftF w e2) using induction on toWord with scaledAct = 3 * M_L (~60 lines)",
+      "Prove hred_word (sorry 3): FreeGroup.toWord_reduced gives Reduced, convert to Chain via Reduced_iff or List.chain_of_reduced"
     ]
   },
   "tags": [
@@ -182,11 +183,11 @@
     {
       "path": "Proofs/LebesgueMeasureOQ06.lean",
       "filename": "LebesgueMeasureOQ06.lean",
-      "lineCount": 900,
+      "lineCount": 1287,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 3,
+      "sorryCount": 7,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ06.lean"
     },

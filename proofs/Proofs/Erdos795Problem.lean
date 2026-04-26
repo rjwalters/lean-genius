@@ -366,32 +366,28 @@ unexpected end of input; expected ','-/
 def IsMultiplicativeSidon (A : Finset ℕ) : Prop :=
   ∀ a b c d ∈ A, a * b = c * d → ({a, b} : Finset ℕ) = {c, d}
 
-/-- Multiplicative Sidon implies distinct subset products -/
-theorem sidon_implies_distinct_products (A : Finset ℕ)
-    (hSidon : IsMultiplicativeSidon A) :
-    HasDistinctSubsetProducts A := by
-  sorry
+/- NOTE: The theorem `sidon_implies_distinct_products` (Sidon → DSP) was REMOVED
+   because it is MATHEMATICALLY FALSE.
 
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+   Counterexample: A = {2, 3, 6} is a multiplicative Sidon set (all products of
+   pairs from A are distinct: 4, 6, 9, 12, 18, 36 — no two pairs give the same
+   product). However, A does NOT have distinct subset products: {2, 3} and {6} are
+   different subsets of A, but both have product 6.
 
-Function expected at
-  HasDistinctSubsetProducts
-but this term has type
-  ?m.1
+   The correct direction is: DSP → Sidon (for 2-element subsets), not Sidon → DSP.
+   See theorem `dsp_implies_sidon` (not yet formalized) for the correct statement.
+-/
 
-Note: Expected a function because this term is being applied to the argument
-  A
-Function expected at
-  IsMultiplicativeSidon
-but this term has type
-  ?m.2
-
-Note: Expected a function because this term is being applied to the argument
-  A-/
-/-- But distinct products is weaker than Sidon -/
+/-- Distinct subset products does NOT imply multiplicative Sidon.
+    The implication goes the other way for 2-element subsets (DSP → Sidon).
+    Counterexample: A = {2, 6, 18} has distinct subset products (products:
+    2, 6, 18, 12, 36, 108, 216, all distinct) but is not Sidon: 6*6 = 36 = 2*18,
+    while {6} ≠ {2, 18} as Finsets. -/
 theorem distinct_products_not_sidon :
     ∃ A : Finset ℕ, HasDistinctSubsetProducts A ∧ ¬IsMultiplicativeSidon A := by
-  -- Example: {2, 3, 4} has distinct products but 2·4 = 4·2 relates elements
+  -- Witness: A = {2, 6, 18}
+  -- DSP: subset products are 2, 6, 18, 12, 36, 108, 216, all distinct.
+  -- Not Sidon: 6*6 = 36 = 2*18, but {6,6} = {6} ≠ {2,18} as Finsets.
   sorry
 
 /- ## Related: Problem #786 -/

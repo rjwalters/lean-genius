@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Historical and Mathematical Context: Cantor's 1874 Nested Interval Argument",
-    "content": "This file formalizes Cantor's original 1874 proof of ℝ uncountability — a proof that precedes the famous diagonal argument by 17 years. In the 1874 paper 'Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen', Cantor introduced the nested interval technique to show that no enumeration f : ℕ → ℝ can be surjective.\n\nThe key historical insight is that the nested interval argument is *constructive*: it explicitly exhibits a real number missing from any proposed enumeration. The diagonal argument (1891) shows the existence of such a number non-constructively via a diagonalization trick. Both proofs yield ¬ Countable ℝ, but the nested interval version provides an explicit witness — the supremum of the left endpoints.\n\nThe formalization uses Mathlib's `sSup` (conditional supremum from `ConditionallyCompleteLattice`) to define the limit point, and proves the full chain of 13 theorems establishing ℝ uncountability with 0 sorries and 0 axioms.",
+    "content": "This file formalizes Cantor's original 1874 proof of \u211d uncountability \u2014 a proof that precedes the famous diagonal argument by 17 years. In the 1874 paper '\u00dcber eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen', Cantor introduced the nested interval technique to show that no enumeration f : \u2115 \u2192 \u211d can be surjective.\n\nThe key historical insight is that the nested interval argument is *constructive*: it explicitly exhibits a real number missing from any proposed enumeration. The diagonal argument (1891) shows the existence of such a number non-constructively via a diagonalization trick. Both proofs yield \u00ac Countable \u211d, but the nested interval version provides an explicit witness \u2014 the supremum of the left endpoints.\n\nThe formalization uses Mathlib's `sSup` (conditional supremum from `ConditionallyCompleteLattice`) to define the limit point, and proves the full chain of 13 theorems establishing \u211d uncountability with 0 sorries and 0 axioms.",
     "mathContext": "The key property that makes the proof work: $a_{n+1} > a_n$ always (strictly, not just $\\geq$). Without this, $f(n)$ could equal the limit point if $f(n)$ coincides with a boundary. With strict increase, $\\sup_n a_n > a_{n+1} > f(n)$ (in the left-exclusion case), giving $f(n) \\neq \\sup_n a_n$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -20,7 +20,7 @@
     ],
     "prerequisites": [
       "countability theory",
-      "completeness of ℝ",
+      "completeness of \u211d",
       "Mathlib.Order.ConditionallyCompleteLattice.Basic"
     ]
   },
@@ -33,18 +33,22 @@
     },
     "type": "definition",
     "title": "The Thirds-Based Nested Interval Construction",
-    "content": "The `nested` function implements the interval construction by structural recursion on ℕ. At step 0, the interval is [0,1]. At step n+1, given [aₙ, bₙ] with d = bₙ - aₙ, three thresholds are computed: t₁ = aₙ + d/3 and t₂ = aₙ + 2d/3. The choice:\n- If f(n) < t₁ (f(n) in left third): take middle third [t₁, t₂]\n- If f(n) > t₂ (f(n) in right third): take middle third [t₁, t₂]\n- Otherwise (f(n) in middle third or at boundary): take right third [t₂, bₙ]\n\nIn all three cases, the new left endpoint aₙ₊₁ is either t₁ or t₂, both strictly greater than aₙ. This is the key design choice: using thirds (rather than halves) ensures the left endpoint *always* advances, even when f(n) is at the boundary between thirds.",
+    "content": "The `nested` function implements the interval construction by structural recursion on \u2115. At step 0, the interval is [0,1]. At step n+1, given [a\u2099, b\u2099] with d = b\u2099 - a\u2099, three thresholds are computed: t\u2081 = a\u2099 + d/3 and t\u2082 = a\u2099 + 2d/3. The choice:\n- If f(n) < t\u2081 (f(n) in left third): take middle third [t\u2081, t\u2082]\n- If f(n) > t\u2082 (f(n) in right third): take middle third [t\u2081, t\u2082]\n- Otherwise (f(n) in middle third or at boundary): take right third [t\u2082, b\u2099]\n\nIn all three cases, the new left endpoint a\u2099\u208a\u2081 is either t\u2081 or t\u2082, both strictly greater than a\u2099. This is the key design choice: using thirds (rather than halves) ensures the left endpoint *always* advances, even when f(n) is at the boundary between thirds.",
     "mathContext": "The thirds division: $t_1 = a_n + \\frac{b_n - a_n}{3}$, $t_2 = a_n + \\frac{2(b_n - a_n)}{3}$. Possible new left endpoints: $t_1 > a_n$ or $t_2 > a_n$. In all cases $a_{n+1} \\geq t_1 = a_n + d/3 > a_n$ where $d = b_n - a_n > 0$.",
     "significance": "key",
     "relatedConcepts": [
       "noncomputable def",
       "structural recursion",
       "thirds subdivision",
-      "if-then-else branch"
+      "if-then-else branch",
+      "Bolzano-Weierstrass theorem",
+      "completeness axiom",
+      "nested interval property",
+      "least upper bound property"
     ],
     "prerequisites": [
       "basic real arithmetic",
-      "ℕ recursion in Lean 4"
+      "\u2115 recursion in Lean 4"
     ]
   },
   {
@@ -56,7 +60,7 @@
     },
     "type": "concept",
     "title": "Base Case Simp Lemmas: Unfolding the Recursion",
-    "content": "Three `@[simp]` lemmas (`nested_zero`, `a_zero`, `b_zero`) establish the base case values: the initial interval is [0, 1], so the first left endpoint is 0 and the first right endpoint is 1. These lemmas are tagged `@[simp]` so that Lean's `simp` tactic can automatically unfold the initial state during inductive proofs.\n\nThis design choice — starting with [0, 1] rather than an arbitrary [a, b] — simplifies the Lean formalization: all bound proofs only need to handle a fixed upper bound of 1 (rather than a general b₀). The `width_pos` lemma at line 94 then bootstraps from these base cases to prove that the interval width stays positive throughout the construction.",
+    "content": "Three `@[simp]` lemmas (`nested_zero`, `a_zero`, `b_zero`) establish the base case values: the initial interval is [0, 1], so the first left endpoint is 0 and the first right endpoint is 1. These lemmas are tagged `@[simp]` so that Lean's `simp` tactic can automatically unfold the initial state during inductive proofs.\n\nThis design choice \u2014 starting with [0, 1] rather than an arbitrary [a, b] \u2014 simplifies the Lean formalization: all bound proofs only need to handle a fixed upper bound of 1 (rather than a general b\u2080). The `width_pos` lemma at line 94 then bootstraps from these base cases to prove that the interval width stays positive throughout the construction.",
     "mathContext": "Base case: $[a_0, b_0] = [0, 1]$, so $\\text{width}_0 = 1 - 0 = 1 > 0$. The `@[simp]` attribute lets `simp` close base cases automatically in inductive steps: `simp [width]` reduces to $1 - 0 = 1 > 0$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -81,7 +85,7 @@
     },
     "type": "concept",
     "title": "Interval Nonemptiness: From Width Positivity to a < b",
-    "content": "The `a_lt_b` theorem derives interval nonemptiness directly from `width_pos`: since `width f n = b f n - a f n > 0`, we get `a f n < b f n` by linarith. This one-line proof is a key bridge lemma — everything that needs interval nonemptiness (including `a_le_b_all` and the `sSup` boundedness argument) goes through `a_lt_b`, not through `width_pos` directly. The indirection is a good design choice: callers express what they need (nonemptiness as `a < b`) rather than referring to the width definition.",
+    "content": "The `a_lt_b` theorem derives interval nonemptiness directly from `width_pos`: since `width f n = b f n - a f n > 0`, we get `a f n < b f n` by linarith. This one-line proof is a key bridge lemma \u2014 everything that needs interval nonemptiness (including `a_le_b_all` and the `sSup` boundedness argument) goes through `a_lt_b`, not through `width_pos` directly. The indirection is a good design choice: callers express what they need (nonemptiness as `a < b`) rather than referring to the width definition.",
     "mathContext": "$\\text{width}(n) = b_n - a_n > 0 \\implies a_n < b_n$ by linarith. Used in `a_le_b_all`: $a_m < b_m$ (from `a_lt_b f m`) provides one branch of the cross-index bound $a_m \\leq b_n$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -104,7 +108,7 @@
     },
     "type": "concept",
     "title": "Core Properties: Strict Monotonicity via Uniform Case Analysis",
-    "content": "The four key properties (width_pos, a_strict_mono, b_mono, exclusion) are all proved by the same pattern: induction on n, then a three-way case split on the if-then-else branches of the construction. The proof structure for each theorem is:\n1. Unfold the recursive definition with `simp only [a, b, nested]`\n2. Set local variables for aₙ, bₙ, d\n3. Use `have hd : d > 0 := width_pos f n` (bootstrap from width_pos)\n4. Case split with `by_cases h1 : f n < aₙ + d/3`, then `by_cases h2 : f n > aₙ + 2d/3`\n5. In each branch, `simp [h1, h2]` simplifies the if-then-else, then `linarith` closes with arithmetic\n\nThe `a_strictMono` and `b_antitone` global versions then follow from `strictMono_nat_of_lt_succ` and `antitone_nat_of_succ_le`, converting pointwise successor inequalities to global monotonicity.",
+    "content": "The four key properties (width_pos, a_strict_mono, b_mono, exclusion) are all proved by the same pattern: induction on n, then a three-way case split on the if-then-else branches of the construction. The proof structure for each theorem is:\n1. Unfold the recursive definition with `simp only [a, b, nested]`\n2. Set local variables for a\u2099, b\u2099, d\n3. Use `have hd : d > 0 := width_pos f n` (bootstrap from width_pos)\n4. Case split with `by_cases h1 : f n < a\u2099 + d/3`, then `by_cases h2 : f n > a\u2099 + 2d/3`\n5. In each branch, `simp [h1, h2]` simplifies the if-then-else, then `linarith` closes with arithmetic\n\nThe `a_strictMono` and `b_antitone` global versions then follow from `strictMono_nat_of_lt_succ` and `antitone_nat_of_succ_le`, converting pointwise successor inequalities to global monotonicity.",
     "mathContext": "Strict monotonicity: $a_{n+1} \\in \\{a_n + d/3,\\, a_n + 2d/3\\} \\subset (a_n, b_n)$, so $a_{n+1} > a_n$ since $d > 0$. This implies $\\text{StrictMono}(a_f)$ via `strictMono_nat_of_lt_succ`. Antitone: $b_{n+1} \\leq b_n$ in all branches.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -129,8 +133,8 @@
       "endLine": 154
     },
     "type": "insight",
-    "title": "Exclusion Property: Why ≤ (Not <) Is the Right Bound",
-    "content": "The exclusion theorem states: for each n, either f(n) ≤ a(n+1) or f(n) > b(n+1). The left-side bound is ≤ (not <). This is deliberate: when f(n) is in the middle third or at t₂, we take the right third [t₂, bₙ], and in this case f(n) ≤ t₂ = a(n+1) exactly. If we required f(n) < a(n+1), this boundary case would fail.\n\nThe weak ≤ bound is sufficient because the main theorem then uses *strict* monotonicity of (aₙ): even though f(n) ≤ a(n+1), the limit point x = sSup(aₙ) satisfies x > a(n+1) (from limit_gt_a with index n+1). So f(n) ≤ a(n+1) < x. The ≤ in exclusion combines with strict > in limit_gt_a to give f(n) < x, hence f(n) ≠ x.",
+    "title": "Exclusion Property: Why \u2264 (Not <) Is the Right Bound",
+    "content": "The exclusion theorem states: for each n, either f(n) \u2264 a(n+1) or f(n) > b(n+1). The left-side bound is \u2264 (not <). This is deliberate: when f(n) is in the middle third or at t\u2082, we take the right third [t\u2082, b\u2099], and in this case f(n) \u2264 t\u2082 = a(n+1) exactly. If we required f(n) < a(n+1), this boundary case would fail.\n\nThe weak \u2264 bound is sufficient because the main theorem then uses *strict* monotonicity of (a\u2099): even though f(n) \u2264 a(n+1), the limit point x = sSup(a\u2099) satisfies x > a(n+1) (from limit_gt_a with index n+1). So f(n) \u2264 a(n+1) < x. The \u2264 in exclusion combines with strict > in limit_gt_a to give f(n) < x, hence f(n) \u2260 x.",
     "mathContext": "Exclusion: $f(n) \\leq a_{n+1}$ or $f(n) > b_{n+1}$. Limit: $x = \\sup_k a_k > a_{n+1}$ (since $a_{n+2} > a_{n+1}$ and $a_{n+2} \\leq x$). Combined: $f(n) \\leq a_{n+1} < x$ or $f(n) > b_{n+1} \\geq x$. Either way $f(n) \\neq x$.",
     "significance": "key",
     "relatedConcepts": [
@@ -154,7 +158,7 @@
     },
     "type": "concept",
     "title": "Bridge Lemmas: Global Monotonicity and Cross-Index Bounds",
-    "content": "Five bridge lemmas elevate the pointwise successor properties into globally usable forms:\n\n1. **`a_strictMono`** (line 157): Converts `a_strict_mono` (which says `a(n+1) > a(n)` for each `n`) into `StrictMono (a f)` (which applies to any pair `m < n`). Uses `strictMono_nat_of_lt_succ` from Mathlib.\n\n2. **`b_antitone`** (line 161): Similarly converts `b_mono` into `Antitone (b f)` via `antitone_nat_of_succ_le`.\n\n3. **`b_le_one`** (line 165): Proves right endpoints ≤ 1 by induction, using `b_mono` to propagate from the base case b(0) = 1.\n\n4. **`a_le_b_all`** (line 171): The critical cross-index lemma: any left endpoint a(m) ≤ any right endpoint b(n), even for *different* indices m ≠ n. The proof splits on `m ≤ n` vs `m > n`, using monotonicity of `a` and antitone of `b` respectively.\n\n5. **`a_bdd_above`** (line 180): Follows from `a_le_b_all` with n=0: every a(m) ≤ b(0) = 1.\n\nThe `a_le_b_all` lemma is mathematically the most subtle: in a standard nested interval argument the bound 'all left endpoints ≤ all right endpoints' is obvious from nestedness, but in Lean it requires a formal case analysis on the relative ordering of the indices.",
+    "content": "Five bridge lemmas elevate the pointwise successor properties into globally usable forms:\n\n1. **`a_strictMono`** (line 157): Converts `a_strict_mono` (which says `a(n+1) > a(n)` for each `n`) into `StrictMono (a f)` (which applies to any pair `m < n`). Uses `strictMono_nat_of_lt_succ` from Mathlib.\n\n2. **`b_antitone`** (line 161): Similarly converts `b_mono` into `Antitone (b f)` via `antitone_nat_of_succ_le`.\n\n3. **`b_le_one`** (line 165): Proves right endpoints \u2264 1 by induction, using `b_mono` to propagate from the base case b(0) = 1.\n\n4. **`a_le_b_all`** (line 171): The critical cross-index lemma: any left endpoint a(m) \u2264 any right endpoint b(n), even for *different* indices m \u2260 n. The proof splits on `m \u2264 n` vs `m > n`, using monotonicity of `a` and antitone of `b` respectively.\n\n5. **`a_bdd_above`** (line 180): Follows from `a_le_b_all` with n=0: every a(m) \u2264 b(0) = 1.\n\nThe `a_le_b_all` lemma is mathematically the most subtle: in a standard nested interval argument the bound 'all left endpoints \u2264 all right endpoints' is obvious from nestedness, but in Lean it requires a formal case analysis on the relative ordering of the indices.",
     "mathContext": "Cross-index bound: for all $m, n \\in \\mathbb{N}$, $a_m \\leq b_n$. If $m \\leq n$: $a_m \\leq a_n < b_n$ (monotone $a$). If $m > n$: $a_m < b_m \\leq b_n$ (antitone $b$). In both cases $a_m \\leq b_n$. This implies $\\{a_m : m \\in \\mathbb{N}\\}$ is bounded above by any $b_n$, enabling `csSup_le` in `limit_le_b`.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -181,7 +185,7 @@
     },
     "type": "concept",
     "title": "Invoking Completeness: BddAbove Enables sSup",
-    "content": "`a_range_bddAbove` establishes that `Set.range (a f)` has an upper bound (specifically 1), by unpacking the range using `a_bdd_above`. This is the technical prerequisite for `sSup` to be meaningful: Lean's `sSup` on a nonempty bounded set in a `ConditionallyCompleteLinearOrder` gives a finite real value. Without `a_range_bddAbove`, `sSup (Set.range (a f))` could be interpreted as `⊤ = +∞`, which would break `le_csSup` and `csSup_le`.\n\nThe `limitPoint` definition then simply names `sSup (Set.range (a f))`. Separating — first prove `BddAbove`, then define `limitPoint` — is cleaner than combining them, because `a_range_bddAbove` is also needed independently in `limit_le_b`, where `csSup_le` requires a `BddAbove` hypothesis.",
+    "content": "`a_range_bddAbove` establishes that `Set.range (a f)` has an upper bound (specifically 1), by unpacking the range using `a_bdd_above`. This is the technical prerequisite for `sSup` to be meaningful: Lean's `sSup` on a nonempty bounded set in a `ConditionallyCompleteLinearOrder` gives a finite real value. Without `a_range_bddAbove`, `sSup (Set.range (a f))` could be interpreted as `\u22a4 = +\u221e`, which would break `le_csSup` and `csSup_le`.\n\nThe `limitPoint` definition then simply names `sSup (Set.range (a f))`. Separating \u2014 first prove `BddAbove`, then define `limitPoint` \u2014 is cleaner than combining them, because `a_range_bddAbove` is also needed independently in `limit_le_b`, where `csSup_le` requires a `BddAbove` hypothesis.",
     "mathContext": "In a `ConditionallyCompleteLinearOrder`: `sSup S` is well-defined and finite when $S$ is nonempty and bounded above. Here $S = \\{a_n : n \\in \\mathbb{N}\\}$, nonempty (contains $a_0 = 0$) and bounded above by 1 (from `a_bdd_above`). The API lemmas `le_csSup` and `csSup_le` both require `BddAbove S` as an explicit hypothesis.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -205,8 +209,8 @@
       "endLine": 213
     },
     "type": "concept",
-    "title": "Limit Point via sSup: Using Completeness of ℝ",
-    "content": "The limit point is defined as `limitPoint f := sSup (Set.range (a f))` — the supremum of all left endpoints. This uses ℝ's structure as a `ConditionallyCompleteLinearOrder`: `sSup` exists and is finite provided the set is nonempty and bounded above.\n\nThe two key properties proved here:\n- `limit_gt_a`: limitPoint > a(n) for all n. Proof: a(n+1) ≤ limitPoint (from `le_csSup`) and a(n+1) > a(n) (from strict monotonicity). Combined by linarith.\n- `limit_le_b`: limitPoint ≤ b(n) for all n. Proof: every a(m) ≤ b(n) (from `a_le_b_all`), so b(n) is an upper bound; `csSup_le` then gives sSup ≤ b(n).\n\nThe lemma `a_le_b_all` is the key auxiliary: it shows any left endpoint is ≤ any right endpoint, even for different indices m,n. This requires considering cases m ≤ n (use monotonicity of a) and m > n (use antitone of b).",
+    "title": "Limit Point via sSup: Using Completeness of \u211d",
+    "content": "The limit point is defined as `limitPoint f := sSup (Set.range (a f))` \u2014 the supremum of all left endpoints. This uses \u211d's structure as a `ConditionallyCompleteLinearOrder`: `sSup` exists and is finite provided the set is nonempty and bounded above.\n\nThe two key properties proved here:\n- `limit_gt_a`: limitPoint > a(n) for all n. Proof: a(n+1) \u2264 limitPoint (from `le_csSup`) and a(n+1) > a(n) (from strict monotonicity). Combined by linarith.\n- `limit_le_b`: limitPoint \u2264 b(n) for all n. Proof: every a(m) \u2264 b(n) (from `a_le_b_all`), so b(n) is an upper bound; `csSup_le` then gives sSup \u2264 b(n).\n\nThe lemma `a_le_b_all` is the key auxiliary: it shows any left endpoint is \u2264 any right endpoint, even for different indices m,n. This requires considering cases m \u2264 n (use monotonicity of a) and m > n (use antitone of b).",
     "mathContext": "For the limit point $x = \\sup\\{a_n : n \\in \\mathbb{N}\\}$: (1) $x > a_n$ for all $n$: since $a_{n+1} > a_n$ and $a_{n+1} \\leq x$ (by `le_csSup`). (2) $x \\leq b_n$ for all $n$: since $\\{a_m\\}$ is bounded above by $b_n$ (from $a_m \\leq b_m \\leq b_n$ for $m \\geq n$ or $a_m \\leq b_m$ and using antitone $b$), and `csSup_le` gives $x \\leq b_n$.",
     "significance": "key",
     "relatedConcepts": [
@@ -214,7 +218,11 @@
       "ConditionallyCompleteLinearOrder",
       "le_csSup",
       "csSup_le",
-      "BddAbove"
+      "BddAbove",
+      "Baire category theorem",
+      "residual set",
+      "sSup construction",
+      "conditional completeness"
     ],
     "prerequisites": [
       "Mathlib.Order.ConditionallyCompleteLattice.Basic",
@@ -231,15 +239,19 @@
       "endLine": 256
     },
     "type": "concept",
-    "title": "Main Theorems: From Limit Point to ℝ Uncountability",
-    "content": "The climax of the proof is `limitPoint_not_in_range`: for any f : ℕ → ℝ, the limit point differs from every f(n). The proof is a `cases` split on the exclusion property:\n- Left case (f(n) ≤ a(n+1)): `limit_gt_a f (n+1)` gives x > a(n+1) ≥ f(n), so f(n) < x, contradicting heq.\n- Right case (f(n) > b(n+1)): `limit_le_b f (n+1)` gives x ≤ b(n+1) < f(n), so x < f(n), contradicting heq.\n\nFrom this, `exists_real_not_in_range` follows directly (provide limitPoint f as the witness), `no_surjection_nat_to_real` negates any claimed surjection, and `reals_uncountable_nested` applies `Countable.exists_surjective_nat` to reduce countability to surjectivity.",
-    "mathContext": "The contradiction in each case: Left: $f(n) \\leq a_{n+1} < x$ (by `limit_gt_a f (n+1)` and $a_{n+1} < x$) gives $f(n) < x$, but $f(n) = x$ by hypothesis — contradiction. Right: $f(n) > b_{n+1} \\geq x$ (by `limit_le_b f (n+1)`) gives $f(n) > x$ — contradiction. Hence $f(n) \\neq x$ for any $n$, so $x \\notin \\operatorname{range}(f)$.",
+    "title": "Main Theorems: From Limit Point to \u211d Uncountability",
+    "content": "The climax of the proof is `limitPoint_not_in_range`: for any f : \u2115 \u2192 \u211d, the limit point differs from every f(n). The proof is a `cases` split on the exclusion property:\n- Left case (f(n) \u2264 a(n+1)): `limit_gt_a f (n+1)` gives x > a(n+1) \u2265 f(n), so f(n) < x, contradicting heq.\n- Right case (f(n) > b(n+1)): `limit_le_b f (n+1)` gives x \u2264 b(n+1) < f(n), so x < f(n), contradicting heq.\n\nFrom this, `exists_real_not_in_range` follows directly (provide limitPoint f as the witness), `no_surjection_nat_to_real` negates any claimed surjection, and `reals_uncountable_nested` applies `Countable.exists_surjective_nat` to reduce countability to surjectivity.",
+    "mathContext": "The contradiction in each case: Left: $f(n) \\leq a_{n+1} < x$ (by `limit_gt_a f (n+1)` and $a_{n+1} < x$) gives $f(n) < x$, but $f(n) = x$ by hypothesis \u2014 contradiction. Right: $f(n) > b_{n+1} \\geq x$ (by `limit_le_b f (n+1)`) gives $f(n) > x$ \u2014 contradiction. Hence $f(n) \\neq x$ for any $n$, so $x \\notin \\operatorname{range}(f)$.",
     "significance": "key",
     "relatedConcepts": [
       "limitPoint_not_in_range",
       "exists_real_not_in_range",
       "reals_uncountable_nested",
-      "Countable.exists_surjective_nat"
+      "Countable.exists_surjective_nat",
+      "surjection witness",
+      "diagonal argument comparison",
+      "non-constructive proof",
+      "enumeration universality"
     ],
     "prerequisites": [
       "limit_gt_a",
@@ -257,7 +269,7 @@
     },
     "type": "concept",
     "title": "Summary: 13 Theorems, 0 Sorries, 0 Axioms",
-    "content": "The closing summary documents the complete proof chain: 13 theorems proved with 0 sorries and 0 axioms. The proof is fully machine-verified, relying only on Mathlib's completeness of ℝ (the `ConditionallyCompleteLattice` structure and associated lemmas `le_csSup`, `csSup_le`).\n\nThe closing comment emphasizes the critical design choice: the *strictly* increasing left endpoints. This is the key innovation over a naive bisection approach. With bisection, if f(n) equals the midpoint, the left endpoint could stay constant, and the limit point could equal f(n). The thirds construction eliminates this by always advancing the left endpoint by at least d/3 > 0.",
+    "content": "The closing summary documents the complete proof chain: 13 theorems proved with 0 sorries and 0 axioms. The proof is fully machine-verified, relying only on Mathlib's completeness of \u211d (the `ConditionallyCompleteLattice` structure and associated lemmas `le_csSup`, `csSup_le`).\n\nThe closing comment emphasizes the critical design choice: the *strictly* increasing left endpoints. This is the key innovation over a naive bisection approach. With bisection, if f(n) equals the midpoint, the left endpoint could stay constant, and the limit point could equal f(n). The thirds construction eliminates this by always advancing the left endpoint by at least d/3 > 0.",
     "mathContext": "Compared to a naive bisection: if f(n) = (a_n + b_n)/2 and we take the right half $[(a_n+b_n)/2, b_n]$, then $a_{n+1} = (a_n+b_n)/2 = f(n)$. If $x = f(n)$, the exclusion gives $f(n) \\leq a_{n+1} = f(n) = x$, which is not a contradiction. The thirds construction avoids this: $a_{n+1} \\geq a_n + d/3 > a_n$, so $x > a_{n+1} \\geq f(n)$ (in the left case) gives a strict contradiction.",
     "significance": "supporting",
     "relatedConcepts": [

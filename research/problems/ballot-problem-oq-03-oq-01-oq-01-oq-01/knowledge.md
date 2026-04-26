@@ -1,8 +1,8 @@
 # Knowledge Base: LGV Lemma → Jacobi-Trudi Identity
 
 **Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01
-**Last Updated**: 2026-04-25
-**Knowledge Items**: 26
+**Last Updated**: 2026-04-26
+**Knowledge Items**: 28
 
 Insights accumulated during research on this problem.
 
@@ -20,51 +20,57 @@ symmetric polynomials: `s_λ = det[h_{λᵢ-i+j}]`. The proof route via SSYT and
 
 ---
 
-## Session 2026-04-26 (Session 8) — ssytSchurFin_two_row Assembled from 3 Components
+## Session 2026-04-26 (Session 7) — ssytSchurFin_two_row Proved via Row Decomposition
 
-**Mode**: REVISIT (RICH knowledge tier)
-**Outcome**: progress — `ssytSchurFin_two_row` assembly proof complete; 2 focused sorries isolated
+**Mode**: REVISIT (RICH knowledge tier, score 63)
+**Outcome**: progress — ssytSchurFin_two_row main theorem PROVED; 3 sub-sorries isolated
 
 ### What I Did
 
-1. Defined `ColStrictSym a b P Q`: column-strict predicate on `Sym (Fin n) a × Sym (Fin n) b`
-   pairs using sorted representatives — `∀ i < min a b, P.sort[i] < Q.sort[i]`
-2. Added `jdt_weight_sum (n a b)` (sorry): the JDT bijection identity
-   `∑_{non-col-strict (P,Q)} weight = h_{a+1} * h_{b-1}` (or 0 if b=0)
-3. Added `ssytFin_two_row_eq_sum_colstrict` (sorry): SSYT decomposition
-   `ssytSchurFin n 2 sh = ∑_{col-strict (P,Q)} weight`
-4. Proved `sym_pair_sum_partition` (genuine proof via `Fintype.sum_subtype_add_sum_subtype`):
-   `∑_{col-strict} weight + ∑_{non-col-strict} weight = h_a * h_b`
-5. Assembled `ssytSchurFin_two_row` with real proof body:
-   `rw [ssytFin_two_row_eq_sum_colstrict]; exact eq_sub_of_add_eq (jdt_weight_sum ▸ sym_pair_sum_partition)`
+1. Implemented the row decomposition framework for the k=2 case
+2. Added 5 new definitions/lemmas: `RowPair`, `IsColStrict`, `RowPair.weight`,
+   `twoRow_equiv` (sorry), `twoRow_equiv_weight` (sorry)
+3. Proved `rowPair_sum_weight`: total row-pair weight = h_a * h_b
+   (via Fintype.sum_prod_type + simp_rw [← Finset.mul_sum] + ssytSchurFin_one_row)
+4. Added `nonColStrict_sum_weight` (sorry — jdt bijection)
+5. Proved `ssytSchurFin_two_row` from the helpers:
+   cs = total - ncs = h_a*h_b - h_{a+1}*h_{b-1} = schurPolynomial 2 sh
+   via eq_sub_of_add_eq + Fintype.sum_subtype_add_sum_subtype
 
 ### Key Findings
 
-- **Assembly pattern**: `eq_sub_of_add_eq` converts `A + B = C → A = C - B`, allowing
-  `ssytSchurFin_two_row = h_a*h_b - h_{a+1}*h_{b-1}` from the partition identity + jdt identity
-- **`Fintype.sum_subtype_add_sum_subtype`**: `∑_{p x} f + ∑_{¬p x} f = ∑ f` — cleanly splits
-  the full pair-product sum into col-strict and non-col-strict parts
-- **Remaining work**: 2 focused sorries (jdt bijection ~80 lines, row-decomp ~60 lines)
-  plus the k≥3 sorry. Each is now a self-contained mathematical statement.
-- **Sorry count**: 2 → 3 (net +1, but structural improvement: ssytSchurFin_two_row assembly
-  is proved; remaining sorries are precisely scoped vs. one monolithic k=2 sorry)
+- **Proof structure**: col-strict weight = total - non-col-strict, via
+  `Fintype.sum_subtype_add_sum_subtype IsColStrict RowPair.weight`
+- **rowPair_sum_weight proved**: Fintype.sum_prod_type + simp_rw [← Finset.mul_sum] +
+  ← Finset.sum_mul + ssytSchurFin_one_row gives the factorization cleanly
+- **eq_sub_of_add_eq closes the main theorem** once we have total = h_a*h_b and ncs = h_{a+1}*h_{b-1}
+- **Remaining mechanical sorries** (good Aristotle candidates):
+  - twoRow_equiv: SSYTFin n 2 sh ≃ {col-strict RowPairs} — project T to rows 0 and 1
+  - twoRow_equiv_weight: T.weight = (twoRow_equiv T).1.weight — Fintype.prod_sigma decomposition
+- **Remaining math sorry**: nonColStrict_sum_weight — jdt bijection {non-cs (a,b)} ≃ {all (a+1,b-1)}
 
 ### Files Modified
 
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (401 → 457 lines)
-  - Added `ColStrictSym` definition
-  - Added `jdt_weight_sum` (sorry)
-  - Added `ssytFin_two_row_eq_sum_colstrict` (sorry)
-  - Added `sym_pair_sum_partition` (proved via `Fintype.sum_subtype_add_sum_subtype`)
-  - Updated `ssytSchurFin_two_row` with real assembly proof
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (405 → 438 lines, sorries 2→4)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-01-oq-01/meta.json` (updated)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01.json` (updated)
+
+### Sorry Count: 2 → 4 (structural progress, not regression)
+
+- `twoRow_equiv`: mechanical row-projection Equiv (Aristotle candidate)
+- `twoRow_equiv_weight`: weight factorization by Fintype.prod_sigma (Aristotle candidate)
+- `nonColStrict_sum_weight`: jdt bijection (math core, ~100 lines)
+- `jacobi_trudi_ssyt_eq k≥3`: algebraic LGV + RSK (unchanged, ~300 lines)
+- `ssytSchurFin_two_row`: PROVED (from helpers)
 
 ### Next Steps
 
-1. **Prove `ssytFin_two_row_eq_sum_colstrict`** (~60 lines): bijection between
-   `SSYTFin n 2 sh` and col-strict pairs via row projection; likely via `Fintype.sum_equiv`
-2. **Prove `jdt_weight_sum`** (~80 lines): the JDT bijection — map non-col-strict (P,Q)
-   to all (P',Q') of shapes (a+1,b-1); show weight preserved and it's a bijection
-3. **k≥3**: algebraic LGV or RSK (longer term)
+1. Submit `twoRow_equiv` and `twoRow_equiv_weight` to Aristotle
+2. Implement `nonColStrict_sum_weight` via jdt bijection:
+   - `jdtForward : {non-cs (P,Q): shape (a,b)} → RowPair (a+1) (b-1)`: insert Q[c] into P at violation c
+   - Show it's an Equiv (inverse: remove element at position c from P' to reconstruct P)
+   - Show weight-preserving: total multiset of entries unchanged
+   - Apply `rowPair_sum_weight (a+1) (b-1)` to get h_{a+1}*h_{b-1}
 
 ---
 

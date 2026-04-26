@@ -17,9 +17,9 @@
       "open-question"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "1 axiom: Conway-Guy optimality (verified computationally for n<=10). 1 sorry: existence of DSS sets for minDSSBound definition (routine, needs explicit construction).",
+    "assumptions": "1 axiom: Conway-Guy optimality (verified computationally for n<=10). The minDSSBound sorry was closed by Erdos1Wip01.dss_existence.",
     "mathlibDependencies": [
       {
         "theorem": "hasDistinctSubsetSums",
@@ -44,7 +44,8 @@
     "prerequisites": [
       "Erdos Problem #1 (distinct subset sums)",
       "The counting bound: 2^n <= n*N + 1",
-      "Conway-Guy construction (OEIS A005318)"
+      "Conway-Guy construction (OEIS A005318)",
+      "Erdos1Wip01.dss_existence (powers-of-two existence theorem)"
     ],
     "mathlib_version": "4.26.0"
   },
@@ -158,7 +159,7 @@
     "theoremCount": 12,
     "definitionCount": 3,
     "path": "Proofs/Erdos1OQ03.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "mainTheorems": [
     {
@@ -174,5 +175,5 @@
       "leanType": "3 * conwayGuy k <= 2 ^ k"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }

@@ -124,6 +124,26 @@
       "targetId": "binary-gcd",
       "relationship": "extends",
       "description": "Extends the parent Binary GCD correctness proof with step count analysis"
+    },
+    {
+      "targetId": "gcd-algorithm-oq-01",
+      "relationship": "related",
+      "description": "Average-case complexity of the Euclidean algorithm: this entry proves the worst-case Lamé bound (O(log min(a,b)) steps), while gcd-algorithm-oq-01 analyzes the average-case distribution of step counts over random inputs."
+    },
+    {
+      "targetId": "gcd-algorithm-oq-01-oq-03",
+      "relationship": "related",
+      "description": "Binet's formula and Lamé's 5-digit bound: directly adjacent to this entry's Lamé theorem proof, providing the Fibonacci-based derivation of the bound euclidSteps(a,b) ≤ 5·(number of decimal digits of min(a,b))."
+    },
+    {
+      "targetId": "binary-gcd-oq-01-oq-04",
+      "relationship": "parent-of",
+      "description": "Binary GCD tight lower bound: the family (1, 2^n-1) requires exactly n Binary GCD steps. This entry proves the upper bound steps ≤ O(log a + log b); the companion entry proves the matching lower bound, completing the tight complexity picture."
+    },
+    {
+      "targetId": "binary-gcd-oq-03",
+      "relationship": "related",
+      "description": "Lehmer-Schönhage hybrid GCD algorithm: this entry asks whether Lehmer's algorithm can be formalized with a formal bound; binary-gcd-oq-03 addresses that open question with the hybrid approach that uses leading-digit estimates to batch quotient computation."
     }
   ],
   "references": [

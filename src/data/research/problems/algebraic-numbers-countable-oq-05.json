@@ -1,0 +1,128 @@
+{
+  "slug": "algebraic-numbers-countable-oq-05",
+  "title": "Algebraic Numbers Countable: Cantor Height Function Proof (1874)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "H(a_0 + a_1 x + \\cdots + a_n x^n) = n + |a_0| + |a_1| + \\cdots + |a_n|",
+    "plain": "Cantor's 1874 original proof of the countability of algebraic numbers uses a **height",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-23T13:50:28+02:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: algebraic-numbers-countable-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "set-theory",
+    "countability",
+    "algebraic-numbers",
+    "cardinality",
+    "field-theory",
+    "cantor"
+  ],
+  "relatedProofs": [
+    "algebraic-numbers-countable",
+    "algebraic-numbers-countable-oq-02",
+    "algebraic-numbers-countable-oq-02-oq-02",
+    "algebraic-numbers-countable-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-26T06:15:00.326Z",
+  "lastUpdate": "2026-04-26T06:15:00.345Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/AlgebraicNumbersCountable.lean",
+      "filename": "AlgebraicNumbersCountable.lean",
+      "lineCount": 255,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountable.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableAristotle.lean",
+      "filename": "AlgebraicNumbersCountableAristotle.lean",
+      "lineCount": 46,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableAristotle.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02.lean",
+      "filename": "AlgebraicNumbersCountableOQ02.lean",
+      "lineCount": 193,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ02.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ02.lean",
+      "lineCount": 286,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ02OQ01.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ02OQ01.lean",
+      "lineCount": 134,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ04.lean",
+      "filename": "AlgebraicNumbersCountableOQ04.lean",
+      "lineCount": 641,
+      "theoremCount": 12,
+      "axiomCount": 4,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ04.lean"
+    }
+  ]
+}

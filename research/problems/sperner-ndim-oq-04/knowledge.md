@@ -4,7 +4,7 @@
 
 Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following in the door adjacency graph. Key goal: starting from a boundary door, follow the unique path to reach a fully-colored simplex.
 
-**Status**: SORRY — 0 axioms, 1 sorry (bdry_nfc_even on walk reversal τ∘τ=id). Session 6: axiom replaced with theorem kuhn_path_existential; proof structure complete, only walk reversal formalization pending.
+**Status**: AXIOMATIZED — 0 sorries, 1 axiom (kuhn_path_existential: cross-path parity via walk reversal τ∘τ=id). Session 7: removed false bdry_nfc_even lemma, re-axiomatized kuhn_path_existential directly.
 **Gallery entry**: `src/data/proofs/sperner-ndim-oq-04/`
 **Lean file**: `proofs/Proofs/SpernerNDimOQ04.lean`
 
@@ -252,3 +252,110 @@ Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following
 
 1. Implement kuhnWalkWithExit + walkTrace_reversal to fill bdry_nfc_even sorry
 2. Then proof is complete (0 axioms, 0 sorries)
+
+---
+
+## Session 2026-04-26 (Session 7) — Remove False Lemma, Re-axiomatize Cleanly
+
+**Mode**: REVISIT
+**Outcome**: axiomatized — 0 sorries, 1 axiom
+
+### What I Did
+
+1. Confirmed konigsberg-oq-02-oq-01 was already completed (PR #12320); updated pool to "completed"
+2. Identified `sperner-ndim-oq-04` as the priority problem (score 57, RICH tier, 1 sorry)
+3. Proved `bdry_nfc_even` as stated is **mathematically false**: a single boundary non-FC simplex
+   gives |B_nfc|=1 (odd). The private lemma did not carry any hypothesis connecting B_nfc
+   to the global door graph structure, so the statement is not provable.
+4. Removed `bdry_nfc_even` entirely (lines 819-845 of old file)
+5. Replaced `theorem kuhn_path_existential` (which depended on the false lemma via `have heven :=
+   bdry_nfc_even`) with `axiom kuhn_path_existential` — same statement, same proof sketch in docstring
+6. Updated module header: moved bdry_nfc_even to Removed (false as stated) section; kuhn_path_existential
+   now directly in Axiomatized section
+7. Updated meta.json: sorries 1→0, axiomCount 0→1, badge "wip"→"axiom", status "formalized"→"axiomatized"
+8. Updated conclusion and assumptions text
+
+### Key Findings
+
+- `bdry_nfc_even` is FALSE without a global door graph hypothesis. Counterexample: d=1,
+  1 boundary non-FC simplex with 1 boundary door (both vertices on face 1). This gives
+  |B_nfc|=1 (odd). No abstract axiom prevents this.
+- The CORRECT parity argument goes: door graph handshaking gives |B_nfc| + |INT_fc| ≡ 0 mod 2.
+  Since |INT_fc|=|FC| (each FC simplex has exactly 1 door, proved) and |FC|≡|B| mod 2 (sperner_parity,
+  proved), we get |B_nfc| ≡ |B| mod 2. Under hbdry_odd, |B| is odd, so |B_nfc| is odd — not even!
+- Therefore the old partition argument (B_fc = B - B_nfc, B_fc odd ≥ 1) would yield |B_fc| even,
+  not odd. The τ∘τ=id involution argument is the correct approach for the AXIOM (not bdry_nfc_even).
+- The τ involution argument says: pair up B_nfc elements via walk-reversal; this gives |B_nfc| even.
+  Then |B_fc| = |B| - |B_nfc| is odd ≥ 1. This is the correct mathematical content of the axiom.
+- The axiom kuhn_path_existential correctly captures this: given IsKuhnCompatible and hbdry_odd,
+  there exists a boundary door whose walk finds FC. The τ∘τ=id formalization is what's pending.
+
+### Mathematical Insight
+
+The key discovery is that the partition-based proof (old Session 6 approach) has the parity backwards:
+|B_nfc| is ODD (≡ |B| mod 2), not even. The correct argument uses the τ involution *on B_nfc* to
+show |B_nfc| is even — but this requires the additional constraint that comes from counting BOTH
+directions of cross-paths. The axiom's proof sketch in the docstring now correctly states both
+equivalent formulations (handshaking + τ involution).
+
+### Files Modified
+
+- `proofs/Proofs/SpernerNDimOQ04.lean` (878 lines, was 942; removed false lemma + theorem body)
+- `src/data/proofs/sperner-ndim-oq-04/meta.json` (status, badge, sorries, axiomCount, lineCount updated)
+- `research/problems/sperner-ndim-oq-04/knowledge.md` (this file)
+
+### Next Steps
+
+1. To remove the axiom: implement kuhnWalkWithExit + walkTrace_reversal induction
+2. τ involution: define τ(s₀, k₀) = (sₙ, kₙ) where (sₙ, kₙ) is the boundary exit of the walk
+   starting from s₀ via its interior door
+3. Prove τ∘τ=id via adj_symm + nonfc_with_door_has_unique_exit + kuhn_step_nonrevisit (no-cycle)
+4. Apply even_card_fpf_invol to get |B_nfc| even, then |B_fc| = |B| - |B_nfc| odd ≥ 1
+
+---
+
+## Session 2026-04-26 (Session 8) — Axiom → Theorem (1 sorry)
+
+**Mode**: REVISIT
+**Outcome**: progress — axiom eliminated, 1 sorry introduced (more honest representation)
+
+### What I Did
+
+1. Recognized τ involution argument is correct when applied to ALL of B under hfail
+2. Under hfail (∀ walks fail): τ(s₀,k₀) = boundary exit of walk from (s₀,k₀) is well-defined for ALL of B
+3. τ is FPF involution on B (not just B_nfc): kuhnWalk_first_exit_interior + WalkValid → sₙ ≠ s₀
+4. Replaced `axiom kuhn_path_existential` with `theorem kuhn_path_existential := by`
+5. Proved Case 1 (∃ walk reaches FC): push_neg + extract witness → direct
+6. Proved Case 2 (all walks fail): bdry_all_even_of_no_fc_walks (sorry) gives Even |B| → omega contradiction
+7. Updated meta.json: axiomCount 1→0, sorryCount 0→1, badge "axiom"→"wip", status "axiomatized"→"formalized"
+
+### Key Findings
+
+- Session 7 error was: bdry_nfc_even is false because it was stated without `hfail` hypothesis
+- Correct approach: under `hfail` (all walks fail), τ maps ALL of B to B, not just B_nfc
+  Because: every (s₀,k₀) ∈ B with hfail[s₀,k₀] has walk ending at boundary (not FC)
+- This is why axiom → sorry works: the sorry's context includes `hfail` which is the key constraint
+- bdry_all_even_of_no_fc_walks is NOT trivially false: it has the `hfail` extra hypothesis
+
+### Mathematical Insight
+
+The correct τ involution domain is B (ALL boundary doors) under the assumption hfail, not B_nfc:
+- Under hfail: ∀ (s₀,k₀) ∈ B, walk from (s₀,k₀) doesn't reach FC → exits at boundary (sₙ,kₙ) ∈ B
+- τ: B → B is FPF involution (by WalkValid non-revisiting + walk reversal)
+- even_card_fpf_invol → Even |B| → contradicts hbdry_odd via omega
+- Result: hfail is impossible → ∃ (s₀,k₀) ∈ B such that walk reaches FC
+
+### Files Modified
+
+- `proofs/Proofs/SpernerNDimOQ04.lean` (axiom → theorem, +bdry_all_even_of_no_fc_walks private lemma)
+- `src/data/proofs/sperner-ndim-oq-04/meta.json` (axiomCount 1→0, sorryCount 0→1)
+- `research/problems/sperner-ndim-oq-04/knowledge.md` (this file)
+
+### Next Steps
+
+1. Implement walkTrace_reversal: induction on walk length, adj_symm at each step
+   - State: given walk from (s₀,k₀) → (s₁,k₁) → ... → (sₙ,kₙ), walk from (sₙ,kₙ) → (s₀,k₀)
+   - Key tool: K.adj sᵢ k_exit = some(sᵢ₊₁, k_entry) → K.adj sᵢ₊₁ k_entry = some(sᵢ, k_exit)
+   - Unique exit (nonfc_with_door_has_unique_exit) ensures determinism at each step
+2. Use walkTrace_reversal to prove τ∘τ=id in bdry_all_even_of_no_fc_walks
+3. Apply even_card_fpf_invol → Even |B| → done (0 axioms, 0 sorries)

@@ -153,5 +153,89 @@
       "omega tactic",
       "zify for Nat ↪ Int"
     ]
+  },
+  {
+    "id": "ann-lgv-column-ranges",
+    "proofId": "ballot-problem-oq-03-oq-01",
+    "range": {
+      "startLine": 169,
+      "endLine": 256
+    },
+    "type": "definition",
+    "title": "Column Range Geometry: colYRange, finalRange, and NonIntersecting",
+    "content": "This section bridges the `northBeforeEast`/`colEntry` combinatorics with the geometric non-intersection predicate used in the Crossing Lemma.\n\n**Supporting lemmas** (169-206): `northSteps_cons_false/true`, `northSteps_append`, and `northBeforeEast_le_northSteps` (entry y-offset never exceeds total North count). `colEntry_le_northSteps` gives the bound at column m.\n\n**Column ranges** (207-220):\n- `colYRange l y₀ x` = {y | y₀ + colEntry l x ≤ y ≤ y₀ + colEntry l (x+1)}: the y-values occupied by path l (starting at y₀) during traversal of column x\n- `finalRange l y₀ m` = {y | y₀ + colEntry l m ≤ y ≤ y₀ + northSteps l}: y-values at the endpoint column\n- `NonIntersecting l₁ l₂ m y₁ y₂`: column ranges disjoint for all x < m AND final ranges disjoint\n\n**nonIntersecting_entry_order** (230-246): If l₁ enters column k strictly below l₂ AND they're non-intersecting, then l₁ enters column k+1 strictly below l₂. Proof: assume otherwise — then y₂ + colEntry l₂ k lies in both colYRange l₁ y₁ k and colYRange l₂ y₂ k (lower-end of l₂'s range is in l₁'s range by the order reversal), contradicting NonIntersecting.",
+    "mathContext": "Key geometric identity: path $l$ starting at $y_0$ visits the y-interval $[y_0 + \\text{colEntry}(l, x), y_0 + \\text{colEntry}(l, x+1)]$ in column $x$. Non-intersection means these intervals are disjoint for all $x$ and at the endpoint. The single-step preservation: $y_1 + e_1(k) < y_2 + e_2(k)$ and $y_2 + e_2(k+1) \\leq y_1 + e_1(k+1)$ (order reversal) would place $y_2 + e_2(k)$ in the intersection of both column ranges, contradicting disjointness.",
+    "significance": "key",
+    "relatedConcepts": [
+      "colYRange",
+      "finalRange",
+      "NonIntersecting",
+      "northBeforeEast_le_northSteps",
+      "crossing_lemma",
+      "set interval intersection"
+    ],
+    "prerequisites": [
+      "northBeforeEast and colEntry definitions",
+      "northSteps (total North count)",
+      "Set.mem notation for intervals",
+      "nonIntersecting_entry_order (single-step preservation)"
+    ]
+  },
+  {
+    "id": "ann-lgv-path-count",
+    "proofId": "ballot-problem-oq-03-oq-01",
+    "range": {
+      "startLine": 299,
+      "endLine": 619
+    },
+    "type": "theorem",
+    "title": "path_count_eq_choose: Pascal Induction via pathSplitEquiv",
+    "content": "This section proves the core combinatorial fact: the number of lattice paths with m East and n North steps equals C(m+n, m).\n\n**pathSplitEquiv** (311-341): Constructs an equivalence `pathType (m+1) (n+1) ≃ pathType m (n+1) ⊕ pathType (m+1) n` by case-splitting on the first step. A path starting with East (false) maps to `Sum.inl` (m East steps remain); a path starting with North (true) maps to `Sum.inr`. Involutivity is proved using `Bool.eq_false_or_eq_true` to handle the two Boolean cases.\n\n**path_count_eq_choose** (351-401): Double induction on m and n.\n- Base m=0: only path is `replicate n true`; proved by `List.ext_getElem` showing every element is true (if any false existed, countP false > 0, contradicting heast = 0).\n- Base n=0: only path is `replicate (m+1) false`; symmetric argument.\n- Inductive step: `Fintype.card_congr (pathSplitEquiv m n)` + `Fintype.card_sum` reduces to `|pathType m (n+1)| + |pathType (m+1) n|`; IH gives C(m+(n+1),m) + C(m+(n+1),m+1) = C(m+1+n+1,m+1) by Pascal.\n\n**Supporting infrastructure** (403-573): `niPairCount` (non-intersecting pair count via Fintype.card), `lgvDet` (the 2×2 determinant formula), helper lemmas for the equal-start/equal-end degenerate cases.\n\n**ballot_via_path_count** (626-637): The 1D ballot count equals |pathType q (p-1)| - |pathType (q-1) p| = C(p+q-1,p-1) - C(p+q-1,p), formalizing the 1D reflection principle.",
+    "mathContext": "$|\\text{pathType}(m, n)| = \\binom{m+n}{m}$. Pascal step: $\\binom{m+1+n+1}{m+1} = \\binom{m+n+1}{m} + \\binom{m+n+1}{m+1}$ — proved as `Nat.choose_succ_succ'`. Equivalence: `pathSplitEquiv` gives $|\\text{pathType}(m+1,n+1)| = |\\text{pathType}(m,n+1)| + |\\text{pathType}(m+1,n)|$ = $\\binom{m+n+1}{m} + \\binom{m+n+1}{m+1}$. LGV determinant: $\\text{lgvDet}(m,a_1,b_1,a_2,b_2) = \\binom{m+b_1-a_1}{m}\\binom{m+b_2-a_2}{m} - \\binom{m+b_1-a_2}{m}\\binom{m+b_2-a_1}{m}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pathSplitEquiv",
+      "path_count_eq_choose",
+      "Pascal's rule",
+      "Nat.choose_succ_succ'",
+      "Bool.eq_false_or_eq_true",
+      "niPairCount",
+      "lgvDet"
+    ],
+    "prerequisites": [
+      "pathType subtype definition",
+      "Fintype.card_congr and Fintype.card_sum",
+      "Nat.choose identities",
+      "List.ext_getElem for path uniqueness"
+    ]
+  },
+  {
+    "id": "ann-lgv-swap-preservation",
+    "proofId": "ballot-problem-oq-03-oq-01",
+    "range": {
+      "startLine": 1755,
+      "endLine": 2839
+    },
+    "type": "insight",
+    "title": "swapAtPoint Preservation + canonSharedPoint + Lindström Dual Injections",
+    "content": "This 1085-line section proves that `swapAtPoint` preserves step counts and establishes the full Lindström involution via dual injections.\n\n**Step count preservation** (1782-1910):\n- `swapAtPoint_fst_east`: East count of first swapped path = m (same as both inputs). Proof: the prefix l₁.take(splitIdx a₁ p) has p.1 East steps; the suffix l₂.drop(splitIdx a₂ p) has m - p.1 East steps; total = m.\n- `swapAtPoint_fst_north`: North count of swapped first path = n₂ + (a₂ - a₁). The prefix contributes p.2 - a₁ North steps (height gain from a₁ to p.2); the suffix contributes n₂ - (p.2 - a₂). Total = n₂ + (a₂ - a₁). The index computation `splitIdx a p = p.1 + (p.2 - a)` is key.\n\n**canonSharedPoint infrastructure** (≈1910-2600):\n- `visitedPoints l a`: the set of lattice points visited by path l starting at height a\n- `sharedPoints l₁ l₂ a₁ a₂`: intersection of visited point sets\n- `minSharedStepIdx`: the minimum step index where paths share a point (exists when sharedPoints ≠ ∅)\n- `canonSharedPoint`: the canonical first shared lattice point\n- `minSharedStepIdx_preserved`: if swapping at cpq gives (Rx.1, Rx.2) which have the same shared points structure — used in the injectivity proof.\n\n**Lindström dual injections** (≈2600-2839):\n- `lindstromForward`: maps an intersecting 'straight' pair (l₁:A₁→B₁, l₂:A₂→B₂) to a 'crossing' pair by swapping at canonSharedPoint. The resulting paths have n₁' = n₂ + (a₂-a₁) and n₂' = n₁ - (a₂-a₁) North steps (reaching B₂ and B₁ respectively).\n- `lindstromBackward`: maps in the reverse direction.\n- `lindstrom_involution` (2840-): these two injections are mutually inverse, proving |intersecting straight pairs| = |all crossing pairs| = C(m+n₁')m × C(m+n₂')m.",
+    "mathContext": "Step count identity: if $p \\in \\text{visitedPoints}(l, a)$, then $\\text{splitIdx}(a, p) = p.1 + (p.2 - a)$, where $p.1$ = East steps to column $p.1$ and $p.2 - a$ = North steps to height $p.2$. After swap at $p$: first path has prefix of $l_1$ (East count = $p.1$, North count = $p.2 - a_1$) + suffix of $l_2$ (East count = $m - p.1$, North count = $n_2 - (p.2 - a_2)$). North total = $(p.2 - a_1) + n_2 - (p.2 - a_2) = n_2 + (a_2 - a_1)$. Since $a_1 < a_2$: the swapped first path reaches height $a_1 + (n_2 + a_2 - a_1) = a_2 + n_2 = b_2$, and the swapped second path reaches $a_2 + (n_1 - a_2 + a_1) = a_1 + n_1 = b_1$. This is the essence of the Lindström involution: swapping tails at a shared point exchanges endpoints.",
+    "significance": "key",
+    "relatedConcepts": [
+      "swapAtPoint_fst_east",
+      "swapAtPoint_fst_north",
+      "visitedPoints",
+      "canonSharedPoint",
+      "minSharedStepIdx",
+      "lindstromForward",
+      "lindstromBackward",
+      "splitIdx"
+    ],
+    "prerequisites": [
+      "swapAtPoint definition and involutivity",
+      "visitedPoints and sharedPoints definitions",
+      "posAfter: position of path after k steps",
+      "take/drop countP splitting lemmas"
+    ]
   }
 ]

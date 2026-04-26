@@ -122,9 +122,25 @@ def OmegaContinuous [CompleteLattice α] (f : α → α) : Prop :=
 theorem OmegaContinuous.monotone [CompleteLattice α] {f : α → α}
     (hf : OmegaContinuous f) : Monotone f := by
   intro a b hab
-  have hc : ∀ n : ℕ, (fun _ : ℕ => a) n ≤ (fun n => if n = 0 then a else b) (n + 1) := by
-    intro n; simp; exact hab
-  sorry -- Derivable but needs careful chain construction; not the main result
+  -- Construct the chain: c 0 = a, c (n+1) = b
+  let c : ℕ → α := fun n => if n = 0 then a else b
+  -- Chain is ascending
+  have hc_asc : ∀ n, c n ≤ c (n + 1) := fun n => by
+    simp only [c, Nat.succ_ne_zero, ↓reduceIte]
+    split_ifs with h
+    · exact hab
+    · exact le_refl b
+  -- Supremum of chain is b
+  have hc_sup : ⨆ n, c n = b := le_antisymm
+    (iSup_le fun n => by simp only [c]; split_ifs <;> [exact hab; exact le_refl b])
+    (le_iSup c 1)
+  -- Apply ω-continuity: f b = ⊔ₙ f(c n)
+  have hcont := hf c hc_asc
+  rw [hc_sup] at hcont
+  -- f a = f (c 0) ≤ ⊔ₙ f(c n) = f b
+  have hfa : f a = f (c 0) := by simp [c]
+  rw [hfa, hcont]
+  exact le_iSup _ 0
 
 /-- The Kleene fixed point: the supremum of the Kleene chain. -/
 noncomputable def kleeneFix [CompleteLattice α] (f : α → α) : α :=

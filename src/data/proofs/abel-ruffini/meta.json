@@ -88,6 +88,10 @@
       {
         "id": "inverse-galois-oq-06",
         "relationship": "Proves A₅ ≅ Gal(x⁵-5x⁴+10x³-10x²+25x-5/ℚ) — an alternative concrete non-radical quintic witness via A₅ realizability, complementing the S₅ witness in abel-ruffini-oq-04-oq-01"
+      },
+      {
+        "id": "abel-ruffini-galois-extensions-oq-04",
+        "relationship": "Jordan-Hölder Uniqueness Theorem via JordanHolderLattice — formalizes the uniqueness guarantee cited in keyInsights: any two composition series of a finite group have the same multiset of simple quotients (0 sorries, 0 axioms), making the S₅ obstruction in Abel-Ruffini absolute and independent of the choice of decomposition"
       }
     ],
     "lineCount": 185,
@@ -444,6 +448,11 @@
       "targetId": "e-transcendental",
       "relationship": "related",
       "description": "The transcendence of $e$ (Hermite, 1873) sits one level above Abel-Ruffini in the expressibility hierarchy discussed in this entry's implications: Abel-Ruffini shows certain algebraic quantities (quintic roots) escape radical expressions, while Hermite's theorem places $e$ outside all algebraic equations over $\\mathbb{Q}$. The progression — irrationality ($\\sqrt{2} \\notin \\mathbb{Q}$) $\\subset$ radical inexpressibility (Abel-Ruffini) $\\subset$ algebraic inexpressibility ($e, \\pi \\notin \\overline{\\mathbb{Q}}$) — marks successive enlargements of the vocabulary of expressibility. Hermite's proof technique (approximating $e$ by rational functions and bounding remainders) is a precursor to Lindemann's 1882 transcendence of $\\pi$, completing the impossibility of squaring the circle"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "The transcendence of $\\pi$ (Lindemann, 1882) sits alongside $e$-transcendence in the expressibility hierarchy: both $e$ and $\\pi$ lie above all algebraic quantities, while Abel-Ruffini's quintic roots are algebraic but not radical. Lindemann's result — and its generalization Hermite-Lindemann — immediately implies the impossibility of squaring the circle (constructing a segment of length $\\sqrt{\\pi}$ from a unit segment). Together `e-transcendental` and `pi-transcendental` in the gallery bracket the algebraic inexpressibility tier: radical-inexpressible algebraic roots (Abel-Ruffini) live strictly between the rationals and the transcendentals. The Hermite-Lindemann theorem formalizes the precise statement: if $\\alpha$ is algebraic and nonzero, then $e^\\alpha$ is transcendental; hence $e^{i\\pi} = -1$ (Euler's identity) forces $i\\pi$ to be transcendental (since $-1$ is algebraic), confirming $\\pi \\notin \\overline{\\mathbb{Q}}$"
     },
     {
       "targetId": "gelfond-schneider",

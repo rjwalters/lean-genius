@@ -24,6 +24,7 @@ a K_{s,t}-free subgraph with Ω(m^{1-1/s}) edges (for s ≤ t)?
 -/
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 
 namespace Erdos1008OQ04
@@ -71,14 +72,22 @@ axiom kst_subgraph_theorem (s t : ℕ) (hs : 1 ≤ s) (hst : s ≤ t) :
 
 /-- **Optimality**: The exponent 1-1/s is best possible.
 
-    The Zarankiewicz construction (random bipartite graphs or algebraic
-    constructions) shows that for n = t^s, the complete bipartite graph
-    K_{n^{1/s}, n} has Θ(n^{2-1/s}) edges and every subgraph with
-    Ω(n^{2-1/s+ε}) edges contains K_{s,t} for any ε > 0.
+    Zarankiewicz's algebraic construction (incidence graphs of finite projective
+    planes) yields K_{s,s}-free graphs with Ω(n^{2-1/s}) edges, matching the
+    Kővári-Sós-Turán upper bound. For prime power q with s = q+1, the point-line
+    incidence graph of PG(2,q) is K_{s,s}-free with q²+q+1 vertices and
+    Θ(n^{2-1/s}) edges. Formalizing this requires finite geometry infrastructure
+    not yet available in Mathlib.
 
-    This shows the CFS exponent cannot be improved. -/
-theorem kst_exponent_optimal (s : ℕ) (hs : 2 ≤ s) :
-    True := trivial -- placeholder: the exponent 1-1/s cannot be improved
+    Axiomatized since the Zarankiewicz construction requires algebraic combinatorics
+    (projective planes over finite fields) not yet formalized in Mathlib. -/
+axiom kst_exponent_optimal (s : ℕ) (hs : 2 ≤ s) :
+    ∃ c : ℝ, 0 < c ∧
+      ∀ n : ℕ, 0 < n →
+        ∃ (G : SimpleGraph (Fin n)) (E : Finset (Sym2 (Fin n))),
+          (E : Set (Sym2 (Fin n))) ⊆ G.edgeSet ∧
+          IsKstFree G s s ∧
+          c * (n : ℝ) ^ ((2 : ℝ) - 1 / (s : ℝ)) ≤ (E.card : ℝ)
 
 -- ============================================================
 -- Part III: Recovery of Parent Result
@@ -112,11 +121,11 @@ theorem c4_from_kst :
 /-
 ## Summary
 
-### Axioms (1)
+### Axioms (2)
 1. `kst_subgraph_theorem` - K_{s,t}-free subgraphs with Ω(m^{1-1/s}) edges exist
+2. `kst_exponent_optimal` - The exponent 1-1/s is optimal (Zarankiewicz construction)
 
-### Proved (2)
-- `kst_exponent_optimal` - The exponent 1-1/s is best possible (vacuous placeholder)
+### Proved (1)
 - `c4_from_kst` - C₄ case as corollary of K_{2,2}
 
 ### Key Insight
@@ -125,9 +134,9 @@ The K_{s,t} generalization reveals the role of the Kővári-Sós-Turán exponent
 The full CFS result uses a more refined "degeneracy" parameter that gives
 better exponents for specific graphs (like 2/3 for C₄ instead of 1/2).
 
-### Axiom Count: 1
-The axiom requires probabilistic method infrastructure (random sampling,
-expectation bounds) not available in Mathlib.
+### Axiom Count: 2
+- kst_subgraph_theorem: requires probabilistic method infrastructure
+- kst_exponent_optimal: requires algebraic geometry (finite projective planes)
 -/
 
 #check @kst_subgraph_theorem

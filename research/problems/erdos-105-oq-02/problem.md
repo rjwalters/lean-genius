@@ -46,3 +46,6 @@ difficulty: hard
 source: gallery-gap
 created: 2026-04-12
 ```
+
+**Significance**: 7/10
+**Tractability**: 5/10

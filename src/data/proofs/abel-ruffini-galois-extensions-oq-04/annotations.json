@@ -110,7 +110,7 @@
   {
     "id": "ann-second-iso",
     "proofId": "abel-ruffini-galois-extensions-oq-04",
-    "range": { "startLine": 183, "endLine": 227 },
+    "range": { "startLine": 183, "endLine": 206 },
     "type": "technique",
     "title": "second_iso: Noether's Second Isomorphism via Direct Map Construction",
     "content": "The second isomorphism theorem in this context states: if x is maximal normal in x⊔y, then (x⊔y)/x ≃* y/(x⊓y). The proof constructs a direct map φ : y →* (x⊔y)/x by composing inclusion le_sup_right with the quotient map mk'. The kernel of φ is computed to be (x⊓y).subgroupOf y (by a membership calculation), and surjectivity follows by decomposing any element of x⊔y as a product from x and y, then showing the x-part is in the kernel. The first isomorphism theorem `quotientKerEquivOfSurjective` then gives the isomorphism. This avoids `rw [sup_comm y x]` which fails with 'motive not type correct' due to Normal typeclass dependency on the rewritten term.",
@@ -122,7 +122,7 @@
   {
     "id": "ann-jordan-holder",
     "proofId": "abel-ruffini-galois-extensions-oq-04",
-    "range": { "startLine": 233, "endLine": 247 },
+    "range": { "startLine": 208, "endLine": 225 },
     "type": "insight",
     "title": "Jordan-Hölder Theorem: One-Line Delegation",
     "content": "With the JordanHolderLattice instance in place, the Jordan-Hölder theorem for groups reduces to a single call to `CompositionSeries.jordan_holder` from Mathlib. This demonstrates the power of the typeclass abstraction: once the three axioms are verified for (Subgroup G), the full Jordan-Hölder machinery — which works for any JordanHolderLattice — applies automatically. The `jordan_holder_finite_groups` variant specializes to finite groups (the hypotheses require finite G implicitly through CompositionSeries termination), delegating immediately to the general version.",
@@ -130,17 +130,5 @@
     "significance": "key",
     "relatedConcepts": ["CompositionSeries", "CompositionSeries.jordan_holder", "composition factors", "Schreier refinement theorem"],
     "prerequisites": ["composition series", "normal series", "Jordan-Hölder theorem statement"]
-  },
-  {
-    "id": "ann-why-three-axioms",
-    "proofId": "abel-ruffini-galois-extensions-oq-04",
-    "range": { "startLine": 70, "endLine": 230 },
-    "type": "insight",
-    "title": "Why Exactly Three Axioms Suffice for Jordan-Hölder",
-    "content": "The JordanHolderLattice typeclass distills the entire Jordan-Hölder uniqueness proof into three axioms. Understanding why these three suffice illuminates the structure of the argument.\n\nThe proof of Jordan-Hölder uniqueness for composition series of the same length proceeds by induction: given two series ending in $z$, the top layers $x$ and $y$ (both maximal normal in $z$) either coincide (trivial) or differ. When they differ, `sup_eq_of_isMaximal` (Axiom 1) guarantees they generate $z$ together: $x \\vee y = z$. Then `isMaximal_inf_left_of_isMaximal_sup` (Axiom 2) gives that $x \\wedge y$ is maximal normal in both $x$ and $y$ — so both series can be 'passed through' the common refinement point $x \\wedge y$ to find a common interpolating series, enabling an inductive comparison. Finally, `second_iso` (Axiom 3) provides the isomorphism $z/x \\simeq y/(x \\wedge y)$ and $z/y \\simeq x/(x \\wedge y)$ (by symmetry), guaranteeing that the two 'top' composition factors in the differing series are indeed isomorphic — just swapped.\n\nThis is the lattice-theoretic distillation of Schreier's refinement argument: the three axioms encode precisely the 'diamond lemma' for two maximal normal subgroup pairs. Any two maximal normal pairs $(x,z)$ and $(y,z)$ with $x \\neq y$ form a diamond: $x \\vee y = z$ (by Axiom 1), $x \\wedge y$ is maximal in both $x$ and $y$ (Axiom 2), and the cross-isomorphisms hold (Axiom 3). Schreier's refinement theorem then follows by inserting this diamond at each mismatch step, and Jordan-Hölder uniqueness follows from Schreier's refinement.",
-    "mathContext": "The key combinatorial content: two composition series $H_\\bullet$ and $K_\\bullet$ of the same group are related by a sequence of 'diamond moves', each of which swaps two adjacent factors while preserving the multiset of composition factors up to isomorphism. The three axioms ensure each diamond move is well-defined and factor-preserving. Birkhoff's lattice-theoretic formulation (1940) showed that these axioms suffice for any modular lattice with the Jordan-Hölder property, making the abstract JordanHolderLattice typeclass a direct descendant of Birkhoff's abstract approach.",
-    "significance": "insight",
-    "relatedConcepts": ["diamond lemma", "Schreier refinement theorem", "modular lattice", "Birkhoff lattice theory", "JordanHolderLattice axioms"],
-    "prerequisites": ["lattice theory", "composition series", "Jordan-Hölder theorem proof strategy"]
   }
 ]

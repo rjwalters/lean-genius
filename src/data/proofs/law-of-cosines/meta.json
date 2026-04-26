@@ -163,6 +163,11 @@
       "targetId": "euler-identity",
       "relationship": "related",
       "description": "Euler's formula $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$ provides the connection between the inner product $\\langle v, w \\rangle = \\|v\\|\\|w\\|\\cos\\theta$ used in the Law of Cosines and the complex exponential — the cosine function that appears in $c^2 = a^2 + b^2 - 2ab\\cos C$ is the real part of $e^{iC}$"
+    },
+    {
+      "targetId": "synthesis-curvature-ptolemy",
+      "relationship": "related",
+      "description": "synthesis-curvature-ptolemy introduces curvatureSin K as the constant-curvature generalization of the distance function, which simultaneously generalizes the law of cosines. The Euclidean law of cosines $c^2 = a^2 + b^2 - 2ab\\cos C$ is the K=0 case: curvatureSin 0(d) = d, so the curvature-parametrized Ptolemy equality reduces to the Euclidean identity. For K>0, curvatureSin K(d) = sin(√K·d)/√K gives the spherical law of cosines; for K<0, it gives the hyperbolic version. The synthesis framework thus unifies all three constant-curvature laws of cosines alongside Ptolemy's theorem."
     }
   ],
   "leanFile": {

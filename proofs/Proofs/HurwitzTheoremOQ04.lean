@@ -44,6 +44,10 @@ These four algebras are deeply connected to the exceptional Lie groups through:
   - `commDer`: commutator of two derivations is a derivation
   - `commDer_antisymm`, `commDer_jacobi`: Der(𝕆) is a Lie algebra
   - `OctonionDerSubmodule`: Der(𝕆) as a Submodule of End_ℝ(ℝ⁸)
+  - `der_maps_unit_to_zero`: D(e₀) = 0 for every derivation D
+  - `der_maps_real_part_to_zero`: D kills the real part r·e₀
+  - `OctonionDer.toLinearMap`: bridge from OctonionDer to LinearMap
+  - `OctonionDer.mem_der_submodule`: every OctonionDer lies in OctonionDerSubmodule
   - `freudenthal_tits_f4/e6/e7/e8`: ExceptionalType dims match definitions (proved by rfl)
   - All exceptional type dimension computations
   - `G2_unique_low_rank`: G₂ is the only exceptional Lie algebra of rank < 4
@@ -587,6 +591,55 @@ axiom G2_der_dimension :
     FiniteDimensional.finrank ℝ OctonionDerSubmodule = ExceptionalType.G2.dim
 
 -- ============================================================
+-- PART IV-d: Structural Properties of Derivations
+-- ============================================================
+
+/-!
+### Key Structural Facts About Der(𝕆)
+
+These results hold for any derivation, independently of the dimension axiom.
+
+**Unit kills**: Every derivation maps e₀ to zero. Proof: applying Leibniz to e₀·e₀ = e₀ gives
+D(e₀) = D(e₀) + D(e₀), so D(e₀) = 0.
+
+**Submodule bridge**: OctonionDer and OctonionDerSubmodule are two representations
+of the same Lie algebra — the former as a structure, the latter as a Submodule of End_ℝ(ℝ⁸).
+-/
+
+/-- Any derivation of the octonion algebra maps the unit element e₀ to zero.
+    Proof: Applying Leibniz to e₀·e₀ = e₀ gives D(e₀) = D(e₀)·e₀ + e₀·D(e₀) = 2·D(e₀),
+    hence D(e₀) = 0 component-wise. -/
+theorem der_maps_unit_to_zero (D : OctonionDer) : D.map octUnit = 0 := by
+  have h := D.leibniz octUnit octUnit
+  simp only [eightMul_right_unit, eightMul_left_unit] at h
+  funext i
+  have hi := congr_fun h i
+  simp only [Pi.add_apply] at hi
+  linarith
+
+/-- Any derivation kills the real part of 𝕆: D(r·e₀) = r·D(e₀) = 0. -/
+theorem der_maps_real_part_to_zero (D : OctonionDer) (r : ℝ) :
+    D.map (r • octUnit) = 0 := by
+  rw [D.map_smul, der_maps_unit_to_zero D, smul_zero]
+
+/-- Convert an OctonionDer structure to an ℝ-linear map. -/
+def OctonionDer.toLinearMap (D : OctonionDer) : (Fin 8 → ℝ) →ₗ[ℝ] (Fin 8 → ℝ) where
+  toFun := D.map
+  map_add' := D.map_add
+  map_smul' := D.map_smul
+
+/-- Every OctonionDer defines an element of OctonionDerSubmodule (satisfies the
+    Leibniz rule as a linear map). This bridges the two representations of Der(𝕆). -/
+theorem OctonionDer.mem_der_submodule (D : OctonionDer) :
+    D.toLinearMap ∈ OctonionDerSubmodule := by
+  intro a b
+  exact D.leibniz a b
+
+/-- Lift an OctonionDer to a certified member of OctonionDerSubmodule. -/
+def OctonionDer.toSubmoduleMem (D : OctonionDer) : OctonionDerSubmodule :=
+  ⟨D.toLinearMap, D.mem_der_submodule⟩
+
+-- ============================================================
 -- PART V: The Freudenthal-Tits Magic Square
 -- ============================================================
 
@@ -756,6 +809,11 @@ were admissible, there would be a 6th exceptional type.
 #check @commDer_jacobi
 #check @OctonionDerSubmodule
 #check @G2_der_dimension
+#check @der_maps_unit_to_zero
+#check @der_maps_real_part_to_zero
+#check @OctonionDer.toLinearMap
+#check @OctonionDer.mem_der_submodule
+#check @OctonionDer.toSubmoduleMem
 #check @freudenthal_tits_f4
 #check @freudenthal_tits_e6
 #check @freudenthal_tits_e7

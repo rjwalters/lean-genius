@@ -118,6 +118,11 @@
       "targetId": "cauchy-schwarz",
       "relationship": "related",
       "description": "Cauchy-Schwarz can be seen as a special case of Maclaurin's inequalities ($M_1 \\geq M_2$ for specific inputs), connecting the two fundamental inequalities of analysis"
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-03-oq-03",
+      "relationship": "extended-by",
+      "description": "Completes the Maclaurin chain: proves M_j ≥ M_k for all j ≤ k by induction on the gap (k - j), using `maclaurin_step` from this entry as the inductive step. Where this entry proves the one-step inequality M_j ≥ M_{j+1}, OQ-03-OQ-03 bootstraps it into the full transitive chain M₁ ≥ M₂ ≥ ... ≥ Mₙ via a `Nat.rec` induction."
     }
   ],
   "leanFile": {
@@ -132,7 +137,7 @@
     ],
     "namespace": "AmgmInequalityOQ02OQ03",
     "lineCount": 226,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 1,
     "path": "Proofs/AmgmInequalityOQ02OQ03.lean",

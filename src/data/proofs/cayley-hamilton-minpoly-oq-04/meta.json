@@ -76,7 +76,22 @@
     {
       "targetId": "cayley-hamilton",
       "relationship": "extends",
-      "description": "Cayley-Hamilton theorem (M satisfies its own characteristic polynomial); this file studies when minpoly = charpoly"
+      "description": "Root Cayley-Hamilton theorem: every matrix satisfies its own characteristic polynomial (charpoly M)(M) = 0. This entry refines that by studying when the minimal polynomial is as large as possible — equal to the characteristic polynomial — characterizing this as the cyclic vector condition. The bridge lemma (minpoly | charpoly with equal degrees forces equality) is the key algebraic fact connecting the two"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "extends",
+      "description": "Parent entry on minimal polynomial reduction and annihilator theory. The minimal polynomial is the subject of this entry's main theorem: nonderogatory ↔ natDeg(minpoly) = n = dim. The `minpoly_dvd_charpoly` and degree-comparison machinery used in the bridge lemma here are established in the parent entry"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
+      "relationship": "extended-by",
+      "description": "Proves the converse direction (nonderogatory → has cyclic vector) over infinite fields via a union-avoidance argument: the set of non-cyclic vectors is a finite union of proper Zariski-closed subsets, so an infinite field guarantees a cyclic vector exists outside all of them. This entry's axiom `nonderogatory_has_cyclic_vector` is exactly what OQ-05-OQ-01 proves for infinite fields — together they establish the full iff for this important special case"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-03",
+      "relationship": "complementary",
+      "description": "Formalizes the Krylov method for computing the minimal polynomial: the sequence v, Mv, M²v, ... becomes linearly dependent at step deg(minpoly). The Krylov subspace construction is precisely the cyclic vector construction — a vector v is cyclic iff the Krylov sequence {v, Mv, ..., M^{n-1}v} is a basis. OQ-03's computational perspective (Krylov = power iteration for minimal polynomial) is the algorithmic dual to this entry's algebraic characterization (cyclic vector ↔ nonderogatory)"
     }
   ],
   "sections": [

@@ -144,6 +144,11 @@
       "targetId": "triangle-angle-sum",
       "relationship": "related",
       "description": "The inscribed angle theorem, closely related to the triangle angle sum, underpins the proof that opposite angles in a cyclic quadrilateral sum to 180 degrees."
+    },
+    {
+      "targetId": "synthesis-curvature-ptolemy",
+      "relationship": "extended-by",
+      "description": "synthesis-curvature-ptolemy extends Ptolemy's theorem to all constant-curvature geometries using the unified curvatureSin K function. The Euclidean theorem proved here is the K=0 special case: as K→0, curvatureSin K(d) → d and the curvature-parametrized Ptolemy equality reduces to AC·BD = AB·CD + BC·DA. The synthesis proof covers K>0 (spherical) and conjectures K<0 (hyperbolic), providing a single framework that subsumes both Euclidean and non-Euclidean versions."
     }
   ],
   "conclusion": {

@@ -1,8 +1,8 @@
 {
   "slug": "szemeredi-regularity-oq-02",
   "title": "Szemerédi Regularity: Frieze-Kannan Weak Regularity Comparison",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-04-22T13:03:46.383Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Completed: gallery entry created.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — problem complete.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: Lean file SzemerediRegularityOQ02.lean had 0 sorries/axioms. Gallery entry created.",
+    "builtItems": [
+      "Gallery entry: src/data/proofs/szemeredi-regularity-oq-02/ (meta.json, annotations.json, index.ts)"
+    ],
+    "insights": [
+      "SzemerediRegularityOQ02.lean already fully proved (399 lines, 0 sorries, 0 axioms) when discovered",
+      "Key per-pair lemma: ε-regular pair (P,Q) implies |e(A,B) - d(P,Q)|A||B|| ≤ 2ε|P||Q|, two cases (large/small)",
+      "Partition identity Σᵢⱼ|Pᵢ||Pⱼ| = n² bridges per-pair to global cut approximation",
+      "Szemerédi stepBound n ≥ 4^n, grows tower-type (≥4^(4^n) in 2 steps)",
+      "FK bound 4^(1/ε²) is singly exponential — dramatic gap from Szemerédi tower",
+      "Converse (FK ⟹ Szemerédi) fails — FK cut-approximation is strictly weaker"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "COMPLETED — gallery entry created, PR submitted"
+    ]
   },
   "tags": [
     "combinatorics",
@@ -43,7 +54,8 @@
     "frieze-kannan"
   ],
   "relatedProofs": [
-    "szemeredi-regularity"
+    "szemeredi-regularity",
+    "szemeredi-regularity-oq-02"
   ],
   "references": {
     "papers": [],
@@ -51,7 +63,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.383Z",
-  "lastUpdate": "2026-04-22T13:03:46.383Z",
+  "lastUpdate": "2026-04-26T00:00:00.000Z",
   "significance": 8,
   "tractability": 6,
   "leanFiles": [

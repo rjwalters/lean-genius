@@ -7,7 +7,7 @@
     "author": "Lawvere (1969), Scott (1972), formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Kleene_fixed-point_theorem",
     "date": "1969/1972",
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "logic",
       "category-theory",
@@ -16,8 +16,8 @@
       "order-theory"
     ],
     "proofRepoPath": "Proofs/CantorDiagonalizationOQ04OQ03.lean",
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "axiomCount": 0,
     "theoremCount": 10,
     "mathlibDependencies": [
@@ -32,8 +32,8 @@
         "module": "Mathlib.Order.CompleteLattice"
       }
     ],
-    "lineCount": 283,
-    "assumptions": []
+    "lineCount": 299,
+    "assumptions": "None. OmegaContinuous.monotone proved via chain construction: c 0 = a, c (n+1) = b gives f(a) ≤ ⊔ₙ f(cₙ) = f(b) by ω-continuity."
   },
   "parent": "cantor-diagonalization-oq-04",
   "openQuestion": "How does Lawvere's categorical fixed-point theorem connect to domain-theoretic fixed points (Kleene chain, Scott's theorem, Y combinator)?",
@@ -117,12 +117,12 @@
   ],
   "leanFile": {
     "namespace": "CantorDiagonalizationOQ04OQ03",
-    "lineCount": 283,
+    "lineCount": 299,
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 4,
     "path": "Proofs/CantorDiagonalizationOQ04OQ03.lean",
-    "sorries": 1
+    "sorries": 0
   },
-  "sorries": 1
+  "sorries": 0
 }
