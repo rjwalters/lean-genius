@@ -40,15 +40,18 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Newton's identities (Newton-Girard) connect power sums pₖ = Σxᵢᵏ to elementary symmetric polynomials eₖ = Σ_{i₁<...<iₖ} xᵢ₁·...·xᵢₖ. This file extends the k=1,2,3 corollaries from the parent proof (AmgmInequalityOQ02OQ01OQ02OQ01) to k=4 and k=5, completing the foundation for symmetric function computations in degrees 4 and 5.",
+    "historicalContext": "Newton's identities — also called Newton-Girard identities — relate power sums $p_k = \\sum_i x_i^k$ to elementary symmetric polynomials $e_k = \\sum_{i_1 < \\cdots < i_k} x_{i_1} \\cdots x_{i_k}$. The identities were first written down by Albert Girard in his 1629 algebraic treatise *Invention nouvelle en l'algèbre*, where he recorded the cases $k = 1, 2, 3, 4$ (in 17th-century notation) as a tool for computing 'Newton sums' of polynomial roots. Isaac Newton then stated the general recurrence in *Arithmetica Universalis* (1707) without proof, and the identities later appeared in the work of Waring (1762) and Lagrange as a foundation for the theory of polynomial resolvents.\n\nThe modern Lean formalization in Mathlib (`MvPolynomial.psum_eq_mul_esymm_sub_sum`) proves the full recurrence for all $k \\geq 1$ over any `CommRing` with any `Fintype` index set — a remarkable generalization from the classical setting of polynomials over $\\mathbb{Q}$ with $n$ specific variables.\n\nThis entry extends the $k=1,2,3$ corollaries from the parent proof (`AmgmInequalityOQ02OQ01OQ02OQ01`) to $k=4$ and $k=5$. The degree-5 case is mathematically noteworthy: Newton-Girard at $k=4,5$ provides the computational tools for manipulating symmetric functions of the roots of a quintic polynomial, sitting at the threshold established by Abel-Ruffini (no radical formula exists for $k \\geq 5$). While the Newton-Girard identities themselves are purely algebraic and hold in all degrees, the degree-5 case occupies a special role in classical algebra as the last degree where the identities were extensively computed by hand (Newton, Waring, Lagrange) in the pursuit of a quintic formula that, as Abel showed in 1824, cannot exist.",
     "problemStatement": "**Open Question**: Extend the Newton-Girard recurrences to k=4 and k=5:\n\n  p₄ = e₁·p₃ − e₂·p₂ + e₃·p₁ − 4·e₄\n  p₅ = e₁·p₄ − e₂·p₃ + e₃·p₂ − e₄·p₁ + 5·e₅\n\nwhere pₖ = Σxᵢᵏ is the k-th power sum and eₖ is the k-th elementary symmetric polynomial over any CommRing.\n\n**Answer**: Proved via Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum. The antidiagonals {(1,3),(2,2),(3,1)} (k=4) and {(1,4),(2,3),(3,2),(4,1)} (k=5) are computed using omega. Dual forms expressing eₖ in terms of power sums are derived via linear_combination.",
     "text": "Proves Newton-Girard recurrences for k=4 and k=5 by instantiating Mathlib's psum_eq_mul_esymm_sub_sum and expanding the antidiagonal filter via omega. The approach is identical to the k=2,3 parent proof, demonstrating the systematic pattern.",
     "proofStrategy": "**k=4**: Apply `psum_eq_mul_esymm_sub_sum` at n=4. Filter {(a,b) | a+b=4, 0<a<4} = {(1,3),(2,2),(3,1)} (3 terms). Expand sum via sum_insert/sum_singleton. Close with ring.\n\n**k=5**: Apply `psum_eq_mul_esymm_sub_sum` at n=5. Filter {(a,b) | a+b=5, 0<a<5} = {(1,4),(2,3),(3,2),(4,1)} (4 terms). Explicit constructor proof for the filter equality (4-element case requires more careful handling). Close with ring.\n\n**Dual forms**: Apply linear_combination to rearrange the power sum identities into expressions for e₄ and e₅.",
     "keyInsights": [
       "The three-tactic pipeline (omega for antidiagonal arithmetic → sum_insert/sum_singleton for finite sum expansion → ring for polynomial identity) extends to k=4,5 with minimal modification",
-      "For k=5, the four-element antidiagonal filter requires an explicit constructor proof (intro h; simp; omega) rather than a one-shot simp+omega, due to the larger disjunction",
-      "The linear_combination tactic works over any CommRing (unlike linarith which requires an ordered type), enabling the dual form theorems for expressions like 4·e₄ and 5·e₅",
-      "All four theorems hold over any CommRing R with any Fintype index type σ — no assumptions on real numbers needed"
+      "For k=5, the four-element antidiagonal filter requires an explicit constructor proof (intro h; simp; omega) rather than a one-shot simp+omega, due to the larger disjunction — a sign that brute-force automation has limits even for elementary combinatorial facts",
+      "The linear_combination tactic works over any CommRing (unlike linarith which requires an ordered type), enabling the dual form theorems for expressions like 4·e₄ and 5·e₅ to be machine-verified without characteristic assumptions",
+      "All four theorems hold over any CommRing R with any Fintype index type σ — no assumptions on real numbers, complex numbers, or characteristic zero needed",
+      "The sign pattern (-1)^a in Newton-Girard creates an alternating ± structure: for k=4, the antidiagonal pairs contribute −e₁p₃, +e₂p₂, −e₃p₁ (signs −,+,−), yielding the signed sum e₁p₃ − e₂p₂ + e₃p₁; for k=5, the pattern −,+,−,+ gives e₁p₄ − e₂p₃ + e₃p₂ − e₄p₁. This alternating structure is a consequence of the Leibniz rule for the determinant of the Vandermonde matrix underlying Newton's identities",
+      "The coefficient k in k·eₖ = (∙) is an integer, so the dual form theorem holds in characteristic p ≠ k — but to express eₖ as 1/k·(∙), one needs char(R) ∤ k. This is why eₖ is recoverable from power sums over ℚ (or ℝ, ℂ) but not over 𝔽₄ for k=4 (where 4=0) or 𝔽₅ for k=5 (where 5=0)",
+      "Together with k=1,2,3 from the parent, the chain p₁,...,p₅ can be computed from e₁,...,e₅ (and vice versa) — providing machine-verified Newton-Girard covering the full range needed for the theory of quintic polynomials, where degree 5 is the solvability boundary established by Abel-Ruffini"
     ],
     "prerequisites": [
       "MvPolynomial.psum_eq_mul_esymm_sub_sum — general Newton-Girard recurrence (Mathlib)",
@@ -95,8 +98,10 @@
     "summary": "Extends Newton-Girard to k=4 and k=5 with 0 sorries and 0 axioms. All four theorems (psum_four_eq, psum_five_eq, esymm_four_from_psum, esymm_five_from_psum) machine-verified over any CommRing.",
     "implications": "**For Newton-Girard**: The k=4,5 corollaries extend the chain to degrees relevant for quintic polynomial theory, where the Galois group determines solvability.\n\n**For Symmetric Functions**: Combined with k=1,2,3 from the parent, we now have machine-verified Newton-Girard identities for degrees 1-5, covering the full range needed for most symmetric function computations.\n\n**Proof Pattern**: The antidiagonal template (omega → sum_insert/sum_singleton → ring) scales to arbitrary k, though the four-element case (k=5) requires the more explicit constructor form for the filter proof.",
     "openQuestions": [
-      "Prove the general Newton-Girard recurrence for arbitrary k as a clean inductive theorem, without case-by-case antidiagonal computation",
-      "Connect to Waring's problem: express p_k^(1/k) as a polynomial in e_1,...,e_k for specific k"
+      "Prove the general Newton-Girard recurrence for arbitrary k as a clean inductive theorem using Mathlib's `psum_eq_mul_esymm_sub_sum` directly, without case-by-case antidiagonal computation — the main challenge is expressing the general antidiagonal filter `{(a,b) | a+b=k, 0 < a < k}` as a Finset in a way that `ring` can close",
+      "Waring's problem (1770): express $p_k^{1/k}$ (or more precisely, express any symmetric polynomial as a polynomial in $e_1, \\ldots, e_n$) — the fundamental theorem of symmetric polynomials guarantees existence, but giving an explicit algorithm using Newton-Girard as the computational engine would make the Lean formalization constructive",
+      "Compute the discriminant $\\Delta(f) = \\prod_{i < j}(x_i - x_j)^2$ of a degree-5 polynomial in terms of $p_1,\\ldots,p_{10}$ using repeated Newton-Girard applications, connecting these identities to the Galois group criterion for quintic solvability",
+      "Extend the antidiagonal template to k=6,7,8,... as a stress test of the proof automation: at what degree does the four-step `sum_insert` chain become impractical, and is there a more scalable approach using `Finset.sum_congr` or decidability?"
     ]
   },
   "crossReferences": [
@@ -118,7 +123,44 @@
     {
       "targetId": "vietas-formulas",
       "relationship": "related",
-      "description": "Vieta's formulas relate polynomial coefficients to elementary symmetric polynomials; Newton-Girard connects these to power sums."
+      "description": "Vieta's formulas express polynomial coefficients as elementary symmetric polynomials of the roots: $a_{n-k}/a_n = (-1)^k e_k(x_1,\\ldots,x_n)$. Newton-Girard extends this by expressing power sums $p_k = \\sum x_i^k$ in terms of the same $e_k$. Together, Vieta + Newton-Girard enable computing power sums directly from polynomial coefficients without knowing individual roots."
+    },
+    {
+      "targetId": "newton-inductive-step",
+      "relationship": "related",
+      "description": "Provides the inductive step for Newton's inequality $e_k^2 \\geq e_{k-1} e_{k+1}$ — a direct consequence of Maclaurin's inequality. The Newton-Girard identities proved in this entry (connecting $p_k$ to $e_k$) are a complementary tool: while Newton's inequality is a comparison between elementary symmetric polynomials, Newton-Girard is an algebraic identity expressing their relationship to power sums."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Newton-Girard at k=4,5 provides the symmetric function machinery underlying the theory of quintic polynomials. The Abel-Ruffini theorem (no radical formula exists for degree ≥ 5) uses the Galois group of the quintic, which is computed via discriminants and power sums — computations that rely on Newton-Girard identities. The k=5 case proved here sits at the exact solvability boundary: degrees 1–4 have radical formulas (Cardano, Ferrari), degree 5 does not."
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "ancestor",
+      "description": "Root of the amgm family: proves the AM-GM inequality $\\frac{x_1+\\cdots+x_n}{n} \\geq (x_1 \\cdots x_n)^{1/n}$. The Newton-Girard chain (k=1,...,5) provides the algebraic foundation for Maclaurin's inequalities relating elementary symmetric means, directly supporting the AM-GM family of results."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "psum_four_eq",
+      "statement": "psum σ R 4 = esymm σ R 1 * psum σ R 3 - esymm σ R 2 * psum σ R 2 + esymm σ R 3 * psum σ R 1 - 4 * esymm σ R 4",
+      "description": "Newton-Girard k=4: the fourth power sum expressed as a linear combination of elementary symmetric polynomials and lower power sums, proved via three-element antidiagonal filter and ring"
+    },
+    {
+      "name": "psum_five_eq",
+      "statement": "psum σ R 5 = esymm σ R 1 * psum σ R 4 - esymm σ R 2 * psum σ R 3 + esymm σ R 3 * psum σ R 2 - esymm σ R 4 * psum σ R 1 + 5 * esymm σ R 5",
+      "description": "Newton-Girard k=5: the fifth power sum expressed via four-element antidiagonal, with explicit iff constructor for the filter proof"
+    },
+    {
+      "name": "esymm_four_from_psum",
+      "statement": "4 * esymm σ R 4 = esymm σ R 3 * psum σ R 1 - esymm σ R 2 * psum σ R 2 + esymm σ R 1 * psum σ R 3 - psum σ R 4",
+      "description": "Dual Newton-Girard k=4: expresses 4·e₄ in terms of power sums, proved by linear_combination over any CommRing"
+    },
+    {
+      "name": "esymm_five_from_psum",
+      "statement": "5 * esymm σ R 5 = esymm σ R 4 * psum σ R 1 - esymm σ R 3 * psum σ R 2 + esymm σ R 2 * psum σ R 3 - esymm σ R 1 * psum σ R 4 + psum σ R 5",
+      "description": "Dual Newton-Girard k=5: expresses 5·e₅ in terms of power sums, proved by linear_combination"
     }
   ],
   "references": [
@@ -126,7 +168,22 @@
       "authors": "Newton, Isaac",
       "title": "Arithmetica Universalis",
       "year": "1707",
-      "note": "Newton's identities for k=4 and k=5, extending the classical cases proved in the parent entry."
+      "venue": "Cambridge",
+      "note": "States the general Newton-Girard recurrence (without proof); the k=4,5 cases in this entry are direct specializations"
+    },
+    {
+      "authors": "Girard, Albert",
+      "title": "Invention nouvelle en l'algèbre",
+      "year": "1629",
+      "venue": "Amsterdam",
+      "note": "First written formulation of Newton's identities for the low-degree cases k=1,2,3,4 (in 17th-century notation)"
+    },
+    {
+      "authors": "Macdonald, I.G.",
+      "title": "Symmetric Functions and Hall Polynomials",
+      "year": "1995",
+      "venue": "Oxford University Press, 2nd edition",
+      "note": "Comprehensive modern reference for symmetric function theory including Newton-Girard identities, power sum symmetric functions, and their role in algebraic combinatorics"
     }
   ]
 }
