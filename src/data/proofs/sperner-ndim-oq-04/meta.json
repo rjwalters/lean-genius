@@ -42,7 +42,7 @@
     ],
     "dateAdded": "2026-04-22",
     "axiomCount": 0,
-    "lineCount": 900,
+    "lineCount": 892,
     "assumptions": "1 sorry: bdry_all_even_of_no_fc_walks — walk-reversal τ∘τ=id involution on boundary doors when all walks fail. Needs walkTrace_reversal (~100-line induction using adj_symm + nonfc_with_door_has_unique_exit). The theorem kuhn_path_existential is now a theorem (not axiom): Case 1 (∃ walk reaches FC) is fully proved via push_neg + kuhnPathStart_is_fc_of_fc_start; Case 2 (all walks fail) uses bdry_all_even_of_no_fc_walks to derive Even |B|, contradicting hbdry_odd via omega. 0 axioms.",
     "mathlib_version": "4.26.0"
   },
@@ -247,7 +247,7 @@
       "BigOperators"
     ],
     "namespace": "SpernerNDimOQ04",
-    "lineCount": 900,
+    "lineCount": 892,
     "axiomCount": 0,
     "theoremCount": 21,
     "definitionCount": 8,
