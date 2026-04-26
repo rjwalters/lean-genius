@@ -53,7 +53,9 @@
       "For n ≥ 6 even: ω_n ≤ ω_6 < ω_5; for n ≥ 7 odd: ω_n ≤ ω_7 < ω_5",
       "Key bound: 2π < 7 (since π < 3.15), making the ratio 2π/7 < 1 for n=5",
       "ω_5 > ω_4 requires only 16 > 15 (no π bound needed); ω_5 > ω_3 requires π > 2.5 (from π > 3)",
-      "n=5 is uniquely the global maximizer — ω_5 ≤ ω_n implies n = 5"
+      "n=5 is uniquely the global maximizer — ω_5 ≤ ω_n implies n = 5",
+      "Concentration of measure: ω_n → 0 as n → ∞ means almost all volume of a high-dimensional ball concentrates in a thin shell near the boundary; n=5 is where this 'curse of dimensionality' begins to dominate over the volume-growth effect from adding dimensions",
+      "The recurrence proof avoids any transcendental equation: the integer maximizer n=5 is determined purely by 2π < 7, requiring only π < 3.5 — a much cruder π bound than the Lean proof actually uses (π < 3.15)"
     ]
   },
   "sections": [
@@ -103,19 +105,56 @@
     "implications": "This fundamental fact of high-dimensional geometry is now formally verified: the 5-dimensional unit ball has the largest volume among all unit balls. For n > 5, the volumes decrease monotonically (within each parity class) toward 0 (the thin shell limit). The crossover is governed by 2π ≈ 6.283, between n+2=6 (where ratio=π/3 > 1) and n+2=7 (where ratio=2π/7 < 1).",
     "openQuestions": [
       "What is the exact supremum of ω_n over all real n > 0 (not just natural numbers)? Does the maximum over ℝ occur near n=5.257?",
-      "How does the maximizing dimension behave for balls in L^p norms? For which p does the maximum shift from n=5?"
+      "How does the maximizing dimension behave for balls in L^p norms? For which p does the maximum shift from n=5?",
+      "Can the real-valued maximizer n* ≈ 5.257 be formalized? It satisfies ψ(n*/2+1) = log π where ψ is the digamma function — can this transcendental equation be proved to have a unique solution in Lean 4?",
+      "Does the Blaschke-Santaló inequality (bounding the volume product of convex bodies) have implications for which bodies maximize volume in fixed dimensions, and can this be formalized in Mathlib?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
       "relationship": "answers-open-question",
-      "description": "Answers the question of which n maximizes ω_n, using the recurrence proved in the parent."
+      "description": "Answers the question of which n maximizes ω_n, using the recurrence ω_{n+2} = 2π/(n+2)·ω_n proved in the parent. The parent establishes the infrastructure (positivity, recurrence, explicit values) that makes the global maximum proof tractable."
     },
     {
       "targetId": "area-of-circle-oq-01-oq-02-oq-01-oq-03",
       "relationship": "related",
-      "description": "The sibling thin-shell result shows ω_n → 0; this proof identifies where the maximum occurs before the decay."
+      "description": "The sibling thin-shell result shows ω_n → 0 as n → ∞, via the even-subsequence formula ω_{2k} = π^k/k!. Together these two results give the complete picture: ω_n increases to its maximum at n=5, then decreases monotonically to 0."
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-01",
+      "relationship": "uses",
+      "description": "The n-dimensional integration framework proving V_n(r) = ∫₀ʳ S_n(ρ)dρ, which establishes ω_n = π^(n/2)/Γ(n/2+1) via spherical coordinates. The recurrence ω_{n+2} = 2π/(n+2)·ω_n is a direct consequence of this integration — each dimension adds two via the separable spherical structure."
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "The companion proof that ω_n → 0 as n → ∞, establishing the eventual decay. The explicit formula ω_{2k} = π^k/k! used there is the even-subsequence limit of the recurrence exploited here. Together they show ω_5 is both a global maximum and the turning point before the concentration-of-measure decay."
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02",
+      "relationship": "generalizes",
+      "description": "The foundational area-from-circumference proof A = ∫C(ρ)dρ for n=2, which seeds the entire ball volume series. The recurrence ω_{n+2} = (2π/(n+2))·ω_n echoes the same circumference-to-area integration step in every even dimension — the 2π factor is precisely the surface area ratio for the 2-sphere."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "omega_five_is_max",
+      "type": "core",
+      "description": "n=5 maximizes unit ball volume: ω_n ≤ ω_5 for all natural n",
+      "leanType": "∀ n : ℕ, omega n ≤ omega 5"
+    },
+    {
+      "name": "omega_five_unique_max",
+      "type": "core",
+      "description": "n=5 is the unique maximizer: ω_5 ≤ ω_n implies n = 5",
+      "leanType": "∀ n : ℕ, omega 5 ≤ omega n → n = 5"
+    },
+    {
+      "name": "omega_max_value",
+      "type": "supporting",
+      "description": "Explicit upper bound: ω_n ≤ 8π²/15 for all n, with equality only at n=5",
+      "leanType": "∀ n : ℕ, omega n ≤ 8 * π ^ 2 / 15"
     }
   ],
   "leanFile": {
