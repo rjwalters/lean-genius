@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-04-25T07:53:15.620Z",
     "iteration": 1,
-    "focus": "curvatureSin function defined, spherical Ptolemy inequality proved for unit-circle points in ℂ",
+    "focus": "Structural properties proved: oddness + derivative normalization",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: curvatureSin defined, spherical Ptolemy inequality proved for unit-circle points in ℂ",
+    "progressSummary": "COMPLETED: Proved curvatureSin_odd and curvatureSin_hasDerivAt_zero/curvatureSin_deriv_zero. All structural properties of sn_K now formalized.",
     "builtItems": [
       "curvatureSin: noncomputable def in SynthesisCurvaturePtolemy.lean:87",
       "curvatureSin_zero: simp lemma (K=0 = identity)",
@@ -37,24 +37,30 @@
       "curvatureSin_neg_one: lemma (K=-1 = sinh)",
       "curvatureSin_zero_right: simp lemma (value at t=0 is 0)",
       "spherical_ptolemy_eq_curvatureSin: theorem restating spherical Ptolemy in curvatureSin 1",
-      "spherical_ptolemy_ineq_curvatureSin: theorem proving spherical Ptolemy inequality for unit-circle points in ℂ"
+      "spherical_ptolemy_ineq_curvatureSin: theorem proving spherical Ptolemy inequality for unit-circle points in \u2102",
+      "curvatureSin_odd: lemma in SynthesisCurvaturePtolemy.lean:143",
+      "hasDerivAt_sinh: private theorem (auxiliary) in SynthesisCurvaturePtolemy.lean:151",
+      "curvatureSin_hasDerivAt_zero: theorem in SynthesisCurvaturePtolemy.lean:169",
+      "curvatureSin_deriv_zero: theorem in SynthesisCurvaturePtolemy.lean:216"
     ],
     "insights": [
-      "curvatureSin K t defined: sin(√K·t)/√K (K>0), t (K=0), sinh(√|K|·t)/√|K| (K<0) — unifying sn_K function for constant-curvature geometry",
+      "curvatureSin K t defined: sin(\u221aK\u00b7t)/\u221aK (K>0), t (K=0), sinh(\u221a|K|\u00b7t)/\u221a|K| (K<0) \u2014 unifying sn_K function for constant-curvature geometry",
       "Key: curvatureSin 1 = sin, curvatureSin (-1) = sinh, curvatureSin 0 = identity",
-      "Spherical Ptolemy inequality for all four unit-circle points in ℂ — no concyclicity needed (NEW)",
-      "Proof chain: chord-arc identity + complex Ptolemy inequality → spherical inequality by dividing by 4",
-      "K<0 (hyperbolic) case blocked: conformal factors (1-|z|²) dont cancel for interior points; ~800-1200 lines needed"
+      "Spherical Ptolemy inequality for all four unit-circle points in \u2102 \u2014 no concyclicity needed (NEW)",
+      "Proof chain: chord-arc identity + complex Ptolemy inequality \u2192 spherical inequality by dividing by 4",
+      "K<0 (hyperbolic) case blocked: conformal factors (1-|z|\u00b2) dont cancel for interior points; ~800-1200 lines needed",
+      "Oddness proof: unfold + split_ifs + rw [mul_neg, Real.sin_neg/sinh_neg, neg_div] \u2014 clean 3-case proof",
+      "Derivative normalization: by_cases on K; each case uses chain rule + div_const + simp to reduce to cos(0)=1 or cosh(0)=1",
+      "hasDerivAt_sinh not in Mathlib \u2014 proved locally from hasDerivAt_exp and sinh definition (standard approach used across gallery)"
     ],
     "mathlibGaps": [
-      "Hyperbolic Ptolemy: Poincaré disk metric not in Mathlib (~800-1200 lines needed)",
-      "Ptolemy inequality for general inner product space (only proved for ℂ, not general IPS)"
+      "Hyperbolic Ptolemy: Poincar\u00e9 disk metric not in Mathlib (~800-1200 lines needed)",
+      "Ptolemy inequality for general inner product space (only proved for \u2102, not general IPS)"
     ],
     "nextSteps": [
-      "Submit SynthesisCurvaturePtolemy.lean for Docker build to verify compilation",
-      "Add curvatureSin oddness lemma: curvatureSin K (-t) = -curvatureSin K t",
-      "Prove normalization: deriv of curvatureSin K at 0 is 1 for all K",
-      "When Mathlib adds Poincaré disk, prove K=-1 case to complete the synthesis"
+      "Prove curvatureSin K satisfies ODE y'' + K*y = 0 (requires second derivative)",
+      "Fix PtolemysTheoremOQ01OQ02.lean /-! docstrings to unblock Docker build",
+      "When Mathlib adds Poincare disk, prove K=-1 case"
     ]
   },
   "tags": [
@@ -74,7 +80,7 @@
     "mathlib": []
   },
   "started": "2026-04-25T12:53:24.054Z",
-  "lastUpdate": "2026-04-25T12:53:24.054Z",
+  "lastUpdate": "2026-04-26T19:10:00Z",
   "significance": 8,
   "tractability": 7
 }
