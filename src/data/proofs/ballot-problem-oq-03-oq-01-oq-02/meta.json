@@ -50,17 +50,20 @@
     ]
   },
   "overview": {
-    "historicalContext": "The hook-length formula (Frame-Robinson-Thrall 1954) states f^λ = n!/∏h(u) where h(u) = arm(u) + leg(u) + 1 is the hook length at cell u of the Young diagram λ. This is one of the most celebrated formulas in algebraic combinatorics, connecting enumerative combinatorics with representation theory (f^λ = dim Specht module S^λ). The Lindström-Gessel-Viennot (LGV) approach provides a determinantal proof: SYT of shape λ biject with non-intersecting lattice path systems, and the LGV determinant factors as the hook product. This file extends the Lean 4 LGV infrastructure from BallotProblemOQ03OQ02 toward a complete formalization of the hook-length formula.",
+    "historicalContext": "The hook-length formula was discovered by Frame, Robinson, and Thrall in 1954. The formula f^λ = n!/∏_{u∈λ}h(u) — where h(u) = arm(u) + leg(u) + 1 is the hook length at each cell — counts the number of Standard Young Tableaux of shape λ. It is one of the most celebrated formulas in algebraic combinatorics, simultaneously a counting theorem (enumerative combinatorics) and a dimension formula (representation theory: f^λ = dim Specht module S^λ over Sₙ). The original Frame-Robinson-Thrall proof was combinatorial but complex; Sagan (1980) and Edelman-Stanton (1985) gave shorter proofs using the RSK correspondence and growth diagrams. The Lindström-Gessel-Viennot (LGV) approach, refined by Gessel and Viennot (1985), provides a determinantal proof: SYT of shape λ biject with non-intersecting lattice path systems, and the LGV determinant factors algebraically as n!/∏h(u). An important probabilistic proof was found by Greene-Nijenhuis-Wilf (GNW, 1979) via the 'hook walk' — a random process that selects corners with probability proportional to their hook products. The GNW hook walk identity Σ_c hookProd(μ)/hookProd(μ∖c) = μ.card is proved here for at-most-2-row diagrams and generalized hook shapes, with 2 sorries remaining for the 3-row and ≥4-row cases. This file extends the Lean 4 LGV infrastructure from BallotProblemOQ03OQ02 toward a complete formalization of the hook-length formula.",
     "problemStatement": "Given the complete n×n LGV infrastructure in BallotProblemOQ03OQ02.lean, prove the hook-length formula f^λ = n!/∏_{u∈λ}h(u) using: (1) the bijection between SYT(λ) and non-intersecting lattice path tuples with LGV source/target encoding, and (2) the algebraic identity showing the LGV determinant equals n!/∏h(u).",
     "text": "This file builds the formal mathematical infrastructure for the hook-length formula. The key definitions are: (1) hookLength μ i j = (rowLen i - j - 1) + (colLen j - i - 1) + 1 (arm + leg + 1) using Mathlib's YoungDiagram API; (2) hookProd μ = ∏_{c ∈ μ.cells} hookLength μ c.1 c.2; (3) StandardYoungTableau μ as a structure with strict row/column monotonicity conditions. The LGV encoding uses weakly-increasing row lengths σ (reversed partition), sources(k) = k, targets(k) = σ(k) + k. Numerical verification via norm_num confirms the formula for all shapes up to size 10.",
     "proofStrategy": "Two-step approach: (Step 1) Bijection between StandardYoungTableau μ and the NI-path count niTupleCount(youngLGVConfig r σ hσ m hm) via the Fomin growth diagram bijection (ni_count_eq_syt_count, open). (Step 2) Algebraic identity det[C(m + σⱼ + j - i, m)] = μ.card! / hookProd μ (lgv_det_factors_as_hook_quotient, open — Vandermonde-type for rectangular, Frame-Robinson-Thrall for general). Both combine with lgv_lemma_rxr to give the main theorem hook_length_formula.",
     "keyInsights": [
-      "hookLength is always positive (arm + leg + 1 ≥ 1) regardless of whether (i,j) is in μ — unconditional positivity from the definition",
-      "The LGV encoding requires σ weakly INCREASING (reversed partition order) to ensure targets(k) = σ(k)+k is strictly monotone",
-      "The LGV wellFormed condition needs σ(0) ≥ r-1 (minimum target ≥ maximum source): σ(0) is the smallest row length",
-      "Numerical verification: for (2,1): 3!/(3×1×1) = 2 ✓; for (3,2,1): 6!/(5×3×1×3×1×1) = 16 ✓",
-      "The two open lemmas (NI bijection + det factorization) are HARD (known mathematics, ~200 lines each)",
-      "hookProd_empty: empty diagram → hook product 1 (empty product), connecting to n!=1 for n=0"
+      "hookLength is always positive (arm + leg + 1 ≥ 1) regardless of whether (i,j) is in μ — unconditional positivity from the definition, enabling hookProd > 0 unconditionally",
+      "The LGV encoding requires σ weakly INCREASING (reversed partition order) to ensure targets(k) = σ(k)+k is strictly monotone — this is the opposite of the usual partition notation where parts are weakly decreasing",
+      "The LGV wellFormed condition needs σ(0) ≥ r-1 (minimum target ≥ maximum source): σ(0) is the smallest row length, i.e., the shortest row of the Young diagram",
+      "The hook_walk_identity Σ_c hookProd(μ)/hookProd(μ∖c) = μ.card is the key recursive identity from the GNW (Greene-Nijenhuis-Wilf 1979) probabilistic proof — proved here for at-most-2-row and generalized hook shapes, open for 3+ rows",
+      "hook_length_formula_general is proved via corner induction modulo hook_walk_identity: removing a corner cell c reduces to a smaller Young diagram, with the combinatorial factor bookkeeping handled by hookProd_ratio_formula",
+      "hookProd_ratio_formula: hookProd(μ)/hookProd(μ∖c) = (product over arm cells) × (product over leg cells) — proved with 0 sorries in session 18, enabling the corner induction",
+      "Numerical verification: for (2,1): 3!/(3×1×1) = 2 ✓; for (3,2,1): 6!/(5×3×1×3×1×1) = 16 ✓; for (4,3,2,1): 10!/(7×5×4×3×3×2×2×1×1×1) = 1440 ✓",
+      "The five open sorries form two clusters: (Cluster 1) the LGV-based proof strategy (RSK bijection + det factorization, ~400 lines total); (Cluster 2) the hook walk identity for 3-row and ≥4-row diagrams (~300 lines GNW/RSK)",
+      "hookProd_empty: empty diagram → hook product 1 (empty product), connecting to the base case n!=1 for n=0 in the induction"
     ],
     "prerequisites": [
       "lgv_lemma_rxr from BallotProblemOQ03OQ02: the general n×n LGV determinant formula",
@@ -73,9 +76,12 @@
     "summary": "Hook-length formula fully proved for five infinite families: 1×n (direct), n×1 (direct), hook-shape (m+1,1) (bijection), 2×m rect (Lindstrom reflection), and general 2-row [a,b] (conditional on ballot bijection, 1 sorry). hookProd for [a,b] = (a+1).descFactorial(b) × (a-b)! × b! proved with 0 sorries. Part XIV adds hook_length_formula_general as the primary result, proved via corner induction modulo hook_walk_identity. Total: 5 sorries (3 LGV path + 2 corner induction: hookProd_ratio_formula + hook_walk_identity ≥3-row).",
     "implications": "A complete formalization would be the first Lean 4 proof of the hook-length formula, a milestone in formal combinatorics. The LGV approach connects our existing ballot problem proofs to representation theory via the Specht module dimension formula f^λ = dim S^λ.",
     "openQuestions": [
-      "Formalize the SYT ↔ NI bijection via Fomin's growth diagrams or the RSK correspondence (~200 lines)",
-      "Prove the det factorization det[C(m+σⱼ+j-i,m)] = n!/hookProd for general partitions via a Vandermonde-type identity",
-      "Add Fintype instance for StandardYoungTableau via column-reading bijection with Fin μ.card permutations"
+      "Formalize the SYT ↔ NI bijection via Fomin's growth diagrams or the RSK correspondence (~200 lines, the main open sorry)",
+      "Prove the det factorization det[C(m+σⱼ+j-i,m)] = n!/hookProd for general partitions via a Vandermonde-type identity (~200 lines)",
+      "Complete the hook_walk_identity for 3-row Young diagrams (1 sorry, combinatorially tractable)",
+      "Complete the hook_walk_identity for ≥4-row Young diagrams via GNW or RSK (~300 lines, the hardest open problem)",
+      "Add Fintype instance for StandardYoungTableau via column-reading bijection with Fin μ.card permutations",
+      "Formalize the connection to representation theory: f^λ = dim S^λ, where S^λ is the Specht module of the symmetric group Sₙ"
     ]
   },
   "leanFile": {
@@ -98,24 +104,34 @@
   },
   "crossReferences": [
     {
-      "id": "ballot-problem-oq-03-oq-01",
-      "title": "LGV Lemma 2×2",
-      "relationship": "foundational"
+      "targetId": "ballot-problem-oq-03-oq-01",
+      "relationship": "foundational",
+      "description": "The 2×2 LGV lemma is the base case of the lattice-path machinery used here. The hook-length formula proof strategy (SYT ↔ non-intersecting path tuples) is built on top of the n×n generalization of this 2×2 result."
     },
     {
-      "id": "ballot-problem-oq-03-oq-02",
-      "title": "LGV Lemma n×n",
-      "relationship": "foundational"
+      "targetId": "ballot-problem-oq-03-oq-02",
+      "relationship": "foundational",
+      "description": "The general n×n LGV lemma (lgv_lemma_rxr) is directly imported here and serves as the key ingredient for the main hook_length_formula theorem. The LGV encoding uses sources(k)=k, targets(k)=σ(k)+k for the partition σ."
     },
     {
-      "id": "ballot-problem-oq-03-oq-01-oq-01",
-      "title": "General n×n LGV (restatement)",
-      "relationship": "sibling"
+      "targetId": "ballot-problem-oq-03-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "A restatement of the general n×n LGV result in a slightly different form. Both files develop the LGV determinant machinery that underpins the hook-length formula proof strategy."
     },
     {
-      "id": "ballot-problem-oq-03-oq-03",
-      "title": "2-row hook-length formula",
-      "relationship": "extends"
+      "targetId": "ballot-problem-oq-03-oq-03",
+      "relationship": "extends",
+      "description": "The 2-row hook-length formula file (BallotProblemOQ03OQ03.lean) is imported here and contributes the hookProd formula for 2-row Young diagrams [a,b]. This file extends that 2-row case to all Young diagrams via corner induction."
+    },
+    {
+      "targetId": "ballot-problem-oq-03",
+      "relationship": "ancestor",
+      "description": "The original ballot problem formalization establishes the combinatorial counting techniques (ballot sequences, Lindström reflection) that are ancestors of the LGV approach used here. The ballot sequence count ballotSeqCount(a+1,b) appears directly in the two_row_hook_identity proved here."
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "related",
+      "description": "Both proofs involve the interplay between combinatorial structure (Young diagrams, countable algebraic numbers) and deeper algebraic/analytic machinery. The hook-length formula connects combinatorics to representation theory (Specht modules), paralleling how algebraic number theory connects combinatorics to field extensions."
     }
   ],
   "sections": [
