@@ -128,3 +128,45 @@ Now:
 ### Next Steps
 1. Prove the tower divisibility sorry: `Module.finrank ℚ ℚ⟮b+β⟯ ∣ 2^(j+k+1)`
    - Key: ℚ⟮b+β⟯ ≤ ℚ⟮a,β,b⟯; each adjoin step multiplies finrank by ≤ 2^k
+
+## Session 28 (2026-04-26) — Tower Sorry Structured (5-Step Proof Skeleton)
+
+**Mode**: REVISIT (continued from Session 27)
+**Outcome**: PROGRESS — single opaque sorry replaced with 5-step structured proof skeleton
+
+### What I Did
+- Replaced the single `sorry` for `Module.finrank ℚ ℚ⟮(b + β)⟯ ∣ 2 ^ (j + k + 1)` with
+  a structured 5-step proof (Steps A–E):
+  - **Step A** (proved): `a ∈ ℚ⟮β⟯` via `mul_mem` from β*β=a and β∈ℚ⟮β⟯
+  - **Step A** (proved): `ℚ⟮a⟯ ≤ ℚ⟮β⟯` via `adjoin_simple_le_iff.mpr`
+  - **Step B** (proved): `b + β ∈ ℚ⟮b⟯ ⊔ ℚ⟮β⟯` via `add_mem` + `mem_sup_left/right`
+  - **Step B** (proved): `ℚ⟮b+β⟯ ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯` via `adjoin_simple_le_iff.mpr`
+  - **Step C** (sorry): `finrank ℚ ℚ⟮β⟯ ∣ 2^(j+1)` — tower via ℚ⟮a⟯
+  - **Step D** (sorry): `finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+k+1)` — needs stronger IH on b
+  - **Step E** (attempted): `finrank ℚ⟮b+β⟯ ∣ finrank (join)` via algebra instances + tower law
+
+### Key Insight: Stronger IH Needed for hjoin_dvd
+The proof gap in Step D: showing `[ℚ⟮b⟯⊔ℚ⟮β⟯:ℚ⟮β⟯] ∣ 2^k` requires knowing that b's
+degree over ℚ⟮β⟯ divides 2^k. This does NOT follow from `finrank ℚ ℚ⟮b⟯ = 2^k` alone.
+A **stronger IH** is needed: "for all IsConstructible b, for any K/ℚ, finrank K K⟮b⟯
+divides a power of 2." This would require reformulating `isConstructible_algebraic_degree`
+or using the `QuadraticTower` approach from `AngleTrisectionOQ02OQ04OQ01.lean`.
+
+### Key Insight: Step C (hβ_dvd) is Provable
+The bound `finrank ℚ ℚ⟮β⟯ ∣ 2^(j+1)` follows from:
+1. `ℚ⟮a⟯ ≤ ℚ⟮β⟯` (Step A)
+2. Tower law: `finrank_β = [ℚ⟮β⟯:ℚ⟮a⟯] * 2^j`
+3. β satisfies X² - a over ℚ⟮a⟯ → `[ℚ⟮β⟯:ℚ⟮a⟯] ≤ 2`
+4. `[ℚ⟮β⟯:ℚ⟮a⟯] ∣ 2` (since it's 1 or 2), so `finrank_β ∣ 2^(j+1)`
+Needs: `Algebra (↥ℚ⟮a⟯) (↥ℚ⟮β⟯)` from `(IntermediateField.inclusion ha_le_β).toAlgebra`
+and bound on minpoly degree of β over ℚ⟮a⟯.
+
+### Files Modified
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean` — structured sorry replacement
+- `src/data/proofs/.../meta.json` — lineCount 284→367, sorries 2→3 (targeted)
+- `src/data/research/problems/...json` — knowledge update
+
+### Next Steps
+1. Prove `hβ_dvd` (Step C): algebra instance setup + minpoly degree bound ≤ 2
+2. For `hjoin_dvd` (Step D): either strengthen IH or convert to QuadraticTower approach
+3. `wantzel_galois_iff` remains out-of-scope
