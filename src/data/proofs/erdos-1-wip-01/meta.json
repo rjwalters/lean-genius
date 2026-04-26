@@ -40,6 +40,10 @@
       {
         "id": "erdos-1-oq-03",
         "relationship": "Fills the sorry in minDSSBound — this theorem is used as the Nat.find witness"
+      },
+      {
+        "id": "erdos-1-oq-02",
+        "relationship": "Contrasts: Dubroff–Fox–Xu achieves the near-optimal lower bound N ≥ √(2/π)·2ⁿ/√n, demonstrating how far the n·2ⁿ existence bound falls from the conjectured threshold"
       }
     ],
     "mathlibDependencies": [
@@ -132,6 +136,11 @@
       "targetId": "erdos-1-oq-03",
       "relationship": "fills-gap",
       "description": "dss_existence fills the sorry in minDSSBound (Nat.find witness), making the minimum DSS bound function well-defined"
+    },
+    {
+      "targetId": "erdos-1-oq-02",
+      "relationship": "contrasts",
+      "description": "Dubroff–Fox–Xu proves N ≥ √(2/π)·2ⁿ/√n (asymptotically tight lower bound), dwarfing the n·2ⁿ existence bound here — together they span the gap between existence and optimality"
     }
   ],
   "conclusion": {
