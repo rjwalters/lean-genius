@@ -72,7 +72,22 @@
     {
       "targetId": "denumerability-rationals",
       "relationship": "extends",
-      "description": "Countability of ℚ; this file adds Cantor's characterization and back-and-forth isomorphism"
+      "description": "Parent entry: ℚ is countably infinite, formalized via a bijection ℚ ↔ ℕ. This entry builds on countability as one of the five CDLO axioms for ℚ, then adds the uniqueness result: any countable structure satisfying density and no-endpoints is order-isomorphic to ℚ. The `card_rat_aleph0` theorem here connects back to the parent's cardinality result, and `integers_embed` / `fin_embeds` extend the parent's embedding infrastructure"
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Cantor's diagonal argument (1891) and the back-and-forth method (1895) are the two great constructive techniques Cantor introduced. Diagonalization proves non-surjectivity by constructing a missing element; back-and-forth proves isomorphism by inductively extending a partial map. Both appear in this entry's proof landscape: diagonalization underlies the countability argument for ℚ (parent), while back-and-forth (`Order.iso_of_countable_dense`) proves Cantor's characterization theorem here"
+    },
+    {
+      "targetId": "schroeder-bernstein",
+      "relationship": "related",
+      "description": "The Schroeder-Bernstein theorem (injections A ↪ B and B ↪ A imply bijection A ↔ B) and Cantor's back-and-forth method solve structurally analogous problems at different abstraction levels. Schroeder-Bernstein works with sets and cardinality; back-and-forth works with linear orders and order-isomorphism. Both produce isomorphisms from partial maps by an inductive extension argument. The `integers_embed` and `fin_embeds` theorems in this entry are order-embedding analogs of the injections in Schroeder-Bernstein"
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "related",
+      "description": "Cantor's theorem (|A| < |2^A|) and Cantor's characterization theorem proved here represent Cantor's two landmark results about infinite sets. The characterization theorem shows ℚ is determined by simple axioms (CDLO); Cantor's theorem shows no set is isomorphic to its powerset. Both use techniques Cantor developed: the characterization uses back-and-forth, while Cantor's theorem uses the diagonal set Ω = {x : x ∉ f(x)}. Together they bracket the landscape: ℚ is the simplest infinite dense linear order; powersets grow beyond all bounds"
     }
   ],
   "sections": [
