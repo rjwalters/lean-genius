@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "id": "ppcy-defs",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
+    "range": { "startLine": 1, "endLine": 56 },
+    "type": "context",
+    "title": "Prime Power Case: Problem Setup and Definitions",
+    "content": "Module header documents the prime power specialization of the cyclic vector theorem: when minpoly(M) = p^e for irreducible p, prove M has a cyclic vector without any axioms. The definitions IsCyclicVector and IsNonderogatory (lines 50-55) match the parent files WIP01 and WIP02. Together with WIP02 (squarefree case), this covers the two structural cases of the general theorem.",
+    "mathContext": "For nonderogatory $M$ with $\\text{minpoly}(M) = p^e$ ($p$ irreducible, $e \\geq 1$): find $v$ with $\\{v, Mv, \\ldots, M^{n-1}v\\}$ spanning $K^n$. Axiom-free proof by induction on $e$.",
+    "significance": "context",
+    "relatedConcepts": ["cyclic vector", "nonderogatory matrix", "prime power", "WIP02 squarefree case"],
+    "prerequisites": ["minimal polynomial", "irreducible polynomial", "prime power factorization"]
+  },
+  {
+    "id": "ppcy-utility",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
+    "range": { "startLine": 57, "endLine": 101 },
+    "type": "technique",
+    "title": "Utility Lemmas: Irreducible Divisibility and Matrix Non-Vanishing",
+    "content": "Three utility lemmas. irreducible_dvd_of_annihilated (line 62): If p is irreducible, v != 0, p(M)v = 0, and r(M)v = 0, then p | r. Proof by Bezout: if p does not divide r, then gcd(p,r) = 1 (since p is prime), giving ap + br = 1. Evaluating at M and applying to v: v = 0, contradiction. exists_mulVec_ne_zero (line 84): A nonzero matrix has a vector outside its kernel. aeval_ne_zero_of_lt_minpoly (line 95): If deg(p) < deg(minpoly(M)) and p != 0, then p(M) != 0.",
+    "mathContext": "Key: $p$ irreducible, $p(M)v = 0$, $r(M)v = 0$, $v \\neq 0 \\Rightarrow p \\mid r$. Via Bezout: $ap + br = 1$, evaluate at $M$: $v = a(M) \\cdot 0 + b(M) \\cdot 0 = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Bezout identity", "IsCoprime", "Prime in UFD", "minpoly minimality"],
+    "prerequisites": ["irreducible_iff_prime in UFD", "IsCoprime", "minpoly.dvd"]
+  },
+  {
+    "id": "ppcy-core",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
+    "range": { "startLine": 102, "endLine": 175 },
+    "type": "insight",
+    "title": "Core Lemma: Prime Power Divisibility by Induction on e",
+    "content": "pow_irred_dvd_of_annihilated (line 114) is the mathematical heart: if p is irreducible, p^e(M)v != 0, p^(e+1)(M)v = 0, and r(M)v = 0, then p^(e+1) | r. Proved by strong induction on e. Base (e=0): irreducible_dvd_of_annihilated. Step: w = p^(e+1)(M)v != 0, p(M)w = 0, r(M)w = 0 gives p | r. Write r = p*r1. Let u = p(M)v. IH on u gives p^(e+1) | r1, so p^(e+2) | r. This elementary divisibility argument replaces the PID structure theorem.",
+    "mathContext": "Induction on $e$: two intermediaries $w = p^{e+1}(M)v$ (for $p \\mid r$) and $u = p(M)v$ (for IH). Polynomial commutativity $r(M) \\cdot p^k(M) = p^k(M) \\cdot r(M)$ is essential.",
+    "significance": "key",
+    "relatedConcepts": ["strong induction", "prime divisibility", "polynomial commutativity", "PID structure theorem bypass"],
+    "prerequisites": ["irreducible_dvd_of_annihilated", "polynomial ring commutativity"]
+  },
+  {
+    "id": "ppcy-main",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
+    "range": { "startLine": 176, "endLine": 253 },
+    "type": "insight",
+    "title": "Main Theorem: Cyclic Vector for Prime Power Nonderogatory Matrices",
+    "content": "nonderogatory_pw_has_cyclic_vector (line 189): For nonderogatory M with minpoly = p^e (p monic irreducible, e >= 1), there exists a cyclic vector. Pick v with p^(e-1)(M)v != 0 (since p^(e-1)(M) != 0 by minimality of minpoly). Then p^e(M)v = 0 (minpoly kills all vectors). For any r with r(M)v = 0 and deg(r) < n: p^e | r by the core lemma, so n = deg(p^e) <= deg(r) < n — contradiction, hence r = 0. Works over any field K (no cardinality assumptions).",
+    "mathContext": "Degree contradiction: $r(M)v = 0$, $r \\neq 0 \\Rightarrow p^e \\mid r \\Rightarrow n = \\deg(p^e) \\leq \\deg(r) < n$. Impossible.",
+    "significance": "key",
+    "relatedConcepts": ["cyclic vector existence", "degree contradiction", "field-independent proof", "nonderogatory matrix"],
+    "prerequisites": ["pow_irred_dvd_of_annihilated", "aeval_ne_zero_of_lt_minpoly", "exists_mulVec_ne_zero"]
+  }
+]
