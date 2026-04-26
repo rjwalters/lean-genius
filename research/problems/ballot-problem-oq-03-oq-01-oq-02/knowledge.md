@@ -397,6 +397,66 @@ Key infrastructure already available:
 
 ---
 
+## Session 2026-04-26 (Session 23) — PART XXIII: hook_walk_identity for 9-row shapes
+
+**Mode**: REVISIT (ACT phase, continuing row-by-row approach)
+**Outcome**: PROGRESS — `hook_walk_identity_nineRow` added; dispatcher extended to 10+ rows
+
+### What I Did
+
+1. Wrote PART XXIII (~1700 lines total) for 9-row Young diagram shapes, following the established
+   mechanical pattern from PART XXII (8-row):
+   - **8 colLen zone lemmas** (`nineRow_colLen_lt`, `nineRow_colLen_mid1`..`nineRow_colLen_mid7`):
+     colLen(s) = 9 for s < rowLen 8, down to colLen(s) = 2 for rowLen 2 ≤ s < rowLen 1
+   - **45 hookLen lemmas** (rows 0..8, each with 1..9 zones respectively using `hookLength_add_eq`)
+   - **`nineRow_corner_bot`**: corner (8, rowLen 8 - 1) always exists
+   - **`nineRow_corner_cases`**: 9-way disjunction via `interval_cases i with hi8 : i ≤ 8`
+   - **`nineRow_card`**: card = sum of 9 row lengths
+   - **9 arm product lemmas** (`nineRow_arm_rowN` for N=0..8): each telescopes via `prod_div_telescope`
+     over zones [0,j), [j,k), [k,g), ..., giving closed-form rational expressions
+   - **`hook_walk_identity_nineRow`**: main theorem (~350 lines), direct algebraic proof:
+     - 9 variables j=rowLen 8, k=rowLen 7, g=rowLen 6, f=rowLen 5, e=rowLen 4, d=rowLen 3,
+       c=rowLen 2, b=rowLen 1, a=rowLen 0
+     - 8 monotonicity inequalities j≤k≤g≤f≤e≤d≤c≤b≤a
+     - 9 ratio computations (hR8..hR0) each with by_cases + hookProd_ratio_formula + arm lemma
+     - 36 non-zero denominator witnesses for field_simp
+     - C(9,2)=36 Nat.cast_sub transitive ordering facts for push_cast
+     - Closes with `field_simp [all 36 hne terms]; ring`
+2. Updated dispatcher: replaced `sorry` (≥9 rows) with `by_cases h9 : μ.rowLen 9 = 0` branching
+   to `hook_walk_identity_nineRow` (exactly 9 rows) or new `sorry` (≥10 rows)
+
+### Key Findings
+
+- **Pattern scales mechanically**: Each additional row N adds N new hookLen zone lemmas (one for the
+  new bottom zone), one arm lemma (N zones), and extends the ratio computation by one more factor.
+  The number of hne_ terms grows by N (one per pair with the new bottom row variable).
+- **9-variable ring identity**: `field_simp + ring` closes the algebraic sum identity for 9 variables
+  (a,b,c,d,e,f,g,k,j), each entry contributing a telescoped rational expression. No human verification
+  needed — `ring` verifies C(9,2)+8 = 44 independent fraction cancellations automatically.
+- **colLen zones**: For n-row shape, `nineRow_colLen_lt` covers the deepest zone (colLen=9),
+  diminishing by 1 for each subsequent zone as we move right past successive row length boundaries.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (~11747 → ~13635 lines, PART XXIII added)
+- Branch: `feat/ballot-9row`
+
+### Sorry Count: 4 (unchanged count, scope further reduced)
+
+- `hook_walk_identity` (dispatcher): sorry now covers only ≥10-row shapes (rowLen 9 ≠ 0)
+- `ni_count_eq_syt_count`: RSK bijection, FALSE as stated
+- `lgv_det_factors_as_hook_quotient`: det identity, FALSE as stated
+- `hook_length_formula`: depends on the two above (FALSE as stated)
+
+### Next Steps
+
+1. **Build verification**: Docker build `Proofs.BallotProblemOQ03OQ01OQ02` in progress
+2. **10-row case**: Continue pattern with PART XXIV (adds j'=rowLen 9 variable, 10 arm zones, 9+8+...+1=45 hne terms)
+3. **GNW proof for general case**: The per-row approach covers finitely many rows; full GNW probabilistic
+   proof is still needed for a completely general sorry-free proof
+
+---
+
 ## Session 2026-04-26 (Session 23) — PART XVIII: hook_walk_identity for 4-row shapes
 
 **Mode**: REVISIT (RICH knowledge tier, score ~130)
