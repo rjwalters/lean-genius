@@ -84,6 +84,30 @@
     "prerequisites": ["chord-arc identity", "Lean 4 linarith", "ring tactic"]
   },
   {
+    "id": "scp-curvaturesin-jacobi-ode",
+    "proofId": "synthesis-curvature-ptolemy",
+    "range": { "startLine": 66, "endLine": 74 },
+    "type": "insight",
+    "title": "curvatureSin as Fundamental Jacobi Field: ODE Perspective",
+    "content": "The `set_option linter.unusedVariables false` and `open Real EuclideanGeometry` lines enable the mathematical environment. The `open Real` brings in `Real.sin`, `Real.sqrt`, and `Real.sinh` as unqualified names, while `open EuclideanGeometry` provides `arccos` and `∠` notation. These imports are non-trivial choices: the proof works in the ℝ-inner product space structure on ℂ, treating complex numbers as 2D real vectors. This is why `InnerProductSpace.Basic` is imported rather than complex analysis tools.",
+    "mathContext": "The three-case definition of $\\text{curvatureSin}_K$ is the unique solution to the Jacobi ODE $y'' + K\\,y = 0$ with $y(0)=0$, $y'(0)=1$: for $K>0$, $y=\\sin(\\sqrt{K}\\,t)/\\sqrt{K}$; for $K=0$, $y=t$; for $K<0$, $y=\\sinh(\\sqrt{-K}\\,t)/\\sqrt{-K}$. The normalization $y'(0)=1$ guarantees scale-invariant Ptolemy formulas across all curvatures.",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.sin", "Real.sinh", "EuclideanGeometry.arccos", "inner product space structure on ℂ"],
+    "prerequisites": ["Lean 4 namespace management", "InnerProductSpace.Basic", "complex numbers as ℝ²"]
+  },
+  {
+    "id": "scp-summary-checks",
+    "proofId": "synthesis-curvature-ptolemy",
+    "range": { "startLine": 258, "endLine": 270 },
+    "type": "context",
+    "title": "Module Summary: Seven Public Declarations",
+    "content": "The seven `#check` lines enumerate the complete public API of this file: one definition (`curvatureSin`), four simp/basic lemmas (`zero`, `one`, `neg_one`, `zero_right`), and two theorems (`spherical_ptolemy_eq_curvatureSin` and `spherical_ptolemy_ineq_curvatureSin`). The `#check` idiom in Lean serves as a lightweight verification that each declaration compiles at its expected type — a sanity-check for API stability. All seven are noncomputable (depending ultimately on `Real.sin`, `Real.sqrt`, `Real.sinh`), so they cannot be used in decidability instances but can be used freely in proofs.",
+    "mathContext": "The public API has a natural three-tier structure: (1) the core function `curvatureSin`; (2) four lemmas pinning its values at $K=0,1,-1$ and $t=0$; (3) two Ptolemy theorems at $K=1$ — equality (requires concyclicity) and inequality (unconditional). Together these form a minimal complete formalization of the $K=1$ case of the curvature-parametrized Ptolemy schema.",
+    "significance": "supporting",
+    "relatedConcepts": ["public API", "noncomputable", "Lean 4 #check", "module structure"],
+    "prerequisites": ["Lean 4 module system", "noncomputable declarations"]
+  },
+  {
     "id": "scp-hyperbolic-conjecture",
     "proofId": "synthesis-curvature-ptolemy",
     "range": { "startLine": 235, "endLine": 257 },
