@@ -74,7 +74,22 @@
     {
       "targetId": "combinations-formula",
       "relationship": "extends",
-      "description": "Basic combinations formula C(n,k) = n!/(k!(n-k)!); this file adds Vandermonde, Hockey Stick, and other advanced identities"
+      "description": "Parent entry: basic combinations formula C(n,k) = n!/(k!(n-k)!) with Pascal's rule and symmetry. This entry extends to advanced identities: Vandermonde's convolution (from the Cauchy product of generating functions), Hockey Stick (iterated Pascal's rule), the product identity (double-counting subsets of subsets), and bounds on binomial coefficients"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The Binomial Theorem (x+y)^n = Σ C(n,k) x^k y^{n-k} provides the generating function perspective on binomial coefficients. Vandermonde's identity C(m+n,r) = Σ C(m,k)C(n,r-k) is equivalent to comparing coefficients of x^r in (1+x)^{m+n} = (1+x)^m · (1+x)^n. The row sum Σ_k C(n,k) = 2^n follows by setting x=y=1 in the binomial theorem. This entry's two-line Vandermonde proof via `Nat.add_choose_eq` directly leverages Mathlib's binomial infrastructure"
+    },
+    {
+      "targetId": "combinations-formula-oq-02",
+      "relationship": "complementary",
+      "description": "Formalizes Catalan numbers C_n = C(2n,n) - C(2n,n+1) and proves the bound C(2n,n) ≤ 4^n. Both entries work with central binomial coefficients: this entry proves C(2n,n) ≤ 4^n via the row sum bound (Theorem central_choose_le_pow4), while OQ-02 connects the same bound to Catalan number estimates and ballot problem recurrences. Together they form a toolkit for central binomial asymptotics"
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "related",
+      "description": "The inclusion-exclusion principle and Vandermonde's identity are both fundamental counting tools in combinatorics. Vandermonde counts r-element subsets of a partitioned set by summing over sizes of the two parts; inclusion-exclusion counts elements in a union by alternating sums of intersection sizes. Both principles appear in the Fibonacci diagonal sum identity Sigma_j C(n-j,j) = F(n+1), where the tiling bijection uses complementary counting arguments similar to inclusion-exclusion"
     }
   ],
   "sections": [
