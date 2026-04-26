@@ -88,28 +88,49 @@
       "title": "§ 1: Setup — AGM Sequences and Limit",
       "startLine": 67,
       "endLine": 91,
-      "summary": "Defines bs_a, bs_b (AGM iterates for a₀=1, b₀=1/√2) and M = agm(1,1/√2). Proves b₀_pos (1/√2 > 0), b₀_le_one (1/√2 ≤ 1), and M_pos (M > 0 by the AGM sandwich bound). All definitions are noncomputable."
+      "summary": "Defines bs_a, bs_b (AGM iterates for a₀=1, b₀=1/√2) and M = agm(1,1/√2). Proves b₀_pos (1/√2 > 0), b₀_le_one (1/√2 ≤ 1), and M_pos (M > 0 by the AGM sandwich bound). All definitions are noncomputable.",
+      "mathContext": "The AGM sequences are defined by delegating to `AmgmInequalityOQ04.agmA` and `agmB`, reusing the parent file's infrastructure. $M = \\text{agm}(1, 1/\\sqrt{2}) \\in [1/\\sqrt{2}, 1]$ by the AGM sandwich: $b_0 = 1/\\sqrt{2} \\leq M \\leq a_0 = 1$. `M_pos` follows directly from `agm_bounds` applied with `b₀_pos` and `b₀_le_one`."
     },
     {
       "id": "sec-series",
       "title": "§ 2: Brent-Salamin Series",
       "startLine": 96,
-      "endLine": 127,
-      "summary": "Defines bs_term n = 2^n·(aₙ²-bₙ²) and proves bs_term_nonneg (using aₙ ≥ bₙ and the factorization A²-B²=(A-B)(A+B)). Axiomatizes bs_summable (quadratic AGM convergence) and S_lt_half (series sum < 1/2). Derives one_minus_2S_pos (1-2S > 0)."
+      "endLine": 134,
+      "summary": "Defines bs_term n = 2^n·(aₙ²-bₙ²) and proves bs_term_nonneg (using aₙ ≥ bₙ and the factorization A²-B²=(A-B)(A+B)). Axiomatizes bs_summable (quadratic AGM convergence) and S_lt_half (series sum < 1/2). Derives one_minus_2S_pos (1-2S > 0).",
+      "mathContext": "Term nonnegativity: $2^n(a_n^2 - b_n^2) = 2^n(a_n - b_n)(a_n + b_n) \\geq 0$ since $a_n \\geq b_n \\geq 0$. The axiom `bs_summable` is mathematically justified by the quadratic AGM convergence: $|a_n - b_n| = O(r^{2^n})$ for $r < 1$, so $2^n(a_n^2 - b_n^2) \\to 0$ super-exponentially. `one_minus_2S_pos` follows from `S_lt_half` by `linarith`."
     },
     {
       "id": "sec-elliptic",
       "title": "§ 3: Elliptic Integrals and Key Analytic Facts",
-      "startLine": 132,
-      "endLine": 174,
-      "summary": "Axiomatizes ellipticK, ellipticE (complete elliptic integrals, not in Mathlib), K_eq_pi_div_2M (Gauss's AGM theorem for k=1/√2), legendre_relation (2KE-K²=π/2 for k=1/√2), ellipticE_agm (E=K(3/4-S/2)). Proves K_pos from K=π/(2M) and M,π>0."
+      "startLine": 139,
+      "endLine": 181,
+      "summary": "Axiomatizes ellipticK, ellipticE (complete elliptic integrals, not in Mathlib), K_eq_pi_div_2M (Gauss's AGM theorem for k=1/√2), legendre_relation (2KE-K²=π/2 for k=1/√2), ellipticE_agm (E=K(3/4-S/2)). Proves K_pos from K=π/(2M) and M,π>0.",
+      "mathContext": "Five axioms encode the three analytic pillars: $K(1/\\sqrt{2}) = \\pi/(2M)$ (Gauss 1799); $2K \\cdot E - K^2 = \\pi/2$ (Legendre 1828, symmetric lemniscate case $k = k' = 1/\\sqrt{2}$); $E = K(3/4 - S/2)$ (Landen transformation). `K_pos` is derived, not axiomatized: $K = \\pi/(2M) > 0$ since $\\pi, M > 0$. The private definition `k₀ = 1/\\sqrt{2}` is the modular parameter used in all axiom statements."
     },
     {
       "id": "sec-main",
       "title": "§ 4: Main Result — Brent-Salamin Formula",
-      "startLine": 180,
+      "startLine": 187,
       "endLine": 242,
-      "summary": "brent_salamin: π = 4M²/(1-2S). Three-step proof: (1) K²(1-2S)=π from Legendre+E formula via ring identity; (2) K²=π²/(4M²) from Gauss's theorem; (3) substitute and cancel π. Corollary bs_sum_value: 2S = 1 - 4M²/π."
+      "summary": "brent_salamin: π = 4M²/(1-2S). Three-step proof: (1) K²(1-2S)=π from Legendre+E formula via ring identity; (2) K²=π²/(4M²) from Gauss's theorem; (3) substitute and cancel π. Corollary bs_sum_value: 2S = 1 - 4M²/π.",
+      "mathContext": "Step 1: substitute $E = K(3/4 - S/2)$ into $2KE - K^2 = \\pi/2$ to get $K^2(1-2S) = \\pi$ (a `ring` identity). Step 2: $K^2 = \\pi^2/(4M^2)$ from Gauss's theorem. Step 3: $\\pi^2(1-2S)/(4M^2) = \\pi$; clearing denominators gives $\\pi(1-2S) = 4M^2$; `mul_left_cancel₀` with $\\pi \\neq 0$ yields $\\pi = 4M^2/(1-2S)$."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "AmgmInequalityOQ04OQ05.brent_salamin",
+      "statement": "Real.pi = 4 * M ^ 2 / (1 - 2 * S)",
+      "description": "The Brent-Salamin formula: π = 4M²/(1-2S) where M = agm(1,1/√2) and S = Σ_{n≥1} 2^n(aₙ²-bₙ²). Proved from 7 axioms."
+    },
+    {
+      "name": "AmgmInequalityOQ04OQ05.bs_sum_value",
+      "statement": "2 * S = 1 - 4 * M ^ 2 / Real.pi",
+      "description": "Corollary rearranging the Brent-Salamin formula: the series value S equals (1 - 4M²/π)/2."
+    },
+    {
+      "name": "AmgmInequalityOQ04OQ05.one_minus_2S_pos",
+      "statement": "0 < 1 - 2 * S",
+      "description": "The denominator 1 - 2S is positive, proved from the axiom S < 1/2."
     }
   ],
   "leanFile": {
