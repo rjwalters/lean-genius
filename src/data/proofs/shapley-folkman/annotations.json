@@ -109,5 +109,81 @@
       "core convergence",
       "convex relaxation"
     ]
+  },
+  {
+    "id": "ann-infra-depth",
+    "proofId": "shapley-folkman",
+    "range": {
+      "startLine": 161,
+      "endLine": 361
+    },
+    "type": "concept",
+    "title": "minCaraDepth: The Well-Founded Measure Driving the Induction",
+    "content": "The infrastructure section (161-361) establishes the well-founded measure `minCaraDepth` that makes the main induction terminate. Key components:\n\n1. `linearDependent_coefficients`: for affinely dependent points in ℝ^d, extracts explicit coefficients (∑λ_i·p_i = 0, ∑λ_i = 0, not-all-zero) via `not_affineIndependent_iff`.\n\n2. `exists_decomposition`: any element of conv(S) has a Caratheodory representation as a convex combination of ≤ d+1 points from S.\n\n3. `binary_repr_of_mem_convexHull_not_mem`: when x ∈ conv(S) \\ S, there exists a convex representation with ≥ 2 non-zero weights.\n\n4. `minCaraDepth` (sInf-based): the minimum number of points needed to represent x ∈ conv(S) as a convex combination of points from S. This is the induction measure.\n\n5. `minCaraDepth_le_of_repr`, `minCaraDepth_ge_two`: bounds on the depth. The `binary_repr_depth` lemma is crucial — it shows that for excess indices, we can produce a representation where the 'remainder' after perturbation has strictly smaller minCaraDepth, giving the well-foundedness needed for the main proof.",
+    "mathContext": "`minCaraDepth(x, S) = inf{n : ∃ p_1,...,p_n ∈ S, ∃ w_1,...,w_n ≥ 0 with ∑w_i=1 and ∑w_i·p_i = x}`. For x ∈ conv(S) \\ S, this is ≥ 2. The Caratheodory bound gives depth ≤ dim+1. The key property: if we perturb a representation using a linear dependence relation, at least one weight hits zero, strictly reducing the depth. This descent argument is what makes `reduce_excess_by_one` work.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "minCaraDepth",
+      "Caratheodory representation",
+      "affine dependence",
+      "well-founded induction",
+      "convex combination"
+    ],
+    "prerequisites": [
+      "AffineIndependent in Mathlib",
+      "convexHull membership",
+      "sInf as infimum in ℕ"
+    ]
+  },
+  {
+    "id": "ann-reduction-step",
+    "proofId": "shapley-folkman",
+    "range": {
+      "startLine": 362,
+      "endLine": 1130
+    },
+    "type": "insight",
+    "title": "reduce_excess_by_one: The 770-Line Core Reduction",
+    "content": "`reduce_excess_by_one` is the heart of the proof (770 lines). Given a decomposition with k > d excess indices, it produces a new decomposition with k-1 excess indices.\n\n**Proof architecture** (5 phases):\n\n1. **Binary representations** (362-450): For each excess index i, invoke `binary_repr_of_mem_convexHull_not_mem` to get a convex representation with ≥ 2 non-zero weights. Bundle these into a finite family.\n\n2. **Dimension argument** (451-600): The excess indices give > d vectors in ℝ^d. By `not_affineIndependent_iff`, extract explicit affine dependence coefficients λ_i with ∑λ_i·f_i = 0 and ∑λ_i = 0 (not-all-zero). Here f_i are the 'extra' points from each excess index's representation.\n\n3. **ε computation** (601-750): For each excess index, the representation has weights w_i ≥ 0 summing to 1. The perturbation δ_i = ε·λ_i·(shifted vector) must keep all weights non-negative. Compute ε = min over boundary constraints (smallest ratio w_i/|λ_i| where λ_i ≠ 0).\n\n4. **Perturbation** (751-900): Perturb each excess index's representation by ε·λ. The key identity: since ∑λ_i·(affine terms) = 0, the sum ∑x_i is preserved. The total sum equals x.\n\n5. **Case split** (901-1130): After perturbation, **Case A**: at least one previously-excess index now has a 1-point representation (weight on a single point = 1), moving it into its original set. **Cases B1/B2**: an excess index reduces its minCaraDepth by at least 1. Either way, total 'depth budget' decreases. Recursive application terminates.\n\nThe 770-line length reflects exhaustive case analysis on which index achieves the minimum ε and whether it resolves completely.",
+    "mathContext": "The sum-preservation identity: $\\sum_i x_i + \\epsilon \\sum_i \\lambda_i \\delta_i = \\sum_i x_i$ because $\\sum_i \\lambda_i = 0$ (affine dependence condition). The ε-choice ensures $w_{ij} - \\epsilon \\lambda_i \\geq 0$ for all weights, while $\\min_j(w_{ij}/\\lambda_i)$ achieves 0 for at least one $(i,j)$, reducing representation size. Total induction measure: $M = \\sum_{i \\in \\text{excess}} \\text{minCaraDepth}(x_i, S_i)$. Each application of `reduce_excess_by_one` either decreases $|\\text{excess}|$ by 1 (Case A) or decreases $M$ (Cases B1/B2). Since both are bounded below by 0, termination follows.",
+    "significance": "key",
+    "relatedConcepts": [
+      "reduce_excess_by_one",
+      "affine dependence perturbation",
+      "epsilon computation",
+      "minCaraDepth descent",
+      "sum preservation"
+    ],
+    "prerequisites": [
+      "minCaraDepth infrastructure",
+      "linearDependent_coefficients",
+      "binary_repr_of_mem_convexHull_not_mem",
+      "Finset.sum preservation under zero-sum perturbation"
+    ]
+  },
+  {
+    "id": "ann-main-and-corollaries",
+    "proofId": "shapley-folkman",
+    "range": {
+      "startLine": 1131,
+      "endLine": 1238
+    },
+    "type": "theorem",
+    "title": "shapley_folkman + Corollaries: Assembling the Final Theorems",
+    "content": "The final 108 lines assemble the main theorem and two corollaries from `reduce_excess_by_one`.\n\n**`shapley_folkman`** (1131-1180): Simple induction on excess count. If a decomposition has k > d excess indices, apply `reduce_excess_by_one` to get k-1. By induction, reach k ≤ d. Lean proof: structural induction on a natural number bound, applying the reduction each step.\n\n**`sum_close_to_convexHull`** (1181-1210): Given N sets S_i and x ∈ conv(∑S_i), there exist x_i ∈ conv(S_i) with ∑x_i = x and |excessIndices| ≤ finrank(ℝ, E). This is the direct statement of Shapley-Folkman.\n\n**`repeated_sum_nearly_convex`** (1211-1238): For a single set S and x ∈ conv(n·S) = n·conv(S), there exist f_1,...,f_n ∈ conv(S) with ∑f_i = x and |{i : f_i ∉ S}| ≤ finrank(ℝ, E). This is the economics corollary: as n grows, the fraction d/n of 'non-convex' agents vanishes.\n\nThe main theorem's Lean proof is remarkably short given the 1130-line setup — the heavy lifting is entirely in `reduce_excess_by_one`. The induction is clean because the reduction is a clean function from decomposition to decomposition.",
+    "mathContext": "The induction scheme: define $M(D) = \\max(0, |\\text{excessIndices}(D)| - d)$. When $M(D) > 0$, apply `reduce_excess_by_one` to get $D'$ with $M(D') < M(D)$. Terminal condition $M(D) = 0$ means $|\\text{excessIndices}(D)| \\leq d = \\text{finrank}(\\mathbb{R}, E)$. For `repeated_sum_nearly_convex`: $\\text{conv}(nS) = n \\cdot \\text{conv}(S)$ is used to reduce to the general theorem with $N = n$ identical sets, each equal to $S$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "shapley_folkman",
+      "sum_close_to_convexHull",
+      "repeated_sum_nearly_convex",
+      "Module.finrank",
+      "Decomposition.excessIndices"
+    ],
+    "prerequisites": [
+      "reduce_excess_by_one",
+      "Induction on natural number bound",
+      "conv(nS) = n·conv(S) identity"
+    ]
   }
 ]
