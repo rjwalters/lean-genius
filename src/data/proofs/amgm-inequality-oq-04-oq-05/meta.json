@@ -1,0 +1,162 @@
+{
+  "id": "amgm-inequality-oq-04-oq-05",
+  "title": "Brent-Salamin Formula: π via AGM and Legendre's Relation",
+  "slug": "amgm-inequality-oq-04-oq-05",
+  "description": "Proves the Brent-Salamin formula (Salamin 1976, Brent 1976): π = 4M²/(1-2S), where M = agm(1,1/√2) is the AGM limit and S = Σ_{n≥1} 2^n(aₙ²-bₙ²) is a series built from the AGM iterates. The proof derives this algebraically from three axiomatized analytic facts: Gauss's AGM theorem (M = π/(2K(1/√2))), Legendre's relation (2KE - K² = π/2 for k=1/√2), and the E-via-AGM formula (E = K(3/4 - S/2)).",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gauss%E2%80%93Legendre_algorithm",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ04OQ05.lean",
+    "tags": [
+      "analysis",
+      "pi",
+      "agm",
+      "elliptic-integrals",
+      "brent-salamin",
+      "legendre",
+      "arithmetic-geometric-mean",
+      "pi-computation",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 7,
+    "lineCount": 242,
+    "theoremCount": 6,
+    "definitionCount": 5,
+    "assumptions": "7 axioms: ellipticK (function), ellipticE (function), K_eq_pi_div_2M (Gauss's AGM theorem for k=1/√2), legendre_relation (Legendre's relation for k=1/√2), ellipticE_agm (E via AGM iteration), bs_summable (series convergence from quadratic AGM convergence), S_lt_half (series sum bound). The algebraic derivation π = 4M²/(1-2S) is machine-verified from these axioms.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Brent-Salamin algorithm (independently discovered by Richard Brent and Eugene Salamin in 1976) computes π with quadratic convergence using the arithmetic-geometric mean.\n\n**Gauss (1791–1799)**: Gauss first observed that the AGM is related to elliptic integrals. His key formula M(a,b) = aπ/(2K(√(1-(b/a)²))) connects the AGM limit to the complete elliptic integral of the first kind K.\n\n**Legendre (1811–1828)**: Adrien-Marie Legendre discovered the fundamental identity K(k)·E(k') + K(k')·E(k) - K(k)·K(k') = π/2, where k' = √(1-k²). For k = k' = 1/√2 (the lemniscate case), this simplifies to 2K·E - K² = π/2.\n\n**E via AGM (Gauss-Landen)**: The ratio E(k)/K(k) can be expressed in terms of the AGM iterates: E/K = 1 - Σ_{n=0}^∞ 2^(n-1)·cₙ² where cₙ² = aₙ² - bₙ². For k=1/√2 with a₀=1, b₀=1/√2: the n=0 term gives 1/4, and the remaining sum is S/2, yielding E = K·(3/4 - S/2).\n\n**Brent-Salamin (1976)**: Combining these three ingredients: substituting E = K(3/4-S/2) into Legendre's relation gives K²(1-2S) = π. Substituting K = π/(2M) gives π²(1-2S)/(4M²) = π, so **π = 4M²/(1-2S)**. Starting from a₀=1, b₀=1/√2, each AGM iteration roughly doubles the number of correct digits.\n\n**Modern usage**: The Brent-Salamin algorithm (and its relatives, the Borwein algorithms) are used for all world-record computations of π. The 2022 record computation of 100 trillion digits used variants of this algorithm.",
+    "problemStatement": "Let M = agm(1, 1/√2) and S = Σ_{n=1}^∞ 2^n(aₙ² - bₙ²) where aₙ, bₙ are the AGM iterates starting from (1, 1/√2). Prove the Brent-Salamin formula: π = 4M² / (1 - 2S).",
+    "text": "The Brent-Salamin formula expresses π in terms of the AGM limit M = agm(1, 1/√2) and the series S of squared differences of AGM iterates. It follows from Legendre's relation for elliptic integrals combined with Gauss's AGM theorem.",
+    "proofStrategy": "Three-step algebraic derivation from axiomatized analytic facts: (1) Substitute E = K·(3/4-S/2) into Legendre's relation 2KE - K² = π/2 to get K²(1-2S) = π. (2) Use Gauss's theorem K = π/(2M) to get K² = π²/(4M²). (3) Substitute K²(1-2S) = π to get π²(1-2S)/(4M²) = π, then cancel π (positive) to get π(1-2S) = 4M², giving π = 4M²/(1-2S).",
+    "keyInsights": [
+      "**The algebraic core is elementary**: Once the three analytic axioms are in place (Gauss's theorem, Legendre's relation, E via AGM), the derivation of the Brent-Salamin formula is purely algebraic — a sequence of substitutions and linear manipulations. The hard mathematics is in the axioms, not the proof.",
+      "**Legendre's relation is the key pivot**: 2KE - K² = π/2 encodes the Wronskian-like relation between K and E as functions of k. At k = k' = 1/√2 (the lemniscate case, where (1/√2)² + (1/√2)² = 1), both integrals appear with the same weight, giving the symmetric form. The full Legendre relation requires differentiating K(k) with respect to k — a 19th century calculation.",
+      "**E/K = 3/4 - S/2 from Landen transformations**: The E-via-AGM formula reduces the computation of E(1/√2) to the AGM iterates via Landen's transformation. Each Landen step relates K(kₙ) to K(kₙ₊₁) where kₙ tracks the AGM. The sum S accumulates the 'lost weight' at each step.",
+      "**Quadratic convergence justifies the axioms**: The series S is summable because AGM convergence is quadratic: |aₙ - bₙ| = O(M·r^{2^n}) for r < 1. So 2^n(aₙ² - bₙ²) = O(2^n·r^{2^{n+1}}) → 0 super-exponentially. This is why the axiom bs_summable is mathematically honest — it follows from quadratic AGM convergence, which is proved in the literature but not yet in this file.",
+      "**1-2S > 0 from a single-term estimate**: The denominator 1-2S is positive because S < 1/2. The n=1 term is 2(a₁² - b₁²) ≈ (1 - 1/√2)²/4 ≈ 0.0215, and higher terms are exponentially smaller. The axiom S_lt_half is a conservative bound — in reality S ≈ 0.0429."
+    ],
+    "prerequisites": [
+      "Arithmetic-geometric mean and its convergence (AmgmInequalityOQ04)",
+      "Complete elliptic integrals K(k) and E(k)",
+      "Legendre's relation for elliptic integrals",
+      "Landen transformation (for the E-via-AGM formula)",
+      "Elementary algebra over ℝ"
+    ]
+  },
+  "conclusion": {
+    "summary": "The Brent-Salamin formula π = 4M²/(1-2S) is proved from 7 axioms. The algebraic derivation is fully machine-verified: Legendre's relation + E-via-AGM implies K²(1-2S) = π; Gauss's theorem gives K² = π²/(4M²); combining and cancelling π yields the formula. The 5 deeply analytic axioms (Gauss's theorem, Legendre's relation, E-via-AGM, series summability, series bound) are mathematically standard but require techniques (theta functions, Landen transformations, quadratic AGM convergence) not yet in Mathlib.",
+    "implications": "This formalization demonstrates that the hard part of the Brent-Salamin formula is the three classical theorems, not the final algebraic step. The algebraic derivation — Legendre + E formula → K²(1-2S) = π → π = 4M²/(1-2S) — is a clear three-line argument that Lean can verify automatically. Future work: formally prove the 5 analytic axioms using Mathlib's interval integral and complex analysis libraries.",
+    "openQuestions": [
+      "Prove bs_summable formally using the quadratic AGM convergence rate |aₙ-bₙ| = O(r^{2^n}): requires the quadratic convergence theorem for AGM, not yet in Mathlib",
+      "Prove S_lt_half rigorously by bounding the n=1 term 2(a₁²-b₁²) < 1/4 and showing the tail is geometric",
+      "Prove the Legendre relation 2KE - K² = π/2 formally using Mathlib's interval integral and differentiation theorems",
+      "Prove E(1/√2) = K(1/√2)·(3/4 - S/2) formally via the Landen transformation theory",
+      "Prove Gauss's AGM theorem M(a,b) = aπ/(2K(√(1-(b/a)²))) — the deepest open question, requiring theta functions or hypergeometric series"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality-oq-04",
+      "relationship": "extends",
+      "description": "Imports AGM definitions (agmA, agmB, agm) and convergence lemmas (agmB_le_agmA, agmA_pos, agmB_pos, agm_bounds). The Brent-Salamin formula is the open question listed at the end of OQ04."
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "Both entries prove results about π. The Brent-Salamin formula gives a fast computational algorithm for π, contrasting with the geometric approach in area-of-circle."
+    },
+    {
+      "targetId": "leibniz-pi",
+      "relationship": "contrast",
+      "description": "Leibniz's series π/4 = 1 - 1/3 + 1/5 - ⋯ converges polynomially. The Brent-Salamin algorithm converges quadratically — each iteration doubles the digits. This makes it among the fastest known algorithms for computing π."
+    },
+    {
+      "targetId": "amgm-inequality-oq-04-oq-01",
+      "relationship": "related",
+      "description": "OQ04-OQ01 defines K(k) as a Mathlib interval integral and proves K(0)=π/2, K>0. This file re-axiomatizes K for self-containedness, but OQ04-OQ01's rigorous definition would replace the ellipticK axiom here."
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-setup",
+      "title": "§ 1: Setup — AGM Sequences and Limit",
+      "startLine": 67,
+      "endLine": 91,
+      "summary": "Defines bs_a, bs_b (AGM iterates for a₀=1, b₀=1/√2) and M = agm(1,1/√2). Proves b₀_pos (1/√2 > 0), b₀_le_one (1/√2 ≤ 1), and M_pos (M > 0 by the AGM sandwich bound). All definitions are noncomputable."
+    },
+    {
+      "id": "sec-series",
+      "title": "§ 2: Brent-Salamin Series",
+      "startLine": 96,
+      "endLine": 127,
+      "summary": "Defines bs_term n = 2^n·(aₙ²-bₙ²) and proves bs_term_nonneg (using aₙ ≥ bₙ and the factorization A²-B²=(A-B)(A+B)). Axiomatizes bs_summable (quadratic AGM convergence) and S_lt_half (series sum < 1/2). Derives one_minus_2S_pos (1-2S > 0)."
+    },
+    {
+      "id": "sec-elliptic",
+      "title": "§ 3: Elliptic Integrals and Key Analytic Facts",
+      "startLine": 132,
+      "endLine": 174,
+      "summary": "Axiomatizes ellipticK, ellipticE (complete elliptic integrals, not in Mathlib), K_eq_pi_div_2M (Gauss's AGM theorem for k=1/√2), legendre_relation (2KE-K²=π/2 for k=1/√2), ellipticE_agm (E=K(3/4-S/2)). Proves K_pos from K=π/(2M) and M,π>0."
+    },
+    {
+      "id": "sec-main",
+      "title": "§ 4: Main Result — Brent-Salamin Formula",
+      "startLine": 180,
+      "endLine": 242,
+      "summary": "brent_salamin: π = 4M²/(1-2S). Three-step proof: (1) K²(1-2S)=π from Legendre+E formula via ring identity; (2) K²=π²/(4M²) from Gauss's theorem; (3) substitute and cancel π. Corollary bs_sum_value: 2S = 1 - 4M²/π."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.AmgmInequalityOQ04"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "AmgmInequalityOQ04OQ05",
+    "lineCount": 242,
+    "axiomCount": 7,
+    "theoremCount": 6,
+    "definitionCount": 5,
+    "path": "Proofs/AmgmInequalityOQ04OQ05.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Salamin, Eugene",
+      "title": "Computation of π Using Arithmetic-Geometric Mean",
+      "year": "1976",
+      "venue": "Mathematics of Computation, vol. 30, no. 135, pp. 565-570",
+      "note": "Original discovery of the AGM-based π algorithm. Derives π = 4M²/(1-Σ2^(n+1)(aₙ²-bₙ²)) from Gauss's AGM theorem and Legendre's relation."
+    },
+    {
+      "authors": "Brent, Richard P.",
+      "title": "Fast Multiple-Precision Evaluation of Elementary Functions",
+      "year": "1976",
+      "venue": "Journal of the ACM, vol. 23, no. 2, pp. 242-251",
+      "note": "Independent discovery of the same algorithm. Proves O(M(n) log n) complexity for n-digit computation."
+    },
+    {
+      "authors": "Borwein, Jonathan M.; Borwein, Peter B.",
+      "title": "Pi and the AGM: A Study in Analytic Number Theory and Computational Complexity",
+      "year": "1987",
+      "venue": "John Wiley & Sons",
+      "note": "Chapter 2 gives a complete proof of the Brent-Salamin formula via Gauss's AGM theorem, Legendre's relation, and the Landen transformation. Theorem 2.1 (Salamin's formula) is what this file formalizes."
+    },
+    {
+      "authors": "Cox, David A.",
+      "title": "The Arithmetic-Geometric Mean of Gauss",
+      "year": "1984",
+      "venue": "L'Enseignement Mathématique, vol. 30, pp. 275-330",
+      "note": "Historical account of Gauss's discovery and its connections to elliptic functions."
+    }
+  ],
+  "sorries": 0
+}
