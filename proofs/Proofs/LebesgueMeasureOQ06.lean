@@ -515,12 +515,55 @@ theorem hausdorff_free_subgroup :
   -- e₂ = (0,1,0) as the test vector
   let e₂ : EuclideanSpace ℝ (Fin 3) := EuclideanSpace.single (1 : Fin 3) 1
   set liftF := FreeGroup.lift (fun b : Bool => if b then φ.toLinearEquiv else ψ.toLinearEquiv)
-  -- SORRY (connection bridge): proved by induction on word length.
-  -- For each reduced word w of length n, decode(evalInt w e2Int) = 3^n * (liftF w) e₂.
-  -- anyInv ensures evalInt w e2Int ≠ encode(3^n * e₂) for n ≥ 1.
-  -- Hence (liftF w) e₂ ≠ e₂ for all w ≠ 1.
+  -- Integer orbit argument (Hausdorff 1914).
+  -- evalWord l computes 3^|l| * (liftF (mk l)) e₂ as a vector in ℤ[√2]³.
+  -- The mod-3 invariant anyInv is preserved by all valid (reduced) transitions
+  -- and holds after any single-letter word (4 base cases), but e2Int fails anyInv.
+  -- Hence (liftF w) e₂ ≠ e₂ for w ≠ 1 by contradiction.
   have orbit_ne : ∀ (w : FreeGroup Bool), w ≠ 1 → (liftF w) e₂ ≠ e₂ := by
-    sorry
+    -- evalWord l = foldr of scaled actions starting from e2Int.
+    -- (b=true, isPos=true)  = φ  → scaledActPhi
+    -- (b=true, isPos=false) = φ⁻¹ → scaledActPhiInv
+    -- (b=false, isPos=true) = ψ  → scaledActPsi
+    -- (b=false, isPos=false)= ψ⁻¹ → scaledActPsiInv
+    let evalWord : List (Bool × Bool) → (Fin 3 → Zsqrtd 2) :=
+      List.foldr
+        (fun ltr v =>
+          if ltr.1 then (if ltr.2 then scaledActPhi else scaledActPhiInv) v
+                   else (if ltr.2 then scaledActPsi else scaledActPsiInv) v)
+        e2Int
+    -- SORRY (list induction on reduced words):
+    -- For any non-empty reduced word l, anyInv (evalWord l).
+    -- Proof: induction on l.
+    --   Base: single letter → base_phi / base_phi_inv / base_psi / base_psi_inv.
+    --   Step: given anyInv (evalWord tl), apply transition lemma for head letter.
+    --     The 12 valid transitions cover all cases.
+    --     Reducedness eliminates the 4 forbidden transitions (e.g. φ⁻¹ after φ).
+    have anyInv_preserved : ∀ (l : List (Bool × Bool)),
+        FreeGroup.IsReduced l → l ≠ [] → anyInv (evalWord l) := by
+      sorry
+    -- SORRY (connection bridge + conclusion):
+    -- For all non-empty reduced l, (liftF (mk l)) e₂ ≠ e₂.
+    -- Bridge: ∀ i, (evalWord l i).re + (evalWord l i).im * √2 =
+    --              3^|l| * ((liftF (mk l)) e₂) i.
+    -- Proved by induction on l: each scaledActL corresponds to 3 * M_L on real vectors.
+    -- Consequence: if (liftF (mk l)) e₂ = e₂, then evalWord l = 3^|l| * e2Int in ℤ[√2]³.
+    -- But anyInv(evalWord l) holds while anyInv(3^|l| * e2Int) fails for |l| ≥ 1
+    --   (since (3^n * e2Int 1).re = 3^n ≡ 0 mod 3 for n ≥ 1, violating inv_psi's .re ≠ 0).
+    -- Contradiction.
+    have key : ∀ (l : List (Bool × Bool)),
+        FreeGroup.IsReduced l → l ≠ [] → (liftF (FreeGroup.mk l)) e₂ ≠ e₂ := by
+      sorry
+    intro w hw
+    have hne : w.toWord ≠ [] := by
+      intro h
+      exact hw (FreeGroup.toWord_injective (h.trans FreeGroup.toWord_one.symm))
+    have hmk : FreeGroup.mk w.toWord = w := by
+      apply FreeGroup.toWord_injective
+      rw [FreeGroup.toWord_mk,
+          FreeGroup.isReduced_iff_reduce_eq.mp FreeGroup.isReduced_toWord]
+    rw [← hmk]
+    exact key w.toWord FreeGroup.isReduced_toWord hne
   -- Injectivity from the orbit witness
   intro w₁ w₂ hw
   by_contra hne
