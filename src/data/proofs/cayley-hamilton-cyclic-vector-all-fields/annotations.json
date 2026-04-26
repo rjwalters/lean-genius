@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-chcvaf-header",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields",
+    "range": {
+      "startLine": 1,
+      "endLine": 47
+    },
+    "type": "concept",
+    "title": "Module Header: Three-Step Proof Architecture and Mathlib Gap",
+    "content": "The module docstring lays out the full proof architecture before any Lean code appears. It names three building blocks: (1) the axiom `nonderogatory_similar_companion` (M ~ C(minpoly M), stated but not proved — the Mathlib gap); (2) `companionMatrix_cyclic_e0` (e₀ is cyclic for C(p), proved in CayleyHamiltonMinpolyOQ05OQ01OQ04 via the orbit C(p)^k · e₀ = eₖ); and (3) `cyclic_vector_of_similar` (cyclic vectors transfer under similarity, proved in the same file). The fourth point is the main theorem combining all three. This upfront blueprint is a design pattern for axiomatized formalizations: declare all assumptions explicitly, prove what you can, and clearly demarcate the boundary between verified and assumed content. The `Status: axiomatized (1 axiom, 0 sorries)` tag in the docstring directly matches the gallery's `badge: axiom` classification.",
+    "mathContext": "The proof architecture encodes the logical dependency graph: main theorem depends on (1) + (2) + (3); (2) and (3) depend only on Mathlib; (1) depends on the PID structure theorem for $K[X]$-modules (the Mathlib gap). This layering means any future Mathlib addition of the PID structure theorem would allow replacing the axiom with a proof, upgrading the entry from `axiomatized` to `verified` without any other changes. The imports (lines 41-49) show the two proof files this depends on: `CayleyHamiltonReductionOQ02OQ01` for companion matrix definitions and `CayleyHamiltonMinpolyOQ05OQ01OQ04` for the proved supporting lemmas.",
+    "significance": "context",
+    "relatedConcepts": [
+      "axiomatized proof architecture",
+      "companion matrix orbit C(p)^k · e₀ = eₖ",
+      "cyclic vector transfer under similarity",
+      "Mathlib gap: PID structure theorem"
+    ],
+    "prerequisites": [
+      "rational canonical form overview",
+      "Lean 4 module docstrings and imports"
+    ]
+  },
+  {
     "id": "ann-chcvaf-rcf-axiom",
     "proofId": "cayley-hamilton-cyclic-vector-all-fields",
     "range": {
@@ -68,6 +91,30 @@
     "prerequisites": [
       "nonderogatory_has_cyclic_vector",
       "companion matrix orbit property"
+    ]
+  },
+  {
+    "id": "ann-chcvaf-cyclic-characterization",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields",
+    "range": {
+      "startLine": 155,
+      "endLine": 169
+    },
+    "type": "insight",
+    "title": "Polynomial Annihilator Characterization of Cyclic Vectors",
+    "content": "`cyclic_iff_not_killed_below_degree` gives the polynomial annihilator characterization: v is cyclic for M iff no nonzero polynomial p of degree < n kills v under M (i.e., `(aeval M p).mulVec v ≠ 0`). The proof is purely logical — it unfolds `IsCyclicVector` and `CyclicVectorArbitrary.IsCyclicVector` via `simp only`, then splits into two implications closed by direct application of the hypothesis. No matrix computation is needed, because this is essentially unfolding the definition: `IsCyclicVector` IS the annihilator condition, and the corollary just restates it using the `aeval M` notation. The nonderogatory hypothesis `h : IsNonderogatory M` appears in the signature but is not used in the proof body — it is present to make the intended context (nonderogatory matrices) explicit to the reader.",
+    "mathContext": "Formally: $v$ is cyclic for $M$ iff $\\ker(p(M) \\cdot -) \\not\\ni v$ for all nonzero $p$ with $\\deg(p) < n$. Since $M$ is nonderogatory, $\\deg(\\mathrm{minpoly}) = n$, so the bound $\\deg(p) < n$ is exactly the bound needed to avoid the minimal polynomial. Any linear dependence $\\sum_{k < n} c_k M^k v = 0$ would give such a polynomial $p = \\sum c_k X^k$ with $p(M)v = 0$, so the condition is equivalent to $\\{v, Mv, \\ldots, M^{n-1}v\\}$ being linearly independent — i.e., a basis of $K^n$ (by dimension count).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "aeval (polynomial evaluation at a matrix)",
+      "mulVec (matrix-vector multiplication)",
+      "annihilator ideal",
+      "CyclicVectorArbitrary.IsCyclicVector"
+    ],
+    "prerequisites": [
+      "polynomial evaluation in Lean 4 via aeval",
+      "K[X]-module structure on K^n",
+      "linear independence via dimension"
     ]
   },
   {
