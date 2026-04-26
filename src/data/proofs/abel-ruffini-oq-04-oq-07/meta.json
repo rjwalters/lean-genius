@@ -155,6 +155,36 @@
       "targetId": "abel-ruffini-oq-04-oq-03",
       "relationship": "related",
       "description": "Galois solvability criterion (iff): a polynomial is solvable by radicals iff its Galois group is solvable — the theoretical foundation for the axiom `bringRadical_not_in_radicals`. Closing that axiom would require connecting the generic Bring-Jerrard quintic's Galois group $S_5$ to the criterion in this entry."
+    },
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "related",
+      "description": "Cardano's cubic formula (Wiedijk #37): the positive case at degree 3, where $S_3$ is solvable and the radical formula exists. The linear Tschirnhaus depression step in this file ($y = x + a_4/5$) is the exact quintic analogue of Cardano's step ($y = x - b/3a$) that reduces a general cubic to a depressed cubic $t^3 + pt + q = 0$. At degree 3, the process terminates with a radical formula; at degree 5, Bring's analogous reduction terminates only at a Bring radical (not expressible in radicals) — the structural difference is precisely $S_3$ solvable vs $S_5$ not solvable."
+    },
+    {
+      "targetId": "general-quartic",
+      "relationship": "related",
+      "description": "Ferrari's quartic solution via resolvent cubic: the positive case at degree 4, where $S_4$ is solvable and the radical formula exists. The Bring-Jerrard reduction is only needed starting at degree 5 because degrees 3 and 4 have genuine radical formulas (Cardano/Ferrari). The threshold is the solvability of $S_4$ vs. $S_5$ — and the quartic's formula terminates with explicit radicals where the quintic's Bring-Jerrard reduction terminates only with a Bring radical."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02",
+      "relationship": "related",
+      "description": "$S_2, S_3, S_4$ are solvable — the positive side of the threshold that explains why degrees 1–4 have radical formulas while degree 5 requires the Bring radical. The biconditional '$S_n$ is solvable iff $n \\leq 4$' from this entry, combined with the Galois bridge from `abel-ruffini`, precisely characterizes for which degrees the Bring-Jerrard approach is forced: exactly degree $\\geq 5$."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Alternating groups: $A_n$ solvable iff $n \\leq 4$ — the alternating-group version of the threshold. The axiom `bringRadical_not_in_radicals` in this file rests on the chain: the generic Bring-Jerrard quintic $y^5 + y - t$ has Galois group $S_5$ over $\\mathbb{Q}(t)$; $S_5$ is not solvable because $[S_5, S_5] = A_5$ and $A_5$ is simple and non-abelian (proved in `abel-ruffini-oq-04-oq-02-oq-02` as the threshold fact); by Galois's criterion, the roots cannot be expressed in radicals. The alternating group classification made precise that the Bring radical is the only viable 'next vocabulary' beyond degree-4 radical formulas."
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "foundational",
+      "description": "The Fundamental Theorem of Algebra guarantees that the depressed quintic and Bring-Jerrard normal form have roots in $\\mathbb{C}$, providing the complex-number setting for the polynomial definitions in this file (`quinticPoly`, `depressedQuintic`, `bringJerrardPoly` are defined over $\\mathbb{C}$). The IVT existence proof for BR in this entry works over $\\mathbb{R}$; the FTA is why the Bring-Jerrard reduction can be stated over $\\mathbb{C}$ in the axiom `bringJerrard_reduction`."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-04",
+      "relationship": "related",
+      "description": "Formalizes the Jordan-Hölder uniqueness theorem for groups — relevant to the algebraic significance section where the composition series of $S_5$ (uniquely $S_5 \\supset A_5 \\supset \\{e\\}$ with factors $A_5$ and $\\mathbb{Z}/2\\mathbb{Z}$) is invoked to explain why the Bring radical cannot be radical-expressed. Jordan-Hölder guarantees that this composition series is the unique one for $S_5$, making the non-solvability obstruction absolute and canonical."
     }
   ],
   "leanFile": {

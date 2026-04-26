@@ -740,6 +740,330 @@ lemma cos_rational_pi_pos_min (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_pos : 0 
     exact Finset.mem_image.mpr
       ⟨⟨n % (2 * q), Nat.mod_lt _ h2q_pos⟩, Finset.mem_univ _, rfl⟩
 
+/-! ## Auxiliary Lemmas for Trig Sum Bound -/
+
+/-- cos(t) ≥ 1/2 for t ∈ [0, π/3].
+    Proof: cos is antimonotone on [0,π] and cos(π/3) = 1/2. -/
+private lemma cos_ge_half_of_le_pi_div_three {t : ℝ} (ht : 0 ≤ t) (ht_le : t ≤ Real.pi / 3) :
+    (1 : ℝ) / 2 ≤ Real.cos t := by
+  have hpi_pos := Real.pi_pos
+  have hpi3_le_pi : Real.pi / 3 ≤ Real.pi := by linarith
+  have h := Real.antitoneOn_cos
+    ⟨ht, le_trans ht_le hpi3_le_pi⟩          -- t ∈ [0, π]
+    ⟨by linarith, hpi3_le_pi⟩                 -- π/3 ∈ [0, π]
+    ht_le                                       -- t ≤ π/3 → cos(π/3) ≤ cos(t)
+  rw [Real.cos_pi_div_three] at h
+  linarith
+
+/-- For t ∈ (0, π/3], cos(t)/sin(t) ≥ 1/(2t).
+    Proof: sin(t) ≤ t and cos(t) ≥ 1/2, so sin(t) ≤ 2t·cos(t), i.e., 1/(2t) ≤ cos(t)/sin(t). -/
+private lemma cot_ge_inv_two_mul {t : ℝ} (ht : 0 < t) (ht_le : t ≤ Real.pi / 3) :
+    1 / (2 * t) ≤ Real.cos t / Real.sin t := by
+  have hpi_pos := Real.pi_pos
+  have hsin_pos : 0 < Real.sin t :=
+    Real.sin_pos_of_pos_of_lt_pi ht (by linarith)
+  rw [div_le_div_iff₀ (by positivity) hsin_pos]
+  -- Goal: 1 * Real.sin t ≤ Real.cos t * (2 * t)
+  have hsin_le : Real.sin t ≤ t := (Real.sin_lt ht).le
+  have hcos_ge : (1 : ℝ) / 2 ≤ Real.cos t :=
+    cos_ge_half_of_le_pi_div_three ht.le ht_le
+  nlinarith
+
+/-- sin(φ)/(1 + cos φ) = tan(φ/2) = sin(φ/2)/cos(φ/2) for φ ∈ (0, 2π).
+
+    For x = -1: |x - cos φ| = |(-1) - cos φ| = 1 + cos φ (since cos φ > -1 for φ ∈ (0, π)).
+    So the Lebesgue sum term sin(φₖ)/|(-1) - cos φₖ| = sin(φₖ)/(1 + cos φₖ) = tan(φₖ/2).
+
+    Half-angle identities:
+      sin(φ) = 2 sin(φ/2) cos(φ/2)
+      1 + cos(φ) = 2 cos²(φ/2)  [from cos(2t) = 2cos²t - 1]
+    So: sin(φ)/(1 + cos φ) = 2sin(φ/2)cos(φ/2) / (2cos²(φ/2)) = sin(φ/2)/cos(φ/2) = tan(φ/2). -/
+private lemma sin_div_one_add_cos {φ : ℝ} (hφ : 0 < φ) (hφ_lt : φ < Real.pi) :
+    Real.sin φ / (1 + Real.cos φ) = Real.sin (φ / 2) / Real.cos (φ / 2) := by
+  have hpi_pos := Real.pi_pos
+  -- φ/2 ∈ (-π/2, π/2) since φ ∈ (0, π)
+  have hcos_half_pos : 0 < Real.cos (φ / 2) :=
+    Real.cos_pos_of_mem_Ioo ⟨by linarith, by linarith⟩
+  -- 1 + cos(φ) = 2cos²(φ/2): from cos(2t) = 2cos²t - 1
+  have h1cos : 1 + Real.cos φ = 2 * Real.cos (φ / 2) ^ 2 := by
+    have hcos2 := Real.cos_two_mul (φ / 2)
+    have hsimp : (2 : ℝ) * (φ / 2) = φ := by ring
+    rw [hsimp] at hcos2
+    linarith
+  -- sin(φ) = 2sin(φ/2)cos(φ/2): from sin(2t) = 2sin(t)cos(t)
+  have hsin : Real.sin φ = 2 * Real.sin (φ / 2) * Real.cos (φ / 2) := by
+    have key := Real.sin_two_mul (φ / 2)
+    have hsimp : (2 : ℝ) * (φ / 2) = φ := by ring
+    rw [hsimp] at key
+    exact key
+  rw [hsin, h1cos]
+  have h2cos_ne : 2 * Real.cos (φ / 2) ^ 2 ≠ 0 := by positivity
+  field_simp [h2cos_ne, hcos_half_pos.ne']
+
+/-- The Chebyshev node angle φₖ = (2k+1)π/(2n) ∈ (0, π) for k < n. -/
+private lemma chebyshevAngle_pos_lt_pi (n : ℕ) (hn : 0 < n) (k : Fin n) :
+    0 < (2 * k.val + 1 : ℝ) * Real.pi / (2 * n) ∧
+    (2 * k.val + 1 : ℝ) * Real.pi / (2 * n) < Real.pi := by
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+  constructor
+  · positivity
+  · rw [div_lt_iff₀ (by positivity)]
+    have hlt : 2 * k.val + 1 < 2 * n := by omega
+    have hlt' : (2 * k.val + 1 : ℝ) < 2 * n := by exact_mod_cast hlt
+    nlinarith [Real.pi_pos]
+
+/-- For x = -1 (e.g., p = q = 1) and the Chebyshev node formula:
+    sin(φₖ) / |(-1) - cos φₖ| = sin(φₖ) / (1 + cos φₖ) = tan(φₖ/2) = sin(φₖ/2)/cos(φₖ/2).
+
+    Here |(-1) - cos φₖ| = 1 + cos φₖ since cos φₖ > -1 (as φₖ ∈ (0, π)). -/
+private lemma sum_term_eq_tan_half_angle (n : ℕ) (hn : 0 < n) (k : Fin n) :
+    Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+    |(-1 : ℝ) - Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n))| =
+    Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) /
+    Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) := by
+  have ⟨hφ_pos, hφ_lt_pi⟩ := chebyshevAngle_pos_lt_pi n hn k
+  have hcos_gt : -1 < Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) := by
+    -- cos(π) = -1 < cos(φ) since 0 < φ < π and cos is strictly decreasing on [0,π]
+    have h := Real.cos_lt_cos_of_nonneg_of_le_pi hφ_pos.le (le_refl Real.pi) hφ_lt_pi
+    simp only [Real.cos_pi] at h; linarith
+  -- |(-1) - cos φ| = 1 + cos φ since -1 - cos φ < 0
+  have h_abs : |(-1 : ℝ) - Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n))| =
+               1 + Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) := by
+    have hneg : (-1 : ℝ) - Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) < 0 :=
+      by linarith [hcos_gt]
+    rw [abs_of_neg hneg]; ring
+  rw [h_abs, sin_div_one_add_cos hφ_pos hφ_lt_pi]
+  -- After rewrite: sin(φ/2)/cos(φ/2) = sin((2k+1)π/(4n))/cos((2k+1)π/(4n))
+  -- where φ = (2k+1)π/(2n), so φ/2 = (2k+1)π/(4n)
+  have harg : (2 * k.val + 1 : ℝ) * Real.pi / (2 * n) / 2 =
+              (2 * k.val + 1 : ℝ) * Real.pi / (4 * n) := by ring
+  rw [harg]
+
+/-- For the x = -1 case: the trigonometric Lebesgue sum S_n = Σ tan(φₖ/2) grows like n log n.
+
+    **Proof sketch (for a future session)**:
+    Step 1: Rewrite using `Finset.sum_congr` + `sum_term_eq_tan_half_angle`:
+      S_n = Σₖ tan((2k+1)π/(4n)) = Σₖ sin((2k+1)π/(4n)) / cos((2k+1)π/(4n))
+
+    Step 2: Take the sub-sum over k = n-m,...,n-1 (last m terms, where m = ⌊√(n+1)⌋):
+      For j = n-1-k = 0,...,m-1: tan(φₖ/2) = cot((2j+1)π/(4n)) [since φₖ/2 = π/2-(2j+1)π/(4n)]
+      The complementary angle (2j+1)π/(4n) ≤ (2m-1)π/(4n) ≤ mπ/(2n) ≤ π/3 for m ≤ 2n/3
+
+    Step 3: Apply `cot_ge_inv_two_mul` to each sub-sum term:
+      cot((2j+1)π/(4n)) ≥ 2n / (π(2j+1))
+
+    Step 4: Bound the odd harmonic sum:
+      Σⱼ₌₀^{m-1} 1/(2j+1) ≥ (1/2) Σⱼ₌₁^m 1/j = (1/2) Hₘ ≥ (1/2) log(m+1)
+      [by comparison 1/(2j+1) ≥ 1/(2j+2) and `log_add_one_le_harmonic`]
+
+    Step 5: Combine: S_n ≥ (2n/π)(1/2)log(m+1) = (n/π)log(m+1)
+      With m ≥ ⌊√(n+1)⌋: log(m+1) ≥ (1/2)log(n+1) so S_n ≥ (n/(2π))log(n+1) ✓
+
+    Main implementation challenge: index arithmetic for the sub-sum bijection k ↔ j in Finset. -/
+private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
+    (1 : ℝ) / (2 * Real.pi) * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) ≤
+      ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+                   |(-1 : ℝ) - Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n))| := by
+  -- Step 1: Rewrite each term using the half-angle formula
+  have hS_eq : ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+                   |(-1 : ℝ) - Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n))| =
+               ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) /
+                   Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) :=
+    Finset.sum_congr rfl (fun k _ => sum_term_eq_tan_half_angle n hn k)
+  rw [hS_eq]
+  -- All tan terms are non-negative (angles in (0, π/2))
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+  have hf_nn : ∀ k : Fin n, 0 ≤ Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) /
+                                   Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) := by
+    intro k
+    have hk_lt : (k : ℝ) + 1 ≤ n := by exact_mod_cast Nat.succ_le_of_lt k.isLt
+    apply div_nonneg
+    · apply Real.sin_nonneg_of_nonneg_of_le_pi
+      · positivity
+      · -- (2k+1)π/(4n) ≤ π ↔ 2k+1 ≤ 4n; follows from k+1 ≤ n
+        have h_gap : (0 : ℝ) < 4 * n - (2 * (k : ℝ) + 1) := by linarith
+        rw [div_le_iff₀ (by positivity : (0:ℝ) < 4 * n)]
+        linarith [mul_pos Real.pi_pos h_gap]
+    · apply le_of_lt
+      apply Real.cos_pos_of_mem_Ioo
+      refine ⟨?_, ?_⟩
+      · -- -(π/2) < angle: angle is positive
+        linarith [div_pos (mul_pos (by linarith : (0:ℝ) < 2*(k:ℝ)+1) Real.pi_pos)
+                          (by positivity : (0:ℝ) < 4*(n:ℝ)),
+                  Real.pi_pos]
+      · -- angle < π/2: ↔ (2k+1)*2 < 4n
+        rw [div_lt_div_iff₀ (by positivity : (0:ℝ) < 4*(n:ℝ)) two_pos]
+        have h_gap2 : (0 : ℝ) < 4 * n - (2 * (k : ℝ) + 1) * 2 := by linarith
+        linarith [mul_pos Real.pi_pos h_gap2]
+  -- Sub-sum via m = Nat.sqrt n
+  set m := Nat.sqrt n with hm_def
+  have hm_pos : 0 < m := Nat.sqrt_pos.mpr hn
+  have hm_le_n : m ≤ n := Nat.sqrt_le_self n
+  have hsucc_sq : n < (m + 1) ^ 2 := by
+    have h := Nat.lt_succ_sqrt n
+    simp only [← hm_def, Nat.succ_eq_add_one, ← sq] at h
+    exact h
+  have hg_lt : ∀ j : Fin m, n - 1 - j.val < n := fun ⟨_, hj⟩ => by omega
+  -- Complementary angle: tan at index n-1-j equals cot at index j
+  -- Key: (2*(n-1-j)+1)π/(4n) = π/2 - (2j+1)π/(4n)
+  have h_comp : ∀ j : Fin m,
+      Real.sin ((2 * (n - 1 - j.val : ℕ) + 1 : ℝ) * Real.pi / (4 * n)) /
+      Real.cos ((2 * (n - 1 - j.val : ℕ) + 1 : ℝ) * Real.pi / (4 * n)) =
+      Real.cos ((2 * j.val + 1 : ℝ) * Real.pi / (4 * n)) /
+      Real.sin ((2 * j.val + 1 : ℝ) * Real.pi / (4 * n)) := by
+    intro ⟨j, hj⟩
+    have hj_lt_n : j < n := by omega
+    have hcast : (2 * (n - 1 - j : ℕ) + 1 : ℝ) = 2 * n - 2 * j - 1 := by
+      have h1 : j + 1 ≤ n := by omega
+      rw [show n - 1 - j = n - (j + 1) from by omega]
+      push_cast [Nat.cast_sub h1]
+      ring
+    have harg : (2 * (n - 1 - j : ℕ) + 1 : ℝ) * Real.pi / (4 * n) =
+                Real.pi / 2 - (2 * j + 1 : ℝ) * Real.pi / (4 * n) := by
+      rw [hcast]; field_simp; ring
+    rw [harg, Real.sin_pi_div_two_sub, Real.cos_pi_div_two_sub]
+  -- Sub-sum ≤ full sum (injection j ↦ n-1-j, all terms ≥ 0)
+  have h_sub_le :
+      ∑ j : Fin m, Real.sin ((2 * (n - 1 - j.val : ℕ) + 1 : ℝ) * Real.pi / (4 * n)) /
+                   Real.cos ((2 * (n - 1 - j.val : ℕ) + 1 : ℝ) * Real.pi / (4 * n)) ≤
+      ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) /
+                   Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) := by
+    let g : Fin m → Fin n := fun j => ⟨n - 1 - j.val, hg_lt j⟩
+    have hg_inj : Function.Injective g := by
+      intro a b h
+      simp only [g, Fin.mk.injEq] at h
+      have ha : a.val < n := Nat.lt_of_lt_of_le a.isLt hm_le_n
+      have hb : b.val < n := Nat.lt_of_lt_of_le b.isLt hm_le_n
+      exact Fin.ext (by omega)
+    let f : Fin n → ℝ := fun k =>
+      Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) /
+      Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n))
+    show ∑ j : Fin m, f (g j) ≤ ∑ k : Fin n, f k
+    calc ∑ j : Fin m, f (g j)
+        = ∑ k ∈ Finset.image g Finset.univ, f k :=
+            (Finset.sum_image (fun j _ j' _ h => hg_inj h)).symm
+      _ ≤ ∑ k ∈ Finset.univ, f k :=
+            Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)
+              (fun k _ _ => hf_nn k)
+      _ = ∑ k : Fin n, f k := rfl
+  -- Main sorry: harmonic chain — ∑_j cot ≥ (1/(2π))*n*log(n+1)
+  -- Strategy: cot((2j+1)π/(4n)) ≥ 2n/(π(2j+1)) [cot_ge_inv_two_mul, j < √n ensures angle ≤ π/3]
+  --   Σ_{j<m} 2n/(π(2j+1)) ≥ (n/π)*harmonic(m) [1/(2j+1) ≥ (1/2)/(j+1)]
+  --   ≥ (n/π)*log(m+1) [log_add_one_le_harmonic]
+  --   ≥ (1/(2π))*n*log(n+1) [(m+1)^2 > n → log(m+1) ≥ (1/2)*log(n+1)]
+  have h_harm_chain :
+      (1 : ℝ) / (2 * Real.pi) * ((n : ℝ) * Real.log ((n : ℝ) + 1)) ≤
+      ∑ j : Fin m, Real.cos ((2 * j.val + 1 : ℝ) * Real.pi / (4 * n)) /
+                   Real.sin ((2 * j.val + 1 : ℝ) * Real.pi / (4 * n)) := by
+    have hm_sq : m ^ 2 ≤ n := Nat.sqrt_le' n
+    have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+    have hm_pos' : (0 : ℝ) < m := Nat.cast_pos.mpr hm_pos
+    have hpi_pos := Real.pi_pos
+    -- A: angle bounds: t_j = (2j+1)π/(4n) ∈ (0, π/3] for j < m = √n
+    have h_angle_pos : ∀ j : Fin m, (0 : ℝ) < (2 * j.val + 1 : ℝ) * Real.pi / (4 * n) :=
+      fun ⟨_, _⟩ => by positivity
+    have h_angle_le : ∀ j : Fin m, (2 * j.val + 1 : ℝ) * Real.pi / (4 * n) ≤ Real.pi / 3 := by
+      intro ⟨j, hj⟩
+      -- Need 3*(2j+1) ≤ 4n in ℤ (avoid ℕ subtraction issues in nlinarith)
+      have h3 : (3 : ℤ) * (2 * j + 1) ≤ 4 * n := by
+        have hj' : (j : ℤ) + 1 ≤ m := by exact_mod_cast hj
+        have hm_sq' : (m : ℤ) ^ 2 ≤ n := by exact_mod_cast hm_sq
+        have hm1 : (1 : ℤ) ≤ m := by exact_mod_cast hm_pos
+        -- Certificate: 4n-(6j+3) = 4*(n-m²) + (4m²-6m+3) + 6*(m-j-1) ≥ 0
+        -- 4m²-6m+3 = 4*(m-1)²+2*(m-1)+1 ≥ 0 via sq_nonneg (m-1)
+        nlinarith [sq_nonneg ((m : ℤ) - 1)]
+      have h3' : (3 : ℝ) * (2 * (j : ℝ) + 1) ≤ 4 * (n : ℝ) := by exact_mod_cast h3
+      rw [div_le_div_iff₀ (by positivity) (by norm_num)]
+      -- Goal: (2j+1)*π*3 ≤ π*(4n); factor as π*(4n-3*(2j+1)) ≥ 0
+      have hd : (0 : ℝ) ≤ 4 * n - 3 * (2 * (j : ℝ) + 1) := by linarith [h3']
+      nlinarith [mul_nonneg hpi_pos.le hd]
+    -- B: each cot term ≥ 2n/(π(2j+1))
+    have h_cot_lb : ∀ j : Fin m,
+        (2 : ℝ) * n / (Real.pi * (2 * j.val + 1)) ≤
+        Real.cos ((2 * j.val + 1 : ℝ) * Real.pi / (4 * n)) /
+        Real.sin ((2 * j.val + 1 : ℝ) * Real.pi / (4 * n)) := fun j => by
+      have hcot := cot_ge_inv_two_mul (h_angle_pos j) (h_angle_le j)
+      have h_eq : (2 : ℝ) * n / (Real.pi * (2 * j.val + 1)) =
+                  1 / (2 * ((2 * j.val + 1 : ℝ) * Real.pi / (4 * n))) := by
+        field_simp; ring
+      rw [h_eq]; exact hcot
+    -- C: 2n/(π(2j+1)) ≥ n/(π(j+1)) since 2j+1 ≤ 2(j+1)
+    have h_inv_ineq : ∀ j : Fin m,
+        (n : ℝ) / (Real.pi * ((j.val : ℝ) + 1)) ≤ 2 * n / (Real.pi * (2 * j.val + 1)) :=
+      fun j => by
+        have hj_pos : (0 : ℝ) < (j.val : ℝ) + 1 := by positivity
+        have h2j_pos : (0 : ℝ) < 2 * (j.val : ℝ) + 1 := by positivity
+        apply (div_le_div_iff₀ (mul_pos hpi_pos hj_pos) (mul_pos hpi_pos h2j_pos)).mpr
+        -- Goal: n * (π*(2j+1)) ≤ 2n * (π*(j+1)); difference = nπ ≥ 0
+        have h_diff : 2 * (n : ℝ) * (Real.pi * ((j.val : ℝ) + 1)) -
+                      (n : ℝ) * (Real.pi * (2 * (j.val : ℝ) + 1)) = (n : ℝ) * Real.pi := by ring
+        linarith [mul_nonneg hn_pos.le hpi_pos.le]
+    -- D: sum of cot ≥ sum of n/(π(j+1))
+    have h_sum_lb :
+        ∑ j : Fin m, (n : ℝ) / (Real.pi * ((j.val : ℝ) + 1)) ≤
+        ∑ j : Fin m, Real.cos ((2 * j.val + 1 : ℝ) * Real.pi / (4 * n)) /
+                     Real.sin ((2 * j.val + 1 : ℝ) * Real.pi / (4 * n)) :=
+      Finset.sum_le_sum fun j _ => (h_inv_ineq j).trans (h_cot_lb j)
+    -- E: factor out n/π from the sum
+    have h_sum_eq :
+        ∑ j : Fin m, (n : ℝ) / (Real.pi * ((j.val : ℝ) + 1)) =
+        n / Real.pi * ∑ j : Fin m, ((j.val : ℝ) + 1)⁻¹ := by
+      rw [Finset.mul_sum]; congr 1; ext ⟨j, _⟩
+      rw [div_eq_mul_inv, mul_inv, mul_comm Real.pi⁻¹]
+      ring
+    -- F: real harmonic sum ≥ log(m+1)
+    have h_harm_real : Real.log ((m : ℝ) + 1) ≤ ∑ j : Fin m, ((j.val : ℝ) + 1)⁻¹ := by
+      have hlog := log_add_one_le_harmonic m
+      -- hlog : Real.log ↑(m+1) ≤ ↑(harmonic m)
+      -- Connect (harmonic m : ℝ) to ∑ j : Fin m, (j+1 : ℝ)⁻¹
+      have h_cast : (harmonic m : ℝ) = ∑ j : Fin m, ((j.val : ℝ) + 1)⁻¹ := by
+        simp only [harmonic_eq_sum_Icc, Rat.cast_sum, Rat.cast_inv, Rat.cast_natCast]
+        -- Goal: ∑ d ∈ Finset.Icc 1 m, (d : ℝ)⁻¹ = ∑ j : Fin m, (j.val + 1 : ℝ)⁻¹
+        have hIcc : Finset.Icc 1 m = (Finset.range m).image (· + 1) := by
+          ext d
+          simp only [Finset.mem_Icc, Finset.mem_range, Finset.mem_image]
+          constructor
+          · intro ⟨h1, h2⟩
+            exact ⟨d - 1, by omega, by omega⟩
+          · rintro ⟨k, hk, rfl⟩
+            omega
+        rw [hIcc, Finset.sum_image (fun a _ b _ h => by omega)]
+        rw [← Fin.sum_univ_eq_sum_range (fun i => ((i + 1 : ℕ) : ℝ)⁻¹) m]
+        congr 1; ext ⟨j, _⟩; push_cast; ring
+      push_cast at hlog
+      linarith [h_cast ▸ hlog]
+    -- G: log(m+1) ≥ (1/2)*log(n+1), since n+1 ≤ (m+1)²
+    have hsucc_sq' : (n : ℝ) + 1 ≤ ((m : ℝ) + 1) ^ 2 := by
+      exact_mod_cast hsucc_sq
+    have h_log_half : (1 : ℝ) / 2 * Real.log ((n : ℝ) + 1) ≤ Real.log ((m : ℝ) + 1) := by
+      have h1 : Real.log ((n : ℝ) + 1) ≤ 2 * Real.log ((m : ℝ) + 1) :=
+        calc Real.log ((n : ℝ) + 1)
+            ≤ Real.log (((m : ℝ) + 1) ^ 2) := by
+                apply Real.log_le_log (by linarith)
+                exact hsucc_sq'
+          _ = 2 * Real.log ((m : ℝ) + 1) := by
+                rw [Real.log_pow]; push_cast; ring
+      linarith
+    -- H: chain the bounds
+    calc (1 : ℝ) / (2 * Real.pi) * ((n : ℝ) * Real.log ((n : ℝ) + 1))
+        = n / Real.pi * (1 / 2 * Real.log ((n : ℝ) + 1)) := by ring
+      _ ≤ n / Real.pi * Real.log ((m : ℝ) + 1) := by
+            apply mul_le_mul_of_nonneg_left h_log_half; positivity
+      _ ≤ n / Real.pi * ∑ j : Fin m, ((j.val : ℝ) + 1)⁻¹ := by
+            apply mul_le_mul_of_nonneg_left h_harm_real; positivity
+      _ = ∑ j : Fin m, (n : ℝ) / (Real.pi * ((j.val : ℝ) + 1)) := h_sum_eq.symm
+      _ ≤ ∑ j : Fin m, Real.cos ((2 * j.val + 1 : ℝ) * Real.pi / (4 * n)) /
+                       Real.sin ((2 * j.val + 1 : ℝ) * Real.pi / (4 * n)) := h_sum_lb
+  -- Combine: lb ≤ cot-sum (harm_chain) = tan-sub-sum (h_comp) ≤ full tan-sum (h_sub_le)
+  calc (1 : ℝ) / (2 * Real.pi) * ((n : ℝ) * Real.log ((n : ℝ) + 1))
+      ≤ ∑ j : Fin m, Real.cos ((2 * j.val + 1 : ℝ) * Real.pi / (4 * n)) /
+                     Real.sin ((2 * j.val + 1 : ℝ) * Real.pi / (4 * n)) := h_harm_chain
+    _ = ∑ j : Fin m, Real.sin ((2 * (n - 1 - j.val : ℕ) + 1 : ℝ) * Real.pi / (4 * n)) /
+                     Real.cos ((2 * (n - 1 - j.val : ℕ) + 1 : ℝ) * Real.pi / (4 * n)) := by
+          congr 1; ext j; rw [h_comp j]
+    _ ≤ ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) /
+                     Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) := h_sub_le
+
 /-! ## Key Lemmas with Sorry -/
 
 /-- **[SORRY] Harmonic sum lower bound for Chebyshev trig sum.**
@@ -747,17 +1071,38 @@ lemma cos_rational_pi_pos_min (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_pos : 0 
     For x = cos(πp/q) with p, q odd, the trigonometric Lebesgue sum
     S_n = Σₖ sin(φₖ)/|x - cos φₖ| grows at least as fast as n · log(n+1).
 
-    Strategy: for θ = πp/q, let k₀ be the node index nearest θ. Node spacing is π/n,
-    and |cos θ - cos φₖ₀₊ⱼ| ≤ |θ - φₖ₀₊ⱼ| ≤ 2jπ/n by Lipschitz + geometry.
-    With sin(φₖ) ≥ sin(θ)/2 for nodes near k₀, summing j = 1..n/2 gives:
-      S_n ≥ Σⱼ sin(θ)/(2jπ/n) = (n·sin(θ)/2π) · Hₙ/₂ ≥ (n·sin(θ)/2π) · log(n/2+1)
-    by `log_add_one_le_harmonic`. -/
+    **Proof strategy (2 cases)**:
+
+    **Case 1: x = -1** (when p/q is an odd integer, e.g., p = q = 1):
+    - Using sum_term_eq_tan_half_angle: S_n = Σₖ tan(φₖ/2) where φₖ = (2k+1)π/(2n)
+    - For k = n-1-j (j = 0,...,⌊n/4⌋-1): φₖ/2 = π/2 - (2j+1)π/(4n)
+    - tan(φₖ/2) = cot((2j+1)π/(4n)) ≥ 2n/(π(2j+1)) by cot_ge_inv_two_mul
+    - Sub-sum: Σⱼ₌₀^{⌊n/4⌋-1} 2n/(π(2j+1)) ≥ (n/π)·log(⌊n/4⌋+1) ≥ C·n·log(n+1)
+    - Apply: trig_sum_lb_of_cos_eq_neg_one
+
+    **Case 2: x ∈ (-1, 1)** (when sin(πp/q) ≠ 0):
+    - Let s = |sin(πp/q)| > 0 (since x ≠ ±1 means p/q ∉ ℤ)
+    - For nodes k at distance j·π/n from nearest node k₀:
+        sin(φₖ)/|x - cos φₖ| ≥ (s/2) / (j·π/n) = s·n/(2π·j)  by Lipschitz + sin bound
+    - Summing j = 1..⌊n·s/(2π)⌋: S_n ≥ (s·n/(2π))·Hₘ ≥ (s·n/(2π))·log(⌊n·s/(2π)⌋+1)
+    - Take C₂ = s²/(4π²) -/
 private lemma chebyshev_trig_sum_lb (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_pos : 0 < q) :
     ∃ C₂ : ℝ, 0 < C₂ ∧ ∀ n : ℕ, 1 ≤ n →
       C₂ * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) ≤
         ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
                      |Real.cos ((↑p : ℝ) * Real.pi / ↑q) - chebyshevNode n k| := by
-  sorry  -- S_n ≥ C₂ · n · log(n+1) via Lipschitz bound + harmonic series
+  set x := Real.cos ((↑p : ℝ) * Real.pi / ↑q) with hx_def
+  -- Case split: x = -1 (e.g., p = q) vs x ∈ (-1, 1)
+  by_cases hx_neg : x = -1
+  · -- Case 1: x = -1 → use trig_sum_lb_of_cos_eq_neg_one
+    refine ⟨1 / (2 * Real.pi), by positivity, fun n hn => ?_⟩
+    simp only [hx_neg, chebyshevNode]
+    exact trig_sum_lb_of_cos_eq_neg_one n (by omega)
+  · -- Case 2: x ∈ (-1, 1) → use Lipschitz bound + harmonic sum
+    -- s = |sin(πp/q)| > 0 since |x| < 1 means sin(πp/q) ≠ 0
+    -- Key: sin(φₖ) ≥ s/2 for nodes near θ = arccos(x), and |x - cos φₖ| ≤ jπ/n for k = k₀+j
+    -- This gives S_n ≥ (s·n/(2π)) · H_m ≥ C₂ · n · log(n+1)
+    sorry  -- Case 2: x ∈ (-1,1), needs Lipschitz bound + harmonic series
 
 /-- **Logarithmic lower bound on the Lebesgue function** (proved modulo `chebyshev_trig_sum_lb`).
 

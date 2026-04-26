@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "2 sorries remain: chebyshev_trig_sum_lb (tractable, ~200 lines) and divergence_from_lebesgue_growth (fundamental gap: lim vs lim sup)",
+    "progressSummary": "PROGRESS: Build passing, 2 genuine sorries remain (chebyshev_trig_sum_lb Case 2 + divergence_from_lebesgue_growth)",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -55,7 +55,11 @@
       "cos_rational_pi_pos_min: ∃ δ > 0 s.t. |cos(nπp/q)| ≥ δ for all n (parity argument)",
       "x_not_chebyshev_node: cos(πp/q) ≠ chebyshevNode n k for all n,k when p,q odd",
       "chebyshev_trig_sum_lb: sorry (isolated harmonic sum lower bound: S_n ≥ C₂·n·log(n+1))",
-      "chebyshev_lebesgue_lb: proved modulo chebyshev_trig_sum_lb via mul_le_mul chain (δ/n · C₂·n·log(n+1) ≤ |cos(nθ)|/n · S_n)"
+      "chebyshev_lebesgue_lb: proved modulo chebyshev_trig_sum_lb via mul_le_mul chain (δ/n · C₂·n·log(n+1) ≤ |cos(nθ)|/n · S_n)",
+      "hg_inj fixed: intro a b h avoids double-coercion (↑↑⟨j,hj⟩ ≠ j for omega) — use .isLt/.val instead of destructuring",
+      "hf_nn fixed: div_le_iff₀/div_lt_div_iff₀ + mul_pos Real.pi_pos h_gap hints for π products",
+      "hsucc_sq: simp [← hm_def, Nat.succ_eq_add_one, ← sq] converts succ*succ → ^2",
+      "Build passes: 0 errors, 2 sorry warnings only (chebyshev_trig_sum_lb Case 2, divergence_from_lebesgue_growth)"
     ],
     "insights": [
       "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
@@ -75,7 +79,10 @@
       "Filter.tendsto_atTop_mono pattern: if f ≤ g pointwise and f → ∞ then g → ∞",
       "let binding in Lean 4 requires explicit unfolding in simp: simp only [vals, ...]",
       "chebyshev_lebesgue_growth is PROVED (not sorry) — wraps chebyshev_lebesgue_lb which assumes sorry #1",
-      "p,q both odd implies cos(pi*p/q) is strictly in (-1,1), so sin argument is nonzero. Case x=+-1 never occurs in hypotheses."
+      "p,q both odd implies cos(pi*p/q) is strictly in (-1,1), so sin argument is nonzero. Case x=+-1 never occurs in hypotheses.",
+      "div_le_div_iff₀/div_le_iff₀/div_lt_div_iff₀ are correct Mathlib names (not without ₀)",
+      "field_simp may fully close goals — remove subsequent ring if it has nothing to do",
+      "Double-coercion atom problem: fun ⟨j,hj⟩ => creates ↑↑⟨j,hj⟩ distinct from j in omega/linarith; use intro a with a.val instead"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -113,11 +120,11 @@
     {
       "path": "Proofs/Erdos1151OQ04.lean",
       "filename": "Erdos1151OQ04.lean",
-      "lineCount": 854,
-      "theoremCount": 31,
+      "lineCount": 1001,
+      "theoremCount": 29,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 2,
+      "sorryCount": 5,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1151OQ04.lean"
     },

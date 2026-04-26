@@ -21,7 +21,7 @@
     "iteration": 1,
     "focus": "Banach-Tarski formalization: equidecomposability, paradoxical sets, amenability",
     "blockers": [],
-    "nextAction": "Build docker and verify compilation; attempt Aristotle on helper sorries",
+    "nextAction": "Verify Docker build; submit hausdorff_free_subgroup to Aristotle if decomposable into lemmas",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 4): paradoxical_no_finite_measure proved (sorry eliminated). 4 sorries remain (hausdorff_free_subgroup, banach_tarski, non-measurability, int_amenable).",
+    "progressSummary": "PROGRESS: sorries reduced from 3 to 2. banach_tarski_pieces_nonmeasurable proved via cardinality contradiction; 2 remaining sorries (hausdorff_free_subgroup, banach_tarski) require deep formalization (150–800 lines each).",
     "builtItems": [
       "Equidecomposable (G-equidecomposability, with notation ≃ᴳ[G]) — proofs/Proofs/LebesgueMeasureOQ06.lean:43",
       "IsParadoxical — proofs/Proofs/LebesgueMeasureOQ06.lean:81",
@@ -43,7 +43,9 @@
       "free_group_not_amenable (axiomatized, sorry) — proofs/Proofs/LebesgueMeasureOQ06.lean:276",
       "int_amenable (axiomatized, sorry) — proofs/Proofs/LebesgueMeasureOQ06.lean:271",
       "Gallery entry: src/data/proofs/lebesgue-measure-oq-06/ (meta.json, index.ts, annotations.json)",
-      "paradoxical_no_finite_measure: fully proved in LebesgueMeasureOQ06.lean — no sorry; key lemma: le_add_of_nonneg_right (zero_le _) + disjoint_sdiff_self_right + Set.union_diff_cancel"
+      "paradoxical_no_finite_measure: fully proved in LebesgueMeasureOQ06.lean — no sorry; key lemma: le_add_of_nonneg_right (zero_le _) + disjoint_sdiff_self_right + Set.union_diff_cancel",
+      "int_amenable translation invariance (fixed, nlinarith-free) — proofs/Proofs/LebesgueMeasureOQ06.lean:273-543",
+      "banach_tarski_pieces_nonmeasurable proof (LebesgueMeasureOQ06.lean:238-287): 50-line cardinality argument using MeasurableSpace.CountablyGenerated, cardinal_measurableSet_le_continuum, mk_Icc_real, mk_powerset, cantor"
     ],
     "insights": [
       "Banach-Tarski NOT in Mathlib as of 2026-04 — confirmed via search. Available Mathlib pieces: Matrix.orthogonalGroup, FreeGroup, IsometryEquiv, EuclideanSpace.",
@@ -53,7 +55,14 @@
       "Full Banach-Tarski proof estimate: 800-1200 lines. Components: free subgroup matrix verification (number theory), F₂ paradoxical decomposition (word combinatorics), lift to S² (orbit analysis), extend to B³ (cone geometry).",
       "amenability connects to paradox dually: G amenable ↔ no G-set is paradoxical (Tarski). So F₂ not amenable = F₂ paradoxical. SO(3) inherits non-amenability from F₂.",
       "The 2D analogue fails for bounded sets: the isometry group of ℝ² (via SO(2) which is abelian) is amenable — no Banach-Tarski in 2D. The Laczkovich squaring-the-circle uses infinitely many pieces and is a different phenomenon.",
-      "paradoxical_no_finite_measure proved: B∪C ⊆ A (subset inclusion), derive monotonicity μ(B∪C) ≤ μ(A) from finite additivity via decomposition A = (B∪C) ∪ (A\\(B∪C)), sandwich gives μ(A)+μ(A) = μ(A)"
+      "paradoxical_no_finite_measure proved: B∪C ⊆ A (subset inclusion), derive monotonicity μ(B∪C) ≤ μ(A) from finite additivity via decomposition A = (B∪C) ∪ (A\\(B∪C)), sandwich gives μ(A)+μ(A) = μ(A)",
+      "nlinarith NEVER works for ℝ≥0∞ — must use ENNReal-specific lemmas or prove in ℝ first via ENNReal.tendsto_ofReal",
+      "Correct pattern: prove convergence in ℝ using linarith/field_simp, then lift to ℝ≥0∞ via ENNReal.tendsto_ofReal",
+      "tendsto_const_nhds.div_atTop proves constant/atTop → 0 in ℝ",
+      "banach_tarski_pieces_nonmeasurable proved via cardinality contradiction: Borel σ-algebra countably generated → ≤ 𝔠 measurable sets; unitBall3 embeds [0,1] → 𝔠 ≤ #unitBall3 → 2^𝔠 subsets by Cantor > 𝔠. Independent of banach_tarski.",
+      "EuclideanSpace ℝ (Fin 3) is definitionally Fin 3 → ℝ (via abbrev PiLp/WithLp), so congr_fun applies directly to EuclideanSpace equality",
+      "𝔠 (continuum) is scoped notation in Cardinal namespace — must use open Cardinal in at theorem level, not inside tactic blocks",
+      "Set.powerset 𝒫 is definitionally {t | t ⊆ s} (from Set.Defs.lean:244), so rfl closes the equality goal"
     ],
     "mathlibGaps": [
       "Banach-Tarski theorem itself not in Mathlib (no formalization as of 2026-04)",
@@ -163,11 +172,11 @@
     {
       "path": "Proofs/LebesgueMeasureOQ06.lean",
       "filename": "LebesgueMeasureOQ06.lean",
-      "lineCount": 282,
+      "lineCount": 784,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 6,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ06.lean"
     },

@@ -271,6 +271,11 @@
       "description": "Proves all finite groups of order $< 60$ are solvable — $A_5$ (order 60) is the minimal non-solvable group. Establishes the p-group solvability chain ($\\text{IsPGroup} \\Rightarrow \\text{IsNilpotent} \\Rightarrow \\text{IsSolvable}$) and verifies groups of order covered by Burnside's theorem ($p^a q^b$). Contextualizes why the Abel-Ruffini obstruction at $|A_5| = 60$ is structurally minimal"
     },
     {
+      "targetId": "abel-ruffini-galois-extensions-oq-04",
+      "relationship": "foundational",
+      "description": "Instantiates Mathlib's `JordanHolderLattice` typeclass for `Subgroup G` and derives the Jordan-Hölder uniqueness theorem for groups — directly formalizing key insight #7 in this entry: 'any two composition series of a finite group have the same multiset of composition factors.' For $S_5$, the unique composition series is $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$ with factors $A_5$ (simple, order 60) and $\\mathbb{Z}/2$; uniqueness is what makes the degree-5 impossibility absolute — no alternative decomposition can avoid the non-abelian $A_5$ obstruction"
+    },
+    {
       "targetId": "general-quartic",
       "relationship": "complementary",
       "description": "Ferrari's quartic formula (1545) is the last degree where radicals succeed — S₄ is solvable (derived series S₄ ▷ A₄ ▷ V₄ ▷ Z/2 ▷ {e}), so the degree-4 boundary is the immediate predecessor to Abel-Ruffini's impossibility at degree 5"
@@ -394,6 +399,11 @@
       "targetId": "inverse-galois-oq-02",
       "relationship": "related",
       "description": "Formalizes the Mathieu group $M_{23}$ — the only sporadic simple group not yet known to be a Galois group over $\\mathbb{Q}$. Proves $M_{23}$ is perfect ($[M_{23}, M_{23}] = M_{23}$), non-solvable (so Shafarevich's theorem, which covers only solvable groups, does not apply), with $|M_{23}| = 2^7 \\cdot 3^2 \\cdot 5 \\cdot 7 \\cdot 11 \\cdot 23$. Directly instantiates the open Inverse Galois Problem discussed in this entry's implications: while Shafarevich proved every solvable group is a Galois group over $\\mathbb{Q}$, non-solvable sporadic groups like $M_{23}$ remain an active open frontier"
+    },
+    {
+      "targetId": "sylow-theorem-oq-02",
+      "relationship": "foundational",
+      "description": "Formalizes the orbit enumeration formula $n_p = [G : N_G(P)]$ via the orbit-stabilizer theorem: all Sylow $p$-subgroups form a single conjugation orbit $\\{gPg^{-1} \\mid g \\in G\\}$, and the normality criterion $n_p = 1 \\Leftrightarrow P \\trianglelefteq G$ is proved explicitly. This is the precise mechanism underlying the Sylow counting argument for $A_5$ simplicity: $n_5$ divides 12 and $n_5 \\equiv 1 \\pmod 5$ forces $n_5 \\in \\{1, 6\\}$; the criterion $n_5 = 1 \\Rightarrow P_5 \\trianglelefteq A_5$ contradicts simplicity, so $n_5 = 6$. `sylow-theorem-oq-04` applies this formula concretely to $A_5$; this entry establishes the formula in full generality."
     },
     {
       "targetId": "sylow-theorem-oq-04",

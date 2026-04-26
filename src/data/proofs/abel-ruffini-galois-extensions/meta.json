@@ -98,6 +98,11 @@
       "description": "Abel-Ruffini impossibility theorem — this file adds the complete solvability classification of S_n, the group-theoretic engine underlying Abel-Ruffini"
     },
     {
+      "targetId": "abel-ruffini-galois-extensions-oq-04",
+      "relationship": "extended-by",
+      "description": "Sub-entry instantiating Mathlib's `JordanHolderLattice` typeclass for `Subgroup G` and deriving the Jordan-Hölder uniqueness theorem for groups. While this parent entry classifies which $S_n$ are solvable, `oq-04` deepens the analysis by proving that the composition series of $S_5$ ($\\{e\\} \\triangleleft A_5 \\triangleleft S_5$) is the *unique* such series — Jordan-Hölder guarantees no alternative decomposition avoids $A_5$. This uniqueness grounds the degree-5 threshold in structural necessity rather than one particular analysis."
+    },
+    {
       "targetId": "inverse-galois",
       "relationship": "related",
       "description": "Inverse Galois problem: while this file asks 'is S_n solvable?', the inverse Galois problem asks 'which groups occur as Galois groups?' The non-solvability of S₅ makes general quintics unsolvable, but the inverse Galois problem for S_n (every S_n occurs as a Galois group over ℚ) is also relevant"

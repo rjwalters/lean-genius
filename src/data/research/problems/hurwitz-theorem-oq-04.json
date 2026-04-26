@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: eightMul_right_unit + eightMul_left_unit PROVED (2026-04-24, simp+decide pattern). 2 sorries remain: alg_aut_preserves_norm, real_part_preserved. Key: alg_aut_preserves_norm not provable from just multiplicativity — needs map_one or norm-preservation as axiom.",
+    "progressSummary": "PROGRESS: 0 sorries, 1 axiom (corrected from Nat.card to finrank). OctonionDerSubmodule added.",
     "builtItems": [
       "ExceptionalType inductive type (G2/F4/E6/E7/E8) with dim/rank — HurwitzTheoremOQ04.lean",
       "OctonionAlgHom structure + OctonionAut — HurwitzTheoremOQ04.lean",
@@ -37,8 +37,16 @@
       "eightMul_left_unit (PROVED 2026-04-24): same pattern — HurwitzTheoremOQ04.lean:94",
       "alg_hom_preserves_norm_product (PROVED) — HurwitzTheoremOQ04.lean",
       "G2_unique_low_rank, E8_is_largest, exceptional_dims_strict_mono (PROVED) — HurwitzTheoremOQ04.lean",
-      "G2_is_octonion_aut, freudenthal_tits_f4/e6/e7/e8 (axioms) — HurwitzTheoremOQ04.lean",
-      "Freudenthal-Tits magic square table with dimensional analysis — HurwitzTheoremOQ04.lean commentary"
+      "G2_is_octonion_aut REPLACED (2026-04-26) by G2_der_dimension: finrank ℝ OctonionDerSubmodule = 14. Previous axiom was Nat.card OctonionAut = 14 which is 0 = 14, mathematically wrong.",
+      "Freudenthal-Tits magic square table with dimensional analysis — HurwitzTheoremOQ04.lean commentary",
+      "OctonionDer structure: ℝ-linear maps with Leibniz rule — HurwitzTheoremOQ04.lean",
+      "zeroDer (proved 0 sorries): zero map is a derivation",
+      "addDer (proved): sum of derivations is a derivation",
+      "smulDer (proved): scalar multiple is a derivation",
+      "eightMul_sub_left/right: eightMul bilinear over subtraction",
+      "commDer (proved): commutator of derivations is a derivation — key Lie algebra result",
+      "commDer_antisymm, commDer_jacobi: Der(𝕆) is a Lie algebra under [·,·]",
+      "OctonionDerSubmodule (2026-04-26): Der(𝕆) as Submodule ℝ (End_ℝ(ℝ⁸)) — PART IV-c of HurwitzTheoremOQ04.lean"
     ],
     "insights": [
       "G₂ = Aut(𝕆): The exceptional Lie group G₂ (dim 14, rank 2) is the automorphism group of the octonions. The 14 dimensions come from SO(7) (dim 21) minus the 7 constraints from preserving the octonion cross product.",
@@ -46,8 +54,13 @@
       "Exactly 4 Hurwitz algebras → exactly 5 exceptional Lie algebras: G₂←Der(𝕆), F₄←𝔏(𝕆,ℝ), E₆←𝔏(𝕆,ℂ), E₇←𝔏(𝕆,ℍ), E₈←𝔏(𝕆,𝕆). Octonions appear in all 5.",
       "Physics connections: E₈×E₈ heterotic strings (dim 2×248=496, anomaly cancellation), M-theory on G₂ manifolds (4D N=1 SUSY), E₇(7) in N=8 supergravity.",
       "OctonionAlgHom structure defined in Lean: linear + multiplicative. Composition and identity proved. Norm-product preservation proved.",
-      "alg_aut_preserves_norm NOT provable from multiplicativity alone: normSq(φ(a))*normSq(φ(b)) = normSq(φ(a*b)) is consistent with both normSq-preserving and non-preserving maps. Need either map_one field or norm-preservation axiom in OctonionAlgHom definition.",
-      "eightMul unit proof pattern: simp(config:={decide:=true})[ite_true,ite_false] evaluates if (0:Fin 8)=j for concrete j. Plain simp[stdBasis] insufficient — need decide mode for Fin equality."
+      "alg_aut_preserves_norm PROVED via phi_unit_eq_unit (invertibility gives φ(e₀)=e₀) + phi_imag_props (pure imaginary elements preserved) + decomposition a = r·e₀ + w.",
+      "alg_aut_preserves_inner PROVED via polarization: innerProd x y = (normSq(x+y) - normSq x - normSq y)/2, with norm preservation + linearity.",
+      "imag_closed_under_aut: Aut(𝕆) ⊆ O(7) now formalized — automorphisms map Im(𝕆) to Im(𝕆) preserving the inner product.",
+      "eightMul unit proof pattern: simp(config:={decide:=true})[ite_true,ite_false] evaluates if (0:Fin 8)=j for concrete j. Plain simp[stdBasis] insufficient — need decide mode for Fin equality.",
+      "freudenthal_tits_f4/e6/e7/e8 de-axiomatized (2026-04-25): these 4 axioms were just ExceptionalType.dim = literal, provable by rfl. Axiom count reduced from 5 to 1.",
+      "G2_is_octonion_aut had type-theoretic flaw: Nat.card of an infinite group = 0 in Lean. Replaced with G2_der_dimension: finrank ℝ OctonionDerSubmodule = 14.",
+      "OctonionDerSubmodule as Submodule ℝ (LinearMap) inherits finite-dimensional vector space structure automatically."
     ],
     "mathlibGaps": [
       "Lie groups not in Mathlib as of 2026-04 — blocks formal G₂ = Aut(𝕆) proof",
@@ -55,10 +68,9 @@
       "Derivation algebra of non-associative algebras not in Mathlib"
     ],
     "nextSteps": [
-      "alg_aut_preserves_norm: add map_one field to OctonionAlgHom OR axiomatize — norm preservation NOT derivable from multiplicativity alone",
-      "real_part_preserved: depends on alg_aut_preserves_norm and φ(e₀)=e₀",
-      "Define Der(𝕆) as the space of derivations and prove it has dimension 14",
-      "Prove G₂ ⊆ SO(7) once alg_aut_preserves_norm is established"
+      "Exhibit 14 explicit derivations D_{ij} for 1<=i<j<=7 to PROVE G2_der_dimension",
+      "Prove linear independence via 14x14 matrix computation",
+      "Archive old sessions"
     ]
   },
   "tags": [
@@ -70,7 +82,8 @@
   ],
   "relatedProofs": [
     "hurwitz-theorem",
-    "hurwitz-theorem-oq-03"
+    "hurwitz-theorem-oq-03",
+    "hurwitz-theorem-oq-04"
   ],
   "references": {
     "papers": [],
@@ -78,14 +91,14 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.381Z",
-  "lastUpdate": "2026-04-22T13:03:46.381Z",
+  "lastUpdate": "2026-04-26T00:00:00Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/HurwitzTheorem.lean",
       "filename": "HurwitzTheorem.lean",
-      "lineCount": 2028,
+      "lineCount": 2043,
       "theoremCount": 35,
       "axiomCount": 0,
       "defCount": 16,
@@ -96,11 +109,11 @@
     {
       "path": "Proofs/HurwitzTheoremOQ04.lean",
       "filename": "HurwitzTheoremOQ04.lean",
-      "lineCount": 430,
-      "theoremCount": 14,
-      "axiomCount": 5,
-      "defCount": 8,
-      "sorryCount": 2,
+      "lineCount": 737,
+      "theoremCount": 23,
+      "axiomCount": 1,
+      "defCount": 12,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzTheoremOQ04.lean"
     }

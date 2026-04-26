@@ -175,12 +175,128 @@ def unitSphere3 : Set (EuclideanSpace ℝ (Fin 3)) :=
     group of rank 2.
 
     This is the key algebraic ingredient for Banach-Tarski. -/
--- AXIOMATIZED: Hausdorff 1914 (proof requires 300+ lines of rotation matrix
--- + number-theoretic argument showing irrational word images ≠ identity)
+-- PARTIAL PROOF: Rotation matrices defined and shown orthogonal.
+-- LinearIsometryEquivs constructed. Remaining sorry: freeness (orbit argument in ℤ[√2]).
 theorem hausdorff_free_subgroup :
     ∃ (φ ψ : EuclideanSpace ℝ (Fin 3) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin 3)),
     Function.Injective
       (FreeGroup.lift (fun b : Bool => if b then φ.toLinearEquiv else ψ.toLinearEquiv)) := by
+  -- Trig identity: cos θ = 1/3, sin θ = 2√2/3, where θ = arccos(1/3)
+  -- Verified: (1/3)² + (2√2/3)² = 1/9 + 8/9 = 1
+  have hcs : (1 / 3 : ℝ) ^ 2 + (2 * Real.sqrt 2 / 3) ^ 2 = 1 := by
+    have h2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+    nlinarith [h2]
+  -- φ = rotation by arccos(1/3) around the z-axis
+  let Mφ : Matrix (Fin 3) (Fin 3) ℝ :=
+    !![(1 : ℝ) / 3, -(2 * Real.sqrt 2 / 3), 0;
+       2 * Real.sqrt 2 / 3, (1 : ℝ) / 3, 0;
+       0, 0, 1]
+  -- ψ = rotation by arccos(1/3) around the x-axis
+  let Mψ : Matrix (Fin 3) (Fin 3) ℝ :=
+    !![1, 0, 0;
+       0, (1 : ℝ) / 3, -(2 * Real.sqrt 2 / 3);
+       0, 2 * Real.sqrt 2 / 3, (1 : ℝ) / 3]
+  -- Orthogonality: Mφᵀ * Mφ = 1 (rotation matrices are orthogonal)
+  -- Each entry follows from c² + s² = 1 and cs - sc = 0
+  have hφ_orth : Mφᵀ * Mφ = 1 := by
+    have hs2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+    unfold_let Mφ
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp only [Matrix.transpose_apply, Matrix.mul_apply, Matrix.one_apply,
+        Fin.sum_univ_three, Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_fin_one, Matrix.head_fin_const, Fin.isValue] <;>
+      ring_nf <;>
+      nlinarith [hs2, hcs, Real.sqrt_nonneg 2]
+  -- Mφ * Mφᵀ = 1
+  have hφ_orth' : Mφ * Mφᵀ = 1 := by
+    have hs2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+    unfold_let Mφ
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp only [Matrix.transpose_apply, Matrix.mul_apply, Matrix.one_apply,
+        Fin.sum_univ_three, Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_fin_one, Matrix.head_fin_const, Fin.isValue] <;>
+      ring_nf <;>
+      nlinarith [hs2, hcs, Real.sqrt_nonneg 2]
+  -- Mψᵀ * Mψ = 1
+  have hψ_orth : Mψᵀ * Mψ = 1 := by
+    have hs2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+    unfold_let Mψ
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp only [Matrix.transpose_apply, Matrix.mul_apply, Matrix.one_apply,
+        Fin.sum_univ_three, Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_fin_one, Matrix.head_fin_const, Fin.isValue] <;>
+      ring_nf <;>
+      nlinarith [hs2, hcs, Real.sqrt_nonneg 2]
+  -- Mψ * Mψᵀ = 1
+  have hψ_orth' : Mψ * Mψᵀ = 1 := by
+    have hs2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+    unfold_let Mψ
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp only [Matrix.transpose_apply, Matrix.mul_apply, Matrix.one_apply,
+        Fin.sum_univ_three, Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_fin_one, Matrix.head_fin_const, Fin.isValue] <;>
+      ring_nf <;>
+      nlinarith [hs2, hcs, Real.sqrt_nonneg 2]
+  -- Build LinearEquiv: toEuclideanLin M has inverse toEuclideanLin Mᵀ
+  -- Uses: toEuclideanLin (Mᵀ * M) = id when Mᵀ * M = 1
+  have hφ_comp_rl : (Matrix.toEuclideanLin Mφ).comp (Matrix.toEuclideanLin Mφᵀ) = LinearMap.id := by
+    ext x
+    simp only [LinearMap.comp_apply, LinearMap.id_apply, Matrix.toEuclideanLin_apply,
+               WithLp.ofLp_toLp, Matrix.mulVec_mulVec, hφ_orth', Matrix.one_mulVec,
+               WithLp.toLp_ofLp]
+  have hφ_comp_lr : (Matrix.toEuclideanLin Mφᵀ).comp (Matrix.toEuclideanLin Mφ) = LinearMap.id := by
+    ext x
+    simp only [LinearMap.comp_apply, LinearMap.id_apply, Matrix.toEuclideanLin_apply,
+               WithLp.ofLp_toLp, Matrix.mulVec_mulVec, hφ_orth, Matrix.one_mulVec,
+               WithLp.toLp_ofLp]
+  have hψ_comp_rl : (Matrix.toEuclideanLin Mψ).comp (Matrix.toEuclideanLin Mψᵀ) = LinearMap.id := by
+    ext x
+    simp only [LinearMap.comp_apply, LinearMap.id_apply, Matrix.toEuclideanLin_apply,
+               WithLp.ofLp_toLp, Matrix.mulVec_mulVec, hψ_orth', Matrix.one_mulVec,
+               WithLp.toLp_ofLp]
+  have hψ_comp_lr : (Matrix.toEuclideanLin Mψᵀ).comp (Matrix.toEuclideanLin Mψ) = LinearMap.id := by
+    ext x
+    simp only [LinearMap.comp_apply, LinearMap.id_apply, Matrix.toEuclideanLin_apply,
+               WithLp.ofLp_toLp, Matrix.mulVec_mulVec, hψ_orth, Matrix.one_mulVec,
+               WithLp.toLp_ofLp]
+  -- Build linear equivalences
+  let φ_lin : EuclideanSpace ℝ (Fin 3) ≃ₗ[ℝ] EuclideanSpace ℝ (Fin 3) :=
+    LinearEquiv.ofLinear (Matrix.toEuclideanLin Mφ) (Matrix.toEuclideanLin Mφᵀ)
+      hφ_comp_rl hφ_comp_lr
+  let ψ_lin : EuclideanSpace ℝ (Fin 3) ≃ₗ[ℝ] EuclideanSpace ℝ (Fin 3) :=
+    LinearEquiv.ofLinear (Matrix.toEuclideanLin Mψ) (Matrix.toEuclideanLin Mψᵀ)
+      hψ_comp_rl hψ_comp_lr
+  -- Inner product preservation: orthogonal matrices preserve ⟪·,·⟫
+  -- Key algebraic fact: (Mu)·(Mv) = u·(Mᵀ M v) = u·v when Mᵀ M = 1
+  -- φ_lin x = toEuclideanLin Mφ x definitionally (ofLinear_apply)
+  have hφ_inner : ∀ (x y : EuclideanSpace ℝ (Fin 3)), ⟪φ_lin x, φ_lin y⟫_ℝ = ⟪x, y⟫_ℝ := by
+    intro x y
+    -- Unfold φ_lin via ofLinear_apply (definitional equality)
+    show ⟪Matrix.toEuclideanLin Mφ x, Matrix.toEuclideanLin Mφ y⟫_ℝ = ⟪x, y⟫_ℝ
+    simp only [EuclideanSpace.inner_eq_star_dotProduct, Matrix.ofLp_toEuclideanLin_apply,
+               star_trivial]
+    rw [Matrix.dotProduct_mulVec, Matrix.vecMul_mulVec, hφ_orth, Matrix.vecMul_one]
+  have hψ_inner : ∀ (x y : EuclideanSpace ℝ (Fin 3)), ⟪ψ_lin x, ψ_lin y⟫_ℝ = ⟪x, y⟫_ℝ := by
+    intro x y
+    show ⟪Matrix.toEuclideanLin Mψ x, Matrix.toEuclideanLin Mψ y⟫_ℝ = ⟪x, y⟫_ℝ
+    simp only [EuclideanSpace.inner_eq_star_dotProduct, Matrix.ofLp_toEuclideanLin_apply,
+               star_trivial]
+    rw [Matrix.dotProduct_mulVec, Matrix.vecMul_mulVec, hψ_orth, Matrix.vecMul_one]
+  -- Build the linear isometric equivalences via isometryOfInner
+  let φ := LinearEquiv.isometryOfInner φ_lin hφ_inner
+  let ψ := LinearEquiv.isometryOfInner ψ_lin hψ_inner
+  -- Witness: the free group F₂ embeds via φ and ψ
+  refine ⟨φ, ψ, ?_⟩
+  -- SORRY: Freeness requires Hausdorff's orbit argument (1914):
+  -- Track orbit of e₂=(0,1,0) under reduced words in ℤ[√2].
+  -- Key invariant: for a reduced word w of length n, the vector
+  -- 3^n · w(e₂) lies in ℤ[√2]³ with a specific mod-3 pattern
+  -- that distinguishes all non-identity words from the identity.
+  -- Proof requires ~200 lines of inductive argument on reduced words.
   sorry
 
 -- ============================================================
@@ -231,12 +347,60 @@ theorem banach_tarski :
     If the pieces were measurable, the countable additivity of Lebesgue measure
     would force: λ(B³) = ∑ᵢ λ(pieces i) = λ(B³) + λ(B³) = 2λ(B³),
     a contradiction since 0 < λ(B³) = (4/3)π < ∞. -/
--- AXIOMATIZED: classical consequence of banach_tarski (proof requires
--- Vitali-set style argument, ~200 lines; follows trivially from banach_tarski)
+-- Cardinality argument: if every subset of unitBall3 were measurable (Borel),
+-- the measurable sets would number ≤ 𝔠 (since the Borel σ-algebra is countably
+-- generated).  But unitBall3 ≅ [0,1] has cardinality 𝔠, so it has 2^𝔠 subsets,
+-- giving 2^𝔠 ≤ 𝔠 — contradicting Cantor's theorem.
+open Cardinal in
 theorem banach_tarski_pieces_nonmeasurable :
     ∃ (A : Set (EuclideanSpace ℝ (Fin 3))), A ⊆ unitBall3 ∧
     ¬MeasurableSet A := by
-  sorry
+  by_contra hall
+  push_neg at hall
+  -- hall : ∀ A, A ⊆ unitBall3 → MeasurableSet A
+  -- Step 1: The Borel σ-algebra on ℝ³ has cardinality ≤ 𝔠.
+  haveI : MeasurableSpace.CountablyGenerated (EuclideanSpace ℝ (Fin 3)) := inferInstance
+  have hmeas_le : #{t : Set (EuclideanSpace ℝ (Fin 3)) | MeasurableSet t} ≤ 𝔠 := by
+    set s := MeasurableSpace.countableGeneratingSet (EuclideanSpace ℝ (Fin 3))
+    have hcount : s.Countable := MeasurableSpace.countable_countableGeneratingSet
+    have hgen : generateFrom s = ‹MeasurableSpace (EuclideanSpace ℝ (Fin 3))› :=
+      MeasurableSpace.generateFrom_countableGeneratingSet
+    have hrw : ∀ t : Set (EuclideanSpace ℝ (Fin 3)),
+        @MeasurableSet _ (generateFrom s) t ↔ MeasurableSet t :=
+      fun t => by rw [hgen]
+    rw [show {t : Set (EuclideanSpace ℝ (Fin 3)) | MeasurableSet t} =
+            {t | @MeasurableSet _ (generateFrom s) t} from
+          Set.ext fun t => (hrw t).symm]
+    exact MeasurableSpace.cardinal_measurableSet_le_continuum
+      ((le_aleph0_iff_set_countable.mpr hcount).trans aleph0_le_continuum)
+  -- Step 2: Under our hypothesis, every subset of unitBall3 is measurable,
+  --         so #{A | A ⊆ unitBall3} ≤ 𝔠.
+  have hball_sub_le : #{A : Set (EuclideanSpace ℝ (Fin 3)) | A ⊆ unitBall3} ≤ 𝔠 := by
+    apply le_trans _ hmeas_le
+    apply Cardinal.mk_le_of_injective
+    exact Set.inclusion_injective (fun A hA => hall A hA)
+  -- Step 3: unitBall3 has cardinality ≥ 𝔠 (it contains a copy of [0,1] via single).
+  have hball_ge : 𝔠 ≤ #↥unitBall3 := by
+    rw [← mk_Icc_real (show (0 : ℝ) < 1 by norm_num)]
+    apply mk_le_of_injective (f := fun ⟨t, ht⟩ =>
+        ⟨EuclideanSpace.single (0 : Fin 3) t, by
+           simp only [unitBall3, Metric.mem_closedBall, dist_zero_right,
+                      EuclideanSpace.norm_single, Real.norm_eq_abs,
+                      abs_of_nonneg ht.1]
+           exact ht.2⟩)
+    intro ⟨t₁, _⟩ ⟨t₂, _⟩ h
+    simp only [Subtype.mk.injEq] at h
+    have h0 := congr_fun h (0 : Fin 3)
+    simp only [EuclideanSpace.single_apply, eq_self_iff_true, if_true] at h0
+    exact Subtype.ext h0
+  -- Step 4: By Cantor, #{A | A ⊆ unitBall3} = 2^#unitBall3 > 𝔠.
+  have hball_gt : 𝔠 < #{A : Set (EuclideanSpace ℝ (Fin 3)) | A ⊆ unitBall3} := by
+    -- 𝒫 s is definitionally {t | t ⊆ s}, so these are equal by rfl.
+    rw [show {A : Set (EuclideanSpace ℝ (Fin 3)) | A ⊆ unitBall3} = 𝒫 unitBall3 from rfl,
+        mk_powerset]
+    exact hball_ge.trans_lt (cantor _)
+  -- Contradiction: 2^𝔠 ≤ 𝔠 violates Cantor.
+  exact absurd hball_sub_le hball_gt.not_le
 
 -- ============================================================
 -- SECTION VI: Relationship to Amenability
@@ -352,194 +516,188 @@ theorem int_amenable : IsAmenable (Multiplicative ℤ) := by
         exact ⟨Multiplicative.ofAdd (m - n), ha, by
           simp [Multiplicative.ofAdd_mul, Multiplicative.ofAdd_toAdd]
           congr 1; push_cast; ring⟩
-    -- Step 1: Rewrite dens N (g•A) as density over the shifted window Icc(-N-n, N-n)
-    -- via the bijection m ↦ m - n on the filter
-    have h_dens_rw : ∀ N : ℕ, dens N (g • A) =
-        (((Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).filter
-           (fun k => Multiplicative.ofAdd k ∈ A)).card : ℝ≥0∞) /
-        (2 * ↑N + 1) := by
-      intro N; simp only [dens]; congr 1; push_cast
-      symm
-      apply Finset.card_bij (fun k _ => k + n)
+    -- absn = |n| as a natural number
+    set absn : ℕ := n.natAbs with h_absn
+    -- Step 1: Reindex dens N (g•A) — bijection k ↦ k-n moves window [-N,N] to [-N-n,N-n]
+    have h_card_eq : ∀ N : ℕ,
+        ((Finset.Icc (-(N : ℤ)) N).filter (fun k => Multiplicative.ofAdd k ∈ g • A)).card =
+        ((Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).filter
+          (fun k => Multiplicative.ofAdd k ∈ A)).card := by
+      intro N
+      apply Finset.card_bij (fun k _ => k - n)
       · intro k hk
         simp only [Finset.mem_filter, Finset.mem_Icc] at hk ⊢
-        refine ⟨⟨by push_cast; linarith [hk.1.1], by push_cast; linarith [hk.1.2]⟩, ?_⟩
-        rw [h_mem]; push_cast; ring_nf; convert hk.2 using 2; push_cast; ring
-      · intro k₁ _ k₂ _ h; linarith
-      · intro m hm
-        simp only [Finset.mem_filter, Finset.mem_Icc] at hm ⊢
-        exact ⟨m - n, ⟨⟨by push_cast; linarith [hm.1.1],
-                         by push_cast; linarith [hm.1.2]⟩,
-               by rw [← h_mem]; push_cast; ring_nf⟩, by push_cast; ring⟩
-    -- Step 2: The shifted window and original window each have ≤ Int.natAbs n
-    -- extra elements compared to the other. Bound:
-    --   card(Icc(-N-n, N-n) ∩ A) ≤ card(Icc(-N, N) ∩ A) + Int.natAbs n  AND  vice versa
-    -- Both windows have the same cardinality (2N+1); symmetric difference ≤ 2*|n|;
-    -- one-sided inclusion adds ≤ |n| elements.
-    have h_card_bound : ∀ N : ℕ,
+        exact ⟨by omega, (h_mem k).mp hk.2⟩
+      · intro a _ b _ hab; omega
+      · intro k hk
+        simp only [Finset.mem_filter, Finset.mem_Icc] at hk
+        exact ⟨k + n, by simp only [Finset.mem_filter, Finset.mem_Icc];
+          exact ⟨by omega, (h_mem (k + n)).mpr (by convert hk.2 using 2; ring)⟩, by ring⟩
+    -- So dens N (g•A) equals the density over the shifted window
+    have h_dens_shift : ∀ N : ℕ, dens N (g • A) =
+        (((Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).filter
+          (fun k => Multiplicative.ofAdd k ∈ A)).card : ℝ≥0∞) / (2 * (N : ℝ≥0∞) + 1) := by
+      intro N; simp only [dens]; congr 1; exact_mod_cast h_card_eq N
+    -- Step 2: Card bound — shifted window ⊆ original ∪ at most absn extra elements
+    -- Helper to bound card of sdiff
+    have h_sdiff_bound : ∀ N : ℕ,
         ((Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).filter
-           (fun k => Multiplicative.ofAdd k ∈ A)).card ≤
-        ((Finset.Icc (-(N : ℤ)) (N : ℤ)).filter
-           (fun k => Multiplicative.ofAdd k ∈ A)).card + Int.natAbs n ∧
-        ((Finset.Icc (-(N : ℤ)) (N : ℤ)).filter
-           (fun k => Multiplicative.ofAdd k ∈ A)).card ≤
+          (fun k => Multiplicative.ofAdd k ∈ A)).card ≤
+        ((Finset.Icc (-(N : ℤ)) N).filter (fun k => Multiplicative.ofAdd k ∈ A)).card + absn := by
+      intro N
+      have h_sub : (Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).filter
+            (fun k => Multiplicative.ofAdd k ∈ A) ⊆
+          ((Finset.Icc (-(N : ℤ)) N).filter (fun k => Multiplicative.ofAdd k ∈ A)) ∪
+          (Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n) \ Finset.Icc (-(N : ℤ)) N) := by
+        intro k hk
+        simp only [Finset.mem_filter, Finset.mem_Icc, Finset.mem_union, Finset.mem_sdiff] at hk ⊢
+        by_cases hk2 : -(N : ℤ) ≤ k ∧ k ≤ N
+        · left; exact ⟨hk2, hk.2⟩
+        · right; exact ⟨hk.1, by push_neg at hk2; simp [Finset.mem_Icc]; omega⟩
+      have h_card : (Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n) \
+            Finset.Icc (-(N : ℤ)) N).card ≤ absn := by
+        rcases Int.le_or_lt 0 n with hn | hn
+        · -- n ≥ 0: sdiff ⊆ Icc(-N-n, -N-1), size n = absn
+          calc (Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n) \ Finset.Icc (-(N : ℤ)) N).card
+              ≤ (Finset.Icc (-(N : ℤ) - n) (-(N : ℤ) - 1)).card :=
+                Finset.card_le_card (by
+                  intro k; simp only [Finset.mem_sdiff, Finset.mem_Icc]; omega)
+            _ ≤ absn := by
+                rw [Int.card_Icc, h_absn]
+                have heq : -(N : ℤ) - 1 + 1 - (-(N : ℤ) - n) = n := by ring
+                rw [heq, Int.natAbs_of_nonneg hn]
+                exact Nat.le_refl _
+        · -- n < 0: sdiff ⊆ Icc(N+1, N-n), size -n = absn
+          calc (Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n) \ Finset.Icc (-(N : ℤ)) N).card
+              ≤ (Finset.Icc ((N : ℤ) + 1) ((N : ℤ) - n)).card :=
+                Finset.card_le_card (by
+                  intro k; simp only [Finset.mem_sdiff, Finset.mem_Icc]; omega)
+            _ ≤ absn := by
+                rw [Int.card_Icc, h_absn, ← Int.natAbs_neg]
+                have heq : (N : ℤ) - n + 1 - ((N : ℤ) + 1) = -n := by ring
+                rw [heq, Int.natAbs_of_nonneg (by linarith : (0:ℤ) ≤ -n)]
+                exact Nat.le_refl _
+      calc ((Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).filter
+              (fun k => Multiplicative.ofAdd k ∈ A)).card
+          ≤ (((Finset.Icc (-(N : ℤ)) N).filter (fun k => Multiplicative.ofAdd k ∈ A)) ∪
+              (Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n) \ Finset.Icc (-(N : ℤ)) N)).card :=
+            Finset.card_le_card h_sub
+        _ ≤ ((Finset.Icc (-(N : ℤ)) N).filter (fun k => Multiplicative.ofAdd k ∈ A)).card +
+              (Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n) \ Finset.Icc (-(N : ℤ)) N).card :=
+            Finset.card_union_le _ _
+        _ ≤ ((Finset.Icc (-(N : ℤ)) N).filter (fun k => Multiplicative.ofAdd k ∈ A)).card +
+              absn := Nat.add_le_add_left h_card _
+    have h_sdiff_bound2 : ∀ N : ℕ,
+        ((Finset.Icc (-(N : ℤ)) N).filter (fun k => Multiplicative.ofAdd k ∈ A)).card ≤
         ((Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).filter
-           (fun k => Multiplicative.ofAdd k ∈ A)).card + Int.natAbs n := by
+          (fun k => Multiplicative.ofAdd k ∈ A)).card + absn := by
       intro N
-      -- Icc(-N-n, N-n) ⊆ Icc(-N, N) ∪ Icc(-N-|n|, N+|n|)
-      -- and  Icc(-N, N) ⊆ Icc(-N-n, N-n) ∪ Icc(-N-|n|, N+|n|)
-      -- Each union's second piece has card = 2*|n|+1 (too large, but ≤ |n|+1 for the overlap)
-      -- Use a simple bound: both sides have card ≤ 2N+1; the difference ≤ 2|n|;
-      -- hence each ≤ other + 2|n|. For a tighter |n| bound, use:
-      -- Icc(-N-n, N-n) ∩ A ⊆ (Icc(-N,N) ∩ A) ∪ (extra ≤ |n| elements outside Icc(-N,N))
-      -- The extra elements in Icc(-N-n, N-n) \ Icc(-N, N) have card = |n| (shift by |n|).
-      constructor
-      · -- shifted ≤ original + |n|
-        have h_sub : (Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).filter
-                       (fun k => Multiplicative.ofAdd k ∈ A) ⊆
-                     (Finset.Icc (-(N : ℤ)) (N : ℤ)).filter
-                       (fun k => Multiplicative.ofAdd k ∈ A) ∪
-                     Finset.Icc (-(N : ℤ) - n.natAbs) (-(N : ℤ) + n.natAbs) := by
-          intro k hk
-          simp only [Finset.mem_filter, Finset.mem_Icc, Finset.mem_union] at hk ⊢
-          by_cases hklo : -(N : ℤ) ≤ k
-          · left
-            have hkhi : k ≤ (N : ℤ) := by
-              have hnn : k ≤ (N : ℤ) - n := hk.1.2
-              have hna : (0 : ℤ) ≤ n.natAbs := Int.natAbs_nonneg n
-              nlinarith [Int.natAbs_eq n]
-            exact ⟨⟨hklo, hkhi⟩, hk.2⟩
-          · right
-            push_neg at hklo
-            have hklo' : k < -(N : ℤ) := hklo
-            exact ⟨by linarith [Int.le_natAbs (-(N:ℤ) - k), Int.natAbs_eq n, hk.1.1],
-                   by linarith⟩
-        calc ((Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).filter
-               (fun k => Multiplicative.ofAdd k ∈ A)).card
-            ≤ (((Finset.Icc (-(N : ℤ)) (N : ℤ)).filter
-               (fun k => Multiplicative.ofAdd k ∈ A)) ∪
-               Finset.Icc (-(N : ℤ) - n.natAbs) (-(N : ℤ) + n.natAbs)).card :=
-                Finset.card_le_card h_sub
-          _ ≤ ((Finset.Icc (-(N : ℤ)) (N : ℤ)).filter
-               (fun k => Multiplicative.ofAdd k ∈ A)).card +
-              (Finset.Icc (-(N : ℤ) - n.natAbs) (-(N : ℤ) + n.natAbs)).card :=
-                Finset.card_union_le _ _
-          _ ≤ _ := by
-              gcongr
-              rw [Finset.Int.card_fintypeIcc]
-              simp [Int.toNat_of_nonneg]
-              push_cast; omega
-      · -- original ≤ shifted + |n| (symmetric argument with -n)
-        have h_sub : (Finset.Icc (-(N : ℤ)) (N : ℤ)).filter
-                       (fun k => Multiplicative.ofAdd k ∈ A) ⊆
-                     (Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).filter
-                       (fun k => Multiplicative.ofAdd k ∈ A) ∪
-                     Finset.Icc ((N : ℤ) - n.natAbs) ((N : ℤ) + n.natAbs) := by
-          intro k hk
-          simp only [Finset.mem_filter, Finset.mem_Icc, Finset.mem_union] at hk ⊢
-          by_cases hkhi : k ≤ (N : ℤ) - n
-          · left
-            have hklo : -(N : ℤ) - n ≤ k := by
-              nlinarith [Int.natAbs_eq n, hk.1.1]
-            exact ⟨⟨hklo, hkhi⟩, hk.2⟩
-          · right
-            push_neg at hkhi
-            exact ⟨by linarith [Int.natAbs_eq n], by linarith [hk.1.2, Int.natAbs_eq n]⟩
-        calc ((Finset.Icc (-(N : ℤ)) (N : ℤ)).filter
-               (fun k => Multiplicative.ofAdd k ∈ A)).card
-            ≤ (((Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).filter
-               (fun k => Multiplicative.ofAdd k ∈ A)) ∪
-               Finset.Icc ((N : ℤ) - n.natAbs) ((N : ℤ) + n.natAbs)).card :=
-                Finset.card_le_card h_sub
-          _ ≤ ((Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).filter
-               (fun k => Multiplicative.ofAdd k ∈ A)).card +
-              (Finset.Icc ((N : ℤ) - n.natAbs) ((N : ℤ) + n.natAbs)).card :=
-                Finset.card_union_le _ _
-          _ ≤ _ := by
-              gcongr
-              rw [Finset.Int.card_fintypeIcc]
-              simp [Int.toNat_of_nonneg]
-              push_cast; omega
-    -- Step 3: Derive ENNReal sandwich:
-    -- dens N (g•A) ≤ dens N A + err N  AND  dens N A ≤ dens N (g•A) + err N
-    -- where err N = (Int.natAbs n : ℝ≥0∞) / (2*N+1)
-    set err : ℕ → ℝ≥0∞ := fun N =>
-      (Int.natAbs n : ℝ≥0∞) / (2 * ↑N + 1)
-    have h_ub1 : ∀ N, dens N (g • A) ≤ dens N A + err N := by
+      have h_sub2 : (Finset.Icc (-(N : ℤ)) N).filter
+            (fun k => Multiplicative.ofAdd k ∈ A) ⊆
+          ((Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).filter
+            (fun k => Multiplicative.ofAdd k ∈ A)) ∪
+          (Finset.Icc (-(N : ℤ)) N \ Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)) := by
+        intro k hk
+        simp only [Finset.mem_filter, Finset.mem_Icc, Finset.mem_union, Finset.mem_sdiff] at hk ⊢
+        by_cases hk2 : -(N : ℤ) - n ≤ k ∧ k ≤ (N : ℤ) - n
+        · left; exact ⟨hk2, hk.2⟩
+        · right; exact ⟨hk.1, by push_neg at hk2; simp [Finset.mem_Icc]; omega⟩
+      have h_card2 : (Finset.Icc (-(N : ℤ)) N \
+            Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).card ≤ absn := by
+        rcases Int.le_or_lt 0 n with hn | hn
+        · -- n ≥ 0: Icc(-N,N) \ Icc(-N-n,N-n) ⊆ Icc(N-n+1, N), size n = absn
+          calc (Finset.Icc (-(N : ℤ)) N \ Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).card
+              ≤ (Finset.Icc ((N : ℤ) - n + 1) N).card :=
+                Finset.card_le_card (by
+                  intro k; simp only [Finset.mem_sdiff, Finset.mem_Icc]; omega)
+            _ ≤ absn := by
+                rw [Int.card_Icc, h_absn]
+                have heq : (N : ℤ) + 1 - ((N : ℤ) - n + 1) = n := by ring
+                rw [heq, Int.natAbs_of_nonneg hn]
+                exact Nat.le_refl _
+        · -- n < 0: Icc(-N,N) \ Icc(-N-n,N-n) ⊆ Icc(-N, -N-n-1), size -n = absn
+          calc (Finset.Icc (-(N : ℤ)) N \ Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).card
+              ≤ (Finset.Icc (-(N : ℤ)) (-(N : ℤ) - n - 1)).card :=
+                Finset.card_le_card (by
+                  intro k; simp only [Finset.mem_sdiff, Finset.mem_Icc]; omega)
+            _ ≤ absn := by
+                rw [Int.card_Icc, h_absn, ← Int.natAbs_neg]
+                have heq : -(N : ℤ) - n - 1 + 1 - (-(N : ℤ)) = -n := by ring
+                rw [heq, Int.natAbs_of_nonneg (by linarith : (0:ℤ) ≤ -n)]
+                exact Nat.le_refl _
+      calc ((Finset.Icc (-(N : ℤ)) N).filter
+              (fun k => Multiplicative.ofAdd k ∈ A)).card
+          ≤ (((Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).filter
+              (fun k => Multiplicative.ofAdd k ∈ A)) ∪
+              (Finset.Icc (-(N : ℤ)) N \ Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n))).card :=
+            Finset.card_le_card h_sub2
+        _ ≤ ((Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).filter
+              (fun k => Multiplicative.ofAdd k ∈ A)).card +
+              (Finset.Icc (-(N : ℤ)) N \ Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).card :=
+            Finset.card_union_le _ _
+        _ ≤ ((Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).filter
+              (fun k => Multiplicative.ofAdd k ∈ A)).card + absn :=
+            Nat.add_le_add_left h_card2 _
+    have h_upper : ∀ N : ℕ, dens N (g • A) ≤ dens N A + (absn : ℝ≥0∞) / (2 * N + 1) := by
       intro N
-      rw [h_dens_rw N]; simp only [dens, err]
-      rw [← ENNReal.add_div]
-      apply ENNReal.div_le_div_right _ (by positivity)
-      exact_mod_cast (h_card_bound N).1
-    have h_ub2 : ∀ N, dens N A ≤ dens N (g • A) + err N := by
+      rw [h_dens_shift N]; simp only [dens, ← ENNReal.add_div]
+      exact ENNReal.div_le_div_right (by exact_mod_cast h_sdiff_bound N) _
+    have h_lower : ∀ N : ℕ, dens N A ≤ dens N (g • A) + (absn : ℝ≥0∞) / (2 * N + 1) := by
       intro N
-      rw [h_dens_rw N]; simp only [dens, err]
-      rw [← ENNReal.add_div]
-      apply ENNReal.div_le_div_right _ (by positivity)
-      exact_mod_cast (h_card_bound N).2
-    -- Step 4: err N → 0 as N → ∞ along atTop
-    -- err N = (Int.natAbs n : ℝ≥0∞) / (2*N+1). For fixed c = Int.natAbs n,
-    -- c/(2N+1) → 0 since the denominator → ∞.
-    have h_err_zero : Filter.Tendsto err Filter.atTop (nhds 0) := by
-      simp only [err]
-      apply ENNReal.tendsto_nhds_zero.mpr
-      intro ε hε
-      rw [Filter.eventually_atTop]
-      rcases Nat.eq_zero_or_pos (Int.natAbs n) with hn | hn
-      · exact ⟨0, fun N _ => by simp [hn, hε]⟩
-      · rcases ENNReal.eq_or_lt_top ε with rfl | hε_lt_top
-        · exact ⟨0, fun N _ => ENNReal.div_lt_top
-            (by exact ENNReal.natCast_ne_top _) (by norm_cast; omega)⟩
-        · -- ε is finite and > 0
-          have hε_ne : ε ≠ ⊤ := hε_lt_top.ne
-          -- Take N₀ large enough. Since ε > 0 and ε ≠ ⊤:
-          -- (Int.natAbs n : ℝ≥0∞) / (2*N+1) < ε iff 2*N+1 > c/ε
-          -- For N ≥ c + 1: c/(2N+1) ≤ c/(2*1+1) = c/3 ≤ c, but this doesn't give < ε
-          -- Better: use N₀ = (ENNReal.toNNReal (c / ε)).toNat + 1
-          refine ⟨(((Int.natAbs n : ℝ≥0∞) / ε).toNNReal.toNat + 1), fun N hN => ?_⟩
-          have hN_pos : 0 < 2 * (N : ℝ≥0∞) + 1 := by positivity
-          rw [ENNReal.div_lt_iff (ne_of_gt hN_pos) (by norm_cast; omega)]
-          -- Need: (Int.natAbs n : ℝ≥0∞) < ε * (2*N+1)
-          -- Since N ≥ c/ε + 1, we have ε * (2*N+1) ≥ ε * (2*(c/ε+1)+1) > c
-          have hcε : (Int.natAbs n : ℝ≥0∞) ≤ ε * ((Int.natAbs n : ℝ≥0∞) / ε).toNNReal + ε := by
-            rcases ENNReal.eq_top_or_lt_top ((Int.natAbs n : ℝ≥0∞) / ε) with h | h
-            · simp [ENNReal.div_eq_top] at h
-              exact h.elim (fun ⟨_, hε0⟩ => absurd hε0 (ne_of_gt hε)) (fun ⟨hn', _⟩ => by
-                exact absurd hn' (by exact_mod_cast Nat.pos_iff_ne_zero.mp hn))
-            · have := ENNReal.toNNReal_mul_top h.ne
-              calc (Int.natAbs n : ℝ≥0∞)
-                  = ε * ((Int.natAbs n : ℝ≥0∞) / ε) := by
-                      rw [ENNReal.mul_div_cancel' (ne_of_gt hε) hε_ne]
-                _ ≤ ε * ((Int.natAbs n : ℝ≥0∞) / ε).toNNReal + ε := by
-                      have := ENNReal.le_toNNReal_add h.ne
-                      nlinarith [ENNReal.toNNReal_le_toNNReal_of_le (le_refl _)]
-          calc (Int.natAbs n : ℝ≥0∞)
-              ≤ ε * ((Int.natAbs n : ℝ≥0∞) / ε).toNNReal + ε := hcε
-            _ ≤ ε * N + ε := by
-                gcongr
-                have : ((Int.natAbs n : ℝ≥0∞) / ε).toNNReal.toNat < N := by omega
-                exact_mod_cast Nat.le_of_lt_succ (Nat.lt_succ_of_lt this)
-            _ ≤ ε * (2 * N + 1) := by nlinarith [show (0 : ℝ≥0∞) ≤ ε * N from by positivity]
-    -- Step 5: Since U.toFilter ≥ atTop, the U-limit of err is also 0
-    have h_err_U : Filter.Tendsto err U.toFilter (nhds 0) :=
-      h_err_zero.mono_left (Ultrafilter.of_le_atTop U)
-    -- Step 6: Squeeze: U.lim (dens · (g•A)) ≤ U.lim (dens · A) and vice versa
-    -- Using: if f N ≤ g N + h N for all N and h → 0 along U, then lim f ≤ lim g + 0 = lim g
-    apply le_antisymm
-    · -- U.lim (dens · (g•A)) ≤ U.lim (dens · A)
-      have h1 : Filter.Tendsto (fun N => dens N A + err N) U.toFilter
-          (nhds (U.lim (dens · A) + 0)) :=
-        (Ultrafilter.tendsto_nhds_lim rfl).add h_err_U
-      rw [add_zero] at h1
-      exact le_of_tendsto_of_tendsto (Ultrafilter.tendsto_nhds_lim rfl) h1
-        (Filter.eventually_of_forall h_ub1)
-    · -- U.lim (dens · A) ≤ U.lim (dens · (g•A))
-      have h2 : Filter.Tendsto (fun N => dens N (g • A) + err N) U.toFilter
-          (nhds (U.lim (dens · (g • A)) + 0)) :=
-        (Ultrafilter.tendsto_nhds_lim rfl).add h_err_U
-      rw [add_zero] at h2
-      exact le_of_tendsto_of_tendsto (Ultrafilter.tendsto_nhds_lim rfl) h2
-        (Filter.eventually_of_forall h_ub2)
+      rw [h_dens_shift N]; simp only [dens, ← ENNReal.add_div]
+      exact ENNReal.div_le_div_right (by exact_mod_cast h_sdiff_bound2 N) _
+    -- Step 3: The error term absn/(2N+1) → 0 along atTop (and hence along U ⊇ atTop)
+    have h_atTop_le_U : Filter.atTop ≤ U.toFilter := Ultrafilter.of_le Filter.atTop
+    have h_err_tendsto : Filter.Tendsto
+        (fun N : ℕ => (absn : ℝ≥0∞) / (2 * (N : ℝ≥0∞) + 1))
+        U.toFilter (nhds 0) := by
+      apply Filter.Tendsto.mono_left _ h_atTop_le_U
+      -- Step 1: Prove the limit in ℝ: absn/(2N+1) → 0
+      have h_real : Filter.Tendsto (fun N : ℕ => (absn : ℝ) / (2 * N + 1))
+          Filter.atTop (nhds 0) := by
+        apply tendsto_const_nhds.div_atTop
+        apply Filter.tendsto_atTop_atTop_of_monotone (fun a b hab => by linarith)
+        intro b
+        exact ⟨Nat.ceil (max 0 ((b - 1) / 2)),
+               fun N hN => by
+                 have h1 : (N : ℝ) ≥ Nat.ceil (max 0 ((b - 1) / 2)) := by exact_mod_cast hN
+                 have h2 : (Nat.ceil (max 0 ((b - 1) / 2)) : ℝ) ≥ max 0 ((b - 1) / 2) :=
+                   Nat.le_ceil _
+                 linarith [le_max_right 0 ((b - 1) / 2)]⟩
+      -- Step 2: Rewrite each ENNReal term as ENNReal.ofReal (ℝ value)
+      have hcoerce : ∀ N : ℕ, (absn : ℝ≥0∞) / (2 * (N : ℝ≥0∞) + 1) =
+          ENNReal.ofReal ((absn : ℝ) / (2 * N + 1)) := fun N => by
+        have hpos : (0:ℝ) < 2 * N + 1 := by positivity
+        have hdenom : ENNReal.ofReal (2 * (N:ℝ) + 1) = 2 * (N:ℝ≥0∞) + 1 := by
+          rw [ENNReal.ofReal_add (by positivity) (by norm_num : (0:ℝ) ≤ 1),
+              ENNReal.ofReal_mul (by norm_num : (0:ℝ) ≤ 2)]
+          simp [ENNReal.ofReal_ofNat, ENNReal.ofReal_natCast]
+        rw [ENNReal.ofReal_div_of_pos hpos, ENNReal.ofReal_natCast, hdenom]
+      simp_rw [hcoerce]
+      simpa using ENNReal.tendsto_ofReal h_real
+    -- Step 4: Squeeze — use le_of_tendsto_of_tendsto to get equality
+    set L := U.lim (dens · A)
+    have hA_tendsto : Filter.Tendsto (dens · A) U.toFilter (nhds L) :=
+      Ultrafilter.tendsto_nhds_lim rfl
+    have hgA_tendsto : Filter.Tendsto (dens · (g • A)) U.toFilter
+        (nhds (U.lim (dens · (g • A)))) := Ultrafilter.tendsto_nhds_lim rfl
+    -- Upper bound: U.lim(dens·(g•A)) ≤ L
+    have h_le : U.lim (dens · (g • A)) ≤ L := by
+      have hbound : Filter.Tendsto
+          (fun N => dens N A + (absn : ℝ≥0∞) / (2 * N + 1))
+          U.toFilter (nhds (L + 0)) := hA_tendsto.add h_err_tendsto
+      rw [add_zero] at hbound
+      exact le_of_tendsto_of_tendsto hgA_tendsto hbound
+        (Filter.Eventually.of_forall h_upper)
+    -- Lower bound: L ≤ U.lim(dens·(g•A))
+    have h_ge : L ≤ U.lim (dens · (g • A)) := by
+      have hbound2 : Filter.Tendsto
+          (fun N => dens N (g • A) + (absn : ℝ≥0∞) / (2 * N + 1))
+          U.toFilter (nhds (U.lim (dens · (g • A)) + 0)) := hgA_tendsto.add h_err_tendsto
+      rw [add_zero] at hbound2
+      exact le_of_tendsto_of_tendsto hA_tendsto hbound2
+        (Filter.Eventually.of_forall h_lower)
+    exact le_antisymm h_le h_ge
 
 /-- Words starting with generator g (as positive or inverse letter).
     NOTE: Mathlib convention: (g, true) = positive generator, (g, false) = inverse.
