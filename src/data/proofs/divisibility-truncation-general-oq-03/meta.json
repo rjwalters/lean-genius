@@ -97,12 +97,17 @@
     {
       "targetId": "divisibility-truncation-general",
       "relationship": "extends",
-      "description": "Extends the parent divisibility truncation theorem with the canonical Bézout/osculator construction."
+      "description": "Extends the parent divisibility truncation theorem with the canonical Bézout/osculator construction. The parent establishes that d|n iff d|⌊n/10⌋+c·(n%10) for any osculator c; this entry identifies the canonical choice c = gcdA(10,d) mod d."
     },
     {
       "targetId": "divisibility-truncation-general-oq-01",
       "relationship": "uses",
-      "description": "Imports unified_osculator from OQ-01 for the concrete divisibility test applications."
+      "description": "Imports `unified_osculator` from OQ-01 (the abstract divisibility equivalence for any osculator c) to prove `bezout_osculator_rule` and the concrete examples. OQ-03 contributes only the identification of the canonical osculator; all divisibility algebra is in OQ-01."
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's identity is the mathematical foundation of this proof: for gcd(10,d) = 1, there exist integers a, b with 10a + db = 1 (Mathlib: `Nat.gcd_eq_gcd_ab`). Rearranging gives d | 10a − 1, making a = gcdA(10,d) the osculator. This entry provides the key step from the abstract Bézout identity to the concrete divisibility test, demonstrating Bézout's theorem as the engine of modular inverse computation."
     }
   ],
   "leanFile": {
