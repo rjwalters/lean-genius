@@ -2,7 +2,7 @@
   "id": "ballot-problem-oq-03-oq-01-oq-02",
   "title": "Hook-Length Formula for Standard Young Tableaux via LGV",
   "slug": "ballot-problem-oq-03-oq-01-oq-02",
-  "description": "Formalizes the hook-length formula f^λ = n!/∏h(u) for Standard Young Tableaux. Proves: 1-row, 1-col, hook shapes, 2-rect, general 2-row, all gHookYD [a,1^b], ≤2-col (transpose duality), exactly 3-row, exactly 4-row. General formula has 4 sorries: 3 via LGV approach + 1 for hook_walk_identity (≥5-row shapes only).",
+  "description": "Formalizes the hook-length formula f^λ = n!/∏h(u) for Standard Young Tableaux. Proves: 1-row, 1-col, hook shapes, 2-rect, general 2-row, all gHookYD [a,1^b], ≤2-col (transpose duality), exactly 3-row (ALL [a,b,c] shapes). General formula has 4 sorries: 3 via LGV approach + 1 for hook_walk_identity (≥4-row, ≥3-col, non-gHookYD).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-21",
@@ -22,8 +22,8 @@
     "sorries": 4,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "Four open sorries: (1) hook_length_formula (LGV approach: requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) hook_walk_identity ≥5-row case (GNW or RSK, ~300 lines; at-most-2-row, gHookYD, ≤2-col, exactly-3-row, exactly-4-row all proved). hook_length_formula_general is proved modulo hook_walk_identity via corner induction.",
-    "lineCount": 7274,
+    "assumptions": "Four open sorries: (1) hook_length_formula (LGV approach: requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) hook_walk_identity ≥4-row non-gHookYD ≥3-col case (GNW probabilistic proof, ~300 lines; at-most-2-row, gHookYD, ≤2-col, exactly-3-row ALL proved). hook_length_formula_general is proved modulo hook_walk_identity via corner induction.",
+    "lineCount": 6297,
     "theoremCount": 164,
     "definitionCount": 14,
     "originalContributions": [
