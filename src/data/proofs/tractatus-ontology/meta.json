@@ -186,6 +186,33 @@
       "What is the right spectrum of world models between the free model (full independence) and highly constrained physical models? Can an IndependentWorlds typeclass characterize exactly which models satisfy elementary independence?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Gödel's First Incompleteness Theorem is the formal realization of the limits Wittgenstein gestures at in TLP 6.54. Gödel shows that any sufficiently expressive formal system either contains unprovable truths or is inconsistent — the formal undecidability that Wittgenstein's silence (TLP 7) intuited philosophically. Both works confront the same phenomenon: a formal system powerful enough to reason about mathematics cannot exhaust mathematical truth from within."
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "Turing's undecidability of the halting problem is a computational limit on expressibility that parallels Wittgenstein's saying/showing distinction. No program can determine from within whether an arbitrary program halts; no proposition can say what only the totality of propositions shows. Both are instances of a formal ceiling on internal self-reference, where the system's limits become visible only from outside — the metalevel that Wittgenstein says one cannot speak from."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-03",
+      "relationship": "related",
+      "description": "Lawvere's fixed-point theorem unifies all diagonal arguments — Cantor, Gödel, Turing, Russell — under a single categorical principle: a total retraction from A to A^A is impossible. The Tractatus saying/showing distinction is another instance of this impossibility: no proposition can exhaustively say what the logical form of propositions shows. This entry's proof that structural and semantic equivalence diverge (structEq_ne_semEq) is itself a diagonal-flavored separateness result."
+    },
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "related",
+      "description": "The independence of the Continuum Hypothesis from ZFC — proved via forcing — parallels Tractarian elementary independence (TLP 2.061): which states of affairs obtain is not fixed by logical form alone but requires choosing a world (a model). Cohen's proof constructs models where CH holds and others where it fails, exactly as this entry constructs free models (full independence) and constrained models (weather, ConstrainedWorld) where independence fails. Both results show that formal structure radically underdetermines semantic content."
+    },
+    {
+      "targetId": "three-place-identity",
+      "relationship": "related",
+      "description": "Three-place identity formalizes the logic of identity as a structural relation, exploring how identity functions as a logical constant rather than an object-level predicate. This is directly parallel to Wittgenstein's claim (TLP 5.53–5.5352) that identity signs have no real content — '=' is not a genuine predicate but a formal convention. Both entries formalize the distinction between logical form (shown by syntax) and factual content (said by propositions)."
+    }
+  ],
   "references": [
     {
       "authors": "Ludwig Wittgenstein",
