@@ -5,7 +5,11 @@ Source: Follow-up to erdos-476 (Erdős-Heilbronn conjecture)
 Status: PARTIAL — ap_of_near_periodic proved (orbit-cardinality argument);
                    vosper_base proved; vosper_ap_sdiff_card proved (hpos proved, Session 20);
                    isAP_sdiff_card proved; vosper_case1_exists sorryed [1 sorry remains];
-                   counting argument proves |A|=|B|=3 sub-case; Kneser needed for |A|≥4 or |B|≥4
+                   counting argument proves |A|=|B|=3 sub-case.
+                   Analysis (Session 21): counting insufficient for |A|≥4 or |B|≥4.
+                   A-redundancy ⟺ B-redundancy (both = r(x)≥2 ∀x), so swapping doesn't help.
+                   Correct approach: Dyson e-transform (reduces |B| while preserving CD equality).
+                   Kneser for ZMod p is circular (reduces to Vosper itself).
 
 Statement (Vosper 1956):
 Let p be prime, A, B ⊆ Z/pZ with |A|, |B| ≥ 2.
@@ -839,9 +843,19 @@ theorem vosper (A B : Finset (ZMod p)) (hA : 2 ≤ A.card) (hB : 2 ≤ B.card)
         by_cases hAB3 : A.card = 3 ∧ B.card = 3
         · obtain ⟨hA3eq, hB3eq⟩ := hAB3
           rw [hA3eq, hB3eq] at hineq; norm_num at hineq
-        · -- |A| ≥ 4 or |B| ≥ 4: (|A|-2)(|B|-2) ≥ 2 holds, but Kneser's theorem is needed
-          -- to derive that A and B must be APs (not available in Mathlib)
-          sorry -- [HARD] Requires Kneser's theorem (not in Mathlib) for |A|≥4 or |B|≥4
+        · -- |A| ≥ 4 or |B| ≥ 4: (|A|-2)(|B|-2) ≥ 2 holds; counting is insufficient.
+          -- Analysis (Session 21):
+          --   • A-redundancy ⟺ r(x)≥2 ∀x ⟺ B-redundancy (equivalent conditions)
+          --   • Swapping A/B roles doesn't help — same counting bound
+          --   • Kneser for ZMod p is circular (equality case IS Vosper)
+          --   • Correct approach: Dyson e-transform
+          --     For t = a₂-a₁ (a₁≠a₂ in A), define A' = A ∪ (B+t), B' = B ∩ (A-t).
+          --     Key properties: |A'|+|B'| = |A|+|B|, A'+B' ⊆ A+B, |B'| < |B|
+          --     (B'=B would mean B closed under -t, forcing |B|=p in ZMod p).
+          --     Repeated transforms reduce to |B'|=1, giving direct AP structure.
+          --     This requires restructuring the induction (termination_by A.card+B.card
+          --     or a separate e-transform lemma with its own well-founded recursion).
+          sorry -- [HARD] Requires Dyson e-transform (different proof technique)
     -- Step 2: Apply IH recursively to A' = A.erase a₀ and B.
     have hA'card : (A.erase a₀).card = A.card - 1 := Finset.card_erase_of_mem ha₀A
     have hA'2 : 2 ≤ (A.erase a₀).card := by omega
