@@ -16,11 +16,18 @@
             "finite-groups",
             "abel-ruffini"
         ],
-        "badge": "verified",
+        "badge": "mathlib",
         "sorries": 0,
         "dateAdded": "2026-04-24",
         "axiomCount": 0,
         "assumptions": "",
+        "mathlibDependencies": [
+            {
+                "theorem": "CompositionSeries.jordan_holder",
+                "description": "Jordan-Hölder uniqueness: any two composition series have the same length and isomorphic factors",
+                "module": "Mathlib.Order.JordanHolder"
+            }
+        ],
         "lineCount": 255,
         "theoremCount": 9,
         "definitionCount": 3,
