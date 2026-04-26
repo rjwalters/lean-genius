@@ -65,6 +65,57 @@ The `FurstenbergCorrespondence.lean` file already exists with substantial infras
 
 ---
 
+## Session 2026-04-26 (Session 2) — Cesàro Infrastructure Build
+
+**Mode**: FRESH (continuing claim on szemeredi-full-oq-01)
+**Outcome**: progress (ACT phase — meaningful infrastructure built)
+
+### What I Did
+- Extended `FurstenbergCorrespondenceOQ01.lean` from 285 to 529 lines
+- Built complete Cesàro measure infrastructure in new Parts VIII and IX
+- Proved the elementary half of the Furstenberg correspondence without compactness
+- Isolated Prokhorov sequential compactness as the minimal remaining local axiom
+
+### Infrastructure Built (all fully proved, 0 sorries)
+
+| Item | Type | Location |
+|------|------|----------|
+| `HasUpperDensityGe` | Definition | OQ01.lean:308 |
+| `finsetDirac_apply` | Theorem | OQ01.lean:316 |
+| `cesaroMeasure` | Definition | OQ01.lean:334 |
+| `cesaroMeasure_isProbability` | Theorem | OQ01.lean:340 |
+| `mem_cylinderZero_shifted` | Theorem | OQ01.lean:364 |
+| `cesaroMeasure_cylinderZero` (orbit-density formula) | Theorem | OQ01.lean:372 |
+| `density_lower_bound` (elementary half of correspondence) | Theorem | OQ01.lean:404 |
+| `seqCompact_probabilityMeasure_cantor` | Local axiom | OQ01.lean:484 |
+
+### Key Mathematical Findings
+
+- `finsetDirac_apply`: sum of Dirac measures applied to a measurable set equals the
+  cardinality of the fiber; proved via `Finset.sum_boole` + `simp_rw`
+- `cesaroMeasure_isProbability`: uses `ENNReal.inv_mul_cancel` with `Finset.card_range`
+- `density_lower_bound` (the non-trivial part): proved via Finset bijection `n ↦ n-a`
+  mapping Ico-filter to range-filter, then ENNReal arithmetic via
+  `ENNReal.le_div_iff_mul_le` + `ENNReal.ofReal_mul` + `ENNReal.ofReal_natCast`
+- The `furstenberg_correspondence` axiom in `FurstenbergCorrespondence.lean` now reduces to:
+  1. `seqCompact_probabilityMeasure_cantor` (local axiom, ~150-200 lines to prove)
+  2. ~50 lines: T-invariance of limit measures (telescoping integral estimate)
+  3. ~30 lines: density preservation at limit (lower semi-continuity of measures)
+
+### Lessons on ENNReal API
+- `ENNReal.le_div_iff_mul_le` (not `le_div_iff₀`) needed for ENNReal division
+- `ENNReal.ofReal_mul` + `ENNReal.ofReal_natCast` for ℝ→ENNReal conversion chains
+- `open Classical` required for `DecidablePred` in `Finset.filter` with set predicates
+- Bijection `card_bij` with `n ↦ n-a` (not `n ↦ n+a`) for Ico→range filter cardinality
+
+### Next Steps
+1. Prove T-invariance: |∫f d(T_*(μ_{a,N})) - ∫f dμ_{a,N}| ≤ 2‖f‖_sup/N → 0 (~50 lines)
+2. Prove density lower semi-continuity at limit: μ(B₀) ≥ δ from density_lower_bound (~30 lines)
+3. Prove `seqCompact_probabilityMeasure_cantor` via Mathlib Prokhorov ingredients (~150-200 lines)
+4. Assemble into a clean proof of `furstenberg_correspondence` (replaces the axiom)
+
+---
+
 ## Dead Ends
 
 - Cannot enumerate AP witnesses case-by-case (infinitely many cases)

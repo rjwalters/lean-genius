@@ -275,11 +275,254 @@ The key missing Mathlib component is weak-* sequential compactness
 for probability measures on compact metrizable spaces.
 -/
 
+/-! ═══════════════════════════════════════════════════════════════════════════════
+PART VIII: CESÀRO PROBABILITY MEASURES — THE FURSTENBERG CONSTRUCTION
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-!
+### Cesàro Averages: The Bridge from Density to Dynamics
+
+The Furstenberg correspondence constructs a T-invariant probability measure
+from a set A with positive upper Banach density. The construction:
+
+**Step 1 (this section)**: For any window [a, a+N) with |A ∩ [a,a+N)| ≥ δN,
+form the Cesàro probability measure:
+  μ_{a,N} = (1/N) Σ_{n=0}^{N-1} δ_{shift^[n](shift^[a](1_A))}
+
+This satisfies μ_{a,N}(B₀) = |A ∩ [a,a+N)| / N ≥ δ. **Proved below.**
+
+**Step 2**: Extract a convergent subsequence from these measures
+  (Prokhorov's theorem: compact space → tight → convergent subsequence).
+  Stated as a local axiom (Mathlib v4.26 has ingredients but not assembled).
+
+**Step 3**: Any limit point is T-invariant with μ(B₀) ≥ δ.
+  T-invariance: |∫f d(T_*(μ_{a,N})) - ∫f dμ_{a,N}| ≤ 2‖f‖/N → 0.
+-/
+
+section CesaroMeasures
+
+open MeasureTheory Classical
+
+/-- Upper Banach density: A has density ≥ δ if arbitrarily long intervals
+    contain ≥ δ-fraction of A. (Matches definition in FurstenbergCorrespondence.) -/
+def HasUpperDensityGe (A : Set ℕ) (δ : ℝ) : Prop :=
+  ∀ N₀ : ℕ, ∃ a N : ℕ, N ≥ N₀ ∧
+    δ * ↑N ≤ ↑((Finset.Ico a (a + N)).filter (· ∈ A)).card
+
+/-- **Key helper**: Evaluating a Finset sum of Dirac measures on a measurable set
+    equals the cardinality of the fiber landing in that set.
+
+    Proof: distribute evaluation over sum, apply Dirac formula, use Finset.sum_boole. -/
+theorem finsetDirac_apply {ι : Type*} (s : Finset ι) (f : ι → CantorSpace)
+    {t : Set CantorSpace} (ht : MeasurableSet t) :
+    (∑ i ∈ s, Measure.dirac (f i)) t =
+    ↑(s.filter (fun i => f i ∈ t)).card := by
+  -- Distribute measure application over the Finset sum
+  have eval_sum : (∑ i ∈ s, Measure.dirac (f i)) t = ∑ i ∈ s, Measure.dirac (f i) t := by
+    induction s using Finset.induction_on with
+    | empty => simp
+    | insert ha ih => rw [Finset.sum_insert ha, Measure.add_apply, ih]
+  rw [eval_sum]
+  -- Each Dirac evaluates as an indicator: dirac a t = if a ∈ t then 1 else 0
+  simp_rw [Measure.dirac_apply' _ ht, Set.indicator_apply, Pi.one_apply]
+  -- Sum of characteristic function = cardinality of filter
+  exact_mod_cast Finset.sum_boole
+
+/-- The N-step Cesàro probability measure at orbit point x:
+    μ_N(x) = (1/N) Σ_{n=0}^{N-1} δ_{shift^[n](x)}.
+    (Convention: μ_0(x) = δ_x.) -/
+noncomputable def cesaroMeasure (x : CantorSpace) : ℕ → Measure CantorSpace
+  | 0     => Measure.dirac x
+  | N + 1 => (↑(N + 1 : ℕ) : ℝ≥0∞)⁻¹ •
+              ∑ n ∈ Finset.range (N + 1), Measure.dirac (shift^[n] x)
+
+/-- The Cesàro measure is a probability measure for N ≥ 1. -/
+theorem cesaroMeasure_isProbability (x : CantorSpace) :
+    ∀ N : ℕ, 0 < N → IsProbabilityMeasure (cesaroMeasure x N) := by
+  intro N hN
+  cases N with
+  | zero => exact absurd hN (lt_irrefl _)
+  | succ N =>
+    refine ⟨?_⟩
+    simp only [cesaroMeasure, Measure.smul_apply]
+    rw [finsetDirac_apply _ _ MeasurableSet.univ]
+    -- Filter trivializes: every orbit point is in Set.univ
+    have : (Finset.range (N + 1)).filter (fun n => shift^[n] x ∈ Set.univ) =
+        Finset.range (N + 1) :=
+      Finset.filter_true_of_mem (fun _ _ => Set.mem_univ _)
+    rw [this, Finset.card_range]
+    exact ENNReal.inv_mul_cancel (by exact_mod_cast Nat.succ_ne_zero N) ENNReal.natCast_ne_top
+
+/-!
+### The Orbit-Density Connection
+
+The Cesàro measure of B₀ exactly counts what fraction of the orbit lies in B₀,
+which equals the density of A in the corresponding window.
+-/
+
+/-- Membership criterion: the a-shifted orbit at time n lands in B₀ iff n+a ∈ A. -/
+theorem mem_cylinderZero_shifted (A : Set ℕ) (a n : ℕ) :
+    shift^[n] (shift^[a] (setIndicator A)) ∈ cylinderZero ↔ n + a ∈ A := by
+  rw [← Function.iterate_add_apply]
+  simp only [cylinderZero, cylinder, Set.mem_setOf_eq]
+  exact shift_indicator_zero A (n + a)
+
+/-- **Orbit-Density Formula**: The Cesàro measure of B₀ at shift^a(1_A) over N steps
+    equals the density of A in the window [a, a+N). -/
+theorem cesaroMeasure_cylinderZero (A : Set ℕ) (a : ℕ) {N : ℕ} (hN : 0 < N) :
+    cesaroMeasure (shift^[a] (setIndicator A)) N cylinderZero =
+    ↑((Finset.range N).filter (fun n => n + a ∈ A)).card / ↑N := by
+  cases N with
+  | zero => exact absurd hN (lt_irrefl _)
+  | succ N =>
+    simp only [cesaroMeasure, Measure.smul_apply]
+    rw [finsetDirac_apply _ _ cylinderZero_measurableSet]
+    -- Connect filter to A-membership
+    have hfilter : (Finset.range (N + 1)).filter
+          (fun n => shift^[n] (shift^[a] (setIndicator A)) ∈ cylinderZero) =
+        (Finset.range (N + 1)).filter (fun n => n + a ∈ A) :=
+      Finset.filter_congr (fun n _ => mem_cylinderZero_shifted A a n)
+    rw [hfilter]
+    -- Goal: (↑(N+1))⁻¹ * ↑card = ↑card / ↑(N+1)
+    -- i.e., a⁻¹ * b = b * a⁻¹ = b / a  (mul_comm + div_eq_mul_inv)
+    rw [div_eq_mul_inv, mul_comm]
+
+/-!
+### Density Lower Bound — The Elementary Half of the Correspondence
+
+Given A with upper Banach density ≥ δ, for any N₀ there exist a and N ≥ N₀
+such that the Cesàro measure of B₀ is ≥ δ. No compactness needed here.
+-/
+
+/-- **Density Lower Bound** (proved, no sequential compactness needed):
+    If A has upper Banach density ≥ δ > 0, then for any threshold N₀,
+    there exist a and N ≥ N₀ such that the Cesàro probability measure
+    at shift^a(1_A) has μ(B₀) ≥ δ.
+
+    This is the fully proved half of the Furstenberg correspondence.
+    The remaining step (extracting a T-invariant limit) requires Prokhorov. -/
+theorem density_lower_bound (A : Set ℕ) {δ : ℝ} (hδ : 0 < δ)
+    (hd : HasUpperDensityGe A δ) (N₀ : ℕ) :
+    ∃ a N : ℕ, N ≥ N₀ ∧
+    ENNReal.ofReal δ ≤ cesaroMeasure (shift^[a] (setIndicator A)) N cylinderZero := by
+  obtain ⟨a, N, hN_ge, hdensity⟩ := hd (max N₀ 1)
+  have hN1 : 1 ≤ N := le_trans (Nat.le_max_right N₀ 1) hN_ge
+  have hN_pos : 0 < N := Nat.lt_of_lt_of_le (by norm_num) hN1
+  have hN₀_le : N₀ ≤ N := le_trans (Nat.le_max_left N₀ 1) hN_ge
+  refine ⟨a, N, hN₀_le, ?_⟩
+  rw [cesaroMeasure_cylinderZero A a hN_pos]
+  -- Card equality: Ico-filter ↔ range-filter via bijection n ↦ n - a
+  have hcard : ((Finset.Ico a (a + N)).filter (· ∈ A)).card =
+      ((Finset.range N).filter (fun n => n + a ∈ A)).card := by
+    apply Finset.card_bij (fun n _ => n - a)
+    · -- n ∈ [a, a+N) ∩ A  →  n-a ∈ [0,N) with (n-a)+a ∈ A
+      intro n hn
+      simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ico] at *
+      obtain ⟨⟨hna, hnaN⟩, hnA⟩ := hn
+      exact ⟨by omega, by rwa [Nat.sub_add_cancel hna]⟩
+    · -- n-a is injective on [a, a+N)
+      intro n₁ hn₁ n₂ hn₂ h
+      simp only [Finset.mem_filter, Finset.mem_Ico] at hn₁ hn₂
+      omega
+    · -- Surjectivity: for m ∈ range-filter, take n = m+a
+      intro m hm
+      simp only [Finset.mem_filter, Finset.mem_range] at hm
+      refine ⟨m + a, Finset.mem_filter.mpr ⟨Finset.mem_Ico.mpr ⟨Nat.le_add_left a m, by omega⟩, hm.2⟩,
+              Nat.add_sub_cancel⟩
+  rw [← hcard]
+  -- ENNReal: δ ≤ |Ico-filter| / N  from  δ * N ≤ |Ico-filter|
+  have hN_ne : (↑N : ℝ≥0∞) ≠ 0 := by exact_mod_cast hN_pos.ne'
+  -- The inequality: ofReal δ ≤ card / N ↔ ofReal δ * N ≤ card
+  rw [ENNReal.le_div_iff_mul_le hN_ne ENNReal.natCast_ne_top]
+  -- ofReal δ * N ≤ card in ℝ≥0∞ follows from δ * N ≤ card in ℝ
+  calc ENNReal.ofReal δ * ↑N
+      = ENNReal.ofReal (δ * ↑N) := by
+          rw [← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul hδ.le]
+    _ ≤ ENNReal.ofReal ↑((Finset.Ico a (a + N)).filter (· ∈ A)).card := by
+          exact ENNReal.ofReal_le_ofReal (by exact_mod_cast hdensity)
+    _ = ↑((Finset.Ico a (a + N)).filter (· ∈ A)).card := ENNReal.ofReal_natCast _
+
+end CesaroMeasures
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
+PART IX: THE MINIMAL REMAINING AXIOM (PROKHOROV)
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-!
+### What the Correspondence Reduces To
+
+Parts I–VIII prove everything except one classical analysis fact:
+**sequential compactness of probability measures on Cantor space**.
+
+The density lower bound (Part VIII, `density_lower_bound`) is fully proved:
+for any A with upper Banach density ≥ δ, arbitrarily large Cesàro averages
+have μ_{a,N}(B₀) ≥ δ.
+
+What remains:
+1. **Prokhorov step**: extract a weak-* convergent subsequence μ_{a_k, N_k} → μ.
+2. **T-invariance**: for continuous f, |∫f d(T_*(μ_{a,N})) - ∫f dμ_{a,N}| ≤ 2‖f‖/N.
+   So any limit μ is T-invariant.
+3. **Density at limit**: μ(B₀) ≥ δ (by lower semi-continuity + density lower bound).
+
+Mathlib v4.26.0 has the ingredients:
+- `IsTightMeasureSet.of_compactSpace` (all measures tight on compact spaces)
+- `LevyProkhorov.eq_convergenceInDistribution` (metrizes weak convergence)
+- `WeakDual.isSeqCompact_closedBall` (sequential Banach-Alaoglu)
+
+The gap is ~150–200 lines assembling these into sequential compactness for
+`ProbabilityMeasure CantorSpace`.
+-/
+
+/-- **Local Axiom (Prokhorov)**: Sequential compactness of probability measures
+    on Cantor space ℕ → Bool in the weak-* topology.
+
+    Mathematical status: This is a standard consequence of Prokhorov's theorem.
+    Cantor space is compact metrizable separable. All sets of probability measures
+    on a compact space are tight (Mathlib: `IsTightMeasureSet.of_compactSpace`).
+    Prokhorov's theorem (tight + compact metrizable → sequentially compact)
+    then applies. Estimated formalization: ~150–200 lines. -/
+axiom seqCompact_probabilityMeasure_cantor :
+    ∀ (f : ℕ → ProbabilityMeasure CantorSpace),
+    ∃ (φ : ℕ → ℕ), StrictMono φ ∧
+    ∃ μ : ProbabilityMeasure CantorSpace,
+    Filter.Tendsto (fun k => f (φ k)) Filter.atTop (nhds μ)
+
+/-!
+### Progress Summary
+
+| Component | Status | Session |
+|-----------|--------|---------|
+| Shift map + cylinders | ✅ Proved | Prior |
+| Set indicators + return property | ✅ Proved | Prior |
+| Orbit-density connection | ✅ Proved | Prior |
+| Compactness of Cantor space | ✅ Proved | Prior |
+| `finsetDirac_apply` | ✅ Proved | This session |
+| `cesaroMeasure` (definition) | ✅ Defined | This session |
+| `cesaroMeasure_isProbability` | ✅ Proved | This session |
+| `mem_cylinderZero_shifted` | ✅ Proved | This session |
+| `cesaroMeasure_cylinderZero` (orbit-density formula) | ✅ Proved | This session |
+| `density_lower_bound` (elementary half) | ✅ Proved | This session |
+| Prokhorov sequential compactness | ⚠ Local axiom | This session |
+| T-invariance of limit measures | ❌ Remaining | ~50 lines |
+| Density preservation at limit | ❌ Remaining | ~30 lines |
+
+**Net result**: `furstenberg_correspondence` reduces to `seqCompact_probabilityMeasure_cantor`
+plus ~80 lines of analysis (T-invariance estimate + density lower semi-continuity).
+-/
+
 #check shift_continuous
 #check shift_measurable
 #check cylinderZero_measurableSet
 #check indicator_in_kfold_return
 #check orbit_indicator_hits
 #check (inferInstance : CompactSpace CantorSpace)
+-- New in this session:
+#check @finsetDirac_apply
+#check @cesaroMeasure
+#check @cesaroMeasure_isProbability
+#check @mem_cylinderZero_shifted
+#check @cesaroMeasure_cylinderZero
+#check @density_lower_bound
+#check @seqCompact_probabilityMeasure_cantor
 
 end FurstenbergOQ01
