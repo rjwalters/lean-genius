@@ -4,8 +4,8 @@
   "slug": "amgm-inequality-oq-02-oq-01-oq-02",
   "description": "Proves the off-diagonal symmetry identity: for a symmetric function f(i,j) = f(j,i), the sum over off-diagonal pairs Σ_{i≠j} f(i,j) = 2·Σ_{i<j} f(i,j). Applied to products xᵢxⱼ, this gives Σ_{i≠j} xᵢxⱼ = 2·e₂ where e₂ = Σ_{i<j} xᵢxⱼ is the second elementary symmetric polynomial, completing the Newton-Girard decomposition (Σxᵢ)² = Σxᵢ² + 2·e₂.",
   "meta": {
-    "author": "Formalized here",
-    "date": "2026",
+    "author": "Lean Genius",
+    "date": "2026-04-13",
     "status": "verified",
     "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ01OQ02.lean",
     "tags": [
@@ -141,6 +141,11 @@
     "sorries": 0
   },
   "crossReferences": [
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
+      "relationship": "child",
+      "description": "Planned extension: Full Newton-Girard recurrence $p_k = \\sum_{i=1}^k (-1)^{i-1} e_i p_{k-i}$ for all $k \\geq 1$. This entry proves the $k=2$ base case $\\sum_{i \\neq j} x_i x_j = 2e_2$; the child tracks generalization to all $k$ using Mathlib's `MvPolynomial.psum_eq_mul_esymm_sub_sum` (Zeilberger's combinatorial proof of Newton's identities)."
+    },
     {
       "targetId": "amgm-inequality-oq-02-oq-01",
       "relationship": "extends",
