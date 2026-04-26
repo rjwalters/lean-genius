@@ -18,11 +18,11 @@
       "advanced"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 1,
     "dateAdded": "2026-04-24",
     "axiomCount": 0,
-    "assumptions": "2 sorries remaining: (1) algebraic extraction from ev=0 in derEval14_injective helper (requires ~50 lines of Leibniz constraint derivations); (2) linear independence of derBasis14 (14×14 evaluation matrix determinant). G2_der_dimension is now a theorem with proof structure, no longer an axiom. All other lemmas fully proved.",
-    "lineCount": 1052,
+    "assumptions": "1 sorry remaining: algebraic extraction from ev=0 in derEval14_injective helper (requires ~50 lines of Leibniz constraint derivations). derBasis14_linearIndependent is now proved (14 Baez derivations shown linearly independent). G2_der_dimension is a theorem with proof structure. All other lemmas fully proved.",
+    "lineCount": 1104,
     "theoremCount": 35,
     "definitionCount": 17,
     "originalContributions": [
