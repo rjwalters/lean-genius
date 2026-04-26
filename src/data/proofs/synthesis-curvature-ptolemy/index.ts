@@ -3,19 +3,7 @@ import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 import sourceRaw from '../../../../proofs/Proofs/SynthesisCurvaturePtolemy.lean?raw'
 
-const meta = metaJson as unknown as {
-  id: string
-  title: string
-  slug: string
-  description: string
-  meta: ProofMeta
-  sections: ProofSection[]
-  overview?: ProofOverview
-  conclusion?: ProofConclusion
-  crossReferences?: CrossReference[]
-}
-
-const annotationsData = annotationsJson as { annotations: Annotation[] }
+const meta = metaJson as unknown as { id: string; title: string; slug: string; description: string; meta: ProofMeta; sections: ProofSection[]; overview?: ProofOverview; conclusion?: ProofConclusion; crossReferences?: CrossReference[] }
 
 export const synthesisCurvaturePtolemyProof: Proof = {
   id: meta.id,
@@ -23,14 +11,14 @@ export const synthesisCurvaturePtolemyProof: Proof = {
   slug: meta.slug,
   description: meta.description,
   meta: meta.meta,
-  sections: meta.sections,
+  sections: meta.sections ?? [],
   source: sourceRaw,
   overview: meta.overview,
   conclusion: meta.conclusion,
   crossReferences: meta.crossReferences,
 }
 
-export const synthesisCurvaturePtolemyAnnotations: Annotation[] = annotationsData.annotations
+export const synthesisCurvaturePtolemyAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const synthesisCurvaturePtolemyData: ProofData = {
   proof: synthesisCurvaturePtolemyProof,
