@@ -114,11 +114,12 @@ theorem log_typeProb_eq' (n : ℕ) (hn : (n : ℝ) ≠ 0)
       = ((n : ℝ) * ((f i : ℝ) / n)) * Real.log ((f i : ℝ) / n) := by rw [hkey]
     _ = (n : ℝ) * ((f i : ℝ) / n * Real.log ((f i : ℝ) / n)) := by ring
 
--- ============================================================
--- PRIMARY TARGET: Type class size = multinomial coefficient
--- ============================================================
+/-
+============================================================
+PRIMARY TARGET: Type class size = multinomial coefficient
+============================================================
 
-/-- **Type class size equals the multinomial coefficient**: |T_f| = n! / ∏(f i)!
+**Type class size equals the multinomial coefficient**: |T_f| = n! / ∏(f i)!
 
     This is the fundamental counting fact of the method of types (Csiszár-Körner 1981).
 
@@ -141,9 +142,72 @@ theorem log_typeProb_eq' (n : ℕ) (hn : (n : ℝ) ≠ 0)
 
     Key lemmas:
     - Nat.multinomial_spec: ∏(f i)! * multinomial univ f = (∑ f i)! = n!
-    - Fintype.card_perm: (Finset.univ : Finset (Equiv.Perm (Fin n))).card = n! -/
+    - Fintype.card_perm: (Finset.univ : Finset (Equiv.Perm (Fin n))).card = n!
+-/
 theorem type_class_size_eq_multinomial (n : ℕ) (f : Fin k → ℕ) (hf : ∑ i, f i = n) :
     (typeClass' n f hf).card = Nat.multinomial Finset.univ f := by
-  sorry
+  -- The number of such permutations is exactly $\frac{n!}{\prod_{i=0}^{k-1} f_i!}$.
+  have h_card : Finset.card (Finset.univ.filter (fun σ : Fin n → Fin k => ∀ i : Fin k, Finset.card (Finset.filter (fun j => σ j = i) Finset.univ) = f i)) = Nat.factorial n / (∏ i, Nat.factorial (f i)) := by
+    rw [ Nat.div_eq_of_eq_mul_left ];
+    · exact Finset.prod_pos fun i _ => Nat.factorial_pos _;
+    · induction' n with n ih generalizing f;
+      · simp_all +decide [ Finset.ext_iff ];
+      · -- Consider the set of sequences where the last element is $i$.
+        have h_split : Finset.card (Finset.filter (fun σ : Fin (n + 1) → Fin k => ∀ i, Finset.card (Finset.filter (fun j => σ j = i) Finset.univ) = f i) (Finset.univ : Finset (Fin (n + 1) → Fin k))) = ∑ i, Finset.card (Finset.filter (fun σ : Fin n → Fin k => ∀ j, Finset.card (Finset.filter (fun l => σ l = j) Finset.univ) = if j = i then f i - 1 else f j) (Finset.univ : Finset (Fin n → Fin k))) := by
+          have h_split : Finset.filter (fun σ : Fin (n + 1) → Fin k => ∀ i, Finset.card (Finset.filter (fun j => σ j = i) Finset.univ) = f i) (Finset.univ : Finset (Fin (n + 1) → Fin k)) = Finset.biUnion (Finset.univ : Finset (Fin k)) (fun i => Finset.image (fun σ : Fin n → Fin k => Fin.snoc σ i) (Finset.filter (fun σ : Fin n → Fin k => ∀ j, Finset.card (Finset.filter (fun l => σ l = j) Finset.univ) = if j = i then f i - 1 else f j) (Finset.univ : Finset (Fin n → Fin k)))) := by
+            ext σ;
+            constructor;
+            · intro hσ;
+              simp +zetaDelta at *;
+              refine' ⟨ σ ( Fin.last n ), Fin.init σ, _, _ ⟩ <;> simp +decide [ ← hσ, Fin.init_def, Fin.snoc ];
+              · intro j; split_ifs <;> simp_all +decide [ Finset.filter_erase, Finset.filter_or ] ;
+                · rw [ ← hσ ];
+                  rw [ Finset.card_filter, Finset.card_filter ];
+                  rw [ Fin.sum_univ_castSucc ] ; aesop;
+                · convert hσ j using 1;
+                  rw [ Finset.card_filter, Finset.card_filter ];
+                  rw [ Fin.sum_univ_castSucc ] ; aesop;
+              · exact funext fun i => by cases i using Fin.lastCases <;> simp +decide [ * ] ;
+            · simp +zetaDelta at *;
+              rintro i σ hσ rfl j; by_cases hj : j = i <;> simp_all +decide [ Fin.snoc ] ;
+              · convert congr_arg ( · + 1 ) ( hσ i ) using 1;
+                · rw [ Finset.card_filter, Finset.card_filter ];
+                  rw [ Fin.sum_univ_castSucc ] ; aesop;
+                · have h_sum : ∑ i, Finset.card (Finset.filter (fun l => σ l = i) Finset.univ) = n := by
+                    simp +decide only [card_filter];
+                    rw [ Finset.sum_comm ] ; aesop;
+                  grind;
+              · convert hσ j using 1;
+                · rw [ Finset.card_filter, Finset.card_filter ];
+                  rw [ Fin.sum_univ_castSucc ] ; aesop;
+                · rw [ if_neg hj ];
+          rw [ h_split, Finset.card_biUnion ];
+          · exact Finset.sum_congr rfl fun _ _ => Finset.card_image_of_injective _ fun x y hxy => by simpa [ Fin.ext_iff ] using hxy;
+          · intros i hi j hj hij; simp [Finset.disjoint_left, Finset.mem_image];
+            grind +extAll;
+        -- Apply the induction hypothesis to each term in the sum.
+        have h_ind : ∀ i, Finset.card (Finset.filter (fun σ : Fin n → Fin k => ∀ j, Finset.card (Finset.filter (fun l => σ l = j) Finset.univ) = if j = i then f i - 1 else f j) (Finset.univ : Finset (Fin n → Fin k))) * (∏ j, (f j).factorial) = (n.factorial) * (f i) := by
+          intro i
+          by_cases hi : f i = 0;
+          · simp [hi];
+            left;
+            intro x; contrapose! hf; simp_all +decide [ Finset.sum_eq_zero_iff_of_nonneg ] ;
+            have h_sum : ∑ i, Finset.card (Finset.filter (fun l => x l = i) Finset.univ) = n := by
+              simp +decide only [card_filter];
+              rw [ Finset.sum_comm ] ; aesop;
+            grind;
+          · rw [ ih ( fun j => if j = i then f i - 1 else f j ) ];
+            · rw [ mul_assoc, ← Finset.prod_erase_mul _ _ ( Finset.mem_univ i ) ];
+              rw [ ← Finset.prod_erase_mul _ _ ( Finset.mem_univ i ) ];
+              rw [ ← mul_assoc, ← mul_assoc, ← Nat.succ_pred_eq_of_pos ( Nat.pos_of_ne_zero hi ) ] ; simp +decide [ Nat.factorial_succ, mul_assoc, mul_comm, mul_left_comm, Finset.prod_ite, Finset.filter_ne', Finset.filter_eq', hi ];
+              exact Or.inl <| Or.inl <| Finset.prod_congr rfl fun x hx => by aesop;
+            · simp_all +decide [ Finset.sum_ite, Finset.filter_eq', Finset.filter_ne' ];
+              rw [ ← Finset.sum_erase_add _ _ ( Finset.mem_univ i ), add_comm ] at hf ; omega;
+        simp_all +decide [ Nat.factorial_succ, mul_comm, Finset.mul_sum _ _ _ ];
+        rw [ ← Finset.sum_mul _ _ _, hf, mul_comm ];
+  convert h_card using 1;
+  · unfold typeClass';
+    simp +decide [ funext_iff, Finset.ext_iff, empDist' ];
+  · rw [ Nat.multinomial, ← hf ]
 
 end ShannonSourceCodingOQ04Aristotle
