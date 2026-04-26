@@ -304,8 +304,7 @@ theorem type_class_size_le_entropy_pow (n : ℕ) (hn : 0 < n) (f : Fin k → ℕ
       ≤ 1 / typeProb n hn' f := by
         rw [le_div_iff₀ htypeProb_pos]; linarith [h_key]
     _ = Real.exp ((n : ℝ) * empEntropy n hn' f) := by
-        rw [htypeProb_exp, Real.exp_neg]
-        simp [Real.exp_pos.ne']
+        rw [htypeProb_exp, neg_mul, Real.exp_neg, one_div, inv_inv]
 
 /-- **Lower bound**: The dominant type class has size ≥ k^n / (n+1)^k.
     Since there are at most (n+1)^k distinct types and all sequences sum to k^n,
