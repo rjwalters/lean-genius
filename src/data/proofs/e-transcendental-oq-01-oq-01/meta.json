@@ -107,9 +107,24 @@
   },
   "crossReferences": [
     {
-      "slug": "e-transcendental-oq-01",
+      "targetId": "e-transcendental-oq-01",
       "relationship": "extends",
-      "description": "Parent file providing Nesterenko's axiom and base results including e+π or e·π transcendence"
+      "description": "Parent entry: the open question of whether e + π or e · π are transcendental, with Nesterenko's axiom providing π, e^π, Γ(1/4) algebraically independent. This entry builds on that foundation to prove transcendence of e^π, Γ(1/4), and π·e^π unconditionally, and derives e+π transcendence conditionally under Schanuel's Conjecture. The polynomial lifting technique used here is the main new contribution"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "foundational",
+      "description": "The root entry: Hermite's 1873 proof that e is transcendental. Hermite's method established the template for all subsequent transcendence proofs (Lindemann 1882 for π, Gel'fond-Schneider 1934 for α^β, Nesterenko 1996 for π, e^π, Γ(1/4)). The unconditional results in this entry (e^π transcendental, Γ(1/4) transcendental) are strictly stronger than the parent's e-transcendence: Nesterenko's algebraic independence subsumes all earlier transcendence results about these constants"
+    },
+    {
+      "targetId": "gelfond-schneider",
+      "relationship": "related",
+      "description": "The Gel'fond-Schneider theorem (1934): α^β is transcendental when α is algebraic ≠ 0,1 and β is algebraic irrational. e^π = (-1)^{-i} is an instance: α = -1 (algebraic), β = -i (algebraic irrational). This entry gives an alternative proof of e^π transcendence via Nesterenko's stronger theorem; the Gel'fond-Schneider proof is historically earlier (Gel'fond 1929) and uses linear forms in logarithms, while Nesterenko's approach uses algebraic independence of three constants simultaneously"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "foundational",
+      "description": "The Hermite-Lindemann-Weierstrass theorem: if α₁,...,αₙ are distinct algebraic numbers, then e^α¹,...,e^{αⁿ} are linearly independent over ℤ. This implies e (take α=1: e^1=e is linearly independent from 1 over ℤ) and π (take α=iπ: e^{iπ}=-1 would be algebraically dependent) are transcendental. Schanuel's Conjecture (axiomatized in Part 6 here) is the conjectural generalization: it would imply linear independence of e^α¹,...,e^{αⁿ} even when the αᵢ are not assumed algebraic, vastly strengthening Hermite-Lindemann"
     }
   ],
   "leanFile": {
