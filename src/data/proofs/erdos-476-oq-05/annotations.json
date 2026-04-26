@@ -81,8 +81,8 @@
       "endLine": 128
     },
     "type": "insight",
-    "title": "The Key Sublemma: Near-Periodicity Forces AP Structure (1 sorry)",
-    "content": "`ap_of_near_periodic`: if `(B \\ (B.image (· + d))).card = 1` and d ≠ 0 and |B| < p, then B is an AP with difference d.\n\nThe mathematical argument (lines 109-114):\n1. Let {b₀} = B \\ (B+d). Then b₀ has no predecessor: b₀ - d ∉ B.\n2. Every other b ∈ B has b - d ∈ B (predecessor exists).\n3. Starting from any b, iterating backward (b, b-d, b-2d, ...) eventually reaches b₀, since d ≠ 0 and |B| < p means the sequence cycles with period p before revisiting.\n4. All elements b₀, b₀+d, ..., b₀+(|B|-1)d are distinct and cover B.\n\n**Formalization barrier (sorry)**: The backward iteration needs well-founded recursion on |B|, requiring `Finset.induction_on` with a measure showing each step strictly decreases. The key: the 'distance from b₀ in B' decreases at each step.",
+    "title": "The Key Sublemma: Near-Periodicity Forces AP Structure (now proved)",
+    "content": "`ap_of_near_periodic`: if `(B \\ (B.image (· + d))).card = 1` and d ≠ 0 and |B| < p, then B is an AP with difference d.\n\nThe mathematical argument (lines 109-114):\n1. Let {b₀} = B \\ (B+d). Then b₀ has no predecessor: b₀ - d ∉ B.\n2. Every other b ∈ B has b - d ∈ B (predecessor exists).\n3. Starting from any b, iterating backward (b, b-d, b-2d, ...) eventually reaches b₀, since d ≠ 0 and |B| < p means the sequence cycles with period p before revisiting.\n4. All elements b₀, b₀+d, ..., b₀+(|B|-1)d are distinct and cover B.\n\n**Formalization** (fully proved at lines 490-627): The backward iteration uses strong induction on ℕ. The key sub-argument: if b₀+k*d ∉ B, construct T = {b₀,...,b₀+(k-1)*d} ⊆ B, show B\\T is closed under (·-d), then the orbit {x₀-n*d : n < p} ⊆ B\\T has p distinct elements (via `horbit_inj`), forcing |B| ≥ p — contradiction. See lines 490-627 for the full proof.",
     "mathContext": "Near-periodicity: $|B \\setminus (B+d)| = 1$ means the shift removes exactly one element and (by `shift_card_eq`) adds exactly one element. The unique non-predecessor element $b_0$ forces $B = \\{b_0, b_0+d, \\ldots, b_0+(|B|-1)d\\}$. The distinctness follows from $d \\neq 0$ and $|B| \\leq p-1 < p$ (primes in $\\mathbb{Z}/p\\mathbb{Z}$ have order $p$).",
     "significance": "key",
     "relatedConcepts": [
@@ -122,6 +122,84 @@
       "isAP_pair",
       "Finset inclusion-exclusion",
       "strong induction on Finset.card"
+    ]
+  },
+  {
+    "id": "ann-vosper-ap-sdiff",
+    "proofId": "erdos-476-oq-05",
+    "range": {
+      "startLine": 199,
+      "endLine": 474
+    },
+    "type": "insight",
+    "title": "vosper_ap_sdiff_card: AP Extension via Position Analysis",
+    "content": "`vosper_ap_sdiff_card` (275 lines, fully proved) is the AP extension lemma for the inductive step of Vosper's theorem. Given: A' = A.erase(a₀) is AP(a₁,d), B is AP(b₀,d), |(A'+B)| = |A|+|B|-2, and |A+B| = |A|+|B|-1. Conclusion: |A \\ (A+d)| = 1 (A is 'near-periodic'), enabling `ap_of_near_periodic` to conclude A is an AP.\n\n**Proof architecture**:\n1. **Both sumsets are APs** (199-230): A'+B = AP(a₁+b₀, d, |A'|+|B|-1) via `isAP_sum`. {a₀}+B = AP(a₀+b₀, d, |B|) via `isAP_sum` with a singleton.\n2. **|{a₀}+B \\ (A'+B)| = 1** (228-246): Inclusion-exclusion on A+B = (A'+B) ∪ ({a₀}+B) gives the union-minus-intersection computation, extracting exactly 1 element of {a₀}+B not in A'+B.\n3. **Position analysis** (248-416): The unique missing element y determines a₀'s position — either a₀ = a₁-d (predecessor) or a₀ = a₁+|A'|·d (successor). The interior case (0 < m < |B|-1) yields a contradiction via linear combination showing (|A'|+|B|)·d = 0, which is impossible since |A'|+|B| < p and d ≠ 0.\n4. **AP construction** (418-474): In each case (predecessor/successor), construct the AP representation for A by explicit index arithmetic, then apply `isAP_sdiff_card`.",
+    "mathContext": "Interior contradiction: if both predecessor and successor indices map to non-missing positions in AP₂, we get $j = n_2 - 1$ and $k = 0$, yielding $(n_2 + 2) \\cdot d = 0$ from linear combination. Since $n_2 + 2 = |A'|+|B| < p$ and $d \\neq 0$, this is impossible in $\\mathbb{Z}/p\\mathbb{Z}$ (prime $p$). The surviving cases force $a_0$ to be an endpoint of $A'$'s AP, extending it by exactly one step.",
+    "significance": "key",
+    "relatedConcepts": [
+      "vosper_ap_sdiff_card",
+      "isAP_sum",
+      "position analysis",
+      "linear_combination tactic",
+      "AP endpoint extension"
+    ],
+    "prerequisites": [
+      "isAP_sum (sumset of two APs is AP)",
+      "ap_of_near_periodic",
+      "isAP_sdiff_card",
+      "Finset inclusion-exclusion"
+    ]
+  },
+  {
+    "id": "ann-ap-near-periodic-proof",
+    "proofId": "erdos-476-oq-05",
+    "range": {
+      "startLine": 475,
+      "endLine": 627
+    },
+    "type": "insight",
+    "title": "ap_of_near_periodic Proof: Orbit-Cardinality Contradiction",
+    "content": "`ap_of_near_periodic` (lines 490-627, fully proved) shows that if |B \\ (B+d)| = 1 with d ≠ 0 and |B| < p, then B is an AP with difference d.\n\n**Proof structure**:\n1. **Extract b₀** (496-508): The unique element b₀ ∈ B \\ (B+d) has no d-predecessor. Every other b ∈ B has b-d ∈ B (via the size-1 complement).\n2. **Injectivity** (510-519): The map j ↦ b₀+j*d is injective on {0,...,|B|-1} since j₁*d = j₂*d with j₁,j₂ < |B| < p forces j₁=j₂ via `ZMod.val_natCast`.\n3. **Membership induction** (522-617): Strong induction proves b₀+k*d ∈ B for all k < |B|. The base-case failure (b₀+k*d ∉ B) is contradicted by an **orbit-cardinality argument**: let T = {b₀,...,b₀+(k-1)*d} ⊆ B. Then B\\T is closed under (·-d) (proved by careful case analysis on T-membership). The orbit {x₀-n*d : n < p} for any x₀ ∈ B\\T has p distinct elements, all in B\\T ⊆ B — but B has fewer than p elements.\n4. **Conclusion** (619-627): `Finset.eq_of_subset_of_card_le` proves B = image of range(|B|) under j ↦ b₀+j*d.\n\nThe orbit argument (steps 3-4) is the most intricate: it combines the closure property, a Fin p injection, `Finset.card_image_of_injective`, and `Finset.card_fin` to get p ≤ |B|, contradicting |B| < p.",
+    "mathContext": "Orbit closure: if $B \\setminus T$ is closed under $b \\mapsto b-d$ and $x_0 \\in B \\setminus T$, then $\\{x_0 - nd : n < p\\} \\subseteq B \\setminus T$. The map $n \\mapsto x_0 - nd$ on $\\text{Fin}\\,p$ is injective (same argument as `zmod_orbit_injective`), giving $|\\text{orbit}| = p \\leq |B \\setminus T| < |B| < p$ — contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ap_of_near_periodic",
+      "zmod_orbit_injective",
+      "Finset.eq_of_subset_of_card_le",
+      "strong induction on ℕ",
+      "orbit-cardinality argument"
+    ],
+    "prerequisites": [
+      "ZMod.val_natCast for injectivity",
+      "Finset.card_image_of_injective",
+      "Finset.induction_on (via strong induction on ℕ)",
+      "ZMod.card = p"
+    ]
+  },
+  {
+    "id": "ann-vosper-base-full",
+    "proofId": "erdos-476-oq-05",
+    "range": {
+      "startLine": 628,
+      "endLine": 874
+    },
+    "type": "insight",
+    "title": "Vosper Base Case (proved) + Full Theorem (1 Kneser sorry)",
+    "content": "**`vosper_base`** (lines 630-691, fully proved): For |A| = 2, A = {a,b}, d = b-a ≠ 0. A is AP by `isAP_pair`. For B: the sumset A+B = (a+B) ∪ (b+B), with |A+B| = |B|+1, forces |B ∩ (B+d)| = |B|-1. The proof:\n- `hunion`: decompose {a,b}+B = {a}+B ∪ {b}+B\n- Inclusion-exclusion: |(a+B) ∪ (b+B)| = 2|B| - |(a+B)∩(b+B)|\n- Set identity: (a+B)∩(b+B) = (B ∩ B.image(·+(b-a))).image(·+a) — proved by explicit `le_antisymm`\n- Applies `shift_card_eq` to get |∩| = |B∩(B+d)| → |B\\(B+d)| = 1 → `ap_of_near_periodic`\n\n**`vosper`** (lines 693-873, 1 sorry): Full theorem by strong induction (`termination_by A.card`).\n- **Base |A|=2**: delegate to `vosper_base`\n- **Inductive step |A|≥3**:\n  1. Existence of non-redundant a₀ (lines 717-844): by contradiction, show all-redundant implies every x∈A+B has ≥2 representations, giving |A|·|B| ≥ 2(|A|+|B|-1). For |B|=2: orbit argument shows A would need |A|≥p (contradiction). For |A|=|B|=3: explicit computation 9 < 10. For |A|≥4 or |B|≥4: **sorry** (requires Kneser's theorem)\n  2. IH application (lines 845-867): `vosper (A.erase a₀) B` gives AP structure for A' and B with common d\n  3. AP extension (line 864): `vosper_ap_sdiff_card` + `ap_of_near_periodic` extends to A",
+    "mathContext": "The sorry at line 844 is the only remaining gap: when $|A| \\geq 4$ or $|B| \\geq 4$ and all elements are redundant, $(|A|-2)(|B|-2) \\geq 2$ holds but doesn't by itself give a contradiction. Kneser's theorem would imply $A$ and $B$ must be cosets of a subgroup of $\\mathbb{Z}/p\\mathbb{Z}$ — but $p$ prime means only trivial subgroups, forcing $|A+B| = p$, contradicting $|A+B| < p$. Kneser's theorem is not yet in Mathlib.",
+    "significance": "key",
+    "relatedConcepts": [
+      "vosper_base",
+      "vosper",
+      "Kneser's theorem",
+      "ZMod.cauchy_davenport",
+      "strong induction via termination_by"
+    ],
+    "prerequisites": [
+      "ap_of_near_periodic (fully proved)",
+      "vosper_ap_sdiff_card (fully proved)",
+      "ZMod.cauchy_davenport from Mathlib",
+      "Finset.card_bij for double counting"
     ]
   }
 ]
