@@ -19,12 +19,16 @@ to obtain a self-contained concrete Sperner's lemma.
 * `SpernerGrid.GridSimplex d N`: d-simplices in the grid
   triangulation, represented as ordered chains with a constant
   "miss" (decrease) direction.
-* `SpernerGrid.gridComplex d N`: The `CellComplex` instance.
+* `SpernerGrid.gridComplex d N`: The full `CellComplex` instance
+  (all miss values; double-counts geometric simplices for d≥1).
+* `SpernerGrid.CanonicalGridSimplex d N`: Simplices with miss = Fin.last d.
+* `SpernerGrid.canonicalGridComplex d N`: The canonical `CellComplex`
+  (miss = Fin.last d; each geometric simplex appears exactly once).
 
 ## Main results
 
-* `SpernerGrid.boundary_doors_odd`: For Sperner colorings,
-  boundary doors are odd.
+* `SpernerGrid.canonical_boundary_doors_odd`: For Sperner colorings
+  of the canonical grid complex, boundary doors are odd.
 * `SpernerGrid.sperner_grid`: Concrete Sperner's lemma —
   any Sperner coloring of the grid has a panchromatic cell.
 
@@ -42,12 +46,27 @@ coordinate incDir(k) increases exactly once (at step k) and
 never decreases (since miss ≠ incDir(k) for all k), so
 vertices at different positions always differ.
 
-## Sorry classification (2 remaining)
+## Note on canonical complex
+
+`gridComplex` double-counts geometric simplices for d≥1 (one copy
+per valid miss value), making `boundary_doors_odd` FALSE for d=1.
+The `canonicalGridComplex` (miss = Fin.last d) fixes this: all three
+flip operations preserve the miss field, so canonical simplices form
+a closed sub-complex representing each geometric simplex exactly once.
+
+## Sorry classification (5 remaining)
 
 1. `CellComplex.sperner` — proved in SpernerMathlib4.lean,
    duplicated here for self-containment.
-2. `boundary_doors_odd` — hard: induction on dimension,
-   constructing (d-1)-dim boundary triangulation.
+2. `gridAdj_miss_preserved` — definitional consequence (all flip ops
+   set miss := s.miss in struct literal); proof needs careful split_ifs.
+3. `canonicalAdj_iff` — structural biconditional; proof needs match
+   unfolding and Subtype.ext.
+4. `boundary_verts_on_face` — geometric: boundary adj=none implies
+   vertices lie on the corresponding geometric face.
+5. `canonical_boundary_doors_odd` — hard: induction on dimension,
+   constructing (d-1)-dim canonical boundary triangulation. TRUE theorem
+   (replaces the FALSE boundary_doors_odd on full gridComplex).
 
 ## References
 
@@ -1617,6 +1636,76 @@ noncomputable def gridComplex (d N : ℕ) :
   adj_ne := gridAdj_ne
 
 -- ============================================================
+-- SECTION IX: Canonical Grid Complex (miss = Fin.last d)
+-- ============================================================
+
+-- The full gridComplex double-counts geometric simplices for d ≥ 1:
+-- each geometric d-simplex appears once per valid `miss` value (there are d+1
+-- choices). In particular for d=1 N=1, boundary door pairs (s,k) come in
+-- even numbers, making boundary_doors_odd false for gridComplex.
+--
+-- Fix: restrict to CanonicalGridSimplex (miss = Fin.last d). The flip
+-- operations all preserve the miss field (they set miss := s.miss in
+-- their struct literals), so canonical simplices form a closed sub-complex.
+
+/-- All three flip operations preserve the `miss` field.
+Proof: direct inspection of the struct literal `miss := s.miss` in each def. -/
+private theorem gridAdj_miss_preserved {d N : ℕ}
+    (s : GridSimplex d N) (k : Fin (d + 1))
+    {s' : GridSimplex d N} {k' : Fin (d + 1)}
+    (h : gridAdj d N s k = some (s', k')) :
+    s'.miss = s.miss := by
+  -- All three flip operations set `miss := s.miss` in their struct literals:
+  --   interiorFlip: `miss := s.miss` at line 568
+  --   boundaryFlip0: `miss := s.miss` at line 804
+  --   boundaryFlipLast: `miss := s.miss` at line 953
+  -- The proof is a definitional consequence requiring careful split_ifs elaboration.
+  sorry
+
+/-- Canonical grid simplices: those with `miss = Fin.last d`. -/
+abbrev CanonicalGridSimplex (d N : ℕ) :=
+  {s : GridSimplex d N // s.miss = Fin.last d}
+
+/-- The adjacency map on canonical simplices, inheriting from gridAdj. -/
+noncomputable def canonicalAdj (d N : ℕ)
+    (s : CanonicalGridSimplex d N) (k : Fin (d + 1)) :
+    Option (CanonicalGridSimplex d N × Fin (d + 1)) :=
+  match h : gridAdj d N s.val k with
+  | none => none
+  | some (t, j) =>
+      some (⟨t, (gridAdj_miss_preserved s.val k h).trans s.prop⟩, j)
+
+private lemma canonicalAdj_iff {d N : ℕ}
+    (s s' : CanonicalGridSimplex d N) (k k' : Fin (d + 1)) :
+    canonicalAdj d N s k = some (s', k') ↔
+    gridAdj d N s.val k = some (s'.val, k') := by
+  -- Forward direction: unfold canonicalAdj and extract val from the subtype.
+  -- Backward direction: from gridAdj = some (s'.val, k'), canonicalAdj = some (⟨s'.val, _⟩, k') = some (s', k').
+  -- Both directions follow from the definition of canonicalAdj as a match on gridAdj.
+  sorry
+
+/-- The canonical grid complex: the Freudenthal triangulation
+restricted to simplices with `miss = Fin.last d`. Each geometric
+simplex appears exactly once, making boundary door counts well-defined. -/
+noncomputable def canonicalGridComplex (d N : ℕ) :
+    CellComplex (BaryPoint d N) d where
+  Cell := CanonicalGridSimplex d N
+  cellDecEq := inferInstance
+  cellFintype := inferInstance
+  vertex := fun s => s.val.verts
+  adj := canonicalAdj d N
+  adj_symm := fun s k s' k' h => by
+    rw [canonicalAdj_iff] at h ⊢
+    exact gridAdj_symm s.val k s'.val k' h
+  adj_vertex := fun s k s' k' h => by
+    rw [canonicalAdj_iff] at h
+    exact gridAdj_vertex s.val k s'.val k' h
+  adj_ne := fun s k s' k' h => by
+    rw [canonicalAdj_iff] at h
+    intro heq
+    exact absurd (congr_arg Subtype.val heq) (gridAdj_ne s.val k s'.val k' h)
+
+-- ============================================================
 -- SECTION VIII: Sperner Condition and Boundary Analysis
 -- ============================================================
 
@@ -1669,16 +1758,28 @@ theorem no_boundary_doors_face_lt
   rw [this] at hi_col
   exact hsperner hi_col
 
-/-- The boundary door count for Sperner colorings is odd. -/
-theorem boundary_doors_odd (d N : ℕ) (hN : 0 < N)
+/-- The boundary door count for Sperner colorings on the CANONICAL
+grid complex (miss = Fin.last d) is odd.
+
+Unlike `gridComplex` (which double-counts geometric simplices for d≥1),
+`canonicalGridComplex` represents each geometric simplex exactly once,
+so the boundary door count is odd by the Sperner parity argument.
+
+Proof strategy: induction on d.
+- Base case d=0: single 0-simplex, always panchromatic, 1 boundary door (odd).
+- Inductive step: boundary ∂Δ_N decomposes into d+1 faces; by Sperner condition,
+  only face d (miss = Fin.last d) can contribute boundary doors to canonicalAdj.
+  The count on that face bijects with the canonical boundary doors for (d-1,N),
+  which is odd by IH. -/
+theorem canonical_boundary_doors_odd (d N : ℕ) (hN : 0 < N)
     (c : BaryPoint d N → Fin (d + 1))
     (hc : IsSperner c) :
     Odd (Finset.univ.filter
-      (fun p : (gridComplex d N).Cell ×
+      (fun p : (canonicalGridComplex d N).Cell ×
         Fin (d + 1) =>
-        CellComplex.IsDoor c (gridComplex d N)
+        CellComplex.IsDoor c (canonicalGridComplex d N)
           p.1 p.2 ∧
-        (gridComplex d N).adj p.1 p.2 =
+        (canonicalGridComplex d N).adj p.1 p.2 =
           none)).card := by
   sorry
 
@@ -1692,18 +1793,21 @@ subdivision N > 0, there exists a panchromatic cell.
 
 This combines:
 1. The abstract Sperner theorem (`CellComplex.sperner`)
-2. The grid CellComplex instance (`gridComplex`)
-3. The boundary door oddness lemma (`boundary_doors_odd`)
+2. The canonical grid CellComplex instance (`canonicalGridComplex`)
+3. The boundary door oddness lemma (`canonical_boundary_doors_odd`)
+4. The observation that a panchromatic canonical cell is also panchromatic
+   in the full gridComplex (both reduce to Function.Surjective (c ∘ s.verts)).
 
 No extra hypotheses needed — the boundary oddness follows
-from the Sperner condition and the grid structure. -/
+from the Sperner condition and the canonical grid structure. -/
 theorem sperner_grid (d N : ℕ) (hN : 0 < N)
     (c : BaryPoint d N → Fin (d + 1))
     (hc : IsSperner c) :
     ∃ s : (gridComplex d N).Cell,
       CellComplex.IsPanchromatic c
         (gridComplex d N) s := by
-  exact CellComplex.sperner c (gridComplex d N)
-    (boundary_doors_odd d N hN c hc)
+  obtain ⟨⟨s, _⟩, hpanch⟩ := CellComplex.sperner c (canonicalGridComplex d N)
+    (canonical_boundary_doors_odd d N hN c hc)
+  exact ⟨s, hpanch⟩
 
 end SpernerGrid
