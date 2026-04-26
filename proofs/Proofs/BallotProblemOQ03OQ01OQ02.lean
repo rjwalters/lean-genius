@@ -13860,7 +13860,7 @@ private lemma hook_walk_identity (μ : YoungDiagram) (hn : 0 < μ.card) :
     by_cases hghook : ∃ (a b : ℕ) (ha : 0 < a) (hb : 0 < b), μ = gHookYD a b ha
     · obtain ⟨a, b, ha, hb, rfl⟩ := hghook
       exact hook_walk_identity_gHookYD a b ha hb
-    · -- ≥3-row, non-gHookYD: check if μ has at most 2 columns
+    · -- ≥3-row, non-gHookYD: check at-most-2-col
       by_cases h2c : μ.colLen 2 = 0
       · exact hook_walk_identity_atMostTwoCols μ h2c hn
       · -- ≥3-row, ≥3-col, non-gHookYD: check if exactly 3 rows
