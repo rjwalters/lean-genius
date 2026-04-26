@@ -523,12 +523,29 @@ section TInvariance
                         = (1/N) Σ_{n<N} (Measure.dirac (T^n (Tx))) = μ_{Tx,N}. -/
 theorem cesaroMeasure_map_shift (x : CantorSpace) (N : ℕ) (hN : 0 < N) :
     (cesaroMeasure x N).map shift = cesaroMeasure (shift x) N := by
-  -- Proof: both sides equal (1/N) * Σ_{n<N} δ_{T^{n+1} x}.
-  -- LHS: map shift distributes over smul and sum; Measure.map_dirac gives δ_{Tx}.
-  -- RHS: δ_{T^n(Tx)} = δ_{T^{n+1}x} since T^n ∘ T = T^{n+1} by iterate_succ.
-  -- Formalization: Measure.map_smul, Measure.map_sum, Measure.map_dirac,
-  --   Function.iterate_succ_apply' (~15 lines).
-  sorry
+  cases N with
+  | zero => exact absurd hN (lt_irrefl _)
+  | succ N =>
+    -- Prove equality by evaluating both sides on arbitrary measurable sets
+    apply Measure.ext
+    intro s hs
+    simp only [cesaroMeasure, Measure.map_apply shift_measurable hs, Measure.smul_apply]
+    congr 1
+    -- Both sums reduce to |{n < N+1 : shift^[n+1] x ∈ s}| via finsetDirac_apply
+    rw [finsetDirac_apply _ (fun n => shift^[n] x) (shift_measurable hs)]
+    rw [finsetDirac_apply _ (fun n => shift^[n] (shift x)) hs]
+    -- Filter sets are equal: shift^[n] x ∈ shift⁻¹' s ↔ shift^[n] (shift x) ∈ s
+    -- (both ↔ shift^[n+1] x ∈ s via iterate_succ_apply and iterate_succ_apply')
+    norm_cast
+    congr 1
+    apply Finset.filter_congr
+    intro n _
+    -- Goal: shift^[n] x ∈ shift⁻¹' s ↔ shift^[n] (shift x) ∈ s
+    -- LHS ↔ shift(shift^[n] x) ∈ s [by mem_preimage] ↔ shift^[n+1] x ∈ s [← iterate_succ_apply']
+    -- RHS ↔ shift^[n+1] x ∈ s [← iterate_succ_apply]
+    -- Both reduce to shift^[n+1] x ∈ s
+    simp only [Set.mem_preimage, ← Function.iterate_succ_apply',
+               ← Function.iterate_succ_apply]
 
 /-- **Local Axiom (T-invariance)**: Any weak-* limit of Cesàro measures
     along a sequence N_k → ∞ is shift-invariant.
