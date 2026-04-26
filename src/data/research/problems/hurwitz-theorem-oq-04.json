@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 0 sorries, 1 axiom (was 5). OctonionDer Lie algebra structure added (Session 4). commDer_jacobi proves Der(𝕆) satisfies Jacobi identity.",
+    "progressSummary": "PROGRESS: Added 3 new theorems about derivation structure (der_kills_unit, der_antinorm, der_inner_zero). 0 sorries, 1 axiom (G2_is_octonion_aut). File now 808 lines, 34 theorems. Der(𝕆) proved to be a Lie algebra of skew-symmetric operators on Im(𝕆).",
     "builtItems": [
       "ExceptionalType inductive type (G2/F4/E6/E7/E8) with dim/rank — HurwitzTheoremOQ04.lean",
       "OctonionAlgHom structure + OctonionAut — HurwitzTheoremOQ04.lean",
@@ -45,7 +45,11 @@
       "smulDer (proved): scalar multiple is a derivation",
       "eightMul_sub_left/right: eightMul bilinear over subtraction",
       "commDer (proved): commutator of derivations is a derivation — key Lie algebra result",
-      "commDer_antisymm, commDer_jacobi: Der(𝕆) is a Lie algebra under [·,·]"
+      "commDer_antisymm, commDer_jacobi: Der(𝕆) is a Lie algebra under [·,·]",
+      "der_kills_unit: D.map octUnit = 0 at HurwitzTheoremOQ04.lean:591",
+      "eightMul_bilinear_zero (private): (eightMul a b) 0 = 2*a0*b0 - innerProd a b at HurwitzTheoremOQ04.lean:600",
+      "der_antinorm: eightMul (D.map w) w + eightMul w (D.map w) = 0 for w ∈ Im(𝕆) at HurwitzTheoremOQ04.lean:607",
+      "der_inner_zero: innerProd (D.map w) w = 0 for w ∈ Im(𝕆) at HurwitzTheoremOQ04.lean:616"
     ],
     "insights": [
       "G₂ = Aut(𝕆): The exceptional Lie group G₂ (dim 14, rank 2) is the automorphism group of the octonions. The 14 dimensions come from SO(7) (dim 21) minus the 7 constraints from preserving the octonion cross product.",
@@ -57,7 +61,10 @@
       "alg_aut_preserves_inner PROVED via polarization: innerProd x y = (normSq(x+y) - normSq x - normSq y)/2, with norm preservation + linearity.",
       "imag_closed_under_aut: Aut(𝕆) ⊆ O(7) now formalized — automorphisms map Im(𝕆) to Im(𝕆) preserving the inner product.",
       "eightMul unit proof pattern: simp(config:={decide:=true})[ite_true,ite_false] evaluates if (0:Fin 8)=j for concrete j. Plain simp[stdBasis] insufficient — need decide mode for Fin equality.",
-      "freudenthal_tits_f4/e6/e7/e8 de-axiomatized (2026-04-25): these 4 axioms were just ExceptionalType.dim = literal, provable by rfl. Axiom count reduced from 5 to 1."
+      "freudenthal_tits_f4/e6/e7/e8 de-axiomatized (2026-04-25): these 4 axioms were just ExceptionalType.dim = literal, provable by rfl. Axiom count reduced from 5 to 1.",
+      "der_kills_unit: any derivation D must satisfy D(e₀) = 0 — immediate from Leibniz since e₀ is the two-sided identity (D(e₀·e₀) = 2D(e₀) = D(e₀))",
+      "der_antinorm: for w ∈ Im(𝕆), D(w)·w + w·D(w) = 0 — follows from D(w²) = D(−‖w‖²·e₀) = 0 by der_kills_unit",
+      "der_inner_zero: derivations are skew-symmetric on Im(𝕆) — ⟨D(w), w⟩ = 0 — extracted from der_antinorm via the component-0 formula (a·b)₀ = 2a₀b₀ − ⟨a,b⟩"
     ],
     "mathlibGaps": [
       "Lie groups not in Mathlib as of 2026-04 — blocks formal G₂ = Aut(𝕆) proof",
@@ -65,9 +72,11 @@
       "Derivation algebra of non-associative algebras not in Mathlib"
     ],
     "nextSteps": [
-      "Attempt to bound dim(Der(𝕆)) = 14 by exhibiting 14 explicit derivations (would strengthen G2_is_octonion_aut)",
-      "Prove that every Aut(𝕆) element near identity gives a derivation via tangent space (requires smooth structures)",
-      "Archive sessions 1-3 to sessions/ directory"
+      "G2_is_octonion_aut: still the only axiom — requires Lie group theory not in Mathlib",
+      "Could reformulate axiom as: dim(Der(𝕆)) = 14 (finite-dimensional Lie algebra dimension) — more precise statement",
+      "To show dim(Der(𝕆)) = 14: exhibit 14 explicit linearly independent derivations via cross-product operators",
+      "From der_inner_zero: derivations act as skew-adjoint operators on Im(𝕆) ≅ ℝ⁷ — this places Der(𝕆) ⊆ 𝔰𝔬(7), dim ≤ 21",
+      "The anti-symmetry constraint D_{ij} = -D_{ji} from der_inner_zero cuts dim from 21 to 7×6/2=21 (already established); the octonion cross-product constraint further cuts to 14"
     ]
   },
   "tags": [
