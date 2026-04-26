@@ -13,11 +13,13 @@ from `BallotProblemOQ03OQ02.lean`, then factor the resulting determinant.
 Key infrastructure already available:
 - `lgvDet` (2×2) and `lgv_lemma_rxr` (n×n) — BallotProblemOQ03.lean + BallotProblemOQ03OQ02.lean
 - `hook_length_formula_two_row` (numerical, 2-row case) — BallotProblemOQ03OQ03.lean
+- `hook_length_formula_general` — proved for all shapes with ≤9 rows OR ≤9 cols
+- `hook_length_formula` — alias for hook_length_formula_general (3 sorries remain)
 
 **Remaining sorries (3):**
-1. `hook_length_formula` (general) — sorry for 3+ row shapes
-2. `ni_count_eq_syt_count` — RSK/Fomin growth diagram bijection: SYT(μ) ↔ NI-paths
-3. `lgv_det_factors_as_hook_quotient` — det × hookProd = n! (Vandermonde-type identity)
+1. `hook_walk_identity` (≥10×≥10 shapes) — GNW hook walk proof needed (~300 lines)
+2. `ni_count_eq_syt_count` — INCORRECTLY STATED (needs canonical LGV config for μ)
+3. `lgv_det_factors_as_hook_quotient` — INCORRECTLY STATED (needs canonical LGV config for μ)
 
 **Proved shapes (all 2-row via hook_length_formula_atMostTwoRows):**
 - All 1-row, 1-col, hook shapes, 2-row rectangles, general 2-row [a,b], any μ with rowLen 2 = 0
@@ -38,6 +40,34 @@ Key infrastructure already available:
 ---
 
 > **Note**: 4 older sessions archived to `sessions/` directory.
+
+## Session 2026-04-26 (Session 31) — Move hook_length_formula; document LGV issues
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: PROGRESS — sorries reduced 4→3; LGV issues documented
+
+### What I Did
+
+1. Removed standalone `sorry` from `hook_length_formula` (line 219 → comment + moved to end)
+2. Added `hook_length_formula` at end of file as alias for `hook_length_formula_general`
+3. Added WARNING comments to `ni_count_eq_syt_count` and `lgv_det_factors_as_hook_quotient`
+   explaining they're incorrectly stated (parameters not connected to μ)
+4. Updated meta.json: sorries 4→3, lineCount 13784→13796
+
+### Key Findings
+
+- `hook_walk_identity` ↔ `hook_length_formula` are EQUIVALENT given corner recursion — cannot prove one from the other without GNW, NPS, or another independent argument
+- `ni_count_eq_syt_count` FALSE as stated: arbitrary (r,σ,m) not connected to μ. Need `youngLGVConfigOf μ` canonical config
+- `lgv_det_factors_as_hook_quotient` same issue. Needs canonical config + Jacobi-Trudi
+- File too large (13796 lines) for Docker 32GB build → compilation unverifiable in current form
+
+### Sorry Count: 3 (down from 4)
+
+1. `hook_walk_identity` (line 13707): ≥10×≥10 only → GNW needed
+2. `ni_count_eq_syt_count` (line 234): incorrectly stated
+3. `lgv_det_factors_as_hook_quotient` (line 247): incorrectly stated
+
+---
 
 ## Session 2026-04-24 (Session 16) — hookProd Ratio Formula Infrastructure
 

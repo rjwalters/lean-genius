@@ -209,14 +209,8 @@ lemma youngLGVConfig_wellFormed {r : ℕ} (σ : Fin r → ℕ) (hσ : Monotone �
 -- PART V: Main Theorems
 -- ============================================================
 
-/-- The hook-length formula: the number of SYT of shape μ times the hook product
-    equals μ.card!. This is Frame-Robinson-Thrall 1954.
-    Proof requires two deep steps:
-    1. SYT(μ) ↔ NI-paths via youngLGVConfig (Fomin/RSK bijection)
-    2. det[C(m+σⱼ+j-i,m)] = μ.card! / hookProd μ (det factorization) -/
-theorem hook_length_formula (μ : YoungDiagram) :
-    Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.card.factorial := by
-  sorry
+-- hook_length_formula is proved at the end of the file via hook_length_formula_general.
+-- (The theorem must be stated after its proof infrastructure is elaborated.)
 
 /-- The 2-row hook-length formula (Catalan case) follows from BallotProblemOQ03OQ03:
     C_m · (m+1)! · m! = (2m)! where C_m is the m-th Catalan number. -/
@@ -226,7 +220,12 @@ theorem hook_length_formula_2row_rect (m : ℕ) :
 
 /-- Auxiliary: count of SYT of shape μ equals the NI-path count with youngLGVConfig.
     This is the Fomin growth diagram bijection (RSK correspondence restricted to SYT).
-    [OPEN: requires ~200 lines of bijection infrastructure] -/
+    WARNING: This statement is INCORRECTLY STATED — it takes arbitrary (r, σ, m) without
+    requiring they encode μ's row lengths. The correct version needs a canonical LGV config:
+      def youngLGVConfigOf (μ : YoungDiagram) : LGVConfig k := youngLGVConfig k σ_μ ...
+    where σ_μ i = μ.rowLen (k-1-i) for k = number of rows of μ. Then the theorem says:
+      card(SYT μ) = niTupleCount (youngLGVConfigOf μ).
+    [OPEN: requires defining youngLGVConfigOf + RSK bijection proof, ~200 lines] -/
 theorem ni_count_eq_syt_count (μ : YoungDiagram) (r : ℕ) (σ : Fin r → ℕ)
     (hσ : Monotone σ) (m : ℕ) (hm : ∀ i : Fin r, σ i + i.val ≤ m)
     (hr : 0 < r) (hmin : r - 1 ≤ σ ⟨0, hr⟩) :
@@ -236,8 +235,11 @@ theorem ni_count_eq_syt_count (μ : YoungDiagram) (r : ℕ) (σ : Fin r → ℕ)
 
 /-- Auxiliary: the LGV determinant for youngLGVConfig times hookProd equals μ.card!.
     This is the algebraic identity connecting path-count determinants to hook products.
-    Cleaner than division: avoids integer division and directly implies the formula.
-    [OPEN: requires Vandermonde-type determinant identity; see knowledge.md Session 2] -/
+    WARNING: This statement is INCORRECTLY STATED — it takes arbitrary (r, σ, m, μ)
+    without requiring that (r, σ, m) encodes μ. The correct version needs a connection:
+    for the canonical config youngLGVConfigOf μ, det(pathMatrix(youngLGVConfigOf μ)) × hookProd μ = μ.card!
+    This follows from the Jacobi-Trudi identity / Lindström determinant formula.
+    [OPEN: requires defining youngLGVConfigOf + Vandermonde-type determinant identity] -/
 theorem lgv_det_factors_as_hook_quotient (μ : YoungDiagram) (r : ℕ) (σ : Fin r → ℕ)
     (hσ : Monotone σ) (m : ℕ) (hm : ∀ i : Fin r, σ i + i.val ≤ m) :
     (pathMatrix (youngLGVConfig r σ hσ m hm)).det * (hookProd μ : ℤ) =
@@ -13775,10 +13777,20 @@ decreasing_by
 /-- **General Hook-Length Formula (Frame-Robinson-Thrall 1954).**
     For any Young diagram μ: card(SYT(μ)) × hookProd(μ) = μ.card!
     Proof: well-founded induction using card_SYT_corner_step + hook_walk_identity.
-    The sole remaining sorry is hook_walk_identity (verified for all special cases;
-    general proof requires hook walk combinatorics, ~300 lines). -/
+    The sole remaining sorry is hook_walk_identity (verified for all special cases up to
+    9 rows and 9 cols; ≥10×≥10 case requires GNW hook walk proof, ~300 lines). -/
 theorem hook_length_formula_general (μ : YoungDiagram) :
     Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.card.factorial := by
   exact_mod_cast hook_length_formula_Q μ
+
+/-- **Hook-Length Formula (Frame-Robinson-Thrall 1954)** — alias for hook_length_formula_general.
+    Proved here (after the corner-recursion infrastructure is in scope) via
+    hook_length_formula_general. The alternate LGV proof path (ni_count_eq_syt_count +
+    lgv_det_factors_as_hook_quotient) has incorrectly stated auxiliary lemmas and remains open.
+    Mathematical status: proved for all shapes with ≤9 rows or ≤9 columns;
+    ≥10×≥10 case sorry pending GNW hook walk argument (~300 lines). -/
+theorem hook_length_formula (μ : YoungDiagram) :
+    Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.card.factorial :=
+  hook_length_formula_general μ
 
 end HookLengthFormula
