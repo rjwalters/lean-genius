@@ -2,9 +2,58 @@
 
 **Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01
 **Last Updated**: 2026-04-26
-**Knowledge Items**: 28
+**Knowledge Items**: 34
 
 Insights accumulated during research on this problem.
+
+---
+
+## Session 2026-04-26 (Session 8) — ssytFin_two_row_eq_sum_colstrict Proved + Missing Defs Added
+
+**Mode**: REVISIT (RICH knowledge tier, score 64)
+**Outcome**: progress — ssytFin_two_row_eq_sum_colstrict proved (3 sorries → 2); file restored to compile
+
+### What I Did
+
+1. Discovered `ColStrictSym` and `sum_all_sym_pairs` were referenced but undefined (file didn't compile)
+2. Added `ColStrictSym` definition (∀ j < min a b, P.sort[j] < Q.sort[j]) with `Decidable` instance
+3. Added `sum_all_sym_pairs` lemma: ∑ PQ : Sym n a × Sym n b, prod*prod = h_a * h_b
+4. Added `ssytFin_row_sort_eq_ofFn` helper: sort of ↑(ofFn T.row_i) = ofFn T.row_i (for monotone rows)
+5. Proved `ssytFin_two_row_eq_sum_colstrict` via explicit Equiv:
+   - `toFun T = ((row0 as Sym), (row1 as Sym))`, ColStrict from T.2.2 + sort = ofFn
+   - `invFun (P,Q) = T where T(0,j) = P.sort[j], T(1,j) = Q.sort[j]`
+   - Row-weak: sorted lists are monotone
+   - Col-strict: ColStrictSym → T.2.2 condition
+   - left_inv: uses `fin_cases i` + `ssytFin_row_sort_eq_ofFn` + `List.getElem_ofFn`
+   - right_inv: ofFn(sort) as multiset = original (via `Multiset.sort_eq`)
+   - Weight: `Fintype.prod_sigma + Fin.prod_univ_two + map_ofFn + prod_ofFn`
+
+### Key Findings
+
+- **ssytFin_row_sort_eq_ofFn is the key helper**: bridges SSYT row-weak condition to the sort-eq needed for ColStrictSym. Pattern: `mergeSort_eq_self (List.sortedLE_ofFn_iff.mpr monotone).pairwise`
+- **fin_cases i for left_inv**: cleanest way to handle the `if p.1.val = 0 then P else Q` dif-split when `i : Fin 2` — avoids messy dependent type reasoning with `sh p.1 = sh 0`
+- **Decidable ColStrictSym**: `Fintype.decidableForallFintype` works automatically since body is `Decidable` (comparison of `Fin n` elements)
+- **sum_all_sym_pairs proof**: `Fintype.sum_prod_type + simp_rw [← Finset.mul_sum, ← Finset.sum_mul]`
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (457 → 577 lines, sorries 3→2)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-01-oq-01/meta.json` (sorries 3→2)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01.json` (knowledge updated)
+
+### Sorry Count: 3 → 2
+
+- `jdt_weight_sum`: weight-preserving JDT bijection {non-col-strict (a,b)} ≃ {all (a+1,b-1)} (OPEN)
+- `jacobi_trudi_ssyt_eq k≥3`: algebraic LGV + RSK (~300 lines) (OPEN)
+
+### Next Steps
+
+1. **Prove `jdt_weight_sum`** (JDT bijection, ~80 lines):
+   - Forward: (P,Q) non-col-strict with violation c → (P + {Q.sort[c]}, Q - {Q.sort[c]})
+   - Inverse: (P', Q') → find "seam" element: c s.t. P'.sort[0..c-1] is col-strict with Q'.sort[0..c-1]
+   - Weight: `Multiset.prod_erase` for Q side, multiset-add for P side
+   - Result via `sum_all_sym_pairs (a+1) (b-1)` + `Fintype.sum_equiv`
+2. Submit `jdt_weight_sum` to Aristotle as HARD sorry (structured bijection may be provable)
 
 ---
 
