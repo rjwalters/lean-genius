@@ -127,5 +127,21 @@
       "description": "Main angle trisection impossibility proof"
     }
   ],
+  "references": [
+    {
+      "authors": ["P. L. Wantzel"],
+      "title": "Recherches sur les moyens de reconnaître si un problème de Géométrie peut se résoudre avec la règle et le compas",
+      "year": "1837",
+      "venue": "Journal de Mathématiques Pures et Appliquées, vol. 2, pp. 366–372",
+      "note": "First proof of the algebraic criterion for compass-and-straightedge constructibility: a length is constructible iff it lies in a tower of quadratic extensions over ℚ, equivalently iff [ℚ(α):ℚ] is a power of 2."
+    },
+    {
+      "authors": ["C. R. Hadlock"],
+      "title": "Field Theory and its Classical Problems",
+      "year": "1978",
+      "venue": "Carus Mathematical Monographs #19, MAA",
+      "note": "Develops the constructibility hierarchy from compass-and-straightedge through marked ruler (neusis), origami, and general algebraic constructions. Each level corresponds to a different class of field extensions."
+    }
+  ],
   "sorries": 0
 }
