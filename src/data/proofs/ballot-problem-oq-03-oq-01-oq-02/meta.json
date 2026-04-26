@@ -2,7 +2,7 @@
   "id": "ballot-problem-oq-03-oq-01-oq-02",
   "title": "Hook-Length Formula for Standard Young Tableaux via LGV",
   "slug": "ballot-problem-oq-03-oq-01-oq-02",
-  "description": "Formalizes the hook-length formula f^λ = n!/∏h(u) for Standard Young Tableaux. Proves: 1-row, 1-col, hook shapes, 2-rect, general 2-row, all gHookYD [a,1^b], ≤2-col, ≤10-col (transpose duality), exactly 3-row through 10-row ALL shapes (PARTS XIV-XXVI). General formula has 4 sorries: 3 via LGV approach + 1 for hook_walk_identity (≥11-row, ≥11-col, non-gHookYD).",
+  "description": "Formalizes the hook-length formula f^λ = n!/∏h(u) for Standard Young Tableaux. Proves: 1-row, 1-col, hook shapes, 2-rect, general 2-row, all gHookYD [a,1^b], ≤2-col, ≤10-col (transpose duality), exactly 3-row through 10-row ALL shapes (PARTS XIV-XXVI). General formula has 3 sorries: 2 in unused LGV path (ni_count_eq_syt_count, lgv_det_factors_as_hook_quotient) + 1 for hook_walk_identity (non-rectangular ≥11-row AND ≥11-col).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-21",
@@ -19,13 +19,13 @@
       "representation-theory"
     ],
     "badge": "wip",
-    "sorries": 4,
+    "sorries": 3,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "Four open sorries: (1) hook_length_formula (LGV approach: requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) hook_walk_identity ≥11-row AND ≥11-col non-gHookYD case (GNW probabilistic proof; at-most-2-row, gHookYD, ≤2-col, exactly-3-row through exactly-10-row ALL proved; ≤10-col via transpose duality). hook_length_formula_general is proved modulo hook_walk_identity via corner induction.",
-    "lineCount": 16029,
-    "theoremCount": 464,
-    "definitionCount": 14,
+    "assumptions": "Three open sorries: (1) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence — unused LGV path), (2) lgv_det_factors_as_hook_quotient (det factorization identity — unused LGV path), (3) hook_walk_identity for non-rectangular ≥11-row AND ≥11-col case (GNW probabilistic proof; all other cases proved: at-most-2-row, gHookYD, ≤2-col, exactly-3-row through exactly-10-row, ≤10-col via transpose duality, rectangles). hook_length_formula_general is proved modulo hook_walk_identity via corner induction.",
+    "lineCount": 16248,
+    "theoremCount": 564,
+    "definitionCount": 21,
     "originalContributions": [
       "hookLength: hook length at cell (i,j) = armLen + legLen + 1 using YoungDiagram.rowLen and colLen",
       "hookLength_pos: hook lengths are always positive (arm + leg + 1 ≥ 1) — unconditional",
@@ -39,11 +39,11 @@
       "twoRowYD: general 2-row Young diagram [a,b] for a≥b",
       "hookProd_twoRowYD: hookProd([a,b]) = (a+1).descFactorial b × (a-b)! × b! (proved, 0 sorries)",
       "two_row_hook_identity: numerical identity ballotSeqCount(a+1,b) × hookProd = (a+b)! (proved, 0 sorries)",
-      "hook_length_formula_two_row_gen: formula for general 2-row [a,b] (1 sorry: card_SYT_twoRowYD)",
+      "hook_length_formula_two_row_gen: formula for general 2-row [a,b] (0 sorries, card_SYT_twoRowYD fully proved via WF induction)",
       "Numerical verification: hook-length formula proved for (2,1), (2,2), (3,1), (3,2), (3,2,1), (4,3,2,1), (3,3), (4,4) shapes",
       "hook_length_formula_gHookYD: HLF for all generalized hook shapes [a, 1^b] (card = C(a+b-1,b), proved via double induction + inline bijection, 0 sorries)",
-      "hookProd_ratio_formula: hookProd(μ)/hookProd(μ\\c) equals product over arm × product over leg (1 sorry: ~50 lines Finset.prod_union decomposition)",
-      "hook_walk_identity: sum over corners c of hookProd(μ)/hookProd(μ\\c) = μ.card — at-most-2-row case proved; ≥3-row case has 1 sorry (~300 lines GNW/RSK)",
+      "hookProd_ratio_formula: hookProd(μ)/hookProd(μ\\c) equals product over arm × product over leg (proved, 0 sorries)",
+      "hook_walk_identity: sum over corners c of hookProd(μ)/hookProd(μ\\c) = μ.card — proved for all shapes except non-rectangular ≥11×≥11 (1 sorry for GNW hook walk argument)",
       "hook_length_formula_general: HLF for all Young diagrams via corner induction (proved modulo hook_walk_identity, 0 sorries in the theorem itself)",
       "corners_gHookYD_cases: characterizes all corners of [a,1^b] as either (0,a-1) with a≥2 or (b,0) (proved, 0 sorries, session 19)",
       "hook_walk_identity_gHookYD: hook walk identity Σ_c hookProd/hookProd(μ\\c)=|μ| proved for all [a,1^b] with b≥1, non-circular via hook_length_formula_gHookYD (session 19)",
@@ -72,7 +72,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Hook-length formula fully proved for five infinite families: 1×n (direct), n×1 (direct), hook-shape (m+1,1) (bijection), 2×m rect (Lindstrom reflection), and general 2-row [a,b] (conditional on ballot bijection, 1 sorry). hookProd for [a,b] = (a+1).descFactorial(b) × (a-b)! × b! proved with 0 sorries. Part XIV adds hook_length_formula_general as the primary result, proved via corner induction modulo hook_walk_identity. Total: 5 sorries (3 LGV path + 2 corner induction: hookProd_ratio_formula + hook_walk_identity ≥3-row).",
+    "summary": "Hook-length formula fully proved for five infinite families: 1×n (direct), n×1 (direct), hook-shape (m+1,1) (bijection), 2×m rect (Lindstrom reflection), and general 2-row [a,b] (0 sorries, card_SYT_twoRowYD fully proved). hookProd for [a,b] = (a+1).descFactorial(b) × (a-b)! × b! proved with 0 sorries. hook_length_formula_general proved via corner induction modulo hook_walk_identity. hookProd_ratio_formula fully proved. Total: 3 sorries (2 in unused LGV path + 1 hook_walk_identity for non-rectangular ≥11×≥11).",
     "implications": "A complete formalization would be the first Lean 4 proof of the hook-length formula, a milestone in formal combinatorics. The LGV approach connects our existing ballot problem proofs to representation theory via the Specht module dimension formula f^λ = dim S^λ.",
     "openQuestions": [
       "Formalize the SYT ↔ NI bijection via Fomin's growth diagrams or the RSK correspondence (~200 lines)",
@@ -91,12 +91,12 @@
       "LGV"
     ],
     "namespace": "HookLengthFormula",
-    "lineCount": 16029,
+    "lineCount": 16248,
     "axiomCount": 0,
-    "sorries": 4,
+    "sorries": 3,
     "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
-    "theoremCount": 521,
-    "definitionCount": 14
+    "theoremCount": 564,
+    "definitionCount": 21
   },
   "crossReferences": [
     {
@@ -158,8 +158,8 @@
       "title": "Parts V-VI: Main Theorems",
       "startLine": 180,
       "endLine": 210,
-      "summary": "hook_length_formula_2row_rect (proved via OQ03OQ03), hook_length_formula (sorry), ni_count_eq_syt_count (sorry), lgv_det_factors_as_hook_quotient (sorry), card_SYT_twoRectYD (sorry — SYT count for 2-row rect = C_m).",
-      "mathContext": "Main theorem: card(SYT(μ)) × hookProd μ = μ.card!. The two sorry components require ~200 lines each."
+      "summary": "hook_length_formula_2row_rect (proved via OQ03OQ03), hook_length_formula (proved via corner induction), ni_count_eq_syt_count (sorry — unused LGV path), lgv_det_factors_as_hook_quotient (sorry — unused LGV path), card_SYT_twoRectYD (proved via Lindstrom reflection).",
+      "mathContext": "Main theorem: card(SYT(μ)) × hookProd μ = μ.card!. The corner induction path (Parts XIII-XIV) supersedes the LGV path. Two LGV sorries remain but are not used by hook_length_formula_general."
     },
     {
       "id": "sec-numerical",
@@ -195,12 +195,12 @@
     },
     {
       "id": "sec-transpose-nrow",
-      "title": "Parts XV-XXIII: Transpose Duality and N-Row Hook Walk (N=3..9)",
+      "title": "Parts XV-XXVI: Transpose Duality and N-Row Hook Walk (N=3..10)",
       "startLine": 5183,
       "endLine": 13633,
       "summary": "Part XV: hookLength_transpose proves h(μ,i,j)=h(μᵀ,j,i), giving HLF and hook_walk for ≤2-col via duality. Parts XIVc-XXIII prove hook_walk_identity for exactly-3-row through 9-row shapes by computing colLen zones, hookLen polynomials, armProd, and closing with field_simp+ring. ~8,000 lines total.",
       "mathContext": "$h(\\mu,i,j) = h(\\mu^\\top,j,i)$ (arm↔leg under transpose). For N-row shapes: hook walk identity $\\sum_c \\text{hookProd}(\\mu)/\\text{hookProd}(\\mu\\setminus c) = \\sum_i a_i$ is a polynomial identity in $a_1,\\ldots,a_N$, verifiable by `ring` after computing each hook length as a linear combination of $a_i$."
     }
   ],
-  "sorries": 4
+  "sorries": 3
 }
