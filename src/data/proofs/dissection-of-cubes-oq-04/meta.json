@@ -7,7 +7,7 @@
     "author": "Lean Genius",
     "sourceUrl": "https://en.wikipedia.org/wiki/Dehn_invariant",
     "date": "1900",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/DissectionOfCubesOQ04.lean",
     "tags": [
       "geometry",
@@ -18,14 +18,14 @@
       "scissors-congruence",
       "irrational-angles"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-04-22",
-    "axiomCount": 1,
-    "assumptions": "1 axiom: tmul_infinite_order_ne_zero (from OQ02OQ02): \u211d is flat over \u2124 \u2014 needed to show nonzero tensor products. Previously axiomatized icoAngle_irrational (arccos(-\u221a5/3)/\u03c0 irrational) is now PROVED via Chebyshev integer sequence for arccos(1/9).",
-    "lineCount": 557,
-    "theoremCount": 15,
-    "definitionCount": 4,
+    "axiomCount": 0,
+    "assumptions": "0 axioms. All previously axiomatized results are now proved: icoAngle_irrational via coupled Chebyshev sequences over ℤ[√5], tmul_infinite_order_ne_zero via Module.Flat ℤ ℝ (proved in OQ02OQ02).",
+    "lineCount": 581,
+    "theoremCount": 22,
+    "definitionCount": 5,
     "mathlibDependencies": [
       {
         "theorem": "Real.arccos_le_pi_div_two",

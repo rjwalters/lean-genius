@@ -203,14 +203,50 @@ theorem tetAngle_infinite_order :
   have hn_ne : (n : ℝ) ≠ 0 := Int.cast_ne_zero.mpr hn
   exact ⟨(m : ℚ) / (n : ℚ), by push_cast; field_simp; linarith⟩
 
-/-- **Flatness axiom**: In ℝ ⊗_ℤ (ℝ/πℤ), if [θ] has infinite order
+/-- **Flatness theorem**: In ℝ ⊗_ℤ (ℝ/πℤ), if [θ] has infinite order
 then r ⊗ [θ] ≠ 0 for r ≠ 0.
 
-Justified by: ℝ is flat over ℤ (torsion-free over PID).
-The injection ℤ ↪ ℝ/πℤ via n ↦ n·[θ] tensors to ℝ ≅ ℝ⊗ℤ ↪ ℝ⊗(ℝ/πℤ). -/
-axiom tmul_infinite_order_ne_zero (r : ℝ) (x : AngleQuot) (hr : r ≠ 0)
+Proof: ℝ is flat over ℤ (torsion-free over a Bezout domain). The map
+n ↦ n·[θ] is an injective ℤ-linear map ℤ ↪ ℝ/πℤ (from infinite order).
+Flatness of ℝ over ℤ implies id ⊗ f : ℝ ⊗ ℤ ↪ ℝ ⊗ (ℝ/πℤ) is injective.
+Under the isomorphism ℝ ⊗ ℤ ≅ ℝ, the element r ⊗ 1 maps to r ≠ 0,
+hence r ⊗ x = (id ⊗ f)(r ⊗ 1) ≠ 0.
+
+Module.Flat ℤ ℝ: ℤ is a Bezout domain (EuclideanDomain → PID → IsBezout) and
+ℝ is torsion-free over ℤ (CharZero ℝ → IsAddTorsionFree ℝ → NoZeroSMulDivisors ℤ ℝ),
+so by flat_iff_torsion_eq_bot_of_isBezout, ℝ is flat over ℤ. -/
+theorem tmul_infinite_order_ne_zero (r : ℝ) (x : AngleQuot) (hr : r ≠ 0)
     (hx : ∀ n : ℤ, n ≠ 0 → n • x ≠ 0) :
-    TensorProduct.tmul ℤ r x ≠ (0 : DehnGroup)
+    TensorProduct.tmul ℤ r x ≠ (0 : DehnGroup) := by
+  -- Module.Flat ℤ ℝ: ℤ is Bezout (PID) and ℝ is torsion-free (CharZero)
+  haveI hflat : Module.Flat ℤ ℝ :=
+    Module.Flat.flat_iff_torsion_eq_bot_of_isBezout.mpr
+      (Submodule.noZeroSMulDivisors_iff_torsion_eq_bot.mp inferInstance)
+  -- Injective ℤ-linear map f : ℤ →ₗ[ℤ] AngleQuot, n ↦ n • x
+  let f : ℤ →ₗ[ℤ] AngleQuot :=
+    { toFun := fun n => n • x
+      map_add' := fun m n => by rw [add_smul]
+      map_smul' := fun c n => by rw [mul_smul] }
+  have hf_inj : Function.Injective f := by
+    intro m n hmn
+    simp only [f, LinearMap.coe_mk, AddHom.coe_mk] at hmn
+    by_contra hne
+    exact hx (m - n) (sub_ne_zero.mpr hne) (by rw [sub_smul, hmn, sub_self])
+  -- By flatness, id ⊗ f : ℝ ⊗[ℤ] ℤ → ℝ ⊗[ℤ] AngleQuot is injective
+  have hlTensor : Function.Injective (f.lTensor ℝ) :=
+    Module.Flat.lTensor_preserves_injective_linearMap f hf_inj
+  -- (f.lTensor ℝ)(r ⊗ₜ 1) = r ⊗ₜ f(1) = r ⊗ₜ (1 • x) = r ⊗ₜ x
+  have hkey : (f.lTensor ℝ) (r ⊗ₜ[ℤ] (1 : ℤ)) = TensorProduct.tmul ℤ r x := by
+    simp [LinearMap.lTensor_tmul, f, one_smul]
+  -- If r ⊗ₜ x = 0, then r ⊗ₜ 1 = 0 by injectivity
+  intro heq
+  have h1 : r ⊗ₜ[ℤ] (1 : ℤ) = (0 : ℝ ⊗[ℤ] ℤ) :=
+    hlTensor (by rw [hkey, heq, map_zero])
+  -- But (TensorProduct.rid ℤ ℝ)(r ⊗ₜ 1) = (1 : ℤ) • r = r ≠ 0
+  have h2 : (TensorProduct.rid ℤ ℝ) (r ⊗ₜ[ℤ] (1 : ℤ)) = r := by
+    rw [TensorProduct.rid_tmul]; exact one_smul ℤ r
+  rw [h1, map_zero] at h2
+  exact hr h2.symm
 
 -- ========================================================================
 -- Part VII: Tetrahedron Dehn Invariant is Nonzero (PROVED)
@@ -379,13 +415,14 @@ theorem dehn_zero_of_rational_angles (angles : List (ℝ × ℝ))
 /-
 ## Axiom Budget
 
-This formalization uses 1 axiom (reduced from 6):
-
-1. `tmul_infinite_order_ne_zero` — ℝ is flat over ℤ
-   Status: Standard algebra (torsion-free over PID ⟹ flat)
+This formalization uses 0 axioms (reduced from 6, then from 1):
 
 ### Previously Axiomatized, Now Proved
 
+- `tmul_infinite_order_ne_zero` — proved via Module.Flat ℤ ℝ
+  (EuclideanDomain ℤ → IsBezout ℤ; CharZero ℝ → NoZeroSMulDivisors ℤ ℝ;
+   flat_iff_torsion_eq_bot_of_isBezout gives Module.Flat ℤ ℝ;
+   then lTensor_preserves_injective_linearMap + TensorProduct.rid argument)
 - `niven_arccos_third` — Cross-referenced from DissectionOfCubesOQ02.lean
 - `arccos_neg_third` — Proved via Mathlib's `Real.arccos_neg`
 - `dehn_preserved_by_scissors` — Proved (placeholder: `True → d₁ = d₁`)
