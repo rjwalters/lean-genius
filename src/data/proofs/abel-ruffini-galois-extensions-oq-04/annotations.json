@@ -110,7 +110,7 @@
   {
     "id": "ann-second-iso",
     "proofId": "abel-ruffini-galois-extensions-oq-04",
-    "range": { "startLine": 183, "endLine": 227 },
+    "range": { "startLine": 183, "endLine": 206 },
     "type": "technique",
     "title": "second_iso: Noether's Second Isomorphism via Direct Map Construction",
     "content": "The second isomorphism theorem in this context states: if x is maximal normal in x⊔y, then (x⊔y)/x ≃* y/(x⊓y). The proof constructs a direct map φ : y →* (x⊔y)/x by composing inclusion le_sup_right with the quotient map mk'. The kernel of φ is computed to be (x⊓y).subgroupOf y (by a membership calculation), and surjectivity follows by decomposing any element of x⊔y as a product from x and y, then showing the x-part is in the kernel. The first isomorphism theorem `quotientKerEquivOfSurjective` then gives the isomorphism. This avoids `rw [sup_comm y x]` which fails with 'motive not type correct' due to Normal typeclass dependency on the rewritten term.",
@@ -122,7 +122,7 @@
   {
     "id": "ann-jordan-holder",
     "proofId": "abel-ruffini-galois-extensions-oq-04",
-    "range": { "startLine": 233, "endLine": 247 },
+    "range": { "startLine": 208, "endLine": 225 },
     "type": "insight",
     "title": "Jordan-Hölder Theorem: One-Line Delegation",
     "content": "With the JordanHolderLattice instance in place, the Jordan-Hölder theorem for groups reduces to a single call to `CompositionSeries.jordan_holder` from Mathlib. This demonstrates the power of the typeclass abstraction: once the three axioms are verified for (Subgroup G), the full Jordan-Hölder machinery — which works for any JordanHolderLattice — applies automatically. The `jordan_holder_finite_groups` variant specializes to finite groups (the hypotheses require finite G implicitly through CompositionSeries termination), delegating immediately to the general version.",
