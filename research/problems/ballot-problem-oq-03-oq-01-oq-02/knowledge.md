@@ -525,3 +525,61 @@ by_cases h4 : μ.rowLen 4 = 0
 1. **9-row case PART XXIII**: ~1900 lines at same growth rate; OR
 2. **Switch strategy**: GNW probabilistic hook walk proof handles all n simultaneously (~300-500 lines)
 3. The row-by-row approach hits diminishing returns; consider GNW formalization for the general case
+
+---
+
+## Session 2026-04-26 (Session 28) — PART XXIII: hook_walk_identity for 9-row shapes
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: PROGRESS — sorry scope reduced to ≥10-row shapes only
+
+### What I Did
+
+1. Read PART XXII (lines 10017-11628) to understand the 8-row pattern exactly
+2. Generated PART XXIII (1956 lines) following the exact same structure:
+   - 8 colLen zone lemmas (nineRow_colLen_lt + mid1..mid7)
+   - 45 hookLen lemmas (row 8: 1 zone, row 7: 2 zones, ..., row 0: 9 zones)
+   - nineRow_corner_bot, nineRow_corner_cases, nineRow_card
+   - 9 arm product lemmas (nineRow_arm_row8..nineRow_arm_row0)
+   - hook_walk_identity_nineRow main lemma via field_simp + ring
+3. Inserted PART XXIII before the hook_walk_identity dispatcher (line 11628)
+4. Updated dispatcher: added h9 by_cases branch → hook_walk_identity_nineRow
+5. Docker build launched for compilation verification
+
+### Key Formulas
+
+Variables: p=rowLen 8, k=rowLen 7, g=rowLen 6, f=rowLen 5, e=rowLen 4, d=rowLen 3, c=rowLen 2, b=rowLen 1, a=rowLen 0
+
+Arm products (9 lemmas):
+- arm_row8: p
+- arm_row7: (k+1)(k-p)/(k-p+1)
+- arm_row6: (g+2)(g-p+1)(g-k)/((g-p+2)(g-k+1))
+- arm_row5: (f+3)(f-p+2)(f-k+1)(f-g)/((f-p+3)(f-k+2)(f-g+1))
+- arm_row4: (e+4)(e-p+3)(e-k+2)(e-g+1)(e-f)/((e-p+4)(e-k+3)(e-g+2)(e-f+1))
+- arm_row3: (d+5)(d-p+4)(d-k+3)(d-g+2)(d-f+1)(d-e)/((d-p+5)(d-k+4)(d-g+3)(d-f+2)(d-e+1))
+- arm_row2: (c+6)(c-p+5)(c-k+4)(c-g+3)(c-f+2)(c-e+1)(c-d)/((c-p+6)(c-k+5)(c-g+4)(c-f+3)(c-e+2)(c-d+1))
+- arm_row1: (b+7)(b-p+6)(b-k+5)(b-g+4)(b-f+3)(b-e+2)(b-d+1)(b-c)/((b-p+7)(b-k+6)(b-g+5)(b-f+4)(b-e+3)(b-d+2)(b-c+1))
+- arm_row0: (a+8)(a-p+7)(a-k+6)(a-g+5)(a-f+4)(a-e+3)(a-d+2)(a-c+1)(a-b)/((a-p+8)(a-k+7)(a-g+6)(a-f+5)(a-e+4)(a-d+3)(a-c+2)(a-b+1))
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (11747 → 13709 lines, PART XXIII added)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md` (this file)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` (knowledge updated)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json` (lineCount 13709)
+
+### Sorry Count: 4 (unchanged count, scope reduced)
+
+- `hook_walk_identity` (line ~13630): sorry covers ONLY ≥10-row shapes
+  - Proved: ≤2-row, ≤2-col, all gHookYD, [a,2,1], [a,b,1], 3-row, 4-row, 5-row, 6-row, 7-row, 8-row, 9-row
+  - Remaining: any μ with 10+ rows AND 3+ columns AND not a generalized hook
+- `ni_count_eq_syt_count` (line 219): RSK bijection (open)
+- `lgv_det_factors_as_hook_quotient` (line 235): det identity (open)
+- `hook_length_formula` (line 245): depends on the two above
+
+### Next Steps
+
+1. **10-row case PART XXIV**: ~2200+ lines, same algebraic pattern
+2. **GNW general proof** (~300-500 lines): handles all n at once
+3. The row-by-row approach hits diminishing returns at 10+
+

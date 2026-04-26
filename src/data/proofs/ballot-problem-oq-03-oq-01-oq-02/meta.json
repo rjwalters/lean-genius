@@ -23,7 +23,7 @@
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
     "assumptions": "Four open sorries: (1) hook_length_formula (LGV approach: requires SYT\u2194NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) hook_walk_identity \u22659-row non-gHookYD \u22653-col case (GNW probabilistic proof; at-most-2-row, gHookYD, \u22642-col, exactly-3-row, exactly-4-row, exactly-5-row, exactly-6-row, exactly-7-row, exactly-8-row ALL proved). hook_length_formula_general is proved modulo hook_walk_identity via corner induction.",
-    "lineCount": 11747,
+    "lineCount": 13709,
     "theoremCount": 315,
     "definitionCount": 14,
     "originalContributions": [
@@ -47,7 +47,8 @@
       "hook_length_formula_general: HLF for all Young diagrams via corner induction (proved modulo hook_walk_identity, 0 sorries in the theorem itself)",
       "corners_gHookYD_cases: characterizes all corners of [a,1^b] as either (0,a-1) with a\u22652 or (b,0) (proved, 0 sorries, session 19)",
       "hook_walk_identity_gHookYD: hook walk identity \u03a3_c hookProd/hookProd(\u03bc\\c)=|\u03bc| proved for all [a,1^b] with b\u22651, non-circular via hook_length_formula_gHookYD (session 19)",
-      "hook_walk_identity_eightRow: hook walk identity proved for ALL exactly-8-row Young diagrams [a,b,c,d,e,f,g,h] via 7 colLen zones, 36 hookLen lemmas, 8 arm product lemmas, field_simp+ring; 1612 lines, 0 sorries (PART XXII)"
+      "hook_walk_identity_eightRow: hook walk identity proved for ALL exactly-8-row Young diagrams [a,b,c,d,e,f,g,h] via 7 colLen zones, 36 hookLen lemmas, 8 arm product lemmas, field_simp+ring; 1612 lines, 0 sorries (PART XXII)",
+      "hook_walk_identity_nineRow: hook walk identity for all 9-row Young diagrams [a,b,c,d,e,f,g,k,p], proved by hookProd_ratio_formula + field_simp/ring (8 colLen zones, 45 hookLen lemmas, 9 arm product lemmas)"
     ]
   },
   "overview": {
