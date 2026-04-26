@@ -1,5 +1,32 @@
 [
   {
+    "id": "ann-module-docstring",
+    "title": "Module Docstring: The Chow Ring Multiplication Table",
+    "type": "context",
+    "proofId": "hilbert-15-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 62
+    },
+    "content": "The module docstring (lines 1–60) is itself a mathematical reference document: it gives the complete Chow ring structure as a table with geometric interpretations for each basis class, displays the full 5×5 multiplication table, traces the four-lines computation σ₁² → σ₁³ → σ₁⁴ = 2 step by step, and explains the proof strategy (native_decide from the explicit LR table). This is the only file in the Lean Genius gallery where the docstring includes a complete multiplication table.\n\nThe relationship to the parent file `Hilbert15SchubertCalculus.lean` is explicit: the parent provides Grassmannian definitions and the axiomatized statement `σ₁⁴ = 2`; this file proves it computationally, eliminating the axiom. This is a demonstration of the refinement methodology: Lean allows working axiomatically first (assuming the hard part), then improving to a proved version.",
+    "mathContext": "The grading: $A^0(\\mathrm{Gr}(2,4)) = \\mathbb{Z}\\sigma_\\emptyset$ (degree 0, fundamental class), $A^1 = \\mathbb{Z}\\sigma_1$ (lines meeting a fixed line), $A^2 = \\mathbb{Z}\\sigma_2 \\oplus \\mathbb{Z}\\sigma_{11}$ (lines in a plane / through a point), $A^3 = \\mathbb{Z}\\sigma_{21}$ (lines in a plane through a point), $A^4 = \\mathbb{Z}\\sigma_{22}$ (a specific line, the 'point class'). The product $\\sigma_1 \\cdot \\sigma_{22} = 0$ (no line meets 4 fixed lines + 1 point class in general position) reflects the dimension count: $1 + 4 > 4 = \\dim A^*(\\mathrm{Gr}(2,4))$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Chow ring grading",
+      "Schubert calculus",
+      "Grassmannian Gr(2,4)",
+      "Littlewood-Richardson multiplication table",
+      "native_decide proof strategy",
+      "axiom elimination"
+    ],
+    "prerequisites": [
+      "algebraic cycles",
+      "rational equivalence",
+      "graded ring theory",
+      "projective 3-space geometry"
+    ]
+  },
+  {
     "id": "ann-schubert-overview",
     "title": "Schubert Calculus on Gr(2,4): Explicit Computation Approach",
     "type": "concept",
