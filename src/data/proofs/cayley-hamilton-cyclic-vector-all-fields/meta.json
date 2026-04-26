@@ -89,10 +89,18 @@
     {
       "id": "corollaries",
       "title": "§ IV. Corollaries",
-      "startLine": 157,
-      "endLine": 185,
-      "summary": "Two corollaries: nonderogatory_has_cyclic_vector_finite (specializes to [Fintype K]) and cyclic_iff_not_killed_below_degree (reformulation of the cyclic condition).",
-      "mathContext": "The finite field corollary specializes the main theorem to finite fields, demonstrating that the result holds even when $|K| \\leq n$ — the regime where union avoidance fails. The equivalence corollary restates cyclicity directly in terms of polynomial non-annihilation."
+      "startLine": 143,
+      "endLine": 169,
+      "summary": "Two corollaries: nonderogatory_has_cyclic_vector_finite (lines 149-153, specializes to [Fintype K] in one line) and cyclic_iff_not_killed_below_degree (lines 157-169, polynomial annihilator reformulation).",
+      "mathContext": "The finite field corollary specializes the main theorem to finite fields, demonstrating that the result holds even when $|K| \\leq n$ — the regime where union avoidance fails. Its proof is a single application of the main theorem, demonstrating the architectural cleanliness: no field cardinality assumption was ever used. The equivalence corollary `v$ is cyclic iff $\\forall p \\neq 0$ with $\\deg(p) < n$, $p(M)v \\neq 0`$ restates cyclicity via polynomial non-annihilation — a condition checkable without constructing a full basis."
+    },
+    {
+      "id": "summary-block",
+      "title": "§ V. Proof Summary",
+      "startLine": 170,
+      "endLine": 199,
+      "summary": "Closing /-! docstring enumerating all proved results, the single axiom (nonderogatory_similar_companion), and the upgrade path to a fully axiom-free proof (~800 lines for Smith normal form + ~200 for the RCF reduction).",
+      "mathContext": "The upgrade path targets the Smith normal form for polynomial matrices: if $M(X) \\in M_n(K[X])$ then there exist invertible $U, V$ over $K[X]$ with $UM(X)V = \\mathrm{diag}(d_1, \\ldots, d_r, 0, \\ldots)$ where $d_i \\mid d_{i+1}$ (elementary divisors). Applied to the characteristic matrix $(XI - M)$, the Smith form gives the invariant factors, and nonderogatory forces exactly one factor $d_1 = \\mathrm{minpoly}\\, M$, directly yielding the RCF similarity."
     }
   ],
   "conclusion": {
