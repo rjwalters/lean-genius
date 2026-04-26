@@ -64,12 +64,20 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Module Header",
+      "id": "module-docstring",
+      "title": "Module Docstring: Newton-Girard Overview",
       "startLine": 1,
+      "endLine": 19,
+      "summary": "Module-level documentation stating the Newton-Girard recurrence pₖ = (-1)^(k+1)·k·eₖ − Σ_{0<j<k} (-1)^j·eⱼ·pₖ₋ⱼ, the three corollaries to be derived (k=1,2,3), and the proof status (PROVED, 0 axioms, 0 sorries).",
+      "mathContext": "Newton-Girard recurrence: $p_k = (-1)^{k+1} k e_k - \\sum_{0 < j < k} (-1)^j e_j p_{k-j}$. Three corollaries: $p_1 = e_1$, $p_2 = e_1^2 - 2e_2$, $p_3 = e_1 p_2 - e_2 p_1 + 3e_3$."
+    },
+    {
+      "id": "setup",
+      "title": "Setup: Imports, Namespace, Variable Declarations",
+      "startLine": 21,
       "endLine": 28,
-      "summary": "Docstring stating the Newton-Girard recurrence and the three corollaries to be derived. Imports Mathlib and opens MvPolynomial, Finset, BigOperators.",
-      "mathContext": "Newton-Girard recurrence: $p_k = (-1)^{k+1} k e_k - \\sum_{0 < j < k} (-1)^j e_j p_{k-j}$."
+      "summary": "Imports Mathlib, opens MvPolynomial/Finset/BigOperators/Set, and declares the polymorphic variable context: σ : Type* (index type), R : Type* [CommRing R] [Fintype σ] (coefficient ring).",
+      "mathContext": "Working over `MvPolynomial σ R` for any `CommRing R` and `Fintype σ`. The `open` statements bring `psum`, `esymm`, `Finset.antidiagonal`, and `∑` notation into scope."
     },
     {
       "id": "corollary-1",
