@@ -20,7 +20,7 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 310,
+    "lineCount": 326,
     "assumptions": "1 sorry: irreducibility of 4X²-2X-1 over ℚ (routine, provable via rational root theorem checking all candidates ±1, ±1/2, ±1/4). The theorem gal_order_eq_totient_div2_general proves a tautology (x = x by rfl) as a placeholder — it does not state the actual Galois order formula due to missing IsCyclotomicExtension infrastructure. All other theorems (splitting field degree 2, Galois order 2, Vieta identity, totient consistency checks) are genuinely proved.",
     "mathlib_version": "4.26.0",
     "historicalContext": "The angle trisection impossibility proof reduces to computing Galois groups of minimal polynomials of cosines. While the cubic cases (n=7, n=9) have been formalized, the quadratic case n=5 reveals a simplification: cos(π/5) has degree 2 over ℚ, and the Galois group formula φ(2n)/2 gives the correct answer 2. The proof is simpler than the cubic cases because the second root is just β = 1/2 - α (Vieta's: sum of roots = 1/2), avoiding the complex algebraic identities needed for cubics.",
@@ -93,7 +93,7 @@
       "Proofs.AngleTrisectionCos20GalOQ01"
     ],
     "namespace": "AngleTrisectionCos20GalOQ01OQ02",
-    "lineCount": 310,
+    "lineCount": 326,
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 2,

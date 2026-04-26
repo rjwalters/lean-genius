@@ -20,7 +20,7 @@
     "badge": "wip",
     "sorries": 2,
     "axiomCount": 0,
-    "lineCount": 1286,
+    "lineCount": 1342,
     "assumptions": "2 sorries: (1) integer-real orbit bridge (evalWord toWord encodes 3^n * liftF, ~60 lines induction via irrationality of sqrt 2); (2) banach_tarski main theorem (800+ lines via Hausdorff paradox + AC). All other supporting lemmas fully proved: evalWord_nonempty_labeledInv, FreeGroup.Reduced/Chain bridge, anyInv+encoding contradiction, free_group_not_amenable, int_amenable (Cesaro window-shift), banach_tarski_pieces_nonmeasurable.",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
@@ -212,7 +212,7 @@
       "Mathlib"
     ],
     "namespace": "BanachTarski",
-    "lineCount": 1286,
+    "lineCount": 1342,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 5,
