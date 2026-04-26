@@ -463,17 +463,11 @@ theorem energy_increment_packaging
     · exact hXneA hXeqA
     · exact hXneB hXeqB
 
-  -- ── ne facts: A' ≠ A, A₂ ≠ A, B' ≠ B, B₂ ≠ B ──────────────────
-  -- A' ≠ A: if A' = A then A₂ = A \ A = ∅, contradicting hA₂pos
-  have hA'neA : A' ≠ A := by
-    sorry
+  -- ── ne facts: A₂ ≠ A, B₂ ≠ B ─────────────────────────────────────
   -- A₂ ≠ A: if A₂ = A then A ⊆ A₂ = A\A', so A'=∅ contradicting hA'pos
   have hA₂neA : A₂ ≠ A := fun heq => by
     obtain ⟨x, hx⟩ := Finset.card_pos.mp hA'pos
     exact absurd hx (Finset.mem_sdiff.mp (heq ▸ hA'sub hx)).2
-  -- B' ≠ B: symmetric
-  have hB'neB : B' ≠ B := by
-    sorry
   -- B₂ ≠ B: symmetric
   have hB₂neB : B₂ ≠ B := fun heq => by
     obtain ⟨x, hx⟩ := Finset.card_pos.mp hB'pos
@@ -497,7 +491,8 @@ theorem energy_increment_packaging
       rw [hXA'] at hXpos hXparts
       obtain ⟨x, hx⟩ := Finset.card_pos.mp hXpos
       exact absurd (hA'sub hx)
-        (Finset.disjoint_left.mp (hparts_disj A' A hXparts hA hA'neA) hx)
+        (Finset.disjoint_left.mp (hparts_disj A' A hXparts hA
+          (hXA' ▸ (Finset.mem_erase.mp hXS).1)) hx)
     · -- X = A₂: X.card > 0 (from hXpos rewritten via hXA₂), so ∃ x ∈ A₂
       rw [hXA₂] at hXpos hXparts
       obtain ⟨x, hx⟩ := Finset.card_pos.mp hXpos
@@ -507,7 +502,8 @@ theorem energy_increment_packaging
       rw [hXB'] at hXpos hXparts
       obtain ⟨x, hx⟩ := Finset.card_pos.mp hXpos
       exact absurd (hB'sub hx)
-        (Finset.disjoint_left.mp (hparts_disj B' B hXparts hB hB'neB) hx)
+        (Finset.disjoint_left.mp (hparts_disj B' B hXparts hB
+          (hXB' ▸ (Finset.mem_erase.mp (Finset.mem_erase.mp hXS).2).1)) hx)
     · -- X = B₂ = B \ B' ⊆ B → same
       rw [hXB₂] at hXpos hXparts
       obtain ⟨x, hx⟩ := Finset.card_pos.mp hXpos
@@ -542,12 +538,38 @@ theorem energy_increment_packaging
     intro h; obtain ⟨x, hx⟩ := Finset.card_pos.mp hA'pos
     exact absurd (Finset.mem_sdiff.mp (h ▸ hx)).1
       (Finset.disjoint_left.mp hAB_disj (hA'sub hx))
-  -- Helper: if A₂ = X where X ⊆ B, then A₂ = ∅ (A ∩ B = ∅) → A' = A → contradiction
-  have hA₂_not_subB : ∀ X : Finset V, X ⊆ B → A₂ ≠ X := by
-    sorry
-  have hA₂B'_ne : A₂ ≠ B' := hA₂_not_subB B' hB'sub
-  have hA₂B₂_ne : A₂ ≠ B₂ :=
-    hA₂_not_subB B₂ (Finset.sdiff_subset)
+  -- A₂ ≠ B': if A₂ = B' then A₂ ⊆ A ∩ B = ∅, but B'.card > 0
+  have hA₂B'_ne : A₂ ≠ B' := by
+    intro heq
+    obtain ⟨x, hx⟩ := Finset.card_pos.mp hB'pos
+    exact absurd (hB'sub hx)
+      (Finset.disjoint_left.mp hAB_disj (Finset.sdiff_subset (heq ▸ hx)))
+  -- A₂ ≠ B₂: if A₂ = B₂ then A₂ ⊆ A ∩ B = ∅, so A₂ = ∅ = B₂,
+  --   hence A' = A and B' = B, giving d(A',B') = d(A,B), contradicting hcore > 0
+  have hA₂B₂_ne : A₂ ≠ B₂ := by
+    intro heq
+    have hA₂_empty : A₂ = ∅ := by
+      ext x; simp only [Finset.mem_empty_iff_false, iff_false]
+      intro hxA₂
+      exact absurd (Finset.sdiff_subset (heq ▸ hxA₂))
+        (Finset.disjoint_left.mp hAB_disj (Finset.sdiff_subset hxA₂))
+    have hA₂z : A₂.card = 0 := Finset.card_eq_zero.mpr hA₂_empty
+    have hAcard_eq : A'.card = A.card := by
+      have h : A'.card + A₂.card = A.card := by
+        have := Finset.card_union_of_disjoint hAd; rw [hAu] at this; omega
+      omega
+    have hA'eq : A' = A := Finset.eq_of_subset_of_card_le hA'sub hAcard_eq.symm.le
+    have hB₂_empty : B₂ = ∅ := heq.symm.trans hA₂_empty
+    have hB₂z : B₂.card = 0 := Finset.card_eq_zero.mpr hB₂_empty
+    have hBcard_eq : B'.card = B.card := by
+      have h : B'.card + B₂.card = B.card := by
+        have := Finset.card_union_of_disjoint hBd; rw [hBu] at this; omega
+      omega
+    have hB'eq : B' = B := Finset.eq_of_subset_of_card_le hB'sub hBcard_eq.symm.le
+    have hzero : (A'.card : ℚ) * B'.card *
+        (edgeDensity G A' B' - edgeDensity G A B) ^ 2 = 0 := by
+      rw [hA'eq, hB'eq, sub_self]; ring
+    linarith [hcore, mul_pos (pow_pos heps 6) (pow_pos hn_pos 2)]
   -- Non-membership for sum expansion of T = {A', A₂, B', B₂}
   have hA'_nm : A' ∉ ({A₂, B', B₂} : Finset (Finset V)) := by
     simp only [Finset.mem_insert, Finset.mem_singleton]
@@ -616,7 +638,9 @@ theorem energy_increment_packaging
     simp only [ef_def]
     push_cast
     rw [← hAcard, ← hBcard, ← hAu, ← hBu]
-    sorry
+    have h1 := mul_le_mul_of_nonneg_left hcA hPnn
+    have h2 := mul_le_mul_of_nonneg_left hcB hPnn
+    ring_nf at h1 h2 ⊢; linarith
 
   -- ── TS ≥ ABS ─────────────────────────────────────────────────────
   have hTS : ∑ P ∈ ({A', A₂, B', B₂} : Finset (Finset V)), ∑ Q ∈ S, ef P Q ≥
@@ -631,7 +655,9 @@ theorem energy_increment_packaging
       have hAcard : (A'.card : ℚ) + A₂.card = A.card := by exact_mod_cast hcard_A
       simp only [ef_def]; push_cast
       rw [← hAcard, ← hAu]
-      sorry
+      have hQnn : (0 : ℚ) ≤ (Q.card : ℚ) / (Fintype.card V : ℚ) ^ 2 := by positivity
+      have h := mul_le_mul_of_nonneg_left hcA hQnn
+      ring_nf at h ⊢; linarith
     have hB_rows : (∑ Q ∈ S, ef B' Q) + (∑ Q ∈ S, ef B₂ Q) ≥ ∑ Q ∈ S, ef B Q := by
       rw [← Finset.sum_add_distrib]
       apply Finset.sum_le_sum; intro Q _
@@ -639,8 +665,10 @@ theorem energy_increment_packaging
       have hBcard : (B'.card : ℚ) + B₂.card = B.card := by exact_mod_cast hcard_B
       simp only [ef_def]; push_cast
       rw [← hBcard, ← hBu]
-      sorry
-    sorry
+      have hQnn : (0 : ℚ) ≤ (Q.card : ℚ) / (Fintype.card V : ℚ) ^ 2 := by positivity
+      have h := mul_le_mul_of_nonneg_left hcB hQnn
+      ring_nf at h ⊢; linarith
+    linarith [hA_rows, hB_rows]
 
   -- ── TT ≥ ABAB + eps^6 ────────────────────────────────────────────
   have hTT : ∑ P ∈ ({A', A₂, B', B₂} : Finset (Finset V)),
@@ -658,7 +686,28 @@ theorem energy_increment_packaging
     have hsub_BB := sub4pair_energy_lower_bound G B' B₂ B' B₂ hBd hBd
     simp only [ef_def]; push_cast
     rw [← hAu, ← hBu, ← hAcard, ← hBcard] at *
-    sorry
+    -- Scale sub4pair bounds by 1/n² to match ef terms
+    have hs : (0 : ℚ) ≤ 1 / (Fintype.card V : ℚ) ^ 2 := by positivity
+    have hn2_pos : (0 : ℚ) < (Fintype.card V : ℚ) ^ 2 := by positivity
+    have hAA_s := mul_le_mul_of_nonneg_right hsub_AA hs
+    have hAB_s := mul_le_mul_of_nonneg_right hsub_AB_lb hs
+    have hBA_s := mul_le_mul_of_nonneg_right hsub_BA hs
+    have hBB_s := mul_le_mul_of_nonneg_right hsub_BB hs
+    have hcore_s : ↑A'.card * ↑B'.card *
+        (edgeDensity G A' B' - edgeDensity G (A' ∪ A₂) (B' ∪ B₂)) ^ 2 /
+        (Fintype.card V : ℚ) ^ 2 > eps ^ 6 := by
+      have h_num_pos : ↑A'.card * ↑B'.card *
+          (edgeDensity G A' B' - edgeDensity G (A' ∪ A₂) (B' ∪ B₂)) ^ 2 -
+          eps ^ 6 * (Fintype.card V : ℚ) ^ 2 > 0 := by linarith [hcore]
+      have h_eq : (↑A'.card * ↑B'.card *
+          (edgeDensity G A' B' - edgeDensity G (A' ∪ A₂) (B' ∪ B₂)) ^ 2 -
+          eps ^ 6 * (Fintype.card V : ℚ) ^ 2) / (Fintype.card V : ℚ) ^ 2 =
+          ↑A'.card * ↑B'.card *
+          (edgeDensity G A' B' - edgeDensity G (A' ∪ A₂) (B' ∪ B₂)) ^ 2 /
+          (Fintype.card V : ℚ) ^ 2 - eps ^ 6 := by field_simp
+      linarith [div_pos h_num_pos hn2_pos, h_eq]
+    ring_nf at hAA_s hAB_s hBA_s hBB_s hcore_s ⊢
+    linarith [hAA_s, hAB_s, hBA_s, hBB_s, hcore_s]
 
   linarith [hST, hTS, hTT]
 

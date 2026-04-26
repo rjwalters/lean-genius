@@ -1,54 +1,7 @@
 # Knowledge Base: erdos-476-oq-05-wip-01
 
-**Last Updated**: 2026-04-26
+**Last Updated**: 2026-04-25
 Insights accumulated during research on this problem.
-
----
-
-## Session 2026-04-26 (Session 3) — B-All-Redundancy Analysis; |A|≥4,|B|≥3 Sorry Confirmed Blocked
-
-**Mode**: REVISIT
-**Outcome**: blocked (deeper analysis; no Lean code changes)
-
-### What I Did
-
-- Analyzed the remaining sorry at line 844 (`|A|≥4 or |B|≥4` all-redundancy case) in depth
-- Proved **B-all-redundancy from A-all-redundancy**: if every x ∈ A+B has ≥ 2 A-reps (hrep2),
-  then ∀ b ∈ B, A+(B\{b}) = A+B. Proof: if x ∉ A+(B\{b₀}), all reps of x use b₀ → at most 1 rep,
-  contradicting hrep2. (~10-15 lines in Lean, using hrep2 already proved at lines 782-804)
-- Attempted orbit argument via B-all-redundancy: for |A|=2, B is closed under a fixed shift d=a₁-a₀,
-  giving |B| ≥ p. But for |A| ≥ 3, the shift d varies with b — no fixed d.
-- Verified for |A|=4, |B|=3: hineq gives equality 12 = 2*6, so every element has EXACTLY rep = 2
-  (the counting is tight). Bipartite graph analysis shows no immediate contradiction from rep = 2.
-- Confirmed the Aristotle companion file (lines 258-265) acknowledges the same blocker.
-
-### Key Findings
-
-- **B-all-redundancy derivation** (elementary, ~15 Lean lines): From `hrep2` (rep_A(x) ≥ 2 for all
-  x ∈ A+B), B is also all-redundant: ∀ b ∈ B, A+(B\{b}) = A+B. The companion file already has
-  this at lines 145-162 via `non_redundant_b_gives_a`. Can be added to main file.
-- **Orbit argument barrier**: The |B|=2 orbit argument works because A is closed under the UNIQUE
-  nonzero difference d of B (forced by |B|=2). For |B|≥3 and |A|≥3, B-all-redundancy gives: ∀ b ∈ B,
-  ∃ d ∈ (A-A)\{0}: b+d ∈ B. But d varies with b — can't apply orbit argument.
-- **tight rep=2 case** (|A|=4, |B|=3): Counting is exactly tight: 4*3=12=2*6. So rep_A(x)=2 exactly
-  for all x. Bipartite graph is 3-regular (A-side) and 2-regular ((A+B)-side). No immediate
-  arithmetic contradiction found.
-- **Assessment: BLOCKED** — The sorry at line 844 requires either (1) Kneser's theorem ~200-300 lines,
-  (2) a polynomial/Fourier approach (~100+ lines), or (3) complete proof restructuring.
-
-### Files Modified
-
-- None (analysis only)
-
-### Next Steps
-
-1. **Build B-all-redundancy into main proof** (~15 lines, easy): Add `hredB_eq` after `hredA_eq`
-   in the sorry block. Gives more hypotheses for future attempts.
-2. **Kneser build**: For ZMod p, Kneser reduces to CD (trivial subgroups), but the STRUCTURAL
-   application differs. The "Kneser route" for Vosper is: use Kneser to show all-redundant A
-   forces A+B to be a coset (impossible in ZMod p with |A+B| < p). Estimated: ~200-300 lines.
-3. **Alternative: polynomial method** using combinatorial Nullstellensatz over ZMod p.
-4. **Flag as BLOCKED and move on** (3 sessions on this sorry with |A|≥4,|B|≥3 sub-case).
 
 ---
 
@@ -153,12 +106,4 @@ theorems. Recommend Aristotle submission as first approach.
 
 ## Dead Ends
 
-- **Counting argument for |A|≥4, |B|≥3**: Double counting gives hineq (|A|-2)(|B|-2) ≥ 2 which
-  HOLDS (not contradicted) for all such cases. The counting approach is exhausted.
-- **Orbit argument via B-all-redundancy**: B-all-redundancy gives ∀ b ∈ B, ∃ d ∈ (A-A)\{0}: b+d ∈ B.
-  But d varies with b (no fixed d), so the orbit/periodicity argument doesn't apply for |A| ≥ 3.
-- **Iterative element removal**: A being all-redundant (removing any a preserves A+B) does NOT imply
-  that A\{a} is also all-redundant. Cannot iterate removal to reach |A|=2.
-- **Inductive hypothesis (IH) application**: (A\{a₀}, B) with all-redundant A has |(A\{a₀})+B| =
-  |A|+|B|-1 > |A\{a₀}|+|B|-1, so Vosper equality condition fails. IH doesn't apply.
-- **IH via B-perspective**: Symmetric argument. (A, B\{b₀}) with B all-redundant has same issue.
+[Approaches known not to work will be documented here]

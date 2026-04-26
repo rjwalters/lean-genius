@@ -53,8 +53,7 @@
       "Strict monotonicity of x↦x⁵+x (via Odd.strictMono_pow) simultaneously gives both uniqueness of the Bring radical and its anti-monotonicity in t",
       "The IVT bound ±(|t|+1) works for all t because (|t|+1)⁵ ≥ 0 dominates the |t| needed to ensure a sign change, regardless of whether t is positive or negative",
       "The Bring radical is an odd function (BR(-t) = -BR(t)) reflecting the odd symmetry of f(x) = x⁵+x; this follows from the uniqueness theorem applied to -BR(t) as a root of x⁵+x+(-t)=0",
-      "Bring (1786) discovered this reduction 46 years before Galois's group theory (1832) and 38 years before Abel's impossibility proof (1824). He worked without any concept of group or Galois group — the reduction is a purely algebraic manipulation. This historical gap is mathematically significant: the Bring-Jerrard form reduces the quintic to its simplest parametric shape, which then becomes the exact input needed for Galois's argument that $S_5$ is not solvable. The two results are conceptually complementary even though they were discovered decades apart.",
-      "Hermite (1858) solved the quintic using elliptic modular functions, showing that the Bring-Jerrard form y⁵ + py + q = 0 can be solved via values of elliptic functions — not by radicals, but by a transcendental extension. The Bring radical BR(t) is itself a special value of the hypergeometric function ₂F₁: BR(t) = -t · ₂F₁(1/5, 4/5; 6/5; (5t/4)⁴ · 256), linking the algebraic obstruction (no radical formula) to the analytic world of hypergeometric functions and modular forms."
+      "Bring (1786) discovered this reduction 46 years before Galois's group theory (1832) and 38 years before Abel's impossibility proof (1824). He worked without any concept of group or Galois group — the reduction is a purely algebraic manipulation. This historical gap is mathematically significant: the Bring-Jerrard form reduces the quintic to its simplest parametric shape, which then becomes the exact input needed for Galois's argument that $S_5$ is not solvable. The two results are conceptually complementary even though they were discovered decades apart."
     ]
   },
   "sections": [
@@ -171,51 +170,6 @@
       "targetId": "abel-ruffini-oq-04-oq-02",
       "relationship": "related",
       "description": "$S_2, S_3, S_4$ are solvable — the positive side of the threshold that explains why degrees 1–4 have radical formulas while degree 5 requires the Bring radical. The biconditional '$S_n$ is solvable iff $n \\leq 4$' from this entry, combined with the Galois bridge from `abel-ruffini`, precisely characterizes for which degrees the Bring-Jerrard approach is forced: exactly degree $\\geq 5$."
-    },
-    {
-      "targetId": "abel-ruffini-oq-04-oq-02-oq-02",
-      "relationship": "related",
-      "description": "Alternating groups: $A_n$ solvable iff $n \\leq 4$ — the alternating-group version of the threshold. The axiom `bringRadical_not_in_radicals` in this file rests on the chain: the generic Bring-Jerrard quintic $y^5 + y - t$ has Galois group $S_5$ over $\\mathbb{Q}(t)$; $S_5$ is not solvable because $[S_5, S_5] = A_5$ and $A_5$ is simple and non-abelian (proved in `abel-ruffini-oq-04-oq-02-oq-02` as the threshold fact); by Galois's criterion, the roots cannot be expressed in radicals. The alternating group classification made precise that the Bring radical is the only viable 'next vocabulary' beyond degree-4 radical formulas."
-    },
-    {
-      "targetId": "fundamental-theorem-algebra",
-      "relationship": "foundational",
-      "description": "The Fundamental Theorem of Algebra guarantees that the depressed quintic and Bring-Jerrard normal form have roots in $\\mathbb{C}$, providing the complex-number setting for the polynomial definitions in this file (`quinticPoly`, `depressedQuintic`, `bringJerrardPoly` are defined over $\\mathbb{C}$). The IVT existence proof for BR in this entry works over $\\mathbb{R}$; the FTA is why the Bring-Jerrard reduction can be stated over $\\mathbb{C}$ in the axiom `bringJerrard_reduction`."
-    },
-    {
-      "targetId": "abel-ruffini-galois-extensions-oq-04",
-      "relationship": "related",
-      "description": "Formalizes the Jordan-Hölder uniqueness theorem for groups — relevant to the algebraic significance section where the composition series of $S_5$ (uniquely $S_5 \\supset A_5 \\supset \\{e\\}$ with factors $A_5$ and $\\mathbb{Z}/2\\mathbb{Z}$) is invoked to explain why the Bring radical cannot be radical-expressed. Jordan-Hölder guarantees that this composition series is the unique one for $S_5$, making the non-solvability obstruction absolute and canonical."
-    },
-    {
-      "targetId": "hermite-lindemann",
-      "relationship": "related",
-      "description": "Hermite-Lindemann transcendence theorem (e^α is transcendental when α ≠ 0 is algebraic) arises from the same 1873 Hermite who solved the quintic (1858) via elliptic functions. The path from the Bring radical — not expressible in radicals but expressible via ₂F₁ — to Hermite-Lindemann runs through the theory of periods of algebraic curves: both results reflect the transcendence of values of transcendental functions at algebraic points."
-    },
-    {
-      "targetId": "vietas-formulas",
-      "relationship": "foundational",
-      "description": "Vieta's formulas express the coefficients of a polynomial as elementary symmetric functions of its roots. The Bring-Jerrard reduction (this entry) systematically eliminates the degree-4, -3, and -2 terms via Tschirnhaus transformations; Vieta's formulas are the algebraic dictionary that translates between \"eliminating a coefficient\" and \"imposing a symmetric condition on the roots.\" Without Vieta, the Tschirnhaus step (substituting y = x² + ax to kill the degree-4 term) would not be reducible to a system of equations in the root-sum-and-product structure."
-    },
-    {
-      "targetId": "solution-of-cubic-oq-03",
-      "relationship": "foundational",
-      "description": "The cubic's Cardano formula x = ∛(-q/2 + √(q²/4 + p³/27)) + ∛(-q/2 - √(q²/4 + p³/27)) is the degree-3 ancestor of the quintic's Bring-Jerrard reduction. Both use the depressed normal form (kill the n-1 degree term via substitution x → x - coefficient/(n·leading)); both reach a \"reduced\" form (depressed cubic t³ + pt + q = 0 vs Bring-Jerrard y⁵ + py + q = 0). The key difference: the depressed cubic is solvable by the discriminant √(q²/4 + p³/27), while the Bring-Jerrard form is not solvable by any radical expression but IS solvable by the Bring radical."
-    },
-    {
-      "targetId": "puiseux-theorem",
-      "relationship": "complementary",
-      "description": "Puiseux's theorem shows the field of Puiseux series (fractional power series $\\sum_{k \\geq k_0} c_k z^{k/n}$) is algebraically closed — every polynomial equation has a Puiseux series solution. This provides an explicit 'beyond-radicals' closed form for the Bring-Jerrard quintic $y^5 + py + q = 0$: its roots ARE expressible as Puiseux series in $p, q$ even though not expressible in radicals. The Bring radical BR$(t)$ is the simplest instance — the root of $x^5 + x + t = 0$ as a Puiseux series in $t$, with leading term $-t$ from the implicit function theorem. The Puiseux theorem occupies the next level of expressibility above radicals: where Abel-Ruffini closes the door on radical formulas, Puiseux opens the door to fractional power series — a strictly larger function class capturing all algebraic functions."
-    },
-    {
-      "targetId": "inverse-galois-oq-06",
-      "relationship": "complementary",
-      "description": "Proves $A_5 \\cong \\text{Gal}(x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5/\\mathbb{Q})$ via Eisenstein at $p=5$ and Sylow theory — a concrete quintic with non-solvable Galois group. Applying the linear Tschirnhaus substitution from this file ($y = x + (-5)/5 = x - 1$) depresses this polynomial to a quintic with no $y^4$ term; after the full Bring-Jerrard reduction (Steps 2-3, axiomatized here), it maps to a Bring-Jerrard form whose roots are expressible via the Bring radical. The polynomial's Galois group $A_5$ blocks radical expressibility (by ), confirming the Bring radical is genuinely necessary — a concrete instantiation of the constructive machinery in this file."
-    },
-    {
-      "targetId": "solution-of-cubic-oq-05",
-      "relationship": "foundational",
-      "description": "Proves the Tschirnhaus substitution $m = t - 5p/6$ reduces Ferrari's resolvent cubic to depressed form for the quartic — the degree-4 analogue of the Step-1 linear depression in this file. The quartic's resolvent cubic has degree 3 and is solvable by Cardano's formula (since $S_3$ is solvable), completing the quartic radical solution. By contrast, the quintic's resolvent has degree 6 (higher, not lower) — the precise reason Lagrange's resolvent method fails at degree 5 and the Bring-Jerrard reduction becomes necessary. Together the two entries exhibit the structural transition: at degree 4, the resolvent method terminates with radicals; at degree 5, it does not, and the Bring radical takes over."
     }
   ],
   "leanFile": {

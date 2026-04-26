@@ -20,54 +20,6 @@ symmetric polynomials: `s_λ = det[h_{λᵢ-i+j}]`. The proof route via SSYT and
 
 ---
 
-## Session 2026-04-26 (Session 8) — ssytSchurFin_two_row Assembled from 3 Components
-
-**Mode**: REVISIT (RICH knowledge tier)
-**Outcome**: progress — `ssytSchurFin_two_row` assembly proof complete; 2 focused sorries isolated
-
-### What I Did
-
-1. Defined `ColStrictSym a b P Q`: column-strict predicate on `Sym (Fin n) a × Sym (Fin n) b`
-   pairs using sorted representatives — `∀ i < min a b, P.sort[i] < Q.sort[i]`
-2. Added `jdt_weight_sum (n a b)` (sorry): the JDT bijection identity
-   `∑_{non-col-strict (P,Q)} weight = h_{a+1} * h_{b-1}` (or 0 if b=0)
-3. Added `ssytFin_two_row_eq_sum_colstrict` (sorry): SSYT decomposition
-   `ssytSchurFin n 2 sh = ∑_{col-strict (P,Q)} weight`
-4. Proved `sym_pair_sum_partition` (genuine proof via `Fintype.sum_subtype_add_sum_subtype`):
-   `∑_{col-strict} weight + ∑_{non-col-strict} weight = h_a * h_b`
-5. Assembled `ssytSchurFin_two_row` with real proof body:
-   `rw [ssytFin_two_row_eq_sum_colstrict]; exact eq_sub_of_add_eq (jdt_weight_sum ▸ sym_pair_sum_partition)`
-
-### Key Findings
-
-- **Assembly pattern**: `eq_sub_of_add_eq` converts `A + B = C → A = C - B`, allowing
-  `ssytSchurFin_two_row = h_a*h_b - h_{a+1}*h_{b-1}` from the partition identity + jdt identity
-- **`Fintype.sum_subtype_add_sum_subtype`**: `∑_{p x} f + ∑_{¬p x} f = ∑ f` — cleanly splits
-  the full pair-product sum into col-strict and non-col-strict parts
-- **Remaining work**: 2 focused sorries (jdt bijection ~80 lines, row-decomp ~60 lines)
-  plus the k≥3 sorry. Each is now a self-contained mathematical statement.
-- **Sorry count**: 2 → 3 (net +1, but structural improvement: ssytSchurFin_two_row assembly
-  is proved; remaining sorries are precisely scoped vs. one monolithic k=2 sorry)
-
-### Files Modified
-
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (401 → 457 lines)
-  - Added `ColStrictSym` definition
-  - Added `jdt_weight_sum` (sorry)
-  - Added `ssytFin_two_row_eq_sum_colstrict` (sorry)
-  - Added `sym_pair_sum_partition` (proved via `Fintype.sum_subtype_add_sum_subtype`)
-  - Updated `ssytSchurFin_two_row` with real assembly proof
-
-### Next Steps
-
-1. **Prove `ssytFin_two_row_eq_sum_colstrict`** (~60 lines): bijection between
-   `SSYTFin n 2 sh` and col-strict pairs via row projection; likely via `Fintype.sum_equiv`
-2. **Prove `jdt_weight_sum`** (~80 lines): the JDT bijection — map non-col-strict (P,Q)
-   to all (P',Q') of shapes (a+1,b-1); show weight preserved and it's a bijection
-3. **k≥3**: algebraic LGV or RSK (longer term)
-
----
-
 ## Session 2026-04-25 (Session 6) — k=2 Case Split + ssytSchurFin_two_row Framework
 
 **Mode**: REVISIT (RICH knowledge tier, score 53)

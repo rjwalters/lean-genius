@@ -20,11 +20,11 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-24",
-    "axiomCount": 1,
-    "assumptions": "1 axiom: G2_der_dimension (finrank ℝ OctonionDerSubmodule = 14). Previous G2_is_octonion_aut (Nat.card OctonionAut = 14) was replaced: Nat.card of an infinite Lie group equals 0 in type theory, making it mathematically incorrect. G2_der_dimension targets the Lie algebra dimension directly. All supporting lemmas fully proved.",
-    "lineCount": 1030,
-    "theoremCount": 32,
-    "definitionCount": 15,
+    "axiomCount": 5,
+    "assumptions": "5 axioms: G2_is_octonion_aut (G₂ ≅ Aut(𝕆), requires Lie group theory not yet in Mathlib), freudenthal_tits_f4/e6/e7/e8 (the four exceptional Lie algebra types from the magic square construction). All supporting lemmas (norm preservation, real-part preservation, imaginary-subspace closure) are fully proved.",
+    "lineCount": 583,
+    "theoremCount": 22,
+    "definitionCount": 11,
     "originalContributions": [
       "OctonionAlgHom / OctonionAut: structures for octonion algebra homomorphisms and automorphisms",
       "alg_aut_preserves_norm: automorphisms preserve the norm (proved via polarization and imaginary decomposition)",
@@ -39,7 +39,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Octonions and exceptional structures** form one of the most surprising threads in mathematics, connecting seemingly unrelated areas across two centuries.\n\nThe octonions were discovered in December 1843 by John T. Graves, a friend of William Rowan Hamilton. Hamilton had just invented the quaternions, and Graves immediately generalized the construction via Cayley's doubling process (the Cayley-Dickson construction). Graves wrote to Hamilton on 26 December 1843 — two months after Hamilton's famous inspiration on Brougham Bridge — reporting his discovery of 'octaves'. Arthur Cayley independently published the octonions in 1845, and they are sometimes called Cayley numbers. The key algebraic feature: octonions are non-associative but alternative ($x(xy) = (xx)y$ and $(xy)y = x(yy)$), which weakens but preserves many properties of associative division algebras.\n\nAdolf Hurwitz's theorem (1898) established the definitive classification: the only normed division algebras over $\\mathbb{R}$ are $\\mathbb{R}$, $\\mathbb{C}$, $\\mathbb{H}$, and $\\mathbb{O}$, in dimensions 1, 2, 4, 8. Hurwitz proved this via his composition theorem: $\\|x\\|^2 \\|y\\|^2 = \\|xy\\|^2$ is possible in $\\mathbb{R}^n$ only for $n \\in \\{1,2,4,8\\}$. His original proof used the theory of bilinear forms and is related to the Radon-Hurwitz numbers in topology.\n\nThe Killing-Cartan classification of simple Lie algebras (Wilhelm Killing 1888, Élie Cartan 1894) found, besides the four classical infinite families ($A_n, B_n, C_n, D_n$), exactly five exceptional types: $G_2$ (rank 2, dim 14), $F_4$ (rank 4, dim 52), $E_6$ (rank 6, dim 78), $E_7$ (rank 7, dim 133), $E_8$ (rank 8, dim 248). Killing discovered them by analyzing Dynkin diagrams; Cartan made the classification rigorous. The exceptional types were initially mysterious accidents of classification.\n\nÉlie Cartan identified $G_2$ as $\\text{Aut}(\\mathbb{O})$ in 1914, making the first explicit connection between octonions and exceptional Lie groups. The connection deepened through the 20th century. Hans Freudenthal (1954) and Jacques Tits (1966) — independently and in a somewhat collaborative back-and-forth — constructed the *magic square*: from any pair $(A, B)$ of normed division algebras, form $\\mathfrak{L}(A,B) = \\mathfrak{der}(A) \\oplus (\\mathrm{Im}\\,A \\otimes \\mathrm{Im}\\,B) \\oplus \\mathfrak{der}(B)$ with a specific Lie bracket. The $4 \\times 4$ table indexed by $\\{\\mathbb{R}, \\mathbb{C}, \\mathbb{H}, \\mathbb{O}\\}$ produces all five exceptional simple Lie algebras. The 'magic' is the symmetry $\\mathfrak{L}(A,B) \\cong \\mathfrak{L}(B,A)$ — non-obvious from the definition, related to triality (the $S_3$ symmetry of $D_4 = \\mathfrak{so}(8)$ permuting the two spinor representations and the vector representation).\n\nIn string theory, $E_8 \\times E_8$ heterotic string theory (Gross, Harvey, Martinec, Rohm, 1985) requires the exceptional $E_8$ gauge symmetry to cancel anomalies in 10 spacetime dimensions — the condition $\\dim(E_8 \\times E_8) = 2 \\times 248 = 496$ arises from a deep topological constraint. $G_2$ manifolds appear in M-theory compactification: to obtain $\\mathcal{N}=1$ supersymmetry in 4D, one compactifies M-theory on a 7-manifold with $G_2$ holonomy (Dominic Joyce's construction, 1996). The octonions and exceptional Lie groups thus appear at the foundations of string theory and M-theory in ways not yet fully understood.\n\nJohn Baez's 2002 survey 'The Octonions' (Bulletin of the AMS) synthesized the connections between octonions, exceptional algebras, and physics, becoming an influential entry point to this literature.",
+    "historicalContext": "Hurwitz's theorem (1898) establishes that normed division algebras over ℝ exist only in dimensions 1, 2, 4, and 8 — corresponding to ℝ, ℂ, ℍ, and 𝕆. This result has profound implications beyond algebra: the four normed division algebras are intimately connected to the five exceptional simple Lie algebras through the Freudenthal-Tits magic square (1954–1966). The connection was suspected by Élie Cartan as early as 1914, when he identified G₂ as the automorphism group of the octonions. Hans Freudenthal (1954) and Jacques Tits (1966) systematized this into a unified construction: from any two normed division algebras A, B, one builds a Lie algebra 𝔏(A, B) = Der(A) ⊕ (Im A ⊗ Im B) ⊕ Der(B), and the resulting 4×4 table (the 'magic square') produces all five exceptional simple Lie algebras: G₂, F₄, E₆, E₇, E₈. The word 'magic' refers to the surprising symmetry 𝔏(A, B) ≅ 𝔏(B, A), despite the construction not obviously being symmetric.",
     "problemStatement": "Show that Aut(𝕆) ⊆ O(7) — the automorphism group of the octonions acts by isometries on the 7-dimensional imaginary subspace Im(𝕆) — and axiomatize the identification G₂ = Aut(𝕆) along with the four exceptional Lie algebras F₄, E₆, E₇, E₈ arising from the Freudenthal-Tits magic square.",
     "text": "Formalizes the connection between the four normed division algebras and the five exceptional Lie algebras. Proves Aut(𝕆) ⊆ O(7) with 0 sorries, axiomatizes G₂ = Aut(𝕆) and the magic square exceptional types F₄, E₆, E₇, E₈.",
     "proofStrategy": "The formalization introduces OctonionAlgHom and OctonionAut structures for algebra homomorphisms and invertible automorphisms. Key lemmas proved: (1) any automorphism φ fixes the unit element e₀ (via the left-identity uniqueness argument); (2) pure imaginary elements y (y[0]=0) satisfy y² = −normSq(y)·e₀; (3) phi_imag_props: automorphisms preserve imaginary elements and their norms; (4) alg_aut_preserves_norm follows by decomposing x = r·e₀ + w (pure imaginary w) and using orthogonality; (5) polarization gives inner product preservation. The exceptional Lie algebra part uses an ExceptionalType inductive type with dimension and rank functions, and proves structural properties (strict ordering, G₂ uniqueness, E₈ maximality) by decidability.",
@@ -62,14 +62,6 @@
   },
   "sections": [
     {
-      "id": "module-overview",
-      "title": "Preamble: Context and Contents",
-      "startLine": 1,
-      "endLine": 63,
-      "summary": "Module documentation places the formalization in context: Hurwitz's theorem (1898) gives 4 normed division algebras, and the Freudenthal-Tits magic square (1954–1966) connects them to 5 exceptional Lie algebras. The contents table distinguishes proved results (0 sorries) from axiomatized ones (deep Lie group results not yet in Mathlib). References: Baez 'The Octonions' (2002), Freudenthal (1964), Tits (1966).",
-      "mathContext": "The magic square table: rows and columns indexed by {ℝ,ℂ,ℍ,𝕆}. Entries: 𝔏(𝕆,ℝ)=F₄, 𝔏(𝕆,ℂ)=E₆, 𝔏(𝕆,ℍ)=E₇, 𝔏(𝕆,𝕆)=E₈, plus G₂=Der(𝕆). The 'magic': 𝔏(A,B)≅𝔏(B,A) despite the definition not being visibly symmetric."
-    },
-    {
       "id": "octonion-automorphisms",
       "title": "§I-II: Octonion Unit and Automorphism Structures",
       "startLine": 64,
@@ -78,44 +70,20 @@
       "mathContext": "An octonion algebra homomorphism φ: 𝕆 → 𝕆 satisfies φ(a+b)=φ(a)+φ(b), φ(r·a)=r·φ(a), and φ(a·b)=φ(a)·φ(b). An automorphism also has a two-sided inverse. The unit element e₀ satisfies e₀·a = a·e₀ = a for all a ∈ 𝕆."
     },
     {
-      "id": "norm-preservation-core",
-      "title": "§III-a: Automorphisms Fix e₀ and Preserve Im(𝕆)",
+      "id": "norm-preservation",
+      "title": "§III: Norm and Inner Product Preservation",
       "startLine": 166,
-      "endLine": 291,
-      "summary": "Private helper lemmas and the core norm result: phi_unit_eq_unit (φ(e₀)=e₀ by surjectivity argument), imag_sq_eq_neg_norm (y²=−‖y‖²e₀ for pure imaginary y), phi_imag_props (φ maps Im(𝕆) to Im(𝕆) isometrically), alg_aut_preserves_norm (φ preserves all norms via real-imaginary decomposition).",
-      "mathContext": "Proof chain: $\\varphi(e_0)=e_0$ (left-identity uniqueness) → $\\varphi(y)^2 = -\\|y\\|^2 e_0$ for $y_0=0$ → $\\|\\varphi(y)\\| = \\|y\\|$ and $\\varphi(y)_0=0$ → $\\|\\varphi(a)\\| = \\|a\\|$ for all $a$ (decompose $a = r e_0 + w$, use orthogonality)."
-    },
-    {
-      "id": "real-part-inner-product",
-      "title": "§III-b: Real Part, Conjugation, and Aut(𝕆) ⊆ O(7)",
-      "startLine": 292,
-      "endLine": 358,
-      "summary": "Defines realPart, imagPart, octConj. Proves real_part_preserved (Re(φ(x))=Re(x)) and alg_aut_preserves_inner (φ preserves the inner product by polarization). Together: Aut(𝕆) fixes e₀, maps Im(𝕆)=ℝ⁷ to itself, and acts isometrically — so Aut(𝕆) ⊆ O(7).",
-      "mathContext": "Polarization: $\\langle \\varphi(x), \\varphi(y) \\rangle = \\frac{1}{2}(\\|\\varphi(x+y)\\|^2 - \\|\\varphi(x)\\|^2 - \\|\\varphi(y)\\|^2) = \\langle x, y \\rangle$. Combined with $\\mathrm{Re}(\\varphi(x))=\\mathrm{Re}(x)$ (real part invariance), we get $\\mathrm{Aut}(\\mathbb{O}) \\subseteq \\mathrm{O}(7)$."
+      "endLine": 360,
+      "summary": "Proves the core structural results: phi_unit_eq_unit (φ(e₀)=e₀), imag_sq_eq_neg_norm (y²=−normSq(y)·e₀ for pure imaginary y), phi_imag_props (φ maps Im(𝕆) to Im(𝕆) with norm preservation), alg_aut_preserves_norm (φ preserves all norms), real_part_preserved (Re(φ(x))=Re(x)), alg_aut_preserves_inner (φ preserves the inner product). These show Aut(𝕆) ⊆ O(7).",
+      "mathContext": "The key chain: (1) φ(e₀)=e₀ by left-identity uniqueness; (2) for y with y[0]=0: y²=−|y|²e₀ (direct computation); (3) φ(y)²=−|y|²e₀ (applying φ and using (1)); (4) |φ(y)|²=|y|² from component 0; (5) φ(y)[0]=0 from 2·(φ(y)[0])²=0; (6) norm preservation for all x by decomposition x=r·e₀+w; (7) inner product preservation by polarization |φ(x)+φ(y)|²=|x+y|²."
     },
     {
       "id": "exceptional-lie-algebras",
-      "title": "§IV: G₂, ExceptionalType, and Der(𝕆) Lie Algebra",
+      "title": "§IV-VI: G₂ and the Exceptional Lie Algebras",
       "startLine": 359,
-      "endLine": 587,
-      "summary": "Introduces ExceptionalType inductive type for G₂,F₄,E₆,E₇,E₈ with dimensions (14,52,78,133,248) and ranks (2,4,6,7,8). Defines Der(𝕆) via the OctonionDer structure (zeroDer, addDer, smulDer, commDer with proved Jacobi identity), formalizing the Lie algebra structure. Defines OctonionDerSubmodule as a Submodule of End_ℝ(ℝ⁸) carrying the inherited finite-dimensional vector space structure.",
-      "mathContext": "G₂ has dimension 14 = dim(SO(7)) − 7 = 21 − 7 (Aut(𝕆) acts on Im(𝕆)≅ℝ⁷ constrained by cross-product). Der(𝕆) = {D : 𝕆 →ₗ ℝ 𝕆 | D(ab) = D(a)b + aD(b)}. Lie bracket: [D₁,D₂] = D₁∘D₂ − D₂∘D₁ (proved to be a derivation via cancellation of cross terms)."
-    },
-    {
-      "id": "explicit-g2-derivations",
-      "title": "§VIII: Explicit G₂ Derivation Basis (octDer0–octDer13)",
-      "startLine": 588,
-      "endLine": 854,
-      "summary": "Exhibits 14 explicit ℝ-linear derivations (octDer0-octDer13) as concrete LinearMaps with {−1,0,1} matrix entries. Each is proved to satisfy the Leibniz rule via fin_cases + ring. The bundle octDerElems packages all 14. The axiom G2_der_dimension asserts Module.finrank ℝ OctonionDerSubmodule = 14 (G₂.dim), completing the identification 𝔤₂ ≅ Der(𝕆).",
-      "mathContext": "Each $\\mathrm{octDer}_k : \\mathbb{R}^8 \\to \\mathbb{R}^8$ is a $\\{-1,0,1\\}$-matrix linear map satisfying the Leibniz rule. Example: $\\mathrm{octDer}_0(x) = (0, 0, -x_5, x_4, -x_3, x_2, 0, 0)$. The $14 \\times 14$ evaluation matrix at witness pairs has $\\det = 1$, proving linear independence. Axiom: $\\mathrm{finrank}_\\mathbb{R}(\\mathrm{Der}(\\mathbb{O})) = 14 = \\dim G_2$."
-    },
-    {
-      "id": "magic-square-structural-summary",
-      "title": "§V-VII: Magic Square, Structural Consequences, and Hurwitz Correspondence",
-      "startLine": 855,
-      "endLine": 1030,
-      "summary": "Part V axiomatizes the magic square dimensions: freudenthal_tits_f4/e6/e7/e8 (F₄=52, E₆=78, E₇=133, E₈=248) as definitional equalities. Part VI proves structural properties by decidability: exceptional_dims_strict_mono, G2_unique_low_rank, E8_is_largest, magic_square_corners_distinct, exceptional_chain. Part VII synthesizes the Hurwitz-exceptional correspondence. Closes with #check summary of all main results.",
-      "mathContext": "Structural: $14 < 52 < 78 < 133 < 248$ (dimensions), $2 < 4 < 6 < 7 < 8$ (ranks), $G_2$ is the unique exceptional type with rank $< 4$. Magic square: $\\mathfrak{L}(\\mathbb{O},\\mathbb{R})=F_4$, $\\mathfrak{L}(\\mathbb{O},\\mathbb{C})=E_6$, $\\mathfrak{L}(\\mathbb{O},\\mathbb{H})=E_7$, $\\mathfrak{L}(\\mathbb{O},\\mathbb{O})=E_8$. Physical: $E_8 \\times E_8$ heterotic string dim $= 2 \\times 248 = 496$."
+      "endLine": 583,
+      "summary": "Introduces ExceptionalType inductive type for G₂,F₄,E₆,E₇,E₈ with dimensions (14,52,78,133,248) and ranks (2,4,6,7,8). Axiomatizes G2_is_octonion_aut (G₂=Aut(𝕆)) and the four Freudenthal-Tits magic square exceptional types. Proves exceptional_dims_strict_mono, G2_unique_low_rank, E8_is_largest, magic_square_corners_distinct, exceptional_chain by decidability.",
+      "mathContext": "G₂ has dimension 14 = dim(SO(7)) − 7 = 21 − 7 (Aut(𝕆) acts on Im(𝕆)≅ℝ⁷ and is constrained by the cross-product structure). The Freudenthal-Tits magic square: 𝔏(A,B) = Der(A) ⊕ (ImA⊗ImB) ⊕ Der(B). Corners: 𝔏(𝕆,ℝ)=F₄(52), 𝔏(𝕆,ℂ)=E₆(78), 𝔏(𝕆,ℍ)=E₇(133), 𝔏(𝕆,𝕆)=E₈(248)."
     }
   ],
   "conclusion": {
@@ -125,24 +93,17 @@
       "Prove G₂ ≅ Aut(𝕆) formally in Lean: requires Lie group theory (compact simple groups, root systems) not yet in Mathlib as of 2026-04.",
       "Formalize the Tits construction 𝔏(A,B) as a Lean definition and prove it satisfies the Jacobi identity.",
       "Prove the magic square symmetry 𝔏(A,B) ≅ 𝔏(B,A) — connected to triality (S₃ symmetry of the D₄ Dynkin diagram).",
-      "Connect to the proved Hurwitz theorem in HurwitzTheorem.lean: show that the 4 admissible dimensions correspond to exactly 5 exceptional simple Lie algebras.",
-      "Albert algebra and F₄: The 3×3 Hermitian octonionic matrices $\\mathfrak{h}_3(\\mathbb{O})$ form the 27-dimensional Albert algebra — the unique exceptional Jordan algebra. Its automorphism group is F₄ and its structure group is E₆. Formalizing the Albert algebra in Lean would require a Jordan algebra typeclass library, and is a natural continuation: F₄ = $\\text{Aut}(\\mathfrak{h}_3(\\mathbb{O}))$ mirrors G₂ = Aut(𝕆) one rung up in the magic square.",
-      "Cayley plane OP² and E₆/F₄: The octonionic projective plane OP² (Cayley plane) has isometry group F₄ and collineation group E₆. Constructing OP² formally as a projective plane over a non-associative division algebra, and proving these group actions, would require extending Lean's projective geometry library to the non-associative setting — a significant but tractable formalization challenge connecting the algebraic and geometric sides of the exceptional story."
+      "Connect to the proved Hurwitz theorem in HurwitzTheorem.lean: show that the 4 admissible dimensions correspond to exactly 5 exceptional simple Lie algebras."
     ]
   },
   "leanFile": {
-    "imports": [
-      "Mathlib",
-      "Proofs.HurwitzTheorem"
-    ],
-    "opens": [
-      "HurwitzTheorem"
-    ],
+    "imports": ["Mathlib", "Proofs.HurwitzTheorem"],
+    "opens": ["HurwitzTheorem"],
     "namespace": "HurwitzTheoremOQ04",
-    "lineCount": 1030,
-    "axiomCount": 1,
-    "theoremCount": 32,
-    "definitionCount": 15,
+    "lineCount": 583,
+    "axiomCount": 5,
+    "theoremCount": 22,
+    "definitionCount": 11,
     "sorries": 0,
     "path": "Proofs/HurwitzTheoremOQ04.lean"
   },
@@ -150,27 +111,12 @@
     {
       "targetId": "hurwitz-theorem",
       "relationship": "extends",
-      "description": "Parent: the main Hurwitz theorem formalization (normed division algebras in dimensions 1, 2, 4, 8). This file adds the connection to exceptional Lie groups."
+      "description": "Extends the main Hurwitz theorem formalization with the connection to exceptional Lie groups"
     },
     {
       "targetId": "hurwitz-theorem-oq-03",
       "relationship": "sibling",
-      "description": "Sibling open question: n-square identities and normed division algebras — another face of the Hurwitz series"
-    },
-    {
-      "targetId": "abel-ruffini",
-      "relationship": "related",
-      "description": "Both involve the deep interplay between algebraic structure and group theory. Abel-Ruffini uses S₅ simple (via A₅) to obstruct radical solvability; this file uses Aut(𝕆) = G₂ simple to establish the exceptional hierarchy."
-    },
-    {
-      "targetId": "fundamental-theorem-algebra",
-      "relationship": "related",
-      "description": "Fundamental theorem of algebra establishes ℂ as algebraically closed — the starting point for understanding why ℝ, ℂ, ℍ, 𝕆 are the only normed division algebras over ℝ. The Hurwitz series builds directly on this algebraic distinction."
-    },
-    {
-      "targetId": "hurwitz-theorem-oq-03-oq-01",
-      "relationship": "sibling",
-      "description": "Sub-question of the Hurwitz series: further exploration of n-square identity consequences and their Lean formalization"
+      "description": "Sibling open question: n-square identities and normed division algebras"
     }
   ],
   "sorries": 0

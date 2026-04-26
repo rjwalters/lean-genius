@@ -1,7 +1,7 @@
 {
   "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
   "title": "Complete Nonderogatory to Cyclic Vector: The General Case (All Fields)",
-  "phase": "ACT",
+  "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -49,22 +49,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: companionMatrix_cyclic_e0 proved (no sorry). Main theorem modularized: only nonderogatory_similar_companion (RCF) remains as sorry. PR #12510.",
-    "builtItems": [
-      "sum_mulVec_dist: mulVec distributes over Finset sums (CayleyHamiltonMinpolyOQ05OQ01OQ04.lean)",
-      "aeval_eq_range_sum: aeval as sum over range(natDegree+1) (CayleyHamiltonMinpolyOQ05OQ01OQ04.lean)",
-      "companionMatrix_cyclic_e0: e0 is cyclic for C(p), proved via orbit lemma, NO SORRY (CayleyHamiltonMinpolyOQ05OQ01OQ04.lean:226)",
-      "nonderogatory_similar_companion: M~C(minpoly M), sorry=RCF theorem (CayleyHamiltonMinpolyOQ05OQ01OQ04.lean:269)"
-    ],
+    "progressSummary": "NEW: Selected by Seeker. Prior work (oq-05-oq-01 through incomplete-01) has proved all auxiliary lemmas; only the main sorry remains. The direct PID route is blocked; alternative routes (companion matrix, span argument) need Mathlib survey.",
+    "builtItems": [],
     "insights": [
       "The blocking step is the PID structure theorem: K^n ≅ K[X]/(d1) ⊕ … ⊕ K[X]/(dr) as K[X]-modules",
       "nonderogatory forces r=1 in the cyclic decomposition, giving K^n ≅ K[X]/(minpoly)",
       "cyclic_iff_ann_eq_minpoly (already proven) reduces the problem to: ∃ v, ann(v) = (minpoly)",
       "companion matrix approach: if M ~ companion(charpoly), then e1 is a cyclic vector for companion, and cyclic_vector_of_similar transfers it to M",
-      "Whether rational canonical form / companion similarity exists in Mathlib is the key unknown",
-      "companionMatrix_cyclic_e0 is provable by orbit argument: C(p)^k*e0=ek then evaluate at natDegree position",
-      "by_contra + leadingCoeff extraction cleanly isolates the zero coefficient contradiction",
-      "Modular proof structure: RCF similarity (sorry) + cyclic e0 (proved) + similarity transfer (proved)"
+      "Whether rational canonical form / companion similarity exists in Mathlib is the key unknown"
     ],
     "mathlibGaps": [
       "Module.InvariantFactors or PID cyclic decomposition theorem",
@@ -72,10 +64,10 @@
       "Finrank-based argument for span of orbit: does LinearMap.span_orbit_eq_top exist?"
     ],
     "nextSteps": [
-      "Prove nonderogatory_similar_companion: needs PID module structure / RCF theorem",
-      "Check if Mathlib LinearAlgebra.RationalCanonicalForm or similar exists (search v4.26+)",
-      "Alternative: build minimal PID structure theorem ~500 lines (V cyclic iff ann ideal principal)",
-      "Consider: can we avoid full RCF by using Module.AEval + annihilator directly?"
+      "Search Mathlib for 'companion' in Matrix namespace",
+      "Search Mathlib for 'rationaCanonicalForm' or 'invariantFactors'",
+      "Check if primary decomposition approach is feasible: Module.primaryDecomposition in Mathlib",
+      "Try dimension argument: span{v, Mv, …, M^(n-1)v} has dim n iff ann(v) = (minpoly) — use rank-nullity"
     ]
   },
   "tags": [

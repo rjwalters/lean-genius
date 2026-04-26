@@ -38,7 +38,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED (session 21): 1 sorry (vosper_case1_exists, Kneser case). Aristotle job 1476ea38 returned COMPLETE_WITH_ERRORS. Counting fails for |A|=3,|B|=4 case (12≤12 not a contradiction). Kneser theorem not in Mathlib.",
+    "progressSummary": "IN-PROGRESS: 1 sorry remains (vosper_case1_exists, Case 1 existence). hpos proved in Session 20 via 3-way case split + ZMod arithmetic. Aristotle job a5594e66 running on case1_exists.",
     "builtItems": [
       "isAP_sdiff_card: proved A\\A.image(·+d)={a} for AP(a,d) with d≠0, |A|<p — key: start a has no predecessor (Erdos476OQ05Problem.lean:153)",
       "vosper_ap_sdiff_card: structured proof using isAP_sdiff_card, hunion, h_sdiff_one — only hpos (position analysis) remains (Erdos476OQ05Problem.lean:207)",
@@ -73,9 +73,9 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "No tractable path without Kneser theorem in Mathlib",
-      "Submit to Aristotle again with different approach when infrastructure improves",
-      "Monitor Mathlib for Kneser theorem additions"
+      "Check Aristotle job a5594e66 for case1_exists result",
+      "If Aristotle fails: double-counting argument proves |A|=|B|=3 case (card_eq_sum_card_fiberwise)",
+      "Larger |A|,|B|: shifting/compression methods needed (not in Mathlib)"
     ]
   },
   "tags": [
