@@ -38,7 +38,7 @@
   {
     "id": "ann-erdos-1-wip-01-pow2-sum-inj-both",
     "proofId": "erdos-1-wip-01",
-    "range": { "startLine": 60, "endLine": 96 },
+    "range": { "startLine": 60, "endLine": 106 },
     "type": "insight",
     "title": "Binary Uniqueness by Strong Induction: Four-Case Analysis",
     "content": "This is the mathematical heart of the proof. `pow2_sum_inj` establishes that if $S, T \\subseteq \\{0,\\ldots,n-1\\}$ satisfy $\\sum_{i \\in S} 2^i = \\sum_{i \\in T} 2^i$, then $S = T$. The proof proceeds by strong induction on $n$, splitting on whether $n-1$ belongs to $S$ and $T$ independently.\n\n**Case (both contain $n-1$)**: `Finset.add_sum_erase` separates out the $2^{n-1}$ contribution from each sum. Canceling it gives equal sums over $S \\setminus \\{n-1\\}$ and $T \\setminus \\{n-1\\}$, and the IH closes.\n\n**Case ($n-1 \\in S$, $n-1 \\notin T$)**: `Finset.single_le_sum` gives $\\sum_S 2^i \\geq 2^{n-1}$, while `sum_pow2_lt_of_subset_range` gives $\\sum_T 2^i < 2^{n-1}$ — contradiction by `omega`.\n\n**Case ($n-1 \\notin S$, $n-1 \\in T$)**: symmetric.\n\n**Case (neither contains $n-1$)**: `subset_range_pred` shrinks both to $\\{0,\\ldots,n-2\\}$ and IH closes directly.",
