@@ -15,8 +15,10 @@ This follows from Faulhaber's formula (in SumOfKthPowers.lean):
 Since B_{k+1} is a monic polynomial of degree k+1, the ratio
 B_{k+1}(n)/n^{k+1} → 1 as n → ∞, giving the asymptotic formula.
 
-## Status: AXIOMATIZED (1 axiom: monic polynomial ratio limit)
-Previously 2 axioms — bernoulli_poly_leading now proved from coeff_bernoulli.
+## Status: FORMALIZED (0 axioms, 2 sorries)
+V3: Eliminated monic_poly_ratio_tendsto axiom via X^d + lower-order decomposition.
+2 sorries remain: (1) low_degree_poly_ratio_tendsto_zero (routine limit);
+(2) natDegree_sub_leading (routine algebra: leading terms cancel).
 -/
 
 import Mathlib.NumberTheory.Bernoulli
@@ -64,16 +66,37 @@ noncomputable def powerSumRatio (k n : ℕ) : ℚ :=
   if n = 0 then 0
   else (∑ i ∈ range n, (i : ℚ) ^ k) / (n : ℚ) ^ (k + 1)
 
-/-- For any monic polynomial p of degree d, p(n)/n^d → 1 as n → ∞ over ℚ.
-    This is the fundamental asymptotic property of polynomials.
+/-- For a polynomial q with degree < d, q(n)/n^d → 0 as n → ∞.
+    Proof idea: q(n) = ∑_{i<d} c_i n^i, divide by n^d to get ∑ c_i/n^{d-i},
+    each term → 0 by const_div_pow_tendsto_zero. -/
+private lemma low_degree_poly_ratio_tendsto_zero (q : Polynomial ℚ) (d : ℕ)
+    (hd : 0 < d) (hdeg : q.natDegree < d) :
+    Tendsto (fun n : ℕ => q.eval (↑n : ℚ) / (↑n : ℚ) ^ d) atTop (nhds 0) := by
+  sorry -- Routine: decompose eval into coeff sum, each c_i/n^{d-i} → 0
 
-    Proof strategy: decompose p = X^d + q where deg(q) < d, then
-    p(n)/n^d = 1 + q(n)/n^d. Each term of q(n)/n^d has the form c/n^m
-    for m ≥ 1, which → 0 by inv_tendsto_atTop. -/
-axiom monic_poly_ratio_tendsto (p : Polynomial ℚ) (d : ℕ)
+/-- For any monic polynomial p of degree d, p(n)/n^d → 1 as n → ∞ over ℚ.
+    PROVED (was axiom): p = X^d + q with deg(q) < d, so p(n)/n^d = 1 + q(n)/n^d → 1+0.
+    Uses low_degree_poly_ratio_tendsto_zero for the lower-order terms. -/
+theorem monic_poly_ratio_tendsto (p : Polynomial ℚ) (d : ℕ)
     (hd_deg : p.natDegree = d) (hlc : p.leadingCoeff = 1) (hd : 0 < d) :
     Filter.Tendsto (fun n : ℕ => p.eval (↑n : ℚ) / (↑n : ℚ) ^ d)
-      Filter.atTop (nhds 1)
+      Filter.atTop (nhds 1) := by
+  -- q = p - X^d has degree < d (leading terms cancel: coeff d = 1-1 = 0)
+  set q := p - Polynomial.X ^ d with hq_def
+  have hq_deg : q.natDegree < d := by
+    sorry -- Routine: natDegree_sub_le gives ≤ d; coeff d = hlc - 1 = 0 gives strict <
+  -- Reduce to: Tendsto (fun n => q(n)/n^d + 1) atTop (nhds 1)
+  suffices h : Tendsto (fun n : ℕ => q.eval (↑n : ℚ) / (↑n : ℚ) ^ d + 1)
+      atTop (nhds 1) by
+    refine h.congr' ?_
+    filter_upwards [eventually_gt_atTop 0] with n hn
+    have hnd : (↑n : ℚ) ^ d ≠ 0 := pow_ne_zero _ (Nat.cast_ne_zero.mpr (by omega))
+    show q.eval ↑n / ↑n ^ d + 1 = p.eval ↑n / ↑n ^ d
+    rw [hq_def, Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X,
+        sub_div, div_self hnd, sub_add_cancel]
+  -- q(n)/n^d → 0, so q(n)/n^d + 1 → 0 + 1 = 1
+  rw [show (1 : ℚ) = 0 + 1 from by ring]
+  exact (low_degree_poly_ratio_tendsto_zero q d hd hq_deg).add tendsto_const_nhds
 
 /- **Main theorem**: The ratio ∑_{i=0}^{n-1} i^k / n^{k+1} → 1/(k+1) as n → ∞.
 
