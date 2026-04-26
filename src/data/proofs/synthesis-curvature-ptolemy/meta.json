@@ -52,59 +52,74 @@
     ],
     "dateAdded": "2026-04-26",
     "axiomCount": 0,
-    "lineCount": 210,
+    "lineCount": 270,
     "assumptions": "0 axioms. 0 sorries. All results are fully machine-verified. The hyperbolic Ptolemy theorem (K<0) is stated as a conjecture in comments only — it is NOT claimed as a theorem in this file.",
     "mathlib_version": "4.26.0",
     "parentProof": "ptolemys-theorem-oq-01-oq-02"
   },
   "sections": [
     {
-      "title": "curvatureSin Definition",
-      "startLine": 87,
-      "endLine": 91,
-      "description": "Defines curvatureSin K t as sin(√K·t)/√K for K>0, t for K=0, sinh(√|K|·t)/√|K| for K<0.",
-      "summary": "curvatureSin K t: unified trigonometric function for κ-geometry",
+      "id": "imports-docstring",
+      "title": "Imports and Module Documentation",
+      "startLine": 1,
+      "endLine": 70,
+      "summary": "Five imports (PtolemysComplexProof, PtolemysTheoremOQ01OQ02, Mathlib trigonometry, InnerProductSpace, Tactic), module docstring defining the three curvatureSin branches, the unified Ptolemy schema, the complete results list, and the hyperbolic case conjecture with infrastructure requirements.",
+      "mathContext": "The imports form the mathematical foundation: `PtolemysComplexProof` provides `ptolemy_inequality` (complex Ptolemy inequality); `PtolemysTheoremOQ01OQ02` provides `SphericalPtolemy.spherical_ptolemy` (equality for cyclic points) and `SphericalPtolemy.unit_sphere_chord_via_sin` (chord-arc identity); the Mathlib imports provide `Real.sin`, `Real.sinh`, `Real.sqrt`, and the inner product space infrastructure."
+    },
+    {
       "id": "curvaturesin-def",
-      "mathContext": "The `sn_K` function from constant-curvature geometry: `sn_K(t) = sin(√K·t)/√K` for positive curvature K, `sn_0(t) = t` for zero curvature, `sn_K(t) = sinh(√|K|·t)/√|K|` for negative curvature. In the limit K→0, sin(√K·t)/√K → t (L'Hôpital). The K=1 case gives sin, the K=-1 case gives sinh."
+      "title": "curvatureSin Definition",
+      "startLine": 72,
+      "endLine": 91,
+      "summary": "Defines curvatureSin K t as sin(√K·t)/√K for K>0, t for K=0, sinh(√|K|·t)/√|K| for K<0. The noncomputable if-then-else definition with the K=0 case as the continuous limit.",
+      "mathContext": "The `sn_K` function from constant-curvature geometry satisfies the Jacobi ODE: $\\text{sn}_K''(t) + K\\cdot\\text{sn}_K(t) = 0$ with $\\text{sn}_K(0)=0$, $\\text{sn}_K'(0)=1$. This ODE governs geodesic deviation (Jacobi fields) in constant-curvature spaces. The K=0 limit: $\\lim_{K\\to 0}\\sin(\\sqrt{K}\\,t)/\\sqrt{K} = t$ by L'Hôpital."
     },
     {
-      "title": "Basic Properties",
-      "startLine": 96,
-      "endLine": 130,
-      "description": "Proves curvatureSin_zero (K=0 identity), curvatureSin_one (K=1 gives sin), curvatureSin_neg_one (K=-1 gives sinh), curvatureSin_zero_right (always 0 at t=0).",
-      "summary": "curvatureSin 0=id, 1=sin, -1=sinh, always 0 at t=0",
       "id": "basic-props",
-      "mathContext": "For K=1: sin(√1·t)/√1 = sin(1·t)/1 = sin(t). For K=-1: sinh(√1·t)/√1 = sinh(t). The K=0 case is the definition. All three geometries satisfy sn_K(0) = 0."
+      "title": "Basic Properties",
+      "startLine": 93,
+      "endLine": 130,
+      "summary": "Six lemmas: curvatureSin_zero (@[simp]: K=0 gives identity), curvatureSin_pos and _neg (helpers), curvatureSin_one (K=1 gives sin), curvatureSin_neg_one (K=-1 gives sinh), curvatureSin_zero_right (@[simp]: always 0 at t=0).",
+      "mathContext": "For K=1: $\\sin(\\sqrt{1}\\cdot t)/\\sqrt{1} = \\sin(t)/1 = \\sin(t)$. For K=-1: $\\sinh(\\sqrt{|-1|}\\cdot t)/\\sqrt{|-1|} = \\sinh(t)$. At $t=0$: all three geometries give $\\text{sn}_K(0)=0$ (initial value condition). The `@[simp]` tags make K=0 and t=0 simplify automatically in subsequent proofs."
     },
     {
-      "title": "Spherical Ptolemy Equality (curvatureSin 1)",
-      "startLine": 155,
-      "endLine": 175,
-      "description": "Restates the spherical Ptolemy equality (from PtolemysTheoremOQ01OQ02.lean) using curvatureSin 1 for concyclic unit-sphere points.",
-      "summary": "Spherical Ptolemy equality via curvatureSin 1 — requires concyclicity",
       "id": "spherical-equality",
-      "mathContext": "For four concyclic unit-sphere points a,b,c,d with diagonals crossing at p, curvatureSin 1 (d(a,c)/2)·curvatureSin 1 (d(b,d)/2) = curvatureSin 1 (d(a,b)/2)·curvatureSin 1 (d(c,d)/2) + curvatureSin 1 (d(a,d)/2)·curvatureSin 1 (d(b,c)/2). Follows directly from spherical_ptolemy since curvatureSin 1 = sin."
+      "title": "Spherical Ptolemy Equality (curvatureSin 1)",
+      "startLine": 132,
+      "endLine": 165,
+      "summary": "Variable declaration (real inner product space V), then spherical_ptolemy_eq_curvatureSin: Ptolemy equality for concyclic unit-sphere points restated in curvatureSin 1 language. One-line proof via curvatureSin_one + SphericalPtolemy.spherical_ptolemy.",
+      "mathContext": "Spherical Ptolemy equality (K=1 case): for concyclic unit-sphere points $a,b,c,d \\in V$ with diagonals crossing at $p$, $\\text{sn}_1(d_{ac}/2)\\cdot\\text{sn}_1(d_{bd}/2) = \\text{sn}_1(d_{ab}/2)\\cdot\\text{sn}_1(d_{cd}/2) + \\text{sn}_1(d_{ad}/2)\\cdot\\text{sn}_1(d_{bc}/2)$. The variable declaration is universe-polymorphic, covering both $S^2 \\subset \\mathbb{R}^3$ and $S^1 \\subset \\mathbb{C}$."
     },
     {
-      "title": "Spherical Ptolemy Inequality (New)",
-      "startLine": 178,
-      "endLine": 240,
-      "description": "Proves the spherical Ptolemy INEQUALITY for any four unit-circle points in ℂ. No concyclicity assumption needed. Proof: chord-arc + complex Ptolemy inequality / 4.",
-      "summary": "Spherical Ptolemy ≤ for all unit-circle points — unconditional inequality",
       "id": "spherical-inequality",
-      "mathContext": "For any z₁,z₂,z₃,z₄ on the unit circle in ℂ (‖z_i‖=1), not necessarily concyclic: sin(d_ac/2)·sin(d_bd/2) ≤ sin(d_ab/2)·sin(d_cd/2) + sin(d_bc/2)·sin(d_ad/2). Proof: chord-arc gives ‖z_i-z_j‖ = 2·sin(d_ij/2), so sin(d_ij/2) = ‖z_i-z_j‖/2. The inequality becomes (‖z₁-z₃‖/2)·(‖z₂-z₄‖/2) ≤ ..., which is ptolemy_inequality divided by 4."
+      "title": "Spherical Ptolemy Inequality — Key New Result",
+      "startLine": 167,
+      "endLine": 229,
+      "summary": "spherical_ptolemy_ineq_curvatureSin: Ptolemy INEQUALITY for ANY four unit-circle points z₁,z₂,z₃,z₄ ∈ ℂ (no concyclicity). Proof: curvatureSin_one → chord-arc identity (6 have steps) → rewrite as chord lengths → ptolemy_inequality/4 via ring+linarith.",
+      "mathContext": "Proof chain: $\\text{sn}_1(d_{ij}/2) = \\sin(d_{ij}/2) = \\|z_i-z_j\\|/2$ (chord-arc). Substituting: $(\\|z_1-z_3\\|/2)\\cdot(\\|z_2-z_4\\|/2) \\leq (\\|z_1-z_2\\|/2)\\cdot(\\|z_3-z_4\\|/2) + (\\|z_2-z_3\\|/2)\\cdot(\\|z_1-z_4\\|/2)$, which is the complex Ptolemy inequality divided by 4. Equality iff concyclic in cyclic order."
+    },
+    {
+      "id": "hyperbolic-conjecture",
+      "title": "Hyperbolic Case Conjecture and Summary",
+      "startLine": 231,
+      "endLine": 270,
+      "summary": "Comment section: hyperbolic Ptolemy conjecture (K=-1, Poincaré disk) blocked by missing Mathlib infrastructure (~800-1200 lines). Summary #check declarations listing all 7 proved results.",
+      "mathContext": "Hyperbolic chord-arc identity: $\\sinh(d_H(z,w)/2) = |z-w|/\\sqrt{(1-|z|^2)(1-|w|^2)}$ where $d_H$ is the Poincaré disk metric. The conformal factors $(1-|z_i|^2)$ do not cancel for interior points (unlike the spherical case where $\\|z_i\\|=1$ removes analogous factors), requiring full Möbius transformation and hyperbolic circle infrastructure."
     }
   ],
   "overview": {
-    "historicalContext": "The sn_K function appears in the work of Beardon and Minda (2007) on Schwarz-Pick lemmas and in general treatments of constant-curvature geometry. The unified Ptolemy theorem — that Ptolemy equality holds for cyclic quadrilaterals in ALL constant-curvature geometries with sn_K replacing the Euclidean metric — is a classical result of non-Euclidean geometry.",
+    "historicalContext": "The sn_K function — also written sn_κ or $\\text{sn}(t|K)$ — is the fundamental trigonometric function of constant-curvature Riemannian geometry. It first appears implicitly in the work of Lobachevsky and Bolyai in the 1830s on hyperbolic geometry, where $\\sinh$ plays the role of $\\sin$ in the spherical law of sines ($\\sinh a/\\sin A = \\sinh b/\\sin B = \\sinh c/\\sin C$). The unified formula $\\text{sn}_K(t) = \\sin(\\sqrt{K}t)/\\sqrt{K}$ (for K>0), $t$ (K=0), $\\sinh(\\sqrt{|K|}t)/\\sqrt{|K|}$ (K<0) appears in Alexandrov's comparison geometry and became standard in global differential geometry through the work of Rauch (1951, the Rauch comparison theorem) and Toponogov (1959). The function satisfies the Jacobi ODE $\\text{sn}_K'' + K\\cdot\\text{sn}_K = 0$, governing geodesic deviation (Jacobi fields) in constant-curvature spaces.\n\nThe Ptolemy theorem for non-Euclidean geometry has an even longer history. The spherical Ptolemy theorem — $\\sin(d_{ac}/2)\\cdot\\sin(d_{bd}/2) = \\sin(d_{ab}/2)\\cdot\\sin(d_{cd}/2) + \\sin(d_{bc}/2)\\cdot\\sin(d_{ad}/2)$ for cyclic spherical quadrilaterals — is classical and appears in works on spherical trigonometry tracing to Menelaus of Alexandria (c. 100 CE). The hyperbolic Ptolemy theorem using $\\sinh$ was formulated in the early 20th century. The unified curvature-parametrized Ptolemy equality $\\text{sn}_K(d_{ac}/2)\\cdot\\text{sn}_K(d_{bd}/2) = \\ldots$ as a single theorem valid for all K appears in modern synthetic accounts of constant-curvature geometry.\n\nThe specific connection used in this file — reducing the spherical Ptolemy inequality to the complex Ptolemy inequality via the chord-arc identity — was exploited by Beardon and Minda in their 2007 paper on multi-point Schwarz-Pick lemmas (J. d'Analyse Math., vol. 92), which uses $\\text{sn}_K$ to give unified proofs of hyperbolic, Euclidean, and spherical Schwarz-Pick lemmas.",
     "problemStatement": "Define curvatureSin K t = sin(√K·t)/√K (K>0), t (K=0), sinh(√|K|·t)/√|K| (K<0). Prove that (1) curvatureSin 1 = sin and curvatureSin (-1) = sinh; (2) the spherical Ptolemy theorem holds in curvatureSin 1 language; (3) the spherical Ptolemy INEQUALITY holds for all unit-circle points in ℂ.",
     "text": "This synthesis file unifies the trigonometric functions of constant-curvature geometry into the curvatureSin K function, and shows how Ptolemy-type results fit into this unified framework. The key new result is the spherical Ptolemy inequality for non-cyclic quadrilaterals.",
     "proofStrategy": "For the spherical inequality: (1) reduce to sin via curvatureSin_one, (2) apply chord-arc identity to express sin values as half-norms, (3) the inequality reduces to the complex Ptolemy inequality divided by 4.",
     "keyInsights": [
-      "The curvatureSin K function unifies sin (K=1), identity (K=0), and sinh (K=-1) in a single definition, making the Ptolemy equality a theorem schema over all constant-curvature geometries.",
-      "The Ptolemy INEQUALITY (≤) holds unconditionally for four points in spherical geometry, while the EQUALITY requires the concyclicity condition. This mirrors the Euclidean case where ptolemy_inequality (≤) holds for all four complex numbers.",
-      "The proof strategy 'complex Ptolemy inequality divided by 4' is enabled by the chord-arc identity ‖z-w‖ = 2·sin(d(z,w)/2) for unit-circle points, which converts norms into curvatureSin 1 values.",
-      "The K<0 (hyperbolic) case is blocked by the absence of Poincaré disk metric infrastructure in Mathlib. The conformal factors (1-|z|²) that appear in the hyperbolic chord-arc identity do not cancel for general interior points, unlike the spherical case."
+      "**The Jacobi ODE unification**: `curvatureSin K` is the unique solution to $f''(t) + K f(t) = 0$ with $f(0)=0$, $f'(0)=1$. This ODE governs geodesic deviation (Jacobi fields) in a space of constant curvature K, making `curvatureSin K` the canonical 'comparison function' for all three geometries. The K=0 limit $t$ corresponds to geodesics in flat space that diverge linearly.",
+      "**Inequality vs Equality dichotomy**: `spherical_ptolemy_eq_curvatureSin` requires concyclicity (four points on a common circle) while `spherical_ptolemy_ineq_curvatureSin` holds for ALL four unit-circle points. This mirrors the Euclidean case: `ptolemy_inequality` holds unconditionally for any four complex numbers, while the Ptolemy equality requires the four points to be concyclic. The equality condition in Ptolemy's theorem characterizes cyclic quadrilaterals.",
+      "**Chord-arc identity as the bridge**: The identity $\\|z-w\\| = 2\\sin(\\arccos\\langle z,w\\rangle/2)$ for unit-circle points is the key bridge converting the angular inequality (in terms of `curvatureSin 1 = sin`) into the chord-length inequality (`ptolemy_inequality` over ℂ). The 'divide by 4' scaling arises because $\\sin(d/2) = \\|z-w\\|/2$, so products of sines equal products of half-chords, and the Ptolemy inequality is in terms of full chords.",
+      "**The conformal factor obstruction for K<0**: For unit-circle points (|z|=|w|=1), the spherical chord-arc identity $\\|z-w\\| = 2\\sin(d/2)$ works cleanly because the denominators in the full formula are 1. For the Poincaré disk (|z|,|w| < 1), the hyperbolic chord-arc identity involves $(1-|z|^2)(1-|w|^2)$ in the denominator, which does NOT cancel when forming the Ptolemy ratio. This structural difference explains why K=1 is tractable with current Mathlib infrastructure but K=-1 requires ~1000 additional lines.",
+      "**curvatureSin_one as a definitional simplifier**: The `simp only [curvatureSin_one]` step in both theorems acts as a 'macro expansion' — it reduces the abstract `sn_1` language to the concrete `sin` language where all Mathlib lemmas apply. The `@[simp]` annotations on `curvatureSin_zero` and `curvatureSin_zero_right` allow further automatic simplification in downstream proofs.",
+      "**Synthesizing a proof tree**: This file sits at the apex of a three-file dependency chain: `PtolemysComplexProof.lean` (complex Ptolemy inequality) → `PtolemysTheoremOQ01OQ02.lean` (spherical equality and chord-arc identity) → `SynthesisCurvaturePtolemy.lean` (unified framework + inequality). Each file builds on the previous, with this file providing the unifying language that frames all results as instances of the curvature-parametrized schema.",
+      "**The non-Euclidean Ptolemy theorem as comparison geometry**: Ptolemy's inequality in constant-curvature geometry is a special case of Alexandrov comparison geometry: in a CAT(K) space (a metric space with curvature bounded above by K), there are Ptolemy-type comparison inequalities involving $\\text{sn}_K$. The formalization here is the Riemannian case (constant curvature), but the `sn_K` framework is the entry point to this broader theory."
     ],
     "prerequisites": [
       "curvatureSin function definition and its three cases",
@@ -132,12 +147,27 @@
     {
       "targetId": "ptolemys-theorem-oq-01-oq-02",
       "relationship": "parent",
-      "description": "The spherical Ptolemy equality (curvatureSin 1 case) is a restatement of the result in PtolemysTheoremOQ01OQ02.lean. The chord-arc identity unit_sphere_chord_via_sin is also imported from that file."
+      "description": "Provides both `SphericalPtolemy.spherical_ptolemy` (equality for cyclic unit-sphere points) and `SphericalPtolemy.unit_sphere_chord_via_sin` (chord-arc identity: ‖a-b‖ = 2·sin(arccos⟨a,b⟩/2)) — the two key ingredients imported by this file. The current entry restates the equality in curvatureSin 1 language and extends it with the unconditional inequality."
     },
     {
       "targetId": "ptolemys-complex-proof",
       "relationship": "parent",
-      "description": "The complex Ptolemy inequality (ptolemy_inequality) from PtolemysComplexProof.lean is the key ingredient for the spherical inequality proof."
+      "description": "Provides `ptolemy_inequality` — the complex Ptolemy inequality ‖z₁-z₃‖·‖z₂-z₄‖ ≤ ‖z₁-z₂‖·‖z₃-z₄‖ + ‖z₂-z₃‖·‖z₁-z₄‖ for any z_i ∈ ℂ. The spherical inequality proved here is this inequality divided by 4, after the chord-arc identity converts sin values to half-chord lengths."
+    },
+    {
+      "targetId": "ptolemys-theorem",
+      "relationship": "related",
+      "description": "The original Euclidean Ptolemy theorem (equality for cyclic quadrilaterals in ℝ²). The current entry generalizes this to spherical geometry via curvatureSin 1 = sin, with the Euclidean case corresponding to the K=0 limit curvatureSin 0 = identity (chord length = arc length in flat geometry)."
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "Both entries involve the interplay of Euclidean and non-Euclidean geometry via Galois theory / group theory and trigonometric identities. The `arccos` inner product formula for spherical geodesic distance appears in both contexts."
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "The transcendence of π (Lindemann, 1882) is directly relevant to the curvatureSin framework: in spherical geometry (K=1), the sn_K function sin(t) has period 2π, so spherical Ptolemy involves angles up to 2π. The fact that π is transcendental means the Ptolemy equality for cyclic points on S² holds for values of sin that are genuinely transcendental in the algebraic sense."
     }
   ],
   "references": [
@@ -163,7 +193,7 @@
       "EuclideanGeometry"
     ],
     "namespace": null,
-    "lineCount": 210,
+    "lineCount": 270,
     "axiomCount": 0,
     "theoremCount": 7,
     "sorries": 0,
