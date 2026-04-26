@@ -67,30 +67,30 @@
       "id": "header",
       "title": "Module Header",
       "startLine": 1,
-      "endLine": 28,
-      "summary": "Docstring stating the Newton-Girard recurrence and the three corollaries to be derived. Imports Mathlib and opens MvPolynomial, Finset, BigOperators.",
+      "endLine": 30,
+      "summary": "Docstring stating the Newton-Girard recurrence and the three corollaries to be derived. Imports Mathlib and opens MvPolynomial, Finset, BigOperators. Variable declaration establishes type-generic setting over any CommRing R indexed by Fintype σ.",
       "mathContext": "Newton-Girard recurrence: $p_k = (-1)^{k+1} k e_k - \\sum_{0 < j < k} (-1)^j e_j p_{k-j}$."
     },
     {
       "id": "corollary-1",
       "title": "Corollary 1: p₁ = e₁",
       "startLine": 32,
-      "endLine": 42,
+      "endLine": 41,
       "summary": "psum_one_eq_esymm_one: bridges Mathlib's psum_one and esymm_one by transitivity. Both lemmas state that the respective quantity equals Σ X i.",
       "mathContext": "$p_1 = \\sum_i X_i = e_1$."
     },
     {
       "id": "corollary-2",
       "title": "Corollary 2: p₂ = e₁² − 2e₂",
-      "startLine": 46,
-      "endLine": 65,
+      "startLine": 43,
+      "endLine": 64,
       "summary": "psum_two_eq: applies psum_eq_mul_esymm_sub_sum at k=2. Antidiagonal filter {(a,b) | a+b=2, 0<a<2} = {(1,1)} computed via omega. Result closed by ring.",
       "mathContext": "$p_2 = e_1^2 - 2e_2$, i.e., $\\sum x_i^2 = (\\sum x_i)^2 - 2\\sum_{i<j} x_i x_j$."
     },
     {
       "id": "corollary-3",
       "title": "Corollary 3: p₃ = e₁p₂ − e₂p₁ + 3e₃",
-      "startLine": 69,
+      "startLine": 66,
       "endLine": 91,
       "summary": "psum_three_eq: applies psum_eq_mul_esymm_sub_sum at k=3. Antidiagonal filter {(a,b) | a+b=3, 0<a<3} = {(1,2),(2,1)} computed via omega. Sum_insert separates the two terms, closed by ring.",
       "mathContext": "$p_3 = e_1 p_2 - e_2 p_1 + 3e_3$."
