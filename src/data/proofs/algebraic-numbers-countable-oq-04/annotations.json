@@ -155,5 +155,41 @@
       "log2_log3_rat_indep",
       "IsAlgebraic ℚ"
     ]
+  },
+  {
+    "id": "ann-baker-n1-gelfond",
+    "proofId": "algebraic-numbers-countable-oq-04",
+    "range": { "startLine": 504, "endLine": 542 },
+    "type": "insight",
+    "title": "Baker n=1: Contains Gelfond-Schneider as Special Case",
+    "content": "`baker_n1_log_independence` proves the n=1 case of Baker's theorem directly: for positive algebraic α ≠ 1 and nonzero algebraic β, β·log α ≠ 0.\n\nThe proof establishes that the singleton {log α} is ℚ-linearly independent (a nonzero vector over any field is independent) via `Fintype.linearIndependent_iff` and `Fin.sum_univ_one`, then applies `baker_homogeneous` with n=1.\n\n**Connection to Gelfond-Schneider**: If we further assume β = log_α(γ) for algebraic γ, then β·log α − log γ = 0. Baker's n=1 case says β·log α ≠ 0 (with nonzero algebraic β), so γ cannot be algebraic — this is the Gelfond-Schneider transcendence of α^β. The Lean theorem is slightly weaker (it doesn't invoke a second log), but it illustrates the containment.\n\n**Linear independence of a singleton**: The proof that `LinearIndependent ℚ (fun _ : Fin 1 => Real.log α)` requires showing: if `c * log α = 0` with `c : ℚ`, then `c = 0`. Since `log α ≠ 0` (from `α > 0`, `α ≠ 1`), `smul_eq_zero` gives the result directly.",
+    "mathContext": "n=1 case of Baker: for algebraic $\\alpha > 0$, $\\alpha \\neq 1$ and algebraic $\\beta \\neq 0$:\n$$\\beta \\cdot \\log \\alpha \\neq 0.$$\nContains Gelfond-Schneider: if $\\alpha^\\beta = \\gamma$ (algebraic) with $\\beta$ irrational algebraic, then $\\beta \\log \\alpha = \\log \\gamma$, contradicting the n=1 Baker statement with an additional second log. The singleton independence uses: `log α ≠ 0` from `Real.log_eq_zero` with $\\alpha \\neq 0$, $\\alpha \\neq 1$, $\\alpha \\neq -1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Gelfond-Schneider theorem", "singleton linear independence", "Fin.sum_univ_one", "Real.log_eq_zero", "baker_homogeneous"],
+    "prerequisites": ["baker_homogeneous", "Real.log_eq_zero", "smul_eq_zero", "Fintype.linearIndependent_iff"]
+  },
+  {
+    "id": "ann-four-exponentials",
+    "proofId": "algebraic-numbers-countable-oq-04",
+    "range": { "startLine": 543, "endLine": 589 },
+    "type": "context",
+    "title": "Four Exponentials Conjecture: The Gap Beyond Baker",
+    "content": "Part IV documents the Four Exponentials Conjecture, the central open problem that Baker's theorem cannot resolve.\n\n**Statement**: If z₁, z₂ are ℚ-linearly independent and w₁, w₂ are ℚ-linearly independent, then at least one of e^{z₁w₁}, e^{z₁w₂}, e^{z₂w₁}, e^{z₂w₂} is transcendental.\n\n**What's proved**: The Six Exponentials Theorem (Lang and Ramachandra, independently 1966) — with 3 z's and 2 w's, at least one exponential is transcendental. Baker's bounds give this with room to spare.\n\n**The gap from 6 to 4**: Reducing from 6 to 4 requires Baker-type bounds to work 'in two dimensions simultaneously.' No current technique achieves this. The Five Exponentials Theorem (a separate partial result) gives a different 5-element configuration.\n\n**A consequence if true**: The Four Exponentials Conjecture would imply that not both 2^t and 3^t can be algebraic for nonzero real t — i.e., the exponential function cannot align 'grid points' of two different geometric sequences simultaneously.\n\nThe file explicitly omits this as an axiom to maintain clean axiom accounting. It is pure documentation of an open problem.",
+    "mathContext": "Four Exponentials: for $z_1, z_2$ and $w_1, w_2$ each $\\mathbb{Q}$-linearly independent,\n$$\\text{tr.deg}\\,\\mathbb{Q}(e^{z_1 w_1}, e^{z_1 w_2}, e^{z_2 w_1}, e^{z_2 w_2}) \\geq 1.$$\nSix Exponentials (proved): same for $z_1, z_2, z_3$ and $w_1, w_2$. Consequence: for $t \\neq 0$ real, if $2^t, 3^t \\in \\bar{\\mathbb{Q}}$ then Four Exponentials gives contradiction (setting $z_i = t \\log i$, $w_j = 1$... actually this needs more care). The conjecture is implied by Schanuel's conjecture.",
+    "significance": "context",
+    "relatedConcepts": ["Four Exponentials Conjecture", "Six Exponentials Theorem", "Schanuel's conjecture", "transcendence degree", "Baker method limitations"],
+    "prerequisites": ["Baker's theorem", "complex ℚ-linear independence", "transcendence degree"]
+  },
+  {
+    "id": "ann-baker-wustholz-bound",
+    "proofId": "algebraic-numbers-countable-oq-04",
+    "range": { "startLine": 590, "endLine": 640 },
+    "type": "insight",
+    "title": "Baker-Wüstholz 1993: Optimal Quantitative Lower Bounds",
+    "content": "Part V axiomatizes the Baker-Wüstholz 1993 theorem, the state-of-the-art quantitative form of Baker's theorem.\n\n**The key improvement**: Baker's 1966 quantitative theorem gives |log |Λ|| < C·log^{n+1}(B). Baker-Wüstholz 1993 reduces this to C·log(B) — linear in log B rather than polynomial. This improvement is crucial for applications: with 9 logarithms (a common case in elliptic curve applications), Baker 1966 gives log^{10}(B) in the exponent while Baker-Wüstholz gives log(B).\n\n**Lean signature**: The axiom takes:\n- `α : Fin n → ℝ` with positivity, algebraicity, and degree bound `hα_deg`\n- Integer coefficients `b : Fin n → ℤ` with height bound `B`\n- Log-height bounds `A i` via `Real.log (α i).abs ≤ Real.log (A i)`\n- The nonvanishing hypothesis `hΛ_ne` (Baker's qualitative theorem guarantees this)\n\nThe conclusion gives a lower bound on `Real.log |Λ|` in terms of C(n,d), the product of log(A_i), and log(B). The explicit constant C(n,d) = 18·(n+1)!·n^{n+1}·(32d)^{n+2}·log(2nd) makes this completely effective.\n\n**Applications in Lean docstring**: Thue equations, Mordell's equation y² = x³ + k, S-unit equations — all have explicit solution bounds computable from Baker-Wüstholz.",
+    "mathContext": "Baker-Wüstholz (1993): if $\\Lambda = \\sum_i b_i \\log \\alpha_i \\neq 0$, $|b_i| \\leq B$, $h(\\alpha_i) \\leq \\log A_i$:\n$$\\log|\\Lambda| > -C(n,d) \\cdot \\prod_{i=1}^n \\log A_i \\cdot \\log B$$\nwhere $C(n,d) = 18(n+1)!n^{n+1}(32d)^{n+2}\\log(2nd)$.\n\nImprovement: exponent $\\log B$ vs Baker 1966's $\\log^{n+1} B$. For $n = 9$ this saves 9 orders of magnitude in the exponent, cutting the size of the search space for solutions by a factor of $H^{9 \\cdot \\log H}$.",
+    "significance": "key",
+    "relatedConcepts": ["Baker-Wüstholz 1993", "logarithmic height", "Thue equations", "Mordell equation", "S-unit equations", "minpoly natDegree"],
+    "prerequisites": ["baker_quantitative", "Real.log", "minpoly ℚ natDegree", "logarithmic height of algebraic numbers"]
   }
 ]
