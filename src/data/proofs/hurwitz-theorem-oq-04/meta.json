@@ -18,10 +18,10 @@
       "advanced"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 2,
     "dateAdded": "2026-04-24",
-    "axiomCount": 1,
-    "assumptions": "1 axiom: G2_der_dimension (finrank ℝ OctonionDerSubmodule = 14). Previous G2_is_octonion_aut (Nat.card OctonionAut = 14) was replaced: Nat.card of an infinite Lie group equals 0 in type theory, making it mathematically incorrect. G2_der_dimension targets the Lie algebra dimension directly. All supporting lemmas fully proved.",
+    "axiomCount": 0,
+    "assumptions": "2 sorries remaining: derBasis14_spans and derBasis14_linearIndependent (supporting lemmas for G₂ dimension proof). G2_der_dimension was replaced from an axiom declaration to a sorry-based theorem in #12984; the dimension proof requires ~50 lines of Leibniz constraint calculations not yet formalized.",
     "lineCount": 822,
     "theoremCount": 35,
     "definitionCount": 17,
@@ -41,7 +41,7 @@
   "overview": {
     "historicalContext": "Hurwitz's theorem (1898) establishes that normed division algebras over ℝ exist only in dimensions 1, 2, 4, and 8 — corresponding to ℝ, ℂ, ℍ, and 𝕆. This result has profound implications beyond algebra: the four normed division algebras are intimately connected to the five exceptional simple Lie algebras through the Freudenthal-Tits magic square (1954–1966). The connection was suspected by Élie Cartan as early as 1914, when he identified G₂ as the automorphism group of the octonions. Hans Freudenthal (1954) and Jacques Tits (1966) systematized this into a unified construction: from any two normed division algebras A, B, one builds a Lie algebra 𝔏(A, B) = Der(A) ⊕ (Im A ⊗ Im B) ⊕ Der(B), and the resulting 4×4 table (the 'magic square') produces all five exceptional simple Lie algebras: G₂, F₄, E₆, E₇, E₈. The word 'magic' refers to the surprising symmetry 𝔏(A, B) ≅ 𝔏(B, A), despite the construction not obviously being symmetric.",
     "problemStatement": "Show that Aut(𝕆) ⊆ O(7) — the automorphism group of the octonions acts by isometries on the 7-dimensional imaginary subspace Im(𝕆) — and axiomatize the identification G₂ = Aut(𝕆) along with the four exceptional Lie algebras F₄, E₆, E₇, E₈ arising from the Freudenthal-Tits magic square.",
-    "text": "Formalizes the connection between the four normed division algebras and the five exceptional Lie algebras. Proves Aut(𝕆) ⊆ O(7) with 0 sorries, axiomatizes G₂ = Aut(𝕆) and the magic square exceptional types F₄, E₆, E₇, E₈.",
+    "text": "Formalizes the connection between the four normed division algebras and the five exceptional Lie algebras. Proves Aut(𝕆) ⊆ O(7) (fully proved), and formalizes G₂ = Aut(𝕆) and the magic square exceptional types F₄, E₆, E₇, E₈. 2 sorries remain in the G₂ dimension lemmas (derBasis14_spans and derBasis14_linearIndependent).",
     "proofStrategy": "The formalization introduces OctonionAlgHom and OctonionAut structures for algebra homomorphisms and invertible automorphisms. Key lemmas proved: (1) any automorphism φ fixes the unit element e₀ (via the left-identity uniqueness argument); (2) pure imaginary elements y (y[0]=0) satisfy y² = −normSq(y)·e₀; (3) phi_imag_props: automorphisms preserve imaginary elements and their norms; (4) alg_aut_preserves_norm follows by decomposing x = r·e₀ + w (pure imaginary w) and using orthogonality; (5) polarization gives inner product preservation. The exceptional Lie algebra part uses an ExceptionalType inductive type with dimension and rank functions, and proves structural properties (strict ordering, G₂ uniqueness, E₈ maximality) by decidability.",
     "keyInsights": [
       "**φ fixes e₀**: Any algebra automorphism must fix the unit element. The elegant proof: φ(e₀) acts as a left identity for all y (since φ is surjective and e₀ is a left identity), and a left identity in an algebra with a right identity must equal the right identity.",
@@ -106,7 +106,7 @@
       "title": "§IV-c to V: Derivation Algebra as Submodule + Freudenthal-Tits Axioms",
       "startLine": 558,
       "endLine": 697,
-      "summary": "Defines OctonionDerSubmodule as a Submodule of End_ℝ(ℝ⁸) to give Der(𝕆) an inherited vector space structure. Axiomatizes G2_der_dimension (finrank = 14). Proves derivation structural properties: der_maps_unit_to_zero, der_maps_real_part_to_zero, toLinearMap, mem_der_submodule. Then states the Freudenthal-Tits magic square: freudenthal_tits_f4/e6/e7/e8 (dimension facts, 52/78/133/248).",
+      "summary": "Defines OctonionDerSubmodule as a Submodule of End_ℝ(ℝ⁸) to give Der(𝕆) an inherited vector space structure. Proves (with 2 remaining sorries) G2_der_dimension (finrank = 14): derBasis14_spans and derBasis14_linearIndependent support lemmas remain sorry. Proves derivation structural properties: der_maps_unit_to_zero, der_maps_real_part_to_zero, toLinearMap, mem_der_submodule. Then states the Freudenthal-Tits magic square: freudenthal_tits_f4/e6/e7/e8 (dimension facts, 52/78/133/248).",
       "mathContext": "Der(𝕆) as a Submodule of $\\text{End}_\\mathbb{R}(\\mathbb{R}^8)$: the set of $\\mathbb{R}$-linear maps $D: \\mathbb{R}^8 \\to \\mathbb{R}^8$ satisfying the Leibniz rule $D(ab) = D(a)\\cdot b + a\\cdot D(b)$ for octonion multiplication. Axiom `G2_der_dimension`: $\\text{finrank}_\\mathbb{R}(\\text{Der}(\\mathbb{O})) = 14$ (the dimension of $\\mathfrak{g}_2$). Tits construction: $\\mathfrak{L}(A,B) = \\mathfrak{der}(A) \\oplus (\\text{Im}A \\otimes \\text{Im}B) \\oplus \\mathfrak{der}(B)$ with $\\dim\\mathfrak{L}(\\mathbb{O},\\mathbb{O}) = 14 + 49 + 14 + \\text{extra} = 248$."
     },
     {
@@ -138,10 +138,10 @@
     ],
     "namespace": "HurwitzTheoremOQ04",
     "lineCount": 822,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 40,
     "definitionCount": 15,
-    "sorries": 0,
+    "sorries": 2,
     "path": "Proofs/HurwitzTheoremOQ04.lean"
   },
   "crossReferences": [
@@ -156,5 +156,5 @@
       "description": "Sibling open question: n-square identities and normed division algebras"
     }
   ],
-  "sorries": 0
+  "sorries": 2
 }
