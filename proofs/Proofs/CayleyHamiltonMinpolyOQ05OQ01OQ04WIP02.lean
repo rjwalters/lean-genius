@@ -276,14 +276,49 @@ theorem nonderogatory_cyclic_of_binary_squarefree
 -- SECTION IV: General Squarefree Theorem
 -- ============================================================
 
+/-- **Key helper** (strong induction on natDegree q):
+    For squarefree q dividing minpoly M, there exists a nonzero v in ker(q(M))
+    that is *strongly q-cyclic*: whenever r(M)v = 0, we have q ∣ r.
+
+    **Proof sketch by strong induction on natDegree q:**
+
+    *q irreducible*: Write minpoly M = q · p'. Then deg(p') < deg(minpoly), so
+    p'(M) ≠ 0. Pick w with p'(M)w ≠ 0. Set v = p'(M)w:
+    - v ≠ 0 ✓
+    - q(M)v = q(M)·p'(M)·w = (q·p')(M)·w = minpoly(M)·w = 0 ✓
+    - r(M)v = 0 → q|r by `irreducible_dvd_of_annihilated` ✓
+
+    *q = s·t (s irred, IsCoprime s t from squarefreeness)*:
+    Apply IH to get vs (s-strongly cyclic in ker(s(M))) and vt (t-strongly cyclic
+    in ker(t(M))). Set v = vs + vt:
+    - v ≠ 0: if vs = −vt then vs ∈ ker(s(M)) ∩ ker(t(M)), and Bezout
+      (IsCoprime s t) gives a(M)s(M)vs + b(M)t(M)vs = vs = 0. Contradiction.
+    - q(M)v = 0: polynomials in M commute, so
+        s(M)·t(M)·vs = t(M)·(s(M)·vs) = t(M)·0 = 0, similarly for vt.
+    - Strong cyclicity: apply CRT projections (as in `nonderogatory_cyclic_of_binary_squarefree`)
+      to extract r(M)vs = 0 and r(M)vt = 0; then s|r and t|r by IH;
+      finally IsCoprime.mul_dvd gives q = s·t | r. -/
+private theorem exists_strongly_cyclic
+    (M : Matrix (Fin n) (Fin n) K) (h_nd : IsNonderogatory M) :
+    ∀ (d : ℕ) (q : K[X]), q.natDegree ≤ d → Squarefree q → q ∣ minpoly K M →
+    ∃ v : Fin n → K, v ≠ 0 ∧ (aeval M q).mulVec v = 0 ∧
+      ∀ r : K[X], (aeval M r).mulVec v = 0 → q ∣ r := by
+  sorry
+  -- Proof uses: irreducible_dvd_of_annihilated, bezout_proj_identity/kills,
+  --   aeval_mul_comm_poly, exists_mulVec_ne_zero', aeval_ne_zero_of_lt_minpoly.
+  -- Termination: natDegree s < natDegree q and natDegree t < natDegree q
+  --   (since s, t both non-units when q not irreducible, not unit).
+  -- IsCoprime s t from: s prime (irred in K[X] = UFD) and s ∤ t
+  --   (if s | t then s² | q, contradicting Squarefree q via hq_sf s ⟨r, _⟩).
+
 /-- **Main Theorem (General Squarefree Case)**:
     Over ANY field K, nonderogatory matrices with squarefree characteristic
     polynomial have cyclic vectors.
 
     - Covers all fields, including finite fields with |K| ≤ n.
     - Axiom-free proof: no PID structure theorem needed.
-    - Binary case (`nonderogatory_cyclic_of_binary_squarefree`) is the key step.
-    - General case follows by induction on the number of irreducible factors.
+    - Proved via `exists_strongly_cyclic`: the full minpoly has a strongly cyclic vector v.
+      Strong cyclicity (r(M)v = 0 → minpoly | r) implies cyclicity (deg(r) < n → r = 0).
 
     What's still open: The non-squarefree case (e.g., Jordan blocks with
     minpoly = p^e, e ≥ 2) still requires the PID structure theorem. -/
@@ -292,14 +327,23 @@ theorem nonderogatory_squarefree_has_cyclic_vector
     (h_nd : IsNonderogatory M)
     (h_sf : Squarefree (minpoly K M)) :
     ∃ v, IsCyclicVector M v := by
-  -- The general proof proceeds by induction on the number of distinct irreducible
-  -- factors of minpoly M. The binary case is the base of the induction.
-  -- We decompose minpoly M = p₁ · ... · pₖ into distinct irreducibles,
-  -- find nonzero vᵢ ∈ ker(pᵢ(M)), and show v = ∑ vᵢ is cyclic.
-  -- The binary case (k=2) is proved in nonderogatory_cyclic_of_binary_squarefree.
-  -- The induction step combines two factors at a time:
-  --   IsCoprime pᵢ (∏_{j≠i}pⱼ) follows from pᵢ distinct irreducible.
-  sorry -- General induction; binary case proved above
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · exact ⟨Fin.elim0, fun r hr _ => by omega⟩
+  -- minpoly degree = n
+  have h_deg : (minpoly K M).natDegree = n := by
+    rw [h_nd, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]
+  -- Get a strongly cyclic vector for the full minpoly M
+  obtain ⟨v, hv_ne, -, hv_strong⟩ :=
+    exists_strongly_cyclic M h_nd (minpoly K M).natDegree (minpoly K M) le_rfl h_sf (dvd_refl _)
+  -- v is a cyclic vector: r(M)v = 0 and deg(r) < n → r = 0
+  refine ⟨v, fun r hr hann => ?_⟩
+  -- Strong cyclicity gives: minpoly M ∣ r
+  have hmin_r : minpoly K M ∣ r := hv_strong r hann
+  -- If r ≠ 0, then deg(minpoly) ≤ deg(r) < n = deg(minpoly). Contradiction.
+  by_contra hr_ne
+  have h_le : n ≤ r.natDegree := by
+    rw [← h_deg]; exact Polynomial.natDegree_le_of_dvd hmin_r hr_ne
+  omega
 
 /-- Corollary: Works over all finite fields of any size. -/
 theorem nonderogatory_squarefree_has_cyclic_vector_finite [Fintype K]
