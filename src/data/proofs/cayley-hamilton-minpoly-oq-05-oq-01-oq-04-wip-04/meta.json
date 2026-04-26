@@ -25,6 +25,11 @@
     "lineCount": 359,
     "assumptions": "None. Fully axiom-free. Requires factored form of minpoly as input hypothesis.",
     "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Axiom-free proof of cyclic vector theorem for all nonderogatory matrices",
+      "Primary decomposition via Bezout projections without PID module theory",
+      "Inductive prime power divisibility engine (pow_irred_dvd_of_annihilated)"
+    ],
     "mathlibDependencies": [
       {
         "theorem": "Matrix.charpoly_natDegree_eq_dim",
@@ -79,6 +84,13 @@
       "Polynomial commutativity (aeval_mul_comm) is used repeatedly: r(M) and F_i(M) commute because both are polynomials in M. This lets π_i 'pass through' r(M).",
       "Finset.prod_dvd_of_coprime closes the proof cleanly: pairwise coprimality + each p_i^{e_i} | r gives ∏ p_i^{e_i} | r, which contradicts deg(r) < n.",
       "The degree-counting argument in hpow_Fi_deg uses Polynomial.natDegree_mul to reduce a product-degree inequality to a linear inequality that omega can handle directly."
+    ],
+    "prerequisites": [
+      "Linear algebra over fields (matrix evaluation of polynomials)",
+      "Minimal and characteristic polynomials of matrices",
+      "Unique factorization in polynomial rings (K[X] is a UFD)",
+      "Bezout's identity and coprimality for polynomials",
+      "Chinese Remainder Theorem for polynomial rings"
     ]
   },
   "sections": [
@@ -159,6 +171,40 @@
       "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-02",
       "relationship": "related",
       "description": "WIP02: squarefree case (axiom-free). WIP04 generalizes the Bezout/CRT technique from WIP02 to the prime power setting."
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "extends",
+      "description": "The Cayley-Hamilton theorem (charpoly(M) annihilates M) is the foundation: minpoly | charpoly, so nonderogatory means minpoly = charpoly, and the cyclic vector theorem characterizes when K^n is cyclic over K[X]."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "nonderogatory_general_has_cyclic_vector",
+      "type": "core",
+      "description": "For nonderogatory M with factored minpoly = ∏ p_i^{e_i}, M has a cyclic vector",
+      "leanType": "{k : ℕ} → 0 < k → (M : Matrix (Fin n) (Fin n) K) → IsNonderogatory M → (p : Fin k → K[X]) → (e : Fin k → ℕ) → [coprimality and positivity hypotheses] → ∃ v, IsCyclicVector M v"
+    },
+    {
+      "name": "pow_irred_dvd_of_annihilated",
+      "type": "key",
+      "description": "If p is irreducible, p^e(M)v ≠ 0, p^(e+1)(M)v = 0, and r(M)v = 0, then p^(e+1) | r"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Frobenius, Ferdinand Georg",
+      "title": "Über lineare Substitutionen und bilineare Formen",
+      "year": "1879",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 84, pp. 1-63",
+      "note": "Introduced the rational canonical form and the notion of nonderogatory matrices. The cyclic vector theorem proved here is equivalent to Frobenius's characterization of nonderogatory matrices as those similar to a single companion matrix block."
+    },
+    {
+      "authors": "Hoffman, Kenneth; Kunze, Ray",
+      "title": "Linear Algebra",
+      "year": "1971",
+      "venue": "Prentice-Hall, 2nd edition",
+      "note": "Chapter 7 develops the primary decomposition theorem and rational canonical form for linear operators. The classical proof uses the structure theorem for finitely generated modules over a PID — the approach this formalization avoids via direct Bezout projection construction."
     }
   ],
   "sorries": 0
