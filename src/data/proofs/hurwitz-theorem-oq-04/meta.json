@@ -20,11 +20,11 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-24",
-    "axiomCount": 5,
-    "assumptions": "5 axioms: G2_is_octonion_aut (G₂ ≅ Aut(𝕆), requires Lie group theory not yet in Mathlib), freudenthal_tits_f4/e6/e7/e8 (the four exceptional Lie algebra types from the magic square construction). All supporting lemmas (norm preservation, real-part preservation, imaginary-subspace closure) are fully proved.",
-    "lineCount": 583,
-    "theoremCount": 22,
-    "definitionCount": 11,
+    "axiomCount": 1,
+    "assumptions": "1 axiom: G2_der_dimension (finrank ℝ OctonionDerSubmodule = 14). Previous G2_is_octonion_aut (Nat.card OctonionAut = 14) was replaced: Nat.card of an infinite Lie group equals 0 in type theory, making it mathematically incorrect. G2_der_dimension targets the Lie algebra dimension directly. All supporting lemmas fully proved.",
+    "lineCount": 764,
+    "theoremCount": 32,
+    "definitionCount": 15,
     "originalContributions": [
       "OctonionAlgHom / OctonionAut: structures for octonion algebra homomorphisms and automorphisms",
       "alg_aut_preserves_norm: automorphisms preserve the norm (proved via polarization and imaginary decomposition)",
@@ -62,6 +62,14 @@
   },
   "sections": [
     {
+      "id": "module-overview",
+      "title": "Preamble: Context and Contents",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "Module documentation places the formalization in context: Hurwitz's theorem (1898) gives 4 normed division algebras, and the Freudenthal-Tits magic square (1954–1966) connects them to 5 exceptional Lie algebras. The contents table distinguishes proved results (0 sorries) from axiomatized ones (deep Lie group results not yet in Mathlib). References: Baez 'The Octonions' (2002), Freudenthal (1964), Tits (1966).",
+      "mathContext": "The magic square table: rows and columns indexed by {ℝ,ℂ,ℍ,𝕆}. Entries: 𝔏(𝕆,ℝ)=F₄, 𝔏(𝕆,ℂ)=E₆, 𝔏(𝕆,ℍ)=E₇, 𝔏(𝕆,𝕆)=E₈, plus G₂=Der(𝕆). The 'magic': 𝔏(A,B)≅𝔏(B,A) despite the definition not being visibly symmetric."
+    },
+    {
       "id": "octonion-automorphisms",
       "title": "§I-II: Octonion Unit and Automorphism Structures",
       "startLine": 64,
@@ -70,19 +78,27 @@
       "mathContext": "An octonion algebra homomorphism φ: 𝕆 → 𝕆 satisfies φ(a+b)=φ(a)+φ(b), φ(r·a)=r·φ(a), and φ(a·b)=φ(a)·φ(b). An automorphism also has a two-sided inverse. The unit element e₀ satisfies e₀·a = a·e₀ = a for all a ∈ 𝕆."
     },
     {
-      "id": "norm-preservation",
-      "title": "§III: Norm and Inner Product Preservation",
+      "id": "norm-preservation-core",
+      "title": "§III-a: Automorphisms Fix e₀ and Preserve Im(𝕆)",
       "startLine": 166,
-      "endLine": 360,
-      "summary": "Proves the core structural results: phi_unit_eq_unit (φ(e₀)=e₀), imag_sq_eq_neg_norm (y²=−normSq(y)·e₀ for pure imaginary y), phi_imag_props (φ maps Im(𝕆) to Im(𝕆) with norm preservation), alg_aut_preserves_norm (φ preserves all norms), real_part_preserved (Re(φ(x))=Re(x)), alg_aut_preserves_inner (φ preserves the inner product). These show Aut(𝕆) ⊆ O(7).",
-      "mathContext": "The key chain: (1) φ(e₀)=e₀ by left-identity uniqueness; (2) for y with y[0]=0: y²=−|y|²e₀ (direct computation); (3) φ(y)²=−|y|²e₀ (applying φ and using (1)); (4) |φ(y)|²=|y|² from component 0; (5) φ(y)[0]=0 from 2·(φ(y)[0])²=0; (6) norm preservation for all x by decomposition x=r·e₀+w; (7) inner product preservation by polarization |φ(x)+φ(y)|²=|x+y|²."
+      "endLine": 291,
+      "summary": "Private helper lemmas and the core norm result: phi_unit_eq_unit (φ(e₀)=e₀ by surjectivity argument), imag_sq_eq_neg_norm (y²=−‖y‖²e₀ for pure imaginary y), phi_imag_props (φ maps Im(𝕆) to Im(𝕆) isometrically), alg_aut_preserves_norm (φ preserves all norms via real-imaginary decomposition).",
+      "mathContext": "Proof chain: $\\varphi(e_0)=e_0$ (left-identity uniqueness) → $\\varphi(y)^2 = -\\|y\\|^2 e_0$ for $y_0=0$ → $\\|\\varphi(y)\\| = \\|y\\|$ and $\\varphi(y)_0=0$ → $\\|\\varphi(a)\\| = \\|a\\|$ for all $a$ (decompose $a = r e_0 + w$, use orthogonality)."
+    },
+    {
+      "id": "real-part-inner-product",
+      "title": "§III-b: Real Part, Conjugation, and Aut(𝕆) ⊆ O(7)",
+      "startLine": 292,
+      "endLine": 358,
+      "summary": "Defines realPart, imagPart, octConj. Proves real_part_preserved (Re(φ(x))=Re(x)) and alg_aut_preserves_inner (φ preserves the inner product by polarization). Together: Aut(𝕆) fixes e₀, maps Im(𝕆)=ℝ⁷ to itself, and acts isometrically — so Aut(𝕆) ⊆ O(7).",
+      "mathContext": "Polarization: $\\langle \\varphi(x), \\varphi(y) \\rangle = \\frac{1}{2}(\\|\\varphi(x+y)\\|^2 - \\|\\varphi(x)\\|^2 - \\|\\varphi(y)\\|^2) = \\langle x, y \\rangle$. Combined with $\\mathrm{Re}(\\varphi(x))=\\mathrm{Re}(x)$ (real part invariance), we get $\\mathrm{Aut}(\\mathbb{O}) \\subseteq \\mathrm{O}(7)$."
     },
     {
       "id": "exceptional-lie-algebras",
-      "title": "§IV-VI: G₂ and the Exceptional Lie Algebras",
+      "title": "§IV-VI: G₂, Magic Square, and Structural Consequences",
       "startLine": 359,
       "endLine": 583,
-      "summary": "Introduces ExceptionalType inductive type for G₂,F₄,E₆,E₇,E₈ with dimensions (14,52,78,133,248) and ranks (2,4,6,7,8). Axiomatizes G2_is_octonion_aut (G₂=Aut(𝕆)) and the four Freudenthal-Tits magic square exceptional types. Proves exceptional_dims_strict_mono, G2_unique_low_rank, E8_is_largest, magic_square_corners_distinct, exceptional_chain by decidability.",
+      "summary": "Introduces ExceptionalType inductive type for G₂,F₄,E₆,E₇,E₈ with dimensions (14,52,78,133,248) and ranks (2,4,6,7,8). Axiomatizes G2_is_octonion_aut (G₂=Aut(𝕆)) and freudenthal_tits_f4/e6/e7/e8. Proves exceptional_dims_strict_mono, G2_unique_low_rank, E8_is_largest, magic_square_corners_distinct, exceptional_chain by decidability. Closes with the Hurwitz-exceptional correspondence explaining why exactly 5 exceptional types exist.",
       "mathContext": "G₂ has dimension 14 = dim(SO(7)) − 7 = 21 − 7 (Aut(𝕆) acts on Im(𝕆)≅ℝ⁷ and is constrained by the cross-product structure). The Freudenthal-Tits magic square: 𝔏(A,B) = Der(A) ⊕ (ImA⊗ImB) ⊕ Der(B). Corners: 𝔏(𝕆,ℝ)=F₄(52), 𝔏(𝕆,ℂ)=E₆(78), 𝔏(𝕆,ℍ)=E₇(133), 𝔏(𝕆,𝕆)=E₈(248)."
     }
   ],
@@ -97,13 +113,18 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib", "Proofs.HurwitzTheorem"],
-    "opens": ["HurwitzTheorem"],
+    "imports": [
+      "Mathlib",
+      "Proofs.HurwitzTheorem"
+    ],
+    "opens": [
+      "HurwitzTheorem"
+    ],
     "namespace": "HurwitzTheoremOQ04",
-    "lineCount": 583,
-    "axiomCount": 5,
-    "theoremCount": 22,
-    "definitionCount": 11,
+    "lineCount": 764,
+    "axiomCount": 1,
+    "theoremCount": 32,
+    "definitionCount": 15,
     "sorries": 0,
     "path": "Proofs/HurwitzTheoremOQ04.lean"
   },
