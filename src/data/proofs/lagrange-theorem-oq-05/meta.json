@@ -126,6 +126,26 @@
       "targetId": "lagrange-theorem",
       "relationship": "extends",
       "description": "Extends Lagrange's theorem through orbit-stabilizer to Burnside's counting lemma"
+    },
+    {
+      "targetId": "lagrange-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Direct source: the orbit-stabilizer theorem |Orb(x)| · |Stab(x)| = |G| is the intermediate step. Burnside's lemma follows by summing over fixed points and applying orbit-stabilizer."
+    },
+    {
+      "targetId": "burnside-counting",
+      "relationship": "related",
+      "description": "Companion entry proving Burnside's lemma and applying it to necklace counting. This entry focuses on the algebraic derivation chain; the companion focuses on the combinatorial application."
+    },
+    {
+      "targetId": "burnside-counting-oq-03",
+      "relationship": "related",
+      "description": "Pólya enumeration theorem for cyclic groups generalizes Burnside's lemma with polynomial weights. The open question here about formalizing Pólya is directly addressed there."
+    },
+    {
+      "targetId": "sylow-theorem-oq-02",
+      "relationship": "related",
+      "description": "Orbit enumeration of Sylow p-subgroups (nₚ = [G : N_G(P)]) is another application of the orbit-stabilizer theorem: counting orbits under G-conjugation gives the Sylow index formula."
     }
   ],
   "conclusion": {
