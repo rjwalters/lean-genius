@@ -1065,11 +1065,61 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
         _ = Real.log ((↑(n / 2) : ℝ) + 1) := by ring
     -- Step D: Odd harmonic bound
     have hHarmonic := odd_harmonic_sum_lb (n / 2) hm_pos
-    -- Step A: Full Fin n sum ≥ filtered sub-sum (nonneg terms dropped)
-    -- Steps B+C: Sub-sum of cot bounds = (2n/π) · odd harmonic sum
-    -- Combined via Fin n → Finset.range conversion + sub_sum_eq_odd_harmonic
-    -- This is the key assembly step connecting Fin n filtering to Finset.range reindexing
-    sorry -- Assembly: Fin n sub-sum bound via cot_lb → (2n/π)·Σ 1/(2j+1) → target
+    -- Assemble via calc chain: target ≤ ... ≤ Σ_Fin tan(B_k)
+    let S := (Finset.univ : Finset (Fin n)).filter (fun k => (n + 1) / 2 ≤ k.val)
+    calc (1 : ℝ) / (2 * Real.pi) * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1))
+        -- Step E: factor and apply log comparison
+        = (↑n / Real.pi) * ((1 : ℝ) / 2 * Real.log ((↑n : ℝ) + 1)) := by ring
+      _ ≤ (↑n / Real.pi) * Real.log ((↑(n / 2) : ℝ) + 1) :=
+          mul_le_mul_of_nonneg_left hLogComp (by positivity)
+        -- Step D: rewrite and apply harmonic bound
+      _ = (2 * ↑n / Real.pi) * ((1 : ℝ) / 2 * Real.log ((↑(n / 2) : ℝ) + 1)) := by ring
+      _ ≤ (2 * ↑n / Real.pi) * ∑ j ∈ Finset.range (n / 2), 1 / (2 * ↑j + 1) :=
+          mul_le_mul_of_nonneg_left hHarmonic (by positivity)
+        -- Factor into sum
+      _ = ∑ j ∈ Finset.range (n / 2), 2 * ↑n / (Real.pi * (2 * ↑j + 1)) := by
+          rw [Finset.mul_sum]; congr 1; ext j; ring
+        -- Step C: Reindex j ↦ ⟨n-1-j,...⟩ mapping range(n/2) → filtered Fin n
+      _ = ∑ k ∈ S, 2 * ↑n / (Real.pi * (2 * ((↑n : ℝ) - ↑k.val) - 1)) := by
+          symm
+          apply Finset.sum_nbij (fun (k : Fin n) => n - 1 - k.val)
+          · -- Maps S → range(n/2)
+            intro k hk
+            simp only [S, Finset.mem_filter, Finset.mem_univ, true_and] at hk
+            simp only [Finset.mem_range]; omega
+          · -- Injective on S
+            intro a ha b hb hab
+            exact Fin.ext (by omega)
+          · -- Surjective onto range(n/2)
+            intro j hj
+            simp only [Finset.mem_range] at hj
+            exact ⟨⟨n - 1 - j, by omega⟩,
+              by simp only [S, Finset.mem_filter, Finset.mem_univ, true_and]; omega,
+              by omega⟩
+          · -- Values match: 2n/(π(2(n-k)-1)) at k = 2n/(π(2j+1)) at j = n-1-k
+            intro k hk
+            simp only [S, Finset.mem_filter, Finset.mem_univ, true_and] at hk
+            congr 1; congr 1
+            have hle : k.val ≤ n := by omega
+            rw [show (n - 1 - k.val : ℕ) = n - k.val - 1 from by omega,
+                show (↑n : ℝ) - ↑k.val = ↑(n - k.val) from
+                  (Nat.cast_sub hle).symm,
+                Nat.cast_sub (show 1 ≤ n - k.val from by omega)]
+            push_cast; ring
+        -- Step B: Apply cot bound to each term
+      _ ≤ ∑ k ∈ S,
+            Real.sin ((2 * ↑k.val + 1 : ℝ) * Real.pi / (4 * ↑n)) /
+            Real.cos ((2 * ↑k.val + 1 : ℝ) * Real.pi / (4 * ↑n)) := by
+          apply Finset.sum_le_sum
+          intro k hk
+          simp only [S, Finset.mem_filter, Finset.mem_univ, true_and] at hk
+          exact tan_half_angle_cot_lb n hn2 k hk
+        -- Step A: Sub-sum ≤ full sum (dropped terms are nonneg)
+      _ ≤ ∑ k : Fin n,
+            Real.sin ((2 * ↑k.val + 1 : ℝ) * Real.pi / (4 * ↑n)) /
+            Real.cos ((2 * ↑k.val + 1 : ℝ) * Real.pi / (4 * ↑n)) :=
+          Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
+            (fun k _ _ => tan_half_angle_nonneg n (by omega) k)
 
 /-! ## Key Lemmas with Sorry -/
 
