@@ -501,3 +501,45 @@ directly gives `i = j` for `i j : Fin 1` without needing any extra hypotheses.
 1. Wait for Docker to be available, run `./proofs/scripts/docker-build.sh Proofs.LebesgueMeasureOQ06`
 2. If proof compiles: update meta.json to `sorries: 2`, create PR
 3. Remaining sorries: `hausdorff_free_subgroup` (~300 lines), `banach_tarski` (~800 lines, AC)
+
+## Session 2026-04-26 (Session 4) - Automaton Infrastructure for Hausdorff Orbit Argument
+
+**Mode**: REVISIT
+**Outcome**: progress — automaton infrastructure built, orbit_ne sorry decomposed
+
+### What I Did
+- Read the 1136-line file (PR #12520) with existing scaledAct* infrastructure
+- Added PART B: word evaluation and automaton infrastructure
+  - `applyGen`: applies generator letter in ℤ[√2]³
+  - `evalWord`: word evaluation (left-to-right fold)
+  - `labeledInv`: mod-3 invariant indexed by last generator applied
+  - `evalWord_append`: lemma that last letter is applied last
+  - `labeledInv_base`: 4 base cases (phi, phi_inv, psi, psi_inv) — 0 sorries
+  - `labeledInv_step`: 12 valid transitions + 4 forbidden (hnocancel contradiction) — 0 sorries
+  - `anyInv_of_labeledInv`: corollary — 0 sorries
+  - `evalWord_nonempty_labeledInv`: main automaton lemma — 2 API sorries
+  - `evalWord_nonempty_anyInv`: consequence — 0 sorries beyond the 2 above
+- Replaced big `orbit_ne` sorry with structured proof containing 3 smaller sorries:
+  1. FreeGroup.Reduced → Chain' (API bridge, ~1 line)
+  2. anyInv v ∧ encoding → False (needs sqrt2 irrationality, ~20 lines)
+  3. evalWord toWord = 3^n * liftF e₂ (main bridge, ~60 lines)
+- Updated meta.json: sorries 2→6, lineCount 783→1286
+
+### Key Findings
+- labeledInv_step covers all 16 cases with the `fin_cases` tactic; 4 forbidden transitions are caught by `exact absurd ⟨rfl, by decide⟩ hnocancel`
+- The 2 API sorries in evalWord_nonempty_labeledInv are:
+  - Prefix chain: `List.chain'_append.mp hred).1` or `List.Chain'.prefix`
+  - Junction condition: `List.chain'_append junction ↔ R l'.getLast! g`
+- The `bridge` sorry (anyInv + encoding → False) is provable by: linear independence of {1,√2}/ℤ (from `Real.irrational_sqrt_two`) extracts `.im = 0`, then mod-3 contradiction
+- `FreeGroup.toWord` is always reduced; `FreeGroup.toWord_eq_nil_iff` (or `FreeGroup.norm_eq_zero`) gives w ≠ 1 ↔ toWord w ≠ []
+
+### Files Modified
+- `proofs/Proofs/LebesgueMeasureOQ06.lean`: +503 lines (automaton infrastructure + orbit_ne restructure)
+- `src/data/proofs/lebesgue-measure-oq-06/meta.json`: sorries 2→6, lineCount updated
+- `src/data/research/problems/lebesgue-measure-oq-06.json`: knowledge updated
+
+### Next Steps
+1. Fix 2 API sorries in evalWord_nonempty_labeledInv: `(List.chain'_append.mp hred).1` for prefix, junction from `.2.2`
+2. Prove bridge (sorry 4): anyInv + encoding → False via Real.irrational_sqrt_two (~20 lines)
+3. Prove henc (sorry 5): evalWord (toWord w) e2Int = 3^n * encode(liftF w e₂) via induction on toWord + scaledAct = 3 * M_L
+4. Fix sorry 3: FreeGroup.Reduced → Chain' using `FreeGroup.toWord_reduced.chain'`
