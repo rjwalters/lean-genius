@@ -177,6 +177,11 @@
       "targetId": "sqrt2-irrational",
       "relationship": "foundational",
       "description": "Irrationality of √2 is the simplest expressibility barrier. The hierarchy is: √2 ∉ ℚ (irrational) → quintic roots ∉ radical extensions (Abel-Ruffini) → e,π ∉ algebraic numbers (Hermite-Lindemann)"
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-04",
+      "relationship": "extended-by",
+      "description": "Baker's theorem (1966) is the multi-logarithm generalization of Hermite-Lindemann: if log α₁, ..., log αₙ are Q-linearly independent, they are Q̄-linearly independent. Hermite-Lindemann is the n=1 case: a single non-zero log α (for algebraic α≠1) is Q̄-linearly independent of 1, i.e., it is transcendental. Baker's proof builds on Hermite's auxiliary polynomial technique but must handle simultaneous approximation of multiple logarithms, requiring a much more delicate zero-counting argument via Siegel's lemma."
     }
   ],
   "leanFile": {

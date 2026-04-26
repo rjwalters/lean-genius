@@ -200,6 +200,11 @@
       "targetId": "liouville-theorem",
       "relationship": "foundational",
       "description": "Liouville's Diophantine approximation theorem (1844) gave the first transcendence results. Gelfond-Schneider uses a different technique (auxiliary functions) but both exploit algebraic vs transcendental approximation gaps"
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-04",
+      "relationship": "extended-by",
+      "description": "Baker's theorem (1966, Fields Medal) is the vast generalization of Gelfond-Schneider: if log α₁, ..., log αₙ are linearly independent over ℚ, they remain linearly independent over Q̄. Gelfond-Schneider handles n=2: log(α^β)/log α = β (algebraic irrational) is the Q̄-linear dependence that Baker's theorem forbids. Baker's proof uses auxiliary function methods pioneered by Gelfond-Schneider but extended to multiple logarithms simultaneously, enabling effective Diophantine bounds with applications to Catalan's conjecture and class number problems."
     }
   ],
   "conclusion": {
