@@ -163,5 +163,30 @@
       "minpoly_sqrt_of_sqfree_factor",
       "divisibility facts (norm_num)"
     ]
+  },
+  {
+    "id": "ann-sqrt2-minpoly-oq01-general",
+    "proofId": "sqrt2-minpoly-oq-01",
+    "range": {
+      "startLine": 132,
+      "endLine": 252
+    },
+    "type": "insight",
+    "title": "Part VII: General Theorem via Irrationality — Beyond Eisenstein",
+    "content": "Part VII proves `minpoly_sqrt_of_not_sq`: for ANY $n$ with $\\lnot\\text{IsSquare}(n)$, we have $\\text{minpoly}_{\\mathbb{Q}}(\\sqrt{n}) = X^2 - n$. This covers the Eisenstein-failing cases like $n=8, 27, 32$.\n\nThe proof does NOT use Eisenstein. Instead it uses a three-step argument:\n1. **Irrationality**: `irrational_sqrt_of_not_sq` proves $\\sqrt{n}$ is irrational using `irrational_nrt_of_notint_nrt`. The key: if $\\sqrt{n} = k/m$ for integers $k,m$, then $n = k^2/m^2$, so $n$ would be a perfect square.\n2. **Degree lower bound**: If $\\text{minpoly}_{\\mathbb{Q}}(\\sqrt{n})$ had degree 1, then $\\sqrt{n}$ would be rational — contradicting irrationality.\n3. **Divisibility + degree**: Since $\\sqrt{n}$ satisfies $X^2 - n = 0$, we have $\\text{minpoly} \\mid X^2 - n$. Degree at most 2, combined with degree at least 2, gives degree exactly 2. Both polynomials are monic of degree 2 with $\\text{minpoly} \\mid X^2 - n$, so they are equal.\n\nPart VII Corollaries verify $\\sqrt{8}$, $\\sqrt{27}$, $\\sqrt{32}$ using the general theorem with `interval_cases` to rule out perfect squares in a bounded range.",
+    "mathContext": "The general argument: $\\lnot\\text{IsSquare}(n) \\Rightarrow \\sqrt{n} \\notin \\mathbb{Q} \\Rightarrow \\deg(\\text{minpoly}) \\geq 2$. Also $\\text{minpoly} \\mid X^2 - n \\Rightarrow \\deg \\leq 2$. So $\\deg = 2$ and $\\text{minpoly} = (X^2 - n) / c$ for some constant $c = 1$ (by monicity). For $n=8$: `interval_cases k` with $k \\leq 3$ rules out $k^2 = 8$ directly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "irrational_nrt_of_notint_nrt",
+      "minpoly.dvd",
+      "minpoly.monic",
+      "natDegree_le_of_dvd",
+      "IsSquare"
+    ],
+    "prerequisites": [
+      "Irrationality of square roots",
+      "minimal polynomial theory",
+      "Polynomial.natDegree_le_of_dvd"
+    ]
   }
 ]
