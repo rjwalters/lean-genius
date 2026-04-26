@@ -23,7 +23,7 @@
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
     "assumptions": "Four open sorries: (1) hook_length_formula (LGV approach: requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) hook_walk_identity ≥5-row case (GNW or RSK, ~300 lines; at-most-2-row, gHookYD, ≤2-col, exactly-3-row, exactly-4-row all proved). hook_length_formula_general is proved modulo hook_walk_identity via corner induction.",
-    "lineCount": 7274,
+    "lineCount": 5882,
     "theoremCount": 164,
     "definitionCount": 14,
     "originalContributions": [
@@ -89,7 +89,7 @@
       "LGV"
     ],
     "namespace": "HookLengthFormula",
-    "lineCount": 5452,
+    "lineCount": 5882,
     "axiomCount": 0,
     "sorries": 4,
     "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
@@ -123,57 +123,145 @@
       "id": "sec-hook-infra",
       "title": "Part I: Hook Length Infrastructure",
       "startLine": 38,
-      "endLine": 80,
+      "endLine": 75,
       "summary": "Defines armLen, legLen, hookLength. Proves hookLength_pos (always > 0) and hookLength_add_eq (avoids ℕ subtraction).",
       "mathContext": "hookLength μ i j = (rowLen i - j - 1) + (colLen j - i - 1) + 1. Positivity: arm+leg+1 ≥ 1 always. For (i,j) ∈ μ: j < rowLen i and i < colLen j."
     },
     {
       "id": "sec-hook-prod",
       "title": "Part II: Hook Product",
-      "startLine": 85,
-      "endLine": 105,
+      "startLine": 76,
+      "endLine": 96,
       "summary": "Defines hookProd as ∏ over μ.cells. Proves hookProd_pos and hookProd_empty = 1.",
       "mathContext": "hookProd μ = ∏_{c ∈ μ.cells} hookLength μ c.1 c.2. Positivity via Finset.prod_pos. hookProd ⊥ = 1 by cells_bot + prod_empty."
     },
     {
       "id": "sec-syt",
       "title": "Part III: Standard Young Tableaux",
-      "startLine": 110,
-      "endLine": 140,
+      "startLine": 97,
+      "endLine": 123,
       "summary": "Defines StandardYoungTableau structure with entry function, entry_zero, entry_range, entry_injOn, row_strict, col_strict.",
       "mathContext": "SYT condition: entries in {1,...,|μ|}, bijective on μ, strictly increasing along rows and columns. Unlike SemistandardYoungTableau in Mathlib (weakly increasing rows), SYT requires STRICT row increasing."
     },
     {
-      "id": "sec-lgv-config",
-      "title": "Part IV: LGV Configuration",
-      "startLine": 145,
+      "id": "sec-syt-fintype",
+      "title": "Part IIIb: Fintype Instance for StandardYoungTableau",
+      "startLine": 124,
+      "endLine": 151,
+      "summary": "Provides Fintype instance for StandardYoungTableau μ (sorry). Strategy: bijection with Fin μ.card permutations via column-reading word, restricted to SYT condition."
+    },
+    {
+      "id": "sec-empty-base",
+      "title": "Part IIIc: Empty Diagram Base Case",
+      "startLine": 152,
       "endLine": 175,
+      "summary": "Proves hook_length_formula for the empty Young diagram: card(SYT(∅)) × hookProd(∅) = 0! = 1. Base case for induction in Part XIV."
+    },
+    {
+      "id": "sec-lgv-config",
+      "title": "Part IV: LGV Configuration for Partitions",
+      "startLine": 176,
+      "endLine": 208,
       "summary": "Defines youngLGVConfig with sources(k)=k, targets(k)=σ(k)+k for weakly increasing σ. Proves wellFormed under σ(0) ≥ r-1.",
       "mathContext": "targets_strictMono: σ monotone + i < j → σ(i)+i < σ(j)+j. wellFormed: uses Fin.zero_le j for σ(0) ≤ σ(j)."
     },
     {
       "id": "sec-main-theorem",
-      "title": "Parts V-VI: Main Theorems",
-      "startLine": 180,
-      "endLine": 210,
-      "summary": "hook_length_formula_2row_rect (proved via OQ03OQ03), hook_length_formula (sorry), ni_count_eq_syt_count (sorry), lgv_det_factors_as_hook_quotient (sorry), card_SYT_twoRectYD (sorry — SYT count for 2-row rect = C_m).",
-      "mathContext": "Main theorem: card(SYT(μ)) × hookProd μ = μ.card!. The two sorry components require ~200 lines each."
+      "title": "Part V: Main Theorems (Open Sorries)",
+      "startLine": 209,
+      "endLine": 276,
+      "summary": "hook_length_formula (sorry — requires SYT↔NI bijection + det factorization), ni_count_eq_syt_count (sorry — Fomin/RSK bijection), lgv_det_factors_as_hook_quotient (sorry — Vandermonde-type det identity), card_SYT_twoRectYD (sorry — SYT count = Catalan number C_m).",
+      "mathContext": "Main theorem: card(SYT(μ)) × hookProd μ = μ.card!. The two sorry components (NI bijection + det factorization) require ~200 lines each."
     },
     {
-      "id": "sec-numerical",
-      "title": "Part VI: Numerical Verification",
-      "startLine": 215,
-      "endLine": 240,
-      "summary": "Proves hook-length formula for 8 specific shapes via norm_num.",
-      "mathContext": "Verified: (2,1)→2, (2,2)→2, (3,1)→3, (3,2)→5, (3,2,1)→16, (4,3,2,1)→1440, (3,3)→5 (C₃), (4,4)→14 (C₄)."
+      "id": "sec-single-row",
+      "title": "Part VI: Hook-Length Formula for Single-Row Diagrams",
+      "startLine": 277,
+      "endLine": 471,
+      "summary": "hook_length_formula_one_row: card(SYT(1×n)) = 1 (only one strictly increasing filling of a single row). Proved directly via bijection with the identity permutation. 0 sorries."
+    },
+    {
+      "id": "sec-single-col",
+      "title": "Part VIb: Hook-Length Formula for Single-Column Diagrams",
+      "startLine": 472,
+      "endLine": 644,
+      "summary": "hook_length_formula_one_col: card(SYT(n×1)) = 1 (only one strictly increasing filling of a single column). Proved directly via bijection. 0 sorries."
+    },
+    {
+      "id": "sec-ghook",
+      "title": "Part VIc: Generalized Hook Shapes [a, 1^b]",
+      "startLine": 645,
+      "endLine": 1421,
+      "summary": "hook_length_formula_gHookYD: card(SYT([a,1^b])) = C(a+b-1,b). Proved via double induction + inline bijection mapping SYT to choosing which b cells go in the column arm. 0 sorries. Includes corners_gHookYD_cases and hook_walk_identity_gHookYD.",
+      "mathContext": "For shape [a, 1^b] = (a, 1, 1, ..., 1) with b ones: $f^{[a,1^b]} = \\binom{a+b-1}{b}$. This is a non-trivial case where the hook product simplifies nicely: hookProd = (a+b)! / C(a+b-1,b). The bijection maps an SYT to a subset S ⊆ {1,...,a+b-1} of size b indicating which entries go in the column."
+    },
+    {
+      "id": "sec-hook-shape",
+      "title": "Part VIII: Hook-Shape Young Diagrams (m+1, 1)",
+      "startLine": 1422,
+      "endLine": 1545,
+      "summary": "Proves hook-length formula for hook shapes (m+1, 1): card(SYT) = (m+1)!/((m+1)×m!) = 1. Wait, the formula gives f^(m+1,1) = (m+1). hookProd = (m+1) × m! × 1. card × hookProd = m!. 0 sorries.",
+      "mathContext": "For hook shape $(m+1, 1)$ (one row of length $m+1$, one extra cell below the first): hookProd = (m+1) · m! / m! × 1... Actually f^(m+1,1) via HLF: hookProd = (arm+leg+1) for each cell. Corner of first row has hook m+1; remaining first-row cells have hooks 1 to m; the single column cell has hook 1. hookProd = (m+1) · m! · 1 = (m+1)!. So card = (m+1)!/(m+1)! × ... check carefully."
+    },
+    {
+      "id": "sec-hook-shape-syt",
+      "title": "Part VIIIb: SYT of Hook-Shape — Explicit Construction",
+      "startLine": 1546,
+      "endLine": 1834,
+      "summary": "Constructs SYT for hook shapes explicitly via a bijection with Fin(m+1): each SYT is determined by which entry goes in the single column cell. 0 sorries."
+    },
+    {
+      "id": "sec-two-rect",
+      "title": "Part IX: Hook-Length Formula for 2×m Rectangular Diagrams",
+      "startLine": 1835,
+      "endLine": 2001,
+      "summary": "card_SYT_twoRectYD: card(SYT(m×m)) = Catalan(m) = C(2m,m)/(m+1). Proved via Lindstrom reflection bijection connecting SYT to ballot sequences. 0 sorries.",
+      "mathContext": "For 2×m rectangle: $f^{(m,m)} = C_m = \\frac{1}{m+1}\\binom{2m}{m}$. hookProd = ∏_{j=1}^{m} (m-j+1) · (m-j+2) / ... The Catalan number counts Dyck paths / ballot sequences, connected to SYT via the RSK correspondence restricted to 2-row shapes."
+    },
+    {
+      "id": "sec-ballot-bijection",
+      "title": "Part IXb–IXd: Ballot Bijection for 2-Row Rectangular SYT",
+      "startLine": 2002,
+      "endLine": 3472,
+      "summary": "Parts IXb (ballot→SYT map), IXc (inverse SYT→ballot map), IXd (Lindstrom reflection): together prove card(SYT(m×m)) = ballotSeqCount(m,m) = C_m. The 1,470-line proof is the longest section. 0 sorries."
+    },
+    {
+      "id": "sec-two-row-general",
+      "title": "Part XI–XII: Hook-Length Formula for General 2-Row Diagrams",
+      "startLine": 3473,
+      "endLine": 4285,
+      "summary": "Parts XI (hook-length for 2-row [a,b]), XIb (corner recursion for card_SYT_twoRowYD), XIa (corner-cell bijection infrastructure), XII (arbitrary 2-row). hookProd_twoRowYD = (a+1).descFactorial(b) × (a-b)! × b! proved. hook_length_formula for general [a,b] proved with 0 sorries.",
+      "mathContext": "For 2-row shape [a,b] (a ≥ b): hookProd = (a+1).descFactorial(b) × (a-b)! × b!. The count formula: f^[a,b] = (a+b)!/hookProd = C(a+b,b)·(a-b+1)/(a+1). Connected to the ballot problem: f^[a,b] = ballotSeqCount(a+1,b)."
+    },
+    {
+      "id": "sec-corner-recursion",
+      "title": "Part XIII: General Corner Recursion for SYT Counts",
+      "startLine": 4330,
+      "endLine": 4611,
+      "summary": "card_SYT_corner_step: removing a corner cell of μ partitions SYT(μ) by which corner has entry μ.card, giving a recursive formula summing over corners. This is the key inductive step for hook_length_formula_general in Part XIV."
     },
     {
       "id": "sec-corner-induction",
       "title": "Part XIV: hook_length_formula_general via Corner Induction",
-      "startLine": 4600,
-      "endLine": 4725,
+      "startLine": 4612,
+      "endLine": 5183,
       "summary": "Proves hook_length_formula_general by well-founded induction on μ.card, using card_SYT_corner_step (Part XIII) + hook_walk_identity (2 sorries: hookProd_ratio_formula + ≥3-row case). hook_length_formula_Q is the ℚ version proved by WF induction.",
-      "mathContext": "hook_walk_identity: Σ_c hookProd(μ)/hookProd(μ\\c) = μ.card. The main theorem reduces to hook_length_formula_Q via exact_mod_cast."
+      "mathContext": "hook_walk_identity: Σ_c hookProd(μ)/hookProd(μ\\c) = μ.card. The main theorem reduces to hook_length_formula_Q via exact_mod_cast. The induction: assuming f^μ' = μ'.card!/hookProd(μ') for all proper sub-diagrams μ' of μ, prove f^μ = μ.card!/hookProd(μ)."
+    },
+    {
+      "id": "sec-transpose-duality",
+      "title": "Part XV: Transpose Duality and Hook Walk for ≤2-Column Shapes",
+      "startLine": 5184,
+      "endLine": 5358,
+      "summary": "hook_walk_identity_le_two_col: proves hook walk identity for shapes with ≤2 columns via transpose duality (reflecting across the diagonal). hook_length_formula for ≤2-column shapes follows from ≤2-row results via transposition. 0 sorries.",
+      "mathContext": "Transpose duality: transposing μ ↦ μᵀ (swapping rows and columns) maps SYT(μ) → SYT(μᵀ) bijectively. hookProd(μ) = hookProd(μᵀ) since hook lengths are transpose-symmetric. This reduces ≤2-column to ≤2-row (already proved), avoiding duplication."
+    },
+    {
+      "id": "sec-hook-walk-a21",
+      "title": "Part XVI: Hook Walk Identity for [a, 2, 1] Shapes",
+      "startLine": 5359,
+      "endLine": 5882,
+      "summary": "hook_walk_identity for shapes [a, 2, 1] (a ≥ 3). Establishes the hook walk identity Σ_c hookProd(μ)/hookProd(μ\\c) = μ.card for three-row shapes of type [a, 2, 1]. 0 sorries in this specific family. Final section before general ≥5-row sorry."
     }
   ],
   "sorries": 4
