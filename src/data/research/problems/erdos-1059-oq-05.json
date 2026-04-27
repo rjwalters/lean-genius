@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1059-oq-05",
   "title": "Generalized interval_cases+decide tactic for factorial compositeness verification",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-30T19:39:40.878Z",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T00:00:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Decidable instance for AllFactorialSubtractionsComposite formalized in Erdos1059OQ05.lean. 0 axioms, 0 sorries, 7 theorems.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — gallery entry has badge: wip and status: axiomatized; the bounded-quantifier decidability infrastructure is in place. Future witness-search work can proceed on a separate problem.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -74,7 +74,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T19:39:40.878Z",
-  "lastUpdate": "2026-03-30T19:39:40.878Z",
+  "lastUpdate": "2026-04-27T00:00:00.000Z",
   "significance": 5,
   "tractability": 7,
   "leanFiles": [
