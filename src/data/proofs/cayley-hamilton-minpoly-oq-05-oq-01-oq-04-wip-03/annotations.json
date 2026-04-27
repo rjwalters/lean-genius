@@ -12,6 +12,18 @@
     "prerequisites": ["field theory", "polynomial rings", "matrix algebra", "unique factorization"]
   },
   {
+    "id": "ann-wip03-setup",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
+    "range": { "startLine": 33, "endLine": 44 },
+    "type": "context",
+    "title": "Imports and Environment Setup",
+    "content": "The file imports the full Mathlib library, opens the `Matrix` and `Polynomial` namespaces for concise notation, and declares `noncomputable section` since `Field K` instances are generally noncomputable in Lean 4. The `Classical.propDecidable` attribute enables classical reasoning (`by_contra`, decidable equality on propositions) throughout the file. The field `K` and dimension `n` are introduced as universe-polymorphic implicit variables, allowing the results to apply to any field and matrix size.",
+    "mathContext": "The `noncomputable` declaration is necessary because field operations and polynomial evaluation in Lean 4 are defined noncomputably via classical axioms. The `open Matrix Polynomial` allows writing `mulVec`, `aeval`, `natDegree`, etc. without module prefixes.",
+    "significance": "context",
+    "relatedConcepts": ["Lean 4 noncomputable", "classical logic", "universe polymorphism"],
+    "prerequisites": ["Lean 4 module system", "Mathlib library structure"]
+  },
+  {
     "id": "ann-wip03-cyclic-def",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
     "range": { "startLine": 49, "endLine": 51 },
