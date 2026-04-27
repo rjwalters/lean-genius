@@ -186,10 +186,12 @@ theorem artin_implies_erdos_985 :
     (∀ q, q.Prime → Set.Infinite {p : ℕ | p.Prime ∧ orderOf (q : ZMod p) = p - 1}) →
     ∀ p, p.Prime → p ≠ 2 → ∃ q, q.Prime ∧ q < p ∧ orderOf (q : ZMod p) = p - 1 := by
   intro h_artin p hp hp2
-  -- This requires showing that among the infinitely many primes for which
-  -- each small prime is a primitive root, there must be one ≤ p.
-  -- The actual proof is more subtle and requires quantitative bounds.
-  exact erdos_985_conjecture p hp hp2
+  -- Deriving Erdős 985 from Artin's conjecture requires a quantitative step:
+  -- the Artin hypothesis gives infinitely many p' for which each prime q is a
+  -- primitive root, but we need to find such a prime q < p specifically for p.
+  -- This gap requires a Linnik-type upper bound (smallest p' ≤ f(q)) and is
+  -- not yet formalized here.
+  sorry
 
 /- ## Summary -/
 
