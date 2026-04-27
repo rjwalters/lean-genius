@@ -1,27 +1,44 @@
 {
   "slug": "erdos-402-wip-01",
   "title": "Complete Graham's GCD Conjecture (Work in Progress)",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE: This proof is marked as work in progress and needs completion.",
-    "whyMatters": []
+    "formal": "\\forall A \\subset \\mathbb{N}, A \\text{ finite}, A \\ne \\emptyset, \\text{all } a > 0 \\implies \\exists a, b \\in A:\\ \\gcd(a, b) \\le a / |A|.",
+    "plain": "Graham (1970): for any finite set A of positive integers, there exist a, b ∈ A with gcd(a,b) ≤ a/|A|. Resolved by Balasubramanian–Soundararajan (1996). The Lean formalization states the main theorem and proves all small cases (|A| ≤ 4) plus several structural reductions; the general-A proof remains as a single `sorry`.",
+    "whyMatters": [
+      "Classical GCD/divisibility problem from Erdős's #402; resolved by Balasubramanian–Soundararajan (1996) via a sieve argument",
+      "Tight: gcd(a,b) = a/|A| is achievable on three families ({1,...,n}, lcm-divisor sets, {2,3,4,6}); the equality characterization itself is conjectural (and shown false in this file via the {1,2,4} counterexample to Graham's stronger equality conjecture)",
+      "Pedagogically rich for Lean: small-card proofs (|A|=2,3,4) exercise gcd/divisibility lemmas; the general-A `sorry` documents a research-grade reduction"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Main theorem (formalized): pair case |A|=2 (erdos_402_pair, via dvd_lt_imp_le_half)",
+      "Main theorem (formalized): triple case |A|=3 (erdos_402_triple, via three_element_gcd_bound)",
+      "Main theorem (formalized): quadruple case |A|=4 (erdos_402_quadruple)",
+      "Main theorem (formalized): when 1 ∈ A (erdos_402_contains_one, pigeonhole on max ≥ |A|)",
+      "Main theorem (formalized): when min(A) ≤ max(A)/|A| (erdos_402_small_min)",
+      "Counterexample to Graham's equality conjecture: {1,2,4} is primitive, satisfies the GCD bound, and is not in any of the three conjectured equality families (counterexample_124_*)",
+      "Balasubramanian–Soundararajan (1996): full theorem in number-theoretic literature (sieve argument, not yet formalized)"
+    ],
+    "open": [
+      "Formalization of the general-A case (erdos_402_graham_conjecture line 99 sorry) — requires a Balasubramanian–Soundararajan sieve argument",
+      "Sharp characterization of all equality cases — the original Graham equality conjecture is FALSE (this file's {1,2,4} counterexample); the correct characterization is open"
+    ],
+    "goal": "Eliminate the line-99 sorry by formalizing the Balasubramanian–Soundararajan sieve argument, or by reducing to a finite case analysis combined with the proved small-card and structural cases."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-28T19:26:08.359Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "iteration": 5,
+    "focus": "Substantial small-case formalization complete; main theorem awaits sieve-based proof",
+    "blockers": [
+      "Main conjecture sieve argument is research-grade Lean (~hundreds of lines); not currently tractable"
+    ],
+    "nextAction": "Either (a) attempt formalization of the cardinality-5 case to extend the small-card induction, or (b) survey existing Mathlib sieve infrastructure for Balasubramanian–Soundararajan-style arguments",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Added 3 new theorems (small_min, three_element_gcd_bound, erdos_402_three). 433 lines, 18 theorems, 0 axioms, 1 sorry (main conjecture).",
+    "progressSummary": "PROGRESS: 693 lines, 19 theorems, 0 axioms, 1 sorry (main conjecture line 99). All cases |A| ≤ 4 are formalized, plus structural reductions (1 ∈ A; small min) and the {1,2,4} counterexample to Graham's equality conjecture. Only remaining gap is the general-A sieve argument from Balasubramanian–Soundararajan (1996).",
     "builtItems": [
       "counterexample_124_satisfies: {1,2,4} satisfies Graham condition",
       "counterexample_124_primitive: {1,2,4} has gcd 1",
@@ -76,16 +93,38 @@
   ],
   "relatedProofs": [
     "erdos-4",
-    "erdos-40",
-    "erdos-402"
+    "erdos-40"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Graham, R. L. (1970) — original conjecture",
+      "Szegedy, M. (1986) — proof for sufficiently large sets",
+      "Zaharescu, A. (1987) — independent proof for large sets",
+      "Balasubramanian, R. & Soundararajan, K. (1996) — completed proof for all finite sets"
+    ],
+    "urls": [
+      "https://www.erdosproblems.com/402"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.GCD.Basic — Nat.gcd, gcd_dvd",
+      "Mathlib.Data.Finset.Card — Finset.card, max_ge_card_of_pos pattern"
+    ]
   },
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos402Problem.lean",
+      "filename": "Erdos402Problem.lean",
+      "lineCount": 693,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos402Problem.lean"
+    }
+  ],
   "started": "2026-03-28T19:26:08.359Z",
-  "lastUpdate": "2026-03-28T19:26:08.359Z",
+  "lastUpdate": "2026-04-28T00:00:00.000Z",
   "significance": 5,
   "tractability": 6
 }

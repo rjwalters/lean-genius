@@ -1,26 +1,40 @@
 {
   "slug": "erdos-1173",
-  "title": "Erdős #1173",
+  "title": "Erdős #1173: Free Sets for Set Mappings under GCH",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "Assume GCH. Let f : \\omega_{\\omega+1} \\to [\\omega_{\\omega+1}]^{\\le \\aleph_\\omega} be a set mapping such that |f(\\alpha) \\cap f(\\beta)| < \\aleph_\\omega for all \\alpha \\ne \\beta. Does there exist a free set of cardinality \\aleph_{\\omega+1}? (A set S is free if \\alpha \\notin f(\\beta) for all distinct \\alpha,\\beta \\in S.)",
+    "plain": "Under the Generalized Continuum Hypothesis, suppose every ordinal below ω_{ω+1} is assigned a set of size at most ℵ_ω, and any two of these sets share strictly fewer than ℵ_ω elements. Must there exist a 'free' set of size ℵ_{ω+1} — that is, a set S in which no element of S belongs to the assigned set of any other element of S?",
+    "whyMatters": [
+      "Open Erdős–Hajnal problem in infinitary combinatorics / set theory (Erdős & Hajnal; Komjáth Ko25b Problem 35; Vaughan Va99 7.88)",
+      "Tests whether the Hajnal free set theorem (regular case) extends to a singular cardinal (ℵ_ω) under a weaker pairwise almost-disjoint intersection hypothesis",
+      "Singular cardinals lack the regularity used in standard free-set arguments; resolution would inform PCF theory and the structure of [κ]^{<κ} for singular κ"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Hajnal free set theorem (regular case): for regular κ and f : κ⁺ → [κ⁺]^{<κ}, there is a free set of size κ⁺",
+      "Under GCH, ℵ_ω is a strong limit cardinal (gch_aleph_omega_strong_limit, formalized)",
+      "Almost-disjoint overlap is bounded by some ℵ_n for n < ω (overlap_bounded_by_aleph_n, formalized)",
+      "Basic cardinal arithmetic: ℵ_ω < ℵ_{ω+1} and 2^{ℵ_ω} = ℵ_{ω+1} under GCH (formalized)"
+    ],
+    "open": [
+      "The full conjecture: existence of a free set of cardinality ℵ_{ω+1}",
+      "Weak form (erdos_1173_weak): existence of a free set of cardinality ℵ_ω"
+    ],
+    "goal": "Either construct a free set of cardinality ℵ_{ω+1} from the GCH + bounded image + almost-disjoint hypotheses, or construct (relatively consistent) a counterexample mapping where no such free set exists."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "iteration": 1,
-    "focus": "Survey",
-    "blockers": [],
-    "nextAction": "Check Mathlib set theory API",
+    "phase": "OBSERVE",
+    "iteration": 2,
+    "focus": "Problem stated and infrastructure formalized; main conjecture remains OPEN",
+    "blockers": [
+      "Main conjecture is an open Erdős–Hajnal problem; resolution requires research-level set theory beyond automated formalization"
+    ],
+    "nextAction": "Survey literature for partial results on singular set mappings (Ko25b Problem 35, Va99 7.88) before any formal proof attempt",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -45,7 +59,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #1173 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #1173 — Free Sets for Set Mappings under GCH\n\n## Problem\n\nUnder GCH, given f : ω_{ω+1} → [ω_{ω+1}]^{≤ℵ_ω} with |f(α) ∩ f(β)| < ℵ_ω for α ≠ β, must there exist a free set of cardinality ℵ_{ω+1}? (S free ⇔ α ∉ f(β) for distinct α, β ∈ S.)\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Lean Formalization\n\n`proofs/Proofs/Erdos1173Problem.lean` — 0 axioms, 0 sorries.\nDefines the conjecture and supporting machinery; proves basic\ncardinal arithmetic and trivial free-set lemmas. Main conjecture\nis a `def : Prop` (statement only).\n\n## References\n\n- Erdős & Hajnal, original problem\n- Komjáth (Ko25b) Problem 35\n- Vaughan (Va99) 7.88\n"
   },
   "tags": [
     "erdos"
@@ -53,16 +67,24 @@
   "relatedProofs": [
     "erdos-1",
     "erdos-11",
-    "erdos-117",
-    "erdos-1173"
+    "erdos-117"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdős, P. & Hajnal, A. — original problem on set mappings and free sets",
+      "Komjáth, P. (Ko25b), Problem 35",
+      "Vaughan, J. (Va99), 7.88"
+    ],
+    "urls": [
+      "https://www.erdosproblems.com/1173"
+    ],
+    "mathlib": [
+      "Mathlib.SetTheory.Cardinal.Basic — Cardinal.aleph, aleph_lt",
+      "Mathlib.SetTheory.Cardinal.Ordinal — aleph_limit, isSuccLimit_omega0"
+    ]
   },
   "started": "2026-01-15T17:01:06.708Z",
-  "lastUpdate": "2026-03-24T08:25:00.000Z",
+  "lastUpdate": "2026-04-28T00:00:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
