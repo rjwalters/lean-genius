@@ -24,6 +24,12 @@
     "lineCount": 167,
     "assumptions": "None. Axiom-free. Imports WIP04 (which is itself axiom-free) and adds UFD factorization to remove the factored-form hypothesis.",
     "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Axiom elimination via UFD wrapping: closes the WIP01 axiom (nonderogatory_similar_to_companion, the rational canonical form structure theorem) by extracting the prime-power factorization of the minimal polynomial automatically through UniqueFactorizationMonoid.normalizedFactors — making the cluster (WIP01–WIP05) the first 0-axiom Lean formalization of the nonderogatory cyclic vector theorem over any field.",
+      "Three-step coprimality chain for distinct monic irreducibles in K[X]: combines Irreducible.associated_of_dvd, Polynomial.eq_of_monic_of_associated, and Irreducible.coprime_iff_not_dvd to convert distinctness into IsCoprime, then lifts via IsCoprime.pow to coprime prime powers — the key technical lemma feeding WIP04's primary decomposition.",
+      "Fintype-to-Fin index conversion adapter (nonderogatory_general_has_cyclic_vector_fintype): bridges WIP04's Fin-indexed signature with WIP05's natural Finset-indexed factorization data via Fintype.equivFin and Equiv.prod_comp — pure interface code with no mathematical content but essential for cluster cohesion.",
+      "Pedagogical decomposition of UFD product identity: explicit chain f = normalize f = s.prod = ∏_{m ∈ D} m^(s.count m) using Monic.normalize_eq_self, prod_normalizedFactors_eq, and Finset.prod_multiset_count — a rewriting template applicable to any theorem requiring an explicit prime-power form of a monic polynomial."
+    ],
     "mathlibDependencies": [
       {
         "theorem": "UniqueFactorizationMonoid.normalizedFactors",
@@ -93,7 +99,10 @@
       "**Fin → Fintype index conversion is cosmetic but enabling**: WIP04 uses `Fin k`-indexed families because that is the simplest signature for Bezout/CRT projections, but `normalizedFactors` produces a `Multiset` whose support is a `Finset`. Reindexing through `Fintype.equivFin` and `Equiv.prod_comp` bridges the two conventions without any mathematical content — pure API code that lets the natural data structure of WIP05 plug into the natural signature of WIP04.",
       "**Zero new mathematics, complete axiom elimination**: This wrapper introduces no new theorems beyond what WIP04 already proved. Its content is interface code between WIP04 and Mathlib's UFD library. Yet it transforms WIP04's conditional theorem (assuming a factorization is supplied) into the full nonderogatory cyclic vector theorem, eliminating the last hypothesis. The cluster WIP01–WIP05 thus achieves 0 axioms despite Mathlib lacking the PID structure theorem.",
       "**Avoiding the rational canonical form**: The classical proof routes through the structure theorem for finitely-generated modules over a PID, deducing $K^n \\cong K[X]/(\\mu_M)$ when nonderogatory and reading off $v$ as a generator. Mathlib 4.26 lacks this in usable form. The WIP02–WIP05 strategy substitutes a primary-decomposition argument: by CRT, $K[X]/(\\prod p_i^{e_i}) \\cong \\prod K[X]/(p_i^{e_i})$, reducing to the prime-power case (WIP03). This reroute generalizes to any module-theoretic result blocked by the same Mathlib gap, suggesting a portable proof template.",
-      "**`IsNonderogatory` as definitional equality**: The hypothesis `IsNonderogatory M` unfolds directly to `minpoly K M = M.charpoly`, providing the bridge from algebraic ($\\mu_M$) to combinatorial ($\\chi_M$, computable via $\\det(XI - M)$) data. This single equality cascades: monicity of $\\chi_M$ transfers to $\\mu_M$, the degree bound $\\deg\\,\\chi_M = n$ gives $\\mu_M$ degree $n$, and the divisibility $\\mu_M \\mid \\chi_M$ becomes equality."
+      "**`IsNonderogatory` as definitional equality**: The hypothesis `IsNonderogatory M` unfolds directly to `minpoly K M = M.charpoly`, providing the bridge from algebraic ($\\mu_M$) to combinatorial ($\\chi_M$, computable via $\\det(XI - M)$) data. This single equality cascades: monicity of $\\chi_M$ transfers to $\\mu_M$, the degree bound $\\deg\\,\\chi_M = n$ gives $\\mu_M$ degree $n$, and the divisibility $\\mu_M \\mid \\chi_M$ becomes equality.",
+      "**Smith Normal Form is the alternative bridge — and is also missing**: The classical PID structure theorem can be proved via the Smith Normal Form (SNF) of the matrix $XI - M \\in M_n(K[X])$, whose nonzero diagonal entries are the *invariant factors* $d_1 \\mid d_2 \\mid \\cdots \\mid d_r$ of the $K[X]$-module $K^n$. When $\\mu_M = \\chi_M$ (nonderogatory), $r = 1$ and the unique invariant factor is $\\mu_M$, giving the cyclic decomposition. Mathlib 4.26 contains SNF for matrices over a Euclidean domain (`Matrix.SmithNormalForm`) but not the bridge to module structure — so this route is also blocked. WIP02–WIP05 effectively reroute around *both* missing pieces (PID structure theorem AND SNF-to-module bridge) via primary decomposition.",
+      "**Why fields, not arbitrary PIDs**: The `IsCoprime.pow` chain requires `Irreducible.coprime_iff_not_dvd`, which holds in any PID — but `Polynomial.eq_of_monic_of_associated` requires the field structure (over a non-field, monic associate polynomials need not be equal: e.g., $X$ and $-X$ over $\\mathbb{Z}$ are associated, both 'monic' in some sense, but distinct). The argument generalizes to any UFD with a notion of 'normalized' representatives, but the cleanest statement is over fields where 'monic' is the canonical normalization. Generalizing to nonderogatory matrices over a *Dedekind domain* (e.g., the ring of integers of a number field) would require replacing 'monic' with 'normalized' and would yield the structure theorem for finitely generated torsion modules over Dedekind domains — a substantial extension, but with the same primary-decomposition spine.",
+      "**The cluster as proof-engineering case study**: WIP01 → WIP02 → WIP03 → WIP04 → WIP05 illustrates a recurring pattern in axiom-free Lean formalization. WIP01 introduces an axiom (the structure theorem) to make progress; subsequent files chip away at it: WIP02 handles the squarefree case (no module theory needed), WIP03 the prime-power case (induction on exponent), WIP04 the general factored case (CRT + WIP03), WIP05 the parameterless general case (UFD wrapping). Each step replaces a 'black box' Mathlib gap with a structurally explicit substitute. This 'sieve' pattern — start with axiom, refine to lemma, refine to definition, refine to theorem — is portable to other Mathlib gaps (Smith Normal Form, Jordan Normal Form, classification of finitely generated abelian groups)."
     ]
   },
   "sections": [
@@ -267,6 +276,31 @@
       "citation": "The mathlib Community, mathlib4: a unified library of mathematics formalized in Lean 4 (2026). Specifically: Mathlib.RingTheory.UniqueFactorizationDomain.NormalizedFactors and Mathlib.Algebra.Polynomial.FieldDivision provide the UFD machinery used in this proof.",
       "type": "preprint",
       "url": "https://leanprover-community.github.io/mathlib4_docs/"
+    },
+    {
+      "key": "AF92",
+      "citation": "Anderson, F.W. and Fuller, K.R., Rings and Categories of Modules, 2nd ed., Springer GTM 13 (1992). Comprehensive treatment of finitely generated modules over PIDs, including the invariant factor and elementary divisor forms of the structure theorem and their applications to canonical forms of linear maps.",
+      "type": "book"
+    },
+    {
+      "key": "CR62",
+      "citation": "Curtis, C.W. and Reiner, I., Representation Theory of Finite Groups and Associative Algebras, Wiley (1962, reprinted AMS Chelsea 2006). Chapter II: cyclic and primary decompositions of K[X]-modules, the rational canonical form, and explicit construction of cyclic vectors via the structure theorem.",
+      "type": "book"
+    },
+    {
+      "key": "Bo89",
+      "citation": "Bourbaki, N., Algèbre, Chapitre 7: Modules sur les anneaux principaux, Masson (1981) / Springer (1989 English ed.). The standard rigorous treatment of the structure theorem for finitely generated modules over a PID, via Smith Normal Form for presentation matrices.",
+      "type": "book"
+    },
+    {
+      "key": "Sm1861",
+      "citation": "Smith, H.J.S., On systems of linear indeterminate equations and congruences, Philosophical Transactions of the Royal Society of London 151 (1861), 293–326. Original paper introducing the Smith Normal Form, predating its modern algebraic interpretation by decades.",
+      "type": "paper"
+    },
+    {
+      "key": "vdW55",
+      "citation": "van der Waerden, B.L., Algebra, vol. 2, 4th ed., Springer (1955; English ed. Ungar 1970). §85 Cyclic Modules, §86 Decomposition Theorem — the classical exposition of cyclic-vector and primary decomposition arguments that the WIP02–WIP05 cluster reformalizes constructively.",
+      "type": "book"
     }
   ],
   "sorries": 0
