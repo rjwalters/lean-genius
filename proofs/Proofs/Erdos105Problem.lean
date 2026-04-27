@@ -164,10 +164,24 @@ theorem many_rich_lines_exist (A : Finset Point) (hncoll : NonCollinear (A : Set
 
 /- ## Part VI: Threshold Function -/
 
-/-- f(n) = largest number such that for all A with |A| = n non-collinear,
-    and all B with |B| ≤ f(n), some rich line of A avoids B.
-    Known: c·n ≤ f(n) ≤ n - 4. Axiomatized since exact determination is open. -/
-axiom thresholdFunction (n : ℕ) : ℕ
+/-- f(n) = largest m such that for all A with |A| = n non-collinear, and all
+    disjoint B with |B| ≤ m, some rich line of A avoids B. Defined as the
+    supremum of obstacle counts that can always be avoided.
+
+    Known: c·n ≤ f(n) ≤ n - 4 (exact value is the open question this gallery
+    studies). Replaces a previous `axiom thresholdFunction : ℕ → ℕ`, which
+    declared the function abstractly without tying it to its mathematical
+    meaning — making conjectures about an opaque symbol rather than a real
+    threshold.
+
+    Note: For n ≤ 1 (or any n where no rich line exists), the set is unbounded
+    above (the implication is vacuous), so by Mathlib convention `sSup = 0`
+    in that range. The interesting regime is n ≥ 4. -/
+noncomputable def thresholdFunction (n : ℕ) : ℕ :=
+  sSup {m : ℕ | ∀ (A B : Finset Point),
+    A.card = n → B.card ≤ m → Disjoint A B →
+    NonCollinear (A : Set Point) →
+    ∃ L : Line, L.richAndUnblocked (A : Set Point) (B : Set Point)}
 
 /-- **Lower bound:** f(n) ≥ c·n for some c > 0. -/
 /-- **Upper bound:** f(n) ≤ n - 4 (from Xichuan's counterexample). -/
