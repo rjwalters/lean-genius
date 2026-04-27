@@ -25,12 +25,16 @@ Two-step LGV proof:
 - instFintypeSYT: Fintype instance for SYT (makes Fintype.card typecheck)
 - hook_length_formula_bot: proved for empty diagram
 - youngLGVConfig: LGV encoding with well-formedness proved
-- hook_length_formula_from_chain: proves main theorem FROM the two sorry lemmas
-- Formula verified numerically for 8 specific shapes
+- hook_length_formula_from_chain: conditional theorem from h_ni_syt + h_det_hook
+- hook_length_formula_general: PROVED via corner recursion + hook_walk_identity
+  (the main theorem is established via this corner-recursion path; the LGV
+   route below remains open)
 
-### Open (2 sorry lemmas)
-- ni_count_eq_syt_count: SYT ↔ NI-path bijection (Fomin growth diagram, ~200 lines)
-- lgv_det_factors_as_hook_quotient: det × hookProd = n! (Vandermonde identity, ~200 lines)
+### Status
+- Main theorem `hook_length_formula` is proved modulo a single remaining sorry in
+  `hook_walk_identity` (the ≥10×≥10 non-rectangular case; ~300-line GNW argument).
+- The alternate LGV proof path remains open. See the OPEN comment block in PART V
+  for the canonical-config restatement that future work should target.
 -/
 
 import Proofs.BallotProblemOQ03OQ02
@@ -218,39 +222,51 @@ theorem hook_length_formula_2row_rect (m : ℕ) :
     LatticePathLGV.Cn m * ((m + 1).factorial * m.factorial) = (2 * m).factorial :=
   LGVCorollaries.hook_length_formula_two_row m
 
-/-- Auxiliary: count of SYT of shape μ equals the NI-path count with youngLGVConfig.
-    This is the Fomin growth diagram bijection (RSK correspondence restricted to SYT).
-    WARNING: This statement is INCORRECTLY STATED — it takes arbitrary (r, σ, m) without
-    requiring they encode μ's row lengths. The correct version needs a canonical LGV config:
-      def youngLGVConfigOf (μ : YoungDiagram) : LGVConfig k := youngLGVConfig k σ_μ ...
-    where σ_μ i = μ.rowLen (k-1-i) for k = number of rows of μ. Then the theorem says:
-      card(SYT μ) = niTupleCount (youngLGVConfigOf μ).
-    [OPEN: requires defining youngLGVConfigOf + RSK bijection proof, ~200 lines] -/
-theorem ni_count_eq_syt_count (μ : YoungDiagram) (r : ℕ) (σ : Fin r → ℕ)
-    (hσ : Monotone σ) (m : ℕ) (hm : ∀ i : Fin r, σ i + i.val ≤ m)
-    (hr : 0 < r) (hmin : r - 1 ≤ σ ⟨0, hr⟩) :
-    Fintype.card (StandardYoungTableau μ) =
-    niTupleCount (youngLGVConfig r σ hσ m hm) := by
-  sorry
+/-
+  ## OPEN: LGV proof path — canonical-config restatement
 
-/-- Auxiliary: the LGV determinant for youngLGVConfig times hookProd equals μ.card!.
-    This is the algebraic identity connecting path-count determinants to hook products.
-    WARNING: This statement is INCORRECTLY STATED — it takes arbitrary (r, σ, m, μ)
-    without requiring that (r, σ, m) encodes μ. The correct version needs a connection:
-    for the canonical config youngLGVConfigOf μ, det(pathMatrix(youngLGVConfigOf μ)) × hookProd μ = μ.card!
-    This follows from the Jacobi-Trudi identity / Lindström determinant formula.
-    [OPEN: requires defining youngLGVConfigOf + Vandermonde-type determinant identity] -/
-theorem lgv_det_factors_as_hook_quotient (μ : YoungDiagram) (r : ℕ) (σ : Fin r → ℕ)
-    (hσ : Monotone σ) (m : ℕ) (hm : ∀ i : Fin r, σ i + i.val ≤ m) :
-    (pathMatrix (youngLGVConfig r σ hσ m hm)).det * (hookProd μ : ℤ) =
-    μ.card.factorial := by
-  sorry
+  Earlier revisions of this file declared two auxiliary `sorry` lemmas
+  (`ni_count_eq_syt_count` and `lgv_det_factors_as_hook_quotient`) that took
+  an arbitrary tuple (r, σ, m) of LGV parameters with no hypothesis tying
+  them to μ.  As stated, those lemmas were not generally true: most choices
+  of (r, σ, m) bear no relation to μ, so the equalities reduce to false
+  numerical claims (e.g. for μ = ⊥ paired with r = 1, σ = fun _ => 5).
+  They were therefore dead, unprovable scaffolding, and have been removed.
 
-/-- The hook-length formula follows from the two auxiliary sorry lemmas + lgv_lemma_rxr.
-    This demonstrates the logical chain is complete; the two remaining deep steps are:
-    (1) ni_count_eq_syt_count — RSK/Fomin growth diagram bijection (~200 lines)
-    (2) lgv_det_factors_as_hook_quotient — Vandermonde-type det identity (~200 lines)
-    If both are resolved for a specific encoding of μ, the formula follows. -/
+  The corrected formulation requires a canonical encoding `youngLGVConfigOf μ`
+  built from μ alone:
+
+      r       = μ.colLen 0                    -- number of non-empty rows
+      σ_μ i   = μ.rowLen (r - 1 - i.val)      -- weakly-increasing reversal
+      m       = σ_μ ⟨r-1, _⟩ + (r-1)           -- max source/target index
+
+  With this canonical config the two open conjectures become:
+
+  (A)  Fintype.card (StandardYoungTableau μ) = niTupleCount (youngLGVConfigOf μ)
+       — the Fomin/RSK bijection between SYT and non-intersecting lattice
+         path tuples.  ~200 lines.
+
+  (B)  (pathMatrix (youngLGVConfigOf μ)).det * (hookProd μ : ℤ) = μ.card.factorial
+       — the Lindström / Jacobi–Trudi determinant identity.  ~200 lines.
+
+  Subtlety: the LGV well-formedness condition `r - 1 ≤ σ_μ ⟨0, _⟩` reduces to
+  `r - 1 ≤ μ.rowLen (r - 1)`, i.e. the bottom row is at least as long as
+  (numRows − 1).  This fails for tall/narrow shapes such as the column
+  `(1,1,…,1)`.  The general statement therefore needs a transpose-duality
+  case split (apply LGV to whichever of μ, μᵀ is "wide enough"), or a more
+  flexible canonical config that does not require well-formedness.
+
+  Until (A) and (B) are formalized, the main theorem `hook_length_formula`
+  is established via the corner-recursion / `hook_walk_identity` path
+  (`hook_length_formula_general`, end of file).  `hook_length_formula_from_chain`
+  below remains a clean *conditional* statement that records the LGV chain
+  abstractly and can consume any future proof of (A) and (B).
+-/
+
+/-- The hook-length formula follows abstractly from the LGV chain hypotheses
+    `h_ni_syt` (SYT count = NI-path count) and `h_det_hook` (det × hookProd = n!).
+    A proof of (A) and (B) above for a canonical encoding `youngLGVConfigOf μ`
+    would discharge both hypotheses and yield `hook_length_formula` directly. -/
 theorem hook_length_formula_from_chain (μ : YoungDiagram)
     (r : ℕ) (σ : Fin r → ℕ) (hσ : Monotone σ) (m : ℕ)
     (hm : ∀ i : Fin r, σ i + i.val ≤ m) (hr : 0 < r) (hmin : r - 1 ≤ σ ⟨0, hr⟩)
@@ -13992,12 +14008,13 @@ theorem hook_length_formula_general (μ : YoungDiagram) :
     Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.card.factorial := by
   exact_mod_cast hook_length_formula_Q μ
 
-/-- **Hook-Length Formula (Frame-Robinson-Thrall 1954)** — alias for hook_length_formula_general.
+/-- **Hook-Length Formula (Frame-Robinson-Thrall 1954)** — alias for `hook_length_formula_general`.
     Proved here (after the corner-recursion infrastructure is in scope) via
-    hook_length_formula_general. The alternate LGV proof path (ni_count_eq_syt_count +
-    lgv_det_factors_as_hook_quotient) has incorrectly stated auxiliary lemmas and remains open.
-    Mathematical status: proved for all shapes with ≤9 rows or ≤9 columns;
-    ≥10×≥10 case sorry pending GNW hook walk argument (~300 lines). -/
+    `hook_length_formula_general`.  The alternate LGV proof path is documented
+    as the canonical-config restatement at the top of PART V; it remains open.
+    Mathematical status: proved for all shapes with ≤9 rows or ≤9 columns and
+    for all rectangles; `≥10 × ≥10` non-rectangular case is the sole remaining
+    sorry, pending the GNW hook-walk argument (~300 lines). -/
 theorem hook_length_formula (μ : YoungDiagram) :
     Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.card.factorial :=
   hook_length_formula_general μ
