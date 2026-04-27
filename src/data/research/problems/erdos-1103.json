@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1103",
   "title": "Erdős #1103",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T15:24:14.877Z",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T15:48:41.407570+00:00",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Conjecture disproved via van Doorn-Tao 2025 upper bound; 1 axiom remains (deep published result).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — problem complete.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Proved erdos_1103_false (conjecture is false via van Doorn-Tao upper bound). 3 axioms (all deep published results). 0 sorries. 9 theorems.",
+    "progressSummary": "COMPLETE: Proved erdos_1103_false (conjecture is false via van Doorn-Tao 2025 upper bound). 1 axiom remaining (`vanDoorn_tao_upper`, deep published result — arXiv:2512.01087). 0 sorries. 9 theorems. 3 defs. File matches meta.json (status: axiomatized, badge: axiom).",
     "builtItems": [
       "Proved squarefreeSumset_singleton (axiom → theorem) in Erdos1103Problem.lean:78",
       "Fixed type annotation for ErdosProblem1103 (j : ℕ)",
@@ -66,7 +66,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T15:24:14.877Z",
-  "lastUpdate": "2026-03-13T07:52:17.057Z",
+  "lastUpdate": "2026-04-27T15:48:41.407570+00:00",
   "significance": 5,
   "tractability": 3,
   "leanFiles": [
