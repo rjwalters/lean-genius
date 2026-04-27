@@ -1,8 +1,8 @@
 {
   "slug": "szemeredi-full-oq-02",
   "title": "Szemerédi's Theorem: Uniform Sets Not Containing k-AP Are o(N) Dense",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -19,9 +19,9 @@
     "phase": "COMPLETED",
     "since": "2026-04-22T13:03:46.383Z",
     "iteration": 1,
-    "focus": "Complete: SzemerediFullOQ02.lean built and PR created",
+    "focus": "Complete: SzemerediFullOQ02.lean has 0 sorries; gallery meta in sync (axiomatized, axiomCount=1).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — work complete. Future work (Gowers U^2 infrastructure) tracked in mathlibGaps.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -69,7 +69,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.383Z",
-  "lastUpdate": "2026-04-26T00:00:00.000Z",
+  "lastUpdate": "2026-04-27T23:36:00.000Z",
   "significance": 8,
   "tractability": 3
 }
