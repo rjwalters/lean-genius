@@ -19,7 +19,7 @@
       "smooth-numbers"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 460,
     "erdosUrl": "https://erdosproblems.com/460",
     "erdosProblemStatus": "open",
@@ -54,9 +54,9 @@
       "Definition of the least-prime-factor filtered sum f(n) and its sufficiency axiom",
       "Splitting into smallPrimeDivisibleSum and largePrimeSum with Erdős's question about individual divergence"
     ],
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 274,
-    "assumptions": "2 axioms: eggleton_erdos_selfridge (deep result), filtered_sum_implies_full. sieve_greedy proved from constructive definition (with hactive guard for sentinel case). sieve_conjectured_bound demoted to def."
+    "assumptions": "2 axioms: eggleton_erdos_selfridge (deep result), filtered_sum_implies_full. sieve_greedy proved from constructive definition (with hactive guard for sentinel case). sieve_conjectured_bound demoted to def. filtered_sum_implies_full converted from axiom to theorem-with-sorry (axiom integrity)."
   },
   "leanFile": {
     "imports": [
