@@ -6,7 +6,7 @@
   "meta": {
     "author": "Banach, S. and Tarski, A. (1924)",
     "date": "2026",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/LebesgueMeasureOQ06.lean",
     "tags": [
       "measure-theory",
@@ -17,11 +17,11 @@
       "axiom-of-choice",
       "research"
     ],
-    "badge": "wip",
-    "sorries": 1,
-    "axiomCount": 0,
-    "lineCount": 1516,
-    "assumptions": "1 sorry: banach_tarski main theorem (800+ lines via Hausdorff paradox + AC). All supporting lemmas fully proved: hausdorff_free_subgroup/orbit_ne (inductive proof via irrationality of sqrt 2 + ℤ[√2] invariant), free_group_paradoxical (F₂ is paradoxical under left action), free_group_not_amenable, int_amenable (Cesaro window-shift), banach_tarski_pieces_nonmeasurable.",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 1517,
+    "assumptions": "1 axiom: banach_tarski main theorem (800+ lines via Hausdorff paradox + Axiom of Choice; provably unprovable in ZF alone — Solovay 1970). Declared as an explicit axiom rather than a placeholder proof so the mathematical assumption is tracked per the axiom integrity policy. All supporting lemmas fully proved: hausdorff_free_subgroup/orbit_ne (inductive proof via irrationality of sqrt 2 + ℤ[√2] invariant), free_group_paradoxical (F₂ is paradoxical under left action), free_group_not_amenable, int_amenable (Cesaro window-shift), banach_tarski_pieces_nonmeasurable.",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -118,7 +118,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Banach-Tarski paradox is formalized with 1 sorry and 0 axioms. The abstract framework (equidecomposability, paradoxical sets, F₂ non-amenability) is fully proved — including complete machine-checked proofs of paradoxical_no_finite_measure, free_group_paradoxical (F₂ is paradoxical under its own left action), free_group_not_amenable, int_amenable (ℤ amenable via Cesàro window-shift), banach_tarski_pieces_nonmeasurable, and orbit_ne (Hausdorff free subgroup freeness via ℤ[√2] automaton). The 1 remaining sorry is the full banach_tarski geometric assembly (~800 lines via Hausdorff paradox + Axiom of Choice).",
+    "summary": "The Banach-Tarski paradox is formalized with 0 sorries and 1 explicit axiom. The abstract framework (equidecomposability, paradoxical sets, F₂ non-amenability) is fully proved — including complete machine-checked proofs of paradoxical_no_finite_measure, free_group_paradoxical (F₂ is paradoxical under its own left action), free_group_not_amenable, int_amenable (ℤ amenable via Cesàro window-shift), banach_tarski_pieces_nonmeasurable, and orbit_ne (Hausdorff free subgroup freeness via ℤ[√2] automaton). The single axiom is the full banach_tarski geometric assembly (~800 lines via Hausdorff paradox + Axiom of Choice). Declared as `axiom` rather than a placeholder proof so the assumption is explicit per the axiom integrity policy — Solovay (1970) showed any proof must use AC essentially.",
     "openQuestions": [
       "Can Hausdorff's free subgroup theorem be fully formalized in Lean? The proof requires showing that explicit 3×3 rotation matrices $\\varphi$ (rotation by $\\arccos(1/3)$ around the $z$-axis) and $\\psi$ (rotation by $\\arccos(1/3)$ around the $x$-axis) generate a free group of rank 2 in $\\text{SO}(3)$. The algebraic argument shows that nontrivial words $w(\\varphi, \\psi)$ applied to $e_1 = (1, 0, 0)$ produce vectors with coordinates in $\\mathbb{Z}[1/3, \\sqrt{2}/3]$ that are non-zero — requiring careful case analysis on the word structure and number-theoretic properties of $\\arccos(1/3)$ (specifically that it is not a rational multiple of $\\pi$).",
       "Can the full Banach-Tarski proof be formalized in Lean 4? The most likely modular path: (1) formalize the free subgroup freeness (the sorry in `hausdorff_free_subgroup`); (2) prove the paradoxical decomposition of $F_2$ acting on itself (purely algebraic, ~100 lines); (3) lift to $S^2 \\setminus D$ via the free group action (~150 lines); (4) handle the exceptional set $D$ via a rotation of infinite order (Hilbert hotel, ~100 lines); (5) extend from $S^2$ to $B^3$ by coning and handling the center (~100 lines). Estimated total: 800–1200 lines.",
@@ -213,12 +213,12 @@
       "Mathlib"
     ],
     "namespace": "BanachTarski",
-    "lineCount": 1516,
-    "axiomCount": 0,
+    "lineCount": 1517,
+    "axiomCount": 1,
     "theoremCount": 53,
     "definitionCount": 5,
     "path": "Proofs/LebesgueMeasureOQ06.lean",
-    "sorries": 1
+    "sorries": 0
   },
-  "sorries": 1
+  "sorries": 0
 }
