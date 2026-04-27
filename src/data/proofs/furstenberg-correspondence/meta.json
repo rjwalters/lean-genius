@@ -55,7 +55,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "In 1977, Hillel Furstenberg gave a revolutionary proof of Szemerédi's theorem using ergodic theory, establishing a deep connection between combinatorial number theory and dynamical systems. This proof introduced the Furstenberg Correspondence Principle (translating density into measure theory) and the Multiple Recurrence Theorem (generalizing Poincaré recurrence). Unlike Szemerédi's original combinatorial proof, Furstenberg's approach gives no quantitative bounds but proves more general results and launched the field of ergodic Ramsey theory.",
+    "historicalContext": "Szemerédi's 1975 theorem on arithmetic progressions in dense integer sets was proved by an extraordinarily intricate combinatorial argument that introduced the regularity lemma. In 1977, Hillel Furstenberg (J. Analyse Math. 31, 204–256) gave a revolutionary alternative proof using ergodic theory, establishing a deep connection between combinatorial number theory and dynamical systems. This proof introduced the Furstenberg Correspondence Principle (translating density of integer sets into measure of dynamical sets) and the Multiple Recurrence Theorem (generalizing Poincaré's 1890 recurrence theorem from one to k-fold intersections). Unlike Szemerédi's combinatorial proof, Furstenberg's approach gives no quantitative bounds but is far more flexible: it generalizes immediately to give the Furstenberg-Katznelson (1978) multidimensional Szemerédi theorem, the Bergelson-Leibman (1996) polynomial Szemerédi theorem (arithmetic progressions with polynomial common differences p(n) = n^2, n^3, …), and the density Hales-Jewett theorem (Furstenberg-Katznelson 1991). The 2012 work of Green-Tao on primes in arithmetic progressions ultimately combines both routes — Szemerédi's quantitative regularity bounds with Furstenberg-style transference principles. Furstenberg's program also launched the field now called *ergodic Ramsey theory*, in which combinatorial statements about integers are systematically translated into recurrence questions for measure-preserving systems and answered using the structural theory of dynamical systems (Furstenberg structure theorem, Host-Kra factors).",
     "problemStatement": "**Furstenberg's Approach**: For any A ⊆ ℕ with positive upper Banach density d*(A) > 0 and any k ≥ 1, A contains a k-term arithmetic progression.\n\n**Method**: (1) Correspondence Principle translates d*(A) > 0 to a measure-preserving system with μ(B) > 0. (2) Multiple Recurrence Theorem gives ∃ n > 0, μ(B ∩ T^{-n}B ∩ ... ∩ T^{-(k-1)n}B) > 0. (3) Correspondence lifts this back to a k-AP in A.",
     "text": "Demonstrates Furstenberg's 1977 ergodic approach to Szemerédi's theorem in Lean 4. The k=2 case is proved using Mathlib's Poincaré recurrence; the full theorem uses 2 axioms.",
     "proofStrategy": "**Architecture**:\n1. Define upper Banach density for ℕ subsets\n2. Bundle probability measure-preserving systems as `System` structure\n3. Prove Poincaré recurrence from Mathlib's `Conservative` theory\n4. Axiomatize the Furstenberg Correspondence Principle\n5. Prove Szemerédi k=2: Correspondence + Poincaré\n6. Axiomatize Multiple Recurrence for k ≥ 3\n7. Prove full Szemerédi by case split: k≤2 (Poincaré) vs k≥3 (axiom)",
@@ -64,7 +64,11 @@
       "The chain MeasurePreserving → Conservative → Poincaré is complete in Mathlib and requires zero additional axioms",
       "The Furstenberg Correspondence Principle could be formalized in ~500 lines using product spaces and ultrafilters",
       "The k≥3 multiple recurrence requires ergodic decomposition and structure theory (~2000+ lines), the main bottleneck for full formalization",
-      "This demonstrates that the ergodic approach to Szemerédi is within reach of current Lean 4 + Mathlib infrastructure"
+      "This demonstrates that the ergodic approach to Szemerédi is within reach of current Lean 4 + Mathlib infrastructure",
+      "**Why ergodic gives no bounds**: the correspondence principle is a *non-constructive* compactness argument — a sequence of finite combinatorial objects of growing size yields, via weak-* limits, an infinite measure-preserving system. The bound depending on δ that Szemerédi extracts combinatorially is hidden inside the limit and cannot be recovered. Trade: massive generality (multidimensional, polynomial, IP-set extensions) at the cost of bound-extraction.",
+      "**Structural hierarchy of dynamical systems**: Furstenberg's full proof of multiple recurrence for k≥3 proceeds by a structure theorem — every measure-preserving system is a tower of compact extensions over its Kronecker (rotational) factor. Multiple recurrence is then proved level-by-level along the tower. This structural view, refined by Host-Kra (2005) and Ziegler (2007) into a finite tower of nilfactors, is the deepest result in ergodic Ramsey theory.",
+      "**Single proof, many theorems**: the same Furstenberg framework yields, with minor changes, (a) van der Waerden (Birkhoff multiple recurrence, finitary), (b) Szemerédi (this entry, k-APs in dense sets), (c) Furstenberg-Katznelson (multi-dim. analog with k IP-recurrence), (d) Bergelson-Leibman (polynomial APs), (e) density Hales-Jewett (combinatorial lines in dense subsets of A^n). Every one of these has resisted purely combinatorial proofs longer than ergodic ones.",
+      "**Mathlib gap analysis is precise**: this file's axiomatization makes explicit *exactly* what Mathlib lacks: weak-* compactness for product measure spaces (~500 LoC for the correspondence principle) and Kronecker-factor decomposition (~2000 LoC for k≥3 recurrence). This is a concrete roadmap for formalization rather than a vague 'far future' goal."
     ],
     "prerequisites": [
       "Measure theory (probability measures, measure-preserving maps)",
@@ -134,12 +138,32 @@
     {
       "targetId": "szemeredi-theorem",
       "relationship": "alternative-proof",
-      "description": "Alternative approach to Szemerédi's theorem via ergodic theory, complementing the regularity lemma approach in szemeredi-theorem"
+      "description": "Alternative approach to Szemerédi's theorem via ergodic theory, complementing the regularity lemma approach in szemeredi-theorem. The ergodic route gives no quantitative bounds but generalizes to multidimensional, polynomial, and IP-set extensions."
     },
     {
       "targetId": "szemeredi-regularity",
-      "relationship": "related",
-      "description": "The regularity lemma approach gives quantitative bounds; the ergodic approach gives no bounds but proves more general results"
+      "relationship": "complementary",
+      "description": "The Szemerédi regularity lemma approach gives quantitative bounds (tower-type); the ergodic approach formalized here gives no bounds but proves more general statements. Modern proofs (Green-Tao 2008) combine quantitative regularity with Furstenberg-style transference principles."
+    },
+    {
+      "targetId": "szemeredi-full",
+      "relationship": "alternative-proof",
+      "description": "The full combinatorial Szemerédi pipeline (regularity + counting + removal). This entry gives an axiomatized ergodic proof of the same statement; both routes are formalization targets in this gallery."
+    },
+    {
+      "targetId": "szemeredi-hypergraph-core",
+      "relationship": "complementary",
+      "description": "Hypergraph-regularity infrastructure for the modern combinatorial proof of multidimensional Szemerédi (Gowers 2007, Nagle-Rödl-Schacht 2006). Furstenberg-Katznelson (1978) proved the multidimensional case ergodically — the ergodic and hypergraph approaches are now seen as parallel developments of the same structural theory."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "ancestor",
+      "description": "Ramsey's theorem (1928) is the prototype 'positive density implies structure' result and the historical root of Ramsey theory. Furstenberg's correspondence principle is the ergodic-theoretic generalization: density (rather than coloring) implies structure (k-APs rather than monochromatic subsets), with Ramsey-type results as special cases."
+    },
+    {
+      "targetId": "furstenberg-correspondence-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open-question entry developing further details of the Furstenberg correspondence pipeline."
     }
   ],
   "conclusion": {
