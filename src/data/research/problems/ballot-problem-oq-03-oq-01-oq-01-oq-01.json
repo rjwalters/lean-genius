@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-23T12:58:12+02:00",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Building Jacobi-Trudi determinant formula in Lean 4 using Mathlib hsymm",
     "blockers": [],
-    "nextAction": "Targeted JDT bijection session: define forward map (P plus Q.sort[c], Q minus Q.sort[c]) and inverse (seam in Pprime), prove Equiv plus Multiset.prod_cons/prod_erase weight preservation. ~120 focused lines for jdt_weight_sum alone.",
+    "nextAction": "Implement jdt_weight_sum_b_one using documented recipe (Sym.oneEquiv + Sym.cons + Multiset.sort_cons + Multiset.prod_cons).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: jdt_weight_sum b=0 case proved (vacuously true). 2 sorries remain: jdt_weight_sum b>=1 (JDT bijection ~100 lines) + jacobi_trudi_ssyt_eq k>=3 (LGV+RSK ~300 lines).",
+    "progressSummary": "PROGRESS: Session 11 (2026-04-27) added actionable b=1 proof recipe to file; 2 sorries remain (jdt_weight_sum b≥1 with concrete recipe, jacobi_trudi_ssyt_eq k≥3).",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -98,7 +98,8 @@
       "ssytSchurFin_two_row proof pattern: cs = total - ncs; Fintype.sum_subtype_add_sum_subtype splits into cs+ncs=total; eq_sub_of_add_eq closes after substituting rowPair_sum_weight and nonColStrict_sum_weight",
       "ssytFin_two_row_eq_sum_colstrict proved via explicit SSYTFin ≃ colstrict-pair Equiv; uses ssytFin_row_sort_eq_ofFn helper that shows sort of sorted row = same row via mergeSort_eq_self",
       "ColStrictSym definition: P.sort[j] < Q.sort[j] for all j < min(a,b); Decidable via Fintype.decidableForallFintype; key for separating SSYT contributions by column-strict pairs",
-      "Session 10 (2026-04-27, survey only): both remaining sorries (jdt_weight_sum, jacobi_trudi_ssyt_eq k>=3) are correctly stated as of session 9. No fast fixes available; each is a focused 100-300 line proof body. Released for an agent with budget for sustained work."
+      "Session 10 (2026-04-27, survey only): both remaining sorries (jdt_weight_sum, jacobi_trudi_ssyt_eq k>=3) are correctly stated as of session 9. No fast fixes available; each is a focused 100-300 line proof body. Released for an agent with budget for sustained work.",
+      "Session 11 (2026-04-27): documented concrete b=1 recipe using Sym.oneEquiv (alpha ≃ Sym alpha 1, Mathlib.Data.Sym.Basic:477), Sym.cons/cons_erase/erase_cons_head, and Multiset.sort_cons. Recipe lives in jdt_weight_sum b≥1 branch comment as actionable Lean plan. Next session can implement jdt_weight_sum_b_one directly without re-discovering API."
     ],
     "mathlibGaps": [
       "No Mathlib SchurPolynomial definition — we provide one via Jacobi-Trudi formula",
@@ -106,10 +107,10 @@
       "RSK correspondence not formalized in Mathlib — needed for jacobiTrudi_lgv_proof"
     ],
     "nextSteps": [
-      "Submit twoRow_equiv and twoRow_equiv_weight to Aristotle (mechanical sorries)",
-      "Implement nonColStrict_sum_weight via jdt bijection: define jdtForward (insert Q[c] into P at violation c), prove it is an Equiv to RowPair (a+1)(b-1), show weight-preserving, apply rowPair_sum_weight",
-      "Once nonColStrict_sum_weight proved, ssytSchurFin_two_row has 0 sorries — only k>=3 remains",
-      "Prove jdt_weight_sum: construct explicit weight-preserving bijection {non-col-strict (a,b)} ≃ {all (a+1,b-1)} via multiset insert/erase; inverse is the seam-finding operation"
+      "Implement jdt_weight_sum_b_one (~60-90 lines) using documented recipe: bijection {(P, q): q ≤ P.sort[0]} ≃ Sym n (a+1) via cons/erase, with weight preserved by prod_cons + map_cons",
+      "Refactor jdt_weight_sum to dispatch on b ∈ {0, 1, ≥2} cases, eliminating the b=1 sorry",
+      "Tackle b≥2 JDT seam construction (~150 lines) — the genuine frontier",
+      "Alternative: build algebraic LGV in BallotProblemOQ03AlgebraicLGV.lean for k≥3 case (~150 lines)"
     ],
     "markdown": "# Knowledge Base: LGV Lemma → Jacobi-Trudi Identity\n\n**Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01\n**Last Updated**: 2026-04-23\n**Knowledge Items**: 0\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nNewly selected. Jacobi-Trudi identity expresses Schur polynomials as determinants of\ncomplete homogeneous symmetric polynomials. The LGV lemma (in parent gallery proof)\nprovides the combinatorial proof route via non-intersecting lattice paths.\n\n---\n\n## Insights\n\n_None yet — begin with OBSERVE phase: check Mathlib for SSYT formalization._\n\n---\n\n## Dead Ends\n\n_None identified yet._\n"
   },
@@ -143,7 +144,7 @@
     "mathlib": []
   },
   "started": "2026-04-23T11:05:51.190Z",
-  "lastUpdate": "2026-04-26T00:00:00.000Z",
+  "lastUpdate": "2026-04-27T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/BallotProblem.lean",

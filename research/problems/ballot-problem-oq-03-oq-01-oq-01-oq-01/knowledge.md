@@ -491,6 +491,72 @@ symmetric polynomials: `s_λ = det[h_{λᵢ-i+j}]`. The proof route via SSYT and
 
 ---
 
+## Session 2026-04-27 (Session 11) — Concrete b=1 Recipe Documented
+
+**Mode**: REVISIT (RICH, score 73)
+**Outcome**: SURVEY+ — added actionable b=1 proof recipe to file; no sorry count change
+
+### What I Did
+
+Confirmed the file's two open sorries are stable (jdt_weight_sum b≥1, jacobi_trudi_ssyt_eq k≥3).
+Investigated relevant Mathlib API:
+
+- **`Sym.oneEquiv : α ≃ Sym α 1`** (Mathlib.Data.Sym.Basic:477) — provides clean
+  Sym n 1 ↔ Fin n conversion: `oneEquiv a = ⟨{a}, _⟩`.
+- **`Sym.cons : α → Sym α n → Sym α (n+1)`** (denoted `::ₛ`, line 106). Coercion
+  is `(a ::ₛ s : Multiset) = a ::ₘ s.1`.
+- **`Sym.erase [DecidableEq α] : Sym α (n+1) → α → (a ∈ s) → Sym α n`** (line 203).
+- **`Sym.cons_erase : a ::ₛ s.erase a h = s`** (line 219) — left-inverse closer.
+- **`Sym.erase_cons_head : (a ::ₛ s).erase a _ = s`** (line 223) — round-trip.
+- **`Multiset.sort_cons : (∀ b ∈ s, r a b) → sort (a ::ₘ s) r = a :: sort s r`**
+  (Multiset/Sort.lean:69) — KEY for showing that consing the min preserves sort head.
+
+Added an explicit recipe block to `BallotProblemOQ03OQ01OQ01OQ01.lean` at the b≥1
+branch of `jdt_weight_sum` describing the b=1 bijection construction in concrete
+Lean terms. This makes the next session's implementation mechanical.
+
+### Concrete b=1 Recipe (already documented in file, recorded here for posterity)
+
+```text
+-- LHS for b=1 (after Sym.oneEquiv reparameterization):
+--   ∑_{(P : Sym n a, q : Fin n) // q ≤ P.sort[0]} wt(P) * X q
+-- RHS: h_{a+1} = ∑_{P' : Sym n (a+1)} wt(P').
+
+-- Bijection ψ:
+--   forward (P, q, h) ↦ q ::ₛ P
+--   inverse P' ↦ ((P'.erase q', oneEquiv q'), proof) where q' = P'.sort.head
+--   left_inv: erase_cons_head (q is the head we just consed)
+--   right_inv: cons_erase (after extracting min, consing it back gives P')
+-- Weight preservation (single line):
+--   wt(P) * X q = ((q ::ₘ P.1).map X).prod = wt(q ::ₛ P)
+-- via Multiset.prod_cons + Multiset.map_cons.
+```
+
+### Why I Didn't Implement
+
+Without local docker build feedback, attempting an 80-100 line bijection proof
+risks breaking compilation in subtle ways (Fin coercions, sort.head pos proofs,
+etc.). The recipe captures the math precisely so a session with build access
+can implement directly.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (~30 lines of detailed
+  recipe added in `jdt_weight_sum` b≥1 branch comment)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01/knowledge.md` (this file)
+
+### Sorry Count: 2 (unchanged)
+
+### Next Session Owner
+
+Implement `jdt_weight_sum_b_one` as a separate `private lemma` using the
+documented recipe. Estimated 60-90 lines focused work given the API references
+are now explicit. Then refactor `jdt_weight_sum` to dispatch on b ∈ {0, 1, ≥2}.
+The b≥2 case remains the JDT seam construction (~150 lines) and is the
+real frontier.
+
+---
+
 ## Session 2026-04-27 (Session 10) — Survey only; no code changes
 
 **Mode**: REVISIT (RICH, score 72)
