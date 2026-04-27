@@ -65,9 +65,24 @@
       "The Bezout/coprimality argument (irreducible_dvd_of_annihilated from WIP02) is reused as the base case and the p-divisibility step, avoiding code duplication.",
       "Commutativity of polynomial evaluation: r(M)(p^k(M)v) = p^k(M)(r(M)v) because polynomials in M commute. This is used repeatedly in the mulVec calculations.",
       "Degree counting closes the proof cleanly: p^e | r with deg(r) < deg(p^e) = n forces r = 0, directly giving the cyclic vector condition."
+    ],
+    "text": "An axiom-free Lean 4 proof of the prime power cyclic vector theorem in 253 lines. The core new contribution is `pow_irred_dvd_of_annihilated`, proved by induction on the exponent $e$: if $p$ is irreducible and $p^e(M)v \\neq 0$ but $p^{e+1}(M)v = 0$, then any $r$ with $r(M)v = 0$ satisfies $p^{e+1} \\mid r$. The inductive step uses a 'shift trick' — applying $p(M)$ to $v$ to descend from level $e+1$ to level $e$ — combined with polynomial evaluation commutativity and the Bezout coprimality argument `irreducible_dvd_of_annihilated`. The main theorem `nonderogatory_pw_has_cyclic_vector` assembles this into a four-step proof: (1) find $v$ with $p^{e-1}(M)v \\neq 0$ via minimality of the minimal polynomial, (2) observe $p^e(M)v = 0$ since $\\mu_M = p^e$ annihilates all vectors, (3) apply the key lemma to get $p^e \\mid r$ for any annihilator $r$, (4) degree counting forces $r = 0$. The proof avoids the PID structure theorem entirely, using only the UFD property of $K[X]$ for Bezout's identity.",
+    "prerequisites": [
+      "Linear algebra: matrices, minimal and characteristic polynomials",
+      "Abstract algebra: polynomial rings as UFDs, irreducibility, Bezout's identity",
+      "The Cayley-Hamilton theorem (for charpoly_natDegree_eq_dim)",
+      "Minimal polynomial theory (minpoly.dvd)"
     ]
   },
   "sections": [
+    {
+      "id": "setup",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring explaining the prime power case and its relationship to WIP01/WIP02. Imports Mathlib, opens the Matrix and Polynomial namespaces, enables classical decidability, and introduces field K and dimension n as implicit variables.",
+      "mathContext": "The variable setup `{K : Type*} [Field K] {n : ℕ}` provides universe-polymorphic generality: K is any field (finite or infinite, any characteristic) and n is the matrix dimension. `Classical.propDecidable` enables decidable propositions needed for by_contra arguments. The noncomputable section is required because field operations in Lean are generally noncomputable."
+    },
     {
       "id": "definitions",
       "title": "I. Definitions",
@@ -88,7 +103,7 @@
       "id": "key-lemma",
       "title": "III. Key Lemma — Prime Power Divisibility",
       "startLine": 98,
-      "endLine": 156,
+      "endLine": 175,
       "summary": "Proves pow_irred_dvd_of_annihilated by induction on e: if p irred, p^e(M)v ≠ 0, p^(e+1)(M)v = 0, r(M)v = 0, then p^(e+1) | r.",
       "mathContext": "Base case (e=0): p(M)v = 0 and v ≠ 0 and r(M)v = 0, so p | r by irreducible_dvd_of_annihilated. Inductive step: w = p^(e+1)(M)v ≠ 0 satisfies p(M)w = 0, so p | r. Writing r = p*r₁, u = p(M)v satisfies p^e(M)u ≠ 0 and r₁(M)u = 0, so IH gives p^(e+1) | r₁, hence p^(e+2) | r."
     },
@@ -96,9 +111,17 @@
       "id": "main-theorem",
       "title": "IV. Main Theorem — Prime Power Case",
       "startLine": 162,
-      "endLine": 235,
+      "endLine": 238,
       "summary": "Proves nonderogatory_pw_has_cyclic_vector: for nonderogatory M with minpoly = p^e (p monic irreducible, e ≥ 1), M has a cyclic vector over any field K.",
       "mathContext": "Pick v with p^(e-1)(M)v ≠ 0 (possible since deg(p^(e-1)) < n = deg(minpoly) implies p^(e-1)(M) ≠ 0). Then p^e(M)v = 0. For any r with r(M)v = 0 and deg(r) < n: pow_irred_dvd_of_annihilated gives p^e | r, so deg(r) ≥ e·deg(p) = n, contradicting deg(r) < n. Hence r = 0."
+    },
+    {
+      "id": "corollaries",
+      "title": "V. Corollaries",
+      "startLine": 240,
+      "endLine": 253,
+      "summary": "Finite field corollary: the prime power cyclic vector theorem applies to all finite fields with no cardinality restriction, unlike earlier gallery results that required |K| > n.",
+      "mathContext": "The corollary `nonderogatory_pw_has_cyclic_vector_finite` is a direct specialization adding `[Fintype K]`, demonstrating that the proof's purely algebraic approach (Bezout in K[X], degree arithmetic) requires no field size hypothesis. This contrasts with Vandermonde-based proofs that need |K| ≥ n distinct evaluation points."
     }
   ],
   "conclusion": {
@@ -161,6 +184,29 @@
       "targetId": "cayley-hamilton-reduction-oq-02-oq-01",
       "relationship": "related",
       "description": "Rational canonical form via companion matrices. WIP03's prime power cyclic vector is a building block for showing each primary component has companion form."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Frobenius, Ferdinand Georg",
+      "title": "Über lineare Substitutionen und bilineare Formen",
+      "year": "1878",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), vol. 84, pp. 1–63",
+      "note": "Introduced the 'Elementartheiler' (elementary divisors) of matrices over polynomial rings, establishing the rational canonical form theory that the cyclic vector theorem generalizes"
+    },
+    {
+      "authors": "Hoffman, Kenneth; Kunze, Ray",
+      "title": "Linear Algebra",
+      "year": "1971",
+      "venue": "Prentice-Hall, 2nd edition",
+      "note": "Chapter 7 presents the cyclic decomposition theorem for finitely generated modules over PIDs, the standard proof framework this formalization bypasses via the elementary inductive approach"
+    },
+    {
+      "authors": "Roman, Steven",
+      "title": "Advanced Linear Algebra",
+      "year": "2008",
+      "venue": "Springer GTM 135, 3rd edition",
+      "note": "Chapter 7 (The Structure of a Linear Operator) covers rational canonical form and the cyclic vector theorem via the PID structure theorem. The prime power decomposition of the characteristic polynomial is the central organizational device"
     }
   ],
   "sorries": 0

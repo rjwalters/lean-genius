@@ -12,6 +12,18 @@
     "prerequisites": ["field theory", "polynomial rings", "matrix algebra", "unique factorization"]
   },
   {
+    "id": "ann-wip03-setup",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
+    "range": { "startLine": 33, "endLine": 44 },
+    "type": "context",
+    "title": "Imports and Variable Declarations",
+    "content": "The single `import Mathlib` brings in the entire Mathlib library, including polynomial arithmetic (natDegree, irreducibility, Bezout/coprimality), matrix algebra (mulVec, aeval), and the minimal polynomial API (minpoly.dvd, minpoly.aeval). The `noncomputable section` is required because Lean's kernel cannot compute arbitrary field operations. `Classical.propDecidable` enables proof by contradiction (`by_contra`) throughout the file. The implicit variables `{K : Type*} [Field K] {n : ℕ}` provide universe-polymorphic generality: the proof works for any field K (finite or infinite, any characteristic) and any matrix dimension n.",
+    "mathContext": "The type signature `Matrix (Fin n) (Fin n) K` represents $K^{n \\times n}$, and `Fin n → K` represents $K^n$. The polynomial evaluation `aeval M p` maps $K[X] \\to K^{n \\times n}$ via $X \\mapsto M$, making $K^n$ a $K[X]$-module via $(r, v) \\mapsto r(M)v$.",
+    "significance": "context",
+    "relatedConcepts": ["Mathlib", "polynomial evaluation", "K[X]-module structure"],
+    "prerequisites": ["Lean 4 type system", "noncomputable definitions"]
+  },
+  {
     "id": "ann-wip03-cyclic-def",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
     "range": { "startLine": 49, "endLine": 51 },
