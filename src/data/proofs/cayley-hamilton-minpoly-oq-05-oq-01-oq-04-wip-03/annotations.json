@@ -1,17 +1,5 @@
 [
   {
-    "id": "ann-wip03-imports-setup",
-    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-    "range": { "startLine": 33, "endLine": 44 },
-    "type": "context",
-    "title": "Imports, Namespace, and Classical Reasoning",
-    "content": "The file imports all of Mathlib (`import Mathlib`) and opens `Matrix` and `Polynomial` namespaces for convenient access. The `noncomputable section` declaration is required because field operations in Lean 4 are generally noncomputable (division requires decidable equality for the zero test). The `Classical.propDecidable` attribute enables classical logic throughout — this is essential for the by-contradiction proofs in `irreducible_dvd_of_annihilated` (where we assume $p \\nmid r$ and derive a contradiction) and `exists_mulVec_ne_zero` (where we assume all vectors are in the kernel). The universe-polymorphic variables `{K : Type*} [Field K] {n : ℕ}` make the development parametric in the field and matrix dimension.",
-    "mathContext": "The namespace `PrimePowerCyclicVector` scopes all definitions and theorems. Key Mathlib dependencies: `aeval` (polynomial evaluation ring homomorphism $K[X] \\to K^{n \\times n}$), `minpoly` (the minimal polynomial functor), `Matrix.mulVec` (matrix-vector multiplication), `IsCoprime`/`Prime` (for the Bézout argument).",
-    "significance": "context",
-    "relatedConcepts": ["noncomputable section", "classical logic", "universe polymorphism", "Mathlib import"],
-    "prerequisites": ["Lean 4 type system", "Mathlib library structure"]
-  },
-  {
     "id": "ann-wip03-docstring",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
     "range": { "startLine": 1, "endLine": 32 },
