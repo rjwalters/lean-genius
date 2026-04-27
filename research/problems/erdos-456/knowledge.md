@@ -64,7 +64,45 @@ Back to the problem
 
 ## Sessions
 
-(No research sessions yet)
+### Session 1 (2026-04-27) — Mathlib API Drift Confirmed (Build Blocked)
+
+**Mode**: REVISIT (claimed RICH, score 29)
+**Outcome**: BLOCKED — file does not build on `origin/main` due to a removed Mathlib module
+
+#### Build Verification
+Ran `LEAN_MEMORY_LIMIT=6144 ./proofs/scripts/docker-build.sh Proofs.Erdos456Problem`. The build fails before any Lean code in this repo is checked:
+
+```
+error: no such file or directory (error code: 2)
+  file: .lake/packages/mathlib/Mathlib/Data/Rat/Order.lean
+error: Proofs/Erdos456Problem.lean: bad import 'Mathlib.Data.Rat.Order'
+```
+
+`Mathlib.Data.Rat.Order` no longer exists in Mathlib (likely merged into `Mathlib.Data.Rat.Basic` or similar in the same 2026-04-26 upgrade cohort that broke `Erdos1151OQ04` and `AngleTrisectionOQ02OQ01OQ02Incomplete01`).
+
+Both files have the broken import:
+- `proofs/Proofs/Erdos456Problem.lean:38`
+- `proofs/Proofs/Erdos456Aristotle.lean:16`
+
+#### State of the Lean Code (when import is restored)
+A grep audit of both files shows **0 axiom declarations and 0 sorry instances** (excluding occurrences in comments/docstrings):
+
+- `Erdos456Problem.lean`: 272 lines, 15 theorems, 6 defs, 0 axioms, 0 sorries
+- `Erdos456Aristotle.lean`: 83 lines, 3 theorems, 2 defs, 0 axioms, 0 sorries
+
+Both `meta.json` and the `leanFiles` block in the problem JSON are roughly accurate on `axiomCount` and `sorries`, but the `progressSummary` says "2 deep axioms (linnik_bound, m_over_n_diverges)" — this is **stale**. Those axioms were eliminated in earlier sessions; the progressSummary needs updating to reflect that the file is fully verified except for the open conjectures (which are stated as `def Prop`, not as `axiom`).
+
+#### Why I Did Not Fix
+Per project memory `project_mathlib_api_drift_2026_04`, removing or renaming a Mathlib import is part of the same upgrade-cohort drift that researchers should not fix in research sessions. The right owner is the Mechanic agent. I have, however, refreshed the JSON metadata where it was clearly stale (separate from the import drift).
+
+#### Files Modified
+- `research/problems/erdos-456/knowledge.md` — this entry
+- `src/data/research/problems/erdos-456.json` — `progressSummary`, `currentState.blockers`, Session 1 insight
+
+#### Next Steps
+1. Mechanic should remove the `Mathlib.Data.Rat.Order` import (and verify nothing in the file depended uniquely on it; ℚ comparisons used in `AlmostAll` may need a replacement import like `Mathlib.Data.Rat.Defs` or the order content reaches via `Mathlib.NumberTheory.LSeries.PrimesInAP`)
+2. After build is green: SOLVED-style follow-up — generate strong open questions (e.g., unconditional `mₙ < pₙ` infinitely often via van Doorn for `n = 2^{2k+1}, k ≥ 1` using `3 ∣ 2^{2k+1}+1`, sharpening `part1_implies_infinitely_many` to drop the conjecture hypothesis)
+3. Refresh `progressSummary` to drop the stale "2 deep axioms" claim
 
 ---
 
