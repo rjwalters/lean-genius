@@ -2,7 +2,7 @@
   "id": "furstenberg-correspondence-oq-01",
   "title": "Shift Dynamics on Cantor Space: Toward the Furstenberg Correspondence",
   "slug": "furstenberg-correspondence-oq-01",
-  "description": "Builds the shift dynamical system on Cantor space {0,1}^ℕ — the infrastructure needed to formalize the Furstenberg correspondence principle. Proves the shift is continuous and measurable, cylinder sets are clopen and measurable, and the k-fold return property connecting dynamical intersections to combinatorial patterns. All theorems proved with 0 sorries (1 local axiom: sequential compactness of probability measures on Cantor space, pending full Prokhorov formalization in Mathlib).",
+  "description": "Builds the shift dynamical system on Cantor space {0,1}^ℕ — the infrastructure needed to formalize the Furstenberg correspondence principle. Proves the shift is continuous and measurable, cylinder sets are clopen and measurable, and the k-fold return property connecting dynamical intersections to combinatorial patterns. All theorems proved except shift-invariance of the limit measure (1 sorry: T-invariance of Cesàro limit on clopen sets). Also has 1 local axiom: sequential compactness of probability measures on Cantor space, pending full Prokhorov formalization in Mathlib.",
   "meta": {
     "author": "Furstenberg (1977)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes",
@@ -19,9 +19,9 @@
       "correspondence-principle"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "axiomCount": 1,
-    "assumptions": "1 local axiom: seqCompact_probabilityMeasure_cantor — every sequence of probability measures on Cantor space (ℕ → Bool) has a weak-* convergent subsequence (Prokhorov's theorem). Mathlib v4.26 has the ingredients (IsTightMeasureSet.of_compactSpace, sequential compactness for compact metrizable spaces) but they are not yet assembled into this exact statement. All other theorems (shift continuity, cylinder sets, k-fold return property, orbit-density connection, Tychonoff compactness) are proved from Mathlib with 0 sorries.",
+    "assumptions": "1 sorry: limit_shift_invariant_on_cylinder (T-invariance of Cesàro limit measure on clopen sets — mathematically clear via Portmanteau + telescoping, requires ENNReal limit algebra assembly). 1 local axiom: seqCompact_probabilityMeasure_cantor — every sequence of probability measures on Cantor space (ℕ → Bool) has a weak-* convergent subsequence (Prokhorov's theorem). Mathlib v4.26 has the ingredients but they are not yet assembled into this exact statement. All other theorems (shift continuity, cylinder sets, k-fold return property, orbit-density connection, Tychonoff compactness) are proved from Mathlib.",
     "dateAdded": "2026-03-30",
     "mathlibDependencies": [
       {
@@ -54,7 +54,7 @@
       "Ergodic theory concepts"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 528,
+    "lineCount": 913,
     "relatedProblems": [
       {
         "id": "furstenberg-correspondence",
@@ -72,7 +72,7 @@
   "overview": {
     "historicalContext": "Hillel Furstenberg's 1977 paper 'Ergodic behavior of diagonal measures and a theorem of Szemerédi on arithmetic progressions' (*Journal d'Analyse Mathématique*) revolutionized combinatorial number theory by introducing ergodic-theoretic methods. Szemerédi had proved his theorem (every set of positive upper density contains arbitrarily long arithmetic progressions) combinatorially in 1975 — a notoriously complex proof. Furstenberg gave a completely different proof using his *correspondence principle*: a set $A \\subseteq \\mathbb{N}$ with $\\bar{d}(A) > 0$ corresponds to a measurable set in a measure-preserving dynamical system with positive measure.\n\nThe construction is elegant: take the Cantor space $\\{0,1\\}^{\\mathbb{N}}$ with the product topology, define the shift map $T(\\omega)_n = \\omega_{n+1}$, and construct a shift-invariant probability measure $\\mu$ so that $\\mu(\\{\\omega : \\omega_0 = 1\\}) = \\bar{d}(A)$. Furstenberg's multiple recurrence theorem then shows that $\\mu(B \\cap T^{-n}B \\cap \\cdots \\cap T^{-kn}B) > 0$ for some $n$, which translates back to arithmetic progressions in $A$.\n\nThis approach launched the field of 'ergodic Ramsey theory' and influenced subsequent breakthroughs: the Green-Tao theorem (primes contain arbitrarily long APs, 2008) builds on the Furstenberg machinery via the transference principle. The correspondence principle itself has been generalized by Bergelson, Host, Kra, and others to handle polynomial and higher-order patterns.",
     "problemStatement": "Can the Furstenberg correspondence construction be fully formalized using Mathlib's tools? This file answers: the shift dynamics, cylinder sets, and combinatorial-dynamical bridge are all provable from Mathlib. The remaining gap is weak-* compactness of probability measures.",
-    "text": "Builds the shift dynamical system on Cantor space needed for the Furstenberg correspondence principle. All results proved with 0 sorries (1 local axiom: Prokhorov sequential compactness for probability measures on Cantor space).",
+    "text": "Builds the shift dynamical system on Cantor space needed for the Furstenberg correspondence principle. All results proved except shift-invariance of the limit measure (1 sorry). Also has 1 local axiom: Prokhorov sequential compactness for probability measures on Cantor space.",
     "proofStrategy": "1. Define Cantor space Ω = ℕ → Bool with product topology\n2. Prove shift T(x)(n) = x(n+1) is continuous and measurable\n3. Prove cylinder sets are clopen and measurable\n4. Define set indicators and prove the fundamental connection: shift^n(1_A)(0) = true ↔ n ∈ A\n5. Prove the k-fold return property: dynamical intersections correspond to arithmetic progressions\n6. Prove Cantor space is compact (Tychonoff) and metrizable",
     "keyInsights": [
       "The shift on ℕ → Bool is continuous by continuous_pi and continuous_apply — Mathlib handles this",
@@ -138,7 +138,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The shift dynamical system on Cantor space is formalized with 0 sorries and 1 local axiom (Prokhorov sequential compactness for probability measures), providing the infrastructure needed for the Furstenberg correspondence.",
+    "summary": "The shift dynamical system on Cantor space is formalized with 1 sorry (T-invariance of limit measure on clopen sets) and 1 local axiom (Prokhorov sequential compactness for probability measures), providing the infrastructure needed for the Furstenberg correspondence.",
     "implications": "The remaining gap for the full correspondence is the construction of a T-invariant limit measure via weak-* compactness, connecting combinatorial density results to ergodic theory.",
     "openQuestions": [
       "Can weak-* sequential compactness for probability measures on compact metrizable spaces be formalized in Mathlib?",
@@ -148,9 +148,9 @@
   "leanFile": {
     "path": "Proofs/FurstenbergCorrespondenceOQ01.lean",
     "filename": "FurstenbergCorrespondenceOQ01.lean",
-    "lineCount": 528,
+    "lineCount": 913,
     "axiomCount": 1,
-    "sorries": 0
+    "sorries": 1
   },
   "mainTheorems": [
     {
@@ -188,5 +188,5 @@
       }
     ]
   },
-  "sorries": 0
+  "sorries": 1
 }
