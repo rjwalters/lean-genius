@@ -1,13 +1,13 @@
 {
   "id": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
-  "title": "Nonderogatory \u2192 Cyclic Vector: The General Case (All Fields)",
+  "title": "Nonderogatory → Cyclic Vector: The General Case (All Fields)",
   "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
-  "description": "The nonderogatory \u2192 cyclic vector theorem holds for ALL fields, including finite fields F_q with q \u2264 n where union avoidance fails. Demonstrates F_2 counterexample to union avoidance and develops the module-theoretic approach via annihilator polynomials and GCD Bezout.",
+  "description": "The nonderogatory → cyclic vector theorem holds for ALL fields, including finite fields F_q with q ≤ n where union avoidance fails. Demonstrates F_2 counterexample to union avoidance and develops the module-theoretic approach via annihilator polynomials and GCD Bezout.",
   "meta": {
     "author": "Classical linear algebra (invariant factor decomposition)",
     "sourceUrl": "",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean",
     "tags": [
       "linear-algebra",
@@ -17,16 +17,16 @@
       "finite-fields",
       "module-theory"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 357,
-    "assumptions": "0 axioms. 1 sorry: main theorem nonderogatory_has_cyclic_vector_any_field (needs structure theorem for f.g. modules over PID, not in Mathlib).",
+    "lineCount": 287,
+    "assumptions": "0 axioms, 0 sorries. Main theorem nonderogatory_has_cyclic_vector_any_field is proved by delegating to WIP05 (UFD factorization of minpoly K M plus WIP04's Bezout/CRT primary decomposition); no PID structure theorem required.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanDomain.gcd_eq_gcd_ab",
-        "description": "Bezout identity for Euclidean domains: gcd(a,b) = gcdA\u00b7a + gcdB\u00b7b",
+        "description": "Bezout identity for Euclidean domains: gcd(a,b) = gcdA·a + gcdB·b",
         "module": "Mathlib.RingTheory.EuclideanDomain"
       },
       {
@@ -43,70 +43,85 @@
         "theorem": "Matrix.charpoly_natDegree_eq_dim",
         "description": "Characteristic polynomial has degree n",
         "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "UniqueFactorizationMonoid.normalizedFactors",
+        "description": "Multiset of normalized irreducible factors of an element in a UFD",
+        "module": "Mathlib.RingTheory.UniqueFactorizationDomain.Basic"
+      },
+      {
+        "theorem": "Polynomial.Monic.normalize_eq_self",
+        "description": "For a monic polynomial p, normalize p = p",
+        "module": "Mathlib.Algebra.Polynomial.Monic"
+      },
+      {
+        "theorem": "IsCoprime.pow",
+        "description": "If IsCoprime a b then IsCoprime (a^m) (b^n) for any naturals m, n",
+        "module": "Mathlib.RingTheory.Coprime.Lemmas"
       }
     ]
   },
   "overview": {
-    "historicalContext": "The cyclic vector theorem \u2014 that every nonderogatory matrix has a cyclic vector \u2014 is a classical result in linear algebra connected to the rational canonical form (Frobenius normal form). A matrix $M \\in M_n(K)$ is nonderogatory if its minimal polynomial equals its characteristic polynomial (both of degree $n$); a vector $v$ is cyclic if $\\{v, Mv, M^2v, \\ldots, M^{n-1}v\\}$ is a basis. The theorem is classical over $\\mathbb{C}$ and over infinite fields via a dimension argument: the vectors failing to be cyclic form a finite union of proper subspaces, which cannot cover all of $K^n$ when $K$ is infinite (or has more than $n$ elements). The question investigated in this OQ-04 is whether the theorem still holds over very small finite fields, such as $\\mathbb{F}_2$ with only 2 elements and $n = 2$ dimensions. The key insight is that the theorem is TRUE over ALL fields \u2014 union avoidance is merely one proof technique; the algebraic structure (module theory over the PID $K[X]$) gives a field-independent proof. The module-theoretic proof connects the cyclic vector question to the structure theorem for finitely generated modules over a PID: $K^n$ as a $K[X]$-module decomposes as $K[X]/(d_1) \\oplus \\cdots \\oplus K[X]/(d_r)$ (invariant factor decomposition), and nonderogatory forces $r = 1$, making $V \\cong K[X]/(\\text{minpoly})$ \u2014 a cyclic module.",
-    "problemStatement": "Over which fields does the nonderogatory \u2192 cyclic vector theorem hold? In particular, does it hold over finite fields $\\mathbb{F}_q$ when $q \\leq n$, where the union avoidance argument breaks down (as the F\u2082 example demonstrates)?",
-    "proofStrategy": "The formalization proceeds in 5 stages: (1) Define `IsCyclicVector` and `IsNonderogatory` consistently with the parent OQ-05-OQ-01 files. (2) Prove similarity invariance: `aeval_conj` shows conjugation by invertible P is a K-algebra endomorphism, and `cyclic_vector_of_similar` transfers cyclic vectors under similarity. (3) Develop annihilator theory: `annihilator_dvd_minpoly` proves GCD annihilation using the Bezout identity (gcd(p, \u03bc) = A\u00b7p + B\u00b7\u03bc, so gcd(M)v = A(M)p(M)v + B(M)\u03bc(M)v = 0 for any p(M)v = 0); `cyclic_iff_ann_eq_minpoly` characterizes cyclic vectors as those whose annihilator ideal equals (minpoly). (4) State the main theorem with a sorry: `nonderogatory_has_cyclic_vector_any_field` requires the PID structure theorem (not in Mathlib). (5) Prove `F2_union_covers` as a concrete counterexample showing union avoidance fails over F\u2082 without disproving the main theorem.",
+    "historicalContext": "The cyclic vector theorem — that every nonderogatory matrix has a cyclic vector — is a classical result in linear algebra connected to the rational canonical form (Frobenius normal form). A matrix $M \\in M_n(K)$ is nonderogatory if its minimal polynomial equals its characteristic polynomial (both of degree $n$); a vector $v$ is cyclic if $\\{v, Mv, M^2v, \\ldots, M^{n-1}v\\}$ is a basis. The theorem is classical over $\\mathbb{C}$ and over infinite fields via a dimension argument: the vectors failing to be cyclic form a finite union of proper subspaces, which cannot cover all of $K^n$ when $K$ is infinite (or has more than $n$ elements). The question investigated in this OQ-04 is whether the theorem still holds over very small finite fields, such as $\\mathbb{F}_2$ with only 2 elements and $n = 2$ dimensions. The key insight is that the theorem is TRUE over ALL fields — union avoidance is merely one proof technique; the algebraic structure (module theory over the PID $K[X]$) gives a field-independent proof. The module-theoretic proof connects the cyclic vector question to the structure theorem for finitely generated modules over a PID: $K^n$ as a $K[X]$-module decomposes as $K[X]/(d_1) \\oplus \\cdots \\oplus K[X]/(d_r)$ (invariant factor decomposition), and nonderogatory forces $r = 1$, making $V \\cong K[X]/(\\text{minpoly})$ — a cyclic module.",
+    "problemStatement": "Over which fields does the nonderogatory → cyclic vector theorem hold? In particular, does it hold over finite fields $\\mathbb{F}_q$ when $q \\leq n$, where the union avoidance argument breaks down (as the F₂ example demonstrates)?",
+    "proofStrategy": "The formalization proceeds in 5 stages: (1) Define `IsCyclicVector` and `IsNonderogatory` consistently with the parent OQ-05-OQ-01 files. (2) Prove similarity invariance: `aeval_conj` shows conjugation by invertible P commutes with polynomial evaluation, and `cyclic_vector_of_similar` transfers cyclic vectors under similarity. (3) Develop annihilator theory: `annihilator_dvd_minpoly` proves GCD annihilation using the Bezout identity; `cyclic_iff_ann_eq_minpoly` characterizes cyclic vectors via annihilator ideals. (4) Prove `companionMatrix_cyclic_e0` (e_0 is cyclic for the companion matrix) via the orbit property. (5) Close the main theorem `nonderogatory_has_cyclic_vector_any_field` by delegating to the WIP05 wrapper, which combines WIP04's Bezout/CRT primary decomposition with UFD factorization of `minpoly K M` to produce a cyclic vector axiom-free, sorry-free, over any field — completely avoiding the PID structure theorem. (6) Prove `F2_union_covers` as a concrete counterexample showing union avoidance fails over F₂ without disproving the main theorem.",
     "keyInsights": [
-      "The F\u2082 counterexample (`F2_union_covers`) demonstrates that the 3 nonzero vectors of F\u2082\u00b2 each lie in one of 3 proper 1-dimensional subspaces: {(1,0)}, {(0,1)}, {(1,1)}. This exhausts all of (F\u2082\u00b2\\{0}), so ANY codimension-1 subspace covering argument fails. Yet the theorem still holds \u2014 union avoidance is just one proof technique, not an essential feature.",
-      "`annihilator_dvd_minpoly` is proved entirely via Bezout identity in 15 lines using a calculation chain (`calc`). The key: `EuclideanDomain.gcd_eq_gcd_ab` gives $d = \\alpha p + \\beta \\mu$ where $d = \\gcd(p, \\mu)$, so $d(M)v = \\alpha(M)(p(M)v) + \\beta(M)(\\mu(M)v) = \\alpha(M) \\cdot 0 + \\beta(M) \\cdot 0 = 0$. This is sorry-free and constitutes the hard algebraic content of the file.",
-      "`cyclic_iff_ann_eq_minpoly` proves the equivalence between cyclicity and the annihilator ideal condition in both directions. The forward direction uses `annihilator_dvd_minpoly` plus degree comparison: if $d \\mid \\mu$ and $\\deg(d) < \\deg(\\mu) = n$, cyclicity forces $d = 0$, contradicting $d \\mid \\mu$ (which is nonzero). The backward direction is simpler: if $\\mu \\mid p$ and $p(M)v = 0$, then $\\deg(\\mu) = n > \\deg(p)$ forces $p = 0$.",
-      "`aeval_conj` constructs the conjugation-by-P map as an explicit `AlgHom` with `toFun`, `map_one'`, `map_mul'`, etc., then applies `Polynomial.aeval_algHom_apply` to prove `aeval(P\u207b\u00b9MP)(p) = P\u207b\u00b9 \u00b7 aeval(M)(p) \u00b7 P`. This is the key algebraic fact that conjugation commutes with the functional calculus \u2014 a consequence of any ring homomorphism commuting with polynomial evaluation.",
-      "The main sorry (`nonderogatory_has_cyclic_vector_any_field`) is a Mathlib gap: the structure theorem for finitely generated modules over a PID (invariant factor decomposition) is not yet in Mathlib. This is a known gap \u2014 the rational canonical form is available but the general PID structure theorem is not. The sorry is precisely located and the mathematical argument is fully written out in the comment."
+      "The F₂ counterexample (`F2_union_covers`) demonstrates that the 3 nonzero vectors of F₂² each lie in one of 3 proper 1-dimensional subspaces. Yet the main theorem still holds, because the cyclic vector argument here uses Bezout/CRT projections (algebra) rather than counting (cardinality).",
+      "`annihilator_dvd_minpoly` is proved via Bezout identity: `EuclideanDomain.gcd_eq_gcd_ab` gives $d = \\alpha p + \\beta \\mu$, so $d(M)v = \\alpha(M)(p(M)v) + \\beta(M)(\\mu(M)v) = 0$. Sorry-free, foundation for the annihilator characterization.",
+      "`cyclic_iff_ann_eq_minpoly` proves the equivalence between cyclicity and the annihilator condition in both directions, using `annihilator_dvd_minpoly` plus degree comparison.",
+      "`aeval_conj` proves `aeval(P⁻¹MP)(p) = P⁻¹ · aeval(M)(p) · P` by induction on `p`, using a closed form for `(P⁻¹MP)^k = P⁻¹ M^k P`. Independent lemma useful for any RCF-based formalization.",
+      "The main theorem is now closed: `nonderogatory_has_cyclic_vector_any_field` delegates to `GeneralCyclicVectorComplete.nonderogatory_has_cyclic_vector_any_field` (WIP05). No axioms, no sorries, no PID structure theorem. The Bezout/CRT primary-decomposition argument in WIP04 plus UFD factorization in WIP05 gives a fully field-independent proof."
     ]
   },
   "sections": [
     {
       "id": "definitions",
-      "title": "\u00a7 I. Definitions",
-      "startLine": 41,
-      "endLine": 49,
+      "title": "§ I. Definitions",
+      "startLine": 45,
+      "endLine": 52,
       "summary": "Defines `IsCyclicVector M v` (no nonzero polynomial of degree < n annihilates v) and `IsNonderogatory M` (minpoly K M = M.charpoly), consistent with parent files.",
       "mathContext": "A vector $v \\in K^n$ is cyclic for $M$ if $\\{v, Mv, \\ldots, M^{n-1}v\\}$ is a basis, equivalently if no polynomial of degree $< n$ annihilates $v$ via $M$. A matrix is nonderogatory if its minimal polynomial coincides with its characteristic polynomial (both monic of degree $n$)."
     },
     {
       "id": "similarity",
-      "title": "\u00a7 II. Similarity Preserves Cyclic Vectors",
-      "startLine": 51,
-      "endLine": 98,
-      "summary": "Proves aeval_conj (conjugation by P is an AlgHom, commuting with polynomial evaluation) and cyclic_vector_of_similar (v is cyclic for N iff P\u207b\u00b9v is cyclic for P\u207b\u00b9NP).",
+      "title": "§ II. Similarity Preserves Cyclic Vectors",
+      "startLine": 54,
+      "endLine": 110,
+      "summary": "Proves aeval_conj (conjugation by P is an AlgHom, commuting with polynomial evaluation) and cyclic_vector_of_similar (v is cyclic for N iff P⁻¹v is cyclic for P⁻¹NP).",
       "mathContext": "If $M = P^{-1}NP$ and $w$ is cyclic for $N$, then $v = P^{-1}w$ is cyclic for $M$. The key fact: $p(P^{-1}NP) = P^{-1}p(N)P$ for any polynomial $p$, which holds because conjugation by $P$ is a $K$-algebra endomorphism."
     },
     {
       "id": "annihilator",
-      "title": "\u00a7 III. Annihilator Characterization (GCD Bezout)",
-      "startLine": 100,
-      "endLine": 178,
-      "summary": "Proves annihilator_dvd_minpoly (GCD annihilation via Bezout, sorry-free) and cyclic_iff_ann_eq_minpoly (cyclic \u2194 annihilator ideal = (minpoly)) for nonderogatory matrices.",
+      "title": "§ III. Annihilator Characterization (GCD Bezout)",
+      "startLine": 112,
+      "endLine": 197,
+      "summary": "Proves annihilator_dvd_minpoly (GCD annihilation via Bezout, sorry-free) and cyclic_iff_ann_eq_minpoly (cyclic ↔ annihilator ideal = (minpoly)) for nonderogatory matrices.",
       "mathContext": "The annihilator ideal of $v$ is $\\{p \\in K[X] : p(M)v = 0\\}$, a principal ideal $(a_v)$ where $a_v \\mid \\mu_M$. For nonderogatory $M$ (with $\\deg \\mu_M = n$): $v$ is cyclic iff $a_v = \\mu_M$. The Bezout identity $\\gcd(p, \\mu) = Ap + B\\mu$ gives $\\gcd(p, \\mu)(M)v = 0$ whenever $p(M)v = 0$."
     },
     {
       "id": "main-theorem",
-      "title": "\u00a7 IV. Main Theorem (All Fields)",
-      "startLine": 180,
-      "endLine": 213,
-      "summary": "States nonderogatory_has_cyclic_vector_any_field (sorry: needs PID structure theorem) and nonderogatory_has_cyclic_vector_finite_any_size (corollary for finite fields, also from sorry).",
-      "mathContext": "Over any field $K$: nonderogatory $M$ has a cyclic vector. Proof via PID structure theorem: $K^n \\cong K[X]/(d_1) \\oplus \\cdots \\oplus K[X]/(d_r)$ as $K[X]$-modules, with $\\mu_M = d_r$ and $\\chi_M = d_1 \\cdots d_r$. Nonderogatory forces $r = 1$, so $K^n \\cong K[X]/(\\mu_M)$ is cyclic. This structure theorem is not yet in Mathlib."
+      "title": "§ IV. Main Theorem (All Fields)",
+      "startLine": 208,
+      "endLine": 240,
+      "summary": "States `nonderogatory_has_cyclic_vector_any_field` (delegated to WIP05, axiom-free / sorry-free) and the corollary `nonderogatory_has_cyclic_vector_finite_any_size` for finite fields. The proof routes through WIP04 (factored case) + WIP05 (UFD wrapper).",
+      "mathContext": "Over any field $K$: nonderogatory $M \\in M_n(K)$ has a cyclic vector. The proof factors $\\mu_M = \\prod p_i^{e_i}$ via UFD on $K[X]$, builds primary vectors $v_i$ with $p_i^{e_i-1}(M)v_i \\neq 0$ and $p_i^{e_i}(M)v_i = 0$, and combines them via Bezout/CRT projections $\\pi_i = b_i F_i(M)$ to produce a cyclic vector $v = \\sum v_i$. No PID structure theorem or RCF is required."
     },
     {
       "id": "f2-counterexample",
-      "title": "\u00a7 V. F\u2082 Counterexample to Union Avoidance",
-      "startLine": 215,
-      "endLine": 258,
-      "summary": "Proves F2_union_covers: every nonzero vector in F\u2082\u00b2 lies in one of the 3 proper 1-dim subspaces, showing union avoidance fails for |K| \u2264 n. The main theorem still holds by module theory.",
+      "title": "§ V. F₂ Counterexample to Union Avoidance",
+      "startLine": 242,
+      "endLine": 253,
+      "summary": "Proves F2_union_covers: every nonzero vector in F₂² lies in one of the 3 proper 1-dim subspaces, showing union avoidance fails for |K| ≤ n. The main theorem still holds by module theory.",
       "mathContext": "The 3 nonzero vectors of $\\mathbb{F}_2^2$ are $(1,0)$, $(0,1)$, $(1,1)$. Each 1-dimensional subspace over $\\mathbb{F}_2$ contains exactly 1 nonzero vector. So $\\mathbb{F}_2^2 \\setminus \\{0\\}$ is covered by 3 proper subspaces. For union avoidance, one needs $|K| > n$ (here $|K| = 2 \\leq 2 = n$), so the argument fails. Yet every nonderogatory $2 \\times 2$ matrix over $\\mathbb{F}_2$ still has a cyclic vector."
     }
   ],
   "conclusion": {
-    "summary": "This formalization establishes the mathematical framework for the general cyclic vector theorem: over ANY field (finite or infinite, regardless of size relative to n), every nonderogatory matrix has a cyclic vector. The GCD annihilation lemma and cyclic characterization are proved sorry-free. The single sorry in the main theorem precisely isolates the Mathlib gap: the structure theorem for f.g. modules over PIDs.",
-    "implications": "The module-theoretic approach establishes that the cyclic vector theorem is a consequence of the PID structure theorem rather than of field size. This connects the result to the broader theory of rational canonical forms and invariant factor decompositions. Once the PID structure theorem becomes available in Mathlib (a known open development task), the sorry can be resolved, completing the full generalization of the parent OQ-05-OQ-01 result to arbitrary fields.",
+    "summary": "This formalization establishes the cyclic vector theorem over ANY field (finite or infinite, regardless of size relative to n) for every nonderogatory matrix. The previously-isolated sorry on the PID structure theorem has been removed: the main theorem is closed by delegating to WIP05, which combines WIP04's Bezout/CRT primary-decomposition argument with UFD factorization of the minimal polynomial. The file is 0 axioms, 0 sorries.",
+    "implications": "The Bezout/CRT projection approach demonstrates that the cyclic vector theorem does not require the full PID structure theorem (rational canonical form) — only the algebraic facts that K[X] is a UFD and that distinct monic irreducibles are coprime. This significantly lowers the Mathlib bar for related results and provides a constructive route avoiding the module-theoretic structure theorem.",
     "openQuestions": [
-      "When will the structure theorem for f.g. modules over PIDs be available in Mathlib? This is the precise Mathlib gap blocking the sorry resolution.",
-      "Can the theorem be proved without the full PID structure theorem, using only the rational canonical form (which IS in Mathlib)? The rational canonical form gives the same invariant factor decomposition for matrix modules specifically.",
-      "Can the `fin_cases`/`simp_all` proof of `F2_union_covers` be extended to give a general theorem: for any finite field F_q with q \u2264 n, F_q^n is covered by finitely many proper subspaces?"
+      "Can the rational canonical form (Frobenius normal form) be derived as a corollary of the cyclic vector theorem proved here, using only Bezout/CRT projections plus invariant-factor uniqueness?",
+      "Does the Bezout/CRT projection technique generalize beyond K[X]: for example, to f.g. modules over arbitrary PIDs (Z, K[[X]])?",
+      "Can the `decide`-based proof of `F2_union_covers` be extended to a general theorem: for any finite field F_q with q ≤ n, F_q^n is covered by (q^n - 1)/(q - 1) one-dimensional subspaces?"
     ]
   },
   "leanFile": {
@@ -118,18 +133,18 @@
       "Polynomial"
     ],
     "namespace": "NonderogatoryGeneral",
-    "lineCount": 357,
+    "lineCount": 287,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 7,
     "definitionCount": 2,
     "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "crossReferences": [
     {
       "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
       "relationship": "extends",
-      "description": "Parent OQ proving nonderogatory \u2192 cyclic vector for infinite fields via union avoidance. This OQ-04 removes the infinite field restriction."
+      "description": "Parent OQ proving nonderogatory → cyclic vector for infinite fields via union avoidance. This OQ-04 removes the infinite field restriction."
     },
     {
       "targetId": "cayley-hamilton-minpoly-oq-05",
@@ -137,5 +152,5 @@
       "description": "Grandparent: the Cayley-Hamilton minimal polynomial hierarchy from which the nonderogatory cyclic vector question arises."
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
