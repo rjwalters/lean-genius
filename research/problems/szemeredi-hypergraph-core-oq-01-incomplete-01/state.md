@@ -4,25 +4,30 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-21T16:43:37+02:00
-**Iteration**: 1
+**Iteration**: 2
+**LastUpdate**: 2026-04-27
 
 ## Current Focus
-Define SimplicialComplex, relativeKDensity, and IsGowersRegular in Lean 4 building
-on existing UHypergraph infrastructure in SzemerediHypergraphCore.lean.
+Sorry eliminated; obstruction documented. SzemerediHypergraphGowers.lean is now
+sorry-free with verified structural lemmas (isGowersRegular_self, _empty,
+relativeKDensity_eq_of_topCliques_eq) and a precise comment block explaining
+why naive → Gowers does not hold without additional structure.
 
 ## Active Approach
-None yet. First step: read SzemerediHypergraphCore.lean to understand UHypergraph
-and kPartiteDensity definitions, then design the SimplicialComplex structure.
+Replaced broken `naive_implies_gowers` (false as stated) with provable surrogates.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 2
+- Current approach attempts: 1
+- Approaches tried: 2 (1: build infra + claim conjecture; 2: prove correct surrogates)
 
 ## Blockers
-None.
+The hypergraph counting lemma (Nagle-Rödl-Schacht 2006) — main payoff — remains
+open. Requires correct Gowers regularity formulation that respects partition
+structure, not the broken vertex-univ hypothesis.
 
 ## Next Action
-OBSERVE: Read `proofs/Proofs/SzemerediHypergraphCore.lean` to understand the existing
-UHypergraph, kPartiteDensity, and IsHypergraphRegular definitions. Then draft the
-SimplicialComplex structure and check Mathlib's Finset family infrastructure.
+DONE for current scope. Follow-ups:
+- Investigate partition-respecting naive regularity formulation
+- Pursue counting lemma directly (separate problem)
+- Create gallery entry for Gowers infrastructure (independent task)
