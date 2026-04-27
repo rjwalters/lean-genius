@@ -87,38 +87,98 @@
     "problemStatement": "Prove that every nonderogatory matrix M ∈ Mₙ(K) over any field K has a cyclic vector v such that {v, Mv, M²v, …, Mⁿ⁻¹v} is a basis of Kⁿ — without taking the prime factorization of minpoly K M as a hypothesis.",
     "proofStrategy": "The proof has two parts. Part 1 generalizes WIP04's Fin-indexed theorem to a Fintype-indexed version by reindexing through Fintype.equivFin. Part 2 extracts the factorization data: (a) f := minpoly K M is monic since charpoly M is monic and minpoly = charpoly by the nonderogatory hypothesis; (b) s := normalizedFactors f is a multiset of monic irreducibles; (c) D := s.toFinset is the Finset of distinct prime factors, nonempty when n ≥ 1 since f is not a unit; (d) for distinct monic irreducibles p, q in s, the relation p ≠ q + Irreducible.associated_of_dvd + eq_of_monic_of_associated shows ¬(p ∣ q), giving IsCoprime p q via Irreducible.coprime_iff_not_dvd, lifted to IsCoprime (p^a) (q^b) via IsCoprime.pow; (e) the product identity f = ∏ q ∈ D, q ^ s.count q follows from Polynomial.Monic.normalize_eq_self, prod_normalizedFactors_eq, and Finset.prod_multiset_count. Apply WIP04's general theorem.",
     "keyInsights": [
-      "The UFD structure of K[X] (where K is a field) is the missing ingredient: it provides an automatic factorization of the minimal polynomial into prime powers without requiring the user to supply one.",
-      "Two distinct monic irreducibles in K[X] are automatically coprime: if p ∣ q then p and q are associated (since q is irreducible and p is non-unit), and two associated monic polynomials are equal — so p ≠ q forces ¬(p ∣ q), which over a PID gives IsCoprime p q.",
-      "The Multiset → Finset conversion via Finset.prod_multiset_count expresses a Multiset.prod as a Finset product with multiplicities. Combined with prod_normalizedFactors_eq (Multiset.prod = normalize) and Monic.normalize_eq_self, this gives the desired product-of-prime-powers form.",
-      "The Fin → Fintype index conversion is purely cosmetic but removes an artificial constraint of WIP04's signature. Reindexing through Fintype.equivFin lets the theorem accept a Finset-indexed family directly.",
-      "This wrapper requires zero new mathematics — only careful interface code between WIP04 and Mathlib's UFD/factorization library."
+      "**UFD structure of K[X] is the missing ingredient**: For a field $K$, the polynomial ring $K[X]$ is a Euclidean domain, hence a PID, hence a UFD. Mathlib's `UniqueFactorizationMonoid.normalizedFactors` provides an automatic factorization of the minimal polynomial into prime powers without requiring the user to supply one — the factorization data is recovered from the algebraic structure itself.",
+      "**Distinct monic irreducibles are coprime — three-step chain**: if $p \\mid q$ for monic irreducibles $p, q$, then by `Irreducible.associated_of_dvd` they are associated; by `eq_of_monic_of_associated` two associated monic polynomials are *equal*, contradicting $p \\neq q$. So $p \\nmid q$, and over a PID `Irreducible.coprime_iff_not_dvd` gives `IsCoprime p q`. Lifted via `IsCoprime.pow` to coprime prime powers — exactly the WIP04 hypothesis. Monicity is essential: it converts associate-equivalence into actual equality, eliminating unit-tracking throughout the proof.",
+      "**Multiset → Finset support conversion**: `Finset.prod_multiset_count` expresses a multiset product as a Finset product over the support with multiplicities (formalizing $a \\cdot a \\cdot b \\cdot b \\cdot b = a^2 b^3$). Composed with `prod_normalizedFactors_eq` (gives $\\mathrm{Multiset.prod} = \\mathrm{normalize}$) and `Monic.normalize_eq_self` (drops the normalize for monic polynomials), the chain produces the canonical product-of-prime-powers form $f = \\prod_{q \\in D} q^{s.\\mathrm{count}\\,q}$.",
+      "**Fin → Fintype index conversion is cosmetic but enabling**: WIP04 uses `Fin k`-indexed families because that is the simplest signature for Bezout/CRT projections, but `normalizedFactors` produces a `Multiset` whose support is a `Finset`. Reindexing through `Fintype.equivFin` and `Equiv.prod_comp` bridges the two conventions without any mathematical content — pure API code that lets the natural data structure of WIP05 plug into the natural signature of WIP04.",
+      "**Zero new mathematics, complete axiom elimination**: This wrapper introduces no new theorems beyond what WIP04 already proved. Its content is interface code between WIP04 and Mathlib's UFD library. Yet it transforms WIP04's conditional theorem (assuming a factorization is supplied) into the full nonderogatory cyclic vector theorem, eliminating the last hypothesis. The cluster WIP01–WIP05 thus achieves 0 axioms despite Mathlib lacking the PID structure theorem.",
+      "**Avoiding the rational canonical form**: The classical proof routes through the structure theorem for finitely-generated modules over a PID, deducing $K^n \\cong K[X]/(\\mu_M)$ when nonderogatory and reading off $v$ as a generator. Mathlib 4.26 lacks this in usable form. The WIP02–WIP05 strategy substitutes a primary-decomposition argument: by CRT, $K[X]/(\\prod p_i^{e_i}) \\cong \\prod K[X]/(p_i^{e_i})$, reducing to the prime-power case (WIP03). This reroute generalizes to any module-theoretic result blocked by the same Mathlib gap, suggesting a portable proof template.",
+      "**`IsNonderogatory` as definitional equality**: The hypothesis `IsNonderogatory M` unfolds directly to `minpoly K M = M.charpoly`, providing the bridge from algebraic ($\\mu_M$) to combinatorial ($\\chi_M$, computable via $\\det(XI - M)$) data. This single equality cascades: monicity of $\\chi_M$ transfers to $\\mu_M$, the degree bound $\\deg\\,\\chi_M = n$ gives $\\mu_M$ degree $n$, and the divisibility $\\mu_M \\mid \\chi_M$ becomes equality."
     ]
   },
   "sections": [
     {
-      "id": "fintype-version",
-      "title": "I. Fintype-Indexed Version of WIP04",
-      "startLine": 56,
-      "endLine": 79,
-      "summary": "Generalizes WIP04's Fin-indexed theorem to a Fintype-indexed version via Fintype.equivFin. Pure index conversion — no mathematical content.",
-      "mathContext": "For any [Fintype σ] [Nonempty σ], we choose an equivalence φ : Fin (Fintype.card σ) ≃ σ and reindex everything through it. The product hypothesis is rewritten using Equiv.prod_comp."
+      "id": "header",
+      "title": "Header: Strategy Documentation",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Documents the role of WIP05 in the cluster: closes the WIP01 axiom by extracting the factorization of the minimal polynomial automatically via UFD theory. Explains the six-step proof strategy (monic + UFD factorization + distinct factors + coprimality + product identity + index conversion + WIP04 application).",
+      "mathContext": "Mathematical context: replace the structure-theorem axiom $M$ nonderogatory $\\Rightarrow M \\sim C(\\mu_M)$ with constructive existence, by routing through UFD factorization and primary decomposition rather than the rational canonical form."
     },
     {
-      "id": "wrapper",
-      "title": "II. Final Wrapper",
-      "startLine": 84,
-      "endLine": 145,
-      "summary": "The main theorem nonderogatory_has_cyclic_vector_any_field. Sets up f := minpoly K M, gets the Multiset of normalized factors, extracts the data needed for WIP04, and applies it.",
-      "mathContext": "The proof breaks into setup (f monic, deg = n), distinct-factor enumeration (Finset D = (normalizedFactors f).toFinset), pairwise coprimality (via Irreducible.coprime_iff_not_dvd + eq_of_monic_of_associated), and the product identity (f = ∏ q ∈ D, q ^ s.count q via Monic.normalize_eq_self + prod_normalizedFactors_eq + Finset.prod_multiset_count)."
+      "id": "imports",
+      "title": "Imports, Namespaces, and Decidability Setup",
+      "startLine": 37,
+      "endLine": 48,
+      "summary": "Imports WIP04, opens four namespaces (Matrix, Polynomial, UniqueFactorizationMonoid, GeneralCyclicVector), declares `noncomputable section` for nonconstructive choice, and enables Classical decidability for Multiset operations.",
+      "mathContext": "Working scope: $\\{K : \\text{Field}\\}$, $\\{n : \\mathbb{N}\\}$. The `noncomputable` flag and `Classical.propDecidable` instance reflect that `normalizedFactors` requires axiom of choice (to pick representatives within associate classes) and Multiset.toFinset requires decidable equality."
+    },
+    {
+      "id": "fintype-version",
+      "title": "I. Fintype-Indexed Version of WIP04",
+      "startLine": 49,
+      "endLine": 80,
+      "summary": "Private adapter `nonderogatory_general_has_cyclic_vector_fintype` generalizes WIP04's Fin-indexed theorem to a Fintype-indexed version via `Fintype.equivFin`. The product hypothesis transfers via `Equiv.prod_comp`; coprimality transfers via `φ.injective`. Pure index conversion — no new mathematics.",
+      "mathContext": "For any `[Fintype σ] [Nonempty σ]`, choose $\\varphi : \\text{Fin}(|\\sigma|) \\simeq \\sigma$ and reindex. From `hprod : minpoly K M = ∏ i : σ, p i ^ e i`, derive `∏ i : Fin k, p (φ i) ^ e (φ i) = minpoly K M` via `Equiv.prod_comp`, then apply WIP04."
+    },
+    {
+      "id": "main-setup",
+      "title": "II. Main Theorem Setup: Monic, Degree, Non-Unit",
+      "startLine": 81,
+      "endLine": 106,
+      "summary": "Begins the main theorem `nonderogatory_has_cyclic_vector_any_field`. Dispatches the $n=0$ case via `Fin.elim0`, then sets up four basic facts: $f := \\mu_M = \\chi_M$ (from nonderogatory), $f$ is monic (charpoly is monic), $f.\\mathrm{natDegree} = n$, and $f$ is not a unit (degree-zero argument via `omega`).",
+      "mathContext": "Prepare the input data for UFD factorization: $f \\neq 0$ (Monic.ne_zero) and $f \\notin K^\\times$ (degree $\\geq 1$). These ensure `exists_mem_normalizedFactors` produces at least one factor."
+    },
+    {
+      "id": "factor-extraction",
+      "title": "II. Distinct Prime Factors and Their Properties",
+      "startLine": 107,
+      "endLine": 128,
+      "summary": "Constructs `s := normalizedFactors f` (the multiset of prime factors), `D := s.toFinset` (distinct factors), and the family $p, e$ indexed by the subtype `↥D`. Proves $D$ is nonempty (so `Nonempty (↥D)` instance is available), and verifies irreducibility, monicity, and positive multiplicity for each factor via `mem_normalizedFactors_iff` and `Multiset.count_pos`.",
+      "mathContext": "$s = \\mathrm{normalizedFactors}(f)$, $D = s.\\mathrm{toFinset}$, $p_{fn}(x) = x.\\mathrm{val}$, $e_{fn}(x) = s.\\mathrm{count}(x.\\mathrm{val})$. Each $p_{fn}(x)$ is monic irreducible; each $e_{fn}(x) > 0$."
+    },
+    {
+      "id": "coprimality",
+      "title": "II. Coprimality of Distinct Monic Irreducibles",
+      "startLine": 129,
+      "endLine": 140,
+      "summary": "The conceptual core: distinct monic irreducibles $p, q$ in $K[X]$ are coprime, and coprimality lifts to powers. Three-step argument: (1) `Irreducible.associated_of_dvd` + `eq_of_monic_of_associated` shows $p \\neq q \\Rightarrow \\neg(p \\mid q)$; (2) `Irreducible.coprime_iff_not_dvd` (PID) gives `IsCoprime p q`; (3) `IsCoprime.pow` lifts to coprime prime powers.",
+      "mathContext": "$p \\neq q$ monic irreducible $\\Rightarrow \\neg(p \\mid q) \\Rightarrow $ IsCoprime $p\\;q \\Rightarrow $ IsCoprime $p^a\\;q^b$. Monicity is essential to convert the associate equivalence into actual equality."
+    },
+    {
+      "id": "product-identity",
+      "title": "II. Product Identity f = ∏ q^(count q)",
+      "startLine": 141,
+      "endLine": 149,
+      "summary": "Assembles the prime-power product identity via three Mathlib facts: (1) `Monic.normalize_eq_self` + `prod_normalizedFactors_eq` give $f = s.\\mathrm{prod}$; (2) `Finset.prod_multiset_count` rewrites this as $\\prod_{m \\in D} m^{s.\\mathrm{count}\\,m}$; (3) `Finset.prod_coe_sort` converts to subtype-indexed form.",
+      "mathContext": "$f = \\prod_{x : \\downarrow D} p_{fn}(x)^{e_{fn}(x)}$. Chain of rewrites: $f = \\mathrm{normalize}\\,f = s.\\mathrm{prod} = \\prod_{m \\in D} m^{s.\\mathrm{count}\\,m} = \\prod_{x : \\downarrow D} p_{fn}(x)^{e_{fn}(x)}$."
+    },
+    {
+      "id": "final-application",
+      "title": "II. Final Application of WIP04",
+      "startLine": 150,
+      "endLine": 153,
+      "summary": "The closing line `exact nonderogatory_general_has_cyclic_vector_fintype M h p_fn e_fn hp_irr hp_monic he_pos hcoprime hprod` discharges the goal by applying the Fintype-indexed WIP04 with all hypotheses in hand.",
+      "mathContext": "Terminal step: WIP05 hypotheses $\\Rightarrow$ Fintype-WIP04 $\\Rightarrow$ WIP04 $\\Rightarrow$ existence of cyclic vector. Cluster axiom count: 0."
+    },
+    {
+      "id": "commentary",
+      "title": "III. Commentary: Significance, Architecture, Mathlib Facts",
+      "startLine": 154,
+      "endLine": 191,
+      "summary": "End-of-file documentation of the WIP01-WIP05 architecture (squarefree → prime-power → general → UFD-wrapped) and an enumerated list of Mathlib facts used. Explains why WIP05 supersedes WIP01's axiom-based version.",
+      "mathContext": "Architectural summary of the cluster's axiom-elimination strategy. Documents the dependency chain: WIP02 (squarefree, CRT) → WIP03 (prime power, induction) → WIP04 (general factored, primary decomposition) → WIP05 (UFD factorization wrapper)."
     }
   ],
   "conclusion": {
     "summary": "This file completes the axiom-free formalization of the nonderogatory cyclic vector theorem over any field. Combined with WIP02 (squarefree case), WIP03 (single prime power case), and WIP04 (general factored case), this produces a fully general proof requiring no axioms and no factorization input — only the matrix and the nonderogatory hypothesis.",
     "implications": "This supersedes WIP01 (which used the nonderogatory_similar_to_companion axiom as a stand-in for the rational canonical form structure theorem). The cluster now has a complete axiom-free path from IsNonderogatory M to ∃ v, IsCyclicVector M v over any field K. The mathematical insight — that the cyclic vector theorem can be proved without the full PID structure theorem, using only Bezout/CRT projections and UFD factorization — generalizes to other module-theoretic results blocked by the same Mathlib gap.",
     "openQuestions": [
-      "Can the same approach (UFD factorization + Bezout/CRT projections) yield a proof of the full PID structure theorem for f.g. K[X]-modules, contributing to Mathlib?",
-      "Does the construction yield a computationally explicit cyclic vector when K is a computable field, or only existence?",
-      "Can the Fintype-indexed version of WIP04 be upstreamed to replace the Fin-indexed version, or is the Fin version preferable for its simpler signature?"
+      "Can the same approach (UFD factorization + Bezout/CRT projections) yield a proof of the full PID structure theorem for finitely generated modules over a PID — both invariant factor and elementary divisor forms — contributing it to Mathlib?",
+      "Does the construction yield a computationally explicit cyclic vector when $K$ is a computable field (e.g., $\\mathbb{Q}$ or $\\mathbb{F}_p$), or only existence? The proof uses `Classical.propDecidable` and `noncomputable section`; identifying which steps are essentially nonconstructive vs. merely lazy would clarify what computational content is recoverable.",
+      "Can the Fintype-indexed version of WIP04 (`nonderogatory_general_has_cyclic_vector_fintype`) be upstreamed to replace the Fin-indexed version in WIP04, eliminating the index-conversion adapter? Or is the Fin-indexed signature preferable for keeping the Bezout/CRT proof core simpler?",
+      "How does the `WIP02 (squarefree) → WIP03 (prime-power) → WIP04 (general factored) → WIP05 (UFD wrapping)` proof template generalize? Specifically, are there other Mathlib gaps (e.g., the Smith Normal Form theorem, structure of f.g. abelian groups) that admit similar UFD-based axiom-free workarounds?",
+      "Can the explicit cyclic vector be characterized? The classical PID approach exhibits $v$ as the image of $1 \\in K[X]/(\\mu_M)$ under the isomorphism $K^n \\cong K[X]/(\\mu_M)$. The WIP05 approach proves existence but does not visibly identify $v$ — can the construction be unwound to show the cyclic vector is the sum of generators of each ker $p_i(M)^{e_i}$, i.e., a CRT-style canonical witness?"
     ]
   },
   "leanFile": {
@@ -151,19 +211,62 @@
       "description": "WIP01 used the nonderogatory_similar_to_companion axiom as a stand-in for rational canonical form. WIP05 eliminates this axiom entirely."
     },
     {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-02",
+      "relationship": "uses",
+      "description": "WIP02 (squarefree minpoly case) is the foundational case proved without module theory, using only CRT projections. WIP05's factorization-based approach reduces ultimately to WIP02 via WIP03 and WIP04."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
+      "relationship": "uses",
+      "description": "WIP03 (prime-power case) handles individual factors $p_i^{e_i}$ via induction on the exponent. WIP05's product decomposition combines WIP03's handling of each summand in the primary decomposition."
+    },
+    {
       "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
       "relationship": "uses",
-      "description": "WIP04 provides the general factored-form theorem. WIP05 supplies the factorization automatically via UniqueFactorizationMonoid.normalizedFactors."
+      "description": "WIP04 provides the general factored-form theorem (Bezout/CRT primary decomposition). WIP05 supplies the factorization automatically via UniqueFactorizationMonoid.normalizedFactors."
     },
     {
       "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
       "relationship": "related",
-      "description": "Grandparent: cyclic vector for infinite fields. WIP05 generalizes to all fields without restrictions."
+      "description": "Grandparent: cyclic vector for infinite fields. WIP05 generalizes to all fields without restrictions, removing the cardinality hypothesis."
     },
     {
       "targetId": "cayley-hamilton",
       "relationship": "uses",
       "description": "Cayley-Hamilton theorem: used implicitly via minpoly.aeval and the nonderogatory condition minpoly = charpoly."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "foundational",
+      "description": "The minimal polynomial is the central object: $\\mu_M$ is the monic generator of the annihilator ideal $\\{f \\in K[X] : f(M) = 0\\}$, and Cayley-Hamilton ensures $\\mu_M \\mid \\chi_M$. The nonderogatory condition $\\mu_M = \\chi_M$ tightens this to equality, which forces $K[X]/(\\mu_M)$ to have dimension $n$ over $K$, and (by the structure theorem the cluster avoids) yields the cyclic decomposition."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-01",
+      "relationship": "related",
+      "description": "Earlier cluster work on the relationship between minimal and characteristic polynomials. Establishes the algebraic backdrop for the nonderogatory condition that this entry exploits."
+    }
+  ],
+  "references": [
+    {
+      "key": "Ja89",
+      "citation": "Jacobson, N., Basic Algebra I, 2nd ed., W.H. Freeman (1989). Chapter 3: theory of a single linear transformation, including the rational canonical form, cyclic decomposition, and the structure theorem for finitely generated modules over a PID — the classical proof route that this formalization deliberately avoids.",
+      "type": "book"
+    },
+    {
+      "key": "DF04",
+      "citation": "Dummit, D.S. and Foote, R.M., Abstract Algebra, 3rd ed., Wiley (2004). Section 12.2-12.3: rational canonical form via the structure theorem for f.g. modules over a PID. Section 9.4: unique factorization in $K[X]$ for $K$ a field.",
+      "type": "book"
+    },
+    {
+      "key": "Ax15",
+      "citation": "Axler, S., Linear Algebra Done Right, 3rd ed., Springer UTM (2015). Chapter 8: minimal polynomial and cyclic vector existence over $\\mathbb{C}$ via determinant-free arguments. The any-field generalization formalized here goes beyond the textbook scope.",
+      "type": "book"
+    },
+    {
+      "key": "Mathlib4",
+      "citation": "The mathlib Community, mathlib4: a unified library of mathematics formalized in Lean 4 (2026). Specifically: Mathlib.RingTheory.UniqueFactorizationDomain.NormalizedFactors and Mathlib.Algebra.Polynomial.FieldDivision provide the UFD machinery used in this proof.",
+      "type": "preprint",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/"
     }
   ],
   "sorries": 0
