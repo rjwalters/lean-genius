@@ -24,7 +24,7 @@
       "Proofs/AbelRuffiniOQ04OQ01.lean"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 6,
     "axiomCount": 1,
     "prerequisites": [
       "Galois theory (Galois groups, splitting fields, fixed fields)",
@@ -299,12 +299,12 @@
       "note": "Proved that every group of order p^a q^b is solvable. This implies that non-solvability requires at least 3 distinct prime factors: |A5| = 60 = 2²·3·5 is the smallest example, connecting to the solvability frontier explored in this file"
     }
   ],
-  "sorries": 1,
+  "sorries": 6,
   "leanFile": {
     "path": "Proofs/InverseGaloisOQ01.lean",
     "lineCount": 723,
     "axiomCount": 1,
-    "sorries": 1,
+    "sorries": 6,
     "theoremCount": 40,
     "definitionCount": 1,
     "imports": [

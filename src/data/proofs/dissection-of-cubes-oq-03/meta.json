@@ -17,7 +17,7 @@
       "dimension"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 6,
     "dateAdded": "2026-04-02",
     "axiomCount": 2,
     "assumptions": "2 axioms inherited from DissectionOfCubes.lean: smaller_cube_above_axiom, all_different_implies_long_chains_axiom. 2 sorries for geometric confinement lemmas (smallest_above_is_smaller, global_min_not_reaching_top).",
@@ -169,7 +169,7 @@
     "theoremCount": 17,
     "definitionCount": 13,
     "path": "Proofs/DissectionOfCubesOQ03.lean",
-    "sorries": 2
+    "sorries": 6
   },
   "crossReferences": [
     {
@@ -193,5 +193,5 @@
       "description": "Sibling open question on the de Bruijn divisibility approach; this file corrects the original unsound de Bruijn axiom (↔ True) and provides the proper CanTileWithBrick formulation"
     }
   ],
-  "sorries": 2
+  "sorries": 6
 }

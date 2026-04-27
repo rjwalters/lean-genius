@@ -18,7 +18,7 @@
       "golden-ratio"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 3,
     "axiomCount": 0,
     "lineCount": 326,
     "assumptions": "1 sorry: irreducibility of 4X²-2X-1 over ℚ (routine, provable via rational root theorem checking all candidates ±1, ±1/2, ±1/4). The theorem gal_order_eq_totient_div2_general proves a tautology (x = x by rfl) as a placeholder — it does not state the actual Galois order formula due to missing IsCyclotomicExtension infrastructure. All other theorems (splitting field degree 2, Galois order 2, Vieta identity, totient consistency checks) are genuinely proved.",
@@ -99,9 +99,9 @@
     "theoremCount": 27,
     "definitionCount": 2,
     "path": "Proofs/AngleTrisectionCos20GalOQ01OQ02.lean",
-    "sorries": 1
+    "sorries": 3
   },
-  "sorries": 1,
+  "sorries": 3,
   "crossReferences": [
     {
       "targetId": "angle-trisection-cos-20-gal",

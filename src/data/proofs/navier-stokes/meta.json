@@ -2,7 +2,7 @@
   "id": "navier-stokes-regularity",
   "title": "Global Regularity for Navier-Stokes",
   "slug": "navier-stokes",
-  "description": "A conditional regularity theorem for the Navier-Stokes Millennium Prize Problem. We identify the precise structural obstruction (scale-bridging concentration) and formulate the minimal Bubble Persistence hypothesis B\u2032 under which all known tools close: B\u2032 \u2192 Type I \u2192 ES\u0160 \u2192 regularity.",
+  "description": "A conditional regularity theorem for the Navier-Stokes Millennium Prize Problem. We identify the precise structural obstruction (scale-bridging concentration) and formulate the minimal Bubble Persistence hypothesis B′ under which all known tools close: B′ → Type I → ESŠ → regularity.",
   "currentVersion": "v4",
   "versionHistory": [
     {
@@ -11,7 +11,7 @@
       "date": "2026-02-12",
       "status": "conditional",
       "file": null,
-      "summary": "3D regularity is CONDITIONAL on hypotheses encoded in NSAxioms structure (physical assumptions moved from axiom declarations to structure fields \u2014 mathematically equivalent). 2D global existence (Ladyzhenskaya 1969) is genuinely proven without assumptions. The Millennium Problem remains open."
+      "summary": "3D regularity is CONDITIONAL on hypotheses encoded in NSAxioms structure (physical assumptions moved from axiom declarations to structure fields — mathematically equivalent). 2D global existence (Ladyzhenskaya 1969) is genuinely proven without assumptions. The Millennium Problem remains open."
     },
     {
       "version": "v1",
@@ -19,23 +19,23 @@
       "date": "2025-12-20",
       "status": "disputed",
       "file": "versions/v1.json",
-      "summary": "Initial analysis identifying 6 unproven axioms. The critical flaw: concentration_near_blowup assumes \u03b8 \u2265 1/2, which is exactly what needs to be proven."
+      "summary": "Initial analysis identifying 6 unproven axioms. The critical flaw: concentration_near_blowup assumes θ ≥ 1/2, which is exactly what needs to be proven."
     },
     {
       "version": "v2",
-      "name": "\u03b8\u2096 Refactor + Literature Analysis",
+      "name": "θₖ Refactor + Literature Analysis",
       "date": "2025-12-22",
       "status": "conditional",
       "file": "versions/v2.json",
-      "summary": "Introduced K-ball concentration framework (\u03b8\u2096). Added literature review connecting to Barker-Prange, Seregin, ES\u0160."
+      "summary": "Introduced K-ball concentration framework (θₖ). Added literature review connecting to Barker-Prange, Seregin, ESŠ."
     },
     {
       "version": "v3",
-      "name": "Conditional Regularity Theorem (B\u2032 \u2192 Regularity)",
+      "name": "Conditional Regularity Theorem (B′ → Regularity)",
       "date": "2025-12-22",
       "status": "conditional",
       "file": "analysis/conditional-regularity-theorem.md",
-      "summary": "Identified the precise obstruction: scale-bridging concentration. Formulated minimal Bubble Persistence hypothesis B\u2032."
+      "summary": "Identified the precise obstruction: scale-bridging concentration. Formulated minimal Bubble Persistence hypothesis B′."
     }
   ],
   "meta": {
@@ -53,7 +53,7 @@
       "K-ball-concentration"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 23,
     "axiomCount": 5,
     "assumptions": "5 structure-encoded assumptions in NSAxioms (Type II exponent, spectral gap, theta dynamics, blowup rate, BKM criterion). 0 Lean axiom declarations, but the 3D regularity theorem is conditional on the NSAxioms structure (5 fields encoding physical hypotheses: Type II exponent, spectral gap, theta dynamics, blowup rate, and BKM criterion). These structure fields are mathematically equivalent to axiom declarations -- the assumptions were reorganized, not eliminated. The 2D global existence theorem (Ladyzhenskaya 1969) is genuinely unconditional. The Millennium Prize problem remains unsolved.",
     "mathlibDependencies": [
@@ -65,8 +65,8 @@
     ],
     "originalContributions": [
       "Tropical rigidity theorem formalization",
-      "Type II dynamics \u03b2 \u2192 0 proof",
-      "K-ball concentration framework (\u03b8\u2096 refactor)",
+      "Type II dynamics β → 0 proof",
+      "K-ball concentration framework (θₖ refactor)",
       "Faber-Krahn additivity for disjoint balls"
     ],
     "dateAdded": "2025-12-21",
@@ -77,68 +77,68 @@
   },
   "objection": {
     "verdict": "CONDITIONAL 3D + PROVEN 2D",
-    "summary": "We identify the precise structural obstruction to ruling out Type II blowup: the SCALE MISMATCH between the parabolic scale \u221a(T*-t) where Barker-Prange gives concentration, and the diffusion scale R_diff = \u221a(\u03bd/\u03a9) where the proof needs it. The Bubble Persistence hypothesis B\u2032 bridges this gap.",
-    "coreIssue": "THE SCALE MISMATCH PROBLEM:\n\n\u2022 For Type I blowup: R_diff \u2248 \u221a(T*-t), so scales match and proof closes\n\u2022 For Type II blowup: R_diff << \u221a(T*-t), creating a gap the smoothing lemma cannot bridge\n\nV3 FORMULATION (Bubble Persistence B\u2032):\nConcentration A(r) = (1/r)\u222b|\u2207u|\u00b2 \u2265 \u03b5 must persist across all DYADIC radii r \u2208 {2\u207b\u1d4f : R_diff \u2264 2\u207b\u1d4f \u2264 c\u221a(T*-t)}.\n\nThis is the MINIMAL hypothesis that:\n1. Glues CKN \u03b5-regularity to enstrophy ODE\n2. Forces Type I rates via scale comparison\n3. Enables ES\u0160 backward uniqueness to exclude blowup\n\nThe hypothesis rules out exactly what Tao identifies as the core obstruction: cascade/escape mechanisms.",
+    "summary": "We identify the precise structural obstruction to ruling out Type II blowup: the SCALE MISMATCH between the parabolic scale √(T*-t) where Barker-Prange gives concentration, and the diffusion scale R_diff = √(ν/Ω) where the proof needs it. The Bubble Persistence hypothesis B′ bridges this gap.",
+    "coreIssue": "THE SCALE MISMATCH PROBLEM:\n\n• For Type I blowup: R_diff ≈ √(T*-t), so scales match and proof closes\n• For Type II blowup: R_diff << √(T*-t), creating a gap the smoothing lemma cannot bridge\n\nV3 FORMULATION (Bubble Persistence B′):\nConcentration A(r) = (1/r)∫|∇u|² ≥ ε must persist across all DYADIC radii r ∈ {2⁻ᵏ : R_diff ≤ 2⁻ᵏ ≤ c√(T*-t)}.\n\nThis is the MINIMAL hypothesis that:\n1. Glues CKN ε-regularity to enstrophy ODE\n2. Forces Type I rates via scale comparison\n3. Enables ESŠ backward uniqueness to exclude blowup\n\nThe hypothesis rules out exactly what Tao identifies as the core obstruction: cascade/escape mechanisms.",
     "thetaKRefactor": {
-      "motivation": "CKN shows singular sets have dimension \u2264 1, so 'few' bad points in spacetime. But this doesn't prevent enstrophy from spreading across MANY small balls, each with vanishing ratio \u03b8 \u2192 0. The fix: track the TOTAL enstrophy captured by K balls.",
+      "motivation": "CKN shows singular sets have dimension ≤ 1, so 'few' bad points in spacetime. But this doesn't prevent enstrophy from spreading across MANY small balls, each with vanishing ratio θ → 0. The fix: track the TOTAL enstrophy captured by K balls.",
       "definitions": {
-        "thetaAtK": "\u03b8\u2096(t) = sup over K-tuples of disjoint balls of (sum of local enstrophies) / E(t)",
-        "averagingLemma": "If \u03b8\u2096 \u2265 c, then single-ball \u03b8 \u2265 c/K (pigeonhole)",
-        "criticalThreshold": "2/\u03c0\u00b2 \u2248 0.203 is the minimum effective concentration needed"
+        "thetaAtK": "θₖ(t) = sup over K-tuples of disjoint balls of (sum of local enstrophies) / E(t)",
+        "averagingLemma": "If θₖ ≥ c, then single-ball θ ≥ c/K (pigeonhole)",
+        "criticalThreshold": "2/π² ≈ 0.203 is the minimum effective concentration needed"
       },
-      "whyFaberKrahnIsAdditive": "If K disjoint balls have local enstrophies E\u2081,...,E\u2096, then P \u2265 \u03a3\u1d62 (\u03c0\u00b2/4R\u00b2)\u00b7E\u1d62 = (\u03c0\u00b2/4R\u00b2)\u00b7\u03b8\u2096\u00b7E. The Faber-Krahn contribution is additive because the balls are disjoint.",
+      "whyFaberKrahnIsAdditive": "If K disjoint balls have local enstrophies E₁,...,Eₖ, then P ≥ Σᵢ (π²/4R²)·Eᵢ = (π²/4R²)·θₖ·E. The Faber-Krahn contribution is additive because the balls are disjoint.",
       "exampleThresholds": [
-        "K = 1, c = 0.50: c/K = 0.50 > 0.203 \u2713 (original axiom)",
-        "K = 1, c = 0.21: c/K = 0.21 > 0.203 \u2713 (minimal single-ball)",
-        "K = 5, c = 1.10: c/K = 0.22 > 0.203 \u2713 (works)",
-        "K = 10, c = 2.5: c/K = 0.25 > 0.203 \u2713 (works)",
-        "K = 100, c = 25: c/K = 0.25 > 0.203 \u2713 (still works if K bounded)"
+        "K = 1, c = 0.50: c/K = 0.50 > 0.203 ✓ (original axiom)",
+        "K = 1, c = 0.21: c/K = 0.21 > 0.203 ✓ (minimal single-ball)",
+        "K = 5, c = 1.10: c/K = 0.22 > 0.203 ✓ (works)",
+        "K = 10, c = 2.5: c/K = 0.25 > 0.203 ✓ (works)",
+        "K = 100, c = 25: c/K = 0.25 > 0.203 ✓ (still works if K bounded)"
       ],
       "openQuestion": "Is K bounded independent of scale near Type II blowup? If so, what is the bound?"
     },
     "detailedAnalysis": {
       "whatIsGenuinelyProven": [
-        "CKN \u03b5-regularity: A(r) + C(r) + D(r) \u2265 \u03b5\u2080 at singular points (CKN 1982)",
-        "Enstrophy ODE: dE/dt \u2264 CE\u00b3 limits growth to E ~ (T*-t)^{-1/2} (standard energy methods)",
-        "Type I concentration: \u2016u\u2016_{L\u00b3} \u2265 \u03b3 at scale \u221a(T*-t) (Barker-Prange 2020)",
-        "Backward uniqueness: Type I blowups excluded via ES\u0160 2003",
-        "Type II dynamics: \u03b2 = (T-t)^{\u03b1-1} \u2192 0 for \u03b1 > 1",
-        "Conditional theorem: B\u2032 \u2192 Type I \u2192 ES\u0160 \u2192 regularity (v3)",
-        "Tropical rigidity theorem: IF crossing with \u03c4 \u2264 0.1, THEN \u03b8 > 0.99"
+        "CKN ε-regularity: A(r) + C(r) + D(r) ≥ ε₀ at singular points (CKN 1982)",
+        "Enstrophy ODE: dE/dt ≤ CE³ limits growth to E ~ (T*-t)^{-1/2} (standard energy methods)",
+        "Type I concentration: ‖u‖_{L³} ≥ γ at scale √(T*-t) (Barker-Prange 2020)",
+        "Backward uniqueness: Type I blowups excluded via ESŠ 2003",
+        "Type II dynamics: β = (T-t)^{α-1} → 0 for α > 1",
+        "Conditional theorem: B′ → Type I → ESŠ → regularity (v3)",
+        "Tropical rigidity theorem: IF crossing with τ ≤ 0.1, THEN θ > 0.99"
       ],
-      "theActualGap": "V3 FINDING: The gap is SCALE-BRIDGING CONCENTRATION. CKN gives concentration at singular points. Barker-Prange gives concentration at \u221a(T*-t) for Type I. But for Type II, R_diff << \u221a(T*-t). The smoothing lemma cannot reach the diffusion scale. Bubble Persistence (B\u2032) is the minimal hypothesis that bridges this gap.",
-      "whyTheGapIsHard": "B\u2032 rules out exactly what Tao identifies as the core obstruction:\n\u2022 Multi-bubble proliferation: enstrophy fragmenting into many small centers\n\u2022 Escape to infinity: concentration drifting away from blowup point\n\u2022 Diffuse cascades: energy spreading across disjoint scales without persistence\n\nThese cannot be ruled out by CKN + enstrophy ODE alone.",
-      "literatureContext": "V3 SYNTHESIS: CKN 1982 (\u03b5-regularity), Barker-Prange 2020 (Type I concentration), Seregin 2025 (Type II exclusion via LPS), ES\u0160 2003 (backward uniqueness). Our B\u2032 is strictly weaker than Seregin's LPS condition. See analysis/conditional-regularity-theorem.md."
+      "theActualGap": "V3 FINDING: The gap is SCALE-BRIDGING CONCENTRATION. CKN gives concentration at singular points. Barker-Prange gives concentration at √(T*-t) for Type I. But for Type II, R_diff << √(T*-t). The smoothing lemma cannot reach the diffusion scale. Bubble Persistence (B′) is the minimal hypothesis that bridges this gap.",
+      "whyTheGapIsHard": "B′ rules out exactly what Tao identifies as the core obstruction:\n• Multi-bubble proliferation: enstrophy fragmenting into many small centers\n• Escape to infinity: concentration drifting away from blowup point\n• Diffuse cascades: energy spreading across disjoint scales without persistence\n\nThese cannot be ruled out by CKN + enstrophy ODE alone.",
+      "literatureContext": "V3 SYNTHESIS: CKN 1982 (ε-regularity), Barker-Prange 2020 (Type I concentration), Seregin 2025 (Type II exclusion via LPS), ESŠ 2003 (backward uniqueness). Our B′ is strictly weaker than Seregin's LPS condition. See analysis/conditional-regularity-theorem.md."
     },
     "promisingDirections": [
       {
-        "name": "Prove B\u2032 in restricted settings",
-        "description": "V3 DIRECTION: Try to prove Bubble Persistence in symmetry classes where bubble count is naturally controlled:\n\u2022 Axisymmetric solutions: symmetry constrains concentration geometry\n\u2022 Periodic domains: no escape to infinity possible\n\u2022 Finite energy with decay: spatial localization built in",
+        "name": "Prove B′ in restricted settings",
+        "description": "V3 DIRECTION: Try to prove Bubble Persistence in symmetry classes where bubble count is naturally controlled:\n• Axisymmetric solutions: symmetry constrains concentration geometry\n• Periodic domains: no escape to infinity possible\n• Finite energy with decay: spatial localization built in",
         "likelihood": "Medium - restricted settings often yield results",
         "status": "RECOMMENDED - NEW"
       },
       {
-        "name": "Weaken B\u2032 further",
-        "description": "V3 DIRECTION: Can we weaken Bubble Persistence?\n\u2022 Require concentration at only O(log(1/R_diff)) dyadic scales\n\u2022 Allow \u03b5 to decay slowly (e.g., \u03b5 ~ 1/log(1/r))\n\u2022 Replace gradient by velocity (L\u00b3 version)",
+        "name": "Weaken B′ further",
+        "description": "V3 DIRECTION: Can we weaken Bubble Persistence?\n• Require concentration at only O(log(1/R_diff)) dyadic scales\n• Allow ε to decay slowly (e.g., ε ~ 1/log(1/r))\n• Replace gradient by velocity (L³ version)",
         "likelihood": "Medium - weaker hypotheses may be provable",
         "status": "UNEXPLORED"
       },
       {
-        "name": "Numerical validation of B\u2032",
-        "description": "V3 DIRECTION: Extract from Hou's simulations or Kang-Protas optimization:\n\u2022 Does concentration persist across scales [R_diff, \u221a(T*-t)]?\n\u2022 What is the observed \u03b5 in B\u2032?\n\u2022 Can this be used as an applied regularity criterion?",
+        "name": "Numerical validation of B′",
+        "description": "V3 DIRECTION: Extract from Hou's simulations or Kang-Protas optimization:\n• Does concentration persist across scales [R_diff, √(T*-t)]?\n• What is the observed ε in B′?\n• Can this be used as an applied regularity criterion?",
         "likelihood": "High - numerical evidence would validate approach",
         "status": "UNEXPLORED"
       },
       {
         "name": "Seregin-style weakening",
-        "description": "V3 DIRECTION: Seregin uses LPS condition. What is the minimal condition (weaker than LPS) forcing trivial Euler limit? B\u2032 is already weaker than LPS.",
+        "description": "V3 DIRECTION: Seregin uses LPS condition. What is the minimal condition (weaker than LPS) forcing trivial Euler limit? B′ is already weaker than LPS.",
         "likelihood": "Medium - connects to existing literature",
         "status": "CONNECTS TO SEREGIN 2025"
       },
       {
         "name": "Tropical crossing (superseded)",
-        "description": "SUPERSEDED: Tropical crossing analysis was from v2. The v3 formulation with B\u2032 provides a cleaner minimal hypothesis. Tropical crossing may imply B\u2032 but is harder to analyze directly.",
-        "likelihood": "Low - superseded by B\u2032 formulation",
+        "description": "SUPERSEDED: Tropical crossing analysis was from v2. The v3 formulation with B′ provides a cleaner minimal hypothesis. Tropical crossing may imply B′ but is harder to analyze directly.",
+        "likelihood": "Low - superseded by B′ formulation",
         "status": "SUPERSEDED BY V3"
       }
     ],
@@ -146,25 +146,25 @@
     "proofStructureAssessment": {
       "logicalSoundness": "The proof structure is mathematically sound. IF the axioms held, the conclusion would follow rigorously.",
       "sophistication": "This is not a naive circular argument. The tropical rigidity framework, Type II adiabatic analysis, and CKN-based capacity arguments represent genuine mathematical contributions.",
-      "repairability": "REVISED ASSESSMENT: The \u03b8\u2096 refactor makes the missing hypothesis MORE PRECISE and potentially MORE TRACTABLE. The question 'is bubble count K bounded?' is a sharper target than 'does single-ball concentration hold?'"
+      "repairability": "REVISED ASSESSMENT: The θₖ refactor makes the missing hypothesis MORE PRECISE and potentially MORE TRACTABLE. The question 'is bubble count K bounded?' is a sharper target than 'does single-ball concentration hold?'"
     },
-    "whatLeanActuallyVerified": "The Lean file proves: (1) 3D conditional regularity \u2014 IF the NSAxioms hypotheses hold THEN no blowup (the hypotheses encode the hard open problem), (2) ESS backward uniqueness and Type I exclusion, (3) Type II stability and beta to 0, (4) CKN dimension/capacity framework, (5) 2D global existence and enstrophy bound (Ladyzhenskaya 1969 \u2014 genuinely proven, no assumptions), (6) 2D exponential decay under Poincare inequality. NOTE: The 3D result uses NSAxioms structure fields which are mathematically equivalent to axiom declarations \u2014 the assumptions were reorganized, not eliminated.",
+    "whatLeanActuallyVerified": "The Lean file proves: (1) 3D conditional regularity — IF the NSAxioms hypotheses hold THEN no blowup (the hypotheses encode the hard open problem), (2) ESS backward uniqueness and Type I exclusion, (3) Type II stability and beta to 0, (4) CKN dimension/capacity framework, (5) 2D global existence and enstrophy bound (Ladyzhenskaya 1969 — genuinely proven, no assumptions), (6) 2D exponential decay under Poincare inequality. NOTE: The 3D result uses NSAxioms structure fields which are mathematically equivalent to axiom declarations — the assumptions were reorganized, not eliminated.",
     "millenniumPrizeStatus": "The Navier-Stokes Millennium Prize problem remains UNSOLVED. The Lean file achieves 0 axioms and 0 sorries by encoding physical hypotheses via the NSAxioms structure (not axiom declarations). The 3D conditional theorem shows: NSAxioms implies no blowup. The 2D case is fully proven (axiom-free).",
-    "axiomEliminationNote": "The Lean file uses 0 axiom declarations, but this is a technical distinction, not a mathematical one. The physical hypotheses were moved from Lean `axiom` declarations into an NSAxioms structure \u2014 the mathematical assumptions are unchanged. The 3D theorem is conditional on these structure fields. The 2D theorem (Ladyzhenskaya) is genuinely unconditional."
+    "axiomEliminationNote": "The Lean file uses 0 axiom declarations, but this is a technical distinction, not a mathematical one. The physical hypotheses were moved from Lean `axiom` declarations into an NSAxioms structure — the mathematical assumptions are unchanged. The 3D theorem is conditional on these structure fields. The 2D theorem (Ladyzhenskaya) is genuinely unconditional."
   },
   "overview": {
     "historicalContext": "The Navier-Stokes equations, formulated by Claude-Louis Navier (1822) and George Gabriel Stokes (1845), describe the motion of viscous fluids. In 2000, the Clay Mathematics Institute designated the Navier-Stokes existence and smoothness problem as one of seven Millennium Prize Problems, offering $1 million for its resolution.\n\nThe question: given smooth initial conditions, do solutions to the 3D incompressible Navier-Stokes equations remain smooth for all time, or can singularities (blowup) develop? This remains one of the great unsolved problems in mathematics.",
     "problemStatement": "The 3D incompressible Navier-Stokes equations are:\n\n$$\\partial_t u + (u \\cdot \\nabla)u = -\\nabla p + \\nu \\Delta u$$\n$$\\nabla \\cdot u = 0$$\n\nwhere $u$ is velocity, $p$ is pressure, and $\\nu > 0$ is viscosity. The global regularity problem asks: given smooth initial data, does a unique smooth solution exist for all time?",
-    "text": "A conditional regularity theorem for the Navier-Stokes Millennium Prize Problem. We identify the precise structural obstruction (scale-bridging concentration) and formulate the minimal Bubble Persistence hypothesis B\u2032 under which all known tools close: B\u2032 \u2192 Type I \u2192 ES\u0160 \u2192 regularity.",
-    "proofStrategy": "V3 CONDITIONAL THEOREM (Bubble Persistence \u2192 Regularity):\n\n1. CKN \u03b5-regularity: A(r) + C(r) + D(r) \u2265 \u03b5\u2080 at singular points [PROVEN - CKN 1982]\n2. Enstrophy ODE: dE/dt \u2264 CE\u00b3 limits growth to E ~ (T*-t)^{-1/2} [PROVEN]\n3. Scale bridge via B\u2032: Concentration persists from R_diff to \u221a(T*-t) [HYPOTHESIS]\n4. Type I concentration: \u2016u\u2016_{L\u00b3} \u2265 \u03b3 at scale \u221a(T*-t) [PROVEN - Barker-Prange 2020]\n5. Backward uniqueness: Type I blowups excluded [PROVEN - ES\u0160 2003]\n\nTHE SCALE MISMATCH:\n\u2022 Type I: R_diff \u2248 \u221a(T*-t), scales match, proof closes\n\u2022 Type II: R_diff << \u221a(T*-t), gap requires B\u2032 to bridge\n\nB\u2032 is the MINIMAL hypothesis that glues all proven steps together.",
+    "text": "A conditional regularity theorem for the Navier-Stokes Millennium Prize Problem. We identify the precise structural obstruction (scale-bridging concentration) and formulate the minimal Bubble Persistence hypothesis B′ under which all known tools close: B′ → Type I → ESŠ → regularity.",
+    "proofStrategy": "V3 CONDITIONAL THEOREM (Bubble Persistence → Regularity):\n\n1. CKN ε-regularity: A(r) + C(r) + D(r) ≥ ε₀ at singular points [PROVEN - CKN 1982]\n2. Enstrophy ODE: dE/dt ≤ CE³ limits growth to E ~ (T*-t)^{-1/2} [PROVEN]\n3. Scale bridge via B′: Concentration persists from R_diff to √(T*-t) [HYPOTHESIS]\n4. Type I concentration: ‖u‖_{L³} ≥ γ at scale √(T*-t) [PROVEN - Barker-Prange 2020]\n5. Backward uniqueness: Type I blowups excluded [PROVEN - ESŠ 2003]\n\nTHE SCALE MISMATCH:\n• Type I: R_diff ≈ √(T*-t), scales match, proof closes\n• Type II: R_diff << √(T*-t), gap requires B′ to bridge\n\nB′ is the MINIMAL hypothesis that glues all proven steps together.",
     "keyInsights": [
-      "V3: The gap is SCALE-BRIDGING CONCENTRATION, not \u03b8 \u2265 c directly",
-      "Bubble Persistence B\u2032 is the minimal hypothesis bridging the scale mismatch",
-      "B\u2032 rules out exactly what Tao identifies as the core obstruction: cascade/escape",
-      "B\u2032 is strictly weaker than Seregin's LPS condition (2025)",
-      "For Type I, the proof closes without B\u2032 (Barker-Prange + ES\u0160)",
-      "The diagnostic value: any unconditional proof MUST rule out failure of B\u2032",
-      "The conditional theorem: B\u2032 \u2192 Type I only \u2192 ES\u0160 \u2192 regularity"
+      "V3: The gap is SCALE-BRIDGING CONCENTRATION, not θ ≥ c directly",
+      "Bubble Persistence B′ is the minimal hypothesis bridging the scale mismatch",
+      "B′ rules out exactly what Tao identifies as the core obstruction: cascade/escape",
+      "B′ is strictly weaker than Seregin's LPS condition (2025)",
+      "For Type I, the proof closes without B′ (Barker-Prange + ESŠ)",
+      "The diagnostic value: any unconditional proof MUST rule out failure of B′",
+      "The conditional theorem: B′ → Type I only → ESŠ → regularity"
     ],
     "prerequisites": [
       "Partial differential equations: Navier-Stokes equations, weak solutions, regularity theory",
@@ -180,15 +180,15 @@
       "title": "Part I-VII: Foundations and Enstrophy Identity",
       "startLine": 1,
       "endLine": 715,
-      "summary": "Establishes the Navier-Stokes solution structure, enstrophy E = \u222b|\u03c9|\u00b2, palinstrophy P, and the fundamental identity E' = 2S - 2\u03bdP. Numerical constants like \u03ba\u00b7c_FK > 2 are genuinely proven via native_decide.",
-      "mathContext": "Enstrophy $E(t) = \\int |\\omega|^2\\, dx$ (total squared vorticity), palinstrophy $P(t) = \\int |\\nabla\\omega|^2\\, dx$, stretching $S = \\int \\omega \\cdot (\\nabla u)\\omega\\, dx$. The fundamental identity: $E'(t) = 2S - 2\\nu P$. The NSAxioms structure encodes 5 physical hypotheses (Type II exponent, spectral gap, theta dynamics, blowup rate, BKM criterion) \u2014 these are the unsolved parts."
+      "summary": "Establishes the Navier-Stokes solution structure, enstrophy E = ∫|ω|², palinstrophy P, and the fundamental identity E' = 2S - 2νP. Numerical constants like κ·c_FK > 2 are genuinely proven via native_decide.",
+      "mathContext": "Enstrophy $E(t) = \\int |\\omega|^2\\, dx$ (total squared vorticity), palinstrophy $P(t) = \\int |\\nabla\\omega|^2\\, dx$, stretching $S = \\int \\omega \\cdot (\\nabla u)\\omega\\, dx$. The fundamental identity: $E'(t) = 2S - 2\\nu P$. The NSAxioms structure encodes 5 physical hypotheses (Type II exponent, spectral gap, theta dynamics, blowup rate, BKM criterion) — these are the unsolved parts."
     },
     {
       "id": "part-8b",
       "title": "Part VIII-B: Concentration Framework (Original)",
       "startLine": 808,
       "endLine": 893,
-      "summary": "Defines single-ball concentration \u03b8 = sup(E_loc/E). Proves bounds \u03b8 \u2264 1 and witness theorems.",
+      "summary": "Defines single-ball concentration θ = sup(E_loc/E). Proves bounds θ ≤ 1 and witness theorems.",
       "mathContext": "Single-ball concentration: $\\theta(t) = \\sup_x \\frac{E_{\\text{loc}}(x, R, t)}{E(t)}$ where $E_{\\text{loc}} = \\int_{B(x,R)} |\\omega|^2$. The critical threshold $\\theta \\geq 2/\\pi^2 \\approx 0.203$ ensures the Faber-Krahn spectral gap dominates stretching: $2\\nu P \\geq \\kappa c_{FK} \\theta E^2 > 2S$, forcing $E' < 0$."
     },
     {
@@ -196,7 +196,7 @@
       "title": "Part VIII-B': K-Ball Concentration Framework (NEW)",
       "startLine": 896,
       "endLine": 1038,
-      "summary": "Defines K-ball concentration \u03b8\u2096, proves Faber-Krahn additivity, averaging lemma (\u03b8 \u2265 \u03b8\u2096/K), and K-threshold analysis.",
+      "summary": "Defines K-ball concentration θₖ, proves Faber-Krahn additivity, averaging lemma (θ ≥ θₖ/K), and K-threshold analysis.",
       "mathContext": "$\\theta_K(t) = \\sup_{K \\text{ disjoint balls}} \\frac{\\sum_{i=1}^K E_{\\text{loc}}(x_i, R, t)}{E(t)}$. Key: Faber-Krahn is additive for disjoint balls: $P \\geq \\sum_i \\frac{\\pi^2}{4R^2} E_{\\text{loc}}(x_i) = \\frac{\\pi^2}{4R^2} \\theta_K E$. Averaging lemma: $\\theta \\geq \\theta_K / K$ (pigeonhole). The proof works if $\\theta_K \\geq 0.203K$ for any fixed $K$."
     },
     {
@@ -204,8 +204,8 @@
       "title": "Part VIII-C: Tropical Framework and Rigidity",
       "startLine": 1022,
       "endLine": 1100,
-      "summary": "Defines tropical L function and proves rigidity theorem: IF tropical crossing with \u03c4 \u2264 0.1, THEN \u03b8 > 0.99.",
-      "mathContext": "Tropical $L$ function: $L(\\beta) = \\min(2\\beta, 1)$ (tropical analogue of the $L$-function). Rigidity theorem: if $L$ crosses level $\\tau \\leq 0.1$, then the crossing forces $\\theta > 0.99$ \u2014 a much stronger concentration than the $0.203$ threshold. This would close the proof if tropical crossings are unavoidable at blowup."
+      "summary": "Defines tropical L function and proves rigidity theorem: IF tropical crossing with τ ≤ 0.1, THEN θ > 0.99.",
+      "mathContext": "Tropical $L$ function: $L(\\beta) = \\min(2\\beta, 1)$ (tropical analogue of the $L$-function). Rigidity theorem: if $L$ crosses level $\\tau \\leq 0.1$, then the crossing forces $\\theta > 0.99$ — a much stronger concentration than the $0.203$ threshold. This would close the proof if tropical crossings are unavoidable at blowup."
     },
     {
       "id": "axioms",
@@ -213,78 +213,78 @@
       "startLine": 1270,
       "endLine": 1390,
       "summary": "The NSAxioms structure encodes 5 physical hypotheses as structure fields (not Lean axiom declarations). These are the unsolved parts of the Millennium Problem.",
-      "mathContext": "NSAxioms structure fields: (1) Type II exponent $\\alpha > 1$, (2) spectral gap $\\lambda_1 \\geq \\pi^2/R^2$, (3) concentration dynamics $\\theta \\geq c$, (4) blowup rate $E(t) \\leq C(T^* - t)^{-\\alpha}$, (5) BKM criterion $\\int_0^T \\|\\omega\\|_\\infty\\, dt < \\infty \\Rightarrow$ regularity. These are mathematically equivalent to `axiom` declarations \u2014 the assumptions were reorganized into a structure, not eliminated."
+      "mathContext": "NSAxioms structure fields: (1) Type II exponent $\\alpha > 1$, (2) spectral gap $\\lambda_1 \\geq \\pi^2/R^2$, (3) concentration dynamics $\\theta \\geq c$, (4) blowup rate $E(t) \\leq C(T^* - t)^{-\\alpha}$, (5) BKM criterion $\\int_0^T \\|\\omega\\|_\\infty\\, dt < \\infty \\Rightarrow$ regularity. These are mathematically equivalent to `axiom` declarations — the assumptions were reorganized into a structure, not eliminated."
     },
     {
       "id": "twin-engine",
       "title": "Twin Engine Stability Theorem",
       "startLine": 1390,
       "endLine": 1460,
-      "summary": "Proves that Type II + concentration implies S \u2264 \u03bdP eventually, using K-ball Faber-Krahn additivity.",
-      "mathContext": "If $\\theta_K \\geq 0.203K$ (concentration) and $E(t) \\sim (T^*-t)^{-\\alpha}$ with $\\alpha > 1$ (Type II), then $2\\nu P \\geq \\kappa c_{FK} \\theta_K E^2 / K > 2S$ eventually. This forces $E'(t) < 0$, contradicting the assumed blowup rate \u2014 the 'twin engine' (viscous damping + Faber-Krahn) overpowers stretching."
+      "summary": "Proves that Type II + concentration implies S ≤ νP eventually, using K-ball Faber-Krahn additivity.",
+      "mathContext": "If $\\theta_K \\geq 0.203K$ (concentration) and $E(t) \\sim (T^*-t)^{-\\alpha}$ with $\\alpha > 1$ (Type II), then $2\\nu P \\geq \\kappa c_{FK} \\theta_K E^2 / K > 2S$ eventually. This forces $E'(t) < 0$, contradicting the assumed blowup rate — the 'twin engine' (viscous damping + Faber-Krahn) overpowers stretching."
     },
     {
       "id": "main-theorems",
       "title": "Final Theorems (Conditional 3D + Proven 2D)",
       "startLine": 1600,
       "endLine": 1670,
-      "summary": "3D: NSAxioms \u2192 no blowup (CONDITIONAL). 2D: global existence and enstrophy bound (PROVEN \u2014 Ladyzhenskaya 1969, no assumptions).",
-      "mathContext": "3D conditional: $\\text{NSAxioms} \\Rightarrow \\nexists$ finite-time blowup (the conditional regularity theorem). 2D proven: for 2D Navier-Stokes, $E(t) \\leq E(0)e^{-c\\nu t}$ (exponential decay under Poincar\u00e9), giving global existence and smoothness unconditionally \u2014 Ladyzhenskaya's 1969 result."
+      "summary": "3D: NSAxioms → no blowup (CONDITIONAL). 2D: global existence and enstrophy bound (PROVEN — Ladyzhenskaya 1969, no assumptions).",
+      "mathContext": "3D conditional: $\\text{NSAxioms} \\Rightarrow \\nexists$ finite-time blowup (the conditional regularity theorem). 2D proven: for 2D Navier-Stokes, $E(t) \\leq E(0)e^{-c\\nu t}$ (exponential decay under Poincaré), giving global existence and smoothness unconditionally — Ladyzhenskaya's 1969 result."
     }
   ],
   "conclusion": {
-    "summary": "V3 CONCLUSION: We identify the precise structural obstruction to ruling out Type II blowup \u2014 the SCALE MISMATCH between the parabolic scale \u221a(T*-t) and the diffusion scale R_diff = \u221a(\u03bd/\u03a9). The Bubble Persistence hypothesis B\u2032 is the MINIMAL condition bridging this gap.\n\nThe conditional theorem is:\n\u2022 CKN \u03b5-regularity (PROVEN)\n\u2022 Enstrophy ODE bound (PROVEN)\n\u2022 Scale bridge via B\u2032 (HYPOTHESIS)\n\u2022 Type I concentration (PROVEN for Type I)\n\u2022 Backward uniqueness (PROVEN)\n\nResult: B\u2032 \u2192 Type I only \u2192 ES\u0160 \u2192 regularity",
-    "implications": "**Theoretical Significance**: WHAT V3 REVEALS:\n\n1. DIAGNOSTIC VALUE: This is not 'just conditional.' Any unconditional proof MUST rule out failure of B\u2032 (cascade/escape mechanisms).\n\n2. MINIMAL HYPOTHESIS: B\u2032 is strictly weaker than Seregin's LPS condition but still captures the essential anti-escape requirement.\n\n3.\n\nSCALE INVARIANCE: The quantity A(r) = (1/r)\u222b|\u2207u|\u00b2 is scale-invariant under NS scaling, making B\u2032 a structural condition.\n\n4. COMPARISON:\n   \u2022 Barker-Prange: Type I only (scales match)\n   \u2022 Seregin: LPS condition (stronger than B\u2032)\n   \u2022 Our B\u2032: Minimal scale-bridging (weaker, more tractable?)\n\n5. MILLENNIUM PRIZE: Still UNSOLVED. We've clarified what it would take to solve it.",
+    "summary": "V3 CONCLUSION: We identify the precise structural obstruction to ruling out Type II blowup — the SCALE MISMATCH between the parabolic scale √(T*-t) and the diffusion scale R_diff = √(ν/Ω). The Bubble Persistence hypothesis B′ is the MINIMAL condition bridging this gap.\n\nThe conditional theorem is:\n• CKN ε-regularity (PROVEN)\n• Enstrophy ODE bound (PROVEN)\n• Scale bridge via B′ (HYPOTHESIS)\n• Type I concentration (PROVEN for Type I)\n• Backward uniqueness (PROVEN)\n\nResult: B′ → Type I only → ESŠ → regularity",
+    "implications": "**Theoretical Significance**: WHAT V3 REVEALS:\n\n1. DIAGNOSTIC VALUE: This is not 'just conditional.' Any unconditional proof MUST rule out failure of B′ (cascade/escape mechanisms).\n\n2. MINIMAL HYPOTHESIS: B′ is strictly weaker than Seregin's LPS condition but still captures the essential anti-escape requirement.\n\n3.\n\nSCALE INVARIANCE: The quantity A(r) = (1/r)∫|∇u|² is scale-invariant under NS scaling, making B′ a structural condition.\n\n4. COMPARISON:\n   • Barker-Prange: Type I only (scales match)\n   • Seregin: LPS condition (stronger than B′)\n   • Our B′: Minimal scale-bridging (weaker, more tractable?)\n\n5. MILLENNIUM PRIZE: Still UNSOLVED. We've clarified what it would take to solve it.",
     "openQuestions": [
-      "Can B\u2032 be proven in restricted settings (axisymmetric, periodic, finite energy)?",
-      "Can B\u2032 be weakened to finitely many dyadic scales?",
+      "Can B′ be proven in restricted settings (axisymmetric, periodic, finite energy)?",
+      "Can B′ be weakened to finitely many dyadic scales?",
       "What do numerical simulations say about concentration across scales?",
       "What is the minimal LPS-type condition for Euler limit triviality?",
-      "Is there a Carleman-type argument that forces B\u2032?"
+      "Is there a Carleman-type argument that forces B′?"
     ]
   },
   "references": [
     {
       "authors": "Navier, C.L.M.H.",
-      "title": "M\u00e9moire sur les lois du mouvement des fluides",
+      "title": "Mémoire sur les lois du mouvement des fluides",
       "year": "1822",
-      "venue": "M\u00e9moires de l'Acad\u00e9mie Royale des Sciences de l'Institut de France",
+      "venue": "Mémoires de l'Académie Royale des Sciences de l'Institut de France",
       "note": "First derivation of the equations of motion for viscous fluids"
     },
     {
       "authors": "Stokes, G.G.",
       "title": "On the theories of the internal friction of fluids in motion",
       "year": "1845",
-      "venue": "Transactions of the Cambridge Philosophical Society 8, 287\u2013305",
+      "venue": "Transactions of the Cambridge Philosophical Society 8, 287–305",
       "note": "Established the modern form of the equations now bearing both names"
     },
     {
       "authors": "Leray, J.",
       "title": "Sur le mouvement d'un liquide visqueux emplissant l'espace",
       "year": "1934",
-      "venue": "Acta Mathematica 63, 193\u2013248",
-      "note": "Foundational paper proving existence of weak solutions and introducing the blowup scenario \u2014 the starting point for the regularity problem"
+      "venue": "Acta Mathematica 63, 193–248",
+      "note": "Foundational paper proving existence of weak solutions and introducing the blowup scenario — the starting point for the regularity problem"
     },
     {
       "authors": "Caffarelli, L.; Kohn, R.; Nirenberg, L.",
       "title": "Partial regularity of suitable weak solutions of the Navier-Stokes equations",
       "year": "1982",
-      "venue": "Communications on Pure and Applied Mathematics 35(6), 771\u2013831",
-      "note": "The CKN \u03b5-regularity theorem: singular sets have 1-dimensional parabolic Hausdorff measure zero \u2014 the key tool used in the conditional regularity analysis"
+      "venue": "Communications on Pure and Applied Mathematics 35(6), 771–831",
+      "note": "The CKN ε-regularity theorem: singular sets have 1-dimensional parabolic Hausdorff measure zero — the key tool used in the conditional regularity analysis"
     },
     {
-      "authors": "Escauriaza, L.; Seregin, G.; \u0160ver\u00e1k, V.",
-      "title": "L\u2083,\u221e-solutions of Navier-Stokes equations and backward uniqueness",
+      "authors": "Escauriaza, L.; Seregin, G.; Šverák, V.",
+      "title": "L₃,∞-solutions of Navier-Stokes equations and backward uniqueness",
       "year": "2003",
-      "venue": "Russian Mathematical Surveys 58(2), 211\u2013250",
-      "note": "Proved Type I blowup exclusion via backward uniqueness \u2014 the ES\u0160 theorem that closes the proof chain when concentration at parabolic scale is established"
+      "venue": "Russian Mathematical Surveys 58(2), 211–250",
+      "note": "Proved Type I blowup exclusion via backward uniqueness — the ESŠ theorem that closes the proof chain when concentration at parabolic scale is established"
     },
     {
       "authors": "Ladyzhenskaya, O.A.",
       "title": "The Mathematical Theory of Viscous Incompressible Flow",
       "year": "1969",
       "venue": "Gordon and Breach, 2nd edition",
-      "note": "Proved global existence and uniqueness for 2D Navier-Stokes \u2014 the unconditional result formalized in this file"
+      "note": "Proved global existence and uniqueness for 2D Navier-Stokes — the unconditional result formalized in this file"
     }
   ],
   "crossReferences": [
@@ -306,7 +306,7 @@
     {
       "targetId": "poincare-conjecture",
       "relationship": "thematic",
-      "description": "The only Millennium Prize Problem solved so far (Perelman 2003). Both problems involve PDEs on manifolds: Ricci flow for Poincar\u00e9, Navier-Stokes for fluid dynamics. Perelman's blowup analysis techniques have parallels in the NS singularity analysis"
+      "description": "The only Millennium Prize Problem solved so far (Perelman 2003). Both problems involve PDEs on manifolds: Ricci flow for Poincaré, Navier-Stokes for fluid dynamics. Perelman's blowup analysis techniques have parallels in the NS singularity analysis"
     },
     {
       "targetId": "schauder-fixed-point",
@@ -378,7 +378,7 @@
       "TwoDimensionalGlobal"
     ],
     "path": "Proofs/NavierStokes.lean",
-    "sorries": 0
+    "sorries": 23
   },
   "mainTheorems": [
     {
@@ -388,5 +388,5 @@
       "leanType": "NavierStokesInitialData -> exists! (u p), NavierStokesSolution u p and Smooth u"
     }
   ],
-  "sorries": 0
+  "sorries": 23
 }

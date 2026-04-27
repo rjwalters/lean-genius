@@ -2,7 +2,7 @@
   "id": "stirling-formula-oq-01",
   "title": "Higher-Order Stirling Expansion",
   "slug": "stirling-formula-oq-01",
-  "description": "Formalizes the first correction term in Stirling's asymptotic expansion: n! ~ \u221a(2\u03c0n)(n/e)^n(1 + 1/(12n) + O(1/n\u00b2)). Shows this eliminates an axiom.",
+  "description": "Formalizes the first correction term in Stirling's asymptotic expansion: n! ~ √(2πn)(n/e)^n(1 + 1/(12n) + O(1/n²)). Shows this eliminates an axiom.",
   "meta": {
     "author": "Stirling (1730), de Moivre (1733)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Stirling%27s_approximation#Speed_of_convergence_and_error_estimates",
@@ -17,26 +17,26 @@
       "bernoulli-numbers"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 3,
     "axiomCount": 0,
     "assumptions": "0 axioms, 1 sorry (stirling_first_correction: requires Euler-Maclaurin or telescoping series analysis). The second sorry (stirling_two_term_expansion) is now proved from the first via ratio identity.",
     "dateAdded": "2026-03-29",
     "mathlibDependencies": [
       {
         "theorem": "Stirling.stirlingSeq",
-        "description": "The Stirling sequence n!/[\u221a(2n)(n/e)^n]",
+        "description": "The Stirling sequence n!/[√(2n)(n/e)^n]",
         "module": "Mathlib.Analysis.SpecialFunctions.Stirling"
       },
       {
         "theorem": "Stirling.tendsto_stirlingSeq_sqrt_pi",
-        "description": "stirlingSeq \u2192 \u221a\u03c0",
+        "description": "stirlingSeq → √π",
         "module": "Mathlib.Analysis.SpecialFunctions.Stirling"
       }
     ],
     "originalContributions": [
       "Stirling series coefficients a_0=1, a_1=1/12, a_2=1/288, a_3=-139/51840",
       "stirlingPartial: truncated Stirling expansion at k terms",
-      "Statement of first correction: stirlingSeq(n)/\u221a\u03c0 = 1 + 1/(12n) + O(1/n\u00b2)",
+      "Statement of first correction: stirlingSeq(n)/√π = 1 + 1/(12n) + O(1/n²)",
       "Path to axiom elimination: first correction implies stirling_error_bound_ge_2",
       "error_bound_from_correction: structured proof reducing axiom to first correction"
     ],
@@ -46,16 +46,16 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "James Stirling published 'Methodus Differentialis' in 1730, giving the asymptotic formula n! ~ \u221a(2\u03c0n)(n/e)^n and the full asymptotic series with Bernoulli number coefficients. Abraham de Moivre independently arrived at the same formula in 1733, and the constant \u221a(2\u03c0) was supplied by de Moivre (Stirling had initially left it implicit). The higher-order terms n! ~ \u221a(2\u03c0n)(n/e)^n \u00b7 (1 + 1/(12n) + 1/(288n\u00b2) \u2212 139/(51840n\u00b3) + ...) were known to both Stirling and de Moivre. The coefficients are given by the Euler-Maclaurin formula: applying the summation formula to \u03a3_{k=1}^n log(k) = log(n!) yields the asymptotic series, with the k-th correction coefficient a_k = B_{2k}/(2k(2k\u22121)n^k) involving Bernoulli numbers B_{2k}. Leonhard Euler's contributions to the Maclaurin-Euler formula (1730s) provided the systematic tool for deriving these coefficients. In the 20th century, the Stirling series was understood as the asymptotic expansion of the log-Gamma function: log \u0393(z) ~ (z\u22121/2)log(z) \u2212 z + (1/2)log(2\u03c0) + \u03a3 B_{2k}/[2k(2k\u22121)z^{2k-1}]. Mathlib's formalization uses the Wallis product as the entry point for Stirling's formula, making the connection to Bernoulli numbers indirect.",
+    "historicalContext": "James Stirling published 'Methodus Differentialis' in 1730, giving the asymptotic formula n! ~ √(2πn)(n/e)^n and the full asymptotic series with Bernoulli number coefficients. Abraham de Moivre independently arrived at the same formula in 1733, and the constant √(2π) was supplied by de Moivre (Stirling had initially left it implicit). The higher-order terms n! ~ √(2πn)(n/e)^n · (1 + 1/(12n) + 1/(288n²) − 139/(51840n³) + ...) were known to both Stirling and de Moivre. The coefficients are given by the Euler-Maclaurin formula: applying the summation formula to Σ_{k=1}^n log(k) = log(n!) yields the asymptotic series, with the k-th correction coefficient a_k = B_{2k}/(2k(2k−1)n^k) involving Bernoulli numbers B_{2k}. Leonhard Euler's contributions to the Maclaurin-Euler formula (1730s) provided the systematic tool for deriving these coefficients. In the 20th century, the Stirling series was understood as the asymptotic expansion of the log-Gamma function: log Γ(z) ~ (z−1/2)log(z) − z + (1/2)log(2π) + Σ B_{2k}/[2k(2k−1)z^{2k-1}]. Mathlib's formalization uses the Wallis product as the entry point for Stirling's formula, making the connection to Bernoulli numbers indirect.",
     "problemStatement": "Formalize the higher-order terms in the Stirling expansion and use them to eliminate the error bound axiom in StirlingFormula.lean.",
     "text": "Formalizes the Stirling series coefficients and the first correction term 1/(12n), showing it implies the axiomatized error bound.",
-    "proofStrategy": "1. Define the Stirling series coefficients from Bernoulli numbers\n2. State the first correction: stirlingSeq(n)/\u221a\u03c0 = 1 + 1/(12n) + O(1/n\u00b2)\n3. Derive the error bound from the first correction\n4. The first correction proof requires Euler-Maclaurin or Wallis product analysis",
+    "proofStrategy": "1. Define the Stirling series coefficients from Bernoulli numbers\n2. State the first correction: stirlingSeq(n)/√π = 1 + 1/(12n) + O(1/n²)\n3. Derive the error bound from the first correction\n4. The first correction proof requires Euler-Maclaurin or Wallis product analysis",
     "keyInsights": [
-      "The error bound proof (error_bound_from_correction) is fully proved without the first correction: assuming the correction as a hypothesis, it reduces to (11n \u2212 12)/(12n\u00b2) \u2265 0 for n \u2265 2, a purely algebraic fact closed by ring + nlinarith",
-      "The first correction proof (sorry) is hard because Mathlib defines stirlingSeq via the Wallis product, not via Euler-Maclaurin \u2014 connecting the Wallis convergence rate to Bernoulli number coefficients requires non-trivial analysis not currently in Mathlib",
-      "The Bernoulli number formula a_k = B_{2k}/(2k(2k\u22121)) gives a_1 = 1/12 from B_2 = 1/6 \u2014 this connection to Bernoulli numbers explains why the sign of the third term is negative (B_4 = \u22121/30) but a_2 is positive (higher-order polynomial in B_4 > 0)",
-      "The file splits into two tiers: the 'hard' theorems with sorry (stirling_first_correction, stirling_two_term_expansion) and the 'easy' theorem (error_bound_from_correction) that is fully proved given the correction as a hypothesis \u2014 a useful proof-by-assuming pattern",
-      "The practical accuracy of the 1/(12n) correction is remarkable: for n \u2265 2 the relative error is < 1/n\u00b2, and for n = 10 the correction gives 4 correct decimal digits of n!/[\u221a(2\u03c0n)(n/e)^n]"
+      "The error bound proof (error_bound_from_correction) is fully proved without the first correction: assuming the correction as a hypothesis, it reduces to (11n − 12)/(12n²) ≥ 0 for n ≥ 2, a purely algebraic fact closed by ring + nlinarith",
+      "The first correction proof (sorry) is hard because Mathlib defines stirlingSeq via the Wallis product, not via Euler-Maclaurin — connecting the Wallis convergence rate to Bernoulli number coefficients requires non-trivial analysis not currently in Mathlib",
+      "The Bernoulli number formula a_k = B_{2k}/(2k(2k−1)) gives a_1 = 1/12 from B_2 = 1/6 — this connection to Bernoulli numbers explains why the sign of the third term is negative (B_4 = −1/30) but a_2 is positive (higher-order polynomial in B_4 > 0)",
+      "The file splits into two tiers: the 'hard' theorems with sorry (stirling_first_correction, stirling_two_term_expansion) and the 'easy' theorem (error_bound_from_correction) that is fully proved given the correction as a hypothesis — a useful proof-by-assuming pattern",
+      "The practical accuracy of the 1/(12n) correction is remarkable: for n ≥ 2 the relative error is < 1/n², and for n = 10 the correction gives 4 correct decimal digits of n!/[√(2πn)(n/e)^n]"
     ]
   },
   "sections": [
@@ -87,7 +87,7 @@
       "title": "Part IV: Error Bound (Axiom Replacement)",
       "startLine": 111,
       "endLine": 145,
-      "summary": "Shows first correction implies the axiomatized error bound. Fully proved (0 sorries). Key step: (11n \u2212 12)/(12n\u00b2) \u2265 0 for n \u2265 2.",
+      "summary": "Shows first correction implies the axiomatized error bound. Fully proved (0 sorries). Key step: (11n − 12)/(12n²) ≥ 0 for n ≥ 2.",
       "mathContext": "$\\frac{\\text{stirlingSeq}(n)}{\\sqrt{\\pi}} - 1 \\leq \\frac{1}{n}$ for $n \\geq 2$ via $\\frac{1}{n} - \\frac{1}{n^2} - \\frac{1}{12n} = \\frac{11n-12}{12n^2} \\geq 0$"
     },
     {
@@ -113,7 +113,7 @@
   ],
   "conclusion": {
     "summary": "States the first correction term in Stirling's expansion and shows it implies the axiomatized error bound. The correction proof requires Euler-Maclaurin or Wallis product analysis.",
-    "implications": "Completing the first correction proof would eliminate the axiom stirling_error_bound_ge_2 from StirlingFormula.lean, making it fully verified (0 axioms, 0 sorries). The formalization also provides a template for higher-order corrections: the same Euler-Maclaurin approach that proves the 1/(12n) term would yield 1/(288n\u00b2) and the negative third term \u2212139/(51840n\u00b3), giving successively tighter bounds. In probability theory, the first correction is essential for precise approximations of binomial coefficients via the local CLT and for bounding errors in Poisson approximation. The Stirling series (being asymptotic but divergent) is a classical example of an asymptotic expansion with Borel summability properties, connecting to the broader theory of divergent series.",
+    "implications": "Completing the first correction proof would eliminate the axiom stirling_error_bound_ge_2 from StirlingFormula.lean, making it fully verified (0 axioms, 0 sorries). The formalization also provides a template for higher-order corrections: the same Euler-Maclaurin approach that proves the 1/(12n) term would yield 1/(288n²) and the negative third term −139/(51840n³), giving successively tighter bounds. In probability theory, the first correction is essential for precise approximations of binomial coefficients via the local CLT and for bounding errors in Poisson approximation. The Stirling series (being asymptotic but divergent) is a classical example of an asymptotic expansion with Borel summability properties, connecting to the broader theory of divergent series.",
     "openQuestions": [
       "Prove the first correction from Euler-Maclaurin or Wallis product analysis",
       "Formalize the full asymptotic series with arbitrary number of terms",
@@ -138,7 +138,7 @@
     "theoremCount": 8,
     "definitionCount": 2,
     "path": "Proofs/StirlingExpansion.lean",
-    "sorries": 1
+    "sorries": 3
   },
-  "sorries": 1
+  "sorries": 3
 }

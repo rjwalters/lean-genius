@@ -15,7 +15,7 @@
       "advanced"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 2,
     "mathlibDependencies": [
       {
         "theorem": "ContractingWith.fixedPoint",
@@ -245,7 +245,7 @@
       "Filter"
     ],
     "path": "Proofs/SchauderFixedPoint.lean",
-    "sorries": 0
+    "sorries": 2
   },
   "mainTheorems": [
     {
@@ -255,5 +255,5 @@
       "leanType": "Convex K -> IsCompact K -> Continuous f -> maps_to f K K -> exists x in K, f x = x"
     }
   ],
-  "sorries": 0
+  "sorries": 2
 }

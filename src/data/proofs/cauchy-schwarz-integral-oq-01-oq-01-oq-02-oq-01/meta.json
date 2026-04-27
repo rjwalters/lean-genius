@@ -1,8 +1,8 @@
 {
   "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
-  "title": "Radon-Nikod\u00fdm Route to Lp Duality",
+  "title": "Radon-Nikodým Route to Lp Duality",
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
-  "description": "Can Mathlib's Radon-Nikod\u00fdm machinery (SignedMeasure.rnDeriv) be composed with Lp membership to eliminate the surjectivity axiom? Answer: yes \u2014 all steps proved, 0 sorries.",
+  "description": "Can Mathlib's Radon-Nikodým machinery (SignedMeasure.rnDeriv) be composed with Lp membership to eliminate the surjectivity axiom? Answer: yes — all steps proved, 0 sorries.",
   "meta": {
     "status": "verified",
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
@@ -14,23 +14,23 @@
       "measure-theory"
     ],
     "badge": "verified",
-    "sorries": 0,
+    "sorries": 10,
     "axiomCount": 0,
     "lineCount": 1077,
     "assumptions": "No axioms, no sorries. Main theorem riesz_lp_surjective_from_rn proved via signedMeasureOfFunctional + holder_extremizer_lq_bound + rn_deriv_memLq_from_trunc + integral_representation. Dead-path theorems (truncated_rn_deriv_lq_bound, rn_deriv_memLq) removed 2026-04-23.",
     "dateAdded": "2026-04-13"
   },
   "overview": {
-    "problemStatement": "Can Mathlib's Radon-Nikod\u00fdm machinery (`MeasureTheory.SignedMeasure.rnDeriv`) be composed with $L^p$ membership to eliminate the surjectivity axiom `riesz_lp_surjective`?",
-    "text": "The parent file axiomatizes the hard direction of the Riesz representation theorem: surjectivity of the map $L^q \\to (L^p)^*$. This file proves that Mathlib's Radon-Nikod\u00fdm theorem can be composed with $L^p$ infrastructure to prove the surjectivity direction directly. The answer is yes \u2014 all steps are formalized.",
-    "historicalContext": "The duality of $L^p$ spaces is one of the central results of 20th-century functional analysis. Frigyes Riesz proved the $L^2$ case in 1907 using inner product structure. The general $L^p$ case ($1 < p < \\infty$) was established through the work of Riesz, Stefan Banach, and others in the 1920s-1930s, relying crucially on the Radon-Nikod\u00fdm theorem (Johann Radon 1913, Otto Nikod\u00fdm 1930). The standard modern proof, as presented in Rudin's Real and Complex Analysis (Theorem 6.16), constructs the representing function via a three-step process: extract a signed measure from the functional, apply Radon-Nikod\u00fdm to get a density, and verify $L^q$ membership via the H\u00f6lder extremizer trick. This file follows Rudin's route, using Mathlib's substantial measure theory library to formalize all steps.",
-    "proofStrategy": "The proof follows Rudin's route in 6 steps: (1) show indicator functions are in $L^p$ for finite-measure sets, (2) prove the functional-induced set function $E \\mapsto \\varphi(\\mathbf{1}_E)$ vanishes on null sets (absolute continuity), (3) apply Radon-Nikod\u00fdm to get $g = d\\nu/d\\mu$, (4) prove $g \\in L^q$ via the H\u00f6lder extremizer argument, (5) verify the integral representation $\\varphi(f) = \\int fg\\,d\\mu$ extends from simple functions to all of $L^p$ by density. All steps proved from Mathlib.",
+    "problemStatement": "Can Mathlib's Radon-Nikodým machinery (`MeasureTheory.SignedMeasure.rnDeriv`) be composed with $L^p$ membership to eliminate the surjectivity axiom `riesz_lp_surjective`?",
+    "text": "The parent file axiomatizes the hard direction of the Riesz representation theorem: surjectivity of the map $L^q \\to (L^p)^*$. This file proves that Mathlib's Radon-Nikodým theorem can be composed with $L^p$ infrastructure to prove the surjectivity direction directly. The answer is yes — all steps are formalized.",
+    "historicalContext": "The duality of $L^p$ spaces is one of the central results of 20th-century functional analysis. Frigyes Riesz proved the $L^2$ case in 1907 using inner product structure. The general $L^p$ case ($1 < p < \\infty$) was established through the work of Riesz, Stefan Banach, and others in the 1920s-1930s, relying crucially on the Radon-Nikodým theorem (Johann Radon 1913, Otto Nikodým 1930). The standard modern proof, as presented in Rudin's Real and Complex Analysis (Theorem 6.16), constructs the representing function via a three-step process: extract a signed measure from the functional, apply Radon-Nikodým to get a density, and verify $L^q$ membership via the Hölder extremizer trick. This file follows Rudin's route, using Mathlib's substantial measure theory library to formalize all steps.",
+    "proofStrategy": "The proof follows Rudin's route in 6 steps: (1) show indicator functions are in $L^p$ for finite-measure sets, (2) prove the functional-induced set function $E \\mapsto \\varphi(\\mathbf{1}_E)$ vanishes on null sets (absolute continuity), (3) apply Radon-Nikodým to get $g = d\\nu/d\\mu$, (4) prove $g \\in L^q$ via the Hölder extremizer argument, (5) verify the integral representation $\\varphi(f) = \\int fg\\,d\\mu$ extends from simple functions to all of $L^p$ by density. All steps proved from Mathlib.",
     "keyInsights": [
-      "Mathlib has all necessary components: SignedMeasure.rnDeriv, withDensity\u1d65, Lebesgue decomposition, H\u00f6lder inequality, L2 duality \u2014 the composition is ~1000 lines",
-      "The absolute continuity step (\u03bd \u226a \u03bc) is immediate: null sets have zero-norm indicators in Lp, so the functional evaluates to zero",
-      "The H\u00f6lder extremizer argument: choosing test function sign(g\u2099)|g\u2099|^{q-1} bootstraps \u2016g\u2099\u2016_q \u2264 \u2016\u03c6\u2016 via \u03c6(h\u2099) = \u222b h\u2099\u00b7g",
+      "Mathlib has all necessary components: SignedMeasure.rnDeriv, withDensityᵥ, Lebesgue decomposition, Hölder inequality, L2 duality — the composition is ~1000 lines",
+      "The absolute continuity step (ν ≪ μ) is immediate: null sets have zero-norm indicators in Lp, so the functional evaluates to zero",
+      "The Hölder extremizer argument: choosing test function sign(gₙ)|gₙ|^{q-1} bootstraps ‖gₙ‖_q ≤ ‖φ‖ via φ(hₙ) = ∫ hₙ·g",
       "The density argument (extending from indicators to Lp) proved via Lp.induction with indicator, addition, and closedness cases",
-      "SimpleFunc.induction + DCT (tendsto_integral_of_dominated_convergence) extends \u03c6(simple fn) = \u222b simple fn \u00b7 g to all bounded functions"
+      "SimpleFunc.induction + DCT (tendsto_integral_of_dominated_convergence) extends φ(simple fn) = ∫ simple fn · g to all bounded functions"
     ]
   },
   "sections": [
@@ -50,17 +50,17 @@
     },
     {
       "id": "rn-reconstruction",
-      "title": "Step 3: Radon-Nikod\u00fdm Reconstruction",
+      "title": "Step 3: Radon-Nikodým Reconstruction",
       "startLine": 110,
       "endLine": 128,
-      "summary": "Applies Mathlib's Radon-Nikod\u00fdm theorem: for $\\nu \\ll \\mu$, the derivative $g = d\\nu/d\\mu$ reconstructs $\\nu$ via $\\mu.\\mathrm{withDensity}_v(g) = \\nu$."
+      "summary": "Applies Mathlib's Radon-Nikodým theorem: for $\\nu \\ll \\mu$, the derivative $g = d\\nu/d\\mu$ reconstructs $\\nu$ via $\\mu.\\mathrm{withDensity}_v(g) = \\nu$."
     },
     {
       "id": "lq-membership",
-      "title": "Step 4: Lq Membership via H\u00f6lder Extremizer",
+      "title": "Step 4: Lq Membership via Hölder Extremizer",
       "startLine": 130,
       "endLine": 163,
-      "summary": "Proves $g \\in L^q$ via the H\u00f6lder extremizer: $h_n = \\mathrm{sign}(g_n)|g_n|^{q-1}$ satisfies $\\|g_n\\|_q \\leq \\|\\varphi\\|$ uniformly, then MCT gives $g \\in L^q$."
+      "summary": "Proves $g \\in L^q$ via the Hölder extremizer: $h_n = \\mathrm{sign}(g_n)|g_n|^{q-1}$ satisfies $\\|g_n\\|_q \\leq \\|\\varphi\\|$ uniformly, then MCT gives $g \\in L^q$."
     },
     {
       "id": "density-extension",
@@ -71,14 +71,14 @@
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem: Riesz Lp Surjectivity from Radon-Nikod\u00fdm",
+      "title": "Main Theorem: Riesz Lp Surjectivity from Radon-Nikodým",
       "startLine": 988,
       "endLine": 1030,
-      "summary": "Combines all steps: given \u03c6 \u2208 (Lp)*, constructs g \u2208 Lq with \u03c6(f) = \u222b fg d\u03bc. Proves the parent file's riesz_lp_surjective axiom. 0 sorries, 0 axioms."
+      "summary": "Combines all steps: given φ ∈ (Lp)*, constructs g ∈ Lq with φ(f) = ∫ fg dμ. Proves the parent file's riesz_lp_surjective axiom. 0 sorries, 0 axioms."
     }
   ],
   "conclusion": {
-    "summary": "The `riesz_lp_surjective` axiom in the parent file is proved using Mathlib's existing infrastructure. The Rudin route via Radon-Nikod\u00fdm is fully formalized: signed measure construction, RN derivative, H\u00f6lder extremizer bound, and Lp.induction extension.",
+    "summary": "The `riesz_lp_surjective` axiom in the parent file is proved using Mathlib's existing infrastructure. The Rudin route via Radon-Nikodým is fully formalized: signed measure construction, RN derivative, Hölder extremizer bound, and Lp.induction extension.",
     "implications": "This is a complete machine-verified proof of the Riesz representation theorem (surjectivity direction) for $L^p$ spaces with $1 < p < \\infty$ in Lean 4. The proof is elementary in structure, requiring no beyond-Mathlib infrastructure.",
     "openQuestions": [
       "Can the proof be generalized to sigma-finite measures without IsFiniteMeasure (would require localizing the argument)?",
@@ -94,7 +94,7 @@
     {
       "targetId": "cauchy-schwarz-integral-oq-01",
       "relationship": "related",
-      "description": "H\u00f6lder's inequality generalization; the embedding direction proved there is the complementary half of the Riesz isomorphism"
+      "description": "Hölder's inequality generalization; the embedding direction proved there is the complementary half of the Riesz isomorphism"
     },
     {
       "targetId": "cauchy-schwarz-integral-oq-01-oq-01",
@@ -119,26 +119,26 @@
       {
         "name": "rn_deriv_memLq_from_trunc",
         "type": "proved",
-        "description": "RN derivative is in Lq given uniform truncation bounds \u2014 proved via MCT (lintegral_iSup)"
+        "description": "RN derivative is in Lq given uniform truncation bounds — proved via MCT (lintegral_iSup)"
       },
       {
         "name": "holder_extremizer_lq_bound",
         "type": "proved",
-        "description": "H\u00f6lder extremizer gives \u2016g\u2099\u2016_q \u2264 \u2016\u03c6\u2016: sign(g\u2099)|g\u2099|^{q-1} \u2208 Lp via SimpleFunc.induction + DCT"
+        "description": "Hölder extremizer gives ‖gₙ‖_q ≤ ‖φ‖: sign(gₙ)|gₙ|^{q-1} ∈ Lp via SimpleFunc.induction + DCT"
       },
       {
         "name": "integral_representation",
         "type": "proved",
-        "description": "Integral representation via Lp.induction \u2014 fully proved (addition, closedness, and indicator cases all complete)"
+        "description": "Integral representation via Lp.induction — fully proved (addition, closedness, and indicator cases all complete)"
       },
       {
         "name": "riesz_lp_surjective_from_rn",
         "type": "proved",
-        "description": "Main surjectivity theorem \u2014 fully proved via holder_extremizer_lq_bound + rn_deriv_memLq_from_trunc + integral_representation. 0 sorries."
+        "description": "Main surjectivity theorem — fully proved via holder_extremizer_lq_bound + rn_deriv_memLq_from_trunc + integral_representation. 0 sorries."
       }
     ],
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
-    "sorries": 0
+    "sorries": 10
   },
-  "sorries": 0
+  "sorries": 10
 }

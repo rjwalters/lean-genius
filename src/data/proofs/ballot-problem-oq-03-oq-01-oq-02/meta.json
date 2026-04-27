@@ -19,7 +19,7 @@
       "representation-theory"
     ],
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 11,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
     "assumptions": "Three open sorries: (1) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (2) lgv_det_factors_as_hook_quotient (det factorization identity), (3) hook_walk_identity ≥11-row AND ≥11-col non-gHookYD case (GNW probabilistic proof; at-most-2-row, gHookYD, ≤2-col, exactly-3-row through exactly-10-row ALL proved; ≤10-col via transpose duality). hook_length_formula is proved via alias. hook_length_formula_general is proved modulo hook_walk_identity via corner induction.",
@@ -91,9 +91,9 @@
       "LGV"
     ],
     "namespace": "HookLengthFormula",
-    "lineCount": 16029,
+    "lineCount": 16248,
     "axiomCount": 0,
-    "sorries": 4,
+    "sorries": 11,
     "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
     "theoremCount": 521,
     "definitionCount": 14
@@ -202,5 +202,5 @@
       "mathContext": "$h(\\mu,i,j) = h(\\mu^\\top,j,i)$ (arm↔leg under transpose). For N-row shapes: hook walk identity $\\sum_c \\text{hookProd}(\\mu)/\\text{hookProd}(\\mu\\setminus c) = \\sum_i a_i$ is a polynomial identity in $a_1,\\ldots,a_N$, verifiable by `ring` after computing each hook length as a linear combination of $a_i$."
     }
   ],
-  "sorries": 4
+  "sorries": 11
 }

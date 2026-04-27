@@ -2,9 +2,9 @@
   "id": "erdos-402",
   "title": "Graham's GCD Conjecture",
   "slug": "erdos-402",
-  "description": "For any finite set A \u2282 \u2115, there exist a, b \u2208 A such that gcd(a, b) \u2264 a/|A|. Graham's conjecture was proved by Balasubramanian and Soundararajan in 1996.",
+  "description": "For any finite set A ⊂ ℕ, there exist a, b ∈ A such that gcd(a, b) ≤ a/|A|. Graham's conjecture was proved by Balasubramanian and Soundararajan in 1996.",
   "meta": {
-    "author": "Graham (1970), solved by Balasubramanian\u2013Soundararajan (1996)",
+    "author": "Graham (1970), solved by Balasubramanian–Soundararajan (1996)",
     "sourceUrl": "https://erdosproblems.com/402",
     "date": "1970",
     "status": "formalized",
@@ -17,7 +17,7 @@
       "solved"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 3,
     "erdosNumber": 402,
     "erdosUrl": "https://erdosproblems.com/402",
     "erdosProblemStatus": "solved",
@@ -56,8 +56,8 @@
       "Aristotle: {1,2,4} counterexample falsifying equality characterization",
       "dvd_lt_imp_le_half: proper divisors bounded by half",
       "erdos_402_pair: conjecture proved for two-element sets",
-      "max_ge_card_of_pos: max of positive Finset \u2265 cardinality",
-      "erdos_402_contains_one: conjecture proved when 1 \u2208 A"
+      "max_ge_card_of_pos: max of positive Finset ≥ cardinality",
+      "erdos_402_contains_one: conjecture proved when 1 ∈ A"
     ],
     "axiomCount": 0,
     "lineCount": 693,
@@ -65,15 +65,15 @@
   },
   "overview": {
     "historicalContext": "Graham posed this conjecture in 1970 as an **extremal problem** on GCD structure in finite sets. The conjecture attracted attention because it connects the multiplicative structure (GCD) of a set to its combinatorial size. **Szegedy** (1986) proved the conjecture for sets larger than an effective constant $N_0$, using a probabilistic argument on prime factorizations. **Zaharescu** (1987) obtained an independent proof for large sets via analytic methods. **Balasubramanian and Soundararajan** (1996) completed the proof for all finite sets by a refined sieve argument, handling the difficult small-set cases. Graham also conjectured that equality $\\gcd(a,b) = \\lfloor a/|A| \\rfloor$ for the optimal pair occurs only for three families of primitive sets, but Aristotle's automated proof search discovered that $\\{1, 2, 4\\}$ is a counterexample to this characterization.",
-    "problemStatement": "For any finite set A \u2282 \u2115 with positive elements, prove there exist a, b \u2208 A such that gcd(a, b) \u2264 a/|A|.",
-    "text": "For any finite set A \u2282 \u2115, there exist a, b \u2208 A such that gcd(a, b) \u2264 a/|A|. Graham's conjecture was proved by Balasubramanian and Soundararajan in 1996.",
-    "proofStrategy": "We formalize the main statement and prove special cases: singleton sets, the Graham special set {2,3,4,6}, and derive a key lemma that coprime pairs suffice when |A| \u2264 a.",
+    "problemStatement": "For any finite set A ⊂ ℕ with positive elements, prove there exist a, b ∈ A such that gcd(a, b) ≤ a/|A|.",
+    "text": "For any finite set A ⊂ ℕ, there exist a, b ∈ A such that gcd(a, b) ≤ a/|A|. Graham's conjecture was proved by Balasubramanian and Soundararajan in 1996.",
+    "proofStrategy": "We formalize the main statement and prove special cases: singleton sets, the Graham special set {2,3,4,6}, and derive a key lemma that coprime pairs suffice when |A| ≤ a.",
     "keyInsights": [
-      "**GCD bound**: $\\forall A \\subseteq \\mathbb{N}^+$ finite, $\\exists a,b \\in A: \\gcd(a,b) \\le \\lfloor a/|A| \\rfloor$ \u2014 proved by Balasubramanian\u2013Soundararajan (1996)",
-      "**Coprime reduction**: if $\\gcd(a,b) = 1$ and $|A| \\le a$, the bound holds immediately \u2014 finding coprime pairs in large sets suffices",
+      "**GCD bound**: $\\forall A \\subseteq \\mathbb{N}^+$ finite, $\\exists a,b \\in A: \\gcd(a,b) \\le \\lfloor a/|A| \\rfloor$ — proved by Balasubramanian–Soundararajan (1996)",
+      "**Coprime reduction**: if $\\gcd(a,b) = 1$ and $|A| \\le a$, the bound holds immediately — finding coprime pairs in large sets suffices",
       "**Equality families**: $\\{1,\\ldots,n\\}$, $\\{L/1,\\ldots,L/n\\}$, and $\\{2,3,4,6\\}$ are primitive sets achieving equality",
-      "**Counterexample discovery**: Aristotle proved that $\\{1,2,4\\}$ satisfies the equality condition but is not a Graham equality case \u2014 the characterization is incomplete",
-      "**Equivalent rational form**: $\\exists a,b \\in A: \\gcd(a,b)/a \\le 1/|A|$ \u2014 cleaner formulation avoiding the floor function, proved by Aristotle from the main conjecture"
+      "**Counterexample discovery**: Aristotle proved that $\\{1,2,4\\}$ satisfies the equality condition but is not a Graham equality case — the characterization is incomplete",
+      "**Equivalent rational form**: $\\exists a,b \\in A: \\gcd(a,b)/a \\le 1/|A|$ — cleaner formulation avoiding the floor function, proved by Aristotle from the main conjecture"
     ],
     "prerequisites": [
       "GCD and Nat.gcd from Mathlib",
@@ -112,7 +112,7 @@
       "title": "The {2, 3, 4, 6} Example",
       "startLine": 83,
       "endLine": 103,
-      "summary": "**GrahamSpecialSet** $= \\{2,3,4,6\\}$ with $|A| = 4$. Verified: $\\gcd(4,3) = 1 = \\lfloor 4/4 \\rfloor$ \u2014 sporadic equality case.",
+      "summary": "**GrahamSpecialSet** $= \\{2,3,4,6\\}$ with $|A| = 4$. Verified: $\\gcd(4,3) = 1 = \\lfloor 4/4 \\rfloor$ — sporadic equality case.",
       "mathContext": "$A = \\{2,3,4,6\\}$: $\\gcd(4,3) = 1 = \\lfloor 4/4 \\rfloor$. Equality case: one of three primitive families achieving $\\gcd(a,b) = \\lfloor a/|A| \\rfloor$."
     },
     {
@@ -120,7 +120,7 @@
       "title": "Graham's Equality Characterization",
       "startLine": 104,
       "endLine": 136,
-      "summary": "**HasNoCommonDivisor** ($\\gcd(A) = 1$) and **IsGrahamEqualityCase**: three primitive families. Aristotle discovered $\\{1,2,4\\}$ counterexample \u2014 characterization incomplete.",
+      "summary": "**HasNoCommonDivisor** ($\\gcd(A) = 1$) and **IsGrahamEqualityCase**: three primitive families. Aristotle discovered $\\{1,2,4\\}$ counterexample — characterization incomplete.",
       "mathContext": "Primitive equality cases: $\\{1,\\ldots,n\\}$, $\\{\\text{lcm}(1,\\ldots,n)/1, \\ldots, \\text{lcm}(1,\\ldots,n)/n\\}$, or $\\{2,3,4,6\\}$. A set is primitive if $\\gcd(A) = 1$."
     },
     {
@@ -133,7 +133,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Graham's GCD Conjecture (Erd\u0151s #402). For any finite set A of positive integers, there exist a, b in A with gcd(a,b) \u2264 a/|A|. The proof was completed by Balasubramanian and Soundararajan in 1996. Notably, Aristotle's automated proof search discovered a counterexample to the equality characterization.",
+    "summary": "We formalize Graham's GCD Conjecture (Erdős #402). For any finite set A of positive integers, there exist a, b in A with gcd(a,b) ≤ a/|A|. The proof was completed by Balasubramanian and Soundararajan in 1996. Notably, Aristotle's automated proof search discovered a counterexample to the equality characterization.",
     "implications": "This result connects combinatorial properties of finite sets to the structure of their greatest common divisors, with applications in additive combinatorics and multiplicative number theory.",
     "openQuestions": [
       "What is the correct characterization of equality cases? ({1,2,4} is missing from the current formulation)",
@@ -144,18 +144,18 @@
   },
   "crossReferences": [
     {
-      "relationship": "Problem 403 concerns related GCD and divisibility questions in finite sets, sharing the Erd\u0151s\u2013Graham framework",
+      "relationship": "Problem 403 concerns related GCD and divisibility questions in finite sets, sharing the Erdős–Graham framework",
       "targetId": "erdos-403"
     },
     {
       "targetId": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient function $\\varphi(n)$ counts integers coprime to $n$, and GCD computations are central to both problems. Graham's conjecture bounds $\\gcd(a,b)$ relative to set size, while $\\varphi$ measures coprimality density \u2014 both probe the multiplicative structure of finite sets"
+      "description": "Euler's totient function $\\varphi(n)$ counts integers coprime to $n$, and GCD computations are central to both problems. Graham's conjecture bounds $\\gcd(a,b)$ relative to set size, while $\\varphi$ measures coprimality density — both probe the multiplicative structure of finite sets"
     },
     {
       "targetId": "gcd-algorithm",
       "relationship": "foundational",
-      "description": "The Euclidean algorithm for GCD is the computational foundation for Graham's conjecture. Every instance of the conjecture requires evaluating $\\gcd(a,b)$ for pairs in a finite set, and the algorithmic properties of GCD underpin both verification and the sieve arguments in Balasubramanian\u2013Soundararajan's proof"
+      "description": "The Euclidean algorithm for GCD is the computational foundation for Graham's conjecture. Every instance of the conjecture requires evaluating $\\gcd(a,b)$ for pairs in a finite set, and the algorithmic properties of GCD underpin both verification and the sieve arguments in Balasubramanian–Soundararajan's proof"
     }
   ],
   "leanFile": {
@@ -182,7 +182,7 @@
     "theoremCount": 25,
     "definitionCount": 5,
     "path": "Proofs/Erdos402Problem.lean",
-    "sorries": 1
+    "sorries": 3
   },
   "references": [
     {
@@ -200,9 +200,9 @@
     {
       "title": "On a conjecture of R. L. Graham",
       "year": "1996",
-      "authors": "Balasubramanian\u2013Soundararajan 1996",
+      "authors": "Balasubramanian–Soundararajan 1996",
       "note": "Complete proof of the conjecture for all finite sets of positive integers"
     }
   ],
-  "sorries": 1
+  "sorries": 3
 }

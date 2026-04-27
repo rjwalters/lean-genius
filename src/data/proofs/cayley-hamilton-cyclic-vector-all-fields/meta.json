@@ -19,7 +19,7 @@
       "minimal-polynomial"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 2,
     "axiomCount": 1,
     "lineCount": 201,
     "assumptions": "1 axiom: nonderogatory_similar_companion (RCF similarity theorem — every nonderogatory matrix is similar to its companion matrix). Requires the structure theorem for f.g. modules over K[X], not yet in Mathlib 4. All other lemmas are fully proved.",
@@ -125,14 +125,17 @@
       "Proofs.CayleyHamiltonReductionOQ02OQ01",
       "Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04"
     ],
-    "opens": ["Matrix", "Polynomial"],
+    "opens": [
+      "Matrix",
+      "Polynomial"
+    ],
     "namespace": "CayleyHamiltonCyclicVectorAllFields",
     "lineCount": 201,
     "axiomCount": 1,
     "theoremCount": 3,
     "definitionCount": 2,
     "path": "Proofs/CayleyHamiltonCyclicVectorAllFields.lean",
-    "sorries": 0
+    "sorries": 2
   },
   "crossReferences": [
     {
@@ -178,5 +181,5 @@
       "description": "Polynomial annihilator characterization: cyclic iff not killed by any nonzero polynomial of degree < n."
     }
   ],
-  "sorries": 0
+  "sorries": 2
 }
