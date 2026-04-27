@@ -16,20 +16,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "ORIENT",
     "since": "2026-03-30T13:07:48.618Z",
     "iteration": 1,
-    "focus": "Proof strategy documented, ready for implementation",
+    "focus": "Implementation plan documented; next session begins coding the PID wrapper",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Run docker build of parent file, then create BezoutIdentityOQ04OQ01OQ01.lean skeleton",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved snf_1x2_invariant_factor — the 1×2 SNF invariant factor is associated to gcd(a,b). File now has 0 sorries, 2 axioms.",
+    "progressSummary": "PLAN COMPLETE 2026-04-27: Detailed implementation plan in knowledge.md for PID generalization. Identified axiom-reduction opportunity (snf_exists provable via Submodule.smithNormalForm). Wrapper-file approach (A) recommended over direct-Mathlib approach (B) for closer alignment with the existing ℤ proof. No Lean code yet — next session implements.",
     "builtItems": [
       "Proved snf_1x2_invariant_factor (BezoutIdentityOQ04OQ01.lean)"
     ],
@@ -44,14 +44,18 @@
       "Part 1 (d|gcd): d|a and d|b since a = d*(u*V00), b = d*(u*V01), then Int.dvd_gcd",
       "Part 2 (gcd|d): det(V)=+-1 gives a*V11 - b*V10 = u*d*det(V) = +-d, then gcd|a and gcd|b gives gcd|d",
       "Key Lean tactics: congr_fun (congr_fun hsnf 0) j for entry extraction, Matrix.mul_apply + Fin.sum for expansion",
-      "Proof uses entry extraction from A=UDV via congr_fun, det_fin_one/two, and Fin.sum_univ simplification"
+      "Proof uses entry extraction from A=UDV via congr_fun, det_fin_one/two, and Fin.sum_univ simplification",
+      "2026-04-27 (researcher-4): SNF existence axiom is reducible over PIDs — Submodule.smithNormalForm in Mathlib.LinearAlgebra.FreeModule.PID provides this constructively. Restricting to ℤ recovers snf_exists as a specialization, eliminating one of two axioms in the parent file.",
+      "2026-04-27: 1×2 proof structure generalizes cleanly: Int.gcd_dvd_left ↦ GCDMonoid.gcd_dvd_left; det V = ±1 ↦ IsUnit (det V) collapses 4-way case split to single IsUnit argument; Matrix.det_fin_two and congr_fun entry extraction are typeclass-free.",
+      "2026-04-27: snf_solvability_criterion likely stays axiomatized over PIDs — full derivation needs quotient-module + Submodule.smithNormalForm theory (substantial separate development).",
+      "2026-04-27: Recommended approach: wrapper file BezoutIdentityOQ04OQ01OQ01.lean parameterized by R [CommRing R] [IsPrincipalIdealRing R] [GCDMonoid R], recovering the ℤ case as R = ℤ specialization."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Implement the matrix entry extraction: congr_fun (congr_fun hsnf 0) j for j=0,1",
-      "Use snf.hD_diag 0 1 (by omega) for D 0 1 = 0",
-      "Use Matrix.det_fin_two for det(V) = V 0 0 * V 1 1 - V 0 1 * V 1 0",
-      "dvd_gcd for Part 1, dvd_sub + dvd_mul for Part 2"
+      "Run ./proofs/scripts/docker-build.sh Proofs.BezoutIdentityOQ04OQ01 to confirm bezout neighborhood is healthy (no Mathlib API drift)",
+      "Create proofs/Proofs/BezoutIdentityOQ04OQ01OQ01.lean skeleton with R [CommRing R] [IsPrincipalIdealRing R] [GCDMonoid R] context",
+      "Port IsUnimodular as IsUnit M.det, SmithNormalForm structure, and snf_1x2_invariant_factor (≈80% mechanical port)",
+      "Document axiom reduction: replace snf_exists axiom with Submodule.smithNormalForm-derived theorem"
     ]
   },
   "tags": [
@@ -92,7 +96,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T13:07:48.618Z",
-  "lastUpdate": "2026-03-30T15:45:00.000Z",
+  "lastUpdate": "2026-04-27T13:10:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
