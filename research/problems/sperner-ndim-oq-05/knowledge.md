@@ -453,6 +453,49 @@ color witness to the exact color forbidden by Sperner.
 
 ---
 
+## Session 2026-04-27 (Session 13) — Audit + state sync
+
+**Mode**: REVISIT (audit-only, no Lean changes)
+**Outcome**: Documented blocked state; surfaced concurrent work on other branches
+
+### What I Did
+
+- Verified current master state of Sperner files:
+  - `SpernerMathlib4.lean` (732 L, 0 sorries, 0 axioms) — Part 1, Mathlib-ready
+  - `SpernerSimplicialInstance.lean` (994 L, 0 sorries, 0 axioms) — Part 2, Mathlib-ready
+  - `SpernerNDim.lean` (669 L, 0 sorries, 0 axioms)
+  - `SpernerGrid.lean` (1782 L, 2 sorries: 1 placeholder for `CellComplex.sperner` + 1 for `boundary_doors_odd`)
+- Audited problem JSON: top-level `phase` was `"ORIENT"`, `iteration: 1` — both stale (12+ sessions on record).
+- Found concurrent active work on other researcher branches that I deliberately did not duplicate:
+  - `feature/researcher-1`: `8ebbf02366a` — imports SpernerMathlib4 in SpernerGrid (2→1 sorry); `3eba151e7b7` — knowledge sync (6→1 sorries reported)
+  - `feature/researcher-7`: `7ba8c40d39f` — proves `vertex_injective` + `finsetToNat_injective`
+- Disk space critically low (~337 MiB free); skipped Docker builds and Lean edits per saved guidance.
+
+### Honest Status Summary
+
+The problem's **primary scope** ("Contribute `SpernerTriangulation` and `sperner_parity` to Mathlib") is **mathematically complete on master**: both Part 1 and Part 2 files have 0 sorries, 0 axioms, and acceptable heartbeat budgets. What remains is split:
+
+- **(External / user action)** Refresh Mathlib fork, open PR to mathlib4, comment on mathlib4#25231 pointing to Part 2.
+- **(Research follow-up, separate thread)** `boundary_doors_odd` in `SpernerGrid.lean` is provably FALSE as currently stated — the fix requires redesigning `GridSimplex`/`gridAdj` with canonical-orientation selection. Researcher-1's unmerged branch is making progress on this (`SpernerFreudenthal` unification, SpernerMathlib4 import) — do not duplicate that effort.
+
+### Recommendation for Future Researchers
+
+If reclaiming this problem: first check `feature/researcher-1` and `feature/researcher-7` for unmerged work. Both have current commits on `SpernerGrid.lean`. The remaining live research target is the `boundary_doors_odd` redesign — but that is logically a sibling problem (concrete grid instance), not the original Mathlib-contribution scope. Consider whether the cleanest move is to spawn a new `sperner-grid-canonical-form-oq-XX` problem and mark this one `completed-blocked-on-user-action`.
+
+### Files Modified
+
+- `research/problems/sperner-ndim-oq-05/knowledge.md` (this entry)
+- `src/data/research/problems/sperner-ndim-oq-05.json` (phase/iteration/progressSummary sync)
+
+### Next Steps
+
+1. **[USER ACTION]** Refresh `rjwalters/mathlib4:sperner-abstract-parity` and open PR to mathlib4.
+2. **[USER ACTION]** Comment on mathlib4#25231 pointing Dillies to `SpernerSimplicialInstance.lean`.
+3. **[Champion / Seeker decision]** Spin off `boundary_doors_odd` redesign as a sibling problem rather than carrying it under this slug.
+4. **[Future researcher]** Coordinate with `feature/researcher-1` / `feature/researcher-7` before touching `SpernerGrid.lean` to avoid merge conflicts.
+
+---
+
 ## Dead Ends
 
 - `FixedPointFree.lean` (GroupTheory) — about group automorphisms, not Finsets
