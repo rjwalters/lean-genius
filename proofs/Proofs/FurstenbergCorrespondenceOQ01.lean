@@ -754,12 +754,28 @@ theorem limit_invariant_on_cylinder
     (hdef : ∀ k, (μs k : Measure CantorSpace) = cesaroMeasure x (Ns k + 1))
     (S : Set CantorSpace) (hS : MeasurableSet S) (hSclopen : IsClopen S) :
     (μ : Measure CantorSpace) (shift ⁻¹' S) = (μ : Measure CantorSpace) S := by
-  -- Proof sketch (each step uses proved results):
-  -- 1. Portmanteau for clopen S: μs k |S → μ|S  (tendsto_measure_of_isClopen_of_tendsto)
-  -- 2. Portmanteau for clopen shift⁻¹S: μs k |shift⁻¹S → μ|shift⁻¹S
-  -- 3. Telescoping (cesaroMeasure_preimage_le/ge): |μs k|shift⁻¹S - μs k|S| ≤ 1/(Ns k + 1) → 0
-  -- 4. By uniqueness of limits in ℝ≥0: μ|shift⁻¹S = μ|S
-  -- Remaining work: assemble these in ENNReal/NNReal arithmetic (~30 lines)
+  -- Proof structure (drafted session 5, BLOCKED on file-wide Mathlib API drift):
+  --
+  -- set ν := (μ : Measure CantorSpace)
+  -- set νs := fun k => ((μs k) : Measure CantorSpace)
+  -- Step 1 (ENNReal Portmanteau, both directions):
+  --   ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto' hconv
+  --     (frontier = ∅ since clopen, so measure of frontier = 0)
+  --   gives μ_k(S) → μ(S) and μ_k(shift⁻¹S) → μ(shift⁻¹S) in ℝ≥0∞.
+  -- Step 2 (error term → 0):
+  --   ENNReal.tendsto_nat_nhds_top.comp (Ns k + 1 → ∞) ⟹ (Ns k + 1 : ℝ≥0∞) → ⊤
+  --   then ENNReal.continuous_inv at ⊤ gives 0, so (Ns k + 1)⁻¹ → 0.
+  -- Step 3 (algebra at limit, both directions):
+  --   ENNReal.Tendsto.add htend_S herr_zero (Or.inl (measure_ne_top μ S))
+  --   gives μ_k S + (Ns k + 1)⁻¹ → ν S + 0 = ν S.
+  --   Then le_of_tendsto_of_tendsto' applied to:
+  --     hbound: νs k (shift⁻¹S) ≤ νs k S + (Ns k + 1)⁻¹  (cesaroMeasure_preimage_le)
+  --   gives ν (shift⁻¹S) ≤ ν S. Symmetric direction via cesaroMeasure_preimage_ge.
+  -- Step 4: le_antisymm.
+  --
+  -- Cannot fill in this proof until the surrounding file's 35 Mathlib API drift
+  -- errors are repaired (see research/problems/szemeredi-full-oq-01/knowledge.md
+  -- session 5). Adding ~60 unvalidated lines here would mask the real blocker.
   sorry
 
 end ShiftInvariance
