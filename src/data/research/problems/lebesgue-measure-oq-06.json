@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: orbit_ne proved (sorries 2 to 1). Bridge sorry eliminated via inductive ℤ-sqrt2 encoding with correct composition-order reversal.",
+    "progressSummary": "PROGRESS: free_group_paradoxical proved (F₂ is paradoxical under left regular action). Uses cover lemmas + set-level mul_smul. Remains: 1 sorry (banach_tarski main theorem, intentionally axiomatized).",
     "builtItems": [
       "Equidecomposable (G-equidecomposability, with notation ≃ᴳ[G]) — proofs/Proofs/LebesgueMeasureOQ06.lean:43",
       "IsParadoxical — proofs/Proofs/LebesgueMeasureOQ06.lean:81",
@@ -56,7 +56,8 @@
       "evalWord_nonempty_labeledInv: automaton induction (0 sorries) — fixed e2Int_no_inv, base_psi, base_psi_inv, hnocancel proofs :465",
       "getLast!_mem_getLast?: helper lemma (induction, 0 sorries) connecting getLast! to getLast? for nonempty lists :473",
       "applyGen_decode: algebraic lemma — applyGen(g,v) decoded = 3 * M_g(decoded v), 12 cases by fin_cases, closed by nlinarith",
-      "enc_ind: induction on word lists — evalWord l v decodes to 3^(n+|l|) * liftF(mk l.reverse)(p) when decode(v)=3^n*p"
+      "enc_ind: induction on word lists — evalWord l v decodes to 3^(n+|l|) * liftF(mk l.reverse)(p) when decode(v)=3^n*p",
+      "free_group_paradoxical (PROVED): IsParadoxical (FreeGroup (Fin 2)) Set.univ — uses Equidecomposable with 2-piece decomposition, cover lemmas, set-level mul_smul + inv_mul_cancel"
     ],
     "insights": [
       "Banach-Tarski NOT in Mathlib as of 2026-04 — confirmed via search. Available Mathlib pieces: Matrix.orthogonalGroup, FreeGroup, IsometryEquiv, EuclideanSpace.",
@@ -79,7 +80,8 @@
       "labeledInv tracks the SPECIFIC last-generator invariant, which is needed for the no-cancel step in the induction",
       "Automaton section (lines 1-517) is now fully sorry-free. Key fixes: (1) full simp beats simp only + dsimp + norm_num for Zsqrtd projections; (2) refine-split + simp per conjunct works for multi-conjunct goals; (3) custom induction on getLast! vs getLast? avoids missing API; (4) direct application of chain_append junction avoids simp on head?_nil",
       "Composition order mismatch: evalWord l applies letters left-to-right (leftmost=innermost), while liftF(mk l) applies leftmost last. Fix: use l.reverse so evalWord l.reverse encodes liftF(mk l)",
-      "Reversing a reduced word preserves reducedness: the no-cancel condition is symmetric since a.2=!b.2 iff b.2=!a.2"
+      "Reversing a reduced word preserves reducedness: the no-cancel condition is symmetric since a.2=!b.2 iff b.2=!a.2",
+      "MulAction G (Set α) instance exists with open scoped Pointwise — mul_smul, one_smul, inv_mul_cancel work at set level. Key for equidecomposability proofs: g⁻¹ • (g • S) = S via ← mul_smul + inv_mul_cancel + one_smul"
     ],
     "mathlibGaps": [
       "Banach-Tarski theorem itself not in Mathlib (no formalization as of 2026-04)",
@@ -186,8 +188,8 @@
     {
       "path": "Proofs/LebesgueMeasureOQ06.lean",
       "filename": "LebesgueMeasureOQ06.lean",
-      "lineCount": 1429,
-      "theoremCount": 7,
+      "lineCount": 1487,
+      "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 1,

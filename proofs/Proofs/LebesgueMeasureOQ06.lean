@@ -1369,6 +1369,65 @@ private lemma wordStart_disjoint {g₁ g₂ : Fin 2} {b₁ b₂ : Bool}
   simp [WordStart] at h₁ h₂
   exact h (Option.some.inj (h₁.symm.trans h₂))
 
+/-- The free group F₂ is **paradoxical** under its own left regular action.
+    F₂ = W(a) ∪ a·W(a⁻¹) shows F₂ ≃ W(a) ∪ W(a⁻¹), and similarly F₂ ≃ W(b) ∪ W(b⁻¹).
+    Since the four word-start sets are pairwise disjoint, B = W(a) ∪ W(a⁻¹) and
+    C = W(b) ∪ W(b⁻¹) are disjoint subsets of F₂, each equidecomposable with the whole.
+
+    This is the key algebraic ingredient for Banach-Tarski: the paradoxical
+    decomposition lifts from F₂ to SO(3) via the Hausdorff free subgroup. -/
+theorem free_group_paradoxical :
+    IsParadoxical (FreeGroup (Fin 2)) (Set.univ : Set (FreeGroup (Fin 2))) := by
+  -- B = W(a) ∪ W(a⁻¹), C = W(b) ∪ W(b⁻¹)
+  refine ⟨WordStart 0 true ∪ WordStart 0 false,
+          WordStart 1 true ∪ WordStart 1 false,
+          Set.subset_univ _, Set.subset_univ _, ?_, ?_, ?_⟩
+  · -- B ∩ C = ∅: four pairwise disjoint WordStart sets
+    exact Set.disjoint_union_right.mpr
+      ⟨Set.disjoint_union_left.mpr
+        ⟨wordStart_disjoint (by decide), wordStart_disjoint (by decide)⟩,
+       Set.disjoint_union_left.mpr
+        ⟨wordStart_disjoint (by decide), wordStart_disjoint (by decide)⟩⟩
+  · -- F₂ ≃ B via: pieces {W(a), a·W(a⁻¹)}, moves {1, a⁻¹}
+    -- Images: 1·W(a) = W(a), a⁻¹·(a·W(a⁻¹)) = W(a⁻¹)
+    refine ⟨2, ![WordStart 0 true, FreeGroup.of (0 : Fin 2) • WordStart 0 false],
+            ![1, (FreeGroup.of (0 : Fin 2))⁻¹], ?_, ?_, ?_, ?_, ?_⟩
+    · intro i; exact Set.subset_univ _
+    · intro i j hij; fin_cases i <;> fin_cases j <;>
+        simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;>
+        first | exact absurd rfl hij | exact free_group_cover_a_disj
+              | exact free_group_cover_a_disj.symm
+    · -- univ = W(a) ∪ a·W(a⁻¹)
+      simp only [Fin.iUnion_fin_two, Matrix.cons_val_zero, Matrix.cons_val_one,
+                  Matrix.head_cons]
+      exact free_group_cover_a
+    · -- B = W(a) ∪ a⁻¹·(a·W(a⁻¹)) = W(a) ∪ W(a⁻¹)
+      simp only [Fin.iUnion_fin_two, Matrix.cons_val_zero, Matrix.cons_val_one,
+                  Matrix.head_cons, one_smul, ← mul_smul, inv_mul_cancel, one_smul]
+    · intro i j hij; fin_cases i <;> fin_cases j <;>
+        simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+                    one_smul, ← mul_smul, inv_mul_cancel, one_smul] <;>
+        first | exact absurd rfl hij | exact wordStart_disjoint (by decide)
+              | exact (wordStart_disjoint (by decide)).symm
+  · -- F₂ ≃ C via: pieces {W(b), b·W(b⁻¹)}, moves {1, b⁻¹}
+    refine ⟨2, ![WordStart 1 true, FreeGroup.of (1 : Fin 2) • WordStart 1 false],
+            ![1, (FreeGroup.of (1 : Fin 2))⁻¹], ?_, ?_, ?_, ?_, ?_⟩
+    · intro i; exact Set.subset_univ _
+    · intro i j hij; fin_cases i <;> fin_cases j <;>
+        simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;>
+        first | exact absurd rfl hij | exact free_group_cover_b_disj
+              | exact free_group_cover_b_disj.symm
+    · simp only [Fin.iUnion_fin_two, Matrix.cons_val_zero, Matrix.cons_val_one,
+                  Matrix.head_cons]
+      exact free_group_cover_b
+    · simp only [Fin.iUnion_fin_two, Matrix.cons_val_zero, Matrix.cons_val_one,
+                  Matrix.head_cons, one_smul, ← mul_smul, inv_mul_cancel, one_smul]
+    · intro i j hij; fin_cases i <;> fin_cases j <;>
+        simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+                    one_smul, ← mul_smul, inv_mul_cancel, one_smul] <;>
+        first | exact absurd rfl hij | exact wordStart_disjoint (by decide)
+              | exact (wordStart_disjoint (by decide)).symm
+
 /-- The free group of rank 2 is NOT amenable.
     Proof: F₂ = W_a ∪ a·W_ainv (disjoint) gives μ(W_a) + μ(W_ainv) = 1.
     Similarly μ(W_b) + μ(W_binv) = 1. But all four sets are pairwise disjoint
