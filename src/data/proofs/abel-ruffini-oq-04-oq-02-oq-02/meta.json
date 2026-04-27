@@ -89,7 +89,8 @@
       "title": "Documentation and Imports",
       "startLine": 1,
       "endLine": 53,
-      "summary": "Module docstring with classification table, key argument, and references. Imports Mathlib.GroupTheory.Solvable and Mathlib.GroupTheory.SpecificGroups.Alternating. set_option linter flags, open Equiv, and namespace declaration."
+      "summary": "Module docstring with classification table, key argument, and references. Imports Mathlib.GroupTheory.Solvable and Mathlib.GroupTheory.SpecificGroups.Alternating. set_option linter flags, open Equiv, and namespace declaration.",
+      "mathContext": "Dependencies: `IsSolvable`, `solvable_of_ker_le_range`, `Equiv.Perm.not_solvable`, `alternatingGroup`, and `isSolvable_of_comm` from Mathlib's group theory library. Namespace `AbelRuffiniOQ04OQ02OQ02` isolates the file's contributions."
     },
     {
       "id": "small-cases",
@@ -265,6 +266,44 @@
       "year": "2024",
       "venue": "https://github.com/leanprover-community/mathlib4",
       "note": "Provides the infrastructure: `IsSolvable`, `solvable_of_ker_le_range`, `Equiv.Perm.not_solvable`, `alternatingGroup.isSimpleGroup_five`, `isSolvable_of_comm`. The proof relies on Mathlib's symmetric group non-solvability for n \u2265 5 rather than proving it from scratch."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "alternating_solvable_iff",
+      "type": "core",
+      "description": "The full bidirectional classification: $A_n$ is solvable if and only if $n \\leq 4$. Forward direction by contradiction via `an_not_solvable_of_ge_five`; backward direction by `interval_cases n` enumerating $n = 0, 1, 2, 3, 4$.",
+      "leanType": "(n : ℕ) → IsSolvable (alternatingGroup (Fin n)) ↔ n ≤ 4"
+    },
+    {
+      "name": "an_not_solvable_of_ge_five",
+      "type": "key",
+      "description": "$A_n$ is not solvable for $n \\geq 5$. Proof: assume $A_n$ solvable; the sign exact sequence $1 \\to A_n \\to S_n \\to \\{\\pm 1\\} \\to 1$ gives $S_n$ solvable, contradicting Mathlib's `Equiv.Perm.not_solvable`.",
+      "leanType": "{n : ℕ} → 5 ≤ n → ¬IsSolvable (alternatingGroup (Fin n))"
+    },
+    {
+      "name": "a4_solvable",
+      "type": "key",
+      "description": "$A_4$ is solvable. The largest solvable alternating group; its solvability rests on the Klein four-group $V_4 \\trianglelefteq A_4$ with composition series $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4$ having abelian factors $(\\mathbb{Z}/2\\mathbb{Z})^2$ and $\\mathbb{Z}/3\\mathbb{Z}$.",
+      "leanType": "IsSolvable (alternatingGroup (Fin 4))"
+    },
+    {
+      "name": "a3_solvable",
+      "type": "supporting",
+      "description": "$A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ is solvable (abelian). Proved via `isSolvable_of_comm` plus `decide` on the commutativity check.",
+      "leanType": "IsSolvable (alternatingGroup (Fin 3))"
+    },
+    {
+      "name": "sharp_threshold",
+      "type": "key",
+      "description": "Witnesses the sharp dichotomy: $A_4$ is solvable AND $A_5$ is not. A single quotable conjunction making the transition at $n = 5$ a one-line corollary.",
+      "leanType": "IsSolvable (alternatingGroup (Fin 4)) ∧ ¬IsSolvable (alternatingGroup (Fin 5))"
+    },
+    {
+      "name": "a5_not_solvable",
+      "type": "specialization",
+      "description": "$A_5$ is not solvable. Direct application of `an_not_solvable_of_ge_five` with $n = 5$. Illustrates the smallest non-solvable alternating group.",
+      "leanType": "¬IsSolvable (alternatingGroup (Fin 5))"
     }
   ],
   "sorries": 0
