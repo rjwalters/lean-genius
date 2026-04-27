@@ -145,6 +145,30 @@
       "targetId": "burnside-counting",
       "relationship": "extends",
       "description": "Generalizes the axiomatized binary 4-necklace computation to the full P\u00f3lya formula; removes axioms by computing fixed-point counts directly."
+    },
+    {
+      "id": "xref-euler-totient",
+      "targetId": "euler-totient",
+      "relationship": "uses",
+      "description": "Euler's totient $\\varphi$ is the indispensable coefficient in the P\u00f3lya necklace formula $n \\cdot N(n, k) = \\sum_{d \\mid n} \\varphi(n/d) \\cdot k^d$. The number of cyclic rotations of order exactly $d$ is $\\varphi(d)$ — those rotations $r$ with $\\gcd(r, n) = n/d$. Without $\\varphi$, the rotation-by-degree group-by counting cannot collapse from $n$ rotations to $\\sum_{d \\mid n} \\varphi(n/d)$ orbits-per-divisor terms."
+    },
+    {
+      "id": "xref-gcd-algorithm",
+      "targetId": "gcd-algorithm",
+      "relationship": "foundational",
+      "description": "The fixed-point count for rotation by $r$ on $n$ positions is $k^{\\gcd(r, n)}$. The proof rests on the elementary number-theoretic fact that the orbit of position $i$ under rotation-by-$r$ has size $n/\\gcd(r, n)$, so the colorings fixed by rotation-by-$r$ are exactly those constant on the $\\gcd(r, n)$ orbits. The $\\gcd$-and-orbit-size lemma is the bridge from group action to fixed-point counts."
+    },
+    {
+      "id": "xref-inclusion-exclusion",
+      "targetId": "inclusion-exclusion",
+      "relationship": "related",
+      "description": "Both Burnside's lemma and inclusion-exclusion are 'averaging' counting techniques that convert overcounted enumerations into orbit/union sizes. Burnside averages fixed-point counts over a group; inclusion-exclusion alternates intersection sizes. P\u00f3lya enumeration unifies them by tracking *which* orbits each group element fixes — and M\u00f6bius inversion on the divisor lattice (Burnside-by-divisor) is formally analogous to M\u00f6bius inversion on the subset lattice (inclusion-exclusion)."
+    },
+    {
+      "id": "xref-binomial-theorem",
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "P\u00f3lya enumeration generalizes binomial-style counting from unordered selections (color $k$ objects from $n$ with no symmetry) to selections under group action (color $k$ objects from $n$ modulo cyclic rotation). The identity $\\sum_{d \\mid n} \\varphi(n/d) k^d = n \\cdot N(n, k)$ specialises to $k^n$ when the symmetry group is trivial, recovering plain binomial counting; the divisor sum is the symmetry-aware refinement."
     }
   ],
   "leanFile": {
