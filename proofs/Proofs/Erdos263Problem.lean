@@ -538,7 +538,7 @@ private lemma doubleExp_tail_pos (N : ℕ) :
     have h : Summable (fun k : ℕ => (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + (N + 1)))) :=
       (summable_nat_add_iff (N + 1)).mpr doubleExp_sum_summable
     exact h.congr (fun k => by congr 1; congr 1; omega)
-  exact tsum_pos hsum (fun k => by positivity) 0 (by positivity)
+  exact hsum.tsum_pos (fun k => by positivity) 0 (by positivity)
 
 /-- D * (finite sum) is a natural number: 2^{2^N} * Σ_{k<N} 1/2^{2^k} ∈ ℕ.
     Each term: 2^{2^N} * (1/2^{2^k}) = 2^{2^N - 2^k} ∈ ℕ (since 2^k ≤ 2^N for k ≤ N). -/
@@ -726,6 +726,55 @@ theorem doubleExp_sum_irrational :
   have hz_pos : 0 < z := by exact_mod_cast hz ▸ hgap_pos
   have hz_lt1 : (z : ℝ) < 1 := hz ▸ hgap_lt1
   linarith [show (1 : ℝ) ≤ z from by exact_mod_cast hz_pos]
+
+/- ## Part XII: Concrete non-irrationality sequence (geometric 2^n)
+
+  Provides an explicit, elementary witness for `¬IsIrrationalitySequence`.
+  This unblocks one half of `truncation_insufficient`: a sequence whose
+  identity perturbation has a rational reciprocal sum (the geometric series).
+  The other half (a proven irrationality sequence) remains open. -/
+
+/-- The geometric sequence `n ↦ 2^n`. -/
+def geom2_seq : PosIntSeq := fun n => ⟨2 ^ n, by positivity⟩
+
+/-- Structural lemma: if `Σ 1/(a n)` (as a real) equals a rational, then `a` is
+    not an irrationality sequence — the identity perturbation `b n = a n` witnesses
+    this directly. -/
+theorem not_irrationality_sequence_of_rational_sum (a : PosIntSeq)
+    (q : ℚ) (hq : ∑' n, (1 : ℝ) / ((a n : ℕ) : ℝ) = (q : ℝ)) :
+    ¬ IsIrrationalitySequence a := by
+  intro h
+  have hirr := h (fun n => ((a n : ℕ) : ℤ))
+    (show IsPerturbation a (fun n => ((a n : ℕ) : ℤ)) from by
+      unfold IsPerturbation
+      have hratio : ∀ n, (((a n : ℕ) : ℤ) : ℝ) / ((a n : ℕ+) : ℝ) = 1 := fun n => by
+        have hpos : (0 : ℝ) < ((a n : ℕ+) : ℝ) := by exact_mod_cast (a n).pos
+        have heq : (((a n : ℕ) : ℤ) : ℝ) = ((a n : ℕ+) : ℝ) := by norm_cast
+        rw [heq, div_self hpos.ne']
+      simp_rw [hratio]; exact tendsto_const_nhds)
+    (fun n => by
+      show (((a n : ℕ) : ℤ)) > 0
+      exact_mod_cast (a n).pos)
+  have hsum_eq : reciprocalSum (fun n => ((a n : ℕ) : ℤ)) = (q : ℝ) := by
+    unfold reciprocalSum
+    have : (fun n => (1 : ℝ) / ((((a n : ℕ) : ℤ) : ℝ))) =
+        (fun n => (1 : ℝ) / ((a n : ℕ) : ℝ)) := by
+      funext n; push_cast; rfl
+    rw [this]; exact hq
+  rw [hsum_eq] at hirr
+  exact hirr ⟨q, rfl⟩
+
+/-- The geometric sequence `2^n` is NOT an irrationality sequence.
+    Witness: `b n = 2^n` (identity perturbation). Then `b n / a n = 1 → 1`,
+    `b n > 0`, and `Σ 1/b n = Σ (1/2)^n = 2 ∈ ℚ`. -/
+theorem geom2_seq_not_irrationality_sequence :
+    ¬ IsIrrationalitySequence geom2_seq :=
+  not_irrationality_sequence_of_rational_sum geom2_seq 2 <| by
+    have hcong : ∀ n, (1 : ℝ) / ((geom2_seq n : ℕ) : ℝ) = ((1 : ℝ) / 2) ^ n := fun n => by
+      show (1 : ℝ) / ((2 ^ n : ℕ) : ℝ) = (1 / 2) ^ n
+      rw [div_pow, one_pow]; push_cast; rfl
+    rw [tsum_congr hcong, tsum_geometric_two]
+    norm_num
 
 end Erdos263
 

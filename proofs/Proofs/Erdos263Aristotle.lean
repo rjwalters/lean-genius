@@ -48,7 +48,7 @@ theorem doubleExp_tail_pos (N : ℕ) :
           ≤ 1 / (2 : ℝ) ^ k :=
               one_div_le_one_div_of_le (pow_pos (by norm_num) k) h_pow_le
         _ = (1 / 2) ^ k := by simp [div_pow, one_div]
-  exact tsum_pos hsum (fun k => by positivity) 0 (by positivity)
+  exact hsum.tsum_pos (fun k => by positivity) 0 (by positivity)
 
 -- Tail bound: 2^{2^N} * Σ_{k≥0} 1/2^{2^(k+N+1)} < 1 / (2^{2^N} - 1).
 -- Geometric bound: each term 1/D^{2^{k+1}} ≤ (1/D²)^{k+1} via 2*(k+1) ≤ 2^{k+1}.
