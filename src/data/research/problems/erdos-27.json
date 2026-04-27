@@ -1,8 +1,8 @@
 {
   "slug": "erdos-27",
   "title": "Erdős #27: Almost Covering Systems",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "in-progress",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -41,16 +41,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "STABLE-AXIOMATIZED: Erdos27Problem.lean (329 lines, 0 sorries, 4 axioms) and Erdos27Aristotle.lean (148 lines, 0 sorries, 5 routine lemmas all proved) are both complete. Gallery meta.json correctly reports status=axiomatized, axiomCount=4, sorries=0. The 4 axioms encode deep published results (FFKPY 2007 disproof + positive direction, averaging argument, BBMST 2024 minimum modulus) that are not eliminable in a single session and require substantial Mathlib infrastructure (analytic number theory, sieve theory, probabilistic combinatorics).",
+    "builtItems": [
+      "research/problems/erdos-27/problem.md (rewritten to reflect actual 0-sorries / 4-axioms state)",
+      "research/problems/erdos-27/knowledge.md (rewritten with honest stable-axiomatized assessment)",
+      "research/problems/erdos-27/state.md (updated to phase COMPLETED)"
+    ],
+    "insights": [
+      "File state when claim-random selected this problem: 0 sorries, 4 axioms (NOT 12 sorries as problem.md claimed). The OBSERVE-phase notes were stale.",
+      "All 4 axioms in Erdos27Problem.lean encode published deep theorems: erdos_27_ffkpy and growing_C_achieves are FFKPY 2007 (JAMS Theorem 1.1, 1.2); averaging_bound_exists is the standard probabilistic averaging argument; bbmst_2024 is Bloom-Briggs-Maynard-Smith-Tao 2024 minimum modulus 616000.",
+      "Erdos27Aristotle.lean has 5 routine supporting lemmas all proved already (no sorries): conjecture_dichotomy, uncoveredCount_le, asymptoticUncoveredDensity_le_one, perfect_is_zero_almost, almostCovering_mono. No further Aristotle work needed.",
+      "Internally proved theorems (no axioms): perfect_is_zero_almost, conjecture_dichotomy, naturalDensity_eq_inv (telescoping product), naturalDensity_vanishes. Plus the 5 in the Aristotle file.",
+      "Routine in-file content is exhausted; further progress requires axiom elimination. Each of the 4 axioms is a multi-paper effort and not a one-session target.",
+      "Honest assessment: this is a SOLVED Erdos problem ($100, awarded to FFKPY 2007). The Lean formalization captures the result via the standard axiomatization pattern. Marking COMPLETED follows the precedent set by erdos-1022 (stable axiomatized status, commit e1c45e2b1ee)."
+    ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Read Erdos27Problem.lean to map 12 sorry locations",
-      "Check which 5 are Aristotle-ready targets",
-      "Survey Mathlib for natural density and ArithmeticFunction support"
+      "If axiom elimination becomes feasible, target averaging_bound_exists first — it is the most likely to be provable from Mathlib (probabilistic / Chinese Remainder Theorem combinatorics) without additional analytic infrastructure.",
+      "FFKPY 2007 axioms (erdos_27_ffkpy, growing_C_achieves) require sieve-theoretic and density bounds well beyond current Mathlib coverage; not a one-session target.",
+      "BBMST 2024 (bbmst_2024) requires the Hough/BBMST minimum-modulus argument; an entire research thread of its own."
     ],
-    "markdown": "# Knowledge Base: erdos-27\n\nInsights accumulated during research on Erdős #27: Almost Covering Systems.\n\n---\n\n## Problem Understanding\n\nProblem SOLVED (NO) by FFKPY. Lean formalization has 12 sorries in Erdos27Problem.lean.\nAristo companion (Erdos27Aristotle.lean) has 5 routine targets.\n\n---\n\n## Insights\n\n[To be filled during OBSERVE/ORIENT phases]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "markdown": "# Knowledge Base: erdos-27\n\n## Stable Axiomatized Status (Session 2026-04-27)\n\n**File state**: 0 sorries, 4 axioms. Gallery meta.json correctly reports `status: axiomatized`, `axiomCount: 4`, `sorries: 0`. All theorems either proved internally or derived from one of the 4 axioms.\n\n**The 4 axioms encode published deep theorems**:\n1. `erdos_27_ffkpy` — FFKPY 2007 main disproof (JAMS Theorem 1.1)\n2. `growing_C_achieves` — FFKPY 2007 positive direction (JAMS Theorem 1.2)\n3. `averaging_bound_exists` — probabilistic averaging argument\n4. `bbmst_2024` — Bloom-Briggs-Maynard-Smith-Tao 2024 minimum modulus 616000\n\n**Aristotle companion** (`Erdos27Aristotle.lean`): 148 lines, 5 routine lemmas all proved (no sorries). No further automation slots.\n\n**Why marked COMPLETED**: Following precedent of erdos-1022 (commit e1c45e2b1ee), Erdos problems whose Lean formalization is in stable axiomatized form (deep results encoded as axioms, all derived theorems proved, all Aristotle-tractable lemmas proved) are marked COMPLETED. Further work requires multi-session axiom elimination targeting deep theorems beyond current Mathlib coverage."
   },
   "tags": [
     "number-theory",
