@@ -4,6 +4,60 @@ Insights accumulated during research on this problem.
 
 ---
 
+## ⚠️ BLOCKED: Mathlib API Drift (2026-04-27)
+
+`proofs/Proofs/LebesgueMeasureOQ06.lean` no longer builds on origin/master.
+Docker build (`./proofs/scripts/docker-build.sh Proofs.LebesgueMeasureOQ06`)
+fails with multiple errors concentrated in `int_amenable` (lines 966–1158).
+
+### Errors observed
+
+1. **`Ultrafilter.lim` API change** (lines 977, 982, 1018, 1020–1025).
+   The error message reports `U.lim` has type `ℕ` (not a function), so
+   `Ultrafilter α → α` rather than the old `Ultrafilter α → (α → β) → β`
+   signature. All four `U.lim (dens · A)` call sites need rewrite to the
+   new ultrafilter-limit API (probably via `Filter.lim` or
+   `Ultrafilter.tendsto_iff_tendsto`-based reformulation).
+
+2. **`·` notation parse change** (lines 982, 1018).
+   Bare `dens · A` now requires parentheses or explicit lambda:
+   `(dens · A)` → `(fun N => dens N A)`.
+
+3. **`Finset.filter_True_of_mem` removed** (line 989).
+   Likely renamed to `Finset.filter_eq_self` (or use `Finset.filter_true`
+   composed with universal-membership argument).
+
+4. **`DecidablePred` synthesis failures** (lines 1007, 1008, 1009).
+   `DecidablePred (fun k => Multiplicative.ofAdd k ∈ A)` no longer auto-
+   synthesizes — needs explicit `classical` or `Classical.dec` instance.
+
+5. **`set n : ℤ := Multiplicative.toAdd g`** (line 1030).
+   Reports "No goals to be solved" — the failure cascade above leaves
+   later tactics with no remaining goal.
+
+### Implication
+
+The file's existing `assumptions` field claims "All supporting lemmas
+fully proved" — this is no longer accurate on master. `int_amenable` does
+not type-check, so the consequent `free_group_not_amenable` (which uses
+the amenability framework) and `paradoxical_no_finite_measure` (used as
+a structural witness) are also unverified until the cascade is repaired.
+
+### Recommended action
+
+Per the project's API-drift policy (project_mathlib_api_drift_2026_04 in
+the agent memory), do **not** attempt to fix this from a research session.
+The Mechanic agent owns API-drift repair; multiple files are affected by
+the 2026-04-26/27 Mathlib upgrade (Erdos1151OQ04, AngleTrisection…, this
+file, and likely more).
+
+After the Mechanic clears the cascade, the next research session can
+return to the structured-decomposition plan for the main `banach_tarski`
+sorry (lift F₂ paradoxical → S² paradoxical → B³ paradoxical via
+Hausdorff exception + cone construction).
+
+---
+
 ## Problem Understanding
 
 The Banach-Tarski paradox (1924) is the statement that the unit ball B³ ⊂ ℝ³ can be

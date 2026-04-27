@@ -1,8 +1,8 @@
 {
   "slug": "lebesgue-measure-oq-06",
   "title": "Lebesgue Measure: Banach-Tarski Paradox Formal Statement in Lean",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "BLOCKED",
     "since": "2026-04-22T13:03:46.382Z",
     "iteration": 1,
     "focus": "Banach-Tarski formalization: equidecomposability, paradoxical sets, amenability",
-    "blockers": [],
-    "nextAction": "Verify Docker build; submit hausdorff_free_subgroup to Aristotle if decomposable into lemmas",
+    "blockers": [
+      "Mathlib API drift: Ultrafilter.lim signature change, `·` notation parse change, Finset.filter_True_of_mem removed, DecidablePred synthesis failures. Concentrated in int_amenable lines 966-1158."
+    ],
+    "nextAction": "Wait for Mechanic to repair API drift; then resume banach_tarski structural decomposition.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: orbit_ne proved (sorries 2 to 1). Bridge sorry eliminated via inductive ℤ-sqrt2 encoding with correct composition-order reversal.",
+    "progressSummary": "BLOCKED: file no longer builds on master (2026-04-27) due to Mathlib API drift in int_amenable. Documented error catalog and recommended Mechanic repair.",
     "builtItems": [
       "Equidecomposable (G-equidecomposability, with notation ≃ᴳ[G]) — proofs/Proofs/LebesgueMeasureOQ06.lean:43",
       "IsParadoxical — proofs/Proofs/LebesgueMeasureOQ06.lean:81",
@@ -79,7 +81,8 @@
       "labeledInv tracks the SPECIFIC last-generator invariant, which is needed for the no-cancel step in the induction",
       "Automaton section (lines 1-517) is now fully sorry-free. Key fixes: (1) full simp beats simp only + dsimp + norm_num for Zsqrtd projections; (2) refine-split + simp per conjunct works for multi-conjunct goals; (3) custom induction on getLast! vs getLast? avoids missing API; (4) direct application of chain_append junction avoids simp on head?_nil",
       "Composition order mismatch: evalWord l applies letters left-to-right (leftmost=innermost), while liftF(mk l) applies leftmost last. Fix: use l.reverse so evalWord l.reverse encodes liftF(mk l)",
-      "Reversing a reduced word preserves reducedness: the no-cancel condition is symmetric since a.2=!b.2 iff b.2=!a.2"
+      "Reversing a reduced word preserves reducedness: the no-cancel condition is symmetric since a.2=!b.2 iff b.2=!a.2",
+      "BLOCKED 2026-04-27: file no longer builds on master due to Mathlib API drift in int_amenable. Errors: Ultrafilter.lim signature change (4 sites), bare `·` notation now requires parens or explicit lambda (2 sites), Finset.filter_True_of_mem removed/renamed (1 site), DecidablePred synthesis broken for `Multiplicative.ofAdd k ∈ A` (3 sites). All concentrated in int_amenable lines 966–1158. Per project policy (project_mathlib_api_drift_2026_04 memory), Mechanic owns API repair; do not attempt research fixes until cascade clears."
     ],
     "mathlibGaps": [
       "Banach-Tarski theorem itself not in Mathlib (no formalization as of 2026-04)",
@@ -88,7 +91,7 @@
       "Amenability for infinite groups not in Mathlib (FolnerCondition exists but Cesaro mean construction not)"
     ],
     "nextSteps": [
-      "Only remaining sorry: banach_tarski main theorem (~800 lines via Hausdorff paradox + AC — intentionally axiomatized)"
+      "BLOCKED on Mathlib API drift in int_amenable (Ultrafilter.lim signature change + 3 other API changes). Wait for Mechanic to repair, then resume structured decomposition of banach_tarski main sorry (lift F₂ paradoxical → S² paradoxical → B³ paradoxical via Hausdorff exception + cone construction)."
     ]
   },
   "tags": [

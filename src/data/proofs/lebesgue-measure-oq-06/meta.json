@@ -21,7 +21,7 @@
     "sorries": 1,
     "axiomCount": 0,
     "lineCount": 1428,
-    "assumptions": "1 sorry: banach_tarski main theorem (800+ lines via Hausdorff paradox + AC). The integer-real orbit bridge is now fully proved via inductive encoding in ℤ[√2]: applyGen_decode (algebraic step) + enc_ind (induction on word lists) + correct composition-order reversal. All other supporting lemmas fully proved: hausdorff_free_subgroup/orbit_ne (inductive proof via irrationality of sqrt 2 + ℤ[√2] invariant), free_group_not_amenable, int_amenable (Cesaro window-shift), banach_tarski_pieces_nonmeasurable.",
+    "assumptions": "1 sorry: banach_tarski main theorem (800+ lines via Hausdorff paradox + AC). BUILD-BROKEN on master 2026-04-27 due to Mathlib API drift in int_amenable (Ultrafilter.lim signature change, `·` parse change, Finset.filter_True_of_mem removal, DecidablePred synthesis failure). Awaiting Mechanic repair. Pre-drift state: hausdorff_free_subgroup/orbit_ne proved (inductive proof via irrationality of √2 + ℤ[√2] invariant), free_group_paradoxical proved (F₂ paradoxical under left action), banach_tarski_pieces_nonmeasurable proved (cardinality argument); int_amenable and free_group_not_amenable currently fail to type-check.",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
     "originalContributions": [
