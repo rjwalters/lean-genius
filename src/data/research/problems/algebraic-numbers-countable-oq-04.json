@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-04-28T00:00:00Z",
-    "iteration": 2,
-    "focus": "Gallery promoted as axiomatized: 4 Baker axioms (baker_homogeneous/inhomogeneous/quantitative/wustholz_bound), 0 sorries, 640-line file. Full Baker proof out of scope (>5000 lines requiring Siegel's lemma + auxiliary function + Schwarz lemma).",
+    "iteration": 3,
+    "focus": "Gallery axiomatized entry: axiom count reduced 4→3 by deriving baker_quantitative as a theorem from baker_homogeneous + baker_wustholz_bound (758-line file, 0 sorries). Three remaining deep axioms (baker_homogeneous, baker_inhomogeneous, baker_wustholz_bound) require full Baker analytic machinery (>5000 lines). Further reduction scope: investigate if baker_inhomogeneous follows from baker_homogeneous.",
     "blockers": [],
-    "nextAction": "None — work scope complete as axiomatized entry. Future deepening would require multi-month effort to formalize Baker's auxiliary function from scratch.",
+    "nextAction": "None — axiom reduction complete. Future deepening would require multi-month effort to formalize Baker's auxiliary function from scratch.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 640-line axiomatized entry. 0 sorries. Proved log2(3) irrational (elementary), transcendental (from Baker). Q-bar independence of {log2, log3} from Baker.",
+    "progressSummary": "AXIOM ELIMINATION: baker_quantitative converted from axiom to theorem (derived from baker_homogeneous + baker_wustholz_bound). axiomCount 4→3. lineCount 640→758. theoremCount 12→13. sorries still 0.",
     "builtItems": [
       "AlgebraicNumbersCountableOQ04.lean: 589 lines, 4 axioms, 12 theorems/lemmas",
       "two_pow_ne_three_pow: 2^p ≠ 3^q proved from Nat.Prime.dvd_of_dvd_pow",
@@ -38,14 +38,17 @@
       "log2_log3_alg_indep: Q-bar linear independence from Baker",
       "baker_n1_log_independence: n=1 case connecting Baker to Gelfond-Schneider",
       "baker_wustholz_bound: Baker-Wüstholz 1993 quantitative lower bound axiom",
-      "src/data/proofs/algebraic-numbers-countable-oq-04/meta.json: gallery entry created"
+      "src/data/proofs/algebraic-numbers-countable-oq-04/meta.json: gallery entry created",
+      "baker_quantitative (PART VI in AlgebraicNumbersCountableOQ04.lean:~644): converted from axiom to theorem, derived from baker_homogeneous + baker_wustholz_bound. Reduces axiom count 4→3."
     ],
     "insights": [
       "Baker theorem requires Q-linear independence as hypothesis — 1,log a_1,...,log a_n Q-independent for inhomogeneous form",
       "Irrationality of log2(3) is provable without transcendence theory: 2^p = 3^q implies 2|3 by Nat.Prime.dvd_of_dvd_pow, contradiction",
       "Baker generalizes Gelfond-Schneider as n=1 case; also implies Six Exponentials theorem",
       "Two sorries remain: (1) connecting log2_log3_rat_indep to indexed family form, (2) type coercion in hlog_indep",
-      "Quantitative Baker-Wüstholz 1993 theorem gives log(B) exponent improvement over Bakers 1966 log^{n+1}(B)"
+      "Quantitative Baker-Wüstholz 1993 theorem gives log(B) exponent improvement over Bakers 1966 log^{n+1}(B)",
+      "baker_quantitative is mathematically subsumed: it follows from baker_wustholz_bound (gives log|Λ| > -C·∏log Aᵢ·log B) combined with baker_homogeneous (gives Λ≠0 since integers are algebraic). The constant C in baker_quantitative equals C(n,d)·∏log Aᵢ where C(n,d) is the explicit Baker-Wüstholz constant.",
+      "Three of the four original Baker axioms (baker_inhomogeneous, baker_quantitative, baker_wustholz_bound) were unused by any theorem in the file before this session. baker_homogeneous is the only axiom invoked by corollaries (log2_3_transcendental, log2_log3_alg_indep, baker_n1_log_independence)."
     ],
     "mathlibGaps": [
       "No direct linearIndependent_pair_iff lemma connecting Irrational(a/b) to LinearIndependent Q ![a,b]",
@@ -78,7 +81,7 @@
     "mathlib": []
   },
   "started": "2026-04-24T19:20:10.048Z",
-  "lastUpdate": "2026-04-24T22:04:18.981515Z",
+  "lastUpdate": "2026-04-27T16:15:00Z",
   "significance": 8,
   "tractability": 4,
   "leanFiles": [

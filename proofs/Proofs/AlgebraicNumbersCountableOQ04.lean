@@ -4,7 +4,7 @@ import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Data.Complex.Exponential
 import Mathlib.LinearAlgebra.LinearIndependent.Basic
 import Mathlib.Data.Real.Irrational
-import Mathlib.NumberTheory.Primes.Infinite
+import Mathlib.Data.Nat.Prime.Infinite
 import Mathlib.Tactic
 
 /-!
@@ -83,7 +83,8 @@ Baker's proof is a tour-de-force of analytic methods:
 
 - [x] Statement of Baker's theorem (homogeneous form)
 - [x] Statement of Baker's theorem (inhomogeneous form)
-- [x] Statement of Baker's quantitative theorem (lower bounds)
+- [x] Baker's quantitative theorem (proved as theorem from Baker–Wüstholz +
+      homogeneous Baker — no longer an independent axiom)
 - [x] Irrationality of log₂(3) (proved elementarily)
 - [x] ℚ-linear independence of {log 2, log 3}
 - [x] ℚ̄-linear independence of {log 2, log 3} (from Baker)
@@ -363,40 +364,35 @@ axiom baker_inhomogeneous
     (hindep : LinearIndependent ℚ (Fin.cons (1 : ℝ) (fun i => Real.log (α i)))) :
     β₀ + ∑ i, β i * Real.log (α i) ≠ 0
 
-/-- **Axiom: Baker's Quantitative Theorem (Effective Lower Bounds)**
+/-- **Theorem: Baker's Quantitative Theorem (Effective Lower Bounds)**
 
 The quantitative strengthening gives an explicit lower bound for the linear form.
 
 Let Λ = β₁ log α₁ + ··· + βₙ log αₙ ≠ 0 (nonzero by the qualitative theorem).
-If b₁, ..., bₙ are integers and B = max|bᵢ|, then there exists C > 0 depending
-only on n, the degree of the αᵢ, and their height such that:
-
-  |Λ| > e^{-C · (log B)^{n+1}}
-
-More precisely, for integer coefficients b₁, ..., bₙ with max |bᵢ| ≤ B:
+If b₁, ..., bₙ are integers, then there exists C > 0 depending only on n and the
+αᵢ such that:
 
   |b₁ log α₁ + ··· + bₙ log αₙ| > B^{-C}
 
-for all B ≥ 2, whenever the linear form is nonzero.
+for all B > 1 with max |bᵢ| ≤ B, whenever some bᵢ ≠ 0 and the log αᵢ are
+ℚ-linearly independent.
 
 **Applications**: This quantitative form is the key input for:
 - Mignotte and de Weger's algorithm for solving Thue equations
 - Bounds on solutions to S-unit equations
 - Effective computation of all solutions to Mordell's equation y² = x³ + k
 
-**Proof status**: Baker's 1966 proof directly gives quantitative bounds. The
-optimal power in (log B) has been refined by Baker-Wüstholz (1993). -/
-axiom baker_quantitative
-    (n : ℕ) (hn : 0 < n)
-    (α : Fin n → ℝ)
-    (hα_pos : ∀ i, 0 < α i)
-    (hα_alg : ∀ i, IsAlgebraic ℚ (α i))
-    (b : Fin n → ℤ)
-    (hb_ne : ∃ i, b i ≠ 0)
-    (hlog_indep : LinearIndependent ℚ (fun i => Real.log (α i))) :
-    ∃ C : ℝ, 0 < C ∧
-    ∀ B : ℕ, 1 < B → (∀ i, |b i| ≤ B) →
-      B^(-C) < |∑ i, (b i : ℝ) * Real.log (α i)|
+**Proof**: Forward declaration. The proof is given in PART V after the
+Baker–Wüstholz axiom is introduced — it is derived from `baker_homogeneous`
+(for Λ ≠ 0) and `baker_wustholz_bound` (for the explicit bound). This makes
+`baker_quantitative` a *theorem* rather than an independent axiom: it follows
+from the deeper Baker–Wüstholz 1993 result.
+
+**Historical note**: Baker's 1966 proof gives quantitative bounds with
+log^{n+1}(B) in the exponent; Baker–Wüstholz (1993) refined this to log(B). -/
+-- The theorem `baker_quantitative` is proved in PART V (after `baker_wustholz_bound`).
+-- We declare it forward here only via the comment; the actual statement and proof
+-- appear after the Baker–Wüstholz axiom.
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: KEY COROLLARIES
@@ -634,6 +630,128 @@ axiom baker_wustholz_bound
       -C * (∏ i, Real.log (A i)) * Real.log B
 
 end BakerWustholz
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
+PART VI: BAKER'S QUANTITATIVE THEOREM AS A CONSEQUENCE
+
+The quantitative form |Λ| > B^(-C) is *not* an independent axiom: it follows
+from `baker_wustholz_bound` (for the explicit lower bound on log|Λ|) combined
+with `baker_homogeneous` (which guarantees Λ ≠ 0 since integer coefficients are
+algebraic).
+
+This eliminates `baker_quantitative` as an independent axiom of the file. The
+total axiom count drops from 4 → 3 (`baker_homogeneous`, `baker_inhomogeneous`,
+`baker_wustholz_bound`).
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+section BakerQuantitative
+
+/-- **Baker's Quantitative Theorem (Effective Lower Bound for Linear Forms in
+Logarithms)**
+
+For positive real algebraic α₁, ..., αₙ with ℚ-linearly independent logarithms,
+and integer coefficients b₁, ..., bₙ not all zero, there exists C > 0 such that
+for every integer B > 1 with max|bᵢ| ≤ B,
+
+  |b₁ log α₁ + ··· + bₙ log αₙ| > B^(-C).
+
+**Proof strategy**:
+1. Apply `baker_homogeneous` to integer coefficients (which are algebraic) to
+   conclude Λ := ∑ bᵢ log αᵢ ≠ 0.
+2. Construct a degree witness `d := (∑ deg(minpoly α_i)) + 1 > 0` and a height
+   witness `A i := α i + 1` (so that `0 < A i`, `1 < A i`, and `log |α i| ≤ log A i`).
+3. Apply `baker_wustholz_bound` to obtain
+     log |Λ| > -C₀ · (∏ log A_i) · log B
+   where C₀ = 18(n+1)! n^{n+1}(32d)^{n+2} log(2nd).
+4. Set C := C₀ · ∏ log A_i. Since each A_i > 1, log A_i > 0, so C > 0.
+5. Convert the log-bound to the rpow form via `Real.log_rpow` and the strict
+   monotonicity of `Real.log` on positive reals. -/
+theorem baker_quantitative
+    (n : ℕ) (hn : 0 < n)
+    (α : Fin n → ℝ)
+    (hα_pos : ∀ i, 0 < α i)
+    (hα_alg : ∀ i, IsAlgebraic ℚ (α i))
+    (b : Fin n → ℤ)
+    (hb_ne : ∃ i, b i ≠ 0)
+    (hlog_indep : LinearIndependent ℚ (fun i => Real.log (α i))) :
+    ∃ C : ℝ, 0 < C ∧
+    ∀ B : ℕ, 1 < B → (∀ i, |b i| ≤ B) →
+      B^(-C) < |∑ i, (b i : ℝ) * Real.log (α i)| := by
+  -- Step 1: Λ ≠ 0 from baker_homogeneous applied to integer coefficients.
+  -- View integer b i as algebraic real coefficients.
+  have hβ_alg : ∀ i, IsAlgebraic ℚ ((b i : ℝ)) := fun i => isAlgebraic_int (b i)
+  have hβ_ne : ∃ i, ((b i : ℝ)) ≠ 0 := by
+    obtain ⟨i, hi⟩ := hb_ne
+    exact ⟨i, by exact_mod_cast hi⟩
+  have hΛ_ne' : (∑ i, (b i : ℝ) * Real.log (α i)) ≠ 0 :=
+    baker_homogeneous n hn α hα_pos hα_alg hlog_indep
+      (fun i => (b i : ℝ)) hβ_alg hβ_ne
+  -- Step 2: Degree bound d ≥ max degree.
+  let d : ℕ := (∑ i, (minpoly ℚ (α i)).natDegree) + 1
+  have hd_pos : 0 < d := Nat.succ_pos _
+  have hα_deg : ∀ i, (minpoly ℚ (α i)).natDegree ≤ d := by
+    intro i
+    have hsum : (minpoly ℚ (α i)).natDegree ≤ ∑ j, (minpoly ℚ (α j)).natDegree :=
+      Finset.single_le_sum (f := fun j => (minpoly ℚ (α j)).natDegree)
+        (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)
+    show _ ≤ (∑ j, (minpoly ℚ (α j)).natDegree) + 1
+    omega
+  -- Step 3: Height witnesses A_i = α_i + 1 > 1.
+  let A : Fin n → ℝ := fun i => α i + 1
+  have hA_pos : ∀ i, 0 < A i := fun i => by
+    show 0 < α i + 1; linarith [hα_pos i]
+  have hA_gt_one : ∀ i, 1 < A i := fun i => by
+    show 1 < α i + 1; linarith [hα_pos i]
+  have hA_bound : ∀ i, Real.log (α i).abs ≤ Real.log (A i) := by
+    intro i
+    show Real.log |α i| ≤ Real.log (α i + 1)
+    rw [abs_of_pos (hα_pos i)]
+    exact Real.log_le_log (hα_pos i) (by linarith)
+  have hlog_A_pos : ∀ i, 0 < Real.log (A i) := fun i => Real.log_pos (hA_gt_one i)
+  -- Step 4: Baker–Wüstholz constant C₀ > 0.
+  set C₀ : ℝ :=
+    18 * (n + 1).factorial * n^(n+1) * (32 * d)^(n+2) * Real.log (2 * n * d) with hC₀_def
+  have hC₀_pos : 0 < C₀ := by
+    apply mul_pos
+    · positivity
+    · apply Real.log_pos
+      have hn1 : (1 : ℝ) ≤ n := by exact_mod_cast hn
+      have hd1 : (1 : ℝ) ≤ d := by exact_mod_cast hd_pos
+      nlinarith
+  -- Step 5: Final constant C := C₀ · ∏ log A_i > 0.
+  set C : ℝ := C₀ * (∏ i, Real.log (A i)) with hC_def
+  have hC_pos : 0 < C :=
+    mul_pos hC₀_pos (Finset.prod_pos (fun i _ => hlog_A_pos i))
+  refine ⟨C, hC_pos, ?_⟩
+  intro B hB hb_bound
+  -- Step 6: Cast |b i| ≤ B from ℤ to ℝ.
+  have hbB : ∀ i, |(b i : ℝ)| ≤ (B : ℝ) := by
+    intro i
+    have hi : |b i| ≤ (B : ℤ) := by exact_mod_cast hb_bound i
+    exact_mod_cast hi
+  have hB_real : (1 : ℝ) < (B : ℝ) := by exact_mod_cast hB
+  have hBpos : (0 : ℝ) < (B : ℝ) := by linarith
+  -- Step 7: Apply Baker–Wüstholz axiom.
+  have hwustholz :=
+    baker_wustholz_bound n d hn hd_pos α hα_pos hα_alg hα_deg b A hA_pos hA_bound
+      (B : ℝ) hB_real hbB hΛ_ne'
+  have hlog_ineq : Real.log (|∑ i, (b i : ℝ) * Real.log (α i)|) >
+                   -C * Real.log (B : ℝ) := by
+    have hrewrite : -C * Real.log (B : ℝ)
+                  = -C₀ * (∏ i, Real.log (A i)) * Real.log (B : ℝ) := by
+      rw [hC_def]; ring
+    rw [hrewrite]; exact hwustholz
+  -- Step 8: Convert log-inequality to rpow form: B^(-C) < |Λ|.
+  have hΛ_pos : 0 < |∑ i, (b i : ℝ) * Real.log (α i)| := abs_pos.mpr hΛ_ne'
+  have hBmC_pos : 0 < (B : ℝ) ^ (-C) := Real.rpow_pos_of_pos hBpos _
+  have hlog_rpow_eq : Real.log ((B : ℝ) ^ (-C)) = -C * Real.log (B : ℝ) :=
+    Real.log_rpow hBpos (-C)
+  have hloglt : Real.log ((B : ℝ) ^ (-C))
+              < Real.log (|∑ i, (b i : ℝ) * Real.log (α i)|) := by
+    rw [hlog_rpow_eq]; exact hlog_ineq
+  exact (Real.log_lt_log_iff hBmC_pos hΛ_pos).mp hloglt
+
+end BakerQuantitative
 
 end BakersTheorem
 
