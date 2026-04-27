@@ -71,42 +71,34 @@
     {
       "id": "definitions",
       "title": "I. Definitions",
-      "startLine": 45,
-      "endLine": 55,
-      "summary": "Defines IsCyclicVector and IsNonderogatory, identical to WIP01 and WIP02. IsCyclicVector captures the condition that no nonzero low-degree polynomial annihilates v, while IsNonderogatory equates the minimal and characteristic polynomials.",
-      "mathContext": "A vector $v$ is cyclic for $M$ if $\\forall r \\in K[X],\\; \\deg(r) < n \\wedge r(M)v = 0 \\Rightarrow r = 0$. A matrix is nonderogatory if $\\mu_M = \\chi_M$, forcing $\\deg(\\mu_M) = n$."
+      "startLine": 46,
+      "endLine": 52,
+      "summary": "Defines IsCyclicVector and IsNonderogatory, identical to WIP01 and WIP02.",
+      "mathContext": "A vector v is cyclic for M if no nonzero polynomial of degree < n annihilates v via M. A matrix is nonderogatory if its minimal polynomial equals its characteristic polynomial."
     },
     {
       "id": "core-lemmas",
-      "title": "II. Utility Lemmas",
-      "startLine": 57,
-      "endLine": 101,
-      "summary": "Three supporting lemmas: irreducible_dvd_of_annihilated (Bézout/coprimality: if p is irreducible, v ≠ 0, p(M)v = 0, and r(M)v = 0, then p | r), exists_mulVec_ne_zero (a nonzero matrix has a nonzero image vector), and aeval_ne_zero_of_lt_minpoly (polynomial of degree < deg(minpoly) evaluates to a nonzero matrix).",
-      "mathContext": "Key coprimality lemma: $p$ irreducible, $v \\neq 0$, $p(M)v = 0$, $r(M)v = 0 \\Rightarrow p \\mid r$. Proof: if $p \\nmid r$, Bézout gives $ap + br = 1$, so $v = (ap + br)(M)v = 0$, contradiction."
+      "title": "II. Core Lemmas",
+      "startLine": 56,
+      "endLine": 95,
+      "summary": "Three supporting lemmas imported from WIP02: irreducible_dvd_of_annihilated (Bezout/coprimality argument), exists_mulVec_ne_zero (a nonzero matrix has a nonzero image), and aeval_ne_zero_of_lt_minpoly (polynomial of degree < deg(minpoly) evaluates to nonzero matrix).",
+      "mathContext": "The core coprimality lemma: if p is irreducible, v ≠ 0, p(M)v = 0, and r(M)v = 0, then p | r. Proof: if not, Bezout gives a*p + b*r = 1, so v = 1·v = (a*p+b*r)(M)v = 0, contradiction."
     },
     {
       "id": "key-lemma",
       "title": "III. Key Lemma — Prime Power Divisibility",
-      "startLine": 103,
-      "endLine": 174,
-      "summary": "Proves pow_irred_dvd_of_annihilated by strong induction on e: if p is irreducible, p^e(M)v ≠ 0, p^(e+1)(M)v = 0, and r(M)v = 0, then p^(e+1) | r. This is the core new contribution, replacing the PID structure theorem with an elementary divisibility descent.",
-      "mathContext": "Base case ($e = 0$): $v \\neq 0$, $p(M)v = 0$, $r(M)v = 0 \\Rightarrow p \\mid r$. Inductive step: $w = p^{e+1}(M)v \\neq 0$ gives $p \\mid r$. Writing $r = p r_1$, the shift $u = p(M)v$ satisfies $p^e(M)u \\neq 0$, $r_1(M)u = 0$, so IH gives $p^{e+1} \\mid r_1$, hence $p^{e+2} \\mid r$."
+      "startLine": 98,
+      "endLine": 156,
+      "summary": "Proves pow_irred_dvd_of_annihilated by induction on e: if p irred, p^e(M)v ≠ 0, p^(e+1)(M)v = 0, r(M)v = 0, then p^(e+1) | r.",
+      "mathContext": "Base case (e=0): p(M)v = 0 and v ≠ 0 and r(M)v = 0, so p | r by irreducible_dvd_of_annihilated. Inductive step: w = p^(e+1)(M)v ≠ 0 satisfies p(M)w = 0, so p | r. Writing r = p*r₁, u = p(M)v satisfies p^e(M)u ≠ 0 and r₁(M)u = 0, so IH gives p^(e+1) | r₁, hence p^(e+2) | r."
     },
     {
       "id": "main-theorem",
       "title": "IV. Main Theorem — Prime Power Case",
-      "startLine": 176,
-      "endLine": 238,
-      "summary": "Proves nonderogatory_pw_has_cyclic_vector: for nonderogatory M with minpoly = p^e (p monic irreducible, e ≥ 1), M has a cyclic vector over any field K. Assembles the key lemma with degree arithmetic and vector selection into a clean four-step argument.",
-      "mathContext": "Pick $v$ with $p^{e-1}(M)v \\neq 0$ (since $\\deg(p^{e-1}) < n = \\deg(\\mu_M)$). Then $p^e(M)v = 0$. For any $r$ with $r(M)v = 0$ and $\\deg(r) < n$: the key lemma gives $p^e \\mid r$, so $\\deg(r) \\geq \\deg(p^e) = n$, contradicting $\\deg(r) < n$. Hence $r = 0$."
-    },
-    {
-      "id": "corollary",
-      "title": "V. Corollary — Finite Fields",
-      "startLine": 240,
-      "endLine": 253,
-      "summary": "Specializes the main theorem to finite fields, making explicit that no cardinality restriction on K is needed. Earlier gallery results (e.g., oq-05-oq-01) required |K| > n via Vandermonde arguments; this prime power result works over any finite field F_q regardless of q vs n.",
-      "mathContext": "The main theorem applies to all fields $K$, including $\\mathbb{F}_q$ for any prime power $q$, with no restriction on $q$ relative to $n$. The proof uses only $K[X]$ as a UFD, not any cardinality or transcendence properties."
+      "startLine": 162,
+      "endLine": 235,
+      "summary": "Proves nonderogatory_pw_has_cyclic_vector: for nonderogatory M with minpoly = p^e (p monic irreducible, e ≥ 1), M has a cyclic vector over any field K.",
+      "mathContext": "Pick v with p^(e-1)(M)v ≠ 0 (possible since deg(p^(e-1)) < n = deg(minpoly) implies p^(e-1)(M) ≠ 0). Then p^e(M)v = 0. For any r with r(M)v = 0 and deg(r) < n: pow_irred_dvd_of_annihilated gives p^e | r, so deg(r) ≥ e·deg(p) = n, contradicting deg(r) < n. Hence r = 0."
     }
   ],
   "conclusion": {
@@ -146,9 +138,9 @@
       "description": "WIP01: full theorem with 1 axiom (rational canonical form). WIP03 provides the prime power case that WIP01 handles implicitly."
     },
     {
-      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-      "relationship": "extended-by",
-      "description": "WIP04: binary prime power case (p^a * q^b). Combines CRT/Bézout projections with WIP03's prime power divisibility to handle two-factor nonderogatory matrices over any field."
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-02",
+      "relationship": "companion",
+      "description": "WIP02: squarefree case (axiom-free). WIP03 is the complementary prime power case. Together they cover all structural cases of the general theorem."
     },
     {
       "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
