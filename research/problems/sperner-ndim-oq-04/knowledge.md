@@ -404,3 +404,66 @@ The correct τ involution domain is B (ALL boundary doors) under the assumption 
    - K.adj sᵢ kᵢ = some(sᵢ₋₁, eᵢ₋₁) by adj_symm from forward walk adjacency
    - Induction reverses n steps to reach s₀ with boundary exit k₀ = Fin.last d
 2. Once walkTrace_reversal done: 0 sorries, proof complete
+
+---
+
+## Session 2026-04-27 (Session 9) — BLOCKED Triage + Stale Pool Correction
+
+**Mode**: REVISIT
+**Outcome**: documentation only — flagging as BLOCKED on walkTrace_reversal infrastructure
+
+### What I Did
+
+1. Confirmed Lean file state: 1126 lines, 0 axioms, 1 sorry at line 980 (`bdry_all_even_of_no_fc_walks`
+   `hInv` component, the walkTrace_reversal step).
+2. Confirmed candidate-pool entry has stale `phase: COMPLETED, status: completed` even though the
+   actual proof has 1 sorry remaining (gallery meta.json correctly shows `status: formalized`,
+   `badge: wip`, `sorries: 1`).
+3. Reviewed prior 8 sessions: the same single sorry has remained across many sessions because
+   closing it requires either ~150 lines of `kuhnWalkSeq` infrastructure OR formalizing the door
+   graph as a Mathlib `SimpleGraph` and using path machinery.
+4. Per the memory rule "If 3+ sessions stuck on same sorry: flag as BLOCKED, move on", marking
+   this problem as BLOCKED with a precise unblock plan documented below.
+
+### Why It Is BLOCKED (precise barrier)
+
+The sorry at line 980 needs:
+```
+show kuhnPathStart c K hKuhn sₙ (Fin.last d) hdoor_n hbdry_n = p.1
+```
+where `sₙ = kuhnPathStart c K hKuhn p.1 (Fin.last d) hdoor₀ hbdry₀`.
+
+`kuhnPathStart` is just the FINAL simplex of the walk; it forgets the path. To prove the
+backward walk from `sₙ` traces back to `p.1`, the proof must access the entire walk SEQUENCE,
+not just its endpoint. The current `WalkValid` invariant captures door records on visited
+simplices but NOT the linear order of the trace.
+
+### Two Concrete Unblock Paths (each multi-session)
+
+**Path A — Define `kuhnWalkSeq`** (~150 lines):
+1. New def `kuhnWalkSeq : (state : KuhnState) → (fuel : ℕ) → List (K.Simplex × Fin (d+1) × Fin (d+1))`
+   returning `(sᵢ, k_in_i, k_out_i)` triples for each visited simplex.
+2. Lemma `kuhnWalkSeq_length`: matches visited.card increase.
+3. Lemma `kuhnWalkSeq_adj_chain`: consecutive entries linked by `K.adj`.
+4. Lemma `kuhnWalkSeq_reversal`: `(seq.reverse.map swap)` is a valid backward walk seq from
+   the final simplex.
+5. Use to close walkTrace_reversal in `bdry_all_even_of_no_fc_walks`.
+
+**Path B — Mathlib SimpleGraph** (~200+ lines):
+1. Define the door graph as `SimpleGraph K.Simplex` with edges `s ~ s' iff ∃ k k', K.adj s k = some(s', k')`.
+2. Prove max degree ≤ 2 under `IsKuhnCompatible`.
+3. Prove boundary doors correspond to "half-edges" (handled via auxiliary boundary vertices).
+4. Use Mathlib's `SimpleGraph.Walk` and `Walk.reverse` machinery for path reversal.
+5. Apply `even_card_fpf_invol` via the reversal involution.
+
+### Files Modified
+
+- `research/problems/sperner-ndim-oq-04/knowledge.md` (this file: BLOCKED triage notes)
+- `src/data/research/problems/sperner-ndim-oq-04.json` (correcting stale `phase: COMPLETED`)
+
+### Next Steps (for future sessions)
+
+- Pick this back up only after one of Paths A/B above is committed as separate infrastructure.
+- Or: accept the existing `kuhn_path_existential` as an axiom (Session 7 form) and remove the
+  sorry at the cost of 1 axiom — this is a defensible position for a fundamental algorithmic
+  result that essentially restates Sperner's lemma constructively.
