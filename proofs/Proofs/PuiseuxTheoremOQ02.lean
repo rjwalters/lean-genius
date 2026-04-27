@@ -42,7 +42,7 @@ Laurent series field of the previous stage.
 - `IsMultiPuiseuxSeries`: the levelwise common-denominator predicate
 - Base cases and dimensional facts
 
-Theorems: 8, Axioms: 0, Sorries: 0
+Theorems: 9, Axioms: 0, Sorries: 0
 -/
 
 noncomputable section
@@ -159,6 +159,24 @@ def IsMultiPuiseuxSeries {K : Type*} [Zero K] :
     (the base case of the recursion). -/
 theorem isMultiPuiseux_base {K : Type*} [Zero K] (a : K) :
     IsMultiPuiseuxSeries 0 a := trivial
+
+/-- Zero is a multivariate Puiseux series at every level. The support is empty
+    so the outer common-denominator condition holds vacuously, and every
+    coefficient is `0` so the inner condition holds by induction. -/
+theorem isMultiPuiseux_zero {K : Type*} [Zero K] (n : ℕ) :
+    letI := instZeroMultiHahn n K
+    IsMultiPuiseuxSeries n (0 : MultiHahnSeries n K) := by
+  induction n with
+  | zero => trivial
+  | succ n ih =>
+    letI : Zero (MultiHahnSeries n K) := instZeroMultiHahn n K
+    refine ⟨⟨1, ?_⟩, ?_⟩
+    · intro q hq
+      simp at hq
+    · intro q
+      show IsMultiPuiseuxSeries n ((0 : HahnSeries ℚ (MultiHahnSeries n K)).coeff q)
+      rw [HahnSeries.coeff_zero]
+      exact ih
 
 /-! ═══════════════════════════════════════════════════════════════════
 Part IV: The Multivariate Algebraic Closure Theorem
