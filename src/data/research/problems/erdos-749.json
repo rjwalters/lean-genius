@@ -1,31 +1,44 @@
 {
   "slug": "erdos-749",
   "title": "Erdős #749",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "Let $\\epsilon>0$. Does there exist $A\\subseteq \\mathbb{N}$ such that the lower density of $A+A$ is at least $1-\\epsilon$ and yet $1_A\\ast 1_A(n) \\ll_\\epsilon 1$ for all $n$?\n\n\n\nA similar question can be asked for upper density.\n\nSee also [28].",
     "plain": "Let $\\epsilon>0$. Does there exist $A\\subseteq \\mathbb{N}$ such that the lower density of $A+A$ is at least $1-\\epsilon$ and yet $1_A\\ast 1_A(n) \\ll_\\epsilon 1$ for all $n$?",
-    "whyMatters": []
+    "whyMatters": [
+      "The question probes the relationship between additive structure (a sumset of nearly full lower density) and additive uniformity (representation function bounded by O(1)) — a regime where Plünnecke-Ruzsa-style methods break down",
+      "Connects directly to Erdős-Turán additive bases conjecture (#28): if r_A is bounded yet A+A has positive density, A is much sparser than required by additive bases",
+      "Sidon sets show density 0, so the gap between bounded representations and density 1-ε is exactly the question of how additive structure scales",
+      "Either answer would be deep: a YES construction (positive answer) would build a near-tile of N with optimally bounded sums; a NO would be a finite-r reverse Plünnecke result"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Sidon sets have upper density 0 — directly from the |A ∩ [1,N]|² ≤ 4N counting bound",
+      "Plünnecke-Ruzsa: if |A+A| ≤ K|A|, then |kA| ≤ K^k |A| for all k ≥ 1 — links additive structure to representation count",
+      "Erdős-Turán (1941): for any infinite Sidon set A, the counting function |A ∩ [1,N]| = O(√N) (up to log)"
+    ],
+    "open": [
+      "Main question: Does there exist A ⊆ ℕ with lower density of A+A ≥ 1-ε and r_A(n) = O_ε(1) for all n?",
+      "Upper-density variant: same question with upper density",
+      "Erdős-Turán additive bases conjecture (#28): an additive basis of order 2 cannot have r_A bounded — see erdos_turan_conjecture_28 axiom in this file"
+    ],
+    "goal": "Formalize the density and representation-function definitions, prove that Sidon sets answer no (they have density 0), and document the open conjecture without making false formal claims."
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-01-15T08:18:33.645Z",
-    "iteration": 4,
-    "focus": "Meta corrections: axiomCount 2→1, stale assumptions fixed",
+    "since": "2026-03-28T23:15:00.000Z",
+    "iteration": 5,
+    "focus": "Maximally formalized: 18 theorems, 1 axiom (the open `erdos_turan_conjecture_28` — cannot be eliminated without solving an open conjecture). lowerDensity/upperDensity defined via Filter.liminf/limsup; full sumSet/repFunction infrastructure; sidon_set_density_zero proved (was an axiom). Status correctly `axiomatized`, badge `axiom`.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "This entry is COMPLETED. Future extensions belong in separate problems: connect to Mathlib Sidon set definitions when available; explore quantitative bounds on r_A for sets near density 1-ε.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 4,
+      "currentApproach": 4,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -71,9 +84,8 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove sidon_set_density_zero from Sidon counting bound |A ∩ [1,N]| ≤ √(2N)+1",
-      "Docker build verification when Docker is available",
-      "Potential Aristotle companion file for routine density lemmas"
+      "This entry is COMPLETED — future work belongs in separate problems.",
+      "Possible extensions: cross-file connection to Mathlib's eventual Sidon set API; quantitative version of sidon_set_density_zero with explicit O(N^{-1/2}) rate; companion file for routine density lemmas if Aristotle becomes useful."
     ],
     "markdown": "# Erdős #749 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\epsilon>0$. Does there exist $A\\subseteq \\mathbb{N}$ such that the lower density of $A+A$ is at least $1-\\epsilon$ and yet $1_A\\ast 1_A(n) \\ll_\\epsilon 1$ for all $n$?\n\n\n\nA similar question can be asked for upper density.\n\nSee also [28].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #28\n- Problem #748\n- Problem #750\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er94b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
@@ -81,17 +93,24 @@
     "erdos"
   ],
   "relatedProofs": [
-    "erdos-7",
-    "erdos-74",
-    "erdos-749"
+    "erdos-28",
+    "erdos-748",
+    "erdos-750"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": [
+      "Erdős, P. (1994). Some recent problems and results in graph theory, combinatorics, and number theory [Er94b]",
+      "Erdős, P., Turán, P. (1941). On a problem of Sidon in additive number theory and on some related problems. J. London Math. Soc. — origin of Erdős-Turán additive bases conjecture",
+      "Plünnecke, H. (1970). Eine zahlentheoretische Anwendung der Graphtheorie",
+      "Ruzsa, I.Z. (1989). An application of graph theory to additive number theory"
+    ],
+    "urls": [
+      "https://erdosproblems.com/749"
+    ],
     "mathlib": []
   },
   "started": "2026-01-15T08:18:33.645Z",
-  "lastUpdate": "2026-03-28T23:15:00.000Z",
+  "lastUpdate": "2026-04-27T00:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
