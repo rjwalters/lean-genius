@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-28T06:54:31-07:00",
-    "iteration": 2,
-    "focus": "Formalized problem and stated characterization",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T17:00:00Z",
+    "iteration": 3,
+    "focus": "Hilbert20LocalSolvability.lean stable: 3 deep axioms (Nirenberg-Treves), 0 sorries",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "OQ-01 retired; sub-OQs (OQ01OQ03 etc.) tracked separately",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 0,
@@ -43,7 +43,8 @@
       "Nirenberg-Treves conjecture (1963, proved Dencker 2006): (Ψ) iff locally solvable for principal type",
       "Elliptic operators satisfy (Ψ) vacuously - principal symbol never vanishes",
       "Operators with real principal symbol satisfy (Ψ) trivially - Im = 0",
-      "Full proof requires microlocal analysis not in Mathlib"
+      "Full proof requires microlocal analysis not in Mathlib",
+      "Audit 2026-04-27: Hilbert20LocalSolvability.lean (the proofRepoPath) has 3 axioms 0 sorries — matches gallery axiomCount=3. Stable axiomatized state for Nirenberg-Treves characterization."
     ],
     "mathlibGaps": [
       "No distribution theory in Mathlib",
@@ -70,7 +71,7 @@
     "mathlib": []
   },
   "started": "2026-03-28T14:26:43.165Z",
-  "lastUpdate": "2026-03-28T14:26:43.174Z",
+  "lastUpdate": "2026-04-27T17:00:00Z",
   "leanFiles": [
     {
       "path": "Proofs/Hilbert20BoundaryValue.lean",
