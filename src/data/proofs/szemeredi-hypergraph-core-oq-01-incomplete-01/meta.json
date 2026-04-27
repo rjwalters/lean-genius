@@ -44,7 +44,7 @@
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
     "lineCount": 322,
-    "assumptions": "Infrastructure file: 0 sorries, 0 axioms. Provides definitions (SimplicialComplex, completeComplex, topCliques, relativeKDensity, IsGowersRegular, globalDensity) and 14 supporting lemmas. The previously-conjectured naive_implies_gowers theorem was found to be false as stated; the obstruction is documented in-file (Part VII).",
+    "assumptions": "Infrastructure file: 1 sorry (naive_implies_gowers: bridging naive and Gowers regularity requires reformulation), 0 axioms. Provides definitions (SimplicialComplex, completeComplex, topCliques, relativeKDensity, IsGowersRegular, globalDensity) and supporting lemmas. The naive_implies_gowers theorem requires additional structural hypothesis on C'; the obstruction is documented in-file (Part VII).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -109,7 +109,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Gowers hypergraph regularity infrastructure: 1 structure (SimplicialComplex), 6 definitions (completeComplex, IsSubComplex, topCliques, relativeKDensity, IsGowersRegular, globalDensity), and 14 proved theorems. 0 sorries, 0 axioms. The key consistency result relativeKDensity_completeComplex shows relative density w.r.t. the complete complex equals global density. A previously-conjectured naive_implies_gowers theorem was found to be false as stated and is replaced by three provable surrogates (relativeKDensity_eq_of_topCliques_eq, isGowersRegular_self, isGowersRegular_empty); the obstruction is documented in Part VII of the file.",
+    "summary": "Gowers hypergraph regularity infrastructure: 1 structure (SimplicialComplex), 6 definitions (completeComplex, IsSubComplex, topCliques, relativeKDensity, IsGowersRegular, globalDensity), and supporting proved theorems. 1 sorry (naive_implies_gowers, pending reformulation with structural hypothesis on C'), 0 axioms. The key consistency result relativeKDensity_completeComplex shows relative density w.r.t. the complete complex equals global density. The naive_implies_gowers theorem requires either partition-induced sub-complexes or a partition-respecting hypothesis; the obstruction is documented in Part VII of the file.",
     "implications": "**Theoretical**: This infrastructure is the foundation for formalizing the hypergraph counting lemma (Nagle-Rödl-Schacht 2006) and the multidimensional Szemerédi theorem (Gowers 2007). The stratified SimplicialComplex design makes dimension-level conditions explicit, which is essential for the inductive structure of the counting lemma proof.\n\n**For the gallery**: The Gowers regularity infrastructure completes the theoretical framework started in SzemerediHypergraphCore.lean (naive regularity) and SzemerediHypergraphCoreOQ01.lean (flat simplicial complex). Together, these files provide a comprehensive formalization of hypergraph regularity foundations.",
     "openQuestions": [
       "Can a partition-respecting variant of naive regularity be defined that genuinely implies Gowers regularity?",
