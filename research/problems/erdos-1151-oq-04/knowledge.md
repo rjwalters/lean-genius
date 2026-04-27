@@ -151,4 +151,70 @@ The current statement with `M < Lₙf(x)` (signed divergence) may require full l
 - `cot_ge_inv_two_mul`: 1/(2t) ≤ cos(t)/sin(t) for t ≤ π/3. Proved via sin(t)≤t and cos(t)≥1/2.
 - `sum_term_eq_tan_half_angle` proof: abs_of_neg + half-angle formula. The `set` tactic was avoided
   to allow `ring` to close the argument equality `φ/2 = (2k+1)π/(4n)` after `rw [harg]`.
-- Note: `congr 1 <;> ring` does NOT work on sin/cos goals; need explicit `have harg` + `rw [harg]`.
+- Note: `congr 1 <;> ring` does NOT work on sin/cos goals; need explicit `command` + `rw [harg]`.
+
+---
+
+## Session 2026-04-27 (researcher-7) — BLOCKED on upstream Mathlib API drift
+
+**Mode**: REVISIT (claimed RICH problem)
+**Outcome**: BLOCKED — main file fails to build on origin/main
+
+### What I Found
+
+The companion file `Erdos1151OQ04Aristotle.lean` JSON metadata claims `sorryCount: 1`,
+but the actual file contains 0 sorries (all proofs complete). Stale metadata.
+
+The main file `Erdos1151OQ04.lean` has **17+ build errors** on origin/main introduced in
+commits 67e2cafc7808 (2026-04-26) and 343f1622666a (2026-04-27). All are Mathlib API
+drift, not Lean errors:
+
+- `div_le_div_iff` → `div_le_div_iff₀` (lines 770, 874, 905)
+- `Nat.eq_or_gt_of_le` removed (line 963)
+- `harmonic_eq_sum_range` unknown identifier (line 913)
+- `Int.even_iff_not_odd.mp` unknown constant (line 1160)
+- `Real.arccos_lt_pi.mpr` unknown constant (line 1166)
+- Several `linarith failed` and `unsolved goals` cascading from the above
+
+The file does not compile. Therefore **no proof work on this problem can be verified**
+until the API drift is fixed (Mechanic territory).
+
+### Attempted Approach (Not Committed)
+
+Considered adding `sin_ge_sin_of_mem_Icc (d θ : ℝ) (...)`: For 0 < d ≤ π/2 and θ ∈ [d, π-d],
+sin d ≤ sin θ. This is Step 4 of the documented `trig_sum_harmonic_lb` proof sketch and
+is purely Mathlib-API-based. The proof I drafted uses `Real.strictMonoOn_sin.monotoneOn`
+plus `Real.sin_pi_sub` for the symmetric case θ > π/2. The proof body itself is independent
+of the broken main file, but the companion file imports `Proofs.Erdos1151OQ04` so its
+build is gated on the main file building. Discarded the edit pending main-file repair.
+
+### Status
+
+Setting status back to `in-progress` (NOT `blocked` — this is recoverable as soon as a
+Mechanic agent fixes the Mathlib API drift). The two outstanding sorries
+(`trig_sum_harmonic_lb` and `divergence_from_lebesgue_growth`) remain genuinely difficult
+research targets; the new blocker is purely an upstream regression and should be cleared
+quickly.
+
+### Next Steps
+
+1. **(Mechanic)** Fix Mathlib API drift in `Erdos1151OQ04.lean` lines 770, 874, 905, 913, 963,
+   1160, 1166 (and resulting cascade errors at 807, 819, 854, 864, 871, 889, 909, 937, 944).
+   Most fixes are mechanical renames (`div_le_div_iff` → `div_le_div_iff₀`,
+   `Int.even_iff_not_odd` → `Int.not_odd_iff_even` or unfold definition, etc.).
+2. **(Researcher, after fix)** Re-attempt adding `sin_ge_sin_of_mem_Icc` to companion file
+   (Step 4 helper for `trig_sum_harmonic_lb`).
+3. **(Researcher, after fix)** Decompose `trig_sum_harmonic_lb` into 3-4 Aristotle-sized
+   helpers (Lipschitz term bound, j-th node distance, sub-sum harmonic estimate, finite-set
+   minimum closure).
+4. **(Researcher, longer-term)** `divergence_from_lebesgue_growth` foundational gap — either
+   weaken to lim sup version or pursue lacunary construction.
+
+### Stale Metadata Discovered
+
+- `src/data/research/problems/erdos-1151-oq-04.json` `leanFiles[0].sorryCount: 5` — actual: 2
+- `src/data/research/problems/erdos-1151-oq-04.json` `leanFiles[1].sorryCount: 1` — actual: 0
+- `leanFiles[0].lineCount: 1001` — actual: 1282
+- `leanFiles[1].lineCount: 141` — actual: 141 (correct)
+
+Updated in this commit.
