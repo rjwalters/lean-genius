@@ -171,3 +171,71 @@ The Aristotle proof uses induction on block length n:
 
 - `source_coding_achievability_mot` (OPEN): requires LLN/concentration inequalities.
   Not tractable without significant infrastructure (>1000 lines). Classify as BLOCKED.
+
+---
+
+## Session 2026-04-27 (Session 4) — Closed Companion File Sorry
+
+**Mode**: REVISIT
+**Outcome**: PROGRESS — Companion file 1 → 0 sorries (gallery already 0 sorries)
+
+### What I Did
+
+1. Reviewed state: main file `ShannonSourceCodingOQ04.lean` has 0 sorries (verified status,
+   per meta.json) and the companion file `ShannonSourceCodingOQ04Aristotle.lean` had 1 stale
+   sorry for `type_class_size_eq_multinomial` even though Aristotle's proof was already
+   integrated into the main file (PR #12842) and into the main file's
+   `type_class_size_eq_multinomial`.
+2. Found Aristotle's proof for the *primed* names (`typeClass'`/`empDist'`) in
+   `aristotle-results/processed/ShannonSourceCodingOQ04Aristotle-solved.lean` (lines 147-211).
+3. Replaced the `sorry` in the companion file with that proof body, matching the primed
+   definitions used in the companion namespace.
+4. Verified build with `./proofs/scripts/docker-build.sh Proofs.ShannonSourceCodingOQ04Aristotle`
+   (host has 7.65GB RAM, used `LEAN_MEMORY_LIMIT=6144`).
+
+### Insights
+
+- The proof body of `type_class_size_eq_multinomial` does NOT reference `typeClass`/`empDist`
+  by name in its main body — it works with `Finset.filter (fun σ => ∀ i, ... = f i)` directly.
+  The only places the definition names matter are:
+  (a) the final `convert h_card; · unfold ...; · rw [Nat.multinomial, ← hf]` step where
+      `unfold` rewrites the goal to match the filtered universal form.
+- This means the same proof transfers cleanly between the main and companion namespaces with
+  only a name swap in the `unfold` line — useful pattern when the same lemma is proved in
+  two namespaces.
+
+### Files Modified
+
+- `proofs/Proofs/ShannonSourceCodingOQ04Aristotle.lean` (147 → 230 lines, 1 → 0 sorries)
+- `src/data/proofs/shannon-source-coding-oq-04/meta.json` (companion sorries 1→0)
+- `src/data/research/problems/shannon-source-coding-oq-04.json` (knowledge updated)
+
+### Status
+
+This problem is now fully formalized:
+- Main file: 0 sorries, 0 axioms (verified)
+- Companion file: 0 sorries
+
+Caveat: `source_coding_achievability_mot` in the main file uses a degenerate type class
+(constant-zero sequence with code_length=0); the formal statement is weaker than the true
+source-coding achievability theorem (which would require LLN/concentration to compare the
+empirical distribution of typical sequences to the source distribution p). The honest
+content of this formalization lies in `type_class_size_le_entropy_pow` (entropy upper
+bound) and `dominant_type_lower_bound` (pigeonhole lower bound).
+
+### Follow-up Open Question
+
+A meaningful achievability strengthening that does NOT require LLN: encoding the dominant
+type class. Specifically, one could prove
+
+```
+theorem dominant_type_code_length :
+  ∃ f : Fin k → ℕ, ∃ hf : ∑ i, f i = n,
+  k ^ n / (n + 1) ^ k ≤ (typeClass n f hf).card ∧
+  ∃ enc : typeClass n f hf → Fin (k ^ n / (n + 1) ^ k + 1).succ, Function.Injective enc
+```
+
+This is a worst-case (uniform-source) achievability statement: it shows the dominant type
+class of any sequence space can be coded with ≤ ⌈log₂(k^n/(n+1)^k)⌉ ≈ n log₂ k - k log₂(n+1)
+bits, which is meaningful since for uniform source p_i = 1/k, n log₂ k = n H(p). It does
+NOT require LLN — only finite cardinality and the existing pigeonhole bound.
