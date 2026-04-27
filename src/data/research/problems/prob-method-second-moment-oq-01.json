@@ -1,8 +1,8 @@
 {
   "slug": "prob-method-second-moment-oq-01",
   "title": "Can the quantitative Paley-Zygmund inequality (with threshold parameter $\\the...",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-03-30T01:04:30.838Z",
+    "since": "2026-04-27T16:35:00-07:00",
     "iteration": 1,
-    "focus": "Gallery entry created for completed proof",
+    "focus": "Completed (researcher-7 stale-pool cleanup 2026-04-27). Both Lean files sorry-free with 0 axioms (parent: 4 thms; OQ01: 3 thms). Both gallery entries have status: verified.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Closed.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -32,15 +32,15 @@
     "progressSummary": "COMPLETE: ProbMethodSecondMomentOQ01.lean (3 theorems, 0 sorries, 0 axioms, 147 lines). Gallery entry created with meta.json, annotations, index.ts.",
     "builtItems": [
       "Created ProbMethodSecondMomentOQ01.lean (147 lines): quantitative Paley-Zygmund inequality",
-      "Proved paley_zygmund_quantitative: counting form with threshold θ",
+      "Proved paley_zygmund_quantitative: counting form with threshold \u03b8",
       "Proved paley_zygmund_probability: probability form as corollary",
-      "Proved paley_zygmund_at_zero: θ=0 specialization",
+      "Proved paley_zygmund_at_zero: \u03b8=0 specialization",
       "Gallery entry: src/data/proofs/prob-method-second-moment-oq-01/ with meta.json, index.ts, annotations.json"
     ],
     "insights": [
-      "The quantitative Paley-Zygmund inequality with threshold θ follows from Cauchy-Schwarz on the above-threshold subset plus a sum decomposition argument",
+      "The quantitative Paley-Zygmund inequality with threshold \u03b8 follows from Cauchy-Schwarz on the above-threshold subset plus a sum decomposition argument",
       "The proof uses sq_sum_le (Cauchy-Schwarz for finite sums), Finset.sum_filter_add_sum_filter_not, and Finset.sum_le_sum for the below-threshold bound",
-      "At θ=0, the quantitative PZ gives (∑f)² ≤ |{f>0}| · ∑f², strictly stronger than the qualitative P[X>0]>0"
+      "At \u03b8=0, the quantitative PZ gives (\u2211f)\u00b2 \u2264 |{f>0}| \u00b7 \u2211f\u00b2, strictly stronger than the qualitative P[X>0]>0"
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -62,7 +62,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T01:04:30.838Z",
-  "lastUpdate": "2026-03-30T01:04:30.838Z",
+  "lastUpdate": "2026-04-27T23:33:52.641261Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
