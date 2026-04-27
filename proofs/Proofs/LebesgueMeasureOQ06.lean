@@ -1369,6 +1369,90 @@ private lemma wordStart_disjoint {g₁ g₂ : Fin 2} {b₁ b₂ : Bool}
   simp [WordStart] at h₁ h₂
   exact h (Option.some.inj (h₁.symm.trans h₂))
 
+/-- Helper: Equidecomposable via a 2-piece partition and inverse-cancel.
+    If `univ = P₀ ∪ g • P₁` (disjoint), then `univ ≃ᴳ P₀ ∪ P₁` via pieces
+    `{P₀, g • P₁}` and group elements `{1, g⁻¹}`. -/
+private lemma equidecomp_of_cover {G : Type*} [Group G]
+    (P₀ P₁ : Set G) (g : G)
+    (hcover : Set.univ = P₀ ∪ g • P₁)
+    (hdisj_pieces : Disjoint P₀ (g • P₁))
+    (hdisj_images : Disjoint P₀ P₁) :
+    Equidecomposable G (Set.univ : Set G) (P₀ ∪ P₁) := by
+  -- Use if-based definitions for clean fin_cases handling
+  let pieces : Fin 2 → Set G := fun i => if i = 0 then P₀ else g • P₁
+  let gs : Fin 2 → G := fun i => if i = 0 then (1 : G) else g⁻¹
+  have hp0 : pieces 0 = P₀ := if_pos rfl
+  have hp1 : pieces 1 = g • P₁ := if_neg (by decide)
+  have hg0 : gs 0 = (1 : G) := if_pos rfl
+  have hg1 : gs 1 = g⁻¹ := if_neg (by decide)
+  have cancel : g⁻¹ • (g • P₁) = P₁ := by rw [smul_smul, inv_mul_cancel, one_smul]
+  -- Helper: ⋃ over Fin 2 = binary union
+  have iUnion_pieces : (⋃ i, pieces i) = P₀ ∪ g • P₁ := by
+    ext x; simp only [Set.mem_iUnion, Set.mem_union]
+    exact ⟨fun ⟨i, hi⟩ => by fin_cases i <;> simp_all,
+           fun h => h.elim (fun h => ⟨0, by rw [hp0]; exact h⟩)
+                           (fun h => ⟨1, by rw [hp1]; exact h⟩)⟩
+  have iUnion_images : (⋃ i, gs i • pieces i) = P₀ ∪ P₁ := by
+    ext x; simp only [Set.mem_iUnion, Set.mem_union]
+    constructor
+    · rintro ⟨i, hi⟩
+      fin_cases i
+      · left; rwa [hg0, hp0, one_smul] at hi
+      · right; rwa [hg1, hp1, cancel] at hi
+    · rintro (h | h)
+      · exact ⟨0, by rw [hg0, hp0, one_smul]; exact h⟩
+      · exact ⟨1, by rw [hg1, hp1, cancel]; exact h⟩
+  refine ⟨2, pieces, gs, ?_, ?_, ?_, ?_, ?_⟩
+  -- pieces ⊆ univ
+  · intro i; exact Set.subset_univ _
+  -- pieces pairwise disjoint
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;> simp_all
+    · rw [hp0, hp1]; exact hdisj_pieces
+    · rw [hp0, hp1]; exact hdisj_pieces.symm
+  -- pieces cover univ
+  · rw [iUnion_pieces]; exact hcover
+  -- images cover B = P₀ ∪ P₁
+  · exact iUnion_images
+  -- images pairwise disjoint
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;> simp_all
+    · rw [hg0, hp0, one_smul, hg1, hp1, cancel]; exact hdisj_images
+    · rw [hg0, hp0, one_smul, hg1, hp1, cancel]; exact hdisj_images.symm
+
+/-- **F₂ is paradoxical** under its own left-multiplication action.
+    The free group of rank 2 can be "duplicated" using only left translations.
+
+    Construction:
+    - B = W_a ∪ W_a⁻¹ (words starting with a or a⁻¹)
+    - C = W_b ∪ W_b⁻¹ (words starting with b or b⁻¹)
+    - B and C are disjoint (distinct head letters)
+    - univ ≃ B via 2 pieces: {W_a, a·W_a⁻¹} mapped by {id, a⁻¹}
+    - univ ≃ C via 2 pieces: {W_b, b·W_b⁻¹} mapped by {id, b⁻¹}
+
+    This is the core group-theoretic engine of the Banach-Tarski paradox. -/
+theorem free_group_paradoxical :
+    IsParadoxical (FreeGroup (Fin 2)) (Set.univ : Set (FreeGroup (Fin 2))) := by
+  set a := FreeGroup.of (0 : Fin 2)
+  set b := FreeGroup.of (1 : Fin 2)
+  set W_a    := WordStart 0 true
+  set W_ainv := WordStart 0 false
+  set W_b    := WordStart 1 true
+  set W_binv := WordStart 1 false
+  refine ⟨W_a ∪ W_ainv, W_b ∪ W_binv, Set.subset_univ _, Set.subset_univ _, ?_, ?_, ?_⟩
+  -- Disjointness of B and C: all four word-start sets have distinct head letters
+  · exact Set.disjoint_union_right.mpr
+      ⟨Set.disjoint_union_left.mpr
+        ⟨wordStart_disjoint (by decide), wordStart_disjoint (by decide)⟩,
+       Set.disjoint_union_left.mpr
+        ⟨wordStart_disjoint (by decide), wordStart_disjoint (by decide)⟩⟩
+  -- univ ≃ W_a ∪ W_ainv via 2-piece decomposition
+  · exact equidecomp_of_cover W_a W_ainv a
+      free_group_cover_a free_group_cover_a_disj (wordStart_disjoint (by decide))
+  -- univ ≃ W_b ∪ W_binv via 2-piece decomposition
+  · exact equidecomp_of_cover W_b W_binv b
+      free_group_cover_b free_group_cover_b_disj (wordStart_disjoint (by decide))
+
 /-- The free group of rank 2 is NOT amenable.
     Proof: F₂ = W_a ∪ a·W_ainv (disjoint) gives μ(W_a) + μ(W_ainv) = 1.
     Similarly μ(W_b) + μ(W_binv) = 1. But all four sets are pairwise disjoint
