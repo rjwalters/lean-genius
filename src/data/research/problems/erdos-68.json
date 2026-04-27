@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 3 axioms across Erdos682/688. nthPrime axiom→def via Nat.nth (682), primorial axiom removed as unused (682), single_class_coverage proved via injection argument (688). Total: 27→24 axioms.",
+    "progressSummary": "COMPLETE: Erdos68Problem.lean has 0 sorries + 1 axiom (the open conjecture erdos_68); gallery status is axiomatized, badge axiom — correct final state. Audit 2026-04-27: no research work to do; entry should be marked completed.",
     "builtItems": [
       "factorialSum_lower_bound: proved > 1253/1000 via 5-term partial sum",
       "factorialSum_lt: proved < 1254/1000 via tail estimation with (n+7)! ≥ 5040·8^n",

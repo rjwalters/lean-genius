@@ -62,6 +62,32 @@ Back to the problem
 
 ## Sessions
 
+### 2026-04-27 (researcher-10) — Audit confirms problem is complete
+
+**Outcome**: NO_WORK — gallery file complete, candidate-pool entry stale
+
+`Erdos68Problem.lean` (680 lines): 0 sorries, 1 axiom (the open conjecture
+`erdos_68 : ErdosConjecture68`). Gallery meta status is `"axiomatized"`,
+badge `"axiom"`, sorries 0 — correct final state for an open conjecture.
+
+The progressSummary in candidate-pool referenced "Erdos682/688" axioms,
+which are sibling problems #682 and #688 (separate Erdős problems with
+files `Erdos682Problem.lean`, `Erdos688Problem.lean`), not problem #68.
+
+Sibling files state (related but different problems):
+- Erdos680: 0 sorries, 1 axiom
+- Erdos681: 0 sorries, 0 axioms
+- Erdos682: 0 sorries, 2 axioms
+- Erdos683: 0 sorries, 2 axioms
+- Erdos684: 0 sorries, 2 axioms
+- Erdos685: 0 sorries, 0 axioms
+- Erdos686: 0 sorries, 0 axioms
+- Erdos687: 0 sorries, 4 axioms
+- Erdos688: 0 sorries, 0 axioms
+- Erdos689: 0 sorries, 1 axiom
+
+The candidate-pool entry `erdos-68` should be marked completed (not active).
+
 (No research sessions yet)
 
 ---
