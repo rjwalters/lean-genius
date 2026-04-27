@@ -765,6 +765,58 @@ private lemma submodule_der_unit_zero
   simp only [Pi.add_apply] at hi
   linarith
 
+/-- For any imaginary basis vector `eⱼ` (j ≠ 0), `eⱼ · eⱼ = -e₀` in 𝕆.
+    Direct computation from the eightMul formula: in component 0, only the
+    diagonal `-aⱼ * bⱼ` term survives (giving -1); all other components vanish. -/
+private lemma stdBasis_sq_neg_unit (j : Fin 8) (hj : j ≠ 0) :
+    eightMul (stdBasis j) (stdBasis j) = -octUnit := by
+  fin_cases j
+  · exact absurd rfl hj
+  all_goals
+    funext k
+    fin_cases k <;>
+      simp only [eightMul, octUnit, stdBasis, Pi.neg_apply,
+        Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+        Matrix.cons_val_two, Matrix.cons_val_three] <;>
+      simp (config := { decide := true }) only [ite_true, ite_false] <;>
+      ring
+
+/-- For any derivation `f` of 𝕆 (member of `OctonionDerSubmodule`) and any
+    imaginary basis vector `eⱼ` (j ≠ 0), the j-th component of `f(eⱼ)` is zero.
+
+    Geometric meaning: derivations preserve the unit-norm constraint on basis
+    vectors, so `f(eⱼ) ⊥ eⱼ` (equivalent to `(f eⱼ)_j = 0` since eⱼ has only
+    its j-th component nonzero).
+
+    Proof: Apply Leibniz at `(eⱼ, eⱼ)`. Since `eⱼ · eⱼ = -e₀` (by
+    `stdBasis_sq_neg_unit`) and `f(e₀) = 0` (by `submodule_der_unit_zero`),
+    we get `0 = f(-e₀) = (f eⱼ) · eⱼ + eⱼ · (f eⱼ)`.
+    The 0-th component of the RHS computes to `-2·(f eⱼ)_j` (since both
+    `(a · eⱼ)_0` and `(eⱼ · a)_0` reduce to `-a_j` for j ≥ 1), giving
+    `(f eⱼ)_j = 0`. -/
+private lemma submodule_der_diagonal_kill
+    (f : (Fin 8 → ℝ) →ₗ[ℝ] (Fin 8 → ℝ)) (hf : f ∈ OctonionDerSubmodule)
+    (j : Fin 8) (hj : j ≠ 0) :
+    f (stdBasis j) j = 0 := by
+  -- 1. Leibniz: f(eⱼ · eⱼ) = (f eⱼ) · eⱼ + eⱼ · (f eⱼ)
+  have hL := hf (stdBasis j) (stdBasis j)
+  -- 2. eⱼ · eⱼ = -e₀ for j ≥ 1
+  rw [stdBasis_sq_neg_unit j hj] at hL
+  -- 3. f(-e₀) = -f(e₀) = 0
+  rw [LinearMap.map_neg, submodule_der_unit_zero f hf, neg_zero] at hL
+  -- 4. Now hL : 0 = (f eⱼ) · eⱼ + eⱼ · (f eⱼ); take component 0
+  have h0 := congr_fun hL 0
+  simp only [Pi.zero_apply, Pi.add_apply] at h0
+  -- 5. For each j ∈ {1,...,7}, compute components and conclude
+  fin_cases j
+  · exact absurd rfl hj
+  all_goals
+    simp only [eightMul, stdBasis,
+      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+      Matrix.cons_val_two, Matrix.cons_val_three] at h0 <;>
+    simp (config := { decide := true }) only [ite_true, ite_false] at h0 <;>
+    linarith
+
 /-- The evaluation map is injective: ev(D) = 0 forces D = 0.
 
     Proof outline: ev(D) = 0 combined with the Leibniz rule and antisymmetry
@@ -809,8 +861,13 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
       have hf0 : f (stdBasis 0) = 0 := submodule_der_unit_zero f hf
       have hg0 : g (stdBasis 0) = 0 := submodule_der_unit_zero g hg
       rw [hf0, hg0]
-    · -- Case j ≠ 0: requires Leibniz constraint analysis (see proof outline above)
-      sorry
+    · -- Case j ≠ 0: split on whether i = j (diagonal) or i ≠ j (off-diagonal)
+      by_cases hij : i = j
+      · -- Case i = j (diagonal kill via submodule_der_diagonal_kill)
+        rw [hij, submodule_der_diagonal_kill f hf j hj,
+            submodule_der_diagonal_kill g hg j hj]
+      · -- Case j ≠ 0, i ≠ j: requires antisymmetry + Fano-line Leibniz analysis
+        sorry
   intro k
   funext i
   exact hev k i
