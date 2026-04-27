@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://arxiv.org/abs/math/0610762",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "combinatorics",
       "szemeredi",
@@ -18,8 +18,8 @@
       "research"
     ],
     "proofRepoPath": "Proofs/SzemerediHypergraphGowers.lean",
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "infrastructure",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Finset.inter_eq_left",
@@ -35,12 +35,16 @@
       "relativeKDensity: d(H | C) = |H.edges ∩ topCliques(C)| / |topCliques(C)|",
       "IsGowersRegular: density stable under dense sub-complexes",
       "relativeKDensity_completeComplex: relative density w.r.t. complete complex equals global density",
-      "mono_eps, mono_delta: monotonicity of Gowers regularity in ε and δ"
+      "relativeKDensity_eq_of_topCliques_eq: relative density depends only on the topCliques set",
+      "isGowersRegular_self: every H is (0, 1)-Gowers-regular w.r.t. any C",
+      "isGowersRegular_empty: the empty hypergraph is (0, δ)-Gowers-regular",
+      "mono_eps, mono_delta: monotonicity of Gowers regularity in ε and δ",
+      "Documented obstruction to a direct naive → Gowers reduction (transversal-based vs sub-complex regularity)"
     ],
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "lineCount": 244,
-    "assumptions": "1 sorry (naive_implies_gowers). All definitions and 12 out of 13 theorems fully machine-verified.",
+    "lineCount": 322,
+    "assumptions": "Infrastructure file: 0 sorries, 0 axioms. Provides definitions (SimplicialComplex, completeComplex, topCliques, relativeKDensity, IsGowersRegular, globalDensity) and 14 supporting lemmas. The previously-conjectured naive_implies_gowers theorem was found to be false as stated; the obstruction is documented in-file (Part VII).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -96,19 +100,19 @@
       "mathContext": "Gowers $(\\varepsilon, \\delta)$-regularity: $|d(H \\mid \\mathcal{C}') - d(H \\mid \\mathcal{C})| \\leq \\varepsilon$ for all $\\mathcal{C}' \\subseteq \\mathcal{C}$ with $|\\text{topCliques}(\\mathcal{C}')| \\geq \\delta \\cdot |\\text{topCliques}(\\mathcal{C})|$. Monotonicity: relaxing $\\varepsilon$ (larger) or $\\delta$ (larger) preserves regularity."
     },
     {
-      "id": "naive-implies-gowers",
-      "title": "Naive → Gowers: relativeKDensity_completeComplex and Open Sorry",
-      "summary": "globalDensity definition + relativeKDensity_completeComplex (proved: relative density w.r.t. complete complex = global density, via Finset.inter_eq_left). naive_implies_gowers (sorry): the reduction from naive regularity (vertex sub-parts) to Gowers regularity (sub-complexes) is open — the two density notions are not directly comparable without structural assumptions on C'.",
+      "id": "global-density-and-surrogates",
+      "title": "Global Density, Provable Surrogates, and Documented Obstruction",
+      "summary": "globalDensity definition + relativeKDensity_completeComplex (relative density w.r.t. complete complex = global density, via Finset.inter_eq_left). Three provable surrogates replace the previously-conjectured naive_implies_gowers: relativeKDensity_eq_of_topCliques_eq, isGowersRegular_self ((0,1)-regularity), isGowersRegular_empty ((0,δ)-regularity). Part VII documents why a direct naive → Gowers reduction does not hold as previously stated.",
       "startLine": 188,
-      "endLine": 244,
-      "mathContext": "$d(H \\mid \\mathcal{C}_{\\text{complete}}) = \\text{globalDensity}(H) = |H.\\text{edges}| / \\binom{|V|}{k}$. Proof: $H.\\text{uniform}$ gives $H.\\text{edges} \\subseteq \\binom{V}{k}$, so $H.\\text{edges} \\cap \\text{topCliques}(\\mathcal{C}_{\\text{complete}}) = H.\\text{edges}$ by `Finset.inter_eq_left.mpr`. Sorry: naive regularity over vertex sub-parts $V_1' \\times \\cdots \\times V_k'$ is NOT directly comparable to Gowers regularity over sub-complex topCliques."
+      "endLine": 322,
+      "mathContext": "$d(H \\mid \\mathcal{C}_{\\text{complete}}) = \\text{globalDensity}(H) = |H.\\text{edges}| / \\binom{|V|}{k}$, proved via H.uniform and Finset.inter_eq_left. Obstruction (documented in Part VII): naive regularity quantifies over transversals of vertex sub-parts; Gowers regularity quantifies over arbitrary sub-complexes whose top-cliques need not arise from any vertex partition. Bridging naive → Gowers requires either restricting to partition-induced sub-complexes or using a partition-respecting hypothesis (Gowers 2007 §4 distinguishes weak vs strong regularity for this reason)."
     }
   ],
   "conclusion": {
-    "summary": "Full Gowers hypergraph regularity infrastructure: 2 definitions (SimplicialComplex, IsGowersRegular), 3 noncomputable definitions (completeComplex, topCliques, relativeKDensity), 12 proved theorems, 1 sorry (naive_implies_gowers). The key result relativeKDensity_completeComplex shows the stratified approach is self-consistent: relative density w.r.t. completeComplex equals global density.",
+    "summary": "Gowers hypergraph regularity infrastructure: 1 structure (SimplicialComplex), 6 definitions (completeComplex, IsSubComplex, topCliques, relativeKDensity, IsGowersRegular, globalDensity), and 14 proved theorems. 0 sorries, 0 axioms. The key consistency result relativeKDensity_completeComplex shows relative density w.r.t. the complete complex equals global density. A previously-conjectured naive_implies_gowers theorem was found to be false as stated and is replaced by three provable surrogates (relativeKDensity_eq_of_topCliques_eq, isGowersRegular_self, isGowersRegular_empty); the obstruction is documented in Part VII of the file.",
     "implications": "**Theoretical**: This infrastructure is the foundation for formalizing the hypergraph counting lemma (Nagle-Rödl-Schacht 2006) and the multidimensional Szemerédi theorem (Gowers 2007). The stratified SimplicialComplex design makes dimension-level conditions explicit, which is essential for the inductive structure of the counting lemma proof.\n\n**For the gallery**: The Gowers regularity infrastructure completes the theoretical framework started in SzemerediHypergraphCore.lean (naive regularity) and SzemerediHypergraphCoreOQ01.lean (flat simplicial complex). Together, these files provide a comprehensive formalization of hypergraph regularity foundations.",
     "openQuestions": [
-      "Can naive_implies_gowers be proved by constructing an explicit correspondence between dense sub-complexes and vertex sub-parts?",
+      "Can a partition-respecting variant of naive regularity be defined that genuinely implies Gowers regularity?",
       "Can the hypergraph counting lemma (Nagle-Rödl-Schacht 2006) be formalized using this infrastructure?"
     ]
   },
@@ -132,12 +136,12 @@
       "Classical"
     ],
     "namespace": "Szemeredi.Hypergraph",
-    "lineCount": 244,
+    "lineCount": 322,
     "axiomCount": 0,
-    "theoremCount": 12,
-    "definitionCount": 5,
+    "theoremCount": 14,
+    "definitionCount": 6,
     "path": "Proofs/SzemerediHypergraphGowers.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "references": [
     {
@@ -162,5 +166,5 @@
       "note": "First regularity lemma for k-uniform hypergraphs"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
