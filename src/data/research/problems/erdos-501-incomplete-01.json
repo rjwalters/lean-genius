@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-03-28T20:57:10.258Z",
-    "iteration": 5,
-    "focus": "Decomposed erdos_hajnal_finite. Remaining sorry is product measure existence lemma for n>=2.",
+    "iteration": 6,
+    "focus": "CH-def bug fixed in Provable file. 3 deep sorries remain across both files (Erdos-Hajnal n>=2, Hechler under CH, NPS closed).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Either eliminate file duplication (provable now mirrors main exactly), or break Mathlib gap with outer-measure Fubini lemma.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Decomposed erdos_hajnal_finite into exists_independent_tuple (sorry for n>=2) + proved combinatorial reduction. 0 axioms, 3 sorries remain (exists_independent_tuple n>=2, hechler_under_CH, nps_closed_infinite).",
+    "progressSummary": "PROGRESS: Fixed CH definition bug in Erdos501ProblemProvable.lean — old def `∀ S ⊆ ℝ uncountable, ∃ surjection ℝ → S` is trivially provable in ZFC (carries no content). Replaced with `Cardinal.aleph 1 = Cardinal.continuum` matching main file. 0 axioms, 3 sorries remain (exists_independent_tuple n>=2, hechler_under_CH, nps_closed_infinite).",
     "builtItems": [
       "Proved max_size_infinite in Erdos501Problem.lean (by_contra + le_iSup₂ + omega)",
       "Proved max_size_infinite in Erdos501ProblemProvable.lean (same proof)",
@@ -40,7 +40,8 @@
       "Created Erdos501Aristotle.lean with bounded_empty, bounded_subset, bounded_inter_Icc, bounded_union, outerMeasure_mono, outerMeasure_inter_le, outerMeasure_union_le, exists_not_mem_of_outerMeasure_lt_Icc (sorry), isClosed_measurableSet, closed_outerMeasure_eq_measure, measure_compl_Icc_pos (sorry), independent_size_zero, independent_size_one",
       "Decomposed erdos_hajnal_finite into exists_independent_tuple + combinatorial reduction",
       "Proved erdos_hajnal_finite from exists_independent_tuple (Finset.image + card_image_of_injective)",
-      "Proved exists_independent_tuple base cases n=0 (Fin.elim0) and n=1 (Subsingleton)"
+      "Proved exists_independent_tuple base cases n=0 (Fin.elim0) and n=1 (Subsingleton)",
+      "Fixed continuum_hypothesis bug in Erdos501ProblemProvable.lean: replaced trivially-true surjection-based def with Cardinal.aleph 1 = Cardinal.continuum"
     ],
     "insights": [
       "Answer depends on set-theoretic axioms (CH): NO under CH (Hechler 1972), YES for closed sets (NPS 1987)",
@@ -61,13 +62,15 @@
       "Key proof analysis: gladysz_pairs and erdos_hajnal_finite both require Fubini-type arguments with measurability of the product graph {(x,y) : x ∈ A_y}. For general families, this graph may be non-measurable. For closed families, measurability of multifunction y ↦ A_y is not automatic.",
       "Product measure proof of Erdos-Hajnal: conflict set C_{ij}={f in [0,L]^n: f(i) in A(f(j))} has measure < L^{n-1} by Fubini section bound. Total < n(n-1)*L^{n-1} < L^n for L > n(n-1), so conflict-free injective tuples exist.",
       "Backward avoidance (x_i not in A_z) cannot be proved by deterministic construction -- requires product measure / counting argument. This is the fundamental difficulty.",
-      "Base cases n=0,1 of exists_independent_tuple proved. Combinatorial reduction (tuple to Finset) fully proved."
+      "Base cases n=0,1 of exists_independent_tuple proved. Combinatorial reduction (tuple to Finset) fully proved.",
+      "BUG (fixed): Provable file had `∀ S ⊆ ℝ uncountable, ∃ f : ℝ → S, Function.Surjective f` as CH. This is trivially True in ZFC: for non-empty S pick s₀ ∈ S and define f(x) := if x ∈ S then x else s₀; every y ∈ S has preimage y. So that def carried no CH content."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove exists_independent_tuple for n>=2: needs outer measure Tonelli/Cavalieri inequality on product spaces",
-      "Alternative: formalize product outer measure bound as Mathlib-compatible lemma, then reduce to it",
-      "Consider whether MeasureTheory.Measure.prod_fubini can handle outer measure bounds for non-measurable sets"
+      "Prove exists_independent_tuple for n>=2: requires outer-measure Tonelli/Cavalieri inequality on product spaces",
+      "Consider proof via measurable cover + Mathlib Fubini, then transfer back to outer measure",
+      "Hechler 1972 (under CH) and NPS 1987 (closed sets) require independent deep formalization efforts (transfinite induction / descriptive set theory)",
+      "Consider unifying main file and Provable file — both now use the same CH def, so structural duplication is closer to elimination"
     ]
   },
   "tags": [

@@ -27,6 +27,7 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.MeasureTheory.Measure.OuterMeasure.Basic
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Data.Set.Finite
+import Mathlib.SetTheory.Cardinal.Continuum
 import Mathlib.Tactic
 
 namespace Erdos501Provable
@@ -109,10 +110,19 @@ theorem independent_pair_exists (A : SetFamily) (hA : BoundedOuterMeasureFamily 
     This is stated as a conditional: CH implies the negation of the
     infinite independence property for some family.
 -/
-/-- The Continuum Hypothesis: every uncountable subset of ℝ has cardinality |ℝ|.
-    Defined as a `Prop` (not axiom) since this is the provable version of the file. -/
+/-- The Continuum Hypothesis: ℵ₁ = 𝔠 (the first uncountable cardinal equals the
+    cardinality of the continuum). This is independent of ZFC.
+
+    Defined as a `Prop` (not axiom) so this file is fully axiom-free.
+
+    Note: A previous version defined CH as
+    `∀ S ⊆ ℝ uncountable, ∃ f : ℝ → S, Function.Surjective f`,
+    but that statement is *trivially provable* in ZFC: pick any s₀ ∈ S and define
+    `f x := if x ∈ S then x else s₀`. This is surjective because every y ∈ S is
+    its own preimage. So that "CH" carried no content. The cardinal-equality form
+    used here matches `Erdos501Problem.lean` and the gallery's `ContinuumHypothesis.lean`. -/
 def continuum_hypothesis : Prop :=
-  ∀ (S : Set ℝ), ¬S.Countable → ∃ f : ℝ → S, Function.Surjective f
+  Cardinal.aleph 1 = Cardinal.continuum
 
 theorem hechler_under_CH (hCH : continuum_hypothesis) :
     ∃ A : SetFamily, BoundedOuterMeasureFamily A ∧ ¬HasInfiniteIndependent A := by

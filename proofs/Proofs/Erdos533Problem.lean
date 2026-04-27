@@ -357,8 +357,13 @@ theorem degree_le {n : ℕ} (G : SGraph n) (v : Fin n) : degree G v ≤ n - 1 :=
 
 /-- Erdős Problem #533: For every δ > 0, any K₅-free graph on n vertices
     with at least δn² edges must contain a triangle-free induced subgraph
-    on ≫_δ n vertices. -/
-axiom erdos_533_conjecture (δ : ℝ) (hδ : 0 < δ) :
+    on ≫_δ n vertices.
+
+    This is the open conjecture; it should be a `Prop`, not an `axiom`,
+    since asserting it via `axiom` would amount to assuming the conjecture
+    is true (which is unknown). The full conjecture is
+    `∀ δ > 0, erdos_533_conjecture δ _`. -/
+def erdos_533_conjecture (δ : ℝ) (_hδ : 0 < δ) : Prop :=
   ∃ c : ℝ, 0 < c ∧ ∀ (n : ℕ) (hn : 1 ≤ n)
     (G : SGraph n) (hK5 : ¬HasClique G 5)
     (hEdges : δ * n ^ 2 ≤ (edgeCount G : ℝ)),
