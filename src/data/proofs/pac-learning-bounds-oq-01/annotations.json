@@ -26,7 +26,7 @@
     "id": "ann-shatters-def",
     "proofId": "pac-learning-bounds-oq-01",
     "range": {
-      "startLine": 22,
+      "startLine": 20,
       "endLine": 23
     },
     "type": "concept",
@@ -50,7 +50,7 @@
     "id": "ann-threshold-class",
     "proofId": "pac-learning-bounds-oq-01",
     "range": {
-      "startLine": 26,
+      "startLine": 25,
       "endLine": 27
     },
     "type": "concept",
@@ -70,8 +70,8 @@
     "id": "ann-singleton-shatters",
     "proofId": "pac-learning-bounds-oq-01",
     "range": {
-      "startLine": 31,
-      "endLine": 51
+      "startLine": 29,
+      "endLine": 49
     },
     "type": "theorem",
     "title": "Lower Bound: Singletons Are Shattered",
@@ -92,8 +92,8 @@
     "id": "ann-not-shatters-pair",
     "proofId": "pac-learning-bounds-oq-01",
     "range": {
-      "startLine": 54,
-      "endLine": 79
+      "startLine": 51,
+      "endLine": 77
     },
     "type": "theorem",
     "title": "Upper Bound: No Pair Is Shattered",
@@ -113,8 +113,8 @@
     "id": "ann-vcdim-bounds",
     "proofId": "pac-learning-bounds-oq-01",
     "range": {
-      "startLine": 81,
-      "endLine": 93
+      "startLine": 79,
+      "endLine": 92
     },
     "type": "concept",
     "title": "Combined Bound: VC dim = 1",
@@ -128,6 +128,32 @@
     "prerequisites": [
       "Lower bound theorem",
       "Upper bound theorem"
+    ]
+  },
+  {
+    "id": "ann-anonymous-constructor-witness",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 36,
+      "endLine": 43
+    },
+    "type": "technique",
+    "title": "Producing Hypothesis Witnesses via `⟨t, rfl⟩`",
+    "content": "Both branches of `threshold_shatters_singleton` use the same Lean idiom to produce a witness in $H_{thr}$:\n\n```lean\nrefine ⟨{x | x < a + 1}, ⟨a + 1, rfl⟩, ?_⟩\n```\n\nThis is a single anonymous constructor application that simultaneously:\n1. Provides the **set** $h = \\{x : x < a+1\\}$ — explicit set comprehension.\n2. Provides the **membership proof** $h \\in H_{thr}$ via the inner anonymous constructor $\\langle a+1, \\mathsf{rfl} \\rangle$, which exhibits $a + 1$ as the witnessing threshold and uses reflexivity (`rfl`) because $h$ was defined to *literally equal* $\\{x : x < a+1\\}$ — no unfolding required.\n3. Leaves the third component (the realization equation) as a metavariable `?_` to be filled by the subsequent tactic block.\n\n**Why `rfl` works here:** The definitional unfolding `thresholdClassifiers = { h | ∃ t, h = { x | x < t } }` reduces membership to an existential. Choosing $h$ already as $\\{x : x < a+1\\}$ makes the equation `{x | x < a + 1} = {x | x < (a+1)}` syntactically identical, so `rfl` discharges it. Had we chosen $h = \\{x : x ≤ a\\}$ instead — equivalent but not syntactically identical — `rfl` would fail and we'd need `Set.ext` plus arithmetic.\n\n**Mathlib idiom prevalence:** This `⟨witness, rfl⟩` pattern is ubiquitous in proofs about subobjects defined by existentials: `Submodule.span`, `Subgroup.closure`, `IsCompact.image`, etc. The `rfl` discharges any equation between syntactically identical normal forms, so the trick is to *choose your witnesses to make the equations definitional*. Failing that, the alternative `⟨witness, by simp [...]⟩` or `⟨witness, by rfl⟩` (which tries unfolding) is the next escalation.\n\n**Connection to constructive content:** Lean's `refine` keeps the proof term explicit. After this step the proof obligation is purely the realization equation $\\forall x \\in S, (x \\in h \\iff x \\in T)$ — entirely separated from the membership-in-$H$ obligation, which has been discharged by the witness data $(a+1)$. This separation is the hallmark of a well-structured constructive proof: *exhibit the witness, then verify its property*.",
+    "mathContext": "Anonymous-constructor pattern $\\langle h, \\langle t, \\mathsf{rfl} \\rangle, ?_\\rangle$ unifies (a) supplying the hypothesis $h \\in H_{thr}$, (b) supplying the threshold parameter $t$, (c) discharging the definitional equation $h = \\{x : x < t\\}$ via reflexivity, leaving only the realization condition.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "anonymous constructor",
+      "definitional equality",
+      "rfl tactic",
+      "existential elimination",
+      "subobject membership",
+      "Set.mem_setOf"
+    ],
+    "prerequisites": [
+      "Sigma/exists types",
+      "Lean tactic `refine`",
+      "Set comprehensions"
     ]
   },
   {
