@@ -23,8 +23,8 @@
     "axiomCount": 0,
     "assumptions": "1 sorry in G2_der_dimension proof chain: derEval14_injective — off-diagonal entries (j in {1,...,7}, i != 0, i != j) of the imaginary basis kernel claim. The j = 0 case is closed via submodule_der_unit_zero; the i = j diagonal case (Session 7, 2026-04-27) is closed via submodule_der_diagonal_kill (Leibniz at (e_j, e_j) using stdBasis_sq_neg_unit). Remaining 49-entry off-diagonal block requires antisymmetry ((f e_i)_j + (f e_j)_i = 0 from Leibniz at (e_i, e_j) + (e_j, e_i)) and Fano-line trilinear constraints. derBasis14_linearIndependent was proved in PR #13121. The Aut(O) is in O(7) — fully proved with 0 sorries.",
     "lineCount": 1180,
-    "theoremCount": 38,
-    "definitionCount": 17,
+    "theoremCount": 60,
+    "definitionCount": 19,
     "originalContributions": [
       "OctonionAlgHom / OctonionAut: structures for octonion algebra homomorphisms and automorphisms",
       "alg_aut_preserves_norm: automorphisms preserve the norm (proved via polarization and imaginary decomposition)",
@@ -137,10 +137,10 @@
       "HurwitzTheorem"
     ],
     "namespace": "HurwitzTheoremOQ04",
-    "lineCount": 1094,
+    "lineCount": 1180,
     "axiomCount": 0,
-    "theoremCount": 40,
-    "definitionCount": 15,
+    "theoremCount": 60,
+    "definitionCount": 19,
     "sorries": 1,
     "path": "Proofs/HurwitzTheoremOQ04.lean"
   },
