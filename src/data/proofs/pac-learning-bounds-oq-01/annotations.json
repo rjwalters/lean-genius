@@ -1,0 +1,107 @@
+[
+  {
+    "id": "ann-shatters-def",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 22,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Shatters Predicate",
+    "content": "A hypothesis class $H \\subseteq \\mathcal{P}(\\alpha)$ shatters a finite set $S$ if every subset $T \\subseteq S$ is exactly $h \\cap S$ for some $h \\in H$. Equivalently, $H$ produces all $2^{|S|}$ possible labelings of $S$. We use a Finset-valued $T$ for cleaner reasoning over finite traces, and quantify over $T \\subseteq S$ via Finset subset.",
+    "mathContext": "$H$ shatters $S$ $\\iff$ $\\forall T \\subseteq S, \\exists h \\in H : \\forall x \\in S, (x \\in h \\iff x \\in T)$.",
+    "significance": "core",
+    "relatedConcepts": [
+      "VC dimension",
+      "growth function"
+    ],
+    "prerequisites": [
+      "Finite subsets",
+      "Set operations"
+    ]
+  },
+  {
+    "id": "ann-threshold-class",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 26,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Threshold Hypothesis Class",
+    "content": "$H_{thr} = \\{ \\{x : x < t\\} : t \\in \\mathbb{N} \\}$ — the family of half-lines below a threshold. Each hypothesis is parameterized by a single natural number $t$ and includes exactly the points strictly below $t$. This is the simplest nontrivial hypothesis class: monotone, ordered, and parameterized by one degree of freedom.",
+    "mathContext": "$h_t(x) = [\\![ x < t ]\\!]$, indicator of the half-line.",
+    "significance": "core",
+    "relatedConcepts": [
+      "monotone hypothesis class",
+      "concept class"
+    ],
+    "prerequisites": [
+      "Set comprehension"
+    ]
+  },
+  {
+    "id": "ann-singleton-shatters",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 31,
+      "endLine": 51
+    },
+    "type": "theorem",
+    "title": "Lower Bound: Singletons Are Shattered",
+    "content": "To shatter $\\{a\\}$ we must realize both labelings $\\emptyset$ and $\\{a\\}$. Two threshold witnesses suffice: $t = a + 1$ produces $h_t = \\{x : x < a + 1\\}$ which contains $a$, and $t = 0$ produces $h_t = \\{x : x < 0\\} = \\emptyset$ which excludes $a$. The proof case-splits on whether $a \\in T$ and supplies the appropriate $t$.",
+    "mathContext": "Witnesses: $t = a + 1$ for the labeling $T = \\{a\\}$; $t = 0$ for the labeling $T = \\emptyset$.",
+    "significance": "core",
+    "relatedConcepts": [
+      "case analysis",
+      "Finset.mem_singleton",
+      "Nat.lt_succ_self"
+    ],
+    "prerequisites": [
+      "Shatters definition",
+      "Threshold hypothesis class"
+    ]
+  },
+  {
+    "id": "ann-not-shatters-pair",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 54,
+      "endLine": 79
+    },
+    "type": "theorem",
+    "title": "Upper Bound: No Pair Is Shattered",
+    "content": "For $a < b$, consider the labeling $T = \\{b\\}$ (only $b$ included). If realized by $h_t$, then $a \\notin h_t$ forces $\\neg(a < t)$, i.e., $t \\leq a$. Simultaneously $b \\in h_t$ forces $b < t$. Combined: $b < t \\leq a$, contradicting $a < b$. The argument is purely order-theoretic: monotone classifiers cannot selectively include the larger of two ordered points without also including the smaller.",
+    "mathContext": "$T = \\{b\\}$ requires both $a \\notin h_t \\Rightarrow t \\leq a$ and $b \\in h_t \\Rightarrow b < t$, an impossibility under $a < b$.",
+    "significance": "core",
+    "relatedConcepts": [
+      "monotonicity obstruction",
+      "Finset.mem_singleton"
+    ],
+    "prerequisites": [
+      "Threshold hypothesis class",
+      "Linear order on ℕ"
+    ]
+  },
+  {
+    "id": "ann-vcdim-bounds",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 81,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "Combined Bound: VC dim = 1",
+    "content": "Packaging the singleton lower bound and the pair upper bound: every singleton is shattered, and no two-point set is. The pair theorem is stated for $a < b$ and lifted to arbitrary distinct pairs via $\\{a, b\\} = \\{b, a\\}$ (Finset extensionality, `Or.comm`). Together these constraints pin VC dim of thresholds at exactly 1 — though we do not formally introduce a `vcDim` function here.",
+    "mathContext": "$\\operatorname{VCdim}(H_{thr}) = 1$.",
+    "significance": "core",
+    "relatedConcepts": [
+      "VC dimension definition",
+      "Finset extensionality"
+    ],
+    "prerequisites": [
+      "Lower bound theorem",
+      "Upper bound theorem"
+    ]
+  }
+]

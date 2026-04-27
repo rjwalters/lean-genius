@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-03-30T01:04:30.789Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "VC dim of thresholds on ℕ formalized as VC dim = 1; gallery entry created",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Move to interval classifiers (oq-01 follow-up)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,30 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: VCDimension.lean restored and extended to 8 theorems, 0 sorries, 0 axioms. New: interval_not_shatters_triple proving VCDim(intervals)=2 via convexity argument. Gallery entry created.",
+    "progressSummary": "PROGRESS: VC dim of threshold classifiers on ℕ proved exactly = 1. Created Proofs/PACLearningOQ01.lean (3 theorems, 2 defs, 0 sorries, 0 axioms). Gallery entry created: src/data/proofs/pac-learning-bounds-oq-01/. Sets a working template for further VC-dim instance computations (intervals, half-spaces) toward parent OQ-01.",
     "builtItems": [
-      "VCDimension.lean: Shatters, vcDim, HypothesisClass, powerset, thresholdClassifiers, intervalClassifiers definitions",
-      "powerset_shatters: powerset shatters every finite set",
-      "threshold_shatters_singleton: threshold classifiers shatter singletons",
-      "threshold_not_shatters_pair: threshold classifiers cannot shatter pairs (key monotonicity argument)",
-      "interval_shatters_pair: interval classifiers shatter pairs via 4 explicit intervals",
-      "Gallery entry: src/data/proofs/pac-learning-bounds-oq-01/",
-      "VCDimension.lean restored and extended: interval_convex + interval_not_shatters_triple (new)",
-      "Gallery entry: src/data/proofs/pac-learning-bounds-oq-01/ with meta.json, index.ts, annotations.json"
+      "Proofs/PACLearningOQ01.lean: Shatters, thresholdClassifiers definitions",
+      "threshold_shatters_singleton: every {a} shattered (witnesses t=a+1, t=0)",
+      "threshold_not_shatters_pair: ∀ a<b, {a,b} not shattered (T={b} unrealizable)",
+      "threshold_vcdim_bounds: combined statement, VC dim of thresholds on ℕ = 1",
+      "Gallery entry: src/data/proofs/pac-learning-bounds-oq-01/{meta,annotations,index}"
     ],
     "insights": [
-      "Threshold monotonicity: {n<t} with b in implies a in when a<b, preventing {b} realization",
-      "Intervals break monotonicity: [b,b+1) contains b but excludes a<b",
-      "Powerset shatters trivially: use h=T for any T",
-      "Finset-based shattering is cleaner than Set-based for computational reasoning",
-      "Interval convexity is the key obstruction: if a,c in [lo,hi) with a<b<c, then b in [lo,hi)",
-      "VCDimension.lean was lost from main (commit cb629eaf69 on orphan branch) - restored and extended"
+      "Set-based Shatters predicate (∀ T ⊆ S, ∃ h ∈ H, ∀ x ∈ S, x ∈ h ↔ x ∈ T) compiles cleanly with Finset T",
+      "Order-theoretic obstruction for non-shattering: monotone classifier (x < t) cannot include only the larger of two ordered points",
+      "Symmetric pair handling: lift a<b case to all a≠b via {a,b} = {b,a} Finset extensionality + Or.comm",
+      "Set membership x ∈ {y | P y} = P x is definitional but rw doesn't apply through it; use ha.mp directly on the iff",
+      "Build of single Lean file via docker takes ~3 min after Mathlib cache hit"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove interval VCDim exactly 2 (triple non-shattering)",
-      "VCDim for halfspace classifiers in R^d (d+1)",
-      "Formalize Fundamental Theorem: finite VCDim iff PAC learnable"
+      "Compute VC dim of interval classifiers on ℕ (expected 2): need triple-shattering obstruction via convexity",
+      "Compute VC dim of half-spaces in ℝᵈ (expected d+1)",
+      "Define vcDim function (sup of cardinalities of shattered Finsets) and prove vcDim_thresholds = 1 directly"
     ]
   },
   "tags": [
@@ -63,7 +59,8 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "pac-learning-bounds"
+    "pac-learning-bounds",
+    "pac-learning-bounds-oq-01"
   ],
   "references": {
     "papers": [],
@@ -71,7 +68,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T01:04:30.789Z",
-  "lastUpdate": "2026-03-29T20:30:00Z",
+  "lastUpdate": "2026-04-27T16:30:00Z",
   "significance": 8,
   "tractability": 5
 }
