@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "axiom erdos_1941_divergence (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq1 : 1 < q) (x : ℝ) (hx : x = Real.cos (↑p * Real.pi / ↑q)) : Filter.Tendsto (fun n => chebyshevInterpSeq (fun _ => 0) x n) Filter.atTop Filter.atTop",
-    "plain": "Can the axiom erdos_1941_divergence be proved in Lean 4 by formalizing the Lebesgue function growth rate Λₙ(cos(πp/q)) → ∞ for rational cosine points with odd p, q?",
+    "formal": "axiom erdos_1941_divergence (p q : \u2115) (hp : Odd p) (hq : Odd q) (hq1 : 1 < q) (x : \u211d) (hx : x = Real.cos (\u2191p * Real.pi / \u2191q)) : Filter.Tendsto (fun n => chebyshevInterpSeq (fun _ => 0) x n) Filter.atTop Filter.atTop",
+    "plain": "Can the axiom erdos_1941_divergence be proved in Lean 4 by formalizing the Lebesgue function growth rate \u039b\u2099(cos(\u03c0p/q)) \u2192 \u221e for rational cosine points with odd p, q?",
     "whyMatters": [
       "Eliminates an axiom from Erdos1151Problem.lean, moving from axiomatized to verified",
       "Connects classical approximation theory (Chebyshev nodes, Lebesgue function) to Lean 4",
@@ -21,7 +21,7 @@
       "limitPointSet_isClosed: limit point sets are closed"
     ],
     "open": [
-      "Lebesgue function growth: Λₙ(cos(πp/q)) → ∞ as n → ∞",
+      "Lebesgue function growth: \u039b\u2099(cos(\u03c0p/q)) \u2192 \u221e as n \u2192 \u221e",
       "erdos_1941_divergence: divergence of Chebyshev interpolation at rational cosines"
     ],
     "goal": "Prove erdos_1941_divergence to eliminate the axiom from the gallery"
@@ -40,49 +40,55 @@
     }
   },
   "knowledge": {
-    "progressSummary": "2 sorries remain: chebyshev_trig_sum_lb (tractable, ~200 lines) and divergence_from_lebesgue_growth (fundamental gap: lim vs lim sup)",
+    "progressSummary": "2 sorries remain: trig_sum_harmonic_lb (Lipschitz+harmonic, self-contained) and divergence_from_lebesgue_growth (lim vs lim sup gap). Case 2 of chebyshev_trig_sum_lb is PROVED modulo trig_sum_harmonic_lb.",
     "builtItems": [
-      "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
-      "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
-      "leadingCoeff_T_ofNat : ∀ n ≥ 1, (T ℝ (n : ℤ)).leadingCoeff = 2^(n-1) — Erdos1151OQ04.lean:306",
+      "T_ofNat_ne_zero (n : \u2115) : T \u211d (n : \u2124) \u2260 0 \u2014 Erdos1151OQ04.lean:274",
+      "natDegree_T_ofNat : \u2200 n : \u2115, (T \u211d (n : \u2124)).natDegree = n \u2014 Erdos1151OQ04.lean:282",
+      "leadingCoeff_T_ofNat : \u2200 n \u2265 1, (T \u211d (n : \u2124)).leadingCoeff = 2^(n-1) \u2014 Erdos1151OQ04.lean:306",
       "Build fixes: all Session 3 lemmas compile cleanly in Proofs/Erdos1151OQ04.lean",
-      "chebyshev_product_formula: T_n = 2^{n-1} * prod(X - cos phi_k) — Erdos1151OQ04.lean:309",
-      "lagrange_basis_chebyshev_formula: explicit Lagrange basis via product formula — Erdos1151OQ04.lean:388",
-      "chebyshev_lebesgue_eq: Lebesgue function explicit formula for ALL n when q odd — Erdos1151OQ04.lean:498",
-      "x_not_chebyshev_node: parity lemma, cos(pi*p/q) != chebyshevNode n k for all n when p,q odd — Erdos1151OQ04.lean:534",
-      "chebyshev_lebesgue_eq_all_n: Lebesgue formula for all n when p,q odd — Erdos1151OQ04.lean:601",
-      "chebyshev_lebesgue_growth: proved (Filter.tendsto_atTop_mono + C·log(n+1) → ∞)",
-      "cos_rational_pi_pos_min: ∃ δ > 0 s.t. |cos(nπp/q)| ≥ δ for all n (parity argument)",
-      "x_not_chebyshev_node: cos(πp/q) ≠ chebyshevNode n k for all n,k when p,q odd",
-      "chebyshev_trig_sum_lb: sorry (isolated harmonic sum lower bound: S_n ≥ C₂·n·log(n+1))",
-      "chebyshev_lebesgue_lb: proved modulo chebyshev_trig_sum_lb via mul_le_mul chain (δ/n · C₂·n·log(n+1) ≤ |cos(nθ)|/n · S_n)"
+      "chebyshev_product_formula: T_n = 2^{n-1} * prod(X - cos phi_k) \u2014 Erdos1151OQ04.lean:309",
+      "lagrange_basis_chebyshev_formula: explicit Lagrange basis via product formula \u2014 Erdos1151OQ04.lean:388",
+      "chebyshev_lebesgue_eq: Lebesgue function explicit formula for ALL n when q odd \u2014 Erdos1151OQ04.lean:498",
+      "x_not_chebyshev_node: parity lemma, cos(pi*p/q) != chebyshevNode n k for all n when p,q odd \u2014 Erdos1151OQ04.lean:534",
+      "chebyshev_lebesgue_eq_all_n: Lebesgue formula for all n when p,q odd \u2014 Erdos1151OQ04.lean:601",
+      "chebyshev_lebesgue_growth: proved (Filter.tendsto_atTop_mono + C\u00b7log(n+1) \u2192 \u221e)",
+      "cos_rational_pi_pos_min: \u2203 \u03b4 > 0 s.t. |cos(n\u03c0p/q)| \u2265 \u03b4 for all n (parity argument)",
+      "x_not_chebyshev_node: cos(\u03c0p/q) \u2260 chebyshevNode n k for all n,k when p,q odd",
+      "chebyshev_trig_sum_lb: sorry (isolated harmonic sum lower bound: S_n \u2265 C\u2082\u00b7n\u00b7log(n+1))",
+      "chebyshev_lebesgue_lb: proved modulo chebyshev_trig_sum_lb via mul_le_mul chain (\u03b4/n \u00b7 C\u2082\u00b7n\u00b7log(n+1) \u2264 |cos(n\u03b8)|/n \u00b7 S_n)",
+      "chebyshev_trig_sum_lb Case 2 PROVED: cos(\u03c0p/q) \u2208 (-1,1) via parity, arccos setup, reduction to trig_sum_harmonic_lb \u2014 Erdos1151OQ04.lean:1146",
+      "trig_sum_harmonic_lb: self-contained sorry for general \u03b8 \u2208 (0, \u03c0), Lipschitz + harmonic Finset argument \u2014 Erdos1151OQ04.lean:1083",
+      "cos_pi_p_q_ne_one: cos(\u03c0p/q) \u2260 1 when p odd (parity: p = 2kq \u2192 even) \u2014 Erdos1151OQ04.lean:1151"
     ],
     "insights": [
-      "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
-      "Growth rate for rational cosines: Λₙ(cos(πp/q)) ≥ C·log(n)",
-      "Divergence of interpolation sequence follows from Λₙ → ∞ via bump function",
-      "natDegree and leadingCoeff of T_n proved by two-step induction on recurrence T_{n+2} = 2X·T_{n+1} - T_n",
-      "Product formula proof strategy: T_n - Q_n has deg < n and n roots (by Chebyshev node roots + card_roots_le_degree) → T_n = Q_n",
-      "(2 : ℝ[X]) = C 2 via Polynomial.C_ofNat; leadingCoeff_C gives leadingCoeff = 2",
+      "Lebesgue function \u039b\u2099(x) = \u03a3\u2096 |\u2113\u2096(x)| measures worst-case interpolation amplification",
+      "Growth rate for rational cosines: \u039b\u2099(cos(\u03c0p/q)) \u2265 C\u00b7log(n)",
+      "Divergence of interpolation sequence follows from \u039b\u2099 \u2192 \u221e via bump function",
+      "natDegree and leadingCoeff of T_n proved by two-step induction on recurrence T_{n+2} = 2X\u00b7T_{n+1} - T_n",
+      "Product formula proof strategy: T_n - Q_n has deg < n and n roots (by Chebyshev node roots + card_roots_le_degree) \u2192 T_n = Q_n",
+      "(2 : \u211d[X]) = C 2 via Polynomial.C_ofNat; leadingCoeff_C gives leadingCoeff = 2",
       "apply lemma fails when conclusion has concrete value (n+2) vs metavar (p.natDegree): use have key := lemma proof; rw [key]",
-      "ℕ strict bound j.val < n does NOT give 2*j+1 < 2*n in ℝ via linarith; need omega on ℕ then exact_mod_cast",
-      "div_lt_iff renamed to div_lt_iff₀ in Mathlib v4.26.0",
-      "Session 5 proved product formula, lagrange basis formula, and lebesgue_eq (sorries: 4→2)",
+      "\u2115 strict bound j.val < n does NOT give 2*j+1 < 2*n in \u211d via linarith; need omega on \u2115 then exact_mod_cast",
+      "div_lt_iff renamed to div_lt_iff\u2080 in Mathlib v4.26.0",
+      "Session 5 proved product formula, lagrange basis formula, and lebesgue_eq (sorries: 4\u21922)",
       "x_not_chebyshev_node: cos(pi*p/q) is NEVER a Chebyshev node when q is odd (parity: q*(2k+1) is odd, angle condition requires even = odd)",
       "chebyshev_lebesgue_eq_all_n: applies for ALL n when p,q odd (not just n=mq subsequence)",
       "divergence_from_lebesgue_growth fundamental gap: Banach-Steinhaus only gives lim sup = inf, not lim = +inf; axiom may be overstated",
-      "chebyshev_lebesgue_growth reduces to lb sorry via tendsto_atTop_mono — growth theorem itself is proved",
-      "Filter.tendsto_atTop_mono pattern: if f ≤ g pointwise and f → ∞ then g → ∞",
+      "chebyshev_lebesgue_growth reduces to lb sorry via tendsto_atTop_mono \u2014 growth theorem itself is proved",
+      "Filter.tendsto_atTop_mono pattern: if f \u2264 g pointwise and f \u2192 \u221e then g \u2192 \u221e",
       "let binding in Lean 4 requires explicit unfolding in simp: simp only [vals, ...]",
-      "chebyshev_lebesgue_growth is PROVED (not sorry) — wraps chebyshev_lebesgue_lb which assumes sorry #1",
-      "p,q both odd implies cos(pi*p/q) is strictly in (-1,1), so sin argument is nonzero. Case x=+-1 never occurs in hypotheses."
+      "chebyshev_lebesgue_growth is PROVED (not sorry) \u2014 wraps chebyshev_lebesgue_lb which assumes sorry #1",
+      "p,q both odd implies cos(pi*p/q) is strictly in (-1,1), so sin argument is nonzero. Case x=+-1 never occurs in hypotheses.",
+      "Session 13: Case 2 factored into self-contained trig_sum_harmonic_lb(\u03b8, h\u03b8\u2208(0,\u03c0), hne). No dependency on p,q.",
+      "Real.arccos_pos.mpr / Real.arccos_lt_pi.mpr: get strict bounds \u03b8\u2080 \u2208 (0,\u03c0) from x \u2208 (-1,1)",
+      "Real.cos_eq_one_iff: cos x = 1 \u2194 \u2203 k : \u2124, x = k*(2\u03c0). Use to show cos(\u03c0p/q) \u2260 1 from p odd.",
+      "LipschitzWith.dist_le_mul converts edist bound to |cos \u03b1 - cos \u03b2| \u2264 |\u03b1 - \u03b2| via Real.dist_eq"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "chebyshev_lebesgue_lb: harmonic sum lower bound for S_n = Σ sin(φₖ)/|cos θ - cos φₖ| ≥ C·n·log(n+1)",
-      "divergence_from_lebesgue_growth: weaken to lim sup = ∞ (Banach-Steinhaus) or find explicit construction",
-      "Attempt chebyshev_trig_sum_lb: Lipschitz + harmonic sum proof (~200 lines). sin(pi*p/q) > 0 from p,q odd ensures x in (-1,1). Nearest node k0, bound denominator via node spacing pi/n, sum j=1..n/4 terms gives (n*sin(theta)/(2pi))*log(n/4+1).",
-      "Sorry #2 gap documented: UBP/Banach-Steinhaus gives lim sup not lim. Consider weakening divergence_from_lebesgue_growth to lim sup = inf version."
+      "PROVE trig_sum_harmonic_lb: Finset reindexing for near-nodes (Lipschitz + odd_harmonic_sum_lb + finite min). ~100-150 lines.",
+      "divergence_from_lebesgue_growth: weaken to lim sup = \u221e (Banach-Steinhaus) or find explicit lacunary construction.",
+      "For trig_sum_harmonic_lb: use pattern from trig_sum_lb_of_cos_eq_neg_one (sub-sum over n/2 nodes, reindex via injection, sum_le_sum). Key difference: use Lipschitz bound instead of half-angle identity."
     ]
   },
   "tags": [
