@@ -1,7 +1,7 @@
 {
   "slug": "hilbert-20-oq-01",
   "title": "hilbert-20-oq-01",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -20,8 +20,10 @@
     "since": "2026-03-28T06:54:31-07:00",
     "iteration": 2,
     "focus": "Formalized problem and stated characterization",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "blockers": [
+      "3 deep axioms in Hilbert20LocalSolvability.lean encode the Nirenberg-Treves theorem (1970): direction (sufficient: psi+local solvability) and (necessary: not-psi -> not-locally-solvable). Full proof requires propagation-of-singularities arguments at the boundary of the 1980s harmonic analysis literature."
+    ],
+    "nextAction": "Gallery is correctly badged 'axiomatized'. Formalization is at appropriate maturity given Mathlib v4.26 PDE coverage. Open questions in src/data/proofs/hilbert-20-oq-01/meta.json conclusion.openQuestions.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 0,
@@ -70,7 +72,7 @@
     "mathlib": []
   },
   "started": "2026-03-28T14:26:43.165Z",
-  "lastUpdate": "2026-03-28T14:26:43.174Z",
+  "lastUpdate": "2026-04-27T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/Hilbert20BoundaryValue.lean",
