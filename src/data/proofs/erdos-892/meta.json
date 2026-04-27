@@ -132,7 +132,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem 892 is formalized with 6 definitions, 6 theorems, and 2 sorries. The Erdős 1935 necessary condition ($\\sum 1/(b_n \\log b_n) < \\infty$) is partially proved: the main structure uses 1 axiom (primitive_reciprocal_log_convergent) and 2 remaining sorries for the divergence of the harmonic-log series and a cast arithmetic simplification.",
+    "summary": "Erdős Problem 892 is formalized with 6 definitions, 7 theorems, 0 sorries, and 2 axioms. The Erdős 1935 necessary condition ($\\sum 1/(b_n \\log b_n) < \\infty$) is fully proved: the main proof splits the sum at threshold $N_0$ where $a(n) \\geq C^2$, with the head bounded by a finite sum and the tail reduced via reciprocal_log_comparison to the convergent series captured by axiom primitive_reciprocal_log_convergent. The two axioms are primitive_reciprocal_log_convergent (Erdős 1935, deep number-theoretic result) and harmonic_log_plus2_diverges (standard Cauchy condensation result not yet in Mathlib).",
     "implications": "A full characterization would provide a fundamental understanding of how the 'thinness' of primitive sequences constrains their growth rates. This connects to Behrend's theorem, the distribution of primes (the densest primitive sequence), and the structure of the divisibility lattice on natural numbers.",
     "openQuestions": [
       "What are necessary and sufficient conditions for a sequence b to admit a primitive dominator?",
