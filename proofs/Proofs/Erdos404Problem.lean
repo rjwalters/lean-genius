@@ -66,9 +66,10 @@ axiom lin_bound_meaning : ∀ s : StrictIncSeq 2, ¬(2^255 ∣ factorialSum s)
     If `k ≥ 255`, then `2^255 ∣ 2^k ∣ factorialSum s`, contradicting `lin_bound_meaning`.
     Hence the set is bounded above by 254, so its supremum is ≤ 254 by `Nat.sSup_def`. -/
 theorem lin_bound : f 2 2 ≤ 254 := by
-  unfold f divisiblePowers
-  have hbdd : ∀ k ∈ {k | dividesByPrimePower 2 k 2}, k ≤ 254 := by
-    rintro k ⟨s, hs⟩
+  show sSup (divisiblePowers 2 2) ≤ 254
+  have hbdd : ∀ k ∈ divisiblePowers 2 2, k ≤ 254 := by
+    intro k hk
+    obtain ⟨s, hs⟩ := hk
     by_contra h_gt
     push_neg at h_gt
     exact lin_bound_meaning s
