@@ -64,7 +64,8 @@
       "The shift trick: applying p(M) to v moves from 'level e' to 'level e-1', letting the induction hypothesis fire on u = p(M)v with polynomial r₁ = r/p.",
       "The Bezout/coprimality argument (irreducible_dvd_of_annihilated from WIP02) is reused as the base case and the p-divisibility step, avoiding code duplication.",
       "Commutativity of polynomial evaluation: r(M)(p^k(M)v) = p^k(M)(r(M)v) because polynomials in M commute. This is used repeatedly in the mulVec calculations.",
-      "Degree counting closes the proof cleanly: p^e | r with deg(r) < deg(p^e) = n forces r = 0, directly giving the cyclic vector condition."
+      "Degree counting closes the proof cleanly: p^e | r with deg(r) < deg(p^e) = n forces r = 0, directly giving the cyclic vector condition.",
+      "**$p$-adic depth analogy.** The proof is structurally a $p$-adic valuation argument transplanted from $\\mathbb{Z}$ to $K[X]$: $v_p(r) := \\sup\\{k : p^k \\mid r\\}$ is the polynomial analog of $p$-adic valuation, and the key lemma asserts that if $v$ has 'depth' $e$ in the $p$-adic filtration $\\ker(p^e(M)) / \\ker(p^{e-1}(M))$, then any annihilator of $v$ has $p$-adic valuation at least $e$. The shift trick $v \\mapsto p(M)v$ is the polynomial analog of multiplication-by-$p$ in $\\mathbb{Z}_p$: it lowers the depth by one, exposing inductive structure. Avoiding the PID structure theorem here is analogous to working with $p$-adic Hensel lifting without invoking the full local structure theorem for finitely generated $\\mathbb{Z}_p$-modules — the induction on exponent is the $K[X]$-side mirror of induction on $p$-adic valuation."
     ]
   },
   "sections": [
@@ -161,6 +162,43 @@
       "targetId": "cayley-hamilton-reduction-oq-02-oq-01",
       "relationship": "related",
       "description": "Rational canonical form via companion matrices. WIP03's prime power cyclic vector is a building block for showing each primary component has companion form."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Frobenius, Ferdinand Georg",
+      "title": "Über lineare Substitutionen und bilineare Formen",
+      "year": "1878",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), vol. 84, pp. 1–63",
+      "note": "Foundational paper introducing elementary divisors (Elementartheiler) and the rational canonical form for matrices over polynomial rings. Frobenius classified matrices up to similarity by their invariant factors $f_1 \\mid f_2 \\mid \\cdots \\mid f_k$, with the special case of a single invariant factor ($k = 1$, i.e., $\\mu_M = \\chi_M$) corresponding to the nonderogatory case studied in this file. The decomposition into prime power blocks that motivates the WIP02/WIP03 split traces directly to Frobenius's elementary divisor analysis."
+    },
+    {
+      "authors": "Smith, Henry John Stephen",
+      "title": "On systems of linear indeterminate equations and congruences",
+      "year": "1861",
+      "venue": "Philosophical Transactions of the Royal Society of London, vol. 151, pp. 293–326",
+      "note": "Established the Smith normal form for matrices over a PID — the algorithmic precursor to the structure theorem for finitely generated modules over a PID. Smith's algorithm produces the diagonal form $\\text{diag}(d_1, d_2, \\ldots, d_k)$ with $d_1 \\mid d_2 \\mid \\cdots \\mid d_k$, which when applied to $XI - M$ over $K[X]$ yields the invariant factors of $M$. This file's axiom-free approach deliberately bypasses the Smith normal form machinery — using only Bézout in $K[X]$ — to obtain the prime power case constructively."
+    },
+    {
+      "authors": "Hartley, Brian and Hawkes, Trevor O.",
+      "title": "Rings, Modules and Linear Algebra: A further course in algebra describing the structure of abelian groups and canonical forms of matrices through the study of rings and modules",
+      "year": "1970",
+      "venue": "Chapman & Hall (reprinted 1980)",
+      "note": "Classical undergraduate textbook giving a clean exposition of the structure theorem for finitely generated modules over a PID and its application to canonical forms (rational canonical form, Jordan normal form). Chapter 8 develops the prime power decomposition step ('primary decomposition') that this file replaces with an elementary induction. The textbook's standard development requires the full PID structure theorem as a prerequisite; the WIP03 approach here is the finitary analog suitable for direct formalization in Mathlib without that infrastructure."
+    },
+    {
+      "authors": "Jacobson, Nathan",
+      "title": "Basic Algebra I",
+      "year": "1985",
+      "venue": "W. H. Freeman, 2nd edition",
+      "note": "Chapter 3 (Modules over a Principal Ideal Domain) develops the rational canonical form via the structure theorem. Theorem 3.10 (existence and uniqueness of invariant factors) and Theorem 3.11 (cyclic decomposition) together prove that a nonderogatory matrix has a cyclic vector — the result this file proves directly for the prime power case. Jacobson's exposition treats $K^n$ as a finitely generated torsion $K[X]$-module annihilated by $\\chi_M$ and applies primary decomposition; the WIP03 induction on exponent is the elementary substitute for this primary decomposition step in the prime power case."
+    },
+    {
+      "authors": "Dummit, David S. and Foote, Richard M.",
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "John Wiley & Sons, 3rd edition",
+      "note": "Section 12.2 (The Rational Canonical Form) develops the cyclic decomposition of a finitely generated torsion module over $K[X]$ via the invariant factor and elementary divisor decompositions. The standard graduate proof of 'nonderogatory matrix has a cyclic vector' goes through the Smith normal form of $XI - M$ and the resulting cyclic module decomposition. This file's prime power case is the analog of Dummit-Foote Theorem 12.2.4 restricted to a single elementary divisor $p^e$, proved without invoking the structure theorem."
     }
   ],
   "sorries": 0
