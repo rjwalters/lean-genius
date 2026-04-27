@@ -651,4 +651,73 @@ theorem erdos_1099_summary :
   · exact erdos_1099
   · exact h_alpha_ge_one
 
+/-
+## Part XI: Erdős's Open Sub-Questions (OQ-01)
+
+Erdős proposed two specific candidate sequences for which h_α might
+remain bounded:
+  (a) n!  —  the factorials
+  (b) lcm{1, 2, ..., n}  —  the lcm sequence
+
+Vose (1984) settled the existence question via a different construction;
+whether these specific candidates suggested by Erdős themselves give
+bounded h_α remains OPEN. See https://erdosproblems.com/1099 .
+-/
+
+/--
+**Open Sub-Question (a) — Erdős, factorial candidate:**
+
+Is h_α(n!) bounded uniformly in n?
+
+Mathematical content: ∀ α > 1, ∃ C, ∀ n ≥ 2, h_α(n!) ≤ C.
+
+Status: OPEN. Vose's bounded-liminf construction does not specialise
+to factorials; the divisor structure of n! is much richer than the
+sequence Vose used.
+-/
+def erdos_1099_factorial_open : Prop :=
+    ∀ α : ℝ, α > 1 →
+      ∃ C : ℝ, ∀ n : ℕ, n ≥ 2 → h_alpha α (n.factorial) ≤ C
+
+/--
+**Open Sub-Question (b) — Erdős, lcm candidate:**
+
+Is h_α(lcm{1,2,…,n}) bounded uniformly in n?
+
+Mathematical content: ∀ α > 1, ∃ C, ∀ n ≥ 1, h_α(lcm{1..n}) ≤ C.
+
+Status: OPEN. Note that `(List.range' 1 n).foldr Nat.lcm 1` evaluates
+to lcm{1,2,…,n}; it is used here directly because the pre-existing
+`lcmDivisors` in Part IV folds over `List.range (n+1)` (which contains
+0) and therefore collapses to 0.
+-/
+def erdos_1099_lcm_open : Prop :=
+    ∀ α : ℝ, α > 1 →
+      ∃ C : ℝ, ∀ n : ℕ, n ≥ 1 →
+        h_alpha α ((List.range' 1 n).foldr Nat.lcm 1) ≤ C
+
+/--
+**Strong-form liminf (proper Vose statement):**
+
+∃ C, C > 0 ∧ ∀ N, ∀ ε > 0, ∃ n ≥ N, h_α(n) < C + ε.
+
+This is what Vose (1984) actually proved and what Erdős asked about
+("liminf_{n→∞} h_α(n) ≪_α 1"): there are arbitrarily large n with
+h_α(n) bounded by C up to ε.
+
+The earlier statements `vose_bounded_sequence`, `vose_liminf_bounded`,
+and `erdos_1099` are strictly weaker — they omit the `∀ N` quantifier,
+so they are satisfied by the trivial constant witness n_k = 2 (since
+h_α(2) = 1). Documenting this gap explicitly here makes the
+formalisation honest about what is, and is not, currently proved.
+
+A formal proof of `erdos_1099_strong_liminf` would require formalising
+Vose's construction, which is substantial future work.
+-/
+def erdos_1099_strong_liminf : Prop :=
+    ∀ α : ℝ, α > 1 →
+      ∃ C : ℝ, C > 0 ∧
+        ∀ N : ℕ, ∀ ε : ℝ, 0 < ε →
+          ∃ n : ℕ, n ≥ N ∧ h_alpha α n < C + ε
+
 end Erdos1099
