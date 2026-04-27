@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (session 6): Proved gridAdj_symm and gridAdj_vertex (5 → 3 sorries). Discovered boundary_verts_on_face and boundary_doors_odd are FALSE as stated; documented with counterexamples. Requires GridSimplex/gridAdj redesign.",
+    "progressSummary": "PROGRESS (session 13): SpernerFreudenthal.lean 6 → 4 sorries. Proved vertex_injective via Nodup.get_inj_iff and finsetToNat_injective via Finset.geomSum_injective. Build verified.",
     "builtItems": [
       "SpernerMathlib4Opt.lean: optimized proof proposal for even_card_of_fpf_invol using sum_involution (research/problems/sperner-ndim-oq-05/lean/)",
       "even_card_of_fpf_invol: 53-line strongInduction proof replaced with 11-line sum_involution proof in SpernerMathlib4.lean",
@@ -38,7 +38,9 @@
       "gridAdj_ne: proved in SpernerGrid.lean (1 sorry removed, 6 → 5 remaining)",
       "gridAdj_symm: proved in SpernerGrid.lean using boundaryFlip0_invol, boundaryFlipLast_invol (5 → 4 sorries)",
       "gridAdj_vertex: proved in SpernerGrid.lean by case analysis on k value (4 → 3 sorries)",
-      "gridAdj_ne additional: proved (3 sorries remain: CellComplex.sperner ref + boundary_verts_on_face + boundary_doors_odd)"
+      "gridAdj_ne additional: proved (3 sorries remain: CellComplex.sperner ref + boundary_verts_on_face + boundary_doors_odd)",
+      "vertex_injective: proved AbstractSimplicialData.toTriangulation.vertex_injective in SpernerFreudenthal.lean using Nodup.get_inj_iff (line 156, sorry removed)",
+      "finsetToNat_injective: proved bitmap injectivity in SpernerFreudenthal.lean via Finset.geomSum_injective + Finset.image_injective Fin.val_injective (line 220, sorry removed)"
     ],
     "insights": [
       "All gallery files (SpernerMathlib4, SpernerSimplicialInstance, etc.) have 0 sorries — mathematical work complete",
@@ -67,7 +69,10 @@
       "sperner_grid requires N≥d for non-empty complex, not just N>0. For d=2, N=1: gridComplex 2 1 is empty, making ∃ s, IsPanchromatic false.",
       "Root cause: gridAdj treats 'boundaryFlip returns none' as 'geometric boundary', but this is wrong when the adjacent simplex exists with a different miss direction. Redesign required.",
       "gridAdj_symm proved using: boundaryFlip0_invol, boundaryFlipLast_invol, interiorFlip_invol + interiorFlip symmetry argument",
-      "gridAdj_vertex proved by case split: k=0 uses boundaryFlip0 vertex property, k=d uses boundaryFlipLast vertex property, 0<k<d uses interiorFlip vertex property"
+      "gridAdj_vertex proved by case split: k=0 uses boundaryFlip0 vertex property, k=d uses boundaryFlipLast vertex property, 0<k<d uses interiorFlip vertex property",
+      "List.Nodup.get_inj_iff (Mathlib.Data.List.Nodup): clean way to convert get equality to index equality on sorted lists",
+      "Fin.cast elaboration gotcha: Fin.ext (congrArg Fin.val heq) fails when heq has Fin.cast in it because Lean back-elaborates Fin.val from goal type; workaround: apply Fin.ext; rw [Fin.ext_iff] at heq; exact heq",
+      "Finset.geomSum_injective in Mathlib.Combinatorics.Colex (namespace Finset): for n ≥ 2, ∑ i ∈ s, n^i is injective on Finset ℕ — direct path to bitmap injectivity"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -100,7 +105,7 @@
     "mathlib": []
   },
   "started": "2026-04-14T21:25:05.895Z",
-  "lastUpdate": "2026-04-26T12:00:00-07:00",
+  "lastUpdate": "2026-04-27T16:20:00-07:00",
   "significance": 8,
   "tractability": 5
 }
