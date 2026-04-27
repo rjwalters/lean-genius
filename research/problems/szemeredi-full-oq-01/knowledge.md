@@ -116,6 +116,138 @@ The `FurstenbergCorrespondence.lean` file already exists with substantial infras
 
 ---
 
+## Session 2026-04-27 (Session 4) — Mathlib Gap Audit for `seqCompact_probabilityMeasure_cantor`
+
+**Mode**: REVISIT (RICH knowledge tier, score 30)
+**Outcome**: SPEC — disk pressure (1.4 GiB free) blocks Docker verification, so this session
+contributes a Mathlib API map only. No Lean source modifications.
+
+### What's Available in Mathlib v4.26 (Verified by Source Inspection)
+
+| Mathlib Theorem | Module | Use |
+|-----------------|--------|-----|
+| `instance MetrizableSpace (ProbabilityMeasure X)` | `LevyProkhorovMetric.lean:717` | metrizability ⇒ first-countable |
+| `instance FirstCountableTopology.seq_compact_of_compact` | `Topology/Sequences.lean:273` | compact + first-countable ⇒ SeqCompactSpace |
+| `IsTightMeasureSet.of_compactSpace` | `Tight.lean:101` | every set tight on compact space |
+| `LevyProkhorov.probabilityMeasureHomeomorph` | `LevyProkhorovMetric.lean:695` | `ProbabilityMeasure X ≃ₜ LevyProkhorov (ProbabilityMeasure X)` |
+| `WeakDual.isCompact_closedBall` | `Analysis/Normed/Module/WeakDual.lean:47` | Banach-Alaoglu (Path B alternative) |
+
+### What is **MISSING** in Mathlib v4.26 (Confirmed by Search)
+
+- **No instance `CompactSpace (ProbabilityMeasure X)`** for compact metrizable separable X.
+  Searched: `grep -rn "CompactSpace.*ProbabilityMeasure"` returns 0 hits in Mathlib MeasureTheory.
+- **No direct sequential Prokhorov theorem**: `tight + complete second-countable ⇒ sequentially
+  compact set of finite measures` is not stated as a lemma.
+
+### Two Construction Paths
+
+#### Path A — Levy-Prokhorov metric (RECOMMENDED, ~150-200 lines)
+
+Pre-conditions on `CantorSpace = ℕ → Bool`:
+- `[CompactSpace CantorSpace]` ✓ (already proved in OQ01.lean)
+- `[MetrizableSpace CantorSpace]` ✓ (Pi.metrizable on countable product)
+- `[SeparableSpace CantorSpace]` ✓ (compact metrizable ⇒ separable)
+- `[BorelSpace CantorSpace]` ✓ (set up automatically with `borelize`)
+
+Construction outline:
+```lean
+-- Step 1: Use Mathlib instances to get the metric structure
+instance : MetrizableSpace (ProbabilityMeasure CantorSpace) := inferInstance  -- from Mathlib
+
+-- Step 2: Prove compactness directly via tightness + completeness
+-- Mathlib gives every set tight (of_compactSpace), but does NOT directly give compactness.
+-- We need the converse direction of Prokhorov: tight + closed ⇒ compact.
+
+-- Approach 2a: Via Levy-Prokhorov metric completeness
+-- The Levy-Prokhorov metric on ProbabilityMeasure(compact metric) is:
+--   (a) total (induces the weak topology)
+--   (b) complete (Mathlib likely has this; SEARCH MISSING)
+--   (c) totally bounded (consequence of tightness; needs proof)
+-- (b) + (c) ⇒ compact (standard metric argument).
+
+-- Approach 2b: Via embedding to a compact subset of C(X)*
+-- ProbabilityMeasure CantorSpace embeds continuously into the unit ball of C(CantorSpace, ℝ)*.
+-- That ball is weak-* compact by Banach-Alaoglu (`WeakDual.isCompact_closedBall`).
+-- The image is closed (positive functionals normalized to 1 are weak-* closed).
+-- Thus ProbabilityMeasure is the continuous image of a compact set, hence compact.
+
+-- Step 3: Apply FirstCountableTopology.seq_compact_of_compact
+example : SeqCompactSpace (ProbabilityMeasure CantorSpace) := inferInstance
+-- Then `seqCompact_probabilityMeasure_cantor` follows from `SeqCompactSpace.tendsto_subseq`.
+```
+
+**Recommendation**: Approach 2b (via `WeakDual.isCompact_closedBall`) is more direct because:
+- Banach-Alaoglu is fully formalized in Mathlib
+- The embedding `μ ↦ (f ↦ ∫f dμ)` is well-studied
+- The image of `ProbabilityMeasure` in `C(X, ℝ)*` is the "positive unit ball", a closed subset
+  of the unit ball
+
+#### Path B — Direct sequence extraction (NOT RECOMMENDED, ~300+ lines)
+
+Use Riesz representation to convert each `ProbabilityMeasure` to a positive linear functional
+on `C(CantorSpace, ℝ)`, apply Banach-Alaoglu directly, extract a weak-* convergent subsequence,
+and prove the limit is again a probability measure (uses Riesz+positivity preserved at limit).
+This duplicates work since Path A's `instance` derivation gives the same result with less code.
+
+### Concrete Mathlib API for Path A (Approach 2b)
+
+```lean
+import Mathlib.Analysis.Normed.Module.WeakDual
+import Mathlib.MeasureTheory.Measure.LevyProkhorovMetric
+import Mathlib.MeasureTheory.Integral.RieszMarkovKakutani  -- for Riesz embedding
+
+-- The continuous embedding (already implicit in Mathlib's ProbabilityMeasure topology):
+-- μ ↦ (f ↦ (∫f dμ).toReal) : ProbabilityMeasure X → WeakDual ℝ C(X, ℝ)
+
+-- Key Mathlib lemmas to chain:
+#check @WeakDual.isCompact_closedBall          -- ‖·‖ ≤ R is weak-* compact
+#check @MeasureTheory.ProbabilityMeasure.continuous_integral_continuousMap  -- the embedding is continuous
+#check @IsCompact.image                         -- continuous image of compact is compact
+#check @FirstCountableTopology.seq_compact_of_compact  -- compact + first-countable ⇒ seq compact
+```
+
+### Recommended Next Concrete Steps
+
+1. **Search Mathlib for `LevyProkhorov.completeSpace` or similar**: confirm whether the
+   Levy-Prokhorov metric on `ProbabilityMeasure(compact)` is recognized as `CompleteSpace`.
+   If yes, Path A Approach 2a becomes a 5-line proof: complete + totally bounded ⇒ compact.
+
+2. **Inspect Mathlib `Riesz` / `RieszMarkovKakutani`**: confirm whether the Riesz
+   representation theorem (probability measures ↔ positive normalized functionals) is
+   formalized, which is needed for Path A Approach 2b.
+
+3. **Single-session attempt**: ~150 lines for Approach 2b, ~50 lines for Approach 2a if (1)
+   confirms completeness.
+
+### Unblocking the Density Preservation Step (~30 lines remaining)
+
+Per Session 3 notes, density preservation at the limit is "~30 lines" but unblocked. The key
+observation: `B₀ = cylinderZero` is **clopen** (line 96-100 of OQ01.lean confirms via
+`cylinder_isClopen`). For a weak-* convergent sequence `μ_k → μ`, we have `μ(C) ≤ liminf μ_k(C)`
+for closed C and `μ(O) ≥ limsup μ_k(O)` for open O — and for clopen sets, we get equality:
+`μ(B₀) = lim μ_k(B₀)`. Mathlib API to use:
+
+```lean
+#check @MeasureTheory.ProbabilityMeasure.le_liminf_measure_closed_of_tendsto
+#check @MeasureTheory.ProbabilityMeasure.tendsto_measure_of_tendsto_of_isClopen
+-- or: derive from the integral formulation since 1_{B₀} is continuous on a clopen
+```
+
+If `tendsto_measure_of_tendsto_of_isClopen` exists, the density preservation is a one-liner.
+**TODO**: search Mathlib for this lemma name (or its content).
+
+### Files NOT Modified This Session
+
+Disk pressure (1.4 GiB) prevented compile verification. All contributions are documentation
+in `knowledge.md`. The state.md and meta.json remain at Session 3 values.
+
+### Sorry Count: 0; Local Axiom Count: 1 (unchanged)
+
+- `seqCompact_probabilityMeasure_cantor`: now has a concrete 2-path construction plan with
+  precise Mathlib API references for each step.
+
+---
+
 ## Dead Ends
 
 - Cannot enumerate AP witnesses case-by-case (infinitely many cases)
