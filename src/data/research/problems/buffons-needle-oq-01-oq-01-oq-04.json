@@ -1,8 +1,8 @@
 {
   "slug": "buffons-needle-oq-01-oq-01-oq-04",
   "title": "Higher-dimensional Cauchy-Crofton formula",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-05T20:06:19-07:00",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T00:00:00-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Audit and graduation: stale pool entry reconciled with actual gallery + Lean state. No remaining tractable work without Mathlib spherical Haar measure.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None — formalization is at appropriate endpoint (axiomatized). Future extensions tracked in knowledge.md.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: n-dimensional Cauchy-Crofton formula with sphere surface areas, crossing constants c_n, and angular averaging axiomatization. 16 theorems, 5 defs, 2 structure-encoded assumptions, 0 sorries.",
+    "progressSummary": "COMPLETED (audit 2026-04-27): n-dim Cauchy-Crofton formalized end-to-end. 333 lines, 20 theorems, 4 defs, 0 sorries, 0 axiom declarations, 2 structure-encoded assumptions in AngularAverageData (Mathlib gap: spherical Haar measure). Sphere areas computed for n in {0,1,2,3} and the recurrence; Cauchy-Crofton constants for n in {2,3,4} (c_2=2/pi, c_3=1/2, c_4=4/(3 pi)); expectedCrossings formula with linearity, scaling, and unit-circle sanity check. Gallery shipped with badge=axiom, status=axiomatized.",
     "builtItems": [
       "Created Proofs/BuffonsNeedleOQ01OQ01OQ04.lean (255 lines, 16 theorems, 5 defs, 0 sorries)",
       "Created gallery data: src/data/proofs/buffons-needle-oq-01-oq-01-oq-04/{meta,annotations,index}",
@@ -43,8 +43,17 @@
       "Angular averaging on RP^{n-1} requires sphere measure not in Mathlib - axiomatized",
       "Unit circle sanity check: 4 expected crossings with unit grid"
     ],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "mathlibGaps": [
+      "Spherical Haar measure / surface measure on S^(n-1) (blocks discharging AngularAverageData)",
+      "Quotient measure on RP^(n-1) = S^(n-1)/{+/-1}",
+      "Spherical change-of-variables theorem",
+      "Beta-function identity int_0^pi |cos theta|^a dtheta"
+    ],
+    "nextSteps": [
+      "Higher-dimension explicit values: sphereArea_four = 8 pi^2 / 3, sphereArea_five = pi^3, cauchyCrofton_five = 3/8, cauchyCrofton_six = 16/(15 pi)",
+      "Asymptotic decay: cauchyCroftonConst n -> 0 as n -> infinity (via Stirling)",
+      "Mathlib upstream: contribute spherical Haar measure to unlock the angular-average identity"
+    ],
     "markdown": "# Knowledge Base: buffons-needle-oq-01-oq-01-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
