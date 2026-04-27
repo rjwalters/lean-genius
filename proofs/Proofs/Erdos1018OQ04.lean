@@ -136,12 +136,23 @@ theorem max_edges (r : ℕ) :
   - r=4: K₉^(4) is not embeddable in R⁶
 -/
 
-/-- An r-uniform hypergraph, viewed as an (r-1)-dimensional simplicial
-    complex, is embeddable in R^d. Formally, the geometric realization
-    admits a continuous injection into R^d mapping distinct simplices
-    to disjoint images (a "linear embedding" or "almost-embedding"). -/
-def isEmbeddable {r : ℕ} (_H : Hypergraph V r) (_d : ℕ) : Prop :=
-  sorry -- Topological definition requires geometric realization
+/-- An r-uniform hypergraph is (linearly) embeddable in ℝ^d:
+    there exists an injective vertex map `φ : V → ℝ^d` such that the
+    convex hulls of distinct edges intersect only in the convex hull
+    of their common vertices.
+
+    This is the standard "almost-embedding" notion in topological
+    combinatorics: the geometric realization of distinct simplices
+    overlap only on their common faces. For r=2 (graphs), this is
+    classical planarity-style embedding into ℝ². For general r, it is
+    the linear approximation of the simplicial-complex embedding used
+    in van Kampen-Flores. -/
+def isEmbeddable {r : ℕ} (H : Hypergraph V r) (d : ℕ) : Prop :=
+  ∃ φ : V → Fin d → ℝ,
+    Function.Injective φ ∧
+    ∀ e₁ ∈ H.edges, ∀ e₂ ∈ H.edges, e₁ ≠ e₂ →
+      convexHull ℝ (Set.image φ e₁) ∩ convexHull ℝ (Set.image φ e₂) ⊆
+      convexHull ℝ (Set.image φ (e₁ ∩ e₂ : Finset V))
 
 /-- An r-uniform hypergraph is non-embeddable in R^d. -/
 def isNonEmbeddable {r : ℕ} (H : Hypergraph V r) (d : ℕ) : Prop :=

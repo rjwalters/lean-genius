@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-30T16:34:54.972Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "isEmbeddable now concrete (was sorry-def). Parent file has 1 sorry (turanNumber) + 4 axioms. Child has 4 sorries (geometric verifications) + 1 axiom.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Fill child r2_implies_main_r2 sorry using defeq between isEmbeddable and isEmbeddableConc; or replace child isEmbeddableConc with parent isEmbeddable to remove duplication.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "FORMALIZATION: Concrete isEmbeddable definition provided, replacing parent sorry. K₃, K₄ explicit embeddings given. 1 axiom (Kostochka-Pyber r=2), 7 sorries (geometric verifications).",
+    "progressSummary": "PROGRESS: Replaced parent isEmbeddable sorry-def with concrete vertex-map + convex-hull intersection definition. Now defeq with child Erdos1018OQ04Incomplete01.isEmbeddableConc. Parent sorry count 2→1.",
     "builtItems": [
       "Created Erdos1018OQ04Incomplete01.lean with 11 theorems, 1 axiom, 7 sorries",
       "Defined isEmbeddableConc with concrete vertex map + simplex separation condition",
@@ -37,7 +37,8 @@
       "Provided explicit coordinates for K3_planar and K4_planar (injectivity proved)",
       "Proved dense_graph_not_planar: n^{1+ε} > 3n eventually (using n^ε → ∞)",
       "Proved K5_edges=10, K3_edges=3, K4_edges=6",
-      "Created src/data/proofs/erdos-1018-oq-04-incomplete-01/ gallery entry"
+      "Created src/data/proofs/erdos-1018-oq-04-incomplete-01/ gallery entry",
+      "Replaced Erdos1018OQ04.isEmbeddable sorry-def with concrete definition (vertex map + convex hull edge separation). Eliminates sorry-def cascade — downstream proofs can now reason about geometric embeddings."
     ],
     "insights": [
       "Parent Erdos1018OQ04.lean has isEmbeddable := sorry, making all dependent results vacuous",
@@ -45,7 +46,8 @@
       "K₃ planar with explicit coords: (0,0),(1,0),(0,1); K₄ with (0,0),(3,0),(1,2),(2,2)",
       "Dense graphs (n^{1+ε} edges) exceed planar bound 3n-6 eventually (n^ε → ∞)",
       "Kostochka-Pyber (r=2, 1988): dense graphs contain non-planar subgraphs on O_ε(1) vertices",
-      "Geometric crossing sorries remain: need convex hull intersection theory from Mathlib"
+      "Geometric crossing sorries remain: need convex hull intersection theory from Mathlib",
+      "Sorry-defs (def := sorry) are worse than axiom: they make the type opaque so no proof can reason through them. Replacing with a concrete def using available Mathlib API (convexHull, Set.image) unblocks downstream work."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -72,7 +74,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T16:34:54.972Z",
-  "lastUpdate": "2026-03-30T16:34:54.972Z",
+  "lastUpdate": "2026-04-27T00:00:00Z",
   "significance": 6,
   "tractability": 5
 }

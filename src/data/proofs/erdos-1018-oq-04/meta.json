@@ -18,10 +18,10 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 4,
-    "lineCount": 307,
-    "assumptions": "4 axioms: van Kampen-Flores theorem, embeddability of K₃ and K₄ in R², density-exceeds-Turán threshold. 2 sorries: isEmbeddable definition, turanNumber definition.",
+    "lineCount": 318,
+    "assumptions": "4 axioms: van Kampen-Flores theorem, embeddability of K₃ and K₄ in R², density-exceeds-Turán threshold. 1 sorry: turanNumber definition (was 2: isEmbeddable now concretely defined via vertex-map + convex-hull intersection).",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
