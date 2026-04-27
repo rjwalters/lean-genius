@@ -16,12 +16,17 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "BLOCKED",
     "since": "2026-04-21T07:30:34-07:00",
-    "iteration": 1,
-    "focus": "Prepare Mathlib PR: granular imports + heartbeat reduction for SpernerSimplicialInstance",
-    "blockers": [],
-    "nextAction": "Test granular imports; profile SpernerSimplicialInstance heartbeats; submit PR to mathlib4",
+    "iteration": 2,
+    "focus": "BLOCKED on (a) external feedback from Mathlib maintainers on issue #25231, and (b) Docker-intensive heartbeat profiling/reduction work that requires substantial disk space",
+    "blockers": [
+      "External: awaiting Mathlib maintainer feedback on issue #25231 (Dillies/SproutSeeds)",
+      "Infrastructure: SpernerSimplicialInstance has maxHeartbeats 1600000 (8x default); Mathlib target ≤ 400000; reducing requires Docker profiling",
+      "Disk pressure: Docker builds blocked when host disk < 1 GB free",
+      "Research code: SpernerGrid.lean has 3 known false-as-stated theorems (boundary_verts_on_face, boundary_doors_odd, sperner_grid hypothesis) requiring redesign — substantial work"
+    ],
+    "nextAction": "Wait for Mathlib feedback on #25231; defer profiling until disk space permits Docker builds. Gallery files (SpernerMathlib4.lean, SpernerSimplicialInstance.lean) are at 0 sorries — math complete.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +34,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (session 6): Proved gridAdj_symm and gridAdj_vertex (5 → 3 sorries). Discovered boundary_verts_on_face and boundary_doors_odd are FALSE as stated; documented with counterexamples. Requires GridSimplex/gridAdj redesign.",
+    "progressSummary": "BLOCKED: Gallery formalization complete (0 sorries in all gallery files). Mathlib contribution awaiting maintainer feedback on #25231. Heartbeat reduction requires Docker profiling not feasible under disk constraints. Research-side gridAdj redesign is substantial work outside scope of single iteration.",
     "builtItems": [
       "SpernerMathlib4Opt.lean: optimized proof proposal for even_card_of_fpf_invol using sum_involution (research/problems/sperner-ndim-oq-05/lean/)",
       "even_card_of_fpf_invol: 53-line strongInduction proof replaced with 11-line sum_involution proof in SpernerMathlib4.lean",
