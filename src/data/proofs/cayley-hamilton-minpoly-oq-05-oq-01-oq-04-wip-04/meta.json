@@ -76,7 +76,8 @@
       "The Bezout (CRT) projection \u03c0_i = (b_i \u00b7 F_i)(M) acts purely algebraically: it is the identity on ker(p_i^{e_i}(M)) and zero on ker(p_j^{e_j}(M)) for j \u2260 i, established directly from the Bezout identity without invoking any module-theoretic decomposition.",
       "The prime power divisibility lemma `pow_irred_dvd_of_annihilated` is proved by induction on the exponent e: at the inductive step, a single application of p(M) shifts the witness from level e+1 to level e, yielding p \u2223 r as a base step and an inductive call on r/p.",
       "The proof works over any field \u2014 including small finite fields like F_2 \u2014 because every step uses only Bezout in K[X], polynomial divisibility, and commutativity of polynomial evaluation. The classical union-avoidance argument (used in OQ-05-OQ-01 for infinite fields) and the rational canonical form (used in WIP01 as an axiom) are both bypassed.",
-      "The remaining gap to the unconditional theorem is purely the K[X]-factorization step: given a polynomial f \u2208 K[X], produce data k, p_i, e_i with f = \u220f_i p_i^{e_i}, p_i monic irreducible, pairwise coprime. This is an instance of UniqueFactorizationMonoid for K[X] and is a routine \u2014 if technical \u2014 Mathlib exercise."
+      "The remaining gap to the unconditional theorem is purely the K[X]-factorization step: given a polynomial f \u2208 K[X], produce data k, p_i, e_i with f = \u220f_i p_i^{e_i}, p_i monic irreducible, pairwise coprime. This is an instance of UniqueFactorizationMonoid for K[X] and is a routine \u2014 if technical \u2014 Mathlib exercise.",
+      "**Mathlib upstream relevance.** The PID structure theorem for finitely generated modules (which would supply rational canonical form directly) has been an unmet Mathlib goal for years. The CRT-projection technique used here is the natural special case of that structure theorem when the module has a single generator (cyclic), and it generalizes to a module-theoretic statement: any K[X]-module killed by a product of pairwise coprime ideals decomposes as a direct sum over those ideals. WIP04's Bezout-based projection idiom is therefore not just a workaround for the missing PID theorem \u2014 it is one of the natural building blocks any future Mathlib proof of the structure theorem would have to formalize anyway, and could be extracted as a standalone lemma about cyclic K[X]-modules even before the full structure theorem lands."
     ]
   },
   "sections": [
@@ -89,12 +90,20 @@
       "mathContext": "A vector v is cyclic for M if no nonzero polynomial of degree < n annihilates v via M. A matrix is nonderogatory if its minimal polynomial equals its characteristic polynomial."
     },
     {
-      "id": "utility-lemmas",
-      "title": "II. Utility Lemmas",
+      "id": "utility-lemmas-base",
+      "title": "II.a. Utility Lemmas: Algebraic Groundwork",
       "startLine": 68,
+      "endLine": 120,
+      "summary": "Five base-level algebraic lemmas: irreducible_dvd_of_annihilated (Bezout for irreducible primes), exists_mulVec_ne_zero, aeval_ne_zero_of_lt_minpoly (degree comparison via minpoly.dvd), aeval_mul_comm (polynomials in a single matrix commute), and bezout_proj_identity (the CRT projection acts as identity on a primary component).",
+      "mathContext": "Establishes: (1) $p$ irreducible $\\wedge\\ p(M)v = r(M)v = 0\\ \\wedge\\ v \\neq 0 \\Rightarrow p \\mid r$ (the base case of the prime-power induction); (2) nonzero matrices admit vectors outside their kernel; (3) $\\deg(p) < \\deg(\\operatorname{minpoly}) \\Rightarrow p(M) \\neq 0$; (4) $f(M) \\cdot g(M) = g(M) \\cdot f(M)$ for $f, g \\in K[X]$; (5) given a Bezout identity $a p + b q = 1$ with $p(M) v = 0$, the projection $(b q)(M)$ acts as identity on $v$."
+    },
+    {
+      "id": "utility-lemmas-induction",
+      "title": "II.b. Prime Power Induction and Finset Distribution",
+      "startLine": 122,
       "endLine": 166,
-      "summary": "Algebraic groundwork: irreducible_dvd_of_annihilated (Bezout argument for primes), exists_mulVec_ne_zero, aeval_ne_zero_of_lt_minpoly, aeval_mul_comm, bezout_proj_identity, the inductive prime-power divisibility lemma pow_irred_dvd_of_annihilated, and mulVec_finset_sum.",
-      "mathContext": "These lemmas establish: (1) p irreducible and p(M)v = r(M)v = 0 with v \u2260 0 \u21d2 p \u2223 r; (2) nonzero matrices have vectors outside their kernel; (3) nonzero polynomials of degree below the minpoly degree evaluate to nonzero matrices; (4) polynomial evaluations at M commute; (5) Bezout projections are the identity on a primary component; (6) by induction on e, p^e(M)v \u2260 0 with p^(e+1)(M)v = 0 and r(M)v = 0 forces p^(e+1) \u2223 r; (7) mulVec distributes over finite sums."
+      "summary": "Two structural lemmas: pow_irred_dvd_of_annihilated (induction on the exponent $e$ to lift the irreducible-divisibility lemma to prime power divisibility) and mulVec_finset_sum (matrix-vector multiplication distributes over finite sums of vectors). These two together drive the main theorem's per-index contradiction and its summation construction $v = \\sum_i v_i$.",
+      "mathContext": "Prime power induction: $p^e(M)v \\neq 0\\ \\wedge\\ p^{e+1}(M)v = 0\\ \\wedge\\ r(M)v = 0 \\Rightarrow p^{e+1} \\mid r$. Inductive step: shift the witness from level $e + 1$ to level $e$ by applying $p(M)$ once, yielding $p \\mid r$ as a base step and a recursive call on $r/p$. Finset distribution: $A \\cdot \\sum_i v_i = \\sum_i (A \\cdot v_i)$ by `Finset.induction_on`."
     },
     {
       "id": "main-theorem",
