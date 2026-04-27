@@ -1,0 +1,231 @@
+{
+  "id": "bezout-identity-oq-03-oq-02",
+  "title": "CRT for Finitely Many Coprime Moduli via Bézout",
+  "slug": "bezout-identity-oq-03-oq-02",
+  "description": "Extends the 2-moduli Chinese Remainder Theorem (bezout-identity-oq-03) to finitely many pairwise coprime moduli indexed by Fin k. Proves existence (∃ x : ℤ, ∀ i : Fin k, x ≡ a i [ZMOD m i]) and uniqueness (any two solutions are congruent modulo the product) by induction on k, combining the inductive solution with a single new modulus via the 2-moduli CRT crt_iscop. Uses IsCoprime.prod_right and Finset.dvd_prod_of_mem from Mathlib.",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chinese_remainder_theorem#Theorem_for_general_rings",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ03OQ02.lean",
+    "tags": [
+      "number-theory",
+      "crt",
+      "bezout",
+      "algebra",
+      "induction",
+      "fin",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "IsCoprime.prod_right",
+        "description": "If a is coprime with each b i (i ∈ s), then a is coprime with ∏ i ∈ s, b i",
+        "module": "Mathlib.RingTheory.Coprime.Lemmas"
+      },
+      {
+        "theorem": "IsCoprime.mul_dvd",
+        "description": "If gcd(m,n)=1, m|k, n|k then mn|k — the dual of prod_right",
+        "module": "Mathlib.RingTheory.Coprime.Basic"
+      },
+      {
+        "theorem": "Finset.dvd_prod_of_mem",
+        "description": "If i ∈ s, then f i ∣ ∏ j ∈ s, f j — used to lift congruences to factors",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Fin.prod_univ_castSucc",
+        "description": "∏ i : Fin (k+1), f i = (∏ i : Fin k, f i.castSucc) * f (Fin.last k)",
+        "module": "Mathlib.Algebra.BigOperators.Fin"
+      },
+      {
+        "theorem": "Fin.lastCases",
+        "description": "Recursor on Fin (k+1) splitting into last and castSucc cases",
+        "module": "Mathlib.Data.Fin.Basic"
+      }
+    ],
+    "originalContributions": [
+      "crt_finitely_many_exists: explicit Fin-induction k-moduli CRT existence built on the parent crt_iscop",
+      "crt_finitely_many_unique: matching uniqueness modulo the product of moduli",
+      "crt_finitely_many: packaged existence + uniqueness in a single statement",
+      "isCoprime_last_prod: the last modulus is coprime with the product of the first k (key inductive coprimality lemma)",
+      "pairwise_castSucc: lifts pairwise coprimality from Fin (k+1) to Fin k via castSucc",
+      "modEq_of_dvd_modulus: lifting lemma — finer modulus implies coarser",
+      "Worked example with moduli (3, 5, 7) and residues (2, 3, 2): solution 23, unique modulo 105"
+    ],
+    "dateAdded": "2026-04-27",
+    "relatedProblems": [
+      {
+        "id": "bezout-identity-oq-03",
+        "relationship": "Parent: 2-moduli CRT via Bézout — this file extends to k pairwise-coprime moduli"
+      },
+      {
+        "id": "bezout-identity-oq-03-oq-01",
+        "relationship": "Sibling: CRT as a ring isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ for coprime m, n"
+      },
+      {
+        "id": "bezout-identity-oq-03-oq-01-oq-01",
+        "relationship": "Sibling: k-fold CRT for ℕ-indexed lists via ZMod.chineseRemainder (this file uses ℤ + Fin instead)"
+      },
+      {
+        "id": "bezout-identity",
+        "relationship": "Foundational: Bézout's identity underlies the parent crt_iscop solution formula"
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 187,
+    "assumptions": "0 axioms, 0 sorries. Inductive proof reduces k-moduli case to (k-1)-moduli case + a single 2-moduli combination via crt_iscop.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "**The k-Moduli Chinese Remainder Theorem**\n\nThe original CRT (Sun Tzu, ~3rd century CE) was stated for a small number of explicit moduli — Sun Tzu's Suanjing problem 26 asks for a number with remainders 2, 3, 2 when divided by 3, 5, 7. The systematic statement for arbitrary finitely many pairwise coprime moduli was developed by Qin Jiushao (Mathematical Treatise in Nine Sections, 1247), who gave the first general algorithm.\n\nThe modern formulation indexes moduli by a finite set (typically Fin k or a list) and is proved by induction: combine the inductive solution for the first $k$ moduli with the new modulus via the 2-moduli CRT. This formalization follows that pattern, building directly on the Bézout-based 2-moduli result `crt_iscop` from the parent entry. The key inductive ingredient is that the new modulus is coprime with the product of the previous $k$ moduli, established via `IsCoprime.prod_right`.",
+    "problemStatement": "**Theorem (k-moduli CRT)**: Let $k \\in \\mathbb{N}$, $m : \\mathrm{Fin}\\, k \\to \\mathbb{Z}$ be pairwise coprime ($\\mathrm{IsCoprime}(m_i, m_j)$ for all $i \\ne j$), and $a : \\mathrm{Fin}\\, k \\to \\mathbb{Z}$ be arbitrary residues. Then there exists $x : \\mathbb{Z}$ such that $x \\equiv a_i \\pmod{m_i}$ for every $i$, and any two such solutions are congruent modulo $\\prod_{i} m_i$.",
+    "text": "A 187-line Lean 4 formalization of the Chinese Remainder Theorem for finitely many pairwise coprime moduli, indexed by $\\mathrm{Fin}\\, k$ over $\\mathbb{Z}$. Proves both existence and uniqueness by induction on $k$, with the 2-moduli case handled by the parent `crt_iscop`. The inductive step combines the IH solution $y$ (mod $M = \\prod_{i < k} m_i$) with the new residue $a_{\\text{last}}$ (mod $m_{\\text{last}}$) using `crt_iscop` applied to the coprime pair $(M, m_{\\text{last}})$. Coprimality of the new modulus with the product follows from `IsCoprime.prod_right`. Uniqueness uses `IsCoprime.mul_dvd` to assemble the inductive product modulus. Includes a worked numerical example with moduli $(3, 5, 7)$.",
+    "proofStrategy": "The proof has two halves, each by induction on $k$:\n\n**Existence** (`crt_finitely_many_exists`):\n1. Base case $k = 0$: $x = 0$ works vacuously (no constraints).\n2. Inductive step at $k+1$: Apply IH to $m' = m \\circ \\mathrm{castSucc}$ to get a solution $y$ for the first $k$ residues. Set $M = \\prod_{i < k} m'_i$. Coprimality of $m_{\\text{last}}$ with $M$ follows from `IsCoprime.prod_right` (each pairwise coprimality lifts to a product). Apply `crt_iscop` to combine $y$ (mod $M$) with $a_{\\text{last}}$ (mod $m_{\\text{last}}$), getting $x$. Verify $x$ satisfies all $k+1$ congruences via `Fin.lastCases`: the last case is direct, and earlier cases use `Finset.dvd_prod_of_mem` + `modEq_of_dvd_modulus` to lift $x \\equiv y \\pmod{M}$ to $x \\equiv y \\pmod{m'_j}$ for each $j$.\n\n**Uniqueness** (`crt_finitely_many_unique`):\n1. Base case $k = 0$: empty product is 1, and any two integers are congruent mod 1.\n2. Inductive step: IH gives $x \\equiv y \\pmod{\\prod m'}$. Combined with $x \\equiv y \\pmod{m_{\\text{last}}}$, `IsCoprime.mul_dvd` yields $x \\equiv y \\pmod{m_{\\text{last}} \\cdot \\prod m'} = \\pmod{\\prod m}$ (after rearranging via `Fin.prod_univ_castSucc`).\n\nThe two are packaged as `crt_finitely_many` (existence + uniqueness in a single statement).",
+    "keyInsights": [
+      "The inductive step is purely algebraic: take a (k-1)-moduli solution and combine with one new modulus via the 2-moduli CRT — this same pattern works for ℤ, lists, finsets, and abstract rings",
+      "IsCoprime.prod_right is the critical bridge: it lifts pairwise coprimality to coprimality with the product, which is exactly the hypothesis required by the 2-moduli step",
+      "Working over ℤ (not ℕ) avoids subtraction issues and matches the algebraic interface of IsCoprime, IsCoprime.mul_dvd, and Int.ModEq",
+      "Fin.lastCases gives the cleanest case split for the verification step: the last coordinate is verified directly, the others use the IH plus a divisibility lift",
+      "The empty-product base case (k = 0) is non-trivial in form but trivial in content: ∏ over Fin 0 = 1, and ZMOD 1 is the universal congruence"
+    ],
+    "prerequisites": [
+      "Number theory (modular arithmetic, Bézout's identity, divisibility)",
+      "Familiarity with Fin types and finite indexing in Lean/Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "lifting-lemma",
+      "title": "Lifting Congruences to Coarser Moduli",
+      "summary": "modEq_of_dvd_modulus: if a ∣ b and x ≡ y [ZMOD b], then x ≡ y [ZMOD a]. Used to lift x ≡ y (mod product) to x ≡ y (mod factor).",
+      "startLine": 33,
+      "endLine": 42,
+      "mathContext": "If $a \\mid b$ and $x \\equiv y \\pmod{b}$, then $x \\equiv y \\pmod{a}$. This is the elementary fact that a finer modulus implies a coarser one — used inductively to lift congruences mod $\\prod m_i$ down to congruences mod each individual $m_j$ via $m_j \\mid \\prod m_i$."
+    },
+    {
+      "id": "pairwise-coprime",
+      "title": "Pairwise Coprimality and the Product",
+      "summary": "isCoprime_last_prod: the last modulus is coprime with the product of the first k. pairwise_castSucc: restricting pairwise coprimality from Fin (k+1) to Fin k.",
+      "startLine": 44,
+      "endLine": 65,
+      "mathContext": "Two key lemmas about pairwise coprimality of $m : \\mathrm{Fin}\\, (k+1) \\to \\mathbb{Z}$: (1) the last modulus $m_{\\mathrm{last}\\, k}$ is coprime with the product $\\prod_{i \\in \\mathrm{Fin}\\, k} m_{i.\\mathrm{castSucc}}$ — proved by `IsCoprime.prod_right` lifting the pointwise coprimality $\\mathrm{IsCoprime}(m_{\\mathrm{last}\\, k}, m_{i.\\mathrm{castSucc}})$; (2) restricting pairwise coprimality from $\\mathrm{Fin}\\, (k+1)$ to $\\mathrm{Fin}\\, k$ via $\\mathrm{castSucc}$ injectivity."
+    },
+    {
+      "id": "existence",
+      "title": "k-Moduli CRT: Existence",
+      "summary": "crt_finitely_many_exists: by induction on k, combining the inductive solution with the new modulus via the 2-moduli crt_iscop.",
+      "startLine": 67,
+      "endLine": 105,
+      "mathContext": "**Existence.** For pairwise coprime $m : \\mathrm{Fin}\\, k \\to \\mathbb{Z}$ and any residues $a : \\mathrm{Fin}\\, k \\to \\mathbb{Z}$, there exists $x \\in \\mathbb{Z}$ with $x \\equiv a_i \\pmod{m_i}$ for every $i$. By induction: in the inductive step, the IH gives $y$ mod $M = \\prod m_{i.\\mathrm{castSucc}}$; the 2-moduli `crt_iscop` then combines $y$ (mod $M$) with $a_{\\mathrm{last}\\, k}$ (mod $m_{\\mathrm{last}\\, k}$) using $\\mathrm{IsCoprime}(m_{\\mathrm{last}\\, k}, M)$ from `isCoprime_last_prod`."
+    },
+    {
+      "id": "uniqueness",
+      "title": "k-Moduli CRT: Uniqueness",
+      "summary": "crt_finitely_many_unique: any two solutions are congruent modulo the product. Inductive step uses IsCoprime.mul_dvd to combine the IH and the last congruence.",
+      "startLine": 107,
+      "endLine": 138,
+      "mathContext": "**Uniqueness.** Any two simultaneous solutions are congruent modulo $\\prod m_i$. By induction on $k$: the inductive step uses `IsCoprime.mul_dvd` — given $m_{\\mathrm{last}\\, k} \\mid (x - y)$, $\\prod_{i.\\mathrm{castSucc}} m_i \\mid (x - y)$, and $\\mathrm{IsCoprime}(m_{\\mathrm{last}\\, k}, \\prod_{i.\\mathrm{castSucc}} m_i)$, conclude $m_{\\mathrm{last}\\, k} \\cdot \\prod m_{i.\\mathrm{castSucc}} \\mid (x - y)$. Rearranging via `Fin.prod_univ_castSucc` gives the desired modulus $\\prod_{\\mathrm{Fin}\\, (k+1)} m_i$."
+    },
+    {
+      "id": "combined",
+      "title": "Combined Existence-Uniqueness",
+      "summary": "crt_finitely_many: packages existence with uniqueness in a single ∃-statement.",
+      "startLine": 140,
+      "endLine": 154,
+      "mathContext": "Packaged statement: there exists $x$ satisfying all congruences, and any other simultaneous solution $y$ is congruent to $x$ modulo $\\prod m_i$. This combines `crt_finitely_many_exists` with `crt_finitely_many_unique` applied to $x - y$."
+    },
+    {
+      "id": "example",
+      "title": "Worked Example: (3, 5, 7) Sun Tzu Problem",
+      "summary": "Concrete instance: x ≡ 2 (mod 3), x ≡ 3 (mod 5), x ≡ 2 (mod 7). Solution x = 23, unique modulo 105.",
+      "startLine": 156,
+      "endLine": 176,
+      "mathContext": "Sun Tzu's original 3rd-century problem: find $x$ with $x \\equiv 2 \\pmod{3}$, $x \\equiv 3 \\pmod{5}$, $x \\equiv 2 \\pmod{7}$. Solution $x = 23$, verified by `decide`. Uniqueness modulo $105 = 3 \\cdot 5 \\cdot 7$: e.g. $128 = 23 + 105$ also works, and $128 \\equiv 23 \\pmod{105}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization extends the 2-moduli CRT to finitely many pairwise-coprime moduli indexed by Fin k over ℤ, with 0 sorries and 0 axioms. The proof uses induction on k, combining the inductive solution with a single new modulus via the parent `crt_iscop`. Both existence and uniqueness are proved, packaged as `crt_finitely_many`.",
+    "implications": "**Mathematical Significance**\n\n1. **Inductive CRT pattern**: The proof exhibits a clean pattern that generalizes to any indexed family — Fin k, Lists, Finsets, even general filtered colimits in ring theory.\n2. **Algorithmic content**: Combined with `crtInt` from the parent, this gives an executable algorithm that returns explicit integer solutions for any finite system of pairwise-coprime congruences.\n3. **Modularity**: By staying in ℤ and using IsCoprime (rather than ZMod), the proof composes with broader algebraic frameworks (e.g. localization, completions, ideal arithmetic).\n4. **Bridge to ZMod**: This entry complements the ring-isomorphism perspective in `bezout-identity-oq-03-oq-01-oq-01` by giving an explicit pointwise solution rather than an abstract iso.",
+    "openQuestions": [
+      "Can the constructed solution x be made `def`-level computable (rather than existential), giving an explicit `crtListInt : (m a : Fin k → ℤ) → ℤ`?",
+      "Can the same induction be lifted to general commutative rings R with pairwise comaximal ideals I_1, ..., I_k?",
+      "Is there a Garner-mixed-radix formulation that gives a more efficient sequential algorithm using only single-precision arithmetic?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-03",
+      "relationship": "extends",
+      "description": "Parent: 2-moduli CRT via Bézout. This file extends to k pairwise-coprime moduli by induction."
+    },
+    {
+      "targetId": "bezout-identity-oq-03-oq-01",
+      "relationship": "complementary",
+      "description": "Sibling: CRT as ring isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ. This file gives the explicit integer-witness perspective."
+    },
+    {
+      "targetId": "bezout-identity-oq-03-oq-01-oq-01",
+      "relationship": "complementary",
+      "description": "Sibling: k-fold CRT as iterated ZMod isomorphism on ℕ-indexed lists. This file uses ℤ and Fin-indexed families instead."
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "ancestor",
+      "description": "Foundational: Bézout's identity gcd(a,b) = ax + by underlies the parent crt_iscop solution formula."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Sun Tzu (Sunzi)",
+      "title": "Sunzi Suanjing (Master Sun's Mathematical Manual)",
+      "year": "400",
+      "venue": "~3rd–5th century CE, Problem 26",
+      "note": "The original CRT problem: find a number with remainders 2, 3, 2 when divided by 3, 5, 7. Used as the worked example in this formalization."
+    },
+    {
+      "authors": "Qin Jiushao",
+      "title": "Mathematical Treatise in Nine Sections (Shushu Jiuzhang)",
+      "year": "1247",
+      "venue": "Southern Song Dynasty, Vol. I-II",
+      "note": "First systematic algorithm for solving simultaneous linear congruences with arbitrary finitely many pairwise-coprime moduli — the algorithmic content this formalization captures."
+    },
+    {
+      "authors": "Knuth, Donald E.",
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": "1997",
+      "venue": "Addison-Wesley, 3rd edition, §4.3.2",
+      "note": "Modern computational treatment of CRT, including Garner's mixed-radix algorithm — referenced in the open questions for efficient implementations."
+    },
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer Graduate Texts in Mathematics 211, 3rd edition, Chapter II §2",
+      "note": "Modern treatment of CRT for general commutative rings with pairwise comaximal ideals — the abstract setting this formalization captures over ℤ."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.RingTheory.Coprime.Basic",
+      "Mathlib.RingTheory.Coprime.Lemmas",
+      "Mathlib.Tactic",
+      "Proofs.BezoutIdentityOQ03"
+    ],
+    "opens": [
+      "BezoutIdentityOQ03"
+    ],
+    "namespace": "BezoutIdentityOQ03OQ02",
+    "lineCount": 187,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 2,
+    "path": "Proofs/BezoutIdentityOQ03OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
