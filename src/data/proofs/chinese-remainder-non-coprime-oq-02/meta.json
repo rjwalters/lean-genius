@@ -78,9 +78,34 @@
   },
   "crossReferences": [
     {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "extends",
+      "description": "Parent: the original non-coprime CRT for two integer moduli ($\\mathbb{Z}$). This entry generalizes the result in three directions: arbitrary Euclidean domains (where Bézout drives uniqueness), polynomial rings (where the construction recovers Lagrange interpolation), and ideal CRT for general PIDs. The parent's element-level statement is recovered as a direct corollary of the ideal-level theorem."
+    },
+    {
       "targetId": "chinese-remainder-non-coprime-oq-03",
       "relationship": "extends",
       "description": "This file handles 2-moduli case; OQ03 extends to 3 moduli"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime-oq-01",
+      "relationship": "complements",
+      "description": "OQ-01 addresses the *computational* efficiency of non-coprime CRT (mixed-radix Garner's algorithm, canonical lcm-bound representatives). OQ-02 addresses the *algebraic* generality (Euclidean domains, polynomial rings, PIDs). Together they answer the parent's two natural follow-up questions: 'how fast?' and 'how general?'"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "specializes",
+      "description": "The classical pairwise-coprime CRT — over $\\mathbb{Z}$, with $\\gcd(m_i, m_j) = 1$ — is the special case of the ideal CRT in this entry where all coprimality assumptions are tight. The polynomial Lagrange interpolation theorem in Part II is the polynomial-ring analogue of Sunzi's classical congruence problem."
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "uses",
+      "description": "Bézout's identity in any Euclidean domain (and in $K[X]$) is the engine of Parts I-III: given coprime $u, v$, the existence of $a, b$ with $a u + b v = 1$ converts coprimality into an explicit projection idempotent that solves the CRT system. The Part IV element-coprimality $\\Leftrightarrow$ ideal-coprimality bridge (`isCoprime_iff_span_sup_eq_top`) is the abstract restatement of the Bézout existence theorem."
+    },
+    {
+      "targetId": "lagrange-four-squares",
+      "relationship": "related",
+      "description": "Lagrange's four-square theorem also uses CRT-style reasoning: the solvability over $\\mathbb{Z}/p\\mathbb{Z}$ at each prime $p$ is glued to a solvability over $\\mathbb{Z}$ via the constructive CRT. The shared ingredient is Bézout-based explicit construction; the shared structural insight is that local solvability + a coprimality condition implies global solvability — the Hasse principle for sums of four squares."
     }
   ],
   "sections": [
