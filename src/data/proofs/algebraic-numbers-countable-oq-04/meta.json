@@ -121,6 +121,117 @@
       "targetId": "algebraic-numbers-countable-oq-05",
       "relationship": "related",
       "description": "Sibling: Cantor's 1874 height function proof. Both the height function (for countability) and Baker's theorem (for transcendence) use degree-based measures of algebraic numbers."
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "foundational",
+      "description": "Hermite's 1873 proof of $e$'s transcendence is the first link in the chain leading to Baker. Hermite's auxiliary polynomial method — constructing a polynomial that vanishes to high order at integer arguments — is the direct ancestor of Baker's auxiliary function. Baker's theorem subsumes Hermite-Lindemann (transcendence of $e^\\alpha$ for nonzero algebraic $\\alpha$) as the special case $\\alpha = 1$, $\\log \\alpha = 0$ paired with Hermite-Lindemann's variant on $e$."
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "foundational",
+      "description": "Lindemann's 1882 proof of $\\pi$'s transcendence — and the Lindemann-Weierstrass extension to all $e^{\\alpha_i}$ for distinct algebraic $\\alpha_i$ — is the closest classical predecessor to Baker. The Lindemann-Weierstrass theorem says: if $\\alpha_1, \\ldots, \\alpha_n$ are $\\mathbb{Q}$-independent algebraic numbers, then $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are algebraically independent over $\\overline{\\mathbb{Q}}$. Baker is the dual statement on the logarithm side: $\\mathbb{Q}$-independent $\\log \\alpha_i$ remain $\\overline{\\mathbb{Q}}$-independent. Together they describe the algebraic structure of the exponential map $\\overline{\\mathbb{Q}} \\to \\overline{\\mathbb{Q}}^\\times$."
+    },
+    {
+      "targetId": "gelfond-schneider",
+      "relationship": "foundational",
+      "description": "Gelfond-Schneider (1934, Hilbert's 7th problem) is the $n = 2$ case of Baker's theorem in disguise: $\\alpha^\\beta = e^{\\beta \\log \\alpha}$ transcendental for algebraic $\\alpha \\neq 0, 1$ and irrational algebraic $\\beta$ corresponds to Baker's $\\beta_1 \\log \\alpha + \\beta_2 \\log e \\neq 0$ with appropriate normalization. Baker's 1966 generalization from $n = 2$ to arbitrary $n$ is one of the most celebrated leaps in 20th-century mathematics, recognized with the 1970 Fields Medal."
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "foundational",
+      "description": "The Hermite-Lindemann theorem ($e^\\alpha$ transcendental for nonzero algebraic $\\alpha$) and its Weierstrass generalization (algebraic independence of $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ for $\\mathbb{Q}$-independent algebraic $\\alpha_i$) together cover the exponential side of transcendence theory. Baker covers the dual logarithm side. Schanuel's conjecture (still open) unifies both into a single statement on the transcendence degree of $\\mathbb{Q}(z_1, \\ldots, z_n, e^{z_1}, \\ldots, e^{z_n})$ — implying Baker, Hermite-Lindemann, and Lindemann-Weierstrass simultaneously."
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "complementary",
+      "description": "Liouville's 1844 theorem — algebraic numbers have rational approximations no better than $|x - p/q| > C/q^d$ where $d$ is the algebraic degree — is the first effective transcendence result and the foundational technique that Baker's auxiliary function method generalizes. Liouville's diophantine inequality remains the model for Baker-style lower bounds: just as Liouville bounds $|x - p/q|$ from below in terms of $q$, Baker bounds $|\\sum \\beta_i \\log \\alpha_i|$ from below in terms of the height of the $\\beta_i$. The progression Liouville (1844) → Thue (1909) → Roth (1955, Fields Medal) → Baker (1966, Fields Medal) marks four decisive sharpenings of the rational approximation theorem."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Baker, Alan",
+      "title": "Linear forms in the logarithms of algebraic numbers I, II, III, IV",
+      "year": "1966–1968",
+      "venue": "Mathematika 13 (1966), 204–216; 14 (1967), 102–107; 14 (1967), 220–228; 15 (1968), 204–216",
+      "note": "The four foundational papers establishing Baker's theorem on linear forms in logarithms. Paper I (1966) introduced the auxiliary function method and proved the qualitative theorem that $\\mathbb{Q}$-linearly independent logarithms of algebraic numbers remain $\\overline{\\mathbb{Q}}$-linearly independent — directly axiomatized in this entry as `baker_homogeneous`. Papers II–IV developed the quantitative lower bounds (sharpened in Baker-Wüstholz 1993) and the inhomogeneous form. Baker received the 1970 Fields Medal for this work and its applications to effective Diophantine geometry."
+    },
+    {
+      "authors": "Baker, Alan",
+      "title": "Transcendental Number Theory",
+      "year": "1975",
+      "venue": "Cambridge University Press, Cambridge Mathematical Library (revised reprint 1990)",
+      "note": "Baker's own monograph synthesizing the auxiliary function method, the proof of the homogeneous and inhomogeneous theorems, and the quantitative lower bounds. Chapters 1–3 develop Hermite's method and Hermite-Lindemann; Chapters 9–11 develop the full Baker theorem with Siegel's lemma, the auxiliary function $F(z_0, \\ldots, z_n)$ construction, the extrapolation lemma, and the contradiction via Schwarz's lemma — the entire `proofStrategy` outlined in this entry. The standard graduate reference for transcendence theory."
+    },
+    {
+      "authors": "Baker, Alan and Wüstholz, Gisbert",
+      "title": "Logarithmic forms and Diophantine geometry",
+      "year": "2007",
+      "venue": "New Mathematical Monographs vol. 9, Cambridge University Press",
+      "note": "The definitive monograph on the Baker-Wüstholz quantitative theorem (Baker-Wüstholz 1993, *Inventiones Mathematicae* 121, 159–186) and its applications to Diophantine geometry. The 1993 paper improved the exponent in Baker's original lower bound from $\\log^{n+1}(B)$ to the optimal $\\log(B)$, using Wüstholz's multiplicity estimates on group varieties — precisely the bound axiomatized in this entry's `baker_wustholz_bound`. The book covers applications to Thue equations, Mordell's equation, S-unit equations, and the class number problem (resolved by Stark 1971 using Baker's bounds for class number 1)."
+    },
+    {
+      "authors": "Hermite, Charles",
+      "title": "Sur la fonction exponentielle",
+      "year": "1873",
+      "venue": "Comptes rendus de l'Académie des Sciences de Paris, vol. 77, pp. 18–24, 74–79, 226–233, 285–293",
+      "note": "Hermite's proof that $e$ is transcendental, introducing the auxiliary polynomial method that is the conceptual ancestor of Baker's auxiliary function. Hermite constructs a polynomial $P(x) = \\sum c_k x^k$ vanishing to high order at $0, 1, 2, \\ldots, n$ and uses bounds on $\\int_0^j P(x) e^{-x} dx$ to derive a contradiction from the assumed algebraicity of $e$. Cited in this entry's historical chain as the first link (1873) leading to Baker (1966)."
+    },
+    {
+      "authors": "Lindemann, Ferdinand von",
+      "title": "Über die Zahl π",
+      "year": "1882",
+      "venue": "Mathematische Annalen, vol. 20, pp. 213–225",
+      "note": "Lindemann's proof that $\\pi$ is transcendental, generalizing Hermite's method to handle $e^{i\\pi} = -1$ via the contradiction with Euler's identity. Weierstrass (1885) extended to the Lindemann-Weierstrass theorem: $\\mathbb{Q}$-independent algebraic $\\alpha_1, \\ldots, \\alpha_n$ give algebraically independent $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$. Baker's theorem is the logarithm-side dual to Lindemann-Weierstrass."
+    },
+    {
+      "authors": "Gelfond, Aleksandr Osipovich",
+      "title": "Sur le septième problème de Hilbert",
+      "year": "1934",
+      "venue": "Bulletin de l'Académie des Sciences de l'URSS, série mathématique, vol. 7, pp. 623–634",
+      "note": "Gelfond's resolution of Hilbert's 7th problem: $\\alpha^\\beta$ is transcendental for algebraic $\\alpha \\neq 0, 1$ and irrational algebraic $\\beta$. Schneider (1934, *Journal für die reine und angewandte Mathematik*) proved the same result independently using a different auxiliary function. Gelfond-Schneider is the $n = 2$ case of Baker's theorem; Baker's leap to general $n$ is the achievement that earned the Fields Medal."
+    },
+    {
+      "authors": "Schneider, Theodor",
+      "title": "Transzendenzuntersuchungen periodischer Funktionen I, II",
+      "year": "1934",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 172, pp. 65–69, 70–74",
+      "note": "Schneider's independent proof of the Gelfond-Schneider theorem (the $n = 2$ case of Baker), using auxiliary functions of two complex variables — closer in technique to Baker's eventual approach than Gelfond's. Schneider's 1957 monograph *Einführung in die transzendenten Zahlen* (Springer) became the standard German-language reference for transcendence theory before Baker's 1975 book."
+    },
+    {
+      "authors": "Baker, Alan",
+      "title": "Linear forms in the logarithms of algebraic numbers (a survey)",
+      "year": "1971",
+      "venue": "Recent Progress in Analytic Number Theory, Vol. 1 (Durham 1979), Academic Press, pp. 1–27 (early version) — and Mathematika 18 (1971), 102–107 for the survey article",
+      "note": "Baker's own survey of the 1966–1971 developments, providing the cleanest exposition of the auxiliary function method for non-specialists. Useful supplement to the 1975 monograph for understanding why the proof works at the conceptual level."
+    },
+    {
+      "authors": "Stark, Harold M.",
+      "title": "A complete determination of the complex quadratic fields of class-number one",
+      "year": "1967",
+      "venue": "Michigan Mathematical Journal 14, pp. 1–27",
+      "note": "Stark's resolution of the Gauss class number 1 problem — there are exactly 9 imaginary quadratic fields $\\mathbb{Q}(\\sqrt{-d})$ with $d \\in \\{1, 2, 3, 7, 11, 19, 43, 67, 163\\}$ having class number 1 — using Baker's lower bounds for linear forms in logarithms. Cited in this entry's `keyInsights` as a flagship application of Baker. Heegner (1952) gave an earlier proof using modular forms but his argument was incomplete; Stark's Baker-based proof is the standard reference."
+    },
+    {
+      "authors": "Tijdeman, Robert",
+      "title": "On the equation of Catalan",
+      "year": "1976",
+      "venue": "Acta Arithmetica 29, pp. 197–209",
+      "note": "Tijdeman's proof that Catalan's equation $x^p - y^q = 1$ has only finitely many solutions in positive integers $x, y > 0$ and primes $p, q > 1$, using Baker's quantitative bounds for linear forms in logarithms. Mihăilescu (2004) later proved the full Catalan conjecture (only solution is $3^2 - 2^3 = 1$) without Baker's bounds, but Tijdeman's effective bounds were a landmark application of Baker's machinery to a centuries-old open problem (Catalan 1844)."
+    },
+    {
+      "authors": "Waldschmidt, Michel",
+      "title": "Diophantine Approximation on Linear Algebraic Groups: Transcendence Properties of the Exponential Function in Several Variables",
+      "year": "2000",
+      "venue": "Grundlehren der mathematischen Wissenschaften vol. 326, Springer-Verlag",
+      "note": "The most comprehensive modern treatment of Baker's theorem and its generalizations, including the Baker-Wüstholz quantitative form, the multiplicity estimates of Wüstholz on group varieties, and the connections to Schanuel's conjecture and the Six Exponentials theorem. Chapter 1 motivates Baker via the duality between exponential and logarithmic transcendence theorems; Chapter 9 develops the full Baker-Wüstholz machinery used in this entry's quantitative axiom."
+    },
+    {
+      "authors": "Murty, M. Ram and Rath, Purusottam",
+      "title": "Transcendental Numbers",
+      "year": "2014",
+      "venue": "Springer Universitext",
+      "note": "Accessible graduate-level introduction to transcendence theory. Chapter 6 develops Baker's theorem with all the analytic prerequisites (Siegel's lemma, the auxiliary function, the extrapolation lemma) at a level approachable for first-year graduate students. Companion to Baker's 1975 monograph for readers approaching the subject for the first time."
     }
   ],
   "sorries": 0,
