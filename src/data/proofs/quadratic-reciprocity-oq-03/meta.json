@@ -1,0 +1,134 @@
+{
+  "id": "quadratic-reciprocity-oq-03",
+  "title": "Quadratic Reciprocity as a Computation Algorithm: Reduction Lemmas",
+  "slug": "quadratic-reciprocity-oq-03",
+  "description": "Packages the core reduction lemmas that turn Quadratic Reciprocity into a GCD-like algorithm for the Legendre symbol: multiplicativity, the first supplementary law, and the reciprocity swap. Includes seven concrete `decide`-verified Legendre symbol computations and a descent statement showing each swap strictly reduces the modulus.",
+  "meta": {
+    "author": "Gauss (1801); formalized by lean-genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Quadratic_reciprocity",
+    "date": "1801",
+    "status": "verified",
+    "proofRepoPath": "Proofs/QuadraticReciprocityOQ03.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "algorithm",
+      "legendre-symbol",
+      "supplementary-laws",
+      "verified-computation"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-04-27",
+    "lineCount": 119,
+    "originalContributions": [
+      "legendreSym_mul_eq: multiplicativity (a·b/p) = (a/p)·(b/p) packaged as a one-line wrapper around `map_mul (legendreSym p)`",
+      "legendreSym_neg_one_eq: first supplementary law (-1/p) = (-1)^((p-1)/2) restated as a clean reduction step",
+      "reciprocity_swap: the reciprocity swap (q/p) = (-1)^((p-1)/2 · (q-1)/2) · (p/q) for distinct odd primes, presented as the single rewrite step of the algorithm",
+      "algorithm_descent: explicit Euclidean-style descent statement — each reciprocity swap reduces the modulus, justifying termination",
+      "Seven `decide`-verified Legendre symbol computations: (3/7)=−1, (2/7)=1, (5/13)=−1, (7/11)=−1, (3/5)=−1, (2/17)=1, (6/7)=−1"
+    ],
+    "assumptions": "No axioms, no sorries. All four reduction lemmas are one-line wrappers around Mathlib's `legendreSym.quadratic_reciprocity'`, `legendreSym.at_neg_one`, and `map_mul`. Examples are verified by Lean's `decide` tactic at elaboration time.",
+    "mathlibDependencies": [
+      {
+        "theorem": "legendreSym.quadratic_reciprocity'",
+        "description": "The Law of Quadratic Reciprocity in quotient form: (q/p) = (-1)^((p/2)·(q/2)) · (p/q) for distinct odd primes",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      },
+      {
+        "theorem": "legendreSym.at_neg_one",
+        "description": "First supplementary law: (-1/p) = (-1)^(p/2) for odd primes",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      },
+      {
+        "theorem": "map_mul",
+        "description": "Multiplicativity of ring hom-like maps; specializes to (a·b/p) = (a/p)·(b/p) for the Legendre symbol",
+        "module": "Mathlib.Algebra.GroupWithZero.Hom"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Law of Quadratic Reciprocity was first conjectured by Euler and Legendre and proved by Gauss in 1796 (published in *Disquisitiones Arithmeticae*, 1801). Gauss called it the 'aureum theorema' (golden theorem) and gave six different proofs over his lifetime. The law states that for distinct odd primes $p, q$: $\\left(\\tfrac{p}{q}\\right)\\left(\\tfrac{q}{p}\\right) = (-1)^{\\frac{p-1}{2} \\cdot \\frac{q-1}{2}}$. Combined with the supplementary laws for $-1$ and $2$, it yields a finite procedure for evaluating any Legendre symbol — analogous to the Euclidean algorithm, where reciprocity swaps replace the division step.",
+    "problemStatement": "State and prove the three core reduction steps that turn Quadratic Reciprocity into an algorithm for computing $\\left(\\tfrac{a}{p}\\right)$: multiplicativity (factor $a$), the first supplementary law (handle the sign), and the reciprocity swap (reduce the modulus). Demonstrate that each swap strictly reduces the prime modulus, and verify the algorithm on concrete examples by Lean's `decide` tactic.",
+    "proofStrategy": "Each reduction lemma is a thin wrapper that exposes a Mathlib theorem in the precise form needed for the algorithm: `legendreSym_mul_eq` is `map_mul`, `legendreSym_neg_one_eq` is `legendreSym.at_neg_one`, and `reciprocity_swap` is `legendreSym.quadratic_reciprocity'`. The descent statement `algorithm_descent` repackages `reciprocity_swap` with an explicit `q < p` hypothesis, making the termination argument visible at the type level. The seven examples evaluate Lean's computable Legendre symbol on small primes via `decide`, which performs the finite case-split entirely at elaboration time and so requires no runtime witness.",
+    "keyInsights": [
+      "Quadratic reciprocity is the *swap step* of an algorithm, not just a static identity: paired with multiplicativity and the first supplementary law, it generates a complete reduction procedure for any Legendre symbol",
+      "Each reduction lemma is a one-line wrapper around Mathlib — the value is in the *packaging*: presenting QR in the canonical algorithmic form (multiplicativity ↔ swap ↔ supplementary law) rather than as scattered library results",
+      "`legendreSym.quadratic_reciprocity'` is the right entry point for an algorithmic presentation: it gives the quotient form $\\left(\\tfrac{q}{p}\\right) = \\pm \\left(\\tfrac{p}{q}\\right)$ directly, avoiding the $\\bmod 4$ case-split of the standard formulation",
+      "`decide` works for Legendre symbol computations on small concrete primes because Mathlib's `legendreSym` is implemented via a computable quotient-type expression — no `native_decide` needed for these examples",
+      "The descent statement `algorithm_descent` makes the Euclidean analogy precise: a reciprocity swap maps $(q/p)$ to a problem with strictly smaller modulus, exactly as Euclid's algorithm reduces $\\gcd(a, b)$ to $\\gcd(b, a \\bmod b)$"
+    ]
+  },
+  "sections": [
+    {
+      "id": "reduction-lemmas",
+      "title": "Algorithm Reduction Lemmas",
+      "startLine": 44,
+      "endLine": 64,
+      "summary": "Three reduction steps: multiplicativity (`legendreSym_mul_eq`), first supplementary law (`legendreSym_neg_one_eq`), and the reciprocity swap (`reciprocity_swap`). Each is a one-line wrapper presenting the Mathlib result in the form needed by the algorithm."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Example Computations",
+      "startLine": 66,
+      "endLine": 95,
+      "summary": "Seven concrete Legendre symbol computations verified by `decide`: (3/7)=−1, (2/7)=1, (5/13)=−1, (7/11)=−1, (3/5)=−1, (2/17)=1, (6/7)=−1. Each example is annotated with the QR-based hand calculation that `decide` corroborates."
+    },
+    {
+      "id": "descent",
+      "title": "Algorithm Termination",
+      "startLine": 97,
+      "endLine": 118,
+      "summary": "Proves `algorithm_descent`: under the hypothesis `q < p`, the reciprocity swap (q/p) = ±(p/q) reduces the modulus from p to q. This makes the Euclidean-style termination argument explicit at the type level."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization packages the Law of Quadratic Reciprocity in its algorithmic form: three reduction lemmas (multiplicativity, first supplementary law, reciprocity swap) plus an explicit descent statement, all proved as one-line wrappers around Mathlib. Seven concrete Legendre symbol computations are verified by Lean's `decide` tactic. The proof has zero sorries and zero axioms.",
+    "implications": "The companion proof `quadratic-reciprocity-algorithm-oq-01` builds on this packaging by implementing the full recursive algorithm (Jacobi-symbol form, well-founded termination, native_decide-verified examples). This entry exposes the *minimum* set of lemmas needed to turn QR into a computation, useful as a teaching artifact and as a stepping stone for downstream verified applications such as Solovay-Strassen primality testing and Tonelli-Shanks square roots.",
+    "openQuestions": [
+      "Can the second supplementary law $\\left(\\tfrac{2}{p}\\right) = (-1)^{(p^2-1)/8}$ be packaged as a fourth reduction lemma in the same one-line wrapper style, completing the standalone algorithmic toolkit?",
+      "Can the descent statement be strengthened to a recursion principle that takes the three reduction lemmas as inputs and produces a verified Legendre symbol computer, without going through the Jacobi-symbol detour of `quadratic-reciprocity-algorithm-oq-01`?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "quadratic-reciprocity",
+      "relationship": "Foundation",
+      "description": "The underlying Law of Quadratic Reciprocity that is packaged here as the swap step of an algorithm."
+    },
+    {
+      "proofId": "quadratic-reciprocity-algorithm",
+      "relationship": "Parent proof",
+      "description": "The parent algorithmic presentation of QR; this entry provides the canonical reduction-lemma form."
+    },
+    {
+      "proofId": "quadratic-reciprocity-algorithm-oq-01",
+      "relationship": "Sibling — full algorithm",
+      "description": "Companion entry that builds on these reduction lemmas to give a fully recursive Jacobi-symbol algorithm with well-founded termination and native_decide-verified examples."
+    },
+    {
+      "proofId": "elementary-quadratic-reciprocity",
+      "relationship": "Related proof",
+      "description": "An elementary proof of QR via Gauss sums; provides the theoretical foundation that this algorithmic packaging makes computational."
+    }
+  ],
+  "references": {
+    "papers": [
+      {
+        "title": "Disquisitiones Arithmeticae",
+        "author": "C. F. Gauss",
+        "year": 1801,
+        "url": "https://en.wikipedia.org/wiki/Disquisitiones_Arithmeticae"
+      }
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Quadratic_reciprocity",
+      "https://en.wikipedia.org/wiki/Legendre_symbol"
+    ],
+    "mathlib": [
+      "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
+      "Mathlib.NumberTheory.LegendreSymbol.Basic"
+    ]
+  }
+}
