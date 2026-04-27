@@ -543,3 +543,52 @@ directly gives `i = j` for `i j : Fin 1` without needing any extra hypotheses.
 2. Prove bridge (sorry 4): anyInv + encoding → False via Real.irrational_sqrt_two (~20 lines)
 3. Prove henc (sorry 5): evalWord (toWord w) e2Int = 3^n * encode(liftF w e₂) via induction on toWord + scaledAct = 3 * M_L
 4. Fix sorry 3: FreeGroup.Reduced → Chain' using `FreeGroup.toWord_reduced.chain'`
+
+---
+
+## Session 2026-04-27 (Session 17) — equidecomposable_symm + pre-existing build failure discovery
+
+**Mode**: REVISIT (claimed via depth-first knowledge tier)
+**Outcome**: progress — added foundational equivalence-relation lemma; flagged file build regression
+
+### What I Did
+1. Added `equidecomposable_symm` (lines 78-103, 26 lines): proves `A ≃ᴳ[G] B → B ≃ᴳ[G] A` by using
+   `g i • pieces i` as the new pieces and `(g i)⁻¹` as the new group elements. The inverse-recovery
+   uses `smul_smul`, `inv_mul_cancel`, `one_smul`. New pieces are pairwise disjoint by the original
+   image disjointness (`h_imgs_disj`); new images by the original piece disjointness.
+2. Removed unused `[MulAction.IsPretransitive G α]` constraint from `equidecomposable_refl`. The
+   prior-session knowledge note flagged this as removable but it was still in the signature; now
+   actually removed. Replaced `Fin.eq_of_val_eq` disjointness witness with `Subsingleton.elim i j`
+   (per same prior-session guidance).
+3. Together with the existing `equidecomposable_refl`, this gives Equidecomposable an explicit
+   reflexive+symmetric structure (transitivity remains to be added — needs piece-intersection construction).
+
+### Files Modified
+- `proofs/Proofs/LebesgueMeasureOQ06.lean`: lines 63-103 (1487 → 1516 lines)
+- `src/data/proofs/lebesgue-measure-oq-06/meta.json`: lineCount 1487 → 1516
+
+### Build Status — REGRESSION DISCOVERED (NOT introduced by this session)
+Docker build of `Proofs.LebesgueMeasureOQ06` FAILS with multiple pre-existing errors at lines well
+beyond my changes (557, 575, 577, 907, 924, 951, 1000, 1006, 1011, 1018, 1036-1038, 1047, 1092):
+- **Primary cause**: `unfold_let Mφ` / `unfold_let Mψ` — "unknown tactic" at lines 577, 588, 599, 610, 767
+  (used inside `hausdorff_free_subgroup`). This tactic appears removed/renamed in current Mathlib (4.26.0).
+- **Secondary cascades**: After `unfold_let` failure, `Matrix.transpose_apply * Matrix.mul_apply` simp
+  cannot close orthogonality proofs (`hφ_orth`, `hψ_orth`, etc.), which propagates failures through
+  `hausdorff_free_subgroup`, then later sections (`banach_tarski_pieces_nonmeasurable`, `int_amenable`).
+- **Status**: Master file does NOT contain `free_group_paradoxical` (master is 1428 lines vs branch 1486
+  pre-edit); the regression source is likely PR #13062 or a recent Mathlib upgrade that removed `unfold_let`.
+
+### Key Findings
+- `unfold_let` was a Mathlib tactic that has been removed in recent versions; replacements include
+  `simp only [show X = ... from rfl]`, `change X = ...`, or refactoring `let X := ...` to `set X := ... with hX_def` + `simp only [hX_def]`.
+- 5 `unfold_let` occurrences need fixing: lines 577, 588, 599, 610, 767. The lambda fix is mechanical.
+- Prior session 16 (2026-04-25) explicitly noted "Docker unavailable... build verification pending" —
+  the file has been quietly broken since the orbit_ne work, and no session has actually re-verified the build.
+
+### Next Steps (for next session)
+1. **HIGH PRIORITY**: Fix `unfold_let` regression — replace with `simp only [show ... from rfl]` or
+   migrate `let` → `set ... with hX_def`. Then re-run docker build and address cascading errors.
+2. Once build passes: my `equidecomposable_symm` will be verified.
+3. `equidecomposable_trans` (transitivity) is the natural next addition — requires constructing
+   intersected pieces, ~50-80 lines.
+4. With `_refl` + `_symm` + `_trans`, `Equidecomposable G` is an `Equivalence` — register the instance.
