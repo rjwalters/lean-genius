@@ -215,7 +215,8 @@
       "**Concrete witness matters**: Abel's original theorem proves existence of unsolvable quintics abstractly. This formalization gives a specific polynomial $x^5 - 4x + 2$ whose five roots provably resist all radical expressions, making the impossibility tangible.",
       "**Sylow elimination as case analysis**: The proof that $|\\text{Gal}| = 120$ is a remarkable case analysis. From $5 \\mid |G|$, $3 \\mid |G|$, and $|G| \\mid 120$, the candidates are $\\{15, 30, 60, 120\\}$. Sylow theory eliminates 15 (unique $P_5$ and $P_3$ would force a cyclic subgroup of order 15, but $S_5$ has none). The simplicity of $A_5$ eliminates 30 (an index-4 subgroup gives $S_5 \\to S_4$, impossible). The odd permutation from discriminant analysis eliminates 60 ($A_5$ is the unique order-60 subgroup, but the Galois image is not contained in $A_5$). Only 120 remains.",
       "**Complex conjugation as the key to eliminating Dedekind's theorem**: The proof constructs a Galois automorphism from complex conjugation: embed the splitting field $SF \\hookrightarrow \\mathbb{C}$ via `IsAlgClosed.lift`, compose with `starRingEnd \\mathbb{C}` (complex conjugation), then restrict via `restrictNormal` to get $\\sigma \\in \\text{Gal}(p/\\mathbb{Q})$. Since $\\Delta^2 = \\text{disc}(p) = -212144 < 0$, the FTGT forces $\\sigma$ to have odd sign — giving a transposition without needing Dedekind's theorem or mod-$p$ factorization at all. This single construction replaces both the Dedekind axiom and the original real-root-count argument.",
-      "**Sylow elimination as a universal strategy for $3 \\mid |\\text{Gal}|$**: Rather than using Dedekind's theorem (mod-$p$ factorization), the proof establishes $3 \\mid |\\text{Gal}|$ purely from the transposition: candidate orders not divisible by 3 are $\\{5, 10, 20, 40\\}$, and each is eliminated by showing a transposition cannot coexist with the unique normal Sylow 5-subgroup at that order. For orders 10, 20, 40: the transposition from `gal_has_odd_perm` would have to normalize the unique Sylow 5-subgroup, but `native_decide` verifies no transposition in $S_5$ normalizes any 5-cycle. For order 5: any order-5 subgroup of $S_5$ consists entirely of even permutations, contradicting the transposition. This approach is more elementary than Dedekind and avoids all mod-$p$ arithmetic."
+      "**Sylow elimination as a universal strategy for $3 \\mid |\\text{Gal}|$**: Rather than using Dedekind's theorem (mod-$p$ factorization), the proof establishes $3 \\mid |\\text{Gal}|$ purely from the transposition: candidate orders not divisible by 3 are $\\{5, 10, 20, 40\\}$, and each is eliminated by showing a transposition cannot coexist with the unique normal Sylow 5-subgroup at that order. For orders 10, 20, 40: the transposition from `gal_has_odd_perm` would have to normalize the unique Sylow 5-subgroup, but `native_decide` verifies no transposition in $S_5$ normalizes any 5-cycle. For order 5: any order-5 subgroup of $S_5$ consists entirely of even permutations, contradicting the transposition. This approach is more elementary than Dedekind and avoids all mod-$p$ arithmetic.",
+      "**Why $x^5 - 4x + 2$ rather than $x^5 - x - 1$ or $x^5 + x + 1$**: The polynomial choice trades off three competing constraints. Eisenstein irreducibility forces a prime $p$ dividing all non-leading coefficients but with $p^2 \\nmid$ constant term — the simplest such pattern is $p=2$ with constant term $\\pm 2$ and one nonzero linear coefficient divisible by 2. Three real roots (for the complex-conjugation transposition) requires the discriminant to be negative — the value $\\Delta^2 = -212144 = -2^4 \\cdot 13259$ is small enough that the derivative-product calculation $p(5/8) = -13259/32768$ keeps the arithmetic tractable. Finally, the constant term $+2$ rather than $-2$ (yielding the famous Trinks polynomials with Galois group $D_5$ or $F_{20}$) ensures a transitive action with all 5 roots in distinct orbits, forcing the Galois image to be primitive and hence (by O'Nan-Scott) maximal in $S_5$. Dummit-Foote's choice optimizes Eisenstein simplicity, real-root sign-change visibility, and discriminant computability simultaneously."
     ],
     "prerequisites": [
       "Abstract algebra (groups, solvable groups, symmetric groups)",
@@ -427,6 +428,11 @@
   },
   "references": [
     {
+      "key": "Ru99",
+      "citation": "Ruffini, P., Teoria generale delle equazioni in cui si dimostra impossibile la soluzione algebraica delle equazioni generali di grado superiore al quarto, Bologna (1799). The first (incomplete) proof of the unsolvability of the general quintic; the gap concerned permutation group theory not yet developed.",
+      "type": "book"
+    },
+    {
       "key": "Ab24",
       "citation": "Abel, N.H., Mémoire sur les équations algébriques, où l'on démontre l'impossibilité de la résolution de l'équation générale du cinquième degré (1824).",
       "type": "paper"
@@ -435,6 +441,16 @@
       "key": "Ga32",
       "citation": "Galois, É., Mémoire sur les conditions de résolubilité des équations par radicaux (1832).",
       "type": "paper"
+    },
+    {
+      "key": "Hi92",
+      "citation": "Hilbert, D., Über die Irreducibilität ganzer rationaler Functionen mit ganzzahligen Coefficienten, Journal für die reine und angewandte Mathematik 110 (1892), pp. 104-129. Hilbert's irreducibility theorem, foundational for the inverse Galois problem: $S_n$ and $A_n$ are realizable as Galois groups over $\\mathbb{Q}$.",
+      "type": "paper"
+    },
+    {
+      "key": "Ed84",
+      "citation": "Edwards, H.M., Galois Theory, Springer GTM 101 (1984). Faithful exposition of Galois's original 1832 memoir, including the historical development of the radical-solvability criterion and the role of the discriminant in Galois group computations.",
+      "type": "book"
     },
     {
       "key": "Ar42",
