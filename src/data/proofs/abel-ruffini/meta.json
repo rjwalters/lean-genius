@@ -769,6 +769,13 @@
       "year": "1977",
       "venue": "in *Algebraic Number Fields ($L$-functions and Galois Properties)* (A. Fröhlich, ed.), Academic Press, pp. 409–464",
       "note": "Effective Chebotarev: explicit error bounds for the density of primes with given Frobenius cycle type, conditional on GRH (and unconditional with weaker bounds). For a Galois extension $K/\\mathbb{Q}$ of degree $n$ and discriminant $\\Delta$, the smallest prime $p$ with $\\text{Frob}_p$ in any nonempty conjugacy class is $O(\\log^2 |\\Delta|)$ under GRH. Practical Galois group computation algorithms (PARI/GP, Magma) implement effective Chebotarev: bounded-time verification of $\\text{Gal}(f) = S_5$ via a finite list of primes. Cited in the openQuestion on Chebotarev formalization."
+    },
+    {
+      "authors": "Selmer, Ernst S.",
+      "title": "On the irreducibility of certain trinomials",
+      "year": "1956",
+      "venue": "Mathematica Scandinavica, vol. 4, pp. 287–302",
+      "note": "Selmer's theorem: the trinomial $x^n - x - 1$ is irreducible over $\\mathbb{Q}$ for every $n \\geq 2$. This irreducibility is the load-bearing first ingredient in the canonical Abel-Ruffini concrete witness $x^5 - x - 1$ that this entry's keyInsights and openQuestions repeatedly invoke. With Selmer's irreducibility in hand, the Galois group computation $\\text{Gal}(x^5 - x - 1/\\mathbb{Q}) \\cong S_5$ proceeds via the standard textbook recipe (Dummit-Foote, Rotman): reduction modulo 2 supplies a 5-cycle in $\\text{Gal}$ via Frobenius, the discriminant $\\Delta = 2869 = 19 \\cdot 151$ is not a perfect square (so $\\text{Gal} \\not\\subseteq A_5$), and exactly three real plus two complex-conjugate roots contribute a transposition via complex conjugation — forcing $\\text{Gal} = S_5$ since any transitive subgroup of $S_p$ for prime $p$ containing a $p$-cycle and a transposition is all of $S_p$. The Lean formalization of $x^5 - 4x + 2$ in `abel-ruffini-oq-04-oq-01` follows this blueprint via Eisenstein at $p = 2$ instead of Selmer's specialized trinomial irreducibility; a Selmer-style formalization establishing irreducibility of the entire family $x^n - x - 1$ in Mathlib remains an open challenge."
     }
   ],
   "mainTheorems": [
