@@ -17,11 +17,13 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-24T00:48:59.907Z",
-    "iteration": 4,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "since": "2026-04-27T00:00:00-07:00",
+    "iteration": 5,
+    "focus": "Roadmap recorded for axiom-elimination 4 -> 2 (eliminate partitionThreshold + threshold_exact via classical definition + transition-existence theorem). Awaiting Docker availability and disk headroom for Lean execution.",
+    "blockers": [
+      "Docker / disk headroom: prior session noted disk-full conditions corrupting builds; this session had only 783 MB free."
+    ],
+    "nextAction": "Execute knowledge.md Steps 1-5: partition_monotone_up_neg, partition_transition_exists, redefine partitionThreshold, prove threshold_exact_of_exists, discharge existence for omega^(omega^2).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 3S→0S in Erdos1182. Fixed bigF_threshold connectivity bug, proved bigF_lower_bound_tree, f_val_2, bigF_val_2. Added Graph.Connected, connected_min_edges axiom.",
+    "progressSummary": "4 axioms (Schipperus, Larson, partitionThreshold, threshold_exact), 0 sorries, 4 theorems including omega_omega2_threshold (bracket in [3,4]). Roadmap to reduce structural axioms 4 -> 2 documented in knowledge.md (Steps 1-5). The exact threshold value (3 vs 4) is open mathematics, not a Lean tooling gap.",
     "builtItems": [
       "Proved relation_to_592 as theorem (trivially follows from counterexample axioms)",
       "Fixed build: Ordinal universe annotations (.{0}), Ordinal.omega->omega0, added Exponential import",
@@ -61,11 +63,17 @@
       "connected_min_edges (connected→≥n-1 edges) is key link: with ≤n-1 edges, connected forces exactly n-1 edges (tree), enabling chvatal_tree_ramsey",
       "Fin 2 graphs have ≤1 edge: proved by Finset.card_le_one + fin2_lt_unique showing (0,1) is the only ordered pair"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "No formalization of Schipperus 1999/2010 (positive K_3 partition for omega^(omega^2))",
+      "No formalization of Larson K_5 blocker",
+      "Decidability of IsPartitionOrd (universal quantification over Ordinal -> Ordinal -> Bool) — only achievable classically"
+    ],
     "nextSteps": [
-      "Verify Erdos1182Problem.lean builds (Docker was unavailable during session)",
-      "If build fails, fix Lean proof syntax issues (Finset.card_le_one API, Classical decidability interaction)",
-      "Consider proving connected_min_edges as theorem instead of axiom (by induction on n, needs graph vertex removal infrastructure)"
+      "Add partition_monotone_up_neg (trivial)",
+      "Prove partition_transition_exists by strong induction (~20 lines)",
+      "Replace partitionThreshold axiom with noncomputable def using Classical.choose",
+      "Replace threshold_exact axiom with conditional theorem threshold_exact_of_exists",
+      "Discharge the existence hypothesis for counterexampleOrd via Schipperus + Larson + transition-existence"
     ]
   },
   "tags": [
