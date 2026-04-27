@@ -155,6 +155,11 @@ def upstepsAboveAxisC (l : List ℤ) : ℕ :=
 theorem upstepsAboveAxisC_eq (l : List ℤ) :
     upstepsAboveAxisC l = upstepsAboveAxis l := rfl
 
+/-- Computational verification of Chung-Feller for n=1:
+    Each of types 0 and 1 has exactly 1 = C₁ balanced path. -/
+example : upstepsAboveAxisC [1, -1] = 1 := by native_decide
+example : upstepsAboveAxisC [-1, 1] = 0 := by native_decide
+
 /-- Computational verification of Chung-Feller for n=2:
     Types 0, 1, 2 each have exactly 2 = C₂ balanced paths. -/
 example : upstepsAboveAxisC [1, 1, -1, -1] = 2 := by native_decide
@@ -163,6 +168,23 @@ example : upstepsAboveAxisC [1, -1, -1, 1] = 1 := by native_decide
 example : upstepsAboveAxisC [-1, 1, 1, -1] = 1 := by native_decide
 example : upstepsAboveAxisC [-1, 1, -1, 1] = 0 := by native_decide
 example : upstepsAboveAxisC [-1, -1, 1, 1] = 0 := by native_decide
+
+/-- The empty list is the unique balanced path with n = 0. -/
+theorem isBalancedPath_nil : IsBalancedPath ([] : List ℤ) 0 := by
+  refine ⟨?_, ?_, ?_⟩
+  · simp
+  · simp
+  · intro x hx
+    simp at hx
+
+/-- A balanced path with n = 0 is the empty list. -/
+theorem balanced_zero_eq_nil {l : List ℤ} (h : IsBalancedPath l 0) : l = [] := by
+  have hlen : l.length = 0 := by
+    have := balanced_length h
+    omega
+  rcases l with _ | ⟨x, rest⟩
+  · rfl
+  · simp at hlen
 
 /-- **Chung-Feller Theorem (uniform distribution)**:
 
