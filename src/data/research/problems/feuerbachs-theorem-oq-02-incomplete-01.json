@@ -73,11 +73,13 @@
       "let-bound goals (midpoint3_equidist, midpoint3_spec) need dsimp only or show before ring/refine."
     ],
     "mathlibGaps": [
-      "3D sphere tangency in Mathlib is less developed than 2D circle geometry"
+      "3D sphere tangency in Mathlib is less developed than 2D circle geometry",
+      "The correct 3D Feuerbach theorem statement needs literature research"
     ],
     "nextSteps": [
       "BLOCKED: 5 main-file tangency sorries appear mathematically FALSE as stated",
       "Future researcher: investigate Murakami (1952) and Court (1934) for the correct 3D Feuerbach formulation",
+      "The correct 3D Feuerbach analogue may use face circumcircles (Murakami 1952), not insphere/exspheres",
       "Possibly the correct sphere is the midedge sphere (center G, radius R/2) — already proved equidistant in session 1",
       "feuerbach_3d_fails_general axiom remains (deep counterexample construction)"
     ]

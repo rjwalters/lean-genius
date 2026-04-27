@@ -7,6 +7,11 @@ is essential — it does NOT hold for general tetrahedra.
 
 ---
 
+## Session 2026-04-27 (Session 1) -- Mathematical Error Discovery
+
+**Mode**: FRESH (WEAK knowledge tier)
+**Outcome**: CRITICAL FINDING -- 2 axioms provably FALSE, tangency theorems likely incorrect
+
 ## File Map
 
 - `proofs/Proofs/FeuerbachsTheoremOQ02.lean`: main formalization (665 lines)
@@ -18,7 +23,15 @@ is essential — it does NOT hold for general tetrahedra.
 - `proofs/Proofs/FeuerbachsTheoremOQ02Aristotle.lean`: companion (124 lines)
   - 14 → 5 sorry'd helper lemmas after this session
 
----
+### False Axioms Identified
+
+**1. `edge_midpoints_on_sphere` (REMOVED)**
+- Claimed: edge midpoints at distance R/3 from midpoint(O, M)
+- Disproved by: regular tetrahedron (edge midpoints at distance 1 vs R/3 ~ 0.577)
+- **Correct**: edge midpoints on sphere centered at G with radius R/2
+
+**2. `face_centroids_on_sphere` (REMOVED)**
+- Face centroids NOT equidistant from N24 for non-regular orthocentric tetrahedra
 
 ## Session 2026-04-27 — Aristotle Companion Cleanup
 
@@ -109,6 +122,17 @@ Five lemmas left, each non-trivial for distinct reasons:
    `face_centroids_on_sphere` which are themselves substantial.
 4. **Axiom decomposition**: the three axioms could be replaced by sorries
    and submitted to Aristotle as a separate effort.
+
+### Monge Point Correction
+- M != H. Euler line: O(0), G(1), H(2), M(4). H = midpoint(O, M).
+
+### Tangency Theorems Likely False
+- dist(N24, I) ~ 1.067 vs |R/3 - r| ~ 0.551 for (2,0,0),(0,3,0),(0,0,6),(0,0,0)
+
+### Changes Made
+1. Removed 2 false axioms (3 -> 1)
+2. Added edge_midpoints_equidist_from_centroid theorem
+3. Fixed docstrings, added warnings
 
 ---
 

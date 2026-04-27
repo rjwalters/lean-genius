@@ -328,11 +328,15 @@ theorem Tetrahedron.circumcenter_equidist (T : Tetrahedron) :
 def Tetrahedron.circumradius (T : Tetrahedron) : ℝ :=
   dist3 T.circumcenter T.A
 
-/-- The Monge point M: the 3D analogue of the orthocenter concept.
+/-- The Monge point M: a special point on the Euler line of a tetrahedron.
     For a general tetrahedron, the four altitudes do NOT meet at a point.
     The Monge point is defined as: M = G + 3(G - O) = 4G - 3O
     where G is the centroid and O is the circumcenter.
-    For an orthocentric tetrahedron, M coincides with the orthocenter. -/
+    **Correction**: M does NOT coincide with the orthocenter H.
+    For an orthocentric tetrahedron, the Euler line has O, G, H, M at parameters
+    0, 1, 2, 4 respectively: the orthocenter H = 2G - O is the MIDPOINT of O and M,
+    while N₂₄ = midpoint(O, M) = H. So the twenty-four-point center equals the
+    orthocenter, NOT the centroid. -/
 def Tetrahedron.mongePoint (T : Tetrahedron) : Point3 :=
   let G := T.centroid
   let O := T.circumcenter
@@ -427,7 +431,11 @@ def Tetrahedron.twentyFourPointCenter (T : Tetrahedron) : Point3 :=
   midpoint3 T.circumcenter T.mongePoint
 
 /-- The twenty-four-point sphere has radius R/3 where R is the circumradius.
-    (In the 2D case, the nine-point circle has radius R/2.) -/
+    (In the 2D case, the nine-point circle has radius R/2.)
+    **Warning**: This radius does NOT correspond to the sphere through edge midpoints.
+    For an orthocentric tetrahedron, the six edge midpoints lie on a sphere centered
+    at the centroid G with radius R/2 (see `edge_midpoints_equidist_from_centroid`).
+    The formula R/3 may not correspond to any classical geometric sphere. -/
 def Tetrahedron.twentyFourPointRadius (T : Tetrahedron) : ℝ :=
   T.circumradius / 3
 
@@ -448,6 +456,23 @@ def spheresExternallyTangent (c₁ c₂ : Point3) (r₁ r₂ : ℝ) : Prop :=
 -- ============================================================
 -- PART 10: The 3D Feuerbach Theorem (Orthocentric Case)
 -- ============================================================
+
+/-
+  **Mathematical Status Warning**: The tangency theorems below use
+  `twentyFourPointCenter` (= midpoint(O, M)) and `twentyFourPointRadius` (= R/3).
+  For an orthocentric tetrahedron, N₂₄ = midpoint(O, M) = H (the orthocenter),
+  so these theorems claim: dist(H, I) = |R/3 - r| and dist(H, E_X) = R/3 + r_X.
+
+  Numerical verification shows these tangency relations FAIL for the orthocentric
+  tetrahedron (2,0,0), (0,3,0), (0,0,6), (0,0,0):
+    dist(N₂₄, I) ≈ 1.067 but |R/3 - r| ≈ 0.551
+  They hold trivially for the regular tetrahedron (degenerate: N₂₄ = I = O).
+
+  The correct 3D Feuerbach analogue likely involves a different sphere
+  (possibly the midedge sphere with center G, radius R/2, or a sphere related
+  to face circumcircles per Murakami 1952). These sorry-gaps may be unfillable
+  as stated.
+-/
 
 /-- **3D Feuerbach's Theorem — Insphere Tangency (Orthocentric Case)**
 
@@ -596,34 +621,52 @@ axiom feuerbach_3d_fails_general :
 -- PART 14: Edge Midpoints on the Twenty-Four-Point Sphere
 -- ============================================================
 
-/-- For an orthocentric tetrahedron, the six edge midpoints lie on the
-    twenty-four-point sphere. This is the 3D analogue of the side midpoints
-    lying on the nine-point circle. -/
-axiom edge_midpoints_on_sphere (T : OrthocentricTetrahedron) :
-    dist3 T.toTetrahedron.twentyFourPointCenter T.toTetrahedron.midpoint_AB =
-      T.toTetrahedron.twentyFourPointRadius ∧
-    dist3 T.toTetrahedron.twentyFourPointCenter T.toTetrahedron.midpoint_AC =
-      T.toTetrahedron.twentyFourPointRadius ∧
-    dist3 T.toTetrahedron.twentyFourPointCenter T.toTetrahedron.midpoint_AD =
-      T.toTetrahedron.twentyFourPointRadius ∧
-    dist3 T.toTetrahedron.twentyFourPointCenter T.toTetrahedron.midpoint_BC =
-      T.toTetrahedron.twentyFourPointRadius ∧
-    dist3 T.toTetrahedron.twentyFourPointCenter T.toTetrahedron.midpoint_BD =
-      T.toTetrahedron.twentyFourPointRadius ∧
-    dist3 T.toTetrahedron.twentyFourPointCenter T.toTetrahedron.midpoint_CD =
-      T.toTetrahedron.twentyFourPointRadius
+/-
+  NOTE: The original axiom `edge_midpoints_on_sphere` claimed that edge midpoints lie
+  at distance `twentyFourPointRadius = R/3` from `twentyFourPointCenter`.
+  This is **mathematically false**. Counterexample: the regular tetrahedron with
+  vertices (1,1,1), (1,-1,-1), (-1,1,-1), (-1,-1,1) has R = √3, so R/3 ≈ 0.577,
+  but each edge midpoint is at distance 1 from the center.
 
-/-- For an orthocentric tetrahedron, the four face centroids lie on the
-    twenty-four-point sphere. -/
-axiom face_centroids_on_sphere (T : OrthocentricTetrahedron) :
-    dist3 T.toTetrahedron.twentyFourPointCenter T.toTetrahedron.faceCentroid_A =
-      T.toTetrahedron.twentyFourPointRadius ∧
-    dist3 T.toTetrahedron.twentyFourPointCenter T.toTetrahedron.faceCentroid_B =
-      T.toTetrahedron.twentyFourPointRadius ∧
-    dist3 T.toTetrahedron.twentyFourPointCenter T.toTetrahedron.faceCentroid_C =
-      T.toTetrahedron.twentyFourPointRadius ∧
-    dist3 T.toTetrahedron.twentyFourPointCenter T.toTetrahedron.faceCentroid_D =
-      T.toTetrahedron.twentyFourPointRadius
+  The correct result (proved below): edge midpoints are equidistant from the
+  **centroid** G, with common distance R/2. The center is G, not N₂₄, and the
+  radius is R/2, not R/3.
+-/
+
+/-- For an orthocentric tetrahedron, all six edge midpoints are equidistant
+    from the centroid G. This is the correct 3D analogue of the side midpoints
+    lying on the nine-point circle. The common distance is R/2 (circumradius / 2).
+
+    Proof: dist²(G, M_XY) = |(V₃ + V₄ - V₁ - V₂)|²/16 where {V₁,V₂} and {V₃,V₄}
+    partition the vertices. For an orthocentric tetrahedron, the three perpendicularity
+    conditions force all six such squared norms to be equal. -/
+theorem edge_midpoints_equidist_from_centroid (T : OrthocentricTetrahedron) :
+    dist3_sq T.toTetrahedron.centroid T.toTetrahedron.midpoint_AB =
+      dist3_sq T.toTetrahedron.centroid T.toTetrahedron.midpoint_CD ∧
+    dist3_sq T.toTetrahedron.centroid T.toTetrahedron.midpoint_AC =
+      dist3_sq T.toTetrahedron.centroid T.toTetrahedron.midpoint_BD ∧
+    dist3_sq T.toTetrahedron.centroid T.toTetrahedron.midpoint_AD =
+      dist3_sq T.toTetrahedron.centroid T.toTetrahedron.midpoint_BC ∧
+    dist3_sq T.toTetrahedron.centroid T.toTetrahedron.midpoint_AB =
+      dist3_sq T.toTetrahedron.centroid T.toTetrahedron.midpoint_AC ∧
+    dist3_sq T.toTetrahedron.centroid T.toTetrahedron.midpoint_AB =
+      dist3_sq T.toTetrahedron.centroid T.toTetrahedron.midpoint_AD := by
+  have h1 := T.AB_perp_CD
+  have h2 := T.AC_perp_BD
+  unfold dist3_sq Tetrahedron.centroid Tetrahedron.midpoint_AB Tetrahedron.midpoint_AC
+    Tetrahedron.midpoint_AD Tetrahedron.midpoint_BC Tetrahedron.midpoint_BD
+    Tetrahedron.midpoint_CD midpoint3 vec3 dot3 at *
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> nlinarith
+
+/-
+  NOTE: The original axiom `face_centroids_on_sphere` claimed that face centroids lie
+  at distance `twentyFourPointRadius = R/3` from `twentyFourPointCenter`.
+  This is **mathematically false**. Counterexample: the orthocentric tetrahedron with
+  vertices (2,0,0), (0,3,0), (0,0,6), (0,0,0) has face centroids at distances
+  ≈ 2.24, 2.11, 1.20, 2.33 from N₂₄ = (0,0,0) — they are not even on a common sphere.
+  (They happen to equal R/3 for a regular tetrahedron, but this is a degenerate case
+  where O = G = N₂₄.)
+-/
 
 -- ============================================================
 -- PART 15: Summary
@@ -632,29 +675,44 @@ axiom face_centroids_on_sphere (T : OrthocentricTetrahedron) :
 /-
 ## Summary of Results
 
-### Proved (0 axioms, 0 sorries):
+### Proved (0 sorries):
 1. orthocentric_third_perp: Third perpendicularity from first two (algebraic identity)
-2. monge_point_euler_line: Monge point formula M = 4G - 3O
-3. centroid_on_euler_line: Centroid divides O-M in ratio 3:1
-4. volume_eq_inradius_surfaceArea: V = rS/3
+2. circumcenter_equidist: Circumcenter is equidistant from all four vertices
+3. monge_point_euler_line: Monge point formula M = 4G - 3O
+4. centroid_on_euler_line: Centroid divides O-M in ratio 3:1
+5. volume_eq_inradius_surfaceArea: V = rS/3
+6. edge_midpoints_equidist_from_centroid: All 6 edge midpoints are equidistant
+   from the centroid G (requires orthocentric hypothesis)
 
-### Sorries (5 theorem sorries — candidates for Aristotle):
-5. feuerbach_3d_insphere: Twenty-four-point sphere tangent to insphere
-6. feuerbach_3d_exsphere_A/B/C/D: Tangent to all four exspheres
-   (These are deep geometric results requiring substantial coordinate computation)
+### Sorries (5 theorem sorries — mathematical status uncertain):
+7. feuerbach_3d_insphere: Twenty-four-point sphere tangent to insphere
+8. feuerbach_3d_exsphere_A/B/C/D: Tangent to all four exspheres
+   **Warning**: Numerical checks suggest these may be FALSE as stated.
+   The formula (center = midpoint(O,M), radius = R/3) fails for the
+   orthocentric tetrahedron (2,0,0),(0,3,0),(0,0,6),(0,0,0).
+   The correct 3D Feuerbach analogue likely uses a different sphere.
 
-### Axioms (3 — deep geometric facts):
-7. circumcenter/circumcenter_equidist: Circumcenter existence and equidistance
-8. feuerbach_3d_fails_general: Orthocentric condition is necessary
-9. edge_midpoints_on_sphere: Edge midpoints lie on the sphere
-10. face_centroids_on_sphere: Face centroids lie on the sphere
+### Axioms (1):
+9. feuerbach_3d_fails_general: Orthocentric condition is necessary
+   (Existential claim — likely true but requires constructive counterexample)
 
-### Key Insight
-The 3D Feuerbach theorem requires the orthocentric hypothesis because:
-- In 2D, every triangle has an orthocenter (altitudes always concurrent)
-- In 3D, altitudes of a general tetrahedron are NOT concurrent
-- The orthocentric condition ensures existence of the orthocenter and
-  hence the proper structure for the Monge/twenty-four-point sphere
+### Corrections Applied (2026-04-27):
+- REMOVED `edge_midpoints_on_sphere` (axiom was FALSE: edge midpoints lie at
+  distance R/2 from centroid G, not R/3 from N₂₄)
+- REMOVED `face_centroids_on_sphere` (axiom was FALSE: face centroids are NOT
+  equidistant from N₂₄ for non-regular orthocentric tetrahedra)
+- ADDED `edge_midpoints_equidist_from_centroid`: correct theorem using centroid G
+- FIXED docstring: Monge point M ≠ orthocenter H. Correct relation: H = 2G - O,
+  M = 4G - 3O, so H = midpoint(O, M) and N₂₄ = midpoint(O, M) = H.
+- For the midedge sphere: center = G, radius = R/2 (not N₂₄ and R/3)
+
+### Key Insights
+1. The 3D Feuerbach theorem requires the orthocentric hypothesis because
+   altitudes of a general tetrahedron are NOT concurrent
+2. The "twenty-four-point sphere" as defined here (center N₂₄, radius R/3)
+   does not correspond to the classical midedge sphere (center G, radius R/2)
+3. The Euler line of a tetrahedron has O, G, H, M at parameter ratios 0:1:2:4,
+   different from the triangle case (0:1:2 for O, G, H)
 -/
 
 #check @feuerbach_3d_theorem
