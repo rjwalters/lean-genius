@@ -1,7 +1,7 @@
 {
   "slug": "feuerbachs-theorem-oq-02-incomplete-01",
   "title": "3D Analogue of Feuerbach's Theorem for Tetrahedra",
-  "phase": "NEW",
+  "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -40,20 +40,44 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Aristotle companion file (FeuerbachsTheoremOQ02Aristotle.lean) reduced from 14 sorries to 0. Filled with safe tactics (positivity, ring, linear_combination, nlinarith). Main file (FeuerbachsTheoremOQ02.lean) still has 5 hard sorries (insphere + 4 exspheres tangencies) and 3 axioms — these remain open.",
+    "builtItems": [
+      "FeuerbachsTheoremOQ02Aristotle.lean: dist3_sq_nonneg/zero_iff/comm — squared distance properties",
+      "dot3_self_nonneg/zero_iff, dot3_comm, dot3_add_left — bilinear dot product algebra",
+      "midpoint3_equidist, midpoint3_spec — midpoint formula correctness",
+      "internally_tangent_sym, externally_tangent_sum_comm, externally_tangent_radii_nonneg (corrected) — sphere tangency arithmetic",
+      "ortho_edge_sum_identity — proved via linear_combination 2·(AB·CD) - 2·(AC·BD); identity |AB|²+|CD|² = |AC|²+|BD|² for orthocentric tetrahedra",
+      "twentyFourPoint_radius_third_of_circum — R/3 ≤ R for nonneg R"
+    ],
+    "insights": [
+      "Companion file sorries are mostly ring-level identities and trivial algebra — readily provable without geometric insight",
+      "ortho_edge_sum_identity (Court 1934) reduces to per-coordinate identity (b-a)²+(d-c)² - (c-a)²-(d-b)² = 2((b-a)(d-c) - (c-a)(d-b)), summable to 2·hab_cd - 2·hac_bd. Closed by linear_combination",
+      "Original externally_tangent_radii_nonneg statement was unprovable (false without r₁ ≤ d hypothesis); corrected with added precondition",
+      "Main file 5 sorries (feuerbach_3d_insphere/exsphere_*) NOT reducible to companion lemmas — need explicit coordinate computations using circumcenter formulas + orthocentric simplifications",
+      "Suggestion: parametrize orthocentric tetrahedra with orthocenter at origin + 3 perpendicular edge directions to drastically simplify coordinates"
+    ],
     "mathlibGaps": [
       "3D sphere tangency in Mathlib is less developed than 2D circle geometry"
     ],
     "nextSteps": [
-      "Read proofs/Proofs/FeuerbachsTheoremOQ02.lean",
-      "Classify each sorry: definitional vs. computational vs. algebraic",
-      "Check Mathlib.Analysis.InnerProductSpace for dot product lemmas"
+      "For main file feuerbach_3d_insphere: try parametrizing orthocentric tetrahedra by orthocenter at origin + 3 perpendicular edge directions",
+      "Alternative: Monge point M = orthocenter for orthocentric T; align with 2D Feuerbach proof structure",
+      "feuerbach_3d_fails_general (axiom): exhibit a specific non-orthocentric tetrahedron numerically violating tangency",
+      "edge_midpoints_on_sphere axiom: directly compute |N₂₄ - midpoint_AB|² and show it equals R²/9 using circumcenter algebra"
     ]
   },
-  "tags": ["geometry", "3d-geometry", "feuerbach", "spheres", "wip-completion"],
-  "relatedProofs": ["feuerbachs-theorem", "feuerbachs-theorem-oq-01", "feuerbachs-theorem-oq-02"],
+  "tags": [
+    "geometry",
+    "3d-geometry",
+    "feuerbach",
+    "spheres",
+    "wip-completion"
+  ],
+  "relatedProofs": [
+    "feuerbachs-theorem",
+    "feuerbachs-theorem-oq-01",
+    "feuerbachs-theorem-oq-02"
+  ],
   "references": {
     "papers": [
       "Feuerbach (1822) - 2D theorem",
