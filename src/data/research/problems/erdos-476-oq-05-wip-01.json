@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-04-22T15:58:45+02:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T17:00:00Z",
+    "iteration": 2,
+    "focus": "WIP investigation integrated into Erdos476OQ05Problem.lean (1 axiom, 0 sorries, gallery axiomatized)",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Pool entry retired — separate WIP tracking no longer needed",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: sorry at line 844 (|A|≥4,|B|≥3 all-a-redundant case) requires ~500 lines Cauchy-Davenport equality theorem. Counting, symmetry, orbit, involution approaches all exhausted. No elementary shortcut.",
+    "progressSummary": "INTEGRATED: WIP work folded into Erdos476OQ05Problem.lean. Gallery erdos-476-oq-05 now axiomatized with 1 axiom (vosper_case1_exists_large) and 0 sorries. The previously-blocked sorry at line 844 is no longer present.",
     "builtItems": [
       "case1_exists |B|=2 branch: fully proved via orbit argument (Erdos476OQ05Problem.lean ~550-609)",
       "hredA_card lemma inline: ∀ a ∈ A, (A.erase a + B).card = A.card + B.card - 1 from CD + inclusion",
@@ -54,7 +54,8 @@
       "Symmetry: all-a-redundant ⟹ all-b-redundant (A+B.erase b = A+B) — provable in ~15 lines but gives same r(x)≥2 info",
       "Orbit argument fails for |B|≥3 because difference d is not uniquely determined",
       "Involution parity (r(x)=2 for all x case): |A|*|B| must be even but 12=3*4 is even — no contradiction",
-      "Circular dependency: proving all-a-redundant impossible requires Cauchy-Davenport equality theorem = Vosper itself"
+      "Circular dependency: proving all-a-redundant impossible requires Cauchy-Davenport equality theorem = Vosper itself",
+      "Audit 2026-04-27: pool summary BLOCKED on sorry at line 844 is stale. Erdos476OQ05Problem.lean has 0 actual sorries (only a comment-mention of \"AP extension sorry\" on line 715). 1 axiom (vosper_case1_exists_large) remains."
     ],
     "mathlibGaps": [
       "Kneser theorem for abelian groups (needed for |A|>=4 or |B|>=4 all-redundant contradiction in Vosper induction)",
@@ -91,5 +92,6 @@
   },
   "started": "2026-04-22T15:58:45+02:00",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "lastUpdate": "2026-04-27T17:00:00Z"
 }
