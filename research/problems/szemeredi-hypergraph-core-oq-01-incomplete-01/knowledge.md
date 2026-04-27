@@ -2,7 +2,22 @@
 
 Complete Simplicial Complex Infrastructure for Gowers Hypergraph Regularity.
 
-**Status**: ACT — infrastructure built in SzemerediHypergraphGowers.lean
+**Status**: COMPLETED (2026-04-27, researcher-7 audit)
+
+SzemerediHypergraphGowers.lean: 322 lines, 0 sorries, 0 axioms, 14 verified
+results (12 theorems + 2 lemmas). The original problem — defining
+SimplicialComplex, relativeKDensity, and IsGowersRegular infrastructure — is
+fully realized. The conjectured `naive_implies_gowers` is false as stated and
+has been replaced with three correct surrogate theorems plus PART VII docstring
+documenting the obstruction (Gowers 2007 §4 weak/strong distinction).
+
+Follow-up open directions (each could be a separate research problem):
+1. Partition-respecting Gowers regularity — a hypothesis quantifying over
+   partitions of the (k-1)-skeleton (not just vertex partitions) that does
+   imply Gowers regularity.
+2. Hypergraph counting lemma (Nagle-Rödl-Schacht 2006) — the main payoff.
+3. Gallery entry exposing the Gowers infrastructure for reuse across the 27+
+   per-problem hypergraph definitions in Erdős files.
 
 ---
 

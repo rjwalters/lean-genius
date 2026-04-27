@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1001-oq-02",
   "title": "erdos-1001-oq-02",
-  "phase": "ORIENT",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-30T11:03:19-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "phase": "BLOCKED",
+    "since": "2026-04-27T15:46:00-07:00",
+    "iteration": 3,
+    "focus": "All three axioms reduce to one Mathlib gap: totient partial-sum asymptotic with O(N log N) error. Verified 2026-04-27 against Mathlib v4.26.0.",
+    "blockers": [
+      "Mathlib gap: Nat.totient partial-sum asymptotic with quantitative error not in Mathlib v4.26.0"
+    ],
+    "nextAction": "Wait for upstream Mathlib contribution of totient partial-sum asymptotic, OR schedule dedicated multi-session Mathlib contribution effort (~500 lines via M\u00f6bius inversion).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,31 +31,35 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: 3 axioms cannot be proved without Mertens theorem (sum of phi(n)/n asymptotics). Mathlib 4 lacks Mertens theorem with error bounds. 6 provable consequences captured.",
+    "progressSummary": "BLOCKED on Mathlib gap (verified v4.26.0, 2026-04-27). All three axioms (rangeTotientSum_asymptotic, rangeTotientSum_error, convergence_rate_est) reduce to: sum_{y<=N} Nat.totient y = (3/pi^2)N^2 + O(N log N). Mathlib has only divisor identity sum_totient; no range asymptotic. The 6 consequence theorems are all fully proved from the axioms.",
     "builtItems": [
       "Erdos1001OQ02.lean: definitions weightedTotientSum, rangeTotientSum, densityConst",
       "Erdos1001OQ02.lean: axiom convergence_rate_est (main rate theorem)",
       "Erdos1001OQ02.lean: theorem convergence_faster_than_sqrtN (partial)",
       "Erdos1001OQ02.lean:rate_is_nontrivial (no sorry) - |S-f|=o(1)",
-      "Erdos1001OQ02.lean:convergence_effective (no sorry) - ∃N₀, ∀N≥N₀, |S-f|<ε",
-      "Erdos1001OQ02.lean:convergence_faster_than_sqrtN (no sorry) - |S-f|=o(1/√N)"
+      "Erdos1001OQ02.lean:convergence_effective (no sorry) - \u2203N\u2080, \u2200N\u2265N\u2080, |S-f|<\u03b5",
+      "Erdos1001OQ02.lean:convergence_faster_than_sqrtN (no sorry) - |S-f|=o(1/\u221aN)"
     ],
     "insights": [
       "Rate of convergence is O(A log N / N) in the EST regime",
-      "Reduction: rate ↔ error in ∑_{y=N}^{cN} φ(y)/y² = (6/π²)log(c) + O(log N/N)",
-      "Density constant 6/π² = 1/ζ(2) from Dirichlet series ∑ φ(y)/y^s = ζ(s-1)/ζ(s)",
-      "div_le_div_iff + nlinarith closes A·logN/N ≤ c/√N arithmetic via N=(√N)²",
+      "Reduction: rate \u2194 error in \u2211_{y=N}^{cN} \u03c6(y)/y\u00b2 = (6/\u03c0\u00b2)log(c) + O(log N/N)",
+      "Density constant 6/\u03c0\u00b2 = 1/\u03b6(2) from Dirichlet series \u2211 \u03c6(y)/y^s = \u03b6(s-1)/\u03b6(s)",
+      "div_le_div_iff + nlinarith closes A\u00b7logN/N \u2264 c/\u221aN arithmetic via N=(\u221aN)\u00b2",
       "Mathlib 4 has Mertens function (sum of mu(n)) for RH but NOT Mertens totient theorem (sum of phi(n)/n ~ 6N/pi^2)",
       "rangeTotientSum_asymptotic needs Abel summation + average order of totient - both missing from Mathlib",
-      "The 6 consequence theorems (convergence_faster_than_sqrtN, rate_is_nontrivial, etc.) are fully proved from the axioms"
+      "The 6 consequence theorems (convergence_faster_than_sqrtN, rate_is_nontrivial, etc.) are fully proved from the axioms",
+      "All 3 axioms reduce to ONE Mathlib gap: Nat.totient partial-sum asymptotic with O(N log N) error (verified absent in Mathlib v4.26.0, 2026-04-27)",
+      "Mathlib v4.26.0 has Mathlib.NumberTheory.AbelSummation (~13 theorems incl. sum_mul_eq_sub_sub_integral_mul) \u2014 sufficient to derive \u2211 \u03c6(y)/y\u00b2 asymptotic from the missing partial-sum lemma",
+      "All 3 axioms reduce to ONE Mathlib gap: Nat.totient partial-sum asymptotic with O(N log N) error (verified absent in Mathlib v4.26.0, 2026-04-27)",
+      "Mathlib v4.26.0 has Mathlib.NumberTheory.AbelSummation (~13 theorems incl. sum_mul_eq_sub_sub_integral_mul) -- sufficient to derive sum phi(y)/y^2 asymptotic from the missing partial-sum lemma"
     ],
     "mathlibGaps": [
-      "Mertens totient sum asymptotics with quantitative error: ∑_{y≤N} φ(y) = (3/π²)N² + O(N log N)"
+      "Mertens totient sum asymptotics with quantitative error: \u2211_{y\u2264N} \u03c6(y) = (3/\u03c0\u00b2)N\u00b2 + O(N log N)"
     ],
     "nextSteps": [
-      "Block until Mathlib adds: Nat.totient average order or Mertens theorem for totient",
-      "Search Mathlib4 GitHub PRs for totient asymptotic contributions",
-      "Check if pi_sq_div_six identity could bootstrap a direct proof of rangeTotientSum_asymptotic"
+      "BLOCKED: needs Mathlib contribution Nat.totient_partial_sum_asymp : (sum_{y<=N} phi(y) : R) - (3/pi^2)*N^2 =O[atTop] (fun N => N * log N) (~500 lines via Mobius inversion, Apostol section 3.7)",
+      "Once (1) lands upstream, applying Mathlib.NumberTheory.AbelSummation gives rangeTotientSum_error mechanically (~50 lines)",
+      "Reclaim only when (a) upstream lemma exists, or (b) a Mathlib-contribution effort is scheduled"
     ],
     "markdown": "# Knowledge Base: erdos-1001-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -72,7 +78,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:27:56.397Z",
-  "lastUpdate": "2026-04-02T00:00:00.000Z",
+  "lastUpdate": "2026-04-27T23:21:34.289242Z",
   "leanFiles": [
     {
       "path": "Proofs/Erdos1001OQ02.lean",

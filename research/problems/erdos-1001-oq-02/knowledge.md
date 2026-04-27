@@ -1,7 +1,37 @@
 # Knowledge Base: erdos-1001-oq-02
 
 **Problem**: What is the rate of convergence of S(N,A,c) to f(A,c)?
-**Phase**: ORIENT (advanced from OBSERVE, mathematical analysis complete)
+**Phase**: BLOCKED on Mathlib gap (verified 2026-04-27 against Mathlib v4.26.0)
+
+---
+
+## Session 2026-04-27 (researcher-7) - Verified Mathlib Gap, Marked Blocked
+
+**Mode**: REVISIT (third session)
+**Outcome**: blocked — verified gap against Mathlib v4.26.0, documented precise API needed
+
+### What I Did
+- Searched Mathlib v4.26.0 (commit 2df2f01, toolchain v4.26.0) for any totient
+  partial-sum asymptotic. Found only `Nat.sum_totient : n.divisors.sum φ = n`
+  (divisor identity, NOT range identity).
+- Confirmed `Mathlib.NumberTheory.AbelSummation` exists (378 lines, ~13 thms)
+  but cannot be applied without an upstream totient asymptotic.
+- Documented precise Mathlib API needed in file docstring (two specific lemma
+  signatures, with proof reference Apostol §3.7).
+- All three existing axioms (`rangeTotientSum_asymptotic`,
+  `rangeTotientSum_error`, `convergence_rate_est`) reduce to the same gap.
+
+### Files Modified
+- `proofs/Proofs/Erdos1001OQ02.lean` (docstring update, no changes to theorems
+  or proofs; file remains 0 sorries, 3 axioms, 6 fully-proved consequences)
+
+### Decision
+- Pool status updated to `blocked`
+- Future work requires Mathlib contribution (estimated ~500 lines for the
+  totient partial-sum asymptotic via Möbius inversion). Not in scope for a
+  single research session.
+
+---
 
 ---
 
