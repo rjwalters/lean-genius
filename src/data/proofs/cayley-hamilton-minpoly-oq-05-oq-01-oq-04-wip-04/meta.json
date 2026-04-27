@@ -21,7 +21,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 421,
+    "lineCount": 359,
     "assumptions": "None. Axiom-free proof using CRT/Bezout projections and prime power divisibility by induction.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -111,17 +111,9 @@
       "id": "main-theorem",
       "title": "V. Main Theorem",
       "startLine": 207,
-      "endLine": 394,
+      "endLine": 327,
       "summary": "Proves nonderogatory_bipow_has_cyclic_vector: the main binary prime power cyclic vector theorem. Constructs v1, v2 in primary components, shows v1+v2 is cyclic via CRT projections and prime power divisibility.",
       "mathContext": "For minpoly = p^a * q^b with p, q coprime irreducibles: (1) lift coprimality to powers; (2) construct primary vectors v1, v2 with correct annihilation properties; (3) show v1+v2 is cyclic by extracting r(M)*vi = 0 via CRT projections, then applying prime power divisibility to get p^a | r and q^b | r, giving p^a*q^b | r and a degree contradiction."
-    },
-    {
-      "id": "corollary-finite",
-      "title": "VI. Corollary: Finite Field Specialization",
-      "startLine": 404,
-      "endLine": 417,
-      "summary": "Explicit corollary adding [Fintype K] to highlight that the proof works over all finite fields, including GF(2). This is a direct application of the main theorem with no additional argument.",
-      "mathContext": "The corollary nonderogatory_bipow_has_cyclic_vector_finite adds the Fintype K instance, emphasizing that no infinite-field assumption is needed — unlike the classical union-avoidance approach."
     }
   ],
   "conclusion": {
@@ -142,7 +134,7 @@
       "Polynomial"
     ],
     "namespace": "BinaryPrimePowerCyclicVector",
-    "lineCount": 421,
+    "lineCount": 359,
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 2,
