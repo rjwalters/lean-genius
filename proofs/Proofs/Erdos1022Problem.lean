@@ -548,27 +548,23 @@ theorem degree_bounded_implies_sparse [Fintype α] (F : Finset (Finset α)) (d :
     intro f hf
     rw [hFX_def, Finset.mem_filter] at hf
     have hfsub : f ⊆ X := hf.2
-    have hfX : f = X.filter (· ∈ f) := by
-      ext x
-      simp only [Finset.mem_filter]
-      exact ⟨fun h => ⟨hfsub h, h⟩, fun h => h.2⟩
-    rw [hfX]
-  -- Step 3: Swap order of summation via indicator.
+    have heq : X.filter (· ∈ f) = f := by
+      ext x; simp only [Finset.mem_filter]
+      exact ⟨fun h => h.2, fun h => ⟨hfsub h, h⟩⟩
+    rw [heq]
+  -- Step 3: Swap order of summation via indicator (Finset.sum_boole).
   have step3 : ∑ f ∈ FX, (X.filter (· ∈ f)).card
              = ∑ x ∈ X, (FX.filter (x ∈ ·)).card := by
-    have lhs : ∑ f ∈ FX, (X.filter (· ∈ f)).card
-             = ∑ f ∈ FX, ∑ x ∈ X, (if x ∈ f then 1 else 0) := by
-      apply Finset.sum_congr rfl
-      intro f _
-      rw [Finset.card_eq_sum_ones]
-      exact (Finset.sum_filter (fun x => x ∈ f) (fun _ => 1)).symm
-    have rhs : ∑ x ∈ X, (FX.filter (x ∈ ·)).card
-             = ∑ x ∈ X, ∑ f ∈ FX, (if x ∈ f then 1 else 0) := by
-      apply Finset.sum_congr rfl
-      intro x _
-      rw [Finset.card_eq_sum_ones]
-      exact (Finset.sum_filter (fun f => x ∈ f) (fun _ => 1)).symm
-    rw [lhs, rhs, Finset.sum_comm]
+    calc ∑ f ∈ FX, (X.filter (· ∈ f)).card
+        = ∑ f ∈ FX, ∑ x ∈ X, (if x ∈ f then 1 else 0) := by
+          apply Finset.sum_congr rfl
+          intro f _
+          exact Finset.sum_boole.symm
+      _ = ∑ x ∈ X, ∑ f ∈ FX, (if x ∈ f then 1 else 0) := Finset.sum_comm
+      _ = ∑ x ∈ X, (FX.filter (x ∈ ·)).card := by
+          apply Finset.sum_congr rfl
+          intro x _
+          exact Finset.sum_boole
   -- Step 4: each fiber size ≤ d, by monotonicity of degree.
   have step4 : ∀ x ∈ X, (FX.filter (x ∈ ·)).card ≤ d := by
     intro x _
