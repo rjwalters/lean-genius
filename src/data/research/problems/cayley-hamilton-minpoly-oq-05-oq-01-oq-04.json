@@ -1,8 +1,8 @@
 {
   "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
   "title": "Over finite fields $\\mathbb{F}_q$ with $q \\leq n$, the union avoidance lemma ...",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -24,22 +24,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-28T20:36:11.746490+00:00",
-    "iteration": 3,
-    "focus": "F_2 counterexample + annihilator characterization + any-field theorem",
-    "blockers": [
-      "Structure theorem for f.g. modules over PIDs not in Mathlib v4.26"
-    ],
-    "nextAction": "Prove annihilator properties connecting mulVec to module minpoly",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T15:37:09.271740+00:00",
+    "iteration": 4,
+    "focus": "Sorry eliminated by delegating to WIP05; main file is now 0 axioms / 0 sorries.",
+    "blockers": [],
+    "nextAction": "Cluster complete; downstream consumers can use nonderogatory_has_cyclic_vector_any_field.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: 1 sorry remains (not 4 — metadata stale). Requires PID structure theorem (f.g. modules over K[X]), which is not in Mathlib. All other theorems fully proved.",
+    "progressSummary": "COMPLETED: Main file's sole sorry (`nonderogatory_similar_companion`, the RCF axiom) has been eliminated. The main theorem `nonderogatory_has_cyclic_vector_any_field` now delegates to `GeneralCyclicVectorComplete.nonderogatory_has_cyclic_vector_any_field` (WIP05), which combines WIP04's Bezout/CRT primary decomposition with UFD factorization of minpoly K M. Result: 0 axioms, 0 sorries, no PID structure theorem required.",
     "builtItems": [
       "annihilator_dvd_minpoly: GCD annihilation via Bezout (sorry-free)",
       "cyclic_iff_ann_eq_minpoly: cyclic ⟺ ann = minpoly (sorry-free forward, partial backward)",
@@ -48,7 +46,8 @@
       "proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean (185 lines)",
       "src/data/proofs/cayley-hamilton-minpoly-oq-05-oq-01-oq-04/ (gallery data)",
       "Recreated CayleyHamiltonMinpolyOQ05OQ01OQ04.lean (183 lines, 6 theorems, 0 axioms, 5 sorries)",
-      "Gallery data: meta.json, annotations.json, index.ts"
+      "Gallery data: meta.json, annotations.json, index.ts",
+      "Eliminated sorry on `nonderogatory_similar_companion` by delegating `nonderogatory_has_cyclic_vector_any_field` to WIP05 — main file 0 sorries / 0 axioms"
     ],
     "insights": [
       "The nonderogatory⟹cyclic vector theorem holds for ALL fields, including finite fields with |K|≤n",
@@ -61,17 +60,14 @@
       "F_2^2 counterexample: 3 lines through origin (span e1, span e2, span e1+e2) cover all 4 points",
       "GCD annihilation proved sorry-free using Bezout identity over any field",
       "File has 1 sorry (nonderogatory_has_cyclic_vector_any_field), not 4 as leanFiles metadata claims",
-      "Alternative proof via companion matrix similarity also requires rational canonical form ��� PID structure theorem"
+      "Alternative proof via companion matrix similarity also requires rational canonical form ��� PID structure theorem",
+      "The RCF / PID structure theorem is NOT required for the cyclic vector theorem: WIP04's Bezout/CRT primary decomposition argument bypasses it entirely, and WIP05 closes the factorization step using UFD. This makes the entire CayleyHamiltonMinpolyOQ05OQ01OQ04 cluster axiom-free over any field."
     ],
-    "mathlibGaps": [
-      "Structure theorem for finitely generated modules over PID",
-      "Rational canonical form / companion matrix theory",
-      "Invariant factor decomposition for matrices"
-    ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "BLOCKED: PID structure theorem for f.g. modules (~500+ lines, deep algebra)",
-      "If Mathlib adds Module.InvariantFactors, this sorry becomes trivial",
-      "Companion matrix approach is equivalent (needs same infrastructure)"
+      "Optional cleanup: refactor WIP04 to take `[Fintype σ]` directly to absorb the WIP05 reindexing wrapper.",
+      "Optional: prove the contrapositive — derive RCF / invariant-factor decomposition as a corollary of cyclic vector existence.",
+      "Optional: generalize the F2_union_covers `decide` proof to a parametric statement counting one-dim subspaces over F_q."
     ]
   },
   "tags": [
@@ -109,7 +105,7 @@
     "mathlib": []
   },
   "started": "2026-03-28T19:54:00.946Z",
-  "lastUpdate": "2026-03-28T20:50:00Z",
+  "lastUpdate": "2026-04-27T15:37:09.271740+00:00",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [

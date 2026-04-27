@@ -1,8 +1,8 @@
 {
   "slug": "yang-mills-2d-oq-02",
   "title": "Casimir Scaling in 4D Continuum Limit",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -16,8 +16,8 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-30T11:35:14-07:00",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T15:50:47.002973+00:00",
     "iteration": 1,
     "focus": "Formalization complete. Added annotations. Gallery data complete.",
     "blockers": [],
@@ -61,5 +61,18 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:39:05.245Z",
-  "lastUpdate": "2026-03-30T20:20:00Z"
+  "lastUpdate": "2026-04-27T15:50:47.002973+00:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/YangMills2DOQ02.lean",
+      "filename": "YangMills2DOQ02.lean",
+      "lineCount": 244,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/YangMills2DOQ02.lean"
+    }
+  ]
 }

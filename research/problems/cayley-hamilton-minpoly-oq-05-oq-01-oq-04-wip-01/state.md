@@ -37,9 +37,10 @@ None. Cluster fully closed.
 
 ## Next Action
 
-PR created. Optional follow-ups:
-1. Close the original `sorry` in `CayleyHamiltonMinpolyOQ05OQ01OQ04.lean` by translating
-   WIP05 to its LinearIndependent-style `IsCyclicVector` definition.
+PR created. Follow-up #1 below has been addressed in a subsequent session
+(`CayleyHamiltonMinpolyOQ05OQ01OQ04.lean` now imports WIP05 and delegates the
+main theorem; no sorries, no axioms remain there). Optional remaining follow-ups:
+1. ~~Close the original `sorry` in `CayleyHamiltonMinpolyOQ05OQ01OQ04.lean`~~ — done.
 2. Refactor WIP04 to take `[Fintype σ]` instead of `Fin k` (would absorb WIP05's
    reindexing wrapper).
 

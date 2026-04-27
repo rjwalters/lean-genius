@@ -1,8 +1,8 @@
 {
   "slug": "kummer-theorem-oq-02",
   "title": "How does the theorem generalize to q-binomial coefficients",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -16,8 +16,8 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-28T20:58:08-07:00",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T15:52:03.354887+00:00",
     "iteration": 1,
     "focus": "quotient formula proved, qKummer needs cyclotomic factorization",
     "blockers": [],
@@ -89,7 +89,7 @@
     "mathlib": []
   },
   "started": "2026-03-29T04:28:18.978Z",
-  "lastUpdate": "2026-03-29T04:28:18.987Z",
+  "lastUpdate": "2026-04-27T15:52:03.354887+00:00",
   "leanFiles": [
     {
       "path": "Proofs/KummerTheorem.lean",

@@ -10,24 +10,26 @@
   **Answer: YES.** The theorem holds over ALL fields, including finite fields
   with |K| ≤ n. The union avoidance argument is unnecessary.
 
-  Proof Strategy (Module-Theoretic):
+  Proof Strategy (Bezout/CRT Projections via WIP04/WIP05):
   For M ∈ M_n(K) nonderogatory (minpoly = charpoly, both of degree n):
-  1. K^n is a K[X]-module via M (X acts as multiplication by M)
-  2. v is cyclic ⟺ ann(v) = (minpoly(M)) as an ideal
-  3. By the cyclic decomposition theorem for modules over a PID,
-     nonderogatory forces V = K[X]/(minpoly) (single cyclic factor)
-  4. The generator of this cyclic module is a cyclic vector
+  1. Factor μ := minpoly K M = ∏ p_i^{e_i} via UFD (`UniqueFactorizationMonoid`)
+  2. For each i, build a primary vector v_i with `p_i^{e_i-1}(M)v_i ≠ 0`
+     and `p_i^{e_i}(M)v_i = 0` (kernel facts only — no PID structure theorem).
+  3. CRT projections π_i = b_i F_i(M) (where a_i p_i^{e_i} + b_i F_i = 1) extract
+     the i-th component, giving p_i^{e_i} ∣ r whenever r(M)(∑ v_i) = 0.
+  4. Pairwise coprimality ⇒ μ ∣ r, contradicting `deg r < n = deg μ`.
 
-  This proof uses the structure theorem for f.g. modules over a PID,
-  which is a deep result not currently in Mathlib. The key sorry
-  (exists_cyclic_vector_module) isolates this gap.
+  This avoids the structure theorem for f.g. modules over a PID entirely.
+  The full proof is in `CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean`
+  (factored case, axiom-free) and `CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean`
+  (UFD factorization wrapper, axiom-free). This file delegates to WIP05.
 
   Key insight: The proof works over ANY field (finite or infinite) because
-  it uses algebraic structure (module theory over PID) rather than
-  cardinality arguments (union avoidance).
+  it uses Bezout/CRT projections rather than cardinality arguments
+  (union avoidance) or rational canonical form.
 -/
 import Mathlib
-import Proofs.CayleyHamiltonReductionOQ02OQ01
+import Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05
 
 noncomputable section
 
@@ -193,113 +195,42 @@ theorem cyclic_iff_ann_eq_minpoly (M : Matrix (Fin n) (Fin n) K)
       rw [hnd, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]
     exact absurd (Polynomial.natDegree_le_of_dvd hμ_dvd hp_ne) (by omega)
 
--- ============================================================
--- SECTION IV: Companion Matrix Cyclic Vector
--- ============================================================
+-- (The companion-matrix cyclic-vector path used in earlier drafts of this file
+-- has been retired: WIP04/WIP05 give a direct Bezout/CRT proof of the main
+-- theorem, so the companion-matrix construction is no longer on the critical
+-- path. The standalone lemmas `aeval_conj` and `cyclic_vector_of_similar`
+-- about similarity invariance are retained above; the previously-included
+-- `companionMatrix_cyclic_e0` and its private helpers depended on
+-- `Proofs.CayleyHamiltonReductionOQ02OQ01`, which is currently affected by
+-- Mathlib API drift, and were removed to keep this file independently buildable.)
 
--- Private helpers (analogues of private lemmas in CayleyHamiltonReductionOQ02OQ01)
-
-/-- Distribute mulVec over a finite sum of matrices. -/
-private theorem sum_mulVec_dist {ι : Type*} (s : Finset ι)
-    (f : ι → Matrix (Fin n) (Fin n) K) (v : Fin n → K) :
-    (∑ i ∈ s, f i) *ᵥ v = ∑ i ∈ s, f i *ᵥ v := by
-  induction s using Finset.induction_on with
-  | empty => simp [Matrix.zero_mulVec]
-  | @insert a s' has ih => rw [Finset.sum_insert has, Matrix.add_mulVec, ih, Finset.sum_insert has]
-
-/-- Expand aeval C q as a sum over range(natDegree q + 1). -/
-private lemma aeval_eq_range_sum (q : K[X]) (C : Matrix (Fin n) (Fin n) K) :
-    aeval C q = ∑ k ∈ Finset.range (q.natDegree + 1), q.coeff k • C ^ k := by
-  simp only [aeval_def, Polynomial.eval₂_eq_sum, Polynomial.sum_def]
-  apply Finset.sum_subset
-  · intro i hi
-    exact Finset.mem_range.mpr
-      (Nat.lt_succ_of_le (Polynomial.le_natDegree_of_mem_supp i hi))
-  · intro i _ hi
-    simp only [Polynomial.notMem_support_iff.mp hi, map_zero, zero_mul]
-
-/-- The standard basis vector e₀ is a cyclic vector for the companion matrix C(p).
-
-    Key: C(p)^k · e₀ = eₖ (orbit property), so p(C(p)) · e₀ expands as a
-    weighted sum of standard basis vectors. If this is 0, all coefficients
-    (hence all of p) must be 0. -/
-theorem companionMatrix_cyclic_e0 (hn : 0 < n) (p : K[X]) (hp : p.Monic)
-    (hdeg : p.natDegree = n) :
-    IsCyclicVector (CayleyHamiltonReductionOQ02OQ01.companionMatrix (d := n) p)
-                   (Pi.single (0 : Fin n) 1) := by
-  set C := CayleyHamiltonReductionOQ02OQ01.companionMatrix (d := n) p
-  intro q hq_deg hann
-  by_contra hq_ne
-  -- q ≠ 0, so leadingCoeff ≠ 0
-  have hlc : q.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.mpr hq_ne
-  -- Expand: (aeval C q) *ᵥ e₀ = ∑_{k < natDeg+1} q.coeff k • (C^k *ᵥ e₀)
-  rw [aeval_eq_range_sum q C, sum_mulVec_dist] at hann
-  simp only [Matrix.smul_mulVec] at hann
-  -- Substitute orbit: C^k *ᵥ e₀ = e_k for k ≤ natDegree q < n
-  have hklt : ∀ k : Fin (q.natDegree + 1), k.val < n := fun k => by omega
-  have hterms : ∑ k ∈ Finset.range (q.natDegree + 1),
-      q.coeff k • (C ^ k).mulVec (Pi.single (0 : Fin n) 1) =
-      ∑ k : Fin (q.natDegree + 1),
-        q.coeff k.val • (Pi.single ⟨k.val, hklt k⟩ 1 : Fin n → K) := by
-    rw [← Fin.sum_univ_eq_sum_range]
-    congr 1; funext k
-    congr 1
-    exact CayleyHamiltonReductionOQ02OQ01.companionMatrix_pow_basis p k.val (hklt k)
-  rw [hterms] at hann
-  -- Evaluate at position ⟨q.natDegree, hq_deg⟩ to extract leading coefficient
-  have hval := congr_fun hann ⟨q.natDegree, hq_deg⟩
-  simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.single_apply, Pi.zero_apply,
-             Fin.mk.injEq] at hval
-  -- Collapse: only term k.val = q.natDegree contributes
-  rw [Finset.sum_eq_single ⟨q.natDegree, Nat.lt_succ_self _⟩
-    (fun k _ hk => by
-      have hne : k.val ≠ q.natDegree := fun h => hk (Fin.ext h)
-      simp [hne, Ne.symm hne])
-    (fun h => absurd (Finset.mem_univ _) h)] at hval
-  simp only [↓reduceIte, mul_one] at hval
-  -- hval : q.coeff q.natDegree = 0, but q.leadingCoeff = q.coeff q.natDegree ≠ 0
-  exact hlc (show q.leadingCoeff = 0 from hval)
 
 -- ============================================================
 -- SECTION IV.5: Main Theorem (All Fields)
 -- ============================================================
 
-/-- KEY SORRY: Every nonderogatory matrix is similar to its companion matrix.
-    This is the Rational Canonical Form theorem (Frobenius normal form).
-    Requires: structure theorem for f.g. modules over K[X] (a PID). -/
-theorem nonderogatory_similar_companion (hn : 0 < n)
-    (M : Matrix (Fin n) (Fin n) K) (h : IsNonderogatory M) :
-    ∃ P : (Matrix (Fin n) (Fin n) K)ˣ,
-      M = P.inv * CayleyHamiltonReductionOQ02OQ01.companionMatrix (d := n) (minpoly K M) * P.val := by
-  sorry -- Requires: Rational Canonical Form / PID module structure theorem (not in Mathlib)
-
 /-- **Main Result**: Over ANY field K, nonderogatory matrices have cyclic vectors.
 
-    Proof structure:
-    1. [sorry] M is similar to C(minpoly M) — the companion matrix (RCF theorem)
-    2. [proved] e₀ is cyclic for C(minpoly M) — orbit property of companion matrices
-    3. [proved] Cyclic vectors transfer under matrix similarity
+    This is the closed (axiom-free, sorry-free) form of the theorem. The previous
+    version of this file isolated the gap to a single sorry assuming Rational
+    Canonical Form (`nonderogatory_similar_companion`); WIP04 + WIP05 instead prove
+    the cyclic vector existence directly via Bezout/CRT projections and UFD
+    factorization of `minpoly K M`, completely avoiding the PID structure theorem.
 
-    The sorry isolates exactly the missing Mathlib infrastructure: the PID module
-    structure theorem giving Rational Canonical Form. -/
+    The result is delegated to
+    `GeneralCyclicVectorComplete.nonderogatory_has_cyclic_vector_any_field`
+    (see `CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean`). The local `IsCyclicVector`
+    and `IsNonderogatory` definitions match the ones used there definitionally. -/
 theorem nonderogatory_has_cyclic_vector_any_field
     (M : Matrix (Fin n) (Fin n) K) (h : IsNonderogatory M) :
     ∃ v, IsCyclicVector M v := by
-  rcases Nat.eq_zero_or_pos n with rfl | hn
-  · exact ⟨Fin.elim0, fun p hp _ => by omega⟩
-  -- Step 1: M ~ C(minpoly M) [sorry: RCF theorem]
-  obtain ⟨P, hMC⟩ := nonderogatory_similar_companion hn M h
-  -- Step 2: minpoly M has degree n (since M is nonderogatory)
-  have hμ_deg : (minpoly K M).natDegree = n := by
-    have := h  -- IsNonderogatory: minpoly K M = M.charpoly
-    rw [h, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]
-  -- Step 3: e₀ is cyclic for C(minpoly M) [proved: no sorry]
-  have hμ_monic : (minpoly K M).Monic := minpoly.monic (Matrix.isIntegral M)
-  have hcyc := companionMatrix_cyclic_e0 hn (minpoly K M) hμ_monic hμ_deg
-  -- Step 4: Transfer cyclic vector along similarity [proved: no sorry]
-  exact cyclic_vector_of_similar M
-    (CayleyHamiltonReductionOQ02OQ01.companionMatrix (d := n) (minpoly K M))
-    P hMC _ hcyc
+  -- The local `IsNonderogatory` and `IsCyclicVector` are definitionally equal to
+  -- the corresponding definitions in `GeneralCyclicVector` (both unfold to the
+  -- same `minpoly K M = M.charpoly` and `∀ p, p.natDegree < n → ...` respectively).
+  have h' : GeneralCyclicVector.IsNonderogatory M := h
+  obtain ⟨v, hv⟩ :=
+    GeneralCyclicVectorComplete.nonderogatory_has_cyclic_vector_any_field M h'
+  exact ⟨v, hv⟩
 
 /-- Corollary: The cyclic vector theorem holds over all finite fields,
     including those with |K| ≤ n. The union avoidance lemma is not needed. -/
@@ -328,28 +259,27 @@ a cyclic vector? Does the theorem fail when q ≤ n?
 
 **Answer**: The theorem holds for ALL (n, q). No failure threshold exists.
 
-**Proof structure** (modular):
-1. [sorry] `nonderogatory_similar_companion`: M ~ C(minpoly M) — Rational Canonical Form
-2. [proved] `companionMatrix_cyclic_e0`: e₀ is cyclic for C(p) — orbit lemma
-3. [proved] `cyclic_vector_of_similar`: cyclic vectors transfer under similarity
-4. Main theorem follows from 1+2+3.
+**Status (this file)**: 0 axioms, 0 sorries. The previously-isolated sorry on
+`nonderogatory_similar_companion` (Rational Canonical Form) has been removed:
+the main theorem is now closed by delegating to WIP04 (Bezout/CRT primary
+decomposition) + WIP05 (UFD factorization of `minpoly K M`).
 
-**Key sorry**: `nonderogatory_similar_companion` requires the structure theorem for
-f.g. modules over K[X] (a PID), which gives Rational Canonical Form. Not in Mathlib.
-
-**Progress vs previous version**: Replaced a monolithic `sorry` with a modular proof.
-The new `companionMatrix_cyclic_e0` (no sorry) establishes the orbit-based cyclic
-vector argument. The remaining sorry is isolated to exactly the RCF similarity step.
-
-**Proved (sorry-free)**:
-- `sum_mulVec_dist`: mulVec distributes over finite sums
-- `aeval_eq_range_sum`: aeval expansion as sum over range(natDegree+1)
-- `companionMatrix_cyclic_e0`: e₀ cyclic for companion matrix (orbit argument)
+**Proved here (sorry-free)**:
 - `annihilator_dvd_minpoly`: Bezout identity for GCD annihilation
 - `cyclic_iff_ann_eq_minpoly`: Characterization of cyclic vectors via annihilators
 - `aeval_conj`: Conjugation commutes with polynomial evaluation (inductive proof)
 - `cyclic_vector_of_similar`: Cyclic vectors transfer under similarity
 - `F2_union_covers`: Counterexample showing union avoidance fails over F₂
+- `nonderogatory_has_cyclic_vector_any_field`: Main theorem (delegates to WIP05)
+- `nonderogatory_has_cyclic_vector_finite_any_size`: Finite-field corollary
+
+**Removed in this revision**: `sum_mulVec_dist`, `aeval_eq_range_sum`, and
+`companionMatrix_cyclic_e0` (which depended on `Proofs.CayleyHamiltonReductionOQ02OQ01`,
+currently affected by Mathlib API drift). The companion-matrix path is no longer
+needed: WIP04 + WIP05 close the main theorem directly via Bezout/CRT projections
+plus UFD factorization, and `aeval_conj` / `cyclic_vector_of_similar` /
+`cyclic_iff_ann_eq_minpoly` remain as standalone lemmas useful for future
+RCF-based formalizations.
 -/
 
 end CyclicVectorArbitrary
