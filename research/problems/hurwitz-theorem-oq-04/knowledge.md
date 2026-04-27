@@ -333,10 +333,8 @@ catch quickly.
 
 1. **Real-part preservation**: prove `(f eⱼ)_0 = 0` for `j ≥ 1`. Strategy:
    express each `eⱼ` as a product of two distinct imaginary basis
-   vectors (e.g. `e₁ = e₂·e₃`, `e₄ = e₅·e₁`, `e₆ = e₂·e₄`, `e₇ = e₃·e₄`).
-   Then `(f(eᵢ·eₖ))_0 = -(f eᵢ)_k - (f eₖ)_i = 0` by `submodule_der_antisymm`.
-   Each `eⱼ` formula needs to be checked against the explicit `eightMul`
-   table (component j formula).
+   vectors. Then `(f(eᵢ·eₖ))_0 = -(f eᵢ)_k - (f eₖ)_i = 0` by
+   `submodule_der_antisymm`.
 2. **Use antisymmetry to close i = 0 sub-case** of `derEval14_injective`:
    `f (stdBasis j) 0 = 0 = g (stdBasis j) 0` via real-part preservation.
 3. **Use antisymmetry to swap (j, i) → (i, j)** in the off-diagonal case:
@@ -346,3 +344,90 @@ catch quickly.
 4. **Fano-line trilinear Leibniz** for the remaining ~14 uncovered
    pairs (those involving only {3,5,6,7}): apply Leibniz at three
    specific basis vectors on a Fano line to relate the components.
+
+---
+
+## Session 2026-04-27 (Session 9, researcher-7) — Multiplication-Table Audit
+
+**Mode**: REVISIT (RICH, score 49)
+**Outcome**: Documentation only. Disk pressure (~1 GB free) prevented Docker
+build verification of any new lemmas; instead, did a careful audit of the
+`eightMul` definition (HurwitzTheorem.lean:255–271) to derive the exact
+factorisation table needed by the next session's real-part-preservation proof.
+
+### Verified `eᵢ · eⱼ = eₖ` table (for the real-part-preservation lemma)
+
+Reading off `eightMul`'s component-k formula and looking for the unique
+positive monomial `aᵢ · bⱼ`:
+
+| Target `eⱼ` | Factorisation | Verifying monomial |
+|------------|---------------|--------------------|
+| `e₁`       | `e₂ · e₃`     | comp 1: `+a₂b₃`    |
+| `e₂`       | `e₃ · e₁`     | comp 2: `+a₃b₁`    |
+| `e₃`       | `e₁ · e₂`     | comp 3: `+a₁b₂`    |
+| `e₄`       | `e₅ · e₁`     | comp 4: `+a₅b₁`    |
+| `e₅`       | `e₁ · e₄`     | comp 5: `+a₁b₄`    |
+| `e₆`       | `e₂ · e₄`     | comp 6: `+a₂b₄`    |
+| `e₇`       | `e₃ · e₄`     | comp 7: `+a₃b₄`    |
+
+All seven factorisations have `i ≠ 0`, `k ≠ 0`, and `i ≠ k`, which is
+exactly the precondition `submodule_der_antisymm` requires.
+
+### Two crucial component identities (no proof yet — for next session)
+
+For `k ≥ 1` and any vector `a`,
+`(eightMul a (stdBasis k))_0 = -aₖ`
+(reading off comp 0: `a₀(eₖ)₀ - a₁(eₖ)₁ - … - a₇(eₖ)₇ = -aₖ`).
+
+Symmetrically, for `i ≥ 1` and any vector `b`,
+`(eightMul (stdBasis i) b)_0 = -bᵢ`.
+
+These should be added as private lemmas
+(`eightMul_stdBasis_right_zero_imag` and `…_left_zero_imag`) before the
+real-part-preservation proof — they isolate the only fact the proof needs
+about component 0, eliminating most of the per-case `simp + ring` work.
+
+### Recommended structure for the next session's work
+
+```lean
+private lemma eightMul_stdBasis_right_zero_imag (a : Fin 8 → ℝ)
+    (k : Fin 8) (hk : k ≠ 0) :
+    eightMul a (stdBasis k) 0 = -a k := by
+  fin_cases k
+  · exact absurd rfl hk
+  all_goals
+    simp [eightMul, stdBasis, Matrix.cons_val_zero, …] <;>
+    simp (config := { decide := true }) [ite_true, ite_false] <;> ring
+
+private lemma eightMul_stdBasis_left_zero_imag … -- symmetric
+
+private lemma submodule_der_real_part
+    (f : (Fin 8 → ℝ) →ₗ[ℝ] (Fin 8 → ℝ)) (hf : f ∈ OctonionDerSubmodule)
+    (j : Fin 8) (hj : j ≠ 0) : f (stdBasis j) 0 = 0 := by
+  fin_cases j
+  · exact absurd rfl hj
+  -- For each j ∈ {1,…,7}, use the table above.
+  -- e₁ case: pick (i,k) = (2,3), use Leibniz, the two component lemmas,
+  --          and submodule_der_antisymm (reduces to -A - B = 0 where A+B = 0).
+  …
+```
+
+This decomposition keeps the per-case work to ~6 lines each (× 7 cases) rather
+than the ad-hoc 50-line block hinted at in session 8's notes.
+
+### Why no Lean changes this session
+
+- Disk at ~1 GB free (borderline per saved guidance).
+- File is 1255 lines, intricate; prior sessions' edits sometimes silently
+  reverted under disk pressure.
+- Multiple PRs landing on this file in the last 24 h (#13228, #13371) — risk
+  of conflict if I push speculative un-verified code in parallel.
+
+### Files Modified
+
+- `research/problems/hurwitz-theorem-oq-04/knowledge.md` (this entry only).
+
+### Sorry Status
+
+- Before: 1 sorry (off-diagonal kernel claim, `j ∈ {1..7}, i ≠ 0, i ≠ j`).
+- After: 1 sorry (no change).
