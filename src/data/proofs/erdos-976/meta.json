@@ -87,7 +87,7 @@
       "title": "Known Lower Bounds",
       "startLine": 69,
       "endLine": 100,
-      "summary": "States the three main known lower bounds as axioms: Nagell-Ricci (n log n), Erdős 1952 (n(log n)^{log log log n}), and Tenenbaum 1990 (n exp((log n)^c))."
+      "summary": "Documents three historical lower bounds as docstrings: Nagell-Ricci (n log n), Erdős 1952 (n(log n)^{log log log n}), and Tenenbaum 1990 (n exp((log n)^c)). Only Tenenbaum's bound is formalized as an axiom."
     },
     {
       "id": "section-3",
@@ -101,7 +101,7 @@
       "title": "Upper Bounds",
       "startLine": 123,
       "endLine": 134,
-      "summary": "States the trivial upper bound F_f(n) ≤ C·n^d as an axiom, bounding the function from above."
+      "summary": "Documents the trivial upper bound F_f(n) ≤ C·n^d as a docstring only; no axiom declaration is present in this section."
     },
     {
       "id": "section-5",
