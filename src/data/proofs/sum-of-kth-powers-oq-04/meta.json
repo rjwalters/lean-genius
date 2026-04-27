@@ -7,7 +7,7 @@
     "author": "Euler (1738), Maclaurin (1742), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Euler%E2%80%93Maclaurin_formula",
     "date": "1738",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/SumOfKthPowersOQ04.lean",
     "tags": [
       "analysis",
@@ -16,10 +16,10 @@
       "bernoulli-numbers",
       "open-question"
     ],
-    "badge": "axiom",
-    "sorries": 0,
-    "axiomCount": 1,
-    "assumptions": "1 axiom: monic_poly_ratio_tendsto (p(n)/n^d -> 1). 0 sorries: powerSumRatio_tendsto is now proved using Faulhaber's formula and filter limits.",
+    "badge": "wip",
+    "sorries": 2,
+    "axiomCount": 0,
+    "assumptions": "0 axioms. 2 routine sorries: (1) low_degree_poly_ratio_tendsto_zero (polynomial of degree < d divided by n^d → 0); (2) natDegree of p - X^d < d when p is monic of degree d. Both are standard analysis/algebra, suitable for Aristotle.",
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.bernoulli",
