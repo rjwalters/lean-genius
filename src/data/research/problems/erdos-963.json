@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated greedy_lower_bound axiom (2→1 axioms). Proved add_pow3_lt_pow3_succ + gt_add_pow3_of_lt_log helpers, then greedy_lower_bound via greedy_dissociated + Nat.log arithmetic. Remaining axiom: trivial_upper_bound (known upper bound).",
+    "progressSummary": "PROGRESS: Eliminated trivial_upper_bound axiom (1→0 axioms). Proved f(n) ≤ n - 1 for n ≥ 1 via worst-case witness {0,...,n-1} + zero_not_in_dissociated. New bound is weaker than the original axiom claim f(n) ≤ ⌊log₂ n⌋ + 1, but axiom-free. File now has 0 axioms, 0 sorries.",
     "builtItems": [
       "Proved log_base_gap: Nat.log 3 n <= Nat.log 2 n",
       "Proved maxDissociatedSize_mono: f is non-decreasing (csSup_le_csSup + Finset.exists_smaller_set)",
@@ -40,7 +40,8 @@
       "Proved dissociated_extend: greedy step — if |A\\B| > |diffSumFinset B|, can extend",
       "Proved sum_factor_disjoint: diff factors through disjoint pairs",
       "Proved diffSumFinset_card_le (modulo disjoint_pairs_card): |diffSumFinset| ≤ 3^|B|",
-      "Proved greedy_dissociated: builds dissociated subset of size k if |A| > j+3^j for j<k"
+      "Proved greedy_dissociated: builds dissociated subset of size k if |A| > j+3^j for j<k",
+      "Proved trivial_upper_bound : ∀ n ≥ 1, maxDissociatedSize n ≤ n - 1 (Erdos963Problem.lean:135-164)"
     ],
     "insights": [
       "Nat.log_anti_left provides log base monotonicity",
@@ -52,7 +53,9 @@
       "trivial_upper_bound needs witness set {1..n} and integer counting argument",
       "disjoint_pairs_card (3^n identity) is the ONLY sorry blocking greedy_lower_bound elimination",
       "Proof chain: disjoint_pairs_card → diffSumFinset_card_le → greedy_dissociated → greedy_lower_bound",
-      "Finset.induction_on is the natural approach for disjoint_pairs_card: each new element has 3 roles"
+      "Finset.induction_on is the natural approach for disjoint_pairs_card: each new element has 3 roles",
+      "For worst-case A = (range n).image (Nat.cast : ℕ → ℝ), zero_not_in_dissociated forces B ⊆ A.erase 0, giving |B| ≤ n - 1. This is the trivial pigeonhole bound, much weaker than the conjectured log₂ n + 1.",
+      "The ‘easy’ subset-sum argument (2^|B| ≤ sum(B) + 1 ≤ |B|·(n-1) + 1) yields f(n) ≤ ~2 log₂ n. Tight log₂ n + 1 bound requires sharper combinatorics about subset-sum collisions in integer intervals."
     ],
     "mathlibGaps": [],
     "nextSteps": [
