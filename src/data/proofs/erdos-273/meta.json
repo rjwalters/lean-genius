@@ -62,7 +62,9 @@
       "For $p \\geq 5$, the smallest allowed modulus is $4 = 5 - 1$, excluding modulus 2 and making it impossible for any single class to cover half of $\\mathbb{Z}$",
       "The reciprocal sum condition $\\sum 1/m_i \\geq 1$ is necessary but not the obstruction — $\\sum_{p \\geq 5} 1/(p-1)$ diverges by Mertens' theorem",
       "Hough's theorem (2015) implies that any solution, if it exists, must use repeated or small moduli from the allowed set",
-      "The problem connects prime distribution (which integers are $p - 1$ for prime $p$?) to the combinatorics of residue class coverings"
+      "The problem connects prime distribution (which integers are $p - 1$ for prime $p$?) to the combinatorics of residue class coverings",
+      "**Sierpiński and Riesel numbers as the canonical application of covering systems**: A Sierpiński number is an odd $k$ such that $k \\cdot 2^n + 1$ is composite for all $n \\geq 1$; a Riesel number is the analogue for $k \\cdot 2^n - 1$. Their existence (Sierpiński 1960, Riesel 1956) was proved via covering systems: choosing residues $a_i \\pmod{m_i}$ such that $a_i \\pmod{m_i}$ forces a specific prime $p_i$ to divide $k \\cdot 2^{a_i} + 1$ for $n \\equiv a_i \\pmod{m_i}$, with $\\bigcup (a_i \\bmod m_i) = \\mathbb{Z}$ guaranteeing every $n$ falls in some class. The smallest known Sierpiński number is $78557$ (proved 1962); the smallest known Riesel number is $509203$. The connection to Problem #273: any restriction on allowable moduli $m_i$ in the covering system translates directly into a restriction on the primes available for the Sierpiński/Riesel construction. If Erdős #273 has a positive answer, then there exist prime-minus-one Sierpiński-type constructions; if negative, an entire class of constructions is impossible.",
+      "**The reciprocal sum 109/180 quantifies the gap**: The seven 'easy primes' (those with $p - 1$ dividing 360) give $\\sum 1/(p-1) = 109/180 \\approx 0.6055$, which is *less than 1* — meaning these primes alone cannot form a covering system regardless of how the residues are chosen. To reach the necessary $\\sum 1/m_i \\geq 1$, one must either include primes with $p - 1$ not dividing 360 (introducing non-CRT-friendly moduli) or use repeated moduli (multiple residue classes mod the same $p - 1$). The exact value $109/180$ is computable: $1/4 + 1/6 + 1/12 + 1/18 + 1/36 + 1/60 + 1/180 = (45 + 30 + 15 + 10 + 5 + 3 + 1)/180 = 109/180$. This is *much* below 1, suggesting the obstruction is severe and a positive answer would require substantially larger moduli."
     ],
     "prerequisites": [
       "Modular arithmetic: congruences, residue classes, Chinese Remainder Theorem",
@@ -230,6 +232,34 @@
       "year": "2007",
       "venue": "Journal of the AMS, vol. 20(2), pp. 495–517",
       "note": "Partial results toward the minimum modulus conjecture using sieve methods; relevant to the structural constraints on covering systems in Problem #273"
+    },
+    {
+      "authors": "Sierpiński, Wacław",
+      "title": "Sur un problème concernant les nombres $k \\cdot 2^n + 1$",
+      "year": "1960",
+      "venue": "Elemente der Mathematik, vol. 15, pp. 73–74",
+      "note": "Sierpiński's original construction of an odd integer $k$ such that $k \\cdot 2^n + 1$ is composite for every $n \\geq 1$, via a covering system that ensures a prescribed prime divides $k \\cdot 2^n + 1$ for every $n$. This is the canonical application of covering systems and the historical motivation for restricting the allowed moduli — Problem #273 asks whether the same construction is possible using only $p - 1$ moduli with $p \\geq 5$."
+    },
+    {
+      "authors": "Riesel, Hans",
+      "title": "Några stora primtal",
+      "year": "1956",
+      "venue": "Elementa, vol. 39, pp. 258–260",
+      "note": "Riesel's analogous construction of an odd integer $k$ such that $k \\cdot 2^n - 1$ is composite for every $n \\geq 1$, also via covering systems. Together with Sierpiński's construction, establishes that covering systems with prescribed prime-power moduli are not merely combinatorial curiosities but produce concrete number-theoretic results — directly motivating the restricted-moduli question in Problem #273."
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "On integers of the form $2^k + p$ and some related problems",
+      "year": "1950",
+      "venue": "Summa Brasiliensis Mathematicae, vol. 2, pp. 113–123",
+      "note": "Erdős's seminal paper introducing covering systems, proving that $\\mathbb{Z}$ admits a covering system with distinct moduli $\\{2, 3, 4, 6, 8, 12, 24\\}$ and using this to construct an arithmetic progression in which no term is of the form $2^k + p$. This is the earliest published covering system result and established the framework for all subsequent work, including Problem #273."
+    },
+    {
+      "authors": "Balister, Paul; Bollobás, Béla; Morris, Robert; Sahasrabudhe, Julian; Tiba, Marius",
+      "title": "Erdős covering systems",
+      "year": "2022",
+      "venue": "arXiv:2106.06487; Acta Mathematica, vol. 229(1), pp. 1–82",
+      "note": "Comprehensive modern survey of Erdős covering systems with new results on the minimum modulus problem, density bounds, and structural constraints. Provides the most up-to-date framework for attacking Problem #273, including refined analyses of when the reciprocal sum condition is sharp and when it admits slack."
     }
   ],
   "sorries": 0
