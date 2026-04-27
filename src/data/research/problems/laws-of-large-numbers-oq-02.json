@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 1 axiom (integral_sampleMean→theorem) and 2 sorries (chebyshev_convergence_rate, chebyshev_rate_implies_convergence). File now: 13 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: LawsOfLargeNumbersOQ02.lean is at 330 lines, 4 axioms (sampleMean_memLp, variance_sampleMean, standardNormalCDF, berryEsseenConstant), 0 sorries. Down from 13 axioms after sustained elimination work. Remaining axioms split: two L²-bookkeeping (sampleMean_memLp, variance_sampleMean) likely provable from Mathlib, two CLT-domain (standardNormalCDF, berryEsseenConstant) blocked by absence of CLT in Mathlib v4.26.",
     "builtItems": [
       "integral_sampleMean: axiom → theorem (proved via integral linearity)",
       "chebyshev_convergence_rate: sorry → proved (Chebyshev + axiom substitution)",
@@ -70,7 +70,7 @@
     "mathlib": []
   },
   "started": "2026-03-29T04:28:18.978Z",
-  "lastUpdate": "2026-03-29T04:28:18.988Z",
+  "lastUpdate": "2026-04-27T23:45:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/LawsOfLargeNumbers.lean",
