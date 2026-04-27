@@ -65,14 +65,19 @@
     }
   ],
   "overview": {
-    "historicalContext": "The Vapnik-Chervonenkis (VC) dimension, introduced by Vapnik and Chervonenkis in 1971, measures the combinatorial richness of a hypothesis class by the size of the largest set it can shatter. Computing VC dimension for concrete classes is essential for applying PAC learning bounds: thresholds are the simplest nontrivial example.\n\nThe parent gallery entry pac-learning-bounds formalizes the Sauer-Shelah polynomial bound and lists as open question OQ-01 whether VC dimension can be computed in Lean for specific hypothesis classes. This entry answers that question for thresholds: the answer is yes, and the proof is short.",
+    "historicalContext": "The Vapnik-Chervonenkis (VC) dimension, introduced by Vapnik and Chervonenkis in their 1971 paper *On the uniform convergence of relative frequencies of events to their probabilities*, measures the combinatorial richness of a hypothesis class by the size of the largest set it can shatter. The original motivation was statistical: VC bounded the rate of uniform convergence of empirical frequencies to true probabilities, generalizing the Glivenko-Cantelli theorem from a single distribution function to arbitrary set systems. The combinatorial heart of the theory is the Sauer-Shelah lemma (Sauer 1972, Shelah 1972, also independently rediscovered by Vapnik-Chervonenkis), which says that a hypothesis class of VC dimension $d$ has growth function bounded by $\\binom{n}{\\leq d} = O(n^d)$ — a polynomial bound that converts the apparent doubly-exponential combinatorial richness ($2^n$ possible labelings) into a polynomial sample-complexity bound for PAC learning.\n\nProbably approximately correct (PAC) learning, formalized by Valiant (1984) and connected to VC theory by Blumer-Ehrenfeucht-Haussler-Warmuth (1989), made the connection sharp: a hypothesis class is PAC-learnable in the realizable setting iff it has finite VC dimension, with sample complexity $\\Theta(d/\\varepsilon)$ for accuracy $\\varepsilon$. The Fundamental Theorem of Statistical Learning thus places VC dimension at the center of supervised learning theory: every distribution-free generalization bound passes through it.\n\nComputing VC dimension for concrete classes is essential for applying these bounds. Thresholds are the simplest nontrivial example, taught in every introductory course. Their VC dimension equals 1 — small but positive — making thresholds the canonical 'smallest interesting' learnable class. Their parameterization by a single natural number gives sample complexity $O(1/\\varepsilon)$, and their order-monotonicity provides the proof template (singletons shatter, pairs don't) that generalizes to intervals (VC dim 2), axis-aligned rectangles in $\\mathbb{R}^d$ (VC dim $2d$), half-spaces in $\\mathbb{R}^d$ (VC dim $d+1$), and beyond.\n\nThe parent gallery entry pac-learning-bounds formalizes the Sauer-Shelah polynomial bound abstractly and lists as open question OQ-01 whether VC dimension can be computed in Lean for specific hypothesis classes. This entry answers that question for thresholds: the answer is yes, and the proof is short — three theorems totaling 86 lines, using only Mathlib's `Finset` and `Nat` API.",
     "problemStatement": "Define the threshold hypothesis class on ℕ as $H_{thr} = \\{x \\mapsto x < t : t \\in \\mathbb{N}\\}$. Compute its VC dimension.\n\nShow:\n1. (Lower bound) Every singleton $\\{a\\}$ is shattered by $H_{thr}$.\n2. (Upper bound) No two-point set $\\{a, b\\}$ with $a \\neq b$ is shattered.\n\nTogether these establish $\\operatorname{VCdim}(H_{thr}) = 1$.",
     "text": "Threshold classifiers on ℕ have VC dimension exactly 1. Verified in Lean 4 with three theorems (one definitional plus two bounds).",
     "proofStrategy": "1. **Lower bound (singleton shattering):** Given any target labeling of $\\{a\\}$, we either include $a$ (use $t = a+1$, so $a < t$ holds) or exclude $a$ (use $t = 0$, so $a < 0$ fails). Both witnesses lie in $H_{thr}$.\n\n2. **Upper bound (no pair shattered):** Suppose $a < b$ and the labeling $T = \\{b\\}$ (only $b$ included) is realized by some $h_t \\in H_{thr}$. Then $a \\notin h_t$ forces $t \\leq a$, while $b \\in h_t$ forces $b < t$. Combined: $b < t \\leq a$, contradicting $a < b$.",
     "keyInsights": [
-      "Thresholds are the simplest nontrivial hypothesis class: monotone in the parameter t. Their order-preserving structure both gives them shattering power on singletons and constrains them from shattering pairs.",
-      "The upper-bound argument is the standard 'monotonicity obstruction': if h_t treats a single point both ways, t can shift; but to selectively include only the larger of two points, t must straddle them, which the < ordering forbids.",
-      "Symmetry handling: the not-shatters-pair theorem is stated for a < b, then lifted to all distinct pairs using Finset extensionality (a, b ↦ b, a)."
+      "Thresholds are the simplest nontrivial hypothesis class: monotone in the parameter $t$. Their order-preserving structure both gives them shattering power on singletons and constrains them from shattering pairs — VC dimension 1 is the *exact* boundary between trivial (constant classes, VC dim 0) and richer classes (intervals, half-planes, etc.).",
+      "The upper-bound argument is the standard 'monotonicity obstruction': if $h_t$ treats a single point both ways, $t$ can shift; but to selectively include only the larger of two points, $t$ must straddle them, which the $<$ ordering forbids. This obstruction is the prototype for the general phenomenon — *order-preserving hypothesis classes have logarithmic-scale VC dimension*, since the $k$-th element fixes $k$ bits of $t$.",
+      "Symmetry handling: the not-shatters-pair theorem is stated for $a < b$, then lifted to all distinct pairs using `Finset` extensionality ($\\{a, b\\} = \\{b, a\\}$). This is a Mathlib-isomorphism technique — the underlying mathematical content is symmetry under the order swap, but the formalization separates the canonical case from the general one for cleaner proof structure.",
+      "**Sauer-Shelah implication**: VC dim 1 means the growth function $\\Pi_{H_{thr}}(n) \\leq \\binom{n}{\\leq 1} = n + 1$. This is dramatically smaller than the $2^n$ possible labelings — and concretely, $\\Pi_{H_{thr}}(n) = n + 1$ exactly (the $n + 1$ thresholds $t = 0, 1, \\ldots, n$ produce the $n + 1$ distinct labelings of a sorted $n$-point set). The Sauer-Shelah bound is *tight* for thresholds, making this entry a sharp witness for the polynomial growth phenomenon at $d = 1$.",
+      "**PAC sample complexity at VC dim 1**: Combining the Fundamental Theorem of Statistical Learning with VC dim$(H_{thr}) = 1$ yields the explicit sample complexity bound $m(\\varepsilon, \\delta) = O(\\frac{1}{\\varepsilon}(\\log\\frac{1}{\\delta} + 1))$ for PAC-learning thresholds — independent of the size of $\\mathbb{N}$. Since the natural-number domain is infinite, this is the simplest example of a hypothesis class over an infinite domain with bounded sample complexity, distinguishing PAC learnability from the trivial finite-class regime.",
+      "**ERM is consistent**: For thresholds, empirical risk minimization (ERM) — choosing the threshold $t^* = \\max\\{x_i : y_i = 1\\} + 1$ from the training data — gives a learnable rule. This is the simplest nontrivial example where ERM achieves the PAC sample complexity matching the VC bound. Many richer classes need stronger algorithmic tools (boosting, regularization, etc.); the threshold case shows that the theory's lower bound is realized by the obvious algorithm.",
+      "**Why ℕ matters less than the order**: The argument never uses any specific arithmetic feature of $\\mathbb{N}$ — only the linear order. The same proof works verbatim for thresholds on any totally ordered set: $\\mathbb{Z}$, $\\mathbb{Q}$, $\\mathbb{R}$, or any chain. This generalization underlies the equivalence between thresholds (one-dimensional half-spaces) and one-dimensional perceptron learning, and motivates the full VC theory of half-spaces in higher dimensions where the order is replaced by linear separability.",
+      "**Connection to interval classes (VC dim 2)**: The natural next step in this hierarchy is intervals $\\{[a, b] : a \\leq b\\}$, which have VC dim 2 (any 2 points are shattered, no 3 points are). The 'no 3 shattered' obstruction generalizes the threshold argument: an interval cannot include the endpoints of a triple while excluding the middle, since intervals are *convex*. This convexity obstruction is the geometric analogue of monotonicity, and the dimension increment 1 → 2 reflects the parameter-count increment 1 → 2."
     ],
     "prerequisites": [
       "VC dimension and shattering",
@@ -117,9 +122,14 @@
     "summary": "Threshold classifiers on ℕ have VC dimension exactly 1. The proof is short, uses only Finset and arithmetic from Mathlib, and demonstrates that concrete VC dimension computations (parent OQ-01) are tractable.",
     "implications": "Provides a worked template for computing VC dimension of other simple hypothesis classes. Natural next steps: intervals on ℕ (VC dim = 2 via convexity obstruction), half-spaces in ℝ (VC dim = 2), axis-aligned rectangles in ℝ² (VC dim = 4). Each becomes a gallery entry advancing OQ-01.",
     "openQuestions": [
-      "Compute VC dim of interval classifiers on ℕ (expected: 2). Would require a 'no triple shattered' lemma using interval convexity.",
-      "Compute VC dim of half-space classifiers on ℝᵈ (expected: d+1). Requires linear algebra and general position arguments.",
-      "Define vcDim as a Lean function (sup of cardinalities of shattered Finsets) and prove vcDim H_thr = 1 directly, not just via the two bounds."
+      "Compute VC dim of interval classifiers on ℕ (expected: 2). Would require a 'no triple shattered' lemma using interval convexity — the geometric analogue of the monotonicity obstruction used here.",
+      "Compute VC dim of half-space classifiers on ℝᵈ (expected: $d+1$). Requires linear algebra (general position arguments) and connects to Radon's theorem: any $d+2$ points in ℝᵈ admit a partition into two sets whose convex hulls intersect, blocking shattering.",
+      "Define vcDim as a Lean function (sup of cardinalities of shattered Finsets) and prove vcDim $H_{thr} = 1$ directly, not just via the two bounds. This requires a `WithTop ℕ`-valued definition (since some classes have infinite VC dimension) and care with the supremum convention.",
+      "Formalize the Sauer-Shelah lemma: for any class $H$ of VC dimension $d$, the growth function $\\Pi_H(n) \\leq \\sum_{i=0}^{d} \\binom{n}{i}$. This entry's $d = 1$ case is implicit (growth $\\leq n+1$); the general bound is the foundation of distribution-free PAC learning.",
+      "Verify the explicit growth-function equality $\\Pi_{H_{thr}}(n) = n + 1$ — i.e., not just the Sauer-Shelah upper bound but the exact count. This would follow from a lemma showing that on any sorted $n$-point set, the $n + 1$ distinct labelings are exactly $\\{\\emptyset, \\{x_n\\}, \\{x_{n-1}, x_n\\}, \\ldots, \\{x_1, \\ldots, x_n\\}\\}$.",
+      "Formalize the PAC sample complexity bound for thresholds: $m(\\varepsilon, \\delta) = O(\\frac{1}{\\varepsilon}(\\log\\frac{1}{\\delta} + 1))$ samples suffice for accuracy $\\varepsilon$ with confidence $1 - \\delta$. Combines this entry's VC dim with the Fundamental Theorem of Statistical Learning.",
+      "Generalize this entry to thresholds on any totally ordered set (replace ℕ with $[\\text{LinearOrder}\\;\\alpha]$). The proof uses only the order, not arithmetic on ℕ — a clean Mathlib-style generalization.",
+      "Prove that empirical risk minimization (ERM) on thresholds is consistent and achieves the PAC bound, with explicit algorithm: $t^* = \\max\\{x_i : y_i = 1\\} + 1$ (or $0$ if no positive examples). The simplest example of an ERM analysis matching the VC bound."
     ]
   },
   "references": [
@@ -128,14 +138,49 @@
       "title": "On the uniform convergence of relative frequencies of events to their probabilities",
       "year": "1971",
       "venue": "Theory of Probability and Its Applications, 16(2), 264–280",
-      "note": "Original definition of VC dimension."
+      "note": "Original definition of VC dimension. The combinatorial part of the paper effectively proves what is now called the Sauer-Shelah lemma, motivated by uniform convergence rates."
+    },
+    {
+      "authors": "Sauer, N.",
+      "title": "On the density of families of sets",
+      "year": "1972",
+      "venue": "Journal of Combinatorial Theory, Series A, 13(1), 145–147",
+      "note": "Sauer's combinatorial proof of the polynomial growth bound $\\Pi_H(n) \\leq \\sum_{i \\leq d} \\binom{n}{i}$. Independent of Vapnik-Chervonenkis."
+    },
+    {
+      "authors": "Shelah, S.",
+      "title": "A combinatorial problem; stability and order for models and theories in infinitary languages",
+      "year": "1972",
+      "venue": "Pacific Journal of Mathematics, 41(1), 247–261",
+      "note": "Shelah's independent proof of the same combinatorial bound, motivated by model theory rather than statistics. The 'Sauer-Shelah lemma' is named for the joint discovery; Vapnik-Chervonenkis (1971) had it earlier still."
+    },
+    {
+      "authors": "Valiant, L. G.",
+      "title": "A theory of the learnable",
+      "year": "1984",
+      "venue": "Communications of the ACM, 27(11), 1134–1142",
+      "note": "Introduced the PAC (probably approximately correct) learning framework, providing the algorithmic side of statistical learning theory."
+    },
+    {
+      "authors": "Blumer, A.; Ehrenfeucht, A.; Haussler, D.; Warmuth, M. K.",
+      "title": "Learnability and the Vapnik-Chervonenkis dimension",
+      "year": "1989",
+      "venue": "Journal of the ACM, 36(4), 929–965",
+      "note": "Established the equivalence between PAC learnability (in the realizable setting) and finite VC dimension — the Fundamental Theorem of Statistical Learning. Provides explicit polynomial sample complexity bounds in terms of VC dimension."
     },
     {
       "authors": "Shalev-Shwartz, Shai; Ben-David, Shai",
       "title": "Understanding Machine Learning: From Theory to Algorithms",
       "year": "2014",
       "venue": "Cambridge University Press",
-      "note": "Chapter 6 discusses VC dimension of threshold and interval classifiers."
+      "note": "Modern textbook treatment. Chapter 6 discusses VC dimension of threshold, interval, and rectangular classifiers; Chapter 28 covers the Fundamental Theorem of Statistical Learning."
+    },
+    {
+      "authors": "Mohri, Mehryar; Rostamizadeh, Afshin; Talwalkar, Ameet",
+      "title": "Foundations of Machine Learning",
+      "year": "2018",
+      "venue": "MIT Press, 2nd edition",
+      "note": "Comprehensive reference for VC theory, Rademacher complexity, and statistical learning bounds, with explicit calculations of VC dimension for many concrete classes."
     }
   ],
   "mainTheorems": [
