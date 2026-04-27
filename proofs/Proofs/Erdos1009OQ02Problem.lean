@@ -238,3 +238,30 @@ theorem clique4_has_triangle {G : SimpleGraph V} (K : Clique4 G) :
     ∃ (a b c : V), G.Adj a b ∧ G.Adj b c ∧ G.Adj a c ∧ a ≠ b ∧ b ≠ c ∧ a ≠ c := by
   exact ⟨K.a, K.b, K.c, K.hab, K.hbc, K.hac,
     K.distinct.1, K.distinct.2.2.2.1, K.distinct.2.1⟩
+
+/-
+## Edge Set Infrastructure
+
+Basic facts about `Clique4.edges` needed for any future induction-based bound
+on the edge-disjoint K₄ count (e.g. an analog of Györi 1988).
+-/
+
+/-- Every edge of a K₄ copy lies in `G.edgeFinset`. This is the basic
+    consistency property: the 6 edges of `K.edges` are all real edges of `G`. -/
+lemma Clique4.edges_subset_edgeFinset {G : SimpleGraph V} [DecidableRel G.Adj]
+    (K : Clique4 G) : K.edges ⊆ G.edgeFinset := by
+  intro e he
+  simp only [Clique4.edges, Finset.mem_insert, Finset.mem_singleton] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl
+  all_goals simp only [SimpleGraph.mem_edgeFinset, SimpleGraph.mem_edgeSet]
+  · exact K.hab
+  · exact K.hac
+  · exact K.had
+  · exact K.hbc
+  · exact K.hbd
+  · exact K.hcd
+
+/-- The edge set of a K₄ is nonempty. -/
+lemma Clique4.edges_nonempty {G : SimpleGraph V} (K : Clique4 G) :
+    K.edges.Nonempty :=
+  ⟨s(K.a, K.b), by simp [Clique4.edges]⟩
