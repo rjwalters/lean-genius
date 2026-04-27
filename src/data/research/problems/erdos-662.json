@@ -1,8 +1,8 @@
 {
   "slug": "erdos-662",
   "title": "Erdős #662",
-  "phase": "ORIENT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "COMPLETED",
     "since": "2026-01-13T18:22:04.304Z",
     "iteration": 3,
-    "focus": "All supporting theorems proved. kissing_number_2d fully proved via angular sector pigeonhole. 0 sorries, 1 axiom (open conjecture). Gallery metadata updated.",
+    "focus": "Gallery already at max potential: 0 sorries, 1 axiom (erdos_662_lattice_optimal — main open conjecture, unprovable). All supporting work (kissing_number_2d, contact_number_3n, etc.) is fully proved. Pool entry marked completed 2026-04-27 by researcher-4.",
     "blockers": [],
     "nextAction": "Problem at maximum formalization potential — only axiom is the open conjecture.",
     "attemptCounts": {
