@@ -1,19 +1,27 @@
 {
   "slug": "leibniz-pi-oq-03",
-  "title": "Leibniz Series Acceleration via Euler/Richardson Transforms",
+  "title": "Leibniz Series Acceleration via Midpoint and Euler Transforms",
   "phase": "COMPLETED",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in analysis: Leibniz Series Acceleration via Euler/Richardson Transforms.",
-    "whyMatters": []
+    "formal": "Part I: |M(k) - π/4| ≤ 1/(2·(4k+1)); Part II: π/4 = Σ_{n≥0} (1/2)^{n+1} · ∫₀¹(1-t²)^n dt (geometric convergence)",
+    "plain": "Accelerate the Leibniz series π/4 = 1 - 1/3 + 1/5 - ... using (a) midpoint averaging, which halves the error constant, and (b) the Euler transform via integral substitution, which gives geometric convergence.",
+    "whyMatters": [
+      "Demonstrates two classical series-acceleration techniques formalized end-to-end",
+      "Midpoint argument is purely combinatorial; Euler transform pulls in measure theory and integral identities",
+      "Connects Leibniz's slow series to a fast geometric one without leaving Mathlib's analysis library"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Part I: midpoint_error_bound — M(k) := (S(2k)+S(2k+1))/2 satisfies |M(k) - π/4| ≤ 1/(2·(4k+1))",
+      "Part II: euler_transform_eq — π/4 = Σ_{n≥0} (1/2)^{n+1} · ∫₀¹(1-t²)^n dt with geometric tail bound",
+      "geometric_series_eq, euler_summable, arctan_integral as supporting lemmas"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Formalize both midpoint and Euler-transform accelerations of the Leibniz series with explicit error/tail bounds."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -41,6 +49,7 @@
       "midpoint M(k)=(S(2k)+S(2k+1))/2 satisfies |M(k)-pi/4|<=1/(2*(4k+1)), proved via gap_eq + abs_le + linarith",
       "inv_div:(a/b)^{-1}=b/a avoids field_simp case splits for geometric series identity",
       "euler_transform_eq closed via ENNReal.ofReal_tsum_of_nonneg + ENNReal.ofReal_lt_top (Summable.tsum_ofReal_ne_top doesn't exist in Mathlib v4.26)",
+      "Euler transform geometric tail: each term ≤ (1/2)^{n+1}, giving geometric convergence vs Leibniz's O(1/N)",
       "Reusable blueprint for series-of-bounded-integrands: AEStronglyMeasurable via continuity.restrict, ENNReal domination via enorm_of_nonneg + lintegral_mono_ae, finiteness via ENNReal.ofReal_tsum_of_nonneg"
     ],
     "mathlibGaps": [],
@@ -66,7 +75,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T22:19:31.122Z",
-  "lastUpdate": "2026-04-27T00:00:00.000Z",
+  "lastUpdate": "2026-04-27T14:10:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
