@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1138",
   "title": "Erdős #1138",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-01-15T15:52:59.263Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Stable: machinery file (Erdos1138Problem.lean) for the open conjecture; OQ-03 with 1 deep axiom (Baker-Harman-Pintz 2001)",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Fully formalized. 3 axioms (2 open conjectures + BHP 2001 deep result), 0 sorries. Gallery entries verified.",
+    "progressSummary": "STABLE-AXIOMATIZED: Erdos1138Problem.lean (227 lines, 0 sorries, 0 axioms — machinery + supporting lemmas only; main conjecture is OPEN and documented in comments without being stated as axiom or theorem) + Erdos1138OQ03.lean (228 lines, 0 sorries, 1 axiom: baker_harman_pintz, the BHP 2001 deep result on prime gaps below x). Gallery meta.json correctly reports erdos-1138 status=axiomatized, axiomCount=0 (open conjecture, no claims) and erdos-1138-oq-03 status=axiomatized, axiomCount=1.",
     "builtItems": [
       "Verified: Erdos1138Problem.lean — 2 axioms (open), 20 theorems, 0 sorries",
       "Verified: Erdos1138OQ03.lean — 1 axiom (BHP), 12 theorems, 0 sorries",
