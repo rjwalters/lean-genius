@@ -104,7 +104,27 @@
     {
       "targetId": "cauchy-schwarz-oq-01-oq-01",
       "relationship": "extends",
-      "description": "Answers OQ-1: formalizes Gram-Schmidt using the CS equality characterization"
+      "description": "Answers OQ-1: formalizes Gram-Schmidt using the CS equality characterization. The parent proves $\\|\\langle u, v \\rangle\\| = \\|u\\| \\|v\\|$ iff $u, v$ are linearly dependent; this entry exposes that 'iff' as the geometric content of the projection $u \\mapsto u - \\frac{\\langle u, v \\rangle}{\\|v\\|^2} v$ vanishing."
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-01",
+      "relationship": "ancestor",
+      "description": "Grandparent: Cauchy-Schwarz for complex inner product spaces (RCLike-uniform). This entry inherits its uniform RCLike treatment — the same Gram-Schmidt code runs over both $\\mathbb{R}$- and $\\mathbb{C}$-inner product spaces because Mathlib's `RCLike.norm_ofReal` and `starRingEnd_apply` reduce the projection coefficient to the same shape in both cases."
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "ancestor",
+      "description": "Root: the original Cauchy-Schwarz inequality $|\\langle u, v\\rangle| \\leq \\|u\\| \\|v\\|$ over real inner product spaces, with the equality condition (linear dependence) proved via the Lagrange identity. This entry's residual-zero characterization is the geometric translation of that algebraic equality test."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "Integral analogue: $(\\int fg)^2 \\leq (\\int f^2)(\\int g^2)$ in $L^2$. The Gram-Schmidt residual construction here generalizes verbatim to $L^2$: the residual is the projection of $f$ onto the orthogonal complement of $g$, and equality in the integral CS holds iff that residual vanishes (i.e. $f$ and $g$ are proportional almost everywhere). This entry's discrete machinery thus prefigures the $L^2$ orthogonal-projection technology."
+    },
+    {
+      "targetId": "lagrange-four-squares",
+      "relationship": "related",
+      "description": "Both proofs use the polarization-style identity $\\|\\alpha u + \\beta v\\|^2 = |\\alpha|^2 \\|u\\|^2 + 2\\operatorname{Re}(\\bar\\alpha \\beta \\langle u, v\\rangle) + |\\beta|^2 \\|v\\|^2$ as a building block. In Cauchy-Schwarz that polarization is plugged with the optimal coefficient (the projection coefficient $\\langle u, v\\rangle / \\|v\\|^2$); in Lagrange's four-square identity, the same multiplicative structure on quaternion norms drives the four-square sum-product formula."
     }
   ],
   "sorries": 0
