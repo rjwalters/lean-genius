@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1014-oq-02-incomplete-01",
   "title": "Explicit Rate of Convergence O(log l / l) for Erdős #1014 k=3",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -23,12 +23,12 @@
     "goal": "ACHIEVED: Explicit rate bound proved with C = 2/c"
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-28T18:00:00.000Z",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T23:31:00.000Z",
     "iteration": 1,
-    "focus": "Explicit rate bound O(log l / l) for k=3",
+    "focus": "Done. Erdos1014OQ02.lean fully proved (0 sorries).",
     "blockers": [],
-    "nextAction": "Verify compilation via docker build",
+    "nextAction": "None — work complete; gallery meta.json already in sync.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -36,23 +36,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Main results proved (rate_of_convergence_k3, log_over_l_faster_than_inv_log). 2 sorries remain in conditional_rate_general_k (Bernoulli bound + factor decomposition). Axioms from parent file (Ramsey definitions).",
+    "progressSummary": "COMPLETED: Erdos1014OQ02.lean has 0 sorries and 0 own axioms (12 inherited from Erdos1014Problem.lean). Main results proved: rate_of_convergence_k3 (|R(3,l+1)/R(3,l) - 1| ≤ (2/c)·log l/l), log_over_l_faster_than_inv_log, conditional_convergence_general_k (delegated to ratio_from_asymptotics), and rate_is_O_log_over_l_not_inv_log corollary. Gallery meta at src/data/proofs/erdos-1014-oq-02/meta.json already in sync (status=axiomatized, sorries=0, axiomCount=12). Last substantive Lean change in PR #7541.",
     "builtItems": [
-      "Erdos1014OQ02.lean: increment_bound (reused from OQ01)",
-      "Erdos1014OQ02.lean: explicit_rate_k3 — main theorem with quantitative rate"
+      "Erdos1014OQ02.lean: rate_of_convergence_k3 — quantitative rate bound for k=3",
+      "Erdos1014OQ02.lean: log_over_l_faster_than_inv_log — confirms O(log l/l) is faster than O(1/log l)",
+      "Erdos1014OQ02.lean: conditional_convergence_general_k — general-k convergence under asymptotic hypothesis",
+      "Erdos1014OQ02.lean: rate_is_O_log_over_l_not_inv_log — bundled corollary answering OQ-02"
     ],
     "insights": [
       "Rate is sharp: recurrence gives O(l) increment, Kim-Shearer gives Θ(l²/log l), ratio is Θ(log l/l)",
       "Key algebra: (l+1)·log l/(c·l²) ≤ 2l·log l/(c·l²) = (2/c)·log l/l for l ≥ 1",
-      "The O(log l/l) rate is UNIVERSAL for all k ≥ 3 under conjectured asymptotics: recurrence always gains one power of l in denominator vs increment",
-      "For general k: R(k,l+1)-R(k,l) ≤ R(k-1,l+1) ~ l^{k-2}/(log l)^{k-3} while R(k,l) ~ l^{k-1}/(log l)^{k-2}, ratio ~ log l/l",
-      "conditional_rate_general_k sorries: (1) Bernoulli-type bound on (1+1/l)^a · (log/log)^b product, (2) 3-factor decomposition combining asymptotics. Both are correct analysis but hard to formalize."
+      "log²(l) < l for l large, via Mathlib's isLittleO_log_rpow_atTop with exponent 1/2",
+      "General-k convergence (without explicit rate) reduces to a 3-factor decomposition R'/R = (R'/g')·(g'/g)·(g/R), proved in parent's ratio_from_asymptotics",
+      "An explicit rate for general k is NOT extractable from the qualitative asymptotic hypothesis alone — it requires quantifying R(k,l)/g(l) → 1"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Docker build to verify compilation",
-      "General k conditional rate theorem (requires power/log arithmetic)"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "erdos",
@@ -82,16 +81,16 @@
     "mathlib": []
   },
   "started": "2026-03-28T18:00:00.000Z",
-  "lastUpdate": "2026-03-28T18:00:00.000Z",
+  "lastUpdate": "2026-04-27T23:31:00.000Z",
   "significance": 7,
   "tractability": 9,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1014OQ02.lean",
       "filename": "Erdos1014OQ02.lean",
-      "lineCount": 124,
+      "lineCount": 186,
       "theoremCount": 4,
-      "axiomCount": 6,
+      "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
