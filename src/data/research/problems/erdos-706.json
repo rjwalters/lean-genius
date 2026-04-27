@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-01-14T21:11:01.533Z",
-    "iteration": 2,
-    "focus": "5A assessed, all appropriate",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T17:00:00Z",
+    "iteration": 3,
+    "focus": "Stable axiomatized state — 3 axioms encode opaque L + Hadwiger-Nelson + monotonicity",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Open conjecture L(r) ≤ r^O(1) requires substantive new techniques",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,21 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "AXIOMATIZED: 3 axioms (multiDistChromatic opaque, base_case = Hadwiger-Nelson 5≤L(1)≤7, monotone). Polynomial upper bound L(r) ≤ r^{O(1)} remains open.",
     "builtItems": [
       "Assessment: 5A all appropriate, 1 theorem proved from axioms"
     ],
     "insights": [
-      "multiDistChromatic is axiomatized as opaque function — all 5 axioms appropriate",
-      "erdos_706_polynomial_bound is the open conjecture (cannot be proved)",
-      "erdos_706_base_case encodes Hadwiger-Nelson bounds (de Grey 2018 for lower, classical for upper)",
-      "erdos_706_monotone unprovable since multiDistChromatic is opaque (would need constructive def)",
-      "erdos_706_exponential_upper is deep result from Frankl-Wilson method",
-      "erdos_706_lower already proved from base_case + monotone — good use of axioms",
-      "Clean file: well-documented, appropriate structure, good references to related problems"
+      "Audit 2026-04-27: file has 3 axioms (not 5 as prior insights claimed). Gallery meta correctly says axiomCount=3.",
+      "axiom multiDistChromatic : ℕ → ℕ — opaque function (definitional placeholder)",
+      "axiom erdos_706_base_case — encodes Hadwiger-Nelson 5 ≤ L(1) ≤ 7 (de Grey 2018 lower; Moser-spindle / 7-coloring upper)",
+      "axiom erdos_706_monotone — monotonicity of L would be provable from a constructive definition",
+      "Theorem erdos_706_lower : ∀ r ≥ 1, L(r) ≥ 5 follows from base_case + monotone (no extra axioms)",
+      "Open conjecture: L(r) ≤ r^{O(1)}. Currently only known: exponential upper bound from Frankl-Wilson"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "AXIOM ELIMINATION PATH (substantial): replace axiom multiDistChromatic with def using SimpleGraph.chromaticNumber on distance graphs in ℝ². Would let us prove erdos_706_monotone (subgraph chromatic monotonicity) and reduce 3 axioms to 1 (Hadwiger-Nelson).",
+      "AXIOM ELIMINATION PATH (small): formalize the explicit 7-coloring (hexagonal tiling) to prove L(1) ≤ 7. The 5 ≤ L(1) lower bound (de Grey graph) is a >1500-vertex configuration and likely infeasible.",
+      "ARISTOTLE CANDIDATES: routine bounds derivable from existing axioms (e.g., L(r) ≥ L(1), L(r) ≤ L(r+1)) — but value is low without axiom elimination"
+    ],
     "markdown": "# Erdős #706 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $L(r)$ be such that if $G$ is a graph formed by taking a finite set of points $P$ in $\\mathbb{R}^2$ and some set $A\\subset (0,\\infty)$ of size $r$, where the vertex set is $P$ and there is an edge between two points if and only if their distance is a member of $A$, then $\\chi(G)\\leq L(r)$.\n\nEstimate $L(r)$. In particular, is it true that $L(r)\\leq r^{O(1)}$?\n\n\n\nThe case $r=1$ is the Hadwiger-Nelson problem, for which it is known that $5\\leq L(1)\\leq 7$.\n\n\nSee also [508], [704], and [705].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #508\n- Problem #704\n- Problem #705\n- Problem #707\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er81\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
@@ -60,7 +63,7 @@
     "mathlib": []
   },
   "started": "2026-01-14T21:11:01.534Z",
-  "lastUpdate": "2026-03-13T07:52:17.052Z",
+  "lastUpdate": "2026-04-27T17:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
