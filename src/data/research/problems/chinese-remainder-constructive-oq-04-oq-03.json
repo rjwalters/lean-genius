@@ -1,31 +1,37 @@
 {
   "slug": "chinese-remainder-constructive-oq-04-oq-03",
-  "title": "Can the pairwise coprimality condition be weakened",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "Weakening pairwise coprimality in list CRT (non-coprime generalization)",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "theorem non_coprime_crt_list_iff {sys : System R} : (∃ x : R, Satisfies x sys) ↔ Compatible sys",
+    "plain": "Can the pairwise coprimality condition in the list CRT be weakened? Answer: YES. The system is solvable iff gcd(mᵢ,mⱼ) ∣ (aᵢ-aⱼ) for all pairs i,j (pairwise GCD compatibility). When solvable, the solution is unique modulo lcm of all moduli.",
+    "whyMatters": [
+      "Strictly generalizes the coprime-moduli CRT to arbitrary moduli over a Euclidean domain",
+      "Recovers the standard CRT when moduli are pairwise coprime (lcm = product)"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "non_coprime_crt_list_iff: solvability ↔ pairwise GCD compatibility (proved as ed_crt_list_iff in ChineseRemainderNonCoprimeList)",
+      "non_coprime_crt_list_unique: any two solutions agree modulo lcm of moduli (proved as ed_crt_list_unique)"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Generalize OQ-04 (coprime list CRT) to arbitrary moduli with compatibility — DONE."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-03-28T20:58:08-07:00",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T00:00:00Z",
     "iteration": 1,
-    "focus": "Surveyed non-coprime CRT generalization path",
+    "focus": "Closed: non-coprime CRT for lists fully proved in ChineseRemainderNonCoprimeList; OQ04OQ03 file references the proofs (3 theorems, 0 sorries, 0 axioms).",
     "blockers": [],
-    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "nextAction": "None — problem solved.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -69,7 +75,7 @@
     "mathlib": []
   },
   "started": "2026-03-29T04:28:18.979Z",
-  "lastUpdate": "2026-03-29T04:28:18.988Z",
+  "lastUpdate": "2026-04-27T00:00:00Z",
   "leanFiles": [
     {
       "path": "Proofs/ChineseRemainderConstructive.lean",
