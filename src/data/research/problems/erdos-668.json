@@ -2,7 +2,7 @@
   "slug": "erdos-668",
   "title": "Erdős #668",
   "phase": "OBSERVE",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-01-13T18:22:04.305Z",
     "iteration": 1,
     "focus": "Proved congruent_unitDistanceCount, assessed all axioms",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — assessed complete; 3 axioms appropriate.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -66,7 +66,7 @@
     "mathlib": []
   },
   "started": "2026-01-13T18:22:04.305Z",
-  "lastUpdate": "2026-03-29T01:17:49.437187+00:00",
+  "lastUpdate": "2026-04-28T00:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
