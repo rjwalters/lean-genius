@@ -89,7 +89,12 @@ theorem log_nat_tendsto_atTop :
 
 /-- For N ≥ 3, log(log N) > 0. -/
 theorem log_log_pos (N : ℕ) (hN : 3 ≤ N) : 0 < Real.log (Real.log N) := by
-  sorry -- Needs: exp 1 < 3 ≤ N → 1 < log N → 0 < log(log N)
+  have hN_real : (3 : ℝ) ≤ N := by exact_mod_cast hN
+  have he : Real.exp 1 < 3 := by linarith [Real.exp_one_lt_d9]
+  have hN1 : 1 < Real.log N := by
+    rw [show (1 : ℝ) = Real.log (Real.exp 1) from (Real.log_exp 1).symm]
+    exact Real.log_lt_log (Real.exp_pos 1) (lt_of_lt_of_le he hN_real)
+  exact Real.log_pos hN1
 
 /-- N / log(log N) → ∞ as N → ∞. -/
 theorem n_div_log_log_tendsto_atTop :
