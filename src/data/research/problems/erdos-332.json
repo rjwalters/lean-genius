@@ -8,20 +8,32 @@
   "problemStatement": {
     "formal": "Let $A\\subseteq \\mathbb{N}$ and $D(A)$ be the set of those numbers which occur infinitely often as $a_1-a_2$ with $a_1,a_2\\in A$. What conditions on $A$ are sufficient to ensure $D(A)$ has bounded gaps?\n\n\n\nPrikry, Tijdeman, Stewart, and others (see the survey articles \\cite{St78} and \\cite{Ti79}) have shown that a sufficient condition is that $A$ has positive density.\n\nOne can also ask what conditions are sufficient for $D(A)$ to have positive density, or for $\\sum_{d\\in D(A)}\\frac{1}{d}=\\infty$, or even just $D(A)\\neq\\emptyset$.",
     "plain": "Let $A\\subseteq \\mathbb{N}$ and $D(A)$ be the set of those numbers which occur infinitely often as $a_1-a_2$ with $a_1,a_2\\in A$. What conditions on $A$ are sufficient to ensure $D(A)$ has bounded gaps?",
-    "whyMatters": []
+    "whyMatters": [
+      "Connects to the Furstenberg correspondence: positive density sets correspond to sets of positive measure in a measure-preserving system, and syndeticity of D(A) follows from Poincaré recurrence in the associated dynamics.",
+      "Sibling of Szemerédi's theorem in the density-forces-structure paradigm: where Szemerédi forces arithmetic progressions, Prikry forces syndetic difference sets — both instances of the same ergodic principle.",
+      "The 'weakest sufficient condition' question is open: zero-density sets (e.g., the primes) sometimes have syndetic D(A), so positive density is not necessary, only sufficient. Determining the optimal condition would clarify how density forces additive structure."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Prikry–Tijdeman–Stewart (1977–78): positive upper density of A implies D(A) has bounded gaps (i.e., is syndetic). Survey references St78 (Stewart, Séminaire Delange-Pisot-Poitou) and Ti79 (Tijdeman, Bicentennial Congress).",
+      "Furstenberg correspondence (1977): positive density sets correspond to positive measure in a measure-preserving system; Prikry's result follows from Poincaré recurrence.",
+      "Bergelson (1985): generalized Prikry's theorem to ℤᵐ-actions, connecting difference set syndeticity to recurrence in ergodic theory."
+    ],
+    "open": [
+      "What is the WEAKEST condition on A guaranteeing D(A) has bounded gaps? Specifically: does $\\sum_{a \\in A} 1/a = \\infty$ alone (without positive density) suffice?",
+      "Does $\\overline{d}(A) > 0$ imply $\\sum_{d \\in D(A)} 1/d = \\infty$ (the harmonic thickness conjecture for difference sets)?",
+      "What conditions on A are sufficient just for D(A) ≠ ∅ (weakest possible structural result)?"
+    ],
+    "goal": "Identify the weakest sufficient condition on A ⊆ ℕ guaranteeing that D(A) has bounded gaps (is syndetic). Positive upper density is the best known sufficient condition, but the optimal threshold is unknown."
   },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-03-28T09:00:00Z",
     "iteration": 4,
-    "focus": "Graduated: formalization complete (0 sorries, 3 deep axioms)",
+    "focus": "Graduated: formalization complete (0 sorries, 1 deep axiom: Prikry's theorem)",
     "blockers": [],
-    "nextAction": "None — all provable structural results formalized. Remaining 3 axioms are deep published results.",
+    "nextAction": "None — all provable structural results formalized. The single remaining axiom (positive_density_bounded_gaps) is the deep Prikry–Tijdeman–Stewart theorem; full proof would require Furstenberg correspondence and ergodic-theoretic recurrence machinery not yet available in Mathlib.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 20 theorems, 3 deep axioms, 0 sorries. Complete D(A) characterization: empty↔finite, nonempty↔infinite, syndetic↔positive density. Full implication chain proved. Axioms: positive_density_bounded_gaps (Prikry), positive_density_diffset_dense, diffSet_harmonic_diverges — all deep additive combinatorics results.",
+    "progressSummary": "COMPLETED: 20 theorems, 1 deep axiom (Prikry's theorem), 0 sorries. Complete D(A) characterization: empty↔finite, nonempty↔infinite, syndetic⟸positive density. Full implication chain density → infinite → D(A) nonempty → D(A) syndetic. The single axiom is positive_density_bounded_gaps (Prikry–Tijdeman–Stewart, 1977–78), a deep additive-combinatorics result.",
     "builtItems": [
       "Assessment: all 3A appropriate and deep",
       "Proved diffSet_mono in Erdos332Problem.lean:102",
@@ -53,8 +65,8 @@
       "Graduated problem to completed status (iteration 4)"
     ],
     "insights": [
-      "3 axioms all deep: positive_density_bounded_gaps (Furstenberg), positive_density_diffset_dense (additive combinatorics), diffSet_harmonic_diverges. None provable from Mathlib.",
-      "2 theorems proved, 0 sorries. File is clean but minimal.",
+      "Single axiom is deep: positive_density_bounded_gaps (Prikry–Tijdeman–Stewart, follows from Furstenberg correspondence + Poincaré recurrence). Not currently provable from Mathlib.",
+      "20 theorems proved, 0 sorries. File is clean and structurally complete.",
       "Proved diffSet_mono: monotonicity A ⊆ B → D(A) ⊆ D(B) via subset transfer on infinite fibres",
       "Proved diffSet_finite_eq_empty: D(A) = ∅ for finite A using Set.Finite.prod bound",
       "Proved lower_density_implies_upper: liminf > 0 → limsup > 0, connects density definitions",
@@ -64,7 +76,7 @@
       "Proved positive_upper_density_infinite: positive upper density → A infinite via Archimedean contradiction on bounded countingFn",
       "Completed full implication chain: density → infinite → D(A) nonempty → D(A) syndetic",
       "Added countingFn_le: elementary bound countingFn A N ≤ N",
-      "Graduation review: 3 axioms verified as deep results (Prikry-Furstenberg for bounded gaps, density transfer for D(A), harmonic divergence). All structural/combinatorial results that follow from definitions alone are proved."
+      "Graduation review: single axiom verified as the deep Prikry–Tijdeman–Stewart result (positive density → bounded gaps via Furstenberg correspondence and Poincaré recurrence). All structural/combinatorial results that follow from definitions alone are proved."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -75,8 +87,7 @@
   ],
   "relatedProofs": [
     "erdos-3",
-    "erdos-33",
-    "erdos-332"
+    "erdos-33"
   ],
   "references": {
     "papers": [],
@@ -91,7 +102,7 @@
     {
       "path": "Proofs/Erdos332Problem.lean",
       "filename": "Erdos332Problem.lean",
-      "lineCount": 255,
+      "lineCount": 254,
       "theoremCount": 20,
       "axiomCount": 1,
       "defCount": 6,

@@ -52,7 +52,7 @@
       "Proved diffSet_nonempty_of_infinite: D(A) is nonempty for infinite A (corollary of zero_mem_diffSet)",
       "Proved lower_density_implies_upper: positive lower density → positive upper density",
       "Proved positive_lower_density_bounded_gaps: lower density suffices for bounded gaps (combines density implication with Prikry's theorem)",
-      "Axiomatized Prikry's theorem, density inheritance, and harmonic thickness conjecture as the known landscape for Problem #332",
+      "Axiomatized Prikry's theorem (positive_density_bounded_gaps) as the single mathematical assumption; density inheritance and harmonic thickness divergence are stated only as related-question comments, not axioms",
       "Proved countingFn_le: counting function bounded by N (|A ∩ {1,...,N}| ≤ N)",
       "Proved positive_upper_density_infinite: positive upper density implies A is infinite, via Archimedean contradiction",
       "Proved positive_upper_density_diffSet_nonempty: density → D(A) nonempty (bridges density and difference set theory)",
@@ -70,7 +70,7 @@
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* [ErGr80], building on the classical study of difference sets pioneered by Khintchine (1930s) and Følner (1954). The key known result is due to Karel Prikry, who proved that positive upper density of $A$ guarantees $D(A)$ has bounded gaps (syndeticity); related work by Robert Tijdeman and Cameron Stewart refined the quantitative bounds on the gap parameter $M$ in terms of the density $\\delta$. The problem connects deeply to Hillel Furstenberg's 1977 correspondence principle (*Journal d'Analyse Mathématique*), which translates combinatorial density questions into ergodic theory — Prikry's theorem follows from Poincaré recurrence in the associated measure-preserving system. The open question of finding the *weakest* sufficient condition sits within the broader program of understanding how density forces structure: Szemerédi's theorem (1975) shows positive density forces arithmetic progressions, and the Green–Tao theorem (2008) extends this to the primes. Problem #332 asks the analogous question for difference sets rather than progressions.",
     "problemStatement": "Let $A \\subseteq \\mathbb{N}$ and $D(A) = \\{d \\in \\mathbb{Z} : a_1 - a_2 = d \\text{ for infinitely many } (a_1, a_2) \\in A^2\\}$. What is the weakest condition on $A$ guaranteeing that $D(A)$ has bounded gaps (is syndetic)?",
-    "text": "A 154-line formalization of Erdős Problem #332 studying the difference set $D(A) = \\{d \\in \\mathbb{Z} : a_1 - a_2 = d \\text{ for infinitely many pairs}\\}$ and the conditions forcing it to be syndetic (have bounded gaps). Defines 6 predicates: `diffSet` (infinite-fibre differences), `HasBoundedGaps` (syndeticity), `countingFn` ($A(N) = |A \\cap [1,N]|$), `HasPositiveUpperDensity` and `HasPositiveLowerDensity` (density via $\\mathbb{Q}$ ratios), and `ErdosProblem332` (weakest sufficient condition). Axiomatizes Prikry's theorem ($\\overline{d}(A) > 0 \\Rightarrow D(A)$ syndetic), density inheritance, and the harmonic thickness conjecture. Proves 7 theorems including symmetry, zero membership, monotonicity, finite emptiness, nonemptiness for infinite sets, density hierarchy, and bounded gaps from lower density.",
+    "text": "A 254-line formalization of Erdős Problem #332 studying the difference set $D(A) = \\{d \\in \\mathbb{Z} : a_1 - a_2 = d \\text{ for infinitely many pairs}\\}$ and the conditions forcing it to be syndetic (have bounded gaps). Defines 6 predicates: `diffSet` (infinite-fibre differences), `HasBoundedGaps` (syndeticity), `countingFn` ($A(N) = |A \\cap [1,N]|$), `HasPositiveUpperDensity` and `HasPositiveLowerDensity` (density via $\\mathbb{Q}$ ratios), and `ErdosProblem332` (weakest sufficient condition). Axiomatizes Prikry's theorem ($\\overline{d}(A) > 0 \\Rightarrow D(A)$ syndetic) as the single assumption. Proves 20 theorems including symmetry, zero membership, monotonicity, finite emptiness, nonemptiness for infinite sets, density hierarchy, the iff characterizations $0 \\in D(A) \\iff A$ infinite $\\iff D(A) \\neq \\emptyset$, additional structural lemmas (union subset, syndeticity is upward closed), and the full density chain $\\overline{d}(A) > 0 \\Rightarrow A$ infinite $\\Rightarrow D(A)$ syndetic.",
     "proofStrategy": "We formalize $D(A)$ as the set of differences with infinite fibre, bounded gaps (syndeticity) via interval covering with parameter $M$, positive upper/lower density via counting functions over $\\mathbb{Q}$, and axiomatize Prikry's theorem and related structural results (density inheritance, symmetry, zero membership). The main problem is stated as a characterization question about optimal sufficient conditions.",
     "keyInsights": [
       "**$D(A)$ captures persistent differences**: Unlike the ordinary difference set $A - A$, $D(A)$ requires each difference to have infinitely many witness pairs — a much stronger structural property that filters out 'accidental' differences",
@@ -99,7 +99,7 @@
     {
       "id": "difference-set",
       "title": "Difference Set D(A)",
-      "startLine": 23,
+      "startLine": 24,
       "endLine": 30,
       "summary": "Defines $D(A) = \\{d \\in \\mathbb{Z} : |\\{(a_1,a_2) \\in A^2 : a_1 - a_2 = d\\}| = \\infty\\}$ using `Set.Infinite` on the fibre over each $d$. Stricter than $A - A$.",
       "mathContext": "$D(A) = \\{d \\in \\mathbb{Z} : |\\{(a_1,a_2) \\in A^2 : a_1 - a_2 = d\\}| = \\infty\\}$. Stricter than $A - A$."
@@ -107,58 +107,34 @@
     {
       "id": "bounded-gaps",
       "title": "Bounded Gaps (Syndeticity)",
-      "startLine": 31,
-      "endLine": 39,
-      "summary": "Defines `HasBoundedGaps`: $\\exists M > 0, \\forall z \\in \\mathbb{Z}, \\exists s \\in S: z \\leq s < z + M$. The dual of thick sets in topological dynamics.",
+      "startLine": 32,
+      "endLine": 43,
+      "summary": "Defines `HasBoundedGaps`: $\\exists M > 0, \\forall z \\in \\mathbb{Z}, \\exists s \\in S: z \\leq s < z + M$. The dual of thick sets in topological dynamics. Includes `diffSet_empty`: $D(\\emptyset) = \\emptyset$.",
       "mathContext": "$\\text{HasBoundedGaps}(S) \\iff \\exists M > 0,\\, \\forall z \\in \\mathbb{Z},\\, \\exists s \\in S: z \\leq s < z + M$."
     },
     {
       "id": "density-conditions",
       "title": "Density Conditions",
-      "startLine": 40,
-      "endLine": 57,
-      "summary": "Counting function $A(N) = |A \\cap [1,N]|$, positive upper density ($\\limsup A(N)/N > 0$), and positive lower density ($\\liminf A(N)/N > 0$), all formalized over $\\mathbb{Q}$.",
+      "startLine": 45,
+      "endLine": 72,
+      "summary": "Counting function $A(N) = |A \\cap [1,N]|$ with `countingFn_zero` and `countingFn_mono`, positive upper density ($\\limsup A(N)/N > 0$), and positive lower density ($\\liminf A(N)/N > 0$), all formalized over $\\mathbb{Q}$.",
       "mathContext": "$A(N) = |A \\cap [1,N]|$; $\\overline{d}(A) = \\limsup_{N \\to \\infty} A(N)/N$; $\\underline{d}(A) = \\liminf_{N \\to \\infty} A(N)/N$."
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "startLine": 59,
-      "endLine": 97,
-      "summary": "Two axioms (Prikry's theorem: $\\overline{d}(A) > 0 \\Rightarrow D(A)$ syndetic; density inheritance for $D(A)$) and two proved theorems (`diffSet_symm`: $D(A) = -D(A)$ via the swap bijection; `zero_mem_diffSet`: $0 \\in D(A)$ for infinite $A$ via diagonal pairs).",
-      "mathContext": "Axioms: Prikry's theorem $\\overline{d}(A) > 0 \\Rightarrow \\text{HasBoundedGaps}(D(A))$; density inheritance. Proved: $D(A) = -D(A)$, $0 \\in D(A)$ for infinite $A$."
+      "startLine": 74,
+      "endLine": 108,
+      "summary": "One axiom (Prikry–Tijdeman–Stewart theorem: $\\overline{d}(A) > 0 \\Rightarrow D(A)$ syndetic) and two proved theorems (`diffSet_symm`: $D(A) = -D(A)$ via the swap bijection; `zero_mem_diffSet`: $0 \\in D(A)$ for infinite $A$ via diagonal pairs).",
+      "mathContext": "Axiom: Prikry's theorem $\\overline{d}(A) > 0 \\Rightarrow \\text{HasBoundedGaps}(D(A))$. Proved: $D(A) = -D(A)$, $0 \\in D(A)$ for infinite $A$."
     },
     {
       "id": "structural-properties",
       "title": "Structural Properties",
-      "startLine": 99,
-      "endLine": 132,
-      "summary": "Five proved theorems: monotonicity ($A \\subseteq B \\Rightarrow D(A) \\subseteq D(B)$), empty difference set for finite sets, nonemptiness for infinite sets, positive lower density implies positive upper density, and bounded gaps from lower density (combining density implication with Prikry's theorem).",
-      "mathContext": "Proved: $D$ is monotone, $D(A) = \\emptyset$ for finite $A$, $D(A) \\neq \\emptyset$ for infinite $A$, $\\underline{d}(A) > 0 \\Rightarrow \\overline{d}(A) > 0$, $\\underline{d}(A) > 0 \\Rightarrow \\text{HasBoundedGaps}(D(A))$."
-    },
-    {
-      "id": "main-problem",
-      "title": "The Main Open Problem",
-      "startLine": 134,
-      "endLine": 144,
-      "summary": "Erdős Problem 332: characterize the weakest property $P$ such that $P(A) \\Rightarrow \\text{HasBoundedGaps}(D(A))$. Positive upper density is the best known sufficient condition.",
-      "mathContext": "Find weakest $P$: $P(A) \\Rightarrow \\text{HasBoundedGaps}(D(A))$. Known: $\\overline{d}(A) > 0$ suffices."
-    },
-    {
-      "id": "related-questions",
-      "title": "Related Questions",
-      "startLine": 146,
-      "endLine": 154,
-      "summary": "Does positive density imply $\\sum_{d \\in D(A)} 1/d = \\infty$? This would show $D(A)$ has 'harmonic thickness' beyond mere syndeticity.",
-      "mathContext": "Open: $\\overline{d}(A) > 0 \\Rightarrow \\sum_{d \\in D(A)} 1/|d| = \\infty$? (harmonic thickness conjecture)"
-    },
-    {
-      "id": "iff-characterizations",
-      "title": "If-and-Only-If Characterizations and Lower Density",
-      "startLine": 155,
+      "startLine": 110,
       "endLine": 163,
-      "summary": "Four theorems completing the structural picture: `zero_mem_diffSet_iff` ($0 \\in D(A) \\iff A$ is infinite), `diffSet_nonempty_iff` ($D(A) \\neq \\emptyset \\iff A$ is infinite), `lower_density_implies_upper` ($\\underline{d}(A) > 0 \\Rightarrow \\overline{d}(A) > 0$), and `positive_lower_density_bounded_gaps` (lower density suffices for syndeticity via Prikry composition).",
-      "mathContext": "$(0 \\in D(A)) \\iff (A \\text{ infinite}) \\iff (D(A) \\neq \\emptyset)$. Density hierarchy: $\\underline{d}(A) > 0 \\Rightarrow \\overline{d}(A) > 0 \\Rightarrow \\text{HasBoundedGaps}(D(A))$."
+      "summary": "Seven proved theorems: `diffSet_mono` (monotonicity $A \\subseteq B \\Rightarrow D(A) \\subseteq D(B)$), `diffSet_finite_eq_empty` (empty difference set for finite sets), `diffSet_nonempty_of_infinite` (nonemptiness for infinite sets), `zero_mem_diffSet_iff` and `diffSet_nonempty_iff` (iff characterizations: $0 \\in D(A) \\iff A$ infinite $\\iff D(A) \\neq \\emptyset$), `lower_density_implies_upper` (density hierarchy), and `positive_lower_density_bounded_gaps` (lower density suffices for syndeticity via Prikry composition).",
+      "mathContext": "Proved: $D$ is monotone, $D(A) = \\emptyset$ for finite $A$, $(0 \\in D(A)) \\iff (A \\text{ infinite}) \\iff (D(A) \\neq \\emptyset)$, $\\underline{d}(A) > 0 \\Rightarrow \\overline{d}(A) > 0 \\Rightarrow \\text{HasBoundedGaps}(D(A))$."
     },
     {
       "id": "additional-structural",
