@@ -55,10 +55,20 @@ axiom triangleRemovalEdges : ℕ → ℝ
 /-- The triangle removal process leaves a non-negative number of edges. -/
 axiom triangleRemovalEdges_nonneg (n : ℕ) : 0 ≤ triangleRemovalEdges n
 
+/-- **Mantel bound for triangle removal**: The triangle removal process ends
+with a triangle-free graph. By Mantel's theorem, any triangle-free graph on
+n vertices has at most ⌊n²/4⌋ edges. Therefore f(n) ≤ n²/4 for all n. -/
+axiom triangleRemoval_mantel_bound (n : ℕ) :
+    triangleRemovalEdges n ≤ (n : ℝ) ^ 2 / 4
+
 /-- The triangle removal process on K_n starts with C(n,2) edges and can only
-remove edges, so f(n) ≤ n(n-1)/2 ≤ n²/2. -/
-axiom triangleRemovalEdges_le_complete (n : ℕ) :
-    triangleRemovalEdges n ≤ (n : ℝ) ^ 2 / 2
+remove edges, so f(n) ≤ n(n-1)/2 ≤ n²/2. Now derived from the tighter
+Mantel bound (n²/4 ≤ n²/2). Originally axiomatized; now a theorem. -/
+theorem triangleRemovalEdges_le_complete (n : ℕ) :
+    triangleRemovalEdges n ≤ (n : ℝ) ^ 2 / 2 := by
+  have h_mantel := triangleRemoval_mantel_bound n
+  have h_sq : (0 : ℝ) ≤ (n : ℝ) ^ 2 := sq_nonneg _
+  linarith
 
 /-- **Bohman-Frieze-Lubetzky (2015)**: f(n) = n^{3/2 + o(1)} almost surely.
 Upper bound part: for every ε > 0, eventually f(n) < n^{3/2 + ε}. -/
@@ -210,12 +220,8 @@ theorem complete_has_triangles {n : ℕ} (hn : 3 ≤ n) :
 -- The triangle removal process terminates with a triangle-free graph.
 -- By Mantel's theorem (Turán for r=3), a triangle-free graph on n vertices
 -- has at most ⌊n²/4⌋ edges. This gives a universal upper bound on f(n).
-
-/-- **Mantel bound for triangle removal**: The triangle removal process ends
-with a triangle-free graph. By Mantel's theorem, any triangle-free graph on
-n vertices has at most ⌊n²/4⌋ edges. Therefore f(n) ≤ n²/4 for all n. -/
-axiom triangleRemoval_mantel_bound (n : ℕ) :
-    triangleRemovalEdges n ≤ (n : ℝ) ^ 2 / 4
+-- The Mantel bound axiom is now declared at the top of the file alongside
+-- other process axioms; the weaker n²/2 bound is derived from it.
 
 /-- The Mantel bound as an eventually-true statement (for comparison with BFL). -/
 theorem trivial_upper_bound :
