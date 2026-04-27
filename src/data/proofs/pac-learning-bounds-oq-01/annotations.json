@@ -8,12 +8,15 @@
     },
     "type": "concept",
     "title": "Shatters Predicate",
-    "content": "A hypothesis class $H \\subseteq \\mathcal{P}(\\alpha)$ shatters a finite set $S$ if every subset $T \\subseteq S$ is exactly $h \\cap S$ for some $h \\in H$. Equivalently, $H$ produces all $2^{|S|}$ possible labelings of $S$. We use a Finset-valued $T$ for cleaner reasoning over finite traces, and quantify over $T \\subseteq S$ via Finset subset.",
-    "mathContext": "$H$ shatters $S$ $\\iff$ $\\forall T \\subseteq S, \\exists h \\in H : \\forall x \\in S, (x \\in h \\iff x \\in T)$.",
+    "content": "A hypothesis class $H \\subseteq \\mathcal{P}(\\alpha)$ shatters a finite set $S$ if every subset $T \\subseteq S$ is exactly $h \\cap S$ for some $h \\in H$. Equivalently, $H$ produces all $2^{|S|}$ possible labelings of $S$. We use a Finset-valued $T$ for cleaner reasoning over finite traces, and quantify over $T \\subseteq S$ via Finset subset.\n\n**VC dimension and the growth function:** The VC dimension $\\operatorname{VCdim}(H)$ is the size of the largest set $H$ shatters (or $\\infty$ if arbitrarily large sets are shattered). The closely related *growth function* $\\Pi_H(n) = \\max_{|S|=n} |\\{h \\cap S : h \\in H\\}|$ counts the maximum number of distinct labelings $H$ produces on any $n$-point set. By definition, $\\Pi_H(n) = 2^n$ iff some $n$-set is shattered, so $\\operatorname{VCdim}(H)$ is the largest $n$ with $\\Pi_H(n) = 2^n$.\n\n**Sauer-Shelah lemma:** The combinatorial heart of VC theory says that a class of VC dimension $d$ has growth function bounded by a polynomial of degree $d$:\n$$\\Pi_H(n) \\leq \\sum_{i=0}^{d} \\binom{n}{i} \\leq \\left(\\frac{en}{d}\\right)^d.$$\nThis is the dichotomy: either $\\Pi_H(n) = 2^n$ (full shattering, infinite VC dim) or $\\Pi_H(n)$ is polynomial in $n$. There is no intermediate behavior. For thresholds, $\\operatorname{VCdim} = 1$ gives $\\Pi_{H_{thr}}(n) \\leq n + 1$, and equality holds: the $n + 1$ thresholds $t \\in \\{0, 1, \\ldots, n\\}$ produce $n + 1$ distinct labelings of a sorted $n$-point set, witnessing tightness of Sauer-Shelah at $d = 1$.\n\n**Use of Finset-valued $T$:** Mathlib's `Finset.Subset` is computational and decidable, simplifying case-analysis tactics. The semantically equivalent set-valued formulation would require classical decidability instances throughout — the Finset choice is a Lean-engineering optimization, not a mathematical commitment.",
+    "mathContext": "$H$ shatters $S$ $\\iff$ $\\forall T \\subseteq S, \\exists h \\in H : \\forall x \\in S, (x \\in h \\iff x \\in T)$. Growth function: $\\Pi_H(n) = \\max_{|S|=n}|\\{h \\cap S : h \\in H\\}|$. Sauer-Shelah: $\\operatorname{VCdim}(H) = d \\Rightarrow \\Pi_H(n) \\leq \\sum_{i \\leq d}\\binom{n}{i}$.",
     "significance": "core",
     "relatedConcepts": [
       "VC dimension",
-      "growth function"
+      "growth function",
+      "Sauer-Shelah lemma",
+      "shattering coefficient",
+      "polynomial-vs-exponential dichotomy"
     ],
     "prerequisites": [
       "Finite subsets",
