@@ -43,12 +43,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PARTIAL: bipartite_benchmark and fin2_ne_zero_eq_one proved. Orphan docstrings consolidated into single block comment (Session 3). Open conjecture still NOT formalized as a Lean axiom — 0-axiom count is misleading. Session 2 (2026-04-27) identified gap; Session 3 cleaned docstrings. Axiomatization deferred pending Docker builds with disk headroom.",
+    "progressSummary": "PARTIAL: bipartite_benchmark and fin2_ne_zero_eq_one proved, but the open conjecture is NOT formalized as a Lean proposition. Lines 49-67 contain orphan docstrings that get concatenated onto fin2_ne_zero_eq_one. Cleanup attempted Session 3 but Lean Edit silently reverted (disk full, 99%, 216Mi free) — try again with disk.",
     "builtItems": [
       "Proved fin2_ne_zero_eq_one: ∀ (i : Fin 2), i ≠ 0 → i = 1 (by decide)",
       "Proved bipartite_benchmark: bipartite graphs have independent sets ≥ m/2, via complement-filter pigeonhole on 2-coloring classes",
-      "(Session 2) Documented formalization gap: open conjecture described only in orphan docstrings, no Lean proposition exists for it",
-      "(Session 3) Cleaned orphan docstrings (lines 49-67): merged into single /- ... -/ block to prevent doc-comment concatenation onto fin2_ne_zero_eq_one"
+      "(Session 2) Documented formalization gap: open conjecture described only in orphan docstrings, no Lean proposition exists for it"
     ],
     "insights": [
       "IsBipartite = Colorable 2 in Mathlib; coloring is a Hom to completeGraph (Fin 2)",
