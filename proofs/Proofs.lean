@@ -1135,6 +1135,7 @@ import Proofs.Erdos334Problem
 import Proofs.Erdos335Problem
 import Proofs.Erdos336Problem
 import Proofs.Erdos337Problem
+import Proofs.Erdos338Aristotle
 import Proofs.Erdos338Problem
 import Proofs.Erdos339Problem
 import Proofs.Erdos33Problem
