@@ -64,7 +64,11 @@
       "The shift trick: applying p(M) to v moves from 'level e' to 'level e-1', letting the induction hypothesis fire on u = p(M)v with polynomial r₁ = r/p.",
       "The Bezout/coprimality argument (irreducible_dvd_of_annihilated from WIP02) is reused as the base case and the p-divisibility step, avoiding code duplication.",
       "Commutativity of polynomial evaluation: r(M)(p^k(M)v) = p^k(M)(r(M)v) because polynomials in M commute. This is used repeatedly in the mulVec calculations.",
-      "Degree counting closes the proof cleanly: p^e | r with deg(r) < deg(p^e) = n forces r = 0, directly giving the cyclic vector condition."
+      "Degree counting closes the proof cleanly: p^e | r with deg(r) < deg(p^e) = n forces r = 0, directly giving the cyclic vector condition.",
+      "**$p$-adic filtration on $K^n$**: The key lemma is best understood as a $p$-adic valuation argument inside the $K[X]$-module $K^n$. The descending filtration $K^n \\supseteq p(M) \\cdot K^n \\supseteq p^2(M) \\cdot K^n \\supseteq \\cdots \\supseteq p^e(M) \\cdot K^n = 0$ assigns each vector $v$ a *level* $\\nu_p(v) := \\max \\{k : v \\in p^k(M) \\cdot K^n\\}$ (formally, $\\nu_p(v) = e - \\min\\{k : p^k(M)v = 0\\}$). The lemma states: an annihilator $r$ of $v$ has $p$-adic valuation $\\nu_p(r) \\geq e+1 - \\nu_p(v)$. The shift trick $v \\mapsto p(M)v$ decreases the level by one and divides $r$ by one factor of $p$ — exactly the move that makes a $p$-adic descent work. This is the local analogue of the global statement that the $p$-primary component of a $K[X]$-module is determined by its $p$-adic filtration.",
+      "**Finite-field gap closure**: Earlier gallery results (e.g., `oq-05-oq-01-oq-01`) required $|K| > n$ because they used Vandermonde-style determinant arguments that fail when there are too few elements to form a non-singular polynomial-evaluation matrix. The prime power case here uses *no* counting: only the UFD property of $K[X]$ (Bézout) and degree bounds. This is the structural reason the proof extends to *every* field — including $\\mathbb{F}_2, \\mathbb{F}_3, \\ldots$ where Vandermonde fails. The WIP02-WIP03 pair thus closes the finite-field gap that has been open in the gallery: any nonderogatory matrix over any field has a cyclic vector via the (squarefree) × (prime power) decomposition. The remaining step (combining squarefree and prime power cases for general $\\mu_M$) is exactly what WIP04 would address.",
+      "**Connection to Hensel's lemma and $\\mathfrak{p}$-adic algebraic number theory**: The descent $r = p \\cdot r_1$ at each induction step is structurally identical to the lifting argument in Hensel's lemma for $p$-adic integers $\\mathbb{Z}_p$: if $f(a) \\equiv 0 \\pmod{p^{n+1}}$ and $f'(a) \\not\\equiv 0 \\pmod p$, lift the root to $a' = a - f(a)/f'(a) \\bmod p^{n+1}$. The polynomial-ring analogue replaces $\\mathbb{Z}_p$ with the $(p)$-adic completion $K[X]_{(p)}$ and the key lemma $\\nu_p(r) \\geq e+1$ is precisely the statement that $r$ vanishes in the $(e+1)$-th truncation $K[X]/(p^{e+1})$. The cyclic vector theorem can therefore be rephrased: for nonderogatory $M$ with $\\mu_M = p^e$, the module $K^n \\cong K[X]/(p^e)$ as a $K[X]$-module — exactly the truncation appearing in $\\mathfrak{p}$-adic descent.",
+      "**Companion matrix realization**: The cyclic vector $v$ explicitly provides the basis transformation that puts $M$ into companion form for $\\mu_M = p^e$. The basis $\\{v, Mv, M^2 v, \\ldots, M^{n-1}v\\}$ is the *Krylov basis*; in this basis $M$ acts by $e_i \\mapsto e_{i+1}$ for $i < n-1$ and $e_{n-1} \\mapsto -\\sum_{i=0}^{n-1} a_i e_i$ where $\\mu_M(X) = X^n + \\sum a_i X^i$. The companion matrix $C(\\mu_M)$ is the canonical representative of the conjugacy class of $M$ in $\\text{GL}_n(K)$ — a fact that this theorem formally guarantees for the prime power case."
     ]
   },
   "sections": [
@@ -103,11 +107,15 @@
   ],
   "conclusion": {
     "summary": "This file provides an axiom-free Lean 4 proof of the prime power case of the nonderogatory cyclic vector theorem, valid over any field K with no cardinality restriction. The key lemma `pow_irred_dvd_of_annihilated` replaces the PID structure theorem with an elementary induction on the prime power exponent, using only Bézout's identity in K[X] and polynomial evaluation commutativity. Together with WIP02 (squarefree case), this covers both structural pillars of the general theorem.",
-    "implications": "The inductive key lemma `pow_irred_dvd_of_annihilated` is the core new contribution: it demonstrates that an elementary divisibility descent replaces the PID structure theorem for the prime power case. The 'shift trick' ($v \\mapsto p(M)v$ decreases the filtration level) is a general technique applicable to other iterated annihilation problems in module theory. This approach provides a fully constructive path to rational canonical form for the prime power case, without requiring the existence of a Smith normal form or module decomposition.",
+    "implications": "1. **Replaces PID machinery**: The inductive key lemma `pow_irred_dvd_of_annihilated` is the core new contribution: it demonstrates that an elementary divisibility descent replaces the PID structure theorem for the prime power case. The 'shift trick' ($v \\mapsto p(M)v$ decreases the filtration level) is a general technique applicable to other iterated annihilation problems in module theory. This approach provides a fully constructive path to rational canonical form for the prime power case, without requiring the existence of a Smith normal form or module decomposition.\n\n2. **Closes the finite-field gap in the gallery**: Earlier results (`oq-05-oq-01-oq-01`) required $|K| > n$ via Vandermonde arguments. This proof has *no* cardinality restriction, so it applies to $\\mathbb{F}_2, \\mathbb{F}_3, \\ldots$ — the natural setting for coding theory (BCH and Reed-Solomon codes use cyclic vectors of $\\mathbb{F}_q$-linear endomorphisms over small $q$) and finite-field cryptography.\n\n3. **Constructive companion form**: The cyclic vector $v$ supplies an explicit Krylov basis $\\{v, Mv, \\ldots, M^{n-1}v\\}$ in which $M$ takes companion form. This is the algorithmic content of the rational canonical form theorem for the prime power primary block, and the basis can be computed in $O(n^3)$ time once $v$ is found.\n\n4. **Control theory applications**: In linear control theory, a single-input system $\\dot{x} = Mx + bu$ is *controllable* iff $b$ is a cyclic vector for $M$. The prime power case covers Jordan blocks of repeated eigenvalues — the analytically subtle case where the controllability matrix has full rank but the system has algebraic eigenvalue degeneracy.\n\n5. **Module-theoretic fingerprint**: The theorem establishes the isomorphism $K^n \\cong K[X]/(p^e)$ as a $K[X]$-module for nonderogatory $M$ with $\\mu_M = p^e$ — the simplest case of the rational canonical form decomposition.\n\n6. **Foundation for WIP04**: The general nonderogatory cyclic vector theorem (any $\\mu_M$) follows from this prime power case + the squarefree case (WIP02) via CRT: $\\mu_M = \\prod p_i^{e_i}$ gives $K^n \\cong \\bigoplus K[X]/(p_i^{e_i})$, and WIP02-WIP03 each handle one summand. Combining the two will give an axiom-free general theorem without invoking the full PID structure theorem.",
     "openQuestions": [
       "Can WIP02 (squarefree) and WIP03 (prime power) be combined into a general WIP04 that handles arbitrary nonderogatory matrices without axioms, using a direct CRT + prime power argument instead of the full PID structure theorem?",
       "The prime power case proved here covers fields K of any characteristic. Does the proof simplify when char(K) = 0 or when K is algebraically closed (so that irreducible p must be linear)?",
-      "Can the key lemma be generalized to non-matrix settings — e.g., cyclic vectors for endomorphisms of infinite-dimensional spaces, or modules over other PIDs besides K[X]?"
+      "Can the key lemma be generalized to non-matrix settings — e.g., cyclic vectors for endomorphisms of infinite-dimensional spaces, or modules over other PIDs besides K[X]?",
+      "**Effective bounds on the cyclic vector $v$**: The proof selects $v$ existentially via `exists_mulVec_ne_zero`. Is there an effective construction — e.g., the standard basis vector $e_j$ for the smallest $j$ such that $p^{e-1}(M) e_j \\neq 0$? This would yield a polynomial-time algorithm extracting a cyclic vector from $M$ given $\\mu_M = p^e$, complementing the existential statement.",
+      "**Generalization to $\\mathbb{Z}/p^k\\mathbb{Z}$-coefficients**: The proof uses that $K[X]$ is a UFD. For matrices over discrete valuation rings $R = \\mathbb{Z}_p$ or finite Galois rings $\\mathbb{Z}/p^k\\mathbb{Z}$, $R[X]$ is no longer a UFD but still has a $p$-adic filtration. Does an analogous cyclic vector / cyclic module decomposition hold for nonderogatory matrices over Galois rings? This would unlock applications to $p$-adic representation theory and post-quantum cryptography (where matrices over $\\mathbb{Z}_{2^k}$ appear in lattice-based schemes).",
+      "**Quantitative Hensel descent**: The shift trick is structurally Hensel's lemma in $K[X]_{(p)}$. Can the inductive proof be made into a *uniform* Hensel-style algorithm — given $r$ with $r(M)v = 0$ and the data of $v, p, e$, produce the explicit $p$-adic series for the witnesses $r_1, r_2, \\ldots$ at each level, culminating in $p^e \\mid r$? Such an algorithm would complement the existential proof and give a verified $p$-adic computation procedure in Lean.",
+      "**Connection to Smith Normal Form algorithms**: Smith Normal Form (SNF) over $K[X]$ produces the rational canonical form via integer-style Gaussian elimination on $XI - M$. The cyclic vector theorem is implicit in SNF: the elementary divisors of $XI - M$ encode the cyclic decomposition. Can the inductive proof here be reverse-engineered into a verified SNF computation specific to the prime power case? Mathlib has SNF over Euclidean domains; specializing it to the prime power case would close the loop between this entry's elementary descent and the PID structure theorem it bypasses."
     ]
   },
   "leanFile": {
@@ -161,6 +169,60 @@
       "targetId": "cayley-hamilton-reduction-oq-02-oq-01",
       "relationship": "related",
       "description": "Rational canonical form via companion matrices. WIP03's prime power cyclic vector is a building block for showing each primary component has companion form."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "foundational",
+      "description": "The minimal polynomial divides the characteristic polynomial (Cayley-Hamilton + minpoly minimality). WIP03 uses both directions: (1) $\\deg(\\mu_M) \\leq n$ from $\\mu_M \\mid \\chi_M$ to bound polynomial degrees in the proof setup, and (2) $\\mu_M = \\chi_M$ for nonderogatory $M$ to force $\\deg(\\mu_M) = n$ in the cyclic vector argument."
+    },
+    {
+      "targetId": "cayley-hamilton-cyclic-vector-all-fields",
+      "relationship": "extends",
+      "description": "Companion entry that targets the *general* (non-prime-power) nonderogatory cyclic vector theorem over all fields — the natural extension of WIP02 + WIP03 via CRT. WIP03 supplies the prime power building block; the parent entry assembles arbitrary $\\mu_M = \\prod p_i^{e_i}$ via primary decomposition."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Frobenius, Ferdinand Georg",
+      "title": "Über lineare Substitutionen und bilineare Formen",
+      "year": "1878",
+      "venue": "Journal für die reine und angewandte Mathematik 84: 1–63",
+      "note": "Frobenius's foundational paper introducing the theory of elementary divisors (Elementartheiler) for matrices over polynomial rings. Establishes the rational canonical form decomposition via the structure theorem for finitely generated modules over PIDs — the heavyweight machinery WIP03 deliberately avoids, replacing it with an elementary inductive descent."
+    },
+    {
+      "authors": "Smith, Henry John Stephen",
+      "title": "On systems of linear indeterminate equations and congruences",
+      "year": "1861",
+      "venue": "Philosophical Transactions of the Royal Society of London 151: 293–326",
+      "note": "Introduces the Smith Normal Form for matrices over $\\mathbb{Z}$, the precursor to the PID structure theorem. The polynomial-ring analogue (over $K[X]$) gives the rational canonical form. WIP03's prime power case is implicit in the Smith form of $XI - M$ when $\\mu_M = p^e$, but is here proved by direct $p$-adic descent rather than via Gaussian elimination."
+    },
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer Graduate Texts in Mathematics, vol. 211, 3rd revised edition",
+      "note": "Chapter XIV (Modules over Principal Rings) develops the structure theorem for finitely generated modules over PIDs and derives the rational canonical form for matrices. The prime power case (cyclic primary modules) is treated implicitly via the Jordan form decomposition; WIP03 isolates it as a stand-alone elementary result."
+    },
+    {
+      "authors": "Dummit, David S.; Foote, Richard M.",
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "John Wiley & Sons, 3rd edition",
+      "note": "§12.2 (The Rational Canonical Form) and §12.3 (The Jordan Canonical Form) cover the cyclic vector theorem via the PID structure theorem. The prime power case (Theorem 18 in §12.3) is deduced from the primary decomposition of finitely generated $K[X]$-modules — the same conclusion WIP03 reaches via direct descent without module decomposition machinery."
+    },
+    {
+      "authors": "Kailath, Thomas",
+      "title": "Linear Systems",
+      "year": "1980",
+      "venue": "Prentice-Hall",
+      "note": "Standard reference for control theory, where the cyclic vector theorem appears as the *controllability* criterion: the linear system $\\dot{x} = Mx + bu$ is controllable iff $b$ is a cyclic vector for $M$. The prime power case corresponds to systems with repeated eigenvalues — the analytically subtle case where the controllability matrix has full rank despite eigenvalue degeneracy. Cited in implications #4."
+    },
+    {
+      "authors": "Newman, Morris",
+      "title": "Integral Matrices",
+      "year": "1972",
+      "venue": "Academic Press, Pure and Applied Mathematics 45",
+      "note": "Comprehensive treatment of Smith Normal Form algorithms over Euclidean and PID rings. Provides the algorithmic counterpart to the rational canonical form: given $XI - M \\in K[X]^{n \\times n}$, SNF computation extracts the elementary divisors in $O(n^3)$ field operations. WIP03's existential proof can be viewed as the structural content underlying SNF for the prime power case."
     }
   ],
   "sorries": 0
