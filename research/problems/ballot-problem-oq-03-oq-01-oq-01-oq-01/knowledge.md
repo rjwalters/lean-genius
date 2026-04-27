@@ -1,10 +1,175 @@
 # Knowledge Base: LGV Lemma → Jacobi-Trudi Identity
 
 **Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01
-**Last Updated**: 2026-04-26
-**Knowledge Items**: 34
+**Last Updated**: 2026-04-27
+**Knowledge Items**: 35
 
 Insights accumulated during research on this problem.
+
+---
+
+## Session 2026-04-27 (Session 10) — JDT Bijection: Mathlib API Map + Decomposition Plan
+
+**Mode**: REVISIT (RICH knowledge tier, score 72)
+**Outcome**: SPEC — concrete Mathlib-precise decomposition of `jdt_weight_sum` for the next attempt.
+Constraint: disk pressure (1.3 GiB free) blocks Docker verification, so this session contributes
+specification only — no Lean source modifications.
+
+### The Two Type-Level Hurdles
+
+For `b ≥ 1`, the JDT bijection sits between sigma-shaped Sym types of **different sizes**:
+`(P : Sym n a, Q : Sym n b)` ↔ `(P' : Sym n (a+1), Q' : Sym n (b-1))`.
+Two specific Mathlib mismatches must be navigated:
+
+1. **`Sym.erase` requires `Sym α (n+1)`** (Mathlib4 `Mathlib.Data.Sym.Basic` line 203):
+   `def erase [DecidableEq α] (s : Sym α (n + 1)) (a : α) (h : a ∈ s) : Sym α n`.
+   So `Q : Sym (Fin n) b` must be re-typed as `Sym (Fin n) ((b-1) + 1)` before erase. The cast
+   uses `Nat.sub_add_cancel hb : (b - 1) + 1 = b` and `Eq.mpr` / `cast`. Pattern:
+   `(Nat.sub_add_cancel hb ▸ Q : Sym (Fin n) ((b-1) + 1)).erase v hv`.
+
+2. **`Sym.cons` returns `Sym α n.succ`** (Mathlib4 line 106):
+   `def cons (a : α) (s : Sym α n) : Sym α n.succ`.
+   So `Sym.cons v P : Sym (Fin n) (a + 1)` works directly — no cast needed for the forward
+   image's first component.
+
+### Forward Map (Concrete)
+
+Given `(P : Sym (Fin n) a, Q : Sym (Fin n) b)` with `¬ColStrictSym a b P Q` and `1 ≤ b ≤ a`:
+
+```lean
+-- Step 1: extract sorted lists
+let pSorted : List (Fin n) := P.1.sort (· ≤ ·)  -- length a
+let qSorted : List (Fin n) := Q.1.sort (· ≤ ·)  -- length b
+
+-- Step 2: find first violation index c (negation of ColStrictSym gives Σ j, ¬(P[j] < Q[j]))
+-- Use Finset.min'_mem on { j : Fin (min a b) // ¬ pSorted[j] < qSorted[j] } (nonempty by hPQ)
+-- Or unpack hPQ : ¬(∀ j, ...) via push_neg + Classical.choose to get ⟨c, hc⟩.
+let c : Fin (min a b) := Classical.choose (not_forall.mp hPQ)
+let hc : qSorted[c.val] ≤ pSorted[c.val] := not_lt.mp (Classical.choose_spec ...)
+let v : Fin n := qSorted[c.val]  -- the "seam" element
+
+-- Step 3: build forward image
+let P' : Sym (Fin n) (a + 1) := Sym.cons v P
+let hv_in_Q : v ∈ Q := by
+  -- v = qSorted[c.val] ∈ qSorted, and qSorted is a sort of Q.1, so v ∈ Q.1 ⇒ v ∈ Q
+  rw [Sym.mem_iff]; exact Multiset.mem_of_mem_sort (List.getElem_mem _ _ _)
+let Q' : Sym (Fin n) (b - 1) :=
+  let Qcast : Sym (Fin n) ((b - 1) + 1) := Nat.sub_add_cancel hb ▸ Q
+  Qcast.erase v (by rwa [← Sym.mem_iff_of_cast]; ... )  -- transport hv_in_Q across the cast
+```
+
+### Inverse Map (Concrete)
+
+Given `(P' : Sym (Fin n) (a + 1), Q' : Sym (Fin n) (b - 1))`:
+
+```lean
+-- Step 1: identify the "seam" element v in P'.sort
+let p'Sorted : List (Fin n) := P'.1.sort (· ≤ ·)  -- length a+1
+let q'Sorted : List (Fin n) := Q'.1.sort (· ≤ ·)  -- length b-1
+
+-- The seam: smallest j ≤ b-1 with (j = b-1) ∨ (p'Sorted[j+1] > q'Sorted[j])
+-- Equivalently: find first j where the "interleaved" sequence breaks
+-- Pattern: define seamIdx : Fin (b - 1 + 1) = Fin b via Finset.min' on
+--   {j : Fin b // j.val = b - 1 ∨ p'Sorted[j.val + 1] > q'Sorted[j.val]}
+-- (nonempty: j = b - 1 always satisfies the first disjunct)
+
+-- Step 2: cons-erase reconstruction
+let v : Fin n := p'Sorted[seamIdx.val]
+let P : Sym (Fin n) a := P'.erase v hv_in_P'  -- P' has v, so erase is well-defined
+let Q : Sym (Fin n) b :=
+  let Qcons := Sym.cons v Q'              : Sym (Fin n) ((b - 1) + 1)
+  Nat.sub_add_cancel hb ▸ Qcons          : Sym (Fin n) b
+```
+
+### Weight Preservation (Single Algebraic Identity)
+
+The weight integrand is `(P.1.map X).prod * (Q.1.map X).prod`. Under the bijection:
+- `Sym.cons v P` has multiset `v ::ₘ P.1`, so `((Sym.cons v P).1.map X).prod = X v * (P.1.map X).prod`
+  (via `Multiset.map_cons + Multiset.prod_cons`).
+- `Sym.erase Qcast v hv` has multiset `Qcast.1.erase v = (b≥1 cast of Q.1).erase v`. Since
+  `v ∈ Q.1`, `Multiset.prod_erase_mul ... v (Multiset.mem_of_mem_sort hv) = Q.1.prod`, i.e.
+  `X v * ((Q.erase v).1.map X).prod = (Q.1.map X).prod`.
+
+Multiplying gives **exact** weight preservation:
+`(P'.1.map X).prod * (Q'.1.map X).prod = X v * (P.1.map X).prod * X v⁻¹ * (Q.1.map X).prod`?
+**No** — the cancellation is wrong. The correct flow:
+
+```
+LHS  = (P.1.map X).prod * (Q.1.map X).prod                                  -- start
+     = (P.1.map X).prod * (X v * ((Q.erase v).1.map X).prod)                -- prod_erase_mul
+     = (X v * (P.1.map X).prod) * ((Q.erase v).1.map X).prod                -- assoc + comm
+     = ((Sym.cons v P).1.map X).prod * (Q'.1.map X).prod                    -- prod_cons (rev)
+     = (P'.1.map X).prod * (Q'.1.map X).prod                                -- defn of P'
+```
+
+So the weight identity is **algebraic from `Multiset.prod_cons` + `Multiset.prod_erase_mul`**.
+No bijection-internal reasoning needed — it's a single `simp [...] ; ring` once the maps are
+named. Estimated proof: **~6 lines** once forward/inverse are defined.
+
+### Why `min{c : pSorted[c] ≥ qSorted[c]}` Defines the Bijection
+
+Two key facts make the seam unique:
+1. **In a non-col-strict pair**, the smallest such `c` exists by negation of ColStrictSym +
+   well-ordering of `Fin (min a b)`.
+2. **In `(P', Q')`**, the inverse seam is the smallest `j` with `p'Sorted[j+1] > q'Sorted[j]`
+   (or `j = b - 1`). After erasing the seam from `P'`, the remainder `P` satisfies
+   `P.sort[c] ≥ Q.sort[c]` precisely at the new index `c = j` — re-creating the violation.
+
+This duality (forward seam = first violation; inverse seam = first "right-shift opportunity")
+is the **heart of jeu-de-taquin sliding** specialized to two rows.
+
+### Why the Partition Hypothesis `b ≤ a` is Essential (Re-confirmed)
+
+Counter-example from Session 9: `a = 1, b = 2` makes the forward map non-surjective onto
+`Sym n 2 × Sym n 1`. Specifically, the pair `({0, 1}, {0})` has no preimage because erasing
+`v = 0` from `{0, 1}` leaves `{1}`, which then needs to be a length-`a = 1` sort that violates
+the original (impossible — no violation in a 1×0 grid). The `b ≤ a` hypothesis ensures
+`min(a, b) = b`, so `Fin (min a b) = Fin b` and the violation set is large enough.
+
+### Recommended Decomposition for the Next Session
+
+Split `jdt_weight_sum` (b ≥ 1 branch) into **5 named lemmas** to make each piece tractable:
+
+1. **`firstViolationIdx`** : `(P : Sym n a) → (Q : Sym n b) → ¬ColStrictSym a b P Q → Fin (min a b)`
+   (returns the first column where `pSorted[c] ≥ qSorted[c]`)
+   Proof: `Finset.min' Finset.univ.filter (¬ColStrictSym at j)` + nonemptiness from hypothesis.
+   Estimated: 15 lines.
+
+2. **`jdt_forward`** : non-col-strict (a, b) → all (a+1, b-1)
+   Constructed via `Sym.cons (qSorted[c]) P` and `Sym.erase Qcast (qSorted[c]) hv`.
+   Estimated: 25 lines.
+
+3. **`jdt_inverse`** : all (a+1, b-1) → non-col-strict (a, b)
+   Mirror construction; needs an analogous "first right-shift" definition.
+   Estimated: 30 lines.
+
+4. **`jdt_left_inv` + `jdt_right_inv`**: composed identities.
+   Use `Subtype.ext + Sym.ext + Multiset.ext` to reduce to multiset equalities.
+   Estimated: 40 lines combined.
+
+5. **`jdt_weight_preserve`**: the 6-line algebraic identity above.
+
+Total: ~115 lines, broken into 5 pieces of ~15-30 lines each — each independently submittable
+to Aristotle.
+
+### Files NOT Modified This Session
+
+Disk pressure prevented Docker build verification. No Lean source changes. All contributions
+are documentation/specification updates.
+
+### Sorry Count: 2 (unchanged)
+
+- `jdt_weight_sum` (b ≥ 1 case): now has a Mathlib-precise decomposition plan (5 sub-lemmas)
+- `jacobi_trudi_ssyt_eq` (k ≥ 3): unchanged — RSK + algebraic LGV, ~300 lines
+
+### Next Steps (Concrete)
+
+1. **First Lean change** when disk allows: add `firstViolationIdx` definition (Lemma 1 above)
+   as a `noncomputable def` with `Classical.choose` + nonemptiness proof. Smallest first step.
+2. **Submit Lemmas 1–5 as separate Aristotle jobs** if Aristotle is reachable; the 5-way split
+   reduces each to a tractable size.
+3. **k ≥ 3 case**: still needs RSK + algebraic LGV. Consider mining Mathlib for any partial RSK
+   formalization (search `Mathlib.Combinatorics.YoungTableau`).
 
 ---
 
