@@ -59,21 +59,24 @@
       "Proved tau_ge_two: every n >= 2 has at least 2 divisors (structural bound)",
       "Proved f_lower_bound: f(n) >= 2n-1 for n >= 1 (stronger than f_ge)",
       "Proved f_decomp: f(2n) = f(n) + extra terms (key ratio decomposition)",
-      "Proved f_gap_lower_bound: extra terms in f(2n) sum to at least 2n"
+      "Proved f_gap_lower_bound: extra terms in f(2n) sum to at least 2n",
+      "Proved mersenne_dvd: if a | b then (2^a - 1) | (2^b - 1) (Mersenne divisibility)",
+      "Proved tau_mersenne_ge_tau: tau(2^k - 1) >= tau(k) via divisor injection d -> 2^d - 1",
+      "Proved f_divisor_sum_lower: f(n) >= sum_{k=1}^n tau(k), connecting f to the divisor summatory function"
     ],
     "axiomCount": 1,
-    "lineCount": 268,
+    "lineCount": 332,
     "assumptions": "1 axiom: kovac_luca_limsup_infinite. See Lean source for the complete statement.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 31,
+    "theoremCount": 35,
     "leanFiles": [
       {
         "path": "Proofs/Erdos893Problem.lean",
         "filename": "Erdos893Problem.lean",
-        "lineCount": 268,
-        "theoremCount": 31,
+        "lineCount": 332,
+        "theoremCount": 35,
         "axiomCount": 1,
-        "defCount": 3,
+        "defCount": 4,
         "sorryCount": 0,
         "isAristotle": false
       }
@@ -89,7 +92,8 @@
       "Kovac-Luca (2025) proved $\\limsup f(2n)/f(n) = \\infty$, which rules out any finite limit but does not establish eventual divergence: the ratio could oscillate with $\\liminf < \\infty$",
       "Mersenne primes contribute $\\tau = 2$ (minimal), while composite $2^k - 1$ can have many divisors: $\\tau(2^{12} - 1) = \\tau(4095) = 24$, making the growth of $f$ highly non-uniform",
       "The gap between $\\limsup = \\infty$ (Kovac-Luca) and $\\lim = \\infty$ (the conjecture) requires showing the ratio cannot persistently drop back, which seems to need new ideas about Mersenne factorizations",
-      "Computational evidence ($f(8)/f(4) = 3$, verified values) supports divergence, but the erratic behavior of $\\tau(2^k - 1)$ prevents simple asymptotic arguments"
+      "Computational evidence ($f(8)/f(4) = 3$, verified values) supports divergence, but the erratic behavior of $\\tau(2^k - 1)$ prevents simple asymptotic arguments",
+      "Mersenne divisibility ($a \\mid b \\Rightarrow (2^a-1) \\mid (2^b-1)$) gives an injection from divisors of $k$ to divisors of $2^k-1$, proving $\\tau(2^k-1) \\geq \\tau(k)$. This yields $f(n) \\geq \\sum_{k=1}^n \\tau(k) \\sim n \\log n$ (Dirichlet), a concrete growth rate lower bound"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -130,34 +134,42 @@
       "mathContext": "Verified: Proves `f_mono` ($m \\le n \\implies f(m) \\le f(n)$) via `Finset.sum_le_sum_of_subset` and `f_pos` ($n \\ge 1 \\implies f(n) > 0$) via chaining with $f(1) = 1$."
     },
     {
+      "id": "sec-893-mersenne",
+      "title": "Mersenne Divisibility and Tau Bounds",
+      "startLine": 207,
+      "endLine": 269,
+      "summary": "Proves `mersenne_dvd` ($a \\mid b \\Rightarrow (2^a-1) \\mid (2^b-1)$) by induction on the quotient, `mersenne_injective` ($2^a-1 = 2^b-1 \\Rightarrow a = b$) by strict monotonicity, `tau_mersenne_ge_tau` ($\\tau(2^k-1) \\geq \\tau(k)$) via injection of divisors, and `f_divisor_sum_lower` ($f(n) \\geq \\sum_{k=1}^n \\tau(k)$) connecting $f$ to the divisor summatory function.",
+      "mathContext": "Key structural chain: Mersenne divisibility provides an injection from divisors of $k$ to divisors of $2^k-1$, giving $\\tau(2^k-1) \\geq \\tau(k)$. Summing yields $f(n) \\geq \\sum_{k=1}^n \\tau(k) \\sim n \\log n$ (by Dirichlet's divisor estimate)."
+    },
+    {
       "id": "sec-893-ratio",
       "title": "The Ratio $f(2n)/f(n)$",
-      "startLine": 126,
-      "endLine": 140,
+      "startLine": 271,
+      "endLine": 284,
       "summary": "Defines `ratio n` as $(f(2n) : \\mathbb{R}) / (f(n) : \\mathbb{R})$. Proves `ratio_ge_one`: the ratio is at least 1 for $n \\ge 1$.",
       "mathContext": "Formal definition: Defines `ratio n` as $(f(2n) : \\mathbb{R}) / (f(n) : \\mathbb{R})$. Proves `ratio_ge_one`: the ratio is at least 1 for $n \\ge 1$."
     },
     {
       "id": "sec-893-known",
       "title": "Known Results: Kovac-Luca",
-      "startLine": 141,
-      "endLine": 156,
+      "startLine": 286,
+      "endLine": 300,
       "summary": "Axiomatizes `kovac_luca_limsup_infinite`: $\\forall M > 0,\\, \\exists n,\\, \\text{ratio}(n) > M$. Proves `ratio_unbounded` by contradiction.",
       "mathContext": "Verified: Axiomatizes `kovac_luca_limsup_infinite`: $\\forall M > 0,\\, \\exists n,\\, \\text{ratio}(n) > M$. Proves `ratio_unbounded` by contradiction."
     },
     {
       "id": "sec-893-main",
       "title": "Main Question: $f(2n)/f(n) \\to \\infty$",
-      "startLine": 157,
-      "endLine": 173,
+      "startLine": 302,
+      "endLine": 318,
       "summary": "States `ErdosProblem893` (full divergence, open). Proves `kovac_luca_weaker_than_conjecture`: divergence implies the Kovac-Luca statement.",
       "mathContext": "Verified: States `ErdosProblem893` (full divergence, open). Proves `kovac_luca_weaker_than_conjecture`: divergence implies the Kovac-Luca statement."
     },
     {
       "id": "sec-893-summary",
       "title": "Summary Theorem",
-      "startLine": 174,
-      "endLine": 187,
+      "startLine": 320,
+      "endLine": 332,
       "summary": "Collects verified results into `erdos893_summary`: positivity, monotonicity, and ratio unboundedness.",
       "mathContext": "Bound: Collects verified results into `erdos893_summary`: positivity, monotonicity, and ratio unboundedness."
     }
@@ -201,9 +213,9 @@
       "Finset"
     ],
     "namespace": "Erdos893",
-    "lineCount": 268,
+    "lineCount": 332,
     "axiomCount": 1,
-    "theoremCount": 31,
+    "theoremCount": 35,
     "definitionCount": 4,
     "path": "Proofs/Erdos893Problem.lean",
     "sorries": 0

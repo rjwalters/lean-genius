@@ -255,5 +255,57 @@
     "path": "Proofs/AbelRuffiniOQ04OQ07.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "linear_tschirnhaus_depresses",
+      "type": "key",
+      "description": "The substitution y = x + a₄/5 eliminates the x⁴ term from any monic quintic (proved via polynomial identity)"
+    },
+    {
+      "name": "bringRadical",
+      "type": "core",
+      "description": "The Bring radical BR(t): the unique real root of x⁵ + x + t = 0, defined via IVT existence and strict monotonicity uniqueness"
+    },
+    {
+      "name": "bringRadical_unique",
+      "type": "key",
+      "description": "Uniqueness of the Bring radical: strict monotonicity of x↦x⁵+x implies at most one real root of x⁵+x+t=0"
+    },
+    {
+      "name": "bringJerrard_summary",
+      "type": "key",
+      "description": "Any quintic's real roots are expressible using Bring radicals plus standard arithmetic (combining the full reduction chain)"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["E. S. Bring"],
+      "title": "Meletemata quaedam mathematica circa transformationem aequationum algebraicarum",
+      "year": "1786",
+      "venue": "Lund University dissertation",
+      "note": "Original discovery of the reduction of the general quintic to the form y⁵ + py + q = 0 via Tschirnhaus substitutions, 38 years before Abel's impossibility proof."
+    },
+    {
+      "authors": ["G. B. Jerrard"],
+      "title": "An Essay on the Resolution of Equations",
+      "year": "1834",
+      "venue": "Taylor and Francis, London",
+      "note": "Independent rediscovery and popularization of the Bring reduction. Jerrard also attempted (incorrectly) to solve the general quintic, but his reduction method was valid."
+    },
+    {
+      "authors": ["F. Klein"],
+      "title": "Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade",
+      "year": "1884",
+      "venue": "Teubner, Leipzig",
+      "note": "Connected icosahedral symmetry (A₅ ≅ I₆₀) to the quintic via the modular j-function, providing a transcendental solution via hypergeometric functions that bypasses the radical barrier."
+    },
+    {
+      "authors": ["R. B. King"],
+      "title": "Beyond the Quartic Equation",
+      "year": "1996",
+      "venue": "Birkhäuser",
+      "note": "Modern treatment of the Bring radical, Tschirnhaus transformations, and the connection between icosahedral symmetry and quintic solutions."
+    }
+  ],
   "sorries": 0
 }

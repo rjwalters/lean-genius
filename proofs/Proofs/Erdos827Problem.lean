@@ -15,9 +15,9 @@ Reference: https://erdosproblems.com/827
 
 Axioms: 4 (minimalNk, minimalNk_valid, minimalNk_sharp,
   martinez_roldan_pensado)
-Proved: nk_monotone (from valid + sharp + subset argument),
-  nk_ge_k (from valid + parabola GP construction),
-  nk_three (from valid + sharp + vacuous AllDistinctCircumradii for 3-sets)
+Proved: nk_ge_k (from valid + parabola GP construction),
+  nk_three (from ge_k + sharp + vacuous AllDistinctCircumradii for 3-sets),
+  nk_monotone (from valid + sharp + subset argument)
 Sorries: 0
 -/
 
@@ -104,6 +104,64 @@ noncomputable def erdosClaimedBound (k : ℕ) : ℕ :=
 /-- Martinez and Roldán-Pensado proved the corrected polynomial bound. -/
 axiom martinez_roldan_pensado : MartinezBound
 
+/- ## Parabola GP Construction -/
+
+/-- Parabola point: i ↦ (i, i²). Points on y = x² are in general position. -/
+noncomputable def parabolaPoint (i : ℕ) : Point := ((i : ℝ), (i : ℝ) ^ 2)
+
+/-- The parabola map is injective: distinct naturals give distinct points. -/
+theorem parabolaPoint_injective : Function.Injective parabolaPoint := by
+  intro a b h
+  simp only [parabolaPoint, Prod.mk.injEq] at h
+  exact_mod_cast h.1
+
+/-- A finite set of n points on the parabola y = x². -/
+noncomputable def parabolaSet (n : ℕ) : Finset Point :=
+  (Finset.range n).image parabolaPoint
+
+/-- The parabola set has exactly n points. -/
+theorem parabolaSet_card (n : ℕ) : (parabolaSet n).card = n := by
+  simp [parabolaSet, Finset.card_image_of_injective _ parabolaPoint_injective]
+
+/-- Points on the parabola y = x² are in general position.
+    The collinearity determinant of (a,a²), (b,b²), (c,c²) factors as
+    (a−c)(b−c)(b−a), which is nonzero for distinct a, b, c. -/
+theorem parabolaSet_gp (n : ℕ) : GeneralPosition (parabolaSet n) := by
+  intro p hp q hq r hr hpq hqr hpr
+  simp only [parabolaSet, Finset.mem_image, Finset.mem_range] at hp hq hr
+  obtain ⟨a, -, rfl⟩ := hp
+  obtain ⟨b, -, rfl⟩ := hq
+  obtain ⟨c, -, rfl⟩ := hr
+  have hab : a ≠ b := fun h => hpq (congrArg parabolaPoint h)
+  have hbc : b ≠ c := fun h => hqr (congrArg parabolaPoint h)
+  have hac : a ≠ c := fun h => hpr (congrArg parabolaPoint h)
+  dsimp only [parabolaPoint]
+  intro heq
+  have factored : ((a : ℝ) - c) * ((b : ℝ) - c) * ((b : ℝ) - a) = 0 := by
+    have : ((a : ℝ) - c) * ((b : ℝ) ^ 2 - (c : ℝ) ^ 2) -
+           ((b : ℝ) - c) * ((a : ℝ) ^ 2 - (c : ℝ) ^ 2) =
+           ((a : ℝ) - c) * ((b : ℝ) - c) * ((b : ℝ) - a) := by ring
+    linarith
+  have h1 : (a : ℝ) ≠ c := by exact_mod_cast hac
+  have h2 : (b : ℝ) ≠ c := by exact_mod_cast hbc
+  have h3 : (b : ℝ) ≠ a := by exact_mod_cast hab.symm
+  exact absurd factored (mul_ne_zero (mul_ne_zero (sub_ne_zero.mpr h1) (sub_ne_zero.mpr h2))
+    (sub_ne_zero.mpr h3))
+
+/- ## Lower Bound -/
+
+/-- n_k ≥ k: you need at least k points to find a k-subset.
+    If minimalNk k < k, the parabola GP set of size minimalNk k satisfies
+    minimalNk_valid but can't contain a k-subset (too small). -/
+theorem nk_ge_k (k : ℕ) (hk : 3 ≤ k) : k ≤ minimalNk k := by
+  by_contra hlt
+  push_neg at hlt
+  obtain ⟨T, hTS, hTcard, _⟩ := minimalNk_valid k hk (parabolaSet (minimalNk k))
+    (parabolaSet_gp _) (by simp [parabolaSet_card])
+  have := Finset.card_le_card hTS
+  rw [parabolaSet_card] at this
+  omega
+
 /- ## Trivial Cases -/
 
 /-- AllDistinctCircumradii is vacuously true for 3-element sets:
@@ -153,6 +211,8 @@ theorem nk_three : minimalNk 3 = 3 := by
   obtain ⟨T, hTS, hTcard⟩ := Finset.exists_smaller_set S 3 (by omega)
   exact hBad ⟨T, hTS, hTcard, allDistinctCircumradii_of_card_three hTcard⟩
 
+/- ## Monotonicity -/
+
 /-- n_k is monotone non-decreasing.
 
     Proof: Assume for contradiction that n_{k₂} < n_{k₁}. By minimalNk_sharp,
@@ -175,62 +235,6 @@ theorem nk_monotone (k₁ k₂ : ℕ) (h : k₁ ≤ k₂) (hk : 3 ≤ k₁) :
     exact hTgood p₁ (hT'T hp₁) q₁ (hT'T hq₁) r₁ (hT'T hr₁)
       p₂ (hT'T hp₂) q₂ (hT'T hq₂) r₂ (hT'T hr₂)
   exact hBad ⟨T', Finset.Subset.trans hT'T hTS, hT'card, hT'good⟩
-
-/- ## Parabola GP Construction -/
-
-/-- Parabola point: i ↦ (i, i²). Points on y = x² are in general position. -/
-noncomputable def parabolaPoint (i : ℕ) : Point := ((i : ℝ), (i : ℝ) ^ 2)
-
-/-- The parabola map is injective: distinct naturals give distinct points. -/
-theorem parabolaPoint_injective : Function.Injective parabolaPoint := by
-  intro a b h
-  simp only [parabolaPoint, Prod.mk.injEq] at h
-  exact_mod_cast h.1
-
-/-- A finite set of n points on the parabola y = x². -/
-noncomputable def parabolaSet (n : ℕ) : Finset Point :=
-  (Finset.range n).image parabolaPoint
-
-/-- The parabola set has exactly n points. -/
-theorem parabolaSet_card (n : ℕ) : (parabolaSet n).card = n := by
-  simp [parabolaSet, Finset.card_image_of_injective _ parabolaPoint_injective]
-
-/-- Points on the parabola y = x² are in general position.
-    The collinearity determinant of (a,a²), (b,b²), (c,c²) factors as
-    (a−c)(b−c)(b−a), which is nonzero for distinct a, b, c. -/
-theorem parabolaSet_gp (n : ℕ) : GeneralPosition (parabolaSet n) := by
-  intro p hp q hq r hr hpq hqr hpr
-  simp only [parabolaSet, Finset.mem_image, Finset.mem_range] at hp hq hr
-  obtain ⟨a, -, rfl⟩ := hp
-  obtain ⟨b, -, rfl⟩ := hq
-  obtain ⟨c, -, rfl⟩ := hr
-  have hab : a ≠ b := fun h => hpq (congrArg parabolaPoint h)
-  have hbc : b ≠ c := fun h => hqr (congrArg parabolaPoint h)
-  have hac : a ≠ c := fun h => hpr (congrArg parabolaPoint h)
-  dsimp only [parabolaPoint]
-  intro heq
-  have factored : ((a : ℝ) - c) * ((b : ℝ) - c) * ((b : ℝ) - a) = 0 := by
-    have : ((a : ℝ) - c) * ((b : ℝ) ^ 2 - (c : ℝ) ^ 2) -
-           ((b : ℝ) - c) * ((a : ℝ) ^ 2 - (c : ℝ) ^ 2) =
-           ((a : ℝ) - c) * ((b : ℝ) - c) * ((b : ℝ) - a) := by ring
-    linarith
-  have h1 : (a : ℝ) ≠ c := by exact_mod_cast hac
-  have h2 : (b : ℝ) ≠ c := by exact_mod_cast hbc
-  have h3 : (b : ℝ) ≠ a := by exact_mod_cast hab.symm
-  exact absurd factored (mul_ne_zero (mul_ne_zero (sub_ne_zero.mpr h1) (sub_ne_zero.mpr h2))
-    (sub_ne_zero.mpr h3))
-
-/-- n_k ≥ k: you need at least k points to find a k-subset.
-    If minimalNk k < k, the parabola GP set of size minimalNk k satisfies
-    minimalNk_valid but can't contain a k-subset (too small). -/
-theorem nk_ge_k (k : ℕ) (hk : 3 ≤ k) : k ≤ minimalNk k := by
-  by_contra hlt
-  push_neg at hlt
-  obtain ⟨T, hTS, hTcard, _⟩ := minimalNk_valid k hk (parabolaSet (minimalNk k))
-    (parabolaSet_gp _) (by simp [parabolaSet_card])
-  have := Finset.card_le_card hTS
-  rw [parabolaSet_card] at this
-  omega
 
 /- ## Structural Properties -/
 
