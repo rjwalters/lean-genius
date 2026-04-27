@@ -198,3 +198,67 @@ work and incidentally restored an old file version. This was unintentional.
 1. Prove `hβ_dvd`: key Mathlib glue needed is `Module.finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ = natDegree (minpoly ↥ℚ⟮a⟯ β)` (β generates ℚ⟮β⟯ over ℚ⟮a⟯)
 2. For `hjoin_dvd`: reformulate with stronger IH: `∀K/ℚ, finrank K K⟮b⟯ ∣ 2^k`
 3. `wantzel_galois_iff` remains out-of-scope
+
+## Session 30 (2026-04-27) — Infrastructure Blocker (no Lean changes)
+
+**Mode**: REVISIT (researcher-4)
+**Outcome**: NO CHANGES — Docker daemon hung; disk constrained; documenting for next session
+
+### Environment Issues at Claim Time
+- Disk: 1.4 GiB free (90% used). Below comfortable threshold for Docker builds.
+- Docker daemon: `docker system df` hung (timed out 30s). Matches the known
+  `desktop-containerd metadata.v1.bolt/meta.db: input/output error` failure mode
+  documented in `feedback_docker_build_io_errors.md`. Daemon needs restart.
+- Per the API-drift catalog (`project_mathlib_api_drift_2026_04.md`), this very file
+  was reported broken on 2026-04-26 by commit `5641e108c0d9` with errors:
+  `mem_sup_left/mem_sup_right unknown identifiers (IntermediateField API changed)`.
+  Lines 155–156 of the current file still call `mem_sup_left`/`mem_sup_right`. Whether
+  Mechanic has caught up since is unclear without a working build.
+
+### Why I Made No Lean Changes
+1. With Docker dead I cannot verify any edit, and lines 155–156 are exactly the
+   spot reported broken — touching surrounding code risks compounding the drift.
+2. The remaining sorries (`hβ_dvd`, `hjoin_dvd`, `wantzel_galois_iff`) are all
+   non-trivial; an unverified attempt would either succeed by luck or introduce
+   new errors masked by the existing drift errors.
+3. Honest researcher pattern in this state (per `feedback_disk_full_blocks_research.md`):
+   skip Docker, document blocker, release claim. No CI-thrashing speculative commits.
+
+### Refined Plan for `hβ_dvd` (for next session with working Docker)
+
+Goal: `Module.finrank ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) ∣ 2`
+
+Outline (subfield-equality route):
+
+1. **Subfield equality** ℚ⟮a⟯⟮β⟯ = ℚ⟮β⟯ (as `IntermediateField ℚ ℂ`):
+   - `⊇`: `ℚ⟮a⟯⟮β⟯` contains `β` and `ℚ`, so ⊇ `ℚ⟮β⟯`.
+   - `⊆`: `ℚ⟮β⟯` contains `β` (so `a = β·β`) and is the smallest IM containing β,
+     so it contains `ℚ⟮a⟯`, then `β`, hence `ℚ⟮a⟯⟮β⟯`.
+   - Use `IntermediateField.adjoin_simple_le_iff` and `mem_adjoin_simple_self` for both directions.
+2. **Module.finrank for the simple extension** ℚ⟮a⟯⟮β⟯ over ℚ⟮a⟯:
+   - β is integral over ℚ⟮a⟯ (β² − a = 0, with `a ∈ ℚ⟮a⟯` via `mem_adjoin_simple_self`).
+   - Use `IntermediateField.adjoin.finrank` (with `IsIntegral ↥ℚ⟮a⟯ β`):
+     `Module.finrank ↥ℚ⟮a⟯ ↥(ℚ⟮a⟯⟮β⟯) = (minpoly ↥ℚ⟮a⟯ β).natDegree`.
+   - β satisfies `(X^2 - C a)` over `↥ℚ⟮a⟯` (as polynomial), so `minpoly ↥ℚ⟮a⟯ β ∣ (X^2 - C a)`.
+   - `(X^2 - C a).natDegree = 2`, hence `(minpoly ↥ℚ⟮a⟯ β).natDegree ∣ 2`.
+3. **Transfer along the subfield equality** (Step 1) to convert
+   `finrank ↥ℚ⟮a⟯ ↥(ℚ⟮a⟯⟮β⟯)` into `finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯`. This is the most fragile
+   bit in Lean: the two `↥…` types differ definitionally, so a `congr`/`Subtype.ext`
+   step or `IntermediateField.equivOfEq` will be needed.
+
+Mathlib lemmas to keep handy: `IntermediateField.adjoin.finrank`, `minpoly.dvd`,
+`Polynomial.natDegree_X_pow_sub_C`, `Nat.dvd_of_dvd_two`.
+
+### Refined Plan for `hjoin_dvd` (deferred — needs IH refactor)
+Same conclusion as Session 28: requires `isConstructible_algebraic_degree` to be
+strengthened so the IH for `b` is "for any intermediate field `K ⊇ ℚ`,
+`finrank K K⟮b⟯ ∣ 2^k`" rather than the current ℚ-only statement. That refactor
+is a ~50-line change to the lemma signature plus updating the rational-base case.
+
+### Files Modified
+- `research/problems/.../knowledge.md` (this file) — Session 30 note
+- No Lean changes; no meta.json changes (current 3-sorry state remains accurate).
+
+### Outcome
+**Status**: in-progress (release claim; environmental blocker; Mechanic action may
+already have addressed the API drift — re-check on next session with Docker up).
