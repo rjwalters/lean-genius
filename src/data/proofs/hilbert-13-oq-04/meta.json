@@ -72,11 +72,31 @@
     {
       "targetId": "hilbert-13",
       "relationship": "extends",
-      "description": "Generalizes the Kolmogorov-Arnold representation from [0,1]^n to compact metrizable spaces of finite covering dimension"
+      "description": "Generalizes the Kolmogorov-Arnold representation from [0,1]^n to compact metrizable spaces of finite covering dimension. The classical [0,1]^n case is recovered here via dim([0,1]^n) = n combined with Sternfeld's characterization."
+    },
+    {
+      "targetId": "hilbert-10",
+      "relationship": "sibling",
+      "description": "Sibling Hilbert problem (Diophantine equations, MRDP theorem). Where Hilbert 10 was definitively solved in the negative (Matiyasevich 1970), Hilbert 13 split by category: NO for smooth (Vitushkin 1954), YES for continuous (Kolmogorov-Arnold 1957). Both illustrate how Hilbert's original questions admit subtle category-dependent answers."
+    },
+    {
+      "targetId": "hilbert-11",
+      "relationship": "sibling",
+      "description": "Sibling Hilbert problem on quadratic forms over algebraic number fields. The dimension/representation theme appears differently: Hilbert 11 controls representability of integers by forms via local-global principles, while Hilbert 13 (this entry) controls representability of continuous functions via covering dimension."
+    },
+    {
+      "targetId": "hilbert-14",
+      "relationship": "sibling",
+      "description": "Hilbert 14 on finite generation of invariant subrings under group actions — answered negatively by Nagata (1959) — provides another example of a Hilbert problem whose answer depends sharply on the category (algebraic vs analytic). The pattern parallels Hilbert 13's continuous-vs-smooth dichotomy formalized here."
+    },
+    {
+      "targetId": "hilbert-17",
+      "relationship": "sibling",
+      "description": "Hilbert 17 on representation of positive polynomials as sums of squares of rational functions (Artin 1927). Both Hilbert 13 (this entry) and Hilbert 17 are 'representation theorems' — decomposing complex objects (continuous functions; positive polynomials) into sums of simpler pieces — and both have surprising positive answers despite the complexity of the source category."
     }
   ],
   "overview": {
-    "historicalContext": "After Kolmogorov and Arnold proved the representation theorem for [0,1]^n (1956-57), mathematicians asked: which topological spaces admit such representations? Ostrand (1965) showed that covering dimension controls the existence of separating maps needed for the construction. Sternfeld (1985) gave a complete characterization: a compact metrizable space has the superposition property with 2n+1 maps if and only if its covering dimension is at most n. This reveals covering dimension as the precise topological invariant governing function representation.",
+    "historicalContext": "Hilbert's 13th problem (1900) asked whether every continuous function of three variables can be written as a finite superposition of continuous functions of two variables. The polynomial-equation form (degree-7 polynomials and nomographic methods) was the original framing; Hilbert expected the answer to be NO. After Kolmogorov (1957, Doklady Akad. Nauk 114, 953-956) and Arnold (1957, Doklady Akad. Nauk 114, 679-681) proved the surprising representation theorem for [0,1]^n — every continuous function on the unit cube admits a 2n+1-term superposition representation in continuous univariate functions — the topological question naturally arose: which other spaces admit such representations? Ostrand (1965, Bull. AMS 71, 619-622) introduced the covering-dimension framework and showed that compact metric spaces of covering dimension n admit 2n+1 separating maps — the technical core of the construction. Sternfeld (1985, Israel J. Math. 50, 13-53) gave the definitive characterization: a compact metrizable space has the superposition property with 2n+1 maps if and only if its covering dimension is at most n. This converts Hilbert's continuous-function question into a purely topological one, and reveals covering dimension as the precise invariant governing function representation. Vitushkin's 1954 negative answer for the *smooth* (C^k) version of the problem — disproving the smooth analogue and earning him the 1966 Lobachevsky Prize — shows that the continuous and smooth categories diverge sharply: the continuous answer is YES, the smooth one is NO. This file formalizes the continuous-category generalization following the Kolmogorov-Arnold-Ostrand-Sternfeld line.",
     "problemStatement": "**The Question**: For which compact spaces X can every continuous f : X -> R be written as a sum of compositions of continuous univariate functions?\n\n**Covering Dimension**: dim(X) <= n if every finite open cover has an open refinement of order <= n+1.\n\n**Generalized KA Theorem**: For compact metric X with dim(X) = n, every continuous f : X -> R can be written as:\n$$f(x) = \\sum_{q=0}^{2n} \\Phi_q(g_q(x))$$\nwhere the Phi_q are continuous univariate functions and g_q : X -> R are continuous.\n\n**Sternfeld's Characterization**: The superposition property with 2n+1 maps holds iff dim(X) <= n.",
     "text": "Generalizes the Kolmogorov-Arnold representation theorem to arbitrary compact metrizable spaces, showing that covering dimension is the precise invariant controlling when superposition representations exist.",
     "proofStrategy": "The formalization proceeds as follows:\n\n1. **Define covering dimension**: Lebesgue covering dimension via finite open cover refinements\n\n2. **Basic properties**: Monotonicity (dim <= n implies dim <= n+1), dimension-0 characterization\n\n3. **Standard spaces**: [0,1]^n has covering dimension exactly n (axiomatized)\n\n4. **Ostrand's maps**: Compact metric spaces of dimension n have 2n+1 separating maps (axiomatized)\n\n5. **Generalized KA**: Main theorem for compact metric spaces (axiomatized)\n\n6. **Sternfeld**: Full characterization linking covering dimension to superposition property\n\n7. **Sharpness**: 2n+1 terms cannot be reduced to 2n",
@@ -85,7 +105,11 @@
       "The 2n+1 bound from Kolmogorov-Arnold is sharp even in the general setting",
       "The classical KA theorem for [0,1]^n is recovered as a special case via dim([0,1]^n) = n",
       "Ostrand's separating maps are the key technical tool connecting dimension to representation",
-      "The 2n+1 count in the Kolmogorov-Arnold theorem has the same origin as the 2n+1 embedding dimension in the Whitney embedding theorem: both arise from general position arguments where n-dimensional objects require 2n+1 coordinates to avoid self-intersections, revealing a deep connection between dimension theory, embedding theory, and function representation"
+      "The 2n+1 count in the Kolmogorov-Arnold theorem has the same origin as the 2n+1 embedding dimension in the Whitney embedding theorem: both arise from general position arguments where n-dimensional objects require 2n+1 coordinates to avoid self-intersections, revealing a deep connection between dimension theory, embedding theory, and function representation",
+      "**Continuous vs smooth divergence**: Hilbert expected NO for his 13th problem; Kolmogorov-Arnold answered YES in the continuous category. Vitushkin (1954) showed NO in the C^k category — the smooth Kolmogorov-Arnold conjecture *fails*, and his proof uses an entropy/capacity obstruction. The classification by regularity is sharp: continuous works, smooth doesn't, and the gap is measured precisely by covering dimension vs metric entropy.",
+      "**Why the iff (not just if)**: Sternfeld's converse — superposition with 2n+1 maps implies dim ≤ n — uses cohomological obstructions. If one could write every continuous f on a (n+1)-dimensional X as a 2n+1-term superposition, Sternfeld constructs a contradiction with the existence of essential maps to S^n given by Hopf-style cohomology classes. Thus the bound is sharp not just in dimension but in topological complexity.",
+      "**Menger compacta as universal witnesses**: the Menger curve M (1-dimensional) and its higher analogues M_n (the universal n-dimensional compacta) are the spaces where all sharpness obstructions can be exhibited. They embed every compact metric space of dimension ≤ n, so any uniform bound on superposition counts must hold on M_n.",
+      "**Modern relevance for neural networks**: the Kolmogorov-Arnold representation has been rediscovered in machine learning as the theoretical justification for KAN (Kolmogorov-Arnold Networks, 2024) — where the 2n+1 univariate functions are replaced by learnable splines. Sternfeld's characterization tells us KAN-style architectures are *theoretically optimal* exactly for compact metric spaces of bounded covering dimension."
     ],
     "prerequisites": [
       "Point-set topology",
