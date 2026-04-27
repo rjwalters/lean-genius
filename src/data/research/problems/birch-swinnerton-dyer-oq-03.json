@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-30T19:20:00Z",
-    "iteration": 2,
-    "focus": "Eliminated 2 redundant/dead axioms",
+    "since": "2026-04-27T17:00:00Z",
+    "iteration": 3,
+    "focus": "Eliminated greenberg_stevens axiom: redundant with ExceptionalZero structure fields (hq_pos, hL_ne_zero)",
     "blockers": [],
-    "nextAction": "hasse_bound elimination via Mathlib bridge is the main tractable target",
+    "nextAction": "hasse_bound elimination remains hard (custom traceOfFrobenius opaque, not Mathlib-bridged). Computational L-nonzero axioms (curveJZero, cremona11a1) require explicit numerical computation. Remaining 17 axioms appear genuinely needed.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,24 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 axioms (21->19). BSD_CM_rank_zero_axiom proved from general Kolyvagin result. gross_zagier_formula_detail removed as dead code.",
+    "progressSummary": "PROGRESS: Eliminated 1 more axiom (18->17). greenberg_stevens converted to theorem since both conjuncts (q_E > 0 ∧ L_invariant ≠ 0) are already encoded as ExceptionalZero structure fields hq_pos and hL_ne_zero. Total reduction so far: 21->17.",
     "builtItems": [
-      "Axiom classification: 12 deep + 7 computational + 2 structural",
+      "Axiom classification: 12 deep + 7 computational + 2 structural (now 1 structural)",
       "Converted BSD_CM_rank_zero_axiom to theorem using (BSD_rank_zero_axiom E hL).1",
       "Removed dead axiom gross_zagier_formula_detail",
       "Removed duplicate theorem parity_conjecture (identical to parity_conjecture_proved)",
-      "Updated meta.json: axiomCount 21->19, lineCount 7437->7422"
+      "Converted greenberg_stevens from axiom to theorem: extracts ⟨ez.hq_pos, ez.hL_ne_zero⟩ directly from the ExceptionalZero structure fields",
+      "Simplified mtt_exceptional_zero proof: direct ez.hL_ne_zero (was: (greenberg_stevens E ez).2)",
+      "Updated meta.json: axiomCount 18->17, lineCount 7432->7435; updated assumptions field with elimination history and noted ExceptionalZero structural assumptions"
     ],
     "insights": [
-      "21 axioms classified into 3 categories: (A) deep conjectures/theorems (12), (B) computational curve facts (7), (C) structural results (2)",
-      "Category A (12 axioms, unprovable from Mathlib): BSD_rank_zero/one_axiom, BSD_CM_rank_zero, parity_conjecture, sha_order_is_square, gross_zagier_formula_detail, greenberg_stevens, elkies_rank_record, positive_proportion_rank_one_bsd, analytic_rank_parity, rank3_hadamard_bound, regulator_pos",
-      "Category B (7 axioms, require numerical computation): curveMinusX/JZero/cremona11a1_L_nonzero, one/two_not_congruent, curve37a_rank/rootNumber, curve389a_rank",
-      "Category C (2 axioms, theoretically provable): hasse_bound (Weil theorem, deep but proven), parity_conjecture_proved_axiom",
+      "21 axioms classified into 3 categories: (A) deep conjectures/theorems, (B) computational curve facts, (C) structural results",
+      "Category A (deep, unprovable from current Mathlib): BSD_rank_zero/one_axiom, parity_conjecture_proved, sha_order_is_square, elkies_rank_record, positive_proportion_rank_one_bsd, analytic_rank_parity, rank3_hadamard_bound, regulator_pos",
+      "Category B (computational, require numerical computation): curveMinusX/JZero/cremona11a1_L_nonzero, two_not_congruent, curve37a_rank/rootNumber, curve389a_rank",
+      "Category C (structural, theoretically provable): hasse_bound (Weil theorem)",
       "hasse_bound uses custom EllipticCurveQ/traceOfFrobenius types, not Mathlib. Elimination requires bridging custom types to Mathlib API.",
       "0 actual sorries in file (metadata was stale: sorry count referred to a comment, not code)",
       "BSD_CM_rank_zero_axiom is redundant: Kolyvagin general BSD_rank_zero_axiom (L(E,1)!=0 -> rank=0) subsumes the CM special case. Eliminated by proving it as a theorem.",
       "gross_zagier_formula_detail was dead code (0 uses). The same content is captured by GrossZagierData.gross_zagier structure field. Removed.",
-      "Axiom count reduced: 21 -> 19. Remaining 19 axioms are genuine: 10 deep theorems, 7 computational facts, 2 structural results."
+      "greenberg_stevens redundant with ExceptionalZero structure: the conjunction `q_E > 0 ∧ L_invariant ≠ 0` is exactly the data of fields hq_pos and hL_ne_zero. Any inhabitant of ExceptionalZero E carries this by construction. Eliminated by proving it as ⟨ez.hq_pos, ez.hL_ne_zero⟩.",
+      "Axiom count reduced cumulatively: 21 -> 19 -> 17. Remaining 17 axioms appear genuinely needed.",
+      "PATTERN: Look for axioms whose conclusion is a conjunction matching existing structure fields. Such axioms are 'free' eliminations — the structure already encodes the data."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -79,11 +83,11 @@
     {
       "path": "Proofs/BirchSwinnertonDyer.lean",
       "filename": "BirchSwinnertonDyer.lean",
-      "lineCount": 7433,
-      "theoremCount": 253,
-      "axiomCount": 18,
+      "lineCount": 7435,
+      "theoremCount": 254,
+      "axiomCount": 17,
       "defCount": 143,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyer.lean"
     },
