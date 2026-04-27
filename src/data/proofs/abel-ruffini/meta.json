@@ -468,6 +468,21 @@
       "targetId": "solution-of-cubic-oq-03-oq-05",
       "relationship": "foundational",
       "description": "Proves Vieta's formulas for the general cubic $x^3 + ax^2 + bx + c = (x-r_1)(x-r_2)(x-r_3)$ over any commutative ring: $a = -(r_1+r_2+r_3)$, $b = r_1r_2+r_1r_3+r_2r_3$, $c = -r_1r_2r_3$. Machine-verifies the foundational reason Galois groups act by permutations: the polynomial coefficients are the elementary symmetric polynomials $\\sigma_1, \\sigma_2, \\sigma_3$ in the roots, hence invariant under every permutation of the roots — so the Galois group permutes roots while fixing coefficients in the base field. Abel-Ruffini's impossibility for degree $\\geq 5$ amounts to: $S_5$ permutes five roots, but no composition of $+, -, \\times, \\div, \\sqrt[n]{\\phantom{x}}$ can extract individual roots from the symmetric-polynomial data encoded in the four coefficients, precisely because $S_5$ is not solvable. This entry bridges the abstract Abel-Ruffini story to the concrete degree-3 case, illustrating why symmetric polynomial invariance is both what makes Galois theory work (coefficients are symmetric functions) and what prevents radical solving in degree 5 (the symmetry group is too large and non-solvable)"
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "Turing's 1936 undecidability of the halting problem is the computational instantiation of the impossibility paradigm that Abel-Ruffini inaugurated: Abel proved certain algebraic roots cannot be *named* by radicals (an expressibility barrier arising from $S_5$'s non-solvability), Turing proved certain functions cannot be *computed* by any algorithm (a decidability barrier arising from self-referential diagonalization). Both results show that a natural class of problems admits no universal solution within a given formal framework — and both use contradiction against a hypothetical universal method. The implications section cites the halting problem as a direct methodological descendant of Abel's impossibility proof"
+    },
+    {
+      "targetId": "hilbert-10",
+      "relationship": "related",
+      "description": "Matiyasevich's 1970 negative resolution of Hilbert's 10th problem — no algorithm can determine whether an arbitrary Diophantine equation $p(x_1, \\ldots, x_n) = 0$ has integer solutions — is the arithmetic instantiation of Abel-Ruffini's impossibility paradigm: Abel proved that polynomial roots cannot generally be *expressed* by radicals (group-theoretic obstruction: $S_5$ not solvable), while MRDP proves that Diophantine solvability cannot be *decided* by any algorithm (via the equivalence of Diophantine sets and recursively enumerable sets). Both concern polynomial equations, but at different levels: Abel-Ruffini blocks closed-form representation of roots, MRDP blocks algorithmic determination of existence of roots"
+    },
+    {
+      "targetId": "hilbert-13",
+      "relationship": "related",
+      "description": "Hilbert's 13th problem asks whether solutions of degree-7 polynomials can be expressed as superpositions of continuous functions of two variables — extending Abel-Ruffini's expressibility question from radical operations to function composition. The Kolmogorov-Arnold theorem (1956-57) resolves the continuous case positively: every continuous function of $n$ variables CAN be represented using functions of one variable. But the algebraic version — whether roots of degree-7 polynomials require algebraic functions of three or more variables — relates to the Tschirnhaus transformations used in `abel-ruffini-oq-04-oq-07`'s Bring-Jerrard reduction, which eliminates variables from quintics using algebraic substitutions. The classical chain: Bring-Jerrard reduces to $x^5 + x + t$ (one parameter), but the analogous reduction for degree 7 was Hilbert's original concern"
     }
   ],
   "references": [
