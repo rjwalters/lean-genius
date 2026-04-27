@@ -37,9 +37,9 @@
       "Root cause analysis of ShannonEntropy.lean line 811 failure (sum order mismatch in strong_subadditivity)",
       "Proposed fix: normalize ∑ y ∑ z ∑ x sum order before linarith using Finset.sum_comm"
     ],
-    "assumptions": "2 axioms: (1) fano_inequality — declared locally to represent the target axiom in ShannonChannelCoding.lean that this file aims to eliminate; (2) import_shannon_entropy_blocked — placeholder for ShannonEntropy.lean compilation blocker. 0 sorries. Both axioms will be eliminatable once ShannonEntropy.lean's strong_subadditivity proof is fixed.",
+    "assumptions": "1 axiom: import_shannon_entropy_blocked — placeholder for ShannonEntropy.lean compilation blocker. 0 sorries. The axiom will be eliminatable once ShannonEntropy.lean's strong_subadditivity proof is fixed. (Note: fano_inequality appears only inside a block comment illustrating the target axiom in ShannonChannelCoding.lean, not as a real axiom declaration.)",
     "dateAdded": "2026-04-04",
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 168,
     "prerequisites": [
       "Fano's inequality (OQ-03): H(X|Y) ≤ h(P_e) + P_e·log(|X|-1)",
