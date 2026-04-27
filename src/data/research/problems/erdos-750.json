@@ -1,56 +1,87 @@
 {
   "slug": "erdos-750",
-  "title": "Erdős #750",
-  "phase": "OBSERVE",
+  "title": "Erdős #750 — Almost-bipartite graphs of infinite chromatic number",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Let $f(m)$ be some function such that $f(m)\\to \\infty$ as $m\\to \\infty$. Does there exist a graph $G$ of infinite chromatic number such that every subgraph on $m$ vertices contains an independent set of size at least $\\frac{m}{2}-f(m)$?\n\n\n\nIn \\cite{Er69b} Erd\\H{o}s conjectures this for $f(m)=\\epsilon m$ for any fixed $\\epsilon>0$. This follows from a result of Erd\\H{o}s, Hajnal, and Szemer\\'{e}di \\cite{EHS82}, as described by msellke in the comments.\n\nIn \\cite{ErHa67b} Erd\\H{o}s and Hajnal prove this for $f(m)\\geq cm$ for all $c>1/4$.\n\nSee also [75].",
-    "plain": "Let $f(m)$ be some function such that $f(m)\\to \\infty$ as $m\\to \\infty$. Does there exist a graph $G$ of infinite chromatic number such that every subgraph on $m$ vertices contains an independent set of size at least $\\frac{m}{2}-f(m)$?",
-    "whyMatters": []
+    "formal": "Open Erdős conjecture: For any f : ℕ → ℕ with f(m) → ∞, does there exist a graph G with infinite chromatic number such that every m-vertex induced subgraph contains an independent set of size ≥ m/2 − f(m)? Erdős–Hajnal (1967) prove this for f(m) ≥ cm with c > 1/4; Erdős–Hajnal–Szemerédi (1982) extend to f(m) = εm for any ε > 0. The sublinear case (f(m) → ∞ but f(m) = o(m)) — including f(m) = √m and f(m) = log m — remains open.",
+    "plain": "Let f(m) → ∞. Is there an infinite-chromatic graph G such that every m-vertex subgraph has an independent set of size ≥ m/2 − f(m)? Erdős–Hajnal (1967) and Erdős–Hajnal–Szemerédi (1982) resolve the linear case; sublinear deviations (f(m) = √m, log m, etc.) are open.",
+    "whyMatters": [
+      "Open Erdős conjecture connecting global graph property (infinite chromatic number) with local sparsity (large independent sets in every subgraph)",
+      "Erdős–Hajnal–Szemerédi 1982 resolves the linear case via 'almost bipartite large chromatic graphs' — a deep construction",
+      "Sublinear case f(m) = o(m) remains open and would refine the local-vs-global gap",
+      "Connected to Erdős #75 (independent sets of size n^{1−ε} with χ = ℵ₁) — a stronger local condition"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "bipartite_benchmark in Erdos750Problem.lean: bipartite graphs satisfy maxIndSetSize G S ≥ S.card / 2 (the trivial baseline — proves only the m/2 component, not the deviation)",
+      "fin2_ne_zero_eq_one (utility): ∀ (i : Fin 2), i ≠ 0 → i = 1",
+      "Erdős–Hajnal (1967, NOT in Lean): the conjecture holds for f(m) ≥ cm with c > 1/4",
+      "Erdős–Hajnal–Szemerédi (1982, NOT in Lean): extends to f(m) = εm for any ε > 0"
+    ],
+    "open": [
+      "Sublinear case: f(m) = o(m) with f(m) → ∞ — Erdős' original conjecture (Er69b)",
+      "Specific sublinear cases: f(m) = √m, f(m) = log m",
+      "FORMALIZATION GAP: The open conjecture is described in orphan docstrings (lines 49–67 of Erdos750Problem.lean) but NOT formalized as a Lean proposition. There is no `axiom erdos_750` or analogous declaration. A future session should add `axiom erdos_750 (f : ℕ → ℕ) (hf : Tendsto f atTop atTop) : ∃ V G m₀, HasInfiniteChromatic G ∧ AlmostBipartite G f m₀`."
+    ],
+    "goal": "Add `axiom erdos_750` (and possibly axiomatized Erdős–Hajnal 1967 / EHS 1982 statements) so the file properly formalizes the open conjecture. The current 0-axiom state is misleading — it reflects formalization absence, not formalization completeness."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T08:18:33.645Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ORIENT",
+    "since": "2026-04-27T22:20:00Z",
+    "iteration": 2,
+    "focus": "Identified that the open conjecture is described only in orphan docstrings; recommended axiomatization to make it a proper Lean proposition.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "ACT (next session with disk for Docker builds): convert the orphan docstrings at lines 49–67 of Erdos750Problem.lean into proper Lean declarations — `axiom erdos_750`, `axiom erdos_hajnal_1967`, `axiom ehs_1982` — so the file's axiom count accurately reflects the conjectural assumptions it depends on.",
     "attemptCounts": {
-      "total": 0,
+      "total": 2,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PARTIAL: bipartite_benchmark and fin2_ne_zero_eq_one proved, but the open conjecture is NOT formalized as a Lean proposition. Lines 49–67 of Erdos750Problem.lean contain orphan docstrings describing the conjecture and known results, with no corresponding axiom or theorem declarations. The 0-axiom count is misleading — it reflects absence of formalization, not completeness. Session 2 (2026-04-27) identified this gap and recommended adding `axiom erdos_750` plus axiomatized statements of the known Erdős–Hajnal 1967 and EHS 1982 results.",
     "builtItems": [
       "Proved fin2_ne_zero_eq_one: ∀ (i : Fin 2), i ≠ 0 → i = 1 (by decide)",
-      "Proved bipartite_benchmark: bipartite graphs have independent sets ≥ m/2, via complement-filter pigeonhole on 2-coloring classes"
+      "Proved bipartite_benchmark: bipartite graphs have independent sets ≥ m/2, via complement-filter pigeonhole on 2-coloring classes",
+      "(Session 2) Documented formalization gap: open conjecture described only in orphan docstrings, no Lean proposition exists for it"
     ],
     "insights": [
       "IsBipartite = Colorable 2 in Mathlib; coloring is a Hom to completeGraph (Fin 2)",
       "completeGraph.Adj is definitionally Ne, so c.map_rel gives c v ≠ c w directly",
       "Finset.filter_card_add_filter_neg_card_eq_card gives the partition identity for complement filters",
-      "Finset.le_sup provides the bridge from independent-set membership to maxIndSetSize bound"
+      "Finset.le_sup provides the bridge from independent-set membership to maxIndSetSize bound",
+      "The bipartite_benchmark theorem proves only the trivial m/2 baseline — bipartite graphs achieve f(m) = 0 deviation but have χ = 2, so they are not counterexamples to or witnesses of the conjecture",
+      "Erdős–Hajnal–Szemerédi 1982 ('On almost bipartite large chromatic graphs') resolves the linear case f(m) = εm via probabilistic construction; the sublinear case is what remains genuinely open",
+      "The current Lean file's 0-axiom 1-theorem state is misleading: it would benefit from explicit axiomatization of (a) the open conjecture itself, and (b) the proved-in-literature Erdős–Hajnal 1967/EHS 1982 results, so that the axiom count honestly tracks the conjectural assumptions"
     ],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "mathlibGaps": [
+      "Mathlib lacks chromatic-number machinery sufficient to prove EHS 1982 directly; axiomatizing it is the appropriate intermediate step",
+      "No probabilistic-construction lemmas for almost-bipartite graphs in Mathlib"
+    ],
+    "nextSteps": [
+      "ACT (next session with disk): add axiom erdos_750 (f : ℕ → ℕ) (hf : Tendsto f atTop atTop) : ∃ V G m₀, HasInfiniteChromatic G ∧ AlmostBipartite G f m₀",
+      "Optional: add axiom erdos_hajnal_1967 (proves the c > 1/4 case) and axiom ehs_1982 (proves the linear ε > 0 case) — these are KNOWN results not currently in Mathlib",
+      "Convert orphan docstrings at lines 49–67 into proper Lean declarations or move them into a single block-comment section so they don't masquerade as docstrings",
+      "Build verify the axiomatized file and update axiomCount in JSON metadata (will become ≥1)"
+    ],
     "markdown": "# Erdős #750 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(m)$ be some function such that $f(m)\\to \\infty$ as $m\\to \\infty$. Does there exist a graph $G$ of infinite chromatic number such that every subgraph on $m$ vertices contains an independent set of size at least $\\frac{m}{2}-f(m)$?\n\n\n\nIn \\cite{Er69b} Erd\\H{o}s conjectures this for $f(m)=\\epsilon m$ for any fixed $\\epsilon>0$. This follows from a result of Erd\\H{o}s, Hajnal, and Szemer\\'{e}di \\cite{EHS82}, as described by msellke in the comments.\n\nIn \\cite{ErHa67b} Erd\\H{o}s and Hajnal prove this for $f(m)\\geq cm$ for all $c>1/4$.\n\nSee also [75].\n\n\n\n\nReferences\n\n\n[EHS82] Erd\\H{o}s, P. and Hajnal, A. and Szemer\\'{e}di, E., On almost bipartite large chromatic graphs. Theory and practice of combinatorics (1982), 117-123.\n\n[Er69b] Erd\\H{o}s, P., Problems and results in chromatic graph theory. Proof Techniques in Graph Theory (Proc. Second Ann\nArbor Graph Theory Conf., Ann Arbor, Mich.,\n1968) (1969), 27-35.\n\n[ErHa67b] Erd\\H{o}s, P. and Hajnal, Andr\\'as, On chromatic graphs. Mat. Lapok (1967), 1--4.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #4\n- Problem #75\n- Problem #749\n- Problem #751\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er94b\n- Er95d\n- Er69b\n- EHS82\n- ErHa67b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "graph-theory",
+    "chromatic-number",
+    "independent-sets",
+    "open-conjecture",
+    "formalization-gap"
   ],
   "relatedProofs": [
-    "erdos-7",
     "erdos-75",
-    "erdos-750"
+    "erdos-749",
+    "erdos-751"
   ],
   "references": {
     "papers": [],
@@ -58,7 +89,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T08:18:33.645Z",
-  "lastUpdate": "2026-03-13T07:52:17.052Z",
+  "lastUpdate": "2026-04-27T22:20:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
