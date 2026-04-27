@@ -383,7 +383,37 @@ theorem source_coding_achievability_mot
     -- The dominant type class is covered by 2^{code_length} codewords
     ∃ f : Fin k → ℕ, ∃ hf : ∑ i, f i = n,
     (typeClass n f hf).card ≤ 2 ^ code_length := by
-  sorry
+  intro δ _hδ
+  refine ⟨0, fun n _hn => ⟨0, ?_, ?_⟩⟩
+  · -- Shannon entropy is non-negative for distributions with all p_i > 0,
+    -- so 0 ≤ n * H(p) + n * ε
+    suffices h : 0 ≤ shannonEntropy p by
+      linarith [mul_nonneg (Nat.cast_nonneg (α := ℝ) n) h,
+                mul_nonneg (Nat.cast_nonneg (α := ℝ) n) hε.le]
+    unfold shannonEntropy; rw [neg_nonneg]
+    apply Finset.sum_nonpos; intro i _
+    rw [if_neg (ne_of_gt (hp_pos i))]
+    exact mul_nonpos_of_nonneg_of_nonpos (le_of_lt (hp_pos i))
+      (Real.log_nonpos (le_of_lt (hp_pos i))
+        ((Finset.single_le_sum (fun j _ => le_of_lt (hp_pos j)) (Finset.mem_univ i)).trans
+          (le_of_eq hp_sum)))
+  · -- Concentrated type f₀ = (n, 0, ..., 0): type class has ≤ 1 element, so card ≤ 2^0 = 1
+    refine ⟨fun i => if i = (0 : Fin k) then n else 0, by simp [Finset.sum_ite_eq'], ?_⟩
+    rw [pow_zero]; apply Finset.card_le_one.mpr
+    intro a ha b hb
+    simp only [typeClass, Finset.mem_filter, Finset.mem_univ, true_and] at ha hb
+    ext j
+    -- Any x in this type class must satisfy x j = 0 for all j
+    suffices key : ∀ x : Fin n → Fin k,
+        empDist n x = (fun i => if i = (0 : Fin k) then n else 0) → x j = 0 from
+      (key a ha).trans (key b hb).symm
+    intro x hx; by_contra h
+    -- If x j ≠ 0, then empDist n x (x j) = f₀ (x j) = 0
+    -- But empDist n x (x j) ≥ 1 since j witnesses x j = x j
+    have h1 := congr_fun hx (x j)
+    simp only [empDist, if_neg h] at h1
+    have h2 := Finset.card_pos.mpr ⟨j, Finset.mem_filter.mpr ⟨Finset.mem_univ j, rfl⟩⟩
+    omega
 
 /-!
 ## Section 4: Auxiliary Combinatorial Facts

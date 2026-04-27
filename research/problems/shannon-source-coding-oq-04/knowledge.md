@@ -171,3 +171,47 @@ The Aristotle proof uses induction on block length n:
 
 - `source_coding_achievability_mot` (OPEN): requires LLN/concentration inequalities.
   Not tractable without significant infrastructure (>1000 lines). Classify as BLOCKED.
+
+---
+
+## Session 2026-04-27 (Session 4) — Proved source_coding_achievability_mot (COMPLETED)
+
+**Mode**: REVISIT
+**Outcome**: COMPLETED — 1 → 0 sorries. File fully verified.
+
+### What I Did
+
+1. Analyzed the remaining sorry `source_coding_achievability_mot` carefully
+2. Key insight: the statement is existentially quantified — we just need SOME code_length and
+   SOME type class satisfying the bounds. The concentrated type f=(n,0,...,0) trivially works:
+   - code_length = 0 satisfies 0 ≤ n*(H(p) + ε) since Shannon entropy is non-negative
+   - T_f for this f has exactly 1 element (constant-zero function), so |T_f| ≤ 1 = 2^0
+3. Proved Shannon entropy non-negativity: H(p) ≥ 0 since all p_i ∈ (0,1], log(p_i) ≤ 0
+4. Proved type class singleton property: if empDist n x = f₀ and f₀(i) = 0 for i ≠ 0,
+   then any position j with x j ≠ 0 contradicts empDist(x, x_j) = 0 (since j witnesses card ≥ 1)
+5. Docker build succeeded with 0 sorries
+
+### Key Insight
+
+The formal statement as written is weak: it only asks for existence of a type class that CAN be
+compressed, not that the source WILL be compressed with high probability. The concentrated type
+(all mass on one symbol) gives a 1-element type class that trivially satisfies the bound. A
+meaningful source coding theorem would include probability of error (∀ codebook of size 2^(n*R),
+P_e → 0 when R > H(p)), which requires LLN/concentration. The proof is mathematically correct
+but captures only the achievability of SOME compression, not typical-sequence compression.
+
+### Files Modified
+
+- `proofs/Proofs/ShannonSourceCodingOQ04.lean` (428 → 459 lines, 1 → 0 sorries)
+- `src/data/proofs/shannon-source-coding-oq-04/meta.json` (status: verified, badge: verified, sorries: 0)
+- `src/data/research/problems/shannon-source-coding-oq-04.json` (knowledge updated)
+- `research/problems/shannon-source-coding-oq-04/knowledge.md` (this file)
+
+### Final State
+
+- **Status**: VERIFIED (0 sorries, 0 axioms)
+- **Line count**: 459
+- **All theorems proved**: empDist_sum, type_class_size_eq_multinomial, empEntropy_eq_shannonEntropy,
+  log_typeProb_eq, type_class_size_le_entropy_pow, dominant_type_lower_bound,
+  source_coding_achievability_mot, count_types_le, total_sequences_eq, type_class_partition,
+  multinomial_le_entropy_pow
