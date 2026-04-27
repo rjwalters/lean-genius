@@ -48,7 +48,6 @@
       "Cycle structure: vertices list with adjacency, closing edge, length >= 3",
       "Cycle.isOdd, Cycle.isDiagonal, Cycle.diagonalCount: odd cycle and diagonal predicates",
       "IsK4Free, chromaticNumber: clique-free and coloring number definitions",
-      "larson_one_diagonal: Larson's 1979 theorem (axiomatized)",
       "BollobasErdosAlternative: structural alternatives for diagonal-free K4-free graphs",
       "voss_two_diagonals: Voss's 1982 strengthening (axiomatized)",
       "voss_implies_larson: verified corollary (>= 2 implies >= 1)",
@@ -103,8 +102,8 @@
       "title": "Part 2: Larson's Theorem (1979)",
       "startLine": 70,
       "endLine": 95,
-      "summary": "`larson_one_diagonal` (axiom): $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 1$ diagonal. `BollobasErdosAlternative` structure and `bollobas_erdos_conjecture` (axiom).",
-      "mathContext": "Formal definition: `larson_one_diagonal` (axiom): $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 1$ diagonal. `BollobasErdosAlternative` structure and `bollobas_erdos_conjecture` (axiom)."
+      "summary": "Larson's 1979 theorem: $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 1$ diagonal (documented in comments). `BollobasErdosAlternative` structure for the Bollobás-Erdős conjecture.",
+      "mathContext": "Larson's theorem is documented but not independently axiomatized; it follows as a corollary of `voss_two_diagonals`. `BollobasErdosAlternative` structure captures the structural alternatives."
     },
     {
       "id": "voss-theorem",
