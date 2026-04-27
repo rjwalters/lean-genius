@@ -837,10 +837,9 @@ theorem positive_measure_gives_ap (A : Set ℕ) (a N : ℕ) (hN : 0 < N)
   -- cylinderZero membership for setIndicator: ↔ (j*d + (n + a)) ∈ A
   have key : ↑(⟨j, hj⟩ : Fin k) * d + (n + a) ∈ A := by
     exact (shift_indicator_zero A _).mp (by
-      simp only [Fin.val_mk, cylinderZero, cylinder, Set.mem_setOf_eq, shift_iterate,
+      simp only [cylinderZero, cylinder, Set.mem_setOf_eq, shift_iterate,
                   zero_add] at hmem ⊢; exact hmem)
-  simp only [Fin.val_mk] at key
-  omega
+  rwa [show n + a + j * d = ↑(⟨j, hj⟩ : Fin k) * d + (n + a) from by simp; ring]
 
 end ReturnProperty
 
