@@ -1,7 +1,7 @@
 {
   "slug": "vietas-formulas-oq-03-oq-01",
   "title": "Generalize to $n$ variables using `MvPolynomial",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-03-28T20:58:08-07:00",
     "iteration": 1,
-    "focus": "Surveyed: Mathlib has general Newton identities, needs bridging",
+    "focus": "Already verified in gallery: 14 theorems, 0 axioms, 0 sorries — see Proofs/VietasFormulasOQ03OQ01.lean",
     "blockers": [],
-    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "nextAction": "None — verified",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 0,
@@ -70,7 +70,7 @@
     "mathlib": []
   },
   "started": "2026-03-29T04:28:18.978Z",
-  "lastUpdate": "2026-03-29T04:28:18.988Z",
+  "lastUpdate": "2026-04-27T17:14:40Z",
   "leanFiles": [
     {
       "path": "Proofs/VietasFormulas.lean",

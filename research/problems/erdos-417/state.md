@@ -1,16 +1,27 @@
 # Current State
 
-**Phase**: NEW
-**Since**: 2026-01-13T02:38:27.587Z
-**Iteration**: 1
+**Phase**: COMPLETED
+**Since**: 2026-01-13T02:38:27.587Z (initial); state.md sync 2026-04-27
+**Iteration**: 2
 
 ## Current Focus
 
-Initial exploration of the problem.
+Completed. `proofs/Proofs/Erdos417Problem.lean` has 17 theorems, 1 axiom
+(`erdos_417_conjecture` — the open Erdős conjecture itself, irreducible),
+0 sorries.
+
+Structural results proved:
+- V', V monotonicity
+- Totient classification (0 not totient; all totient values are 0, 1, or even)
+- V_element_structure
+- erdos_417_ratio_gt_one (consequence of the infinite conjecture)
+
+A previous incorrect axiom (`erdos417LimitExists` — finite limit) was removed
+because it was inconsistent with the infinite-limit conjecture.
 
 ## Active Approach
 
-None yet.
+None — work is done. The single remaining axiom is the open Erdős conjecture.
 
 ## Blockers
 
@@ -18,10 +29,10 @@ None.
 
 ## Next Action
 
-Begin problem exploration.
+None — pool entry marked completed and claim released.
 
 ## Attempt Counts
 
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1

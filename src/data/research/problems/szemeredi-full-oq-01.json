@@ -16,14 +16,15 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "BLOCKED",
     "since": "2026-04-22T13:03:46.383Z",
-    "iteration": 3,
-    "focus": "BLOCKED: file has 35 Mathlib API drift errors; needs upgrade session before further proof work",
+    "iteration": 4,
+    "focus": "BLOCKED on Mathlib API drift in FurstenbergCorrespondenceOQ01.lean (35 errors). Pool status: blocked — re-claim only after Mathlib upgrade session repairs the file.",
     "blockers": [
-      "FurstenbergCorrespondenceOQ01.lean has 35 build errors due to Mathlib v4.26 API drift; no Lean CI exists to detect this rot."
+      "FurstenbergCorrespondenceOQ01.lean has 35 build errors due to Mathlib v4.26 API drift; pool pin still at 2df2f0150c (v4.26.0) as of 2026-04-27 22:30 UTC.",
+      "No Lean CI workflow exists to detect upstream API drift on PRs."
     ],
-    "nextAction": "Defer to Mathlib upgrade session; release claim.",
+    "nextAction": "Operator must upgrade Mathlib pin and repair 35 errors (categories documented in knowledge.md Session 6) before re-marking pool entry as available.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: Session 5 (2026-04-27) wrote complete ~60-line proof of limit_invariant_on_cylinder (T-invariance at weak-* limits) but discovered the surrounding file has 35 pre-existing Mathlib API drift errors. File cannot build. Recent fix PRs were merged without Lean CI validation. Repair requires dedicated Mathlib upgrade session before further axiom-elimination work is meaningful.",
+    "progressSummary": "BLOCKED: Session 5 (2026-04-27) wrote complete ~60-line proof of limit_invariant_on_cylinder (T-invariance at weak-* limits) but discovered the surrounding file has 35 pre-existing Mathlib API drift errors. Session 6 (2026-04-27, ~5h later) confirmed blocker unchanged (no commits to file, no Mathlib pin upgrade) and marked pool entry status='blocked' to stop the re-claim cycle. File cannot build. Repair requires dedicated Mathlib upgrade session.",
     "builtItems": [
       "finsetDirac_apply: sum of Dirac measures on measurable set = filter cardinality (OQ01.lean:316)",
       "cesaroMeasure: N-step Cesaro probability measure definition (OQ01.lean:334)",
@@ -55,7 +56,9 @@
       "open Classical needed for DecidablePred in Finset.filter with set membership predicates",
       "BLOCKER: FurstenbergCorrespondenceOQ01.lean has 35 errors from Mathlib API drift; recent fix PRs (#13069) merged without verifying build (no CI Lean workflow). Cannot add new theorems until Mathlib upgrade session repairs all 35 errors.",
       "Proof of limit_invariant_on_cylinder: Portmanteau (clopen frontier=∅ ⟹ ENNReal version) + ENNReal.Tendsto.add (probability measure values ≠ ⊤) + le_of_tendsto_of_tendsto via cesaroMeasure_preimage_le/ge bounds; takes both directions then le_antisymm.",
-      "Repo has NO Lean build CI workflow — only label-external-issues runs on PRs. Recent merge of #13069 with unchecked test plan is symptom of this gap."
+      "Repo has NO Lean build CI workflow — only label-external-issues runs on PRs. Recent merge of #13069 with unchecked test plan is symptom of this gap.",
+      "Session 6 (2026-04-27, ~5h after Session 5): no Mathlib pin upgrade, no commit to FurstenbergCorrespondenceOQ01.lean. Re-claim via depth-first selector wastes researcher cycles when blocker is unchanged.",
+      "Action: pool entry marked status='blocked' (claim-problem.sh:292 excludes both completed and blocked from claim-random selection) so other researchers stop re-discovering the same blocker. Operator must explicitly clear status to 'available' after Mathlib upgrade session."
     ],
     "mathlibGaps": [
       "Prokhorov theorem: sequential compactness of ProbabilityMeasure on compact metrizable space (~150-200 lines to assemble from Mathlib v4.26 ingredients)",
@@ -87,7 +90,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.383Z",
-  "lastUpdate": "2026-04-27T12:00:00.000Z",
+  "lastUpdate": "2026-04-27T22:30:00.000Z",
   "significance": 9,
   "tractability": 4
 }

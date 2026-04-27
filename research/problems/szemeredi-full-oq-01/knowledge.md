@@ -195,9 +195,66 @@ is: (a) the proof structure documented above, and (b) this blocker discovery.
 
 ---
 
+## Session 2026-04-27 (Session 6) — Pool Status: Blocked
+
+**Mode**: REVISIT (re-claim via depth-first selection, ~5 hours after Session 5)
+**Outcome**: meta-progress (pool status update; no code change)
+
+### What I Did
+
+Verified Session 5's blocker is unchanged:
+- No commits to `FurstenbergCorrespondenceOQ01.lean` since #13150 (Session 5).
+- No Mathlib pin upgrade in `proofs/lake-manifest.json` (still pinned to
+  `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` / v4.26.0).
+- No Lean CI workflow added (only labeling workflows still run on PRs).
+
+### Why Re-Claiming Wastes Cycles
+
+The depth-first selector (knowledge_score = 30, RICH) keeps prioritizing this
+problem even though it is unworkable until Mathlib v4.27+ landing or a manual
+upgrade session repairs the 35 documented errors. Two researchers in one day
+re-claiming, reading the same blocker, and releasing produces no progress.
+
+### Action Taken
+
+Marked the candidate-pool entry `status: "blocked"` so it is excluded from
+`claim-random` selection until someone explicitly clears the blocker. The
+`update <id> blocked` path in `claim-problem.sh` is the supported mechanism
+(see `claim-problem.sh:292` — selector excludes both `completed` and `blocked`).
+
+To resume work on this problem, an operator must:
+1. Either upgrade Mathlib pin in `proofs/lake-manifest.json` and repair the 35
+   API-drift errors in `FurstenbergCorrespondenceOQ01.lean`, OR
+2. Manually update the pool entry back to `available` after a separate fix.
+
+### Concrete Upgrade Inventory (for the eventual upgrade session)
+
+The 35 errors fall into four categories per Session 5's report:
+
+| Category | Sample (line) | Likely Fix |
+|----------|---------------|------------|
+| Renamed lemma | `isOpen_eq_of_isOpen_singleton` (101) | Use `IsOpen.preimage continuous_apply (isOpen_discrete {b}).isOpen`-style form, or whatever the new Portmanteau / topology API names |
+| Removed instance | `Finite.instCompactSpace` (239) | Replace with `inferInstance` (Bool is Finite ⟹ CompactSpace via current type-class resolution) |
+| Tactic semantics | `shift_iterate` (71): `Function.iterate_succ' + ring_nf` no longer closes | Likely needs `Function.iterate_succ_apply'` + manual `omega` or explicit `Nat.add_succ` rewrite |
+| `simp` reduction | `setIndicator` does not reduce to `if` (146) | Add `unfold setIndicator` before `simp` / `split`, or use `by_cases h : n ∈ A` |
+
+These categories cover the 35 errors per the Session 5 grep audit. A focused
+upgrade session should be able to repair all four in O(1 hour) each.
+
+### Recommendation Reiterated
+
+Add a Lean build CI workflow (already noted in Session 5). A `Proofs.YourProof`
+build matrix on PR would catch this rot at merge time, not weeks later when a
+researcher claims and discovers the file is uncompilable.
+
+---
+
 ## Dead Ends
 
 - Cannot enumerate AP witnesses case-by-case (infinitely many cases)
 - Cannot use Poincaré recurrence alone for k ≥ 3 (structural argument needed)
 - Cannot add new theorems on top of broken file (fake formalization;
   Mathlib upgrade required first)
+- Re-claiming via depth-first selector when the file does not build only
+  produces duplicate "blocker discovered" reports (Sessions 5 and 6); pool
+  status `blocked` is the right signal here.

@@ -1,7 +1,7 @@
 {
   "slug": "shannon-source-coding-oq-01",
   "title": "Can rate-distortion theory (lossy compression with distortion constraint $D$)...",
-  "phase": "NEW",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-03-30T17:32:58.852Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Already axiomatized in gallery: 17 theorems, 1 axiom (R(D) convexity, deep), 0 sorries — see Proofs/ShannonSourceCodingOQ01.lean",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — gallery axiomatized; convexity axiom needs log-sum inequality + optimization (deep, deferred)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -66,7 +66,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T17:32:58.852Z",
-  "lastUpdate": "2026-03-30T19:15:00Z",
+  "lastUpdate": "2026-04-27T17:16:10Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [

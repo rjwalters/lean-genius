@@ -1,7 +1,7 @@
 {
   "slug": "sperner-ndim-oq-04",
   "title": "n-Dimensional Sperner: Kuhn Path-Following Algorithm Formalization",
-  "phase": "ACT",
+  "phase": "BLOCKED",
   "status": "blocked",
   "tier": "A",
   "path": "full",
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "BLOCKED",
     "since": "2026-04-27T18:30:00.000Z",
     "iteration": 9,
     "focus": "BLOCKED on walkTrace_reversal — needs ~150 lines of kuhnWalkSeq infrastructure or SimpleGraph reformulation.",
@@ -129,7 +129,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.382Z",
-  "lastUpdate": "2026-04-24T00:00:00.000Z",
+  "lastUpdate": "2026-04-27T17:24:06Z",
   "significance": 8,
   "tractability": 6,
   "leanFiles": [

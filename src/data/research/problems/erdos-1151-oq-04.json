@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1151-oq-04",
   "title": "Prove erdos_1941_divergence via Lebesgue Function Growth at Chebyshev Nodes",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -27,14 +27,14 @@
     "goal": "Prove erdos_1941_divergence to eliminate the axiom from the gallery"
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "BLOCKED",
     "since": "2026-04-21",
     "iteration": 1,
     "focus": "Build blocked by Mathlib API drift in main file. Companion file sorry-free. Awaiting Mechanic repair.",
     "blockers": [
       "Erdos1151OQ04.lean fails to build on origin/main: 17+ Mathlib API drift errors. Mechanic must fix before research can resume."
     ],
-    "nextAction": "Wait for Mechanic to fix main file API drift; then re-attempt sin_ge_sin_of_mem_Icc helper.",
+    "nextAction": "Wait for Mechanic to repair Mathlib API drift in Erdos1151OQ04.lean (div_le_div_iff renaming, Nat.eq_or_gt_of_le removal). Cannot resume work until upstream build is green.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -115,7 +115,7 @@
     "mathlib": []
   },
   "started": "2026-04-21T19:30:00.000Z",
-  "lastUpdate": "2026-04-27T12:50:00.000Z",
+  "lastUpdate": "2026-04-27T17:23:30Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
