@@ -1,7 +1,7 @@
 {
   "slug": "cantor-diagonalization-oq-01-oq-01",
   "title": "Does there exist a cardinal κ with ℵ₀ < κ < 2^ℵ₀",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-03-28T15:56:29-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated 1 sorry (fixed hypothesis bug in not_ch_multiple_intermediates) and 3 vacuous axioms (converted True-returning axioms to theorems). File now 0 sorries, 0 axioms.",
+    "progressSummary": "STABLE-AXIOMATIZED: CantorDiagonalizationOQ01OQ01.lean (303 lines, 0 sorries, 0 axioms). Gallery meta correctly reports status=axiomatized (open CH-related conjecture per CLAUDE.md policy), axiomCount=0, badge=wip. Earlier work eliminated 1 sorry and 3 vacuous (True-returning) axioms; file is in stable state.",
     "builtItems": [
       "Created CantorDiagonalizationOQ01OQ01.lean (307 lines, 13 theorems, 3 axioms)",
       "Proved intermediate_iff_not_ch: central equivalence",
