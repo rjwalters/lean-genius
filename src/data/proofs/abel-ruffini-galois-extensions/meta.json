@@ -287,6 +287,24 @@
       "year": "2024",
       "venue": "https://github.com/leanprover-community/mathlib4",
       "note": "The Lean 4 mathematical library providing the core infrastructure for this formalization: `IsSolvable`, `solvable_of_ker_le_range`, `Equiv.Perm.not_solvable`, `alternatingGroup.isSimpleGroup_five`, `solvableByRad.isSolvable'`, and `IsGalois.card_aut_eq_finrank`. This file's `badge: mathlib` indicates that the main solvability biconditional is proved by combining Mathlib results rather than from scratch."
+    },
+    {
+      "authors": [
+        "W. Burnside"
+      ],
+      "title": "On groups of order $p^\\alpha q^\\beta$",
+      "year": "1904",
+      "venue": "Proceedings of the London Mathematical Society 2(1): 388–392",
+      "note": "Burnside's theorem: every finite group whose order has at most two distinct prime factors is solvable. This sharply complements the threshold proved here: $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$ has *three* distinct primes — exactly one more than Burnside's bound — explaining why $A_5$ is the minimal non-solvable group. The original proof uses character theory (representation theory in characteristic 0); a character-free proof was given by Goldschmidt (1970) and Matsuyama (1973) using the focal subgroup theorem. Directly grounds the openQuestion on formalizing Burnside in Lean."
+    },
+    {
+      "authors": [
+        "D. M. Goldschmidt"
+      ],
+      "title": "A group theoretic proof of the $p^\\alpha q^\\beta$ theorem for odd primes",
+      "year": "1970",
+      "venue": "Mathematische Zeitschrift 113: 373–375",
+      "note": "Character-free proof of Burnside's theorem for the case where both primes are odd. Together with Matsuyama (1973) — who handled the case $p = 2$ — provides a fully elementary route to Burnside's $p^a q^b$ theorem, sidestepping representation theory. Cited in the openQuestion as the technical path most amenable to Lean formalization, since Mathlib has stronger group-theoretic infrastructure than character-theoretic infrastructure."
     }
   ],
   "sections": [
