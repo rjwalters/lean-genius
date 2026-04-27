@@ -22,9 +22,9 @@
     "erdosNumber": 854,
     "erdosUrl": "https://erdosproblems.com/854",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
-    "lineCount": 180,
-    "assumptions": "0 axioms. 0 sorries. All results formalized without axioms.",
+    "axiomCount": 4,
+    "lineCount": 194,
+    "assumptions": "4 axioms encoding the Erdős conjectures and known bounds: (1) maxGap_bound (Jacobsthal function bound), (2) lacampagne_selfridge_counterexample (computational disproof for n₆=30030), (3) ErdosProblem854_missing_gap_growth (Part 1, open), (4) ErdosProblem854_many_gaps (Part 2, open). 0 sorries. All supporting infrastructure (primorials, coprime residues, gap sets, gap evenness) formally proved without axioms.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -88,33 +88,33 @@
     {
       "id": "known-bounds",
       "title": "Jacobsthal Bound and First Missing Gap",
-      "startLine": 108,
-      "endLine": 128,
-      "summary": "Jacobsthal bound axiomatized. First missing gap defined with proved existence witness (sup+1 argument) and proved non-membership via Nat.find_spec.",
+      "startLine": 153,
+      "endLine": 173,
+      "summary": "Jacobsthal bound axiomatized (maxGap_bound: maxGap(primorial k) ≤ 2·pₖ₋₁). First missing gap defined with proved existence witness (sup+1 argument) and proved non-membership via Nat.find_spec.",
       "mathContext": "firstMissingGap existence and non-membership both proved; Jacobsthal bound axiomatized."
     },
     {
       "id": "counterexample",
       "title": "Lacampagne-Selfridge Counterexample",
-      "startLine": 130,
-      "endLine": 133,
-      "summary": "Records the computational disproof of Erdős's strong conjecture for n₆ = 30030.",
+      "startLine": 175,
+      "endLine": 178,
+      "summary": "Records the computational disproof of Erdős's strong conjecture for n₆ = 30030 (axiom lacampagne_selfridge_counterexample).",
       "mathContext": "Axiomatized: Computational fact about specific primorial."
     },
     {
       "id": "conjecture-part1",
       "title": "Conjecture Part 1: Missing Gap Growth",
-      "startLine": 137,
-      "endLine": 140,
-      "summary": "States that the smallest missing gap grows without bound.",
+      "startLine": 182,
+      "endLine": 185,
+      "summary": "States that the smallest missing gap grows without bound (axiom ErdosProblem854_missing_gap_growth).",
       "mathContext": "Open conjecture: axiomatized."
     },
     {
       "id": "conjecture-part2",
       "title": "Conjecture Part 2: Proportional Distinct Gaps",
-      "startLine": 143,
-      "endLine": 147,
-      "summary": "States that the number of distinct gap values is proportional to the maximal gap.",
+      "startLine": 187,
+      "endLine": 192,
+      "summary": "States that the number of distinct gap values is proportional to the maximal gap (axiom ErdosProblem854_many_gaps).",
       "mathContext": "Open conjecture: axiomatized."
     }
   ],
@@ -139,8 +139,8 @@
       "Nat"
     ],
     "namespace": "Erdos854",
-    "lineCount": 180,
-    "axiomCount": 0,
+    "lineCount": 194,
+    "axiomCount": 4,
     "theoremCount": 16,
     "definitionCount": 8,
     "path": "Proofs/Erdos854Problem.lean",
