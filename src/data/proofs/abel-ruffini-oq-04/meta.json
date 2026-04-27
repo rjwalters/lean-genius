@@ -136,6 +136,21 @@
       "targetId": "abel-ruffini-oq-04-oq-07",
       "relationship": "extended-by",
       "description": "Formalizes the Bring-Jerrard reduction (Tschirnhaus substitution eliminating the $x^4$ term) and the Bring radical $\\text{BR}(t)$ — the unique real root of $x^5 + x + t = 0$, proved via IVT and strict monotonicity. Addresses the open question (listed below) about formalizing 'beyond-radicals' solutions: while Abel-Ruffini rules out the four basic radical operations, $\\text{BR}(t)$ provides a closed-form expression using a transcendental function that is not a radical"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-02",
+      "relationship": "extended-by",
+      "description": "Proves the alternating-group analogue: $A_n$ is solvable $\\iff n \\leq 4$. Together with `abel-ruffini-oq-04-oq-02` (the symmetric-group classification), this gives the complete bidirectional solvability classification for both families with the same threshold at $n = 5$. The symmetric-group threshold ($S_n$ solvable $\\iff n \\leq 4$) is driven precisely by $A_5$ being the smallest non-abelian simple group — the fact this entry's `a5_is_simple` extracts from Mathlib"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
+      "relationship": "complementary",
+      "description": "Explains why $|A_5| = 60$ is the precise solvability threshold: every finite group of order $< 60$ is solvable. Formalizes the building blocks (p-group $\\to$ nilpotent $\\to$ solvable for prime powers; Burnside's $p^a q^b$ theorem for two-prime orders; direct arguments for orders 30 and 42). The companion proof that $S_5$ is not solvable matches this entry's `s5_not_solvable`. Together they establish that 60 is the *minimal* order at which non-solvability first appears, sharpening the qualitative 'A₅ is smallest non-abelian simple' statement into a quantitative threshold"
+    },
+    {
+      "targetId": "inverse-galois-oq-06",
+      "relationship": "complementary",
+      "description": "Provides a concrete witness on the inverse-Galois side: $A_5$ is realizable as $\\text{Gal}(q/\\mathbb{Q})$ for $q(x) = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$ (irreducible by Eisenstein at $p = 5$, Galois group identified via Sylow theory). This entry shows $A_5$'s simplicity *blocks* radical solvability of the generic quintic; the inverse-Galois entry shows the same group is *attainable* as a Galois group over $\\mathbb{Q}$. The two entries together exhibit $A_5$'s dual role: the first non-abelian simple group is both the obstruction to radical formulas (this entry, Step 3) and a realizable Galois group with an explicit polynomial witness"
     }
   ],
   "overview": {
