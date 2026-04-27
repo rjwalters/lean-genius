@@ -98,6 +98,21 @@
       "targetId": "arithmetic-series-oq-00",
       "relationship": "answers-open-question",
       "description": "Directly answers the second open question of ArithmeticSeriesOQ00: the weighted generalization ∑(2k-1)k² = (∑k)² is FALSE."
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "ancestor",
+      "description": "Root: the basic arithmetic series identity $\\sum_{k=1}^{n} k = n(n+1)/2$. The 'square of the triangular number' on the right of Nicomachus is $(n(n+1)/2)^2$, so the original Nicomachus identity $\\sum k^3 = (\\sum k)^2$ is a multiplicative refinement of the linear sum. The weighted variant explored here breaks that refinement, illustrating that the cube-square coincidence relies on specific algebraic luck rather than a general weighted-power pattern."
+    },
+    {
+      "targetId": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Faulhaber's formulas give closed forms for $\\sum_{k=1}^{n} k^r$ as polynomials of degree $r+1$ in $n$. The corrected closed form $6\\sum(2k-1)k^2 + n(n+1) = n^2(n+1)(3n+1)$ proved here is a Faulhaber-style polynomial identity over a *weighted* power sum, and its derivation routes through the standard $\\sum k$, $\\sum k^2$, $\\sum k^3$ Faulhaber identities. The non-existence of a clean square-of-something form for the weighted sum quantifies the breakdown of the Nicomachus pattern."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "Closed forms for power sums $\\sum k^r$ derive systematically from telescoping $(k+1)^{r+1} - k^{r+1}$ and applying the binomial theorem to the difference. This method gives the classical Bernoulli/Faulhaber identities and is the algebraic engine behind verifying that $6\\sum(2k-1)k^2 + n(n+1) = n^2(n+1)(3n+1)$ is the unique polynomial-degree-correct closed form."
     }
   ],
   "leanFile": {
