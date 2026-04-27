@@ -31,7 +31,7 @@ These four algebras are deeply connected to the exceptional Lie groups through:
 
 ## Contents
 
-- **Proved** (0 sorries, 1 axiom):
+- **Proved** (1 sorry, 0 axioms):
   - `normSq_octUnit`: the unit e₀ has norm 1
   - `OctonionAlgHom` forms a monoid (identity, composition)
   - `alg_hom_preserves_norm_product`: φ preserves products of norms
