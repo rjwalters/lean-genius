@@ -19,11 +19,11 @@
       "representation-theory"
     ],
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 1,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "Three open sorries: (1) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (2) lgv_det_factors_as_hook_quotient (det factorization identity), (3) hook_walk_identity ≥9-row non-gHookYD ≥3-col case (GNW probabilistic proof; at-most-2-row, gHookYD, ≤2-col, exactly-3-row, exactly-4-row, exactly-5-row, exactly-6-row, exactly-7-row, exactly-9-row ALL proved). hook_length_formula_general is proved modulo hook_walk_identity via corner induction.",
-    "lineCount": 14005,
+    "assumptions": "One open sorry: hook_walk_identity for ≥10 rows AND ≥10 cols AND non-rectangular shapes (GNW probabilistic proof, ~300 lines). Proved cases: at-most-2-row, gHookYD, ≤2-col, exactly 3-row, exactly 4-row, exactly 5-row, exactly 6-row, exactly 7-row, exactly 8-row, exactly 9-row, ≤9-col (transpose duality), all rectangles. The alternate LGV proof path is documented in PART V as a canonical-config restatement; previously-stated arbitrary-parameter LGV sorries were removed in session 32 as dead, unprovable scaffolding. hook_length_formula_general is proved modulo the single hook_walk_identity sorry.",
+    "lineCount": 14022,
     "theoremCount": 484,
     "definitionCount": 14,
     "originalContributions": [

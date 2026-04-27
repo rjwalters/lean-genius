@@ -722,3 +722,48 @@ Build verification impossible: 13764-line file exceeds Docker 32GB memory limit.
 3. Consider: at what point does the mechanical approach become impractical vs. implementing GNW?
    - Each new row adds ~2200 lines; going to ≥50 rows would require ~90K lines total
    - GNW is the only viable approach for the complete proof
+
+---
+
+## Session 2026-04-27 (Session 32) — Remove dead LGV sorries; sorry count 3→1
+
+**Mode**: REVISIT (RICH knowledge tier, score 157)
+**Outcome**: PROGRESS (housekeeping) — 2 incorrectly-stated sorries removed; net sorry count 3 → 1
+
+### What I Did
+
+1. Deleted `ni_count_eq_syt_count` (old line 229) and `lgv_det_factors_as_hook_quotient` (old line 243) from `BallotProblemOQ03OQ01OQ02.lean`. Both took an arbitrary tuple `(r, σ, m)` of LGV parameters with no hypothesis linking them to μ; for almost any parameter choice, the equalities reduced to false numerical claims. They were unused dead scaffolding (only the WARNING-tagged definitions; no caller depended on them — `hook_length_formula_from_chain` takes the chain hypotheses abstractly).
+2. Replaced the deleted block with an `## OPEN: LGV proof path — canonical-config restatement` comment in PART V documenting:
+   - The canonical encoding `youngLGVConfigOf μ` (r = `μ.colLen 0`, σ_μ i = `μ.rowLen (r-1-i)`, m derived).
+   - (A) RSK/Fomin bijection statement: `card SYT μ = niTupleCount (youngLGVConfigOf μ)` (~200 lines).
+   - (B) Lindström / Jacobi–Trudi determinant identity: `(pathMatrix … ).det * hookProd μ = μ.card!` (~200 lines).
+   - The well-formedness obstruction: `r-1 ≤ σ_μ ⟨0,_⟩` reduces to `μ.rowLen (r-1) ≥ r-1`, which fails for tall/narrow shapes such as the column `(1,1,…,1)`. A general LGV proof needs a transpose-duality case split (apply to whichever of μ, μᵀ is wide enough).
+3. Reworded the trailing docstring on `hook_length_formula` (line ~14013) to reflect the new state: only `hook_walk_identity` remains as a sorry, and the LGV path is described as the canonical-config restatement at the top of PART V.
+4. Updated the file's top-of-file `### Status` block to drop the "two open sorry lemmas" framing and surface the single remaining `hook_walk_identity` gap.
+
+### Honesty Note
+
+This session reduces the visible sorry count from 3 to 1, but the reduction comes from **deleting dead, unprovable code** — not from proving anything new. The mathematical content of the file is unchanged: `hook_length_formula_general` was already established (modulo `hook_walk_identity`) via corner recursion. The removed lemmas were *not* on any proof path. The two LGV conjectures (A) and (B) are still open; they have just been moved from broken-`theorem` form into a well-typed comment so future work targets the right statements.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (14005 → 14022 lines: −33 deleted, +50 comment block)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json` (sorries 3→1, lineCount 14022, assumptions reworded)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` (knowledge progressSummary, builtItems, insights, currentState updated)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md` (this entry)
+
+### Sorry Count: 3 → 1
+
+- ✓ REMOVED: `ni_count_eq_syt_count` (was incorrectly stated)
+- ✓ REMOVED: `lgv_det_factors_as_hook_quotient` (was incorrectly stated)
+- `hook_walk_identity` (line ~13932 dispatcher): ≥10 rows AND ≥10 cols AND non-rectangular case — sole remaining sorry, requires GNW (~300 lines)
+
+### Build Status
+
+File at 14022 lines remains beyond practical Docker 32GB build envelope. The edits are local (a comment block plus a single docstring rewording near the end); no new declarations or tactics were introduced, so the change is conservative w.r.t. type-checking risk. Compilation could not be verified this session.
+
+### Next Steps
+
+1. **GNW probabilistic hook-walk proof** (~300 lines) is the cleanest path to a sorry-free `hook_walk_identity`; it would also obviate further row-by-row extensions.
+2. **Canonical-config LGV path**: implement `youngLGVConfigOf` plus (A) and (B), giving a second independent proof of `hook_length_formula`. Note the transpose-duality wrinkle for tall shapes.
+3. **File modularization**: at 14022 lines the file no longer fits the Docker memory envelope. PARTS XII–XXIII (~10000 lines of row-by-row coverage) could be split off into a dedicated module to restore buildability before any further large additions.
