@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 1A (Tsuchimura 2005 — computational verification, published), 0S. Full classification proved both directions.",
+    "progressSummary": "NEAR-COMPLETE: 2A (gaussian_prime_classification + tsuchimura), 0S, 18T. Both remaining axioms are appropriate for an OPEN problem: tsuchimura is genuinely deep (computational verification, Tsuchimura 2005); gaussian_prime_classification is tractable from Mathlib (~50-100 lines) but requires careful API matching. Prior progressSummary undercounted axioms (1A claimed, 2A actual).",
     "builtItems": [
       "PROVED jordan_rabung from tsuchimura (axiom→theorem)",
       "PROVED gethner_et_al from tsuchimura (axiom→theorem)",
@@ -57,12 +57,16 @@
       "primes_mod_4_connection proved: the consequent (arbitrarily long prime-free windows) holds unconditionally via factorial construction, making the conditional implication trivially true",
       "Key technique: for j in [2, k], j divides k!, so j divides k!+j, making k!+j composite",
       "gaussian_prime_theorem was unused by any theorem — safe to convert from axiom to def without loss",
-      "Only remaining axiom (tsuchimura) is genuinely deep: computational verification of moat for step ≤ √26, not provable without significant infrastructure"
+      "Only remaining axiom (tsuchimura) is genuinely deep: computational verification of moat for step ≤ √26, not provable without significant infrastructure",
+      "MATHLIB API for gaussian_prime_classification proof: Mathlib.NumberTheory.Zsqrtd.QuadraticReciprocity has GaussianInt.prime_iff_mod_four_eq_three_of_nat_prime (covers inert case fully), Mathlib.NumberTheory.SumTwoSquares has Nat.Prime.sq_add_sq (Fermat 2-square for p≡1 mod 4) and GaussianInt.sq_add_sq_of_nat_prime_of_not_irreducible.",
+      "Proof skeleton: case-split on Prime z direction: (a) z.norm=2 → use natAbs_norm_eq + decide; (b) z.norm=p² with p≡3 mod 4 → derive z associates ↑p via Zsqrtd.norm_eq_mul_conj, then GaussianInt.prime_iff_mod_four_eq_three_of_nat_prime; (c) z.norm=p with p≡1 mod 4 → use Nat.Prime.sq_add_sq + irreducible_iff_prime in Euclidean domain.",
+      "Reverse direction (norm-classification ⇒ prime): each case uses Zsqrtd.norm_mul to verify minimality / no proper divisor. Norm 2 case: 1+i is the only norm-2 Gaussian integer up to units; computational. Norm p case: any factorization gives z=z₁z₂ with norm(z₁)·norm(z₂)=p, forcing one factor a unit.",
+      "Metadata bug discovered: prior session updated progressSummary to 1A but the file still has 2 axiom declarations (lines 81, 160). Fixed in this session."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Only 1 axiom remains (tsuchimura — computational verification, deep and appropriate)",
-      "File is near-complete for an open problem formalization — only tsuchimura axiom prevents full verification"
+      "Attempt gaussian_prime_classification proof using documented Mathlib API references (~60 lines estimated). Forward direction is the hard part; reverse is mostly computational.",
+      "If gaussian_prime_classification is proved, only tsuchimura remains — and that axiom is appropriate (computational verification published in 2005, formalizing it requires substantial Lean infrastructure for moat enumeration)."
     ],
     "markdown": "# Erdős #952 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite sequence of distinct Gaussian primes $x_1,x_2,\\ldots$ such that\\[\\lvert x_{n+1}-x_n\\rvert \\ll 1?\\]\n\n\n\nThe Gaussian moat problem. This is not actually a problem of Erd\\H{o}s, but has been erroneously attributed to him in the past. In \\cite{Er77c} Erd\\H{o}s recalls: 'The conjecture was told me by Motzkin at the Pasadena number theory meeting 1963 November and it was apparently raised by Basil Gordon and Motzkin. I naturally liked it very much and told it right away to many people, naturally attributing it to Motzkin, but this was later forgotten. Thus the problem is returned to its rightful owners.'\n\n\n\n\nReferences\n\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #951\n- Problem #953\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
@@ -79,7 +83,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T12:22:36.006Z",
-  "lastUpdate": "2026-03-29T00:00:00.000Z",
+  "lastUpdate": "2026-04-27T00:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [

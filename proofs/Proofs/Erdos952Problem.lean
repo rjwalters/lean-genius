@@ -77,7 +77,18 @@ def IsSplitPrime (z : GaussianInt) : Prop :=
 
 /-- The complete classification of Gaussian primes.
     This is a deep theorem combining Fermat's two-square theorem with
-    the structure of the UFD ℤ[i]. We axiomatize it here. -/
+    the structure of the UFD ℤ[i]. We axiomatize it here.
+
+    Tractable from Mathlib (~50-100 line proof). Relevant API:
+    - `Mathlib.NumberTheory.Zsqrtd.QuadraticReciprocity`:
+      `GaussianInt.prime_iff_mod_four_eq_three_of_nat_prime` covers the
+      inert case (p ≡ 3 mod 4).
+    - `Mathlib.NumberTheory.SumTwoSquares`:
+      `Nat.Prime.sq_add_sq` (Fermat 2-square, p ≡ 1 mod 4) and
+      `GaussianInt.sq_add_sq_of_nat_prime_of_not_irreducible`.
+    - `Zsqrtd.norm_mul`, `Zsqrtd.norm_eq_mul_conj` for the multiplicative
+      structure of the norm.
+    - `GaussianInt.natAbs_norm_eq`: norm(z) = re² + im². -/
 axiom gaussian_prime_classification (z : GaussianInt) :
     IsGaussianPrime z ↔ IsNorm2Prime z ∨ IsInertPrime z ∨ IsSplitPrime z
 
