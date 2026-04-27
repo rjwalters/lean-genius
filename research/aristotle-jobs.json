@@ -3079,8 +3079,8 @@
         "pairwiseDistances_singleton",
         "distinctDistances_singleton"
       ],
-      "notes": "Companion file for distinct distances lower bounds. 10 routine lemmas: distance positivity, finset helpers, pairwiseDistances membership, trivial lower bound, and simple constructions.",
-      "status": "pending"
+      "notes": "Companion file for distinct distances lower bounds. 10 routine lemmas: distance positivity, finset helpers, pairwiseDistances membership, trivial lower bound, and simple constructions. RESOLVED MANUALLY: two_point_one_distance proved directly via Finset.ext argument.",
+      "status": "resolved_manually"
     },
     {
       "project_id": "1e5da4a3-3520-4d2b-9856-c2fddbcf1a68",

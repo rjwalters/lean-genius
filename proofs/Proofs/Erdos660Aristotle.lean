@@ -151,7 +151,32 @@ lemma distinctDistances_empty :
 /-- A two-point set has exactly 1 distinct distance -/
 lemma two_point_one_distance (p q : Point3D) (hne : p ≠ q) :
     distinctDistances {p, q} = 1 := by
-  sorry
+  unfold distinctDistances pairwiseDistances
+  have hpq : 0 < dist p q := dist_pos.mpr hne
+  have h1 : (({p, q} : Finset Point3D).product {p, q}).image
+      (fun pq => dist pq.1 pq.2) = {0, dist p q} := by
+    ext d
+    simp only [Finset.mem_image, Finset.mem_product, Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · rintro ⟨⟨a, b⟩, ⟨ha | ha, hb | hb⟩, rfl⟩
+      · subst ha; subst hb; exact Or.inl (dist_self p)
+      · subst ha; subst hb; exact Or.inr rfl
+      · subst ha; subst hb; exact Or.inr (dist_comm q p)
+      · subst ha; subst hb; exact Or.inl (dist_self q)
+    · rintro (rfl | rfl)
+      · exact ⟨(p, p), ⟨Or.inl rfl, Or.inl rfl⟩, dist_self p⟩
+      · exact ⟨(p, q), ⟨Or.inl rfl, Or.inr rfl⟩, rfl⟩
+  rw [h1]
+  have h2 : ({0, dist p q} : Finset ℝ).filter (· > 0) = {dist p q} := by
+    ext d
+    simp only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton, gt_iff_lt]
+    constructor
+    · rintro ⟨rfl | rfl, hd⟩
+      · exact absurd hd (lt_irrefl 0)
+      · rfl
+    · rintro rfl
+      exact ⟨Or.inr rfl, hpq⟩
+  rw [h2, Finset.card_singleton]
 
 /-
   ## Section 6: Finset and Cardinality Helpers
