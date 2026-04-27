@@ -1,8 +1,8 @@
 {
   "slug": "erdos-40",
   "title": "Erdős #40",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-29T06:05:00+00:00",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T00:00:00+00:00",
     "iteration": 4,
-    "focus": "Session 4: Converted b2g_density_bound from axiom to theorem",
+    "focus": "Gallery formalization complete: Erdos40Problem.lean is verified (0 axioms, 0 sorries, badge 'mathlib'). The open conjecture itself remains unsolved ($500 bounty).",
     "blockers": [],
-    "nextAction": "Prove sidon_density_bound from counting argument (known result)",
+    "nextAction": "None — the formalization framework is done. Solving the underlying conjecture is beyond current scope.",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 1,
@@ -88,124 +88,14 @@
     "mathlib": []
   },
   "started": "2026-01-12T06:58:30.838Z",
-  "lastUpdate": "2026-03-29T01:11:23.654482+00:00",
+  "lastUpdate": "2026-04-27T00:00:00+00:00",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
-      "path": "Proofs/Erdos400Problem.lean",
-      "filename": "Erdos400Problem.lean",
-      "lineCount": 172,
-      "theoremCount": 5,
-      "axiomCount": 0,
-      "defCount": 6,
-      "sorryCount": 1,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos400Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos401Problem.lean",
-      "filename": "Erdos401Problem.lean",
-      "lineCount": 320,
-      "theoremCount": 20,
-      "axiomCount": 3,
-      "defCount": 8,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos401Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos402Problem.lean",
-      "filename": "Erdos402Problem.lean",
-      "lineCount": 694,
-      "theoremCount": 19,
-      "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 3,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos402Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos403Problem.lean",
-      "filename": "Erdos403Problem.lean",
-      "lineCount": 340,
-      "theoremCount": 15,
-      "axiomCount": 1,
-      "defCount": 8,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos403Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos404Problem.lean",
-      "filename": "Erdos404Problem.lean",
-      "lineCount": 292,
-      "theoremCount": 7,
-      "axiomCount": 2,
-      "defCount": 8,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos404Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos405Problem.lean",
-      "filename": "Erdos405Problem.lean",
-      "lineCount": 300,
-      "theoremCount": 15,
-      "axiomCount": 3,
-      "defCount": 5,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos405Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos406Problem.lean",
-      "filename": "Erdos406Problem.lean",
-      "lineCount": 273,
-      "theoremCount": 14,
-      "axiomCount": 1,
-      "defCount": 6,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos406Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos407Problem.lean",
-      "filename": "Erdos407Problem.lean",
-      "lineCount": 220,
-      "theoremCount": 7,
-      "axiomCount": 3,
-      "defCount": 7,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos407Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos408Problem.lean",
-      "filename": "Erdos408Problem.lean",
-      "lineCount": 397,
-      "theoremCount": 15,
-      "axiomCount": 5,
-      "defCount": 9,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos408Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos409Problem.lean",
-      "filename": "Erdos409Problem.lean",
-      "lineCount": 425,
-      "theoremCount": 18,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos409Problem.lean"
-    },
-    {
       "path": "Proofs/Erdos40Problem.lean",
       "filename": "Erdos40Problem.lean",
-      "lineCount": 292,
+      "lineCount": 291,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 6,
