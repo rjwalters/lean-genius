@@ -1,31 +1,41 @@
 {
   "slug": "cauchy-schwarz-oq-01-oq-01-oq-01",
   "title": "Formalize complex Gram-Schmidt using Cauchy-Schwarz equality characterization",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "Given vectors u, v in a complex inner product space E over RCLike scalars, define orthogonal projection orthProj v u = (\u27ea v, u \u27eb / \u27ea v, v \u27eb) \u2022 v and residual orthResidual v u = u - orthProj v u. Show the projection pipeline yields a Gram-Schmidt orthogonalization for 2 and 3 vectors, with the key connection: Cauchy-Schwarz equality holds for (v, u) iff orthResidual v u = 0 iff u is a scalar multiple of v.",
+    "plain": "Can the complex Gram-Schmidt process be formalized using the Cauchy-Schwarz equality characterization? Yes \u2014 the orthogonal projection u \u21a6 u - (\u27ea v, u \u27eb / \u27ea v, v \u27eb) v is exactly the GS step, and CS equality detects when this step is trivial.",
+    "whyMatters": [
+      "Connects two classical inner product space results (Gram-Schmidt orthogonalization and Cauchy-Schwarz equality)",
+      "Demonstrates that CS equality is exactly the residual-vanishing condition",
+      "Provides explicit projection pipeline (projCoeff, orthProj, orthResidual) reusable for higher-dimension GS",
+      "Builds on the parent OQ-01-OQ-01 (CS equality characterization)"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "projCoeff, orthProj, orthResidual definitions for complex inner product spaces",
+      "gramSchmidt3: 3-vector Gram-Schmidt with pairwise orthogonality",
+      "cs_equality_iff_residual_zero: main connection theorem (CS equality \u21d4 residual = 0)",
+      "Pythagoras-based norm decrease: ||residual|| \u2264 ||u||"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Formalize complex Gram-Schmidt via CS equality (achieved)."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-04-05T20:06:18-07:00",
-    "iteration": 1,
-    "focus": "Completed — full formalization",
+    "iteration": 2,
+    "focus": "Completed \u2014 full formalization, 0 sorries, 0 axioms.",
     "blockers": [],
-    "nextAction": "None — completed",
+    "nextAction": "None \u2014 completed.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -46,42 +56,28 @@
     "nextSteps": [],
     "markdown": "# Knowledge Base: cauchy-schwarz-oq-01-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "cauchy-schwarz",
+    "gram-schmidt",
+    "inner-product-space",
+    "linear-algebra",
+    "complex-analysis"
+  ],
   "relatedProofs": [
     "cauchy-schwarz",
-    "cauchy-schwarz-integral",
-    "cauchy-schwarz-integral-oq-01",
-    "cauchy-schwarz-integral-oq-01-oq-01",
-    "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
-    "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
-    "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
-    "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
-    "cauchy-schwarz-integral-oq-01-oq-02",
-    "cauchy-schwarz-integral-oq-01-oq-03",
-    "cauchy-schwarz-integral-oq-01-oq-03-oq-01",
-    "cauchy-schwarz-integral-oq-02",
-    "cauchy-schwarz-integral-oq-02-oq-01",
-    "cauchy-schwarz-integral-oq-02-oq-02",
-    "cauchy-schwarz-integral-oq-02-oq-02-oq-01",
-    "cauchy-schwarz-integral-oq-03",
     "cauchy-schwarz-oq-01",
     "cauchy-schwarz-oq-01-oq-01",
-    "cauchy-schwarz-oq-01-oq-01-oq-01",
     "cauchy-schwarz-oq-01-oq-02",
     "cauchy-schwarz-oq-01-oq-03",
-    "cauchy-schwarz-oq-01-oq-04",
-    "cauchy-schwarz-oq-02",
-    "cauchy-schwarz-oq-02-oq-01",
-    "cauchy-schwarz-oq-03",
-    "cauchy-schwarz-oq-03-oq-01",
-    "cauchy-schwarz-oq-03-oq-02",
-    "cauchy-schwarz-oq-04",
-    "cauchy-schwarz-oq-04-oq-01"
+    "cauchy-schwarz-oq-01-oq-04"
   ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.RCLike.Basic"
+    ]
   },
   "started": "2026-04-05T20:06:18-07:00",
   "leanFiles": [
