@@ -6,14 +6,27 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Let $C\\geq 0$. Is there an infinite sequence of $n_i$ such that\\[\\lim_{i\\to \\infty}\\frac{p_{n_i+1}-p_{n_i}}{\\log n_i}=C?\\]",
-    "whyMatters": []
+    "formal": "\\forall C \\ge 0,\\ \\exists\\ \\text{infinite sequence } (n_i)_{i \\ge 1}\\ \\text{such that}\\ \\lim_{i \\to \\infty} \\frac{p_{n_i + 1} - p_{n_i}}{\\log n_i} = C.",
+    "plain": "Erdős #5 (prime gaps): For every nonnegative real C, does there exist an infinite sequence of indices n_i such that the normalized prime gap (p_{n_i+1} - p_{n_i}) / log(n_i) converges to C? In other words, is the set of limit points of the normalized prime-gap sequence equal to all of [0, ∞]?",
+    "whyMatters": [
+      "Open Erdős prime-gap problem #5 in analytic number theory: characterizes the limit-point set of normalized prime gaps",
+      "Goldston–Pintz–Yıldırım (2009) proved 0 is a limit point (small gaps); Maynard–Tao (2013) extended this; whether every C ≥ 0 is a limit point is still open",
+      "Resolution would refine our understanding of the distributional behavior of prime gaps, beyond average and lim sup/lim inf statements"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "0 is a limit point of (p_{n+1} - p_n)/log n (Goldston–Pintz–Yıldırım 2009; bounded gaps imply this)",
+      "Maynard–Tao (2013): bounded prime gaps; refined to gap ≤ 246 (Polymath 8b)",
+      "Westzynthius (1931): liminf is 0; lim sup is +∞ (the sequence is unbounded above)",
+      "Erickson, Goldston, Yıldırım: density results on the limit-point set"
+    ],
+    "open": [
+      "Whether every nonnegative real C is a limit point of (p_{n+1} - p_n)/log n",
+      "Whether the limit-point set has positive measure / contains an interval",
+      "Quantitative density of the limit-point set in [0, ∞]"
+    ],
+    "goal": "Either prove that the limit-point set equals [0, ∞] (every C ≥ 0 is achieved), or characterize a strict subset that contains it."
   },
   "currentState": {
     "phase": "ACT",
@@ -87,7 +100,6 @@
     "erdos"
   ],
   "relatedProofs": [
-    "erdos-5",
     "erdos-5-prime-gaps",
     "erdos-50",
     "erdos-500",
@@ -207,7 +219,7 @@
     "mathlib": []
   },
   "started": "2026-01-12T03:31:00.704Z",
-  "lastUpdate": "2026-03-24T08:00:00Z",
+  "lastUpdate": "2026-04-28T00:00:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
