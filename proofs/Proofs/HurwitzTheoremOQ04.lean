@@ -793,15 +793,57 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
 -- The full proof requires ~50 lines of Leibniz constraint applications.
 -- For now, we use a computational sorry and note the mathematical argument is sound.
 
-/-- The 14 basis derivations are linearly independent in OctonionDerSubmodule. -/
+/-- The 14 basis derivations are linearly independent in OctonionDerSubmodule.
+
+    Proof: Apply derEval14 to any linear relation ∑ gᵢ · basisᵢ = 0, obtaining
+    ∑ gᵢ · ev(basisᵢ) = 0 in ℝ¹⁴. The 14×14 evaluation matrix decomposes into
+    7 independent 2×2 blocks, each with determinant 12. Solving each 2×2 system
+    forces all coefficients to zero. -/
+set_option maxHeartbeats 6400000 in
 private lemma derBasis14_linearIndependent :
     LinearIndependent ℝ derBasis14 := by
-  apply linearIndependent_iff.mpr
-  intro l hl
-  -- hl : l.sum (fun i c => c • derBasis14 i) = 0 in OctonionDerSubmodule
-  -- Apply derEval14 to get: l.sum (fun i c => c • (derEval14 (derBasis14 i))) = 0
-  -- The 14×14 evaluation matrix has nonzero determinant → l = 0
-  sorry
+  rw [Fintype.linearIndependent_iff]
+  intro g hg
+  -- Apply derEval14 to the zero-sum equation
+  have hzero : ∀ k : Fin 14,
+      ∑ i : Fin 14, g i * (derEval14 (derBasis14 i) k) = 0 := by
+    intro k
+    have h1 : ∑ i : Fin 14, g i • derEval14 (derBasis14 i) = 0 := by
+      calc ∑ i, g i • derEval14 (derBasis14 i)
+          = ∑ i, derEval14 (g i • derBasis14 i) := by
+            congr 1; ext i; exact (map_smul derEval14 (g i) (derBasis14 i)).symm
+        _ = derEval14 (∑ i, g i • derBasis14 i) := (map_sum derEval14 _ _).symm
+        _ = derEval14 0 := by rw [hg]
+        _ = 0 := map_zero _
+    have h2 := congr_fun h1 k
+    simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h2
+    exact h2
+  -- Specialize to all 14 rows and simplify each equation
+  -- Each equation ∑ g(i) * M[k,i] = 0 becomes a 2-term linear equation
+  -- because the evaluation matrix has exactly 2 nonzero entries per row.
+  have eq0 := hzero 0;  have eq1 := hzero 1;  have eq2 := hzero 2
+  have eq3 := hzero 3;  have eq4 := hzero 4;  have eq5 := hzero 5
+  have eq6 := hzero 6;  have eq7 := hzero 7;  have eq8 := hzero 8
+  have eq9 := hzero 9;  have eq10 := hzero 10; have eq11 := hzero 11
+  have eq12 := hzero 12; have eq13 := hzero 13
+  -- Expand the Fin 14 sums and evaluate all matrix entries.
+  -- After simp, each eq_k becomes a 2-term linear equation in the g(i)
+  -- (since the evaluation matrix has exactly 2 nonzero entries per row).
+  -- simp set: sum expansion + definition unfolding + matrix indexing + arithmetic
+  simp only [Fin.sum_univ_succ, Fin.sum_univ_zero,
+    derBasis14, derEval14, LinearMap.coe_mk, AddHom.coe_mk,
+    d12, d13, d14, d15, d16, d17, d23, d24, d25, d26, d27, d45, d46, d47,
+    stdBasis, Fin.isValue, ite_true, ite_false,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val', Matrix.cons_val_fin_one,
+    mul_zero, mul_one, zero_mul, one_mul, mul_neg, neg_mul,
+    neg_zero, neg_neg, add_zero, zero_add, sub_zero] at
+    eq0 eq1 eq2 eq3 eq4 eq5 eq6 eq7 eq8 eq9 eq10 eq11 eq12 eq13
+  -- After simp, each eq_k is a linear equation: e.g., eq0 : g 0 * (-4) + g 13 * 2 = 0
+  -- The 7 block pairs: (0,13), (1,12), (2,10), (3,9), (4,8), (5,7), (6,11)
+  -- Each block gives a 2×2 system with det = 12, forcing the pair to 0.
+  intro i
+  fin_cases i <;> nlinarith
 
 /-- **Der(𝕆) has dimension 14**: finrank ℝ OctonionDerSubmodule = 14. -/
 theorem G2_der_dimension :
