@@ -1,68 +1,93 @@
 {
   "slug": "erdos-689",
-  "title": "Erdős #689",
-  "phase": "OBSERVE",
+  "title": "Erdős #689 — r-fold prime covering of [1,n]",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Let $n$ be sufficiently large. Is there some choice of congruence class $a_p$ for all primes $2\\leq p\\leq n$ such that every integer in $[1,n]$ satisfies at least two of the congruences $\\equiv a_p\\pmod{p}$?\n\n\n\nOne can ask a similar question replacing $2$ by any fixed integer $r$ (provided $n$ is sufficiently large depending on $r$).\n\nSee also [687] and [688].\n\nThis problem (with $2$ replaced by $10$) is Problem 45 on Green's open problems list.",
-    "plain": "Let $n$ be sufficiently large. Is there some choice of congruence class $a_p$ for all primes $2\\leq p\\leq n$ such that every integer in $[1,n]$ satisfies at least two of the congruences $\\equiv a_p\\pmod{p}$?",
-    "whyMatters": []
+    "formal": "axiom erdos_689_r_fold (r : ℕ) (hr : r ≥ 1) : ∃ N₀ : ℕ, ∀ n ≥ N₀, ∃ a : ℕ → ℕ, IsRFoldCover n r a — i.e., for every fixed r ≥ 1 there exists N₀ such that for all n ≥ N₀, some choice of congruence classes a_p (one per prime p ≤ n) makes every integer in [1, n] satisfy at least r of the congruences ≡ a_p (mod p). Source: Erdős 1979d.",
+    "plain": "For sufficiently large n, can the primes p ≤ n cover [1, n] r-fold via chosen residues? The original Erdős problem is r=2. Ben Green's open problem 45 is the same with r=10. The r=1 case is the Jacobsthal-style 1-fold covering question.",
+    "whyMatters": [
+      "Open Erdős problem #689 with active interest from Ben Green (Problem 45 on his open list)",
+      "Connects to gaps between primes (Jacobsthal function, problem #687) and to covering systems",
+      "Mertens' second theorem (Σ_{p≤n} 1/p ~ log log n → ∞) suggests enough covering 'power' exists; turning this heuristic into a proof is the hard part",
+      "Formalizing the conjecture and provable structural lemmas in Lean creates a foundation for any future progress on the open question"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "primesUpTo n is monotone in n",
+      "coveringCount n m a is monotone in n",
+      "isRFoldCover n r a is monotone in r (smaller r is easier)",
+      "isRFoldCover n 0 a holds trivially",
+      "primesUpTo 1 = ∅, hence coveringCount 1 m a = 0",
+      "mertens_sum_divergence: ∀ C > 0, Σ_{p ≤ n} 1/p > C eventually (proved from Mathlib's not_summable_one_div_on_primes)",
+      "erdos_689_double_cover := erdos_689_r_fold 2 (the r=2 case derived from the r-fold axiom)",
+      "green_variant_r10 := erdos_689_r_fold 10 (Ben Green's variant)",
+      "jacobsthal_connection := r=1 case via Filter.eventually_atTop"
+    ],
+    "open": [
+      "erdos_689_r_fold (r : ℕ) (hr : r ≥ 1) — the only remaining axiom; this IS the open Erdős conjecture"
+    ],
+    "goal": "The Lean file is at its natural endpoint: 1 axiom remains, and it IS the open conjecture itself. Further reduction requires actually solving the conjecture, which is open. Future sessions can add structural lemmas (e.g., Mertens-based heuristic bounds, exact small-n cases for r=2) but cannot eliminate the remaining axiom without genuine mathematical progress."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-14T19:46:33.202Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACT",
+    "since": "2026-04-27T22:10:00Z",
+    "iteration": 2,
+    "focus": "Stable formalization at minimal axiom count. The remaining axiom is the open Erdős conjecture itself.",
+    "blockers": [
+      "The remaining axiom erdos_689_r_fold IS the open Erdős conjecture #689 (and Ben Green's open problem 45 for r=10) — not eliminable without genuine mathematical progress on the open question."
+    ],
+    "nextAction": "MAINTAIN: The Lean file is complete modulo the open conjecture. Future sessions can add structural depth (e.g., quantitative bounds on coveringCount for random a, or exact analysis of small r=2 cases for n ≤ 100), but axiom-removal sessions should deprioritize this slug and focus on problems with provable axioms.",
     "attemptCounts": {
-      "total": 0,
+      "total": 2,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated jacobsthal_connection axiom (2->1). Only remaining axiom is erdos_689_r_fold (the open conjecture itself).",
+    "progressSummary": "STABLE — formalization at minimal axiom count. Only remaining axiom is erdos_689_r_fold, which IS the open Erdős conjecture (and equivalently Ben Green's open problem 45 for r=10). 13 supporting theorems all proved. Further axiom reduction is impossible without solving the open question. Session 2 (2026-04-27) reconciled JSON metadata with the actual stable state — previous JSON had whyMatters/knownResults all empty despite the file being substantively complete.",
     "builtItems": [
-      "Surveyed Erdos689Problem.lean (141 lines)",
+      "Surveyed Erdos689Problem.lean (180 lines)",
       "Proved theorem mertens_sum_divergence in Erdos689Problem.lean (was axiom)",
       "erdos_689_double_cover: converted from axiom to theorem (= erdos_689_r_fold 2)",
       "green_variant_r10: converted from axiom to theorem (= erdos_689_r_fold 10)",
-      "jacobsthal_connection: converted from axiom to theorem (r=1 case of erdos_689_r_fold via Filter.eventually_atTop)"
+      "jacobsthal_connection: converted from axiom to theorem (r=1 case of erdos_689_r_fold via Filter.eventually_atTop)",
+      "Reconciled JSON metadata to reflect 13 proved theorems and the single remaining open-conjecture axiom (Session 2, 2026-04-27)"
     ],
     "insights": [
-      "5 axioms: erdos_689_double_cover (OPEN), erdos_689_r_fold (OPEN generalization), mertens_sum_divergence (KNOWN but not in Mathlib), jacobsthal_connection (KNOWN), green_variant_r10 (OPEN variant)",
-      "mertens_sum_divergence is most promising for elimination: Σ_{p≤n} 1/p → ∞ is Mertens' second theorem",
+      "Only remaining axiom is erdos_689_r_fold which IS the open conjecture; further reduction requires genuine mathematical progress on the open question",
       "9 proved theorems: covering monotonicity, bounds, small cases — all clean",
       "Problem relates to #687 (Jacobsthal), #688 (covering), Ben Green problem 45",
       "Proved mertens_sum_divergence from Mathlib: not_summable_one_div_on_primes → partial sums → ∞ → exceeds any bound C over primesUpTo n",
-      "Both the main r=2 conjecture and Greens r=10 variant are special cases of the r-fold axiom"
+      "Both the main r=2 conjecture and Green's r=10 variant are special cases of the r-fold axiom; consolidating into a single axiom reduces 3 separate open-conjecture axioms to 1",
+      "Mertens' divergence (Σ_{p≤n} 1/p → ∞) is heuristic evidence for r-fold covering: random a_p assignment gives expected coverage of any m equal to Σ 1/p, which exceeds any constant — but turning the heuristic into a proof remains open"
     ],
     "mathlibGaps": [
-      "No Mertens' second theorem (Σ 1/p ~ log log n) in Mathlib",
+      "No Mertens' second theorem (Σ 1/p ~ log log n) in Mathlib (mertens_sum_divergence proves only divergence, not the asymptotic rate)",
       "No Jacobsthal function bounds in Mathlib"
     ],
     "nextSteps": [
       "Only remaining axiom is erdos_689_r_fold (OPEN conjecture, cannot eliminate)",
       "File is at minimal axiom count — formalization is complete modulo the open conjecture",
-      "Could add more structural lemmas but axiom reduction is done"
+      "Optional structural enrichment (not axiom-reducing): random-assignment expected-coverage formula, exact computation for small r=2 cases (e.g., r=2 explicit covers for n ≤ 30)",
+      "Cross-reference recommendations: erdos-687 (Jacobsthal Y(x)), erdos-688 (one-fold covering with prime range restricted)"
     ],
     "markdown": "# Erdős #689 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n$ be sufficiently large. Is there some choice of congruence class $a_p$ for all primes $2\\leq p\\leq n$ such that every integer in $[1,n]$ satisfies at least two of the congruences $\\equiv a_p\\pmod{p}$?\n\n\n\nOne can ask a similar question replacing $2$ by any fixed integer $r$ (provided $n$ is sufficiently large depending on $r$).\n\nSee also [687] and [688].\n\nThis problem (with $2$ replaced by $10$) is Problem 45 on Green's open problems list.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #687\n- Problem #688\n- Problem #690\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "covering-systems",
+    "primes",
+    "open-conjecture",
+    "mertens-theorem"
   ],
   "relatedProofs": [
-    "erdos-6",
-    "erdos-68",
-    "erdos-689"
+    "erdos-687",
+    "erdos-688",
+    "erdos-690"
   ],
   "references": {
     "papers": [],
@@ -70,7 +95,7 @@
     "mathlib": []
   },
   "started": "2026-01-14T19:46:33.202Z",
-  "lastUpdate": "2026-03-13T07:52:17.051Z",
+  "lastUpdate": "2026-04-27T22:10:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
