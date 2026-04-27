@@ -18,10 +18,10 @@
       "well-founded-recursion"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 4,
     "axiomCount": 1,
-    "lineCount": 1827,
-    "assumptions": "1 axiom: gh_longest_cycle_is_hamiltonian (Ghouila-Houri path surgery: under GH degree conditions, the longest directed cycle in a SC digraph is Hamiltonian — standard result from Ghouila-Houri 1960, Diestel §10). 1 sorry. Rédei, Moon-Moser, directed_hamiltonian_threshold fully proved.",
+    "lineCount": 1884,
+    "assumptions": "1 axiom: gh_longest_cycle_is_hamiltonian (Ghouila-Houri path surgery: under GH degree conditions, the longest directed cycle in a SC digraph is Hamiltonian — standard result from Ghouila-Houri 1960, Diestel §10). 4 sorries.",
     "dateAdded": "2026-03-30",
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hamiltonian_path_problem#Directed_graphs",
@@ -256,12 +256,12 @@
       "Finset"
     ],
     "namespace": "Erdos1012OQ03",
-    "lineCount": 1827,
+    "lineCount": 1884,
     "axiomCount": 1,
-    "sorries": 1,
+    "sorries": 4,
     "path": "Proofs/Erdos1012OQ03.lean",
     "theoremCount": 27,
     "definitionCount": 9
   },
-  "sorries": 1
+  "sorries": 4
 }
