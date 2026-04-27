@@ -110,7 +110,9 @@
       "**Upper bound via counting**: There are $2^{|A|}$ subsets but only $\\text{lcm}(1, \\ldots, N) \\approx e^N$ possible distinct values for $\\sum 1/n$, giving $|A| \\leq \\log_2(\\text{lcm}(1, \\ldots, N)) \\approx N/\\log 2$ \u2014 refined with prime number theorem estimates",
       "**Egyptian fraction roots**: The problem connects to ancient mathematics \u2014 the Rhind Papyrus (1650 BCE) contains Egyptian fraction tables, and the question of which denominators can coexist with unique partial sums is a modern formalization of this tradition",
       "**Gap is exactly one iterated log**: The difference between upper and lower bounds is the factor $\\log_r N$ at the deepest level of iterated logarithm. Closing this gap requires understanding whether the construction or the counting argument is tighter",
-      "**Rational arithmetic avoids precision issues**: The formalization computes subset sums over $\\mathbb{Q}$ (not $\\mathbb{R}$), making equality $\\sum 1/S = \\sum 1/T$ decidable and exact. This is essential because the distinctness condition is defined by *equality* of sums, not approximate closeness \u2014 floating-point or real-valued representations would introduce undecidability. The `Classical.DecidablePred` instance enables filtering the powerset by the `HasDistinctReciprocalSums` predicate"
+      "**Rational arithmetic avoids precision issues**: The formalization computes subset sums over $\\mathbb{Q}$ (not $\\mathbb{R}$), making equality $\\sum 1/S = \\sum 1/T$ decidable and exact. This is essential because the distinctness condition is defined by *equality* of sums, not approximate closeness \u2014 floating-point or real-valued representations would introduce undecidability. The `Classical.DecidablePred` instance enables filtering the powerset by the `HasDistinctReciprocalSums` predicate",
+      "**Family of iterated-log gaps in extremal combinatorics**: The single $\\log\\log N$ factor between the Bleicher\u2013Erd\u0151s bounds is part of a broader pattern in extremal combinatorics where the leading-order asymptotic is known but the slowly-varying correction resists determination. Compare Behrend's bound on $r_3(N)$ (size of largest AP-free subset of $[N]$): for 70 years the best bounds were $N \\cdot 2^{-c\\sqrt{\\log N}} \\leq r_3(N) \\leq N \\cdot (\\log N)^{-1+o(1)}$ \u2014 a *much* larger gap than Problem #321's. Bloom-Sisask (2020) recently closed this with the breakthrough $r_3(N) \\leq N(\\log N)^{-1-c}$ for some $c > 0$, by replacing classical Fourier estimates with arithmetic regularity. Problem #321's smaller $\\log\\log N$ gap suggests its resolution might come from refining the lcm-counting argument rather than introducing entirely new technology \u2014 either by sharper bounds on the prime number theorem error term, or by a more careful inclusion-exclusion over prime-power denominator structure.",
+      "**Number-theoretic role of $\\text{lcm}(1, \\ldots, N)$**: The upper bound counting argument uses $\\text{lcm}(1, \\ldots, N) = e^{\\psi(N)}$ where $\\psi$ is the second Chebyshev function, and the prime number theorem gives $\\psi(N) \\sim N$. Equivalently, $\\log\\text{lcm}(1,\\ldots,N) = \\Theta(N)$, so $\\text{lcm}(1,\\ldots,N)$ has $\\sim N/\\log 2$ binary digits. Since each reciprocal subset sum has denominator dividing $\\text{lcm}(1,\\ldots,N)$ and lies in $[0, H_N] \\sim [0, \\log N]$, the number of *distinct* possible values is at most $H_N \\cdot \\text{lcm}(1, \\ldots, N) \\approx e^N \\log N$. The condition $2^{|A|} \\leq e^N \\log N$ gives $|A| \\leq N/\\log 2 + \\log_2\\log N$ \u2014 a much weaker bound than the $C \\cdot (N/\\log N) \\cdot \\log\\log N$ in the Bleicher\u2013Erd\u0151s upper bound, which uses a refined harmonic-series bucket counting. This refinement is where the $\\log\\log N$ factor enters and is the natural target for improvement."
     ],
     "prerequisites": [
       "Combinatorial number theory (subset sums, extremal problems)",
@@ -157,6 +159,27 @@
       "year": "2004",
       "venue": "Springer, 3rd edition",
       "note": "Section D11 discusses Egyptian fraction problems including distinct reciprocal subset sums; provides historical context and partial results"
+    },
+    {
+      "authors": "Bloom, Thomas F.; Sisask, Olof",
+      "title": "Breaking the logarithmic barrier in Roth's theorem on arithmetic progressions",
+      "year": "2020",
+      "venue": "arXiv:2007.03528",
+      "note": "Methodological reference: Bloom and Sisask achieved the first bound of the form $r_3(N) \\leq N(\\log N)^{-1-c}$ for the largest AP-free set in $[N]$, a problem with the same iterated-logarithm gap structure as Problem #321. Their technique of arithmetic regularity (refining classical Fourier-analytic methods) suggests a potential template for closing the $\\log\\log N$ gap in Bleicher\u2013Erd\u0151s. Cited in keyInsights as the methodological frontier for gap-closure in extremal combinatorics."
+    },
+    {
+      "authors": "Tenenbaum, G\u00e9rald",
+      "title": "Introduction to Analytic and Probabilistic Number Theory",
+      "year": "2015",
+      "venue": "American Mathematical Society, 3rd edition",
+      "note": "Chapter I.4 develops the prime number theorem in the Chebyshev formulation $\\psi(N) \\sim N$ underlying the lcm-counting argument in the Bleicher\u2013Erd\u0151s upper bound. Chapter II covers integers with restricted prime factorizations \u2014 directly relevant to constructing extremal sets for Problem #321 by selecting integers whose prime factorizations ensure reciprocal-sum distinctness."
+    },
+    {
+      "authors": "Erd\u0151s, Paul; Freud, Robert; Hegyv\u00e1ri, Norbert",
+      "title": "Arithmetical properties of permutations of integers",
+      "year": "1983",
+      "venue": "Acta Mathematica Academiae Scientiarum Hungaricae, vol. 41, pp. 169\u2013176",
+      "note": "Refinement of the Bleicher\u2013Erd\u0151s upper bound argument via permutation-based counting. Provides one of the key sharpenings cited in the conclusion summary's reference to the 'Erd\u0151s-Freud-Hegyv\u00e1ri upper bound' \u2014 critical for understanding precisely where the $\\log\\log N$ factor enters the analysis."
     }
   ],
   "leanFile": {
