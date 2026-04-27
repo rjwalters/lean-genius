@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0A, 16T proved (5 new), 0S. Proved Q_n is n-regular for all n via bit-flip bijection (generalizing computational checks for n≤3).",
+    "progressSummary": "COMPLETE: 0A, 17T proved, 0S. Repaired 4 Mathlib API drift sites and added hypercube_n_edge_count (Q_n has n·2^n directed edges for all n, generalizing the native_decide checks for n=2 and n=3).",
     "builtItems": [
       "Proved hypercube_self_subgraph via identity embedding",
       "Proved complete_contains_hypercube via identity + adjacency condition",
@@ -48,7 +48,8 @@
       "hypercube_flip_adj: flipping bit k gives a neighbor",
       "hypercube_adj_of_flip: every neighbor comes from a bit flip",
       "hypercube_flip_injective: distinct bits give distinct neighbors",
-      "hypercube_n_regular_general: Q_n is n-regular for all n"
+      "hypercube_n_regular_general: Q_n is n-regular for all n",
+      "hypercube_n_edge_count: Q_n has n·2^n directed edges for all n (bijection with Fin(2^n) × Fin n)"
     ],
     "insights": [
       "ContainsAsSubgraph with id embedding trivially proves self-containment",
@@ -63,14 +64,18 @@
       "Q_3 has 24 directed edges (= 12 undirected), each vertex degree 3",
       "Q_n regularity proved for all n: neighbors of v are exactly {v XOR 2^k | k < n}, giving exactly n neighbors",
       "Bit-flip function hypercubeFlip is injective via XOR cancellation and power-of-2 injectivity",
-      "Key Lean 4 lemma: Nat.xor_lt_two_pow bounds XOR within 2^n"
+      "Key Lean 4 lemma: Nat.xor_lt_two_pow bounds XOR within 2^n",
+      "Q_n edge count proved for all n: |E(Q_n, directed)| = n·2^n via bijection (v,k) ↦ (v, v⊕2^k) between directed edges and Fin(2^n)×Fin n",
+      "Mathlib API drift fix: `congr_arg (f ·) h` produces unreduced lambdas in Lean 4.26 that block subsequent `rw` matches; explicit `have h' : ... := by rw [h]` avoids this",
+      "Mathlib API drift fix: `Decidable (And ∧ Exists)` no longer infers automatically over Prop alias; `unfold ...; infer_instance` restores it",
+      "Mathlib API drift fix: `rw [Nat.xor_self]` rewrites all matching subterms in Lean 4, not just the first; chains may need fewer steps than expected"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove general Q_n regularity (n-regular for all n, needs XOR range proof)",
-      "Prove Q_n bipartiteness (parity of popcount)",
-      "Prove the conjecture for specific small n values",
-      "Formalize known partial results (e.g., Sudakov-Tomon 2022)"
+      "Prove Q_n bipartiteness (parity of popcount → 2-coloring)",
+      "Prove the conjecture for specific small n values (e.g., n=1 trivially via Q_1=K_2)",
+      "Formalize known partial results (e.g., Sudakov-Tomon 2022)",
+      "Add undirected edge count theorem: |E(Q_n)| = n·2^(n-1) (corollary of directed count)"
     ],
     "markdown": "# Erdős #1035 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a constant $c>0$ such that every graph on $2^n$ vertices with minimum degree $>(1-c)2^n$ contains the $n$-dimensional hypercube $Q_n$?\n\n\n\nErd\\H{o}s \\cite{Er93} says 'if the conjecture is false, two related problems could be asked':\n{UL}\n{LI}Determine or estimate the smallest $m>2^n$ such that every graph on $m$ vertices with minimum degree $>(1-c)2^n$ contains a $Q_n$, and {/LI}\n{LI}For which $u_n$ is it true that every graph on $2^n$ vertices with minimum degree $>2^n-u_n$ contains a $Q_n$.{/LI}\n{/UL}\n\nSee also [576] for the extremal number of edges that guarantee a $Q_n$.\n\n\n\n\nReferences\n\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #576\n- Problem #1034\n- Problem #1036\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #6\n\n## References\n\n- Er93\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
@@ -96,8 +101,8 @@
     {
       "path": "Proofs/Erdos1035Problem.lean",
       "filename": "Erdos1035Problem.lean",
-      "lineCount": 256,
-      "theoremCount": 16,
+      "lineCount": 296,
+      "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 8,
       "sorryCount": 0,
