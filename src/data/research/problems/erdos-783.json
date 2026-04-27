@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-15T08:39:26.859Z",
-    "iteration": 2,
-    "focus": "Axiom elimination via prime reciprocal divergence",
+    "iteration": 3,
+    "focus": "composite_replacement_improves_product added — replacement step for converting coprime → prime-only formalized.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Compose iterative replacement: any coprime A → prime-only A* with sum constraint maintained; analytic estimate connecting product to unsievedCount remains the deep gap.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,20 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM HUNT: Eliminated 2 axioms (maxPrimeCount, maxPrimeCount_spec) by constructing from Mathlib prime reciprocal divergence. 4→2 axioms.",
+    "progressSummary": "PROGRESS (2026-04-27): composite_replacement_improves_product added (28 LOC). All replacement-step lemmas now in place; deep analytic estimate (product → unsievedCount) is the remaining gap toward conjecture.",
     "builtItems": [
       "primeReciprocalSumDiverges: prime reciprocal sums exceed any bound",
       "count_primes_lt: π(p) < p for prime p (0 is not prime)",
       "primesBelow_subset_primeSievingSet: primes ≤ N ⊆ first N nthPrimes",
       "primeSumUnbounded: indexed partial sums unbounded",
       "maxPrimeCount: noncomputable def via Nat.find (was axiom)",
-      "maxPrimeCount_spec: proved theorem (was axiom)"
+      "maxPrimeCount_spec: proved theorem (was axiom)",
+      "composite_replacement_improves_product (PROVED 2026-04-27): if a ∈ A is composite with prime p ∣ a, p < a, p ∉ A, then replacing a with p strictly decreases the sieve product. Bridges prime_factor_better_sieve and smaller_prime_better — gives the improvement step for converting any coprime sieving set toward prime-only."
     ],
     "insights": [
       "maxPrimeCount and maxPrimeCount_spec can be proved from Mathlib prime reciprocal divergence",
       "Key bridge: primesBelow N ⊆ primeSievingSet N via Nat.nth_count and count_primes_lt",
       "not_summable_one_div_on_primes + tendsto_atTop gives unbounded partial sums",
-      "Nat.find constructs maxPrimeCount; find_spec and find_min prove the spec"
+      "Nat.find constructs maxPrimeCount; find_spec and find_min prove the spec",
+      "The conjecture for #783 reduces (modulo deeper analytic estimates) to: (1) every coprime A with bounded reciprocal sum can be improved by replacing composites with prime factors; (2) prime-only sets can be reordered to put smaller primes first. Lemmas (1) and (2) are now both formalized — (1) as composite_replacement_improves_product, (2) as smaller_prime_better."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -65,7 +67,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T08:39:26.859Z",
-  "lastUpdate": "2026-03-13T07:52:17.052Z",
+  "lastUpdate": "2026-04-27T00:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [

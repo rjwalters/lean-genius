@@ -389,4 +389,32 @@ theorem smaller_prime_better (B : Finset ℕ) (p q : ℕ)
     linarith [div_lt_div_of_pos_left one_pos hp_pos (by exact_mod_cast hpq)]
   exact mul_lt_mul_of_pos_right hpq_ineq hrest_pos
 
+/-- Composite replacement: if a ∈ A is composite with prime factor p < a, and p
+    is not already in A, then replacing a with p strictly decreases the sieve
+    product. This bridges `prime_factor_better_sieve` with the product structure
+    used by `smaller_prime_better`, giving the improvement step needed when
+    converting an arbitrary coprime sieving set into a prime-only one.
+
+    Note: the "coprime" hypothesis on A is not used here since we only compare
+    products; the call site is responsible for verifying that
+    `insert p (A.erase a)` remains coprime when needed. -/
+theorem composite_replacement_improves_product
+    (A : Finset ℕ) (a p : ℕ)
+    (ha_mem : a ∈ A) (ha : 2 ≤ a) (hp : p.Prime)
+    (hp_dvd : p ∣ a) (hp_lt : p < a) (hp_not : p ∉ A)
+    (hA : ∀ b ∈ A, 2 ≤ b) :
+    (insert p (A.erase a)).prod (fun x => 1 - 1 / (x : ℝ)) <
+    A.prod (fun x => 1 - 1 / (x : ℝ)) := by
+  -- A.prod = (1-1/a) * (A.erase a).prod
+  rw [← Finset.mul_prod_erase _ _ ha_mem]
+  -- (insert p (A.erase a)).prod = (1-1/p) * (A.erase a).prod
+  have hp_not_erase : p ∉ A.erase a := by
+    simp [Finset.mem_erase]; intro _; exact hp_not
+  rw [Finset.prod_insert hp_not_erase]
+  -- (1-1/p) * rest < (1-1/a) * rest since 1-1/p < 1-1/a (prime_factor_better_sieve)
+  have hrest_pos := sieve_product_pos (A.erase a)
+    (fun b hb => hA b (Finset.mem_of_mem_erase hb))
+  exact mul_lt_mul_of_pos_right
+    (prime_factor_better_sieve a p ha hp hp_dvd hp_lt) hrest_pos
+
 end Erdos783
