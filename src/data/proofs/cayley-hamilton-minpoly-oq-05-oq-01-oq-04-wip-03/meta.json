@@ -69,12 +69,12 @@
   },
   "sections": [
     {
-      "id": "preamble",
-      "title": "Preamble and Setup",
+      "id": "imports",
+      "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 44,
-      "summary": "File documentation, Mathlib import, namespace declaration, and type-class variable setup. Uses Classical.propDecidable for decidability in the coprimality/Bézout arguments.",
-      "mathContext": "The proof is parametric in a field $K$ and dimension $n : \\mathbb{N}$, with all matrices in $K^{n \\times n}$ (Fin n → Fin n → K)."
+      "summary": "Module docstring describing the prime power cyclic vector theorem, its proof strategy (induction on exponent e), and relationship to WIP01/WIP02. Imports `Mathlib`, opens `Matrix` and `Polynomial`, declares `noncomputable section` and `Classical.propDecidable`, and introduces universe-polymorphic field variables `K` and dimension `n`.",
+      "mathContext": "The docstring outlines the key new lemma `pow_irred_dvd_of_annihilated` and its inductive proof structure. The `noncomputable section` is needed because `Field K` instances are generally noncomputable in Lean 4, and `Classical.propDecidable` enables classical reasoning (by_contra, by_cases) throughout the file."
     },
     {
       "id": "definitions",
@@ -109,12 +109,12 @@
       "mathContext": "Pick v with p^(e-1)(M)v ≠ 0 (possible since deg(p^(e-1)) < n = deg(minpoly) implies p^(e-1)(M) ≠ 0). Then p^e(M)v = 0. For any r with r(M)v = 0 and deg(r) < n: pow_irred_dvd_of_annihilated gives p^e | r, so deg(r) ≥ e·deg(p) = n, contradicting deg(r) < n. Hence r = 0."
     },
     {
-      "id": "corollary",
-      "title": "V. Corollary — Finite Fields",
+      "id": "finite-corollary",
+      "title": "V. Finite Field Corollary",
       "startLine": 240,
       "endLine": 253,
-      "summary": "States the finite field specialization as a separate theorem, emphasizing that the prime power cyclic vector theorem holds for all finite fields with no cardinality restriction on |K| relative to n.",
-      "mathContext": "For any finite field $\\mathbb{F}_q$ and nonderogatory $M \\in \\mathbb{F}_q^{n \\times n}$ with $\\mu_M = p^e$, there exists a cyclic vector — no restriction $q > n$ needed."
+      "summary": "Corollary `nonderogatory_pw_has_cyclic_vector_finite` makes explicit that the main theorem holds for all finite fields with no cardinality restriction, then closes the namespace and section.",
+      "mathContext": "The theorem holds for $\\mathbb{F}_q$ for any prime power $q$, unlike earlier results (e.g., OQ-05-OQ-01-OQ-01) that required $|K| > n$. The proof is a direct delegation to the main theorem since no infinite-field-specific arguments were used."
     }
   ],
   "conclusion": {
@@ -142,6 +142,43 @@
     "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP03.lean",
     "sorries": 0
   },
+  "references": [
+    {
+      "authors": "Frobenius, Ferdinand Georg",
+      "title": "Ueber lineare Substitutionen und bilineare Formen",
+      "year": "1878",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), vol. 84, pp. 1–63",
+      "note": "Foundational paper on the rational canonical form and elementary divisors of matrices over polynomial rings — the original context for the cyclic vector theorem"
+    },
+    {
+      "authors": "Hoffman, Kenneth; Kunze, Ray",
+      "title": "Linear Algebra",
+      "year": "1971",
+      "venue": "Prentice-Hall, 2nd edition",
+      "note": "Standard reference for the cyclic decomposition theorem and nonderogatory matrices. Chapter 7 develops the theory of cyclic vectors and rational canonical form via the PID structure theorem"
+    },
+    {
+      "authors": "Horn, Roger A.; Johnson, Charles R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Section 3.2 covers nonderogatory matrices and their characterization via cyclic vectors. Theorem 3.2.4 proves the equivalence: M is nonderogatory iff M has a cyclic vector"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "nonderogatory_pw_has_cyclic_vector",
+      "type": "core",
+      "description": "For nonderogatory M with minpoly = p^e (p monic irreducible, e ≥ 1), M has a cyclic vector over any field K",
+      "leanType": "(M : Matrix (Fin n) (Fin n) K) → IsNonderogatory M → (p : K[X]) → (e : ℕ) → Irreducible p → p.Monic → 0 < e → minpoly K M = p ^ e → ∃ v, IsCyclicVector M v"
+    },
+    {
+      "name": "pow_irred_dvd_of_annihilated",
+      "type": "key",
+      "description": "If p is irreducible, p^e(M)v ≠ 0, p^(e+1)(M)v = 0, and r(M)v = 0, then p^(e+1) divides r",
+      "leanType": "Irreducible p → ∀ (e : ℕ) (v : Fin n → K), (aeval M (p^e)).mulVec v ≠ 0 → (aeval M (p^(e+1))).mulVec v = 0 → ∀ r, (aeval M r).mulVec v = 0 → p^(e+1) ∣ r"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
