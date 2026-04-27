@@ -54,8 +54,8 @@
       "Bateman-Horn conjecture background"
     ],
     "axiomCount": 1,
-    "assumptions": "1 axiom: batemanHorn_formAWithK_infinite (each k-layer of Form A primes is infinite — the BH conjecture prediction). 0 sorries: formA_decomposition_unique was proved via 2-adic valuation (padicValNat 2 (2^k * q) = k when q is odd).",
-    "lineCount": 275,
+    "assumptions": "1 axiom: batemanHorn_formAWithK_infinite {k : ℕ} (hk : 1 ≤ k) (each k-layer of Form A primes with k ≥ 1 is infinite — the BH conjecture prediction). 0 sorries: formA_decomposition_unique was proved via 2-adic valuation (padicValNat 2 (2^k * q) = k when q is odd). The 1 ≤ k restriction is justified by formAWithK0_finite — the k = 0 layer is exactly the singleton {3}, so an unrestricted axiom would be inconsistent.",
+    "lineCount": 385,
     "relatedProblems": [
       {
         "id": "erdos-1065",
