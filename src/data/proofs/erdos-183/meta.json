@@ -51,7 +51,7 @@
       "Growth rate bounds and limit formulations"
     ],
     "axiomCount": 1,
-    "lineCount": 580,
+    "lineCount": 607,
     "references": [
       {
         "title": "Some remarks on the theory of graphs",
@@ -82,7 +82,7 @@
     "historicalContext": "This problem was posed by Paul Erdős in 1961 [Er61] and remains one of the fundamental open questions in Ramsey theory. The multicolor Ramsey number R(3;k) generalizes the classical two-color Ramsey number R(3,3) = 6, which asks for the minimum n such that any 2-coloring of K_n's edges contains a monochromatic triangle.\n\nThe problem connects to several areas of combinatorics. The upper bound R(3;k) ≤ ⌈e·k!⌉ follows from a clever pigeonhole argument, while lower bounds come from connections to Schur numbers. A major breakthrough came in 2021 when Ageron, Casteras, Pellerin, Portella, Rimmel, and Tomasik [ACPPRT21] improved the lower bound to R(3;k) ≥ 380^{k/5} - O(1).\n\nErdős offered $250 for solving this problem, with an additional $100 specifically for proving that the limit is finite. The gap between known bounds is enormous: R(3;k) lies between roughly 3.28^k and k!, making this one of the most intriguing open problems in Ramsey theory.",
     "problemStatement": "Let $R(3;k)$ denote the minimum $n$ such that any $k$-coloring of the edges of the complete graph $K_n$ must contain a monochromatic triangle. Determine:\n\n$$\\lim_{k \\to \\infty} R(3;k)^{1/k}$$\n\n**Known bounds:**\n- Upper: $R(3;k) \\leq \\lceil e \\cdot k! \\rceil$\n- Lower: $R(3;k) \\geq 380^{k/5} - O(1)$\n\n**Reward:** $250 (plus $100 for proving the limit is finite)",
     "text": "Determine the limit of R(3;k)^{1/k} as k approaches infinity, where R(3;k) is the minimum n such that any k-coloring of the edges of K_n contains a monochromatic triangle.",
-    "proofStrategy": "The formalization defines R(3;k) as the minimum n forcing a monochromatic triangle in any k-coloring of K_n. We establish the existence of R(3;k) through an axiom (finiteness follows from the pigeonhole upper bound). The known small values R(3;1)=3, R(3;2)=6, R(3;3)=17 are axiomatized.\n\nThe upper bound uses the inductive relation R(3;k) ≤ 2 + k(R(3;k-1)-1), which unfolds to the factorial bound. The lower bound leverages connections to Schur numbers and the 2021 construction achieving 380^{k/5}.\n\nThe main question is formulated as Filter.Tendsto (fun k => R(3;k)^{1/k}) atTop (nhds L) for some limit L, or alternatively whether this tends to infinity.",
+    "proofStrategy": "The formalization defines R(3;k) as the minimum n forcing a monochromatic triangle in any k-coloring of K_n, established as a theorem (forcing_set_nonempty) via Ramsey's theorem proved by pigeonhole induction on k. The small values R(3;1) = 3 and R(3;2) = 6 are PROVED (not axiomatized): R(3;1) via Subsingleton.elim on Fin 1, R(3;2) via the classical R(3,3) = 6 with the C₅ cycle as the lower-bound witness.\n\nThe upper bound is proved via the inductive relation R(3;k) ≤ 2 + k(R(3;k-1)-1) (theorem R3k_inductive_upper, extracted from the same pigeonhole step that proves forcing_set_nonempty), unfolded to R(3;k) ≤ 3·k! by induction (theorem R3k_le_three_factorial). Monotonicity (R3k_mono) is proved via Fin.castLE embedding.\n\nA single axiom remains: R3k_exponential_lower, the deep Ageron et al. (2021) Schur-number lower bound R(3;k) ≥ 380^{k/5} − O(1). A weaker provable bound (c = 2 via doubling construction) is documented in the file but not yet formalized.\n\nThe main question is formulated as Filter.Tendsto (fun k => R(3;k)^{1/k}) atTop (nhds L) for some limit L, or alternatively whether this tends to infinity.",
     "keyInsights": [
       "**Multicolor Generalization**: R(3;k) extends the classical R(3,3)=6 to k colors, asking when monochromatic triangles are unavoidable",
       "**Enormous Gap**: Known bounds span from exponential (3.28^k) to factorial (k!), leaving vast uncertainty about the true growth rate",
@@ -184,10 +184,10 @@
       "Classical"
     ],
     "namespace": "Erdos183",
-    "lineCount": 580,
+    "lineCount": 607,
     "axiomCount": 1,
-    "theoremCount": 17,
-    "definitionCount": 15,
+    "theoremCount": 18,
+    "definitionCount": 14,
     "path": "Proofs/Erdos183Problem.lean",
     "sorries": 0
   },
