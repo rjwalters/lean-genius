@@ -1,8 +1,8 @@
 {
   "slug": "erdos-263",
   "title": "Erdős #263: Irrationality Sequences",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,16 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "BLOCKED",
     "since": "2026-04-13T22:43:37.492Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "iteration": 11,
+    "focus": "All tractable work complete (17+ theorems proved including doubleExp_sum_irrational). 4 deep sorries remain: folklore_irrationality (Mahler criterion), kovac_tao_not_irrationality (KT 2024), liminf, truncation witness — all require non-Mathlib analytic number theory",
+    "blockers": [
+      "Mathlib lacks Mahler-style irrationality criteria",
+      "Kovač-Tao 2024 theorem not formalized (recent research)",
+      "No transcendental approximation framework for arithmetic sequences"
+    ],
+    "nextAction": "Wait for Mathlib analytic number theory infrastructure (Mahler 1929 irrationality criterion, advanced sumset/distribution results) before re-attempting",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -104,7 +108,7 @@
     "mathlib": []
   },
   "started": "2026-04-13T22:43:37.492Z",
-  "lastUpdate": "2026-04-13",
+  "lastUpdate": "2026-04-27T17:21:05Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
