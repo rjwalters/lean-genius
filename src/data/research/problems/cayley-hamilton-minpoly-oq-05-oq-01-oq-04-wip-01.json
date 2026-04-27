@@ -6,10 +6,10 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "theorem nonderogatory_has_cyclic_vector_any_field {K : Type*} [Field K] {n : \u2115} (M : Matrix (Fin n) (Fin n) K) (h : IsNonderogatory M) : \u2203 v, IsCyclicVector M v",
-    "plain": "If M \u2208 M\u2099(K) is nonderogatory (minpoly = charpoly) over ANY field K (including finite fields with |K| \u2264 n), then M has a cyclic vector v such that {v, Mv, \u2026, M\u207f\u207b\u00b9v} is a basis. This is the field-independent version completing the Cayley-Hamilton minpoly research cluster.",
+    "formal": "theorem nonderogatory_has_cyclic_vector_any_field {K : Type*} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (h : IsNonderogatory M) : ∃ v, IsCyclicVector M v",
+    "plain": "If M ∈ Mₙ(K) is nonderogatory (minpoly = charpoly) over ANY field K (including finite fields with |K| ≤ n), then M has a cyclic vector v such that {v, Mv, …, Mⁿ⁻¹v} is a basis. This is the field-independent version completing the Cayley-Hamilton minpoly research cluster.",
     "whyMatters": [
-      "Removes the [Infinite K] hypothesis from OQ-05-OQ-01 \u2014 the theorem holds universally",
+      "Removes the [Infinite K] hypothesis from OQ-05-OQ-01 — the theorem holds universally",
       "Resolves the last sorry in CayleyHamiltonMinpolyOQ05OQ01OQ04.lean",
       "Completes the nonderogatory/cyclic-vector thread in the Cayley-Hamilton gallery cluster",
       "Requires a proof route that avoids the full PID structure theorem (not in Mathlib)",
@@ -20,9 +20,9 @@
     "proven": [
       "aeval_conj: conjugation by invertible P commutes with polynomial evaluation aeval M",
       "cyclic_vector_of_similar: if M ~ M' and v is cyclic for M', then there is a cyclic vector for M",
-      "annihilator_dvd_minpoly: if p(M)v = 0 then minpoly K M \u2223 p",
-      "cyclic_iff_ann_eq_minpoly: v cyclic \u2194 ann_K[X](v) = (minpoly K M)",
-      "F2_union_covers: F\u2082\u00b2 is covered by 3 proper subspaces (union avoidance fails over F\u2082)",
+      "annihilator_dvd_minpoly: if p(M)v = 0 then minpoly K M ∣ p",
+      "cyclic_iff_ann_eq_minpoly: v cyclic ↔ ann_K[X](v) = (minpoly K M)",
+      "F2_union_covers: F₂² is covered by 3 proper subspaces (union avoidance fails over F₂)",
       "nonderogatory_has_cyclic_vector_finite_any_size: follows from any_field (trivially)"
     ],
     "open": [
@@ -34,45 +34,47 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-04-26T00:00:00+00:00",
-    "iteration": 2,
-    "focus": "WIP04 built and verified: axiom-free proof of general nonderogatory cyclic vector theorem via primary decomposition",
+    "since": "2026-04-27T00:00:00+00:00",
+    "iteration": 3,
+    "focus": "WIP05 built and verified: axiom-free proof of nonderogatory_has_cyclic_vector_any_field WITHOUT factored-form hypothesis. Combined with WIP04, this gives the fully general theorem with no axioms and no factorization input.",
     "blockers": [],
-    "nextAction": "PR merged; follow-up: generalize to eliminate factored-form input hypothesis via UFD factorization",
+    "nextAction": "Cluster fully closed for axiom-free formalization. Optional follow-ups: (1) close the original sorry in CayleyHamiltonMinpolyOQ05OQ01OQ04.lean by translating between definition styles; (2) refactor WIP04 to take a Fintype instead of Fin to avoid the WIP05 reindexing wrapper.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: WIP04 proves the general nonderogatory cyclic vector theorem axiom-free (352 lines, 0 sorries, 0 axioms) using primary decomposition via Bezout projections. Build verified. Supersedes WIP01 by eliminating the rational canonical form axiom.",
+    "progressSummary": "COMPLETED: WIP05 closes the cluster. WIP04 proves the general factored case axiom-free; WIP05 wraps WIP04 with UFD factorization to eliminate the factored-form hypothesis, yielding nonderogatory_has_cyclic_vector_any_field with input only the matrix and the IsNonderogatory hypothesis. 0 sorries, 0 axioms throughout.",
     "builtItems": [
-      "proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean:1 \u2014 complete axiom-free proof of general nonderogatory cyclic vector via primary decomposition (352 lines, 0 sorries, 0 axioms)",
-      "src/data/proofs/cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04/meta.json \u2014 gallery metadata for WIP04",
-      "src/data/proofs/cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04/annotations.json \u2014 empty annotations file"
+      "proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean:1 — complete axiom-free proof of general nonderogatory cyclic vector via primary decomposition (359 lines, 0 sorries, 0 axioms)",
+      "proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean:1 — final wrapper using UFD factorization to eliminate factored-form hypothesis (167 lines, 0 sorries, 0 axioms)",
+      "src/data/proofs/cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04/meta.json — gallery metadata for WIP04",
+      "src/data/proofs/cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-05/meta.json — gallery metadata for WIP05"
     ],
     "insights": [
-      "The blocking step is the PID structure theorem: K^n \u2245 K[X]/(d1) \u2295 \u2026 \u2295 K[X]/(dr) as K[X]-modules",
-      "nonderogatory forces r=1 in the cyclic decomposition, giving K^n \u2245 K[X]/(minpoly)",
-      "cyclic_iff_ann_eq_minpoly (already proven) reduces the problem to: \u2203 v, ann(v) = (minpoly)",
+      "The blocking step is the PID structure theorem: K^n ≅ K[X]/(d1) ⊕ … ⊕ K[X]/(dr) as K[X]-modules",
+      "nonderogatory forces r=1 in the cyclic decomposition, giving K^n ≅ K[X]/(minpoly)",
+      "cyclic_iff_ann_eq_minpoly (already proven) reduces the problem to: ∃ v, ann(v) = (minpoly)",
       "companion matrix approach: if M ~ companion(charpoly), then e1 is a cyclic vector for companion, and cyclic_vector_of_similar transfers it to M",
       "Whether rational canonical form / companion similarity exists in Mathlib is the key unknown",
-      "Primary decomposition via Bezout eliminates the PID structure theorem entirely: for minpoly = prod p_i^e_i, construct v_i = F_i(M)w_i (F_i = complementary product) \u2014 only annihilation/non-annihilation properties needed, not dim(ker) = deg(p_i^e_i)",
+      "Primary decomposition via Bezout eliminates the PID structure theorem entirely: for minpoly = prod p_i^e_i, construct v_i = F_i(M)w_i (F_i = complementary product) — only annihilation/non-annihilation properties needed, not dim(ker) = deg(p_i^e_i)",
       "IsCoprime.prod_right + bezout_proj_identity gives CRT projection pi_i that extracts r(M)v_i = 0 from r(M)(sum v_j) = 0, without needing explicit direct sum decomposition",
       "Finset.prod_dvd_of_coprime in Mathlib handles the final step: pairwise coprime factors all dividing r implies product divides r",
-      "The degree bound hpow_Fi_deg requires Polynomial.natDegree_mul (product degree = sum of degrees) to reduce to an omega-solvable linear inequality \u2014 direct omega on product of variables fails",
-      "Matrix.mulVec_mulVec is A *\u1d65 (B *\u1d65 v) = (A*B) *\u1d65 v \u2014 forward FOLDS nested mulVecs, backward UNFOLDS; *\u1d65 is right-associative so A *\u1d65 B *\u1d65 v means A *\u1d65 (B *\u1d65 v)",
+      "The degree bound hpow_Fi_deg requires Polynomial.natDegree_mul (product degree = sum of degrees) to reduce to an omega-solvable linear inequality — direct omega on product of variables fails",
+      "Matrix.mulVec_mulVec is A *ᵥ (B *ᵥ v) = (A*B) *ᵥ v — forward FOLDS nested mulVecs, backward UNFOLDS; *ᵥ is right-associative so A *ᵥ B *ᵥ v means A *ᵥ (B *ᵥ v)",
       "Finset.prod_ne_zero does NOT exist in Mathlib 4.26; use Finset.prod_eq_zero_iff instead (prove nonzero by contradiction)",
       "Polynomial.Irreducible.natDegree_pos does NOT exist in Mathlib 4.26; use Polynomial.eq_one_of_monic_natDegree_zero + not_isUnit"
     ],
     "mathlibGaps": [
-      "RESOLVED: No PID structure theorem needed \u2014 primary decomposition via Bezout projections suffices",
-      "REMAINING: To get fully general theorem (not requiring factored minpoly as input), need to automatically factor minpoly K M using UniqueFactorizationMonoid on K[X]"
+      "RESOLVED: No PID structure theorem needed — primary decomposition via Bezout projections suffices (WIP04)",
+      "RESOLVED: Factored-form hypothesis eliminated via UniqueFactorizationMonoid.normalizedFactors (WIP05)"
     ],
     "nextSteps": [
-      "Integrate UFD factorization of minpoly K M to eliminate the factored-form hypothesis from WIP04",
-      "Generate follow-up open question: does this primary decomposition approach generalize to modules over other PIDs?"
+      "Optional: close the sorry in CayleyHamiltonMinpolyOQ05OQ01OQ04.lean by translating WIP05's theorem to that file's IsCyclicVector definition (LinearIndependent style vs annihilator style)",
+      "Optional: refactor WIP04's signature from Fin k to a generic Fintype σ to remove the WIP05 reindexing wrapper",
+      "Open question: does the UFD-factorization approach generalize to nonderogatory module endomorphisms over arbitrary PIDs?"
     ]
   },
   "tags": [
@@ -103,11 +105,12 @@
     "Lean Zulip: 'structure theorem for modules over PID' thread"
   ],
   "started": "2026-04-25T12:15:42+02:00",
-  "lastUpdate": "2026-04-26T00:00:00+00:00",
+  "lastUpdate": "2026-04-27T00:00:00+00:00",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     "proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean",
-    "proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean"
+    "proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean",
+    "proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean"
   ]
 }
