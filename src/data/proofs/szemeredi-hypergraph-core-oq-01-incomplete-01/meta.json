@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://arxiv.org/abs/math/0610762",
     "date": "2026",
-    "status": "verified",
+    "status": "formalized",
     "tags": [
       "combinatorics",
       "szemeredi",
@@ -19,7 +19,7 @@
     ],
     "proofRepoPath": "Proofs/SzemerediHypergraphGowers.lean",
     "badge": "infrastructure",
-    "sorries": 0,
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "Finset.inter_eq_left",
@@ -141,7 +141,7 @@
     "theoremCount": 14,
     "definitionCount": 6,
     "path": "Proofs/SzemerediHypergraphGowers.lean",
-    "sorries": 0
+    "sorries": 1
   },
   "references": [
     {
@@ -166,5 +166,5 @@
       "note": "First regularity lemma for k-uniform hypergraphs"
     }
   ],
-  "sorries": 0
+  "sorries": 1
 }
