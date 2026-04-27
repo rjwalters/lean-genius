@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1009-oq-02",
   "title": "Edge-Disjoint K₄ Copies Beyond Turán Threshold",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-03-30T21:13:16.758Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "since": "2026-04-27",
+    "iteration": 2,
+    "focus": "0 sorries, 0 axioms. Infrastructure complete; main open question remains research-level.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Generate trivial linear bound (excess >= 6k+1 -> >=k+1 edge-disjoint K4); see follow-ups.md.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0 sorries. turanK4_extremal proved via CliqueFree.card_edgeFinset_le + mod-3 case split. exceeds_turanK4_has_clique4 proved via Finset.card_eq_four.",
+    "progressSummary": "COMPLETE: 0 sorries, 0 axioms. Session 2: added edges_subset_edgeFinset and edges_nonempty infrastructure; generated 3 follow-up questions (trivial linear bound, Turán sharpness, K_r generalization) in research/problems/erdos-1009-oq-02/follow-ups.md.",
     "builtItems": [
       "turanK4_arith (Erdos1009OQ02Problem.lean): arithmetic lemma for Turan bound via mod-3 case split",
       "turanK4_extremal (Erdos1009OQ02Problem.lean): proved K4-free graphs have <= n^2/3 edges",
-      "exceeds_turanK4_has_clique4 (Erdos1009OQ02Problem.lean): proved K4 exists above Turan threshold"
+      "exceeds_turanK4_has_clique4 (Erdos1009OQ02Problem.lean): proved K4 exists above Turan threshold",
+      "Clique4.edges_subset_edgeFinset (Erdos1009OQ02Problem.lean:251): every K4 edge in G.edgeFinset",
+      "Clique4.edges_nonempty (Erdos1009OQ02Problem.lean:265): K4 edge set is nonempty"
     ],
     "insights": [
       "Created Erdos1009OQ02Problem.lean: K4 analog of Gyori theorem formalized. Clique4 struct, turanThresholdK4=n^2/3, edge-disjointness, open question as Prop.",
@@ -41,10 +43,18 @@
       "turanK4_extremal uses CliqueFree.card_edgeFinset_le; arithmetic n%3 cases need nlinarith not omega",
       "clique4_has_triangle: distinct.2.2.2.1 is b≠c in And-chain a≠b ∧ a≠c ∧ a≠d ∧ b≠c ∧ b≠d ∧ c≠d",
       "turanK4_arith private lemma: simp [h] + omega proves each mod-3 case; simp only does not reduce constants like 3-1 or 0^2",
-      "push_neg on NOT(exists K, True) gives forall K, False (simplifies NOT True to False)"
+      "push_neg on NOT(exists K, True) gives forall K, False (simplifies NOT True to False)",
+      "Clique4.edges_subset_edgeFinset proved: every K4 edge is in G.edgeFinset (simp on mem_edgeFinset+mem_edgeSet, 6-way rcases)",
+      "Clique4.edges_nonempty proved: K4 edge set is nonempty (witness s(K.a, K.b))",
+      "Mathlib SimpleGraph.deleteEdges API analyzed: deleteEdges_adj (Basic.lean:803) and edgeFinset_deleteEdges (Finite.lean:122) give path to trivial linear bound for ≥k+1 edge-disjoint K4 copies given excess ≥6k+1.",
+      "Open question edgeDisjointK4_question still genuinely open at 1:1 rate (Györi-style for K4); trivial 1/6 rate is the first formalizable step."
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove Clique4.edges.card = 6 via Sym2.eq_iff distinctness analysis (15 distinctness checks from K.distinct)",
+      "Prove trivial linear bound: excess >= 6k+1 -> maxEdgeDisjointK4 >= k+1 via deleteEdges induction",
+      "Connect to T(n,3) sharpness via SimpleGraph.turanGraph 3 n"
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -66,15 +76,15 @@
     "mathlib": []
   },
   "started": "2026-03-30T21:13:16.757Z",
-  "lastUpdate": "2026-03-30T21:13:16.757Z",
+  "lastUpdate": "2026-04-27T00:00:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1009OQ02Problem.lean",
       "filename": "Erdos1009OQ02Problem.lean",
-      "lineCount": 241,
-      "theoremCount": 8,
+      "lineCount": 267,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 9,
       "sorryCount": 0,
