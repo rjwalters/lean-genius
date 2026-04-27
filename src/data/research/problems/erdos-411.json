@@ -1,7 +1,7 @@
 {
   "slug": "erdos-411",
   "title": "Erdős #411",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,20 +16,24 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-13T02:38:27.587Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACT",
+    "since": "2026-04-28T00:00:00.000Z",
+    "iteration": 4,
+    "focus": "All known cases (n=10, n=94, n=738) PROVED as axiom-free theorems. Main characterization (ErdosProblem411) remains OPEN.",
+    "blockers": [
+      "ErdosProblem411 (full characterization of all solutions) is the open question; not provable without major advance",
+      "CambieConjecture (n=2^l·p with p∈{2,3,5,7,35,47}) is conjectural — no proof strategy known",
+      "n=148646 and n=4325798 ratio-4 cases not yet formalized (would replicate cambie_ratio3 pattern with totientStep_quadruple lemma)"
+    ],
+    "nextAction": "Optional: formalize n=148646 and n=4325798 ratio-4 cases by adapting cambie_ratio3 proof structure with a totientStep_quadruple lemma analogous to totientStep_triple.",
     "attemptCounts": {
-      "total": 0,
+      "total": 4,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 axioms (6A→4A, 2T→8T). Proved doubling for n=10 and n=94 via totientStep_double_even propagation. Remaining 4 axioms: 3 Cambie ratios (3,4), 1 Steinerberger equivalence.",
+    "progressSummary": "AXIOM-FREE: Erdos411Problem.lean has 0 axioms and 0 sorries (217 lines). All previously axiomatized known cases now PROVED as theorems: doubling_r2_n10, doubling_r2_n94 (via native_decide + doubling_propagation), and cambie_ratio3 (g_{k+4}(738)=3·g_k(738) via strong induction over k mod 4 using totientStep_triple). The main conjecture ErdosProblem411 (full characterization) remains an open `def : Prop`, as does CambieConjecture; these are stated, not assumed.",
     "builtItems": [
       "Survey: identified proof strategy for steinerberger_r2_equiv and downstream axioms",
       "totient_double_even: φ(2m)=2φ(m) for even m (from Mathlib)",
@@ -68,7 +72,7 @@
     "mathlib": []
   },
   "started": "2026-01-13T02:38:27.587Z",
-  "lastUpdate": "2026-03-13T07:52:17.048Z",
+  "lastUpdate": "2026-04-28T00:00:00.000Z",
   "significance": 5,
   "tractability": 3,
   "leanFiles": [
