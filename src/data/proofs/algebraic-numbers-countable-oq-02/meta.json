@@ -204,6 +204,36 @@
       "description": "Investigates 2^\u2135\u2080 further: |P(\u211d)| = 2^\ud835\udd20 = 2^(2^\u2135\u2080). This entry establishes \u2135\u2080 < 2^\u2135\u2080 (the gap between algebraic and transcendental). Cantor's theorem (P(X) has strictly greater cardinality than X) applied to \u211d gives another gap: 2^\u2135\u2080 < 2^(2^\u2135\u2080). OQ-01 explores this next step in the cardinal hierarchy, starting from exactly the 2^\u2135\u2080 established here."
     }
   ],
+  "references": [
+    {
+      "authors": ["G. Cantor"],
+      "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "year": "1874",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), vol. 77, pp. 258–262",
+      "note": "Cantor's landmark paper containing both the countability of algebraic numbers and the uncountability of the reals (via nested intervals). The diagonal argument formalized here came later (1891); the 1874 paper used a different technique."
+    },
+    {
+      "authors": ["G. Cantor"],
+      "title": "Über eine elementare Frage der Mannigfaltigkeitslehre",
+      "year": "1891",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung, vol. 1, pp. 75–78",
+      "note": "Cantor's diagonal argument in its general form, proving |P(X)| > |X| for any set X. The uncountability of ℝ follows as the special case X = ℕ with the identification ℝ ≅ 2^ℕ via binary expansions."
+    },
+    {
+      "authors": ["J. Dauben"],
+      "title": "Georg Cantor: His Mathematics and Philosophy of the Infinite",
+      "year": "1979",
+      "venue": "Harvard University Press",
+      "note": "Comprehensive biography and mathematical analysis of Cantor's work on set theory, cardinal arithmetic, and the continuum hypothesis."
+    },
+    {
+      "authors": ["M. Aigner", "G. M. Ziegler"],
+      "title": "Proofs from THE BOOK",
+      "year": "2018",
+      "venue": "Springer, 6th edition",
+      "note": "Chapter 3 presents Cantor's diagonal argument and its consequences, including the uncountability of transcendental numbers."
+    }
+  ],
   "sorries": 0,
   "leanFile": {
     "imports": [

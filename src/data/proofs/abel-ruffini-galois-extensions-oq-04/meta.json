@@ -157,5 +157,28 @@
             "description": "Proves all finite groups of order $< 60$ are solvable. $A_5$ (order 60) is the minimal non-solvable group — equivalently, the first group to have a non-cyclic composition factor. Jordan-Hölder makes this precise: the 59 groups of smaller order all have composition series with only cyclic factors"
         }
     ],
+    "references": [
+        {
+            "authors": ["C. Jordan"],
+            "title": "Traité des substitutions et des équations algébriques",
+            "year": "1870",
+            "venue": "Gauthier-Villars, Paris",
+            "note": "First systematic treatment of composition series for permutation groups. Jordan proved that the simple factors appearing in any composition series of a group are invariants — the precursor to the Jordan-Hölder theorem."
+        },
+        {
+            "authors": ["O. Hölder"],
+            "title": "Zurückführung einer beliebigen algebraischen Gleichung auf eine Kette von Gleichungen",
+            "year": "1889",
+            "venue": "Mathematische Annalen 34: 26–56",
+            "note": "Proved the uniqueness of composition factors up to order and isomorphism — completing the theorem now known as Jordan-Hölder. The result was later generalized by Schreier (1928) to subnormal series with the Schreier refinement theorem."
+        },
+        {
+            "authors": ["J. J. Rotman"],
+            "title": "An Introduction to the Theory of Groups",
+            "year": "1995",
+            "venue": "Springer GTM 148, 4th edition",
+            "note": "Chapter 5: complete modern proof of the Jordan-Hölder theorem via the Schreier refinement theorem and the Zassenhaus lemma. Standard reference for the lattice-theoretic approach used in Mathlib's JordanHolderLattice."
+        }
+    ],
     "sorries": 0
 }

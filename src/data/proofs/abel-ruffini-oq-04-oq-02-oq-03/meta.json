@@ -154,5 +154,28 @@
       "summary": "Documentation table classifying all 59 orders by solvability proof method: trivial (1), prime-cyclic (17), prime-power (8), two-prime-Burnside (31), three-prime-direct (2). primes_below_60 verified by native_decide. Summary of proved vs. missing (Burnside's theorem)."
     }
   ],
+  "references": [
+    {
+      "authors": ["W. Burnside"],
+      "title": "On groups of order p^α q^β",
+      "year": "1904",
+      "venue": "Proceedings of the London Mathematical Society, 2(1), pp. 388–392",
+      "note": "Proved that every group of order p^a q^b (two primes) is solvable. A₅ (order 60 = 2²·3·5, three primes) is the smallest group escaping this criterion. This result is axiomatized in the formalization for the two-prime orders."
+    },
+    {
+      "authors": ["P. Hall"],
+      "title": "A note on soluble groups",
+      "year": "1928",
+      "venue": "Journal of the London Mathematical Society, 3(2), pp. 98–105",
+      "note": "Hall's theorem characterizes solvable groups via the existence of Hall subgroups of every coprime order. Provides the positive structural test complementing Burnside's sufficient condition."
+    },
+    {
+      "authors": ["J. J. Rotman"],
+      "title": "An Introduction to the Theory of Groups",
+      "year": "1995",
+      "venue": "Springer GTM 148, 4th edition",
+      "note": "Chapter 5 covers solvable groups, p-groups, nilpotent groups, and the Burnside p^a q^b theorem. The classification of all groups of small order by solvability is a standard exercise."
+    }
+  ],
   "sorries": 0
 }

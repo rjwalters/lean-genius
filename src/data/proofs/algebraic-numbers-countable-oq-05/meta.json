@@ -147,5 +147,28 @@
     "isAristotle": false,
     "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ05.lean"
   },
+  "references": [
+    {
+      "authors": ["G. Cantor"],
+      "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "year": "1874",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), vol. 77, pp. 258–262",
+      "note": "Cantor's original paper introducing the height function H(p) = deg(p) + Σ|aᵢ| to prove algebraic numbers are countable. This entry formalizes exactly this approach — finite strata via height bounds, with explicit polynomial enumeration."
+    },
+    {
+      "authors": ["S. Lang"],
+      "title": "Fundamentals of Diophantine Geometry",
+      "year": "1983",
+      "venue": "Springer",
+      "note": "Develops the theory of height functions on algebraic varieties, generalizing Cantor's polynomial height to projective heights and Weil heights. The finiteness-of-bounded-height principle used in this formalization is the prototype for the Northcott property of heights on projective varieties."
+    },
+    {
+      "authors": ["J. Dauben"],
+      "title": "Georg Cantor: His Mathematics and Philosophy of the Infinite",
+      "year": "1979",
+      "venue": "Harvard University Press",
+      "note": "Comprehensive account of Cantor's development of set theory, including the 1874 height function argument formalized here."
+    }
+  ],
   "sorries": 0
 }
