@@ -106,5 +106,29 @@
       "Lower bound theorem",
       "Upper bound theorem"
     ]
+  },
+  {
+    "id": "ann-or-comm-symmetry",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 86,
+      "endLine": 92
+    },
+    "type": "technique",
+    "title": "Symmetry Reduction via `Or.comm`",
+    "content": "A common Lean-engineering pattern: prove the canonical case ($a < b$), then *transport* it to the symmetric case ($b < a$) by rewriting $\\{a, b\\} = \\{b, a\\}$. The Finset equality is established by `ext x; simp [Or.comm]` — extensionality of finite sets reduces to membership equivalence, and `Finset.mem_insert` unfolds the literal pair to a disjunction `x = a ∨ x = b`, which `Or.comm` flips.\n\n**Why this is idiomatic:** The alternative — proving `threshold_not_shatters_pair` symmetrically for *all* pairs (not just $a < b$) — would either duplicate the proof or use `omega`/`linarith` to handle both orderings, obscuring the order-theoretic content. Splitting into the canonical case + symmetry transport is a standard Mathlib idiom (`wlog` tactics encode it as well, but explicit transport is sometimes clearer). The cost is one extra Finset rewrite; the benefit is that the mathematical content (monotonicity obstruction) lives in a single, clean theorem.\n\n**Reusable template:** Many combinatorial obstruction proofs follow this shape — establish a canonical orientation (sorted, or with a designated minimum), prove the obstruction in that orientation, then lift via group-theoretic symmetry (here, the trivial $\\mathbb{Z}/2$ action on ordered pairs). The same pattern lifts a triple-shattering obstruction for intervals from the canonical ordering $a < b < c$ to all 6 permutations, and lifts the half-space obstruction in $\\mathbb{R}^d$ from a sorted basis to all $(d+1)!$ orientations.\n\n**Connection to `wlog`:** Mathlib provides `wlog h : a ≤ b` for exactly this idiom. The explicit `rcases lt_or_gt_of_ne` + transport here is a manual unfolding of `wlog` — pedagogically more transparent for a learner reading the proof.",
+    "mathContext": "$\\{a, b\\} = \\{b, a\\}$ as `Finset`s, via `ext x; simp [Or.comm]`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "wlog tactic",
+      "Finset.ext",
+      "Or.comm",
+      "case symmetry",
+      "canonical orientation"
+    ],
+    "prerequisites": [
+      "Finset extensionality",
+      "Lean tactic `rcases`"
+    ]
   }
 ]

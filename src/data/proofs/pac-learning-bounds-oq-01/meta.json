@@ -62,6 +62,16 @@
       "targetId": "pac-learning-bounds",
       "relationship": "extends",
       "description": "Concrete computation answering the parent's open question OQ-01 about VC dimension of specific hypothesis classes"
+    },
+    {
+      "targetId": "shannon-entropy",
+      "relationship": "complements",
+      "description": "Information-theoretic counterpart of VC theory. Both bound the *capacity* of a system: VC dimension counts combinatorial shattering, while Shannon entropy measures probabilistic uncertainty. Together they underwrite modern generalization bounds — VC for distribution-free PAC learning, entropy/KL-divergence for PAC-Bayes and information bottleneck. The duality is sharp at the level of MDL (Minimum Description Length): a class of VC dimension $d$ requires $\\Theta(d \\log n)$ bits to describe a hypothesis on $n$ samples, mirroring entropy's role in source coding."
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "underlies",
+      "description": "PAC learning bounds are proved using the first-moment method (and Markov's inequality) on the empirical risk. For VC dim 1 thresholds, the bound says $\\mathbb{E}[\\sup_{h \\in H_{thr}} |R(h) - \\hat{R}(h)|] = O(1/\\sqrt{n})$ — a uniform-convergence statement whose proof goes through the symmetrization trick + the Sauer-Shelah polynomial growth bound. The probabilistic method is the engine; VC dimension supplies the combinatorial input."
     }
   ],
   "overview": {
@@ -129,7 +139,9 @@
       "Verify the explicit growth-function equality $\\Pi_{H_{thr}}(n) = n + 1$ — i.e., not just the Sauer-Shelah upper bound but the exact count. This would follow from a lemma showing that on any sorted $n$-point set, the $n + 1$ distinct labelings are exactly $\\{\\emptyset, \\{x_n\\}, \\{x_{n-1}, x_n\\}, \\ldots, \\{x_1, \\ldots, x_n\\}\\}$.",
       "Formalize the PAC sample complexity bound for thresholds: $m(\\varepsilon, \\delta) = O(\\frac{1}{\\varepsilon}(\\log\\frac{1}{\\delta} + 1))$ samples suffice for accuracy $\\varepsilon$ with confidence $1 - \\delta$. Combines this entry's VC dim with the Fundamental Theorem of Statistical Learning.",
       "Generalize this entry to thresholds on any totally ordered set (replace ℕ with $[\\text{LinearOrder}\\;\\alpha]$). The proof uses only the order, not arithmetic on ℕ — a clean Mathlib-style generalization.",
-      "Prove that empirical risk minimization (ERM) on thresholds is consistent and achieves the PAC bound, with explicit algorithm: $t^* = \\max\\{x_i : y_i = 1\\} + 1$ (or $0$ if no positive examples). The simplest example of an ERM analysis matching the VC bound."
+      "Prove that empirical risk minimization (ERM) on thresholds is consistent and achieves the PAC bound, with explicit algorithm: $t^* = \\max\\{x_i : y_i = 1\\} + 1$ (or $0$ if no positive examples). The simplest example of an ERM analysis matching the VC bound.",
+      "Prove the agnostic PAC bound: when no $h \\in H_{thr}$ has zero error, sample complexity becomes $m(\\varepsilon, \\delta) = O(\\frac{1}{\\varepsilon^2}(\\log\\frac{1}{\\delta} + 1))$ — the $1/\\varepsilon^2$ rate (vs. the realizable $1/\\varepsilon$) reflects the variance penalty of stochastic labels. Combining this entry's VC dim with the agnostic FTSL gives an explicit rate.",
+      "Compute the *online* mistake bound for thresholds: a learner using the *halving algorithm* makes $O(\\log |\\text{version space}|)$ mistakes, but on infinite ℕ-domain thresholds the version space has continuum cardinality. The right notion is the *Littlestone dimension*, which for thresholds on ℕ is *infinite* despite VC dim being 1 — a celebrated separation between PAC and online learning."
     ]
   },
   "references": [
@@ -181,6 +193,27 @@
       "year": "2018",
       "venue": "MIT Press, 2nd edition",
       "note": "Comprehensive reference for VC theory, Rademacher complexity, and statistical learning bounds, with explicit calculations of VC dimension for many concrete classes."
+    },
+    {
+      "authors": "Devroye, Luc; Györfi, László; Lugosi, Gábor",
+      "title": "A Probabilistic Theory of Pattern Recognition",
+      "year": "1996",
+      "venue": "Springer, Stochastic Modelling and Applied Probability vol. 31",
+      "note": "Definitive probabilistic treatment of VC theory and PAC bounds. Chapter 12 on Vapnik-Chervonenkis theory contains the symmetrization, ghost-sample, and chaining arguments that turn VC dimension into uniform-convergence rates. The thresholds-on-an-ordered-set example appears as the canonical introductory case."
+    },
+    {
+      "authors": "Littlestone, Nick",
+      "title": "Learning quickly when irrelevant attributes abound: A new linear-threshold algorithm",
+      "year": "1988",
+      "venue": "Machine Learning 2(4), 285–318",
+      "note": "Introduced the *Littlestone dimension*, the online-learning analogue of VC dimension. Famously, thresholds on an unbounded ordered set have VC dim 1 but Littlestone dim $\\infty$ — sharply separating PAC from online learnability, despite both notions being characterized by *combinatorial dimensions*."
+    },
+    {
+      "authors": "Alon, Noga; Ben-David, Shai; Cesa-Bianchi, Nicolò; Haussler, David",
+      "title": "Scale-sensitive dimensions, uniform convergence, and learnability",
+      "year": "1997",
+      "venue": "Journal of the ACM 44(4), 615–631",
+      "note": "Real-valued generalization of VC dimension via fat-shattering. Connects VC dim of thresholds to scale-sensitive bounds and uniform convergence rates for regression — providing the higher-fidelity capacity measure needed when the learner outputs real values rather than binary labels."
     }
   ],
   "mainTheorems": [
