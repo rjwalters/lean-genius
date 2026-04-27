@@ -93,7 +93,7 @@
     "namespace": "HookLengthFormula",
     "lineCount": 16248,
     "axiomCount": 0,
-    "sorries": 4,
+    "sorries": 3,
     "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
     "theoremCount": 521,
     "definitionCount": 14
@@ -202,5 +202,5 @@
       "mathContext": "$h(\\mu,i,j) = h(\\mu^\\top,j,i)$ (arm↔leg under transpose). For N-row shapes: hook walk identity $\\sum_c \\text{hookProd}(\\mu)/\\text{hookProd}(\\mu\\setminus c) = \\sum_i a_i$ is a polynomial identity in $a_1,\\ldots,a_N$, verifiable by `ring` after computing each hook length as a linear combination of $a_i$."
     }
   ],
-  "sorries": 4
+  "sorries": 3
 }
