@@ -21,9 +21,9 @@
     "sorries": 1,
     "dateAdded": "2026-04-24",
     "axiomCount": 0,
-    "assumptions": "1 sorry in G2_der_dimension proof chain: derEval14_injective — extracting basis vector agreement from evaluation equality (~50 lines of Leibniz constraint applications). The j = 0 case (unit-kills) is now closed via submodule_der_unit_zero (added 2026-04-27); the remaining sorry is scoped to the 56-entry imaginary basis claim (j ∈ {1,...,7}). The companion lemma derBasis14_linearIndependent (14×14 evaluation matrix linear independence) was proved in PR #13121 via Fin 14 case analysis with nlinarith on the 7 independent 2×2 blocks. The Aut(𝕆) ⊆ O(7) portion is fully proved with 0 sorries.",
-    "lineCount": 1123,
-    "theoremCount": 36,
+    "assumptions": "1 sorry in G2_der_dimension proof chain: derEval14_injective — off-diagonal entries (j in {1,...,7}, i != 0, i != j) of the imaginary basis kernel claim. The j = 0 case is closed via submodule_der_unit_zero; the i = j diagonal case (Session 7, 2026-04-27) is closed via submodule_der_diagonal_kill (Leibniz at (e_j, e_j) using stdBasis_sq_neg_unit). Remaining 49-entry off-diagonal block requires antisymmetry ((f e_i)_j + (f e_j)_i = 0 from Leibniz at (e_i, e_j) + (e_j, e_i)) and Fano-line trilinear constraints. derBasis14_linearIndependent was proved in PR #13121. The Aut(O) is in O(7) — fully proved with 0 sorries.",
+    "lineCount": 1180,
+    "theoremCount": 38,
     "definitionCount": 17,
     "originalContributions": [
       "OctonionAlgHom / OctonionAut: structures for octonion algebra homomorphisms and automorphisms",

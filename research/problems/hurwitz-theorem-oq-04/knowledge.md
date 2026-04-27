@@ -229,3 +229,40 @@ For a true proof:
 1. **Exhibit 14 derivations**: D_{ij}(x) for 1 ≤ i < j ≤ 7 to PROVE G2_der_dimension
 2. **Linear independence**: 14×14 matrix argument (decide-based)
 3. **Archive sessions 1-4** to sessions/ directory
+
+---
+
+## Session 2026-04-27 (Session 7) — Diagonal Kill (i = j subcase)
+
+**Mode**: REVISIT (RICH, score 36)
+**Outcome**: PROGRESS — added two helper lemmas, scoped down remaining sorry from 56 → 49 entries.
+
+### What I Did
+
+1. **Added `stdBasis_sq_neg_unit`**: For any imaginary basis `eⱼ` (j ≠ 0),
+   `eⱼ · eⱼ = -e₀`. Proof by case-on-j (1..7), then component-wise `simp+ring`.
+
+2. **Added `submodule_der_diagonal_kill`**: For any `f ∈ OctonionDerSubmodule`
+   and `j ≠ 0`, `(f eⱼ)_j = 0`. Apply Leibniz at (eⱼ, eⱼ), use
+   `stdBasis_sq_neg_unit` to rewrite `eⱼ² = -e₀`, then `LinearMap.map_neg` +
+   `submodule_der_unit_zero` give `f(-e₀) = 0`. Component 0 reduces to
+   `-2·(f eⱼ)_j = 0`.
+
+3. **Refactored `derEval14_injective`**: Within the `j ≠ 0` branch, added
+   `by_cases hij : i = j`. The `i = j` (diagonal) case is closed via
+   `submodule_der_diagonal_kill`; `i ≠ j` (off-diagonal) remains as `sorry`.
+
+### Sorry Status
+
+- Before: 1 sorry (entire 56-entry imaginary-basis kernel claim)
+- After: 1 sorry (49-entry off-diagonal claim: j ∈ {1..7}, i ≠ 0, i ≠ j)
+
+### Files Modified
+
+- `proofs/Proofs/HurwitzTheoremOQ04.lean` (1123 → 1180 lines)
+
+### Next Steps
+
+1. Antisymmetry helper: `(f eᵢ)_j + (f eⱼ)_i = 0` from Leibniz at `(eᵢ, eⱼ) + (eⱼ, eᵢ)`.
+2. Real-part preservation: `(f eⱼ)_0 = 0` for j ≥ 1 via Fano-line Leibniz.
+3. Combine all constraints to determine all 64 entries.
