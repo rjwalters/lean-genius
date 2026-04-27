@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-03-28T20:58:08-07:00",
-    "iteration": 3,
-    "focus": "Surveyed convergence rate landscape. Chebyshev rate is next tractable step.",
+    "iteration": 4,
+    "focus": "Eliminated 1 axiom (sampleMean_memLp); fixed Mathlib v4.26 API drift (Memℒp → MemLp). 3 axioms remaining.",
     "blockers": [],
     "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
     "attemptCounts": {
@@ -29,11 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: LawsOfLargeNumbersOQ02.lean is at 330 lines, 4 axioms (sampleMean_memLp, variance_sampleMean, standardNormalCDF, berryEsseenConstant), 0 sorries. Down from 13 axioms after sustained elimination work. Remaining axioms split: two L²-bookkeeping (sampleMean_memLp, variance_sampleMean) likely provable from Mathlib, two CLT-domain (standardNormalCDF, berryEsseenConstant) blocked by absence of CLT in Mathlib v4.26.",
+    "progressSummary": "PROGRESS Session 4: Mathlib v4.26 API drift fix (Memℒp → MemLp rename) + eliminated 1 axiom (sampleMean_memLp → theorem). File now: 3 axioms, 0 sorries (was 4 axioms after prior session). Remaining axioms: variance_sampleMean (provable from IndepFun.variance_sum), standardNormalCDF + CLT statement (genuinely beyond Mathlib v4.26), berryEsseenConstant.",
     "builtItems": [
       "integral_sampleMean: axiom → theorem (proved via integral linearity)",
       "chebyshev_convergence_rate: sorry → proved (Chebyshev + axiom substitution)",
-      "chebyshev_rate_implies_convergence: sorry → proved (ENNReal.ofReal continuity + tendsto_const_div)"
+      "chebyshev_rate_implies_convergence: sorry → proved (ENNReal.ofReal continuity + tendsto_const_div)",
+      "sampleMean_memLp: axiom → theorem (memLp_finset_sum + MemLp.const_mul, eliminates 1 axiom)",
+      "Memℒp → MemLp rename: file now compatible with Mathlib v4.26 API"
     ],
     "insights": [
       "WLLN axiom is NOT redundant: it requires only same mean + variance (not full IdentDistrib), so SLLN does not directly imply it",
@@ -47,13 +49,15 @@
       "integral_sampleMean is provable: integral_mul_left + integral_finset_sum + field_simp",
       "chebyshev_convergence_rate proved from meas_ge_le_variance_div_sq + axiom substitution",
       "chebyshev_rate_implies_convergence proved: chebyshevBound → constant/n → tendsto_const_div",
-      "Memℒp.integrable one_le_two bridges L² to Integrable for integral_finset_sum"
+      "Memℒp.integrable one_le_two bridges L² to Integrable for integral_finset_sum",
+      "Mathlib v4.26 renamed Memℒp → MemLp (file uses old name throughout family — parent LawsOfLargeNumbers.lean still on old name; OQ02 now updated)",
+      "sampleMean_memLp proved: unfold sampleMean → memLp_finset_sum on the inner sum → MemLp.const_mul on the (1/n) scalar"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove sampleMean_memLp: Memℒp.const_smul + memℒp_finset_sum",
-      "Prove variance_sampleMean: IndepFun.variance_sum + variance_smul",
-      "standardNormalCDF: requires characteristic functions (not in Mathlib v4.26)"
+      "Prove variance_sampleMean: use IndepFun.variance_sum + variance_smul (substantial L² API work)",
+      "CLT and Berry-Esseen remain genuinely beyond Mathlib v4.26 (require characteristic functions / Lindeberg / Stein method)",
+      "Rename Memℒp → MemLp in parent LawsOfLargeNumbers.lean and sibling OQ files (separate session)"
     ],
     "markdown": "# Knowledge Base: laws-of-large-numbers-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -108,9 +112,9 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ02.lean",
       "filename": "LawsOfLargeNumbersOQ02.lean",
-      "lineCount": 331,
-      "theoremCount": 7,
-      "axiomCount": 4,
+      "lineCount": 338,
+      "theoremCount": 8,
+      "axiomCount": 3,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,

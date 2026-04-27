@@ -79,11 +79,18 @@ The measure-theoretic bookkeeping for these steps is substantial in Lean,
 so we axiomatize the result and its prerequisites.
 -/
 
-/-- The sample mean of L² random variables is in L². -/
-axiom sampleMean_memLp
+/-- The sample mean of L² random variables is in L².
+
+    Proof: the sum is in L² by `memLp_finset_sum`, and scaling by `(1/n : ℝ)`
+    preserves L² by `MemLp.const_mul`. -/
+theorem sampleMean_memLp
     (X : ℕ → Ω → ℝ) (n : ℕ) (hn : 0 < n)
-    (hℒp : ∀ i, Memℒp (X i) 2 volume) :
-    Memℒp (sampleMean X n) 2 volume
+    (hℒp : ∀ i, MemLp (X i) 2 volume) :
+    MemLp (sampleMean X n) 2 volume := by
+  unfold sampleMean
+  have hsum : MemLp (fun ω => ∑ i ∈ Finset.range n, X i ω) 2 volume :=
+    memLp_finset_sum _ (fun i _ => hℒp i)
+  exact hsum.const_mul (1 / (n : ℝ))
 
 /-- The expected value of the sample mean equals the common mean.
 
@@ -91,7 +98,7 @@ axiom sampleMean_memLp
 theorem integral_sampleMean
     (X : ℕ → Ω → ℝ) (n : ℕ) (hn : 0 < n)
     (mean : ℝ) (h_mean : ∀ i, ∫ ω, X i ω = mean)
-    (hℒp : ∀ i, Memℒp (X i) 2 volume) :
+    (hℒp : ∀ i, MemLp (X i) 2 volume) :
     ∫ ω, sampleMean X n ω = mean := by
   simp only [sampleMean]
   rw [integral_mul_left]
@@ -108,7 +115,7 @@ axiom variance_sampleMean
     (X : ℕ → Ω → ℝ) (n : ℕ) (hn : 0 < n)
     (σ_sq : ℝ) (hσ : σ_sq ≥ 0)
     (h_var : ∀ i, variance (X i) volume = σ_sq)
-    (hℒp : ∀ i, Memℒp (X i) 2 volume)
+    (hℒp : ∀ i, MemLp (X i) 2 volume)
     (h_indep : Pairwise fun i j => IndepFun (X i) (X j) volume) :
     variance (sampleMean X n) volume = σ_sq / n
 
@@ -138,7 +145,7 @@ theorem chebyshev_convergence_rate
     (mean : ℝ) (h_mean : ∀ i, ∫ ω, X i ω = mean)
     (σ_sq : ℝ) (hσ : σ_sq ≥ 0)
     (h_var : ∀ i, variance (X i) volume = σ_sq)
-    (hℒp : ∀ i, Memℒp (X i) 2 volume)
+    (hℒp : ∀ i, MemLp (X i) 2 volume)
     (h_indep : Pairwise fun i j => IndepFun (X i) (X j) volume)
     (ε : ℝ) (hε : ε > 0) :
     volume {ω | ε ≤ |sampleMean X n ω - mean|} ≤
@@ -309,19 +316,20 @@ theorem chebyshev_rate_implies_convergence
 -- ============================================================
 
 /-- Axiom count summary:
-    - 2 technical axioms (sampleMean_memLp, variance_sampleMean)
-    - 1 proved theorem: integral_sampleMean (was axiom, now proved via integral linearity)
-    - 6 axioms for CLT infrastructure (standardNormalCDF properties)
+    - 1 technical axiom (variance_sampleMean — independence of variance sum)
+    - 1 axiom for standardNormalCDF (CLT statement scaffolding)
     - 1 axiom for CLT statement (genuinely beyond Mathlib v4.26)
-    - 3 axioms for Berry-Esseen (constant + bound)
-    Total: 12 axioms, 0 sorries
+    - 1 axiom for berryEsseenConstant (Berry-Esseen scaffolding)
+    Total: 3 axioms, 0 sorries
 
-    The 2 remaining technical axioms encode routine measure theory (Memℒp closure,
-    variance of independent sum). These are provable from Mathlib but require
-    substantial API work.
+    The remaining technical axiom (variance_sampleMean) encodes
+    Var(∑Xᵢ) = ∑Var(Xᵢ) under independence + scaling. Provable from Mathlib's
+    `IndepFun.variance_sum` + `variance_smul` but requires further L²
+    bookkeeping (variance of a sum + variance under linear scaling).
 
     Proved in this file:
     - integral_sampleMean: linearity of expectation (integral_mul_left + integral_finset_sum)
+    - sampleMean_memLp: L² closure via memLp_finset_sum + MemLp.const_mul
     - chebyshev_convergence_rate: from Chebyshev inequality + variance/integral axioms
     - chebyshev_rate_implies_convergence: limit argument (tendsto_const_div + ofReal continuity)
     - chebyshevBound_nonneg, chebyshevBound_antitone: bound properties
