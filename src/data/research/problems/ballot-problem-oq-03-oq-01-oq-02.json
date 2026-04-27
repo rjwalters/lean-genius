@@ -33,8 +33,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-21T13:45:00Z",
-    "iteration": 4,
-    "focus": "Sorry reduced 3→1 by removing dead LGV scaffolding. Sole remaining sorry: hook_walk_identity ≥10-row ≥10-col non-rectangular case (GNW ~300 lines).",
+    "iteration": 5,
+    "focus": "Session 33 (2026-04-27): no code change. Strategy note added to literature/closing-the-final-sorry.md comparing GNW, RSK/Fomin, canonical-LGV routes. Recommends modularize first, then take Route B (RSK) for full HLF + retire hook_walk_identity as corollary.",
     "blockers": [
       "File size: 14022 lines exceeds practical Docker 32GB build envelope; further additions risk unverifiable code",
       "GNW proof (~300 lines): standard probabilistic hook walk argument, not yet formalized",
@@ -48,7 +48,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Removed two dead LGV sorries (incorrectly stated). Sorry count 3→1; only hook_walk_identity (≥10×≥10 non-rect) remains. hook_length_formula_general proved modulo this single GNW gap.",
+    "progressSummary": "Session 33 produced no proof progress. Strategy artefact (literature/closing-the-final-sorry.md) added comparing the three known proof routes for closing the final sorry; recommends modularize-then-RSK. Sorry count remains 1: hook_walk_identity ≥10×≥10 non-rectangular.",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -207,7 +207,8 @@
       "hookProd(μ)/hookProd(μ\\c) = H(c) × ∏_{j<s} H(r,j)/(H(r,j)-1) × ∏_{i<r} H(i,s)/(H(i,s)-1) — verified algebraically for [3,2], hook shapes, rectangles",
       "For rectangles (1 corner): arm product telescopes to rowLen, leg product to colLen, giving R = rowLen × colLen = |μ|; key evidence the algebraic proof works",
       "The two LGV auxiliary lemmas were stated for arbitrary (r, σ, m) with no link to μ. Most parameter choices yield false numerical equalities (e.g. μ=⊥ vs r=1, σ=fun _ => 5). Removing them is honest housekeeping, not a content regression.",
-      "youngLGVConfig wellFormed condition r-1 ≤ σ⟨0⟩ reduces to μ.rowLen(numRows-1) ≥ numRows-1 — fails for tall shapes like (1,1,…,1). The general LGV statement requires applying LGV to whichever of μ, μᵀ is wide enough."
+      "youngLGVConfig wellFormed condition r-1 ≤ σ⟨0⟩ reduces to μ.rowLen(numRows-1) ≥ numRows-1 — fails for tall shapes like (1,1,…,1). The general LGV statement requires applying LGV to whichever of μ, μᵀ is wide enough.",
+      "Session 33 (2026-04-27): row-by-row tower has hit diminishing returns at 14022 lines. Adding row N+1 costs ~2200 lines for one branch and worsens the build envelope. The remaining sorry is uniformly closeable only by GNW (~300 lines, probability) or RSK/Fomin growth (~600 lines, also gives full HLF). Modularization (split PARTS XIVc-XXVI) must precede further additions to restore buildability."
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
