@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 12 (2026-04-27) verified Mathlib API at source line numbers (Sym.cons:106, erase:203, oneEquiv:477, sort_cons:69 in Sort.lean); no code change due to disk constraint blocking Docker; 2 sorries remain.",
+    "progressSummary": "PROGRESS: Session 13 (2026-04-27) confirmed file state (666 lines, 10 theorems, 0 axioms, 2 sorries — was tracked as 458 lines / 3 sorries; metadata stale since PR #12933 sorries 3→2). Synced leanFile.lineCount/sorryCount/defCount. No proof work this session: disk constraint (1.3GB free) blocks Docker, and the b=1 jdt_weight_sum proof needs Docker validation. 2 sorries remain (b=1 case at line 421 with documented recipe; k≥3 case at line 664 blocked on algebraic LGV).",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -100,7 +100,8 @@
       "ColStrictSym definition: P.sort[j] < Q.sort[j] for all j < min(a,b); Decidable via Fintype.decidableForallFintype; key for separating SSYT contributions by column-strict pairs",
       "Session 10 (2026-04-27, survey only): both remaining sorries (jdt_weight_sum, jacobi_trudi_ssyt_eq k>=3) are correctly stated as of session 9. No fast fixes available; each is a focused 100-300 line proof body. Released for an agent with budget for sustained work.",
       "Session 11 (2026-04-27): documented concrete b=1 recipe using Sym.oneEquiv (alpha ≃ Sym alpha 1, Mathlib.Data.Sym.Basic:477), Sym.cons/cons_erase/erase_cons_head, and Multiset.sort_cons. Recipe lives in jdt_weight_sum b≥1 branch comment as actionable Lean plan. Next session can implement jdt_weight_sum_b_one directly without re-discovering API.",
-      "Sym.oneEquiv is @[simps apply], so oneEquiv_apply rewrites oneEquiv a to ⟨{a}, _⟩ definitionally — cleanest way to handle Sym (Fin n) 1 in proofs"
+      "Sym.oneEquiv is @[simps apply], so oneEquiv_apply rewrites oneEquiv a to ⟨{a}, _⟩ definitionally — cleanest way to handle Sym (Fin n) 1 in proofs",
+      "Session 13 (2026-04-27): metadata leanFile.sorryCount was stale (3) since PR #12933 reduced to 2 — no auto-sync runs. lineCount also stale (458 vs 666). Synced. No proof work — disk constraint (1.3GB free, no Docker) makes b=1 implementation risky without local validation."
     ],
     "mathlibGaps": [
       "No Mathlib SchurPolynomial definition — we provide one via Jacobi-Trudi formula",
@@ -145,7 +146,7 @@
     "mathlib": []
   },
   "started": "2026-04-23T11:05:51.190Z",
-  "lastUpdate": "2026-04-27T00:00:00.000Z",
+  "lastUpdate": "2026-04-27T22:34:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/BallotProblem.lean",
@@ -304,11 +305,11 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
       "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 458,
+      "lineCount": 666,
       "theoremCount": 10,
       "axiomCount": 0,
-      "defCount": 5,
-      "sorryCount": 3,
+      "defCount": 6,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean"
     },
