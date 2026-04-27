@@ -28,12 +28,14 @@
     "goal": "Eliminate or reduce 12 sorries. Priority: (1) submit 5 Aristotle targets; (2) density lemmas using Mathlib MeasureTheory; (3) product convergence estimates via logarithmic bounds."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "BLOCKED",
     "since": "2026-04-21T07:22:44-07:00",
     "iteration": 1,
     "focus": "Read Erdos27Problem.lean to identify exact sorry locations and their mathematical content.",
-    "blockers": [],
-    "nextAction": "Read Proofs/Stubs/Erdos27Problem.lean and Proofs/Stubs/Erdos27Aristotle.lean to map sorry targets.",
+    "blockers": [
+      "Mathlib API drift: import Mathlib.Topology.Instances.Real removed in current Mathlib"
+    ],
+    "nextAction": "Wait for Mechanic to repair import drift",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -41,14 +43,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
+    "progressSummary": "BLOCKED 2026-04-27: Mathlib API drift on Topology.Instances.Real prevents build verification. Pre-work assessment complete: 4 axioms are all deep results (FFKPY 2007, BBMST 2024) — none routine. Strategy was to add 4 carryover routine theorems from Aristotle stub (uncoveredCount_le, asymptoticUncoveredDensity_le_one, almostCovering_mono, isAlmostCovering_one); these were drafted but lost when docker build reverted the worktree. Re-apply after Mechanic fixes import.",
+    "builtItems": [
+      "Drafted 4 routine carryover theorems (uncoveredCount_le, asymptoticUncoveredDensity_le_one, almostCovering_mono, isAlmostCovering_one) — adapted from working proofs in Stubs/Erdos27Aristotle.lean. Edits reverted by docker build container; must be re-applied after import drift is fixed."
+    ],
+    "insights": [
+      "BLOCKER 2026-04-27: Mathlib API drift broke import Mathlib.Topology.Instances.Real (line 38). Docker build fails: \"no such file or directory\" for that module. File otherwise has 0 sorries, 4 axioms (all deep results from FFKPY 2007 / BBMST 2024 — none routine). Cannot verify additions until import is repaired by Mechanic. Same drift affects 20+ Erdos files."
+    ],
+    "mathlibGaps": [
+      "import Mathlib.Topology.Instances.Real removed/relocated in current Mathlib (rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67) — affects 20+ files in proofs/Proofs/"
+    ],
     "nextSteps": [
-      "Read Erdos27Problem.lean to map 12 sorry locations",
-      "Check which 5 are Aristotle-ready targets",
-      "Survey Mathlib for natural density and ArithmeticFunction support"
+      "WAIT: Mechanic must fix import Mathlib.Topology.Instances.Real (likely renamed/split in upstream Mathlib)",
+      "After import fix: re-apply the 4 carryover theorems (definitions are stable; proofs adapt directly from Stubs/Erdos27Aristotle.lean)",
+      "Future axiom-reduction work: averaging_bound_exists may be derivable via probabilistic method on Finset (1000+ lines, separate session)"
     ],
     "markdown": "# Knowledge Base: erdos-27\n\nInsights accumulated during research on Erdős #27: Almost Covering Systems.\n\n---\n\n## Problem Understanding\n\nProblem SOLVED (NO) by FFKPY. Lean formalization has 12 sorries in Erdos27Problem.lean.\nAristo companion (Erdos27Aristotle.lean) has 5 routine targets.\n\n---\n\n## Insights\n\n[To be filled during OBSERVE/ORIENT phases]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -89,7 +97,7 @@
     ]
   },
   "started": "2026-04-21T07:22:44-07:00",
-  "lastUpdate": "2026-04-21T07:22:44-07:00",
+  "lastUpdate": "2026-04-27T13:00:00Z",
   "leanFiles": [
     {
       "path": "Proofs/Erdos270Problem.lean",
