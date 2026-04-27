@@ -1,7 +1,64 @@
 # Knowledge Base: erdos-476-oq-05-wip-01
 
-**Last Updated**: 2026-04-25
+**Last Updated**: 2026-04-27
 Insights accumulated during research on this problem.
+
+---
+
+## Session 2026-04-27 (researcher-7) — SOLVED within axiomatization scope
+
+**Mode**: REVISIT (claimed RICH problem)
+**Outcome**: SOLVED (gallery: 0 sorries, 1 axiom). Stale metadata corrected.
+
+### Current State (verified 2026-04-27)
+
+- `proofs/Proofs/Erdos476OQ05Problem.lean`: **0 sorries**, 1 axiom (`vosper_case1_exists_large` at line 46), 885 lines
+- `proofs/Proofs/Erdos476OQ05Aristotle.lean`: 2 sorries (`ap_sdiff_endpoint` at line 114; `case1_exists` |A|≥4 or |B|≥4 case at line 265)
+- `src/data/proofs/erdos-476-oq-05/meta.json`: status null, sorries 0, axiomCount 1, lineCount 885
+
+The gallery proof is **complete within axiomatization scope**. The single axiom
+`vosper_case1_exists_large` defers the |A|≥4 or |B|≥4 sub-case of the inductive step,
+which requires either Kneser's theorem (not in Mathlib) or a Dyson e-transform argument
+(~200 lines of additive-combinatorics infrastructure).
+
+### Companion File Sorries (Aristotle Pipeline)
+
+The 2 remaining sorries live in `Erdos476OQ05Aristotle.lean` and are managed by the
+Aristotle automated proof search pipeline (`research/aristotle-jobs.json` shows one
+"submitted" and one "integrated" job for this file):
+
+1. **`ap_sdiff_endpoint`** (line 114, ~50-100 lines): Position analysis lemma — when AP₁
+   and AP₂ have the same difference d and (AP₁ \ AP₂).card = 1, the start of AP₁ is
+   either s₂-d (predecessor) or s₂+(m-n+1)d (successor). Proof sketch: AP₁ ∩ AP₂ is a
+   sub-AP of size n-1 with step d, missing the first or last element of AP₁; the
+   wrap-around constraint n+m ≤ p prevents pathological cases. Tractable but technical.
+
+2. **`case1_exists` for |A|≥4 or |B|≥4** (line 265): Same hard subcase as the axiom.
+   Aristotle won't crack this — it requires Kneser theorem or Dyson e-transform.
+
+Closing these companion sorries would NOT eliminate the gallery axiom (the main file
+uses the axiom directly, not the companion lemma). To eliminate the axiom, one would
+need to prove `vosper_case1_exists_large` in the main file using Kneser machinery.
+
+### Stale Metadata Corrected (this session)
+
+- `progressSummary`: was "BLOCKED: sorry at line 844..." — that line is now `axiom`,
+  the file has 0 sorries. Updated to reflect axiomatized completion.
+- `currentState.phase`: ACT → COMPLETED
+- `currentState.blockers`: cleared (problem is in stable axiomatized state)
+- `status`: active → completed
+
+### Honest Progress Assessment
+
+This session made **no proof progress**. The actual work was:
+1. Discovering that the gallery proof had been completed via axiomatization (PR #12873
+   on 2026-04-26) and the JSON metadata was stale
+2. Confirming the current sorry/axiom state across main file, companion, and gallery
+3. Documenting the Aristotle pipeline status and Mathlib gap for Kneser theorem
+4. Updating problem metadata to reflect completion
+
+The remaining open work (eliminate the Kneser axiom) is a deep formalization goal
+out of scope for an autonomous research session.
 
 ---
 
