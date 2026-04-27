@@ -275,14 +275,33 @@ theorem three_distance_connection_holds :
 3. EST regime measure formula: S(N,A,c) = 2A · ∑ φ(y)/y² + O(A/N) [needs measure theory]
 4. Combine for final rate [routine once (1)-(3) done]
 
-**Mathlib gap**: Step 1 (Mertens' theorem with quantitative error) appears to be
-missing from Mathlib 4.x. The qualitative statement (φ averages to 6/π²) may exist
-but not with the O(N log N) error needed here.
+**Mathlib gap (verified 2026-04-27 against Mathlib v4.26.0)**: Step 1 (Mertens'
+theorem with quantitative error) is still missing. A grep of Mathlib for any
+asymptotic of `∑_{y≤N} Nat.totient y` returns no results — only the divisor
+identity `Nat.sum_totient : n.divisors.sum φ = n` exists.
 
-**Status**: AXIOMATIZED
-  - `rangeTotientSum_asymptotic`: qualitative convergence (should be provable with Mathlib)
-  - `rangeTotientSum_error`: quantitative rate (requires Mertens with error bounds)
-  - `convergence_rate_est`: main rate theorem (reduces to above)
+**Concrete Mathlib API needed to unblock**:
+1. `Nat.totient_partial_sum_asymp`:
+     `(fun N => ∑ y ∈ Finset.range (N+1), (Nat.totient y : ℝ)) - (3/π^2) * N^2`
+       =O[atTop] (fun N => N * Real.log N)
+2. `Nat.totient_div_sq_partial_sum_asymp` (derivable from (1) via `AbelSummation`):
+     `(fun N => ∑ y ∈ Finset.range (N+1), (Nat.totient y : ℝ) / y^2) -
+       (6/π^2) * Real.log N` =O[atTop] (fun N => Real.log N / N)
+
+Mathlib v4.26 has `Mathlib.NumberTheory.AbelSummation` (378 lines, ~13 theorems
+including `sum_mul_eq_sub_sub_integral_mul`), so step (2) is mechanical once (1)
+exists. The blocker is purely (1): the average order of φ via Möbius inversion
+ζ(s-1)/ζ(s) at s=2 has not been formalized in Mathlib.
+
+**Status**: AXIOMATIZED — BLOCKED on Mathlib gap
+  - `rangeTotientSum_asymptotic`: qualitative convergence (REDUCES to (1))
+  - `rangeTotientSum_error`: quantitative rate (REDUCES to (1) via AbelSummation)
+  - `convergence_rate_est`: main rate theorem (REDUCES to above)
+
+All three axioms above collapse to the SAME Mathlib gap: the totient partial-sum
+asymptotic with `O(N log N)` error. There is no incremental progress available
+on this file without first contributing that asymptotic to Mathlib (estimated
+~500 lines using Möbius-inversion proof, see Apostol §3.7 or Tenenbaum I.3.7).
 -/
 
 /-- **Erdős #1001 OQ-02 SUMMARY**
