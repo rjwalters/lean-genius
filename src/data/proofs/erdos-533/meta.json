@@ -21,8 +21,8 @@
     "erdosUrl": "https://erdosproblems.com/533",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
-    "lineCount": 372,
-    "assumptions": "4 axioms: ehsss_result (EHSSS partial result for delta>1/16), k4_free_triangle_free_subset (K4-free case for all delta>0), turan_k5_free (Turán bound: K5-free has ≤ 3n²/8 edges), erdos_533_conjecture (OPEN). Neighborhood structure and K4-free neighborhood lemma proved. erdos_533_conjecture converted from axiom to def (open conjecture should not be axiom-asserted).",
+    "lineCount": 371,
+    "assumptions": "3 axioms: ehsss_result (EHSSS partial result for delta>1/16), k4_free_triangle_free_subset (K4-free case for all delta>0), turan_k5_free (Turán bound: K5-free has ≤ 3n²/8 edges). erdos_533_conjecture converted from axiom to def (open conjecture should not be axiom-asserted). Neighborhood structure and K4-free neighborhood lemma proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -143,8 +143,8 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 366,
-    "axiomCount": 4,
+    "lineCount": 371,
+    "axiomCount": 3,
     "theoremCount": 27,
     "definitionCount": 5,
     "path": "Proofs/Erdos533Problem.lean",
