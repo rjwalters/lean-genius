@@ -18,11 +18,11 @@
       "advanced"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 2,
     "dateAdded": "2026-04-24",
     "axiomCount": 1,
-    "assumptions": "G2_der_dimension is axiomatized: a complete proof requires exhibiting 14 linearly independent derivations D_{ij}. The Aut(𝕆) ⊆ O(7) portion is fully proved with 0 sorries.",
-    "lineCount": 822,
+    "assumptions": "G2_der_dimension is axiomatized: a complete proof requires exhibiting 14 linearly independent derivations D_{ij}. The Aut(𝕆) ⊆ O(7) portion is fully proved with 0 sorries. Two sorries remain in the G₂ dimension proof: derEvalDeterminesMap (line 787, algebraic extraction from derivation evaluation) and derBasis14_linearIndependent (line 804, linear independence of 14 basis derivations).",
+    "lineCount": 1052,
     "theoremCount": 35,
     "definitionCount": 17,
     "originalContributions": [
@@ -113,7 +113,7 @@
       "id": "physical-applications-summary",
       "title": "§VII: Hurwitz-Exceptional Correspondence and Physical Applications",
       "startLine": 750,
-      "endLine": 822,
+      "endLine": 1052,
       "summary": "Docstring explaining why Hurwitz's 4 normed division algebras yield exactly 5 exceptional Lie algebras: G₂=Der(𝕆), F₄=𝔏(𝕆,ℝ), E₆=𝔏(𝕆,ℂ), E₇=𝔏(𝕆,ℍ), E₈=𝔏(𝕆,𝕆). Physical applications: E₈×E₈ heterotic string theory (anomaly cancellation, dim=496), M-theory compactification on G₂ manifolds, E₇(7) symmetry of N=8 supergravity. #check summary of all 30 public declarations.",
       "mathContext": "E₈×E₈ heterotic string theory: the unique anomaly-free 10D string theory requires $\\text{dim}(G) = 496$ — satisfied by $E_8 \\times E_8$ with $2 \\times 248 = 496$ and $\\text{SO}(32)$ with $\\frac{32\\cdot 31}{2} = 496$. G₂ holonomy: a Riemannian 7-manifold $(M^7, g)$ with holonomy $G_2$ (i.e., the holonomy group $\\subseteq G_2 \\subset \\text{SO}(7)$) admits a parallel spinor, giving $N=1$ supersymmetry in 4D M-theory compactification. These physical applications arise precisely because $G_2 = \\text{Aut}(\\mathbb{O}) \\subseteq \\text{O}(7)$, proved in this file."
     }
@@ -137,11 +137,11 @@
       "HurwitzTheorem"
     ],
     "namespace": "HurwitzTheoremOQ04",
-    "lineCount": 822,
+    "lineCount": 1052,
     "axiomCount": 1,
     "theoremCount": 40,
     "definitionCount": 15,
-    "sorries": 0,
+    "sorries": 2,
     "path": "Proofs/HurwitzTheoremOQ04.lean"
   },
   "crossReferences": [
@@ -156,5 +156,5 @@
       "description": "Sibling open question: n-square identities and normed division algebras"
     }
   ],
-  "sorries": 0
+  "sorries": 2
 }
