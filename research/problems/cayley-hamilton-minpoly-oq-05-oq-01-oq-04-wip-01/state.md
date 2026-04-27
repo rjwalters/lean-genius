@@ -1,43 +1,50 @@
 # Current State
 
 **Phase**: COMPLETED
-**Since**: 2026-04-26T00:00:00+00:00
-**Iteration**: 2
+**Since**: 2026-04-27T00:00:00+00:00
+**Iteration**: 3
 
 ## Current Focus
 
-WIP04 written and build running. Axiom-free proof of general nonderogatory cyclic vector theorem
-via primary decomposition. Eliminates the `nonderogatory_similar_to_companion` axiom from WIP01.
+WIP05 built and verified. The cluster is fully closed for axiom-free formalization:
+WIP04 proves the general factored case; WIP05 supplies the factorization automatically
+via `UniqueFactorizationMonoid.normalizedFactors`, removing the only remaining input
+hypothesis. The composition `nonderogatory_has_cyclic_vector_any_field` takes only
+the matrix and `IsNonderogatory M` and produces a cyclic vector — over any field K.
 
 ## Active Approach
 
-Primary decomposition via Bezout projections:
-1. For each prime power factor p_i^{e_i}, construct v_i = F_i(M)w_i (F_i = complementary product)
-2. Combine as v = sum v_i
-3. Extract r(M)v_i = 0 via CRT/Bezout projection
-4. Apply WIP03's pow_irred_dvd_of_annihilated to get p_i^{e_i} | r
-5. Apply Finset.prod_dvd_of_coprime to get minpoly | r, contradicting deg(r) < n
+UFD factorization wrapper:
+1. f := minpoly K M is monic (from charpoly_monic and the nonderogatory hypothesis).
+2. s := normalizedFactors f is a multiset of monic irreducible primes.
+3. D := s.toFinset is the Finset of distinct primes (nonempty for n ≥ 1).
+4. For each q ∈ D, multiplicity = s.count q ≥ 1.
+5. Distinct monic irreducibles are coprime; powers stay coprime via `IsCoprime.pow`.
+6. f = ∏ q ∈ D, q^(s.count q) via `prod_normalizedFactors_eq` + `Monic.normalize_eq_self`
+   + `Finset.prod_multiset_count`.
+7. Reindex via `Fintype.equivFin` and apply WIP04's `nonderogatory_general_has_cyclic_vector`.
 
 ## Result
 
-**WIP04**: `proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean`
-- 352 lines, 0 sorries, 0 axioms (pending build verification)
-- Namespace: `GeneralCyclicVector`
-- Main theorem: `nonderogatory_general_has_cyclic_vector`
+**WIP05**: `proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean`
+- 167 lines, 0 sorries, 0 axioms (build verified)
+- Namespace: `GeneralCyclicVectorComplete`
+- Main theorem: `nonderogatory_has_cyclic_vector_any_field`
 
 ## Blockers
 
-RESOLVED: No PID structure theorem needed.
-Remaining: To eliminate factored-form hypothesis, need UFD factorization of minpoly K M.
+None. Cluster fully closed.
 
 ## Next Action
 
-After build passes:
-1. Commit, push, create PR
-2. Follow-up: generalize to eliminate factored-form input hypothesis
+PR created. Optional follow-ups:
+1. Close the original `sorry` in `CayleyHamiltonMinpolyOQ05OQ01OQ04.lean` by translating
+   WIP05 to its LinearIndependent-style `IsCyclicVector` definition.
+2. Refactor WIP04 to take `[Fintype σ]` instead of `Fin k` (would absorb WIP05's
+   reindexing wrapper).
 
 ## Attempt Counts
 
-- Total attempts: 1
+- Total attempts: 2
 - Current approach attempts: 1
-- Approaches tried: 1 (primary decomposition via Bezout projections — SUCCESS)
+- Approaches tried: 2 (WIP04 primary decomposition; WIP05 UFD-factorization wrapper)

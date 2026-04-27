@@ -1,0 +1,170 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-05",
+  "title": "Nonderogatory to Cyclic Vector: Final Wrapper (Any Field, No Factored-Form Hypothesis)",
+  "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-05",
+  "description": "Eliminates the factored-form hypothesis from WIP04 by automatically factoring the minimal polynomial via UniqueFactorizationMonoid.normalizedFactors. Yields the fully general nonderogatory cyclic vector theorem over any field, taking only the matrix and the nonderogatory hypothesis as input — completing the closure of the WIP01 axiom.",
+  "meta": {
+    "author": "Final wrapper combining UFD factorization with WIP04",
+    "sourceUrl": "",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean",
+    "tags": [
+      "linear-algebra",
+      "minimal-polynomial",
+      "cyclic-vector",
+      "nonderogatory",
+      "ufd-factorization",
+      "axiom-elimination",
+      "wip"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 167,
+    "assumptions": "None. Axiom-free. Imports WIP04 (which is itself axiom-free) and adds UFD factorization to remove the factored-form hypothesis.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "UniqueFactorizationMonoid.normalizedFactors",
+        "description": "Multiset of normalized prime factors in a UFD",
+        "module": "Mathlib.RingTheory.UniqueFactorizationDomain.NormalizedFactors"
+      },
+      {
+        "theorem": "UniqueFactorizationMonoid.prod_normalizedFactors_eq",
+        "description": "(normalizedFactors a).prod = normalize a",
+        "module": "Mathlib.RingTheory.UniqueFactorizationDomain.NormalizedFactors"
+      },
+      {
+        "theorem": "Polynomial.Monic.normalize_eq_self",
+        "description": "Monic polynomials over a field equal their normalization",
+        "module": "Mathlib.Algebra.Polynomial.FieldDivision"
+      },
+      {
+        "theorem": "Polynomial.mem_normalizedFactors_iff",
+        "description": "p ∈ normalizedFactors q ↔ Irreducible p ∧ p.Monic ∧ p ∣ q",
+        "module": "Mathlib.Algebra.Polynomial.FieldDivision"
+      },
+      {
+        "theorem": "Polynomial.eq_of_monic_of_associated",
+        "description": "Two associated monic polynomials are equal",
+        "module": "Mathlib.Algebra.Polynomial.Monic"
+      },
+      {
+        "theorem": "Finset.prod_multiset_count",
+        "description": "s.prod = ∏ m ∈ s.toFinset, m ^ s.count m",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Irreducible.coprime_iff_not_dvd",
+        "description": "In a PID, an irreducible element is coprime to n iff it does not divide n",
+        "module": "Mathlib.RingTheory.PrincipalIdealDomain"
+      },
+      {
+        "theorem": "IsCoprime.pow",
+        "description": "IsCoprime x y implies IsCoprime (x^m) (y^n) for any m, n",
+        "module": "Mathlib.RingTheory.Coprime.Lemmas"
+      },
+      {
+        "theorem": "Matrix.charpoly_monic",
+        "description": "The characteristic polynomial of a matrix is monic",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff"
+      },
+      {
+        "theorem": "Matrix.charpoly_natDegree_eq_dim",
+        "description": "natDegree of charpoly equals dimension",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff"
+      },
+      {
+        "theorem": "Equiv.prod_comp",
+        "description": "Reindexing finite products via an equivalence",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Defs"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The classical proof of the nonderogatory cyclic vector theorem uses the structure theorem for finitely generated modules over a principal ideal domain (PID), specifically the cyclic decomposition K^n ≅ K[X]/(d₁) ⊕ … ⊕ K[X]/(dᵣ). When minpoly = charpoly (the nonderogatory condition), this decomposition forces r = 1, giving a cyclic K[X]-module structure. Mathlib 4.26 does not include the PID structure theorem for modules, so this proof was historically blocked. WIP02–WIP04 of this cluster developed an alternative approach using Bezout/CRT projections and primary decomposition, culminating in WIP04 which proves the theorem axiom-free given the factorization of minpoly K M as input. This file (WIP05) closes the loop by extracting the factorization automatically using UniqueFactorizationMonoid.normalizedFactors — the fact that K[X] is a UFD when K is a field. The result is the fully general theorem with no input beyond the matrix and the nonderogatory hypothesis.",
+    "problemStatement": "Prove that every nonderogatory matrix M ∈ Mₙ(K) over any field K has a cyclic vector v such that {v, Mv, M²v, …, Mⁿ⁻¹v} is a basis of Kⁿ — without taking the prime factorization of minpoly K M as a hypothesis.",
+    "proofStrategy": "The proof has two parts. Part 1 generalizes WIP04's Fin-indexed theorem to a Fintype-indexed version by reindexing through Fintype.equivFin. Part 2 extracts the factorization data: (a) f := minpoly K M is monic since charpoly M is monic and minpoly = charpoly by the nonderogatory hypothesis; (b) s := normalizedFactors f is a multiset of monic irreducibles; (c) D := s.toFinset is the Finset of distinct prime factors, nonempty when n ≥ 1 since f is not a unit; (d) for distinct monic irreducibles p, q in s, the relation p ≠ q + Irreducible.associated_of_dvd + eq_of_monic_of_associated shows ¬(p ∣ q), giving IsCoprime p q via Irreducible.coprime_iff_not_dvd, lifted to IsCoprime (p^a) (q^b) via IsCoprime.pow; (e) the product identity f = ∏ q ∈ D, q ^ s.count q follows from Polynomial.Monic.normalize_eq_self, prod_normalizedFactors_eq, and Finset.prod_multiset_count. Apply WIP04's general theorem.",
+    "keyInsights": [
+      "The UFD structure of K[X] (where K is a field) is the missing ingredient: it provides an automatic factorization of the minimal polynomial into prime powers without requiring the user to supply one.",
+      "Two distinct monic irreducibles in K[X] are automatically coprime: if p ∣ q then p and q are associated (since q is irreducible and p is non-unit), and two associated monic polynomials are equal — so p ≠ q forces ¬(p ∣ q), which over a PID gives IsCoprime p q.",
+      "The Multiset → Finset conversion via Finset.prod_multiset_count expresses a Multiset.prod as a Finset product with multiplicities. Combined with prod_normalizedFactors_eq (Multiset.prod = normalize) and Monic.normalize_eq_self, this gives the desired product-of-prime-powers form.",
+      "The Fin → Fintype index conversion is purely cosmetic but removes an artificial constraint of WIP04's signature. Reindexing through Fintype.equivFin lets the theorem accept a Finset-indexed family directly.",
+      "This wrapper requires zero new mathematics — only careful interface code between WIP04 and Mathlib's UFD/factorization library."
+    ]
+  },
+  "sections": [
+    {
+      "id": "fintype-version",
+      "title": "I. Fintype-Indexed Version of WIP04",
+      "startLine": 56,
+      "endLine": 79,
+      "summary": "Generalizes WIP04's Fin-indexed theorem to a Fintype-indexed version via Fintype.equivFin. Pure index conversion — no mathematical content.",
+      "mathContext": "For any [Fintype σ] [Nonempty σ], we choose an equivalence φ : Fin (Fintype.card σ) ≃ σ and reindex everything through it. The product hypothesis is rewritten using Equiv.prod_comp."
+    },
+    {
+      "id": "wrapper",
+      "title": "II. Final Wrapper",
+      "startLine": 84,
+      "endLine": 145,
+      "summary": "The main theorem nonderogatory_has_cyclic_vector_any_field. Sets up f := minpoly K M, gets the Multiset of normalized factors, extracts the data needed for WIP04, and applies it.",
+      "mathContext": "The proof breaks into setup (f monic, deg = n), distinct-factor enumeration (Finset D = (normalizedFactors f).toFinset), pairwise coprimality (via Irreducible.coprime_iff_not_dvd + eq_of_monic_of_associated), and the product identity (f = ∏ q ∈ D, q ^ s.count q via Monic.normalize_eq_self + prod_normalizedFactors_eq + Finset.prod_multiset_count)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file completes the axiom-free formalization of the nonderogatory cyclic vector theorem over any field. Combined with WIP02 (squarefree case), WIP03 (single prime power case), and WIP04 (general factored case), this produces a fully general proof requiring no axioms and no factorization input — only the matrix and the nonderogatory hypothesis.",
+    "implications": "This supersedes WIP01 (which used the nonderogatory_similar_to_companion axiom as a stand-in for the rational canonical form structure theorem). The cluster now has a complete axiom-free path from IsNonderogatory M to ∃ v, IsCyclicVector M v over any field K. The mathematical insight — that the cyclic vector theorem can be proved without the full PID structure theorem, using only Bezout/CRT projections and UFD factorization — generalizes to other module-theoretic results blocked by the same Mathlib gap.",
+    "openQuestions": [
+      "Can the same approach (UFD factorization + Bezout/CRT projections) yield a proof of the full PID structure theorem for f.g. K[X]-modules, contributing to Mathlib?",
+      "Does the construction yield a computationally explicit cyclic vector when K is a computable field, or only existence?",
+      "Can the Fintype-indexed version of WIP04 be upstreamed to replace the Fin-indexed version, or is the Fin version preferable for its simpler signature?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial",
+      "UniqueFactorizationMonoid",
+      "GeneralCyclicVector"
+    ],
+    "namespace": "GeneralCyclicVectorComplete",
+    "lineCount": 167,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
+      "relationship": "extends",
+      "description": "Parent: the original any-field nonderogatory cyclic vector theorem. WIP05 closes the sorry that was blocked on the PID structure theorem."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+      "relationship": "supersedes",
+      "description": "WIP01 used the nonderogatory_similar_to_companion axiom as a stand-in for rational canonical form. WIP05 eliminates this axiom entirely."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
+      "relationship": "uses",
+      "description": "WIP04 provides the general factored-form theorem. WIP05 supplies the factorization automatically via UniqueFactorizationMonoid.normalizedFactors."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
+      "relationship": "related",
+      "description": "Grandparent: cyclic vector for infinite fields. WIP05 generalizes to all fields without restrictions."
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "uses",
+      "description": "Cayley-Hamilton theorem: used implicitly via minpoly.aeval and the nonderogatory condition minpoly = charpoly."
+    }
+  ],
+  "sorries": 0
+}

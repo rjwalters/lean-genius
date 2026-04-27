@@ -1,7 +1,46 @@
 # Knowledge: Complete Nonderogatory to Cyclic Vector (All Fields)
 
 **Problem**: `cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01`
-**Status**: COMPLETED — WIP04 proves the GENERAL case (any k factors, k ≥ 1) axiom-free. Build verified. PR #12973.
+**Status**: COMPLETED — WIP05 closes the cluster. WIP04 (general factored case) + WIP05 (UFD factorization wrapper) gives the fully general theorem axiom-free with no factored-form input.
+
+## Session 2026-04-27 (Session 6, researcher-10) - WIP05: UFD Wrapper Eliminates Factored-Form Hypothesis
+
+**Mode**: REVISIT
+**Outcome**: completed
+
+### What I Did
+
+- Created `CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean` (167 lines, 0 sorries, 0 axioms)
+- Proved `nonderogatory_has_cyclic_vector_any_field` taking only `M : Matrix (Fin n) (Fin n) K` and `IsNonderogatory M` — no factorization input
+- Added auxiliary `nonderogatory_general_has_cyclic_vector_fintype` reindexing WIP04 from `Fin k` to any `[Fintype σ] [Nonempty σ]`
+- Used UFD factorization: `(normalizedFactors f).toFinset` enumerates distinct prime factors with multiplicities
+- Build verified via Docker: `./proofs/scripts/docker-build.sh Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05`
+- Added `import Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04WIP03/04/05` to `proofs/Proofs.lean`
+- Added gallery entry `src/data/proofs/cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-05/`
+
+### Key Findings
+
+- **Distinct monic irreducibles in K[X] are auto-coprime**: `Irreducible.coprime_iff_not_dvd` over a PID + `Irreducible.associated_of_dvd` + `eq_of_monic_of_associated` rules out `p ∣ q` when `p ≠ q` and both are monic irreducible
+- **`IsCoprime.pow` lifts** coprimality to any powers (m, n) — Mathlib name is `IsCoprime.pow`, NOT `IsCoprime.pow_pow`
+- **Multiset → Finset prod identity**: `Finset.prod_multiset_count s : s.prod = ∏ m ∈ s.toFinset, m ^ s.count m`
+- **Factorization for monic over field**: `f.Monic → normalize f = f` combines with `prod_normalizedFactors_eq` to give `f = (normalizedFactors f).prod` literally (not just up to associates)
+- **`Polynomial.mem_normalizedFactors_iff`** (in `Polynomial` namespace, requires `[Field R]`): `p ∈ normalizedFactors q ↔ Irreducible p ∧ p.Monic ∧ p ∣ q`
+- **n=0 trivial-case shortcut**: `exact ⟨Fin.elim0, fun r hr _ => by omega⟩` — `hr : r.natDegree < 0` is impossible, omega derives False, closes any goal
+- **Reindexing Fintype to Fin**: `(Fintype.equivFin σ).symm : Fin (Fintype.card σ) ≃ σ` plus `Equiv.prod_comp` handles the rebinding
+
+### Files Modified
+
+- `proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean` (new, 167 lines)
+- `proofs/Proofs.lean` (added imports for WIP03, WIP04, WIP05)
+- `src/data/proofs/cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-05/` (new gallery entry: meta.json, annotations.json, index.ts)
+
+### Next Steps
+
+1. Optional: close the original `sorry` in `CayleyHamiltonMinpolyOQ05OQ01OQ04.lean` by translating WIP05's theorem to the LinearIndependent-style `IsCyclicVector` used there (vs annihilator-style in WIP04/05)
+2. Optional: refactor WIP04 to take `[Fintype σ]` directly, removing the WIP05 reindexing wrapper
+3. Open question: does this UFD-factorization technique generalize to nonderogatory endomorphisms of f.g. modules over arbitrary PIDs?
+
+---
 
 ## Session 2026-04-26 (Session 5) - WIP04: General Case (All k factors) Proved
 
