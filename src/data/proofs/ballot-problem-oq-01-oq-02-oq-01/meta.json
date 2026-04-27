@@ -15,7 +15,7 @@
     ],
     "proofRepoPath": "Proofs/BallotProblemOQ01OQ02OQ01.lean",
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 1,
     "originalContributions": [
       "multiCountedSequence_eq_biUnion: multi-candidate sequences = disjoint union of fibers",
       "multiProjectionFiber_pairwise_disjoint: fibers over distinct targets are disjoint",
@@ -25,7 +25,7 @@
     "dateAdded": "2026-04-12",
     "axiomCount": 0,
     "lineCount": 208,
-    "assumptions": "3 sorries: ncard additivity for disjoint unions (2) and final uniformOn assembly (1). All are Mathlib API navigation, not mathematical gaps."
+    "assumptions": "1 sorry: final uniformOn assembly in uniformOn_fiber_transfer' (line 174). The ncard_biUnion_eq_of_uniform lemma is now fully proved. All remaining work is Mathlib API navigation, not a mathematical gap."
   },
   "overview": {
     "historicalContext": "The ballot problem originates with Joseph Bertrand (1887), who asked for the probability that a winning candidate leads throughout the count. The classical formula $(a-b)/(a+b)$ was proved elegantly by Désiré André using the reflection principle. The multi-candidate generalization asks: when one candidate faces $m-1$ opponents, does the same formula apply? The answer is yes, because only the total opponent vote count matters, not its distribution among opponents. The parent file (BallotProblemOQ01OQ02) established this reduction via a projection-and-fiber argument, proving that all fibers have equal cardinality through an explicit fiberSwap bijection. However, a gap remained: translating the combinatorial fact $|\\text{fiber}(t_1)| = |\\text{fiber}(t_2)|$ into the measure-theoretic statement $\\text{uniformOn}(\\text{MCS}, \\text{MSP}) = \\text{uniformOn}(\\text{CS}, \\text{SP})$. This file provides that bridge, requiring infrastructure for disjoint union cardinality in Mathlib's Set.ncard framework and ratio cancellation in ENNReal arithmetic.",
@@ -53,7 +53,7 @@
       "title": "Part I: Abstract Uniform Fiber Counting",
       "startLine": 37,
       "endLine": 60,
-      "summary": "General lemma: ncard of a disjoint union with uniform fiber sizes = k times number of fibers. Has 2 sorries for Mathlib ncard_biUnion API.",
+      "summary": "General lemma: ncard of a disjoint union with uniform fiber sizes = k times number of fibers. Fully proved using Set.ncard_biUnion and Finset.sum_const.",
       "mathContext": "If $\\{S_i\\}_{i \\in I}$ are pairwise disjoint finite sets each with $|S_i| = k$, then $|\\bigcup_{i \\in I} S_i| = k \\cdot |I|$."
     },
     {
@@ -112,8 +112,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Establishes the structural infrastructure for proving uniformOn_fiber_transfer. The fiber partition (3 lemmas fully proved: decomposition, disjointness, positive decomposition), ENNReal ratio cancellation (fully proved), and a general uniform-fiber counting lemma are all formalized. 3 sorries remain for Mathlib API navigation (ncard additivity for disjoint unions and the final uniformOn assembly). 0 axioms, 208 lines.",
-    "implications": "Completing the 3 remaining sorries (which are pure Mathlib API issues, not mathematical gaps) would eliminate the sole axiom in BallotProblemOQ01OQ02.lean, making the entire multi-candidate ballot theorem chain fully verified from Bertrand's original result through the m-candidate generalization. The uniform fiber transfer pattern itself is reusable: any surjection with equal-sized fibers preserves uniformOn probabilities, which could simplify other combinatorial probability arguments in the gallery.",
+    "summary": "Establishes the structural infrastructure for proving uniformOn_fiber_transfer. The fiber partition (3 lemmas fully proved: decomposition, disjointness, positive decomposition), ENNReal ratio cancellation (fully proved), and the general uniform-fiber counting lemma (ncard_biUnion_eq_of_uniform, now fully proved) are all formalized. 1 sorry remains for the final uniformOn assembly step in uniformOn_fiber_transfer'. 0 axioms, 208 lines.",
+    "implications": "Completing the 1 remaining sorry (pure Mathlib API navigation for ENNReal uniformOn assembly) would eliminate the sole axiom in BallotProblemOQ01OQ02.lean, making the entire multi-candidate ballot theorem chain fully verified from Bertrand's original result through the m-candidate generalization. The uniform fiber transfer pattern itself is reusable: any surjection with equal-sized fibers preserves uniformOn probabilities, which could simplify other combinatorial probability arguments in the gallery.",
     "openQuestions": [
       "Can the ncard_biUnion_eq_of_uniform lemma be proved using Set.ncard_biUnion from Mathlib directly, or does it need a custom Finset-based approach via Finset.sum_const?",
       "What is the exact definition of ProbabilityTheory.uniformOn used in Mathlib's Wiedijk #30 ballot theorem — is it condCount or a custom definition? This determines the final assembly strategy.",
@@ -130,7 +130,7 @@
     "theoremCount": 7,
     "definitionCount": 0,
     "path": "Proofs/BallotProblemOQ01OQ02OQ01.lean",
-    "sorries": 3,
+    "sorries": 1,
     "opens": [
       "Ballot",
       "ProbabilityTheory",
@@ -151,8 +151,8 @@
     {
       "name": "uniformOn_fiber_transfer'",
       "type": "core",
-      "description": "Uniform fibers preserve uniformOn probability (3 sorries for API)"
+      "description": "Uniform fibers preserve uniformOn probability (1 sorry for API: final ENNReal assembly)"
     }
   ],
-  "sorries": 3
+  "sorries": 1
 }
