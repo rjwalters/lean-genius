@@ -123,12 +123,42 @@
     {
       "targetId": "roth-theorem-k3",
       "relationship": "extends",
-      "description": "Extends the qualitative Roth's theorem (r₃(N) = o(N)) with precise quantitative bounds"
+      "description": "Extends the qualitative Roth's theorem ($r_3(N) = o(N)$) with precise quantitative bounds from Roth (1953) through Kelley-Meka (2023)"
+    },
+    {
+      "targetId": "roth-theorem-k3-oq-02",
+      "relationship": "related",
+      "description": "Sibling exploration of Roth's theorem — together these entries cover complementary aspects of the qualitative/quantitative landscape"
+    },
+    {
+      "targetId": "roth-theorem-k3-oq-03",
+      "relationship": "related",
+      "description": "Further exploration in the Roth's theorem family, deepening the formalization of 3-AP-free set theory"
     },
     {
       "targetId": "szemeredi-regularity",
+      "relationship": "foundational",
+      "description": "Szemerédi's regularity lemma is the key structural tool for extending Roth's $k=3$ result to Szemerédi's theorem for all $k$-term APs"
+    },
+    {
+      "targetId": "szemeredi-theorem",
       "relationship": "related",
-      "description": "Szemerédi regularity is the key tool for extending Roth's qualitative theorem to k-APs (Szemerédi's theorem)"
+      "description": "Roth's theorem is the $k=3$ case of Szemerédi's theorem: every subset of positive upper density in $\\mathbb{N}$ contains $k$-term APs for all $k$"
+    },
+    {
+      "targetId": "szemeredi-full",
+      "relationship": "related",
+      "description": "Full Szemerédi theorem formalization — the quantitative bounds here for $k=3$ are dramatically stronger than the general-$k$ bounds from Szemerédi's proof"
+    },
+    {
+      "targetId": "furstenberg-correspondence",
+      "relationship": "complementary",
+      "description": "Furstenberg's ergodic-theoretic proof of Szemerédi's theorem provides an alternative (non-quantitative) route to Roth's theorem via the correspondence principle and multiple recurrence"
+    },
+    {
+      "targetId": "erdos-28-additive-bases",
+      "relationship": "related",
+      "description": "Erdős problem on additive bases — both involve extremal questions about additive structure in the integers, the core theme of additive combinatorics"
     }
   ],
   "conclusion": {
