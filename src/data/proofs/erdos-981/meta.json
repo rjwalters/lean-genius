@@ -51,11 +51,14 @@
       "characterSum N p: ∑_{n≤N} (n/p) partial sum",
       "isBoundedFrom ε p m: bound condition for stabilization",
       "fEps ε p: stabilization threshold f_ε(p)",
-      "sumFEps ε x: sum over primes p < x",
+      "asymptoticFunc x: PNT-form denominator x/log x",
+      "fEpsAlt ε p: first-passage alternative stabilization threshold",
+      "isQuadraticResidue: quadratic residue predicate",
+      "sumFEps axiom: sum of f_ε(p) over primes p < x",
       "elliott_1969 axiom: main asymptotic result",
-      "polya_vinogradov axiom: character sum bounds",
-      "burgess_bound axiom: improved short sum bounds",
-      "tang_zhang_2025 axiom: alternative formulation result"
+      "sumFEpsAlt axiom: sum of fEpsAlt(p) over primes p < x",
+      "tang_zhang_2025 axiom: alternative formulation result",
+      "erdos_981 theorem: combined resolution"
     ],
     "axiomCount": 4,
     "lineCount": 175,
