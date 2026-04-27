@@ -29,17 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS (researcher-7, 2026-04-27): Erdos513Problem.lean axiomCount 6 → 4. Replaced axiom maxModulus with concrete def (iSup over Metric.sphere of powerSeriesFun via tsum); axiom maxModulus_nonneg now provable from le_max_left.",
     "builtItems": [
       "Concretized maxTerm definition (Erdos513Problem.lean:31-33)",
       "Proved maxTerm_nonneg from concrete def (Erdos513Problem.lean:36-37)",
-      "Fixed half_lt_two_div_pi using nlinarith cross-multiplication (Erdos513Problem.lean:116-123)"
+      "Fixed half_lt_two_div_pi using nlinarith cross-multiplication (Erdos513Problem.lean:116-123)",
+      "powerSeriesFun: noncomputable def for entire function ∑' n, a n * z^n (Erdos513Problem.lean:31-32)",
+      "maxModulus: replaced axiom with noncomputable def via iSup over Metric.sphere (Erdos513Problem.lean:35-40)",
+      "maxModulus_nonneg: replaced axiom with theorem (le_max_left 0 _) (Erdos513Problem.lean:43-44)"
     ],
     "insights": [
       "maxTerm can be concretized as max 0 (iSup n, ‖a n‖ * r^n) - eliminates definition axiom + nonneg axiom",
       "half_lt_two_div_pi proof needed cross-multiplication via field_simp + nlinarith (div_lt_div_iff was renamed)",
       "Real.pi_lt_four is the correct Mathlib constant for π < 4 (not pi_lt_315 or pi_lt_3141593)",
-      "maxModulus concretization requires tsum over circles - too complex for this session"
+      "maxModulus concretization requires tsum over circles - too complex for this session",
+      "Lean's tsum returns 0 for non-summable families — safe to use ∑' n, a n * z^n unconditionally as definition of entire function (returns 0 outside disk of convergence for non-entire a)",
+      "max 0 (iSup ...) handles unbounded iSup (which returns 0 default in ℝ) — gives free maxModulus_nonneg without needing summability hypothesis"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -59,17 +64,17 @@
     "mathlib": []
   },
   "started": "2026-01-13T04:39:49.622Z",
-  "lastUpdate": "2026-03-13T07:52:17.049Z",
+  "lastUpdate": "2026-04-27T16:30:00-07:00",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos513Problem.lean",
       "filename": "Erdos513Problem.lean",
-      "lineCount": 160,
-      "theoremCount": 10,
-      "axiomCount": 6,
-      "defCount": 3,
+      "lineCount": 167,
+      "theoremCount": 11,
+      "axiomCount": 4,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos513Problem.lean"

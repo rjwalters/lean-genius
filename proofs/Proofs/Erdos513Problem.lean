@@ -37,13 +37,21 @@ theorem maxTerm_nonneg (a : ℕ → ℂ) (r : ℝ) (hr : 0 ≤ r) :
     0 ≤ maxTerm a r :=
   le_max_left 0 _
 
-/-- The maximum modulus M(r, f) = sup_{|z|=r} |f(z)| for the entire
-    function defined by `a`. Axiomatized. -/
-axiom maxModulus (a : ℕ → ℂ) (r : ℝ) : ℝ
+/-- The entire function defined by a power series with coefficients `a`.
+    For coefficients defining a non-summable series at `z`, `tsum` returns 0. -/
+noncomputable def powerSeriesFun (a : ℕ → ℂ) (z : ℂ) : ℂ := ∑' n, a n * z ^ n
 
-/-- maxModulus is nonneg for r ≥ 0. -/
-axiom maxModulus_nonneg (a : ℕ → ℂ) (r : ℝ) (hr : 0 ≤ r) :
-  0 ≤ maxModulus a r
+/-- The maximum modulus M(r, f) = sup_{|z|=r} |f(z)| for the entire
+    function defined by `a`. Wraps with `max 0` to guarantee nonnegativity
+    (the iSup over the sphere is already nonneg, but this avoids needing
+    boundedness assumptions on `a`). -/
+noncomputable def maxModulus (a : ℕ → ℂ) (r : ℝ) : ℝ :=
+  max 0 (⨆ z ∈ Metric.sphere (0 : ℂ) r, ‖powerSeriesFun a z‖)
+
+/-- maxModulus is nonneg for r ≥ 0 (in fact for all r, by definition). -/
+theorem maxModulus_nonneg (a : ℕ → ℂ) (r : ℝ) (hr : 0 ≤ r) :
+    0 ≤ maxModulus a r :=
+  le_max_left 0 _
 
 /-- The ratio μ(r)/M(r). Returns 0 if M(r) = 0. -/
 noncomputable def termModulusRatio (a : ℕ → ℂ) (r : ℝ) : ℝ :=
