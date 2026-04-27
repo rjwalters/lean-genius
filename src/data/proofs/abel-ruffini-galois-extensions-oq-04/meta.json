@@ -20,7 +20,24 @@
         "sorries": 0,
         "dateAdded": "2026-04-24",
         "axiomCount": 0,
-        "assumptions": "",
+        "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+        "mathlibDependencies": [
+            {
+                "theorem": "CompositionSeries.jordan_holder",
+                "description": "Abstract Jordan-Hölder theorem for JordanHolderLattice instances",
+                "module": "Mathlib.Order.JordanHolder"
+            },
+            {
+                "theorem": "QuotientGroup.quotientKerEquivOfSurjective",
+                "description": "First isomorphism theorem: G/ker(φ) ≃* im(φ)",
+                "module": "Mathlib.GroupTheory.QuotientGroup.Basic"
+            },
+            {
+                "theorem": "Subgroup.mem_sup",
+                "description": "Membership in H ⊔ K: a ∈ H⊔K iff a = h*k for h ∈ H, k ∈ K",
+                "module": "Mathlib.GroupTheory.Subgroup.Basic"
+            }
+        ],
         "lineCount": 234,
         "theoremCount": 3,
         "definitionCount": 3,
@@ -113,9 +130,9 @@
         },
         {
             "id": "sec-main-theorem",
-            "title": "Part V: Jordan-Hölder Theorem",
-            "startLine": 229,
-            "endLine": 255,
+            "title": "Part IV–V: Jordan-Hölder Theorem and Verification",
+            "startLine": 208,
+            "endLine": 234,
             "summary": "`jordan_holder_subgroups` and `jordan_holder_finite_groups`: one-line delegations to `CompositionSeries.jordan_holder` once the JordanHolderLattice instance is provided. `#check` statements verify the exported types. These theorems become available automatically — the entire power of the abstract Jordan-Hölder machinery applies to groups at no additional proof cost.",
             "mathContext": "Jordan-Hölder uniqueness: any two composition series of a finite group have the same length and the same multiset of simple composition factors up to permutation and isomorphism. For $S_5$: the unique series is $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$ with factors $A_5$ (simple, order 60) and $\\mathbb{Z}/2\\mathbb{Z}$. Jordan-Hölder guarantees no alternative decomposition avoids the non-abelian $A_5$ factor, making the Abel-Ruffini degree-5 threshold absolute."
         }
@@ -157,5 +174,28 @@
             "description": "Proves all finite groups of order $< 60$ are solvable. $A_5$ (order 60) is the minimal non-solvable group — equivalently, the first group to have a non-cyclic composition factor. Jordan-Hölder makes this precise: the 59 groups of smaller order all have composition series with only cyclic factors"
         }
     ],
-    "sorries": 0
+    "sorries": 0,
+    "references": [
+        {
+            "authors": "Jordan, Camille",
+            "title": "Traité des substitutions et des équations algébriques",
+            "year": "1870",
+            "venue": "Gauthier-Villars, Paris",
+            "note": "First proof of composition series uniqueness for finite permutation groups; introduced the notion of composition factors as structural invariants"
+        },
+        {
+            "authors": "Hölder, Otto",
+            "title": "Zurückführung einer beliebigen algebraischen Gleichung auf eine Kette von Gleichungen",
+            "year": "1889",
+            "venue": "Mathematische Annalen 34",
+            "note": "Generalized Jordan's theorem to arbitrary finite groups; established the rigorous modern formulation of Jordan-Hölder uniqueness"
+        },
+        {
+            "authors": "Rotman, Joseph J.",
+            "title": "An Introduction to the Theory of Groups",
+            "year": "1995",
+            "venue": "Springer GTM 148, 4th edition",
+            "note": "Standard reference for composition series and the Jordan-Hölder theorem; Chapter 5 develops the lattice-theoretic perspective that Mathlib's JordanHolderLattice abstracts"
+        }
+    ]
 }
