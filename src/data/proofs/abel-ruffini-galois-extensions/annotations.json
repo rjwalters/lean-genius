@@ -364,7 +364,7 @@
     },
     "type": "insight",
     "title": "Galois Group Order Equals Extension Degree",
-    "content": "The `GaloisProperties` section (Part V, lines 221–235) establishes the fundamental numerical form of Galois theory. `galois_group_order`: for a finite Galois extension $E/F$, the order of the automorphism group $|\\text{Aut}(E/F)|$ equals the extension degree $[E:F]$. This is `IsGalois.card_aut_eq_finrank` — the fundamental theorem of Galois theory stated numerically. In the Abel-Ruffini context, it means that a quintic with Galois group $S_5$ necessarily generates a degree-120 extension (since $|S_5| = 120$), which cannot be built from a radical tower (each step of which multiplies the degree by a prime). The theorem requires both `FiniteDimensional F E` (the extension has finite degree) and `IsGalois F E` (the extension is normal and separable) — both are necessary for the order equality. The numerical form enables computing Galois group orders from extension degrees: if $[E:\\mathbb{Q}] = 120$ and $E/\\mathbb{Q}$ is Galois, then $|\\text{Gal}(E/\\mathbb{Q})| = 120$. Combined with the classification that $S_n$ is not solvable for $n \\geq 5$ (and $|S_5| = 120$), this provides the arithmetic bridge from the degree of a polynomial to the solvability of its Galois group.",
+    "content": "The `GaloisProperties` section (Part V, lines 221–235) establishes the fundamental numerical form of Galois theory. `galois_group_order`: for a finite Galois extension $E/F$, the order of the automorphism group $|\\text{Aut}(E/F)|$ equals the extension degree $[E:F]$. This is `IsGalois.card_aut_eq_finrank` — the fundamental theorem of Galois theory stated numerically.\n\n**Provenance — Artin's reformulation**: This identity is due to Emil Artin (1942), who reformulated classical Galois theory by *defining* a Galois extension as a finite extension $E/F$ for which $|\\text{Aut}(E/F)| = [E:F]$, and then proving normality and separability follow. In Mathlib's `IsGalois` typeclass, the equivalence runs the other way (`IsGalois` is defined as normal + separable), and `card_aut_eq_finrank` is the derived numerical consequence — but Artin's perspective explains why this is the *fundamental* theorem: it captures the entire Galois correspondence in one cardinality identity. The Galois correspondence (subfields ↔ subgroups) is then a structural lifting of the numerical equality $|\\text{Gal}(E/F)| = [E:F]$ to an inclusion-reversing bijection between subfields and subgroups.\n\n**Abel-Ruffini application**: A quintic with Galois group $S_5$ necessarily generates a degree-120 extension (since $|S_5| = 120$). Each step of a radical tower $F_0 \\subset F_1 \\subset \\cdots \\subset F_k$ adjoins an $n$-th root and contributes a *cyclic* factor (after adjoining roots of unity) to the composition series — so the radical tower's Galois group has all-abelian composition factors. But $S_5$'s composition series $\\{e\\} \\trianglelefteq A_5 \\trianglelefteq S_5$ has the non-abelian simple factor $A_5$ of order 60. The numerical identity rules out radical towers by counting: there is no cyclic-factor decomposition of a 120-element group whose composition factors are all prime cyclic — the unique non-trivial composition factor of $A_5$ is $A_5$ itself.\n\n**Hypotheses**: The theorem requires both `FiniteDimensional F E` (the extension has finite degree) and `IsGalois F E` (the extension is normal and separable). Removing either breaks the equality: for a non-normal extension like $\\mathbb{Q}(\\sqrt[3]{2})/\\mathbb{Q}$ (degree 3), $|\\text{Aut}| = 1$ (only the identity, since the other two cube roots are non-real), strictly less than $[E:F] = 3$. For an inseparable extension over a field of characteristic $p$, the Frobenius collapses Galois orbits and again $|\\text{Aut}| < [E:F]$. The Galois condition is precisely the hypothesis that makes the Lagrange inequality $|\\text{Aut}(E/F)| \\leq [E:F]$ an equality.\n\n**Numerical bridge**: The result enables computing Galois group orders from extension degrees and vice versa: if $[E:\\mathbb{Q}] = 120$ and $E/\\mathbb{Q}$ is Galois, then $|\\text{Gal}(E/\\mathbb{Q})| = 120$. Combined with the classification that $S_n$ is not solvable for $n \\geq 5$ (and $|S_5| = 120$), this provides the arithmetic bridge from the degree of a polynomial to the solvability of its Galois group, completing the chain: polynomial degree → splitting field degree → Galois group order → solvability classification.",
     "mathContext": "$|\\text{Gal}(E/F)| = [E:F]$ for finite Galois extensions. Equivalently: `Nat.card (E ≃ₐ[F] E) = Module.finrank F E`. Consequence: for a degree-$n$ irreducible polynomial $f$ with splitting field $E$ and Galois extension $E/\\mathbb{Q}$, the Galois group $\\text{Gal}(f/\\mathbb{Q}) \\leq S_n$ has order dividing $n!$. If the extension degree equals $n!$ (e.g., $120 = 5!$ for the companion quintic $x^5 - 4x + 2$), the Galois group is all of $S_n$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -373,14 +373,18 @@
       "IsGalois",
       "card_aut_eq_finrank",
       "radical tower",
-      "fundamental theorem of Galois theory"
+      "fundamental theorem of Galois theory",
+      "Artin's theorem on Galois extensions",
+      "composition factors and abelian quotients"
     ],
     "prerequisites": [
       "Galois extensions",
       "field extensions",
       "automorphism groups",
       "Module.finrank",
-      "IsGalois typeclass"
+      "IsGalois typeclass",
+      "Artin's reformulation of Galois theory",
+      "composition series with abelian factors"
     ]
   },
   {
