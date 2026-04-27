@@ -1,8 +1,8 @@
 {
   "slug": "erdos-417",
   "title": "Erdős #417",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "COMPLETED",
     "since": "2026-01-13T02:38:27.587Z",
     "iteration": 2,
-    "focus": "Structural results proved. 3 axioms are the OPEN conjectures.",
+    "focus": "Erdos417Problem.lean: 17 theorems, 1 axiom (erdos_417_conjecture — the OPEN problem itself), 0 sorries. All structural results proved (V'/V monotonicity, totient structure, ratio > 1 from conjecture). The single remaining axiom is irreducible — it IS the open Erdős conjecture (Tendsto V(x)/V'(x) atTop atTop).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "COMPLETED: Erdos417Problem.lean has 17 theorems, 1 axiom (erdos_417_conjecture — the open Erdős problem itself), 0 sorries. Structural results: V'/V monotonicity, totient classification (0 not totient, all totient values are 0/1/even), V_element_structure, ratio_gt_one consequence of infinite conjecture. The 'eliminated erdos_417_limit_exists' fix removed an inconsistency (finite limit ⊥ ratio → ∞). 1 axiom is the irreducible open conjecture; gallery status: axiomatized.",
     "builtItems": [
       "V'_mono: V' is monotone non-decreasing (proved)",
       "V_mono: V is monotone non-decreasing (proved)",
@@ -70,7 +70,7 @@
     "mathlib": []
   },
   "started": "2026-01-13T02:38:27.587Z",
-  "lastUpdate": "2026-03-13T07:52:17.048Z",
+  "lastUpdate": "2026-04-27T22:36:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
