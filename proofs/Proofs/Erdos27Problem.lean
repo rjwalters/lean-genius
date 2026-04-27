@@ -304,6 +304,17 @@ theorem perfect_covering_min_modulus :
     obtain ⟨c, hc, hlt⟩ := bbmst_2024 S h
     exact ⟨c, hc, Nat.lt_succ_iff.mp hlt⟩⟩
 
+/-- The Erdős conjecture is false. Direct corollary of the dichotomy and FFKPY. -/
+theorem erdos_27_conjecture_false : ¬ ErdosConjecture :=
+  fun h => conjecture_dichotomy.mp h erdos_27_ffkpy
+
+/-- Concrete instance of the FFKPY disproof: for C = 2, there exists a
+    threshold ε and N below which no bounded-moduli system suffices. -/
+theorem ffkpy_C_eq_2 :
+    ∃ ε > 0, ∃ N : ℕ, N ≥ 1 ∧
+      ∀ S : CongruenceSystem, HasModuliInCRange S N 2 → ¬IsAlmostCovering S ε :=
+  erdos_27_ffkpy 2 (by norm_num)
+
 end Erdos27
 
 /-
