@@ -126,6 +126,32 @@
     ]
   },
   {
+    "id": "ann-alt-grp-tactic-strategy",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02",
+    "range": {
+      "startLine": 55,
+      "endLine": 138
+    },
+    "type": "tactic",
+    "title": "Lean Tactic Strategy: Each Case Matched to Its Mathematical Complexity",
+    "content": "The proof's tactical structure mirrors the underlying group theory with remarkable economy. The five small cases use four distinct tactical patterns — none chosen arbitrarily.\n\n**Pattern 1 — `inferInstance` for trivial groups** ($A_0, A_1, A_2$): Lean's typeclass synthesis automatically derives `IsSolvable` from the structural fact that any subsingleton group has $G^{(0)} = G = \\{e\\}$. No manual proof is needed because Mathlib's `isSolvable_of_subsingleton` instance is registered globally and applies via instance search.\n\n**Pattern 2 — `isSolvable_of_comm` + `decide` for abelian groups** ($A_3$): The lemma reduces solvability to commutativity, and `decide` discharges commutativity via Lean's kernel evaluator over the 9 element pairs. This works because $A_3$ has decidable equality and finite carrier — Lean can literally enumerate all $(g, h) \\in A_3 \\times A_3$ and check $gh = hg$.\n\n**Pattern 3 — `native_decide` + `inferInstance` for medium-complexity groups** ($A_4$): The proof first establishes `IsSolvable (Perm (Fin 4))` by computing $S_4^{(3)} = \\{e\\}$ via `native_decide` (compiled-to-native code, much faster than `decide` for the 13824 commutator products required), then `inferInstance` propagates solvability from the supergroup $S_4$ to the subgroup $A_4$. The two-step structure is essential: there's no direct way to compute $A_4^{(2)} = \\{e\\}$ as fast, but $S_4$'s computation reuses to give $A_4$ for free.\n\n**Pattern 4 — exact sequence + `Equiv.Perm.not_solvable` for large groups** ($A_n, n \\geq 5$): No computation possible (the groups are infinite families). Instead, the proof reduces $A_n$ solvability to $S_n$ solvability via `solvable_of_ker_le_range` and contradicts via Mathlib's pre-proved `Equiv.Perm.not_solvable`.\n\n**Bidirectional combination** (`alternating_solvable_iff`): The forward direction uses `by_contra` + `omega` (arithmetic on $n$) + `an_not_solvable_of_ge_five`. The backward direction uses `interval_cases n` to enumerate $\\{0,1,2,3,4\\}$ and apply the matching small-case theorem. This 15-line proof is essentially the case-distinction logic of the theorem itself, making the Lean code structurally identical to a textbook bidirectional proof.\n\n**Why this taxonomy matters**: The four-pattern structure exposes a fundamental design principle in formal proof: tactical sophistication should scale with mathematical complexity. Trivial groups need no work (typeclass machinery suffices); abelian groups need finite enumeration; subgroup arguments need typeclass + computation; infinite families need structural reasoning. A naive proof that uses one technique for all five cases would be either prohibitively slow (forcing `decide` on $A_4$ would compute commutators in a 12-element group times 12 outer commutators = 1728 inner elements per outer pair) or unnecessarily abstract (using exact sequences for $A_3$ wastes the abelian structure).",
+    "mathContext": "The five cases stratify by group-theoretic complexity: trivial ($A_0, A_1, A_2$), cyclic abelian ($A_3 \\cong \\mathbb{Z}/3$), supergroup of solvable group ($A_4 \\leq S_4$, $\\mathrm{dl}(S_4) = 3$), and infinite non-solvable family ($A_n, n \\geq 5$). Each tactical pattern (`inferInstance`, `isSolvable_of_comm + decide`, `native_decide + inferInstance`, exact sequence + Mathlib lemma) is the minimum-effort proof that succeeds for that mathematical structure.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "tactical proof strategy",
+      "decide vs native_decide",
+      "typeclass synthesis",
+      "interval_cases",
+      "by_contra",
+      "tactic minimality"
+    ],
+    "prerequisites": [
+      "Lean 4 tactic framework",
+      "IsSolvable typeclass infrastructure",
+      "decidable equality on finite types"
+    ]
+  },
+  {
     "id": "ann-alt-grp-corollaries",
     "proofId": "abel-ruffini-oq-04-oq-02-oq-02",
     "range": {
