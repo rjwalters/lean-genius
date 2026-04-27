@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1097",
-  "title": "Erdős #1097",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "Erd\u0151s #1097",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T15:31:24.881Z",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T16:05:00-07:00",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Completed (researcher-7 audit 2026-04-27): Erdos1097Problem.lean and Erdos1097OQ01.lean both verified. Erdos1097Problem.lean has 23 theorems, 3 axioms (literature: katz_tao_upper, lemm_lower, chan_equivalence), 0 sorries. Erdos1097OQ01.lean has 18 theorems, 0 axioms, 0 sorries. Gallery meta status is 'axiomatized', badge 'axiom'. Three former axioms proved from lemm_lower (erdos_spencer_lower, erdos_ruzsa_explicit, alphaevolve_improvement).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Closed. Future axiom-elimination would require formalizing Lemm/Katz-Tao proofs (deep additive combinatorics).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -38,14 +38,14 @@
       "Fixed meta.json leanFile.axiomCount from 6 to 3 (actual count)"
     ],
     "insights": [
-      "erdos_spencer_lower (n^{3/2}) follows from lemm_lower (n^{1.778}) since 1.778 > 1.5 and n^c is monotone in c for n≥1",
+      "erdos_spencer_lower (n^{3/2}) follows from lemm_lower (n^{1.778}) since 1.778 > 1.5 and n^c is monotone in c for n\u22651",
       "erdos_ruzsa_explicit (n^{1+c}) follows from lemm_lower with c'=c-1>0.778, C=1",
       "alphaevolve_improvement (c>1.77898) is logically subsumed by lemm_lower (c>1.778) due to rounding in axiom constants",
       "Follow-up OQ-01: k-term AP common differences formalized (17 theorems, 0 axioms)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #1097 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A$ be a set of $n$ integers. How many distinct $d$ can occur as the common difference of a three-term arithmetic progression in $A$? Are there always $O(n^{3/2})$ many such $d$?\n\n\n\nA problem Erd\\H{o}s posed in the 1989 problem session of Great Western Number Theory.\n\nHe states that Erd\\H{o}s and Ruzsa gave an explicit construction which achieved $n^{1+c}$ for some $c>0$, and Erd\\H{o}s and Spencer gave a probabilistic proof which achieved $n^{3/2}$, and speculated this may be the best possible.\n\nIn the comment section, Chan has noticed that this problem is exactly equivalent to a sums-differences question of Bourgain \\cite{Bo99}, introduced as an arithmetic path towards the Kakeya conjecture: find the smallest $c\\in [1,2]$ such that, for any finite sets of integers $A$ and $B$ and $G\\subseteq A\\times B$ we have\\[\\lvert A\\overset{G}{-}B\\rvert \\ll \\max(\\lvert A\\rvert,\\lvert B\\rvert, \\lvert A\\overset{G}{+}B\\rvert)^c\\](where, for example, $A\\overset{G}{+}B$ denotes the set of $a+b$ with $(a,b)\\in G$).\n\nThis is equivalent in the sense that the greatest exponent $c$ achievable for the main problem here is equal to the smallest constant achievable for the sums-differences question. The current best bounds known are thus\\[1.77898\\cdots \\leq c \\leq 11/6 \\approx 1.833.\\]The upper bound is due to Katz and Tao \\cite{KaTa99}. The lower bound is due to Lemm \\cite{Le15} (with a very small improvement found by AlphaEvolve \\cite{GGTW25}).\n\n\n\n\n\nReferences\n\n\n[Bo99] Bourgain, J., On the dimension of {K}akeya sets and related maximal\ninequalities. Geom. Funct. Anal. (1999), 256--282.\n\n[GGTW25] B. Georgiev, J. G\\'{o}mez-Serrano, T. Tao, and A. Wagner, Mathematical exploration and discovery at scale. arXiv:2511.02864 (2025).\n\n[KaTa99] Katz, Nets Hawk and Tao, Terence, Bounds on arithmetic projections, and applications to the\n{K}akeya conjecture. Math. Res. Lett. (1999), 625--630.\n\n[Le15] Lemm, Marius, New counterexamples for sums-differences. Proc. Amer. Math. Soc. (2015), 3863--3868.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #6\n- Problem #1096\n- Problem #1098\n- Problem #39\n- Problem #1\n\n## References\n\n- GWNT89\n- Bo99\n- KaTa99\n- Le15\n- GGTW25\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erd\u0151s #1097 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A$ be a set of $n$ integers. How many distinct $d$ can occur as the common difference of a three-term arithmetic progression in $A$? Are there always $O(n^{3/2})$ many such $d$?\n\n\n\nA problem Erd\\H{o}s posed in the 1989 problem session of Great Western Number Theory.\n\nHe states that Erd\\H{o}s and Ruzsa gave an explicit construction which achieved $n^{1+c}$ for some $c>0$, and Erd\\H{o}s and Spencer gave a probabilistic proof which achieved $n^{3/2}$, and speculated this may be the best possible.\n\nIn the comment section, Chan has noticed that this problem is exactly equivalent to a sums-differences question of Bourgain \\cite{Bo99}, introduced as an arithmetic path towards the Kakeya conjecture: find the smallest $c\\in [1,2]$ such that, for any finite sets of integers $A$ and $B$ and $G\\subseteq A\\times B$ we have\\[\\lvert A\\overset{G}{-}B\\rvert \\ll \\max(\\lvert A\\rvert,\\lvert B\\rvert, \\lvert A\\overset{G}{+}B\\rvert)^c\\](where, for example, $A\\overset{G}{+}B$ denotes the set of $a+b$ with $(a,b)\\in G$).\n\nThis is equivalent in the sense that the greatest exponent $c$ achievable for the main problem here is equal to the smallest constant achievable for the sums-differences question. The current best bounds known are thus\\[1.77898\\cdots \\leq c \\leq 11/6 \\approx 1.833.\\]The upper bound is due to Katz and Tao \\cite{KaTa99}. The lower bound is due to Lemm \\cite{Le15} (with a very small improvement found by AlphaEvolve \\cite{GGTW25}).\n\n\n\n\n\nReferences\n\n\n[Bo99] Bourgain, J., On the dimension of {K}akeya sets and related maximal\ninequalities. Geom. Funct. Anal. (1999), 256--282.\n\n[GGTW25] B. Georgiev, J. G\\'{o}mez-Serrano, T. Tao, and A. Wagner, Mathematical exploration and discovery at scale. arXiv:2511.02864 (2025).\n\n[KaTa99] Katz, Nets Hawk and Tao, Terence, Bounds on arithmetic projections, and applications to the\n{K}akeya conjecture. Math. Res. Lett. (1999), 625--630.\n\n[Le15] Lemm, Marius, New counterexamples for sums-differences. Proc. Amer. Math. Soc. (2015), 3863--3868.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #6\n- Problem #1096\n- Problem #1098\n- Problem #39\n- Problem #1\n\n## References\n\n- GWNT89\n- Bo99\n- KaTa99\n- Le15\n- GGTW25\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -63,7 +63,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T15:31:24.882Z",
-  "lastUpdate": "2026-03-29T18:30:00Z",
+  "lastUpdate": "2026-04-27T23:26:28.367674Z",
   "significance": 5,
   "tractability": 3,
   "leanFiles": [

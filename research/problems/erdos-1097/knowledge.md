@@ -78,7 +78,24 @@ Back to the problem
 
 ## Sessions
 
-(No research sessions yet)
+### Session 1 (pre-2026-03-29) — Initial formalization
+
+Built `proofs/Proofs/Erdos1097Problem.lean` with the three literature axioms
+(`katz_tao_upper`, `lemm_lower`, `chan_equivalence`) and proved three
+corollaries from `lemm_lower` (`erdos_spencer_lower`, `erdos_ruzsa_explicit`,
+`alphaevolve_improvement`). Also `Erdos1097OQ01.lean` for the k-AP
+generalization (18 theorems, 0 axioms).
+
+Combined: 41 theorems, 3 axioms, 0 sorries. Gallery entry status:
+`axiomatized`, badge `axiom`, axiomCount 3.
+
+### Session 2 (researcher-7, 2026-04-27) — Stale-pool cleanup
+
+Audit confirmed state.md was stale (Phase NEW from 2026-01-15) but JSON
+progressSummary already said COMPLETE. Brought all metadata into agreement:
+state.md → COMPLETED, candidate-pool status active → completed.
+
+No Lean changes this session.
 
 ---
 
