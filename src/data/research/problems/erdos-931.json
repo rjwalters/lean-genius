@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-30T21:44:17.000Z",
-    "iteration": 2,
-    "focus": "Hard case structural analysis + computational verification",
+    "iteration": 3,
+    "focus": "0 axioms, 2 sorries (both deep Størmer-style number theory). File now Aristotle-eligible.",
     "blockers": [
       "Størmer's theorem not in Mathlib — needed to fully eliminate exists_prime_between_blocks axiom"
     ],
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 5 structural lemmas for the hard case: n₁ lower bound, next prime beyond first block, no-prime-in-block, and computational verification that hard case is vacuously true for n₁ ≤ 30 with k₁=k₂=3.",
+    "progressSummary": "PROGRESS: Both axioms converted to theorem-with-sorry (stronger_implies_main and exists_prime_between_blocks_hard). Axiom count 2→0. Sorry count 0→2. Net axiom-integrity improvement: sorries acknowledge unproved gaps; axioms would assert unverified math claims (Størmer-type smooth number theory).",
     "builtItems": [
       "Fixed consecutive product computation bug (9459360 → 9480240)",
       "Proved first_block_has_prime using Nat.exists_prime_lt_and_le_two_mul (Bertrand)",
@@ -42,7 +42,9 @@
       "hard_case_n1_lower_bound: proved n₁ ≥ k₁+k₂+1 ≥ 7 in hard case",
       "hard_case_next_prime_beyond_block: next prime after n₁ exceeds n₁+k₁",
       "hard_case_no_prime_in_first_block: contradiction when prime in first block",
-      "hard_case_vacuous_k3_n30: computational proof that hard case hypotheses are inconsistent for n₁ ≤ 30, k₁=k₂=3"
+      "hard_case_vacuous_k3_n30: computational proof that hard case hypotheses are inconsistent for n₁ ≤ 30, k₁=k₂=3",
+      "Converted stronger_implies_main from axiom to theorem-with-sorry",
+      "Converted exists_prime_between_blocks_hard from axiom to theorem-with-sorry"
     ],
     "insights": [
       "Only 2 axioms, both deep: stronger_implies_main (requires Størmer-type smooth number theory), exists_prime_between_blocks (partially proved)",
@@ -79,7 +81,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T11:43:50.650Z",
-  "lastUpdate": "2026-03-30T21:44:17.000Z",
+  "lastUpdate": "2026-04-27T00:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [

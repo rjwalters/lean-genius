@@ -16,13 +16,13 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 2,
     "erdosNumber": 931,
     "erdosUrl": "https://erdosproblems.com/931",
     "erdosProblemStatus": "open",
-    "axiomCount": 2,
+    "axiomCount": 0,
     "lineCount": 523,
-    "assumptions": "2 axioms: stronger_implies_main (Størmer-type smooth number argument), exists_prime_between_blocks_hard (refined: only the hard case with k₁<n₁, tight gap, all factors ≤n₁ — general statement proved as theorem). Computational evidence: hard case hypotheses are vacuously inconsistent for n₁ ≤ 30 with k₁=k₂=3 (hard_case_vacuous_k3_n30). See Lean source.",
+    "assumptions": "2 axioms: stronger_implies_main (Størmer-type smooth number argument), exists_prime_between_blocks_hard (refined: only the hard case with k₁<n₁, tight gap, all factors ≤n₁ — general statement proved as theorem). Computational evidence: hard case hypotheses are vacuously inconsistent for n₁ ≤ 30 with k₁=k₂=3 (hard_case_vacuous_k3_n30). See Lean source. stronger_implies_main and exists_prime_between_blocks_hard converted from axiom to theorem-with-sorry (axiom integrity: do not assert unverified math).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
