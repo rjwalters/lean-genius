@@ -130,8 +130,8 @@ theorem EHP_conjecture_false : ¬EHP_Conjecture := by
   obtain ⟨f, hMonic, hDeg, hProj⟩ := pommerenke_counterexample
   obtain ⟨u, hu⟩ := h f hMonic hDeg
   have := hProj u
-  -- 2.386 > 2
-  sorry
+  -- 2.386 > 2 in ℝ≥0∞
+  exact absurd (this.trans hu) (by norm_num)
 
 /-- The Pommerenke constant: infimum over all polynomials of the min projection measure. -/
 noncomputable def pommerenkeConstant : ℝ≥0∞ :=
@@ -151,7 +151,8 @@ axiom pommerenke_upper_bound :
 /-- Corollary: The minimum projection measure is bounded by 3.3. -/
 theorem min_projection_bounded (f : Polynomial ℂ) (hMonic : f.Monic) (hDeg : f.natDegree ≥ 1) :
     minProjectionMeasure f ≤ 3.3 := by
-  sorry
+  obtain ⟨u, hu⟩ := pommerenke_upper_bound f hMonic hDeg
+  exact (iInf_le _ u).trans hu
 
 /- ## Part VII: Properties of Level Sets -/
 
@@ -185,7 +186,8 @@ noncomputable def maxWidth (S : Set ℂ) : ℝ≥0∞ :=
 /-- For convex sets, minWidth = diameter / (some constant related to shape). -/
 theorem convex_width_bounds (S : Set ℂ) (hConvex : Convex ℝ S) (hCompact : IsCompact S) :
     minWidth S ≤ maxWidth S := by
-  sorry
+  have hne : Nonempty Direction := ⟨⟨1, Complex.norm_one⟩⟩
+  exact (iInf_le (width S) hne.some).trans (le_iSup (width S) hne.some)
 
 /- ## Part IX: Lemniscates -/
 
