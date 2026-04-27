@@ -158,8 +158,8 @@ noncomputable def degreeSequence (G : SimpleGraph V) : List ℕ :=
 def IsRegular (G : SimpleGraph V) (k : ℕ) : Prop :=
   ∀ v : V, vertexDegree G v = k
 
-/-- Regular graphs have 1 distinct degree. -/
-theorem regular_one_degree (G : SimpleGraph V) (k : ℕ) (h : IsRegular G k) :
+/-- Regular graphs have 1 distinct degree (requires nonempty vertex set). -/
+theorem regular_one_degree (G : SimpleGraph V) (k : ℕ) [Nonempty V] (h : IsRegular G k) :
     numDistinctDegrees G = 1 := by
   sorry
 
