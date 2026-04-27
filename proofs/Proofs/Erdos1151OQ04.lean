@@ -13,7 +13,7 @@ Prove `erdos_1941_divergence` by formalizing the connection between:
 The main theorem `erdos_1941_divergence_from_growth` is FULLY PROVED
 (i.e., is a valid mathematical deduction), assuming two sorry lemmas:
 
-  `chebyshev_trig_sum_lb` [SORRY: Case 2 only (x ∈ (-1,1)), harmonic sum via Lipschitz]
+  `trig_sum_harmonic_lb` [SORRY: Lipschitz + harmonic sum for general θ ∈ (0, π)]
   `divergence_from_lebesgue_growth` [SORRY: lacunary series construction]
 
 The non-sorry results proved here:
@@ -31,18 +31,19 @@ The non-sorry results proved here:
   - `cos_rational_pi_mod`: periodicity with period 2q [Session 7]
   - `cos_rational_pi_pos_min`: ∃ δ > 0, |cos(nπp/q)| ≥ δ for all n [Session 7]
   - `chebyshev_lebesgue_growth`: Λₙ → ∞ proved modulo chebyshev_lebesgue_lb [Session 11]
-  - `trig_sum_lb_of_cos_eq_neg_one`: S_n ≥ (1/(2π))·n·log(n+1) for x = -1 [Session 12, NEW]
-  - `chebyshev_trig_sum_lb` Case 1 (x = -1): via trig_sum_lb_of_cos_eq_neg_one [Session 12, NEW]
-  - `tan_eq_cot_complement`: complementary angle cotangent bound [Session 12, NEW]
-  - `odd_harmonic_sum_lb`: ∑ 1/(2j+1) ≥ (1/2)·log(m+1) [Session 12, NEW]
-  - `half_log_le_log_half_add_one`: (1/2)·log(n+1) ≤ log(n/2+1) [Session 12, NEW]
+  - `trig_sum_lb_of_cos_eq_neg_one`: S_n ≥ (1/(2π))·n·log(n+1) for x = -1 [Session 12]
+  - `chebyshev_trig_sum_lb` Case 1 (x = -1): via trig_sum_lb_of_cos_eq_neg_one [Session 12]
+  - `chebyshev_trig_sum_lb` Case 2 (x ∈ (-1,1)): reduced to trig_sum_harmonic_lb [Session 13]
+  - `tan_eq_cot_complement`: complementary angle cotangent bound [Session 12]
+  - `odd_harmonic_sum_lb`: ∑ 1/(2j+1) ≥ (1/2)·log(m+1) [Session 12]
+  - `half_log_le_log_half_add_one`: (1/2)·log(n+1) ≤ log(n/2+1) [Session 12]
 
-## Sorry 1: chebyshev_trig_sum_lb (Case 2 only)
-CASE 1 (x = -1) IS PROVED. Remaining sorry is Case 2 (x ∈ (-1, 1)):
-  - Need: ∃ C₂ > 0, C₂·n·log(n+1) ≤ ∑ sin(φ_k)/|cos(πp/q) - cos(φ_k)| when cos(πp/q) ≠ -1
-  - Strategy: Lipschitz bound |cos θ - cos φ| ≤ |θ-φ|, then harmonic sum of near-nodes
-  - Key tools: sin(πp/q) > 0 gives a constant depending on p,q; node spacing π/n
-  - Estimated difficulty: ~80 lines of careful Finset + trig arithmetic
+## Sorry 1: trig_sum_harmonic_lb (was: chebyshev_trig_sum_lb Case 2)
+Now factored as a SELF-CONTAINED lemma for general θ ∈ (0, π):
+  - Statement: ∃ C > 0, C·n·log(n+1) ≤ Σ sin(φₖ)/|cos θ - cos φₖ| for all n ≥ 1
+  - Depends only on θ ∈ (0, π) and cos θ ≠ any Chebyshev node (no p, q dependency)
+  - Case 2 of chebyshev_trig_sum_lb is PROVED modulo this lemma
+  - Proof approach: Lipschitz + Finset harmonic sum over near-nodes + finite min for small n
 
 ## Sorry 2: divergence_from_lebesgue_growth
 Proof requires:
@@ -1067,6 +1068,35 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
       _ ≤ ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) /
             Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) := hsub_le_full
 
+/-! ## Harmonic Trig Sum Lower Bound (General x ∈ (-1, 1)) -/
+
+/-- **[SORRY] Harmonic trig sum lower bound for general θ ∈ (0, π).**
+
+    For any θ ∈ (0, π) with cos θ not a Chebyshev node for any n, the sum
+    S_n = Σₖ sin(φₖ)/|cos θ - cos φₖ| grows at least as fast as n · log(n+1).
+
+    Proof sketch: Let d = min(θ, π-θ) > 0.
+    1. By Lipschitz (|cos α - cos β| ≤ |α - β|): each term ≥ sin(φₖ)/|θ - φₖ|.
+    2. Nearest node k₀ satisfies |θ - φ_{k₀}| ≤ π/(2n).
+    3. For the j-th nearest node beyond k₀ (j = 0,...,m-1 with m = ⌊nd/(4π)⌋):
+       - |θ - φ_{k₀+j+1}| ≤ (2j+3)π/(2n)
+       - sin(φ_{k₀+j+1}) ≥ sin(d/2) ≥ d/π  (since node is in (d/2, π-d/2))
+       - Term ≥ (d/π) · 2n/((2j+3)π) = 2dn/(π²(2j+3))
+    4. Sub-sum ≥ (2dn/π²) · Σ_{j=0}^{m-1} 1/(2j+3) ≥ (2dn/π²) · ((1/2)·log(m+2) - 1)
+    5. For n ≥ N₀(d), this gives ≥ C · n · log(n+1) where C depends on d.
+    6. For 1 ≤ n < N₀, each S_n > 0 and n·log(n+1) > 0, so min ratio over
+       the finite set {1,...,N₀-1} is positive (Finset.min' argument).
+    7. Take C₂ = min of the large-n constant and the finite-set minimum. -/
+private lemma trig_sum_harmonic_lb (θ : ℝ) (hθ_pos : 0 < θ) (hθ_lt : θ < Real.pi)
+    (hne : ∀ (n : ℕ) (_ : 0 < n) (k : Fin n), Real.cos θ ≠ chebyshevNode n k) :
+    ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, 1 ≤ n →
+      C * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) ≤
+        ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+                     |Real.cos θ - chebyshevNode n k| := by
+  -- Core technical lemma: Lipschitz + harmonic sum over near-nodes + finite minimum.
+  -- See docstring for full proof sketch.
+  sorry
+
 /-! ## Key Lemmas with Sorry -/
 
 /-- **[SORRY] Harmonic sum lower bound for Chebyshev trig sum.**
@@ -1113,10 +1143,49 @@ private lemma chebyshev_trig_sum_lb (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_po
           |(-1 : ℝ) - Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n))| from
       Finset.sum_congr rfl (fun k _ => hrewrite k)]
     exact trig_sum_lb_of_cos_eq_neg_one n hn
-  · -- Case 2: x = cos(πp/q) ∈ (-1, 1), i.e., sin(πp/q) ≠ 0
-    -- Strategy: use Lipschitz bound |cos θ - cos φ| ≤ |θ - φ| and harmonic sum
-    -- of nodes near x to get S_n ≥ C·n·log(n+1) where C depends on sin(πp/q)
-    sorry  -- Case 2: x ∈ (-1, 1), Lipschitz + harmonic sum argument
+  · -- Case 2: x = cos(πp/q) ∈ (-1, 1), Lipschitz + harmonic sum
+    -- Step 1: cos(πp/q) ∈ (-1, 1)
+    have hx_gt : -1 < Real.cos ((↑p : ℝ) * Real.pi / ↑q) := by
+      by_contra h; push_neg at h
+      exact hx_neg1 (le_antisymm h (neg_one_le_cos _))
+    have hx_lt : Real.cos ((↑p : ℝ) * Real.pi / ↑q) < 1 := by
+      by_contra h; push_neg at h
+      have heq : Real.cos ((↑p : ℝ) * Real.pi / ↑q) = 1 :=
+        le_antisymm (Real.cos_le_one _) h
+      rw [Real.cos_eq_one_iff] at heq
+      obtain ⟨k, hk⟩ := heq
+      have hq_ne : (q : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hq_pos.ne'
+      have hpR : (p : ℝ) = k * (2 * q) := by field_simp at hk; linarith
+      have hpZ : (p : ℤ) = k * (2 * q) := by exact_mod_cast hpR
+      exact (Int.even_iff_not_odd.mp ⟨k * q, by linarith⟩) (by exact_mod_cast hp)
+    -- Step 2: arccos gives canonical angle θ₀ ∈ (0, π) with cos θ₀ = cos(πp/q)
+    set x := Real.cos ((↑p : ℝ) * Real.pi / ↑q) with hx_def
+    set θ₀ := Real.arccos x with hθ₀_def
+    have hcos_eq : Real.cos θ₀ = x := Real.cos_arccos (neg_one_le_cos _) (Real.cos_le_one _)
+    have hθ₀_pos : 0 < θ₀ := Real.arccos_pos.mpr hx_lt
+    have hθ₀_lt_pi : θ₀ < Real.pi := Real.arccos_lt_pi.mpr hx_gt
+    -- Step 3: Each sum term is positive
+    have hterm_pos : ∀ (n : ℕ) (hn : 0 < n) (k : Fin n),
+        0 < Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+            |x - chebyshevNode n k| := by
+      intro n hn k
+      exact div_pos (chebyshevAngle_sin_pos n hn k)
+        (abs_pos.mpr (sub_ne_zero.mpr (x_not_chebyshev_node p q hp hq hq_pos n hn k)))
+    -- Step 4: Reduce to cos θ₀ form
+    suffices h_main : ∃ C₂ : ℝ, 0 < C₂ ∧ ∀ n : ℕ, 1 ≤ n →
+        C₂ * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) ≤
+          ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+                       |Real.cos θ₀ - chebyshevNode n k| by
+      obtain ⟨C₂, hC₂, hbound⟩ := h_main
+      refine ⟨C₂, hC₂, fun n hn => ?_⟩
+      have : x = Real.cos θ₀ := hcos_eq.symm
+      rw [this]; exact hbound n hn
+    -- Step 5: Apply trig_sum_harmonic_lb with θ₀ and the node-avoidance property
+    have hne : ∀ (n : ℕ) (_ : 0 < n) (k : Fin n), Real.cos θ₀ ≠ chebyshevNode n k := by
+      intro n hn k
+      rw [hcos_eq]
+      exact x_not_chebyshev_node p q hp hq hq_pos n hn k
+    exact trig_sum_harmonic_lb θ₀ hθ₀_pos hθ₀_lt_pi hne
 
 /-- **Logarithmic lower bound on the Lebesgue function** (proved modulo `chebyshev_trig_sum_lb`).
 
