@@ -1,0 +1,165 @@
+{
+  "id": "pac-learning-bounds-oq-01",
+  "title": "VC Dimension of Threshold Classifiers on ℕ",
+  "slug": "pac-learning-bounds-oq-01",
+  "description": "Concrete VC dimension calculation: threshold classifiers on ℕ have VC dimension exactly 1. Shows every singleton is shattered (lower bound) and no two-point set is shattered (upper bound). Direct contribution to pac-learning-bounds open question OQ-01: 'Can the VC dimension of specific hypothesis classes be computed in Lean?'",
+  "meta": {
+    "author": "Vapnik-Chervonenkis (1971), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vapnik%E2%80%93Chervonenkis_dimension",
+    "date": "1971",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PACLearningOQ01.lean",
+    "tags": [
+      "learning-theory",
+      "combinatorics",
+      "vc-dimension",
+      "cs-math-bridge"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries, 0 structure-encoded assumptions. The Shatters predicate and thresholdClassifiers family are concrete definitions over ℕ. All three theorems (singleton-shatters, pair-doesn't-shatter, combined bound) are fully proved using standard arithmetic and Finset reasoning.",
+    "dateAdded": "2026-04-27",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.mem_singleton",
+        "description": "Membership in a Finset singleton",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.lt_succ_self",
+        "description": "n < n + 1 for natural numbers",
+        "module": "Mathlib.Data.Nat.Defs"
+      },
+      {
+        "theorem": "Nat.not_lt_zero",
+        "description": "No natural number is less than 0",
+        "module": "Mathlib.Data.Nat.Defs"
+      }
+    ],
+    "originalContributions": [
+      "Shatters: standard set-based shattering predicate (every subset T ⊆ S is realized as h ∩ S for some h ∈ H)",
+      "thresholdClassifiers: explicit family { x ↦ x < t : t ∈ ℕ }",
+      "threshold_shatters_singleton: every singleton {a} is shattered, witnessed by t = a+1 (include) or t = 0 (exclude)",
+      "threshold_not_shatters_pair: for a < b, the labeling T = {b} cannot be realized — would require t ≤ a (to exclude a) and t > b (to include b), contradicting a < b",
+      "threshold_vcdim_bounds: combines the two bounds — VC dim of thresholds is exactly 1"
+    ],
+    "prerequisites": [
+      "VC dimension and shattering",
+      "Basic Finset operations in Mathlib"
+    ],
+    "mathlib_version": "4.26.0",
+    "lineCount": 86,
+    "relatedProblems": [
+      {
+        "id": "pac-learning-bounds",
+        "relationship": "Answers a specific instance of OQ-01: computes VC dimension of a concrete hypothesis class"
+      }
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "pac-learning-bounds",
+      "relationship": "extends",
+      "description": "Concrete computation answering the parent's open question OQ-01 about VC dimension of specific hypothesis classes"
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Vapnik-Chervonenkis (VC) dimension, introduced by Vapnik and Chervonenkis in 1971, measures the combinatorial richness of a hypothesis class by the size of the largest set it can shatter. Computing VC dimension for concrete classes is essential for applying PAC learning bounds: thresholds are the simplest nontrivial example.\n\nThe parent gallery entry pac-learning-bounds formalizes the Sauer-Shelah polynomial bound and lists as open question OQ-01 whether VC dimension can be computed in Lean for specific hypothesis classes. This entry answers that question for thresholds: the answer is yes, and the proof is short.",
+    "problemStatement": "Define the threshold hypothesis class on ℕ as $H_{thr} = \\{x \\mapsto x < t : t \\in \\mathbb{N}\\}$. Compute its VC dimension.\n\nShow:\n1. (Lower bound) Every singleton $\\{a\\}$ is shattered by $H_{thr}$.\n2. (Upper bound) No two-point set $\\{a, b\\}$ with $a \\neq b$ is shattered.\n\nTogether these establish $\\operatorname{VCdim}(H_{thr}) = 1$.",
+    "text": "Threshold classifiers on ℕ have VC dimension exactly 1. Verified in Lean 4 with three theorems (one definitional plus two bounds).",
+    "proofStrategy": "1. **Lower bound (singleton shattering):** Given any target labeling of $\\{a\\}$, we either include $a$ (use $t = a+1$, so $a < t$ holds) or exclude $a$ (use $t = 0$, so $a < 0$ fails). Both witnesses lie in $H_{thr}$.\n\n2. **Upper bound (no pair shattered):** Suppose $a < b$ and the labeling $T = \\{b\\}$ (only $b$ included) is realized by some $h_t \\in H_{thr}$. Then $a \\notin h_t$ forces $t \\leq a$, while $b \\in h_t$ forces $b < t$. Combined: $b < t \\leq a$, contradicting $a < b$.",
+    "keyInsights": [
+      "Thresholds are the simplest nontrivial hypothesis class: monotone in the parameter t. Their order-preserving structure both gives them shattering power on singletons and constrains them from shattering pairs.",
+      "The upper-bound argument is the standard 'monotonicity obstruction': if h_t treats a single point both ways, t can shift; but to selectively include only the larger of two points, t must straddle them, which the < ordering forbids.",
+      "Symmetry handling: the not-shatters-pair theorem is stated for a < b, then lifted to all distinct pairs using Finset extensionality (a, b ↦ b, a)."
+    ],
+    "prerequisites": [
+      "VC dimension and shattering",
+      "Basic Finset operations in Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions: Shatters and Threshold Classifiers",
+      "startLine": 17,
+      "endLine": 31,
+      "summary": "Sets up the standard set-based shattering predicate and defines the threshold hypothesis class on ℕ as { x ↦ x < t : t ∈ ℕ }.",
+      "mathContext": "$H$ shatters $S$ iff $\\forall T \\subseteq S, \\exists h \\in H : h \\cap S = T$."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Singleton Shattering (VC dim ≥ 1)",
+      "startLine": 33,
+      "endLine": 51,
+      "summary": "Every singleton {a} is shattered by thresholds: t = a+1 includes a, t = 0 excludes a.",
+      "mathContext": "$\\forall a \\in \\mathbb{N}: H_{thr}$ shatters $\\{a\\}$."
+    },
+    {
+      "id": "upper-bound",
+      "title": "No Pair Shattered (VC dim ≤ 1)",
+      "startLine": 53,
+      "endLine": 76,
+      "summary": "For a < b, labeling T = {b} is unrealizable: would need t ≤ a (exclude a) and t > b (include b), contradicting a < b.",
+      "mathContext": "$\\forall a < b: \\neg H_{thr}$ shatters $\\{a, b\\}$."
+    },
+    {
+      "id": "combined",
+      "title": "Combined Bound (VC dim = 1)",
+      "startLine": 78,
+      "endLine": 86,
+      "summary": "Together: every singleton is shattered, and no two-point set is. Symmetric pairs handled via Finset extensionality.",
+      "mathContext": "$\\operatorname{VCdim}(H_{thr}) = 1$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Threshold classifiers on ℕ have VC dimension exactly 1. The proof is short, uses only Finset and arithmetic from Mathlib, and demonstrates that concrete VC dimension computations (parent OQ-01) are tractable.",
+    "implications": "Provides a worked template for computing VC dimension of other simple hypothesis classes. Natural next steps: intervals on ℕ (VC dim = 2 via convexity obstruction), half-spaces in ℝ (VC dim = 2), axis-aligned rectangles in ℝ² (VC dim = 4). Each becomes a gallery entry advancing OQ-01.",
+    "openQuestions": [
+      "Compute VC dim of interval classifiers on ℕ (expected: 2). Would require a 'no triple shattered' lemma using interval convexity.",
+      "Compute VC dim of half-space classifiers on ℝᵈ (expected: d+1). Requires linear algebra and general position arguments.",
+      "Define vcDim as a Lean function (sup of cardinalities of shattered Finsets) and prove vcDim H_thr = 1 directly, not just via the two bounds."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Vapnik, V. N.; Chervonenkis, A. Ya.",
+      "title": "On the uniform convergence of relative frequencies of events to their probabilities",
+      "year": "1971",
+      "venue": "Theory of Probability and Its Applications, 16(2), 264–280",
+      "note": "Original definition of VC dimension."
+    },
+    {
+      "authors": "Shalev-Shwartz, Shai; Ben-David, Shai",
+      "title": "Understanding Machine Learning: From Theory to Algorithms",
+      "year": "2014",
+      "venue": "Cambridge University Press",
+      "note": "Chapter 6 discusses VC dimension of threshold and interval classifiers."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "threshold_vcdim_bounds",
+      "type": "core",
+      "description": "VC dimension of thresholds on ℕ equals 1: every singleton is shattered, and no two-point set is shattered.",
+      "leanType": "(∀ a, Shatters thresholdClassifiers {a}) ∧ (∀ a b, a ≠ b → ¬ Shatters thresholdClassifiers {a, b})"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "LearningTheory.VCDimension",
+    "lineCount": 86,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 2,
+    "path": "Proofs/PACLearningOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
