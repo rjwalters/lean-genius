@@ -52,18 +52,15 @@
       "maxDistinctDistances function for maximum over all vertices",
       "InConvexPosition predicate for convex polygon vertices",
       "guaranteedDistinctDistances function f(n)",
-      "erdos982Conjecture formal statement",
+      "erdos982Conjecture and erdos982Conjecture' formal statements",
       "moser_bound axiom (1952 result)",
-      "erdos_fishburn_bound axiom (1994 result)",
-      "dumitrescu_bound axiom (2006 result)",
       "nppz_bound axiom (2013 result)",
-      "regular_polygon_distances optimality",
+      "regular_polygon_distances axiom (upper-bound construction)",
       "triangle_case, quadrilateral_case, pentagon_case small examples",
-      "strongerConjectureDisproved connecting to Problem #97",
-      "acute_triangle_counterexample for curve conjecture",
-      "barany_roldan_pensado weakened curve result",
-      "currentGap analysis of known vs conjectured bounds",
-      "erdos_982_status main theorem summarizing state of knowledge"
+      "strongerConjectureDisproved predicate connecting to Problem #97",
+      "stronger_conjecture_is_false axiom",
+      "currentGap definition and gap_value theorem",
+      "erdos_982_status and erdos_982_summary main theorems"
     ],
     "axiomCount": 4,
     "lineCount": 333,
@@ -114,18 +111,18 @@
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "summary": "moser_bound, erdos_fishburn_bound, dumitrescu_bound, nppz_bound axioms",
+      "summary": "moser_bound and nppz_bound axioms (Erdos-Fishburn and Dumitrescu noted in docstrings only)",
       "startLine": 126,
       "endLine": 169,
-      "mathContext": "Axiomatized: moser_bound, erdos_fishburn_bound, dumitrescu_bound, nppz_bound axioms"
+      "mathContext": "Axiomatized: moser_bound, nppz_bound axioms"
     },
     {
       "id": "regular-polygon",
       "title": "Regular Polygon Optimality",
-      "summary": "regular_polygon_distances, upper_bound_on_f axioms",
+      "summary": "regular_polygon_distances axiom",
       "startLine": 170,
       "endLine": 192,
-      "mathContext": "Axiomatized: regular_polygon_distances, upper_bound_on_f axioms"
+      "mathContext": "Axiomatized: regular_polygon_distances axiom"
     },
     {
       "id": "small-cases",
