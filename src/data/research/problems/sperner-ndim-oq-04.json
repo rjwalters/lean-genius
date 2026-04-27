@@ -1,8 +1,8 @@
 {
   "slug": "sperner-ndim-oq-04",
   "title": "n-Dimensional Sperner: Kuhn Path-Following Algorithm Formalization",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "phase": "ACT",
+  "status": "blocked",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -17,19 +17,21 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-04-22T13:03:46.382Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "since": "2026-04-27T18:30:00.000Z",
+    "iteration": 9,
+    "focus": "BLOCKED on walkTrace_reversal — needs ~150 lines of kuhnWalkSeq infrastructure or SimpleGraph reformulation.",
+    "blockers": [
+      "kuhnPathStart forgets the walk path, only retains final simplex; closing the 1 sorry requires either a new kuhnWalkSeq function returning the full trace (List of (Simplex × entry × exit) triples) plus reversal lemmas, or formalizing the door graph as a Mathlib SimpleGraph and using SimpleGraph.Walk.reverse"
+    ],
+    "nextAction": "Future session: implement kuhnWalkSeq with reversal lemmas (~150 lines) OR define door graph as SimpleGraph and use Mathlib path machinery. Alternatively accept Session 7 axiom form (kuhn_path_existential as axiom).",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 9,
+      "currentApproach": 8,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: hMem+hNe proved (Session 31); 1 sorry remaining in hInv (walkTrace_reversal)",
+    "progressSummary": "BLOCKED (Session 9, 2026-04-27): hMem+hNe proved; 1 sorry remains in hInv (walkTrace_reversal). Closing the sorry requires either ~150 lines of new kuhnWalkSeq infrastructure (a List-returning walk variant with reversal lemmas) OR formalizing the door graph as a Mathlib SimpleGraph and using Walk.reverse. Past 8+ sessions hit the same barrier; flagged BLOCKED per memory's '3+ sessions on same sorry' rule. Stale 'completed' status corrected to 'blocked'.",
     "builtItems": [
       "doorDegree def: SpernerNDimOQ04.lean:60",
       "IsKuhnCompatible def: SpernerNDimOQ04.lean:65",
@@ -95,7 +97,9 @@
       "kuhnWalk_not_in_initial_visited: walk result never in initial visited set (proved by fuel induction)",
       "kuhnWalk_congr bridges proof-term mismatches after simp [dif_pos]: Prop fields are proof-irrelevant",
       "hMem (τ maps B→B) and hNe (τ FPF on B) are now fully proved in the Lean file",
-      "The hInv sorry is specifically walkTrace_reversal; the involution argument structure is now complete"
+      "The hInv sorry is specifically walkTrace_reversal; the involution argument structure is now complete",
+      "BLOCKED diagnosis (2026-04-27): closing the 1 remaining sorry needs structural infrastructure that no past session has built. kuhnPathStart only returns the final simplex; proving walk-reversal requires retaining the full walk sequence. Two unblock paths: (A) define kuhnWalkSeq returning a List of (Simplex × entry × exit) triples plus reversal lemmas (~150 lines), or (B) reformulate the door graph as a Mathlib SimpleGraph and use Walk.reverse (~200 lines).",
+      "Pool/gallery metadata divergence found: candidate-pool entry was 'phase: COMPLETED, status: completed' even though gallery meta.json correctly showed 'status: formalized' with 1 sorry. Future researchers should always cross-check pool entries against gallery meta.json before claiming."
     ],
     "mathlibGaps": [
       "No Mathlib theorem for path-following algorithm termination with non-revisiting invariant",
