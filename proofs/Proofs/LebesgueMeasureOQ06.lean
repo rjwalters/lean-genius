@@ -62,16 +62,45 @@ notation:50 A " ≃ᴳ[" G "] " B => Equidecomposable G A B
 
 /-- Equidecomposability is reflexive. -/
 theorem equidecomposable_refl (G : Type*) [Group G] [MulAction G α]
-    [MulAction.IsPretransitive G α] (A : Set α) :
-    A ≃ᴳ[G] A := by
+    (A : Set α) : A ≃ᴳ[G] A := by
   refine ⟨1, fun _ => A, fun _ => 1, ?_, ?_, ?_, ?_, ?_⟩
   · intro; exact le_refl A
-  · intro i j h; exact absurd (Fin.eq_of_val_eq (Nat.lt_one_iff.mp i.isLt ▸
-      Nat.lt_one_iff.mp j.isLt ▸ rfl)) h
+  · intro i j h; exact absurd (Subsingleton.elim i j) h
   · simp only [Set.iUnion_const]
   · simp only [one_smul, Set.iUnion_const]
-  · intro i j h; exact absurd (Fin.eq_of_val_eq (Nat.lt_one_iff.mp i.isLt ▸
-      Nat.lt_one_iff.mp j.isLt ▸ rfl)) h
+  · intro i j h; exact absurd (Subsingleton.elim i j) h
+
+/-- Equidecomposability is symmetric: if `A ≃ᴳ[G] B` then `B ≃ᴳ[G] A`.
+
+    Given pieces `(P_i)` of `A` with group elements `(g_i)` such that
+    `B = ⋃ g_i • P_i`, the inverse decomposition uses pieces `(g_i • P_i)`
+    of `B` with group elements `(g_i⁻¹)`, recovering `A = ⋃ pieces`. -/
+theorem equidecomposable_symm (G : Type*) [Group G] [MulAction G α]
+    {A B : Set α} (h : A ≃ᴳ[G] B) : B ≃ᴳ[G] A := by
+  obtain ⟨n, pieces, g, h_pieces_sub, h_pieces_disj, hA_eq, hB_eq, h_imgs_disj⟩ := h
+  refine ⟨n, fun i => g i • pieces i, fun i => (g i)⁻¹,
+          ?_, ?_, ?_, ?_, ?_⟩
+  · -- Each new piece (g i • pieces i) ⊆ B
+    intro i
+    rw [hB_eq]
+    exact Set.subset_iUnion (fun j => g j • pieces j) i
+  · -- New pieces are pairwise disjoint (= original image disjointness)
+    exact h_imgs_disj
+  · -- B = ⋃ i, g i • pieces i
+    exact hB_eq
+  · -- A = ⋃ i, (g i)⁻¹ • (g i • pieces i) = ⋃ i, pieces i
+    rw [hA_eq]
+    refine iUnion_congr (fun i => ?_)
+    rw [smul_smul, inv_mul_cancel, one_smul]
+  · -- Disjoint ((g i)⁻¹ • (g i • pieces i)) ((g j)⁻¹ • (g j • pieces j))
+    -- = Disjoint (pieces i) (pieces j)
+    intro i j hij
+    have h1 : (g i)⁻¹ • (g i • pieces i) = pieces i := by
+      rw [smul_smul, inv_mul_cancel, one_smul]
+    have h2 : (g j)⁻¹ • (g j • pieces j) = pieces j := by
+      rw [smul_smul, inv_mul_cancel, one_smul]
+    rw [h1, h2]
+    exact h_pieces_disj i j hij
 
 /-- A set is **G-paradoxical** if it can be decomposed into two disjoint subsets,
     each equidecomposable to the whole set.

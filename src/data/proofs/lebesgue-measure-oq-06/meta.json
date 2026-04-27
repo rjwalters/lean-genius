@@ -20,7 +20,7 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 1487,
+    "lineCount": 1516,
     "assumptions": "1 sorry: banach_tarski main theorem (800+ lines via Hausdorff paradox + AC). All supporting lemmas fully proved: hausdorff_free_subgroup/orbit_ne (inductive proof via irrationality of sqrt 2 + ℤ[√2] invariant), free_group_paradoxical (F₂ is paradoxical under left action), free_group_not_amenable, int_amenable (Cesaro window-shift), banach_tarski_pieces_nonmeasurable.",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
@@ -213,9 +213,9 @@
       "Mathlib"
     ],
     "namespace": "BanachTarski",
-    "lineCount": 1487,
+    "lineCount": 1516,
     "axiomCount": 0,
-    "theoremCount": 52,
+    "theoremCount": 53,
     "definitionCount": 5,
     "path": "Proofs/LebesgueMeasureOQ06.lean",
     "sorries": 1
