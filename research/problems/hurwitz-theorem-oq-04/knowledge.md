@@ -6,7 +6,55 @@ Formalize the connection between Hurwitz's theorem (exactly 4 normed division al
 1. G₂ = Aut(𝕆)
 2. Freudenthal-Tits magic square: 𝔏(A,B) = Der(A)⊕(ImA⊗ImB)⊕Der(B)
 
-File: `proofs/Proofs/HurwitzTheoremOQ04.lean` (~730 lines)
+File: `proofs/Proofs/HurwitzTheoremOQ04.lean` (~1100 lines)
+
+---
+
+## Session 2026-04-27 (Session 6) — Decompose `derEval14_injective` (j = 0 case closed)
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: PROGRESS — Decomposed remaining sorry; closed j = 0 case via unit-kills helper.
+
+### What I Did
+
+1. **Added `submodule_der_unit_zero`** helper lemma at the submodule level
+   (not just for `OctonionDer` structure): for any `f ∈ OctonionDerSubmodule`,
+   `f octUnit = 0`. Proof mirrors `der_maps_unit_to_zero` (Leibniz on e₀·e₀ = e₀).
+
+2. **Refactored `derEval14_injective`** to handle the `j = 0` case explicitly:
+   - The 64-entry kernel claim is split via `by_cases hj : j = 0`
+   - Case `j = 0`: closed using `submodule_der_unit_zero` for both f and g
+     (so f (stdBasis 0) = 0 = g (stdBasis 0))
+   - Case `j ≠ 0`: remaining sorry, scoped down from 64 → 56 entries
+   - Updated proof outline to flag the helper and the remaining work
+
+### Key Findings
+
+- The submodule-level proof of unit-kills works without going through `OctonionDer` —
+  using `hf : f ∈ OctonionDerSubmodule` directly via `intro a b` style application
+  (matches the pattern in `OctonionDerSubmodule.add_mem'` field where `hf a b` is used).
+- `f octUnit = f (stdBasis 0)` by definitional equality (`def octUnit := stdBasis 0`),
+  so the helper plugs directly into the case.
+- The remaining 56-entry block (j ∈ {1,...,7}) requires ~50 lines of Leibniz chain:
+  diagonal kill from squaring → antisymmetry from (eᵢ,eⱼ)+(eⱼ,eᵢ) → Fano-line trilinear.
+
+### Files Modified
+
+- `proofs/Proofs/HurwitzTheoremOQ04.lean` — added `submodule_der_unit_zero`,
+  refactored `derEval14_injective` with `by_cases`, expanded proof outline.
+
+### Sorry Status
+
+- Before: 1 sorry (entire 64-entry kernel claim)
+- After: 1 sorry (only 56-entry kernel claim, j ≥ 1)
+
+### Next Steps
+
+1. Prove the diagonal kill lemma: for f ∈ OctonionDerSubmodule and i ≥ 1,
+   `eightMul (f (stdBasis i)) (stdBasis i) + eightMul (stdBasis i) (f (stdBasis i)) = 0`
+   (use Leibniz on stdBasis i × stdBasis i = -octUnit, then unit-kills).
+2. Prove the antisymmetry: `f (stdBasis i) j = -f (stdBasis j) i` for i, j ≥ 1, i ≠ j.
+3. Use the 14 ev=0 coordinates + diagonal + antisymmetry to derive D(eⱼ) = 0 case-by-case.
 
 ---
 
