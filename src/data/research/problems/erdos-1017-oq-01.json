@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1017-oq-01",
   "title": "Can $f(n,k) < \\lfloor n^2/4 \\rfloor$ when $k > n^2/4$ and $K_4$ subgraphs are present?",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "MATURE-AXIOMATIZED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -28,17 +28,21 @@
     "open": [
       "erdos1017_question: general case with K_4 and larger cliques"
     ],
-    "goal": "Prove completeBipartite_edgeCount, reduce remaining axiom count"
+    "goal": "Achieved: 6 axioms eliminated (9→3). Remaining 3 axioms are deep published results (EGP 1966, Gyori-Keszegh 2017, K_4-free corollary)."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-26T00:00:00Z",
-    "iteration": 2,
-    "focus": "Proved completeBipartite_cliqueFree, added turanBound infrastructure, proved K_4-free consequences. Reduced axioms from 10 to 9.",
-    "blockers": [],
-    "nextAction": "Prove completeBipartite_edgeCount via explicit edge enumeration. Consider proving triangleFree_cliquePartition_eq_edges.",
+    "phase": "MATURE-AXIOMATIZED",
+    "since": "2026-04-27T00:00:00Z",
+    "iteration": 3,
+    "focus": "Eliminated 6 axioms total (9→3). Remaining 3 axioms — EGP theorem (1966), Gyori-Keszegh (2017), and the K_4-free closed-form — are deep published results. Problem at natural stopping point.",
+    "blockers": [
+      "EGP theorem (Erdos-Goodman-Posa 1966) requires ~500+ lines of greedy triangle extraction + bipartite remainder argument",
+      "Gyori-Keszegh (2017) requires ~1000+ lines of deep graph decomposition machinery",
+      "K_4-free closed-form is a corollary of Gyori-Keszegh"
+    ],
+    "nextAction": "Hold at axiomatized status. Future work: formalize EGP theorem as a multi-session project (would eliminate one axiom and unlock the K_4-free corollary); Gyori-Keszegh remains out of scope.",
     "attemptCounts": {
-      "total": 1,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -120,7 +124,7 @@
     ]
   },
   "started": "2026-03-24T00:48:59.902Z",
-  "lastUpdate": "2026-03-26T00:00:00Z",
+  "lastUpdate": "2026-04-27T00:00:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
