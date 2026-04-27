@@ -1,26 +1,26 @@
 {
   "slug": "morleys-theorem-oq-01",
   "title": "Conway's Backward Construction for Morley's Theorem",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "Can morleys_theorem_axiom be proved by formalizing the full Conway backward construction verification?",
+    "formal": "morley_equilateral via Conway backward construction: trisecting all angles of any triangle yields an equilateral inner triangle with side (8R sin(α/3) sin(β/3) sin(γ/3))",
+    "plain": "Can morleys_theorem_axiom be eliminated by formalizing the full Conway backward construction (sine rule + cosine rule + triple-angle identity)?",
     "whyMatters": [
-      "Would eliminate the axiom in the Morley formalization"
+      "Eliminated the morleys_theorem_axiom in the Morley formalization",
+      "Demonstrates trigonometric proof technique (Conway-style) without needing complex coordinates",
+      "Reusable supporting lemmas: cosine_rule_identity, sin_triple_product, morley_arm_cosine_rule"
     ]
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-30T06:00:00Z",
+    "phase": "COMPLETED",
+    "since": "2026-04",
     "iteration": 1,
-    "focus": "Supporting lemmas complete, coordinate verification remains",
-    "blockers": [
-      "Coordinate computation for ear vertices in complex plane"
-    ],
-    "nextAction": "Place equilateral triangle in complex plane, compute ear vertex positions, verify side lengths",
+    "focus": "Conway angle identities + sine/cosine rule reduction closes Morley equilateral statement (0 sorries, 0 axioms); gallery entry verified",
+    "blockers": [],
+    "nextAction": "Closed: complete formalization in gallery as morleys-theorem-oq-01 (badge: original).",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -47,9 +47,7 @@
       "conway_angle_identity theorems had incorrect RHS: π - earApex_B - earApex_C + π/3 = 2π/3 - β₃ - γ₃ = π/3 + α₃ (not α₃). Fixed all three variants."
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Complete coordinate verification placing equilateral in complex plane"
-    ],
+    "nextSteps": [],
     "markdown": ""
   },
   "tags": [
@@ -67,7 +65,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T05:55:00Z",
-  "lastUpdate": "2026-03-30T06:05:00Z",
+  "lastUpdate": "2026-04-27T14:15:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/MorleysTheorem.lean",
