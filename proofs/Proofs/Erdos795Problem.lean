@@ -70,6 +70,9 @@ def DistinctProducts' (A : Finset ℕ) : Prop :=
 
 /-- The function g(n): maximum size of A ⊆ {1,...,n} with distinct subset products -/
 noncomputable def g (n : ℕ) : ℕ :=
+  haveI : DecidablePred (fun A : Finset ℕ =>
+      A ⊆ Finset.range (n + 1) ∧ HasDistinctSubsetProducts A) :=
+    Classical.decPred _
   Finset.sup
     ((Finset.range (n + 1)).powerset.filter (fun A =>
       A ⊆ Finset.range (n + 1) ∧ HasDistinctSubsetProducts A))
