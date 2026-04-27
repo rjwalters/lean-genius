@@ -1,7 +1,7 @@
 {
   "slug": "birthday-problem-oq-02-oq-01",
   "title": "Can the matching lower bound $\\prod(1-i/d) \\ge \\exp(-k(k-1)/(2d) - k^2(k-1)^2...",
-  "phase": "NEW",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-26T20:00:24.432Z",
+    "phase": "COMPLETED",
+    "since": "2026-04-27",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Already verified: 0 sorries, 0 axioms, 8 theorems on birthdayProduct two-sided bounds. Status confirmed by researcher-3 review on 2026-04-27.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "No further work needed on this entry. Pool entry updated to COMPLETED.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,28 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All 4 sorries eliminated (2→0 this session). Fixed incorrect hypotheses in 2 theorems. File now 229 lines, 0 sorries, 0 axioms.",
+    "progressSummary": "VERIFIED: BirthdayProblemOQ02OQ01.lean is 229 lines, 8 theorems, 0 sorries, 0 axioms. Gallery meta has status:verified, badge:original. Pool was stale (phase:NEW); confirmed complete by review on 2026-04-27.",
     "builtItems": [
       "Assessment: tractable new formalization, needs Taylor remainder infrastructure",
-      "sum_sq_le_quartic: proved ∑i² ≤ k²(k-1)²/4 via sum_sq_formula + nlinarith",
-      "Gauss sum: proved ∑(-i/d) = -k(k-1)/(2d) via Finset.sum_range_id",
-      "exp_neg_sub_sq_le_one_sub: proved exp(-x-x²) ≤ 1-x for x ∈ [0,1/2] via Taylor bound",
-      "birthdayProduct_lower_bound: proved matching lower bound with corrected hypothesis 2(k-1)≤d",
+      "sum_sq_le_quartic: proved \u2211i\u00b2 \u2264 k\u00b2(k-1)\u00b2/4 via sum_sq_formula + nlinarith",
+      "Gauss sum: proved \u2211(-i/d) = -k(k-1)/(2d) via Finset.sum_range_id",
+      "exp_neg_sub_sq_le_one_sub: proved exp(-x-x\u00b2) \u2264 1-x for x \u2208 [0,1/2] via Taylor bound",
+      "birthdayProduct_lower_bound: proved matching lower bound with corrected hypothesis 2(k-1)\u2264d",
       "birthdayProduct_two_sided: two-sided exponential sandwich for birthday probability"
     ],
     "insights": [
-      "No Lean file for OQ-02-OQ-01. Parent files: 5 files, 0A, 0S, 119T — fully proved",
-      "OQ02 has upper bound P(all distinct) ≤ exp(-k(k-1)/(2d)) but NOT matching lower bound",
+      "No Lean file for OQ-02-OQ-01. Parent files: 5 files, 0A, 0S, 119T \u2014 fully proved",
+      "OQ02 has upper bound P(all distinct) \u2264 exp(-k(k-1)/(2d)) but NOT matching lower bound",
       "OQ-02-OQ-01 asks: formalize matching lower bound via second-order Taylor of ln(1-x)",
-      "Key math: ∏(1-i/d) ≥ exp(-k(k-1)/(2d) - k²(k-1)²/(4d²))",
-      "Tractable: needs ln(1-x) ≥ -x - x²/2 (Taylor with remainder), then product bound",
+      "Key math: \u220f(1-i/d) \u2265 exp(-k(k-1)/(2d) - k\u00b2(k-1)\u00b2/(4d\u00b2))",
+      "Tractable: needs ln(1-x) \u2265 -x - x\u00b2/2 (Taylor with remainder), then product bound",
       "Would need Mathlib Real.log bounds + Taylor/Lagrange remainder for ln",
-      "sum_sq_le_quartic: use case split k=1 (trivial) vs k≥2 (nlinarith with sq_nonneg)",
+      "sum_sq_le_quartic: use case split k=1 (trivial) vs k\u22652 (nlinarith with sq_nonneg)",
       "Gauss sum: factor -(1/d) then use sum_range_id = k(k-1)/2",
-      "exp_neg_sub_sq_le_one_sub: deep — needs Taylor remainder for ln(1-x) ≥ -x-x²",
-      "CRITICAL FIX: original exp(-x-x²) ≤ 1-x had hypothesis x<1 but is FALSE for x>0.69. Changed to x≤1/2.",
-      "CRITICAL FIX: birthdayProduct_lower_bound with k≤d+1 is FALSE (product=0 when k=d+1). Changed to 2(k-1)≤d.",
-      "Proof technique: Taylor bound exp(y) ≥ 1+y+y²/2 via Real.sum_le_exp_of_nonneg, then polynomial algebra"
+      "exp_neg_sub_sq_le_one_sub: deep \u2014 needs Taylor remainder for ln(1-x) \u2265 -x-x\u00b2",
+      "CRITICAL FIX: original exp(-x-x\u00b2) \u2264 1-x had hypothesis x<1 but is FALSE for x>0.69. Changed to x\u22641/2.",
+      "CRITICAL FIX: birthdayProduct_lower_bound with k\u2264d+1 is FALSE (product=0 when k=d+1). Changed to 2(k-1)\u2264d.",
+      "Proof technique: Taylor bound exp(y) \u2265 1+y+y\u00b2/2 via Real.sum_le_exp_of_nonneg, then polynomial algebra"
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -75,7 +75,7 @@
     "mathlib": []
   },
   "started": "2026-03-26T20:00:24.431Z",
-  "lastUpdate": "2026-03-28T06:00:00Z",
+  "lastUpdate": "2026-04-27T00:00:00.000Z",
   "significance": 5,
   "tractability": 6,
   "leanFiles": [
