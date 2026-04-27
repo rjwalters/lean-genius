@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-30T13:49:26.404Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T17:00:00Z",
+    "iteration": 2,
+    "focus": "Verified: 0A 0S in OQ01 (Carmichael function)",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Pool entry retired — formalization fully verified, gallery status=verified",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -38,7 +38,8 @@
     "insights": [
       "Carmichael function = group exponent of (ZMod n)ˣ, directly from Mathlib",
       "For prime p: (ZMod p)ˣ is cyclic (Mathlib instance), so exponent = card",
-      "Prior proof attempt used iSup_orderOf which got stuck; direct IsCyclic.exponent_eq_card is cleaner"
+      "Prior proof attempt used iSup_orderOf which got stuck; direct IsCyclic.exponent_eq_card is cleaner",
+      "Audit 2026-04-27: pool phase was NEW but progressSummary already said COMPLETED. Gallery meta.json confirms status=verified, axiomCount=0, sorries=0. Lean file (83 lines, 6 theorems) verified."
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -62,7 +63,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T13:49:26.404Z",
-  "lastUpdate": "2026-03-30T13:49:26.404Z",
+  "lastUpdate": "2026-04-27T17:00:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
