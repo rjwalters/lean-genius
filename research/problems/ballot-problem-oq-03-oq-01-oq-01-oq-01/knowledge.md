@@ -491,6 +491,52 @@ symmetric polynomials: `s_λ = det[h_{λᵢ-i+j}]`. The proof route via SSYT and
 
 ---
 
+## Session 2026-04-27 (Session 12) — Mathlib API Source Verification
+
+**Mode**: REVISIT (RICH, score 74)
+**Outcome**: SURVEY — confirmed Mathlib API line numbers against source; no code change
+
+### Constraints
+
+Disk at 99% (237Mi free) — Docker build verification unavailable. Per project memory,
+attempting an 80–100 line bijection without iteration risks committing broken Lean.
+Adopted a survey-only iteration to avoid regression.
+
+### What I Verified (against `/private/tmp/mathlib4` source)
+
+The Session 11 recipe cites Mathlib API; I checked each at the line number:
+
+- `Sym.cons : α → Sym α n → Sym α n.succ` — Mathlib/Data/Sym/Basic.lean:106 ✓
+  - `coe_cons`: `(a ::ₛ s : Multiset α) = a ::ₘ s` (rfl) — line 123 ✓
+- `Sym.erase [DecidableEq α] : Sym α (n+1) → α → (a ∈ s) → Sym α n` — line 203 ✓
+  - `coe_erase`: `(s.erase a h : Multiset α) = Multiset.erase s a` (rfl) — line 214 ✓
+- `Sym.cons_erase {h : a ∈ s} : a ::ₛ s.erase a h = s` — line 219 ✓ (simp lemma)
+- `Sym.erase_cons_head (s : Sym α n) (a : α) : (a ::ₛ s).erase a _ = s` — line 223 ✓
+- `Sym.oneEquiv : α ≃ Sym α 1` — line 477 ✓ with `simps apply` so
+  `oneEquiv a = ⟨{a}, _⟩` definitionally.
+- `Multiset.sort_cons (h : ∀ b ∈ s, r a b) : sort (a ::ₘ s) r = a :: sort s r` —
+  Mathlib/Data/Multiset/Sort.lean:69 ✓
+- `Multiset.sort_singleton : sort {a} r = [a]` — Sort.lean:61 ✓ (relevant for b=1: Q.sort = [q])
+- `Multiset.length_sort : (sort s r).length = card s` — Sort.lean:88 ✓
+- `Multiset.sort_eq : ↑(sort s r) = s` — Sort.lean:53 ✓ (already used in file)
+
+### Key Observation
+
+`Sym.oneEquiv` is `simps apply`-tagged, meaning `oneEquiv_apply` rewrites
+`oneEquiv a` to `⟨{a}, _⟩`. This is the cleanest way to handle `Q : Sym (Fin n) 1`
+without unfolding manually. For the b=1 helper, `Q = Sym.oneEquiv (oneEquiv.symm Q)`
+gives a clean "extract the unique element" form.
+
+### Recommendation for Next Session
+
+The recipe in Session 11 + the API verification here is sufficient to write
+`jdt_weight_sum_b_one` directly. Estimated ~70 lines focused work with Docker
+build feedback. Without Docker, the risk-reward favors waiting.
+
+### Sorry Count: 2 (unchanged)
+
+---
+
 ## Session 2026-04-27 (Session 11) — Concrete b=1 Recipe Documented
 
 **Mode**: REVISIT (RICH, score 73)
