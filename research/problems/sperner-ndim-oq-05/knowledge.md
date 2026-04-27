@@ -4,6 +4,61 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-04-27 (researcher-1) — State Audit + Orphaned-Commit Inventory
+
+**Mode**: REVISIT
+**Outcome**: documentation only (no Lean changes; Docker unavailable due to disk pressure)
+
+### Current Sorry Inventory (origin/main, 2026-04-27)
+
+Actual `sorry` tokens (excluding comments) in cluster files:
+- `proofs/Proofs/SpernerMathlib4.lean` — **0**
+- `proofs/Proofs/SpernerSimplicialInstance.lean` — **0**
+- `proofs/Proofs/SpernerSimplicialBridge.lean` — **0**
+- `proofs/Proofs/SpernerFreudenthal.lean` — **6** (lines 156, 190, 191, 192, 224, 319)
+- `proofs/Proofs/SpernerGrid.lean` — **2** (lines 158, 1756)
+
+Cluster total: **8 sorries** across two files.
+
+The two SpernerGrid sorries:
+- L158: redundant `CellComplex.sperner` (the structure is duplicated locally to keep SpernerGrid building standalone; the real proof is in `SpernerMathlib4.lean`).
+- L1756: `boundary_doors_odd` — documented as **FALSE for d=1** with explicit counterexample at the call site (lines 1724–1755). Requires GridSimplex/gridAdj redesign; not a routine sorry.
+
+### Orphaned Lean Commits on `feature/researcher-1` (Pre-Reset)
+
+Four commits made by previous researcher-1 sessions on the long-running `feature/researcher-1` branch were never put into a PR. They sat 180 commits behind `main` and were dropped when this session reset to `origin/main` to avoid rebase conflicts. They remain reachable in the git history under their SHAs:
+
+| SHA | Subject | Net effect (claimed) | Build verified in commit msg? |
+|---|---|---|---|
+| `95ce61d2b8d` | unify SpernerFreudenthal with SpernerSimplicialInstance | Freudenthal 6→2 sorries (drops vertex_injective + adj_symm/vertex/ne dupes via import) | No |
+| `960b3f0d517` | eliminate finsetToNat_injective sorry | Freudenthal 2→1 (`Fintype.equivFin` replaces bitmap encoding) | No |
+| `3eba151e7b7` | knowledge update for 6→1 | doc-only | n/a |
+| `8ebbf02366a` | import SpernerMathlib4 in SpernerGrid | Grid 2→1 (drops the duplicated `CellComplex.sperner` sorry by importing) | No |
+
+If applied together: cluster sorries 8 → 2 (Freudenthal pseudomanifold + Grid boundary_doors_odd).
+
+**Caution before cherry-picking**: none of these four commits mention Docker build verification in their messages. Earlier verified sessions (e.g., the WIP05 commit `7a1e2a6e206`) explicitly say "Build verified". A future session with Docker access should:
+
+1. `git cherry-pick 95ce61d2b8d 960b3f0d517 8ebbf02366a` (skip the knowledge-only commit `3eba151e7b7`).
+2. Run `./proofs/scripts/docker-build.sh Proofs.SpernerFreudenthal Proofs.SpernerGrid Proofs.SpernerMathlib4 Proofs.SpernerSimplicialInstance`.
+3. If green, push to a fresh branch and PR. If red, the surface area to inspect is small — the changes are mostly imports + deletion of duplicates.
+
+### Why This Session Did Not Touch Lean
+
+Disk was at 98% (≈300 MiB free). Per the agent's memory rule about disk-full conditions ("at 100% disk, Edit silently reverts, Docker corrupts containerd"), Docker builds were not attempted, and Lean files were not edited so as not to commit unverifiable changes.
+
+### What Is Actually Blocking This Problem
+
+The work split:
+
+1. **Internal mathematics** — 1 hard sorry (`boundary_doors_odd`) requires the gridAdj redesign documented in the JSON's insights. Not blocked on external review; blocked on a willing researcher with Docker access.
+2. **External Mathlib review** — the `[USER ACTION]` in the JSON's `nextSteps` ("post comment on mathlib4#25231 pointing Dillies to SpernerSimplicialInstance.lean") cannot be done by an agent. Requires the human user.
+3. **Mathlib PR submission** — heartbeat reduction work on SpernerSimplicialInstance is part of the same external-review thread; it is premature without Dillies's confirmation that Part 2 is what they wanted.
+
+The two real next-session moves are (a) cherry-pick + verify the orphaned commits, and (b) tackle the gridAdj redesign for `boundary_doors_odd`.
+
+---
+
 ## Problem Understanding
 
 **Goal**: Contribute `SpernerTriangulation` (abstract cell complex) and

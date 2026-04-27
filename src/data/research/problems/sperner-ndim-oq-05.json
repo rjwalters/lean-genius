@@ -18,10 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-21T07:30:34-07:00",
-    "iteration": 1,
-    "focus": "Prepare Mathlib PR: granular imports + heartbeat reduction for SpernerSimplicialInstance",
-    "blockers": [],
-    "nextAction": "Test granular imports; profile SpernerSimplicialInstance heartbeats; submit PR to mathlib4",
+    "iteration": 2,
+    "focus": "Two real next moves: (a) cherry-pick + Docker-verify orphaned researcher-1 commits (95ce61d2b8d, 960b3f0d517, 8ebbf02366a) which would drop cluster sorries 8\u21922; (b) tackle the gridAdj redesign for boundary_doors_odd. Mathlib PR work is gated on external review (Dillies on mathlib4#25231) and is a [USER ACTION].",
+    "blockers": [
+      "External: mathlib4#25231 needs human comment pointing Dillies to SpernerSimplicialInstance.lean as Part 2",
+      "Internal: boundary_doors_odd is FALSE as stated for d=1; requires GridSimplex/gridAdj redesign (counterexample documented in SpernerGrid.lean:1724-1755)"
+    ],
+    "nextAction": "Cherry-pick orphan commits 95ce61d2b8d, 960b3f0d517, 8ebbf02366a (in that order) and Docker-verify; on green, PR. Then attempt the gridAdj redesign or release as architecturally blocked.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (session 6): Proved gridAdj_symm and gridAdj_vertex (5 → 3 sorries). Discovered boundary_verts_on_face and boundary_doors_odd are FALSE as stated; documented with counterexamples. Requires GridSimplex/gridAdj redesign.",
+    "progressSummary": "ACTIVE: cluster has 8 sorries on origin/main (SpernerFreudenthal 6 + SpernerGrid 2). Four orphaned commits on the long-running feature/researcher-1 branch (never PR'd, dropped during a 2026-04-27 reset to main) would reduce this to 2 if cherry-picked + Docker-verified. The boundary_doors_odd sorry (SpernerGrid.lean:1756) is documented FALSE for d=1 with explicit counterexample and requires gridAdj redesign. Mathlib contribution is blocked on a [USER ACTION] comment to mathlib4#25231 (Dillies has not yet been pointed to SpernerSimplicialInstance.lean as the Part 2 implementation).",
     "builtItems": [
       "SpernerMathlib4Opt.lean: optimized proof proposal for even_card_of_fpf_invol using sum_involution (research/problems/sperner-ndim-oq-05/lean/)",
       "even_card_of_fpf_invol: 53-line strongInduction proof replaced with 11-line sum_involution proof in SpernerMathlib4.lean",
@@ -100,7 +103,7 @@
     "mathlib": []
   },
   "started": "2026-04-14T21:25:05.895Z",
-  "lastUpdate": "2026-04-26T12:00:00-07:00",
+  "lastUpdate": "2026-04-27T16:50:00+00:00",
   "significance": 8,
   "tractability": 5
 }
