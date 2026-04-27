@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-01-13T00:56:39.043Z",
-    "iteration": 2,
-    "focus": "Removed dead axiom, 1A remaining (appropriate)",
+    "since": "2026-04-28T01:52:00.000Z",
+    "iteration": 3,
+    "focus": "Open conjecture (Erdős–Graham, 1980, smooth numbers). Infrastructure complete: 172-line file, 6 theorems, 0 axioms, 0 sorries. The conjecture itself is documented only in comments — not formalized as a Lean axiom or theorem.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Decide: (a) state the conjecture as `axiom erdos_369 : ...` and re-classify as axiomatized, or (b) leave as infrastructure-only. Current state is the latter.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -51,8 +51,7 @@
   ],
   "relatedProofs": [
     "erdos-3",
-    "erdos-36",
-    "erdos-369"
+    "erdos-36"
   ],
   "references": {
     "papers": [],
@@ -60,7 +59,7 @@
     "mathlib": []
   },
   "started": "2026-01-13T00:56:39.044Z",
-  "lastUpdate": "2026-03-13T07:52:17.046Z",
+  "lastUpdate": "2026-04-28T01:52:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
