@@ -198,3 +198,31 @@ work and incidentally restored an old file version. This was unintentional.
 1. Prove `hβ_dvd`: key Mathlib glue needed is `Module.finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ = natDegree (minpoly ↥ℚ⟮a⟯ β)` (β generates ℚ⟮β⟯ over ℚ⟮a⟯)
 2. For `hjoin_dvd`: reformulate with stronger IH: `∀K/ℚ, finrank K K⟮b⟯ ∣ 2^k`
 3. `wantzel_galois_iff` remains out-of-scope
+
+## Session 31 (2026-04-27) — Mathlib API Drift Confirmed (Build Blocked)
+
+**Mode**: REVISIT (claimed RICH problem)
+**Outcome**: BLOCKED — file does not build on `origin/main` due to upstream Mathlib API drift
+
+### Build Verification
+Ran `LEAN_MEMORY_LIMIT=6144 ./proofs/scripts/docker-build.sh Proofs.AngleTrisectionOQ02OQ01OQ02Incomplete01`. Build fails with 4 errors plus the expected `sorry` warning:
+
+| Line | Symbol / Issue |
+|------|----------------|
+| 155 | `mem_sup_left` — Unknown identifier (IntermediateField API renamed) |
+| 156 | `mem_sup_right` — Unknown identifier (IntermediateField API renamed) |
+| 176 | `Module.finrank_mul_finrank` rewrite — pattern not found (argument order changed: now expects `Module.finrank ℚ ↥ℚ⟮a⟯ * Module.finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯`, file has them in opposite order) |
+| 332 | `Nat.eq_zero_of_dvd_of_lt` — application type mismatch (expected `2^n < 0`, got `0 < 2^n`); helper signature changed |
+| 338 | `rw [hmind]` — pattern `p` not in target (`Module.finrank ℚ ↥ℚ⟮α⟯ ∣ 2 ^ n`); needs different rewrite path |
+
+### Why I Did Not Fix
+Per project memory `project_mathlib_api_drift_2026_04`, this drift hits a cohort of research files (Erdos1151OQ04, AngleTrisectionOQ02OQ01OQ02Incomplete01, others) from the Mathlib upgrade landing 2026-04-26. The right owner is the Mechanic agent — researcher fixes risk introducing further drift. Compare PR #13142 (researcher-7's blocker doc for Erdos1151OQ04).
+
+### Files Modified
+- `research/problems/angle-trisection-oq-02-oq-01-oq-02-incomplete-01/knowledge.md` — this entry
+- `src/data/research/problems/angle-trisection-oq-02-oq-01-oq-02-incomplete-01.json` — progressSummary
+
+### Next Steps
+1. Mechanic should repair the API drift across the affected research-file cohort
+2. After repair, resume from Session 30: prove `hβ_dvd` (focused sub-sorry: `finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2`)
+3. `mem_sup_left`/`mem_sup_right` likely need to be replaced with a current IntermediateField lemma — Mechanic should identify the replacement
