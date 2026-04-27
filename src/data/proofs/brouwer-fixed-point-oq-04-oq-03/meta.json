@@ -80,6 +80,31 @@
       "targetId": "brouwer-fixed-point",
       "relationship": "extends",
       "description": "Kakutani generalizes Brouwer to set-valued maps; Fan-Glicksberg extends to LCTVS"
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-04",
+      "relationship": "ancestor",
+      "description": "Direct parent: the original Kakutani fixed point theorem (single-step generalization of Brouwer to set-valued maps with closed graph). This entry's Fan-Glicksberg extension is the natural follow-up — same upper-hemicontinuity hypothesis, but lifted from $\\mathbb{R}^n$ to arbitrary locally convex topological vector spaces, enabling applications to function spaces."
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-04-oq-02",
+      "relationship": "applies",
+      "description": "Nash equilibrium existence: the canonical economic application of Kakutani. The best-response correspondence is upper-hemicontinuous and convex-valued, so Kakutani gives a fixed point — a profile where every player is best-responding. The Fan-Glicksberg extension here is what allows the same argument to handle continuum-strategy games (Bayesian games, contests, infinite-action mechanism design)."
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-04-oq-04",
+      "relationship": "complements",
+      "description": "OQ-04-04 develops the *constructive* / algorithmic side of Kakutani (Scarf's pivoting algorithm, discrete IVT). This entry develops the *infinite-dimensional* abstract side. Together they cover the two main directions in which Kakutani generalizes: down to computation, out to function-space settings."
+    },
+    {
+      "targetId": "sperner-ndim",
+      "relationship": "foundational",
+      "description": "Sperner's lemma is the combinatorial core: the door-counting / parity argument on a fully-colored triangulation gives Brouwer's theorem in finite dimensions, and Brouwer in turn gives Kakutani. Fan-Glicksberg extends the Sperner-Brouwer-Kakutani chain to infinite dimensions by approximating with finite-dimensional Galerkin projections, where Sperner still applies — the combinatorial topology of $n$-dim Sperner is the ultimate foundation of even the LCTVS statement."
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "related",
+      "description": "Borsuk-Ulam (every continuous $S^n \\to \\mathbb{R}^n$ identifies an antipodal pair) and Brouwer/Kakutani are the two main fixed-point-theoretic pillars of equilibrium existence. Both reduce in finite dimensions to the same combinatorial topology (Sperner-style parity), but Borsuk-Ulam exploits $\\mathbb{Z}/2$-equivariance and Brouwer/Kakutani uses the full continuous map. Many existence theorems in mathematical economics admit dual derivations via either."
     }
   ],
   "sections": [
