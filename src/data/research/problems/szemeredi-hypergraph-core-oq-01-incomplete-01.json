@@ -1,17 +1,17 @@
 {
   "slug": "szemeredi-hypergraph-core-oq-01-incomplete-01",
   "title": "Complete Simplicial Complex Infrastructure for Gowers Hypergraph Regularity",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "Define SimplicialComplex (nested family of j-graphs) and relative density for the full Gowers (2007) regularity, building on UHypergraph from SzemerediHypergraphCore.lean",
-    "plain": "The existing SzemerediHypergraphCore.lean defines naive hypergraph regularity, insufficient for the multidimensional Szemerédi theorem. Define the Gowers (2007) regularity infrastructure: SimplicialComplex, relativeKDensity, and IsGowersRegular.",
+    "plain": "The existing SzemerediHypergraphCore.lean defines naive hypergraph regularity, insufficient for the multidimensional Szemer\u00e9di theorem. Define the Gowers (2007) regularity infrastructure: SimplicialComplex, relativeKDensity, and IsGowersRegular.",
     "whyMatters": [
-      "Prerequisite for hypergraph counting lemma (Nagle-Rödl-Schacht 2006) and multidimensional Szemerédi",
+      "Prerequisite for hypergraph counting lemma (Nagle-R\u00f6dl-Schacht 2006) and multidimensional Szemer\u00e9di",
       "Extends existing UHypergraph infrastructure with correct regularity notion",
-      "Would centralize 27+ scattered hypergraph definitions across Erdős problem files"
+      "Would centralize 27+ scattered hypergraph definitions across Erd\u0151s problem files"
     ]
   },
   "knownResults": {
@@ -23,17 +23,17 @@
     "open": [
       "SimplicialComplex V k: nested family of j-graphs for j < k with down-closure",
       "relativeKDensity H C: k-graph density relative to a simplicial complex",
-      "IsGowersRegular H ε C: full Gowers regularity predicate"
+      "IsGowersRegular H \u03b5 C: full Gowers regularity predicate"
     ],
-    "goal": "Define SimplicialComplex, relativeKDensity, IsGowersRegular and prove naive_implies_gowers: IsHypergraphRegular → IsGowersRegular (complete complex)"
+    "goal": "Define SimplicialComplex, relativeKDensity, IsGowersRegular and prove naive_implies_gowers: IsHypergraphRegular \u2192 IsGowersRegular (complete complex)"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-21T00:00:00Z",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T15:55:00-07:00",
     "iteration": 1,
-    "focus": "Define simplicial complex infrastructure extending SzemerediHypergraphCore.lean",
+    "focus": "Completed 2026-04-27 (researcher-7 audit): file is sorry-free with 14 verified results and documented obstruction. Original problem (build SimplicialComplex/relativeKDensity/IsGowersRegular infrastructure) achieved. Original conjecture naive_implies_gowers found false; replaced with three correct surrogate theorems.",
     "blockers": [],
-    "nextAction": "OBSERVE: Read SzemerediHypergraphCore.lean for existing UHypergraph and regularity definitions",
+    "nextAction": "Follow-ups exist as separate research directions (counting lemma; partition-respecting Gowers); this problem is closed.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "COMPLETED: SimplicialComplex/relativeKDensity/IsGowersRegular defined and 14 supporting theorems proved (0 sorries, 0 axioms). Original naive_implies_gowers conjecture found false (transversal hypothesis is degenerate, top-cliques need not arise from vertex partitions); replaced with three correct surrogates: relativeKDensity_eq_of_topCliques_eq, isGowersRegular_self, isGowersRegular_empty. Gowers (2007) \u00a74 weak/strong distinction documented in PART VII.",
     "builtItems": [],
     "insights": [],
     "mathlibGaps": [
@@ -70,8 +70,8 @@
   ],
   "references": {
     "papers": [
-      "Gowers (2007) - Hypergraph regularity and the multidimensional Szemerédi theorem",
-      "Nagle, Rödl, Schacht (2006) - The counting lemma for regular k-uniform hypergraphs"
+      "Gowers (2007) - Hypergraph regularity and the multidimensional Szemer\u00e9di theorem",
+      "Nagle, R\u00f6dl, Schacht (2006) - The counting lemma for regular k-uniform hypergraphs"
     ],
     "urls": [],
     "mathlib": [
@@ -80,7 +80,7 @@
     ]
   },
   "started": "2026-04-21T06:42:55Z",
-  "lastUpdate": "2026-04-21T06:42:55Z",
+  "lastUpdate": "2026-04-27T23:24:02.855749Z",
   "significance": 9,
   "tractability": 5
 }
