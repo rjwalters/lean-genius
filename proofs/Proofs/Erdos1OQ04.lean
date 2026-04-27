@@ -36,6 +36,14 @@ def achievesDistinctSums (n N : ℕ) : Prop :=
   ∃ A : Finset ℕ, A.card = n ∧ (∀ a ∈ A, 0 < a) ∧ (∀ a ∈ A, a ≤ N) ∧
     hasDistinctSubsetSums A
 
+/-- Monotonicity in the bound N: a witnessing n-element DSS set in {1,...,N}
+    also fits in {1,...,N'} for any N' ≥ N. This lets `achievesDistinctSums n`
+    propagate to looser bounds — useful when comparing extremal candidates. -/
+theorem achievesDistinctSums_mono {n N N' : ℕ} (h : N ≤ N')
+    (ha : achievesDistinctSums n N) : achievesDistinctSums n N' := by
+  obtain ⟨A, hcard, hpos, hmax, hdss⟩ := ha
+  exact ⟨A, hcard, hpos, fun a ha' => le_trans (hmax a ha') h, hdss⟩
+
 /- ## Verified Small Cases (OEIS A005318) -/
 
 /-- {1} has distinct subset sums: subsets are ∅ (sum 0) and {1} (sum 1). -/

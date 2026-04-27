@@ -19,33 +19,39 @@
     "phase": "ACT",
     "since": "2026-03-30T11:35:17-07:00",
     "iteration": 2,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Infrastructure additions, Conway-Guy formalization plan",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Docker build to verify mono; tuple-valued recurrence; n=6 case",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "BUILD: Created Erdos1OQ04.lean (119 lines). Verified f(1)-f(5) via native_decide. Defined Conway-Guy conjecture. 2S remain.",
+    "progressSummary": "BUILD: Added achievesDistinctSums_mono (5 lines, infrastructure). File at 0 sorries / 0 axioms. Open work is the Conway-Guy conjecture itself, plus tractable next steps documented (recurrence formulation, n=6 case).",
     "builtItems": [
       "Created Erdos1OQ04.lean with extremal set formalization",
       "Decidable instance for hasDistinctSubsetSums",
       "Verified DSS for {1}, {1,2}, {1,2,4}, {3,5,6,7}, {6,9,11,12,13}",
       "Proved f(1)=1, f(2)=2, f(3)<=4, f(4)<=7, f(5)<=13",
-      "Defined Conway-Guy conjecture"
+      "Defined Conway-Guy conjecture",
+      "Added achievesDistinctSums_mono lemma (Erdos1OQ04.lean): if N ≤ N', achievesDistinctSums n N → achievesDistinctSums n N' (5-line proof)"
     ],
     "insights": [
       "hasDistinctSubsetSums is decidable by checking all pairs in powerset",
       "Conway-Guy sets: {3,5,6,7} for n=4 and {6,9,11,12,13} for n=5",
-      "Powers of 2 give suboptimal max (2^(n-1) vs optimal f(n))"
+      "Powers of 2 give suboptimal max (2^(n-1) vs optimal f(n))",
+      "2026-04-27 (researcher-4): file is fully verified (0 sorries, 0 axioms). The open work is the Conway-Guy conjecture itself (encoded as conwayGuyConjecture Prop) — the actual hard mathematical problem.",
+      "2026-04-27: conwayGuySeq is currently case-by-case (n ≤ 8). Tractable next step: replace with tuple-valued auxiliary recurrence carrying partial sums (cgAux : ℕ → ℕ × ℕ).",
+      "2026-04-27: file ends with bare end at line 245 with no matching namespace — appears to compile but warrants cleanup."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Define Conway-Guy recurrence precisely",
-      "Prove optimality: no set in {1,...,f(n)-1} has n elements with DSS"
+      "Docker build Proofs.Erdos1OQ04 to confirm new mono lemma compiles",
+      "Replace conwayGuySeq case-by-case definition with tuple-valued recurrence formulation",
+      "Add f(6) ≤ 24 via native_decide on the documented Conway-Guy 6-element set (literature lookup needed)",
+      "Optionally clean up bare end at line 245"
     ],
     "markdown": "# Knowledge Base: erdos-1-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -443,7 +449,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:39:05.245Z",
-  "lastUpdate": "2026-03-30T18:39:05.260Z",
+  "lastUpdate": "2026-04-27T13:25:00Z",
   "leanFiles": [
     {
       "path": "Proofs/Erdos1000OQ01.lean",
