@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (session 10): Ported 2 Aristotle proofs (tail_pos, tail_bound). Erdos263Aristotle.lean now 0-sorry. Main file: 4 deep sorries BLOCKED (Mahler criterion, KT2024, liminf, truncation witness). No tractable work remains.",
+    "progressSummary": "BLOCKED (session 11): All tractable work complete. Main file: 4 deep sorries (Mahler criterion, KT2024, liminf, truncation witness) — all require non-Mathlib mathematics. Aristotle file: 0 sorries. 17+ theorems proved including doubleExp_sum_irrational (integer-gap argument). No further progress possible until Mathlib analytic number theory expands.",
     "builtItems": [
       "doubleExp_not_folklore_growth: ¬HasFolkloreGrowth doubleExp — proved in proofs/Proofs/Stubs/Erdos263Problem.lean:89",
       "two_pow_ge_sq: ∀ n ≥ 4, n^2 ≤ 2^n — private lemma in Erdos263Problem.lean:202",
@@ -79,9 +79,11 @@
       "kovac_tao_not_irrationality requires Kovač-Tao 2024 construction — not in Mathlib"
     ],
     "nextSteps": [
-      "BLOCKED: All 4 remaining sorries require non-Mathlib mathematics",
-      "folklore_irrationality needs Mahler criterion (~200+ lines analytic number theory)",
-      "kovac_tao_not_irrationality needs Kovač-Tao 2024 Egyptian fraction construction",
+      "BLOCKED: All 4 remaining sorries require non-Mathlib mathematics — no tractable work remains",
+      "folklore_irrationality: needs Mahler criterion (~200+ lines analytic number theory)",
+      "kovac_tao_not_irrationality: needs Kovač-Tao 2024 Egyptian fraction construction (~300+ lines)",
+      "positive_condition_irrationality: needs deep liminf analysis on growth rates",
+      "truncation_insufficient: needs witnesses from folklore_irrationality or kovac_tao (dependent on above)",
       "Revisit when Mathlib analytic number theory expands significantly"
     ]
   },
@@ -109,22 +111,22 @@
     {
       "path": "Proofs/Erdos263Aristotle.lean",
       "filename": "Erdos263Aristotle.lean",
-      "lineCount": 148,
+      "lineCount": 147,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos263Aristotle.lean"
     },
     {
       "path": "Proofs/Erdos263Problem.lean",
       "filename": "Erdos263Problem.lean",
-      "lineCount": 793,
+      "lineCount": 792,
       "theoremCount": 19,
       "axiomCount": 0,
       "defCount": 19,
-      "sorryCount": 5,
+      "sorryCount": 4,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos263Problem.lean"
     }
