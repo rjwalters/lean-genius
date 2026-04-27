@@ -1,7 +1,7 @@
 {
   "slug": "erdos-27",
   "title": "Erdős #27: Almost Covering Systems",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,24 +16,29 @@
   },
   "knownResults": {
     "proven": [
-      "Erdos27Problem.lean: basic definitions — Congruence, CongruenceSystem, uncoveredDensity, BoundedModuliSystem, AlmostCovering (Proofs/Stubs/Erdos27Problem.lean)",
-      "Erdos27Aristotle.lean: 5 routine lemma targets for Aristotle automation",
-      "Gallery entry at src/data/proofs/erdos-27/ (formalized status, 12 sorries remaining)"
+      "Erdos27Problem.lean: complete formalization with structural definitions and main theorems",
+      "naturalDensity_eq_inv: telescoping product (1-1/n) = 1/k",
+      "naturalDensity_vanishes: density tends to 0 as k grows",
+      "perfect_is_zero_almost: perfect covering implies 0-almost covering",
+      "conjecture_dichotomy: ErdosConjecture iff not ErdosConjectureNegation",
+      "erdos_27_disproved (via axiom erdos_27_ffkpy)",
+      "growing_C_works (via axiom growing_C_achieves)",
+      "bbmst_bound, perfect_covering_min_modulus (via axiom bbmst_2024)",
+      "erdos_27_conjecture_false: not ErdosConjecture (this session)",
+      "ffkpy_C_eq_2: concrete disproof instance for C=2 (this session)"
     ],
     "open": [
-      "12 sorries in Erdos27Problem.lean: density lemmas, product convergence bounds, core FFKPY lower bound",
-      "uncoveredDensity formalization (natural density vs measure-theoretic density)",
-      "∏(1-1/nᵢ) product bound for moduli in [N, CN]"
+      "The 4 axioms cite published proofs that are too long to formalize directly: FFKPY 2007 (~22 pages), BBMST 2024 minimum modulus bound. These are appropriate axioms."
     ],
-    "goal": "Eliminate or reduce 12 sorries. Priority: (1) submit 5 Aristotle targets; (2) density lemmas using Mathlib MeasureTheory; (3) product convergence estimates via logarithmic bounds."
+    "goal": "File is complete (0 sorries). Status: axiomatized — appropriate given problem is solved by FFKPY 2007 ($100 prize claimed)."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-04-21T07:22:44-07:00",
-    "iteration": 1,
-    "focus": "Read Erdos27Problem.lean to identify exact sorry locations and their mathematical content.",
+    "iteration": 2,
+    "focus": "File fully formalized: 0 sorries, 4 axioms (all citing published literature). No further sorry-elimination possible without proving FFKPY/BBMST main theorems.",
     "blockers": [],
-    "nextAction": "Read Proofs/Stubs/Erdos27Problem.lean and Proofs/Stubs/Erdos27Aristotle.lean to map sorry targets.",
+    "nextAction": "Maintenance only. Future work could add concrete consequences of the axioms.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -41,14 +46,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Synced stale candidate-pool metadata (was claiming 12 sorries, but file actually has 0). Added 2 derived corollaries: erdos_27_conjecture_false and ffkpy_C_eq_2.",
+    "builtItems": [
+      "erdos_27_conjecture_false: not ErdosConjecture from dichotomy + FFKPY axiom",
+      "ffkpy_C_eq_2: concrete disproof instance for C=2"
+    ],
+    "insights": [
+      "STALE METADATA FINDING: candidate-pool entry claimed 12 sorries but file actually has 0 sorries (work completed in earlier sessions, gallery meta.json reflects this correctly)",
+      "All 4 axioms are appropriately deep results: FFKPY 2007 main theorem (~22-page paper), FFKPY 2007 positive direction, averaging argument (probabilistic existence), BBMST 2024 minimum modulus bound",
+      "The averaging_bound_exists axiom could potentially be proved from a probabilistic/measure-theoretic argument in Mathlib, but would require building substantial infrastructure for random congruence systems",
+      "The conjecture_dichotomy theorem combined with erdos_27_ffkpy gives not ErdosConjecture as a clean corollary"
+    ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Read Erdos27Problem.lean to map 12 sorry locations",
-      "Check which 5 are Aristotle-ready targets",
-      "Survey Mathlib for natural density and ArithmeticFunction support"
+      "File is at a natural stopping point — no further sorry-elimination possible without proving the literature axioms",
+      "Future work: concrete instances for specific small C values (e.g., C=3, C=10)",
+      "Future work: investigate whether averaging_bound_exists can be reduced to a Mathlib probabilistic argument"
     ],
     "markdown": "# Knowledge Base: erdos-27\n\nInsights accumulated during research on Erdős #27: Almost Covering Systems.\n\n---\n\n## Problem Understanding\n\nProblem SOLVED (NO) by FFKPY. Lean formalization has 12 sorries in Erdos27Problem.lean.\nAristo companion (Erdos27Aristotle.lean) has 5 routine targets.\n\n---\n\n## Insights\n\n[To be filled during OBSERVE/ORIENT phases]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -215,8 +228,8 @@
     {
       "path": "Proofs/Erdos27Problem.lean",
       "filename": "Erdos27Problem.lean",
-      "lineCount": 330,
-      "theoremCount": 8,
+      "lineCount": 340,
+      "theoremCount": 10,
       "axiomCount": 4,
       "defCount": 16,
       "sorryCount": 0,
