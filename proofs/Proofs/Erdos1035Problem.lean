@@ -115,8 +115,9 @@ theorem hypercube_one_is_edge :
 /-- Decidability of `hypercubeAdj`: enables `decide` and `native_decide` for
     computational verification of Q_n properties. -/
 instance hypercubeAdjDecidable (n : ℕ) (u v : Fin (2 ^ n)) :
-    Decidable (hypercubeAdj n u v) :=
-  inferInstance
+    Decidable (hypercubeAdj n u v) := by
+  unfold hypercubeAdj
+  infer_instance
 
 instance hypercubeGraphDecidableAdj (n : ℕ) : DecidableRel (hypercubeGraph n).Adj :=
   fun u v => hypercubeAdjDecidable n u v
@@ -180,8 +181,11 @@ theorem hypercube_adj_iff (n : ℕ) (u v : Fin (2 ^ n)) :
     For any v and k, v XOR 2^k ≠ v since 2^k > 0. -/
 theorem xor_pow2_ne_self (v k : ℕ) : v ^^^ 2 ^ k ≠ v := by
   intro h
-  have : v ^^^ v ^^^ 2 ^ k = v ^^^ v := by rw [h]
-  simp [Nat.xor_self, Nat.zero_xor] at this
+  have hpow : (2 : ℕ) ^ k = 0 := by
+    have h1 : v ^^^ (v ^^^ 2 ^ k) = v ^^^ v := by rw [h]
+    rw [← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor] at h1
+    exact h1
+  exact (Nat.two_pow_pos k).ne' hpow
 
 /- ## General Q_n regularity (proved for all n) -/
 
@@ -212,7 +216,7 @@ theorem hypercube_adj_of_flip (n : ℕ) (v w : Fin (2 ^ n))
   obtain ⟨_, k, hk⟩ := h
   refine ⟨k, Fin.ext ?_⟩
   simp only [hypercubeFlip]
-  have h1 := congr_arg (v.val ^^^ ·) hk
+  have h1 : v.val ^^^ (v.val ^^^ w.val) = v.val ^^^ 2 ^ k.val := by rw [hk]
   rw [← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor] at h1
   exact h1
 
@@ -223,7 +227,8 @@ theorem hypercube_flip_injective (n : ℕ) (v : Fin (2 ^ n)) :
   have h1 : v.val ^^^ 2 ^ i.val = v.val ^^^ 2 ^ j.val := by
     have := congr_arg Fin.val h; simp only [hypercubeFlip] at this; exact this
   have h2 : (2 : ℕ) ^ i.val = 2 ^ j.val := by
-    have h3 := congr_arg (v.val ^^^ ·) h1
+    have h3 : v.val ^^^ (v.val ^^^ 2 ^ i.val) = v.val ^^^ (v.val ^^^ 2 ^ j.val) := by
+      rw [h1]
     rw [← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor,
         ← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor] at h3
     exact h3
@@ -253,3 +258,39 @@ theorem hypercube_n_regular_general (n : ℕ) (v : Fin (2 ^ n)) :
       exact ⟨mem_univ _, by rw [← hk]; exact hypercube_flip_adj n v k⟩
   rw [h_eq, card_image_of_injective _ (hypercube_flip_injective n v),
       card_univ, Fintype.card_fin]
+
+/- ## General Q_n edge count -/
+
+/-- **Q_n has `n · 2^n` directed edges** (equivalently, `n · 2^(n-1)` undirected edges).
+    This generalizes `hypercube_two_edge_count` (n=2: 8 = 2·4) and
+    `hypercube_three_edge_count` (n=3: 24 = 3·8) to all `n`.
+
+    Proof: bijection between directed edges and pairs `(v, k) ∈ Fin(2^n) × Fin n`,
+    sending `(v, k)` to `(v, v ⊕ 2^k)`. Surjectivity uses `hypercube_adj_of_flip`;
+    injectivity uses `hypercube_flip_injective`. -/
+theorem hypercube_n_edge_count (n : ℕ) :
+    (univ.filter (fun p : Fin (2 ^ n) × Fin (2 ^ n) =>
+      (hypercubeGraph n).Adj p.1 p.2)).card = n * 2 ^ n := by
+  let f : Fin (2 ^ n) × Fin n → Fin (2 ^ n) × Fin (2 ^ n) :=
+    fun p => (p.1, hypercubeFlip n p.1 p.2)
+  have hf_inj : Function.Injective f := by
+    rintro ⟨v1, k1⟩ ⟨v2, k2⟩ heq
+    simp only [f, Prod.mk.injEq] at heq
+    obtain ⟨hv, hw⟩ := heq
+    subst hv
+    exact Prod.mk.injEq .. |>.mpr ⟨rfl, hypercube_flip_injective n v1 hw⟩
+  have h_eq : (univ : Finset (Fin (2 ^ n) × Fin n)).image f =
+      univ.filter (fun p : Fin (2 ^ n) × Fin (2 ^ n) =>
+        (hypercubeGraph n).Adj p.1 p.2) := by
+    ext ⟨v, w⟩
+    simp only [mem_image, mem_filter, mem_univ, true_and, f, Prod.mk.injEq]
+    constructor
+    · rintro ⟨⟨v', k⟩, hv, hw⟩
+      subst hv; subst hw
+      exact hypercube_flip_adj n v' k
+    · intro h
+      obtain ⟨k, hk⟩ := hypercube_adj_of_flip n v w h
+      exact ⟨(v, k), rfl, hk.symm⟩
+  rw [← h_eq, card_image_of_injective _ hf_inj,
+      card_univ, Fintype.card_prod, Fintype.card_fin, Fintype.card_fin]
+  ring
