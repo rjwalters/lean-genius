@@ -1,27 +1,38 @@
 {
   "slug": "erdos-1095-incomplete-01",
   "title": "Complete proof of Erdős Problem #1095: The Erdős-Selfridge Function",
-  "phase": "ORIENT",
+  "phase": "SURVEYED",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: Complete proof of Erdős Problem #1095: The Erdős-Selfridge Function.",
-    "whyMatters": []
+    "formal": "g(k) := \\min \\{n > k+1 : \\text{every prime factor of } \\binom{n}{k} \\text{ exceeds } k\\}",
+    "plain": "Estimate the Erdős-Selfridge function g(k): the smallest n > k+1 such that every prime factor of the binomial coefficient C(n,k) is greater than k. Concrete values: g(2)=6, g(3)=g(4)=7, g(5)=23, g(6)=143.",
+    "whyMatters": [
+      "Probes the interplay between binomial coefficients and prime factorization at the boundary of computability.",
+      "The conjecture log g(k) ~ k/log k (Erdős-Lacampagne-Selfridge 1993) is a sharp version of the bound problem and remains open.",
+      "Connects to Sylvester-Schur theorem and arithmetic of factorials (binomial coefficients of small arguments cannot be smooth)."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Lower bound: g(k) >> exp(c·(log k)²) (Konyagin 1999, Bull. London Math. Soc. 31)",
+      "Upper bound: g(k) <= exp((1+o(1))·k) (Ecklund-Erdős-Selfridge 1974, Math. Comp. 28)",
+      "Concrete values: g(2)=6, g(3)=7, g(4)=7, g(5)=23, g(6)=143 (formalized as theorems in Erdos1095Problem.lean)"
+    ],
+    "open": [
+      "Sharp asymptotic: log g(k) ~ k/log k (Erdős-Lacampagne-Selfridge 1993 conjecture)",
+      "Closing the gap between Konyagin lower bound exp((log k)²) and EES upper bound exp(k)"
+    ],
+    "goal": "Eliminate axioms g, g_gt, g_spec, g_minimal by building g constructively via Nat.find on the (decidable) condition (n > k+1 ∧ binomIsKRough n k); requires proving existence first via Kummer/Sylvester-Schur in Mathlib."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "SURVEYED",
     "since": "2026-03-28T20:57:10.257Z",
     "iteration": 2,
-    "focus": "Initial exploration of the problem.",
+    "focus": "No separate Lean file for incomplete-01 workstream; the main Erdos1095Problem.lean has 7 axioms (g, g_gt, g_spec, g_minimal + 3 deep bounds: ees_lower_bound, ees_upper_bound, konyagin_lower_bound).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Either (a) merge this workstream into erdos-1095 since no separate file exists, or (b) build Erdos1095Incomplete01.lean with the bound-strengthening axiom that is currently encoded only as comments.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved gFunc_exists theorem, eliminating the sole axiom. File now has 0 axioms, 0 sorries. Used Kummer theorem (carry-free base-p arithmetic) with explicit witness n=2P-1 where P is primorial product. Status upgraded from axiomatized to verified.",
+    "progressSummary": "SURVEYED: erdos-1095-incomplete-01 has no dedicated Lean file. Main file Erdos1095Problem.lean has 7 axioms (4 for g + 3 deep bounds) and the concrete-value theorems g_two through g_six. Prior progressSummary claimed 0 axioms which contradicts grep -c \"^axiom \" output (7). This workstream slug appears to be a planning artifact; either merge into erdos-1095 or scope a concrete bound-strengthening file.",
     "builtItems": [
       "Proved g_two : g 2 = 6",
       "Proved g_three : g 3 = 7",
