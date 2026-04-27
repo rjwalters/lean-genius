@@ -1,13 +1,13 @@
 {
   "slug": "ballot-problem-oq-01-oq-04-oq-01",
   "title": "Prove Chung-Feller bijection: rotation index to path type",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "∃ f : {l : List ℤ // IsBalancedPath l n} → {l : List ℤ // IsDyckPath l n} × Fin (n+1), Function.Bijective f",
-    "plain": "Prove the Chung-Feller bijection: the map sending a balanced path l to (chungFellerRot(l).tail, upstepsAboveAxis(l)) is a bijection between balanced paths of length 2n and Dyck paths of length 2n × {0,...,n}.",
+    "formal": "\u2203 f : {l : List \u2124 // IsBalancedPath l n} \u2192 {l : List \u2124 // IsDyckPath l n} \u00d7 Fin (n+1), Function.Bijective f",
+    "plain": "Prove the Chung-Feller bijection: the map sending a balanced path l to (chungFellerRot(l).tail, upstepsAboveAxis(l)) is a bijection between balanced paths of length 2n and Dyck paths of length 2n \u00d7 {0,...,n}.",
     "whyMatters": [
       "Proves the uniform distribution of balanced lattice paths over n+1 types",
       "Eliminates the axiom chung_feller_uniform from the parent file BallotProblemOQ01OQ04.lean",
@@ -20,12 +20,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-04-03T07:36:00Z",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T16:42:00-07:00",
     "iteration": 2,
-    "focus": "Proving well-typing lemmas for the Chung-Feller bijection candidate",
+    "focus": "Completed (researcher-7 stale-pool cleanup 2026-04-27). BallotProblemOQ01OQ04OQ01.lean is sorry-free (0 sorries, 0 axioms, 11 theorems, 1164 lines). chung_feller_uniform' was proved in PR #11300 (commit 86dba21678b).",
     "blockers": [],
-    "nextAction": "Prove type-distinctness under rotation to complete bijectivity",
+    "nextAction": "Closed. No gallery meta.json yet for this OQ chain; could be added if/when curated for gallery exposure.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -33,22 +33,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Forward direction complete (balanced paths → Dyck paths via rotation). Bijection candidate well-typed. 2 sorries remain: bijectivity and uniform distribution.",
+    "progressSummary": "COMPLETED 2026-04-27 (stale-pool cleanup). chung_feller_uniform' was proved in PR #11300 closing the bijectivity/uniformity sorries. File is now sorry-free with 0 axioms, 11 theorems, 1164 lines. JSON leanFile sorryCount/theoremCount/lineCount updated to actual values.",
     "builtItems": [
-      "upstepsAboveAxis_le_n: type k ≤ n for balanced path (well-types Fin(n+1) component)",
-      "chungFellerRot_tail_is_balanced: tail of rotation is balanced (count1=n, count-1=n, all ±1)",
+      "upstepsAboveAxis_le_n: type k \u2264 n for balanced path (well-types Fin(n+1) component)",
+      "chungFellerRot_tail_is_balanced: tail of rotation is balanced (count1=n, count-1=n, all \u00b11)",
       "chungFellerRot_tail_is_dyck: tail of rotation is a DYCK PATH (forward direction complete)",
-      "chungFellerMap: bijection candidate fully well-typed (IsDyckPath × Fin(n+1))",
+      "chungFellerMap: bijection candidate fully well-typed (IsDyckPath \u00d7 Fin(n+1))",
       "chungFellerRot_head_eq_one: good rotation starts with 1 [inherited]",
-      "chungFellerRot_tail_nonneg_prefixSum: tail prefix sums ≥ 0 [inherited]",
+      "chungFellerRot_tail_nonneg_prefixSum: tail prefix sums \u2265 0 [inherited]",
       "chungFellerRot_tail_type_eq_n: tail upstepsAboveAxis = n [inherited]"
     ],
     "insights": [
       "The Chung-Feller bijection f(l) = (chungFellerRot(l).tail, upstepsAboveAxis(l)) is now FULLY well-typed",
       "Forward direction: any balanced path maps to a Dyck path via the good rotation",
-      "Key blocker: type-distinctness under rotation — different 1-position rotations of (1::D) must give distinct path types",
+      "Key blocker: type-distinctness under rotation \u2014 different 1-position rotations of (1::D) must give distinct path types",
       "Computational verification confirms the bijection works for n=2: types {0,1,2} all achieved",
-      "The rotation map sends type k to type n (Dyck) — verified for specific examples",
+      "The rotation map sends type k to type n (Dyck) \u2014 verified for specific examples",
       "The hard core is the type-shift analysis: between 1-positions p_j and p_{j+1}, the prefix sum relationship determines type change"
     ],
     "mathlibGaps": [
@@ -92,7 +92,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T02:57:02.769Z",
-  "lastUpdate": "2026-04-03T07:36:00Z",
+  "lastUpdate": "2026-04-27T23:35:58.334619Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -198,11 +198,11 @@
     {
       "path": "Proofs/BallotProblemOQ01OQ04OQ01.lean",
       "filename": "BallotProblemOQ01OQ04OQ01.lean",
-      "lineCount": 1165,
-      "theoremCount": 12,
+      "lineCount": 1164,
+      "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 3,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04OQ01.lean"
     },
