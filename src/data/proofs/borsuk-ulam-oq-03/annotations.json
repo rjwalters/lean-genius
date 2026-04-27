@@ -136,6 +136,81 @@
     ]
   },
   {
+    "id": "ann-bu-oq03-08-tucker-signed",
+    "proofId": "borsuk-ulam-oq-03",
+    "range": {
+      "startLine": 518,
+      "endLine": 570
+    },
+    "type": "technique",
+    "title": "Tucker's 1D Signed Lemma via Boolean Reduction",
+    "content": "The integer-labeled Tucker lemma states: if vertices of a 1D simplicial complex are labeled with nonzero integers such that boundary labels are complementary ($L(0) + L(n+1) = 0$), then some adjacent pair has opposite signs. The proof reduces to the Boolean Tucker lemma by taking the sign of each label ($S(i) = (0 < L(i))$). The complementary boundary condition forces $S(0) \\neq S(n+1)$ (since $L(0)$ and $L(n+1)$ have opposite signs), so the Boolean version gives an adjacent sign-change, which translates back to integer labels with opposite signs.",
+    "mathContext": "Tucker (integer version): $L: \\{0,\\ldots,n+1\\} \\to \\mathbb{Z} \\setminus \\{0\\}$, $L(0) + L(n+1) = 0 \\Rightarrow \\exists i: L(i) \\cdot L(i+1) < 0$. Reduction: $S = \\text{sign}(L)$ satisfies Boolean Tucker's hypothesis.",
+    "significance": "key",
+    "relatedConcepts": ["Tucker's lemma", "complementary labeling", "sign function", "simplicial complex"],
+    "prerequisites": ["tucker_1d_sign_change", "decide predicate in Lean 4"]
+  },
+  {
+    "id": "ann-bu-oq03-09-parity-lemma",
+    "proofId": "borsuk-ulam-oq-03",
+    "range": {
+      "startLine": 1055,
+      "endLine": 1080
+    },
+    "type": "insight",
+    "title": "Tucker's Parity Lemma: Sign Changes as Topological Invariant",
+    "content": "The parity lemma strengthens Tucker: not only does a sign change exist, but the NUMBER of sign changes has the same parity as the endpoint comparison. When endpoints differ ($s(0) \\neq s(n)$), the transition count is odd — hence at least 1. This is the combinatorial analog of the topological fact that the degree of the antipodal map on $S^0$ is odd. The proof uses induction on $n$ with exhaustive Boolean case analysis (8 cases for $a, b, c \\in \\{\\text{true}, \\text{false}\\}$) handled by Lean's `decide` tactic.",
+    "mathContext": "$\\#\\{i : s(i) \\neq s(i+1)\\} \\equiv \\begin{cases} 0 \\pmod{2} & \\text{if } s(0) = s(n) \\\\ 1 \\pmod{2} & \\text{if } s(0) \\neq s(n) \\end{cases}$",
+    "significance": "key",
+    "relatedConcepts": ["topological degree", "parity argument", "Fin.induction", "combinatorial topology"],
+    "prerequisites": ["countTransitions", "Nat.add_mod", "Boolean case analysis"]
+  },
+  {
+    "id": "ann-bu-oq03-10-bu-brouwer-equiv",
+    "proofId": "borsuk-ulam-oq-03",
+    "range": {
+      "startLine": 2006,
+      "endLine": 2049
+    },
+    "type": "insight",
+    "title": "BU ↔ Brouwer FP Equivalence in 1D",
+    "content": "The logical equivalence of Borsuk-Ulam and Brouwer's Fixed Point theorem in 1D is proved in both directions. BU → Brouwer: given $f: [-1,1] \\to [-1,1]$, define $h(x) = f(x) - x$. Then $h(-1) \\geq 0$ (since $f(-1) \\geq -1$) and $h(1) \\leq 0$ (since $f(1) \\leq 1$), so IVT gives a zero $x_0$ with $f(x_0) = x_0$. Brouwer → BU: in 1D both reduce to IVT, so the reverse direction is immediate. In higher dimensions, the equivalence passes through the no-retraction theorem, forming a cycle BU → no-retraction → Brouwer FP → BU.",
+    "mathContext": "BU$_1 \\Leftrightarrow$ Brouwer$_1$: both are IVT. For $n \\geq 2$: BU$_n \\Rightarrow$ no-retraction$_n \\Rightarrow$ Brouwer$_n$ and Brouwer$_n \\Rightarrow$ no-retraction$_n \\Rightarrow$ BU$_n$.",
+    "significance": "key",
+    "relatedConcepts": ["logical equivalence", "theorem reduction", "intermediate value theorem", "no-retraction theorem"],
+    "prerequisites": ["borsuk_ulam_interval", "intermediate_value_Icc'", "ContinuousOn.sub"]
+  },
+  {
+    "id": "ann-bu-oq03-11-no-retraction",
+    "proofId": "borsuk-ulam-oq-03",
+    "range": {
+      "startLine": 2050,
+      "endLine": 2079
+    },
+    "type": "technique",
+    "title": "No-Retraction Theorem in 1D via IVT",
+    "content": "There is no continuous retraction $r: [-1,1] \\to \\{-1,1\\}$ that fixes the boundary ($r(-1) = -1$, $r(1) = 1$). The proof is by IVT: since $r(-1) = -1 \\leq 0 \\leq 1 = r(1)$ and $r$ is continuous, there exists $x_0 \\in [-1,1]$ with $r(x_0) = 0$. But $r$ only takes values in $\\{-1, 1\\}$, so $r(x_0) \\in \\{-1,1\\}$ contradicts $r(x_0) = 0$. This is the 1D instance of the general theorem that $B^{n+1}$ does not retract onto $S^n$, which in higher dimensions requires algebraic topology (Brouwer degree or homology).",
+    "mathContext": "No retraction $r: B^1 \\to S^0$ with $r|_{S^0} = \\text{id}$. IVT: $r(-1) = -1$, $r(1) = 1$, $r$ continuous $\\Rightarrow \\exists x_0: r(x_0) = 0 \\notin \\{\\pm 1\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["retraction", "connectedness", "Brouwer degree", "homology"],
+    "prerequisites": ["intermediate_value_Icc", "Continuous.continuousOn"]
+  },
+  {
+    "id": "ann-bu-oq03-12-ray-sphere",
+    "proofId": "borsuk-ulam-oq-03",
+    "range": {
+      "startLine": 3552,
+      "endLine": 3578
+    },
+    "type": "technique",
+    "title": "Ray-Sphere Intersection: No-Retraction → Brouwer FP Architecture",
+    "content": "The proof that no-retraction implies Brouwer FP uses the ray-sphere intersection technique: given $f: B^{n+1} \\to B^{n+1}$ with no fixed point, define the ray from $f(x)$ through $x$ and intersect it with $S^n$. This gives a retraction $r: B^{n+1} \\to S^n$ that fixes $S^n$ (since on the sphere, the retraction parameter $t = 1$ makes $r(x) = f(x) + 1 \\cdot (x - f(x)) = x$). The construction uses the quadratic formula for ray-sphere intersection: solve $|f(x) + t(x - f(x))|^2 = 1$ for $t$ via the discriminant $\\Delta = (A + B)^2 \\geq 0$ where $A = |x - f(x)|^2$ and $B = \\langle f(x), x - f(x) \\rangle$.",
+    "mathContext": "Retraction: $r(x) = f(x) + t_+(x) \\cdot (x - f(x))$ where $t_+ = \\frac{-B + \\sqrt{B^2 - AC}}{A}$, $A = |d|^2$, $B = \\langle a, d \\rangle$, $C = |a|^2 - 1$, $a = f(x)$, $d = x - f(x)$.",
+    "significance": "key",
+    "relatedConcepts": ["ray-sphere intersection", "quadratic formula", "ball projection", "continuous retraction"],
+    "prerequisites": ["nsq (norm squared)", "ip (inner product)", "Real.sqrt", "div_eq_iff"]
+  },
+  {
     "id": "ann-bu-oq03-07-structural-properties",
     "proofId": "borsuk-ulam-oq-03",
     "range": {

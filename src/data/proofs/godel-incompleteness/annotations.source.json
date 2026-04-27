@@ -8,6 +8,7 @@
     "type": "concept",
     "title": "The Theorem That Changed Everything",
     "content": "Gödel's 1931 paper is one of the most important in the history of mathematics and logic. It proved that Hilbert's dream of a complete, consistent formal foundation for mathematics was impossible.\n\nThe theorem states that any formal system $F$ capable of expressing basic arithmetic must be **incomplete**: there exist true statements that $F$ cannot prove. This isn't a flaw in our axioms—it's a fundamental limitation of formal reasoning itself.\n\nThis formalization presents the key conceptual components. A complete proof would require thousands of lines defining syntax, proof systems, and primitive recursive functions.",
+    "mathContext": "For any consistent, recursively axiomatizable theory $F \\supseteq Q$ (Robinson arithmetic): $\\exists \\varphi \\in \\mathcal{L}_F$ such that $F \\nvdash \\varphi$ and $F \\nvdash \\neg\\varphi$.",
     "significance": "key",
     "relatedConcepts": [
       "Hilbert's Program",
@@ -25,6 +26,7 @@
     "type": "definition",
     "title": "The Formula Type",
     "content": "We axiomatize `Formula` as an abstract type representing well-formed formulas in our formal system. In a full formalization, this would be an inductive type defining the syntax of first-order arithmetic:\n\n- Variables: $x, y, z, \\ldots$\n- Constants: $0, 1, 2, \\ldots$\n- Functions: $+, \\times, S$ (successor)\n- Relations: $=, <$\n- Logical connectives: $\\land, \\lor, \\neg, \\rightarrow$\n- Quantifiers: $\\forall, \\exists$\n\nEvery formula in Peano Arithmetic can be built from these primitives.",
+    "mathContext": "The language $\\mathcal{L}_{\\text{PA}} = \\{0, S, +, \\times, =, <, \\neg, \\land, \\lor, \\to, \\forall, \\exists\\}$. Each well-formed formula $\\varphi$ is a finite string over this alphabet built by inductive grammar rules.",
     "significance": "key",
     "relatedConcepts": [
       "formal syntax",
@@ -79,6 +81,7 @@
     "type": "insight",
     "title": "Injectivity of Encoding",
     "content": "The Gödel numbering must be **injective**: different formulas get different numbers. This ensures we can uniquely identify formulas by their codes.\n\nGödel used prime factorization for his encoding. For instance, a sequence of symbols $(a_1, a_2, \\ldots, a_n)$ might be encoded as $2^{a_1} \\cdot 3^{a_2} \\cdot 5^{a_3} \\cdots p_n^{a_n}$ where $p_i$ is the $i$th prime. The fundamental theorem of arithmetic guarantees unique decoding.",
+    "mathContext": "The Gödel numbering $\\ulcorner \\cdot \\urcorner : \\text{Formula} \\to \\mathbb{N}$ is injective: $\\ulcorner \\varphi \\urcorner = \\ulcorner \\psi \\urcorner \\Rightarrow \\varphi = \\psi$. Gödel's encoding: $\\ulcorner (a_1, \\ldots, a_n) \\urcorner = \\prod_{i=1}^n p_i^{a_i}$.",
     "significance": "supporting",
     "prerequisites": [
       "ann-godel-numbering"
@@ -243,6 +246,7 @@
     "type": "concept",
     "title": "Death of Hilbert's Program",
     "content": "David Hilbert had proposed that:\n1. All mathematics could be formalized in a complete, consistent system\n2. The consistency of this system could be proved by \"finitary\" means\n\nGödel's First Incompleteness Theorem killed (1): no complete system exists. His Second Incompleteness Theorem killed (2): no consistent system can prove its own consistency.\n\nThis was a shock to the mathematical community. The dream of absolute certainty in mathematics was over.",
+    "mathContext": "Hilbert's Program (1920s): Find $F$ such that (1) $F$ is complete ($\\forall \\varphi, F \\vdash \\varphi$ or $F \\vdash \\neg\\varphi$), (2) $F$ is consistent, and (3) $\\text{Con}(F)$ is provable by finitary means. Gödel showed (1) and (3) are impossible for any $F \\supseteq Q$.",
     "significance": "key",
     "relatedConcepts": [
       "Hilbert",
@@ -261,6 +265,7 @@
     "type": "insight",
     "title": "The Inexhaustibility of Mathematics",
     "content": "Gödel's theorem reveals something profound: mathematical truth is inexhaustible. No matter how many axioms we add, there will always be truths beyond our reach.\n\nWe can always add $G$ as a new axiom—then the system proves what it couldn't before. But immediately, a new Gödel sentence $G'$ emerges that the expanded system cannot prove. It's turtles all the way down.",
+    "mathContext": "For any consistent $F$, define $F_1 = F + G_F$. Then $F_1$ is consistent but has its own Gödel sentence $G_{F_1}$ unprovable in $F_1$. Iterating: $F_\\alpha$ for any recursive ordinal $\\alpha$ still has undecidable sentences.",
     "significance": "key",
     "relatedConcepts": [
       "axiom extension",
@@ -278,6 +283,7 @@
     "type": "concept",
     "title": "Mind vs. Machine",
     "content": "Some philosophers (notably Roger Penrose and J.R. Lucas) have argued that Gödel's theorem shows human minds are not machines—we can \"see\" that $G$ is true even though no formal system can prove it.\n\nThis interpretation is controversial. Critics argue that humans are also subject to limitations, and our \"seeing\" the truth of $G$ depends on assumptions (like consistency) that we cannot verify.\n\nThe debate continues: does mathematical intuition transcend computation, or are we also bounded by our own version of incompleteness?",
+    "mathContext": "Lucas-Penrose argument: if the mind is a Turing machine $T$, then $T$ is consistent, so $G_T$ is true but $T$ cannot prove it — yet we can 'see' $G_T$ is true. Conclusion: mind $\\neq$ Turing machine. Putnam's objection: the argument assumes we can verify $\\text{Con}(T)$.",
     "significance": "supporting",
     "relatedConcepts": [
       "mechanism",
