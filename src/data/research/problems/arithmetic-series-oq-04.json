@@ -1,7 +1,7 @@
 {
   "slug": "arithmetic-series-oq-04",
   "title": "Arithmetic Series: Formalize Faulhaber Formula for Power Sums",
-  "phase": "NEW",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Faulhaber's formula fully formalized as alias of Mathlib sum_Ico_pow. Classical cases p=1,2,3 proved by induction+push_cast+linarith. Gallery entry created with meta.json, annotations.json, index.ts. Lean file builds successfully: 0 sorries, 0 axioms, 14 theorems.",
+    "progressSummary": "COMPLETED: ArithmeticSeriesOQ04.lean and all related files (18+ files) have 0 sorries, 0 axioms. Faulhaber formula fully formalized as alias of Mathlib sum_Ico_pow. Classical cases p=1,2,3 proved. Gallery entry created with meta.json, annotations.json, index.ts.",
     "builtItems": [
       "ArithmeticSeriesOQ04.lean: faulhaber_formula (alias of sum_Ico_pow), faulhaber_formula_range (alias of sum_range_pow)",
       "sum_powers_one/two/three: Gauss sum, sum of squares, sum of cubes (Nicomachus) — proved by induction+push_cast+linarith",
@@ -45,7 +45,9 @@
       "sum_powers_three (Nicomachus): ∑k³=(n(n+1)/2)² — linarith handles after push_cast distributes the cast"
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "No further action — all related Lean files are 0A 0S verified."
+    ]
   },
   "tags": [
     "seeker-selected",
