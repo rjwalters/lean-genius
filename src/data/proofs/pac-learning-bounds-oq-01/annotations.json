@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-file-header",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "context",
+    "title": "File Header and Pedagogical Structure",
+    "content": "The header docstring (lines 1–13) lays out the proof in three parts mirroring the textbook structure of a VC dimension calculation: definitions, lower bound, upper bound, then synthesis. This three-part scaffold (concept + ≥ d + ≤ d + combined = d) is the standard recipe for any VC-dimension proof, and applies verbatim when generalizing to intervals (≥ 2 + ≤ 2), axis-aligned rectangles (≥ 2d + ≤ 2d), or half-spaces in $\\mathbb{R}^d$ (≥ d+1 + ≤ d+1 via Radon's theorem).\n\n**Imports and namespace.** `import Mathlib` brings in all of Mathlib at the cost of compile time, but pays off here because the proof uses scattered API across `Finset`, `Nat`, set comprehension, and `Set` — a focused minimal-imports refactor would name 6–8 specific files. The namespace `LearningTheory.VCDimension` claims a portion of the Mathlib-style namespace tree intended for future expansion: subsequent gallery entries on intervals, half-spaces, etc., would all live under `LearningTheory.VCDimension.Intervals`, `LearningTheory.VCDimension.HalfSpaces`, and so on.\n\n**`open Finset`.** Pulling `Finset` into the local namespace lets the proof write `mem_singleton` instead of `Finset.mem_singleton`, but more importantly it surfaces Finset-specific tactic lemmas (`mem_insert`, `subset_iff`) for `simp` to find automatically. This is a Lean-engineering convenience that becomes structurally important in the upper-bound proof, where `Finset.mem_singleton` and `Finset.subset_singleton_iff` close subgoals via `simp` without explicit naming.",
+    "mathContext": "Three-part VC proof scaffold: (i) define the class, (ii) prove $\\operatorname{VCdim} \\geq d$ by exhibiting a shattered $d$-set, (iii) prove $\\operatorname{VCdim} \\leq d$ by ruling out shattering of $(d+1)$-sets. The scaffold generalizes from thresholds ($d=1$) to intervals ($d=2$), rectangles ($d=2k$), and half-spaces ($d = k+1$ in $\\mathbb{R}^k$).",
+    "significance": "context",
+    "relatedConcepts": [
+      "proof scaffold",
+      "Mathlib namespace conventions",
+      "open declarations",
+      "VC dimension calculation recipe"
+    ],
+    "prerequisites": [
+      "Lean 4 namespace and import system",
+      "Mathlib Finset API"
+    ]
+  },
+  {
     "id": "ann-shatters-def",
     "proofId": "pac-learning-bounds-oq-01",
     "range": {
