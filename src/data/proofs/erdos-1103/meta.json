@@ -48,13 +48,13 @@
     "historicalContext": "Erdős posed this problem around the 1970s as part of his program to understand how multiplicative constraints (squarefreeness) interact with additive structure (sumsets). A number $n$ is squarefree if no prime square $p^2$ divides it — the squarefree numbers have asymptotic density $6/\\pi^2 \\approx 0.608$ by Euler's product formula. Requiring ALL pairwise sums $a + b$ to be squarefree is vastly more restrictive: for each prime $p$, the elements of $A$ must avoid collisions modulo $p^2$, and these constraints interact across all primes simultaneously. The problem connects to the Erdős–Sárközy tradition of studying divisibility properties of sumsets. Van Doorn and Tao (2025) made the first significant quantitative progress, establishing both a polynomial lower bound $a_j > 0.24 \\cdot j^{4/3}$ (via sieve methods and the large sieve inequality) and an upper construction achieving $a_j < \\exp(5j/\\log j)$ (subexponential but superpolynomial). Konyagin complemented this with finite-set bounds: $|A \\cap [1,N]| \\le C \\cdot N^{11/15}$, where the exponent $11/15$ arises from large sieve estimates for squarefree residues. The central question — whether true exponential growth $C^j$ for some $C > 1$ is unavoidable — remains open, with a substantial gap between the known polynomial lower bound and subexponential upper bound.",
     "problemStatement": "Let A be an infinite set of positive integers such that a + b is squarefree for all a, b ∈ A. Must A grow at least exponentially?",
     "text": "For an infinite A ⊆ ℕ with every a+b squarefree, how fast must A grow? Erdős conjectured exponential growth is necessary. van Doorn–Tao (2025) proved bounds: a_j > 0.24·j^{4/3} and a_j < exp(5j/log j).",
-    "proofStrategy": "We define SquarefreeSumset as the condition that all pairwise sums are squarefree, define the increasing enumeration enumSet via Mathlib's Nat.nth, and state the conjecture ErdosProblem1103. Known bounds by van Doorn–Tao and Konyagin are stated as axioms. We then prove erdos_1103_false: the van Doorn–Tao upper bound (subexponential growth exp(5j/log j)) directly refutes the exponential growth conjecture, since for any C > 1, C^j eventually exceeds exp(5j/log j).",
+    "proofStrategy": "We define SquarefreeSumset as the condition that all pairwise sums are squarefree, define the increasing enumeration enumSet via Mathlib's Nat.nth (with enumSet_spec proved from Nat.nth_strictMono / Nat.nth_mem_of_infinite / Nat.nth_count), and state the conjecture ErdosProblem1103. Only the van Doorn–Tao upper bound is stated as an axiom (vanDoorn_tao_upper); the van Doorn–Tao lower bound and Konyagin's finite-set bound are referenced in Lean docstrings but not formalized. We then prove erdos_1103_false: the van Doorn–Tao upper bound (subexponential growth exp(5j/log j)) directly refutes the exponential growth conjecture, since for any C > 1, C^j eventually exceeds exp(5j/log j). The supporting lemma subexp_eventually_lt_exp formalizes this asymptotic comparison.",
     "keyInsights": [
       "The **squarefree sumset condition** links additive combinatorics to multiplicative number theory: $a + b$ must avoid all $p^2$ for every pair, creating a global constraint from local divisibility conditions modulo $p^2$ for each prime $p$",
       "**Van Doorn–Tao's polynomial lower bound** $a_j > 0.24 \\cdot j^{4/3}$ rules out slow polynomial growth but leaves a wide gap to the conjectured exponential growth — the proof uses sieve methods bounding how densely a squarefree-sumset can pack into intervals",
       "The **subexponential upper construction** $a_j < \\exp(5j/\\log j)$ shows that exponential growth is not the only option — this is slower than any $C^j$ for $C > 1$, since $5j/\\log j = o(j)$",
       "**Konyagin's finite-set bound** $|A| \\le C \\cdot N^{11/15}$ uses large sieve techniques for squarefree residues: the exponent $11/15 \\approx 0.733$ quantifies the sparsity forced by the squarefree-sumset constraint",
-      "The formalization axiomatizes **enumSet** as a strictly monotone surjection onto $A$, which is the standard Lean approach for discussing growth rates of infinite sets without constructive well-ordering machinery"
+      "The formalization defines **enumSet** non-axiomatically via Mathlib's `Nat.nth`, deriving its strict monotonicity and range surjectivity from `Nat.nth_strictMono` / `Nat.nth_count` — the standard Lean approach for discussing growth rates of infinite sets without bespoke axioms"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -84,8 +84,8 @@
       "title": "Core Definitions",
       "startLine": 28,
       "endLine": 42,
-      "summary": "Defines `SquarefreeSumset A` requiring $\\forall a, b \\in A, \\text{Squarefree}(a+b)$. Axiomatizes `enumSet A j` as the $j$-th smallest element via `StrictMono` and range surjectivity.",
-      "mathContext": "Formal definition: Defines `SquarefreeSumset A` requiring $\\forall a, b \\in A, \\text{Squarefree}(a+b)$. Axiomatizes `enumSet A j` as the $j$-th smallest element via `StrictMono` and range surjectivity."
+      "summary": "Defines `SquarefreeSumset A` requiring $\\forall a, b \\in A, \\text{Squarefree}(a+b)$. Defines `enumSet A j` (the $j$-th smallest element) as `Nat.nth (· ∈ A) j`, and proves `enumSet_spec`: for infinite `A`, `enumSet A` is `StrictMono` and surjects onto `A` (via Mathlib's `Nat.nth_strictMono`, `Nat.nth_mem_of_infinite`, `Nat.nth_count`). No axioms in this section.",
+      "mathContext": "Formal definition: `SquarefreeSumset A := ∀ a ∈ A, ∀ b ∈ A, Squarefree (a + b)`. The increasing enumeration $a_j$ of an infinite $A$ is defined non-axiomatically via `Nat.nth`."
     },
     {
       "id": "conjecture",
@@ -108,24 +108,24 @@
       "title": "Van Doorn–Tao Lower Bound",
       "startLine": 62,
       "endLine": 66,
-      "summary": "Axiomatizes the universal lower bound $a_j > 0.24 \\cdot j^{4/3}$ for all infinite squarefree-sumset sequences, ruling out polynomial growth slower than $j^{4/3}$.",
-      "mathContext": "Axiomatized: Axiomatizes the universal lower bound $a_j > 0.24 \\cdot j^{4/3}$ for all infinite squarefree-sumset sequences, ruling out polynomial growth slower than $j^{4/3}$."
+      "summary": "Documents the van Doorn–Tao lower bound $a_j > 0.24 \\cdot j^{4/3}$ via a Lean docstring only; not axiomatized in this file. The lower bound is not used in the proof of `erdos_1103_false`.",
+      "mathContext": "Cited (not formalized): $a_j > 0.24 \\cdot j^{4/3}$ for all infinite squarefree-sumset sequences, ruling out polynomial growth slower than $j^{4/3}$."
     },
     {
       "id": "konyagin",
       "title": "Konyagin Finite Bound",
       "startLine": 67,
       "endLine": 74,
-      "summary": "Axiomatizes $|A| \\le C \\cdot N^{11/15}$ for finite $A \\subseteq \\{1,\\ldots,N\\}$ with squarefree sumset, quantifying sparsity via the large sieve.",
-      "mathContext": "Axiomatized: Axiomatizes $|A| \\le C \\cdot N^{11/15}$ for finite $A \\subseteq \\{1,\\ldots,N\\}$ with squarefree sumset, quantifying sparsity via the large sieve."
+      "summary": "Documents Konyagin's bound $|A| \\le C \\cdot N^{11/15}$ for finite $A \\subseteq \\{1,\\ldots,N\\}$ with squarefree sumset via a Lean docstring only; not axiomatized in this file.",
+      "mathContext": "Cited (not formalized): $|A| \\ll N^{11/15 + o(1)}$, quantifying sparsity via the large sieve."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 75,
       "endLine": 92,
-      "summary": "Proves `SquarefreeSumset \\emptyset` (vacuous), subset monotonicity, and `squarefree_one`. Axiomatizes the singleton characterization: $\\text{SquarefreeSumset}\\{a\\} \\iff \\text{Squarefree}(2a)$.",
-      "mathContext": "Verified: Proves `SquarefreeSumset \\emptyset` (vacuous), subset monotonicity, and `squarefree_one`. Axiomatizes the singleton characterization: $\\text{SquarefreeSumset}\\{a\\} \\iff \\text{Squarefree}(2a)$."
+      "summary": "Proves `SquarefreeSumset \\emptyset` (vacuous), subset monotonicity, `squarefree_one`, and the singleton characterization $\\text{SquarefreeSumset}\\{a\\} \\iff \\text{Squarefree}(2a)$. Also proves a pair characterization. All by direct unfolding (`simp [SquarefreeSumset]`); no axioms.",
+      "mathContext": "Verified theorems: empty/singleton/pair sumset characterizations and subset monotonicity, all proved without axioms."
     }
   ],
   "crossReferences": [
