@@ -54,14 +54,10 @@
       "guaranteedDistinctDistances function f(n)",
       "erdos982Conjecture formal statement",
       "moser_bound axiom (1952 result)",
-      "erdos_fishburn_bound axiom (1994 result)",
-      "dumitrescu_bound axiom (2006 result)",
       "nppz_bound axiom (2013 result)",
       "regular_polygon_distances optimality",
       "triangle_case, quadrilateral_case, pentagon_case small examples",
       "strongerConjectureDisproved connecting to Problem #97",
-      "acute_triangle_counterexample for curve conjecture",
-      "barany_roldan_pensado weakened curve result",
       "currentGap analysis of known vs conjectured bounds",
       "erdos_982_status main theorem summarizing state of knowledge"
     ],
@@ -114,18 +110,18 @@
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "summary": "moser_bound, erdos_fishburn_bound, dumitrescu_bound, nppz_bound axioms",
+      "summary": "moser_bound, nppz_bound axioms",
       "startLine": 126,
       "endLine": 169,
-      "mathContext": "Axiomatized: moser_bound, erdos_fishburn_bound, dumitrescu_bound, nppz_bound axioms"
+      "mathContext": "Axiomatized: moser_bound, nppz_bound axioms"
     },
     {
       "id": "regular-polygon",
       "title": "Regular Polygon Optimality",
-      "summary": "regular_polygon_distances, upper_bound_on_f axioms",
+      "summary": "regular_polygon_distances axiom",
       "startLine": 170,
       "endLine": 192,
-      "mathContext": "Axiomatized: regular_polygon_distances, upper_bound_on_f axioms"
+      "mathContext": "Axiomatized: regular_polygon_distances axiom"
     },
     {
       "id": "small-cases",
@@ -146,10 +142,10 @@
     {
       "id": "curve-generalization",
       "title": "Convex Curve Generalization",
-      "summary": "acute_triangle_counterexample, barany_roldan_pensado results",
+      "summary": "Barany-Roldan-Pensado convex curve counterexample (commentary only)",
       "startLine": 262,
       "endLine": 293,
-      "mathContext": "Mathematical content: acute_triangle_counterexample, barany_roldan_pensado results"
+      "mathContext": "Mathematical content: Convex curve generalization discussed in comments; not formalized as axioms or theorems"
     },
     {
       "id": "gap-analysis",
