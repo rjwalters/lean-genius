@@ -552,17 +552,15 @@ theorem degree_bounded_implies_sparse [Fintype α] (F : Finset (Finset α)) (d :
       ext x; simp only [Finset.mem_filter]
       exact ⟨fun h => h.2, fun h => ⟨hfsub h, h⟩⟩
     rw [heq]
-  -- Step 3: Swap order of summation via indicator.
+  -- Step 3: Swap order of summation via Finset.sum_comm'.
+  -- Both sides count |{(f, x) : f ∈ FX, x ∈ X, x ∈ f}|.
   have step3 : ∑ f ∈ FX, (X.filter (· ∈ f)).card
              = ∑ x ∈ X, (FX.filter (x ∈ ·)).card := by
-    calc ∑ f ∈ FX, (X.filter (· ∈ f)).card
-        = ∑ f ∈ FX, ∑ x ∈ X, (if x ∈ f then 1 else 0 : ℕ) := by
-          apply Finset.sum_congr rfl; intro f _
-          rw [Finset.card_eq_sum_ones, Finset.sum_filter]
-      _ = ∑ x ∈ X, ∑ f ∈ FX, (if x ∈ f then 1 else 0 : ℕ) := Finset.sum_comm
-      _ = ∑ x ∈ X, (FX.filter (x ∈ ·)).card := by
-          apply Finset.sum_congr rfl; intro x _
-          rw [Finset.card_eq_sum_ones, Finset.sum_filter]
+    simp_rw [Finset.card_eq_sum_ones]
+    apply Finset.sum_comm'
+    intros f x
+    simp only [Finset.mem_filter]
+    tauto
   -- Step 4: each fiber size ≤ d, by monotonicity of degree.
   have step4 : ∀ x ∈ X, (FX.filter (x ∈ ·)).card ≤ d := by
     intro x _
