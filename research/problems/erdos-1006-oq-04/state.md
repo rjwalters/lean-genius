@@ -1,25 +1,26 @@
 # Research State: erdos-1006-oq-04
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-03-30T11:03:19-07:00
+**Since**: 2026-04-03 (DONE per JSON; state.md sync 2026-04-27)
 **Iteration**: 1
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Completed. `proofs/Proofs/Erdos1006OQ04.lean` has 11 theorems, 0 sorries,
+0 axioms — DAG structure of the coloring orientation
+(rank strictness, sources/sinks, arc-iff, no back-arcs, no same-level arcs).
 
 ## Active Approach
-None yet.
+None — work is done.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1 (direct DAG structure proof)
 
 ## Blockers
 None.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+None — problem complete. Pool entry will be marked completed and claim released.

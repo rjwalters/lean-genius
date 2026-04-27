@@ -853,8 +853,10 @@ theorem hausdorff_free_subgroup :
     (4) Extension to B³ \ {0}
     (5) Handle the center point separately -/
 -- AXIOMATIZED: Banach-Tarski 1924 (proof requires 800+ lines via Hausdorff
--- paradox + Axiom of Choice; provably unprovable in ZF alone)
-theorem banach_tarski :
+-- paradox + Axiom of Choice; provably unprovable in ZF alone — Solovay 1970).
+-- Declared as `axiom` (rather than a placeholder proof) so that the
+-- mathematical assumption is tracked explicitly per the axiom integrity policy.
+axiom banach_tarski :
     ∃ (n : ℕ) (pieces : Fin n → Set (EuclideanSpace ℝ (Fin 3)))
       (g₁ g₂ : Fin n → EuclideanSpace ℝ (Fin 3) ≃ᵢ EuclideanSpace ℝ (Fin 3)),
     -- The pieces partition the unit ball
@@ -867,8 +869,7 @@ theorem banach_tarski :
     -- Second reassembly: cover ball #2 (a translate of the unit ball)
     (fun x => x + (2 : ℝ) • (EuclideanSpace.single (0 : Fin 3) 1 : EuclideanSpace ℝ (Fin 3))) ''
       unitBall3 = ⋃ i, g₂ i '' pieces i ∧
-    (∀ i j, i ≠ j → Disjoint (g₂ i '' pieces i) (g₂ j '' pieces j)) := by
-  sorry
+    (∀ i j, i ≠ j → Disjoint (g₂ i '' pieces i) (g₂ j '' pieces j))
 
 /-- **Corollary**: The pieces in the Banach-Tarski decomposition are
     non-Lebesgue-measurable.
