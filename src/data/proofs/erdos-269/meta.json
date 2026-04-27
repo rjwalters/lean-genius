@@ -62,10 +62,11 @@
       "erdos_269_distinct axiom: distinct-term series is irrational",
       "twoThreeSmooth example: P = {2,3}",
       "lcmPadicVal definition: p-adic valuation of L_n",
-      "distinctLcmSeries definition: series without duplicate terms"
+      "distinctLcmSeries definition: series without duplicate terms",
+      "pow_isPSmooth: p^k is P-smooth for prime p ∈ P, k ≥ 1 (structural building block for P infinite ⇒ {a_n} infinite)"
     ],
     "axiomCount": 3,
-    "lineCount": 287,
+    "lineCount": 303,
     "assumptions": "3 axiom(s): erdos_269 (main conjecture, OPEN), erdos_269_infinite (infinite P case), erdos_269_distinct (distinct LCM case). Former axiom smoothSeq_zero now proved."
   },
   "overview": {
@@ -201,9 +202,9 @@
       "Finset"
     ],
     "namespace": "Erdos269",
-    "lineCount": 287,
+    "lineCount": 303,
     "axiomCount": 3,
-    "theoremCount": 14,
+    "theoremCount": 15,
     "definitionCount": 9,
     "path": "Proofs/Erdos269Problem.lean",
     "sorries": 0

@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-12T22:30:27.389Z",
-    "iteration": 2,
-    "focus": "Axiom elimination + Mathlib compatibility fixes",
+    "iteration": 3,
+    "focus": "Surveyed; problem essentially complete with appropriate axiomatization. Added one routine structural lemma.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Move to other problems. Future deep work: formalize the infinite-P case using irrationality criterion + p-adic estimates (substantial multi-session effort).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,13 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 3A appropriate, 14T proved (+2 structural: partialLcm_dvd_succ, smoothSeq_dvd_partialLcm), 0S. Fixed meta.json stale originalContributions and lineCount.",
+    "progressSummary": "ROUTINE: Added pow_isPSmooth structural lemma. Total: 15T, 3A (all appropriate), 0S, 303 lines. No further axiom elimination possible — the three remaining axioms (erdos_269 finite OPEN, erdos_269_infinite, erdos_269_distinct) require deep analytic infrastructure beyond Mathlib.",
     "builtItems": [
       "theorem smoothSeq_zero (Nat.nth_count proof, 8 lines)",
       "Fixed one_isPSmooth (2 lines, simpler proof)",
       "Fixed partialLcm_succ, erdos_269_equivalent, lcmPadicVal",
       "partialLcm_dvd_succ: L_n | L_{n+1} (Nat.dvd_lcm_left)",
-      "smoothSeq_dvd_partialLcm: a_k | L_n for k < n (Finset.dvd_lcm)"
+      "smoothSeq_dvd_partialLcm: a_k | L_n for k < n (Finset.dvd_lcm)",
+      "pow_isPSmooth (Erdos269Problem.lean:~78): p^k is P-smooth for prime p ∈ P and k ≥ 1 (structural building block for P infinite ⇒ {a_n} infinite). Adds 1 theorem (14→15), 16 lines (287→303). Axiom count unchanged (3) — no further reduction possible per prior session."
     ],
     "insights": [
       "smoothSeq_zero provable: 1 is min P-smooth number (count 1 = 0 since IsPSmooth P 0 fails)",
@@ -70,7 +71,7 @@
     "mathlib": []
   },
   "started": "2026-01-12T22:30:27.390Z",
-  "lastUpdate": "2026-03-29T18:10:00.000Z",
+  "lastUpdate": "2026-04-27T17:15:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [

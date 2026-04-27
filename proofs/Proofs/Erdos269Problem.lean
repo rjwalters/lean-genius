@@ -74,6 +74,22 @@ theorem isPSmooth_mul {P : Set ℕ} {m n : ℕ} (hm : IsPSmooth P m) (hn : IsPSm
     · exact hm.2 p hp h
     · exact hn.2 p hp h
 
+/-- Powers of a prime in P are P-smooth: if p ∈ P is prime and k ≥ 1, then p^k is P-smooth.
+
+This is the structural building block for the "P infinite ⇒ {a_n} infinite" argument:
+if any prime p lies in P, then the powers p, p², p³, ... give infinitely many P-smooth
+numbers, so the smoothSeq sequence is well-defined for all indices. -/
+theorem pow_isPSmooth {P : Set ℕ} {p : ℕ} (hp : p.Prime) (hpP : p ∈ P)
+    {k : ℕ} (hk : 1 ≤ k) : IsPSmooth P (p ^ k) := by
+  refine ⟨Nat.pos_pow_of_pos k hp.pos, ?_⟩
+  intro q hq hdiv
+  -- q is prime and q ∣ p^k, so q ∣ p
+  have hqp : q ∣ p := hq.dvd_of_dvd_pow hdiv
+  -- q is prime divisor of prime p, so q = p
+  have heq : q = p :=
+    (Nat.Prime.eq_one_or_self_of_dvd hp q hqp).resolve_left hq.ne_one
+  rwa [heq]
+
 /- ## Part II: The Sequence of P-smooth Numbers -/
 
 /--
