@@ -52,18 +52,15 @@
       "maxDistinctDistances function for maximum over all vertices",
       "InConvexPosition predicate for convex polygon vertices",
       "guaranteedDistinctDistances function f(n)",
-      "erdos982Conjecture formal statement",
+      "erdos982Conjecture and erdos982Conjecture' formal statements",
       "moser_bound axiom (1952 result)",
-      "erdos_fishburn_bound axiom (1994 result)",
-      "dumitrescu_bound axiom (2006 result)",
       "nppz_bound axiom (2013 result)",
-      "regular_polygon_distances optimality",
-      "triangle_case, quadrilateral_case, pentagon_case small examples",
-      "strongerConjectureDisproved connecting to Problem #97",
-      "acute_triangle_counterexample for curve conjecture",
-      "barany_roldan_pensado weakened curve result",
-      "currentGap analysis of known vs conjectured bounds",
-      "erdos_982_status main theorem summarizing state of knowledge"
+      "regular_polygon_distances axiom for optimality",
+      "triangle_case, quadrilateral_case, pentagon_case small examples (with sorries)",
+      "strongerConjectureDisproved definition and stronger_conjecture_is_false axiom (Problem #97 connection)",
+      "currentGap definition and gap_value theorem analyzing the known vs conjectured gap",
+      "erdos_982_status main theorem summarizing the state of knowledge",
+      "erdos_982_summary final theorem (with sorry for the Erdős-Fishburn step)"
     ],
     "axiomCount": 4,
     "lineCount": 333,
@@ -114,18 +111,18 @@
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "summary": "moser_bound, erdos_fishburn_bound, dumitrescu_bound, nppz_bound axioms",
+      "summary": "moser_bound, nppz_bound axioms (Erdős-Fishburn and Dumitrescu mentioned in docstrings only)",
       "startLine": 126,
       "endLine": 169,
-      "mathContext": "Axiomatized: moser_bound, erdos_fishburn_bound, dumitrescu_bound, nppz_bound axioms"
+      "mathContext": "Axiomatized: moser_bound, nppz_bound axioms (Erdős-Fishburn and Dumitrescu bounds appear as docstrings without corresponding axiom declarations)"
     },
     {
       "id": "regular-polygon",
       "title": "Regular Polygon Optimality",
-      "summary": "regular_polygon_distances, upper_bound_on_f axioms",
+      "summary": "regular_polygon_distances axiom (upper_bound_on_f only as docstring)",
       "startLine": 170,
       "endLine": 192,
-      "mathContext": "Axiomatized: regular_polygon_distances, upper_bound_on_f axioms"
+      "mathContext": "Axiomatized: regular_polygon_distances axiom (upper bound mentioned in docstring without corresponding declaration)"
     },
     {
       "id": "small-cases",
@@ -133,7 +130,7 @@
       "summary": "triangle_case, quadrilateral_case, pentagon_case theorems",
       "startLine": 193,
       "endLine": 236,
-      "mathContext": "Verified: triangle_case, quadrilateral_case, pentagon_case theorems"
+      "mathContext": "triangle_case and quadrilateral_case use sorry; pentagon_case is proved via moser_bound"
     },
     {
       "id": "related-problem",
@@ -146,10 +143,10 @@
     {
       "id": "curve-generalization",
       "title": "Convex Curve Generalization",
-      "summary": "acute_triangle_counterexample, barany_roldan_pensado results",
+      "summary": "Convex curve generalization (descriptive docstrings only, no Lean declarations)",
       "startLine": 262,
       "endLine": 293,
-      "mathContext": "Mathematical content: acute_triangle_counterexample, barany_roldan_pensado results"
+      "mathContext": "Documentation only: Bárány-Roldán-Pensado curve counterexamples described in docstrings without corresponding Lean declarations"
     },
     {
       "id": "gap-analysis",
@@ -165,7 +162,7 @@
       "summary": "erdos_982_status, erdos_982_summary final theorems",
       "startLine": 314,
       "endLine": 333,
-      "mathContext": "Verified: erdos_982_status, erdos_982_summary final theorems"
+      "mathContext": "erdos_982_status proved via the two axioms; erdos_982_summary contains a sorry for the Erdős-Fishburn step"
     }
   ],
   "conclusion": {
