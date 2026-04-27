@@ -1,8 +1,8 @@
 {
   "id": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-  "title": "Nonderogatory to Cyclic Vector: Binary Prime Power Case",
+  "title": "Nonderogatory to Cyclic Vector: General Case via Primary Decomposition (Axiom-Free)",
   "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-  "description": "Proves the cyclic vector theorem for nonderogatory matrices whose minimal polynomial factors as p^a * q^b (p, q distinct monic irreducibles, coprime, a >= 1, b >= 1) over any field K. Combines CRT/Bezout projections from WIP02 with prime power divisibility from WIP03.",
+  "description": "Proves the cyclic vector theorem for ALL nonderogatory matrices over any field K, with 0 sorries and 0 axioms. Includes fully general wrapper that automatically factors minpoly using UFD structure of K[X]. Uses primary decomposition via Bezout projections.",
   "meta": {
     "author": "Classical linear algebra (CRT + prime power divisibility)",
     "sourceUrl": "",
@@ -21,8 +21,8 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 421,
-    "assumptions": "None. Axiom-free proof using CRT/Bezout projections and prime power divisibility by induction.",
+    "lineCount": 519,
+    "assumptions": "None. Fully axiom-free. The wrapper theorem nonderogatory_has_cyclic_vector requires only IsNonderogatory M.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {

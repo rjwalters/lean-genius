@@ -1,7 +1,33 @@
 # Knowledge: Complete Nonderogatory to Cyclic Vector (All Fields)
 
 **Problem**: `cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01`
-**Status**: COMPLETED — WIP04 proves the GENERAL case (any k factors, k ≥ 1) axiom-free. Build verified. PR #12973.
+**Status**: COMPLETED — WIP04 now fully general: UFD wrapper eliminates factored-form hypothesis. 519 lines, 0 sorries, 0 axioms.
+
+## Session 2026-04-27 (Session 6) - UFD Wrapper: Fully General Theorem
+
+**Mode**: REVISIT
+**Outcome**: completed
+
+### What I Did
+
+- Added `nonderogatory_has_cyclic_vector` to WIP04: the fully general theorem requiring only `IsNonderogatory M`
+- Added `multiset_prod_eq_finset_pow_count` helper: proves s.prod = prod over toFinset of x^count
+- Uses `normalizedFactors`, `Finset.equivFin`, `Fintype.prod_equiv` for the UFD bridge
+- Build verified via Docker: 0 sorries, 0 axioms, 519 lines
+
+### Key Findings
+
+- **UFD bridge pattern**: normalizedFactors -> toFinset -> equivFin.symm -> Fin k indexing
+- **Monicity of factors**: normalize_normalized_factor + Polynomial.normalize_monic
+- **Coprimality**: Associated.normalize_eq + Prime.coprime_iff_not_dvd + IsCoprime.pow_pow
+- **Product reconstruction**: prove nf.prod = mu by monic Associated argument (Multiset.prod_induction)
+
+### Files Modified
+
+- `proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean` (added Sec IV-V, ~160 lines)
+- `src/data/proofs/cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04/meta.json` (updated)
+
+---
 
 ## Session 2026-04-26 (Session 5) - WIP04: General Case (All k factors) Proved
 

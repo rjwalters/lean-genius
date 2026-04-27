@@ -174,7 +174,7 @@ private lemma mulVec_finset_sum (A : Matrix (Fin n) (Fin n) K)
     (pairwise coprime, each p_i irreducible monic, e_i ≥ 1),
     M has a cyclic vector over any field K. -/
 theorem nonderogatory_general_has_cyclic_vector
-    {k : ℕ} (hk : 0 < k)
+    {k : ℕ} (_hk : 0 < k)
     (M : Matrix (Fin n) (Fin n) K)
     (h_nd : IsNonderogatory M)
     (p : Fin k → K[X]) (e : Fin k → ℕ)
@@ -327,16 +327,181 @@ theorem nonderogatory_general_has_cyclic_vector
   exact absurd (h_deg ▸ Polynomial.natDegree_le_of_dvd h_prod_dvd hr_ne) (by omega)
 
 -- ============================================================
--- SECTION IV: Commentary
+-- SECTION IV: Multiset Product Reconstruction Helper
 -- ============================================================
 
-/-!
+/-- A multiset's product equals the Finset-indexed product of elements raised to their counts.
+    Standard identity: for s : Multiset α, s.prod = ∏ x ∈ s.toFinset, x ^ s.count x. -/
+private lemma multiset_prod_eq_finset_pow_count [DecidableEq K[X]]
+    (s : Multiset K[X]) :
+    s.prod = ∏ x ∈ s.toFinset, x ^ s.count x := by
+  induction s using Multiset.induction with
+  | empty => simp
+  | cons a t ih =>
+    rw [Multiset.prod_cons]
+    by_cases ha : a ∈ t
+    · -- a already in t: count increases by 1
+      rw [Multiset.toFinset_cons, Finset.insert_eq_of_mem (Multiset.mem_toFinset.mpr ha)]
+      rw [ih, Finset.mul_prod_erase _ _ (Multiset.mem_toFinset.mpr ha)]
+      congr 1
+      · rw [Multiset.count_cons_self, pow_succ]
+      · apply Finset.prod_congr rfl
+        intro x hx
+        have hxa : x ≠ a := fun h => by
+          rw [h] at hx; exact (Finset.not_mem_erase a _) hx
+        rw [Multiset.count_cons_of_ne hxa]
+    · -- a is new: insert into toFinset
+      rw [Multiset.toFinset_cons, Finset.prod_insert (by rwa [Multiset.mem_toFinset])]
+      rw [Multiset.count_cons_self, Multiset.count_eq_zero.mpr ha, pow_succ, pow_zero, one_mul]
+      congr 1
+      rw [ih]
+      apply Finset.prod_congr
+      · ext x; simp only [Finset.mem_insert, Multiset.mem_toFinset, Multiset.mem_cons]
+        constructor
+        · rintro (rfl | hx)
+          · exact Or.inl rfl
+          · exact Or.inr hx
+        · rintro (rfl | hx)
+          · exact Or.inl rfl
+          · exact Or.inr hx
+      · intro x hx
+        have hxa : x ≠ a := fun h => by
+          subst h; exact ha (Multiset.mem_toFinset.mp hx)
+        rw [Multiset.count_cons_of_ne hxa]
+
+-- ============================================================
+-- SECTION V: UFD Wrapper — Fully General Theorem
+-- ============================================================
+
+/-- **Fully General Theorem**: Every nonderogatory matrix has a cyclic vector.
+
+    This wraps `nonderogatory_general_has_cyclic_vector` by automatically factoring
+    `minpoly K M` using the UFD structure of K[X]. No factored-form hypothesis needed. -/
+theorem nonderogatory_has_cyclic_vector
+    (M : Matrix (Fin n) (Fin n) K) (h_nd : IsNonderogatory M) :
+    ∃ v : Fin n → K, IsCyclicVector M v := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · exact ⟨Fin.elim0, fun r hr _ => by omega⟩
+  -- Minpoly setup
+  have hμ_monic : (minpoly K M).Monic := minpoly.monic (isIntegral M)
+  have hμ_ne : minpoly K M ≠ 0 := hμ_monic.ne_zero
+  have h_deg : (minpoly K M).natDegree = n := by
+    rw [h_nd, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]
+  have hμ_not_unit : ¬IsUnit (minpoly K M) := by
+    intro h; exact absurd (Polynomial.natDegree_eq_zero_of_isUnit h) (by omega)
+  -- Get normalized factors of minpoly
+  classical
+  set nf := UniqueFactorizationMonoid.normalizedFactors (minpoly K M) with hnf_def
+  set S := nf.toFinset with hS_def
+  -- S is nonempty (minpoly is not a unit and not zero)
+  have hnf_nonempty : nf ≠ 0 := by
+    intro h
+    rcases (UniqueFactorizationMonoid.normalizedFactors_eq_zero.mp h) with h0 | hu
+    · exact hμ_ne h0
+    · exact hμ_not_unit hu
+  have hS_ne : S.Nonempty := by
+    rw [Finset.nonempty_iff_ne_empty, ne_eq, Multiset.toFinset_eq_empty]
+    exact hnf_nonempty
+  set k := S.card with hk_def
+  have hk : 0 < k := Finset.card_pos.mpr hS_ne
+  -- Equivalence Fin k ≃ ↥S
+  let ψ := S.equivFin.symm
+  -- Define irreducible factors and their exponents
+  let p : Fin k → K[X] := fun i => (ψ i : K[X])
+  let e : Fin k → ℕ := fun i => nf.count (p i)
+  -- Each p i is in the normalized factors
+  have hp_mem : ∀ i, p i ∈ nf := fun i =>
+    Multiset.mem_toFinset.mp (ψ i).prop
+  -- Irreducibility
+  have hp_irr : ∀ i, Irreducible (p i) := fun i =>
+    UniqueFactorizationMonoid.irreducible_of_normalized_factor _ (hp_mem i)
+  -- Monicity: normalized factors of a monic polynomial are monic
+  have hp_monic : ∀ i, (p i).Monic := fun i => by
+    have hnorm := UniqueFactorizationMonoid.normalize_normalized_factor (p i) (hp_mem i)
+    have hne := (hp_irr i).ne_zero
+    rw [← hnorm]
+    exact Polynomial.normalize_monic hne
+  -- Positive exponents
+  have he_pos : ∀ i, 0 < e i := fun i =>
+    Multiset.count_pos.mpr (hp_mem i)
+  -- Injectivity: distinct indices give distinct factors
+  have hp_inj : ∀ i j : Fin k, p i = p j → i = j := fun i j h => by
+    exact ψ.injective (Subtype.ext h)
+  -- Pairwise coprimality
+  have hcoprime : ∀ i j : Fin k, i ≠ j → IsCoprime (p i ^ e i) (p j ^ e j) := by
+    intro i j hij
+    apply IsCoprime.pow_pow
+    -- Distinct monic irreducibles are coprime
+    have hpi_prime := UniqueFactorizationMonoid.irreducible_iff_prime.mp (hp_irr i)
+    apply hpi_prime.coprime_iff_not_dvd.mpr
+    intro hdvd
+    -- p i ∣ p j with both irreducible → associated
+    have hassoc : Associated (p i) (p j) :=
+      hdvd.associated_of_irreducible (hp_irr i) (hp_irr j)
+    -- Both normalized → associated implies equal
+    have heq : p i = p j := by
+      have h1 := UniqueFactorizationMonoid.normalize_normalized_factor (p i) (hp_mem i)
+      have h2 := UniqueFactorizationMonoid.normalize_normalized_factor (p j) (hp_mem j)
+      rw [← h1, ← h2]
+      exact Associated.normalize_eq hassoc
+    exact hij (hp_inj i j heq)
+  -- Product reconstruction: minpoly = ∏ i, p i ^ e i
+  have hprod : minpoly K M = ∏ i : Fin k, p i ^ e i := by
+    -- Step 1: nf.prod = minpoly K M (since minpoly is monic, normalize = id)
+    have h_nf_prod : nf.prod = minpoly K M := by
+      have hassoc := UniqueFactorizationMonoid.normalizedFactors_prod hμ_ne
+      rw [Associated] at hassoc
+      obtain ⟨u, hu⟩ := hassoc
+      -- nf.prod * u = minpoly, both monic → u = 1
+      have h_prod_monic : nf.prod.Monic := by
+        apply Multiset.prod_induction _ (fun q => q.Monic)
+        · intro a b ha hb; exact ha.mul hb
+        · exact Polynomial.monic_one
+        · intro q hq
+          have hn := UniqueFactorizationMonoid.normalize_normalized_factor q hq
+          have hne := UniqueFactorizationMonoid.ne_zero_of_mem_normalizedFactors hq
+          rw [← hn]; exact Polynomial.normalize_monic hne
+      have : (u : K[X]) = 1 := by
+        have h1 := h_prod_monic.leadingCoeff
+        have h2 := hμ_monic.leadingCoeff
+        rw [hu] at h2
+        simp only [Polynomial.leadingCoeff_mul] at h2
+        rw [h1, one_mul] at h2
+        ext; simp [Polynomial.leadingCoeff, h2]
+      rw [hu, this, Units.val_one, mul_one]
+    -- Step 2: nf.prod = ∏ q ∈ S, q ^ nf.count q (multiset identity)
+    have h_prod_finset : nf.prod = ∏ q ∈ S, q ^ nf.count q :=
+      multiset_prod_eq_finset_pow_count nf
+    -- Step 3: Reindex ∏ q ∈ S, ... = ∏ i : Fin k, p i ^ e i
+    have h_reindex : ∏ q ∈ S, q ^ nf.count q = ∏ i : Fin k, p i ^ e i := by
+      rw [← Finset.prod_coe_sort S (fun q => q ^ nf.count q)]
+      exact Fintype.prod_equiv ψ
+        (fun i => p i ^ e i)
+        (fun s => (s : K[X]) ^ nf.count (s : K[X]))
+        (fun i => rfl)
+    rw [← h_reindex, ← h_prod_finset, h_nf_prod]
+  -- Apply the main theorem
+  exact nonderogatory_general_has_cyclic_vector hk M h_nd p e hp_irr hp_monic he_pos hcoprime hprod
+
+-- ============================================================
+-- SECTION VI: Commentary
+-- ============================================================
+
+/-
 ### Completeness
 
-WIP04 proves the cyclic vector theorem axiom-free for nonderogatory M, given the
-factored form of minpoly K M. To complete the fully general theorem:
-1. Factor minpoly K M using K[X] as a UFD (available in Mathlib via `UniqueFactorizationMonoid`).
-2. Apply `nonderogatory_general_has_cyclic_vector`.
+WIP04 now provides the FULLY GENERAL theorem `nonderogatory_has_cyclic_vector`:
+for any nonderogatory matrix M over any field K, M has a cyclic vector.
+No factored-form hypothesis is needed — the UFD factorization of K[X] handles
+decomposition automatically.
+
+### Architecture
+
+The proof has two layers:
+1. `nonderogatory_general_has_cyclic_vector` (Sec III): the algebraic core, taking
+   the factored form of minpoly as input. Uses primary decomposition via Bezout.
+2. `nonderogatory_has_cyclic_vector` (Sec V): the UFD wrapper, automatically
+   factoring minpoly K M into prime power factors and bridging to the core theorem.
 
 ### Technical Insight
 
@@ -349,11 +514,6 @@ and p_i^{e_i}(M)·v_i = 0, which follows directly from the construction.
 
 The axiom in WIP01 (`nonderogatory_similar_to_companion`) is unnecessary:
 the cyclic vector theorem holds without rational canonical form.
-
-### Open Question
-
-Can the factorization hypotheses be eliminated by using the UFD structure of K[X]
-to automatically decompose minpoly K M into prime power factors?
 -/
 
 end GeneralCyclicVector

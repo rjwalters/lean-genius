@@ -36,9 +36,9 @@
     "phase": "COMPLETED",
     "since": "2026-04-26T00:00:00+00:00",
     "iteration": 2,
-    "focus": "WIP04 built and verified: axiom-free proof of general nonderogatory cyclic vector theorem via primary decomposition",
+    "focus": "UFD wrapper added: fully general theorem nonderogatory_has_cyclic_vector needs only IsNonderogatory M",
     "blockers": [],
-    "nextAction": "PR merged; follow-up: generalize to eliminate factored-form input hypothesis via UFD factorization",
+    "nextAction": "Completed. Both core theorem and UFD wrapper verified. No remaining sorries.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: WIP04 proves the general nonderogatory cyclic vector theorem axiom-free (352 lines, 0 sorries, 0 axioms) using primary decomposition via Bezout projections. Build verified. Supersedes WIP01 by eliminating the rational canonical form axiom.",
+    "progressSummary": "COMPLETED: WIP04 proves the FULLY GENERAL nonderogatory cyclic vector theorem axiom-free (519 lines, 0 sorries, 0 axioms). The wrapper theorem nonderogatory_has_cyclic_vector automatically factors minpoly using UFD. Build verified.",
     "builtItems": [
       "proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean:1 \u2014 complete axiom-free proof of general nonderogatory cyclic vector via primary decomposition (352 lines, 0 sorries, 0 axioms)",
       "src/data/proofs/cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04/meta.json \u2014 gallery metadata for WIP04",
