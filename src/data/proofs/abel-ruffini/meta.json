@@ -673,6 +673,20 @@
       "note": "The most widely-used graduate algebra textbook, with a complete treatment of Galois theory including the Abel-Ruffini theorem (Chapter 14). Contains the discriminant criterion for determining whether Gal(f) ⊆ Aₙ and explicit Galois group computations for specific quintics — the gap between the abstract theorem and concrete examples"
     },
     {
+      "authors": "Cox, David A.",
+      "title": "Galois Theory",
+      "year": "2012",
+      "venue": "John Wiley & Sons, 2nd edition (Pure and Applied Mathematics)",
+      "note": "The most widely-used dedicated Galois theory textbook in the English-speaking world. Cox develops the subject from Cardano's cubic and Ferrari's quartic through Lagrange resolvents, Abel's 1824 proof (presented in its original form, not just the Galois-theoretic recasting), and Galois's solvability criterion. Chapter 8 (Solvability by Radicals) gives a complete elementary proof of Abel-Ruffini, and Chapter 13 covers the geometric construction problems (compass-and-straightedge constructibility, the regular n-gon). Notably distinguishes Abel's structural argument (analyzing the form of radical expressions) from Galois's group-theoretic recasting — a historiographic point that the Lean formalization in this entry follows the modern Galois route, while Abel's original combinatorial argument over radical towers remains unformalized in any proof assistant"
+    },
+    {
+      "authors": "Rotman, Joseph J.",
+      "title": "Galois Theory",
+      "year": "1998",
+      "venue": "Springer Universitext, 2nd edition",
+      "note": "Compact, rigorous treatment emphasizing the structure of solvable extensions and the proof that Sₙ is not solvable for n ≥ 5. Rotman's Theorem 81 (the irreducibility-mod-p plus complex-conjugation criterion) provides the practical method for verifying that a specific quintic such as x⁵ - x - 1 has Galois group S₅: irreducibility mod 2 yields a 5-cycle, and exactly three real roots forces a transposition via complex conjugation, generating all of S₅. This is precisely the argument needed to instantiate `not_solvable_by_rad_of_not_solvable_gal` for a concrete polynomial — the gap acknowledged in this entry's open questions"
+    },
+    {
       "authors": "van der Waerden, Bartel Leendert",
       "title": "Algebra",
       "year": "1930",
