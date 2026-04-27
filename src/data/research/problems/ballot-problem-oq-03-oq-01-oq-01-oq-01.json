@@ -18,14 +18,14 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-23T12:58:12+02:00",
-    "iteration": 2,
-    "focus": "Building Jacobi-Trudi determinant formula in Lean 4 using Mathlib hsymm",
+    "iteration": 10,
+    "focus": "Closing the two remaining sorries: jdt_weight_sum (b>=1 case via JDT bijection) and jacobi_trudi_ssyt_eq k>=3 (algebraic LGV + RSK)",
     "blockers": [],
-    "nextAction": "Wait for build to confirm; if passing, commit and create gallery entry",
+    "nextAction": "Implement JDT bijection {non-col-strict (P:Sym n a, Q:Sym n b)} ≃ {Sym n (a+1) × Sym n (b-1)} for jdt_weight_sum b>=1 case",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 9,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {

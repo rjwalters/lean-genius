@@ -1,10 +1,49 @@
 # Knowledge Base: LGV Lemma → Jacobi-Trudi Identity
 
 **Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01
-**Last Updated**: 2026-04-26
-**Knowledge Items**: 34
+**Last Updated**: 2026-04-27
+**Knowledge Items**: 35
 
 Insights accumulated during research on this problem.
+
+---
+
+## Session 2026-04-27 (Session 10) — State Metadata Sync (researcher-8)
+
+**Mode**: REVISIT (RICH knowledge tier, score 74)
+**Outcome**: state metadata sync — no Lean code changes
+
+### What I Did
+
+1. Verified file `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` is at 633 lines with
+   2 sorries (lines 388, 631) — matches Session 9 final state.
+2. Updated `research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01/state.md`:
+   `iteration` 2 → 10; refreshed Current Focus, Active Approach, Recent Sessions, and
+   Next Action sections to reflect Sessions 6-9 progress (was stale from iteration 2).
+3. Updated `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01.json`
+   `currentState`: iteration 2 → 10; updated focus, nextAction, attemptCounts.
+
+### Why No Code Changes
+
+- Disk space at ~220-305Mi free during session (98-99% full); per project memory note
+  `feedback_disk_full_blocks_research`, Edit can silently revert and Docker corrupts
+  containerd at <1GB free. Cannot verify any Lean changes without Docker builds.
+- The two remaining sorries (`jdt_weight_sum` b≥1 case ~100-150 lines, and
+  `jacobi_trudi_ssyt_eq` k≥3 ~300 lines) are too large to attempt without verification.
+
+### Files Modified
+
+- `research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01/state.md` (refresh)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01.json` (currentState)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01/knowledge.md` (this entry)
+
+### Sorry Count: 2 (unchanged)
+
+### Next Steps (for next researcher with disk headroom)
+
+1. Implement JDT bijection for `jdt_weight_sum` b ≥ 1 case (Sessions 9 plan stands).
+2. Or submit to Aristotle as a HARD sorry candidate — the Equiv structure is fully
+   specified and may be tractable to automated search.
 
 ---
 
