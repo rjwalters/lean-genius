@@ -59,7 +59,7 @@
       "Theorem continuous_dependence_2d: for any \u03b5 > 0, threshold \u03b4 = \u03b5\u00b7exp(-C\u00b7E(0)\u00b7T) gives W(0) \u2264 \u03b4 implies W(t) \u2264 \u03b5, establishing Hadamard well-posedness"
     ],
     "dateAdded": "2026-02-28",
-    "lineCount": 21110,
+    "lineCount": 21111,
     "assumptions": "1 structure-encoded assumption: NSSolutionPair2D.stability_estimate (Ladyzhenskaya stability estimate W'(t) \u2264 C\u00b7E(t)\u00b7W(t), the core PDE estimate \u2014 mathematically known but not formalized in this file)",
     "mathlib_version": "4.26.0"
   },
@@ -202,7 +202,7 @@
       "TwoDimensionalGlobal"
     ],
     "namespace": "NavierStokesRegularity",
-    "lineCount": 21110,
+    "lineCount": 21111,
     "axiomCount": 0,
     "theoremCount": 846,
     "definitionCount": 104,
