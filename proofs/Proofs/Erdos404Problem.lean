@@ -60,34 +60,21 @@ def erdos404Conjecture : Prop :=
     This is the fundamental statement of Lin's bound. -/
 axiom lin_bound_meaning : ∀ s : StrictIncSeq 2, ¬(2^255 ∣ factorialSum s)
 
-/-- A trivial empty `StrictIncSeq 2` (length 0). Witnesses that
-    `divisiblePowers 2 2` is nonempty since `2^0 = 1` divides `factorialSum = 0`. -/
-private def emptyStrictIncSeq2 : StrictIncSeq 2 where
-  length := 0
-  seq := Fin.elim0
-  starts_at_a h := absurd h (by omega)
-  strictly_increasing i _ _ := i.elim0
-
-private theorem divisiblePowers_2_2_nonempty : (divisiblePowers 2 2).Nonempty := by
-  refine ⟨0, emptyStrictIncSeq2, ?_⟩
-  show (2 : ℕ) ^ 0 ∣ factorialSum emptyStrictIncSeq2
-  rw [pow_zero]
-  exact one_dvd _
-
 /-- Lin (1976) bound `f 2 2 ≤ 254`, derived from `lin_bound_meaning`.
 
     Proof: If `k ∈ divisiblePowers 2 2`, then some sequence `s` has `2^k ∣ factorialSum s`.
     If `k ≥ 255`, then `2^255 ∣ 2^k ∣ factorialSum s`, contradicting `lin_bound_meaning`.
-    Hence the set is bounded above by 254 (and is nonempty via the empty sequence),
-    so its supremum is ≤ 254. -/
+    Hence the set is bounded above by 254, so its supremum is ≤ 254 by `Nat.sSup_def`. -/
 theorem lin_bound : f 2 2 ≤ 254 := by
-  unfold f
-  apply csSup_le divisiblePowers_2_2_nonempty
-  rintro k ⟨s, hs⟩
-  by_contra h_gt
-  push_neg at h_gt
-  exact lin_bound_meaning s
-    (dvd_trans (pow_dvd_pow 2 (by omega : 255 ≤ k)) hs)
+  unfold f divisiblePowers
+  have hbdd : ∀ k ∈ {k | dividesByPrimePower 2 k 2}, k ≤ 254 := by
+    rintro k ⟨s, hs⟩
+    by_contra h_gt
+    push_neg at h_gt
+    exact lin_bound_meaning s
+      (dvd_trans (pow_dvd_pow 2 (by omega : 255 ≤ k)) hs)
+  rw [Nat.sSup_def ⟨254, hbdd⟩]
+  exact Nat.find_min' _ hbdd
 
 /- ## Part IV: p-adic Analysis -/
 
