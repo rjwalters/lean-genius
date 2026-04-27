@@ -750,6 +750,21 @@ private noncomputable def derEval14 : OctonionDerSubmodule →ₗ[ℝ] (Fin 14 �
   map_smul' := fun r ⟨f, _⟩ => by
     funext i; fin_cases i <;> simp [Submodule.coe_smul, Pi.smul_apply]
 
+/-- Any derivation `f` of 𝕆 (as a member of `OctonionDerSubmodule`) annihilates the
+    unit element: `f octUnit = 0`.
+
+    Proof: Apply Leibniz to `octUnit · octUnit = octUnit`, obtaining
+    `f octUnit = f octUnit + f octUnit`, hence `f octUnit = 0` component-wise. -/
+private lemma submodule_der_unit_zero
+    (f : (Fin 8 → ℝ) →ₗ[ℝ] (Fin 8 → ℝ)) (hf : f ∈ OctonionDerSubmodule) :
+    f octUnit = 0 := by
+  have h := hf octUnit octUnit
+  simp only [eightMul_right_unit, eightMul_left_unit] at h
+  funext i
+  have hi := congr_fun h i
+  simp only [Pi.add_apply] at hi
+  linarith
+
 /-- The evaluation map is injective: ev(D) = 0 forces D = 0.
 
     Proof outline: ev(D) = 0 combined with the Leibniz rule and antisymmetry
@@ -757,8 +772,10 @@ private noncomputable def derEval14 : OctonionDerSubmodule →ₗ[ℝ] (Fin 14 �
 
     Steps:
     - ev = 0 gives D(eⱼ)[i] = 0 for the 14 explicit coordinates
+    - **D(e₀) = 0 (unit kills)** — proved here via `submodule_der_unit_zero`,
+      handles the `j = 0` case completely
     - Antisymmetry D(eⱼ)[i] = -D(eᵢ)[j] (from Leibniz on (eᵢ,eⱼ)+(eⱼ,eᵢ)) gives further zeros
-    - D(e₀) = 0 (unit kills); D(eᵢ)[i] = 0 (diagonal from Leibniz on (eᵢ,eᵢ))
+    - D(eᵢ)[i] = 0 (diagonal from Leibniz on (eᵢ,eᵢ): eᵢ² = -e₀ → eᵢ·D(eᵢ) = 0)
     - Together force D(e₁) = D(e₂) = 0 directly
     - Fano line Leibniz: D(e₃)=0 from {1,2,3}; D(e₄)=0 similarly; etc.
     - D(e₅),(e₆),(e₇) = 0 from further Fano lines
@@ -781,17 +798,29 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
   -- Extract ev coordinates: hfg gives all 14 eval coordinates equal
   have hev : ∀ j : Fin 8, ∀ i : Fin 8,
     f (stdBasis j) i = g (stdBasis j) i := by
-    -- From Leibniz for f and g, derive all values
-    -- Key: D = f - g ∈ Der and ev(D) = 0 → D = 0
-    -- We work with D = f - g implicitly by comparing f vs g at each step
-    sorry
+    -- The j = 0 case follows from `submodule_der_unit_zero`: both f and g
+    -- annihilate the unit, so they agree (trivially zero) on stdBasis 0.
+    -- For j ≥ 1, the proof requires combining ev = 0 (the 14 explicit zeros)
+    -- with Leibniz constraints (squaring, antisymmetry, Fano-line trilinear).
+    intro j i
+    by_cases hj : j = 0
+    · -- Case j = 0: f octUnit = g octUnit = 0
+      subst hj
+      have hf0 : f (stdBasis 0) = 0 := submodule_der_unit_zero f hf
+      have hg0 : g (stdBasis 0) = 0 := submodule_der_unit_zero g hg
+      rw [hf0, hg0]
+    · -- Case j ≠ 0: requires Leibniz constraint analysis (see proof outline above)
+      sorry
   intro k
   funext i
   exact hev k i
 
--- Note: The sorry above is for the algebraic extraction from ev=0.
--- The full proof requires ~50 lines of Leibniz constraint applications.
--- For now, we use a computational sorry and note the mathematical argument is sound.
+-- Note: The sorry above is for the algebraic extraction from ev=0 in the imaginary basis.
+-- The j = 0 case (unit-kills) is now closed via `submodule_der_unit_zero`.
+-- The remaining work for j ≥ 1 needs ~50 lines of Leibniz constraint applications:
+--   * D(eⱼ)[j] = 0 from Leibniz on (eⱼ, eⱼ) using eⱼ² = -e₀ and submodule_der_unit_zero
+--   * Antisymmetry D(eⱼ)[i] = -D(eᵢ)[j] from Leibniz on (eᵢ, eⱼ) + (eⱼ, eᵢ)
+--   * The remaining 35 entries are forced via Fano-line trilinear Leibniz on the 7 lines.
 
 /-- The 14 basis derivations are linearly independent in OctonionDerSubmodule.
 

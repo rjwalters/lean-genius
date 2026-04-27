@@ -52,7 +52,53 @@ Back to the problem
 
 ## Sessions
 
-(No research sessions yet)
+### Session 2026-04-27 (Session 1) — Composite Replacement Lemma
+
+**Mode**: FRESH (MODERATE knowledge tier, score 12)
+**Outcome**: PROGRESS — `composite_replacement_improves_product` added (28 LOC).
+
+#### What I Did
+
+Bridged the two existing replacement lemmas:
+- `prime_factor_better_sieve`: composite `a`, prime `p ∣ a`, `p < a` → `1 - 1/p < 1 - 1/a`
+- `smaller_prime_better`: replacing prime `q` with smaller prime `p` strictly decreases the product
+
+The new `composite_replacement_improves_product` shows that the same replacement
+structure works when the original element is composite (not just prime): if `a ∈ A`
+is composite with prime factor `p < a` and `p ∉ A`, then replacing `a` with `p`
+strictly decreases `∏ (1 - 1/x)`. Same proof pattern (`mul_prod_erase` +
+`prod_insert` + `mul_lt_mul_of_pos_right`), reusing `prime_factor_better_sieve`
+directly for the strict inequality.
+
+#### Why It Matters
+
+For any coprime sieving set `A`, this gives the local improvement step toward
+the prime-only sets in the conjecture. Combined with `smaller_prime_better`,
+the structural argument for "prime sieving sets dominate within the
+constant-sum constraint" is now fully formalized at the product level.
+
+The remaining gap toward the open conjecture is the analytic estimate relating
+the sieve product `∏ (1 - 1/a)` to the integer count `unsievedCount A n`
+(stated as `coprime_sieve_estimate` placeholder; needs sharp inclusion-exclusion
+or a Brun-Titchmarsh-style bound).
+
+#### Files Modified
+
+- `proofs/Proofs/Erdos783Problem.lean`: 392 → 420 lines
+- `src/data/proofs/erdos-783/meta.json`: lineCount 392 → 420, assumptions updated
+- `src/data/research/problems/erdos-783.json`: built items, insights, progress
+
+#### Sorry/Axiom Status
+
+- Before: 0 sorries, 0 axioms
+- After: 0 sorries, 0 axioms (file remains assumption-free)
+
+#### Next Steps
+
+1. Compose iterative replacement: any coprime `A` → prime-only `A*` via repeated
+   `composite_replacement_improves_product`, with sum constraint maintained.
+2. Connect product to `unsievedCount` via inclusion-exclusion bounds (deep gap).
+3. Optionally state the conjecture as a `sorry`-marked theorem to make openness explicit.
 
 ---
 
