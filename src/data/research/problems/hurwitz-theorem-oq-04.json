@@ -19,9 +19,11 @@
     "phase": "ACT",
     "since": "2026-04-24T00:00:00Z",
     "iteration": 2,
-    "focus": "submodule_der_unit_zero added; derEval14_injective decomposed via by_cases j = 0; remaining sorry scoped to imaginary basis (j ∈ {1,...,7}).",
-    "blockers": [],
-    "nextAction": "Prove diagonal-kill and antisymmetry helpers, then chain to derive D(eⱼ) = 0 for j ≥ 1.",
+    "focus": "Blocked by Mathlib API drift; build was failing before any new edits. Needs Mechanic-style repair before sorry-elimination resumes.",
+    "blockers": [
+      "Mathlib API drift breaks the build (`ring` no longer closes the diagonal-extraction goals at lines 90/97; whnf timeout at 205; unknown private constant `imag_sq_eq_neg_norm` at 225). Repair upstream first."
+    ],
+    "nextAction": "Prove diagonal-kill and antisymmetry helpers, then chain to derive D(e\u2c7c) = 0 for j \u2265 1.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,48 +33,53 @@
   "knowledge": {
     "progressSummary": "PROGRESS (2026-04-27): submodule_der_unit_zero added; derEval14_injective decomposed by by_cases j = 0; remaining sorry scoped to 56-entry imaginary basis claim.",
     "builtItems": [
-      "ExceptionalType inductive type (G2/F4/E6/E7/E8) with dim/rank — HurwitzTheoremOQ04.lean",
-      "OctonionAlgHom structure + OctonionAut — HurwitzTheoremOQ04.lean",
-      "eightMul_right_unit (PROVED 2026-04-24): simp(decide)+Matrix.cons_val_* pattern — HurwitzTheoremOQ04.lean:82",
-      "eightMul_left_unit (PROVED 2026-04-24): same pattern — HurwitzTheoremOQ04.lean:94",
-      "alg_hom_preserves_norm_product (PROVED) — HurwitzTheoremOQ04.lean",
-      "G2_unique_low_rank, E8_is_largest, exceptional_dims_strict_mono (PROVED) — HurwitzTheoremOQ04.lean",
-      "G2_is_octonion_aut REPLACED (2026-04-26) by G2_der_dimension: finrank ℝ OctonionDerSubmodule = 14. Previous axiom was Nat.card OctonionAut = 14 which is 0 = 14, mathematically wrong.",
-      "Freudenthal-Tits magic square table with dimensional analysis — HurwitzTheoremOQ04.lean commentary",
-      "OctonionDer structure: ℝ-linear maps with Leibniz rule — HurwitzTheoremOQ04.lean",
+      "ExceptionalType inductive type (G2/F4/E6/E7/E8) with dim/rank \u2014 HurwitzTheoremOQ04.lean",
+      "OctonionAlgHom structure + OctonionAut \u2014 HurwitzTheoremOQ04.lean",
+      "eightMul_right_unit (PROVED 2026-04-24): simp(decide)+Matrix.cons_val_* pattern \u2014 HurwitzTheoremOQ04.lean:82",
+      "eightMul_left_unit (PROVED 2026-04-24): same pattern \u2014 HurwitzTheoremOQ04.lean:94",
+      "alg_hom_preserves_norm_product (PROVED) \u2014 HurwitzTheoremOQ04.lean",
+      "G2_unique_low_rank, E8_is_largest, exceptional_dims_strict_mono (PROVED) \u2014 HurwitzTheoremOQ04.lean",
+      "G2_is_octonion_aut REPLACED (2026-04-26) by G2_der_dimension: finrank \u211d OctonionDerSubmodule = 14. Previous axiom was Nat.card OctonionAut = 14 which is 0 = 14, mathematically wrong.",
+      "Freudenthal-Tits magic square table with dimensional analysis \u2014 HurwitzTheoremOQ04.lean commentary",
+      "OctonionDer structure: \u211d-linear maps with Leibniz rule \u2014 HurwitzTheoremOQ04.lean",
       "zeroDer (proved 0 sorries): zero map is a derivation",
       "addDer (proved): sum of derivations is a derivation",
       "smulDer (proved): scalar multiple is a derivation",
       "eightMul_sub_left/right: eightMul bilinear over subtraction",
-      "commDer (proved): commutator of derivations is a derivation — key Lie algebra result",
-      "commDer_antisymm, commDer_jacobi: Der(𝕆) is a Lie algebra under [·,·]",
-      "OctonionDerSubmodule (2026-04-26): Der(𝕆) as Submodule ℝ (End_ℝ(ℝ⁸)) — PART IV-c of HurwitzTheoremOQ04.lean",
-      "submodule_der_unit_zero (PROVED 2026-04-27): submodule-level unit-kills lemma — for any f ∈ OctonionDerSubmodule, f octUnit = 0. Same proof shape as der_maps_unit_to_zero but for LinearMap members."
+      "commDer (proved): commutator of derivations is a derivation \u2014 key Lie algebra result",
+      "commDer_antisymm, commDer_jacobi: Der(\ud835\udd46) is a Lie algebra under [\u00b7,\u00b7]",
+      "OctonionDerSubmodule (2026-04-26): Der(\ud835\udd46) as Submodule \u211d (End_\u211d(\u211d\u2078)) \u2014 PART IV-c of HurwitzTheoremOQ04.lean",
+      "submodule_der_unit_zero (PROVED 2026-04-27): submodule-level unit-kills lemma \u2014 for any f \u2208 OctonionDerSubmodule, f octUnit = 0. Same proof shape as der_maps_unit_to_zero but for LinearMap members."
     ],
     "insights": [
-      "G₂ = Aut(𝕆): The exceptional Lie group G₂ (dim 14, rank 2) is the automorphism group of the octonions. The 14 dimensions come from SO(7) (dim 21) minus the 7 constraints from preserving the octonion cross product.",
-      "Freudenthal-Tits Magic Square: 𝔏(A,B) = Der(A)⊕(ImA⊗ImB)⊕Der(B) gives a symmetric Lie algebra from pairs of Hurwitz algebras. All 5 exceptional types arise from pairs involving 𝕆.",
-      "Exactly 4 Hurwitz algebras → exactly 5 exceptional Lie algebras: G₂←Der(𝕆), F₄←𝔏(𝕆,ℝ), E₆←𝔏(𝕆,ℂ), E₇←𝔏(𝕆,ℍ), E₈←𝔏(𝕆,𝕆). Octonions appear in all 5.",
-      "Physics connections: E₈×E₈ heterotic strings (dim 2×248=496, anomaly cancellation), M-theory on G₂ manifolds (4D N=1 SUSY), E₇(7) in N=8 supergravity.",
+      "G\u2082 = Aut(\ud835\udd46): The exceptional Lie group G\u2082 (dim 14, rank 2) is the automorphism group of the octonions. The 14 dimensions come from SO(7) (dim 21) minus the 7 constraints from preserving the octonion cross product.",
+      "Freudenthal-Tits Magic Square: \ud835\udd0f(A,B) = Der(A)\u2295(ImA\u2297ImB)\u2295Der(B) gives a symmetric Lie algebra from pairs of Hurwitz algebras. All 5 exceptional types arise from pairs involving \ud835\udd46.",
+      "Exactly 4 Hurwitz algebras \u2192 exactly 5 exceptional Lie algebras: G\u2082\u2190Der(\ud835\udd46), F\u2084\u2190\ud835\udd0f(\ud835\udd46,\u211d), E\u2086\u2190\ud835\udd0f(\ud835\udd46,\u2102), E\u2087\u2190\ud835\udd0f(\ud835\udd46,\u210d), E\u2088\u2190\ud835\udd0f(\ud835\udd46,\ud835\udd46). Octonions appear in all 5.",
+      "Physics connections: E\u2088\u00d7E\u2088 heterotic strings (dim 2\u00d7248=496, anomaly cancellation), M-theory on G\u2082 manifolds (4D N=1 SUSY), E\u2087(7) in N=8 supergravity.",
       "OctonionAlgHom structure defined in Lean: linear + multiplicative. Composition and identity proved. Norm-product preservation proved.",
-      "alg_aut_preserves_norm PROVED via phi_unit_eq_unit (invertibility gives φ(e₀)=e₀) + phi_imag_props (pure imaginary elements preserved) + decomposition a = r·e₀ + w.",
+      "alg_aut_preserves_norm PROVED via phi_unit_eq_unit (invertibility gives \u03c6(e\u2080)=e\u2080) + phi_imag_props (pure imaginary elements preserved) + decomposition a = r\u00b7e\u2080 + w.",
       "alg_aut_preserves_inner PROVED via polarization: innerProd x y = (normSq(x+y) - normSq x - normSq y)/2, with norm preservation + linearity.",
-      "imag_closed_under_aut: Aut(𝕆) ⊆ O(7) now formalized — automorphisms map Im(𝕆) to Im(𝕆) preserving the inner product.",
-      "eightMul unit proof pattern: simp(config:={decide:=true})[ite_true,ite_false] evaluates if (0:Fin 8)=j for concrete j. Plain simp[stdBasis] insufficient — need decide mode for Fin equality.",
+      "imag_closed_under_aut: Aut(\ud835\udd46) \u2286 O(7) now formalized \u2014 automorphisms map Im(\ud835\udd46) to Im(\ud835\udd46) preserving the inner product.",
+      "eightMul unit proof pattern: simp(config:={decide:=true})[ite_true,ite_false] evaluates if (0:Fin 8)=j for concrete j. Plain simp[stdBasis] insufficient \u2014 need decide mode for Fin equality.",
       "freudenthal_tits_f4/e6/e7/e8 de-axiomatized (2026-04-25): these 4 axioms were just ExceptionalType.dim = literal, provable by rfl. Axiom count reduced from 5 to 1.",
-      "G2_is_octonion_aut had type-theoretic flaw: Nat.card of an infinite group = 0 in Lean. Replaced with G2_der_dimension: finrank ℝ OctonionDerSubmodule = 14.",
-      "OctonionDerSubmodule as Submodule ℝ (LinearMap) inherits finite-dimensional vector space structure automatically.",
-      "The 64-entry kernel claim of derEval14_injective decomposes by basis index j: j = 0 case is closed by unit-kills (submodule_der_unit_zero); j ∈ {1,...,7} remains. Scoped sorry from 64 → 56 entries."
+      "G2_is_octonion_aut had type-theoretic flaw: Nat.card of an infinite group = 0 in Lean. Replaced with G2_der_dimension: finrank \u211d OctonionDerSubmodule = 14.",
+      "OctonionDerSubmodule as Submodule \u211d (LinearMap) inherits finite-dimensional vector space structure automatically.",
+      "The 64-entry kernel claim of derEval14_injective decomposes by basis index j: j = 0 case is closed by unit-kills (submodule_der_unit_zero); j \u2208 {1,...,7} remains. Scoped sorry from 64 \u2192 56 entries.",
+      "Diagonal kill verified by hand for i=1: Leibniz on (e_1, e_1) yields 0 = (-2 v_1, 2 v_0, 0,0,0,0,0,0) where v = f(e_1). The non-trivial pair-up is exactly the D(e_1)[0] and D(e_1)[1] components \u2014 meaning a single Leibniz identity gives BOTH the (already-known) real-part-zero and the diagonal kill at i=1.",
+      "Pattern conjecture: for any i \u2208 {1,...,7}, Leibniz on (e_i, e_i) plus eightMul e_i e_i = -stdBasis 0 (verified: only component 0 of e_i\u00b7e_i is non-zero, equal to -1 due to a_i\u00b7b_i = -1 in component 0) forces both f(e_i)[0] = 0 and f(e_i)[i] = 0; the other six components zero out by symmetry of the formula. This gives 14 (= 7\u00d72) more constraints from a single Leibniz application per imaginary basis vector.",
+      "BLOCKED on Mathlib API drift (2026-04-27): Docker build of HurwitzTheoremOQ04 fails with cascading errors at lines 88:98, 90:72, 100:98, 102:71, etc. \u2014 `ring` tactic now expects ring_nf, several simp goals timeout, kernel reports unknown constant `imag_sq_eq_neg_norm`. These errors predate any new edits. The file needs upstream repair before further sorry-elimination work; releasing claim per API drift policy."
     ],
     "mathlibGaps": [
-      "Lie groups not in Mathlib as of 2026-04 — blocks formal G₂ = Aut(𝕆) proof",
-      "Tits construction 𝔏(A,B) not in Mathlib — blocks magic square formalization",
+      "Lie groups not in Mathlib as of 2026-04 \u2014 blocks formal G\u2082 = Aut(\ud835\udd46) proof",
+      "Tits construction \ud835\udd0f(A,B) not in Mathlib \u2014 blocks magic square formalization",
       "Derivation algebra of non-associative algebras not in Mathlib"
     ],
     "nextSteps": [
-      "Prove diagonal-kill: eᵢ·D(eᵢ) + D(eᵢ)·eᵢ = 0 for i ≥ 1 from Leibniz on (eᵢ,eᵢ) using eᵢ² = -e₀ and submodule_der_unit_zero",
-      "Prove antisymmetry: D(eᵢ)[j] = -D(eⱼ)[i] from Leibniz on (eᵢ,eⱼ)+(eⱼ,eᵢ)",
-      "Use 14 ev=0 + diagonal + antisymmetry to derive D(eⱼ) = 0 for j ≥ 1 case-by-case"
+      "Prove diagonal-kill: e\u1d62\u00b7D(e\u1d62) + D(e\u1d62)\u00b7e\u1d62 = 0 for i \u2265 1 from Leibniz on (e\u1d62,e\u1d62) using e\u1d62\u00b2 = -e\u2080 and submodule_der_unit_zero",
+      "Prove antisymmetry: D(e\u1d62)[j] = -D(e\u2c7c)[i] from Leibniz on (e\u1d62,e\u2c7c)+(e\u2c7c,e\u1d62)",
+      "Use 14 ev=0 + diagonal + antisymmetry to derive D(e\u2c7c) = 0 for j \u2265 1 case-by-case",
+      "Concrete next coding step: introduce private lemma `submodule_der_diag_zero (f : ...) (hf : f \u2208 OctonionDerSubmodule) {i : Fin 8} (hi : i \u2260 0) : f (stdBasis i) i = 0` proved via fin_cases i + Leibniz hf (stdBasis i) (stdBasis i) + submodule_der_unit_zero. Each case unfolds eightMul into 16 explicit components and reads off the 2-equation system (component 0 and component i) giving f(stdBasis i) 0 = 0 and f(stdBasis i) i = 0.",
+      "Following diagonal_kill: introduce antisymmetry lemma `f (stdBasis i) j + f (stdBasis j) i = 0` for i,j \u2265 1 from Leibniz on (e_i, e_j) + (e_j, e_i). Combined with diagonal_kill and the 14 ev=0 entries, this should close most of the j \u2260 0 case in derEval14_injective."
     ]
   },
   "tags": [
@@ -93,7 +100,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.381Z",
-  "lastUpdate": "2026-04-27T00:00:00Z",
+  "lastUpdate": "2026-04-27T00:00:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
