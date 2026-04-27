@@ -130,5 +130,29 @@
     "significance": "key",
     "relatedConcepts": ["CompositionSeries", "CompositionSeries.jordan_holder", "composition factors", "Schreier refinement theorem"],
     "prerequisites": ["composition series", "normal series", "Jordan-Hölder theorem statement"]
+  },
+  {
+    "id": "ann-namespace-setup",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 32, "endLine": 37 },
+    "type": "context",
+    "title": "Namespace, Open Declarations, and Universe-Polymorphic Variable",
+    "content": "The `namespace AbelRuffiniGaloisExtensionsOQ04` scopes all definitions and theorems to avoid name collisions with Mathlib or other proof files. `open Subgroup QuotientGroup` brings key operations (e.g., `mem_sup`, `mk'`, `subgroupOf`, `quotientKerEquivOfSurjective`) into scope without qualification. The `variable {G : Type*} [Group G]` declaration makes all subsequent definitions universe-polymorphic: the JordanHolderLattice instance and Jordan-Hölder theorem apply to any group in any Lean universe, not just `Type` or `Type 0`. The implicit `{G}` means Lean infers the group from context at each use site.",
+    "mathContext": "Universe polymorphism ensures the instance works uniformly for groups of any cardinality: finite groups in `Type` (like $S_5$), countable groups in `Type 0` (like free groups), and larger groups in higher universes. The `[Group G]` typeclass constraint is the only requirement — no finiteness, commutativity, or other structure is assumed. This generality is essential for a Mathlib-ready instance.",
+    "significance": "context",
+    "relatedConcepts": ["universe polymorphism", "typeclass system", "namespace scoping", "implicit variables"],
+    "prerequisites": ["Lean 4 universe system", "typeclass resolution"]
+  },
+  {
+    "id": "ann-verification",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 227, "endLine": 234 },
+    "type": "context",
+    "title": "Type Verification and Namespace Closure",
+    "content": "The `#check @jordan_holder_subgroups` command asks Lean to display the full type signature of the theorem, confirming it has the expected form: given two composition series with matching endpoints, they are equivalent. `#check @instJordanHolderLatticeSubgroup` verifies the JordanHolderLattice instance is registered — any downstream file importing this module can use `CompositionSeries.jordan_holder` for groups without additional setup. The `end` command closes the namespace, making all definitions accessible as `AbelRuffiniGaloisExtensionsOQ04.jordan_holder_subgroups` etc.",
+    "mathContext": "The `#check` commands are a standard Lean 4 verification pattern: they produce no runtime code but confirm at elaboration time that the typeclass instance is correctly registered and the theorem has the intended type. For the JordanHolderLattice instance, successful `#check` confirms that Lean's typeclass resolution can find `JordanHolderLattice (Subgroup G)` when needed — the critical property that makes `CompositionSeries.jordan_holder` available for groups.",
+    "significance": "context",
+    "relatedConcepts": ["#check command", "typeclass resolution", "instance registration", "namespace system"],
+    "prerequisites": ["Lean 4 elaboration", "typeclass system"]
   }
 ]
