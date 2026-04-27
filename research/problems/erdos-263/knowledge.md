@@ -1,5 +1,67 @@
 # Knowledge Base: Erdős #263 - Irrationality Sequences
 
+## Session 2026-04-27 (Session 12) — Concrete non-irrationality witness + Mathlib drift fix
+
+**Mode**: REVISIT (RICH knowledge tier; prior session 11 marked BLOCKED)
+**Outcome**: progress — added concrete `geom2_seq` witness for `¬IsIrrationalitySequence`;
+            repaired Mathlib API drift (`tsum_pos` → `Summable.tsum_pos`)
+
+### Insight (missed by sessions 1–11)
+
+The geometric sequence `a n = 2^n` is **provably NOT** an irrationality sequence by an
+elementary argument that does not require the open Kovač-Tao 2024 result:
+
+- Take the identity perturbation `b n = 2^n` (so `b n / a n = 1 → 1`, `b n > 0`).
+- `Σ 1/2^n = 2` (geometric series with ratio 1/2), which is rational.
+- Therefore the irrationality-sequence property fails on `geom2_seq`.
+
+This sits BELOW the KT threshold (a_{n+1}/a_n^2 = 1/2^n → 0), so KT would exclude it
+once that theorem is proved — but we don't need KT for this particular sequence.
+
+### What I Added
+
+In `proofs/Proofs/Erdos263Problem.lean` (Part XII):
+
+1. **`geom2_seq`** (def): `n ↦ ⟨2^n, _⟩ : PosIntSeq`
+2. **`not_irrationality_sequence_of_rational_sum`** (theorem, no sorry): structural lemma —
+   if `Σ 1/(a n : ℕ : ℝ) = q : ℚ`, then `a` is not an irrationality sequence (identity
+   perturbation witness)
+3. **`geom2_seq_not_irrationality_sequence`** (theorem, no sorry): direct application;
+   `Σ 1/2^n = 2` via `tsum_geometric_two`
+
+These do NOT close any of the 4 deep sorries, but provide the first concrete witness
+of `¬IsIrrationalitySequence` in this gallery — useful for any future work on
+`truncation_insufficient` (which still needs a positive witness, an actual irrationality
+sequence — that part remains blocked).
+
+### Mathlib API Drift Repaired
+
+Build failed before edits with: `tsum_pos` no longer applies to ℝ — it has been
+restricted to `ℝ≥0` (in `Mathlib.Topology.Instances.ENNReal.Lemmas`). The general version
+is now `Summable.tsum_pos` (additive `to_additive` of `Multipliable.one_lt_tprod` in
+`Mathlib.Topology.Algebra.InfiniteSum.Order`).
+
+**Fix** (one-line, two locations):
+- `proofs/Proofs/Erdos263Problem.lean:541` (in `doubleExp_tail_pos`)
+- `proofs/Proofs/Erdos263Aristotle.lean:51` (in tail positivity)
+
+Both: `tsum_pos hsum h_nn 0 h0` → `hsum.tsum_pos h_nn 0 h0`.
+
+### Current State (post-session)
+- 4 deep sorries unchanged (folklore, KT 2024, positive condition, truncation_insufficient)
+- New theorems (no sorry): `geom2_seq`, `not_irrationality_sequence_of_rational_sum`,
+  `geom2_seq_not_irrationality_sequence`
+- Mathlib drift repaired in 2 files
+
+### Next Steps (for future sessions)
+- The 4 deep sorries remain BLOCKED (need Mahler criterion, KT 2024, liminf analysis)
+- Any positive irrationality witness (e.g., proving `IsIrrationalitySequence doubleExp`)
+  would unlock `truncation_insufficient` via the new structural lemma
+- Future researchers: `not_irrationality_sequence_of_rational_sum` is the new entry point
+  for showing concrete sequences are NOT irrationality sequences
+
+---
+
 ## Session 2026-04-22 (Session 9) — Prove doubleExp_sum_irrational (5→4 sorries)
 
 **Mode**: REVISIT (RICH knowledge tier)

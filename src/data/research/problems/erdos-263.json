@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (session 10): Ported 2 Aristotle proofs (tail_pos, tail_bound). Erdos263Aristotle.lean now 0-sorry. Main file: 4 deep sorries BLOCKED (Mahler criterion, KT2024, liminf, truncation witness). No tractable work remains.",
+    "progressSummary": "Session 12: added concrete ¬IsIrrationalitySequence witness for geom2_seq via identity perturbation + tsum_geometric_two; added structural lemma not_irrationality_sequence_of_rational_sum. Repaired Mathlib drift in tsum_pos. 4 deep sorries unchanged. Total: 22 theorems (no sorry), 4 deep sorries (all require non-Mathlib mathematics).",
     "builtItems": [
       "doubleExp_not_folklore_growth: ¬HasFolkloreGrowth doubleExp — proved in proofs/Proofs/Stubs/Erdos263Problem.lean:89",
       "two_pow_ge_sq: ∀ n ≥ 4, n^2 ≤ 2^n — private lemma in Erdos263Problem.lean:202",
@@ -49,7 +49,10 @@
       "tsum_split_at: tsum split at N into finsum + f(N) + tail (Erdos263Problem.lean:568, sorry)",
       "doubleExp_sum_irrational: Irrational(Σ 1/2^{2^n}) — proved via integer-gap argument (session 9, Erdos263Problem.lean:655-720)",
       "doubleExp_tail_pos proved in Erdos263Aristotle.lean (ported from main, geometric comparison via nat_le_two_pow)",
-      "doubleExp_tail_bound proved in Erdos263Aristotle.lean (ported from main, D*tail<1/(D-1) via r=1/D² geometric series)"
+      "doubleExp_tail_bound proved in Erdos263Aristotle.lean (ported from main, D*tail<1/(D-1) via r=1/D² geometric series)",
+      "geom2_seq: PosIntSeq def n↦2^n (Erdos263Problem.lean Part XII, session 12)",
+      "not_irrationality_sequence_of_rational_sum: structural lemma — rational reciprocal sum ⟹ ¬IsIrrationalitySequence (Erdos263Problem.lean session 12)",
+      "geom2_seq_not_irrationality_sequence: 2^n is NOT an irrationality sequence (witness: identity perturbation, Σ 1/2^n = 2 ∈ ℚ via tsum_geometric_two; session 12)"
     ],
     "insights": [
       "(2^{2^n})^{1/2^n} = 2^{(2^n)*(1/2^n)} = 2^1 = 2 — the function is constantly 2, so doubleExp does NOT satisfy the folklore condition",
@@ -71,7 +74,9 @@
       "doubleExp_sum_summable proved from doubleExp_convergent via congr",
       "doubleExp_fin_mul_nat: 2^{2^N} * finsum ∈ ℕ — each term 2^{2^N-2^k} ∈ ℕ, uses pow_sub₀",
       "Key Aristotle candidates: doubleExp_tail_pos, doubleExp_fin_mul_nat, doubleExp_tail_bound, tsum_split_at",
-      "Aristotle companion file sorries were redundant — proofs existed in main file but not ported; session 10 fixed this gap"
+      "Aristotle companion file sorries were redundant — proofs existed in main file but not ported; session 10 fixed this gap",
+      "Mathlib API drift (2026-04): tsum_pos restricted to ℝ≥0; replacement is Summable.tsum_pos (additive of Multipliable.one_lt_tprod) in Topology.Algebra.InfiniteSum.Order",
+      "geom2_seq is BELOW KT threshold (a_{n+1}/a_n^2 = 1/2^n → 0) so KT would exclude it once proved — but elementary proof via Σ 1/2^n = 2 makes it unconditional"
     ],
     "mathlibGaps": [
       "No elementary tendsto proof for 2^n/n → ∞ directly — need to go via Nat.log or exponential comparison for doubleExp_superexponential",
