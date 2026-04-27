@@ -19,7 +19,7 @@
     "badge": "wip",
     "sorries": 2,
     "axiomCount": 0,
-    "assumptions": "0 axioms. 2 routine sorries: (1) low_degree_poly_ratio_tendsto_zero (polynomial of degree < d divided by n^d → 0); (2) natDegree of p - X^d < d when p is monic of degree d. Both are standard analysis/algebra, suitable for Aristotle.",
+    "assumptions": "0 axioms. 2 routine sorries: (1) low_degree_poly_ratio_tendsto_zero (polynomial of degree < d divided by n^d → 0); (2) natDegree_sub_leading (natDegree of p - X^d < d when p is monic of degree d, routine algebra). Both are standard analysis/algebra, suitable for Aristotle. Note: monic_poly_ratio_tendsto was previously an axiom but was proved in V3.",
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.bernoulli",
@@ -40,7 +40,7 @@
       "powerSumRatio_tendsto proof: general asymptotic 1/(k+1) via Faulhaber + filter limits"
     ],
     "dateAdded": "2026-03-30",
-    "lineCount": 170,
+    "lineCount": 193,
     "theoremCount": 4,
     "definitionCount": 1,
     "prerequisites": [
@@ -53,7 +53,7 @@
   "overview": {
     "historicalContext": "The Euler-Maclaurin formula was discovered independently by Euler (1738) in 'Methodus generalis summandi progressiones' and by Maclaurin (1742) in 'Treatise of Fluxions'. It provides an asymptotic expansion connecting a discrete sum ∑_{j=a}^{b} f(j) to the integral ∫_a^b f(x) dx plus correction terms involving Bernoulli numbers B_{2k} and derivatives of f. The simplest consequence, requiring no correction terms, is: ∑_{i=0}^{n-1} i^k / n^{k+1} → 1/(k+1), which matches the Riemann sum approximation to ∫₀¹ x^k dx = 1/(k+1). Faulhaber's formula (1631), which gives the exact closed form (k+1)·∑ i^k = B_{k+1}(n) - B_{k+1}(0) using Bernoulli polynomials, provides the algebraic route to this asymptotic. Johann Faulhaber computed power sums up to k=17 by hand; the Bernoulli polynomial formulation was clarified by Jakob Bernoulli in 'Ars Conjectandi' (1713). The formalization here shows that the asymptotic is a purely algebraic consequence of Faulhaber's formula and the monicity of B_{k+1}, requiring only one non-trivial analytical axiom.",
     "problemStatement": "$$\\frac{\\sum_{i=0}^{n-1} i^k}{n^{k+1}} \\to \\frac{1}{k+1} \\quad \\text{as } n \\to \\infty$$",
-    "text": "A 170-line formalization of asymptotic power sum behavior. Defines the normalized power sum ratio, axiomatizes monic polynomial ratio limits, and proves the general asymptotic theorem using Faulhaber's formula and filter limits. Includes exact formulas for k=0 (trivial) and k=1 (via Gauss sum).",
+    "text": "A 193-line formalization of asymptotic power sum behavior. Defines the normalized power sum ratio, proves monic polynomial ratio limits from first principles (V3 eliminated the monic_poly_ratio_tendsto axiom), and proves the general asymptotic theorem using Faulhaber's formula and filter limits. Includes exact formulas for k=0 (trivial) and k=1 (via Gauss sum). 2 routine sorries remain.",
     "proofStrategy": "The proof uses Faulhaber's formula: (k+1) * sum i^k = B_{k+1}(n) - B_{k+1}(0), where B_{k+1} is the Bernoulli polynomial. Since B_{k+1} is monic of degree k+1, the ratio B_{k+1}(n)/n^{k+1} -> 1, giving sum i^k / n^{k+1} -> 1/(k+1).",
     "keyInsights": [
       "The asymptotic 1/(k+1) is the Riemann sum interpretation: ∑_{i<n} (i/n)^k · (1/n) → ∫₀¹ x^k dx = 1/(k+1), where each term i^k/n^{k+1} = (i/n)^k/n is a rectangle of width 1/n at height (i/n)^k",
@@ -113,7 +113,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The asymptotic formula sum i^k / n^{k+1} -> 1/(k+1) is proved for all k, with exact formulas for k=0 and k=1 as special cases. One axiom remains: monic_poly_ratio_tendsto (p(n)/n^d -> 1 for monic p of degree d).",
+    "summary": "The asymptotic formula sum i^k / n^{k+1} -> 1/(k+1) is proved for all k, with exact formulas for k=0 and k=1 as special cases. 0 axioms remain (monic_poly_ratio_tendsto was proved in V3 via X^d + lower-order decomposition). 2 routine sorries remain: low_degree_poly_ratio_tendsto_zero and natDegree_sub_leading.",
     "implications": "Connects discrete power sums to continuous integration via the Riemann sum interpretation, laying groundwork for a full Euler-Maclaurin formalization in Lean 4.",
     "openQuestions": [
       "Prove monic_poly_ratio_tendsto: decompose p = X^d + q with deg(q) < d, show q(n)/n^d → 0 term by term using const_div_pow_tendsto_zero for each monomial",
@@ -145,12 +145,12 @@
       "Filter"
     ],
     "namespace": "SumOfKthPowersAsymptotic",
-    "lineCount": 170,
-    "axiomCount": 1,
+    "lineCount": 193,
+    "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 1,
     "path": "Proofs/SumOfKthPowersOQ04.lean",
-    "sorries": 0
+    "sorries": 2
   },
   "mainTheorems": [
     {
@@ -166,5 +166,5 @@
       "leanType": "powerSumRatio 1 n = (n - 1) / (2 * n)"
     }
   ],
-  "sorries": 0
+  "sorries": 2
 }
