@@ -1,35 +1,47 @@
 {
   "slug": "erdos-863",
   "title": "Erdős #863",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "Let $r\\geq 2$ and let $A\\subseteq \\{1,\\ldots,N\\}$ be a set of maximal size such that there are at most $r$ solutions to $n=a+b$ with $a\\leq b$ for any $n$. (That is, $A$ is a $B_2[r]$ set.)\n\nSimilarly, let $B\\subseteq \\{1,\\ldots,N\\}$ be a set of maximal size such that there are at most $r$ solutions to $n=a-b$ for any $n$.\n\nIf $\\lvert A\\rvert\\sim c_rN^{1/2}$ as $N\\to \\infty$ and $\\lvert B\\rvert \\sim c_r'N^{1/2}$ as $N\\to \\infty$ then is it true that $c_r\\neq c_r'$ for $r\\geq 2$? Is it true that $c_r'<c_r$?\n\n\n\nAccording to Erd\\H{o}s, first formulated in conversation with Berend, and later independently reformulated with Freud.\n\nIt is true that $c_1=c_1'$, and the classical bound on the size of Sidon sets (see [30]) implies $c_1=c_1'=1$.",
     "plain": "Let $r\\geq 2$ and let $A\\subseteq \\{1,\\ldots,N\\}$ be a set of maximal size such that there are at most $r$ solutions to $n=a+b$ with $a\\leq b$ for any $n$. (That is, $A$ is a $B_2[r]$ set.)",
-    "whyMatters": []
+    "whyMatters": [
+      "Sidon sets and their B₂[r] generalizations are central objects in additive combinatorics, with deep connections to Singer difference sets, finite projective planes, and number-theoretic counting problems",
+      "The conjectured asymmetry between sums and differences (cᵣ vs c'ᵣ) tests our understanding of why r = 1 is special — the unordered/ordered structure shift only manifests for multiple representations",
+      "Quantitative results (Cilleruelo-Ruzsa-Trujillo 2002, Ruzsa) give Θ-bounds but lack the precision needed to separate cᵣ from c'ᵣ — closing this gap likely requires new methods"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Sidon case (r = 1): c₁ = c'₁ = 1 — Erdős-Turán upper bound + Singer lower bound, classical",
+      "B₂[r] sets in {1,...,N} have size Θ(√(rN)) — Cilleruelo, Ruzsa, Trujillo (2002): |A| ≤ √(rN) + O(r^{1/2}N^{1/4})",
+      "Ruzsa: cᵣ ~ √r with constructions achieving cᵣ ≥ √r - o(1)"
+    ],
+    "open": [
+      "Main conjecture: c'ᵣ < cᵣ for r ≥ 2 (Erdős, with Berend and Freud, [Er92c])",
+      "Weaker: cᵣ ≠ c'ᵣ for some r ≥ 2",
+      "Even existence of the limiting constants cᵣ and c'ᵣ for r ≥ 2 is nontrivial — current results give Θ-bounds, not asymptotic equalities"
+    ],
+    "goal": "Build infrastructure around B₂[r] and difference B₂[r] sets in Lean, formalize the Sidon (r=1) baseline, and document the open conjecture without making false formal claims."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-01-15T10:32:49.761Z",
-    "iteration": 2,
-    "focus": "Built infrastructure: monotonicity, empty set lemmas, card bounds. Created Aristotle companion.",
+    "phase": "ACT",
+    "since": "2026-03-27T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "B₂[r] infrastructure complete: monotonicity, empty/singleton/subset lemmas, card bounds, sidon_counting_bound (|A|² ≤ 4N), and the B₂[1]↔Sidon equivalence (isB2r_one_iff_sidon) connecting to Erdos #340. Companion file has 0 actual sorries — all 5 Aristotle targets proved directly. Open conjectures (cᵣ ≠ c'ᵣ, c'ᵣ < cᵣ) remain unstated to avoid false axiom claims.",
     "blockers": [],
-    "nextAction": "Aristotle proves companion lemmas; future session: prove sidon_classical or connect to Erdos340 IsSidonSet",
+    "nextAction": "Build toward the half-open conjecture: explore quantitative B₂[r] upper bound via Cilleruelo-Ruzsa-Trujillo (|A| ≤ √(rN) + O(r^{1/2}N^{1/4})). Define maxB2rSize asymptotic constants. Connect IsB2r A 1 ↔ IsSidonSet A as a cross-file theorem.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All 6 Aristotle companion sorries proved (was 6S→0S). Proved singleton B₂[r] lemmas, subset monotonicity, and the Sidon counting bound |A|²≤4N.",
+    "progressSummary": "INFRASTRUCTURE COMPLETE — main open conjecture (cᵣ vs c'ᵣ separation) remains unstated. 12 theorems proved in main file plus a 5-theorem Aristotle companion (sidon_counting_bound fully implemented, not stubbed). Notable: isB2r_one_iff_sidon establishes B₂[1] ↔ Sidon, connecting to Erdos #340. 0 axiom declarations, 0 actual sorries.",
     "builtItems": [
       "theorem isB2r_mono: B₂[r] monotone in r (proved, term-mode)",
       "theorem isDiffB2r_mono: diff B₂[r] monotone in r (proved, term-mode)",
@@ -39,12 +51,14 @@
       "theorem isDiffB2r_empty: empty set is diff B₂[r] (proved, by simp)",
       "theorem sumRepCount_le_card_sq: sum rep count ≤ |A|² (proved)",
       "theorem diffRepCount_le_card_sq: diff rep count ≤ |A|² (proved)",
-      "Erdos863Aristotle.lean: companion file with 5 sorry targets",
-      "isB2r_singleton: proved via card_filter_le",
-      "isDiffB2r_singleton: proved via card_filter_le",
-      "isB2r_subset: proved via filter/product monotonicity",
-      "isDiffB2r_subset: proved via filter/product monotonicity",
-      "sidon_counting_bound: full proof of |A|²≤4N for Sidon sets in {1,...,N}"
+      "isB2r_singleton (in main + companion): singletons are B₂[r] for r ≥ 1",
+      "isDiffB2r_singleton (in main + companion): singletons are diff B₂[r] for r ≥ 1",
+      "isB2r_subset (in main + companion): subsets preserve B₂[r] via product monotonicity",
+      "isDiffB2r_subset (in main + companion): subsets preserve diff B₂[r]",
+      "def IsSidonSetLocal: matches IsSidonSet from Erdos340Problem.lean",
+      "theorem isB2r_one_iff_sidon: B₂[1] ↔ Sidon — connects this file to Erdős #340",
+      "Erdos863Aristotle.lean: companion file (5 theorems, 0 actual sorries)",
+      "sidon_counting_bound (in companion): |A|² ≤ 4N for Sidon sets in {1,...,N} — full proof via injectivity on upper triangle, image in Icc 2 (2N), swap injection from lower triangle"
     ],
     "insights": [
       "B₂[r] monotonicity in r is trivial (le_trans); same for diff version",
@@ -57,10 +71,11 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Submit Erdos863Aristotle.lean to Aristotle for automated proof search",
-      "Prove connection theorem: IsSidonSet S ↔ IsB2r S 1 (connect to Erdos340 infrastructure)",
-      "Attempt to prove sidon_classical upper bound direction from counting argument",
-      "Explore whether maxB2rSize monotonicity in r/N can be proved via Finset.sup API"
+      "Cross-file connection: prove Erdos340.IsSidonSet S ↔ Erdos863.IsB2r S 1 (the local equivalence isB2r_one_iff_sidon is already proved — just need to bridge to the Erdos340 namespace)",
+      "Sidon upper bound (sidon_classical analogue): the companion lemma sidon_counting_bound gives |A|² ≤ 4N — derive |A| ≤ 2√N from this",
+      "B₂[r] generalization of counting bound: extend sidon_counting_bound to give |A|² ≤ 2(2N-1)·r + |A| for B₂[r] sets (the Cilleruelo-Ruzsa-Trujillo direction)",
+      "maxB2rSize monotonicity: prove maxB2rSize is monotone in N via Finset.sup_mono",
+      "Define limsup constants cᵣ and c'ᵣ explicitly using Filter.atTop framework, separate from the main conjecture"
     ],
     "markdown": "# Erdős #863 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 2$ and let $A\\subseteq \\{1,\\ldots,N\\}$ be a set of maximal size such that there are at most $r$ solutions to $n=a+b$ with $a\\leq b$ for any $n$. (That is, $A$ is a $B_2[r]$ set.)\n\nSimilarly, let $B\\subseteq \\{1,\\ldots,N\\}$ be a set of maximal size such that there are at most $r$ solutions to $n=a-b$ for any $n$.\n\nIf $\\lvert A\\rvert\\sim c_rN^{1/2}$ as $N\\to \\infty$ and $\\lvert B\\rvert \\sim c_r'N^{1/2}$ as $N\\to \\infty$ then is it true that $c_r\\neq c_r'$ for $r\\geq 2$? Is it true that $c_r'<c_r$?\n\n\n\nAccording to Erd\\H{o}s, first formulated in conversation with Berend, and later independently reformulated with Freud.\n\nIt is true that $c_1=c_1'$, and the classical bound on the size of Sidon sets (see [30]) implies $c_1=c_1'=1$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #30\n- Problem #862\n- Problem #864\n- Problem #39\n- Problem #1\n\n## References\n\n- Er92c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
@@ -68,17 +83,26 @@
     "erdos"
   ],
   "relatedProofs": [
-    "erdos-8",
-    "erdos-86",
-    "erdos-863"
+    "erdos-340",
+    "erdos-862",
+    "erdos-864",
+    "erdos-530"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": [
+      "Erdős, Berend, Freud — formulated this problem in conversation [Er92c, c. 1992]",
+      "Erdős, P. and Turán, P. (1941). On a problem of Sidon in additive number theory. J. London Math. Soc.",
+      "Singer, J. (1938). A theorem in finite projective geometry and some applications to number theory. Trans. AMS",
+      "Lindström, B. (1969). An inequality for B₂-sequences. J. Combin. Theory",
+      "Cilleruelo, J., Ruzsa, I.Z., Trujillo, C. (2002). Upper and lower bounds for finite B₂[g] sequences. J. Number Theory"
+    ],
+    "urls": [
+      "https://erdosproblems.com/863"
+    ],
     "mathlib": []
   },
   "started": "2026-01-15T10:32:49.761Z",
-  "lastUpdate": "2026-03-13T07:52:17.053Z",
+  "lastUpdate": "2026-04-27T00:00:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
