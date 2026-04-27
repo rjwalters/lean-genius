@@ -1,7 +1,7 @@
 {
   "slug": "cramers-rule-oq-03",
   "title": "Can the result extend to non-commutative settings using quasideterminants (Ge...",
-  "phase": "NEW",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "STABLE-VERIFIED: CramersRuleOQ03.lean (175 lines, 0 sorries, 0 axioms). Gallery meta correctly reports status=verified, axiomCount=0, badge=mathlib. JSON phase NEW → COMPLETED to match gallery state.",
     "builtItems": [
       "quasidet₀₀/₁₁: Gelfand-Retakh quasideterminant definitions",
       "ncSolve: explicit solution formula over DivisionRing",
