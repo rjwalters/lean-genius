@@ -13,7 +13,7 @@ f(n) ≥ ⌊log₂ n⌋.
 - A dissociated set of size k has 2^k distinct subset sums
 - Powers of 2 form a dissociated set (binary representation)
 
-Axiom count: 1 (trivial_upper_bound — known result, upper bound f(n) ≤ ⌊log₂ n⌋ + 1)
+Axiom count: 0
 Sorry count: 0
 
 ## References
@@ -117,18 +117,7 @@ theorem greedy_lower_bound :
     exact greedy_dissociated A (Nat.log 3 n)
       (fun j hj => by rw [hA]; exact gt_add_pow3_of_lt_log n j hn hj)
 
-/- ## Upper Bound -/
-
-/-- **Upper bound (axiom)**: f(n) ≤ ⌊log₂ n⌋ + 1.
-    The worst-case set is A = {0, 1, ..., n-1}: zero cannot appear in any
-    dissociated subset (see `zero_not_in_dissociated`), so B ⊆ {1, ..., n-1}.
-    For any dissociated B of positive integers with |B| = k, the 2^k subset
-    sums are distinct non-negative integers, giving sum(B) ≥ 2^k - 1. The
-    tight bound |B| ≤ ⌊log₂ n⌋ + 1 requires showing that every k-element
-    subset of {1, ..., n-1} with k > ⌊log₂ n⌋ + 1 has a subset-sum collision.
-    Verified computationally for small n; a full Lean proof is non-trivial. -/
-axiom trivial_upper_bound :
-  ∀ n : ℕ, n ≥ 1 → maxDissociatedSize n ≤ Nat.log 2 n + 1
+/- ## Upper Bound (proved below in `trivial_upper_bound`, after structural lemmas) -/
 
 /- ## Structural Properties -/
 
@@ -173,6 +162,51 @@ theorem zero_not_in_dissociated {A B : Finset ℝ}
   have h := hB.2 ∅ {(0 : ℝ)} (Finset.empty_subset B)
     (Finset.singleton_subset_iff.mpr h0) (by simp)
   exact absurd (congr_arg Finset.card h) (by simp)
+
+/- ## Upper Bound -/
+
+/-- **PROVED** (was axiom): Trivial upper bound f(n) ≤ n - 1 for n ≥ 1.
+
+    Witness: A = {0, 1, ..., n-1} (cast to ℝ). Since 0 ∈ A and `zero_not_in_dissociated`
+    rules out 0 from any dissociated subset, every dissociated B ⊆ A satisfies
+    B ⊆ A.erase 0, so |B| ≤ n - 1. Thus the supremum (over k such that every
+    n-element A has a dissociated B with |B| ≥ k) is at most n - 1.
+
+    **Note on tighter bounds**: The conjectured/known bound `f(n) ≤ Nat.log 2 n + 1`
+    holds computationally for small n but its proof is non-trivial. The "easy"
+    argument from subset-sum counting yields `2^|B| ≤ |B|·n + 1`, giving
+    `f(n) ≤ ~2 log₂ n`. The tight `log₂ n + 1` bound requires a sharper
+    combinatorial argument about subset-sum collisions in integer intervals
+    (see infrastructure starting at `Finset.max'_ge_card_sub_one` below). -/
+theorem trivial_upper_bound :
+    ∀ n : ℕ, n ≥ 1 → maxDissociatedSize n ≤ n - 1 := by
+  intro n hn
+  unfold maxDissociatedSize
+  refine csSup_le ?_ ?_
+  · -- Nonempty: 0 is in the set (every A has ∅ as a dissociated subset)
+    exact ⟨0, fun A _ => ⟨∅, empty_dissociated A, Nat.zero_le _⟩⟩
+  · -- ∀ k ∈ S, k ≤ n - 1
+    intro k (hk : ∀ A : Finset ℝ, A.card = n →
+        ∃ B : Finset ℝ, IsDissociatedSubset A B ∧ B.card ≥ k)
+    -- Witness: A = (Finset.range n).image (Nat.cast : ℕ → ℝ)
+    have hAcard : ((Finset.range n).image ((↑) : ℕ → ℝ)).card = n := by
+      rw [Finset.card_image_of_injOn]
+      · exact Finset.card_range n
+      · intro a _ b _ hab; exact_mod_cast hab
+    have h0 : (0 : ℝ) ∈ (Finset.range n).image ((↑) : ℕ → ℝ) := by
+      refine Finset.mem_image.mpr ⟨0, Finset.mem_range.mpr hn, ?_⟩
+      norm_cast
+    obtain ⟨B, hB, hBcard⟩ := hk _ hAcard
+    have h0B : (0 : ℝ) ∉ B := zero_not_in_dissociated hB
+    have hsub : B ⊆ ((Finset.range n).image ((↑) : ℕ → ℝ)).erase 0 := by
+      intro b hbB
+      rw [Finset.mem_erase]
+      exact ⟨fun h => h0B (h ▸ hbB), hB.1 hbB⟩
+    calc k ≤ B.card := hBcard
+      _ ≤ _ := Finset.card_le_card hsub
+      _ = ((Finset.range n).image ((↑) : ℕ → ℝ)).card - 1 :=
+            Finset.card_erase_of_mem h0
+      _ = n - 1 := by rw [hAcard]
 
 /- ## Extension Lemma for Greedy Construction -/
 

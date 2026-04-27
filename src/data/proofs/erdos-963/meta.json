@@ -15,14 +15,14 @@
       "subset sums",
       "number theory"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 963,
     "erdosUrl": "https://erdosproblems.com/963",
     "erdosProblemStatus": "open",
-    "axiomCount": 1,
-    "lineCount": 672,
-    "assumptions": "1 axiom: trivial_upper_bound (known result, f(n) ≤ ⌊log₂ n⌋ + 1). greedy_lower_bound now fully proved via greedy_dissociated + Nat.log arithmetic. 0 sorries. Conjecture stated as def ErdosProblem963 (not an axiom).",
+    "axiomCount": 0,
+    "lineCount": 704,
+    "assumptions": "0 axioms. trivial_upper_bound now proved (f(n) ≤ n - 1 for n ≥ 1, via worst-case witness A = {0,...,n-1} and zero_not_in_dissociated). greedy_lower_bound fully proved via greedy_dissociated + Nat.log arithmetic. The conjectured tight bound f(n) ≤ ⌊log₂ n⌋ + 1 remains open in the formalization (the trivial bound n − 1 is much weaker but axiom-free). The main Erdős conjecture f(n) ≥ ⌊log₂ n⌋ is stated as `def ErdosProblem963` (open).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -137,9 +137,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 672,
-    "axiomCount": 1,
-    "theoremCount": 22,
+    "lineCount": 704,
+    "axiomCount": 0,
+    "theoremCount": 23,
     "definitionCount": 4,
     "path": "Proofs/Erdos963Problem.lean",
     "sorries": 0
