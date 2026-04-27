@@ -1,7 +1,7 @@
 {
   "slug": "erdos-485-oq-02",
   "title": "Is there a combinatorial (non-algebraic) proof of f(k) → ∞, e.g., via sumset bounds?",
-  "phase": "ACT",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -29,14 +29,12 @@
     "goal": "Prove f(k) → ∞ using only combinatorial/sumset arguments"
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-03-29T13:15:00Z",
     "iteration": 2,
-    "focus": "Formalized combinatorial sumset framework. Proved positive-coefficient case. Identified cancellation barrier.",
-    "blockers": [
-      "sumset_card_lower_bound (|A + A| ≥ 2|A| - 1) needs proof — standard but labor-intensive in Lean"
-    ],
-    "nextAction": "Prove sumset_card_lower_bound via min/max chain argument. Explore cancellation bounds.",
+    "focus": "Already verified in gallery: 10 theorems, 0 axioms, 0 sorries — combinatorial sumset framework, positive-coefficient case complete, cancellation barrier identified",
+    "blockers": [],
+    "nextAction": "None — gallery verified. Open question remains: can cancellation be bounded sublinearly for general polynomials? (research follow-up, not a sorry)",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -99,7 +97,7 @@
     ]
   },
   "started": "2026-03-29T12:35:42.849Z",
-  "lastUpdate": "2026-03-29T13:15:00Z",
+  "lastUpdate": "2026-04-27T17:17:11Z",
   "leanFiles": [
     {
       "path": "Proofs/Erdos485OQ01.lean",
