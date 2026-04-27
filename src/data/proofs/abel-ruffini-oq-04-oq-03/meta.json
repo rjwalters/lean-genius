@@ -270,6 +270,20 @@
       "note": "Original memoir presenting the criterion; written 1831, submitted to the Paris Academy, published posthumously 14 years after Galois's death"
     },
     {
+      "authors": ["E. E. Kummer"],
+      "title": "\u00dcber die Erg\u00e4nzungss\u00e4tze zu den allgemeinen Reciprocit\u00e4tsgesetzen",
+      "year": "1850",
+      "venue": "Journal f\u00fcr die reine und angewandte Mathematik (Crelle's Journal), vol. 44, pp. 93\u2013146",
+      "note": "Kummer's foundational work on cyclic extensions of cyclotomic fields, the source of what is now called *Kummer theory* \u2014 directly underlying the axiomatized reverse direction of this entry. Kummer proved that over a field $F$ containing a primitive $n$-th root of unity $\\zeta_n$, every cyclic Galois extension $E/F$ of degree $n$ has the form $E = F(\\sqrt[n]{\\beta})$ for some $\\beta \\in F^\\times$, with $\\text{Gal}(E/F)$ acting by $\\sqrt[n]{\\beta} \\mapsto \\zeta_n^k \\sqrt[n]{\\beta}$. This bijection between $F^\\times/(F^\\times)^n$ and cyclic degree-$n$ extensions is the technical engine that converts a composition series with cyclic quotients into an explicit radical tower \u2014 the missing ingredient `solvableGal_implies_solvableByRad` axiomatizes."
+    },
+    {
+      "authors": ["I. R. Shafarevich"],
+      "title": "Construction of fields of algebraic numbers with given solvable Galois group",
+      "year": "1954",
+      "venue": "Izvestiya Akademii Nauk SSSR, Seriya Matematicheskaya, vol. 18, pp. 525\u2013578 (English translation in AMS Translations 4 (1956), pp. 185\u2013237)",
+      "note": "Shafarevich's theorem: every finite solvable group occurs as the Galois group of some Galois extension of $\\mathbb{Q}$ \u2014 directly cited in openQuestion #4 (the Inverse Galois Problem). Combined with this entry's criterion, Shafarevich's theorem implies a positive radical-solvability result: for every finite solvable group $G$, there exists a polynomial $f \\in \\mathbb{Q}[x]$ with $\\text{Gal}(f/\\mathbb{Q}) \\cong G$, hence (assuming the reverse direction of `galois_criterion`) the roots of $f$ admit a radical formula whose nesting structure is dictated by the composition series of $G$. Shafarevich's proof uses central embedding problems and class field theory; the non-solvable case (e.g., $M_{23}$, the only sporadic simple group not yet known to be a Galois group over $\\mathbb{Q}$) remains open."
+    },
+    {
       "authors": ["The mathlib Community"],
       "title": "Mathlib4: A Unified Library of Mathematics Formalized in Lean 4",
       "year": "2024",
