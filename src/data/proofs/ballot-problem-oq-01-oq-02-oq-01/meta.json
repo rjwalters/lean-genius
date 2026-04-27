@@ -24,7 +24,7 @@
     ],
     "dateAdded": "2026-04-12",
     "axiomCount": 0,
-    "lineCount": 208,
+    "lineCount": 207,
     "assumptions": "1 sorry: final ncard/ENNReal assembly for uniformOn_fiber_transfer' (Mathlib API navigation, not a mathematical gap)."
   },
   "overview": {
@@ -84,7 +84,7 @@
       "id": "summary",
       "title": "Proof Status Summary",
       "startLine": 177,
-      "endLine": 208,
+      "endLine": 207,
       "summary": "Documents what is proved (fiber decomposition, disjointness, positive decomposition, ENNReal ratio) vs. remaining sorry steps (ncard_biUnion API, uniformOn assembly).",
       "mathContext": "Pipeline: $\\text{fiber\\_card\\_uniform} \\xrightarrow{\\text{ncard\\_biUnion}} |\\text{MCS}| = k|\\text{CS}| \\xrightarrow{\\text{ENNReal}} \\text{uniformOn equality}$. Mathematical content complete; remaining work is Mathlib API navigation."
     }
@@ -125,7 +125,7 @@
       "Proofs.BallotProblemOQ01OQ02"
     ],
     "namespace": "BallotFiberTransfer",
-    "lineCount": 208,
+    "lineCount": 207,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 0,
