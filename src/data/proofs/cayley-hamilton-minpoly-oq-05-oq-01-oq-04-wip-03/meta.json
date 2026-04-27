@@ -161,6 +161,41 @@
       "targetId": "cayley-hamilton-reduction-oq-02-oq-01",
       "relationship": "related",
       "description": "Rational canonical form via companion matrices. WIP03's prime power cyclic vector is a building block for showing each primary component has companion form."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
+      "relationship": "extended_by",
+      "description": "WIP04 generalizes WIP03 to arbitrary factored minimal polynomials by combining the prime power engine (pow_irred_dvd_of_annihilated) with CRT/Bezout projections from WIP02."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "pow_irred_dvd_of_annihilated",
+      "type": "key",
+      "description": "If p is irreducible, p^e(M)v ≠ 0, p^(e+1)(M)v = 0, and r(M)v = 0, then p^(e+1) | r",
+      "leanType": "{p : K[X]} → Irreducible p → (e : ℕ) → (v : Fin n → K) → (aeval M (p ^ e)).mulVec v ≠ 0 → (aeval M (p ^ (e + 1))).mulVec v = 0 → (r : K[X]) → (aeval M r).mulVec v = 0 → p ^ (e + 1) ∣ r"
+    },
+    {
+      "name": "nonderogatory_pw_has_cyclic_vector",
+      "type": "core",
+      "description": "For nonderogatory M with minpoly = p^e (p monic irreducible, e ≥ 1), M has a cyclic vector over any field K",
+      "leanType": "(M : Matrix (Fin n) (Fin n) K) → IsNonderogatory M → (p : K[X]) → (e : ℕ) → Irreducible p → p.Monic → 0 < e → minpoly K M = p ^ e → ∃ v, IsCyclicVector M v"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Frobenius, Ferdinand Georg",
+      "title": "Über lineare Substitutionen und bilineare Formen",
+      "year": "1879",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 84, pp. 1-63",
+      "note": "Introduced the rational canonical form and elementary divisors for matrices. The cyclic vector theorem for nonderogatory matrices is equivalent to Frobenius's characterization of matrices with a single invariant factor."
+    },
+    {
+      "authors": "Hoffman, Kenneth; Kunze, Ray",
+      "title": "Linear Algebra",
+      "year": "1971",
+      "venue": "Prentice-Hall, 2nd edition",
+      "note": "Chapter 7 develops the primary decomposition theorem and rational canonical form via the PID structure theorem. The prime power case proved here corresponds to the single-block case in their decomposition, but avoids the module-theoretic machinery entirely."
     }
   ],
   "sorries": 0
