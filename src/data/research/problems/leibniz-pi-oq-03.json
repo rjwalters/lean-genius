@@ -1,7 +1,7 @@
 {
   "slug": "leibniz-pi-oq-03",
   "title": "Leibniz Series Acceleration via Euler/Richardson Transforms",
-  "phase": "ACT",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,36 +16,36 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-30T22:19:31.123Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "COMPLETED",
+    "since": "2026-04-05T00:00:00Z",
+    "iteration": 2,
+    "focus": "Formalization complete: midpoint acceleration + Euler transform identity, 0 sorries, 0 axioms.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Done. Gallery entry verified at src/data/proofs/leibniz-pi-oq-03/.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Part I (midpoint) complete 0 sorries; Part II (Euler) 1 sorry for sum-integral exchange",
+    "progressSummary": "COMPLETE: Part I (midpoint, 4 lemmas) and Part II (Euler transform identity) both fully proved. 0 sorries, 0 axioms in proofs/Proofs/LeibnizPiOQ03.lean (277 lines, 22 theorems, 2 defs). Gallery entry status: verified.",
     "builtItems": [
       "midpoint_error_bound in LeibnizPiOQ03.lean - Part I complete",
       "geometric_series_eq in LeibnizPiOQ03.lean - Euler geometric series",
       "euler_summable in LeibnizPiOQ03.lean - summability by comparison",
-      "arctan_integral in LeibnizPiOQ03.lean - FTC for pi/4"
+      "arctan_integral in LeibnizPiOQ03.lean - FTC for pi/4",
+      "euler_transform_eq in LeibnizPiOQ03.lean - sum-integral exchange via MeasureTheory.integral_tsum (Session 2 closed remaining sorry)"
     ],
     "insights": [
       "midpoint M(k)=(S(2k)+S(2k+1))/2 satisfies |M(k)-pi/4|<=1/(2*(4k+1)), proved via gap_eq + abs_le + linarith",
       "inv_div:(a/b)^{-1}=b/a avoids field_simp case splits for geometric series identity",
-      "euler_transform_eq needs MeasureTheory.integral_tsum (sum-integral exchange, 1 sorry)"
+      "euler_transform_eq closed via ENNReal.ofReal_tsum_of_nonneg + ENNReal.ofReal_lt_top (Summable.tsum_ofReal_ne_top doesn't exist in Mathlib v4.26)",
+      "Reusable blueprint for series-of-bounded-integrands: AEStronglyMeasurable via continuity.restrict, ENNReal domination via enorm_of_nonneg + lintegral_mono_ae, finiteness via ENNReal.ofReal_tsum_of_nonneg"
     ],
-    "mathlibGaps": [
-      "MeasureTheory.integral_tsum conditions for Leibniz Euler transform"
-    ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "Submit euler_transform_eq sorry to Aristotle (HARD - dominated convergence)"
+      "None - formalization complete. Open follow-ups (in gallery meta.json conclusion.openQuestions): Richardson extrapolation bound, Euler transform for log(2) series, optimal acceleration rate per term."
     ]
   },
   "tags": [
@@ -66,7 +66,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T22:19:31.122Z",
-  "lastUpdate": "2026-03-30T22:19:31.122Z",
+  "lastUpdate": "2026-04-27T00:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

@@ -1,7 +1,7 @@
 {
   "slug": "shannon-entropy-oq-01",
   "title": "Can differential entropy $h(X) = -\\int f(x) \\ln f(x)\\,dx$ for continuous dist...",
-  "phase": "ACT",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -21,11 +21,11 @@
     "iteration": 2,
     "focus": "COMPLETE: All sorries eliminated. Build succeeds with 0 errors.",
     "blockers": [],
-    "nextAction": "Prove differentialEntropy_scale_equivariant and gaussianDifferentialEntropy.",
+    "nextAction": "Done. Gallery entry verified at src/data/proofs/shannon-entropy-oq-01/ (status: verified, 0 sorries, 0 axioms).",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -91,7 +91,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T17:32:58.852Z",
-  "lastUpdate": "2026-03-30T17:32:58.852Z",
+  "lastUpdate": "2026-04-27T00:00:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [

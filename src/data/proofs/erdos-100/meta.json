@@ -23,7 +23,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 2,
     "lineCount": 482,
-    "assumptions": "2 axioms: guthKatz_distinct_distances (Guth-Katz 2015: at least n/log n distinct distances), piepmeyer_construction (9-point counterexample for linear independence). kanold_bound and erdos_anning_theorem proved directly. 0 sorries.",
+    "assumptions": "2 axioms: guthKatz_distinct_distances (Guth-Katz 2015: at least cn/log n distinct distances), piepmeyer_construction (9-point integer-distance set with diameter < 5). All other named results are theorems proved from these axioms plus the bridge lemma distinctDistances_le_diam. Kanold's n^(3/4) bound is referenced in commentary only (not formally declared); the Erdős-Anning theorem is motivated via the IsCollinear definition but its proof is outside scope. 0 sorries.",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanDist",
@@ -85,80 +85,80 @@
       "title": "Imports and Setup",
       "summary": "Module imports for Euclidean geometry, finite sets, and real analysis; opens Filter, Set, Finset, and scoped Topology",
       "startLine": 1,
-      "endLine": 29,
+      "endLine": 30,
       "mathContext": "Mathematical content: Module imports for Euclidean geometry, finite sets, and real analysis; opens Filter, Set, Finset, and scoped Topology"
     },
     {
       "id": "plane-distance",
       "title": "The Plane and Distance",
-      "summary": "Euclidean distance in ℝ² with symmetry (dist_symm) and nonnegativity (dist_nonneg)",
+      "summary": "Euclidean distance in ℝ² and its basic metric-space lemmas: dist_symm, dist_nonneg, dist_self, dist_pos (positivity for distinct points), dist_triangle",
       "startLine": 31,
-      "endLine": 53,
-      "mathContext": "Mathematical content: Euclidean distance in ℝ² with symmetry (dist_symm) and nonnegativity (dist_nonneg)"
+      "endLine": 77,
+      "mathContext": "Euclidean distance in $\\mathbb{R}^2$ with the standard metric-space lemmas (symmetry, non-negativity, self-distance zero, positivity for distinct points, triangle inequality)."
     },
     {
       "id": "restricted-distances",
       "title": "Restricted Distance Sets",
-      "summary": "hasIntegerDistances predicate, pairwiseDistances, numDistinctDistances",
-      "startLine": 55,
-      "endLine": 79,
-      "mathContext": "Mathematical content: hasIntegerDistances predicate, pairwiseDistances, numDistinctDistances"
+      "summary": "hasIntegerDistances predicate (every pairwise distance is a positive integer), pairwiseDistances (Finset of positive distances), numDistinctDistances",
+      "startLine": 77,
+      "endLine": 103,
+      "mathContext": "hasIntegerDistances predicate, pairwiseDistances Finset, numDistinctDistances cardinality."
     },
     {
       "id": "diameter",
       "title": "Diameter",
-      "summary": "Diameter as maximum pairwise distance; diam_nonneg and diam_is_integer (proved)",
-      "startLine": 81,
-      "endLine": 137,
-      "mathContext": "Mathematical content: Diameter as maximum pairwise distance; diam_nonneg and diam_is_integer (proved)"
+      "summary": "Diameter as maximum pairwise distance (defined via Finset.max' on pairwiseDistances, with 0 fallback when empty); diam_nonneg and diam_is_integer (proved: for ≥ 2 points the diameter is a positive integer)",
+      "startLine": 103,
+      "endLine": 161,
+      "mathContext": "Diameter $\\mathrm{diam}(S) := \\max \\{\\mathrm{dist}(p,q) : p,q \\in S, p \\neq q\\}$ when nonempty, $0$ otherwise. Proved: $\\mathrm{diam}(S) \\geq 0$, and for integer-distance sets with $|S| \\geq 2$ the diameter is a positive integer."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
-      "summary": "minDiameterRestrictedSets, Erdos100Conjecture (diam ≥ cn), Erdos100StrongConjecture (diam ≥ n-1)",
-      "startLine": 139,
-      "endLine": 171,
-      "mathContext": "minDiameterRestrictedSets, Erdos100Conjecture (diam $\\geq$ cn), Erdos100StrongConjecture (diam $\\geq$ n-1)"
+      "summary": "minDiameterRestrictedSets (infimum of diameters over n-point integer-distance sets), Erdos100Conjecture (∃ c > 0, eventually minDiameterRestrictedSets n ≥ c·n), Erdos100StrongConjecture (eventually minDiameterRestrictedSets n ≥ n−1)",
+      "startLine": 161,
+      "endLine": 195,
+      "mathContext": "Erdős #100 main conjecture: $\\exists c>0$ such that eventually $\\mathrm{diam}(A) \\geq c \\cdot |A|$ for any integer-distance $A \\subset \\mathbb{R}^2$. Strong form: eventually $\\mathrm{diam}(A) \\geq |A|-1$."
     },
     {
       "id": "distinct-distances-bridge",
       "title": "Key Connection: Distinct Distances ≤ Diameter",
-      "summary": "Bridge lemma distinctDistances_le_diam: for integer distance sets, #distinct distances ≤ diam (proved via floor injection)",
-      "startLine": 173,
-      "endLine": 242,
-      "mathContext": "Bridge lemma distinctDistances_le_diam: for integer distance sets, #distinct distances $\\leq$ diam (proved via floor injection)"
+      "summary": "Bridge lemma distinctDistances_le_diam: for integer-distance sets, the number of distinct pairwise distances is at most ⌊diam⌋. Proved by injecting pairwiseDistances → Finset.Icc 1 ⌊diam⌋ via Nat.floor.",
+      "startLine": 195,
+      "endLine": 266,
+      "mathContext": "Bridge lemma: $|\\Delta(A)| \\leq \\lfloor \\mathrm{diam}(A) \\rfloor$ via the injection $d \\mapsto \\lfloor d \\rfloor$, valid because every $d \\in \\Delta(A)$ is a positive integer."
     },
     {
       "id": "lower-bounds",
       "title": "Known Lower Bounds",
-      "summary": "diam_ge_one (proved), kanold_bound (axiom), guthKatz_distinct_distances (axiom), diam_ge_n_over_log_n (proved from axioms + bridge lemma)",
-      "startLine": 244,
-      "endLine": 328,
-      "mathContext": "Axiomatized: diam_ge_one (proved), kanold_bound (axiom), guthKatz_distinct_distances (axiom), diam_ge_n_over_log_n (proved from axioms + bridge lemma)"
+      "summary": "diam_ge_one (proved), guthKatz_distinct_distances (axiom: ≥ cn/log n distinct distances), diam_ge_n_over_log_n (proved from axiom + bridge lemma); Kanold's n^(3/4) bound is referenced in commentary only",
+      "startLine": 266,
+      "endLine": 348,
+      "mathContext": "Axiomatized: guthKatz_distinct_distances (axiom: $\\geq cn/\\log n$ distinct distances). Proved: diam_ge_one, diam_ge_n_over_log_n. Kanold's $n^{3/4}$ bound discussed in comments but not declared."
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
-      "summary": "piepmeyer_construction (axiom), piepmeyer_ratio_bound (proved), strong_conjecture_fails_at_9 (proved)",
-      "startLine": 330,
-      "endLine": 366,
-      "mathContext": "Axiomatized: piepmeyer_construction (axiom), piepmeyer_ratio_bound (proved), strong_conjecture_fails_at_9 (proved)"
+      "summary": "piepmeyer_construction (axiom: 9-point integer-distance set with diam < 5), piepmeyer_ratio_bound (proved: ∃ S of size 9 with diam/|S| < 5/9), strong_conjecture_fails_at_9 (proved: the strong form diam ≥ n−1 fails at n = 9)",
+      "startLine": 348,
+      "endLine": 386,
+      "mathContext": "Axiomatized: piepmeyer_construction. Proved: piepmeyer_ratio_bound, strong_conjecture_fails_at_9 — both deduced from the axiom by direct unpacking."
     },
     {
       "id": "erdos-anning",
       "title": "The Erdős-Anning Theorem",
-      "summary": "IsCollinear definition, erdos_anning_theorem (axiom): infinite integer distance sets must be collinear",
-      "startLine": 368,
-      "endLine": 392,
-      "mathContext": "Formal definition: IsCollinear definition, erdos_anning_theorem (axiom): infinite integer distance sets must be collinear"
+      "summary": "IsCollinear definition + motivational discussion: any infinite integer-distance set in ℝ² must be collinear (Erdős–Anning 1945). The theorem is referenced as background context — only the IsCollinear predicate is formally defined here, not a Lean declaration of the theorem itself.",
+      "startLine": 386,
+      "endLine": 407,
+      "mathContext": "Formal definition: IsCollinear (a Set is collinear iff all points lie on a single line). The Erdős–Anning theorem is described in commentary as motivation for restricting to finite point sets; no formal statement is declared."
     },
     {
       "id": "implications",
       "title": "Implications and Sublinearity",
-      "summary": "conjecture_implies_kanold (proved) and n_over_log_sublinear (proved): the n/log n bound is o(n)",
-      "startLine": 394,
-      "endLine": 469,
-      "mathContext": "conjecture_implies_kanold (proved) and n_over_log_sublinear (proved): the n/$\\log n$ bound is o(n)"
+      "summary": "conjecture_implies_kanold (proved: the linear conjecture implies a Kanold-style sublinear bound c·n^(3/4)) and n_over_log_sublinear (proved: ∀ ε > 0, eventually n/log n < ε·n, confirming the Guth-Katz bound is genuinely o(n))",
+      "startLine": 407,
+      "endLine": 470,
+      "mathContext": "conjecture_implies_kanold: linear conjecture $\\Rightarrow$ $c \\cdot n^{3/4}$ sublinear bound; n_over_log_sublinear: $n/\\log n = o(n)$ via filter convergence (Real.tendsto_log_atTop)."
     }
   ],
   "conclusion": {
