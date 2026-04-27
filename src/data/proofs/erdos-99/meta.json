@@ -105,32 +105,40 @@
       "title": "The Triangular Lattice",
       "summary": "triangularLatticePoint, TriangularLattice definitions; lattice properties described in docstrings only",
       "startLine": 98,
-      "endLine": 128,
+      "endLine": 116,
       "mathContext": "Mathematical content: triangularLatticePoint, TriangularLattice definitions; lattice properties described informally in docstrings only (no axiom declarations)"
     },
     {
       "id": "thue-theorem",
       "title": "Thue's Theorem and Lattice Structure",
       "summary": "Thue's diameter consequence described in docstring only; no Lean declaration",
-      "startLine": 129,
-      "endLine": 141,
+      "startLine": 117,
+      "endLine": 124,
       "mathContext": "Informal sketch only: Thue's diameter consequence described in docstring; no Lean declaration exists"
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "summary": "case_n4_no_equilateral axiom (only); case_n3 is a docstring comment",
-      "startLine": 142,
-      "endLine": 157,
+      "startLine": 125,
+      "endLine": 136,
       "mathContext": "Axiomatized: case_n4_no_equilateral axiom only; case_n3 is a docstring comment with no corresponding Lean declaration"
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (OPEN)",
       "summary": "Erdos99Conjecture, StrongerConjecture, triangularPackingDensity",
-      "startLine": 158,
-      "endLine": 179,
+      "startLine": 137,
+      "endLine": 164,
       "mathContext": "Mathematical content: Erdos99Conjecture, StrongerConjecture, triangularPackingDensity"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_99_summary theorem packaging the n=4 counterexample as the concrete result",
+      "startLine": 165,
+      "endLine": 179,
+      "mathContext": "Mathematical content: erdos_99_summary theorem proved by direct application of the case_n4_no_equilateral axiom"
     }
   ],
   "conclusion": {
