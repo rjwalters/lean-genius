@@ -1121,4 +1121,29 @@ theorem densityRatio_recovery_from_growth (A : IncreasingSeq) (k : ℕ)
         nlinarith
     _ ≤ densityRatio A (k + 1) := hge
 
+/-- **Quantitative recovery from ε-fast growth**: if at infinitely many `k`
+    the growth ratio `n_{k+1}/n_k` exceeds `(k+1)/ε`, then `ρ_A(k+1) ≥ 1-ε`
+    at infinitely many indices.
+
+    Direct corollary of `densityRatio_recovery_from_growth` with the choice
+    `C = (k+1)/ε`: the bound `1 - (k+1)/C` then collapses to `1 - ε`.
+
+    This is a quantitative step toward `erdos_dichotomy`: it shows that the
+    "frequently high density" half of the dichotomy follows automatically
+    from a frequent-fast-growth condition on the sequence. -/
+theorem frequently_high_density_of_eps_fast_growth
+    (A : IncreasingSeq) (ε : ℝ) (hε : 0 < ε)
+    (h : ∃ᶠ k in atTop,
+        ((k + 1 : ℝ) / ε) * (A.seq k : ℝ) < (A.seq (k + 1) : ℝ)) :
+    ∃ᶠ k in atTop, 1 - ε ≤ densityRatio A (k + 1) := by
+  refine h.mono fun k hk => ?_
+  have hk1_pos : (0 : ℝ) < (k + 1 : ℝ) := by exact_mod_cast Nat.succ_pos k
+  have hk1ε_pos : (0 : ℝ) < (k + 1 : ℝ) / ε := div_pos hk1_pos hε
+  have hres := densityRatio_recovery_from_growth A k ((k + 1 : ℝ) / ε) hk1ε_pos hk
+  have hε_ne : ε ≠ 0 := ne_of_gt hε
+  have hk1_ne : (k + 1 : ℝ) ≠ 0 := ne_of_gt hk1_pos
+  have hsimp : (k + 1 : ℝ) / ((k + 1 : ℝ) / ε) = ε := by field_simp
+  rw [hsimp] at hres
+  exact hres
+
 end Erdos1000

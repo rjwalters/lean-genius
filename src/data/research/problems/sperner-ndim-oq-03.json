@@ -1,8 +1,8 @@
 {
   "slug": "sperner-ndim-oq-03",
   "title": "Extend n-dim Sperner to Brouwer FPT via displacement coloring",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
@@ -16,8 +16,8 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-29T23:03:00-07:00",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T15:56:46.291957+00:00",
     "iteration": 1,
     "focus": "Both sorries proved. File has 0 sorries, 0 axioms.",
     "blockers": [],
@@ -78,5 +78,18 @@
     "mathlib": []
   },
   "started": "2026-03-30T06:03:08.390Z",
-  "lastUpdate": "2026-03-30T06:03:08.398Z"
+  "lastUpdate": "2026-04-27T15:56:46.291957+00:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/SpernerNDimOQ03.lean",
+      "filename": "SpernerNDimOQ03.lean",
+      "lineCount": 452,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerNDimOQ03.lean"
+    }
+  ]
 }

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved admissible k-tuple existence for all k (factorial construction), closing diameter_lower_bound sorry. OQ03OQ01: 3A→1A, 2S→1S.",
+    "progressSummary": "BLOCKED: API drift from 2026-04-26 Mathlib upgrade. File unbuildable. Pre-existing 1 axiom (BV) intrinsic to formalizability question. Drafted structural lemmas (mono, EH→BV, large-sieve fix) but cannot verify until mechanic repair.",
     "builtItems": [
       "BoundedPrimeGapsOQ04.lean: chebyshevPsi, chebyshevPsiAP via Mathlib vonMangoldt",
       "BoundedPrimeGapsOQ04.lean: bombieriVinogradov formal axiom statement",
@@ -59,7 +59,8 @@
       "Key insight for D(3)≥6: 3 same-parity elements in interval ≤5 must form {a,a+2,a+4}, which is non-admissible mod 3",
       "diameter_lower_bound mostly proved — only missing piece is existence of admissible k-tuples for general k",
       "Admissible k-tuples exist for all k≥1 via factorial construction: {i*k! | i<k}. For p≤k: p|k! collapses all residues. For p>k: at most k<p residues.",
-      "diameter_lower_bound sorry closed: proved admissible k-tuples exist for general k, establishing D(k)≥k-1 without sorry"
+      "diameter_lower_bound sorry closed: proved admissible k-tuples exist for general k, establishing D(k)≥k-1 without sorry",
+      "BoundedPrimeGapsOQ04.lean broken by Mathlib API drift (2026-04-26 upgrade): ∑ in→∑ ∈ migration, noncomputable abbrev Λ rejected, Nat.totient_pos arity changed from function to iff. File unbuildable via Docker until mechanic repair."
     ],
     "mathlibGaps": [
       "Polya-Vinogradov inequality (character sum bounds)",
@@ -69,9 +70,12 @@
       "Perron formula (contour integration)"
     ],
     "nextSteps": [
-      "Formalize Polya-Vinogradov inequality as Layer 1 cornerstone",
-      "Verify BV file compiles via Docker build",
-      "Explore Zhang smooth moduli variant as lower-infrastructure alternative"
+      "MECHANIC: ∑ x in s → ∑ x ∈ s migration across all sums in BoundedPrimeGapsOQ04.lean",
+      "MECHANIC: rename Λ abbrev (e.g. to vMangoldtFn) — Λ no longer parses as identifier",
+      "MECHANIC: Nat.totient_pos is now an iff (.mpr) rather than direct application",
+      "AFTER REPAIR: add hasLevelOfDistribution_mono (subset → smaller sum)",
+      "AFTER REPAIR: add eh_implies_half_level via Nat.sqrt_lt_self for x ≥ 2",
+      "AFTER REPAIR: replace LargeSieveHolds := True placeholder with additive-character form using Complex.exp/normSq"
     ]
   },
   "tags": [

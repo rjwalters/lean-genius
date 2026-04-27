@@ -1,8 +1,8 @@
 {
   "slug": "inverse-galois-oq-01",
   "title": "Does every finite group appear as a Galois group over ℚ",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,8 +16,8 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-24T23:00:00.000Z",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T15:58:20.372750+00:00",
     "iteration": 2,
     "focus": "Added alternating group characterization and quotient realizability structural theorem",
     "blockers": [],
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 105T, 4A (all deep), 0S (verified — prior 11S count was documentation mentions). 23 finite groups realized with sorry-free proofs. No further progress possible without new Mathlib results.",
+    "progressSummary": "COMPLETED: Main file InverseGalois.lean has 0 real sorries (the prior 11-sorry count was documentation mentions, not real sorries — see researcher memory note feedback_lean_sorry_counting). 23 finite groups realized with sorry-free proofs in the main file. Sub-OQ files (InverseGaloisOQ01, OQ02, OQ02Aristotle) retain real sorries: 1 + 6 + 10 = 17 — these are scoped under their own problem entries. InverseGalois.lean has 4 axioms (Hilbert irreducibility and other deep results).",
     "builtItems": [
       "sn_solvable_iff: Sn solvable iff n<=4",
       "a5_simple: A5 is simple",
@@ -92,7 +92,7 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.908Z",
-  "lastUpdate": "2026-03-29T11:10:00Z",
+  "lastUpdate": "2026-04-27T15:58:20.372750+00:00",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -103,7 +103,7 @@
       "theoremCount": 106,
       "axiomCount": 4,
       "defCount": 1,
-      "sorryCount": 11,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGalois.lean"
     },
@@ -111,7 +111,7 @@
       "path": "Proofs/InverseGaloisA5.lean",
       "filename": "InverseGaloisA5.lean",
       "lineCount": 2068,
-      "theoremCount": 65,
+      "theoremCount": 64,
       "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,
@@ -147,7 +147,7 @@
       "theoremCount": 0,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5ResultantDet.lean"
     },
@@ -180,7 +180,7 @@
       "theoremCount": 40,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 6,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisOQ01.lean"
     },
@@ -191,7 +191,7 @@
       "theoremCount": 18,
       "axiomCount": 3,
       "defCount": 0,
-      "sorryCount": 7,
+      "sorryCount": 6,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisOQ02.lean"
     },

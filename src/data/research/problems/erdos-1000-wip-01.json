@@ -51,7 +51,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 7 added Euler-totient bridge (ρ < ε ⟹ φ(n)/n < ε, connecting to prime factorization) and density recovery theorem (fast growth forces high ρ). Total: 1119 lines, 56 theorems, 0 sorries, 2 deep axioms remain.",
+    "progressSummary": "PROGRESS: Session 8 added frequently_high_density_of_eps_fast_growth bridging recovery → dichotomy: ε-fast growth at infinitely many indices implies ρ ≥ 1-ε at infinitely many indices. Total: 1149 lines, 57 theorems, 0 sorries, 2 deep axioms remain (erdos_dichotomy needs the converse: low density frequent ⟹ fast growth frequent).",
     "builtItems": [
       {
         "name": "phiA_ge_totient",
@@ -130,7 +130,8 @@
       "deficit_count_bound: m(1-ε) ≤ Σ(1-ρ) for m low-ρ indices",
       "density_somewhere_pos: Σ ρ_k > 0",
       "low_density_euler_bound: ρ < ε ⟹ φ(n)/n < ε (bridge to prime factorization)",
-      "densityRatio_recovery_from_growth: n_{k+1} > C·n_k ⟹ ρ_{k+1} ≥ 1-(k+1)/C"
+      "densityRatio_recovery_from_growth: n_{k+1} > C·n_k ⟹ ρ_{k+1} ≥ 1-(k+1)/C",
+      "frequently_high_density_of_eps_fast_growth: ∃ᶠ k, n_{k+1} > (k+1)/ε · n_k ⟹ ∃ᶠ k, 1-ε ≤ ρ(k+1) (Erdos1000Problem.lean ~1126-1149)"
     ],
     "insights": [
       "phiA_ge_totient: coprime m has reducedDenom = n_k > n_j for j < k",
@@ -148,7 +149,8 @@
       "Growth constraint from low density: if ρ < ε then (1-ε)n_k < k·n_{k-1}, so the sequence must grow slowly during low-density periods",
       "The growth constraint means low ρ cannot persist at indices where the sequence grows faster than O(k)·n_{k-1}",
       "Deficit counting: among N indices, if m have ρ < ε, then Σ(1-ρ) ≥ m(1-ε). Combined with Σ(1-ρ) < N, this gives m < N/(1-ε), but this is > N for ε < 1, so deficit counting alone does NOT limit the proportion of low-ρ indices to below 1.",
-      "The dichotomy proof likely requires deeper structure than growth/deficit bounds — probably needs the Euler product connection or explicit smooth-number analysis"
+      "The dichotomy proof likely requires deeper structure than growth/deficit bounds — probably needs the Euler product connection or explicit smooth-number analysis",
+      "Quantitative recovery: setting C = (k+1)/ε in densityRatio_recovery_from_growth makes 1 - (k+1)/C collapse to 1-ε, giving the high-density half of erdos_dichotomy from a frequent-fast-growth precondition"
     ],
     "mathlibGaps": [
       "No gaps: Nat.totient, Finset.sum_filter_add_sum_filter_not, card_image_le all sufficient",
