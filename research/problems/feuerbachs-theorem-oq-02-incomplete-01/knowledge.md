@@ -112,6 +112,58 @@ Five lemmas left, each non-trivial for distinct reasons:
 
 ---
 
+## Dead Ends
+
+- 5 tangency sorries likely unfillable (formulas appear mathematically incorrect)
+- feuerbach_3d_fails_general hard to prove (sqrt in face areas)
+
+---
+
+## Session 2026-04-27 (Session 2) — Companion File Cleanup
+
+**Mode**: REVISIT (after Session 1's mathematical-error discovery)
+**Outcome**: Filled all 13 routine sorries in `FeuerbachsTheoremOQ02Aristotle.lean`; fixed 1 false statement.
+
+### Changes to FeuerbachsTheoremOQ02Aristotle.lean
+
+**Proved (12 lemmas, previously sorries):**
+- `dist3_sq_nonneg` — `positivity`
+- `dist3_sq_zero_iff` — destructure + `nlinarith` + `sq_eq_zero_iff`
+- `dist3_sq_comm` — `ring`
+- `dot3_self_nonneg` — `nlinarith [mul_self_nonneg ...]`
+- `dot3_self_zero_iff` — destructure + nlinarith + `mul_self_eq_zero`
+- `dot3_comm`, `dot3_add_left` — `ring`
+- `midpoint3_equidist`, `midpoint3_spec` — `simp only; ring`
+- `internally_tangent_sym` — `abs_sub_comm`
+- `externally_tangent_sum_comm` — `ring`
+- `twentyFourPoint_radius_third_of_circum` — `linarith`
+- `ortho_edge_sum_identity` (the isodynamic property!) — `linear_combination 2 * hab_cd - 2 * hac_bd`
+
+**Statement fix:**
+- `externally_tangent_radii_nonneg` was FALSE as written (counterexample r₁=10, r₂=-5, d=5).
+  Added missing precondition `hr₁_le_d : r₁ ≤ d` to make the statement correct.
+  This matches the geometric intent for non-degenerate external tangency.
+
+### Build Verification
+- `./proofs/scripts/docker-build.sh Proofs.FeuerbachsTheoremOQ02Aristotle` succeeds with
+  64GB memory budget. Only unused-variable warnings remain.
+- Sorry count in companion file: 13 → 0. Axioms: 0 → 0.
+
+### Honest Progress Assessment
+
+This session did NOT advance the main 5-sorry tangency theorems (still flagged "likely
+unfillable"). The companion file consists of routine geometric helper lemmas; their proofs
+are valuable scaffolding for future work but do not substitute for the deep tangency
+results that remain open. The isodynamic property `ortho_edge_sum_identity` is the most
+substantial new lemma proved (a classical fact about orthocentric tetrahedra).
+
+The 5 main sorries appear to require:
+1. Literature search to identify the correct sphere/radius (likely NOT N₂₄ at radius R/3)
+2. Restating the theorems with the correct geometric objects (e.g., midedge sphere)
+3. Then a coordinate computation analogous to the 2D Feuerbach proof
+
+---
+
 ## Problem Understanding
 
 ### What the file proves
