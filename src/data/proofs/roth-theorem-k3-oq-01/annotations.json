@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-header-imports",
+    "proofId": "roth-theorem-k3-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "context",
+    "title": "Module Header: Roth Number and Three-Part Structure",
+    "content": "The file opens with a documentation block introducing the Roth number $r_3(N)$ — the maximum size of a 3-AP-free subset of $\\{0, \\ldots, N-1\\}$ — and outlines the three-part structure: definitions (Part I), density increment iteration (Part II), and quantitative bound statements (Part III). The single `import Mathlib` pulls in the full Mathlib library, providing ZMod, Finset, Real.log, Real.exp, and the positivity/omega tactics. The file uses the `open Finset` command to bring Finset operations into scope without qualification, and works within the namespace `Szemeredi.Roth.Quantitative`, reflecting that Roth's theorem is the $k=3$ case of Szemerédi's theorem on arithmetic progressions.",
+    "mathContext": "The Roth number $r_3(N) = \\max\\{|A| : A \\subseteq [N],\\, A \\text{ has no 3-AP}\\}$ quantifies how dense a set can be while avoiding 3-term arithmetic progressions. This file works in $\\mathbb{Z}/N\\mathbb{Z}$ rather than $[N]$ for algebraic convenience.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Szemerédi's theorem",
+      "Roth's theorem",
+      "ZMod in Mathlib",
+      "additive combinatorics"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "Mathlib library structure"
+    ]
+  },
+  {
     "id": "ann-apfree-def",
     "proofId": "roth-theorem-k3-oq-01",
     "range": {
@@ -115,6 +138,28 @@
     ]
   },
   {
+    "id": "ann-card-le-rothNumber",
+    "proofId": "roth-theorem-k3-oq-01",
+    "range": {
+      "startLine": 102,
+      "endLine": 108
+    },
+    "type": "concept",
+    "title": "Any AP-Free Set Is Bounded by r₃(N)",
+    "content": "Proves the fundamental characterization of the Roth number as a true upper bound: for any AP-free subset $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$, we have $|A| \\leq r_3(N)$. The proof unfolds the Roth number definition and applies `Finset.le_sup` to show that $A$'s cardinality is at most the supremum over all AP-free sets. This theorem is the workhorse used to establish upper bounds on $r_3(N)$: to prove $r_3(N) \\leq f(N)$, it suffices to show that every AP-free set has cardinality at most $f(N)$. Combined with `rothNumber_achieved`, this gives a complete characterization: $r_3(N)$ is the exact maximum, not merely a least upper bound.",
+    "mathContext": "$\\forall A \\subseteq \\mathbb{Z}/N\\mathbb{Z},\\; \\text{APFree}(A) \\Rightarrow |A| \\leq r_3(N)$. Proof: $A$ belongs to the set $\\{B \\in 2^{\\mathbb{Z}/N\\mathbb{Z}} : \\text{APFree}(B)\\}$, so $|A| \\leq \\sup_B |B| = r_3(N)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "supremum characterization",
+      "extremal combinatorics",
+      "Finset.le_sup"
+    ],
+    "prerequisites": [
+      "Finset.sup definition",
+      "AP-free predicate"
+    ]
+  },
+  {
     "id": "ann-roth-number-achieved",
     "proofId": "roth-theorem-k3-oq-01",
     "range": {
@@ -181,6 +226,30 @@
       "Nat.floor_le",
       "real number inequalities",
       "positivity tactic"
+    ]
+  },
+  {
+    "id": "ann-iterations-contrapositive",
+    "proofId": "roth-theorem-k3-oq-01",
+    "range": {
+      "startLine": 160,
+      "endLine": 175
+    },
+    "type": "technique",
+    "title": "Iteration Contrapositive and the Modulus Decay Obstacle",
+    "content": "The `iterations_before_contradiction` theorem provides the contrapositive of `max_iterations_bound`: if density $\\delta + k\\delta^2/100 \\leq 1$, then $(k : \\mathbb{R}) \\leq 100/\\delta^2$. This is the form directly used in quantitative arguments — one shows that the density stays at most 1 after $k$ steps, then deduces a bound on $k$.\n\nThe NOTE comment (lines 169–174) documents a critical correction: the previously stated `density_upper_bound_from_iteration` (claiming $r_3(N) \\leq 10\\sqrt{N}$) was **false** for large $N$. Behrend's lower bound gives $r_3(N) \\geq N \\cdot \\exp(-c\\sqrt{\\log N}) \\gg \\sqrt{N}$. The error arose from assuming the density increment gives a substructure of size $M$ with $M \\geq N^c$, when in fact the increment lemma only guarantees $M < N$ with no lower bound. This gap is the precise obstacle to completing Roth's quantitative argument formally: one needs Fourier-analytic estimates (Roth's $M \\geq N^{2/3}$) to control the modulus decay rate.",
+    "mathContext": "Contrapositive: $\\delta + k\\delta^2/100 \\leq 1 \\Rightarrow k \\leq 100/\\delta^2$. The false claim $r_3(N) \\leq 10\\sqrt{N}$ was refuted by Behrend: $r_3(N) \\geq N \\cdot e^{-c\\sqrt{\\log N}} \\gg N^{1-\\epsilon}$ for any $\\epsilon > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density increment method",
+      "modulus decay",
+      "Fourier restriction",
+      "false conjecture correction"
+    ],
+    "prerequisites": [
+      "density increment framework",
+      "Behrend's lower bound",
+      "real analysis"
     ]
   },
   {
