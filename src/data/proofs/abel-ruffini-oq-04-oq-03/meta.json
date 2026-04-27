@@ -161,6 +161,23 @@
       "Can a 'degree-bound' theorem be formalized: for every $n \\leq 4$, every irreducible $q \\in \\mathbb{Q}[x]$ of degree $n$ has a root expressible using at most $n-1$ nested radical extractions? This would make the criterion quantitative, not just existential."
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "galois_criterion",
+      "type": "core",
+      "description": "solvableByRad F α ↔ IsSolvable q.Gal — the full biconditional Galois solvability criterion (forward proved, reverse axiomatized)"
+    },
+    {
+      "name": "solvableByRad_implies_solvableGal",
+      "type": "key",
+      "description": "Forward direction: radical solvability implies solvable Galois group (fully proved via Mathlib)"
+    },
+    {
+      "name": "not_solvableByRad_of_not_solvableGal",
+      "type": "key",
+      "description": "Contrapositive: non-solvable Galois group implies not solvable by radicals — the logical heart of Abel-Ruffini"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "abel-ruffini",

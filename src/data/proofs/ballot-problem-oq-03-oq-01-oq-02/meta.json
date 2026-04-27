@@ -2,7 +2,7 @@
   "id": "ballot-problem-oq-03-oq-01-oq-02",
   "title": "Hook-Length Formula for Standard Young Tableaux via LGV",
   "slug": "ballot-problem-oq-03-oq-01-oq-02",
-  "description": "Formalizes the hook-length formula f^λ = n!/∏h(u) for Standard Young Tableaux. Proves: 1-row, 1-col, hook shapes, 2-rect, general 2-row, all gHookYD [a,1^b], ≤2-col, ≤10-col (transpose duality), exactly 3-row through 10-row ALL shapes (PARTS XIV-XXVI). General formula has 3 sorries: 2 via LGV approach + 1 for hook_walk_identity (≥11-row, ≥11-col, non-gHookYD). hook_length_formula proved via alias.",
+  "description": "Formalizes the hook-length formula f^λ = n!/∏h(u) for Standard Young Tableaux. Proves: 1-row, 1-col, hook shapes, 2-rect, general 2-row, all gHookYD [a,1^b], ≤2-col (transpose duality), exactly 3-row ALL [a,b,c] shapes, exactly 4-row ALL [a,b,c,d] shapes (PART XVIII), exactly 5-row ALL [a,b,c,d,e] shapes (PART XIX), exactly 6-row ALL [a,b,c,d,e,f] shapes (PART XX), exactly 7-row ALL [a,b,c,d,e,f,g] shapes (PART XXI), exactly 8-row ALL [a,b,c,d,e,f,g,h] shapes (PART XXII), exactly 9-row ALL [a,b,c,d,e,f,g,h,i] shapes (PART XXIII). General formula has 3 sorries: 2 via LGV approach + 1 for hook_walk_identity (≥10-row, ≥3-col, non-gHookYD).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-21",
@@ -22,9 +22,9 @@
     "sorries": 3,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "Three open sorries: (1) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (2) lgv_det_factors_as_hook_quotient (det factorization identity), (3) hook_walk_identity ≥11-row AND ≥11-col non-gHookYD case (GNW probabilistic proof; at-most-2-row, gHookYD, ≤2-col, exactly-3-row through exactly-10-row ALL proved; ≤10-col via transpose duality). hook_length_formula is proved via alias. hook_length_formula_general is proved modulo hook_walk_identity via corner induction.",
-    "lineCount": 16248,
-    "theoremCount": 464,
+    "assumptions": "Three open sorries: (1) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (2) lgv_det_factors_as_hook_quotient (det factorization identity), (3) hook_walk_identity ≥9-row non-gHookYD ≥3-col case (GNW probabilistic proof; at-most-2-row, gHookYD, ≤2-col, exactly-3-row, exactly-4-row, exactly-5-row, exactly-6-row, exactly-7-row, exactly-9-row ALL proved). hook_length_formula_general is proved modulo hook_walk_identity via corner induction.",
+    "lineCount": 14005,
+    "theoremCount": 484,
     "definitionCount": 14,
     "originalContributions": [
       "hookLength: hook length at cell (i,j) = armLen + legLen + 1 using YoungDiagram.rowLen and colLen",
@@ -91,11 +91,11 @@
       "LGV"
     ],
     "namespace": "HookLengthFormula",
-    "lineCount": 16029,
+    "lineCount": 14005,
     "axiomCount": 0,
-    "sorries": 4,
+    "sorries": 3,
     "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
-    "theoremCount": 521,
+    "theoremCount": 484,
     "definitionCount": 14
   },
   "crossReferences": [
@@ -202,5 +202,5 @@
       "mathContext": "$h(\\mu,i,j) = h(\\mu^\\top,j,i)$ (arm↔leg under transpose). For N-row shapes: hook walk identity $\\sum_c \\text{hookProd}(\\mu)/\\text{hookProd}(\\mu\\setminus c) = \\sum_i a_i$ is a polynomial identity in $a_1,\\ldots,a_N$, verifiable by `ring` after computing each hook length as a linear combination of $a_i$."
     }
   ],
-  "sorries": 4
+  "sorries": 3
 }
