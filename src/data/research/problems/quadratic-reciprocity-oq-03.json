@@ -1,8 +1,8 @@
 {
   "slug": "quadratic-reciprocity-oq-03",
   "title": "quadratic-reciprocity-oq-03",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-03-29T19:03:48-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Gallery entry created. Lean proof was already complete; gap was missing src/data/proofs/quadratic-reciprocity-oq-03/.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None — gallery entry registered with 6 annotations, 4 cross-references.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,17 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: QuadraticReciprocityOQ03.lean — 4 theorems + 7 examples, 0 sorries, 0 axioms. QR as algorithm: multiplicativity + reciprocity swap + supplementary laws. Verified Legendre symbol computations.",
+    "progressSummary": "COMPLETE: Lean proof verified (0 sorries, 0 axioms, 4 theorems + 7 examples). Gallery entry created 2026-04-27 with meta.json, annotations.json (6 annotations), index.ts; listings.json regenerated.",
     "builtItems": [
       "legendreSym_mul_eq: multiplicativity (a*b/p) = (a/p)(b/p) via map_mul",
       "legendreSym_neg_one_eq: first supplementary law (-1/p) = (-1)^((p-1)/2)",
       "reciprocity_swap: (q/p) = (-1)^(sign) * (p/q) quotient form",
-      "algorithm_descent: descent property (reciprocity reduces modulus)"
+      "algorithm_descent: descent property (reciprocity reduces modulus)",
+      "Gallery entry: src/data/proofs/quadratic-reciprocity-oq-03/{meta,annotations,index} (2026-04-27)"
     ],
     "insights": [
       "QR + multiplicativity + supplementary laws = complete algorithm for computing Legendre symbols",
       "Each reciprocity swap reduces the prime, like the Euclidean algorithm reduces by taking remainders",
-      "decide tactic in Lean can verify Legendre symbol values for small primes automatically"
+      "decide tactic in Lean can verify Legendre symbol values for small primes automatically",
+      "The Lean proof was complete since 2026-03-30 but invisible — no gallery entry. The candidate-pool progressSummary correctly said COMPLETE, but the actual website registration step had been skipped. Audit pattern: when claimed problem says COMPLETE in progressSummary, check src/data/proofs/<slug>/ exists before assuming work is done."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -57,7 +59,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T02:13:21.213Z",
-  "lastUpdate": "2026-03-30T02:13:21.225Z",
+  "lastUpdate": "2026-04-27T22:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/QuadraticReciprocity.lean",
