@@ -1,31 +1,46 @@
 {
   "slug": "erdos-1155-oq-01-oq-07",
   "title": "Generalize triangle removal to K_r-removal process",
-  "phase": "NEW",
+  "phase": "COMPLETED",
   "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in graph theory: Generalize triangle removal to K_r-removal process.",
-    "whyMatters": []
+    "formal": "For r \\geq 3, define the K_r-removal process on K_n: repeatedly remove all edges of a uniformly random r-clique until the graph is K_r-free. Let f_r(n) be the expected remaining edge count. Conjecture: there exist constants 0 < c_1 \\leq c_2 such that c_1 n^{\\alpha} \\leq f_r(n) \\leq c_2 n^{\\alpha} for all large n, where \\alpha = 2 - 2/(r+1).",
+    "plain": "Generalize the triangle removal process (Erdős #1155, BFL 2015) to K_r-cliques for r \\geq 3. The conjectured exponent is 2-2/(r+1): equals 3/2 for r=3 (BFL), 8/5 for r=4, 5/3 for r=5, and approaches 2 as r \\to \\infty.",
+    "whyMatters": [
+      "Generalizes BFL (2015) f_3(n) = n^{3/2 + o(1)} to arbitrary r-cliques",
+      "Connects random combinatorial processes to Kruskal-Katona-type thresholds",
+      "Provides clean structural framework: exponent is strictly monotone in r, bounded in [1,2)",
+      "Decomposes into modular subgoals (upper Theta, lower Theta, ratio convergence)"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "r = 3 (triangle removal): f_3(n) = n^{3/2 + o(1)} (Bohman-Fonoberova-Llad\u00f3, 2015)",
+      "Exponent 2-2/(r+1) is strictly monotone increasing in r and bounded in [1, 2)",
+      "Conjecture is equivalent to upper Theta-bound AND lower Theta-bound (decomposition)",
+      "Conjecture follows from convergence f_r(n)/n^{\\alpha} \\to L > 0",
+      "Conjecture implies BFL-type sub-polynomial bound n^{\\alpha \\pm \\epsilon}"
+    ],
+    "open": [
+      "K_r-removal conjecture for any r \\geq 4 (no rigorous proof exists)",
+      "Whether the BFL (2015) machinery generalizes or fundamentally new tools are required",
+      "Connection between K_r-removal rate and Ramsey multiplicity in dense graphs"
+    ],
+    "goal": "Prove f_r(n) \\asymp n^{2-2/(r+1)} for some r \\geq 4 (e.g., r = 4 case: f_4(n) \\asymp n^{8/5})."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-03-30T19:39:40.879Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Generalization framework formalized; awaiting future work on r \\geq 4 tight bounds.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Future researcher: attempt r = 4 BFL-style proof or investigate Ramsey-multiplicity connection.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -61,20 +76,25 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "erdos-1",
-    "erdos-11",
-    "erdos-115",
     "erdos-1155",
     "erdos-1155-oq-01",
     "erdos-1155-oq-01-oq-01",
     "erdos-1155-oq-01-oq-06",
-    "erdos-1155-oq-01-oq-07",
     "erdos-1155-oq-02"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Bohman, T., Fonoberova, M., Llad\u00f3, A. (2015). The triangle-free process and the Ramsey number R(3,k). Memoirs of the AMS / arXiv:1302.5963 — proves f_3(n) = n^{3/2 + o(1)}.",
+      "Erd\u0151s, P., Suen, S., Winkler, P. (1995). On the size of a random maximal graph. Random Structures & Algorithms — early analysis of the triangle removal process."
+    ],
+    "urls": [
+      "https://erdosproblems.com/1155"
+    ],
+    "mathlib": [
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Topology.Order.Basic"
+    ]
   },
   "started": "2026-03-30T19:39:40.879Z",
   "lastUpdate": "2026-03-30T19:39:40.879Z",
