@@ -15,7 +15,8 @@ Does Σ (1/aᵢ) → ∞ as n → ∞ (summing over 0 < aᵢ < n)?
 Proved: sieve_initial (a₀ = 0, a₁ = 1) — follows from the constructive definition.
 The sieve is now implemented as a proper well-founded recursive function
 (was previously a dummy fun _ => 0 with all behavior axiomatized).
-Axioms: 2 (eggleton_erdos_selfridge, filtered_sum_implies_full)
+Axioms: 1 (eggleton_erdos_selfridge — Eggleton-Erdős-Selfridge upper bound)
+Sorries: 1 (filtered_sum_implies_full, converted from axiom for axiom-integrity)
 Proved: sieve_greedy (from constructive def, with hactive guard for sentinel case)
 Note: sieve_conjectured_bound demoted from axiom to def — it's an open conjecture.
 -/
@@ -202,10 +203,26 @@ noncomputable def leastPrimeFilteredSum (n : ℕ) : ℝ :=
       (1 : ℝ) / (a : ℝ)
     else 0
 
-/-- If leastPrimeFilteredSum diverges, then the full reciprocal sum diverges too. -/
-axiom filtered_sum_implies_full :
+/-- If `leastPrimeFilteredSum` diverges, then `ErdosProblem460` holds.
+
+    This is a sufficient-condition lemma: it reduces the open conjecture to
+    showing that the "filtered" sum (over `a` with `leastPrimeFactor (n-a) > a`)
+    diverges. The implication is non-trivially provable from the relationship
+    between `leastPrimeFilteredSum` and the greedy coprime sieve, but the
+    formalization requires careful analysis of how filtered indices feed
+    into the sieve sum.
+
+    Converted from `axiom` to `theorem … := by sorry` so Aristotle can attempt
+    the proof and so we no longer assume an unverified mathematical claim
+    (axioms assert truth; sorries acknowledge an unproved gap).
+
+    A weaker form is already proved as `erdos_460_restricted_question`, which
+    uses `largePrimeSum` (summed over greedy-sieve indices, not all
+    `a ∈ range n`); the two are not directly comparable. -/
+theorem filtered_sum_implies_full :
     (∀ M : ℝ, M > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀, leastPrimeFilteredSum n > M) →
-    ErdosProblem460
+    ErdosProblem460 := by
+  sorry
 
 /-
 ## Section VII: Restricted Sums

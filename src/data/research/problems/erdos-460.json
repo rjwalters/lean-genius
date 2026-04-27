@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-13T04:11:10.512Z",
-    "iteration": 2,
-    "focus": "Implemented greedy sieve as well-founded recursive function. Proved sieve_initial. 5 axioms remain.",
+    "iteration": 3,
+    "focus": "1 axiom (eggleton_erdos_selfridge), 1 sorry (filtered_sum_implies_full). The sorry is non-trivially provable from greedy-sieve / least-prime-factor relationship.",
     "blockers": [],
     "nextAction": "Prove sieve_greedy from construction (needs candidates nonemptiness). erdos_460_restricted_question provable via sum decomposition.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 4 structural theorems (reciprocal sum nonneg, 3 leastPrimeFactor properties). Total: 9 theorems, 2 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: filtered_sum_implies_full converted from axiom to theorem-with-sorry. Axioms 2→1 (eggleton_erdos_selfridge remains as deep classical result). Now Aristotle-eligible.",
     "builtItems": [
       "Proved smallPrime_le_sieveReciprocal and largePrime_le_sieveReciprocal (sub-sum lemmas)",
       "Proved erdos_460_restricted_question theorem (was axiom — eliminated 1 axiom)",
@@ -37,7 +37,8 @@
       "sieveReciprocalSum_nonneg (Erdos460Problem.lean:141)",
       "leastPrimeFactor_prime (Erdos460Problem.lean:158)",
       "leastPrimeFactor_dvd (Erdos460Problem.lean:164)",
-      "leastPrimeFactor_le (Erdos460Problem.lean:170)"
+      "leastPrimeFactor_le (Erdos460Problem.lean:170)",
+      "Converted filtered_sum_implies_full from axiom to theorem-with-sorry: net axiom-integrity improvement (sorry acknowledges unproved gap; axiom would assert unverified math)."
     ],
     "insights": [
       "greedyCoprimeSieve is a dummy (fun _ => 0) — all behavior axiomatized, no routine axioms to eliminate",
@@ -70,7 +71,7 @@
     "mathlib": []
   },
   "started": "2026-01-13T04:11:10.512Z",
-  "lastUpdate": "2026-03-28T23:30:00.000Z",
+  "lastUpdate": "2026-04-27T00:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [

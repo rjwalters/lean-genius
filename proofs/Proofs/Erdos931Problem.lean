@@ -204,7 +204,17 @@ beyond 2(n₁+k₁), having the same prime factors forces the second block
 elements to be n₁-smooth — and by results on consecutive smooth numbers
 (Størmer's theorem), there are only finitely many such n₂ for each n₁.
 -/
-axiom stronger_implies_main : StrongerConjecture → ErdosProblem931
+/-- StrongerConjecture (finiteness in the inner range n₂ ≤ 2(n₁+k₁)) implies
+    the full ErdosProblem931 (finiteness with no upper bound on n₂).
+
+    The reduction needs: for n₂ > 2(n₁+k₁), `SamePrimeFactors` forces both blocks
+    to be n₁-smooth, and Størmer's theorem gives only finitely many such pairs.
+    Smooth-number theory not yet in Mathlib.
+
+    Converted from `axiom` to `theorem … := by sorry` so it doesn't assert an
+    unverified mathematical claim — sorry acknowledges the proof gap. -/
+theorem stronger_implies_main : StrongerConjecture → ErdosProblem931 := by
+  sorry
 
 /-
 ## Bertrand's Postulate and Prime Between Blocks
@@ -288,21 +298,24 @@ results on consecutive smooth numbers, this case is likely vacuously true
 (the hypotheses are mutually inconsistent for large n₁).
 -/
 
-/-- Refined axiom: the remaining hard case for prime-between-blocks.
-    All three conditions hold simultaneously:
+/-- The remaining hard case for prime-between-blocks. All three conditions hold:
     - The first block is entirely composite (k₁ < n₁, so no Bertrand prime in block)
     - The gap is tight (n₂+k₂ < 2n₁, so Bertrand's (n₁, 2n₁] overshoots)
     - No large prime factor (all factors ≤ n₁, so SamePrimeFactors transfer fails)
     Under these constraints, SamePrimeFactors forces both blocks to be n₁-smooth.
-    Proving this requires smooth number theory not yet in Mathlib. -/
-axiom exists_prime_between_blocks_hard (k₁ k₂ n₁ n₂ : ℕ)
+    Proving this requires smooth number theory not yet in Mathlib.
+
+    Converted from `axiom` to `theorem … := by sorry` so the sorry signals an
+    unproved gap rather than asserting an unverified claim. -/
+theorem exists_prime_between_blocks_hard (k₁ k₂ n₁ n₂ : ℕ)
     (h₁ : 3 ≤ k₂) (h₂ : k₂ ≤ k₁)
     (h₃ : n₁ + k₁ ≤ n₂)
     (h₄ : SamePrimeFactors n₁ k₁ n₂ k₂)
     (h₅ : k₁ < n₁)
     (h₆ : n₂ + k₂ < 2 * n₁)
     (h₇ : ∀ p ∈ consecutivePrimeFactors n₁ k₁, p ≤ n₁) :
-    ∃ p : ℕ, p.Prime ∧ n₁ < p ∧ p ≤ n₂ + k₂
+    ∃ p : ℕ, p.Prime ∧ n₁ < p ∧ p ≤ n₂ + k₂ := by
+  sorry
 
 /-- **Prime between blocks** (general case): proved by case analysis.
     Reduces the general claim to the hard-case axiom above. -/

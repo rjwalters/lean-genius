@@ -519,4 +519,81 @@ theorem first_moment_at_2 [Fintype α] (F : Finset (Finset α))
     (hsize : AllSizeAtLeast F 2) (hF : F.card < 2) : HasPropertyB F :=
   hasPropertyB_card_le_one F hsize (by omega)
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 13: Degree-Based Sparsity (Double Counting)
+-- ══════════════════════════════════════════════════════════════════
+
+/-- **Degree-bounded ⇒ sparse** (with min size ≥ 1):
+    If every element appears in at most d members of F, and every member
+    has size ≥ 1, then F is d-sparse.
+
+    Proof by double counting: for any X,
+      |F ∩ 𝒫(X)| ≤ Σ_{f ⊆ X, f ∈ F} |f| = Σ_{x ∈ X} |{f ∈ F : f ⊆ X, x ∈ f}|
+                 ≤ Σ_{x ∈ X} deg(x) ≤ d · |X|. -/
+theorem degree_bounded_implies_sparse [Fintype α] (F : Finset (Finset α)) (d : ℕ)
+    (hsize : AllSizeAtLeast F 1) (hdeg : IsDegreeBounded F d) :
+    IsSparse F d := by
+  intro X
+  set FX := F.filter (· ⊆ X) with hFX_def
+  -- Step 1: |FX| ≤ Σ_{f ∈ FX} |f|, using |f| ≥ 1.
+  have step1 : FX.card ≤ ∑ f ∈ FX, f.card := by
+    calc FX.card = ∑ _f ∈ FX, 1 := by simp
+      _ ≤ ∑ f ∈ FX, f.card := by
+        apply Finset.sum_le_sum
+        intro f hf
+        rw [hFX_def, Finset.mem_filter] at hf
+        exact hsize f hf.1
+  -- Step 2: For f ∈ FX, f ⊆ X so f.card = (X.filter (· ∈ f)).card.
+  have step2 : ∀ f ∈ FX, f.card = (X.filter (· ∈ f)).card := by
+    intro f hf
+    rw [hFX_def, Finset.mem_filter] at hf
+    have hfsub : f ⊆ X := hf.2
+    have heq : X.filter (· ∈ f) = f := by
+      ext x; simp only [Finset.mem_filter]
+      exact ⟨fun h => h.2, fun h => ⟨hfsub h, h⟩⟩
+    rw [heq]
+  -- Step 3: Swap order of summation via Finset.sum_comm'.
+  -- Both sides count |{(f, x) : f ∈ FX, x ∈ X, x ∈ f}|.
+  have step3 : ∑ f ∈ FX, (X.filter (· ∈ f)).card
+             = ∑ x ∈ X, (FX.filter (x ∈ ·)).card := by
+    simp_rw [Finset.card_eq_sum_ones]
+    apply Finset.sum_comm'
+    intros f x
+    simp only [Finset.mem_filter]
+    tauto
+  -- Step 4: each fiber size ≤ d, by monotonicity of degree.
+  have step4 : ∀ x ∈ X, (FX.filter (x ∈ ·)).card ≤ d := by
+    intro x _
+    have hsub : FX.filter (x ∈ ·) ⊆ F.filter (x ∈ ·) := by
+      intro f hf
+      rw [Finset.mem_filter] at hf ⊢
+      rw [hFX_def, Finset.mem_filter] at hf
+      exact ⟨hf.1.1, hf.2⟩
+    calc (FX.filter (x ∈ ·)).card
+        ≤ (F.filter (x ∈ ·)).card := Finset.card_le_card hsub
+      _ ≤ d := hdeg x
+  -- Combine: |FX| ≤ d · |X|.
+  calc FX.card
+      ≤ ∑ f ∈ FX, f.card := step1
+    _ = ∑ f ∈ FX, (X.filter (· ∈ f)).card := Finset.sum_congr rfl step2
+    _ = ∑ x ∈ X, (FX.filter (x ∈ ·)).card := step3
+    _ ≤ ∑ _x ∈ X, d := Finset.sum_le_sum step4
+    _ = d * X.card := by
+        rw [Finset.sum_const, smul_eq_mul, Nat.mul_comm]
+
+/-- **Matching ⇒ 1-sparse**: a family of nonempty sets where each element
+    appears in at most one member is 1-sparse. -/
+theorem matching_implies_sparse [Fintype α] (F : Finset (Finset α))
+    (hsize : AllSizeAtLeast F 1) (hdeg : IsDegreeBounded F 1) : IsSparse F 1 :=
+  degree_bounded_implies_sparse F 1 hsize hdeg
+
+/-- **Matchings of ≥ 2-sets are both Property B and 1-sparse**: this links
+    `matching_has_propertyB` with `matching_implies_sparse` to confirm that
+    1-sparsity is consistent with the proven Property B in the matching case. -/
+theorem degree_one_size_two_propertyB_and_sparse [Fintype α] (F : Finset (Finset α))
+    (hsize : AllSizeAtLeast F 2) (hdeg : IsDegreeBounded F 1) :
+    HasPropertyB F ∧ IsSparse F 1 :=
+  ⟨matching_has_propertyB F hsize hdeg,
+   matching_implies_sparse F (allSizeAtLeast_mono (by norm_num) hsize) hdeg⟩
+
 end Erdos1022

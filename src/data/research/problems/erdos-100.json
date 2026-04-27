@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-23T19:00:00Z",
-    "iteration": 3,
-    "focus": "Session 3: Proved diam_is_integer (diameter is a positive integer). Updated gallery metadata 5→4 axioms. All axioms are deep results.",
+    "iteration": 4,
+    "focus": "Verified file state matches gallery meta (2A, 0S). No tractable new work — both axioms require deep Mathlib formalization.",
     "blockers": [],
     "nextAction": "All 4 axioms are deep mathematical results. Piepmeyer construction could be proved with explicit coordinates but requires finding them. Problem is well-formalized.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Main file Erdos100Problem.lean: 4A (all deep), 11T proved, 0S. Related 100X files have separate axioms/sorries.",
+    "progressSummary": "STATUS: Erdos100Problem.lean has 2 axioms (Guth-Katz distinct distances theorem, Piepmeyer construction) + 0 sorries. Both axioms are deep TRUE classical results not yet in Mathlib. Conjecture stated as def Erdos100Conjecture : Prop. Infrastructure complete; further progress requires Mathlib formalization of Guth-Katz.",
     "builtItems": [
       "dist, dist_symm, dist_nonneg in Erdos100Problem.lean:38-53",
       "hasIntegerDistances, pairwiseDistances, numDistinctDistances in Erdos100Problem.lean:66-79",
@@ -118,7 +118,7 @@
     ]
   },
   "started": "2026-01-23T08:04:56.538Z",
-  "lastUpdate": "2026-03-23T03:30:00Z",
+  "lastUpdate": "2026-04-27T00:00:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [

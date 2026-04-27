@@ -23,8 +23,8 @@
     "erdosProblemStatus": "open",
     "relatedProblems": [],
     "axiomCount": 1,
-    "lineCount": 522,
-    "assumptions": "1 axiom: erdos_1022_conjecture (open conjecture). 0 sorries. The erdos_first_moment_bound (|F| < 2^{t-1} implies Property B) was proved via the probabilistic first-moment method (counting argument + pigeonhole).",
+    "lineCount": 599,
+    "assumptions": "1 axiom: erdos_1022_conjecture (open conjecture). 0 sorries. erdos_first_moment_bound (|F| < 2^{t-1} ⇒ Property B) proved via probabilistic first-moment method. degree_bounded_implies_sparse (max-degree d + min size 1 ⇒ d-sparse) proved via double counting using Finset.sum_comm'.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

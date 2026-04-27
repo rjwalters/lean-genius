@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-03-28T17:58:20.661Z",
-    "iteration": 2,
-    "focus": "Structural infrastructure complete. Next: chromatic number, first-moment bound.",
+    "iteration": 3,
+    "focus": "Degree-based sparsity proven; next: cover-free family infrastructure or attempt Lovász c(2)=1 from Mathlib",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended from 213 to 321 lines. Added element degree infrastructure, Lovász theorem (c(2)=1 axiom), union sparsity, Erdős first-moment bound (axiom), and 7 proved theorems. Total: 3 axioms, 22 theorems, 0 sorries.",
+    "progressSummary": "PROGRESS: Extended to 599 lines, 26 theorems. Added degree-based sparsity (degree_bounded_implies_sparse) via double counting using Finset.sum_comm'. Corollary matching_implies_sparse links the existing matching_has_propertyB result with the sparsity framework. Total: 1 axiom (open conjecture), 0 sorries, 26 theorems.",
     "builtItems": [
       "isSparse_mono: sparsity monotone in c (Erdos1022Problem.lean)",
       "isSparse_subset: subfamilies inherit sparsity (Erdos1022Problem.lean)",
@@ -49,7 +49,10 @@
       "isSparse_union: union sparsity is additive (Erdos1022Problem.lean)",
       "allSizeAtLeast_union: min-size preserved under union (Erdos1022Problem.lean)",
       "erdos_first_moment_bound: axiom for 2^{t-1} bound (Erdos1022Problem.lean)",
-      "hasPropertyB_card_le_one: families with ≤1 member have Property B (Erdos1022Problem.lean)"
+      "hasPropertyB_card_le_one: families with ≤1 member have Property B (Erdos1022Problem.lean)",
+      "degree_bounded_implies_sparse: maxDeg ≤ d + minSize ≥ 1 ⇒ d-sparse (Erdos1022Problem.lean § 13)",
+      "matching_implies_sparse: corollary at d=1 (Erdos1022Problem.lean § 13)",
+      "degree_one_size_two_propertyB_and_sparse: links matching_has_propertyB and matching_implies_sparse"
     ],
     "insights": [
       "Property B infrastructure well-suited for Finset-based formalization",
@@ -61,13 +64,16 @@
       "Element degree deg(a) = |{f : a ∈ f}| is fundamental for Local Lemma applications",
       "Lovász (1968) c(2)=1: only solved case of the conjecture, deep proof via greedy/matching",
       "Sparsity is additive under union: c-sparse ∪ d-sparse is (c+d)-sparse",
-      "Erdős first-moment: Pr(mono) = 2^{1-t} per set, union bound gives |F| < 2^{t-1} threshold"
+      "Erdős first-moment: Pr(mono) = 2^{1-t} per set, union bound gives |F| < 2^{t-1} threshold",
+      "Double counting (∑_f |f| = ∑_x deg(x)) connects max-degree to sparsity for min-size ≥ 1 families",
+      "IsDegreeBounded F d ∧ AllSizeAtLeast F 1 ⇒ IsSparse F d (a Mathlib-level structural lemma)",
+      "Finset.sum_comm' is the right tool for double-counting (avoids indicator-rewriting issues)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Add cover-free family definition and prove coverFree_implies_sparse",
-      "Prove degree-based sparsity bound: max degree d implies d-sparse (with min size ≥ 1)",
-      "Try to prove Lovász theorem from Lean: may need Hall/matching infrastructure",
+      "Add cover-free family definition: F is r-cover-free if ∀ A_0 ∈ F, ¬∃ A_1..A_r ∈ F\\{A_0}, A_0 ⊆ ∪ A_i",
+      "Prove sunflower/Δ-system lemma application for sparse families",
+      "Try to prove Lovász c(2)=1 from Mathlib Hall/König matching",
       "Create Aristotle companion file for routine supporting lemmas"
     ]
   },
@@ -86,7 +92,7 @@
     "mathlib": []
   },
   "started": "2026-03-28T17:58:20.661Z",
-  "lastUpdate": "2026-03-28T20:15:00Z",
+  "lastUpdate": "2026-04-27T16:30:00Z",
   "significance": 6,
   "tractability": 5
 }
