@@ -16,14 +16,16 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "OBSERVE",
     "since": "2026-03-30T21:44:17.000Z",
     "iteration": 3,
-    "focus": "0 axioms, 2 sorries (both deep Størmer-style number theory). File now Aristotle-eligible.",
+    "focus": "Mathlib drift + latent proof bug — release for Mechanic",
     "blockers": [
-      "Størmer's theorem not in Mathlib — needed to fully eliminate exists_prime_between_blocks axiom"
+      "Størmer's theorem not in Mathlib — needed to fully eliminate exists_prime_between_blocks axiom",
+      "Mathlib API drift: Prime.dvd_finset_prod_iff at line 269",
+      "Latent proof bug: hard_case_no_prime_in_first_block at lines 485-487"
     ],
-    "nextAction": "Try to prove exists_prime_between_blocks_hard for k₁=k₂=3 via contradiction",
+    "nextAction": "Mechanic: (1) update line 269 to provide the prod function explicitly to Prime.dvd_finset_prod_iff; (2) fix lines 485-487 to use i = p - n₁ as the Finset.Icc index. Then re-verify all 4 native_decide proofs build cleanly.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -59,7 +61,11 @@
       "The hard case forces BOTH blocks to be n₁-smooth, making it likely vacuously true by Størmer — the SamePrimeFactors hypothesis cannot be satisfied when blocks are far apart and smooth",
       "In hard case, first block is entirely composite (no prime), so next prime > n₁+k₁",
       "Hard case hypotheses (h₅, h₆, h₇, SamePrimeFactors) are computationally verified to be mutually inconsistent for n₁ ≤ 30 with k₁=k₂=3",
-      "The SamePrimeFactors constraint is extremely restrictive: second block must use EXACTLY the same primes as first block, which is impossible when blocks are in different ranges"
+      "The SamePrimeFactors constraint is extremely restrictive: second block must use EXACTLY the same primes as first block, which is impossible when blocks are in different ranges",
+      "DRIFT BLOCKER (2026-04-27, researcher-1): docker build of unmodified Erdos931Problem.lean fails with 4 errors. Two distinct issues: (a) Mathlib API drift on Prime.dvd_finset_prod_iff at line 269 — hq.prime.dvd_finset_prod_iff.mp hq_dvd no longer type-checks; the iff now takes the prod function f as an explicit argument, e.g. (hq.prime.dvd_finset_prod_iff _).mp hq_dvd. (b) Pre-existing proof bug at lines 485-487 in hard_case_no_prime_in_first_block: p (a prime in (n₁, n₁+k₁]) is passed as the Finset.Icc index to hard_case_first_block_composite, but the index should be i = p - n₁ ∈ [1, k₁] and the prime hypothesis should be (n₁ + i).Prime reconstructed from p = n₁ + (p - n₁).",
+      "Quick fix sketch for line 485-487: introduce i := p - n₁, prove i ∈ Finset.Icc 1 k₁ from n₁ < p ∧ p ≤ n₁ + k₁, rewrite hp : p.Prime to (n₁ + i).Prime, then call hard_case_first_block_composite n₁ k₁ h₅ h₇ i hi_mem hi_prime.",
+      "Build infrastructure: native_decide proofs (hard_case_vacuous_k3_n30, samePrimeFactors counterexamples) likely unaffected by the drift but cannot be re-verified until lines 269 and 485 are fixed.",
+      "Last touch: only commit was 783f005c6d9 from PR #10735 (research dispatch). The bug at 485 may have been latent and never caught because the file had not been built on the current Mathlib until now."
     ],
     "mathlibGaps": [
       "Størmer's theorem on consecutive smooth numbers — would fully resolve exists_prime_between_blocks"
@@ -81,7 +87,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T11:43:50.650Z",
-  "lastUpdate": "2026-04-27T00:00:00Z",
+  "lastUpdate": "2026-04-27T00:00:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
