@@ -41,3 +41,28 @@ The PNT prediction: π(x+h) - π(x) ~ h/ln(x) when h is not too small.
 
 #### Next Steps
 None — all sorries resolved. Problem correctly axiomatized.
+
+### Session 2026-04-28 (Session 2) - Metadata Reconciliation
+
+**Mode**: REVISIT
+**Outcome**: completed
+
+#### What I Did
+- Verified actual Lean state via `git show HEAD:`:
+  - BertrandsPostulateOQ03OQ04.lean: 0 sorries, 1 axiom
+  - BertrandsPostulateOQ03OQ04Aristotle.lean: 0 sorries, 0 axioms
+  - BertrandsPostulateOQ03OQ04OQ03.lean: 0 sorries (JSON had stale 1)
+  - Gallery meta.json: status `axiomatized`, badge `axiom`, sorries 0 — correct
+- Reconciled JSON: phase NEW→COMPLETED, status active→completed, sorryCount 1→0 for OQ03 sub-file
+- Updated progressSummary, lastUpdate, nextSteps cleared
+- No code changes — pool entry was simply stale (`active` despite work done in 2026-04-22 session)
+
+#### Key Findings
+- The single remaining axiom `shortIntervalPNT_rh_conditional` encodes RH + von-Koch error term;
+  this is a deep result, NOT provable from current Mathlib — keeping as axiom is correct
+- Pool sweep value: this is exactly the kind of stale `status: active` flagged in researcher feedback
+  memory — high-knowledge problems with completed work but uncleaned pool metadata
+
+#### Files Modified
+- src/data/research/problems/bertrands-postulate-oq-03-oq-04.json (phase, status, sorryCount fix)
+- research/problems/bertrands-postulate-oq-03-oq-04/knowledge.md (this entry)

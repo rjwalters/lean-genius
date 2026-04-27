@@ -1,8 +1,8 @@
 {
   "slug": "bertrands-postulate-oq-03-oq-04",
   "title": "PNT-based asymptotic for prime gaps in short intervals",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,20 +16,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-05T05:54:09.851Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "COMPLETED",
+    "since": "2026-04-28T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "Problem axiomatized; metadata reconciled.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — gallery entry verified axiomatized with 1 deep RH-conditional axiom.",
     "attemptCounts": {
-      "total": 0,
+      "total": 3,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created BertrandsPostulateOQ03OQ04.lean (323 lines). Builds with 2 sorries + 1 axiom. Proves ShortIntervalPNT density implies PrimeGapConjecture existence; log ratio lemma proved; RH-conditional density axiomatized.",
+    "progressSummary": "COMPLETED: BertrandsPostulateOQ03OQ04.lean (358 lines, 0 sorries, 1 RH-conditional axiom). Companion Aristotle file 0 sorries. Sub-file OQ03OQ04OQ03.lean has 0 sorries. Gallery status: axiomatized (1 deep axiom shortIntervalPNT_rh_conditional encoding the RH+von-Koch density bound).",
     "builtItems": [
       "BertrandsPostulateOQ03OQ04.lean: ShortIntervalPNT def + 7 proved/partial theorems",
       "Gallery entry: src/data/proofs/bertrands-postulate-oq-03-oq-04/meta.json"
@@ -42,10 +42,7 @@
       "Filter limit algebra for combining PNT limits is the hard part — 2 sorries remain"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove long_interval_density_from_pnt: need pnt_1c.mul hlog_ratio filter algebra",
-      "Submit sorries to Aristotle for automated search"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "seeker-selected"
@@ -62,7 +59,7 @@
     "mathlib": []
   },
   "started": "2026-04-05T05:54:09.851Z",
-  "lastUpdate": "2026-04-05T05:54:09.851Z",
+  "lastUpdate": "2026-04-28T00:00:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
@@ -117,7 +114,7 @@
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulateOQ03OQ04OQ03.lean"
     }
