@@ -118,9 +118,9 @@ noncomputable def maxDegree (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] : ℕ
   Finset.univ.sup fun v => (Finset.univ.filter (G.Adj v)).card
 
 /-- Game 3 (Degree Game): Alice wins if max red degree > max blue degree -/
-def aliceWinsDegreeGame (n : ℕ) (state : GameState n) : Prop :=
+noncomputable def aliceWinsDegreeGame (n : ℕ) (state : GameState n) : Prop :=
   gameOver n state ∧
-  ∃ dr db : ℕ, dr > db  -- max red degree > max blue degree
+  maxDegree (redSubgraph n state) > maxDegree (blueSubgraph n state)
 
 /- ## Part V: Strategies
 
@@ -147,14 +147,22 @@ def AliceHasWinningStrategy_CliqueGame (n : ℕ) : Prop :=
   ∃ τ : AliceStrategy n, ∀ σ : BobStrategy n,
     aliceWinsCliqueGame n (playGame n τ σ)
 
+/-- Alice has a winning strategy for the degree game on K_n -/
+def AliceHasWinningStrategy_DegreeGame (n : ℕ) : Prop :=
+  ∃ τ : AliceStrategy n, ∀ σ : BobStrategy n,
+    aliceWinsDegreeGame n (playGame n τ σ)
+
+/-- Bob has a winning strategy for the degree game on K_n -/
+def BobHasWinningStrategy_DegreeGame (n : ℕ) : Prop :=
+  ∃ σ : BobStrategy n, ∀ τ : AliceStrategy n,
+    ¬aliceWinsDegreeGame n (playGame n τ σ)
+
 /- ## Part VI: Erdős's Conjecture and Known Results -/
 
 /-- Erdős's Conjecture: Bob has winning strategy for all n ≥ 3 -/
 def ErdosConjecture : Prop :=
   ∀ n : ℕ, n ≥ 3 → BobHasWinningStrategy_CliqueGame n
 
-/-- Malekshahian-Spiro 2024: The set {n : Bob wins clique game} has
-    natural density ≥ 3/4 among natural numbers -/
 /-- Malekshahian-Spiro 2024: If Alice wins at n, Bob wins at n+1, n+2, n+3 -/
 axiom malekshahian_spiro_alice_n_bob_n123 :
   ∀ n : ℕ, AliceHasWinningStrategy_CliqueGame n →
@@ -162,14 +170,12 @@ axiom malekshahian_spiro_alice_n_bob_n123 :
     BobHasWinningStrategy_CliqueGame (n + 2) ∧
     BobHasWinningStrategy_CliqueGame (n + 3)
 
-/-- Malekshahian-Spiro 2024: The set {n : Bob wins degree game} has
-    natural density ≥ 2/3 -/
 /-- Malekshahian-Spiro 2024: If Alice wins degree game at n,
     Bob wins at n+1 and n+2 -/
-theorem malekshahian_spiro_alice_n_bob_n12_degree :
-  ∀ n : ℕ, True →  -- If Alice wins degree game at n
-    True  -- Then Bob wins degree game at n+1 and n+2
-  := fun _ _ => trivial
+axiom malekshahian_spiro_alice_n_bob_n12_degree :
+  ∀ n : ℕ, AliceHasWinningStrategy_DegreeGame n →
+    BobHasWinningStrategy_DegreeGame (n + 1) ∧
+    BobHasWinningStrategy_DegreeGame (n + 2)
 
 /- ## Part VII: Consequences of Known Results -/
 
@@ -190,8 +196,6 @@ theorem alice_no_four_consecutive (n : ℕ) :
   -- Contradiction: σ beats all Alice strategies, but τ beats all Bob strategies
   exact hσ τ (hτ σ)
 
-/-- The game is determined: for each n, either Alice or Bob has
-    a winning strategy (by Zermelo's theorem for finite games) -/
 /- ## Part VIII: Summary
 
 Erdős Problem #778: OPEN
