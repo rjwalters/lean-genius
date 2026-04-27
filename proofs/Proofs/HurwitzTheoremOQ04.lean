@@ -793,15 +793,76 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
 -- The full proof requires ~50 lines of Leibniz constraint applications.
 -- For now, we use a computational sorry and note the mathematical argument is sound.
 
-/-- The 14 basis derivations are linearly independent in OctonionDerSubmodule. -/
+/-- The 14×14 evaluation matrix is block-diagonal with 7 blocks of size 2×2,
+    each having determinant 12 ≠ 0. This proves the derivations are linearly independent.
+
+    Block structure (pairs of derivations sharing 2 evaluation positions):
+    (d12,d47)  at cols {0,13}: det [[-4,2],[2,-4]] = 12
+    (d13,d46)  at cols {1,12}: det [[-4,-2],[-2,-4]] = 12
+    (d14,d27)  at cols {2,10}: det [[-4,-2],[-2,-4]] = 12
+    (d15,d26)  at cols {3,9}:  det [[-4,2],[2,-4]] = 12
+    (d16,d25)  at cols {4,8}:  det [[-4,-2],[-2,-4]] = 12
+    (d17,d24)  at cols {5,7}:  det [[-4,2],[2,-4]] = 12
+    (d23,d45)  at cols {6,11}: det [[-4,2],[2,-4]] = 12 -/
+set_option maxHeartbeats 4000000 in
 private lemma derBasis14_linearIndependent :
     LinearIndependent ℝ derBasis14 := by
-  apply linearIndependent_iff.mpr
-  intro l hl
-  -- hl : l.sum (fun i c => c • derBasis14 i) = 0 in OctonionDerSubmodule
-  -- Apply derEval14 to get: l.sum (fun i c => c • (derEval14 (derBasis14 i))) = 0
-  -- The 14×14 evaluation matrix has nonzero determinant → l = 0
-  sorry
+  rw [Fintype.linearIndependent_iff]
+  intro g hg
+  -- hg : ∑ i : Fin 14, g i • derBasis14 i = 0 in ↥OctonionDerSubmodule
+  -- Extract: for any input vector v and coordinate j, the sum of evaluations is zero.
+  have hmap : ∀ (v : Fin 8 → ℝ) (j : Fin 8),
+      (∑ i : Fin 14, g i * ((derBasis14 i).1 v) j) = 0 := by
+    intro v j
+    -- The submodule-valued sum equals zero, so its underlying linear map is zero
+    have h0 : ((∑ i : Fin 14, g i • derBasis14 i : ↥OctonionDerSubmodule).1 v) j = 0 := by
+      rw [hg]; rfl
+    -- Convert: distribute .val over the sum and scalar multiplication
+    convert h0.symm using 1
+    simp only [Submodule.coe_sum, Submodule.coe_smul_of_tower, Finset.sum_apply,
+      LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]
+  -- Specialize to evaluation points (v, j) where only 2 of 14 derivations are nonzero.
+  -- Unrolling: Fin.sum_univ_succ converts ∑ over Fin (n+1) to f 0 + ∑ over Fin n.
+  -- After full unrolling and simp with the derivation definitions, each equation
+  -- reduces to a linear equation in two of the g i.
+  have block1a := hmap (stdBasis 2) 1
+  have block1b := hmap (stdBasis 7) 4
+  have block2a := hmap (stdBasis 3) 1
+  have block2b := hmap (stdBasis 6) 4
+  have block3a := hmap (stdBasis 4) 1
+  have block3b := hmap (stdBasis 7) 2
+  have block4a := hmap (stdBasis 5) 1
+  have block4b := hmap (stdBasis 6) 2
+  have block5a := hmap (stdBasis 6) 1
+  have block5b := hmap (stdBasis 5) 2
+  have block6a := hmap (stdBasis 7) 1
+  have block6b := hmap (stdBasis 4) 2
+  have block7a := hmap (stdBasis 3) 2
+  have block7b := hmap (stdBasis 5) 4
+  -- Simplify each equation: unfold the Fin 14 sum (via Fin.sum_univ_succ/zero),
+  -- look up each derivation in derBasis14 (via Matrix.cons_val_zero/succ),
+  -- apply it to the stdBasis vector, and extract the component.
+  -- The simp reduces ∑_{i:Fin 14} g_i * d_i(eₖ)[l] to an explicit sum of 14 terms,
+  -- most of which are g_i * 0 = 0 (since stdBasis k picks out one input coordinate).
+  simp only [Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero,
+    derBasis14,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_succ, Matrix.cons_val', Matrix.cons_val_fin_one,
+    Fin.isValue, Subtype.coe_mk,
+    d12, d13, d14, d15, d16, d17, d23, d24, d25, d26, d27, d45, d46, d47,
+    stdBasis, LinearMap.coe_mk, AddHom.coe_mk] at
+    block1a block1b block2a block2b block3a block3b block4a block4b
+    block5a block5b block6a block6b block7a block7b
+  -- Evaluate if-then-else for Fin equality (stdBasis i j = if i = j then 1 else 0)
+  simp (config := { decide := true }) only [ite_true, ite_false] at
+    block1a block1b block2a block2b block3a block3b block4a block4b
+    block5a block5b block6a block6b block7a block7b
+  -- Clean up arithmetic: mul_one, mul_zero, add_zero, etc.
+  ring_nf at block1a block1b block2a block2b block3a block3b block4a block4b
+    block5a block5b block6a block6b block7a block7b
+  -- Each block equation is now: c₁*gA + c₂*gB = 0 (with det(c₁,c₂ pair) = 12 ≠ 0)
+  -- Solve: for each i, derive g i = 0 from its block's pair of equations
+  intro i; fin_cases i <;> linarith
 
 /-- **Der(𝕆) has dimension 14**: finrank ℝ OctonionDerSubmodule = 14. -/
 theorem G2_der_dimension :
