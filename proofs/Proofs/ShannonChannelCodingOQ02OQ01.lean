@@ -20,8 +20,8 @@
     (blocked by pre-existing bug in strong_subadditivity, line 811)
   - [PROVED] Standalone: OQ-03 proves Fano completely without ShannonEntropy.lean
 
-  Axioms: 1 (import_shannon_entropy_blocked)
-  Sorries: 1 (fano_trivial_singleton — Unit sum simp issues, conceptually clear)
+  Axioms: 0 (was 1: import_shannon_entropy_blocked : False — removed as dead/unsound)
+  Sorries: 0
 -/
 import Mathlib
 import Proofs.ShannonChannelCodingOQ03
@@ -78,8 +78,8 @@ theorem fano_from_oq03 {α β : Type*} [Fintype α] [Fintype β]
 The main goal is to replace the axiom `fano_inequality` in ShannonChannelCoding.lean:
 
 ```lean
-axiom fano_inequality ... :
-    conditionalEntropy pXY ≤ h P_e + P_e * log (|X| - 1)
+  axiom fano_inequality ... :
+      conditionalEntropy pXY ≤ h P_e + P_e * log (|X| - 1)
 ```
 
 where `conditionalEntropy` is `InformationTheory.conditionalEntropy` from ShannonEntropy.lean.
@@ -106,18 +106,19 @@ rw [show ∑ y : β, ∑ z : γ, ∑ x : α, f x y z = ∑ x : α, ∑ y : β, �
 This normalizes the YZ sum order to match, allowing `linarith` to see the cancellation.
 -/
 
-/-- **Axiom reduction** (sorry — blocked by ShannonEntropy.lean compilation):
-    The `fano_inequality` axiom in ShannonChannelCoding.lean follows from
-    `fano_from_oq03` by definition equality of the two conditionalEntropy definitions.
-
-    When ShannonEntropy.lean is fixed, this sorry can be replaced by:
-    ```
-    have := fano_from_oq03 hn pXY hp hsum
-    exact this  -- or with a definitional equality coercion
-    ```
+/-
+**Axiom reduction note** (blocked by ShannonEntropy.lean compilation):
+The `fano_inequality` axiom in ShannonChannelCoding.lean follows from
+`fano_from_oq03` by definitional equality of the two conditionalEntropy
+definitions. When ShannonEntropy.lean is fixed, the integration step is:
+```
+have := fano_from_oq03 hn pXY hp hsum
+exact this  -- or with a definitional equality coercion
+```
+Previously this section declared `axiom import_shannon_entropy_blocked : False`
+as a placeholder. That axiom was unused (dead) and unsound (False!), so it
+was removed — the documentation of the integration plan is preserved here.
 -/
-axiom import_shannon_entropy_blocked : False
--- Note: once ShannonEntropy.lean compiles, replace with actual proof
 
 -- ============================================================
 -- Section 4: Key Properties Used

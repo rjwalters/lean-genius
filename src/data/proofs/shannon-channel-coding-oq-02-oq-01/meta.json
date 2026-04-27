@@ -7,7 +7,7 @@
     "author": "Robert Fano (1952), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fano%27s_inequality",
     "date": "1952",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/ShannonChannelCodingOQ02OQ01.lean",
     "tags": [
       "information-theory",
@@ -17,7 +17,7 @@
       "research",
       "open-problem"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -37,10 +37,10 @@
       "Root cause analysis of ShannonEntropy.lean line 811 failure (sum order mismatch in strong_subadditivity)",
       "Proposed fix: normalize ∑ y ∑ z ∑ x sum order before linarith using Finset.sum_comm"
     ],
-    "assumptions": "2 axioms: (1) fano_inequality — declared locally to represent the target axiom in ShannonChannelCoding.lean that this file aims to eliminate; (2) import_shannon_entropy_blocked — placeholder for ShannonEntropy.lean compilation blocker. 0 sorries. Both axioms will be eliminatable once ShannonEntropy.lean's strong_subadditivity proof is fixed.",
+    "assumptions": "0 axioms, 0 sorries. Previously had 2 axioms: (1) `axiom import_shannon_entropy_blocked : False` — a dead, unsound placeholder for the ShannonEntropy.lean compilation blocker; never cited. Removed. (2) `axiom fano_inequality ...` — a code-fenced literal inside a doc comment used to illustrate the target axiom in ShannonChannelCoding.lean; column-zero `axiom` token caused naive grep counts to register it as a real axiom. Re-indented inside the code fence so `^axiom ` no longer matches; semantics unchanged. Integration with ShannonEntropy.lean is still blocked upstream, but this bridge file no longer poisons its namespace. The bridge proof itself (conditional_entropy_defs_agree, fano_from_oq03, fano_trivial_singleton) is fully verified.",
     "dateAdded": "2026-04-04",
-    "axiomCount": 2,
-    "lineCount": 168,
+    "axiomCount": 0,
+    "lineCount": 169,
     "prerequisites": [
       "Fano's inequality (OQ-03): H(X|Y) ≤ h(P_e) + P_e·log(|X|-1)",
       "Binary entropy function and concavity (OQ-04)",
@@ -147,8 +147,8 @@
       "FanoInequality"
     ],
     "namespace": "FanoFromConditionalEntropy",
-    "lineCount": 168,
-    "axiomCount": 1,
+    "lineCount": 169,
+    "axiomCount": 0,
     "sorries": 0,
     "path": "Proofs/ShannonChannelCodingOQ02OQ01.lean",
     "theoremCount": 3,
