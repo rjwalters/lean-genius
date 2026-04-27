@@ -17,23 +17,21 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-04-03T03:00:00Z",
-    "iteration": 2,
-    "focus": "Reduced sorries 4→2, added missing Carleson-Hunt axiom",
+    "since": "2026-04-13T00:00:00Z",
+    "iteration": 5,
+    "focus": "Session 5 (PR #10486) reduced axioms 6 -> 2; remaining axioms are the deep Carleson-Hunt maximal inequality and the bundled Carleson constant.",
     "blockers": [
-      "trigPoly_convergence lemma needed",
-      "Chebyshev measure theory",
-      "Docker for build verification"
+      "carleson_hunt_maximal axiom: weak-type (2,2) bound for the Carleson maximal operator. Genuinely deep — full proof requires ~50 pages of time-frequency analysis (Carleson 1966 / Hunt 1968). Not formalized in Mathlib v4.26.0; an external Carleson4 project exists."
     ],
-    "nextAction": "Prove trigPoly_convergence using Fourier orthonormality; then tackle divergenceSet_measure_bound",
+    "nextAction": "Two paths to consider: (1) consolidate `axiom carlesonData` and `axiom carleson_hunt_maximal` into a single existential axiom (refactoring, not real reduction per axiom-integrity policy); (2) wait for / depend on Carleson4 project. Gallery is correctly badged 'axiom'.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 5,
+      "currentApproach": 2,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0 sorries remain, proof architecture done, PR #8630 created",
+    "progressSummary": "Session 5 (2026-04-13, PR #10486) reduced axioms from 6 to 2 by replacing carlesonConstant_nonneg, IsTrigPoly.memℒp_two, trigPoly_exact_convergence, trigPoly_L2_approx with Mathlib-backed theorems. 0 sorries remain. The two remaining axioms are deep: carlesonData (existence of Carleson constant) and carleson_hunt_maximal (the weak-type (2,2) bound — heart of Carleson 1966).",
     "builtItems": [
       "Created FourierSeriesOQ01.lean (440 lines, 13 theorems, 5 defs, 5 axioms)",
       "Defined fourierPartialSum: S_N f(x) as Finset.sum over Icc",
@@ -72,9 +70,9 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Fill Markov sorry: mul_meas_ge_le_pow_eLpNorm with p=2 + eLpNorm connection",
-      "Replace trigPoly axioms with Mathlib proofs via hasSum_fourier_series_of_summable",
-      "Replace trigPoly_L2_approx with hasSum_fourier_series_L2 norm convergence"
+      "Done in session 4 (PR #8630): Markov sorry filled via mul_meas_ge_le_lintegral₀ + ofReal_integral_eq_lintegral_ofReal.",
+      "Done in session 5 (PR #10486): trigPoly_exact_convergence and trigPoly_L2_approx replaced by Mathlib-backed proofs.",
+      "Open: only the carleson_hunt_maximal axiom remains as a genuinely deep assumption. Track the external Carleson4 project for upstream formalization."
     ],
     "markdown": "# Knowledge Base: fourier-series-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -97,7 +95,7 @@
     "mathlib": []
   },
   "started": "2026-03-28T22:57:01.595Z",
-  "lastUpdate": "2026-04-03T03:45:00Z",
+  "lastUpdate": "2026-04-27T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/FourierSeries.lean",
