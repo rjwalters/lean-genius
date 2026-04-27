@@ -51,7 +51,6 @@
       "primesWithPrimePrimitiveRoot set: primes having prime primitive roots",
       "Verified examples: p = 3, 5, 7, 11, 13, 23",
       "heath_brown_theorem axiom: {2, 3, 5} covers infinitely many primes",
-      "artin_conjecture_for_2 axiom: Artin's conjecture for 2",
       "erdos_985_conjecture axiom: main open conjecture",
       "erdos_985_iff_all_odd_primes equivalence theorem",
       "artin_implies_erdos_985 connection theorem"
@@ -90,10 +89,10 @@
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "summary": "exists_primitive_root, zmod_units_cyclic axioms",
+      "summary": "zmod_units_cyclic theorem: (ℤ/pℤ)× is cyclic",
       "startLine": 42,
       "endLine": 52,
-      "mathContext": "Axiomatized: exists_primitive_root, zmod_units_cyclic axioms"
+      "mathContext": "Proved via Mathlib: zmod_units_cyclic theorem"
     },
     {
       "id": "small-examples",
@@ -114,10 +113,10 @@
     {
       "id": "artin-heathbrown",
       "title": "Artin's Conjecture and Heath-Brown",
-      "summary": "artin_conjecture_for_2, heath_brown_theorem axioms",
+      "summary": "heath_brown_theorem axiom: at least one of {2, 3, 5} is a primitive root for infinitely many primes",
       "startLine": 113,
       "endLine": 130,
-      "mathContext": "Verified: artin_conjecture_for_2, heath_brown_theorem axioms"
+      "mathContext": "Axiomatized: heath_brown_theorem (Heath-Brown 1986 unconditional result)"
     },
     {
       "id": "main-conjecture",
