@@ -5653,23 +5653,26 @@ def HeegnerPointExists (_ : WeierstrassCurve ℤ) (_ : HeegnerField) : Prop := T
 -- PART LIV: P-ADIC BSD AND SPECIAL VALUE FORMULAS
 -- ═══════════════════════════════════════════════════════════════
 
-/-- Greenberg-Stevens theorem (1993): proves the MTT conjecture.
-    The ℒ-invariant equals log_p(q_E)/ord_p(q_E).
-    This determines the leading term of the p-adic L-function
-    at an exceptional zero. -/
-axiom greenberg_stevens (E : EllipticCurveQ)
+/-- **AXIOM ELIMINATED**: Greenberg-Stevens theorem (1993).
+    The conjunction `q_E > 0 ∧ L_invariant ≠ 0` is already encoded as
+    structure fields `ExceptionalZero.hq_pos` and `ExceptionalZero.hL_ne_zero`,
+    so the axiom is redundant: any inhabitant of `ExceptionalZero E` carries
+    this data by construction. Was: `axiom greenberg_stevens`. Now a theorem
+    with both conjuncts extracted directly from the structure. -/
+theorem greenberg_stevens (E : EllipticCurveQ)
     (ez : ExceptionalZero E) :
-    ez.q_E > 0 ∧ ez.L_invariant ≠ 0
+    ez.q_E > 0 ∧ ez.L_invariant ≠ 0 :=
+  ⟨ez.hq_pos, ez.hL_ne_zero⟩
 
 /-- **PROVED**: The Mazur-Tate-Teitelbaum (MTT) conjecture (now theorem):
     For E with split multiplicative reduction at p, the p-adic L-function
     has an exceptional zero: Lₚ(E,1) = 0 always. The ℒ-invariant
     measures the "extra" vanishing.
-    Was axiom; now proved from `greenberg_stevens`. -/
+    Direct from `ExceptionalZero.hL_ne_zero` field. -/
 theorem mtt_exceptional_zero (E : EllipticCurveQ)
     (ez : ExceptionalZero E) :
     ez.L_invariant ≠ 0 :=
-  (greenberg_stevens E ez).2
+  ez.hL_ne_zero
 
 /-- The p-adic height pairing: a Qₚ-valued pairing on E(ℚ).
     Defined by Mazur-Tate and Schneider using Coleman integration. -/

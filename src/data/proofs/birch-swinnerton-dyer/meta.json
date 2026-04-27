@@ -15,8 +15,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 18,
-    "assumptions": "18 axiom declarations encoding: (1) L-function analytic continuation and functional equation, (2) Hasse bound a_p^2 <= 4p, (3) BSD conjecture proven cases (Kolyvagin rank 0, Gross-Zagier+Kolyvagin rank 1), (4) parity conjecture (Dokchitsers), (5) L-values and ranks for specific curves, (6) Sha structure, (7) Elkies rank record, (8) Greenberg-Stevens theorem, (9) regulator positivity. Previously 21 axioms: BSD_CM_rank_zero proved redundant (subsumed by Kolyvagin general result), gross_zagier_formula_detail dead code, one_not_congruent proved as theorem from BSD_rank_zero_axiom + curveMinusX_L_nonzero (curveMinusX = congruentNumberCurve 1 by coefficient equality + EllipticCurveQ.ext). 0 sorries. Also: 3 definitions vacuously return Prop := True as stubs pending rigorous formalization: p_adic_L_function (line 5626), HeegnerPointExists (line 5642), p_adic_height_pairing (line 5676). Additionally, sha_is_square := True appears in 4 data record fields (lines 4484, 4495, 4506, 4518).",
+    "axiomCount": 17,
+    "assumptions": "17 axiom declarations encoding: (1) L-function analytic continuation and functional equation, (2) Hasse bound a_p^2 <= 4p, (3) BSD conjecture proven cases (Kolyvagin rank 0, Gross-Zagier+Kolyvagin rank 1), (4) parity conjecture (Dokchitsers), (5) L-values and ranks for specific curves, (6) Sha structure, (7) Elkies rank record, (8) regulator positivity. Previously 21 axioms; reductions: BSD_CM_rank_zero subsumed by Kolyvagin general result, gross_zagier_formula_detail dead code, one_not_congruent proved as theorem (BSD_rank_zero_axiom + curveMinusX_L_nonzero with curveMinusX = congruentNumberCurve 1 by coefficient equality + EllipticCurveQ.ext), and most recently greenberg_stevens converted from axiom to theorem since both conjuncts (q_E > 0, L_invariant ≠ 0) are already encoded as ExceptionalZero structure fields hq_pos and hL_ne_zero. 0 sorries. Also: 3 definitions vacuously return Prop := True as stubs pending rigorous formalization: p_adic_L_function (line 5626), HeegnerPointExists (line 5642), p_adic_height_pairing (line 5676). Additionally, sha_is_square := True appears in 4 data record fields (lines 4484, 4495, 4506, 4518). Note: ExceptionalZero structure fields (hq_pos, hL_ne_zero) constitute structural assumptions; the elimination removes a duplicate axiom but the structural data remains.",
     "mathlibDependencies": [
       {
         "theorem": "WeierstrassCurve",
@@ -80,7 +80,7 @@
     "dateAdded": "2025-12-29",
     "millenniumProblem": "bsd",
     "proofRepoPath": "Proofs/BirchSwinnertonDyer.lean",
-    "lineCount": 7432,
+    "lineCount": 7435,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -716,8 +716,8 @@
   ],
   "sorries": 0,
   "leanFile": {
-    "axiomCount": 18,
-    "lineCount": 7432,
+    "axiomCount": 17,
+    "lineCount": 7435,
     "sorries": 0,
     "path": "Proofs/BirchSwinnertonDyer.lean"
   }
