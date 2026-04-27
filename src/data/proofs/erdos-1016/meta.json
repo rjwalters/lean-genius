@@ -29,8 +29,8 @@
   "overview": {
     "historicalContext": "The study of pancyclic graphs began with J.A. Bondy's 1971 paper 'Pancyclic graphs I', where he proved that any graph with $n$ vertices and at least $n^2/4$ edges is either pancyclic or bipartite. Bondy also conjectured the precise edge threshold for pancyclicity, including the bounds $\\lfloor\\log_2(n-1)\\rfloor - 1 \\leq h(n)$ (lower) and $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ (upper), but did not publish proofs. The lower bound was first rigorously proved by Griffin in 2013 using a doubling argument: each extra edge beyond a Hamiltonian cycle can at most double the range of achievable cycle lengths. George, Khodkar, and Wallis (2016) proved the upper bound via hierarchical constructions, confirming Bondy's prediction. The gap between bounds is only $\\log^* n + O(1)$ — one of the tightest gaps in extremal graph theory. Erdos believed the upper bound gives the truth but could not prove even the weaker statement $h(n) - \\log_2 n \\to \\infty$, calling this 'embarrassing'. The iterated logarithm $\\log^* n$, which for all practical purposes is at most 5, appears naturally in the recursive construction.",
     "problemStatement": "Estimate $h(n)$, the minimum number of excess edges (beyond $n$) for a pancyclic graph on $n$ vertices. Is $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$?",
-    "text": "A formalization of Erdős Problem #1016 in 114 lines with 7 axioms and 3 proved theorems. The file defines pancyclic graphs (containing cycles of all lengths $3$ through $n$), the excess function $h(n) = \\min\\{|E(G)| - n\\}$, and the iterated logarithm $\\log^*$. The main conjecture $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$ and the weaker question $h(n) - \\lfloor\\log_2 n\\rfloor \\to \\infty$ are axiomatized alongside the known bounds: Griffin's lower bound $h(n) \\geq \\lfloor\\log_2(n-1)\\rfloor - 1$ from a doubling argument and George-Khodkar-Wallis's upper bound $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ from hierarchical constructions. The three proved theorems are `hamiltonian_edge_count` ($h(n) \\geq 0$, trivial for $\\mathbb{N}$), `pancyclic_monotone` (edge addition preserves pancyclicity), and `bounds_gap` (the gap $h(n) \\leq h(n) + C$, a trivial consequence of the BES bounds). The substantive mathematical content is encoded in the axioms; the proved theorems serve as structural scaffolding.",
-    "proofStrategy": "We formalize pancyclic graphs (containing cycles of all lengths $3$ through $n$), the excess function $h(n)$, and the iterated logarithm $\\log^*$ in Lean 4. The main conjecture, the weaker divergence question, known bounds (Bondy/Griffin lower, George-Khodkar-Wallis upper), structural properties (monotonicity, Bondy's quadratic threshold), and small cases are stated as axioms.",
+    "text": "A formalization sketch of Erdős Problem #1016 in 158 lines with 0 axioms and 7 theorems. The file defines pancyclic graphs (containing cycles of all lengths $3$ through $n$), the excess function $h(n) = \\min\\{|E(G)| - n\\}$, and the iterated logarithm $\\log^*$. **Model flaw**: `IsPancyclic` takes the cycle-existence predicate `hasCycleOfLength` as an unconstrained parameter disconnected from `edgeCount`, so the defining set for `pancyclicExcess` is empty for all $n \\geq 1$ (witness: `edgeCount = 0`, `hasCycle = fun _ => True`), forcing `pancyclicExcess n = 0`. As a result the original lower-bound and main-conjecture axioms are FALSE under this model and have been removed; the file now contains only theorems that are correct in the degenerate sense (`pancyclicExcess_eq_zero`, `gkw_upper_bound` (trivially true), `triangle_pancyclic`, `hamiltonian_edge_count`, `pancyclic_monotone`, `bounds_gap`, plus the pure-arithmetic `bondy_quadratic_threshold`). The disabled axioms remain as comments documenting the intended statements. A faithful formalization needs `SimpleGraph (Fin n)` with `Walk.IsCycle` and `edgeFinset` (~200 lines of graph-theoretic infrastructure not yet wired up).",
+    "proofStrategy": "**Current state is a placeholder, not a faithful formalization.** The abstract `IsPancyclic` predicate takes `hasCycleOfLength` as an unconstrained `ℕ → Prop` parameter, so it is satisfiable for any `edgeCount` (including 0). Consequently `pancyclicExcess n = sSup ∅ = 0` for all $n \\geq 1$, all numerical lower-bound axioms (Bondy/Griffin, main conjecture, $h(4) = 1$) become FALSE, and only trivially-true upper-bound and structural facts can be proved. The file documents this model flaw explicitly and preserves the false axioms as comments. To formalize Erdős #1016 faithfully one must replace `IsPancyclic` with a `SimpleGraph (Fin n)`-based predicate where cycle existence is derived from the graph (`Walk.IsCycle` + `edgeFinset`), then re-state Bondy's, Griffin's, and GKW's results against that model.",
     "keyInsights": [
       "**The doubling argument gives the lower bound**: each edge beyond a Hamiltonian cycle at most doubles the range of achievable cycle lengths, so $2^{h(n)} \\geq n - 2$, giving $h(n) \\geq \\lfloor\\log_2(n-2)\\rfloor$",
       "**The iterated logarithm $\\log^*$ appears naturally**: the hierarchical upper bound construction adds edges in $\\log_2 n$ stages for major cycle-length doubling, plus $\\log^* n$ correction stages for the boundary effects at each level of the tower",
@@ -71,57 +71,25 @@
       "mathContext": "$h(n) = \\sup\\{h : \\forall G \\text{ pancyclic on } n \\text{ vertices},\\, |E(G)| \\geq n + h\\}$. The Lean definition uses `sSup` over $\\mathbb{N}$.\n\n$\\log^*(n) = \\begin{cases} 0 & n \\leq 1 \\\\ 1 + \\log^*(\\lfloor\\log_2 n\\rfloor) & n \\geq 2 \\end{cases}$. Values: $\\log^*(2) = 1$, $\\log^*(4) = 2$, $\\log^*(16) = 3$, $\\log^*(65536) = 4$, $\\log^*(2^{65536}) = 5$."
     },
     {
-      "id": "main-conjecture",
-      "title": "Main Conjecture and Weaker Question",
+      "id": "model-flaw-and-disabled-axioms",
+      "title": "Model Flaw and Disabled Axioms",
       "startLine": 50,
-      "endLine": 64,
-      "summary": "States Erdos's conjecture $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$ and the weaker open question $h(n) - \\lfloor\\log_2 n\\rfloor \\to \\infty$. The weaker question asks whether the correction to the logarithmic term diverges.",
-      "mathContext": "Conjecture: $\\exists C,\\, \\forall n \\geq 3,\\, h(n) + C \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n$. Combined with GKW upper bound, this gives $h(n) = \\lfloor\\log_2 n\\rfloor + \\log^* n + \\Theta(1)$.\n\nWeaker: $\\forall M,\\, \\exists N,\\, \\forall n \\geq N,\\, h(n) \\geq \\lfloor\\log_2 n\\rfloor + M$."
+      "endLine": 104,
+      "summary": "Documents that `IsPancyclic` is unconstrained in `hasCycleOfLength`, forcing `pancyclicExcess n = 0` for all $n \\geq 1$. Erdős's main conjecture, the weaker $h(n) - \\log_2 n \\to \\infty$ question, Bondy's lower bound, and the small case $h(4) = 1$ are preserved as comments because they are FALSE under this model. The mathematical results (Bondy/Griffin/GKW) are correct; only the Lean encoding is a placeholder. Proves `pancyclicExcess_eq_zero` and `gkw_upper_bound` (the latter trivially, with $C = 0$) consistent with the degenerate model.",
+      "mathContext": "Disabled axioms (commented for future redesign): `erdos_1016_conjecture` ($\\exists C,\\, \\forall n \\geq 3,\\, h(n) + C \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n$), `excess_beyond_log` (weaker divergence), `bondy_lower_bound` ($h(n) + 1 \\geq \\lfloor\\log_2(n-1)\\rfloor$), `small_case_4` ($h(4) = 1$). All four contradict `pancyclicExcess_eq_zero` so cannot be reintroduced without first replacing the abstract predicate with a graph-theoretic model."
     },
     {
-      "id": "lower-bound",
-      "title": "Bondy's Lower Bound (Griffin 2013)",
-      "startLine": 65,
-      "endLine": 72,
-      "summary": "The lower bound $h(n) \\geq \\lfloor\\log_2(n-1)\\rfloor - 1$ from a doubling argument: each extra edge at most doubles achievable cycle lengths, so $2^h \\geq n - 2$.",
-      "mathContext": "Axiom: $\\forall n \\geq 3,\\, h(n) + 1 \\geq \\lfloor\\log_2(n-1)\\rfloor$. Proof idea (Griffin 2013): starting from a Hamiltonian cycle $C_n$, each chord can create cycles of at most twice as many distinct lengths, so $h$ chords give at most $2^h$ cycle lengths out of $n - 2$ needed."
-    },
-    {
-      "id": "upper-bound",
-      "title": "George-Khodkar-Wallis Upper Bound (2016)",
-      "startLine": 73,
-      "endLine": 79,
-      "summary": "The upper bound $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ via explicit hierarchical construction: $\\log_2 n$ doubling stages plus $\\log^* n$ correction stages.",
-      "mathContext": "Axiom: $\\exists C,\\, \\forall n \\geq 3,\\, h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + C$. The construction: start with $C_n$, add $\\lfloor\\log_2 n\\rfloor$ chords at geometrically spaced positions to achieve cycle lengths in $\\{n/2^k \\pm O(1) : 0 \\leq k \\leq \\log_2 n\\}$, then $\\log^* n$ correction chords to fill gaps at each tower level."
-    },
-    {
-      "id": "structural-properties",
-      "title": "Structural Properties",
-      "startLine": 80,
-      "endLine": 96,
-      "summary": "Hamiltonian baseline ($h(n) \\geq 0$), Bondy's quadratic threshold ($n^2/4$ edges suffice for pancyclicity or bipartiteness), and monotonicity of pancyclicity under edge addition.",
-      "mathContext": "Three results: (1) $h(n) \\geq 0$ (trivial for $\\mathbb{N}$, but the non-trivial content is that pancyclic $\\Rightarrow$ Hamiltonian $\\Rightarrow |E| \\geq n$). (2) Bondy's theorem: $|E(G)| \\geq n^2/4 \\Rightarrow G$ pancyclic or bipartite (axiomatized for $n \\geq 7$). (3) Monotonicity: pancyclicity is an upward-closed property under edge addition."
-    },
-    {
-      "id": "small-cases",
-      "title": "Small Cases",
-      "startLine": 97,
-      "endLine": 106,
-      "summary": "Computed values: $h(3) = 0$ ($K_3$), $h(4) = 1$ ($C_4$ plus diagonal). OEIS A105206 gives further terms.",
-      "mathContext": "$h(3) = 0$: $K_3$ has 3 edges = $n$ edges, pancyclic (only needs $C_3$). $h(4) = 1$: need $C_3$ and $C_4$, achieved by $C_4 + $ one diagonal with 5 = $4 + 1$ edges. The BES-style lower bound gives $h(4) \\geq \\lfloor\\log_2 3\\rfloor - 1 = 0$, so the truth $h(4) = 1$ exceeds the lower bound by 1."
-    },
-    {
-      "id": "bounds-gap",
-      "title": "Bounds Gap",
-      "startLine": 107,
-      "endLine": 110,
-      "summary": "The gap between upper and lower bounds is at most $\\log^* n + O(1)$, making this one of the tightest known gaps for an open extremal graph theory problem.",
-      "mathContext": "Upper $-$ lower $\\leq (\\lfloor\\log_2 n\\rfloor + \\log^* n + C) - (\\lfloor\\log_2(n-1)\\rfloor - 1) = \\log^* n + O(1)$. Since $\\log^* n \\leq 5$ for $n < 2^{65536}$, the bounds differ by at most $\\approx 6$ for any practical graph."
+      "id": "structural-theorems",
+      "title": "Structural Theorems (Degenerate)",
+      "startLine": 106,
+      "endLine": 158,
+      "summary": "Six theorems that are either trivial or degenerately true under the abstract model: `hamiltonian_edge_count` ($h(n) \\geq 0$, trivial for $\\mathbb{N}$), `bondy_quadratic_threshold` (the genuine arithmetic fact $n^2/4 \\geq n + \\lfloor\\log_2 n\\rfloor$ for $n \\geq 7$, proved by `interval_cases` for $n \\leq 15$ and `nlinarith` for $n \\geq 16$), `pancyclic_monotone` (trivial — `IsPancyclic` ignores `edgeCount`), `triangle_pancyclic` ($h(3) = 0$ via the empty defining set, exploiting the model flaw), and `bounds_gap` (tautological with $C = 0$). Together with `pancyclicExcess_eq_zero` and `gkw_upper_bound` from the previous section, this gives the file's full theorem list (7 theorems, 0 axioms, 0 sorries).",
+      "mathContext": "The only theorem with substantive arithmetic content is `bondy_quadratic_threshold`. The others either rely on $\\mathbb{N}$-positivity, on the disconnected `hasCycleOfLength` parameter, or on the empty-defining-set consequence. None of them captures the real Erdős/Bondy/Griffin/GKW results, which require a graph-theoretic predicate. Until the model is replaced, the gallery should treat this entry as a placeholder, not as a formalization of Erdős #1016."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdos Problem #1016 on the minimum excess edges for pancyclic graphs. The bounds $\\lfloor\\log_2(n-1)\\rfloor - 1 \\leq h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ leave a gap of only $\\log^* n + O(1)$, which is at most about 6 for any practical $n$. The Lean formalization encodes the definitions, both conjectures, the known bounds, structural properties, and small cases.",
-    "implications": "**Theoretical Significance**: Resolving whether $h(n) = \\lfloor\\log_2 n\\rfloor + \\log^* n + \\Theta(1)$ would determine the exact edge threshold for pancyclicity.\n\nThe problem is notable for the extreme tightness of known bounds combined with the apparent difficulty of closing the gap. A proof of even $h(n) - \\log_2 n \\to \\infty$ would require new techniques for lower-bounding the edge count of pancyclic graphs beyond simple doubling arguments.",
+    "summary": "This entry is a **placeholder, not a faithful formalization of Erdős Problem #1016**. The abstract `IsPancyclic` predicate is satisfiable independently of `edgeCount`, so `pancyclicExcess n = 0` for all $n \\geq 1$, and the original numerical lower-bound axioms (Bondy/Griffin's $h(n) + 1 \\geq \\lfloor\\log_2(n-1)\\rfloor$, Erdős's main conjecture, $h(4) = 1$) were FALSE under this model and have been removed. The 7 theorems that remain are all degenerately true. The mathematical results — Bondy's $n^2/4$ pancyclicity threshold, Griffin's lower bound $h(n) \\geq \\lfloor\\log_2(n-1)\\rfloor - 1$, GKW's upper bound $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ — remain correct in the literature; only the Lean encoding is at fault.",
+    "implications": "**Path to a faithful formalization**: replace `IsPancyclic` with a `SimpleGraph (Fin n)`-based predicate where cycle existence is derived via `Walk.IsCycle` and `edgeFinset`. This requires roughly 200+ lines of graph-theoretic infrastructure connecting cycle lengths to subgraphs of $K_n$. With that in place, the disabled axioms (now preserved as comments) can be reintroduced as theorems or sorries, and the BES-style bounds become meaningful claims rather than vacuous ones. **Theoretical significance**: Resolving whether $h(n) = \\lfloor\\log_2 n\\rfloor + \\log^* n + \\Theta(1)$ would close one of the tightest open gaps ($\\log^* n + O(1) \\leq 6$ for any practical $n$) in extremal graph theory; even the weaker $h(n) - \\log_2 n \\to \\infty$ remains open.",
     "openQuestions": [
       "Is $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$? (Main conjecture)",
       "Does $h(n) - \\lfloor\\log_2 n\\rfloor \\to \\infty$? (Weaker question Erdos could not prove)",
