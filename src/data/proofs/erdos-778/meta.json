@@ -57,9 +57,9 @@
       "game_determined: Zermelo's theorem axiomatized",
       "erdos_778_periodicity summary theorem"
     ],
-    "axiomCount": 2,
-    "lineCount": 219,
-    "assumptions": "2 axioms: playGame, malekshahian_spiro_alice_n_bob_n123. 0 sorries."
+    "axiomCount": 3,
+    "lineCount": 225,
+    "assumptions": "3 axioms: playGame, malekshahian_spiro_alice_n_bob_n123, malekshahian_spiro_alice_n_bob_n12_degree. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erd\u0151s Problem #778: Clique-Building Games on Complete Graphs**\n\nThis problem, posed by Erd\u0151s (referenced in Gu83), concerns competitive edge-coloring games on complete graphs \u2014 a topic at the intersection of combinatorial game theory and Ramsey theory.\n\n**Three Game Variants:**\nAlice and Bob alternate coloring edges of K_n red (Alice) and blue (Bob), with Alice going first. Variant 1 (Clique Game): Alice wins if her largest red clique exceeds Bob's largest blue clique. Variant 2 (Modified Game): Bob colors 2 edges per turn; he wins if his largest clique strictly exceeds Alice's. Variant 3 (Degree Game): Alice wins if the maximum degree in the red subgraph exceeds that of the blue.\n\n**Erd\u0151s's Belief:** Erd\u0151s conjectured that Bob should always have a winning strategy in the clique game for n \u2265 3, reflecting the general principle that the second player often has a structural advantage in such games.\n\n**Recent Progress:** Malekshahian and Spiro (arXiv:2410.18304, 2024) proved significant partial results. For the clique game, they showed Bob wins for a set of n with natural density at least 3/4, and that if Alice ever wins at some n, then Bob wins at the next three values n+1, n+2, n+3. For the degree game, Bob wins with density at least 2/3, with a similar recovery property over two consecutive values. These results strongly support Erd\u0151s's conjecture but the complete answer remains open.",
@@ -168,10 +168,10 @@
       "Finset"
     ],
     "namespace": "Erdos778",
-    "lineCount": 219,
-    "axiomCount": 2,
+    "lineCount": 225,
+    "axiomCount": 3,
     "theoremCount": 3,
-    "definitionCount": 16,
+    "definitionCount": 18,
     "path": "Proofs/Erdos778Problem.lean",
     "sorries": 0
   },
