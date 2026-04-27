@@ -1,10 +1,10 @@
 {
   "id": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-  "title": "Nonderogatory to Cyclic Vector: Binary Prime Power Case",
+  "title": "Nonderogatory to Cyclic Vector: General Case (All Fields)",
   "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-  "description": "Proves the cyclic vector theorem for nonderogatory matrices whose minimal polynomial factors as p^a * q^b (p, q distinct monic irreducibles, coprime, a >= 1, b >= 1) over any field K. Combines CRT/Bezout projections from WIP02 with prime power divisibility from WIP03.",
+  "description": "Proves the cyclic vector theorem for any nonderogatory matrix over any field K, given the prime power factorization of its minimal polynomial as a hypothesis. Uses primary decomposition via Bezout (CRT) projections combined with a prime power divisibility induction. Eliminates the rational canonical form axiom from WIP01 entirely.",
   "meta": {
-    "author": "Classical linear algebra (CRT + prime power divisibility)",
+    "author": "Classical linear algebra (primary decomposition via Bezout projections)",
     "sourceUrl": "",
     "date": "2026",
     "status": "verified",
@@ -15,14 +15,14 @@
       "cyclic-vector",
       "nonderogatory",
       "chinese-remainder-theorem",
-      "prime-power",
+      "primary-decomposition",
       "wip"
     ],
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 359,
-    "assumptions": "None. Axiom-free proof using CRT/Bezout projections and prime power divisibility by induction.",
+    "assumptions": "None on the proof itself (axiom-free, sorry-free). The main theorem takes the prime power factorization of minpoly K M as a hypothesis (data: a finite indexed family of monic irreducibles p_i, exponents e_i, pairwise coprimality, and the equation minpoly K M = \u220f i, p i ^ e i). Eliminating this hypothesis to obtain the unconditional theorem requires applying UFD factorization for K[X], which is a separate (open) step.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -41,14 +41,19 @@
         "module": "Mathlib.FieldTheory.Minpoly.Basic"
       },
       {
-        "theorem": "IsCoprime.pow_pow",
-        "description": "Coprimality lifts to powers: IsCoprime p q implies IsCoprime (p^a) (q^b)",
+        "theorem": "UniqueFactorizationMonoid.irreducible_iff_prime",
+        "description": "In a UFD (like K[X]), irreducible \u21d4 prime; used to access Bezout via coprimality",
+        "module": "Mathlib.RingTheory.UniqueFactorizationDomain"
+      },
+      {
+        "theorem": "Finset.prod_dvd_of_coprime",
+        "description": "If factors are pairwise coprime and each divides r, then their product divides r",
         "module": "Mathlib.RingTheory.Coprime.Lemmas"
       },
       {
-        "theorem": "IsCoprime.mul_dvd",
-        "description": "If p, q coprime and p | r and q | r then p*q | r",
-        "module": "Mathlib.RingTheory.Coprime.Basic"
+        "theorem": "Finset.mul_prod_erase",
+        "description": "Splits \u220f i \u2208 s, f i as f j * \u220f i \u2208 s.erase j, f i for j \u2208 s; used to define the complementary product F_i",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
       },
       {
         "theorem": "Polynomial.natDegree_mul",
@@ -56,73 +61,65 @@
         "module": "Mathlib.Algebra.Polynomial.Degree.Lemmas"
       },
       {
-        "theorem": "Polynomial.natDegree_pow",
-        "description": "natDegree(p^n) = n * natDegree(p)",
+        "theorem": "Polynomial.natDegree_le_of_dvd",
+        "description": "If p \u2223 q and q \u2260 0 then natDegree p \u2264 natDegree q; closes the degree contradiction",
         "module": "Mathlib.Algebra.Polynomial.Degree.Lemmas"
       }
     ]
   },
   "overview": {
-    "historicalContext": "The cyclic vector theorem for nonderogatory matrices is classical, dating to Frobenius's rational canonical form (1879). The traditional proof uses the structure theorem for finitely generated modules over principal ideal domains (K[X]-modules), which has not been formalized in Mathlib as of version 4.26. This file takes an alternative approach: instead of the full PID structure theorem, it uses only the Chinese Remainder Theorem (Bezout identity for coprime elements in K[X]) combined with an inductive prime power divisibility argument. The result covers all matrices whose minimal polynomial has exactly two distinct irreducible factors with arbitrary multiplicities, working over any field including small finite fields where union-avoidance arguments fail.",
-    "problemStatement": "Prove that a nonderogatory matrix M over any field K has a cyclic vector, under the hypothesis that minpoly K M = p^a * q^b where p, q are distinct monic irreducible polynomials (a >= 1, b >= 1). This is the 'binary prime power case' which generalizes both the squarefree binary case (WIP02, a=b=1) and the single prime power case (WIP03, one factor only).",
-    "proofStrategy": "The proof combines two techniques: (1) CRT/Bezout projections from WIP02, which decompose vectors into primary components and extract annihilation information from sums; and (2) prime power divisibility from WIP03 (pow_irred_dvd_of_annihilated), which shows that if p^e(M)v != 0 and p^(e+1)(M)v = 0, then any annihilator of v is divisible by p^(e+1). The combination works as follows: construct v1 = q^b(M)*w1 in ker(p^a(M)) with p^(a-1)(M)*v1 != 0, and v2 = p^a(M)*w2 in ker(q^b(M)) with q^(b-1)(M)*v2 != 0. Then v = v1 + v2 is cyclic because the CRT projections separate r(M)*(v1+v2)=0 into r(M)*v1=0 and r(M)*v2=0, and the prime power lemma gives p^a | r and q^b | r, whence p^a*q^b | r by coprimality, contradicting deg(r) < n.",
+    "historicalContext": "The cyclic vector theorem for nonderogatory matrices (minpoly = charpoly) is classical, dating to Frobenius's rational canonical form (1879). The standard proof routes through the structure theorem for finitely generated modules over a principal ideal domain: K^n decomposes as a direct sum of cyclic K[X]-modules K[X]/(d_1) \u2295 \u2026 \u2295 K[X]/(d_r), and the nonderogatory hypothesis forces r = 1. As of Mathlib 4.26, this PID structure theorem has not been formalized. WIP01 sidestepped the gap with a single axiom (`nonderogatory_similar_to_companion`) capturing rational canonical form. This file (WIP04) eliminates that axiom by avoiding the structure theorem entirely: instead of decomposing K^n as a direct sum of submodules and tracking dimensions, it constructs explicit primary vectors via Bezout/CRT projections and deduces cyclicity from polynomial divisibility alone.",
+    "problemStatement": "Prove that a nonderogatory matrix M over any field K has a cyclic vector \u2014 a vector v such that {v, Mv, M\u00b2v, \u2026, M^(n-1)v} is a basis for K^n \u2014 without depending on the PID module structure theorem. WIP04 proves this under the hypothesis that the minimal polynomial is given as a product of pairwise coprime prime powers minpoly K M = \u220f_{i : Fin k} p_i^{e_i}. The fully unconditional theorem follows by applying UFD factorization for K[X] to obtain such a decomposition, which is left as a follow-up.",
+    "proofStrategy": "Two-step primary decomposition argument. STEP 1 (CONSTRUCT PRIMARY VECTORS): For each prime power factor p_i^{e_i}, define the complementary product F_i := \u220f_{j \u2260 i} p_j^{e_j}. Choose w_i so that (p_i^{e_i-1} \u00b7 F_i)(M) w_i \u2260 0 (which exists because that polynomial has degree < n = deg(minpoly)). Set v_i := F_i(M) w_i. Then p_i^{e_i}(M) v_i = 0 (because minpoly kills everything) and p_i^{e_i-1}(M) v_i \u2260 0 (by choice of w_i). The lemma `pow_irred_dvd_of_annihilated` (proved by induction on the exponent) then gives: any annihilator r of v_i is divisible by p_i^{e_i}. STEP 2 (COMBINE VIA CRT): Set v := \u2211_i v_i. Suppose r(M)v = 0 with deg(r) < n. For each i, the coprimality of p_i^{e_i} and F_i yields a Bezout identity a_i \u00b7 p_i^{e_i} + b_i \u00b7 F_i = 1, so the projection \u03c0_i := (b_i \u00b7 F_i)(M) is the identity on v_i and kills v_j for j \u2260 i. Since polynomial evaluation in M commutes with itself, \u03c0_i \u00b7 r(M) = r(M) \u00b7 \u03c0_i, so r(M) v_i = \u03c0_i(r(M) v) = \u03c0_i(0) = 0. By Step 1, p_i^{e_i} \u2223 r for every i; pairwise coprimality (`Finset.prod_dvd_of_coprime`) then gives \u220f_i p_i^{e_i} = minpoly \u2223 r, contradicting deg(r) < n.",
     "keyInsights": [
-      "IsCoprime(p, q) lifts to IsCoprime(p^a, q^b) via Mathlib's IsCoprime.pow_pow, so the Bezout identity and CRT projections work for prime powers, not just primes.",
-      "The key construction is v1 = q^b(M)*w1 where w1 is chosen so that (p^(a-1)*q^b)(M)*w1 != 0. This gives p^(a-1)(M)*v1 != 0 while p^a(M)*v1 = 0 (since minpoly kills everything). The prime power lemma then bootstraps this to p^a | r for any annihilator r.",
-      "The CRT projections e1 = t(M)*q^b(M) and e2 = s(M)*p^a(M) act as identity on the respective primary components and kill the other, exactly as in the squarefree case. The commutativity of polynomial evaluation in M is the only algebraic fact needed.",
-      "The degree contradiction closes the proof: p^a*q^b | r forces deg(p^a*q^b) = n <= deg(r), but deg(r) < n by hypothesis.",
-      "The proof works over any field — including small finite fields like GF(2) — because it uses only the CRT/Bezout identity in K[X] and polynomial divisibility. Classical proofs using union-avoidance (showing |K| > n suffices to avoid finitely many hyperplanes) or measure-theoretic arguments (cyclic vectors are generic) both fail over small finite fields."
+      "The complementary-product construction v_i = F_i(M) w_i avoids the need to work with restrictions of M to primary subspaces. Crucially, the proof never establishes dim(ker(p_i^{e_i}(M))) = deg(p_i^{e_i}) \u2014 only annihilation/non-annihilation properties of v_i are used, not any dimension count.",
+      "The Bezout (CRT) projection \u03c0_i = (b_i \u00b7 F_i)(M) acts purely algebraically: it is the identity on ker(p_i^{e_i}(M)) and zero on ker(p_j^{e_j}(M)) for j \u2260 i, established directly from the Bezout identity without invoking any module-theoretic decomposition.",
+      "The prime power divisibility lemma `pow_irred_dvd_of_annihilated` is proved by induction on the exponent e: at the inductive step, a single application of p(M) shifts the witness from level e+1 to level e, yielding p \u2223 r as a base step and an inductive call on r/p.",
+      "The proof works over any field \u2014 including small finite fields like F_2 \u2014 because every step uses only Bezout in K[X], polynomial divisibility, and commutativity of polynomial evaluation. The classical union-avoidance argument (used in OQ-05-OQ-01 for infinite fields) and the rational canonical form (used in WIP01 as an axiom) are both bypassed.",
+      "The remaining gap to the unconditional theorem is purely the K[X]-factorization step: given a polynomial f \u2208 K[X], produce data k, p_i, e_i with f = \u220f_i p_i^{e_i}, p_i monic irreducible, pairwise coprime. This is an instance of UniqueFactorizationMonoid for K[X] and is a routine \u2014 if technical \u2014 Mathlib exercise."
     ]
   },
   "sections": [
     {
       "id": "definitions",
       "title": "I. Definitions",
-      "startLine": 55,
-      "endLine": 63,
+      "startLine": 56,
+      "endLine": 66,
       "summary": "Defines IsCyclicVector and IsNonderogatory, consistent with WIP01/WIP02/WIP03.",
-      "mathContext": "A vector v is cyclic for M if no nonzero polynomial of degree < n annihilates v. A matrix is nonderogatory if its minimal polynomial equals its characteristic polynomial."
+      "mathContext": "A vector v is cyclic for M if no nonzero polynomial of degree < n annihilates v via M. A matrix is nonderogatory if its minimal polynomial equals its characteristic polynomial."
     },
     {
       "id": "utility-lemmas",
       "title": "II. Utility Lemmas",
       "startLine": 68,
-      "endLine": 111,
-      "summary": "Core algebraic lemmas copied from WIP02/WIP03: irreducible_dvd_of_annihilated (Bezout argument), exists_mulVec_ne_zero, aeval_ne_zero_of_lt_minpoly, aeval_mul_comm_poly.",
-      "mathContext": "These lemmas establish: (1) if p irreducible and both p(M), r(M) kill v != 0, then p | r; (2) nonzero matrices have vectors outside their kernel; (3) nonzero polynomials of degree less than the minpoly degree evaluate to nonzero matrices; (4) polynomial evaluations at M commute."
-    },
-    {
-      "id": "prime-power-divisibility",
-      "title": "III. Prime Power Divisibility",
-      "startLine": 116,
-      "endLine": 176,
-      "summary": "The pow_irred_dvd_of_annihilated lemma from WIP03: induction showing p^(e+1) | r when p^e(M)v != 0, p^(e+1)(M)v = 0, and r(M)v = 0.",
-      "mathContext": "By induction on e: base case uses irreducible_dvd_of_annihilated; step uses p | r to write r = p*r1, then applies IH to p(M)*v with annihilator r1."
-    },
-    {
-      "id": "crt-projections",
-      "title": "IV. CRT Projection Lemmas",
-      "startLine": 181,
-      "endLine": 202,
-      "summary": "Bezout projection identity and kill lemmas from WIP02: bezout_proj_identity (projection is identity on primary component) and bezout_proj_kills (projection kills the other component).",
-      "mathContext": "For a*p + b*q = 1: b(M)*q(M) is identity on ker(p(M)) and kills ker(q(M)). These are the CRT idempotent projections."
+      "endLine": 166,
+      "summary": "Algebraic groundwork: irreducible_dvd_of_annihilated (Bezout argument for primes), exists_mulVec_ne_zero, aeval_ne_zero_of_lt_minpoly, aeval_mul_comm, bezout_proj_identity, the inductive prime-power divisibility lemma pow_irred_dvd_of_annihilated, and mulVec_finset_sum.",
+      "mathContext": "These lemmas establish: (1) p irreducible and p(M)v = r(M)v = 0 with v \u2260 0 \u21d2 p \u2223 r; (2) nonzero matrices have vectors outside their kernel; (3) nonzero polynomials of degree below the minpoly degree evaluate to nonzero matrices; (4) polynomial evaluations at M commute; (5) Bezout projections are the identity on a primary component; (6) by induction on e, p^e(M)v \u2260 0 with p^(e+1)(M)v = 0 and r(M)v = 0 forces p^(e+1) \u2223 r; (7) mulVec distributes over finite sums."
     },
     {
       "id": "main-theorem",
-      "title": "V. Main Theorem",
-      "startLine": 207,
+      "title": "III. Main Theorem \u2014 General Case",
+      "startLine": 168,
       "endLine": 327,
-      "summary": "Proves nonderogatory_bipow_has_cyclic_vector: the main binary prime power cyclic vector theorem. Constructs v1, v2 in primary components, shows v1+v2 is cyclic via CRT projections and prime power divisibility.",
-      "mathContext": "For minpoly = p^a * q^b with p, q coprime irreducibles: (1) lift coprimality to powers; (2) construct primary vectors v1, v2 with correct annihilation properties; (3) show v1+v2 is cyclic by extracting r(M)*vi = 0 via CRT projections, then applying prime power divisibility to get p^a | r and q^b | r, giving p^a*q^b | r and a degree contradiction."
+      "summary": "Proves nonderogatory_general_has_cyclic_vector: for any k \u2265 1 prime power factors with the listed coprimality, irreducibility, and product hypotheses, M has a cyclic vector. Constructs primary vectors v_i = F_i(M) w_i, takes v = \u2211 v_i, applies CRT projections to extract r(M) v_i = 0, then prime-power divisibility plus Finset.prod_dvd_of_coprime to derive minpoly \u2223 r and a degree contradiction.",
+      "mathContext": "The proof works in three blocks: degree bookkeeping (deg(p_i^{e_i-1} \u00b7 F_i) < n forces aeval-nonzero matrices), primary vector construction (per-index choice of w_i and v_i), and the CRT closure step (Bezout coefficients per index, projection identities, and the pairwise-coprime divisibility argument). Output: \u2203 v, IsCyclicVector M v."
+    },
+    {
+      "id": "commentary",
+      "title": "IV. Commentary",
+      "startLine": 329,
+      "endLine": 358,
+      "summary": "Documents the route to the unconditional theorem (apply UFD factorization for K[X] then this theorem), the technical insight that no dimension argument is needed, and that WIP04 supersedes WIP01 by eliminating its rational canonical form axiom.",
+      "mathContext": "The remaining work to obtain the fully unconditional `nonderogatory_has_cyclic_vector_any_field` is producing the prime power decomposition data from `IsNonderogatory M` automatically, via UniqueFactorizationMonoid on K[X]."
     }
   ],
   "conclusion": {
-    "summary": "This file proves the cyclic vector theorem for the binary prime power case: nonderogatory M with minpoly = p^a * q^b has a cyclic vector, over any field K. The proof is axiom-free and sorry-free, combining CRT projections (from WIP02) with prime power divisibility induction (from WIP03).",
-    "implications": "Together with WIP02 (squarefree case) and WIP03 (single prime power case), this covers all nonderogatory matrices whose minimal polynomial has at most 2 distinct irreducible factors. The technique generalizes directly to k factors by induction: factor out one prime power at a time and apply the binary case. This would give the full nonderogatory cyclic vector theorem without the PID structure theorem.",
+    "summary": "WIP04 proves the nonderogatory cyclic vector theorem for general k-fold prime power factorizations, axiom-free and sorry-free, using primary decomposition via Bezout projections. The construction avoids the PID module structure theorem (not in Mathlib 4.26) and eliminates the rational canonical form axiom from WIP01. The single remaining gap is producing the prime power factorization of minpoly K M from a Mathlib UFD instance.",
+    "implications": "Combined with WIP02 (squarefree case) and WIP03 (single prime power case), this completes the family-of-cases proof of the nonderogatory cyclic vector theorem under a factored-form hypothesis. The technique \u2014 primary vectors v_i = F_i(M) w_i plus CRT projections plus prime power divisibility \u2014 is a self-contained alternative to the PID structure theorem and could plausibly be ported to Mathlib as a lemma about cyclic K[X]-modules without first formalizing the full structure theorem.",
     "openQuestions": [
-      "Can the binary prime power technique be generalized to k factors by induction, yielding the full nonderogatory cyclic vector theorem axiom-free?",
-      "What is the minimal set of Mathlib dependencies needed for this proof?",
-      "Can the construction be made more computationally explicit (e.g., providing the cyclic vector rather than just proving existence)?"
+      "Can the factored-form hypothesis be eliminated by extracting the prime power decomposition of minpoly K M from `UniqueFactorizationMonoid (K[X])`? This is the next concrete step toward the unconditional theorem.",
+      "Does the primary-decomposition + CRT-projection technique generalize to other PIDs (e.g. \u2124-modules), giving a sorry-free proof of the structure theorem for finitely generated modules over a PID under analogous hypotheses?",
+      "Can the construction be made computationally explicit, producing a concrete cyclic vector rather than only an existence statement?"
     ]
   },
   "leanFile": {
@@ -133,10 +130,10 @@
       "Matrix",
       "Polynomial"
     ],
-    "namespace": "BinaryPrimePowerCyclicVector",
+    "namespace": "GeneralCyclicVector",
     "lineCount": 359,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 8,
     "definitionCount": 2,
     "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean",
     "sorries": 0
@@ -145,27 +142,32 @@
     {
       "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
       "relationship": "extends",
-      "description": "Parent: the general nonderogatory cyclic vector theorem. This WIP04 proves the binary prime power case axiom-free."
+      "description": "Parent: the general nonderogatory cyclic vector theorem with the PID-structure-theorem sorry. WIP04 provides the axiom-free general-case argument that, combined with UFD factorization for K[X], would close the parent's `nonderogatory_similar_companion` / `nonderogatory_has_cyclic_vector_any_field` sorries."
     },
     {
       "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
-      "relationship": "related",
-      "description": "Sibling WIP01: companion matrix approach with 1 axiom (similarity). WIP04 takes the CRT approach instead."
-    },
-    {
-      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
-      "relationship": "related",
-      "description": "Grandparent: nonderogatory cyclic vector for infinite fields. WIP04 works over all fields including finite."
+      "relationship": "supersedes",
+      "description": "WIP01 used a single axiom (`nonderogatory_similar_to_companion`, equivalent to rational canonical form). WIP04 eliminates that axiom entirely by avoiding the structure theorem and using primary decomposition via Bezout projections."
     },
     {
       "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
       "relationship": "extends",
-      "description": "Sibling WIP03: single prime power case (minpoly = p^e). WIP04 reuses its pow_irred_dvd_of_annihilated lemma and extends it to two prime power factors via CRT."
+      "description": "WIP03 proved the single prime power case (minpoly = p^e). WIP04 reuses its `pow_irred_dvd_of_annihilated` lemma and lifts the result to arbitrary k pairwise-coprime prime power factors via CRT projections."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-02",
+      "relationship": "extends",
+      "description": "WIP02 proved the squarefree case (k pairwise coprime irreducible factors, all exponents 1). WIP04 generalizes by allowing arbitrary exponents, using the prime power divisibility induction on top of the same CRT projection scheme."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
+      "relationship": "related",
+      "description": "Grandparent: nonderogatory cyclic vector for infinite fields (proved via union avoidance). WIP04 covers any field including small finite fields where union avoidance fails."
     },
     {
       "targetId": "cayley-hamilton",
       "relationship": "uses",
-      "description": "Cayley-Hamilton theorem: used implicitly via minpoly.aeval (minpoly(M) evaluates to zero) and the nonderogatory condition minpoly = charpoly."
+      "description": "Cayley\u2013Hamilton theorem: used implicitly via minpoly.aeval (minpoly(M) evaluates to zero) and the nonderogatory condition minpoly = charpoly."
     }
   ],
   "sorries": 0

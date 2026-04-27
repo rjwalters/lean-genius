@@ -35,10 +35,10 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-04-27T00:00:00+00:00",
-    "iteration": 3,
-    "focus": "WIP05 built and verified: axiom-free proof of nonderogatory_has_cyclic_vector_any_field WITHOUT factored-form hypothesis. Combined with WIP04, this gives the fully general theorem with no axioms and no factorization input.",
+    "iteration": 4,
+    "focus": "Cluster fully closed: parent CayleyHamiltonMinpolyOQ05OQ01OQ04.lean (0 sorries, 0 axioms) delegates to WIP04 + WIP05. Metadata sync this session: WIP04 meta.json corrected from stale 'binary prime power case' (claimed 421 lines) to actual general case (359 lines); WIP05 meta.json lineCount corrected 167 → 190.",
     "blockers": [],
-    "nextAction": "Cluster fully closed for axiom-free formalization. Optional follow-ups: (1) close the original sorry in CayleyHamiltonMinpolyOQ05OQ01OQ04.lean by translating between definition styles; (2) refactor WIP04 to take a Fintype instead of Fin to avoid the WIP05 reindexing wrapper.",
+    "nextAction": "No required follow-ups. Optional: refactor WIP04 to take a Fintype instead of Fin so WIP05's reindexing wrapper can be removed.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -72,9 +72,9 @@
       "RESOLVED: Factored-form hypothesis eliminated via UniqueFactorizationMonoid.normalizedFactors (WIP05)"
     ],
     "nextSteps": [
-      "Optional: close the sorry in CayleyHamiltonMinpolyOQ05OQ01OQ04.lean by translating WIP05's theorem to that file's IsCyclicVector definition (LinearIndependent style vs annihilator style)",
       "Optional: refactor WIP04's signature from Fin k to a generic Fintype σ to remove the WIP05 reindexing wrapper",
-      "Open question: does the UFD-factorization approach generalize to nonderogatory module endomorphisms over arbitrary PIDs?"
+      "Open question: does the UFD-factorization approach generalize to nonderogatory module endomorphisms over arbitrary PIDs?",
+      "Metadata-sync follow-up: when proof files change line count, update the gallery meta.json `leanFile.lineCount` and top-level `meta.lineCount` together (both fields drifted on this cluster)"
     ]
   },
   "tags": [
@@ -105,7 +105,7 @@
     "Lean Zulip: 'structure theorem for modules over PID' thread"
   ],
   "started": "2026-04-25T12:15:42+02:00",
-  "lastUpdate": "2026-04-27T00:00:00+00:00",
+  "lastUpdate": "2026-04-27T16:30:00+00:00",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [

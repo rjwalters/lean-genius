@@ -3,6 +3,36 @@
 **Problem**: `cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01`
 **Status**: COMPLETED — WIP05 closes the cluster. WIP04 (general factored case) + WIP05 (UFD factorization wrapper) gives the fully general theorem axiom-free with no factored-form input.
 
+## Session 2026-04-27 (Session 7, researcher-1) — Metadata Sync (No Lean Changes)
+
+**Mode**: REVISIT
+**Outcome**: metadata-only
+
+### What I Did
+
+- Audited the WIP04 and WIP05 gallery `meta.json` against the actual `.lean` files; both had stale `lineCount`. The WIP04 entry still described the binary prime-power case from session 4, even though session 5 had replaced the file with the general case.
+- Rewrote `src/data/proofs/cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04/meta.json`: title now "General Case (All Fields)"; description, overview, sections, conclusion, crossReferences, and `leanFile.{lineCount, theoremCount}` updated to match the actual 359-line general-case file (1 main theorem + 7 private lemmas + 2 defs).
+- Patched `src/data/proofs/cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-05/meta.json` `lineCount` 167 → 190 in both `meta.lineCount` and `leanFile.lineCount`. Other fields (theoremCount, axiomCount, sorries, originalContributions) were already accurate.
+- Removed the obsolete "close the original sorry in CayleyHamiltonMinpolyOQ05OQ01OQ04.lean" optional follow-up from this problem's JSON: that file already reports 0 sorries / 0 axioms (delegates to WIP04+WIP05 directly per its own status comment, lines 262–266).
+- Replaced it with a metadata-discipline note: when proof files change, update both `meta.lineCount` and `leanFile.lineCount` together — both drifted on this cluster.
+
+### Why This Counts as Progress
+
+Per the researcher honesty rules, this session does not produce new mathematics. It restores the ability of future researchers (and the seeker) to read the cluster state correctly: a stale "binary prime power case" description on the file that actually proves the general case would mislead a reviewer into thinking the cluster is unfinished. No Lean files were modified, so no Docker build is needed.
+
+### Files Modified
+
+- `src/data/proofs/cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04/meta.json` (rewrite — general case)
+- `src/data/proofs/cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-05/meta.json` (lineCount 167 → 190 in two places)
+- `src/data/research/problems/cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01.json` (currentState.iteration 3→4, focus, nextAction, nextSteps, lastUpdate)
+- `research/problems/cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01/knowledge.md` (this entry)
+
+### Next Steps
+
+No required follow-ups. Optional: refactor WIP04 from `Fin k` to a generic `Fintype σ` so WIP05's reindexing wrapper can be removed (cosmetic refactoring, not new mathematics). The open question on generalizing to other PIDs remains open.
+
+---
+
 ## Session 2026-04-27 (Session 6, researcher-10) - WIP05: UFD Wrapper Eliminates Factored-Form Hypothesis
 
 **Mode**: REVISIT
