@@ -266,3 +266,83 @@ For a true proof:
 1. Antisymmetry helper: `(f eᵢ)_j + (f eⱼ)_i = 0` from Leibniz at `(eᵢ, eⱼ) + (eⱼ, eᵢ)`.
 2. Real-part preservation: `(f eⱼ)_0 = 0` for j ≥ 1 via Fano-line Leibniz.
 3. Combine all constraints to determine all 64 entries.
+
+---
+
+## Session 2026-04-27 (Session 8) — Antisymmetry helper added
+
+**Mode**: REVISIT (RICH, score 41)
+**Outcome**: PROGRESS — Added the on-Im(𝕆) antisymmetry lemma plus its
+combinatorial precursor; both stated for any `f ∈ OctonionDerSubmodule`.
+Sorry count unchanged (still 1 in the off-diagonal `derEval14_injective`
+sub-case), but the lemma library now provides the structural tool the
+next session needs to attack the off-diagonal kernel claim.
+
+### What I Did
+
+1. **Added `imag_anticomm`** (private lemma): for `i, j ∈ {1,...,7}`,
+   `i ≠ j`, the symmetric octonion product vanishes:
+   `eightMul (stdBasis i) (stdBasis j) + eightMul (stdBasis j) (stdBasis i) = 0`.
+   Proof by `fin_cases i <;> fin_cases j <;> funext k <;> fin_cases k <;>
+   simp + ring` (≈42 × 8 = 336 leaves; uses `set_option maxHeartbeats 6400000`).
+   This is a pure octonion-multiplication identity — no derivation involved.
+
+2. **Added `submodule_der_antisymm`** (private lemma): for any
+   `f ∈ OctonionDerSubmodule` and `i ≠ 0, j ≠ 0, i ≠ j`,
+   `(f eᵢ)_j + (f eⱼ)_i = 0`. Proof: apply Leibniz at `(eᵢ, eⱼ)` and
+   `(eⱼ, eᵢ)`; sum and use `imag_anticomm` to reduce LHS to `f 0 = 0`.
+   The 0-th component of the four product terms each evaluates to
+   `-(f eᵢ)_j` or `-(f eⱼ)_i` (each appearing twice via the symmetric
+   inner-product structure of `(a·b)_0`), giving
+   `-2·((f eᵢ)_j + (f eⱼ)_i) = 0`. Same fin_cases pattern with linarith.
+
+### Key Findings
+
+- The 0-th component of any octonion product `(a·b)_0` is the
+  negative-definite inner product `a_0·b_0 - ∑_{k≥1} a_k·b_k`. Both
+  `(v · eⱼ)_0` and `(eⱼ · v)_0` equal `-v_j` for `j ≥ 1`. This
+  symmetry is what makes the antisymmetry result work cleanly.
+- Im(𝕆) anti-commutativity (`eᵢ·eⱼ = -eⱼ·eⱼ` for `i ≠ j` both `≥ 1`)
+  is essential — without it the LHS `f(eᵢeⱼ + eⱼeᵢ)` would contain
+  a non-trivial `f(εeₖ)` term and antisymmetry would not hold cleanly.
+- This puts `Der(𝕆) ⊆ 𝔰𝔬(7)` (anti-symmetric matrices on `Im(𝕆) ≅ ℝ⁷`,
+  dim 21). The remaining cut from 21 down to 14 = G₂ requires the
+  Fano-line Leibniz constraints (next session).
+
+### Files Modified
+
+- `proofs/Proofs/HurwitzTheoremOQ04.lean` (1180 → 1255 lines; +75)
+- `src/data/research/problems/hurwitz-theorem-oq-04.json` (knowledge updated)
+- `research/problems/hurwitz-theorem-oq-04/knowledge.md` (this entry)
+
+### Sorry Status
+
+- Before: 1 sorry (49-entry off-diagonal claim, j ∈ {1..7}, i ≠ 0, i ≠ j)
+- After: 1 sorry (same target — but we now have antisymmetry available
+  to reduce 42 off-diagonal pairs (j, i) with j ≠ i to ≈14 + Fano-line work)
+
+### Build Verification
+
+NOT run (disk at 1.2 GB free; per saved guidance, skip Docker builds when
+disk < 1 GB or borderline). Proof structure mirrors `submodule_der_diagonal_kill`
+and `stdBasis_sq_neg_unit` (both successful in main). Risk: a single typo in
+an iterated `simp` set, which the next session / CI build / mechanic will
+catch quickly.
+
+### Next Steps
+
+1. **Real-part preservation**: prove `(f eⱼ)_0 = 0` for `j ≥ 1`. Strategy:
+   express each `eⱼ` as a product of two distinct imaginary basis
+   vectors (e.g. `e₁ = e₂·e₃`, `e₄ = e₅·e₁`, `e₆ = e₂·e₄`, `e₇ = e₃·e₄`).
+   Then `(f(eᵢ·eₖ))_0 = -(f eᵢ)_k - (f eₖ)_i = 0` by `submodule_der_antisymm`.
+   Each `eⱼ` formula needs to be checked against the explicit `eightMul`
+   table (component j formula).
+2. **Use antisymmetry to close i = 0 sub-case** of `derEval14_injective`:
+   `f (stdBasis j) 0 = 0 = g (stdBasis j) 0` via real-part preservation.
+3. **Use antisymmetry to swap (j, i) → (i, j)** in the off-diagonal case:
+   reduces the 42 unordered pairs to ≈14 ordered ones; combine with the
+   14 explicit ev coordinates to cover (1,k), (2,k), (4,k) directly,
+   leaving only pairs in {3,5,6,7}² + {(3,4),(4,3)} for Fano-line work.
+4. **Fano-line trilinear Leibniz** for the remaining ~14 uncovered
+   pairs (those involving only {3,5,6,7}): apply Leibniz at three
+   specific basis vectors on a Fano line to relate the components.

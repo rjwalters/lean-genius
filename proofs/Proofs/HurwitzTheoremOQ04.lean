@@ -817,6 +817,81 @@ private lemma submodule_der_diagonal_kill
     simp (config := { decide := true }) only [ite_true, ite_false] at h0 <;>
     linarith
 
+/-- For distinct imaginary basis vectors `eᵢ`, `eⱼ` (i ≠ 0, j ≠ 0, i ≠ j),
+    the symmetric product vanishes: `eᵢ · eⱼ + eⱼ · eᵢ = 0`.
+
+    Reflects the anti-commutativity of the imaginary octonion basis.
+    Direct computation: every cross-term coefficient `M_{p,q}^k` in the
+    `eightMul` formula (for `k ≥ 1`) is anti-symmetric under `p ↔ q`,
+    so swapped products cancel; the diagonal `a_p · b_p` terms in
+    component 0 vanish here because `a = eᵢ`, `b = eⱼ` with `i ≠ j`. -/
+set_option maxHeartbeats 6400000 in
+private lemma imag_anticomm (i j : Fin 8) (hi : i ≠ 0) (hj : j ≠ 0) (hij : i ≠ j) :
+    eightMul (stdBasis i) (stdBasis j) + eightMul (stdBasis j) (stdBasis i) = 0 := by
+  fin_cases i
+  · exact absurd rfl hi
+  all_goals
+    (fin_cases j
+     · exact absurd rfl hj
+     all_goals
+       (first
+        | exact absurd rfl hij
+        | (funext k
+           fin_cases k <;>
+             simp only [eightMul, stdBasis, Pi.add_apply, Pi.zero_apply,
+               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+               Matrix.cons_val_two, Matrix.cons_val_three] <;>
+             simp (config := { decide := true }) only [ite_true, ite_false] <;>
+             ring))
+
+/-- **Antisymmetry of derivations on Im(𝕆)**: For any derivation `f` of 𝕆
+    (member of `OctonionDerSubmodule`) and distinct imaginary basis indices
+    `i ≠ 0`, `j ≠ 0`, `i ≠ j`, the components satisfy
+
+      `(f eᵢ)_j + (f eⱼ)_i = 0`.
+
+    Geometric meaning: every derivation acts on `Im(𝕆) ≅ ℝ⁷` by an
+    anti-symmetric matrix, so `Der(𝕆) ⊆ 𝔰𝔬(7)` (dim 21). The further
+    Fano-line Leibniz constraints cut this down to dim 14, giving G₂.
+
+    Proof: Apply Leibniz at `(eᵢ, eⱼ)` and `(eⱼ, eᵢ)`; sum. By
+    `imag_anticomm` the input `eᵢ·eⱼ + eⱼ·eᵢ` is `0`, so the LHS is
+    `f 0 = 0`. The 0-th component of the four product terms each
+    evaluates to `-(f eᵢ)_j` or `-(f eⱼ)_i` (each appearing twice via
+    the symmetric inner-product structure of `(a·b)_0`), giving
+    `-2·((f eᵢ)_j + (f eⱼ)_i) = 0`. -/
+set_option maxHeartbeats 6400000 in
+private lemma submodule_der_antisymm
+    (f : (Fin 8 → ℝ) →ₗ[ℝ] (Fin 8 → ℝ)) (hf : f ∈ OctonionDerSubmodule)
+    (i j : Fin 8) (hi : i ≠ 0) (hj : j ≠ 0) (hij : i ≠ j) :
+    f (stdBasis i) j + f (stdBasis j) i = 0 := by
+  -- 1. Two instances of Leibniz
+  have hL1 := hf (stdBasis i) (stdBasis j)
+  have hL2 := hf (stdBasis j) (stdBasis i)
+  -- 2. Sum: f(eᵢ·eⱼ + eⱼ·eᵢ) = f(0) = 0 by `imag_anticomm` + linearity
+  have hzero : f (eightMul (stdBasis i) (stdBasis j)) +
+               f (eightMul (stdBasis j) (stdBasis i)) = 0 := by
+    rw [← f.map_add, imag_anticomm i j hi hj hij, f.map_zero]
+  -- 3. Substitute Leibniz expansions
+  rw [hL1, hL2] at hzero
+  -- 4. Take 0-th component
+  have h0 := congr_fun hzero 0
+  simp only [Pi.zero_apply, Pi.add_apply] at h0
+  -- 5. Expand `eightMul` and `stdBasis` for each (i, j) ∈ {1,..,7}² off-diagonal
+  fin_cases i
+  · exact absurd rfl hi
+  all_goals
+    (fin_cases j
+     · exact absurd rfl hj
+     all_goals
+       (first
+        | exact absurd rfl hij
+        | (simp only [eightMul, stdBasis,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+             Matrix.cons_val_two, Matrix.cons_val_three] at h0 <;>
+           simp (config := { decide := true }) only [ite_true, ite_false] at h0 <;>
+           linarith))
+
 /-- The evaluation map is injective: ev(D) = 0 forces D = 0.
 
     Proof outline: ev(D) = 0 combined with the Leibniz rule and antisymmetry
