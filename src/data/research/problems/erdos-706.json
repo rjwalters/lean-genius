@@ -2,7 +2,7 @@
   "slug": "erdos-706",
   "title": "Erdős #706",
   "phase": "OBSERVE",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-01-14T21:11:01.533Z",
     "iteration": 2,
     "focus": "5A assessed, all appropriate",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — axiomatized formalization stable; 3 axioms appropriate for open problem.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -60,7 +60,7 @@
     "mathlib": []
   },
   "started": "2026-01-14T21:11:01.534Z",
-  "lastUpdate": "2026-03-13T07:52:17.052Z",
+  "lastUpdate": "2026-04-28T00:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
