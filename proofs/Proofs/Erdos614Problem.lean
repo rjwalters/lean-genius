@@ -359,8 +359,8 @@ private theorem edgeCount_ge_of_propertyP1 {n : ℕ} (hn : n ≥ 3)
       have := hasPropertyP_one_triple_has_edge G hP hab hc.1.symm hc.2.symm
       rcases this with h | h | h
       · exact absurd h hnadj
-      · exact Or.inl h.symm
-      · exact Or.inr h.symm
+      · exact Or.inl h
+      · exact Or.inr h
     -- Each c ∈ others produces a distinct edge (to a or to b).
     -- We count: edges from a to its neighbors in others, plus edges from b
     -- to its neighbors in others (that aren't already counted via a).
@@ -429,7 +429,156 @@ theorem erdos_614_existence :
   exact ⟨n * (n - 1) / 2, f_upper_bound n k (by omega)⟩
 
 /-
-## Part 8: Summary
+## Part 8: Tight Bound for k = n - 2
+
+The complete-graph upper bound n*(n-1)/2 is far from tight when k = n - 2.
+A "partial star" graph — vertex 0 adjacent to {1, ..., n-2}, vertex n-1 isolated —
+satisfies P(n-2) with only n - 2 edges. Indeed, the unique (n-2+2)=n-vertex
+subset of an n-vertex graph is V itself, so P(n-2) reduces to the requirement
+that some vertex of V have degree at least n - 2.
+
+The matching lower bound (any graph with P(n-2) has some vertex of degree at
+least n - 2, contributing at least n - 2 distinct edges) yields the tight value
+f(n, n-2) = n - 2 for n ≥ 2. This corrects the previously believed (and removed)
+false claim that k = n - 2 forces the complete graph.
+-/
+
+/-- The partial-star graph on `Fin n`: vertex 0 is adjacent to vertices
+    1, 2, …, n - 2; vertex n - 1 is isolated (when n ≥ 2). The graph has
+    exactly n - 2 edges and maximum degree n - 2 (achieved at vertex 0). -/
+def partialStar (n : ℕ) : SimpleGraph (Fin n) where
+  Adj a b :=
+    (a.val = 0 ∧ 1 ≤ b.val ∧ b.val + 1 < n) ∨
+    (b.val = 0 ∧ 1 ≤ a.val ∧ a.val + 1 < n)
+  symm := fun _ _ h => h.symm
+  loopless := fun a h => by
+    rcases h with ⟨h0, h1, _⟩ | ⟨h0, h1, _⟩ <;> omega
+
+instance partialStar_decAdj (n : ℕ) : DecidableRel (partialStar n).Adj := by
+  intro a b
+  unfold partialStar
+  exact inferInstance
+
+/-- For n ≥ 2, the neighbors of vertex 0 in `partialStar n` are exactly the
+    vertices with index in {1, …, n-2}, giving n - 2 neighbors. -/
+private lemma partialStar_zero_neighbors_card (n : ℕ) (hn : 2 ≤ n) :
+    ((Finset.univ : Finset (Fin n)).filter
+      (fun u => u ≠ ⟨0, by omega⟩ ∧
+                (partialStar n).Adj ⟨0, by omega⟩ u)).card = n - 2 := by
+  -- Step 1: rewrite filter as {u : 1 ≤ u.val ∧ u.val + 1 < n}
+  have hfilt : ((Finset.univ : Finset (Fin n)).filter
+        (fun u => u ≠ ⟨0, by omega⟩ ∧
+                  (partialStar n).Adj ⟨0, by omega⟩ u))
+      = ((Finset.univ : Finset (Fin n)).filter
+        (fun u => 1 ≤ u.val ∧ u.val + 1 < n)) := by
+    ext u
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    constructor
+    · rintro ⟨hne, hadj⟩
+      have hu_ne_zero : u.val ≠ 0 := fun h => hne (Fin.ext h)
+      rcases hadj with ⟨_, hb1, hbn⟩ | ⟨hb0, _, _⟩
+      · exact ⟨hb1, hbn⟩
+      · exact absurd hb0 hu_ne_zero
+    · rintro ⟨h1, h2⟩
+      refine ⟨?_, Or.inl ⟨rfl, h1, h2⟩⟩
+      intro heq
+      have : u.val = 0 := by rw [heq]
+      omega
+  rw [hfilt]
+  -- Step 2: bijection with Finset.range (n - 2) via i ↦ ⟨i + 1, _⟩
+  have hbij : ((Finset.univ : Finset (Fin n)).filter
+        (fun u => 1 ≤ u.val ∧ u.val + 1 < n))
+      = (Finset.range (n - 2)).image (fun i : ℕ => (⟨i + 1, by omega⟩ : Fin n)) := by
+    ext u
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image,
+      Finset.mem_range]
+    constructor
+    · rintro ⟨h1, h2⟩
+      refine ⟨u.val - 1, by omega, ?_⟩
+      ext
+      simp only
+      omega
+    · rintro ⟨i, hi, hueq⟩
+      have huval : u.val = i + 1 := by rw [← hueq]
+      exact ⟨by omega, by omega⟩
+  rw [hbij, Finset.card_image_of_injective _ ?_, Finset.card_range]
+  intro i j hij
+  simp only [Fin.mk.injEq] at hij
+  omega
+
+/-- For n ≥ 2, the partial star on Fin n has exactly n - 2 edges. -/
+private theorem partialStar_edgeCount (n : ℕ) (hn : 2 ≤ n) :
+    edgeCount (partialStar n) = n - 2 := by
+  unfold edgeCount
+  -- Step 1: the edge filter bijects with the neighbors-of-0 filter.
+  -- Pairs (a, b) with a < b ∧ Adj a b have a.val = 0 (since a < b excludes b.val = 0).
+  have hbij : ((Finset.univ : Finset (Fin n × Fin n)).filter
+        (fun p => p.1 < p.2 ∧ (partialStar n).Adj p.1 p.2))
+      = ((Finset.univ : Finset (Fin n)).filter
+          (fun u => u ≠ ⟨0, by omega⟩ ∧
+                    (partialStar n).Adj ⟨0, by omega⟩ u)).image
+          (fun b => ((⟨0, by omega⟩ : Fin n), b)) := by
+    ext ⟨a, b⟩
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image,
+      Prod.mk.injEq]
+    constructor
+    · rintro ⟨hlt, hadj⟩
+      rcases hadj with ⟨ha0, hb1, hbn⟩ | ⟨hb0, _, _⟩
+      · refine ⟨b, ⟨?_, ?_⟩, Fin.ext ha0, rfl⟩
+        · intro heq
+          have : b.val = 0 := by rw [heq]
+          omega
+        · exact Or.inl ⟨rfl, hb1, hbn⟩
+      · -- b.val = 0 contradicts a < b
+        exfalso
+        have hab_val : a.val < b.val := hlt
+        omega
+    · rintro ⟨c, ⟨hcne, hcadj⟩, ha_eq, hb_eq⟩
+      subst ha_eq
+      subst hb_eq
+      refine ⟨?_, ?_⟩
+      · -- ⟨0, _⟩ < c since c.val ≥ 1
+        rcases hcadj with ⟨_, hc1, _⟩ | ⟨hc0, _, _⟩
+        · show (0 : ℕ) < c.val
+          exact hc1
+        · exact absurd (Fin.ext hc0 : c = ⟨0, by omega⟩) hcne
+      · exact hcadj
+  rw [hbij, Finset.card_image_of_injective _ (fun b₁ b₂ h => by
+    simpa [Prod.mk.injEq] using h)]
+  exact partialStar_zero_neighbors_card n hn
+
+/-- For n ≥ 2, the partial star on Fin n satisfies property P(n - 2). -/
+private theorem partialStar_hasPropertyP (n : ℕ) (hn : 2 ≤ n) :
+    hasPropertyP (partialStar n) (n - 2) := by
+  intro S hS
+  -- The only n-subset of Fin n is univ
+  have hSuniv : S = (Finset.univ : Finset (Fin n)) := by
+    apply Finset.eq_of_subset_of_card_le (Finset.subset_univ _)
+    rw [Finset.card_univ, Fintype.card_fin, hS]
+    omega
+  subst hSuniv
+  unfold inducedMaxDegree
+  have hne : ((Finset.univ : Finset (Fin n))).Nonempty :=
+    ⟨⟨0, by omega⟩, Finset.mem_univ _⟩
+  simp only [dif_pos hne]
+  -- Pick vertex 0; its neighbor count is n - 2.
+  have h0_mem : (⟨0, by omega⟩ : Fin n) ∈ (Finset.univ : Finset (Fin n)) :=
+    Finset.mem_univ _
+  refine Finset.le_sup'_of_le _ h0_mem ?_
+  exact (partialStar_zero_neighbors_card n hn).ge
+
+/-- **Upper bound for k = n - 2**: A partial-star graph with vertex 0 adjacent
+    to {1, …, n-2} achieves property P(n-2) with exactly n - 2 edges.
+    This is much tighter than the complete-graph bound n*(n-1)/2. -/
+theorem f_n_minus_2_upper_bound :
+    ∀ n : ℕ, 2 ≤ n → existsGraphWithPropertyP n (n - 2) (n - 2) :=
+  fun n hn => ⟨Fin n, inferInstance, inferInstance, Fintype.card_fin n,
+               partialStar n, inferInstance,
+               partialStar_edgeCount n hn,
+               partialStar_hasPropertyP n hn⟩
+
+/-
+## Part 9: Summary
 -/
 
 /-- **Erdős Problem #614: OPEN**
@@ -437,17 +586,19 @@ theorem erdos_614_existence :
 Summarizes what is known:
 1. The function f(n,k) is well-defined (complete graph gives upper bound)
 2. Lower bound: at least kn/2 edges needed
-3. k=1: at least n-2 edges
-4. Monotone in k parameter
-5. Exact formula: UNKNOWN
-Note: k=n-2 does NOT force complete graph (star suffices; false axiom removed). -/
+3. k=1: at least n-2 edges (proved via vertex-cover injection on Fin n)
+4. k=n-2: at most n-2 edges suffice (partial star) — much tighter than complete graph
+5. Monotone in k parameter
+6. Exact formula for general (n,k): UNKNOWN -/
 theorem erdos_614_summary :
     -- The function is well-defined (existence)
     (∀ n k : ℕ, n ≥ k + 2 → k > 0 →
       ∃ m, existsGraphWithPropertyP n k m) ∧
     -- Complete graph provides an upper bound
     (∀ n k : ℕ, k + 2 ≤ n →
-      existsGraphWithPropertyP n k (n * (n - 1) / 2)) :=
-  ⟨erdos_614_existence, f_upper_bound⟩
+      existsGraphWithPropertyP n k (n * (n - 1) / 2)) ∧
+    -- Partial-star tight upper bound for k = n - 2
+    (∀ n : ℕ, 2 ≤ n → existsGraphWithPropertyP n (n - 2) (n - 2)) :=
+  ⟨erdos_614_existence, f_upper_bound, f_n_minus_2_upper_bound⟩
 
 end Erdos614

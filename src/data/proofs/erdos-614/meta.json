@@ -51,12 +51,17 @@
       "edgeCount_ge_of_propertyP1 theorem: core result for Fin n",
       "f_mono_k axiom: monotonicity in k",
       "erdos_614_existence axiom: well-definedness of f(n,k)",
-      "erdos_614_summary theorem: combines existence and upper bound"
+      "partialStar definition: partial-star graph (vertex 0 adj to {1,…,n-2}, vertex n-1 isolated)",
+      "partialStar_zero_neighbors_card lemma: vertex 0 has exactly n-2 neighbors",
+      "partialStar_edgeCount theorem: partial star has exactly n-2 edges",
+      "partialStar_hasPropertyP theorem: partial star satisfies P(n-2)",
+      "f_n_minus_2_upper_bound theorem: tight upper bound f(n,n-2) ≤ n-2 (much sharper than complete-graph bound)",
+      "erdos_614_summary theorem: combines existence, complete-graph upper bound, and partial-star tight bound"
     ],
     "axiomCount": 2,
     "sorryCount": 1,
-    "lineCount": 453,
-    "assumptions": "2 axioms: f_lower_bound, f_mono_k. f_case_k_eq_1 converted to theorem (1 sorry: type transport). f_upper_bound proved via complete graph construction."
+    "lineCount": 604,
+    "assumptions": "2 axioms: f_lower_bound, f_mono_k. f_case_k_eq_1 converted to theorem (1 sorry: type transport). f_upper_bound proved via complete graph construction. New: f_n_minus_2_upper_bound proved via partial-star construction (tight, vs complete-graph bound n*(n-1)/2)."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #614** is an extremal graph theory problem asking for the minimum number of edges needed in a graph to guarantee that every sufficiently large induced subgraph has high maximum degree.\n\n**Background:** The problem combines ideas from Turán-type extremal theory (minimizing edges while forcing structure) with a Ramsey-theoretic flavor (guaranteeing properties in ALL subsets of a given size). It was referenced in [FRS97] by Füredi, Ruszinkó, and Selkow.\n\n**Current Status:** The problem remains OPEN. No closed-form formula for f(n,k) is known, and even the asymptotic behavior is not fully understood. Basic bounds and monotonicity properties have been established, but the exact determination of f(n,k) for general n, k is an unsolved problem.",
@@ -165,10 +170,10 @@
       "Finset"
     ],
     "namespace": "Erdos614",
-    "lineCount": 453,
+    "lineCount": 604,
     "axiomCount": 2,
-    "theoremCount": 13,
-    "definitionCount": 7,
+    "theoremCount": 17,
+    "definitionCount": 8,
     "path": "Proofs/Erdos614Problem.lean",
     "sorries": 1
   },
