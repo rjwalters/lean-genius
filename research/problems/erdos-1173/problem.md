@@ -1,13 +1,22 @@
-# Problem: Erdős #1173
+# Problem: Erdős #1173 — Free Sets for Set Mappings under GCH
 
 ## Statement
 
 ### Plain Language
-Problem statement not found
+
+Under the Generalized Continuum Hypothesis, suppose every ordinal below
+ω_{ω+1} is assigned a set of size at most ℵ_ω, and any two of these
+assigned sets share strictly fewer than ℵ_ω elements. Must there exist
+a "free" set of size ℵ_{ω+1} — that is, a set S in which no element of
+S belongs to the assigned set of any other element of S?
 
 ### Formal Statement
+
 $$
-(LaTeX not available)
+\text{GCH} \implies \forall f : \omega_{\omega+1} \to [\omega_{\omega+1}]^{\le \aleph_\omega},\
+  \bigl(\forall \alpha \ne \beta,\ |f(\alpha) \cap f(\beta)| < \aleph_\omega\bigr)
+  \implies \exists S \subseteq \omega_{\omega+1},\ |S| = \aleph_{\omega+1}\
+   \land\ (\forall \alpha \ne \beta \in S,\ \alpha \notin f(\beta)).
 $$
 
 ## Classification
@@ -21,22 +30,27 @@ erdosUrl: https://erdosproblems.com/1173
 
 tags:
   - erdos
+  - set-theory
+  - infinitary-combinatorics
+  - singular-cardinals
+  - free-sets
+  - GCH
 ```
 
 **Significance**: 7/10
-**Tractability**: 6/10
+**Tractability**: 6/10 (open Erdős–Hajnal problem; partial formalization possible)
 
 ## Why This Matters
 
-1. **Erdős Legacy** - Part of Paul Erdős's influential problem collection
-2. **Mathematical significance** - open problem; short statement
-
+1. **Erdős–Hajnal legacy** — Part of the classical Erdős–Hajnal program on set mappings and free sets in infinitary combinatorics.
+2. **Singular vs. regular dichotomy** — The Hajnal free set theorem handles regular κ via standard combinatorial arguments. Whether an analogue holds for the singular cardinal ℵ_ω with the weaker almost-disjoint intersection hypothesis is unresolved.
+3. **PCF connection** — Resolution would inform the PCF-theoretic structure of [κ]^{<κ} when κ is singular, and connect to Shelah's work on cofinalities of products of regular cardinals.
 
 ## Related Gallery Proofs
 
 | Proof | Relevance |
 |-------|-----------|
-| --- | --- |
+| (none yet — this is a standalone problem statement) | — |
 
 ## Related Problems
 
@@ -49,7 +63,9 @@ tags:
 
 ## References
 
-(No references available)
+- Erdős, P. & Hajnal, A. — original problem on set mappings and free sets
+- Komjáth, P. (Ko25b), Problem 35
+- Vaughan, J. (Va99), 7.88
 
 ## OEIS Sequences
 
