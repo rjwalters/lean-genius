@@ -154,7 +154,8 @@
       "**Logarithmic growth from probabilistic heuristics**: For a 'random' set of density $\\sim \\sqrt{N}$, each $r_A(n)$ has expectation $\\sim \\log n$, suggesting $\\limsup r_A(n)/\\log n > 0$ as the natural quantitative form",
       "**Erd\u0151s\u2013Fuchs falls short**: The cumulative sum $\\sum r_A(n)$ must oscillate by $\\Omega(N^{1/4}/\\sqrt{\\log N})$, but these fluctuations could concentrate in a few large terms without any single $r_A(n)$ being large \u2014 a subtle gap between average and pointwise behavior",
       "**Sidon sets confirm the extremal case**: Sets with $r \\leq 1$ (Sidon/$B_2$ sets) satisfy $A(N) \\leq \\sqrt{N} + O(N^{1/4})$, which is too sparse for a basis, confirming the conjecture vacuously at the boundary",
-      "**Hierarchy of related problems**: #28 implies #40 ($B_2[g]$ sets cannot be bases), connects to #1145 on dense $B_2[g]$ constructions, and motivates the density version that weakens the basis hypothesis to $A(N) \\gg \\sqrt{N}$"
+      "**Hierarchy of related problems**: #28 implies #40 ($B_2[g]$ sets cannot be bases), connects to #1145 on dense $B_2[g]$ constructions, and motivates the density version that weakens the basis hypothesis to $A(N) \\gg \\sqrt{N}$",
+      "**Density gap separating bases from bounded-representation sets**: The basis density lower bound $|A \\cap [1,N]| \\geq c\\sqrt{N - N_0}$ (proved as `basis_element_count_sq` in this entry) is exactly the threshold where bounded representations become impossible. Any set achieving the basis density $\\sqrt{N}$ has on average $\\sqrt{N} \\cdot \\sqrt{N} / N = \\Theta(1)$ representations per integer \u2014 the *minimum* density that can cover $\\mathbb{N}$. Conversely, Ruzsa's 1998 construction of an infinite Sidon set with density $\\sim N^{\\sqrt{2}-1} \\approx N^{0.414}$ \u2014 the densest known representation-bounded set \u2014 falls strictly below the $N^{1/2}$ basis threshold. The conjecture asserts this density gap (between $N^{0.414}$ and $N^{0.5}$) cannot be bridged by any clever construction with bounded $r_A(n)$ \u2014 a structural rigidity that no current technique (probabilistic, Fourier-analytic, or combinatorial) can establish."
     ],
     "prerequisites": [
       "Additive number theory (sumsets, representation functions)",
@@ -304,6 +305,29 @@
       "venue": "Cambridge University Press",
       "note": "Chapter 2 covers sumsets and the Erd\u0151s\u2013Tur\u00e1n conjecture in the context of modern additive combinatorics; includes the Freiman-Ruzsa theorem and connections to inverse sumset theory",
       "key": "TV06"
+    },
+    {
+      "authors": "Sidon, Simon",
+      "title": "Ein Satz \u00fcber trigonometrische Polynome und seine Anwendung in der Theorie der Fourier-Reihen",
+      "year": "1932",
+      "venue": "Mathematische Annalen, vol. 106, pp. 536\u2013539",
+      "note": "Sidon's original paper introducing what are now called Sidon sets ($B_2$ sequences) \u2014 sets of integers with all pairwise sums distinct, equivalently $r_A(n) \\leq 1$. Erd\u0151s and Tur\u00e1n's 1941 paper that posed Problem #28 was titled 'On a problem of Sidon...' \u2014 the question of whether Sidon sets can be additive bases is the extremal case that motivated the conjecture. Sidon sets remain the only known explicit family certified to be too sparse to be bases.",
+      "key": "Sid32"
+    },
+    {
+      "authors": "Cilleruelo, Javier",
+      "title": "Sidon sets in $\\mathbb{N}^d$",
+      "year": "2010",
+      "venue": "Journal of Combinatorial Theory, Series A, vol. 117, pp. 857\u2013871",
+      "note": "Modern reference on $d$-dimensional Sidon sets and their density bounds. Cilleruelo's work, alongside that of Lev and others, represents the active research frontier in additive combinatorics directly relevant to Problem #28: the structure of sets with bounded representation functions. The density bound $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$ for Sidon sets (which is used in the gallery proof of `sidon_density_bound`) builds on this line of work.",
+      "key": "Ci10"
+    },
+    {
+      "authors": "Ruzsa, Imre Z.",
+      "title": "An infinite Sidon sequence",
+      "year": "1998",
+      "venue": "Journal of Number Theory, vol. 68, pp. 63\u201371",
+      "note": "Constructs an explicit infinite Sidon sequence with density $|A \\cap [1, N]| \\gtrsim N^{\\sqrt{2}-1}$, currently the densest known infinite Sidon set construction. This sets the upper bound on how dense a representation-bounded set can be \u2014 still well below the $\\sqrt{N}$ density needed to be a basis, illustrating why the Erd\u0151s\u2013Tur\u00e1n conjecture is consistent with all known constructions of additive sets with bounded representation."
     }
   ],
   "leanFile": {
