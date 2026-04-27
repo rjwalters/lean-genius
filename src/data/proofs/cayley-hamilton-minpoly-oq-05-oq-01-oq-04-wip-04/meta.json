@@ -111,12 +111,20 @@
       "mathContext": "These are the same or analogous lemmas from WIP02/WIP03, gathered into a single self-contained file. pow_irred_dvd_of_annihilated is the core engine: it embeds the inductive argument from WIP03 that replaces the PID structure theorem."
     },
     {
-      "id": "main-theorem",
-      "title": "III. Main Theorem — General Nonderogatory Case",
+      "id": "main-theorem-phase1",
+      "title": "III-A. Phase 1 — Primary Vector Construction",
       "startLine": 178,
-      "endLine": 320,
-      "summary": "Proves nonderogatory_general_has_cyclic_vector: for nonderogatory M with minpoly = ∏ p_i^{e_i} (k pairwise coprime prime powers, each e_i ≥ 1), M has a cyclic vector over any field K.",
-      "mathContext": "The proof constructs primary vectors v_i = F_i(M)w_i, then combines them as v = ∑ v_i. The CRT projection argument extracts r(M)v_i = 0 from r(M)v = 0, the pow_irred_dvd lemma gives p_i^{e_i} | r, and pairwise coprimality gives minpoly | r, contradicting deg(r) < n."
+      "endLine": 248,
+      "summary": "Sets up the main theorem nonderogatory_general_has_cyclic_vector and constructs primary vectors v_i = F_i(M)w_i for each prime power factor. Establishes degree bounds, non-vanishing of p_i^{e_i-1}(M)·F_i(M), and the annihilation/non-annihilation properties of each v_i.",
+      "mathContext": "For each i, define F_i = ∏_{j≠i} p_j^{e_j}. Show deg(p_i^{e_i-1}·F_i) < n via natDegree_mul, hence p_i^{e_i-1}(M)·F_i(M) ≠ 0 by minimality of minpoly. Pick w_i with (p_i^{e_i-1}·F_i)(M)w_i ≠ 0. Then v_i = F_i(M)w_i satisfies p_i^{e_i}(M)v_i = 0 and p_i^{e_i-1}(M)v_i ≠ 0."
+    },
+    {
+      "id": "main-theorem-phase2",
+      "title": "III-B. Phase 2 — CRT Combination and Cyclic Proof",
+      "startLine": 249,
+      "endLine": 327,
+      "summary": "Combines primary vectors as v = ∑ v_i and proves v is cyclic via Bezout projection isolation: if r(M)v = 0 with deg(r) < n, extract r(M)v_i = 0 for each i, deduce p_i^{e_i} | r by pow_irred_dvd, then minpoly | r by pairwise coprimality, contradicting deg(r) < n.",
+      "mathContext": "The projection π_i = b_i(M)·F_i(M) (from Bezout a_i·p_i^{e_i} + b_i·F_i = 1) satisfies π_i(v_i) = v_i and π_i(v_j) = 0 for j ≠ i. Commutativity gives r(M)v_i = π_i(r(M)v) = 0. Then p_i^{e_i} | r for all i, and Finset.prod_dvd_of_coprime yields ∏ p_i^{e_i} | r, i.e., minpoly | r."
     },
     {
       "id": "commentary",
@@ -132,7 +140,8 @@
     "implications": "The primary decomposition approach demonstrated here — constructing cyclic vectors for each prime power factor via complementary products, then combining via Bezout projections — is a general strategy that avoids needing the full PID module structure theorem. This approach could generalize to other structured linear algebra settings where primary decomposition is available but the full classification theorem is not.",
     "openQuestions": [
       "Can the factorization hypotheses (p : Fin k → K[X], e : Fin k → ℕ, ...) be eliminated by automatically factoring minpoly K M using the UFD structure of K[X]? This would give a fully general theorem from just IsNonderogatory M.",
-      "Does this primary decomposition approach generalize to modules over other PIDs (e.g., ℤ[X]-modules), or are field-specific properties essential?"
+      "Does this primary decomposition approach generalize to modules over other PIDs (e.g., ℤ[X]-modules), or are field-specific properties essential?",
+      "The Bezout projection construction is fully explicit — given the factored minpoly and witness vectors w_i, the cyclic vector v = ∑ F_i(M)w_i is computable. Can this be leveraged to extract a verified algorithm for computing cyclic vectors (or rational canonical forms) from the Lean proof?"
     ]
   },
   "leanFile": {
