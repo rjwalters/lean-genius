@@ -1841,6 +1841,7 @@ import Proofs.Erdos873ProblemProvable
 import Proofs.Erdos874Problem
 import Proofs.Erdos875Problem
 import Proofs.Erdos876Problem
+import Proofs.Erdos876ProblemAristotle
 import Proofs.Erdos877Aristotle
 import Proofs.Erdos877Problem
 import Proofs.Erdos877ProblemAristotle
