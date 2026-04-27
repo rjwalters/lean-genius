@@ -191,6 +191,16 @@
       "targetId": "abel-ruffini-oq-04-oq-03",
       "relationship": "complementary",
       "description": "Galois's full solvability criterion: a root is solvable by radicals $\\iff$ its Galois group is solvable. This entry classifies which alternating groups are solvable; `abel-ruffini-oq-04-oq-03` provides the group-theoretic \u2194 radical link that makes this classification relevant to polynomial equations."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
+      "relationship": "complementary",
+      "description": "Quantifies the threshold: every finite group of order $< 60$ is solvable, with $|A_5| = 60$ marking the precise boundary. Together with this entry's classification ($A_n$ solvable $\\iff n \\leq 4$), the result establishes that 60 is both the smallest order of a non-abelian simple group AND the smallest order at which non-solvability appears \u2014 making $A_5$ the minimal-order obstruction in two senses simultaneously. Its formalization uses the p-group $\\to$ nilpotent $\\to$ solvable chain and Burnside's $p^a q^b$ theorem to handle all sub-60 cases."
+    },
+    {
+      "targetId": "inverse-galois-oq-06",
+      "relationship": "complementary",
+      "description": "Concrete inverse-Galois witness: $A_5$ is realizable as $\\text{Gal}(q/\\mathbb{Q})$ for $q(x) = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$ (irreducible by Eisenstein at $p = 5$). This entry's classification shows $A_5$ is the *first* alternating group that is non-solvable (and simple); the inverse-Galois entry shows the same group is *attainable* as an absolute Galois group. The pairing exhibits $A_5$'s dual role: the solvability classification of $A_n$ explains *why* radical formulas fail, and the inverse-Galois realization shows that $A_5$ is not just an abstract obstruction but an actual Galois group of a $\\mathbb{Q}$-rational polynomial."
     }
   ],
   "references": [
