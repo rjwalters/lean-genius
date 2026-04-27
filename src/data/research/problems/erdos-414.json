@@ -7,13 +7,28 @@
   "path": "full",
   "problemStatement": {
     "formal": "Let $h_1(n)=h(n)=n+\\tau(n)$ (where $\\tau(n)$ counts the number of divisors of $n$) and $h_k(n)=h(h_{k-1}(n))$. Is it true, for any $m,n$, there exist $i$ and $j$ such that $h_i(m)=h_j(n)$?\n\n\n\nAsked by Spiro. That is, there is (eventually) only one possible sequence that the iterations of $n\\mapsto h(n)$ can settle on. Erd\\H{o}s and Graham believed the answer is yes. Similar questions can be asked by the iterates of many other functions. See also [412] and [413].",
-    "plain": "Let $h_1(n)=h(n)=n+\\tau(n)$ (where $\\tau(n)$ counts the number of divisors of $n$) and $h_k(n)=h(h_{k-1}(n))$. Is it true, for any $m,n$, there exist $i$ and $j$ such that $h_i(m)=h_j(n)$?",
-    "whyMatters": []
+    "plain": "Spiro's question (recorded by Erdős and Graham): define h(n) = n + τ(n) where τ counts divisors. Iterating h gives an orbit n, h(n), h(h(n)), …. Question: do every two starting points eventually share a common orbit value? That is, for any m and n, do there exist i and j with h^i(m) = h^j(n)? Erdős and Graham believed the answer is YES — that all orbits eventually merge into a single tail.",
+    "whyMatters": [
+      "Tests whether the iteration n ↦ n + τ(n) has a single eventual orbit, a structural finiteness statement about an arithmetic dynamical system",
+      "Belongs to the Erdős–Spiro family of orbit-merging problems (cf. #412, #413); resolution would inform analogous questions for other arithmetic functions (e.g., n + ω(n), n + Ω(n))",
+      "Empirically verified for small starting points (orbits of 1, 4, 5, … all merge at 7 within a few steps); a proof would require quantitative control on h's orbit growth"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "h is strictly increasing on ℕ_{≥1} (formalized: h_strictly_increasing)",
+      "h(n) ≥ n + 2 for n ≥ 2 (formalized: h_lower_bound_ge2; from {1, n} ⊆ divisors(n))",
+      "Small-orbit merges: h(4) = h(5) = 7; orbits of 1, 4, 5 merge (formalized via native_decide)",
+      "Orbit determinism: once two orbits merge they stay merged (formalized: hOrbit_continuation)",
+      "Orbit growth lower bound: orbits grow at least linearly (formalized: orbit_linear_lower)",
+      "single_eventual_orbit: the conjecture is equivalent to every orbit eventually visiting the orbit of 1"
+    ],
+    "open": [
+      "The main conjecture (erdos_414_conjecture, axiomatized): for all m, n there exist i, j with h^i(m) = h^j(n)",
+      "Quantitative bound: how large is the smallest k(m, n) such that orbits of m and n merge by step k?",
+      "Whether a similar merging holds for closely related iterations (n + ω(n), n + Ω(n), n + φ(n))"
+    ],
+    "goal": "Either prove the main conjecture (replacing the axiom with a theorem), or exhibit a starting point whose orbit never meets the orbit of 1."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -65,7 +80,8 @@
   "relatedProofs": [
     "erdos-4",
     "erdos-41",
-    "erdos-414"
+    "erdos-412",
+    "erdos-413"
   ],
   "references": {
     "papers": [],
