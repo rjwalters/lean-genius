@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Created ETranscendentalOQ03.lean with mu(e)=2 formalization. 2 axioms (Dirichlet lower bound, CF upper bound), 2 theorems proved (e not Liouville, e irrational). Full proof blocked on CF infrastructure.",
+    "progressSummary": "OBSERVED: μ(e)=2 file (219 lines, 2 axioms, 0 sorries) is in good axiomatized state. Identified that one axiom (Dirichlet for irrationals) is now tractable via local DirichletFromMinkowski machinery — recommended for follow-up session (~50 lines, no Mathlib gap).",
     "builtItems": [
       "Created Proofs/ETranscendentalOQ03.lean: 206 lines, 4 theorems, 2 axioms",
       "Created gallery data in src/data/proofs/e-transcendental-oq-03/meta.json",
@@ -41,13 +41,14 @@
       "Lower bound (Dirichlet): every irrational has mu >= 2. Not directly in Mathlib as LiouvilleWith 2.",
       "Upper bound: partial quotients a_n = O(n) implies convergent quality is exactly quadratic",
       "Mathlib has LiouvilleWith framework but NOT Dirichlet approximation theorem at exponent 2",
-      "Full proof would need CF infrastructure: GeneralizedContinuedFraction + Euler CF of e"
+      "Full proof would need CF infrastructure: GeneralizedContinuedFraction + Euler CF of e",
+      "Local Mathlib has dirichlet_approximation_corollary in MinkowskiTheoremOQ02.lean (axiom-free, Q-Minkowski derivation): ∀α Q>0, ∃ q,p with 1≤q≤Q ∧ |α - p/q| < 1/(Qq). The irrational_liouvilleWith_two axiom can be derived from this + standard infinite-q argument: assume only finitely many q give 1/(Qq) approximations, take Q so 1/Q < min nonzero |α - p/q|, derive contradiction via irrationality."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove irrational_liouvilleWith_two from Dirichlet approximation theorem (if/when it enters Mathlib)",
-      "Formalize continued fraction expansion of e via Mathlib GeneralizedContinuedFraction",
-      "Prove e_not_liouvilleWith_gt_two from CF analysis"
+      "TRACTABLE: Eliminate irrational_liouvilleWith_two by importing DirichletFromMinkowski.dirichlet_approximation_corollary and proving the standard infinite-q argument (~50 lines)",
+      "DEEP: e_not_liouvilleWith_gt_two requires CF expansion of e — Euler 1737 pattern [2;1,2,1,1,4,1,1,6,...] showing partial quotients are O(n). Mathlib has GeneralizedContinuedFraction but not the specific e expansion.",
+      "Generalize to e^k for integer k≥1: Davis (1978) gives μ(e^k)=2 with similar CF structure"
     ],
     "markdown": "# Knowledge Base: e-transcendental-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

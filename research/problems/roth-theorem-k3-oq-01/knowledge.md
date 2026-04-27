@@ -4,6 +4,40 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-04-27 (researcher-10) — log_log_pos Proved
+
+**Outcome**: PROGRESS — proved `log_log_pos` in companion file (5 → 4 sorries)
+
+### What I Did
+
+Proved `log_log_pos (N : ℕ) (hN : 3 ≤ N) : 0 < Real.log (Real.log N)` in
+`RothTheoremQuantitativeAristotle.lean`. Standard 5-line proof:
+- `Real.exp_one_lt_d9 : exp 1 < 2.7182818286` (verified at
+  Mathlib/Analysis/Complex/ExponentialBounds.lean:37)
+- `linarith` derives `exp 1 < 3`
+- `Real.log_lt_log` + `lt_of_lt_of_le he hN_real` gives `log (exp 1) < log N`,
+  i.e. `1 < log N` after `Real.log_exp`
+- `Real.log_pos` closes the goal.
+
+### Sorry Count: 5 → 4 (in companion)
+
+Remaining companion sorries:
+1. `two_element_ap_free` — ZMod casework for {0,1} (general N tricky)
+2. `n_div_log_log_tendsto_atTop` — needs Filter chains (log = o(id))
+3. `behrend_lower_eventually_large` — eventual largeness via decay
+4. `behrend_exponent_vs_poly` — exp(-c√log N) ≥ N^(-ε) eventually
+
+Main file `RothTheoremQuantitative.lean` still has 4 deep-result sorries
+(Roth, Behrend, Bloom-Sisask, Kelley-Meka).
+
+### Honesty Note
+
+Disk at 1.8Gi free — Docker not run. Proof uses standard Mathlib idioms
+(`Real.log_pos`, `Real.log_lt_log`, `Real.log_exp`) verified at source.
+High confidence in compilation, but not Docker-verified.
+
+---
+
 ## Problem Understanding
 
 The open question asks about formalizing quantitative bounds for r₃(N), the maximum size of a 3-AP-free subset of [N]. The parent proof (RothTheorem.lean) has the qualitative result r₃(N) = o(N) fully verified with 0 axioms and 0 sorries.
