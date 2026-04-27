@@ -21,7 +21,7 @@
     "iteration": 2,
     "focus": "Building Jacobi-Trudi determinant formula in Lean 4 using Mathlib hsymm",
     "blockers": [],
-    "nextAction": "Wait for build to confirm; if passing, commit and create gallery entry",
+    "nextAction": "Targeted JDT bijection session: define forward map (P plus Q.sort[c], Q minus Q.sort[c]) and inverse (seam in Pprime), prove Equiv plus Multiset.prod_cons/prod_erase weight preservation. ~120 focused lines for jdt_weight_sum alone.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -97,7 +97,8 @@
       "rowPair_sum_weight proof: Fintype.sum_prod_type + simp_rw [← Finset.mul_sum] + ← Finset.sum_mul + ssytSchurFin_one_row cleanly factors sum over product type into product of sums",
       "ssytSchurFin_two_row proof pattern: cs = total - ncs; Fintype.sum_subtype_add_sum_subtype splits into cs+ncs=total; eq_sub_of_add_eq closes after substituting rowPair_sum_weight and nonColStrict_sum_weight",
       "ssytFin_two_row_eq_sum_colstrict proved via explicit SSYTFin ≃ colstrict-pair Equiv; uses ssytFin_row_sort_eq_ofFn helper that shows sort of sorted row = same row via mergeSort_eq_self",
-      "ColStrictSym definition: P.sort[j] < Q.sort[j] for all j < min(a,b); Decidable via Fintype.decidableForallFintype; key for separating SSYT contributions by column-strict pairs"
+      "ColStrictSym definition: P.sort[j] < Q.sort[j] for all j < min(a,b); Decidable via Fintype.decidableForallFintype; key for separating SSYT contributions by column-strict pairs",
+      "Session 10 (2026-04-27, survey only): both remaining sorries (jdt_weight_sum, jacobi_trudi_ssyt_eq k>=3) are correctly stated as of session 9. No fast fixes available; each is a focused 100-300 line proof body. Released for an agent with budget for sustained work."
     ],
     "mathlibGaps": [
       "No Mathlib SchurPolynomial definition — we provide one via Jacobi-Trudi formula",

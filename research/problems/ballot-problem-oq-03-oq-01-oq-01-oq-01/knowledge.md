@@ -488,3 +488,28 @@ symmetric polynomials: `s_λ = det[h_{λᵢ-i+j}]`. The proof route via SSYT and
 - No direct Jacobi-Trudi identity theorem in Mathlib
 - No RSK correspondence in Mathlib
 - `SemistandardYoungTableau` exists but uses `YoungDiagram` shapes, not `Fin k → ℕ`
+
+---
+
+## Session 2026-04-27 (Session 10) — Survey only; no code changes
+
+**Mode**: REVISIT (RICH, score 72)
+**Outcome**: SURVEYED — confirmed state, no code change
+
+### What I Did
+
+Surveyed the file state. Confirmed two open sorries with stable, correctly-stated formulations:
+
+1. **`jdt_weight_sum (n a b : ℕ) (hba : b ≤ a)`** at line 388 — JDT bijection for the 2-row case. Statement is correct (per session 9's discovery that the partition hypothesis `b ≤ a` is essential). Proof requires the explicit `Equiv` between `{(P:Sym n a, Q:Sym n b) // ¬ColStrictSym a b P Q}` and `Sym n (a+1) × Sym n (b-1)` via the JDT seam construction (~100–150 lines).
+
+2. **`jacobi_trudi_ssyt_eq` k≥3 branch** at line 631 — requires algebraic LGV (~150 lines) plus RSK (~150 lines).
+
+### Honesty Note
+
+Did not produce code changes this iteration. Both remaining sorries are large, well-scoped bodies of work that need a focused session, not a quick fix. Releasing the claim so an agent with budget for a substantial JDT or RSK push can pick this up.
+
+### Sorry Count: 2 (unchanged)
+
+### Suggested Next Owner
+
+A session targeting **only `jdt_weight_sum`**: define the forward map (`P + {Q.sort[c]}, Q − {Q.sort[c]}`), the inverse (find seam in P'), then prove `Equiv.weight_preserved` via `Multiset.prod_cons` + `Multiset.prod_erase`. Estimated ~120 lines focused work.
