@@ -278,8 +278,8 @@
     },
     "type": "insight",
     "title": "Galois's Theorem — Contrapositive Form",
-    "content": "The key theorem connecting group theory to polynomial solvability: if the Galois group $\\text{Gal}(q)$ of an irreducible polynomial $q$ is not solvable, then no root of $q$ is expressible by radicals. This is the contrapositive of Galois's fundamental theorem ($\\alpha$ solvable by radicals $\\Rightarrow \\text{Gal}(q)$ solvable). The Lean proof uses `solvableByRad.isSolvable'` from Mathlib, which formalizes the radical tower construction. Together with $S_5$ not solvable, this proves the general quintic unsolvability.",
-    "mathContext": "$q$ irreducible, $q(\\alpha)=0$, $\\text{Gal}(q)$ not solvable $\\Rightarrow \\alpha \\notin F(\\text{radicals})$. Formal: `¬IsSolvable q.Gal → ¬IsSolvableByRad F α`. The positive direction: $\\alpha \\in F(\\text{radicals}) \\Rightarrow \\text{Gal}(q)$ is solvable (proved by Galois 1832).",
+    "content": "The key theorem connecting group theory to polynomial solvability: if the Galois group $\\text{Gal}(q)$ of an irreducible polynomial $q$ is not solvable, then no root of $q$ is expressible by radicals. This is the contrapositive of Galois's fundamental theorem ($\\alpha$ solvable by radicals $\\Rightarrow \\text{Gal}(q)$ solvable). The Lean proof uses `solvableByRad.isSolvable'` from Mathlib, which formalizes the radical tower construction. Together with $S_5$ not solvable, this proves the general quintic unsolvability.\n\n**Radical tower mechanics**: The Mathlib statement `solvableByRad.isSolvable'` encodes the chain of reasoning: a radical extension $F \\subset F(\\alpha)$ with $\\alpha$ solvable by radicals is built up as a tower $F = K_0 \\subset K_1 \\subset K_2 \\subset \\ldots \\subset K_n$ where each $K_{i+1} = K_i(\\beta_i)$ adjoins a $p_i$-th root $\\beta_i^{p_i} \\in K_i$ for some prime $p_i$. After adjoining suitable roots of unity, each step's Galois group $\\text{Gal}(K_{i+1}/K_i)$ is cyclic of order $p_i$ (Kummer theory). The full Galois group $\\text{Gal}(K_n/K_0)$ thus admits a chain of normal subgroups with cyclic prime-order quotients — exactly the definition of solvability. Contrapositively, $\\text{Gal}(q)$ non-solvable rules out the existence of any such tower containing a root of $q$.",
+    "mathContext": "$q$ irreducible, $q(\\alpha)=0$, $\\text{Gal}(q)$ not solvable $\\Rightarrow \\alpha \\notin F(\\text{radicals})$. Formal: `¬IsSolvable q.Gal → ¬IsSolvableByRad F α`. The positive direction (Galois 1832): $\\alpha \\in F(\\text{radicals}) \\Rightarrow \\text{Gal}(q)$ is solvable, proved via the radical tower $F = K_0 \\subset K_1 \\subset \\ldots \\subset K_n \\ni \\alpha$, $K_{i+1} = K_i(\\beta_i)$ with $\\beta_i^{p_i} \\in K_i$. **Kummer theory** supplies the cyclic-quotient step: if $K$ contains a primitive $p$-th root of unity $\\zeta_p$ and $\\beta^p = a \\in K$, then $K(\\beta)/K$ is a cyclic extension of degree dividing $p$, with $\\text{Gal}(K(\\beta)/K) \\hookrightarrow \\langle \\zeta_p \\rangle \\cong \\mathbb{Z}/p\\mathbb{Z}$ via $\\sigma \\mapsto \\sigma(\\beta)/\\beta$. Stacking these cyclic quotients yields a composition series with prime-cyclic factors — the Lean type `IsSolvable q.Gal`.",
     "significance": "key",
     "relatedConcepts": [
       "Galois group",
@@ -287,13 +287,18 @@
       "IsSolvableByRad",
       "radical tower",
       "field extension",
-      "Abel-Ruffini theorem"
+      "Abel-Ruffini theorem",
+      "Kummer theory",
+      "cyclic extensions",
+      "primitive roots of unity"
     ],
     "prerequisites": [
       "Galois theory",
       "radical extensions",
       "IsSolvableByRad",
-      "Mathlib field theory API"
+      "Mathlib field theory API",
+      "Kummer theory (cyclic extensions of degree p)",
+      "primitive p-th roots of unity"
     ]
   },
   {
