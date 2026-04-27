@@ -382,9 +382,42 @@ private lemma jdt_weight_sum (n a b : ℕ) (hba : b ≤ a) :
     -- Need: weight-preserving bijection
     --   {non-col-strict (a,b) pairs} ≃ {all (a+1, b-1) pairs}
     -- Forward map: find first violation c in ColStrictSym, let v = Q.sort[c],
-    --   then P' = Sym.cons v P, Q' = Sym.erase Q v
+    --   then P' = Sym.cons v P, Q' = Sym.erase Q v (need v ∈ Q.1)
     -- Inverse map: find the "seam" element in P'.sort to move back to Q'
     -- Weight preserved by Multiset.prod_cons + Multiset.prod_erase
+    --
+    -- ============================================================================
+    -- DETAILED RECIPE FOR b = 1 BASE CASE (helper for next session)
+    -- ============================================================================
+    -- When b = 1, ColStrictSym a 1 P Q says P.sort[0] < Q.sort[0]; ¬cs gives the
+    -- opposite. Q has size 1, so by Sym.oneEquiv we have Q = oneEquiv q for some
+    -- q : Fin n, with q = Q.sort[0] (only element). Goal becomes:
+    --
+    --   ∑_{(P, q): q ≤ P.sort[0]} wt(P) * X q = h_{a+1}
+    --
+    -- BIJECTION ψ : {(P, q) : q ≤ P.sort[0]} ≃ Sym (Fin n) (a+1)
+    --   forward (P, q) ↦ q ::ₛ P            -- Sym.cons; coe = q ::ₘ P.1
+    --   inverse P' ↦ ((P'.erase q', oneEquiv q')) where
+    --     q' := (P'.1.sort (· ≤ ·)).head    -- smallest element
+    --     proof q' ∈ P'.1: q' is the head of (length a+1) sorted list
+    --     proof q' ≤ (P'.erase q').sort[0]: erase preserves sortedness; q' was min
+    --   weight preservation:
+    --     wt(P) * X q
+    --     = (P.1.map X).prod * X q
+    --     = ((q ::ₘ P.1).map X).prod          -- by Multiset.prod_cons + map_cons
+    --     = wt(q ::ₛ P)
+    -- KEY LEMMAS:
+    --   * Multiset.sort_cons (∀ b ∈ s, r a b) : sort(a ::ₘ s) = a :: sort(s)
+    --     applied with: q ≤ P.sort[0] implies q ≤ all elements of P (sortedness)
+    --   * Sym.cons_erase : a ::ₛ s.erase a h = s  (closes left_inv)
+    --   * Sym.erase_cons_head : (a ::ₛ s).erase a _ = s  (closes right_inv direction)
+    -- ESTIMATE: ~80-100 lines for jdt_weight_sum_b_one as a separate helper.
+    -- ============================================================================
+    --
+    -- For b ≥ 2, the bijection generalizes: insert Q.sort[c] into P at position c,
+    -- where c is the first violation index. The inverse map is the JDT seam
+    -- algorithm (find c such that P'.sort[c] came from Q's c-th violation column).
+    -- This is genuinely intricate; ~150-200 lines of focused Lean work.
     sorry
   · -- b = 0: ColStrictSym a 0 P Q is vacuously true (quantifies over Fin (min a 0) = Fin 0)
     -- So ¬ColStrictSym = False, the subtype is empty, and the sum equals 0
