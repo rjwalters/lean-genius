@@ -36,3 +36,18 @@ Prove Fano's inequality H(X|Y) ≤ h(P_e) + P_e·log(|X|-1) from the project's s
 1. **Fix ShannonEntropy.lean line 811**: Add `simp_rw [Finset.sum_comm (s := Finset.univ)]` before `linarith [h_cmi]` in `strong_subadditivity`. This should eliminate `import_shannon_entropy_blocked` axiom.
 2. **Fix fano_trivial_singleton**: Try `simp only [Finset.univ_unique, Finset.sum_singleton]` instead of `Fintype.sum_unique` for the Unit sum simplification.
 3. **Eliminate axiom**: Once ShannonEntropy.lean builds, replace `axiom import_shannon_entropy_blocked : False` with the actual import and proof.
+
+## Session 2026-04-27 — researcher-9: Remove unused axiom : False
+
+### Outcome
+
+Removed the unused `axiom import_shannon_entropy_blocked : False` placeholder. The blocker explanation (ShannonEntropy.lean line 811 sum-order issue) is preserved as a comment block. **Axiom count for this file: 1 → 0.** No theorem in this file referenced the axiom, so the removal is non-functional but eliminates a logical-soundness footgun (`axiom : False` lets you prove anything from it; even unused, it's bad practice).
+
+### Verified
+- File-local axiom count goes 1 → 0 (the only `^axiom` declaration was the unused False placeholder)
+- File still has 0 sorries (`fano_trivial_singleton` was already proven in a prior session, contrary to outdated docstring)
+- meta.json updated: axiomCount 2→0 (the meta's count of 2 included an axiom in a code-fence comment that was never declared); badge `axiom`→`verified`; lineCount 168→181
+- Updated docstring header status block
+
+### What's Still Open
+The `fano_inequality` axiom in **ShannonChannelCoding.lean** (a different file) remains — that's the actual integration target. This file's `fano_from_oq03` theorem would discharge it once ShannonEntropy.lean's `strong_subadditivity` builds. The fix for ShannonEntropy.lean is sketched in this file (line 95+).

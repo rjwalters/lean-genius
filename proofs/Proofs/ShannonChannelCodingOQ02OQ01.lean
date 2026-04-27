@@ -16,12 +16,16 @@
   Status:
   - [PROVED] Definition compatibility: FanoInequality.conditionalEntropy =
     InformationTheory.conditionalEntropy (definitionally equal)
-  - [SORRY] Integration: axiom reduction requires ShannonEntropy.lean to build
-    (blocked by pre-existing bug in strong_subadditivity, line 811)
   - [PROVED] Standalone: OQ-03 proves Fano completely without ShannonEntropy.lean
+  - [PROVED] fano_trivial_singleton (1-element edge case)
+  - [BLOCKED] Integration into ShannonChannelCoding.lean's `fano_inequality`
+    axiom requires ShannonEntropy.lean to compile (blocked by pre-existing
+    bug in strong_subadditivity, line 811). This blocker is documented as
+    a comment below — *not* declared as an `axiom : False`, since asserting
+    False is logically dangerous (would invalidate every dependent proof).
 
-  Axioms: 1 (import_shannon_entropy_blocked)
-  Sorries: 1 (fano_trivial_singleton — Unit sum simp issues, conceptually clear)
+  Axioms: 0
+  Sorries: 0
 -/
 import Mathlib
 import Proofs.ShannonChannelCodingOQ03
@@ -106,18 +110,27 @@ rw [show ∑ y : β, ∑ z : γ, ∑ x : α, f x y z = ∑ x : α, ∑ y : β, �
 This normalizes the YZ sum order to match, allowing `linarith` to see the cancellation.
 -/
 
-/-- **Axiom reduction** (sorry — blocked by ShannonEntropy.lean compilation):
-    The `fano_inequality` axiom in ShannonChannelCoding.lean follows from
-    `fano_from_oq03` by definition equality of the two conditionalEntropy definitions.
+/-
+**Axiom reduction (BLOCKED — documentation only)**:
 
-    When ShannonEntropy.lean is fixed, this sorry can be replaced by:
-    ```
-    have := fano_from_oq03 hn pXY hp hsum
-    exact this  -- or with a definitional equality coercion
-    ```
+The `fano_inequality` axiom in ShannonChannelCoding.lean would follow from
+`fano_from_oq03` above by definitional equality of the two conditionalEntropy
+definitions. The actual replacement in ShannonChannelCoding.lean would be:
+
+```
+have := fano_from_oq03 hn pXY hp hsum
+exact this  -- or with a definitional equality coercion
+```
+
+This integration is currently blocked because ShannonEntropy.lean's
+`strong_subadditivity` (line 811) fails to build. Until that's fixed, the
+`fano_inequality` axiom in ShannonChannelCoding.lean stands.
+
+**No `axiom : False` placeholder is declared here** — `axiom blocker : False`
+is logically unsound (anything follows from False), so even an unused
+declaration is a footgun for future authors who might invoke it. We leave
+this as a comment instead.
 -/
-axiom import_shannon_entropy_blocked : False
--- Note: once ShannonEntropy.lean compiles, replace with actual proof
 
 -- ============================================================
 -- Section 4: Key Properties Used
