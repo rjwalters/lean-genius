@@ -527,14 +527,71 @@ private lemma sc_walk_to_simple_path (D : Digraph V) (walk : List V)
     ∃ path : List V, path.Nodup ∧
       path.head? = walk.head? ∧ path.getLast? = walk.getLast? ∧
       ∀ i, (h : i + 1 < path.length) → D.arc path[i] path[i+1] := by
-  -- Induction on walk length (well-founded: simplification strictly decreases length)
-  -- Case 1: walk.Nodup → walk itself is the simple path
-  -- Case 2: walk has repeated vertex at positions i < j → remove the loop [i+1..j-1],
-  --   get shorter walk' = walk[0..i] ++ walk[j..end], apply ih.
-  --   Arc at splice: walk[j-1] → walk[j] = walk[i], and walk[i] = walk[j] so
-  --   arc(walk'[i-1], walk'[i]) = arc(walk[j-1], walk[j]) is preserved.
-  --   walk' still has same head and last as walk, length strictly less.
-  sorry
+  -- Well-founded induction on walk length
+  by_cases hnd : walk.Nodup
+  · -- Case 1: walk is already a simple path
+    exact ⟨walk, hnd, rfl, rfl, harcs⟩
+  · -- Case 2: walk has repeated vertex — short-circuit the loop and recurse
+    -- Extract duplicate indices: ∃ i < j with walk[i] = walk[j]
+    -- (standard: ¬Nodup → ¬injective on indices → ∃ distinct equal pair)
+    have hdups : ∃ i j, i < j ∧ j < walk.length ∧
+        walk[i]'(by omega) = walk[j] := by
+      by_contra hall
+      push_neg at hall
+      exact hnd (List.nodup_iff_getElem?_ne_getElem?.mpr fun i j hij => by
+        by_contra heq
+        simp only [not_ne_iff] at heq
+        have hi : i < walk.length := by
+          by_contra h; push_neg at h; simp [List.getElem?_eq_none h] at heq
+        have hj : j < walk.length := by
+          by_contra h; push_neg at h; simp [List.getElem?_eq_none h] at heq
+        simp only [List.getElem?_eq_getElem hi, List.getElem?_eq_getElem hj,
+          Option.some.injEq] at heq
+        rcases Nat.lt_or_gt_of_ne hij with h | h
+        · exact (hall i j h hj heq).elim
+        · exact (hall j i h hi heq.symm).elim)
+    obtain ⟨i, j, hij, hjlen, heq⟩ := hdups
+    -- Build shortened walk: walk' = walk.take i ++ walk.drop j
+    -- walk[i] = walk[j], so the splice preserves arc connectivity
+    set walk' := walk.take i ++ walk.drop j with hwalk'
+    have hlen' : 1 ≤ walk'.length := by
+      simp only [hwalk', List.length_append, List.length_take, List.length_drop]
+      omega
+    have harcs' : ∀ k, (hk : k + 1 < walk'.length) → D.arc walk'[k] walk'[k+1] := by
+      intro k hk
+      simp only [hwalk', List.length_append, List.length_take, List.length_drop] at hk
+      -- Three regions: k+1 < i (both in take), k ≥ i (both in drop), k = i-1 (splice)
+      by_cases hki : k + 1 < i
+      · -- Both indices in the take portion
+        have hk_take : k < (walk.take i).length := by simp; omega
+        have hk1_take : k + 1 < (walk.take i).length := by simp; omega
+        rw [List.getElem_append_left hk_take, List.getElem_append_left hk1_take,
+          List.getElem_take, List.getElem_take]
+        exact harcs k (by omega)
+      · push_neg at hki
+        by_cases hki2 : k + 1 = i
+        · -- Splice point: walk'[k] = walk[i-1], walk'[k+1] = walk[j]
+          -- Arc: harcs (i-1) gives arc(walk[i-1], walk[i])
+          -- walk[i] = walk[j] = heq, so arc(walk[i-1], walk[j])
+          sorry  -- splice arc: walk'[i-1] → walk'[i] via walk[i] = walk[j]
+        · -- Both indices in the drop portion (shifted by j - i)
+          sorry  -- arcs from drop portion of walk
+    have hhead' : walk'.head? = walk.head? := by
+      -- Case i > 0: (take i).head? = walk.head?; (take ++ drop).head? = (take).head?
+      -- Case i = 0: walk' = drop j; head of drop j = walk[j] = walk[0] = walk.head?
+      sorry
+    have hlast' : walk'.getLast? = walk.getLast? := by
+      -- drop j is nonempty (j < walk.length); (take ++ drop).getLast? = (drop).getLast?
+      -- (drop j).getLast? = walk.getLast? since drop is a suffix containing the last element
+      sorry
+    -- Recurse on shorter walk
+    obtain ⟨path, hpath_nd, hpath_head, hpath_last, hpath_arcs⟩ :=
+      sc_walk_to_simple_path D walk' hlen' harcs'
+    exact ⟨path, hpath_nd, hpath_head.trans hhead', hpath_last.trans hlast', hpath_arcs⟩
+  termination_by walk.length
+  decreasing_by
+    simp only [hwalk', List.length_append, List.length_take, List.length_drop]
+    omega
 
 /-- In a strongly connected digraph, for any two distinct vertices u, v,
     there exists a simple (Nodup) path from u to v.

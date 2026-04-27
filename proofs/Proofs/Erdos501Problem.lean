@@ -71,11 +71,50 @@ def HasInfiniteIndependent (A : SetFamily) : Prop :=
 
 /- ## Part III: Erdős-Hajnal Theorem (1960) -/
 
+/-- Product measure existence lemma: there exist n distinct reals
+    with no mutual conflicts in a bounded outer measure family.
+
+    **Proof sketch** (product measure / counting argument):
+    Choose L > n·(n-1). Consider the cube [0,L]^n ⊆ ℝ^n.
+    For each ordered pair (i,j) with i ≠ j, define the conflict set
+      C_{ij} = {f ∈ [0,L]^n : f(i) ∈ A(f(j))}.
+    By the Fubini section bound: for fixed (f(1),...,f̂(i),...,f(n)),
+    the section in coordinate i is A(f(j)) ∩ [0,L], which has
+    1-dimensional outer measure < 1. Hence μ(C_{ij}) < L^{n-1}.
+    By subadditivity: μ(⋃_{i≠j} C_{ij}) < n(n-1) · L^{n-1} < L^n.
+    So conflict-free tuples exist. The non-injective tuples form a
+    measure-zero subset, so conflict-free *injective* tuples exist. -/
+lemma exists_independent_tuple (A : SetFamily) (hA : BoundedOuterMeasureFamily A)
+    (n : ℕ) :
+    ∃ f : Fin n → ℝ, Function.Injective f ∧
+      ∀ i j : Fin n, i ≠ j → f i ∉ A (f j) := by
+  match n with
+  | 0 => exact ⟨Fin.elim0, Function.injective_of_subsingleton _, fun i => Fin.elim0 i⟩
+  | 1 => exact ⟨fun _ => 0, Function.injective_of_subsingleton _,
+                 fun i j h => absurd (Subsingleton.elim i j) h⟩
+  | n + 2 =>
+    /- For n ≥ 2, the proof requires the product measure / Fubini argument
+       sketched above. The key technical step: bounding the product outer
+       measure of C_{ij} by the integral of section outer measures.
+       This uses the outer measure analog of Tonelli's theorem. -/
+    sorry
+
 /-- Erdős-Hajnal (1960): For any bounded outer measure family,
-    arbitrarily large finite independent sets exist. -/
+    arbitrarily large finite independent sets exist.
+
+    Proved from exists_independent_tuple: convert the injective
+    Fin n → ℝ function to a Finset of size n. -/
 theorem erdos_hajnal_finite (A : SetFamily) (hA : BoundedOuterMeasureFamily A) :
     ∀ n : ℕ, IsIndependentOfSize A n := by
-  sorry
+  intro n
+  obtain ⟨f, hInj, hNoConflict⟩ := exists_independent_tuple A hA n
+  refine ⟨Finset.image f Finset.univ, ?_, ?_⟩
+  · rw [Finset.card_image_of_injective _ hInj, Finset.card_univ, Fintype.card_fin]
+  · intro x hx y hy hxy
+    simp only [Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.mem_range] at hx hy
+    obtain ⟨i, rfl⟩ := hx
+    obtain ⟨j, rfl⟩ := hy
+    exact hNoConflict i j (fun h => hxy (congrArg f h))
 
 /-- Corollary: Independent pairs always exist. -/
 theorem independent_pair_exists (A : SetFamily) (hA : BoundedOuterMeasureFamily A) :

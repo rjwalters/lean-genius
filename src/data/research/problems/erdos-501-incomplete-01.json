@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-03-28T20:57:10.258Z",
-    "iteration": 4,
-    "focus": "Proved gladysz_pairs from NPS theorem. Remaining 3 sorries all need deep math.",
+    "iteration": 5,
+    "focus": "Decomposed erdos_hajnal_finite. Remaining sorry is product measure existence lemma for n>=2.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated gladysz_pairs sorry by proving it from nps_closed_infinite. 0 axioms, 3 sorries remain (erdos_hajnal_finite, hechler_under_CH, nps_closed_infinite). Created Aristotle companion file.",
+    "progressSummary": "PROGRESS: Decomposed erdos_hajnal_finite into exists_independent_tuple (sorry for n>=2) + proved combinatorial reduction. 0 axioms, 3 sorries remain (exists_independent_tuple n>=2, hechler_under_CH, nps_closed_infinite).",
     "builtItems": [
       "Proved max_size_infinite in Erdos501Problem.lean (by_contra + le_iSup₂ + omega)",
       "Proved max_size_infinite in Erdos501ProblemProvable.lean (same proof)",
@@ -37,7 +37,10 @@
       "Fixed CH: axiom → def using Cardinal.aleph 1 = Cardinal.continuum (0 axioms)",
       "Proved gladysz_pairs in Erdos501Problem.lean from nps_closed_infinite (hereditary + Finset extraction)",
       "Proved gladysz_pairs in Erdos501ProblemProvable.lean (same proof)",
-      "Created Erdos501Aristotle.lean with bounded_empty, bounded_subset, bounded_inter_Icc, bounded_union, outerMeasure_mono, outerMeasure_inter_le, outerMeasure_union_le, exists_not_mem_of_outerMeasure_lt_Icc (sorry), isClosed_measurableSet, closed_outerMeasure_eq_measure, measure_compl_Icc_pos (sorry), independent_size_zero, independent_size_one"
+      "Created Erdos501Aristotle.lean with bounded_empty, bounded_subset, bounded_inter_Icc, bounded_union, outerMeasure_mono, outerMeasure_inter_le, outerMeasure_union_le, exists_not_mem_of_outerMeasure_lt_Icc (sorry), isClosed_measurableSet, closed_outerMeasure_eq_measure, measure_compl_Icc_pos (sorry), independent_size_zero, independent_size_one",
+      "Decomposed erdos_hajnal_finite into exists_independent_tuple + combinatorial reduction",
+      "Proved erdos_hajnal_finite from exists_independent_tuple (Finset.image + card_image_of_injective)",
+      "Proved exists_independent_tuple base cases n=0 (Fin.elim0) and n=1 (Subsingleton)"
     ],
     "insights": [
       "Answer depends on set-theoretic axioms (CH): NO under CH (Hechler 1972), YES for closed sets (NPS 1987)",
@@ -55,13 +58,16 @@
       "Fubini approach for gladysz_pairs: graph G={(x,y):x∈A_y} on [0,L]² has thin sections (<1 in each column). If measurable, μ(G)<L and μ(G^T)<L, so G∪G^T cannot cover L²>2L for L>2. But joint measurability is not guaranteed for arbitrary closed families.",
       "Proved gladysz_pairs as corollary of nps_closed_infinite: infinite independent set → extract 2-element subset → hereditary independence. Reduces main file from 4 to 3 sorries.",
       "Created Erdos501Aristotle.lean companion file with supporting lemmas: bounded set properties, outer measure monotonicity/subadditivity, interval complement positivity",
-      "Key proof analysis: gladysz_pairs and erdos_hajnal_finite both require Fubini-type arguments with measurability of the product graph {(x,y) : x ∈ A_y}. For general families, this graph may be non-measurable. For closed families, measurability of multifunction y ↦ A_y is not automatic."
+      "Key proof analysis: gladysz_pairs and erdos_hajnal_finite both require Fubini-type arguments with measurability of the product graph {(x,y) : x ∈ A_y}. For general families, this graph may be non-measurable. For closed families, measurability of multifunction y ↦ A_y is not automatic.",
+      "Product measure proof of Erdos-Hajnal: conflict set C_{ij}={f in [0,L]^n: f(i) in A(f(j))} has measure < L^{n-1} by Fubini section bound. Total < n(n-1)*L^{n-1} < L^n for L > n(n-1), so conflict-free injective tuples exist.",
+      "Backward avoidance (x_i not in A_z) cannot be proved by deterministic construction -- requires product measure / counting argument. This is the fundamental difficulty.",
+      "Base cases n=0,1 of exists_independent_tuple proved. Combinatorial reduction (tuple to Finset) fully proved."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove erdos_hajnal_finite: needs Fubini-type argument or probabilistic method for jointly non-measurable families",
-      "For gladysz_pairs: closed families give measurable sections but graph measurability unclear; may need analytic set theory",
-      "Consider companion file for Aristotle with supporting lemmas (e.g., outer measure subadditivity for finite unions)"
+      "Prove exists_independent_tuple for n>=2: needs outer measure Tonelli/Cavalieri inequality on product spaces",
+      "Alternative: formalize product outer measure bound as Mathlib-compatible lemma, then reduce to it",
+      "Consider whether MeasureTheory.Measure.prod_fubini can handle outer measure bounds for non-measurable sets"
     ]
   },
   "tags": [
@@ -83,7 +89,7 @@
     "mathlib": []
   },
   "started": "2026-03-28T20:57:10.257Z",
-  "lastUpdate": "2026-03-28T21:30:00Z",
+  "lastUpdate": "2026-04-27T00:00:00Z",
   "significance": 6,
   "tractability": 5
 }

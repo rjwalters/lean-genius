@@ -73,9 +73,9 @@
       "id": "erdos-hajnal",
       "title": "Erdős-Hajnal Theorem (1960)",
       "startLine": 73,
-      "endLine": 82,
-      "summary": "States and uses the Erdős-Hajnal theorem: for any bounded outer measure family, $\\forall n,\\; \\exists$ independent set of size $n$. Derives size-2 as a corollary.",
-      "mathContext": "Verified: States and uses the Erdős-Hajnal theorem: for any bounded outer measure family, $\\forall n,\\; \\exists$ independent set of size $n$. Derives size-2 as a corollary."
+      "endLine": 122,
+      "summary": "Decomposes the Erdős-Hajnal theorem into `exists_independent_tuple` (product measure existence of n conflict-free distinct reals, proved for n ≤ 1, sorry for n ≥ 2) and the combinatorial reduction `erdos_hajnal_finite` (converts injective tuple to Finset, fully proved). Derives size-2 as corollary.",
+      "mathContext": "The product measure proof sketch: for L > n(n-1), the conflict set in [0,L]^n has measure < n(n-1)·L^{n-1} < L^n by Fubini section bounds, so conflict-free injective tuples exist."
     },
     {
       "id": "ch-result",
@@ -134,9 +134,9 @@
       "MeasureTheory"
     ],
     "namespace": "Erdos501",
-    "lineCount": 239,
+    "lineCount": 278,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 10,
     "definitionCount": 12,
     "path": "Proofs/Erdos501Problem.lean",
     "sorries": 3
