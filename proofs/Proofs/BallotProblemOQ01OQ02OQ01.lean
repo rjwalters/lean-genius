@@ -51,12 +51,11 @@ theorem ncard_biUnion_eq_of_uniform {α ι : Type*}
     (k : ℕ) (hk : ∀ i ∈ I, (S i).ncard = k) :
     (⋃ i ∈ I, S i).ncard = k * I.ncard := by
   rw [Set.ncard_biUnion hI hdisj (fun i hi => hfin i hi)]
-  -- Now goal: ∑ i ∈ I.toFinset, (S i).ncard = k * I.ncard
-  -- But ncard_biUnion gives ncard = Σ ncard_i for finite disjoint sets
-  -- Rewrite each ncard using hk, then simplify the sum
-  conv_lhs => ext i; rw [show (S i).ncard = k from sorry]
-  -- Σ_{i ∈ I.toFinset} k = k * |I.toFinset| = k * I.ncard
-  sorry
+  -- Goal: ∑ i ∈ hI.toFinset, (S i).ncard = k * I.ncard
+  have hmem : ∀ i ∈ hI.toFinset, (S i).ncard = k :=
+    fun i hi => hk i (hI.mem_toFinset.mp hi)
+  rw [Finset.sum_congr rfl hmem, Finset.sum_const, smul_eq_mul,
+      mul_comm, hI.toFinset_card]
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART II: FIBER PARTITION PROPERTIES
