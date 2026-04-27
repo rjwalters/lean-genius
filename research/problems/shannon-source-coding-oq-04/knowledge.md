@@ -137,6 +137,117 @@ cannot be used in `dominant_type_lower_bound` (Section 2). Fix: inline the proof
 
 ---
 
+## Session 2026-04-27 (Session 4) — Statement Audit: `source_coding_achievability_mot` is Trivially True
+
+**Mode**: REVISIT (MODERATE knowledge tier, score 13)
+**Outcome**: AUDIT — identified a soundness issue with the remaining `sorry`'s theorem statement.
+Disk pressure (1.5 GiB free) blocks Docker verification, so this session contributes a
+specification audit only. No Lean source modifications.
+
+### The Issue
+
+The remaining sorry in `ShannonSourceCodingOQ04.lean:386` is in:
+
+```lean
+theorem source_coding_achievability_mot
+    (p : Fin k → ℝ) (hp_pos : ∀ i, 0 < p i) (hp_sum : ∑ i : Fin k, p i = 1)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∀ δ > 0, ∃ N : ℕ, ∀ n ≥ N,
+    ∃ (code_length : ℕ),
+    (code_length : ℝ) ≤ n * (shannonEntropy p) + n * ε ∧
+    ∃ f : Fin k → ℕ, ∃ hf : ∑ i, f i = n,
+    (typeClass n f hf).card ≤ 2 ^ code_length := by
+  sorry
+```
+
+**This statement is trivially true**, because:
+
+1. The variable `δ` does not appear in the conclusion — `∀ δ > 0` can be eliminated.
+2. `code_length : ℕ` and the bound `(code_length : ℝ) ≤ n * H + n * ε`. Since `H ≥ 0` (it's
+   the Shannon entropy of a probability distribution; per the local definition at line 42, it
+   sums `-p_i log p_i` and for `0 < p_i ≤ 1` we have `log p_i ≤ 0`, so each term is non-negative),
+   and `ε > 0`, the right-hand side is `≥ 0`. So we can pick **`code_length = 0`**.
+3. With `code_length = 0`, we need `∃ f, hf, |typeClass n f hf| ≤ 2^0 = 1`. The **degenerate
+   type** `f i = if i = 0 then n else 0` (using `[NeZero k]` to know `0 : Fin k` exists)
+   satisfies `∑ i, f i = n`, and its type class is exactly `{const 0}` — a singleton.
+
+So a Lean proof of the trivial form is:
+
+```lean
+intro δ _
+refine ⟨0, fun n _ => ⟨0, ?_, fun i => if i = 0 then n else 0, ?_, ?_⟩⟩
+· -- 0 ≤ n * H + n * ε
+  have hH : 0 ≤ shannonEntropy p := shannonEntropy_nonneg p hp_pos hp_sum  -- needs lemma
+  positivity
+· -- ∑ i, (if i = 0 then n else 0) = n
+  rw [Finset.sum_ite_eq']; simp
+· -- |typeClass n (fun i => if i = 0 then n else 0) _| ≤ 1
+  have hSing : typeClass n (fun i => if i = 0 then n else 0) _ = {fun _ => 0} := by
+    ext x; simp [typeClass, empDist, Finset.mem_filter]
+    -- A sequence is in the class iff every position equals 0; that's the singleton {const 0}
+    sorry  -- ~10 lines of empDist analysis
+  rw [hSing]; simp
+```
+
+### Why This Matters
+
+- **The current sorry is provable in ~30 lines**, eliminating the badge `wip` and bringing the
+  proof to 0 sorries.
+- **However**, the resulting theorem does NOT capture Shannon's source coding achievability,
+  because:
+  - The "code" represented by `code_length = 0` covers **only one sequence** (the all-zero one),
+    not most sequences
+  - The actual achievability claim is: for any δ > 0, there exists a code of length
+    ≤ n(H(p) + ε) that **covers all but probability δ** of sequences (under the source
+    distribution p)
+  - The current statement makes no probability claim — it just exhibits one type's size
+
+### Recommended Strengthening
+
+The intended source coding theorem should look more like:
+
+```lean
+theorem source_coding_achievability_mot_strong
+    (p : Fin k → ℝ) (hp_pos : ∀ i, 0 < p i) (hp_sum : ∑ i, p i = 1)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∀ δ > 0, ∃ N : ℕ, ∀ n ≥ N,
+    ∃ (S : Finset (Fin n → Fin k)),                          -- the code
+    (S.card : ℝ) ≤ Real.exp ((n : ℝ) * (shannonEntropy p + ε)) ∧
+    -- "Most" sequences are covered: under product measure ⊗p,
+    --   ∑_{x ∈ S} ∏ j, p (x j) ≥ 1 - δ
+    ∑ x ∈ S, ∏ j, p (x j) ≥ 1 - δ := by
+  sorry
+```
+
+This requires:
+1. Sum over `n`-fold product probability: `∑ x, ∏ j, p (x j)`
+2. Concentration around the dominant type via `type_class_size_le_entropy_pow` + LLN/AEP
+3. ~300-500 lines of additional infrastructure
+
+### Two-Track Recommendation
+
+**Track A (Quick Win, ~30 lines)**: Prove the trivial form to eliminate the sorry. Update
+meta.json to flag in description/conclusion that "achievability is stated weakly"; add a
+companion `axiom source_coding_achievability_mot_strong` for the real claim. Status changes
+to `axiomatized`.
+
+**Track B (Real Theorem, ~300-500 lines)**: Strengthen the statement and prove via the type-class
+infrastructure. This gives a genuinely new Lean proof of source coding via method of types,
+fulfilling the original goal of the OQ-04 problem.
+
+### Files NOT Modified This Session
+
+Disk pressure (1.5 GiB) prevented compile verification. All contributions are in `knowledge.md`
+and (in the next session) `state.md`.
+
+### Sorry Count: 1 (unchanged), but now flagged as low-content
+
+The sorry's statement is trivially true — eliminating it gives no real mathematical content.
+The next session should choose Track A (quick zero-sorry victory with weakening note) or
+Track B (real theorem, multi-session investment).
+
+---
+
 ## Session 2026-04-26 (Session 3) — Integrated Aristotle Proof of type_class_size_eq_multinomial
 
 **Mode**: REVISIT
