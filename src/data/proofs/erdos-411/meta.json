@@ -43,10 +43,11 @@
     "originalContributions": [
       "Formalized the totient-step iteration g(n) = n + φ(n) and its k-fold iterate",
       "Defined DoublingRelation and GeneralRatioRelation capturing the eventual scaling property",
-      "Proved known r = 2 solutions (n = 10, 94) via native_decide; axiomatized Cambie's ratio-3 and ratio-4 solutions",
-      "Formalized Steinerberger's (2025) reduction: DoublingRelation n 2 ↔ φ(n) + φ(n + φ(n)) = n",
+      "Proved known r = 2 solutions (n = 10, 94) via native_decide base case + doubling_propagation induction",
+      "Proved Cambie's ratio-3 case g_{k+4}(738) = 3·g_k(738) for all k via strong induction over k mod 4 using totientStep_triple (axiom-free)",
+      "Stated Steinerberger's (2025) reduction (DoublingRelation n 2 ↔ φ(n) + φ(n + φ(n)) = n) as a definition; equivalence proof not yet formalized",
       "Proved even preservation under g using Mathlib's Nat.totient_even",
-      "Formalized Cambie's structural conjecture on the form of r = 2 solutions"
+      "Stated Cambie's structural conjecture (n = 2^l·p with p ∈ {2,3,5,7,35,47}) as a definition; conjecture itself is open"
     ],
     "axiomCount": 0,
     "lineCount": 216,
