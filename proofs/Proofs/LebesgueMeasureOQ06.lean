@@ -1378,47 +1378,38 @@ private lemma equidecomp_of_cover {G : Type*} [Group G]
     (hdisj_pieces : Disjoint P₀ (g • P₁))
     (hdisj_images : Disjoint P₀ P₁) :
     Equidecomposable G (Set.univ : Set G) (P₀ ∪ P₁) := by
-  -- Use if-based definitions for clean fin_cases handling
-  let pieces : Fin 2 → Set G := fun i => if i = 0 then P₀ else g • P₁
-  let gs : Fin 2 → G := fun i => if i = 0 then (1 : G) else g⁻¹
-  have hp0 : pieces 0 = P₀ := if_pos rfl
-  have hp1 : pieces 1 = g • P₁ := if_neg (by decide)
-  have hg0 : gs 0 = (1 : G) := if_pos rfl
-  have hg1 : gs 1 = g⁻¹ := if_neg (by decide)
   have cancel : g⁻¹ • (g • P₁) = P₁ := by rw [smul_smul, inv_mul_cancel, one_smul]
-  -- Helper: ⋃ over Fin 2 = binary union
-  have iUnion_pieces : (⋃ i, pieces i) = P₀ ∪ g • P₁ := by
-    ext x; simp only [Set.mem_iUnion, Set.mem_union]
-    exact ⟨fun ⟨i, hi⟩ => by fin_cases i <;> simp_all,
-           fun h => h.elim (fun h => ⟨0, by rw [hp0]; exact h⟩)
-                           (fun h => ⟨1, by rw [hp1]; exact h⟩)⟩
-  have iUnion_images : (⋃ i, gs i • pieces i) = P₀ ∪ P₁ := by
-    ext x; simp only [Set.mem_iUnion, Set.mem_union]
-    constructor
-    · rintro ⟨i, hi⟩
-      fin_cases i
-      · left; rwa [hg0, hp0, one_smul] at hi
-      · right; rwa [hg1, hp1, cancel] at hi
-    · rintro (h | h)
-      · exact ⟨0, by rw [hg0, hp0, one_smul]; exact h⟩
-      · exact ⟨1, by rw [hg1, hp1, cancel]; exact h⟩
-  refine ⟨2, pieces, gs, ?_, ?_, ?_, ?_, ?_⟩
+  refine ⟨2, ![P₀, g • P₁], ![(1 : G), g⁻¹], ?_, ?_, ?_, ?_, ?_⟩
   -- pieces ⊆ univ
   · intro i; exact Set.subset_univ _
-  -- pieces pairwise disjoint
+  -- pieces pairwise disjoint: simp_all closes i=j cases; remaining i≠j cases need hdisj_pieces
   · intro i j hij
-    fin_cases i <;> fin_cases j <;> simp_all
-    · rw [hp0, hp1]; exact hdisj_pieces
-    · rw [hp0, hp1]; exact hdisj_pieces.symm
+    fin_cases i <;> fin_cases j <;>
+      simp_all [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+                hdisj_pieces, hdisj_pieces.symm]
   -- pieces cover univ
-  · rw [iUnion_pieces]; exact hcover
+  · ext x; constructor
+    · intro _; exact hcover ▸ Set.mem_univ x
+    · intro hx
+      simp only [Set.mem_iUnion]
+      rw [hcover] at hx; simp only [Set.mem_union] at hx
+      rcases hx with h | h
+      · exact ⟨0, by simpa using h⟩
+      · exact ⟨1, by simpa using h⟩
   -- images cover B = P₀ ∪ P₁
-  · exact iUnion_images
+  · ext x; simp only [Set.mem_iUnion, Set.mem_union]; constructor
+    · rintro ⟨i, hi⟩
+      fin_cases i
+      · left; simpa [one_smul] using hi
+      · right; simpa [cancel] using hi
+    · rintro (h | h)
+      · exact ⟨0, by simpa [one_smul] using h⟩
+      · exact ⟨1, by simpa [cancel] using h⟩
   -- images pairwise disjoint
   · intro i j hij
-    fin_cases i <;> fin_cases j <;> simp_all
-    · rw [hg0, hp0, one_smul, hg1, hp1, cancel]; exact hdisj_images
-    · rw [hg0, hp0, one_smul, hg1, hp1, cancel]; exact hdisj_images.symm
+    fin_cases i <;> fin_cases j <;>
+      simp_all [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+                one_smul, cancel, hdisj_images, hdisj_images.symm]
 
 /-- **F₂ is paradoxical** under its own left-multiplication action.
     The free group of rank 2 can be "duplicated" using only left translations.
