@@ -48,7 +48,7 @@
       "fractionalDistance, katznelsonColoring: Diophantine approximation and explicit coloring",
       "problem_464_result, katznelson_theorem: axiomatized key results",
       "lacunary_finitely_colorable, erdos_894: proved main theorem from axioms",
-      "peres_schlag_bound, peres_schlag_optimality: axiomatized quantitative bounds",
+      "Peres-Schlag (2010) bound O(ε⁻¹ log(1/ε)) noted in docstring (Part VI), not axiomatized",
       "CayleyGraph structure, lacunaryCayleyGraph: proved Cayley graph construction",
       "problem_464_implies_894: proved logical implication",
       "powers_of_2_colorable, powers_of_3_colorable: proved special cases",
@@ -62,7 +62,7 @@
     "historicalContext": "Erdős Problem #894 asks whether Cayley graphs on ℤ defined by lacunary sequences have finite chromatic number. A sequence A = {n₁ < n₂ < ...} is lacunary if n_{k+1} ≥ (1+ε)n_k for some ε > 0. The connection to Diophantine approximation was observed by Katznelson (2001): if there exists an irrational θ such that all multiples θ·n_k stay bounded away from integers, then coloring by position on the circle (mod 1) gives a valid finite coloring.\n\nPeres and Schlag (2010) resolved both this problem and the closely related Problem #464 simultaneously. They proved that O(ε⁻¹ log(1/ε)) colors suffice for a lacunary sequence with ratio (1+ε), and that this bound is essentially optimal. Their proof combined harmonic analysis and metric number theory.\n\nThe formalization proves the main theorem (lacunary_finitely_colorable) from two axiomatized results: Problem #464's guarantee of a badly approximable irrational, and Katznelson's observation that this yields a valid coloring. Several proved results include exponential growth of lacunary sequences, the Cayley graph construction with proved symmetry, the logical implication from Problem #464 to #894, and special cases for powers of 2 and 3.",
     "problemStatement": "Let A = {n₁ < n₂ < ...} ⊂ ℕ be a lacunary sequence with n_{k+1} ≥ (1+ε)n_k. Does there exist a finite coloring of ℕ with no monochromatic solutions to a - b ∈ A? Equivalently, does the Cayley graph on ℤ with connection set A have finite chromatic number?\n\n**Status: SOLVED (YES)**\n**Quantitative bound:** O(ε⁻¹ log(1/ε)) colors suffice (Peres-Schlag 2010)",
     "text": "For a lacunary sequence A with n_{k+1} ≥ (1+ε)n_k, does there exist a finite coloring of ℕ with no monochromatic a-b ∈ A? SOLVED: YES, using O(ε⁻¹ log(1/ε)) colors (Peres-Schlag 2010).",
-    "proofStrategy": "The formalization defines IsLacunary, proves exponential growth, constructs Katznelson's coloring via circle intervals of length δ (from Problem #464's irrational θ), and derives the main theorem lacunary_finitely_colorable. The CayleyGraph structure is defined and the lacunary Cayley graph is constructed with proved symmetry. Quantitative bounds from Peres-Schlag (2010) are axiomatized. Special cases (powers of 2 and 3) are proved from the main theorem. The summary theorem combines the main result with the proved implication from Problem #464.",
+    "proofStrategy": "The formalization defines IsLacunary, proves exponential growth, constructs Katznelson's coloring via circle intervals of length δ (from Problem #464's irrational θ), and derives the main theorem lacunary_finitely_colorable. The CayleyGraph structure is defined and the lacunary Cayley graph is constructed with proved symmetry. Quantitative bounds from Peres-Schlag (2010) are mentioned in the Part VI docstring but not axiomatized. Special cases (powers of 2 and 3) are proved from the main theorem. The summary theorem combines the main result with the proved implication from Problem #464.",
     "keyInsights": [
       "Irrational rotation provides the coloring: color n by position of θn on the circle",
       "Problem #464 guarantees a badly approximable θ for lacunary sequences",
@@ -121,8 +121,8 @@
       "title": "Part VI: Quantitative Bounds (Peres-Schlag 2010)",
       "startLine": 141,
       "endLine": 154,
-      "summary": "Axioms: peres_schlag_bound (O(ε⁻¹ log(1/ε)) colors), peres_schlag_optimality (essentially optimal).",
-      "mathContext": "Axioms: peres_schlag_bound ($O(ε⁻¹ log(1/ε)$) colors), peres_schlag_optimality (essentially optimal)."
+      "summary": "Docstring-only narrative on Peres-Schlag (2010) bound O(ε⁻¹ log(1/ε)) — no axioms or theorems declared in this part.",
+      "mathContext": "Docstring-only narrative on Peres-Schlag (2010) bound O(ε⁻¹ log(1/ε)) — no axioms or theorems declared in this part."
     },
     {
       "id": "cayley-graphs",
