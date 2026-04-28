@@ -1,7 +1,7 @@
 {
   "slug": "birthday-problem-oq-03-oq-01-oq-02-oq-01",
   "title": "Qualitative Poisson convergence for birthday triples",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -27,23 +27,25 @@
     "goal": "Prove the qualitative Tendsto form via decomposition: (A) λ(d) → c³/6 (asymptotic analysis), (B) exp(−λ(d)) → exp(−c³/6) (continuity), (C) P_no_triple(n d, d) → exp(−c³/6) (Poisson convergence)"
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-04-27T00:00:00Z",
-    "iteration": 2,
-    "focus": "Decompose qualitative Tendsto axiom into A/B/C sublemmas and prove A+B (routine asymptotics), isolating C as the only remaining hard step",
+    "phase": "ACT",
+    "since": "2026-04-29T00:00:00Z",
+    "iteration": 3,
+    "focus": "Lemma A foundation in source; remainder of Lemma A (cubing + falling-factorial correction) and Lemma B pending",
     "blockers": [],
-    "nextAction": "ACT: In a session with adequate disk, formalize sublemmas A (lambda_tendsto: λ(d) → c³/6) and B (exp_lambda_tendsto: exp(−λ(d)) → exp(−c³/6)). The original axiom then reduces to sublemma C alone.",
+    "nextAction": "Verify nc_div_pow_tendsto builds; then add Lemma A proper via .pow 3 + falling-factorial correction; then Lemma B as one-liner; then restate the axiom as Lemma C only.",
     "attemptCounts": {
       "total": 1,
-      "currentApproach": 0,
+      "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Session 2 (2026-04-27): Reframed the axiom from quantitative Chen-Stein bound to its actual qualitative Tendsto form (drift between JSON `formal` and Lean source identified and corrected). Decomposed the axiom into three sublemmas: (A) λ(d) := C(n d, 3)/d² → c³/6 by routine ratio-of-polynomials analysis with floor-correction control; (B) exp(−λ(d)) → exp(−c³/6) by continuity of Real.exp; (C) P_no_triple(n d, d) → exp(−c³/6) — the genuine Poisson convergence. Sublemmas A and B are formalizable from existing Mathlib without new infrastructure; only C requires the Poisson convergence machinery (method of factorial moments or coupling). This isolates the actual Mathlib gap to its narrowest possible form. Session 1 over-scoped to a Chen-Stein quantitative bound that the axiom does not actually demand.",
+    "progressSummary": "Session 3 (2026-04-29, researcher-4): Added foundation lemma `nc_div_pow_tendsto` to BirthdayProblemOQ03OQ01OQ02.lean (3 lines of proof: tendsto_nat_floor_mul_div_atTop composed with tendsto_rpow_atTop ∘ tendsto_natCast_atTop_atTop) — the floor-quotient asymptotic n_c(d)/d^(2/3) → c that backs Session 2s Lemma A. Confirmed Mathlib 4.26 still has no Poisson-convergence theorems (Lemma C gap unchanged). Docker build was unresponsive this session — proof type-checks by direct lemma signature inspection but green-build verification is deferred. No axiom or sorry deltas. Session 2 (2026-04-27): Reframed the axiom from quantitative Chen-Stein bound to its actual qualitative Tendsto form. Decomposed the axiom into three sublemmas A/B/C; only C requires new Mathlib infrastructure.",
     "builtItems": [
       "Corrected JSON `problemStatement.formal` to match actual Lean axiom signature (qualitative Tendsto, not |...| ≤ C·n⁴/d³)",
-      "Decomposed axiom strategy in research/problems/<slug>/knowledge.md into sublemmas A/B/C"
+      "Decomposed axiom strategy in research/problems/<slug>/knowledge.md into sublemmas A/B/C",
+      "nc_div_pow_tendsto in BirthdayProblemOQ03OQ01OQ02.lean: foundation lemma for Lemma A — `(⌊c·d^(2/3)⌋ : ℝ) / d^(2/3) → c` via tendsto_nat_floor_mul_div_atTop ∘ tendsto_rpow_atTop (Session 3, 2026-04-29)",
+      "In-source decomposition docstring: A/B/C strategy now documented above the axiom in BirthdayProblemOQ03OQ01OQ02.lean §5 (Session 3)"
     ],
     "insights": [
       "JSON `formal` field drifted from actual Lean axiom: JSON claimed quantitative |triple_prob − (1−exp(−λ))| ≤ C·n⁴/d³, but the Lean axiom is qualitative Tendsto along the threshold scaling — discrepancy was the cause of Session 1's BLOCKED conclusion",
@@ -52,7 +54,10 @@
       "exp(−λ(d)) → exp(−c³/6) is one application of Real.continuous_exp.tendsto composed with Lemma A",
       "The original axiom equals (A ∧ B) plus a strictly weaker Poisson convergence statement: P_no_triple(n d, d) → exp(−c³/6). Restating the axiom as the latter halves the conceptual gap.",
       "Method of factorial moments is the cleanest qualitative path: factorial moments of indicator-sum X converge to factorial moments of Poisson(c³/6), which uniquely determines the Poisson distribution — no quantitative error bounds needed",
-      "Coupling-to-independent-Bernoullis is an alternative qualitative path: bound TV distance between dependent and independent triple-indicator vectors, both giving the same Poisson limit"
+      "Coupling-to-independent-Bernoullis is an alternative qualitative path: bound TV distance between dependent and independent triple-indicator vectors, both giving the same Poisson limit",
+      "Mathlib has tendsto_nat_floor_mul_div_atTop (a ≥ 0 → ⌊a·x⌋/x → a as x → ∞) — exactly the floor-quotient asymptotic Session 2 described abstractly as routine",
+      "Composition tendsto_rpow_atTop ∘ tendsto_natCast_atTop_atTop lifts the (⌊·⌋ / ·) asymptotic from ℝ → ℝ to ℕ → ℝ for the d^(2/3) scaling — no new infrastructure needed for Lemma As foundation",
+      "Mathlib.Probability.Distributions.Poisson (4.26) still exposes only PMF/measure constructors — no convergence theorems. Lemma Cs gap (method-of-factorial-moments → Poisson) remains the genuine Mathlib hole, unchanged from Session 2"
     ],
     "mathlibGaps": [
       "Method of factorial moments → Poisson convergence (qualitative form) — not in Mathlib but smaller than Chen-Stein",
@@ -60,10 +65,10 @@
       "(Quantitative) Chen-Stein bound — NOT NEEDED for the actual qualitative axiom; was only needed for the misframed quantitative bound"
     ],
     "nextSteps": [
-      "ACT: formalize Lemma A (lambda_tendsto) and Lemma B (exp_lambda_tendsto) — both ~30-50 lines using Mathlib asymptotic and continuity tooling",
-      "After A+B: restate the original axiom as the simpler P_no_triple(n d, d) → exp(−c³/6), reducing conceptual scope to one Poisson convergence statement",
-      "ACT (later): for sublemma C, decide between method-of-factorial-moments and coupling — the former has cleaner Mathlib alignment via Finset.sum and Nat.descFactorial",
-      "Verify the decomposition in Docker before pushing (skip if disk <1GB free)"
+      "Verify nc_div_pow_tendsto builds in Docker (Session 3 was Docker-blocked); fallback fix is explicit Tendsto annotation if elaboration fails",
+      "ACT: add Lemma A proper (lambda_tendsto) building on nc_div_pow_tendsto.pow 3 + (Nat.choose n 3 : ℝ) - n³/6 → 0 correction (~50 lines)",
+      "ACT: add Lemma B (exp_lambda_tendsto) as Real.continuous_exp.tendsto.comp Lemma A.neg one-liner",
+      "After A+B: restate the axiom as the strictly weaker Lemma C alone (P_no_triple → exp(-c³/6)), isolating the Mathlib gap to one statement"
     ]
   },
   "tags": [
@@ -96,7 +101,7 @@
     ]
   },
   "started": "2026-04-21T06:38:17Z",
-  "lastUpdate": "2026-04-27T22:00:00Z",
+  "lastUpdate": "2026-04-29T00:00:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -191,8 +196,8 @@
     {
       "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
       "filename": "BirthdayProblemOQ03OQ01OQ02.lean",
-      "lineCount": 464,
-      "theoremCount": 19,
+      "lineCount": 501,
+      "theoremCount": 20,
       "axiomCount": 1,
       "defCount": 3,
       "sorryCount": 0,

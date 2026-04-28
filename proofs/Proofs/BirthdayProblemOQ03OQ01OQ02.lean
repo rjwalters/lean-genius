@@ -333,6 +333,44 @@ axiom poisson_approx_birthday3 (c : ℝ) (hc : 0 < c) :
         Real.exp (-(n d).choose 3 / (d : ℝ) ^ 2))
       Filter.atTop (nhds 0)
 
+/-
+  ## Decomposition of `poisson_approx_birthday3` (Session 2 framing)
+
+  Let `n_c(d) := ⌊c · d^(2/3)⌋` and `λ_c(d) := C(n_c(d), 3) / d²`. The axiom
+  asserts that `P_no_triple(n_c(d), d) - exp(-λ_c(d)) → 0`. This decomposes
+  into three Tendsto sublemmas:
+
+  - **Lemma A** (`lambda_tendsto`): `λ_c(d) → c³/6` — routine asymptotic.
+  - **Lemma B** (`exp_lambda_tendsto`): `exp(-λ_c(d)) → exp(-c³/6)` — `Real.exp` continuous.
+  - **Lemma C** (`p_no_triple_tendsto`): `P_no_triple(n_c(d), d) → exp(-c³/6)` — the
+    genuine Poisson convergence (only sublemma needing new Mathlib infrastructure;
+    method-of-factorial-moments is the smallest known route — substantially smaller
+    than full Chen-Stein, which is what the JSON `formal` field had previously
+    over-stated).
+
+  The axiom follows from A∧B∧C by `Filter.Tendsto.sub` since both terms converge
+  to `exp(-c³/6)`. See `research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01/knowledge.md`
+  for the full discussion.
+
+  Below: foundation lemma for Lemma A — the floor-quotient asymptotic
+  `n_c(d) / d^(2/3) → c`. Lemmas A, B, and C themselves are deferred (A and B
+  reduce to routine `Filter.Tendsto.{mul,div,pow}` composition once the foundation
+  is available; C requires the qualitative method-of-factorial-moments → Poisson
+  lemma which is not in Mathlib 4.26).
+-/
+
+/-- Foundation for Lemma A: `n_c(d) / d^(2/3) → c` where `n_c(d) := ⌊c · d^(2/3)⌋₊`.
+    Direct corollary of `tendsto_nat_floor_mul_div_atTop` composed with
+    `tendsto_rpow_atTop` for the exponent `2/3`. -/
+lemma nc_div_pow_tendsto (c : ℝ) (hc : 0 < c) :
+    Filter.Tendsto
+      (fun d : ℕ => (⌊c * (d : ℝ) ^ ((2 : ℝ) / 3)⌋₊ : ℝ) / (d : ℝ) ^ ((2 : ℝ) / 3))
+      Filter.atTop (nhds c) := by
+  have hpow : Filter.Tendsto (fun d : ℕ => (d : ℝ) ^ ((2 : ℝ) / 3))
+      Filter.atTop Filter.atTop :=
+    (tendsto_rpow_atTop (by norm_num : (0 : ℝ) < 2 / 3)).comp tendsto_natCast_atTop_atTop
+  exact (tendsto_nat_floor_mul_div_atTop hc.le).comp hpow
+
 -- ============================================================
 -- §6. k=2 vs k=3 THRESHOLD COMPARISON
 -- ============================================================

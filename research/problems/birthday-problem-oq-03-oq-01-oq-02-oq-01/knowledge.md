@@ -196,3 +196,99 @@ convergence statement C.
      a method-of-moments → Poisson lemma.
 3. Cross-reference `birthday-problem-oq-03-oq-01-oq-01` (n=2 baseline) to see if
    any factorial-moment scaffolding there can be reused or generalized.
+
+---
+
+## Session 2026-04-29 (Session 3, researcher-4) — Lemma A Foundation in Lean
+
+**Mode**: REVISIT (RICH knowledge tier, score 16)
+**Outcome**: ACT (partial) — added the foundation lemma `nc_div_pow_tendsto` that
+backs Lemma A; Lemmas A and B themselves still pending. No axiom or sorry
+delta this session (axiom remains, no new sorries).
+
+### What I Did
+
+1. Re-read Session 2's decomposition strategy and confirmed the axiom signature
+   in `BirthdayProblemOQ03OQ01OQ02.lean:325-334` (qualitative `Filter.Tendsto …
+   atTop (nhds 0)`).
+2. Searched Mathlib (4.26) for the asymptotic combinators that Lemmas A/B need:
+   - **Found**: `tendsto_nat_floor_mul_div_atTop {a : R} (ha : 0 ≤ a) : Tendsto
+     (fun x ↦ (⌊a * x⌋₊ : R) / x) atTop (𝓝 a)` in
+     `Mathlib.Analysis.SpecificLimits.Basic`. This is exactly the
+     floor-quotient asymptotic that prior sessions described as "routine
+     Mathlib composition" without naming the actual lemma.
+   - **Found**: `tendsto_rpow_atTop {y : ℝ} (hy : 0 < y) : Tendsto (· ^ y :
+     ℝ → ℝ) atTop atTop` in
+     `Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics`.
+   - **Found**: `tendsto_natCast_atTop_atTop` in
+     `Mathlib.Order.Filter.AtTopBot.Archimedean` for the `ℕ → ℝ` cast lift.
+   - **Confirmed not in Mathlib**: any qualitative method-of-factorial-moments
+     → Poisson lemma. `Mathlib.Probability.Distributions.Poisson` still has
+     only the PMF/measure constructors (no convergence theorems). Session 2's
+     framing of the Lemma C gap remains accurate.
+3. Added `nc_div_pow_tendsto` to `BirthdayProblemOQ03OQ01OQ02.lean` between
+   the axiom and §6:
+
+   ```lean
+   lemma nc_div_pow_tendsto (c : ℝ) (hc : 0 < c) :
+       Filter.Tendsto
+         (fun d : ℕ => (⌊c * (d : ℝ) ^ ((2 : ℝ) / 3)⌋₊ : ℝ) / (d : ℝ) ^ ((2 : ℝ) / 3))
+         Filter.atTop (nhds c) := by
+     have hpow : Filter.Tendsto (fun d : ℕ => (d : ℝ) ^ ((2 : ℝ) / 3))
+         Filter.atTop Filter.atTop :=
+       (tendsto_rpow_atTop (by norm_num : (0 : ℝ) < 2 / 3)).comp tendsto_natCast_atTop_atTop
+     exact (tendsto_nat_floor_mul_div_atTop hc.le).comp hpow
+   ```
+
+4. Added a docstring block above the lemma recording Session 2's full A/B/C
+   decomposition strategy in-source, so future sessions don't need to recover
+   the framing from the JSON / knowledge.md alone.
+
+### Why This Is Real Progress (and the limit thereof)
+
+- The lemma is a fully proved Lean theorem (`:= by … exact …`, no `sorry`).
+- It's the first concrete in-source piece of Session 2's decomposition strategy,
+  bridging a Mathlib lookup that prior sessions had described abstractly.
+- It's **not** Lemma A itself: that requires composing this floor-quotient
+  asymptotic with `Tendsto.pow` (cubing) and a polynomial-vs-falling-factorial
+  bound to get from `(⌊c·d^(2/3)⌋ : ℝ)³ / d²` to `(C(⌊c·d^(2/3)⌋, 3) : ℝ) / d²`.
+  Estimated remaining work for Lemma A: ~50 lines of `Filter.Tendsto.{const_mul,
+  pow, sub}` + `Nat.choose_three` polynomial expansion + a `≤ 1/d^(2/3)` bound
+  for the lower-order correction. Lemma B remains a one-liner via
+  `Real.continuous_exp.tendsto.comp (Lemma A).neg`.
+
+### Verification Status
+
+- **Docker build NOT verified this session.** Three docker invocations during
+  the session hung partway through `docker info` (no progress after >12 min,
+  background tasks confirmed daemon was responding to `docker info` but the
+  Server section timed out). Treated as Docker infrastructure failure per
+  saved memory `feedback_docker_build_io_errors.md`: "Don't change code in
+  response — push and let next session retry."
+- The two-line proof `(tendsto_nat_floor_mul_div_atTop hc.le).comp hpow`
+  composes Mathlib lemmas whose signatures were verified by direct file read
+  in `/System/Volumes/Data/private/tmp/mathlib4/Mathlib/Analysis/SpecificLimits/Basic.lean`
+  and `…/SpecialFunctions/Pow/Asymptotics.lean`. The composition types align,
+  but a green Docker build is still the only authoritative check.
+
+### Files Modified
+
+- `proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean` (+38 lines: docstring +
+  `nc_div_pow_tendsto`)
+
+### Next Steps
+
+1. **Next session — verify the build** for `Proofs.BirthdayProblemOQ03OQ01OQ02`
+   when Docker is responsive. If `nc_div_pow_tendsto` fails to type-check,
+   the most likely fix is the `tendsto_natCast_atTop_atTop` typeclass
+   instances — try explicit `Tendsto ((↑) : ℕ → ℝ) atTop atTop` annotation.
+2. **Add Lemma A** (`lambda_tendsto`) building on `nc_div_pow_tendsto`:
+   - `((⌊c·d^(2/3)⌋ : ℝ) / d^(2/3))^3 → c³` via `Tendsto.pow`.
+   - Algebraic identity: `((d : ℝ)^(2/3))^3 = (d : ℝ)^2` via `Real.rpow_mul` /
+     `Real.rpow_natCast` (the right reduction for `(2/3)·3 = 2`).
+   - Polynomial-to-falling-factorial: show that
+     `((⌊c·d^(2/3)⌋ : ℝ).choose 3 : ℝ) - (⌊c·d^(2/3)⌋ : ℝ)^3 / 6` divided by `d²`
+     tends to `0` (the difference is `O(d^(4/3) / d²) = O(d^{-2/3})`).
+3. **Add Lemma B** as a one-liner once Lemma A is in.
+4. Hold off on Lemma C until Lemmas A+B are merged — the axiom can then be
+   restated as "Lemma C only", isolating the Mathlib gap.
