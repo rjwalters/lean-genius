@@ -109,54 +109,54 @@
       "id": "trivial-lower",
       "title": "Part 4: Trivial Lower Bound",
       "startLine": 115,
-      "endLine": 142,
+      "endLine": 134,
       "summary": "F(n) ≥ 1 for n ≥ 1, and cliques/independent sets are regular.",
       "mathContext": "F(n) $\\geq$ 1 for n $\\geq$ 1, and cliques/independent sets are regular."
     },
     {
       "id": "ramsey-lower",
       "title": "Part 5: Ramsey-Theoretic Lower Bound",
-      "startLine": 143,
-      "endLine": 184,
+      "startLine": 135,
+      "endLine": 170,
       "summary": "Ramsey numbers, the classical R(k,k) ≤ 4^k bound, and the key consequence F(n) ≥ (1/2)log₂(n).",
       "mathContext": "Ramsey numbers, the classical R(k,k) $\\leq$ $4^{k}$ bound, and the key consequence F(n) $\\geq$ (1/2)log₂(n)."
     },
     {
       "id": "aks-upper",
       "title": "Part 6: Alon-Krivelevich-Sudakov Upper Bound",
-      "startLine": 185,
-      "endLine": 206,
+      "startLine": 171,
+      "endLine": 192,
       "summary": "The 2007 upper bound F(n) ≤ C·√n·(log n)^{O(1)} from probabilistic constructions.",
       "mathContext": "The 2007 upper bound F(n) $\\leq$ C·√n·($\\log n$)^{$O(1)$} from probabilistic constructions."
     },
     {
       "id": "small-values",
       "title": "Part 7: Small Values and Computations",
-      "startLine": 207,
-      "endLine": 243,
+      "startLine": 193,
+      "endLine": 225,
       "summary": "The inverse function G(k), exact values of F(n) for small n, and OEIS references.",
       "mathContext": "Mathematical content: The inverse function G(k), exact values of F(n) for small n, and OEIS references."
     },
     {
       "id": "conjecture",
       "title": "Part 8: The Erdős Conjecture",
-      "startLine": 244,
-      "endLine": 275,
+      "startLine": 226,
+      "endLine": 257,
       "summary": "The formal conjecture F(n)/log(n) → ∞ in both Filter.Tendsto and explicit ε-N forms.",
       "mathContext": "The formal conjecture F(n)/log(n) $\\to$ ∞ in both Filter.Tendsto and explicit ε-N forms."
     },
     {
       "id": "connections",
       "title": "Part 9: Related Results and Connections",
-      "startLine": 276,
-      "endLine": 319,
+      "startLine": 258,
+      "endLine": 293,
       "summary": "Connections to Ramsey diagonal improvements, Erdős-Sauer problem, and random graph theory.",
       "mathContext": "Mathematical content: Connections to Ramsey diagonal improvements, Erdős-Sauer problem, and random graph theory."
     },
     {
       "id": "summary",
       "title": "Part 10: Problem Status and Summary",
-      "startLine": 320,
+      "startLine": 294,
       "endLine": 326,
       "summary": "Bounds summary theorem combining lower and upper bounds.",
       "mathContext": "Verified: Bounds summary theorem combining lower and upper bounds."
