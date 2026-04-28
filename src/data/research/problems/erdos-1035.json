@@ -1,19 +1,37 @@
 {
   "slug": "erdos-1035",
-  "title": "Erdős #1035",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "Hypercube containment via min-degree threshold (1-c)·2^n on 2^n vertices",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "Is there a constant $c>0$ such that every graph on $2^n$ vertices with minimum degree $>(1-c)2^n$ contains the $n$-dimensional hypercube $Q_n$?\n\n\n\nErd\\H{o}s \\cite{Er93} says 'if the conjecture is false, two related problems could be asked':\n{UL}\n{LI}Determine or estimate the smallest $m>2^n$ such that every graph on $m$ vertices with minimum degree $>(1-c)2^n$ contains a $Q_n$, and {/LI}\n{LI}For which $u_n$ is it true that every graph on $2^n$ vertices with minimum degree $>2^n-u_n$ contains a $Q_n$.{/LI}\n{/UL}\n\nSee also [576] for the extremal number of edges that guarantee a $Q_n$.",
     "plain": "Is there a constant $c>0$ such that every graph on $2^n$ vertices with minimum degree $>(1-c)2^n$ contains the $n$-dimensional hypercube $Q_n$?",
-    "whyMatters": []
+    "whyMatters": [
+      "A positive answer would establish Q_n containment as a robust property of dense graphs — extending Turán-type extremal results to a structured target.",
+      "Q_n has 2^n vertices and n·2^{n-1} edges; the question asks whether high local density (min degree near 2^n) suffices despite Q_n's specific bipartite cubical structure.",
+      "Erdős noted (1993) that if the conjecture is false, two natural relaxations remain open: minimum m > 2^n suffices, or what threshold function u_n on 2^n suffices.",
+      "Connects to Erdős #576 on extremal edge counts forcing Q_n — both are aspects of cube-containment extremal theory."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Q_n is well-defined as the n-dim hypercube graph on Bool^n with adjacency = Hamming distance 1 (Lean: definitions in Erdos1035Problem.lean).",
+      "Q_n has exactly 2^n vertices (Lean: hypercube_card).",
+      "Q_n is n-regular: every vertex has exactly n neighbors (Lean: hypercube_regular).",
+      "Q_n has n·2^n directed edges, hence n·2^{n-1} undirected edges (Lean: hypercube_n_edge_count, generalizing native_decide checks for n=2,3).",
+      "Q_n is bipartite (parity coloring, Lean: hypercube_bipartite).",
+      "Threshold formulation: HasHypercubeAtThreshold n c iff every graph on 2^n vertices with min-degree > (1-c)·2^n contains Q_n as a subgraph (Lean: HasHypercubeAtThreshold).",
+      "Mathlib API drift repaired (4 sites) during the formalization."
+    ],
+    "open": [
+      "The main conjecture: ∃ c > 0 such that HasHypercubeAtThreshold n c for all n.",
+      "If false, what is the minimum m(n) > 2^n such that every graph on m vertices with min-degree > (1-c)·2^n contains Q_n?",
+      "What threshold u_n satisfies: every graph on 2^n vertices with min-degree > 2^n - u_n contains Q_n?",
+      "Even partial results for small n (n = 3, 4) are not in Mathlib."
+    ],
+    "goal": "Formalize Q_n, the threshold property, and the conjecture statement; provide infrastructure for future containment proofs and extremal counting (relating to Erdős #576)."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -89,12 +107,20 @@
     "erdos-1035"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdős, P. (1993). Some of my favourite problems in number theory, combinatorics, and geometry. (Source per erdosproblems.com #1035, citation Er93.)"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1035",
+      "https://erdosproblems.com/576"
+    ],
+    "mathlib": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Hasse (boolean cube graph structure)"
+    ]
   },
   "started": "2026-01-15T13:59:18.137Z",
-  "lastUpdate": "2026-03-13T07:52:17.056Z",
+  "lastUpdate": "2026-04-28T01:12:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
