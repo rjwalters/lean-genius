@@ -29,7 +29,7 @@ paths of ALL DISTINCT types. This requires careful prefix sum tracking across
 the modular rotation — see the proof sketch in `chung_feller_uniform`.
 -/
 
-import Proofs.BallotProblemOQ01OQ04
+import Proofs.BallotProblemOQ01OQ04Core
 
 set_option maxHeartbeats 400000
 
