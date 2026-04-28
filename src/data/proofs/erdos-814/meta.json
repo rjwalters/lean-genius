@@ -50,15 +50,15 @@
       "edgeThreshold definition: the critical edge count (k-1)(n-k+2) + C(k-2,2) + 1",
       "minDegree definition: minimum degree over all vertices",
       "sauermann_constant axiom: existence of cₖ ≫ 1/k³",
-      "efrs_original_bound: original 1990 bound with √n savings",
-      "mns_bound: 2017 improvement with n/log(n) savings",
       "sauermann_theorem axiom: full 2019 resolution",
       "erdos_814 theorem: main result restated",
       "edgeThreshold_three theorem: k=3 threshold computation",
       "edgeThreshold_two theorem: k=2 threshold computation",
       "erdos_hajnal_case theorem: original k=3 case",
+      "handshaking axiom: edge-degree counting identity",
       "high_degree_exists theorem: degree averaging argument",
-      "erdos_814_summary theorem: comprehensive summary"
+      "erdos_814_summary theorem: comprehensive summary",
+      "Historical bounds (EFRS 1990 √n savings, MNS 2017 n/log n savings) discussed in doc comments; not formalized as separate declarations."
     ],
     "axiomCount": 3,
     "lineCount": 292,
@@ -68,7 +68,7 @@
     "historicalContext": "**Erdős Problem #814: Minimum Degree Subgraphs**\n\nThis problem concerns a fundamental question in extremal graph theory: given a dense graph, can we always find a small induced subgraph with high minimum degree?\n\n**Key History:**\n- Erdős and Hajnal [Er91]: Studied the case k=3 as a standalone problem\n- Erdős, Faudree, Rousseau, Schelp (1990): Formulated the general conjecture and proved the first quantitative bound of n - cₖ√n vertices\n- Mousset, Noever, Skorić (2017): Improved to n - cₖ·n/log(n) vertices\n- Sauermann (2019): Fully resolved the conjecture with cₖ ≫ 1/k³\n\n**Mathematical Setting:**\nThe edge threshold (k-1)(n-k+2) + C(k-2,2) + 1 is precisely chosen. Graphs with fewer edges can be constructed to avoid the desired subgraph, showing the bound is tight. The conjecture asks whether exceeding this threshold by even one edge forces a small minimum-degree-k subgraph.",
     "problemStatement": "**Problem Statement (Proved)**\n\nLet $k \\geq 2$ and $G$ be a graph with $n \\geq k-1$ vertices and\n$$(k-1)(n-k+2) + \\binom{k-2}{2} + 1$$\nedges. Does there exist some $c_k > 0$ such that $G$ must contain an induced subgraph on at most $(1-c_k)n$ vertices with minimum degree at least $k$?\n\n**Answer: YES**\n\nSauermann (2019) proved the conjecture with $c_k \\gg 1/k^3$. This means for any $k$, there exists a constant $c_k$ of order at least $1/k^3$ such that every sufficiently dense graph contains a proper induced subgraph with minimum degree $k$.",
     "text": "For k ≥ 2, does every dense graph contain a small induced subgraph with minimum degree k? YES, proved by Sauermann (2019).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Edge Threshold:** Define the critical edge count using binomial coefficients from Mathlib\n\n2. **Key Axioms:**\n   - sauermann_constant: Existence of cₖ with the right asymptotic behavior\n   - sauermann_theorem: The main result about induced subgraphs\n   - Historical bounds: efrs_original_bound and mns_bound\n\n3. **Main Theorem:** erdos_814 states that for every k ≥ 2, the desired constant exists\n\n4. **Special Cases:** Explicit analysis of k=2 and k=3 cases\n\n5. **Auxiliary Results:** Handshaking lemma and degree averaging arguments",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Edge Threshold:** Define the critical edge count using binomial coefficients from Mathlib\n\n2. **Key Axioms:**\n   - sauermann_constant: Existence of cₖ with the right asymptotic behavior\n   - sauermann_theorem: The main result about induced subgraphs\n   - handshaking: edge–degree counting identity used by the averaging argument\n\n3. **Main Theorem:** erdos_814 states that for every k ≥ 2, the desired constant exists\n\n4. **Special Cases:** Explicit analysis of k=2 and k=3 cases\n\n5. **Auxiliary Results:** Handshaking lemma and degree averaging arguments\n\n6. **Historical Context (doc comments):** The 1990 EFRS √n savings and the 2017 MNS n/log n savings are described in the file's doc comments to motivate the threshold; they are not declared as separate axioms or theorems.",
     "keyInsights": [
       "**Edge Threshold Significance:** The formula (k-1)(n-k+2) + C(k-2,2) + 1 is tight - graphs with one fewer edge can avoid the conclusion",
       "**Progressive Improvement:** The savings went from √n (1990) to n/log(n) (2017) to cn (2019)",
@@ -86,49 +86,49 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "summary": "edgeThreshold, minDegree, subgraphFraction, sauermann_constant",
-      "startLine": 46,
-      "endLine": 80
+      "startLine": 47,
+      "endLine": 81
     },
     {
       "id": "historical-bounds",
       "title": "Historical Progression",
-      "summary": "efrs_original_bound (1990), mns_bound (2017) showing improvement over time",
-      "startLine": 81,
-      "endLine": 119
+      "summary": "Doc-comment narrative tracing the 1990 EFRS √n savings and 2017 MNS n/log n savings (no separate declarations)",
+      "startLine": 82,
+      "endLine": 100
     },
     {
       "id": "sauermann-theorem",
       "title": "Sauermann's Theorem",
       "summary": "sauermann_theorem axiom and erdos_814 main theorem",
-      "startLine": 120,
-      "endLine": 168
+      "startLine": 101,
+      "endLine": 149
     },
     {
       "id": "threshold-analysis",
       "title": "Edge Threshold Analysis",
-      "summary": "edgeThreshold_three, edgeThreshold_two, extremal_construction",
-      "startLine": 169,
-      "endLine": 205
+      "summary": "edgeThreshold_three, edgeThreshold_two, and extremal-construction commentary",
+      "startLine": 150,
+      "endLine": 179
     },
     {
       "id": "erdos-hajnal",
       "title": "Erdős-Hajnal k=3 Case",
       "summary": "The original case with k=3 that started the investigation",
-      "startLine": 206,
-      "endLine": 240
+      "startLine": 180,
+      "endLine": 214
     },
     {
       "id": "degree-bounds",
       "title": "Degree Bounds and Density",
-      "summary": "handshaking lemma, high_degree_exists theorem",
-      "startLine": 241,
-      "endLine": 274
+      "summary": "handshaking axiom and high_degree_exists theorem",
+      "startLine": 215,
+      "endLine": 248
     },
     {
       "id": "main-results",
       "title": "Main Results Summary",
       "summary": "erdos_814_summary, erdos_814_answer theorems",
-      "startLine": 275,
+      "startLine": 249,
       "endLine": 292
     }
   ],
