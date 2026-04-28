@@ -49,11 +49,9 @@
       "IsClique definition: complete subgraph",
       "HasCliqueOfSize definition: clique existence",
       "h axiom: the minimum clique function",
-      "h_spec: achievability of h(n)",
       "erdos_hajnal_lower_bound axiom: h(n) ≫ n^{1/3}",
       "erdos_hajnal_upper_bound axiom: h(n) ≪ n^{1/2}",
       "erdos_hajnal_bounds theorem: combined bounds (proved)",
-      "bucic_sudakov_lower_bound: h(n) ≫ n^{5/12-o(1)} (2023)",
       "five_twelfths_better theorem: 5/12 > 1/3 (proved by norm_num)",
       "exponent_gap theorem: 1/2 - 5/12 = 1/12 (proved by norm_num)",
       "ErdosConjecture813 definition: can exponents be improved?",
@@ -100,36 +98,36 @@
     {
       "id": "function-h",
       "title": "The Function h(n)",
-      "summary": "Definition and specification of h(n)",
+      "summary": "Axiom h: the minimum clique function",
       "startLine": 61,
-      "endLine": 70
+      "endLine": 67
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "summary": "Erdős-Hajnal bounds on h(n)",
-      "startLine": 71,
-      "endLine": 89
+      "startLine": 68,
+      "endLine": 86
     },
     {
       "id": "bucic-sudakov",
       "title": "Bucić-Sudakov Improvement",
-      "summary": "2023 improved lower bound",
-      "startLine": 90,
-      "endLine": 102
+      "summary": "2023 improved lower bound context: five_twelfths_better and exponent_gap theorems",
+      "startLine": 87,
+      "endLine": 95
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "summary": "Can bounds be improved?",
-      "startLine": 103,
-      "endLine": 111
+      "startLine": 96,
+      "endLine": 104
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Main theorem packaging both bounds",
-      "startLine": 112,
+      "startLine": 105,
       "endLine": 118
     }
   ],
