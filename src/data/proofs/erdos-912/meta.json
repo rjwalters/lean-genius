@@ -102,25 +102,33 @@
       "id": "related-properties",
       "title": "Related Properties",
       "startLine": 151,
-      "endLine": 178,
-      "summary": "Monotonicity and maximum exponent properties",
-      "mathContext": "`exponent_monotone`: $m \\leq n \\implies v_p(m!) \\leq v_p(n!)$ (proved via `padicValNat.factorial_le_factorial`). `max_exponent_is_two`: $v_2(n!)$ is the largest exponent. `exponent_of_two`: $v_2(n!) = n - \\text{popcount}(n)$."
+      "endLine": 172,
+      "summary": "Monotonicity of exponents (theorem) plus docstring context on the maximum exponent",
+      "mathContext": "Proves `exponent_monotone`: $m \\leq n \\implies v_p(m!) \\leq v_p(n!)$ via `padicValNat.factorial_le_factorial`. Two further docstrings (the maximum exponent in $n!$ being $v_2(n!)$, and $v_2(n!) = n - \\text{popcount}(n)$) appear as narrative only — no `max_exponent_is_two` or `exponent_of_two` declaration exists in this file."
     },
     {
       "id": "small-values",
       "title": "Small Values",
-      "startLine": 179,
-      "endLine": 199,
-      "summary": "Values of h(n) for small n (OEIS A071626)",
-      "mathContext": "Axiomatized: $h(1)=0, h(2)=1, h(3)=1, h(4)=2, h(10)=3, h(20)=4, h(100) \\geq 7$. OEIS A071626 sequence. Helps verify the definition and calibrate expectations."
+      "startLine": 173,
+      "endLine": 187,
+      "summary": "Docstring context for h(n) on small n (OEIS A071626)",
+      "mathContext": "Two docstrings give h(n) for small $n$ ($h(1)=0, h(2)=1, h(3)=1, h(4)=2, \\ldots$) and reference the OEIS A071626 sequence. No axioms or theorems are declared in this section — it is narrative context only."
     },
     {
       "id": "difficulty",
       "title": "Why the Conjecture is Hard",
-      "startLine": 200,
-      "endLine": 221,
-      "summary": "Connections to prime distribution",
-      "mathContext": "Placeholder axioms `conjecture_difficulty` and `prime_distribution_connection` (both `True`). The key difficulty is closing the gap between constants $c_1$ and $c_2$ to a single $c$, which requires understanding fine prime gap statistics."
+      "startLine": 188,
+      "endLine": 201,
+      "summary": "Docstring context on why pinning down the constant is hard",
+      "mathContext": "Two docstrings describe the key difficulty (closing the gap between $c_1$ and $c_2$ to a single $c$, which requires fine prime-distribution information) and the connection to prime gap statistics. No `conjecture_difficulty` or `prime_distribution_connection` axiom or theorem exists in this file — these are narrative docstrings only."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 202,
+      "endLine": 220,
+      "summary": "Summary theorem packaging the Erdős-Selfridge bounds",
+      "mathContext": "Proves `erdos_912_summary`, which restates `erdos_selfridge_asymptotic`: there exist $c_1, c_2 > 0$ and $N_0$ such that for $n \\geq N_0$, $c_1\\sqrt{n/\\log n} \\leq h(n) \\leq c_2\\sqrt{n/\\log n}$. A trailing docstring notes that the exact $c$ is unknown and Tao conjectures $c = \\sqrt{2\\pi}$."
     }
   ],
   "conclusion": {
