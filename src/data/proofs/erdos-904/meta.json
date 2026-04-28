@@ -61,10 +61,6 @@
       "BollobasErdosConjecture: formal conjecture statement",
       "edwards_1978: the conjecture is true (axiom)",
       "erdos_904: main theorem",
-      "complete_bipartite_triangle_free: sharpness of threshold",
-      "turan_extremal: Turán's theorem on extremality",
-      "degree_sum_tight: 3/2 is optimal",
-      "supersaturation: many triangles above threshold",
       "erdos_904_main: instantiated main theorem"
     ],
     "axiomCount": 1,
@@ -75,7 +71,7 @@
     "historicalContext": "Turán's theorem (1941) is the cornerstone of extremal graph theory: the maximum number of edges in a triangle-free graph on $n$ vertices is $\\lfloor n^2/4 \\rfloor$, achieved uniquely by the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. Any graph exceeding this threshold must contain a triangle.\n\nBéla Bollobás and Paul Erdős asked a deeper question: can we find not just ANY triangle, but one whose vertices have high combined degree? Specifically, they conjectured that any graph with $n$ vertices and more than $n^2/4$ edges contains a triangle $\\{x, y, z\\}$ with $d(x) + d(y) + d(z) \\geq \\frac{3}{2}n$. C.S. Edwards (1978) [Ed78] proved this conjecture using degree counting arguments and careful vertex selection.\n\nThe constant $\\frac{3}{2}$ is optimal: for any $\\varepsilon > 0$ and large $n$, there exist dense graphs where some triangle has degree sum below $(\\frac{3}{2}+\\varepsilon)n$. The result is an early example of 'structured extremal' results—not just proving existence of a subgraph, but finding one with additional properties. It prefigures modern supersaturation and stability results in extremal combinatorics.",
     "problemStatement": "If $G$ is a graph with $n$ vertices and more than $n^2/4$ edges, then $G$ contains a triangle on vertices $x, y, z$ such that\n$$d(x) + d(y) + d(z) \\geq \\frac{3}{2}n$$\nwhere $d(v)$ denotes the degree of vertex $v$ in $G$.\n\n**Solved** by Edwards (1978). The constant $\\frac{3}{2}$ is best possible.",
     "text": "If G is a graph with n vertices and more than n²/4 edges, then it contains a triangle on vertices x, y, z such that d(x) + d(y) + d(z) ≥ (3/2)n. This was conjectured by Bollobás and Erdős and proved by Edwards in 1978.",
-    "proofStrategy": "The formalization uses Mathlib's `SimpleGraph` framework. The key definitions are `IsDense G` (edgeCount > $n^2/4$), `IsTriangle G x y z` (three mutually adjacent vertices), and `HasHighDegreeSum G x y z` ($2(d(x)+d(y)+d(z)) \\geq 3n$, avoiding fractions). Edwards' theorem is axiomatized as `BollobasErdosConjecture`, with supporting results on sharpness (complete bipartite graph achieves the threshold), Turán extremality, degree sum tightness ($\\frac{3}{2}$ is optimal), and supersaturation (many triangles above threshold).",
+    "proofStrategy": "The formalization uses Mathlib's `SimpleGraph` framework. The key definitions are `IsDense G` (edgeCount > $n^2/4$), `IsTriangle G x y z` (three mutually adjacent vertices), and `HasHighDegreeSum G x y z` ($2(d(x)+d(y)+d(z)) \\geq 3n$, avoiding fractions). Edwards' theorem is encoded as the axiom `edwards_1978 : BollobasErdosConjecture`, from which `erdos_904` and `erdos_904_main` are derived. Supporting structural results — complete bipartite sharpness, Turán extremality, degree sum tightness, and supersaturation — are described in docstrings as informal mathematical context but are not separately formalized as Lean theorems.",
     "keyInsights": [
       "**Turán foundation**: $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$; exceeding this forces a triangle. The Bollobás-Erdős conjecture asks for a STRUCTURED triangle",
       "**Integer encoding**: The condition $d(x)+d(y)+d(z) \\geq \\frac{3}{2}n$ is formalized as $2(d(x)+d(y)+d(z)) \\geq 3n$ to stay in $\\mathbb{N}$",
@@ -149,17 +145,17 @@
       "id": "sharpness",
       "title": "Sharpness and Extremality",
       "startLine": 142,
-      "endLine": 161,
-      "summary": "`complete_bipartite_triangle_free` ($K_{n/2,n/2}$ achieves $\\lfloor n^2/4 \\rfloor$ edges, no triangles), `turan_extremal` (no triangle-free graph exceeds $\\lfloor n^2/4 \\rfloor$)",
-      "mathContext": "`complete_bipartite_triangle_free` ($K_{n/2,n/2}$ achieves $\\lfloor $n^{2}$/4 \\rfloor$ edges, no triangles), `turan_extremal` (no triangle-free graph exceeds $\\lfloor $n^{2}$/4 \\rfloor$)"
+      "endLine": 147,
+      "summary": "Docstring commentary: complete bipartite $K_{n/2,n/2}$ achieves $\\lfloor n^2/4 \\rfloor$ edges and is triangle-free; no triangle-free graph exceeds the Turán threshold (informal context, no Lean theorem).",
+      "mathContext": "Mathematical context (docstrings only, not formalized): complete bipartite sharpness and Turán extremality of the $\\lfloor n^2/4 \\rfloor$ edge bound."
     },
     {
       "id": "stronger-results",
       "title": "Stronger Results",
-      "startLine": 162,
+      "startLine": 148,
       "endLine": 171,
-      "summary": "`degree_sum_tight` ($\\frac{3}{2}$ is best possible), `supersaturation` (dense graphs have many triangles)",
-      "mathContext": "Mathematical content: `degree_sum_tight` ($\\frac{3}{2}$ is best possible), `supersaturation` (dense graphs have many triangles)"
+      "summary": "Docstring commentary on degree-sum tightness ($\\frac{3}{2}$ optimal) and supersaturation (many triangles above threshold); informal context only, plus the final `erdos_904_main` theorem at line 166.",
+      "mathContext": "Mathematical context (docstrings only, not formalized): degree-sum tightness and supersaturation. Concrete content: `erdos_904_main` instantiated from `edwards_1978`."
     }
   ],
   "conclusion": {
