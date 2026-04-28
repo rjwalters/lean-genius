@@ -72,70 +72,70 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 36,
-      "endLine": 44,
-      "summary": "Imports `SimpleGraph.Basic`, `SimpleGraph.Coloring`, `SimpleGraph.Subgraph` from Mathlib. Opens `Nat` and `SimpleGraph` namespaces for clean notation.",
-      "mathContext": "Mathematical content: Imports `SimpleGraph.Basic`, `SimpleGraph.Coloring`, `SimpleGraph.Subgraph` from Mathlib. Opens `Nat` and `SimpleGraph` namespaces for clean notation."
+      "endLine": 46,
+      "summary": "Imports `SimpleGraph.Basic`, `SimpleGraph.Coloring`, `SimpleGraph.Subgraph` from Mathlib plus the in-repo `Proofs.GraphCore` (which supplies `chromaticNumber` and `IsKColorable`). Opens `Nat`, `GraphCore`, and `SimpleGraph` (hiding Mathlib's `chromaticNumber`).",
+      "mathContext": "Imports `SimpleGraph.Basic`, `SimpleGraph.Coloring`, `SimpleGraph.Subgraph` from Mathlib plus the in-repo `Proofs.GraphCore` (which supplies `chromaticNumber` and `IsKColorable`). Opens `Nat`, `GraphCore`, and `SimpleGraph` (hiding Mathlib's `chromaticNumber`)."
     },
     {
       "id": "chromatic-defs",
       "title": "Graph Colorings and Chromatic Number",
-      "startLine": 45,
-      "endLine": 70,
-      "summary": "Defines $\\chi(G) = \\inf\\{k : \\exists\\, c : G.\\text{Coloring}(\\text{Fin}\\,k)\\}$, `IsKColorable` ($\\chi(G) \\leq k$), and `HasChromaticNumberAtLeast` ($\\chi(G) \\geq k$). These form the vocabulary for stating Rödl's theorem.",
-      "mathContext": "Defines $\\chi(G) = \\inf\\{k : \\exists\\, c : G.\\text{Coloring}(\\text{Fin}\\,k)\\}$, `IsKColorable` ($\\chi(G) \\leq k$), and `HasChromaticNumberAtLeast` ($\\chi(G) \\geq k$). These form the vocabulary for stating Rödl's theorem."
+      "startLine": 47,
+      "endLine": 57,
+      "summary": "Defines `HasChromaticNumberAtLeast G k := chromaticNumber G ≥ k`. The underlying `chromaticNumber` and `IsKColorable` definitions are imported from `Proofs.GraphCore`; this section only adds the ≥-flavored predicate used to state Rödl's theorem.",
+      "mathContext": "Defines `HasChromaticNumberAtLeast G k := chromaticNumber G ≥ k`. The underlying `chromaticNumber` and `IsKColorable` definitions are imported from `Proofs.GraphCore`; this section only adds the ≥-flavored predicate used to state Rödl's theorem."
     },
     {
       "id": "triangle-free",
       "title": "Triangle-Free Graphs",
-      "startLine": 71,
-      "endLine": 97,
+      "startLine": 58,
+      "endLine": 84,
       "summary": "Defines `HasTriangle` ($\\exists$ three pairwise adjacent vertices) and `IsTriangleFree` ($\\neg\\text{HasTriangle}$). Proves `emptyGraph_triangleFree`: $\\bot$ is triangle-free via `push_neg` and `bot_adj`.",
       "mathContext": "Defines `HasTriangle` ($\\exists$ three pairwise adjacent vertices) and `IsTriangleFree` ($\\neg\\text{HasTriangle}$). Proves `emptyGraph_triangleFree`: $\\bot$ is triangle-free via `push_neg` and `bot_adj`."
     },
     {
       "id": "subgraphs",
       "title": "Subgraphs",
-      "startLine": 98,
-      "endLine": 121,
+      "startLine": 85,
+      "endLine": 97,
       "summary": "Defines `IsSpanningSubgraph` ($E(H) \\subseteq E(G)$, same vertices). Subgraph monotonicity ($\\chi(H) \\leq \\chi(G)$) is described in a docstring only — no axiom or theorem is declared in this section, and there is no `inducedSubgraph` definition.",
       "mathContext": "Formal definition: `IsSpanningSubgraph`. The subgraph-monotonicity property is described in docstring only; no `inducedSubgraph` definition or χ-monotonicity axiom exists in this file."
     },
     {
       "id": "mycielski",
       "title": "Mycielski's Construction",
-      "startLine": 122,
-      "endLine": 133,
+      "startLine": 98,
+      "endLine": 104,
       "summary": "Docstring section describing Mycielski's 1955 theorem ($\\forall k,\\, \\exists G$ triangle-free with $\\chi(G) \\geq k$) and the Mycielskian construction $\\mu(G)$. No `mycielski_*` axiom or theorem is declared in this file.",
       "mathContext": "Docstring-only context: Mycielski's 1955 theorem and the Mycielskian construction $\\mu(G)$. Not formalized — no axiom or theorem declared in this section."
     },
     {
       "id": "main-theorem",
       "title": "Rödl's Theorem",
-      "startLine": 134,
-      "endLine": 164,
+      "startLine": 105,
+      "endLine": 135,
       "summary": "Axiomatizes Rödl (1977): $\\forall k,\\, \\exists f_k$ such that $\\chi(G) \\geq f_k \\Rightarrow G$ has a triangle-free spanning subgraph with $\\chi \\geq k$. The corollary `erdos_923_true := rodl_1977` gives the formal answer to Problem #923.",
       "mathContext": "Axiomatizes Rödl (1977): $\\forall k,\\, \\exists f_k$ such that $\\chi(G) \\geq f_k \\Rightarrow G$ has a triangle-free spanning subgraph with $\\chi \\geq k$."
     },
     {
       "id": "bounds",
       "title": "Tower Function Bounds",
-      "startLine": 165,
-      "endLine": 199,
+      "startLine": 136,
+      "endLine": 170,
       "summary": "Defines $\\text{tower}(0) = 1$, $\\text{tower}(n+1) = 2^{\\text{tower}(n)}$. Verifies values $1, 2, 4, 16, 65536$ computationally. Axiomatizes $f(k) \\leq \\text{tower}(C \\cdot k)$ for a universal constant $C$.",
       "mathContext": "Defines $\\text{tower}(0) = 1$, $\\text{tower}(n+1) = 2^{\\text{tower}(n)}$. Verifies values $1, 2, 4, 16, 65536$ computationally. Axiomatizes $f(k) \\leq \\text{tower}(C \\cdot k)$ for a universal constant $C$."
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
-      "startLine": 200,
-      "endLine": 227,
+      "startLine": 171,
+      "endLine": 193,
       "summary": "Defines `HFreeSubgraphProblem` for arbitrary forbidden subgraph $H$. Rödl's generalization (the $H$-free version for bipartite $H$) is described in a docstring only — no axiom or theorem is declared. Connects to Erdős Problem #108.",
       "mathContext": "Defines `HFreeSubgraphProblem` for arbitrary forbidden subgraph $H$. Rödl's bipartite-$H$ generalization appears in docstring only; not formalized as an axiom or theorem."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 228,
+      "startLine": 194,
       "endLine": 230,
       "summary": "The summary theorem `erdos_923_summary` packages both Rödl's qualitative result (YES) and quantitative bound ($\\text{tower}(O(k))$) as a conjunction, proved by `⟨rodl_1977, rodl_bound⟩`.",
       "mathContext": "The summary theorem `erdos_923_summary` packages both Rödl's qualitative result (YES) and quantitative bound ($\\text{tower}($O(k)$)$) as a conjunction, proved by `⟨rodl_1977, rodl_bound⟩`."
