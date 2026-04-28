@@ -52,9 +52,10 @@
       "Definition of f(n) as supremum over achievable values",
       "WeakConjecture: f(n) ≤ n^{o(1)}",
       "StrongConjecture: f(n) < n^{c/log log n}",
-      "Axioms for Pach-Sharir and JJMT bounds",
-      "Axiom for lattice lower bound",
-      "Fishburn's small value computations"
+      "Lemma hasEquidistantProperty_le and theorem f_le_n_minus_one (trivial bound f(n) ≤ n - 1)",
+      "Theorem strong_implies_weak: StrongConjecture → WeakConjecture",
+      "Helper lemma rpow_le_rpow_of_exponent_le' for monotonicity in the exponent",
+      "Pach-Sharir, JJMT, lattice lower bound, and Fishburn small-value results are referenced in docstrings only — not formalized as axioms or theorems"
     ],
     "axiomCount": 3,
     "lineCount": 230,
@@ -64,7 +65,7 @@
     "historicalContext": "This problem concerns the equidistance structure of point sets in the plane. For each point x in a set A, we count how many other points lie on a single circle centered at x (i.e., are equidistant from x).\n\nThe function f(n) is the maximum k such that some n-point set has at least k equidistant points from EVERY point in the set. This is a 'stronger form' of the unit distance problem (#90).\n\nThe √n × √n integer lattice achieves f(n) > n^{c/log log n}, while the best upper bound is f(n) ≪ n^{4/11} from recent work by Janzer, Janzer, Methuku, and Tardos (2024).",
     "problemStatement": "**Erdős Problem #92 (OPEN)**\n\nLet $f(n)$ be maximal such that there exists a set $A$ of $n$ points in $\\mathbb{R}^2$ where every $x \\in A$ has at least $f(n)$ points in $A$ equidistant from $x$.\n\n**Questions**:\n1. Is $f(n) \\leq n^{o(1)}$? (weak form)\n2. Is $f(n) < n^{c/\\log\\log n}$? (strong form)\n\n**Known Bounds**:\n- Lower: $f(n) > n^{c/\\log\\log n}$ (lattice)\n- Upper: $f(n) \\ll n^{4/11}$ (JJMT 2024)\n\n**Prize**: $500",
     "text": "Is f(n) ≤ n^{o(1)}, where f(n) is the maximum k such that some n-point set has k equidistant points from every point?",
-    "proofStrategy": "We formalize the key concepts and known bounds:\n\n1. **maxEquidistantPoints**: Maximum points at same distance from x\n\n2. **hasEquidistantProperty**: k-equidistant property for a set\n\n3. **f**: The extremal function as supremum\n\n4. **WeakConjecture**: f(n) ≤ n^ε for all ε > 0\n\n5. **StrongConjecture**: f(n) < n^{c/log log n}\n\n6. **Known bounds** (axioms): Pach-Sharir, JJMT, lattice lower bound",
+    "proofStrategy": "We formalize the key concepts and the trivial bound, with three supporting axioms:\n\n1. **maxEquidistantPoints**: Maximum points at same distance from x\n\n2. **hasEquidistantProperty**: k-equidistant property for a set\n\n3. **f**: The extremal function as supremum\n\n4. **WeakConjecture**: f(n) ≤ n^ε for all ε > 0\n\n5. **StrongConjecture**: f(n) < n^{c/log log n}\n\n6. **Trivial upper bound** f(n) ≤ n - 1, proved as theorem f_le_n_minus_one from axiom maxEquidistantPoints_le_card_sub_one and axiom achievableValues_nonempty\n\n7. **strong_implies_weak**: theorem deriving the weak conjecture from the strong one, using axiom eventually_exponent_small\n\nThe Pach-Sharir n^{2/5} bound, JJMT n^{4/11} bound, lattice lower bound, and Fishburn's exact small-n values are described in docstrings as historical context but are not formalized — no axioms or theorems are stated for them.",
     "keyInsights": [
       "**Circle counting**: For each point, we count how many others lie on the same circle centered at that point.",
       "**Universal property**: f(n) requires the k-equidistant property for ALL points in the set, not just one.",
@@ -113,21 +114,28 @@
       "title": "Known Bounds",
       "startLine": 103,
       "endLine": 148,
-      "summary": "Axioms for upper and lower bounds."
+      "summary": "Axiom maxEquidistantPoints_le_card_sub_one and axiom achievableValues_nonempty, lemma hasEquidistantProperty_le, and theorem f_le_n_minus_one (the trivial upper bound f(n) ≤ n - 1)."
+    },
+    {
+      "id": "narrative-bounds",
+      "title": "Narrative Bound References",
+      "startLine": 149,
+      "endLine": 170,
+      "summary": "Docstring-only descriptions of the Square Root Bound, Pach-Sharir n^{2/5}, JJMT n^{4/11}, and lattice n^{c/log log n} bounds — none formalized."
     },
     {
       "id": "small-values",
       "title": "Small Values",
-      "startLine": 149,
-      "endLine": 164,
-      "summary": "Fishburn's computations for small n."
+      "startLine": 171,
+      "endLine": 182,
+      "summary": "Docstring-only mentions of Fishburn's computations f(6) = 3 and f(8) = 4 — not formalized."
     },
     {
       "id": "consequences",
       "title": "Consequences",
-      "startLine": 165,
+      "startLine": 183,
       "endLine": 230,
-      "summary": "Relations between conjectures and historical notes."
+      "summary": "Axiom eventually_exponent_small, helper lemma rpow_le_rpow_of_exponent_le', theorem strong_implies_weak, and historical notes."
     }
   ],
   "conclusion": {
