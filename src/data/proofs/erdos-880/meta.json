@@ -46,13 +46,13 @@
       "gapSupremum / hasBoundedGaps: gap function Δ(B) and boundedness",
       "burrErdosQuestion: the formal question parametrized by k",
       "k2_bounded_gaps: axiom for k=2 positive case",
-      "k2_parity_argument: parity-based near-representation axiom",
-      "k2_gap_bound_tight: tightness of gap bound 2",
+      "parity argument: odd-n near-representation reasoning for k=2 (mathematical context in docstrings; not axiomatized)",
+      "gap bound tightness for k=2 (mathematical context; not axiomatized in this file)",
       "k_ge_3_unbounded_gaps: axiom for k≥3 negative case",
-      "k_ge_3_counterexample_construction: quantitative counterexample axiom",
+      "counterexample construction for k≥3 (mathematical context; not axiomatized in this file)",
       "burr_erdos_complete_answer: combined theorem (proved from axioms)",
       "erdos_880_status / erdos_880_resolved: final dichotomy theorems (proved)",
-      "parity_argument_detail / parity_fails_k3: detailed parity analysis axioms",
+      "detailed parity analysis for k=2 and k=3 (mathematical context in docstrings; not axiomatized)",
       "representationFunction: counting distinct-element representations"
     ],
     "axiomCount": 2,
@@ -64,7 +64,7 @@
     "historicalContext": "This problem was posed by Burr and Erdős and addresses a fundamental question in additive combinatorics: how does the restriction to distinct summands affect the gap structure of additive bases? An additive basis $A$ of order $k$ satisfies $kA \\supseteq [N_0, \\infty)$ — every large integer is a sum of at most $k$ elements of $A$ (with repetition). The restricted sumset $k \\times A$ allows only sums of distinct elements. Burr and Erdős asked: if $kA \\sim \\mathbb{N}$, must $\\Delta(k \\times A) < \\infty$? Hegyvári, Hennecart, and Plagne completely resolved this in their 2007 paper, discovering a surprising dichotomy. For $k = 2$, the answer is YES with the tight bound $\\Delta(2 \\times A) \\leq 2$, proved by an elegant parity argument: sums $a + a$ are always even, so every odd number in $2A$ must be $a + b$ with $a \\neq b$, hence in $2 \\times A$. Since $2A$ contains all large integers of both parities, odd numbers appear densely in $2 \\times A$, bounding gaps to $2$. For $k \\geq 3$, the answer is NO: there exist bases $A$ with $kA \\sim \\mathbb{N}$ but $\\Delta(k \\times A) = \\infty$. The parity trick fails because sums of $3$ or more distinct elements have no forced parity structure, allowing carefully constructed counterexamples. This result beautifully illustrates how the 'distinct elements' constraint can fundamentally alter combinatorial behavior.",
     "problemStatement": "Let $A \\subset \\mathbb{N}$ be an additive basis of order $k$. Let $B = \\{b_1 < b_2 < \\cdots\\}$ be the elements of $k \\times A$ (sums of at most $k$ distinct elements of $A$). Is it true that $b_{n+1} - b_n = O(1)$?\n\nAnswer (HHP 2007):\n- $k = 2$: YES, $\\Delta(2 \\times A) \\leq 2$ (tight)\n- $k \\geq 3$: NO, $\\exists\\, A$ with $\\Delta(k \\times A) = \\infty$",
     "text": "If A is an additive basis of order k, are gaps in the restricted sumset k×A (sums of distinct elements) bounded? Answer: YES for k=2 (gaps ≤ 2), NO for k≥3. Solved by Hegyvári-Hennecart-Plagne (2007).",
-    "proofStrategy": "The formalization (297 lines) captures: (1) `isAdditiveBasis` via `Finset` sums with `card ≤ k`. (2) `kFoldSumset` (unrestricted) and `restrictedKFoldSumset` (distinct elements via `Finset`). (3) `gapSupremum` using `ℕ∞` and `hasBoundedGaps` for uniform gap bounds. (4) `burrErdosQuestion k` as a universally quantified property. (5) The $k=2$ case: `k2_bounded_gaps` (axiom), `k2_parity_argument` (near-representation axiom), and `k2_gap_bound_tight` (tightness). (6) The $k \\geq 3$ case: `k_ge_3_unbounded_gaps` (axiom) and quantitative counterexample construction. (7) Three fully proved theorems: `burr_erdos_complete_answer`, `erdos_880_status`, and `erdos_880_resolved` combining the axiomatized cases. (8) Detailed parity analysis (`parity_argument_detail`, `parity_fails_k3`) and the representation function.",
+    "proofStrategy": "The formalization (297 lines) captures: (1) `isAdditiveBasis` via `Finset` sums with `card ≤ k`. (2) `kFoldSumset` (unrestricted) and `restrictedKFoldSumset` (distinct elements via `Finset`). (3) `gapSupremum` using `ℕ∞` and `hasBoundedGaps` for uniform gap bounds. (4) `burrErdosQuestion k` as a universally quantified property. (5) The $k=2$ case: `k2_bounded_gaps` (axiom), parity near-representation reasoning (docstring context; not axiomatized), and gap bound tightness (mathematical context; not axiomatized). (6) The $k \\geq 3$ case: `k_ge_3_unbounded_gaps` (axiom) and quantitative counterexample construction. (7) Three fully proved theorems: `burr_erdos_complete_answer`, `erdos_880_status`, and `erdos_880_resolved` combining the axiomatized cases. (8) Detailed parity analysis (parity argument detail and k=3 parity failure — docstring context; not axiomatized) and the representation function.",
     "keyInsights": [
       "**Parity dichotomy**: The answer splits at $k = 2$ vs $k \\geq 3$ due to parity. For $k = 2$, sums $a + a = 2a$ are always even, forcing all odd elements of $2A$ into $2 \\times A$. For $k \\geq 3$, sums of distinct elements can have any parity, removing this structural constraint.",
       "**Tight bound for $k = 2$**: The gap bound $\\Delta(2 \\times A) \\leq 2$ is best possible. There exist bases $A$ with $2A \\sim \\mathbb{N}$ where gaps of exactly $2$ occur infinitely often in $2 \\times A$ — consecutive odd numbers in $2 \\times A$ can be separated by an even number not in $2 \\times A$.",
@@ -141,8 +141,8 @@
       "title": "Parity Argument in Detail",
       "startLine": 228,
       "endLine": 255,
-      "summary": "Detailed axioms: `parity_argument_detail` (odd $n \\in 2A \\implies$ distinct-pair representation) and `parity_fails_k3` (odd $n \\in 3A$ with no all-distinct representation).",
-      "mathContext": "Axiomatized: Detailed axioms: `parity_argument_detail` (odd $n \\in 2A \\implies$ distinct-pair representation) and `parity_fails_k3` (odd $n \\in 3A$ with no all-distinct representation)."
+      "summary": "Detailed parity analysis: odd n ∈ 2A implies distinct-pair representation; odd n ∈ 3A has no all-distinct representation. These results are described in docstring comments as mathematical context but are not axiomatized in this file.",
+      "mathContext": "Detailed parity analysis: odd n ∈ 2A implies distinct-pair representation; odd n ∈ 3A has no all-distinct representation. These results are described in docstring comments as mathematical context but are not axiomatized in this file."
     },
     {
       "id": "summary",
