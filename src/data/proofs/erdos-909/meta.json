@@ -47,12 +47,11 @@
     "originalContributions": [
       "Axiomatized covering dimension predicate (coveringDimension X n) since Mathlib lacks this notion",
       "Formal definition of hasDimensionExactly with n > 0 guard for exact dimension",
-      "Axiomatized product dimension inequality dim(X×Y) ≤ dim(X) + dim(Y)",
       "Formal statement erdos909Statement: ∀ n ≥ 1, ∃ S, dim(S) = n ∧ dim(S×S) = n",
       "Axiomatized rational Hilbert space ℓ²(ℚ) as concrete n=1 example",
       "Axiomatized Anderson-Keisler theorem with MetrizableSpace witness for all n ≥ 1",
       "Proved erdos_909 by extracting TopologicalSpace from MetrizableSpace witness",
-      "Background results: dimension_euclidean (dim(ℝ^n) = n) and dimension_subspace (monotonicity)"
+      "Combined erdos_909_summary theorem packaging the general result with the explicit n=1 witness"
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 3,
@@ -63,7 +62,7 @@
     "historicalContext": "Covering dimension (Lebesgue dimension) is a fundamental topological invariant: dim(X) ≤ n means every finite open cover of X admits a refinement of order at most n+1. For well-behaved spaces, the product inequality dim(X × Y) ≤ dim(X) + dim(Y) holds with equality — for example, dim([0,1]^n) = n and dim([0,1]^n × [0,1]^m) = n+m. Erdős asked whether this equality can fail, and Anderson and Keisler (1967) gave the definitive answer: for every n ≥ 1, there exist separable metric spaces S_n with dim(S_n) = n and dim(S_n × S_n) = n, the most extreme possible violation. For n = 1, the classical example is ℓ²(ℚ) — rational points in Hilbert space — a countable dense totally disconnected subset of ℓ² with covering dimension 1 whose square also has dimension 1. This was known earlier through work of Erdős and Sierpiński. The general construction uses techniques from descriptive set theory (absolute Borel sets, decomposition theorems) to select subsets of n-dimensional spaces whose open covers interact efficiently in the product.",
     "problemStatement": "**Erdős Problem #909** (SOLVED, Anderson-Keisler 1967):\n\nFor every n ≥ 1, does there exist a topological space S with dim(S) = n such that dim(S × S) = n?\n\n**Answer**: YES. For all n ≥ 1, separable metric spaces with this property exist.\n\n**For n = 1**: ℓ²(ℚ) (rational Hilbert space) is an explicit example.\n**For general n**: Anderson-Keisler construction via descriptive set theory.",
     "text": "Is there a space S of dimension n such that S² also has dimension n? YES (Anderson-Keisler 1967). For all n ≥ 1, such separable metric spaces exist, showing the product dimension inequality dim(X×Y) ≤ dim(X)+dim(Y) can fail maximally.",
-    "proofStrategy": "The formalization axiomatizes covering dimension (not in Mathlib) and proceeds in layers: (1) Define coveringDimension as an axiom predicate; (2) Define hasDimensionExactly as dim ≤ n AND not dim ≤ n-1; (3) Axiomatize the product dimension inequality; (4) State erdos909Statement as ∀ n ≥ 1, ∃ S with exact dimension n in both S and S×S; (5) Axiomatize the n=1 example (rational Hilbert space) and the Anderson-Keisler theorem for all n; (6) Prove erdos_909 by extracting TopologicalSpace from the MetrizableSpace witness of Anderson-Keisler; (7) Provide background results on Euclidean dimension and subspace monotonicity.",
+    "proofStrategy": "The formalization axiomatizes covering dimension (not in Mathlib) and proceeds in layers: (1) Define coveringDimension as an axiom predicate; (2) Define hasDimensionExactly as dim ≤ n AND not dim ≤ n-1; (3) State erdos909Statement as ∀ n ≥ 1, ∃ S with exact dimension n in both S and S×S; (4) Axiomatize the n=1 example (rational Hilbert space) and the Anderson-Keisler theorem for all n; (5) Prove erdos_909 by extracting TopologicalSpace from the MetrizableSpace witness of Anderson-Keisler; (6) Package the result with the n=1 witness in erdos_909_summary. Docstrings reference the product dimension inequality and Euclidean/subspace dimension as background, but these are not formalized in this file.",
     "keyInsights": [
       "The product dimension inequality dim(X×Y) ≤ dim(X)+dim(Y) is typically an equality for 'nice' spaces, making dim(S×S) = dim(S) = n (instead of 2n) deeply surprising",
       "For n = 1, the explicit witness ℓ²(ℚ) is countable, dense, and totally disconnected — its 'gaps' allow efficient cover refinement even in the product",
@@ -81,43 +80,43 @@
       "id": "covering-dimension",
       "title": "Covering Dimension",
       "startLine": 27,
-      "endLine": 52,
-      "summary": "Axiomatizes coveringDimension X n (dim ≤ n), defines hasDimensionExactly with n > 0 guard, and axiomatizes the product inequality dim(X×Y) ≤ dim(X)+dim(Y)."
+      "endLine": 48,
+      "summary": "Axiomatizes coveringDimension X n (dim ≤ n) and defines hasDimensionExactly with an n > 0 guard. The product dimension inequality dim(X×Y) ≤ dim(X)+dim(Y) is described in a docstring but not formalized."
     },
     {
       "id": "problem-statement",
       "title": "Formal Problem Statement",
-      "startLine": 53,
-      "endLine": 63,
+      "startLine": 49,
+      "endLine": 59,
       "summary": "Defines erdos909Statement: ∀ n ≥ 1, ∃ S with TopologicalSpace, hasDimensionExactly S n ∧ hasDimensionExactly (S×S) n."
     },
     {
       "id": "n-equals-1",
       "title": "Known Results for n=1",
-      "startLine": 64,
-      "endLine": 75,
+      "startLine": 60,
+      "endLine": 71,
       "summary": "Axiomatizes rational_hilbert_example: ℓ²(ℚ) has dim = 1 and dim of square = 1. Classical example predating the general result."
     },
     {
       "id": "anderson-keisler",
       "title": "Anderson-Keisler Theorem (1967)",
-      "startLine": 76,
-      "endLine": 101,
-      "summary": "Axiomatizes the main result: ∀ n ≥ 1, ∃ separable metric S with dim(S) = n ∧ dim(S×S) = n. Proves erdos_909 by dropping MetrizableSpace witness."
+      "startLine": 72,
+      "endLine": 97,
+      "summary": "Axiomatizes the main result: ∀ n ≥ 1, ∃ separable metric S with dim(S) = n ∧ dim(S×S) = n. Proves erdos_909 by dropping the MetrizableSpace witness and exposing the underlying TopologicalSpace."
     },
     {
       "id": "supporting-results",
-      "title": "Supporting Results",
-      "startLine": 102,
-      "endLine": 110,
-      "summary": "Background: dimension_euclidean (dim(ℝ^n) = n) and dimension_subspace (monotonicity: Y ⊆ X → dim(Y) ≤ dim(X))."
+      "title": "Supporting Results (Docstrings Only)",
+      "startLine": 98,
+      "endLine": 101,
+      "summary": "Header section containing only docstrings that reference dim(ℝ^n) = n and subspace monotonicity. No definitions or theorems are stated for these results in this file."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 111,
+      "startLine": 102,
       "endLine": 125,
-      "summary": "Combined theorem: erdos909Statement holds (all n ≥ 1) and an explicit n=1 example exists (rational Hilbert space)."
+      "summary": "Combined theorem erdos_909_summary: erdos909Statement holds (all n ≥ 1) and an explicit n=1 example exists (rational Hilbert space)."
     }
   ],
   "conclusion": {
