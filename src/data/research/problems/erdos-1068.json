@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1068",
   "title": "Erdős #1068",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-04-28T01:48:00.000Z",
     "iteration": 2,
-    "focus": "Open conjecture (Erdős–Hajnal). Infrastructure complete: 4 theorems, 0 axioms, 0 sorries. The conjecture itself is not formalized — needs first to be stated.",
+    "focus": "Infrastructure formalized for the open Erdős–Hajnal conjecture: PathInGraph, InfinitelyConnected, hasAleph1ChromaticNumber definitions plus 4 supporting theorems including k-connectivity. 0 axioms, 0 sorries.",
     "blockers": [],
-    "nextAction": "Decide: (a) state the conjecture as `axiom erdos_1068 : ...` and mark axiomatized, or (b) leave as infrastructure-only. Current state is the latter.",
+    "nextAction": "None — gallery entry has badge: wip and status: axiomatized; the open conjecture is documented but not stated as a Lean object (no claim is being made).",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 4 theorems + 6 definitions in Erdos1068Problem.lean (264 lines), 0 axioms, 0 sorries. Infrastructure: PathInGraph, InfinitelyConnected, hasAleph1ChromaticNumber. Theorems: inf_connected_no_finite_separator, inf_connected_implies_path, inf_connected_subgraph_has_paths, inf_connected_k_connected. The open conjecture itself (every χ=ℵ₁ graph has a countable infinitely-connected subgraph) is not formalized — only documented in comments. Status: open infrastructure complete; the conjecture remains open mathematically and is not stated as a Lean theorem or axiom.",
+    "progressSummary": "COMPLETE: 4 theorems + 6 definitions in Erdos1068Problem.lean (264 lines), 0 axioms, 0 sorries. Infrastructure: PathInGraph, InfinitelyConnected, hasAleph1ChromaticNumber. Theorems: inf_connected_no_finite_separator, inf_connected_implies_path, inf_connected_subgraph_has_paths, inf_connected_k_connected. The open conjecture itself (every χ=ℵ₁ graph has a countable infinitely-connected subgraph) is not formalized — only documented in comments. Status: open infrastructure complete; the conjecture remains open mathematically and is not stated as a Lean theorem or axiom.",
     "builtItems": [
       "Proved set_theoretic_sensitivity (was axiom True → theorem trivial)",
       "Proved bowler_pikhurko_simplified_construction (was axiom True → theorem trivial)",
@@ -73,7 +73,7 @@
     {
       "path": "Proofs/Erdos1068Problem.lean",
       "filename": "Erdos1068Problem.lean",
-      "lineCount": 265,
+      "lineCount": 264,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 6,

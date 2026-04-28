@@ -1,8 +1,8 @@
 {
   "slug": "erdos-959",
   "title": "Erdős #959",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-01-15T12:36:36.407Z",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T00:00:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Formalization complete: Lean file is sorry-free with axiomatized CDL 2025 results.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — problem axiomatized in gallery (badge: axiom).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -59,14 +59,14 @@
     "mathlib": []
   },
   "started": "2026-01-15T12:36:36.407Z",
-  "lastUpdate": "2026-03-13T07:52:17.055Z",
+  "lastUpdate": "2026-04-27T00:00:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos959Problem.lean",
       "filename": "Erdos959Problem.lean",
-      "lineCount": 159,
+      "lineCount": 158,
       "theoremCount": 7,
       "axiomCount": 2,
       "defCount": 8,
