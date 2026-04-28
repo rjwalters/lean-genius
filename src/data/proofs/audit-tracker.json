@@ -254,7 +254,7 @@
       "auditCount": 1,
       "issues": [],
       "lastAudited": "2026-04-26T13:00:00Z",
-      "notes": "Untracked gallery entry (not in git); Lean file missing from git but PR #12837 is open \u2014 marked clean",
+      "notes": "Untracked gallery entry (not in git); Lean file missing from git but PR #12837 is open — marked clean",
       "result": "clean"
     },
     "angle-trisection-cos-20-gal-oq-03": {
@@ -506,7 +506,7 @@
     "area-of-circle-oq-05": {
       "auditCount": 3,
       "issues": [
-        "sorries 1\u21920, status formalized\u2192verified, badge wip\u2192mathlib (sorry was completed)"
+        "sorries 1→0, status formalized→verified, badge wip→mathlib (sorry was completed)"
       ],
       "lastAudited": "2026-04-26T15:26:52Z",
       "result": "clean"
@@ -1894,7 +1894,7 @@
     "central-limit-theorem-oq-01-oq-02-oq-01": {
       "auditCount": 1,
       "issues": [
-        "lineCount 98\u2192112, theoremCount 7\u21928 (enricher used stale counts)"
+        "lineCount 98→112, theoremCount 7→8 (enricher used stale counts)"
       ],
       "lastAudited": "2026-04-05T12:44:33Z",
       "result": "issues-fixed"
@@ -2411,7 +2411,7 @@
     "descartes-rule-of-signs-oq-02": {
       "auditCount": 4,
       "issues": [
-        "PR #6448: sorries 2\u21920, lineCount 552\u2192698"
+        "PR #6448: sorries 2→0, lineCount 552→698"
       ],
       "lastAudited": "2026-04-03T22:10:54Z",
       "result": "clean"
@@ -7247,8 +7247,8 @@
       "auditCount": 3,
       "issuesFixed": [
         "stale originalContributions items (#12149)",
-        "annotation L1norm_upper_bound incorrectly labelled (sorry) \u2014 proved",
-        "annotation L2_norm incorrectly labelled (sorry) \u2014 proved pending expSumNorm_sq_double; range updated to 257-295"
+        "annotation L1norm_upper_bound incorrectly labelled (sorry) — proved",
+        "annotation L2_norm incorrectly labelled (sorry) — proved pending expSumNorm_sq_double; range updated to 257-295"
       ],
       "lastAudited": "2026-04-24T05:03:47Z",
       "result": "issues-fixed"
@@ -8673,7 +8673,7 @@
     "erdos-719": {
       "auditCount": 4,
       "issues": [
-        "PR #6447: sorries 2\u21921, lineCount 175\u2192196"
+        "PR #6447: sorries 2→1, lineCount 175→196"
       ],
       "lastAudited": "2026-04-03T17:35:38Z",
       "result": "clean"
@@ -8861,7 +8861,7 @@
     "erdos-746": {
       "auditCount": 6,
       "issues": [
-        "PR #6440: sorry count 3\u21924",
+        "PR #6440: sorry count 3→4",
         "Issue #6441: 9 vacuous True stubs",
         "https://github.com/rjwalters/lean-genius/pull/8651"
       ],
@@ -9623,7 +9623,10 @@
       "agentId": "auditor-cycle-20-batch",
       "auditCount": 3,
       "lastAudited": "2026-04-28T14:34:35Z",
-      "result": "issues-found"
+      "result": "issues-fixed",
+      "fixPR": 13648,
+      "fixDate": "2026-04-28",
+      "mechanic": "lean-mechanic"
     },
     "erdos-859": {
       "agentId": "auditor-cycle-20-batch",
@@ -9689,7 +9692,10 @@
       "agentId": "auditor-cycle-20-batch",
       "auditCount": 3,
       "lastAudited": "2026-04-28T13:14:29Z",
-      "result": "issues-found"
+      "result": "issues-fixed",
+      "fixPR": 13653,
+      "fixDate": "2026-04-28",
+      "mechanic": "lean-mechanic"
     },
     "erdos-869": {
       "agentId": "auditor-cycle-20-batch",
@@ -9701,7 +9707,10 @@
       "agentId": "auditor-cycle-20-batch",
       "auditCount": 3,
       "lastAudited": "2026-04-28T14:16:59Z",
-      "result": "issues-found"
+      "result": "issues-fixed",
+      "fixPR": 13649,
+      "fixDate": "2026-04-28",
+      "mechanic": "lean-mechanic"
     },
     "erdos-870": {
       "agentId": "auditor-cycle-20-batch",
@@ -9827,7 +9836,10 @@
       "agentId": "auditor-cycle-20-batch",
       "auditCount": 3,
       "lastAudited": "2026-04-28T13:01:46Z",
-      "result": "issues-found"
+      "result": "issues-fixed",
+      "fixPR": 13654,
+      "fixDate": "2026-04-28",
+      "mechanic": "lean-mechanic"
     },
     "erdos-89": {
       "agentId": "auditor-cycle-20-batch",
