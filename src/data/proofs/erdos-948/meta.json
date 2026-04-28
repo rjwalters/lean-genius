@@ -52,7 +52,6 @@
       "ErdosConjecture948 definition: modified conjecture",
       "dyadicValuation definition: 2-adic valuation",
       "galvinColoring definition: Galvin's 2-coloring",
-      "hindman_theorem axiom: IP sets in colorings",
       "IsIPSet, IsFSSet, IsIPStar definitions: IP set theory",
       "erdos_948_mono_false theorem: monochromatic is false"
     ],
@@ -114,26 +113,26 @@
     {
       "id": "galvin",
       "title": "Galvin's Counterexample",
-      "summary": "dyadicValuation, galvinColoring, galvin_no_monochromatic",
+      "summary": "dyadicValuation definition and galvinColoring definition (Galvin's 2-coloring based on dyadic valuation). No galvin_no_monochromatic theorem declared here — the counterexample result is galvin_counterexample axiom (defined earlier) and erdos_948_mono_false theorem (proved in summary section).",
       "startLine": 126,
       "endLine": 143,
-      "mathContext": "Mathematical content: dyadicValuation, galvinColoring, galvin_no_monochromatic"
+      "mathContext": "Mathematical content: dyadicValuation, galvinColoring"
     },
     {
       "id": "hindman",
       "title": "Hindman's Theorem",
-      "summary": "hindman_theorem axiom",
+      "summary": "Commentary section on Hindman's theorem and IP sets. No hindman_theorem axiom is declared — line 148 is a `--` line comment noting that Hindman's theorem requires a more complex formulation.",
       "startLine": 144,
       "endLine": 159,
-      "mathContext": "Verified: hindman_theorem axiom"
+      "mathContext": "Context: Hindman's theorem (IP sets closed under FS-sums) referenced as motivation only, not formally axiomatized here."
     },
     {
       "id": "ip-sets",
       "title": "IP Sets and FS Sets",
-      "summary": "IsIPSet, IsFSSet, IsIPStar, hindman_ip_star",
+      "summary": "IsIPSet, IsFSSet, IsIPStar",
       "startLine": 160,
       "endLine": 181,
-      "mathContext": "Mathematical content: IsIPSet, IsFSSet, IsIPStar, hindman_ip_star"
+      "mathContext": "Mathematical content: IsIPSet, IsFSSet, IsIPStar"
     },
     {
       "id": "status",
