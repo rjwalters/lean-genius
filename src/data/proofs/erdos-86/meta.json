@@ -51,34 +51,34 @@
       "id": "hypercube",
       "title": "The Hypercube Graph $Q_n$",
       "startLine": 49,
-      "endLine": 88,
+      "endLine": 85,
       "summary": "Defines $Q_n$ as a `SimpleGraph` on $\\{0,1\\}^n$ with Hamming-distance-1 adjacency. Proves symmetry and looplessness. Proves $|V(Q_n)| = 2^n$ via `Fintype.card_fun`. The edge count $e(Q_n) = n \\cdot 2^{n-1}$ is mentioned in a docstring but not formally stated."
     },
     {
       "id": "c4-cycles",
       "title": "4-Cycles and $C_4$-Freeness",
-      "startLine": 89,
-      "endLine": 104,
+      "startLine": 86,
+      "endLine": 101,
       "summary": "Defines `hasC4` (existence of four distinct vertices forming a cycle $a \\sim b \\sim c \\sim d \\sim a$) and `isC4Free` (negation). A $C_4$ in $Q_n$ is a 2-dimensional subcube."
     },
     {
       "id": "f-definition",
       "title": "The Extremal Function $f(n)$",
-      "startLine": 105,
-      "endLine": 118,
+      "startLine": 102,
+      "endLine": 115,
       "summary": "Defines `HypercubeSubgraph` (spanning subgraphs $G \\leq Q_n$) and $f(n) = \\max\\{e(G) : G \\leq Q_n, G \\text{ is } C_4\\text{-free}\\}$ via noncomputable `sSup`."
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds on $f(n)$",
-      "startLine": 119,
-      "endLine": 151,
+      "startLine": 116,
+      "endLine": 145,
       "summary": "Axiomatizes the BHN lower bound $(1/2 + c/\\sqrt{n})$ and Baber's upper bound $0.60318$ (Erdős's earlier $(1/2 + c/n)$ bound is mentioned in a docstring but not separately axiomatized — it is implied by BHN). Proves `f_bounds_summary` combining both directions for $n \\geq 2$."
     },
     {
       "id": "conjecture",
       "title": "Erdős's Conjecture (OPEN, $\\$100$)",
-      "startLine": 152,
+      "startLine": 146,
       "endLine": 186,
       "summary": "Formalizes the conjecture $f(n)/(n \\cdot 2^{n-1}) \\to 1/2$ via `Filter.Tendsto` and the $\\varepsilon$-$N$ alternative. Proves `conjecture_implies_limit` from `Metric.tendsto_atTop`. Includes resolution strategies."
     }
