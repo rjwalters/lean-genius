@@ -42,11 +42,9 @@
     ],
     "originalContributions": [
       "Clean Lean 4 formalization of Littlewood and Rademacher polynomials",
-      "Definition of KacPolynomialData structure for random polynomials",
-      "Axiomatization of Erdős-Offord real roots theorem (2/π log n)",
-      "Axiomatization of Yakir's theorem (convergence in probability)",
-      "Axiomatization of the open almost sure convergence question",
-      "Connection to Salem numbers and Mahler measure"
+      "Definition of KacPolynomialData structure for random polynomials (1 axiom: isRademacher)",
+      "Connection to Salem numbers and Mahler measure",
+      "Documentation of Erdős-Offord (1956) and Yakir (2021) results in source comments"
     ],
     "axiomCount": 1,
     "lineCount": 276,
