@@ -88,41 +88,41 @@
       "title": "Ramsey Numbers",
       "summary": "R(3,3,m) definition and trivial bound",
       "startLine": 66,
-      "endLine": 83
+      "endLine": 75
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "summary": "Erdős's original question and Ramsey formulation",
-      "startLine": 84,
-      "endLine": 103
+      "startLine": 76,
+      "endLine": 95
     },
     {
       "id": "disproof",
       "title": "Alon-Rödl Disproof (2005)",
       "summary": "Single axiom erdos_925_disproved : ¬erdos_925_conjecture. The sharp Alon-Rödl bounds and Sudakov improvement appear in section docstrings only.",
-      "startLine": 104,
-      "endLine": 132
+      "startLine": 96,
+      "endLine": 107
     },
     {
       "id": "optimality",
       "title": "Optimality of n^(1/3)",
       "summary": "Docstring section noting the trivial bound is essentially tight; no axioms or theorems declared here.",
-      "startLine": 133,
-      "endLine": 145
+      "startLine": 108,
+      "endLine": 112
     },
     {
       "id": "easy-bound",
       "title": "The Easy Lower Bound",
       "summary": "easy_lower_bound axiom: every non-Ramsey graph has α ≥ cn^(1/3).",
-      "startLine": 146,
-      "endLine": 160
+      "startLine": 113,
+      "endLine": 126
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Main result theorems: erdos_925 and erdos_925_summary",
-      "startLine": 161,
+      "startLine": 128,
       "endLine": 166
     }
   ],
