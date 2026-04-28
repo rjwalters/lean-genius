@@ -304,18 +304,17 @@ if [[ ${#_proof_slugs[@]} -gt 0 ]]; then
             continue
         fi
 
-        # Check 4: Lean source file exists
-        # Convert slug to a case-insensitive search pattern (remove hyphens)
-        _lean_pattern=$(echo "$_slug" | tr -d '-')
-        _lean_found=false
-        # Search proofs/Proofs/ for a .lean file matching the slug (case-insensitive)
-        while IFS= read -r _match; do
-            _lean_found=true
-            break
-        done < <(find "$REPO_ROOT/proofs/Proofs" -maxdepth 1 -iname "${_lean_pattern}.lean" -type f 2>/dev/null)
-        if [[ "$_lean_found" != "true" ]]; then
+        # Check 4: Lean source file exists at the path declared in meta.json
+        _lean_path=$(jq -r '.leanFile.path // empty' "$_meta" 2>/dev/null)
+        if [[ -z "$_lean_path" ]]; then
             echo -e "${RED}Error: Proof page verification failed for '$_slug'${NC}" >&2
-            echo -e "${RED}  Lean source file not found in proofs/Proofs/ (searched for ${_lean_pattern}.lean)${NC}" >&2
+            echo -e "${RED}  meta.json leanFile.path is missing${NC}" >&2
+            _verify_failed=true
+            continue
+        fi
+        if [[ ! -f "$REPO_ROOT/proofs/$_lean_path" ]]; then
+            echo -e "${RED}Error: Proof page verification failed for '$_slug'${NC}" >&2
+            echo -e "${RED}  Lean source file not found: proofs/$_lean_path${NC}" >&2
             _verify_failed=true
             continue
         fi
