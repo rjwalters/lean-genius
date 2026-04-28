@@ -45,7 +45,7 @@
       "Concrete computational verification of small cases",
       "Basic bounds on n + φ(n) values",
       "Axiomatization of Gabdullin-Iudelevich-Luca density result",
-      "Generalization to other arithmetic functions"
+      "Definition of analogous σ-value set (nPlusSigmaValues)"
     ],
     "axiomCount": 1,
     "lineCount": 114,
@@ -55,7 +55,7 @@
     "historicalContext": "Erdős Problem 822 asks about the density of integers that can be written in the form n + φ(n), where φ is Euler's totient function. This question, posed by Erdős in 1974, connects to deep problems in analytic number theory about the distribution of values of multiplicative functions.\n\nThe totient function φ(n) counts the positive integers up to n that are relatively prime to n. For example, φ(6) = 2 since only 1 and 5 are coprime to 6. The function n + φ(n) combines n with its totient, and the question is whether \"enough\" integers can be represented this way.\n\nThis was resolved in 2024 by Gabdullin, Iudelevich, and Luca, who proved that the set {n + φ(n) : n ∈ ℕ} indeed has positive lower density. They also extended this result to other arithmetic functions including σ (sum of divisors), τ (divisor count), and ω (number of distinct prime factors).",
     "problemStatement": "Does the set of integers of the form $n + \\varphi(n)$ have positive (lower) density?\n\n$$\\text{Does } \\liminf_{N \\to \\infty} \\frac{|\\{k \\leq N : k = n + \\varphi(n) \\text{ for some } n\\}|}{N} > 0?$$\n\nThe answer is **yes**, proved by Gabdullin, Iudelevich, and Luca (2024).",
     "text": "Does the set of integers expressible as n + φ(n) have positive lower density? Gabdullin, Iudelevich, and Luca proved this is true in 2024.",
-    "proofStrategy": "The formalization defines n + φ(n) using Mathlib's Nat.totient and captures the set of all values as a Set.range. Concrete examples are verified computationally via native_decide (e.g., 1+φ(1)=2, 3+φ(3)=5). The main density result is axiomatized since the full proof by Gabdullin-Iudelevich-Luca requires deep analytic number theory beyond current Mathlib. A generalization axiom captures that the same holds for other arithmetic functions.",
+    "proofStrategy": "The formalization defines n + φ(n) using Mathlib's Nat.totient and captures the set of all values as a Set.range. Concrete examples are verified computationally via native_decide (e.g., 1+φ(1)=2, 3+φ(3)=5). The main density result is axiomatized since the full proof by Gabdullin-Iudelevich-Luca requires deep analytic number theory beyond current Mathlib. A generalization is illustrated by defining nPlusSigmaValues for the σ analogue, but the σ density result is not formalized.",
     "keyInsights": [
       "**Euler's totient function:** φ(n) counts integers from 1 to n that are coprime to n. For prime p, φ(p) = p - 1.",
       "**The function n + φ(n):** This always exceeds n and is at most 2n - 1 for n ≥ 2, providing natural bounds.",
@@ -94,21 +94,21 @@
     {
       "id": "main-theorem",
       "title": "Main Theorem",
-      "startLine": 78,
-      "endLine": 93,
+      "startLine": 76,
+      "endLine": 90,
       "summary": "The axiom encoding the Gabdullin–Iudelevich–Luca positive density result."
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
-      "startLine": 94,
-      "endLine": 107,
-      "summary": "Extension to other arithmetic functions (σ, τ)."
+      "startLine": 92,
+      "endLine": 101,
+      "summary": "Extension to other arithmetic functions (σ). The nPlusSigmaValues definition illustrates the pattern, though the σ density result is not formalized."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 108,
+      "startLine": 102,
       "endLine": 114,
       "summary": "Summary theorem combining the density result with the lower bound."
     }
