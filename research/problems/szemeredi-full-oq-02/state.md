@@ -1,33 +1,42 @@
 # Current State
 
-**Phase**: OBSERVE
+**Phase**: COMPLETED (verified)
 **Since**: 2026-04-23T05:52:30.000Z
-**Iteration**: 1
+**Last Updated**: 2026-04-28T00:00:00Z
+**Iteration**: stable — no further work pending
 
 ## Current Focus
 
-Explore Mathlib API for k-AP-free sets and density bounds, especially:
-1. `rothNumberNat` and its asymptotics (k=3 density bound)
-2. How `IsAPFree` in `SzemerediTheorem.lean` relates to Mathlib's `ThreeAPFree`/`AddSalemSpencer`
-3. Whether any o(N) quantitative statement is derivable from existing Mathlib results
+Sequence-of-sets density formulation of Szemerédi's theorem (k-AP-free → vanishing density).
+
+## Resolution
+
+`proofs/Proofs/SzemerediFullOQ02.lean` (118 lines, 0 sorries) is verified. Materialized
+in PR #12918 (2026-04-26) and present on `main`.
+
+- `szemeredi_vanishing_density` — sequences of AP-free sets have density → 0 (all k ≥ 1).
+  Proved via `Filter.Tendsto`.
+- `roth_density_isLittleO` / `ap_free_density_isLittleO_k3` — k=3 case via Mathlib's
+  `rothNumberNat_isLittleO_id`.
+- `szemeredi_density_full` — main theorem alias.
+
+The k ≥ 4 case is axiomatized through the inherited `szemeredi_k_ge_4` axiom from
+`Proofs.SzemerediTheorem` (hypergraph regularity not in Mathlib). `meta.json`
+records `leanFile.axiomCount: 1` to reflect the inherited assumption.
 
 ## Active Approach
 
-Roth-first: attempt to prove the k=3 density bound as a formalization of
-`rothNumberNat N / N → 0`, bridging to the `szemeredi-full-oq-02` density statement.
+n/a — file is stable.
 
 ## Blockers
 
-None identified yet.
+None.
 
 ## Next Action
 
-Survey Mathlib's `Combinatorics.Additive` modules for density-bound lemmas.
-Check `SzemerediTheorem.lean` for the existing `IsAPFree` definition and its
-connection to `ThreeAPFree`.
+None — pool entry being reconciled to `completed`.
 
 ## Attempt Counts
 
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Approaches tried: 1 (Roth → density via Mathlib's `rothNumberNat_isLittleO_id`)

@@ -1,29 +1,37 @@
 # Research State: triangle-angle-sum-oq-02
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-04-22T22:00:00+02:00
+**Since**: 2026-04-28T15:30:00+02:00
 **Iteration**: 1
 
-## Current Focus
-Initial problem understanding. Read problem.md and survey Mathlib infrastructure.
+## Resolution
+Gauss–Bonnet generalization formalized in
+`proofs/Proofs/TriangleAngleSumOQ02.lean` (382 lines, 0 sorries, 0 `axiom`
+declarations). All 22 theorems are derived from 3 structure-encoded
+hypotheses (`gb_local`, `spherical`, `discrete_gb`) — counted as 3 axioms in
+gallery `meta.json` per the project Axiom Integrity Policy.
+
+Coverage:
+- Girard spherical excess (area = r² · (α + β + γ − π)).
+- Lambert hyperbolic defect.
+- Discrete Gauss–Bonnet for triangulations.
+
+Gallery entry `src/data/proofs/triangle-angle-sum-oq-02/meta.json` records
+`status: axiomatized`, `badge: axiom`, `sorries: 0`, `axiomCount: 3`.
 
 ## Active Approach
-None yet.
+N/A — completed.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1 (axiomatize the local Gauss–Bonnet identity, derive
+  Girard, Lambert and the discrete form as theorems).
 
 ## Blockers
 None.
 
 ## Next Action
-1. Survey `Mathlib.Combinatorics.SimplicialComplex.Basic` — check for polyhedron
-   definitions, Euler characteristic, and angle defect.
-2. Check `Mathlib.Analysis.InnerProductSpace.Basic` for angle between vectors.
-3. Survey the existing `triangle-angle-sum` Lean proof to understand available machinery.
-4. Decide: discrete Gauss-Bonnet (combinatorial) vs smooth version (requires Riemannian geometry).
-Then move to ORIENT phase with a concrete target theorem.
+None — pool entry reconciled to `completed` (pool drift from prior session).

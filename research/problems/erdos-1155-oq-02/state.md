@@ -1,25 +1,31 @@
 # Research State: erdos-1155-oq-02
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-04-23T14:49:35+02:00
+**Since**: 2026-04-28T15:30:00+02:00
 **Iteration**: 1
 
-## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+## Resolution
+`proofs/Proofs/Erdos1155OQ02.lean` (314 lines, 0 sorries, 1 `axiom`
+declaration in this file; gallery records 7 axioms total — the additional 6
+are inherited from `Proofs.Erdos1155` and similar Erdős-cluster supports).
+
+Gallery entry `src/data/proofs/erdos-1155-oq-02/meta.json` records
+`status: axiomatized`, `badge: axiom`, `sorries: 0`, `axiomCount: 7`. JSON
+already had `status: completed`, `phase: COMPLETED`; this state.md file is
+brought in line.
 
 ## Active Approach
-None yet.
+N/A — completed.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Blockers
 None.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+None — pool entry reconciled to `completed` (pool drift from prior session).
