@@ -50,7 +50,7 @@
       "isAchievableCycleSet: which sets can be realized",
       "f: the cycle set count function",
       "isLittleO: little-o asymptotic notation",
-      "verstraete_theorem: f(n) ≪ 2^{n - n^{1/10}}",
+      "part1_solved axiom: f(n) = o(2^n) (Verstraëte 2004, qualitative)",
       "nenadov_theorem: f(n) ≪ 2^{n - n^{1/2 - o(1)}}",
       "part2_statement: f(n)/2^{n/2} → ∞ (open)"
     ],
@@ -88,63 +88,63 @@
     {
       "id": "erdos-faudree",
       "title": "Erdős-Faudree Bounds",
-      "startLine": 85,
-      "endLine": 116,
+      "startLine": 84,
+      "endLine": 114,
       "summary": "Axiomatizes the trivial upper bound f(n) ≤ 2^{n-2} and the constructive lower bound f(n) > 2^{n/2}. Proves their conjunction as erdos_faudree_bounds.",
       "mathContext": "Axiomatizes the trivial upper bound f(n) $\\leq$ $$2^{{n-2}$}$ and the constructive lower bound f(n) > $$2^{{n/2}$}$. Proves their conjunction as erdos_faudree_bounds."
     },
     {
       "id": "part1-solved",
       "title": "Part 1 - SOLVED (Verstraëte 2004)",
-      "startLine": 117,
-      "endLine": 150,
-      "summary": "Defines little-o notation, formalizes Part 1 as f = o(2^n), axiomatizes Verstraëte's quantitative bound f(n) ≤ 2^{n - n^{1/10}}, and axiomatizes the Part 1 solution.",
-      "mathContext": "Defines little-o notation, formalizes Part 1 as f = o($2^{n}$), axiomatizes Verstraëte's quantitative bound f(n) $\\leq$ $$2^{{n - n^{1/10}$}$}, and axiomatizes the Part 1 solution."
+      "startLine": 115,
+      "endLine": 144,
+      "summary": "Defines little-o notation, formalizes Part 1 as f = o(2^n), and axiomatizes `part1_solved : f = o(2^n)`. Verstraëte's quantitative bound f(n) ≤ 2^{n − n^{1/10}} is documented as a docstring but not formally axiomatized.",
+      "mathContext": "Formal declaration: `part1_solved` axiom encodes the qualitative statement `f = o(2^n)` only. Verstraëte's quantitative bound is documented as a docstring comment — not a formal Lean axiom."
     },
     {
       "id": "nenadov",
       "title": "Nenadov's Improvement (2025)",
-      "startLine": 151,
-      "endLine": 171,
+      "startLine": 145,
+      "endLine": 164,
       "summary": "Axiomatizes Nenadov's improved bound f(n) ≤ 2^{n - n^{1/2 - ε}} and wraps it in the best_upper_bound theorem.",
       "mathContext": "Axiomatizes Nenadov's improved bound f(n) $\\leq$ $$2^{{n - n^{1/2 - ε}$}$} and wraps it in the best_upper_bound theorem."
     },
     {
       "id": "part2-open",
       "title": "Part 2 - OPEN",
-      "startLine": 172,
-      "endLine": 191,
+      "startLine": 165,
+      "endLine": 183,
       "summary": "Formalizes the open question: does f(n)/2^{n/2} → ∞? Stated as a divergence condition using Real.rpow.",
       "mathContext": "Formalizes the open question: does f(n)/$$2^{{n/2}$}$ $\\to$ ∞? Stated as a divergence condition using Real.rpow."
     },
     {
       "id": "limit",
       "title": "The Limit Question",
-      "startLine": 192,
-      "endLine": 215,
-      "summary": "Formalizes the open question of whether lim f(n)^{1/n} exists, with axiomatized bounds √2 ≤ L ≤ 2 if it does.",
-      "mathContext": "Formalizes the open question of whether lim f(n)^{1/n} exists, with axiomatized bounds √2 $\\leq$ L $\\leq$ 2 if it does."
+      "startLine": 184,
+      "endLine": 203,
+      "summary": "Formalizes the open question of whether lim f(n)^{1/n} exists (`limit_exists` Prop). The bounds √2 ≤ L ≤ 2 are documented as a docstring comment only — not formally axiomatized.",
+      "mathContext": "Defines `limit_exists` as a formal Prop. The bounds √2 ≤ L ≤ 2 appear only as a docstring comment — no formal axiom `limit_bounds` is declared."
     },
     {
       "id": "structural",
       "title": "Structural Constraints",
-      "startLine": 218,
-      "endLine": 229,
+      "startLine": 204,
+      "endLine": 216,
       "summary": "Axiomatizes the existence of non-achievable subsets, the fundamental fact underlying Part 1.",
       "mathContext": "Axiomatized: Axiomatizes the existence of non-achievable subsets, the fundamental fact underlying Part 1."
     },
     {
       "id": "small-values",
       "title": "Small Values",
-      "startLine": 232,
-      "endLine": 245,
-      "summary": "Axiomatizes f(3) = 2, f(4) = 4, f(5) = 8. The last value where f(n) = 2^{n-2} (all subsets achievable).",
-      "mathContext": "Axiomatizes f(3) = 2, f(4) = 4, f(5) = 8. The last value where f(n) = $$2^{{n-2}$}$ (all subsets achievable)."
+      "startLine": 217,
+      "endLine": 226,
+      "summary": "Documents f(3) = 2, f(4) = 4, f(5) = 8 as docstring comments — no formal axioms are declared for these small values.",
+      "mathContext": "Docstring commentary only — f(3) = 2, f(4) = 4, f(5) = 8 are not formal Lean declarations."
     },
     {
       "id": "summary",
       "title": "Summary Theorems",
-      "startLine": 246,
+      "startLine": 227,
       "endLine": 268,
       "summary": "erdos_84_summary packages Part 1 + structural constraints as a conjunction. erdos_84 is a simplified alias for Part 1.",
       "mathContext": "Mathematical content: erdos_84_summary packages Part 1 + structural constraints as a conjunction. erdos_84 is a simplified alias for Part 1."
