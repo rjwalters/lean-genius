@@ -71,22 +71,14 @@
       "id": "sec-913-hypothesis",
       "title": "The 8p²-1 Prime Hypothesis",
       "startLine": 57,
-      "endLine": 68,
-      "summary": "Defines PrimePairs8 = {p : p prime ∧ 8p²-1 prime} and axiomatizes its infinitude as a Bunyakovsky-type hypothesis.",
+      "endLine": 69,
+      "summary": "Defines PrimePairs8 = {p : p prime ∧ 8p²-1 prime} and axiomatizes its infinitude as a Bunyakovsky-type hypothesis (the sole axiom: infinite_8p_sq_minus_1_primes at line 69).",
       "mathContext": "Formal definition: Defines PrimePairs8 = {p : p prime ∧ 8p²-1 prime} and axiomatizes its infinitude as a Bunyakovsky-type hypothesis."
-    },
-    {
-      "id": "sec-913-conditional",
-      "title": "Conditional Proof",
-      "startLine": 69,
-      "endLine": 84,
-      "summary": "The key reduction: PrimePairs8.Infinite implies DistinctExponentSet.Infinite. For p in PrimePairs8, n = 8p²-1 gives exponents {1, 2, 3} on primes {8p²-1, p, 2}.",
-      "mathContext": "Mathematical content: The key reduction: PrimePairs8.Infinite implies DistinctExponentSet.Infinite. For p in PrimePairs8, n = 8p²-1 gives exponents {1, 2, 3} on primes {8p²-1, p, 2}."
     },
     {
       "id": "sec-913-conditional-proof",
       "title": "8p²-1 Conditional Proof",
-      "startLine": 69,
+      "startLine": 70,
       "endLine": 199,
       "summary": "Fully proved conditional: PrimePairs8.Infinite ⟹ DistinctExponentSet.Infinite. Includes the proved exponent_structure theorem (prime factor set is {8p²-1, p, 2}), factorization value computations (exponents 1, 2, 3), and the Set.Infinite.image argument via injectivity of p ↦ 8p²-1.",
       "mathContext": "Core proof: For each prime p ∈ PrimePairs8 \\ {2}, n = 8p²-1 gives n(n+1) = (8p²-1)¹·p²·2³ with all exponents distinct. The exponent_structure theorem proves the prime factors are exactly {8p²-1, p, 2}, using coprimality of consecutive integers and Mathlib's factorization API."
