@@ -130,7 +130,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #954 formalizes Rosen's greedy additive sequence, an open problem from 1977. The formalization achieves 0 sorries with 5 genuinely proved structural theorems, 11 computationally verified initial values, and 3 axioms for the open conjectures and structural claims. The computable construction allows verification against OEIS A390642.",
+    "summary": "Erdős Problem #954 formalizes Rosen's greedy additive sequence, an open problem from 1977. The formalization achieves 0 sorries with 5 genuinely proved structural theorems, 11 computationally verified initial values, and 3 open conjectures formalized as Lean propositions (def ... : Prop) — there are no formal `axiom` declarations in the file. The computable construction allows verification against OEIS A390642.",
     "implications": "A resolution of even the weak conjecture would illuminate the fundamental limits of greedy additive constructions and the tradeoff between sequence density and representation control. The connection to Sidon sets suggests that understanding Rosen's sequence could inform the broader theory of additive bases and the Erdős-Turán conjecture.",
     "openQuestions": [
       "Is $R(x) \\leq (1+o(1))x$ (weak conjecture)? Erdős and Rosen could not prove this.",
