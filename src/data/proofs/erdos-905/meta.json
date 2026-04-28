@@ -35,8 +35,8 @@
   "overview": {
     "historicalContext": "Bollobás and Erdős conjectured this result about edge-triangle multiplicity. It was independently proved by Edwards (unpublished) and Hadziivanov-Nikiforov in 1979. The problem connects to Turán's classical theorem on triangle-free graphs. Turán's theorem (1941) established that the complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} is the unique triangle-free graph on n vertices maximizing the number of edges, at exactly ⌊n²/4⌋. The question posed by Bollobás and Erdős pushed beyond mere existence of triangles to ask about their concentration: once the Turán bound is exceeded, must some edge bear a disproportionate share of the triangle count? The answer n/6 is tight, achieved by graphs close to the balanced complete bipartite graph with a small clique added. Nikiforov subsequently extended these ideas into a broader program on the distribution of cliques above Turán thresholds.",
     "problemStatement": "Every graph with n vertices and more than n²/4 edges contains an edge which is in at least n/6 triangles.",
-    "text": "A 215-line formalization of Erdős Problem #905 (SOLVED) with 1 proved theorem, 9 definitions, and 7 axioms. Defines a custom `Graph` structure with symmetric irreflexive edge sets, `IsTriangle` (three pairwise adjacent vertices), `triangleCountEdge` (number of triangles containing a given edge), and `maxTriangleMultiplicity` (maximum over all edges). The Turán threshold `turanNumber n = n^2/4` and `AboveTuran` predicate are defined. The main result `bollobas_erdos_theorem` is axiomatized: any graph with $> n^2/4$ edges has an edge in $\\geq n/6$ triangles. Tightness of $n/6$, Turán graph properties, and a triangle count lower bound are included.",
-    "proofStrategy": "**Part I**: Custom `Graph` structure with `adj : Fin n → Fin n → Prop`, symmetric and irreflexive. `edgeCount` counts unordered pairs.\n\n**Part II**: `IsTriangle G a b c` requires all three edges. `triangleCountEdge G u v` counts vertices $w$ forming a triangle with $(u,v)$. `maxTriangleMultiplicity G` is the maximum over all edges.\n\n**Part III**: `turanNumber n = n^2/4` defines the Turán threshold. `AboveTuran G` means `edgeCount G > turanNumber n`. `turan_theorem` is axiomatized: triangle-free $\\Rightarrow$ `edgeCount G \\leq turanNumber n`.\n\n**Part IV**: `BollobasErdosConjecture` states the main result. `bollobas_erdos_theorem` axiomatizes it as proved.\n\n**Part V-VII**: Tightness, Turán graph properties, and the triangle count lemma $T(G) \\geq (e(G) - n^2/4) \\cdot n/6$.",
+    "text": "A 190-line formalization of Erdős Problem #905 (SOLVED) with 1 proved theorem, 9 definitions, and 1 axiom. Defines a custom `Graph` structure with symmetric irreflexive edge sets, `IsTriangle` (three pairwise adjacent vertices), `triangleCountEdge` (number of triangles containing a given edge), and `maxTriangleMultiplicity` (maximum over all edges). The Turán threshold `turanNumber n = n^2/4` and `AboveTuran` predicate are defined. The main result `bollobas_erdos_theorem` is axiomatized: any graph with $> n^2/4$ edges has an edge in $\\geq n/6$ triangles. Turán graph properties and a triangle count lower bound are documented in comments.",
+    "proofStrategy": "**Part I**: Custom `Graph` structure with `adj : Fin n → Fin n → Prop`, symmetric and irreflexive. `edgeCount` counts unordered pairs.\n\n**Part II**: `IsTriangle G a b c` requires all three edges. `triangleCountEdge G u v` counts vertices $w$ forming a triangle with $(u,v)$. `maxTriangleMultiplicity G` is the maximum over all edges.\n\n**Part III**: `turanNumber n = n^2/4` defines the Turán threshold. `AboveTuran G` means `edgeCount G > turanNumber n`. Turán's theorem (triangle-free $\\Rightarrow e(G) \\leq n^2/4$) is stated only in a docstring comment; the file's sole axiom is `bollobas_erdos_theorem`.\n\n**Part IV**: `BollobasErdosConjecture` states the main result. `bollobas_erdos_theorem` axiomatizes it as proved.\n\n**Part V-VII**: `IsTuranGraph` defined as the balanced bipartite structure. Tightness of n/6 and the triangle count lemma $T(G) \\geq (e(G) - n^2/4) \\cdot n/6$ are stated in docstring comments only; no additional axioms.",
     "keyInsights": [
       "n²/4 is the Turán threshold for triangle-free graphs",
       "Exceeding this threshold forces high triangle multiplicity on some edge",
@@ -74,7 +74,7 @@
       "title": "Part III: Turán's Threshold",
       "startLine": 95,
       "endLine": 118,
-      "summary": "`turanNumber n = n^2/4` and `AboveTuran G` ($e(G) > n^2/4$). `turan_theorem` axiomatized: triangle-free $\\Rightarrow e(G) \\leq n^2/4$.",
+      "summary": "`turanNumber n = n^2/4` and `AboveTuran G` ($e(G) > n^2/4$). Turán's theorem (triangle-free $\\Rightarrow e(G) \\leq n^2/4$) is stated in a docstring comment only; no `turan_theorem` axiom declaration exists in the file.",
       "mathContext": "Turán's theorem (1941): $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$, the maximum number of edges in a triangle-free graph on $n$ vertices, achieved uniquely by $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$."
     },
     {
@@ -89,7 +89,7 @@
       "title": "Part V: Tightness and Turán Theory",
       "startLine": 146,
       "endLine": 187,
-      "summary": "Axiomatizes tightness of n/6 constant. Defines IsTuranGraph and axiomatizes triangle-free property and that adding any edge creates triangles."
+      "summary": "Defines `IsTuranGraph` as the balanced bipartite structure. Tightness of n/6, triangle-free property, and edge-addition lemma are stated in docstring comments only; no formal axioms or theorems declared in this section."
     },
     {
       "id": "key-lemma",
