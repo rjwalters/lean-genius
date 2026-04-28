@@ -113,7 +113,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The two eliminated axioms — `ramseyNumber` definition and `ramsey_upper_bound` — are now proved from the parent `RamseysTheorem.lean`. The Erdős-Szekeres 1935 bound $R(t,t) \\leq 4^t$ is formally verified. The remaining 6 axioms stand as open problems requiring deeper Ramsey-theoretic machinery.",
+    "summary": "The two eliminated axioms — `ramseyNumber` definition and `ramsey_upper_bound` — are now proved from the parent `RamseysTheorem.lean`. The Erdős-Szekeres 1935 bound $R(t,t) \\leq 4^t$ is formally verified. This file has 0 axioms and 0 sorries. The 6 axioms that remain unproved live in the parent file `Erdos1015Problem.lean` (Moon's theorem, Erdős-Ramsey bound, BES formula, root limit) — they require deeper Ramsey-theoretic machinery not yet in Mathlib.",
     "implications": "Axiom elimination is a measurable proxy for proof completeness. Each eliminated axiom increases the proof's trustworthiness by grounding it in more fundamental principles. The approach — identify which axioms are really definitions or standard bounds, then prove them — is a template for reducing axiom counts in other heavily-axiomatized formalizations. Starting from 8 axioms and eliminating 2, the pattern suggests further reduction is possible with Ramsey lower bounds and combinatorial construction lemmas.",
     "openQuestions": [
       "Can `moon_f3` (Moon's 1966 theorem on a specific Ramsey-type combinatorial identity) be proved in Lean? Moon's result involves binomial coefficient identities that may be accessible via Mathlib's `Nat.choose` API.",
