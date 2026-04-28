@@ -1,31 +1,50 @@
 {
   "slug": "arithmetic-series-oq-04",
-  "title": "Arithmetic Series: Formalize Faulhaber Formula for Power Sums",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Faulhaber's Formula: Power Sums via Bernoulli Numbers",
+  "phase": "DONE",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: Arithmetic Series: Formalize Faulhaber Formula for Power Sums.",
-    "whyMatters": []
+    "formal": "Faulhaber's formula expresses the power sum ∑_{k=1}^{n-1} k^p as a polynomial in n of degree p+1, with coefficients given by Bernoulli numbers: \\[ \\sum_{k=1}^{n-1} k^p = \\frac{1}{p+1} \\sum_{i=0}^{p} \\binom{p+1}{i} B'_i \\, n^{p+1-i}. \\] Equivalently in Mathlib's API, sum_Ico_pow gives \\[ \\sum_{k \\in [1, n+1)} k^p = \\sum_{i \\le p} B'_i \\binom{p+1}{i} n^{p+1-i} / (p+1). \\] The Bernoulli polynomial form (Polynomial.sum_range_pow_eq_bernoulli_sub) states: $(p+1) \\sum_{k<n} k^p = B_{p+1}(n) - B_{p+1}$.",
+    "plain": "Faulhaber's formula expresses the sum 1^p + 2^p + ... + n^p as a polynomial in n via Bernoulli numbers. Classical special cases: ∑k = n(n+1)/2 (Gauss), ∑k² = n(n+1)(2n+1)/6 (sum of squares), ∑k³ = (n(n+1)/2)² (Nicomachus). This Lean entry formalizes Faulhaber's formula as a direct alias of Mathlib's sum_Ico_pow, derives the classical p=1,2,3 cases by induction, records Bernoulli number values, and exposes the Bernoulli polynomial form.",
+    "whyMatters": [
+      "Faulhaber's formula (1631) was the first systematic treatment of power sums and motivated Jacob Bernoulli's discovery of the Bernoulli numbers (Ars Conjectandi, 1713) — a foundational sequence pervading number theory, analysis, and algebraic topology.",
+      "The Bernoulli polynomial form connects elementary power sums to the Riemann zeta function via the Hurwitz zeta function and the von Staudt-Clausen theorem on denominators.",
+      "Power sum identities are gateway lemmas for many number-theoretic and combinatorial results, including the Euler-Maclaurin summation formula and bounds on character sums.",
+      "Mathlib's NumberTheory.Bernoulli already proves the full theorem; this entry establishes Faulhaber as a one-line alias and serves as a worked example of how to leverage existing Mathlib infrastructure without re-deriving from scratch."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "faulhaber_formula: ∑_{k∈Ico 1 (n+1)} k^p = ∑_{i≤p} B'_i · C(p+1,i) · n^(p+1-i) / (p+1) (alias of Mathlib's sum_Ico_pow)",
+      "faulhaber_formula_range: alternative form ∑_{k∈range n} k^p = ∑_{i≤p} B_i · C(p+1,i) · n^(p+1-i) / (p+1) (alias of Mathlib's sum_range_pow)",
+      "sum_powers_one (Gauss): ∑_{k=1}^{n} k = n(n+1)/2",
+      "sum_powers_two: ∑_{k=1}^{n} k² = n(n+1)(2n+1)/6",
+      "sum_powers_three (Nicomachus): ∑_{k=1}^{n} k³ = (n(n+1)/2)²",
+      "Bernoulli numerical values: B'_0 = 1, B'_1 = 1/2, B'_2 = 1/6, B'_3 = 0, B'_{2k+1} = 0 for k ≥ 1",
+      "faulhaber_bernoulli_polynomial: (p+1)·∑_{k<n} k^p = B_{p+1}(n) − B_{p+1} (via Polynomial.sum_range_pow_eq_bernoulli_sub)",
+      "Numerical verification by native_decide: ∑_{k=1}^{10} k = 55, ∑k² = 385, ∑k³ = 3025 = 55²"
+    ],
+    "open": [
+      "Generalization to negative integer p (Hurwitz zeta values via Bernoulli numbers)",
+      "Connection to the Euler-Maclaurin summation formula in Mathlib",
+      "von Staudt-Clausen theorem on denominators of Bernoulli numbers",
+      "Generating function form: t/(e^t − 1) = ∑ B_n t^n / n!"
+    ],
+    "goal": "Formalize Faulhaber's formula and classical special cases (p=1,2,3) in Lean 4, leveraging existing Mathlib Bernoulli number infrastructure rather than re-deriving from scratch. Status: complete — 16 theorems verified in 197 lines, 0 axioms, 0 sorries."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-03T22:29:17.627Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "DONE",
+    "since": "2026-04-27T00:00:00Z",
+    "iteration": 2,
+    "focus": "Completed: 16 theorems verified (0 sorries, 0 axioms) in ArithmeticSeriesOQ04.lean. Faulhaber as alias of Mathlib sum_Ico_pow. Metadata reconciled with gallery state.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Mark complete. Future work: Euler-Maclaurin formalization (open question 2) and von Staudt-Clausen (open question 3) — see knownResults.open.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -50,33 +69,36 @@
   "tags": [
     "seeker-selected",
     "number-theory",
-    "bernoulli-numbers"
+    "bernoulli-numbers",
+    "power-sums",
+    "faulhaber",
+    "combinatorics"
   ],
   "relatedProofs": [
     "arithmetic-series",
     "arithmetic-series-oq-00",
     "arithmetic-series-oq-02",
-    "arithmetic-series-oq-02-oq-01",
-    "arithmetic-series-oq-02-oq-01-oq-01",
-    "arithmetic-series-oq-02-oq-02",
-    "arithmetic-series-oq-02-oq-02-oq-01",
-    "arithmetic-series-oq-02-oq-02-oq-03",
-    "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
-    "arithmetic-series-oq-02-oq-03",
-    "arithmetic-series-oq-02-oq-04",
-    "arithmetic-series-oq-02-oq-04-oq-01",
-    "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
-    "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02",
-    "arithmetic-series-oq-04",
     "arithmetic-series-oq-04-oq-01"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Johann Faulhaber, 'Academia Algebrae' (1631) — first systematic treatment of power sums up to p=17",
+      "Jacob Bernoulli, 'Ars Conjectandi' (posthumous, 1713) — discovery of Bernoulli numbers in computing power sums",
+      "Donald E. Knuth, 'Johann Faulhaber and Sums of Powers', Math. Comp. 61 (1993), 277–294"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Faulhaber%27s_formula",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/Bernoulli.html"
+    ],
+    "mathlib": [
+      "Mathlib.NumberTheory.Bernoulli (sum_Ico_pow, sum_range_pow, bernoulli'_zero/one/two/three)",
+      "Mathlib.NumberTheory.BernoulliPolynomials (Polynomial.sum_range_pow_eq_bernoulli_sub)",
+      "Mathlib.Algebra.BigOperators.NatAntidiagonal",
+      "Mathlib.Combinatorics.Pigeonhole"
+    ]
   },
   "started": "2026-04-03T22:29:17.627Z",
-  "lastUpdate": "2026-04-03T22:29:17.627Z",
+  "lastUpdate": "2026-04-27T00:00:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
