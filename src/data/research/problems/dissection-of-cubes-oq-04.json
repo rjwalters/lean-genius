@@ -1,8 +1,8 @@
 {
   "slug": "dissection-of-cubes-oq-04",
   "title": "Dissection of Cubes: Connection to Dehn Invariant Impossibility",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-04-22T13:03:46.505Z",
-    "iteration": 1,
-    "focus": "Fix 3 sorries in cube_unique_zero_dehn via tmul_infinite_order_ne_zero",
+    "phase": "COMPLETED",
+    "since": "2026-04-28T00:04:54.048Z",
+    "iteration": 2,
+    "focus": "Audit confirmed: 0 axioms, 0 sorries; tmul_infinite_order_ne_zero now proved theorem (PR #12587)",
     "blockers": [],
-    "nextAction": "Compile check via docker-build",
+    "nextAction": "None - problem verified",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: icoAngle_irrational proved (115 lines, Chebyshev sequence). Axiom count 2->1. Only tmul_infinite_order_ne_zero remains.",
+    "progressSummary": "VERIFIED (Session 9 audit, 2026-04-28): tmul_infinite_order_ne_zero was proved in PR #12587 via Module.Flat ℤ ℝ — both axioms eliminated. DissectionOfCubesOQ04.lean and dependencies have 0 axioms, 0 sorries. Gallery meta.json reports status=verified, axiomCount=0. Pool/JSON metadata was stale; this session reconciled the problem JSON.",
     "builtItems": [
       "cube_unique_zero_dehn (PROVED, 0 sorries) — DissectionOfCubesOQ04.lean",
       "cube_isolated_dehn_invariant (PROVED) — cube D=0, all others D≠0",
@@ -42,7 +42,8 @@
       "icoSeq_eq_cos (PROVED) — relates icoSeq to cos values",
       "cos_two_icoAngle (PROVED) — cos(2*icoAngle) = 1/9",
       "arccos_one_ninth_eq (PROVED) — arccos(1/9) = 2*pi - 2*icoAngle",
-      "icoAngle_irrational (PROVED, 115 lines) — axiom replaced with full proof"
+      "icoAngle_irrational (PROVED, 115 lines) — axiom replaced with full proof",
+      "tmul_infinite_order_ne_zero — proved (NOT axiomatized) in DissectionOfCubesOQ02OQ02.lean:214-252 via Module.Flat ℤ ℝ + Module.Flat.lTensor_preserves_injective_linearMap (PR #12587)"
     ],
     "insights": [
       "DissectionOfCubesOQ04.lean already fully drafted (438 lines) with substantial proof",
@@ -53,15 +54,13 @@
       "2 axioms remain: tmul_infinite_order_ne_zero (ℝ flat over ℤ) + icoAngle_irrational (Chebyshev ℤ[√5])",
       "icoAngle_irrational proved via Chebyshev sequence for arccos(1/9)",
       "Key: cos(2*icoAngle)=1/9, so arccos(1/9)=2pi-2*icoAngle — reduces to integer sequence",
-      "Sequence d_n=9^n*2cos(n*arccos(1/9)) satisfies d_{n+2}=2d_{n+1}-81d_n; 3 ndvd d_n for all n"
+      "Sequence d_n=9^n*2cos(n*arccos(1/9)) satisfies d_{n+2}=2d_{n+1}-81d_n; 3 ndvd d_n for all n",
+      "Session 9 audit (2026-04-28): pool entry was status=available and JSON progressSummary said tmul_infinite_order_ne_zero remained axiomatized, but commit f392d09c61 (PR #12587) eliminated that axiom via Module.Flat ℤ ℝ. The chain (OQ02 → OQ02OQ02 → OQ04) is fully verified with 0 axioms, 0 sorries. Stale pool metadata; no new mathematical work needed."
     ],
     "mathlibGaps": [
       "tmul_infinite_order_ne_zero (R flat over Z) — axiomatized, only remaining axiom"
     ],
-    "nextSteps": [
-      "Verify DissectionOfCubesOQ04.lean compiles via docker-build.sh",
-      "Attempt tmul_infinite_order_ne_zero proof (flatness of R over Z)"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "geometry",
@@ -85,7 +84,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.504Z",
-  "lastUpdate": "2026-04-22T13:03:46.504Z",
+  "lastUpdate": "2026-04-28T00:04:54.048Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [

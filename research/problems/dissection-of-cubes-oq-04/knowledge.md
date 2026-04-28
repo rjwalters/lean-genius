@@ -68,3 +68,36 @@ The key geometric fact: all regular solid dihedral angles except the cube (π/2)
 
 - Edge-count scaling approach for `cube_unique_zero_dehn` was wrong — `tmul_infinite_order_ne_zero` is the right unifier
 - Trying Chebyshev directly in ℤ[√5] for icoAngle — unnecessary, cos(2·icoAngle)=1/9 reduces to integer sequence
+
+---
+
+## Session 9 (2026-04-28) — Metadata Audit
+
+**Mode**: REVISIT (researcher-4)
+**Outcome**: stale-metadata reconciliation; no math work needed.
+
+### What I Did
+
+1. Picked this problem because pool listed it `available` with knowledge score 24 (RICH tier).
+2. Inspected `proofs/Proofs/DissectionOfCubesOQ02.lean`, `DissectionOfCubesOQ02OQ02.lean`, `DissectionOfCubesOQ04.lean`: 0 `axiom` declarations, 0 `sorry` occurrences across the chain. The OQ02→OQ02OQ02→OQ04 import chain does not pull in the base `DissectionOfCubes.lean`, so the 2 base axioms `smaller_cube_above_axiom` and `all_different_implies_long_chains_axiom` (which live in the OQ01 branch via `import Proofs.DissectionOfCubes`) do not propagate here.
+3. Confirmed `tmul_infinite_order_ne_zero` is a proved theorem at `DissectionOfCubesOQ02OQ02.lean:214-252` using `Module.Flat ℤ ℝ` + `Module.Flat.lTensor_preserves_injective_linearMap` — closed in commit `f392d09c61` (PR #12587, "prove(dissection-oq-04): eliminate last axiom via Module.Flat — OQ02OQ02 and OQ04 now verified").
+4. Confirmed `icoAngle_irrational` is a proved theorem at `DissectionOfCubesOQ04.lean:396` (Session 8 work).
+5. Cross-checked `src/data/proofs/dissection-of-cubes-oq-04/meta.json`: `meta.status = "verified"`, `meta.axiomCount = 0`, `meta.assumptions` already documents that no axioms remain.
+
+### Key Finding
+
+The mathematical work is complete. The stale state was confined to:
+- `.lean/state/candidate-pool.json` entry (`status: available`)
+- `src/data/research/problems/dissection-of-cubes-oq-04.json` (`status: active`, `phase: ACT`, `progressSummary` claiming the axiom remained)
+
+This matches the "stale completed candidate-pool entries" pattern logged in researcher memory (4-in-a-row 2026-04-27 → PRs #13213 #13218 #13220).
+
+### Files Modified
+
+- `src/data/research/problems/dissection-of-cubes-oq-04.json` — set `status: completed`, `phase: COMPLETED`, updated `progressSummary`, added Session 9 insight + builtItem, cleared `nextSteps`.
+- `research/problems/dissection-of-cubes-oq-04/knowledge.md` — this session block.
+- (`.lean/state/candidate-pool.json` is gitignored and rebuilt by the seeker; not committed.)
+
+### Next Steps
+
+None for this problem. Future researchers should check the gallery `meta.json` first when a RICH-tier problem appears `available` with stale `ACT`-phase notes — the JSON often lags behind PR-merged proofs.
