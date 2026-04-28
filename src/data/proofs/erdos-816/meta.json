@@ -62,10 +62,7 @@
       "satisfiesEH816: Erdős-Hajnal condition",
       "satisfiesWeakerEH816: Chen-Ma weaker condition",
       "isCompleteBipartite: K_{n,n+1} characterization",
-      "K_counterexample: threshold tightness",
-      "chen_ma_theorem: 2025 main result",
-      "erdos_816_for_large_n: corollary for n ≥ 600",
-      "erdos_816_full: complete answer"
+      "axiom erdos_816_full: full Chen-Ma (2025) result for all n (formalizing the answer YES to Erdős #816)"
     ],
     "axiomCount": 1,
     "lineCount": 206,
@@ -124,32 +121,32 @@
     {
       "id": "counterexample",
       "title": "The Counterexample",
-      "summary": "isCompleteBipartite, K_counterexample",
+      "summary": "isCompleteBipartite definition",
       "startLine": 124,
-      "endLine": 152,
-      "mathContext": "Mathematical content: isCompleteBipartite, K_counterexample"
+      "endLine": 145,
+      "mathContext": "Mathematical content: isCompleteBipartite definition"
     },
     {
       "id": "main-theorem",
       "title": "Chen-Ma Theorem (2025)",
-      "summary": "chen_ma_theorem, erdos_816_for_large_n, erdos_816_full",
-      "startLine": 153,
-      "endLine": 189,
-      "mathContext": "Verified: chen_ma_theorem, erdos_816_for_large_n, erdos_816_full"
+      "summary": "axiom erdos_816_full: full Chen-Ma (2025) result for all n",
+      "startLine": 146,
+      "endLine": 171,
+      "mathContext": "Axiomatized: erdos_816_full (complete Chen-Ma 2025 result)"
     },
     {
       "id": "pigeonhole",
       "title": "Pigeonhole for Degrees",
       "summary": "degree-pigeonhole reasoning (mathematical context in docstrings; not axiomatized in this file)",
-      "startLine": 190,
-      "endLine": 201,
+      "startLine": 172,
+      "endLine": 179,
       "mathContext": "degree-pigeonhole reasoning (mathematical context in docstrings; not axiomatized in this file)"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_816_summary theorem",
-      "startLine": 202,
+      "startLine": 180,
       "endLine": 206,
       "mathContext": "Verified: erdos_816_summary theorem"
     }
