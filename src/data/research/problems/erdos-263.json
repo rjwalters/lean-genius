@@ -6,14 +6,38 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "WIP: 7 sorries, 0 axioms.",
-    "whyMatters": []
+    "formal": "A sequence $(a_n)_{n \\ge 0}$ of positive integers is an **irrationality sequence** if for every sequence $(b_n)$ of positive integers with $b_n / a_n \\to 1$, the reciprocal sum $\\sum_{n \\ge 0} 1/b_n$ is irrational. Erdős's two questions: (Q1) Is $a_n = 2^{2^n}$ an irrationality sequence? (Q2) Must every irrationality sequence satisfy $a_n^{1/n} \\to \\infty$ (superexponential growth)?",
+    "plain": "Erdős's Problem #263 asks whether the double-exponential sequence $a_n = 2^{2^n}$ is an irrationality sequence — i.e., whether the reciprocal sum $\\sum 1/b_n$ is irrational for every sequence $(b_n)$ with $b_n/a_n \\to 1$. He further asked whether all irrationality sequences must grow at least superexponentially. Both questions remain open. The Kovač-Tao 2024 result establishes that sequences with $a_{n+1}/a_n^2 \\to 0$ are NOT irrationality sequences, putting $2^{2^n}$ exactly at the critical threshold (since $2^{2^{n+1}} / (2^{2^n})^2 = 1$ for all n).",
+    "whyMatters": [
+      "Connects to Liouville's 1844 transcendence construction: rapidly-growing denominators force irrationality of reciprocal sums, generalizing the proof that $\\sum 1/n!$ is irrational.",
+      "The Kovač-Tao 2024 breakthrough is one of the recent major results in irrationality theory and identified a sharp threshold near the quadratic recurrence $a_{n+1} \\approx a_n^2$ — precisely where $2^{2^n}$ sits.",
+      "Demonstrates that transcendence of a specific value is logically independent of irrationality-sequence robustness: $\\sum 1/2^{2^n}$ is a Fredholm number (transcendental), yet whether $2^{2^n}$ is an irrationality sequence is open.",
+      "The irrationality-sequence property is non-computable (uncountable quantification over perturbations), placing the problem in a different complexity class from finitely-verifiable irrationality questions."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "doubleExp_strictly_increasing, doubleExp_square_growth: the double-exponential sequence is strictly increasing with $a_{n+1} = a_n^2$",
+      "doubleExp_not_folklore_growth: $(2^{2^n})^{1/2^n} = 2$ constantly, so the folklore condition $a_n^{1/2^n} \\to \\infty$ fails for the double exponential",
+      "doubleExp_superexponential: $(2^{2^n})^{1/n} \\to \\infty$ — the double exponential satisfies superexponential growth",
+      "doubleExp_convergent: $\\sum 1/2^{2^n}$ converges (geometric-style comparison)",
+      "doubleExp_not_kovac_tao: $a_{n+1}/a_n^2 = 1$ for the double exponential, so the Kovač-Tao condition $\\to 0$ fails — this sequence sits AT the KT boundary, not below it",
+      "factorial_no_folklore_growth: factorials fail the folklore condition (since $(n+1)! \\le 2^{2^n}$, the rpow comparison gives bound $\\le 2$)",
+      "factorial_has_kovac_tao_condition: $(n+2)!/((n+1)!)^2 = (n+2)/(n+1)! \\to 0$, so KT excludes factorials from being irrationality sequences",
+      "characterization_gap: explicit witness — folklore condition is strictly stronger than superexponential growth",
+      "connection_262_proved: irrationality sequence implies the base sum is itself irrational (via identity perturbation $b = a$)",
+      "doubleExp_sum_irrational: $\\sum 1/2^{2^n}$ is irrational — proved via integer-gap argument (session 9, 6 helper lemmas)",
+      "Aristotle companion file (Erdos263Aristotle.lean): tail_pos and tail_bound proved (geometric-comparison and r=1/D² geometric series)"
+    ],
+    "open": [
+      "folklore_irrationality: classical sufficient condition $a_n^{1/2^n} \\to \\infty \\Rightarrow$ irrationality sequence (BLOCKED — needs Mahler-type criterion, ~200+ lines analytic number theory not in Mathlib)",
+      "kovac_tao_not_irrationality: Kovač-Tao 2024 negative result $a_{n+1}/a_n^2 \\to 0 \\Rightarrow$ NOT irrationality sequence (BLOCKED — needs Egyptian fraction greedy construction not in Mathlib)",
+      "positive_condition_irrationality: sufficient condition $\\liminf a_{n+1}/a_n^{2+\\epsilon} > 0 \\Rightarrow$ irrationality sequence (BLOCKED — needs liminf-based irrationality criterion)",
+      "truncation_insufficient: requires a known irrationality-sequence witness, which depends on unproven folklore_irrationality",
+      "Erdős Q1 (open): is the double exponential $2^{2^n}$ an irrationality sequence?",
+      "Erdős Q2 (open): must every irrationality sequence satisfy $a_n^{1/n} \\to \\infty$?"
+    ],
+    "goal": "Formalize the framework of irrationality sequences (definitions, growth conditions, hierarchy) and the known sufficient/necessary conditions in Lean 4. Status: framework + explicit witnesses (double exponential, factorial) complete; 4 deep theorems remain blocked on non-Mathlib analytic number theory (Mahler criterion, Kovač-Tao Egyptian fraction construction)."
   },
   "currentState": {
     "phase": "BLOCKED",
@@ -46,7 +70,7 @@
       "connection_262_proved: ∀ a, IsIrrationalitySequence a → Irrational (Σ 1/aₙ) — proved via identity perturbation (2026-04-21)",
       "doubleExp_sum_irrational: Irrational (Σ 1/2^{2^n}) — HARD sorry with integer-gap proof sketch (2026-04-21)",
       "doubleExp_term_eq: 1/(doubleExp n : ℕ) = 1/2^{2^n} (Erdos263Problem.lean:524, no sorry)",
-      "doubleExp_sum_summable: Summable (1/2^{2^n}) from doubleExp_convergent (Erdos263Problem.lean:529, no sorry)",
+      "doubleExp_sum_summable: Summable (1/2^{2^n}) from doubleExp_convergent via congr",
       "doubleExp_tail_pos: 0 < ∑ 1/2^{2^{k+N+1}} (Erdos263Problem.lean:533, sorry — Aristotle candidate)",
       "doubleExp_fin_mul_nat: ∃ m:ℕ, 2^{2^N} * finsum = m (Erdos263Problem.lean:546, attempted via pow_sub₀)",
       "doubleExp_tail_bound: 2^{2^N} * tail < 1/(2^{2^N}-1) (Erdos263Problem.lean:562, sorry — key tail estimate)",
@@ -95,17 +119,34 @@
     "erdos-problems",
     "number-theory",
     "irrationality",
-    "seeker-selected"
+    "irrationality-sequences",
+    "diophantine-approximation",
+    "double-exponential",
+    "kovac-tao-2024",
+    "seeker-selected",
+    "blocked-on-mathlib"
   ],
   "relatedProofs": [
-    "erdos-2",
-    "erdos-26",
-    "erdos-263"
+    "erdos-262",
+    "erdos-264"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "P. Erdős, 'Some problems and results on the irrationality of certain series', Mathematica Slovaca (1980s) — original problem statement",
+      "J. Hančl, 'Irrational rapidly convergent series', Rend. Sem. Mat. Univ. Padova 90 (1993), 167–179 — early lower bounds on growth rates",
+      "V. Kovač, T. Tao, 'On a problem of Erdős on irrationality sequences' (2024) — sequences with a_{n+1}/a_n^2 → 0 are not irrationality sequences",
+      "K. Mahler, 'Arithmetische Eigenschaften der Lösungen einer Klasse von Funktionalgleichungen', Math. Ann. 101 (1929) — Mahler's transcendence method"
+    ],
+    "urls": [
+      "https://erdosproblems.com/263",
+      "https://terrytao.wordpress.com/2024/ — Kovač-Tao announcement (subject to actual posting date)"
+    ],
+    "mathlib": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real (rpow API for a_n^{1/n})",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic (tsum, summable)",
+      "Mathlib.Topology.Order.LiminfLimsup (Filter.Tendsto, atTop)",
+      "Mathlib.Data.Real.Irrational (Irrational predicate)"
+    ]
   },
   "started": "2026-04-13T22:43:37.492Z",
   "lastUpdate": "2026-04-27T17:21:05Z",
