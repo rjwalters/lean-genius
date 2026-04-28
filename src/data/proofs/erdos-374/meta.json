@@ -123,7 +123,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #374 is formalized in 149 lines with 5 axioms and 5 proved theorems. bigF is now a noncomputable definition (eliminating 2 axioms). The backward direction of D₂ = squares is proved: for n ≥ 2, (n²−1)! · (n²)! = (n · (n²−1)!)². Prime exclusion and basic properties are derived from axioms. The growth rates of D₃ through D₆ remain open.",
+    "summary": "Erdős Problem #374 is formalized with 0 axioms and 0 sorries (5 proved theorems). `bigF` is a noncomputable definition via `Nat.find`. The backward direction of D₂ = squares is proved: for n ≥ 2, (n²−1)! · (n²)! = (n · (n²−1)!)². Prime exclusion and basic structural properties are established. The growth rates of D₃ through D₆ remain mathematically open.",
     "implications": "Resolution would connect factorial arithmetic to the distribution of square-free parts and p-adic valuations, with links to Legendre's formula, base-p representations, and the theory of multiplicative functions.",
     "openQuestions": [
       "What is |D₃ ∩ {1,...,n}| asymptotically? Is D₃ infinite?",
