@@ -46,9 +46,9 @@
       "Full Lean 4 statement of the Erdős-McKay conjecture as `ErdosMcKayConjecture : Prop`",
       "Axiomatization of the KSSS anticoncentration result with `ksss_theorem : ErdosMcKayConjecture`",
       "Extraction of δ(ε) function via Classical.choose with proved positivity (`delta_pos`)",
-      "Connection between Ramsey graphs and edge density via Erdős-Szemerédi (axiomatized)",
-      "Formalization of induced subgraph edge counts and the edge count range property",
-      "Axiomatization of Ramsey number existence, probabilistic Ramsey graphs, and KSSS optimality"
+      "Formalization of induced subgraph edge counts (`inducedEdgeCount`, `HasInducedWithEdges`) and the edge count range property (`AchievesAllEdgeCounts`, `EdgeCountRangeProperty`)",
+      "Axiomatization of the Ramsey number `R(k, ℓ)` (computing Ramsey numbers is itself an open hard problem)",
+      "Proved `theorem erdos_88 : ErdosMcKayConjecture := ksss_theorem` as the main result"
     ],
     "axiomCount": 2,
     "lineCount": 257,
@@ -58,7 +58,7 @@
     "historicalContext": "Erdős Problem #88 concerns the Erdős-McKay conjecture on induced subgraph edge counts in Ramsey graphs—one of the most celebrated results in modern combinatorics.\n\nThe story begins with Ramsey's theorem (1930): for any k, every sufficiently large graph contains either a k-clique or a k-independent set. Graphs that avoid both (with logarithmic bounds) are called ε-Ramsey graphs. Erdős and Szemerédi (1972) showed these graphs must have Θ(n²) edges—they are 'balanced' between structure and randomness.\n\nErdős and McKay conjectured (c. 1990) that this balance extends further: ε-Ramsey graphs should contain induced subgraphs achieving ALL edge counts from 0 to δn², not just having many edges overall. They proved a weaker version with δ(log n)² replacing δn², leaving an exponential gap.\n\nThe conjecture remained open for over 30 years until Kwan, Sah, Sauermann, and Sawhney (KSSS, 2022, arXiv:2206.01068) proved the full conjecture using anticoncentration techniques for polynomial threshold functions. Their key insight: if you sample a random subset S ⊆ V by including each vertex independently, the edge count e(G[S]) is anticoncentrated—no single value has probability more than O(1/n). Since e(G[S]) ranges up to Θ(p²n²), anticoncentration implies it hits Θ(n) distinct values. By varying the sampling probability p, all values from 0 to δn² are covered.\n\nThe KSSS proof builds on the Meka-Nguyen-Vu framework for anticoncentration of polynomial threshold functions and represents a major advance in probabilistic combinatorics. The team was awarded the $100 Erdős prize.",
     "problemStatement": "**Problem Statement**\n\nFor any ε > 0, there exists δ = δ(ε) > 0 such that if G is a graph on n vertices with:\n- No independent set of size ≥ ε log n\n- No clique of size ≥ ε log n\n\nThen G contains an induced subgraph with exactly m edges for all m ≤ δn².\n\n**Key Insight**: The condition 'no large clique or independent set' actually implies G has Θ(n²) edges (Erdős-Szemerédi), so the δn² bound is natural.\n\n**Answer**: PROVED by Kwan-Sah-Sauermann-Sawhney (2022)",
     "text": "In a graph with no large clique or independent set, can we find induced subgraphs with any desired edge count up to δn²? The Erdős-McKay conjecture was proved by Kwan, Sah, Sauermann, and Sawhney (2022), earning the $100 prize.",
-    "proofStrategy": "The formalization is organized into twelve parts:\n\n1. **Simple Graphs**: Framework setup using Mathlib's `SimpleGraph V` with `edgeCount` via `edgeFinset.card`\n2. **Cliques and Independent Sets**: Custom definitions with `IsClique`, `IsIndependent` and extremal numbers via `iSup` over finsets\n3. **Ramsey Graphs**: `IsRamseyBounded` (asymmetric) and `IsEpsilonRamsey` (symmetric, logarithmic scale)\n4. **Induced Subgraphs**: `inducedSubgraph` as `SimpleGraph S` with inherited adjacency, `inducedEdgeCount` via filtering\n5. **Edge Count Range**: `AchievesAllEdgeCounts` (surjectivity condition) and `EdgeCountRangeProperty` (with δn² scale)\n6. **Erdős-McKay Conjecture**: `ErdosMcKayConjecture : Prop` with ∀ε ∃δ quantifier structure; `ErdosMcKayWeakBound` with (log n)² scale\n7. **Erdős-Szemerédi Density**: Axiomatized Θ(n²) edge bound for ε-Ramsey graphs\n8. **Anticoncentration**: `IsAnticoncentrated` definition and `random_induced_anticoncentration` axiom (placeholder)\n9. **KSSS Theorem**: `ksss_theorem : ErdosMcKayConjecture` (axiomatized)\n10. **Implications**: `delta` function via `Classical.choose` with `delta_pos` (fully proved); `ksss_optimality` axiom\n11. **Ramsey Theory Connection**: Axiomatized `R`, `ramsey_graph_existence`, `probabilistic_ramsey`\n12. **Main Result**: `erdos_88 : ErdosMcKayConjecture := ksss_theorem` (0 sorries in the main line)",
+    "proofStrategy": "The formalization is organized into twelve parts:\n\n1. **Simple Graphs**: Framework setup using Mathlib's `SimpleGraph V` with `edgeCount` via `edgeFinset.card`\n2. **Cliques and Independent Sets**: Custom definitions with `IsClique`, `IsIndependent` and extremal numbers via `iSup` over finsets\n3. **Ramsey Graphs**: `IsRamseyBounded` (asymmetric) and `IsEpsilonRamsey` (symmetric, logarithmic scale). The Ramsey-size bound from Ramsey's theorem is referenced in a docstring but not formalized as an axiom in this file.\n4. **Induced Subgraphs**: `inducedSubgraph` as `SimpleGraph S` with inherited adjacency, `inducedEdgeCount` via filtering\n5. **Edge Count Range**: `AchievesAllEdgeCounts` (surjectivity condition) and `EdgeCountRangeProperty` (with δn² scale)\n6. **Erdős-McKay Conjecture**: `ErdosMcKayConjecture : Prop` with ∀ε ∃δ quantifier structure; `ErdosMcKayWeakBound : Prop` with (log n)² scale (defined; the original Erdős-McKay weak result is referenced in a docstring but not axiomatized)\n7. **Erdős-Szemerédi Density**: The Θ(n²) edge bound for ε-Ramsey graphs is described in a docstring; this section contains no Lean declarations\n8. **Anticoncentration**: `IsAnticoncentrated` definition; the random-induced-subgraph anticoncentration result is referenced in a docstring but not axiomatized in this file\n9. **KSSS Theorem**: `axiom ksss_theorem : ErdosMcKayConjecture` (the 2022 solution, axiomatized) plus `ksss_prize`/`ksss_technique` documentation strings\n10. **Implications**: `delta` function via `Classical.choose` with `delta_pos` (fully proved). KSSS optimality is mentioned in a docstring only.\n11. **Ramsey Theory Connection**: `axiom R (k ℓ : ℕ) : ℕ` (Ramsey numbers). The existence/probabilistic-construction comments are docstrings without declarations.\n12. **Main Result**: `theorem erdos_88 : ErdosMcKayConjecture := ksss_theorem` (0 sorries; main result obtained directly from the KSSS axiom)",
     "keyInsights": [
       "**0-sorry formalization via axiom architecture**: All deep results (KSSS, Erdős-Szemerédi, Ramsey bounds) are axiomatized, while the structural theorems (`delta_pos`, `erdos_88`) are fully proved. This cleanly separates mathematical content from logical framework—a model for formalizing solved problems with complex proofs.",
       "**Anticoncentration as a combinatorial power tool**: The KSSS breakthrough uses anticoncentration—the principle that random induced subgraph edge counts are 'well-spread' with no single value having probability > O(1/n). This builds on the Meka-Nguyen-Vu framework for polynomial threshold functions and represents a new paradigm in extremal graph theory.",
@@ -93,10 +93,10 @@
     {
       "id": "ramsey-graphs",
       "title": "Ramsey Graphs",
-      "summary": "Defines `IsRamseyBounded G k ℓ` (asymmetric) and `IsEpsilonRamsey G ε` (symmetric, logarithmic scale). Axiomatizes `ramsey_size_bound`: ε-Ramsey graphs have bounded size by Ramsey's theorem.",
+      "summary": "Defines `IsRamseyBounded G k ℓ` (asymmetric) and `IsEpsilonRamsey G ε` (symmetric, logarithmic scale). The Ramsey-size bound is referenced in a closing docstring but is not formalized as an axiom or theorem in this file.",
       "startLine": 68,
       "endLine": 87,
-      "mathContext": "Formal definition: Defines `IsRamseyBounded G k ℓ` (asymmetric) and `IsEpsilonRamsey G ε` (symmetric, logarithmic scale). Axiomatizes `ramsey_size_bound`: ε-Ramsey graphs have bounded size by Ramsey's theorem."
+      "mathContext": "Formal definition: Defines `IsRamseyBounded G k ℓ` (asymmetric) and `IsEpsilonRamsey G ε` (symmetric, logarithmic scale). The Ramsey-size bound is referenced in a closing docstring but is not formalized as an axiom or theorem in this file."
     },
     {
       "id": "induced-subgraphs",
@@ -117,34 +117,34 @@
     {
       "id": "erdos-mckay",
       "title": "The Erdős-McKay Conjecture",
-      "summary": "States `ErdosMcKayConjecture : Prop` with the ∀ε ∃δ quantifier structure. Also states the weaker `ErdosMcKayWeakBound` with (log n)² scale, axiomatized as `erdos_mckay_weak` (Erdős-McKay original result).",
+      "summary": "States `ErdosMcKayConjecture : Prop` with the ∀ε ∃δ quantifier structure. Also defines the weaker `ErdosMcKayWeakBound : Prop` with (log n)² scale; the original Erdős-McKay weak result is described in a docstring but not given an axiom in this file.",
       "startLine": 127,
       "endLine": 154,
-      "mathContext": "States `ErdosMcKayConjecture : Prop` with the ∀ε ∃δ quantifier structure. Also states the weaker `ErdosMcKayWeakBound` with (log n)² scale, axiomatized as `erdos_mckay_weak` (Erdős-McKay original result)."
+      "mathContext": "States `ErdosMcKayConjecture : Prop` with the ∀ε ∃δ quantifier structure. Also defines the weaker `ErdosMcKayWeakBound : Prop` with (log n)² scale; the original Erdős-McKay weak result is described in a docstring but not given an axiom in this file."
     },
     {
       "id": "erdos-szemeredi",
       "title": "Erdős-Szemerédi Density",
-      "summary": "Axiomatizes `erdos_szemeredi_density`: for fixed ε > 0, ε-Ramsey graphs satisfy c₁n² ≤ |E(G)| ≤ c₂n². This 1972 result establishes that Θ(n²) is the correct edge count scale for Ramsey graphs.",
-      "startLine": 155,
-      "endLine": 172,
-      "mathContext": "Axiomatizes `erdos_szemeredi_density`: for fixed ε > 0, ε-Ramsey graphs satisfy c₁n² $\\leq$ |E(G)| $\\leq$ c₂n². This 1972 result establishes that Θ(n²) is the correct edge count scale for Ramsey graphs."
+      "summary": "Documentation-only section describing the Erdős-Szemerédi (1972) density result that ε-Ramsey graphs satisfy c₁n² ≤ |E(G)| ≤ c₂n². This is referenced as motivation for the δn² scale but contains no Lean declarations (no axiom, theorem, or definition) — only a docstring header.",
+      "startLine": 149,
+      "endLine": 158,
+      "mathContext": "Documentation-only: describes the Erdős-Szemerédi (1972) density result that ε-Ramsey graphs satisfy c₁n² $\\leq$ |E(G)| $\\leq$ c₂n². No Lean declaration is present in this section."
     },
     {
       "id": "anticoncentration",
       "title": "Anticoncentration",
-      "summary": "Defines `IsAnticoncentrated X bound` (pointwise probability bound) and axiomatizes `random_induced_anticoncentration` (placeholder: random induced subgraph edge counts are well-spread). This is the key KSSS technique.",
-      "startLine": 173,
-      "endLine": 195,
-      "mathContext": "Defines `IsAnticoncentrated X bound` (pointwise probability bound) and axiomatizes `random_induced_anticoncentration` (placeholder: random induced subgraph edge counts are well-spread). This is the key KSSS technique."
+      "summary": "Defines `IsAnticoncentrated X bound` (pointwise probability bound). The random-induced-subgraph anticoncentration lemma — the key KSSS technique — is described in a closing docstring but not formalized as an axiom or theorem in this file.",
+      "startLine": 159,
+      "endLine": 172,
+      "mathContext": "Defines `IsAnticoncentrated X bound` (pointwise probability bound). The random-induced-subgraph anticoncentration lemma — the key KSSS technique — is described in a closing docstring but not formalized as an axiom or theorem in this file."
     },
     {
       "id": "ksss-theorem",
       "title": "The KSSS Theorem",
       "summary": "Axiomatizes `ksss_theorem : ErdosMcKayConjecture` (the 2022 solution). Records the prize ($100) and technique ('Anticoncentration') as string definitions for documentation.",
-      "startLine": 196,
-      "endLine": 214,
-      "mathContext": "Formal definition: Axiomatizes `ksss_theorem : ErdosMcKayConjecture` (the 2022 solution). Records the prize ($100) and technique ('Anticoncentration') as string definitions for documentation."
+      "startLine": 173,
+      "endLine": 224,
+      "mathContext": "Axiomatized: `ksss_theorem : ErdosMcKayConjecture` (the 2022 solution). Records the prize ($100) and technique ('Anticoncentration') as string definitions, and adds `axiom R (k ℓ : ℕ) : ℕ` for Ramsey numbers. KSSS optimality, Ramsey-graph existence, and probabilistic Ramsey constructions appear only in docstrings."
     }
   ],
   "conclusion": {
