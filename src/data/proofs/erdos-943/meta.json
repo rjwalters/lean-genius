@@ -29,7 +29,7 @@
     "historicalContext": "Erdős posed this problem in 1976 [Er76d], asking whether the representation function $r(n)$ for sums of two powerful numbers grows subpolynomially. Powerful numbers (also called squarefull numbers) were first systematically studied by Golomb (1970), who proved the key characterization $n = a^2 b^3$ for $a, b \\geq 1$. The density of powerful numbers up to $x$ is asymptotically $(\\zeta(3/2)/\\zeta(3))\\sqrt{x} \\approx 1.943\\sqrt{x}$, a classical result following from the $a^2 b^3$ representation and Euler product methods. The question belongs to additive number theory: given a structured set $\\mathcal{A}$ with known density, how large can the representation function $r(n) = (\\mathbf{1}_\\mathcal{A} * \\mathbf{1}_\\mathcal{A})(n)$ be? For the analogous problem with perfect squares, Jacobi's two-square theorem gives $r_2(n) = 4(d_1(n) - d_3(n)) = O(n^\\varepsilon)$ via the divisor bound. For powerful numbers, the irregular multiplicative structure (not closed under addition, not a group) makes the problem fundamentally harder. The trivial bound $r(n) \\leq c\\sqrt{n}$ follows from density, corresponding to exponent $1/2$. The conjecture asks for improvement to any $\\varepsilon > 0$. Related work includes Heath-Brown's 1988 result that every sufficiently large integer is the sum of at most three powerful numbers (the ternary case), and Baker-Brüdern's 1994 density-zero result for sums of two cubes of squarefull numbers.",
     "problemStatement": "Let $\\mathcal{A}$ be the set of powerful numbers and $r(n) = |\\{(a,b) \\in \\mathcal{A}^2 : a + b = n\\}|$. Is $r(n) = n^{o(1)}$? That is, for every $\\varepsilon > 0$, does $r(n) \\leq n^\\varepsilon$ hold for all sufficiently large $n$?",
     "text": "Let A be the set of powerful numbers. Is the representation function r(n) = |{(a,b) ∈ A²: a+b=n}| subpolynomial, i.e., r(n) = n^{o(1)}? Known: r(n) ≤ c√n trivially. Open.",
-    "proofStrategy": "The formalization defines `IsPowerful` via the universal quantifier over prime factors ($p \\mid n \\Rightarrow p^2 \\mid n$), the `PowerfulSet` as a `Set \\mathbb{N}`, and the representation function `powerfulSumRep` using `Finset.filter` on `Finset.range(n+1)`. The main conjecture is stated as an axiom (the problem is OPEN), and known results—powerful number density, the trivial $\\sqrt{n}$ bound, and the Golomb $a^2 b^3$ structure—are recorded as axioms. The file also includes informal observations about the average order $\\sum_{n \\leq x} r(n) \\sim c^2 x$, the connection to sums of squares via Jacobi's formula, and the Diophantine constraints from the $a^2 b^3$ form.",
+    "proofStrategy": "The formalization defines `IsPowerful` via the universal quantifier over prime factors ($p \\mid n \\Rightarrow p^2 \\mid n$), the `PowerfulSet` as a `Set \\mathbb{N}`, and the representation function `powerfulSumRep` using `Finset.filter` on `Finset.range(n+1)`. Five elementary lemmas are proved: `not_isPowerful_zero`, `isPowerful_one`, `isPowerful_prime_sq`, `isPowerful_sq`, and `isPowerful_mul` (closure under multiplication). The single axiom `powerful_density` records the classical asymptotic upper bound $|\\{n \\leq x : n \\text{ powerful}\\}| \\leq c\\sqrt{x}$, from which the theorem `trivial_upper_bound` is proved (showing $r(n) \\leq c\\sqrt{n}$). The Erdős conjecture itself and Golomb's $a^2 b^3$ characterization appear only as informal docstring comments (no declarations). Additional observations on the average order, connection to sums of squares, and Diophantine constraints from the $a^2 b^3$ form are included as block comments.",
     "keyInsights": [
       "Powerful numbers have density $\\sim c\\sqrt{x}$ where $c = \\zeta(3/2)/\\zeta(3) \\approx 1.943$, derived from the Dirichlet series $\\sum_{n \\text{ powerful}} n^{-s} = \\zeta(2s)\\zeta(3s)/\\zeta(6s)$",
       "The trivial bound $r(n) \\leq c\\sqrt{n}$ follows from counting: each representation requires $a \\leq n$ to be powerful, and there are at most $c\\sqrt{n}$ such values",
@@ -59,43 +59,50 @@
       "summary": "Three foundational definitions: `IsPowerful` (n ≥ 1 and every prime factor squared divides n), `PowerfulSet` (set comprehension), and `powerfulSumRep` (representation count via Finset.filter on Finset.range(n+1))."
     },
     {
-      "id": "sec-943-conjecture",
-      "title": "Main Conjecture",
+      "id": "sec-943-basic-properties",
+      "title": "Basic Properties of Powerful Numbers",
       "startLine": 42,
-      "endLine": 49,
-      "summary": "Erdős's open conjecture formalized as an axiom: for every ε > 0, r(n) ≤ n^ε for all sufficiently large n, using Real.rpow for the power function."
+      "endLine": 76,
+      "summary": "Five elementary lemmas: not_isPowerful_zero (0 is not powerful), isPowerful_one (1 is powerful vacuously), isPowerful_prime_sq (p² is powerful for prime p), isPowerful_sq (n² is powerful for n ≥ 1), and isPowerful_mul (powerful numbers are closed under multiplication)."
     },
     {
-      "id": "sec-943-density",
-      "title": "Powerful Number Density",
-      "startLine": 50,
-      "endLine": 59,
-      "summary": "Axiom stating the classical density result: the count of powerful numbers up to x is at most c·√x for some constant c > 0."
+      "id": "sec-943-conjecture-comment",
+      "title": "Main Conjecture (Informal)",
+      "startLine": 77,
+      "endLine": 80,
+      "summary": "Part II header and informal docstring stating Erdős's conjecture r(n) = n^{o(1)}. NOT formalized as a Lean declaration — appears only as a docstring comment with no axiom or theorem attached."
+    },
+    {
+      "id": "sec-943-density-axiom",
+      "title": "Powerful Number Density Axiom",
+      "startLine": 81,
+      "endLine": 89,
+      "summary": "Part III header and the single axiom of the file: powerful_density, asserting that the count of powerful numbers up to x is at most c·√x for some c > 0."
     },
     {
       "id": "sec-943-trivial-bound",
-      "title": "Trivial Upper Bound",
-      "startLine": 60,
-      "endLine": 65,
-      "summary": "Axiom stating r(n) ≤ c·√n, the immediate consequence of the density bound: each representation requires one powerful summand from [0,n]."
+      "title": "Trivial Upper Bound (Theorem)",
+      "startLine": 91,
+      "endLine": 113,
+      "summary": "Theorem trivial_upper_bound: r(n) ≤ c·√n. Proved from powerful_density by Finset.card_le_card, since each representation pair (a, n-a) requires a ∈ [0,n] powerful."
     },
     {
-      "id": "sec-943-structure",
-      "title": "Golomb's a²b³ Characterization",
-      "startLine": 66,
-      "endLine": 72,
-      "summary": "Axiom recording Golomb's 1970 result: every powerful number n can be written as a²b³ for a, b ≥ 1, converting the additive problem to a specific Diophantine equation."
+      "id": "sec-943-structure-comment",
+      "title": "Golomb's a²b³ Characterization (Informal)",
+      "startLine": 114,
+      "endLine": 117,
+      "summary": "Docstring describing Golomb's 1970 result that every powerful number has the form a²b³. NOT formalized — appears only as a comment with no declaration attached."
     },
     {
       "id": "sec-943-observations",
       "title": "Observations",
-      "startLine": 73,
-      "endLine": 87,
-      "summary": "Three informal comments (not formalized): the average order of r(n), the connection to Jacobi's formula for sums of two squares, and the Diophantine constraints from the a²b³ form."
+      "startLine": 118,
+      "endLine": 132,
+      "summary": "Part IV header and three informal block comments (not formalized): the average order Σ_{n≤x} r(n) ∼ c²x, the connection to Jacobi's formula for sums of two squares, and the Diophantine constraints from the a²b³ form."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #943 asks whether the number of representations of $n$ as a sum of two powerful numbers grows subpolynomially. The formalization defines powerful numbers, the representation function $r(n)$ via finite set filtering, and states the conjecture as an axiom. The trivial bound $r(n) \\leq c\\sqrt{n}$ from density, the Golomb $a^2 b^3$ characterization, and density asymptotics are all recorded. All major results are axioms since the problem is OPEN, with 0 sorry statements.",
+    "summary": "Erdős Problem #943 asks whether the number of representations of $n$ as a sum of two powerful numbers grows subpolynomially. The formalization defines powerful numbers, the representation function $r(n)$ via finite set filtering, and proves five elementary lemmas about powerful numbers. The single axiom `powerful_density` records the classical density bound $|\\{n \\leq x : n \\text{ powerful}\\}| \\leq c\\sqrt{x}$, from which the theorem `trivial_upper_bound` ($r(n) \\leq c\\sqrt{n}$) is proved. The conjecture itself and Golomb's $a^2 b^3$ characterization are present only as informal docstring comments (not as declarations). 1 axiom, 0 sorries.",
     "implications": "**Theoretical Significance**: Resolution would illuminate the additive structure of multiplicatively defined number sets, a fundamental theme in analytic and combinatorial number theory.\n\nA proof of $r(n) = n^{o(1)}$ would confirm that the special Diophantine structure of powerful numbers ($a^2 b^3$) severely constrains their additive representations, extending the classical Jacobi result for squares. The techniques would likely involve circle method estimates, exponential sum bounds over structured sequences, or novel applications of the $a^2 b^3$ parametrization to counting lattice points on algebraic varieties.",
     "openQuestions": [
       "Is $r(n) = n^{o(1)}$ for all $n$? This is the central question—no improvement over the trivial $n^{1/2}$ bound is known.",
