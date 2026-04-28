@@ -77,8 +77,8 @@
       "title": "Part IV: Historical Results",
       "startLine": 124,
       "endLine": 163,
-      "summary": "burr_unpublished, conlon_fox_pham_2021, subset_ramsey_complete axioms, kth_powers_ramsey_complete theorem.",
-      "mathContext": "Verified: burr_unpublished, conlon_fox_pham_2021, subset_ramsey_complete axioms, kth_powers_ramsey_complete theorem."
+      "summary": "Documents Burr's unpublished result (1985) as a docstring, then declares the `conlon_fox_pham_2021` and `subset_ramsey_complete` axioms, and proves `kth_powers_ramsey_complete` from them.",
+      "mathContext": "`burr_unpublished` appears only as a docstring comment — no axiom declaration exists. Formal declarations: `conlon_fox_pham_2021` (axiom, L142), `subset_ramsey_complete` (axiom, L150), `kth_powers_ramsey_complete` (theorem proved from these axioms)."
     },
     {
       "id": "resolution",
@@ -93,8 +93,8 @@
       "title": "Part VI: Stronger Results",
       "startLine": 186,
       "endLine": 218,
-      "summary": "cfp_density_bounds and burr_erdos_upper_bound axioms.",
-      "mathContext": "Axiomatized: cfp_density_bounds and burr_erdos_upper_bound axioms."
+      "summary": "Records the Conlon-Fox-Pham density bounds and the Burr-Erdős (1985) upper bound as documentation only — no formal `axiom` declarations are introduced.",
+      "mathContext": "`cfp_density_bounds` and `burr_erdos_upper_bound` exist only as docstring comments — no formal axiom declarations in this section."
     },
     {
       "id": "related-context",
