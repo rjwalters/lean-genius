@@ -1,38 +1,38 @@
 {
   "slug": "erdos-512-incomplete-01",
-  "title": "Erd\u0151s #512 \u2014 Fill Measure Theory Gaps in Littlewood Conjecture Formalization",
-  "phase": "ACT",
-  "status": "active",
+  "title": "Erdős #512 — Fill Measure Theory Gaps in Littlewood Conjecture Formalization",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\int_0^1 \\left|\\sum_{n \\in A} e^{2\\pi i n\\theta}\\right| d\\theta \\geq c \\cdot \\log N",
     "plain": "Fill 2 remaining sorry gaps in the Littlewood conjecture formalization: expSumNorm_continuous and L1norm_le_card in the Aristotle companion file.",
     "whyMatters": [
-      "Closes concrete sorry gaps in Erd\u0151s #512 gallery proof",
+      "Closes concrete sorry gaps in Erdős #512 gallery proof",
       "Improves gallery integrity for a flagship formalization",
       "Demonstrates Fourier analysis + integration Mathlib API patterns"
     ]
   },
   "knownResults": {
     "proven": [
-      "expSum_bound: |expSum A \u03b8| \u2264 A.card (triangle inequality)",
-      "L1norm_upper_bound: \u222b\u2080\u00b9 |expSum| d\u03b8 \u2264 A.card (already proved in main file)",
+      "expSum_bound: |expSum A θ| ≤ A.card (triangle inequality)",
+      "L1norm_upper_bound: ∫₀¹ |expSum| dθ ≤ A.card (already proved in main file)",
       "expTwoPiI_norm: |e(x)| = 1",
       "expTwoPiI_periodic: e(x+1) = e(x)"
     ],
     "open": [
-      "L2_norm (Parseval): \u222b\u2080\u00b9 |expSum A \u03b8|\u00b2 d\u03b8 = A.card"
+      "L2_norm (Parseval): ∫₀¹ |expSum A θ|² dθ = A.card"
     ],
     "goal": "Close Aristotle companion sorries and optionally prove Parseval"
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-04-23T00:00:00.000Z",
     "iteration": 1,
-    "focus": "Prove expSumNorm_continuous and L1norm_le_card in Aristotle companion",
+    "focus": "Closed within axiomatization scope: 0 sorries; 2 axioms (konyagin_theorem, mcgehee_pigno_smith_theorem) representing Littlewood conjecture itself.",
     "blockers": [],
-    "nextAction": "Prove L2_norm (Parseval) in main file",
+    "nextAction": "Axiom elimination would require formalizing Konyagin (1981) or McGehee-Pigno-Smith (1981) — multi-thousand-line projects, out of scope for incremental sessions.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -40,29 +40,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Aristotle sorries closed; L2_norm proof structured (1 sorry: normSq double-sum expansion in expSumNorm_sq_double)",
+    "progressSummary": "VERIFIED within axiomatization scope: 0 sorries, 2 axioms (konyagin_theorem, mcgehee_pigno_smith_theorem). Both axioms have identical statement (LittlewoodConjecture); they encode the historical fact that Konyagin (1981) and McGehee-Pigno-Smith (1981) gave independent proofs. expSumNorm_sq_double and L2_norm (Parseval) were proved in PR #12115 (1e702aadd36).",
     "builtItems": [
-      "expSumNorm_continuous (A) : Continuous (expSumNorm A) \u2014 Erdos512Aristotle.lean",
-      "L1norm_le_card (A) : \u222b\u2080\u00b9 expSumNorm A \u03b8 \u2264 A.card \u2014 Erdos512Aristotle.lean",
-      "expTwoPiI_conj (PROVED): conj(e(n\u03b8)) = e(-n\u03b8) \u2014 Erdos512Problem.lean",
-      "integral_cos_character (PROVED): \u222b\u2080\u00b9 cos(2\u03c0k\u03b8)d\u03b8 = [k=0] \u2014 Erdos512Problem.lean",
-      "L2_norm proof skeleton (1 sorry remaining) \u2014 Erdos512Problem.lean"
+      "expSumNorm_continuous (A) : Continuous (expSumNorm A) — Erdos512Aristotle.lean",
+      "L1norm_le_card (A) : ∫₀¹ expSumNorm A θ ≤ A.card — Erdos512Aristotle.lean",
+      "expTwoPiI_conj (PROVED): conj(e(nθ)) = e(-nθ) — Erdos512Problem.lean",
+      "integral_cos_character (PROVED): ∫₀¹ cos(2πkθ)dθ = [k=0] — Erdos512Problem.lean",
+      "L2_norm (PROVED, PR #12115): ∫₀¹ (expSumNorm A θ)² dθ = A.card via expSumNorm_sq_double + integral_cos_character — Erdos512Problem.lean",
+      "expSumNorm_sq_double (PROVED, PR #12115): |∑ e(mθ)|² = ∑_{m,n} cos(2π(m-n)θ) — Erdos512Problem.lean:210"
     ],
     "insights": [
       "expSumNorm_continuous uses Complex.continuous_abs.comp + continuous_finset_sum + fun_prop",
       "L1norm_le_card follows from continuity + setIntegral_mono_on (mirrors main file inline proof at lines 105-131)",
-      "L2_norm (Parseval) requires character orthogonality: \u222b\u2080\u00b9 e^{2\u03c0ik\u03b8} d\u03b8 = [k=0] \u2014 harder",
+      "L2_norm (Parseval) requires character orthogonality: ∫₀¹ e^{2πikθ} dθ = [k=0] — harder",
       "The Aristotle companion header is outdated: L1norm_upper_bound in main file was already proved, only L2_norm remains there",
       "L2_norm proof strategy: expSumNorm_sq_double + integral_cos_character + diagonal count",
-      "integral_cos_character proved: \u222b\u2080\u00b9 cos(2\u03c0k\u03b8)d\u03b8 = [k=0] via intervalIntegral.integral_cos_mul + sin(2\u03c0k)=0",
+      "integral_cos_character proved: ∫₀¹ cos(2πkθ)dθ = [k=0] via intervalIntegral.integral_cos_mul + sin(2πk)=0",
       "Parseval's L2_norm main proof structured: swap integral/sum + apply character orthogonality + simp sub_eq_zero",
-      "Remaining sorry: expSumNorm_sq_double normSq double-sum algebraic identity \u2014 |\u2211e(m\u03b8)|\u00b2 = \u2211_{m,n} cos(2\u03c0(m-n)\u03b8)"
+      "Remaining sorry: expSumNorm_sq_double normSq double-sum algebraic identity — |∑e(mθ)|² = ∑_{m,n} cos(2π(m-n)θ)",
+      "VERIFIED 2026-04-28: file is at 0 sorries, 2 axioms; prior progressSummary was stale.",
+      "konyagin_theorem and mcgehee_pigno_smith_theorem axioms have identical statement (LittlewoodConjecture); the konyagin_equals_mps theorem between them is therefore tautological at the type level. A future axiom-reduction session could merge them into one underlying axiom + two named-theorem aliases (preserves historical attribution while honestly counting one mathematical assumption)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove expSumNorm_sq_double: normSq(\u2211_m e(m\u03b8)) = \u2211_{m,n} cos(2\u03c0(m-n)\u03b8) [ring identity with mul_comm + Complex.normSq_apply]",
-      "Try: simp [Complex.normSq_apply, Complex.re_sum, Complex.mul_re, expTwoPiI_conj, expTwoPiI_add]",
-      "Aristotle candidate: expSumNorm_sq_double (HARD normSq algebraic identity)"
+      "Optional: 2→1 axiom merge — declare a single axiom littlewood_conjecture : LittlewoodConjecture and define konyagin_theorem and mcgehee_pigno_smith_theorem as theorems referencing it. Preserves historical names; reduces axiom count to match the single mathematical assumption.",
+      "Out-of-scope: full elimination requires formalizing Konyagin or MPS papers (~thousands of lines)."
     ]
   },
   "tags": [
@@ -89,25 +91,25 @@
     ]
   },
   "started": "2026-04-23T00:00:00.000Z",
-  "lastUpdate": "2026-04-23T00:00:00.000Z",
+  "lastUpdate": "2026-04-28T00:00:00.000Z",
   "significance": 8,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos512Problem.lean",
       "filename": "Erdos512Problem.lean",
-      "lineCount": 245,
-      "theoremCount": 10,
+      "lineCount": 368,
+      "theoremCount": 14,
       "axiomCount": 2,
-      "defCount": 8,
-      "sorryCount": 1,
+      "defCount": 9,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos512Problem.lean"
     },
     {
       "path": "Proofs/Erdos512Aristotle.lean",
       "filename": "Erdos512Aristotle.lean",
-      "lineCount": 75,
+      "lineCount": 77,
       "theoremCount": 2,
       "axiomCount": 0,
       "defCount": 0,
