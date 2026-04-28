@@ -86,13 +86,13 @@
       "startLine": 1,
       "endLine": 24,
       "summary": "Problem statement, main question, known results, and references.",
-      "mathContext": "Problem #942: h(n) = count of powerful (squarefull) integers in [n^2, (n+1)^2). Is there c > 0 with h(n) >= c sqrt(n)?"
+      "mathContext": "Problem #942: h(n) = count of powerful (squarefull) integers in [n^2, (n+1)^2). Is there c > 0 with h(n) ~ (log n)^c?"
     },
     {
       "id": "background",
       "title": "Background: Powerful Numbers",
       "startLine": 35,
-      "endLine": 49,
+      "endLine": 48,
       "summary": "Definition, examples, non-examples, and density of powerful numbers.",
       "mathContext": "Powerful number: p | n implies p^2 | n. Equivalently n = a^2 b^3. Density ~ (zeta(3/2)/zeta(3)) sqrt(x)."
     },
@@ -100,41 +100,49 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 50,
-      "endLine": 78,
+      "endLine": 68,
       "summary": "Powerful and PowerfulAlt definitions (the only Lean definitions in this file). h is an opaque axiom with no specification.",
       "mathContext": "Powerful(n): forall p | n, p^2 | n. PowerfulAlt(n): exists a b > 0, n = a^2 * b^3. h : ℕ → ℕ is an opaque axiom."
     },
     {
       "id": "examples",
       "title": "Examples of Powerful Numbers",
-      "startLine": 79,
-      "endLine": 104,
-      "summary": "Documentary docstring listing powerful and non-powerful examples. No Lean example declarations in this section.",
+      "startLine": 70,
+      "endLine": 72,
+      "summary": "Documentary docstring header. No Lean example declarations in this section.",
       "mathContext": "Examples documented as commentary: Powerful: 1, 4, 8, 9, 36, 72. Not powerful: 6, 12."
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture (OPEN)",
-      "startLine": 105,
-      "endLine": 119,
-      "summary": "erdos_942_conjecture (opaque Prop axiom) and erdos_942_open (axiom asserting neither true nor false) plus erdos_942_status theorem.",
-      "mathContext": "OPEN: exists c > 0 with h(n) >= c sqrt(n) for all large n."
+      "startLine": 74,
+      "endLine": 86,
+      "summary": "erdos_942_conjecture (opaque Prop axiom) and erdos_942_open (axiom asserting neither true nor false).",
+      "mathContext": "OPEN: exists c > 0 such that h(n) is bounded above by (log n)^{c+o(1)} and achieves (log n)^{c-o(1)} infinitely often."
     },
     {
       "id": "limsup",
       "title": "Known Result: limsup h(n) = infinity",
-      "startLine": 120,
-      "endLine": 132,
+      "startLine": 88,
+      "endLine": 92,
       "summary": "Documentary docstring on limsup h(n) = ∞ (van Doorn). No Lean axiom or theorem in this section — knowledge documented as commentary only.",
       "mathContext": "h(n) is unbounded: limsup h(n) = infinity. But uniform lower bound unknown."
     },
     {
       "id": "density",
       "title": "Known Result: Density of h(n) = l",
-      "startLine": 133,
-      "endLine": 144,
+      "startLine": 94,
+      "endLine": 101,
       "summary": "Documentary docstring on density theory (δ_l exists, Σδ_l = 1, δ_1 ≈ 0.275). No Lean axioms — density facts are commentary only.",
       "mathContext": "Density of {n : h(n) = k} exists for each k, and sum delta_k = 1."
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Status Theorem",
+      "startLine": 102,
+      "endLine": 142,
+      "summary": "Documentary docstrings on De Koninck-Luca lower bound, properties, square intervals, small examples, and a final summary; concludes with erdos_942_status theorem (proved from erdos_942_open).",
+      "mathContext": "De Koninck-Luca: h(n) >= c (log n / log log n)^{1/3} infinitely often. Status theorem: ¬(erdos_942_conjecture ↔ True), proved from erdos_942_open."
     }
   ],
   "conclusion": {
