@@ -91,10 +91,9 @@ def ruzsaConjecture : Prop :=
 /-- **Erdős-Rosenfeld Theorem (1997):**
     There are infinitely many n with four divisors in (√n, √n + n^{1/4}).
     Note: This uses ε = 1/4, which gives a wider interval than the conjecture. -/
-/-- The Erdős-Rosenfeld result for the specific interval (√n, √n + n^{1/4}). -/
-axiom erdos_rosenfeld :
-    ∀ k : ℕ, k ≥ 1 → ∃ n : ℕ, n ≥ k ∧
-      (divisorsInInterval n (Real.sqrt n) (Real.sqrt n + (n : ℝ)^(1/4 : ℝ))).card ≥ 4
+/-- The Erdős-Rosenfeld result: infinitely many n have ≥ 4 divisors in (√n, √n + n^{1/4}). -/
+axiom erdos_rosenfeld_four_divisors :
+    ∃ S : Set ℕ, S.Infinite ∧ ∀ n ∈ S, divisorsNearSqrt n (1/4 : ℝ) ≥ 4
 
 /- ## Part VI: The Factor-Difference Set
 -/
