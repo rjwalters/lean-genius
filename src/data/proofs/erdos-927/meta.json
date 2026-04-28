@@ -114,8 +114,8 @@
       "title": "Examples",
       "startLine": 225,
       "endLine": 242,
-      "summary": "Axiomatizes `complete_graph_cliques`: $K_n$ has cliques of sizes $1, 2, \\ldots, n$ so $g(n) \\geq n$, and `empty_graph_one_clique_size`: $g(1) \\geq 1$.",
-      "mathContext": "Axiomatized: Axiomatizes `complete_graph_cliques`: $K_n$ has cliques of sizes $1, 2, \\ldots, n$ so $g(n) \\geq n$, and `empty_graph_one_clique_size`: $g(1) \\geq 1$."
+      "summary": "Docstring section only. Includes a comment about $K_n$ having cliques of sizes $1, 2, \\ldots, n$. No `complete_graph_cliques` or `empty_graph_one_clique_size` axiom declarations exist in the file.",
+      "mathContext": "Docstring comment only: $K_n$ has $n$ distinct clique sizes $\\{1, 2, \\ldots, n\\}$. No axiom declarations in this section."
     },
     {
       "id": "summary",
