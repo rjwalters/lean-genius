@@ -59,7 +59,7 @@
       "**Why $P(n)$ Controls Everything**: If $p^{2k+1} \\| n$, any square-completing subset must include a multiple of $p$. When $p = P(n) > \\sqrt{2n}+1$, the interval $\\{n+1,\\ldots,n+P(n)\\}$ contains exactly one multiple of $p$ (namely $\\lceil n/p \\rceil \\cdot p$), and this unique multiple suffices. When $P(n)$ is small, many multiples of each prime appear, providing more combinatorial options.",
       "**Distributional Equivalence (Bui-Pratt-Zaharescu 2024)**: For any $c \\in (0,1]$, $\\lim_{x \\to \\infty} \\frac{|\\{n \\leq x : t_n \\leq n^c\\}|}{x} = \\rho(1/c)$ where $\\rho$ is the Dickman function. This means $t_n$ and $P(n)$ have identical distribution — a remarkably clean statistical characterization.",
       "**Universal Lower Bound**: Even for the smoothest possible $n$, $t_n$ cannot be too small: $t_n \\gg (\\log\\log n)^{6/5}/(\\log\\log\\log n)^{1/5}$. This iterated logarithmic bound shows the square-completion problem always requires nontrivial search.",
-      "**Axiomatized Architecture**: The formalization uses 11 axioms to encode statements ranging from trivial ($t_n = 0$ for squares) to deep (the Bui-Pratt-Zaharescu distributional result). The only computationally verified statement is the example $6 \\cdot 8 \\cdot 12 = 24^2$ via `native_decide`.",
+      "**Axiomatized Architecture**: The formalization uses 4 axioms (`t`, `trivial_lower_bound`, `selfridge_equality`, `selfridge_upper_bound`). The deeper results (universal lower bound, upper bound for most $n$, distributional equivalence, smooth-number bound) appear only as documentation comments, not formal axioms. The only computationally verified statement is the example $6 \\cdot 8 \\cdot 12 = 24^2$ via `native_decide`.",
       "**Connection to Quadratic Residues**: The condition $n \\cdot \\prod S$ is a perfect square is equivalent to requiring that the product lies in the kernel of the map $\\mathbb{Z}_{>0} \\to (\\mathbb{Z}/2\\mathbb{Z})^{\\omega(n \\cdot \\prod S)}$ sending each integer to its vector of prime exponent parities. This linear algebra perspective over $\\mathbb{F}_2$ underpins the smooth-number advantage: $y$-smooth integers span a low-dimensional subspace.",
       "**Proximity to the Quadratic Sieve**: The smooth-number regime $t_n = O(\\sqrt{n})$ is intimately connected to the quadratic sieve factoring algorithm, which also seeks subsets of integers in a short interval whose product is a perfect square — but for the purpose of factoring $n$ via the identity $(a^2 - n)(a^2 + n) = a^4 - n^2$."
     ],
@@ -82,7 +82,7 @@
       "title": "The Example t_6 = 6",
       "startLine": 70,
       "endLine": 79,
-      "summary": "Proves `example_t6_product : 6 * 8 * 12 = 24 * 24` via `native_decide` and axiomatizes `t6_equals_6 : t 6 = 6`. This is the only computationally verified statement in the file.",
+      "summary": "Proves `example_t6_product : 6 * 8 * 12 = 24 * 24` via `native_decide`. The equality `t 6 = 6` appears only as a documentation comment — no formal axiom is declared. This is the only computationally verified statement in the file.",
       "mathContext": "$6 = 2 \\cdot 3$ has odd exponents for both 2 and 3. Multiplying by $8 = 2^3$ and $12 = 2^2 \\cdot 3$ gives $6 \\cdot 8 \\cdot 12 = 2^6 \\cdot 3^2 = (2^3 \\cdot 3)^2 = 576 = 24^2$. The subset $\\{8, 12\\} \\subset \\{7, 8, 9, 10, 11, 12\\}$ completes the square, so $t_6 = 6$. Note $P(6) = 3$ and $\\sqrt{12}+1 \\approx 4.46 > 3$, so 6 is smooth and falls in the $t_n = O(\\sqrt{n})$ regime."
     },
     {
@@ -106,7 +106,7 @@
       "title": "Lower Bounds",
       "startLine": 109,
       "endLine": 118,
-      "summary": "Axiomatizes `lower_bound_for_all`: $t_n \\geq C \\cdot (\\log\\log n)^{6/5}/(\\log\\log\\log n)^{1/5}$ for all non-square $n \\geq 3$. This shows square-completion always requires nontrivial search.",
+      "summary": "Documents the universal lower bound $t_n \\gg (\\log\\log n)^{6/5}/(\\log\\log\\log n)^{1/5}$ as a documentation comment only — no formal axiom `lower_bound_for_all` is declared in this section.",
       "mathContext": "The universal lower bound $t_n \\gg (\\log\\log n)^{6/5}/(\\log\\log\\log n)^{1/5}$ is a deep result requiring sieve methods. The iterated logarithms grow extremely slowly ($\\log\\log 10^{10} \\approx 3.03$), so this bound is weak for practical $n$ but theoretically important: it rules out $t_n = O(1)$ and establishes that even the smoothest integers require growing intervals."
     },
     {
@@ -114,7 +114,7 @@
       "title": "Upper Bounds",
       "startLine": 119,
       "endLine": 130,
-      "summary": "Axiomatizes `upper_bound_for_many`: for $x^{1-\\varepsilon}$ many $n \\leq x$, $t_n \\leq \\exp(O(\\sqrt{\\log n \\cdot \\log\\log n}))$. The bound holds for a density-1 subset of integers.",
+      "summary": "Documents the upper bound $t_n \\leq \\exp(O(\\sqrt{\\log n \\cdot \\log\\log n}))$ for most $n$ as a documentation comment only — no formal axiom `upper_bound_for_many` is declared.",
       "mathContext": "The upper bound $t_n \\leq \\exp(O(\\sqrt{\\log n \\cdot \\log\\log n}))$ holds for 'most' $n$ (all but $o(x)$ integers up to $x$). The expression $\\exp(\\sqrt{\\log n \\cdot \\log\\log n})$ is subpolynomial but superpolylogarithmic — for $n = 10^{100}$, it is roughly $\\exp(48) \\approx 7 \\times 10^{20}$. The Lean encoding uses a density condition: the count of $n \\leq x$ satisfying the bound is $\\geq x^{1-\\varepsilon}$ for any $\\varepsilon > 0$."
     },
     {
@@ -122,7 +122,7 @@
       "title": "Bui-Pratt-Zaharescu (2024)",
       "startLine": 131,
       "endLine": 141,
-      "summary": "Axiomatizes `bui_pratt_zaharescu_2024`: for any $c \\in (0,1]$, the density of $\\{n : t_n \\leq n^c\\}$ equals the density of $\\{n : P(n) \\leq n^c\\}$, which is $\\rho(1/c)$ where $\\rho$ is the Dickman function.",
+      "summary": "Documents the Bui-Pratt-Zaharescu (2024) distributional result as a documentation comment only — no formal axiom `bui_pratt_zaharescu_2024` is declared. The distributional equivalence is stated in the file header and section docstring.",
       "mathContext": "The Bui-Pratt-Zaharescu (2024) distributional result is the deepest statement in the file. The Dickman function $\\rho(u)$ satisfies $u\\rho'(u) + \\rho(u-1) = 0$ for $u > 1$ with $\\rho(u) = 1$ for $0 \\leq u \\leq 1$. It gives the asymptotic density of $u$-smooth numbers: $\\Psi(x, x^{1/u})/x \\to \\rho(u)$. The distributional equivalence $t_n \\sim P(n)$ means the square-completion threshold is statistically indistinguishable from the largest prime factor."
     },
     {
@@ -130,7 +130,7 @@
       "title": "Connection to Smooth Numbers",
       "startLine": 142,
       "endLine": 154,
-      "summary": "Defines `IsSmooth n y` (all prime factors of $n$ are $\\leq y$) and axiomatizes `smooth_numbers_small_t`: for $y$-smooth $n$ with $y \\geq 2$, $t_n \\leq y$.",
+      "summary": "Defines `IsSmooth n y` (all prime factors of $n$ are $\\leq y$). The connection to small $t_n$ appears only as a documentation comment — no formal axiom `smooth_numbers_small_t` is declared.",
       "mathContext": "$\\text{IsSmooth}(n, y) \\equiv \\forall p,\\, p \\text{ prime} \\wedge p \\mid n \\Rightarrow p \\leq y$. This is the standard definition of $y$-smooth (or $y$-friable) numbers. The count $\\Psi(x,y) = |\\{n \\leq x : P(n) \\leq y\\}|$ is governed by the Dickman function: $\\Psi(x, x^{1/u}) \\sim x\\rho(u)$. The axiom `smooth_numbers_small_t` gives $t_n \\leq y$ for $y$-smooth non-squares with $y \\geq 2$, showing the square-completion problem is easy for smooth numbers."
     },
     {
@@ -143,7 +143,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization encodes the complete solution to Erdős Problem #841 via an axiomatized structure in 197 lines with 11 axioms. The Selfridge dichotomy ($t_n = P(n)$ for rough $n$, $t_n = O(\\sqrt{n})$ for smooth $n$) together with the Bui-Pratt-Zaharescu distributional result provides a satisfying answer: the square-completion threshold is governed by the same Dickman-function statistics as the largest prime divisor.",
+    "summary": "This formalization encodes the complete solution to Erdős Problem #841 via an axiomatized structure in 169 lines with 4 axioms. The Selfridge dichotomy ($t_n = P(n)$ for rough $n$, $t_n = O(\\sqrt{n})$ for smooth $n$) together with the Bui-Pratt-Zaharescu distributional result provides a satisfying answer: the square-completion threshold is governed by the same Dickman-function statistics as the largest prime divisor.",
     "implications": "**Connections to Broader Mathematics**:\n\n1. **Smooth Number Theory**: The dichotomy between smooth and rough integers pervades analytic number theory. The Dickman function $\\rho(u)$ controlling the distribution of $P(n)$ — and now also $t_n$ — appears in the analysis of factoring algorithms (number field sieve runtime $L_n[1/3, (64/9)^{1/3}]$), the Golomb-Dickman constant in random permutation statistics, and the distribution of cycle lengths in random mappings.\n\n2. **Quadratic Sieve Connection**: Finding subsets of integers in a short interval whose product is a perfect square is precisely the core subroutine of the quadratic sieve factoring algorithm. The quadratic sieve searches for $B$-smooth values of $Q(a) = a^2 - n$ and finds a subset with $\\prod Q(a_i) = \\square$ using Gaussian elimination over $\\mathbb{F}_2$. Problem #841's bound $t_n = O(\\sqrt{n})$ for smooth $n$ reflects the efficiency of this approach.\n\n3. **Multiplicative Number Theory**: The problem belongs to the Erdős-Graham program studying multiplicative structure in short intervals, alongside problems on products of consecutive integers, square-free values, and power-free numbers.\n\n4. **Distribution Theory**: The Bui-Pratt-Zaharescu result $t_n \\sim P(n)$ distributionally is a striking instance of a number-theoretic function being fully characterized by a classical one. Similar phenomena appear in the Erdős-Kac theorem ($\\omega(n)$ is normally distributed) and the Billingsley-Knuth correspondence between prime factorizations and random permutation cycle structures.",
     "openQuestions": [
       "Can the axioms be partially eliminated? The function $t$ itself could potentially be defined via `Nat.find` if the existence of square-completing subsets were proved constructively — this would reduce the axiom count significantly.",
