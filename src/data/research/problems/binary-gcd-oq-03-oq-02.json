@@ -1,7 +1,7 @@
 {
   "slug": "binary-gcd-oq-03-oq-02",
   "title": "Can Schönhage's recursive HGCD (half-GCD) be formalized, achieving O(M(n) log...",
-  "phase": "NEW",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,12 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ORIENT",
     "since": "2026-04-26T08:56:57.650Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "iteration": 2,
+    "focus": "Decide scope: correctness-only HGCD formalization, or include complexity claim (deferred).",
+    "blockers": [
+      "Complexity bound O(M(n) log n) is unfalsifiable in current Mathlib: no bit-complexity model for arithmetic, no fast multiplication."
+    ],
+    "nextAction": "Confirm scope decision. If correctness-only: draft hgcdMatrix definition and termination measure in BinaryGcdOQ03OQ02.lean.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +31,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "SURVEYED (Session 1, 2026-04-28): identified that the question splits into (A) HGCD correctness (tractable, all needed matrix machinery exists in BinaryGcdOQ03.lean) and (B) O(M(n) log n) complexity (blocked on Mathlib gaps: no fast multiplication, no bit-complexity model). Recommendation: pursue (A) only; defer (B) to a separate Mathlib-contribution initiative.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "insights": [
+      "All 2x2 cofactor matrix invariants needed for HGCD correctness already exist in BinaryGcdOQ03.lean (gcd_cofactor_eq, lehmerCofactors_det_unit, cofactor_apply_gcd). The HGCD formalization is the recursive wiring of these.",
+      "The original question conflates two distinct claims: (A) HGCD algorithmic correctness (tractable, ~300-500 lines) and (B) O(M(n) log n) bit complexity (blocked on multiple Mathlib gaps).",
+      "Mathlib has no half-GCD, Schoenhage, Karatsuba, or any fast multiplication; grep against Mathlib confirmed (2026-04-28). Mathlib Computability has Turing/primrec but no bit-complexity model for arithmetic.",
+      "The complexity bound O(M(n) log n) is currently unfalsifiable in Lean: no model in which to state \"M(n) bit operations\". Proving (B) requires upstreaming a bit-complexity framework + fast multiplication first (multi-thousand-line project).",
+      "The single hardest piece on the correctness side is termination of the HGCD recursion: need bitsize(max a b) strict decrease after applying the recursively-computed matrix, which requires showing the matrix accumulated >=1 Euclidean step.",
+      "Recommendation: split the question. Pursue (A) HGCD correctness as a self-contained verification; defer (B) until a complexity model lands in Mathlib or as a separate gallery initiative."
+    ],
+    "mathlibGaps": [
+      "Half-GCD / HGCD: no formalization in Mathlib or this gallery (verified by grep 2026-04-28).",
+      "Fast multiplication algorithms: Mathlib has no Karatsuba, Toom-Cook, or Schoenhage-Strassen FFT-based multiplication (verified 2026-04-28).",
+      "Bit-complexity model for arithmetic operations: Mathlib has Turing/primrec/partrec but nothing that lets you state \"M(n) bit operations to multiply n-bit integers\". Required to formulate the O(M(n) log n) complexity claim.",
+      "Big-integer abstraction: Mathlib operates on Nat/Int as opaque algebraic structures; there is no big-integer-as-array-of-words representation that would let bit-complexity reasoning attach to actual arithmetic primitives."
+    ],
+    "nextSteps": [
+      "Decide scope: correctness-only (recommended, ~300-500 lines) vs correctness-plus-complexity (deferred, multi-thousand lines of foundational work).",
+      "If correctness-only: define hgcdMatrix : Nat -> Nat -> CofactorMatrix recursively in a new BinaryGcdOQ03OQ02.lean, with termination measure bitsize a + bitsize b; reuse cofactor_apply_gcd for the GCD invariance.",
+      "Prove the size-reduction lemma: applying hgcdMatrix(a,b) yields (a',b') with bitsize(max a' b') roughly bitsize(max a b)/2. This is the only genuinely new mathematical content vs the existing Lehmer formalization.",
+      "If complexity-in-scope: escalate to Architect or Hermit role - this becomes a separate Mathlib-contribution-class initiative (bit-complexity model + Karatsuba upstream).",
+      "Update problem statement: replace placeholder formal-statement-to-be-added with a concrete Lean-style spec, e.g. correctness: hgcdMatrix a b applied to (a,b) preserves Nat.gcd a b."
+    ]
   },
   "tags": [
     "challenging",
@@ -52,7 +72,7 @@
     "mathlib": []
   },
   "started": "2026-04-26T08:56:57.650Z",
-  "lastUpdate": "2026-04-26T08:56:57.650Z",
+  "lastUpdate": "2026-04-28T00:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
