@@ -22,7 +22,7 @@
     "axiomCount": 7,
     "assumptions": "7 axioms: triangleRemovalEdges (f(n) exists), triangleRemovalEdges_nonneg (f(n) ≥ 0), triangleRemovalEdges_le_complete (f(n) ≤ C(n,2)), bfl_upper_bound (f(n) ≤ n^{3/2+ε}), bfl_lower_bound (f(n) ≥ n^{3/2−ε}), triangleRemoval_mantel_bound (Mantel variant), triangleRemovalEdges_le_turan_exact (f(n) ≤ n²/4 via Turán).",
     "lineCount": 314,
-    "theoremCount": 10,
+    "theoremCount": 9,
     "definitionCount": 1,
     "originalContributions": [
       "turanDensity_tendsto_zero: δ(n) = f(n)/(n²/4) → 0, combining BFL with Turán bound via squeeze",
