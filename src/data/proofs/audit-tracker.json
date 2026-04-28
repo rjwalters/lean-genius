@@ -9415,10 +9415,14 @@
       "result": "clean"
     },
     "erdos-829": {
-      "agentId": "auditor-cycle-20-batch",
+      "agentId": "mechanic-tracker-sync",
       "auditCount": 3,
-      "lastAudited": "2026-04-28T20:45:16Z",
-      "result": "issues-found"
+      "issues": [
+        "phantom mahler_1935/density_of_sums in originalContributions \u2014 fixed via PR #13710",
+        "section line drift \u2014 fixed via PR #13710"
+      ],
+      "lastAudited": "2026-04-28T23:00:00Z",
+      "result": "issues-fixed"
     },
     "erdos-83": {
       "agentId": "auditor-cycle-20-batch",
@@ -9487,10 +9491,14 @@
       "result": "clean"
     },
     "erdos-839": {
-      "agentId": "auditor-cycle-20-batch",
+      "agentId": "mechanic-tracker-sync",
       "auditCount": 4,
-      "lastAudited": "2026-04-28T19:25:35Z",
-      "result": "issues-found"
+      "issues": [
+        "phantom axiom narrative in overview/conclusion \u2014 fixed via PR #13693",
+        "section structure drift \u2014 fixed via PR #13690"
+      ],
+      "lastAudited": "2026-04-28T23:00:00Z",
+      "result": "issues-fixed"
     },
     "erdos-84": {
       "agentId": "auditor-cycle-20-batch",
@@ -9518,10 +9526,14 @@
       "result": "issues-fixed"
     },
     "erdos-843": {
-      "agentId": "auditor-cycle-20-batch",
+      "agentId": "mechanic-tracker-sync",
       "auditCount": 3,
-      "lastAudited": "2026-04-28T19:01:48Z",
-      "result": "issues-found"
+      "issues": [
+        "phantom axioms burr_unpublished/cfp_density_bounds/burr_erdos_upper_bound in section summaries \u2014 fixed via PR #13679",
+        "section line drift \u2014 fixed via PR #13689"
+      ],
+      "lastAudited": "2026-04-28T23:00:00Z",
+      "result": "issues-fixed"
     },
     "erdos-844": {
       "agentId": "auditor-cycle-20-batch",
