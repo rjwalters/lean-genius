@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 7, 2026-04-28): derEval14_injective now closes 22 of 64 entries structurally (j=0 unit kill, i=j diagonal, i=0 real-part). Residual sorry covers 42 entries on strict imaginary off-diagonal. Helper library complete: submodule_der_unit_zero, submodule_der_diagonal_kill, submodule_der_antisymm, submodule_der_real_part. Next: ev=0 coord extraction + antisymmetry WLOG + Fano-line Leibniz on 7 missing upper-triangular pairs.",
+    "progressSummary": "PROGRESS: 1 monolithic sorry → 7 concrete Fano-line sorries; 28 of 42 residual entries closed mechanically",
     "builtItems": [
       "ExceptionalType inductive type (G2/F4/E6/E7/E8) with dim/rank — HurwitzTheoremOQ04.lean",
       "OctonionAlgHom structure + OctonionAut — HurwitzTheoremOQ04.lean",
@@ -52,7 +52,9 @@
       "submodule_der_unit_zero (PROVED 2026-04-27): submodule-level unit-kills lemma — for any f ∈ OctonionDerSubmodule, f octUnit = 0. Same proof shape as der_maps_unit_to_zero but for LinearMap members.",
       "imag_anticomm: e_i*e_j + e_j*e_i = 0 for i,j in {1..7}, i≠j (HurwitzTheoremOQ04.lean:829)",
       "submodule_der_antisymm: (f e_i)_j + (f e_j)_i = 0 for f in OctonionDerSubmodule (HurwitzTheoremOQ04.lean:864)",
-      "i=0 sub-case in derEval14_injective via submodule_der_real_part (HurwitzTheoremOQ04.lean:1058-1063)"
+      "i=0 sub-case in derEval14_injective via submodule_der_real_part (HurwitzTheoremOQ04.lean:1058-1063)",
+      "derEval14_injective: 158-line case analysis covering all 42 entries of the (j ≠ 0, i ≠ 0, i ≠ j) residual; HurwitzTheoremOQ04.lean ~lines 1058-1230.",
+      "7 named hypotheses F43, F53, F63, F73, F65, F75, F76 inside derEval14_injective — concrete proof obligations replacing the prior monolithic sorry."
     ],
     "insights": [
       "G₂ = Aut(𝕆): The exceptional Lie group G₂ (dim 14, rank 2) is the automorphism group of the octonions. The 14 dimensions come from SO(7) (dim 21) minus the 7 constraints from preserving the octonion cross product.",
@@ -74,7 +76,10 @@
       "Antisymmetry of derivations on Im(𝕆) follows from Leibniz on (e_i,e_j) + (e_j,e_i) plus the inner-product structure of (a·b)_0 = a_0 b_0 - sum_{k≥1} a_k b_k",
       "Both (v · e_j)_0 = -v_j and (e_j · v)_0 = -v_j for j ≥ 1 (component-0 symmetry of octonion product)",
       "Der(𝕆) ⊆ 𝔰𝔬(7): every derivation acts antisymmetrically on Im(𝕆) ≅ ℝ⁷; cutting 𝔰𝔬(7) (dim 21) down to G₂ (dim 14) is the role of Fano-line trilinear Leibniz",
-      "Session 7 (2026-04-28): The 64-entry kernel claim in derEval14_injective decomposes structurally as 8 (j=0) + 7 (i=j) + 7 (i=0) + 42 (j≠0,i≠0,i≠j). The first three are closed by submodule_der_unit_zero, submodule_der_diagonal_kill, and submodule_der_real_part respectively. The residual 42 entries reduce to 21 upper-triangular by antisymmetry (submodule_der_antisymm), then 14 are the explicit ev=0 coords (from hfg directly), leaving 7 hard pairs requiring Fano-line Leibniz."
+      "Session 7 (2026-04-28): The 64-entry kernel claim in derEval14_injective decomposes structurally as 8 (j=0) + 7 (i=j) + 7 (i=0) + 42 (j≠0,i≠0,i≠j). The first three are closed by submodule_der_unit_zero, submodule_der_diagonal_kill, and submodule_der_real_part respectively. The residual 42 entries reduce to 21 upper-triangular by antisymmetry (submodule_der_antisymm), then 14 are the explicit ev=0 coords (from hfg directly), leaving 7 hard pairs requiring Fano-line Leibniz.",
+      "Session 8 (2026-04-28): Replaced 1 monolithic residual sorry with 7 named upper-triangular Fano sorries; 28 mechanical closures via ev coords + antisymm.",
+      "The 7 Fano residual pairs are exactly those (j,i) with both indices in {3,5,6,7} ∪ {(4,3)} — i.e. neither (j,i) nor (i,j) sits in the 14 ev coords.",
+      "Local antisym helper: D(stdBasis p) q = -D(stdBasis q) p reduces 14 antisymm-of-ev cases to single rw chains."
     ],
     "mathlibGaps": [
       "Lie groups not in Mathlib as of 2026-04 — blocks formal G₂ = Aut(𝕆) proof",
@@ -82,10 +87,10 @@
       "Derivation algebra of non-associative algebras not in Mathlib"
     ],
     "nextSteps": [
-      "Verify the build (cherry-picked + new edit) once Docker is healthy",
-      "Add antisymmetry-based WLOG reduction (j > i) inside derEval14_injective (cuts 42 → 21)",
-      "Extract the 14 ev=0 coords from hfg via congr_fun (closes 14 of 21)",
-      "Resolve 7 remaining upper-triangular pairs via Fano-line Leibniz: column 3 (4 pairs), (6,5), (7,5), (7,6)"
+      "Verify Docker build of the new derEval14_injective case analysis.",
+      "Prove the 7 Fano residuals via Fano-line Leibniz analysis on octonion multiplication-table triples.",
+      "Consider factoring the 7 Fano proofs into a uniform submodule_der_fano_line helper parameterized by the Fano triple.",
+      "After F-residuals close: derEval14_injective is sorry-free → completes the upper bound finrank ≤ 14 → G2_der_dimension is sorry-free."
     ]
   },
   "tags": [
