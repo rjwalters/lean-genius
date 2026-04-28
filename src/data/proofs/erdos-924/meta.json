@@ -121,18 +121,18 @@
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "summary": "`FolkmanNumber_3_2` definition, Graham's upper bound $f(3;2) \\le 941$, and exact value $f(3;2) = 786$ (Lange-Radziszowski-Xu 2014).",
+      "summary": "`FolkmanNumber_3_2` definition (existence question for $f(3;2)$ as `ErdosHajnalQuestion 2 3`). Graham's bound $f(3;2) \\le 941$ and the exact value $f(3;2) = 786$ (Lange-Radziszowski-Xu 2014) appear only in consecutive docstring comments with no declarations following them — not as formal axioms or theorems.",
       "startLine": 167,
       "endLine": 197,
-      "mathContext": "Formal definition: `FolkmanNumber_3_2` definition, Graham's upper bound $f(3;2) \\le 941$, and exact value $f(3;2) = 786$ (Lange-Radziszowski-Xu 2014)."
+      "mathContext": "`FolkmanNumber_3_2 : Prop := ErdosHajnalQuestion 2 3` is the only real declaration; the Graham bound and exact value appear in docstrings only."
     },
     {
       "id": "ramsey-connection",
       "title": "Connection to Ramsey Theory",
-      "summary": "`RamseyNumber` $R(l,l)$ definition via `Nat.find`. Comparison: $K_n$ for $n \\ge R(l,l)$ trivially has the Ramsey property but contains all $K_m$; Folkman graphs achieve forcing with $\\omega(G) \\le l$.",
+      "summary": "`RamseyNumber` $R(l,l)$ placeholder definition via `Nat.find` with `Classical.exists_of_ramsey` (not in Mathlib; this definition does not typecheck). Comparison commentary in docstrings: $K_n$ for $n \\ge R(l,l)$ trivially has the Ramsey property but contains all $K_m$; Folkman graphs achieve forcing with $\\omega(G) \\le l$.",
       "startLine": 198,
       "endLine": 221,
-      "mathContext": "Formal definition: `RamseyNumber` $R(l,l)$ definition via `Nat.find`. Comparison: $K_n$ for $n \\ge R(l,l)$ trivially has the Ramsey property but contains all $K_m$; Folkman graphs achieve forcing with $\\omega(G) \\le l$."
+      "mathContext": "`RamseyNumber` is a non-typechecking placeholder; the comparison with Folkman graphs is in docstring commentary only."
     },
     {
       "id": "proof-techniques",
