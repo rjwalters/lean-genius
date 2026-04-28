@@ -42,14 +42,14 @@
     ],
     "originalContributions": [
       "Clean Lean 4 formalization of the problem statements",
-      "Axiomatization of Erd\u0151s-Hajnal finite case theorem",
+      "Placeholder axiom for the Erd\u0151s-Hajnal finite case (cardinality condition only; chromatic number conditions not yet formalized)",
       "Axiomatization of the two open questions as Props",
       "Proved theorems about aleph cardinal ordering",
       "Educational commentary on infinite chromatic numbers"
     ],
     "axiomCount": 3,
     "lineCount": 146,
-    "assumptions": "3 axioms: Question1, Question2, erdos_hajnal_finite. 0 sorries."
+    "assumptions": "3 axioms: Question1, Question2, erdos_hajnal_finite. 0 sorries. Note: erdos_hajnal_finite is a placeholder \u2014 it encodes only the cardinality condition (|V| = \u2135_k) but not the chromatic number properties (global \u2135\u2081, local \u2264 \u2135\u2080) stated in the theorem."
   },
   "overview": {
     "historicalContext": "This problem originates from Erd\u0151s and Hajnal's 1968 paper 'On chromatic number of infinite graphs'. They proved a remarkable result for finite ordinals: for every finite k, there exists a graph with \u2135_k vertices and chromatic number \u2135\u2081 such that every subgraph on fewer than \u2135_k vertices has chromatic number at most \u2135\u2080.\n\nThe construction uses transfinite induction and diagonal arguments. The question asks whether this phenomenon extends to infinite ordinals, specifically \u2135\u2082 and \u2135_{\u03c9+1}.\n\nIn Erd\u0151s's 1969 paper 'Problems and results in chromatic graph theory', the problem was originally stated with chromatic number exactly \u2135\u2080 instead of at most \u2135\u2080. However, this is trivially impossible since any graph contains finite subgraphs with finite chromatic number. The corrected version asks for chromatic number \u2264 \u2135\u2080.",
@@ -88,33 +88,33 @@
       "title": "Erd\u0151s-Hajnal Finite Case",
       "startLine": 67,
       "endLine": 83,
-      "summary": "The solved part: for every finite k, such graphs exist."
+      "summary": "Placeholder axiom for the finite case: asserts existence of a type of cardinality \u2135_k with a symmetric loopless relation, but does not yet encode the chromatic number conditions (global chromatic number \u2135\u2081, induced subgraph chromatic number \u2264 \u2135\u2080) from the Erd\u0151s-Hajnal theorem."
     },
     {
       "id": "negative-results",
       "title": "Impossibility of Exact \u2135\u2080",
       "startLine": 84,
-      "endLine": 97,
+      "endLine": 95,
       "summary": "Why the original = \u2135\u2080 formulation is trivially false."
     },
     {
       "id": "background",
       "title": "Aleph Cardinals Background",
-      "startLine": 98,
-      "endLine": 117,
+      "startLine": 96,
+      "endLine": 115,
       "summary": "Basic facts about the aleph hierarchy using Mathlib."
     },
     {
       "id": "difficulty",
       "title": "Why This Problem is Hard",
-      "startLine": 118,
-      "endLine": 138,
+      "startLine": 116,
+      "endLine": 130,
       "summary": "Commentary on the mathematical challenges."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
-      "startLine": 139,
+      "startLine": 132,
       "endLine": 146,
       "summary": "Proved theorem packaging the cardinal ordering results."
     }
