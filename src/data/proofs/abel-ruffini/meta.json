@@ -796,6 +796,42 @@
       "type": "key",
       "description": "The symmetric group Sₙ is not solvable for n ≥ 5",
       "leanType": "(n : ℕ) → 5 ≤ n → ¬ IsSolvable (Equiv.Perm (Fin n))"
+    },
+    {
+      "name": "s5_not_solvable",
+      "type": "supporting",
+      "description": "S₅ is not solvable. Specialization of `symmetric_group_not_solvable` at n = 5 via `le_rfl`",
+      "leanType": "¬ IsSolvable (Equiv.Perm (Fin 5))"
+    },
+    {
+      "name": "s6_not_solvable",
+      "type": "supporting",
+      "description": "S₆ is not solvable. Specialization of `symmetric_group_not_solvable` at n = 6 via `omega`",
+      "leanType": "¬ IsSolvable (Equiv.Perm (Fin 6))"
+    },
+    {
+      "name": "a5_is_simple",
+      "type": "key",
+      "description": "A₅ is a simple group: the structural reason the derived series of S₅ stalls at A₅. Wraps `alternatingGroup.isSimpleGroup_five`",
+      "leanType": "IsSimpleGroup (alternatingGroup (Fin 5))"
+    },
+    {
+      "name": "s0_solvable",
+      "type": "supporting",
+      "description": "S₀ (permutations of the empty type) is solvable — trivial group, found by `inferInstance`",
+      "leanType": "IsSolvable (Equiv.Perm (Fin 0))"
+    },
+    {
+      "name": "s1_solvable",
+      "type": "supporting",
+      "description": "S₁ (permutations of a single element) is solvable — trivial group, found by `inferInstance`",
+      "leanType": "IsSolvable (Equiv.Perm (Fin 1))"
+    },
+    {
+      "name": "exists_quintic",
+      "type": "supporting",
+      "description": "There exists a degree-5 polynomial over ℚ (witness: X⁵). A trivial existence statement; the substantive analogue (∃ irreducible q with Gal(q) ≅ S₅) is proved in `abel-ruffini-oq-04-oq-01` for x⁵ − 4x + 2",
+      "leanType": "∃ p : Polynomial ℚ, p.natDegree = 5"
     }
   ],
   "sorries": 0
