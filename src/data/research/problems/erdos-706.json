@@ -1,31 +1,44 @@
 {
   "slug": "erdos-706",
   "title": "Erdős #706",
-  "phase": "OBSERVE",
+  "phase": "MATURE-AXIOMATIZED",
   "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "Let $L(r)$ be such that if $G$ is a graph formed by taking a finite set of points $P$ in $\\mathbb{R}^2$ and some set $A\\subset (0,\\infty)$ of size $r$, where the vertex set is $P$ and there is an edge between two points if and only if their distance is a member of $A$, then $\\chi(G)\\leq L(r)$.\n\nEstimate $L(r)$. In particular, is it true that $L(r)\\leq r^{O(1)}$?\n\n\n\nThe case $r=1$ is the Hadwiger-Nelson problem, for which it is known that $5\\leq L(1)\\leq 7$.\n\n\nSee also [508], [704], and [705].",
     "plain": "Let $L(r)$ be such that if $G$ is a graph formed by taking a finite set of points $P$ in $\\mathbb{R}^2$ and some set $A\\subset (0,\\infty)$ of size $r$, where the vertex set is $P$ and there is an edge between two points if and only if their distance is a member of $A$, then $\\chi(G)\\leq L(r)$.",
-    "whyMatters": []
+    "whyMatters": [
+      "Generalizes the Hadwiger-Nelson chromatic-number-of-the-plane problem (r=1) to r forbidden distances",
+      "A polynomial bound L(r) = r^{O(1)} would dramatically improve on the Frankl-Wilson exponential bounds",
+      "Connects extremal graph theory, Euclidean geometry, and chromatic number theory",
+      "Related to Erdos problems #508 (Hadwiger-Nelson), #704 (higher-dim unit distance), #705 (girth variant)"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "erdos_706_lower: L(r) >= 5 for all r >= 1 (proved from base_case + monotonicity)"
+    ],
+    "open": [
+      "Polynomial Bound Conjecture: L(r) <= r^{O(1)} (the main open question of Erdos #706)",
+      "Sharp upper bound for L(1) (Hadwiger-Nelson exact value)"
+    ],
+    "goal": "Achieved a stable axiomatization of the framework: opaque chromatic function, Hadwiger-Nelson 5/7 bounds (de Grey 2018 + classical), monotonicity, derived lower bound. Conjecture itself remains OPEN."
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-01-14T21:11:01.533Z",
-    "iteration": 2,
-    "focus": "5A assessed, all appropriate",
-    "blockers": [],
-    "nextAction": "None — axiomatized formalization stable; 3 axioms appropriate for open problem.",
+    "phase": "MATURE-AXIOMATIZED",
+    "since": "2026-04-27T00:00:00Z",
+    "iteration": 3,
+    "focus": "Lean source is at the appropriate maturity for an OPEN problem: opaque chromatic function (multiDistChromatic), Hadwiger-Nelson 5/7 bounds axiomatized, monotonicity axiomatized, derived L(r) >= 5 theorem. The polynomial-bound conjecture itself is described in docstrings but not stated as a Prop, since proving or refuting it is an open research question.",
+    "blockers": [
+      "Polynomial Bound Conjecture L(r) <= r^{O(1)} is the main open question of the problem",
+      "Constructive definition of multiDistChromatic would require formalizing chromatic number of infinite graphs in R^2 (a substantial Mathlib-scale project)"
+    ],
+    "nextAction": "Hold at axiomatized status. Future enrichment ideas: (a) state the polynomial conjecture as a Prop (currently docstring only); (b) prove L(r) >= L(1) >= 5 in a stronger form using the monotonicity axiom and explicit witnesses; (c) connect to erdos-508 (Hadwiger-Nelson) gallery entry if/when it is formalized.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -55,8 +68,14 @@
     "erdos-706"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": [
+      "Erdos, P. (1981) — original problem source",
+      "de Grey, A. (2018), 'The chromatic number of the plane is at least 5', arXiv:1804.02385 — Hadwiger-Nelson lower bound 5",
+      "Frankl, P. and Wilson, R. M. (1981), 'Intersection theorems with geometric consequences' — exponential upper bounds in higher dimensions"
+    ],
+    "urls": [
+      "https://erdosproblems.com/706"
+    ],
     "mathlib": []
   },
   "started": "2026-01-14T21:11:01.534Z",
