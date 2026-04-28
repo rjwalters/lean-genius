@@ -1,8 +1,8 @@
 {
   "slug": "napoleons-theorem-oq-02",
   "title": "Napoleon's Theorem: Connection to Discrete Fourier Transform",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-04-22T13:03:46.505Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Gallery proof verified — 0 sorries, 0 axioms, 7 originalContributions",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — proof complete",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "Created NapoleonsTheoremOQ02.lean (346 lines, 0 sorries, 0 axioms): DFT-based formulation of Napoleon`s theorem using ω = primitive cube root of unity. Outer Napoleon DFT identities show frequency-2 component vanishes; inner shows frequency-1 vanishes. Yields explicit DFT-based centroid recovery formula G₁ = (X₀ - X₁)/3.",
     "builtItems": [],
     "insights": [],
     "mathlibGaps": [],
@@ -52,7 +52,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.505Z",
-  "lastUpdate": "2026-04-22T13:03:46.505Z",
+  "lastUpdate": "2026-04-28T13:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [

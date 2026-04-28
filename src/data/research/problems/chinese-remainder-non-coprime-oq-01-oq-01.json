@@ -1,8 +1,8 @@
 {
   "slug": "chinese-remainder-non-coprime-oq-01-oq-01",
   "title": "CRT Non-Coprime Extension to k Moduli",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "DONE",
+    "phase": "COMPLETED",
     "since": "2026-04-13T00:00:00.000Z",
     "iteration": 2,
     "focus": "All theorems proved — 0 sorries, 0 axioms",
@@ -78,7 +78,7 @@
     "mathlib": []
   },
   "started": "2026-04-13T06:39:18.605Z",
-  "lastUpdate": "2026-04-13T06:39:18.632Z",
+  "lastUpdate": "2026-04-28T13:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/ChineseRemainderNonCoprime.lean",
