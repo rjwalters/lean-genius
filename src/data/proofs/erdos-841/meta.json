@@ -73,70 +73,70 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 41,
-      "endLine": 69,
+      "endLine": 65,
       "summary": "Defines `IsPerfectSquare`, `interval`, `HasSquareProduct`, `HasSquareSubset`, and the axiomatized function `t`. The function `t` is declared as an axiom rather than defined via `Nat.find` because proving existence of a square-completing subset requires non-trivial number theory.",
       "mathContext": "$\\text{IsPerfectSquare}(n) \\equiv \\exists m,\\, n = m^2$. $\\text{interval}(n,t) = \\{n+1,\\ldots,n+t\\}$ as a `Finset`. $\\text{HasSquareProduct}(n, S) \\equiv \\text{IsPerfectSquare}(n \\cdot \\prod_{s \\in S} s)$. The function $t : \\mathbb{N} \\to \\mathbb{N}$ is axiomatized with $t(n) = 0$ for perfect squares and $t(n) > 0$ otherwise."
     },
     {
       "id": "example",
       "title": "The Example t_6 = 6",
-      "startLine": 70,
-      "endLine": 79,
+      "startLine": 66,
+      "endLine": 73,
       "summary": "Proves `example_t6_product : 6 * 8 * 12 = 24 * 24` via `native_decide`. The equality `t 6 = 6` appears only as a documentation comment — no formal axiom is declared. This is the only computationally verified statement in the file.",
       "mathContext": "$6 = 2 \\cdot 3$ has odd exponents for both 2 and 3. Multiplying by $8 = 2^3$ and $12 = 2^2 \\cdot 3$ gives $6 \\cdot 8 \\cdot 12 = 2^6 \\cdot 3^2 = (2^3 \\cdot 3)^2 = 576 = 24^2$. The subset $\\{8, 12\\} \\subset \\{7, 8, 9, 10, 11, 12\\}$ completes the square, so $t_6 = 6$. Note $P(6) = 3$ and $\\sqrt{12}+1 \\approx 4.46 > 3$, so 6 is smooth and falls in the $t_n = O(\\sqrt{n})$ regime."
     },
     {
       "id": "prime-divisor",
       "title": "The Largest Prime Divisor",
-      "startLine": 80,
-      "endLine": 92,
+      "startLine": 74,
+      "endLine": 86,
       "summary": "Defines `largestPrimeDivisor` via `Finset.max'` on `Nat.primeFactors` and axiomatizes `trivial_lower_bound : t n ≥ largestPrimeDivisor n`.",
       "mathContext": "$P(n) = \\max\\{p : p \\mid n,\\, p \\text{ prime}\\}$. The trivial lower bound $t_n \\geq P(n)$ follows from: if $p^{2k+1} \\| n$ for $p = P(n)$, then any square-completing subset must include a multiple of $p$ from $\\{n+1,\\ldots,n+t_n\\}$, requiring $t_n \\geq p$. The definition returns 0 for $n \\leq 1$."
     },
     {
       "id": "selfridge",
       "title": "Selfridge's Theorem",
-      "startLine": 93,
-      "endLine": 108,
+      "startLine": 87,
+      "endLine": 102,
       "summary": "Axiomatizes `selfridge_equality` ($t_n = P(n)$ when $P(n) > \\sqrt{2n}+1$) and `selfridge_upper_bound` ($\\exists C > 0$ such that $t_n \\leq C\\sqrt{n}$ for smooth $n$). These two axioms encode the complete Selfridge dichotomy.",
       "mathContext": "Selfridge's theorem establishes the sharp dichotomy: $P(n) > \\sqrt{2n}+1 \\Rightarrow t_n = P(n)$ (the large prime $P(n)$ appears exactly once in the interval, and this unique multiple suffices); $P(n) \\leq \\sqrt{2n}+1 \\Rightarrow t_n \\leq C\\sqrt{n}$ (each prime factor appears multiple times, giving more square-completing options). The threshold $\\sqrt{2n}$ ensures uniqueness: if $p > \\sqrt{2n}+1$ then $\\{n+1,\\ldots,n+p\\}$ contains at most one multiple of $p$."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
-      "startLine": 109,
-      "endLine": 118,
+      "startLine": 103,
+      "endLine": 107,
       "summary": "Documents the universal lower bound $t_n \\gg (\\log\\log n)^{6/5}/(\\log\\log\\log n)^{1/5}$ as a documentation comment only — no formal axiom `lower_bound_for_all` is declared in this section.",
       "mathContext": "The universal lower bound $t_n \\gg (\\log\\log n)^{6/5}/(\\log\\log\\log n)^{1/5}$ is a deep result requiring sieve methods. The iterated logarithms grow extremely slowly ($\\log\\log 10^{10} \\approx 3.03$), so this bound is weak for practical $n$ but theoretically important: it rules out $t_n = O(1)$ and establishes that even the smoothest integers require growing intervals."
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
-      "startLine": 119,
-      "endLine": 130,
+      "startLine": 108,
+      "endLine": 112,
       "summary": "Documents the upper bound $t_n \\leq \\exp(O(\\sqrt{\\log n \\cdot \\log\\log n}))$ for most $n$ as a documentation comment only — no formal axiom `upper_bound_for_many` is declared.",
       "mathContext": "The upper bound $t_n \\leq \\exp(O(\\sqrt{\\log n \\cdot \\log\\log n}))$ holds for 'most' $n$ (all but $o(x)$ integers up to $x$). The expression $\\exp(\\sqrt{\\log n \\cdot \\log\\log n})$ is subpolynomial but superpolylogarithmic — for $n = 10^{100}$, it is roughly $\\exp(48) \\approx 7 \\times 10^{20}$. The Lean encoding uses a density condition: the count of $n \\leq x$ satisfying the bound is $\\geq x^{1-\\varepsilon}$ for any $\\varepsilon > 0$."
     },
     {
       "id": "distribution",
       "title": "Bui-Pratt-Zaharescu (2024)",
-      "startLine": 131,
-      "endLine": 141,
+      "startLine": 113,
+      "endLine": 118,
       "summary": "Documents the Bui-Pratt-Zaharescu (2024) distributional result as a documentation comment only — no formal axiom `bui_pratt_zaharescu_2024` is declared. The distributional equivalence is stated in the file header and section docstring.",
       "mathContext": "The Bui-Pratt-Zaharescu (2024) distributional result is the deepest statement in the file. The Dickman function $\\rho(u)$ satisfies $u\\rho'(u) + \\rho(u-1) = 0$ for $u > 1$ with $\\rho(u) = 1$ for $0 \\leq u \\leq 1$. It gives the asymptotic density of $u$-smooth numbers: $\\Psi(x, x^{1/u})/x \\to \\rho(u)$. The distributional equivalence $t_n \\sim P(n)$ means the square-completion threshold is statistically indistinguishable from the largest prime factor."
     },
     {
       "id": "smooth",
       "title": "Connection to Smooth Numbers",
-      "startLine": 142,
-      "endLine": 154,
+      "startLine": 119,
+      "endLine": 126,
       "summary": "Defines `IsSmooth n y` (all prime factors of $n$ are $\\leq y$). The connection to small $t_n$ appears only as a documentation comment — no formal axiom `smooth_numbers_small_t` is declared.",
       "mathContext": "$\\text{IsSmooth}(n, y) \\equiv \\forall p,\\, p \\text{ prime} \\wedge p \\mid n \\Rightarrow p \\leq y$. This is the standard definition of $y$-smooth (or $y$-friable) numbers. The count $\\Psi(x,y) = |\\{n \\leq x : P(n) \\leq y\\}|$ is governed by the Dickman function: $\\Psi(x, x^{1/u}) \\sim x\\rho(u)$. The axiom `smooth_numbers_small_t` gives $t_n \\leq y$ for $y$-smooth non-squares with $y \\geq 2$, showing the square-completion problem is easy for smooth numbers."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 155,
+      "startLine": 127,
       "endLine": 169,
       "summary": "Two summary theorems `erdos_841_characterization` and `erdos_841`, both proved by composing the three Selfridge axioms via `⟨trivial_lower_bound, selfridge_equality, selfridge_upper_bound⟩`. These pack the complete rough/smooth dichotomy into a single conjunction.",
       "mathContext": "The final characterization is a triple conjunction: (1) $\\forall n,\\, \\neg\\text{IsPerfectSquare}(n) \\Rightarrow t_n \\geq P(n)$; (2) $P(n) > \\sqrt{2n}+1 \\Rightarrow t_n = P(n)$; (3) $\\exists C > 0,\\, P(n) \\leq \\sqrt{2n}+1 \\Rightarrow t_n \\leq C\\sqrt{n}$. The proof is a single anonymous constructor — all mathematical content is in the axioms."
