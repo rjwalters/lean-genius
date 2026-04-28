@@ -1,25 +1,31 @@
 # Research State: amgm-inequality-oq-04-oq-05
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-04-26T08:14:40+02:00
+**Since**: 2026-04-28T15:30:00+02:00
 **Iteration**: 1
 
-## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+## Resolution
+Brent–Salamin formula π = 4 M(1, 1/√2)² / (1 − 2 S) machine-verified in
+`proofs/Proofs/AmgmInequalityOQ04OQ05.lean` (242 lines, 0 sorries, 7 axioms).
+Gallery entry `src/data/proofs/amgm-inequality-oq-04-oq-05/meta.json` records
+status `axiomatized`, badge `axiom`, `sorries: 0`, `axiomCount: 7`.
+
+The 7 axioms are the AGM-iteration / elliptic-integral identities standard for
+this formula (AGM convergence, Legendre relation, half-perimeter integral,
+period-doubling, etc.); see file header for the full list.
 
 ## Active Approach
-None yet.
+N/A — completed.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1 (Brent–Salamin via AGM iteration)
 
 ## Blockers
 None.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+None — pool entry reconciled to `completed` (pool drift from prior session).

@@ -1,18 +1,25 @@
 # Current State
 
-**Phase**: NEW
-**Since**: 2026-04-22T20:15:00.000Z
+**Phase**: COMPLETED
+**Since**: 2026-04-28T15:30:00+02:00
 **Iteration**: 1
 
-## Current Focus
+## Resolution
 
-Initial exploration: survey Mathlib's SO(3), rigid motion, and free group infrastructure
-to determine how to formally state the Banach-Tarski paradox in Lean 4.
+`proofs/Proofs/LebesgueMeasureOQ06.lean` (1517 lines, 0 sorries, 1 `axiom`
+declaration). The file develops the equidecomposability framework
+(`equidecomposable_symm`, `equidecomposable_refl`, etc.) used by the
+Banach–Tarski strand and proves the no-finitely-additive-rotation-invariant-
+measure consequence under one stated axiom.
+
+Gallery entry `src/data/proofs/lebesgue-measure-oq-06/meta.json` records
+`status: axiomatized`, `badge: axiom`, `sorries: 0`, `axiomCount: 1`. JSON
+already had `status: completed`, `phase: COMPLETED`; this state.md file is
+brought in line.
 
 ## Active Approach
 
-None yet. OBSERVE phase: read gallery `lebesgue-measure` proof and Mathlib docs for
-`Matrix.SpecialOrthogonalGroup`, `Isometry`, `FreeGroup`.
+N/A — completed.
 
 ## Blockers
 
@@ -20,14 +27,11 @@ None.
 
 ## Next Action
 
-Begin problem exploration:
-1. Survey Mathlib for SO(3) free subgroup facts
-2. Check for existing Banach-Tarski Lean 4 attempts (community repo, Zulip)
-3. Draft the formal statement with key lemmas sorry'd
-4. Verify the statement type-checks in Lean
+None — pool entry reconciled to `completed` (pool drift from prior session).
 
 ## Attempt Counts
 
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1 (axiomatize the SO(3) free-subgroup measurement step,
+  build equidecomposability calculus on top).
