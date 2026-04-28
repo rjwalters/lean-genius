@@ -34,7 +34,7 @@
     "historicalContext": "**From Fishburn's Bound to the Exact Constant**\n\nErdős Problem #94 asks about the growth rate of ∑f(u)² for convex polygons. Fishburn (1995) proved this sum is O(n³) for any convex polygon configuration, and the regular n-gon achieves Θ(n³). The natural follow-up question OQ-02: what is the exact asymptotic constant c such that S(reg_n) ~ c·n³?\n\nFor the regular n-gon with n vertices, there are ⌊n/2⌋ distinct distances d₁ < d₂ < ... < d_{⌊n/2⌋}. Each distance d_k (for 2k ≠ n) has multiplicity exactly n — every vertex participates in exactly one pair at that distance in each direction. Only the diameter (when n is even, k = n/2) has multiplicity n/2. This gives ∑f(d_k)² ≈ ⌊n/2⌋·n² ≈ n³/2, suggesting c = 1/2.\n\nLeftmann and Theile (1995) extended Fishburn's bound to the no-three-collinear condition. The Erdős-Fishburn conjecture, which states the regular n-gon is the extremal configuration maximizing ∑f(u)², would imply that c = 1/2 is the universal optimal constant for all convex n-gons. This open problem connects quantitative extremal geometry to random structure conjectures.\n\n**Prize**: Erdős offered $44 for settling Problem #94; the exact constant question is the remaining open refinement.",
     "problemStatement": "**Problem Statement**\n\nIs ∑f(u)² ~ c·n³ for convex n-gons, and what is c?\n\n**Status**: OPEN\n\n**Known**: Regular n-gon achieves Θ(n³). Analysis suggests c = 1/2.",
     "text": "Formalizes the asymptotic constant question for distance multiplicities in convex polygons.",
-    "proofStrategy": "**Formalization Approach**\n\n1. Axiomatize S (squared-multiplicity sum) and Fishburn's bound\n2. Define regular n-gon and its normalized sum S(n)/n³\n3. Define the asymptotic constant via Choose/limit\n4. Analyze regular n-gon: ⌊n/2⌋ distances, most with multiplicity n\n5. State conjecture c = 1/2 and connection to Erdős-Fishburn",
+    "proofStrategy": "**Formalization Approach**\n\n1. Axiomatize S (squared-multiplicity sum). Fishburn's bound is referenced in a docstring placeholder, not formally axiomatized.\n2. Define regular n-gon and its normalized sum S(n)/n³\n3. Axiomatize asymptotic_constant_exists, define the asymptotic constant via Classical.choose\n4. Axiomatize regular_distinct_count (⌊n/2⌋ distances) and prove dominant_contribution\n5. State conjecture c = 1/2 and connection to Erdős-Fishburn",
     "keyInsights": [
       "**Dominant contribution**: Most distances in the regular n-gon have multiplicity n. Only the diameter (when n is even) has multiplicity n/2. This gives a leading term of n³/2, making c = 1/2 the natural conjectured constant.",
       "**Erdős-Fishburn bridge**: If the regular n-gon is extremal (Erdős-Fishburn), then c = 1/2 gives the universal tight bound S(P) ≤ (1/2 + ε)·n³ for all convex n-gons — combining the extremality conjecture and the limit value.",
@@ -62,15 +62,15 @@
       "title": "Fishburn's Cubic Bound",
       "startLine": 56,
       "endLine": 62,
-      "summary": "Axiomatizes Fishburn's theorem: S(P) = O(n³) for convex polygons.",
-      "mathContext": "$\\exists C > 0, \\forall P \\text{ convex}: S(P) \\leq C \\cdot n^3$."
+      "summary": "Docstring-only placeholder for Fishburn's bound (S(P) = O(n³) for convex polygons); no axiom or theorem declaration in this section.",
+      "mathContext": "$\\exists C > 0, \\forall P \\text{ convex}: S(P) \\leq C \\cdot n^3$ (referenced as background; not formalized)."
     },
     {
       "id": "regular",
       "title": "The Regular n-gon",
       "startLine": 63,
       "endLine": 85,
-      "summary": "Defines regularNGon, S_regular, axiomatizes Θ(n³) growth and convexity.",
+      "summary": "Defines regularNGon and S_regular. Θ(n³) growth and convex-position remarks appear as docstrings only (no axiom or theorem declared).",
       "mathContext": "Regular $n$-gon inscribed in unit circle. $S(\\text{reg}_n) = \\Theta(n^3)$."
     },
     {
@@ -86,7 +86,7 @@
       "title": "Regular n-gon Analysis",
       "startLine": 113,
       "endLine": 148,
-      "summary": "Analyzes ⌊n/2⌋ distinct distances with multiplicity n, proves dominant contribution bound, states conjectured value c = 1/2.",
+      "summary": "Axiomatizes regular_distinct_count (⌊n/2⌋ distances), proves dominant_contribution bound (⌊n/2⌋·n² ≥ n³/2 - n²), states conjectured value c = 1/2.",
       "mathContext": "$\\lfloor n/2 \\rfloor$ distances, each with multiplicity $\\approx n$. Dominant term: $n \\cdot (n/2) \\approx n^3/2$."
     },
     {
