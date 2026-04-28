@@ -53,7 +53,7 @@
       "isFriable predicate: P(n) ≤ y condition",
       "dickman_function axiom: the Dickman-de Bruijn function ρ",
       "psi counting function: Ψ(x, y) = #{n ≤ x : P(n) ≤ y}",
-      "dickman_theorem axiom: Ψ(x, x^α)/x → ρ(1/α)",
+      "dickman_theorem: Ψ(x, x^α)/x → ρ(1/α) (proved as theorem, not a Lean axiom)",
       "consecutiveSmooth definition: both n and n+1 smooth",
       "densityExists predicate: natural density existence",
       "erdos928Question: formal problem statement",
@@ -113,7 +113,7 @@
     {
       "id": "dickman-theorem",
       "title": "Dickman's Theorem (1930)",
-      "summary": "psi counting function, dickman_theorem axiom",
+      "summary": "psi counting function, dickman_theorem (proved as theorem — not a Lean axiom)",
       "startLine": 114,
       "endLine": 134,
       "mathContext": "$\\Psi(x, x^\\alpha) / x \\to \\rho(1/\\alpha)$ as $x \\to \\infty$ (Dickman, 1930). The density of $\\alpha$-smooth numbers is $\\rho(1/\\alpha)$."

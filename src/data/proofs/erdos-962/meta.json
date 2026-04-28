@@ -50,7 +50,7 @@
       "HasLargePrimeFactor predicate",
       "IsValidInterval definition for consecutive integers",
       "k_func definition via supremum",
-      "erdos_lower_bound axiom: Erdős 1965 bound",
+      "Erdős 1965 lower bound (documented in docstring; tang_lower_bound axiom provides the improved bound)",
       "tang_lower_bound axiom: improved lower bound",
       "tao_upper_bound axiom: first non-trivial upper bound",
       "ErdosConjecture definition: k(n) = o(n^ε)",
@@ -98,10 +98,10 @@
     {
       "id": "erdos-lower",
       "title": "Erdős's Lower Bound",
-      "summary": "erdos_lower_bound axiom",
+      "summary": "Erdős 1965 lower bound — documented in docstring (not a Lean axiom; subsumed by tang_lower_bound)",
       "startLine": 102,
       "endLine": 115,
-      "mathContext": "Axiomatized: erdos_lower_bound axiom"
+      "mathContext": "Documented (not axiomatized): Erdős 1965 original lower bound. The tang_lower_bound axiom gives the stronger improved bound."
     },
     {
       "id": "tang-lower",

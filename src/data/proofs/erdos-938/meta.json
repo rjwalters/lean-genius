@@ -53,9 +53,9 @@
       "apIndices set: indices where consecutive powerful numbers form APs",
       "powerfulGap function: gap between consecutive powerful numbers",
       "ap_iff_equal_gaps lemma: AP condition reformulated as equal gaps",
-      "erdos_938 axiom: the main open problem (finiteness of apIndices)",
+      "erdos_938_conjecture Prop definition: the main open problem (finiteness of apIndices — stated as def, not axiom)",
       "NoThreeConsecutivePowerful: connection to Problem #364",
-      "countPowerful counting function with asymptotic axiom",
+      "countPowerful counting function with powerful_count_asymptotic_theorem Prop definition (not an axiom)",
       "differences_finite_of_indices_finite lemma: derived finiteness result",
       "Concrete examples: 1, 4, 8, 9 verified as powerful"
     ],
@@ -133,10 +133,10 @@
     {
       "id": "main-problem",
       "title": "Main Problem Statement",
-      "summary": "erdos_938 axiom: finiteness of apIndices (OPEN)",
+      "summary": "erdos_938_conjecture Prop definition: finiteness of apIndices (OPEN — stated as def, not axiom)",
       "startLine": 125,
       "endLine": 139,
-      "mathContext": "Axiomatized: erdos_938 axiom: finiteness of apIndices (OPEN)"
+      "mathContext": "Mathematical content: erdos_938_conjecture Prop definition (not an axiom — this is an open problem stated as a Prop)"
     },
     {
       "id": "problem-364",
@@ -149,10 +149,10 @@
     {
       "id": "asymptotics",
       "title": "Counting Function and Asymptotics",
-      "summary": "countPowerful and powerful_count_asymptotic axiom",
+      "summary": "countPowerful and powerful_count_asymptotic_theorem Prop definition (not an axiom)",
       "startLine": 156,
       "endLine": 174,
-      "mathContext": "Axiomatized: countPowerful and powerful_count_asymptotic axiom"
+      "mathContext": "Mathematical content: countPowerful function and powerful_count_asymptotic_theorem Prop definition (stated as def, not axiom)"
     },
     {
       "id": "ap-differences",
