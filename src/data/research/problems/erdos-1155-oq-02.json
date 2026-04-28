@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1155-oq-02",
   "title": "Triangle Removal Process: Turán Extremality Gap",
-  "phase": "ACT",
+  "phase": "COMPLETED",
   "status": "completed",
   "tier": "B",
   "path": "full",
@@ -19,9 +19,9 @@
     "phase": "COMPLETED",
     "since": "2026-04-24T00:00:00.000Z",
     "iteration": 1,
-    "focus": "All sorries eliminated. 0 sorries, 2 axioms (inherited from parent).",
+    "focus": "All sorries eliminated. 0 sorries, 7 axioms total (6 inherited from Erdos1155Problem.lean + 1 own: triangleRemovalEdges_le_turan_exact).",
     "blockers": [],
-    "nextAction": "Prove turan_bfl_exponent_gap: needs BFL lower bound n^{3/2-ε} ≤ f(n) (axiomatized in parent).",
+    "nextAction": "None — formalization complete within axiomatization scope.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,17 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0 sorries remain. 2 axioms inherited from parent. triangleRemovalEdges_le_turan proved via axiom. turan_bfl_exponent_gap proved via BFL squeeze.",
+    "progressSummary": "COMPLETE: 0 sorries remain. 7 axioms total: 6 inherited from Erdos1155Problem.lean (triangleRemovalEdges, _nonneg, _le_complete, bfl_upper_bound, bfl_lower_bound, triangleRemoval_mantel_bound) + 1 own (triangleRemovalEdges_le_turan_exact). All theorems proved via BFL squeeze + Turán bound.",
     "builtItems": [
-      "turan_triangle_free_bound in Erdos1155OQ02.lean:53 — CliqueFree 3 graph has ≤ n²/4 edges (1 sorry)",
-      "turanDensity def in Erdos1155OQ02.lean:112 — f(n)/(n²/4), noncomputable",
-      "turanDensity_eq in Erdos1155OQ02.lean:116 — turanDensity n = 4·f(n)/n²",
-      "turanDensity_mem_Icc in Erdos1155OQ02.lean:123 — turanDensity n ∈ [0,1]",
-      "turanDensity_tendsto_zero in Erdos1155OQ02.lean:140 — PROVED via squeeze: 0 ≤ δ(n) ≤ 4/n^{1/4} → 0",
-      "process_not_turan_extremal in Erdos1155OQ02.lean:183 — eventually f(n) < n²/8 (proved)",
-      "turan_gap_diverges in Erdos1155OQ02.lean:218 — PROVED via (1/8)n^{1/4} ≤ n²/4/(f(n)+1) using BFL",
-      "turan_graph_r2_is_maximal in Erdos1155OQ02.lean:271 — turanGraph n 2 is triangle-free",
-      "turan_bfl_exponent_gap in Erdos1155OQ02.lean:277 — PROVED (was sorry): n²/4/f(n) > n^{1/2-ε} eventually via BFL upper at ε/2 + n^{ε/2}>4 squeeze"
+      "turan_triangle_free_bound in Erdos1155OQ02.lean:53 — CliqueFree 3 graph has ≤ n²/4 edges (proved via Mathlib CliqueFree.card_edgeFinset_le)",
+      "turanDensity def in Erdos1155OQ02.lean:104 — f(n)/(n²/4), noncomputable",
+      "turanDensity_eq in Erdos1155OQ02.lean:108 — turanDensity n = 4·f(n)/n²",
+      "turanDensity_mem_Icc in Erdos1155OQ02.lean:116 — turanDensity n ∈ [0,1]",
+      "turanDensity_tendsto_zero in Erdos1155OQ02.lean:132 — PROVED via squeeze: 0 ≤ δ(n) ≤ 4/n^{1/4} → 0",
+      "process_not_turan_extremal in Erdos1155OQ02.lean:175 — eventually f(n) < n²/8 (proved)",
+      "turan_gap_diverges in Erdos1155OQ02.lean:210 — PROVED via (1/8)n^{1/4} ≤ n²/4/(f(n)+1) using BFL",
+      "turan_graph_r2_is_maximal in Erdos1155OQ02.lean:263 — turanGraph n 2 is triangle-free",
+      "turan_bfl_exponent_gap in Erdos1155OQ02.lean:269 — PROVED: n²/4/f(n) > n^{1/2-ε} eventually via BFL upper at ε/2 + n^{ε/2}>4 squeeze"
     ],
     "insights": [
       "turanDensity_tendsto_zero: squeeze proof — 0 ≤ turanDensity n ≤ 4/n^{1/4} → 0. Key: f(n)*n^{1/4} ≤ n^{7/4}*n^{1/4} = n² via Real.rpow_add + Real.rpow_natCast",
@@ -54,9 +54,8 @@
       "No direct way to connect abstract triangleRemovalEdges function to a concrete CliqueFree SimpleGraph — requires axiom"
     ],
     "nextSteps": [
-      "turan_bfl_exponent_gap (line 277): n²/4/f(n) > n^{1/2-ε} — needs BFL lower bound n^{3/2-ε} ≤ f(n) which is axiomatized in parent",
-      "turan_triangle_free_bound sorry: ~100 lines to connect f(n) to concrete triangle-free graph via construction",
-      "Consider graduating to gallery after resolving the turan_triangle_free_bound sorry"
+      "Future axiom-elimination: triangleRemovalEdges_le_turan_exact (~100 lines) requires connecting abstract f(n) to a concrete CliqueFree SimpleGraph construction",
+      "Possible follow-up OQ: bound the rate of convergence to the limiting distribution of f(n)/n^{3/2} (sibling slug erdos-1155-oq-01-oq-01 tracks the existence of a limit)"
     ]
   },
   "tags": [
@@ -83,7 +82,7 @@
     "mathlib": []
   },
   "started": "2026-04-24T00:00:00.000Z",
-  "lastUpdate": "2026-04-24T12:00:00.000Z",
+  "lastUpdate": "2026-04-28T16:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -134,7 +133,7 @@
     {
       "path": "Proofs/Erdos1155OQ02.lean",
       "filename": "Erdos1155OQ02.lean",
-      "lineCount": 315,
+      "lineCount": 314,
       "theoremCount": 9,
       "axiomCount": 1,
       "defCount": 1,
