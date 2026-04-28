@@ -58,7 +58,7 @@
     "historicalContext": "Erdős introduced these 'unconventional number theoretic functions' in 1984. Unlike typical additive functions, f(n) is defined by summing prime powers p^ℓ where ℓ depends on n (not just on the prime power dividing n). This creates unusual asymptotic behavior.\n\nThe function f(n)/n 'almost behaves as a conventional additive function' but exhibits the remarkable property of having no mean value: the limsup of (1/x)∑_{n<x} f(n)/n is infinite while the liminf is finite. This is very unusual in analytic number theory.\n\nErdős proved partial results: max_{n≤x} f(n) ~ x log x / log log x holds along some sequence of x → ∞, and established bounds x log⁴ x ≪ H(x) ≪ x log³ x (where log^k denotes k-fold iterated logarithm). The full asymptotic for all x remains open.",
     "problemStatement": "For $n = \\prod p_i^{k_i}$ (prime factorization), define:\n- $f(n) = \\sum p_i^{\\ell_i}$ where $\\ell_i$ satisfies $n \\in [p_i^{\\ell_i}, p_i^{\\ell_i+1})$\n- $F(n) = \\max \\sum a_i$ over pairwise coprime $a_i \\leq n$ with prime factors dividing $n$\n\n**Main Questions**:\n1. Is $f(n) = o(n \\log\\log n)$ for almost all $n$, while $F(n) \\gg n \\log\\log n$?\n2. Is $\\max_{n \\leq x} f(n) \\sim \\frac{x \\log x}{\\log\\log x}$?\n3. Do $\\max_{n \\leq x} f(n)$ and $\\max_{n \\leq x} F(n)$ coincide?\n4. Find asymptotics for $H(x) = \\sum_{n<x} f(n)/n$.\n\n**Status**: OPEN",
     "text": "Study of f(n) = ∑ pᵢ^ℓᵢ and F(n) = max ∑ aᵢ over coprime decompositions. Questions about their growth, asymptotics, and the unusual behavior of H(x) = ∑ f(n)/n. Open problem.",
-    "proofStrategy": "The formalization defines f(n) using Nat.primeFactors and Nat.log, and F(n) via ValidDecomposition structures. The 'almost all' concept is formalized using density zero. Erdős's known results (bounds on H(x), partial asymptotic for max f) are stated as axioms. The unusual property that f(n)/n has no mean value is captured via limsup = ∞ and finite liminf.",
+    "proofStrategy": "The formalization defines f(n) using Nat.primeFactors and Nat.log, and F(n) via ValidDecomposition structures. The 'almost all' concept is formalized using density zero. Erdős's known bounds on H(x) (lower and upper) are stated as axioms. The unusual property that f(n)/n has no mean value is captured via limsup = ∞ and finite liminf.",
     "keyInsights": [
       "**Unconventional definition**: Unlike standard additive functions where f(p^k) depends only on p and k, here the summand p^ℓ depends on the whole number n through ℓ = ⌊log_p n⌋.",
       "**No mean value**: The function f(n)/n has limsup = ∞ but finite liminf when averaged—a very unusual phenomenon in number theory.",
@@ -75,7 +75,7 @@
     {
       "id": "f-definition",
       "title": "The Function f(n)",
-      "summary": "logFloor, primePowerBelow, f, f_one, f_prime",
+      "summary": "logFloor, primePowerBelow, f, f_one",
       "startLine": 36,
       "endLine": 61
     },
@@ -99,13 +99,6 @@
       "summary": "H, H_lower_bound, H_upper_bound, H_limsup_infinite, H_liminf_finite, f_no_mean_value",
       "startLine": 124,
       "endLine": 155
-    },
-    {
-      "id": "erdos-1984",
-      "title": "Erdős's 1984 Result",
-      "summary": "erdos_1984 partial asymptotic",
-      "startLine": 156,
-      "endLine": 171
     },
     {
       "id": "conjecture-F",
