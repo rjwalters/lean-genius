@@ -4,11 +4,64 @@
 
 **Problem**: Prove the Chung-Feller theorem — that among all $\binom{2n}{n}$ balanced lattice paths, exactly $C_n$ have each fixed number $k \in \{0,\ldots,n\}$ of upsteps above the $x$-axis — via an explicit bijection using the cycle lemma.
 
-**Status**: COMPLETED (Session 5, 2026-04-22)
+**Status**: COMPLETED with axiom eliminated (Session 7, 2026-04-28)
 
-**Key files**:
-- `proofs/Proofs/BallotProblemOQ01OQ04.lean` — structural infrastructure (1 axiom: `chung_feller_uniform`)
+**Key files (three-file architecture)**:
+- `proofs/Proofs/BallotProblemOQ01OQ04Core.lean` — definitions and cycle-lemma bridge (0 axioms, 0 sorries)
 - `proofs/Proofs/BallotProblemOQ01OQ04OQ01.lean` — explicit bijection proof (0 sorries, 0 axiom uses)
+- `proofs/Proofs/BallotProblemOQ01OQ04.lean` — gallery face: re-exports `chung_feller_uniform'` as `chung_feller_uniform` (0 axioms, 0 sorries)
+
+**Net effect**: gallery axiomCount 1 → 0; status `axiomatized` → `verified`.
+
+---
+
+## Session 2026-04-28 (Session 7) — Eliminate the chung_feller_uniform axiom
+
+**Mode**: FRESH (continuation; refactor only, no new math)
+**Outcome**: completed
+
+### What I Did
+
+Refactored the proof family into three files so that the gallery face can
+re-export the bijection-proved theorem instead of axiomatizing it:
+
+1. Created `BallotProblemOQ01OQ04Core.lean` containing all definitions and
+   cycle-lemma bridge lemmas previously in the parent: `IsBalancedPath`,
+   `balanced_length`, `balanced_sum_zero`, `prepend_mem_kCountedSequence`,
+   `prepend_one_good_rotation`, `prepend_unique_good_rotation`,
+   `prepend_length`, `prepend_sum`, `balanced_path_total`, `pathHeight`,
+   `upstepsAboveAxis`, `upstepsAboveAxisC`, `balancedPathsOfType`,
+   `isBalancedPath_nil`, `balanced_zero_eq_nil`, plus the Catalan and
+   `native_decide` examples. Same `ChungFeller` namespace.
+2. Switched `BallotProblemOQ01OQ04OQ01.lean`'s import from
+   `Proofs.BallotProblemOQ01OQ04` to `Proofs.BallotProblemOQ01OQ04Core`.
+   No changes to the bijection proof itself.
+3. Reduced `BallotProblemOQ01OQ04.lean` to a thin gallery face: imports the
+   companion (which transitively imports Core) and proves
+   `chung_feller_uniform := ChungFellerBijection.chung_feller_uniform'`.
+
+### Why This Was Needed
+
+The companion proved `chung_feller_uniform'` (with 0 sorries, 0 axiom uses)
+in Session 5, but the parent kept its own `axiom chung_feller_uniform`
+because the import direction was companion → parent. Reversing the
+direction required moving the parent's definitions out of its way (into a
+new Core file) so the companion could depend on Core instead, freeing the
+parent to consume the companion's proof.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ01OQ04Core.lean` (new, 178 lines)
+- `proofs/Proofs/BallotProblemOQ01OQ04OQ01.lean` (1-line import change)
+- `proofs/Proofs/BallotProblemOQ01OQ04.lean` (rewrote to 73-line re-export)
+
+### Result
+
+- `BallotProblemOQ01OQ04.lean`: 0 sorries, 0 axioms.
+- `BallotProblemOQ01OQ04OQ01.lean`: 0 sorries, 0 axiom uses (unchanged).
+- `BallotProblemOQ01OQ04Core.lean`: 0 sorries, 0 axioms.
+- Gallery `meta.json` updated: `status: axiomatized → verified`,
+  `badge: axiom → verified`, `axiomCount: 1 → 0`.
 
 ---
 
@@ -100,6 +153,6 @@ The Chung-Feller uniformity follows: `|type-j paths| = |type-k paths|` by swappi
 
 ## Next Steps (for future exploration)
 
-1. Can `BallotProblemOQ01OQ04.lean`'s axiom `chung_feller_uniform` be replaced by importing `chung_feller_uniform'` from OQ04OQ01? (Would make the parent file fully axiom-free)
+1. ~~Can `BallotProblemOQ01OQ04.lean`'s axiom `chung_feller_uniform` be replaced by importing `chung_feller_uniform'` from OQ04OQ01?~~ **Resolved in Session 7 (2026-04-28)** via the three-file refactor (Core / Bijection / GalleryFace).
 2. q-analog: can a q-Chung-Feller theorem be formalized, tracking path area?
 3. The bijection connects to RSK correspondence: does `chungFellerMap` have a nice description in terms of RSK?
