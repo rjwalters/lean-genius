@@ -46,6 +46,39 @@ Gallery entry: status=axiomatized, badge=axiom, axiomCount=1, sorries=0
 
 ---
 
+## Session 2026-04-28 (Session 2) — V2 Reconciliation (Axiom Eliminated)
+
+**Mode**: REVISIT
+**Outcome**: progress (metadata reconciliation only — no Lean changes this session)
+
+### What I Did
+
+1. Discovered candidate-pool entry stale-`available` for an already-completed problem
+2. Read gallery file `proofs/Proofs/CayleyHamiltonCyclicVectorAllFields.lean` (189 lines): now V2 axiom-free (0 axioms, 1 routine sorry on `monic_factored_form`)
+3. Confirmed via git log: PR #13041 (2026-04-27) eliminated the V1 RCF axiom by routing through WIP04's `GeneralCyclicVector.nonderogatory_general_has_cyclic_vector` (primary decomposition + Bezout/CRT)
+4. Reconciled `src/data/research/problems/cayley-hamilton-cyclic-vector-all-fields.json` to reflect V2 state (was still describing V1 axiom-based approach)
+5. No Lean code edits this session — Docker daemon was unresponsive locally; pure-text reconciliation only
+
+### Key Findings
+
+- V2 (PR #13041) replaces a deep mathematical axiom (`nonderogatory_similar_companion`, ~800 lines to prove from PID structure theorem) with a routine UFM API sorry (`monic_factored_form`, ~50 lines). Net: deep axiom → routine sorry.
+- V2 proof chain: factor `minpoly K M` via `monic_factored_form` → apply WIP04's `nonderogatory_general_has_cyclic_vector` (axiom-free primary decomposition).
+- `monic_factored_form` is Aristotle-suitable: `normalizedFactors μ` → `toFinset/count` for distinct primes with exponents → coprime via `Prime.coprime_iff_not_dvd` → product equality via `Polynomial.normalizedFactors_prod`.
+- Per-problem JSON had not been updated since V1; this session brings it into agreement with the actual gallery file and the merged axiom-elimination PR.
+
+### Files Modified
+
+- `src/data/research/problems/cayley-hamilton-cyclic-vector-all-fields.json` — `currentState.{focus,nextAction,iteration}`, `knowledge.{progressSummary,builtItems[3..4],insights+=,mathlibGaps,nextSteps}`
+- `research/problems/cayley-hamilton-cyclic-vector-all-fields/knowledge.md` — this session entry
+
+### Next Steps
+
+- Submit `monic_factored_form` to Aristotle (routine UFM API) — would close the file to 0/0.
+- After 0/0: optionally upstream `monic_factored_form` to Mathlib as a `Polynomial.UniqueFactorizationMonoid` lemma.
+
+---
+
 ## Dead Ends
 
-- `exists_strongly_cyclic` approach (strong induction on natDegree q): viable but complex (~100 more lines). Route B was simpler.
+- `exists_strongly_cyclic` approach (strong induction on natDegree q): viable but complex (~100 more lines). Superseded by WIP04 primary-decomposition route used in V2.
+- V1 Route B (axiomatize `nonderogatory_similar_companion`): superseded by V2 axiom elimination (PR #13041).
