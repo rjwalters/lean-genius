@@ -31,18 +31,13 @@
       }
     ],
     "originalContributions": [
-      "Axiomatization of k-vertex-critical graphs",
-      "Definition of the Erdős944 property (critical edge sets have size > r)",
-      "Statement of Dirac's conjecture (1970)",
-      "Axiomatization of Brown's construction (1992, k = 5)",
-      "Axiomatization of Lattanzio's result (2002, k-1 not prime)",
-      "Axiomatization of Jensen's construction (2002, k ≥ 5)",
-      "Axiomatization of Martinsson-Steiner result (2025, large k)",
-      "The open case k = 4"
+      "Typeclass definition of k-vertex-critical graphs (IsKVertexCritical) and the Erdős944 property (IsErdos944Graph)",
+      "Documentation of the open case k = 4",
+      "Historical commentary on known results (Brown 1992, Lattanzio 2002, Jensen 2002, Martinsson-Steiner 2025) — described in source comments, not formally axiomatized"
     ],
     "axiomCount": 0,
     "lineCount": 120,
-    "assumptions": "0 axioms. Lean source contains only typeclass definitions (IsKVertexCritical, IsErdos944Graph) and comments; no axiom declarations or structure-encoded assumptions. Open conjecture; supporting lemmas fully verified."
+    "assumptions": "0 axioms. Lean source contains only typeclass definitions (IsKVertexCritical, IsErdos944Graph) used as abstract predicates with no declared instances; the known results of Brown, Lattanzio, Jensen, and Martinsson-Steiner are described in comments only, not formally axiomatized. Open conjecture (k = 4 case unsolved)."
   },
   "overview": {
     "historicalContext": "A **k-vertex-critical graph** is one with chromatic number k where every vertex is critical (its deletion reduces χ). A **critical edge** is one whose deletion reduces χ.\n\nDirac (1970) conjectured that for k ≥ 4, there exist k-vertex-critical graphs with NO critical edges. This asks whether vertex-criticality and edge-criticality can be 'decoupled.'\n\n**Timeline of results**:\n- 1970: Dirac's conjecture\n- 1992: Brown constructs a 5-vertex-critical graph with no critical edges (11 vertices)\n- 2002: Lattanzio shows such graphs exist when k-1 is not prime\n- 2002: Jensen gives a general construction for all k ≥ 5\n- 2025: Martinsson-Steiner prove existence for large k and any r ≥ 1\n- 2025: Skottova-Steiner show f_k(n) → ∞ for k ≥ 5\n\nThe case **k = 4 remains OPEN**.",
