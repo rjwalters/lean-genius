@@ -33,7 +33,7 @@
     "historicalContext": "The $n$-dimensional hypercube $Q_n$ is one of the most studied structures in combinatorics: $2^n$ vertices (binary strings of length $n$) with $n \\cdot 2^{n-1}$ edges (between strings at Hamming distance 1). Turán-type problems on $Q_n$ ask for the maximum number of edges in a subgraph avoiding a fixed pattern. Erdős posed this problem in 1991, offering $\\$100$ for its resolution: is it true that any $C_4$-free subgraph of $Q_n$ can have at most $(1/2 + o(1)) \\cdot n \\cdot 2^{n-1}$ edges? The conjecture asserts that asymptotically half the edges is the threshold for forcing a 4-cycle. A $C_4$ in $Q_n$ corresponds to a 'square' — four vertices forming a 2-dimensional subcube where two coordinates vary independently. Erdős himself showed $f(n) > (1/2 + c/n) \\cdot n \\cdot 2^{n-1}$, meaning more than half can be kept. Brass, Harborth, and Nienborg (1995) improved this to $c/\\sqrt{n}$. For the upper bound, Balogh, Hu, Lidický, and Liu (2014) used flag algebra methods to obtain $0.6068$, later sharpened by Baber (2012, published 2014) to $0.60318$ via refined semidefinite programming. The gap between $0.5$ and $0.60318$ persists, making this one of the most prominent open problems in extremal combinatorics on structured graphs.",
     "problemStatement": "Let $Q_n$ be the $n$-dimensional hypercube. Let $f(n)$ be the maximum number of edges in a $C_4$-free subgraph of $Q_n$. Is it true that $f(n) \\leq (1/2 + o(1)) \\cdot n \\cdot 2^{n-1}$?",
     "text": "Let f(n) = max edges in a C₄-free subgraph of the n-hypercube Qₙ. Conjecture: f(n) = (1/2+o(1))·n·2^(n-1). Known: 1/2 < f(n)/(n·2^(n-1)) ≤ 0.60318. The gap remains OPEN ($100 prize).",
-    "proofStrategy": "This problem remains OPEN. The formalization captures: (1) The hypercube graph $Q_n$ as a `SimpleGraph` with Hamming-distance-1 adjacency, with symmetry and looplessness proved. (2) The vertex count $|V(Q_n)| = 2^n$ (proved via `Fintype.card_fun`). (3) The edge count $e(Q_n) = n \\cdot 2^{n-1}$ (axiomatized). (4) The $C_4$ definition and $C_4$-freeness. (5) The extremal function $f(n)$ via `sSup`. (6) Erdős's lower bound, the BHN improvement, and Baber's upper bound (axiomatized). (7) A combined bounds theorem `f_bounds_summary` (proved from axioms). (8) The conjecture via `Filter.Tendsto` and its $\\varepsilon$-$N$ reformulation. (9) The implication `conjecture_implies_limit` (proved via `Metric.tendsto_atTop`).",
+    "proofStrategy": "This problem remains OPEN. The formalization captures: (1) The hypercube graph $Q_n$ as a `SimpleGraph` with Hamming-distance-1 adjacency, with symmetry and looplessness proved. (2) The vertex count $|V(Q_n)| = 2^n$ (proved via `Fintype.card_fun`). (3) The edge count $e(Q_n) = n \\cdot 2^{n-1}$ (mentioned in a docstring; not formally stated). (4) The $C_4$ definition and $C_4$-freeness. (5) The extremal function $f(n)$ via `sSup`. (6) The BHN lower bound and Baber's upper bound (axiomatized; the only two axioms in the file). (7) A combined bounds theorem `f_bounds_summary` (proved from those two axioms). (8) The conjecture via `Filter.Tendsto` and its $\\varepsilon$-$N$ reformulation. (9) The implication `conjecture_implies_limit` (proved via `Metric.tendsto_atTop`).",
     "keyInsights": [
       "**$C_4$ as coordinate squares**: A 4-cycle in $Q_n$ corresponds to choosing a vertex $v$ and two coordinates $i \\neq j$, then forming the square $v, v^{\\{i\\}}, v^{\\{j\\}}, v^{\\{i,j\\}}$. Thus $Q_n$ contains $\\binom{n}{2} \\cdot 2^{n-2}$ copies of $C_4$, and avoiding them severely constrains the subgraph.",
       "**More than half survive**: The BHN construction shows $f(n) \\geq (1/2 + c/\\sqrt{n}) \\cdot n \\cdot 2^{n-1}$, so the $C_4$-free density is strictly above $1/2$ for every $n$. If the conjecture is true, the convergence to $1/2$ is at most $O(1/\\sqrt{n})$.",
@@ -52,7 +52,7 @@
       "title": "The Hypercube Graph $Q_n$",
       "startLine": 49,
       "endLine": 88,
-      "summary": "Defines $Q_n$ as a `SimpleGraph` on $\\{0,1\\}^n$ with Hamming-distance-1 adjacency. Proves symmetry and looplessness. Proves $|V(Q_n)| = 2^n$ via `Fintype.card_fun`. Axiomatizes $e(Q_n) = n \\cdot 2^{n-1}$."
+      "summary": "Defines $Q_n$ as a `SimpleGraph` on $\\{0,1\\}^n$ with Hamming-distance-1 adjacency. Proves symmetry and looplessness. Proves $|V(Q_n)| = 2^n$ via `Fintype.card_fun`. The edge count $e(Q_n) = n \\cdot 2^{n-1}$ is mentioned in a docstring but not formally stated."
     },
     {
       "id": "c4-cycles",
@@ -73,7 +73,7 @@
       "title": "Known Bounds on $f(n)$",
       "startLine": 119,
       "endLine": 151,
-      "summary": "Axiomatizes Erdős's lower bound $(1/2 + c/n)$, the BHN improvement $(1/2 + c/\\sqrt{n})$, and Baber's upper bound $0.60318$. Proves `f_bounds_summary` combining both directions for $n \\geq 2$."
+      "summary": "Axiomatizes the BHN lower bound $(1/2 + c/\\sqrt{n})$ and Baber's upper bound $0.60318$ (Erdős's earlier $(1/2 + c/n)$ bound is mentioned in a docstring but not separately axiomatized — it is implied by BHN). Proves `f_bounds_summary` combining both directions for $n \\geq 2$."
     },
     {
       "id": "conjecture",
