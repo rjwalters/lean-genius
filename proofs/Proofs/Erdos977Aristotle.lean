@@ -1,5 +1,5 @@
 /-
-  Aristotle targets for Erdős Problem #977 (Greatest Prime Factor of 2^n - 1)
+  Aristotle targets for Erdos977Problem
   Routine supporting lemmas for automated proof search.
   See Erdos977Problem.lean for the main formalization.
 
@@ -12,19 +12,18 @@
   Excluded (too deep for Aristotle):
   - stewart_2013: Stewart's 2013 theorem (deep number theory)
   - schinzel_bound: Schinzel (1962) bound (deep number theory)
-  - stewart_quantitative / stewart_bound_implies_main: deep analytic NT
+  - schinzel_ratio / stewart_quantitative / stewart_bound_implies_main: deep analytic NT
   - zsygmondy: Zsygmondy's theorem (deep, though may be in Mathlib)
   - lai_limsup_bound: Lai (2021) result
   - ord_divides / large_gpf_small_order: ord2 definition is simplified placeholder
+  - gpf_mersenne_2/3/5/7/11: noncomputable def, decide won't work
 -/
 import Mathlib
 import Proofs.Erdos977Problem
 
+namespace Erdos977
+
 open Finset Nat Real Filter
-
-namespace Erdos977Aristotle
-
-open Erdos977
 
 /-- P(n) divides n for n > 1.
     Strategy: P(n) = max' of primeFactors(n), which is a member, hence divides n. -/
@@ -70,24 +69,4 @@ theorem mersenne_prime_ratio_large (n : ℕ) (hn : n ≥ 2) (hmp : IsMersennePri
     (P (mersenne n) : ℝ) / n = (2 ^ n - 1 : ℝ) / n := by
   sorry
 
-/-- P(2^2 - 1) = P(3) = 3. -/
-theorem gpf_mersenne_2 : P (mersenne 2) = 3 := by
-  sorry
-
-/-- P(2^3 - 1) = P(7) = 7. -/
-theorem gpf_mersenne_3 : P (mersenne 3) = 7 := by
-  sorry
-
-/-- P(2^5 - 1) = P(31) = 31 (Mersenne prime). -/
-theorem gpf_mersenne_5 : P (mersenne 5) = 31 := by
-  sorry
-
-/-- P(2^7 - 1) = P(127) = 127 (Mersenne prime). -/
-theorem gpf_mersenne_7 : P (mersenne 7) = 127 := by
-  sorry
-
-/-- P(2^11 - 1) = P(2047) = 89, since 2047 = 23 × 89. -/
-theorem gpf_mersenne_11 : P (mersenne 11) = 89 := by
-  sorry
-
-end Erdos977Aristotle
+end Erdos977
