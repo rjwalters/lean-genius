@@ -106,49 +106,57 @@
       "id": "mahler-s-upper-bound",
       "title": "Mahler's Upper Bound",
       "startLine": 69,
-      "endLine": 83,
+      "endLine": 82,
       "summary": "Contains `mahlerSUnitConnection` placeholder (def returning True) noting Mahler's S-unit theorem. No `mahler_upper_bound` axiom — Mahler's bound is mentioned in comments but not formalized as an axiom. The equation x + 1 = y in {2,3}-smooth integers has finitely many solutions by Baker-Evertse theory.",
       "mathContext": "Contains `mahlerSUnitConnection` placeholder (def returning True) noting Mahler's S-unit theorem. No axiom for the bound — only a notational placeholder."
     },
     {
       "id": "erd-s-s-lower-bound",
       "title": "Erdős's Lower Bound",
-      "startLine": 84,
-      "endLine": 112,
+      "startLine": 80,
+      "endLine": 88,
       "summary": "Header section only; contains a docstring describing Erdős's lower bound claim but no `erdos_lower_bound` axiom. Steinerberger's construction (Part V) directly proves ErdosQuestion933 without separately axiomatizing Erdős's claim.",
       "mathContext": "Header section only. No `erdos_lower_bound` axiom — the bound is referenced in comments but not formalized as an axiom in this file."
     },
     {
       "id": "steinerberger-s-construction",
       "title": "Steinerberger's Construction",
-      "startLine": 113,
-      "endLine": 140,
+      "startLine": 87,
+      "endLine": 113,
       "summary": "Defines `steinerbergerN r = 2^(3^r)`. Proves `steinerberger_n_plus_1` (rfl). States `steinerberger_gives_large_smooth` (sorry — needs LTE computation to show 3^{r+1} | 2^{3^r}+1). Axiomatizes `steinerberger_proof : ErdosQuestion933` (the file's only axiom). Proves `limsup_infinite` as an alias. No `steinerberger_divisibility` axiom.",
       "mathContext": "Defines `steinerbergerN r = 2^(3^r)`. Proves `steinerberger_n_plus_1` by rfl. The file's only axiom is `steinerberger_proof : ErdosQuestion933`; `steinerberger_gives_large_smooth` has a sorry. No `steinerberger_divisibility` axiom exists."
     },
     {
       "id": "why-the-construction-works",
       "title": "Why the Construction Works",
-      "startLine": 141,
-      "endLine": 160,
+      "startLine": 115,
+      "endLine": 127,
       "summary": "Contains `LTEConnection` placeholder (def returning True) explaining the LTE argument: v_p(a^n+b^n) = v_p(a+b) + v_p(n) with p=3, a=2, b=1, n=3^r, giving v_3(2^{3^r}+1)=r+1. No `power2_mod3` or `lifting_the_exponent` axioms — the LTE application is noted but not formalized.",
       "mathContext": "Contains `LTEConnection` def returning True, explaining the LTE mathematical argument. No `power2_mod3` or `lifting_the_exponent` axioms exist in the file."
     },
     {
       "id": "properties-of-n-n-1",
       "title": "Properties of n(n+1)",
-      "startLine": 161,
-      "endLine": 180,
+      "startLine": 128,
+      "endLine": 146,
       "summary": "Proves `consecutive_coprime` (one-line: `Nat.coprime_self_add_one n`). States `power2_consecutive` and `power3_consecutive` (factorization additivity for coprime products, both sorry) showing v_p(n(n+1)) = v_p(n) + v_p(n+1).",
       "mathContext": "Proves `consecutive_coprime` (one-line: `Nat.coprime_self_add_one n`). States `power2_consecutive` and `power3_consecutive` (factorization additivity for coprime products, both sorry) showing v_p(n(n+1)) = v_p(n) + v_p(n+1)."
     },
     {
       "id": "examples",
       "title": "Examples",
-      "startLine": 181,
-      "endLine": 197,
-      "summary": "Two concrete examples verified by `native_decide`: steinerbergerN 1 = 8 (8·9=72=2³·3², ratio≈4.33), steinerbergerN 2 = 512 (512·513=2⁹·3³·19, smooth=13824). Defines `exampleSequence := steinerbergerN`. The final theorems (`erdos_933`, `erdos_933_main`, `erdos_933_solved`) complete the file.",
+      "startLine": 148,
+      "endLine": 164,
+      "summary": "Two concrete examples verified by `native_decide`: steinerbergerN 1 = 8 (8·9=72=2³·3², ratio≈4.33), steinerbergerN 2 = 512 (512·513=2⁹·3³·19, smooth=13824). Defines `exampleSequence := steinerbergerN`.",
       "mathContext": "Two concrete examples verified by `native_decide`: steinerbergerN 1 = 8 (8·9=72=2³·3², ratio≈4.33), steinerbergerN 2 = 512 (512·513=2⁹·3³·19, smooth=13824). Defines `exampleSequence := steinerbergerN`."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 166,
+      "endLine": 197,
+      "summary": "Three equivalent main theorems completing the formalization: `erdos_933 := steinerberger_proof` (direct alias), `erdos_933_main` (unfolded statement), `erdos_933_solved` (synonym). All three follow directly from the single axiom `steinerberger_proof : ErdosQuestion933`.",
+      "mathContext": "Three equivalent main theorems: `erdos_933`, `erdos_933_main`, `erdos_933_solved`. All are direct consequences of `steinerberger_proof : ErdosQuestion933`."
     }
   ],
   "conclusion": {
