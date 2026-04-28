@@ -57,7 +57,7 @@
       "fermat_no_four_squares_in_AP axiom: Fermat's theorem",
       "bajpai_bennett_chan_four_term axiom: main 2024 result",
       "bajpai_bennett_chan_three_term_3powerful axiom: 3-powerful result",
-      "abc_implies_finite_rpowerful axiom: conditional on ABC",
+      "erdosConjectureRPowerful definition: ABC-conditional behavior of r-powerful APs",
       "erdos_937 theorem: main result",
       "squares_vs_powerful theorem: contrast with Fermat"
     ],
@@ -135,10 +135,10 @@
     {
       "id": "easy-construction",
       "title": "Easy Construction",
-      "summary": "extend_powerful_AP, arbitrarily_long_powerful_APs",
+      "summary": "Docstrings sketching the easy non-coprime case: multiplying an AP of powerful numbers by (a+kd)² extends it, so without coprimality arbitrarily long APs exist. No formal declarations.",
       "startLine": 230,
       "endLine": 254,
-      "mathContext": "Mathematical content: extend_powerful_AP, arbitrarily_long_powerful_APs"
+      "mathContext": "Docstring exposition only. Argues that without the coprimality constraint, scaling an AP by a square extends it, yielding arbitrarily long APs of powerful numbers."
     },
     {
       "id": "bbc-theorem",
@@ -151,10 +151,10 @@
     {
       "id": "abc-conjecture",
       "title": "ABC Conjecture Connection",
-      "summary": "erdosConjectureRPowerful, abc_implies_finite_rpowerful",
+      "summary": "erdosConjectureRPowerful definition packaging the conjectured behavior across r. The ABC-conditional finiteness for r ≥ 4 is described in docstrings only — not stated as a theorem or axiom.",
       "startLine": 277,
       "endLine": 309,
-      "mathContext": "Mathematical content: erdosConjectureRPowerful, abc_implies_finite_rpowerful"
+      "mathContext": "Defines erdosConjectureRPowerful as a Prop bundling the r ≥ 4 finiteness, r = 3 infiniteness, and r = 3 4-term finiteness predictions. The ABC-conditional implication is exposition only."
     },
     {
       "id": "main-results",
