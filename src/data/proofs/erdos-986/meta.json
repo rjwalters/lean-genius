@@ -48,7 +48,7 @@
       "spencer_1977 axiom: k=3 case proved",
       "mattheus_verstraete_2023 axiom: k=4 case proved (major breakthrough)",
       "bohman_keevash_2010 axiom: best known general lower bound",
-      "aks_1980_upper axiom: best known upper bound",
+      "AKS 1980 upper bound: R(k,n) ≪ n^(k-1)/(log n)^(k-2) (documented in docstring, not a Lean axiom)",
       "exponent_gap: analysis of the polynomial gap for k≥5",
       "erdos_986_summary: combined results"
     ],
@@ -60,7 +60,7 @@
     "historicalContext": "**Erdős Problem #986: Ramsey Number Lower Bounds**\n\nThis problem concerns asymptotic lower bounds for off-diagonal Ramsey numbers R(k,n) where k is fixed and n grows.\n\n**Key History:**\n- Erdős conjectured that R(k,n) ≫ n^(k-1)/(log n)^c for fixed k ≥ 3\n- Spencer (1977): Proved the conjecture for k = 3\n- Ajtai-Komlós-Szemerédi (1980): Upper bound R(k,n) ≪ n^(k-1)/(log n)^(k-2)\n- Bohman-Keevash (2010): Best general lower bound n^((k+1)/2)/...\n- Mattheus-Verstraete (2023): Major breakthrough proving k = 4 case\n\n**Mathematical Setting:**\nR(k,n) is the smallest N such that any 2-coloring of K_N edges contains a monochromatic K_k or K_n. The problem asks how fast R(k,n) grows for fixed k.",
     "problemStatement": "**Problem Statement (Partially Solved)**\n\nFor any fixed $k \\geq 3$, prove that:\n$$R(k,n) \\gg \\frac{n^{k-1}}{(\\log n)^c}$$\nfor some constant $c = c(k) > 0$.\n\n**Status:**\n- $k = 3$: **YES** (Spencer, 1977)\n- $k = 4$: **YES** (Mattheus-Verstraete, 2023)\n- $k \\geq 5$: **OPEN**\n\n**Best Known Bounds (general k):**\n- Lower: $R(k,n) \\gg_k n^{(k+1)/2} / (\\log n)^{\\alpha}$ [Bohman-Keevash 2010]\n- Upper: $R(k,n) \\ll_k n^{k-1} / (\\log n)^{k-2}$ [AKS 1980]",
     "text": "For fixed k ≥ 3, is R(k,n) ≫ n^(k-1)/(log n)^c? YES for k=3 (Spencer 1977), YES for k=4 (Mattheus-Verstraete 2023), OPEN for k≥5. Gap between known bounds grows with k.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Ramsey Numbers:** Define R(k,n) as the minimum N for monochromatic cliques.\n\n2. **Asymptotic Notation:** Define ≫ and ≪ for asymptotic bounds.\n\n3. **Conjecture:** Formalize erdos_986_conjecture(k) for each fixed k.\n\n4. **Spencer 1977:** Axiomatize the k = 3 result.\n\n5. **Mattheus-Verstraete 2023:** Axiomatize the k = 4 breakthrough.\n\n6. **General Bounds:** Axiomatize Bohman-Keevash and AKS bounds.\n\n7. **Gap Analysis:** Compute the polynomial exponent gap for k ≥ 5.\n\n8. **Summary:** Combine all known results.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Ramsey Numbers:** Define R(k,n) as the minimum N for monochromatic cliques.\n\n2. **Asymptotic Notation:** Define ≫ and ≪ for asymptotic bounds.\n\n3. **Conjecture:** Formalize erdos_986_conjecture(k) for each fixed k.\n\n4. **Spencer 1977:** Axiomatize the k = 3 result.\n\n5. **Mattheus-Verstraete 2023:** Axiomatize the k = 4 breakthrough.\n\n6. **General Bounds:** Axiomatize Bohman-Keevash lower bound (bohman_keevash_2010); AKS upper bound documented in docstring only.\n\n7. **Gap Analysis:** Compute the polynomial exponent gap for k ≥ 5.\n\n8. **Summary:** Combine all known results.",
     "keyInsights": [
       "**Partial Progress:** k=3 solved 1977, k=4 solved 2023; general case open",
       "**Exponent Gap:** Known lower bound has exponent (k+1)/2, conjecture has k-1",

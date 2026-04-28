@@ -54,8 +54,8 @@
       "hecke_ostrowski axiom: orbit endpoints imply bounded discrepancy",
       "kesten_theorem axiom: bounded discrepancy implies orbit endpoints",
       "erdos_szusz_characterization theorem: complete iff characterization (proved)",
-      "three_distance_theorem axiom: at most 3 gap lengths",
-      "weyl_equidistribution axiom: equidistribution for irrational rotations",
+      "three_distance_theorem: at most 3 gap lengths (documented, not a Lean axiom)",
+      "weyl_equidistribution: equidistribution for irrational rotations (documented, not a Lean axiom)",
       "erdos_998_summary theorem: restates full characterization (proved)"
     ],
     "axiomCount": 2,
@@ -125,16 +125,16 @@
       "title": "Three-Distance Theorem",
       "startLine": 148,
       "endLine": 162,
-      "summary": "Axiomatizes the three-distance theorem: $\\{\\alpha\\}, \\{2\\alpha\\}, \\ldots, \\{n\\alpha\\}$ partition $[0,1)$ into intervals of at most 3 distinct lengths $L_1, L_2, L_3$ with $L_3 = L_1 + L_2$.",
-      "mathContext": "Axiomatizes the three-distance theorem: $\\{\\$\\alpha$\\}, \\{2\\$\\alpha$\\}, \\ldots, \\{n\\$\\alpha$\\}$ partition $[0,1)$ into intervals of at most 3 distinct lengths $L_1, L_2, L_3$ with $L_3 = L_1 + L_2$."
+      "summary": "Documents the three-distance theorem (not a Lean axiom): $\\{\\alpha\\}, \\{2\\alpha\\}, \\ldots, \\{n\\alpha\\}$ partition $[0,1)$ into intervals of at most 3 distinct lengths $L_1, L_2, L_3$ with $L_3 = L_1 + L_2$.",
+      "mathContext": "Mathematical content: three-distance theorem (documented, not a Lean axiom): $\\{\\$\\alpha$\\}, \\{2\\$\\alpha$\\}, \\ldots, \\{n\\$\\alpha$\\}$ partition $[0,1)$ into intervals of at most 3 distinct lengths $L_1, L_2, L_3$ with $L_3 = L_1 + L_2$."
     },
     {
       "id": "weyl",
       "title": "Weyl's Equidistribution",
       "startLine": 163,
       "endLine": 173,
-      "summary": "Axiomatizes Weyl's theorem: $N(n,u,v,\\alpha)/n \\to (v-u)$ as $n \\to \\infty$ for irrational $\\alpha$. Expressed as $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall n \\geq N,\\, |N(n,u,v,\\alpha)/n - (v-u)| < \\varepsilon$.",
-      "mathContext": "Axiomatizes Weyl's theorem: $N(n,u,v,\\alpha)/n \\to (v-u)$ as $n \\to \\infty$ for irrational $\\alpha$. Expressed as $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall n \\geq N,\\, |N(n,u,v,\\alpha)/n - (v-u)| < \\varepsilon$."
+      "summary": "Documents Weyl's theorem (not a Lean axiom): $N(n,u,v,\\alpha)/n \\to (v-u)$ as $n \\to \\infty$ for irrational $\\alpha$. Expressed as $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall n \\geq N,\\, |N(n,u,v,\\alpha)/n - (v-u)| < \\varepsilon$.",
+      "mathContext": "Mathematical content: Weyl's theorem (documented, not a Lean axiom): $N(n,u,v,\\alpha)/n \\to (v-u)$ as $n \\to \\infty$ for irrational $\\alpha$. Expressed as $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall n \\geq N,\\, |N(n,u,v,\\alpha)/n - (v-u)| < \\varepsilon$."
     },
     {
       "id": "summary",

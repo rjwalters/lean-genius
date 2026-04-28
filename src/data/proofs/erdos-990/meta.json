@@ -62,8 +62,8 @@
       "erdos_turan_classical axiom: the 1950 result",
       "sparseConjecture definition: the open problem",
       "sparse_improves_dense theorem: n ≤ d+1",
-      "sharp_erdos_turan axiom: optimal constant exists",
-      "erdelyi_one_sided axiom: one-sided improvement"
+      "sharp constant analysis: optimal Erdős-Turán constant (documented in docstring, not a Lean axiom)",
+      "Erdélyi one-sided improvement: referenced in docstring (not a Lean axiom)"
     ],
     "axiomCount": 4,
     "lineCount": 207,
@@ -101,7 +101,7 @@
     {
       "id": "mahler",
       "title": "The Mahler Measure",
-      "summary": "coeffSum, $M = \\sum|a_i|/\\sqrt{|a_0||a_d|}$, mahler_ge_two axiom ($M \\geq 2$ for monic polynomials)",
+      "summary": "coeffSum, $M = \\sum|a_i|/\\sqrt{|a_0||a_d|}$; AM-GM gives $M \\geq 2$ for monic polynomials (proved inline, not a separate Lean axiom)",
       "startLine": 57,
       "endLine": 78,
       "mathContext": "$M$ normalizes the coefficient sum by the geometric mean of the leading and constant term. For monic polynomials with $|a_0| = |a_d| = 1$, the AM-GM inequality gives $M \\geq 2$. The logarithm $\\log M$ appears under the square root in the bound."
@@ -133,7 +133,7 @@
     {
       "id": "sharp",
       "title": "Sharp Constant",
-      "summary": "sharp_erdos_turan ($\\exists C_{\\text{sharp}}$: optimal constant), hilbert_connection (link to Hilbert transform operator norm)",
+      "summary": "Soundararajan (2019) sharp constant $\\exists C_{\\text{sharp}}$ and Hilbert transform connection — narrative section (no Lean axioms or theorems declared here)",
       "startLine": 153,
       "endLine": 170,
       "mathContext": "Soundararajan (2019) showed the sharp constant is determined by the operator norm of a modified Hilbert transform $Hf(x) = \\text{PV} \\int f(t)/(x-t)\\,dt$ restricted to trigonometric polynomials."
