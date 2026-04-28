@@ -24,6 +24,7 @@ Reference: https://erdosproblems.com/935
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Rat.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 
 /- ## Powerful part -/
@@ -76,7 +77,7 @@ theorem powerfulPart_is_powerful (n : ℕ) (p : ℕ) (hp : p.Prime)
     subst hpq
     -- p^2 | p^(n.factorization p) since 2 ≤ exponent, and that factor divides the product
     exact dvd_trans (pow_dvd_pow p h2)
-      (by simpa [h2] using Finset.dvd_prod_of_mem
+      (by simp only [Finsupp.prod]; simpa [h2] using Finset.dvd_prod_of_mem
         (fun i => if 2 ≤ n.factorization i then i ^ n.factorization i else 1) hq_mem)
   · -- Factor for q is 1; p ∤ 1 contradicts p prime
     simp only [h2, ite_false] at hq_dvd
@@ -109,13 +110,13 @@ theorem powerfulPart_mul (a b : ℕ) (hab : Nat.Coprime a b) :
     apply Finset.prod_congr rfl
     intro p hp
     have : b.factorization p = 0 :=
-      Finsupp.not_mem_support_iff.mp (Finset.disjoint_left.mp hd hp)
+      Finsupp.notMem_support_iff.mp (Finset.disjoint_left.mp hd hp)
     rw [Finsupp.add_apply, this, add_zero]
   · -- For p in b's support: a.factorization p = 0 by disjointness
     apply Finset.prod_congr rfl
     intro p hp
     have : a.factorization p = 0 :=
-      Finsupp.not_mem_support_iff.mp (Finset.disjoint_right.mp hd hp)
+      Finsupp.notMem_support_iff.mp (Finset.disjoint_right.mp hd hp)
     rw [Finsupp.add_apply, this, zero_add]
 
 /- ## Consecutive products -/
@@ -131,11 +132,11 @@ noncomputable def Q2consec (n ℓ : ℕ) : ℕ :=
 /- ## Main conjectures -/
 
 /-- Part 1: For every ε > 0 and ℓ ≥ 1, Q₂(n(n+1)⋯(n+ℓ)) < n^{2+ε}
-    for all sufficiently large n. -/
+    for all sufficiently large n. Uses ℝ exponents via Real.rpow. -/
 def ErdosProblem935_part1 : Prop :=
-    ∀ (ℓ : ℕ) (hℓ : 1 ≤ ℓ) (ε : ℚ) (hε : 0 < ε),
+    ∀ (ℓ : ℕ) (hℓ : 1 ≤ ℓ) (ε : ℝ) (hε : 0 < ε),
       ∃ n₀ : ℕ, ∀ n : ℕ, n₀ ≤ n →
-        (Q2consec n ℓ : ℚ) < (n : ℚ) ^ (2 + ε)
+        (Q2consec n ℓ : ℝ) < (n : ℝ) ^ (2 + ε)
 
 /-- Part 2: For ℓ ≥ 2, lim sup Q₂(n(n+1)⋯(n+ℓ)) / n² = ∞. -/
 def ErdosProblem935_part2 : Prop :=
