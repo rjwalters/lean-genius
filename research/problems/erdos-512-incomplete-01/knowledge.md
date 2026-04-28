@@ -61,3 +61,52 @@ Already proved (no sorry):
    - When k≠0: antiderivative is `expTwoPiI (k * θ) / (2πki)`; FTC gives (e^{2πki}-1)/(2πki) = 0
    - Need: `Complex.integral_exp` or `intervalIntegral.integral_comp_mul_right` in Mathlib
    - Then swap integral and double sum using `MeasureTheory.integral_finset_sum`
+
+## Session 2026-04-28 (Session 2) — Stale-Metadata Audit (researcher-4)
+
+**Mode**: REVISIT (RICH knowledge tier, score 16)
+**Outcome**: COMPLETED — sorries already closed in upstream PRs; metadata reconciled
+
+### Verification
+
+```
+Erdos512Problem.lean:    368 lines, 14 theorems, 16 defs, 2 axioms, 0 sorries
+Erdos512Aristotle.lean:   77 lines,  2 theorems,  0 defs, 0 axioms, 0 sorries
+```
+
+(Counts strip block + line comments before counting `\bsorry\b` per
+`feedback_lean_sorry_counting.md`.)
+
+### Audit Trail (Upstream PRs that closed the gaps)
+
+- **PR #12115** (`1e702aadd36`) — *Prove L2_norm (Parseval) for Erdős #512: eliminate last sorry*
+- **PR #12201** (`37754b91221`) — *Fix: erdos-512 sync sorry count 2→0 (expSumNorm_sq_double proved)*
+
+The research entry's `progressSummary` was still describing the pre-PR-#12201 state ("L2_norm
+proof structured (1 sorry: normSq double-sum expansion in expSumNorm_sq_double)"). That sorry
+is gone; `expSumNorm_sq_double` is now fully proved at lines 210–240 via `Complex.normSq_apply`,
+`expTwoPiI_conj`, and an inner `Complex.exp_mul_I` rewrite that extracts `cos(2π(m−n)θ)`.
+
+### Files Modified
+
+- `src/data/research/problems/erdos-512-incomplete-01.json`
+  (lineCount 245→368, sorryCount 1→0, theoremCount 10→14, defCount 8→16; phase ACT→COMPLETED;
+  status active→completed; `lastUpdate` refreshed; knowledge fields rewritten to reflect closure)
+- `research/problems/erdos-512-incomplete-01/knowledge.md` (this entry)
+- `.lean/state/candidate-pool.json` (status `available`→`completed`; not in this branch — pool
+  lives in main repo's gitignored state, updated separately)
+
+### Remaining Mathematical Status
+
+The two `axiom` declarations (`konyagin_theorem`, `mcgehee_pigno_smith_theorem`) remain. They
+state the Littlewood conjecture itself (now a theorem, by Konyagin 1981 / McGehee–Pigno–Smith
+1981). De-axiomatization would require a fresh research entry: formalize Hardy's discrete
+inequality (1920) + the MPS Fourier-coefficient chain of estimates. That's a multi-session
+infrastructure project, out of scope for this `incomplete-01` follow-up.
+
+### Why This Was Worth Doing
+
+Per `feedback_research_pool_stale_metadata.md`: stale "available" entries on already-completed
+problems waste claim cycles. Pool now reflects gallery state for this entry. Continues the
+recent batch (after dissection-of-cubes-oq-04, erdos-1103, erdos-1084-oq-01, erdos-263).
+
