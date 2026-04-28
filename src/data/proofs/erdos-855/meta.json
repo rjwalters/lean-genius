@@ -44,15 +44,15 @@
     ],
     "originalContributions": [
       "primePi definition: prime counting function",
+      "primePi_monotone theorem: prime counting is monotone",
       "SecondHardyLittlewoodConjecture formulation",
       "IsAdmissibleTuple definition: admissible k-tuples",
       "PrimeKTuplesConjecture formulation",
       "hensley_richards_incompatibility axiom: key result",
-      "hensley_richards_quantitative: error term",
-      "dense_admissible_tuples_exist axiom",
-      "montgomery_vaughan_bound axiom",
+      "primePi_add_ge theorem: trivial lower bound \u03c0(x+y) \u2265 \u03c0(x)",
       "StrausConjecture and ErdosWeakerConjecture formulations",
-      "erdos_855_summary theorem"
+      "straus_also_incompatible axiom: extends Hensley-Richards to Straus's modification",
+      "erdos_855 theorem: combines both incompatibility axioms"
     ],
     "axiomCount": 2,
     "lineCount": 172,
@@ -79,43 +79,50 @@
     {
       "id": "prime-counting",
       "title": "The Prime Counting Function",
-      "summary": "primePi definition, primePi_monotone, prime number theorem",
+      "summary": "primePi definition and primePi_monotone theorem; prime number theorem mentioned in an orphan docstring (not formally stated).",
       "startLine": 33,
-      "endLine": 57
+      "endLine": 54
     },
     {
       "id": "second-hl",
       "title": "The Second Hardy-Littlewood Conjecture",
       "summary": "SecondHardyLittlewoodConjecture definition",
-      "startLine": 58,
-      "endLine": 72
+      "startLine": 55,
+      "endLine": 67
     },
     {
       "id": "k-tuples",
       "title": "The Prime k-Tuples Conjecture",
       "summary": "IsAdmissibleTuple, PrimeKTuplesConjecture definitions",
-      "startLine": 73,
-      "endLine": 94
+      "startLine": 68,
+      "endLine": 87
     },
     {
       "id": "hensley-richards",
       "title": "Hensley-Richards Incompatibility",
-      "summary": "hensley_richards_incompatibility, quantitative version, dense tuples",
-      "startLine": 95,
-      "endLine": 132
+      "summary": "hensley_richards_incompatibility axiom; the quantitative version and reason for incompatibility appear as orphan docstrings only (not separately axiomatized).",
+      "startLine": 88,
+      "endLine": 113
     },
     {
       "id": "unconditional",
       "title": "Unconditional Results",
-      "summary": "montgomery_vaughan_bound, primePi_add_ge theorem",
-      "startLine": 133,
-      "endLine": 154
+      "summary": "primePi_add_ge theorem (trivial lower bound \u03c0(x+y) \u2265 \u03c0(x)). The Montgomery-Vaughan bound is mentioned in an orphan docstring (not formalized).",
+      "startLine": 114,
+      "endLine": 130
     },
     {
       "id": "related",
       "title": "Related Conjectures",
-      "summary": "StrausConjecture, ErdosWeakerConjecture definitions",
-      "startLine": 155,
+      "summary": "StrausConjecture and ErdosWeakerConjecture definitions; straus_also_incompatible axiom (k-tuples \u2192 \u00acStrausConjecture).",
+      "startLine": 131,
+      "endLine": 155
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_855 theorem combining hensley_richards_incompatibility and straus_also_incompatible axioms.",
+      "startLine": 156,
       "endLine": 172
     }
   ],
