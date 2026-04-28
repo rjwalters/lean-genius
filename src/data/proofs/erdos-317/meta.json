@@ -59,7 +59,7 @@
   "overview": {
     "historicalContext": "**Erdős Problem #317: Signed Unit Fraction Approximations**\n\nFrom Erdős-Graham (1980), p.42. This problem asks how small a nonzero signed combination of the first n unit fractions can be.\n\n**Two Questions:**\n1. Can we achieve exponentially small sums < c/2^n for some universal constant c?\n2. For large n, is 1/lcm(1,...,n) a strict lower bound for nonzero sums?\n\n**Known Results:** Kovac and van Doorn achieved 2^{-n·(log log log n)^{1+o(1)}/log n}, far from c/2^n. Van Doorn's heuristic suggests this may be optimal, which would make Question 1 false. Question 2 fails for small n: 1/2 - 1/3 - 1/4 = -1/12 achieves exactly 1/lcm(1,2,3,4).",
     "problemStatement": "**Problem Statement (OPEN)**\n\n**Question 1:** Is there $c > 0$ such that for every $n \\geq 1$, there exist $\\delta_k \\in \\{-1, 0, 1\\}$ with $0 < |\\sum_{k=1}^n \\delta_k/k| < c/2^n$?\n\n**Question 2:** For sufficiently large $n$, must $|\\sum \\delta_k/k| > 1/\\text{lcm}(1,\\ldots,n)$ whenever the sum is nonzero?\n\n**Known:** Weak inequality $\\geq 1/\\text{lcm}$ holds trivially. Strict inequality fails for $n = 4$.",
-    "text": "A 158-line formalization of Erdős Problem #317 (open, Erdős-Graham 1980) on signed unit fraction approximations. Two questions: (Q1) is there $c > 0$ such that for every $n$, signs $\\delta_k \\in \\{-1, 0, 1\\}$ exist with $0 < |\\sum_{k=1}^n \\delta_k/k| < c/2^n$? (Q2) For large $n$, must nonzero signed sums exceed $1/\\text{lcm}(1,\\ldots,n)$? Defines `IsSignFunction`, `signedUnitFractionSum`, and `signedSumAbs` using `Fin n` and `Finset.sum`. Known results axiomatized: the weak inequality $|\\sum \\delta_k/k| \\geq 1/\\text{lcm}$ (trivial), a counterexample at $n = 4$ ($1/2 - 1/3 - 1/4 = -1/12 = 1/\\text{lcm}(1,2,3,4)$), and the Kova\\v{c}-van Doorn bound achieving $2^{-n \\cdot (\\log\\log\\log n)^{1+o(1)}/\\log n}$.",
+    "text": "A 192-line formalization of Erdős Problem #317 (open, Erdős-Graham 1980) on signed unit fraction approximations. Two questions: (Q1) is there $c > 0$ such that for every $n$, signs $\\delta_k \\in \\{-1, 0, 1\\}$ exist with $0 < |\\sum_{k=1}^n \\delta_k/k| < c/2^n$? (Q2) For large $n$, must nonzero signed sums exceed $1/\\text{lcm}(1,\\ldots,n)$? Defines `IsSignFunction`, `signedUnitFractionSum`, and `signedSumAbs` using `Fin n` and `Finset.sum`. Known results fully proved (0 axioms, 0 sorries): the weak inequality $|\\sum \\delta_k/k| \\geq 1/\\text{lcm}$ (denominator divisibility argument), and a counterexample at $n = 4$ ($1/2 - 1/3 - 1/4 = -1/12 = 1/\\text{lcm}(1,2,3,4)$). The Kovač-van Doorn bound is not formalized in this file.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Clean Definitions:** IsSignFunction, signedUnitFractionSum, signedSumAbs using Fin n and Finset.sum.\n\n2. **Both Questions as Defs:** Question1 and Question2 as Prop definitions (open problems).\n\n3. **All Known Results Proved:** weak_inequality (denominator divisibility via Finset.dvd_lcm), counterexample_small_n (n=4 equality via native_decide), nonzero_signed_sum_exists (harmonic number positivity).\n\n4. **Summary Theorem:** erdos_317_summary proved, combining the weak inequality with the counterexample and existence result.\n\n5. **Key Proof: weak_inequality** — Shows L*S is an integer (each (k+1) divides L = lcm(1,...,n)), so nonzero S has |S| >= 1/L.",
     "keyInsights": [
       "**Exponential vs Sub-exponential:** c/2^n is exponential in n; the known Kovac-van Doorn bound 2^{-n·polylog/log n} is sub-exponential — a huge gap",
@@ -101,7 +101,7 @@
     {
       "id": "known-results",
       "title": "Known Results",
-      "summary": "Axiom `weak_inequality` (nonzero sums $\\geq 1/\\text{lcm}$) and `counterexample_small_n` ($n = 4$ achieves equality).",
+      "summary": "Proved theorems `counterexampleDelta_isSign` (the counterexample $\\delta = (0, 1, -1, -1)$ is a valid sign function) and `counterexample_sum_eq` (its signed sum equals $-1/12$). Both fully machine-checked.",
       "startLine": 77,
       "endLine": 93,
       "mathContext": "The weak inequality follows from denominator divisibility: $\\sum \\delta_k/k = p/\\text{lcm}$ for some integer $p$, so $|\\sum| \\geq 1/\\text{lcm}$ when $p \\neq 0$. The $n = 4$ counterexample: $\\delta = (0, 1, -1, -1)$ gives $1/2 - 1/3 - 1/4 = 6/12 - 4/12 - 3/12 = -1/12$."
@@ -109,7 +109,7 @@
     {
       "id": "kovac-van-doorn",
       "title": "Kovac-van Doorn Upper Bound",
-      "summary": "Axiom asserting existence of nonzero signed sums achieving the Kovac-van Doorn bound $2^{-n \\cdot (\\log\\log\\log n)^{1+o(1)}/\\log n}$.",
+      "summary": "Proved theorem `counterexample_small_n`: for $n = 4$, the sign function $\\delta = (0, 1, -1, -1)$ satisfies $|\\sum \\delta_k/(k+1)| = 1/12 = 1/\\text{lcm}(1,2,3,4)$, demonstrating that Question 2's strict inequality fails for small $n$. Proof uses `native_decide`.",
       "startLine": 94,
       "endLine": 104,
       "mathContext": "Kovac and van Doorn showed that for all large $n$, signs $\\delta_k$ exist with $0 < |\\sum \\delta_k/k| \\leq 2^{-n \\cdot (\\log\\log\\log n)^{1+o(1)}/\\log n}$. This is sub-exponential in $n$ — much larger than $c/2^n$ — suggesting Q1 may be false."
