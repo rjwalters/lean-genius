@@ -97,7 +97,7 @@
     {
       "id": "extremal-numbers",
       "title": "Part III: Extremal Numbers",
-      "summary": "exr axiom, isLittleO definition.",
+      "summary": "exr def (noncomputable extremal number), isLittleO def.",
       "startLine": 73,
       "endLine": 82,
       "mathContext": "$\\text{ex}_r(n, \\mathcal{F}(r,d,e))$: max edges in $\\mathcal{F}$-free $r$-uniform hypergraph on $n$ vertices."
@@ -105,7 +105,7 @@
     {
       "id": "threshold-function",
       "title": "Part IV: The Function d_r(e)",
-      "summary": "dr axiom with dr_spec and dr_minimal characterizing the threshold.",
+      "summary": "dr def (sInf over threshold set), dr_spec and dr_minimal theorems characterizing the threshold.",
       "startLine": 83,
       "endLine": 98,
       "mathContext": "$d_r(e) = \\min\\{d : \\text{ex}_r(n, \\mathcal{F}(r,d,e)) = o(n^2)\\}$. The threshold for subquadratic behavior."
@@ -121,7 +121,7 @@
     {
       "id": "upper-bounds",
       "title": "Part VI: Known Upper Bounds",
-      "summary": "sarkozy_selkow_upper axiom.",
+      "summary": "sarkozy_selkow_upper theorem (proved from sarkozy_selkow_result axiom).",
       "startLine": 111,
       "endLine": 116,
       "mathContext": "$d_r(e) \\leq (r-2)e + 2 + \\lfloor\\log_2 e\\rfloor$ [SaSe05]."
@@ -169,7 +169,7 @@
     {
       "id": "summary",
       "title": "Part XII: Summary",
-      "summary": "erdos_1178 axiom: the open conjecture.",
+      "summary": "BrownErdosSosGeneralConjecture def and summary of the open problem.",
       "startLine": 196,
       "endLine": 215,
       "mathContext": "OPEN: $d_r(e) = (r-2)e + 3$. Lower bound proved, upper bound has a $\\log_2 e$ gap."
