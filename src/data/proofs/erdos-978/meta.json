@@ -47,12 +47,11 @@
       "IsIrreducible for polynomials over ℤ",
       "powerFreeDensity: asymptotic density counting function",
       "f_example: the polynomial n⁴ + 2",
-      "erdos_1953_infinitely_many: original Erdős result",
-      "hooley_1967_positive_density: settled question 1",
-      "heath_brown_2006, browning_2011: partial solution to question 2",
-      "squarefree_conjecture_n4_plus_2: the open problem",
-      "n4_plus_2_cubefree: what IS known about n⁴ + 2",
-      "erdos_978_summary: combined results"
+      "hooley_1967_positive_density (axiom): settled question 1",
+      "browning_2011 (axiom): partial solution to question 2 for d ≥ 9 (Heath-Brown 2006 noted in docstring only)",
+      "squarefree_conjecture_n4_plus_2 (def): the open problem",
+      "n4_plus_2_cubefree (axiom): what IS known about n⁴ + 2",
+      "erdos_978_summary (theorem): combined results"
     ],
     "axiomCount": 3,
     "lineCount": 282,
@@ -62,7 +61,7 @@
     "historicalContext": "**Erdős Problem #978: Power-Free Values of Polynomials**\n\nThis problem concerns the density of integers n for which f(n) avoids having high prime powers as divisors.\n\n**Key History:**\n- Erdős (1953): Infinitely many (d-1)-power-free values exist\n- Hooley (1967): Proved positive density for (d-1)-power-free with asymptotics\n- Heath-Brown (2006): Proved (d-2)-power-free result for d ≥ 10\n- Browning (2011): Extended to d ≥ 9 with asymptotic formula\n\n**Mathematical Setting:**\nA number n is k-power-free if no prime p satisfies p^k | n. Squarefree = 2-power-free, cubefree = 3-power-free. The question asks how often polynomial values are power-free.",
     "problemStatement": "**Problem Statement (Partially Solved)**\n\nLet $f \\in \\mathbb{Z}[x]$ be an irreducible polynomial of degree $d > 2$ with $d \\neq 2^l$.\n\n**Question 1:** Does the set of $n$ with $f(n)$ being $(d-1)$-power-free have positive density?\n**Answer: YES** (Hooley, 1967)\n\n**Question 2:** Are there infinitely many $n$ with $f(n)$ being $(d-2)$-power-free?\n**Answer: YES** for $d \\geq 9$ (Heath-Brown 2006, Browning 2011)\n**Status: OPEN** for $d < 9$\n\n**Question 3:** Does $n^4 + 2$ represent infinitely many squarefree numbers?\n**Status: OPEN** (degree 4 < 9)",
     "text": "For irreducible polynomial f of degree d: (1) (d-1)-power-free values have positive density - YES (Hooley 1967). (2) Infinitely many (d-2)-power-free - YES for d≥9 (Browning 2011). (3) n⁴+2 squarefree - OPEN.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Power-Free Numbers:** Define IsPowerFree(k, n) as no prime p having p^k | n.\n\n2. **Special Cases:** IsSquarefree = IsPowerFree(2), IsCubefree = IsPowerFree(3).\n\n3. **Irreducible Polynomials:** Define for ℤ[x] with degree condition.\n\n4. **Density Function:** Define asymptotic density of power-free values.\n\n5. **Erdős 1953:** Axiomatize infinitely many (d-1)-power-free values.\n\n6. **Hooley 1967:** Axiomatize positive density result.\n\n7. **Heath-Brown/Browning:** Axiomatize (d-2)-power-free for d ≥ 9.\n\n8. **Open Problem:** State the n⁴ + 2 squarefree conjecture.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Power-Free Numbers:** Define IsPowerFree(k, n) as no prime p having p^k | n.\n\n2. **Special Cases:** IsSquarefree = IsPowerFree(2), IsCubefree = IsPowerFree(3).\n\n3. **Irreducible Polynomials:** Define for ℤ[x] with degree condition.\n\n4. **Density Function:** Define asymptotic density of power-free values.\n\n5. **Erdős 1953 (docstring only):** The original infinitely-many (d-1)-power-free result is recorded as historical context, not as a formal axiom.\n\n6. **Hooley 1967 (axiom):** Axiomatize positive density result.\n\n7. **Browning 2011 (axiom):** Axiomatize (d-2)-power-free for d ≥ 9 (Heath-Brown 2006 noted in docstring only).\n\n8. **Open Problem:** State the n⁴ + 2 squarefree conjecture as a `def`; axiomatize the known cubefree result.",
     "keyInsights": [
       "**Power-Free Levels:** (d-1)-power-free is easier than (d-2)-power-free",
       "**Degree Threshold:** d ≥ 9 is the current boundary for (d-2)-power-free results",
@@ -104,10 +103,10 @@
     {
       "id": "erdos-1953",
       "title": "Erdős's Result (1953)",
-      "summary": "Infinitely many (d-1)-power-free values",
+      "summary": "Historical context only: Erdős's infinitely-many (d-1)-power-free result is described in a docstring, not declared as an axiom or theorem in this file.",
       "startLine": 127,
       "endLine": 142,
-      "mathContext": "Mathematical content: Infinitely many (d-1)-power-free values"
+      "mathContext": "Docstring/comment block describing Erdős 1953; no formal declaration."
     },
     {
       "id": "hooley",
@@ -120,10 +119,10 @@
     {
       "id": "heath-brown-browning",
       "title": "Heath-Brown and Browning",
-      "summary": "(d-2)-power-free for d ≥ 9",
+      "summary": "(d-2)-power-free for d ≥ 9. Only Browning 2011 is axiomatized; Heath-Brown 2006 appears in a docstring with no formal declaration.",
       "startLine": 173,
       "endLine": 206,
-      "mathContext": "(d-2)-power-free for d $\\geq$ 9"
+      "mathContext": "axiom browning_2011 + theorem second_question_partial; Heath-Brown 2006 noted in docstring only."
     },
     {
       "id": "n4-plus-2",
