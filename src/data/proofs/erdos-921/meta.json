@@ -79,34 +79,34 @@
       "id": "section-1",
       "title": "Basic Definitions",
       "startLine": 33,
-      "endLine": 76,
+      "endLine": 69,
       "summary": "Defines graph structure and the key function f_k(n) (axiom) measuring maximum odd girth in k-chromatic graphs. Chromatic number and odd girth are described in docstrings only."
     },
     {
       "id": "section-2",
       "title": "Main Conjecture",
-      "startLine": 77,
-      "endLine": 100,
+      "startLine": 70,
+      "endLine": 93,
       "summary": "Formalizes the Erdős-Gallai conjecture f_k(n) ≍ n^{1/(k-2)} and states the Kierstead-Szemerédi-Trotter theorem proving it."
     },
     {
       "id": "section-3",
       "title": "Case k = 4",
-      "startLine": 101,
-      "endLine": 133,
+      "startLine": 94,
+      "endLine": 126,
       "summary": "The foundational case: Gallai's lower bound f_4(n) ≫ √n and Erdős's upper bound f_4(n) ≪ √n, with a constructive proof that f_4(n) ≍ √n."
     },
     {
       "id": "section-4",
       "title": "General k Case",
-      "startLine": 134,
-      "endLine": 153,
+      "startLine": 127,
+      "endLine": 138,
       "summary": "Docstrings describing the general lower and upper bounds for arbitrary k ≥ 4. The full f_k(n) ≍ n^{1/(k-2)} result is captured as the kierstead_szemeredi_trotter axiom in section 2; this section contains no axioms or theorems."
     },
     {
       "id": "section-5",
       "title": "Summary",
-      "startLine": 154,
+      "startLine": 139,
       "endLine": 169,
       "summary": "Complete summary theorem proving the conjecture for all k ≥ 4 using the Kierstead-Szemerédi-Trotter axiom."
     }
