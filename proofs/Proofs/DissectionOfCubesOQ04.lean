@@ -23,9 +23,12 @@
 
   ## Axiom Budget
 
-  1. `tmul_infinite_order_ne_zero` (from OQ02OQ02) — ℝ flat over ℤ
-  2. `icoAngle_irrational` — arccos(-√5/3)/π irrational (icosahedron)
-     [Proof requires Chebyshev arithmetic in ℤ[√5]; deferred]
+  0 axioms. Both previously listed axioms are now proved theorems:
+  1. `tmul_infinite_order_ne_zero` (in OQ02OQ02) — proved via Mathlib's
+     `Module.Flat ℤ ℝ` (Bézout + `NoZeroSMulDivisors ℤ ℝ`) and
+     `Module.Flat.lTensor_preserves_injective_linearMap`.
+  2. `icoAngle_irrational` — proved here via Chebyshev integer sequence
+     for `arccos(1/9)` (mod-3 argument; `cos(2·icoAngle) = 1/9`).
 
   ## Classification Table (among Platonic solids)
 
@@ -520,10 +523,11 @@ theorem cube_unique_zero_dehn (a : ℝ) (ha : a > 0) :
 ### New axioms introduced in this file: 0
 (icoAngle_irrational is now PROVED via Chebyshev sequence for arccos(1/9))
 
-### Inherited axioms (from OQ02OQ02): 1
-1. `tmul_infinite_order_ne_zero` — ℝ flat over ℤ
+### Inherited axioms (from OQ02OQ02): 0
+`tmul_infinite_order_ne_zero` is a fully proved theorem in OQ02OQ02
+(uses Mathlib's `Module.Flat ℤ ℝ` and `lTensor_preserves_injective_linearMap`).
 
-### Total axiom count: 1 (reduced from 2)
+### Total axiom count: 0 (reduced from 2 → 1 → 0)
 
 ### New theorems proved (0 sorries):
 - `icoSeq` + `three_ndvd_icoSeq` + `icoSeq_eq_cos` — Chebyshev for arccos(1/9)

@@ -22,7 +22,7 @@
     "sorries": 0,
     "dateAdded": "2026-04-22",
     "axiomCount": 0,
-    "assumptions": "0 axioms. The previously listed axiom tmul_infinite_order_ne_zero is now a proved theorem in DissectionOfCubesOQ02OQ02.lean (status: verified, axiomCount: 0). icoAngle_irrational (arccos(-√5/3)/π irrational) was proved via Chebyshev integer sequence for arccos(1/9). DissectionOfCubesOQ04.lean has 0 axiom declarations, 0 sorries, and only imports fully-proved theorems from its dependencies.",
+    "assumptions": "0 axioms. tmul_infinite_order_ne_zero (flatness of ℝ over ℤ) is proved in DissectionOfCubesOQ02OQ02.lean via Mathlib Module.Flat ℤ ℝ (Bézout + NoZeroSMulDivisors) and lTensor_preserves_injective_linearMap. icoAngle_irrational (arccos(-√5/3)/π irrational) is proved here via Chebyshev integer sequence for arccos(1/9). DissectionOfCubesOQ04.lean has 0 axiom declarations and 0 sorries; OQ02OQ02 import chain is also axiom-free.",
     "lineCount": 557,
     "theoremCount": 25,
     "definitionCount": 4,
@@ -148,7 +148,7 @@
     "summary": "Among the five Platonic solids, the cube is uniquely characterized by having zero Dehn invariant. This extends Hilbert's Third Problem from the single pair (cube, tetrahedron) to the complete classification of all Platonic solids under scissors congruence.",
     "implications": "The complete classification shows that the cube is the unique Platonic solid that can potentially be scissors congruent to a non-Platonic polyhedron of equal volume. All other four Platonic solids have D ≠ 0 and so cannot be dissected and reassembled into any shape with D = 0 (in particular, not into a cube). The new irrationality result arccos(1/√5)/π ∉ ℚ is itself a contribution to the theory of irrational angles, extending the Niven-style Chebyshev technique to a new cosine value.",
     "openQuestions": [
-      "Can the remaining axiom (tmul_infinite_order_ne_zero — flatness of ℝ over ℤ) be proved using Mathlib Module.Flat infrastructure?",
+      "RESOLVED: tmul_infinite_order_ne_zero (flatness of ℝ over ℤ) was proved in DissectionOfCubesOQ02OQ02.lean using Mathlib Module.Flat infrastructure (#12587).",
       "Can this technique be applied to prove irrationality results for other dihedral angles arising in higher-dimensional polytopes?"
     ]
   },
