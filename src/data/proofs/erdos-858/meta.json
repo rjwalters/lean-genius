@@ -30,7 +30,7 @@
     "historicalContext": "Erdős Problem #858 concerns sets $A \\subseteq \\{1,\\ldots,N\\}$ where no element $at = b$ holds with $a,b \\in A$ and $\\text{spf}(t) > a$ (spf = smallest prime factor). This is a weakening of the **primitive set condition** (no element divides another). The **weighted reciprocal sum** $(1/\\log N) \\sum_{n \\in A} 1/n$ is the quantity of interest. **Alexander** (1966, *Acta Arithmetica*) first proved this sum is $o(1)$; **Erdős–Sárközi–Szemerédi** (1968, *J. London Math. Soc.*) gave an independent proof by different methods. For the stronger primitive condition, **Behrend** (1935) showed the quantitative bound $O(1/\\sqrt{\\log\\log N})$. The problem is fully resolved: the maximum is $o(1)$, with no known sharp quantitative bound for the weaker condition.",
     "problemStatement": "Let A ⊆ {1, ..., N} be such that there is no solution to at = b with a, b ∈ A and the smallest prime factor of t is > a. Estimate the maximum of (1/log N) · Σ_{n ∈ A} 1/n.",
     "text": "For A ⊆ {1,...,N} with no at=b where a,b ∈ A and smallest prime factor of t > a, estimate max (1/log N) Σ_{n∈A} 1/n. SOLVED: The maximum is o(1) as N → ∞, proved by Alexander (1966) and Erdős-Sárközi-Szemerédi (1968).",
-    "proofStrategy": "The formalization defines the multiplicative condition (no at=b with spf(t) > a), primitive sets, and the weighted reciprocal sum. Alexander's and Erdős-Sárközi-Szemerédi's results are stated as axioms showing the maximum is o(1). Behrend's bound for primitive sets is included for comparison.",
+    "proofStrategy": "The formalization defines the multiplicative condition (no at=b with spf(t) > a), primitive sets, and the weighted reciprocal sum. Alexander's (1966) result is stated as an axiom showing the maximum is o(1). Erdős-Sárközi-Szemerédi's (1968) independent proof and Behrend's (1935) stronger bound for primitive sets are mentioned in docstrings for context only.",
     "keyInsights": [
       "The condition spf(t) > a is weaker than primitivity (a ∤ b)",
       "Primitive sets satisfy this condition automatically",
@@ -77,8 +77,8 @@
       "id": "solution",
       "title": "Solution: o(1) Bound",
       "startLine": 189,
-      "endLine": 328,
-      "summary": "Alexander (1966) and Erdős-Sárközi-Szemerédi (1968) results"
+      "endLine": 348,
+      "summary": "Alexander (1966) axiom, historical context (docstrings only), example construction, main solution, and summary"
     }
   ],
   "conclusion": {
