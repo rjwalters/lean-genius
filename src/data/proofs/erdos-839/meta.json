@@ -83,44 +83,50 @@
     {
       "id": "definitions",
       "title": "Definitions",
-      "startLine": 20,
-      "endLine": 41,
-      "summary": "Core definitions: consecutive sum $\\sum_{k=i}^{j} a_k$, avoidance property $a_m \\neq \\sum_{k=i}^{j} a_k$ for $i \\leq j < m$, and the ValidSeq subtype bundling positivity, strict monotonicity, and avoidance."
+      "startLine": 21,
+      "endLine": 35,
+      "summary": "Core definitions: consecutive sum ∑_{k=i}^{j} a_k, avoidance property a_m ≠ ∑_{k=i}^{j} a_k for i ≤ j < m, and the ValidSeq subtype bundling positivity, strict monotonicity, and avoidance.",
+      "mathContext": "Definitions: consecutiveSum (L24), AvoidConsecutiveSums (L28), ValidSeq subtype (L34). No axioms in this section."
     },
     {
-      "id": "questions",
+      "id": "growth-rate-questions",
       "title": "Growth Rate Questions",
-      "startLine": 42,
-      "endLine": 55,
-      "summary": "The two open questions: Question 1 ($\\limsup a_n/n = \\infty$, formalized as $\\forall C, \\exists n: a_n/(n+1) > C$) and Question 2 (vanishing logarithmic density, formalized via $\\varepsilon$-$X_0$)."
+      "startLine": 37,
+      "endLine": 49,
+      "summary": "The two open questions: Question 1 (lim sup a_n/n = ∞, formalized as ∀ C, ∃ n: a_n/(n+1) > C) and Question 2 (vanishing logarithmic density, formalized via ε-X_0).",
+      "mathContext": "Definitions: Question1 (L40), Question2 (L45). Both are Prop-valued definitions encoding open conjectures — no theorems or axioms in this section."
     },
     {
-      "id": "structural",
+      "id": "structural-theorems",
       "title": "Structural Theorems (Proved)",
-      "startLine": 56,
-      "endLine": 123,
-      "summary": "Seven fully proved theorems: linear lower bound $a_n \\geq n+1$ (by induction), single-term sum identity, no-repeat from monotonicity, avoidance implies no single-term match, empty sum is zero, sum $\\geq$ first term, strict sum inequality for $i < j$, and the real-valued growth coercion."
+      "startLine": 51,
+      "endLine": 120,
+      "summary": "Eight fully proved theorems: linear lower bound a_n ≥ n+1 (by induction), single-term sum identity, no-repeat from monotonicity, avoidance implies no single-term match, empty sum is zero, sum ≥ first term, strict sum inequality for i < j, and the real-valued growth coercion.",
+      "mathContext": "Proved theorems (no axioms, no sorries): valid_seq_lower_bound (L55), consecutiveSum_single (L64), valid_seq_no_repeat (L70), avoid_implies_no_single_match (L77), consecutiveSum_empty (L82), consecutiveSum_ge_first (L88), consecutiveSum_gt_first (L100), valid_seq_linear_growth (L116)."
     },
     {
       "id": "known-results",
-      "title": "Known Results",
+      "title": "Known Results (Axioms and Counterexample)",
       "startLine": 122,
-      "endLine": 131,
-      "summary": "Axiomatized result: the reciprocal sum $\\sum 1/a_n$ can grow as $\\Omega(c \\cdot \\log \\log x)$."
+      "endLine": 141,
+      "summary": "Axiomatized known results: upperDensity defined via Filter.limsup; axiom freud_density (Freud's construction achieves upper density 19/36); proved theorem freud_counterexample (refutes Erdős's 1/2 conjecture using freud_density).",
+      "mathContext": "Definitions: upperDensity (L126, via Filter.limsup). Axiom: freud_density (L132, ∃ a : ValidSeq, upperDensity a = 19/36). Proved: freud_counterexample (L138, follows from freud_density). This section contains the file's sole axiom."
     },
     {
-      "id": "upper-density",
-      "title": "Upper Density and Freud's Counterexample",
-      "startLine": 132,
-      "endLine": 151,
-      "summary": "The upper density $\\overline{d}(a)$ defined via `Filter.limsup`, Freud's axiomatized density $19/36$, and the proved counterexample to Erdős's $1/2$ conjecture."
-    },
-    {
-      "id": "liminf-finite",
+      "id": "liminf-finite-derivation",
       "title": "Deriving liminf_finite from freud_density",
-      "startLine": 152,
+      "startLine": 143,
+      "endLine": 250,
+      "summary": "Key derivation: liminf_finite proved from freud_density via counting argument — positive upper density forces a(n)/(n+1) < 4 infinitely often. Includes helper lemmas: countRatio_isCoboundedUnder (Filter coboundedness), frequently_lt_of_lt_limsup (contrapositive extraction), term_le_of_count_gt (counting function bounds terms by contradiction on monotonicity).",
+      "mathContext": "All theorems proved (no additional axioms). Lemmas: term_le_of_count_gt (L182). Theorems: liminf_finite (L204). Namespace: LiminfFinite (ends at L250). All proofs depend on freud_density axiom (L132) via the `known-results` section."
+    },
+    {
+      "id": "main-open-questions",
+      "title": "Main Open Questions",
+      "startLine": 252,
       "endLine": 255,
-      "summary": "Key axiom elimination: `liminf_finite` proved from `freud_density` via counting argument. Positive upper density forces a(n)/(n+1) < 4 infinitely often. Includes helper lemmas: `countRatio_isCoboundedUnder` (Filter coboundedness), `frequently_lt_of_lt_limsup` (contrapositive extraction), and `term_le_of_count_gt` (counting function bounds terms by contradiction on monotonicity)."
+      "summary": "Documentation of the two open questions for the proof gallery: Question 1 (lim sup a_n/n = ∞?) and Question 2 (logarithmic density vanishes?). These docstrings reference the formal definitions from the opening section.",
+      "mathContext": "Documentation only — no formal declarations. References Question1 (L40) and Question2 (L45) defined earlier."
     }
   ],
   "conclusion": {
