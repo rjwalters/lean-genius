@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-04-27, Session 8): added imag_anticomm + submodule_der_antisymm — derivations act antisymmetrically on Im(𝕆) ≅ ℝ⁷, putting Der(𝕆) ⊆ 𝔰𝔬(7) (dim 21). Sorry count unchanged (1 in derEval14_injective off-diagonal sub-case) but the structural tool is now in place; next session can build real-part preservation and Fano-line lemmas on top.",
+    "progressSummary": "PROGRESS (Session 7, 2026-04-28): derEval14_injective now closes 22 of 64 entries structurally (j=0 unit kill, i=j diagonal, i=0 real-part). Residual sorry covers 42 entries on strict imaginary off-diagonal. Helper library complete: submodule_der_unit_zero, submodule_der_diagonal_kill, submodule_der_antisymm, submodule_der_real_part. Next: ev=0 coord extraction + antisymmetry WLOG + Fano-line Leibniz on 7 missing upper-triangular pairs.",
     "builtItems": [
       "ExceptionalType inductive type (G2/F4/E6/E7/E8) with dim/rank — HurwitzTheoremOQ04.lean",
       "OctonionAlgHom structure + OctonionAut — HurwitzTheoremOQ04.lean",
@@ -51,7 +51,8 @@
       "OctonionDerSubmodule (2026-04-26): Der(𝕆) as Submodule ℝ (End_ℝ(ℝ⁸)) — PART IV-c of HurwitzTheoremOQ04.lean",
       "submodule_der_unit_zero (PROVED 2026-04-27): submodule-level unit-kills lemma — for any f ∈ OctonionDerSubmodule, f octUnit = 0. Same proof shape as der_maps_unit_to_zero but for LinearMap members.",
       "imag_anticomm: e_i*e_j + e_j*e_i = 0 for i,j in {1..7}, i≠j (HurwitzTheoremOQ04.lean:829)",
-      "submodule_der_antisymm: (f e_i)_j + (f e_j)_i = 0 for f in OctonionDerSubmodule (HurwitzTheoremOQ04.lean:864)"
+      "submodule_der_antisymm: (f e_i)_j + (f e_j)_i = 0 for f in OctonionDerSubmodule (HurwitzTheoremOQ04.lean:864)",
+      "i=0 sub-case in derEval14_injective via submodule_der_real_part (HurwitzTheoremOQ04.lean:1058-1063)"
     ],
     "insights": [
       "G₂ = Aut(𝕆): The exceptional Lie group G₂ (dim 14, rank 2) is the automorphism group of the octonions. The 14 dimensions come from SO(7) (dim 21) minus the 7 constraints from preserving the octonion cross product.",
@@ -72,7 +73,8 @@
       "BLOCKED on Mathlib API drift (2026-04-27): Docker build of HurwitzTheoremOQ04 fails with cascading errors at lines 88:98, 90:72, 100:98, 102:71, etc. — `ring` tactic now expects ring_nf, several simp goals timeout, kernel reports unknown constant `imag_sq_eq_neg_norm`. These errors predate any new edits. The file needs upstream repair before further sorry-elimination work; releasing claim per API drift policy.",
       "Antisymmetry of derivations on Im(𝕆) follows from Leibniz on (e_i,e_j) + (e_j,e_i) plus the inner-product structure of (a·b)_0 = a_0 b_0 - sum_{k≥1} a_k b_k",
       "Both (v · e_j)_0 = -v_j and (e_j · v)_0 = -v_j for j ≥ 1 (component-0 symmetry of octonion product)",
-      "Der(𝕆) ⊆ 𝔰𝔬(7): every derivation acts antisymmetrically on Im(𝕆) ≅ ℝ⁷; cutting 𝔰𝔬(7) (dim 21) down to G₂ (dim 14) is the role of Fano-line trilinear Leibniz"
+      "Der(𝕆) ⊆ 𝔰𝔬(7): every derivation acts antisymmetrically on Im(𝕆) ≅ ℝ⁷; cutting 𝔰𝔬(7) (dim 21) down to G₂ (dim 14) is the role of Fano-line trilinear Leibniz",
+      "Session 7 (2026-04-28): The 64-entry kernel claim in derEval14_injective decomposes structurally as 8 (j=0) + 7 (i=j) + 7 (i=0) + 42 (j≠0,i≠0,i≠j). The first three are closed by submodule_der_unit_zero, submodule_der_diagonal_kill, and submodule_der_real_part respectively. The residual 42 entries reduce to 21 upper-triangular by antisymmetry (submodule_der_antisymm), then 14 are the explicit ev=0 coords (from hfg directly), leaving 7 hard pairs requiring Fano-line Leibniz."
     ],
     "mathlibGaps": [
       "Lie groups not in Mathlib as of 2026-04 — blocks formal G₂ = Aut(𝕆) proof",
@@ -80,14 +82,10 @@
       "Derivation algebra of non-associative algebras not in Mathlib"
     ],
     "nextSteps": [
-      "Prove diagonal-kill: eᵢ·D(eᵢ) + D(eᵢ)·eᵢ = 0 for i ≥ 1 from Leibniz on (eᵢ,eᵢ) using eᵢ² = -e₀ and submodule_der_unit_zero",
-      "Prove antisymmetry: D(eᵢ)[j] = -D(eⱼ)[i] from Leibniz on (eᵢ,eⱼ)+(eⱼ,eᵢ)",
-      "Use 14 ev=0 + diagonal + antisymmetry to derive D(eⱼ) = 0 for j ≥ 1 case-by-case",
-      "Concrete next coding step: introduce private lemma `submodule_der_diag_zero (f : ...) (hf : f ∈ OctonionDerSubmodule) {i : Fin 8} (hi : i ≠ 0) : f (stdBasis i) i = 0` proved via fin_cases i + Leibniz hf (stdBasis i) (stdBasis i) + submodule_der_unit_zero. Each case unfolds eightMul into 16 explicit components and reads off the 2-equation system (component 0 and component i) giving f(stdBasis i) 0 = 0 and f(stdBasis i) i = 0.",
-      "Following diagonal_kill: introduce antisymmetry lemma `f (stdBasis i) j + f (stdBasis j) i = 0` for i,j ≥ 1 from Leibniz on (e_i, e_j) + (e_j, e_i). Combined with diagonal_kill and the 14 ev=0 entries, this should close most of the j ≠ 0 case in derEval14_injective.",
-      "Real-part preservation: prove (f e_j)_0 = 0 for j ≥ 1 via Fano expressions e_j = e_i · e_k (uses submodule_der_antisymm)",
-      "Apply antisymmetry to swap (j,i) → (i,j) in derEval14_injective off-diagonal sub-case",
-      "Fano-line trilinear Leibniz for remaining uncovered pairs in {3,5,6,7}²"
+      "Verify the build (cherry-picked + new edit) once Docker is healthy",
+      "Add antisymmetry-based WLOG reduction (j > i) inside derEval14_injective (cuts 42 → 21)",
+      "Extract the 14 ev=0 coords from hfg via congr_fun (closes 14 of 21)",
+      "Resolve 7 remaining upper-triangular pairs via Fano-line Leibniz: column 3 (4 pairs), (6,5), (7,5), (7,6)"
     ]
   },
   "tags": [

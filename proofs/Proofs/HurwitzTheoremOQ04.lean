@@ -892,6 +892,118 @@ private lemma submodule_der_antisymm
            simp (config := { decide := true }) only [ite_true, ite_false] at h0 <;>
            linarith))
 
+/-- Component-0 identity: for any imaginary basis index `k ≠ 0` and any vector `a`,
+    `(a · eₖ)_0 = -aₖ`.
+
+    Reads off `eightMul`'s component-0 formula
+    `(a · b)_0 = a₀b₀ − a₁b₁ − … − a₇b₇`, specialised to `b = eₖ`. -/
+private lemma eightMul_stdBasis_right_zero_imag
+    (a : Fin 8 → ℝ) (k : Fin 8) (hk : k ≠ 0) :
+    eightMul a (stdBasis k) 0 = -a k := by
+  fin_cases k
+  · exact absurd rfl hk
+  all_goals
+    simp only [eightMul, stdBasis,
+      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+      Matrix.cons_val_two, Matrix.cons_val_three] <;>
+    simp (config := { decide := true }) only [ite_true, ite_false] <;>
+    ring
+
+/-- Component-0 identity: for any imaginary basis index `k ≠ 0` and any vector `a`,
+    `(eₖ · a)_0 = -aₖ`.
+
+    Reads off `eightMul`'s component-0 formula, specialised to `a = eₖ`. -/
+private lemma eightMul_stdBasis_left_zero_imag
+    (a : Fin 8 → ℝ) (k : Fin 8) (hk : k ≠ 0) :
+    eightMul (stdBasis k) a 0 = -a k := by
+  fin_cases k
+  · exact absurd rfl hk
+  all_goals
+    simp only [eightMul, stdBasis,
+      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+      Matrix.cons_val_two, Matrix.cons_val_three] <;>
+    simp (config := { decide := true }) only [ite_true, ite_false] <;>
+    ring
+
+/-- **Real-part preservation**: every derivation `f` of 𝕆 sends imaginary basis
+    vectors into the imaginary subspace. Concretely, for `j ≠ 0`,
+    `(f eⱼ)_0 = 0`.
+
+    Strategy: factor `eⱼ = eₚ · e_q` for a pair `p, q ∈ {1,…,7}` with `p ≠ q`,
+    `p ≠ j`, `q ≠ j` (from the seven-element multiplication table). Apply Leibniz
+    at `(eₚ, e_q)` and read off component 0:
+
+      `(f eⱼ)_0 = (f eₚ · e_q)_0 + (eₚ · f e_q)_0 = -(f eₚ)_q − (f e_q)_p = 0`,
+
+    where the last equality is `submodule_der_antisymm f hf p q`.
+
+    Geometric meaning: this puts `Der(𝕆) ⊆ 𝔰𝔬(7)` (anti-symmetric on Im(𝕆)),
+    confirming that derivations preserve the real / imaginary splitting. -/
+set_option maxHeartbeats 6400000 in
+private lemma submodule_der_real_part
+    (f : (Fin 8 → ℝ) →ₗ[ℝ] (Fin 8 → ℝ)) (hf : f ∈ OctonionDerSubmodule)
+    (j : Fin 8) (hj : j ≠ 0) :
+    f (stdBasis j) 0 = 0 := by
+  -- Generic key: if eₚ · e_q = eⱼ, then (f eⱼ)_0 = 0 via Leibniz + antisymmetry.
+  have key : ∀ (p q : Fin 8), p ≠ 0 → q ≠ 0 → p ≠ q →
+      eightMul (stdBasis p) (stdBasis q) = stdBasis j →
+      f (stdBasis j) 0 = 0 := by
+    intro p q hp hq hpq heq
+    have hL := hf (stdBasis p) (stdBasis q)
+    rw [heq] at hL
+    have h0 := congr_fun hL 0
+    simp only [Pi.add_apply] at h0
+    rw [eightMul_stdBasis_right_zero_imag _ q hq,
+        eightMul_stdBasis_left_zero_imag _ p hp] at h0
+    have ha := submodule_der_antisymm f hf p q hp hq hpq
+    linarith
+  -- Multiplication table: eⱼ = eₚ · e_q for j = 1,...,7. Each factorisation
+  -- proof is a direct component-wise check on the 8-element vector.
+  fin_cases j
+  · exact absurd rfl hj
+  · -- j = 1: e₂ · e₃ = e₁
+    refine key 2 3 (by decide) (by decide) (by decide) ?_
+    funext k; fin_cases k <;>
+      simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;>
+      norm_num
+  · -- j = 2: e₃ · e₁ = e₂
+    refine key 3 1 (by decide) (by decide) (by decide) ?_
+    funext k; fin_cases k <;>
+      simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;>
+      norm_num
+  · -- j = 3: e₁ · e₂ = e₃
+    refine key 1 2 (by decide) (by decide) (by decide) ?_
+    funext k; fin_cases k <;>
+      simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;>
+      norm_num
+  · -- j = 4: e₅ · e₁ = e₄
+    refine key 5 1 (by decide) (by decide) (by decide) ?_
+    funext k; fin_cases k <;>
+      simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;>
+      norm_num
+  · -- j = 5: e₁ · e₄ = e₅
+    refine key 1 4 (by decide) (by decide) (by decide) ?_
+    funext k; fin_cases k <;>
+      simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;>
+      norm_num
+  · -- j = 6: e₂ · e₄ = e₆
+    refine key 2 4 (by decide) (by decide) (by decide) ?_
+    funext k; fin_cases k <;>
+      simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;>
+      norm_num
+  · -- j = 7: e₃ · e₄ = e₇
+    refine key 3 4 (by decide) (by decide) (by decide) ?_
+    funext k; fin_cases k <;>
+      simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;>
+      norm_num
+
 /-- The evaluation map is injective: ev(D) = 0 forces D = 0.
 
     Proof outline: ev(D) = 0 combined with the Leibniz rule and antisymmetry
@@ -901,6 +1013,8 @@ private lemma submodule_der_antisymm
     - ev = 0 gives D(eⱼ)[i] = 0 for the 14 explicit coordinates
     - **D(e₀) = 0 (unit kills)** — proved here via `submodule_der_unit_zero`,
       handles the `j = 0` case completely
+    - **D(eⱼ)[0] = 0 (real-part preserved)** — proved here via
+      `submodule_der_real_part`, handles the `i = 0` sub-case for `j ≥ 1`
     - Antisymmetry D(eⱼ)[i] = -D(eᵢ)[j] (from Leibniz on (eᵢ,eⱼ)+(eⱼ,eᵢ)) gives further zeros
     - D(eᵢ)[i] = 0 (diagonal from Leibniz on (eᵢ,eᵢ): eᵢ² = -e₀ → eᵢ·D(eᵢ) = 0)
     - Together force D(e₁) = D(e₂) = 0 directly
@@ -941,18 +1055,31 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
       · -- Case i = j (diagonal kill via submodule_der_diagonal_kill)
         rw [hij, submodule_der_diagonal_kill f hf j hj,
             submodule_der_diagonal_kill g hg j hj]
-      · -- Case j ≠ 0, i ≠ j: requires antisymmetry + Fano-line Leibniz analysis
-        sorry
+      · -- Case j ≠ 0, i ≠ j: split on whether i = 0 (real-part) or i ≠ 0
+        by_cases hi : i = 0
+        · -- Case i = 0: real-part preservation kills both sides
+          subst hi
+          rw [submodule_der_real_part f hf j hj,
+              submodule_der_real_part g hg j hj]
+        · -- Case j ≠ 0, i ≠ 0, i ≠ j: ev coordinates + antisymmetry + Fano lines
+          -- Antisymmetry reduces this to one ordering; ev=0 covers (j,i) pairs with
+          -- i ∈ {1, 2, 4}; the remaining 7 upper-triangular pairs (column 3, columns
+          -- 5, 6 with j > i) require Fano-line Leibniz analysis on the 7 multiplication
+          -- table triples (e₁·e₂=e₃, e₁·e₄=e₅, e₂·e₄=e₆, e₃·e₄=e₇, plus three more).
+          sorry
   intro k
   funext i
   exact hev k i
 
--- Note: The sorry above is for the algebraic extraction from ev=0 in the imaginary basis.
--- The j = 0 case (unit-kills) is now closed via `submodule_der_unit_zero`.
--- The remaining work for j ≥ 1 needs ~50 lines of Leibniz constraint applications:
---   * D(eⱼ)[j] = 0 from Leibniz on (eⱼ, eⱼ) using eⱼ² = -e₀ and submodule_der_unit_zero
---   * Antisymmetry D(eⱼ)[i] = -D(eᵢ)[j] from Leibniz on (eᵢ, eⱼ) + (eⱼ, eᵢ)
---   * The remaining 35 entries are forced via Fano-line trilinear Leibniz on the 7 lines.
+-- Note: The sorry above is the residual case (j ≠ 0, i ≠ 0, i ≠ j).
+-- Three structural reductions are now in place:
+--   * j = 0 case: closed via `submodule_der_unit_zero` (handles 8 entries).
+--   * i = j (diagonal): closed via `submodule_der_diagonal_kill` (handles 7 entries).
+--   * i = 0 (real-part): closed via `submodule_der_real_part` (handles 7 entries).
+-- 64 - 8 - 7 - 7 = 42 remaining entries (j ∈ {1,..,7}, i ∈ {1,..,7}, i ≠ j).
+-- The full closure requires combining the 14 ev=0 coords (from `hfg`) with
+-- antisymmetry (reduces 42 → 21 upper-triangular) and Fano-line Leibniz on
+-- 7 missing pairs (column 3 entries + (j,i) ∈ {(6,5),(7,5),(7,6)}).
 
 /-- The 14 basis derivations are linearly independent in OctonionDerSubmodule.
 

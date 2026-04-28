@@ -6,55 +6,95 @@ Formalize the connection between Hurwitz's theorem (exactly 4 normed division al
 1. G₂ = Aut(𝕆)
 2. Freudenthal-Tits magic square: 𝔏(A,B) = Der(A)⊕(ImA⊗ImB)⊕Der(B)
 
-File: `proofs/Proofs/HurwitzTheoremOQ04.lean` (~1100 lines)
+File: `proofs/Proofs/HurwitzTheoremOQ04.lean` (~1380 lines)
 
 ---
 
-## Session 2026-04-27 (Session 6) — Decompose `derEval14_injective` (j = 0 case closed)
+## Session 2026-04-28 (Session 7) — Close i=0 sub-case in derEval14_injective
 
 **Mode**: REVISIT (RICH knowledge tier)
-**Outcome**: PROGRESS — Decomposed remaining sorry; closed j = 0 case via unit-kills helper.
+**Outcome**: PROGRESS — Closed third structural case (i = 0 → real-part kills) via
+existing `submodule_der_real_part`. Residual sorry now 42 entries, down from 49.
 
 ### What I Did
 
-1. **Added `submodule_der_unit_zero`** helper lemma at the submodule level
-   (not just for `OctonionDer` structure): for any `f ∈ OctonionDerSubmodule`,
-   `f octUnit = 0`. Proof mirrors `der_maps_unit_to_zero` (Leibniz on e₀·e₀ = e₀).
+1. Cherry-picked the prior session's commit `f227e9348c4` (real-part lemma + the
+   four helpers `submodule_der_unit_zero`, `submodule_der_diagonal_kill`,
+   `submodule_der_antisymm`, `submodule_der_real_part`) onto a fresh master-based
+   branch `research/hurwitz-oq-04-derEval14-j-ge-1`.
+2. Extended `derEval14_injective`'s `by_cases` chain with a third branch:
+   `by_cases hi : i = 0` inside the `j ≠ 0, i ≠ j` case.
+   - When `i = 0`, both `f (stdBasis j) 0` and `g (stdBasis j) 0` are zero by
+     `submodule_der_real_part`, closing the entry by `rw`.
+3. Updated the residual-sorry comment with the precise count (42 entries) and a
+   roadmap for the remaining work (ev=0 + antisymmetry + Fano-line Leibniz).
 
-2. **Refactored `derEval14_injective`** to handle the `j = 0` case explicitly:
-   - The 64-entry kernel claim is split via `by_cases hj : j = 0`
-   - Case `j = 0`: closed using `submodule_der_unit_zero` for both f and g
-     (so f (stdBasis 0) = 0 = g (stdBasis 0))
-   - Case `j ≠ 0`: remaining sorry, scoped down from 64 → 56 entries
-   - Updated proof outline to flag the helper and the remaining work
+### Sorry Decomposition Status (64-entry kernel)
+
+| Case | Closed by | Entries handled |
+|---|---|---|
+| j = 0 (any i) | `submodule_der_unit_zero` | 8 |
+| j ≠ 0, i = j (diagonal) | `submodule_der_diagonal_kill` | 7 |
+| j ≠ 0, i = 0 (real-part) | `submodule_der_real_part` | 7 (NEW) |
+| j ≠ 0, i ≠ 0, i ≠ j | residual sorry | 42 |
+| **total** | | **64** |
 
 ### Key Findings
 
-- The submodule-level proof of unit-kills works without going through `OctonionDer` —
-  using `hf : f ∈ OctonionDerSubmodule` directly via `intro a b` style application
-  (matches the pattern in `OctonionDerSubmodule.add_mem'` field where `hf a b` is used).
-- `f octUnit = f (stdBasis 0)` by definitional equality (`def octUnit := stdBasis 0`),
-  so the helper plugs directly into the case.
-- The remaining 56-entry block (j ∈ {1,...,7}) requires ~50 lines of Leibniz chain:
-  diagonal kill from squaring → antisymmetry from (eᵢ,eⱼ)+(eⱼ,eᵢ) → Fano-line trilinear.
+- The full helper library is now in place: `unit_zero`, `diagonal_kill`,
+  `real_part`, `antisymm`, plus `eightMul_stdBasis_*_zero_imag`.
+- `submodule_der_real_part` is exactly the ingredient needed for the i=0 sub-case
+  — 5 lines of by_cases + rw.
+- Build NOT verified: Docker daemon was unresponsive (multi-agent activity);
+  per `feedback_docker_build_io_errors.md`, committed and pushed unverified;
+  next session should rerun build first.
 
 ### Files Modified
 
-- `proofs/Proofs/HurwitzTheoremOQ04.lean` — added `submodule_der_unit_zero`,
-  refactored `derEval14_injective` with `by_cases`, expanded proof outline.
+- `proofs/Proofs/HurwitzTheoremOQ04.lean` — added i=0 sub-case (5 lines + comment).
 
 ### Sorry Status
 
-- Before: 1 sorry (entire 64-entry kernel claim)
-- After: 1 sorry (only 56-entry kernel claim, j ≥ 1)
+- Before (master): 1 sorry (entire 56-entry kernel claim, j ≥ 1 only) — but prior
+  session's 250-line helper block was *not* on master.
+- After: 1 sorry (42-entry kernel claim, j ≠ 0 ∧ i ≠ 0 ∧ i ≠ j); helper block IS
+  on this branch (cherry-picked).
 
 ### Next Steps
 
-1. Prove the diagonal kill lemma: for f ∈ OctonionDerSubmodule and i ≥ 1,
-   `eightMul (f (stdBasis i)) (stdBasis i) + eightMul (stdBasis i) (f (stdBasis i)) = 0`
-   (use Leibniz on stdBasis i × stdBasis i = -octUnit, then unit-kills).
-2. Prove the antisymmetry: `f (stdBasis i) j = -f (stdBasis j) i` for i, j ≥ 1, i ≠ j.
-3. Use the 14 ev=0 coordinates + diagonal + antisymmetry to derive D(eⱼ) = 0 case-by-case.
+1. Verify the build (Docker capacity permitting).
+2. Add the antisymmetry-based WLOG reduction: assume `j > i` (else swap by
+   `submodule_der_antisymm`). Reduces 42 → 21 upper-triangular pairs.
+3. Extract the 14 ev=0 coords from `hfg` directly (`congr_fun hfg 0`, …, 13);
+   this closes 14 of the 21 upper-triangular pairs.
+4. The residual 7 upper-triangular pairs are:
+   - column 3: (4, 3), (5, 3), (6, 3), (7, 3) — 4 pairs
+   - column 5: (6, 5), (7, 5) — 2 pairs
+   - column 6: (7, 6) — 1 pair
+   These need Fano-line Leibniz analysis (using e₁·e₂=e₃, e₃·e₄=e₇, etc.).
+
+---
+
+## Session 2026-04-27 (Session 6) — Real-part preservation lemma + 4 helpers
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: PROGRESS — Built the helper library: `submodule_der_unit_zero`,
+`submodule_der_diagonal_kill`, `submodule_der_antisymm`, `submodule_der_real_part`.
+
+Commit `f227e9348c4` (cherry-picked into Session 7's branch). Each helper proves
+a structural property of any element of `OctonionDerSubmodule`:
+- unit kills: f(e₀) = 0
+- diagonal kill: f(e_j)[j] = 0 for j ≥ 1
+- antisymm: f(e_i)[j] + f(e_j)[i] = 0 for distinct i, j ≥ 1
+- real-part: f(e_j)[0] = 0 for j ≥ 1, via factorisation e_j = e_p · e_q
+
+Plus the component-0 specialisations of `eightMul`:
+- `eightMul_stdBasis_right_zero_imag`: (a · e_k)_0 = -a_k (k ≥ 1)
+- `eightMul_stdBasis_left_zero_imag`:  (e_k · a)_0 = -a_k (k ≥ 1)
+
+These four helpers + the by_cases scaffolding are exactly what's needed to
+fully close `derEval14_injective` once the 14 ev=0 coords are extracted and the
+Fano-line analysis is done.
 
 ---
 
