@@ -35,7 +35,7 @@
       "f(n), f_m(n): counting functions via powerset filtering",
       "odds_sum_free: concrete example proved by omega",
       "upper_half_sum_free: parametric example proved by omega",
-      "zero_avoiding_is_intersecting: connection to EKR",
+      "f_m_le_f: every maximal sum-free set is sum-free",
       "erdos_877_solved: combined resolution theorem"
     ],
     "axiomCount": 2,
@@ -155,13 +155,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #877 is SOLVED. The answer to 'Is f_m(n) = o(2^{n/2})?' is YES. The count of maximal sum-free subsets satisfies f_m(n) = Θ(2^{n/4}), with sharp asymptotics f_m(n) = (C_n + o(1))2^{n/4} where C_n is an explicit constant depending on n mod 4. The formalization captures the full progression from Cameron-Erdős through BLST. 5 sorries remain.",
+    "summary": "Erdős Problem #877 is SOLVED. The answer to 'Is f_m(n) = o(2^{n/2})?' is YES. The count of maximal sum-free subsets satisfies f_m(n) = Θ(2^{n/4}), with sharp asymptotics f_m(n) = (C_n + o(1))2^{n/4} where C_n is an explicit constant depending on n mod 4. The formalization captures the full progression from Cameron-Erdős through BLST. 4 sorries remain.",
     "implications": "This result reveals a striking gap between the count of all sum-free sets (~2^{n/2}) and maximal sum-free sets (~2^{n/4}). The container method developed for this problem has become one of the most widely used tools in modern combinatorics, with applications to Turán-type problems, Ramsey theory, and graph enumeration.",
     "openQuestions": [
       "What are the exact numerical values of C_0, C_1, C_2, C_3 in the BLST sharp bound?",
       "Can the structure of maximal sum-free sets be characterized more precisely (e.g., typical set profiles)?",
       "What about maximal sum-free sets in other groups: ℤ_n, ℤ_p, or general abelian groups?",
-      "Can the 5 remaining sorries (f_m_le_f, maximal_criterion, odds_construction, maximal_vs_all, erdos_877) be closed?",
+      "Can the 4 remaining sorries (maximal_criterion, odds_construction, maximal_vs_all, erdos_877) be closed?",
       "Is there a sharp threshold for the transition from f_m(n) ≈ f(n) to f_m(n) ≪ f(n) as the maximality constraint is relaxed?"
     ]
   },
