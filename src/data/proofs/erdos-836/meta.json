@@ -53,7 +53,6 @@
       "Question1: O(r²) vertex bound conjecture (FALSE)",
       "question1_false: Alon's disproof",
       "AlonVertexCount: ~4^r/√r vertex formula",
-      "alon_construction: existence of counterexample",
       "ErdosLovaszBound: r/log r intersection bound",
       "erdos_836_summary: combined results"
     ],
@@ -83,63 +82,63 @@
     {
       "id": "hypergraph-defs",
       "title": "Hypergraph Definitions",
-      "startLine": 41,
-      "endLine": 65,
+      "startLine": 42,
+      "endLine": 66,
       "summary": "Hypergraph structure, uniformity, and intersection properties",
       "mathContext": "Formal definition: Hypergraph structure, uniformity, and intersection properties"
     },
     {
       "id": "chromatic",
       "title": "Chromatic Number",
-      "startLine": 66,
-      "endLine": 91,
+      "startLine": 67,
+      "endLine": 92,
       "summary": "Proper colouring, 3-chromatic, and at-most-3-chromatic definitions",
       "mathContext": "Formal definition: Proper colouring, 3-chromatic, and at-most-3-chromatic definitions"
     },
     {
       "id": "vertex-count",
       "title": "Vertex Count Question",
-      "startLine": 92,
-      "endLine": 128,
+      "startLine": 93,
+      "endLine": 129,
       "summary": "Question 1 about O(r²) vertex bound — shown FALSE",
       "mathContext": "Question 1 about $O(r²)$ vertex bound — shown FALSE"
     },
     {
       "id": "alon",
       "title": "Alon's Counterexample",
-      "startLine": 129,
-      "endLine": 167,
+      "startLine": 130,
+      "endLine": 159,
       "summary": "Construction with ~4^r/√r vertices disproving Q1",
       "mathContext": "Construction with ~$4^{r}$/√r vertices disproving Q1"
     },
     {
       "id": "intersection",
       "title": "Edge Intersection Question",
-      "startLine": 168,
-      "endLine": 199,
+      "startLine": 160,
+      "endLine": 191,
       "summary": "Question 2 and Erdős-Lovász bound r/log r",
       "mathContext": "Bound: Question 2 and Erdős-Lovász bound r/log r"
     },
     {
       "id": "fano",
       "title": "The Fano Plane",
-      "startLine": 200,
-      "endLine": 217,
+      "startLine": 192,
+      "endLine": 209,
       "summary": "Fano plane as extremal example for r-1 intersection",
       "mathContext": "Mathematical content: Fano plane as extremal example for r-1 intersection"
     },
     {
       "id": "examples",
       "title": "Specific Values",
-      "startLine": 218,
-      "endLine": 247,
+      "startLine": 210,
+      "endLine": 239,
       "summary": "Verified computations for r=3 (Fano!) and r=4",
       "mathContext": "Mathematical content: Verified computations for r=3 (Fano!) and r=4"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 248,
+      "startLine": 240,
       "endLine": 270,
       "summary": "Complete summary: Q1 FALSE, Q2 partial (r/log r)",
       "mathContext": "Mathematical content: Complete summary: Q1 FALSE, Q2 partial (r/log r)"
