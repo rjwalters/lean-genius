@@ -30,7 +30,7 @@
     "historicalContext": "**Erdős** originally conjectured that $R(G) \\geq R(k)$ whenever $\\chi(G) = k$: graphs with the same chromatic number as $K_k$ should have Ramsey number at least as large. This was disproved by **Faudree and McKay**, who showed the pentagonal wheel $W$ (central vertex joined to $C_5$) has $\\chi(W) = 4$ and $R(W) = 17 < R(4) = 18$. Erdős then weakened the conjecture to two forms: (weak) $R(G) > (1-\\varepsilon)^k \\cdot R(k)$ for large $k$, and (strong) $R(G) > c \\cdot R(k)$ for an absolute constant $c > 0$. The problem connects to the **Erdős-Szekeres bound** $R(k) \\leq 4^k$ (1935), the probabilistic lower bound $R(k) \\geq 2^{k/2}$ (Erdős 1947), and the recent breakthrough by **Campos, Griffiths, Morris, and Sahasrabudhe** (2023) proving $R(k) \\leq (4-\\varepsilon)^k$. The problem remains **open** in both forms.",
     "problemStatement": "For every ε > 0, is R(G) > (1 − ε)^k · R(k) for all sufficiently large k and every graph G with chromatic number k? The stronger form asks whether there exists an absolute constant c > 0 with R(G) > c · R(k).",
     "text": "For every ε > 0, is it true that for sufficiently large k, R(G) > (1 − ε)^k · R(k) for every graph G with χ(G) = k? Stronger form: does there exist c > 0 such that R(G) > c · R(k) for all large k?",
-    "proofStrategy": "The formalization axiomatizes diagonal Ramsey numbers R(k), graph Ramsey numbers R(G), and chromatic numbers χ(G) using `SimpleGraph (Fin n)` from Mathlib. Both weak and strong conjectures are stated as `Prop`-valued definitions. Known bounds (exponential lower bound from random colourings, Erdős-Szekeres upper bound) and the Faudree-McKay counterexample are recorded as axioms.",
+    "proofStrategy": "The formalization axiomatizes diagonal Ramsey numbers R(k), graph Ramsey numbers R(G), and chromatic numbers χ(G) using `SimpleGraph (Fin n)` from Mathlib. Both weak and strong conjectures are stated as `Prop`-valued definitions. Known bounds (exponential lower bound from random colourings, Erdős-Szekeres upper bound) and the Faudree-McKay counterexample appear only in docstrings, not as axioms.",
     "keyInsights": [
       "**Original conjecture disproved**: Faudree-McKay showed the pentagonal wheel $W$ has $\\chi(W) = 4$ but $R(W) = 17 < R(4) = 18$, giving a minimal counterexample on 6 vertices",
       "**Weak form allows exponential decay**: the factor $(1-\\varepsilon)^k$ permits $R(G)$ to be exponentially smaller than $R(k)$, but demands that the ratio $R(G)/R(k)$ does not decay faster than $(1-\\varepsilon)^k$",
@@ -49,7 +49,7 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 16,
-      "endLine": 22,
+      "endLine": 21,
       "summary": "Imports SimpleGraph.Basic, Fin.Basic, Filter.Basic, and tactics.",
       "mathContext": "Mathematical content: Imports SimpleGraph.Basic, Fin.Basic, Filter.Basic, and tactics."
     },
@@ -57,41 +57,41 @@
       "id": "diagonal-ramsey",
       "title": "Diagonal Ramsey Number",
       "startLine": 23,
-      "endLine": 31,
-      "summary": "Axiomatizes R(k) with positivity for k ≥ 1.",
-      "mathContext": "Axiomatizes R(k) with positivity for k $\\geq$ 1."
+      "endLine": 27,
+      "summary": "Axiomatizes diagonal Ramsey number R(k). Positivity claim (k ≥ 1) appears only as an orphan docstring, not as an axiom.",
+      "mathContext": "Axiomatizes diagonal Ramsey number R(k). Positivity claim (k \\geq 1) appears only as an orphan docstring."
     },
     {
       "id": "graph-ramsey",
       "title": "Graph Ramsey Number",
-      "startLine": 32,
-      "endLine": 38,
-      "summary": "Axiomatizes R(G) for SimpleGraph (Fin n) with positivity.",
-      "mathContext": "Axiomatized: Axiomatizes R(G) for SimpleGraph (Fin n) with positivity."
+      "startLine": 30,
+      "endLine": 32,
+      "summary": "Axiomatizes graph Ramsey number R(G) for SimpleGraph (Fin n). Positivity claim appears only as an orphan docstring.",
+      "mathContext": "Axiomatizes graph Ramsey number R(G) for SimpleGraph (Fin n). Positivity claim appears only as an orphan docstring."
     },
     {
       "id": "chromatic-number",
       "title": "Chromatic Number",
-      "startLine": 39,
-      "endLine": 49,
-      "summary": "Axiomatizes χ(G) with bounds: 1 ≤ χ(G) ≤ n for non-empty graphs.",
-      "mathContext": "Axiomatizes χ(G) with bounds: 1 $\\leq$ χ(G) $\\leq$ n for non-empty graphs."
+      "startLine": 35,
+      "endLine": 37,
+      "summary": "Axiomatizes chromatic number χ(G) for finite simple graphs. Bounds (1 ≤ χ(G) ≤ n) appear only as orphan docstrings, not as axioms.",
+      "mathContext": "Axiomatizes chromatic number χ(G) for finite simple graphs. Bounds (1 \\leq χ(G) \\leq n) appear only as orphan docstrings."
     },
     {
       "id": "weak-conjecture",
       "title": "Weak Form: R(G) > (1-ε)^k · R(k)",
-      "startLine": 50,
-      "endLine": 60,
+      "startLine": 43,
+      "endLine": 50,
       "summary": "The weak form as a Prop-valued definition: exponentially decaying factor allowed.",
       "mathContext": "Formal definition: The weak form as a Prop-valued definition: exponentially decaying factor allowed."
     },
     {
       "id": "strong-conjecture",
       "title": "Strong Form: R(G) > c · R(k)",
-      "startLine": 61,
-      "endLine": 68,
-      "summary": "The strong form as a Prop-valued definition: absolute constant c independent of k.",
-      "mathContext": "Formal definition: The strong form as a Prop-valued definition: absolute constant c independent of k."
+      "startLine": 52,
+      "endLine": 59,
+      "summary": "The strong form as a Prop-valued definition: absolute constant c > 0, independent of k.",
+      "mathContext": "Formal definition: The strong form as a Prop-valued definition: absolute constant c > 0, independent of k."
     }
   ],
   "conclusion": {
