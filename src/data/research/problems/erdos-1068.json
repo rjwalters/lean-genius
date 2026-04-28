@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-01-15T14:38:41.571Z",
-    "iteration": 1,
-    "focus": "Axiom elimination: reduced 6→3 axioms",
+    "since": "2026-04-28T01:48:00.000Z",
+    "iteration": 2,
+    "focus": "Open conjecture (Erdős–Hajnal). Infrastructure complete: 4 theorems, 0 axioms, 0 sorries. The conjecture itself is not formalized — needs first to be stated.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Decide: (a) state the conjecture as `axiom erdos_1068 : ...` and mark axiomatized, or (b) leave as infrastructure-only. Current state is the latter.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 6T (was 5), 3A, 0S. Added k-connectivity theorem.",
+    "progressSummary": "PROGRESS: 4 theorems + 6 definitions in Erdos1068Problem.lean (264 lines), 0 axioms, 0 sorries. Infrastructure: PathInGraph, InfinitelyConnected, hasAleph1ChromaticNumber. Theorems: inf_connected_no_finite_separator, inf_connected_implies_path, inf_connected_subgraph_has_paths, inf_connected_k_connected. The open conjecture itself (every χ=ℵ₁ graph has a countable infinitely-connected subgraph) is not formalized — only documented in comments. Status: open infrastructure complete; the conjecture remains open mathematically and is not stated as a Lean theorem or axiom.",
     "builtItems": [
       "Proved set_theoretic_sensitivity (was axiom True → theorem trivial)",
       "Proved bowler_pikhurko_simplified_construction (was axiom True → theorem trivial)",
@@ -58,8 +58,7 @@
   "relatedProofs": [
     "erdos-1",
     "erdos-10",
-    "erdos-106",
-    "erdos-1068"
+    "erdos-106"
   ],
   "references": {
     "papers": [],
@@ -67,7 +66,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T14:38:41.571Z",
-  "lastUpdate": "2026-03-13T07:52:17.056Z",
+  "lastUpdate": "2026-04-28T01:48:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
