@@ -53,7 +53,7 @@
       "divisorsInInterval definition: divisors in (a, b)",
       "divisorsNearSqrt definition: count of divisors near √n",
       "ruzsaConjecture definition: formal statement",
-      "erdos_rosenfeld_four_divisors axiom: Erdős-Rosenfeld result",
+      "erdos_rosenfeld_four_divisors axiom: infinitely many n with ≥ 4 divisors in (√n, √n + n^{1/4})",
       "factorDifferenceSet definition: differences between divisors",
       "localDivisorDensity definition: density measure",
       "ruzsaConjectureAlt definition: equivalent formulation",
@@ -68,7 +68,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 154,
-    "assumptions": "1 axiom: erdos_rosenfeld. 0 sorries."
+    "assumptions": "1 axiom: erdos_rosenfeld_four_divisors. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Ruzsa's Conjecture**\n\nThis problem is attributed by Erdős to Imre Z. Ruzsa, a Hungarian mathematician known for work in additive combinatorics and number theory.\n\n**The Question:** Given ε > 0, is there a constant C_ε such that for all sufficiently large n, the number of divisors of n lying in the narrow interval (√n, √n + n^{1/2-ε}) is at most C_ε?\n\n**Why It's Hard:** The interval shrinks relative to √n as n grows (since n^{1/2-ε} / √n = n^{-ε} → 0). Can divisors 'pile up' in this shrinking window?\n\n**Known Result:** Erdős and Rosenfeld (1997) showed there are infinitely many n with four divisors in (√n, √n + n^{1/4}). This uses ε = 1/4, giving a wider interval.\n\n**Current Status:** OPEN. The problem is considered tractable by some researchers.",
@@ -124,10 +124,10 @@
     {
       "id": "erdos-rosenfeld",
       "title": "Erdős-Rosenfeld Result",
-      "summary": "erdos_rosenfeld_four_divisors, erdos_rosenfeld axioms",
+      "summary": "erdos_rosenfeld_four_divisors axiom",
       "startLine": 95,
-      "endLine": 110,
-      "mathContext": "Axiomatized: erdos_rosenfeld_four_divisors, erdos_rosenfeld axioms"
+      "endLine": 98,
+      "mathContext": "Axiomatized: erdos_rosenfeld_four_divisors (1 axiom)"
     },
     {
       "id": "factor-difference",
