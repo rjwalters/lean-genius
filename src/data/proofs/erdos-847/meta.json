@@ -63,10 +63,7 @@
       "ENRConjecture definition: the disproved conjecture",
       "enr_conjecture_false axiom: the conjecture is FALSE",
       "counterexample_exists theorem: derived from enr_conjecture_false via push_neg",
-      "szemeredi_theorem: density implies APs",
-      "roth_theorem: k=3 case",
-      "kelley_meka_bound: best known bounds",
-      "finset_pigeonhole theorem: pigeonhole principle for Finsets",
+      "finset_pigeonhole private theorem: pigeonhole principle for Finsets",
       "finite_union_implies_enr theorem: finite AP-free union implies ENR condition (PROVED)",
       "erdos_847_disproved theorem: main result"
     ],
@@ -106,72 +103,72 @@
       "id": "ap-definitions",
       "title": "Arithmetic Progression Definitions",
       "summary": "isThreeTermAP, isAPFree, isAPFree' definitions",
-      "startLine": 39,
-      "endLine": 61,
+      "startLine": 36,
+      "endLine": 74,
       "mathContext": "Formal definition: isThreeTermAP, isAPFree, isAPFree' definitions"
     },
     {
       "id": "enr-condition",
       "title": "The ENR Condition",
       "summary": "hasENRCondition, hasENRProperty definitions",
-      "startLine": 62,
-      "endLine": 79,
+      "startLine": 76,
+      "endLine": 92,
       "mathContext": "Formal definition: hasENRCondition, hasENRProperty definitions"
     },
     {
       "id": "finite-union",
       "title": "Finite Union Characterization",
       "summary": "isFiniteAPFreeUnion, hasFiniteAPFreePartition definitions",
-      "startLine": 80,
-      "endLine": 96,
+      "startLine": 94,
+      "endLine": 110,
       "mathContext": "Formal definition: isFiniteAPFreeUnion, hasFiniteAPFreePartition definitions"
     },
     {
       "id": "conjecture",
       "title": "The Conjecture (Disproved)",
       "summary": "ENRConjecture, enr_conjecture_false, counterexample_exists",
-      "startLine": 97,
-      "endLine": 122,
+      "startLine": 111,
+      "endLine": 139,
       "mathContext": "Mathematical content: ENRConjecture, enr_conjecture_false, counterexample_exists"
     },
     {
       "id": "szemeredi",
       "title": "Szemeredi's Theorem",
-      "summary": "szemeredi_theorem, apfree_zero_density",
-      "startLine": 123,
-      "endLine": 144,
-      "mathContext": "Verified: szemeredi_theorem, apfree_zero_density"
+      "summary": "Documentation comments on Szemerédi's theorem and density consequences — `szemeredi_theorem` and `apfree_zero_density` exist only as docstrings, no formal declarations.",
+      "startLine": 141,
+      "endLine": 154,
+      "mathContext": "Docstring commentary only — `szemeredi_theorem` and `apfree_zero_density` are not formal Lean declarations in this file."
     },
     {
       "id": "why-fails",
       "title": "Why the Conjecture Fails",
-      "summary": "key_insight, finite_union_implies_enr",
-      "startLine": 145,
-      "endLine": 170,
-      "mathContext": "Mathematical content: key_insight, finite_union_implies_enr"
+      "summary": "`key_insight` is a block comment only. Formal content: `finset_pigeonhole` (private theorem) and `finite_union_implies_enr` (proved theorem using pigeonhole).",
+      "startLine": 155,
+      "endLine": 234,
+      "mathContext": "`key_insight` appears only as a block comment (lines 157-167). Formal declarations: `finset_pigeonhole` (private theorem, pigeonhole for Finsets) and `finite_union_implies_enr` (proved)."
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Problems #774 and #846",
-      "startLine": 171,
-      "endLine": 184,
-      "mathContext": "Mathematical content: Problems #774 and #846"
+      "startLine": 236,
+      "endLine": 247,
+      "mathContext": "Docstring commentary only — discusses related problems #774 and #846 with no formal declarations."
     },
     {
       "id": "bounds",
       "title": "Roth's Theorem and Bounds",
-      "summary": "roth_theorem, kelley_meka_bound",
-      "startLine": 185,
-      "endLine": 204,
-      "mathContext": "Verified: roth_theorem, kelley_meka_bound"
+      "summary": "Documentation comments on Roth's theorem (1953) and Kelley-Meka bounds (2023) — `roth_theorem` and `kelley_meka_bound` exist only as docstrings, no formal declarations.",
+      "startLine": 248,
+      "endLine": 259,
+      "mathContext": "Docstring commentary only — `roth_theorem` and `kelley_meka_bound` are not formal Lean declarations in this file."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_847_disproved, erdos_847_counterexample",
-      "startLine": 205,
-      "endLine": 254,
+      "startLine": 260,
+      "endLine": 290,
       "mathContext": "Mathematical content: erdos_847_disproved, erdos_847_counterexample"
     }
   ],
