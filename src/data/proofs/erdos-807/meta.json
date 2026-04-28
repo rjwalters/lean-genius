@@ -52,9 +52,9 @@
       "BipartiteCover structure for edge-disjoint covers",
       "bipartitionNumber definition as infimum of cover sizes",
       "ERW_conjecture formulation of the original question",
-      "alon_2015 axiom: the disproof showing strict inequality",
-      "alon_bohman_huang_2017 axiom: quantitative improvement",
-      "graham_pollak axiom: classical result on complete graphs",
+      "alon_2015 result (not formalized): the disproof showing strict inequality",
+      "alon_bohman_huang_2017 theorem (True-stub): quantitative improvement",
+      "graham_pollak result (not formalized): classical result on complete graphs",
       "erdos_807 theorem: the main disproof result",
       "cliqueCoverNumber definition for comparison"
     ],
@@ -66,7 +66,7 @@
     "historicalContext": "**Erdos Problem #807: Bipartite Decomposition**\n\nThis problem concerns the relationship between two fundamental graph parameters: the bipartition number and the independence number.\n\n**Key History:**\n- Katona, Recski, Wormald [KRW88]: Original conjecture formulation\n- Graham-Pollak (1971): Classic result that complete graphs need n-1 complete bipartite subgraphs\n- Alon [Al15] (2015): Disproved the conjecture\n- Alon, Bohman, Huang [ABH17] (2017): Strengthened the disproof\n\n**Mathematical Setting:**\n- tau(G) = bipartition number = minimum edge-disjoint complete bipartite subgraphs covering G\n- alpha(G) = independence number = size of largest independent set\n- G(n, 1/2) = Erdos-Renyi random graph with n vertices and edge probability 1/2\n\nThe conjecture asked whether tau(G) = n - alpha(G) almost surely for random graphs. This seemed plausible given connections to the Graham-Pollak theorem.",
     "problemStatement": "**Problem Statement (Disproved)**\n\nThe bipartition number $\\tau(G)$ is the smallest number of pairwise edge-disjoint complete bipartite graphs whose union is $G$. The independence number $\\alpha(G)$ is the size of the largest independent set.\n\n**Conjecture:** For a random graph $G$ on $n$ vertices with edge probability $1/2$, is it true that $\\tau(G) = n - \\alpha(G)$ almost surely?\n\n**Answer: NO**\n\nAlon (2015) showed: Almost surely $\\tau(G) \\leq n - \\alpha(G) - 1$.\n\nAlon-Bohman-Huang (2017) proved: There exists $c > 0$ such that almost surely $\\tau(G) \\leq n - (1+c)\\alpha(G)$.",
     "text": "Is the bipartition number of a random graph equal to n minus the independence number almost surely? NO, disproved by Alon (2015).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Structures:** Define independence number and bipartition number using SimpleGraph from Mathlib.\n\n2. **Key Definitions:**\n   - CompleteBipartite: structure for complete bipartite subgraphs\n   - BipartiteCover: edge-disjoint collection covering all edges\n   - bipartitionNumber: infimum of cover sizes\n\n3. **Main Results:** Axiomatize Alon's disproof and the Alon-Bohman-Huang improvement.\n\n4. **Why Axioms:** The results require probabilistic analysis of random graphs, concentration inequalities, and sophisticated counting arguments beyond Mathlib's current scope.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Structures:** Define independence number and bipartition number using SimpleGraph from Mathlib.\n\n2. **Key Definitions:**\n   - CompleteBipartite: structure for complete bipartite subgraphs\n   - BipartiteCover: edge-disjoint collection covering all edges\n   - bipartitionNumber: infimum of cover sizes\n\n3. **Main Results:** Formalize Alon's disproof and the Alon-Bohman-Huang improvement via True-stub theorems.\n\n4. **Why True-stubs:** The results require probabilistic analysis of random graphs, concentration inequalities, and sophisticated counting arguments beyond Mathlib's current scope.",
     "keyInsights": [
       "**Bipartition Number:** The minimum number of edge-disjoint complete bipartite subgraphs needed to cover all edges of G",
       "**Independence Number:** The size of the largest set of vertices with no edges between them",
