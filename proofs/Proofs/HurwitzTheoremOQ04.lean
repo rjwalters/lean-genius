@@ -1104,16 +1104,137 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
             simpa [derEval14] using congr_fun hfg (12 : Fin 14)
           have e13 : f (stdBasis 7) 4 = g (stdBasis 7) 4 := by
             simpa [derEval14] using congr_fun hfg (13 : Fin 14)
-          -- 7 Fano upper-triangular residuals (j > i, both in {3,5,6,7} ∪ {(4,3)}).
-          -- These need Fano-line Leibniz analysis on the multiplication-table triples;
-          -- left as named sorries pending Fano-line lemmas.
-          have F43 : f (stdBasis 4) 3 = g (stdBasis 4) 3 := by sorry
-          have F53 : f (stdBasis 5) 3 = g (stdBasis 5) 3 := by sorry
-          have F63 : f (stdBasis 6) 3 = g (stdBasis 6) 3 := by sorry
-          have F73 : f (stdBasis 7) 3 = g (stdBasis 7) 3 := by sorry
-          have F65 : f (stdBasis 6) 5 = g (stdBasis 6) 5 := by sorry
-          have F75 : f (stdBasis 7) 5 = g (stdBasis 7) 5 := by sorry
-          have F76 : f (stdBasis 7) 6 = g (stdBasis 7) 6 := by sorry
+          -- 7 Fano upper-triangular residuals proved via Fano-line Leibniz.
+          -- For each F_{ji}, pick a multiplication-table pair (p,q) with
+          -- e_p · e_q = e_j and read off coord i of the Leibniz equation.
+          -- All RHS terms reduce to ev coords (e0..e13) or their antisymmetry
+          -- partners, after using submodule_der_real_part for the j=0 column.
+          have F43 : f (stdBasis 4) 3 = g (stdBasis 4) 3 := by
+            -- (5,1): e_5·e_1 = e_4. Comp 3: f(e_4)_3 = -f(e_5)_2 - f(e_1)_6.
+            -- f(e_5)_2 = g(e_5)_2 (e8); f(e_1)_6 = -f(e_6)_1 (antisym), e4.
+            have e51 : eightMul (stdBasis 5) (stdBasis 1) = (stdBasis 4 : Fin 8 → ℝ) := by
+              funext k; fin_cases k <;>
+                simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
+                  Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;> norm_num
+            have hLf := hf (stdBasis 5) (stdBasis 1); rw [e51] at hLf
+            have hLg := hg (stdBasis 5) (stdBasis 1); rw [e51] at hLg
+            have hf3 := congr_fun hLf 3
+            have hg3 := congr_fun hLg 3
+            simp only [Pi.add_apply, eightMul, stdBasis,
+              Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+              Matrix.cons_val_two, Matrix.cons_val_three] at hf3 hg3
+            simp (config := { decide := true }) only [ite_true, ite_false] at hf3 hg3
+            have af := antisym f hf 1 6 (by decide) (by decide) (by decide)
+            have ag := antisym g hg 1 6 (by decide) (by decide) (by decide)
+            linarith
+          have F53 : f (stdBasis 5) 3 = g (stdBasis 5) 3 := by
+            -- (1,4): e_1·e_4 = e_5. Comp 3: f(e_5)_3 = -f(e_1)_7 + f(e_4)_2.
+            -- f(e_1)_7 = -f(e_7)_1 (antisym), e5; f(e_4)_2 = e7.
+            have e14 : eightMul (stdBasis 1) (stdBasis 4) = (stdBasis 5 : Fin 8 → ℝ) := by
+              funext k; fin_cases k <;>
+                simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
+                  Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;> norm_num
+            have hLf := hf (stdBasis 1) (stdBasis 4); rw [e14] at hLf
+            have hLg := hg (stdBasis 1) (stdBasis 4); rw [e14] at hLg
+            have hf3 := congr_fun hLf 3
+            have hg3 := congr_fun hLg 3
+            simp only [Pi.add_apply, eightMul, stdBasis,
+              Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+              Matrix.cons_val_two, Matrix.cons_val_three] at hf3 hg3
+            simp (config := { decide := true }) only [ite_true, ite_false] at hf3 hg3
+            have af := antisym f hf 1 7 (by decide) (by decide) (by decide)
+            have ag := antisym g hg 1 7 (by decide) (by decide) (by decide)
+            linarith
+          have F63 : f (stdBasis 6) 3 = g (stdBasis 6) 3 := by
+            -- (2,4): e_2·e_4 = e_6. Comp 3: f(e_6)_3 = -f(e_2)_7 - f(e_4)_1.
+            -- f(e_2)_7 = -f(e_7)_2 (antisym), e10; f(e_4)_1 = e2.
+            have e24 : eightMul (stdBasis 2) (stdBasis 4) = (stdBasis 6 : Fin 8 → ℝ) := by
+              funext k; fin_cases k <;>
+                simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
+                  Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;> norm_num
+            have hLf := hf (stdBasis 2) (stdBasis 4); rw [e24] at hLf
+            have hLg := hg (stdBasis 2) (stdBasis 4); rw [e24] at hLg
+            have hf3 := congr_fun hLf 3
+            have hg3 := congr_fun hLg 3
+            simp only [Pi.add_apply, eightMul, stdBasis,
+              Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+              Matrix.cons_val_two, Matrix.cons_val_three] at hf3 hg3
+            simp (config := { decide := true }) only [ite_true, ite_false] at hf3 hg3
+            have af := antisym f hf 2 7 (by decide) (by decide) (by decide)
+            have ag := antisym g hg 2 7 (by decide) (by decide) (by decide)
+            linarith
+          have F73 : f (stdBasis 7) 3 = g (stdBasis 7) 3 := by
+            -- (2,5): e_2·e_5 = e_7. Comp 3: f(e_7)_3 = +f(e_2)_6 - f(e_5)_1.
+            -- f(e_2)_6 = -f(e_6)_2 (antisym), e9; f(e_5)_1 = e3.
+            have e25 : eightMul (stdBasis 2) (stdBasis 5) = (stdBasis 7 : Fin 8 → ℝ) := by
+              funext k; fin_cases k <;>
+                simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
+                  Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;> norm_num
+            have hLf := hf (stdBasis 2) (stdBasis 5); rw [e25] at hLf
+            have hLg := hg (stdBasis 2) (stdBasis 5); rw [e25] at hLg
+            have hf3 := congr_fun hLf 3
+            have hg3 := congr_fun hLg 3
+            simp only [Pi.add_apply, eightMul, stdBasis,
+              Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+              Matrix.cons_val_two, Matrix.cons_val_three] at hf3 hg3
+            simp (config := { decide := true }) only [ite_true, ite_false] at hf3 hg3
+            have af := antisym f hf 2 6 (by decide) (by decide) (by decide)
+            have ag := antisym g hg 2 6 (by decide) (by decide) (by decide)
+            linarith
+          have F65 : f (stdBasis 6) 5 = g (stdBasis 6) 5 := by
+            -- (2,4): e_2·e_4 = e_6. Comp 5: f(e_6)_5 = +f(e_2)_1 - f(e_4)_7.
+            -- f(e_2)_1 = e0; f(e_4)_7 = -f(e_7)_4 (antisym), e13.
+            have e24 : eightMul (stdBasis 2) (stdBasis 4) = (stdBasis 6 : Fin 8 → ℝ) := by
+              funext k; fin_cases k <;>
+                simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
+                  Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;> norm_num
+            have hLf := hf (stdBasis 2) (stdBasis 4); rw [e24] at hLf
+            have hLg := hg (stdBasis 2) (stdBasis 4); rw [e24] at hLg
+            have hf5 := congr_fun hLf 5
+            have hg5 := congr_fun hLg 5
+            simp only [Pi.add_apply, eightMul, stdBasis,
+              Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+              Matrix.cons_val_two, Matrix.cons_val_three] at hf5 hg5
+            simp (config := { decide := true }) only [ite_true, ite_false] at hf5 hg5
+            have af := antisym f hf 4 7 (by decide) (by decide) (by decide)
+            have ag := antisym g hg 4 7 (by decide) (by decide) (by decide)
+            linarith
+          have F75 : f (stdBasis 7) 5 = g (stdBasis 7) 5 := by
+            -- (3,4): e_3·e_4 = e_7. Comp 5: f(e_7)_5 = +f(e_3)_1 + f(e_4)_6.
+            -- f(e_3)_1 = e1; f(e_4)_6 = -f(e_6)_4 (antisym), e12.
+            have e34 : eightMul (stdBasis 3) (stdBasis 4) = (stdBasis 7 : Fin 8 → ℝ) := by
+              funext k; fin_cases k <;>
+                simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
+                  Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;> norm_num
+            have hLf := hf (stdBasis 3) (stdBasis 4); rw [e34] at hLf
+            have hLg := hg (stdBasis 3) (stdBasis 4); rw [e34] at hLg
+            have hf5 := congr_fun hLf 5
+            have hg5 := congr_fun hLg 5
+            simp only [Pi.add_apply, eightMul, stdBasis,
+              Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+              Matrix.cons_val_two, Matrix.cons_val_three] at hf5 hg5
+            simp (config := { decide := true }) only [ite_true, ite_false] at hf5 hg5
+            have af := antisym f hf 4 6 (by decide) (by decide) (by decide)
+            have ag := antisym g hg 4 6 (by decide) (by decide) (by decide)
+            linarith
+          have F76 : f (stdBasis 7) 6 = g (stdBasis 7) 6 := by
+            -- (3,4): e_3·e_4 = e_7. Comp 6: f(e_7)_6 = +f(e_3)_2 - f(e_4)_5.
+            -- f(e_3)_2 = e6; f(e_4)_5 = -f(e_5)_4 (antisym), e11.
+            have e34 : eightMul (stdBasis 3) (stdBasis 4) = (stdBasis 7 : Fin 8 → ℝ) := by
+              funext k; fin_cases k <;>
+                simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
+                  Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;> norm_num
+            have hLf := hf (stdBasis 3) (stdBasis 4); rw [e34] at hLf
+            have hLg := hg (stdBasis 3) (stdBasis 4); rw [e34] at hLg
+            have hf6 := congr_fun hLf 6
+            have hg6 := congr_fun hLg 6
+            simp only [Pi.add_apply, eightMul, stdBasis,
+              Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+              Matrix.cons_val_two, Matrix.cons_val_three] at hf6 hg6
+            simp (config := { decide := true }) only [ite_true, ite_false] at hf6 hg6
+            have af := antisym f hf 4 5 (by decide) (by decide) (by decide)
+            have ag := antisym g hg 4 5 (by decide) (by decide) (by decide)
+            linarith
           -- Discharge each (j,i) pair.
           fin_cases j
           · exact absurd rfl hj

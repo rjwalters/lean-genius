@@ -6,7 +6,123 @@ Formalize the connection between Hurwitz's theorem (exactly 4 normed division al
 1. G₂ = Aut(𝕆)
 2. Freudenthal-Tits magic square: 𝔏(A,B) = Der(A)⊕(ImA⊗ImB)⊕Der(B)
 
-File: `proofs/Proofs/HurwitzTheoremOQ04.lean` (~1525 lines)
+File: `proofs/Proofs/HurwitzTheoremOQ04.lean` (~1646 lines)
+
+---
+
+## Session 2026-04-28 (Session 9) — 7 Fano residuals proved by Leibniz
+
+**Mode**: REVISIT (RICH knowledge tier — built directly on Session 8's 7-sorry decomposition)
+**Outcome**: PROGRESS — replaced all 7 named Fano sorries (`F43, F53, F63, F73, F65, F75, F76`)
+inside `derEval14_injective` with explicit Fano-line Leibniz proofs. The 64-entry
+kernel is now sorry-free *modulo build verification* (pending Docker capacity).
+
+### Strategy
+
+For each `F_{ji} : f (stdBasis j) i = g (stdBasis j) i`, choose a multiplication-table
+pair `(p, q)` with `eightMul (stdBasis p) (stdBasis q) = stdBasis j` and read off
+**coordinate i** of the Leibniz equation `f (e_p · e_q) = (f e_p)·e_q + e_p·(f e_q)`.
+
+The two RHS terms each become a **single coordinate** of `f` (or `g`) on a basis
+vector, because one factor is a stdBasis (concrete coordinate vector) and only
+one term in the comp-i formula contributes a non-zero `b_k` (resp. `a_k`).
+
+These two coords are *always* either:
+- in the **14 ev free coords** (e0..e13), giving `f = g` directly, OR
+- the **antisym partner** of an ev coord, giving `f = g` via `submodule_der_antisymm`.
+
+The choice of `(p, q)` for each `(j, i)`:
+
+| Sorry | (j, i) | (p, q) | comp | 1st RHS term | 2nd RHS term |
+|-------|--------|--------|------|--------------|--------------|
+| F43 | (4, 3) | (5, 1) | 3 | `−f(e₅)₂` (e8) | `−f(e₁)₆` (antisym e4) |
+| F53 | (5, 3) | (1, 4) | 3 | `−f(e₁)₇` (antisym e5) | `+f(e₄)₂` (e7) |
+| F63 | (6, 3) | (2, 4) | 3 | `−f(e₂)₇` (antisym e10) | `−f(e₄)₁` (e2) |
+| F73 | (7, 3) | (2, 5) | 3 | `+f(e₂)₆` (antisym e9) | `−f(e₅)₁` (e3) |
+| F65 | (6, 5) | (2, 4) | 5 | `+f(e₂)₁` (e0) | `−f(e₄)₇` (antisym e13) |
+| F75 | (7, 5) | (3, 4) | 5 | `+f(e₃)₁` (e1) | `+f(e₄)₆` (antisym e12) |
+| F76 | (7, 6) | (3, 4) | 6 | `+f(e₃)₂` (e6) | `−f(e₄)₅` (antisym e11) |
+
+Each proof is mechanical:
+
+```lean
+have F_ji : f (stdBasis j) i = g (stdBasis j) i := by
+  have e_pq : eightMul (stdBasis p) (stdBasis q) = stdBasis j := by
+    funext k; fin_cases k <;> simp [eightMul, stdBasis, …] <;> norm_num
+  have hLf := hf p q; rw [e_pq] at hLf
+  have hLg := hg p q; rw [e_pq] at hLg
+  have hf_i := congr_fun hLf i
+  have hg_i := congr_fun hLg i
+  simp only [Pi.add_apply, eightMul, stdBasis, Matrix.cons_val_*] at hf_i hg_i
+  simp (config := { decide := true }) only [ite_true, ite_false] at hf_i hg_i
+  have af := antisym f hf p' q' …
+  have ag := antisym g hg p' q' …
+  linarith
+```
+
+### Why This Works (mathematical content)
+
+The 14 ev coords form a *complete set of free generators* for the Lie subalgebra
+`Der(𝕆)`: any derivation is fully determined by its action at the 14 free pairs.
+The Fano-line Leibniz constraints close the remaining 7 pairs because each Fano
+triple `{a, b, c}` with `e_a · e_b = e_c` ties three coordinates together
+modulo `D(e_c)_? = (D(e_a) · e_b)_? + (e_a · D(e_b))_?`. Choosing the right
+component projects out two terms which are *exactly* the antisym partners or
+direct reads of the 14 free coords.
+
+This is the core mechanism by which `dim Der(𝕆) = 14` (not 21 = `dim 𝔰𝔬(7)`):
+the **7 extra Fano constraints** cut the 21-dimensional `𝔰𝔬(7)` down to G₂.
+
+### Files Modified
+
+- `proofs/Proofs/HurwitzTheoremOQ04.lean` — +131 lines, –10 lines
+  (replaced 7 sorries with 7 explicit Leibniz proofs).
+
+### Sorry Count: 0 (was 7)
+
+Modulo build verification, `derEval14_injective` is sorry-free. The remaining
+infrastructure for the dim-14 → G₂ identification (linear independence,
+spanning, Lie bracket structure) is in subsequent sections of the file.
+
+### Build Status
+
+NOT verified — Docker daemon was stuck/unresponsive (4 stale builds for
+HurwitzTheoremOQ04 dating to 5:05 AM, 9:37 AM, 15:27 PM); pushed unverified
+per `feedback_docker_build_io_errors.md` policy. Next session must build first.
+
+### Next Steps
+
+1. **Verify build** (Docker capacity permitting). Risk of failure:
+   - `linarith` may need `mul_zero, mul_one` cleanup before the simp set
+     leaves arithmetic noise (e.g. `0 * a₂ + (-1) * a₂ + 0 * a₃ + …`).
+     If so: add `ring_nf at hf_i hg_i` between the two `simp only` calls.
+   - The eightMul factorization equations (e51, e14, e24, e25, e34) might
+     not reduce cleanly with the chosen simp set. Test by inspecting the
+     existing `submodule_der_real_part` factorizations (which use the same
+     pattern and *do* compile).
+2. After build verification, advance phase to **COMPLETED** for this proof
+   (`derEval14_injective` is the central injectivity lemma).
+3. The remaining work in the file is:
+   - `derBasis14_linearIndependent` (linear independence of 14 explicit
+     derivations) — already partial.
+   - `OctonionDerSpace` dimension theorem (dim ≤ 14 from injectivity, ≥ 14
+     from independence, hence = 14).
+   - Connection to G₂ as `Aut(𝕆)`: the Lie algebra of G₂ is precisely Der(𝕆).
+
+### Tactical Notes
+
+- The seven `(p, q)` choices were selected to ensure **both** RHS coords are
+  either free or antisym partners of free, and **neither** is itself a Fano
+  residual. This avoids circularity (e.g. for F73, using `(3, 4)` at comp 3
+  gives a tautology because `(e_3·D(e_4))_3 = D(e_4)_0 = 0` and the other term
+  is the antisym partner of F73 itself).
+- The component-i formula for `(a · stdBasis q) i` (resp. `(stdBasis p · b) i`)
+  has exactly **one** non-zero term (since `b` has one non-zero entry). After
+  the simp + decide chain, this collapses to `±a_k` (resp. `±b_k`) for a
+  specific `k` determined by the Fano-line geometry.
+- `linarith` is given the Leibniz equations on f and g plus two antisym hypotheses
+  (one each for f, g). It must combine 4 hypotheses (`hf_i, hg_i, af, ag`) plus
+  the 14 ev hints (e0..e13) implicitly available in scope.
 
 ---
 

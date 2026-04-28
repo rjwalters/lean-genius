@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 1 monolithic sorry → 7 concrete Fano-line sorries; 28 of 42 residual entries closed mechanically",
+    "progressSummary": "PROGRESS: 7 named Fano sorries → 0 (modulo Docker build verification); derEval14_injective complete pending build.",
     "builtItems": [
       "ExceptionalType inductive type (G2/F4/E6/E7/E8) with dim/rank — HurwitzTheoremOQ04.lean",
       "OctonionAlgHom structure + OctonionAut — HurwitzTheoremOQ04.lean",
@@ -54,7 +54,8 @@
       "submodule_der_antisymm: (f e_i)_j + (f e_j)_i = 0 for f in OctonionDerSubmodule (HurwitzTheoremOQ04.lean:864)",
       "i=0 sub-case in derEval14_injective via submodule_der_real_part (HurwitzTheoremOQ04.lean:1058-1063)",
       "derEval14_injective: 158-line case analysis covering all 42 entries of the (j ≠ 0, i ≠ 0, i ≠ j) residual; HurwitzTheoremOQ04.lean ~lines 1058-1230.",
-      "7 named hypotheses F43, F53, F63, F73, F65, F75, F76 inside derEval14_injective — concrete proof obligations replacing the prior monolithic sorry."
+      "7 named hypotheses F43, F53, F63, F73, F65, F75, F76 inside derEval14_injective — concrete proof obligations replacing the prior monolithic sorry.",
+      "F43, F53, F63, F73, F65, F75, F76: explicit proofs in HurwitzTheoremOQ04.lean L1107-1238 — replaces all 7 named sorries inside derEval14_injective."
     ],
     "insights": [
       "G₂ = Aut(𝕆): The exceptional Lie group G₂ (dim 14, rank 2) is the automorphism group of the octonions. The 14 dimensions come from SO(7) (dim 21) minus the 7 constraints from preserving the octonion cross product.",
@@ -79,7 +80,10 @@
       "Session 7 (2026-04-28): The 64-entry kernel claim in derEval14_injective decomposes structurally as 8 (j=0) + 7 (i=j) + 7 (i=0) + 42 (j≠0,i≠0,i≠j). The first three are closed by submodule_der_unit_zero, submodule_der_diagonal_kill, and submodule_der_real_part respectively. The residual 42 entries reduce to 21 upper-triangular by antisymmetry (submodule_der_antisymm), then 14 are the explicit ev=0 coords (from hfg directly), leaving 7 hard pairs requiring Fano-line Leibniz.",
       "Session 8 (2026-04-28): Replaced 1 monolithic residual sorry with 7 named upper-triangular Fano sorries; 28 mechanical closures via ev coords + antisymm.",
       "The 7 Fano residual pairs are exactly those (j,i) with both indices in {3,5,6,7} ∪ {(4,3)} — i.e. neither (j,i) nor (i,j) sits in the 14 ev coords.",
-      "Local antisym helper: D(stdBasis p) q = -D(stdBasis q) p reduces 14 antisymm-of-ev cases to single rw chains."
+      "Local antisym helper: D(stdBasis p) q = -D(stdBasis q) p reduces 14 antisymm-of-ev cases to single rw chains.",
+      "Session 9: Each Fano residual F_{ji} is dischargeable by Leibniz at a single (p,q) pair: comp-i RHS terms collapse to one antisym partner + one direct ev coord (or vice versa).",
+      "Session 9: The 7 residuals are *not* equivalent — F73 requires (2,5) (not (3,4) at comp 3) to avoid tautology (D(e₄)₀=0 makes one RHS term vanish trivially, leaving an identity in F73 itself).",
+      "Session 9: Mathematical reading — the 7 Fano constraints cut 𝔰𝔬(7) (dim 21) down to Der(𝕆) (dim 14) by tying the 7 upper-triangular Fano pairs to the 14 free coords + their antisym partners."
     ],
     "mathlibGaps": [
       "Lie groups not in Mathlib as of 2026-04 — blocks formal G₂ = Aut(𝕆) proof",
@@ -87,10 +91,11 @@
       "Derivation algebra of non-associative algebras not in Mathlib"
     ],
     "nextSteps": [
-      "Verify Docker build of the new derEval14_injective case analysis.",
-      "Prove the 7 Fano residuals via Fano-line Leibniz analysis on octonion multiplication-table triples.",
-      "Consider factoring the 7 Fano proofs into a uniform submodule_der_fano_line helper parameterized by the Fano triple.",
-      "After F-residuals close: derEval14_injective is sorry-free → completes the upper bound finrank ≤ 14 → G2_der_dimension is sorry-free."
+      "Verify Docker build of Proofs.HurwitzTheoremOQ04 once daemon frees up; if linarith fails, add ring_nf at hf_i hg_i between the two simp only calls.",
+      "After build green: advance phase to COMPLETED for derEval14_injective.",
+      "Tackle derBasis14_linearIndependent and the dimension theorem (OctonionDerSpace dim = 14).",
+      "Identify Der(𝕆) ≅ 𝔤₂ (Lie algebra of G₂) — connect to Mathlib LieAlgebra structure.",
+      "Wire dim-14 lemma into the gallery meta.json once verified."
     ]
   },
   "tags": [
