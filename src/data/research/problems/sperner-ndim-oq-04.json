@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED (Session 9, 2026-04-27): hMem+hNe proved; 1 sorry remains in hInv (walkTrace_reversal). Closing the sorry requires either ~150 lines of new kuhnWalkSeq infrastructure (a List-returning walk variant with reversal lemmas) OR formalizing the door graph as a Mathlib SimpleGraph and using Walk.reverse. Past 8+ sessions hit the same barrier; flagged BLOCKED per memory's '3+ sessions on same sorry' rule. Stale 'completed' status corrected to 'blocked'.",
+    "progressSummary": "BLOCKED: walkTrace_reversal sorry (line 980) requires kuhnWalkSeq infrastructure (~150 lines, Path A) or Mathlib SimpleGraph framing (~200+ lines, Path B). 9 sessions stuck on same sorry; flagged BLOCKED per research-rules. File: 1126 lines, 0 axioms, 1 sorry.",
     "builtItems": [
       "doorDegree def: SpernerNDimOQ04.lean:60",
       "IsKuhnCompatible def: SpernerNDimOQ04.lean:65",

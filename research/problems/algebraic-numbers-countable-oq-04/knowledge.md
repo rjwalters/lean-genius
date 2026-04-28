@@ -62,3 +62,54 @@ The theorem has an inhomogeneous form (with constant β₀) and a quantitative f
 3. Consider submitting `two_pow_ne_three_pow` to Aristotle for verification (it should compile)
 
 4. (Lower priority) Add more examples: irrationality/transcendence of log₂(5), log₃(5)
+
+
+---
+
+## Session 2026-04-28 (Session 2) — Reconcile stale `phase=ACT/status=in-progress`
+
+**Mode**: REVISIT (metadata reconciliation)
+**Outcome**: METADATA RECONCILE — research-side JSON brought in line with merged work
+
+### What I Did
+
+Audited candidate-pool entry: `algebraic-numbers-countable-oq-04` was listed
+`status=available` in `.lean/state/candidate-pool.json` with knowledge score 19,
+but the actual state diverged:
+
+- **Lean file**: `proofs/Proofs/AlgebraicNumbersCountableOQ04.lean` (640 lines, 0 sorries, 4 `axiom` declarations)
+- **Gallery**: `src/data/proofs/algebraic-numbers-countable-oq-04/meta.json` — `status: axiomatized`, `badge: axiom`, `axiomCount: 4`, dated 2026-04-24
+- **Research JSON**: stuck at `phase=ACT`, `status=in-progress`, `currentState.nextAction = "Build and verify Lean file compiles via Docker wrapper."` — Session 1 work item from 2026-04-25
+- **No `state.md`** existed, so the only narrative source was an outdated `currentState` block
+
+### Reconciliation
+
+1. `src/data/research/problems/algebraic-numbers-countable-oq-04.json`:
+   - `phase`: `ACT` → `COMPLETED`
+   - `status`: `in-progress` → `completed`
+   - `currentState.phase`: `ACT` → `COMPLETED`
+   - `currentState.focus` rewritten to describe axiomatized scope
+   - `currentState.nextAction` set to `None — work scope complete`
+2. Created `research/problems/algebraic-numbers-countable-oq-04/state.md`
+   documenting `Phase: COMPLETED (axiomatized)`, the four Baker axioms, and
+   why "verified" is not the appropriate badge (full Baker proof needs Siegel
+   + auxiliary function + extrapolation, ~5000+ lines).
+
+No code changes; pure metadata reconciliation. The Lean file and gallery
+were already in their final state.
+
+### Files Modified
+
+- `src/data/research/problems/algebraic-numbers-countable-oq-04.json`
+- `research/problems/algebraic-numbers-countable-oq-04/state.md` (created)
+- `research/problems/algebraic-numbers-countable-oq-04/knowledge.md` (this entry)
+
+### Sorry/Axiom Delta
+
+No change. File remains 0 sorries, 4 axioms. Gallery remains `axiomatized`.
+
+### Next Steps
+
+None for the axiomatized scope. A future deepening to `verified` would be a
+multi-month formalization of Baker's auxiliary-function machinery and is
+not currently scoped.

@@ -1,8 +1,8 @@
 {
   "slug": "algebraic-numbers-countable-oq-04",
   "title": "Formalize Bakers Theorem: Linear Independence of Logarithms",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-04-24T21:58:33.771259Z",
+    "phase": "COMPLETED",
+    "since": "2026-04-28T00:00:00Z",
     "iteration": 2,
-    "focus": "All sorries resolved. Baker theorem axiomatized, log2(3) irrationality proved, transcendence derived from Baker.",
+    "focus": "Gallery promoted as axiomatized: 4 Baker axioms (baker_homogeneous/inhomogeneous/quantitative/wustholz_bound), 0 sorries, 640-line file. Full Baker proof out of scope (>5000 lines requiring Siegel's lemma + auxiliary function + Schwarz lemma).",
     "blockers": [],
-    "nextAction": "Build and verify Lean file compiles via Docker wrapper.",
+    "nextAction": "None — work scope complete as axiomatized entry. Future deepening would require multi-month effort to formalize Baker's auxiliary function from scratch.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
