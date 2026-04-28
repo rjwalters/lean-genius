@@ -1,8 +1,8 @@
 {
   "slug": "hurwitz-theorem-oq-04",
   "title": "Hurwitz Theorem: Connection to Exceptional Lie Groups",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 7 named Fano sorries → 0 (modulo Docker build verification); derEval14_injective complete pending build.",
+    "progressSummary": "VERIFIED: 0 sorries, 0 axioms, 1646 lines. PR #13632 closed final 7 Fano-line Leibniz residuals via choice of multiplication-table pair (p,q) with eightMul(stdBasis p, stdBasis q) = stdBasis j. derEval14_injective is fully machine-checked: 14 evaluation coords determine any element of Der(𝕆), giving dim Der(𝕆) = 14. Gallery: verified, badge original.",
     "builtItems": [
       "ExceptionalType inductive type (G2/F4/E6/E7/E8) with dim/rank — HurwitzTheoremOQ04.lean",
       "OctonionAlgHom structure + OctonionAut — HurwitzTheoremOQ04.lean",
