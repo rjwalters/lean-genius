@@ -1,8 +1,8 @@
 {
   "slug": "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-01",
   "title": "Extend to k=4,5,",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-04-26T08:56:57.648Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "k=4 and k=5 Newton-Girard recurrence corollaries — verified.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — file is stable.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -77,7 +77,7 @@
     "mathlib": []
   },
   "started": "2026-04-26T08:56:57.648Z",
-  "lastUpdate": "2026-04-26T08:56:57.648Z",
+  "lastUpdate": "2026-04-28T00:00:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
