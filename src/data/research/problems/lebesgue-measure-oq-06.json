@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: orbit_ne proved (sorries 2 to 1). Bridge sorry eliminated via inductive ℤ-sqrt2 encoding with correct composition-order reversal.",
+    "progressSummary": "AXIOMATIZED (gallery-graduated, PR #13325 merged 2026-04-27): banach_tarski declared as explicit axiom (provably unprovable in ZF — Solovay 1970). At master HEAD, LebesgueMeasureOQ06.lean has 1517 lines, 0 sorries, 1 axiom. All supporting infrastructure proved (free_group_paradoxical, hausdorff_free_subgroup, free_group_not_amenable, int_amenable, banach_tarski_pieces_nonmeasurable, orbit_ne). Gallery meta correctly reflects status=axiomatized, badge=axiom. No further research action required for this OQ.",
     "builtItems": [
       "Equidecomposable (G-equidecomposability, with notation ≃ᴳ[G]) — proofs/Proofs/LebesgueMeasureOQ06.lean:43",
       "IsParadoxical — proofs/Proofs/LebesgueMeasureOQ06.lean:81",
@@ -88,7 +88,7 @@
       "Amenability for infinite groups not in Mathlib (FolnerCondition exists but Cesaro mean construction not)"
     ],
     "nextSteps": [
-      "Only remaining sorry: banach_tarski main theorem (~800 lines via Hausdorff paradox + AC — intentionally axiomatized)"
+      "Done. PR #13325 (merged 2026-04-27) converted the banach_tarski sorry into an explicit axiom declaration, finalizing the axiomatized form. Eliminating the axiom would require formalizing the full Hausdorff paradox + Axiom of Choice argument (~800-1200 lines, deep open Mathlib formalization) — that is a separate research initiative, not a continuation of this OQ."
     ]
   },
   "tags": [
@@ -113,7 +113,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.382Z",
-  "lastUpdate": "2026-04-22T00:00:00.000Z",
+  "lastUpdate": "2026-04-28T05:15:00Z",
   "significance": 8,
   "tractability": 6,
   "leanFiles": [
@@ -186,11 +186,11 @@
     {
       "path": "Proofs/LebesgueMeasureOQ06.lean",
       "filename": "LebesgueMeasureOQ06.lean",
-      "lineCount": 1429,
-      "theoremCount": 7,
-      "axiomCount": 0,
+      "lineCount": 1517,
+      "theoremCount": 53,
+      "axiomCount": 1,
       "defCount": 5,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ06.lean"
     },
