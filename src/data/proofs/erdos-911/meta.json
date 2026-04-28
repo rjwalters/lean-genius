@@ -35,21 +35,23 @@
       }
     ],
     "originalContributions": [
-      "SimpleGraph' structure: custom graph representation",
-      "edgeCount definition: number of edges in a graph",
-      "isDense definition: C-dense graphs with e ≥ Cn",
-      "EdgeColoring definition: 2-coloring of edges",
-      "isMonochromatic definition: subgraph with uniform color",
-      "isRamseyFor definition: H Ramsey for G",
-      "sizeRamseyNumber axiom: R̂(G) minimum edges for Ramsey",
-      "superlinearGrowth definition: f(x)/x → ∞",
-      "ErdosConjecture911 definition: the main conjecture",
-      "beck_path_linear axiom: paths have linear size Ramsey",
-      "rodl_szemeredi_complete axiom: complete graphs Θ(n²)",
-      "bounded_degree_linear axiom: KRSS theorem",
-      "size_ramsey_lower_bound axiom: R̂(G) ≥ e(G)",
-      "graphRamseyNumber axiom: vertex Ramsey number",
-      "erdos_911_statement theorem: equivalence"
+      "EdgeColoring₂ definition: 2-coloring of a graph's edges",
+      "MonochromaticEmbedding definition: monochromatic copy of G inside H under coloring c with color b",
+      "IsRamseyFor definition: H is Ramsey for G if every 2-coloring yields a monochromatic embedding",
+      "sizeRamseyNumber axiom: minimum number of edges in a Ramsey witness for G",
+      "sizeRamseyNumber_spec axiom: the witness graph realizing sizeRamseyNumber exists",
+      "edgeCount definition: |E(G)| via Mathlib edgeFinset.card",
+      "IsDense definition: C-dense graphs with e(G) ≥ C·|V|",
+      "SuperlinearGrowth definition: f(x)/x → ∞ as x → ∞ (∀ M, eventually f x ≥ M·x)",
+      "ErdosConjecture911 definition: existence of a superlinear f witnessing R̂(G) ≥ f(C)·e(G) for dense G",
+      "size_ramsey_ge_edges theorem: trivial lower bound R̂(G) ≥ e(G), proved via Embedding.mapEdgeSet injectivity",
+      "dense_has_many_edges theorem: definitional unfolding of IsDense",
+      "conjecture_strengthens_trivial_bound theorem: when f(C) ≥ 2, the conjecture strictly improves R̂(G) ≥ e(G)",
+      "linear_not_superlinear theorem: identity function is not superlinear",
+      "quadratic_is_superlinear theorem: n·n exhibits superlinear growth",
+      "superlinear_add_linear theorem: superlinear growth is closed under adding a linear term",
+      "vertex_ramsey_number axiom: vertex Ramsey number used for upper-bound discussion",
+      "trivial_bound_not_superlinear theorem: the trivial 1·e(G) bound cannot witness a superlinear f"
     ],
     "axiomCount": 3,
     "lineCount": 238,
@@ -59,7 +61,7 @@
     "historicalContext": "Erdős posed this problem in 1982 [Er82e, p.78]. Size Ramsey numbers, introduced by Erdős, Faudree, Rousseau, and Schelp in 1978, measure the minimum edge complexity of Ramsey graphs.\n\nMajor results include:\n- Beck (1983): Paths have linear size Ramsey numbers R̂(Pₙ) = O(n)\n- Rödl-Szemerédi (2000): Complete graphs have R̂(Kₙ) = Θ(n²)\n- Kohayakawa-Rödl-Schacht-Szemerédi (2011): Bounded degree graphs have linear R̂\n\nThe question asks whether edge density forces additional Ramsey complexity. The motivation is that complete graphs K_n have Θ(n²) edges and R̂(K_n) = Θ(n²), giving R̂(G)/e(G) bounded — so no superlinear factor emerges even for the densest graphs. Erdős asked whether some dense family must exhibit superlinear R̂/e(G) growth, distinguishing density-driven complexity from degree-driven complexity established by the KRSS theorem.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nDoes there exist a function f(x) with f(x)/x → ∞ as x → ∞ such that:\n\nFor all sufficiently large constants C, if G is a graph with n vertices and at least Cn edges, then the size Ramsey number satisfies:\n$$\\hat{R}(G) > f(C) \\cdot e(G)$$\n\nwhere e(G) is the number of edges in G.\n\n**Background:**\nThe size Ramsey number R̂(G) is the minimum number of edges m in a graph H such that any 2-coloring of H's edges contains a monochromatic copy of G.",
     "text": "Does there exist a function f(x) with f(x)/x → ∞ such that for all sufficiently large C, if G has n vertices and at least Cn edges, then R̂(G) > f(C) · e(G)?",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Custom SimpleGraph' structure with adjacency, symmetry, and no loops\n\n2. **Size Ramsey:** Axiomatize sizeRamseyNumber as minimum edges for Ramsey property\n\n3. **Density Condition:** isDense(G, C) := e(G) ≥ C·n\n\n4. **The Conjecture:** ErdosConjecture911 formalizes the existence of superlinear f\n\n5. **Known Results:** Axiomatize Beck, Rödl-Szemerédi, and KRSS theorems",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Reuse Mathlib's SimpleGraph and define EdgeColoring₂, MonochromaticEmbedding, and IsRamseyFor on top of it\n\n2. **Size Ramsey:** Axiomatize sizeRamseyNumber and sizeRamseyNumber_spec because the size Ramsey number quantifies over all witness graph types and cannot be defined constructively in this fragment\n\n3. **Density Condition:** IsDense(G, C) := edgeCount G ≥ C · |V|\n\n4. **The Conjecture:** ErdosConjecture911 packages the existence of a superlinear f, a threshold C₀, and the bound sizeRamseyNumber G ≥ f C · edgeCount G for all C-dense graphs\n\n5. **Proved Lemmas:** From the two axioms we prove size_ramsey_ge_edges, conjecture_strengthens_trivial_bound, and several growth-rate facts (linear_not_superlinear, quadratic_is_superlinear, superlinear_add_linear). Beck (1983), Rödl–Szemerédi (2000), and KRSS (2011) are discussed only in docstrings as background — they are not axiomatized in this file.\n\n6. **Auxiliary axiom:** A separate vertex_ramsey_number axiom supports the upper-bound discussion via R̂(G) ≤ C(R(G), 2)",
     "keyInsights": [
       "**Trivial Bound:** R̂(G) ≥ e(G) always - the Ramsey graph must contain G",
       "**Paths are Easy:** R̂(Pₙ) = O(n) - Beck's theorem shows paths need few edges",
@@ -75,68 +77,44 @@
   },
   "sections": [
     {
-      "id": "graph-definitions",
-      "title": "Graph and Edge Definitions",
-      "summary": "SimpleGraph', edgeCount, avgDegree, isDense",
-      "startLine": 25,
-      "endLine": 51,
-      "mathContext": "Mathematical content: SimpleGraph', edgeCount, avgDegree, isDense"
-    },
-    {
-      "id": "size-ramsey",
-      "title": "Size Ramsey Numbers",
-      "summary": "EdgeColoring, isMonochromatic, isRamseyFor, sizeRamseyNumber",
-      "startLine": 52,
-      "endLine": 78,
-      "mathContext": "Mathematical content: EdgeColoring, isMonochromatic, isRamseyFor, sizeRamseyNumber"
+      "id": "ramsey-definitions",
+      "title": "Size Ramsey Number Definitions",
+      "summary": "EdgeColoring₂, MonochromaticEmbedding, IsRamseyFor, sizeRamseyNumber, sizeRamseyNumber_spec",
+      "startLine": 36,
+      "endLine": 74,
+      "mathContext": "Mathematical content: EdgeColoring₂ (def), MonochromaticEmbedding (def), IsRamseyFor (def), sizeRamseyNumber (axiom), sizeRamseyNumber_spec (axiom)"
     },
     {
       "id": "conjecture",
-      "title": "The Erdős Conjecture",
-      "summary": "superlinearGrowth, ErdosConjecture911, polynomialSuperlinear",
-      "startLine": 79,
-      "endLine": 101,
-      "mathContext": "Mathematical content: superlinearGrowth, ErdosConjecture911, polynomialSuperlinear"
+      "title": "Dense Graphs and the Conjecture",
+      "summary": "edgeCount, IsDense, SuperlinearGrowth, ErdosConjecture911",
+      "startLine": 76,
+      "endLine": 104,
+      "mathContext": "Formal definitions: edgeCount, IsDense, SuperlinearGrowth, ErdosConjecture911"
     },
     {
-      "id": "known-results",
-      "title": "Known Results",
-      "summary": "beck_path_linear, rodl_szemeredi_complete, bounded_degree_linear",
-      "startLine": 102,
-      "endLine": 123,
-      "mathContext": "Bound: beck_path_linear, rodl_szemeredi_complete, bounded_degree_linear"
+      "id": "core-lemmas",
+      "title": "Proved Lemmas",
+      "summary": "size_ramsey_ge_edges, dense_has_many_edges, superlinear_implies_superlinear_bound, conjecture_strengthens_trivial_bound",
+      "startLine": 106,
+      "endLine": 157,
+      "mathContext": "Verified: size_ramsey_ge_edges (trivial lower bound R̂(G) ≥ e(G)), dense_has_many_edges, superlinear_implies_superlinear_bound, conjecture_strengthens_trivial_bound"
     },
     {
-      "id": "bounds",
-      "title": "Bounds and Density",
-      "summary": "size_ramsey_lower_bound, dense_many_edges",
-      "startLine": 124,
-      "endLine": 143,
-      "mathContext": "Bound: size_ramsey_lower_bound, dense_many_edges"
+      "id": "growth-properties",
+      "title": "Growth-Rate and Edge-Count Lemmas",
+      "summary": "edge_count_nonneg, complete_edge_count, complete_graph_dense, linear_not_superlinear, quadratic_is_superlinear, superlinear_add_linear",
+      "startLine": 159,
+      "endLine": 196,
+      "mathContext": "Verified: edge_count_nonneg, complete_edge_count, complete_graph_dense, linear_not_superlinear, quadratic_is_superlinear, superlinear_add_linear"
     },
     {
-      "id": "status",
-      "title": "Problem Status",
-      "summary": "erdos_911_status, densityForcesStructure, sparse_random_linear",
-      "startLine": 144,
-      "endLine": 164,
-      "mathContext": "Formal definition: erdos_911_status, densityForcesStructure, sparse_random_linear"
-    },
-    {
-      "id": "related",
-      "title": "Related Concepts",
-      "summary": "graphRamseyNumber, size_at_most_complete_ramsey, turanDensity",
-      "startLine": 165,
-      "endLine": 186,
-      "mathContext": "Mathematical content: graphRamseyNumber, size_at_most_complete_ramsey, turanDensity"
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_911_statement theorem, problem summary",
-      "startLine": 187,
-      "endLine": 238,
-      "mathContext": "Verified: erdos_911_statement theorem, problem summary"
+      "id": "vertex-ramsey-number",
+      "title": "Vertex Ramsey Number and Upper Bound Sketch",
+      "summary": "Background docstring on the upper bound R̂(G) ≤ C(R(G), 2), vertex_ramsey_number axiom, trivial_bound_not_superlinear theorem",
+      "startLine": 198,
+      "endLine": 236,
+      "mathContext": "Mathematical content: Part 4 (Known Results — docstring only), Part 5 (Relationship to the Conjecture — docstring only), vertex_ramsey_number (axiom), trivial_bound_not_superlinear (theorem)"
     }
   ],
   "conclusion": {
