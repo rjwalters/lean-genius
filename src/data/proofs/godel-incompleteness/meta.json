@@ -72,7 +72,7 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 20,
-      "summary": "Module docstring: formalizes both incompleteness theorems, Hilbert-Bernays-Löb derivability conditions, and Löb's theorem. Notes 3 axioms, placeholder `Provable` predicate. Imports `Mathlib.Logic.Basic` and `Mathlib.Tactic`.",
+      "summary": "Module docstring: formalizes both incompleteness theorems, Hilbert-Bernays-Löb derivability conditions, and Löb's theorem. Placeholder `Provable := fun _ => False` predicate makes all formal theorems vacuously true; 0 axioms, 0 sorries. Imports `Mathlib.Logic.Basic` and `Mathlib.Tactic`.",
       "mathContext": "Two incompleteness theorems: (1) consistent $F \\Rightarrow F$ is incomplete (has true unprovable sentences), (2) consistent $F \\Rightarrow F$ cannot prove its own consistency. Three axioms encode self-reference (`G_self_reference`), derivability conditions (`derivability_conditions`), and Löb fixed points (`lob_sentence_fixed_point`). `Provable : Formula → Prop := fun _ => False` is a placeholder."
     },
     {
@@ -120,7 +120,7 @@
       "title": "Part 6: The Gödel Sentence",
       "startLine": 136,
       "endLine": 162,
-      "summary": "`G : Formula := ⟨42⟩` (arbitrary code; real construction via diagonal lemma). `G_self_reference` (axiom): encapsulates the diagonal lemma result that $G \\leftrightarrow \\neg\\text{Prov}(\\ulcorner G \\urcorner)$.",
+      "summary": "`G : Formula := ⟨42⟩` (arbitrary code; real construction via diagonal lemma). Block comment describes the self-reference property $G \\leftrightarrow \\neg\\text{Prov}(\\ulcorner G \\urcorner)$ and explains why a `G_self_reference` axiom was not added — proving it requires a full diagonal lemma implementation. No axiom is declared.",
       "mathContext": "The Gödel sentence $G$ satisfies $G \\leftrightarrow \\neg\\text{Prov}(\\ulcorner G \\urcorner)$: \"I am not provable.\" This is the rigorous version of the Liar Paradox — replacing \"false\" with \"unprovable\" avoids logical contradiction while creating undecidability. The axiom `G_self_reference` encapsulates the full diagonal construction."
     },
     {
@@ -144,7 +144,7 @@
       "title": "Second Incompleteness Theorem and Löb's Theorem",
       "startLine": 212,
       "endLine": 437,
-      "summary": "Derivability conditions (axiom), Löb sentence fixed point (axiom), `second_incompleteness_theorem`: Consistent → ¬Provable Con. `lob_theorem`: if ⊢(Prov(⌜φ⌝) → φ), then ⊢ φ. Both use the Hilbert-Bernays-Löb conditions D1-D3.",
+      "summary": "D1-D3 derivability conditions described in comments but not declared as axioms (removed: inconsistent with `Provable := fun _ => False`). `def impl`, `def Falsum`, `def Con`. `second_incompleteness_theorem`: Consistent → ¬Provable Con (vacuously true). `lob_theorem`: if ⊢(Prov(⌜φ⌝) → φ), then ⊢ φ (vacuously true). Both formally proved with 0 axioms.",
       "mathContext": "Second incompleteness: $\\text{Con}(F) \\not\\vdash \\text{Con}(F)$ where $\\text{Con}(F) = \\neg\\text{Prov}(\\ulcorner 0=1 \\urcorner)$. Derivability conditions (Hilbert-Bernays-Löb): (D1) $\\vdash \\varphi \\Rightarrow \\vdash \\text{Prov}(\\ulcorner\\varphi\\urcorner)$, (D2) $\\vdash \\text{Prov}(\\ulcorner\\varphi \\to \\psi\\urcorner) \\to (\\text{Prov}(\\ulcorner\\varphi\\urcorner) \\to \\text{Prov}(\\ulcorner\\psi\\urcorner))$, (D3) $\\vdash \\text{Prov}(\\ulcorner\\varphi\\urcorner) \\to \\text{Prov}(\\ulcorner\\text{Prov}(\\ulcorner\\varphi\\urcorner)\\urcorner)$. Löb: $\\vdash (\\text{Prov}(\\ulcorner\\varphi\\urcorner) \\to \\varphi) \\Rightarrow \\vdash \\varphi$."
     }
   ],
