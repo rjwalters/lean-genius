@@ -115,7 +115,7 @@
       "startLine": 108,
       "endLine": 112,
       "summary": "Documents the upper bound $t_n \\leq \\exp(O(\\sqrt{\\log n \\cdot \\log\\log n}))$ for most $n$ as a documentation comment only — no formal axiom `upper_bound_for_many` is declared.",
-      "mathContext": "The upper bound $t_n \\leq \\exp(O(\\sqrt{\\log n \\cdot \\log\\log n}))$ holds for 'most' $n$ (all but $o(x)$ integers up to $x$). The expression $\\exp(\\sqrt{\\log n \\cdot \\log\\log n})$ is subpolynomial but superpolylogarithmic — for $n = 10^{100}$, it is roughly $\\exp(48) \\approx 7 \\times 10^{20}$. The Lean encoding uses a density condition: the count of $n \\leq x$ satisfying the bound is $\\geq x^{1-\\varepsilon}$ for any $\\varepsilon > 0$."
+      "mathContext": "The upper bound $t_n \\leq \\exp(O(\\sqrt{\\log n \\cdot \\log\\log n}))$ holds for 'most' $n$ (all but $o(x)$ integers up to $x$). The expression $\\exp(\\sqrt{\\log n \\cdot \\log\\log n})$ is subpolynomial but superpolylogarithmic — for $n = 10^{100}$, it is roughly $\\exp(48) \\approx 7 \\times 10^{20}$. A density formulation of this bound (count of $n \\leq x$ satisfying it is $\\geq x^{1-\\varepsilon}$) is described in the file's docstring; it is not formally axiomatized."
     },
     {
       "id": "distribution",
@@ -131,7 +131,7 @@
       "startLine": 119,
       "endLine": 126,
       "summary": "Defines `IsSmooth n y` (all prime factors of $n$ are $\\leq y$). The connection to small $t_n$ appears only as a documentation comment — no formal axiom `smooth_numbers_small_t` is declared.",
-      "mathContext": "$\\text{IsSmooth}(n, y) \\equiv \\forall p,\\, p \\text{ prime} \\wedge p \\mid n \\Rightarrow p \\leq y$. This is the standard definition of $y$-smooth (or $y$-friable) numbers. The count $\\Psi(x,y) = |\\{n \\leq x : P(n) \\leq y\\}|$ is governed by the Dickman function: $\\Psi(x, x^{1/u}) \\sim x\\rho(u)$. The axiom `smooth_numbers_small_t` gives $t_n \\leq y$ for $y$-smooth non-squares with $y \\geq 2$, showing the square-completion problem is easy for smooth numbers."
+      "mathContext": "$\\text{IsSmooth}(n, y) \\equiv \\forall p,\\, p \\text{ prime} \\wedge p \\mid n \\Rightarrow p \\leq y$. This is the standard definition of $y$-smooth (or $y$-friable) numbers. The count $\\Psi(x,y) = |\\{n \\leq x : P(n) \\leq y\\}|$ is governed by the Dickman function: $\\Psi(x, x^{1/u}) \\sim x\\rho(u)$. Folklore expects $t_n \\leq y$ for $y$-smooth non-squares with $y \\geq 2$, showing the square-completion problem is easy for smooth numbers; this connection is recorded as a documentation comment in the file rather than as a formal axiom."
     },
     {
       "id": "summary",
