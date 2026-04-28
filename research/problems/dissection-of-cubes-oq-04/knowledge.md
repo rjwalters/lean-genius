@@ -64,6 +64,55 @@ The key geometric fact: all regular solid dihedral angles except the cube (π/2)
 
 ---
 
+## Session 9 (2026-04-28) — Audit & Metadata Reconciliation
+
+**Mode**: REVISIT
+**Outcome**: completed — all axioms confirmed eliminated; metadata synced to verified state
+
+### What I Did
+
+1. Audited the OQ04 import chain: `DissectionOfCubesOQ04.lean` imports
+   `DissectionOfCubesOQ02` and `DissectionOfCubesOQ02OQ02`. Neither
+   imports the parent `DissectionOfCubes.lean` (which has 2 axioms about
+   cube subdivision unrelated to the Dehn classification).
+2. Verified that `tmul_infinite_order_ne_zero` is a fully proved
+   `theorem` at `DissectionOfCubesOQ02OQ02.lean:214` (Module.Flat ℤ ℝ
+   via Bézout + NoZeroSMulDivisors, lTensor preserves injectivity).
+3. Verified 0 `axiom ` declarations and 0 `sorry` across OQ02, OQ02OQ02,
+   OQ04. The Aristotle companion (OQ04Aristotle.lean, 3 sorries) is for
+   proof search, not the main theorem.
+4. Found that PR #12587 (2026-04-26) and PR #13118 (2026-04-27) had
+   already corrected the gallery metadata to verified/0 axioms, but the
+   bundled-syncs PR #13325 (a17ded32bd6) and the szemeredi-hypergraph
+   audit PR #13370 (b85f48f2133) inadvertently reverted the gallery
+   meta back to axiomatized/1 axiom. The Lean file's own header
+   "Axiom Budget" section was also stale (claiming 1 inherited axiom).
+
+### Key Findings
+
+- OQ04 is verified-equivalent (0 own axioms, 0 sorries, no axioms in
+  import chain). Two independent prior PRs had already concluded this.
+- The metadata regression was caused by bundled meta-sync PRs that
+  overwrote the corrected fields with stale values from working copies.
+
+### Files Modified (no proof changes)
+
+- `proofs/Proofs/DissectionOfCubesOQ04.lean` — Axiom Budget header and
+  Part VI Axiom Audit comment updated to reflect 0 axioms.
+- `src/data/proofs/dissection-of-cubes-oq-04/meta.json` — status
+  axiomatized→verified, badge axiom→verified, axiomCount 1→0,
+  leanFile.axiomCount 1→0, assumptions text rewritten,
+  conclusion.openQuestions[0] marked RESOLVED.
+- `src/data/research/problems/dissection-of-cubes-oq-04.json` — status
+  active→completed, phase ACT→COMPLETED, currentState refreshed,
+  knowledge.progressSummary updated to VERIFIED.
+
+### Next Steps
+
+- None. OQ04 closes the cube-isolation classification.
+
+---
+
 ## Dead Ends
 
 - Edge-count scaling approach for `cube_unique_zero_dehn` was wrong — `tmul_infinite_order_ne_zero` is the right unifier
