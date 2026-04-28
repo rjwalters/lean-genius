@@ -49,10 +49,10 @@
       "HasPolylogBound definition: the Erdős question",
       "ErdosQuestion definition: main problem formulation",
       "mordell_unbounded axiom: limsup = infinity",
-      "mahler_1935: (log n)^{1/4} lower bound",
       "stewart_2008 axiom: (log n)^{11/13} lower bound",
+      "taxicab_1729 theorem: cubeRepresentations 1729 ≥ 2",
       "hardy_ramanujan_1729 theorem: taxicab number",
-      "density_of_sums: asymptotic density of cube sums",
+      "stewart_improves_mahler theorem: 11/13 > 1/4",
       "erdos_829_summary theorem: combines Stewart and Mordell results"
     ],
     "axiomCount": 2,
@@ -63,7 +63,7 @@
     "historicalContext": "**Erdős Problem #829** asks whether the number of representations of $n$ as a sum of two positive cubes is bounded by a power of $\\log n$. This question sits at the intersection of additive number theory, the theory of elliptic curves, and analytic number theory. The representation function $r_2(n)$ counts the number of ways to write $n = a^3 + b^3$, equivalent to the convolution $(1_A * 1_A)(n)$ where $A$ is the set of perfect cubes.\n\nThe study of sums of two cubes has a rich history stretching back centuries. Euler (1756) studied the equation $x^3 + y^3 = z^3 + w^3$ and found parametric families of solutions. Ramanujan (c. 1919) famously identified 1729 as the smallest 'taxicab number' — expressible as $1^3 + 12^3 = 9^3 + 10^3$. Mordell established that $\\limsup r_2(n) = \\infty$, proving the representation function is unbounded, by exploiting the connection between cube-sum representations and rational points on the elliptic curve $E_n: x^3 + y^3 = n$.\n\nMahler (1935) gave the first quantitative lower bound in his landmark paper 'On the Lattice Points on Curves of Genus 1' in *Proc. London Math. Soc.*, proving $r_2(n) \\gg (\\log n)^{1/4}$ for infinitely many $n$. His method applied the geometry of numbers to count lattice points on twists of the Fermat cubic. This exponent stood for over 70 years until Stewart (2008) achieved a breakthrough in *Int. Math. Res. Not. IMRN*, improving it to $r_2(n) \\gg (\\log n)^{11/13}$ infinitely often. Stewart's proof uses deep results on the distribution of solutions to cubic Thue equations $F(x,y) = h$ for binary cubic forms $F$.\n\nThe fundamental difficulty of the upper bound is that it requires simultaneously controlling the Mordell-Weil ranks of infinitely many elliptic curves $x^3 + y^3 = n$. Each representation of $n$ as a cube sum corresponds to a rational point on $E_n$, so bounding $r_2(n)$ means bounding the number of rational points — a problem intimately connected to the Birch and Swinnerton-Dyer conjecture and the distribution of elliptic curve ranks.",
     "problemStatement": "**Problem Statement (Open)**\n\nLet $A \\subset \\mathbb{N}$ be the set of perfect cubes. Is it true that\n\n$1_A * 1_A(n) \\ll (\\log n)^{O(1)}$?\n\nIn words: Is the number of representations of $n$ as a sum of two cubes bounded by some power of $\\log n$?\n\n**Status: OPEN**\n\nKnown: $r_2(n) \\gg (\\log n)^{11/13}$ infinitely often (Stewart 2008), but no upper bound has been established.",
     "text": "Is 1_A * 1_A(n) << (log n)^{O(1)} where A is the set of cubes? OPEN. Known: Mordell (unbounded), Mahler (>>(log n)^{1/4}), Stewart (>>(log n)^{11/13}).",
-    "proofStrategy": "**Formalization Approach**\n\nThe formalization proceeds in seven parts:\n\n1. **Cubes and Representation Function (lines 38–70):** Define `IsCube`, `CubeSet`, and the counting functions `cubeRepresentations` (unordered) and `orderedCubeRepresentations` (ordered) via Finset filtering over $\\{0, \\ldots, n\\}^2$.\n\n2. **The Erdős Question (lines 72–88):** `HasPolylogBound` encodes the existence of constants $c, C > 0$ such that $r_2(n) \\leq C (\\log n)^c$ for all $n \\geq 2$. `ErdosQuestion` is defined as `HasPolylogBound`.\n\n3. **Known Lower Bounds (lines 90–127):** Axiomatize the three key results: Mordell's unboundedness, Mahler's $(\\log n)^{1/4}$ bound, and Stewart's $(\\log n)^{11/13}$ bound.\n\n4. **Famous Examples (lines 128–157):** The taxicab numbers $\\text{Ta}(2) = 1729$ and $\\text{Ta}(3) = 87539319$ as concrete witnesses.\n\n5. **Theoretical Framework (lines 159–181):** Asymptotic density $N(x) \\sim c \\cdot x^{2/3}$ and the fact that most integers are not cube sums.\n\n6. **Exponent Comparison (lines 183–189):** `norm_num` verifies $11/13 > 1/4$.\n\n7. **Summary (lines 191–218):** Conjunction of Stewart and Mordell results.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization proceeds in seven parts:\n\n1. **Cubes and Representation Function (lines 38–70):** Define `IsCube`, `CubeSet`, and the counting functions `cubeRepresentations` (unordered) and `orderedCubeRepresentations` (ordered) via Finset filtering over $\\{0, \\ldots, n\\}^2$.\n\n2. **The Erdős Question (lines 72–88):** `HasPolylogBound` encodes the existence of constants $c, C > 0$ such that $r_2(n) \\leq C (\\log n)^c$ for all $n \\geq 2$. `ErdosQuestion` is defined as `HasPolylogBound`.\n\n3. **Known Lower Bounds (lines 90–127):** Axiomatize the two key results: Mordell's unboundedness and Stewart's $(\\log n)^{11/13}$ bound. Mahler's $(\\log n)^{1/4}$ bound appears as historical commentary only — it is not formalized as a Lean declaration.\n\n4. **Famous Examples (lines 128–149):** The taxicab theorem $\\text{Ta}(2) = 1729$, proved via `taxicab_1729` and `hardy_ramanujan_1729`; $\\text{Ta}(3) = 87539319$ appears as historical commentary only.\n\n5. **Theoretical Framework (lines 150–160):** Descriptive commentary on asymptotic density $N(x) \\sim c \\cdot x^{2/3}$; no Lean declarations.\n\n6. **Exponent Comparison (lines 161–168):** `norm_num` verifies $11/13 > 1/4$.\n\n7. **Summary (lines 169–196):** Conjunction of Stewart and Mordell results.",
     "keyInsights": [
       "**Elliptic Curve Bridge:** Each representation $n = a^3 + b^3$ corresponds to a rational point $(a, b)$ on $E_n: x^3 + y^3 = n$, transforming the combinatorial question into one about Mordell-Weil ranks of elliptic curve families",
       "**73 Years of Progress on Exponents:** Mahler's 1935 exponent of $1/4$ stood until Stewart's 2008 improvement to $11/13$, more than tripling the exponent via cubic Thue equation methods",
@@ -105,40 +105,40 @@
     {
       "id": "lower-bounds",
       "title": "Known Lower Bounds",
-      "summary": "Axiomatizes Mordell ($\\limsup r_2(n) = \\infty$), Mahler 1935 ($r_2(n) \\gg (\\log n)^{1/4}$ i.o.), and Stewart 2008 ($r_2(n) \\gg (\\log n)^{11/13}$ i.o.)",
+      "summary": "Axiomatizes Mordell's unboundedness ($\\limsup r_2(n) = \\infty$) and Stewart's 2008 lower bound ($r_2(n) \\gg (\\log n)^{11/13}$ i.o.); Mahler's 1935 $1/4$ exponent appears in historical commentary only",
       "startLine": 90,
       "endLine": 127,
-      "mathContext": "Axiomatizes Mordell ($\\limsup r_2(n) = \\infty$), Mahler 1935 ($r_2(n) \\gg (\\$\\log n$)^{1/4}$ i.o.), and Stewart 2008 ($r_2(n) \\gg (\\$\\log n$)^{11/13}$ i.o.)"
+      "mathContext": "Axiomatizes Mordell's unboundedness ($\\limsup r_2(n) = \\infty$) and Stewart's 2008 lower bound ($r_2(n) \\gg (\\$\\log n$)^{11/13}$ i.o.); Mahler's 1935 $1/4$ exponent appears in historical commentary only"
     },
     {
       "id": "famous-examples",
       "title": "Taxicab Numbers",
-      "summary": "Hardy-Ramanujan number $1729 = 1^3 + 12^3 = 9^3 + 10^3$ (Ta(2)) and $87539319$ (Ta(3) with 3 representations)",
+      "summary": "Hardy-Ramanujan number $1729 = 1^3 + 12^3 = 9^3 + 10^3$ (Ta(2)), proved via `taxicab_1729` and `hardy_ramanujan_1729`; Ta(3) = 87539319 appears as historical commentary only",
       "startLine": 128,
-      "endLine": 158,
-      "mathContext": "Hardy-Ramanujan number $1729 = $1^{3}$ + $12^{3}$ = $9^{3}$ + $10^{3}$$ (Ta(2)) and $87539319$ (Ta(3) with 3 representations)"
+      "endLine": 149,
+      "mathContext": "Hardy-Ramanujan number $1729 = $1^{3}$ + $12^{3}$ = $9^{3}$ + $10^{3}$$ (Ta(2)), proved via `taxicab_1729` and `hardy_ramanujan_1729`; Ta(3) = 87539319 appears as historical commentary only"
     },
     {
       "id": "theory",
       "title": "Asymptotic Density",
-      "summary": "Counting function $N(x) = |\\{n \\leq x : r_2(n) > 0\\}| \\sim c \\cdot x^{2/3}$, implying density zero for the sumset $A + A$",
-      "startLine": 159,
-      "endLine": 182,
-      "mathContext": "Mathematical content: Counting function $N(x) = |\\{n \\leq x : r_2(n) > 0\\}| \\sim c \\cdot x^{2/3}$, implying density zero for the sumset $A + A$"
+      "summary": "Descriptive commentary (no Lean declarations): notes that $N(x) = |\\{n \\leq x : r_2(n) > 0\\}| \\sim c \\cdot x^{2/3}$, implying density zero for the sumset $A + A$",
+      "startLine": 150,
+      "endLine": 160,
+      "mathContext": "Mathematical content: Descriptive commentary only — counting function $N(x) \\sim c \\cdot x^{2/3}$ and cube-free number context; no Lean declarations in this range"
     },
     {
       "id": "the-gap",
       "title": "Exponent Comparison",
       "summary": "Verified inequality $11/13 > 1/4$ confirming Stewart's improvement over Mahler, proved by `norm_num`",
-      "startLine": 183,
-      "endLine": 190,
+      "startLine": 161,
+      "endLine": 168,
       "mathContext": "Bound: Verified inequality $11/13 > 1/4$ confirming Stewart's improvement over Mahler, proved by `norm_num`"
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "Conjunction of Stewart's quantitative bound and Mordell's unboundedness: $\\langle \\text{stewart\\_2008}, \\text{mordell\\_unbounded} \\rangle$",
-      "startLine": 191,
+      "startLine": 169,
       "endLine": 196,
       "mathContext": "Bound: Conjunction of Stewart's quantitative bound and Mordell's unboundedness: $\\langle \\text{stewart\\_2008}, \\text{mordell\\_unbounded} \\rangle$"
     }
