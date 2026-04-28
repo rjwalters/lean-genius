@@ -29,7 +29,7 @@
     "historicalContext": "Erdős posed Problem #926 in his 1971 paper 'Some unsolved problems in graph theory and combinatorial analysis,' asking whether the Turán number of a specific graph $H_k$ satisfies $\\mathrm{ex}(n; H_k) \\ll_k n^{3/2}$. He claimed a proof for $k = 3$ in that paper. The graph $H_k$ has a central vertex $x$ adjacent to $k$ vertices $y_i$, plus $\\binom{k}{2}$ witness vertices $z_{ij}$ each adjacent to exactly $y_i$ and $y_j$. Füredi (1991, Combinatorica) proved the general case: $\\mathrm{ex}(n; H_k) \\ll (kn)^{3/2}$ using probabilistic methods and dependent random choice — a technique pioneered for embedding sparse forbidden subgraphs. Alon, Krivelevich, and Sudakov (2003, Combin. Probab. Comput.) refined this to $\\mathrm{ex}(n; H_k) \\ll k \\cdot n^{3/2}$, saving a factor of $\\sqrt{k}$. The lower bound $\\mathrm{ex}(n; H_k) \\gg n^{3/2}$ is immediate from $C_4 \\subseteq H_k$ (for $k \\geq 3$) and the Kővári-Sós-Turán theorem (1954). The problem connects to the broader 2-degenerate conjecture (Erdős Problem 146), since all $z_{ij}$ vertices have degree 2.",
     "problemStatement": "Let $k \\geq 4$. Is it true that $\\mathrm{ex}(n; H_k) \\ll_k n^{3/2}$, where $H_k$ is the graph on vertices $x, y_1, \\ldots, y_k, z_{ij}$ ($1 \\leq i < j \\leq k$), with $x$ adjacent to all $y_i$ and each $z_{ij}$ adjacent to $y_i$ and $y_j$?",
     "text": "For k ≥ 4, is it true that ex(n; H_k) ≪_k n^(3/2), where H_k is the graph with central vertex x adjacent to k vertices y_1,...,y_k, and (k choose 2) vertices z_ij each adjacent to a unique pair y_i, y_j? Answer: YES. Proved by Füredi (1991) with bound (kn)^(3/2), improved by Alon-Krivelevich-Sudakov (2003) to k·n^(3/2).",
-    "proofStrategy": "The formalization defines the vertex count $|V(H_k)| = 1 + k + \\binom{k}{2}$ and edge count $|E(H_k)| = k^2$, with computed examples ($H_4$ has 11 vertices, 16 edges). Structural properties ($C_4$-containment, 2-degeneracy, bipartiteness) are axiomatized. The Kővári-Sós-Turán theorem, Füredi's bound, and the AKS improvement are axiomatized. Three theorems are proved: `erdos_926` (trivially `True`), `erdos_926_summary` (conjunction of `True`s), and `erdos_926_order`.",
+    "proofStrategy": "The formalization defines the vertex count $|V(H_k)| = 1 + k + \\binom{k}{2}$ and edge count $|E(H_k)| = k^2$, with computed examples ($H_4$ has 11 vertices, 16 edges). Structural properties ($C_4$-containment, 2-degeneracy, bipartiteness), the Kővári-Sós-Turán theorem, Füredi's bound, and the AKS improvement are all documented in docstring comments — no axiom declarations exist in the file. Three theorems are formally proved: `erdos_926` (trivially `True`), `erdos_926_summary` (conjunction of `True`s), and `erdos_926_order`.",
     "keyInsights": [
       "**$C_4$-containment gives the lower bound**: $H_k \\supseteq C_4$ (via cycle $x - y_1 - z_{12} - y_2 - x$), so $\\mathrm{ex}(n; H_k) \\geq \\mathrm{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$ by Kővári-Sós-Turán.",
       "**2-degeneracy**: All $z_{ij}$ vertices have degree exactly 2, making $H_k$ 2-degenerate. This connects to the general conjecture (Problem 146) that $\\mathrm{ex}(n; H) \\ll n^{3/2}$ for all 2-degenerate $H$.",
@@ -64,64 +64,64 @@
       "title": "Properties of $H_k$",
       "startLine": 75,
       "endLine": 102,
-      "summary": "Axiomatizes three structural properties: $C_4 \\subseteq H_k$ for $k \\geq 3$ (via cycle $x$-$y_1$-$z_{12}$-$y_2$), 2-degeneracy ($z_{ij}$ vertices have degree 2), and bipartiteness with parts $\\{x\\} \\cup \\{z_{ij}\\}$ and $\\{y_i\\}$.",
-      "mathContext": "Axiomatizes three structural properties: $C_4 \\subseteq H_k$ for $k \\geq 3$ (via cycle $x$-$y_1$-$z_{12}$-$y_2$), 2-degeneracy ($z_{ij}$ vertices have degree 2), and bipartiteness with parts $\\{x\\} \\cup \\{z_{ij}\\}$ and $\\{y_i\\}$."
+      "summary": "Three structural properties described in docstring comments: $C_4 \\subseteq H_k$ for $k \\geq 3$ (via cycle $x$-$y_1$-$z_{12}$-$y_2$), 2-degeneracy ($z_{ij}$ vertices have degree 2), and bipartiteness. No axiom declarations in this section.",
+      "mathContext": "Three structural properties in docstring comments only; no formal axiom or theorem declarations in this section."
     },
     {
       "id": "extremal-numbers",
       "title": "Extremal Numbers",
       "startLine": 103,
       "endLine": 129,
-      "summary": "Axiomatizes the extremal number function $\\mathrm{ex}(n; H)$, the Kővári-Sós-Turán theorem ($\\mathrm{ex}(n; K_{r,s}) \\leq \\frac{1}{2}(s-1)^{1/r} n^{2-1/r} + O(n)$), and $\\mathrm{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$.",
-      "mathContext": "Axiomatizes the extremal number function $\\mathrm{ex}(n; H)$, the Kővári-Sós-Turán theorem ($\\mathrm{ex}(n; K_{r,s}) \\leq \\frac{1}{2}(s-1)^{1/r} n^{2-1/r} + O(n)$), and $\\mathrm{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$."
+      "summary": "Describes in docstring comments: the extremal number function $\\mathrm{ex}(n; H)$, the Kővári-Sós-Turán theorem ($\\mathrm{ex}(n; K_{r,s}) \\leq \\frac{1}{2}(s-1)^{1/r} n^{2-1/r} + O(n)$), and $\\mathrm{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$. No axiom declarations in this section.",
+      "mathContext": "Extremal number facts described in docstring comments; no formal axiom or theorem declarations in this section."
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound",
       "startLine": 130,
       "endLine": 144,
-      "summary": "Axiomatizes $\\mathrm{ex}(n; H_k) \\gg n^{3/2}$ from $C_4 \\subseteq H_k$: any $C_4$-free graph is $H_k$-free, so $\\mathrm{ex}(n; C_4) \\leq \\mathrm{ex}(n; H_k)$.",
-      "mathContext": "Axiomatized: Axiomatizes $\\mathrm{ex}(n; H_k) \\gg n^{3/2}$ from $C_4 \\subseteq H_k$: any $C_4$-free graph is $H_k$-free, so $\\mathrm{ex}(n; C_4) \\leq \\mathrm{ex}(n; H_k)$."
+      "summary": "Documents in a docstring: $\\mathrm{ex}(n; H_k) \\gg n^{3/2}$ from $C_4 \\subseteq H_k$ (any $C_4$-free graph is $H_k$-free, so $\\mathrm{ex}(n; C_4) \\leq \\mathrm{ex}(n; H_k)$). No axiom declarations in this section.",
+      "mathContext": "Lower bound argument described in a docstring comment; no formal declarations in this section."
     },
     {
       "id": "furedi",
       "title": "Füredi's Theorem (1991)",
       "startLine": 145,
       "endLine": 157,
-      "summary": "Axiomatizes Füredi's upper bound: $\\mathrm{ex}(n; H_k) \\leq C \\cdot (kn)^{3/2}$ for $k \\geq 3$, proved via dependent random choice.",
-      "mathContext": "Axiomatized: Axiomatizes Füredi's upper bound: $\\mathrm{ex}(n; H_k) \\leq C \\cdot (kn)^{3/2}$ for $k \\geq 3$, proved via dependent random choice."
+      "summary": "Documents in a docstring: Füredi's upper bound $\\mathrm{ex}(n; H_k) \\leq C \\cdot (kn)^{3/2}$ for $k \\geq 3$ via dependent random choice. No axiom declarations in this section.",
+      "mathContext": "Füredi's theorem described in a docstring comment; no formal axiom or theorem declarations in this section."
     },
     {
       "id": "aks",
       "title": "Alon-Krivelevich-Sudakov (2003)",
       "startLine": 158,
       "endLine": 178,
-      "summary": "Axiomatizes the AKS improvement: $\\mathrm{ex}(n; H_k) \\leq C \\cdot k \\cdot n^{3/2}$, saving $\\sqrt{k}$ from Füredi. Proves `erdos_926 : True` (placeholder for the solved problem).",
-      "mathContext": "Verified: Axiomatizes the AKS improvement: $\\mathrm{ex}(n; H_k) \\leq C \\cdot k \\cdot n^{3/2}$, saving $\\sqrt{k}$ from Füredi. Proves `erdos_926 : True` (placeholder for the solved problem)."
+      "summary": "Documents in a docstring: AKS improvement $\\mathrm{ex}(n; H_k) \\leq C \\cdot k \\cdot n^{3/2}$, saving $\\sqrt{k}$ from Füredi. Formally proves `erdos_926 : True` (placeholder theorem).",
+      "mathContext": "AKS bound described in a docstring; `erdos_926 : True` is the only formal theorem proved in this section."
     },
     {
       "id": "degeneracy",
       "title": "Connection to Degeneracy",
       "startLine": 179,
       "endLine": 199,
-      "summary": "Axiomatizes the 2-degenerate conjecture (Problem 146): $\\mathrm{ex}(n; H) \\ll n^{3/2}$ for all 2-degenerate $H$. Also the general $d$-degenerate bound $\\mathrm{ex}(n; H) = O(n^{2-1/d})$.",
-      "mathContext": "Axiomatizes the 2-degenerate conjecture (Problem 146): $\\mathrm{ex}(n; H) \\ll n^{3/2}$ for all 2-degenerate $H$. Also the general $d$-degenerate bound $\\mathrm{ex}(n; H) = $O(n^{2-1/d})$$."
+      "summary": "Documents in docstrings: the 2-degenerate conjecture (Problem 146) that $\\mathrm{ex}(n; H) \\ll n^{3/2}$ for all 2-degenerate $H$, and the general $d$-degenerate bound $\\mathrm{ex}(n; H) = O(n^{2-1/d})$. No axiom declarations in this section.",
+      "mathContext": "2-degenerate conjecture and degeneracy bounds described in docstring comments; no formal axiom or theorem declarations in this section."
     },
     {
       "id": "related",
       "title": "Related Problems",
       "startLine": 200,
       "endLine": 218,
-      "summary": "Defines `hkMinusX` (the graph $H_k$ with vertex $x$ removed, related to Problem 1021). Axiomatizes Erdős's 1971 claim for $k = 3$.",
-      "mathContext": "Formal definition: Defines `hkMinusX` (the graph $H_k$ with vertex $x$ removed, related to Problem 1021). Axiomatizes Erdős's 1971 claim for $k = 3$."
+      "summary": "Defines `hkMinusX` (the graph $H_k$ with vertex $x$ removed, related to Problem 1021). Erdős's 1971 claim for $k = 3$ is described in a docstring comment, not as an axiom.",
+      "mathContext": "`hkMinusX` is the only formal definition; Erdős's k=3 claim appears in a docstring only."
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Method Connection",
       "startLine": 219,
       "endLine": 235,
-      "summary": "Axiomatizes dependent random choice (common neighborhood of random $r$-tuple gives controlled, high-codegree set) and the container method as alternative approaches.",
-      "mathContext": "Axiomatized: Axiomatizes dependent random choice (common neighborhood of random $r$-tuple gives controlled, high-codegree set) and the container method as alternative approaches."
+      "summary": "Documents in docstrings: dependent random choice (common neighborhood of random $r$-tuple gives controlled, high-codegree set) and the container method as alternative approaches. No axiom declarations in this section.",
+      "mathContext": "Probabilistic method approaches described in docstring comments; no formal axiom or theorem declarations in this section."
     }
   ],
   "conclusion": {
