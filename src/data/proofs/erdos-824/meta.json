@@ -47,8 +47,7 @@
       "SigmaEqual definition: pairs with equal σ values",
       "IsCoprimeSigmaEqualPair definition: coprime σ-equal pairs",
       "h counting function: number of valid pairs up to x",
-      "erdos_1974_limsup: h(x)/x unbounded",
-      "pollack_pomerance_2016: h(x)/x → ∞",
+      "h_superlinear axiom: h(x)/x → ∞ (Pollack-Pomerance 2016)",
       "StrongConjecture definition: h(x) > x^{2-ε}",
       "IsSquarefree definition: no repeated prime factors",
       "WeisenbergCondition definition: eliminating trivial duplicates",
@@ -82,61 +81,61 @@
       "title": "Sum of Divisors Function",
       "summary": "Definition of σ(n) and basic properties",
       "startLine": 43,
-      "endLine": 83,
+      "endLine": 82,
       "mathContext": "Formal definition: Definition of σ(n) and basic properties"
     },
     {
       "id": "coprime-pairs",
       "title": "Coprime σ-Equal Pairs",
       "summary": "Definition of the counting function h(x)",
-      "startLine": 84,
-      "endLine": 117,
+      "startLine": 83,
+      "endLine": 115,
       "mathContext": "Formal definition: Definition of the counting function h(x)"
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "summary": "Erdős 1974, Pollack-Pomerance 2016, superlinear growth",
-      "startLine": 118,
-      "endLine": 143,
-      "mathContext": "Mathematical content: Erdős 1974, Pollack-Pomerance 2016, superlinear growth"
+      "summary": "h_superlinear axiom encoding Pollack-Pomerance 2016 superlinear growth",
+      "startLine": 116,
+      "endLine": 134,
+      "mathContext": "Mathematical content: h_superlinear axiom encoding Pollack-Pomerance 2016 superlinear growth"
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "summary": "Strong conjecture h(x) > x^{2-o(1)} and upper bound",
-      "startLine": 144,
-      "endLine": 167,
+      "startLine": 135,
+      "endLine": 157,
       "mathContext": "Bound: Strong conjecture h(x) > x^{2-o(1)} and upper bound"
     },
     {
       "id": "coprimality",
       "title": "Why Coprimality Matters",
       "summary": "Example coprime σ-equal pair (14, 15)",
-      "startLine": 168,
-      "endLine": 183,
+      "startLine": 158,
+      "endLine": 172,
       "mathContext": "Mathematical content: Example coprime σ-equal pair (14, 15)"
     },
     {
       "id": "variants",
       "title": "Related Variants",
       "summary": "Squarefree and Weisenberg variants",
-      "startLine": 184,
-      "endLine": 212,
+      "startLine": 173,
+      "endLine": 200,
       "mathContext": "Mathematical content: Squarefree and Weisenberg variants"
     },
     {
       "id": "connections",
       "title": "Connections to Other Problems",
       "summary": "Untouchable numbers",
-      "startLine": 213,
-      "endLine": 224
+      "startLine": 201,
+      "endLine": 211
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_824_summary combining superlinear growth and conjecture",
-      "startLine": 225,
+      "startLine": 212,
       "endLine": 238,
       "mathContext": "Mathematical content: erdos_824_summary combining superlinear growth and conjecture"
     }
