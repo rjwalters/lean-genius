@@ -2,7 +2,7 @@
   "slug": "dirichlets-theorem-oq-02",
   "title": "Generalized Riemann Hypothesis for Dirichlet L-functions: All non-trivial zer...",
   "phase": "ACT",
-  "status": "active",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "COMPLETE: GRH formalization (DirichletsTheoremOQ02OQ01.lean, axiomatized) and elementary primes≡3 mod 4 (DirichletsTheoremOQ02.lean, verified) both stable on main. 0 sorries across all 6 Dirichlet files. Top-level status synced from 'active' to 'completed' to match currentState.phase.",
     "builtItems": [
       "Created DirichletsTheoremOQ02OQ01.lean: GRH formalization (445 lines, 0 sorry)",
       "15 theorems proved: GRH_iff_right_half, GRH_zero_free_region, GRH_no_siegel_zeros, GRH_L_nonzero_right_of_half, GRH_consequence_chain, GRH_error_sublinear, etc.",
@@ -74,7 +74,7 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.817Z",
-  "lastUpdate": "2026-03-25T00:00:00Z",
+  "lastUpdate": "2026-04-28T00:00:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -118,7 +118,7 @@
       "theoremCount": 16,
       "axiomCount": 4,
       "defCount": 9,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ02OQ01.lean"
     },

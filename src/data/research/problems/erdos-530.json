@@ -1,8 +1,8 @@
 {
   "slug": "erdos-530",
   "title": "Erdős #530",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-01-13T04:39:49.623Z",
     "iteration": 2,
-    "focus": "Axiom elimination — proved sidon_upper_bound, partially proved sidon_sum_count",
+    "focus": "Axiomatized stable: 0 sorries, 2 foundational axioms — komlos_sulyok_szemeredi (deep theorem, not in Mathlib) and alon_erdos_partition_conjecture (genuinely open). sidon_sum_count is fully proved despite stale focus saying 'partially'.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — axiomatized formalization stable. Both axioms are appropriate: KSS is a deep 1975 result not yet in Mathlib, Alon–Erdős is the open conjecture itself.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed incorrect universal upper bound in ErdosProblem530 (counterexample: powers of 2 are Sidon). Proved interval upper bound: Sidon subsets of {1,...,N} have |S|^2 <= 4N. Proved corrected problem statement from KSS axiom + interval bound. 4 new theorems, 0 new sorries.",
+    "progressSummary": "COMPLETED (axiomatized): Erdos530Problem.lean has 0 sorry, 2 axiom, 15 theorems on main. Gallery entry erdos-530 is status=axiomatized, badge=axiom. Both remaining axioms are non-Mathlib foundational results (KSS lower bound, Alon–Erdős partition conjecture).",
     "builtItems": [
       "maxSidonSize_le_card: proved maxSidonSize A ≤ A.card (Erdos530Problem.lean:87)",
       "sidon_upper_bound: PROVED (was axiom) — trivial bound from subset property (Erdos530Problem.lean:95)",
@@ -84,7 +84,7 @@
     "mathlib": []
   },
   "started": "2026-01-13T04:39:49.623Z",
-  "lastUpdate": "2026-03-24T09:00:00.000Z",
+  "lastUpdate": "2026-04-28T00:00:00Z",
   "significance": 5,
   "tractability": 3,
   "leanFiles": [

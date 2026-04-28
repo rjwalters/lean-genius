@@ -188,9 +188,27 @@ theorem d3_4_conjectured : conjecturedValue 3 4 = 7 := by norm_num
 /-- d_4(3) should be 9 according to the conjecture. -/
 theorem d4_3_conjectured : conjecturedValue 4 3 = 9 := by norm_num
 
-/- d_3(10): Solymosi-Solymosi (2017) proved d_3(10) ≤ 14.
-    The conjecture predicts d_3(10) = 13.
-    Formally: dr 3 10 ≤ 14. -/
+/-- **Solymosi-Solymosi (2017):** d_3(10) ≤ 14.
+    The conjecture predicts d_3(10) = 13. Axiomatized as a deep published result.
+    Reference: Solymosi-Solymosi, "On a hypergraph Turán problem of Frankl",
+    Combinatorica 37 (2017). -/
+axiom solymosi_d3_10 : dr 3 10 ≤ 14
+
+/-- The Solymosi-Solymosi bound differs from the conjectured value by at most 1. -/
+theorem solymosi_d3_10_gap : dr 3 10 ≤ conjecturedValue 3 10 + 1 := by
+  unfold conjecturedValue
+  have h := solymosi_d3_10
+  omega
+
+/-- Lower bound on d_3(10) from BES: d_3(10) ≥ 13. -/
+theorem bes_d3_10_lower : dr 3 10 ≥ 13 := by
+  have h := bes_lower_bound 3 10 (by omega) (by omega)
+  unfold conjecturedValue at h
+  omega
+
+/-- Combined bounds: 13 ≤ d_3(10) ≤ 14 (the conjecture says equality at 13). -/
+theorem d3_10_bounds : 13 ≤ dr 3 10 ∧ dr 3 10 ≤ 14 :=
+  ⟨bes_d3_10_lower, solymosi_d3_10⟩
 
 /- ## Part IX: The Main Conjecture -/
 

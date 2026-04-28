@@ -203,11 +203,11 @@ claim_problem() {
         return 1
     fi
 
-    # Check if already completed
+    # Check if already completed/graduated/blocked (terminal statuses, not claimable)
     local status
     status=$(jq -r ".candidates[] | select(.id == \"$problem_id\") | .status" "$POOL_FILE")
-    if [[ "$status" == "completed" ]]; then
-        echo "Error: Problem '$problem_id' already completed" >&2
+    if [[ "$status" == "completed" ]] || [[ "$status" == "graduated" ]] || [[ "$status" == "blocked" ]]; then
+        echo "Error: Problem '$problem_id' has terminal status '$status' (not claimable)" >&2
         return 1
     fi
 
@@ -289,7 +289,7 @@ claim_random_problem() {
         score=$(get_knowledge_score "$problem_id")
         available+=("$problem_id")
         scores+=("$score")
-    done < <(jq -r '.candidates[] | select(.status != "completed" and .status != "blocked") | .id' "$POOL_FILE" 2>/dev/null)
+    done < <(jq -r '.candidates[] | select(.status != "completed" and .status != "blocked" and .status != "graduated") | .id' "$POOL_FILE" 2>/dev/null)
 
     if [[ ${#available[@]} -eq 0 ]]; then
         echo "No available problems to claim" >&2
