@@ -1055,18 +1055,31 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
       · -- Case i = j (diagonal kill via submodule_der_diagonal_kill)
         rw [hij, submodule_der_diagonal_kill f hf j hj,
             submodule_der_diagonal_kill g hg j hj]
-      · -- Case j ≠ 0, i ≠ j: requires antisymmetry + Fano-line Leibniz analysis
-        sorry
+      · -- Case j ≠ 0, i ≠ j: split on whether i = 0 (real-part) or i ≠ 0
+        by_cases hi : i = 0
+        · -- Case i = 0: real-part preservation kills both sides
+          subst hi
+          rw [submodule_der_real_part f hf j hj,
+              submodule_der_real_part g hg j hj]
+        · -- Case j ≠ 0, i ≠ 0, i ≠ j: ev coordinates + antisymmetry + Fano lines
+          -- Antisymmetry reduces this to one ordering; ev=0 covers (j,i) pairs with
+          -- i ∈ {1, 2, 4}; the remaining 7 upper-triangular pairs (column 3, columns
+          -- 5, 6 with j > i) require Fano-line Leibniz analysis on the 7 multiplication
+          -- table triples (e₁·e₂=e₃, e₁·e₄=e₅, e₂·e₄=e₆, e₃·e₄=e₇, plus three more).
+          sorry
   intro k
   funext i
   exact hev k i
 
--- Note: The sorry above is for the algebraic extraction from ev=0 in the imaginary basis.
--- The j = 0 case (unit-kills) is now closed via `submodule_der_unit_zero`.
--- The remaining work for j ≥ 1 needs ~50 lines of Leibniz constraint applications:
---   * D(eⱼ)[j] = 0 from Leibniz on (eⱼ, eⱼ) using eⱼ² = -e₀ and submodule_der_unit_zero
---   * Antisymmetry D(eⱼ)[i] = -D(eᵢ)[j] from Leibniz on (eᵢ, eⱼ) + (eⱼ, eᵢ)
---   * The remaining 35 entries are forced via Fano-line trilinear Leibniz on the 7 lines.
+-- Note: The sorry above is the residual case (j ≠ 0, i ≠ 0, i ≠ j).
+-- Three structural reductions are now in place:
+--   * j = 0 case: closed via `submodule_der_unit_zero` (handles 8 entries).
+--   * i = j (diagonal): closed via `submodule_der_diagonal_kill` (handles 7 entries).
+--   * i = 0 (real-part): closed via `submodule_der_real_part` (handles 7 entries).
+-- 64 - 8 - 7 - 7 = 42 remaining entries (j ∈ {1,..,7}, i ∈ {1,..,7}, i ≠ j).
+-- The full closure requires combining the 14 ev=0 coords (from `hfg`) with
+-- antisymmetry (reduces 42 → 21 upper-triangular) and Fano-line Leibniz on
+-- 7 missing pairs (column 3 entries + (j,i) ∈ {(6,5),(7,5),(7,6)}).
 
 /-- The 14 basis derivations are linearly independent in OctonionDerSubmodule.
 
