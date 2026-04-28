@@ -94,7 +94,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 129 on Ramsey numbers R(n;k,r) avoiding monochromatic cliques, encoding the full Erdős–Gyárfás conjecture, the k=3 specialization, the known lower bound, and five structural properties. All 5 axioms encode results whose proofs require probabilistic methods or embedding arguments not currently available in Mathlib. The 0-sorry formalization provides a clean framework for stating and eventually proving these Ramsey-theoretic bounds.",
+    "summary": "The formalization captures Erdős Problem 129 on Ramsey numbers R(n;k,r) avoiding monochromatic cliques, encoding the full Erdős–Gyárfás conjecture, the k=3 specialization, the known lower bound, and five structural properties (0 sorries, 0 axiom declarations). The five deep results whose proofs require probabilistic methods or embedding arguments are stated as Lean `def : Prop` conjectures, not formal `axiom` declarations. The formalization provides a clean framework for stating and eventually proving these Ramsey-theoretic bounds.",
     "implications": "Resolution of the upper bound R(n;3,r) < C^{√n} would complete the characterization of the growth rate for anti-Ramsey numbers at clique size 3, establishing a sharp exponential threshold analogous to the Erdős–Szekeres bound for classical Ramsey numbers. The general conjecture would extend this to all clique sizes, potentially unifying probabilistic and algebraic approaches to Ramsey theory.",
     "openQuestions": [
       "Does R(n;3,r) < C^{√n} hold for some C > 1 depending on r?",

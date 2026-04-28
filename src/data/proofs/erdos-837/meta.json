@@ -106,7 +106,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #837 is OPEN. The formalization captures the density jump framework for $k$-uniform hypergraphs, records the elegant solution $A_2 = \\{1 - 1/m\\}$ for graphs via Erdős–Stone–Simonovits, and axiomatizes the central open question: characterize $A_3$ for 3-uniform hypergraphs. The file has 0 sorries but 4 axioms encoding the known and unknown results.",
+    "summary": "Erdős Problem #837 is OPEN. The formalization captures the density jump framework for $k$-uniform hypergraphs, records the elegant solution $A_2 = \\{1 - 1/m\\}$ for graphs via Erdős–Stone–Simonovits, and states the central open question: characterize $A_3$ for 3-uniform hypergraphs. The file has 0 sorries and 0 axiom declarations; the known and unknown results are encoded as `def : Prop` statements, not formal `axiom` declarations.",
     "implications": "**Theoretical Significance**: Characterizing $A_3$ would be a major breakthrough in hypergraph extremal theory, unifying our understanding of density phenomena across all uniformities.\n\nIt would resolve or subsume many specific open problems including the Turán tetrahedron conjecture. The structure of $A_3$—whether discrete like $A_2$, or having accumulation points, or even being uncountable—remains completely open.",
     "openQuestions": [
       "What is $A_3$ for 3-uniform hypergraphs? Is it countable or uncountable?",
