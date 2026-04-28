@@ -1061,25 +1061,168 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
           subst hi
           rw [submodule_der_real_part f hf j hj,
               submodule_der_real_part g hg j hj]
-        · -- Case j ≠ 0, i ≠ 0, i ≠ j: ev coordinates + antisymmetry + Fano lines
-          -- Antisymmetry reduces this to one ordering; ev=0 covers (j,i) pairs with
-          -- i ∈ {1, 2, 4}; the remaining 7 upper-triangular pairs (column 3, columns
-          -- 5, 6 with j > i) require Fano-line Leibniz analysis on the 7 multiplication
-          -- table triples (e₁·e₂=e₃, e₁·e₄=e₅, e₂·e₄=e₆, e₃·e₄=e₇, plus three more).
-          sorry
+        · -- Case j ≠ 0, i ≠ 0, i ≠ j: 42 entries.
+          -- Strategy: 14 ev=0 coords cover {(j,i) : i ∈ {1,2,4}, j > i}; their
+          -- antisymmetric partners cover 14 more. The remaining 14 entries are
+          -- 7 upper-triangular Fano residuals + their 7 antisymm swaps. We
+          -- localize the 7 unsolved cases as named hypotheses (sorries) and
+          -- discharge the other 35 mechanically.
+          -- antisym: D(eₚ)(q) = -D(e_q)(p) for p,q ∈ {1,..,7}, p ≠ q.
+          have antisym : ∀ (D : (Fin 8 → ℝ) →ₗ[ℝ] (Fin 8 → ℝ)),
+              D ∈ OctonionDerSubmodule → ∀ (p q : Fin 8),
+              p ≠ 0 → q ≠ 0 → p ≠ q →
+              D (stdBasis p) q = -D (stdBasis q) p := by
+            intros D hD p q hp hq hpq
+            have := submodule_der_antisymm D hD p q hp hq hpq
+            linarith
+          -- Extract the 14 ev=0 facts from hfg.
+          have e0 : f (stdBasis 2) 1 = g (stdBasis 2) 1 := by
+            simpa [derEval14] using congr_fun hfg (0 : Fin 14)
+          have e1 : f (stdBasis 3) 1 = g (stdBasis 3) 1 := by
+            simpa [derEval14] using congr_fun hfg (1 : Fin 14)
+          have e2 : f (stdBasis 4) 1 = g (stdBasis 4) 1 := by
+            simpa [derEval14] using congr_fun hfg (2 : Fin 14)
+          have e3 : f (stdBasis 5) 1 = g (stdBasis 5) 1 := by
+            simpa [derEval14] using congr_fun hfg (3 : Fin 14)
+          have e4 : f (stdBasis 6) 1 = g (stdBasis 6) 1 := by
+            simpa [derEval14] using congr_fun hfg (4 : Fin 14)
+          have e5 : f (stdBasis 7) 1 = g (stdBasis 7) 1 := by
+            simpa [derEval14] using congr_fun hfg (5 : Fin 14)
+          have e6 : f (stdBasis 3) 2 = g (stdBasis 3) 2 := by
+            simpa [derEval14] using congr_fun hfg (6 : Fin 14)
+          have e7 : f (stdBasis 4) 2 = g (stdBasis 4) 2 := by
+            simpa [derEval14] using congr_fun hfg (7 : Fin 14)
+          have e8 : f (stdBasis 5) 2 = g (stdBasis 5) 2 := by
+            simpa [derEval14] using congr_fun hfg (8 : Fin 14)
+          have e9 : f (stdBasis 6) 2 = g (stdBasis 6) 2 := by
+            simpa [derEval14] using congr_fun hfg (9 : Fin 14)
+          have e10 : f (stdBasis 7) 2 = g (stdBasis 7) 2 := by
+            simpa [derEval14] using congr_fun hfg (10 : Fin 14)
+          have e11 : f (stdBasis 5) 4 = g (stdBasis 5) 4 := by
+            simpa [derEval14] using congr_fun hfg (11 : Fin 14)
+          have e12 : f (stdBasis 6) 4 = g (stdBasis 6) 4 := by
+            simpa [derEval14] using congr_fun hfg (12 : Fin 14)
+          have e13 : f (stdBasis 7) 4 = g (stdBasis 7) 4 := by
+            simpa [derEval14] using congr_fun hfg (13 : Fin 14)
+          -- 7 Fano upper-triangular residuals (j > i, both in {3,5,6,7} ∪ {(4,3)}).
+          -- These need Fano-line Leibniz analysis on the multiplication-table triples;
+          -- left as named sorries pending Fano-line lemmas.
+          have F43 : f (stdBasis 4) 3 = g (stdBasis 4) 3 := by sorry
+          have F53 : f (stdBasis 5) 3 = g (stdBasis 5) 3 := by sorry
+          have F63 : f (stdBasis 6) 3 = g (stdBasis 6) 3 := by sorry
+          have F73 : f (stdBasis 7) 3 = g (stdBasis 7) 3 := by sorry
+          have F65 : f (stdBasis 6) 5 = g (stdBasis 6) 5 := by sorry
+          have F75 : f (stdBasis 7) 5 = g (stdBasis 7) 5 := by sorry
+          have F76 : f (stdBasis 7) 6 = g (stdBasis 7) 6 := by sorry
+          -- Discharge each (j,i) pair.
+          fin_cases j
+          · exact absurd rfl hj
+          · -- j = 1: all i ∈ {2,..,7} use antisym of ev coord at (i,1).
+            fin_cases i
+            · exact absurd rfl hi
+            · exact absurd rfl hij
+            · rw [antisym f hf 1 2 (by decide) (by decide) (by decide),
+                  antisym g hg 1 2 (by decide) (by decide) (by decide), e0]
+            · rw [antisym f hf 1 3 (by decide) (by decide) (by decide),
+                  antisym g hg 1 3 (by decide) (by decide) (by decide), e1]
+            · rw [antisym f hf 1 4 (by decide) (by decide) (by decide),
+                  antisym g hg 1 4 (by decide) (by decide) (by decide), e2]
+            · rw [antisym f hf 1 5 (by decide) (by decide) (by decide),
+                  antisym g hg 1 5 (by decide) (by decide) (by decide), e3]
+            · rw [antisym f hf 1 6 (by decide) (by decide) (by decide),
+                  antisym g hg 1 6 (by decide) (by decide) (by decide), e4]
+            · rw [antisym f hf 1 7 (by decide) (by decide) (by decide),
+                  antisym g hg 1 7 (by decide) (by decide) (by decide), e5]
+          · -- j = 2: i=1 direct; i ∈ {3,..,7} antisym of (i,2).
+            fin_cases i
+            · exact absurd rfl hi
+            · exact e0
+            · exact absurd rfl hij
+            · rw [antisym f hf 2 3 (by decide) (by decide) (by decide),
+                  antisym g hg 2 3 (by decide) (by decide) (by decide), e6]
+            · rw [antisym f hf 2 4 (by decide) (by decide) (by decide),
+                  antisym g hg 2 4 (by decide) (by decide) (by decide), e7]
+            · rw [antisym f hf 2 5 (by decide) (by decide) (by decide),
+                  antisym g hg 2 5 (by decide) (by decide) (by decide), e8]
+            · rw [antisym f hf 2 6 (by decide) (by decide) (by decide),
+                  antisym g hg 2 6 (by decide) (by decide) (by decide), e9]
+            · rw [antisym f hf 2 7 (by decide) (by decide) (by decide),
+                  antisym g hg 2 7 (by decide) (by decide) (by decide), e10]
+          · -- j = 3: i=1 (e1), i=2 (e6) direct; i ∈ {4,5,6,7} antisym of Fano.
+            fin_cases i
+            · exact absurd rfl hi
+            · exact e1
+            · exact e6
+            · exact absurd rfl hij
+            · rw [antisym f hf 3 4 (by decide) (by decide) (by decide),
+                  antisym g hg 3 4 (by decide) (by decide) (by decide), F43]
+            · rw [antisym f hf 3 5 (by decide) (by decide) (by decide),
+                  antisym g hg 3 5 (by decide) (by decide) (by decide), F53]
+            · rw [antisym f hf 3 6 (by decide) (by decide) (by decide),
+                  antisym g hg 3 6 (by decide) (by decide) (by decide), F63]
+            · rw [antisym f hf 3 7 (by decide) (by decide) (by decide),
+                  antisym g hg 3 7 (by decide) (by decide) (by decide), F73]
+          · -- j = 4: i=1 (e2), i=2 (e7), i=3 (F43); i ∈ {5,6,7} antisym of ev.
+            fin_cases i
+            · exact absurd rfl hi
+            · exact e2
+            · exact e7
+            · exact F43
+            · exact absurd rfl hij
+            · rw [antisym f hf 4 5 (by decide) (by decide) (by decide),
+                  antisym g hg 4 5 (by decide) (by decide) (by decide), e11]
+            · rw [antisym f hf 4 6 (by decide) (by decide) (by decide),
+                  antisym g hg 4 6 (by decide) (by decide) (by decide), e12]
+            · rw [antisym f hf 4 7 (by decide) (by decide) (by decide),
+                  antisym g hg 4 7 (by decide) (by decide) (by decide), e13]
+          · -- j = 5: i=1 (e3), i=2 (e8), i=3 (F53), i=4 (e11); i ∈ {6,7} antisym of Fano.
+            fin_cases i
+            · exact absurd rfl hi
+            · exact e3
+            · exact e8
+            · exact F53
+            · exact e11
+            · exact absurd rfl hij
+            · rw [antisym f hf 5 6 (by decide) (by decide) (by decide),
+                  antisym g hg 5 6 (by decide) (by decide) (by decide), F65]
+            · rw [antisym f hf 5 7 (by decide) (by decide) (by decide),
+                  antisym g hg 5 7 (by decide) (by decide) (by decide), F75]
+          · -- j = 6: i=1 (e4), i=2 (e9), i=3 (F63), i=4 (e12), i=5 (F65); i=7 antisym.
+            fin_cases i
+            · exact absurd rfl hi
+            · exact e4
+            · exact e9
+            · exact F63
+            · exact e12
+            · exact F65
+            · exact absurd rfl hij
+            · rw [antisym f hf 6 7 (by decide) (by decide) (by decide),
+                  antisym g hg 6 7 (by decide) (by decide) (by decide), F76]
+          · -- j = 7: i=1 (e5), i=2 (e10), i=3 (F73), i=4 (e13), i=5 (F75), i=6 (F76).
+            fin_cases i
+            · exact absurd rfl hi
+            · exact e5
+            · exact e10
+            · exact F73
+            · exact e13
+            · exact F75
+            · exact F76
+            · exact absurd rfl hij
   intro k
   funext i
   exact hev k i
 
--- Note: The sorry above is the residual case (j ≠ 0, i ≠ 0, i ≠ j).
--- Three structural reductions are now in place:
---   * j = 0 case: closed via `submodule_der_unit_zero` (handles 8 entries).
---   * i = j (diagonal): closed via `submodule_der_diagonal_kill` (handles 7 entries).
---   * i = 0 (real-part): closed via `submodule_der_real_part` (handles 7 entries).
--- 64 - 8 - 7 - 7 = 42 remaining entries (j ∈ {1,..,7}, i ∈ {1,..,7}, i ≠ j).
--- The full closure requires combining the 14 ev=0 coords (from `hfg`) with
--- antisymmetry (reduces 42 → 21 upper-triangular) and Fano-line Leibniz on
--- 7 missing pairs (column 3 entries + (j,i) ∈ {(6,5),(7,5),(7,6)}).
+-- Note: All four structural reductions are now in place:
+--   * j = 0 case: `submodule_der_unit_zero` (handles 8 entries).
+--   * i = j (diagonal): `submodule_der_diagonal_kill` (handles 7 entries).
+--   * i = 0 (real-part): `submodule_der_real_part` (handles 7 entries).
+--   * j ≠ 0, i ≠ 0, i ≠ j: 14 ev=0 coords + antisymmetry handle 28 of 42 entries.
+-- The 7 named hypotheses F43, F53, F63, F73, F65, F75, F76 are the residual
+-- upper-triangular Fano cases (their 7 antisymm partners are derived inline).
+-- Each residual is `f (stdBasis j) i = g (stdBasis j) i` for (j,i) where neither
+-- (j,i) nor (i,j) is among the 14 free ev coords, requiring Fano-line Leibniz
+-- analysis on the multiplication-table triples
+-- (e₁·e₂=e₃, e₁·e₄=e₅, e₂·e₄=e₆, e₃·e₄=e₇, e₁·e₆=-e₇, e₂·e₅=-e₇, e₃·e₅=e₆ etc.).
 
 /-- The 14 basis derivations are linearly independent in OctonionDerSubmodule.
 
