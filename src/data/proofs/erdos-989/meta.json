@@ -159,10 +159,10 @@
     {
       "id": "proof-techniques",
       "title": "Proof Techniques",
-      "summary": "Documents the two proof techniques used by Beck: Fourier analysis with Bessel functions for the lower bound, and probabilistic lattice perturbation for the upper bound. This section contains only narrative documentation, not formal declarations.",
+      "summary": "Docstring exposition of the two proof techniques: Fourier analysis with Bessel function J₁ asymptotics for the lower bound, and a randomized perturbed-lattice construction with concentration bounds for the upper bound. No additional Lean declarations — commentary only.",
       "startLine": 209,
       "endLine": 239,
-      "mathContext": "Documents the two proof techniques used by Beck: Fourier analysis with Bessel functions for the lower bound, and probabilistic lattice perturbation for the upper bound. This section contains only narrative documentation, not formal declarations."
+      "mathContext": "Docstring exposition of the two proof techniques: Fourier analysis with Bessel function J₁ asymptotics for the lower bound, and a randomized perturbed-lattice construction with concentration bounds for the upper bound. No additional Lean declarations — commentary only."
     },
     {
       "id": "open-questions",
@@ -175,10 +175,10 @@
     {
       "id": "related-results",
       "title": "Related Results",
-      "summary": "Documents Schmidt's classical box discrepancy theorem and Alexander's half-plane discrepancy theorem in docstrings, providing context for why circle discrepancy (\u221ar) is intermediate. These results are described but not formalized.",
+      "summary": "Docstring discussion of Schmidt's classical box discrepancy theorem (D(N) \u2265 c\u00b7(log N)^{d/2}) and Alexander's half-plane discrepancy theorem (\u226b r^{1/4}), providing context for why circle discrepancy (\u221ar) is intermediate. Commentary only \u2014 no Lean declarations.",
       "startLine": 284,
       "endLine": 320,
-      "mathContext": "Documents Schmidt's classical box discrepancy theorem and Alexander's half-plane discrepancy theorem in docstrings, providing context for why circle discrepancy (\u221ar) is intermediate. These results are described but not formalized."
+      "mathContext": "Docstring discussion of Schmidt's classical box discrepancy theorem (D(N) \u2265 c\u00b7(log N)^{d/2}) and Alexander's half-plane discrepancy theorem (\u226b r^{1/4}), providing context for why circle discrepancy (\u221ar) is intermediate. Commentary only \u2014 no Lean declarations."
     },
     {
       "id": "summary",
