@@ -43,14 +43,12 @@
     ],
     "originalContributions": [
       "phi, preimageCount: Euler totient and preimage count",
-      "pillai_theorem: lim sup g(n) = ∞",
-      "erdos_1935: g(n) > n^c for some c > 0",
-      "lichtmanExponent, lichtman_theorem: best known bound 0.71568",
+      "erdos_1935 axiom: g(n) > n^c for some c > 0",
+      "lichtmanExponent, lichtman_theorem axiom: best known bound 0.71568",
       "ErdosConjecture821: formal statement g(n) > n^{1-ε}",
       "IsEpsilonSmooth, SmoothPrimesCondition: smooth primes connection",
-      "smooth_implies_conjecture: reduction to smooth primes",
-      "preimageCount_upper_bound, average_preimageCount: bounds",
-      "erdos_821_partial, erdos_821_best_known: partial results"
+      "smooth_implies_conjecture axiom: reduction to smooth primes",
+      "erdos_821 theorem: main summary combining known bounds"
     ],
     "axiomCount": 3,
     "lineCount": 142,
@@ -60,7 +58,7 @@
     "historicalContext": "Erdős Problem #821 asks about the preimage counting function g(n) = |{m : φ(m) = n}| for Euler's totient. The question is whether for every ε > 0, there are infinitely many n with g(n) > n^{1-ε}. This would mean the preimage count can be almost as large as n itself, infinitely often.\n\nPillai first showed g(n) is unbounded. Erdős (1935) strengthened this to g(n) > n^c for some c > 0 infinitely often, establishing power-law growth. Baker and Harman (1998) improved the constant, and Lichtman (2022) achieved the current best: g(n) > n^{0.71568} infinitely often. The gap between the exponent 0.71568 and the target of 1 remains significant.\n\nThe conjecture has a beautiful connection to smooth numbers: it would follow if for every ε > 0, there are sufficiently many primes p < x with all prime factors of p-1 less than p^ε. This reduction shows that the problem is intimately connected to the distribution of primes with smooth shifted values, a central topic in analytic number theory.",
     "problemStatement": "**Problem Statement (Open)**\n\nLet g(n) = |{m : φ(m) = n}| count preimages of n under Euler's totient.\n\n**Question:** For every ε > 0, are there infinitely many n with g(n) > n^{1-ε}?\n\n**Status: OPEN**\n\n- Known: g(n) > n^{0.71568} infinitely often (Lichtman 2022)\n- Conjectured: g(n) > n^{1-ε} for all ε > 0\n- Gap: exponent 0.71568 vs target 1",
     "text": "Let g(n) count m with φ(m)=n. For every ε>0, are there infinitely many n with g(n) > n^{1-ε}? OPEN: Best known is g(n) > n^{0.71568} (Lichtman 2022).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:** phi (Euler totient), preimageCount (g(n))\n\n2. **Known Results:** pillai_theorem, erdos_1935, lichtman_theorem\n\n3. **Main Conjecture:** ErdosConjecture821 formal statement\n\n4. **Smooth Primes:** IsEpsilonSmooth, SmoothPrimesCondition\n\n5. **Reduction:** smooth_implies_conjecture showing the connection\n\n6. **Bounds:** Upper and average bounds on g(n)\n\n7. **Partial Results:** erdos_821_partial, erdos_821_best_known",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:** phi (Euler totient), preimageCount (g(n))\n\n2. **Known Results:** erdos_1935 (power-law growth), lichtman_theorem (best bound 0.71568)\n\n3. **Main Conjecture:** ErdosConjecture821 formal statement\n\n4. **Smooth Primes:** IsEpsilonSmooth, SmoothPrimesCondition\n\n5. **Reduction:** smooth_implies_conjecture showing the connection to smooth primes\n\n6. **Summary:** erdos_821 theorem combining the known bounds",
     "keyInsights": [
       "**Preimage Function:** g(n) = |{m : φ(m) = n}| counts totient preimages",
       "**Best Bound:** Lichtman (2022): g(n) > n^{0.71568} infinitely often",
@@ -79,48 +77,48 @@
       "title": "Euler's Totient Function",
       "summary": "phi, g, preimageCount definitions",
       "startLine": 40,
-      "endLine": 57
+      "endLine": 55
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "summary": "pillai_theorem, erdos_1935, erdos_explicit_bound",
-      "startLine": 58,
-      "endLine": 75
+      "summary": "erdos_1935 axiom: g(n) > n^c for some c > 0",
+      "startLine": 56,
+      "endLine": 68
     },
     {
       "id": "lichtman",
       "title": "Lichtman's Result (2022)",
-      "summary": "lichtmanExponent, lichtman_theorem, lichtman_primes",
-      "startLine": 76,
-      "endLine": 92
+      "summary": "lichtmanExponent, lichtman_theorem axiom: best known bound n^0.71568",
+      "startLine": 69,
+      "endLine": 79
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "summary": "ErdosConjecture821 formal statement and alternative form",
-      "startLine": 93,
-      "endLine": 103
+      "startLine": 80,
+      "endLine": 90
     },
     {
       "id": "smooth-primes",
       "title": "Connection to Smooth Primes",
-      "summary": "IsEpsilonSmooth, SmoothPrimesCondition, smooth_implies_conjecture",
-      "startLine": 104,
-      "endLine": 119
+      "summary": "IsEpsilonSmooth, SmoothPrimesCondition, smooth_implies_conjecture axiom",
+      "startLine": 91,
+      "endLine": 106
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
-      "summary": "preimageCount_upper_bound, average_preimageCount",
-      "startLine": 120,
-      "endLine": 129
+      "summary": "Upper bound commentary on preimage count (docstring analysis)",
+      "startLine": 107,
+      "endLine": 116
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_821 main theorem combining partial results",
-      "startLine": 137,
+      "summary": "erdos_821 theorem combining known power-law and best bound",
+      "startLine": 117,
       "endLine": 142
     }
   ],
