@@ -406,11 +406,38 @@ private lemma jdt_weight_sum (n a b : ℕ) (hba : b ≤ a) :
     --     = (P.1.map X).prod * X q
     --     = ((q ::ₘ P.1).map X).prod          -- by Multiset.prod_cons + map_cons
     --     = wt(q ::ₛ P)
-    -- KEY LEMMAS:
-    --   * Multiset.sort_cons (∀ b ∈ s, r a b) : sort(a ::ₘ s) = a :: sort(s)
-    --     applied with: q ≤ P.sort[0] implies q ≤ all elements of P (sortedness)
-    --   * Sym.cons_erase : a ::ₛ s.erase a h = s  (closes left_inv)
-    --   * Sym.erase_cons_head : (a ::ₛ s).erase a _ = s  (closes right_inv direction)
+    -- KEY LEMMAS (verified Mathlib v4.26.0, paths confirmed 2026-04-27 session 13):
+    --   * Multiset.sort_cons (Data/Multiset/Sort.lean:69):
+    --       (∀ b ∈ s, r a b) → sort(a ::ₘ s) r = a :: sort s r
+    --     Applied with: q ≤ P.sort[0] + sortedness ⇒ q ≤ all of P
+    --   * Sym.cons (Data/Sym/Basic.lean:106), coe_cons:123 (rfl):
+    --       (a ::ₛ s : Multiset α) = a ::ₘ s.1
+    --   * Sym.cons_erase (Data/Sym/Basic.lean:219, simp):
+    --       a ::ₛ s.erase a h = s   — closes left_inv
+    --   * Sym.erase_cons_head (Data/Sym/Basic.lean:223, simp):
+    --       (a ::ₛ s).erase a _ = s — closes right_inv direction
+    --   * Sym.oneEquiv (Data/Sym/Basic.lean:477, @[simps apply]):
+    --       α ≃ Sym α 1; oneEquiv_apply rewrites oneEquiv a to ⟨{a}, _⟩
+    --
+    -- INVERSE DIRECTION MECHANISM (the trickiest piece, fleshed out session 13):
+    --   Given P' : Sym (Fin n) (a+1):
+    --     L := (P'.1 : Multiset).sort (· ≤ ·) : List (Fin n), length = a+1, sorted
+    --     L_pos : 0 < L.length := by simp [Multiset.length_sort, P'.2]
+    --     q' := L.head L_pos.ne' : Fin n
+    --   Show q' ∈ P'.1 (need this to apply Sym.erase):
+    --     have : q' ∈ L := List.head_mem L_pos.ne'
+    --     have : q' ∈ (L : Multiset) := Multiset.mem_coe.mpr this
+    --     rw [Multiset.sort_eq] at this
+    --     exact this -- q' ∈ P'.1
+    --   Show q' ≤ (P'.1.erase q').sort[0] (the bijection's domain constraint):
+    --     L = q' :: L.tail (by List.head_cons_tail)
+    --     P'.1 = (q' ::ₘ (L.tail : Multiset)) by Multiset.sort_eq + List congruence
+    --     (P'.1.erase q' : Multiset) = (L.tail : Multiset)
+    --       by Multiset.erase_cons_head (Data/Multiset/AddSub.lean:156):
+    --         (a ::ₘ s).erase a = s
+    --     (P'.1.erase q').sort[0] = L.tail[0] = L[1] (when a ≥ 1)
+    --     Sortedness of L gives L[0] ≤ L[1], so q' ≤ L.tail[0]. ✓
+    --     For a = 0 case: tail is empty, so erased multiset is 0; ColStrictSym is vacuous.
     -- ESTIMATE: ~80-100 lines for jdt_weight_sum_b_one as a separate helper.
     -- ============================================================================
     --

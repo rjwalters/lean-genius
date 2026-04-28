@@ -625,3 +625,67 @@ Did not produce code changes this iteration. Both remaining sorries are large, w
 ### Suggested Next Owner
 
 A session targeting **only `jdt_weight_sum`**: define the forward map (`P + {Q.sort[c]}, Q − {Q.sort[c]}`), the inverse (find seam in P'), then prove `Equiv.weight_preserved` via `Multiset.prod_cons` + `Multiset.prod_erase`. Estimated ~120 lines focused work.
+
+---
+
+## Session 2026-04-27 (Session 13) — b=1 Inverse Mechanism Refined
+
+**Mode**: REVISIT (RICH, score 75)
+**Outcome**: SURVEY+ — refined inverse direction recipe with verified Mathlib paths; no proof code change
+
+### Constraints
+
+Disk at 89% (1.6GB free). Per project memory and prior sessions 10-12, attempting a
+fresh ~80-100 line bijection proof without Docker iteration risks committing broken Lean.
+Adopted SURVEY+ approach: refine the recipe so the next session's implementation
+is more mechanical.
+
+### What I Verified
+
+Cross-checked Mathlib v4.26.0 source at `/private/tmp/mathlib4`:
+
+- `Multiset.erase_cons_head (a : α) (s : Multiset α) : (a ::ₘ s).erase a = s`
+  — `Mathlib/Data/Multiset/AddSub.lean:156` (NEW reference, not surfaced in prior sessions)
+- `Multiset.cons_erase {s : Multiset α} {a : α} : a ∈ s → a ::ₘ s.erase a = s`
+  — `Mathlib/Data/Multiset/AddSub.lean:175`
+- `Multiset.length_sort : (sort s r).length = card s` — `Sort.lean:88`
+- All Sym.cons / erase / oneEquiv references from session 12 still valid
+
+### What I Refined
+
+Updated the recipe in `BallotProblemOQ03OQ01OQ01OQ01.lean` (jdt_weight_sum b≥1 branch
+comment) to spell out the inverse direction's mechanism step-by-step:
+
+```text
+Given P' : Sym (Fin n) (a+1):
+  L := P'.1.sort (· ≤ ·) : List, length a+1, sorted
+  q' := L.head L_pos.ne'
+  q' ∈ P'.1: List.head_mem + Multiset.mem_coe + Multiset.sort_eq
+  Erase well-defined: P'.1 = q' ::ₘ (L.tail : Multiset) → erase q' = L.tail
+    (via Multiset.erase_cons_head, AddSub.lean:156)
+  Domain constraint q' ≤ (P'.erase q').sort[0]:
+    L = q' :: L.tail (List.head_cons_tail), so L[0] ≤ L[1] = L.tail[0]
+```
+
+This is more concrete than session 11/12's recipe — the inverse direction was the
+trickiest piece, and the precise lemma chain (Multiset.erase_cons_head was missing
+from the prior recipe) is now spelled out.
+
+### Sorry Count: 2 (unchanged)
+
+Both remaining sorries are stable, correctly stated:
+1. `jdt_weight_sum (hba : b ≤ a)` b≥1 case — JDT bijection (~80-100 lines for b=1; ~150 for b≥2)
+2. `jacobi_trudi_ssyt_eq` k≥3 — algebraic LGV + RSK (~300 lines)
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` — recipe comment refined (~25 line addition, comment-only, no code/proof change)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01.json` — knowledge updated
+- `research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01/knowledge.md` — this entry
+
+### Next Session Owner
+
+The b=1 helper is now mechanical to implement given Docker access. Estimated 80-100
+lines using the documented recipe. The b≥2 JDT seam construction remains the genuine
+frontier (~150 lines). For k≥3, a separate file `BallotProblemOQ03AlgebraicLGV.lean`
+with ~150 lines of ring-valued LGV would complete the framework.
