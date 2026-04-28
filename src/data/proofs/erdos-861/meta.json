@@ -86,64 +86,64 @@
       "id": "sidon-definitions",
       "title": "Sidon Set Definitions",
       "startLine": 45,
-      "endLine": 70,
-      "summary": "Definition of Sidon sets as sets with distinct pairwise sums",
-      "mathContext": "$\\text{IsSidon}(S) \\iff \\forall a \\le b,\\, c \\le d \\in S: a + b = c + d \\implies (a = c \\wedge b = d)$. All pairwise sums are distinct (B$_2$ sequence)."
+      "endLine": 90,
+      "summary": "Definition of Sidon sets as sets with distinct pairwise sums, plus equivalent formulation",
+      "mathContext": "$\\text{IsSidon}(S) \\iff \\forall a \\le b,\\, c \\le d \\in S: a + b = c + d \\implies (a = c \\wedge b = d)$. All pairwise sums are distinct (B$_2$ sequence). Includes `IsSidon'` (pair-set form) and `sidon_equiv` proving the two definitions agree."
     },
     {
       "id": "counting-functions",
       "title": "Functions f(N) and A(N)",
-      "startLine": 71,
-      "endLine": 90,
+      "startLine": 92,
+      "endLine": 110,
       "summary": "Maximum Sidon size and count of Sidon subsets",
       "mathContext": "$f(N) = \\max\\{|S| : S \\subseteq \\{1, \\ldots, N\\},\\, \\text{IsSidon}(S)\\}$. $A(N) = |\\{S : S \\subseteq \\{1, \\ldots, N\\},\\, \\text{IsSidon}(S)\\}|$."
     },
     {
       "id": "asymptotic",
       "title": "Known Asymptotic",
-      "startLine": 91,
-      "endLine": 113,
-      "summary": "Erdős-Turán result f(N) ~ √N",
-      "mathContext": "$f(N) \\sim \\sqrt{N}$ as $N \\to \\infty$ (Erdős-Turán). The maximum Sidon subset of $\\{1, \\ldots, N\\}$ has $\\sim \\sqrt{N}$ elements."
+      "startLine": 112,
+      "endLine": 128,
+      "summary": "Documents Erdős-Turán f(N) ~ √N (in docstring) and states `SidonSizeConjecture` for the refined bound",
+      "mathContext": "$f(N) \\sim \\sqrt{N}$ as $N \\to \\infty$ (Erdős-Turán, recorded only in docstring; not formally stated as a theorem). `SidonSizeConjecture` formalizes the refined statement $f(N) = \\sqrt{N} + O(N^\\varepsilon)$ for any $\\varepsilon > 0$."
     },
     {
       "id": "question1",
       "title": "Cameron-Erdős Question 1",
-      "startLine": 114,
-      "endLine": 134,
-      "summary": "Is A(N)/2^{f(N)} → ∞? (Answer: Yes)",
+      "startLine": 130,
+      "endLine": 149,
+      "summary": "Is A(N)/2^{f(N)} → ∞? (Answer: Yes; declared as axiom `cameron_erdos_q1_true`)",
       "mathContext": "Q1: Is $A(N) / 2^{f(N)} \\to \\infty$? *YES*. The Saxton-Thomason bound $A(N) \\ge 2^{1.16 f(N)}$ implies $A(N)/2^{f(N)} \\ge 2^{0.16 f(N)} \\to \\infty$."
     },
     {
       "id": "question2",
       "title": "Cameron-Erdős Question 2",
-      "startLine": 135,
-      "endLine": 156,
-      "summary": "Is A(N) = 2^{(1+o(1))f(N)}? (Answer: No)",
+      "startLine": 151,
+      "endLine": 171,
+      "summary": "Is A(N) = 2^{(1+o(1))f(N)}? (Answer: No; declared as axiom `cameron_erdos_q2_false`)",
       "mathContext": "Q2: Is $A(N) = 2^{(1+o(1))f(N)}$? *NO*. The bounds $2^{1.16 f(N)} \\le A(N) \\le 2^{6.442 f(N)}$ show the exponent is not $1 + o(1)$."
     },
     {
       "id": "bounds",
       "title": "Current Best Bounds",
-      "startLine": 157,
-      "endLine": 196,
-      "summary": "Saxton-Thomason lower and KLRS upper bounds",
+      "startLine": 173,
+      "endLine": 211,
+      "summary": "Saxton-Thomason lower and KLRS upper bound axioms, combined into `current_bounds` theorem",
       "mathContext": "$2^{1.16 f(N)} \\le A(N) \\le 2^{6.442 f(N)}$ for large $N$. Lower: Saxton-Thomason (2015, hypergraph containers). Upper: Kohayakawa-Lee-Rödl-Samotij (2015)."
     },
     {
       "id": "properties",
       "title": "Basic Properties",
-      "startLine": 197,
-      "endLine": 224,
-      "summary": "Elementary Sidon set properties",
-      "mathContext": "Empty set is Sidon. Singletons are Sidon. Sidon subset of a Sidon set is Sidon. If $S \\subseteq \\{1, \\ldots, N\\}$ is Sidon, then $|S| \\le f(N)$."
+      "startLine": 213,
+      "endLine": 234,
+      "summary": "Elementary Sidon set properties (empty set, singleton)",
+      "mathContext": "Empty set is Sidon. Singletons are Sidon. (A docstring fragment for an `addition preserves Sidon` lemma is present but the lemma itself is not stated.)"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 225,
-      "endLine": 255,
-      "summary": "Main results and current state of knowledge",
+      "startLine": 235,
+      "endLine": 263,
+      "summary": "Main results bundled: `erdos_861_summary` and `erdos_861` combine Q1-true and Q2-false axioms",
       "mathContext": "$A(N)/2^{f(N)} \\to \\infty$ (Q1: YES) and $\\exists c \\in [1.16, 6.442]: A(N) = 2^{(c+o(1))f(N)}$ (Q2: NO, exponent $\\neq 1$). The exact $c$ remains open."
     }
   ],
