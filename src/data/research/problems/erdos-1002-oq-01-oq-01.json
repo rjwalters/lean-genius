@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-04-05T12:58:50.790Z",
-    "iteration": 3,
-    "focus": "Proved weyl_equidist_continuous and weyl_fract_average_zero via ε-approximation and sandwich arguments",
+    "since": "2026-04-27T23:42:00.000Z",
+    "iteration": 4,
+    "focus": "Down to 1 sorry: Stone-Weierstrass / Fourier polynomial extraction inside equidist_approx (Erdos1002OQ01OQ01.lean:206). All sandwich and continuity work resolved.",
     "blockers": [],
-    "nextAction": "Prove equidist_approx (connect span_fourier_closure_eq_top to concrete periodic functions) and deviation_sandwich (piecewise linear construction)",
+    "nextAction": "Extract a finite-Fourier polynomial from span_fourier_closure_eq_top (AddCircle.liftIco) and bound integral via Σ_{k=0} Re(Aₖ) for trig period integrals.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved deviation_sandwich structure (6/8 goals). Defined sandwichUpCore/sandwichLoCore, proved non-integer continuity of f∘fract, periodicity (via Int.fract_add_int), pointwise bounds (bump nonneg). File: 479 lines, 4 sorries (was 2), 1 axiom. Remaining: integer continuity of f∘fract (ε-δ), two integral bounds (routine computation).",
+    "progressSummary": "PROGRESS: Erdos1002OQ01OQ01.lean is at 705 lines, 1 axiom (innerSum_log_bound, Diophantine), 1 sorry (Stone-Weierstrass / Fourier polynomial inside equidist_approx at line 206). Gallery meta src/data/proofs/erdos-1002-oq-01-oq-01/meta.json is in sync (sorries=1, axiomCount=1, status=axiomatized). Sandwich + continuity work all resolved (was 4 sorries → 1).",
     "builtItems": [
       "irrational_exp_ne_one: exp(2πikα) ≠ 1 for irrational α, k ≠ 0 — Erdos1002OQ01OQ01.lean:46",
       "weyl_cesaro_bound: ‖Σ_{k<N} r^k‖ ≤ 2/‖r-1‖ for ‖r‖=1, r≠1 — Erdos1002OQ01OQ01.lean:77",
@@ -66,9 +66,8 @@
       "Continued fraction theory for Diophantine approximation bounds — needed for innerSum_log_bound"
     ],
     "nextSteps": [
-      "PRIORITY: Prove continuous_comp_fract integer case via ε-δ with f cts at 0 and f(0)=f(1) for left limits",
-      "Prove integral bounds: replace fract by id on [0,1] a.e., compute ∫₀¹ sandwichUpCore = δ/2 via integral splitting at 1-δ",
-      "equidist_approx: extract trig polynomial from span_fourier_closure_eq_top, show averages converge via linearity + weyl_cesaro_zero"
+      "Resolve the single remaining sorry at Erdos1002OQ01OQ01.lean:206 — extract trig polynomial h = Σ Re(Aₖ exp(2πikx)) from span_fourier_closure_eq_top (AddCircle.liftIco) within ε of g, with ∫₀¹ h = Σ_{k=0} Re(Aₖ).",
+      "Long-term: eliminate innerSum_log_bound axiom via Diophantine approximation (continued-fraction theory not yet in Mathlib)."
     ]
   },
   "tags": [
@@ -90,7 +89,7 @@
     "mathlib": []
   },
   "started": "2026-04-05T12:58:50.790Z",
-  "lastUpdate": "2026-04-05T00:00:00.000Z",
+  "lastUpdate": "2026-04-27T23:42:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
@@ -108,11 +107,11 @@
     {
       "path": "Proofs/Erdos1002OQ01OQ01.lean",
       "filename": "Erdos1002OQ01OQ01.lean",
-      "lineCount": 706,
+      "lineCount": 705,
       "theoremCount": 8,
       "axiomCount": 1,
       "defCount": 4,
-      "sorryCount": 3,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1002OQ01OQ01.lean"
     },
