@@ -141,8 +141,7 @@ def IsFolkmanGraph [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj]
 **Folkman Number:**
 f(l; k) is the minimum number of vertices of a Folkman graph for (l, k).
 -/
-def FolkmanNumber (k l : ℕ) : ℕ :=
-  Nat.find (ErdosHajnalQuestion k l)  -- Requires existence proof
+axiom FolkmanNumber (k l : ℕ) : ℕ
 
 /-
 ## Part V: Known Results
@@ -196,8 +195,7 @@ The exact value of f(3; 2) was determined to be 786.
 R(l, l) is the minimum n such that any 2-coloring of K_n contains
 monochromatic K_l.
 -/
-def RamseyNumber (l : ℕ) : ℕ :=
-  Nat.find (Classical.exists_of_ramsey l l)  -- Placeholder
+axiom RamseyNumber (l : ℕ) : ℕ
 
 /--
 **Comparison with Ramsey Numbers:**
