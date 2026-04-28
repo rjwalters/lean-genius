@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1155-oq-02",
   "title": "Triangle Removal Process: Turán Extremality Gap",
-  "phase": "ACT",
+  "phase": "COMPLETED",
   "status": "completed",
   "tier": "B",
   "path": "full",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0 sorries remain. 2 axioms inherited from parent. triangleRemovalEdges_le_turan proved via axiom. turan_bfl_exponent_gap proved via BFL squeeze.",
+    "progressSummary": "AXIOMATIZED: 0 sorries, 7 axioms total (1 new in OQ02 + 6 inherited from Erdos1155Problem.lean). All Turán-density results (turanDensity_tendsto_zero, turan_gap_diverges, turan_bfl_exponent_gap, process_not_turan_extremal) proved unconditionally given the axiomatized BFL+Turán bounds.",
     "builtItems": [
       "turan_triangle_free_bound in Erdos1155OQ02.lean:53 — CliqueFree 3 graph has ≤ n²/4 edges (1 sorry)",
       "turanDensity def in Erdos1155OQ02.lean:112 — f(n)/(n²/4), noncomputable",
@@ -48,15 +48,16 @@
       "triangleRemovalEdges_le_turan_exact is axiomatized: connecting abstract f(n) to concrete CliqueFree graph requires ~100 lines",
       "Turán gap is polynomial: n²/4 / n^{3/2} = n^{1/2}/4 → ∞ — stronger than density-zero statement",
       "Real.rpow_add requires positivity of base: (0:ℝ) < n needed before applying the identity",
-      "turan_bfl_exponent_gap proved: squeeze via BFL upper bound at ε/2, then n^{ε/2} > 4 eventually gives n^{2-ε/2} < n²/4"
+      "turan_bfl_exponent_gap proved: squeeze via BFL upper bound at ε/2, then n^{ε/2} > 4 eventually gives n^{2-ε/2} < n²/4",
+      "Audit 2026-04-28: header docstring claimed \"Axiom Count: 0 new\" / \"Sorry Count: 1\" but file actually has 1 new axiom (triangleRemovalEdges_le_turan_exact) and 0 sorries. Fixed.",
+      "All 4 main results in originalContributions verified present in source (turanDensity_tendsto_zero, turan_gap_diverges, turan_bfl_exponent_gap, process_not_turan_extremal). meta.json axiomCount=7 reflects accurate total chain count."
     ],
     "mathlibGaps": [
       "No direct way to connect abstract triangleRemovalEdges function to a concrete CliqueFree SimpleGraph — requires axiom"
     ],
     "nextSteps": [
-      "turan_bfl_exponent_gap (line 277): n²/4/f(n) > n^{1/2-ε} — needs BFL lower bound n^{3/2-ε} ≤ f(n) which is axiomatized in parent",
-      "turan_triangle_free_bound sorry: ~100 lines to connect f(n) to concrete triangle-free graph via construction",
-      "Consider graduating to gallery after resolving the turan_triangle_free_bound sorry"
+      "Optional: discharge triangleRemovalEdges_le_turan_exact axiom by constructing the explicit triangle-free output graph and applying turan_triangle_free_bound",
+      "Optional: integrate parent axioms (BFL, triangle-free count) into a unified Erdos1155Core file"
     ]
   },
   "tags": [

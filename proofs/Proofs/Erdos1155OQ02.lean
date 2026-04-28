@@ -19,8 +19,11 @@
   3. bfl_vs_turan_ratio: f(n) / (n²/4) = O(n^{-1/2+ε}) — quantifying the gap
   4. process_not_turan_extremal: eventually f(n) < (n²/4)/2 (process produces sparse graphs)
 
-  ## Axiom Count: 0 new (inherits from Erdos1155Problem.lean)
-  ## Sorry Count: 1 (f(n) ≤ ⌊n²/4⌋ requires connecting abstract f(n) to graph theory)
+  ## Axiom Count: 1 new (triangleRemovalEdges_le_turan_exact); 6 inherited from
+  ##   Erdos1155Problem.lean (triangleRemovalEdges, triangleRemovalEdges_nonneg,
+  ##   triangleRemovalEdges_le_complete, bfl_upper_bound, bfl_lower_bound,
+  ##   triangleRemoval_mantel_bound). Total chain: 7 axioms.
+  ## Sorry Count: 0
 -/
 
 import Mathlib.Combinatorics.SimpleGraph.Extremal.Turan
