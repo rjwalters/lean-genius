@@ -17,7 +17,7 @@
       "polyhedra",
       "wiedijk-100"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "dateAdded": "2026-03-22",
     "mathlibDependencies": [
@@ -40,8 +40,8 @@
       "Conditional Hilbert's Third Problem: cube and tetrahedron not scissors congruent, assuming Dehn's theorem as hypothesis"
     ],
     "lineCount": 379,
-    "axiomCount": 1,
-    "assumptions": "1 stub definition: `ScissorsCongruent (P Q : Type*) := \u2203 (n : \u2115), True` (line 55-56 of Lean source). This placeholder makes everything trivially scissors congruent to everything \u2014 `scissors_congruent_refl` and `scissors_congruent_symm` hold vacuously. The scissors congruence relation is not mathematically formalized. Additionally, Dehn's theorem is encoded as an explicit hypothesis (not an axiom) in `hilbert_third_problem`. The core number-theoretic result (arccos(1/3)/\u03c0 is irrational via Chebyshev recurrence) is fully proved with 0 sorries.",
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Note: `ScissorsCongruent (P Q : Type*) := \u2203 (n : \u2115), True` (line 55-56) is a stub placeholder definition \u2014 not an axiom declaration or structure-encoded assumption. Dehn\u2019s theorem is taken as an explicit hypothesis in `hilbert_third_problem`, not as an axiom declaration. The core number-theoretic result (arccos(1/3)/\u03c0 is irrational via Chebyshev recurrence) is fully proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

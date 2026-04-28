@@ -7,8 +7,13 @@ least `m` such that all `n ≥ m` are in `P(A)`.
 
 **Question:** Are there infinitely many `k` with `T(n^k) > T(n^{k+1})`?
 
-Known values: `T(n) = 1`, `T(n²) = 128`, `T(n³) = 12758`,
-`T(n⁴) = 5134240`, `T(n⁵) = 67898771`.
+Known values (under the "least `m`" convention used by `threshold` here):
+`T(n) = 1`, `T(n²) = 129`, `T(n³) = 12759`,
+`T(n⁴) = 5134241`, `T(n⁵) = 67898772`.
+
+Equivalently, the largest non-representable integers are `0, 128, 12758,
+5134240, 67898771` (cf. OEIS A001661); under our `IsCompleteSeq`
+definition the threshold is "largest non-representable + 1".
 
 *Reference:* [erdosproblems.com/345](https://www.erdosproblems.com/345)
 -/
@@ -151,14 +156,17 @@ theorem threshold_powerSeq_1 : threshold (powerSeq 1) = 1 := by
     (Sprague 1948). 128 is the largest non-representable integer. -/
 axiom threshold_squares : threshold (powerSeq 2) = 129
 
-/-- `T(n³) = 12758`. -/
-axiom threshold_cubes : threshold (powerSeq 3) = 12758
+/-- `T(n³) = 12759`. Every integer ≥ 12759 is a sum of distinct positive cubes;
+    12758 is the largest non-representable integer (OEIS A001661). -/
+axiom threshold_cubes : threshold (powerSeq 3) = 12759
 
-/-- `T(n⁴) = 5134240`. -/
-axiom threshold_fourth : threshold (powerSeq 4) = 5134240
+/-- `T(n⁴) = 5134241`. 5134240 is the largest non-representable integer
+    (OEIS A001661). -/
+axiom threshold_fourth : threshold (powerSeq 4) = 5134241
 
-/-- `T(n⁵) = 67898771`. -/
-axiom threshold_fifth : threshold (powerSeq 5) = 67898771
+/-- `T(n⁵) = 67898772`. 67898771 is the largest non-representable integer
+    (OEIS A001661). -/
+axiom threshold_fifth : threshold (powerSeq 5) = 67898772
 
 /- ## Completeness of power sequences -/
 
@@ -178,7 +186,7 @@ def ErdosProblem345 : Prop :=
 /- ## Monotonicity observations -/
 
 /-- The known values show `T(n^k)` is rapidly increasing for small k:
-    1 < 129 < 12758 < 5134240 < 67898771. -/
+    1 < 129 < 12759 < 5134241 < 67898772. -/
 theorem threshold_mono_small :
     threshold (powerSeq 1) < threshold (powerSeq 2) ∧
     threshold (powerSeq 2) < threshold (powerSeq 3) ∧

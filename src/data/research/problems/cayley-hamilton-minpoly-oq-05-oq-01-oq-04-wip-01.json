@@ -6,10 +6,10 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "theorem nonderogatory_has_cyclic_vector_any_field {K : Type*} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (h : IsNonderogatory M) : ∃ v, IsCyclicVector M v",
-    "plain": "If M ∈ Mₙ(K) is nonderogatory (minpoly = charpoly) over ANY field K (including finite fields with |K| ≤ n), then M has a cyclic vector v such that {v, Mv, …, Mⁿ⁻¹v} is a basis. This is the field-independent version completing the Cayley-Hamilton minpoly research cluster.",
+    "formal": "theorem nonderogatory_has_cyclic_vector_any_field {K : Type*} [Field K] {n : \u2115} (M : Matrix (Fin n) (Fin n) K) (h : IsNonderogatory M) : \u2203 v, IsCyclicVector M v",
+    "plain": "If M \u2208 M\u2099(K) is nonderogatory (minpoly = charpoly) over ANY field K (including finite fields with |K| \u2264 n), then M has a cyclic vector v such that {v, Mv, \u2026, M\u207f\u207b\u00b9v} is a basis. This is the field-independent version completing the Cayley-Hamilton minpoly research cluster.",
     "whyMatters": [
-      "Removes the [Infinite K] hypothesis from OQ-05-OQ-01 — the theorem holds universally",
+      "Removes the [Infinite K] hypothesis from OQ-05-OQ-01 \u2014 the theorem holds universally",
       "Resolves the last sorry in CayleyHamiltonMinpolyOQ05OQ01OQ04.lean",
       "Completes the nonderogatory/cyclic-vector thread in the Cayley-Hamilton gallery cluster",
       "Requires a proof route that avoids the full PID structure theorem (not in Mathlib)",
@@ -20,9 +20,9 @@
     "proven": [
       "aeval_conj: conjugation by invertible P commutes with polynomial evaluation aeval M",
       "cyclic_vector_of_similar: if M ~ M' and v is cyclic for M', then there is a cyclic vector for M",
-      "annihilator_dvd_minpoly: if p(M)v = 0 then minpoly K M ∣ p",
-      "cyclic_iff_ann_eq_minpoly: v cyclic ↔ ann_K[X](v) = (minpoly K M)",
-      "F2_union_covers: F₂² is covered by 3 proper subspaces (union avoidance fails over F₂)",
+      "annihilator_dvd_minpoly: if p(M)v = 0 then minpoly K M \u2223 p",
+      "cyclic_iff_ann_eq_minpoly: v cyclic \u2194 ann_K[X](v) = (minpoly K M)",
+      "F2_union_covers: F\u2082\u00b2 is covered by 3 proper subspaces (union avoidance fails over F\u2082)",
       "nonderogatory_has_cyclic_vector_finite_any_size: follows from any_field (trivially)"
     ],
     "open": [
@@ -54,9 +54,9 @@
       "src/data/proofs/cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-05/meta.json — gallery metadata for WIP05"
     ],
     "insights": [
-      "The blocking step is the PID structure theorem: K^n ≅ K[X]/(d1) ⊕ … ⊕ K[X]/(dr) as K[X]-modules",
-      "nonderogatory forces r=1 in the cyclic decomposition, giving K^n ≅ K[X]/(minpoly)",
-      "cyclic_iff_ann_eq_minpoly (already proven) reduces the problem to: ∃ v, ann(v) = (minpoly)",
+      "The blocking step is the PID structure theorem: K^n \u2245 K[X]/(d1) \u2295 \u2026 \u2295 K[X]/(dr) as K[X]-modules",
+      "nonderogatory forces r=1 in the cyclic decomposition, giving K^n \u2245 K[X]/(minpoly)",
+      "cyclic_iff_ann_eq_minpoly (already proven) reduces the problem to: \u2203 v, ann(v) = (minpoly)",
       "companion matrix approach: if M ~ companion(charpoly), then e1 is a cyclic vector for companion, and cyclic_vector_of_similar transfers it to M",
       "Whether rational canonical form / companion similarity exists in Mathlib is the key unknown",
       "Primary decomposition via Bezout eliminates the PID structure theorem entirely: for minpoly = prod p_i^e_i, construct v_i = F_i(M)w_i (F_i = complementary product) — only annihilation/non-annihilation properties needed, not dim(ker) = deg(p_i^e_i)",

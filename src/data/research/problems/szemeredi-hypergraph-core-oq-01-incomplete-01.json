@@ -49,9 +49,9 @@
       "Mathlib has SetFamily.Shadow (Kruskal-Katona) but not hypergraph regularity"
     ],
     "nextSteps": [
-      "Read proofs/Proofs/SzemerediHypergraphCore.lean for existing infrastructure",
-      "Design SimplicialComplex structure with Fin k indexing",
-      "Check Mathlib.Combinatorics.SetFamily for usable building blocks"
+      "Investigate partition-respecting naive regularity: hypothesis quantifying over partitions of (k-1)-skeleton, not just vertex sets.",
+      "Hypergraph counting lemma (Nagle-Rödl-Schacht 2006) remains open — main payoff.",
+      "Create gallery entry for Gowers infrastructure (independent task)."
     ]
   },
   "tags": [

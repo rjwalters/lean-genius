@@ -2,6 +2,16 @@
 
 Lean Genius is a formal mathematics project that formalizes mathematical theorems and problems (including Erdős problems) in Lean 4 and presents them in an interactive web gallery.
 
+## Canonical Branch
+
+`main` is the sole canonical branch. All PRs must target `main`. Never use `master` as a PR base or branch origin. If `git remote show origin` or `git symbolic-ref refs/remotes/origin/HEAD` returns `master`, fix it locally:
+
+```bash
+git remote set-head origin main
+```
+
+(See #13577 — `master` was retired after a 33/339-commit divergence and merged into `main`.)
+
 ## Making Code Changes
 
 **Always work in a branch and worktree when editing code.** Direct pushes to main are blocked by branch protection. Multiple agents run concurrently and can overwrite uncommitted changes on main.

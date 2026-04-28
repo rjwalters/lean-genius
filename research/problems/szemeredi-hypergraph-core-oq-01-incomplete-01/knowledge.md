@@ -80,3 +80,68 @@ Created `/proofs/Proofs/SzemerediHypergraphGowers.lean` (222 lines) with:
 1. Attempt `naive_implies_gowers` — bridge from naive to Gowers
 2. Create gallery entry for Gowers infrastructure
 3. The hypergraph counting lemma (main mathematical payoff) remains open
+
+---
+
+## Session 2026-04-27 (Session 2) — Eliminated Sorry, Documented Obstruction
+
+**Mode**: REVISIT (knowledge score 5, WEAK)
+**Outcome**: Sorry count 1→0; replaced broken theorem with 3 verified structural lemmas.
+
+### Analysis: Why the Previous `naive_implies_gowers` Was Broken
+
+The conjectured statement:
+```
+IsHypergraphRegular H ε (List.replicate k univ) → IsGowersRegular hk H ε δ (completeComplex V (k-1))
+```
+fails for two compounding reasons:
+
+1. **Hypothesis degeneracy**: With `parts = [univ × k]` and `k ≥ 2`,
+   `transversals parts = ∅`. The transversal predicate requires `(s ∩ P).card = 1`
+   for each `P ∈ parts`. With duplicates `P = univ`, `s ∩ univ = s`, forcing
+   `s.card = 1`. But also `s.card = parts.length = k ≥ 2`. Contradiction.
+   So `kPartiteDensity H parts = 0`, and the hypothesis bounds
+   `|kPartiteDensity H parts' - 0| ≤ ε`. This is meaningful (bounds the density
+   over k-tuples of large subsets) but only sees vertex-partition product structure.
+
+2. **Conclusion non-degeneracy**: `IsGowersRegular` quantifies over arbitrary
+   sub-complexes `C' ⊆ completeComplex`. Sub-complex top-cliques need not arise
+   from any vertex partition — they can concentrate on arbitrary regions of the
+   k-set lattice. Thus naive regularity does not imply Gowers regularity in
+   general; this matches Gowers (2007) §4's explicit distinction between
+   "weak" (transversal) and "strong" (relative-to-complex) regularity.
+
+### What Was Built This Session
+
+**Replaced the broken `naive_implies_gowers` sorry with verified results**:
+
+- `relativeKDensity_eq_of_topCliques_eq` — relative density depends only on the
+  topCliques set; complexes with identical topCliques give identical densities.
+  Proof: unfold + `rw [h]`.
+- `isGowersRegular_self` — every H is (0, 1)-Gowers-regular w.r.t. any C.
+  Proof: δ = 1 + `topCliques_mono` force topCliques equality (subset + reverse
+  cardinality bound → `Finset.eq_of_subset_of_card_le`); equal topCliques give
+  equal densities; difference is 0.
+- `isGowersRegular_empty` — the empty k-graph is (0, δ)-Gowers-regular for
+  every δ. Proof: `relativeKDensity_empty` makes both sides 0.
+
+Plus a **PART VII** comment block (~40 lines) documenting precisely:
+- Why the original conjecture fails
+- Provable surrogates that replace it
+- What additional structure would bridge naive → Gowers
+
+### Files Modified
+- `proofs/Proofs/SzemerediHypergraphGowers.lean` (244 → 322 lines, 1 → 0 sorries)
+
+### Sorry/Axiom Delta
+- Sorries: 1 → 0  (-1)
+- Axioms: 0 → 0  (no change)
+- New verified theorems: +3
+
+### Next Steps
+1. The hypergraph counting lemma (main mathematical payoff) remains open;
+   needs Gowers regularity formulation that respects partition structure.
+2. Investigate "partition-respecting" naive regularity that would actually
+   imply Gowers (i.e., quantify over partitions of the (k-1)-skeleton, not
+   just vertex partitions).
+3. Create gallery entry for Gowers infrastructure (independent task).

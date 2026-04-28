@@ -9,7 +9,7 @@
     },
     "title": "Problem Overview: Completeness Thresholds for Power Sequences",
     "content": "Erdős Problem #345 studies the **completeness threshold** $T(A)$ for sets of $k$-th powers. A set $A \\subseteq \\mathbb{N}$ is **complete** if every sufficiently large integer is a sum of distinct elements of $A$. The threshold $T(A)$ is the smallest $m$ such that every $n \\ge m$ is representable. For power sequences $\\{n^k\\}$, the question is whether $T(n^k)$ can ever *decrease* as $k$ grows.",
-    "mathContext": "The completeness of $\\{n^k\\}$ for all $k \\ge 1$ follows from Waring's problem (Hilbert 1909), but the threshold $T(n^k)$ measures the onset of completeness for sums of *distinct* $k$-th powers, a finer question. Known values $T(n) = 1$, $T(n^2) = 128$, $T(n^3) = 12758$, $T(n^4) = 5134240$, $T(n^5) = 67898771$ grow superexponentially, yet Erdős conjectured occasional reversals $T(n^k) > T(n^{k+1})$.",
+    "mathContext": "The completeness of $\\{n^k\\}$ for all $k \\ge 1$ follows from Waring's problem (Hilbert 1909), but the threshold $T(n^k)$ measures the onset of completeness for sums of *distinct* $k$-th powers, a finer question. Under the file's \"least $m$\" convention, the known values are $T(n) = 1$, $T(n^2) = 129$, $T(n^3) = 12759$, $T(n^4) = 5134241$, $T(n^5) = 67898772$ — i.e. one more than the largest non-representable integers $0, 128, 12758, 5134240, 67898771$ (OEIS A001661). They grow superexponentially, yet Erdős conjectured occasional reversals $T(n^k) > T(n^{k+1})$.",
     "relatedConcepts": [
       "Complete sequences",
       "Subset sums",
@@ -144,8 +144,8 @@
       "endLine": 71
     },
     "title": "Known Threshold Values",
-    "content": "Exact computed values:\n- $T(n) = 1$ (trivial)\n- $T(n^2) = 128$\n- $T(n^3) = 12758$\n- $T(n^4) = 5134240$\n- $T(n^5) = 67898771$\n\nGrowth ratios: $128, 99.7, 403.3, 13.2$. The sequence is strictly increasing for $k \\le 5$.",
-    "mathContext": "Computing these thresholds requires exhaustive search: one must verify that every integer from $T(n^k)$ onward can be expressed as a sum of distinct $k$-th powers, and exhibit a non-representable integer just below the threshold. For $k = 5$, verifying $T(n^5) = 67898771$ requires checking tens of millions of representations. The erratic growth ratios (from 403 to 13) hint at complex behavior, and $T(n^k)$ for $k \\ge 6$ is currently computationally infeasible.",
+    "content": "Exact computed values (least-$m$ convention used by `threshold`):\n- $T(n) = 1$ (trivial)\n- $T(n^2) = 129$\n- $T(n^3) = 12759$\n- $T(n^4) = 5134241$\n- $T(n^5) = 67898772$\n\nThe largest non-representable integers (OEIS A001661) are $0, 128, 12758, 5134240, 67898771$ — `threshold` adds 1.\n\nGrowth ratios: $129, 98.9, 402.4, 13.2$. The sequence is strictly increasing for $k \\le 5$.",
+    "mathContext": "Computing these thresholds requires exhaustive search: one must verify that every integer from $T(n^k)$ onward can be expressed as a sum of distinct $k$-th powers, and exhibit a non-representable integer just below the threshold. For $k = 5$, verifying $T(n^5) = 67898772$ requires checking tens of millions of representations. The erratic growth ratios (from 402 to 13) hint at complex behavior, and $T(n^k)$ for $k \\ge 6$ is currently computationally infeasible.",
     "relatedConcepts": [
       "Computational number theory",
       "Exhaustive search",

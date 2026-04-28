@@ -105,7 +105,7 @@
       "title": "Fixed Point Is Nash + Main Existence Theorem",
       "startLine": 201,
       "endLine": 280,
-      "summary": "fixed_point_is_nash: algebraic proof that any fixed point σ* of Nash's map is a Nash equilibrium (Cᵢ = 0 for all i). nash_existence: apply brouwer_product_simplex axiom to nashMap, then fixed_point_is_nash.",
+      "summary": "fixed_point_is_nash: algebraic proof that any fixed point σ* of Nash's map is a Nash equilibrium (Cᵢ = 0 for all i). nash_existence: apply brouwer_product_simplex theorem to nashMap, then fixed_point_is_nash.",
       "mathContext": "At fixed point: eᵢₖ = σ*ᵢ(k)·Cᵢ for all i,k. If Cᵢ > 0: EU_i(σ*ᵢ, σ*₋ᵢ) > EU_i(σ*ᵢ, σ*₋ᵢ) — contradiction. So Cᵢ = 0, meaning σ* is a Nash equilibrium."
     }
   ],
@@ -118,7 +118,7 @@
     {
       "targetId": "brouwer-fixed-point-oq-04",
       "relationship": "depends-on",
-      "description": "Provides the brouwer_product_simplex axiom (Brouwer FPT for product simplex) and the kakutani_fixed_point_axiom used in OQ-01."
+      "description": "Provides the brouwer_pi_compact_convex axiom (general Brouwer FPT) from which brouwer_product_simplex is proved, and the kakutani_fixed_point_axiom used in OQ-01."
     }
   ],
   "references": [

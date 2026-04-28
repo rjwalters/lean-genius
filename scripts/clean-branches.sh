@@ -224,9 +224,8 @@ echo ""
 PROTECTED_BRANCHES_FILE=$(mktemp)
 trap 'rm -f "$PR_MAP_FILE" "${PR_MAP_FILE}.open" "${PR_MAP_FILE}.closed" "$PROTECTED_BRANCHES_FILE"' EXIT
 
-# main and master are always protected
+# main is always protected (master was retired via #13577)
 echo "main" >> "$PROTECTED_BRANCHES_FILE"
-echo "master" >> "$PROTECTED_BRANCHES_FILE"
 
 # Branches checked out in worktrees are protected
 git worktree list --porcelain 2>/dev/null | grep "^branch refs/heads/" | sed 's|^branch refs/heads/||' >> "$PROTECTED_BRANCHES_FILE"
@@ -238,7 +237,7 @@ if [[ -n "$current_branch" ]]; then
 fi
 
 protected_count=$(sort -u "$PROTECTED_BRANCHES_FILE" | wc -l | tr -d ' ')
-info "  $protected_count branches protected (main, master, worktree-checked-out)"
+info "  $protected_count branches protected (main, worktree-checked-out)"
 
 is_protected() {
     local branch="$1"

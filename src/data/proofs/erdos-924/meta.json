@@ -50,14 +50,15 @@
       "HasRamseyProperty definition: k-Ramsey property for K_l",
       "ErdosHajnalQuestion definition: the main problem formulation",
       "IsFolkmanGraph definition: graphs satisfying the property",
-      "FolkmanNumber definition: minimum vertices",
+      "FolkmanNumber axiom: minimum vertex count for Folkman graphs",
       "folkman_1970 axiom: k=2 case",
       "nesetril_rodl_1976 axiom: general k case",
+      "RamseyNumber axiom: classical Ramsey number R(l,l)",
       "erdos_924 theorem: main result"
     ],
-    "axiomCount": 2,
-    "lineCount": 303,
-    "assumptions": "2 axioms: folkman_1970, nesetril_rodl_1976. 0 sorries."
+    "axiomCount": 4,
+    "lineCount": 301,
+    "assumptions": "4 axioms: FolkmanNumber, RamseyNumber, folkman_1970, nesetril_rodl_1976. 0 sorries."
   },
   "overview": {
     "historicalContext": "A question posed by Erdős and Hajnal in Ramsey theory, asking whether graphs can exhibit Ramsey-type behavior while avoiding large cliques.\n\nThe classical Ramsey theorem (1930) guarantees that sufficiently large complete graphs K_n force monochromatic K_l in any k-coloring. But K_n contains all cliques up to K_n. The Erdős-Hajnal question asks: can we achieve the same Ramsey forcing while forbidding K_{l+1}?\n\nFolkman (1970) proved the k = 2 case using shift graph constructions, introducing what are now called 'Folkman graphs'. His paper was published posthumously — Folkman died in 1969. Nešetřil and Rödl (1976) proved the general case for all k ≥ 2 using the Hales-Jewett theorem and partite constructions.\n\nThe Folkman number f(l; k) — the minimum vertices needed — has been an active area of research. The most-studied case f(3; 2) = 786 was determined through decades of work by Graham, Spencer, Frankl-Rödl, Dudek-Rödl, Lange-Radziszowski-Xu, and others.",
@@ -105,10 +106,10 @@
     {
       "id": "folkman-graphs",
       "title": "Folkman Graphs",
-      "summary": "`IsFolkmanGraph` $= \\text{IsCliqueFree}\\, G\\, (l+1) \\land \\text{HasRamseyProperty}\\, G\\, k\\, l$. `FolkmanNumber` $f(l;k)$ defined via `Nat.find` from the existence guarantee.",
+      "summary": "`IsFolkmanGraph` $= \\text{IsCliqueFree}\\, G\\, (l+1) \\land \\text{HasRamseyProperty}\\, G\\, k\\, l$. `FolkmanNumber (k l : ℕ) : ℕ` axiomatized as the minimum vertex count.",
       "startLine": 127,
-      "endLine": 146,
-      "mathContext": "Mathematical content: `IsFolkmanGraph` $= \\text{IsCliqueFree}\\, G\\, (l+1) \\land \\text{HasRamseyProperty}\\, G\\, k\\, l$. `FolkmanNumber` $f(l;k)$ defined via `Nat.find` from the existence guarantee."
+      "endLine": 145,
+      "mathContext": "Axiomatized: `IsFolkmanGraph` definition; `FolkmanNumber` is an axiom (minimum vertex count for Folkman graphs — witnesses existence)."
     },
     {
       "id": "known-results",
@@ -146,8 +147,8 @@
       "id": "summary",
       "title": "Summary",
       "summary": "`erdos_924_summary` combines three results in a single conjunction. `erdos_924 := nesetril_rodl_1976` identifies the solution. `erdos_924_answer` unpacks the existential for downstream use.",
-      "startLine": 268,
-      "endLine": 303,
+      "startLine": 248,
+      "endLine": 301,
       "mathContext": "Mathematical content: `erdos_924_summary` combines three results in a single conjunction. `erdos_924 := nesetril_rodl_1976` identifies the solution. `erdos_924_answer` unpacks the existential for downstream use."
     }
   ],
@@ -173,10 +174,10 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos924",
-    "lineCount": 303,
-    "axiomCount": 2,
+    "lineCount": 301,
+    "axiomCount": 4,
     "theoremCount": 3,
-    "definitionCount": 14,
+    "definitionCount": 12,
     "path": "Proofs/Erdos924Problem.lean",
     "sorries": 0
   },
