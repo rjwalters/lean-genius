@@ -56,47 +56,54 @@
     {
       "id": "graph-definitions",
       "title": "Part I: Graph Definitions",
-      "startLine": 41,
-      "endLine": 67,
+      "startLine": 42,
+      "endLine": 68,
       "summary": "Defines `Graph` structure with `adj : Fin n → Fin n → Prop` (symmetric, irreflexive), `edgeCount` counting unordered pairs, and the `Adj` predicate.",
       "mathContext": "The custom graph type has vertices $\\{0, \\ldots, n-1\\}$ and edges as a symmetric irreflexive relation. $e(G) = |\\{\\{u,v\\} : G.\\text{adj}\\, u\\, v\\}|$."
     },
     {
       "id": "triangles",
       "title": "Part II: Triangles",
-      "startLine": 68,
-      "endLine": 94,
+      "startLine": 69,
+      "endLine": 95,
       "summary": "`IsTriangle G a b c` (three pairwise adjacent vertices), `triangleCountEdge G u v` (count of $w$ forming triangles with edge $uv$), `maxTriangleMultiplicity G` (max over all edges).",
       "mathContext": "$T_e(G, uv) = |\\{w : G.\\text{adj}\\,u\\,w \\wedge G.\\text{adj}\\,v\\,w\\}|$, the number of common neighbors of $u$ and $v$. $\\mu(G) = \\max_{uv} T_e(G, uv)$."
     },
     {
       "id": "turan-threshold",
       "title": "Part III: Turán's Threshold",
-      "startLine": 95,
-      "endLine": 118,
+      "startLine": 96,
+      "endLine": 116,
       "summary": "`turanNumber n = n^2/4` and `AboveTuran G` ($e(G) > n^2/4$). Turán's theorem (triangle-free $\\Rightarrow e(G) \\leq n^2/4$) is stated in a docstring comment only; no `turan_theorem` axiom declaration exists in the file.",
       "mathContext": "Turán's theorem (1941): $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$, the maximum number of edges in a triangle-free graph on $n$ vertices, achieved uniquely by $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$."
     },
     {
       "id": "main-theorem",
       "title": "Part IV: The Main Theorem",
-      "startLine": 119,
-      "endLine": 145,
+      "startLine": 117,
+      "endLine": 140,
       "summary": "Defines BollobasErdosConjecture and axiomatizes it as proved. Alternate formulation via maxTriangleMultiplicity."
     },
     {
       "id": "tightness-turan",
       "title": "Part V: Tightness and Turán Theory",
-      "startLine": 146,
-      "endLine": 187,
+      "startLine": 141,
+      "endLine": 169,
       "summary": "Defines `IsTuranGraph` as the balanced bipartite structure. Tightness of n/6, triangle-free property, and edge-addition lemma are stated in docstring comments only; no formal axioms or theorems declared in this section."
     },
     {
       "id": "key-lemma",
       "title": "Part VI: Key Lemma",
-      "startLine": 188,
-      "endLine": 190,
+      "startLine": 170,
+      "endLine": 178,
       "summary": "Triangle count lower bound: T(G) ≥ (e(G) - n²/4) · n/6."
+    },
+    {
+      "id": "summary",
+      "title": "Part VII: Summary",
+      "startLine": 179,
+      "endLine": 190,
+      "summary": "The main theorem `erdos_905 : BollobasErdosConjecture` is discharged by `bollobas_erdos_theorem`. This closes the formalization: every graph with > n²/4 edges has an edge in ≥ n/6 triangles."
     }
   ],
   "conclusion": {
