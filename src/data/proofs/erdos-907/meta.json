@@ -47,8 +47,8 @@
     "originalContributions": [
       "Custom `IsAdditive` definition for Cauchy's equation with proved properties: additive_zero, additive_neg, additive_nat_mul (all fully proved by induction/linarith/ring)",
       "Full proof that linear_is_additive, continuous_has_continuous_differences, additive_difference_const, continuous_decomposition, sq_has_continuous_differences (all 0-sorry)",
-      "Axiomatization of deep results: continuous_additive_is_linear, de_bruijn_theorem, decomposition_unique, exists_discontinuous_additive",
-      "Extension to regularity theory: bounded_differences_linear_growth, measurable_differences_decomposition (axiomatized)",
+      "Axiomatization of exactly 2 deep results: continuous_additive_is_linear (Cauchy regularity), de_bruijn_theorem (main decomposition theorem)",
+      "Extension to regularity theory: bounded differences → linear growth and measurable differences → measurable+additive decomposition (discussed in docstring comments; not axiomatized)",
       "Connection to erdos-908 via decomposition_continuous_additive characterization",
       "Summary theorem packaging de Bruijn + continuous direction + additive constancy as conjunction"
     ],
@@ -60,14 +60,14 @@
     "historicalContext": "Erdős Problem #907 belongs to the rich tradition of studying Cauchy's functional equation φ(x+y) = φ(x) + φ(y) and its interplay with regularity conditions.\n\nCauchy (1821) showed that continuous additive functions must be linear: φ(x) = cx. The quest to weaken this regularity hypothesis became a central theme in 19th-20th century analysis. Lebesgue measurability, local boundedness, and monotonicity all suffice; but Hamel (1905) used the Axiom of Choice to construct discontinuous additive functions whose graphs are dense in ℝ², showing that *some* regularity condition is necessary.\n\nDe Bruijn's 1951 paper 'Functions whose differences belong to a given class' addressed the natural question: if f is not itself continuous but all its differences Δ_h f(x) = f(x+h) - f(x) are continuous, what can we say about f? His answer is a clean decomposition: f = g + φ with g continuous and φ additive. The 'irregular' part is exactly additive—and additive functions are invisible to the difference operator (since Δ_h φ = φ(h) is constant).\n\nThis result is a prototype for regularity theory: local or incremental smoothness (continuous differences) forces global structure (continuous + additive decomposition). The uniqueness theorem shows the decomposition is canonical modulo linear functions (which are both continuous and additive). The formalization in Lean 4 achieves 0 sorries by axiomatizing de Bruijn's theorem and the Cauchy-regularity results, while fully proving all structural consequences including the additive function properties, the difference operator algebra, and the x² example.",
     "problemStatement": "Let f : ℝ → ℝ be such that f(x+h) - f(x) is continuous for every h > 0. Is it true that f = g + φ for some continuous g and additive φ (i.e., φ(x+y) = φ(x) + φ(y))? Answer: YES.",
     "text": "If f(x+h) - f(x) is continuous for every h > 0, can f be decomposed as g + φ for continuous g and additive φ? Answer: YES, proved by de Bruijn (1951).",
-    "proofStrategy": "The formalization is organized into ten parts:\n\n1. **Additive Functions**: `IsAdditive` definition with proved properties: `additive_zero` (φ(0) = 0, via linarith), `additive_neg` (φ(-x) = -φ(x), via linarith), `additive_nat_mul` (φ(nx) = nφ(x), via induction+ring), `additive_rat_mul` (axiom for ℚ-linearity)\n2. **Continuous Additive = Linear**: `IsLinear` definition, `linear_is_additive` (proved via ring), `continuous_additive_is_linear` (axiom), `monotone_additive_is_linear` (axiom)\n3. **Discontinuous Additive**: `exists_discontinuous_additive` (axiom via AC), `discontinuous_additive_dense` (axiom: dense graph)\n4. **Difference Operator**: `difference f h x = f(x+h) - f(x)` with `Δ[h]` notation, `hasContinuousDifferences` as ∀ h > 0, Continuous (Δ[h] f)\n5. **De Bruijn's Theorem**: `hasDeBruijnDecomposition` as ∃ (g φ), Continuous g ∧ IsAdditive φ ∧ f = g + φ; `de_bruijn_theorem` (axiom); `erdos_907` := de_bruijn_theorem\n6. **Decomposition Properties**: `decomposition_unique` (axiom: unique mod linear), `continuous_decomposition` (proved: f + 0), `additive_continuous_decomposition` (proved via continuous_additive_is_linear)\n7. **Examples**: `sq_has_continuous_differences` (proved: Δ_h(x²) = 2hx+h² via ring+continuity)\n8. **Regularity Theory**: `bounded_differences_linear_growth` (axiom), `measurable_differences_decomposition` (axiom)\n9. **Related Problem**: `decomposition_continuous_additive` (axiom: ↔ Continuous f)\n10. **Summary**: `erdos_907_summary` (proved conjunction of 3 results)",
+    "proofStrategy": "The formalization is organized into ten parts:\n\n1. **Additive Functions**: `IsAdditive` definition with proved properties: `additive_zero` (φ(0) = 0, via linarith), `additive_neg` (φ(-x) = -φ(x), via linarith), `additive_nat_mul` (φ(nx) = nφ(x), via induction+ring)\n2. **Continuous Additive = Linear**: `IsLinear` definition, `linear_is_additive` (proved via ring), `continuous_additive_is_linear` (axiom)\n3. **Discontinuous Additive**: Hamel basis + AC construction and dense graph property (mathematical context in docstrings; not axiomatized)\n4. **Difference Operator**: `difference f h x = f(x+h) - f(x)` with `Δ[h]` notation, `hasContinuousDifferences` as ∀ h > 0, Continuous (Δ[h] f)\n5. **De Bruijn's Theorem**: `hasDeBruijnDecomposition` as ∃ (g φ), Continuous g ∧ IsAdditive φ ∧ f = g + φ; `de_bruijn_theorem` (axiom); `erdos_907` := de_bruijn_theorem\n6. **Decomposition Properties**: decomposition uniqueness modulo linear functions (mathematical context; not axiomatized), `continuous_decomposition` (proved: f + 0), `additive_continuous_decomposition` (proved via continuous_additive_is_linear)\n7. **Examples**: `sq_has_continuous_differences` (proved: Δ_h(x²) = 2hx+h² via ring+continuity)\n8. **Regularity Theory**: bounded Δ_h → linear growth and measurable Δ_h → measurable+additive decomposition (docstring comments; not axiomatized)\n9. **Related Problem**: `decomposition_continuous_additive` (axiom: ↔ Continuous f)\n10. **Summary**: `erdos_907_summary` (proved conjunction of 3 results)",
     "keyInsights": [
       "**Additive functions are 'invisible' to the difference operator**: Since Δ_h φ(x) = φ(h) is constant (and thus continuous), additive functions always satisfy the continuous differences condition regardless of their own regularity. This makes them the exact obstruction to concluding continuity from continuous differences.",
       "**The decomposition f = g + φ is a quotient by the kernel**: The space of functions with continuous differences modulo C(ℝ) is exactly the space of additive functions. De Bruijn's theorem says this quotient map splits: every f with continuous differences has a section g ∈ C(ℝ) such that f - g is additive.",
       "**Uniqueness modulo linear functions**: The intersection C(ℝ) ∩ Additive = Linear, so the decomposition is unique up to transferring a linear function cx between g and φ. This follows directly from continuous_additive_is_linear.",
       "**0-sorry architecture via clean axiom boundaries**: The file axiomatizes exactly the deep results (de Bruijn's theorem, Cauchy regularity, discontinuous existence, dense graphs) while fully proving all structural consequences. No sorry appears anywhere—the axiom/theorem boundary is mathematically principled.",
       "**The x² example illustrates both triviality and non-triviality**: f(x) = x² is continuous, so its differences are trivially continuous and its decomposition is trivial (g = x², φ = 0). The interesting cases are discontinuous f with continuous differences—these are exactly f = (continuous) + (additive).",
-      "**Extension to measurable differences connects to erdos-908**: The axiom `measurable_differences_decomposition` foreshadows erdos-908, where Laczkovich showed that measurable differences yield a finer decomposition. The framework of difference operators and additive functions unifies both problems."
+      "**Extension to measurable differences connects to erdos-908**: The result that measurable differences yield a measurable+additive decomposition foreshadows erdos-908, where Laczkovich showed that measurable differences yield a finer decomposition. The framework of difference operators and additive functions unifies both problems."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -78,26 +78,26 @@
     {
       "id": "additive-functions",
       "title": "Additive Functions (Cauchy's Equation)",
-      "summary": "Defines `IsAdditive φ := ∀ x y, φ(x+y) = φ(x) + φ(y)`. Proves three basic properties: `additive_zero` (φ(0) = 0, linarith), `additive_neg` (φ(-x) = -φ(x), linarith), `additive_nat_mul` (φ(nx) = nφ(x), induction+ring). Axiomatizes `additive_rat_mul` for ℚ-linearity.",
+      "summary": "Defines `IsAdditive φ := ∀ x y, φ(x+y) = φ(x) + φ(y)`. Proves three basic properties: `additive_zero` (φ(0) = 0, linarith), `additive_neg` (φ(-x) = -φ(x), linarith), `additive_nat_mul` (φ(nx) = nφ(x), induction+ring). The ℚ-linearity extension is discussed in docstring comments but not formally axiomatized.",
       "startLine": 40,
       "endLine": 78,
-      "mathContext": "Defines `IsAdditive φ := ∀ x y, φ(x+y) = φ(x) + φ(y)`. Proves three basic properties: `additive_zero` (φ(0) = 0, linarith), `additive_neg` (φ(-x) = -φ(x), linarith), `additive_nat_mul` (φ(nx) = nφ(x), induction+ring). Axiomatizes `additive_rat_mul` for ℚ-linearity."
+      "mathContext": "Defines `IsAdditive φ := ∀ x y, φ(x+y) = φ(x) + φ(y)`. Proves three basic properties: `additive_zero` (φ(0) = 0, linarith), `additive_neg` (φ(-x) = -φ(x), linarith), `additive_nat_mul` (φ(nx) = nφ(x), induction+ring). The ℚ-linearity extension is discussed in docstring comments but not formally axiomatized."
     },
     {
       "id": "continuous-additive",
       "title": "Continuous Additive Functions are Linear",
-      "summary": "Defines `IsLinear φ := ∃ c, ∀ x, φ(x) = cx`. Proves `linear_is_additive` (ring). Axiomatizes `continuous_additive_is_linear` (Cauchy's theorem) and `monotone_additive_is_linear` (regularity condition).",
+      "summary": "Defines `IsLinear φ := ∃ c, ∀ x, φ(x) = cx`. Proves `linear_is_additive` (ring). Axiomatizes `continuous_additive_is_linear` (Cauchy's theorem: continuous additive ⟹ linear). Monotone additivity implying linearity is discussed as mathematical context but not axiomatized.",
       "startLine": 79,
       "endLine": 104,
-      "mathContext": "Defines `IsLinear φ := ∃ c, ∀ x, φ(x) = cx`. Proves `linear_is_additive` (ring). Axiomatizes `continuous_additive_is_linear` (Cauchy's theorem) and `monotone_additive_is_linear` (regularity condition)."
+      "mathContext": "Defines `IsLinear φ := ∃ c, ∀ x, φ(x) = cx`. Proves `linear_is_additive` (ring). Axiomatizes `continuous_additive_is_linear` (Cauchy's theorem: continuous additive ⟹ linear). Monotone additivity implying linearity is discussed as mathematical context but not axiomatized."
     },
     {
       "id": "discontinuous-additive",
       "title": "Discontinuous Additive Functions",
-      "summary": "Axiomatizes `exists_discontinuous_additive` (via Hamel basis + AC) and `discontinuous_additive_dense` (graph dense in ℝ²). These show the pathological nature of non-regular additive functions.",
+      "summary": "Discusses the existence of discontinuous additive functions via Hamel basis + Axiom of Choice and their dense graphs in ℝ². These results are described in docstring comments as mathematical context but are not axiomatized in this Lean file.",
       "startLine": 105,
       "endLine": 120,
-      "mathContext": "Axiomatized: Axiomatizes `exists_discontinuous_additive` (via Hamel basis + AC) and `discontinuous_additive_dense` (graph dense in ℝ²). These show the pathological nature of non-regular additive functions."
+      "mathContext": "Discusses the existence of discontinuous additive functions via Hamel basis + Axiom of Choice and their dense graphs in ℝ². These results are described in docstring comments as mathematical context but are not axiomatized in this Lean file."
     },
     {
       "id": "difference-operator",
@@ -118,10 +118,10 @@
     {
       "id": "decomposition-properties",
       "title": "Properties of the Decomposition",
-      "summary": "Axiomatizes `decomposition_unique` (unique mod linear: g₁ = g₂ + cx). Proves `continuous_decomposition` (f + 0 for continuous f) and `additive_continuous_decomposition` (extracts slope c via continuous_additive_is_linear).",
+      "summary": "Proves `continuous_decomposition` (f + 0 for continuous f) and `additive_continuous_decomposition` (extracts slope c via continuous_additive_is_linear). Decomposition uniqueness modulo linear functions is noted as a mathematical fact but is not formally axiomatized in this file.",
       "startLine": 171,
       "endLine": 198,
-      "mathContext": "Axiomatizes `decomposition_unique` (unique mod linear: g₁ = g₂ + cx). Proves `continuous_decomposition` (f + 0 for continuous f) and `additive_continuous_decomposition` (extracts slope c via continuous_additive_is_linear)."
+      "mathContext": "Proves `continuous_decomposition` (f + 0 for continuous f) and `additive_continuous_decomposition` (extracts slope c via continuous_additive_is_linear). Decomposition uniqueness modulo linear functions is noted as a mathematical fact but is not formally axiomatized in this file."
     },
     {
       "id": "examples",
@@ -134,10 +134,10 @@
     {
       "id": "regularity-theory",
       "title": "Connection to Regularity Theory",
-      "summary": "Axiomatizes two extensions: `bounded_differences_linear_growth` (bounded Δ_h implies at most linear growth) and `measurable_differences_decomposition` (measurable Δ_h implies measurable + additive decomposition).",
+      "summary": "States two extensions as mathematical context: bounded Δ_h implies at most linear growth; measurable Δ_h implies measurable + additive decomposition. These are described in docstring comments but not formally axiomatized in this file.",
       "startLine": 226,
       "endLine": 232,
-      "mathContext": "Axiomatizes two extensions: `bounded_differences_linear_growth` (bounded Δ_h implies at most linear growth) and `measurable_differences_decomposition` (measurable Δ_h implies measurable + additive decomposition)."
+      "mathContext": "States two extensions as mathematical context: bounded Δ_h implies at most linear growth; measurable Δ_h implies measurable + additive decomposition. These are described in docstring comments but not formally axiomatized in this file."
     }
   ],
   "conclusion": {
