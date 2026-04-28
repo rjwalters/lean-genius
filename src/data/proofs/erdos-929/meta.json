@@ -22,14 +22,14 @@
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 377,
-    "assumptions": "2 deep axioms: rosser_lower (Rosser sieve), fgkmt_upper (Ford-Green-Konyagin-Maynard-Tao 2018). smooth_threshold_2 and smoothBlockSet_pos_density fully proved.",
+    "assumptions": "0 axioms, 0 sorries. Known bounds (rosser_lower from Rosser sieve, fgkmt_upper from Ford-Green-Konyagin-Maynard-Tao 2018) appear as docstring comments only — no axiom declarations. smooth_threshold_2 and smoothBlockSet_pos_density fully proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1976, motivated by his longstanding interest in the distribution of smooth (or friable) numbers — integers whose prime factors are all bounded. The study of smooth numbers dates back to Ramanujan (1917) who first investigated their counting function, later made precise by Dickman (1930) through his function $\\rho(u)$ estimating $\\Psi(x, x^{1/u})/x$. The connection to consecutive integers goes deeper: Størmer (1897) had already studied consecutive smooth numbers, and Erdős and others explored how many consecutive integers can share the property of having only small prime factors. The breakthrough of Ford, Green, Konyagin, Maynard, and Tao (2018) on large gaps between primes — settling a conjecture of Erdős on prime gap sizes — unexpectedly provided the best known upper bound on $S(k)$, connecting this problem to one of the central achievements in 21st-century analytic number theory.",
     "problemStatement": "Let $S(k)$ be the minimal $x$ such that the set $\\{n \\in \\mathbb{N} : n+1, \\ldots, n+k \\text{ are all } x\\text{-smooth}\\}$ has positive upper density. Is $S(k) \\geq k^{1-o(1)}$?",
     "text": "Let S(k) be the minimal x such that a positive density of n have n+1,...,n+k all x-smooth. Is S(k) ≥ k^{1−o(1)}? Known: k^{1/2−o(1)} ≤ S(k) ≤ k·(log³ k)/(log² k · log⁴ k) by Ford–Green–Konyagin–Maynard–Tao.",
-    "proofStrategy": "We formalize the core definitions — $x$-smoothness, smooth blocks, upper density, and the threshold function $S(k)$ — then state the main conjecture and known bounds as axioms. The definition of $S(k)$ uses `Nat.find` with the trivial upper bound $S(k) \\leq k+1$ as existence witness. The known bounds are formalized using Lean's filter-based `∀ᶠ ... in atTop` for eventual inequalities, and the FGKMT result is stated with explicit iterated logarithmic factors.",
+    "proofStrategy": "We formalize the core definitions — $x$-smoothness, smooth blocks, upper density, and the threshold function $S(k)$ — then state the main conjecture and prove the trivial upper bound. The definition of $S(k)$ uses `Nat.find` with the trivial upper bound $S(k) \\leq k+1$ as existence witness. The known bounds (Rosser sieve lower bound, FGKMT upper bound) appear as docstring comments only — they are not axiomatized as Lean declarations.",
     "keyInsights": [
       "The trivial bound $S(k) \\leq k+1$ uses the elegant observation that $n \\equiv -1 \\pmod{(k+1)!}$ forces each $n+i$ to be divisible by $i$, making all block elements $(k+1)$-smooth",
       "Rosser's sieve gives $S(k) > k^{1/2-o(1)}$ — the current gap between this and the conjectured $k^{1-o(1)}$ is enormous and represents a fundamental open problem in multiplicative number theory",
@@ -96,7 +96,7 @@
       "title": "Known Bounds",
       "startLine": 246,
       "endLine": 267,
-      "summary": "Proves `trivial_upper` ($S(k) \\leq k+1$ via `Nat.find_le`). Axiomatizes `rosser_lower` ($S(k) \\geq k^{1/2-\\varepsilon}$ from Rosser's sieve) and `fgkmt_upper` ($S(k) \\ll k \\cdot \\frac{\\log\\log\\log k}{\\log\\log k \\cdot \\log\\log\\log\\log k}$ from Ford–Green–Konyagin–Maynard–Tao).",
+      "summary": "Proves `trivial_upper` ($S(k) \\leq k+1$ via `Nat.find_le`). Includes docstring comments describing `rosser_lower` ($S(k) \\geq k^{1/2-\\varepsilon}$ from Rosser's sieve) and `fgkmt_upper` ($S(k) \\ll k \\cdot \\frac{\\log\\log\\log k}{\\log\\log k \\cdot \\log\\log\\log\\log k}$ from Ford–Green–Konyagin–Maynard–Tao) — neither is declared as an axiom in the file.",
       "mathContext": "$k^{1/2-o(1)} \\leq S(k) \\leq k+1$. The FGKMT bound refines the trivial upper bound using their prime gap breakthrough."
     },
     {
