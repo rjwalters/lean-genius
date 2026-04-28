@@ -39,10 +39,8 @@
       "IsProperColouring for hypergraph k-colourings",
       "hasChromaticNumberAtLeast predicate",
       "erdosConjecture formal statement",
-      "steiner_counterexample (Fano plane)",
       "alon_disproof axiom for r ≥ 4",
       "m(r,k) axiom for minimum edges",
-      "akolzin_shabanov_bounds axiom",
       "cherkashin_petrov_limit axiom",
       "erdos_832 summary theorem combining disproof and asymptotics"
     ],
@@ -55,7 +53,7 @@
     "historicalContext": "Erdős conjectured that for r ≥ 3 and k sufficiently large, every r-uniform hypergraph with chromatic number k must have at least C((r-1)(k-1)+1, r) edges, with equality only for the complete hypergraph. For graphs (r = 2), this reduces to the classical result that chromatic number k implies at least C(k, 2) edges, achieved by the complete graph K_k.\n\nAlon disproved the conjecture for r ≥ 4 in 1985, using connections to Turán numbers to construct r-uniform hypergraphs with high chromatic number but only (7/8)^r times the conjectured number of edges. For r = 3, the Fano plane (a Steiner triple system on 7 vertices with 7 edges and chromatic number 3) provides a small counterexample, since the conjecture predicts C(5,3) = 10 edges. Whether the conjecture holds for r = 3 with large k remains open.\n\nSubsequent work established the asymptotic behavior of m(r, k), the minimum number of edges in an r-uniform hypergraph with chromatic number exceeding k. Akolzin and Shabanov (2016) proved (r/log r) · k^r ≪ m(r,k) ≪ (r³ log r) · k^r, and Cherkashin and Petrov (2020) showed that m(r,k)/k^r converges to a constant c_r for each fixed r.",
     "problemStatement": "Let r ≥ 3 and k sufficiently large. Must every r-uniform hypergraph with chromatic number k have at least C((r-1)(k-1)+1, r) edges?\n\n**Answer: NO** for r ≥ 4 (Alon 1985). The r = 3 case remains partially open.",
     "text": "For r-uniform hypergraphs with chromatic number k, must there be ≥ C((r-1)(k-1)+1, r) edges? NO for r ≥ 4 (Alon 1985). Asymptotic: m(r,k) ~ c_r · k^r.",
-    "proofStrategy": "The Lean formalization defines r-uniform hypergraphs, proper colourings, and chromatic number predicates. Alon's disproof and the Steiner counterexample are axiomatized. The function m(r,k) is axiomatized with bounds from Akolzin-Shabanov and the limit theorem of Cherkashin-Petrov. The summary theorem packages the disproof and asymptotics via exact.",
+    "proofStrategy": "The Lean formalization defines r-uniform hypergraphs, proper colourings, and chromatic number predicates. Alon's disproof is axiomatized (alon_disproof); the Steiner triple counterexample is described in docstrings. The function m(r,k) is axiomatized, and the Cherkashin-Petrov limit theorem is axiomatized; the Akolzin-Shabanov bounds are described in docstrings only. The summary theorem packages the disproof and asymptotic limit by combining the alon_disproof and cherkashin_petrov_limit axioms.",
     "keyInsights": [
       "Fano plane: 7 edges with χ = 3, vs C(5,3) = 10 predicted — counterexample for r = 3, k = 3",
       "Alon's (7/8)^r factor: exponential improvement over the complete hypergraph for large r",
@@ -75,50 +73,50 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 35,
-      "endLine": 54,
+      "endLine": 53,
       "summary": "Hypergraph, IsUniform, IsProperColouring, hasChromaticNumberAtLeast"
     },
     {
       "id": "classical-case",
       "title": "Classical Graph Case (r=2)",
       "startLine": 55,
-      "endLine": 63,
-      "summary": "Classical bound C(k,2) for graphs with chromatic number k"
+      "endLine": 59,
+      "summary": "Classical bound C(k,2) for graphs with chromatic number k (docstring only)"
     },
     {
       "id": "erdos-conjecture",
       "title": "Erdős's Conjecture",
-      "startLine": 64,
-      "endLine": 73,
-      "summary": "Conjectured bound C((r-1)(k-1)+1, r) — disproved for r ≥ 4"
+      "startLine": 60,
+      "endLine": 68,
+      "summary": "Conjectured bound C((r-1)(k-1)+1, r) — disproved for r ≥ 4 (erdosConjecture def)"
     },
     {
       "id": "counterexamples",
       "title": "Counterexamples",
-      "startLine": 74,
-      "endLine": 95,
-      "summary": "Steiner triple (Fano plane) and Alon's disproof for r ≥ 4"
+      "startLine": 70,
+      "endLine": 85,
+      "summary": "Steiner triple (Fano plane) docstring; alon_disproof axiom for r ≥ 4"
     },
     {
       "id": "function-m",
       "title": "The Function m(r,k)",
-      "startLine": 96,
-      "endLine": 117,
-      "summary": "Minimum edges axiom, Akolzin-Shabanov bounds, Cherkashin-Petrov limit"
+      "startLine": 87,
+      "endLine": 101,
+      "summary": "m axiom (minimum edges); Akolzin-Shabanov bounds docstring; cherkashin_petrov_limit axiom"
     },
     {
       "id": "open-and-examples",
       "title": "Open Questions and Examples",
-      "startLine": 118,
-      "endLine": 131,
-      "summary": "r=3 open case, Fano plane bound, Alon's factor computation"
+      "startLine": 103,
+      "endLine": 115,
+      "summary": "r3_open_question def; Fano plane bound and Alon's factor examples"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 132,
+      "startLine": 117,
       "endLine": 140,
-      "summary": "erdos_832 theorem combining Alon's disproof and Cherkashin-Petrov limit"
+      "summary": "erdos_832 theorem combining alon_disproof and cherkashin_petrov_limit axioms"
     }
   ],
   "conclusion": {
