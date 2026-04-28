@@ -84,7 +84,7 @@
       "id": "counting-functions",
       "title": "Counting Functions f(n) and f_m(n)",
       "startLine": 117,
-      "endLine": 132,
+      "endLine": 136,
       "summary": "Defines $f(n)$ (all sum-free subsets) and $f_m(n)$ (maximal sum-free subsets) via `Finset.powerset.filter`. Proves $f_m(n) \\leq f(n)$.",
       "mathContext": "Formal definition: Defines $f(n)$ (all sum-free subsets) and $f_m(n)$ (maximal sum-free subsets) via `Finset.powerset.filter`. Proves $f_m(n) \\leq f(n)$."
     },
@@ -92,7 +92,7 @@
       "id": "cameron-erdos-bound",
       "title": "Cameron-Erdős Lower Bound",
       "startLine": 143,
-      "endLine": 156,
+      "endLine": 160,
       "summary": "$f_m(n) > 2^{n/4}$ for $n \\geq 4$, via constructing exponentially many maximal sum-free sets from subsets of odd numbers.",
       "mathContext": "$f_m(n) > $$2^{{n/4}$}$$ for $n \\geq 4$, via constructing exponentially many maximal sum-free sets from subsets of odd numbers."
     },
@@ -100,38 +100,38 @@
       "id": "luczak-schoen",
       "title": "Łuczak-Schoen (2001): Main Question Resolved",
       "startLine": 167,
-      "endLine": 184,
+      "endLine": 180,
       "summary": "$\\exists c < 1/2,\\ f_m(n) < 2^{cn}$. Resolves the main question: $f_m(n) = o(2^{n/2})$ is **YES**.",
       "mathContext": "$\\exists c < 1/2,\\ f_m(n) < $$2^{{cn}$}$$. Resolves the main question: $f_m(n) = o($$2^{{n/2}$}$)$ is **YES**."
     },
     {
       "id": "blst-sharp",
       "title": "BLST Sharp Asymptotics (2015, 2018)",
-      "startLine": 194,
-      "endLine": 219,
+      "startLine": 193,
+      "endLine": 207,
       "summary": "BLST 2015: $f_m(n) = 2^{(1/4+o(1))n}$ via the container method. BLST 2018: $f_m(n) = (C_n + o(1)) \\cdot 2^{n/4}$ with $C_n$ depending on $n \\bmod 4$.",
       "mathContext": "BLST 2015: $f_m(n) = $$2^{{(1/4+o(1))n}$}$$ via the container method. BLST 2018: $f_m(n) = (C_n + o(1)) \\cdot $$2^{{n/4}$}$$ with $C_n$ depending on $n \\bmod 4$."
     },
     {
       "id": "structure",
       "title": "Structure and the Container Method",
-      "startLine": 234,
-      "endLine": 248,
+      "startLine": 209,
+      "endLine": 232,
       "summary": "Explains the $1/4$ exponent (only $n/4$ free choices in typical maximal sets) and the hypergraph container method underlying the BLST proof.",
       "mathContext": "Verified: Explains the $1/4$ exponent (only $n/4$ free choices in typical maximal sets) and the hypergraph container method underlying the BLST proof."
     },
     {
       "id": "erdos-748",
       "title": "Comparison with Erdős #748",
-      "startLine": 254,
-      "endLine": 270,
+      "startLine": 234,
+      "endLine": 253,
       "summary": "$f(n) = \\Theta(2^{n/2})$ vs $f_m(n) = \\Theta(2^{n/4})$: maximality reduces the count exponentially. The ratio $f_m(n)/f(n) = \\Theta(2^{-n/4}) \\to 0$.",
       "mathContext": "$f(n) = \\Theta($$2^{{n/2}$}$)$ vs $f_m(n) = \\Theta($$2^{{n/4}$}$)$: maximality reduces the count exponentially. The ratio $f_m(n)/f(n) = \\Theta($$2^{{-n/4}$}$) \\to 0$."
     },
     {
       "id": "summary",
       "title": "Summary and Resolution",
-      "startLine": 286,
+      "startLine": 256,
       "endLine": 291,
       "summary": "Combined `erdos_877_solved`: Łuczak-Schoen resolves the question, Cameron-Erdős gives the tight lower bound. Final `erdos_877` states $f_m(n) = \\Theta(2^{n/4})$.",
       "mathContext": "Combined `erdos_877_solved`: Łuczak-Schoen resolves the question, Cameron-Erdős gives the tight lower bound. Final `erdos_877` states $f_m(n) = \\Theta($$2^{{n/4}$}$)$."
