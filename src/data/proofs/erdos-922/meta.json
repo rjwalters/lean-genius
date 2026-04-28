@@ -95,34 +95,34 @@
     {
       "id": "greedy-coloring",
       "title": "Greedy Coloring Connection",
-      "summary": "Connection to greedy coloring and degree bounds",
+      "summary": "Part 7 docstring commentary (lines 167–171) and greedy coloring docstring (lines 173–175) — no Lean declarations in this section",
       "startLine": 167,
-      "endLine": 182,
-      "mathContext": "Bound: Connection to greedy coloring and degree bounds"
+      "endLine": 175,
+      "mathContext": "Docstring commentary only — greedy coloring connection described but no Lean declaration for it"
     },
     {
       "id": "erdos-hajnal",
       "title": "The Original Erdős-Hajnal Formulation",
-      "summary": "The 1967 formulation that Folkman resolved",
-      "startLine": 183,
-      "endLine": 200,
-      "mathContext": "Mathematical content: The 1967 formulation that Folkman resolved"
+      "summary": "Part 8 docstring (lines 176–180); `def erdosHajnalQuestion` (line 183): formalizes the 1967 Erdős-Hajnal question as a Lean proposition; docstring note that Folkman answered it (lines 190–191)",
+      "startLine": 176,
+      "endLine": 191,
+      "mathContext": "Formal definition: `def erdosHajnalQuestion` (line 183) — the 1967 Erdős-Hajnal formulation. Folkman's affirmative answer is in `folkman_theorem` (axiom, line 118)."
     },
     {
       "id": "related-results",
       "title": "Related Results",
-      "summary": "Ramsey connection, Brooks' theorem",
-      "startLine": 201,
-      "endLine": 217,
-      "mathContext": "Verified: Ramsey connection, Brooks' theorem"
+      "summary": "Part 9 docstring (lines 192–196) and Ramsey/Brooks docstring (lines 198–199) — commentary only, no Lean declarations for Ramsey or Brooks in this section",
+      "startLine": 192,
+      "endLine": 200,
+      "mathContext": "Docstring commentary only — Ramsey connection and Brooks' theorem described but not declared as axioms or theorems in this file"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_922_summary theorem combining all main results",
-      "startLine": 218,
+      "summary": "Part 10 docstring (lines 201–206); `theorem erdos_922_summary` (lines 209–218): combines folkman_theorem, folkman_bound_tight, and folkman_zero_implies_bipartite into a single summary theorem",
+      "startLine": 201,
       "endLine": 220,
-      "mathContext": "Mathematical content: erdos_922_summary theorem combining all main results"
+      "mathContext": "Formal theorem: `erdos_922_summary` (line 209) — combines all main results via `folkman_theorem G`, `folkman_bound_tight`, `folkman_zero_implies_bipartite G`"
     }
   ],
   "conclusion": {
