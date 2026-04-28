@@ -297,12 +297,15 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
       status: proofMeta.status || 'unknown',
       badge: proofMeta.badge || 'unknown',
       claimedSorries: proofMeta.sorries ?? -1,
-      // Use leanFile.axiomCount (raw declarations) for comparison when present.
-      // meta.axiomCount counts ALL assumptions including structure-encoded ones.
-      // leanFile.axiomCount counts only ^axiom declarations, matching what we detect.
-      claimedAxioms: (typeof meta.leanFile === 'object' && meta.leanFile !== null && meta.leanFile.axiomCount !== undefined)
-        ? meta.leanFile.axiomCount
-        : (proofMeta.axiomCount ?? -1),
+      // leanFile.axiomCount counts only the main file; meta.axiomCount counts the
+      // full import chain. When we aggregate detection across additionalFiles or
+      // followed imports, compare against meta.axiomCount to avoid false-positive
+      // undercounts (single-file claim vs multi-file actual).
+      claimedAxioms: (allLeanFiles.length > 1)
+        ? (proofMeta.axiomCount ?? -1)
+        : ((typeof meta.leanFile === 'object' && meta.leanFile !== null && meta.leanFile.axiomCount !== undefined)
+            ? meta.leanFile.axiomCount
+            : (proofMeta.axiomCount ?? -1)),
     },
     actual: {
       sorryCount,
