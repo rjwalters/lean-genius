@@ -41,7 +41,7 @@
     "originalContributions": [
       "Formalized the growth condition k ≪_ε a^ε for monochromatic progressions",
       "Axiomatized Hunter's complete solution for 2 colors",
-      "Proved 1 color is insufficient via van der Waerden argument",
+      "Proved one_color_insufficient constructively using Fin.eq_zero (any 1-coloring trivially maps all elements to the unique Fin 1 value)",
       "Connected Spencer's 3-coloring and Erdős's partial result"
     ],
     "axiomCount": 3,
@@ -53,7 +53,7 @@
     "historicalContext": "Erdős Problem #984 concerns the fine structure of monochromatic arithmetic progressions under 2-colorings of ℕ. Van der Waerden's theorem (1927) guarantees that any finite coloring of the integers contains arbitrarily long monochromatic APs, but says nothing about where they occur or how their length relates to their starting position.\n\nErdős asked whether the growth of monochromatic AP lengths can be made subpolynomial: specifically, whether there exists a 2-coloring such that any monochromatic k-term AP starting at a satisfies k ≪_ε a^ε for all ε > 0. This is the strongest possible polynomial control—k must grow slower than every positive power of a.\n\nSpencer (1975) first showed this is achievable with 3 colors, using a bound related to the inverse van der Waerden function W⁻¹(3,a), which grows unimaginably slowly due to the tower-function growth of W(3,k). Erdős himself established partial progress for 2 colors, constructing a 2-coloring achieving the weaker bound k ≪ a^{1-c} for some absolute constant c > 0, but he could not push the exponent to match the full subpolynomial condition.\n\nZach Hunter resolved the problem completely using refined probabilistic methods, proving that 2 colors suffice for the full k ≪_ε a^ε bound. Combined with the elementary observation that 1 color trivially fails (every set is monochromatic), this establishes 2 as the exact chromatic number for this problem. Hunter's work builds on the Lovász Local Lemma framework and careful combinatorial analysis of AP structure.",
     "problemStatement": "Can ℕ be 2-colored such that if {a, a+d, ..., a+(k-1)d} is a k-term monochromatic arithmetic progression, then k ≪_ε a^ε for all ε > 0?",
     "text": "Can ℕ be 2-colored such that any k-term monochromatic arithmetic progression starting at a satisfies k ≪_ε a^ε for all ε > 0? Zach Hunter proved YES, improving on Spencer's 3-color result and Erdős's partial k ≪ a^{1-c} bound.",
-    "proofStrategy": "The formalization proceeds in stages mirroring the historical development: (1) basic definitions of colorings, APs, and monochromaticity using Finset.image; (2) the key predicate GrowsSlowerThanAnyPower encoding k ≪_ε a^ε via explicit ∀ε>0, ∃C>0 quantifier structure; (3) van der Waerden's theorem axiomatized for multi-color settings; (4) Spencer's 3-color result axiomatized with its own Coloring3 type; (5) Erdős's weaker ErdosWeakBound formalized and axiomatized; (6) Hunter's full solution axiomatized; and (7) one_color_insufficient proved constructively using Fin.eq_zero and push_neg. The summary theorem packages all three main results.",
+    "proofStrategy": "The formalization proceeds in stages mirroring the historical development: (1) basic definitions of colorings, APs, and monochromaticity using Finset.image; (2) the key predicate GrowsSlowerThanAnyPower encoding k ≪_ε a^ε via explicit ∀ε>0, ∃C>0 quantifier structure; (3) van der Waerden's theorem referenced in docstring only (no Lean axiom declared); (4) Spencer's 3-color result axiomatized with its own Coloring3 type; (5) Erdős's weaker ErdosWeakBound formalized and axiomatized; (6) Hunter's full solution axiomatized; and (7) one_color_insufficient proved constructively using Fin.eq_zero and push_neg. The summary theorem packages all three main results.",
     "keyInsights": [
       "The gap between Spencer's 3-color and the desired 2-color result persisted for decades, highlighting how much harder it is to achieve subpolynomial growth with fewer colors",
       "The growth condition k ≪_ε a^ε is precisely the condition that k grows slower than every polynomial in a—equivalently, log k / log a → 0 as a → ∞",
@@ -90,8 +90,8 @@
       "title": "Part 3: Van der Waerden Connection",
       "startLine": 70,
       "endLine": 82,
-      "summary": "Axiomatizes van der Waerden's theorem for r ≥ 2 colors and k ≥ 3 terms, guaranteeing monochromatic APs in sufficiently long initial segments.",
-      "mathContext": "Axiomatizes van der Waerden's theorem for r $\\geq$ 2 colors and k $\\geq$ 3 terms, guaranteeing monochromatic APs in sufficiently long initial segments."
+      "summary": "Documents van der Waerden's theorem role via docstring only; no Lean axiom is declared in this section (the theorem is invoked implicitly through Spencer's and Erdős's axiomatized results).",
+      "mathContext": "Documents van der Waerden's theorem role via docstring only; no Lean axiom is declared in this section."
     },
     {
       "id": "spencer-result",
@@ -122,16 +122,16 @@
       "title": "Part 7: Chromatic Number Perspective",
       "startLine": 129,
       "endLine": 158,
-      "summary": "Axiomatizes two_colors_suffice_for_power_bound (weaker, per-ε version) and proves one_color_insufficient constructively using Fin.eq_zero and push_neg, establishing 2 as optimal.",
-      "mathContext": "Verified: Axiomatizes two_colors_suffice_for_power_bound (weaker, per-ε version) and proves one_color_insufficient constructively using Fin.eq_zero and push_neg, establishing 2 as optimal."
+      "summary": "Proves one_color_insufficient constructively using Fin.eq_zero and push_neg, establishing that 1 color cannot achieve monochromatic-AP control. The two_colors_suffice bound appears as a docstring comment only; no corresponding axiom or theorem is declared.",
+      "mathContext": "Verified: Proves one_color_insufficient constructively using Fin.eq_zero and push_neg, establishing that 1 color is insufficient. The two_colors_suffice bound is referenced in a docstring only; no Lean declaration exists."
     },
     {
       "id": "explicit-bounds",
       "title": "Part 8: Explicit Bounds",
       "startLine": 159,
       "endLine": 169,
-      "summary": "Axiomatizes the existence of an exponent 0 < c < 1 for Erdős's weak bound with unit constant C = 1.",
-      "mathContext": "Axiomatized: Axiomatizes the existence of an exponent 0 < c < 1 for Erdős's weak bound with unit constant C = 1."
+      "summary": "Documents the optimal exponent in Erdős's construction via a docstring comment only; no axiom or theorem is declared in this section.",
+      "mathContext": "Documents the optimal exponent in Erdős's construction via a docstring comment only; no Lean declaration exists in this section."
     },
     {
       "id": "summary",
