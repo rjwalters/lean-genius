@@ -97,16 +97,16 @@
       "title": "Subgraphs",
       "startLine": 98,
       "endLine": 121,
-      "summary": "Defines `IsSpanningSubgraph` ($E(H) \\subseteq E(G)$, same vertices) and `inducedSubgraph` ($G[S]$ via `comap`). Axiomatizes $\\chi(H) \\leq \\chi(G)$ for spanning subgraphs $H \\subseteq G$.",
-      "mathContext": "Formal definition: Defines `IsSpanningSubgraph` ($E(H) \\subseteq E(G)$, same vertices) and `inducedSubgraph` ($G[S]$ via `comap`). Axiomatizes $\\chi(H) \\leq \\chi(G)$ for spanning subgraphs $H \\subseteq G$."
+      "summary": "Defines `IsSpanningSubgraph` ($E(H) \\subseteq E(G)$, same vertices). Subgraph monotonicity ($\\chi(H) \\leq \\chi(G)$) is described in a docstring only — no axiom or theorem is declared in this section, and there is no `inducedSubgraph` definition.",
+      "mathContext": "Formal definition: `IsSpanningSubgraph`. The subgraph-monotonicity property is described in docstring only; no `inducedSubgraph` definition or χ-monotonicity axiom exists in this file."
     },
     {
       "id": "mycielski",
       "title": "Mycielski's Construction",
       "startLine": 122,
       "endLine": 133,
-      "summary": "Axiomatizes Mycielski's 1955 theorem: $\\forall k,\\, \\exists G$ triangle-free with $\\chi(G) \\geq k$. The Mycielskian $\\mu(G)$ increments $\\chi$ by 1 while preserving triangle-freeness.",
-      "mathContext": "Verified: Axiomatizes Mycielski's 1955 theorem: $\\forall k,\\, \\exists G$ triangle-free with $\\chi(G) \\geq k$. The Mycielskian $\\mu(G)$ increments $\\chi$ by 1 while preserving triangle-freeness."
+      "summary": "Docstring section describing Mycielski's 1955 theorem ($\\forall k,\\, \\exists G$ triangle-free with $\\chi(G) \\geq k$) and the Mycielskian construction $\\mu(G)$. No `mycielski_*` axiom or theorem is declared in this file.",
+      "mathContext": "Docstring-only context: Mycielski's 1955 theorem and the Mycielskian construction $\\mu(G)$. Not formalized — no axiom or theorem declared in this section."
     },
     {
       "id": "main-theorem",
@@ -129,8 +129,8 @@
       "title": "Generalizations",
       "startLine": 200,
       "endLine": 227,
-      "summary": "Defines `HFreeSubgraphProblem` for arbitrary forbidden subgraph $H$. Axiomatizes Rödl's generalization: the $H$-free version holds when $H$ is bipartite ($\\exists$ 2-coloring of $H$). Connects to Erdős Problem #108.",
-      "mathContext": "Defines `HFreeSubgraphProblem` for arbitrary forbidden subgraph $H$. Axiomatizes Rödl's generalization: the $H$-free version holds when $H$ is bipartite ($\\exists$ 2-coloring of $H$)."
+      "summary": "Defines `HFreeSubgraphProblem` for arbitrary forbidden subgraph $H$. Rödl's generalization (the $H$-free version for bipartite $H$) is described in a docstring only — no axiom or theorem is declared. Connects to Erdős Problem #108.",
+      "mathContext": "Defines `HFreeSubgraphProblem` for arbitrary forbidden subgraph $H$. Rödl's bipartite-$H$ generalization appears in docstring only; not formalized as an axiom or theorem."
     },
     {
       "id": "summary",
@@ -148,7 +148,7 @@
       "What is the optimal constant $C$ in $f(k) \\leq \\text{tower}(Ck)$? Is $C = 1$ achievable?",
       "Can the result be extended to ALL graphs $H$ (not just bipartite)? For non-bipartite $H$ like $K_4$ or odd cycles $C_{2t+1}$, the problem connects to Erdős Problem #108.",
       "Is the tower-type growth of $f(k)$ necessary, or could $f(k)$ grow as a polynomial or exponential in $k$ for the triangle-free case?",
-      "Can the Lean axioms (`rodl_1977`, `mycielski_triangle_free_high_chromatic`) be replaced by fully verified proofs using Mathlib's graph coloring infrastructure?"
+      "Can the Lean axioms `rodl_1977` and `rodl_bound` be replaced by fully verified proofs using Mathlib's graph coloring infrastructure?"
     ]
   },
   "crossReferences": [
@@ -177,7 +177,7 @@
     "lineCount": 230,
     "axiomCount": 2,
     "theoremCount": 3,
-    "definitionCount": 9,
+    "definitionCount": 6,
     "path": "Proofs/Erdos923Problem.lean",
     "sorries": 0
   },

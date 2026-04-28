@@ -66,32 +66,32 @@
       "title": "The Function $g(n)$",
       "startLine": 65,
       "endLine": 94,
-      "summary": "Defines `g : \\mathbb{N} \\to \\mathbb{N}` as the maximum number of distinct clique sizes over all graphs on $n$ vertices (noncomputable). Axiomatizes $g(n) \\leq n$ and proves `singleton_is_clique`: every vertex forms a clique of size 1.",
-      "mathContext": "Defines `g : \\mathbb{N} \\to \\mathbb{N}` as the maximum number of distinct clique sizes over all graphs on $n$ vertices (noncomputable). Axiomatizes $g(n) \\leq n$ and proves `singleton_is_clique`: every vertex forms a clique of size 1."
+      "summary": "Defines `g : \\mathbb{N} \\to \\mathbb{N}` as the maximum number of distinct clique sizes over all graphs on $n$ vertices (currently a placeholder `g n := n`). Proves `singleton_is_clique`: every vertex forms a clique of size 1. The trivial $g(n) \\leq n$ bound is described in a docstring only — no axiom is declared.",
+      "mathContext": "Defines `g : \\mathbb{N} \\to \\mathbb{N}` (placeholder `g n := n`). Proves `singleton_is_clique`. The $g(n) \\leq n$ bound is described in docstring only; no axiom declared."
     },
     {
       "id": "moon-moser",
       "title": "Moon-Moser Bounds (1965)",
       "startLine": 95,
       "endLine": 112,
-      "summary": "Axiomatizes the Moon-Moser bounds: upper bound $g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$ using `Nat.log 2 n`, and lower bound $g(n) > n - \\log_2 n - 2\\log\\log n / \\log 2$ using `Real.log`.",
-      "mathContext": "Axiomatizes the Moon-Moser bounds: upper bound $g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$ using `Nat.log 2 n`, and lower bound $g(n) > n - \\log_2 n - 2\\log\\$\\log n$ / \\log 2$ using `Real.log`."
+      "summary": "Docstring section describing the Moon-Moser bounds: upper bound $g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$ and lower bound $g(n) > n - \\log_2 n - 2\\log\\log n$. No axioms or theorems are declared in this section.",
+      "mathContext": "Docstring-only context: the Moon-Moser bounds are described but not axiomatized in this file."
     },
     {
       "id": "log-star",
       "title": "The Iterated Logarithm $\\log^*$",
       "startLine": 113,
       "endLine": 139,
-      "summary": "Defines `logStar : \\mathbb{N} \\to \\mathbb{N}` recursively: $\\log^*(0) = \\log^*(1) = 0$, otherwise $1 + \\log^*(\\lfloor \\log_2 n \\rfloor)$ if $\\lfloor \\log_2 n \\rfloor > 1$. Axiomatizes $\\log^*(2^{16}) \\leq 4$.",
-      "mathContext": "Defines `logStar : \\mathbb{N} \\to \\mathbb{N}` recursively: $\\log^*(0) = \\log^*(1) = 0$, otherwise $1 + \\log^*(\\lfloor \\log_2 n \\rfloor)$ if $\\lfloor \\log_2 n \\rfloor > 1$. Axiomatizes $\\log^*(2^{16}) \\leq 4$."
+      "summary": "Defines `logStar : \\mathbb{N} \\to \\mathbb{N}` recursively: $\\log^*(0) = \\log^*(1) = 0$, otherwise $1 + \\log^*(\\lfloor \\log_2 n \\rfloor)$ if $\\lfloor \\log_2 n \\rfloor > 1$. The $\\log^*(2^{16}) = 4$ value is mentioned in a docstring only — no axiom or theorem is declared.",
+      "mathContext": "Defines `logStar` recursively. $\\log^*(2^{16}) = 4$ is mentioned in docstring only; no axiom declared."
     },
     {
       "id": "erdos-conjecture",
       "title": "Erdős's Conjecture (1966)",
       "startLine": 140,
       "endLine": 162,
-      "summary": "Axiomatizes Erdős's improved lower bound $g(n) > n - \\log_2 n - \\log^*(n) - C$. Defines `ErdosConjecture` as $|g(n) - (n - \\log_2 n - \\log^*(n))| \\leq C$ for all $n \\geq 2$.",
-      "mathContext": "Formal definition: Axiomatizes Erdős's improved lower bound $g(n) > n - \\log_2 n - \\log^*(n) - C$. Defines `ErdosConjecture` as $|g(n) - (n - \\log_2 n - \\log^*(n))| \\leq C$ for all $n \\geq 2$."
+      "summary": "Defines `ErdosConjecture` as $|g(n) - (n - \\log_2 n - \\log^*(n))| \\leq C$ for all $n \\geq 2$. Erdős's improved lower bound $g(n) > n - \\log_2 n - \\log^*(n) - C$ is described in a docstring only — no axiom is declared (the conjecture is formalized as a `Prop` definition).",
+      "mathContext": "Defines `ErdosConjecture`. Erdős's improved lower bound is described in docstring only; no axiom declared in this section."
     },
     {
       "id": "spencer",
