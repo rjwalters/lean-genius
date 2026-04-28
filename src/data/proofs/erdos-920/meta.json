@@ -31,7 +31,7 @@
     "historicalContext": "The study of chromatic numbers of $K_k$-free graphs has a rich history intertwining graph coloring and Ramsey theory. Erdős initiated this line in 1959 when he used the probabilistic method to show $R(3,m) \\gg (m/\\log m)^2$, which implies $g_3(n) \\gg n^{1/2}/\\log n$. Graver and Yackel established the upper bound $g_k(n) \\ll (n \\log\\log n / \\log n)^{1-1/(k-1)}$ in 1968, published in the Journal of Combinatorial Theory. Shearer later improved the $k=3$ lower bound to $g_3(n) \\gg (n/\\log n)^{1/2}$, essentially resolving that case. For decades the general case $k \\geq 4$ remained open, with the best known lower bound exponent $1 - 2/(k+1)$ falling short of the conjectured $1 - 1/(k-1)$. The landscape changed dramatically in 2023 when Sam Mattheus and Jacques Verstraete proved $R(4,t) \\gg t^3/(\\log t)^4$ using algebraic geometry over finite fields, resolving the $k=4$ case with the optimal exponent $2/3$. Their work appeared in Annals of Mathematics and represents one of the major combinatorial breakthroughs of the decade. The problem for $k \\geq 5$ remains one of the central open questions in extremal combinatorics.",
     "problemStatement": "Let $g_k(n)$ denote the largest chromatic number of a graph with $n$ vertices containing no complete graph $K_k$. Is it true that for $k \\geq 4$, $g_k(n) \\gg n^{1-1/(k-1)} / (\\log n)^c$ for some constant $c > 0$?",
     "text": "Let g_k(n) denote the largest chromatic number of a K_k-free graph on n vertices. Is g_k(n) ≫ n^{1-1/(k-1)} / (log n)^c for k ≥ 4? This connects chromatic numbers to Ramsey theory.",
-    "proofStrategy": "The formalization axiomatizes the key results and connections in this area. The central structural insight is the **Ramsey-chromatic bridge**: if $R(k,m) \\geq c \\cdot m^\\alpha / (\\log m)^\\beta$, then $g_k(n) \\geq c' \\cdot n^{1-1/\\alpha} / (\\log n)^{\\beta/\\alpha}$. This reduces the chromatic number problem to bounding Ramsey numbers. The file axiomatizes the Graver-Yackel upper bound, the Erdős $k=3$ bound, Shearer's improvement, the Mattheus-Verstraete $k=4$ breakthrough, and the general lower bound, then uses the Ramsey-chromatic connection to unify these results in a summary theorem.",
+    "proofStrategy": "The formalization axiomatizes the key results and connections in this area. The central structural insight is the **Ramsey-chromatic bridge**: if $R(k,m) \\geq c \\cdot m^\\alpha / (\\log m)^\\beta$, then $g_k(n) \\geq c' \\cdot n^{1-1/\\alpha} / (\\log n)^{\\beta/\\alpha}$. This reduces the chromatic number problem to bounding Ramsey numbers. The file declares 4 axioms: `maxChromaticKFree` (extremal function), `mattheus_verstraete_2023` (k=4 breakthrough), `general_lower_bound` (general bound with exponent 1−2/(k+1)), and `RamseyNumber`. The Graver-Yackel upper bound, Erdős k=3 bound, Shearer's improvement, and Ramsey-chromatic connection are stated in docstring comments only; no formal axiom declarations for those results.",
     "keyInsights": [
       "**Extremal function** $g_k(n)$: measures the worst-case chromatic complexity among $K_k$-free graphs on $n$ vertices, capturing the tension between local structure (no large cliques) and global complexity (high chromatic number)",
       "**Graver-Yackel upper bound** (1968): $g_k(n) \\ll (n \\log\\log n / \\log n)^{1-1/(k-1)}$ provides the conjectured target exponent $1 - 1/(k-1)$ as the 'correct' answer",
@@ -64,28 +64,28 @@
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
-      "summary": "Axiomatizes the Graver-Yackel (1968) upper bound $g_k(n) \\leq C(n \\log\\log n / \\log n)^{1-1/(k-1)}$ and the trivial bound $g_k(n) \\leq n$. The Graver-Yackel bound provides the target exponent that Erdős conjectures also holds for the lower bound.",
+      "summary": "Contains docstring comments for the Graver-Yackel (1968) upper bound $g_k(n) \\leq C(n \\log\\log n / \\log n)^{1-1/(k-1)}$ and the trivial bound $g_k(n) \\leq n$. No formal axiom declarations for these bounds; they are stated as background context only. The Graver-Yackel exponent $1-1/(k-1)$ is the target for the Erdős conjecture.",
       "startLine": 73,
       "endLine": 94
     },
     {
       "id": "lower-bounds",
       "title": "Known Lower Bounds",
-      "summary": "Axiomatizes four progressively stronger lower bounds: Erdős (1959) $g_3(n) \\gg n^{1/2}/\\log n$ via the probabilistic method, Shearer's improvement $g_3(n) \\gg (n/\\log n)^{1/2}$, the Mattheus-Verstraete (2023) breakthrough $g_4(n) \\gg n^{2/3}/(\\log n)^{4/3}$, and the general bound $g_k(n) \\gg n^{1-2/(k+1)}/(\\log n)^{c_k}$.",
+      "summary": "Axiomatizes two lower bounds as formal declarations: `mattheus_verstraete_2023` ($g_4(n) \\gg n^{2/3}/(\\log n)^{4/3}$, the 2023 breakthrough) and `general_lower_bound` ($g_k(n) \\gg n^{1-2/(k+1)}/(\\log n)^{c_k}$). The Erdős (1959) bound $g_3(n) \\gg n^{1/2}/\\log n$ and Shearer's improvement $g_3(n) \\gg (n/\\log n)^{1/2}$ are stated in docstring comments only; no `^axiom` declarations for those.",
       "startLine": 95,
       "endLine": 139
     },
     {
       "id": "erdos-conjecture",
       "title": "The Erdős Conjecture",
-      "summary": "Formalizes the conjecture as `ErdosConjecture k`: for $k \\geq 4$, $g_k(n) \\geq C \\cdot n^{1-1/(k-1)}/(\\log n)^c$. Also axiomatizes `the_gap` showing the strict inequality $1 - 2/(k+1) < 1 - 1/(k-1)$ for $k \\geq 4$, quantifying how far current bounds fall short.",
+      "summary": "Defines the conjecture as `def ErdosConjecture k : Prop :=...` (a `def`, not an axiom). The gap $1 - 2/(k+1) < 1 - 1/(k-1)$ for $k \\geq 4$ is stated in a docstring comment only; no `the_gap` axiom declaration exists in the file.",
       "startLine": 140,
       "endLine": 165
     },
     {
       "id": "ramsey-connection",
       "title": "Connection to Ramsey Numbers",
-      "summary": "Axiomatizes the Ramsey number $R(k,m)$, the Ramsey-chromatic connection (the key bridge: $R(k,m) \\geq c \\cdot m^\\alpha/(\\log m)^\\beta \\implies g_k(n) \\geq c' \\cdot n^{1-1/\\alpha}/(\\log n)^{\\beta/\\alpha}$), and the specific Ramsey bounds of Erdős ($R(3,m) \\gg (m/\\log m)^2$) and Mattheus-Verstraete ($R(4,m) \\gg m^3/(\\log m)^4$).",
+      "summary": "Axiomatizes the Ramsey number as `axiom RamseyNumber (k m : ℕ) : ℕ`. The Ramsey-chromatic connection ($R(k,m) \\geq c \\cdot m^\\alpha/(\\log m)^\\beta \\implies g_k(n) \\geq c' \\cdot n^{1-1/\\alpha}/(\\log n)^{\\beta/\\alpha}$) and specific Ramsey bounds of Erdős ($R(3,m) \\gg (m/\\log m)^2$) and Mattheus-Verstraete ($R(4,m) \\gg m^3/(\\log m)^4$) are stated in docstring comments only; no formal axiom declarations for those results.",
       "startLine": 166,
       "endLine": 203
     }
