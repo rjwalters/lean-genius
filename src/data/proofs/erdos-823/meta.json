@@ -67,8 +67,8 @@
       "pollack_2015 axiom and erdos_823_solved theorem (proved)",
       "σ-pair examples: (14,15), (206,210), (957,958)",
       "Euler totient analogy with erdos_phi_easy axiom",
-      "sigmaFiber definition with arbitrarily large fibers axiom",
-      "Density results: positive density of σ-values and multi-preimage values",
+      "sigmaFiber definition and fiber_24_nonempty theorem (proved)",
+      "Density of σ-values and multi-preimage values noted in doc comments; not formalized as theorems.",
       "Perfect number examples: σ(6)=12, σ(28)=56",
       "erdos_823_statement: complete resolution (proved)"
     ],
@@ -89,7 +89,7 @@
     "historicalContext": "**The Sum of Divisors Function and Ratio Flexibility**\n\nThe sum of divisors function $\\sigma(n) = \\sum_{d \\mid n} d$ is one of the most studied objects in number theory, with roots going back to Euclid's characterization of perfect numbers ($\\sigma(n) = 2n$). Its multiplicativity — $\\sigma(mn) = \\sigma(m)\\sigma(n)$ for $\\gcd(m,n) = 1$ — makes it tractable yet rich in structure.\n\n**Problem #823 (Erdős, 1974)**: Given $\\alpha \\geq 1$, do there exist sequences $n_k, m_k$ with $\\sigma(n_k) = \\sigma(m_k)$ and $n_k/m_k \\to \\alpha$? Erdős posed this in his 1974 paper *Remarks on some problems in number theory*, noting that the analogous result for Euler's totient $\\varphi$ is 'easy to prove.' The $\\varphi$ case is easy because $\\varphi(n) = \\varphi(2n)$ for odd $n$, giving trivial $\\varphi$-pairs at ratio $2$, and multiplicativity handles arbitrary ratios. For $\\sigma$, no such simple identity exists.\n\n**σ-Pairs and Their Abundance**: Numbers $n \\neq m$ with $\\sigma(n) = \\sigma(m)$ (called $\\sigma$-pairs) are surprisingly common. Examples include $\\sigma(14) = \\sigma(15) = 24$, $\\sigma(206) = \\sigma(210) = 432$, and $\\sigma(957) = \\sigma(958)$. The pair $(14, 15)$ works because $14 = 2 \\cdot 7$ gives $\\sigma = (1+2)(1+7) = 24$ while $15 = 3 \\cdot 5$ gives $\\sigma = (1+3)(1+5) = 24$ — a coincidence enabled by multiplicativity. Erdős and Pomerance showed that the number of $n \\leq x$ with $\\sigma(n) = \\sigma(n+1)$ grows as $x/(\\log x)^c$.\n\n**Pollack's Resolution (2015)**: Paul Pollack proved the affirmative answer in his paper *Remarks on fibers of the sum-of-divisors function* (Mathematika 61(3), 2015, pp. 616–636). His proof exploits three key facts: (1) the set of $\\sigma$-values with multiple preimages has positive lower density, (2) multiplicativity allows scaling of $\\sigma$-pairs to approximate any ratio, and (3) a careful density argument closes the approximation gap. The construction is non-explicit — it proves existence of appropriate sequences without giving a formula.\n\n**The Fiber Perspective**: Pollack's approach centers on the *fibers* $\\sigma^{-1}(m) = \\{n : \\sigma(n) = m\\}$. Key structural results include: fibers can be arbitrarily large, every sufficiently large even number is a $\\sigma$-value, and the set of $m$ with $|\\sigma^{-1}(m)| \\geq 2$ has positive density. These facts, combined with multiplicativity, give enough raw material to construct converging sequences at any prescribed ratio.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $\\alpha \\geq 1$. Does there exist a sequence of integers $n_k, m_k$ such that $\\sigma(n_k) = \\sigma(m_k)$ for all $k \\geq 1$ and $n_k/m_k \\to \\alpha$?\n\n**Answer: YES** (Pollack, 2015)\n\nThe result also holds for all $\\alpha > 0$ by symmetry ($\\alpha < 1$ case: swap $n$ and $m$).\n\nErdős noted that the analogous result for $\\varphi(n)$ is 'easy to prove.'",
     "text": "Given α ≥ 1, does there exist a sequence of integers n_k, m_k such that σ(n_k) = σ(m_k) and n_k/m_k → α? Solved affirmatively by Pollack (2015).",
-    "proofStrategy": "**Formalization Strategy**\n\n1. **σ from Mathlib**: Defines $\\sigma(n) = \\texttt{ArithmeticFunction.sigma 1 n}$, leveraging Mathlib's arithmetic function infrastructure. Axiomatizes key properties: values at $1$, primes, prime powers, and multiplicativity.\n\n2. **Problem Formalization**: Defines `IsSigmaPair` ($\\sigma(n) = \\sigma(m)$) and `SigmaSequenceConvergingTo α` using Lean's filter-based `Tendsto` for convergence.\n\n3. **Pollack's Theorem**: Axiomatized as `pollack_2015`. The main result `erdos_823_solved` is **proved** as a direct corollary.\n\n4. **Concrete Examples**: Three $\\sigma$-pairs are axiomatized: $(14, 15)$, $(206, 210)$, $(957, 958)$. Ratios verified by `native_decide`.\n\n5. **Totient Analogy**: Defines $\\varphi$ via `ArithmeticFunction.totient` and axiomatizes the 'easy' $\\varphi$ result. Examples: $\\varphi(1) = \\varphi(2)$, $\\varphi(3) = \\varphi(4) = \\varphi(6)$.\n\n6. **Fiber Structure**: Defines `sigmaFiber` and axiomatizes unbounded fibers, positive density of $\\sigma$-values, and positive density of multi-preimage values.\n\n7. **Summary**: `erdos_823_statement` is **proved** as a conjunction of the $\\sigma$ and $\\varphi$ results.",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **σ from Mathlib**: Defines $\\sigma(n) = \\texttt{ArithmeticFunction.sigma 1 n}$, leveraging Mathlib's arithmetic function infrastructure. Proves key properties: values at $1$, primes, prime powers, and multiplicativity.\n\n2. **Problem Formalization**: Defines `IsSigmaPair` ($\\sigma(n) = \\sigma(m)$) and `SigmaSequenceConvergingTo α` using Lean's filter-based `Tendsto` for convergence.\n\n3. **Pollack's Theorem**: Axiomatized as `pollack_2015`. The main result `erdos_823_solved` is **proved** as a direct corollary.\n\n4. **Concrete Examples**: Three $\\sigma$-pairs are **proved** via `native_decide`: $(14, 15)$, $(206, 210)$, $(957, 958)$. Ratios also checked.\n\n5. **Totient Analogy**: Defines $\\varphi$ via `ArithmeticFunction.totient` and axiomatizes the 'easy' $\\varphi$ result. Examples: $\\varphi(1) = \\varphi(2)$, $\\varphi(3) = \\varphi(4) = \\varphi(6)$.\n\n6. **Fiber Structure**: Defines `sigmaFiber m`. Proves `fiber_24_nonempty` ($14, 15 \\in \\sigma^{-1}(24)$). Density and unbounded-fiber properties are noted in doc comments but not formalized.\n\n7. **Summary**: `erdos_823_statement` is **proved** as a conjunction of the $\\sigma$ and $\\varphi$ results.",
     "keyInsights": [
       "**Multiplicativity is the engine**: $\\sigma(mn) = \\sigma(m)\\sigma(n)$ for coprime $m, n$ allows building $\\sigma$-pairs with controlled ratios. Given a pair $(a, b)$ with $\\sigma(a) = \\sigma(b)$, multiplying by coprime factors $c$ gives $(ac, bc)$ with $\\sigma(ac) = \\sigma(a)\\sigma(c) = \\sigma(b)\\sigma(c) = \\sigma(bc)$ — the same $\\sigma$-value at ratio $a/b$. Different coprime multipliers generate different ratios",
       "**φ is easy, σ is hard**: For $\\varphi$, the identity $\\varphi(2n) = \\varphi(n)$ for odd $n$ gives trivial pairs $(n, 2n)$ at ratio $1/2$. No analogous identity exists for $\\sigma$: $\\sigma(2n) = 3\\sigma(n)$ only when $\\gcd(2, n) = 1$, and this changes the $\\sigma$-value rather than preserving it. Pollack's proof must work harder to find $\\sigma$-preserving modifications",
@@ -116,79 +116,79 @@
       "id": "divisor-basics",
       "title": "Sum of Divisors Basics",
       "startLine": 44,
-      "endLine": 63,
-      "summary": "Defines $\\sigma(n) = \\texttt{ArithmeticFunction.sigma 1 n}$. Axiomatizes: $\\sigma(1) = 1$, $\\sigma(p) = p+1$, $\\sigma(p^k)(p-1) = p^{k+1} - 1$, multiplicativity $\\sigma(mn) = \\sigma(m)\\sigma(n)$ for coprime inputs.",
-      "mathContext": "Defines $\\sigma(n) = \\texttt{ArithmeticFunction.sigma 1 n}$. Axiomatizes: $\\sigma(1) = 1$, $\\sigma(p) = p+1$, $\\sigma(p^k)(p-1) = p^{k+1} - 1$, multiplicativity $\\sigma(mn) = \\sigma(m)\\sigma(n)$ for coprime inputs."
+      "endLine": 87,
+      "summary": "Defines $\\sigma(n) = \\texttt{ArithmeticFunction.sigma 1 n}$. Proves: $\\sigma(1) = 1$, $\\sigma(p) = p+1$, $\\sigma(p^k)(p-1) = p^{k+1} - 1$, multiplicativity $\\sigma(mn) = \\sigma(m)\\sigma(n)$ for coprime inputs.",
+      "mathContext": "Defines $\\sigma(n) = \\texttt{ArithmeticFunction.sigma 1 n}$. Proves: $\\sigma(1) = 1$, $\\sigma(p) = p+1$, $\\sigma(p^k)(p-1) = p^{k+1} - 1$, multiplicativity $\\sigma(mn) = \\sigma(m)\\sigma(n)$ for coprime inputs."
     },
     {
       "id": "main-problem",
       "title": "The Main Problem",
-      "startLine": 71,
-      "endLine": 80,
+      "startLine": 89,
+      "endLine": 104,
       "summary": "Defines `IsSigmaPair n m` ($\\sigma(n) = \\sigma(m)$) and `SigmaSequenceConvergingTo α` ($\\exists (n_k), (m_k),\\; \\sigma(n_k) = \\sigma(m_k) \\wedge n_k/m_k \\to \\alpha$).",
       "mathContext": "Defines `IsSigmaPair n m` ($\\sigma(n) = \\sigma(m)$) and `SigmaSequenceConvergingTo α` ($\\exists (n_k), (m_k),\\; \\sigma(n_k) = \\sigma(m_k) \\wedge n_k/m_k \\to \\$\\alpha$$)."
     },
     {
       "id": "pollack-theorem",
       "title": "Pollack's Theorem (2015)",
-      "startLine": 88,
-      "endLine": 99,
+      "startLine": 106,
+      "endLine": 123,
       "summary": "Axiomatizes `pollack_2015` and **proves** `erdos_823_solved` as a direct corollary.",
       "mathContext": "Verified: Axiomatizes `pollack_2015` and **proves** `erdos_823_solved` as a direct corollary."
     },
     {
       "id": "sigma-pairs",
       "title": "Examples of σ-Pairs",
-      "startLine": 107,
-      "endLine": 129,
-      "summary": "Axiomatizes $\\sigma(14) = \\sigma(15) = 24$, $\\sigma(206) = \\sigma(210) = 432$, $\\sigma(957) = \\sigma(958)$. Ratio checks via `native_decide`.",
-      "mathContext": "Axiomatized: Axiomatizes $\\sigma(14) = \\sigma(15) = 24$, $\\sigma(206) = \\sigma(210) = 432$, $\\sigma(957) = \\sigma(958)$. Ratio checks via `native_decide`."
+      "startLine": 125,
+      "endLine": 153,
+      "summary": "Proves $\\sigma(14) = \\sigma(15) = 24$, $\\sigma(206) = \\sigma(210) = 432$, $\\sigma(957) = \\sigma(958)$. Ratio checks via `native_decide`.",
+      "mathContext": "Proves $\\sigma(14) = \\sigma(15) = 24$, $\\sigma(206) = \\sigma(210) = 432$, $\\sigma(957) = \\sigma(958)$. Ratio checks via `native_decide`."
     },
     {
       "id": "totient-analogy",
       "title": "Euler Totient Analogy",
-      "startLine": 137,
-      "endLine": 158,
+      "startLine": 155,
+      "endLine": 185,
       "summary": "Defines $\\varphi(n)$ via `ArithmeticFunction.totient`. Axiomatizes the 'easy' $\\varphi$-analogue and examples: $\\varphi(1) = \\varphi(2) = 1$, $\\varphi(3) = \\varphi(4) = \\varphi(6) = 2$.",
       "mathContext": "Formal definition: Defines $\\varphi(n)$ via `ArithmeticFunction.totient`. Axiomatizes the 'easy' $\\varphi$-analogue and examples: $\\varphi(1) = \\varphi(2) = 1$, $\\varphi(3) = \\varphi(4) = \\varphi(6) = 2$."
     },
     {
       "id": "fiber-properties",
       "title": "σ-Fiber Structure",
-      "startLine": 164,
-      "endLine": 176,
-      "summary": "Defines `sigmaFiber m` ($\\sigma^{-1}(m)$). Axiomatizes: $14, 15 \\in \\sigma^{-1}(24)$, fibers can be arbitrarily large, every large even number is a $\\sigma$-value.",
-      "mathContext": "Formal definition: Defines `sigmaFiber m` ($\\sigma^{-1}(m)$). Axiomatizes: $14, 15 \\in \\sigma^{-1}(24)$, fibers can be arbitrarily large, every large even number is a $\\sigma$-value."
+      "startLine": 187,
+      "endLine": 196,
+      "summary": "Defines `sigmaFiber m` ($\\sigma^{-1}(m)$). Proves `fiber_24_nonempty` ($14, 15 \\in \\sigma^{-1}(24)$). Unbounded-fiber and σ-value coverage properties are noted in orphan doc comments at L198-199 but not formalized.",
+      "mathContext": "Formal definition: Defines `sigmaFiber m` ($\\sigma^{-1}(m)$). Proves `fiber_24_nonempty` ($14, 15 \\in \\sigma^{-1}(24)$). Unbounded-fiber and σ-value coverage properties are noted in orphan doc comments at L198-199 but not formalized."
     },
     {
       "id": "density-results",
       "title": "Density Results",
-      "startLine": 183,
-      "endLine": 194,
-      "summary": "Axiomatizes positive density of $\\sigma$-values ($|\\{m \\leq N : \\sigma^{-1}(m) \\neq \\emptyset\\}| \\geq cN$) and positive density of multi-preimage values.",
-      "mathContext": "Axiomatized: Axiomatizes positive density of $\\sigma$-values ($|\\{m \\leq N : \\sigma^{-1}(m) \\neq \\emptyset\\}| \\geq cN$) and positive density of multi-preimage values."
+      "startLine": 198,
+      "endLine": 205,
+      "summary": "Doc-comment-only section. Orphan doc comments about fiber size and σ-value coverage (L198-199), Part VII header (L200-201), and doc comments about positive density of σ-values and multi-preimage values (L204-205). No axioms or theorems in this range.",
+      "mathContext": "Doc-comment-only section. Orphan doc comments about fiber size and σ-value coverage (L198-199), Part VII header (L200-201), and doc comments about positive density of σ-values and multi-preimage values (L204-205). No axioms or theorems in this range."
     },
     {
       "id": "computations",
       "title": "Computational Examples",
-      "startLine": 201,
-      "endLine": 213,
+      "startLine": 207,
+      "endLine": 223,
       "summary": "Verified: $\\sigma(p) = p+1$ for small primes, $\\sigma(6) = 12$, $\\sigma(28) = 56$ (perfect numbers).",
       "mathContext": "Mathematical content: Verified: $\\sigma(p) = p+1$ for small primes, $\\sigma(6) = 12$, $\\sigma(28) = 56$ (perfect numbers)."
     },
     {
       "id": "key-insight",
       "title": "Abundance of σ-Pairs",
-      "startLine": 224,
-      "endLine": 228,
-      "summary": "Axiomatizes infinitely many $\\sigma$-pairs $(n, m)$ with $n \\neq m$ — the fundamental enabling fact for Pollack's construction.",
-      "mathContext": "Axiomatized: Axiomatizes infinitely many $\\sigma$-pairs $(n, m)$ with $n \\neq m$ — the fundamental enabling fact for Pollack's construction."
+      "startLine": 225,
+      "endLine": 231,
+      "summary": "Commentary-only section (Part IX block comment, L225-231). Describes why σ multiplicativity enables Pollack's construction. No axioms or theorems in this range.",
+      "mathContext": "Commentary-only section (Part IX block comment, L225-231). Describes why σ multiplicativity enables Pollack's construction. No axioms or theorems in this range."
     },
     {
       "id": "summary",
       "title": "Complete Statement (Proved)",
-      "startLine": 259,
-      "endLine": 270,
+      "startLine": 233,
+      "endLine": 271,
       "summary": "`erdos_823_statement`: **proved** conjunction of the $\\sigma$ result (Pollack) and $\\varphi$ result (Erdős).",
       "mathContext": "Mathematical content: `erdos_823_statement`: **proved** conjunction of the $\\sigma$ result (Pollack) and $\\varphi$ result (Erdős)."
     }
