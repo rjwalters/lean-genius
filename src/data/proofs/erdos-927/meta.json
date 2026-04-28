@@ -65,62 +65,62 @@
       "id": "g-function",
       "title": "The Function $g(n)$",
       "startLine": 65,
-      "endLine": 94,
+      "endLine": 92,
       "summary": "Defines `g : \\mathbb{N} \\to \\mathbb{N}` as the maximum number of distinct clique sizes over all graphs on $n$ vertices (currently a placeholder `g n := n`). Proves `singleton_is_clique`: every vertex forms a clique of size 1. The trivial $g(n) \\leq n$ bound is described in a docstring only — no axiom is declared.",
       "mathContext": "Defines `g : \\mathbb{N} \\to \\mathbb{N}` (placeholder `g n := n`). Proves `singleton_is_clique`. The $g(n) \\leq n$ bound is described in docstring only; no axiom declared."
     },
     {
       "id": "moon-moser",
       "title": "Moon-Moser Bounds (1965)",
-      "startLine": 95,
-      "endLine": 112,
+      "startLine": 93,
+      "endLine": 104,
       "summary": "Docstring section describing the Moon-Moser bounds: upper bound $g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$ and lower bound $g(n) > n - \\log_2 n - 2\\log\\log n$. No axioms or theorems are declared in this section.",
       "mathContext": "Docstring-only context: the Moon-Moser bounds are described but not axiomatized in this file."
     },
     {
       "id": "log-star",
       "title": "The Iterated Logarithm $\\log^*$",
-      "startLine": 113,
-      "endLine": 139,
+      "startLine": 105,
+      "endLine": 129,
       "summary": "Defines `logStar : \\mathbb{N} \\to \\mathbb{N}` recursively: $\\log^*(0) = \\log^*(1) = 0$, otherwise $1 + \\log^*(\\lfloor \\log_2 n \\rfloor)$ if $\\lfloor \\log_2 n \\rfloor > 1$. The $\\log^*(2^{16}) = 4$ value is mentioned in a docstring only — no axiom or theorem is declared.",
       "mathContext": "Defines `logStar` recursively. $\\log^*(2^{16}) = 4$ is mentioned in docstring only; no axiom declared."
     },
     {
       "id": "erdos-conjecture",
       "title": "Erdős's Conjecture (1966)",
-      "startLine": 140,
-      "endLine": 162,
+      "startLine": 130,
+      "endLine": 148,
       "summary": "Defines `ErdosConjecture` as $|g(n) - (n - \\log_2 n - \\log^*(n))| \\leq C$ for all $n \\geq 2$. Erdős's improved lower bound $g(n) > n - \\log_2 n - \\log^*(n) - C$ is described in a docstring only — no axiom is declared (the conjecture is formalized as a `Prop` definition).",
       "mathContext": "Defines `ErdosConjecture`. Erdős's improved lower bound is described in docstring only; no axiom declared in this section."
     },
     {
       "id": "spencer",
       "title": "Spencer's Disproof (1971)",
-      "startLine": 163,
-      "endLine": 194,
+      "startLine": 149,
+      "endLine": 180,
       "summary": "Axiomatizes `spencer_theorem`: $\\exists C > 0,\\, \\forall n \\geq 2,\\, g(n) > n - \\log_2 n - C$, and `conjecture_disproved`: $\\neg\\text{ErdosConjecture}$. Defines `CorrectAsymptotic` as $g(n) = n - \\log_2 n - \\Theta(1)$.",
       "mathContext": "Axiomatizes `spencer_theorem`: $\\exists C > 0,\\, \\forall n \\geq 2,\\, g(n) > n - \\log_2 n - C$, and `conjecture_disproved`: $\\neg\\text{ErdosConjecture}$. Defines `CorrectAsymptotic` as $g(n) = n - \\log_2 n - \\Theta(1)$."
     },
     {
       "id": "proof-ideas",
       "title": "Proof Ideas and Connections",
-      "startLine": 195,
-      "endLine": 224,
+      "startLine": 181,
+      "endLine": 209,
       "summary": "Comment sections discussing Moon-Moser construction (avoiding clique-size gaps), Ramsey connection (upper bound from monochromatic subsets), Spencer's key insight (probabilistic avoidance of $\\log^*$ loss), and connection to Problem 775.",
       "mathContext": "Comment sections discussing Moon-Moser construction (avoiding clique-size gaps), Ramsey connection (upper bound from monochromatic subsets), Spencer's key insight (probabilistic avoidance of $\\log^*$ loss), and connection to Problem 775."
     },
     {
       "id": "examples",
       "title": "Examples",
-      "startLine": 225,
-      "endLine": 242,
+      "startLine": 210,
+      "endLine": 220,
       "summary": "Docstring section only. Includes a comment about $K_n$ having cliques of sizes $1, 2, \\ldots, n$. No `complete_graph_cliques` or `empty_graph_one_clique_size` axiom declarations exist in the file.",
       "mathContext": "Docstring comment only: $K_n$ has $n$ distinct clique sizes $\\{1, 2, \\ldots, n\\}$. No axiom declarations in this section."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
-      "startLine": 243,
+      "startLine": 221,
       "endLine": 253,
       "summary": "Proves `erdos_927_summary` combining Spencer's theorem and the disproof: $\\exists C > 0$ with $g(n) > n - \\log_2 n - C$ and $\\neg\\text{ErdosConjecture}$. Proved by `exact \\langle spencer\\_theorem, conjecture\\_disproved\\rangle`.",
       "mathContext": "Proves `erdos_927_summary` combining Spencer's theorem and the disproof: $\\exists C > 0$ with $g(n) > n - \\log_2 n - C$ and $\\neg\\text{ErdosConjecture}$. Proved by `exact \\langle spencer\\_theorem, conjecture\\_disproved\\rangle`."
