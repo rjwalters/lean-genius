@@ -86,34 +86,34 @@
       "id": "section-2",
       "title": "Known Lower Bounds",
       "startLine": 69,
-      "endLine": 100,
+      "endLine": 91,
       "summary": "Documents three historical lower bounds as docstrings: Nagell-Ricci (n log n), Erdős 1952 (n(log n)^{log log log n}), and Tenenbaum 1990 (n exp((log n)^c)). Only Tenenbaum's bound is formalized as an axiom."
     },
     {
       "id": "section-3",
       "title": "Main Conjectures",
-      "startLine": 101,
-      "endLine": 122,
+      "startLine": 92,
+      "endLine": 113,
       "summary": "Formalizes the two open conjectures as Prop definitions: polynomial growth F_f(n) ≫ n^{1+c}, and the stronger degree growth F_f(n) ≫ n^d."
     },
     {
       "id": "section-4",
       "title": "Upper Bounds",
-      "startLine": 123,
-      "endLine": 134,
+      "startLine": 114,
+      "endLine": 121,
       "summary": "Documents the trivial upper bound F_f(n) ≤ C·n^d as a docstring only; no axiom declaration is present in this section."
     },
     {
       "id": "section-5",
       "title": "Computational Examples",
-      "startLine": 135,
-      "endLine": 162,
+      "startLine": 122,
+      "endLine": 149,
       "summary": "Defines P(n) alias, proves greatestPrimeDivisor examples via native_decide, and gives numerical bound comparisons at n=1000."
     },
     {
       "id": "section-6",
       "title": "Summary",
-      "startLine": 163,
+      "startLine": 150,
       "endLine": 175,
       "summary": "Proves erdos_976_status theorem establishing the current best bound by applying tenenbaum_bound."
     }
