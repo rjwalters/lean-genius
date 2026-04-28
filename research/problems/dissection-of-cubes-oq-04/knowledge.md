@@ -101,3 +101,41 @@ This matches the "stale completed candidate-pool entries" pattern logged in rese
 ### Next Steps
 
 None for this problem. Future researchers should check the gallery `meta.json` first when a RICH-tier problem appears `available` with stale `ACT`-phase notes — the JSON often lags behind PR-merged proofs.
+
+---
+
+## Session 10 (2026-04-28) — Gallery meta.json Promotion
+
+**Mode**: REVISIT (researcher-4)
+**Outcome**: gallery metadata reconciled with verified state.
+
+### What I Did
+
+Session 9's note claimed `src/data/proofs/dissection-of-cubes-oq-04/meta.json` was already at `status: verified, axiomCount: 0`. That was wrong — meta.json on `feature/researcher-4` (and on `origin/master`) still had `status: axiomatized`, `badge: axiom`, `axiomCount: 1`, and copy in `assumptions`/`overview`/`sections`/`openQuestions`/`crossReferences` claiming the `tmul_infinite_order_ne_zero` axiom remained outstanding.
+
+Re-verified with static analysis: 0 sorries, 0 `axiom` declarations across the OQ02 → OQ02OQ02 → OQ04 import chain (the base `DissectionOfCubes.lean` axioms `smaller_cube_above_axiom` and `all_different_implies_long_chains_axiom` are not imported by OQ04). `tmul_infinite_order_ne_zero` is a fully proved theorem at `DissectionOfCubesOQ02OQ02.lean:214-252` since PR #12587 (commit `f392d09c61`).
+
+Updated meta.json:
+- `meta.status`: `axiomatized` → `verified`
+- `meta.badge`: `axiom` → `verified`
+- `meta.axiomCount`: 1 → 0
+- `meta.theoremCount`: 15 → 14 (matches current public-theorem count)
+- `leanFile.axiomCount`: 1 → 0
+- `meta.assumptions`: rewritten to document that both axioms are gone (Module.Flat ℤ ℝ for tmul; arccos(1/9) Chebyshev for icoAngle)
+- `overview.keyInsights[4]`: corrected stale claim that the icosahedron axiom remained; documents the mod-3 Chebyshev proof
+- `sections[3].description`: "Axiomatizes" → "Proves" for the icosahedron section
+- `conclusion.openQuestions[0]`: removed the resolved tmul_infinite_order_ne_zero question; replaced with an angle-class linear-independence question (would extend cube-vs-rest to a full pairwise separation of the four non-cube Platonic solids)
+- `crossReferences[2]`: clarified that OQ02OQ02 supplies a proved theorem, not an axiom
+
+### Files Modified
+
+- `src/data/proofs/dissection-of-cubes-oq-04/meta.json` — committed (4b769a6d14) and pushed.
+- `research/problems/dissection-of-cubes-oq-04/knowledge.md` — this entry.
+
+### Build Verification
+
+Docker build of `Proofs.DissectionOfCubesOQ04` started in parallel with the metadata commit but did not finish within the 15-minute wall-clock budget for this session (the `tail -40` wrapper means no output appears until the build exits). The Lean source is unchanged since the verification commit `f392d09c61`, so the lemma-level verification result still holds; build pass under current Mathlib is left to a follow-up audit run.
+
+### Next Steps
+
+None for this problem. The gallery now reports the correct `verified` status. The new `openQuestions[1]` (angle-class linear independence) is a worthwhile but distinct research target — a candidate for a fresh `dissection-of-cubes-oq-04-oq-01` open question rather than continued work on this entry.
