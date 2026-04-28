@@ -2,7 +2,7 @@
   "id": "hurwitz-theorem-oq-04",
   "title": "Hurwitz's Theorem: Connection to Exceptional Lie Groups",
   "slug": "hurwitz-theorem-oq-04",
-  "description": "Formalizes the deep connection between the four normed division algebras (ℝ, ℂ, ℍ, 𝕆) and the five exceptional Lie algebras (G₂, F₄, E₆, E₇, E₈) via the Freudenthal-Tits magic square. Proves that Aut(𝕆) ⊆ O(7) (automorphisms preserve the imaginary subspace and inner product), and introduces an inductive ExceptionalType labeling G₂, F₄, E₆, E₇, E₈ with their dimensions and ranks; the deeper identification G₂ ≅ Aut(𝕆) is reduced to G2_der_dimension (1 sorry remaining) pending future Lie-group infrastructure.",
+  "description": "Formalizes the deep connection between the four normed division algebras (ℝ, ℂ, ℍ, 𝕆) and the five exceptional Lie algebras (G₂, F₄, E₆, E₇, E₈) via the Freudenthal-Tits magic square. Proves that Aut(𝕆) ⊆ O(7) (automorphisms preserve the imaginary subspace and inner product), and introduces an inductive ExceptionalType labeling G₂, F₄, E₆, E₇, E₈ with their dimensions and ranks; the deeper identification G₂ ≅ Aut(𝕆) is reduced to G2_der_dimension, which depends on derEval14_injective with 7 named Fano residuals (F43, F53, F63, F65, F73, F75, F76) pending future Lie-group infrastructure.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-24",
@@ -18,11 +18,11 @@
       "advanced"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 7,
     "dateAdded": "2026-04-24",
     "axiomCount": 0,
-    "assumptions": "1 sorry in G2_der_dimension proof chain: derEval14_injective — off-diagonal entries (j in {1,...,7}, i != 0, i != j) of the imaginary basis kernel claim. The j = 0 case is closed via submodule_der_unit_zero; the i = j diagonal case (Session 7, 2026-04-27) is closed via submodule_der_diagonal_kill (Leibniz at (e_j, e_j) using stdBasis_sq_neg_unit). Remaining 49-entry off-diagonal block requires antisymmetry ((f e_i)_j + (f e_j)_i = 0 from Leibniz at (e_i, e_j) + (e_j, e_i)) and Fano-line trilinear constraints. derBasis14_linearIndependent was proved in PR #13121. The Aut(O) is in O(7) — fully proved with 0 sorries.",
-    "lineCount": 1382,
+    "assumptions": "7 sorries in G2_der_dimension proof chain: derEval14_injective — 7 named upper-triangular Fano residuals F43, F53, F63, F65, F73, F75, F76 (each of the form `f (stdBasis j) i = g (stdBasis j) i` for a specific (j,i) Fano pair with j > i, both in {3,5,6,7} ∪ {(4,3)}). PR #13623 (2026-04-28) replaced the prior monolithic sorry with this structured 42-case analysis: 28 cases close directly from the multiplication table; 7 close by antisymmetry of the 7 named residuals. The j = 0 case is closed via submodule_der_unit_zero; the i = j diagonal case is closed via submodule_der_diagonal_kill (Leibniz at (e_j, e_j) using stdBasis_sq_neg_unit). The 7 remaining residuals are amenable to a uniform Fano-line Leibniz argument pending Fano-line lemmas. derBasis14_linearIndependent was proved in PR #13121. The Aut(O) is in O(7) — fully proved with 0 sorries.",
+    "lineCount": 1525,
     "theoremCount": 65,
     "definitionCount": 19,
     "originalContributions": [
@@ -41,7 +41,7 @@
   "overview": {
     "historicalContext": "Hurwitz's theorem (1898) establishes that normed division algebras over ℝ exist only in dimensions 1, 2, 4, and 8 — corresponding to ℝ, ℂ, ℍ, and 𝕆. This result has profound implications beyond algebra: the four normed division algebras are intimately connected to the five exceptional simple Lie algebras through the Freudenthal-Tits magic square (1954–1966). The connection was suspected by Élie Cartan as early as 1914, when he identified G₂ as the automorphism group of the octonions. Hans Freudenthal (1954) and Jacques Tits (1966) systematized this into a unified construction: from any two normed division algebras A, B, one builds a Lie algebra 𝔏(A, B) = Der(A) ⊕ (Im A ⊗ Im B) ⊕ Der(B), and the resulting 4×4 table (the 'magic square') produces all five exceptional simple Lie algebras: G₂, F₄, E₆, E₇, E₈. The word 'magic' refers to the surprising symmetry 𝔏(A, B) ≅ 𝔏(B, A), despite the construction not obviously being symmetric.",
     "problemStatement": "Show that Aut(𝕆) ⊆ O(7) — the automorphism group of the octonions acts by isometries on the 7-dimensional imaginary subspace Im(𝕆) — and axiomatize the identification G₂ = Aut(𝕆) along with the four exceptional Lie algebras F₄, E₆, E₇, E₈ arising from the Freudenthal-Tits magic square.",
-    "text": "Formalizes the connection between the four normed division algebras and the five exceptional Lie algebras. Proves Aut(𝕆) ⊆ O(7) (fully proved, 0 sorries). G2_der_dimension (finrank Der(𝕆) = 14) is proved modulo 1 remaining sorry for basis evaluation extraction (derEval14_injective); the companion linear-independence lemma is now proved.",
+    "text": "Formalizes the connection between the four normed division algebras and the five exceptional Lie algebras. Proves Aut(𝕆) ⊆ O(7) (fully proved, 0 sorries). G2_der_dimension (finrank Der(𝕆) = 14) is proved modulo 7 named Fano residuals in derEval14_injective (PR #13623 structured 42-case analysis: 28 cases discharge directly, 7 by antisymmetry, 7 remain as F43, F53, F63, F65, F73, F75, F76); the companion linear-independence lemma is now proved.",
     "proofStrategy": "The formalization introduces OctonionAlgHom and OctonionAut structures for algebra homomorphisms and invertible automorphisms. Key lemmas proved: (1) any automorphism φ fixes the unit element e₀ (via the left-identity uniqueness argument); (2) pure imaginary elements y (y[0]=0) satisfy y² = −normSq(y)·e₀; (3) phi_imag_props: automorphisms preserve imaginary elements and their norms; (4) alg_aut_preserves_norm follows by decomposing x = r·e₀ + w (pure imaginary w) and using orthogonality; (5) polarization gives inner product preservation. The exceptional Lie algebra part uses an ExceptionalType inductive type with dimension and rank functions, and proves structural properties (strict ordering, G₂ uniqueness, E₈ maximality) by decidability.",
     "keyInsights": [
       "**φ fixes e₀**: Any algebra automorphism must fix the unit element. The elegant proof: φ(e₀) acts as a left identity for all y (since φ is surjective and e₀ is a left identity), and a left identity in an algebra with a right identity must equal the right identity.",
@@ -66,7 +66,7 @@
       "title": "Preamble: Context and Contents",
       "startLine": 1,
       "endLine": 63,
-      "summary": "Module documentation places the formalization in context: Hurwitz's theorem (1898) gives 4 normed division algebras, and the Freudenthal-Tits magic square (1954–1966) connects them to 5 exceptional Lie algebras. The contents table distinguishes proved results from in-progress ones (1 remaining sorry for the Der(𝕆) dimension proof — basis evaluation extraction). References: Baez 'The Octonions' (2002), Freudenthal (1964), Tits (1966).",
+      "summary": "Module documentation places the formalization in context: Hurwitz's theorem (1898) gives 4 normed division algebras, and the Freudenthal-Tits magic square (1954–1966) connects them to 5 exceptional Lie algebras. The contents table distinguishes proved results from in-progress ones (7 named Fano residuals remain in the Der(𝕆) dimension proof — basis evaluation extraction, derEval14_injective). References: Baez 'The Octonions' (2002), Freudenthal (1964), Tits (1966).",
       "mathContext": "The magic square table: rows and columns indexed by {ℝ,ℂ,ℍ,𝕆}. Entries: 𝔏(𝕆,ℝ)=F₄, 𝔏(𝕆,ℂ)=E₆, 𝔏(𝕆,ℍ)=E₇, 𝔏(𝕆,𝕆)=E₈, plus G₂=Der(𝕆). The 'magic': 𝔏(A,B)≅𝔏(B,A) despite the definition not being visibly symmetric."
     },
     {
@@ -106,7 +106,7 @@
       "title": "§IV-c to V: Derivation Algebra as Submodule + Freudenthal-Tits Axioms",
       "startLine": 558,
       "endLine": 697,
-      "summary": "Defines OctonionDerSubmodule as a Submodule of End_ℝ(ℝ⁸) to give Der(𝕆) an inherited vector space structure. Proves G2_der_dimension (finrank = 14) via upper bound (injective evaluation map) and lower bound (14 linearly independent derivations); derBasis14_linearIndependent is now fully proved, leaving 1 sorry in derEval14_injective (basis evaluation extraction). Proves derivation structural properties: der_maps_unit_to_zero, der_maps_real_part_to_zero, toLinearMap, mem_der_submodule. Then states the Freudenthal-Tits magic square: freudenthal_tits_f4/e6/e7/e8 (dimension facts, 52/78/133/248).",
+      "summary": "Defines OctonionDerSubmodule as a Submodule of End_ℝ(ℝ⁸) to give Der(𝕆) an inherited vector space structure. Proves G2_der_dimension (finrank = 14) via upper bound (injective evaluation map) and lower bound (14 linearly independent derivations); derBasis14_linearIndependent is now fully proved, leaving 7 named Fano residuals (F43, F53, F63, F65, F73, F75, F76) in derEval14_injective per PR #13623's structured 42-case analysis. Proves derivation structural properties: der_maps_unit_to_zero, der_maps_real_part_to_zero, toLinearMap, mem_der_submodule. Then states the Freudenthal-Tits magic square: freudenthal_tits_f4/e6/e7/e8 (dimension facts, 52/78/133/248).",
       "mathContext": "Der(𝕆) as a Submodule of $\\text{End}_\\mathbb{R}(\\mathbb{R}^8)$: the set of $\\mathbb{R}$-linear maps $D: \\mathbb{R}^8 \\to \\mathbb{R}^8$ satisfying the Leibniz rule $D(ab) = D(a)\\cdot b + a\\cdot D(b)$ for octonion multiplication. Axiom `G2_der_dimension`: $\\text{finrank}_\\mathbb{R}(\\text{Der}(\\mathbb{O})) = 14$ (the dimension of $\\mathfrak{g}_2$). Tits construction: $\\mathfrak{L}(A,B) = \\mathfrak{der}(A) \\oplus (\\text{Im}A \\otimes \\text{Im}B) \\oplus \\mathfrak{der}(B)$ with $\\dim\\mathfrak{L}(\\mathbb{O},\\mathbb{O}) = 14 + 49 + 14 + \\text{extra} = 248$."
     },
     {
@@ -119,7 +119,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization establishes the bridge between Hurwitz's four normed division algebras and the five exceptional Lie algebras. The key proved result is that Aut(𝕆) ⊆ O(7): octonion automorphisms preserve norms, real parts, inner products, and the imaginary subspace — all proved without sorries using algebraic decomposition. G2_der_dimension (finrank Der(𝕆) = 14) has 1 remaining sorry for basis evaluation extraction (derEval14_injective); the linear-independence companion lemma is now fully proved. The five exceptional Lie algebras (G₂, F₄, E₆, E₇, E₈) are connected via the Freudenthal-Tits magic square, with structural properties proved by decidability.",
+    "summary": "This formalization establishes the bridge between Hurwitz's four normed division algebras and the five exceptional Lie algebras. The key proved result is that Aut(𝕆) ⊆ O(7): octonion automorphisms preserve norms, real parts, inner products, and the imaginary subspace — all proved without sorries using algebraic decomposition. G2_der_dimension (finrank Der(𝕆) = 14) has 7 named Fano residuals (F43, F53, F63, F65, F73, F75, F76) remaining in derEval14_injective per PR #13623's structured 42-case analysis (28 cases close directly, 7 by antisymmetry); the linear-independence companion lemma is now fully proved. The five exceptional Lie algebras (G₂, F₄, E₆, E₇, E₈) are connected via the Freudenthal-Tits magic square, with structural properties proved by decidability.",
     "implications": "The formalization demonstrates that Hurwitz's theorem (n∈{1,2,4,8}) constrains not just composition algebras but the entire exceptional structure of simple Lie algebras: the 4 normed division algebras yield exactly 5 exceptional types. Removing the 16-dimensional case eliminates the possibility of a 6th exceptional Lie algebra. Physical applications include E₈×E₈ heterotic string theory (anomaly cancellation: dim=2×248=496) and M-theory compactification on G₂ manifolds.",
     "openQuestions": [
       "Prove G₂ ≅ Aut(𝕆) formally in Lean: requires Lie group theory (compact simple groups, root systems) not yet in Mathlib as of 2026-04.",
@@ -137,11 +137,11 @@
       "HurwitzTheorem"
     ],
     "namespace": "HurwitzTheoremOQ04",
-    "lineCount": 1382,
+    "lineCount": 1525,
     "axiomCount": 0,
     "theoremCount": 65,
     "definitionCount": 19,
-    "sorries": 1,
+    "sorries": 7,
     "path": "Proofs/HurwitzTheoremOQ04.lean"
   },
   "crossReferences": [
@@ -156,5 +156,5 @@
       "description": "Sibling open question: n-square identities and normed division algebras"
     }
   ],
-  "sorries": 1
+  "sorries": 7
 }
