@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1151-oq-04",
   "title": "Prove erdos_1941_divergence via Lebesgue Function Growth at Chebyshev Nodes",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -27,12 +27,14 @@
     "goal": "Prove erdos_1941_divergence to eliminate the axiom from the gallery"
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "BLOCKED",
     "since": "2026-04-21",
     "iteration": 1,
-    "focus": "Read Erdos1151Problem.lean, assess Mathlib for Chebyshev polynomial theory",
-    "blockers": [],
-    "nextAction": "Read proofs/Proofs/Erdos1151Problem.lean, search Mathlib for ChebyshevPolynomial",
+    "focus": "Build blocked by Mathlib API drift in main file. Companion file sorry-free. Awaiting Mechanic repair.",
+    "blockers": [
+      "Erdos1151OQ04.lean fails to build on origin/main: 17+ Mathlib API drift errors. Mechanic must fix before research can resume."
+    ],
+    "nextAction": "Wait for Mechanic to repair Mathlib API drift in Erdos1151OQ04.lean (div_le_div_iff renaming, Nat.eq_or_gt_of_le removal). Cannot resume work until upstream build is green.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -40,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "2 sorries remain: chebyshev_trig_sum_lb (tractable, ~200 lines) and divergence_from_lebesgue_growth (fundamental gap: lim vs lim sup)",
+    "progressSummary": "BLOCKED upstream: main file Erdos1151OQ04.lean has Mathlib API drift errors (div_le_div_iff renamed, Nat.eq_or_gt_of_le removed, etc.) introduced 2026-04-26/27 in commits 67e2cafc/343f1622. Companion file is sorry-free (stale metadata corrected). 2 genuine sorries remain in main file (trig_sum_harmonic_lb, divergence_from_lebesgue_growth) but cannot be worked until Mechanic fixes API drift.",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -55,7 +57,10 @@
       "cos_rational_pi_pos_min: ∃ δ > 0 s.t. |cos(nπp/q)| ≥ δ for all n (parity argument)",
       "x_not_chebyshev_node: cos(πp/q) ≠ chebyshevNode n k for all n,k when p,q odd",
       "chebyshev_trig_sum_lb: sorry (isolated harmonic sum lower bound: S_n ≥ C₂·n·log(n+1))",
-      "chebyshev_lebesgue_lb: proved modulo chebyshev_trig_sum_lb via mul_le_mul chain (δ/n · C₂·n·log(n+1) ≤ |cos(nθ)|/n · S_n)"
+      "chebyshev_lebesgue_lb: proved modulo chebyshev_trig_sum_lb via mul_le_mul chain (δ/n · C₂·n·log(n+1) ≤ |cos(nθ)|/n · S_n)",
+      "chebyshev_trig_sum_lb Case 2 PROVED: cos(πp/q) ∈ (-1,1) via parity, arccos setup, reduction to trig_sum_harmonic_lb — Erdos1151OQ04.lean:1146",
+      "trig_sum_harmonic_lb: self-contained sorry for general θ ∈ (0, π), Lipschitz + harmonic Finset argument — Erdos1151OQ04.lean:1083",
+      "cos_pi_p_q_ne_one: cos(πp/q) ≠ 1 when p odd (parity: p = 2kq → even) — Erdos1151OQ04.lean:1151"
     ],
     "insights": [
       "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
@@ -75,14 +80,18 @@
       "Filter.tendsto_atTop_mono pattern: if f ≤ g pointwise and f → ∞ then g → ∞",
       "let binding in Lean 4 requires explicit unfolding in simp: simp only [vals, ...]",
       "chebyshev_lebesgue_growth is PROVED (not sorry) — wraps chebyshev_lebesgue_lb which assumes sorry #1",
-      "p,q both odd implies cos(pi*p/q) is strictly in (-1,1), so sin argument is nonzero. Case x=+-1 never occurs in hypotheses."
+      "p,q both odd implies cos(pi*p/q) is strictly in (-1,1), so sin argument is nonzero. Case x=+-1 never occurs in hypotheses.",
+      "Session 13: Case 2 factored into self-contained trig_sum_harmonic_lb(θ, hθ∈(0,π), hne). No dependency on p,q.",
+      "Real.arccos_pos.mpr / Real.arccos_lt_pi.mpr: get strict bounds θ₀ ∈ (0,π) from x ∈ (-1,1)",
+      "Real.cos_eq_one_iff: cos x = 1 ↔ ∃ k : ℤ, x = k*(2π). Use to show cos(πp/q) ≠ 1 from p odd.",
+      "LipschitzWith.dist_le_mul converts edist bound to |cos α - cos β| ≤ |α - β| via Real.dist_eq"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "chebyshev_lebesgue_lb: harmonic sum lower bound for S_n = Σ sin(φₖ)/|cos θ - cos φₖ| ≥ C·n·log(n+1)",
-      "divergence_from_lebesgue_growth: weaken to lim sup = ∞ (Banach-Steinhaus) or find explicit construction",
-      "Attempt chebyshev_trig_sum_lb: Lipschitz + harmonic sum proof (~200 lines). sin(pi*p/q) > 0 from p,q odd ensures x in (-1,1). Nearest node k0, bound denominator via node spacing pi/n, sum j=1..n/4 terms gives (n*sin(theta)/(2pi))*log(n/4+1).",
-      "Sorry #2 gap documented: UBP/Banach-Steinhaus gives lim sup not lim. Consider weakening divergence_from_lebesgue_growth to lim sup = inf version."
+      "(Mechanic) Fix Mathlib API drift in Erdos1151OQ04.lean — see knowledge.md session 2026-04-27 for line-by-line list",
+      "(Researcher, after Mechanic fix) Add sin_ge_sin_of_mem_Icc helper to companion file (Step 4 of trig_sum_harmonic_lb proof sketch)",
+      "(Researcher, after Mechanic fix) Decompose trig_sum_harmonic_lb into 3-4 Aristotle-sized helpers",
+      "(Researcher, longer-term) Address divergence_from_lebesgue_growth foundational lim/limsup gap"
     ]
   },
   "tags": [
@@ -106,18 +115,18 @@
     "mathlib": []
   },
   "started": "2026-04-21T19:30:00.000Z",
-  "lastUpdate": "2026-04-21T19:30:00.000Z",
+  "lastUpdate": "2026-04-27T17:23:30Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1151OQ04.lean",
       "filename": "Erdos1151OQ04.lean",
-      "lineCount": 1001,
+      "lineCount": 1282,
       "theoremCount": 29,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 5,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1151OQ04.lean"
     },
@@ -128,7 +137,7 @@
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1151OQ04Aristotle.lean"
     },

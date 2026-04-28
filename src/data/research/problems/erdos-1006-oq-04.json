@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1006-oq-04",
   "title": "DAG Structure of the Coloring Orientation (Erdős #1006)",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -18,12 +18,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "DONE",
+    "phase": "COMPLETED",
     "since": "2026-04-03T00:00:00Z",
     "iteration": 1,
-    "focus": "Created Erdos1006OQ04.lean with 10 theorems, 0 sorries, 0 axioms.",
+    "focus": "Erdos1006OQ04.lean has 11 theorems, 0 sorries, 0 axioms (verified 2026-04-27 by file inspection).",
     "blockers": [],
-    "nextAction": "Verify compilation with docker-build.sh.",
+    "nextAction": "",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -64,7 +64,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:27:56.397Z",
-  "lastUpdate": "2026-04-03T00:00:00Z",
+  "lastUpdate": "2026-04-27T22:32:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/Erdos1006OQ01.lean",

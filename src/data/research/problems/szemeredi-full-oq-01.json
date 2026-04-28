@@ -16,12 +16,15 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "BLOCKED",
     "since": "2026-04-22T13:03:46.383Z",
-    "iteration": 2,
-    "focus": "Building Cesaro measure infrastructure toward furstenberg_correspondence proof",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "iteration": 4,
+    "focus": "BLOCKED on Mathlib API drift in FurstenbergCorrespondenceOQ01.lean (35 errors). Pool status: blocked — re-claim only after Mathlib upgrade session repairs the file.",
+    "blockers": [
+      "FurstenbergCorrespondenceOQ01.lean has 35 build errors due to Mathlib v4.26 API drift; pool pin still at 2df2f0150c (v4.26.0) as of 2026-04-27 22:30 UTC.",
+      "No Lean CI workflow exists to detect upstream API drift on PRs."
+    ],
+    "nextAction": "Operator must upgrade Mathlib pin and repair 35 errors (categories documented in knowledge.md Session 6) before re-marking pool entry as available.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: Session 2 (2026-04-26) built complete Cesaro measure infrastructure. FurstenbergCorrespondenceOQ01.lean extended 285→529 lines with 6 new theorems all proved. furstenberg_correspondence axiom now reduces to Prokhorov (~150-200 lines) + ~80 lines analysis.",
+    "progressSummary": "BLOCKED: Session 5 (2026-04-27) wrote complete ~60-line proof of limit_invariant_on_cylinder (T-invariance at weak-* limits) but discovered the surrounding file has 35 pre-existing Mathlib API drift errors. Session 6 (2026-04-27, ~5h later) confirmed blocker unchanged (no commits to file, no Mathlib pin upgrade) and marked pool entry status='blocked' to stop the re-claim cycle. File cannot build. Repair requires dedicated Mathlib upgrade session.",
     "builtItems": [
       "finsetDirac_apply: sum of Dirac measures on measurable set = filter cardinality (OQ01.lean:316)",
       "cesaroMeasure: N-step Cesaro probability measure definition (OQ01.lean:334)",
@@ -37,7 +40,8 @@
       "mem_cylinderZero_shifted: orbit membership criterion for indicator (OQ01.lean:364)",
       "cesaroMeasure_cylinderZero: orbit-density formula connecting μ(B₀) to density in [a,a+N) (OQ01.lean:372)",
       "density_lower_bound: elementary half of Furstenberg correspondence, no compactness needed (OQ01.lean:404)",
-      "seqCompact_probabilityMeasure_cantor: local axiom for Prokhorov sequential compactness (OQ01.lean:484)"
+      "seqCompact_probabilityMeasure_cantor: local axiom for Prokhorov sequential compactness (OQ01.lean:484)",
+      "limit_invariant_on_cylinder: complete proof structure (~60 lines) replacing T-invariance sorry at FurstenbergCorrespondenceOQ01.lean:748 — uses ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto + ENNReal.Tendsto.add + telescoping bounds; not locally validated due to file-wide build blocker"
     ],
     "insights": [
       "FurstenbergCorrespondence.lean already exists with szemeredi_k2_ergodic proved via Poincaré recurrence",
@@ -49,19 +53,25 @@
       "density_lower_bound proved without compactness: Cesaro measure of B₀ ≥ δ for good windows, via ENNReal arithmetic",
       "ENNReal API lesson: use ENNReal.le_div_iff_mul_le (not le_div_iff₀), ENNReal.ofReal_mul, ENNReal.ofReal_natCast",
       "Bijection for Ico→range filter cardinality: use n↦n-a (not n↦n+a), proved via Finset.card_bij",
-      "open Classical needed for DecidablePred in Finset.filter with set membership predicates"
+      "open Classical needed for DecidablePred in Finset.filter with set membership predicates",
+      "BLOCKER: FurstenbergCorrespondenceOQ01.lean has 35 errors from Mathlib API drift; recent fix PRs (#13069) merged without verifying build (no CI Lean workflow). Cannot add new theorems until Mathlib upgrade session repairs all 35 errors.",
+      "Proof of limit_invariant_on_cylinder: Portmanteau (clopen frontier=∅ ⟹ ENNReal version) + ENNReal.Tendsto.add (probability measure values ≠ ⊤) + le_of_tendsto_of_tendsto via cesaroMeasure_preimage_le/ge bounds; takes both directions then le_antisymm.",
+      "Repo has NO Lean build CI workflow — only label-external-issues runs on PRs. Recent merge of #13069 with unchecked test plan is symptom of this gap.",
+      "Session 6 (2026-04-27, ~5h after Session 5): no Mathlib pin upgrade, no commit to FurstenbergCorrespondenceOQ01.lean. Re-claim via depth-first selector wastes researcher cycles when blocker is unchanged.",
+      "Action: pool entry marked status='blocked' (claim-problem.sh:292 excludes both completed and blocked from claim-random selection) so other researchers stop re-discovering the same blocker. Operator must explicitly clear status to 'available' after Mathlib upgrade session."
     ],
     "mathlibGaps": [
       "Prokhorov theorem: sequential compactness of ProbabilityMeasure on compact metrizable space (~150-200 lines to assemble from Mathlib v4.26 ingredients)",
       "Ergodic decomposition theorem (for multiple_recurrence_ge3, BLOCKED)",
       "Compact extension / weak mixing tower structure for m.p. systems (BLOCKED)",
-      "Van der Waerden theorem (combinatorial, ~300 lines, buildable as infrastructure for k≥3)"
+      "Van der Waerden theorem (combinatorial, ~300 lines, buildable as infrastructure for k≥3)",
+      "FurstenbergCorrespondenceOQ01.lean Mathlib upgrade: ~35 specific errors (see knowledge.md session 5)"
     ],
     "nextSteps": [
-      "Prove T-invariance of Cesaro limit measures: |∫f d(T_*(μ_{a,N})) - ∫f dμ_{a,N}| ≤ 2||f||/N → 0 (~50 lines)",
-      "Prove density lower semi-continuity: μ(B₀) ≥ δ for any limit point via density_lower_bound (~30 lines)",
-      "Prove seqCompact_probabilityMeasure_cantor via Mathlib Prokhorov ingredients: IsTightMeasureSet.of_compactSpace + LevyProkhorov metrization (~150-200 lines)",
-      "Assemble full furstenberg_correspondence proof eliminating the axiom in FurstenbergCorrespondence.lean"
+      "PRIORITY: Mathlib upgrade session to repair 35 errors in FurstenbergCorrespondenceOQ01.lean (renamed lemmas like isOpen_eq_of_isOpen_singleton, removed instances like Finite.instCompactSpace, tactic behavior changes for split/simp).",
+      "After file builds: validate limit_invariant_on_cylinder proof structure (already written).",
+      "Then prove seqCompact_probabilityMeasure_cantor via Mathlib Prokhorov ingredients (~150-200 lines).",
+      "Recommend: add Lean CI workflow to prevent silent rot of unbuilt files."
     ]
   },
   "tags": [
@@ -80,7 +90,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.383Z",
-  "lastUpdate": "2026-04-26T00:00:00.000Z",
+  "lastUpdate": "2026-04-27T22:30:00.000Z",
   "significance": 9,
   "tractability": 4
 }
