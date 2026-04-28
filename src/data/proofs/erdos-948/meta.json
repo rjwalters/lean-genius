@@ -52,7 +52,7 @@
       "ErdosConjecture948 definition: modified conjecture",
       "dyadicValuation definition: 2-adic valuation",
       "galvinColoring definition: Galvin's 2-coloring",
-      "hindman_theorem axiom: IP sets in colorings",
+      "Hindman's theorem context documented as commentary (motivational background, not formally axiomatized)",
       "IsIPSet, IsFSSet, IsIPStar definitions: IP set theory",
       "erdos_948_mono_false theorem: monochromatic is false"
     ],
@@ -114,26 +114,26 @@
     {
       "id": "galvin",
       "title": "Galvin's Counterexample",
-      "summary": "dyadicValuation, galvinColoring, galvin_no_monochromatic",
+      "summary": "dyadicValuation, galvinColoring (definitions); galvin_counterexample axiom (disproves MonochromaticConjecture)",
       "startLine": 126,
       "endLine": 143,
-      "mathContext": "Mathematical content: dyadicValuation, galvinColoring, galvin_no_monochromatic"
+      "mathContext": "Mathematical content: dyadicValuation, galvinColoring definitions; galvin_counterexample axiom"
     },
     {
       "id": "hindman",
       "title": "Hindman's Theorem",
-      "summary": "hindman_theorem axiom",
+      "summary": "Hindman's theorem context (documentary comments on the positive existence result, not axiomatized in this file)",
       "startLine": 144,
       "endLine": 159,
-      "mathContext": "Verified: hindman_theorem axiom"
+      "mathContext": "Documentary commentary about Hindman's theorem; no Lean declarations in this section"
     },
     {
       "id": "ip-sets",
       "title": "IP Sets and FS Sets",
-      "summary": "IsIPSet, IsFSSet, IsIPStar, hindman_ip_star",
+      "summary": "IsIPSet, IsFSSet, IsIPStar definitions: IP set, FS set, and IP* set predicates",
       "startLine": 160,
       "endLine": 181,
-      "mathContext": "Mathematical content: IsIPSet, IsFSSet, IsIPStar, hindman_ip_star"
+      "mathContext": "Mathematical content: IsIPSet, IsFSSet, IsIPStar definitions"
     },
     {
       "id": "status",
