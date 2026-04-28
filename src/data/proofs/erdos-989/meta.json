@@ -159,10 +159,10 @@
     {
       "id": "proof-techniques",
       "title": "Proof Techniques",
-      "summary": "Formalizes the two proof techniques as axioms: fourier_analysis_lower_bound (for any A and r > 1, some circle has discrepancy \u2265 \u221ar/10) and probabilistic_upper_bound_construction (existence of sequence with local discrepancy O(\u221a(r log r))).",
+      "summary": "Docstring exposition of the two proof techniques: Fourier analysis with Bessel function J\u2081 asymptotics for the lower bound, and a randomized perturbed-lattice construction with concentration bounds for the upper bound. No additional Lean declarations \u2014 commentary only.",
       "startLine": 209,
       "endLine": 239,
-      "mathContext": "Formalizes the two proof techniques as axioms: fourier_analysis_lower_bound (for any A and r > 1, some circle has discrepancy \u2265 \u221ar/10) and probabilistic_upper_bound_construction (existence of sequence with local discrepancy O(\u221a(r log r)))."
+      "mathContext": "Docstring exposition of the two proof techniques: Fourier analysis with Bessel function J\u2081 asymptotics for the lower bound, and a randomized perturbed-lattice construction with concentration bounds for the upper bound. No additional Lean declarations \u2014 commentary only."
     },
     {
       "id": "open-questions",
@@ -175,10 +175,10 @@
     {
       "id": "related-results",
       "title": "Related Results",
-      "summary": "States Schmidt's classical box discrepancy theorem (D(N) \u2265 c log N for d=2) and Alexander's half-plane discrepancy theorem (D(N) \u2265 cN^{1/4}) as axioms, providing context for why circle discrepancy (\u221ar) is intermediate.",
+      "summary": "Docstring discussion of Schmidt's classical box discrepancy theorem (D(N) \u2265 c\u00b7(log N)^{d/2}) and Alexander's half-plane discrepancy theorem (\u226b r^{1/4}), providing context for why circle discrepancy (\u221ar) is intermediate. Commentary only \u2014 no Lean declarations.",
       "startLine": 284,
       "endLine": 320,
-      "mathContext": "States Schmidt's classical box discrepancy theorem (D(N) \u2265 c log N for d=2) and Alexander's half-plane discrepancy theorem (D(N) \u2265 cN^{1/4}) as axioms, providing context for why circle discrepancy (\u221ar) is intermediate."
+      "mathContext": "Docstring discussion of Schmidt's classical box discrepancy theorem (D(N) \u2265 c\u00b7(log N)^{d/2}) and Alexander's half-plane discrepancy theorem (\u226b r^{1/4}), providing context for why circle discrepancy (\u221ar) is intermediate. Commentary only \u2014 no Lean declarations."
     },
     {
       "id": "summary",
