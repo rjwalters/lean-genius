@@ -51,10 +51,8 @@
       "AliceStrategy, BobStrategy, playGame axiomatization",
       "BobHasWinningStrategy_CliqueGame, AliceHasWinningStrategy_CliqueGame definitions",
       "ErdosConjecture: Bob wins for all n >= 3",
-      "malekshahian_spiro_density_clique: density >= 3/4",
       "malekshahian_spiro_alice_n_bob_n123: Alice at n implies Bob at n+1,n+2,n+3",
       "alice_no_four_consecutive: proved from Malekshahian-Spiro axiom",
-      "game_determined: Zermelo's theorem axiomatized",
       "erdos_778_periodicity summary theorem"
     ],
     "axiomCount": 3,
@@ -117,31 +115,31 @@
       "title": "Strategies",
       "summary": "AliceStrategy, BobStrategy, playGame, winning strategy definitions",
       "startLine": 125,
-      "endLine": 149,
+      "endLine": 160,
       "mathContext": "Formal definition: AliceStrategy, BobStrategy, playGame, winning strategy definitions"
     },
     {
       "id": "conjecture-and-results",
       "title": "Erd\u0151s's Conjecture and Known Results",
-      "summary": "ErdosConjecture, Malekshahian-Spiro density and periodicity axioms",
-      "startLine": 150,
+      "summary": "ErdosConjecture, Malekshahian-Spiro periodicity axioms",
+      "startLine": 161,
       "endLine": 181,
-      "mathContext": "Axiomatized: ErdosConjecture, Malekshahian-Spiro density and periodicity axioms"
+      "mathContext": "Axiomatized: ErdosConjecture, Malekshahian-Spiro periodicity axioms"
     },
     {
       "id": "consequences",
       "title": "Consequences of Known Results",
-      "summary": "alice_no_four_consecutive proved theorem, game_determined axiom",
+      "summary": "alice_no_four_consecutive proved theorem",
       "startLine": 182,
-      "endLine": 205,
-      "mathContext": "Verified: alice_no_four_consecutive proved theorem, game_determined axiom"
+      "endLine": 200,
+      "mathContext": "Verified: alice_no_four_consecutive proved theorem"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_778_periodicity combining known results",
-      "startLine": 206,
-      "endLine": 219,
+      "startLine": 201,
+      "endLine": 225,
       "mathContext": "Mathematical content: erdos_778_periodicity combining known results"
     }
   ],
@@ -170,7 +168,7 @@
     "namespace": "Erdos778",
     "lineCount": 225,
     "axiomCount": 3,
-    "theoremCount": 3,
+    "theoremCount": 2,
     "definitionCount": 18,
     "path": "Proofs/Erdos778Problem.lean",
     "sorries": 0
