@@ -58,18 +58,17 @@
       "isFourCycleFree: C4-free graph predicate (negation of hasFourCycle)",
       "edgeCount: edge counting via G.edgeFinset.card",
       "ex_C4 (axiom): extremal number for C4",
-      "ex_C4_realized (axiom): existence of optimal C4-free graph",
       "projectivePlaneVertices: formula q^2 + q + 1 for projective plane size",
       "asymptotic_ratio: ratio ex(n;C4)/n^{3/2} (noncomputable def)",
-      "erdos_klein_upper (axiom): O(n^{3/2}) upper bound (1938)",
-      "reiman_bounds (axiom): refined constant bounds 1/(2*sqrt(2)) <= L <= 1/2",
-      "projective_plane_construction (axiom): lower bound via PG(2,q)",
+      "Erdos-Klein O(n^{3/2}) upper bound (1938): documented in docstring only",
+      "Reiman bounds 1/(2*sqrt(2)) <= L <= 1/2 (1958): documented in docstring only",
+      "Projective plane lower bound via PG(2,q): documented in docstring only",
       "asymptotic_formula (axiom): limit equals 1/2",
       "erdos_765 (PROVED): main asymptotic result, direct from asymptotic_formula",
-      "furedi_exact (axiom): exact values for q > 13 prime power",
-      "erdos_refined_upper (axiom): upper bound with 1/4 coefficient",
+      "Furedi exact result for q > 13 prime power (1983): documented in docstring only",
+      "Erdos refined upper bound with 1/4 coefficient: documented in docstring only",
       "erdos_conjecture: definition of Erdos's refined conjecture",
-      "ma_yang_disproof (axiom): disproof via positive-density counterexample set",
+      "Ma-Yang disproof via positive-density counterexample (2023): documented in docstring only",
       "is_B2_sequence: Sidon set / B2 sequence definition",
       "fano_plane_example, pg23_example, pg24_example, pg25_example (4 PROVED): projective plane vertex counts",
       "erdos_765_summary (PROVED): combines asymptotic formula and Fano plane example"
@@ -82,7 +81,7 @@
     "historicalContext": "**The Pre-Turan Era and the Origins of Extremal Graph Theory (1936-1938)**\n\nErdos first encountered this problem in 1936 while studying B2 sequences (Sidon sets) in additive number theory — Problem #425 in his collection. He proved ex(n; C4) = O(n^{3/2}) using a double-counting argument: in a C4-free graph, each pair of vertices shares at most one common neighbor, so the number of 2-paths is at most C(n,2). He later wrote with characteristic self-deprecation: 'Being struck by a curious blindness and lack of imagination, I did not at that time extend the problem from C4 to other graphs and thus missed founding an interesting and fruitful new branch of graph theory.' Turan's systematic study of extremal numbers began in 1941, five years later.\n\n**The Race for the Exact Constant (1958-1983)**\n\nReiman (1958) proved that the limit L = lim ex(n;C4)/n^{3/2} exists and satisfies 1/(2*sqrt(2)) <= L <= 1/2. The lower bound uses the Erdos-Renyi-Brown construction: the incidence graph of the projective plane PG(2,q) is C4-free (two points determine a unique line, so no two vertices share more than one common neighbor) with (1/2)q(q+1)^2 edges on q^2+q+1 vertices. For n = q^2 + q + 1, this achieves ratio approaching 1/2. Furedi (1983) completed the picture by proving exact equality for q > 13: the projective plane graph is the unique extremal graph.\n\n**Recent Developments: The Ma-Yang Breakthrough (2023)**\n\nErdos conjectured the more precise formula ex(n;C4) = (1/2)n^{3/2} + (1/4)n + O(sqrt(n)) but cautioned he had 'limited evidence.' Ma and Yang (2023) spectacularly disproved this by showing the coefficient 1/4 can be improved to 1/4 - c for some c > 0, for a positive density of values of n. The exact lower-order terms remain an active research area.\n\n**The Lean formalization** axiomatizes the historical progression from Erdos-Klein through Furedi and Ma-Yang, proving 6 results (main theorem, 4 projective plane examples, summary) and establishing the complete story of Problem #765.",
     "problemStatement": "**Problem**: Give an asymptotic formula for ex(n; C4), where ex(n; C4) denotes the maximum number of edges in an n-vertex graph containing no 4-cycle (quadrilateral).\n\n**Answer**: ex(n; C4) ~ (1/2)n^{3/2}\n\nMore precisely:\n- lim_{n -> inf} ex(n;C4)/n^{3/2} = 1/2\n- For n = q^2 + q + 1 (q prime power > 13): ex(n;C4) = (1/2)q(q+1)^2 exactly\n- Erdos's refined conjecture ex(n;C4) = (1/2)n^{3/2} + (1/4)n + O(sqrt(n)) was DISPROVED by Ma-Yang (2023)",
     "text": "Determine an asymptotic formula for ex(n; C4), the maximum number of edges in an n-vertex graph with no 4-cycle. Answer: ex(n; C4) ~ (1/2)n^{3/2}.",
-    "proofStrategy": "**Formalization Architecture**\n\nThe formalization builds the complete story of Problem #765 in 8 sections:\n\n1. **Basic Definitions** (hasFourCycle, isFourCycleFree, edgeCount): C4 defined via 4 distinct vertices with 6 distinctness + 4 adjacency conditions\n\n2. **Extremal Function** (ex_C4, ex_C4_realized): Axiomatized maximum with existence guarantee\n\n3. **Historical Bounds**: Erdos-Klein O(n^{3/2}) upper bound, Reiman's refined constants, projective plane construction\n\n4. **Asymptotic Formula** (asymptotic_ratio, asymptotic_formula, erdos_765): Main result via limit definition\n\n5. **Furedi's Exact Result**: ex(n;C4) = (1/2)q(q+1)^2 for q > 13 prime power\n\n6. **Erdos's Conjecture and Disproof**: Refined upper bound, conjecture definition, Ma-Yang counterexample via positive-density sets\n\n7. **B2 Sequences**: Connection to Sidon sets in additive combinatorics\n\n8. **Examples** (4 PROVED): Projective plane vertex counts for q = 2,3,4,5",
+    "proofStrategy": "**Formalization Architecture**\n\nThe formalization builds the complete story of Problem #765 in 8 sections:\n\n1. **Basic Definitions** (hasFourCycle, isFourCycleFree, edgeCount): C4 defined via 4 distinct vertices with 6 distinctness + 4 adjacency conditions\n\n2. **Extremal Function** (ex_C4): Axiomatized maximum; existence guarantee documented in docstring only\n\n3. **Historical Bounds**: Erdos-Klein upper bound, Reiman's constants, projective plane construction — all documented in docstrings only, not formalized as Lean declarations\n\n4. **Asymptotic Formula** (asymptotic_ratio, asymptotic_formula, erdos_765): Main result via limit definition\n\n5. **Furedi's Exact Result**: Documented in docstring only — not formalized as a Lean declaration\n\n6. **Erdos's Conjecture and Disproof** (erdos_conjecture def): Refined conjecture defined; upper bound and Ma-Yang disproof documented in docstrings only\n\n7. **B2 Sequences**: Connection to Sidon sets in additive combinatorics\n\n8. **Examples** (4 PROVED): Projective plane vertex counts for q = 2,3,4,5",
     "keyInsights": [
       "**Projective Planes as Extremal Graphs**: The incidence graph of PG(2,q) achieves ex(n;C4) for n = q^2+q+1. The C4-free property follows from the projective plane axiom: two points determine a unique line, so no two vertices share more than one common neighbor.",
       "**Double Counting Argument**: The upper bound uses sum of C(deg(v), 2) <= C(n,2), since each pair contributes at most one 2-path. By Cauchy-Schwarz, this gives |E| = O(n^{3/2}).",
@@ -110,16 +109,16 @@
       "title": "Extremal Function ex(n; C4)",
       "startLine": 58,
       "endLine": 73,
-      "summary": "ex_C4 (axiom): maximum edges in n-vertex C4-free graph. ex_C4_realized (axiom): existence of optimal graph. The central object of Problem #765.",
-      "mathContext": "Axiomatized: ex_C4 (axiom): maximum edges in n-vertex C4-free graph. ex_C4_realized (axiom): existence of optimal graph. The central object of Problem #765."
+      "summary": "ex_C4 (axiom): maximum edges in n-vertex C4-free graph. Existence of optimal graph documented in docstring only. The central object of Problem #765.",
+      "mathContext": "Axiomatized: ex_C4 (axiom): maximum edges in n-vertex C4-free graph. Existence guarantee documented in docstring only — no Lean declaration."
     },
     {
       "id": "historical-bounds",
       "title": "Historical Bounds (1938-1958)",
       "startLine": 74,
       "endLine": 104,
-      "summary": "erdos_klein_upper (axiom): O(n^{3/2}) via double counting. reiman_bounds (axiom): 1/(2*sqrt(2)) <= L <= 1/2. projective_plane_construction (axiom): PG(2,q) lower bound (1/2)q(q+1)^2 for n = q^2+q+1.",
-      "mathContext": "erdos_klein_upper (axiom): $O(n^{3/2})$ via double counting. reiman_bounds (axiom): 1/(2*$\\sqrt{2}$) <= L <= 1/2. projective_plane_construction (axiom): PG(2,q) lower bound (1/2)q(q+1)^2 for n = q^2+q+1."
+      "summary": "Historical bounds documented in docstrings only: Erdos-Klein O(n^{3/2}) via double counting (1938), Reiman 1/(2*sqrt(2)) <= L <= 1/2 (1958), PG(2,q) lower bound (1/2)q(q+1)^2 for n = q^2+q+1. projectivePlaneVertices def: q^2+q+1.",
+      "mathContext": "Historical bounds documented in docstrings only — not formalized as Lean declarations. Only actual declaration: projectivePlaneVertices def: q^2+q+1."
     },
     {
       "id": "asymptotic-formula",
@@ -134,16 +133,16 @@
       "title": "Furedi's Exact Result (1983)",
       "startLine": 132,
       "endLine": 145,
-      "summary": "furedi_exact (axiom): for q > 13 prime power, ex(q^2+q+1; C4) = (1/2)q(q+1)^2 exactly. PG(2,q) is the unique extremal graph.",
-      "mathContext": "Axiomatized: furedi_exact (axiom): for q > 13 prime power, ex(q^2+q+1; C4) = (1/2)q(q+1)^2 exactly. PG(2,q) is the unique extremal graph."
+      "summary": "Furedi's theorem (1983): for q > 13 prime power, ex(q^2+q+1; C4) = (1/2)q(q+1)^2 exactly; PG(2,q) is the unique extremal graph. Documented in docstring only — no Lean declaration.",
+      "mathContext": "Documented in docstring only — furedi_exact is not a Lean axiom declaration. Historical result: for q > 13 prime power, ex(q^2+q+1; C4) = (1/2)q(q+1)^2."
     },
     {
       "id": "erdos-conjecture",
       "title": "Erdos's Conjecture and Ma-Yang Disproof",
       "startLine": 146,
       "endLine": 175,
-      "summary": "erdos_refined_upper (axiom): (1/2)n^{3/2} + (1/4)n + O(sqrt(n)). erdos_conjecture (def): lower bound matching. ma_yang_disproof (axiom): positive-density counterexample with coefficient 1/4 - c.",
-      "mathContext": "erdos_refined_upper (axiom): (1/2)n^{3/2} + (1/4)n + $O($\\sqrt{n}$)$. erdos_conjecture (def): lower bound matching. ma_yang_disproof (axiom): positive-density counterexample with coefficient 1/4 - c."
+      "summary": "erdos_conjecture (def): lower bound conjecture (1/2)n^{3/2} + (1/4)n + O(sqrt(n)). Refined upper bound and Ma-Yang disproof (2023) documented in docstrings only — not formalized as Lean declarations.",
+      "mathContext": "Formal definition: erdos_conjecture (def). Erdos refined upper bound and Ma-Yang disproof documented in docstrings only — not Lean axiom declarations."
     },
     {
       "id": "number-theory",
