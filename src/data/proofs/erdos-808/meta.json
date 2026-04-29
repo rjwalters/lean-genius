@@ -2,7 +2,7 @@
   "id": "erdos-808",
   "title": "Graph-Restricted Sum-Product Bounds",
   "slug": "erdos-808",
-  "description": "Graph version of sum-product: with n^{1+c} edges, is max(|A+_G A|, |A\u00b7_G A|) \u2265 n^{1+c-\u03b5}? DISPROVED by Alon-Ruzsa-Solymosi (2020). Counterexample: n^{5/3} edges give only n^{4/3} outputs. Positive result: max \u2265 m^{3/2}/n^{7/4}.",
+  "description": "Graph version of sum-product: with n^{1+c} edges, is max(|A+_G A|, |A·_G A|) ≥ n^{1+c-ε}? DISPROVED by Alon-Ruzsa-Solymosi (2020). Counterexample: n^{5/3} edges give only n^{4/3} outputs. Positive result: max ≥ m^{3/2}/n^{7/4}.",
   "meta": {
     "author": "Alon, Ruzsa, Solymosi (2020)",
     "sourceUrl": "https://erdosproblems.com/808",
@@ -46,9 +46,9 @@
     ],
     "originalContributions": [
       "Lean formalization of graph-restricted sumsets and product sets",
-      "Formal statement of the (false) Erd\u0151s-Szemer\u00e9di graph conjecture",
-      "Axiomatized ARS counterexample construction",
-      "Positive lower bound: max \u2265 m^{3/2}n^{-7/4}",
+      "Formal statement of the (false) Erdős-Szemerédi graph conjecture",
+      "Axiomatized refutation of the Erdős-Szemerédi graph conjecture (erdos_808_false)",
+      "Positive lower bound: max ≥ m^{3/2}n^{-7/4}",
       "Connection to classical sum-product conjecture"
     ],
     "dateAdded": "2026-01-19",
@@ -57,16 +57,16 @@
     "lineCount": 211
   },
   "overview": {
-    "historicalContext": "This problem generalizes the famous Erd\u0151s-Szemer\u00e9di sum-product conjecture to graph-restricted settings. Alon, Ruzsa, and Solymosi (2020) showed the natural generalization fails, but proved a weaker positive bound. The classical Erd\u0151s-Szemer\u00e9di sum-product conjecture (1983) asserts that for any finite set A of real numbers, max(|A+A|, |A\u00b7A|) \u2265 |A|^{2\u2212\u03b5}, capturing the heuristic that a set cannot simultaneously have small sumset and small product set. The graph-restricted variant, proposed by Erd\u0151s and Szemer\u00e9di, asks whether restricting sums and products to edges of a dense graph preserves this expansion. The ARS (2020) counterexample, using sets with strong multiplicative structure and a carefully chosen bipartite graph, showed that graph sparsity can be exploited to defeat expansion, settling the conjecture negatively.",
-    "problemStatement": "If A \u2282 \u2115 with |A| = n and graph G on A has \u2265 n^{1+c} edges, is max(|A +_G A|, |A \u00b7_G A|) \u2265 n^{1+c-\u03b5}? Here A +_G A = {a+b : (a,b) \u2208 G}.",
-    "text": "Graph version of sum-product: with n^{1+c} edges, is max(|A+_G A|, |A\u00b7_G A|) \u2265 n^{1+c-\u03b5}? DISPROVED by Alon-Ruzsa-Solymosi (2020). Counterexample: n^{5/3} edges give only n^{4/3} outputs. Positive result: max \u2265 m^{3/2}/n^{7/4}.",
+    "historicalContext": "This problem generalizes the famous Erdős-Szemerédi sum-product conjecture to graph-restricted settings. Alon, Ruzsa, and Solymosi (2020) showed the natural generalization fails, but proved a weaker positive bound. The classical Erdős-Szemerédi sum-product conjecture (1983) asserts that for any finite set A of real numbers, max(|A+A|, |A·A|) ≥ |A|^{2−ε}, capturing the heuristic that a set cannot simultaneously have small sumset and small product set. The graph-restricted variant, proposed by Erdős and Szemerédi, asks whether restricting sums and products to edges of a dense graph preserves this expansion. The ARS (2020) counterexample, using sets with strong multiplicative structure and a carefully chosen bipartite graph, showed that graph sparsity can be exploited to defeat expansion, settling the conjecture negatively.",
+    "problemStatement": "If A ⊂ ℕ with |A| = n and graph G on A has ≥ n^{1+c} edges, is max(|A +_G A|, |A ·_G A|) ≥ n^{1+c-ε}? Here A +_G A = {a+b : (a,b) ∈ G}.",
+    "text": "Graph version of sum-product: with n^{1+c} edges, is max(|A+_G A|, |A·_G A|) ≥ n^{1+c-ε}? DISPROVED by Alon-Ruzsa-Solymosi (2020). Counterexample: n^{5/3} edges give only n^{4/3} outputs. Positive result: max ≥ m^{3/2}/n^{7/4}.",
     "proofStrategy": "ARS constructed sets with arithmetic structure where many edges (n^{5/3}) produce few distinct sums/products (n^{4/3}). They also proved a positive lower bound using different techniques.",
     "keyInsights": [
       "The conjecture is FALSE: n^{5/3} edges can yield only n^{4/3} outputs, an exponent gap of 1/3",
-      "Arithmetic structure (like APs with |A+A| \u2264 2|A|-1) allows many edges without many new sums",
-      "Positive result: max(|A+_G A|, |A\u00b7_G A|) \u2265 c \u00b7 m^{3/2} \u00b7 n^{-7/4} still guarantees some expansion",
+      "Arithmetic structure (like APs with |A+A| ≤ 2|A|-1) allows many edges without many new sums",
+      "Positive result: max(|A+_G A|, |A·_G A|) ≥ c · m^{3/2} · n^{-7/4} still guarantees some expansion",
       "Graph structure fundamentally changes sum-product behavior: sparse graphs defeat expansion that complete graphs guarantee",
-      "The complete graph case reduces to the classical Erd\u0151s-Szemer\u00e9di conjecture (Problem 52), which remains open \u2014 sparsity is the essential obstruction"
+      "The complete graph case reduces to the classical Erdős-Szemerédi conjecture (Problem 52), which remains open — sparsity is the essential obstruction"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -81,7 +81,7 @@
       "startLine": 1,
       "endLine": 49,
       "summary": "Module docstring documenting the problem statement, background, and references; 4 Mathlib imports covering required modules; `open` declarations (Finset); namespace `Erdos808`",
-      "mathContext": "Graph version of Erd\u0151s-Szemer\u00e9di sum-product: for a graph $G$ on $A$ with $n^{1+c}$ edges, is $\\max(|A +_G A|, |A \\cdot_G A|) \\geq n^{1+c-\\varepsilon}$? DISPROVED by Alon-Ruzsa-Solymosi (2020); positive result: $\\max \\geq m^{3/2} n^{-7/4}$."
+      "mathContext": "Graph version of Erdős-Szemerédi sum-product: for a graph $G$ on $A$ with $n^{1+c}$ edges, is $\\max(|A +_G A|, |A \\cdot_G A|) \\geq n^{1+c-\\varepsilon}$? DISPROVED by Alon-Ruzsa-Solymosi (2020); positive result: $\\max \\geq m^{3/2} n^{-7/4}$."
     },
     {
       "id": "basic-definitions",
@@ -96,52 +96,52 @@
       "title": "The Original Conjecture (DISPROVED)",
       "startLine": 83,
       "endLine": 105,
-      "summary": "Statement of the false Erd\u0151s-Szemer\u00e9di graph conjecture",
-      "mathContext": "$|E(G)| \\ge n^{1+c} \\implies \\max(|A +_G A|, |A \\cdot_G A|) \\ge n^{1+c-\\varepsilon}$. Conjectured generalization of the Erd\u0151s-Szemer\u00e9di sum-product phenomenon to sparse graphs. DISPROVED."
+      "summary": "Statement of the false Erdős-Szemerédi graph conjecture",
+      "mathContext": "$|E(G)| \\ge n^{1+c} \\implies \\max(|A +_G A|, |A \\cdot_G A|) \\ge n^{1+c-\\varepsilon}$. Conjectured generalization of the Erdős-Szemerédi sum-product phenomenon to sparse graphs. DISPROVED."
     },
     {
       "id": "counterexample",
       "title": "The Counterexample",
       "startLine": 106,
-      "endLine": 134,
-      "summary": "ARS counterexample: n^{5/3} edges \u2192 n^{4/3} outputs",
+      "endLine": 123,
+      "summary": "ARS counterexample: n^{5/3} edges → n^{4/3} outputs",
       "mathContext": "$\\exists A, G: |E(G)| \\approx n^{5/3},\\, \\max(|A +_G A|, |A \\cdot_G A|) \\approx n^{4/3}$. Alon-Ruzsa-Solymosi (2020): exponent gap $5/3 - 4/3 = 1/3$ refutes the conjecture."
     },
     {
       "id": "positive-result",
       "title": "The Positive Result",
-      "startLine": 135,
-      "endLine": 159,
-      "summary": "ARS positive bound: max \u2265 m^{3/2}/n^{7/4}",
+      "startLine": 124,
+      "endLine": 154,
+      "summary": "ARS positive bound: max ≥ m^{3/2}/n^{7/4}",
       "mathContext": "$\\max(|A +_G A|, |A \\cdot_G A|) \\ge c \\cdot m^{3/2} \\cdot n^{-7/4}$ where $m = |E(G)|$, $n = |A|$. ARS positive bound: more edges do guarantee more outputs."
     },
     {
       "id": "sum-product-connection",
       "title": "Connection to Sum-Product",
-      "startLine": 160,
-      "endLine": 184,
+      "startLine": 155,
+      "endLine": 175,
       "summary": "Relation to classical sum-product conjecture (Problem 52)",
       "mathContext": "Classical: $\\max(|A+A|, |A \\cdot A|) \\ge |A|^{2-\\varepsilon}$ (Problem 52, open). Problem 808 is the graph-restricted version. Complete graph case reduces to the classical conjecture."
     },
     {
       "id": "construction-idea",
       "title": "The Construction Idea",
-      "startLine": 185,
-      "endLine": 208,
+      "startLine": 176,
+      "endLine": 192,
       "summary": "How arithmetic structure enables the counterexample",
       "mathContext": "Arithmetic progressions satisfy $|A + A| \\le 2|A| - 1$. The ARS counterexample exploits this: structured $A$ allows $n^{5/3}$ edges while $|A +_G A| \\le n^{4/3}$."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 209,
+      "startLine": 193,
       "endLine": 211,
       "summary": "Main results and key insight about graph structure",
       "mathContext": "$\\neg\\text{GraphSumProductConj} \\wedge \\max(|A +_G A|, |A \\cdot_G A|) \\ge c m^{3/2} n^{-7/4}$. Graph structure fundamentally changes sum-product behavior vs the complete graph case."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #808 is DISPROVED. The graph-restricted sum-product conjecture fails: n^{5/3} edges can produce only n^{4/3} outputs. However, ARS proved a positive bound: max(|A+_G A|, |A\u00b7_G A|) \u2265 m^{3/2}/n^{7/4}.",
+    "summary": "Erdős Problem #808 is DISPROVED. The graph-restricted sum-product conjecture fails: n^{5/3} edges can produce only n^{4/3} outputs. However, ARS proved a positive bound: max(|A+_G A|, |A·_G A|) ≥ m^{3/2}/n^{7/4}.",
     "implications": "Graph structure fundamentally changes sum-product phenomena. Sparse graphs can exploit arithmetic structure to avoid expansion, unlike complete graphs.",
     "openQuestions": [
       "What is the optimal lower bound in terms of m and n?",
@@ -171,17 +171,17 @@
     {
       "targetId": "erdos-1067",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: disproved, graph-theory"
+      "description": "Related Erdős problem sharing themes: disproved, graph-theory"
     },
     {
       "targetId": "erdos-1080",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: disproved, graph-theory"
+      "description": "Related Erdős problem sharing themes: disproved, graph-theory"
     },
     {
       "targetId": "erdos-110",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: disproved, graph-theory"
+      "description": "Related Erdős problem sharing themes: disproved, graph-theory"
     }
   ],
   "sorries": 0
