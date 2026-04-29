@@ -46,15 +46,11 @@
       }
     ],
     "originalContributions": [
-      "IsIndependentSet, IsClique, IsHomogeneous definitions",
-      "IsProperColoring and chromaticNumber definitions",
-      "IsCochromaticColoring definition",
-      "cochromaticNumber axiom with cochromatic_le_chromatic",
-      "complete_graph_cochromatic and complete_graph_tight_bound axioms",
-      "erdos_gimbel_theorem axiom: ζ(H) ≥ c√(m/log m)",
-      "aks_theorem axiom: ζ(H) ≥ cm/log m (full solution)",
-      "ramsey_for_cochromatic and ramsey_number_bound axioms",
-      "erdos_760 summary theorem combining results"
+      "Definitions: IsIndependentSet, IsClique, IsHomogeneous, IsProperColoring, chromaticNumber, IsCochromaticColoring",
+      "cochromaticNumber: axiomatized as ℕ-valued invariant (line 103)",
+      "aks_theorem: axiomatized Alon-Krivelevich-Sudakov bound ζ(H) ≥ cm/log m (line 152)",
+      "erdos_760_solved: theorem reducing to aks_theorem (line 164)",
+      "erdos_760: summary theorem reducing to aks_theorem (line 224)"
     ],
     "relatedProblems": [
       {
@@ -104,42 +100,42 @@
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "summary": "cochromatic_le_chromatic, complete_graph_cochromatic, complete_graph_tight_bound",
+      "summary": "Commentary on ζ(G) ≤ χ(G) relationship and complete graph cochromatic bounds (docstring only; no declarations in this section)",
       "startLine": 105,
       "endLine": 138
     },
     {
       "id": "erdos-gimbel",
       "title": "Erdős-Gimbel Partial Result",
-      "summary": "erdos_gimbel_theorem, erdos_gimbel_weaker",
+      "summary": "aks_theorem (axiom, AKS bound ζ(H) ≥ cm/log m), erdos_760_solved (theorem reducing to aks_theorem)",
       "startLine": 139,
       "endLine": 164
     },
     {
       "id": "aks-theorem",
       "title": "Alon-Krivelevich-Sudakov Theorem",
-      "summary": "aks_theorem, erdos_760_solved",
+      "summary": "Body of erdos_760_solved and proof technique commentary (no new declarations)",
       "startLine": 165,
       "endLine": 197
     },
     {
       "id": "proof-technique",
       "title": "Proof Technique",
-      "summary": "ramsey_for_cochromatic",
+      "summary": "Ramsey-type argument commentary (docstring only; no declarations)",
       "startLine": 198,
       "endLine": 216
     },
     {
       "id": "related",
       "title": "Related Results",
-      "summary": "ramsey_number_bound",
+      "summary": "erdos_760 summary theorem (lines 224–230, reduces to aks_theorem)",
       "startLine": 217,
       "endLine": 231
     },
     {
       "id": "summary",
       "title": "Main Results Summary",
-      "summary": "erdos_760",
+      "summary": "Closing namespace (end Erdos760)",
       "startLine": 232,
       "endLine": 232
     }
