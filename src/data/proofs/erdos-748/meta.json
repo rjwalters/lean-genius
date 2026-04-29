@@ -85,72 +85,72 @@
       "id": "sum-free-definition",
       "title": "Sum-Free Sets",
       "summary": "Defines `IsSumFree A`: $\\forall a,b,c \\in A,\\; a \\ne b + c$. Alternative `IsSumFree'` and proved equivalence `sumFree_iff`.",
-      "startLine": 44,
-      "endLine": 71,
+      "startLine": 46,
+      "endLine": 72,
       "mathContext": "Formal definition: Defines `IsSumFree A`: $\\forall a,b,c \\in A,\\; a \\ne b + c$. Alternative `IsSumFree'` and proved equivalence `sumFree_iff`."
     },
     {
       "id": "counting",
       "title": "Counting Sum-Free Sets",
       "summary": "Defines `sumFreeSubsets n` (filtered power set of $\\{0,\\ldots,n-1\\}$) and $f(n) = |\\text{sumFreeSubsets}(n)|$ (OEIS A007865).",
-      "startLine": 72,
-      "endLine": 88,
+      "startLine": 74,
+      "endLine": 89,
       "mathContext": "Formal definition: Defines `sumFreeSubsets n` (filtered power set of $\\{0,\\ldots,n-1\\}$) and $f(n) = |\\text{sumFreeSubsets}(n)|$ (OEIS A007865)."
     },
     {
       "id": "lower-bound",
       "title": "Trivial Lower Bound",
       "summary": "Proves `upperHalf_sumFree`: subsets of $\\{\\lfloor n/2 \\rfloor + 1, \\ldots, n\\}$ are sum-free (sums exceed $n$). Axiomatizes $f(n) \\ge 2^{n/2}$.",
-      "startLine": 89,
-      "endLine": 113,
+      "startLine": 91,
+      "endLine": 114,
       "mathContext": "Proves `upperHalf_sumFree`: subsets of $\\{\\lfloor n/2 \\rfloor + 1, \\ldots, n\\}$ are sum-free (sums exceed $n$). Axiomatizes $f(n) \\ge $$2^{{n/2}$}$$."
     },
     {
       "id": "conjecture",
       "title": "The Cameron-Erdős Conjecture",
       "summary": "Defines `cameronErdosConjecture`: $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\ge N$, $(1-\\varepsilon)n/2 \\le \\log_2 f(n) \\le (1+\\varepsilon)n/2$.",
-      "startLine": 114,
-      "endLine": 129,
+      "startLine": 116,
+      "endLine": 130,
       "mathContext": "Formal definition: Defines `cameronErdosConjecture`: $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\ge N$, $(1-\\varepsilon)n/2 \\le \\log_2 f(n) \\le (1+\\varepsilon)n/2$."
     },
     {
       "id": "solution",
       "title": "The Solution",
       "summary": "Axiomatizes Green's $f(n) \\le C \\cdot 2^{n/2}$, Sapozhenko's independent result, and the precise $f(n) \\sim c_n \\cdot 2^{n/2}$ with parity-dependent constants. Proves `cameron_erdos_proved`.",
-      "startLine": 130,
-      "endLine": 174,
+      "startLine": 132,
+      "endLine": 217,
       "mathContext": "Axiomatizes Green's $f(n) \\le C \\cdot $$2^{{n/2}$}$$, Sapozhenko's independent result, and the precise $f(n) \\sim c_n \\cdot $$2^{{n/2}$}$$ with parity-dependent constants. Proves `cameron_erdos_proved`."
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Proves `empty_sumFree` (vacuous), `singleton_sumFree` ($x \\ne 2x$ for $x > 0$), and `oddNumbers_sumFree` (odd + odd = even $\\ne$ odd).",
-      "startLine": 175,
-      "endLine": 211,
+      "startLine": 219,
+      "endLine": 254,
       "mathContext": "Verified: Proves `empty_sumFree` (vacuous), `singleton_sumFree` ($x \\ne 2x$ for $x > 0$), and `oddNumbers_sumFree` (odd + odd = even $\\ne$ odd)."
     },
     {
       "id": "structure",
       "title": "Structure of Sum-Free Sets",
-      "summary": "Axiomatizes that $f(n) \\le 10(2^{n/2} + 2^{(n+1)/2})$ for $n \\ge 100$ (two dominant types) and the maximum sum-free set size $\\lceil n/2 \\rceil$ (Schur connection).",
-      "startLine": 212,
-      "endLine": 239,
-      "mathContext": "Axiomatizes that $f(n) \\le 10($$2^{{n/2}$}$ + $$2^{{(n+1)/2}$}$)$ for $n \\ge 100$ (two dominant types) and the maximum sum-free set size $\\lceil n/2 \\rceil$ (Schur connection)."
+      "summary": "Informal docstring commentary on the two dominant types of sum-free sets (subsets of $[n/2+1, n]$ and subsets of odd numbers) and the Schur connection (maximum sum-free subset of $[1,n]$ has size $\\lceil n/2 \\rceil$). No axioms or theorems are declared in this section.",
+      "startLine": 256,
+      "endLine": 272,
+      "mathContext": "Commentary only: Two dominant types of sum-free sets — subsets of the upper half $[n/2+1, n]$ (type 1) and subsets of odd numbers (type 2) — account for essentially all sum-free sets. Schur connection: maximum size of a sum-free subset of $[1,n]$ is $\\lceil n/2 \\rceil$."
     },
     {
       "id": "oeis",
       "title": "OEIS A007865",
-      "summary": "Axiomatizes small values from OEIS A007865: $f(1) = 2$, $f(2) = 3$, $f(3) = 6$. These match the known sequence and verify the counting function against explicit enumeration.",
-      "startLine": 240,
-      "endLine": 256,
-      "mathContext": "Axiomatized: Axiomatizes small values from OEIS A007865: $f(1) = 2$, $f(2) = 3$, $f(3) = 6$. These match the known sequence and verify the counting function against explicit enumeration."
+      "summary": "Proves $f(1) = 2$, $f(2) = 3$, $f(3) = 6$ by `native_decide`, matching OEIS A007865. These are fully machine-checked results, not axioms.",
+      "startLine": 274,
+      "endLine": 289,
+      "mathContext": "Verified by `native_decide`: $f(1) = 2$, $f(2) = 3$, $f(3) = 6$. Matches OEIS A007865. The counting function $f(n) = |\\text{sumFreeSubsets}(n)|$ is evaluated computably for small $n$."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Combines all results into `erdos_748_summary`: the conjecture $f(n) = 2^{(1+o(1))n/2}$ is TRUE (Green 2004, Sapozhenko 2003). The main theorem `erdos_748` packages the lower bound, upper bound, and precise asymptotic $f(n) \\sim c_n \\cdot 2^{n/2}$.",
-      "startLine": 257,
-      "endLine": 279,
+      "startLine": 291,
+      "endLine": 325,
       "mathContext": "Combines all results into `erdos_748_summary`: the conjecture $f(n) = 2^{(1+o(1))n/2}$ is TRUE (Green 2004, Sapozhenko 2003). The main theorem `erdos_748` packages the lower bound, upper bound, and precise asymptotic $f(n) \\sim c_n \\cdot 2^{n/2}$."
     }
   ],
