@@ -54,11 +54,8 @@
       "question1_affirmative axiom: edge bound for small families (ADGS 2015)",
       "question2_negative axiom: counterexample to quadratic density (Alon-Frankl 1985)",
       "question3_affirmative axiom: subquadratic threshold (Alon-Frankl 1985)",
-      "extremal_construction: tight example with 2^n edges",
       "alonFranklFamily: explicit counterexample family",
       "IsChain and IsAntichain definitions",
-      "sperner_bound: maximum antichain size",
-      "daykinFrankl: asymptotic chain characterization",
       "erdos_777_summary: combined main results"
     ],
     "axiomCount": 3,
@@ -69,7 +66,7 @@
     "historicalContext": "**Erdos Problem #777: Comparable Pairs in Set Families**\n\nThis problem was posed by Daykin and Erdos in the early 1980s, exploring the structure of families of sets through their comparability graphs.\n\n**Key History:**\n- Daykin and Erdos [Gu83]: Original problem formulation with three questions\n- Daykin and Frankl: Proved that if almost all pairs are comparable, then |F|^{1/n} approaches 1\n- Alon-Frankl [AlFr85]: Resolved Questions 2 (no) and 3 (yes)\n- Alon-Das-Glebov-Sudakov [ADGS15]: Resolved Question 1 (yes)\n\n**Mathematical Setting:**\nGiven a family F of subsets of {1,...,n}, the comparability graph G_F has F as vertices and connects A to B if they are comparable (one contains the other). The problem asks about the maximum number of edges possible under various size constraints on F.",
     "problemStatement": "**Problem Statement (All Three Questions Resolved)**\n\nLet $\\mathcal{F}$ be a family of subsets of $\\{1,\\ldots,n\\}$ with $|\\mathcal{F}| = m$. Define the comparability graph $G_{\\mathcal{F}}$ where $A \\sim B$ iff $A \\subseteq B$ or $B \\subseteq A$.\n\n**Question 1:** For $\\epsilon > 0$ and $n$ large, if $m \\leq (2-\\epsilon)2^{n/2}$, does $G_{\\mathcal{F}}$ have $< 2^n$ edges?\n**Answer: YES** (Alon-Das-Glebov-Sudakov 2015)\n\n**Question 2:** If $G_{\\mathcal{F}}$ has $\\geq cm^2$ edges, must $m \\ll_c 2^{n/2}$?\n**Answer: NO** (Alon-Frankl 1985 counterexample)\n\n**Question 3:** For $\\epsilon > 0$, does $\\delta > 0$ exist such that $> m^{2-\\delta}$ edges implies $m < (2+\\epsilon)^{n/2}$?\n**Answer: YES** (Alon-Frankl 1985)",
     "text": "Given a family F of subsets of {1,...,n}, how many comparable pairs can it have? Three questions about edge counts in the comparability graph were resolved by Alon, Frankl, and others.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define comparability of finite sets, the comparability graph, and edge counting functions\n\n2. **Base Structures:** Work with baseSet(n) = {0,...,n-1} and its power set\n\n3. **Three Main Axioms:**\n   - question1_affirmative: The edge bound for families of size (2-epsilon)*2^{n/2}\n   - question2_negative: Existence of the Alon-Frankl counterexample family\n   - question3_affirmative: The subquadratic threshold result\n\n4. **Supporting Results:**\n   - Chains have maximum edges, antichains have zero edges\n   - Sperner's bound on maximum antichain size\n   - Daykin-Frankl asymptotic characterization\n\n5. **Concrete Examples:** The extremal construction achieving exactly 2^n edges",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define comparability of finite sets, the comparability graph, and edge counting functions\n\n2. **Base Structures:** Work with baseSet(n) = {0,...,n-1} and its power set\n\n3. **Three Main Axioms:**\n   - question1_affirmative: The edge bound for families of size (2-epsilon)*2^{n/2}\n   - question2_negative: Existence of the Alon-Frankl counterexample family\n   - question3_affirmative: The subquadratic threshold result\n\n4. **Supporting Results (discussed in commentary, not formalized):**\n   - The extremal construction achieving exactly 2^n edges\n   - Sperner's bound on maximum antichain size\n   - Daykin-Frankl asymptotic characterization\n\n5. **Concrete Examples:** singleton_comparable, empty_comparable, full_comparable",
     "keyInsights": [
       "**Comparability Graph:** Two sets are connected iff one contains the other - this captures the partial order structure",
       "**Extremal Family:** All subsets of {1,...,n/2} plus {1,...,n/2} union each subset of {n/2+1,...,n} achieves exactly 2^n edges with 2^{n/2+1} sets",
@@ -103,64 +100,64 @@
     {
       "id": "question-1",
       "title": "Question 1: Edge Bound",
-      "summary": "question1_affirmative, extremal_construction",
+      "summary": "question1_affirmative axiom (ADGS 2015 edge bound)",
       "startLine": 114,
-      "endLine": 143,
-      "mathContext": "Mathematical content: question1_affirmative, extremal_construction"
+      "endLine": 137,
+      "mathContext": "Mathematical content: question1_affirmative axiom"
     },
     {
       "id": "question-2",
       "title": "Question 2: Quadratic Density",
       "summary": "question2_negative, alonFranklFamily counterexample",
-      "startLine": 144,
-      "endLine": 176,
+      "startLine": 138,
+      "endLine": 170,
       "mathContext": "Mathematical content: question2_negative, alonFranklFamily counterexample"
     },
     {
       "id": "question-3",
       "title": "Question 3: Subquadratic Threshold",
-      "summary": "question3_affirmative, alonFrankl_quantitative",
-      "startLine": 177,
-      "endLine": 209,
-      "mathContext": "Mathematical content: question3_affirmative, alonFrankl_quantitative"
+      "summary": "question3_affirmative axiom (Alon-Frankl 1985 threshold)",
+      "startLine": 171,
+      "endLine": 194,
+      "mathContext": "Mathematical content: question3_affirmative axiom"
     },
     {
       "id": "daykin-frankl",
       "title": "Daykin-Frankl Result",
-      "summary": "Asymptotic characterization when edge ratio approaches 1",
-      "startLine": 210,
-      "endLine": 233,
+      "summary": "Daykin-Frankl result discussed in commentary (not formalized)",
+      "startLine": 195,
+      "endLine": 208,
       "mathContext": "Mathematical content: Asymptotic characterization when edge ratio approaches 1"
     },
     {
       "id": "chains-antichains",
       "title": "Chains and Antichains",
-      "summary": "IsChain, IsAntichain, extreme edge counts, Sperner bound",
-      "startLine": 234,
-      "endLine": 271,
-      "mathContext": "Bound: IsChain, IsAntichain, extreme edge counts, Sperner bound"
+      "summary": "IsChain, IsAntichain definitions; Dilworth connection in commentary",
+      "startLine": 209,
+      "endLine": 231,
+      "mathContext": "Mathematical content: IsChain, IsAntichain definitions"
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "singleton_comparable, empty_comparable, full_comparable",
-      "startLine": 272,
-      "endLine": 303,
+      "startLine": 232,
+      "endLine": 263,
       "mathContext": "Mathematical content: singleton_comparable, empty_comparable, full_comparable"
     },
     {
       "id": "adgs-theorem",
       "title": "ADGS Theorem",
-      "summary": "Alon-Das-Glebov-Sudakov resolution of Question 1",
-      "startLine": 304,
-      "endLine": 322,
+      "summary": "Alon-Das-Glebov-Sudakov resolution of Question 1 (discussed in commentary)",
+      "startLine": 264,
+      "endLine": 274,
       "mathContext": "Mathematical content: Alon-Das-Glebov-Sudakov resolution of Question 1"
     },
     {
       "id": "main-results",
       "title": "Main Results Summary",
-      "summary": "erdos_777_summary combining all three answers",
-      "startLine": 323,
+      "summary": "erdos_777_summary combining all three answers, erdos_777",
+      "startLine": 275,
       "endLine": 336,
       "mathContext": "Mathematical content: erdos_777_summary combining all three answers"
     }
