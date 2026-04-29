@@ -85,79 +85,79 @@
       "id": "hypergraph-fundamentals",
       "title": "Hypergraph Fundamentals",
       "summary": "UniformHypergraph structure, Hypergraph3 abbreviation for 3-uniform case",
-      "startLine": 46,
-      "endLine": 67,
+      "startLine": 47,
+      "endLine": 68,
       "mathContext": "Formal definition: UniformHypergraph structure, Hypergraph3 abbreviation for 3-uniform case"
     },
     {
       "id": "cliques-in-hypergraphs",
       "title": "Cliques in Hypergraphs",
       "summary": "completeHypergraph, IsClique, IsMaximalClique definitions",
-      "startLine": 68,
-      "endLine": 92,
+      "startLine": 69,
+      "endLine": 93,
       "mathContext": "Formal definition: completeHypergraph, IsClique, IsMaximalClique definitions"
     },
     {
       "id": "clique-size-distribution",
       "title": "Clique Size Distribution",
       "summary": "cliqueSizes set, numCliqueSizes counting function",
-      "startLine": 93,
-      "endLine": 111,
+      "startLine": 94,
+      "endLine": 112,
       "mathContext": "Mathematical content: cliqueSizes set, numCliqueSizes counting function"
     },
     {
       "id": "historical-results",
       "title": "Historical Results for Graphs",
       "summary": "spencer_graph_construction, moon_moser_upper_bound axioms",
-      "startLine": 112,
-      "endLine": 137,
+      "startLine": 113,
+      "endLine": 133,
       "mathContext": "Axiomatized: spencer_graph_construction, moon_moser_upper_bound axioms"
     },
     {
       "id": "erdos-construction",
       "title": "Erdős's Construction",
       "summary": "erdos_hypergraph_construction achieving n - log*n clique sizes",
-      "startLine": 138,
-      "endLine": 153,
+      "startLine": 134,
+      "endLine": 145,
       "mathContext": "Mathematical content: erdos_hypergraph_construction achieving n - log*n clique sizes"
     },
     {
       "id": "the-question",
       "title": "The Question",
       "summary": "erdos775Question formal statement",
-      "startLine": 154,
-      "endLine": 169,
+      "startLine": 146,
+      "endLine": 161,
       "mathContext": "Mathematical content: erdos775Question formal statement"
     },
     {
       "id": "gao-theorem",
       "title": "Gao's Theorem (2025)",
       "summary": "gaoFunction definition, gao_upper_bound, gaoFunction_tendsto_infinity axioms",
-      "startLine": 170,
-      "endLine": 200,
+      "startLine": 162,
+      "endLine": 192,
       "mathContext": "Formal definition: gaoFunction definition, gao_upper_bound, gaoFunction_tendsto_infinity axioms"
     },
     {
       "id": "the-answer",
       "title": "The Answer - NO",
       "summary": "erdos_775_answer theorem: formal disproof of erdos775Question",
-      "startLine": 201,
-      "endLine": 236,
+      "startLine": 193,
+      "endLine": 228,
       "mathContext": "Verified: erdos_775_answer theorem: formal disproof of erdos775Question"
     },
     {
       "id": "comparison",
       "title": "Comparison with Graphs",
       "summary": "graphs_vs_hypergraphs showing fundamental difference between k=2 and k≥3",
-      "startLine": 237,
-      "endLine": 260,
+      "startLine": 229,
+      "endLine": 252,
       "mathContext": "graphs_vs_hypergraphs showing fundamental difference between k=2 and k$\\geq$3"
     },
     {
       "id": "related-summary",
       "title": "Related Problems and Summary",
       "summary": "erdos_927_related, erdos_775_summary combining all results",
-      "startLine": 261,
+      "startLine": 253,
       "endLine": 281,
       "mathContext": "Mathematical content: erdos_927_related, erdos_775_summary combining all results"
     }
