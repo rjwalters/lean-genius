@@ -66,7 +66,7 @@
     "historicalContext": "**Erdős Problem #775**\n\nThis problem explores the combinatorial structure of hypergraphs, specifically asking about the diversity of clique sizes.\n\n**Key History:**\n- Moon and Moser (1965): Proved that graphs on n vertices have at most n - log₂n + O(1) different clique sizes\n- Spencer (1971): Constructed graphs achieving this optimal bound\n- Erdős: Constructed 3-uniform hypergraphs with n - log*n different clique sizes, and asked if n - O(1) is achievable\n- Gao (2025): Proved the answer is NO for all k ≥ 3\n\n**Mathematical Setting:**\nA k-uniform hypergraph has edges that are exactly k-element subsets of vertices. For k=2, this is an ordinary graph. A clique (maximal complete subgraph) is a set where every k-subset is an edge. The question asks: how many different sizes of cliques can coexist?",
     "problemStatement": "**Problem Statement (Disproved)**\n\nIs there a 3-uniform hypergraph on n vertices which contains at least n - O(1) different sizes of cliques (maximal complete subgraphs)?\n\n**Answer: NO**\n\nGao (2025) proved: For any k ≥ 3, every k-uniform hypergraph on n vertices contains at most n - f_k(n) different sizes of cliques, where f_k(n) → ∞ as n → ∞.\n\nThis means no constant bound is achievable—the gap must grow with n.",
     "text": "Is there a 3-uniform hypergraph on n vertices with at least n - O(1) different clique sizes? NO, disproved by Gao (2025).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Hypergraph Structure:** Define UniformHypergraph as a structure with an edge set where all edges have exactly k vertices.\n\n2. **Clique Definitions:** Define IsClique (every k-subset of S is an edge) and IsMaximalClique (cannot be extended).\n\n3. **Clique Size Counting:** Define cliqueSizes as the set of maximal clique sizes and numCliqueSizes as its cardinality.\n\n4. **Historical Results:** Axiomatize Spencer's construction (graphs) and Moon-Moser's optimality.\n\n5. **Gao's Theorem:** Axiomatize the upper bound n - f_k(n) and the property that f_k(n) → ∞.\n\n6. **Main Proof:** Show that erdos775Question (existence of constant C) contradicts Gao's theorem by choosing n large enough that f_k(n) > C.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Hypergraph Structure:** Define UniformHypergraph as a structure with an edge set where all edges have exactly k vertices.\n\n2. **Clique Definitions:** Define IsClique (every k-subset of S is an edge) and IsMaximalClique (cannot be extended).\n\n3. **Clique Size Counting:** Define cliqueSizes as the set of maximal clique sizes and numCliqueSizes as its cardinality.\n\n4. **Historical Results:** Axiomatize Spencer's construction (graphs); Moon-Moser optimality is referenced in docstrings but not formalized.\n\n5. **Gao's Theorem:** Axiomatize the upper bound n - f_k(n) and the property that f_k(n) → ∞.\n\n6. **Main Proof:** Show that erdos775Question (existence of constant C) contradicts Gao's theorem by choosing n large enough that f_k(n) > C.",
     "keyInsights": [
       "**Graphs vs Hypergraphs:** For graphs (k=2), we can achieve n - log₂n + O(1) clique sizes, which is optimal. For k ≥ 3, we cannot even achieve n - O(1).",
       "**Structural Constraint:** The requirement that edges have exactly k ≥ 3 vertices imposes fundamental limitations on how clique sizes can be distributed.",
@@ -108,18 +108,18 @@
     {
       "id": "historical-results",
       "title": "Historical Results for Graphs",
-      "summary": "spencer_graph_construction, moon_moser_upper_bound axioms",
+      "summary": "spencer_graph_construction axiom; Moon-Moser optimality described in docstrings only",
       "startLine": 113,
       "endLine": 133,
-      "mathContext": "Axiomatized: spencer_graph_construction, moon_moser_upper_bound axioms"
+      "mathContext": "Axiomatized: spencer_graph_construction. Moon-Moser optimality discussed in docstrings only (not formally axiomatized)."
     },
     {
       "id": "erdos-construction",
       "title": "Erdős's Construction",
-      "summary": "erdos_hypergraph_construction achieving n - log*n clique sizes",
+      "summary": "Erdős's n - log*n construction (docstring narrative; not formalized as a Lean declaration)",
       "startLine": 134,
       "endLine": 145,
-      "mathContext": "Mathematical content: erdos_hypergraph_construction achieving n - log*n clique sizes"
+      "mathContext": "Discusses Erdős's construction achieving n - log*n distinct clique sizes (docstring narrative; not formalized as a Lean declaration)"
     },
     {
       "id": "the-question",
@@ -156,10 +156,10 @@
     {
       "id": "related-summary",
       "title": "Related Problems and Summary",
-      "summary": "erdos_927_related, erdos_775_summary combining all results",
+      "summary": "erdos_775_summary combining lower bound and disproof",
       "startLine": 253,
       "endLine": 281,
-      "mathContext": "Mathematical content: erdos_927_related, erdos_775_summary combining all results"
+      "mathContext": "Mathematical content: erdos_775_summary combining lower bound and disproof"
     }
   ],
   "conclusion": {
