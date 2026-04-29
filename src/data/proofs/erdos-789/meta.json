@@ -46,14 +46,10 @@
       "SumRep.length and SumRep.value definitions",
       "SumLengthFree property definition",
       "h function axiom (maximal sum-length-free subset)",
-      "h_achievable axiom (existence)",
-      "erdos_1962_upper axiom (n^{5/6})",
       "straus_1966_upper axiom (\u221an, best upper)",
-      "erdos_1962_lower axiom (n^{1/3})",
       "erdos_choi_1974_lower axiom ((n log n)^{1/3}, best lower)",
       "combined_bounds theorem",
-      "IsSidonSet definition and connection",
-      "sidon_implies_sum_length_free relation",
+      "IsSidonSet definition",
       "Computational examples with native_decide",
       "erdos_789_statement main theorem"
     ],
@@ -74,7 +70,7 @@
     "historicalContext": "**The Sum-Length-Free Property**\\n\\nA set B is sum-length-free if whenever two sums of elements from B are equal, they must involve the same number of terms. This is weaker than the Sidon property (which requires the actual terms to be equal).\\n\\n**Erd\u0151s's Original Work (1962)**\\n\\nErd\u0151s proved h(n) \u226a n^{5/6} and h(n) \u226b n^{1/3}. The lower bound used a beautiful probabilistic construction: for random \u03b1, the set of elements whose fractional parts {\u03b1a} lie in a small interval tends to be sum-length-free.\\n\\n**Straus's Improvement (1966)**\\n\\nStraus dramatically improved the upper bound to h(n) \u226a \u221an using a clever counting argument on sum representations.\\n\\n**Erd\u0151s-Choi (1974)**\\n\\nChoi improved the lower bound to h(n) \u226b (n log n)^{1/3} by refining Erd\u0151s's probabilistic argument.\\n\\n**The Gap**\\n\\nThe gap between (n log n)^{1/3} and \u221an is substantial. For n = 10^6, this is roughly 239 vs 1000. Closing this gap is the main open problem.",
     "problemStatement": "Let h(n) be maximal such that if A \u2286 \u2124 with |A| = n then there is B \u2286 A with |B| \u2265 h(n) such that if a\u2081+\u22ef+a\u1d63 = b\u2081+\u22ef+b\u209b with a\u1d62,b\u1d62 \u2208 B then r = s. Estimate h(n).",
     "text": "Estimate h(n) where h(n) is the max |B| such that equal sums in B have equal length. Known: (n log n)^{1/3} \u226a h(n) \u226a \u221an. Status: OPEN.",
-    "proofStrategy": "We formalize the sum-length-free property via SumRep structures and the SumLengthFree predicate. The function h(n) is axiomatized with bounds from Straus (upper) and Erd\u0151s-Choi (lower). We connect to Sidon sets and show computational examples. The main theorem combines all known bounds.",
+    "proofStrategy": "We formalize the sum-length-free property via SumRep structures and the SumLengthFree predicate. The function h(n) is axiomatized with bounds from Straus (upper) and Erd\u0151s-Choi (lower). IsSidonSet is defined for context. The main theorem combines all known bounds.",
     "keyInsights": [
       "Sum-length-free is weaker than Sidon: only length must match",
       "Upper bound h(n) \u226a \u221an (Straus 1966) matches Sidon bound",
@@ -133,10 +129,10 @@
     {
       "id": "sidon",
       "title": "Connection to Sidon Sets",
-      "summary": "IsSidonSet definition, Sidon implies sum-length-free",
+      "summary": "IsSidonSet definition; connection noted in docstrings only, not formalized",
       "startLine": 134,
       "endLine": 154,
-      "mathContext": "IsSidonSet definition, Sidon implies sum-length-free"
+      "mathContext": "IsSidonSet definition"
     },
     {
       "id": "examples",
