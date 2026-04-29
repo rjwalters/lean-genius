@@ -5,7 +5,7 @@
 **Phase**: COMPLETED (axiomatized)
 **Path**: full
 **Since**: 2026-04-28
-**Iteration**: 2
+**Iteration**: 3 (last touched 2026-04-29 for gallery meta.json drift fix)
 
 ## Current Focus
 

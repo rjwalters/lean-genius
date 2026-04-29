@@ -30,8 +30,7 @@
       "log2_log3_rat_indep: ℚ-linear independence of {log 2, log 3} (from irrationality of log₂(3))",
       "log2_3_transcendental: Transcendence of log₂(3) (derived from baker_homogeneous)",
       "log2_log3_alg_indep: Q̄-linear independence of {log 2, log 3} (direct application of Baker)",
-      "baker_n1_log_independence: log α is not annihilated by nonzero algebraic β (n=1 case of Baker)",
-      "baker_wustholz_bound: Baker-Wüstholz 1993 effective lower bound (state-of-the-art quantitative form)"
+      "baker_n1_log_independence: log α is not annihilated by nonzero algebraic β (n=1 case of Baker, derived from baker_homogeneous)"
     ]
   },
   "overview": {
@@ -75,32 +74,40 @@
     },
     {
       "id": "sec-arithmetic",
-      "title": "Sec 1: Elementary Arithmetic — Irrationality of log2(3)",
+      "title": "Part I: Elementary Arithmetic — Irrationality of log2(3)",
       "startLine": 129,
-      "endLine": 257,
+      "endLine": 294,
       "summary": "Proves 2^p ≠ 3^q for positive p, q using Nat.Prime.dvd_of_dvd_pow. Derives positivity and nonvanishing of log 2 and log 3. Proves irrationality of log2(3) = log 3 / log 2. Proves Q-linear independence of {log 2, log 3}.",
       "mathContext": "Central lemma: 2^p ≠ 3^q for p, q >= 1. If 2^p = 3^q then dvd_pow_self gives 2 | 2^p = 3^q, so Nat.Prime.dvd_of_dvd_pow gives 2 | 3, contradicted by decide. Irrationality: rational log2(3) = n/d implies 3^d = 2^n, contradiction."
     },
     {
       "id": "sec-baker-axioms",
-      "title": "Sec 2: Baker Theorem Axiom Catalog",
-      "startLine": 258,
-      "endLine": 363,
+      "title": "Part II: Baker Theorem Axiom Catalog",
+      "startLine": 295,
+      "endLine": 400,
       "summary": "Three axioms: baker_homogeneous (Q-independent logs remain Q-bar-independent), baker_inhomogeneous (with constant term), baker_quantitative (explicit lower bound). Each axiom documented with mathematical justification.",
       "mathContext": "Main type: for linearly independent logs of algebraic a_i, any algebraic linear combination with not-all-zero coefficients is nonzero. Quantitative: |sum b_i log a_i| > B^{-C} for explicit C."
     },
     {
       "id": "sec-corollaries",
-      "title": "Sec 3: Key Corollaries from Baker",
-      "startLine": 364,
-      "endLine": 542,
-      "summary": "Corollaries: log2(3) is transcendental (Baker n=2 case), Q-bar-linear independence of {log 2, log 3}, n=1 case connecting to Gelfond-Schneider, Four Exponentials Conjecture as main open problem.",
+      "title": "Part III: Key Corollaries from Baker",
+      "startLine": 401,
+      "endLine": 543,
+      "summary": "Corollaries: log2(3) is transcendental (Baker n=2 case), Q-bar-linear independence of {log 2, log 3}, n=1 case connecting to Gelfond-Schneider.",
       "mathContext": "Transcendence of log2(3): assume beta = log2(3) algebraic. Then beta*log2 - log3 = 0 with beta, -1 algebraic and log2, log3 Q-independent. Baker says this sum is nonzero. Contradiction."
     },
     {
-      "id": "sec-baker-wustholz",
-      "title": "Sec 4: Baker-Wustholz Quantitative Theorem",
+      "id": "sec-four-exponentials",
+      "title": "Part IV: Four Exponentials Conjecture (Open Problem)",
       "startLine": 544,
+      "endLine": 590,
+      "summary": "Documentation-only section: states the Four Exponentials Conjecture as a central open problem in transcendence theory not resolved by Baker, contrasted with the proved Six Exponentials theorem. No formal statements (axioms or theorems) are introduced — the conjecture is described in commentary.",
+      "mathContext": "Four Exponentials: if z1, z2 are Q-linearly independent and w1, w2 are Q-linearly independent, then at least one of e^{z_i w_j} (4 values) is transcendental. Six Exponentials (proved) requires three z's and two w's; the gap from 6 to 4 is the open problem."
+    },
+    {
+      "id": "sec-baker-wustholz",
+      "title": "Part V: Baker-Wustholz Quantitative Theorem",
+      "startLine": 591,
       "endLine": 640,
       "summary": "States Baker-Wustholz 1993 theorem with explicit constant C(n,d). Documents improvement from Baker 1966 to Baker-Wustholz 1993. Applications to Thue equations, Mordell equation, S-unit equations.",
       "mathContext": "Baker-Wustholz bound: log|Lambda| > -C(n,d) * prod_i log(A_i) * log(B) where C(n,d) = 18*(n+1)! * n^{n+1} * (32d)^{n+2} * log(2nd)."
