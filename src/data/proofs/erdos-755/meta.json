@@ -47,11 +47,11 @@
       "T6_unit: count of unit equilateral triangles in \u211d\u2076",
       "T6: count of equilateral triangles of any size",
       "T_d: general dimension counting function",
-      "lenz_construction axiom: lower bound construction",
+      "Lenz construction: lower bound T₆ᵘ(n) ≥ n³/27 - O(n²), documented in Part III",
       "erdos_conjecture_unit: the original conjecture",
       "erdos_conjecture_any_size: stronger version",
       "cdl_2025_main axiom: T\u2086(n) = (1/27 + o(1))n\u00b3",
-      "cdl_general_dimension axiom: formula for even d \u2265 6",
+      "Higher-dimensional formulas: T_d(n) for even d ≥ 6, documented in Part VI",
       "erdos_755_summary: combined main results"
     ],
     "axiomCount": 1,
@@ -81,64 +81,64 @@
       "id": "euclidean",
       "title": "Euclidean Space Setup",
       "summary": "Distance definition and equilateral triangle conditions",
-      "startLine": 36,
-      "endLine": 62,
+      "startLine": 37,
+      "endLine": 63,
       "mathContext": "Formal definition: Distance definition and equilateral triangle conditions"
     },
     {
       "id": "counting",
       "title": "Counting Functions",
       "summary": "T\u2086\u1d58(n), T\u2086(n), T_d(n) definitions",
-      "startLine": 63,
-      "endLine": 99,
+      "startLine": 64,
+      "endLine": 100,
       "mathContext": "Formal definition: T\u2086\u1d58(n), T\u2086(n), T_d(n) definitions"
     },
     {
       "id": "lenz",
       "title": "The Lenz Construction",
       "summary": "Lower bound T\u2086\u1d58(n) \u2265 n\u00b3/27 - O(n\u00b2)",
-      "startLine": 100,
-      "endLine": 125,
+      "startLine": 101,
+      "endLine": 114,
       "mathContext": "Lower bound T\u2086\u1d58(n) $\\geq$ n\u00b3/27 - $O(n\u00b2)$"
     },
     {
       "id": "conjecture",
       "title": "Erd\u0151s's Conjecture",
       "summary": "T\u2086\u1d58(n) \u2264 (1/27 + o(1))n\u00b3 and stronger any-size version",
-      "startLine": 126,
-      "endLine": 147,
+      "startLine": 115,
+      "endLine": 136,
       "mathContext": "T\u2086\u1d58(n) $\\leq$ (1/27 + o(1))n\u00b3 and stronger any-size version"
     },
     {
       "id": "cdl",
       "title": "Clemen-Dumitrescu-Liu Solution",
       "summary": "T\u2086(n) = (1/27 + o(1))n\u00b3 proved in 2025",
-      "startLine": 148,
-      "endLine": 185,
+      "startLine": 137,
+      "endLine": 188,
       "mathContext": "Mathematical content: T\u2086(n) = (1/27 + o(1))n\u00b3 proved in 2025"
     },
     {
       "id": "general",
       "title": "Higher Dimensions",
       "summary": "Exact formulas for T_d(n) for even d \u2265 6",
-      "startLine": 186,
-      "endLine": 209,
+      "startLine": 189,
+      "endLine": 201,
       "mathContext": "Exact formulas for T_d(n) for even d $\\geq$ 6"
     },
     {
       "id": "explanation",
       "title": "Why 1/27?",
       "summary": "The constant explained via optimal partitioning",
-      "startLine": 210,
-      "endLine": 245,
+      "startLine": 202,
+      "endLine": 238,
       "mathContext": "Mathematical content: The constant explained via optimal partitioning"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Complete answer: YES, with exact asymptotic",
-      "startLine": 246,
-      "endLine": 259,
+      "startLine": 239,
+      "endLine": 272,
       "mathContext": "Mathematical content: Complete answer: YES, with exact asymptotic"
     }
   ],
