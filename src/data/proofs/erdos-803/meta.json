@@ -51,10 +51,8 @@
       "balanced_monotone theorem (proved)",
       "HasLogDensity definition: ≥ n log n edges",
       "Erdos803Conjecture definition: formal statement of the disproved conjecture",
-      "alon_2008_counterexample: D-balanced subgraphs bounded by m√(log m)",
       "erdos_803_disproved axiom: negation of the conjecture",
       "erdos_simonovits_polynomial axiom: positive result for polynomial density",
-      "janzer_sudakov_2023: best logarithmic density bound",
       "erdos_803_summary theorem combining disproof with positive result"
     ],
     "axiomCount": 2,
@@ -83,36 +81,43 @@
       "id": "balanced",
       "title": "D-Balanced Graphs",
       "startLine": 32,
-      "endLine": 72,
+      "endLine": 71,
       "summary": "Definitions of maxDegree, minDegree, IsDBalanced; proofs that regular graphs are 1-balanced and the balanced property is monotone in D."
     },
     {
       "id": "density",
       "title": "Edge Density",
       "startLine": 73,
-      "endLine": 87,
+      "endLine": 86,
       "summary": "Definitions of edgeCount, vertexCount, and HasLogDensity (n log n edge threshold)."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture (Disproved)",
       "startLine": 88,
-      "endLine": 106,
+      "endLine": 105,
       "summary": "Formal statement of the original (false) conjecture: O(1)-balanced subgraphs with m log m edges."
     },
     {
       "id": "alon",
       "title": "Alon's Counterexample (2008)",
       "startLine": 107,
-      "endLine": 129,
+      "endLine": 113,
       "summary": "Alon's 2008 counterexample axiom and the disproof of the conjecture."
     },
     {
       "id": "positive",
       "title": "Positive Results",
-      "startLine": 130,
-      "endLine": 159,
+      "startLine": 115,
+      "endLine": 135,
       "summary": "Erdős-Simonovits for polynomial density and Janzer-Sudakov 2023 for best logarithmic bound."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 136,
+      "endLine": 159,
+      "summary": "erdos_803_summary theorem combining the disproof (erdos_803_disproved) with the polynomial-density positive result (erdos_simonovits_polynomial)."
     }
   ],
   "conclusion": {
