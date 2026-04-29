@@ -55,7 +55,7 @@
       "hasSquareRootBound: the O(n^{1/2}) frequency condition",
       "erdos734Question: formal statement of the open problem",
       "deBruijn_erdos: m \u2265 n axiom for non-trivial PBDs",
-      "pair_count: pair counting identity (axiomatized)",
+      "pair counting identity: discussed in docstrings only, not formalized as axiom",
       "erdos_734_summary: combining de Bruijn-Erd\u0151s and projective plane existence"
     ],
     "axiomCount": 2,
@@ -99,48 +99,48 @@
     {
       "id": "de-bruijn-erdos",
       "title": "de Bruijn-Erd\u0151s Theorem",
-      "summary": "deBruijn_erdos and some_size_frequent axioms",
+      "summary": "deBruijn_erdos axiom: m ≥ n for non-trivial PBDs. some_size_frequent discussed in docstring but not formalized as axiom.",
       "startLine": 98,
-      "endLine": 119,
-      "mathContext": "Axiomatized: deBruijn_erdos and some_size_frequent axioms"
+      "endLine": 116,
+      "mathContext": "Axiomatized: deBruijn_erdos axiom. some_size_frequent mentioned in narrative only."
     },
     {
       "id": "erdos-question",
       "title": "The Erd\u0151s Question",
       "summary": "hasSquareRootBound, erdos734Question definitions",
-      "startLine": 120,
-      "endLine": 139,
+      "startLine": 117,
+      "endLine": 136,
       "mathContext": "Formal definition: hasSquareRootBound, erdos734Question definitions"
     },
     {
       "id": "known-constructions",
       "title": "Known Constructions",
-      "summary": "projective_plane_exists, affine_plane_exists axioms",
-      "startLine": 140,
-      "endLine": 165,
-      "mathContext": "Axiomatized: projective_plane_exists, affine_plane_exists axioms"
+      "summary": "projective_plane_exists axiom. affine_plane_exists discussed in docstring but not formalized as axiom.",
+      "startLine": 137,
+      "endLine": 158,
+      "mathContext": "Axiomatized: projective_plane_exists axiom. Affine planes discussed in narrative only."
     },
     {
       "id": "pair-counting",
       "title": "Pair Counting",
-      "summary": "pair_count axiom: sum of block pair counts = C(n,2)",
-      "startLine": 166,
-      "endLine": 177,
-      "mathContext": "Axiomatized: pair_count axiom: sum of block pair counts = C(n,2)"
+      "summary": "Pair counting identity (sum of block pair counts = C(n,2)) discussed in docstring only — not formalized as axiom.",
+      "startLine": 159,
+      "endLine": 167,
+      "mathContext": "Narrative only: pair counting identity mentioned in docstring but not declared as axiom."
     },
     {
       "id": "partial-results",
       "title": "Partial Results",
-      "summary": "near_uniform_designs_exist axiom",
-      "startLine": 178,
-      "endLine": 190,
-      "mathContext": "Axiomatized: near_uniform_designs_exist axiom"
+      "summary": "Near-uniform designs discussed in docstring only — near_uniform_designs_exist not formalized as axiom.",
+      "startLine": 168,
+      "endLine": 176,
+      "mathContext": "Narrative only: near_uniform_designs_exist mentioned in docstring but not declared as axiom."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_734_summary combining de Bruijn-Erd\u0151s and projective planes",
-      "startLine": 191,
+      "startLine": 177,
       "endLine": 206,
       "mathContext": "Mathematical content: erdos_734_summary combining de Bruijn-Erd\u0151s and projective planes"
     }
