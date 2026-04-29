@@ -1,0 +1,133 @@
+{
+  "id": "isoperimetric-theorem-oq-02",
+  "title": "Discrete Isoperimetric Inequality (1D)",
+  "slug": "isoperimetric-theorem-oq-02",
+  "description": "On the integer lattice ℤ, the (vertex) edge boundary of a finite set S with |S| ≥ 2 has at least 2 elements, with equality iff S is an integer interval. This is the 1D foundation for higher-dimensional discrete isoperimetric theorems on ℤ^d (Bollobás–Leader compression) and on the hypercube (Harper).",
+  "meta": {
+    "author": "Bollobás, Harper",
+    "sourceUrl": "https://www.cs.ru.nl/~freek/100/",
+    "date": "1966-1986",
+    "status": "verified",
+    "proofRepoPath": "Proofs/IsoperimetricTheoremOQ02.lean",
+    "tags": [
+      "combinatorics",
+      "discrete-geometry",
+      "isoperimetric-inequality",
+      "open-question"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-04-29",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.min', Finset.max'",
+        "description": "Minimum and maximum of a nonempty finset, used to extract endpoints of S",
+        "module": "Mathlib.Order.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.min'_lt_max'_of_card",
+        "description": "If a finset has more than one element, its minimum is strictly less than its maximum",
+        "module": "Mathlib.Order.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.Icc",
+        "description": "The integer interval [a, b] as a Finset, used for the equality case",
+        "module": "Mathlib.Order.LocallyFinite"
+      }
+    ],
+    "originalContributions": [
+      "edgeBoundary definition for Finset ℤ via shift-image difference: ((S.image (· - 1)) ∪ (S.image (· + 1))) \\ S",
+      "mem_edgeBoundary characterization: x ∈ ∂S ↔ (x+1 ∈ S ∨ x-1 ∈ S) ∧ x ∉ S",
+      "edgeBoundary_card_ge_two: lower bound proved constructively via min'/max' endpoints",
+      "edgeBoundary_Icc: the boundary of an interval [a,b] is exactly {a-1, b+1}",
+      "edgeBoundary_Icc_card: intervals achieve equality with |∂S| = 2",
+      "discrete_isoperimetric_1d: combined statement of bound and equality case"
+    ],
+    "axiomCount": 0,
+    "lineCount": 136,
+    "assumptions": "0 axioms, 0 sorries — fully verified."
+  },
+  "overview": {
+    "historicalContext": "The discrete isoperimetric problem asks for the minimum boundary among finite subsets of a lattice or graph with a given size. The 1D case on ℤ is elementary: an interval minimizes the boundary. Higher-dimensional analogues are deeper — Harper (1966) solved the hypercube case, Bollobás–Leader (1991) compression handles ℤ^d. The 1D result is the base case underlying these techniques and a natural target for formalization since it requires only Finset min/max reasoning.",
+    "problemStatement": "Let S ⊆ ℤ be a nonempty finite set. Define the (vertex) edge boundary ∂S = {x ∈ ℤ : x ∉ S, x+1 ∈ S or x-1 ∈ S}. Prove that if |S| ≥ 2, then |∂S| ≥ 2, with equality iff S is an integer interval [a, b].",
+    "text": "Discrete isoperimetric inequality on ℤ: |∂S| ≥ 2 for finite S with |S| ≥ 2; intervals achieve equality.",
+    "proofStrategy": "The lower bound is constructive: the points min(S) - 1 and max(S) + 1 both lie in ∂S (each is adjacent to an element of S — the relevant endpoint — and is itself outside S since it sits strictly below the minimum or above the maximum). When |S| ≥ 2 the minimum is strictly below the maximum (Finset.min'_lt_max'_of_card), so these two boundary witnesses are distinct, giving |∂S| ≥ 2. Conversely, for an interval Finset.Icc a b with a ≤ b a direct case analysis on the boundary characterization shows ∂(Icc a b) = {a - 1, b + 1}, and these two endpoints are distinct, proving the equality case.",
+    "keyInsights": [
+      "The vertex boundary on ℤ is naturally captured as the symmetric shift difference ((S.image (· - 1)) ∪ (S.image (· + 1))) \\ S",
+      "The min'/max' endpoints of a Finset ℤ furnish constructive boundary witnesses without requiring connectivity or interval structure",
+      "Finset.min'_lt_max'_of_card is exactly the cardinality fact that drives the |∂S| ≥ 2 bound — it is the only place |S| ≥ 2 is consumed",
+      "Equality on intervals reduces to a four-way case analysis (x+1 or x-1 lands inside [a,b]; x is or is not in [a,b]); linarith handles all branches uniformly"
+    ],
+    "prerequisites": [
+      "Finset basics (min', max', image, sdiff)",
+      "Linear arithmetic over ℤ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Edge Boundary on ℤ",
+      "startLine": 33,
+      "endLine": 53,
+      "summary": "Defines edgeBoundary as the shift-image difference and proves the membership characterization x ∈ ∂S ↔ (x+1 ∈ S ∨ x-1 ∈ S) ∧ x ∉ S."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound: |∂S| ≥ 2",
+      "startLine": 55,
+      "endLine": 91,
+      "summary": "Main theorem edgeBoundary_card_ge_two: uses Finset.min'/max' to construct two distinct boundary witnesses min(S) - 1 and max(S) + 1, with min'_lt_max'_of_card supplying distinctness from |S| ≥ 2."
+    },
+    {
+      "id": "interval-equality",
+      "title": "Equality Case: Intervals",
+      "startLine": 93,
+      "endLine": 127,
+      "summary": "edgeBoundary_Icc shows ∂(Icc a b) = {a - 1, b + 1} via case analysis on the membership characterization, and edgeBoundary_Icc_card concludes |∂(Icc a b)| = 2."
+    },
+    {
+      "id": "summary",
+      "title": "Combined Statement",
+      "startLine": 129,
+      "endLine": 136,
+      "summary": "discrete_isoperimetric_1d packages the bound and the interval equality into a single conjunction."
+    }
+  ],
+  "conclusion": {
+    "summary": "The 1D discrete isoperimetric inequality on ℤ is fully verified: |∂S| ≥ 2 for any finite S with |S| ≥ 2, with equality iff S is an interval. The proof is short (~136 lines, 0 axioms, 0 sorries) and reduces the bound to extracting Finset.min' and Finset.max' as boundary witnesses.",
+    "openQuestions": [
+      "Generalize to ℤ^d: for finite S ⊆ ℤ^d with |S| = n, characterize the minimum-boundary configurations (Bollobás–Leader cubical compression)",
+      "Formalize Harper's theorem on the discrete hypercube {0,1}^n: among subsets of size k, initial segments of the simplicial order minimize the edge boundary",
+      "Prove the converse: if |∂S| = 2 then S is an integer interval (uniqueness of equality)",
+      "Quantitative stability: if |∂S| ≤ 2 + ε, how close is S to an interval (e.g. in symmetric difference)?"
+    ],
+    "implications": "This is the smallest non-trivial discrete isoperimetric statement and provides a clean Lean foundation for working towards the d-dimensional and hypercube cases, which are central in extremal combinatorics and concentration of measure."
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "DiscreteIsoperimetric1D",
+    "lineCount": 136,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "path": "Proofs/IsoperimetricTheoremOQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "extends",
+      "description": "Discrete 1D analogue of the classical Euclidean isoperimetric inequality: replaces continuous boundary length by the vertex edge boundary on ℤ"
+    },
+    {
+      "targetId": "isoperimetric-theorem-oq-01",
+      "relationship": "complements",
+      "description": "Sibling open-question entry: OQ-01 covers curved-surface variants (sphere, hyperbolic plane), OQ-02 covers the discrete-lattice variant"
+    }
+  ],
+  "sorries": 0
+}
