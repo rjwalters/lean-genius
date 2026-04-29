@@ -50,7 +50,6 @@
       "ErdosDanzerQuestion: Formal statement of the problem",
       "danzer_1964_existence: Exact additive complements exist",
       "sarkozy_szemeredi_1994: Affirmative answer to the question",
-      "ruzsa_2017: Growth rate can be arbitrarily slow",
       "representationFunction: r(n) for variance analysis"
     ],
     "axiomCount": 2,
@@ -61,7 +60,7 @@
     "historicalContext": "**Exact Additive Complements: Minimal Density Pairs**\n\nThe study of additive complements concerns pairs of sets A, B such that A + B covers all sufficiently large integers. The counting function A(x) = |A ∩ [1,x]| measures how dense each set is.\n\n**Danzer's Existence Theorem (1964)**\n\nLudwig Danzer proved that 'exact' additive complements exist: pairs where A(x)B(x) ~ x. This was surprising because Hanani had earlier conjectured they don't exist. The condition A(x)B(x) ~ x means these sets are as sparse as possible while still covering all large integers.\n\n**Sárközy-Szemerédi Solution (1994)**\n\nAndrás Sárközy and Endre Szemerédi answered Erdős and Danzer's question affirmatively: for exact additive complements, A(x)B(x) - x must tend to infinity. The proof uses careful analysis of the representation function r(n) and variance estimates.\n\n**Ruzsa's Refinement (2017)**\n\nImre Ruzsa showed that while A(x)B(x) - x → ∞ is necessary, the growth can be arbitrarily slow. For any w(x) → ∞, there exist exact complements with A(x)B(x) - x < w(x) infinitely often.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet A, B ⊆ ℕ be infinite sets such that A + B contains all large integers.\n\nLet A(x) = |A ∩ [1,x]| and B(x) = |B ∩ [1,x]|.\n\nIf A(x)B(x) ~ x (exact additive complements), is it true that A(x)B(x) - x → ∞?\n\n**Answer: YES** (Sárközy-Szemerédi 1994)\n\n**Refinement:** The growth to ∞ can be arbitrarily slow (Ruzsa 2017)",
     "text": "For exact additive complements A, B with A(x)B(x) ~ x, does A(x)B(x) - x tend to infinity? YES, proved by Sárközy-Szemerédi (1994).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:** sumset A + B, counting function A(x), CoversLargeIntegers\n\n2. **Exact Complements:** IsAdditiveComplement, ProductAsymptoticToX, IsExactAdditiveComplement\n\n3. **The Main Question:** ErdosDanzerQuestion as a formal proposition\n\n4. **Key Theorems:**\n   - Danzer (1964): Existence of exact complements\n   - Sárközy-Szemerédi (1994): A(x)B(x) - x → ∞\n   - Ruzsa (2017): Growth rate tight characterization\n\n5. **Related Concepts:** Representation function r(n), variance analysis\n\n6. **Summary Theorem:** Combining all main results",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:** sumset A + B, counting function A(x), CoversLargeIntegers\n\n2. **Exact Complements:** IsAdditiveComplement, ProductAsymptoticToX, IsExactAdditiveComplement\n\n3. **The Main Question:** ErdosDanzerQuestion as a formal proposition\n\n4. **Key Theorems:**\n   - Danzer (1964): Existence of exact complements\n   - Sárközy-Szemerédi (1994): A(x)B(x) - x → ∞\n\n5. **Related Concepts:** Representation function r(n), variance analysis\n\n6. **Summary Theorem:** Combining all main results",
     "keyInsights": [
       "**Counting Function A(x):** Measures density of A up to x",
       "**Exact = Minimal Density:** A(x)B(x) ~ x is the sparsest possible",
@@ -118,7 +117,7 @@
     {
       "id": "ruzsa-refinement",
       "title": "Ruzsa's Refinement",
-      "summary": "ruzsa_2017",
+      "summary": "Documents (in a docstring) Ruzsa's (2017) tight characterization of growth rates. Not formalized in this file.",
       "startLine": 139,
       "endLine": 154
     },
