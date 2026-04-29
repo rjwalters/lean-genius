@@ -30,7 +30,7 @@
       "squaresUpTo_card: proved |squaresUpTo N| = N",
       "f: max Sidon subset size",
       "lower_bound, upper_bound axioms",
-      "landau_theorem: sums of two squares density"
+      "r2 and sumOfTwoSquaresCount: representation/counting functions for sums of two squares"
     ],
     "axiomCount": 2,
     "lineCount": 236,
@@ -75,15 +75,15 @@
       "id": "squares-and-f",
       "title": "Perfect Squares and the Extremal Function",
       "startLine": 54,
-      "endLine": 90,
+      "endLine": 96,
       "summary": "Defines `squaresUpTo N` as the set $\\{1^2, \\ldots, N^2\\}$, the cardinality theorem (sorry), and the extremal function $f(N) = \\max\\{|A| : A \\subseteq \\text{squaresUpTo}(N), A \\text{ Sidon}\\}$. States the main question: is $f(N) = N^{1-o(1)}$?",
       "mathContext": "Defines `squaresUpTo N` as the set $\\{1^2, \\ldots, N^2\\}$, the cardinality theorem (sorry), and the extremal function $f(N) = \\max\\{|A| : A \\subseteq \\text{squaresUpTo}(N), A \\text{ Sidon}\\}$. States the main question: is $f(N) = N^{1-o(1)}$?"
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
-      "startLine": 91,
-      "endLine": 120,
+      "startLine": 98,
+      "endLine": 126,
       "summary": "Axiomatizes the Lefmann\u2013Thiele lower bound $f(N) \\ge c \\cdot N^{2/3}$ and the Alon\u2013Erd\u0151s upper bound $f(N) \\le C \\cdot N/(\\log N)^{1/4}$. Combines them into `current_knowledge`.",
       "mathContext": "Axiomatized: Axiomatizes the Lefmann\u2013Thiele lower bound $f(N) \\ge c \\cdot N^{2/3}$ and the Alon\u2013Erd\u0151s upper bound $f(N) \\le C \\cdot N/(\\log N)^{1/4}$. Combines them into `current_knowledge`."
     },
@@ -106,22 +106,22 @@
     {
       "id": "open-questions",
       "title": "Open Questions",
-      "startLine": 202,
-      "endLine": 224,
+      "startLine": 188,
+      "endLine": 207,
       "summary": "Formalizes `trueOrder` as the existence of a sharp exponent $\\alpha \\in [2/3, 1)$. Poses the question of explicit constructions improving on the probabilistic bound.",
       "mathContext": "Formalizes `trueOrder` as the existence of a sharp exponent $\\$\\alpha$ \\in [2/3, 1)$. Poses the question of explicit constructions improving on the probabilistic bound."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
-      "startLine": 225,
+      "startLine": 209,
       "endLine": 236,
       "summary": "Combines lower bound, upper bound, and open status into `erdos_773_summary`, providing a single entry point for the formalization's main results.",
       "mathContext": "Bound: Combines lower bound, upper bound, and open status into `erdos_773_summary`, providing a single entry point for the formalization's main results."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erd\u0151s Problem #773 in full: definitions of Sidon sets and the extremal function $f(N)$, axiomatized bounds $N^{2/3} \\le f(N) \\le N/(\\log N)^{1/4}$, Landau's theorem connecting the problem to analytic number theory, and sketches of both the probabilistic lower bound and the counting upper bound. The single sorry is on `squaresUpTo_card`, a routine injectivity lemma.",
+    "summary": "This formalization captures Erd\u0151s Problem #773 in full: definitions of Sidon sets and the extremal function $f(N)$, axiomatized bounds $N^{2/3} \\le f(N) \\le N/(\\log N)^{1/4}$, Landau's theorem connecting the problem to analytic number theory, and sketches of both the probabilistic lower bound and the counting upper bound.",
     "implications": "This problem sits at a remarkable crossroads of three mathematical areas: (1) **additive combinatorics** \u2014 the Sidon/B\u2082 condition is a fundamental object of study since Erd\u0151s\u2013Tur\u00e1n 1941; (2) **analytic number theory** \u2014 Landau's 1908 theorem on sums of two squares provides the key counting constraint; and (3) **the probabilistic method** \u2014 the best lower bound comes from random selection, a technique pioneered by Erd\u0151s himself. Resolving the gap would likely require new ideas combining all three perspectives.",
     "openQuestions": [
       "Is $f(N) = N^{1-o(1)}$, or is the true exponent strictly less than 1? The answer determines whether the Sidon constraint on squares is 'essentially free.'",
