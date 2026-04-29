@@ -50,7 +50,6 @@
       "Definition of HasNaturalDensity using Filter.Tendsto",
       "Statement of density and finite conjectures as Props",
       "Axiomatization of mod 4 and Selfridge examples",
-      "Ruzsa's unpublished upper bound axiom",
       "Verified examples of mod 4 residues"
     ],
     "axiomCount": 2,
@@ -61,7 +60,7 @@
     "historicalContext": "Erdős Problem #786 was posed around 1965 and appears in several of Erdős's papers from 1965, 1969, and 1973. The problem asks about 'multiplicative cardinality sets' - sets where equal products must come from equal numbers of factors.\n\nThe simplest example is integers ≡ 2 (mod 4), which achieves density 1/4. Each such integer has exactly one factor of 2, so a product of k elements has exactly k factors of 2, forcing equal products to have equal factor counts.\n\nSelfridge constructed a more sophisticated example achieving density 1/e - ε for any ε > 0. His construction uses consecutive primes p₁ < ... < pₖ where the sum of reciprocals crosses 1, and takes integers divisible by exactly one of these primes.\n\nRuzsa reportedly proved an upper bound showing density 1 is impossible (size ≤ (1-c)N for some c > 0), but this proof was never published.",
     "problemStatement": "**Erdős Problem #786**: For any $\\varepsilon > 0$, does there exist a set $A \\subset \\mathbb{N}$ with density $> 1 - \\varepsilon$ such that whenever\n$$a_1 \\cdot a_2 \\cdots a_r = b_1 \\cdot b_2 \\cdots b_s$$\nwith $a_i, b_j \\in A$, we must have $r = s$?\n\n**Status**: OPEN\n\n**Known Results**:\n- Integers $\\equiv 2 \\pmod{4}$: density $1/4$\n- Selfridge construction: density $1/e - \\varepsilon$ for any $\\varepsilon > 0$\n- Ruzsa (unpublished): maximum size $\\leq (1-c)N$ for some $c > 0$\n\n**Second Question**: Can we find $A \\subset \\{1,\\ldots,N\\}$ of size $\\geq (1-o(1))N$?",
     "text": "For any ε > 0, is there a set A of density > 1-ε such that equal products from A must have equal numbers of factors? Selfridge achieved density 1/e - ε; whether arbitrarily high density is possible remains OPEN.",
-    "proofStrategy": "We formalize the problem and its known partial results:\n\n1. **Define MulCardSet**: Equal products must have equal factor counts\n2. **Define natural density**: Using Filter.Tendsto for limit as n → ∞\n3. **State the conjectures**: DensityConjecture and FiniteConjecture as Props\n4. **Axiomatize examples**: mod 4 residues (density 1/4) and Selfridge (density 1/e - ε)\n5. **State bounds**: Ruzsa's unpublished upper bound, log 2 lower bound\n6. **Verify examples**: Concrete mod 4 calculations via native_decide",
+    "proofStrategy": "We formalize the problem and its known partial results:\n\n1. **Define MulCardSet**: Equal products must have equal factor counts\n2. **Define natural density**: Using Filter.Tendsto for limit as n → ∞\n3. **State the conjectures**: DensityConjecture and FiniteConjecture as Props\n4. **Axiomatize examples**: mod 4 residues (density 1/4) and Selfridge (density 1/e - ε)\n5. **Document bounds**: Ruzsa's unpublished upper bound and log 2 lower bound are described in docstrings (not formalized as axioms)\n6. **Verify examples**: Concrete mod 4 calculations via native_decide",
     "keyInsights": [
       "**The core constraint**: A multiplicative cardinality set forces factorization patterns to be unique. If a·b = c·d with all in A, then we must have 2 = 2 factors on each side.",
       "**Why mod 4 works**: Integers ≡ 2 (mod 4) have exactly one factor of 2. A product of r such integers has exactly r factors of 2. So equal products require equal counts.",
@@ -118,11 +117,11 @@
     },
     {
       "id": "bounds",
-      "title": "Upper and Lower Bounds",
+      "title": "Upper and Lower Bounds (documentation)",
       "startLine": 109,
       "endLine": 129,
-      "summary": "Ruzsa's (1-c)N upper bound and log 2 lower bound.",
-      "mathContext": "Bound: Ruzsa's (1-c)N upper bound and log 2 lower bound."
+      "summary": "Docstrings describing Ruzsa's (1-c)N upper bound and log 2 lower bound; neither is formalized as an axiom or theorem.",
+      "mathContext": "Documentation only: Ruzsa's (1-c)N upper bound and log 2 lower bound are described in comments but not declared in Lean."
     },
     {
       "id": "insight",
