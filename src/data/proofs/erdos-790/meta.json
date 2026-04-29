@@ -1,10 +1,10 @@
 {
   "id": "erdos-790",
-  "title": "Erd\u0151s Problem #790: Maximum Sum-Free Subsequences",
+  "title": "Erdős Problem #790: Maximum Sum-Free Subsequences",
   "slug": "erdos-790",
-  "description": "Let l(n) be the maximum size of a guaranteed sum-free subset of any n-element integer set. Known bounds: \u221a(n log n / log log n) \u2264 l(n) \u2264 n / log n (CKS 1975). Main conjecture: l(n) \u2265 n^{1-o(1)}. OPEN.",
+  "description": "Let l(n) be the maximum size of a guaranteed sum-free subset of any n-element integer set. Known bounds: √(n log n / log log n) ≤ l(n) ≤ n / log n (CKS 1975). Main conjecture: l(n) ≥ n^{1-o(1)}. OPEN.",
   "meta": {
-    "author": "Choi-Koml\u00f3s-Szemer\u00e9di (1975)",
+    "author": "Choi-Komlós-Szemerédi (1975)",
     "sourceUrl": "https://erdosproblems.com/790",
     "date": "1975",
     "status": "axiomatized",
@@ -42,16 +42,12 @@
       }
     ],
     "originalContributions": [
-      "IsSumFree definition: no element equals sum of \u22652 distinct others",
+      "IsSumFree definition: no element equals sum of ≥2 distinct others",
       "classicalSumFree definition: no a + b = c (stronger condition)",
       "l(n) axiom: extremal function for guaranteed sum-free subsets",
-      "l_characterization: every n-set has sum-free subset of size \u2265 l(n)",
-      "l_optimal: l(n) is the best such bound",
-      "erdos_lower_bound: l(n) \u2265 \u221a(n/2)",
-      "choi_improvement: l(n) > (1+c)\u221an",
-      "cks_lower_bound: l(n) \u2265 c\u221a(n log n / log log n)",
-      "cks_upper_bound: l(n) \u2264 Cn/log n",
-      "cks_conjecture: l(n) \u2265 n^{1-o(1)} (OPEN)",
+      "cks_lower_bound: l(n) ≥ c√(n log n / log log n)",
+      "cks_upper_bound: l(n) ≤ Cn/log n",
+      "cks_conjecture: l(n) ≥ n^{1-o(1)} (OPEN)",
       "cks_bounds and erdos_790_summary theorems"
     ],
     "axiomCount": 5,
@@ -59,16 +55,16 @@
     "assumptions": "5 axioms: l, cks_lower_bound, cks_upper_bound, question1_affirmative, question2_answered. 0 sorries."
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #790 concerns the extremal function l(n) for sum-free subsequences. The problem appeared in Erd\u0151s's 1965 survey \"Extremal problems in number theory,\" where he claimed to have a complicated proof that l(n) = o(n) but by 1973 reported \"difficulties in reconstructing\" it. This is one of the rare cases where Erd\u0151s lost track of one of his own proofs.\n\nThe definitive work was done by Choi, Koml\u00f3s, and Szemer\u00e9di in their 1975 Trans. Amer. Math. Soc. paper \"On sum-free subsequences.\" They proved both the best known lower bound l(n) \u2265 c\u221a(n log n / log log n) and the upper bound l(n) \u2264 Cn/log n. This confirmed l(n) = o(n) rigorously and answered Erd\u0151s's main questions, but left a large gap between the bounds.\n\nThe notion of \"sum-free\" here is weaker than the classical definition: rather than forbidding a + b = c, it forbids a\u2081 = a\u2082 + \u22ef + a\u1d63 for any r \u2265 2 distinct elements. This weaker condition means more sets qualify as sum-free. Choi, Koml\u00f3s, and Szemer\u00e9di conjectured l(n) \u2265 n^{1-o(1)}, suggesting l(n) is nearly linear. This conjecture remains open and represents the central question.",
+    "historicalContext": "Erdős Problem #790 concerns the extremal function l(n) for sum-free subsequences. The problem appeared in Erdős's 1965 survey \"Extremal problems in number theory,\" where he claimed to have a complicated proof that l(n) = o(n) but by 1973 reported \"difficulties in reconstructing\" it. This is one of the rare cases where Erdős lost track of one of his own proofs.\n\nThe definitive work was done by Choi, Komlós, and Szemerédi in their 1975 Trans. Amer. Math. Soc. paper \"On sum-free subsequences.\" They proved both the best known lower bound l(n) ≥ c√(n log n / log log n) and the upper bound l(n) ≤ Cn/log n. This confirmed l(n) = o(n) rigorously and answered Erdős's main questions, but left a large gap between the bounds.\n\nThe notion of \"sum-free\" here is weaker than the classical definition: rather than forbidding a + b = c, it forbids a₁ = a₂ + ⋯ + aᵣ for any r ≥ 2 distinct elements. This weaker condition means more sets qualify as sum-free. Choi, Komlós, and Szemerédi conjectured l(n) ≥ n^{1-o(1)}, suggesting l(n) is nearly linear. This conjecture remains open and represents the central question.",
     "problemStatement": "Let $l(n)$ be maximal such that for any $A \\subseteq \\mathbb{Z}$ with $|A| = n$, there exists a sum-free $B \\subseteq A$ with $|B| \\geq l(n)$. Here sum-free means no element equals a sum of $\\geq 2$ distinct other elements. **Known bounds:** $\\sqrt{n \\log n / \\log\\log n} \\ll l(n) \\ll n / \\log n$ (CKS 1975). **Questions:** (1) Does $l(n)/\\sqrt{n} \\to \\infty$? YES. (2) Is $l(n) < n^{1-c}$ for some $c > 0$? YES. **CKS Conjecture:** $l(n) \\geq n^{1-o(1)}$. STATUS: OPEN.",
-    "text": "Let l(n) be the maximum size of a guaranteed sum-free subset of any n-element integer set. Known bounds: \u221a(n log n / log log n) \u2264 l(n) \u2264 n / log n (CKS 1975). Main conjecture: l(n) \u2265 n^{1-o(1)}. OPEN.",
-    "proofStrategy": "The formalization defines IsSumFree as the weak sum-free condition (no element is a sum of \u22652 distinct others) and classicalSumFree as the stronger classical condition (no a + b = c). The extremal function l(n) is axiomatized with characterization and optimality axioms. Three progressive lower bounds are stated (Erd\u0151s, Choi, CKS), followed by the CKS upper bound. The main questions are formalized as propositions and answered by axioms referencing the CKS bounds. Two theorems are proved: cks_bounds (combining both bounds) and erdos_790_summary (answering both questions).",
+    "text": "Let l(n) be the maximum size of a guaranteed sum-free subset of any n-element integer set. Known bounds: √(n log n / log log n) ≤ l(n) ≤ n / log n (CKS 1975). Main conjecture: l(n) ≥ n^{1-o(1)}. OPEN.",
+    "proofStrategy": "The formalization defines IsSumFree as the weak sum-free condition (no element is a sum of ≥2 distinct others) and classicalSumFree as the stronger classical condition (no a + b = c). The extremal function l(n) is axiomatized. The CKS lower bound and upper bound are axiomatized; Erdős's and Choi's earlier lower bounds are discussed in docstrings only. The main questions are formalized as propositions and answered by axioms referencing the CKS bounds. Two theorems are proved: cks_bounds (combining both bounds) and erdos_790_summary (answering both questions).",
     "keyInsights": [
-      "**Weak vs Classical Sum-Free**: No a = a\u2082 + \u22ef + a\u1d63 (r \u2265 2) is weaker than no a + b = c",
-      "**Huge Gap**: Current bounds span \u221a(n log n / log log n) to n/log n \u2014 roughly n^{1/2+\u03b5} to n^{1-\u03b5}",
-      "**Both Questions Answered**: CKS bounds settle l(n)/\u221an \u2192 \u221e and l(n) < n^{1-c}",
-      "**CKS Conjecture (OPEN)**: l(n) \u2265 n^{1-o(1)} would mean l(n) is nearly linear",
-      "**Erd\u0151s's Lost Proof**: He claimed l(n) = o(n) in 1965 but couldn't reconstruct it by 1973",
+      "**Weak vs Classical Sum-Free**: No a = a₂ + ⋯ + aᵣ (r ≥ 2) is weaker than no a + b = c",
+      "**Huge Gap**: Current bounds span √(n log n / log log n) to n/log n — roughly n^{1/2+ε} to n^{1-ε}",
+      "**Both Questions Answered**: CKS bounds settle l(n)/√n → ∞ and l(n) < n^{1-c}",
+      "**CKS Conjecture (OPEN)**: l(n) ≥ n^{1-o(1)} would mean l(n) is nearly linear",
+      "**Erdős's Lost Proof**: He claimed l(n) = o(n) in 1965 but couldn't reconstruct it by 1973",
       "**Probabilistic Methods**: Lower bound constructions use random or greedy selection"
     ],
     "prerequisites": [
@@ -91,21 +87,21 @@
       "title": "The Extremal Function l(n)",
       "startLine": 47,
       "endLine": 64,
-      "summary": "l(n) axiom with characterization and optimality"
+      "summary": "l(n) axiom; characterization and optimality discussed in docstrings only"
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "startLine": 65,
       "endLine": 85,
-      "summary": "Erd\u0151s, Choi, and CKS lower bounds"
+      "summary": "CKS lower bound axiomatized; Erdős and Choi bounds discussed in docstrings only"
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound",
       "startLine": 86,
       "endLine": 94,
-      "summary": "CKS upper bound l(n) \u2264 Cn/log n"
+      "summary": "CKS upper bound l(n) ≤ Cn/log n"
     },
     {
       "id": "main-questions",
@@ -123,10 +119,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #790 asks for the extremal function l(n) \u2014 the maximum guaranteed sum-free subset size in any n-element integer set. Choi-Koml\u00f3s-Szemer\u00e9di (1975) proved \u221a(n log n / log log n) \u2264 l(n) \u2264 n/log n, answering both of Erd\u0151s's questions (l(n)/\u221an \u2192 \u221e and l(n) < n^{1-c}). The CKS conjecture l(n) \u2265 n^{1-o(1)} remains OPEN.",
+    "summary": "Erdős Problem #790 asks for the extremal function l(n) — the maximum guaranteed sum-free subset size in any n-element integer set. Choi-Komlós-Szemerédi (1975) proved √(n log n / log log n) ≤ l(n) ≤ n/log n, answering both of Erdős's questions (l(n)/√n → ∞ and l(n) < n^{1-c}). The CKS conjecture l(n) ≥ n^{1-o(1)} remains OPEN.",
     "implications": "Closing the gap between the lower and upper bounds would resolve a fundamental question in additive combinatorics about the size of guaranteed sum-free structures. The problem connects to Ramsey theory, the probabilistic method, and Schur numbers.",
     "openQuestions": [
-      "Is l(n) \u2265 n^{1-o(1)}? (CKS Conjecture)",
+      "Is l(n) ≥ n^{1-o(1)}? (CKS Conjecture)",
       "Can the n/log n upper bound be improved?",
       "What is the correct asymptotic for l(n)?",
       "What happens for sum-free sets in Z/mZ instead of Z?"
@@ -156,17 +152,17 @@
     {
       "targetId": "erdos-857",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: combinatorics, extremal-combinatorics, open"
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics, open"
     },
     {
       "targetId": "erdos-1014",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: combinatorics, open"
+      "description": "Related Erdős problem sharing themes: combinatorics, open"
     },
     {
       "targetId": "erdos-1023",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: combinatorics, extremal-combinatorics"
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics"
     }
   ],
   "sorries": 0
