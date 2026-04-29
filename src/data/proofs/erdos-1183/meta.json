@@ -48,11 +48,12 @@
       "Corrected abstract definitions of f(n) and F(n) using sSup (was sInf, evaluating to 0)",
       "Formal proof erdos1183_f_lower_bound: f(n) ≥ ⌈(n+1)/2⌉ via le_csSup",
       "Proof erdos1183_F_ge_f: F(n) ≥ f(n) since sublattices are union-closed",
-      "BddAbove proofs bounding achievable sets by 2^n"
+      "BddAbove proofs bounding achievable sets by 2^n",
+      "Trivial upper bounds erdos1183_f_upper_bound and erdos1183_F_upper_bound: f(n), F(n) ≤ 2^n via csSup_le and Fintype.card_finset"
     ],
     "axiomCount": 0,
     "assumptions": "0 axiom declarations. Two open conjectures (erdos1183_f_growth_conjecture, erdos1183_F_superpolynomial_conjecture) stated as Prop definitions, not assumed true.",
-    "lineCount": 280,
+    "lineCount": 314,
     "prerequisites": [
       "Finite set theory (Finset, powerset, filter)",
       "Lattice theory (union/intersection closure)",
@@ -131,9 +132,9 @@
       "id": "abstract-definitions-and-bound",
       "title": "Abstract Definitions of f(n), F(n) and Formal Bounds",
       "startLine": 201,
-      "endLine": 280,
-      "summary": "Formalizes $f(n)$ and $F(n)$ as suprema over achievable sizes (`sSup`), with proofs that the suprema are bounded above (hence the `sSup` is a nat). `erdos1183_f_lower_bound` proves $f(n) \\geq \\lceil(n+1)/2\\rceil$ by exhibiting the chain witness. `achievableSublattice_subset_unionClosed` and `erdos1183_F_ge_f` formalize $F(n) \\geq f(n)$ via subset ordering of achievable sets and `csSup_le_csSup`.",
-      "mathContext": "$f(n) = \\text{sSup}\\{k : \\exists \\text{ monochromatic sublattice of size } k\\}$. $F(n) = \\text{sSup}\\{k : \\exists \\text{ monochromatic union-closed family of size } k\\}$. Since every sublattice is union-closed: $\\{\\text{achievable sublattice sizes}\\} \\subseteq \\{\\text{achievable union-closed sizes}\\} \\Rightarrow f(n) \\leq F(n)$."
+      "endLine": 314,
+      "summary": "Formalizes $f(n)$ and $F(n)$ as suprema over achievable sizes (`sSup`), with proofs that the suprema are bounded above (hence the `sSup` is a nat). `erdos1183_f_lower_bound` proves $f(n) \\geq \\lceil(n+1)/2\\rceil$ by exhibiting the chain witness. `achievableSublattice_subset_unionClosed` and `erdos1183_F_ge_f` formalize $F(n) \\geq f(n)$ via subset ordering of achievable sets and `csSup_le_csSup`. `erdos1183_f_upper_bound` and `erdos1183_F_upper_bound` give the trivial upper bound $f(n), F(n) \\leq 2^n$ via `csSup_le` and `Fintype.card_finset`.",
+      "mathContext": "$f(n) = \\text{sSup}\\{k : \\exists \\text{ monochromatic sublattice of size } k\\}$. $F(n) = \\text{sSup}\\{k : \\exists \\text{ monochromatic union-closed family of size } k\\}$. Since every sublattice is union-closed: $\\{\\text{achievable sublattice sizes}\\} \\subseteq \\{\\text{achievable union-closed sizes}\\} \\Rightarrow f(n) \\leq F(n)$. Trivial upper bound: any monochromatic family $F \\subseteq \\mathcal{P}(\\text{Fin}(n))$ has $|F| \\leq |\\mathcal{P}(\\text{Fin}(n))| = 2^n$."
     }
   ],
   "conclusion": {
@@ -199,10 +200,10 @@
       "Finset"
     ],
     "namespace": "Erdos1183",
-    "lineCount": 280,
+    "lineCount": 314,
     "axiomCount": 0,
-    "theoremCount": 15,
-    "definitionCount": 12,
+    "theoremCount": 17,
+    "definitionCount": 14,
     "path": "Proofs/Erdos1183Problem.lean",
     "sorries": 0
   },

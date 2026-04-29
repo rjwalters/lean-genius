@@ -265,6 +265,40 @@ theorem erdos1183_F_ge_f (n : ℕ) : erdos1183_F n ≥ erdos1183_f n := by
     · intro A hA; exact absurd hA (Finset.not_mem_empty A)
   · exact achievableSublattice_subset_unionClosed n
 
+/-- **Trivial upper bound:** f(n) ≤ 2^n, since any monochromatic family is a
+    subset of `Finset.univ : Finset (Finset (Fin n))` of cardinality 2^n. -/
+theorem erdos1183_f_upper_bound (n : ℕ) : erdos1183_f n ≤ 2 ^ n := by
+  unfold erdos1183_f
+  apply csSup_le
+  · -- nonempty: 0 is achievable (every family has size ≥ 0)
+    refine ⟨0, fun χ => ⟨∅, ⟨?_, ?_⟩, ⟨0, ?_⟩, Nat.zero_le _⟩⟩
+    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
+    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
+    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
+  · intro k hk
+    obtain ⟨F, _, _, hcard⟩ := hk (fun _ => 0)
+    have h1 : F.card ≤ (Finset.univ : Finset (Finset (Fin n))).card :=
+      Finset.card_le_card (Finset.subset_univ F)
+    have h2 : (Finset.univ : Finset (Finset (Fin n))).card = 2 ^ n := by
+      rw [Finset.card_univ, Fintype.card_finset, Fintype.card_fin]
+    omega
+
+/-- F(n) ≤ 2^n by the same containment argument. -/
+theorem erdos1183_F_upper_bound (n : ℕ) : erdos1183_F n ≤ 2 ^ n := by
+  unfold erdos1183_F
+  apply csSup_le
+  · -- nonempty: 0 is achievable
+    refine ⟨0, fun χ => ⟨∅, ?_, ⟨0, ?_⟩, Nat.zero_le _⟩⟩
+    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
+    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
+  · intro k hk
+    obtain ⟨F, _, _, hcard⟩ := hk (fun _ => 0)
+    have h1 : F.card ≤ (Finset.univ : Finset (Finset (Fin n))).card :=
+      Finset.card_le_card (Finset.subset_univ F)
+    have h2 : (Finset.univ : Finset (Finset (Fin n))).card = 2 ^ n := by
+      rw [Finset.card_univ, Fintype.card_finset, Fintype.card_fin]
+    omega
+
 /-- Open conjecture: f(n) is at most linear in n. Erdős had no conjecture
     for the growth rate. Stated as a Prop (not axiom) since unresolved. -/
 def erdos1183_f_growth_conjecture : Prop :=
