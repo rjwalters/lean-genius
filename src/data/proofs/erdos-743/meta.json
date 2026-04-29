@@ -42,12 +42,10 @@
       "isStar, isPath, maxDegree axioms for tree classification",
       "boundedDegreeCollection definition",
       "treePackingConjecture: formal statement of the open problem",
-      "gyarfasLehel_stars and gyarfasLehel_starsPaths axioms (1978)",
+      "gyarfasLehel_starsPaths axiom (1978): stars/paths packing case",
       "fishburn_small_n axiom: n \u2264 9 (1983)",
-      "bollobas_greedy axiom: small trees (1983)",
       "jkko_boundedDegree axiom: bounded degree (2019)",
-      "allen_sublinearDegree axiom: cn/log n degree (2021)",
-      "janzerMontgomery_largeTrees axiom: large trees (2024)",
+      "Bollobás greedy (1983), Allen sublinear degree (2021), Janzer-Montgomery large trees (2024): discussed in comments, not formalized as axioms",
       "complete_graph_edges_small: verified edge counts",
       "erdos_743_summary theorem combining key results"
     ],
@@ -86,54 +84,54 @@
       "id": "edge-count",
       "title": "Edge Count Verification",
       "startLine": 66,
-      "endLine": 88,
+      "endLine": 101,
       "summary": "totalTreeEdges, completeGraphEdges, edge_counts_match, concrete values",
       "mathContext": "Mathematical content: totalTreeEdges, completeGraphEdges, edge_counts_match, concrete values"
     },
     {
       "id": "conjecture",
       "title": "Tree Packing Conjecture",
-      "startLine": 89,
-      "endLine": 96,
+      "startLine": 102,
+      "endLine": 109,
       "summary": "treePackingConjecture formal statement",
       "mathContext": "Mathematical content: treePackingConjecture formal statement"
     },
     {
       "id": "gyarfas-lehel",
       "title": "Gy\u00e1rf\u00e1s-Lehel Results",
-      "startLine": 97,
-      "endLine": 112,
+      "startLine": 110,
+      "endLine": 120,
       "summary": "Stars case and stars/paths case axioms",
       "mathContext": "Axiomatized: Stars case and stars/paths case axioms"
     },
     {
       "id": "small-greedy",
       "title": "Small Cases and Greedy",
-      "startLine": 113,
-      "endLine": 127,
-      "summary": "fishburn_small_n, bollobas_greedy axioms",
-      "mathContext": "Axiomatized: fishburn_small_n, bollobas_greedy axioms"
+      "startLine": 121,
+      "endLine": 130,
+      "summary": "fishburn_small_n axiom (n ≤ 9, 1983); Bollobás greedy packing (1983) mentioned in comments only.",
+      "mathContext": "Axiomatized: fishburn_small_n axiom (n ≤ 9). Bollobás greedy packing discussed in comments but not formalized."
     },
     {
       "id": "bounded-degree",
       "title": "Bounded Degree Results",
-      "startLine": 128,
-      "endLine": 145,
-      "summary": "jkko_boundedDegree, allen_sublinearDegree axioms",
-      "mathContext": "Axiomatized: jkko_boundedDegree, allen_sublinearDegree axioms"
+      "startLine": 131,
+      "endLine": 141,
+      "summary": "jkko_boundedDegree axiom: bounded degree (2019); Allen sublinear degree (2021) mentioned in comments only.",
+      "mathContext": "Axiomatized: jkko_boundedDegree axiom. Allen sublinear degree discussed in comments but not formalized."
     },
     {
       "id": "large-trees",
       "title": "Packing Large Trees",
-      "startLine": 146,
-      "endLine": 158,
-      "summary": "janzerMontgomery_largeTrees axiom",
-      "mathContext": "Axiomatized: janzerMontgomery_largeTrees axiom"
+      "startLine": 142,
+      "endLine": 147,
+      "summary": "Janzer-Montgomery large trees (2024): discussed in comments only, not formalized as an axiom.",
+      "mathContext": "Comments only: Janzer-Montgomery large trees result (2024) discussed but not formalized."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 159,
+      "startLine": 148,
       "endLine": 162,
       "summary": "erdos_743_summary theorem",
       "mathContext": "Verified: erdos_743_summary theorem"
