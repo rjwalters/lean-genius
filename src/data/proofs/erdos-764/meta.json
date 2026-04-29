@@ -61,14 +61,13 @@
       "IsLinearBounded: f(N) = cN + O(1) predicate",
       "IsLinearLittleO: f(N) = cN + o(N^alpha) predicate with parametric exponent",
       "IsLinearVaughan: f(N) = cN + o(N^{1/4}/(log N)^{1/2}) predicate",
-      "erdos_fuchs_theorem, erdos_fuchs_corollary (axioms): 2-fold impossibility results",
+      "Erdős-Fuchs (1956) 2-fold impossibility: described in Part III narrative; not formalized as Lean axioms in this file",
       "vaughan_3fold_theorem, vaughan_corollary (axioms): 3-fold impossibility results",
       "vaughan_hfold_theorem (axiom): general h-fold impossibility for h >= 2",
       "ErrorOscillates: error oscillation predicate (above and below N^{1/4})",
-      "error_oscillation (axiom): 3-fold error oscillates for infinite sets",
+      "error oscillation for 3-fold: described in Part V docstring narrative; no error_oscillation axiom declared",
       "Squares definition and squares_not_linear (PROVED): application to perfect squares",
-      "montgomery_vaughan_refinement (axiom): o(N^{1/4}) impossible (no log factor)",
-      "quarter_exponent_tight (axiom): 1/4 exponent is best possible",
+      "Montgomery-Vaughan refinement and 1/4 exponent tightness: described in Part VII narrative; not formalized as Lean axioms",
       "erdos_764_summary (PROVED): combines three impossibility results into one theorem"
     ],
     "axiomCount": 4,
@@ -79,7 +78,7 @@
     "historicalContext": "**From Erdos-Fuchs to Vaughan: The Impossibility of Linear Representation Functions**\n\nThe representation function r_h(n) counts the number of ways to write n as a sum of h elements from a set A. For h = 2, the cumulative sum R_2(N) = sum_{n<=N} r_2(n) counts the total number of representations up to N. If A has density d, one expects R_2(N) ~ d^2 * N, so the question is: how close can R_2(N) be to a linear function?\n\n**Erdos-Fuchs (1956):** Proved that R_2(N) = cN + o(N^{1/4}/(log N)^{1/2}) is impossible for any set A and constant c > 0. This resolved Problem #763 and established that representation functions must fluctuate significantly. The proof uses exponential sums and Parseval's identity.\n\n**Erdos's Question (#764):** Does the same hold for 3-fold convolutions? Can R_3(N) = cN + O(1)?\n\n**Vaughan (1972):** Proved the answer is NO. Even R_3(N) = cN + o(N^{1/4}/(log N)^{1/2}) is impossible for any h-fold convolution with h >= 2. Vaughan extended the Erdos-Fuchs exponential sum technique to higher-order convolutions.\n\n**Montgomery-Vaughan (1990):** Refined the result, removing the logarithmic factor: o(N^{1/4}) is impossible for 2-fold convolutions. They also showed the 1/4 exponent is best possible — there exist sets achieving O(N^{1/4+epsilon}) error for any epsilon > 0.\n\n**The Lean formalization** axiomatizes all major theorems (Erdos-Fuchs, Vaughan, Montgomery-Vaughan) and proves two results: squares_not_linear (application to perfect squares) and erdos_764_summary (combining three impossibility results). The error bound hierarchy IsLinearBounded / IsLinearVaughan / IsLinearLittleO cleanly separates the strength of different impossibility statements.",
     "problemStatement": "**Problem**: Let $A \\subseteq \\mathbb{N}$. Can there exist some constant $c > 0$ such that\n$$\\sum_{n \\leq N} 1_A * 1_A * 1_A(n) = cN + O(1)?$$\n\n**Answer**: NO\n\n**Vaughan's Theorem** (1972): Even the weaker bound\n$$\\sum_{n \\leq N} 1_A * 1_A * 1_A(n) = cN + o\\left(\\frac{N^{1/4}}{(\\log N)^{1/2}}\\right)$$\nis impossible. This generalizes to any h-fold convolution with h >= 2.",
     "text": "Can sum_{n<=N} 1_A * 1_A * 1_A(n) = cN + O(1) for some A subset N and c > 0? Answer: NO (Vaughan 1972).",
-    "proofStrategy": "**Formalization Architecture**\n\nThe formalization builds a layered framework for representation function error bounds:\n\n1. **Convolution Definitions** (charFun, conv2, conv3, convH): Representation counting via Finset.filter on Finset.product. conv2 and conv3 are explicit; convH is axiomatized for the general case.\n\n2. **Error Bound Hierarchy** (IsLinearBounded, IsLinearVaughan, IsLinearLittleO): Three levels of approximation quality forming a strict chain: O(1) implies o(N^{1/4}/sqrt(log N)) implies o(N^{1/4}).\n\n3. **Erdos-Fuchs Baseline** (erdos_fuchs_theorem, erdos_fuchs_corollary): 2-fold impossibility axioms establishing the foundational case.\n\n4. **Vaughan's Theorem** (vaughan_3fold_theorem, vaughan_corollary, vaughan_hfold_theorem): 3-fold and general h-fold impossibility axioms — the core of Problem #764.\n\n5. **Error Oscillation** (ErrorOscillates, error_oscillation): Strengthening showing the error must change sign infinitely often with amplitude >= N^{1/4}.\n\n6. **Applications** (squares_not_linear — PROVED): Concrete application to perfect squares.\n\n7. **Refinements** (montgomery_vaughan_refinement, quarter_exponent_tight): Optimal exponent results.\n\n8. **Summary** (erdos_764_summary — PROVED): Combines all three impossibility results.",
+    "proofStrategy": "**Formalization Architecture**\n\nThe formalization builds a layered framework for representation function error bounds:\n\n1. **Convolution Definitions** (charFun, conv2, conv3, convH): Representation counting via Finset.filter on Finset.product. conv2 and conv3 are explicit; convH is axiomatized for the general case.\n\n2. **Error Bound Hierarchy** (IsLinearBounded, IsLinearVaughan, IsLinearLittleO): Three levels of approximation quality forming a strict chain: O(1) implies o(N^{1/4}/sqrt(log N)) implies o(N^{1/4}).\n\n3. **Erdős-Fuchs Baseline** (Part III narrative): The 1956 impossibility results for 2-fold convolutions are described in docstrings only; no erdos_fuchs_theorem or erdos_fuchs_corollary axiom is declared in this file.\n\n4. **Vaughan's Theorem** (vaughan_3fold_theorem, vaughan_corollary, vaughan_hfold_theorem): 3-fold and general h-fold impossibility axioms — the core of Problem #764.\n\n5. **Error Oscillation** (ErrorOscillates definition): The predicate is defined; oscillation result described in Part V narrative; no error_oscillation axiom declared.\n\n6. **Applications** (squares_not_linear — PROVED): Concrete application to perfect squares.\n\n7. **Refinements** (Part VII narrative): Montgomery-Vaughan refinement and 1/4 exponent tightness described in docstrings; no montgomery_vaughan_refinement or quarter_exponent_tight axiom declared.\n\n8. **Summary** (erdos_764_summary — PROVED): Combines all three impossibility results.",
     "keyInsights": [
       "**Convolution counts representations**: (1_A * 1_A * 1_A)(n) counts ways to write n = a + b + c with a, b, c in A. The cumulative sum R_3(N) measures how 'regular' these representations are.",
       "**Error cannot be bounded**: No matter what set A you choose, the cumulative sum cannot grow like cN + O(1). The fluctuations in representation counts are inherent.",
@@ -111,49 +110,49 @@
     },
     {
       "id": "erdos-fuchs",
-      "title": "Erdos-Fuchs Theorem (2-Fold Baseline)",
-      "summary": "erdos_fuchs_theorem (axiom): 2-fold sum cannot be cN + o(N^{1/4}/(log N)^{1/2}). erdos_fuchs_corollary (axiom): 2-fold sum cannot be cN + O(1). Establishes the foundational 1956 result that Problem #764 generalizes.",
+      "title": "Erdős-Fuchs Theorem (2-Fold Baseline)",
+      "summary": "Part III (lines 82–97): Erdős-Fuchs (1956) impossibility for 2-fold convolutions described in docstring narrative. No erdos_fuchs_theorem or erdos_fuchs_corollary axiom is declared in this file — these are docstring-only context for Problem #764.",
       "startLine": 82,
-      "endLine": 103,
-      "mathContext": "erdos_fuchs_theorem (axiom): 2-fold sum cannot be cN + o(N^{1/4}/(log N)^{1/2}). erdos_fuchs_corollary (axiom): 2-fold sum cannot be cN + O(1). Establishes the foundational 1956 result that Problem #764 generalizes."
+      "endLine": 97,
+      "mathContext": "Erdős-Fuchs (1956) impossibility results for 2-fold convolutions are described in Part III narrative (lines 82–97); they are not formally axiomatized in this file (no erdos_fuchs_theorem or erdos_fuchs_corollary axiom declarations). Background context for Problem #764."
     },
     {
       "id": "vaughan-theorem",
       "title": "Vaughan's Theorem (Core Result)",
       "summary": "vaughan_3fold_theorem (axiom): 3-fold sum cannot be cN + o(N^{1/4}/(log N)^{1/2}). vaughan_corollary (axiom): direct answer to Problem #764. vaughan_hfold_theorem (axiom): generalizes to h-fold for all h >= 2.",
-      "startLine": 104,
-      "endLine": 132,
+      "startLine": 98,
+      "endLine": 126,
       "mathContext": "vaughan_3fold_theorem (axiom): 3-fold sum cannot be cN + o(N^{1/4}/(log N)^{1/2}). vaughan_corollary (axiom): direct answer to Problem #764. vaughan_hfold_theorem (axiom): generalizes to h-fold for all h >= 2."
     },
     {
       "id": "error-bounds",
       "title": "Error Oscillation Theory",
-      "summary": "ErrorOscillates definition: error infinitely often above N^{1/4} and below -N^{1/4}. error_oscillation (axiom): for infinite A, 3-fold error oscillates. Strengthens impossibility to signed oscillation.",
-      "startLine": 133,
-      "endLine": 152,
-      "mathContext": "ErrorOscillates definition: error infinitely often above N^{1/4} and below -N^{1/4}. error_oscillation (axiom): for infinite A, 3-fold error oscillates. Strengthens impossibility to signed oscillation."
+      "summary": "ErrorOscillates definition: error infinitely often above N^{1/4} and below -N^{1/4}. The oscillation result for 3-fold convolutions is described in Part V narrative (lines 127–142); no error_oscillation axiom is declared in this file.",
+      "startLine": 127,
+      "endLine": 142,
+      "mathContext": "ErrorOscillates definition: error infinitely often above N^{1/4} and below -N^{1/4}. The error oscillation result for infinite sets is described in Part V narrative (lines 127–142); no error_oscillation axiom is declared in this file."
     },
     {
       "id": "examples",
       "title": "Examples and Special Cases",
       "summary": "Squares = {k^2 : k in N}. squares_not_linear (PROVED from vaughan_corollary): even perfect squares cannot achieve linear 3-fold convolution growth.",
-      "startLine": 153,
-      "endLine": 162,
+      "startLine": 143,
+      "endLine": 152,
       "mathContext": "Squares = {$k^{2}$ : k in N}. squares_not_linear (PROVED from vaughan_corollary): even perfect squares cannot achieve linear 3-fold convolution growth."
     },
     {
       "id": "refinements",
       "title": "Montgomery-Vaughan Refinement",
-      "summary": "montgomery_vaughan_refinement (axiom): o(N^{1/4}) impossible for 2-fold (removes log factor). quarter_exponent_tight (axiom): 1/4 exponent is best possible — sets exist with O(N^alpha) error for any alpha > 1/4.",
-      "startLine": 163,
-      "endLine": 182,
-      "mathContext": "montgomery_vaughan_refinement (axiom): o(N^{1/4}) impossible for 2-fold (removes log factor). quarter_exponent_tight (axiom): 1/4 exponent is best possible — sets exist with O(N^alpha) error for any alpha > 1/4."
+      "summary": "Part VII (lines 153–166): Montgomery-Vaughan (1990) refinement and 1/4 exponent tightness described in narrative docstrings. No montgomery_vaughan_refinement or quarter_exponent_tight axiom is declared in this file.",
+      "startLine": 153,
+      "endLine": 166,
+      "mathContext": "Montgomery-Vaughan (1990) refinement and 1/4 exponent tightness are described in Part VII narrative (lines 153–166); neither montgomery_vaughan_refinement nor quarter_exponent_tight are declared as Lean axioms in this file."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "erdos_764_summary (PROVED): combines vaughan_corollary (3-fold O(1) impossible), vaughan_3fold_theorem (3-fold Vaughan bound impossible), and vaughan_hfold_theorem (h-fold O(1) impossible for h >= 2) into a single triple conjunction.",
-      "startLine": 183,
+      "startLine": 167,
       "endLine": 192,
       "mathContext": "erdos_764_summary (PROVED): combines vaughan_corollary (3-fold O(1) impossible), vaughan_3fold_theorem (3-fold Vaughan bound impossible), and vaughan_hfold_theorem (h-fold O(1) impossible for h >= 2) into a single triple conjunction."
     }
