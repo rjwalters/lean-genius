@@ -42,10 +42,8 @@
     ],
     "originalContributions": [
       "IsSumAvoidingIn, HasSumAvoidingSubset, maxSumAvoidingSize definitions",
-      "g axiomatized with g_spec specification",
+      "g axiomatized (extremal function for sum-avoiding subsets)",
       "empty_is_sum_avoiding and singleton_is_sum_avoiding proved theorems",
-      "klarner_lower_bound: g(n) ≫ log n",
-      "choi_1971_upper_bound: g(n) ≪ n^(2/5+ε)",
       "ruzsa_2005_upper_bound: g(n) ≪ exp(√log n)",
       "sanders_2021_lower_bound: (log n)^(1+c) ≪ g(n)",
       "beker_2025_lower_bound: (log n)^(1+1/68-ε) ≪ g(n)",
@@ -60,7 +58,7 @@
     "historicalContext": "The Erdős-Moser sum-free set problem asks: given any n-element set A of integers, how large a subset B can we guarantee to find such that no sum b₁ + b₂ of distinct elements of B lies in A? Choi (1971) observed that without loss of generality we can take A ⊆ ℤ, and proved the first polynomial upper bound g(n) ≪ n^{2/5+o(1)}.\n\nThe lower bound story begins with Klarner's greedy argument giving g(n) ≫ log n. Sanders (2021) made a breakthrough by proving g(n) ≫ (log n)^{1+c} for some c > 0, using bounds on k-configurations — subsets where all pairwise sums remain in A. Beker (2025) refined this to the specific exponent 1 + 1/68. On the upper side, Ruzsa (2005) dramatically improved Choi's bound to g(n) ≪ exp(√(log n)).\n\nThe gap between the polylogarithmic lower bound and subpolynomial upper bound remains enormous. Determining the true order of g(n) is one of the major open problems in additive combinatorics. The function grows faster than any power of log n but slower than any power of n.",
     "problemStatement": "**Problem Statement (Open)**\n\nLet $g(n)$ be maximal such that given any $A \\subset \\mathbb{R}$ with $|A| = n$, there exists $B \\subseteq A$ with $|B| \\geq g(n)$ such that $b_1 + b_2 \\notin A$ for all $b_1 \\neq b_2 \\in B$.\n\nEstimate $g(n)$.\n\n**Current best bounds:**\n$$(\\log n)^{1+c} \\ll g(n) \\ll \\exp(\\sqrt{\\log n})$$\n\n**Status: OPEN** — the exact order of $g(n)$ is unknown.",
     "text": "Let g(n) be maximal such that every n-set A has a sum-avoiding subset B of size ≥ g(n). Current bounds: (log n)^(1+c) ≪ g(n) ≪ exp(√(log n)). The exact order remains open.",
-    "proofStrategy": "The formalization defines sum-avoiding subsets (IsSumAvoidingIn) and axiomatizes g(n) with a specification capturing its extremal property. Proved theorems establish that empty sets and singletons are sum-avoiding. Historical bounds are axiomatized: Klarner (log n), Choi (n^{2/5+ε}), Ruzsa (exp(√log n)), Sanders ((log n)^{1+c}), and Beker ((log n)^{1+1/68-ε}). k-configurations are defined as the dual notion. The summary theorem combines the three key bounds.",
+    "proofStrategy": "The formalization defines sum-avoiding subsets (IsSumAvoidingIn) and axiomatizes g(n) as the extremal function. Proved theorems establish that empty sets and singletons are sum-avoiding. Three historical bounds are axiomatized: Ruzsa (exp(√log n)), Sanders ((log n)^{1+c}), and Beker ((log n)^{1+1/68-ε}). Klarner's and Choi's bounds appear as docstrings only (not formalized). k-configurations are defined as the dual notion. The summary theorem combines the three axiomatized bounds.",
     "keyInsights": [
       "**Sum-avoiding vs sum-free:** B is sum-avoiding in A if sums b₁+b₂ stay outside A, not outside B",
       "**Greedy gives log n:** Klarner's greedy construction achieves g(n) ≫ log n",
@@ -80,70 +78,70 @@
       "title": "Basic Definitions",
       "summary": "IsSumAvoidingIn, maxSumAvoidingSize, HasSumAvoidingSubset, g axiom with spec",
       "startLine": 38,
-      "endLine": 62,
-      "mathContext": "Axiomatized: IsSumAvoidingIn, maxSumAvoidingSize, HasSumAvoidingSubset, g axiom with spec"
+      "endLine": 58,
+      "mathContext": "Axiomatized: IsSumAvoidingIn, maxSumAvoidingSize, HasSumAvoidingSubset, g axiom"
     },
     {
       "id": "trivial-cases",
       "title": "Trivial Cases",
       "summary": "empty_is_sum_avoiding and singleton_is_sum_avoiding proved theorems",
-      "startLine": 63,
-      "endLine": 81,
+      "startLine": 59,
+      "endLine": 77,
       "mathContext": "Verified: empty_is_sum_avoiding and singleton_is_sum_avoiding proved theorems"
     },
     {
       "id": "klarner-lower",
       "title": "Klarner's Lower Bound",
-      "summary": "klarner_lower_bound: g(n) ≫ log n",
-      "startLine": 82,
-      "endLine": 87,
-      "mathContext": "klarner_lower_bound: g(n) ≫ $\\log n$"
+      "summary": "Klarner's lower bound: g(n) ≫ log n (docstring only, not formalized)",
+      "startLine": 78,
+      "endLine": 80,
+      "mathContext": "Discussed but not formalized: Klarner's greedy construction giving g(n) ≫ log n"
     },
     {
       "id": "choi-upper",
       "title": "Choi's Upper Bound (1971)",
-      "summary": "choi_1971_upper_bound: g(n) ≪ n^(2/5+ε)",
-      "startLine": 88,
-      "endLine": 94,
-      "mathContext": "Bound: choi_1971_upper_bound: g(n) ≪ n^(2/5+ε)"
+      "summary": "Choi's upper bound: g(n) ≪ n^(2/5+ε) (docstring only, not formalized)",
+      "startLine": 81,
+      "endLine": 83,
+      "mathContext": "Discussed but not formalized: Choi's 1971 polynomial upper bound g(n) ≪ n^(2/5+ε)"
     },
     {
       "id": "ruzsa-upper",
       "title": "Ruzsa's Upper Bound (2005)",
       "summary": "ruzsa_2005_upper_bound: g(n) ≪ exp(√log n)",
-      "startLine": 95,
-      "endLine": 101,
+      "startLine": 84,
+      "endLine": 90,
       "mathContext": "ruzsa_2005_upper_bound: g(n) ≪ exp(√$\\log n$)"
     },
     {
       "id": "sanders-lower",
       "title": "Sanders' Lower Bound (2021)",
       "summary": "sanders_2021_lower_bound: (log n)^(1+c) ≪ g(n)",
-      "startLine": 102,
-      "endLine": 108,
+      "startLine": 91,
+      "endLine": 97,
       "mathContext": "sanders_2021_lower_bound: ($\\log n$)^(1+c) ≪ g(n)"
     },
     {
       "id": "beker-lower",
       "title": "Beker's Lower Bound (2025)",
       "summary": "bekerExponent = 1+1/68, beker_2025_lower_bound",
-      "startLine": 109,
-      "endLine": 118,
+      "startLine": 98,
+      "endLine": 107,
       "mathContext": "Bound: bekerExponent = 1+1/68, beker_2025_lower_bound"
     },
     {
       "id": "k-configurations",
       "title": "k-Configurations",
       "summary": "IsKConfiguration: the dual notion where all sums lie in A",
-      "startLine": 119,
-      "endLine": 125,
+      "startLine": 108,
+      "endLine": 114,
       "mathContext": "Mathematical content: IsKConfiguration: the dual notion where all sums lie in A"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_787_summary: three-part conjunction of known bounds",
-      "startLine": 126,
+      "startLine": 115,
       "endLine": 138,
       "mathContext": "Bound: erdos_787_summary: three-part conjunction of known bounds"
     }
