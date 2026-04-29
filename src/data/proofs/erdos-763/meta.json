@@ -52,8 +52,7 @@
       "truncate definition: finite restriction of infinite sets",
       "erdos_fuchs_theorem axiom: impossibility of bounded error",
       "erdos_763 theorem: the main negative result",
-      "erdos_fuchs_strong axiom: o(N^{1/4}/(log N)^{1/2}) bound",
-      "montgomery_vaughan axiom: improved N^{1/4} bound",
+      "errorTerm definition: difference between cumulative count and linear approximation",
       "perfectSquares, arithmeticProgression, IsSidonSet examples",
       "sidon_not_bounded theorem: application to Sidon sets"
     ],
@@ -65,7 +64,7 @@
     "historicalContext": "**The Erdős-Turán Conjecture and the Erdős-Fuchs Theorem**\n\nThis problem originates from a 1941 conjecture of Erdős and Turán about the regularity of additive bases. Given a set A ⊆ ℕ, the representation function r_A(n) counts the number of ways to write n as a sum of two elements from A. The cumulative sum R_A(N) = ∑_{n≤N} r_A(n) measures how \"rich\" the set A is as an additive basis.\n\nErdős and Turán asked: can R_A(N) grow perfectly linearly with only bounded fluctuation? That is, can R_A(N) = cN + O(1) for some constant c > 0?\n\n**The Resolution (1956)**\n\nIn their landmark 1956 paper \"On a problem of additive number theory\" in the Journal of the London Mathematical Society, Erdős and Fuchs proved the surprising result that such perfect regularity is impossible. Even more remarkably, they showed that even R_A(N) = cN + o(N^{1/4}/(log N)^{1/2}) is impossible.\n\n**Subsequent Improvements**\n\nJurkat (unpublished) and Montgomery-Vaughan (1990) strengthened this to show the error term must infinitely often exceed N^{1/4}. This is essentially optimal: there exist sets achieving error O(N^{1/4+ε}) for any ε > 0.",
     "problemStatement": "**Problem Statement (Disproved)**\n\nLet $A \\subseteq \\mathbb{N}$. Can there exist some constant $c > 0$ such that\n$$\\sum_{n \\leq N} r_A(n) = cN + O(1)$$\nwhere $r_A(n) = |\\{(a,b) \\in A \\times A : a + b = n\\}|$?\n\n**Answer: NO**\n\n**Erdős-Fuchs Theorem (1956):** For any infinite set $A$ and $c > 0$, it is impossible to have $\\sum_{n \\leq N} r_A(n) = cN + o(N^{1/4}/(\\log N)^{1/2})$.\n\n**Montgomery-Vaughan (1990):** The error term must exceed $N^{1/4}$ infinitely often.",
     "text": "Can a set A ⊆ ℕ have representation count ∑_{n≤N} r_A(n) = cN + O(1)? NO - disproved by Erdős-Fuchs (1956).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Representation Functions:** Define r_A(n) counting pairs summing to n, and cumulative sum R_A(N).\n\n2. **Linear Growth Property:** Define HasLinearGrowthBounded capturing R_A(N) = cN + O(1).\n\n3. **Truncation:** Handle infinite sets via finite truncations to [0, N].\n\n4. **Main Axiom:** The Erdős-Fuchs theorem is axiomatized as it requires deep Fourier analysis beyond Mathlib.\n\n5. **Strong Forms:** Axiomatize the strengthened error bounds from the 1956 paper and Montgomery-Vaughan.\n\n6. **Examples:** Define perfect squares, arithmetic progressions, and Sidon sets to illustrate the theorem.\n\n**Why Axiomatization?** The proof uses Fourier analysis on the circle, Parseval's identity, and delicate estimates on trigonometric sums. These analytic techniques are not yet available in Mathlib.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Representation Functions:** Define r_A(n) counting pairs summing to n, and cumulative sum R_A(N).\n\n2. **Linear Growth Property:** Define HasLinearGrowthBounded capturing R_A(N) = cN + O(1).\n\n3. **Truncation:** Handle infinite sets via finite truncations to [0, N].\n\n4. **Main Axiom:** The Erdős-Fuchs theorem is axiomatized as it requires deep Fourier analysis beyond Mathlib.\n\n5. **Strong Forms:** Document the strengthened error bounds from the 1956 paper and Montgomery-Vaughan in prose; these are not formalized in Lean.\n\n6. **Examples:** Define perfect squares, arithmetic progressions, and Sidon sets to illustrate the theorem.\n\n**Why Axiomatization?** The proof uses Fourier analysis on the circle, Parseval's identity, and delicate estimates on trigonometric sums. These analytic techniques are not yet available in Mathlib.",
     "keyInsights": [
       "**Variance Cannot Be Eliminated:** The representation function r(n) has inherent variability that cannot average out to O(1) cumulative error.",
       "**Fourier Analysis Key:** The proof uses generating functions (∑ z^{aᵢ})² and Parseval's identity to bound the error.",
@@ -107,10 +106,10 @@
     {
       "id": "error-bounds",
       "title": "Strengthened Error Bounds",
-      "summary": "errorTerm, erdos_fuchs_strong, montgomery_vaughan axioms",
+      "summary": "errorTerm definition; strong forms documented in prose only",
       "startLine": 125,
       "endLine": 159,
-      "mathContext": "Axiomatized: errorTerm, erdos_fuchs_strong, montgomery_vaughan axioms"
+      "mathContext": "Formal definition: errorTerm only; erdos_fuchs_strong and montgomery_vaughan appear only as docstring prose"
     },
     {
       "id": "intuition",
