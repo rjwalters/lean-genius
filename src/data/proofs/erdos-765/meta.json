@@ -100,62 +100,62 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 29,
-      "endLine": 57,
+      "endLine": 56,
       "summary": "hasFourCycle (4 distinct vertices with 6 distinctness + 4 adjacency conditions), isFourCycleFree (negation), edgeCount (G.edgeFinset.card). Uses SimpleGraph.Adj and Fintype.",
       "mathContext": "Mathematical content: hasFourCycle (4 distinct vertices with 6 distinctness + 4 adjacency conditions), isFourCycleFree (negation), edgeCount (G.edgeFinset.card). Uses SimpleGraph.Adj and Fintype."
     },
     {
       "id": "extremal-function",
       "title": "Extremal Function ex(n; C4)",
-      "startLine": 58,
-      "endLine": 73,
+      "startLine": 57,
+      "endLine": 67,
       "summary": "ex_C4 (axiom): maximum edges in n-vertex C4-free graph. Existence of optimal graph documented in docstring only. The central object of Problem #765.",
       "mathContext": "Axiomatized: ex_C4 (axiom): maximum edges in n-vertex C4-free graph. Existence guarantee documented in docstring only — no Lean declaration."
     },
     {
       "id": "historical-bounds",
       "title": "Historical Bounds (1938-1958)",
-      "startLine": 74,
-      "endLine": 104,
+      "startLine": 68,
+      "endLine": 88,
       "summary": "Historical bounds documented in docstrings only: Erdos-Klein O(n^{3/2}) via double counting (1938), Reiman 1/(2*sqrt(2)) <= L <= 1/2 (1958), PG(2,q) lower bound (1/2)q(q+1)^2 for n = q^2+q+1. projectivePlaneVertices def: q^2+q+1.",
       "mathContext": "Historical bounds documented in docstrings only — not formalized as Lean declarations. Only actual declaration: projectivePlaneVertices def: q^2+q+1."
     },
     {
       "id": "asymptotic-formula",
       "title": "The Asymptotic Formula",
-      "startLine": 105,
-      "endLine": 131,
+      "startLine": 89,
+      "endLine": 115,
       "summary": "asymptotic_ratio (noncomputable def): ex_C4(n)/n^{3/2}. asymptotic_formula (axiom): limit is 1/2. erdos_765 (PROVED): main theorem, direct from asymptotic_formula.",
       "mathContext": "Verified: asymptotic_ratio (noncomputable def): ex_C4(n)/n^{3/2}. asymptotic_formula (axiom): limit is 1/2. erdos_765 (PROVED): main theorem, direct from asymptotic_formula."
     },
     {
       "id": "furedi-exact",
       "title": "Furedi's Exact Result (1983)",
-      "startLine": 132,
-      "endLine": 145,
+      "startLine": 116,
+      "endLine": 124,
       "summary": "Furedi's theorem (1983): for q > 13 prime power, ex(q^2+q+1; C4) = (1/2)q(q+1)^2 exactly; PG(2,q) is the unique extremal graph. Documented in docstring only — no Lean declaration.",
       "mathContext": "Documented in docstring only — furedi_exact is not a Lean axiom declaration. Historical result: for q > 13 prime power, ex(q^2+q+1; C4) = (1/2)q(q+1)^2."
     },
     {
       "id": "erdos-conjecture",
       "title": "Erdos's Conjecture and Ma-Yang Disproof",
-      "startLine": 146,
-      "endLine": 175,
+      "startLine": 125,
+      "endLine": 144,
       "summary": "erdos_conjecture (def): lower bound conjecture (1/2)n^{3/2} + (1/4)n + O(sqrt(n)). Refined upper bound and Ma-Yang disproof (2023) documented in docstrings only — not formalized as Lean declarations.",
       "mathContext": "Formal definition: erdos_conjecture (def). Erdos refined upper bound and Ma-Yang disproof documented in docstrings only — not Lean axiom declarations."
     },
     {
       "id": "number-theory",
       "title": "Connection to Number Theory",
-      "startLine": 176,
-      "endLine": 188,
+      "startLine": 145,
+      "endLine": 157,
       "summary": "is_B2_sequence: Sidon set definition (all pairwise sums distinct). Erdos's original 1936 motivation connecting additive combinatorics to extremal graph theory.",
       "mathContext": "Formal definition: is_B2_sequence: Sidon set definition (all pairwise sums distinct). Erdos's original 1936 motivation connecting additive combinatorics to extremal graph theory."
     },
     {
       "id": "examples",
       "title": "Projective Plane Examples (4 PROVED)",
-      "startLine": 189,
+      "startLine": 158,
       "endLine": 215,
       "summary": "fano_plane_example: PG(2,2) = 7 vertices. pg23_example: PG(2,3) = 13. pg24_example: PG(2,4) = 21. pg25_example: PG(2,5) = 31. All proved by simp[projectivePlaneVertices]; ring.",
       "mathContext": "Mathematical content: fano_plane_example: PG(2,2) = 7 vertices. pg23_example: PG(2,3) = 13. pg24_example: PG(2,4) = 21. pg25_example: PG(2,5) = 31. All proved by simp[projectivePlaneVertices]; ring."
