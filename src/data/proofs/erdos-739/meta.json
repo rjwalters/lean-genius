@@ -52,9 +52,8 @@
       "ErdosGalvinQuestion: universal Galvin property",
       "galvin_countable_theorem axiom: property holds for 𝔪 = ℵ₀",
       "finite_chromatic_subgraphs: proved corollary of Galvin",
-      "galvin_set_theory_implication axiom: connection to 2^κ < 2^ν",
       "komjath_consistency axiom: counterexample with χ=ℵ₂, no ℵ₁ subgraph",
-      "shelah_constructibility axiom: YES under V=L",
+      "Galvin's set-theory implication (2^κ < 2^ν) and Shelah's V=L result: discussed in narrative, not formalized as axioms",
       "GCH definition, MainOpenProblem: GCH → Galvin property?",
       "erdos_739_summary: proved, combining Galvin and Komjáth"
     ],
@@ -67,16 +66,8 @@
         "description": "Galvin's 1973 result: if a graph G has chromatic number aleph-0, then for every positive natural number n, G contains a subgraph with chromatic number exactly n. This is the only case of the Galvin property that is provable in ZFC without additional set-theoretic axioms."
       },
       {
-        "name": "galvin_set_theory_implication",
-        "description": "Galvin's observation connecting graph theory to cardinal arithmetic: if the induced-subgraph version of the Galvin property holds universally (every graph with infinite chromatic number has induced subgraphs of all smaller infinite chromatic numbers), then the continuum function is strictly monotone, i.e., 2^kappa < 2^nu whenever kappa < nu."
-      },
-      {
         "name": "komjath_consistency",
         "description": "Komjath's 1988 consistency result: it is consistent with ZFC that there exists a graph with chromatic number aleph-2 that has no subgraph with chromatic number aleph-1. The model is constructed by collapsing the continuum function so that 2^(aleph-0) = 2^(aleph-1) = 2^(aleph-2) = aleph-3, which defeats Galvin's set-theoretic implication."
-      },
-      {
-        "name": "shelah_constructibility",
-        "description": "Shelah's 1990 result under the axiom of constructibility V=L: if a graph G has chromatic number aleph-2, then G must contain a subgraph with chromatic number aleph-1. Together with Komjath's consistency result, this establishes the set-theoretic independence of the Galvin property for uncountable cardinals."
       }
     ]
   },
@@ -127,40 +118,40 @@
     {
       "id": "set-theory",
       "title": "Set-Theoretic Observation",
-      "summary": "galvin_set_theory_implication: induced version implies 2^κ < 2^ν",
+      "summary": "Galvin's observation: induced-subgraph version implies 2^κ < 2^ν. Discussed in narrative/docstrings; not formalized as an axiom in this file.",
       "startLine": 84,
-      "endLine": 94,
+      "endLine": 88,
       "mathContext": "Galvin's set-theoretic implication connects graph coloring to the continuum function: if the induced-subgraph version of the Galvin property holds universally, then 2^kappa < 2^nu for all kappa < nu. The axiom formalizes this as an implication from the universal coloring property to strict monotonicity of cardinal exponentiation. This observation is the conceptual key to the entire independence result, because it shows that any model where the continuum function collapses (like Komjath's model with 2^(aleph-0) = 2^(aleph-1)) is a candidate for producing counterexamples."
     },
     {
       "id": "komjath",
       "title": "Komjáth's Consistency Result (1988)",
       "summary": "komjath_consistency: χ=ℵ₂ graph with no ℵ₁-chromatic subgraph",
-      "startLine": 95,
-      "endLine": 104,
+      "startLine": 89,
+      "endLine": 98,
       "mathContext": "Komjath's construction uses forcing to build a model of ZFC in which 2^(aleph-0) = 2^(aleph-1) = 2^(aleph-2) = aleph-3. In this model, Galvin's set-theoretic implication cannot apply (since the continuum function is not strictly monotone between aleph-0 and aleph-1). The graph itself is built using a variant of the Rado graph construction adapted to uncountable cardinals, producing a graph with chi = aleph-2 such that every subgraph either has finite chromatic number or has chromatic number at least aleph-2, skipping aleph-1 entirely."
     },
     {
       "id": "shelah",
       "title": "Shelah's Result under V=L (1990)",
-      "summary": "shelah_constructibility: YES under V=L for ℵ₂/ℵ₁",
-      "startLine": 105,
-      "endLine": 112,
+      "summary": "Shelah's V=L result (YES for ℵ₂/ℵ₁) discussed in narrative/docstrings; not formalized as an axiom in this file.",
+      "startLine": 99,
+      "endLine": 102,
       "mathContext": "Shelah's proof uses the fine structure of the constructible universe L. Under V=L, the diamond principle (a combinatorial consequence of constructibility) provides the bookkeeping needed to build an aleph-1-chromatic subgraph by transfinite induction along the constructible hierarchy. The key insight is that V=L supplies enough 'prediction' power (via the diamond sequences) to choose vertices at each stage that collectively produce the desired chromatic number. This technique does not obviously carry over to weaker hypotheses like GCH."
     },
     {
       "id": "gch",
       "title": "The GCH Question (OPEN)",
       "summary": "GCH, MainOpenProblem",
-      "startLine": 113,
-      "endLine": 122,
+      "startLine": 103,
+      "endLine": 112,
       "mathContext": "GCH (the Generalized Continuum Hypothesis) states that 2^kappa = kappa^+ for every infinite cardinal kappa, where kappa^+ is the successor cardinal. GCH is strictly weaker than V=L but still constrains cardinal arithmetic significantly: under GCH, the continuum function is strictly monotone (2^kappa < 2^nu whenever kappa < nu), so Komjath's counterexample strategy (collapsing the continuum function) cannot work. However, GCH does not provide the diamond-principle machinery that Shelah's proof requires. The formalization defines GCH as a Prop and states MainOpenProblem as the implication GCH -> ErdosGalvinQuestion, leaving it as a definition rather than an axiom to reflect its open status."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_739_summary proved from Galvin and Komjáth",
-      "startLine": 123,
+      "startLine": 113,
       "endLine": 129,
       "mathContext": "The summary theorem `erdos_739_summary` packages the two main results into a conjunction, proved by `exact <galvin_countable_theorem, komjath_consistency>`. The conjunction captures the essence of the independence phenomenon: the first conjunct (Galvin) shows that the property holds in ZFC for countable chromatic number, while the second conjunct (Komjath) shows that extending this to uncountable chromatic numbers is not provable in ZFC. The proof is a direct pairing of the two axioms, illustrating how axiomatic formalization enables clean compositional reasoning even for metamathematical results."
     }
