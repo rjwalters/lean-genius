@@ -51,8 +51,7 @@
       "aeksBound: the (log t / t)n bound function",
       "shearer_1995: improved bound axiom",
       "aks_1980_triangle_free: r=3 case",
-      "conjecture_true_for_r3: derived theorem",
-      "alon_1996: local chromatic version"
+      "conjecture_true_for_r3: derived theorem"
     ],
     "axiomCount": 2,
     "lineCount": 180,
@@ -62,7 +61,7 @@
     "historicalContext": "**Erdős Problem #802: The AEKS Conjecture on Independence in Sparse Graphs**\n\nThe relationship between forbidden subgraphs and independence numbers is a central theme in extremal graph theory. Turán's theorem (1941) determines the maximum number of edges in a $K_r$-free graph, but what about the *minimum* size of the largest independent set?\n\nFor a graph $G$ with $n$ vertices and average degree $t$, the greedy algorithm guarantees $\\alpha(G) \\geq n/(t+1)$. But if $G$ is $K_r$-free, can we do much better? The AEKS conjecture, posed by Ajtai, Erdős, Komlós, and Szemerédi in their 1981 paper \"On Turán's theorem for sparse graphs,\" asserts that the answer is yes: $\\alpha(G) \\geq c_r \\cdot (\\log t / t) \\cdot n$, an improvement by a factor of $\\log t$ over the greedy bound.\n\n**Resolution Timeline:**\n- **1980**: Ajtai, Komlós, and Szemerédi prove the full bound for $r = 3$ (triangle-free graphs). Remarkably, this preceded the general conjecture by a year. Their paper introduced what became known as the *semi-random method*.\n- **1981**: AEKS prove a weaker bound of $\\alpha(G) \\geq c \\cdot (\\log\\log t / t) \\cdot n$ for general $r \\geq 3$. This was the first result going beyond the greedy bound for all $K_r$-free graphs.\n- **1995**: Shearer improves the general bound to $\\alpha(G) \\geq c \\cdot (\\log t / (\\log\\log t \\cdot t)) \\cdot n$, nearly matching the conjecture up to a $\\log\\log t$ factor.\n- **1996**: Alon proves the full conjectured bound under the stronger hypothesis that $G$ is *locally $(r-2)$-chromatic* (every neighborhood has chromatic number $\\leq r-2$).\n- **1995**: Kim proves $R(3, k) \\sim ck^2/\\log k$, matching the AKS lower bound. This confirms that the triangle-free independence bound is essentially optimal.\n\nThe general conjecture for $r \\geq 4$ remains one of the most important open problems in probabilistic combinatorics. Closing the $\\log\\log t$ gap would have significant consequences for Ramsey theory and extremal combinatorics.",
     "problemStatement": "**Problem Statement (SOLVED for r=3)**\n\nLet $G$ be a $K_r$-free graph on $n$ vertices with average degree $t$.\n\n**Conjecture:** $G$ contains an independent set of size at least $c_r \\cdot (\\log t / t) \\cdot n$.\n\n**Status:**\n- SOLVED for $r=3$ (AKS 1980): $\\alpha(G) \\geq c \\cdot (\\log t / t) \\cdot n$\n- PARTIAL for general $r$: best bound is $\\alpha(G) \\geq c \\cdot (\\log t / (\\log\\log t \\cdot t)) \\cdot n$ (Shearer 1995)\n- SOLVED under stronger assumptions: locally $(r-2)$-chromatic graphs (Alon 1996)",
     "text": "Is it true that any K_r-free graph on n vertices with average degree t contains an independent set on (log t / t)n vertices? SOLVED for r=3 by AKS (1980). Partial progress for general r by Shearer (1995).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Primitives:** Defines `avgDegree` ($2|E|/|V|$), `IsCliqueFree` (no $r$-clique), `IsTriangleFree`, `IsIndependent`, and `independenceNumber` ($\\alpha(G)$).\n\n2. **The Conjecture:** `AEKSConjecture r` formalizes the existence of $c_r > 0$ with the $(\\log t / t) \\cdot n$ bound, with `aeksBound` as a helper.\n\n3. **Known Results:** Four axioms capture the progression: AEKS 1981 (double log), Shearer 1995 (log/loglog), AKS 1980 (full bound for $r = 3$), and Alon 1996 (full bound under local chromatic assumption).\n\n4. **Verified Theorem:** `conjecture_true_for_r3` derives $\\text{AEKS}_3$ from `aks_1980_triangle_free` — a clean proof unwrapping the triangle-free definition.\n\n5. **Ramsey Connection:** Axioms capture $R(3, k) \\geq ck^2/\\log k$ and $\\alpha(G) \\geq c\\sqrt{n \\log n}$ for triangle-free graphs.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Primitives:** Defines `avgDegree` ($2|E|/|V|$), `IsCliqueFree` (no $r$-clique), `IsTriangleFree`, `IsIndependent`, and `independenceNumber` ($\\alpha(G)$).\n\n2. **The Conjecture:** `AEKSConjecture r` formalizes the existence of $c_r > 0$ with the $(\\log t / t) \\cdot n$ bound, with `aeksBound` as a helper.\n\n3. **Known Results:** Two axioms capture the formalized progression: Shearer 1995 (log/loglog) and AKS 1980 (full bound for $r = 3$). AEKS 1981 and Alon 1996 appear only as historical docstrings — no corresponding axioms are declared.\n\n4. **Verified Theorem:** `conjecture_true_for_r3` derives $\\text{AEKS}_3$ from `aks_1980_triangle_free` — a clean proof unwrapping the triangle-free definition.\n\n5. **Ramsey Connection:** Axioms capture $R(3, k) \\geq ck^2/\\log k$ and $\\alpha(G) \\geq c\\sqrt{n \\log n}$ for triangle-free graphs.",
     "keyInsights": [
       "**The Logarithmic Improvement:** Forbidding $K_r$ boosts the greedy bound $n/(t+1)$ by a factor of $\\log t$. This logarithmic gain is the heart of the AEKS conjecture and is achieved via probabilistic arguments that exploit the absence of dense substructures.",
       "**Triangle-Free Case is Special:** The $r = 3$ case (AKS 1980) is the only case where the full conjecture is proved. Triangle-free graphs have the strongest structural constraints on neighborhoods, which the semi-random method can exploit. For $r \\geq 4$, the local structure is more complex.",
@@ -113,18 +112,18 @@
     {
       "id": "known-results",
       "title": "Known Results: AEKS, Shearer, AKS",
-      "summary": "Three axioms capturing the progression: AEKS 1981 (log log t / t), Shearer 1995 (log t / (log log t · t)), AKS 1980 (full bound for r=3); derives conjecture_true_for_r3",
+      "summary": "Two axioms: Shearer 1995 (log t / (log log t · t)) and AKS 1980 (full bound for r=3); derives conjecture_true_for_r3. AEKS 1981 appears only as a docstring (no axiom declared).",
       "startLine": 86,
       "endLine": 118,
-      "mathContext": "Axiomatized: Three axioms capturing the progression: AEKS 1981 (log log t / t), Shearer 1995 (log t / (log log t · t)), AKS 1980 (full bound for r=3); derives conjecture_true_for_r3"
+      "mathContext": "Axiomatized: Two axioms — shearer_1995 (log t / (log log t · t)) and aks_1980_triangle_free (full bound for r=3); derives conjecture_true_for_r3. AEKS 1981 documented in docstring only."
     },
     {
       "id": "alon-result",
       "title": "Alon's Local Chromatic Result (1996)",
-      "summary": "Defines IsLocallyChromatic (placeholder), axiomatizes full (log t / t) bound under local (r-2)-chromatic assumption, proves locally chromatic implies clique-free",
+      "summary": "Defines localChromaticNumber (placeholder) and IsLocallyChromatic (placeholder); Alon (1996) result documented in docstring only — no axiom or theorem formalized here.",
       "startLine": 119,
       "endLine": 144,
-      "mathContext": "Formal definition: Defines IsLocallyChromatic (placeholder), axiomatizes full (log t / t) bound under local (r-2)-chromatic assumption, proves locally chromatic implies clique-free"
+      "mathContext": "Formal definition: Defines localChromaticNumber and IsLocallyChromatic as placeholder stubs; Alon (1996) result appears in a docstring only, with no axiom or theorem declared."
     },
     {
       "id": "ramsey-connection",
