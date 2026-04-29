@@ -58,7 +58,8 @@
       "sumset_comm, sumset_mono, etc: 10 proved sumset algebra theorems",
       "trivial_partition, complement_partition, partition_membership: 3 proved partition results",
       "nat_syndetic, empty_not_syndetic, syndetic_nonempty, syndetic_mono, syndetic_infinite: 5 proved syndetic results",
-      "density_empty/finite/mono/univ/le_one: 5 density axioms",
+      "density_empty, density_univ, density_mono, density_le_one: 4 proved density theorems",
+      "cofinite_density_one axiom: cofinite sets have density 1",
       "basis_infinite: proved bases are infinite (contradiction via bounded sumsets)",
       "basis_has_pos_density_sumset: proved bases have positive density sumsets",
       "part2_gives_non_syndetic: proved Part 2 implies non-syndetic partition exists",
@@ -72,7 +73,7 @@
     "historicalContext": "**Burr and Erdős's Two-Part Problem on Sumset Splitting**\n\nBurr and Erdős posed this two-part problem in 1994 [Er94b], exploring the partition regularity of sumsets at the intersection of additive combinatorics, density theory, and Ramsey theory.\n\n**Part 1 (Density Splitting):**\nIf A + A has positive upper density (a positive fraction of integers are sums of pairs from A), can we always split A = A₁ ⊔ A₂ such that both A₁ + A₁ and A₂ + A₂ also have positive density? This is a density version of Ramsey-type partition questions: does additive structure survive partitioning?\n\n**Part 2 (Non-Splittable Basis):**\nA basis of order 2 is a set A where A + A contains all sufficiently large integers. Does there exist such a basis where no partition A = A₁ ⊔ A₂ makes both A₁ + A₁ and A₂ + A₂ syndetic (having bounded gaps)? This asks for a basis that is 'indivisible' in a strong sense.\n\n**Erdős's Belief:**\nErdős reportedly believed he could construct such a non-splittable basis but 'could never quite finish the proof,' suggesting the problem lies at the boundary of current techniques.\n\n**The Tension:**\nThe two parts are in formal tension. If Part 2 holds for some basis A, then since A + A is cofinite (hence positive density), Part 1 fails for the syndetic strengthening applied to that specific A. The formalization makes this connection rigorous through the theorem part2_contradicts_part1_for_basis.\n\n**Notable Formalization:**\nThe Lean file achieves 0 sorries with 20+ proved structural theorems including sumset algebra, partition theory, syndetic set properties, basis infiniteness, and the Part 1/Part 2 tension connection — making it one of the most complete formalizations in the gallery despite both conjectures remaining open.",
     "problemStatement": "Part 1: If A+A has positive density, can A = A₁ ⊔ A₂ with both A₁+A₁, A₂+A₂ positive density? Part 2: Is there a basis of order 2 where no split makes both sumsets syndetic?",
     "text": "Can A with A+A of positive density be split A = A₁ ⊔ A₂ with both A₁+A₁ and A₂+A₂ positive density? Is there a basis where no split makes both syndetic?",
-    "proofStrategy": "**Formalization Strategy**\n\nThe formalization builds a complete framework for the problem without attempting to resolve the open conjectures:\n\n1. **Definitions**: upperDensity via Filter.limsup of ncard ratios; sumset as explicit existential; IsBasisOrder2 via Filter.Eventually; IsSyndetic via bounded gap quantification\n\n2. **Conjectures**: Both parts stated as Prop definitions, keeping them as mathematical objects rather than axioms\n\n3. **Sumset Algebra** (10 proved): Commutativity, monotonicity, identity elements, union containment\n\n4. **Partition Theory** (3 proved): Trivial and complement partitions, disjointness membership\n\n5. **Syndetic Theory** (5 proved): N is syndetic, empty is not, nonemptiness, monotonicity, infiniteness\n\n6. **Density Axioms** (5): Standard properties axiomatized rather than proved from limsup\n\n7. **Basis Properties** (2 proved): basis_infinite by contradiction (bounded A implies bounded A+A), basis_has_pos_density_sumset via cofinite density\n\n8. **Connection Theorems** (2 proved): Part 2 implies non-syndetic exists; Part 2 contradicts Part 1 for the specific basis",
+    "proofStrategy": "**Formalization Strategy**\n\nThe formalization builds a complete framework for the problem without attempting to resolve the open conjectures:\n\n1. **Definitions**: upperDensity via Filter.limsup of ncard ratios; sumset as explicit existential; IsBasisOrder2 via Filter.Eventually; IsSyndetic via bounded gap quantification\n\n2. **Conjectures**: Both parts stated as Prop definitions, keeping them as mathematical objects rather than axioms\n\n3. **Sumset Algebra** (10 proved): Commutativity, monotonicity, identity elements, union containment\n\n4. **Partition Theory** (3 proved): Trivial and complement partitions, disjointness membership\n\n5. **Syndetic Theory** (5 proved): N is syndetic, empty is not, nonemptiness, monotonicity, infiniteness\n\n6. **Density Theorems** (4 proved): density_empty, density_univ, density_mono, density_le_one — all proved from limsup; plus 1 axiom: cofinite_density_one (cofinite sets have density 1, used in the basis argument)\n\n7. **Basis Properties** (2 proved): basis_infinite by contradiction (bounded A implies bounded A+A), basis_has_pos_density_sumset via cofinite density\n\n8. **Connection Theorems** (2 proved): Part 2 implies non-syndetic exists; Part 2 contradicts Part 1 for the specific basis",
     "keyInsights": [
       "**Density vs syndetic**: Part 1 concerns positive density (a measure-theoretic property), while Part 2 concerns syndeticity (a topological/combinatorial property). Syndetic implies positive density, but not vice versa — this gap is what allows both parts to potentially be true simultaneously",
       "**Tension between parts**: If Part 2 holds for some basis A, then Part 1 fails for that specific A when 'positive density' is strengthened to 'syndetic'. The formalization proves this connection rigorously through part2_contradicts_part1_for_basis",
@@ -124,16 +125,16 @@
     },
     {
       "id": "density",
-      "title": "Density Properties (Axiomatized)",
+      "title": "Density Properties",
       "startLine": 182,
-      "endLine": 200,
-      "summary": "5 axioms: density_empty (d(empty)=0), density_finite, density_mono (monotone), density_univ (d(N)=1), density_le_one. Standard upper density properties."
+      "endLine": 214,
+      "summary": "4 proved theorems: density_empty (d(∅)=0), density_univ (d(ℕ)=1), density_mono (monotone), density_le_one (≤1) — all derived from limsup. No density_finite exists in the file."
     },
     {
       "id": "basis",
       "title": "Basis Properties and Connections",
-      "startLine": 201,
-      "endLine": 272,
+      "startLine": 215,
+      "endLine": 284,
       "summary": "basis_infinite (PROVED by contradiction: bounded A implies bounded A+A). basis_has_pos_density_sumset (PROVED via cofinite density). part2_gives_non_syndetic and part2_contradicts_part1_for_basis (PROVED): formal tension between Parts 1 and 2."
     }
   ],
