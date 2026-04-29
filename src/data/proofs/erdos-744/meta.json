@@ -44,12 +44,11 @@
       "chromaticNumber axiom for graph coloring",
       "isKChromatic and isCritical definitions for critical graphs",
       "isBipartite definition via chromatic number",
-      "bipartite_iff_no_odd_cycle axiom (K\u00f6nig characterization)",
+      "bipartite_iff_no_odd_cycle (König characterization): discussed in docstrings, not formalized as axiom",
       "bipartitionNumber definition for edge deletion to bipartiteness",
       "f function: the f_k(n) function central to the problem",
       "f_3_equals_1 theorem: odd cycles need 1 edge removed",
-      "gallai_upper_bound axiom: O(\u221an) bound for k=4",
-      "lovasz_upper_bound axiom: generalized bound",
+      "Gallai O(√n) bound and Lovász generalized bound: discussed in docstrings/comments, not formalized as axioms",
       "erdosOriginalConjecture and erdosLogConjecture definitions",
       "rodl_tuza_theorem axiom: the disproof, f_k(n) = C(k-1,2)",
       "f_4_eventually_3 and f_5_eventually_6 theorems",
@@ -84,80 +83,80 @@
       "id": "graph-definitions",
       "title": "Basic Graph Definitions",
       "summary": "SimpleGraph', chromaticNumber, isKChromatic, isCritical, isKCritical",
-      "startLine": 29,
-      "endLine": 69,
+      "startLine": 30,
+      "endLine": 70,
       "mathContext": "Mathematical content: SimpleGraph', chromaticNumber, isKChromatic, isCritical, isKCritical"
     },
     {
       "id": "bipartite",
       "title": "Bipartite Graphs",
-      "summary": "isBipartite definition, bipartite_iff_no_odd_cycle axiom",
-      "startLine": 70,
-      "endLine": 87,
-      "mathContext": "Formal definition: isBipartite definition, bipartite_iff_no_odd_cycle axiom"
+      "summary": "isBipartite definition (χ(G) ≤ 2); bipartite_iff_no_odd_cycle discussed in docstring but not formalized as axiom.",
+      "startLine": 71,
+      "endLine": 84,
+      "mathContext": "Formal definition: isBipartite via chromatic number. König odd-cycle characterization mentioned in narrative only."
     },
     {
       "id": "edge-deletion",
       "title": "Edge Deletion and f_k(n)",
       "summary": "bipartitionNumber, f \u2014 the central function of the problem",
-      "startLine": 88,
-      "endLine": 117,
+      "startLine": 85,
+      "endLine": 114,
       "mathContext": "Mathematical content: bipartitionNumber, f \u2014 the central function of the problem"
     },
     {
       "id": "known-results",
       "title": "Known Results and Historical Bounds",
-      "summary": "f_3_equals_1, gallai_upper_bound, lovasz_upper_bound",
-      "startLine": 118,
-      "endLine": 154,
-      "mathContext": "Bound: f_3_equals_1, gallai_upper_bound, lovasz_upper_bound"
+      "summary": "f_3_equals_1 theorem: odd cycles need 1 edge removed; Gallai O(√n) bound and Lovász generalized bound discussed in docstrings, not formalized as axioms.",
+      "startLine": 115,
+      "endLine": 146,
+      "mathContext": "Verified: f_3_equals_1. Gallai/Lovász bounds mentioned in narrative but not formalized as axioms."
     },
     {
       "id": "original-conjecture",
       "title": "The Original Conjecture",
       "summary": "erdosOriginalConjecture, erdosLogConjecture \u2014 what Erd\u0151s expected",
-      "startLine": 155,
-      "endLine": 178,
+      "startLine": 147,
+      "endLine": 170,
       "mathContext": "Mathematical content: erdosOriginalConjecture, erdosLogConjecture \u2014 what Erd\u0151s expected"
     },
     {
       "id": "rodl-tuza",
       "title": "R\u00f6dl-Tuza Theorem (1985)",
       "summary": "rodl_tuza_theorem axiom, f_4_eventually_3, f_5_eventually_6",
-      "startLine": 179,
-      "endLine": 221,
+      "startLine": 171,
+      "endLine": 213,
       "mathContext": "Verified: rodl_tuza_theorem axiom, f_4_eventually_3, f_5_eventually_6"
     },
     {
       "id": "counterexample-structure",
       "title": "Why the Conjecture Was False",
-      "summary": "complete_graph_chromatic, complete_graph_edges \u2014 structural insight",
-      "startLine": 222,
-      "endLine": 248,
-      "mathContext": "Mathematical content: complete_graph_chromatic, complete_graph_edges \u2014 structural insight"
+      "summary": "complete_graph_edges theorem relating to binomial coefficients; structural insight into why the conjecture was false.",
+      "startLine": 214,
+      "endLine": 237,
+      "mathContext": "Verified: complete_graph_edges theorem. Structural insight: non-bipartiteness concentrated in K_{k-1}."
     },
     {
       "id": "consequences",
       "title": "Consequences of the Disproof",
       "summary": "erdos_conjecture_false, log_conjecture_false",
-      "startLine": 249,
-      "endLine": 280,
+      "startLine": 238,
+      "endLine": 283,
       "mathContext": "Mathematical content: erdos_conjecture_false, log_conjecture_false"
     },
     {
       "id": "complete-picture",
       "title": "The Complete Picture",
       "summary": "f_k_table, f_k_formula \u2014 table and general formula",
-      "startLine": 281,
-      "endLine": 301,
+      "startLine": 284,
+      "endLine": 304,
       "mathContext": "Mathematical content: f_k_table, f_k_formula \u2014 table and general formula"
     },
     {
       "id": "status",
       "title": "Problem Status and Main Statement",
       "summary": "erdos_744_status, erdos_744_statement \u2014 summary theorem",
-      "startLine": 302,
-      "endLine": 342,
+      "startLine": 305,
+      "endLine": 344,
       "mathContext": "Verified: erdos_744_status, erdos_744_statement \u2014 summary theorem"
     }
   ],
