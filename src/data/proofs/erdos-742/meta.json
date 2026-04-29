@@ -51,7 +51,7 @@
       "furedi_theorem: the main result axiomatized",
       "bound_is_tight: extremal example exists",
       "IsDiameterCritical: general diameter-critical definition",
-      "balanced_bipartite_edges axiom: (n/2)*((n+1)/2) = n²/4"
+      "balanced_bipartite_minimal axiom: ∃ V G, |V|=n ∧ IsMinimalDiameter2 G ∧ edgeCount G = n²/4"
     ],
     "axiomCount": 2,
     "lineCount": 207,
@@ -120,38 +120,38 @@
       "id": "bipartite-example",
       "title": "Complete Bipartite Extremal Example",
       "startLine": 94,
-      "endLine": 115,
+      "endLine": 108,
       "summary": "Axiomatizes: $K_{a,b}$ has diameter 2 with $a \\cdot b$ edges, the balanced partition gives $\\lfloor n^2/4 \\rfloor$ edges, and $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ is minimal diameter-2.",
       "mathContext": "Axiomatizes: $K_{a,b}$ has diameter 2 with $a \\cdot b$ edges, the balanced partition gives $\\lfloor $n^{2}$/4 \\rfloor$ edges, and $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ is minimal diameter-2."
     },
     {
       "id": "furedi-theorem",
       "title": "Füredi's Theorem",
-      "startLine": 116,
-      "endLine": 141,
+      "startLine": 109,
+      "endLine": 134,
       "summary": "Axiomatizes Füredi (1992): $\\exists N_0,\\; \\forall n \\ge N_0$, minimal diameter-2 graphs have $|E| \\le n^2/4$. Proves `bound_is_tight`: $\\forall n \\ge 2$, the bound is achieved by the balanced bipartite graph.",
       "mathContext": "Axiomatizes Füredi (1992): $\\exists N_0,\\; \\forall n \\ge N_0$, minimal diameter-2 graphs have $|E| \\le n^2/4$. Proves `bound_is_tight`: $\\forall n \\ge 2$, the bound is achieved by the balanced bipartite graph."
     },
     {
       "id": "history",
       "title": "Historical Context",
-      "startLine": 142,
-      "endLine": 159,
+      "startLine": 135,
+      "endLine": 144,
       "summary": "Records the conjecture timeline (Ore → Murty-Simon → Murty-Plesník → Caccetta-Häggkvist → Füredi). Axiomatizes that Füredi's proof uses extremal methods.",
       "mathContext": "Records the conjecture timeline (Ore $\\to$ Murty-Simon $\\to$ Murty-Plesník $\\to$ Caccetta-Häggkvist $\\to$ Füredi). Axiomatizes that Füredi's proof uses extremal methods."
     },
     {
       "id": "related",
       "title": "Diameter-Critical Generalization",
-      "startLine": 160,
-      "endLine": 186,
+      "startLine": 145,
+      "endLine": 167,
       "summary": "Defines `IsDiameterCritical G d` for general diameter $d$. Proves `minimal_iff_critical`: `IsMinimalDiameter2 G ↔ IsDiameterCritical G 2`. Axiomatizes existence of bounds for $d \\ge 3$.",
       "mathContext": "Formal definition: Defines `IsDiameterCritical G d` for general diameter $d$. Proves `minimal_iff_critical`: `IsMinimalDiameter2 G ↔ IsDiameterCritical G 2`. Axiomatizes existence of bounds for $d \\ge 3$."
     },
     {
       "id": "summary",
       "title": "Main Theorem and Summary",
-      "startLine": 187,
+      "startLine": 168,
       "endLine": 207,
       "summary": "Proves `erdos_742`: the conjunction of Füredi's upper bound and tightness. Defines answer and status strings. Includes `#check` commands for key definitions.",
       "mathContext": "Formal definition: Proves `erdos_742`: the conjunction of Füredi's upper bound and tightness. Defines answer and status strings. Includes `#check` commands for key definitions."
