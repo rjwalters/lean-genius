@@ -113,3 +113,57 @@ No change. File remains 0 sorries, 4 axioms. Gallery remains `axiomatized`.
 None for the axiomatized scope. A future deepening to `verified` would be a
 multi-month formalization of Baker's auxiliary-function machinery and is
 not currently scoped.
+
+---
+
+## Session 2026-04-29 (Session 3) — Gallery meta.json drift fix
+
+**Mode**: REVISIT (gallery metadata reconciliation)
+**Outcome**: META FIX — section ranges realigned, phantom contribution removed
+
+### What I Did
+
+Audit of `src/data/proofs/algebraic-numbers-countable-oq-04/meta.json` against
+the actual Lean file (`proofs/Proofs/AlgebraicNumbersCountableOQ04.lean`,
+640 lines, 4 axioms, 0 sorries) found two narrative drifts:
+
+1. **Section line ranges 30-50 lines off** and PART IV missing entirely:
+   - sec-arithmetic claimed 129-257; PART I actually spans 129-294
+   - sec-baker-axioms claimed 258-363; PART II actually spans 295-400
+   - sec-corollaries claimed 364-542; PART III actually spans 401-543
+   - PART IV (Four Exponentials Conjecture, lines 544-590) had no section entry
+   - sec-baker-wustholz claimed 544-640; PART V actually spans 591-640
+2. **Phantom originalContribution**: `baker_wustholz_bound` was listed as an
+   "original contribution" but is declared as `axiom` at line 620, not a
+   theorem. Listing axiom statements alongside proved theorems overstates
+   the verified content. Removed.
+
+### Reconciliation
+
+1. `src/data/proofs/algebraic-numbers-countable-oq-04/meta.json`:
+   - Realigned all section `startLine`/`endLine` to match actual PART
+     banners (verified by grepping for `PART [IVX]+`)
+   - Added new `sec-four-exponentials` section (544-590) covering PART IV
+     (commentary-only, no axioms or theorems)
+   - Renamed section titles from `Sec N` to `Part N` for consistency with
+     the file's own PART numbering
+   - Trimmed sec-corollaries summary (it had mentioned Four Exponentials,
+     which now lives in its own section)
+   - Removed `baker_wustholz_bound` from originalContributions (it is an
+     axiom; the other 6 entries are all proved theorems)
+
+No code changes. Lean file unchanged: 640 lines, 4 axioms, 0 sorries.
+Gallery still `axiomatized`/`axiom`/`axiomCount: 4`.
+
+### Files Modified
+
+- `src/data/proofs/algebraic-numbers-countable-oq-04/meta.json`
+- `research/problems/algebraic-numbers-countable-oq-04/knowledge.md` (this entry)
+
+### Sorry/Axiom Delta
+
+No change.
+
+### Next Steps
+
+None. Gallery is now consistent with the Lean file at the axiomatized scope.
