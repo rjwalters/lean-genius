@@ -102,46 +102,46 @@
       "title": "Alon-Bukh-Sudakov Upper Bound (2009)",
       "summary": "Axiomatizes the resolution: every $A$ with $|A| \\leq \\sqrt{n}$ admits a basis $B$ of size $O\\left(\\frac{\\log\\log n}{\\log n}\\sqrt{n}\\right)$",
       "startLine": 101,
-      "endLine": 131,
+      "endLine": 126,
       "mathContext": "$\\forall A \\subseteq \\{1,\\ldots,n\\}$ with $|A| \\leq \\sqrt{n}$, $\\exists B$ with $A \\subseteq B+B$ and $|B| \\leq C \\cdot \\frac{\\log\\log n}{\\log n} \\cdot \\sqrt{n}$"
     },
     {
       "id": "tight-bound",
       "title": "The Tight Bound",
       "summary": "Combines both bounds into a verified theorem: the optimal basis size is $\\Theta\\left(\\frac{\\log\\log n}{\\log n} \\cdot \\sqrt{n}\\right)$",
-      "startLine": 132,
-      "endLine": 156,
+      "startLine": 127,
+      "endLine": 151,
       "mathContext": "$|B|_{\\text{opt}} = \\Theta\\left(\\frac{\\log\\log n}{\\log n}\\sqrt{n}\\right)$"
     },
     {
       "id": "related",
       "title": "Related Results",
       "summary": "Defines Sidon sets (`IsSidonSet`) where all pairwise sums are distinct — the dual problem to finding small bases",
-      "startLine": 157,
-      "endLine": 175,
+      "startLine": 152,
+      "endLine": 170,
       "mathContext": "$S$ is Sidon $\\iff a+b = c+d \\implies \\{a,b\\} = \\{c,d\\}$ for $a,b,c,d \\in S$"
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Proves `trivial_basis`: $A \\cup \\{0\\}$ is always a basis (since $a = a + 0$), establishing the $|B| = |A|+1$ baseline that Erdős asked to improve",
-      "startLine": 176,
-      "endLine": 197,
+      "startLine": 171,
+      "endLine": 192,
       "mathContext": "$B = A \\cup \\{0\\} \\implies A \\subseteq B + B$ since $a = a + 0 \\in B + B$"
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Notation",
       "summary": "Documents (in a docstring) that $\\frac{\\log\\log n}{\\log n} \\to 0$ — the analytic fact ensuring the Alon-Bukh-Sudakov bound gives $|B| = o(\\sqrt{n})$. Not formalized in this file.",
-      "startLine": 198,
-      "endLine": 210,
+      "startLine": 193,
+      "endLine": 201,
       "mathContext": "$\\lim_{n \\to \\infty} \\frac{\\log\\log n}{\\log n} = 0$"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Closing docstring restating the resolved problem (Alon-Bukh-Sudakov, 2009). No additional declarations.",
-      "startLine": 211,
+      "startLine": 202,
       "endLine": 219,
       "mathContext": "$\\forall A \\subseteq \\{1,\\ldots,n\\}$ with $|A| \\leq \\sqrt{n}$, $\\exists B$ with $|B| \\leq \\frac{\\log\\log n}{\\log n}\\sqrt{n}$ and $A \\subseteq B+B$"
     }
