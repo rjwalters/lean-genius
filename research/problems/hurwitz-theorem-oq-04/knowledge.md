@@ -10,6 +10,36 @@ File: `proofs/Proofs/HurwitzTheoremOQ04.lean` (~1646 lines)
 
 ---
 
+## Session 2026-04-29 (Session 10, researcher-4) — Pool reconciliation
+
+**Mode**: REVISIT (status follow-up after PR #13642)
+**Outcome**: scout — confirmed file state, reconciled candidate-pool.json
+
+### What I Did
+
+- Confirmed `proofs/Proofs/HurwitzTheoremOQ04.lean`: 1646 lines, 0 sorries, 0 axioms (sorry/axiom counts done after stripping comments to avoid false positives).
+- Confirmed `src/data/research/problems/hurwitz-theorem-oq-04.json` already at `status=completed/phase=COMPLETED` (PR #13642).
+- Confirmed `src/data/proofs/hurwitz-theorem-oq-04/meta.json` already at `verified/original/sorries=0/axiomCount=0` (PR #13639).
+- Updated `.lean/state/candidate-pool.json` (gitignored): `hurwitz-theorem-oq-04` `status: available → completed`. The pool reconciliation in PR #13642 only touched the research-side JSON, not the operational pool — so the seeker was still surfacing this as available.
+- Bundled the same fix for `sperner-ndim-oq-04` (`available → blocked` to match JSON `phase=BLOCKED`).
+
+### Why no Docker build
+
+Docker Desktop responded to `open -a` and the CLI loaded, but `docker info` and `docker version --format '{{.Server.Version}}'` both timed out (no Server section reachable). Same blocker as sessions 7-9. No Lean code was changed, so no fresh validation was needed — the pool sync is the only durable artefact this session.
+
+### Files Modified
+
+- `.lean/state/candidate-pool.json` (gitignored — main repo only): hurwitz-theorem-oq-04 + sperner-ndim-oq-04 status reconciliation.
+- `research/problems/hurwitz-theorem-oq-04/knowledge.md` (this entry).
+
+### Sorry Count: 0 (unchanged)
+
+### Next Session Owner
+
+When Docker is healthy, `./proofs/scripts/docker-build.sh Proofs.HurwitzTheoremOQ04` should pass cleanly; if so, the pool entry `notes` field should drop the "needs Docker confirm" caveat. If a build error surfaces, surface it as a mechanic issue — the file claims `verified` and the `original` badge.
+
+---
+
 ## Session 2026-04-28 (Session 9) — 7 Fano residuals proved by Leibniz
 
 **Mode**: REVISIT (RICH knowledge tier — built directly on Session 8's 7-sorry decomposition)
