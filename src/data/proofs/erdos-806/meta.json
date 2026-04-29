@@ -47,11 +47,9 @@
       "sumset_card_bound theorem: |B + B| ≤ |B|²",
       "erdos_newman_lower_bound axiom: Ω((log log n / log n) · √n)",
       "alon_bukh_sudakov_upper_bound axiom: O((log log n / log n) · √n)",
-      "erdos_806: main result existence",
       "optimal_basis_size theorem: tight Θ bound",
       "IsSidonSet definition: connection to Sidon sets",
-      "trivial_basis theorem: A ∪ {0} always works",
-      "log_factor_is_o_one: (log log n / log n) → 0"
+      "trivial_basis theorem: A ∪ {0} always works"
     ],
     "axiomCount": 2,
     "lineCount": 219,
@@ -102,7 +100,7 @@
     {
       "id": "upper-bound",
       "title": "Alon-Bukh-Sudakov Upper Bound (2009)",
-      "summary": "Axiomatizes the resolution: every $A$ with $|A| \\leq \\sqrt{n}$ admits a basis $B$ of size $O\\left(\\frac{\\log\\log n}{\\log n}\\sqrt{n}\\right)$, plus the qualitative corollary `erdos_806`",
+      "summary": "Axiomatizes the resolution: every $A$ with $|A| \\leq \\sqrt{n}$ admits a basis $B$ of size $O\\left(\\frac{\\log\\log n}{\\log n}\\sqrt{n}\\right)$",
       "startLine": 101,
       "endLine": 131,
       "mathContext": "$\\forall A \\subseteq \\{1,\\ldots,n\\}$ with $|A| \\leq \\sqrt{n}$, $\\exists B$ with $A \\subseteq B+B$ and $|B| \\leq C \\cdot \\frac{\\log\\log n}{\\log n} \\cdot \\sqrt{n}$"
@@ -134,7 +132,7 @@
     {
       "id": "asymptotics",
       "title": "Asymptotic Notation",
-      "summary": "Axiomatizes $\\frac{\\log\\log n}{\\log n} \\to 0$ — the key analytic fact ensuring the Alon-Bukh-Sudakov bound gives $|B| = o(\\sqrt{n})$",
+      "summary": "Documents (in a docstring) that $\\frac{\\log\\log n}{\\log n} \\to 0$ — the analytic fact ensuring the Alon-Bukh-Sudakov bound gives $|B| = o(\\sqrt{n})$. Not formalized in this file.",
       "startLine": 198,
       "endLine": 210,
       "mathContext": "$\\lim_{n \\to \\infty} \\frac{\\log\\log n}{\\log n} = 0$"
@@ -142,7 +140,7 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Restates the full quantitative result as an axiom: SOLVED by Alon-Bukh-Sudakov (2009), closing the problem after 32 years",
+      "summary": "Closing docstring restating the resolved problem (Alon-Bukh-Sudakov, 2009). No additional declarations.",
       "startLine": 211,
       "endLine": 219,
       "mathContext": "$\\forall A \\subseteq \\{1,\\ldots,n\\}$ with $|A| \\leq \\sqrt{n}$, $\\exists B$ with $|B| \\leq \\frac{\\log\\log n}{\\log n}\\sqrt{n}$ and $A \\subseteq B+B$"
