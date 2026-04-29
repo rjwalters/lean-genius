@@ -54,7 +54,6 @@
       "malekshahian_spiro_density_clique: density >= 3/4",
       "malekshahian_spiro_alice_n_bob_n123: Alice at n implies Bob at n+1,n+2,n+3",
       "alice_no_four_consecutive: proved from Malekshahian-Spiro axiom",
-      "game_determined: Zermelo's theorem axiomatized",
       "erdos_778_periodicity summary theorem"
     ],
     "axiomCount": 3,
@@ -131,10 +130,10 @@
     {
       "id": "consequences",
       "title": "Consequences of Known Results",
-      "summary": "alice_no_four_consecutive proved theorem, game_determined axiom",
+      "summary": "alice_no_four_consecutive proved theorem",
       "startLine": 182,
       "endLine": 205,
-      "mathContext": "Verified: alice_no_four_consecutive proved theorem, game_determined axiom"
+      "mathContext": "Verified: alice_no_four_consecutive proved theorem"
     },
     {
       "id": "summary",
@@ -170,7 +169,7 @@
     "namespace": "Erdos778",
     "lineCount": 225,
     "axiomCount": 3,
-    "theoremCount": 3,
+    "theoremCount": 2,
     "definitionCount": 18,
     "path": "Proofs/Erdos778Problem.lean",
     "sorries": 0
