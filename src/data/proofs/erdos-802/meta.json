@@ -106,38 +106,38 @@
       "title": "The AEKS Conjecture",
       "summary": "Formalizes AEKSConjecture r: ∃ c > 0 such that α(G) ≥ c·(log t / t)·n for K_r-free G with average degree t; includes aeksBound helper",
       "startLine": 71,
-      "endLine": 85,
+      "endLine": 84,
       "mathContext": "Formalizes AEKSConjecture r: ∃ c > 0 such that α(G) $\\geq$ c·(log t / t)·n for K_r-free G with average degree t; includes aeksBound helper"
     },
     {
       "id": "known-results",
       "title": "Known Results: AEKS, Shearer, AKS",
       "summary": "Two axioms: Shearer 1995 (log t / (log log t · t)) and AKS 1980 (full bound for r=3); derives conjecture_true_for_r3. AEKS 1981 appears only as a docstring (no axiom declared).",
-      "startLine": 86,
-      "endLine": 118,
+      "startLine": 85,
+      "endLine": 113,
       "mathContext": "Axiomatized: Two axioms — shearer_1995 (log t / (log log t · t)) and aks_1980_triangle_free (full bound for r=3); derives conjecture_true_for_r3. AEKS 1981 documented in docstring only."
     },
     {
       "id": "alon-result",
       "title": "Alon's Local Chromatic Result (1996)",
       "summary": "Defines localChromaticNumber (placeholder) and IsLocallyChromatic (placeholder); Alon (1996) result documented in docstring only — no axiom or theorem formalized here.",
-      "startLine": 119,
-      "endLine": 144,
+      "startLine": 114,
+      "endLine": 128,
       "mathContext": "Formal definition: Defines localChromaticNumber and IsLocallyChromatic as placeholder stubs; Alon (1996) result appears in a docstring only, with no axiom or theorem declared."
     },
     {
       "id": "ramsey-connection",
       "title": "Ramsey Theory Connection",
       "summary": "Ramsey lower bound R(3,k) ≥ ck²/log k from AKS; triangle-free independence bound α(G) ≥ c√(n log n)",
-      "startLine": 145,
-      "endLine": 164,
+      "startLine": 129,
+      "endLine": 140,
       "mathContext": "Ramsey lower bound R(3,k) $\\geq$ ck²/log k from AKS; triangle-free independence bound α(G) $\\geq$ c√(n $\\log n$)"
     },
     {
       "id": "summary",
       "title": "Main Theorem and Summary",
       "summary": "erdos_802 combines AEKS₃ (full conjecture for r=3) with Shearer's partial bound for general r; includes status strings and #check verification",
-      "startLine": 165,
+      "startLine": 141,
       "endLine": 180,
       "mathContext": "Bound: erdos_802 combines AEKS₃ (full conjecture for r=3) with Shearer's partial bound for general r; includes status strings and #check verification"
     }
