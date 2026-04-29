@@ -2,7 +2,7 @@
   "id": "isoperimetric-theorem-oq-02",
   "title": "Discrete Isoperimetric Inequality (1D)",
   "slug": "isoperimetric-theorem-oq-02",
-  "description": "On the integer lattice ℤ, the (vertex) edge boundary of a finite set S with |S| ≥ 2 has at least 2 elements, with equality iff S is an integer interval. This is the 1D foundation for higher-dimensional discrete isoperimetric theorems on ℤ^d (Bollobás–Leader compression) and on the hypercube (Harper).",
+  "description": "On the integer lattice ℤ, the (vertex) edge boundary of a finite set S with |S| ≥ 2 has at least 2 elements, with integer intervals achieving equality. This is the 1D foundation for higher-dimensional discrete isoperimetric theorems on ℤ^d (Bollobás–Leader compression) and on the hypercube (Harper).",
   "meta": {
     "author": "Bollobás, Harper",
     "sourceUrl": "https://www.cs.ru.nl/~freek/100/",
@@ -50,7 +50,7 @@
   },
   "overview": {
     "historicalContext": "The discrete isoperimetric problem asks for the minimum boundary among finite subsets of a lattice or graph with a given size. The 1D case on ℤ is elementary: an interval minimizes the boundary. Higher-dimensional analogues are deeper — Harper (1966) solved the hypercube case, Bollobás–Leader (1991) compression handles ℤ^d. The 1D result is the base case underlying these techniques and a natural target for formalization since it requires only Finset min/max reasoning.",
-    "problemStatement": "Let S ⊆ ℤ be a nonempty finite set. Define the (vertex) edge boundary ∂S = {x ∈ ℤ : x ∉ S, x+1 ∈ S or x-1 ∈ S}. Prove that if |S| ≥ 2, then |∂S| ≥ 2, with equality iff S is an integer interval [a, b].",
+    "problemStatement": "Let S ⊆ ℤ be a nonempty finite set. Define the (vertex) edge boundary ∂S = {x ∈ ℤ : x ∉ S, x+1 ∈ S or x-1 ∈ S}. Prove that if |S| ≥ 2, then |∂S| ≥ 2, with integer intervals [a, b] achieving equality.",
     "text": "Discrete isoperimetric inequality on ℤ: |∂S| ≥ 2 for finite S with |S| ≥ 2; intervals achieve equality.",
     "proofStrategy": "The lower bound is constructive: the points min(S) - 1 and max(S) + 1 both lie in ∂S (each is adjacent to an element of S — the relevant endpoint — and is itself outside S since it sits strictly below the minimum or above the maximum). When |S| ≥ 2 the minimum is strictly below the maximum (Finset.min'_lt_max'_of_card), so these two boundary witnesses are distinct, giving |∂S| ≥ 2. Conversely, for an interval Finset.Icc a b with a ≤ b a direct case analysis on the boundary characterization shows ∂(Icc a b) = {a - 1, b + 1}, and these two endpoints are distinct, proving the equality case.",
     "keyInsights": [
@@ -95,7 +95,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The 1D discrete isoperimetric inequality on ℤ is fully verified: |∂S| ≥ 2 for any finite S with |S| ≥ 2, with equality iff S is an interval. The proof is short (~136 lines, 0 axioms, 0 sorries) and reduces the bound to extracting Finset.min' and Finset.max' as boundary witnesses.",
+    "summary": "The 1D discrete isoperimetric inequality on ℤ is fully verified: |∂S| ≥ 2 for any finite S with |S| ≥ 2, with integer intervals attaining the bound. The proof is short (~136 lines, 0 axioms, 0 sorries) and reduces the bound to extracting Finset.min' and Finset.max' as boundary witnesses.",
     "openQuestions": [
       "Generalize to ℤ^d: for finite S ⊆ ℤ^d with |S| = n, characterize the minimum-boundary configurations (Bollobás–Leader cubical compression)",
       "Formalize Harper's theorem on the discrete hypercube {0,1}^n: among subsets of size k, initial segments of the simplicial order minimize the edge boundary",
