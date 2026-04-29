@@ -39,7 +39,7 @@
         "module": "Mathlib.Order.WellFounded"
       }
     ],
-    "assumptions": "3 axiom declarations: prime_divides_central_iff (Kummer's carry characterization), small_primes_divide (small primes divide C(2n,n) for large n), upper_bound_trivial (least non-divisor ≤ 2n+1). Proved: two_divides_central (Pascal+symmetry), bertrand_central (Bertrand+dvd_choose_add), central_binom_lower (binomial sum+max term). Removed least_nondiv_is_prime (false: counterexample n=2, C(4,2)=6, leastNonDiv=4).",
+    "assumptions": "3 axiom declarations: prime_divides_central_iff (Kummer's carry characterization: p | C(2n,n) iff some base-p digit of n is ≥ ⌈p/2⌉), choose_dvd_lcm (C(N,k) divides lcm(1,...,N+1)), upper_bound_trivial (least non-divisor ≤ 2n+1). Proved: two_divides_central (Pascal+symmetry), bertrand_central (Bertrand+dvd_choose_add), central_binom_lower (binomial sum+max term). Note: small_primes_divide is NOT an axiom — small_primes_divide_false (theorem, line 89) shows 3 ∤ C(6,3)=20, i.e. small primes do NOT always divide C(2n,n).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -86,7 +86,7 @@
       "title": "Divisibility Properties",
       "startLine": 48,
       "endLine": 74,
-      "summary": "Axiomatizes Kummer's theorem on carries, the prime divisibility criterion ($p \\mid \\binom{2n}{n}$ iff some digit $\\geq \\lceil p/2 \\rceil$), small primes dividing $\\binom{2n}{n}$ for large $n$, evenness, and the primorial asymptotic."
+      "summary": "Axiomatizes the prime divisibility criterion via prime_divides_central_iff ($p \\mid \\binom{2n}{n}$ iff some base-$p$ digit of $n$ is $\\geq \\lceil p/2 \\rceil$). Proves small_primes_divide_false (3 ∤ C(6,3)=20, showing the naive claim that small primes always divide C(2n,n) is FALSE) and two_divides_central (C(2n,n) is always even, by Pascal's rule)."
     },
     {
       "id": "asymptotics",
