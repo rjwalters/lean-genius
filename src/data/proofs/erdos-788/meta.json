@@ -51,10 +51,10 @@
       "pairwiseSums and isSumFreeWithResp definitions",
       "isValidConfig definition",
       "f axiom for the extremal function",
-      "choi_upper_bound and choiConjecture",
-      "adenwalla_lower_bound and sidon_sets_exist axioms",
-      "hunter_bound and bss_bound axioms",
-      "interval_sum_range theorem (constructive)",
+      "choiConjecture definition (Choi's open conjecture as a Prop)",
+      "adenwalla_lower_bound axiom; isSidonSet definition",
+      "bss_bound axiom (best known upper bound, Baltz-Schoen-Srivastav 2000)",
+      "interval_sum_range and sums_in_upper_interval theorems (constructive)",
       "erdos_788_summary theorem"
     ],
     "axiomCount": 3,
@@ -66,7 +66,7 @@
     "historicalContext": "Erdős Problem #788 asks about sum-free subsets in specific intervals. Given a 'forbidden' set B in the interval (2n, 4n), we seek a large set C in (n, 2n) whose pairwise sums avoid B. The function f(n) measures the maximum guaranteed combined size |C| + |B|. The natural interval pairing arises because elements c₁, c₂ ∈ (n, 2n) with c₁ ≠ c₂ always sum to values in (2n, 4n).\n\nChoi (1971) initiated the study, proving f(n) ≪ n^{3/4} and conjecturing f(n) ≤ n^{1/2+o(1)}. Adenwalla proved the lower bound f(n) ≫ n^{1/2} using Sidon sets — sets where all pairwise sums are distinct, existing with size ~√n in intervals of length n. Hunter improved the upper bound to n^{2/3+o(1)} via counting arguments.\n\nThe current best bound is due to Baltz, Schoen, and Srivastav (2000), who proved f(n) ≪ (n log n)^{2/3} using probabilistic construction of large Sidon sets. The gap between n^{1/2} and (n log n)^{2/3} has remained open for over 50 years, and Choi's conjecture f(n) ≤ n^{1/2+o(1)} is still unresolved.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet $f(n)$ be maximal such that for all $B \\subset (2n, 4n) \\cap \\mathbb{N}$, there exists $C \\subset (n, 2n) \\cap \\mathbb{N}$ with $c_1 + c_2 \\notin B$ for all $c_1 \\neq c_2 \\in C$ and $|C| + |B| \\geq f(n)$.\n\n**Known bounds:** $n^{1/2} \\ll f(n) \\ll (n \\log n)^{2/3}$\n\n**Conjecture (Choi):** $f(n) \\leq n^{1/2+o(1)}$",
     "text": "Estimate f(n) where f(n) is maximal s.t. for all B ⊂ (2n,4n), ∃ C ⊂ (n,2n) sum-free w.r.t. B with |C|+|B| ≥ f(n). Conjectured f(n) ≤ n^{1/2+o(1)}. Known: n^{1/2} ≪ f(n) ≪ (n log n)^{2/3}. OPEN.",
-    "proofStrategy": "**Formalization Approach**\n\nThe formalization defines sum-free sets with respect to a prescribed set via isSumFreeWithResp. The function f(n) is axiomatized since computing it requires deep combinatorial arguments. Known bounds are captured as axioms: Choi's n^{3/4}, Adenwalla's n^{1/2} lower bound via Sidon sets, Hunter's n^{2/3+o(1)}, and BSS's (n log n)^{2/3}. The interval arithmetic theorem (interval_sum_range) is proved constructively. The summary theorem combines the lower and upper bounds via exact ⟨...⟩.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization defines sum-free sets with respect to a prescribed set via isSumFreeWithResp. The function f(n) is axiomatized since computing it requires deep combinatorial arguments. Two bounds are axiomatized: Adenwalla's n^{1/2} lower bound (via Sidon sets) and BSS's (n log n)^{2/3} upper bound. Choi's n^{3/4} and Hunter's n^{2/3+o(1)} bounds appear only as docstring commentary, not as formal axioms. Two interval-arithmetic theorems (interval_sum_range and sums_in_upper_interval) are proved constructively via omega. The summary theorem combines the lower and upper bounds via exact ⟨...⟩.",
     "keyInsights": [
       "**Natural Interval Pairing:** Elements of (n, 2n) sum to values in (2n, 4n), making these the natural intervals",
       "**Sidon Sets Give Lower Bound:** Sidon sets of size ~√n in (n, 2n) prove f(n) ≫ n^{1/2}",
@@ -92,41 +92,41 @@
       "title": "The Function f(n)",
       "summary": "isValidConfig, f axiom",
       "startLine": 68,
-      "endLine": 80
+      "endLine": 77
     },
     {
       "id": "choi-bound",
       "title": "Choi's Bound and Conjecture (1971)",
-      "summary": "choi_upper_bound, choiConjecture",
-      "startLine": 81,
-      "endLine": 90
+      "summary": "choiConjecture (Prop definition of Choi's open conjecture)",
+      "startLine": 78,
+      "endLine": 84
     },
     {
       "id": "adenwalla",
       "title": "Adenwalla's Lower Bound",
-      "summary": "adenwalla_lower_bound, isSidonSet, sidon_sets_exist",
-      "startLine": 91,
-      "endLine": 108
+      "summary": "adenwalla_lower_bound axiom, isSidonSet definition",
+      "startLine": 85,
+      "endLine": 98
     },
     {
       "id": "improvements",
       "title": "Hunter's and BSS Improvements",
-      "summary": "hunter_bound, bss_bound",
-      "startLine": 109,
-      "endLine": 122
+      "summary": "bss_bound axiom (Baltz-Schoen-Srivastav 2000 upper bound)",
+      "startLine": 99,
+      "endLine": 108
     },
     {
       "id": "interval-arithmetic",
       "title": "Interval Arithmetic",
-      "summary": "interval_sum_range theorem, sums_in_upper_interval axiom",
-      "startLine": 123,
-      "endLine": 145
+      "summary": "interval_sum_range and sums_in_upper_interval theorems",
+      "startLine": 109,
+      "endLine": 136
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_788_summary theorem",
-      "startLine": 146,
+      "startLine": 137,
       "endLine": 155
     }
   ],
