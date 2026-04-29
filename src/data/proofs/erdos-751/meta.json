@@ -78,42 +78,42 @@
       "id": "graph-foundations",
       "title": "Graph Theory Foundations",
       "summary": "minDegree, maxDegree, chromaticNumber, girth, cycleLengths definitions",
-      "startLine": 36,
+      "startLine": 37,
       "endLine": 87
     },
     {
       "id": "key-relationships",
       "title": "Key Relationships",
-      "summary": "chromatic_implies_minDeg, four_chromatic_minDeg axioms",
+      "summary": "four_chromatic_minDeg axiom: chi(G) = 4 implies minDegree(G) >= 3",
       "startLine": 88,
-      "endLine": 110
+      "endLine": 107
     },
     {
       "id": "bondy-vince",
       "title": "Bondy-Vince Theorem",
-      "summary": "bondy_vince_theorem and bondy_vince_gap axioms",
-      "startLine": 111,
-      "endLine": 138
+      "summary": "bondy_vince_theorem axiom: minDegree >= 3 implies cycle-length difference <= 2",
+      "startLine": 108,
+      "endLine": 130
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "erdos_751_chromatic_4, erdos_751_with_girth, erdos_751 theorems",
-      "startLine": 139,
-      "endLine": 191
+      "startLine": 131,
+      "endLine": 183
     },
     {
       "id": "strengthening",
       "title": "Strengthening",
       "summary": "min_degree_3_cycle_gap, chromatic_4_implies_min_deg_3",
-      "startLine": 192,
-      "endLine": 215
+      "startLine": 184,
+      "endLine": 207
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_751_summary combining all results",
-      "startLine": 216,
+      "startLine": 208,
       "endLine": 235
     }
   ],
