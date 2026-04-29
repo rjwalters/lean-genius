@@ -3,13 +3,12 @@
   Routine supporting lemmas for automated proof search.
   See UnitDistanceHN7.lean for the main Hadwiger-Nelson upper bound (χ(ℝ²) ≤ 7).
 
-  The main file has 3 sorries that are candidates for automated proof:
-  1. hexCenter_dist_sq — algebraic distance formula for A₂ lattice centers
-  2. covering_radius — Voronoi covering radius ≤ s for the hexagonal lattice
-  3. hexColor_eq_implies_mod — mod condition from hexColor equality
+  Status (2026-04-29): only the geometric covering-radius obligation remains as a sorry.
+  hexCenter_dist_sq and the modular-arithmetic step (hexColor_eq_implies_mod) are now
+  proved here as well (the latter mirrors the inline step in same_color_far).
 
   Criteria for inclusion:
-  - NOT the main Hadwiger-Nelson theorem (follows from the 3 sorries above)
+  - NOT the main Hadwiger-Nelson theorem (follows from the supporting lemmas above)
   - Standalone theorems (sorries at theorem level, not buried in proofs)
   - No definition sorries, no axiom declarations, no open conjectures
   - No /-! docstring sections (use /- instead)
@@ -38,8 +37,8 @@ theorem hexCenter_dist_sq_ari (a₁ b₁ a₂ b₂ : ℤ) :
     dist (hexCenter a₁ b₁) (hexCenter a₂ b₂) ^ 2 =
     3 * hexSideLength ^ 2 *
       (((a₁ : ℝ) - a₂) ^ 2 + ((a₁ : ℝ) - a₂) * ((b₁ : ℝ) - b₂) +
-       ((b₁ : ℝ) - b₂) ^ 2) := by
-  sorry
+       ((b₁ : ℝ) - b₂) ^ 2) :=
+  hexCenter_dist_sq a₁ b₁ a₂ b₂
 
 /-
 ## Target 2: Hex Color Equality Implies Lattice Mod Condition
@@ -52,7 +51,16 @@ If two lattice cells have the same color, then 3·(q₁-q₂) + (r₁-r₂) ≡ 
 theorem hexColor_eq_implies_mod_ari (p q : Plane)
     (hcolor : hexColor p = hexColor q) :
     (3 * ((hexCoord p).1 - (hexCoord q).1) + ((hexCoord p).2 - (hexCoord q).2)) % 7 = 0 := by
-  sorry
+  set a₁ := (hexCoord p).1
+  set b₁ := (hexCoord p).2
+  set a₂ := (hexCoord q).1
+  set b₂ := (hexCoord q).2
+  simp only [hexColor, Fin.mk.injEq] at hcolor
+  have h₁_pos : 0 ≤ (3 * a₁ + b₁) % 7 := Int.emod_nonneg _ (by norm_num)
+  have h₂_pos : 0 ≤ (3 * a₂ + b₂) % 7 := Int.emod_nonneg _ (by norm_num)
+  have h₁_lt : (3 * a₁ + b₁) % 7 < 7 := Int.emod_lt_of_pos _ (by norm_num)
+  have h₂_lt : (3 * a₂ + b₂) % 7 < 7 := Int.emod_lt_of_pos _ (by norm_num)
+  omega
 
 /-
 ## Target 3: Covering Radius of A₂ Lattice

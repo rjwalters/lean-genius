@@ -118,15 +118,22 @@ theorem covering_radius (p : Plane) :
   -- algorithm assigns each point to the nearest lattice center.
 
 /-- Squared distance between hex centers equals 3s²·Q(Δa, Δb).
-    ‖center(a₁,b₁) - center(a₂,b₂)‖² = 3s²·(Δa² + Δa·Δb + Δb²). -/
+    ‖center(a₁,b₁) - center(a₂,b₂)‖² = 3s²·(Δa² + Δa·Δb + Δb²).
+    Expand: Δx = s√3·(Δa + Δb/2), Δy = 3s/2·Δb. -/
 theorem hexCenter_dist_sq (a₁ b₁ a₂ b₂ : ℤ) :
     dist (hexCenter a₁ b₁) (hexCenter a₂ b₂) ^ 2 =
     3 * hexSideLength ^ 2 *
       (((a₁ : ℝ) - a₂) ^ 2 + ((a₁ : ℝ) - a₂) * ((b₁ : ℝ) - b₂) +
        ((b₁ : ℝ) - b₂) ^ 2) := by
-  sorry
-  -- Expand: Δx = s√3·(Δa + Δb/2), Δy = 3s/2·Δb.
-  -- Δx² + Δy² = 3s²·Δa² + 3s²·Δa·Δb + 3s²·Δb² = 3s²·Q(Δa,Δb).
+  rw [EuclideanSpace.dist_sq_eq, Fin.sum_univ_two]
+  simp only [hexCenter, PiLp.continuousLinearEquiv_symm_apply, PiLp.toLp_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+             Real.dist_eq, sq_abs]
+  have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 :=
+    Real.mul_self_sqrt (by norm_num : (3:ℝ) ≥ 0)
+  nlinarith [h3, sq_nonneg ((a₁ : ℝ) - a₂), sq_nonneg ((b₁ : ℝ) - b₂),
+             sq_nonneg (((a₁ : ℝ) - a₂) + ((b₁ : ℝ) - b₂) / 2),
+             sq_nonneg hexSideLength]
 
 /-- √21 > 9/2. Proof: 21 > (9/2)² = 20.25, and √ is monotone. -/
 theorem sqrt21_gt_nine_halves : Real.sqrt 21 > 9 / 2 := by
@@ -182,7 +189,11 @@ theorem same_color_far (p q : Plane)
   have hmod : (3 * (a₁ - a₂) + (b₁ - b₂)) % 7 = 0 := by
     -- hexColor equality means (3a₁+b₁) mod 7 = (3a₂+b₂) mod 7
     simp only [hexColor, Fin.mk.injEq] at hcolor
-    sorry -- Extract: ((3a₁+b₁) % 7).toNat % 7 = ((3a₂+b₂) % 7).toNat % 7 → mod condition
+    have h₁_pos : 0 ≤ (3 * a₁ + b₁) % 7 := Int.emod_nonneg _ (by norm_num)
+    have h₂_pos : 0 ≤ (3 * a₂ + b₂) % 7 := Int.emod_nonneg _ (by norm_num)
+    have h₁_lt : (3 * a₁ + b₁) % 7 < 7 := Int.emod_lt_of_pos _ (by norm_num)
+    have h₂_lt : (3 * a₂ + b₂) % 7 < 7 := Int.emod_lt_of_pos _ (by norm_num)
+    omega
   -- Step 2: Different cells → (Δa, Δb) ≠ (0, 0)
   have hne : (a₁ - a₂, b₁ - b₂) ≠ (0, 0) := by
     intro h
@@ -258,24 +269,19 @@ end
 /-
   ## Summary
 
-  Theorems proved: 8
+  Theorems proved:
   - color_sublattice_min_norm: Q(Δa,Δb) ≥ 7 on color sublattice (FULLY PROVED)
   - sqrt21_gt_nine_halves: √21 > 9/2 (FULLY PROVED)
   - side_length_gap_bound: s(√21 - 2) > 1 (FULLY PROVED)
+  - hexCenter_dist_sq: ‖center(a₁,b₁) - center(a₂,b₂)‖² = 3s²·Q(Δa,Δb) (FULLY PROVED)
   - same_hex_close: same cell → dist < 1 (proved FROM covering_radius)
   - same_color_far: same color, different cell → dist > 1 (proved FROM covering_radius, hexCenter_dist_sq)
   - hadwiger_nelson_7coloring: main theorem (proved FROM same_hex_close, same_color_far)
 
-  Remaining sorries: 3
+  Remaining sorries: 1
   1. covering_radius — A₂ Voronoi cell circumradius ≤ s (geometric)
-  2. hexCenter_dist_sq — algebraic expansion of center distance formula
-  3. color extraction in same_color_far — Fin 7 equality → mod arithmetic
-
-  Key progress vs prior version (3 sorries, 1 FALSE):
-  - Fixed definitions: proper axial basis inversion + cube-coordinate Voronoi rounding
-  - same_hex_close is now TRUE (was false with parallelogram cells)
-  - Proved numerical bound √21 > 9/2 rigorously
-  - Clean proof chain: main theorem follows from well-defined geometric lemmas
+     The cube-coordinate rounding algorithm assigns each point to the nearest
+     lattice center. This is the only remaining geometric obligation.
 -/
 
 #check hadwiger_nelson_7coloring
