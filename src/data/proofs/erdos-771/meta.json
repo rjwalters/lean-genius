@@ -68,14 +68,14 @@
       "ErdosGrahamConjecture, ErdosGrahamConjecture': two formulations",
       "erdos_graham_lower_bound (axiom): f(n) >= (1/2-eps)*n/log n",
       "primeMutliples, prime_multiples_size (sorry), prime_multiples_avoid (sorry): construction lemmas",
-      "smallest_prime_bound (axiom): Bertrand's postulate",
+      "smallest_prime_bound (noted in comments): Bertrand's postulate",
       "alon_freiman_upper_bound (axiom): f(n) <= (1/2+eps)*n/log n",
-      "lcm_up_to, lcm_estimate (axiom), large_set_achieves_sum (axiom): LCM tools",
+      "lcm_up_to, lcm_estimate (unformalized), large_set_achieves_sum (unformalized): LCM tools",
       "erdos_graham_conjecture_true (partial proof + sorry): combines both bounds",
       "explicitBounds, leading_constant (sorry): explicit numerical bounds",
       "m_eq_one_case (sorry), m_eq_two_case (sorry): special cases",
       "smallPrimeConstruction: practical construction via Nat.minFac",
-      "IsSumFree, sum_free_upper_bound (axiom): comparison with sum-free sets",
+      "IsSumFree, sum_free_upper_bound (unformalized): comparison with sum-free sets",
       "erdos_771, erdos_771_main, erdos_771_solved: main theorem statements"
     ],
     "axiomCount": 2,
@@ -129,16 +129,16 @@
       "title": "Erdos-Graham Lower Bound",
       "startLine": 103,
       "endLine": 132,
-      "summary": "erdos_graham_lower_bound (axiom): f(n) >= (1/2-eps)n/log n. primeMutliples (filter by divisibility), prime_multiples_size (sorry: card = n/p), prime_multiples_avoid (sorry: p prime and p not dividing m implies avoidance), smallest_prime_bound (axiom: Bertrand's postulate).",
-      "mathContext": "erdos_graham_lower_bound (axiom): f(n) >= (1/2-eps)n/log n. primeMutliples (filter by divisibility), prime_multiples_size (sorry: card = n/p), prime_multiples_avoid (sorry: p prime and p not dividing m implies avoidance), smallest_prime_bound (axiom: Bertrand's postulate)."
+      "summary": "erdos_graham_lower_bound (axiom): f(n) >= (1/2-eps)n/log n. primeMutliples (filter by divisibility), prime_multiples_size (sorry: card = n/p), prime_multiples_avoid (sorry: p prime and p not dividing m implies avoidance), smallest_prime_bound (noted in comments: Bertrand's postulate).",
+      "mathContext": "erdos_graham_lower_bound (axiom): f(n) >= (1/2-eps)n/log n. primeMutliples (filter by divisibility), prime_multiples_size (sorry: card = n/p), prime_multiples_avoid (sorry: p prime and p not dividing m implies avoidance), smallest_prime_bound (noted in comments: Bertrand's postulate)."
     },
     {
       "id": "alon-freiman-upper-bound",
       "title": "Alon-Freiman Upper Bound",
       "startLine": 133,
       "endLine": 155,
-      "summary": "alon_freiman_upper_bound (axiom): f(n) <= (1/2+eps)n/log n. lcm_up_to (Icc_n(s).lcm id), lcm_estimate (axiom: lcm{1,...,s} <= exp(2s)), large_set_achieves_sum (axiom: large sets hit some m).",
-      "mathContext": "alon_freiman_upper_bound (axiom): f(n) <= (1/2+eps)n/$\\log n$. lcm_up_to (Icc_n(s).lcm id), lcm_estimate (axiom: lcm{1,...,s} <= exp(2s)), large_set_achieves_sum (axiom: large sets hit some m)."
+      "summary": "alon_freiman_upper_bound (axiom): f(n) <= (1/2+eps)n/log n. lcm_up_to (Icc_n(s).lcm id), lcm_estimate (unformalized: lcm{1,...,s} <= exp(2s)), large_set_achieves_sum (unformalized: large sets hit some m).",
+      "mathContext": "alon_freiman_upper_bound (axiom): f(n) <= (1/2+eps)n/$\\log n$. lcm_up_to (Icc_n(s).lcm id), lcm_estimate (unformalized: lcm{1,...,s} <= exp(2s)), large_set_achieves_sum (unformalized: large sets hit some m)."
     },
     {
       "id": "the-complete-answer",
@@ -169,8 +169,8 @@
       "title": "Connection to Sum-Free Sets",
       "startLine": 210,
       "endLine": 228,
-      "summary": "IsSumFree (no a+b=c in S), sum_free_upper_bound (axiom: |S| <= n/3+1). Comparison: m-avoiding allows n/(2 log n) vs n/3 for sum-free.",
-      "mathContext": "IsSumFree (no a+b=c in S), sum_free_upper_bound (axiom: |S| <= n/3+1). Comparison: m-avoiding allows n/(2 $\\log n$) vs n/3 for sum-free."
+      "summary": "IsSumFree (no a+b=c in S), sum_free_upper_bound (unformalized: |S| <= n/3+1). Comparison: m-avoiding allows n/(2 log n) vs n/3 for sum-free.",
+      "mathContext": "IsSumFree (no a+b=c in S), sum_free_upper_bound (unformalized: |S| <= n/3+1). Comparison: m-avoiding allows n/(2 $\\log n$) vs n/3 for sum-free."
     },
     {
       "id": "summary",
