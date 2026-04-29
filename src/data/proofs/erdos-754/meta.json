@@ -47,7 +47,6 @@
       "favoriteCount: max count at any distance",
       "f: the function f_d(n) for dimension d",
       "avis_erdos_pach_lower_bound: f(n) ≥ n/2 + 2",
-      "swanepoel_2013: favorite distance pairs bound",
       "swanepoel_erdos_754: f(n) ≤ n/2 + O(1)",
       "erdos_754_solved: combining bounds"
     ],
@@ -72,7 +71,7 @@
     "historicalContext": "**Erdős Problem #754: Favorite Distances in ℝ⁴**\n\nThis problem asks about 'favorite distances' - the maximum number of points equidistant from a given point in a configuration.\n\n**Key History:**\n- Erdős (1994): Posed the problem about ℝ⁴\n- Avis-Erdős-Pach (1988): Proved n/2 + 2 ≤ f(n) ≤ (1+o(1))n/2\n- Swanepoel (2013): Completed the solution with f(n) = n/2 + O(1)\n\nThe lower bound of n/2 + 2 is achieved by placing n/2 points on each of two orthogonal great circles of the Clifford torus in ℝ⁴: every point on one circle is equidistant from all n/2 points on the other circle, so each point has at least n/2 favorite-distance equidistant neighbors. The problem is special to ℝ⁴ and higher dimensions; in ℝ² and ℝ³ the analogous favorite-distance problem has a different answer, reflecting how the intersection of spheres changes dimensionally.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet f(n) be maximal such that there exists a set A of n points in ℝ⁴ where every x ∈ A has at least f(n) points equidistant from x.\n\n**Question:** Is f(n) ≤ n/2 + O(1)?\n\n**Answer: YES** - Swanepoel (2013)",
     "text": "In n points in ℝ⁴, each point can have at most n/2 + O(1) equidistant neighbors. Proved by Swanepoel (2013) after initial bounds by Avis-Erdős-Pach (1988).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:**\n   - PointConfig: configurations in ℝᵈ\n   - equidistantSet: points at given distance\n   - favoriteCount: maximum over distances\n   - f: the extremal function\n\n2. **Bounds:**\n   - avis_erdos_pach_lower_bound: f(n) ≥ n/2 + 2\n   - swanepoel_erdos_754: f(n) ≤ n/2 + O(1)\n\n3. **Stronger Result:**\n   - swanepoel_2013: bound on favorite distance pairs\n   - Applies to arbitrary distance assignments",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:**\n   - PointConfig: configurations in ℝᵈ\n   - equidistantSet: points at given distance\n   - favoriteCount: maximum over distances\n   - f: the extremal function\n\n2. **Bounds:**\n   - avis_erdos_pach_lower_bound: f(n) ≥ n/2 + 2\n   - swanepoel_erdos_754: f(n) ≤ n/2 + O(1)\n\n3. **Stronger Result:**\n   - Swanepoel (2013): total favorite distance pairs ≤ (1/2)n² + O(n)\n   - Applies to arbitrary distance assignments",
     "keyInsights": [
       "**Dimension 4 Is Special:** The problem specifically asks about ℝ⁴ because the geometry changes from ℝ³. Higher dimensions have similar bounds.",
       "**Clifford Torus Construction:** Taking n/2 points on each of two orthogonal circles achieves f(n) ≥ n/2 - points on different circles are equidistant.",
@@ -115,27 +114,27 @@
       "title": "Four-Dimensional Case",
       "summary": "Avis-Erdős-Pach bounds (1988)",
       "startLine": 71,
-      "endLine": 80
+      "endLine": 77
     },
     {
       "id": "swanepoel",
       "title": "Swanepoel's Theorem",
       "summary": "2013 solution, favorite distance pairs, erdos_754_solved",
-      "startLine": 81,
-      "endLine": 110
+      "startLine": 78,
+      "endLine": 102
     },
     {
       "id": "higher-dim",
       "title": "Higher Dimensions",
-      "summary": "swanepoel_higher_dimensions for d ≥ 4",
-      "startLine": 111,
-      "endLine": 117
+      "summary": "Swanepoel (2013) analogous results for higher dimensions d ≥ 4",
+      "startLine": 103,
+      "endLine": 105
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_754, erdos_754_summary",
-      "startLine": 118,
+      "startLine": 106,
       "endLine": 140
     }
   ],
