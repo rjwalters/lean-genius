@@ -49,7 +49,7 @@
       "HasKChordsIncident and AvoidsCycleWithKChords predicates",
       "g_k function axiom with achievability and maximality",
       "czipszer_upper and erdos_lower bound axioms",
-      "posa_k1, erdos_k2, erdos_k3 special case axioms",
+      "Pósa/Erdős special-case formulas (g_1, g_2, g_3) recorded as comments",
       "jiang_2004 main theorem axiom",
       "erdos_767_solved theorem from Jiang's result",
       "formula_factored algebraic verification",
@@ -82,63 +82,63 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Graphs, cycles, chords, and avoidance predicates",
-      "startLine": 32,
-      "endLine": 72,
+      "startLine": 33,
+      "endLine": 73,
       "mathContext": "Mathematical content: Graphs, cycles, chords, and avoidance predicates"
     },
     {
       "id": "g-function",
       "title": "The Function g_k(n)",
       "summary": "Definition, achievability, and maximality axioms",
-      "startLine": 73,
-      "endLine": 90,
+      "startLine": 74,
+      "endLine": 86,
       "mathContext": "Formal definition: Definition, achievability, and maximality axioms"
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
       "summary": "Czipszer upper bound and Erdős lower bound",
-      "startLine": 91,
-      "endLine": 102,
+      "startLine": 87,
+      "endLine": 98,
       "mathContext": "Bound: Czipszer upper bound and Erdős lower bound"
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "summary": "Pósa k=1, Erdős k=2,3",
-      "startLine": 103,
-      "endLine": 118,
-      "mathContext": "Mathematical content: Pósa k=1, Erdős k=2,3"
+      "summary": "Pósa k=1, Erdős k=2,3 — recorded as comments only, no declarations",
+      "startLine": 99,
+      "endLine": 105,
+      "mathContext": "Mathematical content: Pósa k=1, Erdős k=2,3 (docstrings only)"
     },
     {
       "id": "jiang",
       "title": "Jiang's Theorem (2004)",
       "summary": "Main result: exact formula for n >= 3k+3",
-      "startLine": 119,
-      "endLine": 132,
+      "startLine": 106,
+      "endLine": 119,
       "mathContext": "Mathematical content: Main result: exact formula for n >= 3k+3"
     },
     {
       "id": "verification",
       "title": "Formula Verification",
       "summary": "Algebraic checks and special case verification",
-      "startLine": 133,
-      "endLine": 155,
+      "startLine": 120,
+      "endLine": 142,
       "mathContext": "Mathematical content: Algebraic checks and special case verification"
     },
     {
       "id": "examples",
       "title": "Computational Examples",
       "summary": "Numerical verification with native_decide",
-      "startLine": 156,
-      "endLine": 171,
+      "startLine": 143,
+      "endLine": 158,
       "mathContext": "Mathematical content: Numerical verification with native_decide"
     },
     {
       "id": "combined",
       "title": "Combined Result",
       "summary": "erdos_767_statement combining all bounds",
-      "startLine": 172,
+      "startLine": 159,
       "endLine": 193,
       "mathContext": "Bound: erdos_767_statement combining all bounds"
     }
