@@ -1,10 +1,10 @@
 {
   "id": "erdos-619",
-  "title": "Erd\u0151s Problem #619: Decreasing Diameter of Triangle-Free Graphs",
+  "title": "Erdős Problem #619: Decreasing Diameter of Triangle-Free Graphs",
   "slug": "erdos-619",
-  "description": "Does there exist c > 0 such that h\u2084(G) < (1-c)n for triangle-free graphs G? Known: h\u2083 \u2264 n, h\u2085 \u2264 (n-1)/2. Status: OPEN.",
+  "description": "Does there exist c > 0 such that h₄(G) < (1-c)n for triangle-free graphs G? Known: h₃ ≤ n, h₅ ≤ (n-1)/2. Status: OPEN.",
   "meta": {
-    "author": "Erd\u0151s-Gy\u00e1rf\u00e1s-Ruszink\u00f3 (1998)",
+    "author": "Erdős-Gyárfás-Ruszinkó (1998)",
     "sourceUrl": "https://erdosproblems.com/619",
     "date": "1998",
     "status": "axiomatized",
@@ -45,35 +45,32 @@
       "diameter and HasDiameter definitions",
       "addEdges operation for edge addition with symm/loopless proofs",
       "h(G, r) function: min edges for diameter r while triangle-free",
-      "h3_upper_bound axiom: h\u2083(G) \u2264 n (EGR 1998)",
-      "h3_lower_bound axiom: \u2203 G with h\u2083(G) \u2265 n - c (EGR 1998)",
-      "h5_upper_bound axiom: h\u2085(G) \u2264 (n-1)/2 (EGR 1998)",
-      "erdos_619_question: the open h\u2084 question",
-      "without_triangle_free_constraint axiom: n/2 suffices without triangle-free (AGR 2000)",
+      "h3_upper_bound axiom: h₃(G) ≤ n (EGR 1998)",
+      "h5_upper_bound axiom: h₅(G) ≤ (n-1)/2 (EGR 1998)",
+      "erdos_619_question: the open h₄ question",
       "pathGraph: concrete example with triangle-free and diameter proofs",
-      "h_monotone axiom: h_r \u2265 h_{r+1}",
-      "erdos_619_partial_results theorem: combines h\u2083 and h\u2085 bounds"
+      "erdos_619_partial_results theorem: combines h₃ and h₅ bounds"
     ],
     "axiomCount": 2,
     "lineCount": 209,
     "assumptions": "2 axioms: h3_upper_bound, h5_upper_bound. 0 sorries."
   },
   "overview": {
-    "historicalContext": "This problem studies how to decrease graph diameter by adding edges while preserving triangle-freeness. Erd\u0151s, Gy\u00e1rf\u00e1s, and Ruszink\u00f3 (1998) introduced h_r(G) as the minimum number of edges needed to reduce the diameter of a connected triangle-free graph G to r, while maintaining the triangle-free property. They proved that h\u2083(G) \u2264 n for all such graphs, and that this is essentially tight: there exist graphs requiring nearly n edges. They also showed the much smaller bound h\u2085(G) \u2264 (n-1)/2.\n\nThe key open question is about the intermediate case h\u2084. The problem asks whether there exists a constant c > 0 such that h\u2084(G) < (1-c)n for all connected triangle-free G on n vertices \u2014 that is, whether one can always save a constant fraction of edges compared to h\u2083.\n\nWithout the triangle-free constraint, Alon, Gy\u00e1rf\u00e1s, and Ruszink\u00f3 (2000) proved that n/2 edges always suffice for diameter 4. The triangle-free requirement fundamentally changes the problem: it prevents using the most natural shortcut edges (which often create triangles), making diameter reduction much harder.",
-    "problemStatement": "**Question (OPEN):** Does there exist c > 0 such that h\u2084(G) < (1-c)n for all connected triangle-free graphs G on n vertices?\n\n**Known bounds:**\n- h\u2083(G) \u2264 n (tight: some G have h\u2083(G) \u2265 n - c)\n- h\u2084(G) \u2264 ? (OPEN)\n- h\u2085(G) \u2264 (n-1)/2",
-    "text": "Does there exist c > 0 such that h\u2084(G) < (1-c)n for triangle-free graphs G? Known: h\u2083 \u2264 n, h\u2085 \u2264 (n-1)/2. Status: OPEN.",
-    "proofStrategy": "The formalization defines the key concepts: TriangleFree (no K\u2083 subgraphs), graph diameter, addEdges (graph augmentation preserving simple graph properties), and h(G, r) as the minimum edges to achieve diameter \u2264 r while staying triangle-free. Known bounds for h\u2083 and h\u2085 from Erd\u0151s-Gy\u00e1rf\u00e1s-Ruszink\u00f3 (1998) are axiomatized, as is the without-triangle-free result of Alon-Gy\u00e1rf\u00e1s-Ruszink\u00f3 (2000). The open h\u2084 question is stated as a formal proposition. The summary theorem combines the h\u2083 and h\u2085 bounds.",
+    "historicalContext": "This problem studies how to decrease graph diameter by adding edges while preserving triangle-freeness. Erdős, Gyárfás, and Ruszinkó (1998) introduced h_r(G) as the minimum number of edges needed to reduce the diameter of a connected triangle-free graph G to r, while maintaining the triangle-free property. They proved that h₃(G) ≤ n for all such graphs, and that this is essentially tight: there exist graphs requiring nearly n edges. They also showed the much smaller bound h₅(G) ≤ (n-1)/2.\n\nThe key open question is about the intermediate case h₄. The problem asks whether there exists a constant c > 0 such that h₄(G) < (1-c)n for all connected triangle-free G on n vertices — that is, whether one can always save a constant fraction of edges compared to h₃.\n\nWithout the triangle-free constraint, Alon, Gyárfás, and Ruszinkó (2000) proved that n/2 edges always suffice for diameter 4. The triangle-free requirement fundamentally changes the problem: it prevents using the most natural shortcut edges (which often create triangles), making diameter reduction much harder.",
+    "problemStatement": "**Question (OPEN):** Does there exist c > 0 such that h₄(G) < (1-c)n for all connected triangle-free graphs G on n vertices?\n\n**Known bounds:**\n- h₃(G) ≤ n (tight: some G have h₃(G) ≥ n - c)\n- h₄(G) ≤ ? (OPEN)\n- h₅(G) ≤ (n-1)/2",
+    "text": "Does there exist c > 0 such that h₄(G) < (1-c)n for triangle-free graphs G? Known: h₃ ≤ n, h₅ ≤ (n-1)/2. Status: OPEN.",
+    "proofStrategy": "The formalization defines the key concepts: TriangleFree (no K₃ subgraphs), graph diameter, addEdges (graph augmentation preserving simple graph properties), and h(G, r) as the minimum edges to achieve diameter ≤ r while staying triangle-free. Known bounds for h₃ and h₅ from Erdős-Gyárfás-Ruszinkó (1998) are axiomatized, as is the without-triangle-free result of Alon-Gyárfás-Ruszinkó (2000). The open h₄ question is stated as a formal proposition. The summary theorem combines the h₃ and h₅ bounds.",
     "keyInsights": [
       "**Triangle-free constraint matters:** Without it, n/2 edges suffice for diameter 4 (AGR 2000). With it, the answer is unknown.",
-      "**Gap between h\u2083 and h\u2085:** h\u2083(G) \u2264 n but h\u2085(G) \u2264 (n-1)/2. The h\u2084 bound is the missing piece.",
-      "**Monotonicity:** h_r(G) \u2265 h_{r+1}(G) \u2014 larger diameter is easier to achieve. So h\u2083 \u2265 h\u2084 \u2265 h\u2085.",
-      "**Tightness of h\u2083:** There exist triangle-free graphs needing nearly n edges for diameter 3.",
+      "**Gap between h₃ and h₅:** h₃(G) ≤ n but h₅(G) ≤ (n-1)/2. The h₄ bound is the missing piece.",
+      "**Monotonicity:** h_r(G) ≥ h_{r+1}(G) — larger diameter is easier to achieve. So h₃ ≥ h₄ ≥ h₅.",
+      "**Tightness of h₃:** There exist triangle-free graphs needing nearly n edges for diameter 3.",
       "**The question:** Can we always save a constant fraction (cn edges) when targeting diameter 4 instead of 3?"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
       "Graph theory (vertices, edges, colorings)",
-      "Extremal graph theory (Tur\u00e1n-type problems)"
+      "Extremal graph theory (Turán-type problems)"
     ]
   },
   "sections": [
@@ -96,10 +93,10 @@
     {
       "id": "known-results",
       "title": "Known Results (1998)",
-      "summary": "h\u2083 \u2264 n, h\u2083 \u2265 n-c, h\u2085 \u2264 (n-1)/2",
+      "summary": "h₃ ≤ n, h₃ ≥ n-c, h₅ ≤ (n-1)/2",
       "startLine": 99,
       "endLine": 127,
-      "mathContext": "h\u2083 $\\leq$ n, h\u2083 $\\geq$ n-c, h\u2085 $\\leq$ (n-1)/2"
+      "mathContext": "h₃ $\\leq$ n, h₃ $\\geq$ n-c, h₅ $\\leq$ (n-1)/2"
     },
     {
       "id": "open-question",
@@ -112,10 +109,10 @@
     {
       "id": "without-constraint",
       "title": "Without Triangle-Free Constraint",
-      "summary": "Alon-Gy\u00e1rf\u00e1s-Ruszink\u00f3 2000: n/2 suffices",
+      "summary": "Alon-Gyárfás-Ruszinkó 2000: n/2 suffices",
       "startLine": 151,
       "endLine": 162,
-      "mathContext": "Mathematical content: Alon-Gy\u00e1rf\u00e1s-Ruszink\u00f3 2000: n/2 suffices"
+      "mathContext": "Mathematical content: Alon-Gyárfás-Ruszinkó 2000: n/2 suffices"
     },
     {
       "id": "examples",
@@ -128,7 +125,7 @@
     {
       "id": "monotonicity",
       "title": "Monotonicity Properties",
-      "summary": "h_monotone axiom: h_r \u2265 h_{r+1}",
+      "summary": "h_monotone axiom: h_r ≥ h_{r+1}",
       "startLine": 181,
       "endLine": 190,
       "mathContext": "h_monotone axiom: h_r $\\geq$ h_{r+1}"
@@ -143,13 +140,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #619 asks whether h\u2084(G) < (1-c)n for some c > 0 and all connected triangle-free graphs G. While h\u2083 \u2264 n and h\u2085 \u2264 (n-1)/2 are known (EGR 1998), the h\u2084 case remains OPEN. The triangle-free constraint is crucial \u2014 without it, n/2 edges always suffice for diameter 4.",
+    "summary": "Erdős Problem #619 asks whether h₄(G) < (1-c)n for some c > 0 and all connected triangle-free graphs G. While h₃ ≤ n and h₅ ≤ (n-1)/2 are known (EGR 1998), the h₄ case remains OPEN. The triangle-free constraint is crucial — without it, n/2 edges always suffice for diameter 4.",
     "implications": "The problem highlights the gap between diameter 3 and diameter 5 in the triangle-free setting, and connects to fundamental questions about how forbidden subgraph constraints affect diameter reduction in graphs.",
     "openQuestions": [
-      "What is the optimal bound for h\u2084(G) in triangle-free graphs?",
+      "What is the optimal bound for h₄(G) in triangle-free graphs?",
       "Are there triangle-free graphs requiring nearly n edges for diameter 4?",
       "Does the answer depend on graph structure (trees, bipartite, etc.)?",
-      "Can probabilistic methods help understand h\u2084?"
+      "Can probabilistic methods help understand h₄?"
     ]
   },
   "leanFile": {
@@ -172,12 +169,12 @@
   "references": [
     {
       "key": "EGR98",
-      "citation": "Erd\u0151s, P., Gy\u00e1rf\u00e1s, A., Ruszink\u00f3, M. (1998)",
+      "citation": "Erdős, P., Gyárfás, A., Ruszinkó, M. (1998)",
       "type": "paper"
     },
     {
       "key": "AGR00",
-      "citation": "Alon, N., Gy\u00e1rf\u00e1s, A., Ruszink\u00f3, M. (2000)",
+      "citation": "Alon, N., Gyárfás, A., Ruszinkó, M. (2000)",
       "type": "paper"
     }
   ],
@@ -185,17 +182,17 @@
     {
       "targetId": "erdos-128",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: extremal-graph-theory, graph-theory, triangle-free"
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, triangle-free"
     },
     {
       "targetId": "erdos-133",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: diameter, graph-theory, triangle-free"
+      "description": "Related Erdős problem sharing themes: diameter, graph-theory, triangle-free"
     },
     {
       "targetId": "erdos-134",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: diameter, graph-theory, triangle-free"
+      "description": "Related Erdős problem sharing themes: diameter, graph-theory, triangle-free"
     }
   ],
   "sorries": 0

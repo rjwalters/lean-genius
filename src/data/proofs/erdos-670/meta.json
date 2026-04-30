@@ -45,7 +45,6 @@
       "dist': Euclidean distance via √(∑(pᵢ-qᵢ)²)",
       "DistinctDistances: all pairwise distance differences ≥ δ",
       "diameter: max pairwise distance via Finset.sup'",
-      "trivial_lower_bound axiom: diameter ≥ C(n,2)",
       "MainConjecture: diameter ≥ (1-ε)n² for large n (OPEN)",
       "WeakConjecture: diameter ≥ cn² for some c > 0",
       "trivial_gives_half axiom: WeakConjecture with c = 1/2",
@@ -53,8 +52,6 @@
       "erdos_1997_d1 axiom: MainConjecture for d=1",
       "arithmeticProgression construction showing tightness",
       "SuperlinearConjecture: diameter ≥ n(n-1)/2",
-      "differ_implies_distinct axiom: gap ≥ 1 implies distinct",
-      "pigeonhole_approach axiom: diameter ≥ C(n,2) - 1",
       "erdos_670_summary: proved conjunction of d=1 result and WeakConjecture"
     ],
     "axiomCount": 2,
