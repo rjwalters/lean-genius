@@ -351,7 +351,8 @@
       "Finset"
     ],
     "path": "Proofs/Erdos1155OQ01.lean",
-    "sorries": 0
+    "sorries": 0,
+    "definitionCount": 3
   },
   "conclusion": {
     "summary": "This 489-line formalization fully proves 20 structural theorems (0 sorries, 0 axiom declarations), dissecting the precise gap between Bohman-Frieze-Lubetzky's $n^{3/2+o(1)}$ result and Erdős's conjectured $\\Theta(n^{3/2})$ for the triangle removal process. The central insight is that the conjecture is a compactness condition on the ratio $f(n)/n^{3/2}$: it holds if and only if this sequence has all its accumulation points in a bounded interval $(c_1, c_2) \\subset (0, \\infty)$, a topological reformulation more revealing than the original asymptotic statement. The decomposition into independent $O(n^{3/2})$ and $\\Omega(n^{3/2})$ bounds provides a practical research roadmap — proving either one-sided bound constitutes concrete progress toward the full conjecture. The strict hierarchy Conjecture $\\Rightarrow$ BFL $\\Rightarrow$ Grable quantifies how each known result relaxes multiplicative constant control, while the exact critical exponent characterization ($3/2 = \\inf\\{\\alpha : f(n) = O(n^\\alpha)\\}$) confirms BFL pinpointed the right scaling.",

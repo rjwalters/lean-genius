@@ -28,7 +28,7 @@
     ],
     "originalContributions": [
       "Weighted ballot sequence definitions (WeightSeq, partialSums, isGoodWeighted)",
-      "Explicit counterexample: votes [2,1] vs [2] \u2014 actual P=1/3, classical formula=1/5",
+      "Explicit counterexample: votes [2,1] vs [2] — actual P=1/3, classical formula=1/5",
       "Fiber argument failure theorem: same sign pattern but different goodness",
       "Scaled ballot formula: (ap-bq)/(ap+bq) for uniform weight scaling"
     ],
@@ -39,16 +39,16 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The classical ballot problem (Bertrand 1887, Andr\u00e9 1887) asks: if candidate A receives a votes and candidate B receives b votes with a > b, what fraction of all vote orderings keep A strictly ahead throughout the count? The answer, (a-b)/(a+b), is proved via the reflection principle or cycle lemma.\n\nThe weighted ballot problem generalizes this by assigning non-unit weights to individual votes. This arises naturally in applications: weighted voting systems, continuous-time processes, and models where some voters have stronger preferences. The key question is whether the formula (W_A - W_B)/(W_A + W_B) (using total weights) remains valid.\n\nThe answer is NO: the classical formula breaks for non-uniform individual weights. The fundamental reason is that the classical proof (via the Andr\u00e9 cycle lemma or reflection principle) exploits the combinatorial symmetry of \u00b11 sequences \u2014 each ballot sequence has the same weight 1/(a+b)! \u2014 which fails when individual votes have different weights.",
+    "historicalContext": "The classical ballot problem (Bertrand 1887, André 1887) asks: if candidate A receives a votes and candidate B receives b votes with a > b, what fraction of all vote orderings keep A strictly ahead throughout the count? The answer, (a-b)/(a+b), is proved via the reflection principle or cycle lemma.\n\nThe weighted ballot problem generalizes this by assigning non-unit weights to individual votes. This arises naturally in applications: weighted voting systems, continuous-time processes, and models where some voters have stronger preferences. The key question is whether the formula (W_A - W_B)/(W_A + W_B) (using total weights) remains valid.\n\nThe answer is NO: the classical formula breaks for non-uniform individual weights. The fundamental reason is that the classical proof (via the André cycle lemma or reflection principle) exploits the combinatorial symmetry of ±1 sequences — each ballot sequence has the same weight 1/(a+b)! — which fails when individual votes have different weights.",
     "problemStatement": "**Open Question** (from ballot-problem-oq-01-oq-02): Generalize to weighted votes or non-uniform prior distributions over opponent candidate identities.\n\n**Finding**: The classical formula fails for non-uniform weights. The fiber counting argument from the parent proof breaks. A counterexample is exhibited explicitly.",
     "text": "Formalizes the weighted ballot problem, proves the classical formula fails via counterexample, identifies the structural obstruction (fiber argument breakdown), and establishes the scaled ballot formula as a valid partial generalization.",
-    "proofStrategy": "**Counterexample strategy**: Exhibit two weight configurations with the same total (W_A = 3, W_B = 2) but different probability structures. For A-votes [2,1] and B-votes [2], enumerate all 6 orderings explicitly and count good ones (2/6 = 1/3 \u2260 1/5 from formula).\n\n**Fiber argument**: Show two sequences with the same \u00b11 sign pattern but different goodness properties \u2014 directly defeating the parent's uniformity argument.\n\n**Scaled case**: When all A-votes have weight p and all B-votes have weight q, the formula (ap-bq)/(ap+bq) is a valid generalization (proved for the formula structure).",
+    "proofStrategy": "**Counterexample strategy**: Exhibit two weight configurations with the same total (W_A = 3, W_B = 2) but different probability structures. For A-votes [2,1] and B-votes [2], enumerate all 6 orderings explicitly and count good ones (2/6 = 1/3 ≠ 1/5 from formula).\n\n**Fiber argument**: Show two sequences with the same ±1 sign pattern but different goodness properties — directly defeating the parent's uniformity argument.\n\n**Scaled case**: When all A-votes have weight p and all B-votes have weight q, the formula (ap-bq)/(ap+bq) is a valid generalization (proved for the formula structure).",
     "keyInsights": [
-      "The classical formula (a-b)/(a+b) relies on each vote ordering having equal probability 1/(a+b)! \u2014 this breaks immediately for non-unit weights",
-      "The fiber argument from OQ-02 requires each \u00b11 pattern to have the same number of 'good' multi-candidate refinements \u2014 non-uniform weights break this",
-      "Two votes of [2, -1] and [1, -2] have the same \u00b11 sign pattern but different goodness: [2,-1] is good (sums: 2,1) while [1,-2] is not (sums: 1,-1)",
+      "The classical formula (a-b)/(a+b) relies on each vote ordering having equal probability 1/(a+b)! — this breaks immediately for non-unit weights",
+      "The fiber argument from OQ-02 requires each ±1 pattern to have the same number of 'good' multi-candidate refinements — non-uniform weights break this",
+      "Two votes of [2, -1] and [1, -2] have the same ±1 sign pattern but different goodness: [2,-1] is good (sums: 2,1) while [1,-2] is not (sums: 1,-1)",
       "The scaled case (all A-votes weight p, all B-votes weight q) admits the formula (ap-bq)/(ap+bq), a natural generalization",
-      "The general weighted ballot is equivalent to a random walk with non-unit steps \u2014 no simple closed form exists in general"
+      "The general weighted ballot is equivalent to a random walk with non-unit steps — no simple closed form exists in general"
     ],
     "prerequisites": [
       "Classical ballot problem",
@@ -62,7 +62,7 @@
       "title": "Definitions for Weighted Ballot",
       "startLine": 51,
       "endLine": 73,
-      "summary": "WeightSeq (List \u211a), partialSums (scanl), isGoodWeighted (all partial sums positive), Decidable instance."
+      "summary": "WeightSeq (List ℚ), partialSums (scanl), isGoodWeighted (all partial sums positive), Decidable instance."
     },
     {
       "id": "partial-sum-lemmas",
@@ -70,14 +70,14 @@
       "startLine": 75,
       "endLine": 101,
       "summary": "partialSums_nil, partialSums_singleton, partialSums_two, singleton_good_iff, two_good_iff.",
-      "mathContext": "partialSums [w\u2081, w\u2082] = [w\u2081, w\u2081+w\u2082]; isGoodWeighted [w\u2081,w\u2082] \u2194 0 < w\u2081 \u2227 0 < w\u2081+w\u2082."
+      "mathContext": "partialSums [w₁, w₂] = [w₁, w₁+w₂]; isGoodWeighted [w₁,w₂] ↔ 0 < w₁ ∧ 0 < w₁+w₂."
     },
     {
       "id": "counterexample",
       "title": "Counterexample: Classical Formula Fails",
       "startLine": 103,
       "endLine": 152,
-      "summary": "Six orderings of [2,1,-2] enumerated. Two are good. Actual P = 1/3 \u2260 1/5 = classical formula.",
+      "summary": "Six orderings of [2,1,-2] enumerated. Two are good. Actual P = 1/3 ≠ 1/5 = classical formula.",
       "mathContext": "W_A = 2+1 = 3, W_B = 2. Formula: (3-2)/(3+2) = 1/5. Actual: 2/6 = 1/3."
     },
     {
@@ -85,7 +85,7 @@
       "title": "The Fiber Argument Breaks",
       "startLine": 154,
       "endLine": 182,
-      "summary": "projection_ambiguity: [2,-1] is good but [1,-2] is not, despite same \u00b11 pattern. fiber_argument_fails: existential witness.",
+      "summary": "projection_ambiguity: [2,-1] is good but [1,-2] is not, despite same ±1 pattern. fiber_argument_fails: existential witness.",
       "mathContext": "The parent's key invariant (equal fiber sizes) fails for non-uniform weights."
     },
     {
@@ -101,17 +101,17 @@
       "title": "Scaled Ballot Expression and Open Directions",
       "startLine": 247,
       "endLine": 311,
-      "summary": "Defines scaledBallotFormula (ap-bq)/(ap+bq), proves degeneration to classical, positivity, and \u22641 bound. Notes this is NOT the actual probability for the scaled case. Concludes with open directions.",
+      "summary": "Defines scaledBallotFormula (ap-bq)/(ap+bq), proves degeneration to classical, positivity, and ≤1 bound. Notes this is NOT the actual probability for the scaled case. Concludes with open directions.",
       "mathContext": "$(ap-bq)/(ap+bq)$ degenerates to $(a-b)/(a+b)$ when $p = q = 1$. But it does not equal the actual ballot probability in general."
     }
   ],
   "conclusion": {
-    "summary": "The classical ballot formula fails for non-uniform weights. A concrete counterexample is proved (P = 1/3 vs formula 1/5). The structural obstruction \u2014 fiber argument breakdown \u2014 is formalized. The scaled ballot formula provides a valid partial generalization.",
-    "implications": "1. **No simple formula**: For general weight sequences, no closed-form exists analogous to the classical (a-b)/(a+b).\n2. **Structural insight**: The classical proof is fundamentally tied to \u00b11 sequences; it cannot be naively adapted for non-unit weights.\n3. **Scaled case**: Uniform scaling (all votes have weight p or q) does preserve the formula structure, giving (ap-bq)/(ap+bq).",
+    "summary": "The classical ballot formula fails for non-uniform weights. A concrete counterexample is proved (P = 1/3 vs formula 1/5). The structural obstruction — fiber argument breakdown — is formalized. The scaled ballot formula provides a valid partial generalization.",
+    "implications": "1. **No simple formula**: For general weight sequences, no closed-form exists analogous to the classical (a-b)/(a+b).\n2. **Structural insight**: The classical proof is fundamentally tied to ±1 sequences; it cannot be naively adapted for non-unit weights.\n3. **Scaled case**: Uniform scaling (all votes have weight p or q) does preserve the formula structure, giving (ap-bq)/(ap+bq).",
     "openQuestions": [
       "For which weight distributions does a closed-form ballot probability exist?",
-      "Can the P\u00f3lya urn (exchangeable) model give a tractable formula?",
-      "What is the correct formula for the scaled case (all A-votes weight p, all B-votes weight q) \u2014 is it provably (ap-bq)/(ap+bq) via cycle lemma?"
+      "Can the Pólya urn (exchangeable) model give a tractable formula?",
+      "What is the correct formula for the scaled case (all A-votes weight p, all B-votes weight q) — is it provably (ap-bq)/(ap+bq) via cycle lemma?"
     ]
   },
   "leanFile": {
@@ -129,7 +129,7 @@
     "lineCount": 311,
     "axiomCount": 0,
     "theoremCount": 24,
-    "definitionCount": 3,
+    "definitionCount": 4,
     "path": "Proofs/BallotProblemOQ01OQ02OQ04.lean",
     "sorries": 0
   },
@@ -153,14 +153,14 @@
   "references": [
     {
       "authors": "Bertrand, J.",
-      "title": "Solution d'un probl\u00e8me",
+      "title": "Solution d'un problème",
       "year": "1887",
       "venue": "C. R. Acad. Sci. Paris 105",
       "note": "Original ballot problem statement"
     },
     {
-      "authors": "Andr\u00e9, D.",
-      "title": "Solution directe du probl\u00e8me r\u00e9solu par M. Bertrand",
+      "authors": "André, D.",
+      "title": "Solution directe du problème résolu par M. Bertrand",
       "year": "1887",
       "venue": "C. R. Acad. Sci. Paris 105",
       "note": "Reflection principle proof"

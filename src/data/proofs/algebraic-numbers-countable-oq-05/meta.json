@@ -2,7 +2,7 @@
   "id": "algebraic-numbers-countable-oq-05",
   "title": "Cantor's 1874 Height Function Proof of Algebraic Number Countability",
   "slug": "algebraic-numbers-countable-oq-05",
-  "description": "Formalizes Cantor's original 1874 proof that the algebraic reals are countable, using the HEIGHT FUNCTION H(p) = deg(p) + \u2211|a\u1d62|. The key result is that each height stratum is FINITE (not just countable), making this a particularly constructive and elegant argument. 0 sorries, 0 axioms.",
+  "description": "Formalizes Cantor's original 1874 proof that the algebraic reals are countable, using the HEIGHT FUNCTION H(p) = deg(p) + ∑|aᵢ|. The key result is that each height stratum is FINITE (not just countable), making this a particularly constructive and elegant argument. 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-04-26",
@@ -26,144 +26,151 @@
     "dateAdded": "2026-04-26",
     "assumptions": "",
     "originalContributions": [
-      "cantorHeight: The Cantor height function H(p) = natDegree(p) + \u2211\u1d62 |p\u1d62| on integer polynomials",
-      "cantorHeight_degree_le: natDegree(p) \u2264 H(p) \u2014 degree is bounded by height",
-      "cantorHeight_coeff_le: |p.coeff i| \u2264 H(p) for all i \u2014 each coefficient is bounded by height",
-      "finite_polys_of_height: {p : Polynomial \u2124 | H(p) \u2264 h} is finite for each h \u2014 the key finiteness theorem",
+      "cantorHeight: The Cantor height function H(p) = natDegree(p) + ∑ᵢ |pᵢ| on integer polynomials",
+      "cantorHeight_degree_le: natDegree(p) ≤ H(p) — degree is bounded by height",
+      "cantorHeight_coeff_le: |p.coeff i| ≤ H(p) for all i — each coefficient is bounded by height",
+      "finite_polys_of_height: {p : Polynomial ℤ | H(p) ≤ h} is finite for each h — the key finiteness theorem",
       "finite_real_roots: each nonzero integer polynomial has finitely many real roots",
       "algebraicRealsOfHeight: the height-stratified family of real algebraic numbers",
       "finite_algebraicRealsOfHeight: each height stratum algebraicRealsOfHeight(h) is FINITE",
-      "algebraic_reals_eq_iUnion_height: IsAlgebraic \u211a x \u2194 x \u2208 \u22c3\u2095 algebraicRealsOfHeight(h)",
+      "algebraic_reals_eq_iUnion_height: IsAlgebraic ℚ x ↔ x ∈ ⋃ₕ algebraicRealsOfHeight(h)",
       "algebraic_reals_countable_via_height: the algebraic reals are countable (main theorem)",
-      "algebraicRealsOfHeight_mono: the filtration is monotone \u2014 height strata nest",
-      "card_algebraic_reals_eq_aleph0: #(algebraic reals) = \u2135\u2080",
+      "algebraicRealsOfHeight_mono: the filtration is monotone — height strata nest",
+      "card_algebraic_reals_eq_aleph0: #(algebraic reals) = ℵ₀",
       "finite_algebraicReals_bounded_height: explicit characterization of height-bounded algebraic reals"
     ]
   },
   "overview": {
-    "historicalContext": "Georg Cantor's 1874 paper '\u00dcber eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen' (On a Property of the Collection of All Real Algebraic Numbers) introduced the height function as a tool to count algebraic numbers. This was one of the first rigorous applications of cardinality reasoning and marks the birth of set theory.\n\nCantor's insight was simple yet profound: assign a natural number H(p) to each integer polynomial p \u2014 the 'height' \u2014 in such a way that only finitely many polynomials have any given height. Then, since each polynomial has finitely many roots, the algebraic numbers of bounded height form a finite set. The algebraic numbers as a whole are a countable union of these finite sets.\n\nThe height function Cantor chose was H(a\u2080 + a\u2081X + \u00b7\u00b7\u00b7 + a\u2099X\u207f) = n + |a\u2080| + |a\u2081| + \u00b7\u00b7\u00b7 + |a\u2099|. This elegant choice ensures:\n- Bounded height \u2192 bounded degree AND bounded coefficients\n- Finitely many integer polynomials of each height\n- Combined with the finite-roots theorem: finitely many algebraic reals of each height\n\nThis 1874 paper appeared just one year before Cantor's diagonal argument (1875/1891), and represents the 'constructive' half of Cantor's revolution: algebraic numbers are countable (enumerable), while real numbers are not (uncountable via diagonalization).",
-    "problemStatement": "**The Cantor Height Function**: For an integer polynomial p = a\u2080 + a\u2081X + \u00b7\u00b7\u00b7 + a\u2099X\u207f, define:\n\n  H(p) = n + |a\u2080| + |a\u2081| + \u00b7\u00b7\u00b7 + |a\u2099|\n\n**Open Question**: Can we formalize Cantor's original 1874 proof that uses the height function to stratify algebraic reals into **finite** strata (not just countable), giving a more constructive proof of countability?\n\n**Main Theorem**: The algebraic real numbers are countable, with the explicit decomposition:\n\n  {x : \u211d | IsAlgebraic \u211a x} = \u22c3\u2095 {roots of integer polys with height \u2264 h}\n\nEach set on the right is **finite** (the key finiteness, stronger than countability).",
-    "proofStrategy": "The proof proceeds in four steps:\n\n**Step 1: Height bounds degree and coefficients.** For any polynomial p with H(p) \u2264 h:\n- natDegree(p) \u2264 h (the degree is at most h)\n- |p.coeff i| \u2264 h for each coefficient i (each coefficient fits in [-h, h])\n\n**Step 2: Finitely many polynomials of bounded height.** Polynomials with H(p) \u2264 h are determined by:\n- Their degree (at most h+1 choices: 0, 1, ..., h)\n- Their coefficients (each in the finite set {-h, ..., h}, and there are at most h+1 coefficients)\n\nThis injects height-\u2264h polynomials into the finite Fintype `Fin(h+1) \u2192 Icc(-h, h)`, proving finiteness.\n\n**Step 3: Finite real roots per polynomial.** Each nonzero integer polynomial of degree n has at most n real roots (from `Polynomial.setOf_isRoot_finite`).\n\n**Step 4: Height stratification gives countability.** For each h, let `algebraicRealsOfHeight(h)` = roots of all height-\u2264h polynomials. By Steps 2 and 3, this is a finite union of finite sets = finite. The algebraic reals = \u22c3\u2095 algebraicRealsOfHeight(h) = countable union of finite sets = countable.\n\n**Comparison with the main gallery proof**: The proof in `AlgebraicNumbersCountable.lean` stratifies by polynomial **degree** (giving countably infinite strata \u2014 polynomials of each degree are countably many). Cantor's height approach gives **finite** strata (polynomials of each height are finitely many). The height approach is more constructive: for each h, one can in principle enumerate all height-h algebraic reals in finite time.",
+    "historicalContext": "Georg Cantor's 1874 paper 'Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen' (On a Property of the Collection of All Real Algebraic Numbers) introduced the height function as a tool to count algebraic numbers. This was one of the first rigorous applications of cardinality reasoning and marks the birth of set theory.\n\nCantor's insight was simple yet profound: assign a natural number H(p) to each integer polynomial p — the 'height' — in such a way that only finitely many polynomials have any given height. Then, since each polynomial has finitely many roots, the algebraic numbers of bounded height form a finite set. The algebraic numbers as a whole are a countable union of these finite sets.\n\nThe height function Cantor chose was H(a₀ + a₁X + ··· + aₙXⁿ) = n + |a₀| + |a₁| + ··· + |aₙ|. This elegant choice ensures:\n- Bounded height → bounded degree AND bounded coefficients\n- Finitely many integer polynomials of each height\n- Combined with the finite-roots theorem: finitely many algebraic reals of each height\n\nThis 1874 paper appeared just one year before Cantor's diagonal argument (1875/1891), and represents the 'constructive' half of Cantor's revolution: algebraic numbers are countable (enumerable), while real numbers are not (uncountable via diagonalization).",
+    "problemStatement": "**The Cantor Height Function**: For an integer polynomial p = a₀ + a₁X + ··· + aₙXⁿ, define:\n\n  H(p) = n + |a₀| + |a₁| + ··· + |aₙ|\n\n**Open Question**: Can we formalize Cantor's original 1874 proof that uses the height function to stratify algebraic reals into **finite** strata (not just countable), giving a more constructive proof of countability?\n\n**Main Theorem**: The algebraic real numbers are countable, with the explicit decomposition:\n\n  {x : ℝ | IsAlgebraic ℚ x} = ⋃ₕ {roots of integer polys with height ≤ h}\n\nEach set on the right is **finite** (the key finiteness, stronger than countability).",
+    "proofStrategy": "The proof proceeds in four steps:\n\n**Step 1: Height bounds degree and coefficients.** For any polynomial p with H(p) ≤ h:\n- natDegree(p) ≤ h (the degree is at most h)\n- |p.coeff i| ≤ h for each coefficient i (each coefficient fits in [-h, h])\n\n**Step 2: Finitely many polynomials of bounded height.** Polynomials with H(p) ≤ h are determined by:\n- Their degree (at most h+1 choices: 0, 1, ..., h)\n- Their coefficients (each in the finite set {-h, ..., h}, and there are at most h+1 coefficients)\n\nThis injects height-≤h polynomials into the finite Fintype `Fin(h+1) → Icc(-h, h)`, proving finiteness.\n\n**Step 3: Finite real roots per polynomial.** Each nonzero integer polynomial of degree n has at most n real roots (from `Polynomial.setOf_isRoot_finite`).\n\n**Step 4: Height stratification gives countability.** For each h, let `algebraicRealsOfHeight(h)` = roots of all height-≤h polynomials. By Steps 2 and 3, this is a finite union of finite sets = finite. The algebraic reals = ⋃ₕ algebraicRealsOfHeight(h) = countable union of finite sets = countable.\n\n**Comparison with the main gallery proof**: The proof in `AlgebraicNumbersCountable.lean` stratifies by polynomial **degree** (giving countably infinite strata — polynomials of each degree are countably many). Cantor's height approach gives **finite** strata (polynomials of each height are finitely many). The height approach is more constructive: for each h, one can in principle enumerate all height-h algebraic reals in finite time.",
     "keyInsights": [
-      "The height function H(p) = deg(p) + \u2211|a\u1d62| is the key combinatorial device: bounded height implies both bounded degree AND bounded coefficient size, making the stratum finite rather than just countable. Stratifying by degree alone (the other approach) would give countably infinite strata.",
-      "The proof of `finite_polys_of_height` works by building an explicit injection: each polynomial with H(p) \u2264 h maps to its coefficient tuple (p.coeff 0, ..., p.coeff h), where each coefficient lies in the finite set Icc(-h, h) and the polynomial is determined by its first h+1 coefficients (since degree \u2264 h). This injection maps into the Fintype `Fin(h+1) \u2192 Icc(-h, h)`, a finite type.",
-      "The `algebraic_reals_eq_iUnion_height` theorem requires a non-trivial step: converting a rational polynomial witness for algebraic-over-\u211a into an integer polynomial witness (clearing denominators). This uses Mathlib's `IsLocalization.integerNormalization` for the fraction ring \u2124 \u2286 \u211a. The reverse direction uses `Polynomial.aeval_map_algebraMap` (scalar tower).",
-      "The final countability follows from `Set.countable_iUnion` applied to the countably-indexed family of finite sets. Each set is countable because it's finite (`Set.Finite.countable`). The union over a countable index set (\u2115) preserves countability.",
-      "The monotonicity lemma `algebraicRealsOfHeight_mono` shows the strata form a nested filtration: height-h stratum \u2286 height-(h+1) stratum. Every algebraic number eventually appears in some stratum (algebraic_reals_eq_iUnion_height shows the union is all algebraic reals).",
-      "The `card_algebraic_reals_eq_aleph0` theorem uses Mathlib's `Algebraic.cardinalMk_of_countable_of_charZero` directly \u2014 a black-box result. This demonstrates that Mathlib now has robust infrastructure for algebraic number theory."
+      "The height function H(p) = deg(p) + ∑|aᵢ| is the key combinatorial device: bounded height implies both bounded degree AND bounded coefficient size, making the stratum finite rather than just countable. Stratifying by degree alone (the other approach) would give countably infinite strata.",
+      "The proof of `finite_polys_of_height` works by building an explicit injection: each polynomial with H(p) ≤ h maps to its coefficient tuple (p.coeff 0, ..., p.coeff h), where each coefficient lies in the finite set Icc(-h, h) and the polynomial is determined by its first h+1 coefficients (since degree ≤ h). This injection maps into the Fintype `Fin(h+1) → Icc(-h, h)`, a finite type.",
+      "The `algebraic_reals_eq_iUnion_height` theorem requires a non-trivial step: converting a rational polynomial witness for algebraic-over-ℚ into an integer polynomial witness (clearing denominators). This uses Mathlib's `IsLocalization.integerNormalization` for the fraction ring ℤ ⊆ ℚ. The reverse direction uses `Polynomial.aeval_map_algebraMap` (scalar tower).",
+      "The final countability follows from `Set.countable_iUnion` applied to the countably-indexed family of finite sets. Each set is countable because it's finite (`Set.Finite.countable`). The union over a countable index set (ℕ) preserves countability.",
+      "The monotonicity lemma `algebraicRealsOfHeight_mono` shows the strata form a nested filtration: height-h stratum ⊆ height-(h+1) stratum. Every algebraic number eventually appears in some stratum (algebraic_reals_eq_iUnion_height shows the union is all algebraic reals).",
+      "The `card_algebraic_reals_eq_aleph0` theorem uses Mathlib's `Algebraic.cardinalMk_of_countable_of_charZero` directly — a black-box result. This demonstrates that Mathlib now has robust infrastructure for algebraic number theory."
     ],
     "prerequisites": [
-      "AlgebraicNumbersCountable: the main gallery proof (parent) \u2014 countability via degree stratification",
+      "AlgebraicNumbersCountable: the main gallery proof (parent) — countability via degree stratification",
       "Polynomial.setOf_isRoot_finite: finitely many real roots for nonzero polynomials",
       "IsLocalization.integerNormalization_aeval_eq_zero: clearing denominators preserves roots",
       "Polynomial.aeval_map_algebraMap: scalar tower for aeval under ring maps",
       "Set.Finite.iUnion: finite union of finite sets is finite",
       "Set.countable_iUnion: countable union of countable sets is countable"
     ],
-    "furtherWork": "This proof opens several natural follow-up questions: (1) Can we make the height enumeration fully computable, producing an explicit bijection \u2115 \u2194 algebraic reals? (2) Can we bound the number of algebraic reals of height exactly h (not just \u2264 h)? (3) Does a similar height argument work for algebraic complex numbers or p-adic algebraic numbers? (4) The height function also appears in Mahler's measure \u2014 can we connect these two appearances?"
+    "furtherWork": "This proof opens several natural follow-up questions: (1) Can we make the height enumeration fully computable, producing an explicit bijection ℕ ↔ algebraic reals? (2) Can we bound the number of algebraic reals of height exactly h (not just ≤ h)? (3) Does a similar height argument work for algebraic complex numbers or p-adic algebraic numbers? (4) The height function also appears in Mahler's measure — can we connect these two appearances?"
   },
   "sections": [
     {
       "id": "height-function",
-      "title": "\u00a71\u20132: The Cantor Height Function",
+      "title": "§1–2: The Cantor Height Function",
       "startLine": 46,
       "endLine": 108,
-      "summary": "Defines cantorHeight p = natDegree p + \u2211\u1d62 |p.coeff i|. Proves: degree \u2264 height (cantorHeight_degree_le), coefficient sum \u2264 height (cantorHeight_sum_le), each |coeff i| \u2264 height (cantorHeight_coeff_le), and nonzero polynomials have positive height (cantorHeight_pos_of_ne_zero).",
-      "mathContext": "The height function maps Polynomial \u2124 \u2192 \u2115. The four basic properties are proved by simple arithmetic: the height is the sum of degree and coefficient-norms, so each summand is \u2264 the total. For coefficients beyond natDegree, Polynomial.coeff_eq_zero_of_natDegree_lt gives coeff = 0."
+      "summary": "Defines cantorHeight p = natDegree p + ∑ᵢ |p.coeff i|. Proves: degree ≤ height (cantorHeight_degree_le), coefficient sum ≤ height (cantorHeight_sum_le), each |coeff i| ≤ height (cantorHeight_coeff_le), and nonzero polynomials have positive height (cantorHeight_pos_of_ne_zero).",
+      "mathContext": "The height function maps Polynomial ℤ → ℕ. The four basic properties are proved by simple arithmetic: the height is the sum of degree and coefficient-norms, so each summand is ≤ the total. For coefficients beyond natDegree, Polynomial.coeff_eq_zero_of_natDegree_lt gives coeff = 0."
     },
     {
       "id": "finiteness",
-      "title": "\u00a73: Finiteness of Polynomials of Bounded Height",
+      "title": "§3: Finiteness of Polynomials of Bounded Height",
       "startLine": 110,
       "endLine": 152,
-      "summary": "finite_polys_of_height: {p | H(p) \u2264 h} is finite. Proof via injection into Fin(h+1) \u2192 Icc(-h,h) (a Fintype). The auxiliary poly_eq_fin_sum shows p equals its truncated sum of terms through degree h.",
-      "mathContext": "Key Lean pattern: Set.Finite.subset (Set.finite_range f) where f maps the Fintype to Polynomial \u2124. The Fintype is (Fin(h+1) \u2192 \u21a5Icc(-h:\u2124, h)) \u2014 coefficient tuples with each entry in the bounded interval. The witness for each p is its coefficient function, bounded by cantorHeight_coeff_le."
+      "summary": "finite_polys_of_height: {p | H(p) ≤ h} is finite. Proof via injection into Fin(h+1) → Icc(-h,h) (a Fintype). The auxiliary poly_eq_fin_sum shows p equals its truncated sum of terms through degree h.",
+      "mathContext": "Key Lean pattern: Set.Finite.subset (Set.finite_range f) where f maps the Fintype to Polynomial ℤ. The Fintype is (Fin(h+1) → ↥Icc(-h:ℤ, h)) — coefficient tuples with each entry in the bounded interval. The witness for each p is its coefficient function, bounded by cantorHeight_coeff_le."
     },
     {
       "id": "finite-roots",
-      "title": "\u00a74: Finite Real Roots per Polynomial",
+      "title": "§4: Finite Real Roots per Polynomial",
       "startLine": 154,
       "endLine": 166,
-      "summary": "finite_real_roots: each nonzero integer polynomial has finitely many real roots. Direct from Polynomial.setOf_isRoot_finite applied to the image in Polynomial \u211d.",
-      "mathContext": "The map algebraMap \u2124 \u211d : Polynomial \u2124 \u2192 Polynomial \u211d preserves nonzero-ness (Polynomial.map_ne_zero). Then setOf_isRoot_finite gives finiteness of {x : \u211d | IsRoot (p.map ...) x}. The convert converts IsRoot into the aeval = 0 formulation."
+      "summary": "finite_real_roots: each nonzero integer polynomial has finitely many real roots. Direct from Polynomial.setOf_isRoot_finite applied to the image in Polynomial ℝ.",
+      "mathContext": "The map algebraMap ℤ ℝ : Polynomial ℤ → Polynomial ℝ preserves nonzero-ness (Polynomial.map_ne_zero). Then setOf_isRoot_finite gives finiteness of {x : ℝ | IsRoot (p.map ...) x}. The convert converts IsRoot into the aeval = 0 formulation."
     },
     {
       "id": "height-strata",
-      "title": "\u00a75\u20137: Height Stratification and Countability",
+      "title": "§5–7: Height Stratification and Countability",
       "startLine": 168,
       "endLine": 242,
-      "summary": "algebraicRealsOfHeight h = \u22c3{p : nonzero with H(p)\u2264h} roots(p). finite_algebraicRealsOfHeight: finite index \u00d7 finite fibers = finite. algebraic_reals_eq_iUnion_height: algebraic reals = \u22c3\u2095 strata (uses integerNormalization). algebraic_reals_countable_via_height: countable union of finite sets = countable.",
-      "mathContext": "The iUnion is over the subtype {q : Polynomial \u2124 // q \u2260 0 \u2227 H(q) \u2264 h}, which is Finite (bounded by finite_polys_of_height). Set.Finite.iUnion requires: (1) Finite index type, (2) each fiber is finite. The direction 'algebraic \u2192 in union' uses integerNormalization to clear rational polynomial denominators."
+      "summary": "algebraicRealsOfHeight h = ⋃{p : nonzero with H(p)≤h} roots(p). finite_algebraicRealsOfHeight: finite index × finite fibers = finite. algebraic_reals_eq_iUnion_height: algebraic reals = ⋃ₕ strata (uses integerNormalization). algebraic_reals_countable_via_height: countable union of finite sets = countable.",
+      "mathContext": "The iUnion is over the subtype {q : Polynomial ℤ // q ≠ 0 ∧ H(q) ≤ h}, which is Finite (bounded by finite_polys_of_height). Set.Finite.iUnion requires: (1) Finite index type, (2) each fiber is finite. The direction 'algebraic → in union' uses integerNormalization to clear rational polynomial denominators."
     },
     {
       "id": "structural",
-      "title": "\u00a78: Structural Properties",
+      "title": "§8: Structural Properties",
       "startLine": 244,
       "endLine": 266,
-      "summary": "algebraicRealsOfHeight_mono: monotone filtration (strata nest). card_algebraic_reals_eq_aleph0: #(algebraic reals) = \u2135\u2080. finite_algebraicReals_bounded_height: explicit version with polynomial witnesses.",
+      "summary": "algebraicRealsOfHeight_mono: monotone filtration (strata nest). card_algebraic_reals_eq_aleph0: #(algebraic reals) = ℵ₀. finite_algebraicReals_bounded_height: explicit version with polynomial witnesses.",
       "mathContext": "Monotonicity from Nat.le_succ_of_le. Cardinal computation from Algebraic.cardinalMk_of_countable_of_charZero (Mathlib black box for countable fields of char 0). The explicit bounded-height theorem just unfolds the iUnion definition."
     }
   ],
   "conclusion": {
-    "summary": "This formalization completes Cantor's original 1874 proof that the algebraic reals are countable, using the height function H(p) = deg(p) + \u2211|a\u1d62| to stratify algebraic reals into finite (not just countable) strata. All 12 theorems are proved with 0 sorries and 0 axioms, making this a fully verified formalization. The key innovation over the main gallery proof (`AlgebraicNumbersCountable.lean`) is the HEIGHT STRATIFICATION producing finite strata, which is more constructive and historically accurate.",
-    "implications": "The height function proof has two advantages over degree stratification: (1) it gives finite strata (stronger than countable), and (2) it is constructive \u2014 for each h, the finitely many height-h algebraic reals can in principle be enumerated. This connects to computational algebra: height bounds appear in algorithms for root isolation, algebraic number arithmetic, and determining algebraic independence.\n\nThe finiteness of height strata has applications beyond algebraic numbers: any mathematical object that can be 'measured' by a height function with finite level sets can be enumerated. This principle appears in Diophantine geometry (Weil heights for rational points on varieties), algebraic combinatorics (graded algebras), and coding theory.",
+    "summary": "This formalization completes Cantor's original 1874 proof that the algebraic reals are countable, using the height function H(p) = deg(p) + ∑|aᵢ| to stratify algebraic reals into finite (not just countable) strata. All 12 theorems are proved with 0 sorries and 0 axioms, making this a fully verified formalization. The key innovation over the main gallery proof (`AlgebraicNumbersCountable.lean`) is the HEIGHT STRATIFICATION producing finite strata, which is more constructive and historically accurate.",
+    "implications": "The height function proof has two advantages over degree stratification: (1) it gives finite strata (stronger than countable), and (2) it is constructive — for each h, the finitely many height-h algebraic reals can in principle be enumerated. This connects to computational algebra: height bounds appear in algorithms for root isolation, algebraic number arithmetic, and determining algebraic independence.\n\nThe finiteness of height strata has applications beyond algebraic numbers: any mathematical object that can be 'measured' by a height function with finite level sets can be enumerated. This principle appears in Diophantine geometry (Weil heights for rational points on varieties), algebraic combinatorics (graded algebras), and coding theory.",
     "openQuestions": [
-      "Can we make the height enumeration explicit? That is, can we produce a computable bijection \u2115 \u2194 algebraic reals using the height function?",
+      "Can we make the height enumeration explicit? That is, can we produce a computable bijection ℕ ↔ algebraic reals using the height function?",
       "Can we bound the size of each height stratum? Specifically, how many real algebraic numbers have Cantor height exactly h?",
-      "The Cantor height H(p) = n + \u2211|a\u1d62| is one choice. Other heights (Mahler measure, naive height, projective height) have different finiteness properties \u2014 can we formalize the equivalence of different height functions for countability?",
-      "Does the proof generalize to algebraic numbers over other fields? For example, algebraic numbers over \u211a(\u221a2) or algebraic p-adic numbers?"
+      "The Cantor height H(p) = n + ∑|aᵢ| is one choice. Other heights (Mahler measure, naive height, projective height) have different finiteness properties — can we formalize the equivalence of different height functions for countability?",
+      "Does the proof generalize to algebraic numbers over other fields? For example, algebraic numbers over ℚ(√2) or algebraic p-adic numbers?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "algebraic-numbers-countable",
       "relationship": "extends",
-      "description": "The main gallery proof of algebraic number countability. Uses degree stratification (countably infinite strata) rather than height stratification (finite strata). This proof is Cantor's original 1874 approach \u2014 finite strata via the height function \u2014 while the parent uses a more modern Mathlib-friendly degree-based approach. Together they illustrate two complementary methods: the height approach is more constructive (finite strata can be enumerated in finite time), the degree approach is simpler for Lean formalization."
+      "description": "The main gallery proof of algebraic number countability. Uses degree stratification (countably infinite strata) rather than height stratification (finite strata). This proof is Cantor's original 1874 approach — finite strata via the height function — while the parent uses a more modern Mathlib-friendly degree-based approach. Together they illustrate two complementary methods: the height approach is more constructive (finite strata can be enumerated in finite time), the degree approach is simpler for Lean formalization."
     },
     {
       "targetId": "algebraic-numbers-countable-oq-02",
       "relationship": "related",
-      "description": "\u211d is uncountable via Cantor's diagonal argument. Together with this proof, forms the complete 1874 Cantor picture: algebraic numbers are countable, real numbers are not. The countability proved here and the uncountability of reals (OQ02) together imply the existence of transcendental numbers \u2014 without exhibiting a single one. This is Cantor's original 1874 existence argument for transcendentals, preceding Liouville's explicit construction."
+      "description": "ℝ is uncountable via Cantor's diagonal argument. Together with this proof, forms the complete 1874 Cantor picture: algebraic numbers are countable, real numbers are not. The countability proved here and the uncountability of reals (OQ02) together imply the existence of transcendental numbers — without exhibiting a single one. This is Cantor's original 1874 existence argument for transcendentals, preceding Liouville's explicit construction."
     },
     {
       "targetId": "algebraic-numbers-countable-oq-04",
       "relationship": "related",
-      "description": "Baker's theorem on linear independence of logarithms of algebraic numbers. While this entry proves all algebraic numbers are countable (set-theoretic cardinality), Baker's theorem characterizes which specific algebraic combinations are transcendental (analytic/algebraic independence). The height function in this entry and the Siegel's lemma in Baker's proof both count integer polynomial solutions \u2014 the height bounds in this proof and the coefficient bounds in Siegel's lemma are the same combinatorial idea applied to different problems."
+      "description": "Baker's theorem on linear independence of logarithms of algebraic numbers. While this entry proves all algebraic numbers are countable (set-theoretic cardinality), Baker's theorem characterizes which specific algebraic combinations are transcendental (analytic/algebraic independence). The height function in this entry and the Siegel's lemma in Baker's proof both count integer polynomial solutions — the height bounds in this proof and the coefficient bounds in Siegel's lemma are the same combinatorial idea applied to different problems."
     },
     {
       "targetId": "algebraic-numbers-countable-oq-02-oq-02",
       "relationship": "related",
-      "description": "Cantor-Bernstein-Schroeder theorem, foundational for comparing infinite cardinalities. Provides the infrastructure for cardinal arithmetic used in `card_algebraic_reals_eq_aleph0` \u2014 showing the algebraic reals have the same cardinality as \u2115 (\u2135\u2080). CBS shows two sets are equicardinal if each injects into the other; here we use it implicitly via Mathlib's `Algebraic.cardinalMk_of_countable_of_charZero`."
+      "description": "Cantor-Bernstein-Schroeder theorem, foundational for comparing infinite cardinalities. Provides the infrastructure for cardinal arithmetic used in `card_algebraic_reals_eq_aleph0` — showing the algebraic reals have the same cardinality as ℕ (ℵ₀). CBS shows two sets are equicardinal if each injects into the other; here we use it implicitly via Mathlib's `Algebraic.cardinalMk_of_countable_of_charZero`."
     }
   ],
   "leanFile": {
     "path": "Proofs/AlgebraicNumbersCountableOQ05.lean",
     "filename": "AlgebraicNumbersCountableOQ05.lean",
     "lineCount": 296,
-    "theoremCount": 12,
+    "theoremCount": 13,
     "axiomCount": 0,
     "defCount": 2,
     "sorryCount": 0,
     "isAristotle": false,
-    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ05.lean"
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ05.lean",
+    "definitionCount": 2
   },
   "references": [
     {
-      "authors": ["G. Cantor"],
+      "authors": [
+        "G. Cantor"
+      ],
       "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
       "year": "1874",
       "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), vol. 77, pp. 258–262",
       "note": "Cantor's original paper introducing the height function H(p) = deg(p) + Σ|aᵢ| to prove algebraic numbers are countable. This entry formalizes exactly this approach — finite strata via height bounds, with explicit polynomial enumeration."
     },
     {
-      "authors": ["S. Lang"],
+      "authors": [
+        "S. Lang"
+      ],
       "title": "Fundamentals of Diophantine Geometry",
       "year": "1983",
       "venue": "Springer",
       "note": "Develops the theory of height functions on algebraic varieties, generalizing Cantor's polynomial height to projective heights and Weil heights. The finiteness-of-bounded-height principle used in this formalization is the prototype for the Northcott property of heights on projective varieties."
     },
     {
-      "authors": ["J. Dauben"],
+      "authors": [
+        "J. Dauben"
+      ],
       "title": "Georg Cantor: His Mathematics and Philosophy of the Infinite",
       "year": "1979",
       "venue": "Harvard University Press",

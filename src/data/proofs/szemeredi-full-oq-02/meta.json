@@ -168,11 +168,15 @@
       "Mathlib.Tactic",
       "Proofs.SzemerediTheorem"
     ],
-    "opens": ["Szemeredi", "Asymptotics", "Filter"],
+    "opens": [
+      "Szemeredi",
+      "Asymptotics",
+      "Filter"
+    ],
     "namespace": "SzemerediDensity",
     "lineCount": 118,
     "axiomCount": 1,
-    "theoremCount": 5,
+    "theoremCount": 4,
     "definitionCount": 0,
     "path": "Proofs/SzemerediFullOQ02.lean",
     "sorries": 0

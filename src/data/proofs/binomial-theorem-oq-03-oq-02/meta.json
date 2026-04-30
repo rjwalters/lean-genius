@@ -1,8 +1,8 @@
 {
   "id": "binomial-theorem-oq-03-oq-02",
-  "title": "The Classical Limit (1+x/n)^n \u2192 exp(x)",
+  "title": "The Classical Limit (1+x/n)^n → exp(x)",
   "slug": "binomial-theorem-oq-03-oq-02",
-  "description": "The fundamental limit characterization of the exponential function, proved from first principles: log'(1) = 1, so n\u00b7log(1+x/n) \u2192 x, and continuity of exp gives (1+x/n)^n \u2192 exp(x). Includes Euler's number as (1+1/n)^n \u2192 e, the reciprocal limit, and the compounding inequality.",
+  "description": "The fundamental limit characterization of the exponential function, proved from first principles: log'(1) = 1, so n·log(1+x/n) → x, and continuity of exp gives (1+x/n)^n → exp(x). Includes Euler's number as (1+1/n)^n → e, the reciprocal limit, and the compounding inequality.",
   "meta": {
     "author": "Euler (1748); limit definition formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Characterizations_of_the_exponential_function",
@@ -23,45 +23,45 @@
     "mathlibDependencies": [
       {
         "theorem": "Real.hasDerivAt_log",
-        "description": "HasDerivAt log (1/x) x for x > 0. The foundational fact: composing with t \u21a6 1+t at t=0 gives log'(1+t)|\u2080 = 1.",
+        "description": "HasDerivAt log (1/x) x for x > 0. The foundational fact: composing with t ↦ 1+t at t=0 gives log'(1+t)|₀ = 1.",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Deriv"
       },
       {
         "theorem": "hasDerivAtFilter_iff_tendsto_slope",
-        "description": "Converts derivative to slope form: HasDerivAt f f' x \u2194 slope f x \u2192 f' in nhdsWithin. Gives log(1+h)/h \u2192 1.",
+        "description": "Converts derivative to slope form: HasDerivAt f f' x ↔ slope f x → f' in nhdsWithin. Gives log(1+h)/h → 1.",
         "module": "Mathlib.Analysis.Calculus.Deriv.Slope"
       },
       {
         "theorem": "Real.continuous_exp",
-        "description": "Continuity of exp. The composition step: if n\u00b7log(1+x/n) \u2192 x, then exp(n\u00b7log(1+x/n)) \u2192 exp(x).",
+        "description": "Continuity of exp. The composition step: if n·log(1+x/n) → x, then exp(n·log(1+x/n)) → exp(x).",
         "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
       },
       {
         "theorem": "tendsto_const_div_atTop_nhds_zero_nat",
-        "description": "c/n \u2192 0 as n \u2192 \u221e. Proves x/n \u2192 0, the input to the slope limit.",
+        "description": "c/n → 0 as n → ∞. Proves x/n → 0, the input to the slope limit.",
         "module": "Mathlib.Topology.Algebra.Order.LiminfLimsup"
       },
       {
         "theorem": "Real.exp_nat_mul",
-        "description": "exp(n\u00b7x) = exp(x)^n. Converts exp(n\u00b7log(1+x/n)) to (1+x/n)^n for the final step.",
+        "description": "exp(n·x) = exp(x)^n. Converts exp(n·log(1+x/n)) to (1+x/n)^n for the final step.",
         "module": "Mathlib.Analysis.SpecialFunctions.Exp"
       },
       {
         "theorem": "Real.add_one_le_exp",
-        "description": "x + 1 \u2264 exp(x). The fundamental inequality from convexity of exp, used for the compounding bound.",
+        "description": "x + 1 ≤ exp(x). The fundamental inequality from convexity of exp, used for the compounding bound.",
         "module": "Mathlib.Analysis.SpecialFunctions.Exp"
       }
     ],
     "originalContributions": [
       "hasDerivAt_log_one_plus: the derivative of log(1+t) at t=0 is 1",
-      "tendsto_log_one_plus_div: log(1+h)/h \u2192 1 as h \u2192 0 (slope of log at 1)",
-      "tendsto_one_plus_div_pow_exp: the classical limit (1+x/n)^n \u2192 exp(x)",
-      "tendsto_euler: Euler's number as (1+1/n)^n \u2192 e",
-      "tendsto_one_minus_div_pow_inv_e: the reciprocal limit (1-1/n)^n \u2192 e\u207b\u00b9",
-      "tendsto_one_minus_div_pow_exp_neg: (1-x/n)^n \u2192 exp(-x) for decay/discounting",
+      "tendsto_log_one_plus_div: log(1+h)/h → 1 as h → 0 (slope of log at 1)",
+      "tendsto_one_plus_div_pow_exp: the classical limit (1+x/n)^n → exp(x)",
+      "tendsto_euler: Euler's number as (1+1/n)^n → e",
+      "tendsto_one_minus_div_pow_inv_e: the reciprocal limit (1-1/n)^n → e⁻¹",
+      "tendsto_one_minus_div_pow_exp_neg: (1-x/n)^n → exp(-x) for decay/discounting",
       "continuous_compounding: financial interpretation of the exponential limit",
-      "one_plus_le_exp: 1+x \u2264 exp(x) restated from Mathlib",
-      "one_plus_div_pow_le_exp: (1+x/n)^n \u2264 exp(x) for x \u2265 0 via iterated inequality",
+      "one_plus_le_exp: 1+x ≤ exp(x) restated from Mathlib",
+      "one_plus_div_pow_le_exp: (1+x/n)^n ≤ exp(x) for x ≥ 0 via iterated inequality",
       "exponential_limit_summary: all main results packaged"
     ],
     "dateAdded": "2026-03-24",
@@ -73,16 +73,16 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The limit $\\lim_{n \\to \\infty} (1 + x/n)^n = e^x$ is one of the most fundamental results in analysis, connecting discrete compound growth to continuous exponential growth. **Leonhard Euler** explored this limit extensively in *Introductio in analysin infinitorum* (1748), where he defined $e$ as the value of $(1+1/n)^n$ as $n \\to \\infty$. The idea that compound interest converges to exponential growth was known earlier to **Jacob Bernoulli** (1683), who studied the problem of continuous compounding. The rigorous proof requires the derivative of the logarithm at 1 \u2014 that $\\log(1+h)/h \\to 1$ as $h \\to 0$ \u2014 combined with the continuity of the exponential function. This result is surprisingly absent from Mathlib v4.26.0 despite being a standard textbook theorem, making it a natural contribution target.",
-    "problemStatement": "**Open Question (OQ-03-OQ-02):** Can we prove the classical limit definition $(1+x/n)^n \\to e^x$ in Lean 4 and contribute it to Mathlib?\n\n**Answer:** YES. The proof uses three ingredients from Mathlib:\n1. $\\text{HasDerivAt}(\\log, 1, 1)$ \u2014 the derivative of log at 1\n2. $\\text{slope}(\\log(1+\\cdot), 0) \\to 1$ \u2014 slope form of the derivative\n3. Continuity of $\\exp$ \u2014 to compose limits\n\nThe key chain: $\\log(1+h)/h \\to 1$ as $h \\to 0$, then $x/n \\to 0$ gives $\\log(1+x/n)/(x/n) \\to 1$, so $n\\cdot\\log(1+x/n) \\to x$, and finally $\\exp(n\\cdot\\log(1+x/n)) = (1+x/n)^n \\to e^x$.",
-    "text": "The fundamental limit characterization of the exponential function, proved from first principles: log'(1) = 1, so n\u00b7log(1+x/n) \u2192 x, and continuity of exp gives (1+x/n)^n \u2192 exp(x). Includes Euler's number as (1+1/n)^n \u2192 e, the reciprocal limit, and the compounding inequality.",
+    "historicalContext": "The limit $\\lim_{n \\to \\infty} (1 + x/n)^n = e^x$ is one of the most fundamental results in analysis, connecting discrete compound growth to continuous exponential growth. **Leonhard Euler** explored this limit extensively in *Introductio in analysin infinitorum* (1748), where he defined $e$ as the value of $(1+1/n)^n$ as $n \\to \\infty$. The idea that compound interest converges to exponential growth was known earlier to **Jacob Bernoulli** (1683), who studied the problem of continuous compounding. The rigorous proof requires the derivative of the logarithm at 1 — that $\\log(1+h)/h \\to 1$ as $h \\to 0$ — combined with the continuity of the exponential function. This result is surprisingly absent from Mathlib v4.26.0 despite being a standard textbook theorem, making it a natural contribution target.",
+    "problemStatement": "**Open Question (OQ-03-OQ-02):** Can we prove the classical limit definition $(1+x/n)^n \\to e^x$ in Lean 4 and contribute it to Mathlib?\n\n**Answer:** YES. The proof uses three ingredients from Mathlib:\n1. $\\text{HasDerivAt}(\\log, 1, 1)$ — the derivative of log at 1\n2. $\\text{slope}(\\log(1+\\cdot), 0) \\to 1$ — slope form of the derivative\n3. Continuity of $\\exp$ — to compose limits\n\nThe key chain: $\\log(1+h)/h \\to 1$ as $h \\to 0$, then $x/n \\to 0$ gives $\\log(1+x/n)/(x/n) \\to 1$, so $n\\cdot\\log(1+x/n) \\to x$, and finally $\\exp(n\\cdot\\log(1+x/n)) = (1+x/n)^n \\to e^x$.",
+    "text": "The fundamental limit characterization of the exponential function, proved from first principles: log'(1) = 1, so n·log(1+x/n) → x, and continuity of exp gives (1+x/n)^n → exp(x). Includes Euler's number as (1+1/n)^n → e, the reciprocal limit, and the compounding inequality.",
     "proofStrategy": "The proof proceeds through four parts:\n\n1. **Derivative foundation** (Part I): Prove $\\text{HasDerivAt}(\\log(1+t), 1, 0)$ by composing the chain rule with $\\log'(1) = 1$. Convert to slope form: $\\log(1+h)/h \\to 1$ as $h \\to 0$.\n\n2. **The main limit** (Part I continued): For $x \\neq 0$, compose $h = x/n \\to 0$ with the slope limit to get $\\log(1+x/n)/(x/n) \\to 1$. Rewrite $n\\cdot\\log(1+x/n) = x \\cdot [\\log(1+x/n)/(x/n)]$ to conclude $n\\cdot\\log(1+x/n) \\to x$. Apply continuity of $\\exp$ and use $\\exp(n\\cdot\\log(1+x/n)) = (1+x/n)^n$ for large $n$.\n\n3. **Special cases** (Parts II-III): Derive Euler's number $(1+1/n)^n \\to e$, the reciprocal limit $(1-1/n)^n \\to e^{-1}$, and the compound interest interpretation.\n\n4. **The inequality** (Part III-b): From $1+x \\leq e^x$ (convexity of exp), deduce $(1+x/n)^n \\leq e^x$ for $x \\geq 0$ by taking $n$-th powers.",
     "keyInsights": [
       "**Derivative of log at 1 is the key**: The entire proof reduces to $\\log'(1) = 1$. Once we have $\\log(1+h)/h \\to 1$ as $h \\to 0$, the rest is algebraic manipulation and composition of limits.",
       "**The slope form bridges calculus and limits**: Converting $\\text{HasDerivAt}$ to the slope $\\log(1+h)/h$ via `hasDerivAtFilter_iff_tendsto_slope` is the crucial translation step. This is a general technique: derivatives give limit statements about difference quotients.",
-      "**nhdsWithin handles the x \u2260 0 case**: The slope limit holds in $\\text{nhdsWithin}\\, 0\\, \\{0\\}^c$ (approaching 0 through nonzero values). The composition $x/n \\to 0$ lands in this filter precisely because $x \\neq 0$ and $n \\geq 1$.",
-      "**The positivity argument for exp \u2218 log**: For large $n$, $1 + x/n > 0$ (specifically when $|x| < n$), so $\\exp(\\log(1+x/n)) = 1+x/n$. The proof uses $|x/n| < 1$ for $n > |x|$.",
-      "**The inequality (1+x/n)^n \u2264 exp(x) is multiplicative**: Each factor $1+x/n \\leq \\exp(x/n)$ by the tangent line inequality, so the product of $n$ factors gives $(1+x/n)^n \\leq \\exp(x/n)^n = \\exp(x)$."
+      "**nhdsWithin handles the x ≠ 0 case**: The slope limit holds in $\\text{nhdsWithin}\\, 0\\, \\{0\\}^c$ (approaching 0 through nonzero values). The composition $x/n \\to 0$ lands in this filter precisely because $x \\neq 0$ and $n \\geq 1$.",
+      "**The positivity argument for exp ∘ log**: For large $n$, $1 + x/n > 0$ (specifically when $|x| < n$), so $\\exp(\\log(1+x/n)) = 1+x/n$. The proof uses $|x/n| < 1$ for $n > |x|$.",
+      "**The inequality (1+x/n)^n ≤ exp(x) is multiplicative**: Each factor $1+x/n \\leq \\exp(x/n)$ by the tangent line inequality, so the product of $n$ factors gives $(1+x/n)^n \\leq \\exp(x/n)^n = \\exp(x)$."
     ],
     "prerequisites": [
       "Derivative of $\\log$ at positive reals (`Real.hasDerivAt_log`)",
@@ -127,7 +127,7 @@
     },
     {
       "id": "inequality",
-      "title": "The Inequality (1+x/n)^n \u2264 exp(x)",
+      "title": "The Inequality (1+x/n)^n ≤ exp(x)",
       "startLine": 171,
       "endLine": 206,
       "summary": "Proves $1+x \\leq e^x$ (tangent line inequality) and deduces $(1+x/n)^n \\leq e^x$ for $x \\geq 0$ by taking the $n$-th power of $1+x/n \\leq e^{x/n}$.",
@@ -144,10 +144,10 @@
   ],
   "conclusion": {
     "summary": "This formalization proves the classical limit $(1+x/n)^n \\to e^x$ from first principles in Lean 4, using only the derivative of $\\log$ at 1 and the continuity of $\\exp$. The proof is entirely constructive: no axioms, no sorries, 215 lines, 10 theorems. The result fills a gap in Mathlib v4.26.0.",
-    "implications": "**Mathlib contribution potential**: The main theorem `tendsto_one_plus_div_pow_exp` is a natural addition to Mathlib's `Analysis.SpecialFunctions.Exp` module, as it provides a standard characterization of the exponential function missing from the library.\n\n**Applications**: The limit directly underlies the Poisson limit theorem (proved in the parent formalization OQ-03), the definition of matrix exponentials via $\\lim (I + A/n)^n = e^A$, and the continuous-time limit of discrete stochastic processes.\n\n**Proof technique**: The six-step argument \u2014 derivative \u2192 slope \u2192 filter composition \u2192 algebraic rewrite \u2192 limit product \u2192 continuity of exp \u2192 exp/log cancellation \u2014 is a template for proving similar characterizations of special functions from their derivative properties.",
+    "implications": "**Mathlib contribution potential**: The main theorem `tendsto_one_plus_div_pow_exp` is a natural addition to Mathlib's `Analysis.SpecialFunctions.Exp` module, as it provides a standard characterization of the exponential function missing from the library.\n\n**Applications**: The limit directly underlies the Poisson limit theorem (proved in the parent formalization OQ-03), the definition of matrix exponentials via $\\lim (I + A/n)^n = e^A$, and the continuous-time limit of discrete stochastic processes.\n\n**Proof technique**: The six-step argument — derivative → slope → filter composition → algebraic rewrite → limit product → continuity of exp → exp/log cancellation — is a template for proving similar characterizations of special functions from their derivative properties.",
     "openQuestions": [
       "Can the main limit theorem be contributed to Mathlib? The proof uses standard Mathlib infrastructure and the result is absent from v4.26.0",
-      "Prove the complex-valued version: $(1+z/n)^n \\to e^z$ for $z \\in \\mathbb{C}$, generalizing from $\\mathbb{R}$ \u2014 this requires the complex logarithm branch cut analysis",
+      "Prove the complex-valued version: $(1+z/n)^n \\to e^z$ for $z \\in \\mathbb{C}$, generalizing from $\\mathbb{R}$ — this requires the complex logarithm branch cut analysis",
       "Prove monotonicity: $(1+1/n)^n$ is strictly increasing in $n$, which combined with the upper bound $(1+1/n)^n \\leq e$ gives the bounded monotone convergence proof of Euler's constant",
       "Connect to the power series definition: the binomial expansion $(1+x/n)^n = \\sum_{k=0}^n \\binom{n}{k}(x/n)^k$ converges term-by-term to $\\sum x^k/k! = e^x$"
     ]
@@ -161,7 +161,7 @@
     {
       "targetId": "binomial-theorem",
       "relationship": "ancestor",
-      "description": "The binomial theorem $(x+y)^n = \\sum \\binom{n}{k} x^k y^{n-k}$ is the algebraic foundation \u2014 the binomial expansion of $(1+x/n)^n$ converges term-by-term to the Taylor series $\\sum x^k/k!$"
+      "description": "The binomial theorem $(x+y)^n = \\sum \\binom{n}{k} x^k y^{n-k}$ is the algebraic foundation — the binomial expansion of $(1+x/n)^n$ converges term-by-term to the Taylor series $\\sum x^k/k!$"
     },
     {
       "targetId": "e-transcendental",
@@ -171,7 +171,7 @@
     {
       "targetId": "euler-identity",
       "relationship": "related",
-      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ connects the exponential limit to complex analysis \u2014 the complex version $(1+z/n)^n \\to e^z$ evaluated at $z = i\\pi$ gives the identity"
+      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ connects the exponential limit to complex analysis — the complex version $(1+z/n)^n \\to e^z$ evaluated at $z = i\\pi$ gives the identity"
     },
     {
       "targetId": "taylor-theorem",
@@ -188,7 +188,9 @@
     "lineCount": 215,
     "path": "Proofs/BinomialTheoremOQ03OQ02.lean",
     "axiomCount": 0,
-    "sorries": 0
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 10
   },
   "sorries": 0
 }

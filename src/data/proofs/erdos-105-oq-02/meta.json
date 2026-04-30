@@ -154,12 +154,15 @@
     }
   ],
   "leanFile": {
-    "imports": ["Proofs.Erdos105Problem", "Mathlib"],
+    "imports": [
+      "Proofs.Erdos105Problem",
+      "Mathlib"
+    ],
     "namespace": "Erdos105OQ02",
     "lineCount": 288,
     "axiomCount": 3,
     "theoremCount": 20,
-    "definitionCount": 6,
+    "definitionCount": 8,
     "path": "Proofs/Erdos105OQ02.lean",
     "sorries": 0
   },

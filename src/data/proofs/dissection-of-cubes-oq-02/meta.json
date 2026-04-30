@@ -33,28 +33,28 @@
       }
     ],
     "originalContributions": [
-      "Complete proof that arccos(1/3)/\u03c0 is irrational via Chebyshev polynomial recurrence (Niven's theorem): defines nivenSeq, proves 3\u2224c_k by induction, links to cosine via cos_step",
+      "Complete proof that arccos(1/3)/π is irrational via Chebyshev polynomial recurrence (Niven's theorem): defines nivenSeq, proves 3∤c_k by induction, links to cosine via cos_step",
       "Simplified Dehn invariant: dehnInvariantZero predicate via rational angle test",
-      "Invariant separation: cube_dehn_zero (\u03c0/2 rational) vs tetrahedron_dehn_nonzero (arccos(1/3)/\u03c0 irrational)",
+      "Invariant separation: cube_dehn_zero (π/2 rational) vs tetrahedron_dehn_nonzero (arccos(1/3)/π irrational)",
       "polygon_dehn_zero: 2D Bolyai-Gerwien analog (all polygons have zero Dehn invariant)",
       "Conditional Hilbert's Third Problem: cube and tetrahedron not scissors congruent, assuming Dehn's theorem as hypothesis"
     ],
     "lineCount": 379,
     "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. Note: `ScissorsCongruent (P Q : Type*) := \u2203 (n : \u2115), True` (line 55-56) is a stub placeholder definition \u2014 not an axiom declaration or structure-encoded assumption. Dehn\u2019s theorem is taken as an explicit hypothesis in `hilbert_third_problem`, not as an axiom declaration. The core number-theoretic result (arccos(1/3)/\u03c0 is irrational via Chebyshev recurrence) is fully proved.",
+    "assumptions": "0 axioms, 0 sorries. Note: `ScissorsCongruent (P Q : Type*) := ∃ (n : ℕ), True` (line 55-56) is a stub placeholder definition — not an axiom declaration or structure-encoded assumption. Dehn’s theorem is taken as an explicit hypothesis in `hilbert_third_problem`, not as an axiom declaration. The core number-theoretic result (arccos(1/3)/π is irrational via Chebyshev recurrence) is fully proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Hilbert's Third Problem, posed by David Hilbert in 1900 as the third of his famous 23 problems, asked whether two polyhedra of equal volume are always scissors congruent \u2014 that is, whether one can always be cut into finitely many polyhedral pieces and reassembled into the other. In 2D, the Bolyai-Gerwien theorem (proved independently by Farkas Bolyai and Paul Gerwien around 1833, with earlier work by William Wallace in 1807) shows the answer is yes: any two equal-area polygons are scissors congruent. Hilbert suspected the 3D case would be different. Max Dehn, Hilbert's student, confirmed this in 1900 by introducing an algebraic invariant \u2014 now called the Dehn invariant \u2014 that is preserved under polyhedral dissection. Since the cube and regular tetrahedron have different Dehn invariants (zero vs nonzero), they cannot be scissors congruent despite having equal volume. This made Hilbert's Third the first of the 23 problems to be solved. The story was completed in 1965 when Jean-Pierre Sydler proved the converse: volume and Dehn invariant are the complete set of scissors congruence invariants in 3D.",
+    "historicalContext": "Hilbert's Third Problem, posed by David Hilbert in 1900 as the third of his famous 23 problems, asked whether two polyhedra of equal volume are always scissors congruent — that is, whether one can always be cut into finitely many polyhedral pieces and reassembled into the other. In 2D, the Bolyai-Gerwien theorem (proved independently by Farkas Bolyai and Paul Gerwien around 1833, with earlier work by William Wallace in 1807) shows the answer is yes: any two equal-area polygons are scissors congruent. Hilbert suspected the 3D case would be different. Max Dehn, Hilbert's student, confirmed this in 1900 by introducing an algebraic invariant — now called the Dehn invariant — that is preserved under polyhedral dissection. Since the cube and regular tetrahedron have different Dehn invariants (zero vs nonzero), they cannot be scissors congruent despite having equal volume. This made Hilbert's Third the first of the 23 problems to be solved. The story was completed in 1965 when Jean-Pierre Sydler proved the converse: volume and Dehn invariant are the complete set of scissors congruence invariants in 3D.",
     "problemStatement": "Given a cube and a regular tetrahedron of equal volume, prove they are not scissors congruent. Formally: there is no decomposition of the cube into finitely many polyhedral pieces that can be rearranged via rigid motions to form the tetrahedron. The proof uses the Dehn invariant $D(P) = \\sum_e \\ell(e) \\otimes [\\theta(e)] \\in \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$.",
     "text": "Formalizes the Dehn invariant approach to Hilbert's Third Problem: proves the cube has zero Dehn invariant (rational angles) while the tetrahedron has nonzero invariant (irrational angle), showing they cannot be scissors congruent.",
-    "proofStrategy": "The proof proceeds by invariant separation. First, define a simplified Dehn invariant that checks whether all dihedral angles are rational multiples of \u03c0. Then: (1) prove the cube has zero Dehn invariant since its dihedral angle \u03c0/2 = (1/2)\u03c0 is rational; (2) prove the regular tetrahedron has nonzero Dehn invariant since arccos(1/3)/\u03c0 is irrational (by Niven's theorem); (3) conclude by Dehn's theorem (assumed as an explicit hypothesis in this formalization) that scissors congruent polyhedra have equal Dehn invariant, so the cube and tetrahedron cannot be scissors congruent. The proof also establishes the 2D contrast via the Bolyai-Gerwien theorem.",
+    "proofStrategy": "The proof proceeds by invariant separation. First, define a simplified Dehn invariant that checks whether all dihedral angles are rational multiples of π. Then: (1) prove the cube has zero Dehn invariant since its dihedral angle π/2 = (1/2)π is rational; (2) prove the regular tetrahedron has nonzero Dehn invariant since arccos(1/3)/π is irrational (by Niven's theorem); (3) conclude by Dehn's theorem (assumed as an explicit hypothesis in this formalization) that scissors congruent polyhedra have equal Dehn invariant, so the cube and tetrahedron cannot be scissors congruent. The proof also establishes the 2D contrast via the Bolyai-Gerwien theorem.",
     "keyInsights": [
-      "The Dehn invariant lives in the tensor product \u211d \u2297_\u2124 (\u211d/\u03c0\u2124), a subtle algebraic structure where edge lengths tensor with dihedral angle classes mod \u03c0 \u2014 this is what makes it sensitive to the arithmetic nature of angles",
-      "The cube is the only Platonic solid whose dihedral angle is a rational multiple of \u03c0 (by Niven's theorem), making it uniquely 'scissors-friendly' among regular polyhedra",
-      "The dimensional contrast is striking: equal-area polygons are always scissors congruent (Bolyai-Gerwien), but equal-volume polyhedra are not \u2014 the obstruction appears precisely in the passage from 2D to 3D",
+      "The Dehn invariant lives in the tensor product ℝ ⊗_ℤ (ℝ/πℤ), a subtle algebraic structure where edge lengths tensor with dihedral angle classes mod π — this is what makes it sensitive to the arithmetic nature of angles",
+      "The cube is the only Platonic solid whose dihedral angle is a rational multiple of π (by Niven's theorem), making it uniquely 'scissors-friendly' among regular polyhedra",
+      "The dimensional contrast is striking: equal-area polygons are always scissors congruent (Bolyai-Gerwien), but equal-volume polyhedra are not — the obstruction appears precisely in the passage from 2D to 3D",
       "Dehn's invariant was the first example of what would become a major theme in algebraic K-theory: using tensor product constructions to detect obstructions to geometric equivalence",
-      "Hilbert's Third Problem was the first of his 23 problems to be solved \u2014 Dehn answered it the same year (1900) it was posed, using purely algebraic methods to resolve a geometric question"
+      "Hilbert's Third Problem was the first of his 23 problems to be solved — Dehn answered it the same year (1900) it was posed, using purely algebraic methods to resolve a geometric question"
     ],
     "prerequisites": [
       "Geometry (tetrahedra, volume computation)",
@@ -76,31 +76,31 @@
       "title": "Dihedral Angles of Common Polyhedra",
       "startLine": 66,
       "endLine": 80,
-      "summary": "Defines the dihedral angles of the cube (\u03c0/2) and regular tetrahedron (arccos(1/3)). Proves the cube angle is a rational multiple of \u03c0.",
+      "summary": "Defines the dihedral angles of the cube (π/2) and regular tetrahedron (arccos(1/3)). Proves the cube angle is a rational multiple of π.",
       "mathContext": "Cube: $\\theta = \\pi/2 = (1/2)\\pi$ (rational). Tetrahedron: $\\theta = \\arccos(1/3)$."
     },
     {
       "id": "niven",
-      "title": "Niven's Theorem: arccos(1/3)/\u03c0 is Irrational (Chebyshev Recurrence)",
+      "title": "Niven's Theorem: arccos(1/3)/π is Irrational (Chebyshev Recurrence)",
       "startLine": 81,
       "endLine": 233,
-      "summary": "The entry's primary contribution (~150 lines of original number theory). Defines the nivenSeq recurrence (c\u2080=2, c\u2081=2, c_{k+2}=2c_{k+1}-9c_k), proves 3\u2224c_k by strong induction with modular arithmetic, establishes the cosine link via cos_step (Chebyshev identity), proves nivenSeq_eq_cos relating the integer sequence to 3^k\u00b72\u00b7cos(k\u00b7arccos(1/3)), and derives tetrahedron_angle_irrational_pi by contradiction: if arccos(1/3)/\u03c0 = p/q then cos(q\u00b7arccos(1/3)) = cos(p\u03c0) = \u00b11, so c_q = \u00b12\u00b73^q, contradicting 3\u2224c_q.",
-      "mathContext": "Define $c_k$ by $c_0 = c_1 = 2$, $c_{k+2} = 2c_{k+1} - 9c_k$. Then $c_k = 3^k \\cdot 2\\cos(k \\cdot \\arccos(1/3))$ and $3 \\nmid c_k$. If $\\arccos(1/3) = (p/q)\\pi$ then $c_q = 2 \\cdot 3^q \\cos(p\\pi) = \\pm 2 \\cdot 3^q$, so $3 \\mid c_q$ \u2014 contradiction."
+      "summary": "The entry's primary contribution (~150 lines of original number theory). Defines the nivenSeq recurrence (c₀=2, c₁=2, c_{k+2}=2c_{k+1}-9c_k), proves 3∤c_k by strong induction with modular arithmetic, establishes the cosine link via cos_step (Chebyshev identity), proves nivenSeq_eq_cos relating the integer sequence to 3^k·2·cos(k·arccos(1/3)), and derives tetrahedron_angle_irrational_pi by contradiction: if arccos(1/3)/π = p/q then cos(q·arccos(1/3)) = cos(pπ) = ±1, so c_q = ±2·3^q, contradicting 3∤c_q.",
+      "mathContext": "Define $c_k$ by $c_0 = c_1 = 2$, $c_{k+2} = 2c_{k+1} - 9c_k$. Then $c_k = 3^k \\cdot 2\\cos(k \\cdot \\arccos(1/3))$ and $3 \\nmid c_k$. If $\\arccos(1/3) = (p/q)\\pi$ then $c_q = 2 \\cdot 3^q \\cos(p\\pi) = \\pm 2 \\cdot 3^q$, so $3 \\mid c_q$ — contradiction."
     },
     {
       "id": "dehn",
       "title": "The Dehn Invariant",
       "startLine": 236,
       "endLine": 263,
-      "summary": "Defines a simplified boolean Dehn invariant (dehnInvariantZero) testing whether all dihedral angles are rational multiples of \u03c0. Proves cube_dehn_zero and tetrahedron_dehn_nonzero \u2014 the two halves of the invariant obstruction.",
-      "mathContext": "Defines a simplified boolean Dehn invariant (dehnInvariantZero) testing whether all dihedral angles are rational multiples of \u03c0. Proves cube_dehn_zero and tetrahedron_dehn_nonzero \u2014 the two halves of the invariant obstruction."
+      "summary": "Defines a simplified boolean Dehn invariant (dehnInvariantZero) testing whether all dihedral angles are rational multiples of π. Proves cube_dehn_zero and tetrahedron_dehn_nonzero — the two halves of the invariant obstruction.",
+      "mathContext": "Defines a simplified boolean Dehn invariant (dehnInvariantZero) testing whether all dihedral angles are rational multiples of π. Proves cube_dehn_zero and tetrahedron_dehn_nonzero — the two halves of the invariant obstruction."
     },
     {
       "id": "dehn-theorem",
       "title": "Dehn's Theorem (Invariance Under Dissection)",
       "startLine": 114,
       "endLine": 127,
-      "summary": "Dehn's theorem (scissors congruent polyhedra have equal Dehn invariant) is encoded as an explicit hypothesis rather than proved. The dehn_invariant_modus_ponens wrapper is propositional modus ponens applying this hypothesis \u2014 it does not prove Dehn's theorem.",
+      "summary": "Dehn's theorem (scissors congruent polyhedra have equal Dehn invariant) is encoded as an explicit hypothesis rather than proved. The dehn_invariant_modus_ponens wrapper is propositional modus ponens applying this hypothesis — it does not prove Dehn's theorem.",
       "mathContext": "Dehn's theorem: $P \\sim_{\\mathrm{sc}} Q \\Rightarrow D(P) = D(Q)$. Assumed as an explicit hypothesis in the formalization; proving additivity of the Dehn invariant under polyhedral decomposition remains open."
     },
     {
@@ -116,8 +116,8 @@
       "title": "2D Contrast: Bolyai-Gerwien Theorem",
       "startLine": 151,
       "endLine": 177,
-      "summary": "Proves polygon_dehn_zero: in 2D all interior angles are integer multiples of \u03c0, so the Dehn invariant vanishes for all polygons. This formalizes the dimensional contrast between 2D (always scissors congruent) and 3D (not always).",
-      "mathContext": "Proves polygon_dehn_zero: in 2D all interior angles are integer multiples of \u03c0, so the Dehn invariant vanishes for all polygons. This formalizes the dimensional contrast between 2D (always scissors congruent) and 3D (not always)."
+      "summary": "Proves polygon_dehn_zero: in 2D all interior angles are integer multiples of π, so the Dehn invariant vanishes for all polygons. This formalizes the dimensional contrast between 2D (always scissors congruent) and 3D (not always).",
+      "mathContext": "Proves polygon_dehn_zero: in 2D all interior angles are integer multiples of π, so the Dehn invariant vanishes for all polygons. This formalizes the dimensional contrast between 2D (always scissors congruent) and 3D (not always)."
     },
     {
       "id": "dehn-sydler",
@@ -132,15 +132,15 @@
       "title": "Dihedral Angles of Other Platonic Solids",
       "startLine": 200,
       "endLine": 379,
-      "summary": "Defines dihedral angles for the regular octahedron (arccos(-1/3)) and icosahedron (arccos(-\u221a5/3)). Proves positivity of the tetrahedron angle. Provides verification checks for the main results.",
-      "mathContext": "Formal definition: Defines dihedral angles for the regular octahedron (arccos(-1/3)) and icosahedron (arccos(-\u221a5/3)). Proves positivity of the tetrahedron angle. Provides verification checks for the main results."
+      "summary": "Defines dihedral angles for the regular octahedron (arccos(-1/3)) and icosahedron (arccos(-√5/3)). Proves positivity of the tetrahedron angle. Provides verification checks for the main results.",
+      "mathContext": "Formal definition: Defines dihedral angles for the regular octahedron (arccos(-1/3)) and icosahedron (arccos(-√5/3)). Proves positivity of the tetrahedron angle. Provides verification checks for the main results."
     }
   ],
   "conclusion": {
-    "summary": "The primary contribution is a complete, axiom-free proof that arccos(1/3)/\u03c0 is irrational via Chebyshev polynomial recurrence (Niven's theorem), establishing that the regular tetrahedron's dihedral angle is not a rational multiple of \u03c0. This creates the invariant separation between cube (zero simplified Dehn invariant, angle \u03c0/2 rational) and tetrahedron (nonzero invariant). The connection to Hilbert's Third Problem (non-scissors-congruence) is conditional on Dehn's theorem, which is assumed as an explicit hypothesis. The 2D contrast via polygon_dehn_zero demonstrates why the phenomenon is dimension-specific.",
-    "implications": "**Theoretical Significance**: This formalization provides a machine-checked account of one of the most elegant results in geometric combinatorics: the negative answer to Hilbert's Third Problem.\n\nIt demonstrates that equal-volume polyhedra need not be scissors congruent, in stark contrast to the 2D case. The key breakthrough is the fully verified proof of tetrahedron_angle_irrational_pi (arccos(1/3)/\u03c0 is irrational) via Chebyshev's recurrence, completing the invariant separation.",
+    "summary": "The primary contribution is a complete, axiom-free proof that arccos(1/3)/π is irrational via Chebyshev polynomial recurrence (Niven's theorem), establishing that the regular tetrahedron's dihedral angle is not a rational multiple of π. This creates the invariant separation between cube (zero simplified Dehn invariant, angle π/2 rational) and tetrahedron (nonzero invariant). The connection to Hilbert's Third Problem (non-scissors-congruence) is conditional on Dehn's theorem, which is assumed as an explicit hypothesis. The 2D contrast via polygon_dehn_zero demonstrates why the phenomenon is dimension-specific.",
+    "implications": "**Theoretical Significance**: This formalization provides a machine-checked account of one of the most elegant results in geometric combinatorics: the negative answer to Hilbert's Third Problem.\n\nIt demonstrates that equal-volume polyhedra need not be scissors congruent, in stark contrast to the 2D case. The key breakthrough is the fully verified proof of tetrahedron_angle_irrational_pi (arccos(1/3)/π is irrational) via Chebyshev's recurrence, completing the invariant separation.",
     "openQuestions": [
-      "Formalize the full tensor product Dehn invariant D(P) \u2208 \u211d \u2297_\u2124 (\u211d/\u03c0\u2124) with proper edge-length weighting, moving beyond the simplified boolean version",
+      "Formalize the full tensor product Dehn invariant D(P) ∈ ℝ ⊗_ℤ (ℝ/πℤ) with proper edge-length weighting, moving beyond the simplified boolean version",
       "Prove the Dehn-Sydler completeness theorem: volume + Dehn invariant are the complete scissors congruence invariants in 3D",
       "Extend to higher dimensions: formalize the Dupont-Sah conjecture relating scissors congruence in dimension n to algebraic K-theory groups",
       "Determine Dehn invariants for all Archimedean solids and classify which pairs are scissors congruent"
@@ -165,7 +165,7 @@
     {
       "targetId": "isoperimetric-theorem",
       "relationship": "related",
-      "description": "Both involve fundamental geometric constraints on shape decomposition \u2014 isoperimetric bounds limit area-to-perimeter ratios while Dehn invariants limit polyhedral decomposition"
+      "description": "Both involve fundamental geometric constraints on shape decomposition — isoperimetric bounds limit area-to-perimeter ratios while Dehn invariants limit polyhedral decomposition"
     }
   ],
   "leanFile": {
@@ -179,7 +179,7 @@
     "lineCount": 379,
     "axiomCount": 0,
     "theoremCount": 20,
-    "definitionCount": 5,
+    "definitionCount": 7,
     "opens": [
       "Real"
     ],
@@ -194,12 +194,12 @@
     },
     {
       "key": "Sy65",
-      "citation": "Sydler, J.-P., Conditions n\u00e9cessaires et suffisantes pour l'\u00e9quivalence des poly\u00e8dres de l'espace euclidien \u00e0 trois dimensions, Comment. Math. Helv. 40 (1965), 43-80.",
+      "citation": "Sydler, J.-P., Conditions nécessaires et suffisantes pour l'équivalence des polyèdres de l'espace euclidien à trois dimensions, Comment. Math. Helv. 40 (1965), 43-80.",
       "type": "paper"
     },
     {
       "key": "Ni56",
-      "citation": "Niven, I., Irrational Numbers, Carus Math. Monographs No. 11, MAA (1956). Contains the theorem that arccos(r) is a rational multiple of \u03c0 only for r \u2208 {0, \u00b11/2, \u00b11}.",
+      "citation": "Niven, I., Irrational Numbers, Carus Math. Monographs No. 11, MAA (1956). Contains the theorem that arccos(r) is a rational multiple of π only for r ∈ {0, ±1/2, ±1}.",
       "type": "book"
     },
     {

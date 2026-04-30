@@ -2,7 +2,7 @@
   "id": "ptolemys-theorem-oq-01-oq-01",
   "title": "Ptolemy's Theorem Converse: Equality Characterizes Cyclic Order",
   "slug": "ptolemys-theorem-oq-01-oq-01",
-  "description": "Proves the converse of Ptolemy's theorem for unit-circle points: if the equality \u2016z\u2081-z\u2083\u2016\u00b7\u2016z\u2082-z\u2084\u2016 = \u2016z\u2081-z\u2082\u2016\u00b7\u2016z\u2083-z\u2084\u2016 + \u2016z\u2082-z\u2083\u2016\u00b7\u2016z\u2081-z\u2084\u2016 holds for four distinct points on the unit circle, then they appear in counterclockwise or clockwise cyclic order. Combined with the forward direction from PtolemysTheoremOQ01, this gives the complete biconditional: Ptolemy equality \u2194 CCW or CW order. The proof uses the equality case of the triangle inequality in the strictly convex space \u2102 (via SameRay) to extract a positive proportionality constant, then axiomatizes the angular case analysis identifying positive sine-product ratios with cyclic orderings.",
+  "description": "Proves the converse of Ptolemy's theorem for unit-circle points: if the equality ‖z₁-z₃‖·‖z₂-z₄‖ = ‖z₁-z₂‖·‖z₃-z₄‖ + ‖z₂-z₃‖·‖z₁-z₄‖ holds for four distinct points on the unit circle, then they appear in counterclockwise or clockwise cyclic order. Combined with the forward direction from PtolemysTheoremOQ01, this gives the complete biconditional: Ptolemy equality ↔ CCW or CW order. The proof uses the equality case of the triangle inequality in the strictly convex space ℂ (via SameRay) to extract a positive proportionality constant, then axiomatizes the angular case analysis identifying positive sine-product ratios with cyclic orderings.",
   "meta": {
     "author": "Lean Genius Researcher",
     "sourceUrl": "https://en.wikipedia.org/wiki/Ptolemy%27s_theorem",
@@ -20,31 +20,31 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "One axiom: `positive_ratio_implies_cyclic_order` \u2014 the angular case analysis showing that a positive product of half-angle sines forces CCW or CW order. This follows from the exp factorization in PtolemysTheoremOQ01 and a finite sign analysis of the three interlacing patterns of four angles.",
+    "assumptions": "One axiom: `positive_ratio_implies_cyclic_order` — the angular case analysis showing that a positive product of half-angle sines forces CCW or CW order. This follows from the exp factorization in PtolemysTheoremOQ01 and a finite sign analysis of the three interlacing patterns of four angles.",
     "mathlibDependencies": [
       {
         "theorem": "sameRay_iff_norm_add",
-        "description": "In a strictly convex space, SameRay \u211d x y \u2194 \u2016x + y\u2016 = \u2016x\u2016 + \u2016y\u2016 (equality case of triangle inequality)",
+        "description": "In a strictly convex space, SameRay ℝ x y ↔ ‖x + y‖ = ‖x‖ + ‖y‖ (equality case of triangle inequality)",
         "module": "Mathlib.Analysis.InnerProductSpace.Convex"
       },
       {
         "theorem": "ptolemy_equality_implies_proportional",
-        "description": "Ptolemy equality + nonzero factors \u2192 \u2203 t>0, t\u2022(z\u2081-z\u2082)(z\u2083-z\u2084) = (z\u2082-z\u2083)(z\u2081-z\u2084)",
+        "description": "Ptolemy equality + nonzero factors → ∃ t>0, t•(z₁-z₂)(z₃-z₄) = (z₂-z₃)(z₁-z₄)",
         "module": "Proofs.PtolemysComplexProofOQ01"
       },
       {
         "theorem": "ptolemy_equality_for_unit_circle_ccw",
-        "description": "CCW order on unit circle \u2192 Ptolemy equality (forward direction)",
+        "description": "CCW order on unit circle → Ptolemy equality (forward direction)",
         "module": "Proofs.PtolemysTheoremOQ01"
       },
       {
         "theorem": "norm_sub_rev",
-        "description": "\u2016a - b\u2016 = \u2016b - a\u2016, used to convert CW order conclusion to standard form",
+        "description": "‖a - b‖ = ‖b - a‖, used to convert CW order conclusion to standard form",
         "module": "Mathlib.Topology.Algebra.Order.LiminfLimsup"
       }
     ],
     "originalContributions": [
-      "ptolemy_equality_implies_ccw_or_cw: Main converse theorem \u2014 Ptolemy equality for unit-circle points implies CCW or CW order",
+      "ptolemy_equality_implies_ccw_or_cw: Main converse theorem — Ptolemy equality for unit-circle points implies CCW or CW order",
       "ptolemy_equality_iff_ccw_or_cw: Full biconditional characterization of cyclic quadrilaterals via Ptolemy equality",
       "IsCWOrder: Definition of clockwise cyclic order as the reverse of CCW order",
       "FourDistinct: Structure capturing all six pairwise distinctness conditions for four complex points",
@@ -55,22 +55,22 @@
     "definitionCount": 2
   },
   "overview": {
-    "historicalContext": "Ptolemy's theorem (c. 150 AD) states that for a cyclic quadrilateral ABCD in convex position, AC\u00b7BD = AB\u00b7CD + BC\u00b7DA. The question of whether equality alone characterizes concyclic order \u2014 the *converse* \u2014 was implicit in Ptolemy's work but requires careful proof. In modern terms, it follows from the cross-ratio characterization: for four points on a circle, the cross-ratio R = (z\u2082-z\u2083)(z\u2081-z\u2084)/((z\u2081-z\u2082)(z\u2083-z\u2084)) is always real, and R > 0 precisely when the points are in CCW or CW order. This file provides the Lean 4 formalization of the converse direction, completing the full biconditional characterization.",
-    "problemStatement": "**Open Question from PtolemysTheoremOQ01**: The parent proof showed CCW order \u2192 Ptolemy equality. Does the converse hold? If four distinct unit-circle points satisfy \u2016z\u2081-z\u2083\u2016\u00b7\u2016z\u2082-z\u2084\u2016 = \u2016z\u2081-z\u2082\u2016\u00b7\u2016z\u2083-z\u2084\u2016 + \u2016z\u2082-z\u2083\u2016\u00b7\u2016z\u2081-z\u2084\u2016, must they be in CCW or CW order?",
-    "text": "The converse of Ptolemy's theorem follows from the strict convexity of the complex plane as a normed space. The Ptolemy equality \u2016a+b\u2016 = \u2016a\u2016 + \u2016b\u2016 (after algebraic rewriting) is exactly the equality case of the triangle inequality, which in a strictly convex space forces a and b to lie on the same ray (SameRay). Since both products are nonzero (four distinct points), this gives a positive proportionality constant. The angular step \u2014 identifying positive cross-ratio with cyclic order \u2014 uses the exp factorization exp(i\u03b1)-exp(i\u03b2) = 2i\u00b7sin((\u03b1-\u03b2)/2)\u00b7exp(i(\u03b1+\u03b2)/2).",
-    "proofStrategy": "**Step 1** (Algebra \u2192 Positive proportionality): The Ptolemy equality\n  \u2016z\u2081-z\u2083\u2016\u00b7\u2016z\u2082-z\u2084\u2016 = \u2016z\u2081-z\u2082\u2016\u00b7\u2016z\u2083-z\u2084\u2016 + \u2016z\u2082-z\u2083\u2016\u00b7\u2016z\u2081-z\u2084\u2016\nreduces via the identity (z\u2081-z\u2082)(z\u2083-z\u2084) + (z\u2082-z\u2083)(z\u2081-z\u2084) = (z\u2081-z\u2083)(z\u2082-z\u2084) to the equality case \u2016a+b\u2016 = \u2016a\u2016 + \u2016b\u2016. In the strictly convex space \u2102, this forces SameRay \u211d a b, which (since both are nonzero) gives \u2203 t > 0, t\u2022a = b.\n\n**Step 2** (Geometry \u2192 Cyclic order): Write z\u2c7c = exp(i\u03b8\u2c7c). The positive proportionality reduces (after canceling the common exponential phase E\u2081\u2082\u2083\u2084 and the (2i)\u00b2 factors) to t\u00b7sin((\u03b8\u2081-\u03b8\u2082)/2)\u00b7sin((\u03b8\u2083-\u03b8\u2084)/2) = sin((\u03b8\u2082-\u03b8\u2083)/2)\u00b7sin((\u03b8\u2081-\u03b8\u2084)/2). With t > 0, both sine products have the same sign. Among the three possible interlacing patterns of four distinct angles, only CCW and CW order give equal-sign products.",
+    "historicalContext": "Ptolemy's theorem (c. 150 AD) states that for a cyclic quadrilateral ABCD in convex position, AC·BD = AB·CD + BC·DA. The question of whether equality alone characterizes concyclic order — the *converse* — was implicit in Ptolemy's work but requires careful proof. In modern terms, it follows from the cross-ratio characterization: for four points on a circle, the cross-ratio R = (z₂-z₃)(z₁-z₄)/((z₁-z₂)(z₃-z₄)) is always real, and R > 0 precisely when the points are in CCW or CW order. This file provides the Lean 4 formalization of the converse direction, completing the full biconditional characterization.",
+    "problemStatement": "**Open Question from PtolemysTheoremOQ01**: The parent proof showed CCW order → Ptolemy equality. Does the converse hold? If four distinct unit-circle points satisfy ‖z₁-z₃‖·‖z₂-z₄‖ = ‖z₁-z₂‖·‖z₃-z₄‖ + ‖z₂-z₃‖·‖z₁-z₄‖, must they be in CCW or CW order?",
+    "text": "The converse of Ptolemy's theorem follows from the strict convexity of the complex plane as a normed space. The Ptolemy equality ‖a+b‖ = ‖a‖ + ‖b‖ (after algebraic rewriting) is exactly the equality case of the triangle inequality, which in a strictly convex space forces a and b to lie on the same ray (SameRay). Since both products are nonzero (four distinct points), this gives a positive proportionality constant. The angular step — identifying positive cross-ratio with cyclic order — uses the exp factorization exp(iα)-exp(iβ) = 2i·sin((α-β)/2)·exp(i(α+β)/2).",
+    "proofStrategy": "**Step 1** (Algebra → Positive proportionality): The Ptolemy equality\n  ‖z₁-z₃‖·‖z₂-z₄‖ = ‖z₁-z₂‖·‖z₃-z₄‖ + ‖z₂-z₃‖·‖z₁-z₄‖\nreduces via the identity (z₁-z₂)(z₃-z₄) + (z₂-z₃)(z₁-z₄) = (z₁-z₃)(z₂-z₄) to the equality case ‖a+b‖ = ‖a‖ + ‖b‖. In the strictly convex space ℂ, this forces SameRay ℝ a b, which (since both are nonzero) gives ∃ t > 0, t•a = b.\n\n**Step 2** (Geometry → Cyclic order): Write zⱼ = exp(iθⱼ). The positive proportionality reduces (after canceling the common exponential phase E₁₂₃₄ and the (2i)² factors) to t·sin((θ₁-θ₂)/2)·sin((θ₃-θ₄)/2) = sin((θ₂-θ₃)/2)·sin((θ₁-θ₄)/2). With t > 0, both sine products have the same sign. Among the three possible interlacing patterns of four distinct angles, only CCW and CW order give equal-sign products.",
     "keyInsights": [
-      "The algebraic identity (z\u2081-z\u2082)(z\u2083-z\u2084) + (z\u2082-z\u2083)(z\u2081-z\u2084) = (z\u2081-z\u2083)(z\u2082-z\u2084) converts Ptolemy equality to a triangle inequality equality case.",
-      "Strict convexity of \u2102 (as a real inner product space) is the key that converts triangle equality to SameRay, hence to positive proportionality.",
-      "The exponential phase factors E\u2081\u2082\u00b7E\u2083\u2084 = E\u2082\u2083\u00b7E\u2081\u2084 cancel exactly in the ratio, leaving a purely real sine-product ratio.",
+      "The algebraic identity (z₁-z₂)(z₃-z₄) + (z₂-z₃)(z₁-z₄) = (z₁-z₃)(z₂-z₄) converts Ptolemy equality to a triangle inequality equality case.",
+      "Strict convexity of ℂ (as a real inner product space) is the key that converts triangle equality to SameRay, hence to positive proportionality.",
+      "The exponential phase factors E₁₂·E₃₄ = E₂₃·E₁₄ cancel exactly in the ratio, leaving a purely real sine-product ratio.",
       "Three cyclic interlacing patterns exist for four angles; only CCW and CW give equal-sign sine products (the axiom encodes this finite case analysis).",
-      "CW order is handled elegantly by relabeling: IsCCWOrder z\u2081 z\u2084 z\u2083 z\u2082, then using \u2016a-b\u2016 = \u2016b-a\u2016 and multiplication commutativity."
+      "CW order is handled elegantly by relabeling: IsCCWOrder z₁ z₄ z₃ z₂, then using ‖a-b‖ = ‖b-a‖ and multiplication commutativity."
     ],
     "prerequisites": [
       "Ptolemy equality for CCW order (PtolemysTheoremOQ01)",
       "SameRay characterization of triangle equality (PtolemysComplexProofOQ01)",
       "exp difference factorization (PtolemysTheoremOQ01)",
-      "Strict convexity of \u2102 as a real inner product space"
+      "Strict convexity of ℂ as a real inner product space"
     ]
   },
   "sections": [
@@ -84,11 +84,11 @@
     },
     {
       "id": "sec-positivity",
-      "title": "Ptolemy Equality \u2192 Positive Proportionality",
+      "title": "Ptolemy Equality → Positive Proportionality",
       "startLine": 61,
       "endLine": 90,
       "summary": "Combines ptolemy_equality_implies_proportional with distinctness to get positive proportionality via strict convexity.",
-      "description": "Combines ptolemy_equality_implies_proportional with distinctness to get \u2203 t>0, t\u2022(z\u2081-z\u2082)(z\u2083-z\u2084) = (z\u2082-z\u2083)(z\u2081-z\u2084). This is the algebraic core using strict convexity of \u2102."
+      "description": "Combines ptolemy_equality_implies_proportional with distinctness to get ∃ t>0, t•(z₁-z₂)(z₃-z₄) = (z₂-z₃)(z₁-z₄). This is the algebraic core using strict convexity of ℂ."
     },
     {
       "id": "sec-axiom",
@@ -96,7 +96,7 @@
       "startLine": 91,
       "endLine": 155,
       "summary": "Axiomatizes the trigonometric step: positive proportionality implies CCW or CW order.",
-      "description": "Axiomatizes the trigonometric step: positive proportionality for unit-circle points \u2192 CCW or CW order. Documents the complete proof sketch via exp factorization and sign analysis."
+      "description": "Axiomatizes the trigonometric step: positive proportionality for unit-circle points → CCW or CW order. Documents the complete proof sketch via exp factorization and sign analysis."
     },
     {
       "id": "sec-main",
@@ -112,23 +112,23 @@
       "startLine": 191,
       "endLine": 250,
       "summary": "Proves the complete biconditional: Ptolemy equality iff CCW or CW order.",
-      "description": "Proves the complete \u2194 via ptolemy_equality_iff_ccw_or_cw. The CW direction requires relabeling (z\u2081,z\u2084,z\u2083,z\u2082) and converting via norm symmetry and product commutativity."
+      "description": "Proves the complete ↔ via ptolemy_equality_iff_ccw_or_cw. The CW direction requires relabeling (z₁,z₄,z₃,z₂) and converting via norm symmetry and product commutativity."
     }
   ],
   "conclusion": {
     "summary": "This file completes the characterization of Ptolemy's theorem for unit-circle points by proving the converse: Ptolemy equality implies CCW or CW cyclic order. Combined with the forward direction from PtolemysTheoremOQ01, the full biconditional is machine-verified with exactly one axiom covering the angular case analysis.",
-    "implications": "The biconditional ptolemy_equality_iff_ccw_or_cw is a sharp characterization of cyclic quadrilaterals: the equality relation (an algebraic condition on six distances) is exactly equivalent to the ordering relation (a topological/geometric condition on four points). This exemplifies how strict convexity \u2014 a functional analytic property \u2014 bridges algebra and geometry. The remaining axiom (positive_ratio_implies_cyclic_order) is mathematically clear and provable from the exp_diff_factor infrastructure already in the parent file; formalizing the \u2248200 lines of trigonometric case analysis is a concrete next step for completing the proof.",
+    "implications": "The biconditional ptolemy_equality_iff_ccw_or_cw is a sharp characterization of cyclic quadrilaterals: the equality relation (an algebraic condition on six distances) is exactly equivalent to the ordering relation (a topological/geometric condition on four points). This exemplifies how strict convexity — a functional analytic property — bridges algebra and geometry. The remaining axiom (positive_ratio_implies_cyclic_order) is mathematically clear and provable from the exp_diff_factor infrastructure already in the parent file; formalizing the ≈200 lines of trigonometric case analysis is a concrete next step for completing the proof.",
     "openQuestions": [
       "Can the axiom positive_ratio_implies_cyclic_order be formally proved in Lean, either by extending the exp_diff_factor infrastructure from PtolemysTheoremOQ01 or by a direct interval-arithmetic argument on the three interlacing patterns of four angles?",
-      "Does the result extend to arbitrary M\u00f6bius circles (not just the unit circle), where the cross-ratio characterization of concyclicity is well-known but may require different Lean infrastructure?",
-      "Can the Lean formalization be used to verify the general Ptolemy inequality AC\u00b7BD \u2264 AB\u00b7CD + BC\u00b7DA for non-cyclic quadrilaterals, with equality iff the quadrilateral is cyclic?"
+      "Does the result extend to arbitrary Möbius circles (not just the unit circle), where the cross-ratio characterization of concyclicity is well-known but may require different Lean infrastructure?",
+      "Can the Lean formalization be used to verify the general Ptolemy inequality AC·BD ≤ AB·CD + BC·DA for non-cyclic quadrilaterals, with equality iff the quadrilateral is cyclic?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "ptolemys-theorem-oq-01",
       "relationship": "parent",
-      "description": "Proves the forward direction (CCW \u2192 equality) and all angular infrastructure (exp_diff_factor, ptolemy_ratio_pos_of_ccw, IsCCWOrder)"
+      "description": "Proves the forward direction (CCW → equality) and all angular infrastructure (exp_diff_factor, ptolemy_ratio_pos_of_ccw, IsCCWOrder)"
     },
     {
       "targetId": "ptolemys-complex-proof-oq-01",
@@ -151,7 +151,7 @@
     "lineCount": 288,
     "axiomCount": 1,
     "theoremCount": 8,
-    "definitionCount": 0,
+    "definitionCount": 1,
     "sorries": 0,
     "path": "Proofs/PtolemysTheoremOQ01OQ01.lean"
   }

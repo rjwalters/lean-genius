@@ -123,28 +123,39 @@
   ],
   "references": [
     {
-      "authors": ["P. Turán"],
+      "authors": [
+        "P. Turán"
+      ],
       "title": "On an Extremal Problem in Graph Theory",
       "year": "1941",
       "venue": "Matematikai és Fizikai Lapok 48: 436–452",
       "note": "Turán's theorem: any triangle-free graph on n vertices has at most ⌊n²/4⌋ edges, achieved by K_{⌊n/2⌋, ⌈n/2⌉}. The foundational upper bound applied in Part I of this formalization."
     },
     {
-      "authors": ["I. Z. Ruzsa", "E. Szemerédi"],
+      "authors": [
+        "I. Z. Ruzsa",
+        "E. Szemerédi"
+      ],
       "title": "Triple Systems with No Six Points Carrying Three Triangles",
       "year": "1978",
       "venue": "Combinatorics (Keszthely, 1976). Colloq. Math. Soc. János Bolyai 18: 939–945",
       "note": "The triangle removal lemma: if a graph on n vertices has o(n³) triangles, it can be made triangle-free by removing o(n²) edges. The triangle removal process studied by Erdős #1155 is motivated by this lemma; the BFL result quantifies the process endpoint."
     },
     {
-      "authors": ["J. Bohman", "A. Frieze", "B. Łuczak"],
+      "authors": [
+        "J. Bohman",
+        "A. Frieze",
+        "B. Łuczak"
+      ],
       "title": "Ramsey Games with Giants",
       "year": "2015",
       "venue": "Random Structures and Algorithms 46(3): 501–536",
       "note": "BFL result: the triangle removal process on K_n produces f(n) = n^{3/2+o(1)} edges. The upper and lower bounds f(n) ≤ n^{3/2+ε} and f(n) ≥ n^{3/2−ε} used as axioms in this file's proof of the Turán extremality gap."
     },
     {
-      "authors": ["J. Grable"],
+      "authors": [
+        "J. Grable"
+      ],
       "title": "On Random Greedy Triangle-Free Graphs",
       "year": "1997",
       "venue": "Random Structures and Algorithms 11(3): 147–195",
@@ -155,7 +166,9 @@
     "lineCount": 314,
     "path": "Proofs/Erdos1155OQ02.lean",
     "axiomCount": 1,
-    "sorries": 0
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 9
   },
   "sorries": 0
 }

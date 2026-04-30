@@ -65,7 +65,7 @@
     "namespace": "GaloisCriterion",
     "lineCount": 242,
     "axiomCount": 1,
-    "theoremCount": 6,
+    "theoremCount": 8,
     "definitionCount": 0,
     "path": "Proofs/AbelRuffiniOQ04OQ03.lean",
     "sorries": 0
@@ -244,49 +244,63 @@
   ],
   "references": [
     {
-      "authors": ["I. Stewart"],
+      "authors": [
+        "I. Stewart"
+      ],
       "title": "Galois Theory",
       "year": "2015",
       "venue": "CRC Press, 4th edition",
       "note": "Chapters 9-12: solvability by radicals, Galois's criterion, and the classical proof of Abel-Ruffini as a corollary"
     },
     {
-      "authors": ["D. A. Cox"],
+      "authors": [
+        "D. A. Cox"
+      ],
       "title": "Galois Theory",
       "year": "2012",
       "venue": "Wiley, 2nd edition",
       "note": "Theorem 13.4.3 (Galois criterion), Theorem 13.1.1 (forward direction), Section 13.4 (Kummer theory for cyclic extensions)"
     },
     {
-      "authors": ["S. Lang"],
+      "authors": [
+        "S. Lang"
+      ],
       "title": "Algebra",
       "year": "2002",
       "venue": "Graduate Texts in Mathematics 211, Springer, 3rd revised edition",
       "note": "Chapter VI §7-§9: Galois's solvability criterion, Kummer extensions, and the complete proof of both directions"
     },
     {
-      "authors": ["É. Galois"],
+      "authors": [
+        "É. Galois"
+      ],
       "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
       "year": "1846",
       "venue": "Journal de mathématiques pures et appliquées (posthumous, ed. Liouville), vol. 11, pp. 381-444",
       "note": "Original memoir presenting the criterion; written 1831, submitted to the Paris Academy, published posthumously 14 years after Galois's death"
     },
     {
-      "authors": ["E. E. Kummer"],
-      "title": "\u00dcber die Erg\u00e4nzungss\u00e4tze zu den allgemeinen Reciprocit\u00e4tsgesetzen",
+      "authors": [
+        "E. E. Kummer"
+      ],
+      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
       "year": "1850",
-      "venue": "Journal f\u00fcr die reine und angewandte Mathematik (Crelle's Journal), vol. 44, pp. 93\u2013146",
-      "note": "Kummer's foundational work on cyclic extensions of cyclotomic fields, the source of what is now called *Kummer theory* \u2014 directly underlying the axiomatized reverse direction of this entry. Kummer proved that over a field $F$ containing a primitive $n$-th root of unity $\\zeta_n$, every cyclic Galois extension $E/F$ of degree $n$ has the form $E = F(\\sqrt[n]{\\beta})$ for some $\\beta \\in F^\\times$, with $\\text{Gal}(E/F)$ acting by $\\sqrt[n]{\\beta} \\mapsto \\zeta_n^k \\sqrt[n]{\\beta}$. This bijection between $F^\\times/(F^\\times)^n$ and cyclic degree-$n$ extensions is the technical engine that converts a composition series with cyclic quotients into an explicit radical tower \u2014 the missing ingredient `solvableGal_implies_solvableByRad` axiomatizes."
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), vol. 44, pp. 93–146",
+      "note": "Kummer's foundational work on cyclic extensions of cyclotomic fields, the source of what is now called *Kummer theory* — directly underlying the axiomatized reverse direction of this entry. Kummer proved that over a field $F$ containing a primitive $n$-th root of unity $\\zeta_n$, every cyclic Galois extension $E/F$ of degree $n$ has the form $E = F(\\sqrt[n]{\\beta})$ for some $\\beta \\in F^\\times$, with $\\text{Gal}(E/F)$ acting by $\\sqrt[n]{\\beta} \\mapsto \\zeta_n^k \\sqrt[n]{\\beta}$. This bijection between $F^\\times/(F^\\times)^n$ and cyclic degree-$n$ extensions is the technical engine that converts a composition series with cyclic quotients into an explicit radical tower — the missing ingredient `solvableGal_implies_solvableByRad` axiomatizes."
     },
     {
-      "authors": ["I. R. Shafarevich"],
+      "authors": [
+        "I. R. Shafarevich"
+      ],
       "title": "Construction of fields of algebraic numbers with given solvable Galois group",
       "year": "1954",
-      "venue": "Izvestiya Akademii Nauk SSSR, Seriya Matematicheskaya, vol. 18, pp. 525\u2013578 (English translation in AMS Translations 4 (1956), pp. 185\u2013237)",
-      "note": "Shafarevich's theorem: every finite solvable group occurs as the Galois group of some Galois extension of $\\mathbb{Q}$ \u2014 directly cited in openQuestion #4 (the Inverse Galois Problem). Combined with this entry's criterion, Shafarevich's theorem implies a positive radical-solvability result: for every finite solvable group $G$, there exists a polynomial $f \\in \\mathbb{Q}[x]$ with $\\text{Gal}(f/\\mathbb{Q}) \\cong G$, hence (assuming the reverse direction of `galois_criterion`) the roots of $f$ admit a radical formula whose nesting structure is dictated by the composition series of $G$. Shafarevich's proof uses central embedding problems and class field theory; the non-solvable case (e.g., $M_{23}$, the only sporadic simple group not yet known to be a Galois group over $\\mathbb{Q}$) remains open."
+      "venue": "Izvestiya Akademii Nauk SSSR, Seriya Matematicheskaya, vol. 18, pp. 525–578 (English translation in AMS Translations 4 (1956), pp. 185–237)",
+      "note": "Shafarevich's theorem: every finite solvable group occurs as the Galois group of some Galois extension of $\\mathbb{Q}$ — directly cited in openQuestion #4 (the Inverse Galois Problem). Combined with this entry's criterion, Shafarevich's theorem implies a positive radical-solvability result: for every finite solvable group $G$, there exists a polynomial $f \\in \\mathbb{Q}[x]$ with $\\text{Gal}(f/\\mathbb{Q}) \\cong G$, hence (assuming the reverse direction of `galois_criterion`) the roots of $f$ admit a radical formula whose nesting structure is dictated by the composition series of $G$. Shafarevich's proof uses central embedding problems and class field theory; the non-solvable case (e.g., $M_{23}$, the only sporadic simple group not yet known to be a Galois group over $\\mathbb{Q}$) remains open."
     },
     {
-      "authors": ["The mathlib Community"],
+      "authors": [
+        "The mathlib Community"
+      ],
       "title": "Mathlib4: A Unified Library of Mathematics Formalized in Lean 4",
       "year": "2024",
       "venue": "https://github.com/leanprover-community/mathlib4",

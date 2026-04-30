@@ -114,15 +114,21 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Filter", "Real", "Finset"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Real",
+      "Finset"
+    ],
     "namespace": "AmgmPowerMeanLimits",
     "lineCount": 272,
     "axiomCount": 0,
     "sorries": 0,
     "path": "Proofs/AmgmInequalityPowerMeanLimits.lean",
     "theoremCount": 19,
-    "definitionCount": 4
+    "definitionCount": 3
   },
   "sorries": 0
 }

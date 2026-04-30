@@ -138,12 +138,18 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib", "Proofs.Erdos1027Problem"],
-    "opens": ["Finset", "Erdos1027"],
+    "imports": [
+      "Mathlib",
+      "Proofs.Erdos1027Problem"
+    ],
+    "opens": [
+      "Finset",
+      "Erdos1027"
+    ],
     "namespace": "Erdos1027.UnionBound",
     "lineCount": 183,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 5,
     "substantiveTheoremCount": 4,
     "duplicateTheorems": 0,
     "definitionCount": 0,

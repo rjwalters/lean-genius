@@ -106,37 +106,6 @@
   ],
   "crossReferences": [
     {
-      "targetId": "cantor-diagonalization-oq-03-oq-01",
-      "relationship": "extends",
-      "description": "Direct parent: proves lawvere_fpt (in any point-surjective evaluation structure, every endomorphism has a fixed point). This file instantiates it with the sentence evaluation structure and ¬Pr as the endomorphism to get the Gödel sentence."
-    },
-    {
-      "targetId": "cantor-diagonalization-oq-03-oq-01-oq-02",
-      "relationship": "related",
-      "description": "Sibling: Rice's theorem as Lawvere instance (Bool.not, no fixed point → undecidability). Together, OQ-02 (Rice, no fixed point) and OQ-03 (Gödel, fixed point exists but unprovable) complete the Lawvere chain."
-    },
-    {
-      "targetId": "godel-incompleteness",
-      "relationship": "related",
-      "description": "Classical version: the traditional Gödel incompleteness proof (via diagonal lemma and Rosser's trick). This OQ provides the categorical Lawvere framing as an alternative, more abstract proof."
-    },
-    {
-      "targetId": "cantor-diagonalization-oq-03-oq-01-oq-01",
-      "relationship": "related",
-      "description": "Sibling: the categorical Lawvere FPT (global element / Yoneda approach). The three siblings OQ-01/02/03 together formalize the complete Cantor → Rice → Gödel diagonal argument chain."
-    }
-  ],
-  "leanFile": {
-    "namespace": "CantorDiagonalizationOQ03OQ01OQ03",
-    "lineCount": 256,
-    "axiomCount": 0,
-    "theoremCount": 7,
-    "definitionCount": 5,
-    "path": "Proofs/CantorDiagonalizationOQ03OQ01OQ03.lean",
-    "sorries": 0
-  },
-  "crossReferences": [
-    {
       "proofId": "cantor-diagonalization-oq-03-oq-01",
       "relationship": "extends",
       "description": "The parent Lawvere Fixed-Point Theorem: in any cartesian closed category, a point-surjective morphism forces every endomorphism to have a fixed point. This entry uses `lawvere_fpt` directly — the GodelModel's `h_diag` field IS the point-surjectivity hypothesis. The Gödel sentence is the fixed point produced by applying `lawvere_fpt` to the endomorphism Neg∘PrSent."
@@ -162,5 +131,14 @@
       "description": "The original Cantor diagonalization argument (1891): no surjection from a set to its powerset. Lawvere's 1969 insight was that this is the Val=Prop, f=¬ case of his fixed-point theorem. The Gödel proof here is three abstraction levels above Cantor — Cantor → Lawvere abstraction → Rice application → Gödel application — but all share the same diagonal core: self-application creates a fixed point or a contradiction."
     }
   ],
+  "leanFile": {
+    "namespace": "CantorDiagonalizationOQ03OQ01OQ03",
+    "lineCount": 256,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "path": "Proofs/CantorDiagonalizationOQ03OQ01OQ03.lean",
+    "sorries": 0
+  },
   "sorries": 0
 }

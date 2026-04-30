@@ -2,7 +2,7 @@
   "id": "collatz-structured-oq-02",
   "title": "Collatz Cycles: Non-Existence of Small Cycles",
   "slug": "collatz-structured-oq-02",
-  "description": "Proves structural constraints on hypothetical Collatz cycles: no fixed points, no 2-cycles, the unique cycle through 1 is {1,4,2} with period 3, and derives algebraic bounds on cycle length from the 2^M > 3^j constraint. All n \u2264 20 verified to reach 1.",
+  "description": "Proves structural constraints on hypothetical Collatz cycles: no fixed points, no 2-cycles, the unique cycle through 1 is {1,4,2} with period 3, and derives algebraic bounds on cycle length from the 2^M > 3^j constraint. All n ≤ 20 verified to reach 1.",
   "meta": {
     "author": "Lagarias, Eliahou (formalized in Lean 4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Collatz_conjecture#Cycle_length",
@@ -28,12 +28,12 @@
     ],
     "originalContributions": [
       "No fixed points: collatz(n) = n implies n = 0",
-      "No 2-cycles: collatz\u00b2(n) = n implies n = 0",
+      "No 2-cycles: collatz²(n) = n implies n = 0",
       "Unique cycle through 1 with minimum period 3",
-      "3/4 contraction for n \u2261 1 mod 4: three Collatz steps decrease",
-      "Minimum halving bounds: j odd steps need \u2265 \u2308j\u00b7log\u2082(3)\u2309 halvings",
-      "Minimum cycle lengths: j=1\u2192\u22653, j=2\u2192\u22656, j=3\u2192\u22658, j=4\u2192\u226511",
-      "All n \u2264 20 verified to reach 1"
+      "3/4 contraction for n ≡ 1 mod 4: three Collatz steps decrease",
+      "Minimum halving bounds: j odd steps need ≥ ⌈j·log₂(3)⌉ halvings",
+      "Minimum cycle lengths: j=1→≥3, j=2→≥6, j=3→≥8, j=4→≥11",
+      "All n ≤ 20 verified to reach 1"
     ],
     "dateAdded": "2026-03-23",
     "lineCount": 256,
@@ -41,15 +41,15 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Lothar Collatz first posed the 3n+1 problem in 1937, and it quickly became one of the most famous unsolved problems in mathematics \u2014 Paul Erd\u0151s remarked that 'mathematics is not yet ready for such problems.' The conjecture is equivalent to asking whether the only cycle in the Collatz dynamical system is 1\u21924\u21922\u21921. Riho Terras (1976) proved that almost all positive integers have a finite stopping time, introducing probabilistic methods to the field. Jeffrey Lagarias's landmark 1985 survey systematized structural results about hypothetical cycles, establishing the algebraic framework based on the $2^M > 3^j$ constraint. Shalom Eliahou (1993) pushed these bounds dramatically, proving that any non-trivial cycle must have length exceeding $1.7 \\times 10^{10}$ (17 billion). The computational frontier reached $n < 2^{68} \\approx 2.95 \\times 10^{20}$ (Barina, 2020), verified by distributed computation. Despite these results, the conjecture remains wide open \u2014 Terence Tao (2019) proved that the Collatz conjecture holds for 'almost all' integers in a logarithmic density sense, the strongest result to date.",
-    "problemStatement": "**Research Question**: Are there cycles other than 1\u21924\u21922\u21921 in the Collatz sequence?\n\n**What We Prove**:\n- No fixed points: collatz(n) = n \u27f9 n = 0\n- No 2-cycles: collatz(collatz(n)) = n \u27f9 n = 0\n- The unique cycle through 1 has minimum period exactly 3\n- For n \u2261 1 mod 4: three Collatz steps always decrease (3/4 contraction)\n- Minimum halving requirements from 2^M > 3^j\n- All n \u2264 20 reach 1 (not in non-trivial cycles)",
+    "historicalContext": "Lothar Collatz first posed the 3n+1 problem in 1937, and it quickly became one of the most famous unsolved problems in mathematics — Paul Erdős remarked that 'mathematics is not yet ready for such problems.' The conjecture is equivalent to asking whether the only cycle in the Collatz dynamical system is 1→4→2→1. Riho Terras (1976) proved that almost all positive integers have a finite stopping time, introducing probabilistic methods to the field. Jeffrey Lagarias's landmark 1985 survey systematized structural results about hypothetical cycles, establishing the algebraic framework based on the $2^M > 3^j$ constraint. Shalom Eliahou (1993) pushed these bounds dramatically, proving that any non-trivial cycle must have length exceeding $1.7 \\times 10^{10}$ (17 billion). The computational frontier reached $n < 2^{68} \\approx 2.95 \\times 10^{20}$ (Barina, 2020), verified by distributed computation. Despite these results, the conjecture remains wide open — Terence Tao (2019) proved that the Collatz conjecture holds for 'almost all' integers in a logarithmic density sense, the strongest result to date.",
+    "problemStatement": "**Research Question**: Are there cycles other than 1→4→2→1 in the Collatz sequence?\n\n**What We Prove**:\n- No fixed points: collatz(n) = n ⟹ n = 0\n- No 2-cycles: collatz(collatz(n)) = n ⟹ n = 0\n- The unique cycle through 1 has minimum period exactly 3\n- For n ≡ 1 mod 4: three Collatz steps always decrease (3/4 contraction)\n- Minimum halving requirements from 2^M > 3^j\n- All n ≤ 20 reach 1 (not in non-trivial cycles)",
     "text": "We formalize structural constraints on hypothetical Collatz cycles. The key results: no fixed points exist (except 0), no 2-cycles exist, the orbit {1,4,2} is the unique cycle through 1 with minimum period 3, and the 2^M > 3^j constraint forces minimum cycle lengths that grow with the number of odd steps.",
-    "proofStrategy": "The proof combines algebraic constraints with computational verification:\n\n1. **No fixed points**: Case split on parity. Even: n/2 = n \u27f9 n = 0. Odd: 3n+1 = n impossible.\n\n2. **No 2-cycles**: Nested parity analysis. Each case leads to a linear contradiction.\n\n3. **3/4 contraction**: For n \u2261 1 mod 4, the sequence n \u2192 3n+1 \u2192 (3n+1)/2 \u2192 (3n+1)/4 is guaranteed because 4 | (3n+1) when n \u2261 1 mod 4, and (3n+1)/4 < n.\n\n4. **Halving bounds**: A cycle with j odd steps needs M halvings where 2^M > 3^j. Since log\u2082(3) \u2248 1.585, each odd step requires on average \u22481.585 halvings.\n\n5. **Verified non-cycling**: All n from 1 to 20 are computationally verified to reach 1 using native_decide.",
+    "proofStrategy": "The proof combines algebraic constraints with computational verification:\n\n1. **No fixed points**: Case split on parity. Even: n/2 = n ⟹ n = 0. Odd: 3n+1 = n impossible.\n\n2. **No 2-cycles**: Nested parity analysis. Each case leads to a linear contradiction.\n\n3. **3/4 contraction**: For n ≡ 1 mod 4, the sequence n → 3n+1 → (3n+1)/2 → (3n+1)/4 is guaranteed because 4 | (3n+1) when n ≡ 1 mod 4, and (3n+1)/4 < n.\n\n4. **Halving bounds**: A cycle with j odd steps needs M halvings where 2^M > 3^j. Since log₂(3) ≈ 1.585, each odd step requires on average ≈1.585 halvings.\n\n5. **Verified non-cycling**: All n from 1 to 20 are computationally verified to reach 1 using native_decide.",
     "keyInsights": [
-      "The Collatz conjecture is equivalent to 'no non-trivial cycles exist' \u2014 proving cycle non-existence for all lengths would resolve it",
+      "The Collatz conjecture is equivalent to 'no non-trivial cycles exist' — proving cycle non-existence for all lengths would resolve it",
       "Odd steps multiply by ~3/2 on average, requiring ~1.585 halvings to compensate each odd step, making the system a tug-of-war between exponential growth (3^j) and exponential shrinkage (2^M)",
-      "The 3/4 contraction for n \u2261 1 mod 4 is the strongest known per-residue-class decrease, and generalizes: deeper residue class analysis (mod 8, mod 16, ...) yields the 'Syracuse acceleration' used in computational verification",
-      "Minimum cycle lengths grow faster than linearly with the number of odd steps because log\u2082(3) \u2248 1.585 is irrational \u2014 each additional odd step demands more than one additional halving",
+      "The 3/4 contraction for n ≡ 1 mod 4 is the strongest known per-residue-class decrease, and generalizes: deeper residue class analysis (mod 8, mod 16, ...) yields the 'Syracuse acceleration' used in computational verification",
+      "Minimum cycle lengths grow faster than linearly with the number of odd steps because log₂(3) ≈ 1.585 is irrational — each additional odd step demands more than one additional halving",
       "The nested parity argument for ruling out 2-cycles generalizes poorly: ruling out k-cycles for arbitrary k requires exponentially many cases, motivating the shift to algebraic and analytic methods"
     ],
     "prerequisites": [
@@ -64,9 +64,9 @@
     "keyIdea": "Case analysis on parity to rule out short cycles, combined with the 2^M > 3^j algebraic constraint that forces minimum cycle lengths for any hypothetical cycle with j odd steps.",
     "notableSteps": [
       "Parity case splitting to eliminate fixed points and 2-cycles",
-      "The 3/4 contraction: for n \u2261 1 mod 4, three steps give (3n+1)/4 < n",
+      "The 3/4 contraction: for n ≡ 1 mod 4, three steps give (3n+1)/4 < n",
       "Halving lower bounds via by_contra + interval_cases on M",
-      "Computational verification of all n \u2264 20 reaching 1 via native_decide"
+      "Computational verification of all n ≤ 20 reaching 1 via native_decide"
     ]
   },
   "sections": [
@@ -85,7 +85,7 @@
       "title": "No Fixed Points",
       "startLine": 53,
       "endLine": 65,
-      "content": "Proof that collatz(n) = n implies n = 0. The even case gives n/2 = n (impossible for n > 0), and the odd case gives 3n+1 = n (impossible for \u2115).",
+      "content": "Proof that collatz(n) = n implies n = 0. The even case gives n/2 = n (impossible for n > 0), and the odd case gives 3n+1 = n (impossible for ℕ).",
       "summary": "Eliminates period-1 orbits via parity case split. Both cases reduce to linear equations over $\\mathbb{N}$ with no positive solutions, dispatched by `omega`.",
       "proofMethod": "Case split on parity with omega for the arithmetic contradictions.",
       "mathContext": "No period-1 orbits: $T(n) = n$ has no solution for $n \\geq 2$. If $n$ is even: $n/2 = n \\Rightarrow n = 0$. If $n$ is odd: $3n+1 = n \\Rightarrow n = -1/2$. Neither gives a positive integer fixed point."
@@ -96,7 +96,7 @@
       "startLine": 66,
       "endLine": 89,
       "content": "Proof that collatz(collatz(n)) = n implies n = 0. Uses nested parity analysis: for even n, check if n/2 is even or odd; for odd n, 3n+1 is always even and (3n+1)/2 = n gives a contradiction.",
-      "summary": "Eliminates period-2 orbits by exhausting all four parity combinations of $(n, T(n))$. The odd-even case gives $(3n+1)/2 = n$, which forces $n = -1$ \u2014 impossible in $\\mathbb{N}$.",
+      "summary": "Eliminates period-2 orbits by exhausting all four parity combinations of $(n, T(n))$. The odd-even case gives $(3n+1)/2 = n$, which forces $n = -1$ — impossible in $\\mathbb{N}$.",
       "proofMethod": "Nested case analysis on parity of n and n/2.",
       "mathContext": "No period-2 orbits: exhaust all four parity combinations of $(n, T(n))$. The odd-even case gives $n/2 = (3n+1)/2$, impossible. The even-odd case gives $3(n/2)+1 = n \\Rightarrow n = 2$, but $T(2) = 1 \\neq T^2(2) = 2$. No valid 2-cycle exists."
     },
@@ -105,7 +105,7 @@
       "title": "The Unique Cycle Through 1",
       "startLine": 90,
       "endLine": 113,
-      "content": "The orbit 1 \u2192 4 \u2192 2 \u2192 1 is a 3-cycle, and 3 is the minimum period. No shorter period exists for 1.",
+      "content": "The orbit 1 → 4 → 2 → 1 is a 3-cycle, and 3 is the minimum period. No shorter period exists for 1.",
       "summary": "Computationally verifies $T^3(1) = 1$ and proves minimality: periods 1 and 2 are excluded. Explicitly computes the orbit elements $1 \\to 4 \\to 2 \\to 1$.",
       "proofMethod": "Computational verification via native_decide plus interval_cases for minimality.",
       "mathContext": "The unique small cycle is $1 \\to 4 \\to 2 \\to 1$ (period 3). Computationally verified: $T^3(1) = 1$. Minimality: periods 1 and 2 have been excluded, so this 3-cycle is the smallest."
@@ -115,7 +115,7 @@
       "title": "Structural Properties",
       "startLine": 114,
       "endLine": 153,
-      "content": "Odd steps strictly increase (collatz(n) > n for odd n \u2265 1), even steps strictly decrease (collatz(n) < n for even n \u2265 2). The 3/4 contraction: for n \u2261 1 mod 4, three steps yield (3n+1)/4 < n.",
+      "content": "Odd steps strictly increase (collatz(n) > n for odd n ≥ 1), even steps strictly decrease (collatz(n) < n for even n ≥ 2). The 3/4 contraction: for n ≡ 1 mod 4, three steps yield (3n+1)/4 < n.",
       "summary": "Establishes monotonicity properties and the key 3/4 contraction theorem: three Collatz steps on $n \\equiv 1 \\pmod{4}$ produce $(3n+1)/4 < n$, leveraging $4 \\mid (3n+1)$ to guarantee two consecutive halvings.",
       "proofMethod": "Rewriting with collatz_odd/even followed by omega for arithmetic bounds.",
       "mathContext": "The $3/4$ contraction theorem: three Collatz steps on an odd number $n$ give $T^3(n) \\leq (3n+1)/2 + 1 \\approx 3n/4 + \\text{const}$, showing average decrease. Monotonicity properties of the map on specific residue classes."
@@ -125,10 +125,10 @@
       "title": "The 2^M > 3^j Constraint",
       "startLine": 154,
       "endLine": 190,
-      "content": "For a cycle with j odd steps and M halvings, we need 2^M > 3^j. This gives minimum halving requirements: j=1\u2192M\u22652, j=2\u2192M\u22654, j=3\u2192M\u22655, j=4\u2192M\u22657. Combined with j + M = cycle length, this gives minimum cycle lengths.",
+      "content": "For a cycle with j odd steps and M halvings, we need 2^M > 3^j. This gives minimum halving requirements: j=1→M≥2, j=2→M≥4, j=3→M≥5, j=4→M≥7. Combined with j + M = cycle length, this gives minimum cycle lengths.",
       "summary": "Formalizes the Lagarias algebraic constraint: a cycle with $j$ odd steps and $M$ halvings requires $2^M > 3^j$, i.e., $M > j \\log_2 3$. Proves concrete bounds for $j = 1, 2, 3, 4$ and derives minimum total cycle lengths $L = j + M$.",
       "proofMethod": "Proof by contradiction with interval_cases on M, using simp_all to evaluate concrete exponentials.",
-      "mathContext": "Lagarias's algebraic constraint: a hypothetical cycle with $j$ odd steps and $M$ total halvings satisfies $n = (3^j n + \\sum 3^k)/2^M$, giving $n(2^M - 3^j) = \\sum 3^k$. For $2^M > 3^j$ (enough halvings), the cycle must decrease \u2014 constraining possible cycle lengths."
+      "mathContext": "Lagarias's algebraic constraint: a hypothetical cycle with $j$ odd steps and $M$ total halvings satisfies $n = (3^j n + \\sum 3^k)/2^M$, giving $n(2^M - 3^j) = \\sum 3^k$. For $2^M > 3^j$ (enough halvings), the cycle must decrease — constraining possible cycle lengths."
     },
     {
       "id": "small-verification",
@@ -142,10 +142,10 @@
     }
   ],
   "conclusion": {
-    "summary": "We establish that hypothetical non-trivial Collatz cycles must have: no fixed points, length \u2265 3 (with the only length-3 cycle being {1,4,2}), minimum element > 20, and at least \u2308j\u00b7log\u2082(3)\u2309 halvings for j odd steps. These structural constraints formalize the algebraic framework used by Lagarias and Eliahou in their cycle-length lower bound arguments.",
+    "summary": "We establish that hypothetical non-trivial Collatz cycles must have: no fixed points, length ≥ 3 (with the only length-3 cycle being {1,4,2}), minimum element > 20, and at least ⌈j·log₂(3)⌉ halvings for j odd steps. These structural constraints formalize the algebraic framework used by Lagarias and Eliahou in their cycle-length lower bound arguments.",
     "implications": "The formalized $2^M > 3^j$ constraint provides a certified foundation for extending cycle-length lower bounds to larger $j$. Each new case ($j = 5, 6, \\ldots$) follows the same proof pattern and could be automated. The 3/4 contraction theorem for $n \\equiv 1 \\pmod{4}$ demonstrates that residue-class acceleration is formally verifiable, opening the door to formalizing the full Syracuse acceleration used in large-scale computational verification.",
     "openQuestions": [
-      "Can the case-analysis approach be extended to rule out k-cycles for all k \u2264 some bound, or does the combinatorial explosion make this infeasible without algebraic methods?",
+      "Can the case-analysis approach be extended to rule out k-cycles for all k ≤ some bound, or does the combinatorial explosion make this infeasible without algebraic methods?",
       "Is it possible to formalize Eliahou's full bound (cycle length > 17 billion) in Lean, or does the proof require analytic estimates that resist formalization?",
       "Can Tao's 2019 almost-all result (logarithmic density 1) be formalized in Lean using Mathlib's measure theory and ergodic theory libraries?"
     ]
@@ -158,7 +158,7 @@
     },
     {
       "relationship": "related",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions \u2014 the residue class analysis (mod 4) used in the 3/4 contraction connects to the distribution of primes in residue classes",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions — the residue class analysis (mod 4) used in the 3/4 contraction connects to the distribution of primes in residue classes",
       "targetId": "dirichlets-theorem"
     },
     {
@@ -173,7 +173,7 @@
     },
     {
       "relationship": "related",
-      "description": "Erd\u0151s Problem #1009 on edge-disjoint triangles in dense graphs \u2014 Erd\u0151s himself called Collatz 'hopeless' and contributed to combinatorial number theory; both problems involve counting structures under arithmetic constraints",
+      "description": "Erdős Problem #1009 on edge-disjoint triangles in dense graphs — Erdős himself called Collatz 'hopeless' and contributed to combinatorial number theory; both problems involve counting structures under arithmetic constraints",
       "targetId": "erdos-1009"
     }
   ],
@@ -189,17 +189,18 @@
     ],
     "opens": [],
     "path": "Proofs/CollatzCycles.lean",
-    "sorries": 0
+    "sorries": 0,
+    "definitionCount": 4
   },
   "references": [
     {
       "key": "La85",
-      "citation": "Lagarias, J.C., The 3x+1 problem and its generalizations, The American Mathematical Monthly 92(1) (1985), 3\u201323. Foundational survey of the Collatz conjecture.",
+      "citation": "Lagarias, J.C., The 3x+1 problem and its generalizations, The American Mathematical Monthly 92(1) (1985), 3–23. Foundational survey of the Collatz conjecture.",
       "type": "paper"
     },
     {
       "key": "El93",
-      "citation": "Eliahou, S., The 3x+1 problem: new lower bounds on nontrivial cycle lengths, Discrete Mathematics 118 (1993), 45\u201356. Non-existence results for small Collatz cycles.",
+      "citation": "Eliahou, S., The 3x+1 problem: new lower bounds on nontrivial cycle lengths, Discrete Mathematics 118 (1993), 45–56. Non-existence results for small Collatz cycles.",
       "type": "paper"
     },
     {
