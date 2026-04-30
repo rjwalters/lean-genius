@@ -61,15 +61,10 @@
       "small_primes_divide axiom: primes ≤ k divide k consecutive integers",
       "q definition: smallest prime not dividing the consecutive product",
       "q_prime, q_not_dvd, q_minimal axioms: properties of q(n,k)",
-      "q_lower_trivial axiom: q(n,k) > k",
       "ErdosConjecture457 definition: main conjecture with Set.Infinite",
       "ErdosConjecture457_q definition: equivalent q formulation",
-      "conjecture_equivalence axiom: both formulations are equivalent",
-      "construction_lower axiom: (2+o(1))log(n) construction",
-      "two_barrier_significance axiom: the 2 barrier is achievable",
       "UpperBoundConjecture definition: q < (1-ε)(log n)² eventually",
-      "IsSmooth definition: y-smooth numbers",
-      "consecutive_product_smooth_support axiom: smoothness property"
+      "IsSmooth definition: y-smooth numbers"
     ],
     "axiomCount": 2,
     "lineCount": 181,
