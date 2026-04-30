@@ -30,7 +30,7 @@
     "historicalContext": "Murty conjectured in the 1970s that only four types of point configurations in the plane can be 'magic' — admitting positive weights with equal sums on all lines through at least two points. The conjecture remained open for decades until Ackerman, Buchin, Knauer, Pinchasi, and Rote proved it in their 2008 paper 'There are not too many magic configurations.' Their proof analyzes the linear system of equations $Aw = c\\mathbf{1}$ (where $A$ is the point-line incidence matrix) and shows that for configurations outside the four classes, the positive orthant intersected with this affine subspace is empty. The problem connects to classical topics in incidence geometry: the Sylvester-Gallai theorem (every non-collinear set has an ordinary line), the Melchior-Hirzebruch inequality on line arrangements, and the theory of weighted incidence structures in projective geometry. The four magic classes are: (1) collinear, (2) general position (no 3 collinear), (3) near-pencil ($n-1$ points on a line), and (4) projective images of the triangle-incenter configuration.",
     "problemStatement": "Given any $n$ points in $\\mathbb{R}^2$, when can one assign positive weights to the points such that the sum of weights along every line containing at least two points is the same constant $c > 0$?",
     "text": "Characterize point configurations admitting positive weights with equal sums on all lines (magic configurations).",
-    "proofStrategy": "The formalization defines point configurations in $\\mathbb{R}^2$ via `EuclideanSpace`, positive weightings, configuration lines (lines through $\\ge 2$ points), and the magic property. Each of the four classes is defined and axiomatized as magic. The classification theorem (`magic_classification`) states Murty's conjecture is true. Concrete examples (collinear triple, triangle) are verified. The incidence matrix viewpoint and dimension counting argument are formalized.",
+    "proofStrategy": "The formalization defines point configurations in $\\mathbb{R}^2$ via `EuclideanSpace`, positive weightings, configuration lines (lines through $\\ge 2$ points), and the magic property. Two of the four classes (`IsCollinear`, `IsGeneralPosition`) are axiomatized as magic; the other two (`IsNearPencil`, `IsIncenterConfig`) are defined but not separately axiomatized in this file. The classification theorem (`magic_classification`) states Murty's conjecture is true. Concrete examples (collinear triple, triangle) are verified. The incidence matrix viewpoint and dimension counting argument are sketched via docstrings.",
     "keyInsights": [
       "**Murty's conjecture (proved ABKPR08)**: A configuration is magic iff it is collinear, in general position, a near-pencil, or projectively equivalent to a triangle-incenter configuration",
       "**Projective invariance**: Magic is preserved under projective transformations, so the classification is really about four projective classes",
@@ -72,45 +72,61 @@
       "id": "classes",
       "title": "Part III: The Four Magic Classes",
       "startLine": 68,
-      "endLine": 114,
-      "summary": "Defines the four classes: `IsCollinear` (all points on one line), `IsGeneralPosition` (no 3 collinear), `IsNearPencil` ($n-1$ on a line), `IsIncenterConfig` (triangle + incenter + bisector points). Axiomatizes each class as magic.",
-      "mathContext": "Defines the four classes: `IsCollinear` (all points on one line), `IsGeneralPosition` (no 3 collinear), `IsNearPencil` ($n-1$ on a line), `IsIncenterConfig` (triangle + incenter + bisector points). Axiomatizes each class as magic."
+      "endLine": 108,
+      "summary": "Defines the four classes: `IsCollinear`, `IsGeneralPosition`, `IsNearPencil`, `IsIncenterConfig`. Axiomatizes `collinear_is_magic` and `general_position_is_magic`; near-pencil and incenter classes are defined but not separately axiomatized in this file.",
+      "mathContext": "Defines the four classes: `IsCollinear` (all points on one line), `IsGeneralPosition` (no 3 collinear), `IsNearPencil` ($n-1$ on a line), `IsIncenterConfig` (triangle + incenter + bisector points). Axiomatizes `collinear_is_magic` and `general_position_is_magic`; near-pencil and incenter classes are defined but not separately axiomatized in this file."
     },
     {
       "id": "projective",
       "title": "Part IV: Projective Equivalence",
-      "startLine": 115,
-      "endLine": 127,
-      "summary": "Defines `ProjectivelyEquivalent` (bijective image) and axiomatizes that the magic property is preserved: $P$ magic $\\Leftrightarrow$ $f(P)$ magic for bijective $f$.",
-      "mathContext": "Formal definition: Defines `ProjectivelyEquivalent` (bijective image) and axiomatizes that the magic property is preserved: $P$ magic $\\Leftrightarrow$ $f(P)$ magic for bijective $f$."
+      "startLine": 109,
+      "endLine": 117,
+      "summary": "Defines `ProjectivelyEquivalent` (bijective image). The preservation of magic under projective equivalence follows from `magic_classification` but is not separately axiomatized here.",
+      "mathContext": "Formal definition: Defines `ProjectivelyEquivalent` (bijective image). The preservation of magic under projective equivalence follows from `magic_classification` but is not separately axiomatized here."
     },
     {
       "id": "classification",
       "title": "Part V: The Main Classification",
-      "startLine": 128,
-      "endLine": 165,
-      "summary": "Defines `IsMagicClass` (disjunction of the four classes), `murty_conjecture` (magic $\\Leftrightarrow$ magic class for $|P| \\ge 3$), axiomatizes `magic_classification`, and proves the contrapositive `not_magic_outside_classes`.",
-      "mathContext": "Defines `IsMagicClass` (disjunction of the four classes), `murty_conjecture` (magic $\\Leftrightarrow$ magic class for $|P| \\ge 3$), axiomatizes `magic_classification`, and proves the contrapositive `not_magic_outside_classes`."
+      "startLine": 118,
+      "endLine": 131,
+      "summary": "Defines `IsMagicClass` (disjunction of the four classes), `murty_conjecture` (magic $\\Leftrightarrow$ magic class for $|P| \\ge 3$), and axiomatizes `magic_classification`.",
+      "mathContext": "Defines `IsMagicClass` (disjunction of the four classes), `murty_conjecture` (magic $\\Leftrightarrow$ magic class for $|P| \\ge 3$), and axiomatizes `magic_classification`."
+    },
+    {
+      "id": "key-lemma",
+      "title": "Part VI: Key Lemma: Lines Through a Point",
+      "startLine": 132,
+      "endLine": 140,
+      "summary": "Defines `linesThrough` (number of lines through a given point). Docstring notes that in a magic configuration the weight of a point is determined by the number of lines through it and the magic constant.",
+      "mathContext": "Defines `linesThrough` (number of lines through a given point in a configuration)."
+    },
+    {
+      "id": "non-magic",
+      "title": "Part VII: The Non-Magic Theorem",
+      "startLine": 141,
+      "endLine": 149,
+      "summary": "Proves `not_magic_outside_classes`: configurations not in the four classes are not magic (contrapositive of `magic_classification`).",
+      "mathContext": "Verified: Proves `not_magic_outside_classes`: configurations not in the four classes are not magic (contrapositive of `magic_classification`)."
     },
     {
       "id": "examples",
-      "title": "Part VI: Examples",
-      "startLine": 166,
-      "endLine": 187,
+      "title": "Part VIII: Examples",
+      "startLine": 150,
+      "endLine": 171,
       "summary": "Constructs `threeCollinear` $= \\{(0,0), (1,0), (2,0)\\}$ and `triangle` $= \\{(0,0), (1,0), (0,1)\\}$. Proves both are magic via the class axioms.",
       "mathContext": "Verified: Constructs `threeCollinear` $= \\{(0,0), (1,0), (2,0)\\}$ and `triangle` $= \\{(0,0), (1,0), (0,1)\\}$. Proves both are magic via the class axioms."
     },
     {
       "id": "linear",
-      "title": "Part VII: Linear Algebra Perspective",
-      "startLine": 188,
-      "endLine": 210,
-      "summary": "Defines the `incidenceMatrix` ($A_{L,p} = 1$ if $p \\in L$, else $0$). Axiomatizes `magic_iff_positive_solution` and the `weighting_dimension_bound`: outside the four classes, the positive orthant misses the solution space.",
-      "mathContext": "Defines the `incidenceMatrix` ($A_{L,p} = 1$ if $p \\in L$, else $0$). Axiomatizes `magic_iff_positive_solution` and the `weighting_dimension_bound`: outside the four classes, the positive orthant misses the solution space."
+      "title": "Part IX: Linear Algebra Perspective",
+      "startLine": 172,
+      "endLine": 185,
+      "summary": "Defines the `incidenceMatrix` ($A_{L,p} = 1$ if $p \\in L$, else $0$) and sketches the dimension counting argument via docstrings: outside the four classes, the positive orthant misses the affine solution subspace. These claims are not formally axiomatized in this file.",
+      "mathContext": "Defines the `incidenceMatrix` ($A_{L,p} = 1$ if $p \\in L$, else $0$). The magic-iff-positive-solution equivalence and dimension bound are present as docstrings only."
     }
   ],
   "conclusion": {
-    "summary": "This 240-line formalization captures Erdős Problem #735 (Murty's conjecture), solved by ABKPR08 in 2008. The classification theorem states that a point configuration is magic if and only if it is collinear, in general position, a near-pencil, or projectively equivalent to a triangle-incenter configuration. The formalization includes definitions, class axioms, the main classification, concrete examples, and the incidence matrix perspective.",
+    "summary": "This formalization captures Erdős Problem #735 (Murty's conjecture), solved by ABKPR08 in 2008. The classification theorem states that a point configuration is magic if and only if it is collinear, in general position, a near-pencil, or projectively equivalent to a triangle-incenter configuration. The formalization includes definitions, two class axioms (collinear, general position), the main classification axiom, concrete examples, and the incidence matrix perspective.",
     "implications": "The result provides a complete classification of weighted incidence structures with uniform line sums. The techniques connect discrete geometry with linear algebra over the positive reals and projective geometry.",
     "openQuestions": [
       "What are analogous characterizations of magic configurations in ℝ³ or higher dimensions?",
