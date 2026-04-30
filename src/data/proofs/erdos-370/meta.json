@@ -98,18 +98,19 @@
       "Finset",
       "BigOperators"
     ],
-    "sorries": 2
+    "sorries": 2,
+    "definitionCount": 7
   },
   "crossReferences": [
     {
       "targetId": "erdos-1136",
       "relationship": "related-problem",
-      "description": "Both are Erd\u0151s problems about sets of integers satisfying arithmetic constraints, resolved by clever constructions. Erd\u0151s #1136 uses binary structure; #370 uses difference of squares."
+      "description": "Both are Erdős problems about sets of integers satisfying arithmetic constraints, resolved by clever constructions. Erdős #1136 uses binary structure; #370 uses difference of squares."
     },
     {
       "targetId": "erdos-984",
       "relationship": "related-problem",
-      "description": "Both are Erd\u0151s problems in combinatorial number theory where extremal constructions play a central role in resolving density/existence questions."
+      "description": "Both are Erdős problems in combinatorial number theory where extremal constructions play a central role in resolving density/existence questions."
     },
     {
       "targetId": "erdos-527",
@@ -123,7 +124,7 @@
     }
   ],
   "overview": {
-    "historicalContext": "This problem appears in Erd\u0151s and Graham's influential monograph *Old and New Problems and Results in Combinatorial Number Theory* (1980, p. 69). They asked whether infinitely many consecutive integers $n$, $n+1$ both have their largest prime factor less than their square root. Such numbers are called *sqrt-smooth* --- their prime factorizations are dominated by small primes relative to the number's magnitude.\n\nThe trivial observation is that sqrt-smooth numbers exist (e.g., any perfect square $p^2$ with $p$ prime has $\\operatorname{gpf} = p = \\sqrt{p^2}$, though this gives equality not strict inequality) but finding consecutive pairs is much harder. Carl Pomerance observed that if the exponent $1/2$ is relaxed to $1/\\sqrt{e} - \\varepsilon$ (approximately $0.6065 - \\varepsilon$), the statement follows from density considerations via the **Dickman-de Bruijn function** $\\rho(u)$, which gives the proportion of $u$-smooth numbers. At $u = \\sqrt{e}$, exactly half of all integers are $u$-smooth, making consecutive pairs abundant by a simple probability argument.\n\nStefan Steinerberger found the elegant constructive solution: take $n = m^2 - 1 = (m-1)(m+1)$. Then $n+1 = m^2$, so $\\operatorname{gpf}(n+1) = \\operatorname{gpf}(m)$. If $m$ is a power of 2, $\\operatorname{gpf}(m^2) = 2 < m = \\sqrt{m^2}$. For $n$ itself, we need $\\operatorname{gpf}((m-1)(m+1)) < m$. The first valid case is $m = 8$: $n = 63 = 7 \\times 9$, $\\operatorname{gpf}(63) = 7 < \\sqrt{63} \\approx 7.94$, and $\\operatorname{gpf}(64) = 2 < 8 = \\sqrt{64}$. There are infinitely many valid choices of $m$, resolving the problem completely.\n\nThe proof was partially verified by the Aristotle proof search system, which confirmed the $n=63$ example and the key identity $n+1 = m^2$. The main infinitude theorem remains sorry'd, requiring a proof that infinitely many $m$ yield valid constructions.",
+    "historicalContext": "This problem appears in Erdős and Graham's influential monograph *Old and New Problems and Results in Combinatorial Number Theory* (1980, p. 69). They asked whether infinitely many consecutive integers $n$, $n+1$ both have their largest prime factor less than their square root. Such numbers are called *sqrt-smooth* --- their prime factorizations are dominated by small primes relative to the number's magnitude.\n\nThe trivial observation is that sqrt-smooth numbers exist (e.g., any perfect square $p^2$ with $p$ prime has $\\operatorname{gpf} = p = \\sqrt{p^2}$, though this gives equality not strict inequality) but finding consecutive pairs is much harder. Carl Pomerance observed that if the exponent $1/2$ is relaxed to $1/\\sqrt{e} - \\varepsilon$ (approximately $0.6065 - \\varepsilon$), the statement follows from density considerations via the **Dickman-de Bruijn function** $\\rho(u)$, which gives the proportion of $u$-smooth numbers. At $u = \\sqrt{e}$, exactly half of all integers are $u$-smooth, making consecutive pairs abundant by a simple probability argument.\n\nStefan Steinerberger found the elegant constructive solution: take $n = m^2 - 1 = (m-1)(m+1)$. Then $n+1 = m^2$, so $\\operatorname{gpf}(n+1) = \\operatorname{gpf}(m)$. If $m$ is a power of 2, $\\operatorname{gpf}(m^2) = 2 < m = \\sqrt{m^2}$. For $n$ itself, we need $\\operatorname{gpf}((m-1)(m+1)) < m$. The first valid case is $m = 8$: $n = 63 = 7 \\times 9$, $\\operatorname{gpf}(63) = 7 < \\sqrt{63} \\approx 7.94$, and $\\operatorname{gpf}(64) = 2 < 8 = \\sqrt{64}$. There are infinitely many valid choices of $m$, resolving the problem completely.\n\nThe proof was partially verified by the Aristotle proof search system, which confirmed the $n=63$ example and the key identity $n+1 = m^2$. The main infinitude theorem remains sorry'd, requiring a proof that infinitely many $m$ yield valid constructions.",
     "problemStatement": "Are there infinitely many n such that gpf(n) < sqrt(n) and gpf(n+1) < sqrt(n+1), where gpf denotes the greatest prime factor?",
     "text": "Are there infinitely many n such that both n and n+1 have their largest prime factor less than their square root? Steinerberger found an elegant solution using n = m^2 - 1.",
     "proofStrategy": "The formalization axiomatizes gpf with 6 properties (value at 1, divisibility, primality, prime/prime-power values, product bound) and defines three smoothness predicates. The Steinerberger construction $n = m^2 - 1$ is formalized with the factorization $(m-1)(m+1)$ axiomatized and the successor identity $n+1 = m^2$ verified. The worked example $n=63$ is fully verified (Aristotle proved all 4 component theorems). The main infinitude theorem is stated in two forms (`Set.Infinite` and injective function) but remains sorry'd. Pomerance's density perspective is included with the critical exponent $1/\\sqrt{e}$ and a weak Dickman density axiom.",
@@ -153,7 +154,7 @@
       "title": "Problem Overview",
       "startLine": 12,
       "endLine": 49,
-      "summary": "Problem statement, history (Erd\u0151s-Graham 1980, Pomerance density observation, Steinerberger construction), key insight $n = m^2 - 1$, worked example $n = 63$."
+      "summary": "Problem statement, history (Erdős-Graham 1980, Pomerance density observation, Steinerberger construction), key insight $n = m^2 - 1$, worked example $n = 63$."
     },
     {
       "id": "gpf-definition",
@@ -192,13 +193,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #370 is SOLVED: there are infinitely many $n$ where both $n$ and $n+1$ are sqrt-smooth. Steinerberger's construction $n = m^2 - 1 = (m-1)(m+1)$ provides an elegant infinite family. The formalization verifies the concrete case $n = 63$ (via Aristotle proof search) and connects to smooth number density theory via Pomerance's observation and the Dickman-de Bruijn function.",
+    "summary": "Erdős Problem #370 is SOLVED: there are infinitely many $n$ where both $n$ and $n+1$ are sqrt-smooth. Steinerberger's construction $n = m^2 - 1 = (m-1)(m+1)$ provides an elegant infinite family. The formalization verifies the concrete case $n = 63$ (via Aristotle proof search) and connects to smooth number density theory via Pomerance's observation and the Dickman-de Bruijn function.",
     "implications": "**Theoretical Significance**: The Steinerberger solution demonstrates how difference-of-squares factorization can reduce deep-sounding number-theoretic questions to elementary observations.\n\nThe connection to the Dickman function reveals that the exponent $1/2$ lies below the density threshold $1/\\sqrt{e}$, explaining why the problem requires constructive methods rather than probabilistic arguments. This distinction between 'density-easy' and 'construction-required' exponents is a recurring theme in smooth number theory.",
     "openQuestions": [
       "What is the asymptotic count of $n \\leq N$ with $\\text{ConsecutiveSqrtSmooth}(n)$? Can the Steinerberger construction be optimized to find the densest infinite family?",
       "Are there infinitely many $n$ with $\\operatorname{gpf}(n), \\operatorname{gpf}(n+1), \\operatorname{gpf}(n+2)$ all less than their square roots (consecutive triples)?",
       "Can the main infinitude theorem be proved in Lean by showing infinitely many $m = 2^k$ yield $\\operatorname{gpf}((2^k-1)(2^k+1)) < 2^k$?",
-      "What is the exact critical exponent below which the Erd\u0151s-Graham problem requires constructive rather than density-based proofs?"
+      "What is the exact critical exponent below which the Erdős-Graham problem requires constructive rather than density-based proofs?"
     ]
   },
   "sorries": 2
