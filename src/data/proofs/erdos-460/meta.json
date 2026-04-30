@@ -55,7 +55,7 @@
       "Splitting into smallPrimeDivisibleSum and largePrimeSum with Erdős's question about individual divergence"
     ],
     "axiomCount": 1,
-    "lineCount": 274,
+    "lineCount": 291,
     "assumptions": "2 axioms: eggleton_erdos_selfridge (deep result), filtered_sum_implies_full. sieve_greedy proved from constructive definition (with hactive guard for sentinel case). sieve_conjectured_bound demoted to def. filtered_sum_implies_full converted from axiom to theorem-with-sorry (axiom integrity)."
   },
   "leanFile": {
@@ -69,7 +69,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 274,
+    "lineCount": 291,
     "axiomCount": 1,
     "theoremCount": 10,
     "definitionCount": 9,
