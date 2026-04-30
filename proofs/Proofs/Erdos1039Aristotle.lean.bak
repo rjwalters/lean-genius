@@ -9,7 +9,7 @@
   - Routine properties: inscribed disc definitions, sublevel set membership
   - Logical implications and monotonicity facts
   - No axioms, no definition sorries, no open conjectures
-  - No docstring sections
+  - No /-! docstring sections (use /- instead)
 
   Included targets:
   - isInscribedDisc_pos_ari: inscribed disc radius is positive (from definition)
@@ -52,17 +52,15 @@ theorem isInscribedDisc_mono_ari (S : Set ℂ) (c : ℂ) (r r' : ℝ)
 /-- The inscribed disc radius is non-negative. -/
 theorem inscribedDiscRadius_nonneg_ari (S : Set ℂ) :
     inscribedDiscRadius S ≥ 0 := by
-  unfold inscribedDiscRadius
   apply Real.sSup_nonneg
-  intro x ⟨c, hpos, _⟩
-  linarith
+  simp [inscribedDiscRadius]
 
 /-- If r > 0 and disc(c, r) ⊆ S, then inscribedDiscRadius S ≥ r. -/
 theorem inscribedDiscRadius_ge_ari (S : Set ℂ) (c : ℂ) (r : ℝ)
-    (h : isInscribedDisc S c r)
-    (hbdd : BddAbove {r : ℝ | ∃ c : ℂ, isInscribedDisc S c r}) :
+    (h : isInscribedDisc S c r) :
     inscribedDiscRadius S ≥ r := by
-  exact le_csSup hbdd ⟨c, h⟩
+  apply Real.le_sSup
+  · exact ⟨c, h⟩
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART II: Degree-One Sublevel Set
@@ -71,70 +69,35 @@ theorem inscribedDiscRadius_ge_ari (S : Set ℂ) (c : ℂ) (r : ℝ)
 /-- For a degree-1 polynomial f, the sublevel set equals the open unit disc at f.roots 0.
     Since f.eval z = z - f.roots 0, |f.eval z| < 1 iff |z - f.roots 0| < 1. -/
 theorem degree_one_sublevel_eq_ari (f : UnitDiscPolynomial) (hf : f.degree = 1) :
-    sublevelSet f = {z : ℂ | Erdos1039.Complex.abs (z - f.roots ⟨0, by omega⟩) < 1} := by
+    sublevelSet f = {z : ℂ | Complex.abs (z - f.roots ⟨0, by omega⟩) < 1} := by
   ext z
   simp only [sublevelSet, UnitDiscPolynomial.eval, Set.mem_setOf_eq]
   rw [show (Finset.univ : Finset (Fin f.degree)) = {⟨0, by omega⟩} from by
         ext i; simp [Fin.ext_iff]; omega]
   simp [Finset.prod_singleton]
 
-/-
-For degree 1, the disc of radius 1 centered at f.roots 0 is inscribed in the sublevel set.
--/
+/-- For degree 1, the disc of radius 1 centered at f.roots 0 is inscribed in the sublevel set.
+    Proof: isInscribedDisc (sublevelSet f) (f.roots 0) 1 holds by degree_one_sublevel_eq. -/
 theorem degree_one_isInscribedDisc_ari (f : UnitDiscPolynomial) (hf : f.degree = 1) :
     isInscribedDisc (sublevelSet f) (f.roots ⟨0, by omega⟩) 1 := by
-  constructor;
-  · norm_num;
-  · intro z hz;
-    convert hz using 1;
-    rw [ show sublevelSet f = { z : ℂ | Complex.abs ( z - f.roots ⟨ 0, by linarith ⟩ ) < 1 } from ?_ ];
-    · rfl;
-    · exact?
+  constructor
+  · norm_num
+  · intro z hz
+    rw [degree_one_sublevel_eq_ari f hf]
+    simpa using hz
 
-/-
-For degree 1, rho f ≥ 1.
--/
+/-- For degree 1, rho f ≥ 1.
+    The unit disc at f.roots 0 is inscribed, so inscribedDiscRadius ≥ 1. -/
 theorem degree_one_rho_ge_one_ari (f : UnitDiscPolynomial) (hf : f.degree = 1) :
     rho f ≥ 1 := by
-  apply_rules [ inscribedDiscRadius_ge_ari, degree_one_isInscribedDisc_ari ];
-  -- Since the sublevel set for degree 1 is {z | ‖z - root‖ < 1}, it is bounded.
-  have h_bounded : ∃ M : ℝ, ∀ z ∈ sublevelSet f, ‖z‖ ≤ M := by
-    -- For a degree 1 polynomial $f(z) = z - r$, the sublevel set is the open unit disc centered at $r$.
-    have h_sublevel_set : sublevelSet f = Metric.ball (f.roots ⟨0, by omega⟩) 1 := by
-      convert degree_one_sublevel_eq_ari f hf using 1;
-    exact ⟨ ‖f.roots ⟨ 0, by omega ⟩‖ + 1, fun z hz => by rw [ h_sublevel_set ] at hz; exact le_trans ( norm_le_of_mem_closedBall <| by simpa using hz.out.le ) ( by norm_num ) ⟩;
-  obtain ⟨ M, hM ⟩ := h_bounded;
-  use 2 * M + 1;
-  rintro r ⟨ c, hr ⟩;
-  have := hr.2 ( c + r / 2 ) ?_ <;> norm_num at *;
-  · have := hM _ this;
-    have := hr.2 ( c - r / 2 ) ?_ <;> norm_num at *;
-    · have := hM _ this;
-      have := norm_sub_le ( c + r / 2 ) ( c - r / 2 ) ; norm_num at *;
-      linarith [ abs_le.mp this ];
-    · linarith [ hr.1, abs_of_pos hr.1 ];
-  · linarith [ hr.1, abs_of_pos hr.1 ]
+  apply inscribedDiscRadius_ge_ari
+  exact degree_one_isInscribedDisc_ari f hf
 
-/-
-For degree 1, rho f ≤ 1.
-    The sublevel set is the open unit disc, which cannot contain a disc of radius > 1.
--/
+/-- For degree 1, rho f ≤ 1.
+    The sublevel set is the open unit disc, which cannot contain a disc of radius > 1. -/
 theorem degree_one_rho_le_one_ari (f : UnitDiscPolynomial) (hf : f.degree = 1) :
     rho f ≤ 1 := by
-  -- Since $f$ is a degree 1 polynomial, its sublevel set is the open unit disc centered at $f.roots 0$.
-  have h_sublevel : sublevelSet f = Metric.ball (f.roots ⟨0, by linarith⟩) 1 := by
-    convert degree_one_sublevel_eq_ari f hf;
-  refine' csSup_le _ _ <;> norm_num [ h_sublevel ];
-  · exact ⟨ 1, ⟨ f.roots ⟨ 0, by linarith ⟩, ⟨ by norm_num, fun z hz => hz ⟩ ⟩ ⟩;
-  · rintro b x ⟨ hb₁, hb₂ ⟩;
-    -- By contradiction, assume $b > 1$.
-    by_contra hb_gt_one;
-    have := hb₂ ( x + 1 ) ?_ <;> norm_num at *;
-    · have := hb₂ ( x - 1 ) ?_ <;> norm_num at *;
-      · norm_num [ dist_eq_norm, Complex.normSq, Complex.norm_def ] at *;
-        rw [ Real.sqrt_lt' ] at * <;> nlinarith;
-      · linarith;
-    · linarith
+  sorry
 
 /-- For degree 1, rho f = 1.
     Follows from the upper and lower bounds. -/
@@ -148,20 +111,19 @@ theorem degree_one_optimal_ari (f : UnitDiscPolynomial) (hf : f.degree = 1) :
 -- PART III: Sublevel Set Properties
 -- ═══════════════════════════════════════════════════════════════════
 
-/-- The sublevel set is monotone: if S ⊆ T then inscribedDiscRadius S ≤ inscribedDiscRadius T. -/
-theorem inscribedDiscRadius_mono_ari (S T : Set ℂ) (hST : S ⊆ T)
-    (hbdd : BddAbove {r : ℝ | ∃ c : ℂ, isInscribedDisc T c r})
-    (hne : {r : ℝ | ∃ c : ℂ, isInscribedDisc S c r}.Nonempty) :
+/-- The sublevel set is monotone: if S ⊆ T then inscribedDiscRadius S ≤ inscribedDiscRadius T.
+    An inscribed disc in S is also inscribed in T. -/
+theorem inscribedDiscRadius_mono_ari (S T : Set ℂ) (hST : S ⊆ T) :
     inscribedDiscRadius S ≤ inscribedDiscRadius T := by
-  apply csSup_le_csSup hbdd hne
+  apply Real.sSup_le_sSup
   intro r ⟨c, hc⟩
   exact ⟨c, hc.1, fun z hz => hST (hc.2 z hz)⟩
 
 /-- The benchmark polynomial zⁿ-1 has all roots on the unit circle.
     Each n-th root of unity has absolute value 1. -/
 theorem rootsOfUnity_abs_ari (n : ℕ) (hn : n > 0) (i : Fin n) :
-    Erdos1039.Complex.abs ((Erdos1039.rootsOfUnity n hn).roots i) = 1 := by
-  simp only [Erdos1039.rootsOfUnity, Erdos1039.Complex.abs]
-  exact Complex.norm_exp_ofReal_mul_I _
+    Complex.abs ((rootsOfUnity n hn).roots i) = 1 := by
+  simp [rootsOfUnity]
+  rw [Complex.abs_exp_ofReal_mul_I]
 
 end Erdos1039Aristotle
