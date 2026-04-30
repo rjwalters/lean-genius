@@ -1,8 +1,8 @@
 {
   "id": "erdos-1098-oq-01-oq-01",
-  "title": "Erd\u0151s #1098 OQ-01-OQ-01: Groups with Non-Commuting Graph Clique Number 3",
+  "title": "Erdős #1098 OQ-01-OQ-01: Groups with Non-Commuting Graph Clique Number 3",
   "slug": "erdos-1098-oq-01-oq-01",
-  "description": "Characterizes groups with clique number \u03c9(\u0393(G)) = 3 in the non-commuting graph. Proves necessary conditions: any 3-clique forces [G:Z(G)] \u2265 4 and G non-abelian. Shows S\u2083 achieves \u03c9 = 3 (the 3 transpositions pairwise non-commute). The proof that clique elements lie in distinct Z(G)-cosets is fully proved; the index lower bound and S\u2083 witness are axiomatized.",
+  "description": "Characterizes groups with clique number ω(Γ(G)) = 3 in the non-commuting graph. Proves necessary conditions: any 3-clique forces [G:Z(G)] ≥ 4 and G non-abelian. Shows S₃ achieves ω = 3 (the 3 transpositions pairwise non-commute). The proof that clique elements lie in distinct Z(G)-cosets is fully proved; the index lower bound and S₃ witness are axiomatized.",
   "meta": {
     "author": "Abdollahi-Akbari-Maimani (2006), Neumann (1976); formalization by researcher-3",
     "sourceUrl": "https://erdosproblems.com/1098",
@@ -21,41 +21,41 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 2,
-    "assumptions": "2 axioms: three_clique_index_ge_four (3 pairwise non-commuting elements give [G:Z(G)] \u2265 4, requires coset counting in potentially-infinite groups) and S3_omega_three (S\u2083 has clique number exactly 3, requires case analysis on all elements of S\u2083). All necessary conditions (non-abelian, elements outside center, distinct cosets) are fully proved. The coset separation theorem nonCommuting_distinct_cosets is fully proved using the center commutativity condition.",
+    "assumptions": "2 axioms: three_clique_index_ge_four (3 pairwise non-commuting elements give [G:Z(G)] ≥ 4, requires coset counting in potentially-infinite groups) and S3_omega_three (S₃ has clique number exactly 3, requires case analysis on all elements of S₃). All necessary conditions (non-abelian, elements outside center, distinct cosets) are fully proved. The coset separation theorem nonCommuting_distinct_cosets is fully proved using the center commutativity condition.",
     "erdosNumber": 1098,
     "erdosUrl": "https://erdosproblems.com/1098",
     "originalContributions": [
-      "center_excluded_from_clique: center elements cannot appear in cliques of size \u2265 2",
+      "center_excluded_from_clique: center elements cannot appear in cliques of size ≥ 2",
       "nonCommuting_distinct_cosets: non-commuting elements lie in distinct Z(G)-cosets",
       "three_clique_distinct_cosets: 3-clique elements in 3 distinct cosets",
-      "three_clique_necessary_conditions: 3-clique implies non-abelian + all elements non-central + index \u2265 4",
-      "erdos_1098_oq01_oq01: combines S\u2083 existence with necessity conditions"
+      "three_clique_necessary_conditions: 3-clique implies non-abelian + all elements non-central + index ≥ 4",
+      "erdos_1098_oq01_oq01: combines S₃ existence with necessity conditions"
     ],
     "lineCount": 205,
     "theoremCount": 8,
     "defCount": 3
   },
   "overview": {
-    "historicalContext": "Abdollahi, Akbari, and Maimani (2006) studied the non-commuting graph $\\Gamma(G)$ systematically, classifying groups by clique number: $\\omega = 0$ iff $G$ abelian; $\\omega = 1$ is impossible (a single vertex has no edges); $\\omega = 2$ iff $G/Z(G) \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2$ (the 'AC-groups'). The case $\\omega = 3$ is more complex: it includes $S_3$, $A_4$, $D_8$ (dihedral order 8), and products $Z \\times S_3$ for abelian $Z$. The classification requires both establishing when a 3-clique is possible (index $\\geq 4$ is necessary) and showing that no 4-clique exists.\n\nNeumann's 1976 theorem provides the backdrop: $\\omega(\\Gamma(G)) < \\infty$ iff $[G:Z(G)] < \\infty$. This means finite clique number is exactly the condition for $G$ to be 'bounded' \u2014 the center has finite index. For the $\\omega = 3$ classification, the sharp result is: $\\omega = 3$ iff $[G:Z(G)] \\in \\{4, 5, 6\\}$ and $G/Z(G)$ is isomorphic to $\\mathbb{Z}/2 \\times \\mathbb{Z}/2 \\times \\mathbb{Z}/2$, $S_3$, $\\mathbb{Z}/5$, or $D_{10}$ (in appropriate cases).",
-    "problemStatement": "Which groups G have \u03c9(\u0393(G)) = 3? That is, which groups have a maximum pairwise non-commuting set of size exactly 3?",
-    "text": "Groups with \u03c9(\u0393(G)) = 3 are characterized by having 3 pairwise non-commuting elements but no 4 pairwise non-commuting elements. Necessary conditions include: [G:Z(G)] \u2265 4 (since 3 clique elements occupy distinct non-central cosets, plus the central coset itself), and G/Z(G) is non-abelian. S\u2083 is the prototypical example: its 3 transpositions form a 3-clique.",
-    "proofStrategy": "For necessary conditions: (1) center elements cannot non-commute with anything, so they're excluded from cliques; (2) if two elements are in the same Z(G)-coset (g = h*z for z \u2208 Z(G)), they commute (since g*h = h*z*h = h*h*z = h*g using centrality of z); (3) 3 elements in 3 distinct non-central cosets plus Z(G) itself gives \u2265 4 cosets.",
+    "historicalContext": "Abdollahi, Akbari, and Maimani (2006) studied the non-commuting graph $\\Gamma(G)$ systematically, classifying groups by clique number: $\\omega = 0$ iff $G$ abelian; $\\omega = 1$ is impossible (a single vertex has no edges); $\\omega = 2$ iff $G/Z(G) \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2$ (the 'AC-groups'). The case $\\omega = 3$ is more complex: it includes $S_3$, $A_4$, $D_8$ (dihedral order 8), and products $Z \\times S_3$ for abelian $Z$. The classification requires both establishing when a 3-clique is possible (index $\\geq 4$ is necessary) and showing that no 4-clique exists.\n\nNeumann's 1976 theorem provides the backdrop: $\\omega(\\Gamma(G)) < \\infty$ iff $[G:Z(G)] < \\infty$. This means finite clique number is exactly the condition for $G$ to be 'bounded' — the center has finite index. For the $\\omega = 3$ classification, the sharp result is: $\\omega = 3$ iff $[G:Z(G)] \\in \\{4, 5, 6\\}$ and $G/Z(G)$ is isomorphic to $\\mathbb{Z}/2 \\times \\mathbb{Z}/2 \\times \\mathbb{Z}/2$, $S_3$, $\\mathbb{Z}/5$, or $D_{10}$ (in appropriate cases).",
+    "problemStatement": "Which groups G have ω(Γ(G)) = 3? That is, which groups have a maximum pairwise non-commuting set of size exactly 3?",
+    "text": "Groups with ω(Γ(G)) = 3 are characterized by having 3 pairwise non-commuting elements but no 4 pairwise non-commuting elements. Necessary conditions include: [G:Z(G)] ≥ 4 (since 3 clique elements occupy distinct non-central cosets, plus the central coset itself), and G/Z(G) is non-abelian. S₃ is the prototypical example: its 3 transpositions form a 3-clique.",
+    "proofStrategy": "For necessary conditions: (1) center elements cannot non-commute with anything, so they're excluded from cliques; (2) if two elements are in the same Z(G)-coset (g = h*z for z ∈ Z(G)), they commute (since g*h = h*z*h = h*h*z = h*g using centrality of z); (3) 3 elements in 3 distinct non-central cosets plus Z(G) itself gives ≥ 4 cosets.",
     "keyInsights": [
-      "Coset separation: g and h non-commute \u2192 g \u2260 h*z for any z \u2208 Z(G) (they're in different cosets)",
-      "The center coset Z(G) is distinct from the 3 non-central cosets, giving index \u2265 4",
-      "S\u2083 achieves the minimum index: [S\u2083:Z(S\u2083)] = 6 > 4, with \u03c9 = 3",
-      "The classification extends: G = Z \u00d7 S\u2083 (Z abelian) gives \u03c9 = 3 with larger index",
+      "Coset separation: g and h non-commute → g ≠ h*z for any z ∈ Z(G) (they're in different cosets)",
+      "The center coset Z(G) is distinct from the 3 non-central cosets, giving index ≥ 4",
+      "S₃ achieves the minimum index: [S₃:Z(S₃)] = 6 > 4, with ω = 3",
+      "The classification extends: G = Z × S₃ (Z abelian) gives ω = 3 with larger index",
       "The coset separation argument is the algebraic core: $gh \\neq hg$ implies $g$ and $h$ lie in different $Z(G)$-cosets, because any $g = hz$ with $z \\in Z(G)$ would give $gh = hzh = h(hz) = h^2 z = hg$. In Lean, this is formalized as `nonCommuting_distinct_cosets` using `mul_assoc` and `Subgroup.mem_center_iff.mp`. The full proof of index $\\geq 4$ then follows by combining: (1) clique elements are non-central, (2) they're pairwise in distinct non-central cosets, (3) the central coset $Z(G)$ is a 4th distinct coset."
     ]
   },
   "sections": [
     {
       "id": "module-intro",
-      "title": "Module: \u03c9 = 3 Classification Framework",
+      "title": "Module: ω = 3 Classification Framework",
       "startLine": 1,
       "endLine": 50,
       "summary": "Module docstring and definitions setup. Documents Abdollahi-Akbari-Maimani classification, nonCommuting/commuting/IsClique predicates, center-commutativity axiom.",
-      "mathContext": "Sets up the group-theoretic framework: G a group with Subgroup.center G, Finset G for finite sets, IsClique S = \u2200 g h \u2208 S, g \u2260 h \u2192 nonCommuting g h."
+      "mathContext": "Sets up the group-theoretic framework: G a group with Subgroup.center G, Finset G for finite sets, IsClique S = ∀ g h ∈ S, g ≠ h → nonCommuting g h."
     },
     {
       "id": "definitions",
@@ -63,7 +63,7 @@
       "summary": "nonCommuting, commuting, IsClique definitions compatible with OQ-01",
       "startLine": 50,
       "endLine": 75,
-      "mathContext": "IsClique S: \u2200 g h \u2208 S, g \u2260 h \u2192 nonCommuting g h"
+      "mathContext": "IsClique S: ∀ g h ∈ S, g ≠ h → nonCommuting g h"
     },
     {
       "id": "center-exclusion",
@@ -71,7 +71,7 @@
       "summary": "Z(G) elements cannot appear in cliques; center_excluded_from_clique",
       "startLine": 76,
       "endLine": 100,
-      "mathContext": "z \u2208 Z(G) \u2192 z commutes with all \u2192 cannot non-commute \u2192 excluded from clique"
+      "mathContext": "z ∈ Z(G) → z commutes with all → cannot non-commute → excluded from clique"
     },
     {
       "id": "coset-separation",
@@ -79,7 +79,7 @@
       "summary": "Non-commuting elements lie in distinct Z(G)-cosets; nonCommuting_distinct_cosets (fully proved)",
       "startLine": 101,
       "endLine": 125,
-      "mathContext": "g = h*z \u2192 g*h = h*z*h = h*(z*h) = h*(h*z) [z central] = h*g, so g,h commute \u2014 contradiction"
+      "mathContext": "g = h*z → g*h = h*z*h = h*(z*h) = h*(h*z) [z central] = h*g, so g,h commute — contradiction"
     },
     {
       "id": "main-results",
@@ -91,12 +91,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Groups with \u03c9(\u0393(G)) = 3 are characterized by having 3 pairwise non-commuting elements but no 4. Necessary conditions ([G:Z(G)] \u2265 4, non-abelian) are proved. The coset separation lemma shows non-commuting elements always lie in distinct cosets, giving the index bound. S\u2083 witnesses the achievability.",
-    "implications": "This continues the classification of groups by clique number beyond OQ-01's \u03c9 \u2264 2 results. The coset separation technique generalizes: \u03c9(\u0393(G)) \u2265 k implies [G:Z(G)] \u2265 k+1. Combined with Neumann's theorem (\u03c9 finite \u2194 [G:Z(G)] finite), this gives tight bounds on when non-commuting graph cliques exist.",
+    "summary": "Groups with ω(Γ(G)) = 3 are characterized by having 3 pairwise non-commuting elements but no 4. Necessary conditions ([G:Z(G)] ≥ 4, non-abelian) are proved. The coset separation lemma shows non-commuting elements always lie in distinct cosets, giving the index bound. S₃ witnesses the achievability.",
+    "implications": "This continues the classification of groups by clique number beyond OQ-01's ω ≤ 2 results. The coset separation technique generalizes: ω(Γ(G)) ≥ k implies [G:Z(G)] ≥ k+1. Combined with Neumann's theorem (ω finite ↔ [G:Z(G)] finite), this gives tight bounds on when non-commuting graph cliques exist.",
     "openQuestions": [
-      "Complete classification: which non-abelian quotients G/Z(G) give exactly \u03c9 = 3?",
-      "What is \u03c9(\u0393(S\u2084))? (alternating group A\u2084 has \u03c9 = 3 but S\u2084 may be larger)",
-      "For each k \u2265 4, what is the minimum order of G with \u03c9(\u0393(G)) = k?"
+      "Complete classification: which non-abelian quotients G/Z(G) give exactly ω = 3?",
+      "What is ω(Γ(S₄))? (alternating group A₄ has ω = 3 but S₄ may be larger)",
+      "For each k ≥ 4, what is the minimum order of G with ω(Γ(G)) = k?"
     ]
   },
   "crossReferences": [
@@ -107,7 +107,7 @@
     },
     {
       "relationship": "child-of",
-      "description": "Sub-problem of the Erd\u0151s #1098 non-commuting graph problem",
+      "description": "Sub-problem of the Erdős #1098 non-commuting graph problem",
       "targetId": "erdos-1098"
     }
   ],
@@ -115,7 +115,9 @@
     "lineCount": 205,
     "path": "Proofs/Erdos1098OQ01OQ01.lean",
     "axiomCount": 2,
-    "sorries": 0
+    "sorries": 0,
+    "definitionCount": 3,
+    "theoremCount": 8
   },
   "sorries": 0
 }

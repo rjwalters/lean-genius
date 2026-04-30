@@ -50,7 +50,7 @@
       "Function.Embedding and Equiv types in Lean/Mathlib"
     ],
     "lineCount": 198,
-    "assumptions": "0 axioms, 0 sorries. Core Schr\u00f6der-Bernstein theorem (Function.Embedding.schroeder_bernstein, antisymm) from Mathlib; original work is corollaries and pedagogical infrastructure.",
+    "assumptions": "0 axioms, 0 sorries. Core Schröder-Bernstein theorem (Function.Embedding.schroeder_bernstein, antisymm) from Mathlib; original work is corollaries and pedagogical infrastructure.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -79,7 +79,7 @@
       "startLine": 1,
       "endLine": 52,
       "summary": "Overview of the Schroeder-Bernstein theorem, its historical significance, and Mathlib dependencies.",
-      "mathContext": "Statement: if $\\exists f: A \\hookrightarrow B$ and $\\exists g: B \\hookrightarrow A$ (injections), then $A \\cong B$ (bijection). Equivalently: $|A| \\leq |B| \\wedge |B| \\leq |A| \\Rightarrow |A| = |B|$ \u2014 antisymmetry of cardinal ordering."
+      "mathContext": "Statement: if $\\exists f: A \\hookrightarrow B$ and $\\exists g: B \\hookrightarrow A$ (injections), then $A \\cong B$ (bijection). Equivalently: $|A| \\leq |B| \\wedge |B| \\leq |A| \\Rightarrow |A| = |B|$ — antisymmetry of cardinal ordering."
     },
     {
       "id": "main-theorem",
@@ -95,7 +95,7 @@
       "startLine": 79,
       "endLine": 94,
       "summary": "The embedding form using Lean's Function.Embedding type for bundled injective functions.",
-      "mathContext": "`Function.Embedding \u03b1 \u03b2` bundles a function with an injectivity proof. The embedding form: $(\\alpha \\hookrightarrow \\beta) \\to (\\beta \\hookrightarrow \\alpha) \\to (\\alpha \\simeq \\beta)$, where $\\simeq$ is `Equiv`."
+      "mathContext": "`Function.Embedding α β` bundles a function with an injectivity proof. The embedding form: $(\\alpha \\hookrightarrow \\beta) \\to (\\beta \\hookrightarrow \\alpha) \\to (\\alpha \\simeq \\beta)$, where $\\simeq$ is `Equiv`."
     },
     {
       "id": "cardinality-form",
@@ -103,7 +103,7 @@
       "startLine": 95,
       "endLine": 106,
       "summary": "The cardinal arithmetic form: embeddings both ways implies equal cardinalities.",
-      "mathContext": "Cardinal form: $|\\alpha| \\leq |\\beta| \\wedge |\\beta| \\leq |\\alpha| \\Rightarrow |\\alpha| = |\\beta|$, where $|\\alpha| = \\text{Cardinal.mk}\\ \\alpha$. This is `Cardinal.antisymm` in Mathlib \u2014 the antisymmetry that makes cardinal ordering a partial order."
+      "mathContext": "Cardinal form: $|\\alpha| \\leq |\\beta| \\wedge |\\beta| \\leq |\\alpha| \\Rightarrow |\\alpha| = |\\beta|$, where $|\\alpha| = \\text{Cardinal.mk}\\ \\alpha$. This is `Cardinal.antisymm` in Mathlib — the antisymmetry that makes cardinal ordering a partial order."
     },
     {
       "id": "proof-strategy",
@@ -239,7 +239,7 @@
     "namespace": "SchroederBernstein",
     "lineCount": 198,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 5,
     "definitionCount": 3,
     "path": "Proofs/SchroederBernstein.lean",
     "sorries": 0

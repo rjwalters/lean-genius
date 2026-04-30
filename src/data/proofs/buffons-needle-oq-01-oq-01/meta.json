@@ -2,7 +2,7 @@
   "id": "buffons-needle-oq-01-oq-01",
   "title": "Buffon-Barbier: Angular Average and the Smooth Curve Formula",
   "slug": "buffons-needle-oq-01-oq-01",
-  "description": "Proves the Buffon-Barbier smooth curve theorem (E[crossings] = 2L/(\u03c0d)) from first principles using the angular average identity \u222b_0^\u03c0 |a sin \u03b8 + b cos \u03b8| d\u03b8 = 2\u221a(a\u00b2+b\u00b2). This resolves the open question in buffons-needle-oq-01 by replacing the axiomatic smooth case with a concrete verified proof.",
+  "description": "Proves the Buffon-Barbier smooth curve theorem (E[crossings] = 2L/(πd)) from first principles using the angular average identity ∫_0^π |a sin θ + b cos θ| dθ = 2√(a²+b²). This resolves the open question in buffons-needle-oq-01 by replacing the axiomatic smooth case with a concrete verified proof.",
   "meta": {
     "author": "Barbier (1860); Lean formalization 2026",
     "sourceUrl": "https://en.wikipedia.org/wiki/Buffon%27s_noodle",
@@ -25,7 +25,7 @@
     "mathlibDependencies": [
       {
         "theorem": "intervalIntegral.integral_comp_add_right",
-        "description": "Change of variables u = \u03b8 + c in interval integrals",
+        "description": "Change of variables u = θ + c in interval integrals",
         "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral"
       },
       {
@@ -35,7 +35,7 @@
       },
       {
         "theorem": "intervalIntegral.integral_symm",
-        "description": "Symmetry of interval integrals: \u222b_a^b = -\u222b_b^a",
+        "description": "Symmetry of interval integrals: ∫_a^b = -∫_b^a",
         "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral"
       },
       {
@@ -45,25 +45,25 @@
       },
       {
         "theorem": "Real.sin_nonneg_of_mem_Icc",
-        "description": "sin \u03b8 \u2265 0 for \u03b8 \u2208 [0, \u03c0]",
+        "description": "sin θ ≥ 0 for θ ∈ [0, π]",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       },
       {
         "theorem": "Complex.cos_arg",
-        "description": "cos(arg z) = z.re / \u2016z\u2016, used to define the rotation angle \u03c6",
+        "description": "cos(arg z) = z.re / ‖z‖, used to define the rotation angle φ",
         "module": "Mathlib.Analysis.SpecialFunctions.Complex.Arg"
       },
       {
         "theorem": "Complex.sin_arg",
-        "description": "sin(arg z) = z.im / \u2016z\u2016, used to define the rotation angle \u03c6",
+        "description": "sin(arg z) = z.im / ‖z‖, used to define the rotation angle φ",
         "module": "Mathlib.Analysis.SpecialFunctions.Complex.Arg"
       }
     ],
     "originalContributions": [
-      "integral_sin_zero_pi: \u222b_0^\u03c0 sin \u03b8 d\u03b8 = 2 (proved via FTC)",
-      "integral_abs_sin_zero_pi: \u222b_0^\u03c0 |sin \u03b8| d\u03b8 = 2 (using sin \u2265 0 on [0, \u03c0])",
-      "integral_abs_sin_shift: \u222b_0^\u03c0 |sin(\u03b8 + c)| d\u03b8 = 2 for any c (change of variables + periodicity)",
-      "angular_average: \u222b_0^\u03c0 |a sin \u03b8 + b cos \u03b8| d\u03b8 = 2\u221a(a\u00b2+b\u00b2) (via Complex.arg for the rotation angle)",
+      "integral_sin_zero_pi: ∫_0^π sin θ dθ = 2 (proved via FTC)",
+      "integral_abs_sin_zero_pi: ∫_0^π |sin θ| dθ = 2 (using sin ≥ 0 on [0, π])",
+      "integral_abs_sin_shift: ∫_0^π |sin(θ + c)| dθ = 2 for any c (change of variables + periodicity)",
+      "angular_average: ∫_0^π |a sin θ + b cos θ| dθ = 2√(a²+b²) (via Complex.arg for the rotation angle)",
       "concreteSmoothExpectedCrossings: concrete double integral definition of expected crossings",
       "buffon_smooth_concrete: main theorem with explicit Fubini hypothesis",
       "hFubini_from_angular_average: proves the Fubini hypothesis from angular_average",
@@ -75,14 +75,14 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "In buffons-needle-oq-01 (Buffon's Noodle), the smooth curve case of the Buffon-Barbier theorem was left as an open question, formalized as an axiom. The question was: can the axiom `buffon_noodle_smooth_eq` be derived from Mathlib's arc length theory?\n\nThis file answers YES. The key insight is the **angular average identity**:\n  \u222b_0^\u03c0 |a sin \u03b8 + b cos \u03b8| d\u03b8 = 2\u221a(a\u00b2 + b\u00b2)\n\nThis is the fundamental reason why the crossing probability depends only on arc length and not on the shape of the curve. For any direction (a, b) representing the tangent vector \u03b3'(t), the integral of |crossings contribution| over all angles \u03b8 gives exactly 2\u2016\u03b3'(t)\u2016. Integrating over t gives 2L/(\u03c0d).\n\nThe proof uses Complex.arg to find the rotation angle \u03c6 such that a sin \u03b8 + b cos \u03b8 = \u221a(a\u00b2+b\u00b2) \u00b7 sin(\u03b8 + \u03c6), then applies the rotation-invariant identity \u222b_0^\u03c0 |sin(\u03b8 + c)| d\u03b8 = 2.",
-    "problemStatement": "**Open Question from buffons-needle-oq-01**: Can the smooth curve axiom\n  `buffon_noodle_smooth_eq : smoothExpectedCrossings \u03b3 a b d = 2 * arcLength(\u03b3) / (\u03c0 * d)`\nbe proved from Mathlib's arc length theory?\n\n**Theorem (Buffon-Barbier, 1860)**: For any smooth planar curve \u03b3 : [a,b] \u2192 \u211d\u00b2 with arc length L, when dropped randomly on a floor with parallel lines (spacing d), the expected number of crossings is:\n  E[crossings] = 2L / (\u03c0d)\n\n**Answer**: YES \u2014 proved here using the angular average theorem and Fubini's theorem.",
-    "text": "Proves the Buffon-Barbier smooth curve theorem (E[crossings] = 2L/(\u03c0d)) from first principles using the angular average identity \u222b_0^\u03c0 |a sin \u03b8 + b cos \u03b8| d\u03b8 = 2\u221a(a\u00b2+b\u00b2). This resolves the open question in buffons-needle-oq-01 by replacing the axiomatic smooth case with a concrete verified proof.",
-    "proofStrategy": "**Key Identity**: \u222b_0^\u03c0 |a sin \u03b8 + b cos \u03b8| d\u03b8 = 2\u221a(a\u00b2 + b\u00b2)\n\n**Why this works**:\n- The vector (a sin \u03b8 + b cos \u03b8) measures how much the tangent direction (a, b) contributes to crossings for angle \u03b8\n- Averaging over all angles \u03b8 \u2208 [0, \u03c0] gives exactly 2\u2016(a,b)\u2016 = 2 times the speed\n- The formula 2L/(\u03c0d) follows by integrating over the curve and normalizing by \u03c0d\n\n**Proof of angular average** (the heart of the proof):\n1. For (a, b) = (0, 0): both sides = 0 \u2713\n2. For (a, b) \u2260 (0, 0): Let r = \u221a(a\u00b2+b\u00b2) and \u03c6 = arg(a + bi)\n   - Then cos \u03c6 = a/r and sin \u03c6 = b/r\n   - So a sin \u03b8 + b cos \u03b8 = r(sin \u03b8 cos \u03c6 + cos \u03b8 sin \u03c6) = r sin(\u03b8 + \u03c6)\n   - Therefore: \u222b_0^\u03c0 |a sin \u03b8 + b cos \u03b8| d\u03b8 = r \u222b_0^\u03c0 |sin(\u03b8 + \u03c6)| d\u03b8 = r \u00b7 2 = 2r \u2713\n\n**Rotation invariance**: \u222b_0^\u03c0 |sin(\u03b8 + c)| d\u03b8 = 2\n- Change variables u = \u03b8 + c: \u222b_c^{c+\u03c0} |sin u| du\n- Split and use |sin(u+\u03c0)| = |sin u| to show \u222b_c^{c+\u03c0} = \u222b_0^\u03c0\n- Equals 2 by the basic integral \u2713",
+    "historicalContext": "In buffons-needle-oq-01 (Buffon's Noodle), the smooth curve case of the Buffon-Barbier theorem was left as an open question, formalized as an axiom. The question was: can the axiom `buffon_noodle_smooth_eq` be derived from Mathlib's arc length theory?\n\nThis file answers YES. The key insight is the **angular average identity**:\n  ∫_0^π |a sin θ + b cos θ| dθ = 2√(a² + b²)\n\nThis is the fundamental reason why the crossing probability depends only on arc length and not on the shape of the curve. For any direction (a, b) representing the tangent vector γ'(t), the integral of |crossings contribution| over all angles θ gives exactly 2‖γ'(t)‖. Integrating over t gives 2L/(πd).\n\nThe proof uses Complex.arg to find the rotation angle φ such that a sin θ + b cos θ = √(a²+b²) · sin(θ + φ), then applies the rotation-invariant identity ∫_0^π |sin(θ + c)| dθ = 2.",
+    "problemStatement": "**Open Question from buffons-needle-oq-01**: Can the smooth curve axiom\n  `buffon_noodle_smooth_eq : smoothExpectedCrossings γ a b d = 2 * arcLength(γ) / (π * d)`\nbe proved from Mathlib's arc length theory?\n\n**Theorem (Buffon-Barbier, 1860)**: For any smooth planar curve γ : [a,b] → ℝ² with arc length L, when dropped randomly on a floor with parallel lines (spacing d), the expected number of crossings is:\n  E[crossings] = 2L / (πd)\n\n**Answer**: YES — proved here using the angular average theorem and Fubini's theorem.",
+    "text": "Proves the Buffon-Barbier smooth curve theorem (E[crossings] = 2L/(πd)) from first principles using the angular average identity ∫_0^π |a sin θ + b cos θ| dθ = 2√(a²+b²). This resolves the open question in buffons-needle-oq-01 by replacing the axiomatic smooth case with a concrete verified proof.",
+    "proofStrategy": "**Key Identity**: ∫_0^π |a sin θ + b cos θ| dθ = 2√(a² + b²)\n\n**Why this works**:\n- The vector (a sin θ + b cos θ) measures how much the tangent direction (a, b) contributes to crossings for angle θ\n- Averaging over all angles θ ∈ [0, π] gives exactly 2‖(a,b)‖ = 2 times the speed\n- The formula 2L/(πd) follows by integrating over the curve and normalizing by πd\n\n**Proof of angular average** (the heart of the proof):\n1. For (a, b) = (0, 0): both sides = 0 ✓\n2. For (a, b) ≠ (0, 0): Let r = √(a²+b²) and φ = arg(a + bi)\n   - Then cos φ = a/r and sin φ = b/r\n   - So a sin θ + b cos θ = r(sin θ cos φ + cos θ sin φ) = r sin(θ + φ)\n   - Therefore: ∫_0^π |a sin θ + b cos θ| dθ = r ∫_0^π |sin(θ + φ)| dθ = r · 2 = 2r ✓\n\n**Rotation invariance**: ∫_0^π |sin(θ + c)| dθ = 2\n- Change variables u = θ + c: ∫_c^{c+π} |sin u| du\n- Split and use |sin(u+π)| = |sin u| to show ∫_c^{c+π} = ∫_0^π\n- Equals 2 by the basic integral ✓",
     "keyInsights": [
-      "The angular average \u222b_0^\u03c0 |a sin \u03b8 + b cos \u03b8| d\u03b8 = 2\u221a(a\u00b2+b\u00b2) is the KEY INSIGHT explaining why shape doesn't matter in Buffon's noodle",
-      "The rotation angle \u03c6 = arg(a+bi) works uniformly for all cases including a=0 using Complex.arg from Mathlib",
-      "The identity |sin(x+\u03c0)| = |sin x| (\u03c0-periodicity of |sin|) is what makes the rotation invariance proof work",
+      "The angular average ∫_0^π |a sin θ + b cos θ| dθ = 2√(a²+b²) is the KEY INSIGHT explaining why shape doesn't matter in Buffon's noodle",
+      "The rotation angle φ = arg(a+bi) works uniformly for all cases including a=0 using Complex.arg from Mathlib",
+      "The identity |sin(x+π)| = |sin x| (π-periodicity of |sin|) is what makes the rotation invariance proof work",
       "The proof avoids the co-area formula by using Fubini's theorem as an explicit hypothesis",
       "The hFubini hypothesis is exactly angular_average applied pointwise, so the full theorem follows automatically",
       "This resolves the open question in BuffonsNoodle.lean: the axiomatic smooth case can be replaced by this concrete proof"
@@ -99,21 +99,21 @@
       "title": "The Fundamental Angular Integral",
       "startLine": 59,
       "endLine": 82,
-      "summary": "integral_sin_zero_pi: \u222b_0^\u03c0 sin \u03b8 d\u03b8 = 2 via FTC. integral_abs_sin_zero_pi: \u222b_0^\u03c0 |sin \u03b8| d\u03b8 = 2 using sin \u2265 0 on [0, \u03c0]."
+      "summary": "integral_sin_zero_pi: ∫_0^π sin θ dθ = 2 via FTC. integral_abs_sin_zero_pi: ∫_0^π |sin θ| dθ = 2 using sin ≥ 0 on [0, π]."
     },
     {
       "id": "rotation-invariance",
       "title": "Rotation Invariance",
       "startLine": 83,
       "endLine": 141,
-      "summary": "integral_abs_sin_shift: \u222b_0^\u03c0 |sin(\u03b8+c)| d\u03b8 = 2 for any c. Uses change of variables and \u03c0-periodicity of |sin|."
+      "summary": "integral_abs_sin_shift: ∫_0^π |sin(θ+c)| dθ = 2 for any c. Uses change of variables and π-periodicity of |sin|."
     },
     {
       "id": "angular-average",
       "title": "The Angular Average Theorem",
       "startLine": 142,
       "endLine": 232,
-      "summary": "angular_average: \u222b_0^\u03c0 |a sin \u03b8 + b cos \u03b8| d\u03b8 = 2\u221a(a\u00b2+b\u00b2). Uses Complex.arg to find the rotation angle \u03c6 = arg(a+bi)."
+      "summary": "angular_average: ∫_0^π |a sin θ + b cos θ| dθ = 2√(a²+b²). Uses Complex.arg to find the rotation angle φ = arg(a+bi)."
     },
     {
       "id": "concrete-crossings",
@@ -139,10 +139,10 @@
   ],
   "conclusion": {
     "summary": "The Buffon-Barbier smooth curve theorem is proved from first principles using the angular average identity. The open question from BuffonsNoodle.lean is resolved: the axiomatic smooth case is not needed. The proof requires only Fubini's theorem (as an explicit hypothesis), not the full co-area formula.",
-    "implications": "**Mathematical Significance**:\n\n**1. Angular Average as the Central Identity**\nThe formula \u222b_0^\u03c0 |a sin \u03b8 + b cos \u03b8| d\u03b8 = 2\u221a(a\u00b2+b\u00b2) is the heart of integral geometry. It explains WHY the crossing probability depends only on length: every arc element contributes proportionally to its length, independent of direction.\n\n**2. The Cauchy-Crofton Connection**\nThis proof is a special case of the Cauchy-Crofton formula:\n   measure(lines meeting curve C) = 2 \u00b7 length(C)\nOur proof gives an elementary verification using only Fubini and the angular average.\n\n**3. Eliminating Axioms**\nThe axiomatic treatment in BuffonsNoodle.lean used:\n  `noncomputable axiom smoothExpectedCrossings`\n  `axiom buffon_noodle_smooth_eq`\nThis file replaces both with proved theorems, improving the formalization.\n\n**4. Technique: Complex.arg for Rotation**\nUsing Complex.arg to find the rotation angle \u03c6 = arg(a+bi) is an elegant approach that handles all cases (a=0, a<0, a>0) uniformly through Mathlib's existing arg theory.",
+    "implications": "**Mathematical Significance**:\n\n**1. Angular Average as the Central Identity**\nThe formula ∫_0^π |a sin θ + b cos θ| dθ = 2√(a²+b²) is the heart of integral geometry. It explains WHY the crossing probability depends only on length: every arc element contributes proportionally to its length, independent of direction.\n\n**2. The Cauchy-Crofton Connection**\nThis proof is a special case of the Cauchy-Crofton formula:\n   measure(lines meeting curve C) = 2 · length(C)\nOur proof gives an elementary verification using only Fubini and the angular average.\n\n**3. Eliminating Axioms**\nThe axiomatic treatment in BuffonsNoodle.lean used:\n  `noncomputable axiom smoothExpectedCrossings`\n  `axiom buffon_noodle_smooth_eq`\nThis file replaces both with proved theorems, improving the formalization.\n\n**4. Technique: Complex.arg for Rotation**\nUsing Complex.arg to find the rotation angle φ = arg(a+bi) is an elegant approach that handles all cases (a=0, a<0, a>0) uniformly through Mathlib's existing arg theory.",
     "openQuestions": [
       "Fully integrate with BuffonsNoodle.lean by removing the axioms and using concreteSmoothExpectedCrossings",
-      "Prove the integrability hypothesis (hInnerInt) from smoothness of \u03b3",
+      "Prove the integrability hypothesis (hInnerInt) from smoothness of γ",
       "Formalize the Cauchy-Crofton formula in full generality",
       "Higher-dimensional Cauchy-Crofton: expected crossings with hyperplane arrangements",
       "Prove the co-area formula in Mathlib to eliminate the Fubini hypothesis"
@@ -167,8 +167,8 @@
   ],
   "references": [
     {
-      "title": "Note sur un probl\u00e8me de calcul des probabilit\u00e9s",
-      "author": "Barbier, \u00c9.",
+      "title": "Note sur un problème de calcul des probabilités",
+      "author": "Barbier, É.",
       "year": "1860",
       "description": "Original generalization of Buffon's needle to arbitrary smooth curves, proving E[crossings] = 2L/(pi*d)"
     },
@@ -180,7 +180,7 @@
     },
     {
       "title": "Integral Geometry and Geometric Probability",
-      "author": "Santal\u00f3, L. A.",
+      "author": "Santaló, L. A.",
       "year": "1976",
       "description": "Foundational text on integral geometry; the angular average identity used here is a special case of the Cauchy-Crofton formula"
     }
@@ -197,7 +197,7 @@
     "namespace": "BuffonsNeedleOQ01OQ01",
     "lineCount": 390,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 9,
     "definitionCount": 2,
     "path": "Proofs/BuffonsNeedleOQ01OQ01.lean",
     "sorries": 0

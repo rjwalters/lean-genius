@@ -2,7 +2,7 @@
   "id": "collatz-cycles-oq-04",
   "title": "Collatz Cycle Algebraic Equation: General Halving Constraint",
   "slug": "collatz-cycles-oq-04",
-  "description": "Formalizes the algebraic cycle equation for general j-step Collatz cycles: the product identity \u220f(3n\u1d62+1) = 2^M \u00b7 \u220fn\u1d62 implies 3^j < 2^M for all j \u2265 1. Generalizes the j=1,2,3,4 specific halving constraints from CollatzCycles.lean to a single unified proof via cyclic permutation and product telescoping.",
+  "description": "Formalizes the algebraic cycle equation for general j-step Collatz cycles: the product identity ∏(3nᵢ+1) = 2^M · ∏nᵢ implies 3^j < 2^M for all j ≥ 1. Generalizes the j=1,2,3,4 specific halving constraints from CollatzCycles.lean to a single unified proof via cyclic permutation and product telescoping.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-13",
@@ -24,23 +24,23 @@
     "theoremCount": 10,
     "definitionCount": 3,
     "originalContributions": [
-      "CycleConfig structure: encodes j-step Collatz cycle with odd elements, halving counts, and step relation 2^m\u1d62 \u00b7 n_{i+1} = 3n\u1d62 + 1",
-      "cycle_product_equation: \u220f\u1d62(3n\u1d62+1) = 2^M \u00b7 \u220f\u1d62n\u1d62 via cyclic permutation (\u03c3 is bijection on Fin j)",
-      "prod_step_gt: 3^j \u00b7 \u220fn\u1d62 < \u220f(3n\u1d62+1) by induction on j",
+      "CycleConfig structure: encodes j-step Collatz cycle with odd elements, halving counts, and step relation 2^mᵢ · n_{i+1} = 3nᵢ + 1",
+      "cycle_product_equation: ∏ᵢ(3nᵢ+1) = 2^M · ∏ᵢnᵢ via cyclic permutation (σ is bijection on Fin j)",
+      "prod_step_gt: 3^j · ∏nᵢ < ∏(3nᵢ+1) by induction on j",
       "halving_constraint: 3^j < 2^M for any valid Collatz cycle (general j)",
-      "no_power_eq: 2^M \u2260 3^j for M \u2265 1 (parity: 2^M is even, 3^j is odd)",
-      "cycle_M_gt_j: M \u2265 j+1 for any cycle (general lower bound on total halvings)"
+      "no_power_eq: 2^M ≠ 3^j for M ≥ 1 (parity: 2^M is even, 3^j is odd)",
+      "cycle_M_gt_j: M ≥ j+1 for any cycle (general lower bound on total halvings)"
     ]
   },
   "overview": {
-    "historicalContext": "The Collatz conjecture (1937) asks whether iterating n \u21a6 n/2 (even) or n \u21a6 3n+1 (odd) always reaches 1. A key structural constraint on hypothetical non-trivial cycles was identified by Lagarias (1985) and sharpened by Eliahou (1993): a cycle with j odd steps and M total halvings must satisfy 2^M > 3^j.\n\nPrevious Lean formalizations (CollatzCycles.lean, CollatzStructured.lean) proved this constraint for specific values j = 1, 2, 3, 4 using Lean's `interval_cases` tactic to enumerate possible M values. This file derives the constraint for ALL j \u2265 1 from a single algebraic argument: the product telescoping identity \u220f(3n\u1d62+1) = 2^M \u00b7 \u220fn\u1d62, combined with the inductive bound \u220f(3n\u1d62+1) > 3^j \u00b7 \u220fn\u1d62.",
-    "problemStatement": "For a Collatz cycle with j \u2265 1 odd steps: the odd elements n\u2080,...,n_{j-1} and halving counts m\u2080,...,m_{j-1} satisfy the cyclic step relation 2^{m\u1d62} \u00b7 n_{(i+1) mod j} = 3n\u1d62 + 1 for all i. Defining M = \u03a3m\u1d62, does this force 3^j < 2^M? More generally, does it force M \u2265 j+1?",
-    "proofStrategy": "Three-step argument:\n\n1. **Product equation** (Theorem `cycle_product_equation`): Take the product of the cyclic step relations over all i. The right-hand side becomes (\u220f 2^{m\u1d62}) \u00b7 (\u220f n_{\u03c3(i)}) where \u03c3 is the cyclic shift. Since \u03c3 is a bijection on Fin j, the permuted product equals the original: \u220f n_{\u03c3(i)} = \u220f n\u1d62. The power product becomes 2^M by `prod_pow_eq_pow_sum`. Result: \u220f(3n\u1d62+1) = 2^M \u00b7 \u220fn\u1d62.\n\n2. **Strict inequality** (Theorem `prod_step_gt`): Inductively prove 3^j \u00b7 \u220fn\u1d62 < \u220f(3n\u1d62+1). Each factor satisfies 3n\u1d62+1 > 3n\u1d62, so the product gains a strict inequality at each step. A careful `calc` proof handles the interaction between multiplying by 3^j (from IH) and the +1 terms.\n\n3. **Halving constraint** (Theorem `halving_constraint`): Combine: 2^M \u00b7 \u220fn\u1d62 = \u220f(3n\u1d62+1) > 3^j \u00b7 \u220fn\u1d62. Cancel \u220fn\u1d62 > 0 to get 2^M > 3^j.",
+    "historicalContext": "The Collatz conjecture (1937) asks whether iterating n ↦ n/2 (even) or n ↦ 3n+1 (odd) always reaches 1. A key structural constraint on hypothetical non-trivial cycles was identified by Lagarias (1985) and sharpened by Eliahou (1993): a cycle with j odd steps and M total halvings must satisfy 2^M > 3^j.\n\nPrevious Lean formalizations (CollatzCycles.lean, CollatzStructured.lean) proved this constraint for specific values j = 1, 2, 3, 4 using Lean's `interval_cases` tactic to enumerate possible M values. This file derives the constraint for ALL j ≥ 1 from a single algebraic argument: the product telescoping identity ∏(3nᵢ+1) = 2^M · ∏nᵢ, combined with the inductive bound ∏(3nᵢ+1) > 3^j · ∏nᵢ.",
+    "problemStatement": "For a Collatz cycle with j ≥ 1 odd steps: the odd elements n₀,...,n_{j-1} and halving counts m₀,...,m_{j-1} satisfy the cyclic step relation 2^{mᵢ} · n_{(i+1) mod j} = 3nᵢ + 1 for all i. Defining M = Σmᵢ, does this force 3^j < 2^M? More generally, does it force M ≥ j+1?",
+    "proofStrategy": "Three-step argument:\n\n1. **Product equation** (Theorem `cycle_product_equation`): Take the product of the cyclic step relations over all i. The right-hand side becomes (∏ 2^{mᵢ}) · (∏ n_{σ(i)}) where σ is the cyclic shift. Since σ is a bijection on Fin j, the permuted product equals the original: ∏ n_{σ(i)} = ∏ nᵢ. The power product becomes 2^M by `prod_pow_eq_pow_sum`. Result: ∏(3nᵢ+1) = 2^M · ∏nᵢ.\n\n2. **Strict inequality** (Theorem `prod_step_gt`): Inductively prove 3^j · ∏nᵢ < ∏(3nᵢ+1). Each factor satisfies 3nᵢ+1 > 3nᵢ, so the product gains a strict inequality at each step. A careful `calc` proof handles the interaction between multiplying by 3^j (from IH) and the +1 terms.\n\n3. **Halving constraint** (Theorem `halving_constraint`): Combine: 2^M · ∏nᵢ = ∏(3nᵢ+1) > 3^j · ∏nᵢ. Cancel ∏nᵢ > 0 to get 2^M > 3^j.",
     "keyInsights": [
-      "The cyclic shift \u03c3: i \u21a6 (i+1) mod j is an Equiv.Perm (Fin j). Using Equiv.Perm.prod_comp, any product over a permuted index equals the original \u2014 this is the key algebraic fact enabling the product telescoping.",
-      "Finset.prod_pow_eq_pow_sum converts \u220f 2^{m\u1d62} = 2^{\u03a3m\u1d62} in one step, avoiding messy inductive arguments about products of powers.",
-      "The strict inequality \u220f(3n\u1d62+1) > 3^j \u00b7 \u220fn\u1d62 requires careful induction: at each step, (3n\u2080+1) \u00b7 (tail product) > (3n\u2080+1) \u00b7 3^{j'} \u00b7 (tail), and then (3n\u2080+1) > 3n\u2080 gives the final inequality. The `calc` structure makes this clean.",
-      "The parity argument for `no_power_eq`: 2^M is even for M \u2265 1 (divisible by 2), while 3^j is always odd (3 \u2261 1 mod 2, so 3^j \u2261 1 mod 2). This immediately gives 2^M \u2260 3^j.",
+      "The cyclic shift σ: i ↦ (i+1) mod j is an Equiv.Perm (Fin j). Using Equiv.Perm.prod_comp, any product over a permuted index equals the original — this is the key algebraic fact enabling the product telescoping.",
+      "Finset.prod_pow_eq_pow_sum converts ∏ 2^{mᵢ} = 2^{Σmᵢ} in one step, avoiding messy inductive arguments about products of powers.",
+      "The strict inequality ∏(3nᵢ+1) > 3^j · ∏nᵢ requires careful induction: at each step, (3n₀+1) · (tail product) > (3n₀+1) · 3^{j'} · (tail), and then (3n₀+1) > 3n₀ gives the final inequality. The `calc` structure makes this clean.",
+      "The parity argument for `no_power_eq`: 2^M is even for M ≥ 1 (divisible by 2), while 3^j is always odd (3 ≡ 1 mod 2, so 3^j ≡ 1 mod 2). This immediately gives 2^M ≠ 3^j.",
       "The file subsumes the j=1,2,3,4 case analyses in CollatzCycles.lean: the specific `min_halvings_j1/j2/j3/j4` theorems here follow by instantiating `halving_constraint` and using `interval_cases` only for the small M values."
     ],
     "prerequisites": [
@@ -60,17 +60,17 @@
     {
       "id": "cyclic-bijection",
       "title": "Part II: The Cyclic Successor Bijection",
-      "description": "cyclicSucc: i \u21a6 (i+1) mod j as an Equiv.Perm (Fin j)",
+      "description": "cyclicSucc: i ↦ (i+1) mod j as an Equiv.Perm (Fin j)",
       "theorems": [
         {
           "name": "prod_perm_eq",
-          "statement": "\u220f i, f (\u03c3 i) = \u220f i, f i for any permutation \u03c3",
+          "statement": "∏ i, f (σ i) = ∏ i, f i for any permutation σ",
           "status": "proved",
           "description": "Products are invariant under permutation of the index set"
         },
         {
           "name": "prod_two_pow",
-          "statement": "\u220f\u1d62 2^{m\u1d62} = 2^{\u2211\u1d62 m\u1d62}",
+          "statement": "∏ᵢ 2^{mᵢ} = 2^{∑ᵢ mᵢ}",
           "status": "proved",
           "description": "Product of powers equals power of sum"
         }
@@ -79,36 +79,36 @@
     {
       "id": "product-equation",
       "title": "Part IV: The Product Equation",
-      "description": "Main algebraic identity: \u220f(3n\u1d62+1) = 2^M \u00b7 \u220fn\u1d62",
+      "description": "Main algebraic identity: ∏(3nᵢ+1) = 2^M · ∏nᵢ",
       "theorems": [
         {
           "name": "cycle_product_equation",
-          "statement": "\u220f\u1d62 (3\u00b7c.odds i + 1) = 2^c.M \u00b7 \u220f\u1d62 c.odds i",
+          "statement": "∏ᵢ (3·c.odds i + 1) = 2^c.M · ∏ᵢ c.odds i",
           "status": "proved",
-          "description": "Product telescoping via cyclic bijection. Follows from step relation 3n\u1d62+1 = 2^{m\u1d62}\u00b7n_{\u03c3(i)} by taking the product over all i."
+          "description": "Product telescoping via cyclic bijection. Follows from step relation 3nᵢ+1 = 2^{mᵢ}·n_{σ(i)} by taking the product over all i."
         }
       ]
     },
     {
       "id": "halving-constraint",
-      "title": "Part V\u2013VI: The Halving Constraint and Parity",
-      "description": "3^j < 2^M and 2^M \u2260 3^j",
+      "title": "Part V–VI: The Halving Constraint and Parity",
+      "description": "3^j < 2^M and 2^M ≠ 3^j",
       "theorems": [
         {
           "name": "prod_step_gt",
-          "statement": "3^j \u00b7 \u220fn\u1d62 < \u220f(3n\u1d62+1) for all positive n\u1d62",
+          "statement": "3^j · ∏nᵢ < ∏(3nᵢ+1) for all positive nᵢ",
           "status": "proved",
-          "description": "Inductive proof: each factor 3n\u1d62+1 > 3n\u1d62, so the product exceeds 3^j \u00b7 \u220fn\u1d62"
+          "description": "Inductive proof: each factor 3nᵢ+1 > 3nᵢ, so the product exceeds 3^j · ∏nᵢ"
         },
         {
           "name": "halving_constraint",
           "statement": "3^j < 2^M for any valid Collatz cycle configuration",
           "status": "proved",
-          "description": "Combines cycle_product_equation with prod_step_gt, cancelling \u220fn\u1d62 > 0"
+          "description": "Combines cycle_product_equation with prod_step_gt, cancelling ∏nᵢ > 0"
         },
         {
           "name": "no_power_eq",
-          "statement": "2^M \u2260 3^j for M \u2265 1",
+          "statement": "2^M ≠ 3^j for M ≥ 1",
           "status": "proved",
           "description": "Parity argument: 2^M is even, 3^j is odd"
         }
@@ -116,18 +116,18 @@
     },
     {
       "id": "cycle-length",
-      "title": "Part VII\u2013VIII: Cycle Length Lower Bound",
-      "description": "M \u2265 j+1 and specialization to j=1,2,3,4",
+      "title": "Part VII–VIII: Cycle Length Lower Bound",
+      "description": "M ≥ j+1 and specialization to j=1,2,3,4",
       "theorems": [
         {
           "name": "cycle_M_gt_j",
-          "statement": "c.M \u2265 j + 1 for any valid cycle with j odd steps",
+          "statement": "c.M ≥ j + 1 for any valid cycle with j odd steps",
           "status": "proved",
-          "description": "From 2^M > 3^j > 2^j: monotonicity of 2^\u00b7 gives M > j, hence M \u2265 j+1"
+          "description": "From 2^M > 3^j > 2^j: monotonicity of 2^· gives M > j, hence M ≥ j+1"
         },
         {
           "name": "min_halvings_j1/j2/j3/j4",
-          "statement": "j=1: M \u2265 2; j=2: M \u2265 4; j=3: M \u2265 5; j=4: M \u2265 7",
+          "statement": "j=1: M ≥ 2; j=2: M ≥ 4; j=3: M ≥ 5; j=4: M ≥ 7",
           "status": "proved",
           "description": "Specializations of halving_constraint via interval_cases"
         }
@@ -135,10 +135,10 @@
     }
   ],
   "conclusion": {
-    "summary": "All 10 theorems are fully proved with 0 sorries and 0 axioms. The proof generalizes the specific j=1,2,3,4 halving constraints from CollatzCycles.lean to all j \u2265 1 via the product equation \u220f(3n\u1d62+1) = 2^M\u00b7\u220fn\u1d62 and the inductive bound \u220f(3n\u1d62+1) > 3^j\u00b7\u220fn\u1d62.",
-    "implications": "The general halving constraint M \u2265 j+1 (with the sharper bound M \u2265 \u2308j\u00b7log\u2082(3)\u2309 being beyond what this proof gives directly) implies that any non-trivial Collatz cycle grows quickly in length. The product equation 2^M\u00b7\u220fn\u1d62 = \u220f(3n\u1d62+1) is the fundamental algebraic identity of Collatz cycle theory.",
+    "summary": "All 10 theorems are fully proved with 0 sorries and 0 axioms. The proof generalizes the specific j=1,2,3,4 halving constraints from CollatzCycles.lean to all j ≥ 1 via the product equation ∏(3nᵢ+1) = 2^M·∏nᵢ and the inductive bound ∏(3nᵢ+1) > 3^j·∏nᵢ.",
+    "implications": "The general halving constraint M ≥ j+1 (with the sharper bound M ≥ ⌈j·log₂(3)⌉ being beyond what this proof gives directly) implies that any non-trivial Collatz cycle grows quickly in length. The product equation 2^M·∏nᵢ = ∏(3nᵢ+1) is the fundamental algebraic identity of Collatz cycle theory.",
     "openQuestions": [
-      "Can the sharp bound M \u2265 \u2308j\u00b7log\u2082(3)\u2309 be formalized from the product equation using Diophantine approximation techniques?",
+      "Can the sharp bound M ≥ ⌈j·log₂(3)⌉ be formalized from the product equation using Diophantine approximation techniques?",
       "Can Eliahou's bound (any non-trivial cycle has M > 17 billion) be derived from the product equation with additional number-theoretic input?"
     ]
   },
@@ -169,7 +169,7 @@
     "lineCount": 209,
     "axiomCount": 0,
     "theoremCount": 13,
-    "definitionCount": 3,
+    "definitionCount": 2,
     "path": "Proofs/CollatzCyclesOQ04.lean",
     "sorries": 0
   },

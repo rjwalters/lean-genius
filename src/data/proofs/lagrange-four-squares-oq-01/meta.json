@@ -2,7 +2,7 @@
   "id": "lagrange-four-squares-oq-01",
   "title": "Computational Complexity of Four-Square Representations (OQ-01)",
   "slug": "lagrange-four-squares-oq-01",
-  "description": "Addresses the computational aspects of Lagrange's four-square theorem: given n, how efficiently can one find integers a, b, c, d with a\u00b2 + b\u00b2 + c\u00b2 + d\u00b2 = n? The formalization establishes component bounds (each \u2264 \u221an), implements a computable greedy search algorithm, verifies correctness for all n \u2264 100 via native_decide, analyzes uniqueness of sorted representations, identifies numbers of the excluded form 4^a(8b+7) that require all four nonzero squares, and proves the bounds on the search space. All results are 0 sorry and 0 axioms, with computational proofs using Mathlib's Nat.sum_four_squares.",
+  "description": "Addresses the computational aspects of Lagrange's four-square theorem: given n, how efficiently can one find integers a, b, c, d with a² + b² + c² + d² = n? The formalization establishes component bounds (each ≤ √n), implements a computable greedy search algorithm, verifies correctness for all n ≤ 100 via native_decide, analyzes uniqueness of sorted representations, identifies numbers of the excluded form 4^a(8b+7) that require all four nonzero squares, and proves the bounds on the search space. All results are 0 sorry and 0 axioms, with computational proofs using Mathlib's Nat.sum_four_squares.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
@@ -19,28 +19,34 @@
     "sorries": 0,
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
-    "mathlibDependencies": [{"theorem": "Nat.sum_four_squares", "description": "Every natural number is a sum of four squares — used as foundation for four_square_exists_bounded", "module": "Mathlib.NumberTheory.SumFourSquares"}],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.sum_four_squares",
+        "description": "Every natural number is a sum of four squares — used as foundation for four_square_exists_bounded",
+        "module": "Mathlib.NumberTheory.SumFourSquares"
+      }
+    ],
     "assumptions": "Core existential result (four_square_exists_bounded) uses Mathlib's Nat.sum_four_squares. Algorithm, bounds, and verification proofs are independently proved.",
     "lineCount": 395,
     "theoremCount": 71,
     "definitionCount": 9,
     "originalContributions": [
       "findFourSquares: computable greedy algorithm returning the lexicographically largest sorted four-square decomposition",
-      "component_bound and all_components_bounded: each component in any representation is at most \u221an",
-      "Batch verification check_all_50 and check_all_100: all n \u2264 100 are correctly decomposed by native_decide",
+      "component_bound and all_components_bounded: each component in any representation is at most √n",
+      "Batch verification check_all_50 and check_all_100: all n ≤ 100 are correctly decomposed by native_decide",
       "countRepresentations: function counting distinct sorted representations of n",
       "Representation uniqueness analysis: 1, 2, 3, 5, 6, 7, 8 have unique sorted representations; first multiply-represented numbers identified",
       "isExcludedForm and excluded_form_check_50: detection of the 4^a(8b+7) form (Legendre's three-square theorem criterion)",
-      "largest_component_bounds: \u221a(n/4) \u2264 a \u2264 \u221an for sorted representations",
-      "four_square_exists_bounded: derived from Mathlib's Nat.sum_four_squares, adds \u221an component bounds simultaneously"
+      "largest_component_bounds: √(n/4) ≤ a ≤ √n for sorted representations",
+      "four_square_exists_bounded: derived from Mathlib's Nat.sum_four_squares, adds √n component bounds simultaneously"
     ]
   },
   "overview": {
-    "historicalContext": "Lagrange proved in 1770 that every positive integer is a sum of four perfect squares. The decision problem (is n representable?) is trivially YES by Lagrange's theorem, but the search problem (find an explicit decomposition) has nontrivial complexity. The Rabin-Shallit algorithm (1986) finds four-square representations in expected O(log\u00b2n \u00b7 polylog(log n)) time using randomized techniques. Legendre's three-square theorem (1798) characterizes the numbers NOT representable as sums of three squares: exactly those of the form 4^a(8b+7), and these are precisely the numbers requiring all four squares to be nonzero. The connection to quadratic forms over \u2124 connects this problem to the arithmetic of quaternions and to Gaussian integers.",
-    "problemStatement": "Open question from lagrange-four-squares: What is the computational complexity of finding a four-square representation? The formalization addresses this by: (1) proving that the naive O(n\u00b2) search space is tight (each component \u2264 \u221an); (2) implementing a greedy O(n\u00b2) algorithm and verifying its correctness computationally; (3) characterizing when representations are unique or multiple; (4) identifying the Legendre exclusion criterion for numbers needing all four nonzero squares.",
-    "proofStrategy": "Component bounds follow directly from a\u00b2 \u2264 a\u00b2 + b\u00b2 + c\u00b2 + d\u00b2 = n, so a \u2264 \u221an. The greedy algorithm iterates downward from \u221an for each component and checks whether the remainder is a perfect square. Correctness for small n is verified by native_decide (compiled Lean evaluation). The uniqueness analysis uses countRepresentations, which searches the bounded space exhaustively. The excluded form detection uses repeated division by 4 followed by checking the residue mod 8.",
+    "historicalContext": "Lagrange proved in 1770 that every positive integer is a sum of four perfect squares. The decision problem (is n representable?) is trivially YES by Lagrange's theorem, but the search problem (find an explicit decomposition) has nontrivial complexity. The Rabin-Shallit algorithm (1986) finds four-square representations in expected O(log²n · polylog(log n)) time using randomized techniques. Legendre's three-square theorem (1798) characterizes the numbers NOT representable as sums of three squares: exactly those of the form 4^a(8b+7), and these are precisely the numbers requiring all four squares to be nonzero. The connection to quadratic forms over ℤ connects this problem to the arithmetic of quaternions and to Gaussian integers.",
+    "problemStatement": "Open question from lagrange-four-squares: What is the computational complexity of finding a four-square representation? The formalization addresses this by: (1) proving that the naive O(n²) search space is tight (each component ≤ √n); (2) implementing a greedy O(n²) algorithm and verifying its correctness computationally; (3) characterizing when representations are unique or multiple; (4) identifying the Legendre exclusion criterion for numbers needing all four nonzero squares.",
+    "proofStrategy": "Component bounds follow directly from a² ≤ a² + b² + c² + d² = n, so a ≤ √n. The greedy algorithm iterates downward from √n for each component and checks whether the remainder is a perfect square. Correctness for small n is verified by native_decide (compiled Lean evaluation). The uniqueness analysis uses countRepresentations, which searches the bounded space exhaustively. The excluded form detection uses repeated division by 4 followed by checking the residue mod 8.",
     "keyInsights": [
-      "The O(n\u00b2) search space bound (each of 4 components \u2264 \u221an) is tight: there exist representations where all four components are \u0398(\u221an)",
+      "The O(n²) search space bound (each of 4 components ≤ √n) is tight: there exist representations where all four components are Θ(√n)",
       "The greedy algorithm's correctness relies on Lagrange's theorem (Nat.sum_four_squares in Mathlib): the fallback (0,0,0,0) case never occurs for the proof-theoretic guarantee",
       "Legendre's form 4^a(8b+7) identifies exactly the numbers requiring 4 nonzero squares; this is a certificate for maximal complexity of representation search",
       "native_decide provides batch verification of 100 cases in a single tactic, demonstrating Lean's computational proof capabilities",
@@ -55,13 +61,13 @@
     ]
   },
   "conclusion": {
-    "summary": "The computational aspects of Lagrange's four-square theorem are fully formalized with 71 theorems and 0 sorries. The greedy algorithm is proved correct for all n \u2264 100 by native_decide, component bounds are established algebraically, and the Legendre exclusion criterion is verified computationally. The formalization demonstrates that Lean 4 is well-suited for verified algorithm correctness proofs via native evaluation.",
+    "summary": "The computational aspects of Lagrange's four-square theorem are fully formalized with 71 theorems and 0 sorries. The greedy algorithm is proved correct for all n ≤ 100 by native_decide, component bounds are established algebraically, and the Legendre exclusion criterion is verified computationally. The formalization demonstrates that Lean 4 is well-suited for verified algorithm correctness proofs via native evaluation.",
     "implications": "The component bounds formalized here underlie all polynomial-time algorithms for four-square representation. The excluded form criterion gives a necessary condition for a number to require 4 nonzero squares, which is relevant to the Waring problem generalization. The use of native_decide for batch verification opens the door to certifying computational number theory results in Lean without slow tactic proofs.",
     "openQuestions": [
-      "Can the Rabin-Shallit randomized O(log\u00b2n) algorithm be formalized and its expected complexity proved?",
-      "Can the formalization be extended to prove Legendre's three-square theorem: n is a sum of three squares iff n \u2262 4^a(8b+7)?",
-      "What is the exact count of four-square representations of n, and can the Jacobi four-square formula r\u2084(n) = 8\u00b7\u03a3_{4\u2224d} d be formalized?",
-      "Can the connection between four-square representations and quaternion arithmetic over \u2124 be formalized in Lean 4?"
+      "Can the Rabin-Shallit randomized O(log²n) algorithm be formalized and its expected complexity proved?",
+      "Can the formalization be extended to prove Legendre's three-square theorem: n is a sum of three squares iff n ≢ 4^a(8b+7)?",
+      "What is the exact count of four-square representations of n, and can the Jacobi four-square formula r₄(n) = 8·Σ_{4∤d} d be formalized?",
+      "Can the connection between four-square representations and quaternion arithmetic over ℤ be formalized in Lean 4?"
     ]
   },
   "sections": [
@@ -70,8 +76,8 @@
       "title": "Component Bounds: Each Square Is at Most n",
       "startLine": 53,
       "endLine": 79,
-      "summary": "Proves that in any four-square representation a\u00b2 + b\u00b2 + c\u00b2 + d\u00b2 = n, each component satisfies a \u2264 \u221an. Four parallel theorems plus the joint all_components_bounded.",
-      "mathContext": "a\u00b2 \u2264 a\u00b2+b\u00b2+c\u00b2+d\u00b2 = n, so a \u2264 \u221an. The O(n\u00b2) search space follows: (\u221an+1)\u2074 = O(n\u00b2) total candidates."
+      "summary": "Proves that in any four-square representation a² + b² + c² + d² = n, each component satisfies a ≤ √n. Four parallel theorems plus the joint all_components_bounded.",
+      "mathContext": "a² ≤ a²+b²+c²+d² = n, so a ≤ √n. The O(n²) search space follows: (√n+1)⁴ = O(n²) total candidates."
     },
     {
       "id": "greedy-algorithm",
@@ -79,14 +85,14 @@
       "startLine": 88,
       "endLine": 123,
       "summary": "Computable greedy search returning the lexicographically largest sorted four-square decomposition. Uses nested List.foldl with Option accumulation for early termination.",
-      "mathContext": "Iterates a from \u221an down, then b \u2264 min(\u221a(n-a\u00b2),a), then c, then checks if remainder is a perfect square. Correctness guaranteed by Lagrange's theorem for the (0,0,0,0) fallback case."
+      "mathContext": "Iterates a from √n down, then b ≤ min(√(n-a²),a), then c, then checks if remainder is a perfect square. Correctness guaranteed by Lagrange's theorem for the (0,0,0,0) fallback case."
     },
     {
       "id": "verification",
       "title": "Correctness Verification and Batch Checks",
       "startLine": 126,
       "endLine": 186,
-      "summary": "Individual cases (n = 0..10, 30, 50, 99, 100) and batch checks via native_decide. check_all_100 certifies correctness for all n \u2264 100. sorted_100 verifies descending order of all outputs.",
+      "summary": "Individual cases (n = 0..10, 30, 50, 99, 100) and batch checks via native_decide. check_all_100 certifies correctness for all n ≤ 100. sorted_100 verifies descending order of all outputs.",
       "mathContext": "native_decide compiles the Bool-valued check to native code. Single tactic proves 101 instances of algorithm correctness simultaneously."
     },
     {
@@ -95,23 +101,23 @@
       "startLine": 188,
       "endLine": 228,
       "summary": "countRepresentations uses the list monad to enumerate all sorted representations. Verifies: 1,2,3,5,6,7,8 have 1 representation; 4,9,10,12,13 have 2; 18,25 have 3; 36 is the first with 4.",
-      "mathContext": "List monad do-notation: nested List.range with guard filter. Counts sorted non-increasing tuples (a \u2264 b \u2264 c \u2264 d) summing to n. Related to Jacobi's formula r\u2084(n) = 8\u00b7\u03a3_{4\u2224d, d|n} d."
+      "mathContext": "List monad do-notation: nested List.range with guard filter. Counts sorted non-increasing tuples (a ≤ b ≤ c ≤ d) summing to n. Related to Jacobi's formula r₄(n) = 8·Σ_{4∤d, d|n} d."
     },
     {
       "id": "structural-bounds",
       "title": "Component Sum Bounds and Existence",
       "startLine": 230,
       "endLine": 287,
-      "summary": "Perfect square trivial representations (line 237). Component sum bounds: sum \u2265 a\u00b2, sum \u2264 4a\u00b2 for sorted reps. largest_component_bounds: a \u2208 [\u221a(n/4), \u221an]. four_square_exists_bounded: Lagrange + simultaneous bounds.",
-      "mathContext": "For sorted a \u2265 b \u2265 c \u2265 d: n \u2264 4a\u00b2 (since b\u00b2,c\u00b2,d\u00b2 \u2264 a\u00b2), so a \u2265 \u00bd\u221an. Combining with a \u2264 \u221an gives a \u2208 [\u221an/2, \u221an]. four_square_exists_bounded uses Nat.sum_four_squares from Mathlib."
+      "summary": "Perfect square trivial representations (line 237). Component sum bounds: sum ≥ a², sum ≤ 4a² for sorted reps. largest_component_bounds: a ∈ [√(n/4), √n]. four_square_exists_bounded: Lagrange + simultaneous bounds.",
+      "mathContext": "For sorted a ≥ b ≥ c ≥ d: n ≤ 4a² (since b²,c²,d² ≤ a²), so a ≥ ½√n. Combining with a ≤ √n gives a ∈ [√n/2, √n]. four_square_exists_bounded uses Nat.sum_four_squares from Mathlib."
     },
     {
       "id": "excluded-forms",
       "title": "Excluded Forms and Four-Square Necessity",
       "startLine": 289,
       "endLine": 366,
-      "summary": "minSquares counts nonzero components in greedy output. isExcludedForm detects 4^k(8m+7) via 8 unrolled divisions. checkExcludedFormUpTo 50 verifies Legendre's criterion for all n \u2264 50 by native_decide.",
-      "mathContext": "Legendre (1798): n is a sum of three squares iff n \u2260 4^a(8b+7). Excluded forms \u2264 50: 7,15,23,28,31,39,47. These require all four squares nonzero, characterizing 'hard' instances for representation algorithms."
+      "summary": "minSquares counts nonzero components in greedy output. isExcludedForm detects 4^k(8m+7) via 8 unrolled divisions. checkExcludedFormUpTo 50 verifies Legendre's criterion for all n ≤ 50 by native_decide.",
+      "mathContext": "Legendre (1798): n is a sum of three squares iff n ≠ 4^a(8b+7). Excluded forms ≤ 50: 7,15,23,28,31,39,47. These require all four squares nonzero, characterizing 'hard' instances for representation algorithms."
     }
   ],
   "crossReferences": [
@@ -130,7 +136,9 @@
     "lineCount": 395,
     "path": "Proofs/LagrangeFourSquaresOQ01.lean",
     "axiomCount": 0,
-    "sorries": 0
+    "sorries": 0,
+    "definitionCount": 9,
+    "theoremCount": 71
   },
   "sorries": 0
 }

@@ -45,36 +45,36 @@
     "lineCount": 123
   },
   "overview": {
-    "historicalContext": "The connection between polynomial degree and Galois group order is classical: for an irreducible polynomial $p$ over $F$, the tower law gives $[E:F] = [E:F(\\alpha)] \\cdot [F(\\alpha):F]$ where $[F(\\alpha):F] = \\deg(p)$, forcing $\\deg(p) \\mid [E:F] = |\\text{Gal}(p)|$. Emil Artin's 1942 lecture notes *Galois Theory* (Notre Dame Mathematical Lectures) establish the abstract framework in which this divisibility lives, though the polynomial-level statement emerged from the interplay with algebraic number theory and the classical impossibility results. The prime-degree special case is most prominent in constructibility: a real number is constructible iff its minimal polynomial over $\\mathbb{Q}$ has degree a power of 2; since $2\\cos(20\u00b0)$ satisfies the degree-3 irreducible $X^3 - 3X - 1$, angle trisection is impossible. Mathlib's `prime_degree_dvd_card` (in `Mathlib/FieldTheory/PolynomialGaloisGroup.lean`) was written precisely for this constructibility toolkit. However, the same argument works for any irreducible: the only prime-specific step was deducing $\\deg(p) \\neq 0$ from `Nat.Prime.ne_zero`, which `Irreducible.natDegree_pos` provides for free. Dropping the hypothesis extends the theorem's reach considerably: in the solvability-by-radicals theory, degree-4 irreducibles arise (the $S_4$ Galois group case requires $4 \\mid |\\text{Gal}|$); in algebraic number theory, the Frobenius element $\\text{Frob}_{\\mathfrak{p}}$ for a prime $\\mathfrak{p}$ above $p$ has order equal to the inertia degree $f(\\mathfrak{p}|p)$, and the Chebotarev density theorem counts conjugacy classes by splitting behavior \u2014 both require degree divisibility for non-prime-degree residue polynomials. The gallery entry models the complete contribution pipeline: prototype the generalization, exhibit the original as a corollary, document exact Mathlib diff and deprecation strategy.",
+    "historicalContext": "The connection between polynomial degree and Galois group order is classical: for an irreducible polynomial $p$ over $F$, the tower law gives $[E:F] = [E:F(\\alpha)] \\cdot [F(\\alpha):F]$ where $[F(\\alpha):F] = \\deg(p)$, forcing $\\deg(p) \\mid [E:F] = |\\text{Gal}(p)|$. Emil Artin's 1942 lecture notes *Galois Theory* (Notre Dame Mathematical Lectures) establish the abstract framework in which this divisibility lives, though the polynomial-level statement emerged from the interplay with algebraic number theory and the classical impossibility results. The prime-degree special case is most prominent in constructibility: a real number is constructible iff its minimal polynomial over $\\mathbb{Q}$ has degree a power of 2; since $2\\cos(20°)$ satisfies the degree-3 irreducible $X^3 - 3X - 1$, angle trisection is impossible. Mathlib's `prime_degree_dvd_card` (in `Mathlib/FieldTheory/PolynomialGaloisGroup.lean`) was written precisely for this constructibility toolkit. However, the same argument works for any irreducible: the only prime-specific step was deducing $\\deg(p) \\neq 0$ from `Nat.Prime.ne_zero`, which `Irreducible.natDegree_pos` provides for free. Dropping the hypothesis extends the theorem's reach considerably: in the solvability-by-radicals theory, degree-4 irreducibles arise (the $S_4$ Galois group case requires $4 \\mid |\\text{Gal}|$); in algebraic number theory, the Frobenius element $\\text{Frob}_{\\mathfrak{p}}$ for a prime $\\mathfrak{p}$ above $p$ has order equal to the inertia degree $f(\\mathfrak{p}|p)$, and the Chebotarev density theorem counts conjugacy classes by splitting behavior — both require degree divisibility for non-prime-degree residue polynomials. The gallery entry models the complete contribution pipeline: prototype the generalization, exhibit the original as a corollary, document exact Mathlib diff and deprecation strategy.",
     "problemStatement": "**Generalization:** For any irreducible polynomial $p$ over a `CharZero` field $F$, $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$.\n\n**Proof:** By the tower law $[E:F] = [E:F(\\alpha)] \\cdot [F(\\alpha):F]$ where $E$ is the splitting field and $\\alpha$ is any root. Since $[F(\\alpha):F] = \\deg(\\text{minpoly}(F, \\alpha)) = \\deg(p)$ (by irreducibility), the result follows.\n\n**Impact:** The existing `prime_degree_dvd_card` becomes a trivial corollary.",
     "text": "Generalizes Mathlib's prime_degree_dvd_card to all irreducible polynomials by observing the prime hypothesis is unused beyond deducing nonzero degree.",
-    "proofStrategy": "The proof is identical to Mathlib's existing proof of prime_degree_dvd_card, except that we replace the use of Nat.Prime.ne_zero with Irreducible.natDegree_pos to establish p.degree \u2260 0. This single change drops the unnecessary hypothesis.",
+    "proofStrategy": "The proof is identical to Mathlib's existing proof of prime_degree_dvd_card, except that we replace the use of Nat.Prime.ne_zero with Irreducible.natDegree_pos to establish p.degree ≠ 0. This single change drops the unnecessary hypothesis.",
     "keyInsights": [
-      "**One substitution suffices**: Replacing `Nat.Prime.ne_zero` with `Irreducible.natDegree_pos.ne'` in the proof of `prime_degree_dvd_card` drops the Prime hypothesis with no other changes \u2014 the rest of the proof is identical.",
+      "**One substitution suffices**: Replacing `Nat.Prime.ne_zero` with `Irreducible.natDegree_pos.ne'` in the proof of `prime_degree_dvd_card` drops the Prime hypothesis with no other changes — the rest of the proof is identical.",
       "**Fintype.card vs Nat.card bridge**: The gallery proof uses Nat.card p.Gal; Mathlib uses Fintype.card p.Gal. The two are equal via Fintype.card_eq_nat_card, making the corollary a one-line rw + exact.",
-      "**minpoly degree via dvd_symm**: The key step proving deg(minpoly(F,\u03b1)) = deg(p) uses Irreducible.dvd_symm: two irreducible polynomials that mutually divide each other must be associates (equal up to units), so equal degree. This avoids any prime-degree reasoning.",
-      "**Gallery as Mathlib staging**: This entry models the pattern of using the gallery to prototype Mathlib contributions \u2014 prove the generalization, show the original as a corollary, document the exact PR code and deprecation strategy.",
-      "**Application scope**: With the prime condition dropped, natDegree_dvd_card applies to: degree-4 irreducibles for solvability-by-radicals arguments; composite-degree extensions in Chebotarev density; any Galois correspondence theorem needing deg \u2223 |Gal|."
+      "**minpoly degree via dvd_symm**: The key step proving deg(minpoly(F,α)) = deg(p) uses Irreducible.dvd_symm: two irreducible polynomials that mutually divide each other must be associates (equal up to units), so equal degree. This avoids any prime-degree reasoning.",
+      "**Gallery as Mathlib staging**: This entry models the pattern of using the gallery to prototype Mathlib contributions — prove the generalization, show the original as a corollary, document the exact PR code and deprecation strategy.",
+      "**Application scope**: With the prime condition dropped, natDegree_dvd_card applies to: degree-4 irreducibles for solvability-by-radicals arguments; composite-degree extensions in Chebotarev density; any Galois correspondence theorem needing deg ∣ |Gal|."
     ],
     "prerequisites": [
       "Galois theory: splitting fields, Galois groups of polynomials, the fundamental theorem connecting |Gal| to the degree of the splitting field extension",
-      "Field extensions: tower law dim(E/F) = dim(E/K) \u00b7 dim(K/F), simple extensions F(\u03b1), the connection between minimal polynomial degree and extension degree",
-      "Polynomial algebra: irreducible polynomials, roots in splitting fields, the fact that minpoly(F, \u03b1) divides any polynomial vanishing at \u03b1"
+      "Field extensions: tower law dim(E/F) = dim(E/K) · dim(K/F), simple extensions F(α), the connection between minimal polynomial degree and extension degree",
+      "Polynomial algebra: irreducible polynomials, roots in splitting fields, the fact that minpoly(F, α) divides any polynomial vanishing at α"
     ]
   },
   "sections": [
     {
       "id": "parent-generalization",
       "title": "Generalized Theorem from Parent File",
-      "summary": "Documents the key result natDegree_dvd_card_gal proved in AngleTrisectionOQ02OQ01.lean: for irreducible p over CharZero, p.natDegree \u2223 Nat.card p.Gal. Contrasts with Mathlib's prime_degree_dvd_card which requires p.natDegree.Prime.",
+      "summary": "Documents the key result natDegree_dvd_card_gal proved in AngleTrisectionOQ02OQ01.lean: for irreducible p over CharZero, p.natDegree ∣ Nat.card p.Gal. Contrasts with Mathlib's prime_degree_dvd_card which requires p.natDegree.Prime.",
       "startLine": 1,
       "endLine": 43,
-      "mathContext": "The crucial substitution: replace `Nat.Prime.ne_zero` (used to get deg(p) \u2260 0 from the prime hypothesis) with `Irreducible.natDegree_pos.ne'` (which gives deg(p) > 0 directly from irreducibility). All other proof steps are identical to Mathlib's existing proof."
+      "mathContext": "The crucial substitution: replace `Nat.Prime.ne_zero` (used to get deg(p) ≠ 0 from the prime hypothesis) with `Irreducible.natDegree_pos.ne'` (which gives deg(p) > 0 directly from irreducibility). All other proof steps are identical to Mathlib's existing proof."
     },
     {
       "id": "corollary-proof",
       "title": "Mathlib Theorem as Trivial Corollary",
-      "summary": "Proves prime_degree_dvd_card_from_general: the existing Mathlib theorem prime_degree_dvd_card follows in two steps \u2014 rw [Fintype.card_eq_nat_card] bridges Fintype.card to Nat.card, then exact applies the generalized result, completely ignoring the p_deg : p.natDegree.Prime hypothesis.",
+      "summary": "Proves prime_degree_dvd_card_from_general: the existing Mathlib theorem prime_degree_dvd_card follows in two steps — rw [Fintype.card_eq_nat_card] bridges Fintype.card to Nat.card, then exact applies the generalized result, completely ignoring the p_deg : p.natDegree.Prime hypothesis.",
       "startLine": 45,
       "endLine": 55,
       "mathContext": "The proof demonstrates the unused-hypothesis pattern: `p_deg : p.natDegree.Prime` appears in the signature but is never referenced in the body. `Fintype.card_eq_nat_card` (Mathlib.Data.Fintype.Card) gives Fintype.card G = Nat.card G for any Fintype G, bridging the two cardinality APIs."
@@ -82,15 +82,15 @@
     {
       "id": "contribution-lean-code",
       "title": "Contribution-Ready Lean Code for Mathlib",
-      "summary": "Provides the exact Lean code to add to Mathlib/FieldTheory/PolynomialGaloisGroup.lean: the generalized natDegree_dvd_card theorem. Proof chain: Gal.card_of_separable \u2192 pick root \u03b1 \u2192 tower law via finrank_mul_finrank \u2192 minpoly degree equals p degree via dvd_symm between two irreducibles.",
+      "summary": "Provides the exact Lean code to add to Mathlib/FieldTheory/PolynomialGaloisGroup.lean: the generalized natDegree_dvd_card theorem. Proof chain: Gal.card_of_separable → pick root α → tower law via finrank_mul_finrank → minpoly degree equals p degree via dvd_symm between two irreducibles.",
       "startLine": 57,
       "endLine": 90,
-      "mathContext": "The tower law: [E:F] = [E:F(\u03b1)]\u00b7[F(\u03b1):F] gives |Gal(p)| = [E:F] = [E:F(\u03b1)]\u00b7deg(minpoly(F,\u03b1)). Since minpoly(F,\u03b1) \u2223 p (by minimality) and p \u2223 minpoly(F,\u03b1) (by Irreducible.dvd_symm applied to two irreducibles that mutually divide), they have equal natDegree. Hence deg(p) \u2223 |Gal(p)|."
+      "mathContext": "The tower law: [E:F] = [E:F(α)]·[F(α):F] gives |Gal(p)| = [E:F] = [E:F(α)]·deg(minpoly(F,α)). Since minpoly(F,α) ∣ p (by minimality) and p ∣ minpoly(F,α) (by Irreducible.dvd_symm applied to two irreducibles that mutually divide), they have equal natDegree. Hence deg(p) ∣ |Gal(p)|."
     },
     {
       "id": "deprecation-checklist",
       "title": "Deprecation Strategy and PR Checklist",
-      "summary": "Shows the @[deprecated natDegree_dvd_card] annotation to add to prime_degree_dvd_card, making it a one-line corollary. PR checklist: theorem proved (\u2713), Mathlib-only imports (\u2713), strictly generalizes (\u2713), existing result is corollary (\u2713); outstanding: compile against Mathlib master, documentation, downstream usage audit.",
+      "summary": "Shows the @[deprecated natDegree_dvd_card] annotation to add to prime_degree_dvd_card, making it a one-line corollary. PR checklist: theorem proved (✓), Mathlib-only imports (✓), strictly generalizes (✓), existing result is corollary (✓); outstanding: compile against Mathlib master, documentation, downstream usage audit.",
       "startLine": 92,
       "endLine": 111,
       "mathContext": "Mathlib deprecation strategy: keep prime_degree_dvd_card as a `@[deprecated]` wrapper to avoid breaking downstream callers. The deprecation `(since := \"YYYY-MM-DD\")` triggers a lint warning, guiding users to the more general natDegree_dvd_card. Zero breakage: any proof using prime_degree_dvd_card continues to compile (just with a warning)."
@@ -123,14 +123,14 @@
     {
       "targetId": "angle-trisection-oq-02-oq-02",
       "relationship": "related",
-      "description": "Gauss-Wantzel theorem: n-gon constructibility requires \u03c6(n) a power of 2, which implicitly uses degree-divides-|Gal| to rule out odd-prime-degree field extensions in the constructibility chain"
+      "description": "Gauss-Wantzel theorem: n-gon constructibility requires φ(n) a power of 2, which implicitly uses degree-divides-|Gal| to rule out odd-prime-degree field extensions in the constructibility chain"
     }
   ],
   "conclusion": {
     "summary": "The generalized theorem natDegree_dvd_card is proved and ready for Mathlib contribution. It strictly generalizes the existing prime_degree_dvd_card by dropping the unnecessary Prime hypothesis. The contribution plan includes exact code changes and deprecation strategy.",
-    "implications": "This contribution would simplify downstream proofs in Mathlib that currently need to establish primality just to use the divisibility result. Any application where $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$ is needed \u2014 constructibility, solvability by radicals, Galois representations, Chebotarev density \u2014 benefits from the weaker hypothesis. The deprecation strategy (adding `@[deprecated natDegree_dvd_card]` to `prime_degree_dvd_card`) ensures zero breakage for existing callers while signaling the preferred API. More broadly, this entry demonstrates a systematic pattern: Mathlib theorems proved first for prime-degree polynomials (the motivating case) can often be generalized to all irreducibles by substituting the prime-specific auxiliary lemma with its irreducibility-based counterpart. A systematic audit of `Mathlib/FieldTheory/PolynomialGaloisGroup.lean` could surface further such opportunities.",
+    "implications": "This contribution would simplify downstream proofs in Mathlib that currently need to establish primality just to use the divisibility result. Any application where $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$ is needed — constructibility, solvability by radicals, Galois representations, Chebotarev density — benefits from the weaker hypothesis. The deprecation strategy (adding `@[deprecated natDegree_dvd_card]` to `prime_degree_dvd_card`) ensures zero breakage for existing callers while signaling the preferred API. More broadly, this entry demonstrates a systematic pattern: Mathlib theorems proved first for prime-degree polynomials (the motivating case) can often be generalized to all irreducibles by substituting the prime-specific auxiliary lemma with its irreducibility-based counterpart. A systematic audit of `Mathlib/FieldTheory/PolynomialGaloisGroup.lean` could surface further such opportunities.",
     "openQuestions": [
-      "Does the theorem extend beyond CharZero? Separability is the key hypothesis \u2014 inseparable irreducibles in characteristic p have Gal group of smaller order than expected.",
+      "Does the theorem extend beyond CharZero? Separability is the key hypothesis — inseparable irreducibles in characteristic p have Gal group of smaller order than expected.",
       "Can Fintype.card be replaced with Nat.card throughout the Gal API in Mathlib? Nat.card is more general (works for non-Fintype groups).",
       "Are there other Mathlib theorems with unnecessarily strong prime-degree hypotheses? A systematic search through PolynomialGaloisGroup.lean and FieldTheory/ would be valuable.",
       "Has this Mathlib PR been submitted? The contribution plan is complete; the gap is just aligning with the latest Mathlib API and running the CI pipeline."
@@ -163,7 +163,9 @@
     "lineCount": 123,
     "path": "Proofs/AngleTrisectionOQ02OQ01OQ01.lean",
     "axiomCount": 0,
-    "sorries": 0
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 5
   },
   "sorries": 0
 }

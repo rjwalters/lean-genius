@@ -60,15 +60,15 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Hilbert's 5th Problem was posed at the 1900 International Congress of Mathematicians in Paris. Sophus Lie had developed the theory of continuous transformation groups in the 1870s, always assuming differentiability of the group operations. Hilbert asked whether this assumption was necessary. Von Neumann made the first breakthrough in 1933, proving the compact case using the Peter-Weyl theorem and Haar measure. The full resolution came in 1952 when Gleason, Montgomery, and Zippin independently proved that locally compact groups with no small subgroups are Lie groups. Yamabe extended this in 1953 to show every locally compact group is a projective limit of Lie groups. The remaining open part \u2014 the Hilbert-Smith conjecture on group actions on manifolds \u2014 saw a major advance when Pardon proved the dimension 3 case in 2013. Terence Tao's 2014 graduate text provides a modern treatment of the entire theory.",
+    "historicalContext": "Hilbert's 5th Problem was posed at the 1900 International Congress of Mathematicians in Paris. Sophus Lie had developed the theory of continuous transformation groups in the 1870s, always assuming differentiability of the group operations. Hilbert asked whether this assumption was necessary. Von Neumann made the first breakthrough in 1933, proving the compact case using the Peter-Weyl theorem and Haar measure. The full resolution came in 1952 when Gleason, Montgomery, and Zippin independently proved that locally compact groups with no small subgroups are Lie groups. Yamabe extended this in 1953 to show every locally compact group is a projective limit of Lie groups. The remaining open part — the Hilbert-Smith conjecture on group actions on manifolds — saw a major advance when Pardon proved the dimension 3 case in 2013. Terence Tao's 2014 graduate text provides a modern treatment of the entire theory.",
     "problemStatement": "**Problem:** Are continuous groups automatically differential groups?\n\n**Theorem (Montgomery-Zippin, 1952):** A locally compact topological group is a Lie group if and only if it has no small subgroups. Equivalently: locally Euclidean topological groups ARE Lie groups.",
     "text": "Are continuous groups automatically differential groups? The Montgomery-Zippin theorem (1952) shows that locally Euclidean topological groups are Lie groups.",
     "proofStrategy": "The resolution proceeds through several key insights:\n1. Define 'no small subgroups' property\n2. Show Lie groups have this property (via exponential map)\n3. Prove the converse: no small subgroups implies Lie structure\n4. Use Gleason's lemmas to construct local coordinates",
     "keyInsights": [
-      "Topology alone can force smoothness \u2014 the group axioms plus local compactness and NSS determine a unique smooth structure",
+      "Topology alone can force smoothness — the group axioms plus local compactness and NSS determine a unique smooth structure",
       "The 'no small subgroups' (NSS) property characterizes Lie groups among locally compact groups via the Montgomery-Zippin biconditional",
-      "One-parameter subgroups \u03c6: \u211d \u2192 G connect the Lie algebra (infinitesimal) to the Lie group (global) via the exponential map",
-      "The Hilbert-Smith conjecture remains open in dimension \u2265 4, reducing to whether p-adic integers can act faithfully on manifolds",
+      "One-parameter subgroups φ: ℝ → G connect the Lie algebra (infinitesimal) to the Lie group (global) via the exponential map",
+      "The Hilbert-Smith conjecture remains open in dimension ≥ 4, reducing to whether p-adic integers can act faithfully on manifolds",
       "Von Neumann's 1933 solution of the compact case used representation theory (Peter-Weyl), while the general case required entirely different techniques (Gleason's one-parameter subgroup analysis)"
     ],
     "prerequisites": [
@@ -117,15 +117,15 @@
       "title": "Part IV: The Montgomery-Zippin Theorem",
       "startLine": 214,
       "endLine": 249,
-      "summary": "The main theorem: NSS \u2194 locally Euclidean for locally compact, locally connected groups.",
-      "mathContext": "Axiomatized as `HasNoSmallSubgroups G \u2194 IsLocallyEuclidean G` with `[LocallyCompactSpace G] [LocallyConnectedSpace G]`. This biconditional resolves Hilbert's 5th Problem. The proof spans 100+ pages in Montgomery-Zippin's 1955 book."
+      "summary": "The main theorem: NSS ↔ locally Euclidean for locally compact, locally connected groups.",
+      "mathContext": "Axiomatized as `HasNoSmallSubgroups G ↔ IsLocallyEuclidean G` with `[LocallyCompactSpace G] [LocallyConnectedSpace G]`. This biconditional resolves Hilbert's 5th Problem. The proof spans 100+ pages in Montgomery-Zippin's 1955 book."
     },
     {
       "id": "von-neumann",
       "title": "Part V: Von Neumann's Theorem",
       "startLine": 250,
       "endLine": 280,
-      "summary": "Compact topological groups embed into matrix groups GL(n,\u211d).",
+      "summary": "Compact topological groups embed into matrix groups GL(n,ℝ).",
       "mathContext": "Axiom: $\\forall G$ compact topological group, $\\exists n,\\ \\varphi: G \\hookrightarrow M_n(\\mathbb{R})$ continuous injective. Uses Peter-Weyl theorem: compact groups have enough finite-dimensional unitary representations to separate points. Von Neumann 1933."
     },
     {
@@ -141,15 +141,15 @@
       "title": "Part VII: One-Parameter Subgroups",
       "startLine": 324,
       "endLine": 363,
-      "summary": "One-parameter subgroups \u03c6: \u211d \u2192 G and the Lie algebra as their collection.",
-      "mathContext": "`OneParameterSubgroup G` is a structure with `toFun : \u211d \u2192 G`, continuity, and the homomorphism property $\\varphi(s+t) = \\varphi(s) \\cdot \\varphi(t)$. `LieAlgebraOf G` is defined as the type of all such subgroups. In a Lie group, every one-parameter subgroup factors through the exponential map: $\\varphi(t) = \\exp(tX)$ for $X \\in \\mathfrak{g}$."
+      "summary": "One-parameter subgroups φ: ℝ → G and the Lie algebra as their collection.",
+      "mathContext": "`OneParameterSubgroup G` is a structure with `toFun : ℝ → G`, continuity, and the homomorphism property $\\varphi(s+t) = \\varphi(s) \\cdot \\varphi(t)$. `LieAlgebraOf G` is defined as the type of all such subgroups. In a Lie group, every one-parameter subgroup factors through the exponential map: $\\varphi(t) = \\exp(tX)$ for $X \\in \\mathfrak{g}$."
     },
     {
       "id": "consequences",
       "title": "Part VIII: Applications and Consequences",
       "startLine": 364,
       "endLine": 405,
-      "summary": "Three corollaries: smooth \u27f9 analytic, automatic smoothness, and Yamabe's approximation theorem.",
+      "summary": "Three corollaries: smooth ⟹ analytic, automatic smoothness, and Yamabe's approximation theorem.",
       "mathContext": "All three results stated as `True := trivial` placeholders. (1) `lie_group_analytic`: Smooth Lie groups are real analytic. (2) `automatic_smoothness`: Measurable homomorphisms between Lie groups are smooth (Baire category argument). (3) `yamabe_approximation` (1953): Locally compact connected groups are projective limits of Lie groups, $G = \\varprojlim G/N_i$."
     },
     {
@@ -158,7 +158,7 @@
       "startLine": 406,
       "endLine": 440,
       "summary": "Matrix groups (Lie), Diff(M) (not Lie), and p-adic integers (small subgroups).",
-      "mathContext": "`matrix_groups_are_lie`, `infinite_dim_not_lie`: placeholder Prop definitions. `p_adic_have_small_subgroups (p : \u2115) [Fact (Nat.Prime p)] : True`: The $p$-adic integers $\\mathbb{Z}_p = \\varprojlim \\mathbb{Z}/p^n\\mathbb{Z}$ have open subgroups $p^n\\mathbb{Z}_p$ forming a neighborhood basis of $0$, violating NSS."
+      "mathContext": "`matrix_groups_are_lie`, `infinite_dim_not_lie`: placeholder Prop definitions. `p_adic_have_small_subgroups (p : ℕ) [Fact (Nat.Prime p)] : True`: The $p$-adic integers $\\mathbb{Z}_p = \\varprojlim \\mathbb{Z}/p^n\\mathbb{Z}$ have open subgroups $p^n\\mathbb{Z}_p$ forming a neighborhood basis of $0$, violating NSS."
     },
     {
       "id": "summary",
@@ -173,7 +173,7 @@
     "summary": "The Montgomery-Zippin theorem (1952) resolves Hilbert's 5th Problem by showing that locally Euclidean topological groups are exactly the Lie groups. Continuous symmetries on manifolds are automatically smooth. The formalization defines three key properties (NSS, locally Euclidean, locally compact), states Gleason's foundational lemmas, and axiomatizes the main biconditional theorem.",
     "implications": "This theorem reveals a profound connection between topology and differential geometry: the algebraic structure of a group, combined with local compactness and 'no small subgroups,' forces smooth structure to exist. The resolution influenced the development of geometric group theory, transformation groups, and the study of locally compact groups.",
     "openQuestions": [
-      "Does the Hilbert-Smith conjecture hold in dimension \u2265 4? (Can p-adic integers act faithfully on 4-manifolds?)",
+      "Does the Hilbert-Smith conjecture hold in dimension ≥ 4? (Can p-adic integers act faithfully on 4-manifolds?)",
       "Can the formalization be extended with actual Lie algebra infrastructure from Mathlib to state the exponential map properties?",
       "What are the obstructions to extending these results to infinite-dimensional groups (Banach-Lie groups)?"
     ]
@@ -194,7 +194,7 @@
     "lineCount": 487,
     "axiomCount": 5,
     "theoremCount": 8,
-    "definitionCount": 6,
+    "definitionCount": 7,
     "path": "Proofs/Hilbert5LieGroups.lean",
     "sorries": 0
   },
@@ -207,7 +207,7 @@
     {
       "targetId": "sylow-theorems",
       "relationship": "foundational",
-      "description": "Sylow's theorems on $p$-subgroups provide structural information about finite groups. The $p$-adic integers $\\mathbb{Z}_p$ \u2014 the key counterexample in this formalization (they have small subgroups, hence are not Lie) \u2014 are built from Sylow-type $p$-group structure in the projective limit $\\mathbb{Z}_p = \\varprojlim \\mathbb{Z}/p^n\\mathbb{Z}$"
+      "description": "Sylow's theorems on $p$-subgroups provide structural information about finite groups. The $p$-adic integers $\\mathbb{Z}_p$ — the key counterexample in this formalization (they have small subgroups, hence are not Lie) — are built from Sylow-type $p$-group structure in the projective limit $\\mathbb{Z}_p = \\varprojlim \\mathbb{Z}/p^n\\mathbb{Z}$"
     },
     {
       "targetId": "brouwer-fixed-point",
@@ -227,14 +227,14 @@
       "authors": "Gleason, Andrew M.",
       "title": "Groups without small subgroups",
       "year": "1952",
-      "venue": "Annals of Mathematics, vol. 56, no. 2, pp. 193\u2013212",
+      "venue": "Annals of Mathematics, vol. 56, no. 2, pp. 193–212",
       "note": "Key step in the solution: locally compact groups without small subgroups are Lie groups"
     },
     {
       "authors": "Yamabe, Hidehiko",
       "title": "A generalization of a theorem of Gleason",
       "year": "1953",
-      "venue": "Annals of Mathematics, vol. 58, no. 2, pp. 351\u2013365",
+      "venue": "Annals of Mathematics, vol. 58, no. 2, pp. 351–365",
       "note": "Extended Gleason's result to all locally compact groups, completing the solution of Hilbert's 5th problem"
     },
     {
@@ -248,13 +248,13 @@
       "title": "Almost invariant submanifolds for compact group actions",
       "authors": "J. von Neumann",
       "year": "1933",
-      "venue": "Annals of Mathematics, 34(2):170\u2013190"
+      "venue": "Annals of Mathematics, 34(2):170–190"
     },
     {
       "title": "The Hilbert-Smith conjecture for three-manifolds",
       "authors": "J. Pardon",
       "year": "2013",
-      "venue": "Journal of the American Mathematical Society, 26(3):879\u2013899"
+      "venue": "Journal of the American Mathematical Society, 26(3):879–899"
     }
   ],
   "mainTheorems": [

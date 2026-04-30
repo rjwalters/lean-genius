@@ -5,7 +5,13 @@
   "description": "This work reconstructs the Tractatus as a parameterized model-theoretic system and proves that its central philosophical claims correspond to explicit semantic constraints and provable limits of expressibility.",
   "meta": {
     "status": "axiomatized",
-    "tags": ["philosophy", "logic", "ontology", "model-theory", "truth-functions"],
+    "tags": [
+      "philosophy",
+      "logic",
+      "ontology",
+      "model-theory",
+      "truth-functions"
+    ],
     "proofRepoPath": "Proofs/TractatusOntology.lean",
     "badge": "axiom",
     "sorries": 0,
@@ -251,13 +257,15 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib.Tactic"],
+    "imports": [
+      "Mathlib.Tactic"
+    ],
     "opens": [],
     "namespace": "Tractatus",
     "lineCount": 1230,
     "axiomCount": 1,
-    "theoremCount": 40,
-    "definitionCount": 29,
+    "theoremCount": 41,
+    "definitionCount": 26,
     "path": "Proofs/TractatusOntology.lean",
     "sorries": 0,
     "additionalFiles": [

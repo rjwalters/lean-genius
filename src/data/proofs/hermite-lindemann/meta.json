@@ -40,19 +40,19 @@
     "dateAdded": "2025-12-29",
     "axiomCount": 1,
     "lineCount": 390,
-    "assumptions": "1 axiom: hermite_lindemann (deep analytic number theory, not in Mathlib). All corollaries (e transcendence, \u03c0 transcendence) are now proved from this single axiom via Euler's identity and algebraic closure properties.",
+    "assumptions": "1 axiom: hermite_lindemann (deep analytic number theory, not in Mathlib). All corollaries (e transcendence, π transcendence) are now proved from this single axiom via Euler's identity and algebraic closure properties.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Charles Hermite's 1873 paper \"Sur la fonction exponentielle\" proved $e$ is transcendental, introducing the **auxiliary polynomial method** that became the foundation of transcendence theory. Hermite's key innovation was constructing a polynomial $f(x) = x^{p-1}(x-1)^p \\cdots (x-n)^p / (p-1)!$ whose integral against $e^x$ yields simultaneously a nonzero integer and a quantity less than 1 \u2014 a contradiction. Ferdinand von Lindemann generalized this in his 1882 paper \"\u00dcber die Zahl $\\pi$\" to show $e^\\alpha$ is transcendental for any nonzero algebraic $\\alpha$, immediately proving $\\pi$ transcendental via Euler's identity and settling the ancient circle-squaring problem. Karl Weierstrass published the definitive generalization in 1885: if $\\alpha_1, \\ldots, \\alpha_n$ are $\\mathbb{Q}$-linearly independent algebraic numbers, then $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are algebraically independent. This hierarchy \u2014 Hermite to Lindemann to Weierstrass \u2014 established the template that Gelfond, Schneider, and Baker would later extend.",
-    "problemStatement": "**Hermite-Lindemann Theorem**: If $\\alpha \\neq 0$ is algebraic over $\\mathbb{Q}$, then $e^\\alpha$ is transcendental over $\\mathbb{Z}$.\n\n$$\\alpha \\in \\overline{\\mathbb{Q}} \\setminus \\{0\\} \\implies e^\\alpha \\notin \\overline{\\mathbb{Q}}$$\n\n**Key Corollaries**:\n- $e = e^1$ is transcendental (Wiedijk #67, Hermite 1873)\n- $\\pi$ is transcendental (Wiedijk #53, Lindemann 1882) \u2014 via $e^{i\\pi} = -1$",
+    "historicalContext": "Charles Hermite's 1873 paper \"Sur la fonction exponentielle\" proved $e$ is transcendental, introducing the **auxiliary polynomial method** that became the foundation of transcendence theory. Hermite's key innovation was constructing a polynomial $f(x) = x^{p-1}(x-1)^p \\cdots (x-n)^p / (p-1)!$ whose integral against $e^x$ yields simultaneously a nonzero integer and a quantity less than 1 — a contradiction. Ferdinand von Lindemann generalized this in his 1882 paper \"Über die Zahl $\\pi$\" to show $e^\\alpha$ is transcendental for any nonzero algebraic $\\alpha$, immediately proving $\\pi$ transcendental via Euler's identity and settling the ancient circle-squaring problem. Karl Weierstrass published the definitive generalization in 1885: if $\\alpha_1, \\ldots, \\alpha_n$ are $\\mathbb{Q}$-linearly independent algebraic numbers, then $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are algebraically independent. This hierarchy — Hermite to Lindemann to Weierstrass — established the template that Gelfond, Schneider, and Baker would later extend.",
+    "problemStatement": "**Hermite-Lindemann Theorem**: If $\\alpha \\neq 0$ is algebraic over $\\mathbb{Q}$, then $e^\\alpha$ is transcendental over $\\mathbb{Z}$.\n\n$$\\alpha \\in \\overline{\\mathbb{Q}} \\setminus \\{0\\} \\implies e^\\alpha \\notin \\overline{\\mathbb{Q}}$$\n\n**Key Corollaries**:\n- $e = e^1$ is transcendental (Wiedijk #67, Hermite 1873)\n- $\\pi$ is transcendental (Wiedijk #53, Lindemann 1882) — via $e^{i\\pi} = -1$",
     "text": "For any non-zero algebraic number alpha, e^alpha is transcendental. This implies the transcendence of both e and pi.",
-    "proofStrategy": "The Lean file axiomatizes the Hermite-Lindemann theorem and the Lindemann-Weierstrass theorem (both classical and strong forms), then derives corollaries. The **proof technique** (documented pedagogically) uses Hermite's auxiliary polynomial method: (1) assume $\\sum a_k e^k = 0$ for integers $a_k$; (2) for large prime $p$, construct $f(x) = x^{p-1}(x-1)^p \\cdots (x-n)^p / (p-1)!$; (3) define $F(x) = \\sum_{k \\geq 0} f^{(k)}(x)$ and compute $I_k = \\int_0^k f(t) e^t dt = e^k F(0) - F(k)$; (4) show $S = \\sum a_k I_k$ is simultaneously a nonzero integer and less than 1 in absolute value \u2014 contradiction.",
+    "proofStrategy": "The Lean file axiomatizes the Hermite-Lindemann theorem and the Lindemann-Weierstrass theorem (both classical and strong forms), then derives corollaries. The **proof technique** (documented pedagogically) uses Hermite's auxiliary polynomial method: (1) assume $\\sum a_k e^k = 0$ for integers $a_k$; (2) for large prime $p$, construct $f(x) = x^{p-1}(x-1)^p \\cdots (x-n)^p / (p-1)!$; (3) define $F(x) = \\sum_{k \\geq 0} f^{(k)}(x)$ and compute $I_k = \\int_0^k f(t) e^t dt = e^k F(0) - F(k)$; (4) show $S = \\sum a_k I_k$ is simultaneously a nonzero integer and less than 1 in absolute value — contradiction.",
     "keyInsights": [
       "**Hermite's auxiliary polynomial method**: The polynomial $f(x) = x^{p-1}\\prod(x-k)^p / (p-1)!$ is engineered so that $f^{(j)}(0)$ and $f^{(j)}(k)$ have specific divisibility properties modulo $p$, creating an integer that can be bounded below 1",
-      "**Three-level hierarchy**: Hermite-Lindemann (single exponent) $\\subset$ Lindemann-Weierstrass classical (linear independence) $\\subset$ Lindemann-Weierstrass strong (algebraic independence) \u2014 each strictly more powerful",
+      "**Three-level hierarchy**: Hermite-Lindemann (single exponent) $\\subset$ Lindemann-Weierstrass classical (linear independence) $\\subset$ Lindemann-Weierstrass strong (algebraic independence) — each strictly more powerful",
       "**Two corollaries settle two Wiedijk problems**: $e$ transcendental (#67) follows from $\\alpha = 1$; $\\pi$ transcendental (#53) follows from $e^{i\\pi} = -1$ via contraposition",
-      "**Contrapositive form**: If $e^\\alpha$ is algebraic for $\\alpha \\neq 0$, then $\\alpha$ must be transcendental \u2014 this is the form used to prove $\\ln 2$ is transcendental ($e^{\\ln 2} = 2$ is algebraic)",
+      "**Contrapositive form**: If $e^\\alpha$ is algebraic for $\\alpha \\neq 0$, then $\\alpha$ must be transcendental — this is the form used to prove $\\ln 2$ is transcendental ($e^{\\ln 2} = 2$ is algebraic)",
       "**Template for modern transcendence theory**: The proof technique of constructing auxiliary functions and deriving integer/analytic contradictions was extended by Gelfond-Schneider (1934, Hilbert's 7th) and Baker (1966, linear forms in logarithms)"
     ],
     "prerequisites": [
@@ -75,8 +75,8 @@
       "title": "Part I: Basic Definitions and Background",
       "startLine": 109,
       "endLine": 126,
-      "summary": "Documents key Mathlib definitions: `IsAlgebraic R x`, `Transcendental R x`, `LinearIndependent R v`. Notes that `Transcendental \u2124 x \u27fa Transcendental \u211a x` by clearing denominators.",
-      "mathContext": "Documents key Mathlib definitions: `IsAlgebraic R x`, `Transcendental R x`, `LinearIndependent R v`. Notes that `Transcendental $\\mathbb{Z}$ x \u27fa Transcendental $\\mathbb{Q}$ x` by clearing denominators."
+      "summary": "Documents key Mathlib definitions: `IsAlgebraic R x`, `Transcendental R x`, `LinearIndependent R v`. Notes that `Transcendental ℤ x ⟺ Transcendental ℚ x` by clearing denominators.",
+      "mathContext": "Documents key Mathlib definitions: `IsAlgebraic R x`, `Transcendental R x`, `LinearIndependent R v`. Notes that `Transcendental $\\mathbb{Z}$ x ⟺ Transcendental $\\mathbb{Q}$ x` by clearing denominators."
     },
     {
       "id": "hermite-lindemann-theorem",
@@ -166,22 +166,22 @@
     {
       "targetId": "liouville-theorem",
       "relationship": "extends",
-      "description": "Liouville (1844) gave the first transcendental numbers via approximation bounds; Hermite-Lindemann (1873-1882) proved specific important constants (e, \u03c0) transcendental using the more powerful auxiliary polynomial method"
+      "description": "Liouville (1844) gave the first transcendental numbers via approximation bounds; Hermite-Lindemann (1873-1882) proved specific important constants (e, π) transcendental using the more powerful auxiliary polynomial method"
     },
     {
       "targetId": "abel-ruffini",
       "relationship": "related",
-      "description": "Both are impossibility results about expressibility: Abel-Ruffini shows some roots aren't expressible by radicals, Hermite-Lindemann shows e and \u03c0 aren't even algebraic \u2014 a hierarchy from radical to algebraic to transcendental"
+      "description": "Both are impossibility results about expressibility: Abel-Ruffini shows some roots aren't expressible by radicals, Hermite-Lindemann shows e and π aren't even algebraic — a hierarchy from radical to algebraic to transcendental"
     },
     {
       "targetId": "sqrt2-irrational",
       "relationship": "foundational",
-      "description": "Irrationality of \u221a2 is the simplest expressibility barrier. The hierarchy is: \u221a2 \u2209 \u211a (irrational) \u2192 quintic roots \u2209 radical extensions (Abel-Ruffini) \u2192 e,\u03c0 \u2209 algebraic numbers (Hermite-Lindemann)"
+      "description": "Irrationality of √2 is the simplest expressibility barrier. The hierarchy is: √2 ∉ ℚ (irrational) → quintic roots ∉ radical extensions (Abel-Ruffini) → e,π ∉ algebraic numbers (Hermite-Lindemann)"
     },
     {
       "targetId": "algebraic-numbers-countable-oq-04",
       "relationship": "extended-by",
-      "description": "Baker's theorem (1966) is the multi-logarithm generalization of Hermite-Lindemann: if log \u03b1\u2081, ..., log \u03b1\u2099 are Q-linearly independent, they are Q\u0304-linearly independent. Hermite-Lindemann is the n=1 case: a single non-zero log \u03b1 (for algebraic \u03b1\u22601) is Q\u0304-linearly independent of 1, i.e., it is transcendental. Baker's proof builds on Hermite's auxiliary polynomial technique but must handle simultaneous approximation of multiple logarithms, requiring a much more delicate zero-counting argument via Siegel's lemma."
+      "description": "Baker's theorem (1966) is the multi-logarithm generalization of Hermite-Lindemann: if log α₁, ..., log αₙ are Q-linearly independent, they are Q̄-linearly independent. Hermite-Lindemann is the n=1 case: a single non-zero log α (for algebraic α≠1) is Q̄-linearly independent of 1, i.e., it is transcendental. Baker's proof builds on Hermite's auxiliary polynomial technique but must handle simultaneous approximation of multiple logarithms, requiring a much more delicate zero-counting argument via Siegel's lemma."
     }
   ],
   "leanFile": {
@@ -202,7 +202,7 @@
     "namespace": "HermiteLindemann",
     "lineCount": 390,
     "axiomCount": 1,
-    "theoremCount": 5,
+    "theoremCount": 4,
     "definitionCount": 1,
     "path": "Proofs/HermiteLindemann.lean",
     "sorries": 0
@@ -212,21 +212,21 @@
       "authors": "Hermite, Charles",
       "title": "Sur la fonction exponentielle",
       "year": "1873",
-      "venue": "Comptes rendus de l'Acad\u00e9mie des Sciences 77",
-      "note": "Proved e is transcendental \u2014 the first of the Hermite-Lindemann results"
+      "venue": "Comptes rendus de l'Académie des Sciences 77",
+      "note": "Proved e is transcendental — the first of the Hermite-Lindemann results"
     },
     {
       "authors": "Lindemann, Ferdinand von",
-      "title": "\u00dcber die Zahl \u03c0",
+      "title": "Über die Zahl π",
       "year": "1882",
       "venue": "Mathematische Annalen 20, pp. 213-225",
-      "note": "Extended Hermite's method to prove \u03c0 transcendental, settling the ancient problem of squaring the circle"
+      "note": "Extended Hermite's method to prove π transcendental, settling the ancient problem of squaring the circle"
     },
     {
       "authors": "Weierstrass, Karl",
-      "title": "Zu Lindemann's Abhandlung: \u00dcber die Ludolph'sche Zahl",
+      "title": "Zu Lindemann's Abhandlung: Über die Ludolph'sche Zahl",
       "year": "1885",
-      "venue": "Sitzungsberichte der K\u00f6niglich Preu\u00dfischen Akademie der Wissenschaften",
+      "venue": "Sitzungsberichte der Königlich Preußischen Akademie der Wissenschaften",
       "note": "Generalized Lindemann's result to the full Lindemann-Weierstrass theorem on algebraic independence"
     }
   ],

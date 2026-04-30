@@ -2,7 +2,7 @@
   "id": "cayley-hamilton-minpoly-oq-03-oq-01",
   "title": "Krylov Method for the Generalized (Vector) Minimal Polynomial",
   "slug": "cayley-hamilton-minpoly-oq-03-oq-01",
-  "description": "Formalizes the vector minimal polynomial \u03bc_{M,v}: the monic polynomial of smallest degree annihilating v under M. Proves the annihilator ideal structure, that \u03bc_M annihilates every vector (\u03bc_{M,v} | \u03bc_M), and that annihilating polynomials have degree \u2264 n. Builds on the OQ-03 Krylov expansion theorem.",
+  "description": "Formalizes the vector minimal polynomial μ_{M,v}: the monic polynomial of smallest degree annihilating v under M. Proves the annihilator ideal structure, that μ_M annihilates every vector (μ_{M,v} | μ_M), and that annihilating polynomials have degree ≤ n. Builds on the OQ-03 Krylov expansion theorem.",
   "meta": {
     "author": "researcher-6",
     "sourceUrl": "https://en.wikipedia.org/wiki/Minimal_polynomial_(linear_algebra)",
@@ -24,15 +24,15 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The generalized (vector) minimal polynomial \u03bc_{M,v} arises naturally in Krylov subspace methods. For a matrix M and starting vector v, the Krylov sequence {v, Mv, M\u00b2v, ...} generates the cyclic K[X]-submodule \u27e8v\u27e9, and \u03bc_{M,v} is the generator of its annihilator in K[X]. This concept was made practical by Wiedemann (1986) who showed that for sparse matrices over finite fields, a single Krylov sequence suffices to compute solutions to Mx = b \u2014 the key being that \u03bc_{M,v} divides \u03bc_M, so the sequence terminates in \u2264 deg(\u03bc_M) \u2264 n steps.",
-    "problemStatement": "Given an n\u00d7n matrix M over a field K and a vector v, there exists a unique monic polynomial \u03bc_{M,v} of minimum degree with \u03bc_{M,v}(M)\u00b7v = 0. Prove: (1) \u03bc_{M,v} exists, (2) deg(\u03bc_{M,v}) \u2264 n, (3) \u03bc_{M,v} | \u03bc_M, (4) the Krylov sequence for v yields \u03bc_{M,v}.",
-    "proofStrategy": "Use degree_lt_wf (well-founded degree order) to extract a minimum-degree nonzero annihilating polynomial q\u2080. Make it monic via monic_of_isUnit_leadingCoeff_inv_smul. Prove divisibility by Euclidean division: for any annihilating q, the remainder q %\u2098 \u03bc would be a nonzero annihilator of smaller degree if nonzero, contradicting minimality. Degree bound: \u03bc | \u03bc_M | charpoly, so deg(\u03bc) \u2264 deg(\u03bc_M) \u2264 n.",
+    "historicalContext": "The generalized (vector) minimal polynomial μ_{M,v} arises naturally in Krylov subspace methods. For a matrix M and starting vector v, the Krylov sequence {v, Mv, M²v, ...} generates the cyclic K[X]-submodule ⟨v⟩, and μ_{M,v} is the generator of its annihilator in K[X]. This concept was made practical by Wiedemann (1986) who showed that for sparse matrices over finite fields, a single Krylov sequence suffices to compute solutions to Mx = b — the key being that μ_{M,v} divides μ_M, so the sequence terminates in ≤ deg(μ_M) ≤ n steps.",
+    "problemStatement": "Given an n×n matrix M over a field K and a vector v, there exists a unique monic polynomial μ_{M,v} of minimum degree with μ_{M,v}(M)·v = 0. Prove: (1) μ_{M,v} exists, (2) deg(μ_{M,v}) ≤ n, (3) μ_{M,v} | μ_M, (4) the Krylov sequence for v yields μ_{M,v}.",
+    "proofStrategy": "Use degree_lt_wf (well-founded degree order) to extract a minimum-degree nonzero annihilating polynomial q₀. Make it monic via monic_of_isUnit_leadingCoeff_inv_smul. Prove divisibility by Euclidean division: for any annihilating q, the remainder q %ₘ μ would be a nonzero annihilator of smaller degree if nonzero, contradicting minimality. Degree bound: μ | μ_M | charpoly, so deg(μ) ≤ deg(μ_M) ≤ n.",
     "keyInsights": [
-      "The annihilator ideal I_v of v under M is always nonzero: it contains \u03bc_M, since \u03bc_M(M) = 0 as a matrix implies \u03bc_M(M)\u00b7v = 0\u00b7v = 0 for every vector v",
-      "The divisibility \u03bc_{M,v} | \u03bc_M holds by definition: \u03bc_M \u2208 I_v = \u27e8\u03bc_{M,v}\u27e9. This means the Krylov iteration for any v terminates in at most deg(\u03bc_M) \u2264 n steps",
-      "The annihilator set is not merely a subgroup but an ideal: if p(M)\u00b7v = 0, then (q\u00b7p)(M)\u00b7v = q(M)\u00b70 = 0 for any polynomial q",
-      "The proof of vec_minpoly_exists uses degree_lt_wf (well-founded recursion on polynomial degree) to extract the minimum-degree annihilating polynomial \u2014 rather than invoking Mathlib's abstract PID machinery, it directly implements the Euclidean division + minimality contradiction argument, making the construction explicit and computational.",
-      "The Krylov expansion lemma `aeval_mulVec_eq_krylov_sum` is the computational bridge: it rewrites polynomial evaluation $p(M)v = \\sum_k c_k M^k v$ as an explicit Krylov linear combination. This connects algebraic minimality (\u03bc_{M,v}(M)v = 0) to the linear-algebraic Krylov termination condition (the Krylov sequence becomes linearly dependent at step deg(\u03bc_{M,v})), unifying the algebraic and computational perspectives on the vector minimal polynomial."
+      "The annihilator ideal I_v of v under M is always nonzero: it contains μ_M, since μ_M(M) = 0 as a matrix implies μ_M(M)·v = 0·v = 0 for every vector v",
+      "The divisibility μ_{M,v} | μ_M holds by definition: μ_M ∈ I_v = ⟨μ_{M,v}⟩. This means the Krylov iteration for any v terminates in at most deg(μ_M) ≤ n steps",
+      "The annihilator set is not merely a subgroup but an ideal: if p(M)·v = 0, then (q·p)(M)·v = q(M)·0 = 0 for any polynomial q",
+      "The proof of vec_minpoly_exists uses degree_lt_wf (well-founded recursion on polynomial degree) to extract the minimum-degree annihilating polynomial — rather than invoking Mathlib's abstract PID machinery, it directly implements the Euclidean division + minimality contradiction argument, making the construction explicit and computational.",
+      "The Krylov expansion lemma `aeval_mulVec_eq_krylov_sum` is the computational bridge: it rewrites polynomial evaluation $p(M)v = \\sum_k c_k M^k v$ as an explicit Krylov linear combination. This connects algebraic minimality (μ_{M,v}(M)v = 0) to the linear-algebraic Krylov termination condition (the Krylov sequence becomes linearly dependent at step deg(μ_{M,v})), unifying the algebraic and computational perspectives on the vector minimal polynomial."
     ],
     "prerequisites": [
       "Cayley-Hamilton theorem and minimal polynomial theory",
@@ -52,53 +52,53 @@
     "lineCount": 265,
     "axiomCount": 0,
     "theoremCount": 10,
-    "definitionCount": 3,
+    "definitionCount": 2,
     "path": "Proofs/CayleyHamiltonMinpolyOQ03OQ01.lean",
     "sorries": 0
   },
   "sections": [
     {
       "id": "part-i-krylov-expansion",
-      "title": "Part I: Krylov Infrastructure \u2014 Polynomial Evaluation as Krylov Sum",
+      "title": "Part I: Krylov Infrastructure — Polynomial Evaluation as Krylov Sum",
       "startLine": 1,
       "endLine": 78,
-      "summary": "Module header, imports, and namespace setup, followed by: krylovVec definition (M^k \u00b7 v), sum_mulVec helper (mulVec distributes over finite matrix sums), and the central lemma aeval_mulVec_eq_krylov_sum (polynomial evaluation at M applied to v equals a linear combination of Krylov vectors with polynomial coefficients)."
+      "summary": "Module header, imports, and namespace setup, followed by: krylovVec definition (M^k · v), sum_mulVec helper (mulVec distributes over finite matrix sums), and the central lemma aeval_mulVec_eq_krylov_sum (polynomial evaluation at M applied to v equals a linear combination of Krylov vectors with polynomial coefficients)."
     },
     {
       "id": "part-ii-annihilator-ideal",
       "title": "Part II: The Vector Annihilator Set as an Ideal of K[X]",
       "startLine": 79,
       "endLine": 110,
-      "summary": "vecAnnSet definition and three ideal axioms: zero membership (trivial), closure under addition (map_add + add_mulVec), and closure under multiplication (map_mul + mul_mulVec \u2014 the ideal axiom distinguishing it from a subgroup). The annihilator set is the key algebraic object whose monic generator is \u03bc_{M,v}."
+      "summary": "vecAnnSet definition and three ideal axioms: zero membership (trivial), closure under addition (map_add + add_mulVec), and closure under multiplication (map_mul + mul_mulVec — the ideal axiom distinguishing it from a subgroup). The annihilator set is the key algebraic object whose monic generator is μ_{M,v}."
     },
     {
       "id": "part-iii-inclusion",
-      "title": "Part III: \u03bc_M Annihilates Every Vector",
+      "title": "Part III: μ_M Annihilates Every Vector",
       "startLine": 111,
       "endLine": 126,
-      "summary": "minpoly_mem_vecAnnSet (\u03bc_M(M)\u00b7v = 0\u00b7v = 0 via minpoly.aeval) and vecAnnSet_ne_bot (the annihilator ideal is nonzero, witnessed by \u03bc_M itself). These establish that vecAnnSet has a generator, guaranteeing existence of \u03bc_{M,v}."
+      "summary": "minpoly_mem_vecAnnSet (μ_M(M)·v = 0·v = 0 via minpoly.aeval) and vecAnnSet_ne_bot (the annihilator ideal is nonzero, witnessed by μ_M itself). These establish that vecAnnSet has a generator, guaranteeing existence of μ_{M,v}."
     },
     {
       "id": "part-iv-degree-bound",
       "title": "Part IV: Degree Bound and Krylov Zero Combination",
       "startLine": 127,
       "endLine": 157,
-      "summary": "vec_ann_poly_of_deg_le_dim (there exists an annihilating polynomial of degree \u2264 n, witnessed by \u03bc_M via the divisibility chain minpoly | charpoly) and krylov_zero_combo_at_minpoly (the Krylov vectors at \u03bc_M satisfy a zero linear combination \u2014 the Lean certificate for Krylov termination in \u2264 n steps)."
+      "summary": "vec_ann_poly_of_deg_le_dim (there exists an annihilating polynomial of degree ≤ n, witnessed by μ_M via the divisibility chain minpoly | charpoly) and krylov_zero_combo_at_minpoly (the Krylov vectors at μ_M satisfy a zero linear combination — the Lean certificate for Krylov termination in ≤ n steps)."
     },
     {
       "id": "part-v-existence",
-      "title": "Part V: vec_minpoly_exists \u2014 Full Existence, Monic Form, Divisibility",
+      "title": "Part V: vec_minpoly_exists — Full Existence, Monic Form, Divisibility",
       "startLine": 158,
       "endLine": 265,
-      "summary": "The main theorem vec_minpoly_exists proves existence of a monic \u03bc with degree \u2264 n, \u03bc(M)\u00b7v = 0, \u03bc | \u03bc_M, and universal minimality (\u03bc | q for every annihilating q). The proof uses degree_lt_wf to find the minimum-degree element, monic_of_isUnit_leadingCoeff_inv_smul for the monic form, and a Euclidean division + minimality contradiction for the divisibility. The closing summary comment reviews all 9 theorems."
+      "summary": "The main theorem vec_minpoly_exists proves existence of a monic μ with degree ≤ n, μ(M)·v = 0, μ | μ_M, and universal minimality (μ | q for every annihilating q). The proof uses degree_lt_wf to find the minimum-degree element, monic_of_isUnit_leadingCoeff_inv_smul for the monic form, and a Euclidean division + minimality contradiction for the divisibility. The closing summary comment reviews all 9 theorems."
     }
   ],
   "sorries": 0,
   "conclusion": {
-    "summary": "Nine theorems fully formalize the generalized (vector) minimal polynomial \u03bc_{M,v}: the monic polynomial of smallest degree annihilating vector v under matrix M. The capstone theorem vec_minpoly_exists establishes all four key properties simultaneously \u2014 existence, degree \u2264 n, divisibility of \u03bc_M, and universal minimality \u2014 using well-founded recursion on polynomial degree rather than abstract PID machinery.",
-    "implications": "This formalization provides the algebraic foundation for Wiedemann's sparse matrix algorithm: since \u03bc_{M,v} | \u03bc_M, the Krylov sequence (v, Mv, M\u00b2v, ...) always terminates in \u2264 deg(\u03bc_M) \u2264 n steps for any starting vector v, justifying single-vector Krylov methods over finite fields. The theorem krylov_zero_combo_at_minpoly gives the explicit zero linear combination of Krylov vectors, bridging algebraic minimality (\u03bc_M(M) = 0) with the computational property (Krylov sequence is linearly dependent within n+1 vectors). The construction also avoids Mathlib's IsPrincipalIdealRing API, implementing PID generator extraction directly via Euclidean division and degree minimality.",
+    "summary": "Nine theorems fully formalize the generalized (vector) minimal polynomial μ_{M,v}: the monic polynomial of smallest degree annihilating vector v under matrix M. The capstone theorem vec_minpoly_exists establishes all four key properties simultaneously — existence, degree ≤ n, divisibility of μ_M, and universal minimality — using well-founded recursion on polynomial degree rather than abstract PID machinery.",
+    "implications": "This formalization provides the algebraic foundation for Wiedemann's sparse matrix algorithm: since μ_{M,v} | μ_M, the Krylov sequence (v, Mv, M²v, ...) always terminates in ≤ deg(μ_M) ≤ n steps for any starting vector v, justifying single-vector Krylov methods over finite fields. The theorem krylov_zero_combo_at_minpoly gives the explicit zero linear combination of Krylov vectors, bridging algebraic minimality (μ_M(M) = 0) with the computational property (Krylov sequence is linearly dependent within n+1 vectors). The construction also avoids Mathlib's IsPrincipalIdealRing API, implementing PID generator extraction directly via Euclidean division and degree minimality.",
     "openQuestions": [
-      "Can the vector minimal polynomial \u03bc_{M,v} be contributed to Mathlib as a standalone definition (analogous to Polynomial.minpoly), with these 9 theorems forming its API surface?",
+      "Can the vector minimal polynomial μ_{M,v} be contributed to Mathlib as a standalone definition (analogous to Polynomial.minpoly), with these 9 theorems forming its API surface?",
       "Does Wiedemann's sparse linear system algorithm (Mx = b over GF(q)) admit a full Lean 4 formalization using vec_minpoly_exists and aeval_mulVec_eq_krylov_sum as core primitives?"
     ]
   },
@@ -106,12 +106,12 @@
     {
       "targetId": "cayley-hamilton-minpoly-oq-03",
       "relationship": "extends",
-      "description": "OQ-03 proves the Krylov method for \u03bc_M (the matrix minimal polynomial). OQ-03-OQ-01 generalizes to \u03bc_{M,v} (the vector minimal polynomial), which is the minimum-degree annihilating polynomial for a specific starting vector v."
+      "description": "OQ-03 proves the Krylov method for μ_M (the matrix minimal polynomial). OQ-03-OQ-01 generalizes to μ_{M,v} (the vector minimal polynomial), which is the minimum-degree annihilating polynomial for a specific starting vector v."
     },
     {
       "targetId": "cayley-hamilton",
       "relationship": "uses",
-      "description": "The Cayley-Hamilton theorem implies \u03bc_M(M) = 0, which is the key step showing \u03bc_M \u2208 I_v for every vector v."
+      "description": "The Cayley-Hamilton theorem implies μ_M(M) = 0, which is the key step showing μ_M ∈ I_v for every vector v."
     }
   ],
   "references": [
@@ -119,7 +119,7 @@
       "authors": "Wiedemann, Douglas H.",
       "title": "Solving sparse linear equations over finite fields",
       "year": "1986",
-      "venue": "IEEE Transactions on Information Theory, 32(1), 54\u201362",
+      "venue": "IEEE Transactions on Information Theory, 32(1), 54–62",
       "note": "Introduced the single-vector Krylov method based on the vector minimal polynomial for sparse matrix algorithms"
     }
   ]

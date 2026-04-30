@@ -1,6 +1,6 @@
 {
   "id": "lovasz-local-lemma",
-  "title": "Lov\u00e1sz Local Lemma",
+  "title": "Lovász Local Lemma",
   "slug": "lovasz-local-lemma",
   "description": "A fundamental tool in probabilistic combinatorics: if bad events are each unlikely and have sparse dependence structure, they can all be avoided simultaneously. Formalized via symmetric and general LLL, k-SAT application, Moser-Tardos constructive bound, and the LLL threshold function T(d) = d^d/(d+1)^{d+1}.",
   "meta": {
@@ -12,7 +12,7 @@
       "combinatorics",
       "probabilistic-method",
       "graph-theory",
-      "lov\u00e1sz-local-lemma",
+      "lovász-local-lemma",
       "k-sat"
     ],
     "badge": "original",
@@ -24,27 +24,27 @@
     "theoremCount": 25,
     "definitionCount": 2,
     "originalContributions": [
-      "Ten-part algebraic formalization of the Lov\u00e1sz Local Lemma covering symmetric and general cases",
+      "Ten-part algebraic formalization of the Lovász Local Lemma covering symmetric and general cases",
       "Formal LLL threshold function lllThreshold(d) = d^d/(d+1)^{d+1} with computed values at d=1,2,3",
-      "Universal upper bound lllThreshold_le_quarter: T(d) \u2264 1/4 for all d \u2265 1, proved via Bernoulli's inequality",
-      "k-SAT application: a k-CNF formula where each variable appears in at most 2^{k-2}/k clauses is satisfiable (k \u2265 3)",
-      "Moser-Tardos constructive LLL bound: nonnegative expected resampling count \u03a3 x_i/(1-x_i)",
+      "Universal upper bound lllThreshold_le_quarter: T(d) ≤ 1/4 for all d ≥ 1, proved via Bernoulli's inequality",
+      "k-SAT application: a k-CNF formula where each variable appears in at most 2^{k-2}/k clauses is satisfiable (k ≥ 3)",
+      "Moser-Tardos constructive LLL bound: nonnegative expected resampling count Σ x_i/(1-x_i)",
       "Dependency graph structure: IsValidDepGraph and HasMaxDegree predicates",
       "threshold_satisfies_lll bridging symmetric threshold to the general LLL framework",
-      "Bernoulli's inequality proved by induction; (1+1/d)^d \u2265 2 and (d+1)^d \u2265 2\u00b7d^d as corollaries"
+      "Bernoulli's inequality proved by induction; (1+1/d)^d ≥ 2 and (d+1)^d ≥ 2·d^d as corollaries"
     ]
   },
   "overview": {
-    "historicalContext": "The Lov\u00e1sz Local Lemma was introduced by Erd\u0151s and Lov\u00e1sz in 1975 in the context of graph coloring problems. The original application was to hypergraph 2-coloring (Property B): given a $k$-uniform hypergraph where each hyperedge intersects at most $d$ others, the LLL shows the hypergraph is 2-colorable if $2^{1-k}(d+1) \\leq 1$ — i.e., if $d \\leq 2^{k-1}-1$. This was a dramatic improvement over direct probabilistic arguments.\n\nThe LLL provides a non-constructive but powerful tool for proving the existence of combinatorial objects: if 'bad' events are individually unlikely and each event depends on only a bounded number of others, then there exists an outcome avoiding all bad events simultaneously. The key insight separating LLL from union bound arguments is the 'local' structure — the condition is on each event's neighborhood, not global.\n\nJoel Spencer (1977) proved the symmetric LLL with the optimal $p(d+1) \\leq 1/e$ constant, replacing the original $p(4d) \\leq 1$ bound. Shearer (1985) characterized the exact boundary with a criterion in terms of the dependency graph's independent set polynomial, showing the LLL is not tight. The non-symmetric 'Lopsided LLL' of Erd\u0151s-Spencer (1991) handles negative dependence.\n\nMoser and Tardos (2010) gave a remarkable algorithmic version: their resampling algorithm terminates in expected polynomial time when the LLL condition holds. This transformed the LLL from a pure existence tool to a practical algorithmic technique, with applications to constraint satisfaction, parallel algorithms, and online load balancing. The Moser-Tardos analysis uses entropy arguments: each resampling reduces a potential function related to the log-probability of the witness tree.\n\nThe symmetric LLL states: if each event has probability \u2264 p and shares dependencies with at most d others, and p\u00b7(d+1) \u2264 1/e, then all events can be avoided. The threshold T(d) = d^d/(d+1)^{d+1} is the exact algebraic maximum of x(1-x)^d, satisfying T(d) \u2264 1/4 for all d \u2265 1.",
-    "problemStatement": "Given n 'bad' events, each with probability \u2264 p, where each event is independent of all but at most d others, find conditions under which P[no bad event occurs] > 0.\n\n**Symmetric LLL**: If p\u00b7(d+1) \u2264 1/e, then P[\u2229 \u0100\u1d62] > 0.\n\n**General LLL**: If there exist x_i \u2208 [0,1) such that P[A\u1d62] \u2264 x_i \u00b7 \u220f_{j \u2208 \u0393(i)} (1 - x_j) for all i, then P[\u2229 \u0100\u1d62] \u2265 \u220f(1 - x_i) > 0.",
-    "proofStrategy": "The formalization avoids measure theory by working with the algebraic core: bounding and positivity of products \u220f(1-x_i). The key results are:\n\n1. **Symmetric bound**: If p\u00b7(d+1) \u2264 1/3 (an algebraic approximation to 1/e), then (1-p)^n > 0 by positivity.\n2. **General LLL**: The avoidance product \u220f(1-x_i) > 0 when each x_i < 1, by Finset.prod_pos.\n3. **Prob bound**: The LLL condition implies prob_i \u2264 x_i via Finset.prod_le_one.\n4. **Threshold**: T(d) = d^d/(d+1)^{d+1} satisfies T(d) \u2264 1/4 by Bernoulli's inequality: (d+1)^d \u2265 2\u00b7d^d.\n5. **Bridge**: threshold_satisfies_lll shows T(d)-bounded probabilities satisfy the general LLL condition with x_i = 1/(d+1).",
+    "historicalContext": "The Lovász Local Lemma was introduced by Erdős and Lovász in 1975 in the context of graph coloring problems. The original application was to hypergraph 2-coloring (Property B): given a $k$-uniform hypergraph where each hyperedge intersects at most $d$ others, the LLL shows the hypergraph is 2-colorable if $2^{1-k}(d+1) \\leq 1$ — i.e., if $d \\leq 2^{k-1}-1$. This was a dramatic improvement over direct probabilistic arguments.\n\nThe LLL provides a non-constructive but powerful tool for proving the existence of combinatorial objects: if 'bad' events are individually unlikely and each event depends on only a bounded number of others, then there exists an outcome avoiding all bad events simultaneously. The key insight separating LLL from union bound arguments is the 'local' structure — the condition is on each event's neighborhood, not global.\n\nJoel Spencer (1977) proved the symmetric LLL with the optimal $p(d+1) \\leq 1/e$ constant, replacing the original $p(4d) \\leq 1$ bound. Shearer (1985) characterized the exact boundary with a criterion in terms of the dependency graph's independent set polynomial, showing the LLL is not tight. The non-symmetric 'Lopsided LLL' of Erdős-Spencer (1991) handles negative dependence.\n\nMoser and Tardos (2010) gave a remarkable algorithmic version: their resampling algorithm terminates in expected polynomial time when the LLL condition holds. This transformed the LLL from a pure existence tool to a practical algorithmic technique, with applications to constraint satisfaction, parallel algorithms, and online load balancing. The Moser-Tardos analysis uses entropy arguments: each resampling reduces a potential function related to the log-probability of the witness tree.\n\nThe symmetric LLL states: if each event has probability ≤ p and shares dependencies with at most d others, and p·(d+1) ≤ 1/e, then all events can be avoided. The threshold T(d) = d^d/(d+1)^{d+1} is the exact algebraic maximum of x(1-x)^d, satisfying T(d) ≤ 1/4 for all d ≥ 1.",
+    "problemStatement": "Given n 'bad' events, each with probability ≤ p, where each event is independent of all but at most d others, find conditions under which P[no bad event occurs] > 0.\n\n**Symmetric LLL**: If p·(d+1) ≤ 1/e, then P[∩ Āᵢ] > 0.\n\n**General LLL**: If there exist x_i ∈ [0,1) such that P[Aᵢ] ≤ x_i · ∏_{j ∈ Γ(i)} (1 - x_j) for all i, then P[∩ Āᵢ] ≥ ∏(1 - x_i) > 0.",
+    "proofStrategy": "The formalization avoids measure theory by working with the algebraic core: bounding and positivity of products ∏(1-x_i). The key results are:\n\n1. **Symmetric bound**: If p·(d+1) ≤ 1/3 (an algebraic approximation to 1/e), then (1-p)^n > 0 by positivity.\n2. **General LLL**: The avoidance product ∏(1-x_i) > 0 when each x_i < 1, by Finset.prod_pos.\n3. **Prob bound**: The LLL condition implies prob_i ≤ x_i via Finset.prod_le_one.\n4. **Threshold**: T(d) = d^d/(d+1)^{d+1} satisfies T(d) ≤ 1/4 by Bernoulli's inequality: (d+1)^d ≥ 2·d^d.\n5. **Bridge**: threshold_satisfies_lll shows T(d)-bounded probabilities satisfy the general LLL condition with x_i = 1/(d+1).",
     "keyInsights": [
-      "The avoidance product $\\prod_i(1-x_i) > 0$ when each $x_i < 1$ is elementary (Finset.prod_pos), but is the algebraic heart of the LLL \u2014 the entire probabilistic content reduces to this non-vanishing.",
-      "Bernoulli's inequality $(1+x)^n \\geq 1+nx$ (proved by induction + nlinarith on $nx^2 \\geq 0$) gives $(d+1)^d \\geq 2d^d$, which implies $T(d) \\leq 1/4$ universally \u2014 a clean algebraic proof of a non-obvious bound.",
+      "The avoidance product $\\prod_i(1-x_i) > 0$ when each $x_i < 1$ is elementary (Finset.prod_pos), but is the algebraic heart of the LLL — the entire probabilistic content reduces to this non-vanishing.",
+      "Bernoulli's inequality $(1+x)^n \\geq 1+nx$ (proved by induction + nlinarith on $nx^2 \\geq 0$) gives $(d+1)^d \\geq 2d^d$, which implies $T(d) \\leq 1/4$ universally — a clean algebraic proof of a non-obvious bound.",
       "The LLL threshold factorization $T(d) = (1/(d+1)) \\cdot (d/(d+1))^d$ reveals the symmetric $x_i = 1/(d+1)$ assignment: the product over the dependency neighborhood is $(d/(d+1))^{|\\Gamma(i)|}$, bounded below by $(d/(d+1))^d = T(d)/(1/(d+1))$.",
       "The Moser-Tardos resampling bound $\\sum_i x_i/(1-x_i) \\geq 0$ is trivial algebraically (Finset.sum_nonneg + div_nonneg), but it encodes the deep result that the constructive algorithm terminates in finite expected time.",
       "k-SAT: each clause has probability $2^{-k}$ of violation, depends on at most $k \\cdot (2^{k-2}/k) = 2^{k-2}$ others, and LLL condition $2^{-k}(2^{k-2}+1) \\leq 1$ reduces to $2^{k-2}+1 \\leq 2^k$, verified by pow2_plus_one_le.",
-      "The formalization deliberately avoids measure theory: all results are stated over rationals (\u211a) with algebraic positivity arguments, making the proofs accessible without requiring probability space infrastructure.",
+      "The formalization deliberately avoids measure theory: all results are stated over rationals (ℚ) with algebraic positivity arguments, making the proofs accessible without requiring probability space infrastructure.",
       "**Shearer's exact criterion (1985)**: The general LLL condition $P[A_i] \\leq x_i \\prod_{j \\in \\Gamma(i)}(1-x_j)$ is not the most general known condition. Shearer's theorem (1985) characterizes the exact boundary: a set of events $\\{A_i\\}$ can be simultaneously avoided if and only if $P[\\cap_{i \\in S} \\bar{A}_i] > 0$ for all $S \\subseteq [n]$, with an explicit formula involving the dependency graph's independent set polynomial. The LLL is strictly weaker: it is sufficient but not necessary. This gap means the Lean formalization captures only one sufficient condition from a richer theory — `lovasz-local-lemma-oq-02` investigates the algebraic tightness of the symmetric threshold $T(d)$ specifically."
     ],
     "prerequisites": [
@@ -54,7 +54,7 @@
     ]
   },
   "conclusion": {
-    "summary": "This formalization captures ten interlocking aspects of the Lov\u00e1sz Local Lemma in pure Lean 4, without appealing to measure theory. The algebraic core \u2014 positivity of avoidance products \u2014 is proved from first principles, and the symmetric/general cases are formally connected. The LLL threshold function is computed exactly and bounded universally by 1/4 via Bernoulli's inequality.",
+    "summary": "This formalization captures ten interlocking aspects of the Lovász Local Lemma in pure Lean 4, without appealing to measure theory. The algebraic core — positivity of avoidance products — is proved from first principles, and the symmetric/general cases are formally connected. The LLL threshold function is computed exactly and bounded universally by 1/4 via Bernoulli's inequality.",
     "implications": "The LLL is a cornerstone of the probabilistic method, with applications to graph coloring, k-SAT, Ramsey theory, coding theory, and beyond. The Moser-Tardos constructive version underpins efficient algorithms. Formalizing the LLL in Lean provides a verified foundation for probabilistic combinatorics arguments.",
     "openQuestions": [
       "Formalize the full probabilistic LLL with measure-theoretic probability spaces in Lean 4",
@@ -69,35 +69,35 @@
       "title": "Part I: Symmetric LLL Algebraic Core",
       "startLine": 21,
       "endLine": 34,
-      "summary": "symmetric_lll_bound: if p\u00b7(d+1) \u2264 1/3 and p \u2265 0, then (1-p)^n > 0. Proved via pow_pos and nlinarith."
+      "summary": "symmetric_lll_bound: if p·(d+1) ≤ 1/3 and p ≥ 0, then (1-p)^n > 0. Proved via pow_pos and nlinarith."
     },
     {
       "id": "sec-lll-general",
       "title": "Part II: General LLL Product Positivity",
       "startLine": 36,
       "endLine": 48,
-      "summary": "general_lll: \u220f(1-x_i) > 0 when all x_i \u2208 [0,1). Proved via Finset.prod_pos."
+      "summary": "general_lll: ∏(1-x_i) > 0 when all x_i ∈ [0,1). Proved via Finset.prod_pos."
     },
     {
       "id": "sec-lll-prob-bounds",
       "title": "Part III: Probability Bounds from LLL Condition",
       "startLine": 50,
       "endLine": 75,
-      "summary": "lll_prob_bound: the LLL condition prob_i \u2264 x_i\u00b7\u220f_{j\u2208\u0393(i)}(1-x_j) implies prob_i \u2264 x_i, since the product \u2264 1. lll_factor_pos: each 1-x_i > 0."
+      "summary": "lll_prob_bound: the LLL condition prob_i ≤ x_i·∏_{j∈Γ(i)}(1-x_j) implies prob_i ≤ x_i, since the product ≤ 1. lll_factor_pos: each 1-x_i > 0."
     },
     {
       "id": "sec-lll-ksat",
       "title": "Part IV: k-SAT Application",
       "startLine": 77,
       "endLine": 113,
-      "summary": "ksat_lll: for k \u2265 3, (1/2)^k\u00b7(2^{k-2}+1) \u2264 1, verifying the LLL condition for k-CNF formulas where each variable appears in at most 2^{k-2}/k clauses."
+      "summary": "ksat_lll: for k ≥ 3, (1/2)^k·(2^{k-2}+1) ≤ 1, verifying the LLL condition for k-CNF formulas where each variable appears in at most 2^{k-2}/k clauses."
     },
     {
       "id": "sec-lll-moser-tardos",
       "title": "Part V: Moser-Tardos Constructive Bound",
       "startLine": 115,
       "endLine": 129,
-      "summary": "moser_tardos_termination: 0 \u2264 \u2211 x_i/(1-x_i) when each x_i \u2208 [0,1). Formalizes the non-negativity of the expected resampling count."
+      "summary": "moser_tardos_termination: 0 ≤ ∑ x_i/(1-x_i) when each x_i ∈ [0,1). Formalizes the non-negativity of the expected resampling count."
     },
     {
       "id": "sec-lll-symmetric-spec",
@@ -118,7 +118,7 @@
       "title": "Part VIII: Bernoulli's Inequality and Universal Threshold Bound",
       "startLine": 227,
       "endLine": 294,
-      "summary": "bernoulli_ineq: (1+x)^n \u2265 1+nx (induction). one_plus_inv_pow_ge_two: (1+1/d)^d \u2265 2. succ_pow_ge_two_mul: (d+1)^d \u2265 2d^d. lllThreshold_le_quarter: T(d) \u2264 1/4 for all d \u2265 1."
+      "summary": "bernoulli_ineq: (1+x)^n ≥ 1+nx (induction). one_plus_inv_pow_ge_two: (1+1/d)^d ≥ 2. succ_pow_ge_two_mul: (d+1)^d ≥ 2d^d. lllThreshold_le_quarter: T(d) ≤ 1/4 for all d ≥ 1."
     },
     {
       "id": "sec-lll-connections",
@@ -132,7 +132,7 @@
       "title": "Part X: Threshold-to-LLL Bridge and Complete Symmetric LLL",
       "startLine": 308,
       "endLine": 364,
-      "summary": "lllThreshold_eq_product: T(d) = (1/(d+1))\u00b7(d/(d+1))^d. threshold_satisfies_lll: prob_i \u2264 T(d) \u2192 LLL condition holds. symmetric_lll_complete: full symmetric LLL combining condition and positivity."
+      "summary": "lllThreshold_eq_product: T(d) = (1/(d+1))·(d/(d+1))^d. threshold_satisfies_lll: prob_i ≤ T(d) → LLL condition holds. symmetric_lll_complete: full symmetric LLL combining condition and positivity."
     }
   ],
   "crossReferences": [
@@ -171,7 +171,9 @@
     "lineCount": 364,
     "path": "Proofs/LovaszLocalLemma.lean",
     "axiomCount": 0,
-    "sorries": 0
+    "sorries": 0,
+    "definitionCount": 2,
+    "theoremCount": 25
   },
   "sorries": 0
 }

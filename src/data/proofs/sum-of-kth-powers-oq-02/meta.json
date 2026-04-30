@@ -2,7 +2,7 @@
   "id": "sum-of-kth-powers-oq-02",
   "title": "Sum of Powers: Extension to Non-Integer Exponents",
   "slug": "sum-of-kth-powers-oq-02",
-  "description": "Extends Faulhaber's formulas to real exponents via the p-series \u03b6(s) = \u2211 1/n^s. Proves convergence dichotomy (iff s > 1), recovers \u03b6(2) = \u03c0\u00b2/6 and \u03b6(4) = \u03c0\u2074/90, establishes term and zeta monotonicity, and bridges real-exponent theory to integer power sums.",
+  "description": "Extends Faulhaber's formulas to real exponents via the p-series ζ(s) = ∑ 1/n^s. Proves convergence dichotomy (iff s > 1), recovers ζ(2) = π²/6 and ζ(4) = π⁴/90, establishes term and zeta monotonicity, and bridges real-exponent theory to integer power sums.",
   "leanFile": {
     "path": "Proofs/SumOfKthPowersOQ02.lean",
     "imports": [
@@ -20,7 +20,9 @@
     "namespace": "RealZeta",
     "lineCount": 175,
     "axiomCount": 0,
-    "sorries": 0
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 14
   },
   "meta": {
     "author": "Euler (1734); formalized here",
@@ -48,12 +50,12 @@
       },
       {
         "theorem": "hasSum_zeta_two",
-        "description": "Basel Problem: \u03b6(2) = \u03c0\u00b2/6",
+        "description": "Basel Problem: ζ(2) = π²/6",
         "module": "Mathlib.NumberTheory.ZetaValues"
       },
       {
         "theorem": "hasSum_zeta_four",
-        "description": "\u03b6(4) = \u03c0\u2074/90",
+        "description": "ζ(4) = π⁴/90",
         "module": "Mathlib.NumberTheory.ZetaValues"
       },
       {
@@ -64,18 +66,18 @@
     ],
     "originalContributions": [
       "summable_inv_rpow: convergence of p-series for s > 1 (wrapper)",
-      "not_summable_inv_rpow: divergence for s \u2264 1 (wrapper)",
-      "zeta_two_eq / zeta_four_eq: tsum forms of Basel and \u03b6(4)",
-      "inv_rpow_antitone: (n^s)\u207b\u00b9 is antitone in s for n \u2265 1",
-      "inv_rpow_strictAnti: strict version for n \u2265 2",
-      "tsum_inv_rpow_antitone: \u03b6(s) is antitone via hasSum_le",
-      "one_le_tsum_inv_rpow: \u03b6(s) \u2265 1 via le_hasSum at n=1",
-      "tsum_inv_rpow_le_zeta_two: \u03b6(s) \u2264 \u03c0\u00b2/6 for s \u2265 2 via antitone + Basel",
-      "partialZeta_tendsto: partial sums converge to \u03b6(s)",
+      "not_summable_inv_rpow: divergence for s ≤ 1 (wrapper)",
+      "zeta_two_eq / zeta_four_eq: tsum forms of Basel and ζ(4)",
+      "inv_rpow_antitone: (n^s)⁻¹ is antitone in s for n ≥ 1",
+      "inv_rpow_strictAnti: strict version for n ≥ 2",
+      "tsum_inv_rpow_antitone: ζ(s) is antitone via hasSum_le",
+      "one_le_tsum_inv_rpow: ζ(s) ≥ 1 via le_hasSum at n=1",
+      "tsum_inv_rpow_le_zeta_two: ζ(s) ≤ π²/6 for s ≥ 2 via antitone + Basel",
+      "partialZeta_tendsto: partial sums converge to ζ(s)",
       "partialZeta_mono: partial sums are monotone",
       "rpow_inv_eq_nat_inv: bridge from rpow to nat pow",
-      "summable_inv_nat_pow: summability for integer k \u2265 2",
-      "partial_sum_sq_tendsto: \u2211 1/n\u00b2 \u2192 \u03c0\u00b2/6"
+      "summable_inv_nat_pow: summability for integer k ≥ 2",
+      "partial_sum_sq_tendsto: ∑ 1/n² → π²/6"
     ],
     "dateAdded": "2026-03-23",
     "lineCount": 175,
@@ -174,7 +176,7 @@
     }
   ],
   "overview": {
-    "historicalContext": "Johann Faulhaber (1631) published closed-form expressions for sums of consecutive kth powers, extending work by al-Haytham (c. 1000) and Bernoulli. The reciprocal series sum 1/n^2 was posed as the Basel Problem by Pietro Mengoli in 1644 and resisted solution for 90 years. Euler's breakthrough in 1734, showing zeta(2) = pi^2/6, stunned contemporary mathematicians by linking a discrete arithmetic sum to the circle constant. Euler subsequently computed zeta(2k) for all positive integers k using Bernoulli numbers and powers of pi. The convergence dichotomy at s = 1 \u2014 the harmonic series diverges while sum 1/n^s converges for any s > 1 \u2014 was first observed by Nicole Oresme (c. 1360) and later connected to the prime number theorem via the Euler product zeta(s) = prod (1 - p^{-s})^{-1}. Riemann's 1859 memoir extended zeta(s) to complex s via analytic continuation, transforming number theory forever.",
+    "historicalContext": "Johann Faulhaber (1631) published closed-form expressions for sums of consecutive kth powers, extending work by al-Haytham (c. 1000) and Bernoulli. The reciprocal series sum 1/n^2 was posed as the Basel Problem by Pietro Mengoli in 1644 and resisted solution for 90 years. Euler's breakthrough in 1734, showing zeta(2) = pi^2/6, stunned contemporary mathematicians by linking a discrete arithmetic sum to the circle constant. Euler subsequently computed zeta(2k) for all positive integers k using Bernoulli numbers and powers of pi. The convergence dichotomy at s = 1 — the harmonic series diverges while sum 1/n^s converges for any s > 1 — was first observed by Nicole Oresme (c. 1360) and later connected to the prime number theorem via the Euler product zeta(s) = prod (1 - p^{-s})^{-1}. Riemann's 1859 memoir extended zeta(s) to complex s via analytic continuation, transforming number theory forever.",
     "problemStatement": "Extend Faulhaber integer power sums to real exponents via zeta(s) = sum 1/n^s.",
     "text": "A 175-line formalization extending Faulhaber's integer power sum formulas to real exponents via the Riemann zeta function $\\zeta(s) = \\sum_{n=1}^{\\infty} n^{-s}$. The proof establishes the convergence dichotomy (the $p$-series converges iff $s > 1$), recovers the Basel problem $\\zeta(2) = \\pi^2/6$ and $\\zeta(4) = \\pi^4/90$ from Mathlib, proves term-wise and sum-wise antitonicity of $\\zeta(s)$ in $s$, derives bounds $1 \\leq \\zeta(s) \\leq \\pi^2/6$ for $s \\geq 2$, shows partial sum convergence and monotonicity, and bridges real-exponent theory back to integer power sums via `rpow_natCast`. All 14 theorems are fully verified with 0 sorries and 0 axioms, building on Mathlib's `summable_nat_rpow_inv`, `hasSum_zeta_two`, and `hasSum_zeta_four`.",
     "proofStrategy": "Eight parts: convergence dichotomy, known values, term monotonicity, zeta monotonicity, bounds, partial sums, bridge to integers. Fully verified.",
@@ -193,7 +195,7 @@
   },
   "conclusion": {
     "summary": "All 14 results fully proved. 0 sorries, 0 axioms.",
-    "implications": "**1. Convergence dichotomy**: The sharp threshold $s > 1$ for convergence of $\\zeta(s) = \\sum_{n=1}^{\\infty} 1/n^s$ is fundamental to analysis. The divergence at $s = 1$ (harmonic series) connects to the infinitude of primes via Euler's product formula $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$.\n\n**2. Bridge to number theory**: This formalization bridges Faulhaber's combinatorial integer power sums $\\sum_{k=1}^n k^m$ to the analytic zeta function $\\zeta(s) = \\sum 1/n^s$. The zeta function is the Rosetta stone of number theory: its zeros encode the distribution of primes (Riemann hypothesis), its special values encode deep arithmetic invariants (class numbers, regulators), and its Euler product connects additive and multiplicative number theory.\n\n**3. Special values and Bernoulli numbers**: The verified values $\\zeta(2) = \\pi^2/6$ (Basel problem) and $\\zeta(4) = \\pi^4/90$ are instances of Euler's general formula $\\zeta(2k) = (-1)^{k+1} B_{2k} (2\\pi)^{2k} / (2(2k)!)$ where $B_{2k}$ are Bernoulli numbers. The odd zeta values $\\zeta(3), \\zeta(5), \\ldots$ remain mysterious \u2014 Ap\u00e9ry (1979) proved $\\zeta(3)$ irrational, but the irrationality of $\\zeta(5)$ is open.\n\n**4. Monotonicity and functional analysis**: The proved monotonicity $s_1 < s_2 \\Rightarrow \\zeta(s_1) > \\zeta(s_2)$ for $s > 1$ reflects the strict decrease of the zeta function on the real line, with $\\zeta(s) \\to \\infty$ as $s \\to 1^+$ and $\\zeta(s) \\to 1$ as $s \\to \\infty$.",
+    "implications": "**1. Convergence dichotomy**: The sharp threshold $s > 1$ for convergence of $\\zeta(s) = \\sum_{n=1}^{\\infty} 1/n^s$ is fundamental to analysis. The divergence at $s = 1$ (harmonic series) connects to the infinitude of primes via Euler's product formula $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$.\n\n**2. Bridge to number theory**: This formalization bridges Faulhaber's combinatorial integer power sums $\\sum_{k=1}^n k^m$ to the analytic zeta function $\\zeta(s) = \\sum 1/n^s$. The zeta function is the Rosetta stone of number theory: its zeros encode the distribution of primes (Riemann hypothesis), its special values encode deep arithmetic invariants (class numbers, regulators), and its Euler product connects additive and multiplicative number theory.\n\n**3. Special values and Bernoulli numbers**: The verified values $\\zeta(2) = \\pi^2/6$ (Basel problem) and $\\zeta(4) = \\pi^4/90$ are instances of Euler's general formula $\\zeta(2k) = (-1)^{k+1} B_{2k} (2\\pi)^{2k} / (2(2k)!)$ where $B_{2k}$ are Bernoulli numbers. The odd zeta values $\\zeta(3), \\zeta(5), \\ldots$ remain mysterious — Apéry (1979) proved $\\zeta(3)$ irrational, but the irrationality of $\\zeta(5)$ is open.\n\n**4. Monotonicity and functional analysis**: The proved monotonicity $s_1 < s_2 \\Rightarrow \\zeta(s_1) > \\zeta(s_2)$ for $s > 1$ reflects the strict decrease of the zeta function on the real line, with $\\zeta(s) \\to \\infty$ as $s \\to 1^+$ and $\\zeta(s) \\to 1$ as $s \\to \\infty$.",
     "openQuestions": [
       "Can $\\zeta(2k)$ for $k = 3, 4, \\ldots$ be computed from Bernoulli numbers in Lean? The formula $\\zeta(2k) = (-1)^{k+1} B_{2k} (2\\pi)^{2k} / (2(2k)!)$ would give $\\zeta(6) = \\pi^6/945$, $\\zeta(8) = \\pi^8/9450$, etc.",
       "Can the Euler product formula $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$ be formalized? This would connect the additive definition (sum over naturals) to the multiplicative structure (product over primes), providing a new proof of the infinitude of primes",
@@ -238,7 +240,7 @@
       "title": "De summis serierum reciprocarum",
       "year": "1734",
       "venue": "Commentarii academiae scientiarum Petropolitanae 7, pp. 123-134 (published 1740)",
-      "note": "First proof that \u03b6(2) = \u03c0\u00b2/6 (the Basel problem), using the product formula for sin(x)/x \u2014 one of the most celebrated results in analysis"
+      "note": "First proof that ζ(2) = π²/6 (the Basel problem), using the product formula for sin(x)/x — one of the most celebrated results in analysis"
     },
     {
       "authors": "Hardy, G.H.; Wright, E.M.",
@@ -252,7 +254,7 @@
       "title": "The Theory of the Riemann Zeta-Function",
       "year": "1986",
       "venue": "Oxford University Press, 2nd edition (revised by D.R. Heath-Brown)",
-      "note": "Definitive monograph on \u03b6(s) including convergence, analytic continuation, functional equation, and the Euler product"
+      "note": "Definitive monograph on ζ(s) including convergence, analytic continuation, functional equation, and the Euler product"
     },
     {
       "authors": "Knuth, Donald E.",

@@ -1,8 +1,8 @@
 {
   "id": "algebraic-numbers-countable-oq-02-oq-02",
-  "title": "Cantor's 1874 Nested Interval Proof of \u211d Uncountability",
+  "title": "Cantor's 1874 Nested Interval Proof of ℝ Uncountability",
   "slug": "algebraic-numbers-countable-oq-02-oq-02",
-  "description": "Formalizes Cantor's original 1874 proof that \u211d is uncountable using nested intervals, distinct from the diagonal argument (1891). Given any enumeration f : \u2115 \u2192 \u211d, constructs a thirds-based nested interval sequence that avoids each f(n), then shows the supremum of left endpoints is not in range(f). The key technique \u2014 strictly increasing left endpoints \u2014 prevents boundary-case failures.",
+  "description": "Formalizes Cantor's original 1874 proof that ℝ is uncountable using nested intervals, distinct from the diagonal argument (1891). Given any enumeration f : ℕ → ℝ, constructs a thirds-based nested interval sequence that avoids each f(n), then shows the supremum of left endpoints is not in range(f). The key technique — strictly increasing left endpoints — prevents boundary-case failures.",
   "meta": {
     "author": "lean-genius researcher",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cantor%27s_first_set_theory_article",
@@ -47,14 +47,14 @@
       "nested: explicit thirds-based nested interval construction avoiding each f(n)",
       "a_strict_mono: PROVED left endpoints strictly increase at each step",
       "b_mono: PROVED right endpoints are non-increasing",
-      "exclusion: PROVED f(n) \u2264 a(n+1) or f(n) > b(n+1) at each step",
-      "limitPoint_not_in_range: PROVED limit point \u2260 f(n) for all n",
-      "exists_real_not_in_range: PROVED for any f : \u2115 \u2192 \u211d, \u2203 x \u2209 range(f)",
-      "reals_uncountable_nested: PROVED \u00ac Countable \u211d via nested intervals"
+      "exclusion: PROVED f(n) ≤ a(n+1) or f(n) > b(n+1) at each step",
+      "limitPoint_not_in_range: PROVED limit point ≠ f(n) for all n",
+      "exists_real_not_in_range: PROVED for any f : ℕ → ℝ, ∃ x ∉ range(f)",
+      "reals_uncountable_nested: PROVED ¬ Countable ℝ via nested intervals"
     ],
     "axiomCount": 0,
     "prerequisites": [
-      "Completeness of \u211d (conditional supremum)",
+      "Completeness of ℝ (conditional supremum)",
       "Basic real arithmetic (division by 3, ordering)",
       "Monotonicity and antitone sequences"
     ],
@@ -62,31 +62,31 @@
     "relatedProblems": [
       {
         "id": "algebraic-numbers-countable-oq-02",
-        "relationship": "Parent: cardinality-based proof of \u211d uncountability"
+        "relationship": "Parent: cardinality-based proof of ℝ uncountability"
       },
       {
         "id": "algebraic-numbers-countable",
         "relationship": "Grandparent: algebraic numbers are countable"
       }
     ],
-    "assumptions": "0 axioms. Relies only on Mathlib's completeness of \u211d (conditional supremum) and basic real arithmetic."
+    "assumptions": "0 axioms. Relies only on Mathlib's completeness of ℝ (conditional supremum) and basic real arithmetic."
   },
   "overview": {
-    "historicalContext": "In 1874, Georg Cantor published '\u00dcber eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen' (Journal f\u00fcr die reine und angewandte Mathematik, 77, pp. 258-262), introducing his first proof that the real numbers are uncountable. This predates the more famous diagonal argument (1891) by 17 years.\n\nThe nested interval proof is remarkable for its constructive character: given any proposed enumeration f : \u2115 \u2192 \u211d, it explicitly constructs an interval-based witness \u2014 a real number guaranteed not to appear in the list. Cantor's original paper was primarily about algebraic numbers being countable; the uncountability of \u211d was a corollary demonstrating the existence of transcendental numbers.\n\nThis Lean 4 formalization uses a thirds-based subdivision (rather than the halves that might seem natural), a key technical choice that ensures left endpoints strictly increase at every step. Cantor's original argument had this monotonicity property implicitly; making it explicit and proved is the main contribution of this formalization over a naive bisection approach.",
-    "problemStatement": "Formalize Cantor's 1874 nested interval construction proving that \u211d is uncountable, as an alternative to the cardinality-based proof in OQ-02.",
+    "historicalContext": "In 1874, Georg Cantor published 'Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen' (Journal für die reine und angewandte Mathematik, 77, pp. 258-262), introducing his first proof that the real numbers are uncountable. This predates the more famous diagonal argument (1891) by 17 years.\n\nThe nested interval proof is remarkable for its constructive character: given any proposed enumeration f : ℕ → ℝ, it explicitly constructs an interval-based witness — a real number guaranteed not to appear in the list. Cantor's original paper was primarily about algebraic numbers being countable; the uncountability of ℝ was a corollary demonstrating the existence of transcendental numbers.\n\nThis Lean 4 formalization uses a thirds-based subdivision (rather than the halves that might seem natural), a key technical choice that ensures left endpoints strictly increase at every step. Cantor's original argument had this monotonicity property implicitly; making it explicit and proved is the main contribution of this formalization over a naive bisection approach.",
+    "problemStatement": "Formalize Cantor's 1874 nested interval construction proving that ℝ is uncountable, as an alternative to the cardinality-based proof in OQ-02.",
     "text": "A 285-line formalization of Cantor's original 1874 proof. The construction divides each interval into thirds and selects a subinterval avoiding f(n), ensuring left endpoints strictly increase. The supremum of left endpoints is then shown to differ from every f(n) by case analysis on the exclusion property.",
-    "proofStrategy": "Thirds-based interval subdivision with strict left-endpoint increase. The construction has a uniform proof structure: every property (width_pos, a_strict_mono, b_mono, exclusion) is proved by the same pattern \u2014 induction on n, three-way case analysis on the `if-then-else` branches of `nested`, then `linarith` to close each arithmetic subgoal. The key insight: the thirds design ensures the left endpoint always advances by at least d/3 > 0 regardless of where f(n) falls, giving a limit point x = sSup{a\u2099} that satisfies x > a\u2099 for all n. Combined with the exclusion property (f(n) \u2264 a\u2099\u208a\u2081 or f(n) > b\u2099\u208a\u2081), this gives f(n) < x or f(n) > x by linarith, hence f(n) \u2260 x.",
+    "proofStrategy": "Thirds-based interval subdivision with strict left-endpoint increase. The construction has a uniform proof structure: every property (width_pos, a_strict_mono, b_mono, exclusion) is proved by the same pattern — induction on n, three-way case analysis on the `if-then-else` branches of `nested`, then `linarith` to close each arithmetic subgoal. The key insight: the thirds design ensures the left endpoint always advances by at least d/3 > 0 regardless of where f(n) falls, giving a limit point x = sSup{aₙ} that satisfies x > aₙ for all n. Combined with the exclusion property (f(n) ≤ aₙ₊₁ or f(n) > bₙ₊₁), this gives f(n) < x or f(n) > x by linarith, hence f(n) ≠ x.",
     "keyInsights": [
-      "**Strict monotonicity is essential**: A bisection construction where a\u2099 sometimes stays constant allows f(n) to equal the limit point. The thirds construction guarantees a\u2099\u208a\u2081 > a\u2099 always \u2014 the left endpoint advances by at least d/3 > 0 regardless of where f(n) falls.",
-      "**Weak exclusion + strict monotonicity = strict separation**: The exclusion property gives f(n) \u2264 a(n+1) (weak \u2264, not <), but limit_gt_a gives x > a(n+1) (strict). The combination f(n) \u2264 a(n+1) < x yields f(n) < x \u2014 a strict inequality from weak hypotheses.",
-      "**Completeness of \u211d via sSup**: The proof uses sSup (conditional supremum) from \u211d's conditionally complete lattice structure. This is the *only* use of completeness \u2014 the rest is constructive real arithmetic.",
-      "**Cross-index monotonicity (a_le_b_all)**: The crucial auxiliary that any left endpoint a(m) \u2264 any right endpoint b(n), even for different indices. Without this, the bound limit_le_b fails. The proof splits into m \u2264 n (use strictMono a) and m > n (use antitone b) cases.",
-      "**Constructive witness**: Unlike the diagonal argument, the nested interval proof provides an explicit real number not in the range of f \u2014 the supremum sSup(range(a f)). This constructive character makes the argument well-suited for potential extraction of computational content.",
-      "**Baire Category Theorem precursor**: The nested interval construction here is the template for the Baire Category Theorem proof that any nonempty complete metric space without isolated points is uncountable. BCT shows each singleton {f(n)} is nowhere dense, so the countable union \u22c3{f(n)} cannot cover the space. The thirds-based nested selection corresponds exactly to choosing balls avoiding each f(n) in the abstract BCT proof \u2014 making this formalization a concrete instance of a deep topological phenomenon that applies to all perfect Polish spaces.",
-      "The 1874 nested interval proof predates Cantor's 1891 diagonal argument by 17 years and is conceptually distinct: rather than a combinatorial self-referential trick (diagonal), it uses analytic completeness (supremum = limit of bounded monotone sequence). The two proofs represent different foundations: the nested interval proof rests on the completeness axiom of \u211d (every bounded monotone sequence converges), while the diagonal argument is purely combinatorial and works in any infinite set without ordering. Both proofs are non-constructive in the same sense: they show a real outside the enumeration exists, but cannot compute which one it is without knowing the entire enumeration."
+      "**Strict monotonicity is essential**: A bisection construction where aₙ sometimes stays constant allows f(n) to equal the limit point. The thirds construction guarantees aₙ₊₁ > aₙ always — the left endpoint advances by at least d/3 > 0 regardless of where f(n) falls.",
+      "**Weak exclusion + strict monotonicity = strict separation**: The exclusion property gives f(n) ≤ a(n+1) (weak ≤, not <), but limit_gt_a gives x > a(n+1) (strict). The combination f(n) ≤ a(n+1) < x yields f(n) < x — a strict inequality from weak hypotheses.",
+      "**Completeness of ℝ via sSup**: The proof uses sSup (conditional supremum) from ℝ's conditionally complete lattice structure. This is the *only* use of completeness — the rest is constructive real arithmetic.",
+      "**Cross-index monotonicity (a_le_b_all)**: The crucial auxiliary that any left endpoint a(m) ≤ any right endpoint b(n), even for different indices. Without this, the bound limit_le_b fails. The proof splits into m ≤ n (use strictMono a) and m > n (use antitone b) cases.",
+      "**Constructive witness**: Unlike the diagonal argument, the nested interval proof provides an explicit real number not in the range of f — the supremum sSup(range(a f)). This constructive character makes the argument well-suited for potential extraction of computational content.",
+      "**Baire Category Theorem precursor**: The nested interval construction here is the template for the Baire Category Theorem proof that any nonempty complete metric space without isolated points is uncountable. BCT shows each singleton {f(n)} is nowhere dense, so the countable union ⋃{f(n)} cannot cover the space. The thirds-based nested selection corresponds exactly to choosing balls avoiding each f(n) in the abstract BCT proof — making this formalization a concrete instance of a deep topological phenomenon that applies to all perfect Polish spaces.",
+      "The 1874 nested interval proof predates Cantor's 1891 diagonal argument by 17 years and is conceptually distinct: rather than a combinatorial self-referential trick (diagonal), it uses analytic completeness (supremum = limit of bounded monotone sequence). The two proofs represent different foundations: the nested interval proof rests on the completeness axiom of ℝ (every bounded monotone sequence converges), while the diagonal argument is purely combinatorial and works in any infinite set without ordering. Both proofs are non-constructive in the same sense: they show a real outside the enumeration exists, but cannot compute which one it is without knowing the entire enumeration."
     ],
     "prerequisites": [
-      "Completeness of \u211d as a conditionally complete lattice",
+      "Completeness of ℝ as a conditionally complete lattice",
       "Monotone/antitone sequence properties",
       "Basic real arithmetic"
     ]
@@ -103,7 +103,7 @@
     {
       "id": "pointwise-properties",
       "title": "Pointwise Inductive Properties",
-      "summary": "Proves four core properties by induction with three-way case analysis on the if-then-else branches: width_pos (interval width stays positive), a_lt_b (intervals remain nonempty), a_strict_mono (left endpoints strictly increase at each step), b_mono (right endpoints non-increase), and exclusion (f(n) \u2264 a(n+1) or f(n) > b(n+1)).",
+      "summary": "Proves four core properties by induction with three-way case analysis on the if-then-else branches: width_pos (interval width stays positive), a_lt_b (intervals remain nonempty), a_strict_mono (left endpoints strictly increase at each step), b_mono (right endpoints non-increase), and exclusion (f(n) ≤ a(n+1) or f(n) > b(n+1)).",
       "startLine": 82,
       "endLine": 154,
       "mathContext": "$a_{n+1} \\in \\{a_n + d/3, a_n + 2d/3\\}$, so $a_{n+1} > a_n$ since $d > 0$. Exclusion: $f(n) \\leq a_{n+1}$ or $f(n) > b_{n+1}$ by case-splitting on where $f(n)$ falls in the three thirds."
@@ -111,7 +111,7 @@
     {
       "id": "global-properties",
       "title": "Global Monotonicity and Bridge Lemmas",
-      "summary": "Elevates pointwise successor inequalities to global StrictMono/Antitone forms and proves the cross-index bound: any left endpoint a(m) \u2264 any right endpoint b(n), even for different indices. This cross-index bound is the key auxiliary enabling the sSup argument.",
+      "summary": "Elevates pointwise successor inequalities to global StrictMono/Antitone forms and proves the cross-index bound: any left endpoint a(m) ≤ any right endpoint b(n), even for different indices. This cross-index bound is the key auxiliary enabling the sSup argument.",
       "startLine": 155,
       "endLine": 181,
       "mathContext": "Cross-index: for all $m, n$, $a_m \\leq b_n$. If $m \\leq n$: $a_m \\leq a_n < b_n$ (monotone $a$). If $m > n$: $a_m < b_m \\leq b_n$ (antitone $b$). Enables `csSup_le` to show $\\sup_m a_m \\leq b_n$ for any $n$."
@@ -119,7 +119,7 @@
     {
       "id": "limit",
       "title": "The Limit Point",
-      "summary": "Defines the limit point as sSup of left endpoints and proves it exceeds every a\u2099 and is at most every b\u2099.",
+      "summary": "Defines the limit point as sSup of left endpoints and proves it exceeds every aₙ and is at most every bₙ.",
       "startLine": 182,
       "endLine": 220,
       "mathContext": "$x = \\sup\\{a_n\\}$ satisfies $a_n < x \\leq b_n$ for all $n$."
@@ -127,7 +127,7 @@
     {
       "id": "main-results",
       "title": "Main Theorems",
-      "summary": "Proves the limit point is not in range(f), no surjection \u2115 \u2192 \u211d exists, and \u211d is uncountable.",
+      "summary": "Proves the limit point is not in range(f), no surjection ℕ → ℝ exists, and ℝ is uncountable.",
       "startLine": 215,
       "endLine": 285,
       "mathContext": "$f(n) \\neq x$ for all $n$: from exclusion, $f(n) \\leq a_{n+1} < x$ or $f(n) > b_{n+1} \\geq x$."
@@ -137,27 +137,27 @@
     {
       "targetId": "algebraic-numbers-countable-oq-02",
       "relationship": "parent",
-      "description": "The parent proof uses cardinality (\u2135\u2080 < \ud835\udd20) to prove \u211d uncountable. This file provides an alternative constructive nested interval proof of the same result."
+      "description": "The parent proof uses cardinality (ℵ₀ < 𝔠) to prove ℝ uncountable. This file provides an alternative constructive nested interval proof of the same result."
     },
     {
       "targetId": "algebraic-numbers-countable",
       "relationship": "ancestor",
-      "description": "Proves algebraic numbers are countable. Combined with \u211d uncountable (proved here), this establishes that transcendental numbers are uncountable."
+      "description": "Proves algebraic numbers are countable. Combined with ℝ uncountable (proved here), this establishes that transcendental numbers are uncountable."
     },
     {
       "targetId": "cantor-diagonalization",
       "relationship": "alternative",
-      "description": "Cantor's 1891 diagonal argument proving the same \u211d uncountability result via a fundamentally different technique \u2014 constructing a real not in any enumeration by flipping digits on the diagonal. Comparing the two proofs illustrates how different constructive witness strategies (nested intervals vs. diagonalization) can achieve the same mathematical conclusion."
+      "description": "Cantor's 1891 diagonal argument proving the same ℝ uncountability result via a fundamentally different technique — constructing a real not in any enumeration by flipping digits on the diagonal. Comparing the two proofs illustrates how different constructive witness strategies (nested intervals vs. diagonalization) can achieve the same mathematical conclusion."
     },
     {
       "targetId": "cantors-theorem",
       "relationship": "generalization",
-      "description": "Cantor's general theorem |X| < |P(X)| applied to X = \u2115 gives |\u2115| < |P(\u2115)| \u2245 |\u211d|, furnishing the cardinality-theoretic explanation for why \u211d is uncountable. The nested interval proof here provides an explicit constructive witness; Cantor's theorem provides the abstract size comparison underlying all such results."
+      "description": "Cantor's general theorem |X| < |P(X)| applied to X = ℕ gives |ℕ| < |P(ℕ)| ≅ |ℝ|, furnishing the cardinality-theoretic explanation for why ℝ is uncountable. The nested interval proof here provides an explicit constructive witness; Cantor's theorem provides the abstract size comparison underlying all such results."
     },
     {
       "targetId": "e-transcendental",
       "relationship": "implication",
-      "description": "The combined force of the nested intervals proof (\u211d uncountable) and the parent entry (algebraic numbers countable) is that transcendental numbers exist and are uncountable. `e-transcendental` proves $e$ is one specific transcendental \u2014 the first historically, predating Cantor's uncountability argument by one year (Hermite 1873). This entry proves the transcendental complement is vast; `e-transcendental` proves the first member of that complement."
+      "description": "The combined force of the nested intervals proof (ℝ uncountable) and the parent entry (algebraic numbers countable) is that transcendental numbers exist and are uncountable. `e-transcendental` proves $e$ is one specific transcendental — the first historically, predating Cantor's uncountability argument by one year (Hermite 1873). This entry proves the transcendental complement is vast; `e-transcendental` proves the first member of that complement."
     },
     {
       "targetId": "liouville-theorem",
@@ -167,22 +167,22 @@
     {
       "targetId": "schroeder-bernstein",
       "relationship": "foundational",
-      "description": "The Schr\u00f6der-Bernstein theorem (injections in both directions imply a bijection) is the key tool for establishing cardinality equalities like $|\\mathbb{R}| = 2^{\\aleph_0}$. The nested interval construction here avoids needing this theorem directly, but the related cardinality-based proof in the parent entry (algebraic-numbers-countable-oq-02) uses cardinal arithmetic built on Schr\u00f6der-Bernstein."
+      "description": "The Schröder-Bernstein theorem (injections in both directions imply a bijection) is the key tool for establishing cardinality equalities like $|\\mathbb{R}| = 2^{\\aleph_0}$. The nested interval construction here avoids needing this theorem directly, but the related cardinality-based proof in the parent entry (algebraic-numbers-countable-oq-02) uses cardinal arithmetic built on Schröder-Bernstein."
     },
     {
       "targetId": "hermite-lindemann",
       "relationship": "implication",
-      "description": "Lindemann-Weierstrass provides a concrete transcendental via the proof that e^\u03b1 is transcendental for algebraic \u03b1 \u2260 0. This entry (nested interval construction) proves uncountably many transcendentals exist without naming any. The gap is existential \u2192 specific: nested interval gives existence, Lindemann-Weierstrass gives the first certified examples (e, \u03c0)."
+      "description": "Lindemann-Weierstrass provides a concrete transcendental via the proof that e^α is transcendental for algebraic α ≠ 0. This entry (nested interval construction) proves uncountably many transcendentals exist without naming any. The gap is existential → specific: nested interval gives existence, Lindemann-Weierstrass gives the first certified examples (e, π)."
     },
     {
       "targetId": "gelfond-schneider",
       "relationship": "implication",
-      "description": "Gelfond-Schneider provides a second wave of specific transcendentals: \u03b1^\u03b2 is transcendental when \u03b1, \u03b2 are algebraic with \u03b1 \u2209 {0,1}, \u03b2 irrational. This entry establishes the uncountable pool; Gelfond-Schneider names more members of it. Together they exemplify the divide between existence proofs (Cantor, Baire category) and explicit construction (Liouville, Lindemann-Weierstrass, Gelfond-Schneider)."
+      "description": "Gelfond-Schneider provides a second wave of specific transcendentals: α^β is transcendental when α, β are algebraic with α ∉ {0,1}, β irrational. This entry establishes the uncountable pool; Gelfond-Schneider names more members of it. Together they exemplify the divide between existence proofs (Cantor, Baire category) and explicit construction (Liouville, Lindemann-Weierstrass, Gelfond-Schneider)."
     },
     {
       "targetId": "cantor-diagonalization-oq-02",
       "relationship": "related",
-      "description": "Studies the cardinality of \u03c9\u2081 (first uncountable ordinal), building on the strict inequality \u2135\u2080 < |\u211d| established by this entry. The nested interval proof is the most elementary way to obtain this inequality; \u03c9\u2081 is its ordinal counterpart. The Continuum Hypothesis (|\u211d| = \u2135\u2081) remains independent of ZFC, making the exact position of 2^\u2135\u2080 in the aleph hierarchy \u2014 and hence whether |\u211d| = |\u03c9\u2081| \u2014 undecidable."
+      "description": "Studies the cardinality of ω₁ (first uncountable ordinal), building on the strict inequality ℵ₀ < |ℝ| established by this entry. The nested interval proof is the most elementary way to obtain this inequality; ω₁ is its ordinal counterpart. The Continuum Hypothesis (|ℝ| = ℵ₁) remains independent of ZFC, making the exact position of 2^ℵ₀ in the aleph hierarchy — and hence whether |ℝ| = |ω₁| — undecidable."
     }
   ],
   "leanFile": {
@@ -202,46 +202,47 @@
       "Mathlib.Tactic"
     ],
     "path": "Proofs/AlgebraicNumbersCountableOQ02OQ02.lean",
-    "sorries": 0
+    "sorries": 0,
+    "definitionCount": 5
   },
   "mainTheorems": [
     {
       "name": "exists_real_not_in_range",
       "type": "core",
-      "description": "For any f : \u2115 \u2192 \u211d, there exists x \u2208 \u211d not in range(f)",
-      "leanType": "\u2200 f : \u2115 \u2192 \u211d, \u2203 x : \u211d, x \u2209 Set.range f"
+      "description": "For any f : ℕ → ℝ, there exists x ∈ ℝ not in range(f)",
+      "leanType": "∀ f : ℕ → ℝ, ∃ x : ℝ, x ∉ Set.range f"
     },
     {
       "name": "reals_uncountable_nested",
       "type": "core",
-      "description": "\u211d is uncountable (Cantor's 1874 nested interval proof)",
-      "leanType": "\u00ac Countable \u211d"
+      "description": "ℝ is uncountable (Cantor's 1874 nested interval proof)",
+      "leanType": "¬ Countable ℝ"
     }
   ],
   "conclusion": {
-    "summary": "A complete formalization of Cantor's 1874 nested interval proof of \u211d uncountability. The key technical insight \u2014 using thirds-based subdivision to guarantee strictly increasing left endpoints \u2014 resolves a subtle boundary-case issue that makes simpler bisection constructions fail.",
-    "implications": "This provides an alternative to the cardinality-based proof in OQ-02, with distinct computational character. The limit point `sSup {a f n}` is an explicit function of the enumeration f \u2014 in computable analysis (Weihrauch complexity / Type-2 effectivity), the witness is computable given oracle access to f. The formalization makes the completeness axiom usage transparent: the single `sSup` call in `limitPoint` is the only point where Dedekind completeness of \u211d enters; the rest of the 285-line proof is constructive real arithmetic. The nested interval technique generalizes: Bolzano-Weierstrass (every bounded real sequence has a convergent subsequence) uses the same bisection structure, and the abstract Baire Category Theorem (every nonempty complete metric space without isolated points is uncountable) replaces nested intervals with nested open balls avoiding each f(n) \u2014 making this formalization a concrete, fully verified instance of a deep topological principle.",
+    "summary": "A complete formalization of Cantor's 1874 nested interval proof of ℝ uncountability. The key technical insight — using thirds-based subdivision to guarantee strictly increasing left endpoints — resolves a subtle boundary-case issue that makes simpler bisection constructions fail.",
+    "implications": "This provides an alternative to the cardinality-based proof in OQ-02, with distinct computational character. The limit point `sSup {a f n}` is an explicit function of the enumeration f — in computable analysis (Weihrauch complexity / Type-2 effectivity), the witness is computable given oracle access to f. The formalization makes the completeness axiom usage transparent: the single `sSup` call in `limitPoint` is the only point where Dedekind completeness of ℝ enters; the rest of the 285-line proof is constructive real arithmetic. The nested interval technique generalizes: Bolzano-Weierstrass (every bounded real sequence has a convergent subsequence) uses the same bisection structure, and the abstract Baire Category Theorem (every nonempty complete metric space without isolated points is uncountable) replaces nested intervals with nested open balls avoiding each f(n) — making this formalization a concrete, fully verified instance of a deep topological principle.",
     "openQuestions": [
       "Can the nested interval construction be made fully constructive (avoiding Classical.choice in the supremum)?",
-      "What is the computational content of the limit point \u2014 can it be extracted as a Cauchy sequence?",
+      "What is the computational content of the limit point — can it be extracted as a Cauchy sequence?",
       "Can the construction be generalized to prove uncountability of other complete metric spaces?",
-      "What is the minimal axiom system needed to formalize this proof \u2014 does it require excluded middle, or can it be done in constructive type theory with a suitable notion of supremum?"
+      "What is the minimal axiom system needed to formalize this proof — does it require excluded middle, or can it be done in constructive type theory with a suitable notion of supremum?"
     ]
   },
   "references": [
     {
       "authors": "Cantor, Georg",
-      "title": "\u00dcber eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
       "year": "1874",
-      "venue": "Journal f\u00fcr die reine und angewandte Mathematik, 77",
-      "note": "Pages 258-262. First proof of \u211d uncountability using nested intervals."
+      "venue": "Journal für die reine und angewandte Mathematik, 77",
+      "note": "Pages 258-262. First proof of ℝ uncountability using nested intervals."
     },
     {
       "authors": "Cantor, Georg",
-      "title": "\u00dcber eine elementare Frage der Mannigfaltigkeitslehre",
+      "title": "Über eine elementare Frage der Mannigfaltigkeitslehre",
       "year": "1891",
       "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung, 1",
-      "note": "Pages 75-78. The diagonal argument (1891) \u2014 Cantor's second and more famous proof of \u211d uncountability, using a direct diagonalization instead of nested intervals."
+      "note": "Pages 75-78. The diagonal argument (1891) — Cantor's second and more famous proof of ℝ uncountability, using a direct diagonalization instead of nested intervals."
     },
     {
       "authors": "Moschovakis, Yiannis N.",

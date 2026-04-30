@@ -2,9 +2,9 @@
   "id": "erdos-2-oq-01",
   "title": "Exact Maximum Minimum Modulus for Covering Systems",
   "slug": "erdos-2-oq-01",
-  "description": "Structural theorems about the exact maximum minimum modulus M for covering systems. Proves existence, uniqueness, and the gap 42 \u2264 M \u2264 616,000 from Owens' construction and Balister et al.'s bound. Characterizes the achievable set as an initial segment [0, M].",
+  "description": "Structural theorems about the exact maximum minimum modulus M for covering systems. Proves existence, uniqueness, and the gap 42 ≤ M ≤ 616,000 from Owens' construction and Balister et al.'s bound. Characterizes the achievable set as an initial segment [0, M].",
   "meta": {
-    "author": "Based on Hough (2015), Balister-Bollob\u00e1s-Morris-Sahasrabudhe-Tiba (2022), Owens (2014)",
+    "author": "Based on Hough (2015), Balister-Bollobás-Morris-Sahasrabudhe-Tiba (2022), Owens (2014)",
     "sourceUrl": "https://erdosproblems.com/2",
     "date": "2015, 2022",
     "status": "axiomatized",
@@ -35,7 +35,7 @@
       "Covering systems and congruence classes",
       "Well-ordering principle for natural numbers",
       "Basic properties of achievability (monotonicity)",
-      "Erd\u0151s Problem #2 parent formalization"
+      "Erdős Problem #2 parent formalization"
     ],
     "mathlib_version": "4.29.0",
     "additionalFiles": [
@@ -45,39 +45,39 @@
       "Formal definition of IsExactMaxMinModulus with equivalent characterizations",
       "Existence proof using well-ordering (Nat.find on the complement of the achievable set)",
       "Uniqueness proof via monotonicity contradiction",
-      "Gap theorem: 42 \u2264 M \u2264 616,000 from Owens and Balister bounds",
+      "Gap theorem: 42 ≤ M ≤ 616,000 from Owens and Balister bounds",
       "Complete characterization of achievable set as initial segment [0, M]",
       "Gap narrowing framework for future bound improvements"
     ],
     "assumptions": "3 axiom(s) inherited from imported Lean file. 0 sorry(s)."
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #2 asked whether the minimum modulus of a covering system can be arbitrarily large. This was resolved negatively by Hough (2015) and improved by Balister et al. (2022), giving the upper bound M \u2264 616,000. The best construction, by Owens (2014), achieves minimum modulus 42. The exact value of M remains one of the most prominent open questions in covering system theory. This formalization proves that M exists as a well-defined mathematical object and constrains it to the interval [42, 616000], establishing the structural framework for any future narrowing of the gap.",
-    "problemStatement": "What is the exact maximum possible minimum modulus M for covering systems with distinct moduli \u2265 2?",
-    "text": "Structural theorems about the exact maximum minimum modulus M for covering systems. Currently 42 \u2264 M \u2264 616,000.",
-    "proofStrategy": "Define achievability as a downward-monotone predicate on \u2115. Use the well-ordering principle (Nat.find) on the set of non-achievable values to extract the exact boundary M. Prove M is unique via monotonicity. Derive the gap [42, 616000] from Owens' construction (lower bound) and Balister et al.'s theorem (upper bound). Characterize the achievable set as exactly {0, 1, ..., M}.",
+    "historicalContext": "Erdős Problem #2 asked whether the minimum modulus of a covering system can be arbitrarily large. This was resolved negatively by Hough (2015) and improved by Balister et al. (2022), giving the upper bound M ≤ 616,000. The best construction, by Owens (2014), achieves minimum modulus 42. The exact value of M remains one of the most prominent open questions in covering system theory. This formalization proves that M exists as a well-defined mathematical object and constrains it to the interval [42, 616000], establishing the structural framework for any future narrowing of the gap.",
+    "problemStatement": "What is the exact maximum possible minimum modulus M for covering systems with distinct moduli ≥ 2?",
+    "text": "Structural theorems about the exact maximum minimum modulus M for covering systems. Currently 42 ≤ M ≤ 616,000.",
+    "proofStrategy": "Define achievability as a downward-monotone predicate on ℕ. Use the well-ordering principle (Nat.find) on the set of non-achievable values to extract the exact boundary M. Prove M is unique via monotonicity. Derive the gap [42, 616000] from Owens' construction (lower bound) and Balister et al.'s theorem (upper bound). Characterize the achievable set as exactly {0, 1, ..., M}.",
     "keyInsights": [
-      "**Achievability is downward-monotone**: if min modulus m is achievable, so is any m' \u2264 m",
-      "**Well-ordering gives existence**: the smallest non-achievable value n\u2080 determines M = n\u2080 - 1",
-      "**Uniqueness from monotonicity**: any two exact maxima must be equal (contradiction if M\u2081 \u2260 M\u2082)",
-      "**The achievable set is an initial segment**: Achievable m \u2194 m \u2264 M",
+      "**Achievability is downward-monotone**: if min modulus m is achievable, so is any m' ≤ m",
+      "**Well-ordering gives existence**: the smallest non-achievable value n₀ determines M = n₀ - 1",
+      "**Uniqueness from monotonicity**: any two exact maxima must be equal (contradiction if M₁ ≠ M₂)",
+      "**The achievable set is an initial segment**: Achievable m ↔ m ≤ M",
       "**Gap narrowing framework**: any improved bound (lower or upper) directly constrains M"
     ],
     "prerequisites": [
       "Covering systems and congruence classes",
       "Well-ordering principle for natural numbers",
       "Achievability monotonicity",
-      "Erd\u0151s Problem #2 parent formalization"
+      "Erdős Problem #2 parent formalization"
     ]
   },
   "conclusion": {
     "summary": "The exact maximum minimum modulus M for covering systems is proved to exist (via Nat.find on the non-achievable set), to be unique (via monotonicity contradiction), and to lie in [42, 616000] (from Owens and Balister bounds). The achievable set is completely characterized as the initial segment {0, 1, ..., M}. All structural theorems are proved without axioms; the bounds 42 and 616000 are inherited as axioms from the parent file.",
     "implications": "This formalization provides a rigorous mathematical framework for the exact maximum minimum modulus. Any future improvement to either the lower bound (currently 42, from Owens' explicit construction) or upper bound (currently 616,000, from Balister et al.'s 2022 proof) directly constrains M via the gap-narrowing framework. Closing the gap would require either a new explicit covering system with minimum modulus > 42 (new construction) or a tighter upper bound proof.",
     "openQuestions": [
-      "What is the exact value of M? Currently 42 \u2264 M \u2264 616,000",
+      "What is the exact value of M? Currently 42 ≤ M ≤ 616,000",
       "Can the upper bound be improved below 616,000? Balister's proof uses a complex entropy argument",
       "Can the lower bound be improved above 42? This requires a new covering system with minimum modulus > 42",
-      "Is there a covering system with minimum modulus 43, 44, ..., or do all such systems require moduli including some \u2264 42?"
+      "Is there a covering system with minimum modulus 43, 44, ..., or do all such systems require moduli including some ≤ 42?"
     ]
   },
   "sections": [
@@ -108,7 +108,7 @@
     {
       "id": "gap",
       "title": "The Gap [42, 616000]",
-      "summary": "Proves 42 \u2264 M \u2264 616000 from Owens and Balister bounds.",
+      "summary": "Proves 42 ≤ M ≤ 616000 from Owens and Balister bounds.",
       "startLine": 117,
       "endLine": 145,
       "mathContext": "Lower bound: if $M < 42$ then $M+1 \\leq 42$ is achievable (Owens), contradicting $M$ being exact. Upper bound: if $M > 616{,}000$ then $M$ is not achievable (Balister), contradicting the definition."
@@ -116,7 +116,7 @@
     {
       "id": "characterization",
       "title": "Complete Characterization of the Achievable Set",
-      "summary": "Proves Achievable m \u2194 m \u2264 M, characterizing achievability as an initial segment.",
+      "summary": "Proves Achievable m ↔ m ≤ M, characterizing achievability as an initial segment.",
       "startLine": 147,
       "endLine": 170,
       "mathContext": "The achievable set is exactly $\\{0, 1, \\ldots, M\\}$. This follows from downward-monotonicity (achievable below $M$) and non-achievability above $M$ (from the exact max definition). The gap narrowing theorem provides a framework for improving bounds."
@@ -138,7 +138,9 @@
     "lineCount": 232,
     "path": "Proofs/Erdos2OQ01.lean",
     "axiomCount": 0,
-    "sorries": 0
+    "sorries": 0,
+    "definitionCount": 2,
+    "theoremCount": 18
   },
   "sorries": 0
 }
