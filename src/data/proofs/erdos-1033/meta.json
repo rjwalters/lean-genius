@@ -1,10 +1,10 @@
 {
   "id": "erdos-1033",
-  "title": "Erd\u0151s Problem #1033: Triangle Degree Sums in Dense Graphs",
+  "title": "Erdős Problem #1033: Triangle Degree Sums in Dense Graphs",
   "slug": "erdos-1033",
-  "description": "Let h(n) = max k such that every graph on n vertices with > n\u00b2/4 edges contains a triangle with degree sum \u2265 k. Conjecture: h(n) \u2265 (2(\u221a3\u22121)\u2212o(1))n \u2248 1.464n. Known: (21/16)n \u2264 h(n) \u2264 2(\u221a3\u22121)n.",
+  "description": "Let h(n) = max k such that every graph on n vertices with > n²/4 edges contains a triangle with degree sum ≥ k. Conjecture: h(n) ≥ (2(√3−1)−o(1))n ≈ 1.464n. Known: (21/16)n ≤ h(n) ≤ 2(√3−1)n.",
   "meta": {
-    "author": "Erd\u0151s-Laskar (1985), Fan (1988)",
+    "author": "Erdős-Laskar (1985), Fan (1988)",
     "sourceUrl": "https://erdosproblems.com/1033",
     "date": "1985",
     "status": "axiomatized",
@@ -47,7 +47,7 @@
     "originalContributions": [
       "Formal definition of h(n) as supremum of valid lower bounds",
       "Triangle structure with degree sum formalization",
-      "Statement of Erd\u0151s-Laskar and Fan bounds as axioms",
+      "Statement of Erdős-Laskar and Fan bounds as axioms",
       "Formalization of the main conjecture and its asymptotic equivalent"
     ],
     "relatedProblems": [],
@@ -56,14 +56,14 @@
     "assumptions": "3 axioms (erdos_laskar_upper, erdos_laskar_lower, fan_lower). 0 sorries (h_as_min, turan_plus_one, h_four, h_spec all proved). Note: erdos_laskar_upper and fan_lower axioms are too strong for small n (asymptotic results stated as universal)."
   },
   "overview": {
-    "historicalContext": "P\u00e1l Tur\u00e1n proved in 1941 that every graph on $n$ vertices with more than $\\lfloor n^2/4 \\rfloor$ edges contains a triangle \u2014 establishing the foundational result of extremal graph theory. This problem, posed by Erd\u0151s and Laskar, asks a refined question: given that triangles must exist above the Tur\u00e1n threshold, how large must the degree sum of the *heaviest* triangle be?\n\nErd\u0151s and Renu Laskar (1985) proved the initial bounds $(1+c)n \\leq h(n) \\leq 2(\\sqrt{3}-1)n$, where the upper bound $2(\\sqrt{3}-1) \\approx 1.464$ comes from optimizing triangle configurations in nearly-bipartite graphs close to the Tur\u00e1n graph $T(n,2)$. Genghua Fan (1988) improved the lower bound to $(21/16)n = 1.3125n$ via careful degree counting arguments.\n\nThe gap between $1.3125n$ and $1.464n$ remains open. The conjectured answer is $h(n) = (2(\\sqrt{3}-1) - o(1))n$, which would mean the Erd\u0151s-Laskar construction is essentially optimal.",
-    "problemStatement": "**Problem Statement**\n\nLet h(n) be such that every graph on n vertices with > n\u00b2/4 edges contains a triangle whose vertices have degrees summing to at least h(n). Estimate h(n).\n\n**Conjecture**: h(n) \u2265 (2(\u221a3\u22121)\u2212o(1))n \u2248 1.464n\n\n**Status**: OPEN",
-    "text": "Let h(n) = max k such that every graph on n vertices with > n\u00b2/4 edges contains a triangle with degree sum \u2265 k. Conjecture: h(n) \u2265 (2(\u221a3\u22121)\u2212o(1))n \u2248 1.464n. Known: (21/16)n \u2264 h(n) \u2264 2(\u221a3\u22121)n.",
-    "proofStrategy": "**Known Approach**\n\n1. **Upper Bound**: Erd\u0151s-Laskar construct graphs just above Tur\u00e1n threshold where all triangles have degree sum \u2264 2(\u221a3\u22121)n.\n\n2. **Lower Bound (Fan)**: Careful analysis shows h(n) \u2265 (21/16)n via degree counting in triangles.\n\n3. **Key Insight**: The constant 2(\u221a3\u22121) arises from optimizing triangle configurations in nearly-bipartite graphs.\n\n4. **Gap**: Closing the 0.15n gap between bounds remains open.",
+    "historicalContext": "Pál Turán proved in 1941 that every graph on $n$ vertices with more than $\\lfloor n^2/4 \\rfloor$ edges contains a triangle — establishing the foundational result of extremal graph theory. This problem, posed by Erdős and Laskar, asks a refined question: given that triangles must exist above the Turán threshold, how large must the degree sum of the *heaviest* triangle be?\n\nErdős and Renu Laskar (1985) proved the initial bounds $(1+c)n \\leq h(n) \\leq 2(\\sqrt{3}-1)n$, where the upper bound $2(\\sqrt{3}-1) \\approx 1.464$ comes from optimizing triangle configurations in nearly-bipartite graphs close to the Turán graph $T(n,2)$. Genghua Fan (1988) improved the lower bound to $(21/16)n = 1.3125n$ via careful degree counting arguments.\n\nThe gap between $1.3125n$ and $1.464n$ remains open. The conjectured answer is $h(n) = (2(\\sqrt{3}-1) - o(1))n$, which would mean the Erdős-Laskar construction is essentially optimal.",
+    "problemStatement": "**Problem Statement**\n\nLet h(n) be such that every graph on n vertices with > n²/4 edges contains a triangle whose vertices have degrees summing to at least h(n). Estimate h(n).\n\n**Conjecture**: h(n) ≥ (2(√3−1)−o(1))n ≈ 1.464n\n\n**Status**: OPEN",
+    "text": "Let h(n) = max k such that every graph on n vertices with > n²/4 edges contains a triangle with degree sum ≥ k. Conjecture: h(n) ≥ (2(√3−1)−o(1))n ≈ 1.464n. Known: (21/16)n ≤ h(n) ≤ 2(√3−1)n.",
+    "proofStrategy": "**Known Approach**\n\n1. **Upper Bound**: Erdős-Laskar construct graphs just above Turán threshold where all triangles have degree sum ≤ 2(√3−1)n.\n\n2. **Lower Bound (Fan)**: Careful analysis shows h(n) ≥ (21/16)n via degree counting in triangles.\n\n3. **Key Insight**: The constant 2(√3−1) arises from optimizing triangle configurations in nearly-bipartite graphs.\n\n4. **Gap**: Closing the 0.15n gap between bounds remains open.",
     "keyInsights": [
-      "Tur\u00e1n threshold: n\u00b2/4 edges forces a triangle",
+      "Turán threshold: n²/4 edges forces a triangle",
       "h(n) = guaranteed minimum of max triangle degree sum",
-      "Upper bound 2(\u221a3\u22121)n \u2248 1.464n from Erd\u0151s-Laskar",
+      "Upper bound 2(√3−1)n ≈ 1.464n from Erdős-Laskar",
       "Lower bound (21/16)n = 1.3125n from Fan",
       "Gap of about 0.15n remains open"
     ],
@@ -86,11 +86,11 @@
     },
     {
       "id": "turan-threshold",
-      "title": "Tur\u00e1n Threshold",
+      "title": "Turán Threshold",
       "summary": "turanThreshold, isAboveTuran, turan_has_triangle",
       "startLine": 43,
       "endLine": 60,
-      "mathContext": "Tur\u00e1n (1941): $|E(G)| > \\lfloor n^2/4 \\rfloor \\Rightarrow G$ contains a triangle."
+      "mathContext": "Turán (1941): $|E(G)| > \\lfloor n^2/4 \\rfloor \\Rightarrow G$ contains a triangle."
     },
     {
       "id": "triangles",
@@ -110,15 +110,15 @@
     },
     {
       "id": "constant",
-      "title": "The Constant 2(\u221a3\u22121)",
+      "title": "The Constant 2(√3−1)",
       "summary": "erdosLaskarConstant, erdosLaskar_approx",
       "startLine": 119,
       "endLine": 140,
-      "mathContext": "$2(\\sqrt{3}-1) \\approx 1.464$. Arises from optimizing triangle degree sums in nearly-bipartite graphs near the Tur\u00e1n graph $T(n,2)$."
+      "mathContext": "$2(\\sqrt{3}-1) \\approx 1.464$. Arises from optimizing triangle degree sums in nearly-bipartite graphs near the Turán graph $T(n,2)$."
     },
     {
       "id": "upper-bound",
-      "title": "Erd\u0151s-Laskar Upper Bound",
+      "title": "Erdős-Laskar Upper Bound",
       "summary": "erdos_laskar_upper, upper_bound_tight",
       "startLine": 141,
       "endLine": 158,
@@ -126,7 +126,7 @@
     },
     {
       "id": "original-lower",
-      "title": "Erd\u0151s-Laskar Lower Bound",
+      "title": "Erdős-Laskar Lower Bound",
       "summary": "erdos_laskar_lower, lower_beats_n",
       "startLine": 159,
       "endLine": 176,
@@ -182,7 +182,7 @@
     },
     {
       "id": "turan-graph",
-      "title": "Relation to Tur\u00e1n Graph",
+      "title": "Relation to Turán Graph",
       "summary": "bipartite_no_triangle, turan_plus_one",
       "startLine": 298,
       "endLine": 321,
@@ -197,10 +197,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #1033 asks to estimate h(n), where every graph on n vertices with > n\u00b2/4 edges contains a triangle with degree sum \u2265 h(n). Erd\u0151s-Laskar (1985) proved h(n) \u2264 2(\u221a3\u22121)n, and Fan (1988) proved h(n) \u2265 (21/16)n. The gap remains open.",
-    "implications": "1. **Tur\u00e1n Theory Extension**: Refines our understanding beyond triangle existence\n\n**2. Degree-Sum Problems**: Template for similar extremal questions\n\n3. **Extremal Graph Structure**: Near-Tur\u00e1n graphs have specific triangle properties\n\n4. **Algorithmic Implications**: Finding high-degree-sum triangles.",
+    "summary": "Erdős Problem #1033 asks to estimate h(n), where every graph on n vertices with > n²/4 edges contains a triangle with degree sum ≥ h(n). Erdős-Laskar (1985) proved h(n) ≤ 2(√3−1)n, and Fan (1988) proved h(n) ≥ (21/16)n. The gap remains open.",
+    "implications": "1. **Turán Theory Extension**: Refines our understanding beyond triangle existence\n\n**2. Degree-Sum Problems**: Template for similar extremal questions\n\n3. **Extremal Graph Structure**: Near-Turán graphs have specific triangle properties\n\n4. **Algorithmic Implications**: Finding high-degree-sum triangles.",
     "openQuestions": [
-      "Is h(n) = (2(\u221a3\u22121)\u2212o(1))n? (Main conjecture)",
+      "Is h(n) = (2(√3−1)−o(1))n? (Main conjecture)",
       "What are the extremal graphs achieving h(n)?",
       "Can the lower bound be improved beyond (21/16)n?",
       "What about k-cliques instead of triangles?",
@@ -210,40 +210,40 @@
   "crossReferences": [
     {
       "relationship": "foundational",
-      "description": "Erd\u0151s #905 establishes that every dense graph (above Tur\u00e1n threshold) has an edge in at least n/6 triangles. This codegree result is a prerequisite for understanding triangle degree-sum guarantees and underlies the book lemma used in related lower bound arguments.",
+      "description": "Erdős #905 establishes that every dense graph (above Turán threshold) has an edge in at least n/6 triangles. This codegree result is a prerequisite for understanding triangle degree-sum guarantees and underlies the book lemma used in related lower bound arguments.",
       "targetId": "erdos-905"
     },
     {
       "relationship": "companion",
-      "description": "Erd\u0151s #1034 asks about triangle neighbor counts in dense graphs and is directly companion to #1033. Both probe the structure of triangles above the Tur\u00e1n threshold, with #1034 measuring neighborhood size and #1033 measuring degree sums of triangle vertices.",
+      "description": "Erdős #1034 asks about triangle neighbor counts in dense graphs and is directly companion to #1033. Both probe the structure of triangles above the Turán threshold, with #1034 measuring neighborhood size and #1033 measuring degree sums of triangle vertices.",
       "targetId": "erdos-1034"
     },
     {
       "relationship": "related",
-      "description": "Erd\u0151s #1032 studies 4-chromatic critical graphs with linear minimum degree, connecting the Tur\u00e1n-type threshold with chromatic criticality. Minimum degree conditions are closely tied to degree-sum phenomena in dense graphs.",
+      "description": "Erdős #1032 studies 4-chromatic critical graphs with linear minimum degree, connecting the Turán-type threshold with chromatic criticality. Minimum degree conditions are closely tied to degree-sum phenomena in dense graphs.",
       "targetId": "erdos-1032"
     },
     {
       "relationship": "context",
-      "description": "Ramsey's theorem guarantees clique or independent set structure in dense graphs. Triangle existence above the Tur\u00e1n threshold is the r=3 instance of Ramsey-type problems, and the degree-sum question refines the structural information forced by Ramsey thresholds.",
+      "description": "Ramsey's theorem guarantees clique or independent set structure in dense graphs. Triangle existence above the Turán threshold is the r=3 instance of Ramsey-type problems, and the degree-sum question refines the structural information forced by Ramsey thresholds.",
       "targetId": "ramseys-theorem"
     },
     {
       "relationship": "related",
-      "description": "Erd\u0151s #1031 studies induced regular subgraphs in graphs below the Ramsey threshold. The interplay between degree regularity and extremal thresholds is shared with #1033's analysis of degree sums in triangles near the Tur\u00e1n threshold.",
+      "description": "Erdős #1031 studies induced regular subgraphs in graphs below the Ramsey threshold. The interplay between degree regularity and extremal thresholds is shared with #1033's analysis of degree sums in triangles near the Turán threshold.",
       "targetId": "erdos-1031"
     }
   ],
   "references": [
     {
       "authors": [
-        "P. Erd\u0151s",
+        "P. Erdős",
         "R. Laskar"
       ],
       "title": "A note on the size of a chordal subgraph",
       "venue": "Congressus Numerantium",
       "year": "1985",
-      "note": "Original paper introducing h(n) and establishing both the upper bound 2(\u221a3\u22121)n and an initial lower bound for the degree-sum problem."
+      "note": "Original paper introducing h(n) and establishing both the upper bound 2(√3−1)n and an initial lower bound for the degree-sum problem."
     },
     {
       "authors": [
@@ -253,41 +253,41 @@
       "venue": "Journal of Graph Theory",
       "volume": "12",
       "year": "1988",
-      "pages": "249\u2013263",
-      "note": "Improves the lower bound to h(n) \u2265 (21/16)n via careful degree-counting arguments in triangles above the Tur\u00e1n threshold."
+      "pages": "249–263",
+      "note": "Improves the lower bound to h(n) ≥ (21/16)n via careful degree-counting arguments in triangles above the Turán threshold."
     },
     {
       "authors": [
-        "P. Tur\u00e1n"
+        "P. Turán"
       ],
       "title": "On an extremal problem in graph theory",
-      "venue": "Matematikai \u00e9s Fizikai Lapok",
+      "venue": "Matematikai és Fizikai Lapok",
       "volume": "48",
       "year": "1941",
-      "pages": "436\u2013452",
-      "note": "Foundational result proving that every graph on n vertices with more than n\u00b2/4 edges contains a triangle, establishing the threshold that underlies the entire h(n) problem."
+      "pages": "436–452",
+      "note": "Foundational result proving that every graph on n vertices with more than n²/4 edges contains a triangle, establishing the threshold that underlies the entire h(n) problem."
     },
     {
       "authors": [
-        "B. Bollob\u00e1s"
+        "B. Bollobás"
       ],
       "title": "Extremal Graph Theory",
       "venue": "Academic Press, London",
       "year": "1978",
-      "note": "Comprehensive treatment of Tur\u00e1n-type problems, extremal thresholds, and degree-sum methods in graphs. Standard reference for the techniques used in proving bounds on h(n)."
+      "note": "Comprehensive treatment of Turán-type problems, extremal thresholds, and degree-sum methods in graphs. Standard reference for the techniques used in proving bounds on h(n)."
     },
     {
       "authors": [
-        "T. K\u0151v\u00e1ri",
-        "V.T. S\u00f3s",
-        "P. Tur\u00e1n"
+        "T. Kővári",
+        "V.T. Sós",
+        "P. Turán"
       ],
       "title": "On a problem of K. Zarankiewicz",
       "venue": "Colloquium Mathematicum",
       "volume": "3",
       "year": "1954",
-      "pages": "50\u201357",
-      "note": "K\u0151v\u00e1ri\u2013S\u00f3s\u2013Tur\u00e1n theorem on bipartite subgraph densities; the nearly-bipartite structure of Tur\u00e1n graph T(n,2) that achieves the upper bound in the h(n) problem relies on bipartite extremal results from this line of work."
+      "pages": "50–57",
+      "note": "Kővári–Sós–Turán theorem on bipartite subgraph densities; the nearly-bipartite structure of Turán graph T(n,2) that achieves the upper bound in the h(n) problem relies on bipartite extremal results from this line of work."
     }
   ],
   "leanFile": {
@@ -306,7 +306,7 @@
     "lineCount": 1018,
     "axiomCount": 3,
     "theoremCount": 28,
-    "definitionCount": 17,
+    "definitionCount": 19,
     "sorries": 0,
     "path": "Proofs/Erdos1033Problem.lean"
   },
