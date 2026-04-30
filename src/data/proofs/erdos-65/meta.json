@@ -1,10 +1,10 @@
 {
   "id": "erdos-65",
-  "title": "Erd\u0151s Problem #65: Cycle Lengths in Dense Graphs",
+  "title": "Erdős Problem #65: Cycle Lengths in Dense Graphs",
   "slug": "erdos-65",
-  "description": "Let G be a graph with n vertices and kn edges. Is the sum of reciprocals of cycle lengths \u03a3 1/a\u1d62 \u226b log k? Is this sum minimized when G is complete bipartite?",
+  "description": "Let G be a graph with n vertices and kn edges. Is the sum of reciprocals of cycle lengths Σ 1/aᵢ ≫ log k? Is this sum minimized when G is complete bipartite?",
   "meta": {
-    "author": "Erd\u0151s & Hajnal",
+    "author": "Erdős & Hajnal",
     "sourceUrl": "https://erdosproblems.com/65",
     "date": "",
     "status": "verified",
@@ -26,10 +26,10 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Posed by Erd\u0151s and Hajnal, this problem connects edge density to cycle structure in extremal graph theory. The first part was proved by Gy\u00e1rf\u00e1s, Koml\u00f3s, and Szemer\u00e9di in their 1984 paper 'On a problem of K. Zarankiewicz,' establishing that \u03a3 1/a\u1d62 grows at least logarithmically with edge density. Liu and Montgomery (2020) proved the sharp constant is (1/2 - o(1)), resolving the quantitative question completely. The second part \u2014 whether complete bipartite graphs minimize the cycle variety \u2014 remains open and connects to deep questions about the interaction between graph symmetry and cycle structure.",
-    "problemStatement": "Let G be a graph with n vertices and kn edges, and let a\u2081 < a\u2082 < ... be the distinct cycle lengths in G. Is \u03a3 1/a\u1d62 \u226b log k? Is this sum minimized when G is a complete bipartite graph?",
-    "text": "Let G be a graph with n vertices and kn edges. Is the sum of reciprocals of cycle lengths \u03a3 1/a\u1d62 \u226b log k? Is this sum minimized when G is complete bipartite?",
-    "proofStrategy": "The formalization defines cycle detection predicates, edge density, and the reciprocal sum. The GKS theorem is stated as an axiom. The open minimization question is formalized as Erdos65Question. Related results include the K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem.",
+    "historicalContext": "Posed by Erdős and Hajnal, this problem connects edge density to cycle structure in extremal graph theory. The first part was proved by Gyárfás, Komlós, and Szemerédi in their 1984 paper 'On a problem of K. Zarankiewicz,' establishing that Σ 1/aᵢ grows at least logarithmically with edge density. Liu and Montgomery (2020) proved the sharp constant is (1/2 - o(1)), resolving the quantitative question completely. The second part — whether complete bipartite graphs minimize the cycle variety — remains open and connects to deep questions about the interaction between graph symmetry and cycle structure.",
+    "problemStatement": "Let G be a graph with n vertices and kn edges, and let a₁ < a₂ < ... be the distinct cycle lengths in G. Is Σ 1/aᵢ ≫ log k? Is this sum minimized when G is a complete bipartite graph?",
+    "text": "Let G be a graph with n vertices and kn edges. Is the sum of reciprocals of cycle lengths Σ 1/aᵢ ≫ log k? Is this sum minimized when G is complete bipartite?",
+    "proofStrategy": "The formalization defines cycle detection predicates, edge density, and the reciprocal sum. The GKS theorem is stated as an axiom. The open minimization question is formalized as Erdos65Question. Related results include the Kővári-Sós-Turán theorem.",
     "keyInsights": [
       "Dense graphs must have diverse cycle lengths - proved by GKS (1984)",
       "Complete bipartite graphs have only even cycles {4, 6, 8, ...}",
@@ -46,10 +46,10 @@
     {
       "id": "header",
       "title": "Problem Statement",
-      "summary": "Erd\u0151s-Hajnal problem: edge density vs cycle length variety, GKS theorem, minimization question",
+      "summary": "Erdős-Hajnal problem: edge density vs cycle length variety, GKS theorem, minimization question",
       "startLine": 1,
       "endLine": 23,
-      "mathContext": "Verified: Erd\u0151s-Hajnal problem: edge density vs cycle length variety, GKS theorem, minimization question"
+      "mathContext": "Verified: Erdős-Hajnal problem: edge density vs cycle length variety, GKS theorem, minimization question"
     },
     {
       "id": "core-definitions",
@@ -70,10 +70,10 @@
     {
       "id": "gks-theorem",
       "title": "GKS Theorem (1984)",
-      "summary": "Gy\u00e1rf\u00e1s-Koml\u00f3s-Szemer\u00e9di: \u03a3 1/a\u1d62 \u2265 c\u00b7log(e/n) for graphs with e edges on n vertices",
+      "summary": "Gyárfás-Komlós-Szemerédi: Σ 1/aᵢ ≥ c·log(e/n) for graphs with e edges on n vertices",
       "startLine": 87,
       "endLine": 108,
-      "mathContext": "Gy\u00e1rf\u00e1s-Koml\u00f3s-Szemer\u00e9di: $\\sum$ 1/a\u1d62 $\\geq$ c\u00b7log(e/n) for graphs with e edges on n vertices"
+      "mathContext": "Gyárfás-Komlós-Szemerédi: $\\sum$ 1/aᵢ $\\geq$ c·log(e/n) for graphs with e edges on n vertices"
     },
     {
       "id": "open-question",
@@ -109,11 +109,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #65 is PARTIALLY SOLVED. The logarithmic lower bound \u03a3 1/a\u1d62 \u226b log k was proved by Gy\u00e1rf\u00e1s-Koml\u00f3s-Szemer\u00e9di (1984), with sharp constant by Liu-Montgomery (2020). The minimization question remains open.",
-    "implications": "The logarithmic lower bound $\\sum 1/a_i \\gg \\log k$ reveals a structural principle: dense graphs contain not just many cycles, but cycles of many different lengths, with the reciprocal-length sum growing logarithmically with edge density. The sharp constant by Liu-Montgomery (2020) quantifies this bridge between Tur\u00e1n-type density ($kn$ edges) and the cycle spectrum. The complete bipartite minimization conjecture, if resolved, would identify the extremal structure \u2014 analogous to how Tur\u00e1n's theorem identifies the $K_{r+1}$-free extremal graph. This connects to the broader program in extremal graph theory of understanding how local substructure (cycle lengths) is constrained by global density.",
+    "summary": "Erdős Problem #65 is PARTIALLY SOLVED. The logarithmic lower bound Σ 1/aᵢ ≫ log k was proved by Gyárfás-Komlós-Szemerédi (1984), with sharp constant by Liu-Montgomery (2020). The minimization question remains open.",
+    "implications": "The logarithmic lower bound $\\sum 1/a_i \\gg \\log k$ reveals a structural principle: dense graphs contain not just many cycles, but cycles of many different lengths, with the reciprocal-length sum growing logarithmically with edge density. The sharp constant by Liu-Montgomery (2020) quantifies this bridge between Turán-type density ($kn$ edges) and the cycle spectrum. The complete bipartite minimization conjecture, if resolved, would identify the extremal structure — analogous to how Turán's theorem identifies the $K_{r+1}$-free extremal graph. This connects to the broader program in extremal graph theory of understanding how local substructure (cycle lengths) is constrained by global density.",
     "openQuestions": [
       "Is the reciprocal sum minimized by complete bipartite graphs among all graphs with the same edge count?",
-      "What is the analogous result for odd cycle lengths only \u2014 does parity restriction change the extremal structure?",
+      "What is the analogous result for odd cycle lengths only — does parity restriction change the extremal structure?",
       "Can the Liu-Montgomery sharp constant be formalized in Lean using Mathlib's graph theory infrastructure?"
     ]
   },
@@ -139,7 +139,7 @@
       "relationship": "related"
     },
     {
-      "relevance": "The Szemer\u00e9di Regularity Lemma is a key tool in proving cycle-structure results for dense graphs, including the GKS theorem approach.",
+      "relevance": "The Szemerédi Regularity Lemma is a key tool in proving cycle-structure results for dense graphs, including the GKS theorem approach.",
       "targetId": "szemeredi-regularity",
       "relationship": "related"
     },
@@ -152,56 +152,56 @@
   "references": [
     {
       "authors": [
-        "A. Gy\u00e1rf\u00e1s",
-        "J. Koml\u00f3s",
-        "E. Szemer\u00e9di"
+        "A. Gyárfás",
+        "J. Komlós",
+        "E. Szemerédi"
       ],
       "title": "On a problem of K. Zarankiewicz",
       "venue": "Acta Mathematica Hungarica",
       "year": "1984",
       "volume": "44",
-      "pages": "283\u2013293",
-      "note": "Proves \u03a3 1/a\u1d62 \u2265 c\u00b7log(e/n) for graphs with e edges; the GKS theorem axiomatized in this formalization."
+      "pages": "283–293",
+      "note": "Proves Σ 1/aᵢ ≥ c·log(e/n) for graphs with e edges; the GKS theorem axiomatized in this formalization."
     },
     {
       "authors": [
         "H. Liu",
         "R. Montgomery"
       ],
-      "title": "A solution to Erd\u0151s and Hajnal's odd cycle problem",
+      "title": "A solution to Erdős and Hajnal's odd cycle problem",
       "venue": "Journal of the American Mathematical Society",
       "year": "2023",
       "volume": "36",
-      "pages": "1191\u20131234",
-      "note": "Proves the sharp constant (1/2 \u2212 o(1)) log k for the reciprocal sum, fully resolving the quantitative part of Problem 65."
+      "pages": "1191–1234",
+      "note": "Proves the sharp constant (1/2 − o(1)) log k for the reciprocal sum, fully resolving the quantitative part of Problem 65."
     },
     {
       "authors": [
-        "P. Erd\u0151s",
+        "P. Erdős",
         "A. Hajnal"
       ],
       "title": "On the structure of graphs without cycles of given lengths",
-      "venue": "Colloquium Mathematicum Societatis J\u00e1nos Bolyai",
+      "venue": "Colloquium Mathematicum Societatis János Bolyai",
       "year": "1966",
-      "note": "Original problem statement by Erd\u0151s and Hajnal posing both the logarithmic lower bound and the minimization question."
+      "note": "Original problem statement by Erdős and Hajnal posing both the logarithmic lower bound and the minimization question."
     },
     {
       "authors": [
-        "B. Bollob\u00e1s"
+        "B. Bollobás"
       ],
       "title": "Extremal Graph Theory",
       "venue": "Academic Press",
       "year": "1978",
-      "note": "Standard reference for extremal graph theory including K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem and Zarankiewicz problem techniques used in this formalization."
+      "note": "Standard reference for extremal graph theory including Kővári-Sós-Turán theorem and Zarankiewicz problem techniques used in this formalization."
     },
     {
       "authors": [
-        "E. Szemer\u00e9di"
+        "E. Szemerédi"
       ],
       "title": "Regular Partitions of Graphs",
-      "venue": "Probl\u00e8mes Combinatoires et Th\u00e9orie des Graphes (Colloq. Internat. CNRS)",
+      "venue": "Problèmes Combinatoires et Théorie des Graphes (Colloq. Internat. CNRS)",
       "year": "1978",
-      "pages": "399\u2013401",
+      "pages": "399–401",
       "note": "The Regularity Lemma, a key structural tool underlying density-based cycle arguments in extremal graph theory."
     }
   ],
@@ -217,7 +217,9 @@
     "namespace": "Erdos65",
     "lineCount": 217,
     "axiomCount": 0,
-    "sorries": 0
+    "sorries": 0,
+    "definitionCount": 9,
+    "theoremCount": 1
   },
   "sorries": 0
 }

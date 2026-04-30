@@ -1,8 +1,8 @@
 {
   "id": "erdos-155",
-  "title": "Erd\u0151s Problem #155: Slow Growth of Maximum Sidon Subsets",
+  "title": "Erdős Problem #155: Slow Growth of Maximum Sidon Subsets",
   "slug": "erdos-155",
-  "description": "Let F(N) be the largest Sidon subset of {1,...,N}. Is F(N+k) \u2264 F(N)+1 for all sufficiently large N, for every fixed k? Possibly even for k \u2248 \u03b5\u221aN. F(N) ~ \u221aN. Status: OPEN.",
+  "description": "Let F(N) be the largest Sidon subset of {1,...,N}. Is F(N+k) ≤ F(N)+1 for all sufficiently large N, for every fixed k? Possibly even for k ≈ ε√N. F(N) ~ √N. Status: OPEN.",
   "meta": {
     "erdosNumber": 155,
     "status": "axiomatized",
@@ -32,12 +32,12 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The study of Sidon sets ($B_2$ sets) began when the Hungarian mathematician Simon Sidon asked Erd\u0151s in 1932 about sets of integers with all pairwise sums distinct. Erd\u0151s and Tur\u00e1n (1941) proved the fundamental upper bound $F(N) = O(\\sqrt{N})$ by counting pairwise sums, and Singer (1938) achieved the matching lower bound $F(N) \\ge (1-o(1))\\sqrt{N}$ using perfect difference sets from finite projective geometry. Lindstr\u00f6m (1969) refined the upper bound to $F(N) \\le \\sqrt{N} + N^{1/4} + 1$, and the gap between upper and lower bounds in the second-order term remains open (the '$\\sqrt{N} + 1/2$ vs $\\sqrt{N} + N^{1/4}$' question). Erd\u0151s posed Problem #155 around 1992, asking about the fine growth structure: since $F(N)$ increases by 1 only $\\sim \\sqrt{N}$ times in $[1,N]$, the increase points should be very sparse \u2014 heuristically spaced $\\sim \\sqrt{N}$ apart. The conjecture that $F(N+k) \\le F(N) + 1$ for fixed $k$ formalizes this, and the stronger form $k \\approx \\varepsilon\\sqrt{N}$ would nearly pin down the increase point distribution.",
+    "historicalContext": "The study of Sidon sets ($B_2$ sets) began when the Hungarian mathematician Simon Sidon asked Erdős in 1932 about sets of integers with all pairwise sums distinct. Erdős and Turán (1941) proved the fundamental upper bound $F(N) = O(\\sqrt{N})$ by counting pairwise sums, and Singer (1938) achieved the matching lower bound $F(N) \\ge (1-o(1))\\sqrt{N}$ using perfect difference sets from finite projective geometry. Lindström (1969) refined the upper bound to $F(N) \\le \\sqrt{N} + N^{1/4} + 1$, and the gap between upper and lower bounds in the second-order term remains open (the '$\\sqrt{N} + 1/2$ vs $\\sqrt{N} + N^{1/4}$' question). Erdős posed Problem #155 around 1992, asking about the fine growth structure: since $F(N)$ increases by 1 only $\\sim \\sqrt{N}$ times in $[1,N]$, the increase points should be very sparse — heuristically spaced $\\sim \\sqrt{N}$ apart. The conjecture that $F(N+k) \\le F(N) + 1$ for fixed $k$ formalizes this, and the stronger form $k \\approx \\varepsilon\\sqrt{N}$ would nearly pin down the increase point distribution.",
     "problemStatement": "Is it true that for every $k \\ge 1$, $F(N+k) \\le F(N) + 1$ for all sufficiently large $N$, where $F(N)$ is the maximum Sidon subset size of $\\{1,\\ldots,N\\}$?",
-    "text": "Let F(N) be the largest Sidon subset of {1,...,N}. Is F(N+k) \u2264 F(N)+1 for all sufficiently large N, for every fixed k? Possibly even for k \u2248 \u03b5\u221aN. F(N) ~ \u221aN. Status: OPEN.",
-    "proofStrategy": "We formalize Sidon sets, define $F(N)$ axiomatically with achievability and optimality axioms, state the Erd\u0151s\u2013Tur\u00e1n/Lindstr\u00f6m upper bound and Singer lower bound, and present the main conjecture ($F(N+k) \\le F(N)+1$ for fixed $k$) and its stronger form ($k \\approx \\varepsilon\\sqrt{N}$). Consequences about the sparsity of increase points and known small values from OEIS A003022 are also axiomatized.",
+    "text": "Let F(N) be the largest Sidon subset of {1,...,N}. Is F(N+k) ≤ F(N)+1 for all sufficiently large N, for every fixed k? Possibly even for k ≈ ε√N. F(N) ~ √N. Status: OPEN.",
+    "proofStrategy": "We formalize Sidon sets, define $F(N)$ axiomatically with achievability and optimality axioms, state the Erdős–Turán/Lindström upper bound and Singer lower bound, and present the main conjecture ($F(N+k) \\le F(N)+1$ for fixed $k$) and its stronger form ($k \\approx \\varepsilon\\sqrt{N}$). Consequences about the sparsity of increase points and known small values from OEIS A003022 are also axiomatized.",
     "keyInsights": [
-      "**$F(N) \\sim \\sqrt{N}$ with tight bounds**: Erd\u0151s\u2013Tur\u00e1n gives $F(N) \\le \\sqrt{N} + N^{1/4} + 1$; Singer's finite-field construction gives $F(N) \\ge \\sqrt{N} - O(N^{1/4})$. The second-order term remains unknown.",
+      "**$F(N) \\sim \\sqrt{N}$ with tight bounds**: Erdős–Turán gives $F(N) \\le \\sqrt{N} + N^{1/4} + 1$; Singer's finite-field construction gives $F(N) \\ge \\sqrt{N} - O(N^{1/4})$. The second-order term remains unknown.",
       "**Increase points have density $\\sim 1/\\sqrt{N}$**: Since $F$ increases $\\sim \\sqrt{N}$ times in $[1,N]$ (one step at a time), the average gap between increase points is $\\sim \\sqrt{N}$, making any fixed $k$ negligible for large $N$",
       "**The strong form implies near-uniform spacing**: If $F(N + \\lfloor\\varepsilon\\sqrt{N}\\rfloor) \\le F(N)+1$, then increase points are separated by at least $\\varepsilon\\sqrt{N}$, meaning they distribute almost uniformly at scale $\\sqrt{N}$",
       "**Singer's finite geometry construction**: For $q$ prime power, the set of elements with specified trace in $\\mathbb{F}_{q^2}^*$ gives a perfect difference set of size $q+1$ in $\\mathbb{Z}/(q^2+q+1)$, yielding optimal Sidon sets",
@@ -78,8 +78,8 @@
       "title": "Asymptotic Bounds",
       "startLine": 60,
       "endLine": 72,
-      "summary": "Axiomatizes the Erd\u0151s\u2013Tur\u00e1n/Lindstr\u00f6m upper bound $F(N) \\le \\sqrt{N} + N^{1/4} + 1$ and the Singer lower bound $F(N) \\ge (1-\\varepsilon)\\sqrt{N}$ for large $N$. Together: $F(N) = (1+o(1))\\sqrt{N}$.",
-      "mathContext": "Axiomatized: Axiomatizes the Erd\u0151s\u2013Tur\u00e1n/Lindstr\u00f6m upper bound $F(N) \\le \\sqrt{N} + N^{1/4} + 1$ and the Singer lower bound $F(N) \\ge (1-\\varepsilon)\\sqrt{N}$ for large $N$. Together: $F(N) = (1+o(1))\\sqrt{N}$."
+      "summary": "Axiomatizes the Erdős–Turán/Lindström upper bound $F(N) \\le \\sqrt{N} + N^{1/4} + 1$ and the Singer lower bound $F(N) \\ge (1-\\varepsilon)\\sqrt{N}$ for large $N$. Together: $F(N) = (1+o(1))\\sqrt{N}$.",
+      "mathContext": "Axiomatized: Axiomatizes the Erdős–Turán/Lindström upper bound $F(N) \\le \\sqrt{N} + N^{1/4} + 1$ and the Singer lower bound $F(N) \\ge (1-\\varepsilon)\\sqrt{N}$ for large $N$. Together: $F(N) = (1+o(1))\\sqrt{N}$."
     },
     {
       "id": "main-conjecture",
@@ -94,8 +94,8 @@
       "title": "Stronger Form: $k \\approx \\varepsilon\\sqrt{N}$",
       "startLine": 83,
       "endLine": 91,
-      "summary": "Erd\u0151s's stronger conjecture: $F(N + \\lfloor\\varepsilon\\sqrt{N}\\rfloor) \\le F(N) + 1$, implying consecutive increase points are separated by $\\ge \\varepsilon\\sqrt{N}$.",
-      "mathContext": "Mathematical content: Erd\u0151s's stronger conjecture: $F(N + \\lfloor\\varepsilon\\sqrt{N}\\rfloor) \\le F(N) + 1$, implying consecutive increase points are separated by $\\ge \\varepsilon\\sqrt{N}$."
+      "summary": "Erdős's stronger conjecture: $F(N + \\lfloor\\varepsilon\\sqrt{N}\\rfloor) \\le F(N) + 1$, implying consecutive increase points are separated by $\\ge \\varepsilon\\sqrt{N}$.",
+      "mathContext": "Mathematical content: Erdős's stronger conjecture: $F(N + \\lfloor\\varepsilon\\sqrt{N}\\rfloor) \\le F(N) + 1$, implying consecutive increase points are separated by $\\ge \\varepsilon\\sqrt{N}$."
     },
     {
       "id": "consequences",
@@ -115,13 +115,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #155 asks whether the maximum Sidon subset function F(N) grows so slowly that F(N+k) \u2264 F(N)+1 for any fixed k and large N. Since F(N) ~ \u221aN and increases by exactly 1 at each jump, the ~\u221aN increase points should be far apart. The problem remains open, with a stronger variant suggesting plateaus of length ~\u03b5\u221aN between consecutive increases.",
-    "implications": "A positive answer would provide precise structural information about the distribution of maximum Sidon sets, showing that optimal Sidon subsets of [N] and [N+k] differ by at most one element for large N. This connects to the broader question of understanding the second-order term in F(N) = \u221aN + O(N^{1/4}), with implications for combinatorial number theory and the structure of B_2 sequences.",
+    "summary": "Erdős Problem #155 asks whether the maximum Sidon subset function F(N) grows so slowly that F(N+k) ≤ F(N)+1 for any fixed k and large N. Since F(N) ~ √N and increases by exactly 1 at each jump, the ~√N increase points should be far apart. The problem remains open, with a stronger variant suggesting plateaus of length ~ε√N between consecutive increases.",
+    "implications": "A positive answer would provide precise structural information about the distribution of maximum Sidon sets, showing that optimal Sidon subsets of [N] and [N+k] differ by at most one element for large N. This connects to the broader question of understanding the second-order term in F(N) = √N + O(N^{1/4}), with implications for combinatorial number theory and the structure of B_2 sequences.",
     "openQuestions": [
-      "Does F(N+k) \u2264 F(N)+1 hold for all fixed k and sufficiently large N?",
-      "Does the stronger form with k \u2248 \u03b5\u221aN hold? What is the largest growth rate k(N) for which F(N+k(N)) \u2264 F(N)+1?",
-      "What is the second-order term in F(N) = \u221aN + ??? Specifically, is F(N) = \u221aN + O(1) or F(N) = \u221aN + \u0398(N^{1/4})?",
-      "Are the increase points of F(N) approximately uniformly distributed at scale \u221aN, or do they cluster?",
+      "Does F(N+k) ≤ F(N)+1 hold for all fixed k and sufficiently large N?",
+      "Does the stronger form with k ≈ ε√N hold? What is the largest growth rate k(N) for which F(N+k(N)) ≤ F(N)+1?",
+      "What is the second-order term in F(N) = √N + ??? Specifically, is F(N) = √N + O(1) or F(N) = √N + Θ(N^{1/4})?",
+      "Are the increase points of F(N) approximately uniformly distributed at scale √N, or do they cluster?",
       "Can probabilistic methods (random Sidon sets) shed light on the gap structure of F?"
     ]
   },
@@ -137,15 +137,15 @@
     "lineCount": 199,
     "axiomCount": 1,
     "theoremCount": 10,
-    "definitionCount": 1,
+    "definitionCount": 2,
     "path": "Proofs/Erdos155Problem.lean",
     "sorries": 0
   },
   "references": [
-    "Erd\u0151s\u2013Tur\u00e1n (1941): On a problem of Sidon in additive number theory",
+    "Erdős–Turán (1941): On a problem of Sidon in additive number theory",
     "Singer (1938): A theorem in finite projective geometry and some applications to number theory",
-    "Lindstr\u00f6m (1969): An inequality for B_2 sequences",
-    "Erd\u0151s (1992, 1994): Problem statements on slow growth of F(N)",
+    "Lindström (1969): An inequality for B_2 sequences",
+    "Erdős (1992, 1994): Problem statements on slow growth of F(N)",
     "Cilleruelo (2010): Sidon sets in N^d",
     "Ruzsa (1993): Solving a linear equation in a set of integers",
     "O'Bryant (2004): A complete annotated bibliography of work related to Sidon sets",
@@ -156,17 +156,17 @@
     {
       "targetId": "erdos-156",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
     },
     {
       "targetId": "erdos-332",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, difference-sets, open"
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, difference-sets, open"
     },
     {
       "targetId": "erdos-340",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, open, sidon-sets"
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, open, sidon-sets"
     }
   ],
   "sorries": 0
