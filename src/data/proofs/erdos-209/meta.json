@@ -1,10 +1,10 @@
 {
   "id": "erdos-209",
-  "title": "Erd\u0151s Problem #209: Gallai Triangles in Line Arrangements",
+  "title": "Erdős Problem #209: Gallai Triangles in Line Arrangements",
   "slug": "erdos-209",
-  "description": "Must every line arrangement (d \u2265 4 lines, no parallels, no 4-concurrent) have a Gallai triangle? NO, disproved by F\u00fcredi-Pal\u00e1sti (1984) and Escudero (2016).",
+  "description": "Must every line arrangement (d ≥ 4 lines, no parallels, no 4-concurrent) have a Gallai triangle? NO, disproved by Füredi-Palásti (1984) and Escudero (2016).",
   "meta": {
-    "author": "Erd\u0151s (problem), F\u00fcredi-Pal\u00e1sti (1984), Escudero (2016)",
+    "author": "Erdős (problem), Füredi-Palásti (1984), Escudero (2016)",
     "sourceUrl": "https://erdosproblems.com/209",
     "date": "2016",
     "status": "axiomatized",
@@ -44,9 +44,7 @@
       "IsOrdinaryPoint definition: exactly 2 lines meet",
       "Is3RichPoint definition: 3+ lines meet",
       "IsGallaiTriangle definition: triangle with ordinary vertices",
-      "sylvester_gallai axiom: ordinary points exist",
-      "furedi_palasti_1984 axiom: counterexamples for d not \u2261 0 (mod 9)",
-      "escudero_2016 axiom: counterexamples for all d \u2265 4",
+      "escudero_2016 axiom: counterexamples for all d ≥ 4",
       "erdos_209 theorem: main disproof"
     ],
     "axiomCount": 1,
@@ -54,15 +52,15 @@
     "assumptions": "1 axiom: escudero_2016. 0 sorries."
   },
   "overview": {
-    "historicalContext": "**Erd\u0151s Problem #209** is a question in incidence geometry about the structure of line arrangements. The classical Sylvester-Gallai theorem (1893) guarantees that any finite set of points not all collinear determines at least one \"ordinary line\" (containing exactly 2 points). Erd\u0151s asked: can we extend this to triangles?\n\n**Historical Development:**\n- **1893 (Sylvester-Gallai):** Ordinary points/lines must exist.\n- **1984 (F\u00fcredi-Pal\u00e1sti):** Disproved the conjecture for most d.\n- **2016 (Escudero):** Completed the disproof for ALL d \u2265 4.\n\n**Key Insight:** While ordinary points always exist, they can be positioned to avoid forming triangles with only ordinary vertices.",
-    "problemStatement": "**Problem Statement (Disproved)**\n\nLet $A$ be a finite collection of $d \\geq 4$ non-parallel lines in $\\mathbb{R}^2$ such that no point lies on 4 or more lines. Must there exist a **Gallai triangle** (or **ordinary triangle**): three lines from $A$ that form a triangle where each vertex involves exactly two lines?\n\n**Answer: NO!**\n\n**Resolution:**\n- F\u00fcredi-Pal\u00e1sti (1984): No for $d$ not divisible by 9\n- Escudero (2016): No for ALL $d \\geq 4$\n\n**Dual Formulation:** Given $n$ points with no 4 collinear, must there exist 3 points where each pair determines an ordinary line?",
-    "text": "Must every line arrangement (d \u2265 4 lines, no parallels, no 4-concurrent) have a Gallai triangle? NO, disproved by F\u00fcredi-Pal\u00e1sti (1984) and Escudero (2016).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Lines and Arrangements:** Define lines via coefficients, parallel criterion, and line arrangements as finite sets.\n\n2. **Incidence Properties:** Define ordinary points (2 lines), 3-rich points (3+ lines), and Gallai triangles.\n\n3. **Sylvester-Gallai:** Axiomatize that ordinary points always exist.\n\n4. **Counterexamples:** Axiomatize F\u00fcredi-Pal\u00e1sti (1984) and Escudero (2016) constructions.\n\n5. **Main Result:** Prove the conjecture is false for all d \u2265 4.\n\n6. **Dual Problem:** Explain the point-line duality.",
+    "historicalContext": "**Erdős Problem #209** is a question in incidence geometry about the structure of line arrangements. The classical Sylvester-Gallai theorem (1893) guarantees that any finite set of points not all collinear determines at least one \"ordinary line\" (containing exactly 2 points). Erdős asked: can we extend this to triangles?\n\n**Historical Development:**\n- **1893 (Sylvester-Gallai):** Ordinary points/lines must exist.\n- **1984 (Füredi-Palásti):** Disproved the conjecture for most d.\n- **2016 (Escudero):** Completed the disproof for ALL d ≥ 4.\n\n**Key Insight:** While ordinary points always exist, they can be positioned to avoid forming triangles with only ordinary vertices.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet $A$ be a finite collection of $d \\geq 4$ non-parallel lines in $\\mathbb{R}^2$ such that no point lies on 4 or more lines. Must there exist a **Gallai triangle** (or **ordinary triangle**): three lines from $A$ that form a triangle where each vertex involves exactly two lines?\n\n**Answer: NO!**\n\n**Resolution:**\n- Füredi-Palásti (1984): No for $d$ not divisible by 9\n- Escudero (2016): No for ALL $d \\geq 4$\n\n**Dual Formulation:** Given $n$ points with no 4 collinear, must there exist 3 points where each pair determines an ordinary line?",
+    "text": "Must every line arrangement (d ≥ 4 lines, no parallels, no 4-concurrent) have a Gallai triangle? NO, disproved by Füredi-Palásti (1984) and Escudero (2016).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Lines and Arrangements:** Define lines via coefficients, parallel criterion, and line arrangements as finite sets.\n\n2. **Incidence Properties:** Define ordinary points (2 lines), 3-rich points (3+ lines), and Gallai triangles.\n\n3. **Sylvester-Gallai:** Axiomatize that ordinary points always exist.\n\n4. **Counterexamples:** Axiomatize Füredi-Palásti (1984) and Escudero (2016) constructions.\n\n5. **Main Result:** Prove the conjecture is false for all d ≥ 4.\n\n6. **Dual Problem:** Explain the point-line duality.",
     "keyInsights": [
       "**Ordinary Points Exist:** Sylvester-Gallai guarantees at least one point where exactly 2 lines meet.",
       "**Triangles Blocked:** Ordinary points can be positioned so that every triangle has at least one 3-rich vertex.",
       "**Algebraic Constructions:** Counterexamples use special algebraic or projective configurations.",
-      "**Partial Result First:** F\u00fcredi-Pal\u00e1sti (1984) handled most d, then Escudero (2016) filled the gap.",
+      "**Partial Result First:** Füredi-Palásti (1984) handled most d, then Escudero (2016) filled the gap.",
       "**Point-Line Duality:** The problem has an equivalent dual formulation about point configurations.",
       "**Connection to #960:** Related questions about line arrangements and Gallai-type structures."
     ],
@@ -102,28 +100,28 @@
     },
     {
       "id": "disproof",
-      "title": "The Erd\u0151s Question and Its Disproof",
-      "summary": "F\u00fcredi-Pal\u00e1sti (1984) and Escudero (2016) counterexamples",
+      "title": "The Erdős Question and Its Disproof",
+      "summary": "Füredi-Palásti (1984) and Escudero (2016) counterexamples",
       "startLine": 178,
       "endLine": 223
     },
     {
       "id": "main-result",
       "title": "Main Result",
-      "summary": "erdos_209 theorem: disproved for all d \u2265 4 via Escudero",
+      "summary": "erdos_209 theorem: disproved for all d ≥ 4 via Escudero",
       "startLine": 224,
       "endLine": 241
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #209 asked whether every d-line arrangement (d \u2265 4, no parallels, no 4-concurrent) must contain a Gallai triangle. This was DISPROVED: F\u00fcredi-Pal\u00e1sti (1984) showed counterexamples exist for d not divisible by 9, and Escudero (2016) completed the proof for all d \u2265 4. While Sylvester-Gallai guarantees ordinary points exist, they can be positioned to avoid forming triangles.",
+    "summary": "Erdős Problem #209 asked whether every d-line arrangement (d ≥ 4, no parallels, no 4-concurrent) must contain a Gallai triangle. This was DISPROVED: Füredi-Palásti (1984) showed counterexamples exist for d not divisible by 9, and Escudero (2016) completed the proof for all d ≥ 4. While Sylvester-Gallai guarantees ordinary points exist, they can be positioned to avoid forming triangles.",
     "implications": "**Theoretical Significance**: **Implications for Incidence Geometry**\n\n1. **Limits of Sylvester-Gallai:** The theorem doesn't extend to triangular structures as hoped.\n\n**2. Algebraic Configurations:** Special line arrangements have surprising combinatorial properties.\n\n3. **Point-Line Duality:** The dual problem about points is equally interesting.\n\n4. **Constructive Methods:** Both counterexamples use explicit algebraic constructions.",
     "openQuestions": [
       "What is the minimum number of 3-rich points needed to block all Gallai triangles?",
       "Can the constructions be simplified or made more explicit?",
       "What happens in higher dimensions (hyperplane arrangements)?",
       "Are there natural restrictions under which Gallai triangles must exist?",
-      "What is the connection to other Erd\u0151s geometry problems?"
+      "What is the connection to other Erdős geometry problems?"
     ]
   },
   "leanFile": {
@@ -151,24 +149,24 @@
     {
       "targetId": "erdos-105",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: disproved, incidence-geometry"
+      "description": "Related Erdős problem sharing themes: disproved, incidence-geometry"
     },
     {
       "targetId": "erdos-1082",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: geometry, incidence-geometry"
+      "description": "Related Erdős problem sharing themes: geometry, incidence-geometry"
     },
     {
       "targetId": "erdos-1086",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: geometry, incidence-geometry"
+      "description": "Related Erdős problem sharing themes: geometry, incidence-geometry"
     }
   ],
   "references": [
     {
       "key": "SzT83",
       "authors": [
-        "E. Szemer\u00e9di",
+        "E. Szemerédi",
         "W.T. Trotter"
       ],
       "title": "Extremal problems in discrete geometry",

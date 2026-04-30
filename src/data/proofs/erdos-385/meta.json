@@ -58,7 +58,6 @@
       "leastPrimeDivisor_le_sqrt axiom: p(m) ≤ √m for composite m",
       "F definition: max{m + p(m) : m < n, m composite} using Finset.sup'",
       "FSet definition: set-based alternative for F(n)",
-      "F_upper_bound axiom: F(n) ≤ n + √n",
       "erdos385Question1 definition: F(n) > n eventually",
       "erdos385Question2 definition: F(n) - n → ∞",
       "q2_implies_q1 axiom: Question 2 implies Question 1",

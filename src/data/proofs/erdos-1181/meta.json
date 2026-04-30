@@ -68,11 +68,9 @@
       "q definition: smallest prime not dividing consecutive product (constructive via Nat.find)",
       "q_prime, q_not_dvd theorems: properties proved from Nat.find_spec",
       "q_minimal theorem: minimality proved from Nat.find_min",
-      "trivial_upper_bound axiom: q ≤ (1+o(1))(log n)² via primorial/PNT",
       "erdos1181_conjecture definition: main conjecture with Filter.atTop",
       "tao_heuristic_bound definition: q ≪ (log log n / log log log n) · log n",
       "chebyshev_theta definition: Chebyshev function θ(x)",
-      "pnt_chebyshev axiom: PNT for Chebyshev function",
       "erdos457_conjecture definition: related lower bound conjecture",
       "conjectures_compatible theorem stub: compatibility of #457 and #1181"
     ],
