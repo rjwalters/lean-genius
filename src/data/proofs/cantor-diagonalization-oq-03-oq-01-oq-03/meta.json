@@ -22,7 +22,7 @@
     "axiomCount": 5,
     "assumptions": "GodelModel axiomatizes the essentials of a Peano-strength formal system as structure fields: point-surjective evaluation (diagonal lemma / h_diag), consistency (h_consistent), reflection principle (h_reflection), and D1 axiom of provability logic (h_D1) — 4 Prop-typed assumptions. StrongGodelModel additionally axiomatizes double-negation elimination (h_dne) — 1 more. Total: 5 structure-encoded mathematical assumptions. These are hypotheses, not global Lean axioms.",
     "lineCount": 256,
-    "theoremCount": 6,
+    "theoremCount": 7,
     "definitionCount": 5,
     "originalContributions": [
       "diagonal_lemma: abstract Lawvere version of the Gödel-Carnap diagonal lemma",

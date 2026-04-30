@@ -22,7 +22,7 @@
     "axiomCount": 3,
     "assumptions": "3 axioms: (1) posUpperDensity_piecewiseSyndetic \u2014 piecewise syndeticity from positive density (pigeonhole argument not yet in Mathlib); (2) hindman_theorem \u2014 Hindman (1974) via idempotent ultrafilters; (3) posUpperDensity_ipStar \u2014 Furstenberg-Katznelson IP Szemer\u00e9di theorem (1985). Previously stated as sorries; converted to axiom declarations reflecting their status as deep results assumed without Lean proof.",
     "lineCount": 473,
-    "theoremCount": 7,
+    "theoremCount": 8,
     "definitionCount": 10,
     "originalContributions": [
       "IsSyndetic, IsThick, IsPiecewiseSyndetic: gap condition definitions",
