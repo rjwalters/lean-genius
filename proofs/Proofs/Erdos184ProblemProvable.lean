@@ -140,20 +140,22 @@ def ErdosGallaiConjecture : Prop :=
 **Original Erdős-Gallai Bound:**
 O(n log n) pieces suffice.
 -/
-theorem erdos_gallai_original_bound : := by sorry
-  ∃ C : ℝ, C > 0 ∧ ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : Graph V),
+theorem erdos_gallai_original_bound :
+    ∃ C : ℝ, C > 0 ∧ ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : Graph V),
     Fintype.card V ≥ 2 →
-    (decompNumber G : ℝ) ≤ C * Fintype.card V * Real.log (Fintype.card V)
+    (decompNumber G : ℝ) ≤ C * Fintype.card V * Real.log (Fintype.card V) := by
+  sorry
 
 /--
 **Lower Bound from K_{3,n-3}:**
 At least (1+c)n pieces are needed for some graphs.
 -/
-theorem lower_bound_from_bipartite : := by sorry
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 6 →
+theorem lower_bound_from_bipartite :
+    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 6 →
     ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : Graph V),
       Fintype.card V = n ∧
-      (decompNumber G : ℝ) ≥ (1 + c) * n
+      (decompNumber G : ℝ) ≥ (1 + c) * n := by
+  sorry
 
 /--
 **The Iterated Logarithm:**
@@ -168,10 +170,11 @@ noncomputable def logStar : ℕ → ℕ
 **Bucić-Montgomery (2022):**
 O(n log* n) pieces suffice.
 -/
-theorem bucic_montgomery_bound : := by sorry
-  ∃ C : ℝ, C > 0 ∧ ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : Graph V),
+theorem bucic_montgomery_bound :
+    ∃ C : ℝ, C > 0 ∧ ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : Graph V),
     Fintype.card V ≥ 2 →
-    (decompNumber G : ℝ) ≤ C * Fintype.card V * (logStar (Fintype.card V) + 1)
+    (decompNumber G : ℝ) ≤ C * Fintype.card V * (logStar (Fintype.card V) + 1) := by
+  sorry
 
 /-
 ## Part V: Dense Graph Result
@@ -187,11 +190,12 @@ def minDegree (G : Graph V) : ℕ :=
 **Conlon-Fox-Sudakov (2014):**
 For graphs with minimum degree ≥ εn, only O(n) pieces are needed.
 -/
-theorem conlon_fox_sudakov : := by sorry
-  ∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧
+theorem conlon_fox_sudakov :
+    ∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧
     ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : Graph V),
       (minDegree G : ℝ) ≥ ε * Fintype.card V →
-      (decompNumber G : ℝ) ≤ C * Fintype.card V
+      (decompNumber G : ℝ) ≤ C * Fintype.card V := by
+  sorry
 
 /-
 ## Part VI: Non-Disjoint Case
@@ -215,9 +219,10 @@ noncomputable def coverNumber (G : Graph V) : ℕ :=
 **Erdős (1971):**
 If we don't require edge-disjointness, n-1 cycles and edges suffice.
 -/
-theorem erdos_covering_bound : := by sorry
-  ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : Graph V),
-    coverNumber G ≤ Fintype.card V - 1
+theorem erdos_covering_bound :
+    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : Graph V),
+    coverNumber G ≤ Fintype.card V - 1 := by
+  sorry
 
 /-
 ## Part VII: Related Problems
