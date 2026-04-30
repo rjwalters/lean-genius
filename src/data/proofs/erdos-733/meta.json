@@ -53,8 +53,6 @@
       "richLines definition: lines with >= 2 points",
       "isLineCompatible definition: realizable sequences",
       "countLineCompatible function: sequence count f(n)",
-      "szemeredi_trotter axiom: incidence theorem",
-      "rich_lines_bound axiom: k-rich lines bound",
       "lower_bound axiom: exp(c*sqrt(n)) lower bound",
       "upper_bound axiom: exp(C*sqrt(n)) upper bound",
       "erdos_733 theorem: complete tight bounds",
@@ -62,7 +60,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 274,
-    "theoremCount": 3,
+    "theoremCount": 6,
     "prerequisites": [
       "Combinatorial geometry: point-line incidences",
       "Szemerédi-Trotter incidence theorem",
@@ -75,7 +73,7 @@
     "historicalContext": "**Erdos Problem #733**\n\nThis problem concerns the combinatorics of point-line incidences.\n\n**Key History:**\n- Erdos posed the problem about counting line-compatible sequences\n- He noted the lower bound exp(c*sqrt(n)) was 'easy' via grid constructions\n- Szemeredi-Trotter (1983) proved the matching upper bound\n\n**Related Problems:**\n- Problem #607: Similar problem without multiplicities\n- Problem #732: Related incidence problem\n\n**The Szemeredi-Trotter Theorem:**\nThe key tool is their incidence theorem: n points and m lines have O(n^{2/3}m^{2/3} + n + m) incidences.",
     "problemStatement": "**Problem Statement (Solved)**\n\nA sequence 1 < X_1 <= X_2 <= ... <= X_m <= n is 'line-compatible' if some n-point configuration realizes it, where X_i is the number of points on line i.\n\nProve there are at most exp(O(n^{1/2})) such sequences.\n\n**Answer: PROVED**\n\n- Lower bound: exp(c*sqrt(n)) (Erdos, 'easy')\n- Upper bound: exp(C*sqrt(n)) (Szemeredi-Trotter, 1983)\n\nTogether: f(n) = exp(Theta(sqrt(n))).",
     "text": "How many line-compatible sequences exist for n points? Answer: exp(Theta(n^{1/2})), proved by Szemeredi-Trotter (1983).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Point/Line Definitions:** PointSet, lineThrough, pointsOnLine\n\n2. **Line-Compatible:** Define isLineCompatible, countLineCompatible f(n)\n\n3. **Szemeredi-Trotter:** Axiomatize the incidence theorem\n\n4. **Lower Bound:** Grid construction gives exp(c*sqrt(n))\n\n5. **Upper Bound:** Szemeredi-Trotter implies exp(C*sqrt(n))\n\n6. **Main Result:** f(n) = exp(Theta(sqrt(n)))",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Point/Line Definitions:** PointSet, lineThrough, pointsOnLine\n\n2. **Line-Compatible:** Define isLineCompatible, countLineCompatible f(n)\n\n3. **Szemeredi-Trotter:** Cited in expository docstrings; its consequences are encoded in the lower_bound and upper_bound axioms (no standalone ST axiom declared)\n\n4. **Lower Bound:** Grid construction gives exp(c*sqrt(n)); axiom lower_bound\n\n5. **Upper Bound:** Szemeredi-Trotter implies exp(C*sqrt(n)); axiom upper_bound\n\n6. **Main Result:** f(n) = exp(Theta(sqrt(n)))",
     "keyInsights": [
       "**Line-Compatible:** Sequences of point counts on lines that can be realized",
       "**Szemeredi-Trotter:** The incidence bound I = O(n^{2/3}m^{2/3} + n + m) is key",
@@ -118,10 +116,10 @@
     {
       "id": "szemeredi-trotter",
       "title": "The Szemerédi-Trotter Theorem",
-      "summary": "Axiomatized incidence bound and k-rich lines corollary.",
+      "summary": "Motivating exposition for the Szemerédi-Trotter incidence theorem and k-rich lines corollary. Section contains only orphan docstrings (no axiom declarations); the theorem is invoked indirectly via the lower_bound and upper_bound axioms.",
       "startLine": 107,
       "endLine": 133,
-      "mathContext": "$I(P, L) \\leq C(n^{2/3}m^{2/3} + n + m)$ for $n$ points and $m$ lines. Corollary: $\\leq O(n^2/k^3 + n/k)$ lines with $\\geq k$ points."
+      "mathContext": "$I(P, L) \\leq C(n^{2/3}m^{2/3} + n + m)$ for $n$ points and $m$ lines. Corollary: $\\leq O(n^2/k^3 + n/k)$ lines with $\\geq k$ points. These results are stated in docstrings only — no separate axiom declarations are made in this section."
     },
     {
       "id": "lower-bound",
