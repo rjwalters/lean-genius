@@ -58,8 +58,6 @@
       "discrepancy: $\\text{disc}(f, d) = \\sup_{a,n} |\\text{apSum}\\;f\\;a\\;d\\;n|$ via sSup",
       "h function: $h(d) = \\inf_f \\text{disc}(f, d)$ via sInf over valid colorings",
       "roth_lower_bound axiom: $\\exists c > 0,\\; h(d) \\geq c\\sqrt{d}$",
-      "beck_upper_bound axiom: $\\forall \\varepsilon > 0,\\; h(d) \\leq Cd^{8+\\varepsilon}$",
-      "factorial_bound axiom: $h(d) \\leq d!$ (Cantor-Erdős-Schreiber-Straus 1966)",
       "erdos_177 theorem: main result proved via roth_lower_bound"
     ],
     "relatedProblems": [

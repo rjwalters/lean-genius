@@ -55,7 +55,6 @@
       "isSAW predicate: startsAtOrigin ∧ isConnected ∧ isSelfAvoiding",
       "sawCount axiom: counting function f(n,k)",
       "f_zero, f_one: base cases f(0,k)=1, f(1,k)=2k",
-      "submultiplicativity axiom: f(m+n,k) ≤ f(m,k)·f(n,k)",
       "limit_exists axiom (Hammersley-Morton 1954) via Fekete's lemma",
       "connectiveConstant definition using Classical.choose",
       "trivial_bounds theorem: k ≤ μ_k ≤ 2k-1",

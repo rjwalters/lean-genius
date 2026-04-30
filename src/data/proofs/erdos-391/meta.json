@@ -51,7 +51,6 @@
       "t(n) definition: maximum minimum factor over all n-factorizations of n!",
       "ratio definition: t(n)/n, the key asymptotic quantity",
       "easy_upper_bound axiom: lim sup t(n)/n ≤ 1/e",
-      "acrstuv_theorem axiom: t(n)/n = 1/e - c₀/log(n) + O(1/(log n)^{1+c})",
       "limit_is_one_over_e axiom: lim t(n)/n = 1/e",
       "second_order_correction axiom: t(n)/n ≤ 1/e - c/log(n) for large n",
       "upper_bound_explicit axiom: t(n) ≤ n/e for n ≠ 1, 2, 4",
