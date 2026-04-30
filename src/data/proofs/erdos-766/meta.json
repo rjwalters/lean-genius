@@ -62,16 +62,11 @@
       "maxBipartiteEdges definition: ⌊k²/4⌋ edges in complete bipartite",
       "inRangeOfInterest definition: k < l ≤ k²/4",
       "dirac_erdos_theorem axiom: f(n;k,⌊k²/4⌋+1) ≤ ⌊n²/4⌋+1",
-      "turan_theorem axiom: ex(n;K_r) = (1-1/(r-1))n²/2 + O(n)",
       "monotonicity_question definition: is f strictly increasing in l?",
       "f_nondecreasing axiom: f is non-decreasing",
-      "f_upper_bound axiom: f(n;k,l) ≤ n(n-1)/2",
-      "f_triangle axiom: f(n;3,3) = ⌊n²/4⌋ (Mantel's theorem)",
-      "turan_c4 axiom: ex(n;C₄) = Θ(n^{3/2})",
       "turanDensityExists axiom: existence of Turán density limit",
       "turanDensity definition: asymptotic density π(H)",
-      "erdos_766_summary theorem: Dirac-Erdős result and weak monotonicity",
-      "erdos_766_strict_monotonicity_open axiom: strict monotonicity conjecture (OPEN)"
+      "erdos_766_summary theorem: Dirac-Erdős result and weak monotonicity"
     ],
     "axiomCount": 3,
     "lineCount": 181,

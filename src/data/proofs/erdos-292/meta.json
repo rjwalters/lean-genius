@@ -49,16 +49,10 @@
       "two_not_in_A theorem: 2 ∉ A (from prime power exclusion)",
       "four_not_in_A theorem: 4 ∉ A (from prime power exclusion)",
       "primes_not_in_A theorem: all primes are excluded",
-      "doubling_in_A axiom: if n ∈ A then 2n ∈ A",
       "setB definition: complement B = ℕ \\ A",
-      "B_characterization axiom: B consists of small multiples of prime powers",
-      "martin_B_density axiom: |B ∩ [1,x]|/x ~ (log log x)/(log x)",
       "hasNaturalDensity definition: natural density of a set",
       "martin_main_theorem axiom: A has density 1",
-      "B_has_density_zero axiom: B has density 0",
-      "six_smallest_in_A axiom: 6 is smallest in A > 1",
-      "erdosStrausConjecture definition: 4/n = 1/a + 1/b + 1/c",
-      "general_egyptian_fraction axiom: every n/m has Egyptian representation"
+      "erdosStrausConjecture definition: 4/n = 1/a + 1/b + 1/c"
     ],
     "axiomCount": 3,
     "lineCount": 150,
