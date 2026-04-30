@@ -1,13 +1,13 @@
 {
   "id": "erdos-156",
-  "title": "Erd\u0151s Problem #156: Minimum Size of Maximal Sidon Sets",
+  "title": "Erdős Problem #156: Minimum Size of Maximal Sidon Sets",
   "slug": "erdos-156",
-  "description": "Does there exist a maximal Sidon set A \u2282 {1,...,N} of size O(N^{1/3})?",
+  "description": "Does there exist a maximal Sidon set A ⊂ {1,...,N} of size O(N^{1/3})?",
   "meta": {
-    "author": "Erd\u0151s",
+    "author": "Erdős",
     "coauthors": [
-      "S\u00e1rk\u00f6zy",
-      "S\u00f3s"
+      "Sárközy",
+      "Sós"
     ],
     "sourceUrl": "https://erdosproblems.com/156",
     "status": "formalized",
@@ -60,8 +60,8 @@
       "Two equivalent formal definitions of Sidon sets with proved equivalence theorem",
       "Greedy Sidon construction with proof that it produces valid Sidon sets",
       "Maximal Sidon set predicate and interval-based formalization",
-      "Erd\u0151s-Tur\u00e1n upper bound and greedy lower bound stated as axioms",
-      "Ruzsa's N^{1/3+\u03b5} result formalized for arbitrary \u03b5 > 0",
+      "Erdős-Turán upper bound and greedy lower bound stated as axioms",
+      "Ruzsa's N^{1/3+ε} result formalized for arbitrary ε > 0",
       "Main conjecture as disjunction: O(N^{1/3}) or super-N^{1/3} lower bound",
       "Sumset formalization with cardinality formula for Sidon sets",
       "Growth exponent conjecture via Filter.Tendsto of log ratio",
@@ -73,13 +73,13 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Simon Sidon introduced what are now called Sidon sets (or $B_2$ sequences) in 1932 while studying lacunary Fourier series. A Sidon set is a set of integers where all pairwise sums $a + b$ (with $a \\leq b$) are distinct. Erd\u0151s and Tur\u00e1n proved in 1941 that any Sidon set $A \\subseteq \\{1, \\ldots, N\\}$ has size at most $\\sqrt{N} + O(N^{1/4})$, and constructions based on modular arithmetic (Singer difference sets, Erd\u0151s-Tur\u00e1n) achieve this bound up to lower-order terms. The greedy algorithm \u2014 include each element that preserves the Sidon property \u2014 produces sets of size $\\Theta(\\sqrt{N})$.\n\nThe study of *maximal* Sidon sets \u2014 those that cannot be extended within $\\{1, \\ldots, N\\}$ \u2014 reveals a subtler landscape. The greedy construction automatically produces maximal sets, but these are large (size $\\sim \\sqrt{N}$). Erd\u0151s, S\u00e1rk\u00f6zy, and S\u00f3s [ESS94] asked whether much smaller maximal Sidon sets exist, specifically of size $O(N^{1/3})$. Ruzsa [Ru98b] made a breakthrough by constructing maximal Sidon sets of size $O(N^{1/3+\\varepsilon})$ for any $\\varepsilon > 0$, using a clever recursive method that creates sufficient 'coverage' of sums while keeping the set sparse.\n\nThe gap between Ruzsa's $N^{1/3+\\varepsilon}$ and the conjectured $N^{1/3}$ remains open. The exponent $1/3$ is natural: a maximal Sidon set of size $s$ must 'cover' all $\\sim N$ elements (each absent element must have its sum represented), and each pair in the set covers $O(s)$ sums, requiring $s^2 \\cdot s \\sim N$ \u2014 i.e., $s \\sim N^{1/3}$. Whether logarithmic factors can be eliminated is the core question. OEIS A382397 tracks related sequences.",
+    "historicalContext": "Simon Sidon introduced what are now called Sidon sets (or $B_2$ sequences) in 1932 while studying lacunary Fourier series. A Sidon set is a set of integers where all pairwise sums $a + b$ (with $a \\leq b$) are distinct. Erdős and Turán proved in 1941 that any Sidon set $A \\subseteq \\{1, \\ldots, N\\}$ has size at most $\\sqrt{N} + O(N^{1/4})$, and constructions based on modular arithmetic (Singer difference sets, Erdős-Turán) achieve this bound up to lower-order terms. The greedy algorithm — include each element that preserves the Sidon property — produces sets of size $\\Theta(\\sqrt{N})$.\n\nThe study of *maximal* Sidon sets — those that cannot be extended within $\\{1, \\ldots, N\\}$ — reveals a subtler landscape. The greedy construction automatically produces maximal sets, but these are large (size $\\sim \\sqrt{N}$). Erdős, Sárközy, and Sós [ESS94] asked whether much smaller maximal Sidon sets exist, specifically of size $O(N^{1/3})$. Ruzsa [Ru98b] made a breakthrough by constructing maximal Sidon sets of size $O(N^{1/3+\\varepsilon})$ for any $\\varepsilon > 0$, using a clever recursive method that creates sufficient 'coverage' of sums while keeping the set sparse.\n\nThe gap between Ruzsa's $N^{1/3+\\varepsilon}$ and the conjectured $N^{1/3}$ remains open. The exponent $1/3$ is natural: a maximal Sidon set of size $s$ must 'cover' all $\\sim N$ elements (each absent element must have its sum represented), and each pair in the set covers $O(s)$ sums, requiring $s^2 \\cdot s \\sim N$ — i.e., $s \\sim N^{1/3}$. Whether logarithmic factors can be eliminated is the core question. OEIS A382397 tracks related sequences.",
     "problemStatement": "A Sidon set $A \\subseteq \\{1, \\ldots, N\\}$ is **maximal** if for every $x \\in \\{1, \\ldots, N\\} \\setminus A$, the set $A \\cup \\{x\\}$ is not a Sidon set (i.e., adding $x$ creates a repeated sum).\n\n**Question**: Does there exist a constant $C > 0$ and a family of maximal Sidon sets $\\{A_N\\}_{N \\geq 1}$ with $|A_N| \\leq C \\cdot N^{1/3}$ for all $N$?",
-    "text": "Does there exist a maximal Sidon set A \u2282 {1,...,N} of size O(N^{1/3})?",
-    "proofStrategy": "The formalization provides two equivalent definitions of Sidon sets \u2014 the standard version (`IsSidonSet`, requiring $a + b = c + d$ with $a \\leq b, c \\leq d$ to imply $\\{a,b\\} = \\{c,d\\}$) and a strict version (`IsSidonSetAlt`, requiring $a < b, c < d$ to imply $a = c, b = d$) \u2014 with a detailed equivalence proof. The greedy construction is defined recursively and proved to always yield Sidon sets. Maximality is defined via the `IsMaximalSidonSet` predicate combining subset-of-interval, Sidon property, and non-extendability. The Erd\u0151s-Tur\u00e1n upper bound ($\\leq \\sqrt{N} + C$) and greedy lower bound ($\\geq c\\sqrt{N}$) are axioms. Ruzsa's result is formalized as: for all $\\varepsilon > 0$, there exist maximal Sidon sets of size $\\leq N^{1/3 + \\varepsilon}$. The main conjecture is a disjunction \u2014 either $O(N^{1/3})$ is achievable or there is a growing lower bound.",
+    "text": "Does there exist a maximal Sidon set A ⊂ {1,...,N} of size O(N^{1/3})?",
+    "proofStrategy": "The formalization provides two equivalent definitions of Sidon sets — the standard version (`IsSidonSet`, requiring $a + b = c + d$ with $a \\leq b, c \\leq d$ to imply $\\{a,b\\} = \\{c,d\\}$) and a strict version (`IsSidonSetAlt`, requiring $a < b, c < d$ to imply $a = c, b = d$) — with a detailed equivalence proof. The greedy construction is defined recursively and proved to always yield Sidon sets. Maximality is defined via the `IsMaximalSidonSet` predicate combining subset-of-interval, Sidon property, and non-extendability. The Erdős-Turán upper bound ($\\leq \\sqrt{N} + C$) and greedy lower bound ($\\geq c\\sqrt{N}$) are axioms. Ruzsa's result is formalized as: for all $\\varepsilon > 0$, there exist maximal Sidon sets of size $\\leq N^{1/3 + \\varepsilon}$. The main conjecture is a disjunction — either $O(N^{1/3})$ is achievable or there is a growing lower bound.",
     "keyInsights": [
-      "**Sidon sets are maximally spread sumsets**: A Sidon set $A$ has $|A + A| = |A|(|A|+1)/2$ \u2014 the maximum possible for its cardinality. This is because all pairwise sums are distinct, making Sidon sets extremal objects in additive combinatorics",
-      "**The Erd\u0151s-Tur\u00e1n bound is tight**: The classical bound $|A| \\leq \\sqrt{N} + O(N^{1/4})$ for Sidon sets in $\\{1,\\ldots,N\\}$ is essentially sharp \u2014 constructions from finite geometry (Singer difference sets) achieve $|A| \\sim \\sqrt{N}$. The proof uses the pigeonhole principle: all $\\binom{|A|}{2} + |A|$ sums lie in $\\{2, \\ldots, 2N\\}$",
+      "**Sidon sets are maximally spread sumsets**: A Sidon set $A$ has $|A + A| = |A|(|A|+1)/2$ — the maximum possible for its cardinality. This is because all pairwise sums are distinct, making Sidon sets extremal objects in additive combinatorics",
+      "**The Erdős-Turán bound is tight**: The classical bound $|A| \\leq \\sqrt{N} + O(N^{1/4})$ for Sidon sets in $\\{1,\\ldots,N\\}$ is essentially sharp — constructions from finite geometry (Singer difference sets) achieve $|A| \\sim \\sqrt{N}$. The proof uses the pigeonhole principle: all $\\binom{|A|}{2} + |A|$ sums lie in $\\{2, \\ldots, 2N\\}$",
       "**Maximality forces coverage**: A maximal Sidon set must 'cover' every absent element: for each $x \\notin A$, there must exist $a, b \\in A$ with $a + b = x + c$ for some $c \\in A$ (or similar collision). This coverage requirement creates the tension between sparsity and maximality",
       "**The $N^{1/3}$ heuristic**: If $|A| = s$, the set covers roughly $s^2$ sums in $A + A$ and each sum 'blocks' $O(s)$ potential additions, giving coverage of $\\sim s^3$ elements. Requiring $s^3 \\sim N$ yields $s \\sim N^{1/3}$, explaining why this exponent is natural",
       "**Ruzsa's recursive construction**: Ruzsa's breakthrough builds maximal Sidon sets by starting with a Sidon set $S$ in a smaller interval and recursively extending it to fill gaps, ensuring maximality. The extra $\\varepsilon$ in the exponent comes from logarithmic factors in the recursive depth"
@@ -95,16 +95,16 @@
       "title": "Module Docstring",
       "startLine": 1,
       "endLine": 18,
-      "summary": "Problem statement, definition of Sidon sets and maximality, references to Erd\u0151s-S\u00e1rk\u00f6zy-S\u00f3s [ESS94] and Ruzsa [Ru98b].",
-      "mathContext": "Formal definition: Problem statement, definition of Sidon sets and maximality, references to Erd\u0151s-S\u00e1rk\u00f6zy-S\u00f3s [ESS94] and Ruzsa [Ru98b]."
+      "summary": "Problem statement, definition of Sidon sets and maximality, references to Erdős-Sárközy-Sós [ESS94] and Ruzsa [Ru98b].",
+      "mathContext": "Formal definition: Problem statement, definition of Sidon sets and maximality, references to Erdős-Sárközy-Sós [ESS94] and Ruzsa [Ru98b]."
     },
     {
       "id": "sidon-definitions",
       "title": "Sidon Set Definitions",
       "startLine": 19,
       "endLine": 81,
-      "summary": "Two definitions of Sidon sets (IsSidonSet with \u2264, IsSidonSetAlt with <) and a detailed equivalence proof via case analysis on orderings. The proof handles all four combinations of a \u2264 b vs a > b and c \u2264 d vs c > d.",
-      "mathContext": "Two definitions of Sidon sets (IsSidonSet with \u2264, IsSidonSetAlt with <) and a detailed equivalence proof via case analysis on orderings. The proof handles all four combinations of a \u2264 b vs a > b and c \u2264 d vs c > d."
+      "summary": "Two definitions of Sidon sets (IsSidonSet with ≤, IsSidonSetAlt with <) and a detailed equivalence proof via case analysis on orderings. The proof handles all four combinations of a ≤ b vs a > b and c ≤ d vs c > d.",
+      "mathContext": "Two definitions of Sidon sets (IsSidonSet with ≤, IsSidonSetAlt with <) and a detailed equivalence proof via case analysis on orderings. The proof handles all four combinations of a ≤ b vs a > b and c ≤ d vs c > d."
     },
     {
       "id": "maximal-sidon",
@@ -127,32 +127,32 @@
       "title": "Classical Bounds",
       "startLine": 132,
       "endLine": 148,
-      "summary": "Two axioms: sidon_upper_bound (|A| \u2264 \u221aN + C for Sidon A \u2286 {1,...,N}) and greedy_lower_bound (|greedy(N)| \u2265 c\u221aN). These establish that greedy Sidon sets have size \u0398(\u221aN).",
-      "mathContext": "Two axioms: sidon_upper_bound (|A| $\\leq$ \u221aN + C for Sidon A \u2286 {1,...,N}) and greedy_lower_bound (|greedy(N)| $\\geq$ c$\\sqrt{N}$). These establish that greedy Sidon sets have size \u0398(\u221aN)."
+      "summary": "Two axioms: sidon_upper_bound (|A| ≤ √N + C for Sidon A ⊆ {1,...,N}) and greedy_lower_bound (|greedy(N)| ≥ c√N). These establish that greedy Sidon sets have size Θ(√N).",
+      "mathContext": "Two axioms: sidon_upper_bound (|A| $\\leq$ √N + C for Sidon A ⊆ {1,...,N}) and greedy_lower_bound (|greedy(N)| $\\geq$ c$\\sqrt{N}$). These establish that greedy Sidon sets have size Θ(√N)."
     },
     {
       "id": "ruzsa-construction",
       "title": "Ruzsa's Small Maximal Sidon Sets",
       "startLine": 149,
       "endLine": 161,
-      "summary": "Axiom ruzsa_small_maximal: for any \u03b5 > 0, there exist maximal Sidon sets of size \u2264 N^{1/3+\u03b5}. This is the key breakthrough result that motivates the conjecture.",
-      "mathContext": "Axiom ruzsa_small_maximal: for any \u03b5 > 0, there exist maximal Sidon sets of size $\\leq$ N^{1/3+\u03b5}. This is the key breakthrough result that motivates the conjecture."
+      "summary": "Axiom ruzsa_small_maximal: for any ε > 0, there exist maximal Sidon sets of size ≤ N^{1/3+ε}. This is the key breakthrough result that motivates the conjecture.",
+      "mathContext": "Axiom ruzsa_small_maximal: for any ε > 0, there exist maximal Sidon sets of size $\\leq$ N^{1/3+ε}. This is the key breakthrough result that motivates the conjecture."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 162,
       "endLine": 183,
-      "summary": "The central axiom erdos_156_conjecture: either \u2203 C > 0 with maximal Sidon sets of size \u2264 C\u00b7N^{1/3} for all N, or \u2200 C > 0 the bound C\u00b7N^{1/3} is eventually exceeded.",
-      "mathContext": "The central axiom erdos_156_conjecture: either \u2203 C > 0 with maximal Sidon sets of size $\\leq$ C\u00b7N^{1/3} for all N, or \u2200 C > 0 the bound C\u00b7N^{1/3} is eventually exceeded."
+      "summary": "The central axiom erdos_156_conjecture: either ∃ C > 0 with maximal Sidon sets of size ≤ C·N^{1/3} for all N, or ∀ C > 0 the bound C·N^{1/3} is eventually exceeded.",
+      "mathContext": "The central axiom erdos_156_conjecture: either ∃ C > 0 with maximal Sidon sets of size $\\leq$ C·N^{1/3} for all N, or ∀ C > 0 the bound C·N^{1/3} is eventually exceeded."
     },
     {
       "id": "gap-and-minimum",
       "title": "Gap Analysis and Minimum Size",
       "startLine": 184,
       "endLine": 203,
-      "summary": "Defines minMaximalSidonSize via Nat.find and states the growth exponent conjecture: \u2203 \u03b1 \u2208 [1/3, 1/2] such that log(minMaximalSidonSize N)/log N \u2192 \u03b1.",
-      "mathContext": "Defines minMaximalSidonSize via Nat.find and states the growth exponent conjecture: \u2203 \u03b1 \u2208 [1/3, 1/2] such that log(minMaximalSidonSize N)/log N $\\to$ \u03b1."
+      "summary": "Defines minMaximalSidonSize via Nat.find and states the growth exponent conjecture: ∃ α ∈ [1/3, 1/2] such that log(minMaximalSidonSize N)/log N → α.",
+      "mathContext": "Defines minMaximalSidonSize via Nat.find and states the growth exponent conjecture: ∃ α ∈ [1/3, 1/2] such that log(minMaximalSidonSize N)/log N $\\to$ α."
     },
     {
       "id": "additive-combinatorics",
@@ -172,14 +172,14 @@
     }
   ],
   "conclusion": {
-    "summary": "This 261-line formalization of Erd\u0151s Problem #156 defines Sidon sets with two equivalent characterizations (proved equivalent via detailed case analysis), constructs greedy Sidon sets with an inductive Sidon-ness proof, and states the main conjecture about minimal maximal Sidon sets. Classical bounds (Erd\u0151s-Tur\u00e1n, greedy), Ruzsa's N^{1/3+\u03b5} breakthrough, and two equivalent formulations of the open problem (via constants and via infimum) provide a complete formal framework. Three sorries remain in structural proofs.",
+    "summary": "This 261-line formalization of Erdős Problem #156 defines Sidon sets with two equivalent characterizations (proved equivalent via detailed case analysis), constructs greedy Sidon sets with an inductive Sidon-ness proof, and states the main conjecture about minimal maximal Sidon sets. Classical bounds (Erdős-Turán, greedy), Ruzsa's N^{1/3+ε} breakthrough, and two equivalent formulations of the open problem (via constants and via infimum) provide a complete formal framework. Three sorries remain in structural proofs.",
     "implications": "**Theoretical Significance**: Resolution would determine the exact sparsity threshold for Sidon-type coverage: how few elements suffice to 'block' all possible extensions in {1,...,N}.\n\nAn affirmative answer (O(N^{1/3}) achievable) would require new constructions beyond Ruzsa's recursive method, potentially using algebraic or probabilistic techniques. A negative answer would establish a fundamental barrier separating the combinatorial notion of maximality from pure counting arguments.",
     "openQuestions": [
-      "Does the growth exponent \u03b1 = lim log(minMaximalSidonSize N)/log N exist, and if so, is it exactly 1/3?",
-      "Can Ruzsa's construction be derandomized or simplified to remove the \u03b5 in the exponent?",
+      "Does the growth exponent α = lim log(minMaximalSidonSize N)/log N exist, and if so, is it exactly 1/3?",
+      "Can Ruzsa's construction be derandomized or simplified to remove the ε in the exponent?",
       "What is the typical size of a random maximal Sidon set in {1,...,N}?",
-      "How does the problem generalize to B_h sequences for h > 2 \u2014 what is the minimal maximal B_h set size?",
-      "Is there a polynomial-time algorithm to find a maximal Sidon set of size O(N^{1/3+\u03b5}) in {1,...,N}?"
+      "How does the problem generalize to B_h sequences for h > 2 — what is the minimal maximal B_h set size?",
+      "Is there a polynomial-time algorithm to find a maximal Sidon set of size O(N^{1/3+ε}) in {1,...,N}?"
     ]
   },
   "leanFile": {
@@ -191,14 +191,14 @@
     "lineCount": 652,
     "axiomCount": 0,
     "theoremCount": 19,
-    "definitionCount": 10,
+    "definitionCount": 12,
     "path": "Proofs/Erdos156Problem.lean",
     "sorries": 3
   },
   "references": [
     {
       "key": "ESS94",
-      "citation": "P. Erd\u0151s, A. S\u00e1rk\u00f6zy, V. T. S\u00f3s, 'On sum sets of Sidon sets', Journal of Number Theory (1994)"
+      "citation": "P. Erdős, A. Sárközy, V. T. Sós, 'On sum sets of Sidon sets', Journal of Number Theory (1994)"
     },
     {
       "key": "Ru98b",
@@ -213,17 +213,17 @@
     {
       "targetId": "erdos-155",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
     },
     {
       "targetId": "erdos-757",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
     },
     {
       "targetId": "erdos-789",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
     }
   ],
   "sorries": 3
