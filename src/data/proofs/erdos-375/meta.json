@@ -60,7 +60,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 357,
-    "assumptions": "2 axioms: (1) ramachandra_shorey_tijdeman \u2014 Ramachandra-Shorey-Tijdeman (1975) partial result for k << (log n / log log n)^3; (2) grimm_difficulty \u2014 the known mathematical implication Grimm conjecture \u2192 Legendre conjecture (via prime gap bounds p_{n+1}-p_n \u226a p_n^{1/2-\u03b5}), requiring analytic number theory not yet in Mathlib."
+    "assumptions": "2 axioms: (1) ramachandra_shorey_tijdeman — Ramachandra-Shorey-Tijdeman (1975) partial result for k << (log n / log log n)^3; (2) grimm_difficulty — the known mathematical implication Grimm conjecture → Legendre conjecture (via prime gap bounds p_{n+1}-p_n ≪ p_n^{1/2-ε}), requiring analytic number theory not yet in Mathlib."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #375: Grimm's Conjecture**\n\nThis conjecture was originally posed by C.A. Grimm in 1969 in the American Mathematical Monthly. It connects prime factorization with combinatorial matching theory.\n\n**The Core Question:**\nGiven any interval of k consecutive composite numbers (a 'prime gap'), can we always assign a distinct prime divisor to each composite?\n\n**Historical Progress:**\n- 1969: Grimm poses conjecture, proves k << log n / log log n\n- 1970s: Erdos-Selfridge extend to k <= (1+o(1)) log n\n- 1975: Ramachandra-Shorey-Tijdeman prove k << (log n / log log n)^3\n\n**Significance:**\nThis is listed as problem B32 in Guy's Unsolved Problems in Number Theory. It remains one of the most intriguing open problems connecting prime gaps to matching theory.",
@@ -181,7 +181,7 @@
     "namespace": "Erdos375",
     "lineCount": 357,
     "axiomCount": 2,
-    "theoremCount": 7,
+    "theoremCount": 6,
     "definitionCount": 9,
     "path": "Proofs/Erdos375Problem.lean",
     "sorries": 0
@@ -190,17 +190,17 @@
     {
       "targetId": "erdos-1055",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, open, prime-gaps"
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-gaps"
     },
     {
       "targetId": "erdos-1137",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, open, prime-gaps"
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-gaps"
     },
     {
       "targetId": "erdos-276",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: composite-numbers, number-theory, open"
+      "description": "Related Erdős problem sharing themes: composite-numbers, number-theory, open"
     }
   ],
   "sorries": 0
