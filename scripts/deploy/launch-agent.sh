@@ -14,18 +14,31 @@
 
 set -euo pipefail
 
-# Find repo root
+# Find repo root (resolves worktrees to the main repo, not the worktree dir)
 find_repo_root() {
-    local dir="$PWD"
-    while [[ "$dir" != "/" ]]; do
-        if [[ -d "$dir/.git" ]] || [[ -f "$dir/.git" ]]; then
-            echo "$dir"
-            return 0
-        fi
-        dir="$(dirname "$dir")"
-    done
-    echo "Error: Not in a git repository" >&2
-    return 1
+    # git rev-parse --git-common-dir returns the main repo's .git dir,
+    # even when invoked from a worktree (where .git is a file, not a dir).
+    local common_git
+    common_git="$(git rev-parse --git-common-dir 2>/dev/null)" || {
+        echo "Error: Not in a git repository" >&2
+        return 1
+    }
+    # --git-common-dir may return ".git" (relative) or an absolute path.
+    if [[ "$common_git" == ".git" ]]; then
+        # Walk up looking for the .git directory in case CWD changed.
+        local dir="$PWD"
+        while [[ "$dir" != "/" ]]; do
+            if [[ -d "$dir/.git" ]]; then
+                echo "$dir"
+                return 0
+            fi
+            dir="$(dirname "$dir")"
+        done
+        echo "Error: Could not resolve repo root" >&2
+        return 1
+    fi
+    # Absolute path; the parent of .git is the repo root.
+    dirname "$common_git"
 }
 
 REPO_ROOT="$(find_repo_root)"
@@ -121,11 +134,22 @@ create_worktree() {
         print_warning "No .env found - deploys will fail without CLOUDFLARE_ACCOUNT_ID"
     fi
 
-    # Symlink OAuth tokens so the claude-wrapper can find them in the worktree
+    # Symlink OAuth tokens so the claude-wrapper can find them in the worktree.
+    # Guard: refuse to create a self-pointing symlink (which would break load
+    # balancing and look identical to a directory in `ls`). See #13577 follow-up.
     if [[ -d "$REPO_ROOT/.loom/tokens" ]]; then
-        mkdir -p "$WORKTREE_PATH/.loom" 2>/dev/null || true
-        ln -sfn "$REPO_ROOT/.loom/tokens" "$WORKTREE_PATH/.loom/tokens"
-        print_info "Linked .loom/tokens for OAuth token rotation"
+        local src="$REPO_ROOT/.loom/tokens"
+        local dst="$WORKTREE_PATH/.loom/tokens"
+        local src_real dst_real
+        src_real="$(cd "$src" 2>/dev/null && pwd -P)"
+        dst_real="$(dirname "$dst")"; dst_real="$(cd "$dst_real" 2>/dev/null && pwd -P)/$(basename "$dst")"
+        if [[ "$src_real" == "$dst_real" ]]; then
+            print_warning "Refusing to create self-pointing tokens symlink ($dst → $src). Skipping."
+        else
+            mkdir -p "$WORKTREE_PATH/.loom" 2>/dev/null || true
+            ln -sfn "$src_real" "$dst"
+            print_info "Linked .loom/tokens for OAuth token rotation"
+        fi
     fi
 
     # Install node dependencies in worktree

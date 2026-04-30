@@ -19,18 +19,26 @@
 
 set -euo pipefail
 
-# Find repo root
+# Find repo root (resolves worktrees to the main repo, not the worktree dir)
 find_repo_root() {
-    local dir="$PWD"
-    while [[ "$dir" != "/" ]]; do
-        if [[ -d "$dir/.git" ]] || [[ -f "$dir/.git" ]]; then
-            echo "$dir"
-            return 0
-        fi
-        dir="$(dirname "$dir")"
-    done
-    echo "Error: Not in a git repository" >&2
-    return 1
+    local common_git
+    common_git="$(git rev-parse --git-common-dir 2>/dev/null)" || {
+        echo "Error: Not in a git repository" >&2
+        return 1
+    }
+    if [[ "$common_git" == ".git" ]]; then
+        local dir="$PWD"
+        while [[ "$dir" != "/" ]]; do
+            if [[ -d "$dir/.git" ]]; then
+                echo "$dir"
+                return 0
+            fi
+            dir="$(dirname "$dir")"
+        done
+        echo "Error: Could not resolve repo root" >&2
+        return 1
+    fi
+    dirname "$common_git"
 }
 
 REPO_ROOT="$(find_repo_root)"
@@ -194,10 +202,18 @@ launch_agent() {
     # Create or update worktree
     create_worktree
 
-    # Symlink OAuth tokens so the claude-wrapper can find them in the worktree
+    # Symlink OAuth tokens so the claude-wrapper can find them in the worktree.
+    # Guard against self-pointing symlinks (corrupts load balancing).
     if [[ -d "$REPO_ROOT/.loom/tokens" ]]; then
-        mkdir -p "$WORKTREE_PATH/.loom" 2>/dev/null || true
-        ln -sfn "$REPO_ROOT/.loom/tokens" "$WORKTREE_PATH/.loom/tokens"
+        local src="$REPO_ROOT/.loom/tokens"
+        local dst="$WORKTREE_PATH/.loom/tokens"
+        local src_real dst_real
+        src_real="$(cd "$src" 2>/dev/null && pwd -P)"
+        dst_real="$(dirname "$dst")"; dst_real="$(cd "$dst_real" 2>/dev/null && pwd -P)/$(basename "$dst")"
+        if [[ "$src_real" != "$dst_real" ]]; then
+            mkdir -p "$WORKTREE_PATH/.loom" 2>/dev/null || true
+            ln -sfn "$src_real" "$dst"
+        fi
     fi
 
     # Create prompt file
