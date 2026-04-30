@@ -47,6 +47,24 @@ if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
     _repo_root="${REPO_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
     _tokens_dir="$_repo_root/.loom/tokens"
 
+    # Bootstrap: if .loom/tokens is missing/empty/broken-symlink but .env
+    # has ACCOUNT_KEY_N entries, materialize them into the tokens dir.
+    if [[ ! -d "$_tokens_dir" ]] || ! ls "$_tokens_dir"/*.token &>/dev/null 2>&1; then
+        _env_file="$_repo_root/.env"
+        if [[ -f "$_env_file" ]] && grep -q '^ACCOUNT_KEY_[0-9]\+=' "$_env_file" 2>/dev/null; then
+            # Replace whatever is at $_tokens_dir (broken symlink, etc) with a real dir.
+            rm -f "$_tokens_dir" 2>/dev/null || true
+            mkdir -p "$_tokens_dir" 2>/dev/null || true
+            while IFS='=' read -r key val; do
+                _n="${key#ACCOUNT_KEY_}"
+                [[ "$_n" =~ ^[0-9]+$ ]] || continue
+                printf '%s' "$val" | tr -d "'\"\n" > "$_tokens_dir/agent-$_n.token"
+                chmod 600 "$_tokens_dir/agent-$_n.token" 2>/dev/null || true
+            done < <(grep '^ACCOUNT_KEY_[0-9]\+=' "$_env_file")
+            echo "[wrapper] Bootstrapped $(ls "$_tokens_dir"/*.token 2>/dev/null | wc -l | tr -d ' ') OAuth tokens from .env" >&2
+        fi
+    fi
+
     if [[ -d "$_tokens_dir" ]] && ls "$_tokens_dir"/*.token &>/dev/null; then
         _ranking_file="$_tokens_dir/.ranking"
         _allowlist_file="$_tokens_dir/.allowlist"
