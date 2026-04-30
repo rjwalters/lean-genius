@@ -1,10 +1,10 @@
 {
   "id": "erdos-1028",
-  "title": "Erd\u0151s Problem #1028: Discrepancy of Sign Functions",
+  "title": "Erdős Problem #1028: Discrepancy of Sign Functions",
   "slug": "erdos-1028",
-  "description": "Let H(n) = min_f max_X |\u2211_{x\u2260y\u2208X} f(x,y)| where f: pairs \u2192 {\u00b11}. Erd\u0151s (1963) proved n/4 \u2264 H(n) \u226a n^(3/2). Erd\u0151s-Spencer (1971) proved H(n) \u226b n^(3/2). Answer: H(n) = \u0398(n^(3/2)).",
+  "description": "Let H(n) = min_f max_X |∑_{x≠y∈X} f(x,y)| where f: pairs → {±1}. Erdős (1963) proved n/4 ≤ H(n) ≪ n^(3/2). Erdős-Spencer (1971) proved H(n) ≫ n^(3/2). Answer: H(n) = Θ(n^(3/2)).",
   "meta": {
-    "author": "Erd\u0151s (1963), Erd\u0151s-Spencer (1971)",
+    "author": "Erdős (1963), Erdős-Spencer (1971)",
     "sourceUrl": "https://erdosproblems.com/1028",
     "date": "1971",
     "status": "axiomatized",
@@ -28,16 +28,16 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #1028 concerns the discrepancy of sign functions: given a function f mapping pairs from {1,...,n} to {\u00b11}, the discrepancy of a subset X is |\u2211_{x\u2260y\u2208X} f(x,y)|. The function H(n) is the minimum over all sign functions f of the maximum discrepancy over all subsets X. This measures the unavoidable imbalance in signed complete graphs.\n\nErd\u0151s (1963) established the upper bound H(n) = O(n^{3/2}) using the probabilistic method: a random sign function achieves maximum discrepancy O(n^{3/2}) with positive probability. For a subset of size k, the expected discrepancy of a random signing is \u221a(k(k-1)) \u2248 k, and optimizing over k \u2248 \u221an gives the n^{3/2} bound. Note: the originally proposed lower bound H(n) \u2265 n/4 was found to be incorrect (Aristotle verified a counterexample for n=8).\n\nErd\u0151s and Spencer (1971) proved the matching lower bound H(n) = \u03a9(n^{3/2}) using entropy and counting arguments, establishing H(n) = \u0398(n^{3/2}). Their proof showed that any sign function must have some subset with discrepancy at least cn^{3/2}, confirming that random signs are essentially optimal. The formalization includes several theorems proved by Aristotle (Harmonic), including the well-definedness of H(n), symmetric pair sum decomposition, and discrepancy bounds.",
-    "problemStatement": "**Problem Statement**\n\nLet H(n) = min_f max_{X \u2286 {1,...,n}} |\u2211_{x\u2260y\u2208X} f(x,y)|, where f ranges over all functions f: X\u00b2 \u2192 {-1, 1}.\n\nEstimate H(n).\n\n**Status**: SOLVED\n\n**Answer**: H(n) = \u0398(n^(3/2))",
-    "text": "Let H(n) = min_f max_X |\u2211_{x\u2260y\u2208X} f(x,y)| where f: pairs \u2192 {\u00b11}. Erd\u0151s (1963) proved n/4 \u2264 H(n) \u226a n^(3/2). Erd\u0151s-Spencer (1971) proved H(n) \u226b n^(3/2). Answer: H(n) = \u0398(n^(3/2)).",
-    "proofStrategy": "**Proof Approach**\n\n1. **Upper Bound (Probabilistic)**: Random sign functions have max discrepancy O(n^(3/2)) with high probability.\n\n2. **Lower Bound (Erd\u0151s 1963)**: Linear bound n/4 via simple counting.\n\n3. **Improved Lower Bound (Erd\u0151s-Spencer 1971)**: Entropy or counting arguments give n^(3/2).\n\n4. **Key Insight**: The n^(3/2) bound arises from the \u221a(pairs in subset of size k) \u2248 k for k \u2248 \u221an.",
+    "historicalContext": "Erdős Problem #1028 concerns the discrepancy of sign functions: given a function f mapping pairs from {1,...,n} to {±1}, the discrepancy of a subset X is |∑_{x≠y∈X} f(x,y)|. The function H(n) is the minimum over all sign functions f of the maximum discrepancy over all subsets X. This measures the unavoidable imbalance in signed complete graphs.\n\nErdős (1963) established the upper bound H(n) = O(n^{3/2}) using the probabilistic method: a random sign function achieves maximum discrepancy O(n^{3/2}) with positive probability. For a subset of size k, the expected discrepancy of a random signing is √(k(k-1)) ≈ k, and optimizing over k ≈ √n gives the n^{3/2} bound. Note: the originally proposed lower bound H(n) ≥ n/4 was found to be incorrect (Aristotle verified a counterexample for n=8).\n\nErdős and Spencer (1971) proved the matching lower bound H(n) = Ω(n^{3/2}) using entropy and counting arguments, establishing H(n) = Θ(n^{3/2}). Their proof showed that any sign function must have some subset with discrepancy at least cn^{3/2}, confirming that random signs are essentially optimal. The formalization includes several theorems proved by Aristotle (Harmonic), including the well-definedness of H(n), symmetric pair sum decomposition, and discrepancy bounds.",
+    "problemStatement": "**Problem Statement**\n\nLet H(n) = min_f max_{X ⊆ {1,...,n}} |∑_{x≠y∈X} f(x,y)|, where f ranges over all functions f: X² → {-1, 1}.\n\nEstimate H(n).\n\n**Status**: SOLVED\n\n**Answer**: H(n) = Θ(n^(3/2))",
+    "text": "Let H(n) = min_f max_X |∑_{x≠y∈X} f(x,y)| where f: pairs → {±1}. Erdős (1963) proved n/4 ≤ H(n) ≪ n^(3/2). Erdős-Spencer (1971) proved H(n) ≫ n^(3/2). Answer: H(n) = Θ(n^(3/2)).",
+    "proofStrategy": "**Proof Approach**\n\n1. **Upper Bound (Probabilistic)**: Random sign functions have max discrepancy O(n^(3/2)) with high probability.\n\n2. **Lower Bound (Erdős 1963)**: Linear bound n/4 via simple counting.\n\n3. **Improved Lower Bound (Erdős-Spencer 1971)**: Entropy or counting arguments give n^(3/2).\n\n4. **Key Insight**: The n^(3/2) bound arises from the √(pairs in subset of size k) ≈ k for k ≈ √n.",
     "keyInsights": [
-      "Sign function f: pairs \u2192 {\u00b11}",
+      "Sign function f: pairs → {±1}",
       "Discrepancy of X = |sum of f over pairs in X|",
       "H(n) = min over f of max discrepancy",
-      "Erd\u0151s: n/4 \u2264 H(n) \u226a n^(3/2)",
-      "Erd\u0151s-Spencer: H(n) = \u0398(n^(3/2))"
+      "Erdős: n/4 ≤ H(n) ≪ n^(3/2)",
+      "Erdős-Spencer: H(n) = Θ(n^(3/2))"
     ],
     "prerequisites": [
       "Combinatorics (counting, extremal problems)",
@@ -70,14 +70,14 @@
     },
     {
       "id": "erdos-upper",
-      "title": "Erd\u0151s's Upper Bound (1963)",
+      "title": "Erdős's Upper Bound (1963)",
       "summary": "erdos_upper",
       "startLine": 136,
       "endLine": 144
     },
     {
       "id": "erdos-spencer",
-      "title": "Erd\u0151s-Spencer (1971)",
+      "title": "Erdős-Spencer (1971)",
       "summary": "erdos_spencer_lower, erdos_spencer_improves",
       "startLine": 145,
       "endLine": 157,
@@ -125,7 +125,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #1028 asked to estimate H(n), the minimum possible maximum discrepancy over sign functions on pairs. Erd\u0151s (1963) gave n/4 \u2264 H(n) \u226a n^(3/2), and Erd\u0151s-Spencer (1971) closed the gap: H(n) = \u0398(n^(3/2)).",
+    "summary": "Erdős Problem #1028 asked to estimate H(n), the minimum possible maximum discrepancy over sign functions on pairs. Erdős (1963) gave n/4 ≤ H(n) ≪ n^(3/2), and Erdős-Spencer (1971) closed the gap: H(n) = Θ(n^(3/2)).",
     "implications": "1. **Discrepancy Theory**: Fundamental result on unavoidable imbalance\n\n**2. Signed Graphs**: Minimum imbalance in edge-signed complete graphs\n\n3. **Probabilistic Method**: Upper bound via random signs\n\n4. **Ramsey Connection**: Large homogeneous subsets relate to discrepancy.",
     "openQuestions": [
       "What are the exact constants in the asymptotic?",
@@ -141,19 +141,19 @@
       "targetId": "ramseys-theorem"
     },
     {
-      "relationship": "Erd\u0151s #1 (Sidon sets / sum-free sets) shares the probabilistic-method toolkit used to establish the O(n^{3/2}) upper bound.",
+      "relationship": "Erdős #1 (Sidon sets / sum-free sets) shares the probabilistic-method toolkit used to establish the O(n^{3/2}) upper bound.",
       "targetId": "erdos-1"
     },
     {
-      "relationship": "Erd\u0151s #1025 studies signed graph imbalance; the two problems share the signed-complete-graph model and discrepancy extremal questions.",
+      "relationship": "Erdős #1025 studies signed graph imbalance; the two problems share the signed-complete-graph model and discrepancy extremal questions.",
       "targetId": "erdos-1025"
     },
     {
-      "relationship": "Adjacent Erd\u0151s problem in the discrepancy-theory cluster; formalized with the same axiom structure and proof approach.",
+      "relationship": "Adjacent Erdős problem in the discrepancy-theory cluster; formalized with the same axiom structure and proof approach.",
       "targetId": "erdos-1029"
     },
     {
-      "relationship": "Erd\u0151s #500 involves combinatorial counting over pairs; the pair-sum decomposition technique used here appears in related Erd\u0151s pair-counting problems.",
+      "relationship": "Erdős #500 involves combinatorial counting over pairs; the pair-sum decomposition technique used here appears in related Erdős pair-counting problems.",
       "targetId": "erdos-500"
     },
     {
@@ -164,7 +164,7 @@
   "references": [
     {
       "authors": [
-        "P. Erd\u0151s"
+        "P. Erdős"
       ],
       "title": "On some problems in graph theory, combinatorial analysis and combinatorial number theory",
       "venue": "Graph Theory and Combinatorics (Cambridge, 1983)",
@@ -173,15 +173,15 @@
     },
     {
       "authors": [
-        "P. Erd\u0151s",
+        "P. Erdős",
         "J. Spencer"
       ],
       "title": "Imbalances in k-colorations",
       "venue": "Networks",
       "volume": "1",
-      "pages": "379\u2013385",
+      "pages": "379–385",
       "year": "1971",
-      "note": "Establishes the matching \u03a9(n^{3/2}) lower bound, completing H(n) = \u0398(n^{3/2})."
+      "note": "Establishes the matching Ω(n^{3/2}) lower bound, completing H(n) = Θ(n^{3/2})."
     },
     {
       "authors": [
@@ -190,19 +190,19 @@
       "title": "Six standard deviations suffice",
       "venue": "Transactions of the American Mathematical Society",
       "volume": "289",
-      "pages": "679\u2013706",
+      "pages": "679–706",
       "year": "1985",
-      "note": "Landmark discrepancy result proving the entropy method; directly related to the Erd\u0151s-Spencer lower bound technique used here."
+      "note": "Landmark discrepancy result proving the entropy method; directly related to the Erdős-Spencer lower bound technique used here."
     },
     {
       "authors": [
-        "J. Matou\u0161ek",
+        "J. Matoušek",
         "J. Spencer"
       ],
       "title": "Discrepancy in arithmetic progressions",
       "venue": "Journal of the American Mathematical Society",
       "volume": "9",
-      "pages": "195\u2013204",
+      "pages": "195–204",
       "year": "1996",
       "note": "Illustrates the discrepancy-theory framework connecting signed-sum estimates with combinatorial lower bounds."
     },
@@ -241,7 +241,7 @@
     "lineCount": 311,
     "axiomCount": 2,
     "theoremCount": 8,
-    "definitionCount": 10,
+    "definitionCount": 11,
     "path": "Proofs/Erdos1028Problem.lean",
     "sorries": 0
   },
