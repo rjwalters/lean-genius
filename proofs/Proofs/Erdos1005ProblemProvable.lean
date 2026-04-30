@@ -48,6 +48,20 @@ private instance : DecidableEq FareyFraction := fun f g =>
     else isFalse (by intro h; cases h; exact h2 rfl)
   else isFalse (by intro h; cases h; exact h1 rfl)
 
+/-- The Farey sequence as a sorted list (for indexing).
+    Constructed by enumerating all coprime pairs (a,b) with 0 ≤ a ≤ b ≤ n, b ≥ 1,
+    then sorting by rational value a/b (via cross-multiplication: a₁b₂ ≤ a₂b₁). -/
+def fareyList (n : ℕ) : List FareyFraction :=
+  let pairs : List (ℕ × ℕ) := do
+    let b ← (List.range (n + 1)).filter (· > 0)
+    let a ← (List.range (b + 1)).filter (Nat.Coprime · b)
+    return (a, b)
+  let sorted := pairs.mergeSort fun p q => p.1 * q.2 ≤ q.1 * p.2
+  sorted.filterMap fun ⟨a, b⟩ =>
+    if h : b > 0 ∧ a ≤ b ∧ Nat.Coprime a b then
+      some ⟨a, b, h.1, h.2.1, h.2.2⟩
+    else none
+
 def fareySequence (n : ℕ) : Finset FareyFraction :=
   (fareyList n).toFinset
 
@@ -93,20 +107,6 @@ lemma similarlyOrdered_refl (f : FareyFraction) : similarlyOrdered f f := by
 A run of consecutive Farey fractions is similarly ordered if every
 pair in the run satisfies the similarly ordered property.
 -/
-
-/-- The Farey sequence as a sorted list (for indexing).
-    Constructed by enumerating all coprime pairs (a,b) with 0 ≤ a ≤ b ≤ n, b ≥ 1,
-    then sorting by rational value a/b (via cross-multiplication: a₁b₂ ≤ a₂b₁). -/
-def fareyList (n : ℕ) : List FareyFraction :=
-  let pairs : List (ℕ × ℕ) := do
-    let b ← (List.range (n + 1)).filter (· > 0)
-    let a ← (List.range (b + 1)).filter (Nat.Coprime · b)
-    return (a, b)
-  let sorted := pairs.mergeSort fun p q => p.1 * q.2 ≤ q.1 * p.2
-  sorted.filterMap fun ⟨a, b⟩ =>
-    if h : b > 0 ∧ a ≤ b ∧ Nat.Coprime a b then
-      some ⟨a, b, h.1, h.2.1, h.2.2⟩
-    else none
 
 /-- A run of length k starting at index i is similarly ordered. -/
 def isSimOrdered (n : ℕ) (i k : ℕ) : Prop :=
