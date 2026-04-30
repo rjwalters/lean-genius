@@ -1,10 +1,10 @@
 {
   "id": "erdos-710",
-  "title": "Erd\u0151s Problem #710: Minimal Interval for Divisibility Matching",
+  "title": "Erdős Problem #710: Minimal Interval for Divisibility Matching",
   "slug": "erdos-710",
-  "description": "Let f(n) be minimal such that in (n, n+f(n)) there exist distinct integers a\u2081,...,a\u2099 with k|a\u2096 for all k. Obtain an asymptotic formula for f(n). Known bounds differ by \u221a(log log n) factor; exact asymptotics remain OPEN.",
+  "description": "Let f(n) be minimal such that in (n, n+f(n)) there exist distinct integers a₁,...,aₙ with k|aₖ for all k. Obtain an asymptotic formula for f(n). Known bounds differ by √(log log n) factor; exact asymptotics remain OPEN.",
   "meta": {
-    "author": "Erd\u0151s, Pomerance (bounds 1980), Open (asymptotics)",
+    "author": "Erdős, Pomerance (bounds 1980), Open (asymptotics)",
     "sourceUrl": "https://erdosproblems.com/710",
     "date": "1980",
     "status": "axiomatized",
@@ -52,10 +52,8 @@
       "IntervalAdmitsSelection definition: existence of valid selection",
       "minimalIntervalLength definition: the function f(n)",
       "multiplesInInterval definition: counting multiples",
-      "erdos_pomerance_lower_bound axiom: (2/\u221ae + o(1))n\u221a(log n / log log n)",
-      "erdos_pomerance_upper_bound axiom: (1.7398... + o(1))n\u221a(log n)",
-      "bounds_gap axiom: factor of \u221a(log log n) between bounds",
-      "erdos_710_open axiom: asymptotic formula exists",
+      "erdos_pomerance_lower_bound axiom: (2/√e + o(1))n√(log n / log log n)",
+      "erdos_pomerance_upper_bound axiom: (1.7398... + o(1))n√(log n)",
       "Small examples for n = 1, 2, 3",
       "smallest_multiple_bound theorem: greedy algorithm insight",
       "constraintDensity definition: heuristic analysis"
@@ -65,16 +63,16 @@
     "assumptions": "3 axioms: selection_exists_large, erdos_pomerance_lower_bound, erdos_pomerance_upper_bound. 0 sorries."
   },
   "overview": {
-    "historicalContext": "**Erd\u0151s Problem #710**\n\nThis problem concerns the minimal interval length needed for divisibility matching, a combinatorial problem at the intersection of number theory and extremal combinatorics.\n\n**Key History:**\n- Erd\u0151s and Pomerance (1980): Established upper and lower bounds in \"Matching the natural numbers up to n with distinct multiples of another interval\"\n- Erd\u0151s [Er92c] (1992): \"Some of my forgotten problems in number theory\" - offered 2000 rupees prize\n- The problem remains OPEN - exact asymptotics unknown\n\n**Mathematical Setting:**\n- Given n, we seek distinct integers a\u2081,...,a\u2099 in a short interval starting at n\n- The k-th integer must be divisible by k\n- f(n) = minimal interval length for this to be possible\n- The challenge is finding the precise asymptotic growth rate of f(n)",
-    "problemStatement": "**Problem Statement (OPEN)**\n\nLet f(n) be minimal such that in (n, n+f(n)) there exist distinct integers a\u2081,...,a\u2099 with k | a\u2096 for all 1 \u2264 k \u2264 n.\n\nObtain an asymptotic formula for f(n).\n\n**Known Bounds (Erd\u0151s-Pomerance 1980):**\n- Lower: (2/\u221ae + o(1)) \u00b7 n \u00b7 \u221a(log n / log log n) \u2248 1.213 \u00b7 n \u00b7 \u221a(log n / log log n)\n- Upper: (1.7398... + o(1)) \u00b7 n \u00b7 \u221a(log n)\n\n**Gap:** The bounds differ by a factor of \u221a(log log n), which grows very slowly but is unbounded.\n\n**Prize:** Erd\u0151s offered 2000 rupees (~$78 in 1992) for an asymptotic formula.",
-    "text": "Let f(n) be minimal such that in (n, n+f(n)) there exist distinct integers a\u2081,...,a\u2099 with k|a\u2096 for all k. Obtain an asymptotic formula for f(n). Known bounds differ by \u221a(log log n) factor; exact asymptotics remain OPEN.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define IsValidSelection (divisibility matching), IntervalAdmitsSelection, and minimalIntervalLength f(n)\n\n2. **Counting Functions:** Define multiplesInInterval to count multiples of d in an interval\n\n3. **Known Bounds:** Axiomatize the Erd\u0151s-Pomerance upper and lower bounds\n\n4. **Bounds Gap:** Show the gap is \u221a(log log n)\n\n5. **Open Problem:** Axiomatize existence of exact asymptotic\n\n6. **Examples:** Verify divisibility matching for n = 1, 2, 3\n\n7. **Heuristics:** Analyze why the constraint for large k is critical",
+    "historicalContext": "**Erdős Problem #710**\n\nThis problem concerns the minimal interval length needed for divisibility matching, a combinatorial problem at the intersection of number theory and extremal combinatorics.\n\n**Key History:**\n- Erdős and Pomerance (1980): Established upper and lower bounds in \"Matching the natural numbers up to n with distinct multiples of another interval\"\n- Erdős [Er92c] (1992): \"Some of my forgotten problems in number theory\" - offered 2000 rupees prize\n- The problem remains OPEN - exact asymptotics unknown\n\n**Mathematical Setting:**\n- Given n, we seek distinct integers a₁,...,aₙ in a short interval starting at n\n- The k-th integer must be divisible by k\n- f(n) = minimal interval length for this to be possible\n- The challenge is finding the precise asymptotic growth rate of f(n)",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet f(n) be minimal such that in (n, n+f(n)) there exist distinct integers a₁,...,aₙ with k | aₖ for all 1 ≤ k ≤ n.\n\nObtain an asymptotic formula for f(n).\n\n**Known Bounds (Erdős-Pomerance 1980):**\n- Lower: (2/√e + o(1)) · n · √(log n / log log n) ≈ 1.213 · n · √(log n / log log n)\n- Upper: (1.7398... + o(1)) · n · √(log n)\n\n**Gap:** The bounds differ by a factor of √(log log n), which grows very slowly but is unbounded.\n\n**Prize:** Erdős offered 2000 rupees (~$78 in 1992) for an asymptotic formula.",
+    "text": "Let f(n) be minimal such that in (n, n+f(n)) there exist distinct integers a₁,...,aₙ with k|aₖ for all k. Obtain an asymptotic formula for f(n). Known bounds differ by √(log log n) factor; exact asymptotics remain OPEN.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define IsValidSelection (divisibility matching), IntervalAdmitsSelection, and minimalIntervalLength f(n)\n\n2. **Counting Functions:** Define multiplesInInterval to count multiples of d in an interval\n\n3. **Known Bounds:** Axiomatize the Erdős-Pomerance upper and lower bounds\n\n4. **Bounds Gap:** Show the gap is √(log log n)\n\n5. **Open Problem:** Axiomatize existence of exact asymptotic\n\n6. **Examples:** Verify divisibility matching for n = 1, 2, 3\n\n7. **Heuristics:** Analyze why the constraint for large k is critical",
     "keyInsights": [
       "**Divisibility Constraint:** The k-th integer must be divisible by k, making large k the hardest constraint (fewest multiples in any interval)",
-      "**Bounds Gap:** The \u221a(log log n) gap between upper and lower bounds is the key mystery",
-      "**Critical k:** For slot n, we need a multiple of n in the interval, requiring L \u2248 n as a minimum",
+      "**Bounds Gap:** The √(log log n) gap between upper and lower bounds is the key mystery",
+      "**Critical k:** For slot n, we need a multiple of n in the interval, requiring L ≈ n as a minimum",
       "**Greedy Approach:** Assigning smallest available multiples gives upper bound but is not optimal",
-      "**Prize Problem:** This is one of Erd\u0151s's \"forgotten problems\" with a modest prize attached",
+      "**Prize Problem:** This is one of Erdős's \"forgotten problems\" with a modest prize attached",
       "**Related Problem:** See also #711 for a connected question"
     ],
     "prerequisites": [
@@ -150,12 +148,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #710 asks for an asymptotic formula for f(n), the minimal interval length needed for divisibility matching. Erd\u0151s and Pomerance (1980) established bounds that differ by a factor of \u221a(log log n). The exact asymptotics remain open, with a prize of 2000 rupees offered by Erd\u0151s. The formalization defines the key concepts, axiomatizes the known bounds, and verifies the setup with small examples.",
-    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Divisibility Structure:** The distribution of multiples in intervals is central to the problem\n\n2. **Extremal Combinatorics:** Finding optimal matchings with divisibility constraints\n\n**3. Asymptotic Analysis:** The \u221a(log n) vs \u221a(log n / log log n) question is delicate\n\n4. **Algorithmic Aspects:** Greedy algorithms give bounds but not optimal solutions\n\n5. **Prize Problems:** Part of Erd\u0151s's legacy of encouraging research with cash prizes.",
+    "summary": "Erdős Problem #710 asks for an asymptotic formula for f(n), the minimal interval length needed for divisibility matching. Erdős and Pomerance (1980) established bounds that differ by a factor of √(log log n). The exact asymptotics remain open, with a prize of 2000 rupees offered by Erdős. The formalization defines the key concepts, axiomatizes the known bounds, and verifies the setup with small examples.",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Divisibility Structure:** The distribution of multiples in intervals is central to the problem\n\n2. **Extremal Combinatorics:** Finding optimal matchings with divisibility constraints\n\n**3. Asymptotic Analysis:** The √(log n) vs √(log n / log log n) question is delicate\n\n4. **Algorithmic Aspects:** Greedy algorithms give bounds but not optimal solutions\n\n5. **Prize Problems:** Part of Erdős's legacy of encouraging research with cash prizes.",
     "openQuestions": [
       "What is the exact asymptotic formula for f(n)?",
-      "Is the upper bound tight: f(n) ~ C\u00b7n\u00b7\u221a(log n)?",
-      "Is the lower bound tight: f(n) ~ C\u00b7n\u00b7\u221a(log n / log log n)?",
+      "Is the upper bound tight: f(n) ~ C·n·√(log n)?",
+      "Is the lower bound tight: f(n) ~ C·n·√(log n / log log n)?",
       "Is there a polynomial-time algorithm to compute f(n) exactly?",
       "What is the connection to Problem #711?"
     ]
@@ -184,17 +182,17 @@
     {
       "targetId": "erdos-711",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: asymptotic-analysis, combinatorics, divisibility, number-theory"
+      "description": "Related Erdős problem sharing themes: asymptotic-analysis, combinatorics, divisibility, number-theory"
     },
     {
       "targetId": "erdos-1005",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: asymptotic-analysis, combinatorics, number-theory"
+      "description": "Related Erdős problem sharing themes: asymptotic-analysis, combinatorics, number-theory"
     },
     {
       "targetId": "erdos-13",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: combinatorics, divisibility, number-theory"
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
     }
   ],
   "sorries": 0

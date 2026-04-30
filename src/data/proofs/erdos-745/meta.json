@@ -1,10 +1,10 @@
 {
   "id": "erdos-745",
-  "title": "Erd\u0151s Problem #745: Second Largest Component of Random Graphs",
+  "title": "Erdős Problem #745: Second Largest Component of Random Graphs",
   "slug": "erdos-745",
-  "description": "Describe the second largest component of G(n, 1/n). Answer: It has size \u0398(log n) almost surely. Proved by Koml\u00f3s-Sulyok-Szemer\u00e9di (1980).",
+  "description": "Describe the second largest component of G(n, 1/n). Answer: It has size Θ(log n) almost surely. Proved by Komlós-Sulyok-Szemerédi (1980).",
   "meta": {
-    "author": "Koml\u00f3s-Sulyok-Szemer\u00e9di (1980)",
+    "author": "Komlós-Sulyok-Szemerédi (1980)",
     "sourceUrl": "https://erdosproblems.com/745",
     "date": "1980",
     "status": "axiomatized",
@@ -41,24 +41,20 @@
       "criticalRandomGraph definition: G(n, 1/n)",
       "ComponentSizes, largestComponentSize, secondLargestComponentSize",
       "subcritical_components, supercritical_giant axioms",
-      "critical_giant_size axiom: giant is \u0398(n^{2/3})",
-      "komlos_sulyok_szemeredi axiom: second largest is O(log n)",
-      "second_largest_lower_bound axiom: second largest is \u03a9(log n)",
-      "erdos_745 theorem: combining upper and lower bounds",
-      "critical_window axiom: phase transition width n^{-1/3}"
+      "erdos_745 theorem: combining upper and lower bounds"
     ],
     "axiomCount": 0,
     "lineCount": 298,
-    "assumptions": "0 axioms, 0 sorries. critical_giant_size, komlos_sulyok_szemeredi, second_largest_lower_bound are theorem declarations using True-stub proofs (\u2203 c, c > 0 \u2227 True), not real axiom declarations."
+    "assumptions": "0 axioms, 0 sorries. critical_giant_size, komlos_sulyok_szemeredi, second_largest_lower_bound are theorem declarations using True-stub proofs (∃ c, c > 0 ∧ True), not real axiom declarations."
   },
   "overview": {
-    "historicalContext": "**Erd\u0151s Problem #745: Random Graph Components**\n\nThis problem concerns the Erd\u0151s-R\u00e9nyi random graph model G(n, p), one of the foundational models in probabilistic combinatorics.\n\n**Historical Timeline:**\n- 1959-1960: Erd\u0151s and R\u00e9nyi introduce the random graph model G(n, p)\n- 1960: They discover the phase transition at p = 1/n\n- 1960s-70s: The structure of the giant component is studied\n- 1980: Koml\u00f3s, Sulyok, and Szemer\u00e9di prove Erd\u0151s's conjecture about the second largest component\n- 1980s-90s: \u0141uczak and others refine understanding of the critical window\n\n**The Phase Transition:**\nAt p = 1/n, the random graph undergoes a dramatic change:\n- p < 1/n: All components small (size O(log n))\n- p = 1/n: Giant emerges with size \u0398(n^{2/3})\n- p > 1/n: Unique giant of size \u0398(n)",
-    "problemStatement": "**Problem Statement (Solved)**\n\nDescribe the size of the second largest component of the random graph $G(n, 1/n)$, where each edge is included independently with probability $1/n$.\n\n**Answer:**\nAlmost surely, the second largest component has size $\\Theta(\\log n)$.\n\nMore precisely:\n- Upper bound: second largest $\\leq c \\log n$ w.h.p.\n- Lower bound: second largest $\\geq c' \\log n$ w.h.p.\n\nThis was conjectured by Erd\u0151s and proved by Koml\u00f3s, Sulyok, and Szemer\u00e9di in 1980.\n\n**The contrast is striking:**\n- Giant (largest): $\\Theta(n^{2/3})$\n- Second largest: $\\Theta(\\log n)$\n\nThe gap is polynomial!",
-    "text": "Describe the second largest component of G(n, 1/n). Answer: It has size \u0398(log n) almost surely. Proved by Koml\u00f3s-Sulyok-Szemer\u00e9di (1980).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Random Graph Model:** Define G(n, p) structure with edge probability\n\n2. **Critical Threshold:** Define p = 1/n as the critical probability\n\n3. **Phase Transition:** Axiomatize subcritical, critical, and supercritical regimes\n\n4. **Giant Component:** Axiomatize that the giant has size \u0398(n^{2/3})\n\n5. **KSS Theorem:** Axiomatize Koml\u00f3s-Sulyok-Szemer\u00e9di result\n\n6. **Main Theorem:** Combine upper and lower bounds\n\n**Why Axioms?** Probability theory and concentration inequalities required for the proof are not fully developed in Mathlib.",
+    "historicalContext": "**Erdős Problem #745: Random Graph Components**\n\nThis problem concerns the Erdős-Rényi random graph model G(n, p), one of the foundational models in probabilistic combinatorics.\n\n**Historical Timeline:**\n- 1959-1960: Erdős and Rényi introduce the random graph model G(n, p)\n- 1960: They discover the phase transition at p = 1/n\n- 1960s-70s: The structure of the giant component is studied\n- 1980: Komlós, Sulyok, and Szemerédi prove Erdős's conjecture about the second largest component\n- 1980s-90s: Łuczak and others refine understanding of the critical window\n\n**The Phase Transition:**\nAt p = 1/n, the random graph undergoes a dramatic change:\n- p < 1/n: All components small (size O(log n))\n- p = 1/n: Giant emerges with size Θ(n^{2/3})\n- p > 1/n: Unique giant of size Θ(n)",
+    "problemStatement": "**Problem Statement (Solved)**\n\nDescribe the size of the second largest component of the random graph $G(n, 1/n)$, where each edge is included independently with probability $1/n$.\n\n**Answer:**\nAlmost surely, the second largest component has size $\\Theta(\\log n)$.\n\nMore precisely:\n- Upper bound: second largest $\\leq c \\log n$ w.h.p.\n- Lower bound: second largest $\\geq c' \\log n$ w.h.p.\n\nThis was conjectured by Erdős and proved by Komlós, Sulyok, and Szemerédi in 1980.\n\n**The contrast is striking:**\n- Giant (largest): $\\Theta(n^{2/3})$\n- Second largest: $\\Theta(\\log n)$\n\nThe gap is polynomial!",
+    "text": "Describe the second largest component of G(n, 1/n). Answer: It has size Θ(log n) almost surely. Proved by Komlós-Sulyok-Szemerédi (1980).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Random Graph Model:** Define G(n, p) structure with edge probability\n\n2. **Critical Threshold:** Define p = 1/n as the critical probability\n\n3. **Phase Transition:** Axiomatize subcritical, critical, and supercritical regimes\n\n4. **Giant Component:** Axiomatize that the giant has size Θ(n^{2/3})\n\n5. **KSS Theorem:** Axiomatize Komlós-Sulyok-Szemerédi result\n\n6. **Main Theorem:** Combine upper and lower bounds\n\n**Why Axioms?** Probability theory and concentration inequalities required for the proof are not fully developed in Mathlib.",
     "keyInsights": [
       "**Critical Threshold:** At p = 1/n, the random graph is 'on the edge' of containing a giant",
-      "**Giant Size:** At criticality, giant has size \u0398(n^{2/3}), not \u0398(n) as in supercritical case",
+      "**Giant Size:** At criticality, giant has size Θ(n^{2/3}), not Θ(n) as in supercritical case",
       "**Winner Takes All:** The giant is polynomially larger than the second component",
       "**Log n Bound:** All non-giant components are O(log n) in size",
       "**Critical Window:** Phase transition has width n^{-1/3} around p = 1/n",
@@ -104,7 +100,7 @@
     },
     {
       "id": "kss-theorem",
-      "title": "Koml\u00f3s-Sulyok-Szemer\u00e9di Theorem",
+      "title": "Komlós-Sulyok-Szemerédi Theorem",
       "summary": "komlos_sulyok_szemeredi, second_largest bounds, erdos_745 theorem",
       "startLine": 158,
       "endLine": 207,
@@ -136,7 +132,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #745 asked about the second largest component of G(n, 1/n). Erd\u0151s conjectured it is O(log n), which was proved by Koml\u00f3s, Sulyok, and Szemer\u00e9di in 1980. The answer is \u0398(log n) - dramatically smaller than the giant component of size \u0398(n^{2/3}).",
+    "summary": "Erdős Problem #745 asked about the second largest component of G(n, 1/n). Erdős conjectured it is O(log n), which was proved by Komlós, Sulyok, and Szemerédi in 1980. The answer is Θ(log n) - dramatically smaller than the giant component of size Θ(n^{2/3}).",
     "implications": "**Theoretical Significance**: **Impact on Random Graph Theory**\n\n1. **Phase Transitions:** Demonstrates the dramatic nature of the critical threshold\n\n2. **Winner Takes All:** At criticality, one component dominates all others\n\n**3. Scaling Exponents:** The exponents 2/3 (giant) and log (others) are universal\n\n4. **Percolation Theory:** Foundational for understanding mean-field critical phenomena\n\n5. **Algorithmic Applications:** Finding the giant component is a key subroutine.",
     "openQuestions": [
       "Exact distribution of the second largest component size",
@@ -169,17 +165,17 @@
     {
       "targetId": "erdos-747",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: probabilistic-combinatorics, random-graphs, solved"
+      "description": "Related Erdős problem sharing themes: probabilistic-combinatorics, random-graphs, solved"
     },
     {
       "targetId": "erdos-799",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: probabilistic-combinatorics, random-graphs, solved"
+      "description": "Related Erdős problem sharing themes: probabilistic-combinatorics, random-graphs, solved"
     },
     {
       "targetId": "erdos-578",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: probabilistic-combinatorics, random-graphs"
+      "description": "Related Erdős problem sharing themes: probabilistic-combinatorics, random-graphs"
     }
   ],
   "sorries": 0
