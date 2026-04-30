@@ -1,10 +1,10 @@
 {
   "id": "erdos-601",
-  "title": "Erd\u0151s #601: Infinite Paths and Independent Sets in Ordinal Graphs",
+  "title": "Erdős #601: Infinite Paths and Independent Sets in Ordinal Graphs",
   "slug": "erdos-601",
-  "description": "For which limit ordinals \u03b1 must every graph on \u03b1 have infinite path OR independent set of order type \u03b1? Known for \u03b1 < \u03c9\u2081^{\u03c9+2}. Prize: $500.",
+  "description": "For which limit ordinals α must every graph on α have infinite path OR independent set of order type α? Known for α < ω₁^{ω+2}. Prize: $500.",
   "meta": {
-    "author": "Paul Erd\u0151s, Andr\u00e1s Hajnal, Eric Milner, Jean Larson",
+    "author": "Paul Erdős, András Hajnal, Eric Milner, Jean Larson",
     "sourceUrl": "https://erdosproblems.com/601",
     "date": "1970",
     "status": "axiomatized",
@@ -52,7 +52,7 @@
       "IsIndependent: independence predicate",
       "HasOrderType: order type of vertex subsets",
       "PropertyP: path-vs-independent-set dichotomy",
-      "criticalOrdinal: \u03c9\u2081^{\u03c9+2} definition",
+      "criticalOrdinal: ω₁^{ω+2} definition",
       "erdos_hajnal_milner: main theorem (1970)",
       "CriticalCaseConjecture: $250 prize problem",
       "MartinsAxiom: set-theoretic axiom",
@@ -107,7 +107,7 @@
     },
     {
       "id": "ehm",
-      "title": "Erd\u0151s-Hajnal-Milner Theorem (1970)",
+      "title": "Erdős-Hajnal-Milner Theorem (1970)",
       "summary": "Defines `criticalOrdinal` $= \\omega_1^{\\omega+2}$ and axiomatizes the main result: $P(\\alpha)$ holds for all $\\alpha < \\omega_1^{\\omega+2}$. The proof uses transfinite induction on Cantor normal form.",
       "startLine": 88,
       "endLine": 101,
@@ -116,10 +116,10 @@
     {
       "id": "critical",
       "title": "The Critical Case: $\\omega_1^{\\omega+2}$ ($250)",
-      "summary": "States the `CriticalCaseConjecture`: does $P(\\omega_1^{\\omega+2})$ hold? This is the exact boundary where the Erd\u0151s-Hajnal-Milner induction breaks down. \\$250 prize.",
+      "summary": "States the `CriticalCaseConjecture`: does $P(\\omega_1^{\\omega+2})$ hold? This is the exact boundary where the Erdős-Hajnal-Milner induction breaks down. \\$250 prize.",
       "startLine": 102,
       "endLine": 116,
-      "mathContext": "Bound: States the `CriticalCaseConjecture`: does $P(\\omega_1^{\\omega+2})$ hold? This is the exact boundary where the Erd\u0151s-Hajnal-Milner induction breaks down. \\$250 prize."
+      "mathContext": "Bound: States the `CriticalCaseConjecture`: does $P(\\omega_1^{\\omega+2})$ hold? This is the exact boundary where the Erdős-Hajnal-Milner induction breaks down. \\$250 prize."
     },
     {
       "id": "martins-axiom",
@@ -140,10 +140,10 @@
     {
       "id": "graph-tools",
       "title": "Graph-Theoretic Tools",
-      "summary": "States K\u00f6nig's lemma (infinite finitely-branching trees have rays) and ordinal Ramsey partition regularity for large ordinals.",
+      "summary": "States König's lemma (infinite finitely-branching trees have rays) and ordinal Ramsey partition regularity for large ordinals.",
       "startLine": 152,
       "endLine": 165,
-      "mathContext": "Mathematical content: States K\u00f6nig's lemma (infinite finitely-branching trees have rays) and ordinal Ramsey partition regularity for large ordinals."
+      "mathContext": "Mathematical content: States König's lemma (infinite finitely-branching trees have rays) and ordinal Ramsey partition regularity for large ordinals."
     },
     {
       "id": "independence",
@@ -163,13 +163,13 @@
     }
   ],
   "overview": {
-    "historicalContext": "**Infinite Graph Theory and Ordinal Dichotomies (1970-1990)**\n\n**Erd\u0151s, Hajnal, and Milner** posed this problem around 1970 as part of their systematic study of infinite graphs on ordinal vertex sets. The question asks whether every graph on a limit ordinal $\\alpha$ must exhibit a fundamental dichotomy: either it contains an **infinite path** (ray) or an **independent set of order type $\\alpha$**. This connects graph theory with set theory and ordinal arithmetic.\n\nThe landmark result is the **Erd\u0151s-Hajnal-Milner theorem (1970)**: Property $P(\\alpha)$ holds for all $\\alpha < \\omega_1^{\\omega+2}$. The proof uses transfinite induction on the Cantor normal form of $\\alpha$, with the inductive step becoming increasingly difficult as the ordinal exponent grows. The boundary $\\omega_1^{\\omega+2}$ marks the point where the induction breaks down.\n\n**Larson (1990)** extended the result under **Martin's Axiom**: assuming MA, $P(\\alpha)$ holds for all $\\alpha$ with cardinality $< 2^{\\aleph_0}$. This showed the problem has deep connections to set-theoretic axioms beyond ZFC. The critical case $P(\\omega_1^{\\omega+2})$ carries a $250 prize, and the general conjecture carries $500.",
-    "problemStatement": "**Open Problem ($500 Prize)**\n\nFor which limit ordinals $\\alpha$ is it true that every graph with vertex set $\\alpha$ must have either an infinite path or an independent set of order type $\\alpha$? The conjecture is that this holds for **all** limit ordinals.\n\nThe critical test case is $\\alpha = \\omega_1^{\\omega+2}$ ($250 prize), the exact boundary of the Erd\u0151s-Hajnal-Milner theorem.",
-    "text": "For which limit ordinals \u03b1 must every graph on \u03b1 have infinite path OR independent set of order type \u03b1? Known for \u03b1 < \u03c9\u2081^{\u03c9+2}. Prize: $500.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core definitions:** Define ordinal graphs, infinite paths, independent sets with order types, and the property $P(\\alpha)$.\n2. **Base cases:** Prove $P(n)$ for finite $n$ (trivial) and $P(\\omega)$ (via Ramsey's theorem).\n3. **Main theorem:** Axiomatize the Erd\u0151s-Hajnal-Milner theorem for $\\alpha < \\omega_1^{\\omega+2}$.\n4. **Critical case:** State the $250 conjecture at $\\omega_1^{\\omega+2}$.\n5. **Martin's Axiom:** Axiomatize MA and Larson's extension to $|\\alpha| < 2^{\\aleph_0}$.\n6. **General conjecture:** State the $500 conjecture for all limit ordinals.\n7. **Supporting tools:** Ordinal hierarchy, K\u00f6nig's lemma, independence number, transfinite induction.",
+    "historicalContext": "**Infinite Graph Theory and Ordinal Dichotomies (1970-1990)**\n\n**Erdős, Hajnal, and Milner** posed this problem around 1970 as part of their systematic study of infinite graphs on ordinal vertex sets. The question asks whether every graph on a limit ordinal $\\alpha$ must exhibit a fundamental dichotomy: either it contains an **infinite path** (ray) or an **independent set of order type $\\alpha$**. This connects graph theory with set theory and ordinal arithmetic.\n\nThe landmark result is the **Erdős-Hajnal-Milner theorem (1970)**: Property $P(\\alpha)$ holds for all $\\alpha < \\omega_1^{\\omega+2}$. The proof uses transfinite induction on the Cantor normal form of $\\alpha$, with the inductive step becoming increasingly difficult as the ordinal exponent grows. The boundary $\\omega_1^{\\omega+2}$ marks the point where the induction breaks down.\n\n**Larson (1990)** extended the result under **Martin's Axiom**: assuming MA, $P(\\alpha)$ holds for all $\\alpha$ with cardinality $< 2^{\\aleph_0}$. This showed the problem has deep connections to set-theoretic axioms beyond ZFC. The critical case $P(\\omega_1^{\\omega+2})$ carries a $250 prize, and the general conjecture carries $500.",
+    "problemStatement": "**Open Problem ($500 Prize)**\n\nFor which limit ordinals $\\alpha$ is it true that every graph with vertex set $\\alpha$ must have either an infinite path or an independent set of order type $\\alpha$? The conjecture is that this holds for **all** limit ordinals.\n\nThe critical test case is $\\alpha = \\omega_1^{\\omega+2}$ ($250 prize), the exact boundary of the Erdős-Hajnal-Milner theorem.",
+    "text": "For which limit ordinals α must every graph on α have infinite path OR independent set of order type α? Known for α < ω₁^{ω+2}. Prize: $500.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core definitions:** Define ordinal graphs, infinite paths, independent sets with order types, and the property $P(\\alpha)$.\n2. **Base cases:** Prove $P(n)$ for finite $n$ (trivial) and $P(\\omega)$ (via Ramsey's theorem).\n3. **Main theorem:** Axiomatize the Erdős-Hajnal-Milner theorem for $\\alpha < \\omega_1^{\\omega+2}$.\n4. **Critical case:** State the $250 conjecture at $\\omega_1^{\\omega+2}$.\n5. **Martin's Axiom:** Axiomatize MA and Larson's extension to $|\\alpha| < 2^{\\aleph_0}$.\n6. **General conjecture:** State the $500 conjecture for all limit ordinals.\n7. **Supporting tools:** Ordinal hierarchy, König's lemma, independence number, transfinite induction.",
     "keyInsights": [
-      "**Erd\u0151s-Hajnal-Milner (1970):** $P(\\alpha)$ holds for all $\\alpha < \\omega_1^{\\omega+2}$ via transfinite induction on Cantor normal form",
-      "**Critical boundary:** The induction breaks at $\\omega_1^{\\omega+2}$ due to the complexity of the exponent $\\omega + 2$ \u2014 new techniques are needed",
+      "**Erdős-Hajnal-Milner (1970):** $P(\\alpha)$ holds for all $\\alpha < \\omega_1^{\\omega+2}$ via transfinite induction on Cantor normal form",
+      "**Critical boundary:** The induction breaks at $\\omega_1^{\\omega+2}$ due to the complexity of the exponent $\\omega + 2$ — new techniques are needed",
       "**Larson (1990):** Under Martin's Axiom, $P(\\alpha)$ extends to all $\\alpha$ with $|\\alpha| < 2^{\\aleph_0}$, showing set-theoretic dependence",
       "**Ramsey-type dichotomy:** The problem generalizes the infinite Ramsey theorem from $\\omega$ to arbitrary ordinals with order type requirements",
       "**Two-tier prize:** $250 for the critical case $P(\\omega_1^{\\omega+2})$, $500 for the full generalization to all limit ordinals"
@@ -181,13 +181,13 @@
     ]
   },
   "conclusion": {
-    "summary": "This formalization captures Erd\u0151s Problem #601 on the path-vs-independent-set dichotomy for ordinal graphs. The Erd\u0151s-Hajnal-Milner theorem (1970) establishes $P(\\alpha)$ for $\\alpha < \\omega_1^{\\omega+2}$, and Larson (1990) extends this under Martin's Axiom. The critical case $\\alpha = \\omega_1^{\\omega+2}$ and the general conjecture for all limit ordinals remain open, with $250 and $500 prizes respectively.",
-    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Infinite combinatorics:** Resolution would illuminate the structure of infinite graphs on ordinal vertex sets and the role of ordinal arithmetic in graph theory.\n**2. Set theory connections:** Larson's result suggests the answer may depend on set-theoretic axioms \u2014 the problem may be independent of ZFC.\n3. **Partition calculus:** The techniques connect to the broader Erd\u0151s-Rado partition calculus and ordinal Ramsey theory.\n4. **Structural graph theory:** Would establish a fundamental dichotomy principle for infinite graphs, analogous to finite Ramsey theory.",
+    "summary": "This formalization captures Erdős Problem #601 on the path-vs-independent-set dichotomy for ordinal graphs. The Erdős-Hajnal-Milner theorem (1970) establishes $P(\\alpha)$ for $\\alpha < \\omega_1^{\\omega+2}$, and Larson (1990) extends this under Martin's Axiom. The critical case $\\alpha = \\omega_1^{\\omega+2}$ and the general conjecture for all limit ordinals remain open, with $250 and $500 prizes respectively.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Infinite combinatorics:** Resolution would illuminate the structure of infinite graphs on ordinal vertex sets and the role of ordinal arithmetic in graph theory.\n**2. Set theory connections:** Larson's result suggests the answer may depend on set-theoretic axioms — the problem may be independent of ZFC.\n3. **Partition calculus:** The techniques connect to the broader Erdős-Rado partition calculus and ordinal Ramsey theory.\n4. **Structural graph theory:** Would establish a fundamental dichotomy principle for infinite graphs, analogous to finite Ramsey theory.",
     "openQuestions": [
-      "Does P(\u03c9\u2081^{\u03c9+2}) hold? ($250 \u2014 the critical boundary case)",
-      "Does P(\u03b1) hold for all limit ordinals \u03b1? ($500 \u2014 the general conjecture)",
+      "Does P(ω₁^{ω+2}) hold? ($250 — the critical boundary case)",
+      "Does P(α) hold for all limit ordinals α? ($500 — the general conjecture)",
       "Is the answer independent of ZFC (provable under MA but not in ZFC alone)?",
-      "Can the Erd\u0151s-Hajnal-Milner bound \u03c9\u2081^{\u03c9+2} be improved in ZFC?",
+      "Can the Erdős-Hajnal-Milner bound ω₁^{ω+2} be improved in ZFC?",
       "What happens for singular cardinals and their ordinal powers?"
     ]
   },
@@ -207,7 +207,7 @@
     "namespace": "Erdos601",
     "lineCount": 259,
     "axiomCount": 4,
-    "theoremCount": 19,
+    "theoremCount": 18,
     "definitionCount": 13,
     "sorries": 10,
     "path": "Proofs/Erdos601Problem.lean"
@@ -215,17 +215,17 @@
   "references": [
     {
       "key": "EHM70",
-      "citation": "Erd\u0151s, Paul, Hajnal, Andr\u00e1s, and Milner, Eric C., On sets of almost disjoint subsets of a set, Acta Math. Acad. Sci. Hungar. 19 (1968/1970), 209-218.",
+      "citation": "Erdős, Paul, Hajnal, András, and Milner, Eric C., On sets of almost disjoint subsets of a set, Acta Math. Acad. Sci. Hungar. 19 (1968/1970), 209-218.",
       "type": "paper"
     },
     {
       "key": "La90",
-      "citation": "Larson, Jean A., A short proof of a partition theorem for the ordinal \u03c9^\u03c9, Ann. Pure Appl. Logic 48 (1990), 253-255.",
+      "citation": "Larson, Jean A., A short proof of a partition theorem for the ordinal ω^ω, Ann. Pure Appl. Logic 48 (1990), 253-255.",
       "type": "paper"
     },
     {
       "key": "EH77",
-      "citation": "Erd\u0151s, Paul and Hajnal, Andr\u00e1s, Unsolved problems in set theory, Proc. Sympos. Pure Math. 13 (1977), 17-48.",
+      "citation": "Erdős, Paul and Hajnal, András, Unsolved problems in set theory, Proc. Sympos. Pure Math. 13 (1977), 17-48.",
       "type": "paper"
     },
     {
@@ -235,7 +235,7 @@
     },
     {
       "key": "EP",
-      "citation": "Erd\u0151s Problems, Problem #601, https://erdosproblems.com/601.",
+      "citation": "Erdős Problems, Problem #601, https://erdosproblems.com/601.",
       "type": "website"
     }
   ],
@@ -243,17 +243,17 @@
     {
       "targetId": "erdos-111",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: graph-theory, open, set-theory"
+      "description": "Related Erdős problem sharing themes: graph-theory, open, set-theory"
     },
     {
       "targetId": "erdos-1169",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: graph-theory, open, set-theory"
+      "description": "Related Erdős problem sharing themes: graph-theory, open, set-theory"
     },
     {
       "targetId": "erdos-1174",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: graph-theory, open, set-theory"
+      "description": "Related Erdős problem sharing themes: graph-theory, open, set-theory"
     }
   ],
   "sorries": 10

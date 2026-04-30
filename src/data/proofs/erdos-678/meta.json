@@ -1,10 +1,10 @@
 {
   "id": "erdos-678",
-  "title": "Erd\u0151s Problem #678: LCM of Consecutive Integers",
+  "title": "Erdős Problem #678: LCM of Consecutive Integers",
   "slug": "erdos-678",
   "description": "Can a shorter interval of consecutive integers have larger LCM than a longer interval starting later? Yes! Solved by Cambie (2024) with Lean proof.",
   "meta": {
-    "author": "Erd\u0151s (1979), solved by Cambie (2024)",
+    "author": "Erdős (1979), solved by Cambie (2024)",
     "sourceUrl": "https://erdosproblems.com/678",
     "date": "1979",
     "status": "formalized",
@@ -52,7 +52,7 @@
     "relatedProblems": [
       {
         "id": "erdos-646",
-        "relationship": "Related Erd\u0151s problem on factorial divisibility and prime power structure"
+        "relationship": "Related Erdős problem on factorial divisibility and prime power structure"
       }
     ],
     "axiomCount": 0,
@@ -69,16 +69,16 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erd\u0151s posed this problem in 1979, asking a counterintuitive question: can a shorter interval of consecutive integers have a larger LCM than a longer interval starting further along?\n\nThe referee of the 1979 paper (later identified as John Selfridge) immediately found examples: M(96,7) > M(104,8). The full answer\u2014infinitely many such comparisons\u2014was proved by Stijn Cambie in 2024, with a Lean-verified proof showing that for all sufficiently large k, such pairs exist. The phenomenon is driven by the distribution of prime powers: the LCM of an interval is essentially determined by which prime powers it contains, and an interval that captures a large prime power (such as 2^7 = 128) can have a much larger LCM than a slightly longer interval that misses it. Chebyshev's classical estimates show log M(n,k) \u2248 k, making the precise combinatorics of prime power placement critical.",
-    "problemStatement": "Let M(n,k) = lcm{n+1, n+2, ..., n+k} be the LCM of k consecutive integers starting at n+1.\n\n**Question:** Are there infinitely many triples (m, n, k) with k \u2265 3 and m \u2265 n+k such that M(n,k) > M(m,k+1)?\n\n**Answer:** YES (Cambie 2024)",
+    "historicalContext": "Erdős posed this problem in 1979, asking a counterintuitive question: can a shorter interval of consecutive integers have a larger LCM than a longer interval starting further along?\n\nThe referee of the 1979 paper (later identified as John Selfridge) immediately found examples: M(96,7) > M(104,8). The full answer—infinitely many such comparisons—was proved by Stijn Cambie in 2024, with a Lean-verified proof showing that for all sufficiently large k, such pairs exist. The phenomenon is driven by the distribution of prime powers: the LCM of an interval is essentially determined by which prime powers it contains, and an interval that captures a large prime power (such as 2^7 = 128) can have a much larger LCM than a slightly longer interval that misses it. Chebyshev's classical estimates show log M(n,k) ≈ k, making the precise combinatorics of prime power placement critical.",
+    "problemStatement": "Let M(n,k) = lcm{n+1, n+2, ..., n+k} be the LCM of k consecutive integers starting at n+1.\n\n**Question:** Are there infinitely many triples (m, n, k) with k ≥ 3 and m ≥ n+k such that M(n,k) > M(m,k+1)?\n\n**Answer:** YES (Cambie 2024)",
     "text": "Can a shorter interval of consecutive integers have larger LCM than a longer interval starting later? Yes! Solved by Cambie (2024) with Lean proof.",
     "proofStrategy": "The formalization:\n\n1. Defines `intervalLcm n k` computing lcm{n+1,...,n+k}\n2. Verifies Selfridge's examples computationally via `native_decide`\n3. States Cambie's theorem: for large k, such comparisons always exist\n4. Develops supporting theory on prime power divisibility\n\nThe key insight: intervals can 'skip' prime powers, dramatically affecting their LCM.",
     "keyInsights": [
-      "**Selfridge Examples:** M(96,7) = 1,073,741,700 > M(104,8) = 786,145,080 \u2014 verified computationally!",
+      "**Selfridge Examples:** M(96,7) = 1,073,741,700 > M(104,8) = 786,145,080 — verified computationally!",
       "**Prime Power Effect:** An interval containing 2^7 = 128 has LCM divisible by 128, but nearby intervals may only need 2^6.",
       "**Cambie's Theorem (2024):** For all sufficiently large k, there exist n,m with M(n,k) > M(m,k+1).",
-      "**Growth Rate:** Erd\u0151s proved n_k/k \u2192 \u221e where n_k is the minimal n for which the comparison holds.",
-      "**Counterintuition:** More numbers \u2260 larger LCM. The starting position matters crucially."
+      "**Growth Rate:** Erdős proved n_k/k → ∞ where n_k is the minimal n for which the comparison holds.",
+      "**Counterintuition:** More numbers ≠ larger LCM. The starting position matters crucially."
     ],
     "prerequisites": [
       "Least common multiple (LCM) of natural numbers",
@@ -92,31 +92,31 @@
   "sections": [
     {
       "id": "interval-lcm-defs",
-      "title": "\u00a71: Interval LCM Definitions and Basic Properties",
+      "title": "§1: Interval LCM Definitions and Basic Properties",
       "startLine": 40,
       "endLine": 95,
       "summary": "Defines intervalLcm n k = lcm{n+1,...,n+k} and equivalent form intervalLcm'. Proves intervalLcm_eq_intervalLcm', intervalLcm_zero (lcm of empty = 1), intervalLcm_one, intervalLcm_mono_right (monotone in k), and dvd_intervalLcm (every element divides the lcm).",
-      "mathContext": "$\\text{lcm}(n+1, n+2, \\ldots, n+k) = \\prod_{p^a \\leq k} p^{\\lfloor \\log_p(n+k) \\rfloor - \\lfloor \\log_p n \\rfloor}$. The Chebyshev function gives $\\text{lcm}(1,\\ldots,n) \\approx e^n$ (prime number theorem). For shifted intervals, the lcm depends on which prime powers land in the interval \u2014 a number-theoretic question at the heart of this problem."
+      "mathContext": "$\\text{lcm}(n+1, n+2, \\ldots, n+k) = \\prod_{p^a \\leq k} p^{\\lfloor \\log_p(n+k) \\rfloor - \\lfloor \\log_p n \\rfloor}$. The Chebyshev function gives $\\text{lcm}(1,\\ldots,n) \\approx e^n$ (prime number theorem). For shifted intervals, the lcm depends on which prime powers land in the interval — a number-theoretic question at the heart of this problem."
     },
     {
       "id": "selfridge-examples",
-      "title": "\u00a72: Selfridge's Examples and the Comparison Predicate",
+      "title": "§2: Selfridge's Examples and the Comparison Predicate",
       "startLine": 97,
       "endLine": 128,
       "summary": "Defines erdosLcmComparison n m k: lcm{n+1,...,n+k} > lcm{m+1,...,m+k+1}. Verifies Selfridge's two concrete examples: lcm(97,...,103) > lcm(105,...,112) and lcm(133,...,139) > lcm(140,...,147). Both by native_decide. States erdos_678_infinitely_many (infinitely many such n, m) as an axiom.",
-      "mathContext": "Selfridge observed that $\\text{lcm}(97,\\ldots,103) > \\text{lcm}(105,\\ldots,112)$ despite the second interval being longer \u2014 a $k$-element interval can have larger lcm than a $(k+1)$-element interval starting later. This counterintuitive comparison arises when the longer interval contains no additional prime powers beyond those in the shorter interval, but the shorter one includes a larger prime."
+      "mathContext": "Selfridge observed that $\\text{lcm}(97,\\ldots,103) > \\text{lcm}(105,\\ldots,112)$ despite the second interval being longer — a $k$-element interval can have larger lcm than a $(k+1)$-element interval starting later. This counterintuitive comparison arises when the longer interval contains no additional prime powers beyond those in the shorter interval, but the shorter one includes a larger prime."
     },
     {
       "id": "cambie-theorem",
-      "title": "\u00a73: Cambie's Theorem and Technical Bounds",
+      "title": "§3: Cambie's Theorem and Technical Bounds",
       "startLine": 129,
       "endLine": 167,
-      "summary": "Axiomatizes cambie_2024: for all sufficiently large k, any k-element interval has smaller lcm than some (k+1)-element interval \u2014 the exact content of Erd\u0151s's 1978 question. Proves prime_power_divides_intervalLcm, interval_skip_prime_power, intervalLcm_growth (lcm grows at least exponentially), and intervalLcm_chebyshev_upper bound.",
-      "mathContext": "Cambie (2024) proved that for large $k$, there always exists $n$ with $\\text{lcm}(n+1,\\ldots,n+k) > \\text{lcm}(m+1,\\ldots,m+k+1)$ for some $m$ \u2014 resolving Erd\u0151s's question. The key tool is the Chebyshev upper bound $\\text{lcm}(n+1,\\ldots,n+k) \\leq e^{2.000733k}$ and explicit prime power distribution in short intervals."
+      "summary": "Axiomatizes cambie_2024: for all sufficiently large k, any k-element interval has smaller lcm than some (k+1)-element interval — the exact content of Erdős's 1978 question. Proves prime_power_divides_intervalLcm, interval_skip_prime_power, intervalLcm_growth (lcm grows at least exponentially), and intervalLcm_chebyshev_upper bound.",
+      "mathContext": "Cambie (2024) proved that for large $k$, there always exists $n$ with $\\text{lcm}(n+1,\\ldots,n+k) > \\text{lcm}(m+1,\\ldots,m+k+1)$ for some $m$ — resolving Erdős's question. The key tool is the Chebyshev upper bound $\\text{lcm}(n+1,\\ldots,n+k) \\leq e^{2.000733k}$ and explicit prime power distribution in short intervals."
     },
     {
       "id": "growth-rate",
-      "title": "\u00a74: Growth Rate and the Main Theorem",
+      "title": "§4: Growth Rate and the Main Theorem",
       "startLine": 169,
       "endLine": 187,
       "summary": "Defines minimalN k as the smallest n where the comparison holds for all k-element intervals. Axiomatizes erdos_growth_rate: minimalN k grows superlinearly. Proves erdos_678 (existence) from the Selfridge examples. Wraps up with the complete formalization of the LCM comparison problem.",
@@ -124,16 +124,16 @@
     },
     {
       "id": "open-questions-678",
-      "title": "\u00a75: Open Questions on Interval LCM Comparisons",
+      "title": "§5: Open Questions on Interval LCM Comparisons",
       "startLine": 126,
       "endLine": 187,
       "summary": "The formalization captures the full state: Selfridge examples (verified), Cambie's theorem (axiomatized), growth rate (axiomatized). Open: what is the exact growth rate of N(k)? Can the first comparison be found for k=6 or smaller? What is the density of n where such comparisons occur?",
-      "mathContext": "Beyond Cambie's qualitative result, quantitative questions remain: How large must the starting index $n$ be? How often does the comparison $\\text{lcm}(n+1,\\ldots,n+k) > \\text{lcm}(m+1,\\ldots,m+k+1)$ hold for random $n,m$? These connect to the distribution of prime powers in short intervals \u2014 a topic at the frontier of analytic number theory."
+      "mathContext": "Beyond Cambie's qualitative result, quantitative questions remain: How large must the starting index $n$ be? How often does the comparison $\\text{lcm}(n+1,\\ldots,n+k) > \\text{lcm}(m+1,\\ldots,m+k+1)$ hold for random $n,m$? These connect to the distribution of prime powers in short intervals — a topic at the frontier of analytic number theory."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #678 asks whether a shorter interval can have larger LCM than a longer one starting later. The answer is YES: Selfridge found concrete examples in 1979, and Cambie proved infinitely many exist in 2024. Our formalization verifies specific examples computationally and states the main theoretical results.",
-    "implications": "**Theoretical Significance**: This problem connects to:\n\n1. **Prime distribution:** Intervals containing prime powers have structured LCMs\n**2. Smooth numbers:** Intervals avoiding large primes have smaller LCMs\n3. **Computational number theory:** LCM computations are tractable for moderate intervals\n4. **Chebyshev bounds:** The growth rate log M(n,k) \u2248 k uses prime-counting estimates.",
+    "summary": "Erdős Problem #678 asks whether a shorter interval can have larger LCM than a longer one starting later. The answer is YES: Selfridge found concrete examples in 1979, and Cambie proved infinitely many exist in 2024. Our formalization verifies specific examples computationally and states the main theoretical results.",
+    "implications": "**Theoretical Significance**: This problem connects to:\n\n1. **Prime distribution:** Intervals containing prime powers have structured LCMs\n**2. Smooth numbers:** Intervals avoiding large primes have smaller LCMs\n3. **Computational number theory:** LCM computations are tractable for moderate intervals\n4. **Chebyshev bounds:** The growth rate log M(n,k) ≈ k uses prime-counting estimates.",
     "openQuestions": [
       "Find the exact threshold K where Cambie's theorem applies",
       "Characterize all (n,m,k) triples satisfying the comparison",
@@ -144,7 +144,7 @@
   "references": [
     {
       "authors": "Cambie, Stijn",
-      "title": "On a problem of Erd\u0151s about the LCM of consecutive integers",
+      "title": "On a problem of Erdős about the LCM of consecutive integers",
       "year": "2024",
       "venue": "arXiv preprint",
       "note": "Proved infinitely many examples exist where shorter intervals have larger LCM"
@@ -159,7 +159,7 @@
     {
       "targetId": "lagrange-theorem",
       "relationship": "foundational",
-      "description": "Lagrange's theorem on subgroup orders constrains the LCM of divisors studied in Problem #678. The LCM of a set of integers is governed by their prime factorizations, and Lagrange's theorem provides structural constraints on how these factorizations interact within the multiplicative group (\u2124/n\u2124)\u00d7"
+      "description": "Lagrange's theorem on subgroup orders constrains the LCM of divisors studied in Problem #678. The LCM of a set of integers is governed by their prime factorizations, and Lagrange's theorem provides structural constraints on how these factorizations interact within the multiplicative group (ℤ/nℤ)×"
     }
   ],
   "leanFile": {
@@ -169,7 +169,7 @@
     "lineCount": 236,
     "axiomCount": 0,
     "theoremCount": 18,
-    "definitionCount": 0,
+    "definitionCount": 4,
     "sorries": 4,
     "path": "Proofs/Erdos678Problem.lean"
   },
