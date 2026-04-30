@@ -54,9 +54,7 @@
       "PairCountCondition: necessary pair-counting condition",
       "pair_count_necessary: necessity theorem",
       "CharacterizationQuestion: Q1 formalization",
-      "characterization_hard: no simple characterization axiom",
       "B: counting function for block-compatible sequences",
-      "erdos_upper_bound: Erdős's upper bound axiom",
       "alon_lower_bound: Alon's lower bound axiom",
       "question_2_solved: Q2 resolution theorem",
       "AsymptoticConstant: asymptotic form",
@@ -128,48 +126,48 @@
     {
       "id": "characterization",
       "title": "Question 1 - Characterization (OPEN)",
-      "summary": "Formalizes CharacterizationQuestion as the existence of a decidable necessary-and-sufficient predicate. Axiomatizes characterization_hard: pair-counting is not sufficient.",
+      "summary": "Formalizes CharacterizationQuestion as the existence of a decidable necessary-and-sufficient predicate. Notes (in docstring) that pair-counting is necessary but not sufficient; no axiom for this claim.",
       "startLine": 126,
       "endLine": 153,
-      "mathContext": "Axiomatized: Formalizes CharacterizationQuestion as the existence of a decidable necessary-and-sufficient predicate. Axiomatizes characterization_hard: pair-counting is not sufficient."
+      "mathContext": "Formalizes CharacterizationQuestion as the existence of a decidable necessary-and-sufficient predicate. The insufficiency of pair-counting is stated in commentary; Q1 remains open."
     },
     {
       "id": "counting",
       "title": "Question 2 - Counting (SOLVED)",
-      "summary": "Defines B(n), axiomatizes Erdős's upper bound and Alon's lower bound, and axiomatizes question_2_solved combining them.",
+      "summary": "Defines B(n), axiomatizes alon_lower_bound and question_2_solved. Erdős's upper bound is documented in a docstring but not separately axiomatized.",
       "startLine": 154,
-      "endLine": 202,
-      "mathContext": "Formal definition: Defines B(n), axiomatizes Erdős's upper bound and Alon's lower bound, and axiomatizes question_2_solved combining them."
+      "endLine": 186,
+      "mathContext": "Defines B(n), axiomatizes alon_lower_bound (lower bound from Alon) and question_2_solved (Q2 resolved). Erdős's upper bound appears only in commentary."
     },
     {
       "id": "asymptotic",
       "title": "The Asymptotic Constant",
       "summary": "Defines AsymptoticConstant (B(n) = 2^{(c+o(1))√n log n}) and proves constant_at_least_half (c ≥ 1/2) from alon_lower_bound using norm_num.",
-      "startLine": 203,
-      "endLine": 234,
+      "startLine": 187,
+      "endLine": 217,
       "mathContext": "Defines AsymptoticConstant (B(n) = $$2^{{(c+o(1))√n $\\log n$}$}$) and proves constant_at_least_half (c $\\geq$ 1/2) from alon_lower_bound using norm_num."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "summary": "Axiomatizes example_n3 (IsBlockCompatible [3] 3) and verifies pair-counting for n=4 ([4] and [2,2,2,2,2,2]) and n=6 ([3,3,3,3,3]) using simp/norm_num.",
-      "startLine": 235,
-      "endLine": 280,
+      "startLine": 219,
+      "endLine": 257,
       "mathContext": "Axiomatized: Axiomatizes example_n3 (IsBlockCompatible [3] 3) and verifies pair-counting for n=4 ([4] and [2,2,2,2,2,2]) and n=6 ([3,3,3,3,3]) using simp/norm_num."
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Notes connections to Problem #733 (line-compatible sequences) and Steiner systems S(2,k,n).",
-      "startLine": 281,
-      "endLine": 297,
+      "startLine": 259,
+      "endLine": 272,
       "mathContext": "Mathematical content: Notes connections to Problem #733 (line-compatible sequences) and Steiner systems S(2,k,n)."
     },
     {
       "id": "summary",
       "title": "Summary Theorems",
       "summary": "erdos_732_summary packages Q2-solved + pair-counting necessity as a conjunction. erdos_732 is an alias.",
-      "startLine": 298,
+      "startLine": 274,
       "endLine": 316,
       "mathContext": "Mathematical content: erdos_732_summary packages Q2-solved + pair-counting necessity as a conjunction. erdos_732 is an alias."
     }
