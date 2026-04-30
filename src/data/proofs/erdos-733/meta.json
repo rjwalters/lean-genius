@@ -53,8 +53,6 @@
       "richLines definition: lines with >= 2 points",
       "isLineCompatible definition: realizable sequences",
       "countLineCompatible function: sequence count f(n)",
-      "szemeredi_trotter axiom: incidence theorem",
-      "rich_lines_bound axiom: k-rich lines bound",
       "lower_bound axiom: exp(c*sqrt(n)) lower bound",
       "upper_bound axiom: exp(C*sqrt(n)) upper bound",
       "erdos_733 theorem: complete tight bounds",
@@ -62,7 +60,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 274,
-    "theoremCount": 3,
+    "theoremCount": 6,
     "prerequisites": [
       "Combinatorial geometry: point-line incidences",
       "Szemerédi-Trotter incidence theorem",
@@ -118,7 +116,7 @@
     {
       "id": "szemeredi-trotter",
       "title": "The Szemerédi-Trotter Theorem",
-      "summary": "Axiomatized incidence bound and k-rich lines corollary.",
+      "summary": "Motivating exposition of the Szemerédi-Trotter theorem (docstrings only; no declarations in this section).",
       "startLine": 107,
       "endLine": 133,
       "mathContext": "$I(P, L) \\leq C(n^{2/3}m^{2/3} + n + m)$ for $n$ points and $m$ lines. Corollary: $\\leq O(n^2/k^3 + n/k)$ lines with $\\geq k$ points."
@@ -190,7 +188,7 @@
     "lineCount": 274,
     "axiomCount": 2,
     "theoremCount": 6,
-    "definitionCount": 6,
+    "definitionCount": 7,
     "path": "Proofs/Erdos733Problem.lean",
     "sorries": 2
   },
