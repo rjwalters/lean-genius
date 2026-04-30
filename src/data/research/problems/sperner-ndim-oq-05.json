@@ -1,8 +1,8 @@
 {
   "slug": "sperner-ndim-oq-05",
   "title": "Contribute SpernerTriangulation and sperner_parity to Mathlib",
-  "phase": "ORIENT",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,15 +16,15 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-04-21T07:30:34-07:00",
-    "iteration": 2,
-    "focus": "Two real next moves: (a) cherry-pick + Docker-verify orphaned researcher-1 commits (95ce61d2b8d, 960b3f0d517, 8ebbf02366a) which would drop cluster sorries 8\u21922; (b) tackle the gridAdj redesign for boundary_doors_odd. Mathlib PR work is gated on external review (Dillies on mathlib4#25231) and is a [USER ACTION].",
+    "phase": "BLOCKED",
+    "since": "2026-05-01T00:00:00Z",
+    "iteration": 3,
+    "focus": "Mathlib-targeted formalization complete (SpernerMathlib4.lean Part 1 and SpernerSimplicialInstance.lean Part 2 both 0 sorries, default heartbeats, granular imports — PR-ready). Awaiting human action to refresh rjwalters/mathlib4:sperner-abstract-parity branch and submit the Mathlib PR comment on mathlib4#25231.",
     "blockers": [
-      "External: mathlib4#25231 needs human comment pointing Dillies to SpernerSimplicialInstance.lean as Part 2",
-      "Internal: boundary_doors_odd is FALSE as stated for d=1; requires GridSimplex/gridAdj redesign (counterexample documented in SpernerGrid.lean:1724-1755)"
+      "USER ACTION REQUIRED: Refresh `rjwalters/mathlib4:sperner-abstract-parity` branch with current SpernerMathlib4.lean (Part 1).",
+      "USER ACTION REQUIRED: Submit Mathlib PR pointing at Part 1 and comment on mathlib4#25231 referencing SpernerSimplicialInstance.lean (Part 2)."
     ],
-    "nextAction": "Cherry-pick orphan commits 95ce61d2b8d, 960b3f0d517, 8ebbf02366a (in that order) and Docker-verify; on green, PR. Then attempt the gridAdj redesign or release as architecturally blocked.",
+    "nextAction": "Wait for Mathlib PR submission (human-only step). No further research-agent action possible until then.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
