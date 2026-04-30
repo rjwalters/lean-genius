@@ -1,10 +1,10 @@
 {
   "id": "erdos-1162",
-  "title": "Erd\u0151s Problem #1162: Number of Subgroups of S_n",
+  "title": "Erdős Problem #1162: Number of Subgroups of S_n",
   "slug": "erdos-1162",
-  "description": "Give an asymptotic formula for the number of subgroups of S_n. Pyber (1993) proved log f(n) \u224d n\u00b2. Roney-Dougal-Tracey (2025) proved log f(n) = (1/16 + o(1))n\u00b2. The constant 1/16 arises from elementary abelian 2-subgroups.",
+  "description": "Give an asymptotic formula for the number of subgroups of S_n. Pyber (1993) proved log f(n) ≍ n². Roney-Dougal-Tracey (2025) proved log f(n) = (1/16 + o(1))n². The constant 1/16 arises from elementary abelian 2-subgroups.",
   "meta": {
-    "author": "Erd\u0151s, Tur\u00e1n (original); Pyber (1993); Roney-Dougal, Tracey (2025)",
+    "author": "Erdős, Turán (original); Pyber (1993); Roney-Dougal, Tracey (2025)",
     "sourceUrl": "https://erdosproblems.com/1162",
     "date": "1993",
     "status": "axiomatized",
@@ -47,11 +47,11 @@
     ],
     "originalContributions": [
       "numSubgroups axiom: f(n) = number of subgroups of S_n",
-      "roney_dougal_tracey: log f(n) / n\u00b2 \u2192 1/16 (Tendsto formulation)",
-      "rdt_implies_pyber: convergence \u2192 eventual bounds (PROVED, no sorry)",
+      "roney_dougal_tracey: log f(n) / n² → 1/16 (Tendsto formulation)",
+      "rdt_implies_pyber: convergence → eventual bounds (PROVED, no sorry)",
       "pyber_theorem: derived from rdt_implies_pyber + roney_dougal_tracey (no longer an axiom)",
       "Elementary abelian 2-group infrastructure (maxElem2Rank, numSubgroupsElem2)",
-      "constant_explanation: (1/4)\u00b2 = 1/16 (proved by norm_num)",
+      "constant_explanation: (1/4)² = 1/16 (proved by norm_num)",
       "Small cases: f(1)=1, f(2)=2, f(3)=6, f(4)=30",
       "erdos1162_asymptotic: formal statement of the asymptotic result"
     ],
@@ -60,16 +60,16 @@
     "assumptions": "1 axiom: roney_dougal_tracey. 0 sorries."
   },
   "overview": {
-    "historicalContext": "Counting subgroups of the symmetric group $S_n$ is a fundamental problem in combinatorial group theory, posed by Erd\u0151s and Tur\u00e1n. The problem has two parts: the asymptotic formula for $f(n) = |\\{H \\leq S_n\\}|$ and a 'statistical theorem on their order' (the distribution of $|H|$ as $H$ ranges over subgroups). The first breakthrough came from Pyber (1993), who established $\\log f(n) \\asymp n^2$ \u2014 the order of magnitude \u2014 using probabilistic arguments about the structure of maximal subgroups. The precise constant eluded researchers for 32 years. Roney-Dougal and Tracey (2025) finally proved $\\log f(n) = (1/16 + o(1))n^2$, showing the dominant contribution comes from elementary abelian 2-subgroups of the wreath product $(\\mathbb{Z}/2\\mathbb{Z}) \\wr S_{\\lfloor n/4 \\rfloor}$. The constant $1/16 = (1/4)^2$ is purely combinatorial: the number of subgroups of $(\\mathbb{Z}/2\\mathbb{Z})^k$ (counted by Gaussian binomial coefficients over $\\mathrm{GF}(2)$) grows as $2^{k^2/4}$, and with $k = n/4$ this gives $n^2/64 \\cdot \\log 2$, which (after careful bookkeeping) yields $n^2/16$.",
+    "historicalContext": "Counting subgroups of the symmetric group $S_n$ is a fundamental problem in combinatorial group theory, posed by Erdős and Turán. The problem has two parts: the asymptotic formula for $f(n) = |\\{H \\leq S_n\\}|$ and a 'statistical theorem on their order' (the distribution of $|H|$ as $H$ ranges over subgroups). The first breakthrough came from Pyber (1993), who established $\\log f(n) \\asymp n^2$ — the order of magnitude — using probabilistic arguments about the structure of maximal subgroups. The precise constant eluded researchers for 32 years. Roney-Dougal and Tracey (2025) finally proved $\\log f(n) = (1/16 + o(1))n^2$, showing the dominant contribution comes from elementary abelian 2-subgroups of the wreath product $(\\mathbb{Z}/2\\mathbb{Z}) \\wr S_{\\lfloor n/4 \\rfloor}$. The constant $1/16 = (1/4)^2$ is purely combinatorial: the number of subgroups of $(\\mathbb{Z}/2\\mathbb{Z})^k$ (counted by Gaussian binomial coefficients over $\\mathrm{GF}(2)$) grows as $2^{k^2/4}$, and with $k = n/4$ this gives $n^2/64 \\cdot \\log 2$, which (after careful bookkeeping) yields $n^2/16$.",
     "problemStatement": "**Problem Statement (Partially Resolved)**\n\nGive an asymptotic formula for the number of subgroups of $S_n$. Is there a statistical theorem on their order?\n\n**Known:**\n- Pyber (1993): $\\log f(n) \\asymp n^2$\n- Roney-Dougal-Tracey (2025): $\\log f(n) = (\\frac{1}{16} + o(1))n^2$\n\nThe asymptotic formula is now established. The statistical theorem on orders remains partially open.",
-    "text": "Asymptotic enumeration of subgroups of S_n: log f(n) = (1/16 + o(1))n\u00b2. The constant 1/16 arises from elementary abelian 2-subgroups.",
+    "text": "Asymptotic enumeration of subgroups of S_n: log f(n) = (1/16 + o(1))n². The constant 1/16 arises from elementary abelian 2-subgroups.",
     "proofStrategy": "The formalization axiomatizes f(n) as the subgroup count (not computationally feasible to define constructively), states Pyber's bounds and the Roney-Dougal-Tracey asymptotic using Filter.Tendsto. The connection to elementary abelian 2-groups explains the constant 1/16. Small cases are stated for verification.",
     "keyInsights": [
-      "**The constant 1/16**: Comes from (1/4)\u00b2 \u2014 the dominant subgroups embed as elementary abelian 2-groups on \u230an/4\u230b points, and the number of subgroups of (Z/2Z)^k grows as 2^(k\u00b2/4).",
+      "**The constant 1/16**: Comes from (1/4)² — the dominant subgroups embed as elementary abelian 2-groups on ⌊n/4⌋ points, and the number of subgroups of (Z/2Z)^k grows as 2^(k²/4).",
       "**Most subgroups are 2-groups**: The overwhelming majority of subgroups of S_n have order a power of 2.",
-      "**Wreath product structure**: The key construction is (Z/2Z) \u2240 S_{\u230an/4\u230b} \u2014 wreath products of 2-groups with symmetric groups on a quarter of the points.",
-      "**Gaussian binomial coefficients**: The count of subgroups of (Z/2Z)^k involves Gaussian binomials over GF(2), contributing the k\u00b2/4 term.",
-      "**Axiom reduction to 1**: The original 6-axiom formalization was reduced to 1 through Lean proofs: f1 via Subsingleton\u2192Unique chain, f2-f4 via native_decide, leaving only the single deep published result (Roney-Dougal-Tracey 2025) as an irreducible assumption."
+      "**Wreath product structure**: The key construction is (Z/2Z) ≀ S_{⌊n/4⌋} — wreath products of 2-groups with symmetric groups on a quarter of the points.",
+      "**Gaussian binomial coefficients**: The count of subgroups of (Z/2Z)^k involves Gaussian binomials over GF(2), contributing the k²/4 term.",
+      "**Axiom reduction to 1**: The original 6-axiom formalization was reduced to 1 through Lean proofs: f1 via Subsingleton→Unique chain, f2-f4 via native_decide, leaving only the single deep published result (Roney-Dougal-Tracey 2025) as an irreducible assumption."
     ],
     "prerequisites": [
       "Symmetric groups $S_n$ and their subgroup structure",
@@ -91,7 +91,7 @@
     {
       "id": "trivial-bounds",
       "title": "Part II: Trivial Bounds",
-      "summary": "f(n) \u2264 2^(n!) upper bound.",
+      "summary": "f(n) ≤ 2^(n!) upper bound.",
       "startLine": 54,
       "endLine": 65,
       "mathContext": "Each subgroup is a subset of $S_n$ ($|S_n| = n!$), giving $f(n) \\leq 2^{n!}$."
@@ -142,15 +142,15 @@
       "summary": "erdos1162_asymptotic and erdos_1162 main theorem.",
       "startLine": 173,
       "endLine": 187,
-      "mathContext": "$\\log f(n) = (1/16 + o(1))n^2$. Erd\u0151s's asymptotic formula question is answered."
+      "mathContext": "$\\log f(n) = (1/16 + o(1))n^2$. Erdős's asymptotic formula question is answered."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #1162 asks for an asymptotic formula for the number of subgroups of S_n. Pyber (1993) showed log f(n) \u224d n\u00b2. Roney-Dougal and Tracey (2025) proved the precise asymptotic: log f(n) = (1/16 + o(1))n\u00b2. The constant 1/16 arises from elementary abelian 2-groups embedded via wreath products.",
-    "implications": "**Theoretical Significance**: This result reveals that the subgroup structure of S_n is dominated by 2-groups, specifically elementary abelian 2-subgroups of the wreath product (Z/2Z) \u2240 S_{\u230an/4\u230b}. The constant 1/16 connects to the theory of Gaussian binomial coefficients and the lattice of subspaces of a vector space over GF(2).",
+    "summary": "Erdős Problem #1162 asks for an asymptotic formula for the number of subgroups of S_n. Pyber (1993) showed log f(n) ≍ n². Roney-Dougal and Tracey (2025) proved the precise asymptotic: log f(n) = (1/16 + o(1))n². The constant 1/16 arises from elementary abelian 2-groups embedded via wreath products.",
+    "implications": "**Theoretical Significance**: This result reveals that the subgroup structure of S_n is dominated by 2-groups, specifically elementary abelian 2-subgroups of the wreath product (Z/2Z) ≀ S_{⌊n/4⌋}. The constant 1/16 connects to the theory of Gaussian binomial coefficients and the lattice of subspaces of a vector space over GF(2).",
     "openQuestions": [
       "What is the precise statistical distribution of subgroup orders in S_n?",
-      "Can the error term in log f(n) = (1/16 + o(1))n\u00b2 be made explicit?",
+      "Can the error term in log f(n) = (1/16 + o(1))n² be made explicit?",
       "What fraction of subgroups are abelian? Nilpotent? Solvable?",
       "What is the analogous result for alternating groups A_n?"
     ]
@@ -188,18 +188,18 @@
       "title": "Enumerating finite groups of given order",
       "year": "1993",
       "venue": "Annals of Mathematics 137(1)",
-      "note": "Proved log f(n) \u224d n\u00b2, establishing the order of magnitude"
+      "note": "Proved log f(n) ≍ n², establishing the order of magnitude"
     },
     {
       "authors": "Roney-Dougal, C. M. and Tracey, G.",
       "title": "The number of subgroups of the symmetric group",
       "year": "2025",
       "venue": "Annals of Mathematics (to appear)",
-      "note": "Proved the precise asymptotic: log f(n) = (1/16 + o(1))n\u00b2"
+      "note": "Proved the precise asymptotic: log f(n) = (1/16 + o(1))n²"
     },
     {
       "authors": "Vardi, I.",
-      "title": "Paul Erd\u0151s: Selected problems",
+      "title": "Paul Erdős: Selected problems",
       "year": "1999",
       "venue": "Mathematical Intelligencer 21(3)",
       "note": "Problem 5.73: original statement of the problem"
@@ -223,7 +223,7 @@
     "lineCount": 221,
     "axiomCount": 1,
     "theoremCount": 9,
-    "definitionCount": 4,
+    "definitionCount": 5,
     "path": "Proofs/Erdos1162Problem.lean",
     "sorries": 0
   },
