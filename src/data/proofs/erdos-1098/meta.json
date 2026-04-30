@@ -55,7 +55,7 @@
       "isClique, cliqueNumber (via ⨆), hasFiniteCliqueNumber, noInfiniteClique",
       "centerHasFiniteIndex via Subgroup.index ≠ ⊤",
       "neumann_theorem axiom: no infinite clique ↔ finite index center",
-      "neumann_bound axiom: clique size ≤ [G : Z(G)]",
+      "neumann_bound theorem: clique size ≤ [G : Z(G)]",
       "erdos_question_answered: main theorem via rewrite with neumann_theorem",
       "same_coset_commute and clique_different_cosets (coset argument, sorry)",
       "abelian_no_edges: proved using Subgroup.mem_center_iff",
