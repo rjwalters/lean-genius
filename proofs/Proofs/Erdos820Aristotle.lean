@@ -122,6 +122,13 @@ theorem prime_dvd_gcd_pow_cong_right {p k l n : ℕ} (hp : p.Prime) (hl : l ≥ 
   have hdvd : p ∣ l^n - 1 := dvd_trans h (Nat.gcd_dvd_right _ _)
   exact (Nat.modEq_iff_dvd' hln).mpr hdvd
 
+-- If p | gcd(k^n-1, l^n-1), there exists d | n with k^d ≡ 1 [MOD p] and l^d ≡ 1 [MOD p].
+-- Proof: take d = n; k^n ≡ 1 [MOD p] from p | k^n-1 (via gcd_dvd_left), similarly for l.
+theorem gcd_characterization (k l n p : ℕ) (hp : Nat.Prime p) :
+    p ∣ Nat.gcd (k^n - 1) (l^n - 1) →
+    ∃ d : ℕ, d ∣ n ∧ (k^d ≡ 1 [MOD p]) ∧ (l^d ≡ 1 [MOD p]) := by
+  sorry
+
 /-
   ## Section 4: Concrete GCD Computations for Small n
 
