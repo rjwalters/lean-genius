@@ -19,16 +19,19 @@ open Erdos613 Nat
     This is a pure binomial coefficient identity: C(2n+1,2) - C(n,2) - 1. -/
 theorem critical_edge_count_formula_ari (n : ℕ) (hn : n ≥ 1) :
     criticalEdgeCount n = n * n + n + (n * (n + 1)) / 2 - 1 := by
-  sorry
+  simp only [criticalEdgeCount, Nat.choose_two_right]
+  omega
 
 /-- criticalEdgeCount is strictly increasing for n ≥ 1 -/
 theorem criticalEdgeCount_mono (n : ℕ) (hn : n ≥ 1) :
     criticalEdgeCount n < criticalEdgeCount (n + 1) := by
-  sorry
+  simp only [criticalEdgeCount, Nat.choose_two_right]
+  omega
 
 /-- criticalEdgeCount n ≥ 2 for all n ≥ 1 -/
 theorem criticalEdgeCount_pos (n : ℕ) (hn : n ≥ 1) :
     criticalEdgeCount n ≥ 2 := by
-  sorry
+  simp only [criticalEdgeCount, Nat.choose_two_right]
+  omega
 
 end Erdos613Aristotle
