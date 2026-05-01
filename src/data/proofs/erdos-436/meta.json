@@ -74,8 +74,8 @@
       "title": "The $r(k,m,p)$ Function",
       "startLine": 157,
       "endLine": 176,
-      "summary": "Defines $r(k,m,p) = \\min\\{r \\geq 1 : r, \\ldots, r+m-1$ are $k$th power residues$\\}$ via $\\texttt{Nat.find}$. Axiomatizes existence for large primes.",
-      "mathContext": "Formal definition: Defines $r(k,m,p) = \\min\\{r \\geq 1 : r, \\ldots, r+m-1$ are $k$th power residues$\\}$ via $\\texttt{Nat.find}$. Axiomatizes existence for large primes."
+      "summary": "Defines $r(k,m,p) = \\min\\{r \\geq 1 : r, \\ldots, r+m-1$ are $k$th power residues$\\}$ via $\\texttt{Nat.find}$. A docstring at lines 170–173 notes existence for large primes informally; no axiom or theorem formalizes this claim.",
+      "mathContext": "Formal definition: Defines $r(k,m,p) = \\min\\{r \\geq 1 : r, \\ldots, r+m-1$ are $k$th power residues$\\}$ via $\\texttt{Nat.find}$. Existence for large primes is mentioned in a docstring only; no formal declaration."
     },
     {
       "id": "lambda-function",
