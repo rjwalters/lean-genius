@@ -6523,9 +6523,12 @@
     },
     "erdos-407": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T22:43:27Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom Bajpai-Bennett 131082 axiom (only ≤ 9 declared, 131082 only in docstring); phantom FourRepFamily theorems (def + 2 docstring headers, no proofs); section line drift in main-results/infinite-family/summary (#14418)"
+      ]
     },
     "erdos-408": {
       "agentId": "auditor-cycle-20-batch",
