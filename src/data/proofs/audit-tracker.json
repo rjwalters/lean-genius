@@ -8341,10 +8341,13 @@
       ]
     },
     "erdos-67": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-01T03:44:01Z",
-      "result": "clean"
+      "agentId": "auditor-agent",
+      "auditCount": 4,
+      "issues": [
+        "section line ranges drift across 3 sections (complex-variant, stronger-conjecture, multiplicative) — issue #14099"
+      ],
+      "lastAudited": "2026-05-01T05:00:00Z",
+      "result": "issues-found"
     },
     "erdos-670": {
       "agentId": "auditor-agent",
