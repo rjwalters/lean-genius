@@ -114,8 +114,8 @@
       "title": "Lorentz's Result (1954)",
       "startLine": 93,
       "endLine": 100,
-      "summary": "Axiomatizes `lorentz_1954`: $\\exists A$ with $\\text{IsComplementToPowersOfTwo}(A) \\wedge \\text{HasLorentzDensity}(A)$. The first positive answer, but with the suboptimal density $O(N \\log\\log N / \\log N)$.",
-      "mathContext": "Axiomatizes `lorentz_1954`: $\\exists A$ with $\\text{IsComplementToPowersOfTwo}(A) \\wedge \\text{HasLorentzDensity}(A)$. The first positive answer, but with the suboptimal density $O(N \\log\\log N / \\log N)$."
+      "summary": "documents in source comments `lorentz_1954` (no Lean declaration exists): $\\exists A$ with $\\text{IsComplementToPowersOfTwo}(A) \\wedge \\text{HasLorentzDensity}(A)$. The first positive answer, but with the suboptimal density $O(N \\log\\log N / \\log N)$.",
+      "mathContext": "documents in source comments `lorentz_1954` (no Lean declaration exists): $\\exists A$ with $\\text{IsComplementToPowersOfTwo}(A) \\wedge \\text{HasLorentzDensity}(A)$. The first positive answer, but with the suboptimal density $O(N \\log\\log N / \\log N)$."
     },
     {
       "id": "ruzsa-construction",
@@ -154,24 +154,24 @@
       "title": "Connection to Primitive Roots",
       "startLine": 170,
       "endLine": 189,
-      "summary": "Axiomatizes `primitive_root_order`: $\\text{ord}_{5^n}(2) = \\varphi(5^n) = 4 \\cdot 5^{n-1}$, and `powers_cover_residues`: $\\forall r$ coprime to $5^n$, $\\exists k$ with $2^k \\equiv r \\pmod{5^n}$. These are the algebraic foundations of Ruzsa's construction.",
-      "mathContext": "Axiomatizes `primitive_root_order`: $\\text{ord}_{5^n}(2) = \\varphi(5^n) = 4 \\cdot 5^{n-1}$, and `powers_cover_residues`: $\\forall r$ coprime to $5^n$, $\\exists k$ with $2^k \\equiv r \\pmod{5^n}$."
+      "summary": "documents in source comments `primitive_root_order` (no Lean declaration exists): $\\text{ord}_{5^n}(2) = \\varphi(5^n) = 4 \\cdot 5^{n-1}$, and `powers_cover_residues`: $\\forall r$ coprime to $5^n$, $\\exists k$ with $2^k \\equiv r \\pmod{5^n}$. These are the algebraic foundations of Ruzsa's construction.",
+      "mathContext": "documents in source comments `primitive_root_order` (no Lean declaration exists): $\\text{ord}_{5^n}(2) = \\varphi(5^n) = 4 \\cdot 5^{n-1}$, and `powers_cover_residues`: $\\forall r$ coprime to $5^n$, $\\exists k$ with $2^k \\equiv r \\pmod{5^n}$."
     },
     {
       "id": "generalizations",
       "title": "Generalizations to Other Bases",
       "startLine": 190,
       "endLine": 205,
-      "summary": "Defines $\\text{GeneralizedComplement}(g, A)$ for arbitrary base $g$, and axiomatizes `generalization_to_any_base`: for any $g \\geq 2$, sparse complements to $\\{g^k\\}$ exist with density $O(N/\\log N)$.",
-      "mathContext": "Defines $\\text{GeneralizedComplement}(g, A)$ for arbitrary base $g$, and axiomatizes `generalization_to_any_base`: for any $g \\geq 2$, sparse complements to $\\{g^k\\}$ exist with density $$O(N/\\log N)$$."
+      "summary": "Defines $\\text{GeneralizedComplement}(g, A)$ for arbitrary base $g$, and documents in source comments `generalization_to_any_base` (no Lean declaration exists): for any $g \\geq 2$, sparse complements to $\\{g^k\\}$ exist with density $O(N/\\log N)$.",
+      "mathContext": "Defines $\\text{GeneralizedComplement}(g, A)$ for arbitrary base $g$, and documents in source comments `generalization_to_any_base` (no Lean declaration exists): for any $g \\geq 2$, sparse complements to $\\{g^k\\}$ exist with density $$O(N/\\log N)$$."
     },
     {
       "id": "related",
       "title": "Related Sumset Problems",
       "startLine": 206,
       "endLine": 226,
-      "summary": "Axiomatizes `sumset_covering` ($A + \\{2^k\\}$ covers all large integers) and `additive_basis_order_two` ($A \\cup \\text{PowersOfTwo}$ forms a thin additive basis of order 2). Connects to the broader theory of additive bases.",
-      "mathContext": "Axiomatizes `sumset_covering` ($A + \\{2^k\\}$ covers all large integers) and `additive_basis_order_two` ($A \\cup \\text{PowersOfTwo}$ forms a thin additive basis of order 2)."
+      "summary": "documents in source comments `sumset_covering` (no Lean declaration exists) ($A + \\{2^k\\}$ covers all large integers) and `additive_basis_order_two` ($A \\cup \\text{PowersOfTwo}$ forms a thin additive basis of order 2). Connects to the broader theory of additive bases.",
+      "mathContext": "documents in source comments `sumset_covering` (no Lean declaration exists) ($A + \\{2^k\\}$ covers all large integers) and `additive_basis_order_two` ($A \\cup \\text{PowersOfTwo}$ forms a thin additive basis of order 2)."
     },
     {
       "id": "summary",

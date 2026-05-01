@@ -149,7 +149,7 @@
     {
       "id": "turan",
       "title": "Connection to Turan Numbers",
-      "summary": "Defines Turan number `turan n k H` as $\\text{ex}(n, H) = \\sup\\{|E(G)| : G \\text{ is } H\\text{-free}\\}$ via `sSup`. Axiomatizes `ar_turan_lower`: $\\text{AR}(n, H) \\geq \\text{ex}(n, H) + 1$ for $n \\geq k$.",
+      "summary": "Defines Turan number `turan n k H` as $\\text{ex}(n, H) = \\sup\\{|E(G)| : G \\text{ is } H\\text{-free}\\}$ via `sSup`. documents in source comments `ar_turan_lower` (no Lean declaration exists): $\\text{AR}(n, H) \\geq \\text{ex}(n, H) + 1$ for $n \\geq k$.",
       "startLine": 324,
       "endLine": 340,
       "mathContext": "The Turan number $\\text{ex}(n, H) = \\max\\{|E(G)| : G \\text{ on } n \\text{ vertices, } H\\text{-free}\\}$. The key connection: $\\text{AR}(n, H) \\geq \\text{ex}(n, H) + 1$ because an $H$-free graph can be colored rainbow (all edges distinct colors), with remaining edges of $K_n$ getting one extra color. This links anti-Ramsey theory to extremal graph theory."

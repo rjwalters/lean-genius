@@ -101,10 +101,10 @@
     {
       "id": "covering-sets",
       "title": "Covering Sets",
-      "summary": "Defines `IsCoveringSet` (finite primes $P$ where $\\forall k, \\exists p \\in P, p \\mid 2^k \\cdot m + 1$) and `HasFiniteCoveringSet`. Axiomatizes `covering_set_implies_sierpinski`: covered numbers are Sierpinski.",
+      "summary": "Defines `IsCoveringSet` (finite primes $P$ where $\\forall k, \\exists p \\in P, p \\mid 2^k \\cdot m + 1$) and `HasFiniteCoveringSet`. documents in source comments `covering_set_implies_sierpinski` (no Lean declaration exists): covered numbers are Sierpinski.",
       "startLine": 64,
       "endLine": 80,
-      "mathContext": "Defines `IsCoveringSet` (finite primes $P$ where $\\forall k, \\exists p \\in P, p \\mid 2^k \\cdot m + 1$) and `HasFiniteCoveringSet`. Axiomatizes `covering_set_implies_sierpinski`: covered numbers are Sierpinski."
+      "mathContext": "Defines `IsCoveringSet` (finite primes $P$ where $\\forall k, \\exists p \\in P, p \\mid 2^k \\cdot m + 1$) and `HasFiniteCoveringSet`. documents in source comments `covering_set_implies_sierpinski` (no Lean declaration exists): covered numbers are Sierpinski."
     },
     {
       "id": "main-question",

@@ -170,16 +170,16 @@
       "title": "Infinite Groups and Examples",
       "startLine": 201,
       "endLine": 250,
-      "summary": "Proves `abelian_no_edges` (Z(G) = ⊤ implies no non-commuting pairs). Axiomatizes `infinite_clique_example`, `symmetric_group_clique_bound` (≤ n!), `dihedral_group_center_index`. States `finite_group_finite_index` (sorry).",
-      "mathContext": "Proves `abelian_no_edges` (Z(G) = ⊤ implies no non-commuting pairs). Axiomatizes `infinite_clique_example`, `symmetric_group_clique_bound` (≤ n!), `dihedral_group_center_index`. States `finite_group_finite_index` (sorry)."
+      "summary": "Proves `abelian_no_edges` (Z(G) = ⊤ implies no non-commuting pairs). documents in source comments `infinite_clique_example` (no Lean declaration exists), `symmetric_group_clique_bound` (≤ n!), `dihedral_group_center_index`. States `finite_group_finite_index` (sorry).",
+      "mathContext": "Proves `abelian_no_edges` (Z(G) = ⊤ implies no non-commuting pairs). documents in source comments `infinite_clique_example` (no Lean declaration exists), `symmetric_group_clique_bound` (≤ n!), `dihedral_group_center_index`. States `finite_group_finite_index` (sorry)."
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
       "startLine": 251,
       "endLine": 280,
-      "summary": "Axiomatizes `commutingProbability` and `prob_clique_relation` for finite groups. Defines `isBFCGroup` (bounded finite conjugacy classes) and axiomatizes `bfc_center_connection`.",
-      "mathContext": "Formal definition: Axiomatizes `commutingProbability` and `prob_clique_relation` for finite groups. Defines `isBFCGroup` (bounded finite conjugacy classes) and axiomatizes `bfc_center_connection`."
+      "summary": "Axiomatizes `commutingProbability` and `prob_clique_relation` for finite groups. Defines `isBFCGroup` (bounded finite conjugacy classes) and documents in source comments `bfc_center_connection` (no Lean declaration exists).",
+      "mathContext": "Formal definition: Axiomatizes `commutingProbability` and `prob_clique_relation` for finite groups. Defines `isBFCGroup` (bounded finite conjugacy classes) and documents in source comments `bfc_center_connection` (no Lean declaration exists)."
     },
     {
       "id": "summary",

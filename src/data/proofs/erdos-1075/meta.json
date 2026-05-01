@@ -119,18 +119,18 @@
     {
       "id": "conjecture",
       "title": "The Open Conjecture",
-      "summary": "Defines `ErdosConjecture1075` as a `Prop`: $\\exists c_r > r^{-r}$ with edge threshold $(1+\\varepsilon)(n/r)^r$. The `def` (not `axiom`) signals an unresolved question. Also axiomatizes `threshold_comparison`: $(n/r)^r < n^r$ for $r \\ge 3$, quantifying the gap between the two thresholds. The conjecture is a supersaturation question — does slight density excess force structural improvements?",
+      "summary": "Defines `ErdosConjecture1075` as a `Prop`: $\\exists c_r > r^{-r}$ with edge threshold $(1+\\varepsilon)(n/r)^r$. The `def` (not `axiom`) signals an unresolved question. Also documents in source comments `threshold_comparison` (no Lean declaration exists): $(n/r)^r < n^r$ for $r \\ge 3$, quantifying the gap between the two thresholds. The conjecture is a supersaturation question — does slight density excess force structural improvements?",
       "startLine": 100,
       "endLine": 134,
-      "mathContext": "Defines `ErdosConjecture1075` as a `Prop`: $\\exists c_r > r^{-r}$ with edge threshold $(1+\\varepsilon)(n/r)^r$. The `def` (not `axiom`) signals an unresolved question. Also axiomatizes `threshold_comparison`: $(n/r)^r < n^r$ for $r \\ge 3$, quantifying the gap between the two thresholds. The conjecture is a supersaturation question — does slight density excess force structural improvements?"
+      "mathContext": "Defines `ErdosConjecture1075` as a `Prop`: $\\exists c_r > r^{-r}$ with edge threshold $(1+\\varepsilon)(n/r)^r$. The `def` (not `axiom`) signals an unresolved question. Also documents in source comments `threshold_comparison` (no Lean declaration exists): $(n/r)^r < n^r$ for $r \\ge 3$, quantifying the gap between the two thresholds. The conjecture is a supersaturation question — does slight density excess force structural improvements?"
     },
     {
       "id": "asymptotics",
       "title": "Complete Hypergraphs and Asymptotics",
-      "summary": "Defines `completeHypergraphEdges m r = Nat.choose m r` and axiomatizes `binomial_asymptotic`: $\\binom{m}{r}/(m^r/r!) \\to 1$ as $m \\to \\infty$. This bridges the combinatorial edge count $\\binom{m}{r}$ with the density measure $m^r$ used in the problem statement, using `Filter.Tendsto` for the asymptotic.",
+      "summary": "Defines `completeHypergraphEdges m r = Nat.choose m r` and documents in source comments `binomial_asymptotic` (no Lean declaration exists): $\\binom{m}{r}/(m^r/r!) \\to 1$ as $m \\to \\infty$. This bridges the combinatorial edge count $\\binom{m}{r}$ with the density measure $m^r$ used in the problem statement, using `Filter.Tendsto` for the asymptotic.",
       "startLine": 135,
       "endLine": 149,
-      "mathContext": "Defines `completeHypergraphEdges m r = Nat.choose m r` and axiomatizes `binomial_asymptotic`: $\\binom{m}{r}/(m^r/r!) \\to 1$ as $m \\to \\infty$. This bridges the combinatorial edge count $\\binom{m}{r}$ with the density measure $m^r$ used in the problem statement, using `Filter.Tendsto` for the asymptotic."
+      "mathContext": "Defines `completeHypergraphEdges m r = Nat.choose m r` and documents in source comments `binomial_asymptotic` (no Lean declaration exists): $\\binom{m}{r}/(m^r/r!) \\to 1$ as $m \\to \\infty$. This bridges the combinatorial edge count $\\binom{m}{r}$ with the density measure $m^r$ used in the problem statement, using `Filter.Tendsto` for the asymptotic."
     },
     {
       "id": "summary",
