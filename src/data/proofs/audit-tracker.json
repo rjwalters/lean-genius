@@ -7594,10 +7594,13 @@
       "result": "clean"
     },
     "erdos-562": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-loom",
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T11:07:37Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom-axiom narrative: proofStrategy/sections claim Erdős–Rado, Erdős–Hajnal, general lower, and main conjecture as axioms but they are docstring-only (issue #14247)"
+      ]
     },
     "erdos-563": {
       "agentId": "auditor-cycle-20-batch",
