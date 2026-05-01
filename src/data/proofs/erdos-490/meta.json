@@ -101,50 +101,50 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "IsSubsetUpTo (A ⊆ {1,...,N}), productSet (A·B via biUnion/image), HasDistinctProducts (|A·B| = |A||B|), ProductMapInjective (injectivity formulation), and their equivalence",
+      "summary": "IsSubsetUpTo (A ⊆ {1,...,N}), productSet (A·B via biUnion/image), HasDistinctProducts (|A·B| = |A||B|), ProductMapInjective (injectivity formulation); equivalence noted in a docstring comment only — no theorem declared",
       "startLine": 38,
       "endLine": 62,
-      "mathContext": "Mathematical content: IsSubsetUpTo (A ⊆ {1,...,N}), productSet (A·B via biUnion/image), HasDistinctProducts (|A·B| = |A||B|), ProductMapInjective (injectivity formulation), and their equivalence"
+      "mathContext": "Mathematical content: IsSubsetUpTo (A ⊆ {1,...,N}), productSet (A·B via biUnion/image), HasDistinctProducts (|A·B| = |A||B|), ProductMapInjective (injectivity formulation); equivalence noted in a docstring comment only"
     },
     {
       "id": "the-erdos-question",
       "title": "The Erdős Question",
       "summary": "maxProductSize via Nat.find, ErdosQuestion490 formalizing ∃C, |A||B| ≤ CN²/log N",
       "startLine": 63,
-      "endLine": 85,
+      "endLine": 95,
       "mathContext": "maxProductSize via Nat.find, ErdosQuestion490 formalizing ∃C, |A||B| $\\leq$ CN²/log N"
     },
     {
       "id": "szemeredi-theorem",
       "title": "Szemerédi's Theorem (1976)",
       "summary": "szemeredi_theorem axiom proving the N²/log N upper bound; erdos_490_answer derives YES immediately",
-      "startLine": 86,
-      "endLine": 101,
+      "startLine": 96,
+      "endLine": 111,
       "mathContext": "Verified: szemeredi_theorem axiom proving the N²/log N upper bound; erdos_490_answer derives YES immediately"
     },
     {
       "id": "optimal-example",
       "title": "The Optimal Example",
       "summary": "optimalA = [1, N/2], optimalB = primes in (N/2, N]; optimal_has_distinct_products axiom; optimal_works_because_primes (prime divisibility, sorried)",
-      "startLine": 102,
+      "startLine": 112,
       "endLine": 133,
       "mathContext": "Axiomatized: optimalA = [1, N/2], optimalB = primes in (N/2, N]; optimal_has_distinct_products axiom; optimal_works_because_primes (prime divisibility, sorried)"
     },
     {
       "id": "limit-question",
       "title": "The Limit Question (Open)",
-      "summary": "productRatio normalization, LimitQuestion existence, van_doorn_observation (limit ≥ 1), LimitQuestionOpen placeholder",
+      "summary": "productRatio normalization, LimitQuestion existence, LimitQuestionOpen placeholder; van Doorn's observation (limit ≥ 1 if it exists) is documented in a docstring comment only — no Lean declaration",
       "startLine": 134,
       "endLine": 154,
-      "mathContext": "productRatio normalization, LimitQuestion existence, van_doorn_observation (limit $\\geq$ 1), LimitQuestionOpen placeholder"
+      "mathContext": "productRatio normalization, LimitQuestion existence, LimitQuestionOpen placeholder; van Doorn's observation is docstring-only"
     },
     {
       "id": "special-cases",
       "title": "Special Cases: Multiplicative Sidon Sets",
-      "summary": "IsMultiplicativeSidon (A = B case), sidon_bound axiom (|A|² ≤ CN²/log N), primes_sidon (primes form a Sidon set, sorried)",
+      "summary": "IsMultiplicativeSidon (A = B case), primes_sidon (primes form a Sidon set, sorried); the sidon_bound (|A|² ≤ CN²/log N) is noted in a docstring comment only — no axiom or theorem declared",
       "startLine": 155,
       "endLine": 177,
-      "mathContext": "IsMultiplicativeSidon (A = B case), sidon_bound axiom (|A|² $\\leq$ CN²/log N), primes_sidon (primes form a Sidon set, sorried)"
+      "mathContext": "IsMultiplicativeSidon (A = B case), primes_sidon (primes form a Sidon set, sorried); sidon_bound is docstring-only"
     },
     {
       "id": "related-problems",
