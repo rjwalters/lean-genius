@@ -90,87 +90,87 @@
       "id": "point-config",
       "title": "Point Configuration",
       "summary": "euclidDist, PointConfig definitions",
-      "startLine": 38,
-      "endLine": 54,
+      "startLine": 39,
+      "endLine": 55,
       "mathContext": "Formal definition: euclidDist, PointConfig definitions"
     },
     {
       "id": "distance-count",
       "title": "Distinct Distance Count",
       "summary": "distanceSet, distinctDistCount (R function)",
-      "startLine": 55,
-      "endLine": 72,
+      "startLine": 56,
+      "endLine": 73,
       "mathContext": "Mathematical content: distanceSet, distinctDistCount (R function)"
     },
     {
       "id": "g-function",
       "title": "The Function g(n)",
       "summary": "rValueSet, numDistinctRValues, g definition",
-      "startLine": 73,
-      "endLine": 97,
+      "startLine": 74,
+      "endLine": 98,
       "mathContext": "Formal definition: rValueSet, numDistinctRValues, g definition"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "summary": "csizmadia_bound and upper_bound axioms (Erdős–Fishburn bound mentioned only in docstring)",
-      "startLine": 98,
-      "endLine": 125,
+      "startLine": 99,
+      "endLine": 123,
       "mathContext": "Bound: csizmadia_bound axiom (g(n) > 7n/10), upper_bound axiom (g(n) < n - cn^{2/3}); Erdős–Fishburn bound appears only in docstring"
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "summary": "erdos653Conjecture definition",
-      "startLine": 126,
-      "endLine": 139,
+      "startLine": 124,
+      "endLine": 137,
       "mathContext": "Formal definition: erdos653Conjecture definition"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "summary": "g_le_n axiom; g_pos and g_mono discussed only in docstrings",
-      "startLine": 140,
-      "endLine": 159,
+      "startLine": 138,
+      "endLine": 153,
       "mathContext": "Axiomatized: g_le_n axiom (g(n) ≤ n); g_pos and g_mono appear only in docstrings"
     },
     {
       "id": "special-configs",
       "title": "Special Configurations",
       "summary": "IsCollinear, IsRegularPolygon, regular_polygon_r_value",
-      "startLine": 160,
-      "endLine": 188,
+      "startLine": 154,
+      "endLine": 178,
       "mathContext": "Mathematical content: IsCollinear, IsRegularPolygon, regular_polygon_r_value"
     },
     {
       "id": "extremal-configs",
       "title": "Extremal Configurations",
       "summary": "IsOptimalConfig, optimal_exists",
-      "startLine": 189,
-      "endLine": 206,
+      "startLine": 179,
+      "endLine": 193,
       "mathContext": "Mathematical content: IsOptimalConfig, optimal_exists"
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Analysis",
       "summary": "Asymptotic gap commentary in docstrings (no axioms in this section)",
-      "startLine": 207,
-      "endLine": 225,
+      "startLine": 194,
+      "endLine": 203,
       "mathContext": "Mathematical content: asymptotic gap commentary (gap_lower_bound and gap_bounds in docstrings only)"
     },
     {
       "id": "connections",
       "title": "Connection to Unit Distance Problem",
       "summary": "unitDistPairs, totalDistinctDistances",
-      "startLine": 226,
-      "endLine": 245,
+      "startLine": 204,
+      "endLine": 223,
       "mathContext": "Mathematical content: unitDistPairs, totalDistinctDistances"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_653_summary theorem, erdos_653 theorem",
-      "startLine": 246,
+      "startLine": 224,
       "endLine": 253,
       "mathContext": "Verified: erdos_653_summary theorem, erdos_653 theorem"
     }
