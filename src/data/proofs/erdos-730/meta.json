@@ -73,49 +73,33 @@
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 44,
-      "endLine": 49,
+      "endLine": 47,
       "summary": "Axiomatizes the EGRS conjecture: `Set.Infinite CentralBinomPairs`. Stated as an axiom reflecting the open status of the problem.",
-      "mathContext": "Axiomatized: Axiomatizes the EGRS conjecture: `Set.Infinite CentralBinomPairs`. Stated as an axiom reflecting the open status of the problem."
+      "mathContext": "Axiomatized: Set.Infinite CentralBinomPairs (docstring + one-line axiom)"
     },
     {
       "id": "examples",
       "title": "Known Examples",
-      "startLine": 50,
-      "endLine": 69,
-      "summary": "Axiomatizes the known pairs $(87,88)$ and $(607,608)$, the triple $(10003, 10004, 10005)$ with all pairwise matches, and proves `delta_ne_one`: a non-consecutive pair exists (gap 2 via the triple).",
-      "mathContext": "Verified: Axiomatizes the known pairs $(87,88)$ and $(607,608)$, the triple $(10003, 10004, 10005)$ with all pairwise matches, and proves `delta_ne_one`: a non-consecutive pair exists (gap 2 via the triple)."
-    },
-    {
-      "id": "kummer",
-      "title": "Kummer's Divisibility Criterion",
-      "startLine": 70,
-      "endLine": 76,
-      "summary": "Axiomatizes Kummer's theorem specialized to central binomials: $p \\mid \\binom{2n}{n}$ iff $\\exists k,\\; (n / p^k) \\bmod p \\ge \\lceil p/2 \\rceil$, capturing the carry condition in base-$p$ addition.",
-      "mathContext": "Verified: Axiomatizes Kummer's theorem specialized to central binomials: $p \\mid \\binom{2n}{n}$ iff $\\exists k,\\; (n / p^k) \\bmod p \\ge \\lceil p/2 \\rceil$, capturing the carry condition in base-$p$ addition."
+      "startLine": 48,
+      "endLine": 63,
+      "summary": "Axiomatizes the known triple $(10003, 10004, 10005)$ with all pairwise matches (`triple_10003`). Proves `delta_ne_one`: a non-consecutive pair exists (gap 2 via the triple). Pairs (87,88) and (607,608) described in docstrings only.",
+      "mathContext": "Axiomatized: triple_10003 (L55). Verified: delta_ne_one (L61). Pairs (87,88)/(607,608) are docstring context only."
     },
     {
       "id": "structure",
       "title": "Prime Divisor Structure",
-      "startLine": 77,
-      "endLine": 88,
-      "summary": "Three structural results: (1) $2 \\mid \\binom{2n}{n}$ for $n \\ge 1$, (2) primes $p > 2n$ never divide $\\binom{2n}{n}$, (3) primes in $(n, 2n]$ always divide $\\binom{2n}{n}$ with multiplicity 1 (Bertrand/Legendre).",
-      "mathContext": "Three structural results: (1) $2 \\mid \\binom{2n}{n}$ for $n \\ge 1$, (2) primes $p > 2n$ never divide $\\binom{2n}{n}$, (3) primes in $(n, 2n]$ always divide $\\binom{2n}{n}$ with multiplicity 1 (Bertrand/Legendre)."
+      "startLine": 64,
+      "endLine": 121,
+      "summary": "Docstring on Kummer's carry criterion (L67–69). Three proved theorems: `two_divides_central` (L71), `large_prime_not_dividing` (L87), `middle_primes_divide` (L105). No Kummer axiom declared — Kummer's theorem appears only in a docstring.",
+      "mathContext": "Verified: two_divides_central, large_prime_not_dividing, middle_primes_divide. Kummer's theorem is docstring context only — no axiom declaration."
     },
     {
       "id": "spacing",
-      "title": "Spacing Conjecture",
-      "startLine": 89,
-      "endLine": 96,
-      "summary": "The stronger conjecture: for every $k \\ge 1$, infinitely many $n$ satisfy $\\mathrm{rad}\\binom{2n}{n} = \\mathrm{rad}\\binom{2(n+k)}{n+k}$.",
-      "mathContext": "Mathematical content: The stronger conjecture: for every $k \\ge 1$, infinitely many $n$ satisfy $\\mathrm{rad}\\binom{2n}{n} = \\mathrm{rad}\\binom{2(n+k)}{n+k}$."
-    },
-    {
-      "id": "reduction",
-      "title": "Spacing-1 Implies Main Conjecture",
-      "startLine": 97,
-      "endLine": 107,
-      "summary": "Proved theorem: the spacing-1 case implies the main conjecture, via injective image $n \\mapsto (n, n+1)$ into `CentralBinomPairs` using `Set.Infinite.mono` and `omega`.",
-      "mathContext": "Verified: Proved theorem: the spacing-1 case implies the main conjecture, via injective image $n \\mapsto (n, n+1)$ into `CentralBinomPairs` using `Set.Infinite.mono` and `omega`."
+      "title": "Spacing Conjecture and Reduction",
+      "startLine": 122,
+      "endLine": 136,
+      "summary": "Docstring on the stronger spacing conjecture for every $k \\ge 1$. Proves `spacing1_implies_main` (L127): spacing-1 case implies the main conjecture via injective image $n \\mapsto (n, n+1)$ into `CentralBinomPairs`.",
+      "mathContext": "Verified: spacing1_implies_main (L127). Spacing conjecture for k≥2 described in docstring only."
     },
     {
       "id": "heuristic",
