@@ -1,8 +1,8 @@
 {
   "id": "abel-ruffini-oq-04-oq-02-oq-02",
-  "title": "Alternating Groups: A\u2099 Solvable iff n \u2264 4",
+  "title": "Alternating Groups: Aₙ Solvable iff n ≤ 4",
   "slug": "abel-ruffini-oq-04-oq-02-oq-02",
-  "description": "Proves the complete solvability classification for alternating groups: A\u2099 is solvable if and only if n \u2264 4. This is the alternating-group analogue of the symmetric group result (S\u2099 solvable iff n \u2264 4), with the same threshold driven by A\u2085 being the smallest non-abelian simple group.",
+  "description": "Proves the complete solvability classification for alternating groups: Aₙ is solvable if and only if n ≤ 4. This is the alternating-group analogue of the symmetric group result (Sₙ solvable iff n ≤ 4), with the same threshold driven by A₅ being the smallest non-abelian simple group.",
   "meta": {
     "author": "Classical (Galois, Jordan)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Alternating_group#Alternating_groups_and_the_Feit%E2%80%93Thompson_theorem",
@@ -23,7 +23,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Equiv.Perm.not_solvable",
-        "description": "Perm(\u03b1) not solvable for |\u03b1| \u2265 5 \u2014 the main non-solvability engine, ultimately based on A\u2085 simplicity",
+        "description": "Perm(α) not solvable for |α| ≥ 5 — the main non-solvability engine, ultimately based on A₅ simplicity",
         "module": "Mathlib.GroupTheory.Solvable"
       },
       {
@@ -38,25 +38,25 @@
       },
       {
         "theorem": "isSolvable_of_comm",
-        "description": "Commutative groups are solvable \u2014 used for A\u2083 \u2245 \u2124/3\u2124",
+        "description": "Commutative groups are solvable — used for A₃ ≅ ℤ/3ℤ",
         "module": "Mathlib.GroupTheory.Solvable"
       },
       {
         "theorem": "isSolvable_of_subsingleton",
-        "description": "Trivial (subsingleton) groups are solvable \u2014 used for A\u2080, A\u2081, A\u2082 via inferInstance",
+        "description": "Trivial (subsingleton) groups are solvable — used for A₀, A₁, A₂ via inferInstance",
         "module": "Mathlib.GroupTheory.Solvable"
       },
       {
         "theorem": "alternatingGroup.isSimpleGroup_five",
-        "description": "A\u2085 is a simple group \u2014 the foundational fact underlying Equiv.Perm.not_solvable for n \u2265 5",
+        "description": "A₅ is a simple group — the foundational fact underlying Equiv.Perm.not_solvable for n ≥ 5",
         "module": "Mathlib.GroupTheory.SpecificGroups.Alternating"
       }
     ],
     "originalContributions": [
-      "a3_solvable: A\u2083 \u2245 \u2124/3\u2124 solvable by isSolvable_of_comm + decide",
-      "a4_solvable: A\u2084 solvable as subgroup of solvable S\u2084",
-      "an_not_solvable_of_ge_five: A_n not solvable for n \u2265 5 via exact sequence argument",
-      "alternating_solvable_iff: Complete bidirectional classification A_n solvable \u2194 n \u2264 4"
+      "a3_solvable: A₃ ≅ ℤ/3ℤ solvable by isSolvable_of_comm + decide",
+      "a4_solvable: A₄ solvable as subgroup of solvable S₄",
+      "an_not_solvable_of_ge_five: A_n not solvable for n ≥ 5 via exact sequence argument",
+      "alternating_solvable_iff: Complete bidirectional classification A_n solvable ↔ n ≤ 4"
     ],
     "dateAdded": "2026-04-05",
     "axiomCount": 0,
@@ -65,15 +65,15 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The solvability of alternating groups is inseparable from the classical story of Galois theory and the quest to understand when polynomial equations can be solved by radicals.\n\nGalois (1832), in letters written the night before his fatal duel at age 20, established that $A_5$ (order 60) is simple \u2014 the first non-abelian simple group ever identified. He proved that a polynomial equation is solvable by radicals if and only if its Galois group is solvable, and showed that $S_5$ is not solvable precisely because $A_5$ appears as an insoluble composition factor. Jordan (1870) in his landmark treatise *Trait\u00e9 des substitutions et des \u00e9quations alg\u00e9briques* systematically developed the theory of composition series for permutation groups, proving Jordan-H\u00f6lder uniqueness and showing that $A_n$ is simple for $n \\geq 5$ in full generality. H\u00f6lder (1892) completed the classification by proving the Jordan-H\u00f6lder theorem in its modern form: the composition factors of any finite group are unique up to order and isomorphism.\n\nThe fact that $A_4$ is solvable (via the normal Klein four-group $V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\} \\trianglelefteq A_4$) while $A_5$ is not is one of the most beautiful pieces of finite group theory. It directly explains why quartic equations have the Ferrari formula while quintics do not: the composition series $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$ has all abelian factors ($V_4/\\{e\\} \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$, $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$, $S_4/A_4 \\cong \\mathbb{Z}/2\\mathbb{Z}$), while the analogous chain $\\{e\\} \\trianglelefteq A_5 \\trianglelefteq S_5$ stalls at $A_5$ which is simple and non-abelian.\n\nFor the alternating groups specifically: $A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (cyclic of order 3, abelian and solvable), $A_4$ has the solvability composition series above. For $n \\geq 5$, $A_n$ is simple (no non-trivial proper normal subgroups), and since $A_5$ is non-abelian, all $A_n$ ($n \\geq 5$) are non-solvable. The Feit-Thompson theorem (1963, 255 pages) proves every finite group of odd order is solvable \u2014 consistent with this classification since $|A_n|$ is even for $n \\geq 3$ ($|A_n| = n!/2$, and $n! \\geq 6$ is even) and $A_5$ (order 60, even) is the counterexample for even orders.",
-    "problemStatement": "**Open Question**: Prove that A_n solvable iff n \u2264 4.\n\n**Answer**: The complete classification is proved. A\u2099 is solvable iff n \u2264 4, with the threshold driven by A\u2085 being the smallest non-abelian simple group.",
+    "historicalContext": "The solvability of alternating groups is inseparable from the classical story of Galois theory and the quest to understand when polynomial equations can be solved by radicals.\n\nGalois (1832), in letters written the night before his fatal duel at age 20, established that $A_5$ (order 60) is simple — the first non-abelian simple group ever identified. He proved that a polynomial equation is solvable by radicals if and only if its Galois group is solvable, and showed that $S_5$ is not solvable precisely because $A_5$ appears as an insoluble composition factor. Jordan (1870) in his landmark treatise *Traité des substitutions et des équations algébriques* systematically developed the theory of composition series for permutation groups, proving Jordan-Hölder uniqueness and showing that $A_n$ is simple for $n \\geq 5$ in full generality. Hölder (1892) completed the classification by proving the Jordan-Hölder theorem in its modern form: the composition factors of any finite group are unique up to order and isomorphism.\n\nThe fact that $A_4$ is solvable (via the normal Klein four-group $V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\} \\trianglelefteq A_4$) while $A_5$ is not is one of the most beautiful pieces of finite group theory. It directly explains why quartic equations have the Ferrari formula while quintics do not: the composition series $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$ has all abelian factors ($V_4/\\{e\\} \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$, $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$, $S_4/A_4 \\cong \\mathbb{Z}/2\\mathbb{Z}$), while the analogous chain $\\{e\\} \\trianglelefteq A_5 \\trianglelefteq S_5$ stalls at $A_5$ which is simple and non-abelian.\n\nFor the alternating groups specifically: $A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (cyclic of order 3, abelian and solvable), $A_4$ has the solvability composition series above. For $n \\geq 5$, $A_n$ is simple (no non-trivial proper normal subgroups), and since $A_5$ is non-abelian, all $A_n$ ($n \\geq 5$) are non-solvable. The Feit-Thompson theorem (1963, 255 pages) proves every finite group of odd order is solvable — consistent with this classification since $|A_n|$ is even for $n \\geq 3$ ($|A_n| = n!/2$, and $n! \\geq 6$ is even) and $A_5$ (order 60, even) is the counterexample for even orders.",
+    "problemStatement": "**Open Question**: Prove that A_n solvable iff n ≤ 4.\n\n**Answer**: The complete classification is proved. Aₙ is solvable iff n ≤ 4, with the threshold driven by A₅ being the smallest non-abelian simple group.",
     "text": "Proves the exact solvability threshold for alternating groups: $A_n$ is solvable if and only if $n \\leq 4$. The small cases ($n \\leq 4$) use four distinct Lean strategies matching each group's structure: `inferInstance` for the trivial groups $A_0, A_1, A_2$; `isSolvable_of_comm` with `decide` for the abelian $A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$; and `native_decide` to verify derived length 3 of $S_4$ followed by `inferInstance` to inherit solvability to the subgroup $A_4 \\leq S_4$. The large cases ($n \\geq 5$) use a short exact sequence reduction: the sign homomorphism $1 \\to A_n \\hookrightarrow S_n \\xrightarrow{\\text{sgn}} \\{\\pm 1\\} \\to 1$ implies that if $A_n$ were solvable then $S_n$ would be solvable (by `solvable_of_ker_le_range`), contradicting Mathlib's `Equiv.Perm.not_solvable`. The bidirectional classification `alternating_solvable_iff` combines both directions in 15 lines, with the backward direction using `interval_cases` to enumerate all five solvable cases. The entry complements its symmetric-group sibling `abel-ruffini-oq-04-oq-02` to give a complete solvability picture of both group families.",
-    "proofStrategy": "**Small cases (n \u2264 4)**:\n- A\u2080, A\u2081, A\u2082: trivial groups, `inferInstance`\n- A\u2083: abelian (\u2245 \u2124/3\u2124), proved by `isSolvable_of_comm` + `decide`\n- A\u2084: subgroup of solvable S\u2084, `inferInstance` via subgroup solvability\n\n**Large cases (n \u2265 5)**:\n- Key exact sequence: 1 \u2192 A\u2099 \u2192 S\u2099 \u2192 \u2124\u02e3 \u2192 1\n- If A\u2099 solvable \u2192 S\u2099 solvable (via `solvable_of_ker_le_range`)\n- But Mathlib proves \u00acIsSolvable(S\u2099) for n \u2265 5 via `Equiv.Perm.not_solvable`\n- Contradiction \u2192 \u00acIsSolvable(A\u2099)\n\n**Classification**: `alternating_solvable_iff` combines both directions.",
+    "proofStrategy": "**Small cases (n ≤ 4)**:\n- A₀, A₁, A₂: trivial groups, `inferInstance`\n- A₃: abelian (≅ ℤ/3ℤ), proved by `isSolvable_of_comm` + `decide`\n- A₄: subgroup of solvable S₄, `inferInstance` via subgroup solvability\n\n**Large cases (n ≥ 5)**:\n- Key exact sequence: 1 → Aₙ → Sₙ → ℤˣ → 1\n- If Aₙ solvable → Sₙ solvable (via `solvable_of_ker_le_range`)\n- But Mathlib proves ¬IsSolvable(Sₙ) for n ≥ 5 via `Equiv.Perm.not_solvable`\n- Contradiction → ¬IsSolvable(Aₙ)\n\n**Classification**: `alternating_solvable_iff` combines both directions.",
     "keyInsights": [
       "$A_4$ is solvable because it has a normal subgroup $V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\} \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$ (the Klein four-group). The composition series $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4$ has abelian factors ($V_4$ and $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$). This is the algebraic reason quartic equations are solvable: $\\text{Gal}(f/\\mathbb{Q}) \\leq S_4$, and $S_4$ is solvable via the chain $S_4 \\supset A_4 \\supset V_4 \\supset \\{e\\}$.",
-      "$A_5$ is the smallest non-abelian simple group (order 60). Simplicity means its only normal subgroups are $\\{e\\}$ and $A_5$ itself; non-abelian means its derived subgroup $[A_5, A_5] = A_5 \\neq \\{e\\}$. A solvable group has $G^{(n)} = \\{e\\}$ for some $n$, but $A_5^{(n)} = A_5$ for all $n$ \u2014 the derived series never descends. This directly blocks the quintic: any quintic with Galois group $S_5$ has $A_5$ as a composition factor, making the Galois group non-solvable.",
-      "The key reduction \u2014 $A_n$ solvable $\\Rightarrow S_n$ solvable \u2014 is proved via the sign exact sequence $1 \\to A_n \\to S_n \\xrightarrow{\\text{sign}} \\{\\pm 1\\} \\to 1$. By `solvable_of_ker_le_range`: if the kernel ($A_n$, by hypothesis) and the quotient ($\\{\\pm 1\\} \\cong \\mathbb{Z}/2\\mathbb{Z}$, abelian) are solvable, then $S_n$ is solvable. This contrapositive is the proof backbone for the $n \\geq 5$ direction.",
-      "The Lean proof strategy is a textbook instance of proof by contradiction combined with a reduction chain: assume $A_n$ solvable \u2192 (reduction via sign sequence) \u2192 $S_n$ solvable \u2192 (Mathlib lemma) \u2192 contradiction. This modular structure separates the group-theoretic content from the computational verification.",
+      "$A_5$ is the smallest non-abelian simple group (order 60). Simplicity means its only normal subgroups are $\\{e\\}$ and $A_5$ itself; non-abelian means its derived subgroup $[A_5, A_5] = A_5 \\neq \\{e\\}$. A solvable group has $G^{(n)} = \\{e\\}$ for some $n$, but $A_5^{(n)} = A_5$ for all $n$ — the derived series never descends. This directly blocks the quintic: any quintic with Galois group $S_5$ has $A_5$ as a composition factor, making the Galois group non-solvable.",
+      "The key reduction — $A_n$ solvable $\\Rightarrow S_n$ solvable — is proved via the sign exact sequence $1 \\to A_n \\to S_n \\xrightarrow{\\text{sign}} \\{\\pm 1\\} \\to 1$. By `solvable_of_ker_le_range`: if the kernel ($A_n$, by hypothesis) and the quotient ($\\{\\pm 1\\} \\cong \\mathbb{Z}/2\\mathbb{Z}$, abelian) are solvable, then $S_n$ is solvable. This contrapositive is the proof backbone for the $n \\geq 5$ direction.",
+      "The Lean proof strategy is a textbook instance of proof by contradiction combined with a reduction chain: assume $A_n$ solvable → (reduction via sign sequence) → $S_n$ solvable → (Mathlib lemma) → contradiction. This modular structure separates the group-theoretic content from the computational verification.",
       "`A_4` solvability in Lean uses `inferInstance`: Lean's typeclass machinery automatically derives `IsSolvable (alternatingGroup (Fin 4))` from `IsSolvable (Perm (Fin 4))` (since $A_4 \\leq S_4$ and subgroups of solvable groups are solvable). The one non-automatic step is establishing $S_4$ solvability via `native_decide` on the derived series.",
       "The composition series $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$ has the remarkable property that it simultaneously explains three facts: $A_4$ is solvable (factors $V_4/\\{e\\} \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$, $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$, abelian), $A_4$ is the largest alternating group without a subgroup of index 2 (since $V_4$ has no index-2 subgroup), and quartic equations but not quintic equations have radical solutions. This single chain is the algebraic heart of why $n=4$ is the exact threshold.",
       "The non-solvability for $n \\geq 5$ has multiple isomorphic faces via 'exceptional' simple group identifications: $A_5 \\cong \\text{PSL}(2,4) \\cong \\text{PSL}(2,5) \\cong \\text{Icos}^+$ (rotation group of the icosahedron), and $A_6 \\cong \\text{PSL}(2,9) \\cong \\text{Sp}(4,2)'$. These coincidences are *exceptional*: for $n \\geq 7$, $A_n$ is no longer isomorphic to any classical group of Lie type, and the $A_n$ family becomes a 'pure' infinite series of finite simple groups. The exceptional isomorphisms at $n = 5, 6$ are why so much of classical Galois theory can be presented geometrically (via the icosahedron) — Klein's 1884 *Vorlesungen über das Ikosaeder* exploits $A_5 \\cong \\text{Icos}^+$ to give a 'beyond-radicals' solution to the quintic via the icosahedral equation.",
@@ -99,26 +99,26 @@
     },
     {
       "id": "small-cases",
-      "title": "Small Alternating Groups Are Solvable (n \u2264 4)",
+      "title": "Small Alternating Groups Are Solvable (n ≤ 4)",
       "startLine": 55,
       "endLine": 80,
-      "summary": "Proves A\u2080 through A\u2084 are solvable. A\u2080, A\u2081, A\u2082 by inferInstance; A\u2083 by isSolvable_of_comm + decide; A\u2084 by subgroup solvability from S\u2084 (derived length 3 via native_decide).",
+      "summary": "Proves A₀ through A₄ are solvable. A₀, A₁, A₂ by inferInstance; A₃ by isSolvable_of_comm + decide; A₄ by subgroup solvability from S₄ (derived length 3 via native_decide).",
       "mathContext": "$A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (abelian). $A_4 \\leq S_4$ and $S_4$ is solvable (derived length 3: $S_4^{(3)} = \\{e\\}$ verified by native_decide)."
     },
     {
       "id": "large-cases",
-      "title": "Large Alternating Groups Are Not Solvable (n \u2265 5)",
+      "title": "Large Alternating Groups Are Not Solvable (n ≥ 5)",
       "startLine": 82,
       "endLine": 109,
-      "summary": "Proves A_n not solvable for n \u2265 5. Private lemma sn_solvable_of_an_solvable uses the sign exact sequence 1 \u2192 A\u2099 \u2192 S\u2099 \u2192 \u2124\u02e3 \u2192 1 and solvable_of_ker_le_range. Private lemma sn_not_solvable delegates to Equiv.Perm.not_solvable. Public theorem an_not_solvable_of_ge_five combines them by contradiction.",
-      "mathContext": "Exact sequence $1 \\to A_n \\to S_n \\xrightarrow{\\text{sign}} \\{\\pm 1\\} \\to 1$ and solvability extension. If $A_n$ solvable and $\\{\\pm 1\\} \\cong \\mathbb{Z}/2\\mathbb{Z}$ solvable, then $S_n$ solvable \u2014 but $S_n$ is not solvable for $n \\geq 5$."
+      "summary": "Proves A_n not solvable for n ≥ 5. Private lemma sn_solvable_of_an_solvable uses the sign exact sequence 1 → Aₙ → Sₙ → ℤˣ → 1 and solvable_of_ker_le_range. Private lemma sn_not_solvable delegates to Equiv.Perm.not_solvable. Public theorem an_not_solvable_of_ge_five combines them by contradiction.",
+      "mathContext": "Exact sequence $1 \\to A_n \\to S_n \\xrightarrow{\\text{sign}} \\{\\pm 1\\} \\to 1$ and solvability extension. If $A_n$ solvable and $\\{\\pm 1\\} \\cong \\mathbb{Z}/2\\mathbb{Z}$ solvable, then $S_n$ solvable — but $S_n$ is not solvable for $n \\geq 5$."
     },
     {
       "id": "classification",
       "title": "The Complete Classification",
       "startLine": 111,
       "endLine": 138,
-      "summary": "alternating_solvable_iff: IsSolvable (alternatingGroup (Fin n)) \u2194 n \u2264 4. Forward direction: contradiction via an_not_solvable_of_ge_five. Backward direction: interval_cases n enumerates 0\u20134, each discharged by the small-case theorems.",
+      "summary": "alternating_solvable_iff: IsSolvable (alternatingGroup (Fin n)) ↔ n ≤ 4. Forward direction: contradiction via an_not_solvable_of_ge_five. Backward direction: interval_cases n enumerates 0–4, each discharged by the small-case theorems.",
       "mathContext": "$A_n$ solvable $\\iff n \\leq 4$. Proof by interval_cases (backward) and by_contra + omega (forward)."
     },
     {
@@ -126,18 +126,18 @@
       "title": "Corollaries and Sharp Threshold",
       "startLine": 140,
       "endLine": 167,
-      "summary": "Named instances for A\u2085 and A\u2086 non-solvability. Convenience lemmas alternating_solvable_of_le_four and alternating_not_solvable_of_ge_five. sharp_threshold witnesses that A\u2084 is solvable but A\u2085 is not. Closes namespace AbelRuffiniOQ04OQ02OQ02.",
+      "summary": "Named instances for A₅ and A₆ non-solvability. Convenience lemmas alternating_solvable_of_le_four and alternating_not_solvable_of_ge_five. sharp_threshold witnesses that A₄ is solvable but A₅ is not. Closes namespace AbelRuffiniOQ04OQ02OQ02.",
       "mathContext": "The exact threshold: $A_4$ solvable (via Klein four-group chain $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4$), $A_5$ not (simplest non-abelian simple group, order 60)."
     }
   ],
   "conclusion": {
-    "summary": "The complete solvability classification for alternating groups is proved: A\u2099 solvable iff n \u2264 4. The proof is clean and short, reducing the hard direction to Mathlib's symmetric group result via the sign exact sequence.",
-    "implications": "1. **Galois theory**: Combined with the Galois correspondence (a polynomial is solvable by radicals iff its Galois group is solvable), this classification explains precisely why degree $\\leq 4$ polynomials admit radical formulas while degree $\\geq 5$ does not: $\\text{Gal}(f/\\mathbb{Q}) \\leq S_n$ for a degree-$n$ polynomial $f$, and $S_n$ is solvable iff $n \\leq 4$, with $A_n$ solvable iff $n \\leq 4$ giving the same threshold for the alternating group factor.\n\n2. **Simple group theory**: $A_5$ (order 60) is the exact obstruction \u2014 the smallest non-abelian simple group. The entry by `an_not_solvable_of_ge_five` ultimately relies on the simplicity of $A_5$ embedded in all $A_n$ for $n \\geq 5$. This makes the classification theorem a direct corollary of $A_5$'s simplicity.\n\n3. **Uniform threshold**: Both $S_n$ and $A_n$ become non-solvable at $n = 5$, for the same algebraic reason: the exact sequence $1 \\to A_n \\to S_n \\to \\{\\pm 1\\} \\to 1$ means $S_n$ is solvable iff both $A_n$ and $\\{\\pm 1\\}$ are solvable (and $\\{\\pm 1\\}$ is always solvable). So $S_n$ solvable $\\iff A_n$ solvable, and both share the threshold $n \\leq 4$.\n\n4. **Jordan-H\u00f6lder uniqueness**: The composition factors of $A_4$ are $(\\mathbb{Z}/2\\mathbb{Z})^2$ and $\\mathbb{Z}/3\\mathbb{Z}$ (from $A_4 \\supset V_4 \\supset \\{e\\}$). By Jordan-H\u00f6lder, these are the unique composition factors (up to order) of any group isomorphic to $A_4$. For $A_5$, the unique composition series is $A_5 \\supset \\{e\\}$ (since $A_5$ is simple), and the unique composition factor is $A_5$ itself \u2014 a non-abelian simple group, hence not cyclic of prime order, making $A_5$ non-solvable.\n\n5. **Lean formalization efficiency**: The 167-line proof with 0 axioms demonstrates how Mathlib's `IsSolvable` typeclass infrastructure makes the classification nearly mechanical. The $n \\leq 4$ direction uses `interval_cases` + `inferInstance` (5 cases, each one-liners). The $n \\geq 5$ direction reduces to Mathlib's `Equiv.Perm.not_solvable`. The proof is dominated by the two private helper lemmas (`sn_solvable_of_an_solvable`, `sn_not_solvable`) \u2014 the reduction architecture is the main mathematical content.",
+    "summary": "The complete solvability classification for alternating groups is proved: Aₙ solvable iff n ≤ 4. The proof is clean and short, reducing the hard direction to Mathlib's symmetric group result via the sign exact sequence.",
+    "implications": "1. **Galois theory**: Combined with the Galois correspondence (a polynomial is solvable by radicals iff its Galois group is solvable), this classification explains precisely why degree $\\leq 4$ polynomials admit radical formulas while degree $\\geq 5$ does not: $\\text{Gal}(f/\\mathbb{Q}) \\leq S_n$ for a degree-$n$ polynomial $f$, and $S_n$ is solvable iff $n \\leq 4$, with $A_n$ solvable iff $n \\leq 4$ giving the same threshold for the alternating group factor.\n\n2. **Simple group theory**: $A_5$ (order 60) is the exact obstruction — the smallest non-abelian simple group. The entry by `an_not_solvable_of_ge_five` ultimately relies on the simplicity of $A_5$ embedded in all $A_n$ for $n \\geq 5$. This makes the classification theorem a direct corollary of $A_5$'s simplicity.\n\n3. **Uniform threshold**: Both $S_n$ and $A_n$ become non-solvable at $n = 5$, for the same algebraic reason: the exact sequence $1 \\to A_n \\to S_n \\to \\{\\pm 1\\} \\to 1$ means $S_n$ is solvable iff both $A_n$ and $\\{\\pm 1\\}$ are solvable (and $\\{\\pm 1\\}$ is always solvable). So $S_n$ solvable $\\iff A_n$ solvable, and both share the threshold $n \\leq 4$.\n\n4. **Jordan-Hölder uniqueness**: The composition factors of $A_4$ are $(\\mathbb{Z}/2\\mathbb{Z})^2$ and $\\mathbb{Z}/3\\mathbb{Z}$ (from $A_4 \\supset V_4 \\supset \\{e\\}$). By Jordan-Hölder, these are the unique composition factors (up to order) of any group isomorphic to $A_4$. For $A_5$, the unique composition series is $A_5 \\supset \\{e\\}$ (since $A_5$ is simple), and the unique composition factor is $A_5$ itself — a non-abelian simple group, hence not cyclic of prime order, making $A_5$ non-solvable.\n\n5. **Lean formalization efficiency**: The 167-line proof with 0 axioms demonstrates how Mathlib's `IsSolvable` typeclass infrastructure makes the classification nearly mechanical. The $n \\leq 4$ direction uses `interval_cases` + `inferInstance` (5 cases, each one-liners). The $n \\geq 5$ direction reduces to Mathlib's `Equiv.Perm.not_solvable`. The proof is dominated by the two private helper lemmas (`sn_solvable_of_an_solvable`, `sn_not_solvable`) — the reduction architecture is the main mathematical content.",
     "openQuestions": [
       "Can the composition series for $A_4$ ($A_4 \\trianglerighteq V_4 \\trianglerighteq \\{e\\}$) be exhibited explicitly in Lean with the quotient group isomorphisms $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$ and $V_4 \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$ identified?",
       "For $n \\geq 5$, can the embedding $A_5 \\hookrightarrow A_n$ be made explicit and used directly for the non-solvability proof (bypassing the symmetric group)?",
       "Is there a Mathlib path to a standalone `alternatingGroup.isSolvable_iff` theorem, avoiding the detour through `Equiv.Perm.not_solvable`?",
-      "Extend to the Feit-Thompson theorem context: for odd-order groups, every group is solvable \u2014 can the alternating group classification help formalize aspects of this?",
+      "Extend to the Feit-Thompson theorem context: for odd-order groups, every group is solvable — can the alternating group classification help formalize aspects of this?",
       "Extend the classification to the Mathieu groups $M_{11}, M_{12}, M_{22}, M_{23}, M_{24}$: all are sporadic finite simple groups (hence non-solvable) discovered by Mathieu (1861, 1873) decades before the alternating series was fully classified. Could a Lean formalization expose these as the sporadic counterpart of $A_n$ — multiply transitive permutation groups whose non-solvability has a structural rather than asymptotic explanation? This would also exercise Mathlib's growing infrastructure for sporadic finite simple groups.",
       "Quantify the 'gap' between $A_4$ solvability and $A_5$ non-solvability via the *derived length* function $\\mathrm{dl}: G \\mapsto \\min\\{n : G^{(n)} = \\{e\\}\\}$ (with $\\mathrm{dl}(G) = \\infty$ if $G$ is non-solvable). Mathlib formalizes this implicitly via `IsSolvable` ($\\exists n, G^{(n)} = \\{e\\}$) but no public `derivedLength` function is exposed. Formalize $\\mathrm{dl}(A_3) = 1, \\mathrm{dl}(A_4) = 2, \\mathrm{dl}(S_4) = 3$, and prove the stratification $\\{G : \\mathrm{dl}(G) \\leq k\\}$ is closed under subgroups, quotients, and extensions of bounded length",
       "**Formalize the exceptional isomorphism $A_5 \\cong \\mathrm{PSL}(2, \\mathbb{F}_5)$ in Lean**: This entry treats $A_5$ purely as `alternatingGroup (Fin 5)`, but the geometric/Lie-theoretic identity $A_5 \\cong \\mathrm{PSL}(2, \\mathbb{F}_5)$ would tie this entry directly to the classification of finite simple groups. Mathlib has `Matrix.SpecialLinearGroup` and `MulAction` for projective actions but lacks an explicit construction of $\\mathrm{PSL}(2, \\mathbb{F}_q)$ as a quotient `SL(2, ℤ/q) ⧸ center`. A formalization would require: (a) defining `PSL(2, F)` as `SL(2, F) ⧸ center`, (b) proving $|\\mathrm{PSL}(2, \\mathbb{F}_5)| = 60$ via order arithmetic, (c) constructing the explicit 5-element projective line $\\mathbb{P}^1(\\mathbb{F}_5)$ on which $\\mathrm{PSL}(2, \\mathbb{F}_5)$ acts faithfully, and (d) deriving the isomorphism with $A_5$ via the action homomorphism $\\mathrm{PSL}(2, \\mathbb{F}_5) \\to \\mathrm{Sym}(\\mathbb{P}^1(\\mathbb{F}_5)) \\cong S_5$, restricted to its image. This would simultaneously prove the secondary isomorphism $\\mathrm{PSL}(2, \\mathbb{F}_4) \\cong \\mathrm{PSL}(2, \\mathbb{F}_5)$ (both order 60) — one of the five exceptional isomorphisms that the CFSG identifies as the small-order coincidences underlying the entire classification."
@@ -164,7 +164,7 @@
     {
       "targetId": "abel-ruffini-oq-04-oq-02",
       "relationship": "extends",
-      "description": "Parent: proves $S_n$ solvable iff $n \\leq 4$ (symmetric group version). This entry is the alternating group analogue \u2014 same threshold, same driving factor ($A_5$ simplicity), complementary perspective."
+      "description": "Parent: proves $S_n$ solvable iff $n \\leq 4$ (symmetric group version). This entry is the alternating group analogue — same threshold, same driving factor ($A_5$ simplicity), complementary perspective."
     },
     {
       "targetId": "abel-ruffini-galois-extensions",
@@ -179,12 +179,12 @@
     {
       "targetId": "abel-ruffini-oq-04-oq-01",
       "relationship": "related",
-      "description": "Sibling: concrete witness $x^5 - 4x + 2$ with $\\text{Gal} \\cong S_5$ \u2014 shows the abstract non-solvability of $A_5 \\leq S_5$ translates to a specific unsolvable polynomial via the Galois bridge."
+      "description": "Sibling: concrete witness $x^5 - 4x + 2$ with $\\text{Gal} \\cong S_5$ — shows the abstract non-solvability of $A_5 \\leq S_5$ translates to a specific unsolvable polynomial via the Galois bridge."
     },
     {
       "targetId": "abel-ruffini",
       "relationship": "related",
-      "description": "Root ancestor: the Abel-Ruffini theorem itself \u2014 general quintic equations have no radical solution, directly explained by this solvability classification of alternating groups."
+      "description": "Root ancestor: the Abel-Ruffini theorem itself — general quintic equations have no radical solution, directly explained by this solvability classification of alternating groups."
     },
     {
       "targetId": "lagrange-theorem",
@@ -220,30 +220,30 @@
   "references": [
     {
       "authors": [
-        "\u00c9. Galois"
+        "É. Galois"
       ],
-      "title": "M\u00e9moire sur les conditions de r\u00e9solubilit\u00e9 des \u00e9quations par radicaux",
+      "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
       "year": "1846",
-      "venue": "Journal de Math\u00e9matiques Pures et Appliqu\u00e9es (published posthumously)",
-      "note": "The foundational paper: polynomial solvable by radicals iff Galois group is solvable. Galois proved A\u2085 is simple and identified it as the obstruction to quintic solvability."
+      "venue": "Journal de Mathématiques Pures et Appliquées (published posthumously)",
+      "note": "The foundational paper: polynomial solvable by radicals iff Galois group is solvable. Galois proved A₅ is simple and identified it as the obstruction to quintic solvability."
     },
     {
       "authors": [
         "C. Jordan"
       ],
-      "title": "Trait\u00e9 des substitutions et des \u00e9quations alg\u00e9briques",
+      "title": "Traité des substitutions et des équations algébriques",
       "year": "1870",
       "venue": "Gauthier-Villars, Paris",
-      "note": "First systematic study of composition series for alternating and symmetric groups. Jordan proved A\u2099 is simple for n \u2265 5 and studied the complete solvability structure."
+      "note": "First systematic study of composition series for alternating and symmetric groups. Jordan proved Aₙ is simple for n ≥ 5 and studied the complete solvability structure."
     },
     {
       "authors": [
-        "O. H\u00f6lder"
+        "O. Hölder"
       ],
-      "title": "Zur\u00fcckf\u00fchrung einer beliebigen algebraischen Gleichung auf eine Kette von Gleichungen",
+      "title": "Zurückführung einer beliebigen algebraischen Gleichung auf eine Kette von Gleichungen",
       "year": "1889",
-      "venue": "Mathematische Annalen 34: 26\u201356",
-      "note": "Proved the Jordan-H\u00f6lder theorem in its modern form: the composition factors of a finite group are unique up to order and isomorphism, establishing the foundation for solvability theory."
+      "venue": "Mathematische Annalen 34: 26–56",
+      "note": "Proved the Jordan-Hölder theorem in its modern form: the composition factors of a finite group are unique up to order and isomorphism, establishing the foundation for solvability theory."
     },
     {
       "authors": [
@@ -252,7 +252,7 @@
       "title": "Galois Theory",
       "year": "2015",
       "venue": "Chapman and Hall/CRC, 4th edition",
-      "note": "Chapters 12-13: complete proof that S\u2099 (and A\u2099) are solvable iff n \u2264 4, including the Klein four-group construction and A\u2085 simplicity argument."
+      "note": "Chapters 12-13: complete proof that Sₙ (and Aₙ) are solvable iff n ≤ 4, including the Klein four-group construction and A₅ simplicity argument."
     },
     {
       "authors": [
@@ -261,7 +261,7 @@
       "title": "An Introduction to the Theory of Groups",
       "year": "1995",
       "venue": "Springer GTM 148, 4th edition",
-      "note": "Chapter 5: solvable groups, derived series, composition series, Jordan-H\u00f6lder theorem. Chapter 9: alternating groups A\u2099 and their simplicity for n \u2265 5."
+      "note": "Chapter 5: solvable groups, derived series, composition series, Jordan-Hölder theorem. Chapter 9: alternating groups Aₙ and their simplicity for n ≥ 5."
     },
     {
       "authors": [
@@ -270,8 +270,8 @@
       ],
       "title": "Solvability of Groups of Odd Order",
       "year": "1963",
-      "venue": "Pacific Journal of Mathematics 13(3): 775\u20131029",
-      "note": "The Feit-Thompson theorem: every finite group of odd order is solvable. A 255-page proof, the longest single theorem in group theory at the time of publication, and the watershed result that launched the classification of finite simple groups (CFSG). Directly relevant to this entry: since |A_n| = n!/2 is even for all n \u2265 3, Feit-Thompson immediately rules out odd-order non-solvable obstructions, sharpening the threshold proved here. Cited in keyInsights for the parity hierarchy explanation. A Coq formalization of Feit-Thompson by Gonthier et al. (2013) was a landmark in formal verification."
+      "venue": "Pacific Journal of Mathematics 13(3): 775–1029",
+      "note": "The Feit-Thompson theorem: every finite group of odd order is solvable. A 255-page proof, the longest single theorem in group theory at the time of publication, and the watershed result that launched the classification of finite simple groups (CFSG). Directly relevant to this entry: since |A_n| = n!/2 is even for all n ≥ 3, Feit-Thompson immediately rules out odd-order non-solvable obstructions, sharpening the threshold proved here. Cited in keyInsights for the parity hierarchy explanation. A Coq formalization of Feit-Thompson by Gonthier et al. (2013) was a landmark in formal verification."
     },
     {
       "authors": [
@@ -298,7 +298,7 @@
       "title": "Mathlib4: A Unified Library of Mathematics Formalized in Lean 4",
       "year": "2024",
       "venue": "https://github.com/leanprover-community/mathlib4",
-      "note": "Provides the infrastructure: `IsSolvable`, `solvable_of_ker_le_range`, `Equiv.Perm.not_solvable`, `alternatingGroup.isSimpleGroup_five`, `isSolvable_of_comm`. The proof relies on Mathlib's symmetric group non-solvability for n \u2265 5 rather than proving it from scratch."
+      "note": "Provides the infrastructure: `IsSolvable`, `solvable_of_ker_le_range`, `Equiv.Perm.not_solvable`, `alternatingGroup.isSimpleGroup_five`, `isSolvable_of_comm`. The proof relies on Mathlib's symmetric group non-solvability for n ≥ 5 rather than proving it from scratch."
     },
     {
       "authors": [
@@ -313,11 +313,49 @@
       "authors": [
         "F. Klein"
       ],
-      "title": "Vorlesungen \u00fcber das Ikosaeder und die Aufl\u00f6sung der Gleichungen vom f\u00fcnften Grade",
+      "title": "Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade",
       "year": "1884",
-      "venue": "Teubner, Leipzig (English: *Lectures on the Icosahedron*, 1888, Tr\u00fcbner & Co.)",
+      "venue": "Teubner, Leipzig (English: *Lectures on the Icosahedron*, 1888, Trübner & Co.)",
       "note": "Klein's masterwork establishing the isomorphism $A_5 \\cong I_{60}$ (icosahedral rotation group) and using it to solve the general quintic via elliptic modular functions. The non-solvability of $A_5$ proved in this entry is exactly the algebraic obstacle Klein circumvents: by encoding the quintic's symmetries geometrically through the icosahedron, Klein replaces the radical operations Abel-Ruffini forbids with the modular function $j(\\tau)$, yielding closed-form solutions in a richer vocabulary. This duality — abstract non-solvability (here) versus geometric solvability (Klein) — illustrates the precise scope of the impossibility theorem."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "alternating_solvable_iff",
+      "type": "core",
+      "description": "The full bidirectional classification: $A_n$ is solvable if and only if $n \\leq 4$. Forward direction by contradiction via `an_not_solvable_of_ge_five`; backward direction by `interval_cases n` enumerating $n = 0, 1, 2, 3, 4$.",
+      "leanType": "(n : ℕ) → IsSolvable (alternatingGroup (Fin n)) ↔ n ≤ 4"
+    },
+    {
+      "name": "an_not_solvable_of_ge_five",
+      "type": "key",
+      "description": "$A_n$ is not solvable for $n \\geq 5$. Proof: assume $A_n$ solvable; the sign exact sequence $1 \to A_n \to S_n \to \\{\\pm 1\\} \to 1$ gives $S_n$ solvable, contradicting Mathlib’s `Equiv.Perm.not_solvable`.",
+      "leanType": "{n : ℕ} → 5 ≤ n → ¬IsSolvable (alternatingGroup (Fin n))"
+    },
+    {
+      "name": "a4_solvable",
+      "type": "key",
+      "description": "$A_4$ is solvable. The largest solvable alternating group; its solvability rests on the Klein four-group $V_4 \trianglelefteq A_4$ with composition series $\\{e\\} \trianglelefteq V_4 \trianglelefteq A_4$ having abelian factors $(\\mathbb{Z}/2\\mathbb{Z})^2$ and $\\mathbb{Z}/3\\mathbb{Z}$.",
+      "leanType": "IsSolvable (alternatingGroup (Fin 4))"
+    },
+    {
+      "name": "a3_solvable",
+      "type": "supporting",
+      "description": "$A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ is solvable (abelian). Proved via `isSolvable_of_comm` plus `decide` on the commutativity check.",
+      "leanType": "IsSolvable (alternatingGroup (Fin 3))"
+    },
+    {
+      "name": "sharp_threshold",
+      "type": "key",
+      "description": "Witnesses the sharp dichotomy: $A_4$ is solvable AND $A_5$ is not. A single quotable conjunction making the transition at $n = 5$ a one-line corollary.",
+      "leanType": "IsSolvable (alternatingGroup (Fin 4)) ∧ ¬IsSolvable (alternatingGroup (Fin 5))"
+    },
+    {
+      "name": "a5_not_solvable",
+      "type": "specialization",
+      "description": "$A_5$ is not solvable. Direct application of `an_not_solvable_of_ge_five` with $n = 5$. Illustrates the smallest non-solvable alternating group.",
+      "leanType": "¬IsSolvable (alternatingGroup (Fin 5))"
+    }
+  ]
 }
