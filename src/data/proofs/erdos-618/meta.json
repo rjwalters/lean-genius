@@ -1,8 +1,8 @@
 {
   "id": "erdos-618",
-  "title": "Erd\u0151s Problem #618: Decreasing Diameter of Triangle-Free Graphs",
+  "title": "Erdős Problem #618: Decreasing Diameter of Triangle-Free Graphs",
   "slug": "erdos-618",
-  "description": "For a triangle-free graph G, let h\u2082(G) be the minimum edges to add for diameter 2 while staying triangle-free. Proved: \u0394 = o(n^{1/2}) implies h\u2082(G) = o(n\u00b2).",
+  "description": "For a triangle-free graph G, let h₂(G) be the minimum edges to add for diameter 2 while staying triangle-free. Proved: Δ = o(n^{1/2}) implies h₂(G) = o(n²).",
   "meta": {
     "author": "Noga Alon (solver)",
     "sourceUrl": "https://erdosproblems.com/618",
@@ -43,15 +43,11 @@
     "originalContributions": [
       "IsTriangleFree: triangle-free via CliqueFree 3",
       "maxDegree: maximum degree of a graph",
-      "DiameterAtMostTwo: diameter \u2264 2 via common neighbors",
+      "DiameterAtMostTwo: diameter ≤ 2 via common neighbors",
       "ValidExtension structure: subgraph + triangle-free + diameter 2",
-      "h\u2082: minimum edges to add for valid extension",
-      "simonovits_example: high-degree graphs can need \u0398(n\u00b2) edges",
-      "bounded_degree_result: O(1) degree gives O(n log n) edges",
-      "alon_theorem: the main result \u0394 = o(\u221an) \u2192 h\u2082 = o(n\u00b2)",
+      "h₂: minimum edges to add for valid extension",
       "MainConjecture: formal asymptotic statement",
-      "threshold_is_sharp: \u221an threshold is optimal",
-      "mantel_theorem: triangle-free edge bound",
+      "threshold_is_sharp: √n threshold is optimal",
       "erdos_618: summary combining main conjecture + threshold"
     ],
     "axiomCount": 2,
@@ -59,16 +55,16 @@
     "assumptions": "2 axioms: main_conjecture_proved, threshold_is_sharp. 0 sorries."
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #618 was posed by Erd\u0151s, Gy\u00e1rf\u00e1s, and Ruszink\u00f3 in their 1998 Combinatorica paper 'How to decrease the diameter of triangle-free graphs.' For a triangle-free graph G on n vertices, h\u2082(G) denotes the minimum number of edges that must be added so that the resulting graph has diameter at most 2 while remaining triangle-free. The authors proved that for bounded degree graphs (\u0394 = O(1)) with no isolated vertices, h\u2082(G) = O(n log n).\n\nSimonovits showed the complementary direction: there exist triangle-free graphs with maximum degree \u226b \u221an for which h\u2082(G) = \u0398(n\u00b2). This established that \u221an is a critical threshold for the maximum degree. The central conjecture asked whether \u0394 = o(\u221an) always implies h\u2082(G) = o(n\u00b2). Noga Alon resolved this conjecture affirmatively, observing that the problem is essentially identical to Erd\u0151s Problem #134.\n\nThe \u221an threshold arises naturally from the interplay between Mantel's theorem (triangle-free graphs have at most n\u00b2/4 edges) and the structural requirements for diameter 2. A graph with degree \u2248 \u221an has roughly n^{3/2} edges, which is the scale at which triangle-free diameter-2 graphs transition between sparse and dense behavior. Alon's proof uses probabilistic and extremal graph theory methods.",
-    "problemStatement": "For a triangle-free graph G on n vertices, let h\u2082(G) denote the minimum number of edges that must be added to G so that the resulting graph has diameter at most 2 while remaining triangle-free. The question asks: if G has maximum degree o(n^{1/2}), must h\u2082(G) = o(n\u00b2)?",
-    "text": "For a triangle-free graph G, let h\u2082(G) be the minimum edges to add for diameter 2 while staying triangle-free. Proved: \u0394 = o(n^{1/2}) implies h\u2082(G) = o(n\u00b2).",
-    "proofStrategy": "The formalization defines triangle-free graphs (via Mathlib's CliqueFree 3), diameter-2 condition, valid extensions, and the h\u2082 function as an infimum. Alon's theorem is axiomatized as: for any \u03b5 > 0, eventually all triangle-free graphs with \u0394 \u2264 n^{1/2-\u03b5} satisfy h\u2082 \u2264 \u03b5n\u00b2. The sharp threshold axiom captures both directions. The summary theorem combines these via exact \u27e8main_conjecture_proved, threshold_is_sharp.1\u27e9.",
+    "historicalContext": "Erdős Problem #618 was posed by Erdős, Gyárfás, and Ruszinkó in their 1998 Combinatorica paper 'How to decrease the diameter of triangle-free graphs.' For a triangle-free graph G on n vertices, h₂(G) denotes the minimum number of edges that must be added so that the resulting graph has diameter at most 2 while remaining triangle-free. The authors proved that for bounded degree graphs (Δ = O(1)) with no isolated vertices, h₂(G) = O(n log n).\n\nSimonovits showed the complementary direction: there exist triangle-free graphs with maximum degree ≫ √n for which h₂(G) = Θ(n²). This established that √n is a critical threshold for the maximum degree. The central conjecture asked whether Δ = o(√n) always implies h₂(G) = o(n²). Noga Alon resolved this conjecture affirmatively, observing that the problem is essentially identical to Erdős Problem #134.\n\nThe √n threshold arises naturally from the interplay between Mantel's theorem (triangle-free graphs have at most n²/4 edges) and the structural requirements for diameter 2. A graph with degree ≈ √n has roughly n^{3/2} edges, which is the scale at which triangle-free diameter-2 graphs transition between sparse and dense behavior. Alon's proof uses probabilistic and extremal graph theory methods.",
+    "problemStatement": "For a triangle-free graph G on n vertices, let h₂(G) denote the minimum number of edges that must be added to G so that the resulting graph has diameter at most 2 while remaining triangle-free. The question asks: if G has maximum degree o(n^{1/2}), must h₂(G) = o(n²)?",
+    "text": "For a triangle-free graph G, let h₂(G) be the minimum edges to add for diameter 2 while staying triangle-free. Proved: Δ = o(n^{1/2}) implies h₂(G) = o(n²).",
+    "proofStrategy": "The formalization defines triangle-free graphs (via Mathlib's CliqueFree 3), diameter-2 condition, valid extensions, and the h₂ function as an infimum. Alon's theorem is axiomatized as: for any ε > 0, eventually all triangle-free graphs with Δ ≤ n^{1/2-ε} satisfy h₂ ≤ εn². The sharp threshold axiom captures both directions. The summary theorem combines these via exact ⟨main_conjecture_proved, threshold_is_sharp.1⟩.",
     "keyInsights": [
-      "The \u221an degree threshold is sharp: below it h\u2082 = o(n\u00b2), above it h\u2082 can be \u0398(n\u00b2)",
+      "The √n degree threshold is sharp: below it h₂ = o(n²), above it h₂ can be Θ(n²)",
       "Triangle-free + diameter 2 severely constrains the graph structure",
-      "The problem is essentially identical to Erd\u0151s Problem #134",
-      "For bounded degree graphs, h\u2082(G) = O(n log n) (EGR98)",
-      "Alon's probabilistic argument shows that random triangle-free graphs near the \u221an threshold exhibit a phase transition in h\u2082 \u2014 a phenomenon typical of random graph thresholds but unusual for deterministic extremal problems"
+      "The problem is essentially identical to Erdős Problem #134",
+      "For bounded degree graphs, h₂(G) = O(n log n) (EGR98)",
+      "Alon's probabilistic argument shows that random triangle-free graphs near the √n threshold exhibit a phase transition in h₂ — a phenomenon typical of random graph thresholds but unusual for deterministic extremal problems"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -85,22 +81,22 @@
     },
     {
       "id": "h2-function",
-      "title": "The h\u2082 Function",
-      "summary": "Valid extension structure and h\u2082 as infimum",
+      "title": "The h₂ Function",
+      "summary": "Valid extension structure and h₂ as infimum",
       "startLine": 93,
       "endLine": 126
     },
     {
       "id": "egr-results",
-      "title": "Erd\u0151s-Gy\u00e1rf\u00e1s-Ruszink\u00f3 Results",
-      "summary": "Simonovits example and bounded degree result",
+      "title": "Erdős-Gyárfás-Ruszinkó Results",
+      "summary": "Trivial lower bound (h₂_nonneg); historical EGR results via docstrings",
       "startLine": 127,
       "endLine": 159
     },
     {
       "id": "alon-solution",
       "title": "Alon's Solution",
-      "summary": "Main theorem: \u0394 = o(\u221an) implies h\u2082 = o(n\u00b2)",
+      "summary": "Main theorem: Δ = o(√n) implies h₂ = o(n²)",
       "startLine": 160,
       "endLine": 179
     },
@@ -114,7 +110,7 @@
     {
       "id": "threshold",
       "title": "The Threshold",
-      "summary": "Sharp threshold at \u221an and Mantel's theorem",
+      "summary": "Sharp threshold at √n (threshold_is_sharp axiom)",
       "startLine": 217,
       "endLine": 246
     },
@@ -127,12 +123,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #618 is SOLVED. Alon proved that for triangle-free graphs with maximum degree o(n^{1/2}), the function h\u2082(G) is o(n\u00b2). The \u221an threshold is sharp, as shown by Simonovits's examples.",
+    "summary": "Erdős Problem #618 is SOLVED. Alon proved that for triangle-free graphs with maximum degree o(n^{1/2}), the function h₂(G) is o(n²). The √n threshold is sharp, as shown by Simonovits's examples.",
     "implications": "The result characterizes the minimum edge augmentation needed for diameter reduction in sparse triangle-free graphs. It connects graph diameter, triangle-freeness, and degree constraints in a precise asymptotic relationship.",
     "openQuestions": [
       "What is the exact coefficient in the asymptotic for specific degree ranges?",
       "Can similar results be proved for diameter 3 or higher?",
-      "What about K\u2084-free or general Kr-free graphs?"
+      "What about K₄-free or general Kr-free graphs?"
     ]
   },
   "leanFile": {
@@ -161,17 +157,17 @@
     {
       "targetId": "erdos-133",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: diameter, graph-theory, triangle-free"
+      "description": "Related Erdős problem sharing themes: diameter, graph-theory, triangle-free"
     },
     {
       "targetId": "erdos-134",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: diameter, graph-theory, triangle-free"
+      "description": "Related Erdős problem sharing themes: diameter, graph-theory, triangle-free"
     },
     {
       "targetId": "erdos-619",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: diameter, graph-theory, triangle-free"
+      "description": "Related Erdős problem sharing themes: diameter, graph-theory, triangle-free"
     }
   ],
   "sorries": 0
