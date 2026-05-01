@@ -42,8 +42,8 @@
     "originalContributions": [
       "Formalization of triangle-free and C₄-free predicates",
       "Definition of extremal function ex(n; {C₃, C₄})",
-      "Kővári-Sós-Turán theorem axiomatized",
-      "Erdős-Simonovits result for {C₄, C₅}",
+      "KST bound documented as commentary; extremal function `exC4 : ℕ → ℕ` is axiomatized (not the bound)",
+      "Erdős-Simonovits equality documented as commentary; extremal function `exC4C5 : ℕ → ℕ` is axiomatized (not the equality)",
       "Conjecture formalized as asymptotic statement",
       "Upper and lower bound structure",
       "Projective plane construction reference"
@@ -57,7 +57,7 @@
     "historicalContext": "This problem was posed by Erdős and Simonovits and concerns the Turán-type extremal function for graphs forbidding both triangles (C₃) and 4-cycles (C₄). The celebrated Kővári-Sós-Turán theorem from 1954 established that ex(n; C₄) ~ (1/2)n^(3/2). Erdős and Simonovits proved that ex(n; {C₄, C₅}) = (n/2)^(3/2) + O(n). This problem asks whether forbidding triangles instead of 5-cycles gives the same (n/2)^(3/2) asymptotic.\n\nThe question is subtle: while ex(n; {C₃, C₄}) ≤ ex(n; C₄) trivially, the conjectured asymptotic (n/2)^(3/2) is smaller than (1/2)n^(3/2) by a factor of √2. This would mean the triangle-free constraint actually reduces the leading constant.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nIs it true that ex(n; {C₃, C₄}) ~ (n/2)^(3/2)?\n\nHere ex(n; F) denotes the maximum number of edges in an n-vertex graph containing no subgraph isomorphic to any graph in F.\n\n**Known bounds:**\n- Upper: ex(n; {C₃, C₄}) ≤ ex(n; C₄) ≤ (1/2)n^(3/2) + O(n)\n- Lower: ex(n; {C₃, C₄}) ≥ c·n^(3/2) for some c > 0",
     "text": "Is ex(n; {C₃, C₄}) ~ (n/2)^(3/2)? OPEN. Asks whether forbidding triangles along with 4-cycles gives asymptotic (n/2)^(3/2).",
-    "proofStrategy": "The formalization defines the key predicates (triangle-free, C₄-free) and the extremal function. We axiomatize the Kővári-Sós-Turán bound and establish the upper bound via composition. The conjecture is formalized as an asymptotic statement using ε-δ form. The problem remains OPEN - the formalization captures what is known without claiming resolution.",
+    "proofStrategy": "The formalization defines the key predicates (triangle-free, C₄-free) and the extremal functions. The extremal functions `exC4` and `exC4C5` are axiomatized as abstract natural number functions; the KST bound `ex(n; C₄) ≤ (1/2)n^(3/2)` and the Erdős-Simonovits equality `ex(n; {C₄, C₅}) = (n/2)^(3/2) + O(n)` are documented in docstring commentary only — neither is declared as an axiom or theorem. The conjecture is formalized as an asymptotic statement using ε-δ form. The problem remains OPEN.",
     "keyInsights": [
       "**Extremal function:** ex(n; F) = max edges in n-vertex F-free graph",
       "**KST bound:** ex(n; C₄) ~ (1/2)n^(3/2) is tight",
@@ -100,16 +100,16 @@
       "title": "Kővári-Sós-Turán Theorem",
       "startLine": 95,
       "endLine": 109,
-      "summary": "Upper bound ex(n; C₄) ≤ (1/2)n^(3/2) + O(n) and asymptotic",
-      "mathContext": "Upper bound ex(n; C₄) $\\leq$ (1/2)n^(3/2) + $O(n)$ and asymptotic"
+      "summary": "KST bound `ex(n; C₄) ≤ (1/2)n^(3/2) + O(n)` documented in docstring commentary only; the bound is NOT declared as an axiom or theorem. This section also contains `axiom exC4C5 : ℕ → ℕ` (the extremal function for {C₄, C₅}-free graphs).",
+      "mathContext": "KST bound (commentary only); `axiom exC4C5 : ℕ → ℕ` declared here"
     },
     {
       "id": "erdos-simonovits",
       "title": "Erdős-Simonovits Result",
       "startLine": 110,
       "endLine": 121,
-      "summary": "ex(n; {C₄, C₅}) = (n/2)^(3/2) + O(n)",
-      "mathContext": "ex(n; {C₄, C₅}) = (n/2)^(3/2) + $O(n)$"
+      "summary": "The Erdős-Simonovits equality `ex(n; {C₄, C₅}) = (n/2)^(3/2) + O(n)` is documented in docstring commentary only; no axiom or theorem is declared in this section.",
+      "mathContext": "Docstring commentary only; no Lean declaration in this section"
     },
     {
       "id": "conjecture",
@@ -146,7 +146,7 @@
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 174,
+      "startLine": 168,
       "endLine": 177,
       "summary": "Main theorems: erdos_573 and erdos_573_summary",
       "mathContext": "Verified: Main theorems: erdos_573 and erdos_573_summary"
