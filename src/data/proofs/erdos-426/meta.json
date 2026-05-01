@@ -31,7 +31,7 @@
     "historicalContext": "This problem originated with Erdős and Entringer in 1972. They asked whether a graph could have as many unique subgraphs as there are non-isomorphic graphs (~ 2^(n choose 2)/n! by Pólya). Entringer-Erdős achieved 2^{(n choose 2) - O(n^{3/2})} unique subgraphs. Brouwer (1975) improved this to 2^{(n choose 2) - O(n)}/n!.\n\nErdős believed Brouwer's construction was essentially optimal and offered $25 for a proof. Spencer suggested the full bound might be achievable (Erdős offered $100 for such a construction). In 2024, Bradač and Christoph proved the answer is NO: f(n) = o(2^(n choose 2)/n!).",
     "problemStatement": "We say H is a **unique subgraph** of G if there is exactly one way to find H as a subgraph (not necessarily induced) of G.\n\n**Question:** Is there a graph on n vertices with ≫ 2^(n choose 2)/n! many distinct unique subgraphs?\n\n**Answer:** NO (Bradač-Christoph 2024)\n\nf(n) = o(2^(n choose 2)/n!), with the o(1) being O(log log log n / log log n).\n\n**Historical bounds:**\n- Brouwer (1975): 2^{(n choose 2) - O(n)}/n! unique subgraphs achievable\n- Bradač-Christoph (2024): 2^(n choose 2)/n! is NOT achievable",
     "text": "Can a graph on n vertices have ≫ 2^(n choose 2)/n! unique subgraphs? Answer: NO (Bradač-Christoph 2024). Unique subgraphs are rare.",
-    "proofStrategy": "We formalize unique subgraphs via SubgraphCopy, IsUniqueSubgraph, and CountUniqueSubgraphs. The maximum f(n) = maxUniqueSubgraphs is defined. Historical constructions (Entringer-Erdős, Brouwer) and the Bradač-Christoph resolution are axiomatized. The main theorem establishes ¬OriginalQuestion.",
+    "proofStrategy": "We formalize unique subgraphs via SubgraphCopy, IsUniqueSubgraph, and CountUniqueSubgraphs. The maximum f(n) = maxUniqueSubgraphs is defined. The Brouwer (1975) construction and the Bradač-Christoph (2024) resolution are axiomatized (brouwer_1975, bradac_christoph_2024, original_question_false). Entringer-Erdős is described in historical context only (docstring, no Lean axiom). The main theorem establishes ¬OriginalQuestion.",
     "keyInsights": [
       "Number of non-isomorphic graphs on n vertices is ~ 2^(n choose 2)/n! (Pólya)",
       "A unique subgraph must embed in exactly one way - this is rare",
@@ -66,54 +66,54 @@
       "id": "part-ii-the-counting-bounds",
       "title": "/- ## Part II: The Counting Bounds",
       "startLine": 84,
-      "endLine": 114,
+      "endLine": 107,
       "summary": "/- ## Part II: The Counting Bounds",
       "mathContext": "Bound: /- ## Part II: The Counting Bounds"
     },
     {
       "id": "part-iii-historical-constructi",
       "title": "/- ## Part III: Historical Constructions",
-      "startLine": 115,
-      "endLine": 133,
+      "startLine": 108,
+      "endLine": 123,
       "summary": "/- ## Part III: Historical Constructions",
       "mathContext": "Mathematical content: /- ## Part III: Historical Constructions"
     },
     {
       "id": "part-iv-the-main-conjecture-an",
       "title": "/- ## Part IV: The Main Conjecture and Its Resolution",
-      "startLine": 134,
-      "endLine": 155,
+      "startLine": 124,
+      "endLine": 145,
       "summary": "/- ## Part IV: The Main Conjecture and Its Resolution",
       "mathContext": "Mathematical content: /- ## Part IV: The Main Conjecture and Its Resolution"
     },
     {
       "id": "part-v-brada-christoph-resolut",
       "title": "/- ## Part V: Bradač-Christoph Resolution (2024)",
-      "startLine": 156,
-      "endLine": 197,
+      "startLine": 146,
+      "endLine": 182,
       "summary": "/- ## Part V: Bradač-Christoph Resolution (2024)",
       "mathContext": "Mathematical content: /- ## Part V: Bradač-Christoph Resolution (2024)"
     },
     {
       "id": "part-vi-understanding-the-resu",
       "title": "/- ## Part VI: Understanding the Result",
-      "startLine": 198,
-      "endLine": 216,
+      "startLine": 183,
+      "endLine": 201,
       "summary": "/- ## Part VI: Understanding the Result",
       "mathContext": "Mathematical content: /- ## Part VI: Understanding the Result"
     },
     {
       "id": "part-vii-related-concepts",
       "title": "/- ## Part VII: Related Concepts",
-      "startLine": 217,
-      "endLine": 240,
+      "startLine": 202,
+      "endLine": 225,
       "summary": "/- ## Part VII: Related Concepts",
       "mathContext": "Mathematical content: /- ## Part VII: Related Concepts"
     },
     {
       "id": "part-viii-summary",
       "title": "/- ## Part VIII: Summary",
-      "startLine": 241,
+      "startLine": 226,
       "endLine": 255,
       "summary": "/- ## Part VIII: Summary",
       "mathContext": "Mathematical content: /- ## Part VIII: Summary"
