@@ -43,19 +43,11 @@
       }
     ],
     "originalContributions": [
-      "Point, Line: geometric primitives",
-      "OnLine: point-line incidence",
-      "Collinear: collinearity predicate",
-      "InKGeneralPosition: no k+1 points collinear",
-      "IsKRich: line contains ≥k points",
-      "f_k: the extremal function",
-      "sylvester_k3: k=3 gives Θ(n²)",
-      "karteszi_lower_bound: n log n lower bound",
-      "grunbaum_lower_bound: n^{1+1/(k-2)} bound",
-      "solymosi_stojakovic: n^{2-o(1)} bound",
-      "erdos_588_conjecture: the main conjecture",
-      "problem_101: connection to k=4 case",
-      "szemeredi_trotter: incidence theorem"
+      "Point: geometric primitive (abbrev Point := ℝ × ℝ)",
+      "f: extremal function for k-rich lines (axiom f (k n : ℕ) : ℕ)",
+      "sylvester_k3: f₃(n) = n²/6 + O(n) (axiom)",
+      "erdos_588: theorem stating Sylvester's bound (proved from sylvester_k3)",
+      "Documentation of Kárteszi, Grünbaum, and Solymosi-Stojaković bounds in source comments (not formalized as axioms)"
     ],
     "dateUpdated": "2026-02-12",
     "mathContext": {
@@ -89,7 +81,7 @@
     "historicalContext": "**Erdős Problem #588: k-Point Lines in General Position**\n\nThis problem, posed by Paul Erdős in the 1970s with a $100 prize, generalizes Problem #101 (the $k=4$ case). It asks about the maximum number of '$k$-rich' lines (lines containing $\\ge k$ points) when no $k+1$ points are collinear.\n\n**The Function $f_k(n)$**: Given $n$ points in $\\mathbb{R}^2$ with no $k+1$ collinear, $f_k(n)$ is the maximum number of lines through $\\ge k$ points.\n\n**Key Developments:**\n- **Sylvester**: Established $f_3(n) = n^2/6 + O(n)$ — the $k=3$ case is quadratic, motivating the question for $k \\ge 4$\n- **Kárteszi (1963)**: Proved $f_k(n) \\ge \\Omega(n \\log n)$ using combinatorial constructions, showing the function grows superlinearly\n- **Grünbaum (1976)**: Improved to $f_k(n) \\ge \\Omega(n^{1+1/(k-2)})$ using algebraic configurations. For $k=4$ this gives $\\Omega(n^{3/2})$\n- **Solymosi-Stojaković (2013)**: Achieved $f_k(n) \\ge n^{2-O(1/\\sqrt{\\log n})}$ via lattice-point constructions with projective transformations. This is $n^{2-o(1)}$, tantalizingly close to $n^2$\n\n**The Conjecture**: Is $f_k(n) = o(n^2)$ for $k \\ge 4$? Despite the Solymosi-Stojaković lower bound being extremely close to $n^2$, the conjecture asserts $f_k(n)/n^2 \\to 0$. The $\\$100$ prize remains unclaimed.\n\n**Connection to Szemerédi-Trotter**: The incidence theorem gives $O(n^2/k^3)$ as an upper bound for $k$-rich lines, which is $O(n^2)$ — matching the trivial bound. Going below quadratic requires structural arguments beyond incidence counting.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet f_k(n) be the minimum such that if n points in R² have no k+1 points collinear, then there are at most f_k(n) lines containing at least k points.\n\n**Conjecture:** f_k(n) = o(n²) for k ≥ 4.\n\n**Known Bounds:**\n- Lower: f_k(n) ≥ n^{2 - O(1/√log n)} (Solymosi-Stojaković)\n- Upper: f_k(n) ≤ O(n²) (trivial)\n\n**Prize:** $100",
     "text": "Is f_k(n) = o(n²) for k ≥ 4? Here f_k(n) is the max number of k-rich lines for n points with no k+1 collinear. OPEN. Best lower bound: n^{2-o(1)} (Solymosi-Stojaković 2013).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Geometry:** Define Point, Line, OnLine for plane geometry.\n2. **General Position:** Define InKGeneralPosition (no k+1 collinear).\n3. **k-Rich Lines:** Define IsKRich and the counting function f_k.\n4. **Known Results:** Axiomatize bounds from Sylvester, Kárteszi, Grünbaum, Solymosi-Stojaković.\n5. **Conjecture:** State the o(n²) conjecture formally.\n6. **Connections:** Link to Szemerédi-Trotter and Problem #101.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Geometry:** Define `Point := ℝ × ℝ`. (No Line, OnLine, or collinearity predicates are formalized — these are described in source comments.)\n2. **Extremal function:** Axiomatize `f (k n : ℕ) : ℕ` as the counting function for k-rich lines.\n3. **Known result (k=3):** Axiomatize `sylvester_k3` — the Sylvester bound f₃(n) = n²/6 + O(n).\n4. **Main theorem:** Prove `erdos_588` directly from `sylvester_k3`. Bounds from Kárteszi, Grünbaum, and Solymosi-Stojaković are documented in source comments only, not axiomatized.\n5. **Open case:** The k ≥ 4 conjecture and lower bounds are described in docstring remarks, not formalized.",
     "keyInsights": [
       "**k=3 fails:** f_3(n) = Θ(n²), so k≥4 restriction is essential",
       "**Near-tight lower:** n^{2-o(1)} is extremely close to n²",
@@ -135,7 +127,7 @@
     {
       "id": "k4-open",
       "title": "Part III: The $k \\ge 4$ Case (Open)",
-      "summary": "Axiomatizes `lower_bound_k4`: $f_4(n) \\ge n^{2 - c/\\sqrt{\\log n}}$ (Solymosi-Stojaković 2013). Axiomatizes `erdos_conjecture_k4`: the $\\varepsilon$-$N$ formulation of $f_k(n) = o(n^2)$ for $k \\ge 4$.",
+      "summary": "Documents the open k ≥ 4 case via docstring remarks only. The Solymosi-Stojaković lower bound $n^{2-c/\\sqrt{\\log n}}$ and Erdős's $o(n^2)$ conjecture are described in comments; no axioms or theorems are declared in this range.",
       "startLine": 62,
       "endLine": 79
     }
