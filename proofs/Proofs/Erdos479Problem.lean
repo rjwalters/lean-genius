@@ -78,9 +78,9 @@ Proved by Graham, Lehmer, and Lehmer.
 axiom powers_of_two_infinite (i : ℕ) (hi : i ≥ 1) :
     (SolutionSet (2 ^ i)).Infinite
 
-/--
-For k = -1 (equivalently k = n-1 mod n), there are infinitely many solutions.
-Also proved by Graham, Lehmer, and Lehmer.
+/-
+For k = -1 (equivalently k = n-1 mod n), Graham, Lehmer, and Lehmer also proved
+infinitely many solutions exist. This case is not formalized in this file.
 -/
 /-
 ## The Open Conjecture
@@ -213,7 +213,7 @@ The pattern is irregular and hard to predict.
 Combines the key results:
 1. k = 1 is impossible (no solutions for n > 1)
 2. Powers of 2 case proved (Graham-Lehmer-Lehmer)
-3. k = -1 case proved (Graham-Lehmer-Lehmer)
+3. k = 2 case proved (via Fermat's Little Theorem)
 4. General conjecture: SolutionSet(k) infinite for all k > 1
 -/
 theorem erdos_479_summary :

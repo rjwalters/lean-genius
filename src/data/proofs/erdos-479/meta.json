@@ -45,7 +45,7 @@
       "Formal statement of Graham's OPEN conjecture in Lean 4",
       "Definition of SolutionSet(k) = { n | 2^n ≡ k (mod n) }",
       "Axiomatization of why k = 1 is impossible (2^n ≢ 1 mod n for n > 1)",
-      "Statement of known partial results (powers of 2, k = -1)",
+      "Statement of known partial results (powers of 2 case)",
       "Verified examples using decide tactic (2^3 ≡ 2 mod 3, etc.)",
       "Documentation of the k = 3 difficulty (smallest n = 4700063497)"
     ],
@@ -58,7 +58,7 @@
     "historicalContext": "This problem is a conjecture of Ronald Graham, reported by Erdős and Graham. The question asks whether for every residue k (except k = 1), there are infinitely many n such that 2^n ≡ k (mod n).\n\nThe restriction k ≠ 1 is necessary and easy to verify: for n > 1, we always have 2^n ≢ 1 (mod n). This is because for even n, 2^n ≡ 0 (mod 2), not 1; and for odd n > 1, more subtle arguments apply.\n\nGraham, Lehmer, and Lehmer proved the conjecture for special cases: when k is a power of 2, or when k = -1. Tang later gave a simplified proof for these cases.\n\nThe problem is computationally challenging. For k = 3, the smallest n with 2^n ≡ 3 (mod n) is n = 4700063497 — a 10-digit number! This illustrates how sparse solutions can be for certain residues. The OEIS sequence A036236 catalogs the smallest n for each k.",
     "problemStatement": "Is it true that, for all $k \\neq 1$, there are infinitely many $n$ such that $2^n \\equiv k \\pmod{n}$?\n\n**Status**: OPEN — The general conjecture remains unproved.\n\n**Known Results**:\n- The case $k = 1$ is impossible: $2^n \\not\\equiv 1 \\pmod{n}$ for all $n > 1$\n- Graham, Lehmer, and Lehmer proved it for $k = 2^i$ (powers of 2) and $k = -1$\n- For $k = 2$: All odd primes work, since $2^p \\equiv 2 \\pmod{p}$ by Fermat\n- For $k = 3$: Smallest solution is $n = 4700063497$",
     "text": "Is it true that, for all k ≠ 1, there are infinitely many n such that 2^n ≡ k (mod n)? This is Graham's conjecture.",
-    "proofStrategy": "We formalize this OPEN problem by:\n\n1. **Defining SolutionSet(k)**: The set { n > 0 | 2^n ≡ k (mod n) }\n\n2. **Stating the impossibility of k = 1**: Axiom that 2^n ≢ 1 (mod n) for n > 1\n\n3. **Graham's conjecture**: For all k > 1, SolutionSet(k) is infinite\n\n4. **Known partial results**: Axioms for powers of 2 and k = -1 cases\n\n5. **Computational examples**: Using `decide` to verify small cases like 2^3 ≡ 2 (mod 3)\n\n6. **The k = 3 phenomenon**: Documenting the enormous smallest solution",
+    "proofStrategy": "We formalize this OPEN problem by:\n\n1. **Defining SolutionSet(k)**: The set { n > 0 | 2^n ≡ k (mod n) }\n\n2. **Stating the impossibility of k = 1**: Axiom that 2^n ≢ 1 (mod n) for n > 1\n\n3. **Graham's conjecture**: For all k > 1, SolutionSet(k) is infinite\n\n4. **Known partial result**: Axiom for powers of 2 case\n\n5. **Computational examples**: Using `decide` to verify small cases like 2^3 ≡ 2 (mod 3)\n\n6. **The k = 3 phenomenon**: Documenting the enormous smallest solution",
     "keyInsights": [
       "**Why k = 1 fails**: For even n, 2^n ≡ 0 (mod 2) ≠ 1. For odd n > 1, more subtle number theory shows 2^n ≢ 1 (mod n).",
       "**Fermat's Little Theorem**: For prime p, 2^p ≡ 2 (mod p). So every odd prime is in SolutionSet(2), proving that case is infinite.",
@@ -94,8 +94,8 @@
       "title": "Known Partial Results",
       "startLine": 68,
       "endLine": 87,
-      "summary": "Powers of 2 and k = -1 cases proved by Graham, Lehmer, and Lehmer.",
-      "mathContext": "Mathematical content: Powers of 2 and k = -1 cases proved by Graham, Lehmer, and Lehmer."
+      "summary": "Powers of 2 case proved by Graham, Lehmer, and Lehmer.",
+      "mathContext": "Mathematical content: Powers of 2 case proved by Graham, Lehmer, and Lehmer."
     },
     {
       "id": "conjecture",
