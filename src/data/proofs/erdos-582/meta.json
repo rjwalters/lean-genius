@@ -55,15 +55,16 @@
       "monochromaticSubgraph: subgraph of single color",
       "hasRamseyProperty: every coloring has monochromatic K3",
       "isFolkmanGraph: K4-free with Ramsey property",
-      "folkmanNumber_2_3_4: the specific Folkman number",
+      "folkmanNumber_2_3_4 (opaque): abstract constant for the specific Folkman number",
+      "folkmanNumber (opaque): abstract constant for the general Folkman number f(r,k,n)",
       "folkman_existence axiom: main existence result",
       "folkman_bounds: 19 <= f(2,3,4) <= 941",
       "Historical bound timeline from 1970-2008",
       "Connection to classical Ramsey theory"
     ],
-    "axiomCount": 3,
-    "lineCount": 317,
-    "assumptions": "3 axioms: folkman_existence, folkman_lower_bound, folkman_upper_bound. 0 sorries."
+    "axiomCount": 5,
+    "lineCount": 316,
+    "assumptions": "5 assumptions: 2 opaque constants (folkmanNumber_2_3_4, folkmanNumber) + 3 axioms (folkman_existence, folkman_lower_bound, folkman_upper_bound). 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #582: The Folkman Number**\n\nThis problem was first posed by Erdos and Hajnal in 1967 and asks a fundamental question in Ramsey theory: can we have a graph that avoids K4 (no 4-clique) yet still forces monochromatic triangles in every 2-coloring of its edges?\n\n**Historical Timeline:**\n- 1967: Erdos-Hajnal pose the question\n- 1970: Folkman proves existence (with astronomical bounds)\n- 1986: Frankl-Rodl prove f(2,3,4) <= 7x10^11\n- 1988: Spencer proves <= 3x10^9, winning Erdos's $100 prize\n- 2007: Lu gives explicit construction with <= 9697 vertices\n- 2008: Dudek-Rodl prove <= 941 (current record)\n\nThe number f(2,3,4), called the Folkman number, remains one of the most studied parameters in extremal graph theory.",
@@ -191,9 +192,9 @@
     ],
     "namespace": "Erdos582",
     "lineCount": 317,
-    "axiomCount": 3,
+    "axiomCount": 5,
     "theoremCount": 5,
-    "definitionCount": 11,
+    "definitionCount": 9,
     "path": "Proofs/Erdos582Problem.lean",
     "sorries": 0
   },
