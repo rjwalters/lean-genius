@@ -106,7 +106,7 @@
     {
       "id": "erdos-szekeres",
       "title": "Erdős-Szekeres Observation",
-      "summary": "isValidPair, erdos_szekeres_bound, exponential bound, gcd_always_gt_one",
+      "summary": "isValidPair predicate (L64), axiom erdos_szekeres_exponential (L77): gcd ≥ 2^i bound, theorem gcd_always_gt_one (L85). Note: erdos_szekeres_bound is a phantom — the actual axiom is erdos_szekeres_exponential.",
       "startLine": 57,
       "endLine": 94,
       "mathContext": "Erdős-Szekeres: $\\forall 2 \\leq i < j \\leq n/2: g(n,i,j) > 1$. The GCD is never 1 for central binomial coefficients. Proved via shared prime divisors from Kummer's theorem."
