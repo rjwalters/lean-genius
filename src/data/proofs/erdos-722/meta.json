@@ -92,46 +92,46 @@
       "id": "classical",
       "title": "Classical Results: Kirkman, Fano, Hanani",
       "startLine": 128,
-      "endLine": 163,
+      "endLine": 148,
       "summary": "Axiomatizes `fano_plane_exists`: $S(2,3,7)$ (real axiom at L143). Kirkman triple systems and Hanani's results described in docstrings only — no axiom declarations for these.",
       "mathContext": "Axiomatized: fano_plane_exists (L143); kirkman_triple_systems and hanani_1961 are docstring descriptions only"
     },
     {
       "id": "wilson",
       "title": "Wilson's Theorem (1972)",
-      "startLine": 164,
-      "endLine": 186,
+      "startLine": 149,
+      "endLine": 167,
       "summary": "Axiomatizes `wilson_theorem_r2`: $\\forall k \\geq 2,\\; \\exists N_0,\\; \\forall n \\geq N_0$ satisfying divisibility, $S(2,k,n)$ exists. Quantitative bound $N_0 \\leq C \\cdot k^2$ described in docstring only — no `wilson_quantitative` axiom declared.",
       "mathContext": "Axiomatized: wilson_theorem_r2 (L160); wilson_quantitative is a docstring description only"
     },
     {
       "id": "keevash",
       "title": "Keevash's Theorem (2014) — General Solution",
-      "startLine": 187,
-      "endLine": 235,
+      "startLine": 168,
+      "endLine": 214,
       "summary": "Axiomatizes `keevash_theorem`: $\\forall r \\geq 1,\\; k > r,\\; \\exists N_0,\\; \\forall n \\geq N_0$ satisfying divisibility, $S(r,k,n)$ exists. Proves `erdos_722_solved` directly from Keevash. Documents the randomized algebraic construction method.",
       "mathContext": "Axiomatizes `keevash_theorem`: $\\forall r \\geq 1,\\; k > r,\\; \\exists N_0,\\; \\forall n \\geq N_0$ satisfying divisibility, $S(r,k,n)$ exists. Proves `erdos_722_solved` directly from Keevash."
     },
     {
       "id": "examples",
       "title": "Small Examples",
-      "startLine": 236,
-      "endLine": 264,
+      "startLine": 215,
+      "endLine": 243,
       "summary": "Proves `fano_plane_divisibility : DivisibilityConditions 2 3 7` and `s239_divisibility : DivisibilityConditions 2 3 9` computationally via `interval_cases` and `decide`.",
       "mathContext": "Verified: Proves `fano_plane_divisibility : DivisibilityConditions 2 3 7` and `s239_divisibility : DivisibilityConditions 2 3 9` computationally via `interval_cases` and `decide`."
     },
     {
       "id": "related",
       "title": "Related Concepts: Resolvable, Packing, Covering",
-      "startLine": 265,
-      "endLine": 291,
+      "startLine": 244,
+      "endLine": 270,
       "summary": "Defines `IsResolvable` (blocks partition into parallel classes), `IsPacking` (every $r$-set in $\\leq 1$ block), `IsCovering` (every $r$-set in $\\geq 1$ block). Steiner systems are both packings and coverings.",
       "mathContext": "Defines `IsResolvable` (blocks partition into parallel classes), `IsPacking` (every $r$-set in $\\leq 1$ block), `IsCovering` (every $r$-set in $\\geq 1$ block)."
     },
     {
       "id": "summary",
       "title": "Summary and Main Theorems",
-      "startLine": 292,
+      "startLine": 271,
       "endLine": 302,
       "summary": "Proves `erdos_722_summary` combining Keevash's general theorem, Wilson's $r = 2$ result, and Fano plane existence. Historical note on Steiner vs Kirkman naming.",
       "mathContext": "Verified: Proves `erdos_722_summary` combining Keevash's general theorem, Wilson's $r = 2$ result, and Fano plane existence. Historical note on Steiner vs Kirkman naming."
