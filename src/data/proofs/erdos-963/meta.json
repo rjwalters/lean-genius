@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/963",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "lineCount": 704,
+    "lineCount": 706,
     "assumptions": "0 axioms. trivial_upper_bound now proved (f(n) ≤ n - 1 for n ≥ 1, via worst-case witness A = {0,...,n-1} and zero_not_in_dissociated). greedy_lower_bound fully proved via greedy_dissociated + Nat.log arithmetic. The conjectured tight bound f(n) ≤ ⌊log₂ n⌋ + 1 remains open in the formalization (the trivial bound n − 1 is much weaker but axiom-free). The main Erdős conjecture f(n) ≥ ⌊log₂ n⌋ is stated as `def ErdosProblem963` (open).",
     "mathlib_version": "4.26.0"
   },
@@ -137,7 +137,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 704,
+    "lineCount": 706,
     "axiomCount": 0,
     "theoremCount": 23,
     "definitionCount": 4,
