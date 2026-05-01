@@ -137,23 +137,23 @@
       "id": "connection-710",
       "title": "Connection to Problem #710",
       "summary": "Axiomatized Erdős-Pomerance bounds for f(n,n): C₁·n·√(log n/log log n) ≤ f(n,n) ≤ C₂·n·√(log n). Shows van Doorn's difference can dominate the base value.",
-      "startLine": 217,
-      "endLine": 243,
+      "startLine": 213,
+      "endLine": 231,
       "mathContext": "Axiomatized Erdős-Pomerance bounds for f(n,n): C₁·n·√($\\log n$/log $\\log n$) $\\leq$ f(n,n) $\\leq$ C₂·n·√($\\log n$). Shows van Doorn's difference can dominate the base value."
     },
     {
       "id": "examples",
       "title": "Small Examples: n=2",
       "summary": "Three fully proved examples with m=1,2,3 all showing f(2,m) ≤ 3. Demonstrates the divergence is asymptotic, not visible at small scale.",
-      "startLine": 244,
-      "endLine": 295,
+      "startLine": 232,
+      "endLine": 283,
       "mathContext": "Three fully proved examples with m=1,2,3 all showing f(2,m) $\\leq$ 3. Demonstrates the divergence is asymptotic, not visible at small scale."
     },
     {
       "id": "summary",
       "title": "Main Results Summary",
       "summary": "Theorem erdos_711_summary combining all results. erdos_711_part2_solved confirms second conjecture. openQuestion records first conjecture status.",
-      "startLine": 296,
+      "startLine": 284,
       "endLine": 333,
       "mathContext": "Verified: Theorem erdos_711_summary combining all results. erdos_711_part2_solved confirms second conjecture. openQuestion records first conjecture status."
     }
