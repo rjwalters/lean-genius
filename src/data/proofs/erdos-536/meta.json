@@ -43,10 +43,10 @@
       "Defined HasEqualPairwiseLCM: three distinct elements with equal pairwise LCMs",
       "Defined HasLCMTriple: set contains an equal-pairwise-LCM triple",
       "Stated erdos_536_conjecture: density conjecture for all ε > 0",
-      "Stated weisenberg_dense_case: partial result for ε > 221/225",
-      "Stated four_elements_fail: no four-element analogue at density 1/2",
-      "Stated weisenberg_construction: large triple-free sets with f(N) → ∞",
-      "Stated lcm_structure: equal pairwise LCMs imply common divisibility"
+      "Proved weisenberg_dense_case: partial result for ε > 221/225 by instantiating erdos_536_conjecture",
+      "Documented in docstring: four-element failure (no four-element analogue at density 1/2)",
+      "Documented in docstring: Weisenberg construction (large triple-free sets with f(N) → ∞)",
+      "Proved lcm_structure: equal pairwise LCMs imply common divisibility"
     ],
     "lineCount": 83,
     "axiomCount": 1,
@@ -56,7 +56,7 @@
     "historicalContext": "Erdős posed versions of this problem from the 1960s through the 1990s, culminating in a discussion at the 1991 West Coast Number Theory session. The question asks whether positive-density subsets of $\\{1,\\ldots,N\\}$ must contain three distinct elements with equal pairwise LCMs: $[a,b] = [b,c] = [a,c]$. This means $a, b, c$ are all divisors of a common value $L = [a,b]$, and each pair covers all prime factors of $L$.\n\nWeisenberg proved the conjecture for density $\\varepsilon > 221/225 \\approx 0.982$, an impressively tight partial result. Weisenberg also constructed sets of size $\\gg (\\log\\log N)^{f(N)} \\cdot N / \\log N$ (where $f(N) \\to \\infty$) that avoid the LCM triple property, showing that if a density threshold exists, triple-free sets can be surprisingly large.\n\nErdős showed that the analogous statement for four elements is false: there exist sets of density $\\geq 1/2$ in $\\{1,\\ldots,N\\}$ with no four elements having all pairwise LCMs equal. This sharp contrast between triples and quadruples is characteristic of extremal combinatorics problems.\n\nThe problem sits within a family of Erdős problems (#535, #537, #856, #857) on GCD/LCM patterns in dense sets, connecting density Ramsey theory to multiplicative number theory. The condition $[a,b] = [b,c] = [a,c] = L$ forces a very rigid multiplicative structure: each pair must jointly account for every prime power in the factorization of $L$.\n\n**Status**: OPEN — The conjecture is proved only for $\\varepsilon > 221/225$.",
     "problemStatement": "**Problem (OPEN)**\n\nFor any $\\varepsilon > 0$ and $N$ sufficiently large, if $A \\subseteq \\{1,\\ldots,N\\}$ with $|A| \\geq \\varepsilon N$, must there exist distinct $a, b, c \\in A$ with\n$$[a, b] = [b, c] = [a, c]?$$\n\n**Known Results:**\n- Weisenberg: holds for $\\varepsilon > 221/225 \\approx 0.982$\n- Four-element analogue fails at density $1/2$\n- Triple-free sets can have size $\\gg (\\log\\log N)^{f(N)} \\cdot N / \\log N$\n\n**Open**: Does the conjecture hold for all $\\varepsilon > 0$?",
     "text": "If A ⊆ {1,...,N} has |A| ≥ εN, must there be distinct a,b,c ∈ A with [a,b]=[b,c]=[a,c]? Weisenberg: yes for ε > 221/225. Fails for four elements. Open.",
-    "proofStrategy": "**Formalization Strategy**\n\nThe Lean file (88 lines) formalizes the problem with all results axiomatized:\n\n1. **Core definitions** (lines 27–34): `HasEqualPairwiseLCM a b c` asserts $a \\neq b \\wedge b \\neq c \\wedge a \\neq c$ and $a.\\text{lcm}\\, b = b.\\text{lcm}\\, c = a.\\text{lcm}\\, c$, using `Nat.lcm`. `HasLCMTriple A` existentially quantifies over elements of $A$.\n\n2. **Main conjecture** (lines 41–46): `erdos_536_conjecture` axiomatizes the density statement: $\\forall \\varepsilon > 0, \\exists N_0, \\forall N \\geq N_0$, any $A \\subseteq \\text{Finset.Icc}\\, 1\\, N$ with $|A| \\geq \\varepsilon N$ satisfies `HasLCMTriple A`.\n\n3. **Weisenberg's results** (lines 53–75): `weisenberg_dense_case` (the conjecture for $\\varepsilon > 221/225$), `four_elements_fail` (density $\\geq 1/2$ sets avoiding quadruples), and `weisenberg_construction` (large triple-free sets with unbounded size function).\n\n4. **LCM structure** (lines 82–84): `lcm_structure` derives $a \\mid L \\wedge b \\mid L \\wedge c \\mid L$ from equal pairwise LCMs.",
+    "proofStrategy": "**Formalization Strategy**\n\nThe Lean file (83 lines) formalizes the problem:\n\n1. **Core definitions** (lines 27–34): `HasEqualPairwiseLCM a b c` asserts $a \\neq b \\wedge b \\neq c \\wedge a \\neq c$ and $a.\\text{lcm}\\, b = b.\\text{lcm}\\, c = a.\\text{lcm}\\, c$, using `Nat.lcm`. `HasLCMTriple A` existentially quantifies over elements of $A$.\n\n2. **Main conjecture** (lines 41–46): `erdos_536_conjecture` axiomatizes the density statement: $\\forall \\varepsilon > 0, \\exists N_0, \\forall N \\geq N_0$, any $A \\subseteq \\text{Finset.Icc}\\, 1\\, N$ with $|A| \\geq \\varepsilon N$ satisfies `HasLCMTriple A`.\n\n3. **Known results** (lines 48–64): `weisenberg_dense_case` (theorem, proved by instantiation at lines 53–58) proves the conjecture for $\\varepsilon > 221/225$. Four-element failure and Weisenberg's construction are documented in docstring comments (lines 60–64) only; no corresponding declarations exist.\n\n4. **LCM structure** (lines 65–80): `lcm_structure` (theorem, proved) derives $a \\mid L \\wedge b \\mid L \\wedge c \\mid L$ from equal pairwise LCMs.",
     "keyInsights": [
       "**Equal pairwise LCMs force divisibility structure**: If $[a,b] = [b,c] = [a,c] = L$, then $a \\mid L$, $b \\mid L$, $c \\mid L$, and each pair covers all prime factors of $L$. The three elements must 'jointly represent' the prime factorization of $L$",
       "**Weisenberg's density threshold**: The conjecture holds for $\\varepsilon > 221/225 \\approx 0.982$, a remarkable partial result showing that near-full-density sets must contain LCM triples",
@@ -100,21 +100,21 @@
       "id": "weisenberg",
       "title": "Weisenberg's Results",
       "startLine": 48,
-      "endLine": 76,
-      "summary": "Three axiomatized results: weisenberg_dense_case (conjecture holds for ε > 221/225), four_elements_fail (density ≥ 1/2 sets can avoid four-element LCM patterns), and weisenberg_construction (large triple-free sets with size ≥ f(N) for unbounded f).",
-      "mathContext": "Partial: $|A| \\geq \\frac{221}{225}N \\Rightarrow \\text{HasLCMTriple}(A)$. Negative: $\\exists A,\\; |A| \\geq N/2,\\; \\nexists$ four elements with all 6 pairwise LCMs equal. Construction: $\\exists f \\to \\infty,\\; \\exists A \\subseteq [N],\\; \\neg\\text{HasLCMTriple}(A) \\wedge |A| \\geq f(N)$."
+      "endLine": 64,
+      "summary": "Proves weisenberg_dense_case (conjecture holds for ε > 221/225) by instantiating erdos_536_conjecture with ε = 221/225. Four-element failure and Weisenberg's construction are documented in docstring comments only (lines 60–64); no corresponding axiom or theorem declarations exist in the file.",
+      "mathContext": "Proved: $|A| \\geq \\frac{221}{225}N \\Rightarrow \\text{HasLCMTriple}(A)$ (instantiation of the main axiom). Docstring-only: four-element failure at density $\\geq 1/2$; triple-free construction with $|A| \\gg (\\log\\log N)^{f(N)} \\cdot N/\\log N$."
     },
     {
       "id": "observations",
       "title": "LCM Structure and Related Problems",
-      "startLine": 77,
+      "startLine": 65,
       "endLine": 83,
-      "summary": "Axiomatizes lcm_structure: equal pairwise LCMs L imply a|L, b|L, c|L. Notes connections to Problems #535, #537, #856, #857.",
+      "summary": "Proves lcm_structure (theorem, not axiom): equal pairwise LCMs $[a,b]=[b,c]=[a,c]=L$ imply $a \\mid L$, $b \\mid L$, $c \\mid L$. Notes connections to Problems #535, #537, #856, #857.",
       "mathContext": "$[a,b] = [b,c] = [a,c] = L \\Rightarrow a \\mid L \\wedge b \\mid L \\wedge c \\mid L$. Follows from $\\text{lcm}(x,y) = L \\Rightarrow x \\mid L$."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #536 with precise definitions of the equal pairwise LCM property, the density conjecture, Weisenberg's partial result for density > 221/225, the four-element failure, and the LCM divisibility structure lemma. All results are axiomatized.",
+    "summary": "This formalization captures Erdős Problem #536 with the main conjecture axiomatized, Weisenberg's partial result and the LCM divisibility structure proved as theorems, and the four-element failure and Weisenberg construction documented in docstring comments.",
     "implications": "1. **Density Ramsey Theory**: Resolution would establish a new density Ramsey result for multiplicative structure, extending the paradigm from additive (Szemerédi) to multiplicative patterns\n\n2. **LCM Distribution**: Understanding when dense sets must contain LCM triples illuminates the distribution of least common multiples among integers\n\n**3. Triple vs. Quadruple Transition**: The sharp failure at four elements suggests a deep structural reason why three elements suffice—understanding this transition would advance extremal number theory\n\n4. **Multiplicative Combinatorics**: The problem connects to the broader program of understanding multiplicative structure in dense sets, complementing additive results like Szemerédi's theorem.",
     "openQuestions": [
       "Does the conjecture hold for all ε > 0?",
