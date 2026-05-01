@@ -94,56 +94,56 @@
     {
       "id": "diameter-bounds",
       "title": "Diameter Bounds",
-      "summary": "polya_diameter_bound axiom (≤ 4), components_below_4 axiom",
-      "startLine": 80,
-      "endLine": 112,
-      "mathContext": "polya_diameter_bound axiom ($\\leq$ 4), components_below_4 axiom"
+      "summary": "polya_diameter_bound axiom (diameter ≤ 4)",
+      "startLine": 81,
+      "endLine": 103,
+      "mathContext": "polya_diameter_bound axiom ($\\leq$ 4)"
     },
     {
       "id": "pommerenke",
       "title": "Pommerenke's Counterexample",
       "summary": "pommerenke_theorem axiom, erdos_511 main theorem",
-      "startLine": 113,
-      "endLine": 162,
+      "startLine": 104,
+      "endLine": 157,
       "mathContext": "Verified: pommerenke_theorem axiom, erdos_511 main theorem"
     },
     {
       "id": "roots-of-unity",
       "title": "The Key Example z^n - 1",
-      "summary": "rootsOfUnityPoly definition, sum_diameters_rootsOfUnity axiom",
-      "startLine": 163,
-      "endLine": 196,
-      "mathContext": "Formal definition: rootsOfUnityPoly definition, sum_diameters_rootsOfUnity axiom"
+      "summary": "rootsOfUnityPoly definition (z^n - 1)",
+      "startLine": 158,
+      "endLine": 180,
+      "mathContext": "Formal definition: rootsOfUnityPoly definition (z^n - 1)"
     },
     {
       "id": "petal-structure",
       "title": "The Petal Structure",
-      "summary": "petal_structure axiom, perturbation_creates_components axiom",
-      "startLine": 197,
-      "endLine": 228,
-      "mathContext": "Formal definition: petal_structure axiom, perturbation_creates_components axiom"
+      "summary": "Narrative discussion of petal structure for z^n - 1 (no Lean declarations)",
+      "startLine": 181,
+      "endLine": 195,
+      "mathContext": "Narrative discussion of petal structure for z^n - 1 (no Lean declarations)"
     },
     {
       "id": "huang",
       "title": "Huang's Independent Discovery",
-      "summary": "huang_theorem axiom (2025 rediscovery)",
-      "startLine": 229,
-      "endLine": 251,
-      "mathContext": "Verified: huang_theorem axiom (2025 rediscovery)"
+      "summary": "Historical note on Huang (2025) independent rediscovery (no Lean declarations)",
+      "startLine": 196,
+      "endLine": 208,
+      "mathContext": "Historical note on Huang (2025) independent rediscovery (no Lean declarations)"
     },
     {
       "id": "threshold-4",
       "title": "The Critical Threshold at 4",
-      "summary": "diameter_4_is_sharp axiom, no_component_reaches_4 theorem",
-      "startLine": 252,
-      "endLine": 282,
-      "mathContext": "Verified: diameter_4_is_sharp axiom, no_component_reaches_4 theorem"
+      "summary": "no_component_reaches_4 theorem (derived from polya_diameter_bound)",
+      "startLine": 209,
+      "endLine": 231,
+      "mathContext": "Verified: no_component_reaches_4 theorem (derived from polya_diameter_bound)"
     },
     {
       "id": "summary",
       "title": "Summary of Results",
       "summary": "erdos_511_summary theorem, erdos_511_answer theorem",
-      "startLine": 283,
+      "startLine": 232,
       "endLine": 285,
       "mathContext": "Verified: erdos_511_summary theorem, erdos_511_answer theorem"
     }
