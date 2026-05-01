@@ -47,6 +47,7 @@
       "IsSparse definition: o(√x) growth condition",
       "BFreeSet definition: numbers not divisible by A",
       "IsBFree definition: A-free numbers",
+      "nthElement axiom: ordered elements of B (well-ordering axiomatized)",
       "gap definition: consecutive gaps",
       "gapSquaredSum definition: Σ(b_{i+1}-b_i)²",
       "normalizedGapStatistic definition: (1/x)Σ gaps²",
@@ -88,7 +89,7 @@
     {
       "id": "gaps",
       "title": "Gaps and Gap Statistics",
-      "summary": "nthElement, gap, gapSquaredSum, normalizedGapStatistic",
+      "summary": "nthElement axiom, gap, gapSquaredSum, normalizedGapStatistic",
       "startLine": 65,
       "endLine": 96
     },
@@ -102,22 +103,22 @@
     {
       "id": "squarefree",
       "title": "The Squarefree Case",
-      "summary": "PrimeSquares, squarefreeSetAsBFree, erdos_squarefree_limit, squarefree_density",
-      "startLine": 118,
-      "endLine": 151
+      "summary": "PrimeSquares definition (A = {p² : p prime}), erdos_squarefree_limit axiom (limit exists for squarefrees); docstring commentary on B = squarefree numbers and density 6/π²",
+      "startLine": 119,
+      "endLine": 144
     },
     {
       "id": "kfree",
       "title": "K-Free Numbers",
       "summary": "IsKFree, IsCubefree",
-      "startLine": 152,
-      "endLine": 168
+      "startLine": 145,
+      "endLine": 161
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_489_summary, erdos_489",
-      "startLine": 169,
+      "startLine": 162,
       "endLine": 190
     }
   ],
