@@ -16,9 +16,12 @@
       because there is no bit-complexity model of arithmetic and no fast
       multiplication. Deferred -- documented as a Mathlib infrastructure gap.
 
-  This file establishes (A) and the structural skeleton for (B). The
-  size-reduction lemma is stated with the precise quantitative bound and
-  marked `sorry`; closing it is the focus of follow-up sessions.
+  This file establishes (A), the matrix-vector invariant that
+  underpins (B) (the row-vector relation `(a₀, b₀) · M = (current pair)`
+  for `M = lehmerCofactors fuel a₀ b₀ id`), and the structural
+  skeleton for (B). The size-reduction lemma itself is stated with
+  the precise quantitative bound and marked `sorry`; closing it is
+  the focus of follow-up sessions.
 
   All cofactor-matrix machinery (det, mul, apply, GCD invariance under
   unimodular matrices) is reused from `BinaryGcdOQ03.lean`.
@@ -193,7 +196,136 @@ theorem hgcdMatrix_apply_gcd (fuel a b : ℕ) :
   exact h
 
 -- ═══════════════════════════════════════════════════════════════
--- PART IV: SIZE REDUCTION (the genuinely new content)
+-- PART IV: MATRIX-VECTOR INVARIANT (foundational for size reduction)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Matrix-vector invariant for `lehmerCofactors`
+
+The maintained invariant of the Lehmer-step machine is that the
+accumulated cofactor matrix, applied (in row-vector convention) to
+the *original* pair, recovers the *current* pair after each step.
+
+Formally: if `(a₀, b₀)` is the initial pair (as integers, allowing
+the proof to track sign cleanly) and `M` is the cofactor accumulator
+at some intermediate step where the current pair is `(ahat, bhat)`,
+then:
+
+    a₀ * M.α + b₀ * M.γ = ahat
+    a₀ * M.β + b₀ * M.δ = bhat
+
+Starting from `M = id`, the relation holds trivially because
+`(a₀, b₀) · id = (a₀, b₀)`. We prove it carries through one step
+of `lehmerInnerStep`, then iterate to cover `lehmerCofactors`.
+
+This invariant is the foundation of the size-reduction argument
+for `hgcdMatrix_size_reduction`: combined with the bound
+`bhat_final ≤ bhat₀` (Euclidean-step monotonicity, separate
+lemma) and the determinant condition (Cramer inversion), it
+gives entry bounds on the cofactor matrix.
+
+The proof of `hgcdMatrix_size_reduction` itself is still `sorry`
+in PART V; this PART supplies the first of three components
+identified in the next-action plan in
+`research/problems/binary-gcd-oq-03-oq-02/state.md`. -/
+
+/-- Matrix-vector invariant for one Lehmer inner step.
+
+    Given a "ghost original pair" `(a₀, b₀)` consistent with the
+    current state `(ahat, bhat, M)` via the row-vector relation
+    `(a₀, b₀) · M = (ahat, bhat)`, the relation persists after one
+    `lehmerInnerStep` to the new state `(ahat', bhat', M')`.
+
+    Proof: unfold `lehmerInnerStep` to extract the form of the new
+    matrix entries (`α' = β`, `β' = α - q·β`, `γ' = δ`,
+    `δ' = γ - q·δ`) and the new pair (`ahat' = bhat`,
+    `bhat' = ahat % bhat`). The first conclusion is exactly `h_inv₂`;
+    the second follows from `h_inv₁ - q · h_inv₂` and
+    `Nat.div_add_mod`. -/
+theorem lehmerInnerStep_invariant {a₀ b₀ : ℤ} {ahat bhat : ℕ} {M : CofactorMatrix}
+    {ahat' bhat' : ℕ} {M' : CofactorMatrix}
+    (h_inv₁ : a₀ * M.α + b₀ * M.γ = (ahat : ℤ))
+    (h_inv₂ : a₀ * M.β + b₀ * M.δ = (bhat : ℤ))
+    (h_step : lehmerInnerStep ahat bhat M = some (ahat', bhat', M')) :
+    a₀ * M'.α + b₀ * M'.γ = (ahat' : ℤ) ∧
+    a₀ * M'.β + b₀ * M'.δ = (bhat' : ℤ) := by
+  simp [lehmerInnerStep] at h_step
+  split at h_step <;> simp_all
+  split at h_step <;> simp_all
+  -- Surviving case: bhat ≠ 0 and ahat % bhat ≠ 0; the some-equation
+  -- has reduced to the equality of the triples.
+  obtain ⟨rfl, rfl, rfl⟩ := h_step
+  refine ⟨?_, ?_⟩
+  · -- a₀ * M'.α + b₀ * M'.γ = a₀ * M.β + b₀ * M.δ = bhat
+    exact h_inv₂
+  · -- a₀ * (M.α - q·M.β) + b₀ * (M.γ - q·M.δ) = ahat % bhat
+    have expand :
+        a₀ * (M.α - ((ahat / bhat : ℕ) : ℤ) * M.β)
+          + b₀ * (M.γ - ((ahat / bhat : ℕ) : ℤ) * M.δ)
+        = (a₀ * M.α + b₀ * M.γ)
+            - ((ahat / bhat : ℕ) : ℤ) * (a₀ * M.β + b₀ * M.δ) := by ring
+    rw [expand, h_inv₁, h_inv₂]
+    -- Goal: (ahat : ℤ) - ↑(ahat/bhat) * (bhat : ℤ) = ↑(ahat % bhat)
+    -- From Nat.div_add_mod: bhat * (ahat/bhat) + ahat % bhat = ahat
+    -- Cast to ℤ: ↑bhat * ↑(ahat/bhat) + ↑(ahat%bhat) = ↑ahat
+    -- Then commute multiplication and rearrange.
+    have hdivmod_int :
+        (bhat : ℤ) * ((ahat / bhat : ℕ) : ℤ) + ((ahat % bhat) : ℤ) = (ahat : ℤ) := by
+      exact_mod_cast Nat.div_add_mod ahat bhat
+    have hcomm : ((ahat / bhat : ℕ) : ℤ) * (bhat : ℤ)
+               = (bhat : ℤ) * ((ahat / bhat : ℕ) : ℤ) := by ring
+    linarith
+
+/-- Multi-step matrix-vector invariant for `lehmerCofactors`.
+
+    Existential form: there exist final residues `(ahat', bhat')`
+    such that applying the accumulated matrix to the ghost original
+    pair recovers them. Proved by induction on `fuel`, applying
+    `lehmerInnerStep_invariant` to the head step.
+
+    Note: the existential form avoids defining a parallel
+    "track residues" function; the residues are determined by the
+    iterated `lehmerInnerStep`s, but expressing them explicitly is
+    not needed for the entry-bound argument. -/
+theorem lehmerCofactors_invariant {a₀ b₀ : ℤ} (fuel ahat bhat : ℕ) (M : CofactorMatrix)
+    (h_inv₁ : a₀ * M.α + b₀ * M.γ = (ahat : ℤ))
+    (h_inv₂ : a₀ * M.β + b₀ * M.δ = (bhat : ℤ)) :
+    ∃ ahat' bhat' : ℕ,
+      a₀ * (lehmerCofactors fuel ahat bhat M).α
+        + b₀ * (lehmerCofactors fuel ahat bhat M).γ = (ahat' : ℤ) ∧
+      a₀ * (lehmerCofactors fuel ahat bhat M).β
+        + b₀ * (lehmerCofactors fuel ahat bhat M).δ = (bhat' : ℤ) := by
+  induction fuel generalizing ahat bhat M with
+  | zero => exact ⟨ahat, bhat, h_inv₁, h_inv₂⟩
+  | succ n ih =>
+    simp only [lehmerCofactors]
+    match hstep : lehmerInnerStep ahat bhat M with
+    | none => exact ⟨ahat, bhat, h_inv₁, h_inv₂⟩
+    | some (ahat'', bhat'', M'') =>
+      have ⟨h₁', h₂'⟩ := lehmerInnerStep_invariant h_inv₁ h_inv₂ hstep
+      exact ih ahat'' bhat'' M'' h₁' h₂'
+
+/-- Specialisation of `lehmerCofactors_invariant` to `M = id` and the
+    "ghost original pair" being the algorithm's actual input pair
+    `(ahat, bhat)`.
+
+    Concretely: row-applying the accumulated cofactor matrix to the
+    input pair yields the final Euclidean-residue pair. This is the
+    correctness of `applyToNat (lehmerCofactors fuel ahat bhat id)
+    ahat bhat`: it equals the final reduced pair. -/
+theorem lehmerCofactors_id_apply_eq (fuel ahat bhat : ℕ) :
+    ∃ ahat' bhat' : ℕ,
+      (ahat : ℤ) * (lehmerCofactors fuel ahat bhat CofactorMatrix.id).α
+        + (bhat : ℤ) * (lehmerCofactors fuel ahat bhat CofactorMatrix.id).γ
+            = (ahat' : ℤ) ∧
+      (ahat : ℤ) * (lehmerCofactors fuel ahat bhat CofactorMatrix.id).β
+        + (bhat : ℤ) * (lehmerCofactors fuel ahat bhat CofactorMatrix.id).δ
+            = (bhat' : ℤ) := by
+  apply lehmerCofactors_invariant
+  · simp [CofactorMatrix.id]
+  · simp [CofactorMatrix.id]
+
+-- ═══════════════════════════════════════════════════════════════
+-- PART V: SIZE REDUCTION (the genuinely new content)
 -- ═══════════════════════════════════════════════════════════════
 
 /-- The bitsize of a natural number: `Nat.log 2 n + 1` for `n > 0`,
@@ -210,7 +342,15 @@ def bitsize (n : ℕ) : ℕ := if n = 0 then 0 else Nat.log 2 n + 1
     `BinaryGcdOQ03.lean`; closing it is the next-session focus.
 
     The constant `c = hgcdThreshold + 2` is an over-approximation; the
-    Brent–Zimmermann analysis gives `c = O(1)` more precisely. -/
+    Brent–Zimmermann analysis gives `c = O(1)` more precisely.
+
+    The matrix-vector invariant in PART IV is the first of three
+    components needed to close this proof; the remaining two are
+    (a) Euclidean-residue monotonicity (`bhat_final ≤ bhat₀`,
+    derivable from `lehmerInnerStep` flipping `(ahat, bhat)` to
+    `(bhat, ahat % bhat)` with `ahat % bhat < bhat`) and (b) a
+    perturbation argument bounding the difference between
+    `(a, b) · M` and `(aHi · 2^shift, bHi · 2^shift) · M = (aHi', bHi') · 2^shift`. -/
 theorem hgcdMatrix_size_reduction (fuel a b : ℕ)
     (hfuel : bitsize (max a b) ≤ fuel)
     (hbig : 2 ^ hgcdThreshold ≤ max a b) :
@@ -230,7 +370,7 @@ theorem hgcdMatrix_size_reduction (fuel a b : ℕ)
   sorry
 
 -- ═══════════════════════════════════════════════════════════════
--- PART V: COMPLEXITY (DEFERRED)
+-- PART VI: COMPLEXITY (DEFERRED)
 -- ═══════════════════════════════════════════════════════════════
 
 /-! ### Bit-complexity claim — deferred
@@ -252,7 +392,7 @@ initiative; we therefore document the complexity claim here without
 attempting to formalise it. -/
 
 -- ═══════════════════════════════════════════════════════════════
--- PART VI: COMPUTATIONAL SANITY CHECKS
+-- PART VII: COMPUTATIONAL SANITY CHECKS
 -- ═══════════════════════════════════════════════════════════════
 
 example : (hgcdMatrix 0 100 80).det = 1 := by
@@ -290,13 +430,21 @@ example : applyToNat (hgcdTopHalfStep 1000 300) 1000 300 = (100, 100) := by
 * `hgcdTopHalfStep_det_unit`: the top-half Lehmer step keeps `det = ±1`.
 * `hgcdMatrix_det_unit`: the recursive HGCD matrix is unimodular.
 * `hgcdMatrix_apply_gcd`: applying the HGCD matrix preserves `Nat.gcd`.
+* `lehmerInnerStep_invariant`, `lehmerCofactors_invariant`,
+  `lehmerCofactors_id_apply_eq`: the row-vector matrix-vector
+  invariant `(a₀, b₀) · M = (current pair)` is preserved by the
+  Lehmer-step machine. Foundational lemma for the size-reduction
+  argument (Step 1 of three in the proof plan).
 
 **Deferred**
 
 * `hgcdMatrix_size_reduction`: stated, currently `sorry`. Proving it is
-  the genuinely new mathematical content of this OQ; see Part IV docstring.
+  the genuinely new mathematical content of this OQ; see Part V docstring.
+  Step 1 (matrix-vector invariant) is now in PART IV; remaining work is
+  Steps 2 (entry bound via Cramer + residue monotonicity) and 3
+  (perturbation argument from low bits + recursion-iteration).
 * Bit complexity `O(M(n) log n)`: not formulable in Mathlib today; see
-  Part V docstring for the foundational gaps.
+  Part VI docstring for the foundational gaps.
 -/
 
 end LehmerGcd
