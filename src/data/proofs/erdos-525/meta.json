@@ -51,21 +51,21 @@
     "originalContributions": [
       "IsLittlewoodPolynomial definition (±1 coefficients)",
       "LittlewoodPolynomials set definition",
-      "littlewood_count axiom (2^(n+1) polynomials)",
+      "Documented in docstring: littlewood_count — 2^(n+1) Littlewood polynomials of degree n; no Lean declaration",
       "UnitCircle definition",
       "minModulus function (infimum on unit circle)",
       "HasSmallValue definition",
-      "has_small_value_iff_min_lt_one axiom",
+      "Documented in docstring: has_small_value_iff_min_lt_one — HasSmallValue iff minModulus < 1; no Lean declaration",
       "almost_all_small axiom",
       "LittlewoodConjecture definition",
       "kashin_theorem axiom",
       "konyagin_upper_bound axiom (n^{-1/2+o(1)})",
-      "konyagin_exponent_tight axiom",
-      "konyagin_schlag_lower_tail axiom",
+      "Documented in docstring: konyagin_exponent_tight — exponent -1/2 is essentially optimal; no Lean declaration",
+      "Documented in docstring: konyagin_schlag_lower_tail — Konyagin-Schlag (1999) lower tail bound; no Lean declaration",
       "cook_nguyen_lambda constant",
       "cook_nguyen_distribution axiom (e^{-ελ} limit)",
       "IsRudinShapiro definition",
-      "rudin_shapiro_bound axiom",
+      "Documented in docstring: rudin_shapiro_bound — |p(z)| ≤ √(2n) on unit circle; no Lean declaration",
       "AllOnesPolynomial definition",
       "MahlerMeasure definition",
       "LehmerQuestion definition",
@@ -97,72 +97,72 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "IsLittlewoodPolynomial, LittlewoodPolynomials, UnitCircle, minModulus",
+      "summary": "IsLittlewoodPolynomial, LittlewoodPolynomials, UnitCircle, minModulus (littlewood_count documented in docstring only; no Lean declaration)",
       "startLine": 43,
-      "endLine": 65,
-      "mathContext": "Mathematical content: IsLittlewoodPolynomial, LittlewoodPolynomials, UnitCircle, minModulus"
+      "endLine": 62,
+      "mathContext": "Mathematical content: IsLittlewoodPolynomial, LittlewoodPolynomials, UnitCircle, minModulus definitions"
     },
     {
       "id": "first-question",
       "title": "The First Question",
-      "summary": "HasSmallValue, has_small_value_iff_min_lt_one, almost_all_small",
-      "startLine": 66,
-      "endLine": 83,
-      "mathContext": "Mathematical content: HasSmallValue, has_small_value_iff_min_lt_one, almost_all_small"
+      "summary": "HasSmallValue, almost_all_small axiom (has_small_value_iff_min_lt_one documented in docstring only; no Lean declaration)",
+      "startLine": 63,
+      "endLine": 79,
+      "mathContext": "Mathematical content: HasSmallValue definition, almost_all_small axiom; has_small_value_iff_min_lt_one is a docstring comment with no Lean declaration"
     },
     {
       "id": "littlewood-conjecture",
       "title": "Littlewood's Conjecture",
       "summary": "LittlewoodConjecture definition, kashin_theorem axiom",
-      "startLine": 84,
-      "endLine": 96,
+      "startLine": 80,
+      "endLine": 92,
       "mathContext": "Formal definition: LittlewoodConjecture definition, kashin_theorem axiom"
     },
     {
       "id": "konyagin-bound",
       "title": "Konyagin's Improvement",
-      "summary": "konyagin_upper_bound, konyagin_exponent_tight axioms",
-      "startLine": 97,
-      "endLine": 111,
-      "mathContext": "Axiomatized: konyagin_upper_bound, konyagin_exponent_tight axioms"
+      "summary": "konyagin_upper_bound axiom (konyagin_exponent_tight documented in docstring only; no Lean declaration)",
+      "startLine": 93,
+      "endLine": 103,
+      "mathContext": "Axiomatized: konyagin_upper_bound axiom; konyagin_exponent_tight is a docstring comment with no Lean declaration"
     },
     {
       "id": "konyagin-schlag",
       "title": "Konyagin-Schlag Lower Bound",
-      "summary": "konyagin_schlag_lower_tail axiom",
-      "startLine": 112,
-      "endLine": 121,
-      "mathContext": "Axiomatized: konyagin_schlag_lower_tail axiom"
+      "summary": "Konyagin-Schlag (1999) lower tail result documented in docstring; no Lean declaration in this section",
+      "startLine": 104,
+      "endLine": 109,
+      "mathContext": "No Lean declarations: konyagin_schlag_lower_tail is a docstring comment only; Part V contains only section header and docstring"
     },
     {
       "id": "cook-nguyen",
       "title": "Cook-Nguyen Universal Distribution",
-      "summary": "cook_nguyen_lambda, cook_nguyen_distribution axioms",
-      "startLine": 122,
-      "endLine": 138,
-      "mathContext": "Axiomatized: cook_nguyen_lambda, cook_nguyen_distribution axioms"
+      "summary": "cook_nguyen_lambda constant, cook_nguyen_distribution axiom",
+      "startLine": 110,
+      "endLine": 126,
+      "mathContext": "Axiomatized: cook_nguyen_lambda constant, cook_nguyen_distribution axiom"
     },
     {
       "id": "special-cases",
       "title": "Special Cases and Examples",
-      "summary": "IsRudinShapiro, AllOnesPolynomial, rudin_shapiro_bound",
-      "startLine": 139,
-      "endLine": 162,
-      "mathContext": "Bound: IsRudinShapiro, AllOnesPolynomial, rudin_shapiro_bound"
+      "summary": "IsRudinShapiro, AllOnesPolynomial definitions (rudin_shapiro_bound documented in docstring only; no Lean declaration)",
+      "startLine": 127,
+      "endLine": 143,
+      "mathContext": "Definitions: IsRudinShapiro, AllOnesPolynomial; rudin_shapiro_bound is a docstring comment with no Lean declaration"
     },
     {
       "id": "connections",
       "title": "Connection to Other Problems",
       "summary": "MahlerMeasure, LehmerQuestion definitions",
-      "startLine": 163,
-      "endLine": 180,
+      "startLine": 144,
+      "endLine": 157,
       "mathContext": "Formal definition: MahlerMeasure, LehmerQuestion definitions"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_525_main, erdos_525_answer theorems",
-      "startLine": 181,
+      "startLine": 158,
       "endLine": 202,
       "mathContext": "Verified: erdos_525_main, erdos_525_answer theorems"
     }
