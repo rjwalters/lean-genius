@@ -130,7 +130,11 @@
       "The prime power case proved here covers fields K of any characteristic. Does the proof simplify when char(K) = 0 or when K is algebraically closed (so that irreducible p must be linear)?",
       "Can the key lemma be generalized to non-matrix settings — e.g., cyclic vectors for endomorphisms of infinite-dimensional spaces, or modules over other PIDs besides K[X]?",
       "**Computational complexity**: The proof is constructive — given $M$ with $\\mu_M = p^e$, it picks $v$ such that $p^{e-1}(M)v \\neq 0$ via standard basis enumeration. Can a Lean-formalized algorithm be extracted that finds a cyclic vector in $O(n^3)$ field operations? This would match the complexity of the Berkowitz or Krylov algorithm and provide an axiom-free, machine-verified counterpart to the standard computational linear algebra.",
-      "**Differential analog**: The cyclic vector theorem has a differential-algebraic counterpart: every irreducible linear differential operator over $\\mathbb{C}(x)$ has a cyclic vector in its solution space (Deligne's theorem in differential Galois theory). Can the inductive shift trick used in WIP03 be adapted to differential modules over $\\mathbb{C}(x)\\{\\partial\\}$, giving an axiom-free proof of the differential cyclic vector theorem for the prime power case of the differential minimal polynomial?"
+      "**Differential analog**: The cyclic vector theorem has a differential-algebraic counterpart: every irreducible linear differential operator over $\\mathbb{C}(x)$ has a cyclic vector in its solution space (Deligne's theorem in differential Galois theory). Can the inductive shift trick used in WIP03 be adapted to differential modules over $\\mathbb{C}(x)\\{\\partial\\}$, giving an axiom-free proof of the differential cyclic vector theorem for the prime power case of the differential minimal polynomial?",
+      "**Effective bounds on the cyclic vector $v$**: The proof selects $v$ existentially via `exists_mulVec_ne_zero`. Is there an effective construction — e.g., the standard basis vector $e_j$ for the smallest $j$ such that $p^{e-1}(M) e_j \\neq 0$? This would yield a polynomial-time algorithm extracting a cyclic vector from $M$ given $\\mu_M = p^e$, complementing the existential statement.",
+      "**Generalization to $\\mathbb{Z}/p^k\\mathbb{Z}$-coefficients**: The proof uses that $K[X]$ is a UFD. For matrices over discrete valuation rings $R = \\mathbb{Z}_p$ or finite Galois rings $\\mathbb{Z}/p^k\\mathbb{Z}$, $R[X]$ is no longer a UFD but still has a $p$-adic filtration. Does an analogous cyclic vector / cyclic module decomposition hold for nonderogatory matrices over Galois rings? This would unlock applications to $p$-adic representation theory and post-quantum cryptography (where matrices over $\\mathbb{Z}_{2^k}$ appear in lattice-based schemes).",
+      "**Quantitative Hensel descent**: The shift trick is structurally Hensel's lemma in $K[X]_{(p)}$. Can the inductive proof be made into a *uniform* Hensel-style algorithm — given $r$ with $r(M)v = 0$ and the data of $v, p, e$, produce the explicit $p$-adic series for the witnesses $r_1, r_2, \\ldots$ at each level, culminating in $p^e \\mid r$? Such an algorithm would complement the existential proof and give a verified $p$-adic computation procedure in Lean.",
+      "**Connection to Smith Normal Form algorithms**: Smith Normal Form (SNF) over $K[X]$ produces the rational canonical form via integer-style Gaussian elimination on $XI - M$. The cyclic vector theorem is implicit in SNF: the elementary divisors of $XI - M$ encode the cyclic decomposition. Can the inductive proof here be reverse-engineered into a verified SNF computation specific to the prime power case? Mathlib has SNF over Euclidean domains; specializing it to the prime power case would close the loop between this entry's elementary descent and the PID structure theorem it bypasses."
     ]
   },
   "leanFile": {
@@ -245,6 +249,20 @@
       "year": "2024",
       "venue": "https://github.com/leanprover-community/mathlib4",
       "note": "Provides the polynomial-ring infrastructure (aeval, minpoly, natDegree_pow, UniqueFactorizationMonoid.irreducible_iff_prime, Prime.coprime_iff_not_dvd) used throughout. The IsCyclicVector typeclass approach follows Mathlib's convention of expressing structural properties as predicate definitions, enabling clean aeval rewrites."
+    },
+    {
+      "authors": "Kailath, Thomas",
+      "title": "Linear Systems",
+      "year": "1980",
+      "venue": "Prentice-Hall",
+      "note": "Standard reference for control theory, where the cyclic vector theorem appears as the *controllability* criterion: the linear system $\\dot{x} = Mx + bu$ is controllable iff $b$ is a cyclic vector for $M$. The prime power case corresponds to systems with repeated eigenvalues — the analytically subtle case where the controllability matrix has full rank despite eigenvalue degeneracy. Connects this entry's algebraic result to the engineering context of repeated-eigenvalue controllability."
+    },
+    {
+      "authors": "Newman, Morris",
+      "title": "Integral Matrices",
+      "year": "1972",
+      "venue": "Academic Press, Pure and Applied Mathematics 45",
+      "note": "Comprehensive treatment of Smith Normal Form algorithms over Euclidean and PID rings. Provides the algorithmic counterpart to the rational canonical form: given $XI - M \\in K[X]^{n \\times n}$, SNF computation extracts the elementary divisors in $O(n^3)$ field operations. WIP03's existential proof can be viewed as the structural content underlying SNF for the prime power case — see the openQuestion on SNF connection."
     }
   ],
   "mainTheorems": [
@@ -313,6 +331,16 @@
       "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
       "relationship": "extended_by",
       "description": "WIP04 generalizes WIP03 to arbitrary factored minimal polynomials by combining the prime power engine (pow_irred_dvd_of_annihilated) with CRT/Bezout projections from WIP02."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "foundational",
+      "description": "The minimal polynomial divides the characteristic polynomial (Cayley-Hamilton + minpoly minimality). WIP03 uses both directions: (1) $\\deg(\\mu_M) \\leq n$ from $\\mu_M \\mid \\chi_M$ to bound polynomial degrees in the proof setup, and (2) $\\mu_M = \\chi_M$ for nonderogatory $M$ to force $\\deg(\\mu_M) = n$ in the cyclic vector argument."
+    },
+    {
+      "targetId": "cayley-hamilton-cyclic-vector-all-fields",
+      "relationship": "extends",
+      "description": "Companion entry that targets the *general* (non-prime-power) nonderogatory cyclic vector theorem over all fields — the natural extension of WIP02 + WIP03 via CRT. WIP03 supplies the prime power building block; the parent entry assembles arbitrary $\\mu_M = \\prod p_i^{e_i}$ via primary decomposition."
     }
   ],
   "sorries": 0
