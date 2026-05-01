@@ -7959,10 +7959,16 @@
       "result": "clean"
     },
     "erdos-616": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-agent-1777617200",
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T16:32:00Z",
+      "result": "issues-found",
+      "issues": [
+        "assumptions field overstates: 2 phantom axioms (optimalCoveringBound, fractionalCoveringNumber) added to 2 real axioms",
+        "sections[3] main-question references phantom optimalCoveringBound axiom",
+        "sections[8] fractional-relaxation references phantom fractionalCoveringNumber axiom"
+      ],
+      "relatedIssue": 14144
     },
     "erdos-617": {
       "agentId": "auditor-cycle-20-batch",
