@@ -1,0 +1,141 @@
+[
+  {
+    "id": "ann-qr-as-algorithm",
+    "proofId": "quadratic-reciprocity-oq-03",
+    "range": {
+      "startLine": 4,
+      "endLine": 36
+    },
+    "type": "concept",
+    "title": "QR as a GCD-Like Algorithm",
+    "content": "Quadratic Reciprocity, paired with multiplicativity and the first supplementary law, gives a complete *algorithm* for computing $\\left(\\tfrac{a}{p}\\right)$:\n\n1. **Reduce**: replace $a$ by $a \\bmod p$.\n2. **Factor**: write $a = (-1)^e \\cdot 2^k \\cdot q_1 \\cdots q_r$ with each $q_i$ an odd prime, then split via multiplicativity.\n3. **Handle constants**: $\\left(\\tfrac{-1}{p}\\right) = (-1)^{(p-1)/2}$ (first supplementary law); $\\left(\\tfrac{2}{p}\\right) = (-1)^{(p^2-1)/8}$ (second).\n4. **Swap**: for each odd prime factor $q$, replace $\\left(\\tfrac{q}{p}\\right)$ by $\\pm\\left(\\tfrac{p}{q}\\right)$ via reciprocity.\n5. **Recurse**: each swap reduces the modulus, like Euclid's algorithm reduces $\\gcd(a,b)$ to $\\gcd(b, a \\bmod b)$.\n\nThis file packages steps 2, 3, and 4 as named reduction lemmas — `legendreSym_mul_eq`, `legendreSym_neg_one_eq`, and `reciprocity_swap` — together with an explicit `algorithm_descent` statement showing termination.",
+    "mathContext": "The packaging matters because Mathlib spreads the relevant lemmas across multiple modules and theorem names: `map_mul` (general algebra), `legendreSym.at_neg_one` (number theory), `legendreSym.quadratic_reciprocity'` (QR proper). Calling them `legendreSym_mul_eq`, `legendreSym_neg_one_eq`, `reciprocity_swap` makes the algorithmic structure visible: each is one *reduction step*. The companion proof `quadratic-reciprocity-algorithm-oq-01` consumes exactly these three steps in its recursive Jacobi-symbol implementation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Legendre symbol",
+      "Quadratic Reciprocity",
+      "first supplementary law",
+      "second supplementary law",
+      "Euclidean algorithm analogy"
+    ],
+    "prerequisites": [
+      "Quadratic residues mod p",
+      "Definition of the Legendre symbol",
+      "Statement of Quadratic Reciprocity"
+    ]
+  },
+  {
+    "id": "ann-multiplicativity",
+    "proofId": "quadratic-reciprocity-oq-03",
+    "range": {
+      "startLine": 48,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Step 1 — Multiplicativity",
+    "content": "```lean\ntheorem legendreSym_mul_eq (a b : ℤ) (p : ℕ) [Fact p.Prime] :\n    legendreSym p (a * b) = legendreSym p a * legendreSym p b :=\n  map_mul (legendreSym p) a b\n```\n\nFor any integers $a, b$ and odd prime $p$:\n$$\\left(\\tfrac{ab}{p}\\right) = \\left(\\tfrac{a}{p}\\right)\\left(\\tfrac{b}{p}\\right).$$\n\nThis is the *factorization step* of the algorithm: once $a$ is factored, each prime power can be handled independently.",
+    "mathContext": "Mathlib defines `legendreSym p` as a `MonoidHom` (in fact a `RingHom`-like object via `ZMod`-quotient), so multiplicativity is the *defining property* of the homomorphism: `map_mul (legendreSym p) a b`. The proof has no algebraic content of its own — its value is in *naming* the step in algorithmic terms. Note that this works for all integers $a, b$, not just integers coprime to $p$: when $p \\mid a$, both sides equal $0$, consistent with the convention $\\left(\\tfrac{0}{p}\\right) = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Legendre symbol",
+      "MonoidHom",
+      "map_mul",
+      "multiplicative function"
+    ],
+    "prerequisites": [
+      "Group homomorphisms preserve multiplication"
+    ]
+  },
+  {
+    "id": "ann-first-supplementary",
+    "proofId": "quadratic-reciprocity-oq-03",
+    "range": {
+      "startLine": 53,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Step 2 — First Supplementary Law",
+    "content": "```lean\ntheorem legendreSym_neg_one_eq (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) :\n    legendreSym p (-1) = (-1) ^ (p / 2)\n```\n\nFor an odd prime $p$:\n$$\\left(\\tfrac{-1}{p}\\right) = (-1)^{(p-1)/2} = \\begin{cases} +1 & p \\equiv 1 \\pmod 4 \\\\ -1 & p \\equiv 3 \\pmod 4 \\end{cases}$$\n\nThis is the *sign-handling step* of the algorithm.",
+    "mathContext": "The Lean expression uses `p / 2` (integer division) which equals $(p-1)/2$ for odd $p$. The proof is one line: `legendreSym.at_neg_one hp`, which is Mathlib's name for the first supplementary law (Euler's criterion specialized at $-1$). The hypothesis `hp : p ≠ 2` excludes the only case where the formula fails to be well-defined (for $p = 2$, the Legendre symbol degenerates and $-1 \\equiv 1 \\pmod 2$). The rule's significance: combined with multiplicativity, every Legendre symbol can be brought to the form $\\left(\\tfrac{a}{p}\\right)$ with $0 < a < p$, and the sign accumulated separately.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's criterion",
+      "first supplementary law",
+      "sign of (-1) mod p"
+    ],
+    "prerequisites": [
+      "Legendre symbol",
+      "p mod 4 case analysis"
+    ]
+  },
+  {
+    "id": "ann-reciprocity-swap",
+    "proofId": "quadratic-reciprocity-oq-03",
+    "range": {
+      "startLine": 58,
+      "endLine": 64
+    },
+    "type": "theorem",
+    "title": "Step 3 — The Reciprocity Swap (Algorithmic Form)",
+    "content": "```lean\ntheorem reciprocity_swap {p q : ℕ} [Fact p.Prime] [Fact q.Prime]\n    (hp : p ≠ 2) (hq : q ≠ 2) :\n    legendreSym q p = (-1) ^ (p / 2 * (q / 2)) * legendreSym p q :=\n  legendreSym.quadratic_reciprocity' hp hq\n```\n\nFor distinct odd primes $p, q$:\n$$\\left(\\tfrac{q}{p}\\right) \\;=\\; (-1)^{\\frac{p-1}{2} \\cdot \\frac{q-1}{2}} \\, \\left(\\tfrac{p}{q}\\right).$$\n\nThis is the *swap step*: it exchanges numerator and denominator in the Legendre symbol, picking up a sign that depends only on $p, q \\bmod 4$.",
+    "mathContext": "The quotient form $\\left(\\tfrac{q}{p}\\right) = \\pm \\left(\\tfrac{p}{q}\\right)$ is more useful for an algorithm than the symmetric product form $\\left(\\tfrac{p}{q}\\right)\\left(\\tfrac{q}{p}\\right) = (-1)^{\\ldots}$, because the algorithm wants to *replace* one symbol by an expression in another. Mathlib's `legendreSym.quadratic_reciprocity'` (note the prime — it's the quotient form) provides this directly. The sign is $-1$ iff $p \\equiv q \\equiv 3 \\pmod 4$; otherwise $+1$. Combined with `legendreSym_mod_left` (Mathlib), the swap also reduces the *modulus*: after the swap one can apply $\\left(\\tfrac{p}{q}\\right) = \\left(\\tfrac{p \\bmod q}{q}\\right)$ where $p \\bmod q < q < p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Quadratic Reciprocity",
+      "quotient form vs product form",
+      "sign factor (-1)^((p-1)/2·(q-1)/2)",
+      "modulus reduction"
+    ],
+    "prerequisites": [
+      "Statement of Quadratic Reciprocity",
+      "Legendre symbol modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-decide-examples",
+    "proofId": "quadratic-reciprocity-oq-03",
+    "range": {
+      "startLine": 74,
+      "endLine": 95
+    },
+    "type": "concept",
+    "title": "Verified Examples via decide",
+    "content": "Seven Legendre symbol computations verified by Lean's `decide` tactic:\n\n| Symbol | Value | Hand calculation |\n|---|---|---|\n| $(3/7)$ | $-1$ | Reciprocity: $(3/7) = -(7/3) = -(1/3) = -1$ |\n| $(2/7)$ | $+1$ | $7 \\equiv -1 \\pmod 8$, so $2$ is QR |\n| $(5/13)$ | $-1$ | $5 \\equiv 1 \\pmod 4$, swap: $(5/13) = (13/5) = (3/5) = -1$ |\n| $(7/11)$ | $-1$ | Both $\\equiv 3 \\pmod 4$, swap with sign |\n| $(3/5)$ | $-1$ | $3$ not in $\\{0, 1, 4\\}$ (QRs mod 5) |\n| $(2/17)$ | $+1$ | $17 \\equiv 1 \\pmod 8$, so $2$ is QR |\n| $(6/7)$ | $-1$ | Multiplicativity: $(6/7) = (2/7) \\cdot (3/7) = 1 \\cdot (-1) = -1$ |",
+    "mathContext": "`decide` works here because Mathlib's `legendreSym p a` is implemented via Euler's criterion in `ZMod p` — for a concrete small prime $p$, `ZMod p` is a `Fintype`, so the equality $a^{(p-1)/2} = \\pm 1$ in `ZMod p` is decidable and Lean can evaluate it during elaboration. No `native_decide` is needed because the search space is tiny ($p \\le 17$). The seven examples are not just illustrative: they exercise multiplicativity (last row), the second supplementary law (rows 2 and 6), and the reciprocity swap (rows 1, 3, 4) — each reduction lemma in this file gets a worked instance.",
+    "significance": "supplementary",
+    "relatedConcepts": [
+      "decide tactic",
+      "Euler's criterion",
+      "decidable equality in ZMod p",
+      "elaboration-time evaluation"
+    ],
+    "prerequisites": [
+      "Lean's decide tactic",
+      "Decidable propositions",
+      "Finite computation in ZMod p"
+    ]
+  },
+  {
+    "id": "ann-descent",
+    "proofId": "quadratic-reciprocity-oq-03",
+    "range": {
+      "startLine": 104,
+      "endLine": 107
+    },
+    "type": "theorem",
+    "title": "Algorithm Termination via Descent",
+    "content": "```lean\ntheorem algorithm_descent {p q : ℕ} [Fact p.Prime] [Fact q.Prime]\n    (hp : p ≠ 2) (hq : q ≠ 2) (hqp : q < p) :\n    legendreSym q p = (-1) ^ (p / 2 * (q / 2)) * legendreSym p q\n```\n\n**Statement**: with the extra hypothesis `q < p`, the reciprocity swap takes the symbol $\\left(\\tfrac{q}{p}\\right)$ to a symbol $\\left(\\tfrac{p}{q}\\right)$ whose modulus $q$ is strictly smaller than the original $p$.\n\n**Algorithmic reading**: each application of `algorithm_descent` decreases the modulus, exactly as Euclid's algorithm $\\gcd(a, b) \\mapsto \\gcd(b, a \\bmod b)$ decreases its first argument.",
+    "mathContext": "The proof is `exact reciprocity_swap hp hq` — the `hqp : q < p` hypothesis is *not used* in the proof itself but encoded at the type level to make the descent argument visible. This is a small but principled design choice: by requiring the caller to prove `q < p`, the lemma makes a guarantee — its conclusion *can* be the recursive step of a terminating algorithm. A consumer that uses `algorithm_descent` repeatedly must supply a proof of strict decrease at each step, which is how `quadratic-reciprocity-algorithm-oq-01` discharges its `decreasing_by` obligations: after a swap the modulus is `b mod a` with `b mod a < a`, satisfying the precondition for the next application of descent.",
+    "significance": "key",
+    "relatedConcepts": [
+      "well-founded recursion",
+      "termination by strict decrease",
+      "Euclidean algorithm",
+      "decreasing_by"
+    ],
+    "prerequisites": [
+      "Termination of recursive functions",
+      "Well-founded induction"
+    ]
+  }
+]
