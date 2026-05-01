@@ -7738,10 +7738,13 @@
       "result": "clean"
     },
     "erdos-582": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-agent",
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T09:24:45Z",
+      "result": "issues-found",
+      "issues": [
+        "Inconsistent axioms: folkmanNumber_2_3_4 := 0 (def) with axiom folkman_lower_bound : ≥ 19 — issue #14212"
+      ]
     },
     "erdos-583": {
       "agentId": "auditor-cycle-20-batch",
