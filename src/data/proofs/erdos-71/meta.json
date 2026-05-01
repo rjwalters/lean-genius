@@ -70,7 +70,7 @@
       "title": "Core Definitions",
       "startLine": 48,
       "endLine": 75,
-      "summary": "Defines ArithProg a d, the containsEven predicate (Even a ∨ Odd d), membership lemma (mem_arithProg_iff), first_mem_arithProg (a ∈ P), and axiomatizes arithProg_infinite.",
+      "summary": "Defines ArithProg a d, the containsEven predicate (Even a ∨ Odd d), membership lemma (mem_arithProg_iff), first_mem_arithProg (a ∈ P), and proves arithProg_infinite (theorem, not axiom).",
       "mathContext": "$P = \\{a + kd : k \\in \\mathbb{N}\\}$ contains even numbers iff $2 \\mid a$ or $d$ is odd (alternating parity). If $d > 0$, $P$ is infinite."
     },
     {
@@ -102,15 +102,15 @@
       "title": "Related Results",
       "startLine": 173,
       "endLine": 188,
-      "summary": "Axiomatizes bondy_simonovits (high min degree → consecutive even cycle lengths) and avg_to_min_degree (average-to-minimum degree subgraph extraction).",
-      "mathContext": "Bondy-Simonovits: $\\delta(G) \\geq d \\implies G$ contains $C_k$ for all even $k \\in [4, 2d]$. Subgraph extraction: $\\bar{d}(G) \\geq 2d \\implies \\exists H \\subseteq G$ with $\\delta(H) \\geq d$."
+      "summary": "Docstring discussion of related results: Bondy-Simonovits (high min degree → consecutive even cycle lengths) and subgraph extraction (average-to-min degree). Neither is declared as an axiom; both are described in docstring prose for context.",
+      "mathContext": "Bondy-Simonovits: $\\delta(G) \\geq d \\implies G$ contains $C_k$ for all even $k \\in [4, 2d]$. Subgraph extraction: $\\bar{d}(G) \\geq 2d \\implies \\exists H \\subseteq G$ with $\\delta(H) \\geq d$. Described in prose only — not formally declared in this file."
     },
     {
       "id": "even-necessity",
       "title": "Why Even Numbers Matter",
       "startLine": 189,
       "endLine": 232,
-      "summary": "Axiomatizes bipartite_no_odd_cycles and even_condition_necessary. The bipartite counterexample K_{n,n} shows odd-only progressions cannot be forced by density.",
+      "summary": "Docstring explanation of why even numbers are necessary: K_{n,n} has arbitrarily high average degree but only even cycles. Names bipartite_no_odd_cycles and even_condition_necessary appear in docstrings only — not declared as axioms in this file.",
       "mathContext": "Bipartite graphs have only even cycles (vertices alternate between parts). $K_{n,n}$ has $\\bar{d} = n$ but $C_{2k+1} \\not\\subseteq K_{n,n}$. So for $P = \\{3, 7, 11, \\ldots\\}$ (all odd), no $c$ works."
     },
     {

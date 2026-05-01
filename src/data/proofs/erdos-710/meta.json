@@ -66,7 +66,7 @@
     "historicalContext": "**Erdős Problem #710**\n\nThis problem concerns the minimal interval length needed for divisibility matching, a combinatorial problem at the intersection of number theory and extremal combinatorics.\n\n**Key History:**\n- Erdős and Pomerance (1980): Established upper and lower bounds in \"Matching the natural numbers up to n with distinct multiples of another interval\"\n- Erdős [Er92c] (1992): \"Some of my forgotten problems in number theory\" - offered 2000 rupees prize\n- The problem remains OPEN - exact asymptotics unknown\n\n**Mathematical Setting:**\n- Given n, we seek distinct integers a₁,...,aₙ in a short interval starting at n\n- The k-th integer must be divisible by k\n- f(n) = minimal interval length for this to be possible\n- The challenge is finding the precise asymptotic growth rate of f(n)",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet f(n) be minimal such that in (n, n+f(n)) there exist distinct integers a₁,...,aₙ with k | aₖ for all 1 ≤ k ≤ n.\n\nObtain an asymptotic formula for f(n).\n\n**Known Bounds (Erdős-Pomerance 1980):**\n- Lower: (2/√e + o(1)) · n · √(log n / log log n) ≈ 1.213 · n · √(log n / log log n)\n- Upper: (1.7398... + o(1)) · n · √(log n)\n\n**Gap:** The bounds differ by a factor of √(log log n), which grows very slowly but is unbounded.\n\n**Prize:** Erdős offered 2000 rupees (~$78 in 1992) for an asymptotic formula.",
     "text": "Let f(n) be minimal such that in (n, n+f(n)) there exist distinct integers a₁,...,aₙ with k|aₖ for all k. Obtain an asymptotic formula for f(n). Known bounds differ by √(log log n) factor; exact asymptotics remain OPEN.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define IsValidSelection (divisibility matching), IntervalAdmitsSelection, and minimalIntervalLength f(n)\n\n2. **Counting Functions:** Define multiplesInInterval to count multiples of d in an interval\n\n3. **Known Bounds:** Axiomatize the Erdős-Pomerance upper and lower bounds\n\n4. **Bounds Gap:** Show the gap is √(log log n)\n\n5. **Open Problem:** Axiomatize existence of exact asymptotic\n\n6. **Examples:** Verify divisibility matching for n = 1, 2, 3\n\n7. **Heuristics:** Analyze why the constraint for large k is critical",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define IsValidSelection (divisibility matching), IntervalAdmitsSelection, and minimalIntervalLength f(n)\n\n2. **Counting Functions:** Define multiplesInInterval to count multiples of d in an interval\n\n3. **Known Bounds:** Axiomatize the Erdős-Pomerance upper and lower bounds\n\n4. **Bounds Gap:** Show the gap is √(log log n)\n\n5. **Open Problem:** Document the asymptotic gap as an unresolved open question (no axiom)\n\n6. **Examples:** Verify divisibility matching for n = 1, 2, 3\n\n7. **Heuristics:** Analyze why the constraint for large k is critical",
     "keyInsights": [
       "**Divisibility Constraint:** The k-th integer must be divisible by k, making large k the hardest constraint (fewest multiples in any interval)",
       "**Bounds Gap:** The √(log log n) gap between upper and lower bounds is the key mystery",
@@ -110,7 +110,7 @@
     {
       "id": "open-problem",
       "title": "The Open Problem",
-      "summary": "erdos_710_open axiom",
+      "summary": "Docstring discussion of the open asymptotic problem: the exact formula for f(n) is unknown; the √(log log n) gap between the Erdős-Pomerance bounds is unresolved. No axiom declaration in this section.",
       "startLine": 153,
       "endLine": 175
     },
@@ -142,7 +142,7 @@
       "id": "main-results",
       "title": "Main Results Summary",
       "summary": "erdos_710_summary theorem",
-      "startLine": 303,
+      "startLine": 275,
       "endLine": 320,
       "mathContext": "Verified: erdos_710_summary theorem"
     }
