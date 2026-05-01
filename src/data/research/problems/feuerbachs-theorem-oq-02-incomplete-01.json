@@ -27,12 +27,12 @@
     "goal": "Fill the 5 sorries to complete the 3D Feuerbach proof for orthocentric tetrahedra"
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-04-21T00:00:00Z",
     "iteration": 2,
-    "focus": "9 of 14 sorries eliminated in FeuerbachsTheoremOQ02Aristotle.lean. 5 helper sorries + 5 main sorries remain.",
+    "focus": "Companion file fully proved; main file 5 tangency sorries documented as likely false",
     "blockers": [],
-    "nextAction": "Prove remaining 4 tractable companion sorries (dist3_sq_zero_iff, dot3_self_zero_iff, midpoint3_equidist, midpoint3_spec). Remove or fix externally_tangent_radii_nonneg.",
+    "nextAction": "BLOCKED: literature search needed to identify correct 3D Feuerbach formulation (Murakami/Court)",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -40,32 +40,48 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 9 of 14 sorries in FeuerbachsTheoremOQ02Aristotle.lean using ring/positivity/linarith/linear_combination. Identified externally_tangent_radii_nonneg as UNPROVABLE as stated (counterexample r₁=3,r₂=-1,d=2). Remaining 4 companion sorries are tractable but need Prod.ext / dsimp gymnastics.",
+    "progressSummary": "PROGRESS (session 2, 2026-04-27): Filled all 13 routine sorries in FeuerbachsTheoremOQ02Aristotle.lean (companion file). Fixed 1 mathematically false statement (externally_tangent_radii_nonneg, added missing precondition r₁≤d). Build verified with 64GB memory budget. Proved isodynamic property (ortho_edge_sum_identity) via linear_combination. Main file 5 tangency sorries remain (likely incorrect per session 1).\n\nPROGRESS (session 1): Discovered 2 FALSE axioms - removed. Added correct theorem edge_midpoints_equidist_from_centroid. Fixed Monge point docstring. Axioms: 3 -> 1.",
     "builtItems": [
+      "edge_midpoints_equidist_from_centroid: 6 midpoints equidistant from G (proved via nlinarith)",
+      "REMOVED axiom edge_midpoints_on_sphere (was FALSE)",
+      "REMOVED axiom face_centroids_on_sphere (was FALSE)",
+      "Fixed Monge point docstring (M != H; H = midpoint(O,M))",
+      "Added mathematical warnings to tangency theorems",
+      "Companion file (FeuerbachsTheoremOQ02Aristotle.lean): 13 sorries -> 0 (session 2)",
+      "ortho_edge_sum_identity proved (isodynamic property of orthocentric tetrahedra)",
+      "Fixed false statement externally_tangent_radii_nonneg by adding hr₁_le_d precondition",
       "dist3_sq_nonneg in FeuerbachsTheoremOQ02Aristotle.lean (positivity)",
       "dist3_sq_comm in FeuerbachsTheoremOQ02Aristotle.lean (ring)",
-      "dot3_self_nonneg in FeuerbachsTheoremOQ02Aristotle.lean (positivity)",
+      "dot3_self_nonneg in FeuerbachsTheoremOQ02Aristotle.lean (nlinarith)",
       "dot3_comm in FeuerbachsTheoremOQ02Aristotle.lean (ring)",
       "dot3_add_left in FeuerbachsTheoremOQ02Aristotle.lean (ring)",
       "internally_tangent_sym in FeuerbachsTheoremOQ02Aristotle.lean (abs_sub_comm)",
-      "externally_tangent_sum_comm in FeuerbachsTheoremOQ02Aristotle.lean (add_comm)",
+      "externally_tangent_sum_comm in FeuerbachsTheoremOQ02Aristotle.lean (ring)",
       "twentyFourPoint_radius_third_of_circum in FeuerbachsTheoremOQ02Aristotle.lean (linarith)",
       "ortho_edge_sum_identity in FeuerbachsTheoremOQ02Aristotle.lean (linear_combination 2*hab_cd - 2*hac_bd)"
     ],
     "insights": [
-      "ortho_edge_sum_identity: |AB|² + |CD|² - |AC|² - |BD|² = 2·((B-A)·(D-C)) - 2·((C-A)·(D-B)). The linear_combination tactic with coefficients 2,-2 closes from the two perpendicularity hypotheses via ring.",
-      "externally_tangent_radii_nonneg is FALSE as stated: hypotheses (0 < d, d = r₁ + r₂, 0 ≤ r₁) do not force 0 ≤ r₂ (counterexample r₁=3, r₂=-1, d=2). The lemma needs an additional hypothesis like 0 ≤ r₂ - r₁ + d or to be removed.",
-      "let-bound goals (midpoint3_equidist, midpoint3_spec) likely need dsimp only or show before ring/refine; test before submitting to Aristotle.",
-      "Aristotle companion files contain a mix of ring-trivial and Prod.ext-requiring lemmas — fast wins available with single-tactic proofs."
+      "edge_midpoints_on_sphere is FALSE: regular tet has midpoints at dist 1, not R/3~0.577",
+      "face_centroids_on_sphere is FALSE: non-regular orthocentric tet has centroids at different dists",
+      "Correct midedge sphere: center=centroid G, radius=R/2 (not N24 and R/3)",
+      "Monge point M != orthocenter H. Euler line: O(0), G(1), H(2), M(4). H = midpoint(O,M)",
+      "N24 = midpoint(O,M) = H for orthocentric tetrahedra",
+      "Tangency formulas (dist(H,I)=|R/3-r|) fail numerically for right-angle tetrahedra",
+      "ortho_edge_sum_identity: |AB|²+|CD|² = |AC|²+|BD|² for orthocentric tetrahedra (proved via linear_combination 2*hab_cd - 2*hac_bd)",
+      "Aristotle file proof tactics: positivity for nonneg sums, ring for poly identities, nlinarith with mul_self_nonneg for zero-iff",
+      "externally_tangent_radii_nonneg is FALSE as stated: hypotheses (0 < d, d = r₁ + r₂, 0 ≤ r₁) do not force 0 ≤ r₂ (counterexample r₁=3, r₂=-1, d=2). Added precondition r₁≤d fixes it.",
+      "let-bound goals (midpoint3_equidist, midpoint3_spec) need dsimp only or show before ring/refine."
     ],
     "mathlibGaps": [
-      "3D sphere tangency in Mathlib is less developed than 2D circle geometry"
+      "3D sphere tangency in Mathlib is less developed than 2D circle geometry",
+      "The correct 3D Feuerbach theorem statement needs literature research"
     ],
     "nextSteps": [
-      "Prove remaining 4 companion sorries (dist3_sq_zero_iff, dot3_self_zero_iff, midpoint3_equidist, midpoint3_spec) — these need Prod.ext / dsimp only.",
-      "Remove or restate externally_tangent_radii_nonneg (currently unprovable).",
-      "The 5 main 3D Feuerbach sorries require deep coordinate computation; consider symbolic expansion of |N₂₄ - I|² as a separate effort.",
-      "Three axioms in main file (feuerbach_3d_fails_general, edge_midpoints_on_sphere, face_centroids_on_sphere) could be converted to theorem ... := by sorry and submitted to Aristotle."
+      "BLOCKED: 5 main-file tangency sorries appear mathematically FALSE as stated",
+      "Future researcher: investigate Murakami (1952) and Court (1934) for the correct 3D Feuerbach formulation",
+      "The correct 3D Feuerbach analogue may use face circumcircles (Murakami 1952), not insphere/exspheres",
+      "Possibly the correct sphere is the midedge sphere (center G, radius R/2) — already proved equidistant in session 1",
+      "feuerbach_3d_fails_general axiom remains (deep counterexample construction)"
     ]
   },
   "tags": [

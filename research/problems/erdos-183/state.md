@@ -1,27 +1,36 @@
 # Current State
 
-**Phase**: NEW
-**Since**: 2026-01-12T10:00:45.598Z
-**Iteration**: 1
+**Phase**: ACT
+**Since**: 2026-04-27T00:00:00Z
+**Iteration**: 5
 
 ## Current Focus
 
-Initial exploration of the problem.
+File in stable state: 1 axiom (R3k_exponential_lower from Ageron et al. 2021),
+0 sorries, 11 theorems including R(3;1)=3, R(3;2)=6, monotonicity,
+inductive upper bound, factorial upper bound. All small values PROVED
+(not axiomatized). Single remaining axiom is the deep cited Schur-number
+construction.
 
 ## Active Approach
 
-None yet.
+Path to eliminate the remaining axiom: doubling construction
+R(3;k+1) ≥ 2·R(3;k) - 1, giving R(3;k) ≥ 2^k + 1 by induction. Suffices
+for the ∃ c > 1 existential statement (with c = 2).
 
 ## Blockers
 
-None.
+None — doubling construction is provable but ~150 lines of Lean.
 
 ## Next Action
 
-Begin problem exploration.
+Add `forces_mono` lemma (vertex monotonicity for ForcesMonochromaticTriangle)
+as building block. Follow-up session: full doubling construction to
+eliminate the last axiom.
 
 ## Attempt Counts
 
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 5
+- Current approach attempts: 1
+- Approaches tried: pigeonhole induction (Ramsey), explicit constructions
+  (R(3,3)=6), monotonicity via castLE, factorial upper bound via induction

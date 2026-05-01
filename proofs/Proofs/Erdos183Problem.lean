@@ -495,7 +495,40 @@ def SchurNumber (_k : ℕ) : Prop :=
   True  -- placeholder; full definition would require sum-free coloring formalization
 
 
-/-- The Ageron et al. lower bound (2021) -/
+/-- Vertex monotonicity for `ForcesMonochromaticTriangle`: if m vertices already
+    force a monochromatic triangle under any k-coloring, then so do m' ≥ m
+    vertices. Proof: restrict an m'-coloring to its first m vertices via
+    `Fin.castLE`, apply the m-forcing hypothesis, lift the resulting triangle
+    back to m' using injectivity of `Fin.castLE`. Building block toward the
+    doubling construction R(3;k+1) ≥ 2·R(3;k) - 1, which would eliminate the
+    remaining axiom. -/
+private lemma forces_mono {m m' k : ℕ} (h : m ≤ m')
+    (hf : ForcesMonochromaticTriangle m k) :
+    ForcesMonochromaticTriangle m' k := by
+  intro hk c hsym
+  let c_r : EdgeColoring m k := fun p => c (Fin.castLE h p.1, Fin.castLE h p.2)
+  have h_inj : Function.Injective (Fin.castLE h) := by
+    intro a b hab
+    ext
+    have := congr_arg Fin.val hab
+    simpa [Fin.castLE] using this
+  have c_r_sym : IsSymmetric c_r := fun i j => hsym _ _
+  obtain ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩ := hf hk c_r c_r_sym
+  refine ⟨color, Fin.castLE h i, Fin.castLE h j, Fin.castLE h l,
+    fun heq => hij (h_inj heq), fun heq => hjl (h_inj heq),
+    fun heq => hil (h_inj heq), ?_, ?_, ?_⟩
+  · exact hcij
+  · exact hcjl
+  · exact hcil
+
+/-- The Ageron et al. (2021) lower bound R(3;k) ≥ 380^{k/5} - O(1).
+    Stated as the existential `∃ c > 1, ∀ k ≥ 1, R(3;k) ≥ c^k`. The deep cited
+    construction gives c = 380^{1/5} ≈ 3.28, but any c > 1 suffices for this
+    statement. A weaker but provable c = 2 follows from the doubling
+    construction (NOT formalized here yet — see `forces_mono` for a building
+    block). The doubling argument: a triangle-free k-coloring of K_n yields a
+    triangle-free (k+1)-coloring of K_{2n} by using a new color for cross-half
+    edges; iterating from R(3;1) = 3 gives R(3;k) ≥ 2^k + 1. -/
 axiom R3k_exponential_lower :
   ∃ c : ℝ, c > 1 ∧ ∀ k : ℕ, k ≥ 1 → (R3k k : ℝ) ≥ c ^ k
 

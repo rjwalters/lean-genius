@@ -17,14 +17,14 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-26T00:00:00Z",
-    "iteration": 4,
-    "focus": "7 axioms (down from 8). Proved forcing_set_nonempty via pigeonhole induction on k.",
+    "since": "2026-04-27T00:00:00Z",
+    "iteration": 5,
+    "focus": "1 axiom (deep Ageron et al. 2021 Schur-number lower bound). 0 sorries. 11 theorems including R(3;1)=3, R(3;2)=6, monotonicity, factorial upper bound.",
     "blockers": [],
-    "nextAction": "Prove forcing_set_nonempty or R3k_inductive_upper via pigeonhole"
+    "nextAction": "Doubling construction R(3;k+1) ≥ 2·R(3;k) - 1 → eliminate the last axiom"
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 6A (down from 7), 15T proved, 0S. R3k_inductive_upper proved by extracting pigeonhole step.",
+    "progressSummary": "STABLE: 1A (deep Schur lower bound), 11T proved, 0S. All small values PROVED (not axiomatized). R3k_inductive_upper, R3k_factorial_upper, R3k_le_three_factorial PROVED.",
     "builtItems": [
       "R3k_one: proved R(3;1)=3 via Nat.find_eq_iff — upper bound uses Subsingleton.elim on Fin 1, lower bound uses pigeonhole on Fin m for m<3",
       "Removed 2 inconsistent axioms (kthRoot_lower, kthRoot_upper) and 1 sorry theorem",
@@ -37,7 +37,8 @@
       "mapColor: color relabeling function Fin(k+1) → Fin k collapsing c₀, with injectivity on ≠c₀",
       "forces_imp_ge_three: proof that ForcesMonochromaticTriangle m k with k≥1 requires m≥3",
       "forcing_step: extracted pigeonhole lemma — if m forces triangle with k colors, (k+1)*(m-1)+2 forces with k+1 colors",
-      "R3k_inductive_upper: PROVED (axiom→theorem) — R(3;k) ≤ 2 + k*(R(3;k-1)-1) from forcing_step + Nat.find_min"
+      "R3k_inductive_upper: PROVED (axiom→theorem) — R(3;k) ≤ 2 + k*(R(3;k-1)-1) from forcing_step + Nat.find_min",
+      "forces_mono: vertex monotonicity for ForcesMonochromaticTriangle via Fin.castLE — building block for doubling construction"
     ],
     "insights": [
       "kthRoot_lower is INCONSISTENT with R3k_one: kthRootR3k 1 = R3k(1)^1 = 3 but axiom requires c > 3",
@@ -49,11 +50,17 @@
       "pigeonhole_five_two provable via native_decide on the finite function space Fin 5 → Fin 2",
       "forcing_set_nonempty proved by pigeonhole induction on k: base k=1 uses K₃, inductive step uses (k+1)*(m-1)+2 vertices and mapColor for color relabeling",
       "R3k_inductive_upper was provable from existing infrastructure — same pigeonhole step as forcing_set_nonempty",
-      "Axiom count reduced 7→6. Remaining 6 are deeper: R3k_three (computational), factorial bound (needs induction+Stirling), SchurNumber/bounds (deep combinatorics)"
+      "Earlier session record stale: ACTUAL current state is 1A (only R3k_exponential_lower). Small values PROVED, factorial upper PROVED via induction on R3k_inductive_upper.",
+      "Doubling construction R(3;k+1) ≥ 2·R(3;k) - 1 gives R(3;k) ≥ 2^k + 1 by induction, sufficient for the ∃ c > 1 existential statement (with c = 2). Path to eliminate the last axiom; forces_mono is the first building block.",
+      "doubleColoring sketch: cross-half edges get Fin.last k (new color); within-half edges keep their color via Fin.castSucc. Triangle-free if original is — split-triangles have mixed colors, all-same-half triangles inherit, all-cross-half impossible (3 vertices, 2 halves → some pair shares a half)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Potential: prove R3k_factorial_upper by induction on R3k_inductive_upper (but needs Stirling approximation)"
+      "Implement doubleColoring : EdgeColoring n k → EdgeColoring (n+n) (k+1)",
+      "Prove doubleColoring_sym (symmetry) and doubleColoring_no_triangle",
+      "Prove R3k_doubling : R3k (k+1) ≥ 2 * R3k k - 1",
+      "Prove R3k_two_pow : R3k k ≥ 2^k + 1 by induction",
+      "Replace axiom R3k_exponential_lower with theorem (c = 2)"
     ]
   },
   "tags": [
@@ -70,15 +77,15 @@
     "mathlib": []
   },
   "started": "2026-01-12T10:00:45.598Z",
-  "lastUpdate": "2026-03-28T10:00:00Z",
+  "lastUpdate": "2026-04-27T00:00:00Z",
   "significance": 5,
   "tractability": 3,
   "leanFiles": [
     {
       "path": "Proofs/Erdos183Problem.lean",
       "filename": "Erdos183Problem.lean",
-      "lineCount": 581,
-      "theoremCount": 10,
+      "lineCount": 607,
+      "theoremCount": 11,
       "axiomCount": 1,
       "defCount": 14,
       "sorryCount": 0,
