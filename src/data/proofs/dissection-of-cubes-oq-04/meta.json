@@ -23,7 +23,7 @@
     "dateAdded": "2026-04-22",
     "axiomCount": 0,
     "assumptions": "0 axioms. tmul_infinite_order_ne_zero (flatness of ℝ over ℤ) is proved in DissectionOfCubesOQ02OQ02.lean via Mathlib Module.Flat ℤ ℝ (Bézout + NoZeroSMulDivisors) and lTensor_preserves_injective_linearMap. icoAngle_irrational (arccos(-√5/3)/π irrational) is proved here via Chebyshev integer sequence for arccos(1/9). DissectionOfCubesOQ04.lean has 0 axiom declarations and 0 sorries; OQ02OQ02 import chain is also axiom-free.",
-    "lineCount": 557,
+    "lineCount": 561,
     "theoremCount": 25,
     "definitionCount": 4,
     "mathlibDependencies": [
@@ -89,7 +89,7 @@
       "id": "sec-chebyshev-sequence",
       "title": "Part I: Chebyshev Sequence for arccos(3/5)",
       "startLine": 60,
-      "endLine": 165,
+      "endLine": 180,
       "description": "Defines cosThreeFifthsSeq with recurrence d_{n+2} = 6d_{n+1} - 25d_n and proves two key properties: 5 ∤ d_n for all n, and d_n = 5^n · 2cos(n · arccos(3/5)).",
       "theorems": [
         "cosThreeFifthsSeq",
@@ -101,8 +101,8 @@
     {
       "id": "sec-dod-angle",
       "title": "Part II: Dodecahedron Angle Irrationality Chain",
-      "startLine": 166,
-      "endLine": 255,
+      "startLine": 181,
+      "endLine": 251,
       "description": "Proves arccos(1/√5)/π and arccos(-1/√5)/π are irrational via the half-angle identity 2·arccos(1/√5) = arccos(-3/5) = π - arccos(3/5).",
       "theorems": [
         "two_arccos_sqrt5_eq",
@@ -113,8 +113,8 @@
     {
       "id": "sec-dod-dehn",
       "title": "Part III: Dodecahedron Dehn Invariant",
-      "startLine": 256,
-      "endLine": 300,
+      "startLine": 252,
+      "endLine": 278,
       "description": "Proves the dodecahedron has nonzero Dehn invariant using the infinite-order angle class and the flatness axiom.",
       "theorems": [
         "dodAngle_infinite_order",
@@ -124,8 +124,8 @@
     {
       "id": "sec-icosahedron",
       "title": "Part IV: Icosahedron",
-      "startLine": 301,
-      "endLine": 355,
+      "startLine": 279,
+      "endLine": 443,
       "description": "Axiomatizes icoAngle_irrational for arccos(-√5/3)/π and derives the icosahedron's nonzero Dehn invariant.",
       "theorems": [
         "icoAngle_infinite_order",
@@ -135,13 +135,21 @@
     {
       "id": "sec-classification",
       "title": "Part V: Complete Classification",
-      "startLine": 356,
-      "endLine": 415,
+      "startLine": 444,
+      "endLine": 515,
       "description": "The main result: among the five Platonic solids, only the cube has zero Dehn invariant.",
       "theorems": [
         "cube_isolated_dehn_invariant",
         "cube_unique_zero_dehn"
       ]
+    },
+    {
+      "id": "sec-axiom-audit",
+      "title": "Part VI: Axiom Audit and Verification",
+      "startLine": 516,
+      "endLine": 561,
+      "description": "Summary of axiom budget (0 axioms), list of new theorems proved, and #check verification commands.",
+      "theorems": []
     }
   ],
   "conclusion": {
@@ -177,7 +185,7 @@
   "sorries": 0,
   "leanFile": {
     "path": "Proofs/DissectionOfCubesOQ04.lean",
-    "lineCount": 557,
+    "lineCount": 561,
     "theoremCount": 23,
     "definitionCount": 4,
     "axiomCount": 0,
