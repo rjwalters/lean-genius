@@ -49,7 +49,7 @@
       "F function: minimum N for given k",
       "folkman_theorem axiom: existence of F(k)",
       "balogh_2017 axiom: F(k) ≥ 2^{2^{k-1}/k}",
-      "Small cases F(1), F(2), F(3)",
+      "Stub theorems F_1 (F(1) = 1) and F_2 (F(2) = 3), both sorry'd; F(3) ≥ 11 documented in source comment only (no Lean declaration)",
       "erdos_531 theorem: main result"
     ],
     "axiomCount": 2,
@@ -60,7 +60,7 @@
     "historicalContext": "**Erdős Problem #531: Folkman's Theorem**\n\nThis problem asks about the quantitative aspects of Folkman's theorem, a fundamental result in Ramsey theory.\n\n**Key History:**\n- Sanders and Folkman (1960s): Proved the existence of F(k)\n- Rado's theorem (1933): Provides an alternative proof via partition regularity\n- Erdős-Spencer (1989): First non-trivial lower bound F(k) ≥ 2^{ck²/log k}\n- Balogh et al. (2017): Improved to F(k) ≥ 2^{2^{k-1}/k}\n\n**Mathematical Setting:**\nThe function F(k) is the Folkman number: the minimum N such that any 2-coloring of {1,...,N} contains a k-element subset where all 2^k - 1 non-empty subset sums are monochromatic.",
     "problemStatement": "**Problem Statement (Bounds Established, Exact Growth Open)**\n\nLet F(k) be the minimal N such that if we two-colour {1,...,N}, there is a set A of size k such that all subset sums (for non-empty subsets) are monochromatic. Estimate F(k).\n\n**Known Results:**\n$$F(k) \\geq 2^{2^{k-1}/k}$$\n\nBalogh-Eberhard-Narayanan-Treglown-Wagner (2017) proved this doubly-exponential lower bound, improving on Erdős-Spencer (1989).\n\nThe upper bound (from Folkman's existence proof) is much larger, leaving a huge gap.",
     "text": "Estimate F(k), the minimal N such that any 2-coloring of {1,...,N} has a k-element set with monochromatic subset sums. Lower bound: F(k) ≥ 2^{2^{k-1}/k}.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - Coloring: ℕ → Bool\n   - SubsetSums: all non-empty subset sums of a finite set\n   - MonochromaticSubsetSums: all sums have same color\n   - F(k): minimum N using sInf\n\n2. **Main Theorems as Axioms:**\n   - folkman_theorem: F(k) exists (finite for all k ≥ 1)\n   - erdos_spencer_1989: F(k) ≥ 2^{ck²/log k}\n   - balogh_2017: F(k) ≥ 2^{2^{k-1}/k}\n\n3. **Small Cases:** F(1) = 1, F(2) = 3, F(3) ≥ 11\n\n4. **Connections:** Link to Rado's theorem on partition regularity",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - Coloring: ℕ → Bool\n   - SubsetSums: all non-empty subset sums of a finite set\n   - MonochromaticSubsetSums: all sums have same color\n   - F(k): minimum N using sInf\n\n2. **Main Theorems as Axioms:**\n   - folkman_theorem: F(k) exists (finite for all k ≥ 1)\n   - balogh_2017: F(k) ≥ 2^{2^{k-1}/k}\n   - erdos_spencer_1989 (documented in source comment only; no Lean declaration exists)\n\n3. **Small Cases:** F_1 (F(1) = 1) and F_2 (F(2) = 3) are sorry-stubbed theorems awaiting proof; F(3) ≥ 11 is documented in a source comment only (no Lean declaration)\n\n4. **Connections:** Link to Rado's theorem on partition regularity",
     "keyInsights": [
       "A $k$-element set $A$ has $2^k - 1$ non-empty subsets, each producing a sum. Monochromaticity requires ALL these sums to get the same color — an exponentially growing constraint that explains why $F(k)$ grows so fast",
       "The lower bound $F(k) \\geq 2^{2^{k-1}/k}$ is doubly exponential: even the exponent $2^{k-1}/k$ grows exponentially in $k$. This means $F(5) \\geq 2^{16/5} \\approx 10$, but $F(20) \\geq 2^{2^{19}/20} \\approx 2^{26000}$ — enormous growth",
@@ -110,7 +110,7 @@
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
-      "summary": "Axiomatizes two lower bounds: `erdos_spencer_1989` ($F(k) \\geq 2^{ck^2/\\log k}$) and `balogh_2017` ($F(k) \\geq 2^{2^{k-1}/k}$, the current best).",
+      "summary": "Axiomatizes `balogh_2017` ($F(k) \\geq 2^{2^{k-1}/k}$, the current best lower bound). Documents `erdos_spencer_1989` ($F(k) \\geq 2^{ck^2/\\log k}$) in a source comment only (no Lean declaration exists).",
       "startLine": 80,
       "endLine": 97,
       "mathContext": "Erdős-Spencer (1989): $F(k) \\geq 2^{ck^2/\\log k}$ for some $c > 0$. Balogh-Eberhard-Narayanan-Treglown-Wagner (2017): $F(k) \\geq 2^{2^{k-1}/k}$, showing doubly-exponential growth. For large $k$, $2^{k-1}/k \\gg k^2/\\log k$, so the 2017 bound is strictly stronger."
@@ -118,7 +118,7 @@
     {
       "id": "small-cases",
       "title": "Small Cases",
-      "summary": "Proves or axiomatizes $F(1) = 1$ (trivial), $F(2) = 3$ (any coloring of $\\{1,2,3\\}$ has $a, b$ with $a+b$ monochromatic — this is Schur's theorem for $k=2$), and $F(3) \\geq 11$.",
+      "summary": "Declares `F_1` ($F(1) = 1$) and `F_2` ($F(2) = 3$) as sorry-stubbed theorems awaiting proof. $F(3) \\geq 11$ is documented in a source comment only (no Lean declaration exists).",
       "startLine": 98,
       "endLine": 114,
       "mathContext": "$F(1) = 1$: any single element has its (unique) subset sum trivially monochromatic. $F(2) = 3$: in any 2-coloring of $\\{1,2,3\\}$, either $1+2=3$ is mono or we find a suitable pair. $F(3) \\geq 11$: verified by exhaustive search."
