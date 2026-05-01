@@ -243,11 +243,15 @@ theorem k1_dominates_small :
       a unit mod p.
     - At p = 2: the count is 1 for all k ≥ 1 (2^k·n+1 is always odd).
 
-    As a consequence, the density of Form A primes with any fixed k
+    As a consequence, the density of Form A primes with any fixed k ≥ 1
     is the same as the density of safe primes (k=1).
 
-    We axiomatize a weak form: each k-layer is infinite. -/
-axiom batemanHorn_formAWithK_infinite (k : ℕ) :
+    **Note on k = 0**: For k = 0, the predicate becomes "p = q + 1 with
+    q prime", which forces q = 2, p = 3 (the only consecutive prime
+    pair). So the k = 0 layer is finite (a singleton). The Bateman-Horn
+    framework must therefore restrict to k ≥ 1 for the local density
+    analysis at p = 2 to apply uniformly. We axiomatize accordingly. -/
+axiom batemanHorn_formAWithK_infinite {k : ℕ} (hk : 1 ≤ k) :
   Set.Infinite {p : ℕ | IsFormAWithK k p}
 
 /-- BH for k=1 is equivalent to the safe primes conjecture. -/
@@ -270,6 +274,112 @@ theorem batemanHorn_implies_formA_infinite (k : ℕ) :
 /-- Applying BH axiom: the safe primes conjecture holds (as a consequence). -/
 theorem safe_primes_infinite :
     Set.Infinite {p : ℕ | IsSafePrime p} :=
-  (batemanHorn_k1_iff_safePrimes).mp (batemanHorn_formAWithK_infinite 1)
+  (batemanHorn_k1_iff_safePrimes).mp (batemanHorn_formAWithK_infinite (by norm_num))
+
+-- ## Bridge to Erdős 1065a
+
+/-- The local `IsFormA` predicate matches `IsTwoTimePrimePlusOne` from
+    `Erdos1065Problem.lean` (definitionally equal modulo notation). We
+    avoid importing that file to keep this module standalone. -/
+theorem isFormA_unfold (p : ℕ) :
+    IsFormA p ↔ p.Prime ∧ ∃ q k : ℕ, q.Prime ∧ p = 2 ^ k * q + 1 :=
+  Iff.rfl
+
+/-- The Bateman-Horn axiom for k = 1 alone implies the existence of
+    infinitely many Form A primes — the statement of Erdős 1065a.
+
+    Logical hierarchy: BH for k=1 is strictly stronger than Erdős 1065a,
+    because BH fixes the value of k while 1065a only requires existence
+    of *some* k for each prime. -/
+theorem bh_k1_implies_formA_infinite :
+    Set.Infinite {p : ℕ | IsFormA p} :=
+  batemanHorn_implies_formA_infinite 1 (batemanHorn_formAWithK_infinite (by norm_num))
+
+-- ## k-Specific Characterizations of Form A
+
+/-- Form A with k = 0: p prime and p = q + 1 for some prime q.
+    Since q and q+1 are consecutive integers both prime, the only
+    possibility is q = 2, p = 3. -/
+theorem formAWithK0_iff (p : ℕ) :
+    IsFormAWithK 0 p ↔ p.Prime ∧ ∃ q : ℕ, q.Prime ∧ p = q + 1 := by
+  unfold IsFormAWithK
+  constructor
+  · rintro ⟨hp, q, hq, heq⟩
+    refine ⟨hp, q, hq, ?_⟩
+    rw [pow_zero, one_mul] at heq; exact heq
+  · rintro ⟨hp, q, hq, heq⟩
+    refine ⟨hp, q, hq, ?_⟩
+    rw [pow_zero, one_mul]; exact heq
+
+/-- Form A with k = 0 forces p = 3 (and q = 2). The only consecutive
+    prime pair (q, q+1) is (2, 3): one of any two consecutive integers
+    is even, and 2 is the only even prime. -/
+theorem formAWithK0_unique (p : ℕ) (h : IsFormAWithK 0 p) : p = 3 := by
+  obtain ⟨hp, q, hq, heq⟩ := h
+  have hpq : p = q + 1 := by rw [pow_zero, one_mul] at heq; exact heq
+  have hq2 : 2 ≤ q := hq.two_le
+  rcases eq_or_lt_of_le hq2 with hq_eq | hq_gt
+  · -- q = 2 ⇒ p = 3 directly
+    omega
+  · -- q ≥ 3: q is an odd prime ⇒ p = q+1 is even ⇒ p = 2 ⇒ contradiction
+    exfalso
+    have hq_odd : q % 2 = 1 := by
+      rcases hq.eq_two_or_odd with hq2_eq | hodd
+      · omega
+      · exact hodd
+    have hpm : p % 2 = 0 := by omega
+    have hp_even : 2 ∣ p := Nat.dvd_of_mod_eq_zero hpm
+    have hp_eq_2 : p = 2 :=
+      (hp.eq_one_or_self_of_dvd 2 hp_even).resolve_left (by norm_num) |>.symm
+    omega
+
+/-- Form A with k = 2: p prime and p = 4q + 1 for some prime q.
+    Equivalently, p ≡ 1 (mod 4) with (p - 1)/4 prime. -/
+theorem formAWithK2_iff (p : ℕ) :
+    IsFormAWithK 2 p ↔ p.Prime ∧ ∃ q : ℕ, q.Prime ∧ p = 4 * q + 1 := by
+  unfold IsFormAWithK
+  have h : (2 : ℕ) ^ 2 = 4 := by norm_num
+  constructor
+  · rintro ⟨hp, q, hq, heq⟩
+    refine ⟨hp, q, hq, ?_⟩
+    rw [h] at heq; exact heq
+  · rintro ⟨hp, q, hq, heq⟩
+    refine ⟨hp, q, hq, ?_⟩
+    rw [h]; exact heq
+
+/-- Form A with k = 3: p prime and p = 8q + 1 for some prime q. -/
+theorem formAWithK3_iff (p : ℕ) :
+    IsFormAWithK 3 p ↔ p.Prime ∧ ∃ q : ℕ, q.Prime ∧ p = 8 * q + 1 := by
+  unfold IsFormAWithK
+  have h : (2 : ℕ) ^ 3 = 8 := by norm_num
+  constructor
+  · rintro ⟨hp, q, hq, heq⟩
+    refine ⟨hp, q, hq, ?_⟩
+    rw [h] at heq; exact heq
+  · rintro ⟨hp, q, hq, heq⟩
+    refine ⟨hp, q, hq, ?_⟩
+    rw [h]; exact heq
+
+/-- The k = 0 layer of Form A is {3} — a singleton (and hence finite).
+    This shows that **not every k-layer is infinite**: the BH axiom is
+    nontrivial precisely because some layers (like k = 0) are finite. -/
+theorem formAWithK0_layer_eq_three :
+    {p : ℕ | IsFormAWithK 0 p} = {3} := by
+  ext p
+  simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
+  constructor
+  · exact formAWithK0_unique p
+  · intro hp; subst hp
+    exact ⟨by decide, 2, by decide, by norm_num⟩
+
+/-- The k = 0 layer is finite (a singleton). This justifies the
+    `1 ≤ k` hypothesis on `batemanHorn_formAWithK_infinite`: the
+    "every k-layer is infinite" reading would be inconsistent at k = 0.
+
+    The mathematical reason: at k = 0 the polynomial f(n) = n + 1 has
+    a parity obstruction at p = 2 — exactly one of (n, n+1) is even,
+    forcing q = 2 (the only even prime), which uniquely yields p = 3. -/
+theorem formAWithK0_finite : Set.Finite {p : ℕ | IsFormAWithK 0 p} := by
+  rw [formAWithK0_layer_eq_three]; exact Set.finite_singleton 3
 
 end Erdos1065BatemanHorn

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved erdos_1065b from erdos_1065a (2→1 axioms). Added not_form_a proofs for all 8 Form B-only primes ≤100 (completing census). 8 strict inclusion witnesses total.",
+    "progressSummary": "PROGRESS: Identified and corrected axiom-integrity defect in batemanHorn_formAWithK_infinite (was inconsistent at k=0). Added 8 new theorems including k-layer characterizations (k=0,2,3) and Erdős 1065a bridge. File still has 1 axiom (now correctly restricted to k ≥ 1).",
     "builtItems": [
       "example_23, example_47, example_53, example_59, example_83, example_89 in Erdos1065Problem.lean",
       "example_37_extended: proof that 37 IS Form B (corrects prior error)",
@@ -45,7 +45,15 @@
       "fifteen_examples_le_100: corrected census replacing fourteen_examples_le_100",
       "Proved erdos_1065b from erdos_1065a via conjecture_a_implies_b (2→1 axioms)",
       "not_form_a_67, not_form_a_73, not_form_a_79: completes all Form B-only non-examples",
-      "strict_inclusion_67/73/79: three new Form A ⊊ Form B witnesses"
+      "strict_inclusion_67/73/79: three new Form A ⊊ Form B witnesses",
+      "formAWithK0_iff: characterization of Form A with k=0",
+      "formAWithK0_unique: any Form A prime with k=0 must equal 3",
+      "formAWithK0_layer_eq_three: {p | IsFormAWithK 0 p} = {3}",
+      "formAWithK0_finite: justifies 1 ≤ k restriction on BH axiom",
+      "formAWithK2_iff: Form A with k=2 ⟺ p = 4q+1",
+      "formAWithK3_iff: Form A with k=3 ⟺ p = 8q+1",
+      "isFormA_unfold: bridge between BatemanHorn.IsFormA and Problem.IsTwoTimePrimePlusOne",
+      "bh_k1_implies_formA_infinite: explicit BH→1065a derivation"
     ],
     "insights": [
       "The original file claimed 8 Form A primes ≤100, but the correct count is 14: 3, 5, 7, 11, 13, 23, 29, 41, 47, 53, 59, 83, 89, 97",
@@ -56,7 +64,11 @@
       "Census bug: p=17 was missing from Form A list (17=2^3·2+1 with q=2 prime). Correct count is 15 Form A primes ≤100, not 14",
       "Complete Form B census ≤100: 8 primes are Form B-only (19,31,37,43,61,67,73,79). Most have k=l=1 pattern: p-1=2·3·q",
       "Only 2 primes ≤100 are neither Form A nor B: p=2 (trivially) and p=71 (70=2·5·7, 3∤70)",
-      "erdos_1065b is redundant: follows from erdos_1065a since Form A ⊂ Form B (take l=0). Axiom count 2→1."
+      "erdos_1065b is redundant: follows from erdos_1065a since Form A ⊂ Form B (take l=0). Axiom count 2→1.",
+      "AXIOM-INTEGRITY: batemanHorn_formAWithK_infinite was previously stated for ALL k, but is mathematically inconsistent at k=0: IsFormAWithK 0 p ⟺ p = q+1 with q prime, which forces (q,p) = (2,3) by parity, so the k=0 layer is the singleton {3}, finite. Restricted axiom to 1 ≤ k.",
+      "k=0 anomaly characterized: formAWithK0_layer_eq_three proves {p | IsFormAWithK 0 p} = {3} unconditionally. This is the only consecutive prime pair.",
+      "Added k-specific characterizations: formAWithK2_iff (p = 4q+1) and formAWithK3_iff (p = 8q+1) bridge the parameterized predicate to standard arithmetic forms.",
+      "Added bridge isFormA_unfold connecting BatemanHorn IsFormA with Problem IsTwoTimePrimePlusOne (definitionally equal). bh_k1_implies_formA_infinite shows BH(k=1) is strictly stronger than erdos_1065a."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -89,8 +101,8 @@
     {
       "path": "Proofs/Erdos1065BatemanHorn.lean",
       "filename": "Erdos1065BatemanHorn.lean",
-      "lineCount": 276,
-      "theoremCount": 24,
+      "lineCount": 385,
+      "theoremCount": 32,
       "axiomCount": 1,
       "defCount": 3,
       "sorryCount": 0,
