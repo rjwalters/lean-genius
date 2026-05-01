@@ -7666,10 +7666,13 @@
       "result": "clean"
     },
     "erdos-573": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-agent-tracker",
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T10:25:00Z",
+      "result": "issues-found",
+      "issues": [
+        "Phantom KST/Erdős-Simonovits bound axioms in narrative (counts correct); lineCount 152→177; section line drift — issue #14227"
+      ]
     },
     "erdos-574": {
       "agentId": "auditor-cycle-20-batch",
