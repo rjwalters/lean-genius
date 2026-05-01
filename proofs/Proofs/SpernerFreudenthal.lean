@@ -149,11 +149,10 @@ noncomputable def AbstractSimplicialData.toTriangulation
     intro ⟨s, hs⟩ i j hij
     unfold vertexEnum at hij
     have hnd : (s.sort (· ≤ ·)).Nodup := s.sort_nodup (· ≤ ·)
-    have hlen : (s.sort (· ≤ ·)).length = n + 1 := by
-      rw [sort_length_eq]; exact D.card_eq s hs
-    -- The sorted list is nodup so equal elements means equal indices
-    -- Nodup + L[i] = L[j] → i = j
-    sorry
+    have heq : i.cast _ = j.cast _ := hnd.get_inj_iff.mp hij
+    apply Fin.ext
+    rw [Fin.ext_iff] at heq
+    exact heq
   adj := fun ⟨s, hs⟩ k =>
     let face := s.erase (D.vertexEnum s hs k)
     let containers := D.topSimplices.filter (fun t => face ⊆ t)
@@ -218,10 +217,18 @@ def finsetToNat {n : ℕ} (s : Finset (Fin n)) : ℕ :=
 distinct natural numbers via the binary representation. -/
 theorem finsetToNat_injective (n : ℕ) : Function.Injective (@finsetToNat n) := by
   intro s t hst
-  ext x
-  -- The key property: in base 2, the x-th bit of finsetToNat s
-  -- is 1 iff x ∈ s. Equal sums means equal bit patterns.
-  sorry
+  unfold finsetToNat at hst
+  -- Convert sums over Finset (Fin n) to sums over Finset ℕ via image of Fin.val
+  have hs : s.sum (fun i => 2 ^ i.val) = ∑ i ∈ s.image Fin.val, 2 ^ i := by
+    rw [Finset.sum_image (fun _ _ _ _ h => Fin.val_injective h)]
+  have ht : t.sum (fun i => 2 ^ i.val) = ∑ i ∈ t.image Fin.val, 2 ^ i := by
+    rw [Finset.sum_image (fun _ _ _ _ h => Fin.val_injective h)]
+  rw [hs, ht] at hst
+  -- The map (s : Finset ℕ) ↦ ∑ i ∈ s, 2^i is injective by Finset.geomSum_injective
+  have him : s.image Fin.val = t.image Fin.val :=
+    Finset.geomSum_injective (le_refl 2) hst
+  -- Image under injective Fin.val is injective on Finsets
+  exact Finset.image_injective Fin.val_injective him
 
 /-- Linear order on `Finset (Fin n)` via bitmap encoding. -/
 noncomputable instance finsetLinearOrder : LinearOrder (Finset (Fin n)) :=

@@ -42,6 +42,8 @@
       "gridAdj_symm: proved in SpernerGrid.lean using boundaryFlip0_invol, boundaryFlipLast_invol (5 → 4 sorries)",
       "gridAdj_vertex: proved in SpernerGrid.lean by case analysis on k value (4 → 3 sorries)",
       "gridAdj_ne additional: proved (3 sorries remain: CellComplex.sperner ref + boundary_verts_on_face + boundary_doors_odd)",
+      "vertex_injective: proved AbstractSimplicialData.toTriangulation.vertex_injective in SpernerFreudenthal.lean using Nodup.get_inj_iff (line 156, sorry removed)",
+      "finsetToNat_injective: proved bitmap injectivity in SpernerFreudenthal.lean via Finset.geomSum_injective + Finset.image_injective Fin.val_injective (line 220, sorry removed)",
       "SpernerGridAristotle.lean: removed 3 stale stub sorries (gridAdj_symm/vertex/ne) — duplicates of proven main-file theorems; file now a placeholder (49 → 28 LOC)"
     ],
     "insights": [
@@ -72,6 +74,9 @@
       "Root cause: gridAdj treats 'boundaryFlip returns none' as 'geometric boundary', but this is wrong when the adjacent simplex exists with a different miss direction. Redesign required.",
       "gridAdj_symm proved using: boundaryFlip0_invol, boundaryFlipLast_invol, interiorFlip_invol + interiorFlip symmetry argument",
       "gridAdj_vertex proved by case split: k=0 uses boundaryFlip0 vertex property, k=d uses boundaryFlipLast vertex property, 0<k<d uses interiorFlip vertex property",
+      "List.Nodup.get_inj_iff (Mathlib.Data.List.Nodup): clean way to convert get equality to index equality on sorted lists",
+      "Fin.cast elaboration gotcha: Fin.ext (congrArg Fin.val heq) fails when heq has Fin.cast in it because Lean back-elaborates Fin.val from goal type; workaround: apply Fin.ext; rw [Fin.ext_iff] at heq; exact heq",
+      "Finset.geomSum_injective in Mathlib.Combinatorics.Colex (namespace Finset): for n >= 2, ∑ i ∈ s, n^i is injective on Finset ℕ — direct path to bitmap injectivity",
       "SpernerGridAristotle.lean (2026-04-14, last untouched) declared gridAdj_symm/gridAdj_vertex/gridAdj_ne as sorry stubs in namespace SpernerGrid AFTER PRs #11358 and #12534 proved them in SpernerGrid.lean — duplicate-definition source. No automated CI build workflow exists for proofs, only label-external-issues + Proofs.lean sync; Docker builds are local-only, so duplicates went unnoticed."
     ],
     "mathlibGaps": [],
