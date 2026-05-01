@@ -59,7 +59,7 @@
     "historicalContext": "The Erdős-Heilbronn conjecture was posed in 1964 and asks whether large subsets of cyclic groups necessarily contain non-empty zero-sum subsets. The precise question is: does there exist a constant c such that any A ⊆ ℤ/Nℤ with |A| > c·√N must contain a non-empty subset summing to 0 mod N? The conjecture sits at the foundation of additive combinatorics, connecting subset sum problems to group structure.\n\nOlson made the first breakthrough in 1968, proving the conjecture for prime N with the constant √2: any subset of ℤ/pℤ of size exceeding √(2p) must contain a zero-sum subset. His proof used polynomial methods. Szemerédi then settled the general case in 1970, proving the conjecture for all N by showing that large subsets in any cyclic group have this property. This resolved Problem #540 completely.\n\nSubsequent work refined the constants. Hamidoune and Zémor (1996) showed that (1+o(1))·√(2N) works asymptotically for arbitrary finite abelian groups. Balandraud (2012) achieved the definitive result for primes: √(2p) is the exact threshold, meaning sets just below this size can avoid zero-sums, but any set at or above it cannot. The optimal constant is thus √2 for primes and asymptotically √2 in general.",
     "problemStatement": "**Problem (SOLVED)**\n\nIs it true that if $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ has size $\\gg \\sqrt{N}$ then there exists some non-empty $S \\subseteq A$ such that $\\sum_{s \\in S} s \\equiv 0 \\pmod{N}$?\n\n**Answer:** YES\n- **Olson (1968):** Proved for primes, threshold $\\sqrt{2p}$\n- **Szemerédi (1970):** Proved for all $N$\n- **Balandraud (2012):** Exact threshold $\\sqrt{2p}$ for primes\n- **Optimal constant:** $\\sqrt{2}$",
     "text": "If A ⊆ ℤ/Nℤ has size ≫ √N, must A contain a non-empty zero-sum subset? YES, proved by Szemerédi (1970). Optimal threshold √(2N) for primes (Balandraud 2012).",
-    "proofStrategy": "The formalization defines subset sums in ℤ/Nℤ, the zero-sum property, and the Erdős-Heilbronn threshold as a parameterized Prop. Key results are axiomatized: Olson's prime case, Szemerédi's general solution, Balandraud's tight bounds, and the Hamidoune–Zémor asymptotic. The main theorem erdos_540_solved is proved from Szemerédi's axiom. The trivial case N = 1 is proved directly (all elements are 0 in ℤ/1ℤ). The Davenport constant provides context: sequences need N elements for zero-sums, but subsets only need √N.",
+    "proofStrategy": "The formalization defines subset sums in ℤ/Nℤ, the zero-sum property, and the Erdős-Heilbronn threshold as a parameterized Prop. Two axioms encode the proven results: olson_prime_case (1968, prime case with √(2p) threshold) and szemeredi_general_case (1970, general resolution). Balandraud's tight bound (2012) and the Hamidoune–Zémor (1996) asymptotic are mentioned in docstrings but not axiomatized. The main theorem erdos_540_solved is proved from Szemerédi's axiom. The trivial case N = 1 is proved directly (all elements are 0 in ℤ/1ℤ). The Davenport constant provides context: sequences need N elements for zero-sums, but subsets only need √N.",
     "keyInsights": [
       "**√N vs N Threshold:** The Davenport constant gives a linear bound (sequences of length N), but subsets of size √N already suffice — a dramatic improvement from subset combinatorics.",
       "**Pigeonhole Foundation:** With k elements there are 2^k − 1 non-empty subsets mapping to N possible sums. When 2^k > N (i.e., k > log N), two subsets collide; their symmetric difference has sum 0. The √N bound requires deeper structural analysis.",
@@ -79,7 +79,7 @@
       "title": "Basic Definitions",
       "summary": "Subset sums, zero-sum subsets, and the HasZeroSumSubset predicate",
       "startLine": 28,
-      "endLine": 43,
+      "endLine": 42,
       "mathContext": "Mathematical content: Subset sums, zero-sum subsets, and the HasZeroSumSubset predicate"
     },
     {
@@ -87,7 +87,7 @@
       "title": "The Erdős-Heilbronn Conjecture",
       "summary": "Threshold property and the original conjecture statement",
       "startLine": 44,
-      "endLine": 59,
+      "endLine": 58,
       "mathContext": "Mathematical content: Threshold property and the original conjecture statement"
     },
     {
@@ -95,7 +95,7 @@
       "title": "Olson's Theorem (1968) — Prime Case",
       "summary": "First proof for primes with √(2p) threshold",
       "startLine": 60,
-      "endLine": 79,
+      "endLine": 78,
       "mathContext": "Verified: First proof for primes with √(2p) threshold"
     },
     {
@@ -103,40 +103,48 @@
       "title": "Szemerédi's Theorem (1970) — General Case",
       "summary": "Complete resolution of the conjecture",
       "startLine": 80,
-      "endLine": 94,
+      "endLine": 93,
       "mathContext": "Mathematical content: Complete resolution of the conjecture"
     },
     {
       "id": "balandraud",
       "title": "Balandraud's Optimal Result (2012)",
-      "summary": "Exact threshold √(2p) for primes with tightness",
+      "summary": "Discusses the exact √(2p) threshold (mentioned in docstring; not axiomatized in this file)",
       "startLine": 95,
-      "endLine": 113,
+      "endLine": 104,
       "mathContext": "Mathematical content: Exact threshold √(2p) for primes with tightness"
     },
     {
       "id": "hamidoune-zemor",
       "title": "Hamidoune–Zémor (1996)",
-      "summary": "Near-optimal (1+o(1))√(2N) for all N",
-      "startLine": 114,
-      "endLine": 129,
+      "summary": "Discusses the (1+o(1))√(2N) asymptotic (mentioned in docstring; not axiomatized in this file)",
+      "startLine": 105,
+      "endLine": 113,
       "mathContext": "Mathematical content: Near-optimal (1+o(1))√(2N) for all N"
     },
     {
       "id": "davenport",
       "title": "Trivial Case and Davenport Constant",
-      "summary": "N = 1 proved directly; Davenport constant comparison",
-      "startLine": 130,
-      "endLine": 153,
+      "summary": "case_N_1 theorem proved directly for ℤ/1ℤ; Davenport constant context in docstring",
+      "startLine": 114,
+      "endLine": 131,
       "mathContext": "Mathematical content: N = 1 proved directly; Davenport constant comparison"
     },
     {
       "id": "abelian",
       "title": "Generalization to Abelian Groups",
-      "summary": "Extension to arbitrary finite abelian groups",
-      "startLine": 154,
-      "endLine": 160,
+      "summary": "Discusses extension to arbitrary finite abelian groups (docstring only; not axiomatized)",
+      "startLine": 132,
+      "endLine": 138,
       "mathContext": "Mathematical content: Extension to arbitrary finite abelian groups"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_540_summary and erdos_540 theorems collecting the results",
+      "startLine": 139,
+      "endLine": 160,
+      "identifiers": []
     }
   ],
   "conclusion": {
