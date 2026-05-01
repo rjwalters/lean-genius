@@ -94,18 +94,18 @@
     {
       "id": "constraint-analysis",
       "title": "Divisibility Constraint Analysis",
-      "summary": "multiplesInInterval, multiples_sparse",
+      "summary": "multiplesInInterval definition: counting multiples of d in an interval",
       "startLine": 89,
       "endLine": 112,
-      "mathContext": "Mathematical content: multiplesInInterval, multiples_sparse"
+      "mathContext": "Mathematical content: multiplesInInterval definition"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "summary": "erdos_pomerance_lower_bound, erdos_pomerance_upper_bound, bounds_gap",
+      "summary": "erdos_pomerance_lower_bound axiom, erdos_pomerance_upper_bound axiom",
       "startLine": 113,
       "endLine": 152,
-      "mathContext": "Bound: erdos_pomerance_lower_bound, erdos_pomerance_upper_bound, bounds_gap"
+      "mathContext": "Bound: erdos_pomerance_lower_bound axiom, erdos_pomerance_upper_bound axiom"
     },
     {
       "id": "open-problem",
@@ -125,24 +125,24 @@
     {
       "id": "heuristics",
       "title": "Heuristic Analysis",
-      "summary": "constraintDensity, critical_constraint_heuristic",
+      "summary": "smallest_multiple_bound theorem: greedy algorithm bound for divisibility matching",
       "startLine": 230,
       "endLine": 263,
-      "mathContext": "Mathematical content: constraintDensity, critical_constraint_heuristic"
+      "mathContext": "Verified: smallest_multiple_bound theorem"
     },
     {
       "id": "greedy",
       "title": "Greedy Algorithm Insight",
-      "summary": "smallest_multiple_bound theorem",
+      "summary": "Part VIII related-problems notes and fValues placeholder sequence",
       "startLine": 264,
-      "endLine": 290,
-      "mathContext": "Verified: smallest_multiple_bound theorem"
+      "endLine": 273,
+      "mathContext": "Related: Part VIII connection notes and fValues placeholder"
     },
     {
       "id": "main-results",
       "title": "Main Results Summary",
       "summary": "erdos_710_summary theorem",
-      "startLine": 275,
+      "startLine": 274,
       "endLine": 320,
       "mathContext": "Verified: erdos_710_summary theorem"
     }
