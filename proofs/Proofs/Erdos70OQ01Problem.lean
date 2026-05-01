@@ -186,6 +186,24 @@ theorem stepping_down (k n : ℕ) (hk : 1 ≤ k) :
   apply Ordinal.mul_le_mul_left'
   exact_mod_cast Nat.sub_le k 1
 
+/-- Successor form of stepping-down: ω·(k+1) partition implies ω·k partition.
+    This avoids the Nat subtraction in `stepping_down` for cleaner downstream use. -/
+theorem stepping_down_succ (k n : ℕ) :
+    OmegaMultKPartition (k + 1) n → OmegaMultKPartition k n := by
+  intro h
+  unfold OmegaMultKPartition at *
+  apply partition_arrow_mono_ordinal _ _ _ _ _ h
+  apply Ordinal.mul_le_mul_left'
+  exact_mod_cast Nat.le_succ k
+
+/-- Base case: OmegaMultKPartition 1 n is exactly PartitionArrow on ω.
+    Since ω · 1 = ω, the k=1 case reduces to the standard partition arrow on ω,
+    which is the Erdős-Rado regime. -/
+theorem omega_mul_one_partition (n : ℕ) :
+    OmegaMultKPartition 1 n ↔ PartitionArrow continuum_card Ordinal.omega0 n := by
+  unfold OmegaMultKPartition
+  rw [Nat.cast_one, Ordinal.mul_one]
+
 /-- The omega^2 case implies all omega*k cases (since omega*k < omega^2). -/
 theorem omega_squared_implies_omega_mult_k (k n : ℕ) :
     OmegaSquaredPartition n → OmegaMultKPartition k n := by
