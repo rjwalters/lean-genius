@@ -144,8 +144,6 @@ theorem erdos_395_solved (n : ℕ) : erdos_395_question n := by
 def extremal_example (n : ℕ) : Fin n → ℂ :=
   fun i => if i.val < n / 2 then 1 else Complex.I
 
-/-- The extremal example has probability exactly Θ(1/n).
-Axiomatized because the precise computation requires CLT-type arguments. -/
 /-
 ## Part VI: Summary
 
