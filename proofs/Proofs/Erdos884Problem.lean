@@ -479,4 +479,20 @@ theorem allPairsSum_le_tau_mul_consecutive (n : ℕ) (hn : n > 1) :
     _ = (τ - 1) • consecutivePairsSum n := by rw [add_zero]
     _ = ↑(τ - 1 : ℕ) * consecutivePairsSum n := nsmul_eq_mul _ _
 
+/-- Unconditional index-based bound: allPairsSum is bounded by the index double sum
+    Σ_{0≤i<j<τ} 1/(j-i), independent of the divisor structure of n. Combined with a
+    closed-form harmonic estimate Σ_{i,j} 1/(j-i) = Σ_{k=1}^{τ-1} (τ-k)/k ≤ τ·H_{τ-1},
+    this yields an unconditional O(τ log τ) bound on allPairsSum. Companion to
+    allPairsSum_le_tau_mul_consecutive but does not depend on consecutivePairsSum. -/
+theorem allPairsSum_le_indexSum (n : ℕ) (hn : n > 1) :
+    allPairsSum n ≤
+      ∑ i ∈ Finset.range (numDivisors n),
+        ∑ j ∈ Finset.Ioo i (numDivisors n),
+          (1 : ℝ) / ((j - i : ℕ) : ℝ) := by
+  unfold allPairsSum
+  apply Finset.sum_le_sum; intro i _
+  apply Finset.sum_le_sum; intro j hj
+  have ⟨hij, hjτ⟩ := Finset.mem_Ioo.mp hj
+  exact reciprocal_gap_index_bound n hn hij hjτ
+
 end Erdos884
