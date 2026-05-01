@@ -521,7 +521,15 @@ now in place.
       max ahat' bhat' ≤ max ahat bhat` for `M = lehmerCofactors
       fuel ahat bhat id`.
 
-3. Verified the file via Docker build.
+3. Attempted Docker build verification. Docker daemon was
+   unresponsive (multiple stuck `docker-build.sh` processes
+   from concurrent agents; matches the
+   "Docker build I/O errors during heavy multi-agent activity"
+   pattern documented in working memory). Build verification
+   deferred to next session. The proofs are written to mirror
+   existing patterns from `BinaryGcdOQ03.lean`
+   (`lehmerInnerStep_det`, `lehmerCofactors_det_unit`); risk of
+   a tactic-script issue is low but non-zero.
 
 ### Key Findings
 
