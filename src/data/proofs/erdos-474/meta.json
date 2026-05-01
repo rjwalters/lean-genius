@@ -117,56 +117,56 @@
       "title": "The Two-Color Case (Solved)",
       "summary": "sierpinski_kurepa axiom",
       "startLine": 102,
-      "endLine": 124,
-      "mathContext": "Axiomatized: sierpinski_kurepa axiom"
+      "endLine": 119,
+      "mathContext": "Axiomatized: sierpinski_kurepa axiom (line 110)"
     },
     {
       "id": "under-ch",
       "title": "Under CH (Erdős's Result)",
       "summary": "ContinuumHypothesis definition, erdos_under_ch axiom",
-      "startLine": 125,
-      "endLine": 142,
-      "mathContext": "Formal definition: ContinuumHypothesis definition, erdos_under_ch axiom"
+      "startLine": 120,
+      "endLine": 137,
+      "mathContext": "Formal definition: ContinuumHypothesis (line 126); axiom erdos_under_ch (line 133)"
     },
     {
       "id": "shelah",
       "title": "Shelah's Consistency Result",
       "summary": "shelah_consistency axiom",
-      "startLine": 143,
-      "endLine": 167,
-      "mathContext": "Axiomatized: shelah_consistency axiom"
+      "startLine": 138,
+      "endLine": 158,
+      "mathContext": "Axiomatized: shelah_consistency (line 147)"
     },
     {
       "id": "open-question",
       "title": "The Open Question",
       "summary": "OpenQuestion definition, erdos_prize_question definition",
-      "startLine": 168,
-      "endLine": 200,
-      "mathContext": "Formal definition: OpenQuestion definition, erdos_prize_question definition"
+      "startLine": 159,
+      "endLine": 191,
+      "mathContext": "Formal definition: OpenQuestion (line 169), erdos_prize_question (line 183)"
     },
     {
       "id": "related",
       "title": "Related Results",
-      "summary": "motivational docstrings: higher color numbers, Erdős-Rado connection (NegativePartition def is in open-question section)",
-      "startLine": 201,
-      "endLine": 237,
-      "mathContext": "Documentation only: motivational docstrings for higher colors and Erdős-Rado"
+      "summary": "NegativePartition def, motivational docstrings for higher colors and Erdős-Rado",
+      "startLine": 192,
+      "endLine": 215,
+      "mathContext": "NegativePartition definition (line 199); motivational docstrings for higher colors and Erdős-Rado"
     },
     {
       "id": "argument",
       "title": "The Argument Structure",
-      "summary": "erdos_474_summary theorem (line 249), erdos_474 theorem (starts line 265)",
-      "startLine": 238,
-      "endLine": 266,
-      "mathContext": "Verified: erdos_474_summary theorem (line 249), erdos_474 theorem (starts line 265)"
+      "summary": "Why CH helps and why larger c might fail (motivational docstrings)",
+      "startLine": 216,
+      "endLine": 229,
+      "mathContext": "Documentation only: motivational docstrings on why CH helps and why larger c might fail"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_474 theorem proof conclusion, end Erdos474",
-      "startLine": 267,
+      "summary": "erdos_474_summary theorem (line 249), erdos_474 theorem (line 265), end Erdos474",
+      "startLine": 230,
       "endLine": 277,
-      "mathContext": "Closing: remainder of erdos_474 theorem body (lines 267-275), namespace end"
+      "mathContext": "Verified: erdos_474_summary theorem (line 249), erdos_474 theorem (line 265); namespace end (line 277)"
     }
   ],
   "conclusion": {
