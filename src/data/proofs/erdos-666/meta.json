@@ -49,7 +49,7 @@
       "HasC4, HasC6, HasC2k cycle predicates",
       "EpsilonDenseSubgraph: subgraph with ε-fraction of edges",
       "ErdosConjecture: original (disproved) conjecture",
-      "erdos_conjecture_false theorem: main disproof",
+      "erdos_conjecture_false: stated disproof theorem (proof body sorry; reduces to chung_1992)",
       "chung_1992 axiom: 4-partition into C₆-free subgraphs",
       "GeneralizedConjecture: open question for C_{2k}"
     ],
@@ -120,26 +120,34 @@
     {
       "id": "bdt",
       "title": "Brouwer-Dejter-Thomassen (1993)",
-      "summary": "Independent 4-coloring result",
+      "summary": "Informal commentary on BDT independent 4-coloring result (no formal declarations in file)",
       "startLine": 176,
-      "endLine": 198,
-      "mathContext": "Mathematical content: Independent 4-coloring result"
+      "endLine": 178,
+      "mathContext": "Informal commentary: BDT independent 4-coloring result (no formal declarations)"
     },
     {
       "id": "conder",
       "title": "Conder's Improvement (1993)",
-      "summary": "3-coloring, ε = 1/3 counterexample",
-      "startLine": 199,
-      "endLine": 232,
-      "mathContext": "Mathematical content: 3-coloring, ε = 1/3 counterexample"
+      "summary": "conder_better_bound: ε = 1/3 counterexample theorem derived from chung_1992",
+      "startLine": 179,
+      "endLine": 201,
+      "mathContext": "Mathematical content: conder_better_bound theorem (3-coloring, ε = 1/3 counterexample)"
     },
     {
       "id": "generalized",
       "title": "Generalized Conjecture",
-      "summary": "Open question for C_{2k}",
-      "startLine": 233,
-      "endLine": 253,
-      "mathContext": "Mathematical content: Open question for C_{2k}"
+      "summary": "GeneralizedConjecture: open question for C_{2k} in dense hypercube subgraphs",
+      "startLine": 203,
+      "endLine": 218,
+      "mathContext": "Mathematical content: GeneralizedConjecture definition (open question for C_{2k})"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_666_summary: combined theorem stating conjecture is false and C₆-free subgraphs exist",
+      "startLine": 232,
+      "endLine": 261,
+      "mathContext": "Mathematical content: erdos_666_summary theorem"
     }
   ],
   "conclusion": {
