@@ -8445,12 +8445,13 @@
     },
     "erdos-684": {
       "agentId": "auditor-foreground",
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [
-        "phantom identifiers in section summaries: tang_bound, rh_conditional_bound, heuristic_conjecture, erdos_684_status (issue #14084)"
+        "phantom identifiers in section summaries: tang_bound, rh_conditional_bound, heuristic_conjecture, erdos_684_status (issue #14084)",
+        "phantom identifiers in section summaries: tang_bound, rh_conditional_bound (Modern Bounds), heuristic_conjecture (Heuristic), erdos_684_status (Status); all removed (closes #14084)"
       ],
-      "lastAudited": "2026-05-01T05:50:00Z",
-      "result": "issues-found"
+      "lastAudited": "2026-05-01T03:54:00Z",
+      "result": "issues-fixed"
     },
     "erdos-685": {
       "agentId": "auditor-cycle-20-batch",
