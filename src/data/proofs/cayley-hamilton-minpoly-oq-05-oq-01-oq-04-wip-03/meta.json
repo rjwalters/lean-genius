@@ -53,12 +53,6 @@
         "description": "If p(M) = 0 then minpoly(M) divides p",
         "module": "Mathlib.FieldTheory.Minpoly.Basic"
       }
-    ],
-    "originalContributions": [
-      "pow_irred_dvd_of_annihilated: the inductive divisibility lemma replacing the PID structure theorem — if p irreducible, p^e(M)v ≠ 0, p^(e+1)(M)v = 0, and r(M)v = 0, then p^(e+1) | r",
-      "Shift trick formalization: the descent v ↦ p(M)v decreasing the p-adic filtration level by 1, enabling the induction on e",
-      "nonderogatory_pw_has_cyclic_vector: cyclic vector existence for nonderogatory matrices with prime-power minimal polynomial, valid over any field K with no cardinality restriction (covers finite fields)",
-      "Axiom-free, sorry-free formalization avoiding Mathlib's not-yet-available PID structure theorem and Smith normal form machinery"
     ]
   },
   "overview": {
@@ -72,16 +66,8 @@
       "Commutativity of polynomial evaluation: r(M)(p^k(M)v) = p^k(M)(r(M)v) because polynomials in M commute. This is used repeatedly in the mulVec calculations.",
       "Degree counting closes the proof cleanly: p^e | r with deg(r) < deg(p^e) = n forces r = 0, directly giving the cyclic vector condition.",
       "**p-adic valuation perspective**: The proof can be read through the lens of $p$-adic valuation $v_p$ on $K[X]$ (with $p$ irreducible monic). Every polynomial $r \\in K[X]$ has a $p$-adic valuation $v_p(r) = \\max\\{k : p^k \\mid r\\}$, and the lemma `pow_irred_dvd_of_annihilated` is precisely the assertion: if $v$ has $p$-adic level exactly $e$ in the filtration $V \\supset p(M)V \\supset p^2(M)V \\supset \\cdots$ (i.e., $v \\in \\ker(p^{e+1}(M)) \\setminus \\ker(p^e(M))$), then any annihilator $r$ must have $v_p(r) \\geq e+1$. This valuation-theoretic framing (familiar from local rings and Henselization) makes the structure of the descent argument transparent — even though the formal Lean proof uses only elementary divisibility.",
-      "**Bypassing the Krull-Schmidt machinery**: The classical proof of rational canonical form via the PID structure theorem (Smith normal form for $K[X]$-modules) factors $K^n$ as a direct sum $\\bigoplus_i K[X]/(p_i^{e_i})$ of primary cyclic modules — a deep theorem requiring Krull-Schmidt uniqueness. WIP03 demonstrates that for the prime power case, this entire structural machinery is unnecessary: a single inductive argument on the exponent suffices. The trade-off is that the prime power restriction is essential: without primary decomposition (which WIP02 handles via squarefree CRT), the general case requires combining the two approaches."
-    ],
-    "prerequisites": [
-      "Field theory and matrix algebra over a field $K$",
-      "Polynomial ring $K[X]$ as a UFD; Bézout's identity for coprime polynomials",
-      "Minimal polynomial $\\mu_M$ and its divisibility property: $r(M) = 0 \\Rightarrow \\mu_M \\mid r$",
-      "Characteristic polynomial $\\chi_M$ and Cayley-Hamilton ($\\mu_M \\mid \\chi_M$, $\\deg(\\chi_M) = n$)",
-      "Polynomial evaluation map $\\text{aeval}_M : K[X] \\to K^{n \\times n}$ as a ring homomorphism — gives commutativity $r(M) \\cdot p^k(M) = p^k(M) \\cdot r(M)$",
-      "Strong induction on natural numbers; the Lean tactic `induction e using Nat.strong_induction_on`",
-      "Irreducibility in a UFD: $p$ irreducible ⟺ $p$ prime, hence $p \\nmid r \\Leftrightarrow \\gcd(p, r) = 1$"
+      "**Bypassing the Krull-Schmidt machinery**: The classical proof of rational canonical form via the PID structure theorem (Smith normal form for $K[X]$-modules) factors $K^n$ as a direct sum $\\bigoplus_i K[X]/(p_i^{e_i})$ of primary cyclic modules — a deep theorem requiring Krull-Schmidt uniqueness. WIP03 demonstrates that for the prime power case, this entire structural machinery is unnecessary: a single inductive argument on the exponent suffices. The trade-off is that the prime power restriction is essential: without primary decomposition (which WIP02 handles via squarefree CRT), the general case requires combining the two approaches.",
+      "**Module-theoretic shadow**: Although the proof avoids the PID structure theorem, the inductive argument is the *p*-adic valuation reasoning hidden behind it. In the language of $K[X]$-modules, $K^n$ acted on by $M$ is a torsion module with annihilator $(p^e)$, and `pow_irred_dvd_of_annihilated` is the assertion that any vector $v$ with annihilator exactly $(p^{k+1})$ has $\\text{ord}_p(\\text{Ann}(v)) = k+1$. The 'shift trick' $v \\mapsto p(M)v$ corresponds to the canonical map $K^n/(p^{e+1}) \\to K^n/(p^e)$ that decreases the *p*-adic level by one. The full PID theorem unpacks this as a direct sum decomposition $K^n \\cong \\bigoplus_i K[X]/(p^{e_i})$, but for the *single-summand* (cyclic) case the inductive lemma suffices on its own — providing an axiom-free path that avoids constructing the decomposition while still extracting its quantitative content. The same reasoning generalizes to any DVR-like setting with a notion of valuation: replace $K[X]$ with a discrete valuation ring, $p$ with the uniformizer, and the inductive lemma transports verbatim. This makes WIP03 a template for *p*-adic descent arguments in algebraic-geometry settings (e.g., reductions modulo prime ideals in number rings)."
     ]
   },
   "sections": [
@@ -142,9 +128,7 @@
       "The prime power case proved here covers fields K of any characteristic. Does the proof simplify when char(K) = 0 or when K is algebraically closed (so that irreducible p must be linear)?",
       "Can the key lemma be generalized to non-matrix settings — e.g., cyclic vectors for endomorphisms of infinite-dimensional spaces, or modules over other PIDs besides K[X]?",
       "**Computational complexity**: The proof is constructive — given $M$ with $\\mu_M = p^e$, it picks $v$ such that $p^{e-1}(M)v \\neq 0$ via standard basis enumeration. Can a Lean-formalized algorithm be extracted that finds a cyclic vector in $O(n^3)$ field operations? This would match the complexity of the Berkowitz or Krylov algorithm and provide an axiom-free, machine-verified counterpart to the standard computational linear algebra.",
-      "**Differential analog**: The cyclic vector theorem has a differential-algebraic counterpart: every irreducible linear differential operator over $\\mathbb{C}(x)$ has a cyclic vector in its solution space (Deligne's theorem in differential Galois theory). Can the inductive shift trick used in WIP03 be adapted to differential modules over $\\mathbb{C}(x)\\{\\partial\\}$, giving an axiom-free proof of the differential cyclic vector theorem for the prime power case of the differential minimal polynomial?",
-      "**Can the shift-trick technique be axiomatized?** The shift $v \\mapsto p(M)v$ as a level-decreasing operator on the $p$-adic filtration is a recurring pattern. Can a Lean tactic or structure encode this as a general 'induction on filtration depth' principle, applicable to any module $M$ over a UFD with a chain of submodules indexed by $p$-adic valuation?",
-      "**Generalization to local rings**: The proof structure should generalize from $K[X]$ (a PID) to any local UFD with maximal ideal $\\mathfrak{m} = (p)$ — the irreducible $p$ generates $\\mathfrak{m}$, and the filtration $V_k = \\ker(p^k)$ becomes the standard $\\mathfrak{m}$-adic filtration. Can the Lean formalization be parameterized over such rings to cover, e.g., $p$-adic integers $\\mathbb{Z}_p$ where similar cyclic decomposition theorems hold?"
+      "**Differential analog**: The cyclic vector theorem has a differential-algebraic counterpart: every irreducible linear differential operator over $\\mathbb{C}(x)$ has a cyclic vector in its solution space (Deligne's theorem in differential Galois theory). Can the inductive shift trick used in WIP03 be adapted to differential modules over $\\mathbb{C}(x)\\{\\partial\\}$, giving an axiom-free proof of the differential cyclic vector theorem for the prime power case of the differential minimal polynomial?"
     ]
   },
   "leanFile": {
@@ -205,6 +189,60 @@
       "year": "2003",
       "venue": "Springer Grundlehren der mathematischen Wissenschaften, vol. 328",
       "note": "Chapter 2 develops the differential analog of cyclic vectors for D-modules over differential rings. The Deligne cyclic vector theorem (Theorem 2.9) parallels the matrix-theoretic result proved here, suggesting the inductive shift trick may extend to the differential setting — see openQuestions"
+    },
+    {
+      "authors": [
+        "S. Lang"
+      ],
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Graduate Texts in Mathematics, Springer (3rd edition, revised)",
+      "note": "Chapter XIV §2–3 develops the full module structure theorem and deduces the rational canonical form. Theorem 2.7 (primary decomposition) is the abstract framework that the prime power case formalized here instantiates. Lang's exposition makes explicit the analogy with finite abelian groups (K[X] → Z, prime polynomials → primes), clarifying why prime power components are the natural building blocks."
+    },
+    {
+      "authors": [
+        "S. Roman"
+      ],
+      "title": "Advanced Linear Algebra",
+      "year": "2008",
+      "venue": "Springer GTM 135, 3rd edition",
+      "note": "Chapters 8–9 give a self-contained treatment of cyclic decomposition, primary decomposition, and rational canonical form. Roman organizes the exposition around invariant factors and explicitly proves the cyclic decomposition for primary components — the prime-power module decomposition this entry formalizes for the single-summand (nonderogatory) case. Includes careful treatment of the p-adic filtration argument that `pow_irred_dvd_of_annihilated` formalizes."
+    },
+    {
+      "authors": [
+        "J.-P. Serre"
+      ],
+      "title": "Local Fields",
+      "year": "1979",
+      "venue": "Springer GTM 67",
+      "note": "Chapter I develops the p-adic valuation framework referenced in the module-theoretic shadow keyInsight. The inductive descent in `pow_irred_dvd_of_annihilated` is the polynomial-ring shadow of DVR reasoning: multiplication by a uniformizer decreases valuation by one, exactly mirroring the v → p(M)v shift trick. Connects the Lean formalization to algebraic number theory."
+    },
+    {
+      "authors": [
+        "Horn, Roger A.; Johnson, Charles R."
+      ],
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Section 3.2 covers nonderogatory matrices and their characterization via cyclic vectors. Theorem 3.2.4 proves the equivalence: M is nonderogatory iff M has a cyclic vector."
+    },
+    {
+      "authors": [
+        "Lancaster, Peter; Tismenetsky, Miron"
+      ],
+      "title": "The Theory of Matrices",
+      "year": "1985",
+      "venue": "Academic Press, 2nd edition",
+      "note": "Chapter 6 treats the cyclic decomposition theorem with explicit construction of cyclic vectors via prime power factorization of the minimal polynomial. The 'level-shifting' technique in their proof (applying p(M) to descend one level) is the same strategy formalized here as the inductive step of pow_irred_dvd_of_annihilated."
+    },
+    {
+      "authors": [
+        "The Mathlib Community"
+      ],
+      "title": "Mathlib4: A Unified Library of Mathematics Formalized in Lean 4",
+      "year": "2024",
+      "venue": "https://github.com/leanprover-community/mathlib4",
+      "note": "Provides the polynomial-ring infrastructure (aeval, minpoly, natDegree_pow, UniqueFactorizationMonoid.irreducible_iff_prime, Prime.coprime_iff_not_dvd) used throughout. The IsCyclicVector typeclass approach follows Mathlib's convention of expressing structural properties as predicate definitions, enabling clean aeval rewrites."
     }
   ],
   "mainTheorems": [
