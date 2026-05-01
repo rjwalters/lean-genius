@@ -69,65 +69,65 @@
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 48,
-      "endLine": 75,
+      "endLine": 79,
       "summary": "Defines ArithProg a d, the containsEven predicate (Even a ∨ Odd d), membership lemma (mem_arithProg_iff), first_mem_arithProg (a ∈ P), and proves arithProg_infinite (theorem, not axiom).",
       "mathContext": "$P = \\{a + kd : k \\in \\mathbb{N}\\}$ contains even numbers iff $2 \\mid a$ or $d$ is odd (alternating parity). If $d > 0$, $P$ is infinite."
     },
     {
       "id": "graph-definitions",
       "title": "Graph Definitions",
-      "startLine": 76,
-      "endLine": 101,
+      "startLine": 80,
+      "endLine": 105,
       "summary": "Defines Fin.succMod (cyclic successor), ContainsCycleLength (injective vertex sequence with cyclic adjacency), CycleLengths, edgeCount, and avgDegree = 2|E|/|V|.",
       "mathContext": "A $k$-cycle is an injective map $v : \\text{Fin}\\,k \\to V$ with $v(i) \\sim v((i+1) \\bmod k)$ for all $i$. Average degree $\\bar{d}(G) = 2|E|/|V|$."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem (Bollobás 1977)",
-      "startLine": 102,
-      "endLine": 146,
+      "startLine": 106,
+      "endLine": 150,
       "summary": "Axiomatizes bollobas_theorem: for valid progressions, ∃ c(P) forcing cycles. Proves even_cycles_from_high_degree corollary by applying Bollobás with P = {4, 6, 8, ...}.",
       "mathContext": "Bollobás's theorem: $\\forall P = \\{a + kd\\}$ with $a \\geq 3, d > 0$, containsEven: $\\exists c > 0, \\bar{d}(G) \\geq c \\implies \\exists k \\in P, G \\supseteq C_k$. Corollary instantiates with $(a,d) = (4,2)$."
     },
     {
       "id": "optimal-constants",
       "title": "The Open Question: Optimal Constants",
-      "startLine": 147,
-      "endLine": 172,
+      "startLine": 151,
+      "endLine": 176,
       "summary": "Defines optimalConstantQuestion: existence of optimal f(a,d) giving the best constant c(P). Known: c exists; unknown: tight bounds as function of a, d.",
       "mathContext": "The quantitative question: what is $c^*(a,d) = \\inf\\{c : \\bar{d}(G) \\geq c \\implies \\exists k \\in P, C_k \\subseteq G\\}$? For $P = \\{\\text{even} \\geq 4\\}$, Bondy-Simonovits gives polynomial bounds."
     },
     {
       "id": "related-results",
       "title": "Related Results",
-      "startLine": 173,
-      "endLine": 188,
+      "startLine": 177,
+      "endLine": 182,
       "summary": "Docstring discussion of related results: Bondy-Simonovits (high min degree → consecutive even cycle lengths) and subgraph extraction (average-to-min degree). Neither is declared as an axiom; both are described in docstring prose for context.",
       "mathContext": "Bondy-Simonovits: $\\delta(G) \\geq d \\implies G$ contains $C_k$ for all even $k \\in [4, 2d]$. Subgraph extraction: $\\bar{d}(G) \\geq 2d \\implies \\exists H \\subseteq G$ with $\\delta(H) \\geq d$. Described in prose only — not formally declared in this file."
     },
     {
       "id": "even-necessity",
       "title": "Why Even Numbers Matter",
-      "startLine": 189,
-      "endLine": 232,
+      "startLine": 183,
+      "endLine": 216,
       "summary": "Docstring explanation of why even numbers are necessary: K_{n,n} has arbitrarily high average degree but only even cycles. Names bipartite_no_odd_cycles and even_condition_necessary appear in docstrings only — not declared as axioms in this file.",
       "mathContext": "Bipartite graphs have only even cycles (vertices alternate between parts). $K_{n,n}$ has $\\bar{d} = n$ but $C_{2k+1} \\not\\subseteq K_{n,n}$. So for $P = \\{3, 7, 11, \\ldots\\}$ (all odd), no $c$ works."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "startLine": 233,
-      "endLine": 252,
+      "startLine": 217,
+      "endLine": 236,
       "summary": "Proves multiples_of_four: applying Bollobás with P = {4, 8, 12, ...} (a=4, d=4) forces cycles divisible by 4.",
       "mathContext": "Application with $(a,d) = (4,4)$: any $k \\in P$ has form $4 + 4m = 4(1+m)$, hence $4 \\mid k$ and $k \\geq 4$."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 253,
+      "startLine": 237,
       "endLine": 258,
       "summary": "Summarizes the resolution: SOLVED by Bollobás 1977, even condition necessary, optimal constants open. Lists references.",
-      "mathContext": "The formalization proves 2 corollaries (even cycles, multiples of 4) and demonstrates necessity of the even condition. 6 axioms encode deep results (Bollobás, Bondy-Simonovits, bipartite structure, subgraph extraction)."
+      "mathContext": "The formalization proves 2 corollaries (even cycles, multiples of 4) and demonstrates necessity of the even condition. 1 axiom (`bollobas_theorem`) encodes the main result. The Bondy-Simonovits, bipartite-graph, and subgraph-extraction results are referenced in docstring prose only — not declared as axioms in this file."
     }
   ],
   "conclusion": {
