@@ -138,10 +138,10 @@
     {
       "id": "related-results",
       "title": "Related Results",
-      "summary": "**Proved** `exists_high_degree_vertex` from the Erdős–Lovász bound; axiomatizes `edge_lower_bound` ($|E| \\geq 2^{r-1}/(4r)$ for 3-chromatic $H$)",
+      "summary": "**Proved** `exists_high_degree_vertex` from the Erdős–Lovász bound; documents in source comments `edge_lower_bound` (no Lean declaration exists) ($|E| \\geq 2^{r-1}/(4r)$ for 3-chromatic $H$)",
       "startLine": 171,
       "endLine": 191,
-      "mathContext": "**Proved** `exists_high_degree_vertex` from the Erdős–Lovász bound; axiomatizes `edge_lower_bound` ($|E| \\geq $$2^{{r-1}$}$/(4r)$ for 3-chromatic $H$)"
+      "mathContext": "**Proved** `exists_high_degree_vertex` from the Erdős–Lovász bound; documents in source comments `edge_lower_bound` (no Lean declaration exists) ($|E| \\geq $$2^{{r-1}$}$/(4r)$ for 3-chromatic $H$)"
     },
     {
       "id": "specific-values",
@@ -154,10 +154,10 @@
     {
       "id": "proof-technique",
       "title": "Proof Technique: Lovász Local Lemma",
-      "summary": "Describes the LLL argument: random 2-coloring with $\\Pr[\\text{monochromatic } e] = 2^{1-r}$, dependency $\\leq r\\Delta$; axiomatizes `contrapositive_form`: $\\forall v,\\; \\deg(v) < 2^{r-1}/(4r) \\implies \\chi(H) \\leq 2$",
+      "summary": "Describes the LLL argument: random 2-coloring with $\\Pr[\\text{monochromatic } e] = 2^{1-r}$, dependency $\\leq r\\Delta$; documents in source comments `contrapositive_form` (no Lean declaration exists): $\\forall v,\\; \\deg(v) < 2^{r-1}/(4r) \\implies \\chi(H) \\leq 2$",
       "startLine": 208,
       "endLine": 215,
-      "mathContext": "Describes the LLL argument: random 2-coloring with $\\Pr[\\text{monochromatic } e] = 2^{1-r}$, dependency $\\leq r\\Delta$; axiomatizes `contrapositive_form`: $\\forall v,\\; \\deg(v) < 2^{r-1}/(4r) \\implies \\chi(H) \\leq 2$"
+      "mathContext": "Describes the LLL argument: random 2-coloring with $\\Pr[\\text{monochromatic } e] = 2^{1-r}$, dependency $\\leq r\\Delta$; documents in source comments `contrapositive_form` (no Lean declaration exists): $\\forall v,\\; \\deg(v) < 2^{r-1}/(4r) \\implies \\chi(H) \\leq 2$"
     }
   ],
   "conclusion": {

@@ -152,7 +152,7 @@
     {
       "id": "examples",
       "title": "Examples: Paley Graphs and Random Graphs",
-      "summary": "Defines `IsPaleyGraph` ($q \\equiv 1 \\pmod{4}$, $(q-1)/2$-regular on $\\mathbb{F}_q$). Axiomatizes `random_regular_bound` (DKM holds with high probability for random regular graphs).",
+      "summary": "Defines `IsPaleyGraph` ($q \\equiv 1 \\pmod{4}$, $(q-1)/2$-regular on $\\mathbb{F}_q$). documents in source comments `random_regular_bound` (no Lean declaration exists) (DKM holds with high probability for random regular graphs).",
       "startLine": 148,
       "endLine": 171,
       "mathContext": "Paley graph $P(q)$ for $q \\equiv 1 \\pmod{4}$: $V = \\mathbb{F}_q$, $u \\sim v \\iff u - v \\in (\\mathbb{F}_q^\\times)^2$. $(q-1)/2$-regular, self-complementary. Random $(n+1)$-regular model $\\mathcal{G}(2n, n+1)$ satisfies DKM bound with high probability."

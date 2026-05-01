@@ -79,7 +79,7 @@
       "title": "Main Conjecture (EGRS)",
       "startLine": 39,
       "endLine": 47,
-      "summary": "Axiomatizes `erdos_731_conjecture`: for almost all $n$, $\\text{leastNonDivCentral}(n) = \\exp((\\log n)^{1/2+o(1)})$. Uses a placeholder `True` since the precise formulation requires asymptotic density."
+      "summary": "documents in source comments `erdos_731_conjecture` (no Lean declaration exists): for almost all $n$, $\\text{leastNonDivCentral}(n) = \\exp((\\log n)^{1/2+o(1)})$. Uses a placeholder `True` since the precise formulation requires asymptotic density."
     },
     {
       "id": "divisibility",
@@ -93,7 +93,7 @@
       "title": "Asymptotic Analysis",
       "startLine": 75,
       "endLine": 107,
-      "summary": "The counterexample `least_nondiv_counterexample` ($4$ is not prime but $4 \\nmid \\binom{4}{2} = 6$, showing the least non-divisor need not be prime). Axiomatizes `egrs_typical_behavior` (EGRS heuristic for typical $n$).",
+      "summary": "The counterexample `least_nondiv_counterexample` ($4$ is not prime but $4 \\nmid \\binom{4}{2} = 6$, showing the least non-divisor need not be prime). documents in source comments `egrs_typical_behavior` (no Lean declaration exists) (EGRS heuristic for typical $n$).",
       "mathContext": "For most $n$, $f(n)$ is the smallest prime not dividing $\\binom{2n}{n}$. But $n = 2$: $\\binom{4}{2} = 6$, $4 \\nmid 6$, so $f(2) = 4$ (not prime). This shows the prime restriction is 'almost always' true but not universal."
     },
     {

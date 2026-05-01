@@ -123,16 +123,16 @@
       "title": "Halasz's Theorem (1973)",
       "startLine": 107,
       "endLine": 121,
-      "summary": "The definitive answer: YES with $C = 1$. Axiomatizes `halasz_theorem`, defines `halaszConstant = 1`, and proves `erdos_523_answer` by witnessing the existential.",
-      "mathContext": "Formal definition: The definitive answer: YES with $C = 1$. Axiomatizes `halasz_theorem`, defines `halaszConstant = 1`, and proves `erdos_523_answer` by witnessing the existential."
+      "summary": "The definitive answer: YES with $C = 1$. documents in source comments `halasz_theorem` (no Lean declaration exists), defines `halaszConstant = 1`, and proves `erdos_523_answer` by witnessing the existential.",
+      "mathContext": "Formal definition: The definitive answer: YES with $C = 1$. documents in source comments `halasz_theorem` (no Lean declaration exists), defines `halaszConstant = 1`, and proves `erdos_523_answer` by witnessing the existential."
     },
     {
       "id": "probabilistic-framework",
       "title": "Probabilistic Framework",
       "startLine": 128,
       "endLine": 142,
-      "summary": "Defines `probabilitySpace`, `uniformSignDistribution`, `AlmostSureConvergence C`, and axiomatizes `halasz_almost_sure` (a.s. convergence to $C = 1$).",
-      "mathContext": "Formal definition: Defines `probabilitySpace`, `uniformSignDistribution`, `AlmostSureConvergence C`, and axiomatizes `halasz_almost_sure` (a.s. convergence to $C = 1$)."
+      "summary": "Defines `probabilitySpace`, `uniformSignDistribution`, `AlmostSureConvergence C`, and documents in source comments `halasz_almost_sure` (no Lean declaration exists) (a.s. convergence to $C = 1$).",
+      "mathContext": "Formal definition: Defines `probabilitySpace`, `uniformSignDistribution`, `AlmostSureConvergence C`, and documents in source comments `halasz_almost_sure` (no Lean declaration exists) (a.s. convergence to $C = 1$)."
     },
     {
       "id": "l2-analysis",
@@ -147,8 +147,8 @@
       "title": "Littlewood Polynomials",
       "startLine": 170,
       "endLine": 183,
-      "summary": "Defines `IsLittlewood` (polynomials with $\\pm 1$ coefficients), `LittlewoodProblem` (deterministic extremal question), and axiomatizes `typical_littlewood` (most Littlewood polynomials have $\\max \\approx \\sqrt{n \\log n}$).",
-      "mathContext": "Defines `IsLittlewood` (polynomials with $\\pm 1$ coefficients), `LittlewoodProblem` (deterministic extremal question), and axiomatizes `typical_littlewood` (most Littlewood polynomials have $\\max \\approx \\sqrt{n \\log n}$)."
+      "summary": "Defines `IsLittlewood` (polynomials with $\\pm 1$ coefficients), `LittlewoodProblem` (deterministic extremal question), and documents in source comments `typical_littlewood` (no Lean declaration exists) (most Littlewood polynomials have $\\max \\approx \\sqrt{n \\log n}$).",
+      "mathContext": "Defines `IsLittlewood` (polynomials with $\\pm 1$ coefficients), `LittlewoodProblem` (deterministic extremal question), and documents in source comments `typical_littlewood` (no Lean declaration exists) (most Littlewood polynomials have $\\max \\approx \\sqrt{n \\log n}$)."
     },
     {
       "id": "bounds",

@@ -102,7 +102,7 @@
     {
       "id": "folkman-theorem",
       "title": "Folkman's Theorem",
-      "summary": "Axiomatizes `folkman_theorem`: $F(k)$ is finite for all $k \\geq 1$. Also axiomatizes `folkman_well_defined`: any coloring of $\\{1,\\ldots,F(k)\\}$ contains a monochromatic $k$-set.",
+      "summary": "Axiomatizes `folkman_theorem`: $F(k)$ is finite for all $k \\geq 1$. Also documents in source comments `folkman_well_defined` (no Lean declaration exists): any coloring of $\\{1,\\ldots,F(k)\\}$ contains a monochromatic $k$-set.",
       "startLine": 64,
       "endLine": 79,
       "mathContext": "Folkman's theorem (1960s): $\\forall k \\geq 1,\\, F(k) < \\infty$. Equivalently: the system of equations $\\{\\sum_{i \\in S} x_i = y_S : \\emptyset \\neq S \\subseteq [k]\\}$ is partition regular. This follows from Rado's theorem since the coefficient matrix has columns summing to a column of the identity."
@@ -134,7 +134,7 @@
     {
       "id": "rado-connection",
       "title": "Connection to Rado's Theorem",
-      "summary": "Axiomatizes `folkman_from_rado`: Folkman's theorem follows from Rado's theorem on partition regularity. The subset sum equations form a partition-regular system because the coefficient matrix satisfies Rado's columns condition.",
+      "summary": "documents in source comments `folkman_from_rado` (no Lean declaration exists): Folkman's theorem follows from Rado's theorem on partition regularity. The subset sum equations form a partition-regular system because the coefficient matrix satisfies Rado's columns condition.",
       "startLine": 127,
       "endLine": 147,
       "mathContext": "Rado's theorem (1933): a system $Ax = 0$ over $\\mathbb{Z}$ is partition regular iff $A$ satisfies the columns condition. For Folkman: the variables are $x_1, \\ldots, x_k$ and $y_S$ for each $\\emptyset \\neq S \\subseteq [k]$, with equations $\\sum_{i \\in S} x_i = y_S$. The coefficient matrix satisfies Rado's condition."

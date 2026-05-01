@@ -129,10 +129,10 @@
     {
       "id": "saw-definition",
       "title": "Self-Avoiding Walk Definition",
-      "summary": "Defines `SelfAvoidingWalk k` as a structure with `steps`, `selfAvoiding`, and `validSteps` properties. Axiomatizes `endToEndDistance` ($|X_n|$) and `expectedEndDistance` ($d_k(n) = \\mathbb{E}[|X_n|]$) with custom notation `d_k(n)`.",
+      "summary": "Defines `SelfAvoidingWalk k` as a structure with `steps`, `selfAvoiding`, and `validSteps` properties. documents in source comments `endToEndDistance` (no Lean declaration exists) ($|X_n|$) and `expectedEndDistance` ($d_k(n) = \\mathbb{E}[|X_n|]$) with custom notation `d_k(n)`.",
       "startLine": 40,
       "endLine": 76,
-      "mathContext": "Defines `SelfAvoidingWalk k` as a structure with `steps`, `selfAvoiding`, and `validSteps` properties. Axiomatizes `endToEndDistance` ($|X_n|$) and `expectedEndDistance` ($d_k(n) = \\mathbb{E}[|X_n|]$) with custom notation `d_k(n)`."
+      "mathContext": "Defines `SelfAvoidingWalk k` as a structure with `steps`, `selfAvoiding`, and `validSteps` properties. documents in source comments `endToEndDistance` (no Lean declaration exists) ($|X_n|$) and `expectedEndDistance` ($d_k(n) = \\mathbb{E}[|X_n|]$) with custom notation `d_k(n)`."
     },
     {
       "id": "critical-exponent",

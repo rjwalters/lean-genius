@@ -115,18 +115,18 @@
     {
       "id": "polynomial-generalization",
       "title": "Polynomial Generalization",
-      "summary": "Defines `PolyIsEvenSomewhere f` ($\\exists z,\\; 2 \\mid f(z)$) and `HasMonochromaticPolyPair c f`. Axiomatizes `khalfalah_szemeredi_general`: for any non-constant polynomial satisfying the evenness condition, monochromatic $f$-pairs exist. The evenness condition is necessary since odd $f$ allows parity-based avoidance.",
+      "summary": "Defines `PolyIsEvenSomewhere f` ($\\exists z,\\; 2 \\mid f(z)$) and `HasMonochromaticPolyPair c f`. documents in source comments `khalfalah_szemeredi_general` (no Lean declaration exists): for any non-constant polynomial satisfying the evenness condition, monochromatic $f$-pairs exist. The evenness condition is necessary since odd $f$ allows parity-based avoidance.",
       "startLine": 111,
       "endLine": 136,
-      "mathContext": "Defines `PolyIsEvenSomewhere f` ($\\exists z,\\; 2 \\mid f(z)$) and `HasMonochromaticPolyPair c f`. Axiomatizes `khalfalah_szemeredi_general`: for any non-constant polynomial satisfying the evenness condition, monochromatic $f$-pairs exist. The evenness condition is necessary since odd $f$ allows parity-based avoidance."
+      "mathContext": "Defines `PolyIsEvenSomewhere f` ($\\exists z,\\; 2 \\mid f(z)$) and `HasMonochromaticPolyPair c f`. documents in source comments `khalfalah_szemeredi_general` (no Lean declaration exists): for any non-constant polynomial satisfying the evenness condition, monochromatic $f$-pairs exist. The evenness condition is necessary since odd $f$ allows parity-based avoidance."
     },
     {
       "id": "kth-powers",
       "title": "k-th Power Generalization",
-      "summary": "Defines `IsKthPower m k`, `SumIsKthPower x y k`, and `HasMonochromaticKthPowerPair`. Axiomatizes `kth_power_result` for $k \\geq 2$: any finite coloring has monochromatic pairs with $k$-th power sums. Follows from the polynomial case since $f(z) = z^k$ satisfies $2 \\mid f(0)$.",
+      "summary": "Defines `IsKthPower m k`, `SumIsKthPower x y k`, and `HasMonochromaticKthPowerPair`. documents in source comments `kth_power_result` (no Lean declaration exists) for $k \\geq 2$: any finite coloring has monochromatic pairs with $k$-th power sums. Follows from the polynomial case since $f(z) = z^k$ satisfies $2 \\mid f(0)$.",
       "startLine": 137,
       "endLine": 168,
-      "mathContext": "Defines `IsKthPower m k`, `SumIsKthPower x y k`, and `HasMonochromaticKthPowerPair`. Axiomatizes `kth_power_result` for $k \\geq 2$: any finite coloring has monochromatic pairs with $k$-th power sums. Follows from the polynomial case since $f(z) = z^k$ satisfies $2 \\mid f(0)$."
+      "mathContext": "Defines `IsKthPower m k`, `SumIsKthPower x y k`, and `HasMonochromaticKthPowerPair`. documents in source comments `kth_power_result` (no Lean declaration exists) for $k \\geq 2$: any finite coloring has monochromatic pairs with $k$-th power sums. Follows from the polynomial case since $f(z) = z^k$ satisfies $2 \\mid f(0)$."
     },
     {
       "id": "graph-perspective",
