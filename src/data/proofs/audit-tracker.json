@@ -6433,10 +6433,13 @@
       "result": "issues-fixed"
     },
     "erdos-393": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-agent",
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T07:00:00Z",
+      "result": "issues-found",
+      "issues": [
+        "issue #14432: section line drift Parts 3-8 (counting-function/abc-conditional/bounds/diophantine/density ranges off by 3-14 lines); empty Part 6 'Lower Bounds' has only 3 dangling /-- ... -/ docstrings (137-139), no formalized bounds; numerical counts (4 axioms, 0 sorries, 4 theorems, 12 defs, 177 lines) and axiomatized/axiom badge all clean"
+      ]
     },
     "erdos-394": {
       "agentId": "auditor-cycle-20-batch",
