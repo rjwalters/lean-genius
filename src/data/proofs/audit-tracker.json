@@ -6684,10 +6684,14 @@
       "result": "clean"
     },
     "erdos-431": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-agent",
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T21:19:24Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom-section: prime_counting_asymptotic, primes_sumset_not_primes, must_contain_small_elements not declared (issue #14400)",
+        "section line-range drift: inverse-goldbach, counting-functions, main-statement off by 1-2 lines"
+      ]
     },
     "erdos-432": {
       "agentId": "auditor-cycle-20-batch",
