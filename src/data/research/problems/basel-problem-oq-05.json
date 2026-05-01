@@ -1,8 +1,8 @@
 {
   "slug": "basel-problem-oq-05",
   "title": "Can Euler's original proof via the Weierstrass factorization $\\sin(x)/x = \\pr...",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-26T20:00:24.431Z",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T18:10:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "File is axiomatized with one Mathlib-gap axiom (weierstrass_sin_product); gallery entry 'axiomatized' with badge 'axiom' — matches reality.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None for routine research. Future: contribute Weierstrass product formula to Mathlib (substantial complex-analysis work) to convert axiom to theorem.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Created BaselProblemOQ05.lean (184 lines, 8T, 2A, 0S). Formalizes Euler proof structure via Weierstrass product. Key finding: product formula NOT in Mathlib — axiomatized.",
+    "progressSummary": "AXIOMATIZED-COMPLETE (gallery 'axiomatized' with badge 'axiom'): proofs/Proofs/BaselProblemOQ05.lean has 9 theorems, 0 sorries, 1 axiom (189 lines). The single axiom `weierstrass_sin_product` is the Weierstrass factorization for sin(πx)/(πx); it is not in Mathlib v4.26.0 and would require substantial complex-analysis infrastructure to prove. All other content (Taylor side, coefficient comparison, Euler proof structure, partial product positivity bounds) is fully verified.",
     "builtItems": [
       "Documented proof strategy for zeta_two_transcendental and zeta_four_transcendental",
       "proofs/Proofs/BaselProblemOQ05.lean (184 lines, 8T, 2A, 0S)",
@@ -45,8 +45,13 @@
       "Partial product positivity: each factor 1-x²/n² > 0 for |x| < 1 is fully verified",
       "Mathlib proves Basel via Bernoulli polynomials (hasSum_zeta_two), not Weierstrass products"
     ],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "mathlibGaps": [
+      "Weierstrass factorization for sin(πx)/(πx) in real or complex form"
+    ],
+    "nextSteps": [
+      "(Long-term, optional) Contribute Weierstrass product formula for sin to Mathlib so this axiom can be eliminated.",
+      "(Optional) Add downstream theorems: e.g., derive ζ(2) = π²/6 directly from the axiomatized product (likely already done in BaselProblem.lean — cross-check)."
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -67,7 +72,7 @@
     "mathlib": []
   },
   "started": "2026-03-26T20:00:24.431Z",
-  "lastUpdate": "2026-03-28T00:30:00.000Z",
+  "lastUpdate": "2026-04-27T18:10:00.000Z",
   "significance": 5,
   "tractability": 6,
   "leanFiles": [
