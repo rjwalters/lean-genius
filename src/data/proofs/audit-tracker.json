@@ -8100,9 +8100,12 @@
     },
     "erdos-636": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T06:02:15Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom axioms in narrative: assumptions field claims 7 former axioms (ramsey_graphs_exist, erdos_faudree_sos, ks_probabilistic_method, signature_distribution, non_ramsey_smaller_bound, ramsey_forces_complexity, induced_path_count) which are absent from the file; sections efs/ramsey/techniques/ramsey-theory and originalContributions/proofStrategy reference axioms that do not exist — issue #14136"
+      ]
     },
     "erdos-637": {
       "agentId": "auditor-cycle-20-batch",
