@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-29T05:28:40-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "Structural cleanup: cleaner recursive forms and base cases in the partition hierarchy",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Add monotonicity in the cardinal parameter (partition_arrow_mono_cardinal)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,23 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axioms from 5 to 2 by proving monotonicity and ramsey_3_3 from definitions",
+    "progressSummary": "PROGRESS: File at 14 theorems, 0 axioms, 0 sorries. Added stepping_down_succ (cleaner recursion form) and omega_mul_one_partition (base case for ω·1 = ω). OmegaSquaredConjecture remains defined as Prop but unasserted (problem is open).",
     "builtItems": [
       "Proved partition_arrow_mono_ordinal (Erdos70Problem.lean:191)",
       "Proved partition_arrow_mono_size (Erdos70Problem.lean:201)",
-      "Proved ramsey_3_3 (Erdos70Problem.lean:159)"
+      "Proved ramsey_3_3 (Erdos70Problem.lean:159)",
+      "Proved stepping_down_succ: ω·(k+1) → ω·k without Nat subtraction (Erdos70OQ01Problem.lean:191)",
+      "Proved omega_mul_one_partition: OmegaMultKPartition 1 n ↔ PartitionArrow continuum_card ω n (Erdos70OQ01Problem.lean:202)"
     ],
     "insights": [
       "ramsey_3_3 is trivially true: any 3-element set has exactly one 3-subset (itself), so it is always homogeneous for its own color",
       "partition_arrow_mono_ordinal follows from Ordinal.card_le_card: alpha <= beta implies alpha.card <= beta.card",
       "partition_arrow_mono_size follows directly from le_trans on natural numbers",
       "After proving 3 axioms, only erdos_rado_omega_plus_n and finite_ramsey remain as axioms",
-      "The omega-squared case (first open case beyond Erdos-Rado) would need stepping-up techniques beyond current infrastructure"
+      "The omega-squared case (first open case beyond Erdos-Rado) would need stepping-up techniques beyond current infrastructure",
+      "Erdos70Problem.lean (parent) and Erdos70OQ01Problem.lean both reached 0 axioms / 0 sorries: prior 'erdos_rado_omega_plus_n' and 'finite_ramsey' axioms have already been eliminated. Only the open question OmegaSquaredConjecture remains stated as a Prop (not asserted).",
+      "stepping_down_succ avoids Nat.sub k 1 boilerplate; useful as a recursion-friendly form when iterating across the ω·k hierarchy.",
+      "omega_mul_one_partition pins down the base case explicitly: ω·1 = ω via Ordinal.mul_one, so the k=1 case of OmegaMultKPartition is precisely the Erdős-Rado-regime partition arrow on ω."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Investigate if finite_ramsey can be derived from Mathlib Ramsey theory",
-      "erdos_rado_omega_plus_n is a deep result - likely needs dedicated formalization effort"
+      "Prove partition_arrow_mono_cardinal: monotonicity in the cardinal parameter (κ ≤ κ' ⇒ κ → (α,m) implies κ' → (α,m)) via embedding pullback",
+      "Formalize specific instance: PartitionArrow continuum_card ω n for small n using Mathlib Ramsey infrastructure",
+      "Investigate whether omega_squared_is_limit can be leveraged to formalize a 'cofinal stepping-up' bound"
     ],
     "markdown": "# Knowledge Base: erdos-70-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -186,8 +192,8 @@
     {
       "path": "Proofs/Erdos70OQ01Problem.lean",
       "filename": "Erdos70OQ01Problem.lean",
-      "lineCount": 241,
-      "theoremCount": 12,
+      "lineCount": 258,
+      "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 11,
       "sorryCount": 0,
