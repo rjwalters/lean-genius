@@ -1,31 +1,42 @@
 {
   "slug": "ptolemys-theorem-oq-02",
-  "title": "Can the complex-number proof be formalized, showing that Ptolemy's theorem fo...",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Ptolemy's Theorem → Sine Addition Formula (Complex-Number Proof)",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in geometry: Can the complex-number proof be formalized, showing that Ptolemy's theorem fo....",
-    "whyMatters": []
+    "formal": "theorem sin_add_from_ptolemy (α β : ℝ) (hα : 0 < α) (hα' : α < π/4) (hβ : 0 < β) (hβ' : β < π/4) (hab : α + β < π/2) : sin (α + β) = sin α * cos β + cos α * sin β",
+    "plain": "Can the complex-number proof of Ptolemy's theorem be applied on the unit circle to derive the sine addition formula sin(α+β) = sin α cos β + cos α sin β?",
+    "whyMatters": [
+      "Closes the historical loop — machine-verifies the classical derivation Ptolemy used 1500 years before Euler's exponential form",
+      "Demonstrates that pure algebraic Ptolemy (no geometry) suffices for trigonometric identities",
+      "Gallery entry shows complex-analytic proof techniques on the unit circle"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "sin_add_from_ptolemy: sin(α+β) = sinα cosβ + cosα sinβ via Ptolemy's theorem on the unit-circle quadrilateral (1, exp(2αI), -1, exp(-2βI))",
+      "Five chord-length lemmas: ‖1 - exp(2αI)‖ = 2 sin α, ‖exp(2αI) - (-1)‖ = 2 cos α, etc., for α, β ∈ (0, π/2)",
+      "ccw_order: the four points lie in counterclockwise order on the unit circle for α, β ∈ (0, π/2)"
+    ],
+    "open": [
+      "cos addition via symmetric quadrilateral choice (open question listed in gallery entry)",
+      "Generalize chord-length lemmas to circles of arbitrary radius r"
+    ],
+    "goal": "sin(α+β) = sinα cosβ + cosα sinβ derived from Ptolemy's equality on a specific unit-circle quadrilateral"
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-03-30T01:04:30.839Z",
+    "since": "2026-04-24",
     "iteration": 1,
-    "focus": "Completed complex-number proof of Ptolemy inequality",
+    "focus": "sin_add_from_ptolemy proved in PtolemysComplexProofOQ02.lean (PR #12279); gallery entry verified",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Closed: complete formalization in gallery as ptolemys-complex-proof-oq-02 (badge: mathlib).",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -73,64 +84,20 @@
     "mathlib": []
   },
   "started": "2026-03-30T01:04:30.838Z",
-  "lastUpdate": "2026-03-30T01:04:30.838Z",
+  "lastUpdate": "2026-04-27T13:55:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/PtolemysTheorem.lean",
-      "filename": "PtolemysTheorem.lean",
-      "lineCount": 241,
-      "theoremCount": 3,
+      "path": "Proofs/PtolemysComplexProofOQ02.lean",
+      "filename": "PtolemysComplexProofOQ02.lean",
+      "lineCount": 351,
+      "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheorem.lean"
-    },
-    {
-      "path": "Proofs/PtolemysTheoremOQ01.lean",
-      "filename": "PtolemysTheoremOQ01.lean",
-      "lineCount": 483,
-      "theoremCount": 8,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 2,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01.lean"
-    },
-    {
-      "path": "Proofs/PtolemysTheoremOQ01Incomplete01.lean",
-      "filename": "PtolemysTheoremOQ01Incomplete01.lean",
-      "lineCount": 490,
-      "theoremCount": 2,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 4,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01Incomplete01.lean"
-    },
-    {
-      "path": "Proofs/PtolemysTheoremOQ01OQ01.lean",
-      "filename": "PtolemysTheoremOQ01OQ01.lean",
-      "lineCount": 289,
-      "theoremCount": 6,
-      "axiomCount": 1,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01OQ01.lean"
-    },
-    {
-      "path": "Proofs/PtolemysTheoremOQ01OQ02.lean",
-      "filename": "PtolemysTheoremOQ01OQ02.lean",
-      "lineCount": 271,
-      "theoremCount": 2,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01OQ02.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysComplexProofOQ02.lean"
     }
   ]
 }
