@@ -6713,9 +6713,12 @@
     },
     "erdos-435": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T21:47:48Z",
+      "result": "issues-found",
+      "issues": [
+        "PR #14407 / issue #14397 + follow-up comment: phantom non_representable_exist axiom in section main-theorem; conclusion summary claims 6 axioms (only 2 declared); Sylvester–Frobenius docstring labelled axiomatized in section related-results"
+      ]
     },
     "erdos-436": {
       "agentId": "auditor-cycle-20-batch",
