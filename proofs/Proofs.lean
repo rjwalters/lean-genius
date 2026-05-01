@@ -7,6 +7,7 @@ import Proofs.AMGMInequalityOQ02OQ01
 import Proofs.AMGMOperatorMeans
 import Proofs.AbelRuffini
 import Proofs.AbelRuffiniGaloisExtensions
+import Proofs.AbelRuffiniGaloisExtensionsOQ04
 import Proofs.AbelRuffiniOQ04
 import Proofs.AbelRuffiniOQ04OQ01
 import Proofs.AbelRuffiniOQ04OQ02
@@ -25,6 +26,9 @@ import Proofs.AmgmInequalityOQ02
 import Proofs.AmgmInequalityOQ02Aristotle
 import Proofs.AmgmInequalityOQ02Defs
 import Proofs.AmgmInequalityOQ02OQ01OQ02
+import Proofs.AmgmInequalityOQ02OQ01OQ02OQ01
+import Proofs.AmgmInequalityOQ02OQ01OQ02OQ01Aristotle
+import Proofs.AmgmInequalityOQ02OQ01OQ02OQ01OQ01
 import Proofs.AmgmInequalityOQ02OQ02
 import Proofs.AmgmInequalityOQ02OQ03
 import Proofs.AmgmInequalityOQ02OQ03OQ03
@@ -36,12 +40,14 @@ import Proofs.AmgmInequalityOQ03OQ03
 import Proofs.AmgmInequalityOQ03OQ04
 import Proofs.AmgmInequalityOQ04
 import Proofs.AmgmInequalityOQ04OQ01
+import Proofs.AmgmInequalityOQ04OQ05
 import Proofs.AmgmInequalityPowerMeanLimits
 import Proofs.AngleTrisection
 import Proofs.AngleTrisectionAristotle
 import Proofs.AngleTrisectionCos20Gal
 import Proofs.AngleTrisectionCos20GalOQ01
 import Proofs.AngleTrisectionCos20GalOQ01OQ01
+import Proofs.AngleTrisectionCos20GalOQ01OQ02
 import Proofs.AngleTrisectionCos20GalOQ03
 import Proofs.AngleTrisectionCos20GalOQ03OQ01
 import Proofs.AngleTrisectionEmbedding
@@ -51,6 +57,7 @@ import Proofs.AngleTrisectionOQ02OQ01
 import Proofs.AngleTrisectionOQ02OQ01OQ01
 import Proofs.AngleTrisectionOQ02OQ01OQ02
 import Proofs.AngleTrisectionOQ02OQ01OQ02Aristotle
+import Proofs.AngleTrisectionOQ02OQ01OQ02Incomplete01
 import Proofs.AngleTrisectionOQ02OQ02
 import Proofs.AngleTrisectionOQ02OQ03
 import Proofs.AngleTrisectionOQ02OQ03Ext
@@ -69,6 +76,7 @@ import Proofs.AreaOfCircle
 import Proofs.AreaOfCircleOQ01OQ02OQ01
 import Proofs.AreaOfCircleOQ01OQ02OQ01OQ01
 import Proofs.AreaOfCircleOQ01OQ02OQ01OQ01OQ01
+import Proofs.AreaOfCircleOQ01OQ02OQ01OQ01OQ02
 import Proofs.AreaOfCircleOQ01OQ02OQ01OQ03
 import Proofs.AreaOfCircleOQ01OQ02OQ02
 import Proofs.AreaOfCircleOQ01OQ02OQ02OQ01
@@ -94,6 +102,7 @@ import Proofs.AreaOfCircleOQ05OQ02
 import Proofs.ArithmeticSeries
 import Proofs.ArithmeticSeriesOQ00
 import Proofs.ArithmeticSeriesOQ00OQ01
+import Proofs.ArithmeticSeriesOQ00OQ02
 import Proofs.ArithmeticSeriesOQ02
 import Proofs.ArithmeticSeriesOQ02OQ01
 import Proofs.ArithmeticSeriesOQ02OQ01OQ01
@@ -118,6 +127,7 @@ import Proofs.BallotProblemOQ01OQ02OQ01Aristotle
 import Proofs.BallotProblemOQ01OQ02OQ02
 import Proofs.BallotProblemOQ01OQ02OQ04
 import Proofs.BallotProblemOQ01OQ04
+import Proofs.BallotProblemOQ01OQ04Core
 import Proofs.BallotProblemOQ01OQ04OQ01
 import Proofs.BallotProblemOQ02
 import Proofs.BallotProblemOQ02OQ02
@@ -138,6 +148,7 @@ import Proofs.BaselProblemOQ01OQ03
 import Proofs.BaselProblemOQ02
 import Proofs.BaselProblemOQ02Aristotle
 import Proofs.BaselProblemOQ04
+import Proofs.BaselProblemOQ04OQ03
 import Proofs.BaselProblemOQ05
 import Proofs.BertrandsPostulate
 import Proofs.BertrandsPostulateOQ03
@@ -152,6 +163,7 @@ import Proofs.BezoutIdentityOQ02
 import Proofs.BezoutIdentityOQ02OQ01
 import Proofs.BezoutIdentityOQ02OQ01OQ01
 import Proofs.BezoutIdentityOQ02OQ01OQ01OQ01
+import Proofs.BezoutIdentityOQ02OQ01OQ01OQ01OQ01
 import Proofs.BezoutIdentityOQ02OQ01OQ02
 import Proofs.BezoutIdentityOQ02OQ01OQ02OQ02
 import Proofs.BezoutIdentityOQ02OQ01OQ02OQ02OQ03
@@ -164,6 +176,7 @@ import Proofs.BezoutIdentityOQ03OQ01
 import Proofs.BezoutIdentityOQ03OQ01OQ01
 import Proofs.BezoutIdentityOQ03OQ01OQ01OQ01
 import Proofs.BezoutIdentityOQ03OQ01OQ02
+import Proofs.BezoutIdentityOQ03OQ02
 import Proofs.BezoutIdentityOQ03OQ04
 import Proofs.BezoutIdentityOQ03OQ04OQ01
 import Proofs.BezoutIdentityOQ04
@@ -175,6 +188,7 @@ import Proofs.BinaryGcdOQ01OQ04
 import Proofs.BinaryGcdOQ02
 import Proofs.BinaryGcdOQ03
 import Proofs.BinaryGcdOQ03OQ01
+import Proofs.BinaryGcdOQ03OQ02
 import Proofs.BinomialTheorem
 import Proofs.BinomialTheoremOQ01
 import Proofs.BinomialTheoremOQ01Aristotle
@@ -183,6 +197,7 @@ import Proofs.BinomialTheoremOQ02
 import Proofs.BinomialTheoremOQ02OQ01
 import Proofs.BinomialTheoremOQ02OQ01OQ01
 import Proofs.BinomialTheoremOQ02OQ01OQ01Aristotle
+import Proofs.BinomialTheoremOQ02OQ01OQ01OQ01
 import Proofs.BinomialTheoremOQ02OQ01OQ02
 import Proofs.BinomialTheoremOQ02OQ01OQ03
 import Proofs.BinomialTheoremOQ02OQ02
@@ -321,6 +336,8 @@ import Proofs.CauchySchwarzOQ03OQ02
 import Proofs.CauchySchwarzOQ04
 import Proofs.CauchySchwarzOQ04OQ01
 import Proofs.CayleyHamilton
+import Proofs.CayleyHamiltonCyclicVectorAllFields
+import Proofs.CayleyHamiltonCyclicVectorAllFieldsAristotle
 import Proofs.CayleyHamiltonMinpolyOQ01
 import Proofs.CayleyHamiltonMinpolyOQ02
 import Proofs.CayleyHamiltonMinpolyOQ02OQ01
@@ -446,6 +463,7 @@ import Proofs.DenumerabilityRationalsOQ04
 import Proofs.Derangements
 import Proofs.DerangementsConvergence
 import Proofs.DerangementsConvergenceOQ01
+import Proofs.DerangementsConvergenceOQ03
 import Proofs.DerangementsOQ02
 import Proofs.DerangementsOQ02OQ01
 import Proofs.DerangementsOQ02OQ02
@@ -570,6 +588,7 @@ import Proofs.Erdos1015Problem
 import Proofs.Erdos1016Problem
 import Proofs.Erdos1017OQ01
 import Proofs.Erdos1017Problem
+import Proofs.Erdos1018Aristotle
 import Proofs.Erdos1018OQ04
 import Proofs.Erdos1018OQ04Incomplete01
 import Proofs.Erdos1018Problem
@@ -608,6 +627,7 @@ import Proofs.Erdos1036Problem
 import Proofs.Erdos1037Aristotle
 import Proofs.Erdos1037Problem
 import Proofs.Erdos1038Problem
+import Proofs.Erdos1039Aristotle
 import Proofs.Erdos1039Problem
 import Proofs.Erdos1039ProblemAristotle
 import Proofs.Erdos103OQ01
@@ -683,6 +703,7 @@ import Proofs.Erdos1076Problem
 import Proofs.Erdos1077Problem
 import Proofs.Erdos1078Problem
 import Proofs.Erdos1079Problem
+import Proofs.Erdos107Aristotle
 import Proofs.Erdos107Problem
 import Proofs.Erdos1080Problem
 import Proofs.Erdos1081Problem
@@ -837,6 +858,7 @@ import Proofs.Erdos1181Problem
 import Proofs.Erdos1182Problem
 import Proofs.Erdos1183Problem
 import Proofs.Erdos118Problem
+import Proofs.Erdos1196Aristotle
 import Proofs.Erdos1196Problem
 import Proofs.Erdos119Problem
 import Proofs.Erdos11Problem
@@ -900,7 +922,9 @@ import Proofs.Erdos157Problem
 import Proofs.Erdos158Problem
 import Proofs.Erdos159Problem
 import Proofs.Erdos15Problem
+import Proofs.Erdos160Aristotle
 import Proofs.Erdos160Problem
+import Proofs.Erdos160ProblemAristotle
 import Proofs.Erdos161Problem
 import Proofs.Erdos162Problem
 import Proofs.Erdos163Problem
@@ -956,7 +980,7 @@ import Proofs.Erdos1OQ03
 import Proofs.Erdos1OQ03Aristotle
 import Proofs.Erdos1OQ04
 import Proofs.Erdos1Problem
-import Proofs.Erdos1WIP01
+import Proofs.Erdos1Wip01
 import Proofs.Erdos200Problem
 import Proofs.Erdos201Problem
 import Proofs.Erdos202Problem
@@ -981,6 +1005,7 @@ import Proofs.Erdos217Problem
 import Proofs.Erdos218Problem
 import Proofs.Erdos219Problem
 import Proofs.Erdos21Problem
+import Proofs.Erdos220Aristotle
 import Proofs.Erdos220Problem
 import Proofs.Erdos220ProblemProvable
 import Proofs.Erdos221Problem
@@ -1006,7 +1031,9 @@ import Proofs.Erdos237Problem
 import Proofs.Erdos238Problem
 import Proofs.Erdos239Problem
 import Proofs.Erdos23Problem
+import Proofs.Erdos240Aristotle
 import Proofs.Erdos240Problem
+import Proofs.Erdos240ProblemAristotle
 import Proofs.Erdos241Problem
 import Proofs.Erdos242Problem
 import Proofs.Erdos243Problem
@@ -1095,6 +1122,7 @@ import Proofs.Erdos303Problem
 import Proofs.Erdos304Problem
 import Proofs.Erdos305Problem
 import Proofs.Erdos306Problem
+import Proofs.Erdos307Aristotle
 import Proofs.Erdos307OQ02
 import Proofs.Erdos307Problem
 import Proofs.Erdos308Problem
@@ -1136,6 +1164,7 @@ import Proofs.Erdos334Aristotle
 import Proofs.Erdos334Problem
 import Proofs.Erdos335Problem
 import Proofs.Erdos336Problem
+import Proofs.Erdos337Aristotle
 import Proofs.Erdos337Problem
 import Proofs.Erdos338Aristotle
 import Proofs.Erdos338Problem
@@ -1168,6 +1197,7 @@ import Proofs.Erdos359Problem
 import Proofs.Erdos35Aristotle
 import Proofs.Erdos35Problem
 import Proofs.Erdos35ProblemAristotle
+import Proofs.Erdos360Aristotle
 import Proofs.Erdos360Problem
 import Proofs.Erdos361Problem
 import Proofs.Erdos362Aristotle
@@ -1195,6 +1225,7 @@ import Proofs.Erdos379Problem
 import Proofs.Erdos37Problem
 import Proofs.Erdos380Problem
 import Proofs.Erdos381Problem
+import Proofs.Erdos381ProblemAristotle
 import Proofs.Erdos382Problem
 import Proofs.Erdos383Problem
 import Proofs.Erdos384Problem
@@ -1233,6 +1264,7 @@ import Proofs.Erdos411Problem
 import Proofs.Erdos412Problem
 import Proofs.Erdos413Problem
 import Proofs.Erdos414Problem
+import Proofs.Erdos415Aristotle
 import Proofs.Erdos415Problem
 import Proofs.Erdos415ProblemAristotle
 import Proofs.Erdos416Problem
@@ -1288,6 +1320,7 @@ import Proofs.Erdos453OQ02
 import Proofs.Erdos453Problem
 import Proofs.Erdos454Aristotle
 import Proofs.Erdos454Problem
+import Proofs.Erdos454ProblemAristotle
 import Proofs.Erdos455Problem
 import Proofs.Erdos456Aristotle
 import Proofs.Erdos456Problem
@@ -1337,6 +1370,7 @@ import Proofs.Erdos48Problem
 import Proofs.Erdos490Aristotle
 import Proofs.Erdos490OQ01
 import Proofs.Erdos490Problem
+import Proofs.Erdos490ProblemAristotle
 import Proofs.Erdos491Problem
 import Proofs.Erdos492Aristotle
 import Proofs.Erdos492Problem
@@ -1403,9 +1437,11 @@ import Proofs.Erdos541Problem
 import Proofs.Erdos542Problem
 import Proofs.Erdos543Problem
 import Proofs.Erdos544Problem
+import Proofs.Erdos545Aristotle
 import Proofs.Erdos545Problem
 import Proofs.Erdos546Problem
 import Proofs.Erdos547Problem
+import Proofs.Erdos548Aristotle
 import Proofs.Erdos548Problem
 import Proofs.Erdos548ProblemAristotle
 import Proofs.Erdos549Problem
@@ -1414,13 +1450,17 @@ import Proofs.Erdos54Problem
 import Proofs.Erdos550Problem
 import Proofs.Erdos551Problem
 import Proofs.Erdos551ProblemAristotle
+import Proofs.Erdos552Aristotle
 import Proofs.Erdos552Problem
+import Proofs.Erdos553Aristotle
 import Proofs.Erdos553Problem
+import Proofs.Erdos553ProblemAristotle
 import Proofs.Erdos554Problem
 import Proofs.Erdos555Problem
 import Proofs.Erdos556Problem
 import Proofs.Erdos557Problem
 import Proofs.Erdos558Problem
+import Proofs.Erdos559Aristotle
 import Proofs.Erdos559Problem
 import Proofs.Erdos55Problem
 import Proofs.Erdos560Problem
@@ -1456,6 +1496,7 @@ import Proofs.Erdos585Problem
 import Proofs.Erdos586Problem
 import Proofs.Erdos587Problem
 import Proofs.Erdos588Problem
+import Proofs.Erdos589Aristotle
 import Proofs.Erdos589Problem
 import Proofs.Erdos58Problem
 import Proofs.Erdos590Problem
@@ -1497,6 +1538,7 @@ import Proofs.Erdos612Problem
 import Proofs.Erdos612ProblemAristotle
 import Proofs.Erdos613Aristotle
 import Proofs.Erdos613Problem
+import Proofs.Erdos613ProblemAristotle
 import Proofs.Erdos614Problem
 import Proofs.Erdos615Problem
 import Proofs.Erdos616Problem
@@ -1512,6 +1554,7 @@ import Proofs.Erdos622OQ04
 import Proofs.Erdos622Problem
 import Proofs.Erdos623Aristotle
 import Proofs.Erdos623Problem
+import Proofs.Erdos623ProblemAristotle
 import Proofs.Erdos624Problem
 import Proofs.Erdos625Aristotle
 import Proofs.Erdos625Problem
@@ -1522,14 +1565,18 @@ import Proofs.Erdos626ProblemAristotle
 import Proofs.Erdos627Aristotle
 import Proofs.Erdos627Problem
 import Proofs.Erdos627ProblemAristotle
+import Proofs.Erdos628Aristotle
 import Proofs.Erdos628Problem
 import Proofs.Erdos628ProblemAristotle
 import Proofs.Erdos629Aristotle
 import Proofs.Erdos629Problem
 import Proofs.Erdos62Problem
+import Proofs.Erdos630Aristotle
 import Proofs.Erdos630Problem
 import Proofs.Erdos630ProblemAristotle
+import Proofs.Erdos631Aristotle
 import Proofs.Erdos631Problem
+import Proofs.Erdos631ProblemAristotle
 import Proofs.Erdos632Aristotle
 import Proofs.Erdos632Problem
 import Proofs.Erdos632ProblemAristotle
@@ -1543,6 +1590,7 @@ import Proofs.Erdos636Problem
 import Proofs.Erdos636ProblemAristotle
 import Proofs.Erdos637Aristotle
 import Proofs.Erdos637Problem
+import Proofs.Erdos637ProblemAristotle
 import Proofs.Erdos638Problem
 import Proofs.Erdos639Problem
 import Proofs.Erdos63Problem
@@ -1575,6 +1623,7 @@ import Proofs.Erdos65OQ03
 import Proofs.Erdos65Problem
 import Proofs.Erdos660Aristotle
 import Proofs.Erdos660Problem
+import Proofs.Erdos660ProblemAristotle
 import Proofs.Erdos661Problem
 import Proofs.Erdos662Problem
 import Proofs.Erdos663Problem
@@ -1604,6 +1653,7 @@ import Proofs.Erdos678Aristotle
 import Proofs.Erdos678Problem
 import Proofs.Erdos679Aristotle
 import Proofs.Erdos679Problem
+import Proofs.Erdos679ProblemAristotle
 import Proofs.Erdos67Problem
 import Proofs.Erdos680Problem
 import Proofs.Erdos681Problem
@@ -1646,6 +1696,7 @@ import Proofs.Erdos711Problem
 import Proofs.Erdos712Problem
 import Proofs.Erdos713Problem
 import Proofs.Erdos714Problem
+import Proofs.Erdos715Aristotle
 import Proofs.Erdos715Problem
 import Proofs.Erdos715ProblemAristotle
 import Proofs.Erdos716Problem
@@ -1696,6 +1747,7 @@ import Proofs.Erdos751Problem
 import Proofs.Erdos752Problem
 import Proofs.Erdos753Problem
 import Proofs.Erdos754Problem
+import Proofs.Erdos755Aristotle
 import Proofs.Erdos755Problem
 import Proofs.Erdos756Problem
 import Proofs.Erdos757Problem
@@ -1743,11 +1795,13 @@ import Proofs.Erdos791Problem
 import Proofs.Erdos792Problem
 import Proofs.Erdos793Problem
 import Proofs.Erdos794Problem
+import Proofs.Erdos795Aristotle
 import Proofs.Erdos795Problem
 import Proofs.Erdos796Problem
 import Proofs.Erdos797Problem
 import Proofs.Erdos798Aristotle
 import Proofs.Erdos798Problem
+import Proofs.Erdos798ProblemAristotle
 import Proofs.Erdos799Problem
 import Proofs.Erdos79Aristotle
 import Proofs.Erdos79Problem
@@ -1826,8 +1880,10 @@ import Proofs.Erdos857Problem
 import Proofs.Erdos858Problem
 import Proofs.Erdos859Aristotle
 import Proofs.Erdos859Problem
+import Proofs.Erdos859ProblemAristotle
 import Proofs.Erdos85Problem
 import Proofs.Erdos860Problem
+import Proofs.Erdos860ProblemAristotle
 import Proofs.Erdos861Problem
 import Proofs.Erdos862Problem
 import Proofs.Erdos863Aristotle
@@ -1878,11 +1934,13 @@ import Proofs.Erdos895Problem
 import Proofs.Erdos895ProblemAristotle
 import Proofs.Erdos896Problem
 import Proofs.Erdos897Problem
+import Proofs.Erdos898Aristotle
 import Proofs.Erdos898Problem
 import Proofs.Erdos899Problem
 import Proofs.Erdos89Problem
 import Proofs.Erdos8Problem
 import Proofs.Erdos900Problem
+import Proofs.Erdos901Aristotle
 import Proofs.Erdos901Problem
 import Proofs.Erdos901ProblemAristotle
 import Proofs.Erdos902Problem
@@ -2255,6 +2313,7 @@ import Proofs.LeibnizPiOQ02
 import Proofs.LeibnizPiOQ02Aristotle
 import Proofs.LeibnizPiOQ03
 import Proofs.LiouvilleTheorem
+import Proofs.LiouvilleTheoremOQ04
 import Proofs.LovaszLocalLemma
 import Proofs.LovaszLocalLemmaOQ02
 import Proofs.LovaszLocalLemmaOQ02Aristotle
@@ -2293,6 +2352,7 @@ import Proofs.NthRootIrrationalOQ01
 import Proofs.OSBridge
 import Proofs.OnePlusOne
 import Proofs.PACLearning
+import Proofs.PACLearningOQ01
 import Proofs.PNPBarriersLegacy
 import Proofs.PNPBarriersOQ01
 import Proofs.PNPBarriersSound
@@ -2425,7 +2485,10 @@ import Proofs.SolutionOfCubicOQ03OQ03
 import Proofs.SolutionOfCubicOQ03OQ05
 import Proofs.SolutionOfCubicOQ05
 import Proofs.SophieGermain
+import Proofs.SophieGermainOQ01
 import Proofs.SophieGermainOQ02
+import Proofs.SpernerFreudenthal
+import Proofs.SpernerFreudenthalAristotle
 import Proofs.SpernerGrid
 import Proofs.SpernerGridAristotle
 import Proofs.SpernerMathlib
@@ -2464,6 +2527,7 @@ import Proofs.SumOfKthPowers
 import Proofs.SumOfKthPowersOQ01
 import Proofs.SumOfKthPowersOQ02
 import Proofs.SumOfKthPowersOQ04
+import Proofs.SumOfKthPowersOQ04Aristotle
 import Proofs.SylowTheorem
 import Proofs.SylowTheoremOQ01
 import Proofs.SylowTheoremOQ02
@@ -2475,6 +2539,7 @@ import Proofs.SzemerediCoreOQ01
 import Proofs.SzemerediCoreOQ01Aristotle
 import Proofs.SzemerediCoreOQ03
 import Proofs.SzemerediCounting
+import Proofs.SzemerediFullOQ02
 import Proofs.SzemerediHypergraphCore
 import Proofs.SzemerediHypergraphCoreOQ01
 import Proofs.SzemerediHypergraphGowers
