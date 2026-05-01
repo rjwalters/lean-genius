@@ -63,8 +63,6 @@
       "averageDegree, cycleLengths, containsCycleIn: graph theory predicates on SimpleGraph",
       "isUnavoidable, isStronglyUnavoidable: the unavoidability property",
       "Erdos72Statement: the formal problem statement",
-      "bollobas_arithmetic_progression: axiom for AP unavoidability",
-      "verstraete_existence: non-constructive solution axiom",
       "liu_montgomery_powers_of_two: powers of 2 are unavoidable",
       "erdos_72_solved: combining Liu-Montgomery with density-zero for the solution",
       "erdos_was_wrong: formal refutation of Erd\u0151s's belief",
@@ -131,38 +129,38 @@
       "id": "known-results",
       "title": "Known Results",
       "startLine": 110,
-      "endLine": 141,
+      "endLine": 136,
       "summary": "Documents Bollobás (1977) and Verstraëte (2005) as historical context in docstrings; axiomatizes only Liu-Montgomery (2020) — `liu_montgomery_powers_of_two`",
       "mathContext": "Axiomatized: liu_montgomery_powers_of_two (L130); Bollobás and Verstraëte described in docstrings only"
     },
     {
       "id": "erdos-wrong",
       "title": "Erd\u0151s's Error",
-      "startLine": 142,
-      "endLine": 153,
+      "startLine": 137,
+      "endLine": 148,
       "summary": "Liu-Montgomery refuted Erd\u0151s's belief that powers of 2 wouldn't work",
       "mathContext": "Mathematical content: Liu-Montgomery refuted Erd\u0151s's belief that powers of 2 wouldn't work"
     },
     {
       "id": "other-sets",
       "title": "Other Density-0 Sets",
-      "startLine": 154,
-      "endLine": 173,
+      "startLine": 149,
+      "endLine": 168,
       "summary": "Perfect squares and the open question of which sets are unavoidable",
       "mathContext": "Mathematical content: Perfect squares and the open question of which sets are unavoidable"
     },
     {
       "id": "quantitative",
       "title": "Quantitative Bounds",
-      "startLine": 174,
-      "endLine": 186,
+      "startLine": 169,
+      "endLine": 179,
       "summary": "Optimal threshold and explicit bounds from Liu-Montgomery",
       "mathContext": "Bound: Optimal threshold and explicit bounds from Liu-Montgomery"
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
-      "startLine": 187,
+      "startLine": 180,
       "endLine": 221,
       "summary": "Controlled growth sets and the general Liu-Montgomery theorem",
       "mathContext": "Verified: Controlled growth sets and the general Liu-Montgomery theorem"
