@@ -41,7 +41,7 @@
     "originalContributions": [
       "Formalization of the 4-point distance property",
       "Definition of distinct distances for finite point sets",
-      "Classification of 6 configurations with only 2 distances",
+      "Partial classification of 6 two-distance configurations: square, 60° rhombus, and pentagon subset formally characterized; isosceles trapezoid (2 types) and kite left as True placeholders",
       "Educational explanation of Moree-Osburn lattice construction"
     ],
     "axiomCount": 1,
@@ -85,15 +85,15 @@
       "id": "axiom",
       "title": "Main Axiom",
       "startLine": 59,
-      "endLine": 76,
-      "summary": "State the Moree-Osburn construction works (requires deep number theory)"
+      "endLine": 94,
+      "summary": "State the Moree-Osburn construction works (requires deep number theory); axiom moreeOsburnWorks declared at lines 89–94"
     },
     {
       "id": "theorem",
       "title": "Main Theorem",
-      "startLine": 77,
-      "endLine": 95,
-      "summary": "Derive the answer to Erdős #659 from the axiom"
+      "startLine": 96,
+      "endLine": 113,
+      "summary": "Derive the answer to Erdős #659 from the axiom; theorem erdos_659 at lines 100–113"
     },
     {
       "id": "configurations",
