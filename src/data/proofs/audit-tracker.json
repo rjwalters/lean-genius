@@ -7456,10 +7456,13 @@
       "result": "issues-fixed"
     },
     "erdos-541": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "lean-auditor",
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T17:15:00Z",
+      "result": "issues-found",
+      "issues": [
+        "Issue #14282: phantom-axiom narrative (axiomCount=1 correct, but assumptions list 3, sections claim EGZ/Erdős-Szemerédi axiomatized, proofStrategy says graham_conjecture is sorry — it is proved)"
+      ]
     },
     "erdos-542": {
       "agentId": "auditor-cycle-20-batch",
