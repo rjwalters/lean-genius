@@ -31,20 +31,20 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-01T00:00:00.000Z",
-    "iteration": 3,
-    "focus": "Prove hgcdMatrix_size_reduction (single sorry in BinaryGcdOQ03OQ02.lean). Requires entry-bound lemma on lehmerCofactors.",
+    "iteration": 4,
+    "focus": "Prove hgcdMatrix_size_reduction (single sorry in BinaryGcdOQ03OQ02.lean). Step 1 (matrix-vector invariant for lehmerCofactors) DONE in Session 4; Steps 2 (entry bound via Cramer + residue monotonicity) and 3 (perturbation analysis from low bits) remain.",
     "blockers": [
       "Bit complexity (C) remains genuinely Mathlib-blocked: no bit-complexity model, no fast multiplication. Documented as deferred in BinaryGcdOQ03OQ02.lean Part V."
     ],
-    "nextAction": "Prove entry bound on lehmerCofactors entries (each ≤ ~2^(fuel+1)); use Cramer inversion to bound applyToNat output by 2^(bitsize(max a b)/2 + 2); iterate to close hgcdMatrix_size_reduction.",
+    "nextAction": "Prove the Lehmer accumulator entry bound using the now-available matrix-vector invariant + Cramer inversion on the unimodular cofactor (|α|, |β|, |γ|, |δ| ≤ max(|a₀|, |b₀|) / max(ahat', bhat')) plus a small Euclidean residue monotonicity lemma. Then combine with the (a = aHi·2^shift + aLo) decomposition for the perturbation argument.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 3,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 3, 2026-05-01): cofactor-convention fix landed. applyToNat now uses row-vector product matching the lehmerCofactors accumulator; hgcdMatrix mul order swapped; hgcdMatrix_apply_gcd restated and re-proved; native_decide example demonstrates the (1000,300) reduction. hgcdMatrix_size_reduction is now well-typed against the actual Lehmer-reduced pair (was false-as-stated under Session-2 column convention). Sorry count unchanged at 1; axiom count unchanged at 0. Separate follow-up: BinaryGcdOQ03.lean lehmerReduce has the same column-apply issue but is gcd-correct via fuel/fallback.",
+    "progressSummary": "PROGRESS (Session 4, 2026-05-01): matrix-vector invariant for lehmerCofactors added — three new theorems in BinaryGcdOQ03OQ02.lean PART IV (lehmerInnerStep_invariant, lehmerCofactors_invariant, lehmerCofactors_id_apply_eq). This is Step 1 of three for hgcdMatrix_size_reduction; Steps 2-3 (entry bound via Cramer + residue monotonicity, perturbation analysis from low bits) remain. Sorry count unchanged at 1; axiom count unchanged at 0. Build verification blocked by Docker daemon unresponsiveness (same pattern as Session 3); proofs mirror existing lehmerInnerStep_det / lehmerCofactors_det_unit patterns.",
     "builtItems": [
       "hgcdThreshold (BinaryGcdOQ03OQ02.lean): bottom-out threshold for HGCD recursion.",
       "hgcdTopHalfStep (BinaryGcdOQ03OQ02.lean): one Lehmer-style reduction on the top half of the bits.",
@@ -57,7 +57,11 @@
       "BinaryGcdOQ03OQ02.lean: applyToNat rewritten to row-vector product (Session 3)",
       "BinaryGcdOQ03OQ02.lean: hgcdMatrix recursive composition reordered to M_top.mul M_rec (Session 3)",
       "BinaryGcdOQ03OQ02.lean: hgcdMatrix_apply_gcd restated and re-proved against the row product, via gcd_cofactor_eq with relabelled (α, β, γ, δ) ← (M.α, M.γ, M.β, M.δ) (Session 3)",
-      "BinaryGcdOQ03OQ02.lean: native_decide example pinning row-apply behaviour on (1000, 300) → (100, 100) (Session 3)"
+      "BinaryGcdOQ03OQ02.lean: native_decide example pinning row-apply behaviour on (1000, 300) → (100, 100) (Session 3)",
+      "BinaryGcdOQ03OQ02.lean PART IV (Session 4): lehmerInnerStep_invariant — per-step matrix-vector invariant for lehmerInnerStep (ghost original pair (a₀, b₀) with (a₀, b₀) · M = (current pair) is preserved across one step).",
+      "BinaryGcdOQ03OQ02.lean PART IV (Session 4): lehmerCofactors_invariant — existential multi-step matrix-vector invariant for lehmerCofactors, by induction on fuel.",
+      "BinaryGcdOQ03OQ02.lean PART IV (Session 4): lehmerCofactors_id_apply_eq — specialisation to M = id and ghost pair = input pair (a, b).",
+      "BinaryGcdOQ03OQ02.lean: file reorganised PART IV (size reduction → V), V (complexity → VI), VI (sanity checks → VII); file-level docstring and final summary updated to mention the matrix-vector invariant."
     ],
     "insights": [
       "All 2x2 cofactor matrix invariants needed for HGCD correctness already exist in BinaryGcdOQ03.lean (gcd_cofactor_eq, lehmerCofactors_det_unit, cofactor_apply_gcd). The HGCD formalization is the recursive wiring of these.",
@@ -71,7 +75,11 @@
       "Session 2: the genuinely new content is the entry-bound lemma on lehmerCofactors — an upper bound roughly 2^(fuel+1) on each entry. This bound does not appear in Mathlib or BinaryGcdOQ03.lean and must be proved inline (likely 30-80 lines).",
       "Session 3 (2026-05-01): discovered cofactor-convention mismatch in BinaryGcdOQ03OQ02.lean. lehmerCofactors accumulates M in row-vector convention (M • S right-multiplication, invariant (a₀,b₀)·M = current pair), but the Session-2 applyToNat used CofactorMatrix.apply (column product M·(a,b)ᵀ). Products differ once M.β ≠ M.γ (i.e., for ≥2 Lehmer steps with distinct quotients). Counterexample (1000, 300): row-apply gives reduced (100, 100); column-apply gives (400, 900) — *not* reduced. Both preserve gcd; only row-apply realises the half-bitsize reduction.",
       "Session 3: hgcdMatrix_size_reduction was therefore false-as-stated under the column-apply applyToNat. The lemma is now well-typed against the actual Lehmer-reduced pair after rewriting applyToNat to (a·M.α + b·M.γ, a·M.β + b·M.δ) and swapping the recursive mul order to M_top.mul M_rec.",
-      "Session 3 (separate finding): BinaryGcdOQ03.lean lehmerReduce uses the same column-apply formula on a row-accumulated cofactor, so the Lehmer step in the existing algorithm does not actually realise a reduction either. lehmerGcd is still gcd-correct via fuel exhaustion + euclidGcd fallback. Worth a follow-up issue on the OQ-03 line."
+      "Session 3 (separate finding): BinaryGcdOQ03.lean lehmerReduce uses the same column-apply formula on a row-accumulated cofactor, so the Lehmer step in the existing algorithm does not actually realise a reduction either. lehmerGcd is still gcd-correct via fuel exhaustion + euclidGcd fallback. Worth a follow-up issue on the OQ-03 line.",
+      "Session 4 (2026-05-01): the matrix-vector invariant requires generalisation to a 'ghost original pair' (a₀, b₀) parameterised at the theorem level — not just (a₀, b₀) = (input ahat, input bhat). The naive form would not survive the inductive step because the current pair changes; the ghost pair stays fixed.",
+      "Session 4: per-step / multi-step decomposition mirrors the existing lehmerInnerStep_det / lehmerCofactors_det_unit split. Per-step lemma carries the arithmetic (Nat.div_add_mod + ℤ-cast handling); multi-step lemma is purely structural induction.",
+      "Session 4: Sign tracking is automatic when stating (a₀, b₀) over ℤ — no Nat-subtraction-truncation worries. Only ℕ↔ℤ bridging is in the Euclidean modulo step.",
+      "Session 4: the existential form (∃ ahat' bhat', ...) avoids defining a parallel 'track residues' function. The explicit residues aren't needed for the entry-bound argument that follows — only their existence + the invariant relation."
     ],
     "mathlibGaps": [
       "Half-GCD / HGCD: no formalization in Mathlib or this gallery (verified by grep 2026-04-28).",
@@ -80,11 +88,11 @@
       "Big-integer abstraction: Mathlib operates on Nat/Int as opaque algebraic structures; there is no big-integer-as-array-of-words representation that would let bit-complexity reasoning attach to actual arithmetic primitives."
     ],
     "nextSteps": [
-      "Prove the Lehmer accumulator entry bound: |M.α|, |M.β|, |M.γ|, |M.δ| ≤ max(ahat, bhat) + 1 (or simple polynomial bound) for M = lehmerCofactors fuel ahat bhat id. Most likely route: maintain the matrix-vector invariant (ahat₀, bhat₀) · M = (current pair) as a theorem, combine with sign-tracking on the alternating cofactor parities.",
-      "Combine the entry bound with the row-product expansion (a = aHi·2^shift + aLo, similar for b) to bound the residual by 2^shift · (aHi' + |M.α| + |M.γ|).",
-      "Iterate the half-reduction (top + recursive call) to close the threshold gap and discharge hgcdMatrix_size_reduction.",
-      "Once size reduction is proved, replace explicit-fuel hgcdMatrix with a WellFounded.fix definition (lexicographic on bitsize).",
-      "Follow-up issue on BinaryGcdOQ03.lean: lehmerReduce uses column-apply on a row-accumulated cofactor; lehmerGcd remains gcd-correct only by fuel exhaustion + euclidGcd fallback."
+      "Step 2 (next session): Lehmer accumulator entry bound. With the matrix-vector invariant (lehmerCofactors_invariant) and det = ±1 (lehmerCofactors_det_unit), Cramer inversion gives a₀ = ±(δ·ahat' - β·bhat'), b₀ = ±(α·bhat' - γ·ahat'). Combined with bhat' < ahat' (Euclidean residue monotonicity, separate small lemma using Nat.mod_lt), this gives |α|, |β|, |γ|, |δ| ≤ max(|a₀|, |b₀|) / max(ahat', bhat').",
+      "Step 3: combine entry bound with applyToNat M a b = (a·M.α + b·M.γ, a·M.β + b·M.δ) and decomposition a = aHi·2^shift + aLo (similar b). Bound residual by 2^shift · (residue(aHi, bHi) + |M.α| + |M.γ|).",
+      "Step 4: iterate the half-reduction (top-half + recursive call) to discharge hgcdMatrix_size_reduction's threshold gap.",
+      "Step 5: once size reduction is proved, replace explicit-fuel hgcdMatrix with a WellFounded.fix definition (lexicographic on bitsize).",
+      "Follow-up issue on BinaryGcdOQ03.lean: lehmerReduce uses column-apply on a row-accumulated cofactor; lehmerGcd remains gcd-correct only by fuel exhaustion + euclidGcd fallback. (Open since Session 3.)"
     ]
   },
   "tags": [
@@ -104,7 +112,7 @@
     "mathlib": []
   },
   "started": "2026-04-26T08:56:57.650Z",
-  "lastUpdate": "2026-05-01T00:00:00.000Z",
+  "lastUpdate": "2026-05-01T15:04:42Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [

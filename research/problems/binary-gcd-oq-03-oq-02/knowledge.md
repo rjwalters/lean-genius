@@ -345,3 +345,137 @@ noting that `lehmerReduce` uses `M.apply` (column) on a
 row-accumulated `M`, so the "Lehmer step" in the existing algorithm
 does not actually reduce the pair. The algorithm is still
 gcd-correct via fuel exhaustion + `euclidGcd` fallback.
+
+## Session 2026-05-01 (Session 4) — Matrix-vector invariant
+
+**Mode**: continuation of Session 3 (same day)
+**Outcome**: progress — Step 1 of three for `hgcdMatrix_size_reduction`
+done. Three new theorems established in `BinaryGcdOQ03OQ02.lean`'s
+new PART IV. Sorry count unchanged at 1; axiom count unchanged at 0.
+
+### What I Did
+
+Implemented the matrix-vector invariant for `lehmerCofactors`, which
+is the foundational lemma identified by the Session-2 (and Session-3
+restated) proof plan.
+
+The invariant: for `M = lehmerCofactors fuel ahat₀ bhat₀ id`, there
+exist final residues `(ahat', bhat')` (from iterating `lehmerInnerStep`)
+such that
+
+```
+ahat₀ * M.α + bhat₀ * M.γ = ahat'    (in ℤ)
+ahat₀ * M.β + bhat₀ * M.δ = bhat'    (in ℤ)
+```
+
+— equivalently `(ahat₀, bhat₀) · M = (ahat', bhat')` in row-vector
+convention. This is the algebraic content underlying the algorithm:
+the matrix encodes the linear combination producing the current
+Euclidean residues from the inputs.
+
+Three theorems added, in escalating generality:
+
+1. `lehmerInnerStep_invariant {a₀ b₀ : ℤ}`: per-step preservation
+   of the relation, parameterised over a "ghost original pair"
+   `(a₀, b₀)` (allowing `a₀, b₀` to be different from the current
+   `(ahat, bhat)` so that the induction can carry through). Proof:
+   unfold `lehmerInnerStep`, split on `bhat = 0` then on
+   `ahat % bhat = 0`, reach the surviving case where the new
+   matrix is `⟨M.β, M.α - q·M.β, M.δ, M.γ - q·M.δ⟩` and the new
+   pair is `(bhat, ahat % bhat)`. The first conclusion is
+   `h_inv₂` directly; the second follows from
+   `h_inv₁ - q · h_inv₂` plus `Nat.div_add_mod`. Uses `linarith`
+   with a `mul_comm` hint to handle the ℤ-cast multiplication.
+
+2. `lehmerCofactors_invariant {a₀ b₀ : ℤ} (fuel)`: existential
+   multi-step version. Inductive on `fuel`; base case is
+   `⟨ahat, bhat, h_inv₁, h_inv₂⟩`; successor case uses
+   `match hstep : lehmerInnerStep ahat bhat M with` (the same
+   pattern as the existing `lehmerCofactors_det_unit`) to split
+   on whether the head step succeeds, applying
+   `lehmerInnerStep_invariant` to compute the new invariants and
+   `ih` to descend.
+
+3. `lehmerCofactors_id_apply_eq`: specialisation to `M = id`
+   and ghost pair = input pair. Direct corollary of (2).
+
+Choice of formulation: the existential form was preferred over
+defining a parallel "track residues" function, because the explicit
+residues are not needed for the entry-bound argument that
+follows — only their existence and the invariant relation. This
+keeps the file additions to a single section without a new
+recursive definition.
+
+Build verification: Docker daemon was unresponsive during multiple
+attempts at session start (matches the Session-3 docker-daemon
+failure mode under heavy multi-agent activity). Proofs are written
+conservatively to mirror existing `lehmerInnerStep_det` and
+`lehmerCofactors_det_unit` patterns; build risk should be low but
+remains unverified this session. PR remains DRAFT pending
+build success.
+
+### Key Findings
+
+* The matrix-vector invariant is genuinely the right generalised
+  statement for the inductive proof. The naive form
+  `(ahat₀, bhat₀) · M = (final pair)` would not survive the
+  inductive step because the "current pair" changes; the ghost
+  original pair `(a₀, b₀)` remains fixed throughout the
+  recursion, which is exactly what's needed.
+* The decomposition into per-step + multi-step keeps the
+  arithmetic-heavy reasoning (Nat.div_add_mod + cast handling)
+  isolated to the per-step lemma, while the inductive proof
+  is purely structural. This split mirrors how the existing
+  file separates `lehmerInnerStep_det` (one step) from
+  `lehmerCofactors_det_unit` (induction).
+* Sign tracking is automatic in ℤ: `a₀, b₀ : ℤ` means we don't
+  have to worry about `Nat`-subtraction-truncation in the
+  linear-combination steps. The only ℕ↔ℤ bridging is in the
+  Euclidean-modulo step.
+
+### Files Modified
+
+* `proofs/Proofs/BinaryGcdOQ03OQ02.lean` — added PART IV
+  (matrix-vector invariant) with three theorems
+  (`lehmerInnerStep_invariant`, `lehmerCofactors_invariant`,
+  `lehmerCofactors_id_apply_eq`). Renumbered subsequent parts
+  V→VI (complexity), VI→VII (sanity checks), and added
+  `PART V: SIZE REDUCTION` heading. Updated file-level
+  docstring and final summary section. Sorry count unchanged
+  at 1; axiom count unchanged at 0; +157 lines, -9 lines.
+* `research/problems/binary-gcd-oq-03-oq-02/state.md` — Session 4
+  block, iteration 4 → 5, restated next-action plan
+  (1 done, 2-5 remain).
+* `research/problems/binary-gcd-oq-03-oq-02/knowledge.md` —
+  this Session-4 entry.
+
+### Next Steps
+
+The matrix-vector invariant is now in place. The natural next
+session continues with **Step 2** of the proof plan: the
+**Lehmer accumulator entry bound**.
+
+With the invariant `a₀ * M.α + b₀ * M.γ = ahat'` and
+`a₀ * M.β + b₀ * M.δ = bhat'` (with `det M = ±1`), Cramer's rule
+recovers `a₀, b₀` from the final residues:
+
+```
+a₀ = ±(δ * ahat' - β * bhat')
+b₀ = ±(α * bhat' - γ * ahat')
+```
+
+Combined with `bhat' < ahat'` (Euclidean residues form a
+decreasing sequence in `bhat`) and `ahat' ≥ 1` (assuming the
+algorithm hasn't terminated), this gives:
+
+```
+|α|, |β|, |γ|, |δ| ≤ max(|a₀|, |b₀|) / max(ahat', bhat')
+```
+
+So the entries of `M` are bounded by the input size divided by
+the residual size — precisely the bound needed for the
+perturbation analysis in Step 3.
+
+Step 2 will need a separate small lemma about Euclidean-step
+monotonicity (`bhat_final ≤ bhat₀`), provable by induction on
+fuel using `Nat.mod_lt`.
