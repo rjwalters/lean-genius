@@ -915,7 +915,7 @@
     },
     "bezout-identity-oq-03-oq-02": {
       "auditCount": 1,
-      "lastAudited": "2026-05-01T08:29:33Z",
+      "lastAudited": "2026-05-01T08:33:09Z",
       "result": "clean",
       "issues": []
     },
@@ -7696,10 +7696,13 @@
       "result": "issues-fixed"
     },
     "erdos-578": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-session-1777628135",
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T09:50:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "section line drift fixed: riordan, threshold-distribution, properties, summary all shifted to match actual Part V-VIII positions"
+      ]
     },
     "erdos-579": {
       "agentId": "auditor-cycle-20-batch",
@@ -7792,10 +7795,13 @@
       "result": "clean"
     },
     "erdos-59": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-session-1777628135",
+      "auditCount": 4,
+      "lastAudited": "2026-05-01T09:38:39Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom 7-axiom narrative (actual 5); fix in flight as PR #14211"
+      ]
     },
     "erdos-590": {
       "agentId": "auditor-cycle-20-batch",
@@ -13296,12 +13302,6 @@
     "isoperimetric-theorem-oq-02": {
       "auditCount": 3,
       "lastAudited": "2026-04-29T05:43:30Z",
-      "result": "clean",
-      "issues": []
-    },
-    "bezout-identity-oq-03-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-01T08:33:09Z",
       "result": "clean",
       "issues": []
     }

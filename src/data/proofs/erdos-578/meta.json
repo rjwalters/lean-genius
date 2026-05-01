@@ -121,28 +121,28 @@
       "id": "riordan",
       "title": "Riordan's Theorem (2000)",
       "startLine": 99,
-      "endLine": 111,
+      "endLine": 107,
       "summary": "Strengthened result for p > 1/4, proves original conjecture"
     },
     {
       "id": "threshold-distribution",
       "title": "Threshold and Distribution",
-      "startLine": 112,
-      "endLine": 126,
-      "summary": "Threshold at 1/4 is optimal, copies normally distributed",
-      "mathContext": "Threshold: $p \\leq 1/4 \\implies Q_d \\not\\subseteq G(2^d,p)$ a.s. Distribution: the standardized count $(X - \\mathbb{E}[X])/\\sqrt{\\text{Var}(X)} \\to N(0,1)$."
+      "startLine": 108,
+      "endLine": 119,
+      "summary": "Threshold at 1/4 is optimal; normal-distribution refinement is documented in comments only (not axiomatized)",
+      "mathContext": "Threshold: $p \\leq 1/4 \\implies Q_d \\not\\subseteq G(2^d,p)$ a.s. Distribution: the standardized count $(X - \\mathbb{E}[X])/\\sqrt{\\text{Var}(X)} \\to N(0,1)$ (informal, not in Lean)."
     },
     {
       "id": "properties",
       "title": "Hypercube Properties",
-      "startLine": 127,
-      "endLine": 142,
+      "startLine": 120,
+      "endLine": 135,
       "summary": "d-regular, automorphism group d!·2^d"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 143,
+      "startLine": 136,
       "endLine": 151,
       "summary": "Proved conjunction of conjecture and threshold"
     }
