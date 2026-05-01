@@ -131,10 +131,8 @@ def isFolkmanGraph (G : SimpleGraph V) : Prop :=
 The minimum number of vertices in a Folkman graph.
 This is the specific number asked about in Problem 582.
 -/
-noncomputable def folkmanNumber_2_3_4 : ℕ :=
-  -- The minimum n such that there exists a Folkman graph on n vertices
-  -- Formalized as a constant since computing it is intractable
-  0  -- placeholder
+-- Opaque constant: the exact value is unknown; bound axioms constrain it below.
+opaque folkmanNumber_2_3_4 : ℕ
 
 /-
 ## Part IV: Main Existence Theorem
@@ -251,8 +249,8 @@ def folkmanGeneralizesRamsey : Prop :=
 **General Folkman Number f(r,k,n):**
 Minimum vertices in K_n-free graph where every r-coloring has monochromatic K_k.
 -/
-noncomputable def folkmanNumber (r k n : ℕ) : ℕ :=
-  0  -- placeholder
+-- Opaque constant: defensive; prevents any future bound axiom from reducing to 0 ≥ k.
+opaque folkmanNumber (r k n : ℕ) : ℕ
 
 /--
 **f(2,3,3) = ∞:**
