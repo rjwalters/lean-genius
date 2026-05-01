@@ -58,7 +58,7 @@
       "partialSums definition via List.scanl for cumulative sums",
       "IsValidOrdering predicate: ordering with distinct partial sums",
       "GrahamConjecture formalization for prime fields",
-      "Axiomatization of Costa-Pellegrini, Hicks-Ollis-Schmitt, Kravitz, and Bedert-Kravitz results",
+      "Axiomatization of Costa-Pellegrini, Hicks-Ollis-Schmitt, and Bedert-Kravitz results (Kravitz 2024 documented in source comments only)",
       "AlspachConjecture generalization to abelian groups with equivalence proof",
       "HasExplicitValidOrdering for constructive proofs",
       "Summary theorem combining all verified ranges"
@@ -72,7 +72,7 @@
     "historicalContext": "Graham's Rearrangement Conjecture (Erdős Problem #475) is a central open problem in additive combinatorics over finite fields. Ronald Graham (1935–2020), one of the most prolific discrete mathematicians of the 20th century and a close collaborator of Erdős, proved the base case: the full non-zero set $\\mathbb{F}_p \\setminus \\{0\\}$ always admits a valid ordering. Brian Alspach later generalized the conjecture to arbitrary finite abelian groups.\n\nThe first major extension came from Costa and Pellegrini (2020, Archiv der Mathematik) who verified the conjecture for all sets of size $t \\leq 12$ via exhaustive computation combined with theoretical reductions. Hicks, Ollis, and Schmitt (2019, J. Combin. Des.) handled the complementary regime $t \\geq p - 3$ using the polynomial method and structural properties of near-complete subsets.\n\nA breakthrough for intermediate sizes came from Michael Kravitz (2024), who proved the conjecture for $t \\leq \\log p / \\log \\log p$ using character sum techniques. Will Sawin independently observed the same bound on MathOverflow. However, all these methods hit the so-called 'rectification barrier'—a fundamental limitation of Freiman-type inverse theorems that caps progress at $\\log p / \\log \\log p$.\n\nThe most dramatic advance is due to Bedert and Kravitz (2024), who developed entirely new techniques circumventing the rectification barrier, pushing the verified range to $t \\leq \\exp((\\log p)^{1/4})$. Despite this remarkable progress, the general conjecture for arbitrary $t$ remains open, with the gap between $\\exp((\\log p)^{1/4})$ and $p - 3$ still unresolved.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet $p$ be a prime. Given any finite set $A \\subseteq \\mathbb{F}_p \\setminus \\{0\\}$, is there always a rearrangement $A = \\{a_1, \\ldots, a_t\\}$ such that all partial sums $\\sum_{k=1}^{m} a_k$ are distinct for all $1 \\leq m \\leq t$?\n\n**Known Results:**\n- $t \\leq 12$: YES (Costa-Pellegrini 2020)\n- $t \\geq p - 3$: YES (Hicks-Ollis-Schmitt 2019)\n- $t \\leq \\exp((\\log p)^{1/4})$: YES (Bedert-Kravitz 2024)\n\n**Open:** General $t$ (the gap in the middle).",
     "text": "Given A ⊆ 𝔽ₚ\\{0}, does there exist an ordering with all partial sums distinct? Proven for t ≤ 12, t ≥ p-3, t ≤ exp((log p)^{1/4}). General case OPEN.",
-    "proofStrategy": "The Lean formalization proceeds in eight parts:\n\n1. **Valid Orderings** (Part I): Defines `partialSums` via `List.scanl`, `IsValidOrdering` requiring element-preservation and partial-sum distinctness, and `GrahamConjecture` as the universal statement over $\\mathbb{F}_p$.\n\n2. **Small Cases** (Part II): Axiomatizes Costa-Pellegrini (2020) for $|A| \\leq 12$, with a wrapper theorem `small_sets_have_valid_orderings`.\n\n3. **Large Cases** (Part III): Axiomatizes Hicks-Ollis-Schmitt (2019) for $p - 3 \\leq |A| \\leq p - 1$ and Graham's constructive result for $|A| = p - 1$.\n\n4. **Logarithmic Range** (Part IV): Axiomatizes Kravitz (2024) for $|A| \\leq \\log p / \\log \\log p$.\n\n5. **Rectification Barrier** (Part V): Axiomatizes Bedert-Kravitz (2024) for $|A| \\leq \\exp((\\log p)^{1/4})$.\n\n6. **Alspach Generalization** (Part VI): Defines `AlspachConjecture` for abelian groups, proves equivalence with `GrahamConjecture` for $\\mathbb{F}_p$.\n\n7. **Constructive Proofs** (Part VII): Introduces `HasExplicitValidOrdering` and axiomatizes Graham's constructive proof.\n\n8. **Summary** (Part VIII): Combines all verified ranges into `erdos_475_summary`.",
+    "proofStrategy": "The Lean formalization proceeds in eight parts:\n\n1. **Valid Orderings** (Part I): Defines `partialSums` via `List.scanl`, `IsValidOrdering` requiring element-preservation and partial-sum distinctness, and `GrahamConjecture` as the universal statement over $\\mathbb{F}_p$.\n\n2. **Small Cases** (Part II): Axiomatizes Costa-Pellegrini (2020) for $|A| \\leq 12$, with a wrapper theorem `small_sets_have_valid_orderings`.\n\n3. **Large Cases** (Part III): Axiomatizes Hicks-Ollis-Schmitt (2019) for $p - 3 \\leq |A| \\leq p - 1$. (Graham's full-set result for $|A|=p-1$ is documented historically, not separately axiomatized — subsumed by Hicks-Ollis-Schmitt.)\n\n4. **Logarithmic Range** (Part IV): Documents Kravitz (2024) in source comments for $|A| \\leq \\log p / \\log \\log p$ (no axiom; superseded by Bedert-Kravitz).\n\n5. **Rectification Barrier** (Part V): Axiomatizes Bedert-Kravitz (2024) for $|A| \\leq \\exp((\\log p)^{1/4})$.\n\n6. **Alspach Generalization** (Part VI): Defines `AlspachConjecture` for abelian groups, proves equivalence with `GrahamConjecture` for $\\mathbb{F}_p$.\n\n7. **Constructive Proofs** (Part VII): Introduces `HasExplicitValidOrdering` and documents Graham's constructive proof in source comments (no Lean axiom).\n\n8. **Summary** (Part VIII): Combines all verified ranges into `erdos_475_summary`.",
     "keyInsights": [
       "**Partial sum distinctness**: The condition asks for $t$ distinct elements among the $t$ partial sums $s_1, s_2, \\ldots, s_t \\in \\mathbb{F}_p$, which is non-trivial since $\\mathbb{F}_p$ has only $p$ elements total",
       "**Counting argument**: Among $t!$ possible orderings, we need just one with distinct partial sums—yet proving existence for all $A$ simultaneously is the challenge",
@@ -116,8 +116,8 @@
       "title": "Large Cases (Hicks-Ollis-Schmitt 2019)",
       "startLine": 87,
       "endLine": 99,
-      "summary": "Axiomatizes `hicks_ollis_schmitt_2019` for $p - 3 \\leq |A| \\leq p - 1$ and `graham_full_set` for $|A| = p - 1$. When $A$ is nearly all of $\\mathbb{F}_p \\setminus \\{0\\}$, structural arguments using the polynomial method suffice.",
-      "mathContext": "Axiomatizes `hicks_ollis_schmitt_2019` for $p - 3 \\leq |A| \\leq p - 1$ and `graham_full_set` for $|A| = p - 1$. When $A$ is nearly all of $\\mathbb{F}_p \\setminus \\{0\\}$, structural arguments using the polynomial method suffice."
+      "summary": "Axiomatizes `hicks_ollis_schmitt_2019` for $p - 3 \\leq |A| \\leq p - 1$. (Graham's $|A|=p-1$ result mentioned in docstring only — no separate declaration.)",
+      "mathContext": "Axiomatized: `hicks_ollis_schmitt_2019` for $p - 3 \\leq |A| \\leq p - 1$. Graham's full-set result is docstring-only, subsumed by this axiom."
     },
     {
       "id": "logarithmic",
@@ -154,8 +154,8 @@
     {
       "id": "summary",
       "title": "Summary Theorem",
-      "startLine": 192,
-      "endLine": 195,
+      "startLine": 168,
+      "endLine": 193,
       "summary": "Proves `erdos_475_summary` combining small ($t \\leq 12$), large ($t \\geq p-3$), and medium ($t \\leq \\exp((\\log p)^{1/4})$) cases into a single conjunction. The general conjecture for arbitrary $t$ remains OPEN.",
       "mathContext": "Proves `erdos_475_summary` combining small ($t \\leq 12$), large ($t \\geq p-3$), and medium ($t \\leq \\exp((\\log p)^{1/4})$) cases into a single conjunction. The general conjecture for arbitrary $t$ remains OPEN."
     }
