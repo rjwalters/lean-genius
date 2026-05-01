@@ -7648,10 +7648,13 @@
       "result": "clean"
     },
     "erdos-570": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-agent-2026-05-01",
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T10:50:04Z",
+      "result": "issues-found",
+      "issues": [
+        "sections.cases.summary claims four phantom axioms (EFRS/Sidorenko/Jayawardene/CFMPP) — only erdos_570_resolved exists in Lean; numerical fields correct — issue #14234"
+      ]
     },
     "erdos-571": {
       "agentId": "auditor-cycle-20-batch",
