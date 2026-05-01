@@ -48,8 +48,6 @@
       "delta(m, α): the density function",
       "HasSharpThreshold: formal statement of threshold existence",
       "hallThreshold: β = 1/log 2 ≈ 1.443",
-      "trivial_upper_bound: δ → 0 for α < 1",
-      "erdos_alpha_one: δ → 0 for α = 1 (Erdős 1979)",
       "hall_theorem: complete solution with β = 1/log 2",
       "erdos_697_answer, erdos_697_threshold: main results"
     ],
@@ -107,26 +105,26 @@
     {
       "id": "part-2-the-threshold-question",
       "title": "Part 2: The Threshold Question",
-      "startLine": 63,
-      "endLine": 80,
+      "startLine": 64,
+      "endLine": 87,
       "summary": "Formalizes `HasSharpThreshold` as $\\exists \\beta > 1$ with density $\\to 0$ below and $\\to 1$ above, using `Filter.Tendsto`. Defines `hallThreshold = 1/\\ln 2$ and proves $\\beta > 1$ via `exp_one_gt_d9` and monotonicity of $\\ln$.",
       "mathContext": "Formalizes `HasSharpThreshold` as $\\exists \\beta > 1$ with density $\\to 0$ below and $\\to 1$ above, using `Filter.Tendsto`. Defines `hallThreshold = 1/\\ln 2$ and proves $\\beta > 1$ via `exp_one_gt_d9` and monotonicity of $\\ln$."
     },
     {
       "id": "part-3-trivial-bounds",
       "title": "Part 3: Trivial Bounds",
-      "startLine": 81,
-      "endLine": 94,
-      "summary": "Axiomatizes the trivial bound: for $\\alpha < 1$, $\\delta(m, \\alpha) \\to 0$ because $|\\{d \\equiv 1 \\pmod{m} : d < e^{m^\\alpha}\\}| \\approx m^{\\alpha - 1} \\to 0$.",
-      "mathContext": "Axiomatizes the trivial bound: for $\\$\\alpha$ < 1$, $\\$\\delta$(m, \\$\\alpha$) \\to 0$ because $|\\{d \\equiv 1 \\pmod{m} : d < e^{m^\\$\\alpha$}\\}| \\approx m^{\\$\\alpha$ - 1} \\to 0$."
+      "startLine": 89,
+      "endLine": 97,
+      "summary": "Commentary on the trivial bound: for $\\alpha < 1$, $\\delta(m, \\alpha) \\to 0$ because $|\\{d \\equiv 1 \\pmod{m} : d < e^{m^\\alpha}\\}| \\approx m^{\\alpha - 1} \\to 0$. This section is docstring commentary only — no formal theorem declared.",
+      "mathContext": "Commentary on the trivial bound: for $\\$\\alpha$ < 1$, $\\$\\delta$(m, \\$\\alpha$) \\to 0$ because $|\\{d \\equiv 1 \\pmod{m} : d < e^{m^\\$\\alpha$}\\}| \\approx m^{\\$\\alpha$ - 1} \\to 0$. Docstring only — no formal theorem."
     },
     {
       "id": "part-4-erd-s-s-claim-for-1",
       "title": "Part 4: Erdős's Claim for α = 1",
-      "startLine": 95,
+      "startLine": 98,
       "endLine": 104,
-      "summary": "Axiomatizes Erdős's 1979 claim that $\\delta(m, 1) \\to 0$, extending the trivial range from $\\alpha < 1$ to $\\alpha \\le 1$.",
-      "mathContext": "Axiomatizes Erdős's 1979 claim that $\\$\\delta$(m, 1) \\to 0$, extending the trivial range from $\\$\\alpha$ < 1$ to $\\$\\alpha$ \\le 1$."
+      "summary": "Commentary on Erdős's 1979 claim that $\\delta(m, 1) \\to 0$, extending the trivial range from $\\alpha < 1$ to $\\alpha \\le 1$. This section is docstring commentary only — no formal theorem declared.",
+      "mathContext": "Commentary on Erdős's 1979 claim that $\\$\\delta$(m, 1) \\to 0$, extending the trivial range from $\\$\\alpha$ < 1$ to $\\$\\alpha$ \\le 1$. Docstring only — no formal theorem."
     },
     {
       "id": "part-5-hall-s-theorem-1992",
@@ -140,46 +138,46 @@
       "id": "part-6-why-1-log-2",
       "title": "Part 6: Why 1/log 2?",
       "startLine": 130,
-      "endLine": 148,
+      "endLine": 146,
       "summary": "Intuition for the threshold value: the count of admissible $d$ is $\\sim e^{m^\\alpha}/m$. The critical exponent $1/\\ln 2$ arises from sieve-theoretic analysis of when enough admissible divisors exist to cover positive density.",
       "mathContext": "Intuition for the threshold value: the count of admissible $d$ is $\\sim e^{m^\\alpha}/m$. The critical exponent $1/\\ln 2$ arises from sieve-theoretic analysis of when enough admissible divisors exist to cover positive density."
     },
     {
       "id": "part-7-behavior-at-threshold",
       "title": "Part 7: Behavior at Threshold",
-      "startLine": 149,
-      "endLine": 163,
+      "startLine": 147,
+      "endLine": 160,
       "summary": "Notes that Hall's theorem leaves the exact behavior at $\\alpha = \\beta = 1/\\ln 2$ as an open question—the density may be 0, 1, or intermediate.",
       "mathContext": "Notes that Hall's theorem leaves the exact behavior at $\\$\\alpha$ = \\$\\beta$ = 1/\\ln 2$ as an open question—the density may be 0, 1, or intermediate."
     },
     {
       "id": "part-8-connection-to-problem-6",
       "title": "Part 8: Connection to Problem #696",
-      "startLine": 164,
-      "endLine": 172,
+      "startLine": 161,
+      "endLine": 169,
       "summary": "Commentary linking to Erdős Problem #696, which concerns chains of prime divisors under the same congruence condition $d \\equiv 1 \\pmod{m}$.",
       "mathContext": "Mathematical content: Commentary linking to Erdős Problem #696, which concerns chains of prime divisors under the same congruence condition $d \\equiv 1 \\pmod{m}$."
     },
     {
       "id": "part-9-examples",
       "title": "Part 9: Examples",
-      "startLine": 173,
-      "endLine": 185,
+      "startLine": 170,
+      "endLine": 180,
       "summary": "Concrete cases: for $m = 2$, every integer has an odd divisor, so $\\delta(2, \\alpha) = 1$ trivially. For $m = p$ (large prime), the smallest admissible $d$ is $1 + p$, making the density analysis non-trivial.",
       "mathContext": "Concrete cases: for $m = 2$, every integer has an odd divisor, so $\\delta(2, \\alpha) = 1$ trivially. For $m = p$ (large prime), the smallest admissible $d$ is $1 + p$, making the density analysis non-trivial."
     },
     {
       "id": "part-10-historical-context",
       "title": "Part 10: Historical Context",
-      "startLine": 186,
-      "endLine": 196,
+      "startLine": 181,
+      "endLine": 191,
       "summary": "Notes on the problem's origins in Erdős's 1979 Astérisque paper and Hall's 1992 resolution in J. Number Theory.",
       "mathContext": "Mathematical content: Notes on the problem's origins in Erdős's 1979 Astérisque paper and Hall's 1992 resolution in J. Number Theory."
     },
     {
       "id": "part-11-main-results",
       "title": "Part 11: Main Results",
-      "startLine": 197,
+      "startLine": 192,
       "endLine": 226,
       "summary": "Final theorems: `erdos_697_answer` (threshold exists), `erdos_697_threshold` (full characterization with $\\beta = 1/\\ln 2$), `erdos_697_summary` (threshold exists and $\\beta > 1$), and `erdos_697_solved` (problem is completely resolved).",
       "mathContext": "Final theorems: `erdos_697_answer` (threshold exists), `erdos_697_threshold` (full characterization with $\\beta = 1/\\ln 2$), `erdos_697_summary` (threshold exists and $\\beta > 1$), and `erdos_697_solved` (problem is completely resolved)."
