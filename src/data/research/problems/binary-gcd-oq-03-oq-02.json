@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 2, 2026-05-01): correctness-only formalization started. Created BinaryGcdOQ03OQ02.lean (~190 lines, 0 axioms, 1 sorry) with hgcdMatrix definition (recursive HGCD with explicit fuel), proved hgcdMatrix_det_unit and hgcdMatrix_apply_gcd. Single remaining sorry is hgcdMatrix_size_reduction — the genuinely new mathematical content of the OQ. Bit-complexity claim (C) documented as Mathlib-blocked (Part V comment).",
+    "progressSummary": "PROGRESS (Session 3, 2026-05-01): cofactor-convention fix landed. applyToNat now uses row-vector product matching the lehmerCofactors accumulator; hgcdMatrix mul order swapped; hgcdMatrix_apply_gcd restated and re-proved; native_decide example demonstrates the (1000,300) reduction. hgcdMatrix_size_reduction is now well-typed against the actual Lehmer-reduced pair (was false-as-stated under Session-2 column convention). Sorry count unchanged at 1; axiom count unchanged at 0. Separate follow-up: BinaryGcdOQ03.lean lehmerReduce has the same column-apply issue but is gcd-correct via fuel/fallback.",
     "builtItems": [
       "hgcdThreshold (BinaryGcdOQ03OQ02.lean): bottom-out threshold for HGCD recursion.",
       "hgcdTopHalfStep (BinaryGcdOQ03OQ02.lean): one Lehmer-style reduction on the top half of the bits.",
@@ -53,7 +53,11 @@
       "hgcdTopHalfStep_det_unit (BinaryGcdOQ03OQ02.lean): top-half step is unimodular.",
       "hgcdMatrix_det_unit (BinaryGcdOQ03OQ02.lean): recursive HGCD matrix is unimodular (induction on fuel).",
       "hgcdMatrix_apply_gcd (BinaryGcdOQ03OQ02.lean): application of hgcdMatrix preserves Nat.gcd.",
-      "bitsize (BinaryGcdOQ03OQ02.lean): bitsize helper used in size-reduction statement."
+      "bitsize (BinaryGcdOQ03OQ02.lean): bitsize helper used in size-reduction statement.",
+      "BinaryGcdOQ03OQ02.lean: applyToNat rewritten to row-vector product (Session 3)",
+      "BinaryGcdOQ03OQ02.lean: hgcdMatrix recursive composition reordered to M_top.mul M_rec (Session 3)",
+      "BinaryGcdOQ03OQ02.lean: hgcdMatrix_apply_gcd restated and re-proved against the row product, via gcd_cofactor_eq with relabelled (α, β, γ, δ) ← (M.α, M.γ, M.β, M.δ) (Session 3)",
+      "BinaryGcdOQ03OQ02.lean: native_decide example pinning row-apply behaviour on (1000, 300) → (100, 100) (Session 3)"
     ],
     "insights": [
       "All 2x2 cofactor matrix invariants needed for HGCD correctness already exist in BinaryGcdOQ03.lean (gcd_cofactor_eq, lehmerCofactors_det_unit, cofactor_apply_gcd). The HGCD formalization is the recursive wiring of these.",
@@ -64,7 +68,10 @@
       "Recommendation: split the question. Pursue (A) HGCD correctness as a self-contained verification; defer (B) until a complexity model lands in Mathlib or as a separate gallery initiative.",
       "Session 2 (2026-05-01): det-unit and gcd-preservation halves of HGCD correctness were essentially mechanical given existing CofactorMatrix infrastructure — proved with one induction over fuel + a four-way rcases on determinant signs.",
       "Session 2: explicit-fuel recursive definition lets us sidestep the termination proof entirely until size-reduction is established. Once size-reduction is proved, fuel can be replaced by WellFounded.fix on bitsize.",
-      "Session 2: the genuinely new content is the entry-bound lemma on lehmerCofactors — an upper bound roughly 2^(fuel+1) on each entry. This bound does not appear in Mathlib or BinaryGcdOQ03.lean and must be proved inline (likely 30-80 lines)."
+      "Session 2: the genuinely new content is the entry-bound lemma on lehmerCofactors — an upper bound roughly 2^(fuel+1) on each entry. This bound does not appear in Mathlib or BinaryGcdOQ03.lean and must be proved inline (likely 30-80 lines).",
+      "Session 3 (2026-05-01): discovered cofactor-convention mismatch in BinaryGcdOQ03OQ02.lean. lehmerCofactors accumulates M in row-vector convention (M • S right-multiplication, invariant (a₀,b₀)·M = current pair), but the Session-2 applyToNat used CofactorMatrix.apply (column product M·(a,b)ᵀ). Products differ once M.β ≠ M.γ (i.e., for ≥2 Lehmer steps with distinct quotients). Counterexample (1000, 300): row-apply gives reduced (100, 100); column-apply gives (400, 900) — *not* reduced. Both preserve gcd; only row-apply realises the half-bitsize reduction.",
+      "Session 3: hgcdMatrix_size_reduction was therefore false-as-stated under the column-apply applyToNat. The lemma is now well-typed against the actual Lehmer-reduced pair after rewriting applyToNat to (a·M.α + b·M.γ, a·M.β + b·M.δ) and swapping the recursive mul order to M_top.mul M_rec.",
+      "Session 3 (separate finding): BinaryGcdOQ03.lean lehmerReduce uses the same column-apply formula on a row-accumulated cofactor, so the Lehmer step in the existing algorithm does not actually realise a reduction either. lehmerGcd is still gcd-correct via fuel exhaustion + euclidGcd fallback. Worth a follow-up issue on the OQ-03 line."
     ],
     "mathlibGaps": [
       "Half-GCD / HGCD: no formalization in Mathlib or this gallery (verified by grep 2026-04-28).",
@@ -73,11 +80,11 @@
       "Big-integer abstraction: Mathlib operates on Nat/Int as opaque algebraic structures; there is no big-integer-as-array-of-words representation that would let bit-complexity reasoning attach to actual arithmetic primitives."
     ],
     "nextSteps": [
-      "Prove the Lehmer accumulator entry bound: each entry of (lehmerCofactors fuel ahat bhat M) is at most ~2^(fuel+1). Likely by induction on fuel using lehmerInnerStep_det and the explicit step form euclidStepMatrix q = ⟨0, 1, 1, -q⟩.",
-      "Combine the entry bound with Cramer's rule (inverse of unimodular matrix has same entry bound up to sign) to bound applyToNat (hgcdTopHalfStep a b) a b by 2^(bitsize(max a b)/2 + 2).",
-      "Iterate the half-reduction twice (top-level + recursive call) to close hgcdMatrix_size_reduction.",
-      "Once size reduction is proved, replace the explicit-fuel definition with a WellFounded.fix definition (lexicographic on bitsize).",
-      "(Optional, lower priority) Wire hgcdMatrix into lehmerGcd to give a recursive variant hgcdGcd and prove hgcdGcd a b = Nat.gcd a b."
+      "Prove the Lehmer accumulator entry bound: |M.α|, |M.β|, |M.γ|, |M.δ| ≤ max(ahat, bhat) + 1 (or simple polynomial bound) for M = lehmerCofactors fuel ahat bhat id. Most likely route: maintain the matrix-vector invariant (ahat₀, bhat₀) · M = (current pair) as a theorem, combine with sign-tracking on the alternating cofactor parities.",
+      "Combine the entry bound with the row-product expansion (a = aHi·2^shift + aLo, similar for b) to bound the residual by 2^shift · (aHi' + |M.α| + |M.γ|).",
+      "Iterate the half-reduction (top + recursive call) to close the threshold gap and discharge hgcdMatrix_size_reduction.",
+      "Once size reduction is proved, replace explicit-fuel hgcdMatrix with a WellFounded.fix definition (lexicographic on bitsize).",
+      "Follow-up issue on BinaryGcdOQ03.lean: lehmerReduce uses column-apply on a row-accumulated cofactor; lehmerGcd remains gcd-correct only by fuel exhaustion + euclidGcd fallback."
     ]
   },
   "tags": [

@@ -209,3 +209,139 @@ to a single sorry (the size-reduction lemma).
 3. (Optional, lower priority) wire `hgcdMatrix` into the existing
    `lehmerGcd` to give a recursive variant `hgcdGcd` and prove
    `hgcdGcd a b = Nat.gcd a b`.
+
+## Session 2026-05-01 (Session 3) — Cofactor convention fix
+
+**Mode**: continuation of Session 2 (same day)
+**Outcome**: progress — corrected a convention mismatch that would
+have made `hgcdMatrix_size_reduction` *false as previously stated*.
+The lemma is now well-aligned with the algorithm semantics; sorry
+count unchanged at 1.
+
+### What I Did
+
+While reviewing the file before attempting the size-reduction proof,
+I traced `lehmerInnerStep` and `lehmerCofactors` against the
+`CofactorMatrix.apply` definition, and discovered they use *different*
+matrix conventions:
+
+* `lehmerInnerStep` updates the accumulator via
+  `M' = M · S` where `S = ⟨0, 1, 1, -q⟩` (right-multiplication by
+  the step matrix). Equivalently, the maintained invariant is
+  `(a₀, b₀) · M = (current pair)` — **row-vector convention**.
+
+* `CofactorMatrix.apply (a, b) = (M.α·a + M.β·b, M.γ·a + M.δ·b)` is
+  the **column-vector** product `M · (a, b)ᵀ`.
+
+These products are equal only when `M.β = M.γ`, i.e. for the very
+first Lehmer step (where `S = ⟨0, 1, 1, -q⟩` is symmetric on those
+entries). After two or more Lehmer steps with distinct quotients,
+the row and column products diverge.
+
+For the Session-2 `applyToNat` (which used `M.apply`), this means:
+
+* `cofactor_apply_gcd` is still applicable — column-applying any
+  unimodular matrix preserves gcd. So `hgcdMatrix_apply_gcd` was
+  *true* but read against the column product, not the actual
+  Lehmer-reduced pair.
+* `hgcdMatrix_size_reduction` was *false* in general, because the
+  column-applied pair is not the reduced pair — it can even be
+  larger than the input.
+
+Concrete demonstration (now a `native_decide` test in the file):
+take `(a, b) = (1000, 300)`. `hgcdTopHalfStep` extracts `aHi = 31,
+bHi = 9` (`shift = 5`, `n = 10`) and runs two cofactor steps on
+those:
+
+* step 1: `q = 3, r = 4`, `M₁ = ⟨0, 1, 1, -3⟩`,
+* step 2: `q = 2, r = 1`, `M₂ = ⟨1, -2, -3, 7⟩` (β = -2 ≠ γ = -3).
+
+| Convention   | Result on (1000, 300)                    | Reduced? |
+|--------------|------------------------------------------|----------|
+| Row-apply    | (1000·1 + 300·(-3), 1000·(-2) + 300·7) = (100, 100) | yes (max bitsize 7 < 10) |
+| Column-apply | (1·1000 + (-2)·300, (-3)·1000 + 7·300) = (400, -900) → (400, 900) | **no** (max bitsize 10) |
+
+Both pairs preserve `Nat.gcd 1000 300 = 100`; only the row-apply
+pair is the actual Lehmer reduction.
+
+Fix applied:
+
+1. `applyToNat M a b` now computes `(a·M.α + b·M.γ, a·M.β + b·M.δ)`
+   directly (row product), bypassing `M.apply`.
+2. `hgcdMatrix`'s recursive composition swapped from
+   `(M_rec).mul (M_top)` to `(M_top).mul (M_rec)`, so that the
+   row-apply of the composite is "top-half first, then recurse".
+3. `hgcdMatrix_apply_gcd` restated with the row product on the
+   left-hand side. Proof: relabel `(α, β, γ, δ) ← (M.α, M.γ, M.β,
+   M.δ)` and apply `gcd_cofactor_eq` from `BinaryGcdOQ03`; the
+   det condition `α·δ - β·γ = M.α·M.δ - M.γ·M.β = M.det` is
+   symmetric under the swap `β ↔ γ`. Plus a `ring`-rewrite to
+   match goal multiplication order.
+4. `hgcdMatrix_det_unit` updated to feed
+   `mul_unit_of_unit_of_unit` arguments in the new order
+   (top-half first).
+5. File-level docstring expanded to spell out the convention; new
+   `native_decide` example pins the row-apply behaviour on the
+   `(1000, 300)` case.
+
+### Key Findings
+
+* This is a non-trivial bug: it would have surfaced only when
+  somebody tried to *use* the cofactor matrix to reduce a pair, which
+  is exactly what HGCD does. The pure correctness theorems
+  (`hgcdMatrix_det_unit`, `hgcdMatrix_apply_gcd`) were both true under
+  the column convention, but the SIZE-REDUCTION lemma — the
+  genuinely new content of OQ-02 — would have been false.
+* The fix is local to `BinaryGcdOQ03OQ02.lean` and does not require
+  changes to `BinaryGcdOQ03.lean`, because `lehmerCofactors`'s row
+  convention is consistent within itself; the issue was only at the
+  boundary where we tried to "apply" the accumulated matrix.
+* Note that `lehmerReduce` in `BinaryGcdOQ03.lean` *also* uses
+  `M.apply`, which has the same issue — it does not actually
+  produce the Lehmer-reduced pair for matrices with two or more
+  steps. The existing `lehmerGcd` algorithm is gcd-correct via
+  fuel exhaustion + euclidGcd fallback, but the Lehmer "speedup"
+  is not actually realised. This is a separate finding worth a
+  follow-up issue against the OQ-03 line.
+
+### Files Modified
+
+* `proofs/Proofs/BinaryGcdOQ03OQ02.lean` — convention fix:
+  `applyToNat` body, `hgcdMatrix` mul order, `hgcdMatrix_det_unit`
+  arg order, `hgcdMatrix_apply_gcd` restated and re-proved, file-level
+  + `applyToNat` docstrings, smoke-check example updated, new
+  `native_decide` example for the (1000, 300) case. Sorry count
+  unchanged at 1; axiom count unchanged at 0.
+* `research/problems/binary-gcd-oq-03-oq-02/state.md` — Session-3
+  block, updated active-approach narrative.
+* `research/problems/binary-gcd-oq-03-oq-02/knowledge.md` — this
+  Session-3 entry.
+
+### Next Steps
+
+The size-reduction lemma is now well-typed against the actual
+Lehmer-reduced pair. The proof plan from Session 2 carries over,
+with one wording change:
+
+1. **Lehmer accumulator entry bound** —
+   prove `|M.α|, |M.β|, |M.γ|, |M.δ| ≤ max(ahat, bhat)` (or some
+   simple polynomial bound) for `M = lehmerCofactors fuel ahat
+   bhat id`. Most likely route: maintain the matrix-vector
+   invariant `(ahat₀, bhat₀) · M = (current pair)` *as a
+   theorem*, and combine it with sign tracking on the cofactors
+   (the alternation `α, δ` vs `β, γ` per step).
+2. **Half-bitsize residual via the entry bound** —
+   write `a = aHi · 2^shift + aLo`, similar for b, expand the
+   row product, and bound the result by
+   `2^shift · (aHi' + |M.α| + |M.γ|)`.
+3. **Iterate** the half-reduction (top-half + recursive call) to
+   close the threshold gap.
+
+Step 1 is the bulk of the work and the natural focus of a future
+session.
+
+A separate follow-up: file an issue against `BinaryGcdOQ03.lean`
+noting that `lehmerReduce` uses `M.apply` (column) on a
+row-accumulated `M`, so the "Lehmer step" in the existing algorithm
+does not actually reduce the pair. The algorithm is still
+gcd-correct via fuel exhaustion + `euclidGcd` fallback.

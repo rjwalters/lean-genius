@@ -23,6 +23,21 @@
   All cofactor-matrix machinery (det, mul, apply, GCD invariance under
   unimodular matrices) is reused from `BinaryGcdOQ03.lean`.
 
+  **Cofactor convention.** `lehmerCofactors` accumulates the cofactor
+  matrix in the row-vector convention: each Lehmer step `S_k`
+  right-multiplies the accumulator (`M' = M · S_k`), so the invariant
+  maintained is `(a₀, b₀) · M = (current pair)`.
+
+  Consequently this file's `applyToNat M a b` performs the row-vector
+  product `(a, b) · M = (a·M.α + b·M.γ, a·M.β + b·M.δ)`, *not* the
+  column-vector `M.apply` from `BinaryGcdOQ03.lean`. Both products
+  preserve `Nat.gcd` when `det M = ±1`, but only the row product yields
+  the actual reduced pair from the iterated Lehmer steps. The
+  composition order in `hgcdMatrix` (`M_top.mul M_rec`, with the top
+  step on the *left*) is similarly chosen so that
+  `(a, b) · (M_top · M_rec) = ((a, b) · M_top) · M_rec` matches "apply
+  the top-half step first, then recurse".
+
   References:
   - Schönhage (1971), "Schnelle Berechnung von Kettenbruchentwicklungen"
   - Brent & Zimmermann, "Modern Computer Arithmetic", §1.6.3
@@ -59,15 +74,34 @@ def hgcdTopHalfStep (a b : ℕ) : CofactorMatrix :=
   lehmerCofactors n aHi bHi CofactorMatrix.id
 
 /-- Apply a cofactor matrix to a non-negative pair, taking absolute values
-    of the result. In the algorithm both components remain non-negative
-    when the matrix is correctly accumulated; this is a safety wrapper. -/
+    of the result.
+
+    **Convention.** `lehmerCofactors` accumulates the cofactor matrix in the
+    *row-vector* convention: each Lehmer step `S_k` right-multiplies the
+    accumulator (`M' = M · S_k`), so the invariant maintained is
+    `(a₀, b₀) · M = (current pair)`. Hence "applying" `M` to `(a, b)` to
+    obtain the Lehmer-reduced pair means computing the row-vector product
+    `(a, b) · M = (a·M.α + b·M.γ, a·M.β + b·M.δ)`.
+
+    This is *not* the column-vector product `M.apply (a, b)` from
+    `BinaryGcdOQ03.lean` (which would give `(M.α·a + M.β·b, M.γ·a + M.δ·b)`).
+    Both products preserve `Nat.gcd` when `det M = ±1`, but only the
+    row-vector product yields the actual reduced pair from the iterated
+    Lehmer steps. See knowledge.md / state.md for the worked counterexample
+    `(a, b) = (1000, 300)` where the column form does *not* reduce. -/
 def applyToNat (M : CofactorMatrix) (a b : ℕ) : ℕ × ℕ :=
-  let (u, v) := M.apply (↑a) (↑b)
+  let u : ℤ := (a : ℤ) * M.α + (b : ℤ) * M.γ
+  let v : ℤ := (a : ℤ) * M.β + (b : ℤ) * M.δ
   (u.natAbs, v.natAbs)
 
 /-- Recursive HGCD with explicit fuel. Returns a cofactor matrix `M` whose
     determinant is `±1` and which preserves `Nat.gcd`. The size-reduction
-    property is stated separately. -/
+    property is stated separately.
+
+    The recursive composition order — `M_top.mul M_rec` rather than
+    `M_rec.mul M_top` — matches the row-vector convention: row-applying
+    the composite is `(a, b) · M_top · M_rec`, i.e. apply the top-half
+    step first, then apply the recursive matrix to the reduced pair. -/
 def hgcdMatrix : (fuel a b : ℕ) → CofactorMatrix
   | 0,        _, _ => CofactorMatrix.id
   | fuel + 1, a, b =>
@@ -83,10 +117,10 @@ def hgcdMatrix : (fuel a b : ℕ) → CofactorMatrix
           < 2 ^ hgcdThreshold then
         hgcdTopHalfStep a b
       else
-        (hgcdMatrix fuel
+        (hgcdTopHalfStep a b).mul
+          (hgcdMatrix fuel
             (applyToNat (hgcdTopHalfStep a b) a b).1
-            (applyToNat (hgcdTopHalfStep a b) a b).2).mul
-          (hgcdTopHalfStep a b)
+            (applyToNat (hgcdTopHalfStep a b) a b).2)
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART II: DETERMINANT IS ±1
@@ -124,21 +158,39 @@ theorem hgcdMatrix_det_unit (fuel a b : ℕ) :
     · exact hgcdTopHalfStep_det_unit a b
     · rw [CofactorMatrix.det_mul]
       exact mul_unit_of_unit_of_unit
+        (hgcdTopHalfStep_det_unit a b)
         (ih (applyToNat (hgcdTopHalfStep a b) a b).1
             (applyToNat (hgcdTopHalfStep a b) a b).2)
-        (hgcdTopHalfStep_det_unit a b)
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART III: GCD PRESERVATION
 -- ═══════════════════════════════════════════════════════════════
 
-/-- Applying `hgcdMatrix` to `(a, b)` preserves the GCD. This is an
-    immediate consequence of `cofactor_apply_gcd` together with
-    `hgcdMatrix_det_unit`. -/
+/-- Applying `hgcdMatrix` to `(a, b)` (row convention) preserves the GCD.
+    This is the row-vector analogue of `cofactor_apply_gcd`; it follows from
+    `gcd_cofactor_eq` applied to the relabelled coefficients
+    `(α, β, γ, δ) ← (M.α, M.γ, M.β, M.δ)`, since the determinant condition
+    `α·δ - β·γ = M.α·M.δ - M.γ·M.β = M.det = ±1` is symmetric under the
+    swap `β ↔ γ`. -/
 theorem hgcdMatrix_apply_gcd (fuel a b : ℕ) :
     let M := hgcdMatrix fuel a b
-    Int.gcd (M.α * (↑a : ℤ) + M.β * ↑b) (M.γ * ↑a + M.δ * ↑b) = Nat.gcd a b := by
-  exact cofactor_apply_gcd (hgcdMatrix_det_unit fuel a b)
+    Int.gcd ((↑a : ℤ) * M.α + ↑b * M.γ) ((↑a : ℤ) * M.β + ↑b * M.δ)
+      = Nat.gcd a b := by
+  set M := hgcdMatrix fuel a b
+  have hdet : M.α * M.δ - M.γ * M.β = 1 ∨ M.α * M.δ - M.γ * M.β = -1 := by
+    have h := hgcdMatrix_det_unit fuel a b
+    simp only [CofactorMatrix.det] at h
+    rcases h with h | h
+    · left; linarith
+    · right; linarith
+  have h := gcd_cofactor_eq (α := M.α) (β := M.γ) (γ := M.β) (δ := M.δ)
+              (a := a) (b := b) hdet
+  -- h : Int.gcd (M.α * ↑a + M.γ * ↑b) (M.β * ↑a + M.δ * ↑b) = Nat.gcd a b
+  -- Goal differs only by commutativity of `*` on `ℤ`.
+  have eq1 : (↑a : ℤ) * M.α + ↑b * M.γ = M.α * ↑a + M.γ * ↑b := by ring
+  have eq2 : (↑a : ℤ) * M.β + ↑b * M.δ = M.β * ↑a + M.δ * ↑b := by ring
+  rw [eq1, eq2]
+  exact h
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART IV: SIZE REDUCTION (the genuinely new content)
@@ -212,8 +264,23 @@ example : (hgcdMatrix 5 7 3).det = 1 ∨ (hgcdMatrix 5 7 3).det = -1 :=
 
 example :
     let M := hgcdMatrix 4 5 3
-    Int.gcd (M.α * (5 : ℤ) + M.β * 3) (M.γ * 5 + M.δ * 3) = Nat.gcd 5 3 :=
+    Int.gcd ((5 : ℤ) * M.α + (3 : ℤ) * M.γ) ((5 : ℤ) * M.β + (3 : ℤ) * M.δ)
+      = Nat.gcd 5 3 :=
   hgcdMatrix_apply_gcd 4 5 3
+
+/-- **Convention sanity check.** For `(a, b) = (1000, 300)` the top-half
+    Lehmer step extracts `aHi = 31, bHi = 9` (`shift = 5`) and runs two
+    cofactor steps, yielding `M = ⟨1, -2, -3, 7⟩`.
+
+    * Row-apply (this file's convention):
+      `(1000·1 + 300·(-3), 1000·(-2) + 300·7) = (100, 100)` — reduced.
+    * Column-apply (the previous, *incorrect*, convention):
+      `(1·1000 + (-2)·300, (-3)·1000 + 7·300) = (400, -900)` — *not* reduced.
+
+    Both pairs preserve `Nat.gcd 1000 300 = 100`, but only the row-apply
+    pair is a valid Lehmer reduction (max bit-size 7 < 10). -/
+example : applyToNat (hgcdTopHalfStep 1000 300) 1000 300 = (100, 100) := by
+  native_decide
 
 /-! ## Summary
 

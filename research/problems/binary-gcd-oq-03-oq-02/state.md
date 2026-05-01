@@ -2,12 +2,15 @@
 
 **Phase**: ACT
 **Since**: 2026-05-01
-**Iteration**: 3
+**Iteration**: 4
 
 ## Current Focus
 
-Proving the **size-reduction lemma** `hgcdMatrix_size_reduction` —
-the only sorry remaining in `proofs/Proofs/BinaryGcdOQ03OQ02.lean`.
+Proving the **size-reduction lemma** `hgcdMatrix_size_reduction` — the
+only sorry remaining in `proofs/Proofs/BinaryGcdOQ03OQ02.lean`. The
+Session-3 (2026-05-01) work corrected a cofactor-convention mismatch
+that would have made the lemma *false as previously stated*; the
+lemma is now well-typed against the actual Lehmer-reduced pair.
 
 Quantitative target:
 
@@ -17,24 +20,58 @@ bitsize (max (applyToNat (hgcdMatrix fuel a b) a b).1
   ≤ bitsize (max a b) / 2 + (hgcdThreshold + 2)
 ```
 
+where `applyToNat M a b = (a·M.α + b·M.γ, a·M.β + b·M.δ)` (row
+convention; see "Active Approach").
+
 ## Active Approach
 
 **Correctness-only formalization** as recommended by Session 1.
-Session 2 (2026-05-01) executed the recommendation:
 
-1. Defined `hgcdMatrix : ℕ → ℕ → ℕ → CofactorMatrix` (recursive HGCD
-   with explicit fuel; two recursive calls composed via
-   `CofactorMatrix.mul`).
-2. Proved `hgcdMatrix_det_unit` — the matrix is unimodular (det = ±1).
-3. Proved `hgcdMatrix_apply_gcd` — applying it preserves `Nat.gcd`.
-4. Stated `hgcdMatrix_size_reduction` with the precise quantitative
-   bound (sorry, deferred).
-5. Documented the bit-complexity claim (C) as a Mathlib infrastructure
-   gap in a Part-V comment.
+* Session 2 (2026-05-01) put down the skeleton: `hgcdMatrix`,
+  det-unit, gcd preservation, and the size-reduction lemma stated
+  with `sorry`.
+* Session 3 (2026-05-01) discovered and fixed a cofactor-convention
+  mismatch:
 
-The two correctness theorems were essentially mechanical given the
-existing `BinaryGcdOQ03.lean` cofactor-matrix machinery. The
-size-reduction lemma is the genuinely new content.
+  `lehmerCofactors` in `BinaryGcdOQ03.lean` accumulates the cofactor
+  matrix in the **row-vector** convention: each Lehmer step
+  `S_k = ⟨0, 1, 1, -q⟩` *right*-multiplies the accumulator
+  (`M' = M · S_k`), so the maintained invariant is
+  `(a₀, b₀) · M = (current pair)`.
+
+  The previous Session-2 `applyToNat` used `M.apply` (column-vector
+  product `M · (a, b)ᵀ`). This is *not* the row product
+  `(a, b) · M`; the two differ as soon as `M.β ≠ M.γ`, which happens
+  whenever Lehmer runs ≥ 2 steps with different quotients.
+
+  Concrete counterexample (now a `native_decide` test in the file):
+  for `(a, b) = (1000, 300)`, Lehmer on the top half `(31, 9)` builds
+  `M = ⟨1, -2, -3, 7⟩`. Row-apply gives `(100, 100)` — reduced;
+  column-apply gives `(400, 900)` — *larger* than the input. Both
+  preserve gcd `100`, but only row-apply realises the half-bitsize
+  reduction the size-reduction lemma claims.
+
+  Fix in Session 3:
+
+  - `applyToNat` rewritten to `(a·M.α + b·M.γ, a·M.β + b·M.δ)`.
+  - `hgcdMatrix` recursive composition swapped from
+    `M_rec.mul M_top` to `M_top.mul M_rec`, so that
+    `(a, b) · (M_top · M_rec)` reads "apply top first, then recurse"
+    in row convention.
+  - `hgcdMatrix_apply_gcd` restated with the row product on the
+    left-hand side; the proof reduces to `gcd_cofactor_eq` applied
+    to the relabelled coefficients
+    `(α, β, γ, δ) ← (M.α, M.γ, M.β, M.δ)` (det condition is
+    symmetric under the swap `β ↔ γ`).
+  - `hgcdMatrix_det_unit` updated to feed
+    `mul_unit_of_unit_of_unit` in the new argument order.
+  - File-level docstring and `applyToNat` docstring document the
+    convention and the worked counterexample.
+
+The two correctness theorems remain mechanical given the existing
+cofactor-matrix machinery. The size-reduction lemma is the genuinely
+new content, and its statement is now well-aligned with the actual
+algorithm semantics.
 
 ## Blockers
 
@@ -66,7 +103,7 @@ size-reduction lemma is the genuinely new content.
 
 ## Attempt Counts
 
-* Total attempts: 1 (Session 2 — skeleton + det/gcd theorems)
-* Current approach attempts: 1
-* Approaches tried: 1 (HGCD as Lehmer-step composition with
-  explicit fuel)
+* Total attempts: 2 (Session 2 — skeleton; Session 3 — convention fix)
+* Current approach attempts: 2
+* Approaches tried: 1 (HGCD as Lehmer-step composition with explicit
+  fuel; row-vector cofactor convention)
