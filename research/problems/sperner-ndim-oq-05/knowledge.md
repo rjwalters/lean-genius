@@ -453,7 +453,48 @@ color witness to the exact color forbidden by Sperner.
 
 ---
 
-## Session 2026-04-27 (Session 13) — Audit + state sync
+## Session 2026-04-27 (Session 13a) - Prove vertex_injective + finsetToNat_injective in SpernerFreudenthal
+
+**Mode**: REVISIT
+**Outcome**: PROGRESS — 6 → 4 sorries in `proofs/Proofs/SpernerFreudenthal.lean`
+
+### What I Did
+
+1. Audited file states: SpernerFreudenthal.lean had 6 sorries, others 0 (or commented stubs)
+2. Searched Mathlib for relevant lemmas to close two routine sorries
+3. Proved `AbstractSimplicialData.toTriangulation.vertex_injective` (line 156)
+4. Proved `finsetToNat_injective` (line 224)
+5. Verified compilation via Docker build (152s build, exit 0)
+
+### Key Technical Insights
+
+- **Nodup.get_inj_iff**: `Nodup.get_inj_iff : l.Nodup → (l.get i = l.get j ↔ i = j)`. Available in `Mathlib.Data.List.Nodup`. Used to prove `vertex_injective` for the sorted-list-based vertex enumeration.
+
+- **Fin.cast elaboration gotcha**: `Fin.ext (congrArg Fin.val heq)` failed with "argument heq has type `Fin.cast _ i = Fin.cast _ j` but is expected to have type `i = j`". Lean back-elaborated `Fin.val`'s domain from `Fin.ext`'s expected goal. Workaround: `apply Fin.ext; rw [Fin.ext_iff] at heq; exact heq`. The `Fin.ext_iff` rewrite simplifies `(Fin.cast _ i).val = (Fin.cast _ j).val` to `i.val = j.val` by definitional equality.
+
+- **Finset.geomSum_injective**: For 2 ≤ n, `(fun s : Finset ℕ ↦ ∑ i ∈ s, n^i)` is injective. Lives in `Mathlib.Combinatorics.Colex` (within `namespace Finset`, `section Nat`). Provides clean proof of bitmap injectivity for `Finset (Fin n)` via `Finset.sum_image (Fin.val_injective)` then `Finset.image_injective Fin.val_injective`.
+
+### Files Modified
+
+- `proofs/Proofs/SpernerFreudenthal.lean` (vertex_injective, finsetToNat_injective; 6 → 4 sorries)
+
+### Remaining Sorries in SpernerFreudenthal.lean
+
+1. `adj_symm` (line 187) — adjacency symmetry of `toTriangulation` (analogous to `SpernerSimplicialInstance.adjFn_symm`, ~87 lines there)
+2. `adj_vertex` (line 188) — codim-1 face equality (analogous to `SpernerSimplicialInstance.adjFn_vertex`, ~62 lines)
+3. `adj_ne` (line 189) — adjacent simplices distinct
+4. `pseudomanifold` (line 322) — Freudenthal triangulation pseudomanifold property (the deep sorry; faces are shared by ≤ 2 simplices)
+
+### Next Steps
+
+1. The three `adj_*` sorries: structurally similar to `SpernerSimplicialInstance.lean`. Could either (a) port those proofs to operate on `D.vertexEnum` instead of the fixed adjacency function, or (b) simply delegate by reusing the construction. Estimated 200-400 LoC.
+2. `pseudomanifold` for Freudenthal: requires showing each n-face appears in ≤ 2 prefix-simplices. This is the classical Freudenthal pseudomanifold property; standard proof via permutation transposition argument. ~100-200 LoC.
+3. **[USER ACTION]** Refresh Mathlib fork + submit Part 1 PR to mathlib4 (status unchanged from session 11)
+4. **[USER ACTION]** Comment on mathlib4#25231 pointing to SpernerSimplicialInstance.lean (Part 2)
+
+---
+
+## Session 2026-04-27 (Session 13b) — Audit + state sync
 
 **Mode**: REVISIT (audit-only, no Lean changes)
 **Outcome**: Documented blocked state; surfaced concurrent work on other branches

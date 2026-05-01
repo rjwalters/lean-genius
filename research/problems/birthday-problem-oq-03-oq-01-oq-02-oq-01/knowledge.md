@@ -89,11 +89,91 @@ These confirm P(no triple | n=3) = (d³-d)/d³ = 1 - 1/d², matching exp(-1/d²)
 
 ---
 
+## Session 2026-04-27 (Session 2) — Axiom Re-reading + Method-of-Moments Path
+
+**Mode**: REVISIT (WEAK knowledge tier, score 5)
+**Outcome**: STRATEGY REFINEMENT — actual axiom is qualitative, not quantitative; method of moments is a lighter alternative to Chen-Stein.
+
+### What I Did
+
+1. Re-read the actual Lean axiom (`BirthdayProblemOQ03OQ01OQ02.lean:325`) and compared to the JSON `problemStatement.formal`.
+2. Mapped the axiom's parameter shape: `(c : ℝ) (hc : 0 < c)` with `n d := ⌊c · d^{2/3}⌋`, then `Filter.Tendsto (fun d => P_no_triple - exp(-C(n d, 3)/d²)) atTop (nhds 0)`.
+3. Computed the limit values to confirm the regime: λ(d) = C(n d, 3)/d² → c³/6 as d → ∞ (uses `choose3_real` already proved in §1).
+4. Re-classified the proof difficulty against this qualitative axiom shape.
+
+### Key Finding: The Axiom is QUALITATIVE, Not Quantitative
+
+The JSON `problemStatement.formal` field shows a **quantitative** Chen-Stein bound `|...| ≤ C·n⁴/d³`. The actual Lean axiom (`poisson_approx_birthday3`, line 325) is **qualitative**:
+
+```lean
+Filter.Tendsto (fun d => P_no_triple_at_(n d, d) - exp(-C(n d, 3)/d²)) atTop (nhds 0)
+```
+
+This changes the strategy significantly:
+- Quantitative Chen-Stein bound (JSON) → 500-800 lines of Stein's operator + dependency graphs
+- Qualitative Tendsto (actual axiom) → method of moments suffices (~150-300 lines)
+
+The pool/JSON-stated formal target overstates what is needed to remove the axiom from this file.
+
+### Method-of-Moments Strategy Sketch
+
+Standard textbook proof outline (see Bollobás *Random Graphs* §1.3):
+
+Let X_d := number of unordered birthday triples among `n(d)` people, i.e.,
+X_d = Σ_{i<j<k} 𝟙{f(i)=f(j)=f(k)} on the uniform measure over `Fin (n d) → Fin d`.
+
+1. **First moment**: E[X_d] = C(n d, 3)/d² → c³/6 =: λ. (provable in Lean today; cardinality argument)
+2. **Higher factorial moments**: For each fixed r, E[(X_d)_r] → λ^r (the r-th factorial moment of Poisson(λ)).
+   - Reduces to counting r-tuples of triples by overlap pattern: independent ones give λ^r·(1+o(1)); overlapping pairs contribute o(1).
+   - Each fixed r is a finite combinatorial sum; the o(1) terms come from `Filter.Tendsto` of polynomial ratios in d.
+3. **Method of moments**: For Poisson, factorial-moment convergence implies distribution convergence. Then `P(X_d = 0) → e^{-λ}` is the r=0 specialization combined with Bonferroni inequalities.
+
+**Mathlib coverage**:
+- `Filter.Tendsto`, polynomial limits at infinity: present, well-developed
+- Factorial-moment computation as Finset sums: native Lean territory, no probability dependency
+- "Method of moments → distribution convergence" theorem for Poisson: NOT in Mathlib, but for the specific case `P(X_d = 0)` we don't need the full theorem — Bonferroni inclusion-exclusion suffices.
+
+### Bonferroni Path (Most Promising)
+
+Use Bonferroni inequalities directly:
+
+For any odd r:    P(X_d ≥ 1) ≥ Σ_{k=1}^{r} (-1)^{k+1} S_k(d)
+For any even r:   P(X_d ≥ 1) ≤ Σ_{k=1}^{r} (-1)^{k+1} S_k(d)
+
+where S_k(d) = E[(X_d choose k)] = Σ over k-subsets of triples of P(all k triples coincide).
+
+By definition of `Real.exp` Taylor series and choosing r → ∞ slowly enough (e.g., r = ⌈log d⌉), `Σ (-1)^{k+1} S_k(d) → 1 - e^{-λ}`. Both Bonferroni bounds squeeze P(X_d ≥ 1).
+
+**Estimated scope**: 200-300 lines of Lean. Most of the work is the inclusion-exclusion identity for `Finset.card.filter` + the asymptotic counting `S_k(d) → λ^k/k!`.
+
+### Why This Wasn't Found in Session 1
+
+Session 1's knowledge.md frames the goal as "prove the Chen-Stein bound", which matches the pool JSON formal but not the actual Lean axiom. Re-reading the file's axiom directly shows the lighter qualitative form. This is a pool-staleness issue: the JSON `problemStatement.formal` was probably written before the Lean file was settled.
+
+### Recommended Next Action
+
+1. **Update problem JSON** so `problemStatement.formal` matches the actual qualitative axiom (Tendsto, not absolute-value bound).
+2. **Try Bonferroni**: implement `S_k(d)` counting lemma and the Bonferroni-Tendsto squeeze argument.
+3. **Aristotle-friendly subgoals** (companion file): each `S_k(d) → λ^k/k!` for fixed k is a polynomial-ratio limit, well within `Filter.Tendsto`/`norm_num`/`polyrith` automation reach.
+
+### Files Modified This Session
+
+- `research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01/knowledge.md` — added Session 2
+- `src/data/research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01.json` — phase NEW → ORIENT, insights/nextSteps refreshed
+- (No Lean files modified — disk near-full constraint, see CLAUDE.md feedback note; deferred to next session)
+
+### Disk-Constraint Disclaimer
+
+Host disk at 98% (304 MiB free) at session start. Per memory `feedback_disk_full_blocks_research`, no Docker builds were attempted and no Lean source edits were made — the strategy refinement is documentary only. The Bonferroni path needs to be drafted in a future session when disk has been reclaimed.
+
+---
+
 ## Dead Ends
 
-- **Chen-Stein from scratch this session**: Too large (~500-800 lines of measure theory infrastructure)
+- **Chen-Stein from scratch this session**: Too large (~500-800 lines of measure theory infrastructure) — and overkill for the qualitative axiom (Session 2 finding)
 - **Second moment → exact bound**: Second moment proves asymptotics, not explicit error bounds
 - **Union bound as proof of main axiom**: Only proves one direction, not the bilateral approximation bound
+- **Quantitative Chen-Stein (Session 1 framing)**: Mismatched scope — actual axiom is qualitative, lighter methods apply
 
 ---
 
