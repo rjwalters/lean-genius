@@ -153,7 +153,7 @@
     {
       "id": "alternative",
       "title": "Erdős's Alternative Approach",
-      "summary": "Axiomatizes `erdos_alternative_approach`: infinitely many $n$ in $(l!, (l+1)!]$ have all prime factors $> l$ ($l$-rough) and all factorial subtractions composite. This drops primality, replacing it with a roughness condition potentially amenable to sieve methods.",
+      "summary": "Documents in source comments Erdős's alternative approach: infinitely many $n$ in $(l!, (l+1)!]$ have all prime factors $> l$ ($l$-rough) and all factorial subtractions composite. No Lean axiom declaration exists for this statement; the section is a docstring only.",
       "startLine": 125,
       "endLine": 136,
       "mathContext": "Relaxes primality to rough-number condition: $n \\in (l!, (l+1)!]$ with $\\min(\\text{prime factors of } n) > l$. Connected to Dickman $\\rho$-function."
