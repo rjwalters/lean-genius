@@ -118,16 +118,16 @@
       "title": "Part VI: Comparison with BES Threshold",
       "startLine": 165,
       "endLine": 172,
-      "summary": "asymptotic_agreement: sharp threshold ≈ (r-3/2)n.",
-      "mathContext": "Mathematical content: asymptotic_agreement: sharp threshold ≈ (r-3/2)n."
+      "summary": "Docstring commentary on asymptotic agreement: the sharp threshold (r-1)n - ⌈sn/(2s-1)⌉ ≈ (r-3/2)n for large n since ⌈sn/(2s-1)⌉ ≈ n/2 + O(1). No Lean theorem is declared in Part VI — the section contains only a docstring with Part VII beginning immediately after.",
+      "mathContext": "Docstring commentary on asymptotic agreement between the sharp threshold and the BES threshold (r-3/2)n. asymptotic_agreement is not a Lean declaration — only a docstring heading."
     },
     {
       "id": "transversals",
       "title": "Part VII: Connection to Transversals",
       "startLine": 173,
       "endLine": 188,
-      "summary": "IsIndependentTransversal definition and extremal_construction.",
-      "mathContext": "Formal definition: IsIndependentTransversal definition and extremal_construction."
+      "summary": "IsIndependentTransversal definition: a transversal T with one vertex per part such that no two vertices are adjacent. extremal_construction is noted in a docstring comment only — no Lean declaration of that name exists in this section.",
+      "mathContext": "IsIndependentTransversal definition (lines 185–188): a transversal with one vertex per part, no adjacent pair. extremal_construction is a docstring heading, not a Lean declaration."
     },
     {
       "id": "summary",
