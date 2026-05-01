@@ -53,9 +53,9 @@
       "Proved IP set infinitude from singleton membership",
       "Singleton membership in FS(A) for a ∈ A",
       "Disjoint sum closure for FS(A)",
-      "Idempotent ultrafilter existence axiom with IP-set property",
-      "Ultrafilter implies Hindman axiom (modern proof path)",
-      "Hales-Jewett implies Hindman axiom (alternative proof path)",
+      "Ultrafilter proof strategy described in docstring (idempotent ultrafilters in (βℕ, +)); no Lean declaration",
+      "Modern ultrafilter proof path sketched in docstring; no Lean declaration",
+      "Hales-Jewett connection sketched in docstring; no Lean declaration",
       "Finite Hindman theorem axiom and Hindman numbers definition"
     ],
     "axiomCount": 2,
@@ -128,30 +128,30 @@
       "title": "Ultrafilter Proof (Modern Approach)",
       "summary": "Idempotent ultrafilters in (βℕ, +) and ultrafilter proof strategy",
       "startLine": 202,
-      "endLine": 248,
-      "mathContext": "Verified: Idempotent ultrafilters in (βℕ, +) and ultrafilter proof strategy"
+      "endLine": 227,
+      "mathContext": "Narrative: docstring-only description of the ultrafilter proof strategy via idempotent ultrafilters in (βℕ, +); no Lean declarations in this section"
     },
     {
       "id": "hales-jewett",
       "title": "Hales-Jewett Connection",
       "summary": "Deriving Hindman from Hales-Jewett theorem",
-      "startLine": 249,
-      "endLine": 266,
-      "mathContext": "Verified: Deriving Hindman from Hales-Jewett theorem"
+      "startLine": 228,
+      "endLine": 240,
+      "mathContext": "Narrative: docstring-only sketch of deriving Hindman from the Hales-Jewett theorem; no Lean declarations in this section"
     },
     {
       "id": "computational",
       "title": "Computational Aspects",
       "summary": "Hindman numbers and the finite version",
-      "startLine": 267,
-      "endLine": 294,
+      "startLine": 241,
+      "endLine": 268,
       "mathContext": "Mathematical content: Hindman numbers and the finite version"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Problem status, combined results, and impact",
-      "startLine": 295,
+      "startLine": 269,
       "endLine": 303,
       "mathContext": "Mathematical content: Problem status, combined results, and impact"
     }
