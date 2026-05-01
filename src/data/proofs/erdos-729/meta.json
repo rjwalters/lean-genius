@@ -112,8 +112,8 @@
       "title": "Proof Strategy",
       "startLine": 132,
       "endLine": 140,
-      "summary": "Axiomatizes `proof_extends_erdos_argument`: for primes $p > C$, the $p$-adic constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ holds even under the relaxed condition, since the correction factor $k$ has no $p$-component.",
-      "mathContext": "Axiomatizes `proof_extends_erdos_argument`: for primes $p > C$, the $p$-adic constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ holds even under the relaxed condition, since the correction factor $k$ has no $p$-component."
+      "summary": "Prose discussion of the proof strategy: for primes $p > C$, the $p$-adic constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ holds even under the relaxed condition. No axiom declaration in this range — description only.",
+      "mathContext": "Prose description of proof strategy for relaxed divisibility. No axiom declaration in this range."
     },
     {
       "id": "legendre-details",
@@ -128,8 +128,8 @@
       "title": "Implications and Rigidity",
       "startLine": 163,
       "endLine": 184,
-      "summary": "Axiomatizes `factorial_rigidity` and proves `binomial_rigidity`: when $a + b = n$, $n!/(a!b!) = \\binom{n}{a}$ is always an integer (proved via `Nat.choose_mul_factorial_mul_factorial`).",
-      "mathContext": "Axiomatized: Axiomatizes `factorial_rigidity` and proves `binomial_rigidity`: when $a + b = n$, $n!/(a!b!) = \\binom{n}{a}$ is always an integer (proved via `Nat.choose_mul_factorial_mul_factorial`)."
+      "summary": "Proves `binomial_rigidity`: when $a + b = n$, $n!/(a!b!) = \\binom{n}{a}$ is always an integer (proved via `Nat.choose_mul_factorial_mul_factorial`). Prose docstring notes the rigidity of factorial structure.",
+      "mathContext": "Verified: proves `binomial_rigidity` via Nat.choose_mul_factorial_mul_factorial."
     },
     {
       "id": "main-statement",
