@@ -95,35 +95,35 @@
       "id": "definition",
       "title": "Distance Set and L(r)",
       "summary": "Defines `IsDistanceSet` (finite subset of positive reals) and `multiDistChromatic` (axiomatized L(r) = max χ(G_A) over distance sets A of size r). The function is noncomputable since it involves a supremum over uncountably many geometric configurations.",
-      "startLine": 22,
-      "endLine": 32
+      "startLine": 21,
+      "endLine": 30
     },
     {
       "id": "main-conjecture",
       "title": "Polynomial Bound Conjecture",
       "summary": "Describes the polynomial bound conjecture ∃ C, k > 0 such that L(r) ≤ C · r^k for all r ≥ 1 in prose commentary. This conjecture is not formalized as a Lean declaration — it is the central open question motivating the problem.",
-      "startLine": 33,
-      "endLine": 41
+      "startLine": 32,
+      "endLine": 36
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds: Hadwiger-Nelson and Monotonicity",
       "summary": "Records `erdos_706_base_case` (5 ≤ L(1) ≤ 7 from de Grey and Isbell), `erdos_706_monotone` (L is non-decreasing), and `erdos_706_lower` (L(r) ≥ 5 for r ≥ 1, combining monotonicity with de Grey's result).",
-      "startLine": 42,
-      "endLine": 58
+      "startLine": 37,
+      "endLine": 53
     },
     {
       "id": "exponential-upper",
       "title": "Exponential Upper Bound",
       "summary": "Notes in commentary that ∃ C > 1 such that L(r) ≤ C^r (Frankl-Wilson exponential upper bound). This bound is described in prose only — it is not formalized as a Lean axiom or theorem. The polynomial conjecture asks whether this exponential bound can be dramatically improved.",
-      "startLine": 59,
-      "endLine": 68
+      "startLine": 55,
+      "endLine": 60
     },
     {
       "id": "observations",
       "title": "Connections to Related Problems",
       "summary": "Notes connections to Problem #508 (Hadwiger-Nelson, the r = 1 case), Problem #704 (unit distance graphs in ℝⁿ, where Frankl-Wilson gives exponential lower bounds), and Problem #705 (girth constraints on unit distance graphs).",
-      "startLine": 69,
+      "startLine": 61,
       "endLine": 71
     }
   ],
