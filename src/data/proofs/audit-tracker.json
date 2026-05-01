@@ -7708,10 +7708,19 @@
       "result": "issues-fixed"
     },
     "erdos-580": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-session-1777623758",
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T08:23:46Z",
+      "result": "issues-found",
+      "issues": [
+        "originalContributions: 4 phantom entries (AKS_theorem, path_case, star_case, LKS_tightness) - docstrings only",
+        "proofStrategy: steps 5 and 7 claim 5 axiomatizations, only zhao_theorem is axiomatized",
+        "section trees: claims Cayley's formula axiomatized - docstring only",
+        "section partial-results: claims AKS_theorem axiomatized - docstring only",
+        "section special-cases: claims path_case/star_case axiomatized - docstrings only",
+        "section tightness: claims LKS_tightness axiomatized - docstring only",
+        "tracking issue: #14197"
+      ]
     },
     "erdos-581": {
       "agentId": "auditor-cycle-20-batch",
