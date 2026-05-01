@@ -59,7 +59,7 @@
     "historicalContext": "This problem concerns the density $\\delta_1(n,m)$ of integers with exactly one divisor in the open interval $(n,m)$, and whether this density is unimodal as a function of $m$.\n\n**Erdős (1986):** Posed the unimodality question at the Oberwolfach Number Theory conference. He proved the quantitative bound $\\delta_1(n,m) \\leq 1/(\\log n)^c$ for some $c > 0$, showing the density decays as $n$ grows. The bound follows from the Hardy-Ramanujan observation that a typical integer $k$ has about $\\log \\log k$ prime factors, so its divisors are spread out and having exactly one in a short interval requires special multiplicative structure.\n\n**Ford (2008):** Kevin Ford's landmark paper 'The distribution of integers with a divisor in a given interval' (Annals of Mathematics, 2008) gave precise asymptotics for the related function $H(x,y,z) = \\#\\{n \\leq x : \\exists d \\mid n,\\; y < d < z\\}$. Ford proved $H(x,y,z) \\asymp x \\cdot \\delta(u)$ where $u = \\log z / \\log y$ and $\\delta(u)$ involves the Dickman function $\\rho(u)$. This resolved Problem #446 and provided the foundational framework for studying $\\delta_1$.\n\n**Cambie (2025):** Stijn Cambie disproved unimodality with an elegant computational counterexample. For $n = 3$, he computed $\\delta_1(3,6) \\approx 0.35$, $\\delta_1(3,7) \\approx 0.33$, $\\delta_1(3,8) \\approx 0.3619$ via inclusion-exclusion over divisibility conditions, showing a decrease-then-increase pattern that violates any unimodal shape. He further proved the dramatically stronger result that the number of local maxima grows superpolynomially in $M$, driven by the prime counting function $\\pi(m) - \\pi(n) \\sim m/\\log m$.",
     "problemStatement": "**Problem Statement (Disproved)**\n\nLet $\\delta_1(n,m)$ be the density of integers with exactly one divisor in $(n,m)$.\n\n**Original Question (Erdős 1986):**\nIs $\\delta_1(n,m)$ unimodal for $m > n + 1$? That is, does it increase then decrease?\n\n**Answer: NO**\n\n**Cambie's Counterexample (2025):**\nFor $n = 3$:\n- $\\delta_1(3,6) = 0.35$\n- $\\delta_1(3,7) \\approx 0.33$\n- $\\delta_1(3,8) \\approx 0.3619$\n\nThe sequence **decreases then increases**, refuting unimodality.\n\n**Stronger Result:** The sequence has superpolynomially many local maxima.",
     "text": "Let δ₁(n,m) be the density of integers with exactly one divisor in (n,m). Is δ₁(n,m) unimodal for m > n+1? DISPROVED by Cambie (2025) with explicit counterexamples showing superpolynomially many local maxima.",
-    "proofStrategy": "**Formalization Architecture**\n\n1. **Core Definitions (lines 49–79):** `divisorsInInterval` counts $|\\mathcal{D}(k) \\cap (n,m)|$ via `Finset.filter` on `Nat.divisors`. `countWithOneDivisor` counts integers $k \\leq N$ with exactly one such divisor. `delta1` defines $\\delta_1(n,m) = \\limsup_{N \\to \\infty} \\frac{\\text{count}(N,n,m)}{N}$ using `Filter.limsup` over `Filter.atTop`.\n\n2. **Historical Bounds (lines 87–111):** Erdős's bound $\\delta_1(n,m) \\leq 1/(\\log n)^c$ and Ford's 2008 sharper bounds are axiomatized, encoding the quantitative decay.\n\n3. **Unimodality Framework (lines 119–134):** `IsUnimodal` formalizes the definition (non-decreasing to peak, non-increasing after). `erdosUnimodalityQuestion` asks whether $\\delta_1(n,\\cdot)$ satisfies this.\n\n4. **Cambie's Disproof (lines 142–175):** Axiomatized counterexample values for $n=3$, the negation of unimodality for $n=2,3$, and the universal negation.\n\n5. **Superpolynomial Oscillation (lines 187–213):** `SuperpolynomialGrowth` captures $g(n) = \\omega(n^k)$ for all $k$, and `cambie_superpolynomial_maxima` asserts this for the local maxima count.\n\n6. **Synthesis (lines 277–295):** `erdos_692` combines the bound with the disproof via `constructor`.",
+    "proofStrategy": "**Formalization Architecture**\n\n1. **Core Definitions (lines 49–79):** `divisorsInInterval` counts $|\\mathcal{D}(k) \\cap (n,m)|$ via `Finset.filter` on `Nat.divisors`. `countWithOneDivisor` counts integers $k \\leq N$ with exactly one such divisor. `delta1` defines $\\delta_1(n,m) = \\limsup_{N \\to \\infty} \\frac{\\text{count}(N,n,m)}{N}$ using `Filter.limsup` over `Filter.atTop`.\n\n2. **Historical Bounds (lines 87–111):** Erdős's bound $\\delta_1(n,m) \\leq 1/(\\log n)^c$ and Ford's 2008 sharper bounds are axiomatized, encoding the quantitative decay.\n\n3. **Unimodality Framework (lines 119–134):** `IsUnimodal` formalizes the definition (non-decreasing to peak, non-increasing after). `erdosUnimodalityQuestion` asks whether $\\delta_1(n,\\cdot)$ satisfies this.\n\n4. **Cambie's Disproof (lines 142–175):** Axiomatized counterexample values for $n=3$, the negation of unimodality for $n=2,3$, and the universal negation.\n\n5. **Superpolynomial Oscillation (lines 172–200):** `IsLocalMaximum`, `countLocalMaxima`, and `SuperpolynomialGrowth` formalize the oscillation framework (lines 172–192). Cambie's theorem that the local maxima count grows superpolynomially is discussed in commentary at lines 194–200; no Lean axiom is declared for this result.\n\n6. **Synthesis (lines 263–279):** `erdos_692` combines the bound with the disproof via `constructor`.",
     "keyInsights": [
       "**Minimal Counterexample at $n = 3$:** The density values $\\delta_1(3,6) > \\delta_1(3,7) < \\delta_1(3,8)$ show non-monotonicity at the smallest non-trivial $n$, computed via inclusion-exclusion over divisibility by 4, 5, and 20",
       "**Prime Boundary Oscillation Mechanism:** When $m$ passes through a prime $p$, multiples of $p$ gain a new divisor in $(n,m)$: those with zero divisors before contribute positively to $\\delta_1$, while those with exactly one contribute negatively — the net effect oscillates with local prime structure",
@@ -138,65 +138,65 @@
     {
       "id": "ford-bounds",
       "title": "Ford's Sharper Bounds (2008)",
-      "summary": "Axiomatizes Ford's regime-dependent bounds on $\\delta_1(n,m)$ from his Annals paper, refining Erdős's estimate using $H(x,y,z) \\asymp x \\cdot \\delta(\\log z / \\log y)$",
+      "summary": "Discusses Ford's regime-dependent bounds on $\\delta_1(n,m)$ in commentary (docstring at lines 102–108); no axiom is declared. Ford's 2008 Annals paper refined Erdős's estimate using $H(x,y,z) \\asymp x \\cdot \\delta(\\log z / \\log y)$",
       "startLine": 102,
-      "endLine": 111,
+      "endLine": 108,
       "mathContext": "Ford: regime-dependent bounds on $\\\\delta_1(n,m)$ from his work on the distribution of divisors."
     },
     {
       "id": "unimodality-definition",
       "title": "Unimodality and Erdős's Question",
       "summary": "Defines `IsUnimodal f start` (non-decreasing to peak, non-increasing after) and `erdosUnimodalityQuestion n`: is $m \\mapsto \\delta_1(n,m)$ unimodal for $m > n+1$?",
-      "startLine": 119,
-      "endLine": 134,
+      "startLine": 115,
+      "endLine": 130,
       "mathContext": "Unimodal: non-decreasing to a peak, then non-increasing. Question: is $m \\\\mapsto \\\\delta_1(n,m)$ unimodal for fixed $n$?"
     },
     {
       "id": "cambie-counterexample",
       "title": "Cambie's Counterexample Values ($n = 3$)",
-      "summary": "Axiomatizes $\\delta_1(3,6) > 0.34$, $\\delta_1(3,7) < 0.34$, $\\delta_1(3,8) > 0.36$ — the decrease-then-increase pattern computed via inclusion-exclusion over divisibility by 4, 5, and 20",
-      "startLine": 142,
-      "endLine": 158,
+      "summary": "Notes computed counterexample values in commentary: $\\delta_1(3,6) \\approx 0.35$, $\\delta_1(3,7) \\approx 0.33$, $\\delta_1(3,8) \\approx 0.3619$ (docstring at lines 138–149). Axiomatizes the abstract negation `cambie_disproves_unimodality` (line 154): $\\neg(\\forall n \\geq 2,\\; \\text{unimodal})$. The specific numerical bounds appear only in the docstring, not in the axiom statement.",
+      "startLine": 138,
+      "endLine": 154,
       "mathContext": "Cambie (2025): $\\\\delta_1(3,6) > 0.34 > \\\\delta_1(3,7) < 0.34 < \\\\delta_1(3,8)$. Non-monotone! Disproves unimodality for $n=3$."
     },
     {
       "id": "disproof",
       "title": "Disproof of Unimodality",
-      "summary": "Axiomatizes $\\neg\\,\\text{erdosUnimodalityQuestion}\\,3$ and $\\neg\\,\\text{erdosUnimodalityQuestion}\\,2$, then the universal negation $\\neg(\\forall n \\geq 2,\\; \\text{unimodal})$",
-      "startLine": 159,
-      "endLine": 175,
+      "summary": "Axiomatizes `cambie_n3_not_unimodal` (line 160): $\\neg\\,\\text{erdosUnimodalityQuestion}\\,3$. Notes in commentary (lines 162–165) that $n=2$ also fails, but no axiom is declared for $n=2$. The universal negation is captured by `cambie_disproves_unimodality` in the preceding section.",
+      "startLine": 160,
+      "endLine": 165,
       "mathContext": "DISPROVED: $\\\\delta_1(n,m)$ is NOT unimodal for $n = 3$ (Cambie 2025). Also fails for $n = 4$."
     },
     {
       "id": "local-maxima-defs",
       "title": "Local Maxima and Superpolynomial Growth",
       "summary": "Defines `IsLocalMaximum`, `countLocalMaxima` on $[\\text{start}+1, M]$, and `SuperpolynomialGrowth g` meaning $g(n) = \\omega(n^k)$ for every $k$",
-      "startLine": 187,
-      "endLine": 203,
+      "startLine": 172,
+      "endLine": 192,
       "mathContext": "Local maximum: $\\\\delta_1(n,m) > \\\\delta_1(n,m-1)$ and $\\\\delta_1(n,m) > \\\\delta_1(n,m+1)$. Count of local maxima measures oscillation complexity."
     },
     {
       "id": "superpolynomial-maxima",
       "title": "Superpolynomially Many Local Maxima",
-      "summary": "Axiomatizes that for fixed $n \\geq 2$, the count of local maxima of $\\delta_1(n,\\cdot)$ up to $M$ grows superpolynomially — driven by $\\pi(M) \\sim M/\\log M$",
-      "startLine": 209,
-      "endLine": 213,
+      "summary": "Discusses in commentary Cambie's theorem that for fixed $n \\geq 2$, the count of local maxima of $\\delta_1(n,\\cdot)$ up to $M$ grows superpolynomially (docstring at lines 194–200); no axiom is declared for this result. The superpolynomial growth machinery is defined in the preceding section.",
+      "startLine": 194,
+      "endLine": 200,
       "mathContext": "For fixed $n \\\\geq 2$: the number of local maxima of $m \\\\mapsto \\\\delta_1(n,m)$ for $m \\\\leq M$ grows super-polynomially in $M$. Wild oscillation."
     },
     {
       "id": "ford-distribution",
       "title": "Ford's Distribution Function $H(x,y,z)$",
       "summary": "Defines `fordDistribution(x,y,z) = \\#\\{n \\leq x : \\exists d \\mid n,\\; y < d < z\\}$ and the oscillation interpretation connecting 'at least one' to 'exactly one' via inclusion-exclusion",
-      "startLine": 232,
-      "endLine": 256,
+      "startLine": 212,
+      "endLine": 219,
       "mathContext": "Ford: $\\\\Phi(x,y,z) = \\\\#\\\\{n \\\\leq x : \\\\exists d \\\\mid n,; y < d \\\\leq z\\\\}$. The distribution of divisors in intervals is a rich and well-studied topic."
     },
     {
       "id": "main-results",
       "title": "Main Summary Theorems",
       "summary": "`erdos_692` combines the upper bound with Cambie's disproof via `constructor`; `erdos_692_status` records $\\neg\\,\\text{erdosUnimodalityQuestion}\\,3$ resolving a 39-year-old problem",
-      "startLine": 277,
-      "endLine": 281,
+      "startLine": 263,
+      "endLine": 279,
       "mathContext": "DISPROVED (Cambie 2025). The density $\\\\delta_1(n,m)$ oscillates with super-polynomially many local maxima. Combined with Erdos upper bound $\\\\delta_1 < 1$."
     }
   ],
