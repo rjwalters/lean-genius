@@ -81,62 +81,62 @@
       "id": "existence-prime-power-orders",
       "title": "Existence for Prime Power Orders",
       "startLine": 61,
-      "endLine": 74,
+      "endLine": 69,
       "summary": "Docstring discussion of the PG(2,q) construction from finite fields establishing projective planes for prime power orders — no formal axiom declaration in this section.",
       "mathContext": "Informal overview — no formal declarations in this section"
     },
     {
       "id": "verified-small-orders",
       "title": "Verified for Small Orders",
-      "startLine": 75,
-      "endLine": 87,
+      "startLine": 70,
+      "endLine": 78,
       "summary": "Docstring summary of orders up to 11: prime powers covered by PG(2,q), order 6 ruled out by Bruck-Ryser, order 10 by Lam's computation. No formal axiom declaration in this section.",
       "mathContext": "Informal overview — no formal declarations in this section"
     },
     {
       "id": "bruck-ryser-theorem",
       "title": "The Bruck-Ryser Theorem",
-      "startLine": 88,
-      "endLine": 104,
+      "startLine": 79,
+      "endLine": 95,
       "summary": "States the Bruck-Ryser theorem as an axiom: if a projective plane of order n exists and n ≡ 1 or 2 (mod 4), then n is a sum of two squares. This necessary condition rules out infinitely many orders including 6, 14, 21, and 22.",
       "mathContext": "States the Bruck-Ryser theorem as an axiom: if a projective plane of order n exists and n ≡ 1 or 2 (mod 4), then n is a sum of two squares. This necessary condition rules out infinitely many orders including 6, 14, 21, and 22."
     },
     {
       "id": "lam-order-10",
       "title": "The Lam Result for Order 10",
-      "startLine": 105,
-      "endLine": 119,
+      "startLine": 96,
+      "endLine": 106,
       "summary": "Docstring description of Lam, Thiel, and Swiercz's 1989 computational proof that no order-10 projective plane exists. Notable because Bruck-Ryser does not rule out order 10 (since 10 = 1² + 3²). No axiom declaration in this section.",
       "mathContext": "Informal overview — no formal declarations in this section"
     },
     {
       "id": "order-12-open",
       "title": "Order 12 Remains Open",
-      "startLine": 120,
-      "endLine": 128,
+      "startLine": 107,
+      "endLine": 115,
       "summary": "Documents that order 12 is the smallest open case: 12 ≡ 0 (mod 4) so Bruck-Ryser does not apply, 12 is not a prime power, and no computer search has succeeded due to the enormous search space.",
       "mathContext": "Mathematical content: Documents that order 12 is the smallest open case: 12 ≡ 0 (mod 4) so Bruck-Ryser does not apply, 12 is not a prime power, and no computer search has succeeded due to the enormous search space."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties (Verified)",
-      "startLine": 129,
-      "endLine": 140,
+      "startLine": 116,
+      "endLine": 127,
       "summary": "Two verified theorems extracting counting formulas from Mathlib's ProjectivePlane API: plane_points and plane_lines both proving |P| = |L| = n² + n + 1, reflecting projective point-line duality.",
       "mathContext": "Verified: Two verified theorems extracting counting formulas from Mathlib's ProjectivePlane API: plane_points and plane_lines both proving |P| = |L| = n² + n + 1, reflecting projective point-line duality."
     },
     {
       "id": "small-order-examples",
       "title": "Examples of Small Orders",
-      "startLine": 141,
-      "endLine": 168,
+      "startLine": 128,
+      "endLine": 155,
       "summary": "Verified computations: IsPrimePow for orders 1-5 via decide (with order 4 needing explicit 4=2² rewrite), and ¬IsPrimePow for 6, 10, 12 confirming these are not prime powers.",
       "mathContext": "Mathematical content: Verified computations: IsPrimePow for orders 1-5 via decide (with order 4 needing explicit 4=2² rewrite), and ¬IsPrimePow for 6, 10, 12 confirming these are not prime powers."
     },
     {
       "id": "bruck-ryser-applications",
       "title": "Bruck-Ryser Applications (Verified)",
-      "startLine": 169,
+      "startLine": 156,
       "endLine": 174,
       "summary": "The crown jewel: a complete verified proof chain ruling out order 6. Proves 6 mod 4 = 2, then that 6 is not a sum of two squares via interval_cases, then applies Bruck-Ryser to conclude no order-6 plane exists.",
       "mathContext": "The crown jewel: a complete verified proof chain ruling out order 6. Proves 6 mod 4 = 2, then that 6 is not a sum of two squares via interval_cases, then applies Bruck-Ryser to conclude no order-6 plane exists."
