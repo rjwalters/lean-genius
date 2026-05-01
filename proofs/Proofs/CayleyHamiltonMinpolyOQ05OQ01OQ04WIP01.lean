@@ -234,9 +234,25 @@ theorem cyclic_vector_similar_transfer
 
 /-- **Axiom**: A nonderogatory matrix M is similar to its companion matrix.
     This is the classical theorem that requires the rational canonical form
-    (equivalently, the PID structure theorem for K[X]-modules), which is not
-    currently in Mathlib 4.26.
+    (equivalently, the PID structure theorem for K[X]-modules).
 
+    AUDIT 2026-04-27: The PID structure theorem IS in Mathlib (4.26+):
+    - `Module.equiv_directSum_of_isTorsion` (Mathlib.Algebra.Module.PID)
+    - `Module.equiv_free_prod_directSum` (Mathlib.Algebra.Module.PID)
+    - `Module.exists_ker_toSpanSingleton_eq_annihilator` (Mathlib.Algebra.Module.PID)
+
+    Combined with the AEval module infrastructure
+    (`Module.AEval'` and `Module.AEval.annihilator_top_eq_ker_aeval` in
+    Mathlib.Algebra.Polynomial.Module.AEval), the cyclic vector existence
+    can be derived DIRECTLY from `exists_ker_toSpanSingleton_eq_annihilator`
+    without needing similarity to a companion matrix at all.
+
+    For nonderogatory M with charpoly = minpoly of degree n, the theorem gives
+    x in K^n with ker(p ↦ p • x) = (minpoly K M); since (minpoly) contains no
+    nonzero polynomial of degree < n, x is automatically a cyclic vector.
+
+    The axiom remains for now because writing the bridging code requires
+    discharging the axiom into ~50–150 new lines that have not been built yet.
     The forward direction (similar to companion -> nonderogatory) is trivial
     since minpoly_companionMatrix and charpoly_companionMatrix are proved. -/
 axiom nonderogatory_similar_to_companion (M : Matrix (Fin n) (Fin n) K)

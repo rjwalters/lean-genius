@@ -21,7 +21,7 @@
     "sorries": 0,
     "axiomCount": 1,
     "lineCount": 290,
-    "assumptions": "1 axiom: nonderogatory_similar_to_companion (nonderogatory matrix is similar to its companion matrix; requires rational canonical form / PID structure theorem, not yet in Mathlib 4.26).",
+    "assumptions": "1 axiom: nonderogatory_similar_to_companion (nonderogatory matrix is similar to its companion matrix). NOTE (audit 2026-04-27): the PID structure theorem IS in Mathlib (Module.equiv_directSum_of_isTorsion, Module.equiv_free_prod_directSum at Mathlib.Algebra.Module.PID), and Module.exists_ker_toSpanSingleton_eq_annihilator combined with Module.AEval' (Mathlib.Algebra.Polynomial.Module.AEval) directly gives a cyclic vector for nonderogatory matrices without needing similarity to a companion matrix at all. The remaining work is bridging code, not a missing structure theorem.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -43,6 +43,21 @@
         "theorem": "Polynomial.le_natDegree_of_mem_supp",
         "description": "Support elements are bounded by natDegree",
         "module": "Mathlib.Algebra.Polynomial.Degree.Definitions"
+      },
+      {
+        "theorem": "Module.exists_ker_toSpanSingleton_eq_annihilator",
+        "description": "(Audit 2026-04-27, future use) For f.g. module over PID, exists x with ker(toSpanSingleton x) = annihilator. Discharges nonderogatory_similar_to_companion via AEval module.",
+        "module": "Mathlib.Algebra.Module.PID"
+      },
+      {
+        "theorem": "Module.equiv_directSum_of_isTorsion",
+        "description": "(Audit 2026-04-27, future use) Structure theorem for f.g. torsion modules over PID — invariant factor decomposition.",
+        "module": "Mathlib.Algebra.Module.PID"
+      },
+      {
+        "theorem": "Module.AEval.annihilator_top_eq_ker_aeval",
+        "description": "(Audit 2026-04-27, future use) annihilator of AEval module equals ker of aeval, connecting module-theoretic and polynomial views.",
+        "module": "Mathlib.Algebra.Polynomial.Module.AEval"
       }
     ]
   },
@@ -112,9 +127,9 @@
     "summary": "This file makes concrete progress on the nonderogatory cyclic vector theorem. The companion matrix cyclic vector (companionMat_e0_cyclic) is fully proved via the Krylov orbit argument. The remaining sorry is precisely stated as an axiom: nonderogatory matrices are similar to their companion matrices. This decomposes the original vague sorry into a proved part and a precisely-located mathematical gap.",
     "implications": "The orbit argument C^k e0 = e_k is now formally verified in Lean 4, establishing a concrete constructive fact about companion matrices. The similarity transfer theorem is also verified. The only remaining mathematical content is the rational canonical form / PID structure theorem, which is a known Mathlib gap. This decomposition makes the remaining work modular: once the similarity axiom is proved, the entire chain completes automatically.",
     "openQuestions": [
-      "Can nonderogatory_similar_to_companion be proved using existing Mathlib infrastructure (e.g., primary decomposition for finitely generated modules)?",
-      "When will Mathlib add the rational canonical form or the PID module structure theorem?",
-      "Can a direct proof via the Cayley-Hamilton theorem avoid the rational canonical form entirely? (M annihilated by charpoly + nonderogatory forces minpoly = charpoly, but getting a cyclic vector from this requires the similarity.)"
+      "AUDIT 2026-04-27: The PID structure theorem IS in Mathlib at Mathlib.Algebra.Module.PID (Module.equiv_directSum_of_isTorsion, Module.equiv_free_prod_directSum, Module.exists_ker_toSpanSingleton_eq_annihilator). Why was the axiom introduced? The original work appears to predate awareness of these results, or chose the companion-matrix route for pedagogical clarity.",
+      "Direct route to discharge the axiom: apply Module.exists_ker_toSpanSingleton_eq_annihilator to Module.AEval' M (K^n with K[X]-action via M, defined in Mathlib.Algebra.Polynomial.Module.AEval). Combined with Module.AEval.annihilator_top_eq_ker_aeval and the connection between aeval kernel and minpoly, this yields a cyclic vector directly — no companion matrix similarity needed. Estimated effort: 50-150 lines of bridging code.",
+      "Alternative route (preserves companion-matrix architecture): prove nonderogatory_similar_to_companion via the cyclic vector existence (above) plus a change-of-basis argument — the cyclic vector v gives basis {v, Mv, ..., M^{n-1}v} in which M acts as the companion matrix of minpoly = charpoly. This is the classical proof and works once the cyclic vector is established."
     ]
   },
   "leanFile": {
