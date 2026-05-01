@@ -40,8 +40,8 @@
       }
     ],
     "originalContributions": [
-      "Axiomatized greatest prime factor P(m) function",
-      "Properties: P(p) = p, P(p^k) = p, P(m*n) = max(P(m), P(n))",
+      "Greatest prime factor P(m) defined via Mathlib's primeFactorsList",
+      "Properties: P(p) = p (gpf_prime), P(p^k) = p (gpf_prime_power), P(m) | m (gpf_divides), P(m).Prime (gpf_is_prime)",
       "Erdős conjecture formal statement",
       "Key lemma: 2^k ≢ -1 (mod 7) for all k",
       "Counterexample theorem: no n with P(n) = 2, P(n+1) = 7",
@@ -59,7 +59,7 @@
     "historicalContext": "**Erdős Problem #649**\n\nThis problem asks whether all prime pairs can be realized as greatest prime factors of consecutive integers.\n\n**Key History:**\n- Erdős believed the problem was 'probably hopelessly difficult'\n- Multiple counterexamples discovered via modular arithmetic\n- Tong proved infinitely many pairs fail for any fixed p\n- Mahler (1935) studied growth of P(n(n+1))\n\n**The Counterexamples:**\n- (2, 7): 2^k ≢ -1 (mod 7) since ord_7(2) = 3 is odd\n- (19, 2): 2 is a primitive root mod 19\n- Infinitely many pairs via quadratic reciprocity obstructions",
     "problemStatement": "**Problem Statement (Disproved)**\n\nLet P(m) denote the greatest prime factor of m.\n\nIs it true that for any two primes p, q, there exists n such that:\n- P(n) = p\n- P(n+1) = q\n\n**Answer: NO**\n\nThe pair (p, q) = (2, 7) has no solution, and infinitely many other pairs fail.",
     "text": "Can any two primes p, q be achieved as P(n) = p and P(n+1) = q for some n? DISPROVED: The pair (2, 7) fails since 2^k ≢ -1 (mod 7) for all k.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Greatest Prime Factor:** Axiomatize P(m) with key properties\n\n2. **Erdős Conjecture:** Define as ∀ p q prime, ∃ n with P(n) = p, P(n+1) = q\n\n3. **Counterexample (2, 7):**\n   - If P(n) = 2, then n = 2^k for some k\n   - If P(2^k + 1) = 7, then 7 | (2^k + 1)\n   - But 2^k cycles {1, 2, 4} mod 7, never reaching 6 ≡ -1\n   - Contradiction\n\n4. **Main Theorem:** Apply the counterexample to disprove the conjecture\n\n5. **Extensions:** Tong's theorem on infinitely many failures",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Greatest Prime Factor:** Define P(m) via Mathlib's primeFactorsList; axiomatize specific arithmetic facts (gpf_eq_two_iff, consecutive_gpf_divides) used in the counterexample\n\n2. **Erdős Conjecture:** Define as ∀ p q prime, ∃ n with P(n) = p, P(n+1) = q\n\n3. **Counterexample (2, 7):**\n   - If P(n) = 2, then n = 2^k for some k\n   - If P(2^k + 1) = 7, then 7 | (2^k + 1)\n   - But 2^k cycles {1, 2, 4} mod 7, never reaching 6 ≡ -1\n   - Contradiction\n\n4. **Main Theorem:** Apply the counterexample to disprove the conjecture\n\n5. **Extensions:** Tong's theorem on infinitely many failures",
     "keyInsights": [
       "**Powers of 2 mod 7:** The cycle {1, 2, 4} has period 3, never hitting 6 ≡ -1",
       "**Order Theory:** ord_7(2) = 3 is odd, so -1 ∉ ⟨2⟩ in (Z/7Z)*",
@@ -77,10 +77,10 @@
     {
       "id": "gpf-definition",
       "title": "Greatest Prime Factor",
-      "summary": "Definition of P(m), axioms for primes, prime powers, products",
+      "summary": "Definition of P(m) via Mathlib's primeFactorsList, private helper lemmas, P(1) = 0",
       "startLine": 39,
       "endLine": 80,
-      "mathContext": "Formal definition: Definition of P(m), axioms for primes, prime powers, products"
+      "mathContext": "Formal definition: Definition of P(m) via Mathlib's primeFactorsList, private helper lemmas, P(1) = 0"
     },
     {
       "id": "conjecture",
