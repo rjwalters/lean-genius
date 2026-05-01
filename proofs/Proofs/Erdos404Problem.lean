@@ -12,7 +12,7 @@ Let f(a, p) denote the greatest such k if it exists. How does f(a, p) behave?
 Known results:
 - Lin (1976): f(2, 2) ≤ 254
 
-Axioms: 2 (lin_bound, lin_bound_meaning — Lin 1976 result)
+Axioms: 1 (lin_bound_meaning — Lin 1976 result; lin_bound is now derived)
 Sorries: 0
 
 Tags: number-theory, p-adic-valuation, factorials, divisibility, open-problem
@@ -55,8 +55,27 @@ def erdos404Conjecture : Prop :=
 
 /- ## Part III: Known Results -/
 
-axiom lin_bound : f 2 2 ≤ 254
+/-- Lin (1976) [Bell Labs internal memorandum]: no strictly increasing sequence
+    starting at 2 has 2^255 dividing its factorial sum.
+    This is the fundamental statement of Lin's bound. -/
 axiom lin_bound_meaning : ∀ s : StrictIncSeq 2, ¬(2^255 ∣ factorialSum s)
+
+/-- Lin (1976) bound `f 2 2 ≤ 254`, derived from `lin_bound_meaning`.
+
+    Proof: If `k ∈ divisiblePowers 2 2`, then some sequence `s` has `2^k ∣ factorialSum s`.
+    If `k ≥ 255`, then `2^255 ∣ 2^k ∣ factorialSum s`, contradicting `lin_bound_meaning`.
+    Hence the set is bounded above by 254, so its supremum is ≤ 254 by `Nat.sSup_def`. -/
+theorem lin_bound : f 2 2 ≤ 254 := by
+  show sSup (divisiblePowers 2 2) ≤ 254
+  have hbdd : ∀ k ∈ divisiblePowers 2 2, k ≤ 254 := by
+    intro k hk
+    obtain ⟨s, hs⟩ := hk
+    by_contra h_gt
+    push_neg at h_gt
+    exact lin_bound_meaning s
+      (dvd_trans (pow_dvd_pow 2 (by omega : 255 ≤ k)) hs)
+  rw [Nat.sSup_def ⟨254, hbdd⟩]
+  exact Nat.find_min' _ hbdd
 
 /- ## Part IV: p-adic Analysis -/
 

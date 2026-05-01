@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Proved padic_val_factorial_asymp sorry (Nat.log/n→0 via isLittleO + squeeze). File now 2A/0S — only Lin 1976 bounds remain as axioms.",
+    "progressSummary": "AXIOM ELIMINATION: Derived lin_bound from lin_bound_meaning via Nat.sSup_def. File now 1A/0S — only the fundamental Lin 1976 bound (¬(2^255 | factorialSum)) remains as axiom; the supremum form f(2,2) ≤ 254 is now a theorem.",
     "builtItems": [
       "Assessment: 4A all appropriate",
       "PROVED legendre_formula: padicValNat p n! = legendreSum n p (was axiom, now theorem)",
@@ -40,7 +40,8 @@
       "padic_val_factorial_asymp: v/n->1/(p-1) via squeeze (1 sorry: log/n->0)",
       "sum_telescope_nat: Nat telescoping sum lemma",
       "div_pow_antitone: n/p^k decreasing in k",
-      "Proved padic_val_factorial_asymp: ν_p(n!)/n → 1/(p-1) via isLittleO_log_rpow_atTop + Nat.pow_log_le_self + epsilon-N squeeze"
+      "Proved padic_val_factorial_asymp: ν_p(n!)/n → 1/(p-1) via isLittleO_log_rpow_atTop + Nat.pow_log_le_self + epsilon-N squeeze",
+      "lin_bound: derived from lin_bound_meaning via Nat.sSup_def + pow_dvd_pow (axiomCount 2 → 1)"
     ],
     "insights": [
       "lin_bound and lin_bound_meaning both encode Lin 1976 result (f(2,2) ≤ 254) — deep, appropriate",
@@ -54,7 +55,9 @@
       "Key insight: digit-sum identity legendreSum*(p-1)+baseDigitSum=n is exact Nat equality, both bounds follow by omega",
       "Telescoping via division algorithm: (a/p)*(p-1) + a%p = a - a/p, summed over k=0..L",
       "Remaining sorry (Nat.log p n / n -> 0) needs sublinear bound on Nat.log",
-      "isLittleO_log_rpow_atTop with r=1 gives log(x)=o(x); composed with Nat.pow_log_le_self gives Nat.log p n ≤ Real.log n / Real.log p, yielding the sublinear bound for squeeze"
+      "isLittleO_log_rpow_atTop with r=1 gives log(x)=o(x); composed with Nat.pow_log_le_self gives Nat.log p n ≤ Real.log n / Real.log p, yielding the sublinear bound for squeeze",
+      "lin_bound and lin_bound_meaning were redundant: ¬(2^255 | factorialSum s) for all s implies divisiblePowers 2 2 ⊆ {0,...,254}, hence sSup ≤ 254",
+      "Use Nat.sSup_def + Nat.find_min' to bound sSup of a Set ℕ without needing a nonemptiness witness — cleaner than csSup_le for ℕ"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -76,16 +79,16 @@
     "mathlib": []
   },
   "started": "2026-01-13T02:35:40.569Z",
-  "lastUpdate": "2026-03-29T00:30:00Z",
+  "lastUpdate": "2026-04-27T16:30:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos404Problem.lean",
       "filename": "Erdos404Problem.lean",
-      "lineCount": 292,
+      "lineCount": 290,
       "theoremCount": 7,
-      "axiomCount": 2,
+      "axiomCount": 1,
       "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,
