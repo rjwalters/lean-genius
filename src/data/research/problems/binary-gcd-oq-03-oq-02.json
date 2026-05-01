@@ -1,7 +1,7 @@
 {
   "slug": "binary-gcd-oq-03-oq-02",
   "title": "Can Schönhage's recursive HGCD (half-GCD) be formalized, achieving O(M(n) log...",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -31,15 +31,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED (Session 1, 2026-04-28): identified that the question splits into (A) HGCD correctness (tractable, all needed matrix machinery exists in BinaryGcdOQ03.lean) and (B) O(M(n) log n) complexity (blocked on Mathlib gaps: no fast multiplication, no bit-complexity model). Recommendation: pursue (A) only; defer (B) to a separate Mathlib-contribution initiative.",
-    "builtItems": [],
+    "progressSummary": "Session 2 (2026-05-01): ACT — added BinaryGcdOQ03OQ02.lean (≈340 lines, 0 sorries on correctness layer). Operational correctness of recursive HGCD: hgcdMatrix def, cofactor_mul_apply, hgcdMatrix_det_unit (induction on fuel), hgcdMatrix_preserves_gcd. Size-reduction lemma is stated as an explicit open subproblem; complexity bound remains deferred to a separate Mathlib-contribution initiative.",
+    "builtItems": [
+      "BinaryGcdOQ03OQ02.lean: hgcdMatrix def — fuel-indexed recursive HGCD (Schönhage). Threshold-based bottoming via lehmerCofactors; otherwise top-half-shift recursion + apply + bottom-half recursion + matrix product.",
+      "BinaryGcdOQ03OQ02.lean: cofactor_mul_apply — proves CofactorMatrix.mul corresponds to composition of CofactorMatrix.apply. Algebraic kernel justifying the M₂.mul M₁ return.",
+      "BinaryGcdOQ03OQ02.lean: hgcdMatrix_det_unit — induction on fuel proving every HGCD output has det ±1. Uses lehmerCofactors_det_unit at the leaf and CofactorMatrix.det_mul for the recursive case.",
+      "BinaryGcdOQ03OQ02.lean: hgcdMatrix_preserves_gcd — corollary of cofactor_apply_gcd given det ±1. Operational correctness of the recursive HGCD."
+    ],
     "insights": [
       "All 2x2 cofactor matrix invariants needed for HGCD correctness already exist in BinaryGcdOQ03.lean (gcd_cofactor_eq, lehmerCofactors_det_unit, cofactor_apply_gcd). The HGCD formalization is the recursive wiring of these.",
       "The original question conflates two distinct claims: (A) HGCD algorithmic correctness (tractable, ~300-500 lines) and (B) O(M(n) log n) bit complexity (blocked on multiple Mathlib gaps).",
       "Mathlib has no half-GCD, Schoenhage, Karatsuba, or any fast multiplication; grep against Mathlib confirmed (2026-04-28). Mathlib Computability has Turing/primrec but no bit-complexity model for arithmetic.",
       "The complexity bound O(M(n) log n) is currently unfalsifiable in Lean: no model in which to state \"M(n) bit operations\". Proving (B) requires upstreaming a bit-complexity framework + fast multiplication first (multi-thousand-line project).",
       "The single hardest piece on the correctness side is termination of the HGCD recursion: need bitsize(max a b) strict decrease after applying the recursively-computed matrix, which requires showing the matrix accumulated >=1 Euclidean step.",
-      "Recommendation: split the question. Pursue (A) HGCD correctness as a self-contained verification; defer (B) until a complexity model lands in Mathlib or as a separate gallery initiative."
+      "Recommendation: split the question. Pursue (A) HGCD correctness as a self-contained verification; defer (B) until a complexity model lands in Mathlib or as a separate gallery initiative.",
+      "Operational correctness of Schönhage HGCD reduces entirely to the matrix-determinant invariant already proved for Lehmer (BinaryGcdOQ03.lean). The recursion structure adds no new GCD-preservation obligation; it only redistributes work for asymptotic gain. So Path A (correctness only) requires zero new mathematical content beyond the composition law M.mul ↦ apply ∘ apply.",
+      "Fuel-indexed totality avoids the size-reduction proof obligation in the def. Termination via fuel decreasing; correctness via induction on fuel. The hard math (size reduction) is decoupled from the correctness layer."
     ],
     "mathlibGaps": [
       "Half-GCD / HGCD: no formalization in Mathlib or this gallery (verified by grep 2026-04-28).",
@@ -48,11 +55,9 @@
       "Big-integer abstraction: Mathlib operates on Nat/Int as opaque algebraic structures; there is no big-integer-as-array-of-words representation that would let bit-complexity reasoning attach to actual arithmetic primitives."
     ],
     "nextSteps": [
-      "Decide scope: correctness-only (recommended, ~300-500 lines) vs correctness-plus-complexity (deferred, multi-thousand lines of foundational work).",
-      "If correctness-only: define hgcdMatrix : Nat -> Nat -> CofactorMatrix recursively in a new BinaryGcdOQ03OQ02.lean, with termination measure bitsize a + bitsize b; reuse cofactor_apply_gcd for the GCD invariance.",
-      "Prove the size-reduction lemma: applying hgcdMatrix(a,b) yields (a',b') with bitsize(max a' b') roughly bitsize(max a b)/2. This is the only genuinely new mathematical content vs the existing Lehmer formalization.",
-      "If complexity-in-scope: escalate to Architect or Hermit role - this becomes a separate Mathlib-contribution-class initiative (bit-complexity model + Karatsuba upstream).",
-      "Update problem statement: replace placeholder formal-statement-to-be-added with a concrete Lean-style spec, e.g. correctness: hgcdMatrix a b applied to (a,b) preserves Nat.gcd a b."
+      "(Optional) State and prove a precise size-reduction lemma after one HGCD step. Stehlé–Zimmermann (2004) provides explicit constants for the binary-recursive variant. Note: this needs a bitsize measure in Lean and the advance lemma for top-half truncation; ~150-300 lines self-contained.",
+      "(Optional) Wire hgcdMatrix into a top-level recursive GCD function and prove correctness by composing hgcdMatrix_preserves_gcd with euclidGcd_eq_gcd at the leaves. ~50-100 lines.",
+      "(Deferred — separate initiative) Bit-complexity bound O(M(n) log n) requires Mathlib infrastructure for fast multiplication and a bit-complexity model. Per session 1, this is multi-thousand-line foundational work."
     ]
   },
   "tags": [

@@ -134,3 +134,79 @@ This survey produces a structural insight (the correctness/complexity split)
 and identifies infrastructure gaps. It does **not** prove anything. The next
 session can act on the recommendation in ~1–2 sessions of pure correctness
 work, or escalate the complexity gap to a separate initiative.
+
+## Session 2026-05-01 (Session 2) — Path A Correctness Layer
+
+**Mode**: REVISIT (claim from available pool, knowledge tier MODERATE)
+**Outcome**: in-progress → ACT — added `BinaryGcdOQ03OQ02.lean` with the
+HGCD correctness layer (0 sorries on correctness; size-reduction stated
+as a deferred placeholder).
+
+### What I Did
+
+1. Read `BinaryGcdOQ03.lean` (Lehmer infrastructure) and identified
+   the operational correctness contract for HGCD: matrix has det ±1.
+2. Designed `hgcdMatrix : ℕ → ℕ → ℕ → CofactorMatrix` as a fuel-indexed
+   total function. Recursion structure: bottom out via `lehmerCofactors`
+   below threshold; otherwise top-half recursion + `apply` to full
+   precision + bottom-half recursion + matrix product `M₂ · M₁`.
+3. Proved three results:
+   - `cofactor_mul_apply`: cofactor multiplication corresponds to
+     composition of `apply` actions.
+   - `hgcdMatrix_det_unit`: induction on fuel proves det ±1 at every
+     output. Leaf case: `lehmerCofactors_det_unit`. Recursive case:
+     `det_mul` + IH twice.
+   - `hgcdMatrix_preserves_gcd`: corollary of `cofactor_apply_gcd` from
+     `BinaryGcdOQ03.lean`, given the determinant invariant.
+4. Stated `hgcdMatrix_size_reduction` as a focused placeholder with a
+   detailed comment laying out the bitsize / bound / constant choices
+   needed for a precise proof. Stehlé–Zimmermann (2004) is cited as a
+   reference with explicit constants.
+
+### Key Findings
+
+- **Correctness reduces to det invariance.** The matrix-determinant
+  invariant proved for Lehmer carries through the HGCD recursion via
+  `det_mul` and the IH. The recursion structure adds no new
+  GCD-preservation obligation.
+- **Fuel-indexing decouples correctness from size reduction.** Using
+  fuel as the termination measure means we never need the size-reduction
+  lemma to prove the function total, so the correctness theorems can be
+  proved without it. Size reduction is a separable claim about *which*
+  fuel suffices, i.e. a complexity claim, not a correctness claim.
+- **The composition law is the only genuinely new content.**
+  `cofactor_mul_apply` is the algebraic statement that `mul` is the
+  right notion of "compose two cofactor matrices" relative to `apply`.
+  Implicit in `BinaryGcdOQ03.lean`'s design but never explicitly stated;
+  now a single short theorem (proved by `ring`).
+
+### Files Modified
+
+- `proofs/Proofs/BinaryGcdOQ03OQ02.lean` — new, ~340 lines, 0 axioms,
+  0 sorries on the correctness layer; one stated
+  `hgcdMatrix_size_reduction` placeholder.
+- `proofs/Proofs.lean` — auto-regenerated to include the new module.
+- `src/data/research/problems/binary-gcd-oq-03-oq-02.json` — phase ACT,
+  builtItems, insights, nextSteps, progressSummary updated.
+- `research/problems/binary-gcd-oq-03-oq-02/knowledge.md` — this file.
+- `research/problems/binary-gcd-oq-03-oq-02/state.md` — synced to ACT.
+
+### Next Steps
+
+1. (Optional, in scope) Prove `hgcdMatrix_size_reduction` precisely.
+   Bitsize via `Nat.log 2 + 1`. The advance lemma for one step needs
+   the truncation-error bound from Stehlé–Zimmermann §3-4.
+2. (Optional, in scope) Wire `hgcdMatrix` into a top-level GCD function
+   `hgcdGcd : ℕ → ℕ → ℕ` and prove `hgcdGcd_correct`.
+3. (Out of scope, separate initiative) Bit-complexity bound
+   O(M(n)·log n). Requires Mathlib infrastructure that does not exist.
+
+### Honest Assessment
+
+This session **does** prove something nontrivial: the correctness contract
+of Schönhage's recursive HGCD as a Lean theorem. It is a *modest* result
+— the math reduces to existing Lehmer infrastructure plus the composition
+law. But it removes one of the genuine open questions in the candidate
+pool (binary-gcd-oq-03-oq-02 was MODERATE knowledge tier, phase ORIENT)
+by reducing it to a focused size-reduction subproblem and a separable
+complexity initiative. The phase advances ORIENT → ACT.
