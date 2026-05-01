@@ -135,16 +135,32 @@
       "title": "The Open Problem",
       "startLine": 134,
       "endLine": 154,
-      "summary": "Existence axiom and statement of what remains unknown.",
-      "mathContext": "Axiomatized: Existence axiom and statement of what remains unknown."
+      "summary": "axiom f_lower_bound (kn/2 lower bound) and inducedMaxDegree_le helper.",
+      "mathContext": "Axiomatized: f_lower_bound asserts every n-vertex graph with Property P(k) has ≥ kn/2 edges."
     },
     {
-      "id": "summary",
-      "title": "Summary",
+      "id": "upper-bound",
+      "title": "Upper Bound and k=1 Case (Proved)",
       "startLine": 155,
-      "endLine": 177,
-      "summary": "erdos_614_summary theorem combining existence and upper bound.",
-      "mathContext": "Verified: erdos_614_summary theorem combining existence and upper bound."
+      "endLine": 402,
+      "summary": "Private helpers (edgeCount_complete, complete_hasPropertyP, hasPropertyP_one_triple_has_edge, edge_injection_bound, edgeCount_ge_of_propertyP1), theorem f_upper_bound (complete graph achieves Property P(k)), and theorem f_case_k_eq_1 (tight bound n-2 for k=1 via edge injection).",
+      "mathContext": "f_upper_bound: K_n has Property P(k) for k+2 ≤ n. f_case_k_eq_1: for k=1 and n≥3, f(n,1) = n-2, proved by injecting edges into the triples and using Cauchy-Schwarz-style counting."
+    },
+    {
+      "id": "monotonicity-axiom",
+      "title": "Monotonicity Axiom and Existence (Partially Axiomatized)",
+      "startLine": 403,
+      "endLine": 448,
+      "summary": "axiom f_mono_k (f is non-decreasing in k) and proved theorem erdos_614_existence (combines f_lower_bound and f_upper_bound into the existence statement).",
+      "mathContext": "axiom f_mono_k: f(n,k) ≤ f(n,k+1). erdos_614_existence: for k+2 ≤ n, kn/2 ≤ f(n,k) ≤ n(n-1)/2."
+    },
+    {
+      "id": "partial-star",
+      "title": "Partial Star Construction (Proved)",
+      "startLine": 449,
+      "endLine": 604,
+      "summary": "def partialStar (n-2 edge star graph), private lemmas partialStar_zero_neighbors_card and partialStar_edgeCount and partialStar_hasPropertyP, theorem f_n_minus_2_upper_bound, and erdos_614_summary combining all main results.",
+      "mathContext": "partialStar n is a star with n-2 edges (vertex 0 adjacent to vertices 1..n-2). Proved: it has Property P(1), so f(n,1) ≤ n-2. erdos_614_summary: f(n,1) = n-2 exactly (both bounds proved)."
     }
   ],
   "conclusion": {
