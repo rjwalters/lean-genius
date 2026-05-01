@@ -41,6 +41,56 @@ Key infrastructure already available:
 
 > **Note**: 4 older sessions archived to `sessions/` directory.
 
+## Session 2026-05-01 (Session 34) — Reconcile state.md with sessions 5–33 progress
+
+**Mode**: REVISIT (RICH knowledge tier, score 163)
+**Outcome**: HOUSEKEEPING — state.md brought current; no Lean changes
+
+### What I Did
+
+1. Verified the current state of `BallotProblemOQ03OQ01OQ02.lean`:
+   - 14022 lines (matches `meta.json:lineCount`)
+   - 1 real `sorry` (after stripping comments/docstrings) at line 13932 inside
+     the `hook_walk_identity` dispatcher's ≥10×≥10 non-rectangular branch
+   - 0 `axiom` declarations
+   - 482 `theorem`/`lemma` declarations + 21 `def` declarations
+   - All other sorries reported by raw `grep` are inside docstrings/comments
+2. Verified the gallery `meta.json` matches the file: `sorries: 1`,
+   `axiomCount: 0`, `lineCount: 14022`, `status: formalized`, `badge: wip`.
+3. Cross-referenced session 31–33 notes with `literature/closing-the-final-sorry.md`
+   to confirm the recommended next step (file modularization → GNW Route A).
+4. Replaced the stale state.md (which still claimed `Iteration: 1`,
+   "First step: read BallotProblemOQ03OQ02.lean", "Active Approach: None yet")
+   with an accurate snapshot:
+   - Iteration: 33, Phase: ACT (modularize-then-prove)
+   - Approaches tried (1–4) with one-line outcomes each
+   - Blockers: file size beyond Docker envelope; no probabilistic toolkit
+   - Next action: dependency-map → split into `Core` + `RowCases` modules,
+     then attempt deterministic GNW in a `HookWalk` companion file
+
+### Why This Session
+
+The state.md drift discovered today (iteration 1 vs. 33 sessions of work) is
+exactly the failure mode flagged in the
+"stale 'completed' candidate-pool entries" memory note: a researcher arriving
+fresh and only reading state.md would re-do work that's been done 32 times.
+Reconciling state.md to match the actual research history (preserved in
+knowledge.md and sessions/) is a high-value, low-risk pure-text contribution,
+appropriate when the build envelope blocks Lean edits.
+
+### Files Modified
+
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/state.md`
+  (full rewrite to match sessions 5–33 reality)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md` (this entry)
+
+### No Sorry Count Change
+
+The Lean file is unchanged. Sorry count remains 1 (`hook_walk_identity` for
+≥10 rows AND ≥10 cols AND non-rectangular shapes).
+
+---
+
 ## Session 2026-04-26 (Session 31) — Move hook_length_formula; document LGV issues
 
 **Mode**: REVISIT (RICH knowledge tier)
