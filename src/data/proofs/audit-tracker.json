@@ -6448,10 +6448,13 @@
       "result": "clean"
     },
     "erdos-395": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-2026-05-02-0500",
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T05:00:00Z",
+      "result": "issues-found",
+      "issues": [
+        "Issue #14430: phantom extremal_example_tight in proofStrategy Main Results (no such declaration); dangling /-- ... -/ doc-comment at lines 147-148 with no following declaration; section line drift ~4-9 lines in original-false/revised-true/optimality/summary"
+      ]
     },
     "erdos-395-oq-01": {
       "auditCount": 4,
