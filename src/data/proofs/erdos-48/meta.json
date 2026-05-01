@@ -90,88 +90,88 @@
       "id": "arithmetic-functions",
       "title": "Arithmetic Functions",
       "summary": "sumDivisors definition, notation, Euler's totient from Mathlib",
-      "startLine": 40,
-      "endLine": 70,
+      "startLine": 41,
+      "endLine": 71,
       "mathContext": "phi(n)=Euler totient. sigma(m)=sum of divisors. Both multiplicative."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "summary": "sumDivisors_one, sumDivisors_prime, totient_prime, totient_lt",
-      "startLine": 71,
-      "endLine": 101,
+      "startLine": 72,
+      "endLine": 117,
       "mathContext": "sigma(1)=1, sigma(p)=p+1. phi(p)=p-1. phi(n)<n for n>1."
     },
     {
       "id": "pair-sets",
       "title": "Totient-Sigma Pairs",
       "summary": "totientSigmaPairs, commonValues, commonValues_iff",
-      "startLine": 102,
-      "endLine": 130,
+      "startLine": 118,
+      "endLine": 146,
       "mathContext": "Common values: Im(phi) intersect Im(sigma). Infinitely many?"
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "summary": "pair_5_3, pair_2_1, pair_7_5, pair_13_11, pair_13_6",
-      "startLine": 131,
-      "endLine": 216,
+      "startLine": 147,
+      "endLine": 231,
       "mathContext": "phi(3)=2=sigma(1). phi(7)=6=sigma(5). phi(13)=12=sigma(11)."
     },
     {
       "id": "ford-luca-pomerance",
       "title": "Ford-Luca-Pomerance Theorem",
       "summary": "ford_luca_pomerance axiom, erdos_48 main theorem",
-      "startLine": 217,
-      "endLine": 243,
+      "startLine": 232,
+      "endLine": 258,
       "mathContext": "SOLVED: infinitely many (n,m) with phi(n)=sigma(m)."
     },
     {
       "id": "garaev",
       "title": "Garaev's Improvement",
       "summary": "garaev_improvement axiom with stronger density bounds",
-      "startLine": 244,
-      "endLine": 263,
+      "startLine": 259,
+      "endLine": 278,
       "mathContext": "Garaev: stronger density bounds on solutions up to x."
     },
     {
       "id": "twin-primes",
       "title": "Connection to Twin Primes",
-      "summary": "twin_prime_gives_pair, twin_prime_implies_erdos_48",
-      "startLine": 264,
-      "endLine": 295,
+      "summary": "twin_prime_gives_pair, prime_pair_condition",
+      "startLine": 279,
+      "endLine": 306,
       "mathContext": "Twin primes p,p+2: phi(p+2)=p+1=sigma(p)."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "prime_pair_condition, Sophie Germain, perfect numbers",
-      "startLine": 296,
-      "endLine": 335,
+      "startLine": 307,
+      "endLine": 346,
       "mathContext": "Sophie Germain primes, perfect numbers give phi-sigma pairs."
     },
     {
       "id": "value-distribution",
       "title": "Value Distribution",
       "summary": "totientRange, sigmaRange, common values 1, 4, 6, 12",
-      "startLine": 336,
-      "endLine": 402,
+      "startLine": 347,
+      "endLine": 413,
       "mathContext": "Range of phi: density ~ C/sqrt(log x) (Ford)."
     },
     {
       "id": "multiplicativity",
       "title": "Multiplicativity",
-      "summary": "sumDivisors_multiplicative, totient_multiplicative",
-      "startLine": 403,
-      "endLine": 423,
+      "summary": "totient_multiplicative (σ-multiplicativity documented in docstring)",
+      "startLine": 414,
+      "endLine": 430,
       "mathContext": "sigma multiplicative: sigma(mn)=sigma(m)sigma(n) for gcd(m,n)=1."
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "erdos_48_summary, erdos_48_answer, at_least_five_pairs",
-      "startLine": 424,
-      "endLine": 471,
+      "startLine": 431,
+      "endLine": 479,
       "mathContext": "SOLVED: infinitely many common values of phi and sigma."
     }
   ],
