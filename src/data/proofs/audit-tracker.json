@@ -7254,9 +7254,12 @@
     },
     "erdos-511": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T17:03:49Z",
+      "result": "issues-found",
+      "issues": [
+        "Issue #14317: 6 phantom axioms in sections summaries (components_below_4, sum_diameters_rootsOfUnity, petal_structure, perturbation_creates_components, huang_theorem, diameter_4_is_sharp); section line ranges drifted at threshold-4/summary"
+      ]
     },
     "erdos-512": {
       "agentId": "auditor-cycle-20-batch",
