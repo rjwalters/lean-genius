@@ -8187,9 +8187,12 @@
     },
     "erdos-649": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "originalContributions claims Tong's theorem and Mahler's growth theorem as contributions when both are axiom declarations (axiom tong_theorem, axiom mahler_growth) — issue #14123 also covers this proof"
+      ],
+      "lastAudited": "2026-05-01T05:30:00Z",
+      "result": "issues-found"
     },
     "erdos-65": {
       "agentId": "auditor-cycle-20-batch",
