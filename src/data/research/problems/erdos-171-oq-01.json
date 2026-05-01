@@ -1,8 +1,8 @@
 {
   "slug": "erdos-171-oq-01",
   "title": "Erdős #171: Is χ(ℝ²) = 5, 6, or 7",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-03-28T17:58:20.619Z",
-    "iteration": 1,
-    "focus": "Proved both sorry theorems (lower_bound_4 and de_grey). 0 sorries remain.",
+    "since": "2026-05-01T00:00:00Z",
+    "iteration": 2,
+    "focus": "OQ01 (lower_bound_4 and de_grey theorems) is subsumed by parent erdos-171 gallery entry; both theorems are proved in proofs/Proofs/Erdos171Problem.lean (axiomatized 2/0 — de Grey graph + Isbell coloring stated as axioms).",
     "blockers": [],
-    "nextAction": "None — problem completed.",
+    "nextAction": "No further OQ-level work; reducing/eliminating de_grey_graph and isbell_coloring axioms is a separate research direction tracked under parent.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
