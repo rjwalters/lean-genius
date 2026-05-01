@@ -37,7 +37,7 @@
     "historicalContext": "Erdős asked whether there exists $k$ such that every sufficiently large integer can be written as a prime plus at most $k$ powers of 2. He described the problem as 'probably unattackable' and, with Graham, conjectured no such $k$ exists. The problem has deep roots: Romanoff (1934) showed that already for $k = 1$, a positive proportion of integers are representable as $p + 2^a$, using sieve methods. Erdős (1950) proved via covering congruences that the complement also has positive density. Gallagher (1975) proved the density approaches 1 as $k$ grows, using the large sieve inequality and the Bombieri-Vinogradov theorem on primes in arithmetic progressions. Granville and Soundararajan (1998) made the bold conjecture that $k = 3$ suffices for all odd integers $> 1$. Grechuk computationally verified that $1117175146$ (even) is not in $S_3$, confirming the parity barrier. The problem connects to Goldbach-type questions, covering systems (Erdős 1950), and the deep question of how well lacunary sequences complement the primes as additive bases.",
     "problemStatement": "Does there exist a constant $k$ such that every integer $n > 1$ can be written as $n = p + 2^{a_1} + \\cdots + 2^{a_j}$ where $p$ is prime and $j \\leq k$?",
     "text": "Is there some k such that every sufficiently large integer is the sum of a prime and at most k powers of 2? Erdős and Graham conjectured no such k exists. Gallagher showed the representable set has density arbitrarily close to 1.",
-    "proofStrategy": "The formalization defines $S_k = \\{n : n = p + \\sum 2^{a_i},\\, p \\text{ prime},\\, j \\leq k\\}$ using `Multiset N` for exponents and `Set.lowerDensity` via `Filter.liminf`. The Erdős-Graham conjecture ($\\neg \\exists k: \\{n > 1\\} \\subseteq S_k$), Gallagher's density theorem ($\\forall \\varepsilon > 0,\\, \\exists k: \\underline{d}(S_k) \\geq 1 - \\varepsilon$), the Granville-Soundararajan conjectures ($k = 3$ for odd, $k = 4$ for even), Grechuk's counterexample ($1117175146 \\notin S_3$), covering congruence exceptions, and Romanoff's theorem ($\\underline{d}(S_1) > 0$) are all axiomatized. No proved theorems (all results are deep).",
+    "proofStrategy": "The formalization defines $S_k = \\{n : n = p + \\sum 2^{a_i},\\, p \\text{ prime},\\, j \\leq k\\}$ using `Multiset N` for exponents and `Set.lowerDensity` via `Filter.liminf`. The Erdős-Graham conjecture ($\\neg \\exists k: \\{n > 1\\} \\subseteq S_k$), Gallagher's density theorem ($\\forall \\varepsilon > 0,\\, \\exists k: \\underline{d}(S_k) \\geq 1 - \\varepsilon$), the Granville-Soundararajan conjectures ($k = 3$ for odd, $k = 4$ for even), Grechuk's counterexample ($1117175146 \\notin S_3$), covering congruence exceptions, and Romanoff's theorem ($\\underline{d}(S_1) > 0$) are documented in source comments only. The Lean file declares only `sumPrimeAndTwoPows` and `Set.lowerDensity` (0 axiom declarations). No proved theorems (all results are deep).",
     "keyInsights": [
       "**Gallagher's density theorem (1975)**: For any $\\varepsilon > 0$, $\\exists k(\\varepsilon)$ with $\\underline{d}(S_{k(\\varepsilon)}) \\geq 1 - \\varepsilon$, using the large sieve and Bombieri-Vinogradov theorem. This is the strongest unconditional result.",
       "**Granville-Soundararajan conjecture (1998)**: $k = 3$ suffices for all odd $n > 1$, verified computationally up to large bounds. The parity distinction is fundamental.",
@@ -76,7 +76,7 @@
       "title": "Erdős-Graham Conjecture",
       "startLine": 50,
       "endLine": 60,
-      "summary": "Axiomatizes `erdos_10_conjecture`: $\\neg \\exists k,\\, \\{n > 1\\} \\subseteq S_k$. The Erdős-Graham conjecture that no finite $k$ suffices for all integers. Equivalently: $\\forall k,\\, \\{n > 1\\} \\setminus S_k \\neq \\emptyset$.",
+      "summary": "Documents in source comments the Erdős-Graham conjecture $\\neg \\exists k,\\, \\{n > 1\\} \\subseteq S_k$: no finite $k$ suffices for all integers. No Lean axiom declaration exists for this statement.",
       "mathContext": "$\\forall k \\in \\mathbb{N},\\; \\exists n > 1,\\; n \\notin S_k$: no finite number of powers of 2 added to a prime can represent all integers."
     },
     {
@@ -84,7 +84,7 @@
       "title": "Gallagher's Density Theorem",
       "startLine": 61,
       "endLine": 68,
-      "summary": "Axiomatizes `gallagher_density`: $\\forall \\varepsilon > 0,\\, \\exists k: \\underline{d}(S_k) \\geq 1 - \\varepsilon$. The strongest unconditional result — 'almost all' integers are representable for large enough $k$. Proved via the large sieve (1975).",
+      "summary": "Documents in source comments Gallagher's density theorem $\\forall \\varepsilon > 0,\\, \\exists k: \\underline{d}(S_k) \\geq 1 - \\varepsilon$. The strongest unconditional result — proved via the large sieve (1975). No Lean axiom declaration exists for this statement.",
       "mathContext": "Gallagher (1975): $\\underline{d}(S_k) \\to 1$ as $k \\to \\infty$, proved via the large sieve inequality and Bombieri-Vinogradov theorem."
     },
     {
@@ -92,7 +92,7 @@
       "title": "Granville-Soundararajan Conjectures",
       "startLine": 69,
       "endLine": 80,
-      "summary": "Axiomatizes `granville_soundararajan_odd`: $\\{n \\text{ odd},\\, n > 1\\} \\subseteq S_3$, and `granville_soundararajan_even`: $\\{n \\text{ even},\\, n \\neq 0\\} \\subseteq S_4$. Conjectured 1998; computationally verified for large ranges.",
+      "summary": "Documents in source comments the Granville-Soundararajan conjectures: $\\{n \\text{ odd},\\, n > 1\\} \\subseteq S_3$ and $\\{n \\text{ even},\\, n \\neq 0\\} \\subseteq S_4$. Conjectured 1998; computationally verified for large ranges. No Lean axiom declarations exist for these statements.",
       "mathContext": "Conjectured: every odd $n > 1$ is $p + 2^a + 2^b + 2^c$ ($k=3$) and every even $n > 0$ is $p + 2^a + 2^b + 2^c + 2^d$ ($k=4$)."
     },
     {
@@ -100,7 +100,7 @@
       "title": "Grechuk's Counterexample",
       "startLine": 81,
       "endLine": 87,
-      "summary": "Axiomatizes `grechuk_counterexample`: $1117175146 \\notin S_3$. Since $1117175146$ is even, this is consistent with $S_3 \\supseteq \\{n \\text{ odd},\\, n > 1\\}$ but shows $k = 3$ fails for even integers.",
+      "summary": "Documents in source comments Grechuk's counterexample $1117175146 \\notin S_3$. Since $1117175146$ is even, this is consistent with $S_3 \\supseteq \\{n \\text{ odd},\\, n > 1\\}$ but shows $k = 3$ fails for even integers. No Lean axiom declaration exists for this statement.",
       "mathContext": "$1117175146 \\notin S_3$: this even number cannot be $p + 2^a + 2^b + 2^c$ for any prime $p$, establishing the parity barrier for $k = 3$."
     },
     {
@@ -108,12 +108,12 @@
       "title": "Infinitely Many Exceptions",
       "startLine": 88,
       "endLine": 94,
-      "summary": "Axiomatizes `infinitely_many_exceptions_k2`: $\\{n \\text{ even}\\} \\setminus S_2$ is infinite (proved via covering congruences), and `infinitely_many_exceptions_k3`: $\\{n \\text{ even}\\} \\setminus S_3$ is infinite (conjectured).",
+      "summary": "Documents in source comments the covering congruence exceptions: $\\{n \\text{ even}\\} \\setminus S_2$ is infinite (proved via covering congruences), and $\\{n \\text{ even}\\} \\setminus S_3$ is infinite (conjectured). No Lean axiom declarations exist for these statements.",
       "mathContext": "Erdős's covering congruence argument: infinitely many even integers are not in $S_2 = \\{p + 2^a + 2^b\\}$. Extension to $S_3$ remains open."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #10 is formalized comprehensively with all major results axiomatized: the Erdős-Graham conjecture ($\\neg \\exists k: \\{n > 1\\} \\subseteq S_k$), Gallagher's density theorem ($\\underline{d}(S_k) \\to 1$), Granville-Soundararajan conjectures ($k = 3$ for odd, $k = 4$ for even), Grechuk's counterexample ($1117175146 \\notin S_3$), covering congruence exceptions, and Romanoff's positive density. The parity barrier between odd and even integers is a central theme. All results are axiomatized (no proved theorems), reflecting the depth of the underlying number theory.",
+    "summary": "Erdős Problem #10 is formalized with the key sets `sumPrimeAndTwoPows` and `Set.lowerDensity` defined in Lean. All major results — the Erdős-Graham conjecture ($\\neg \\exists k: \\{n > 1\\} \\subseteq S_k$), Gallagher's density theorem ($\\underline{d}(S_k) \\to 1$), Granville-Soundararajan conjectures ($k = 3$ for odd, $k = 4$ for even), Grechuk's counterexample ($1117175146 \\notin S_3$), covering congruence exceptions, and Romanoff's positive density — are documented in source comments only (0 axiom declarations). The parity barrier between odd and even integers is a central theme.",
     "implications": "**Theoretical Significance**: Resolution would require advances in sieve methods beyond Gallagher's large sieve, or new techniques for handling lacunary additive bases.\n\nThe covering congruence argument connects to Erdős's work on covering systems. Understanding how well powers of 2 complement the primes illuminates fundamental questions in additive number theory and the distribution of primes in arithmetic progressions.",
     "openQuestions": [
       "Does there exist any finite $k$ that works for all sufficiently large integers? (The main open question.)",
