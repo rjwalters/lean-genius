@@ -131,7 +131,7 @@
       "title": "Structural Properties",
       "startLine": 130,
       "endLine": 188,
-      "summary": "Proves `threshold_mono` ($j \\leq k \\Rightarrow h_3(j) \\leq h_3(k)$, via `csInf_le_csInf`), `threshold_one` ($h_3(1) = 1$, single vertex is $K_3$-free with $\\chi \\geq 1$), `threshold_two` ($h_3(2) = 2$, complete graph $K_2$ is $K_3$-free with $\\chi = 2$, proved by `le_antisymm` with case analysis on $n \\in \\{0, 1\\}$). Axiomatizes `threshold_three` ($h_3(3) = 5$, cycle $C_5$) and `threshold_four` ($h_3(4) = 11$, Gr\u00f6tzsch graph).",
+      "summary": "Proves `threshold_mono` ($j \\leq k \\Rightarrow h_3(j) \\leq h_3(k)$, via `csInf_le_csInf`), `threshold_one` ($h_3(1) = 1$, single vertex is $K_3$-free with $\\chi \\geq 1$), `threshold_two` ($h_3(2) = 2$, complete graph $K_2$ is $K_3$-free with $\\chi = 2$, proved by `le_antisymm` with case analysis on $n \\in \\{0, 1\\}$). The values $h_3(3) = 5$ (cycle $C_5$) and $h_3(4) = 11$ (Gr\u00f6tzsch graph) are documented in source comments only; no Lean axiom declarations exist for these statements.",
       "mathContext": "$h_3(1) = 1$ (single vertex), $h_3(2) = 2$ ($K_2$), $h_3(3) = 5$ ($C_5$), $h_3(4) = 11$ (Gr\u00f6tzsch graph). The `threshold_two` proof is ~20 lines: shows $K_2 = (\\top : \\text{SimpleGraph}(\\text{Fin}\\ 2))$ is triangle-free and not 1-colorable, then shows any graph on $< 2$ vertices IS 1-colorable."
     },
     {

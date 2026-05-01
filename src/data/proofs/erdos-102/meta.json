@@ -91,7 +91,7 @@
       "title": "Main Problem: Divergence of $h_c(n)$",
       "startLine": 46,
       "endLine": 55,
-      "summary": "Axiomatizes `erdos_102_divergence`: for fixed $c > 0$, given $cn^2$ rich lines, $\\max$-collinear $\\to \\infty$ with $n$. This is the central open question.",
+      "summary": "Documents in source comments the central open question: for fixed $c > 0$, given $cn^2$ rich lines, $\\max$-collinear $\\to \\infty$ with $n$. No Lean axiom declaration exists for this statement; the only axiom in the file is `connection_101`.",
       "mathContext": "Axiomatized: Axiomatizes `erdos_102_divergence`: for fixed $c > 0$, given $cn^2$ rich lines, $\\max$-collinear $\\to \\infty$ with $n$. This is the central open question."
     },
     {

@@ -81,8 +81,8 @@
       "title": "The Main Conjecture (Problem 1068)",
       "startLine": 94,
       "endLine": 105,
-      "summary": "Axiomatizes `erdos_1068`: for all $G$ with $\\chi(G) \\geq \\aleph_1$, there exists a countable $S$ with $G[S]$ infinitely connected. This is the central open problem.",
-      "mathContext": "Axiomatized: Axiomatizes `erdos_1068`: for all $G$ with $\\chi(G) \\geq \\aleph_1$, there exists a countable $S$ with $G[S]$ infinitely connected. This is the central open problem."
+      "summary": "Documents in source comments the main conjecture: for all $G$ with $\\chi(G) \\geq \\aleph_1$, there exists a countable $S$ with $G[S]$ infinitely connected. No Lean axiom declaration exists for this statement (the file has 0 axioms).",
+      "mathContext": "The main conjecture is documented in a Lean docstring only; no axiom or theorem formalizes it. The file declares definitions (`InfinitelyConnected`, `hasAleph1ChromaticNumber`, etc.) and proved theorems but no axioms."
     },
     {
       "id": "known-results",

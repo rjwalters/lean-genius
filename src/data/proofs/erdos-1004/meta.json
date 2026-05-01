@@ -120,7 +120,7 @@
       "title": "Part X: Probabilistic Heuristics",
       "startLine": 277,
       "endLine": 296,
-      "summary": "Axiomatizes `distinct_totient_count`: $|\\{\\varphi(k) : k \\leq x\\}| \\sim x/\\log x$ (from Ford's theorem). Birthday paradox heuristic `birthday_heuristic`: collisions expected after $K \\approx \\sqrt{x/\\log x}$ terms, suggesting logarithmic runs are plausible.",
+      "summary": "Axiomatizes `distinct_totients_asymptotic`: $|\\{\\varphi(k) : k \\leq x\\}| \\sim x/\\log x$ (from Ford's theorem). Birthday paradox heuristic via `birthdayProbabilityHeuristic`: collisions expected after $K \\approx \\sqrt{x/\\log x}$ terms, suggesting logarithmic runs are plausible.",
       "mathContext": "$|\\varphi([1,x])| \\sim \\frac{x}{\\log x}$ (Ford 1998). Birthday paradox: drawing from a pool of $N$ values, a collision is expected after $\\sim \\sqrt{N}$ draws. For $N \\sim x/\\log x$, this gives $K \\sim \\sqrt{x/\\log x}$."
     },
     {
