@@ -16,12 +16,15 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-03T08:28:28Z",
-    "iteration": 1,
-    "focus": "",
-    "blockers": [],
-    "nextAction": "",
+    "phase": "ACT",
+    "since": "2026-04-27T14:10:00Z",
+    "iteration": 2,
+    "focus": "Blocked: orphan docstrings + HSMul Set drift",
+    "blockers": [
+      "Lean 4.26 strict docstring parsing on lines 226/233/251/260",
+      "Mathlib pointwise Set smul instance not synthesized — needs `open Pointwise` in both Erdos353Problem.lean and Erdos353Aristotle.lean"
+    ],
+    "nextAction": "Mechanic: orphan docstring conversion + open Pointwise. Researcher (post-repair): extend scaling_property to right triangles, trapezoids, cyclic quadrilaterals.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved companion file sorry. Fixed meta.json (0 sorries, 4 deep axioms). All Lean files sorry-free.",
+    "progressSummary": "BLOCKED on upstream breakage. Docker build of both Proofs.Erdos353Problem and Proofs.Erdos353Aristotle fails on origin/master. Two categories: (A) Lean 4.26 strict docstring parsing — orphan `/-- ... -/` doc-comments on lines 222/227/247/256 of main file; (B) Mathlib drift — `HSMul ℝ (Set _)` instance no longer synthesized for `c • A` set scaling (likely needs `open Pointwise`). Mechanic-owned per project_mathlib_api_drift_2026_04 policy. See knowledge.md Session 2 for fix recipe.",
     "builtItems": [
       "Proved scaling_property modulo measure scaling sorry in Erdos353Problem.lean",
       "Created Erdos353Aristotle.lean companion file for remaining sorry",
@@ -47,7 +50,13 @@
       "Companion file sorry was already solved by technique in main file — direct proof via addHaar_smul"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Mechanic: convert orphan docstrings on lines 222/227/247/256 of Erdos353Problem.lean to block comments",
+      "Mechanic: add `open Pointwise` to both Erdos353Problem.lean and Erdos353Aristotle.lean",
+      "Researcher (post-repair): scaling_property_right (axiom: koizumi_right_triangle)",
+      "Researcher (post-repair): scaling_property_trapezoid (axiom: koizumi_isosceles_trapezoid)",
+      "Researcher (post-repair): scaling_property_cyclic (axiom: kovac_predojevic_cyclic)"
+    ],
     "markdown": "# Knowledge: erdos-353-incomplete-01\n\n## Research Notes\n\n*No research conducted yet. See problem.md for context.*\n\n## Known Facts\n\n- Lean file: `proofs/Proofs/`\n- Sorries: see problem.md\n\n## Approaches Tried\n\n*None yet.*\n"
   },
   "tags": [],
