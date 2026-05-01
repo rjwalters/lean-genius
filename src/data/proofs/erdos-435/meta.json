@@ -55,8 +55,7 @@
       "primePowerContribution: contribution from each prime factor",
       "hwangSongFormula: explicit formula for Frobenius number",
       "hwang_song_theorem axiom: main result",
-      "representable_semigroup: algebraic structure",
-      "gcd_binomials_one: coprimality condition"
+      "informal discussion of semigroup structure and coprimality (docstrings only, no Lean declarations)"
     ],
     "axiomCount": 2,
     "lineCount": 233,
@@ -151,10 +150,10 @@
     {
       "id": "semigroup-structure",
       "title": "Numerical Semigroup Structure",
-      "summary": "documents in source comments `representable_semigroup` (no Lean declaration exists) ($0 \\in S_n$ and additive closure) and `gcd_binomials_one` ($\\gcd(\\binom{n}{1}, \\binom{n}{2}) = 1$ for non-prime-powers).",
+      "summary": "Informal docstrings discussing semigroup structure ($0 \\in S_n$ and additive closure) and coprimality ($\\gcd(\\binom{n}{1}, \\binom{n}{2}) = 1$ for non-prime-powers). No Lean declarations in this section.",
       "startLine": 165,
       "endLine": 187,
-      "mathContext": "Axiomatized: documents in source comments `representable_semigroup` (no Lean declaration exists) ($0 \\in S_n$ and additive closure) and `gcd_binomials_one` ($\\gcd(\\binom{n}{1}, \\binom{n}{2}) = 1$ for non-prime-powers)."
+      "mathContext": "Mathematical content: Informal discussion of semigroup structure and coprimality conditions as docstring commentary; these results are stated but not formalized in Lean."
     },
     {
       "id": "related-results",
