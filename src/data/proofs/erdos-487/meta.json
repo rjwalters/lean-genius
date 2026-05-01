@@ -61,48 +61,56 @@
     {
       "id": "density-lcm",
       "startLine": 47,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "Definitions for positive upper density, positive lower density, LCM triples, and divisibility chains.",
       "title": "Density and LCM Definitions"
     },
     {
       "id": "union-free",
-      "startLine": 83,
-      "endLine": 109,
+      "startLine": 84,
+      "endLine": 110,
       "summary": "Definition of union-free collections and the prime factorization bijection connecting LCM to set union.",
       "title": "Union-Free Collections"
     },
     {
       "id": "davenport-erdos",
-      "startLine": 110,
-      "endLine": 157,
+      "startLine": 111,
+      "endLine": 156,
       "summary": "The 1936 Davenport-Erdős result and the coprime multipliers LCM triple construction.",
       "title": "Davenport-Erdős Theorem"
     },
     {
       "id": "kleitman",
-      "startLine": 158,
-      "endLine": 222,
+      "startLine": 157,
+      "endLine": 212,
       "summary": "Kleitman's 1971 theorem bounding union-free collections, plus the o(2^n) corollary.",
       "title": "Kleitman's Theorem"
     },
     {
       "id": "main-result",
-      "startLine": 223,
-      "endLine": 244,
+      "startLine": 213,
+      "endLine": 227,
       "summary": "The main theorem: dense sets contain LCM triples, plus infinitely many such triples.",
       "title": "Main Result"
     },
     {
       "id": "examples",
-      "startLine": 245,
-      "endLine": 310,
+      "startLine": 228,
+      "endLine": 294,
       "summary": "Concrete examples including multiples of 6 (LCM triples exist) and powers of 2 (no LCM triples, but density 0).",
       "title": "Examples"
     },
     {
+      "id": "proof-structure",
+      "startLine": 295,
+      "endLine": 317,
+      "title": "Proof Structure",
+      "summary": "Outline of the Davenport-Erdős + Kleitman proof strategy: prime factorization bijection, union-free family bound, and contradiction with positive density.",
+      "mathContext": "Seven-step proof sketch: (1) positive density δ > 0; (2) prime factorization map φ; (3) image family F_N; (4) LCM-free implies union-free; (5) Kleitman: |F_N| = o(N); (6) density requires δN elements; (7) contradiction."
+    },
+    {
       "id": "summary",
-      "startLine": 335,
+      "startLine": 318,
       "endLine": 350,
       "summary": "Summary combining LCM triple existence and Kleitman's theorem.",
       "title": "Summary"
