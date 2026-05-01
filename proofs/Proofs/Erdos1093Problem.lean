@@ -165,3 +165,13 @@ theorem not_isKSmooth_zero (k : ℕ) : ¬IsKSmooth k 0 := by
   intro h
   obtain ⟨p, hpk, hp⟩ := Nat.exists_infinite_primes (k + 1)
   exact absurd (h p hp (dvd_zero p)) (by omega)
+
+/-- The deficiency vanishes iff none of n, n-1, ..., n-k+1 is k-smooth. -/
+theorem deficiency_eq_zero_iff (n k : ℕ) :
+    deficiency n k = 0 ↔ ∀ i, i < k → ¬IsKSmooth k (n - i) := by
+  simp [deficiency, Finset.card_eq_zero, Finset.filter_eq_empty_iff, Finset.mem_range]
+
+/-- The deficiency is positive iff some n - i (with i < k) is k-smooth. -/
+theorem deficiency_pos_iff (n k : ℕ) :
+    0 < deficiency n k ↔ ∃ i, i < k ∧ IsKSmooth k (n - i) := by
+  simp [deficiency, Finset.card_pos, Finset.filter_nonempty_iff, Finset.mem_range]

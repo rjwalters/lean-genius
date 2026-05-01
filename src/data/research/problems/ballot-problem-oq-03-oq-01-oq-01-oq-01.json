@@ -18,18 +18,18 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-23T12:58:12+02:00",
-    "iteration": 3,
-    "focus": "Building Jacobi-Trudi determinant formula in Lean 4 using Mathlib hsymm",
+    "iteration": 10,
+    "focus": "Closing the two remaining sorries: jdt_weight_sum (b>=1 case via JDT bijection) and jacobi_trudi_ssyt_eq k>=3 (algebraic LGV + RSK)",
     "blockers": [],
-    "nextAction": "Implement jdt_weight_sum_b_one using documented recipe (Sym.oneEquiv + Sym.cons + Multiset.sort_cons + Multiset.prod_cons).",
+    "nextAction": "Implement JDT bijection {non-col-strict (P:Sym n a, Q:Sym n b)} ≃ {Sym n (a+1) × Sym n (b-1)} for jdt_weight_sum b>=1 case",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 9,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Session 14 (2026-05-01) confirmed Mathlib API for the b=1 jdt_weight_sum recipe: hsymm_zero (Symmetric/Defs.lean:318), Sym.cons_erase (Sym/Basic.lean:219), Sym.erase_cons_head (:223), Sym.oneEquiv (:477), Sym.uniqueZero (:261), Multiset.sort_cons (Multiset/Sort.lean:69) all present and applicable. Confirmed lineCount drift 666→694 (recipe docstring grew via PR #13365). No proof work this session — local Docker daemon hung (server unresponsive); attempt deferred to next session with fresh Docker. Sorry count remains 2.",
+    "progressSummary": "PROGRESS: jdt_weight_sum b=0 case proved (vacuously true). 2 sorries remain: jdt_weight_sum b>=1 (JDT bijection ~100 lines) + jacobi_trudi_ssyt_eq k>=3 (LGV+RSK ~300 lines).",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",

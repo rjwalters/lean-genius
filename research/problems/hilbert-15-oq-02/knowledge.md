@@ -142,3 +142,59 @@ a horizontal strip.
 - `proofs/Proofs/Hilbert15OQ02.lean` — 419→506 lines, 20→25 theorems, +1 def
 - `src/data/proofs/hilbert-15-oq-02/meta.json` — updated
 - `src/data/research/problems/hilbert-15-oq-02.json` — updated
+
+---
+
+## Session 2026-04-27 (researcher-8) — Metadata Reconciliation
+
+**Mode**: REVISIT (RICH knowledge score 28); Lean file already complete
+**Outcome**: Metadata audit — synced stale candidate-pool / state files with verified completion
+
+### Audit Findings
+
+The Lean file `Proofs/Hilbert15OQ02.lean` was fully complete from sessions 1–3
+(0 sorries, 0 `axiom` declarations, 25 theorems, 4 definitions). However, downstream
+tracking metadata was stale and inconsistent with the verified state:
+
+- `src/data/research/problems/hilbert-15-oq-02.json` had `phase: "ACT"`, `status: "active"`,
+  blockers referencing a 2026-04-12 Docker outage, and "Verify build once Docker Desktop is
+  manually restarted" as `nextAction` — even though the build had long since been verified
+  (the gallery's `meta.json` reports `axiomCount: 3`, `sorries: 0`, etc.)
+- `research/problems/hilbert-15-oq-02/state.md` was still `Phase: NEW`, `Iteration: 1`,
+  `Total attempts: 0` — never updated despite three completed sessions
+- The candidate-pool entry showed `status: "in-progress"` — should be `completed`
+
+This is the exact pattern flagged by the `feedback_research_pool_stale_metadata.md`
+memory note: a verified problem still showing as active work.
+
+### What I Did
+
+1. Updated `src/data/research/problems/hilbert-15-oq-02.json`:
+   - `phase: ACT → COMPLETED`, `status: active → completed`
+   - `currentState`: cleared blockers, updated focus/nextAction to reflect completion
+   - `iteration: 2 → 3`, `attemptCounts.total: 1 → 3`
+   - `progressSummary`: revised to include accurate theorem counts and clarify why the
+     three placeholder `True`-theorems justify the `axiomatized` badge per policy
+   - `nextSteps`: replaced stale "verify build" entries with explicit note that
+     extensions belong in separate problems
+   - `lastUpdate: 2026-04-12 → 2026-04-27`
+2. Rewrote `research/problems/hilbert-15-oq-02/state.md` to reflect COMPLETED phase
+3. Added this session note documenting the audit
+4. Will update candidate-pool entry to `completed` via the claim release flow
+
+### No Lean Code Changes
+
+Disk is at 93% capacity (~1GB free), so per the `feedback_disk_full_blocks_research.md`
+memory rule, I avoided new Lean theorems that would require Docker verification. The
+mathematical work is genuinely complete — adding speculative new theorems without the
+ability to build them risks regressing a clean file.
+
+### Status Reconciliation
+
+The gallery's `meta.json` correctly reports `status: "axiomatized"` with `axiomCount: 3`
+counting the three vacuous `True` theorems (`lr_saturation_theorem`,
+`lr_positivity_in_P`, `lr_counting_sharp_P_complete`). Per the axiom integrity policy
+in CLAUDE.md, this is correct: the theorems make implicit mathematical claims about
+complexity theory that the formal content does not actually prove, so they should be
+counted as assumptions even though they are not declared as `axiom`. Hilbert problems
+must always be `axiomatized`, never `verified`.

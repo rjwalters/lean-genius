@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-30T17:32:58.851Z",
-    "iteration": 4,
-    "focus": "Extended odd weird bound to >4725, covering 7 odd abundant numbers",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T17:00:00Z",
+    "iteration": 5,
+    "focus": "Subject is Erdos470Problem.lean (odd weird numbers); 3 deep axioms remain",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Open question: do odd weird numbers exist? 3 axioms encode known results (Liddy-Riedl, Melfi conditional, Benkoski-Erdős density)",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended odd weird bound from >4725 to >5985 (10 odd abundants verified). Removed ~115 lines of duplicate code fixing compilation. 3 deep axioms remain.",
+    "progressSummary": "AXIOMATIZED: Erdos470Problem.lean has 42 theorems, 3 axioms, 0 sorries. Existence of odd weird numbers remains open.",
     "builtItems": [
       "Decidable instances for IsPseudoperfect and IsWeird in Erdos470Problem.lean:70-78",
       "Proved no_weird_below_70 (was axiom) via native_decide in Erdos470Problem.lean:108-110",
@@ -70,7 +70,9 @@
       "5355 = 3² × 5 × 7 × 17 is the 8th odd abundant, semiperfect (native_decide)",
       "5775 = 3 × 5² × 7 × 11 is the 9th odd abundant, semiperfect (native_decide)",
       "5985 = 3² × 5 × 7 × 19 is the 10th odd abundant, semiperfect (native_decide)",
-      "File had duplicate declarations from prior sessions causing compilation errors — cleaned up"
+      "File had duplicate declarations from prior sessions causing compilation errors — cleaned up",
+      "Audit 2026-04-27: pool leanFiles incorrectly listed Erdos825Problem.lean (different file). Actual subject is Erdos470Problem.lean (593 lines, 42 theorems, 11 defs, 3 axioms, 0 sorries).",
+      "Three remaining axioms are all deep: (1) liddy_riedl_6_primes — odd weird ≥ 6 prime divisors; (2) melfi_conditional — conditional infinitude depending on prime-gap conjecture; (3) benkoski_erdos_density — positive density of weird numbers."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -93,20 +95,20 @@
     "mathlib": []
   },
   "started": "2026-03-30T17:32:58.851Z",
-  "lastUpdate": "2026-03-30T20:30:00.000Z",
+  "lastUpdate": "2026-04-27T17:00:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/Erdos825Problem.lean",
-      "filename": "Erdos825Problem.lean",
-      "lineCount": 106,
-      "theoremCount": 3,
-      "axiomCount": 0,
-      "defCount": 8,
+      "path": "Proofs/Erdos470Problem.lean",
+      "filename": "Erdos470Problem.lean",
+      "lineCount": 593,
+      "theoremCount": 42,
+      "axiomCount": 3,
+      "defCount": 11,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos825Problem.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos470Problem.lean"
     }
   ]
 }

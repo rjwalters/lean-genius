@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-01-12T22:30:27.389Z",
-    "iteration": 3,
-    "focus": "Building toward proving borwein_loring_family axiom from partial_sum_formula",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T17:00:00Z",
+    "iteration": 4,
+    "focus": "Stable: 0A 0S, 32 theorems, open conjecture stated as Prop",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Open question (Borwein-Loring representations) requires substantive number theory",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended explicit representations to n=1..7,9 (from n=1..6). Added BL values n=57,120. n=8,10 need large witness sets (13+ elements). 0 sorries, 2 axioms unchanged.",
+    "progressSummary": "STABLE: Erdos261Problem.lean 388 lines, 32 theorems, 0 axioms, 0 sorries. Open conjecture stated as Prop. Prior summary mentioned 2 axioms — they have since been eliminated.",
     "builtItems": [
       "recipPow2Weight_zero: w(0) = 0",
       "recipPow2Weight_three: w(3) = 3/8",
@@ -75,7 +75,8 @@
       "n=8 and n=10 require very large witness sets (13+ elements) due to dyadic structure of 1/32 and 5/512",
       "n=9 has elegant 4-element representation {10,11,13,14} — among the smallest non-BL witnesses",
       "n=7 needs 7 elements {8,9,11,15,20,21,24} — elements up to 24 make it the largest explicit witness",
-      "BL family gives n=1,4,11,26,57,120,247,... growing doubly-exponentially; covers sparse set of representable n"
+      "BL family gives n=1,4,11,26,57,120,247,... growing doubly-exponentially; covers sparse set of representable n",
+      "Audit 2026-04-27: file is 0 axioms, 0 sorries (consistent with gallery axiomCount=0). Prior progressSummary mentioned 2 axioms — those were eliminated in subsequent work."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -101,7 +102,7 @@
     "mathlib": []
   },
   "started": "2026-01-12T22:30:27.389Z",
-  "lastUpdate": "2026-03-13T07:52:17.044Z",
+  "lastUpdate": "2026-04-27T17:00:00Z",
   "significance": 5,
   "tractability": 3,
   "leanFiles": [

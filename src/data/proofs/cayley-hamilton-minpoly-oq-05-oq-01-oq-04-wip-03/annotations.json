@@ -1,17 +1,5 @@
 [
   {
-    "id": "ann-wip03-lean-setup",
-    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-    "range": { "startLine": 33, "endLine": 44 },
-    "type": "context",
-    "title": "Lean 4 Technical Setup",
-    "content": "The file imports all of Mathlib (for access to polynomial algebra, matrix theory, and UFD machinery), marks the section as `noncomputable` (since polynomial decidability and classical logic are used), and opens the `Matrix` and `Polynomial` namespaces. The `Classical.propDecidable` instance enables decidable equality for propositions — essential for the `by_contra` and case-splitting tactics used throughout the Bézout argument. The proof is parametric in a field $K$ and dimension $n$, with no finiteness or cardinality constraints on $K$.",
-    "mathContext": "Variables: $K$ a field, $n : \\mathbb{N}$, matrices in $\\text{Matrix}(\\text{Fin}\\, n)(\\text{Fin}\\, n)\\, K$. The `noncomputable` annotation is needed because `K[X]` division (used in Bézout's identity) requires classical choice.",
-    "significance": "context",
-    "relatedConcepts": ["noncomputable definitions", "classical logic", "type-class inference", "universe polymorphism"],
-    "prerequisites": ["Lean 4 syntax", "Mathlib conventions"]
-  },
-  {
     "id": "ann-wip03-docstring",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
     "range": { "startLine": 1, "endLine": 32 },
@@ -22,18 +10,6 @@
     "significance": "context",
     "relatedConcepts": ["nonderogatory matrix", "cyclic vector", "minimal polynomial", "prime power decomposition", "rational canonical form"],
     "prerequisites": ["field theory", "polynomial rings", "matrix algebra", "unique factorization"]
-  },
-  {
-    "id": "ann-wip03-setup",
-    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-    "range": { "startLine": 33, "endLine": 44 },
-    "type": "context",
-    "title": "Imports and Environment Setup",
-    "content": "The file imports the full Mathlib library, opens the `Matrix` and `Polynomial` namespaces for concise notation, and declares `noncomputable section` since `Field K` instances are generally noncomputable in Lean 4. The `Classical.propDecidable` attribute enables classical reasoning (`by_contra`, decidable equality on propositions) throughout the file. The field `K` and dimension `n` are introduced as universe-polymorphic implicit variables, allowing the results to apply to any field and matrix size.",
-    "mathContext": "The `noncomputable` declaration is necessary because field operations and polynomial evaluation in Lean 4 are defined noncomputably via classical axioms. The `open Matrix Polynomial` allows writing `mulVec`, `aeval`, `natDegree`, etc. without module prefixes.",
-    "significance": "context",
-    "relatedConcepts": ["Lean 4 noncomputable", "classical logic", "universe polymorphism"],
-    "prerequisites": ["Lean 4 module system", "Mathlib library structure"]
   },
   {
     "id": "ann-wip03-cyclic-def",

@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1022",
   "title": "[Problem Title]",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Created Erdos1022Problem.lean from stub. Defined Property B, sparsity, conjecture. 1A (conjecture), 0S, 5T.",
+    "progressSummary": "COMPLETED: gallery is `status: axiomatized`. File has 1 axiom (erdos_1022_conjecture — the open Erdős problem itself, NOT eliminable) and 0 sorries. Substantial infrastructure developed: HasPropertyB, IsSparse, AllSizeAtLeast definitions; 18+ supporting theorems including monotonicity, sparsity bounds, and the recent degree-bounded ⇒ sparse via double-counting result (PR #13269).",
     "builtItems": [
       "Erdos1022Problem.lean: HasPropertyB def, AllSizeAtLeast def, IsSparse def",
       "erdos_1022_conjecture axiom",
@@ -44,7 +44,9 @@
       "Follow-up OQ-01: Property B_k (k-colorability) generalization (10 theorems, 0 axioms)"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "No further routine work — gallery is verified-axiomatized. The single axiom is the open conjecture; only resolution would be a research-level breakthrough on Erdős #1022 itself."
+    ],
     "markdown": "# Knowledge Base: erdos-1022\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [

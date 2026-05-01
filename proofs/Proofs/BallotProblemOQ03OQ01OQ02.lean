@@ -222,16 +222,33 @@ theorem hook_length_formula_2row_rect (m : ℕ) :
     LatticePathLGV.Cn m * ((m + 1).factorial * m.factorial) = (2 * m).factorial :=
   LGVCorollaries.hook_length_formula_two_row m
 
-/-
-  ## OPEN: LGV proof path — canonical-config restatement
+/-- Auxiliary: count of SYT of shape μ equals the NI-path count with youngLGVConfig.
+    This is the Fomin growth diagram bijection (RSK correspondence restricted to SYT).
+    WARNING: This statement is INCORRECTLY STATED — it takes arbitrary (r, σ, m) without
+    requiring they encode μ's row lengths. The correct version needs a canonical LGV config:
+      def youngLGVConfigOf (μ : YoungDiagram) : LGVConfig k := youngLGVConfig k σ_μ ...
+    where σ_μ i = μ.rowLen (k-1-i) for k = number of rows of μ. Then the theorem says:
+      card(SYT μ) = niTupleCount (youngLGVConfigOf μ).
+    [OPEN: requires defining youngLGVConfigOf + RSK bijection proof, ~200 lines] -/
+theorem ni_count_eq_syt_count (μ : YoungDiagram) (r : ℕ) (σ : Fin r → ℕ)
+    (hσ : Monotone σ) (m : ℕ) (hm : ∀ i : Fin r, σ i + i.val ≤ m)
+    (hr : 0 < r) (hmin : r - 1 ≤ σ ⟨0, hr⟩) :
+    Fintype.card (StandardYoungTableau μ) =
+    niTupleCount (youngLGVConfig r σ hσ m hm) := by
+  sorry
 
-  Earlier revisions of this file declared two auxiliary `sorry` lemmas
-  (`ni_count_eq_syt_count` and `lgv_det_factors_as_hook_quotient`) that took
-  an arbitrary tuple (r, σ, m) of LGV parameters with no hypothesis tying
-  them to μ.  As stated, those lemmas were not generally true: most choices
-  of (r, σ, m) bear no relation to μ, so the equalities reduce to false
-  numerical claims (e.g. for μ = ⊥ paired with r = 1, σ = fun _ => 5).
-  They were therefore dead, unprovable scaffolding, and have been removed.
+/-- Auxiliary: the LGV determinant for youngLGVConfig times hookProd equals μ.card!.
+    This is the algebraic identity connecting path-count determinants to hook products.
+    WARNING: This statement is INCORRECTLY STATED — it takes arbitrary (r, σ, m, μ)
+    without requiring that (r, σ, m) encodes μ. The correct version needs a connection:
+    for the canonical config youngLGVConfigOf μ, det(pathMatrix(youngLGVConfigOf μ)) × hookProd μ = μ.card!
+    This follows from the Jacobi-Trudi identity / Lindström determinant formula.
+    [OPEN: requires defining youngLGVConfigOf + Vandermonde-type determinant identity] -/
+theorem lgv_det_factors_as_hook_quotient (μ : YoungDiagram) (r : ℕ) (σ : Fin r → ℕ)
+    (hσ : Monotone σ) (m : ℕ) (hm : ∀ i : Fin r, σ i + i.val ≤ m) :
+    (pathMatrix (youngLGVConfig r σ hσ m hm)).det * (hookProd μ : ℤ) =
+    μ.card.factorial := by
+  sorry
 
   The corrected formulation requires a canonical encoding `youngLGVConfigOf μ`
   built from μ alone:
@@ -14008,13 +14025,12 @@ theorem hook_length_formula_general (μ : YoungDiagram) :
     Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.card.factorial := by
   exact_mod_cast hook_length_formula_Q μ
 
-/-- **Hook-Length Formula (Frame-Robinson-Thrall 1954)** — alias for `hook_length_formula_general`.
+/-- **Hook-Length Formula (Frame-Robinson-Thrall 1954)** — alias for hook_length_formula_general.
     Proved here (after the corner-recursion infrastructure is in scope) via
-    `hook_length_formula_general`.  The alternate LGV proof path is documented
-    as the canonical-config restatement at the top of PART V; it remains open.
-    Mathematical status: proved for all shapes with ≤9 rows or ≤9 columns and
-    for all rectangles; `≥10 × ≥10` non-rectangular case is the sole remaining
-    sorry, pending the GNW hook-walk argument (~300 lines). -/
+    hook_length_formula_general. The alternate LGV proof path (ni_count_eq_syt_count +
+    lgv_det_factors_as_hook_quotient) has incorrectly stated auxiliary lemmas and remains open.
+    Mathematical status: proved for all shapes with ≤9 rows or ≤9 columns;
+    ≥10×≥10 case sorry pending GNW hook walk argument (~300 lines). -/
 theorem hook_length_formula (μ : YoungDiagram) :
     Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.card.factorial :=
   hook_length_formula_general μ

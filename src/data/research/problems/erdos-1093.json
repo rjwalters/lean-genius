@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1093",
   "title": "Erdős #1093",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-15T14:52:37.979Z",
-    "iteration": 2,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 3,
+    "focus": "Structural characterizations added; els_upper_bound remains as deep ELS 1993 axiom",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Build verification (deferred — disk constraints). Long-term: search Mathlib for any prime-factorization estimates that could chip at els_upper_bound; otherwise leave as documented deep axiom.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,14 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 1 axiom (els_upper_bound, deep). 25 theorems including 5 deficiency>1 examples and structural bounds. Comprehensive formalization.",
+    "progressSummary": "AXIOMATIZED: 1 axiom (els_upper_bound, deep ELS 1993). 0 sorries, 27 theorems, 6 defs, 177 lines. This session: added 2 structural characterizations: deficiency_eq_zero_iff and deficiency_pos_iff (clean Finset.filter rewrites). Erdős problem itself is OPEN; remaining axiom is the published deep result, not eliminable from current Mathlib.",
     "builtItems": [
       "Assessment: 2A appropriate",
       "13 new native_decide theorems: deficiency_14_4 through deficiency_2099_19",
       "Eliminated many_deficiency_one_examples axiom (2→1 axioms)",
       "5 new deficiency>1 native_decide theorems (lines 127-137)",
       "deficiency_le bound theorem (lines 149-153)",
-      "isKSmooth_one and not_isKSmooth_zero lemmas (lines 155-167)"
+      "isKSmooth_one and not_isKSmooth_zero lemmas (lines 155-167)",
+      "deficiency_eq_zero_iff: deficiency = 0 iff no n-i is k-smooth (Finset.filter_eq_empty_iff)",
+      "deficiency_pos_iff: deficiency > 0 iff some n-i is k-smooth (Finset.filter_nonempty_iff)"
     ],
     "insights": [
       "2 axioms: els_upper_bound (deep), many_deficiency_one_examples (computational, potentially provable by native_decide but slow). 4T, 0S.",
@@ -44,7 +46,9 @@
       "Verified examples span k=4,5,6,7,8,9,10,11,12,14,15,16,19 — matching the known deficiency-1 pairs from computational search",
       "Remaining axiom els_upper_bound (ELS 1993) is a deep published result unlikely provable from Mathlib",
       "Added 5 deficiency>1 verified examples: d(44,8)=2, d(74,10)=2, d(46,10)=3, d(47,10)=3, d(47,11)=4",
-      "Added structural bounds: deficiency_le (deficiency ≤ k), isKSmooth_one, not_isKSmooth_zero"
+      "Added structural bounds: deficiency_le (deficiency ≤ k), isKSmooth_one, not_isKSmooth_zero",
+      "deficiency is a Finset.card, so card-zero/card-pos give clean iff characterizations via filter_eq_empty_iff and filter_nonempty_iff",
+      "ELS 1993 upper bound (n ≪ 2^k √k for deficiency ≥ 1) remains the only axiom — deep number theory, not in Mathlib"
     ],
     "mathlibGaps": [],
     "nextSteps": [],

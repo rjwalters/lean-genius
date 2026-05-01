@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-05-01T00:00:00Z",
+    "since": "2026-04-27T17:00:00Z",
     "iteration": 3,
-    "focus": "Gallery: verified/mathlib, 0 sorries, 0 axioms, 695 lines (AngleTrisectionOQ05.lean). Origami / Huzita-Hatori formalization is fully verified.",
+    "focus": "Verified: 0A 0S in OQ05 + OQ05OQ01",
     "blockers": [],
-    "nextAction": "No work needed; entry stays as exemplary verified formalization.",
+    "nextAction": "Pool entry retired — formalization fully verified",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,14 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ASSESSED: 0A 0S 27T, fully verified. Origami/Huzita-Hatori axioms formalization.",
+    "progressSummary": "COMPLETED: AngleTrisectionOQ05.lean (27 thm, 0A 0S) and AngleTrisectionOQ05OQ01.lean (28 thm, 0A 0S) fully verified. Gallery entry status=verified.",
     "builtItems": [
       "Assessment: fully verified, no improvements needed"
     ],
     "insights": [
       "AngleTrisectionOQ05.lean: fully verified (0A 0S 27T)",
       "Part of extensive angle trisection formalization family (11 files, ~400+ theorems total)",
-      "No work needed — exemplary formalization"
+      "No work needed — exemplary formalization",
+      "Audit 2026-04-27: pool entry was stale-active. Lean files confirmed 0A 0S; gallery meta.json status=verified with axiomCount=0, sorries=0."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -78,7 +79,7 @@
     "mathlib": []
   },
   "started": "2026-03-26T20:00:24.430Z",
-  "lastUpdate": "2026-03-26T20:00:24.430Z",
+  "lastUpdate": "2026-04-27T17:00:00Z",
   "significance": 5,
   "tractability": 6,
   "leanFiles": [

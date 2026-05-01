@@ -1,8 +1,8 @@
 {
   "slug": "szemeredi-hypergraph-core-oq-01-incomplete-01",
   "title": "Complete Simplicial Complex Infrastructure for Gowers Hypergraph Regularity",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "phase": "ACT",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -28,12 +28,12 @@
     "goal": "Define SimplicialComplex, relativeKDensity, IsGowersRegular and prove naive_implies_gowers: IsHypergraphRegular \u2192 IsGowersRegular (complete complex)"
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-04-27T15:55:00-07:00",
-    "iteration": 1,
-    "focus": "Completed 2026-04-27 (researcher-7 audit): file is sorry-free with 14 verified results and documented obstruction. Original problem (build SimplicialComplex/relativeKDensity/IsGowersRegular infrastructure) achieved. Original conjecture naive_implies_gowers found false; replaced with three correct surrogate theorems.",
+    "phase": "ACT",
+    "since": "2026-04-21T00:00:00Z",
+    "iteration": 2,
+    "focus": "Sorry eliminated; obstruction documented; awaiting follow-up direction (partition-respecting Gowers or counting lemma).",
     "blockers": [],
-    "nextAction": "Follow-ups exist as separate research directions (counting lemma; partition-respecting Gowers); this problem is closed.",
+    "nextAction": "Investigate counting lemma or partition-respecting reformulation; this issue is COMPLETED for current scope.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -41,9 +41,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: SimplicialComplex/relativeKDensity/IsGowersRegular defined and 14 supporting theorems proved (0 sorries, 0 axioms). Original naive_implies_gowers conjecture found false (transversal hypothesis is degenerate, top-cliques need not arise from vertex partitions); replaced with three correct surrogates: relativeKDensity_eq_of_topCliques_eq, isGowersRegular_self, isGowersRegular_empty. Gowers (2007) \u00a74 weak/strong distinction documented in PART VII.",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Eliminated naive_implies_gowers sorry (1 -> 0). Replaced false conjecture with 3 verified structural lemmas: relativeKDensity_eq_of_topCliques_eq, isGowersRegular_self (any H is (0,1)-regular w.r.t. any C), isGowersRegular_empty (empty H is (0,δ)-regular). Documented obstruction precisely: hypothesis with parts=[univ × k] is degenerate (transversals empty for k≥2), and Gowers regularity quantifies over arbitrary sub-complexes whose top-cliques need not arise from vertex partitions.",
+    "builtItems": [
+      "relativeKDensity_eq_of_topCliques_eq in SzemerediHypergraphGowers.lean (helper: density depends only on topCliques set)",
+      "isGowersRegular_self in SzemerediHypergraphGowers.lean (every H is (0,1)-Gowers-regular w.r.t. any C)",
+      "isGowersRegular_empty in SzemerediHypergraphGowers.lean (empty hypergraph is (0,δ)-Gowers-regular)"
+    ],
+    "insights": [
+      "Naive regularity with parts=[univ × k] has degenerate transversals: (s ∩ univ).card = 1 forces |s|=1, but |s| = k ≥ 2 gives contradiction. So kPartiteDensity = 0 trivially.",
+      "Gowers regularity sub-complex top-cliques can concentrate on regions no vertex partition can reach. Naive → Gowers fails without partition-respecting hypothesis (Gowers 2007 §4 weak vs strong).",
+      "δ = 1 + topCliques_mono forces topCliques equality (subset + reverse cardinality bound). Equal topCliques give equal relative densities. This yields trivial (0,1)-regularity for any H,C."
+    ],
     "mathlibGaps": [
       "No SimplicialComplex definition in Mathlib",
       "Mathlib has SetFamily.Shadow (Kruskal-Katona) but not hypergraph regularity"
@@ -80,7 +88,7 @@
     ]
   },
   "started": "2026-04-21T06:42:55Z",
-  "lastUpdate": "2026-04-27T23:24:02.855749Z",
+  "lastUpdate": "2026-04-27T13:00:00Z",
   "significance": 9,
   "tractability": 5
 }

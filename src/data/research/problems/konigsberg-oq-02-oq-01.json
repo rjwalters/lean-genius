@@ -1,7 +1,7 @@
 {
   "slug": "konigsberg-oq-02-oq-01",
   "title": "Hierholzer's Algorithm — Directed Eulerian Circuit Formalization in Lean 4",
-  "phase": "ACT",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: directed_euler_circuit_sufficient_corrected proved (0 sorries). Full Hierholzer algorithm formalized via WF induction on arcCount. Docker build pending verification.",
+    "progressSummary": "COMPLETED: gallery verified (status: verified, 0 sorries, 0 axioms). Pool sorryCount metadata for KonigsbergOQ02OQ01.lean is stale — listed 3 sorries but those are occurrences in comments/docstrings, not actual `sorry` tactics (verified via grep + comment exclusion).",
     "builtItems": [
       "Digraph.isStronglyConnected definition in KonigsbergOQ02OQ01.lean",
       "maximal_balanced_trail_is_circuit theorem (proved, 0 sorries) in KonigsbergOQ02OQ01.lean",
@@ -80,9 +80,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Verify Docker build succeeds for Proofs.KonigsbergOQ02OQ01",
-      "Update pool status to completed",
-      "Generate follow-up OQ: BEST theorem (count Eulerian circuits)"
+      "No further action — gallery is verified. The leanFile sorryCount field for KonigsbergOQ02OQ01.lean (3) is comment-substring miscounting; actual sorries: 0."
     ],
     "markdown": "# Knowledge Base: konigsberg-oq-02-oq-01\n\n## Session 2026-04-24 — Key Sub-Lemma Proved\n\n**Outcome**: progress\n\n### What Was Done\n- Created `KonigsbergOQ02OQ01.lean`\n- Defined `Digraph.isStronglyConnected`\n- Proved `maximal_balanced_trail_is_circuit` (0 sorries)\n- Proved helper lemmas: `fst_count_eq_outDegree_stuck`, `snd_count_le_inDegree`\n- Stated corrected main theorem with 1 sorry\n\n### Key Proof of maximal_balanced_trail_is_circuit\npath_fst_snd_eq gives: `[u] ++ snd_list = fst_list ++ [v₀]`\nCount v₀: `count(v₀,[u]) + snd_count = fst_count + 1`\n- fst_count = outDeg(v₀) [hstuck + Nodup]\n- snd_count ≤ inDeg(v₀) [Nodup + valid]\n- inDeg = outDeg [balance]\nIf u ≠ v₀: 0 + snd_count = outDeg + 1 but snd_count ≤ outDeg → contradiction\n\n### Files Modified\n- `proofs/Proofs/KonigsbergOQ02OQ01.lean` (created, ~230 lines)\n\n### Next Steps\n- Walk.splice constructor\n- WF induction on covered arc count\n"
   },
@@ -150,7 +148,7 @@
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 4,
-      "sorryCount": 3,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ02OQ01.lean"
     },

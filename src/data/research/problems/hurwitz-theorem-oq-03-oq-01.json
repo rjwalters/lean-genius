@@ -27,12 +27,12 @@
     "goal": "Prove hurwitz_only_if, or at minimum prove the n=3 impossibility as a first step"
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-04-22",
-    "iteration": 2,
-    "focus": "Proved crossMat_sq_neg_one, confirmed even-n BLOCKED by missing Clifford algebra library",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T17:00:00Z",
+    "iteration": 3,
+    "focus": "BLOCKED on Mathlib gap (Bott periodicity for Cl(0,n)); 1 sorry in HurwitzOnlyIf.lean",
     "blockers": [],
-    "nextAction": "Track Mathlib for Clifford algebra rep theory; current proof is maximally complete",
+    "nextAction": "Resume when Mathlib gains Clifford algebra periodicity infrastructure",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -66,7 +66,8 @@
       "ring fails for non-commutative matrix rings: use abel for additive goals, neg_mul for sign flips",
       "eight_square_identity_norm: two-step simp pattern needed — first simp only unfolds defs, second simp (not only) evaluates ![...] i via Matrix.cons_val_* for all 8 indices",
       "Fixed 5 pre-existing build errors: right_polarization spurious ring, no_odd_nsquare ring for non-comm, Nat.eq_or_ne → eq_or_ne, eight_square_identity_exists theorem→def, eight_square_identity_norm simp pattern",
-      "Even-n sorry: all paths (halving, volume element, trace/det) require Clifford Bott periodicity. Cl(0,5)≅M(4,ℂ) has min rep dim 8>6; Cl(0,9)≅M(16,ℝ) has dim 16>10. Table embedded in sorry comment."
+      "Even-n sorry: all paths (halving, volume element, trace/det) require Clifford Bott periodicity. Cl(0,5)≅M(4,ℂ) has min rep dim 8>6; Cl(0,9)≅M(16,ℝ) has dim 16>10. Table embedded in sorry comment.",
+      "Audit 2026-04-27: pool leanFiles listed HurwitzTheorem.lean and HurwitzTheoremOQ04.lean; the actual subject file (per gallery proofRepoPath) is HurwitzOnlyIf.lean (113 lines, 1 sorry, 0 axioms). Gallery status=formalized, badge=wip, sorries=1."
     ],
     "mathlibGaps": [
       "Radon-Hurwitz numbers not in Mathlib (as of 2026-04)",
@@ -116,27 +117,16 @@
   "started": "2026-04-21",
   "leanFiles": [
     {
-      "path": "Proofs/HurwitzTheorem.lean",
-      "filename": "HurwitzTheorem.lean",
-      "lineCount": 2043,
-      "theoremCount": 35,
+      "path": "Proofs/HurwitzOnlyIf.lean",
+      "filename": "HurwitzOnlyIf.lean",
+      "lineCount": 113,
+      "theoremCount": 4,
       "axiomCount": 0,
-      "defCount": 16,
-      "sorryCount": 2,
+      "defCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzTheorem.lean"
-    },
-    {
-      "path": "Proofs/HurwitzTheoremOQ04.lean",
-      "filename": "HurwitzTheoremOQ04.lean",
-      "lineCount": 823,
-      "theoremCount": 26,
-      "axiomCount": 1,
-      "defCount": 15,
-      "sorryCount": 2,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzTheoremOQ04.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzOnlyIf.lean"
     }
   ],
-  "lastUpdate": "2026-04-23T00:00:00.000Z"
+  "lastUpdate": "2026-04-27T17:00:00Z"
 }

@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-05T20:06:19-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T17:00:00Z",
+    "iteration": 2,
+    "focus": "Stable axiomatized state — 2 structure-encoded assumptions in AngularAverageData",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Eliminate structure-encoded angularAvg axioms by formalizing RP^{n-1} surface measure (large project, blocked on Mathlib)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -41,7 +41,10 @@
       "c_2 = 2/pi recovers Buffon-Barbier, c_3 = 1/2 for 3D",
       "Sphere surface area sigma_n = 2*pi^{(n+1)/2}/Gamma((n+1)/2) computed for n=0,1,2",
       "Angular averaging on RP^{n-1} requires sphere measure not in Mathlib - axiomatized",
-      "Unit circle sanity check: 4 expected crossings with unit grid"
+      "Unit circle sanity check: 4 expected crossings with unit grid",
+      "Audit 2026-04-27: pool leanFiles reports axiomCount=0 because grep only counts ^axiom declarations. Gallery meta.json correctly reports axiomCount=2 — these are structure-encoded assumptions in AngularAverageData (angularAvg_eq, angularAvg_nonneg).",
+      "BuffonsNeedleOQ01OQ01OQ04.lean (332 lines, 20 theorems): axiomatized via structure fields rather than top-level axioms. Per axiom integrity policy these still count as assumptions.",
+      "Gallery status=axiomatized, badge=axiom — correctly reflects the 2 structure-encoded assumptions."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -165,5 +168,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ02.lean"
     }
-  ]
+  ],
+  "lastUpdate": "2026-04-27T17:00:00Z"
 }

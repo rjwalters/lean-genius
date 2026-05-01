@@ -1,7 +1,7 @@
 {
   "slug": "bounded-prime-gaps-oq-04-oq-02",
   "title": "What is the minimal set of Mathlib additions needed for BV",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-28T20:58:09-07:00",
-    "iteration": 2,
-    "focus": "Catalog complete. Next: implement gaussSumBound and vaughanIdentity.",
+    "iteration": 3,
+    "focus": "Survey file complete; 6 axioms are the documented minimal additions; phase mismatch flagged",
     "blockers": [],
     "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Identified 6 minimal Mathlib additions for BV (~5500 lines total). Created comprehensive Lean catalog with precise types, dependency graph, tractability ranking, and bridging lemmas.",
+    "progressSummary": "COMPLETED (survey): Identified 6 minimal Mathlib additions for Bombieri-Vinogradov (~5500 lines total). 600-line Lean catalog with precise types, bridging lemmas, dependency graph. The 6 axioms ARE the survey content (gaussSumBound, polyaVinogradov, largeSieve, siegelWalfisz, vaughanIdentity, zeroDensityEstimate) — each represents 300-2000 lines of future Mathlib work. Pool sorryCount:1 is a false positive (grep matches the docstring \"0 sorry\").",
     "builtItems": [
       "Created BoundedPrimeGapsOQ04OQ02.lean with 6 minimal additions catalog",
       "Proved bridging lemmas: chebyshevPsi_mono, chebyshevPsiAP_le_chebyshevPsi, expectedMainTerm_pos, expectedMainTerm_q_one, bv_error_nonneg_terms",
@@ -50,7 +50,9 @@
       "Each addition unlocks 4-5 further results beyond BV (e.g., gaussSumBound enables Burgess bounds, Jacobi sums)",
       "LargeSieve is the first sieve result that would exist in Mathlib — foundational for all sieve theory",
       "All 6 axioms are well-known theorems (gaussSumBound, polyaVinogradov, largeSieve, siegelWalfisz, vaughanIdentity, zeroDensityEstimate) missing from Mathlib. Each needs 300-2000 lines to prove. None are used by any theorem in the file — they are purely a catalog.",
-      "sorryCount was incorrectly 1 in metadata — actual sorry count is 0 (only appears in a comment)"
+      "sorryCount was incorrectly 1 in metadata — actual sorry count is 0 (only appears in a comment)",
+      "Pool sorryCount:1 is a false positive: only the docstring contains the substring \"sorry\" (in \"0 sorry\"). Actual code sorry count is 0. Per known counting issue: strip comments before counting.",
+      "The 6 axioms in this file are intentional axiomatizations representing the minimal Mathlib additions needed for BV. Eliminating any of them is a 300-2000 line undertaking and the proper subject of separate research problems."
     ],
     "mathlibGaps": [],
     "nextSteps": [

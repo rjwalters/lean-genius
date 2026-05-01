@@ -1,7 +1,7 @@
 {
   "slug": "cayley-hamilton-reduction-oq-02-oq-01",
   "title": "Rational canonical form (Frobenius normal form) formalization",
-  "phase": "ACT",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-03-30T08:49:59.592Z",
     "iteration": 2,
     "focus": "Proved orbit infrastructure: column action, last column, power orbit. Restructured proof plan to eliminate circular dependency.",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: Proved 5 orbit infrastructure lemmas. Restructured proof plan: aeval→minpoly→charpoly (no circular dependency). 3 sorries remain (aeval, minpoly, charpoly).",
+    "progressSummary": "STABLE-VERIFIED: CayleyHamiltonReductionOQ02OQ01.lean (396 lines, 0 sorries, 0 axioms). Gallery meta correctly reports status=verified, axiomCount=0, badge=original. Stale progressSummary previously claimed '3 sorries remain' — completed in earlier work.",
     "builtItems": [
       "companionMatrix: def for d×d companion from monic polynomial",
       "companionMatrix_subdiag, _last_col, _zero: entry lemmas",

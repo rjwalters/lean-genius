@@ -107,46 +107,25 @@
   {
     "id": "ann-main-theorem",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-    "range": { "startLine": 172, "endLine": 327 },
+    "range": { "startLine": 204, "endLine": 402 },
     "type": "theorem",
     "title": "Main Theorem: nonderogatory_general_has_cyclic_vector",
     "content": "The main theorem states: for any field $K$, any nonderogatory matrix $M : \\text{Matrix}\\,(\\text{Fin}\\,n)\\,(\\text{Fin}\\,n)\\,K$ with $\\text{minpoly}_K(M) = \\prod_{i : \\text{Fin}\\,k} p_i^{e_i}$ (pairwise coprime, $p_i$ monic irreducible, $e_i \\geq 1$, $k \\geq 1$), there exists $v$ with `IsCyclicVector M v`.\n\nThe proof has six phases:\n\n1. **Edge case $n = 0$**: the only function $\\text{Fin}\\,0 \\to K$ is the empty function `Fin.elim0`, which is trivially cyclic.\n\n2. **Degree of minpoly**: from $h\\_nd$ and `Matrix.charpoly_natDegree_eq_dim` plus `Fintype.card_fin`, derive $\\deg(\\text{minpoly}_K M) = n$.\n\n3. **Complementary product setup**: define $F : \\text{Fin}\\,k \\to K[X]$ by $F_i := \\prod_{j \\in \\text{univ.erase}\\,i} p_j^{e_j}$. Establish $F_i \\neq 0$ (each factor is nonzero) and $p_i^{e_i} \\cdot F_i = \\text{minpoly}\\,K\\,M$ via `Finset.mul_prod_erase`.\n\n4. **Primary vector construction**: bound $\\deg(p_i^{e_i - 1} \\cdot F_i) < n$ (using `Polynomial.natDegree_mul`, the multiplicative identity $(p_i^{e_i-1} F_i) \\cdot p_i = p_i^{e_i} F_i = \\text{minpoly}$, and `omega`). Apply `aeval_ne_zero_of_lt_minpoly` to get $(p_i^{e_i-1} F_i)(M) \\neq 0$. Use `exists_mulVec_ne_zero` to choose $w_i$ with $(p_i^{e_i-1} F_i)(M) w_i \\neq 0$. Set $v_i := F_i(M) w_i$. Then $p_i^{e_i}(M) v_i = 0$ (since $p_i^{e_i} \\cdot F_i = \\text{minpoly}$ and `minpoly.aeval` gives $\\text{minpoly}(M) = 0$) and $p_i^{e_i - 1}(M) v_i \\neq 0$ (by choice of $w_i$).\n\n5. **CRT extraction**: candidate cyclic vector $v := \\sum_i v_i$. Suppose $r(M) v = 0$ with $\\deg(r) < n$, aiming for $r = 0$. For each $i$, Bezout for $(p_i^{e_i}, F_i)$ (proved coprime via `IsCoprime.prod_right` from the input pairwise coprimality) gives $a_i p_i^{e_i} + b_i F_i = 1$. The projection $\\pi_i = (b_i F_i)(M)$:\n   - acts as identity on $v_i$: by `bezout_proj_identity` since $p_i^{e_i}(M) v_i = 0$;\n   - kills $v_j$ for $j \\neq i$: since $p_j^{e_j} \\mid F_i$ (direct fact from `Finset.dvd_prod_of_mem`), we factor $F_i = p_j^{e_j} \\cdot Q$, commute via `aeval_mul_comm`, and kill via $p_j^{e_j}(M) v_j = 0$.\n\n   Apply $\\pi_i$ to both sides of $r(M) v = 0$, use commutativity of polynomial evaluations to swap $\\pi_i$ past $r(M)$, and read off $r(M) v_i = 0$.\n\n6. **Divisibility and degree contradiction**: by `pow_irred_dvd_of_annihilated` applied with the witness $v_i$ (which has $p_i^{e_i-1}(M) v_i \\neq 0$ and $p_i^{e_i}(M) v_i = 0$), each $p_i^{e_i} \\mid r$. By `Finset.prod_dvd_of_coprime`, $\\prod_i p_i^{e_i} \\mid r$. Since $\\prod_i p_i^{e_i} = \\text{minpoly}\\,K\\,M$ has degree $n$, `Polynomial.natDegree_le_of_dvd` (assuming $r \\neq 0$ for contradiction) gives $\\deg r \\geq n$, contradicting $\\deg r < n$.\n\nThe whole proof is purely algebraic — no dimension counting, no submodule quotients, no field-size hypothesis — which is why it works over any field including $\\mathbb{F}_2$.",
     "mathContext": "Key formal ingredients: $\\text{IsCoprime}$ in $K[X]$ (Bezout coefficients), $\\text{Finset.prod\\_dvd\\_of\\_coprime}$ (extracting product divisibility from pairwise coprimality), `Polynomial.natDegree_le_of_dvd` (the degree-bound contradiction), and `aeval_mul_comm` (commutativity of polynomial evaluations at $M$, used to slide $\\pi_i$ past $r(M)$ in the CRT extraction). The non-triviality of $r$ (assumed for contradiction) is the only place `by_contra` enters.",
     "significance": "key",
-    "relatedConcepts": [
-      "general k-fold primary decomposition",
-      "complementary product construction",
-      "CRT projection extraction",
-      "pairwise coprime divisibility",
-      "Finset.prod_dvd_of_coprime",
-      "Finset.mul_prod_erase"
-    ],
-    "prerequisites": [
-      "IsCoprime.prod_right",
-      "Finset.dvd_prod_of_mem",
-      "pow_irred_dvd_of_annihilated",
-      "bezout_proj_identity",
-      "aeval_ne_zero_of_lt_minpoly",
-      "Matrix.charpoly_natDegree_eq_dim"
-    ]
+    "relatedConcepts": ["cyclic vector existence", "degree contradiction", "IsCoprime.mul_dvd", "nonderogatory matrix"],
+    "prerequisites": ["IsCoprime.pow_pow", "pow_irred_dvd_of_annihilated", "bezout_proj_identity", "bezout_proj_kills"]
   },
   {
-    "id": "ann-commentary",
+    "id": "ann-corollary-finite",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-    "range": { "startLine": 329, "endLine": 358 },
+    "range": { "startLine": 404, "endLine": 417 },
     "type": "insight",
-    "title": "Commentary: Path to Unconditional Theorem and Why No Dimension Argument is Needed",
-    "content": "The closing commentary records three observations:\n\n1. **Path to the unconditional theorem**: the only remaining hypothesis is the *factored form* of $\\text{minpoly}_K M$. To eliminate it, factor the minimal polynomial using $K[X]$ as a UFD via Mathlib's `UniqueFactorizationMonoid` instance, producing data $(k, p_i, e_i)$ that satisfies all the input hypotheses, and apply `nonderogatory_general_has_cyclic_vector`. This is purely a Mathlib API exercise — no new mathematical content is required.\n\n2. **No dimension argument is needed**: the proof never establishes $\\dim \\ker(p_i^{e_i}(M)) = \\deg(p_i^{e_i})$ or any other dimension equality. Only the annihilation/non-annihilation properties of the primary vectors $v_i$ are used. This is the structural reason the proof works over arbitrary fields including $\\mathbb{F}_2, \\mathbb{F}_3, \\ldots$ without any field-size or 'enough vectors' hypothesis. Classical proofs that route through union-avoidance ('the set of non-cyclic vectors is a union of $\\leq n$ proper subspaces, so some vector escapes when $|K| > n$') are sharp for infinite fields but break for $\\mathbb{F}_q$ with $q \\leq n$.\n\n3. **Supersedes WIP01**: WIP01 used a single axiom — `nonderogatory_similar_to_companion`, equivalent to rational canonical form — to discharge the case where $\\text{minpoly}_K M$ has multiple distinct prime factors. WIP04 eliminates the axiom entirely. The technique (primary vectors via complementary products, CRT projections, prime-power divisibility induction) could plausibly be ported to Mathlib as a lemma about cyclic $K[X]$-modules without first formalizing the full PID structure theorem — a substantial Mathlib gap as of version 4.26.\n\nTogether with WIP02 (squarefree case, all exponents 1) and WIP03 (single-prime-power case, $k = 1$), WIP04 closes the family-of-cases proof of the nonderogatory cyclic vector theorem. The next step in the dependency chain is OQ-05-OQ-01-OQ-04 (the parent), which combines WIP04 with K[X]-UFD factorization to obtain the unconditional theorem.",
-    "mathContext": "The unconditional theorem schema: given $M$ nonderogatory, $\\text{minpoly}_K M$ is a polynomial in the UFD $K[X]$, hence factors as $\\prod_i p_i^{e_i}$ with $p_i$ monic irreducible. The factorization is unique up to permutation, and the input data $(p, e, \\text{hp\\_irr}, \\text{hp\\_monic}, \\text{he\\_pos}, \\text{hcoprime}, \\text{hprod})$ to `nonderogatory_general_has_cyclic_vector` is exactly the data of such a factorization. The 'separate (open) step' mentioned in `meta.assumptions` is producing this data from `IsNonderogatory M` automatically, which requires Mathlib glue rather than new mathematics.",
+    "title": "Corollary: Explicit Finite Field Instance",
+    "content": "The corollary `nonderogatory_bipow_has_cyclic_vector_finite` adds a `[Fintype K]` instance to make the finite field applicability explicit. This is a direct specialization of the main theorem — no additional proof is needed because the main theorem already works over *any* field K. The corollary exists to highlight that this proof, unlike the classical union-avoidance argument (which requires |K| > n or |K| = ∞), handles fields as small as GF(2). Over GF(2), a 10×10 matrix has only 1024 vectors, so measure-theoretic or probabilistic arguments are meaningless — but this algebraic CRT-based proof still applies.",
+    "mathContext": "Over $\\mathbb{F}_2$, the classical argument 'the set of non-cyclic vectors has measure zero' fails since $|\\mathbb{F}_2^n| = 2^n$ is finite. Union-avoidance ($|K| > n$ needed to avoid $n$ hyperplanes) also fails for small fields. The CRT approach avoids both issues entirely.",
     "significance": "context",
-    "relatedConcepts": [
-      "UniqueFactorizationMonoid",
-      "K[X] as PID",
-      "rational canonical form",
-      "union avoidance",
-      "small finite fields",
-      "Mathlib roadmap"
-    ],
-    "prerequisites": ["UFD factorization in K[X]", "WIP01 axiom history", "Mathlib 4.26 status"]
+    "relatedConcepts": ["finite field", "union-avoidance", "GF(2)", "constructive algebra"],
+    "prerequisites": ["nonderogatory_bipow_has_cyclic_vector", "Fintype"]
   }
 ]

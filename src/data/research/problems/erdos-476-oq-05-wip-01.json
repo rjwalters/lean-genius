@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-04-22T15:58:45+02:00",
-    "iteration": 1,
-    "focus": "Gallery proof complete via axiomatization. Aristotle pipeline handles remaining companion sorries.",
+    "since": "2026-04-27T17:00:00Z",
+    "iteration": 2,
+    "focus": "WIP investigation integrated into Erdos476OQ05Problem.lean (1 axiom, 0 sorries, gallery axiomatized)",
     "blockers": [],
-    "nextAction": "Mark completed; release claim. Track Mathlib for Kneser theorem to enable axiom removal.",
+    "nextAction": "Pool entry retired — separate WIP tracking no longer needed",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SOLVED (within axiomatization scope): Erdos476OQ05Problem.lean has 0 sorries, 1 axiom (vosper_case1_exists_large for |A|≥4 or |B|≥4 case, deferred to Kneser-type argument). Gallery proof complete; companion file has 2 sorries managed by ongoing Aristotle pipeline (1 submitted, 1 deferred for Kneser-class subcase). Eliminating the axiom remains a deep open formalization goal (~200-300 lines of Mathlib infrastructure).",
+    "progressSummary": "INTEGRATED: WIP work folded into Erdos476OQ05Problem.lean. Gallery erdos-476-oq-05 now axiomatized with 1 axiom (vosper_case1_exists_large) and 0 sorries. The previously-blocked sorry at line 844 is no longer present.",
     "builtItems": [
       "case1_exists |B|=2 branch: fully proved via orbit argument (Erdos476OQ05Problem.lean ~550-609)",
       "hredA_card lemma inline: ∀ a ∈ A, (A.erase a + B).card = A.card + B.card - 1 from CD + inclusion",
@@ -56,7 +56,7 @@
       "Orbit argument fails for |B|≥3 because difference d is not uniquely determined",
       "Involution parity (r(x)=2 for all x case): |A|*|B| must be even but 12=3*4 is even — no contradiction",
       "Circular dependency: proving all-a-redundant impossible requires Cauchy-Davenport equality theorem = Vosper itself",
-      "The all-redundant counter-argument for |A|≥4 or |B|≥4 in Vosper is a known hard case (Dyson e-transform / Kneser). The mathematical community accepts axiomatization here as a reasonable formalization checkpoint; Mathlib gap (Kneser for ZMod p) remains the primary blocker."
+      "Audit 2026-04-27: pool summary BLOCKED on sorry at line 844 is stale. Erdos476OQ05Problem.lean has 0 actual sorries (only a comment-mention of \"AP extension sorry\" on line 715). 1 axiom (vosper_case1_exists_large) remains."
     ],
     "mathlibGaps": [
       "Kneser theorem for abelian groups (needed for |A|>=4 or |B|>=4 all-redundant contradiction in Vosper induction)",
@@ -93,5 +93,6 @@
   },
   "started": "2026-04-22T15:58:45+02:00",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "lastUpdate": "2026-04-27T17:00:00Z"
 }

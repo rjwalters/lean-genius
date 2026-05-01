@@ -1,7 +1,7 @@
 {
   "slug": "erdos-848",
   "title": "Erdős #848",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-03-23T21:30:00Z",
     "iteration": 5,
-    "focus": "Added Van Doorn counting step: at most 2 solutions of x²=-1 in ZMod p",
+    "focus": "Stable axiomatized — 3 deep axioms (vanDoorn density, Sawhney 2024 main result, Sawhney structure); 17+ theorems proved; OQ-01 fully verified",
     "blockers": [],
     "nextAction": "Complete: 3 axioms properly declared (Van Doorn, Sawhney x2), 15 theorems proved, 0 sorries.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 3A appropriate (deep analytic NT), 15T proved (was 13), 0S. Added Van Doorn counting step: at most 2 solutions of x²=-1 in ZMod p.",
+    "progressSummary": "STABLE-AXIOMATIZED: Erdos848Problem.lean (308 lines, 0 sorries, 3 axioms, 17 theorems) + Erdos848ProblemOQ01.lean (160 lines, 0 sorries, 0 axioms, fully verified). The 3 axioms encode deep results — vanDoorn_upper_bound (density bound from Hensel lifting + infinite prime sums), sawhney_solution (Sawhney 2024 main answer N/25 for large N), sawhney_structure (uniqueness of extremal {n ≡ 7, 18 (mod 25)}). Gallery meta.json correctly reports axiomCount=3, badge=axiom for parent and verified for OQ-01.",
     "builtItems": [
       "Proved mod25_achieves (axiom→theorem): 5²|ab+1 when a≡b≡7(mod25)",
       "Proved mod25_achieves_18: symmetric case for a≡b≡18(mod25)",
