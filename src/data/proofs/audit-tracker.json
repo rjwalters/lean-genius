@@ -967,6 +967,14 @@
       "lastAudited": "2026-04-05T08:13:26Z",
       "result": "issues-fixed"
     },
+    "binary-gcd-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-01T16:10:24Z",
+      "result": "issues-found",
+      "issues": [
+        "Issue #14301: theoremCount 13→14 off-by-one; section line ranges drift 4–10 lines (sections 2–6); narrative content otherwise accurate, no phantom axioms"
+      ]
+    },
     "binary-gcd-oq-03": {
       "auditCount": 1,
       "issues": [],
