@@ -127,7 +127,7 @@
       "startLine": 156,
       "endLine": 190,
       "summary": "Complete sequences, complete_implies_subcomplete theorem, and density hierarchy",
-      "mathContext": "Defines `IsComplete` ($P(A) \\supseteq \\{n \\geq N_0\\}$) and proves `complete_implies_subcomplete` constructively by witnessing the AP with $a = N_0, d = 1$. Also axiomatizes `folkman_implies_sqrt_density`: the technical lemma $N^{1/2+\\varepsilon} \\geq C\\sqrt{N}$ for large $N$."
+      "mathContext": "Defines `IsComplete` ($P(A) \\supseteq \\{n \\geq N_0\\}$) and proves `complete_implies_subcomplete` constructively by witnessing the AP with $a = N_0, d = 1$. Also documents in source comments `folkman_implies_sqrt_density` (no Lean declaration exists): the technical lemma $N^{1/2+\\varepsilon} \\geq C\\sqrt{N}$ for large $N$."
     },
     {
       "id": "summary",

@@ -148,10 +148,10 @@
     {
       "id": "erdos-gyarfas",
       "title": "Erdős-Gyárfás Conjecture (Disproved)",
-      "summary": "States `erdos_gyarfas_conjecture` (for every r, ∃ graph with δ ≥ r avoiding all 2^k-cycles) and axiomatizes `liu_montgomery_threshold` disproving it for large r.",
+      "summary": "States `erdos_gyarfas_conjecture` (for every r, ∃ graph with δ ≥ r avoiding all 2^k-cycles) and documents in source comments `liu_montgomery_threshold` (no Lean declaration exists) disproving it for large r.",
       "startLine": 81,
       "endLine": 106,
-      "mathContext": "States `erdos_gyarfas_conjecture` (for every r, ∃ graph with δ $\\geq$ r avoiding all $2^{k}$-cycles) and axiomatizes `liu_montgomery_threshold` disproving it for large r."
+      "mathContext": "States `erdos_gyarfas_conjecture` (for every r, ∃ graph with δ $\\geq$ r avoiding all $2^{k}$-cycles) and documents in source comments `liu_montgomery_threshold` (no Lean declaration exists) disproving it for large r."
     },
     {
       "id": "partial-results",
@@ -180,10 +180,10 @@
     {
       "id": "known-results",
       "title": "Known Cycle Results",
-      "summary": "Axiomatizes `dirac_theorem` (δ ≥ n/2 → Hamiltonian) and `bondy_pancyclic` (≥ n²/4 edges → pancyclic or bipartite). These classical results show high degree forces cycles but don't resolve specific lengths at δ = 3.",
+      "summary": "documents in source comments `dirac_theorem` (no Lean declaration exists) (δ ≥ n/2 → Hamiltonian) and `bondy_pancyclic` (≥ n²/4 edges → pancyclic or bipartite). These classical results show high degree forces cycles but don't resolve specific lengths at δ = 3.",
       "startLine": 176,
       "endLine": 199,
-      "mathContext": "Axiomatizes `dirac_theorem` (δ ≥ n/2 → Hamiltonian) and `bondy_pancyclic` (≥ n²/4 edges → pancyclic or bipartite). These classical results show high degree forces cycles but don't resolve specific lengths at δ = 3."
+      "mathContext": "documents in source comments `dirac_theorem` (no Lean declaration exists) (δ ≥ n/2 → Hamiltonian) and `bondy_pancyclic` (≥ n²/4 edges → pancyclic or bipartite). These classical results show high degree forces cycles but don't resolve specific lengths at δ = 3."
     },
     {
       "id": "random-graphs",

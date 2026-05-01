@@ -112,10 +112,10 @@
     {
       "id": "schur-identity",
       "title": "Schur's Partition Identity",
-      "summary": "Defines `schurGapPartitions` (gap $\\geq 3$, distinct) and `schurModPartitions` (distinct, parts $\\equiv \\pm 1 \\pmod{3}$), both using `List.Nodup` to enforce distinctness. Axiomatizes `schur_partition_identity` (1926): the two sets have equal cardinality for all $n$.",
+      "summary": "Defines `schurGapPartitions` (gap $\\geq 3$, distinct) and `schurModPartitions` (distinct, parts $\\equiv \\pm 1 \\pmod{3}$), both using `List.Nodup` to enforce distinctness. documents in source comments `schur_partition_identity` (no Lean declaration exists) (1926): the two sets have equal cardinality for all $n$.",
       "startLine": 108,
       "endLine": 126,
-      "mathContext": "Defines `schurGapPartitions` (gap $\\geq 3$, distinct) and `schurModPartitions` (distinct, parts $\\equiv \\pm 1 \\pmod{3}$), both using `List.Nodup` to enforce distinctness. Axiomatizes `schur_partition_identity` (1926): the two sets have equal cardinality for all $n$."
+      "mathContext": "Defines `schurGapPartitions` (gap $\\geq 3$, distinct) and `schurModPartitions` (distinct, parts $\\equiv \\pm 1 \\pmod{3}$), both using `List.Nodup` to enforce distinctness. documents in source comments `schur_partition_identity` (no Lean declaration exists) (1926): the two sets have equal cardinality for all $n$."
     },
     {
       "id": "structural-properties",

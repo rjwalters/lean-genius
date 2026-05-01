@@ -110,7 +110,7 @@
       "title": "The Key Inequality",
       "startLine": 108,
       "endLine": 130,
-      "summary": "Axiomatizes `cauchy_schwarz_divisors` ($r(n) + \\tau(n) \\geq \\tau(n)^2/\\tau^+(n)$) and `problem_448_consequence` ($\\tau(n)^2/\\tau^+(n) \\geq (K+1)\\tau(n)$ on positive density).  The Cauchy-Schwarz bound is a dyadic pigeonhole argument; Problem 448's consequence provides the density input.",
+      "summary": "documents in source comments `cauchy_schwarz_divisors` (no Lean declaration exists) ($r(n) + \\tau(n) \\geq \\tau(n)^2/\\tau^+(n)$) and `problem_448_consequence` ($\\tau(n)^2/\\tau^+(n) \\geq (K+1)\\tau(n)$ on positive density).  The Cauchy-Schwarz bound is a dyadic pigeonhole argument; Problem 448's consequence provides the density input.",
       "mathContext": "$r(n) + \\tau(n) \\ge \\frac{\\tau(n)^2}{\\tau^+(n)}$. Cauchy-Schwarz applied to divisor pairs grouped by dyadic intervals. When $\\tau^+(n) \\ll \\tau(n)$, close pairs dominate."
     },
     {
@@ -118,7 +118,7 @@
       "title": "Examples and Small Values",
       "startLine": 131,
       "endLine": 143,
-      "summary": "Axiomatizes `example_12`: $\\tau(12) = 6$, $r(12) = 5$.  Demonstrates that $r(n)/\\tau(n) = 5/6$ for this small case, foreshadowing the general unboundedness result.",
+      "summary": "documents in source comments `example_12` (no Lean declaration exists): $\\tau(12) = 6$, $r(12) = 5$.  Demonstrates that $r(n)/\\tau(n) = 5/6$ for this small case, foreshadowing the general unboundedness result.",
       "mathContext": "$\\tau(12) = 6$, close pairs: $(2,3), (3,4), (3,6), (4,6), (6,12)$, so $r(12) = 5$. Demonstrates $r(n)$ can be close to $\\tau(n)$."
     },
     {
@@ -126,7 +126,7 @@
       "title": "Ford's Derivation",
       "startLine": 144,
       "endLine": 154,
-      "summary": "Axiomatizes `ford_derivation`: the two-step argument from Cauchy-Schwarz + Problem 448 to $r(n) \\geq K \\cdot \\tau(n)$ on positive density.  This is the core argument of the disproof, reducing Problem 449 to Problem 448.",
+      "summary": "documents in source comments `ford_derivation` (no Lean declaration exists): the two-step argument from Cauchy-Schwarz + Problem 448 to $r(n) \\geq K \\cdot \\tau(n)$ on positive density.  This is the core argument of the disproof, reducing Problem 449 to Problem 448.",
       "mathContext": "From Problem 448: $\\tau(n)/\\tau^+(n)$ can be arbitrarily large on a positive density set. By Cauchy-Schwarz, $r(n) \\ge \\tau(n)^2/\\tau^+(n) - \\tau(n) \\ge K \\cdot \\tau(n)$ for such $n$."
     }
   ],

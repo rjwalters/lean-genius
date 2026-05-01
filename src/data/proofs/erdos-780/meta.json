@@ -122,10 +122,10 @@
     {
       "id": "tightness",
       "title": "Tightness Construction",
-      "summary": "Defines `tightBound` $= kr - 1 + (t-1)(k-1)$. Axiomatizes `tightness_construction`: partition coloring with $|X_1| = kr-1$, $|X_i| = k-1$ avoids $k$ disjoint monochromatic edges, proving optimality of the threshold.",
+      "summary": "Defines `tightBound` $= kr - 1 + (t-1)(k-1)$. documents in source comments `tightness_construction` (no Lean declaration exists): partition coloring with $|X_1| = kr-1$, $|X_i| = k-1$ avoids $k$ disjoint monochromatic edges, proving optimality of the threshold.",
       "startLine": 95,
       "endLine": 113,
-      "mathContext": "Defines `tightBound` $= kr - 1 + (t-1)(k-1)$. Axiomatizes `tightness_construction`: partition coloring with $|X_1| = kr-1$, $|X_i| = k-1$ avoids $k$ disjoint monochromatic edges, proving optimality of the threshold."
+      "mathContext": "Defines `tightBound` $= kr - 1 + (t-1)(k-1)$. documents in source comments `tightness_construction` (no Lean declaration exists): partition coloring with $|X_1| = kr-1$, $|X_i| = k-1$ avoids $k$ disjoint monochromatic edges, proving optimality of the threshold."
     },
     {
       "id": "kneser-conjecture",

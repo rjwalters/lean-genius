@@ -136,7 +136,7 @@
       "summary": "Axiomatizes only `zhao_theorem` (the 2011 exact result for large $n$). The AKS asymptotic theorem (1995, $(1+\\varepsilon)$ factor) is documented in a docstring comment, not formalized as an axiom. Derives `erdos_580` directly from Zhao's theorem as a one-line proof.",
       "startLine": 159,
       "endLine": 196,
-      "mathContext": "Axiomatizes `AKS_theorem` (the 1995 asymptotic version with $(1+\\varepsilon)$ factor) and `zhao_theorem` (the 2011 exact result for large $n$). Derives `erdos_580` directly from Zhao's theorem, establishing the main result as a one-line proof."
+      "mathContext": "documents in source comments `AKS_theorem` (no Lean declaration exists) (the 1995 asymptotic version with $(1+\\varepsilon)$ factor) and `zhao_theorem` (the 2011 exact result for large $n$). Derives `erdos_580` directly from Zhao's theorem, establishing the main result as a one-line proof."
     },
     {
       "id": "special-cases",
@@ -144,7 +144,7 @@
       "summary": "Path and star special cases documented in docstring comments only. No `path_case` or `star_case` axioms are declared in this range.",
       "startLine": 197,
       "endLine": 222,
-      "mathContext": "Axiomatizes `path_case` (all paths of length $\\leq n/2 - 1$ embed under LKS) and `star_case` (all stars $K_{1,k-1}$ with $k \\leq n/2$ embed)."
+      "mathContext": "documents in source comments `path_case` (no Lean declaration exists) (all paths of length $\\leq n/2 - 1$ embed under LKS) and `star_case` (all stars $K_{1,k-1}$ with $k \\leq n/2$ embed)."
     },
     {
       "id": "tightness",
@@ -152,7 +152,7 @@
       "summary": "Tightness of the LKS condition documented in a docstring comment only. No `LKS_tightness` axiom is declared in this range.",
       "startLine": 223,
       "endLine": 236,
-      "mathContext": "Axiomatizes `LKS_tightness`: for every $n \\geq 4$, there exists a graph with $n/2 - 1$ vertices of degree $n/2 - 1$ that fails to contain some tree on $n/2$ vertices, proving the $(n/2, n/2, n/2)$ threshold is sharp."
+      "mathContext": "documents in source comments `LKS_tightness` (no Lean declaration exists): for every $n \\geq 4$, there exists a graph with $n/2 - 1$ vertices of degree $n/2 - 1$ that fails to contain some tree on $n/2$ vertices, proving the $(n/2, n/2, n/2)$ threshold is sharp."
     }
   ],
   "conclusion": {
