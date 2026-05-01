@@ -8434,10 +8434,13 @@
       "result": "clean"
     },
     "erdos-684": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-foreground",
+      "auditCount": 3,
+      "issues": [
+        "phantom identifiers in section summaries: tang_bound, rh_conditional_bound, heuristic_conjecture, erdos_684_status (issue #14084)"
+      ],
+      "lastAudited": "2026-05-01T05:50:00Z",
+      "result": "issues-found"
     },
     "erdos-685": {
       "agentId": "auditor-cycle-20-batch",
