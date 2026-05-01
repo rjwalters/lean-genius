@@ -254,7 +254,7 @@
       "auditCount": 1,
       "issues": [],
       "lastAudited": "2026-04-26T13:00:00Z",
-      "notes": "Untracked gallery entry (not in git); Lean file missing from git but PR #12837 is open \u2014 marked clean",
+      "notes": "Untracked gallery entry (not in git); Lean file missing from git but PR #12837 is open — marked clean",
       "result": "clean"
     },
     "angle-trisection-cos-20-gal-oq-03": {
@@ -506,7 +506,7 @@
     "area-of-circle-oq-05": {
       "auditCount": 3,
       "issues": [
-        "sorries 1\u21920, status formalized\u2192verified, badge wip\u2192mathlib (sorry was completed)"
+        "sorries 1→0, status formalized→verified, badge wip→mathlib (sorry was completed)"
       ],
       "lastAudited": "2026-04-26T15:26:52Z",
       "result": "clean"
@@ -1894,7 +1894,7 @@
     "central-limit-theorem-oq-01-oq-02-oq-01": {
       "auditCount": 1,
       "issues": [
-        "lineCount 98\u2192112, theoremCount 7\u21928 (enricher used stale counts)"
+        "lineCount 98→112, theoremCount 7→8 (enricher used stale counts)"
       ],
       "lastAudited": "2026-04-05T12:44:33Z",
       "result": "issues-fixed"
@@ -2411,7 +2411,7 @@
     "descartes-rule-of-signs-oq-02": {
       "auditCount": 4,
       "issues": [
-        "PR #6448: sorries 2\u21920, lineCount 552\u2192698"
+        "PR #6448: sorries 2→0, lineCount 552→698"
       ],
       "lastAudited": "2026-04-03T22:10:54Z",
       "result": "clean"
@@ -7247,8 +7247,8 @@
       "auditCount": 3,
       "issuesFixed": [
         "stale originalContributions items (#12149)",
-        "annotation L1norm_upper_bound incorrectly labelled (sorry) \u2014 proved",
-        "annotation L2_norm incorrectly labelled (sorry) \u2014 proved pending expSumNorm_sq_double; range updated to 257-295"
+        "annotation L1norm_upper_bound incorrectly labelled (sorry) — proved",
+        "annotation L2_norm incorrectly labelled (sorry) — proved pending expSumNorm_sq_double; range updated to 257-295"
       ],
       "lastAudited": "2026-04-24T05:03:47Z",
       "result": "issues-fixed"
@@ -8587,10 +8587,10 @@
       "result": "clean"
     },
     "erdos-706": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-agent",
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T01:58:40Z",
+      "result": "issues-found"
     },
     "erdos-707": {
       "agentId": "auditor-cycle-20-batch",
@@ -8673,7 +8673,7 @@
     "erdos-719": {
       "auditCount": 4,
       "issues": [
-        "PR #6447: sorries 2\u21921, lineCount 175\u2192196"
+        "PR #6447: sorries 2→1, lineCount 175→196"
       ],
       "lastAudited": "2026-04-03T17:35:38Z",
       "result": "clean"
@@ -8861,7 +8861,7 @@
     "erdos-746": {
       "auditCount": 6,
       "issues": [
-        "PR #6440: sorry count 3\u21924",
+        "PR #6440: sorry count 3→4",
         "Issue #6441: 9 vacuous True stubs",
         "https://github.com/rjwalters/lean-genius/pull/8651"
       ],
@@ -9419,8 +9419,8 @@
       "agentId": "mechanic-tracker-sync",
       "auditCount": 3,
       "issues": [
-        "phantom mahler_1935/density_of_sums in originalContributions \u2014 fixed via PR #13710",
-        "section line drift \u2014 fixed via PR #13710"
+        "phantom mahler_1935/density_of_sums in originalContributions — fixed via PR #13710",
+        "section line drift — fixed via PR #13710"
       ],
       "lastAudited": "2026-04-28T23:00:00Z",
       "result": "issues-fixed"
@@ -9495,8 +9495,8 @@
       "agentId": "mechanic-tracker-sync",
       "auditCount": 4,
       "issues": [
-        "phantom axiom narrative in overview/conclusion \u2014 fixed via PR #13693",
-        "section structure drift \u2014 fixed via PR #13690"
+        "phantom axiom narrative in overview/conclusion — fixed via PR #13693",
+        "section structure drift — fixed via PR #13690"
       ],
       "lastAudited": "2026-04-28T23:00:00Z",
       "result": "issues-fixed"
@@ -9530,8 +9530,8 @@
       "agentId": "mechanic-tracker-sync",
       "auditCount": 3,
       "issues": [
-        "phantom axioms burr_unpublished/cfp_density_bounds/burr_erdos_upper_bound in section summaries \u2014 fixed via PR #13679",
-        "section line drift \u2014 fixed via PR #13689"
+        "phantom axioms burr_unpublished/cfp_density_bounds/burr_erdos_upper_bound in section summaries — fixed via PR #13679",
+        "section line drift — fixed via PR #13689"
       ],
       "lastAudited": "2026-04-28T23:00:00Z",
       "result": "issues-fixed"
