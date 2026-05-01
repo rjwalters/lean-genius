@@ -48,8 +48,7 @@
       "erdos_1968_bound axiom: classical upper bound",
       "erdos_728_resolution axiom: main result (Barreto & ChatGPT-5.2)",
       "constructionTemplate: the b = n/2 approach",
-      "legendreSum for p-adic valuation calculation",
-      "divisibility_via_legendre axiom for verification"
+      "legendreSum for p-adic valuation calculation"
     ],
     "axiomCount": 2,
     "lineCount": 246,
@@ -124,10 +123,10 @@
     {
       "id": "legendre",
       "title": "Legendre's Formula",
-      "summary": "legendreSum and divisibility_via_legendre",
+      "summary": "legendreSum (def): p-adic valuation of n! via Legendre's formula",
       "startLine": 197,
       "endLine": 226,
-      "mathContext": "Mathematical content: legendreSum and divisibility_via_legendre"
+      "mathContext": "Formal definition: legendreSum (p-adic valuation); divisibility_via_legendre is docstring only — no axiom declaration"
     },
     {
       "id": "related",

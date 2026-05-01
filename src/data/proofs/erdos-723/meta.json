@@ -36,7 +36,7 @@
     "historicalContext": "The study of finite projective planes traces back to Gino Fano's 1892 work on the smallest example (the Fano plane, order 2). Euler's 1782 conjecture on mutually orthogonal Latin squares (MOLS) is intimately connected: a set of $n-1$ MOLS of order $n$ is equivalent to a projective plane of order $n$. The prime power conjecture emerged as projective planes were constructed for all prime power orders via the Galois field construction PG(2,q), but no other orders were found. In 1949, R.H. Bruck and H.J. Ryser proved a necessary condition using algebraic number theory: if $n \\equiv 1,2 \\pmod{4}$, then $n$ must be expressible as a sum of two integer squares. Chowla and Ryser extended this in 1950 to the Bruck-Ryser-Chowla theorem for symmetric designs. The most dramatic result came from C.W.H. Lam, L. Thiel, and S. Swiercz, who in 1989 completed a massive computer search proving no projective plane of order 10 exists—consuming thousands of hours of Cray supercomputer time over nearly a decade. The Bruck-Ryser theorem does not rule out order 10 (since $10 = 1^2 + 3^2$), making Lam's result a tour de force of computational mathematics. Order 12 remains the smallest open case: $12 \\equiv 0 \\pmod{4}$ so Bruck-Ryser does not apply, and the search space is astronomically larger than order 10.",
     "problemStatement": "A finite projective plane of order $n$ has $n^2+n+1$ points, $n^2+n+1$ lines, with $n+1$ points per line and $n+1$ lines per point. The Prime Power Conjecture asks: must $n$ be a prime power? Planes exist for all prime powers via the PG(2,q) construction over finite fields.",
     "text": "If there is a finite projective plane of order n, must n be a prime power? OPEN in general. Verified for n ≤ 11, with Bruck-Ryser application for n=6 fully verified.",
-    "proofStrategy": "The formalization uses Mathlib's `Configuration.ProjectivePlane` type to state the conjecture and verify partial results. The verified theorem chain demonstrates the Bruck-Ryser method: starting from the modular arithmetic fact $6 \\equiv 2 \\pmod{4}$, then exhaustively proving $6 \\ne a^2 + b^2$ via `interval_cases`, and combining these to conclude no order-6 plane exists. Deep results (existence for prime powers, Lam's order-10 non-existence) are recorded as axioms, correctly reflecting their status as assumed rather than machine-verified.",
+    "proofStrategy": "The formalization uses Mathlib's `Configuration.ProjectivePlane` type to state the conjecture and verify partial results. The verified theorem chain demonstrates the Bruck-Ryser method: starting from the modular arithmetic fact $6 \\equiv 2 \\pmod{4}$, then exhaustively proving $6 \\ne a^2 + b^2$ via `interval_cases`, and combining these to conclude no order-6 plane exists. The Bruck-Ryser theorem is recorded as an axiom (`bruck_ryser`); existence for prime powers and Lam's order-10 result are described in docstrings only, not formally axiomatized.",
     "keyInsights": [
       "The formalization demonstrates a complete Bruck-Ryser non-existence proof chain: from $6 \\equiv 2 \\pmod{4}$ through the sum-of-two-squares obstruction to $\\neg\\exists$ a projective plane of order 6, all machine-verified in Lean",
       "The `decide` tactic suffices for small prime power checks, but order 4 requires an explicit rewrite $4 = 2^2$ followed by `IsPrimePow.pow`, illustrating how composite prime powers need special treatment even computationally",
@@ -82,16 +82,16 @@
       "title": "Existence for Prime Power Orders",
       "startLine": 61,
       "endLine": 74,
-      "summary": "Axiom asserting that projective planes exist for all prime power orders, via the classical PG(2,q) construction from finite fields. This is a deep algebraic result not formalized in Mathlib.",
-      "mathContext": "Axiomatized: Axiom asserting that projective planes exist for all prime power orders, via the classical PG(2,q) construction from finite fields. This is a deep algebraic result not formalized in Mathlib."
+      "summary": "Docstring discussion of the PG(2,q) construction from finite fields establishing projective planes for prime power orders — no formal axiom declaration in this section.",
+      "mathContext": "Informal overview — no formal declarations in this section"
     },
     {
       "id": "verified-small-orders",
       "title": "Verified for Small Orders",
       "startLine": 75,
       "endLine": 87,
-      "summary": "Axiom recording that the conjecture holds for all orders up to 11. Each case uses different methods: direct construction for prime powers, Bruck-Ryser for 6, and Lam's computation for 10.",
-      "mathContext": "Axiom recording that the conjecture holds for all orders up to 11. Each case uses different methods: direct construction for prime powers, Bruck-Ryser for 6, and Lam's computation for 10."
+      "summary": "Docstring summary of orders up to 11: prime powers covered by PG(2,q), order 6 ruled out by Bruck-Ryser, order 10 by Lam's computation. No formal axiom declaration in this section.",
+      "mathContext": "Informal overview — no formal declarations in this section"
     },
     {
       "id": "bruck-ryser-theorem",
@@ -106,8 +106,8 @@
       "title": "The Lam Result for Order 10",
       "startLine": 105,
       "endLine": 119,
-      "summary": "Axiom recording Lam, Thiel, and Swiercz's 1989 computational proof that no order-10 projective plane exists. Notable because Bruck-Ryser does not rule out order 10 (since 10 = 1² + 3²).",
-      "mathContext": "Verified: Axiom recording Lam, Thiel, and Swiercz's 1989 computational proof that no order-10 projective plane exists. Notable because Bruck-Ryser does not rule out order 10 (since 10 = 1² + 3²)."
+      "summary": "Docstring description of Lam, Thiel, and Swiercz's 1989 computational proof that no order-10 projective plane exists. Notable because Bruck-Ryser does not rule out order 10 (since 10 = 1² + 3²). No axiom declaration in this section.",
+      "mathContext": "Informal overview — no formal declarations in this section"
     },
     {
       "id": "order-12-open",
