@@ -60,7 +60,8 @@
       "IsCollinear: collinear point predicate",
       "IsRegularPolygon: regular polygon predicate",
       "IsOptimalConfig: configurations achieving g(n)",
-      "totalDistinctDistances: total distinct distances"
+      "totalDistinctDistances: total distinct distances",
+      "g_le_n axiom: g(n) ≤ n"
     ],
     "axiomCount": 3,
     "lineCount": 253,
@@ -70,7 +71,7 @@
     "historicalContext": "**Erdős Problem #653**\n\nThis problem studies how the \"distance richness\" of individual points in a configuration can vary. For each point xᵢ, R(xᵢ) counts how many distinct distances emanate from it. The question asks: how many different values can R take across all points?\n\n**Key History:**\n- Erdős [Er97e]: Original problem formulation\n- Erdős-Fishburn: Proved g(n) > (3/8)n\n- Csizmadia: Improved to g(n) > (7/10)n\n- Both groups: Proved g(n) < n - cn^{2/3}\n\n**Mathematical Setting:**\n- Related to the famous Erdős distinct distances problem\n- Measures local distance diversity rather than global count\n- Connection to unit distance graphs and extremal combinatorics",
     "problemStatement": "**Problem Statement (Open)**\n\nFor $n$ points $x_1, \\ldots, x_n \\in \\mathbb{R}^2$, define:\n$$R(x_i) = \\#\\{|x_j - x_i| : j \\neq i\\}$$\n\nLet $g(n)$ be the maximum number of distinct values the $R(x_i)$ can take.\n\n**Conjecture:** $g(n) \\geq (1 - o(1))n$\n\n**Known Bounds:**\n- Lower: $g(n) > \\frac{7}{10}n$ (Csizmadia)\n- Upper: $g(n) < n - cn^{2/3}$\n\n**Status: OPEN**",
     "text": "For n points in the plane, let R(xᵢ) count distinct distances from xᵢ. What is the maximum number of distinct R-values? Conjecture: g(n) ≥ (1-o(1))n. OPEN with bounds 0.7n < g(n) < n - cn^{2/3}.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Point Configurations:** Define euclidDist for plane distance and PointConfig for n-point sets.\n\n2. **R-Function:** Define distanceSet and distinctDistCount (the R function) measuring distances from each point.\n\n3. **g(n) Definition:** Define rValueSet, numDistinctRValues, and g as the supremum over configurations.\n\n4. **Known Bounds:** Axiomatize Erdős-Fishburn (3/8) and Csizmadia (7/10) lower bounds, plus the n - cn^{2/3} upper bound.\n\n5. **The Conjecture:** State erdos653Conjecture as the limit statement g(n)/n → 1.\n\n6. **Special Cases:** Analyze collinear points and regular polygons.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Point Configurations:** Define euclidDist for plane distance and PointConfig for n-point sets.\n\n2. **R-Function:** Define distanceSet and distinctDistCount (the R function) measuring distances from each point.\n\n3. **g(n) Definition:** Define rValueSet, numDistinctRValues, and g as the supremum over configurations.\n\n4. **Known Bounds:** Axiomatize Csizmadia (7/10) lower bound and the n - cn^{2/3} upper bound (Erdős-Fishburn 3/8 bound mentioned in docstring only).\n\n5. **The Conjecture:** State erdos653Conjecture as the limit statement g(n)/n → 1.\n\n6. **Special Cases:** Analyze collinear points and regular polygons.",
     "keyInsights": [
       "**R(x) = Local Richness:** Each point sees a different number of distinct distances; R measures this local diversity",
       "**g(n) vs n:** The gap n - g(n) is Θ(n^{2/3}), not o(n) as conjectured to be true",
@@ -112,10 +113,10 @@
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "summary": "erdos_fishburn_bound, csizmadia_bound, upper_bound",
+      "summary": "csizmadia_bound and upper_bound axioms (Erdős–Fishburn bound mentioned only in docstring)",
       "startLine": 98,
       "endLine": 125,
-      "mathContext": "Bound: erdos_fishburn_bound, csizmadia_bound, upper_bound"
+      "mathContext": "Bound: csizmadia_bound axiom (g(n) > 7n/10), upper_bound axiom (g(n) < n - cn^{2/3}); Erdős–Fishburn bound appears only in docstring"
     },
     {
       "id": "conjecture",
@@ -128,10 +129,10 @@
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "summary": "g_pos, g_le_n, g_mono axioms",
+      "summary": "g_le_n axiom; g_pos and g_mono discussed only in docstrings",
       "startLine": 140,
       "endLine": 159,
-      "mathContext": "Axiomatized: g_pos, g_le_n, g_mono axioms"
+      "mathContext": "Axiomatized: g_le_n axiom (g(n) ≤ n); g_pos and g_mono appear only in docstrings"
     },
     {
       "id": "special-configs",
@@ -152,10 +153,10 @@
     {
       "id": "asymptotic",
       "title": "Asymptotic Analysis",
-      "summary": "gap_lower_bound, gap_bounds axioms",
+      "summary": "Asymptotic gap commentary in docstrings (no axioms in this section)",
       "startLine": 207,
       "endLine": 225,
-      "mathContext": "Axiomatized: gap_lower_bound, gap_bounds axioms"
+      "mathContext": "Mathematical content: asymptotic gap commentary (gap_lower_bound and gap_bounds in docstrings only)"
     },
     {
       "id": "connections",
