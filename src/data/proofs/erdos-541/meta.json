@@ -43,7 +43,7 @@
       "Formal definition of HasUniqueZeroSumLength property",
       "Definition of distinctCount via Set.range cardinality",
       "Statement of Graham's conjecture as a theorem",
-      "Axiomatization of Erdős-Szemerédi (large primes) and Gao-Hamidoune-Wang (general) results",
+      "Axiomatization of Gao-Hamidoune-Wang (all moduli) as the sole assumption; Erdős-Szemerédi (large primes, 1976) documented in docstring comment only",
       "Examples showing constant and two-value sequences satisfy distinctCount ≤ 2",
       "Connection to Olson's theorem on zero-sum subsequence existence",
       "Historical context linking to Erdős-Ginzburg-Ziv theorem"
@@ -58,16 +58,14 @@
     "lineCount": 167,
     "axiomCount": 1,
     "assumptions": [
-      "erdos_szemeredi_large_primes: Graham's conjecture holds for sufficiently large primes (Erdős-Szemerédi 1976)",
-      "gao_hamidoune_wang: Graham's conjecture holds for all moduli n (Gao-Hamidoune-Wang 2010)",
-      "erdos_ginzburg_ziv: Among 2n-1 integers, some n have sum ≡ 0 mod n (Erdős-Ginzburg-Ziv 1961)"
+      "gao_hamidoune_wang: Graham's conjecture holds for all moduli n (Gao-Hamidoune-Wang 2010)"
     ]
   },
   "overview": {
     "historicalContext": "Zero-sum problems form a central topic in additive combinatorics. The study asks: given a sequence of elements from an abelian group, when must there exist a subsequence summing to zero?\n\nGraham posed a structural question: if we impose that ALL nonempty zero-sum subsets have the SAME cardinality r, what does this constrain about the sequence? His conjecture was that such rigid structure forces the sequence to use at most 2 distinct residues.\n\nErdős and Szemerédi (1976) proved this for sufficiently large primes. The full result came from Gao, Hamidoune, and Wang (2010), who proved it for ALL moduli n, not just primes.\n\nThis connects to the Erdős-Ginzburg-Ziv theorem (1961), which guarantees that among 2n-1 integers, some n have sum divisible by n.",
     "problemStatement": "Let $a_1, \\ldots, a_p$ be residues modulo a prime $p$ (not necessarily distinct). Suppose there exists a fixed $r$ such that every nonempty subset $S \\subseteq [p]$ with\n$$\\sum_{i \\in S} a_i \\equiv 0 \\pmod{p}$$\nhas exactly $|S| = r$ elements.\n\n**Graham's Conjecture** (SOLVED): Under these conditions, at most 2 distinct residues appear among the $a_i$.\n\n**History**:\n- Graham posed the question\n- Erdős-Szemerédi (1976) proved it for $p$ sufficiently large\n- Gao-Hamidoune-Wang (2010) proved it for all moduli (not just primes)",
     "text": "If a sequence of p residues modulo p has the property that all nonempty zero-sum subsets have the same cardinality r, must at most 2 distinct residues appear in the sequence? This was conjectured by Graham and proved by Erdős-Szemerédi (1976) for large primes, then by Gao-Hamidoune-Wang (2010) for all moduli.",
-    "proofStrategy": "Since this is a solved theorem but the proof is quite involved, our formalization:\n\n1. **Defines the key concepts**:\n   - `HasUniqueZeroSumLength p a r`: all nonempty zero-sum subsets have cardinality r\n   - `HasSomeUniqueZeroSumLength p a`: there exists such an r\n   - `distinctCount p a`: count of distinct residues in the sequence\n\n2. **States the main theorem**: `graham_conjecture` asserts distinctCount ≤ 2 given the zero-sum uniformity property\n\n3. **Provides examples**: constant sequences trivially satisfy distinctCount ≤ 1, and two-value sequences satisfy distinctCount ≤ 2\n\n4. **Records related results**: Erdős-Szemerédi (large primes), Gao-Hamidoune-Wang (general), Olson's theorem (existence), and Erdős-Ginzburg-Ziv\n\nThe main theorem is marked as sorry because the full proof requires sophisticated combinatorial arguments from the 2010 paper.",
+    "proofStrategy": "Since this is a solved theorem but the proof is quite involved, our formalization:\n\n1. **Defines the key concepts**:\n   - `HasUniqueZeroSumLength p a r`: all nonempty zero-sum subsets have cardinality r\n   - `HasSomeUniqueZeroSumLength p a`: there exists such an r\n   - `distinctCount p a`: count of distinct residues in the sequence\n\n2. **States the main theorem**: `graham_conjecture` asserts distinctCount ≤ 2 given the zero-sum uniformity property\n\n3. **Provides examples**: constant sequences trivially satisfy distinctCount ≤ 1, and two-value sequences satisfy distinctCount ≤ 2\n\n4. **Records related results**: Gao-Hamidoune-Wang (axiomatized), plus docstring mentions of Erdős-Szemerédi (large primes), Olson's theorem (existence), and Erdős-Ginzburg-Ziv\n\nThe main theorem `graham_conjecture` is proved by direct application of the `gao_hamidoune_wang` axiom; it is not a sorry.",
     "keyInsights": [
       "**Uniformity Implies Simplicity**: If all zero-sum subsets have the same size, the sequence cannot be 'rich' in distinct values. Three or more distinct residues would allow constructing zero-sums of different cardinalities.",
       "**Connection to Pigeonhole**: Zero-sum subsequences always exist by the pigeonhole principle on partial sums. Graham asks about the converse constraint.",
@@ -104,7 +102,7 @@
       "title": "Graham's Conjecture and Partial Results",
       "startLine": 46,
       "endLine": 86,
-      "summary": "States graham_conjecture (with sorry), then axiomatizes Erdős-Szemerédi (large primes) and Gao-Hamidoune-Wang (all moduli). The main claim: HasSomeUniqueZeroSumLength implies distinctCount ≤ 2.",
+      "summary": "Axiomatizes gao_hamidoune_wang (all moduli, Gao-Hamidoune-Wang 2010) and proves graham_conjecture by direct application. Erdős-Szemerédi (large primes, 1976) is documented in a docstring comment only; gao_hamidoune_wang is the sole axiom. The main claim: HasSomeUniqueZeroSumLength implies distinctCount ≤ 2.",
       "mathContext": "$\\text{HasSomeUniqueZeroSumLength}(p, a) \\Rightarrow \\text{distinctCount}(p, a) \\leq 2$. Erdős-Szemerédi: holds for $p \\gg 1$ prime. Gao-Hamidoune-Wang: holds for all $n$."
     },
     {
@@ -120,7 +118,7 @@
       "title": "Historical Context and EGZ",
       "startLine": 153,
       "endLine": 167,
-      "summary": "Historical notes on zero-sum theory, Davenport constant, and the Erdős-Ginzburg-Ziv theorem axiomatized: among 2n-1 integers, some n have sum ≡ 0 mod n.",
+      "summary": "Historical notes on zero-sum theory and the Davenport constant. The Erdős-Ginzburg-Ziv theorem (1961) is mentioned in a closing docstring comment only; no axiom or theorem declaration follows it in the file.",
       "mathContext": "Erdős-Ginzburg-Ziv (1961): $\\forall a : \\text{Fin}(2n-1) \\to \\mathbb{Z}/n\\mathbb{Z},\\; \\exists S,\\; |S| = n \\wedge \\sum_{i \\in S} a_i = 0$. Tight: $2n-2$ copies of $\\{0, 1\\}$ avoid this."
     }
   ],
