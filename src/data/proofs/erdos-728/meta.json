@@ -115,26 +115,26 @@
     {
       "id": "construction",
       "title": "The b = n/2 Construction",
-      "summary": "constructionTemplate and size verification",
+      "summary": "constructionTemplate def (L168) and construction_size theorem (L176): the b = n/2 approach satisfies size constraints.",
       "startLine": 162,
-      "endLine": 196,
-      "mathContext": "Mathematical content: constructionTemplate and size verification"
+      "endLine": 182,
+      "mathContext": "Formal definition: constructionTemplate def and construction_size theorem"
     },
     {
       "id": "legendre",
       "title": "Legendre's Formula",
-      "summary": "legendreSum (def): p-adic valuation of n! via Legendre's formula",
-      "startLine": 197,
-      "endLine": 226,
+      "summary": "legendreSum def (L195): p-adic valuation of n! via Legendre's formula. Docstring on divisibility verification via p-adic constraints. No axiom declaration in this range.",
+      "startLine": 183,
+      "endLine": 240,
       "mathContext": "Formal definition: legendreSum (p-adic valuation); divisibility_via_legendre is docstring only — no axiom declaration"
     },
     {
       "id": "related",
-      "title": "Related Results",
-      "summary": "Connection to Problem #729",
-      "startLine": 227,
+      "title": "Summary Theorem",
+      "summary": "erdos_728_summary theorem (L241): restates Erdős's 1968 bound by forwarding to the erdos_1968_bound axiom.",
+      "startLine": 241,
       "endLine": 246,
-      "mathContext": "Mathematical content: Connection to Problem #729"
+      "mathContext": "Verified: erdos_728_summary theorem forwards to erdos_1968_bound axiom"
     }
   ],
   "conclusion": {
