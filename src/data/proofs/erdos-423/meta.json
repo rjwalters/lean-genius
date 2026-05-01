@@ -58,94 +58,94 @@
       "id": "computable-definition",
       "title": "Part I: Computable Sequence Definition",
       "startLine": 33,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Computable sequence construction: isConsecSum checks consecutive sum property, buildSeq constructs terms greedily, consSeq extracts the nth term.",
       "mathContext": "The sequence is computed greedily: `isConsecSum` checks all contiguous sublists for sums matching the candidate, and `buildSeq` finds the smallest valid next term. This gives a computable `consSeq : ℕ → ℕ`."
     },
     {
       "id": "initial-values",
       "title": "Part II: Verified Initial Values",
-      "startLine": 77,
-      "endLine": 104,
+      "startLine": 78,
+      "endLine": 105,
       "summary": "First 8 terms verified by native_decide: 1, 2, 3, 5, 6, 8, 10, 11. Combined in consSeq_values theorem.",
       "mathContext": "Each term is verified computationally: `consSeq 0 = 1`, `consSeq 1 = 2`, ..., `consSeq 7 = 11`. All proofs use `native_decide`, leveraging the computable definition."
     },
     {
       "id": "consecutive-sum-verification",
       "title": "Part III: Verified Consecutive Sum Property",
-      "startLine": 105,
-      "endLine": 125,
+      "startLine": 106,
+      "endLine": 126,
       "summary": "Computational verification that early terms are consecutive sums: 3=1+2, 5=2+3, 6=1+2+3, 8=3+5, 10=2+3+5, 11=1+2+3+5.",
       "mathContext": "Each verification proves $a_k = \\sum_{j=i}^{k-1} a_j$ for specific $i$. For example, $6 = a_0 + a_1 + a_2 = 1+2+3$ shows 6 is representable as a sum of three consecutive terms."
     },
     {
       "id": "monotonicity",
       "title": "Part IV: Monotonicity",
-      "startLine": 126,
-      "endLine": 138,
+      "startLine": 127,
+      "endLine": 191,
       "summary": "Strict monotonicity verified on first 8 terms (native_decide) and proved globally via findNextElem_ge.",
       "mathContext": "StrictMono consSeq is proved from the definition: findNextElem always returns ≥ its starting candidate, so each $a_k$ is strictly greater than $a_{k-1}$. The proof chain: findNextElem_ge → consSeq_succ_gt → consSeq_strictMono."
     },
     {
       "id": "consecutive-sum-predicate",
       "title": "Part V: Consecutive Sum Predicate",
-      "startLine": 139,
-      "endLine": 155,
-      "summary": "Formal predicate IsConsecutiveSum and axioms: consSeq_is_consecutive_sum (each term is a consecutive sum), consSeq_minimal (no smaller valid candidate exists).",
-      "mathContext": "$\\text{IsConsecutiveSum}(m, n)$ asserts $m = \\sum_{k=i}^{j} a_k$ for some $i < j < n$. The minimality axiom says no $m'$ with $a_{k-1} < m' < a_k$ is a consecutive sum — the greedy choice is formalized."
+      "startLine": 192,
+      "endLine": 201,
+      "summary": "Formal predicate IsConsecutiveSum: defines when m is a consecutive sum of the sequence up to index n. Two docstring placeholders describe intended properties (consSeq_is_consecutive_sum, consSeq_minimal) but neither was declared as an axiom or theorem.",
+      "mathContext": "$\\text{IsConsecutiveSum}(m, n)$ asserts $m = \\sum_{k=i}^{j} a_k$ for some $i < j < n$. Two comments describe intended properties — that each sequence term is a consecutive sum and that the greedy choice is minimal — but neither was formalized as a declaration in this file."
     },
     {
       "id": "growth",
       "title": "Part VI: Growth Properties",
-      "startLine": 156,
-      "endLine": 175,
+      "startLine": 202,
+      "endLine": 221,
       "summary": "Linear lower bound proved (consSeq n ≥ n+1). Axioms from Bolan-Tang: excess nondecreasing and unbounded.",
       "mathContext": "The lower bound $a(n) \\geq n+1$ is proved by induction using strict monotonicity. The Bolan-Tang results (2024-2025) show $a(n) - n$ is nondecreasing and $a(n) - n \\to \\infty$, implying superlinear growth."
     },
     {
       "id": "missing",
       "title": "Part VII: Missing Numbers",
-      "startLine": 176,
-      "endLine": 227,
+      "startLine": 222,
+      "endLine": 273,
       "summary": "Defines seqRange and missingNumbers. Axiom: infinitely many missing. Proved: 4, 7, 9 are missing (computational + monotonicity arguments).",
       "mathContext": "The missing number proofs use a hybrid approach: verify $a_k \\neq m$ for small $k$ by computation, then use $a_k > m$ for large $k$ via monotonicity. This gives a complete proof that $m \\notin \\text{seqRange}$ without checking infinitely many terms."
     },
     {
       "id": "refined-bounds",
       "title": "Part VIII: Refined Bounds from Excess Nondecreasing",
-      "startLine": 281,
-      "endLine": 308,
+      "startLine": 274,
+      "endLine": 302,
       "summary": "Refined lower bounds combining verified initial values with excess_nondecreasing: consSeq(n) ≥ n+2 for n≥3, ≥ n+3 for n≥5, ≥ n+4 for n≥6. Integer version of excess nondecreasing.",
       "mathContext": "Since the excess $a(n) - n$ is nondecreasing (Bolan-Tang), any computed excess propagates forward. From $a(6) = 10$ we get $a(n) - n \\geq 4$ for all $n \\geq 6$."
     },
     {
       "id": "superlinear",
       "title": "Part IX: Super-Linear Growth",
-      "startLine": 310,
-      "endLine": 337,
+      "startLine": 303,
+      "endLine": 331,
       "summary": "Defines excessInt (ℤ-valued excess). Proves super-linear growth and eventual exceedance: for any C, eventually consSeq(n) ≥ n + C.",
       "mathContext": "The filter-theoretic formulation $\\text{Tendsto}(a(n)-n, \\text{atTop}, \\text{atTop})$ is restated as the concrete $\\forall C,\\, \\exists N,\\, \\forall n \\geq N,\\, a(n) \\geq n + C$."
     },
     {
       "id": "structural",
       "title": "Part X: Structural Properties",
-      "startLine": 339,
-      "endLine": 371,
+      "startLine": 332,
+      "endLine": 365,
       "summary": "Injectivity from strict monotonicity, index < value relationship, preimage finiteness, eventual excess bounds, computed excess values.",
       "mathContext": "Structural consequences: $a$ is injective, $k < a(k)$ for all $k$, $\\{n : a(n) \\leq m\\}$ is finite. Computed excess values: $a(0)-0 = 1$, $a(3)-3 = 2$, $a(6)-6 = 4$."
     },
     {
       "id": "main-question",
       "title": "Part XI: The Main Question",
-      "startLine": 373,
-      "endLine": 387,
+      "startLine": 366,
+      "endLine": 380,
       "summary": "Open question: does a(n)/n converge to some C > 1? Formalized as ErdosQuestion423_convergence using Filter.Tendsto.",
       "mathContext": "The convergence question asks whether $\\lim_{n \\to \\infty} a(n)/n = C$ exists for some $C > 1$. If so, the sequence has natural density $1/C$, giving the proportion of integers that appear."
     },
     {
       "id": "summary",
       "title": "Part XII: Summary",
-      "startLine": 388,
+      "startLine": 381,
       "endLine": 409,
       "summary": "erdos_423_known proved: combines excess nondecreasing and infinitely many missing. Status: OPEN.",
       "mathContext": "The summary theorem packages the two main known results: $(\\forall m \\leq n,\\; a(m)-m \\leq a(n)-n) \\wedge \\text{Set.Infinite}(\\text{missingNumbers})$. The proof combines the Bolan-Tang axioms."
