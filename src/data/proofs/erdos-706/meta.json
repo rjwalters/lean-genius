@@ -62,11 +62,9 @@
     "originalContributions": [
       "IsDistanceSet: predicate for finite subsets of positive reals",
       "multiDistChromatic: axiomatized chromatic function L(r) = max χ(G_A) over |A| = r",
-      "erdos_706_polynomial_bound: axiomatized polynomial conjecture ∃ C, k > 0, L(r) ≤ C · r^k",
       "erdos_706_base_case: axiomatized Hadwiger-Nelson bounds 5 ≤ L(1) ≤ 7",
       "erdos_706_monotone: axiomatized monotonicity r ≤ s → L(r) ≤ L(s)",
-      "erdos_706_lower: axiomatized trivial lower bound L(r) ≥ 5 for r ≥ 1",
-      "erdos_706_exponential_upper: axiomatized exponential bound ∃ C > 1, L(r) ≤ C^r"
+      "erdos_706_lower: proved theorem — trivial lower bound L(r) ≥ 5 for r ≥ 1 (from monotonicity + base case)"
     ],
     "axiomCount": 3,
     "lineCount": 71,
@@ -76,7 +74,7 @@
     "historicalContext": "Erdős posed this problem in 1981 as a natural generalization of the Hadwiger-Nelson problem (1950). The Hadwiger-Nelson problem asks for the chromatic number of the unit distance graph of ℝ² — the single-distance case r = 1. For 65 years the bounds were 4 ≤ χ ≤ 7, until Aubrey de Grey's 2018 breakthrough showing χ ≥ 5 via a computer-found 1581-vertex unit distance graph. The upper bound 7 (from Isbell's hexagonal 7-coloring) has stood since the 1950s.\n\nFor multiple distances, the question becomes far harder. The function L(r) = max_{|A|=r} χ(G_A) captures the worst-case chromatic number over all distance sets of size r. The known upper bound is exponential (L(r) ≤ C^r, from Frankl-Wilson type methods), while the conjecture asks for polynomial growth. Closing the gap between polynomial and exponential would be a landmark result in combinatorial geometry.",
     "problemStatement": "For a finite set A ⊂ (0,∞) of size r, let G_A be the graph on ℝ² with edges between points at distance in A. Let L(r) = max_{|A|=r} χ(G_A). Estimate L(r). In particular, is L(r) ≤ r^{O(1)}?",
     "text": "For a set A of r positive reals, let G_A be the distance graph on ℝ² with edges at distances in A. Let L(r) = max χ(G_A). Is L(r) ≤ r^{O(1)}? Open.",
-    "proofStrategy": "The formalization axiomatizes the multi-distance chromatic function L(r) as a noncomputable function, states the polynomial bound conjecture, records the Hadwiger-Nelson base case (5 ≤ L(1) ≤ 7 from de Grey 2018), proves monotonicity from subgraph inclusion, establishes the trivial lower bound L(r) ≥ 5, and notes the exponential upper bound from Frankl-Wilson methods. The Lean file connects to Problems #508, #704, and #705 as related distance graph problems.",
+    "proofStrategy": "The formalization axiomatizes the multi-distance chromatic function L(r) as an opaque function, then axiomatizes the Hadwiger-Nelson base case (5 ≤ L(1) ≤ 7 from de Grey 2018) and monotonicity (r ≤ s → L(r) ≤ L(s)). The trivial lower bound L(r) ≥ 5 is a proved theorem derived from these two axioms. The polynomial conjecture L(r) ≤ r^{O(1)} and the Frankl-Wilson exponential upper bound L(r) ≤ C^r are described in prose commentary only — they are not formalized as Lean declarations. The file connects to Problems #508, #704, and #705 as related distance graph problems.",
     "keyInsights": [
       "The case r = 1 is the Hadwiger-Nelson problem: 5 ≤ L(1) ≤ 7 (de Grey 2018, Isbell 1950s)",
       "L(r) is monotone non-decreasing: more distances → more edges → higher chromatic number",
@@ -103,7 +101,7 @@
     {
       "id": "main-conjecture",
       "title": "Polynomial Bound Conjecture",
-      "summary": "States `erdos_706_polynomial_bound`: ∃ C, k > 0 such that L(r) ≤ C · r^k for all r ≥ 1. This is the central open question — whether chromatic number grows polynomially or superpolynomially in the number of forbidden distances.",
+      "summary": "Describes the polynomial bound conjecture ∃ C, k > 0 such that L(r) ≤ C · r^k for all r ≥ 1 in prose commentary. This conjecture is not formalized as a Lean declaration — it is the central open question motivating the problem.",
       "startLine": 33,
       "endLine": 41
     },
@@ -117,7 +115,7 @@
     {
       "id": "exponential-upper",
       "title": "Exponential Upper Bound",
-      "summary": "Records `erdos_706_exponential_upper`: ∃ C > 1 such that L(r) ≤ C^r. This exponential bound from Frankl-Wilson methods is the best known upper bound, and the polynomial conjecture asks whether it can be dramatically improved.",
+      "summary": "Notes in commentary that ∃ C > 1 such that L(r) ≤ C^r (Frankl-Wilson exponential upper bound). This bound is described in prose only — it is not formalized as a Lean axiom or theorem. The polynomial conjecture asks whether this exponential bound can be dramatically improved.",
       "startLine": 59,
       "endLine": 68
     },
