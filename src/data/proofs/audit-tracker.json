@@ -7135,9 +7135,12 @@
     },
     "erdos-495": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "Phantom-axiom narrative: originalContributions list 3 items only present as doc-comments (cassels_swinnerton_dyer_cubic, ekl_hausdorff_dimension_zero, badziahin_velani_padic); ekl_hausdorff_dimension_zero overclaims — actual axiom is ekl_countable_exceptions; section IV/VI summaries also reference these phantoms — issue #14323"
+      ],
+      "lastAudited": "2026-05-01T17:27:08Z",
+      "result": "issues-found"
     },
     "erdos-496": {
       "agentId": "auditor-cycle-20-batch",
