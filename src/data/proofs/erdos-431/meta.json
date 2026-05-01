@@ -93,24 +93,24 @@
       "title": "The Inverse Goldbach Conjecture",
       "summary": "InverseGoldbachPair, InverseGoldbachConjecture",
       "startLine": 54,
-      "endLine": 70,
+      "endLine": 72,
       "mathContext": "Mathematical content: InverseGoldbachPair, InverseGoldbachConjecture"
     },
     {
       "id": "counting-functions",
       "title": "Counting Functions and Growth Bounds",
-      "summary": "countingFunction, GrowthBounds, Elsholtz-Harper 2015",
+      "summary": "countingFunction, GrowthBounds, Elsholtz-Harper 2015 (elsholtz_harper_2015 axiom)",
       "startLine": 71,
-      "endLine": 91,
-      "mathContext": "Bound: countingFunction, GrowthBounds, Elsholtz-Harper 2015"
+      "endLine": 94,
+      "mathContext": "Bound: countingFunction, GrowthBounds, elsholtz_harper_2015 axiom (lines 93-94)"
     },
     {
       "id": "prime-counting",
       "title": "Prime Counting Asymptotics",
-      "summary": "prime_counting_asymptotic: π(x) ~ x/log(x)",
-      "startLine": 92,
+      "summary": "Informal docstring noting π(x) ~ x/log(x); no Lean declaration in this section.",
+      "startLine": 96,
       "endLine": 100,
-      "mathContext": "Mathematical content: prime_counting_asymptotic: π(x) ~ x/log(x)"
+      "mathContext": "Mathematical content: Part 4 header and orphan docstring about prime counting asymptotics — no theorem or axiom declared."
     },
     {
       "id": "three-sets",
@@ -131,24 +131,24 @@
     {
       "id": "goldbach-connection",
       "title": "Connection to Goldbach",
-      "summary": "GoldbachConjecture, goldbach_implies_sumset, primes_sumset_not_primes",
+      "summary": "GoldbachConjecture def, goldbach_implies_sumset theorem; informal docstring noting Primes+Primes ≠ Primes (no declaration).",
       "startLine": 142,
       "endLine": 164,
-      "mathContext": "Mathematical content: GoldbachConjecture, goldbach_implies_sumset, primes_sumset_not_primes"
+      "mathContext": "Mathematical content: GoldbachConjecture (def, line 149), goldbach_implies_sumset (theorem, line 153). Orphan docstring at lines 159-161 describes primes-sumset inequality informally but has no corresponding Lean declaration."
     },
     {
       "id": "structural-constraints",
       "title": "Structural Constraints",
-      "summary": "must_contain_small_elements",
+      "summary": "Informal docstring noting A must contain 2 or be very special; no Lean declaration in this section.",
       "startLine": 165,
-      "endLine": 174,
-      "mathContext": "Mathematical content: must_contain_small_elements"
+      "endLine": 173,
+      "mathContext": "Mathematical content: Part 8 header and orphan docstring (line 168) about structural constraints on A — no theorem or axiom declared."
     },
     {
       "id": "main-statement",
       "title": "Main Problem Statement",
       "summary": "erdos_431_statement combining all results",
-      "startLine": 175,
+      "startLine": 174,
       "endLine": 193,
       "mathContext": "Mathematical content: erdos_431_statement combining all results"
     },
