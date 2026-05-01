@@ -37,7 +37,7 @@
     "historicalContext": "Bollobás and Erdős conjectured that a graph with at most k distinct odd cycle lengths satisfies χ(G) ≤ 2k+2. The case k=0 is the classical bipartite characterization (χ ≤ 2 iff no odd cycles). Bollobás and Shelah proved the k=1 case: at most one odd cycle length implies χ ≤ 4. Gyárfás solved the general conjecture in 1992 using an inductive argument powered by a structural dichotomy for 2-connected graphs: either the graph contains K_{2k+2} or has a low-degree vertex (degree ≤ 2k). He also characterized equality: χ(G) = 2k+2 iff K_{2k+2} ⊆ G. In 2021, Gao, Huo, and Ma substantially strengthened the result: if χ(G) ≥ 2k+3, then G contains k+1 consecutive odd cycle lengths {2m+1, 2m+3, ..., 2m+2k+1} for some m. This is strictly stronger than just having k+1 distinct odd lengths. The problem is closely related to Problem #57 (Liu-Montgomery 2020), which handles the infinite chromatic number case: χ(G) = ∞ implies ∑ 1/aᵢ = ∞ over odd cycle lengths.",
     "problemStatement": "If $G$ is a graph which contains odd cycles of $\\leq k$ different lengths, then $\\chi(G) \\leq 2k+2$, with equality if and only if $G$ contains $K_{2k+2}$.",
     "text": "If G has at most k distinct odd cycle lengths, then χ(G) ≤ 2k+2, with equality iff G contains K_{2k+2}. Solved by Gyárfás (1992).",
-    "proofStrategy": "The formalization axiomatizes the chromatic number with a specification (existence + minimality). Gyárfás' theorem is stated as three axioms: the upper bound χ ≤ 2k+2, the equality characterization via K_{2k+2}, and the structural dichotomy for 2-connected graphs. Four theorems are proved: the Bollobás-Shelah case (k=1), the bipartite case (k=0), a χ ≥ 5 corollary, and the equality-implies-clique direction — all by combining the axioms with omega. The Gao-Huo-Ma consecutive odd lengths strengthening is axiomatized.",
+    "proofStrategy": "The formalization axiomatizes the chromatic number and two parts of Gyárfás' theorem: the upper bound χ ≤ 2k+2 and the equality characterization via K_{2k+2}. Four theorems are proved: the Bollobás-Shelah case (k=1), the bipartite case (k=0), a χ ≥ 5 corollary, and the equality-implies-clique direction — all by combining the axioms with omega. The structural dichotomy for 2-connected graphs and the Gao-Huo-Ma consecutive odd lengths strengthening (2021) are referenced as docstring commentary only — they are not declared as axioms or theorems.",
     "keyInsights": [
       "The bound χ ≤ 2k+2 is tight: K_{2k+2} has exactly k odd cycle lengths {3, 5, ..., 2k+1} and χ(K_{2k+2}) = 2k+2",
       "Gyárfás' proof engine: in 2-connected graphs with ≤ k odd cycle lengths and no K_{2k+2}, some vertex has degree ≤ 2k, enabling induction by vertex removal + greedy extension",
@@ -63,48 +63,48 @@
     {
       "id": "definitions",
       "title": "Core Definitions: Cycles, Coloring, Cliques",
-      "summary": "cycleLengths and oddCycleLengths via Walk.IsCycle, numOddCycleLengths via Set.ncard, IsColorable, axiomatized chromaticNumber with spec, ContainsClique via Finset",
+      "summary": "cycleLengths and oddCycleLengths via Walk.IsCycle, numOddCycleLengths via Set.ncard, IsColorable, axiomatized chromaticNumber, ContainsClique via Finset",
       "startLine": 26,
-      "endLine": 63
+      "endLine": 59
     },
     {
       "id": "main-results",
-      "title": "Gyárfás' Theorem (1992): Upper Bound, Equality, Structure",
-      "summary": "gyarfas_upper_bound: k odd lengths → χ ≤ 2k+2. gyarfas_equality: χ = 2k+2 ↔ K_{2k+2} ⊆ G. gyarfas_structural: 2-connected → K_{2k+2} or low-degree vertex",
-      "startLine": 64,
-      "endLine": 91
+      "title": "Gyárfás' Theorem (1992): Upper Bound and Equality",
+      "summary": "gyarfas_upper_bound axiom: k odd lengths → χ ≤ 2k+2. gyarfas_equality axiom: χ = 2k+2 ↔ K_{2k+2} ⊆ G. The structural dichotomy is described in a docstring only (no declaration)",
+      "startLine": 60,
+      "endLine": 82
     },
     {
       "id": "special-cases",
       "title": "Special Cases: k=0 (Bipartite) and k=1 (Bollobás-Shelah)",
       "summary": "bollobas_shelah: 1 odd length → χ ≤ 4 (proved by omega from gyarfas_upper_bound). no_odd_cycles_bipartite: 0 odd lengths → χ ≤ 2 (proved by omega)",
-      "startLine": 92,
-      "endLine": 113
+      "startLine": 83,
+      "endLine": 104
     },
     {
       "id": "gao-huo-ma",
       "title": "Gao-Huo-Ma Strengthening (2021): Consecutive Odd Lengths",
-      "summary": "consecutiveOddLengths definition. gao_huo_ma axiom: χ ≥ 2k+3 → k+1 consecutive odd cycle lengths exist. Strictly stronger than Gyárfás' count bound",
-      "startLine": 114,
-      "endLine": 130
+      "summary": "consecutiveOddLengths definition. The Gao-Huo-Ma theorem (χ ≥ 2k+3 → k+1 consecutive odd cycle lengths) is described in a docstring only — it is not declared as an axiom or theorem in this file",
+      "startLine": 105,
+      "endLine": 117
     },
     {
       "id": "corollaries",
       "title": "Proved Corollaries",
       "summary": "chi_5_two_odd_lengths: χ ≥ 5 → 2+ odd lengths (by contrapositive + omega). equality_implies_clique: forward direction of gyarfas_equality (by rewrite)",
-      "startLine": 131,
-      "endLine": 149
+      "startLine": 118,
+      "endLine": 136
     },
     {
       "id": "historical-notes",
       "title": "Historical Notes and References",
       "summary": "Progression from k=0 (bipartite) through k=1 (Bollobás-Shelah) to general k (Gyárfás), Gao-Huo-Ma consecutive strengthening, references",
-      "startLine": 150,
+      "startLine": 137,
       "endLine": 152
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #58 was SOLVED by Gyárfás in 1992. The 166-line formalization axiomatizes the three components of Gyárfás' theorem (upper bound, equality characterization, structural dichotomy) and the Gao-Huo-Ma consecutive lengths strengthening (2021). Four theorems are proved from these axioms: the k=0 bipartite case, the k=1 Bollobás-Shelah case, a χ ≥ 5 corollary, and the equality-implies-clique direction. All proofs are clean one-line arguments using omega.",
+    "summary": "Erdős Problem #58 was SOLVED by Gyárfás in 1992. The 152-line formalization axiomatizes the chromatic number plus two components of Gyárfás' theorem (upper bound, equality characterization). Four theorems are proved from these axioms: the k=0 bipartite case, the k=1 Bollobás-Shelah case, a χ ≥ 5 corollary, and the equality-implies-clique direction. All proofs are clean one-line arguments using omega. Gyárfás' structural dichotomy and the Gao-Huo-Ma consecutive lengths strengthening (2021) appear as docstring commentary only — neither is declared as an axiom or theorem.",
     "implications": "Combined with Problem #57 (Liu-Montgomery 2020), this gives a complete quantitative picture of how chromatic number controls odd cycle structure: from none (bipartite) through bounded counts (Gyárfás) to divergent reciprocal sums (infinite χ). The Gao-Huo-Ma strengthening suggests that the structure is even more rigid than counting alone reveals — high chromatic number forces consecutive odd cycle lengths.",
     "openQuestions": [
       "Can the Gao-Huo-Ma consecutive lengths result be further strengthened to determine the starting point m?",
