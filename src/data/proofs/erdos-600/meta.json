@@ -59,17 +59,11 @@
       "Question1 and Question2 formal statements",
       "e_monotone_r and e_monotone_n monotonicity axioms",
       "questions_together proved theorem",
-      "upper_bound and lower_bound axioms for known bounds",
       "erdos_600_summary: three-part conjunction of known results"
     ],
     "axiomCount": 3,
     "lineCount": 167,
     "assumptions": [
-      {
-        "name": "e_well_defined",
-        "statement": "e n r <= n * (n - 1) / 2",
-        "description": "The threshold function e(n,r) is bounded by the maximum number of edges in a simple graph on n vertices, ensuring the sInf definition is well-defined (the defining set is non-empty)."
-      },
       {
         "name": "ruzsa_szemeredi",
         "statement": "For all epsilon > 0, eventually e(n,r) < epsilon * n^2",
@@ -84,21 +78,6 @@
         "name": "e_monotone_n",
         "statement": "e n r <= e (n + 1) r",
         "description": "Monotonicity of e(n,r) in the number of vertices n. More vertices provide more room for edges, so the threshold is non-decreasing in n."
-      },
-      {
-        "name": "turan_number_bound",
-        "statement": "e n r <= n * n / 4",
-        "description": "The Turan number ex(n, K_3) = floor(n^2/4) gives an absolute upper bound, since any graph exceeding this edge count must contain a triangle (Turan's theorem)."
-      },
-      {
-        "name": "upper_bound",
-        "statement": "There exists C > 0 such that eventually e(n,r) <= C * n^2 / log n",
-        "description": "The refined upper bound from improvements to Ruzsa-Szemeredi using the Szemeredi regularity lemma: e(n,r) is at most O(n^2 / log n) for fixed r."
-      },
-      {
-        "name": "lower_bound",
-        "statement": "There exists c > 0 such that eventually e(n,r) >= c * n^(2 - 1/log(log n))",
-        "description": "The threshold is nearly quadratic from below: constructions based on Behrend-type sets show e(n,r) >= n^(2-o(1)), leaving a significant gap with the upper bound."
       }
     ]
   },
@@ -106,7 +85,7 @@
     "historicalContext": "Erdős posed this problem in 1987, building on the influential work of Ruzsa and Szemerédi from 1978 on triple systems. Their seminal paper proved that in any graph on n vertices where every edge is in at least one triangle, if the graph has o(n²) edges then one cannot guarantee that some edge is in many triangles — equivalently, e(n,r) = o(n²) for fixed r. This result is intimately connected to the triangle removal lemma, one of the cornerstones of extremal graph theory.\n\nThe problem asks two specific questions about the fine structure of the function e(n,r). Question 1 asks whether the absolute gap e(n,r+1) - e(n,r) grows without bound as n → ∞, meaning that requiring one additional triangle per edge always costs significantly more edges for large graphs. Question 2 asks whether the ratio e(n,r+1)/e(n,r) → 1, meaning that while the absolute cost may grow, the relative cost becomes negligible. If both are true, the thresholds grow at the same asymptotic rate but with unbounded absolute separation.\n\nThe known bounds place e(n,r) at roughly n²/log n from above and n^{2-o(1)} from below, leaving a significant gap even for the basic asymptotics. Both questions remain completely open. The problem connects to Turán-type extremal theory, the Szemerédi regularity lemma, and the broader study of how graph density forces local substructure.",
     "problemStatement": "**Problem Statement (Open)**\n\nLet $e(n,r)$ be the minimal number of edges such that every graph on $n$ vertices with $\\geq e(n,r)$ edges, where each edge is in at least one triangle, must have some edge contained in $\\geq r$ triangles.\n\n**Questions:**\n1. Does $e(n, r+1) - e(n, r) \\to \\infty$ as $n \\to \\infty$?\n2. Does $e(n, r+1) / e(n, r) \\to 1$ as $n \\to \\infty$?\n\n**Status: OPEN** — Known: $e(n,r) = o(n^2)$ for fixed $r$ (Ruzsa-Szemerédi 1978).",
     "text": "The function e(n,r) captures a fundamental extremal threshold: how many edges must a triangle-covered graph have before some edge is forced into high triangle multiplicity? The Ruzsa-Szemeredi (1978) theorem, proved via connections to (6,3)-free triple systems and the triangle removal lemma, establishes that e(n,r) = o(n^2) for any fixed r. Known bounds place the threshold between n^{2-o(1)} (Behrend-type constructions) and O(n^2/log n) (regularity-based upper bounds). Erdos asked two penetrating questions about the fine structure: whether consecutive thresholds e(n,r) and e(n,r+1) separate by an unbounded absolute gap (Question 1) yet remain asymptotically equivalent (Question 2). An affirmative answer to both would reveal a striking phenomenon where the thresholds share the same asymptotic growth rate but diverge in absolute terms.",
-    "proofStrategy": "The formalization is organized in eight parts following a bottom-up architecture:\n\n**Part I (Graph Definitions):** A custom `Graph n` structure on `Fin n` with a `Finset (Fin n x Fin n)` edge set, symmetry, and irreflexivity. `edgeCount` divides the pair count by 2 to get undirected edges. `IsTriangle` checks three distinct vertices with all three edges present.\n\n**Part II (Edge-Triangle Containment):** `triangleCount G u v` counts triangles containing edge {u,v} by filtering `Finset.univ`. The key predicates `AllEdgesTriangleCovered` (every edge is in some triangle) and `HasEdgeInRTriangles` (some edge is in >= r triangles) formalize the problem constraints.\n\n**Part III (Threshold Function):** `e n r` is defined as `sInf` of the set of thresholds m such that every triangle-covered graph with >= m edges has some edge in >= r triangles. The `e_well_defined` axiom ensures the set is non-empty.\n\n**Part IV (Ruzsa-Szemeredi):** The main known result `ruzsa_szemeredi` is axiomatized: for fixed r >= 2, for all epsilon > 0, eventually e(n,r) < epsilon * n^2. This uses `Filter.atTop` to express the asymptotic statement.\n\n**Part V (Open Questions):** `Question1` and `Question2` are defined as propositions using `Filter.atTop`, formalizing the two open questions about absolute and relative gaps.\n\n**Part VI (Monotonicity):** Two monotonicity axioms and the `questions_together` theorem, which is the only non-trivial proved result: it packages both questions into a conjunction showing that if both hold, differences grow to infinity while relative differences vanish.\n\n**Part VII (Known Bounds):** Three axioms capture the Turan bound (n^2/4), the refined upper bound (C*n^2/log n), and the Behrend-type lower bound (c*n^{2-1/log log n}).\n\n**Part VIII (Summary):** `erdos_600_summary` packages the three known results (subquadratic growth, monotonicity in r, monotonicity in n) as a proved conjunction.",
+    "proofStrategy": "The formalization is organized in eight parts following a bottom-up architecture:\n\n**Part I (Graph Definitions):** A custom `Graph n` structure on `Fin n` with a `Finset (Fin n x Fin n)` edge set, symmetry, and irreflexivity. `edgeCount` divides the pair count by 2 to get undirected edges. `IsTriangle` checks three distinct vertices with all three edges present.\n\n**Part II (Edge-Triangle Containment):** `triangleCount G u v` counts triangles containing edge {u,v} by filtering `Finset.univ`. The key predicates `AllEdgesTriangleCovered` (every edge is in some triangle) and `HasEdgeInRTriangles` (some edge is in >= r triangles) formalize the problem constraints.\n\n**Part III (Threshold Function):** `e n r` is defined as `sInf` of the set of thresholds m such that every triangle-covered graph with >= m edges has some edge in >= r triangles. The set is non-empty since n*(n-1)/2 trivially bounds the edge count of any simple graph.\n\n**Part IV (Ruzsa-Szemeredi):** The main known result `ruzsa_szemeredi` is axiomatized: for fixed r >= 2, for all epsilon > 0, eventually e(n,r) < epsilon * n^2. This uses `Filter.atTop` to express the asymptotic statement.\n\n**Part V (Open Questions):** `Question1` and `Question2` are defined as propositions using `Filter.atTop`, formalizing the two open questions about absolute and relative gaps.\n\n**Part VI (Monotonicity):** Two monotonicity axioms and the `questions_together` theorem, which is the only non-trivial proved result: it packages both questions into a conjunction showing that if both hold, differences grow to infinity while relative differences vanish.\n\n**Part VII (Known Bounds):** Three axioms capture the Turan bound (n^2/4), the refined upper bound (C*n^2/log n), and the Behrend-type lower bound (c*n^{2-1/log log n}).\n\n**Part VIII (Summary):** `erdos_600_summary` packages the three known results (subquadratic growth, monotonicity in r, monotonicity in n) as a proved conjunction.",
     "keyInsights": [
       "**e(n,r) measures edge-triangle containment thresholds:** the minimum edges in a triangle-covered graph forcing some edge to be in many triangles",
       "**Ruzsa-Szemerédi (1978):** e(n,r) = o(n²) for fixed r, proved via the triangle removal lemma",
@@ -141,10 +120,10 @@
     {
       "id": "e-function",
       "title": "The e(n,r) Function",
-      "summary": "e(n,r) definition via sInf and e_well_defined axiom",
+      "summary": "e(n,r) definition via sInf",
       "startLine": 78,
       "endLine": 91,
-      "mathContext": "The threshold function e(n,r) = sInf{m : every triangle-covered graph on n vertices with >= m edges has some edge in >= r triangles} is the central object of the problem. Using sInf (infimum over natural numbers) formalizes the 'minimal number of edges' precisely. The e_well_defined axiom ensures the defining set is non-empty by providing the trivial upper bound n(n-1)/2, which is the maximum number of edges in a simple graph on n vertices."
+      "mathContext": "The threshold function e(n,r) = sInf{m : every triangle-covered graph on n vertices with >= m edges has some edge in >= r triangles} is the central object of the problem. Using sInf (infimum over natural numbers) formalizes the 'minimal number of edges' precisely. The set is non-empty since any m exceeding n*(n-1)/2 trivially satisfies the condition (no simple graph on n vertices can have that many edges)."
     },
     {
       "id": "ruzsa-szemeredi",
@@ -173,7 +152,7 @@
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "summary": "turan_number_bound, upper_bound, lower_bound",
+      "summary": "Known mathematical bounds: Turán upper bound, regularity-based upper bound, Behrend lower bound (expository; no Lean axioms)",
       "startLine": 136,
       "endLine": 155,
       "mathContext": "Three bounds bracket the threshold function. The Turan bound e(n,r) <= n^2/4 follows from Turan's theorem: any graph exceeding floor(n^2/4) edges must contain a triangle, so the triangle-covered constraint is automatically satisfied beyond this point. The refined upper bound C*n^2/log n comes from applying the Szemeredi regularity lemma to improve the Ruzsa-Szemeredi analysis, extracting a logarithmic savings. The lower bound c*n^{2 - 1/log log n} uses Behrend-type constructions of dense sets without 3-term arithmetic progressions to build triangle-covered graphs that avoid high triangle multiplicity. The gap between upper and lower bounds (n^2/log n vs n^{2-o(1)}) remains a major open problem in its own right."
