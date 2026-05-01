@@ -90,7 +90,7 @@
       "id": "frankl-1977",
       "title": "Frankl's Result for r = 1",
       "startLine": 100,
-      "endLine": 112,
+      "endLine": 117,
       "summary": "Frankl (1977) determined $T(n,1)$: optimal family is large sets ($|A| > (n+1)/2$) plus $\\emptyset$. Pigeonhole argument for large sets avoiding 1-intersection.",
       "mathContext": "Mathematical content: Frankl (1977) determined $T(n,1)$: optimal family is large sets ($|A| > (n+1)/2$) plus $\\emptyset$. Pigeonhole argument for large sets avoiding 1-intersection."
     },
@@ -114,22 +114,22 @@
       "id": "chromatic-connection",
       "title": "Connection to Chromatic Numbers",
       "startLine": 181,
-      "endLine": 204,
+      "endLine": 195,
       "summary": "The exponential bound implies $\\chi(G_n) \\geq c^n$ for the unit distance graph. Frankl-Wilson (1981) proved this independently via mod $p$ methods.",
       "mathContext": "Bound: The exponential bound implies $\\chi(G_n) \\geq c^n$ for the unit distance graph. Frankl-Wilson (1981) proved this independently via mod $p$ methods."
     },
     {
       "id": "frankl-wilson",
       "title": "The Frankl-Wilson Theorem",
-      "startLine": 214,
-      "endLine": 226,
+      "startLine": 196,
+      "endLine": 212,
       "summary": "Generalizes to $L$-avoiding families. The Frankl-Wilson theorem (mod $p$ version): uniform families with modular constraints satisfy $|\\mathcal{F}| \\leq \\binom{n}{s}$, using the linear algebra method.",
       "mathContext": "Verified: Generalizes to $L$-avoiding families. The Frankl-Wilson theorem (mod $p$ version): uniform families with modular constraints satisfy $|\\mathcal{F}| \\leq \\binom{n}{s}$, using the linear algebra method."
     },
     {
       "id": "summary",
       "title": "Summary and Resolution",
-      "startLine": 258,
+      "startLine": 227,
       "endLine": 259,
       "summary": "Combined `erdos_703_solved` theorem: `mainQuestion ∧ T(n,0) = 2^{n-1}`. Clean statement `erdos_703 : mainQuestion := frankl_rodl_1987`.",
       "mathContext": "Combined `erdos_703_solved` theorem: `mainQuestion ∧ T(n,0) = $$2^{{n-1}$}$`. Clean statement `erdos_703 : mainQuestion := frankl_rodl_1987`."
