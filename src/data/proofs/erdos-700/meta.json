@@ -40,7 +40,7 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 26,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "Defines `largestPrimeFactor` $P(n)$ via `Finset.sup` over prime divisors (returns 0 for $n \\le 1$), `smallestPrimeFactor` $p(n)$ via `Nat.minFac`, and `fBinom` $f(n) = \\min_{1 < k \\leq n/2} \\gcd(n, \\binom{n}{k})$ as `Finset.min'` over `Finset.Icc 2 (n/2)` (nonempty for $n \\ge 4$, returns 0 otherwise).",
       "mathContext": "$P(n) = \\sup\\{p \\in [0, n] : p \\text{ prime}, p \\mid n\\}$. $p(n) = \\text{Nat.minFac}(n)$. $f(n) = \\min\\{\\gcd(n, \\binom{n}{k}) : 2 \\le k \\le n/2\\}$ for $n \\ge 4$. The function $f$ measures the minimum common divisor between $n$ and its non-trivial binomial coefficients, detecting the arithmetic structure of $n$ through Pascal's triangle."
     },
@@ -48,47 +48,47 @@
       "id": "helper-lemmas",
       "title": "Helper Lemmas",
       "startLine": 48,
-      "endLine": 134,
+      "endLine": 141,
       "summary": "Proves `minFac_prime_sq`, `minFac_mul_prime`, `le_largestPrimeFactor` (existing). NEW: `n_dvd_k_mul_choose` (absorption identity: $n \\mid k \\cdot \\binom{n}{k}$, from `Nat.succ_mul_choose_eq`). NEW: `gcd_choose_ge_minFac` (for $n \\ge 4$ and $2 \\le k \\le n/2$, $\\gcd(n, \\binom{n}{k}) \\ge \\text{minFac}(n)$, via coprime cancellation: $n/\\gcd(n,k) \\mid \\binom{n}{k}$).",
       "mathContext": "Key new result: from the absorption identity $k \\cdot \\binom{n}{k} = n \\cdot \\binom{n-1}{k-1}$, coprime cancellation gives $n/\\gcd(n,k) \\mid \\binom{n}{k}$. Since $\\gcd(n,k) \\le k \\le n/2$, the quotient $n/\\gcd(n,k) \\ge \\text{minFac}(n)$ (every proper divisor of $n$ is $\\le n/\\text{minFac}(n)$). This establishes the lower bound $\\gcd(n, \\binom{n}{k}) \\ge \\text{minFac}(n)$ for all $k$ in range."
     },
     {
       "id": "bounds",
       "title": "Basic Sandwich Bounds",
-      "startLine": 135,
-      "endLine": 157,
+      "startLine": 143,
+      "endLine": 333,
       "summary": "Axiomatizes `f_upper_bound` ($f(n) \\le n/P(n)$, needs Kummer's theorem). PROVES `f_lower_bound` ($p(n) \\le f(n)$ for $n \\ge 4$) via the absorption identity and coprime cancellation: for each $k$, $n/\\gcd(n,k) \\mid \\gcd(n, \\binom{n}{k})$, and $n/\\gcd(n,k) \\ge \\text{minFac}(n)$ since $\\gcd(n,k) \\le n/2$.",
       "mathContext": "The sandwich inequality $p(n) \\le f(n) \\le n/P(n)$ is fundamental. Upper bound (axiomatized): Kummer's theorem. Lower bound (NOW PROVED): from $n \\mid k \\cdot \\binom{n}{k}$ and coprime cancellation, every $\\gcd(n, \\binom{n}{k})$ is divisible by $n/\\gcd(n,k) \\ge \\text{minFac}(n)$."
     },
     {
       "id": "equalities",
       "title": "Known Exact Values",
-      "startLine": 159,
-      "endLine": 211,
+      "startLine": 335,
+      "endLine": 387,
       "summary": "PROVES `f_semiprime` ($f(pq) = p$) and NOW PROVES `f_30` ($f(30) = 6$) computationally via `interval_cases` + `native_decide` over all $k \\in [2, 15]$. The sandwich gives equality for semiprimes; $n = 30$ requires checking all 14 GCD values explicitly.",
       "mathContext": "Proved: $f(pq) = p$ for primes $p \\le q$ (sandwich argument). NOW PROVED: $f(30) = 6$ by verifying $\\gcd(30, \\binom{30}{k}) \\ge 6$ for all $k \\in [2, 15]$, with equality at $k = 5$ where $\\gcd(30, 142506) = 6$."
     },
     {
       "id": "question1",
       "title": "Question 1: Characterization of f(n) = n/P(n) (OPEN)",
-      "startLine": 137,
-      "endLine": 144,
+      "startLine": 388,
+      "endLine": 396,
       "summary": "Documents the open characterization problem: which composite $n$ satisfy $f(n) = n/P(n)$? Known examples: all semiprimes $pq$ (by `f_semiprime`) and $n = 30$ (by `f_30`). The general characterization remains open; $f(n) = n/P(n)$ does NOT hold for all composite $n$.",
       "mathContext": "Open question: characterize $\\{n \\text{ composite} : f(n) = n/P(n)\\}$. Known: all semiprimes $pq$ satisfy this, as do some non-semiprimes like $30$. A false axiom claiming this holds for all composite $n$ was identified and removed."
     },
     {
       "id": "question2",
       "title": "Question 2: Large Values of f(n)",
-      "startLine": 146,
-      "endLine": 166,
+      "startLine": 397,
+      "endLine": 414,
       "summary": "PROVES `f_prime_square`: $f(p^2) \\ge p = \\sqrt{p^2}$ from `f_lower_bound` and `minFac_prime_sq`. Axiomatizes `erdos_700_question2`: infinitely many composite $n$ with $f(n) > \\sqrt{n}$. Prime squares give equality ($f(p^2) \\ge p = \\sqrt{p^2}$), so strict inequality is the open part.",
       "mathContext": "Proved: $f(p^2) \\ge p$, since $p(p^2) = \\text{minFac}(p^2) = p$ and $p(n) \\le f(n)$. Open: are there infinitely many composite $n$ with $f(n) > \\sqrt{n}$ strictly? Prime squares are sparse ($\\sim \\sqrt{x}/\\log x$ up to $x$), and they only achieve $f(p^2) \\ge \\sqrt{n}$, not strict inequality."
     },
     {
       "id": "question3",
       "title": "Question 3: Upper Bound Conjecture",
-      "startLine": 168,
-      "endLine": 176,
+      "startLine": 415,
+      "endLine": 419,
       "summary": "Axiomatizes `erdos_700_question3`: for every $A > 0$, $\\exists C > 0$ such that $f(n) \\le C \\cdot n / (\\log n)^A$ for all composite $n \\ge 4$. This would show $f(n)$ is much smaller than $n/P(n)$ for typical $n$, since $P(n) \\sim \\log n$ by Hardy-Ramanujan.",
       "mathContext": "Open conjecture: $f(n) \\ll_A n/(\\log n)^A$ for every fixed $A > 0$. This would imply $f(n)/n \\to 0$ faster than any power of $1/\\log n$. The connection to the Hardy-Ramanujan theorem: $P(n) \\sim \\log n$ for typical $n$, so $n/P(n) \\sim n/\\log n$, and the conjecture asks whether $f(n)$ is typically much smaller than even this."
     }
