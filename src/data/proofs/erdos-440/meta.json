@@ -54,8 +54,7 @@
       "optimal_constant c ≈ 1.86 as infinite series",
       "tao_elementary_proof axiom for A(x) = O(√x)",
       "van_doorn_sharp_bound axiom with optimal constant",
-      "erdos_szemeredi_liminf_bound axiom using Filter.atTop",
-      "erdos_szemeredi_summary theorem combining both bounds",
+      "erdos_szemeredi_summary theorem combining both axiomatized bounds",
       "countingFunctionK generalization to k-consecutive LCM",
       "erdos_440_solved main theorem"
     ],
@@ -67,7 +66,7 @@
     "historicalContext": "Erdős Problem #440 originated from a problem in the American Mathematical Monthly. It asks about the growth of a counting function A(x) that measures how many consecutive pairs in an infinite sequence have small least common multiple. Erdős and Szemerédi solved it completely in their 1980 paper published in Mat. Lapok.\n\nThe key insight is that the natural numbers form the extremal sequence: for A = ℕ, consecutive integers n and n+1 are always coprime, so lcm(n, n+1) = n(n+1). This gives A(x) ≈ √x, and the liminf of A(x)/√x equals 1. Erdős and Szemerédi proved that no sequence can consistently exceed this — liminf A(x)/√x ≤ 1 for every sequence.\n\nTerence Tao later provided an elegant elementary proof of the O(√x) bound using a GCD decomposition argument. Wouter van Doorn established the sharp constant: A(x) ≤ (c + o(1))√x where c = Σ_{n≥1} 1/(√n(n+1)) ≈ 1.86, confirming and refining the Erdős-Szemerédi result.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $A = \\{a_1 < a_2 < \\cdots\\} \\subseteq \\mathbb{N}$ be an infinite increasing sequence. Let $A(x)$ count the number of indices $i$ for which $\\mathrm{lcm}(a_i, a_{i+1}) \\leq x$.\n\n**Questions:** (1) Is $A(x) = O(x^{1/2})$? (2) How large can $\\liminf A(x)/x^{1/2}$ be?\n\n**Answer:** YES to (1), and $\\liminf A(x)/\\sqrt{x} \\leq 1$ always, with equality for $A = \\mathbb{N}$. The sharp bound is $A(x) \\leq (c + o(1))\\sqrt{x}$ where $c \\approx 1.86$.",
     "text": "For infinite sequence A, let A(x) count indices i with lcm(aᵢ, aᵢ₊₁) ≤ x. Is A(x) = O(√x)? YES, and liminf A(x)/√x ≤ 1 always, with equality for A = ℕ (Erdős-Szemerédi 1980).",
-    "proofStrategy": "The formalization defines increasing sequences, the counting function A(x), and the normalized ratio. The lcm_consecutive theorem is proved constructively using Nat.coprime_self_add_one. The O(√x) bound (Tao), sharp constant (van Doorn), and liminf bound (Erdős-Szemerédi) are axiomatized. The main theorems erdos_szemeredi_summary and erdos_440_solved combine these results.",
+    "proofStrategy": "The formalization defines increasing sequences, the counting function A(x), and the normalized ratio. The lcm_consecutive theorem is proved constructively using Nat.coprime_self_add_one. The O(√x) bound (Tao) and sharp constant (van Doorn) are axiomatized. The liminf-≤-1 statement (Erdős-Szemerédi) is described in docstrings but not formalized as an axiom; erdos_szemeredi_summary only combines the two axiomatized bounds. The main theorem erdos_440_solved combines these results.",
     "keyInsights": [
       "**Coprimality is key:** lcm(n, n+1) = n(n+1) because consecutive integers are coprime",
       "**Natural numbers are extremal:** A = ℕ achieves liminf A(x)/√x = 1, the maximum",
@@ -107,7 +106,7 @@
       "title": "The Liminf Question",
       "startLine": 141,
       "endLine": 170,
-      "summary": "Erdős-Szemerédi liminf bound, combined summary theorem"
+      "summary": "Docstring discussion of the liminf-≤-1 claim; erdos_szemeredi_summary combines tao_elementary_proof and van_doorn_sharp_bound"
     },
     {
       "id": "generalizations",
