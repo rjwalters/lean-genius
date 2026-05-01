@@ -128,18 +128,18 @@
     {
       "id": "why-m-matters",
       "title": "Why the Starting Point Matters",
-      "summary": "Analyzes residue class effects: multiplesInInterval(d, m, L) = ⌊(m+L)/d⌋ - ⌊m/d⌋ depends on m mod d. Axiomatized bound ≤ L/d + 1.",
+      "summary": "Analyzes residue class effects: multiplesInInterval(d, m, L) = ⌊(m+L)/d⌋ - ⌊m/d⌋ depends on m mod d. Standard bound L/d + 1 stated in docstring (no axiom).",
       "startLine": 184,
       "endLine": 211,
-      "mathContext": "Analyzes residue class effects: multiplesInInterval(d, m, L) = ⌊(m+L)/d⌋ - ⌊m/d⌋ depends on m mod d. Axiomatized bound $\\leq$ L/d + 1."
+      "mathContext": "Analyzes residue class effects: multiplesInInterval(d, m, L) = ⌊(m+L)/d⌋ - ⌊m/d⌋ depends on m mod d. Standard bound L/d + 1 stated in docstring (no axiom)."
     },
     {
       "id": "connection-710",
       "title": "Connection to Problem #710",
-      "summary": "Axiomatized Erdős-Pomerance bounds for f(n,n): C₁·n·√(log n/log log n) ≤ f(n,n) ≤ C₂·n·√(log n). Shows van Doorn's difference can dominate the base value.",
+      "summary": "Documents Erdős-Pomerance bounds for f(n,n): C₁·n·√(log n/log log n) ≤ f(n,n) ≤ C₂·n·√(log n) and van Doorn's dominance result in docstrings (no axiom — bounds formalized in upper-bounds and van-doorn sections).",
       "startLine": 213,
       "endLine": 231,
-      "mathContext": "Axiomatized Erdős-Pomerance bounds for f(n,n): C₁·n·√($\\log n$/log $\\log n$) $\\leq$ f(n,n) $\\leq$ C₂·n·√($\\log n$). Shows van Doorn's difference can dominate the base value."
+      "mathContext": "Documents Erdős-Pomerance bounds for f(n,n): C₁·n·√($\\log n$/log $\\log n$) $\\leq$ f(n,n) $\\leq$ C₂·n·√($\\log n$) in docstrings (no axiom — bounds formalized in upper-bounds and van-doorn sections)."
     },
     {
       "id": "examples",
