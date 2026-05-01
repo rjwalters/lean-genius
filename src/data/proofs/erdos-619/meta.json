@@ -48,7 +48,7 @@
       "h3_upper_bound axiom: h₃(G) ≤ n (EGR 1998)",
       "h5_upper_bound axiom: h₅(G) ≤ (n-1)/2 (EGR 1998)",
       "erdos_619_question: the open h₄ question",
-      "pathGraph: concrete example with triangle-free and diameter proofs",
+      "pathGraph: concrete example definition (Pₙ on Fin n)",
       "erdos_619_partial_results theorem: combines h₃ and h₅ bounds"
     ],
     "axiomCount": 2,
@@ -59,7 +59,7 @@
     "historicalContext": "This problem studies how to decrease graph diameter by adding edges while preserving triangle-freeness. Erdős, Gyárfás, and Ruszinkó (1998) introduced h_r(G) as the minimum number of edges needed to reduce the diameter of a connected triangle-free graph G to r, while maintaining the triangle-free property. They proved that h₃(G) ≤ n for all such graphs, and that this is essentially tight: there exist graphs requiring nearly n edges. They also showed the much smaller bound h₅(G) ≤ (n-1)/2.\n\nThe key open question is about the intermediate case h₄. The problem asks whether there exists a constant c > 0 such that h₄(G) < (1-c)n for all connected triangle-free G on n vertices — that is, whether one can always save a constant fraction of edges compared to h₃.\n\nWithout the triangle-free constraint, Alon, Gyárfás, and Ruszinkó (2000) proved that n/2 edges always suffice for diameter 4. The triangle-free requirement fundamentally changes the problem: it prevents using the most natural shortcut edges (which often create triangles), making diameter reduction much harder.",
     "problemStatement": "**Question (OPEN):** Does there exist c > 0 such that h₄(G) < (1-c)n for all connected triangle-free graphs G on n vertices?\n\n**Known bounds:**\n- h₃(G) ≤ n (tight: some G have h₃(G) ≥ n - c)\n- h₄(G) ≤ ? (OPEN)\n- h₅(G) ≤ (n-1)/2",
     "text": "Does there exist c > 0 such that h₄(G) < (1-c)n for triangle-free graphs G? Known: h₃ ≤ n, h₅ ≤ (n-1)/2. Status: OPEN.",
-    "proofStrategy": "The formalization defines the key concepts: TriangleFree (no K₃ subgraphs), graph diameter, addEdges (graph augmentation preserving simple graph properties), and h(G, r) as the minimum edges to achieve diameter ≤ r while staying triangle-free. Known bounds for h₃ and h₅ from Erdős-Gyárfás-Ruszinkó (1998) are axiomatized, as is the without-triangle-free result of Alon-Gyárfás-Ruszinkó (2000). The open h₄ question is stated as a formal proposition. The summary theorem combines the h₃ and h₅ bounds.",
+    "proofStrategy": "The formalization defines the key concepts: TriangleFree (no K₃ subgraphs), graph diameter, addEdges (graph augmentation preserving simple graph properties), and h(G, r) as the minimum edges to achieve diameter ≤ r while staying triangle-free. Known bounds for h₃ and h₅ from Erdős-Gyárfás-Ruszinkó (1998) are axiomatized (h3_upper_bound, h5_upper_bound). The without-triangle-free result of Alon-Gyárfás-Ruszinkó (2000), the h₃ lower bound, monotonicity, and pathGraph properties are described in docstrings only. The open h₄ question is stated as a formal proposition. The summary theorem combines the h₃ and h₅ bounds.",
     "keyInsights": [
       "**Triangle-free constraint matters:** Without it, n/2 edges suffice for diameter 4 (AGR 2000). With it, the answer is unknown.",
       "**Gap between h₃ and h₅:** h₃(G) ≤ n but h₅(G) ≤ (n-1)/2. The h₄ bound is the missing piece.",
@@ -93,10 +93,10 @@
     {
       "id": "known-results",
       "title": "Known Results (1998)",
-      "summary": "h₃ ≤ n, h₃ ≥ n-c, h₅ ≤ (n-1)/2",
+      "summary": "h₃ ≤ n axiom (h3_upper_bound), h₅ ≤ (n-1)/2 axiom (h5_upper_bound). h₃ ≥ n-c lower bound mentioned in docstring only.",
       "startLine": 99,
       "endLine": 127,
-      "mathContext": "h₃ $\\leq$ n, h₃ $\\geq$ n-c, h₅ $\\leq$ (n-1)/2"
+      "mathContext": "Axiomatized: h₃ $\\leq$ n; h₅ $\\leq$ (n-1)/2. Docstring only: h₃ $\\geq$ n-c."
     },
     {
       "id": "open-question",
@@ -117,18 +117,18 @@
     {
       "id": "examples",
       "title": "Examples and Special Cases",
-      "summary": "pathGraph, path_is_triangle_free, path_diameter",
+      "summary": "pathGraph definition (Pₙ on Fin n); triangle-free and diameter properties described in docstrings",
       "startLine": 163,
       "endLine": 180,
-      "mathContext": "Mathematical content: pathGraph, path_is_triangle_free, path_diameter"
+      "mathContext": "Concrete example: pathGraph definition. Properties (triangle-free, diameter n-1) noted in docstrings only."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity Properties",
-      "summary": "h_monotone axiom: h_r ≥ h_{r+1}",
+      "summary": "Monotonicity h_r ≥ h_{r+1} described in docstring (no axiom declared)",
       "startLine": 181,
       "endLine": 190,
-      "mathContext": "h_monotone axiom: h_r $\\geq$ h_{r+1}"
+      "mathContext": "Discussion of monotonicity h_r $\\geq$ h_{r+1}, captured only in a docstring."
     },
     {
       "id": "summary",
