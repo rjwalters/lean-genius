@@ -51,7 +51,49 @@ Back to the problem
 
 ## Sessions
 
-(No research sessions yet)
+### Session 2026-04-27 — researcher-4 (stable-complete assessment)
+
+**Outcome**: surveyed / formalization stable
+
+The Lean formalization in `proofs/Proofs/Erdos414Problem.lean` is at its stable
+endpoint: 32 theorems, 1 axiom, 0 sorries. The lone axiom is the open
+Erdős-Graham conjecture itself. All supporting theory is proved:
+
+- Growth: `h_strictly_increasing`, `orbit_strictly_increasing`,
+  `orbit_linear_lower`, `orbit_linear_lower_ge2`
+- Bounds: `h_upper`, `h_upper_sqrt`, `divisors_card_le_two_sqrt`,
+  `h_lower_bound_ge2`
+- Determinism: `hOrbit_continuation` (once two orbits meet, they stay merged)
+- Computed values: `h_one`..`h_ten`, base merges of orbits 2..10 with orbit
+  of 1 (`orbit_*_merges_with_1`)
+- Structural consequence: `single_eventual_orbit` (derived from the conjecture
+  via orbit-of-1 as reference)
+
+**Why no further routine progress is possible**:
+
+1. The remaining axiom IS the open conjecture. Eliminating it requires
+   a mathematical breakthrough, not Mathlib lookup.
+2. Adding more individual `orbit_N_merges_with_1` theorems for N > 10 is
+   enumeration theater — covers a finite set, conjecture concerns infinitely
+   many starts.
+3. All natural supporting bounds (τ ≤ 2√n, h ≤ n + 2√n, h ≥ n+2 for n ≥ 2)
+   are already proved.
+
+**What an actual proof attack would need**:
+
+- A density argument: show every sufficiently large integer lies in the
+  forward orbit of 1 under h. Equivalent to proving the image of `h^k(1)`
+  for k ≥ 0 has positive density / asymptotic density 1.
+- Or a structural reduction: classify residues mod some modulus to merge
+  orbit equivalence classes.
+- Connection to OEIS A064491 (orbit of 1 under h) — known sequence but no
+  proof of merge property.
+- Sieve methods or probabilistic heuristics for τ(n) iteration.
+
+**Reusability**: The structural framework (`hOrbit_continuation`,
+`hOrbit_pos`, monotonicity pattern) is reusable for related iteration
+problems — notably Erdős #412 (σ-iteration version). Worth porting if
+someone takes that file beyond its current scope.
 
 ---
 
