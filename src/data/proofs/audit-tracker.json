@@ -969,11 +969,9 @@
     },
     "binary-gcd-oq-02": {
       "auditCount": 1,
-      "lastAudited": "2026-05-01T16:10:24Z",
-      "result": "issues-found",
-      "issues": [
-        "Issue #14301: theoremCount 13→14 off-by-one; section line ranges drift 4–10 lines (sections 2–6); narrative content otherwise accurate, no phantom axioms"
-      ]
+      "lastAudited": "2026-05-01T16:19:22Z",
+      "result": "clean",
+      "issues": []
     },
     "binary-gcd-oq-03": {
       "auditCount": 1,
@@ -7366,9 +7364,9 @@
     },
     "erdos-526": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T16:29:56Z",
+      "result": "issues-found"
     },
     "erdos-527": {
       "agentId": "auditor-cycle-20-batch",
@@ -13371,12 +13369,6 @@
       "issues": [
         "badge=original for proof whose reduction lemmas are 1-line Mathlib wrappers; tracked in #14250 + PR #14251"
       ]
-    },
-    "binary-gcd-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-01T16:19:22Z",
-      "result": "clean",
-      "issues": []
     }
   },
   "erdos-1097-oq-01": {
