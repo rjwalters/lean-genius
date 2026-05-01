@@ -113,31 +113,31 @@
       "id": "small-cases",
       "title": "Small Cases",
       "summary": "Axiomatizes only ramsey_3_3 (every 2-coloring of K₆ has a monochromatic triangle). The n ≤ 5 (triangle-free 2-coloring exists) and n = 6 (exactly 10 edges escape) cases are documented in source docstrings without separate axioms. The n = 6 case is the phase transition point where R(3,3) first forces monochromatic triangles.",
-      "startLine": 120,
-      "endLine": 143,
+      "startLine": 118,
+      "endLine": 130,
       "mathContext": "Axiom: ramsey_3_3 (every 2-coloring of K₆ has a monochromatic triangle). The small_case_5 and case_6 facts appear only as orphan docstrings; no axiom or definition declared for them."
     },
     {
       "id": "keevash-sudakov",
       "title": "The Keevash-Sudakov Theorem",
       "summary": "Axiomatizes keevash_sudakov_main (for n ≥ 7, countEdgesNotInMono ≤ n²/4) and defines balancedBipartiteColoring explicitly as a Lean function splitting vertices at n/2. Tightness (existence of achieving colorings) and bipartite_achieves_bound are described in source docstrings only — no axiom or definition declared for them.",
-      "startLine": 144,
-      "endLine": 169,
+      "startLine": 131,
+      "endLine": 148,
       "mathContext": "Axiom: keevash_sudakov_main (for n ≥ 7, countEdgesNotInMono ≤ n²/4). Definition: balancedBipartiteColoring. keevash_sudakov_tight and bipartite_achieves_bound appear only as orphan docstrings."
     },
     {
       "id": "ramsey-connection",
       "title": "Connection to Ramsey Theory",
       "summary": "Proves edge_partition: every edge in K_n is either in a monochromatic triangle or not — a complete dichotomy established by case analysis on the existential witness. This clean by-cases proof was verified by Aristotle. The bipartite-like structure of non-mono edges is noted in a source docstring only; no axiom or declaration exists for it.",
-      "startLine": 170,
-      "endLine": 188,
+      "startLine": 149,
+      "endLine": 168,
       "mathContext": "Proves edge_partition: every edge in K_n is either in a monochromatic triangle or not — a complete dichotomy established by case analysis on the existential witness. This clean by-cases proof was verified by Aristotle."
     },
     {
       "id": "pyber",
       "title": "Pyber's Covering Result",
       "summary": "Axiomatizes keevash_sudakov_complete unifying all cases (the single axiom in this section). Pyber's 1986 clique covering result and the Erdős-Rousseau-Schelp asymptotic result are described in source docstrings only — no formal axiom or declaration exists for them.",
-      "startLine": 189,
+      "startLine": 169,
       "endLine": 202,
       "mathContext": "Axiom: keevash_sudakov_complete (complete solution for all n). Pyber's ⌊n²/4⌋ + 2 clique covering and ERS asymptotic bound appear only as orphan docstrings."
     }
