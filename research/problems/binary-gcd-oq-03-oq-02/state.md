@@ -2,7 +2,7 @@
 
 **Phase**: ACT
 **Since**: 2026-05-01
-**Iteration**: 5
+**Iteration**: 6
 
 ## Current Focus
 
@@ -96,9 +96,43 @@ convention; see "Active Approach").
 The two correctness theorems remain mechanical given the existing
 cofactor-matrix machinery. The size-reduction lemma is the genuinely
 new content, and its statement is now well-aligned with the actual
-algorithm semantics. Step 1 (invariant) is now done; Steps 2 (entry
-bound from invariant + residue monotonicity + Cramer) and 3
-(perturbation analysis from low bits) remain.
+algorithm semantics. Step 1 (invariant) is done; Step 2a (residue
+monotonicity) is done as of Session 5; Step 2b (entry bound via
+Cramer inversion) and Step 3 (perturbation analysis) remain.
+
+* Session 5 (2026-05-02) executed Step 2a of the next-action plan:
+  residue monotonicity for `lehmerCofactors`.
+
+  Four new theorems extending PART IV of `BinaryGcdOQ03OQ02.lean`:
+
+  - `lehmerInnerStep_residue_le`: per-step bound. A successful
+    `lehmerInnerStep` returns `ahat' = bhat` and `bhat' < bhat`.
+    Proof follows the `lehmerInnerStep_det` pattern: unfold the
+    definition, two `split at h <;> simp_all` calls eliminate the
+    `if` chain, and `omega` handles `ahat % bhat < bhat`.
+
+  - `lehmerInnerStep_max_le`: corollary. `max ahat' bhat' ≤
+    max ahat bhat`.
+
+  - `lehmerCofactors_invariant_le`: strengthens
+    `lehmerCofactors_invariant` (Session 4) with the residue bound
+    `max ahat' bhat' ≤ max ahat bhat`. Same induction structure as
+    the parent, threading `lehmerInnerStep_max_le` through each
+    recursive step via transitivity.
+
+  - `lehmerCofactors_id_apply_le`: specialisation to `M = id` and
+    ghost pair = input pair. Combined statement: row-applying the
+    accumulated cofactor matrix to `(ahat, bhat)` yields a Euclidean-
+    residue pair whose max is bounded by `max ahat bhat`.
+
+  This gives the residue-side bound used in the size-reduction
+  argument. The remaining piece (Step 2b) is a Cramer-inversion
+  bound on the cofactor entries: from
+  `a₀ M.α + b₀ M.γ = ahat'` and `a₀ M.β + b₀ M.δ = bhat'` with
+  `det M = ±1`, Cramer gives the entries in terms of `(a₀, b₀)`
+  and `(ahat', bhat')`. With residue monotonicity providing
+  `(ahat', bhat') ≤ (ahat, bhat)` componentwise (in max), this
+  closes the entry bound.
 
 ## Blockers
 
@@ -116,18 +150,19 @@ bound from invariant + residue monotonicity + Cramer) and 3
 1. ✅ **Done in Session 4**: Matrix-vector invariant
    (`lehmerCofactors_invariant`).
 
-2. **Lehmer accumulator entry bound** (next-session focus). With the
-   matrix-vector invariant in hand, the entry bound follows from
-   Cramer's rule on the inverse and the Euclidean-residue
-   monotonicity bound `bhat_final ≤ bhat₀`.
+2a. ✅ **Done in Session 5**: Residue monotonicity
+    (`lehmerCofactors_invariant_le`, `lehmerCofactors_id_apply_le`).
 
-   Concretely: from `a₀ * M.α + b₀ * M.γ = ahat'` and
-   `a₀ * M.β + b₀ * M.δ = bhat'` with `det M = ±1`, Cramer gives
-   `a₀ = ±(δ * ahat' - β * bhat')` and `b₀ = ±(α * bhat' - γ * ahat')`,
-   so `|α|, |β|, |γ|, |δ|` are bounded by `max(|a₀|, |b₀|)` whenever
-   the corresponding residue is `≥ 1`. Combined with residue
-   monotonicity, this gives the entry bound on `lehmerCofactors`
-   needed for size reduction.
+2b. **Cramer-inversion entry bound** (next-session focus). From
+   `lehmerCofactors_id_apply_le` we have
+   `(ahat, bhat) · M = (ahat', bhat')` with `max ahat' bhat' ≤
+   max ahat bhat` and `det M = ±1`. Cramer's rule gives
+   `ahat = ±(δ · ahat' - β · bhat')` and `bhat = ±(α · bhat' -
+   γ · ahat')`, from which one extracts entry bounds in terms of
+   `(ahat, bhat)`. Care is needed on degenerate residue values
+   (e.g. `bhat' = 0`). The Lean version will likely state the
+   bound `|α|, |γ| ≤ ahat` (and `|β|, |δ| ≤ bhat`) on a generic
+   non-degenerate run, then handle the degenerate case separately.
 
 3. **Perturbation analysis**: combine the entry bound with
    `applyToNat M a b = (a · M.α + b · M.γ, a · M.β + b · M.δ)` and
@@ -144,8 +179,8 @@ bound from invariant + residue monotonicity + Cramer) and 3
 
 ## Attempt Counts
 
-* Total attempts: 3 (Session 2 — skeleton; Session 3 — convention fix;
-  Session 4 — matrix-vector invariant)
-* Current approach attempts: 3
+* Total attempts: 4 (Session 2 — skeleton; Session 3 — convention fix;
+  Session 4 — matrix-vector invariant; Session 5 — residue monotonicity)
+* Current approach attempts: 4
 * Approaches tried: 1 (HGCD as Lehmer-step composition with explicit
   fuel; row-vector cofactor convention)

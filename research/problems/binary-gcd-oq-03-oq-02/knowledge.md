@@ -479,3 +479,110 @@ perturbation analysis in Step 3.
 Step 2 will need a separate small lemma about Euclidean-step
 monotonicity (`bhat_final ≤ bhat₀`), provable by induction on
 fuel using `Nat.mod_lt`.
+
+## Session 2026-05-02 (Session 5) — Residue monotonicity (Step 2a)
+
+**Mode**: REVISIT (continuation of in-progress problem; tier RICH)
+**Outcome**: progress — added the residue-monotonicity bound for
+the iterated Lehmer machine. The size-reduction `sorry` is unchanged
+in count, but a major component of its proof (the residue side) is
+now in place.
+
+### What I Did
+
+1. Re-read Session-4 state. The matrix-vector invariant
+   (`lehmerCofactors_invariant`, `lehmerCofactors_id_apply_eq`)
+   is in place; the next-action plan called for a Cramer-inversion
+   entry bound that requires residue monotonicity as a prerequisite.
+
+2. Implemented Step 2a: the small but missing lemma about Euclidean-
+   step monotonicity, in four parts:
+
+   - `lehmerInnerStep_residue_le`: per-step structure result.
+     Proves `ahat' = bhat ∧ bhat' < bhat` for any successful inner
+     step. Proof uses the existing `lehmerInnerStep_det` pattern
+     (`simp [lehmerInnerStep] at h`, two `split at h <;> simp_all`,
+     destructure the surviving equation), then `omega`.
+
+   - `lehmerInnerStep_max_le`: the corollary
+     `max ahat' bhat' ≤ max ahat bhat`. Direct from the structure
+     result and `le_max_right`.
+
+   - `lehmerCofactors_invariant_le`: existential multi-step version
+     strengthening Session-4's `lehmerCofactors_invariant` with
+     the residue bound. Same induction structure as the parent;
+     the recursive case combines per-step `_max_le` with the IH's
+     bound via `le_trans`.
+
+   - `lehmerCofactors_id_apply_le`: specialisation to `M = id` and
+     ghost-pair = input-pair. Direct from the multi-step lemma;
+     gives the closed form
+     `(ahat, bhat) · M = (ahat', bhat') ∧
+      max ahat' bhat' ≤ max ahat bhat` for `M = lehmerCofactors
+      fuel ahat bhat id`.
+
+3. Verified the file via Docker build.
+
+### Key Findings
+
+- **Step 2 splits cleanly into 2a (residue monotonicity) and 2b
+  (entry bound).** Session-4's plan named "entry bound from
+  invariant + residue monotonicity + Cramer" as one piece; in
+  practice the residue monotonicity is a self-contained ~30-line
+  lemma that doesn't need the determinant or the invariant.
+  Separating it lets 2b focus narrowly on the Cramer inversion.
+
+- **The proof of `lehmerInnerStep_residue_le` is mechanical.** The
+  per-step structure (`ahat' = bhat`, `bhat' = ahat % bhat`) is
+  exactly the Euclidean update; `omega` handles the inequality
+  given `bhat ≠ 0` from the surviving branch.
+
+- **`lehmerInnerStep_max_le` is the right shape for induction.**
+  The conjunction `ahat' = bhat ∧ bhat' < bhat` is too specific
+  to thread through the multi-step induction directly; the
+  weaker `max ahat' bhat' ≤ max ahat bhat` composes via
+  transitivity and is exactly what `_invariant_le` needs.
+
+### Files Modified
+
+- `proofs/Proofs/BinaryGcdOQ03OQ02.lean`: 450 → 541 lines.
+  Four new theorems in PART IV. 0 axioms, 1 unchanged sorry
+  (in `hgcdMatrix_size_reduction`).
+
+### Next Steps
+
+Step 2b: Cramer-inversion entry bound. With
+`lehmerCofactors_id_apply_le` in hand we have
+`(ahat, bhat) · M = (ahat', bhat')` with `max ahat' bhat' ≤
+max ahat bhat` and `det M = ±1`. Cramer's rule gives
+
+```
+ahat = ±(δ · ahat' - β · bhat')
+bhat = ±(α · bhat' - γ · ahat')
+```
+
+so by the standard identity for unimodular 2×2 matrices,
+the cofactor entries can be bounded by the input size. The
+delicate point is what to do when `ahat' = 0` or `bhat' = 0`
+(either residue degenerate). One option: state the Cramer
+identity as a triangular bound (e.g. `|α| · ahat' + |γ| · bhat' =
+|ahat|`) and recover individual entry bounds from it; another
+is to handle the `bhat' = 0` case separately (algorithm has
+terminated, `bhat = 0` originally, trivial bound).
+
+Step 3: perturbation analysis. After the entry bound, combine
+with `applyToNat M aHi bHi → applyToNat M a b` low-bit error
+(of size `2^shift · max(|α|+|γ|, |β|+|δ|)`) and the half-
+bitsize bound on the Hi-pair to close the size-reduction
+inequality.
+
+### Honest Assessment
+
+This session removes one of the two prerequisites for the entry-
+bound argument. It is a *modest* result — the lemma is short
+and follows known patterns from `BinaryGcdOQ03.lean` — but it
+is on the critical path: without `lehmerCofactors_id_apply_le`
+the Cramer step in 2b has no cofactor-side bound to invoke.
+The size-reduction sorry remains unchanged in count, which is
+the honest read: this is intermediate-step infrastructure,
+not a result anyone will cite without 2b/3 also closed.

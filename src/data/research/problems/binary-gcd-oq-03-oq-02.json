@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 4, 2026-05-01): matrix-vector invariant for lehmerCofactors added — three new theorems in BinaryGcdOQ03OQ02.lean PART IV (lehmerInnerStep_invariant, lehmerCofactors_invariant, lehmerCofactors_id_apply_eq). This is Step 1 of three for hgcdMatrix_size_reduction; Steps 2-3 (entry bound via Cramer + residue monotonicity, perturbation analysis from low bits) remain. Sorry count unchanged at 1; axiom count unchanged at 0. Build verification blocked by Docker daemon unresponsiveness (same pattern as Session 3); proofs mirror existing lehmerInnerStep_det / lehmerCofactors_det_unit patterns.",
+    "progressSummary": "PROGRESS (Session 5, 2026-05-02): residue monotonicity for lehmerCofactors added — four new theorems in BinaryGcdOQ03OQ02.lean PART IV (lehmerInnerStep_residue_le, lehmerInnerStep_max_le, lehmerCofactors_invariant_le, lehmerCofactors_id_apply_le). This is Step 2a of the size-reduction proof plan; Step 2b (Cramer entry bound) and Step 3 (perturbation analysis) remain. Sorry count unchanged at 1; axiom count unchanged at 0.",
     "builtItems": [
       "hgcdThreshold (BinaryGcdOQ03OQ02.lean): bottom-out threshold for HGCD recursion.",
       "hgcdTopHalfStep (BinaryGcdOQ03OQ02.lean): one Lehmer-style reduction on the top half of the bits.",
@@ -61,7 +61,11 @@
       "BinaryGcdOQ03OQ02.lean PART IV (Session 4): lehmerInnerStep_invariant — per-step matrix-vector invariant for lehmerInnerStep (ghost original pair (a₀, b₀) with (a₀, b₀) · M = (current pair) is preserved across one step).",
       "BinaryGcdOQ03OQ02.lean PART IV (Session 4): lehmerCofactors_invariant — existential multi-step matrix-vector invariant for lehmerCofactors, by induction on fuel.",
       "BinaryGcdOQ03OQ02.lean PART IV (Session 4): lehmerCofactors_id_apply_eq — specialisation to M = id and ghost pair = input pair (a, b).",
-      "BinaryGcdOQ03OQ02.lean: file reorganised PART IV (size reduction → V), V (complexity → VI), VI (sanity checks → VII); file-level docstring and final summary updated to mention the matrix-vector invariant."
+      "BinaryGcdOQ03OQ02.lean: file reorganised PART IV (size reduction → V), V (complexity → VI), VI (sanity checks → VII); file-level docstring and final summary updated to mention the matrix-vector invariant.",
+      "BinaryGcdOQ03OQ02.lean PART IV (Session 5): lehmerInnerStep_residue_le — single-step structure result ahat' = bhat ∧ bhat' < bhat.",
+      "BinaryGcdOQ03OQ02.lean PART IV (Session 5): lehmerInnerStep_max_le — single-step max bound max ahat' bhat' ≤ max ahat bhat.",
+      "BinaryGcdOQ03OQ02.lean PART IV (Session 5): lehmerCofactors_invariant_le — strengthens Session-4 lehmerCofactors_invariant with the residue bound max ahat_final bhat_final ≤ max ahat_initial bhat_initial.",
+      "BinaryGcdOQ03OQ02.lean PART IV (Session 5): lehmerCofactors_id_apply_le — specialisation combining matrix-vector invariant + residue bound for M = id, ghost pair = input pair."
     ],
     "insights": [
       "All 2x2 cofactor matrix invariants needed for HGCD correctness already exist in BinaryGcdOQ03.lean (gcd_cofactor_eq, lehmerCofactors_det_unit, cofactor_apply_gcd). The HGCD formalization is the recursive wiring of these.",
@@ -79,7 +83,9 @@
       "Session 4 (2026-05-01): the matrix-vector invariant requires generalisation to a 'ghost original pair' (a₀, b₀) parameterised at the theorem level — not just (a₀, b₀) = (input ahat, input bhat). The naive form would not survive the inductive step because the current pair changes; the ghost pair stays fixed.",
       "Session 4: per-step / multi-step decomposition mirrors the existing lehmerInnerStep_det / lehmerCofactors_det_unit split. Per-step lemma carries the arithmetic (Nat.div_add_mod + ℤ-cast handling); multi-step lemma is purely structural induction.",
       "Session 4: Sign tracking is automatic when stating (a₀, b₀) over ℤ — no Nat-subtraction-truncation worries. Only ℕ↔ℤ bridging is in the Euclidean modulo step.",
-      "Session 4: the existential form (∃ ahat' bhat', ...) avoids defining a parallel 'track residues' function. The explicit residues aren't needed for the entry-bound argument that follows — only their existence + the invariant relation."
+      "Session 4: the existential form (∃ ahat' bhat', ...) avoids defining a parallel 'track residues' function. The explicit residues aren't needed for the entry-bound argument that follows — only their existence + the invariant relation.",
+      "Session 5 (2026-05-02): Step 2 splits into 2a (residue monotonicity) and 2b (Cramer entry bound). Residue monotonicity is a self-contained ~30-line lemma; doesn't need the determinant or the matrix-vector invariant. Separating it lets 2b focus narrowly on Cramer inversion.",
+      "Session 5: lehmerInnerStep_residue_le proves ahat' = bhat ∧ bhat' < bhat for any successful inner step; lehmerInnerStep_max_le derives the multi-step-friendly form max ahat' bhat' ≤ max ahat bhat by le_max_right + transitivity. The latter is the right shape for induction (per-step strict-decrease doesn't compose; max-bound does)."
     ],
     "mathlibGaps": [
       "Half-GCD / HGCD: no formalization in Mathlib or this gallery (verified by grep 2026-04-28).",
@@ -88,8 +94,8 @@
       "Big-integer abstraction: Mathlib operates on Nat/Int as opaque algebraic structures; there is no big-integer-as-array-of-words representation that would let bit-complexity reasoning attach to actual arithmetic primitives."
     ],
     "nextSteps": [
-      "Step 2 (next session): Lehmer accumulator entry bound. With the matrix-vector invariant (lehmerCofactors_invariant) and det = ±1 (lehmerCofactors_det_unit), Cramer inversion gives a₀ = ±(δ·ahat' - β·bhat'), b₀ = ±(α·bhat' - γ·ahat'). Combined with bhat' < ahat' (Euclidean residue monotonicity, separate small lemma using Nat.mod_lt), this gives |α|, |β|, |γ|, |δ| ≤ max(|a₀|, |b₀|) / max(ahat', bhat').",
-      "Step 3: combine entry bound with applyToNat M a b = (a·M.α + b·M.γ, a·M.β + b·M.δ) and decomposition a = aHi·2^shift + aLo (similar b). Bound residual by 2^shift · (residue(aHi, bHi) + |M.α| + |M.γ|).",
+      "Step 2b (next session): Cramer-inversion entry bound. With lehmerCofactors_id_apply_le we have (ahat, bhat) · M = (ahat', bhat') with max ahat' bhat' ≤ max ahat bhat and det M = ±1. Cramer gives ahat = ±(δ·ahat' - β·bhat'), bhat = ±(α·bhat' - γ·ahat'). Care needed for degenerate residues (ahat' = 0 or bhat' = 0).",
+      "Step 3: perturbation analysis. After entry bound, combine with applyToNat M a b = (a·M.α + b·M.γ, a·M.β + b·M.δ) and the decomposition a = aHi·2^shift + aLo to bound residual by 2^shift · (residue(aHi, bHi) + |M.α| + |M.γ|).",
       "Step 4: iterate the half-reduction (top-half + recursive call) to discharge hgcdMatrix_size_reduction's threshold gap.",
       "Step 5: once size reduction is proved, replace explicit-fuel hgcdMatrix with a WellFounded.fix definition (lexicographic on bitsize).",
       "Follow-up issue on BinaryGcdOQ03.lean: lehmerReduce uses column-apply on a row-accumulated cofactor; lehmerGcd remains gcd-correct only by fuel exhaustion + euclidGcd fallback. (Open since Session 3.)"

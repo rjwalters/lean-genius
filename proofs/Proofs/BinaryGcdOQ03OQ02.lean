@@ -346,15 +346,18 @@ theorem lehmerInnerStep_residue_le {ahat bhat : ℕ} {M : CofactorMatrix}
     {ahat' bhat' : ℕ} {M' : CofactorMatrix}
     (h : lehmerInnerStep ahat bhat M = some (ahat', bhat', M')) :
     bhat' < bhat ∧ ahat' = bhat := by
-  simp [lehmerInnerStep] at h
-  split at h <;> simp_all
-  split at h <;> simp_all
-  -- Surviving case: bhat ≠ 0 and ahat % bhat ≠ 0; substitution gives
-  -- ahat' = bhat, bhat' = ahat % bhat, M' = explicit matrix.
-  obtain ⟨rfl, rfl, _⟩ := h
-  refine ⟨?_, rfl⟩
-  -- Goal: ahat % bhat < bhat. omega uses bhat ≠ 0 from context.
-  omega
+  -- Mirror the case-split structure of `lehmerInnerStep_det`.
+  -- bhat = 0 and ahat % bhat = 0 both make the step return `none`,
+  -- contradicting `some (...)`. The surviving branch substitutes
+  -- ahat' := bhat, bhat' := ahat % bhat, and gives bhat ≠ 0.
+  by_cases hb : bhat = 0
+  · simp [lehmerInnerStep, hb] at h
+  · by_cases hr : ahat % bhat = 0
+    · simp [lehmerInnerStep, hb, hr] at h
+    · simp [lehmerInnerStep, hb, hr] at h
+      obtain ⟨rfl, rfl, _⟩ := h
+      refine ⟨?_, rfl⟩
+      exact Nat.mod_lt _ (Nat.pos_of_ne_zero hb)
 
 /-- One successful Lehmer inner step does not increase the maximum
     of the pair `(ahat, bhat)`. -/
