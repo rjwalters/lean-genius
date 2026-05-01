@@ -58,12 +58,15 @@
       "rpow_ge_one_of_ge_one lemma: x^p ≥ 1 for x ≥ 1, p ≥ 0",
       "sarkozy_szemeredi_1965 axiom: sharp 2^N/N^(3/2) bound",
       "halasz_1977 axiom: 2^N/N² bound with fixed cardinality",
-      "fourier_extraction axiom: generating function integral formula",
+      "fourier_extraction theorem: generating function integral formula proved via Fourier orthogonality (was axiom)",
+      "cexp_pow_eq, cexp_zpow lemmas: complex exponential commutes with natural/integer power",
+      "exp_orthogonality lemma: ∫₀²π exp(inθ) dθ = 2π if n=0 else 0",
       "erdos_362_summary theorem: main results combined",
       "zpow_finset_sum theorem: zpow distributes over finset sum",
       "gf_at_one theorem: GF at z=1 equals 2^|A|",
       "gf_expansion theorem: product-to-powerset-sum identity (key for Fourier)",
-      "gf_disjoint_union theorem: GF factors over disjoint union"
+      "gf_disjoint_union theorem: GF factors over disjoint union",
+      "subset_count_le_pow theorem: trivial 2^N upper bound on countSubsetsWithSum"
     ],
     "axiomCount": 2,
     "lineCount": 336,
