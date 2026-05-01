@@ -7018,9 +7018,12 @@
     },
     "erdos-48": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T18:22:31Z",
+      "result": "issues-found",
+      "issues": [
+        "Section line ranges drift 7-16 lines; phantom theorem references twin_prime_implies_erdos_48 and sumDivisors_multiplicative (issue #14347)"
+      ]
     },
     "erdos-480": {
       "agentId": "auditor-cycle-20-batch",
