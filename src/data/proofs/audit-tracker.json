@@ -7332,10 +7332,12 @@
       "result": "issues-fixed"
     },
     "erdos-522": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T16:49:06Z",
+      "result": "issues-found",
+      "issues": [
+        "Issue #14311: proofStrategy claims phantom Erdős-Offord/Yakir/almost-sure-convergence axioms; root-counting section misclaimed as axiomatized; assumptions misnames axiom (KacPolynomialData → KacPolynomialData.isRademacher)"
+      ]
     },
     "erdos-523": {
       "agentId": "auditor-cycle-20-batch",
