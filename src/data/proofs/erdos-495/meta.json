@@ -51,10 +51,10 @@
       "littlewoodProduct definition: n \u00b7 \u2016n\u03b1\u2016 \u00b7 \u2016n\u03b2\u2016",
       "LittlewoodConjecture: infinitely-often formulation of the conjecture",
       "littlewood_rational_case: conjecture holds for rational \u03b1",
-      "cassels_swinnerton_dyer_cubic: conjecture holds for cubic irrationals",
-      "ekl_hausdorff_dimension_zero: EKL theorem (2006)",
+      "Documentation of Cassels\u2013Swinnerton-Dyer cubic irrationals result (no Lean axiom; doc-comment only)",
+      "ekl_countable_exceptions: EKL countable-exceptions axiom (weaker than Hausdorff dim 0 result)",
       "PAdicLittlewood: p-adic variant definition",
-      "badziahin_velani_padic: partial result for p-adic case"
+      "Documentation of Badziahin\u2013Velani (2014) partial result (no Lean axiom; doc-comment only)"
     ],
     "axiomCount": 2,
     "lineCount": 178,
@@ -104,7 +104,7 @@
       "title": "Part IV: Special Cases",
       "startLine": 88,
       "endLine": 112,
-      "summary": "Axiomatizes the rational case and Cassels\u2013Swinnerton-Dyer (1955) for cubic irrationals."
+      "summary": "Axiomatizes the rational case only; Cassels\u2013Swinnerton-Dyer (1955) for cubic irrationals appears as a doc-comment only (no Lean axiom)."
     },
     {
       "id": "ekl-theorem",
@@ -118,7 +118,7 @@
       "title": "Part VI: The p-adic Littlewood Conjecture",
       "startLine": 138,
       "endLine": 164,
-      "summary": "Defines the p-adic Littlewood conjecture (de Mathan\u2013Teuli\u00e9 2004) and Badziahin\u2013Velani (2014) partial result."
+      "summary": "Defines the p-adic Littlewood conjecture (de Mathan\u2013Teuli\u00e9 2004); Badziahin\u2013Velani (2014) partial result appears as a doc-comment only (no Lean axiom)."
     },
     {
       "id": "summary",
