@@ -7963,16 +7963,15 @@
       "result": "clean"
     },
     "erdos-616": {
-      "agentId": "auditor-agent-1777617200",
-      "auditCount": 3,
-      "lastAudited": "2026-05-01T16:32:00Z",
+      "agentId": "auditor-agent-main",
+      "auditCount": 4,
+      "lastAudited": "2026-05-01T06:44:24Z",
       "result": "issues-found",
       "issues": [
-        "assumptions field overstates: 2 phantom axioms (optimalCoveringBound, fractionalCoveringNumber) added to 2 real axioms",
-        "sections[3] main-question references phantom optimalCoveringBound axiom",
-        "sections[8] fractional-relaxation references phantom fractionalCoveringNumber axiom"
+        "sections[3]-sections[9] line ranges shifted by 2-5 lines vs actual proofs/Proofs/Erdos616Problem.lean",
+        "overview.proofStrategy claims 'only proved theorem is tau_one_iff_kernel' but coefficient_bounds and erdos_616_summary are also proved"
       ],
-      "relatedIssue": 14144
+      "relatedIssue": 14157
     },
     "erdos-617": {
       "agentId": "auditor-cycle-20-batch",
