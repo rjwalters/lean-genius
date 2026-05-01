@@ -7432,10 +7432,13 @@
       ]
     },
     "erdos-536": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-agent",
+      "auditCount": 3,
+      "issues": [
+        "phantom-axiom narrative + section line drift: prose claims four_elements_fail/weisenberg_construction axiomatized (only docstrings), and lcm_structure/weisenberg_dense_case as axioms (both are theorems). Filed #14286"
+      ],
+      "lastAudited": "2026-05-01T15:33:04Z",
+      "result": "issues-found"
     },
     "erdos-537": {
       "agentId": "auditor-cycle-20-batch",
