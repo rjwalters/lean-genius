@@ -75,16 +75,18 @@ def hgcdMatrix : (fuel a b : ℕ) → CofactorMatrix
       CofactorMatrix.id
     else
       -- Step 1: reduce on the top half of the bits.
-      let M₁ := hgcdTopHalfStep a b
-      -- Apply M₁ to the full pair to get the half-reduced pair.
-      let (a₁, b₁) := applyToNat M₁ a b
-      if h : max a₁ b₁ < 2 ^ hgcdThreshold then
-        M₁
+      -- Step 2: recurse on the reduced pair, compose, and return.
+      -- (Branching on whether the half-reduced pair is small enough
+      --  to skip the recursive call.)
+      if (max (applyToNat (hgcdTopHalfStep a b) a b).1
+              (applyToNat (hgcdTopHalfStep a b) a b).2)
+          < 2 ^ hgcdThreshold then
+        hgcdTopHalfStep a b
       else
-        -- Step 2: recurse on the reduced pair.
-        let M₂ := hgcdMatrix fuel a₁ b₁
-        -- Compose: M₂ acts after M₁ on the original pair.
-        M₂.mul M₁
+        (hgcdMatrix fuel
+            (applyToNat (hgcdTopHalfStep a b) a b).1
+            (applyToNat (hgcdTopHalfStep a b) a b).2).mul
+          (hgcdTopHalfStep a b)
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART II: DETERMINANT IS ±1
@@ -97,23 +99,34 @@ theorem hgcdTopHalfStep_det_unit (a b : ℕ) :
   unfold hgcdTopHalfStep
   exact lehmerCofactors_det_unit _ _ _ _ (Or.inl CofactorMatrix.det_id)
 
-/-- The recursive HGCD matrix has determinant `±1`. -/
+/-- Helper: a product of two `±1` integers is itself `±1`. -/
+private theorem mul_unit_of_unit_of_unit {x y : ℤ}
+    (hx : x = 1 ∨ x = -1) (hy : y = 1 ∨ y = -1) :
+    x * y = 1 ∨ x * y = -1 := by
+  rcases hx with hx | hx <;> rcases hy with hy | hy <;>
+    subst hx <;> subst hy <;> simp
+
+/-- The recursive HGCD matrix has determinant `±1`.
+
+    Proof is by induction on the fuel. The fuel-zero case returns the
+    identity matrix (det = 1). At successor fuel the definition has two
+    nested `if`s; we branch on each and use `hgcdTopHalfStep_det_unit`
+    plus the inductive hypothesis. The composed case uses
+    `CofactorMatrix.det_mul`. -/
 theorem hgcdMatrix_det_unit (fuel a b : ℕ) :
     (hgcdMatrix fuel a b).det = 1 ∨ (hgcdMatrix fuel a b).det = -1 := by
   induction fuel generalizing a b with
   | zero => left; exact CofactorMatrix.det_id
   | succ n ih =>
-    unfold hgcdMatrix
-    split_ifs
+    simp only [hgcdMatrix]
+    split_ifs with h₁ h₂
     · left; exact CofactorMatrix.det_id
     · exact hgcdTopHalfStep_det_unit a b
-    · -- Composed case: det(M₂ · M₁) = det M₂ · det M₁; both ±1.
-      rw [CofactorMatrix.det_mul]
-      rcases ih (applyToNat (hgcdTopHalfStep a b) a b).1
-                (applyToNat (hgcdTopHalfStep a b) a b).2 with h2 | h2 <;>
-      rcases hgcdTopHalfStep_det_unit a b with h1 | h1 <;>
-      [left; right; right; left] <;>
-      simp [h1, h2]
+    · rw [CofactorMatrix.det_mul]
+      exact mul_unit_of_unit_of_unit
+        (ih (applyToNat (hgcdTopHalfStep a b) a b).1
+            (applyToNat (hgcdTopHalfStep a b) a b).2)
+        (hgcdTopHalfStep_det_unit a b)
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART III: GCD PRESERVATION

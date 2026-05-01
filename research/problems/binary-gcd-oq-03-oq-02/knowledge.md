@@ -134,3 +134,78 @@ This survey produces a structural insight (the correctness/complexity split)
 and identifies infrastructure gaps. It does **not** prove anything. The next
 session can act on the recommendation in ~1–2 sessions of pure correctness
 work, or escalate the complexity gap to a separate initiative.
+
+## Session 2026-05-01 (Session 2) — HGCD skeleton compiled, det+gcd theorems proved
+
+**Mode**: REVISIT (acted on Session-1 recommendation)
+**Outcome**: progress — phase ORIENT → ACT; correctness side (A) reduced
+to a single sorry (the size-reduction lemma).
+
+### What I Did
+
+- Made the scope decision recommended by Session 1: correctness-only.
+  Documented (B) bit complexity as a Mathlib infrastructure gap and
+  did not attempt it.
+- Updated `problemStatement.formal` from the placeholder
+  `\\text{(formal statement to be added)}` to a concrete 3-part
+  spec: (A) correctness, (B) size reduction, (C) complexity (deferred).
+- Updated `problemStatement.whyMatters` (was empty) and
+  `knownResults.proven/open/goal` (were empty) with the classical
+  references and precise sub-goals.
+- Created `proofs/Proofs/BinaryGcdOQ03OQ02.lean` (~190 lines) with:
+  - `hgcdThreshold`, `hgcdTopHalfStep`, `applyToNat`, `hgcdMatrix`
+    (recursive HGCD with explicit fuel; two recursive calls composed
+    with `CofactorMatrix.mul`).
+  - `hgcdTopHalfStep_det_unit` (top-half step is unimodular).
+  - `hgcdMatrix_det_unit` (recursive HGCD matrix is unimodular —
+    induction on fuel; uses `CofactorMatrix.det_mul` for the
+    composed branch).
+  - `hgcdMatrix_apply_gcd` (application preserves `Nat.gcd` —
+    immediate from the previous theorem and the existing
+    `cofactor_apply_gcd` from `BinaryGcdOQ03`).
+  - `bitsize` helper.
+  - `hgcdMatrix_size_reduction` — **statement only, sorry**. The only
+    sorry in the file. Quantitative bound is
+    `bitsize(max(M·(a,b))) ≤ bitsize(max a b)/2 + (hgcdThreshold+2)`.
+  - Three `example` smoke checks at the end (`det = 1` at fuel 0,
+    `det = ±1` at fuel 5, `gcd` preservation at fuel 4).
+- Registered the new file in `proofs/Proofs.lean`.
+
+### Key Findings
+
+- The det-unit and gcd-preservation halves of HGCD correctness are
+  almost mechanical given the existing `CofactorMatrix` infrastructure
+  in `BinaryGcdOQ03.lean`. They were proved with one induction and
+  a four-way `rcases` on the determinant signs.
+- The genuinely new mathematical content of OQ-02 is the
+  size-reduction lemma `hgcdMatrix_size_reduction`. Closing it
+  requires bounding the entries of the Lehmer cofactor accumulator
+  by `2^(bitsize(max a b)/2 + 2)` — a Lehmer accumulator entry-bound
+  lemma which appears not to exist either in Mathlib or in
+  `BinaryGcdOQ03.lean`, and which is the natural focus of the next
+  session.
+- (C) bit complexity remains genuinely Mathlib-blocked; no Lean
+  formulation is currently possible. Documenting this in a Part-V
+  comment is itself a (small) contribution.
+
+### Files Modified
+
+- `proofs/Proofs/BinaryGcdOQ03OQ02.lean` (new, ~190 lines, 1 sorry, 0 axioms)
+- `proofs/Proofs.lean` (added import)
+- `src/data/research/problems/binary-gcd-oq-03-oq-02.json` (formal
+  statement + whyMatters + knownResults populated)
+
+### Next Steps
+
+1. Prove `hgcdMatrix_size_reduction`. The critical lemma is an
+   entry bound on `lehmerCofactors`: each entry of the accumulated
+   matrix is at most `2^(fuel + 1)`. Combined with the Cramer
+   inversion already used in `dvd_of_det_unit`, this gives the
+   half-bitsize bound on the residual.
+2. Once size reduction is established, derive a non-trivial
+   termination measure (e.g. lexicographic on
+   `(bitsize(max a b), fuel)`) and consider replacing the explicit
+   fuel parameter with a `WellFounded.fix` definition.
+3. (Optional, lower priority) wire `hgcdMatrix` into the existing
+   `lehmerGcd` to give a recursive variant `hgcdGcd` and prove
+   `hgcdGcd a b = Nat.gcd a b`.
