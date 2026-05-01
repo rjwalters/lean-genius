@@ -82,16 +82,16 @@
       "title": "Kővári-Sós-Turán Theorem (Proved)",
       "summary": "Full proof of KST C₄ case via cherry counting + Cauchy-Schwarz: 4m² ≤ n²(n-1) + 2mn",
       "startLine": 189,
-      "endLine": 299,
+      "endLine": 340,
       "mathContext": "The Kővári-Sós-Turán theorem for $C_4$-free graphs: if $G$ has $n$ vertices, $m$ edges, and is $C_4$-free, then $4m^2 \\le n^2(n-1) + 2mn$, giving $m = O(n^{3/2})$. Proved via: (1) Cherry counting — offDiag neighborhoods are pairwise disjoint by $C_4$-freeness, giving $\\sum d(v)(d(v)-1) \\le n(n-1)$; (2) Cauchy-Schwarz — $(\\sum d(v))^2 \\le n \\cdot \\sum d(v)^2$; (3) Handshaking lemma — $\\sum d(v) = 2m$."
     },
     {
       "id": "main-theorems",
       "title": "Main Theorems (Partially Axiomatized)",
-      "summary": "CFS main theorem — 1 axiom; exponent optimality — proved",
-      "startLine": 302,
-      "endLine": 330,
-      "mathContext": "One axiomatized result: **Erdős #1008** (Conlon-Fox-Sudakov 2014): $\\exists c > 0$ such that every $m$-edge graph has a $C_4$-free subgraph with $\\ge c \\cdot m^{2/3}$ edges. Proved: Optimality — for every $\\varepsilon > 0$, some graph has no $C_4$-free subgraph with $m^{2/3+\\varepsilon}$ edges."
+      "summary": "Bipartite KST helpers (KB, bip_cherry_disjoint/count, bip_edge_bound) + axiom erdos_1008 (CFS conjecture) + proved theorems: exponent_optimal (2/3 is tight) and c4free_subgraph_exists",
+      "startLine": 341,
+      "endLine": 698,
+      "mathContext": "One axiomatized result: **Erdős #1008** (Conlon-Fox-Sudakov 2014, line 590): $\\exists c > 0$ such that every $m$-edge graph has a $C_4$-free subgraph with $\\ge c \\cdot m^{2/3}$ edges. Proved: Exponent optimality (line 605) — for every $\\varepsilon > 0$, some graph has no $C_4$-free subgraph with $m^{2/3+\\varepsilon}$ edges, via Folkman's $K_{n,n^2}$ construction and bipartite cherry counting. Existence (line 690) — every graph has such a subgraph."
     }
   ],
   "conclusion": {
