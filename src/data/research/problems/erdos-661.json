@@ -16,12 +16,16 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "OBSERVE",
     "since": "2026-01-13T18:22:04.304Z",
-    "iteration": 2,
-    "focus": "Fixed inconsistency, added proved theorems",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "iteration": 3,
+    "focus": "Mathlib/Lean 4.26 drift blocker — release for Mechanic",
+    "blockers": [
+      "Lean 4.26 docstring parser strictness",
+      "rintro rfl scoping (line 72)",
+      "DecidableEq Point4 not synthesizable (def alias)"
+    ],
+    "nextAction": "Mechanic: convert orphan /-- -/ to /- -/ (lines 82-91), fix line 72 to `exact distSq_self p` or restructure, then re-apply researcher draft Lenz cardinality theorems (need explicit DecidableEq Point4 instance).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -55,7 +59,10 @@
       "Formalized Lenz construction in R4: two orthogonal unit circles give constant bipartite distance sqrt(2)",
       "Proved lenz_distSq4_eq: distSq4(C1(θ), C2(φ)) = 2 for all θ,φ using Pythagorean identity",
       "Proved lenzCircle1_unit, lenzCircle2_unit: both circles have unit norm",
-      "Dimension gap: F4(2n)=1 (verified) vs conjectured F2(2n)=o(n/sqrt(log n)) in R2"
+      "Dimension gap: F4(2n)=1 (verified) vs conjectured F2(2n)=o(n/sqrt(log n)) in R2",
+      "DRIFT BLOCKER (2026-04-27): docker build fails on the existing file with 5+ Lean 4.26 errors before reaching new content. Per memory project_mathlib_api_drift_2026_04, this matches the documented April 26-27 Mathlib/Lean drift wave; release claim and route to Mechanic.",
+      "Specific drift errors in current Erdos661Problem.lean: (1) Line 72 `· rintro rfl; exact distSq_self q` fails with `Unknown identifier q` — after rintro rfl the variable q is no longer in scope under current Lean 4.26 elaboration. (2) Lines 85, 89: orphan `/-- ... -/` doc comments before `/- ## ... -/` block headers raise `unexpected token /--; expected lemma` — Lean 4.26 stricter docstring parsing. Cascade then breaks lines 95-98.",
+      "Planned but not committed work: bipartiteDistSet4 + 4 Lenz F_4(2n)=1 cardinality theorems (lenz_bipartiteDistSet4_subset_singleton, _card_le_one, _eq_singleton, _card_eq_one) plus a noncomputable DecidableEq Point4 instance. Drafts saved in git stash WIP-DecidableEq-Point4 on this worktree; can be re-applied once Mechanic restores the existing file."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -75,7 +82,7 @@
     "mathlib": []
   },
   "started": "2026-01-13T18:22:04.304Z",
-  "lastUpdate": "2026-03-13T07:52:17.050Z",
+  "lastUpdate": "2026-04-27T00:00:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
