@@ -1,31 +1,50 @@
 # Current State
 
-**Phase**: ORIENT
-**Since**: 2026-04-28
-**Iteration**: 2
+**Phase**: ACT
+**Since**: 2026-05-01
+**Iteration**: 3
 
 ## Current Focus
 
-Decide scope of formalization: correctness-only (recommended) vs correctness-plus-complexity (deferred). See knowledge.md "Research strategy (recommended)" for the split.
+Correctness layer complete. Decide whether to pursue size-reduction lemma
+(needed for asymptotic complexity bound) or treat current correctness layer
+as the final scope of this open question.
 
 ## Active Approach
 
-Session 1 survey recommendation: pursue **correctness-only** formalization of `hgcdMatrix : ℕ → ℕ → CofactorMatrix` in a new `BinaryGcdOQ03OQ02.lean`, reusing the cofactor-matrix machinery already verified in `BinaryGcdOQ03.lean`. Defer the O(M(n)·log n) complexity claim until Mathlib has a bit-complexity model and fast multiplication.
+Session 2 outcome: Path A (correctness only) implemented in
+`BinaryGcdOQ03OQ02.lean` (~340 lines, 0 sorries on the correctness layer).
+Recursive `hgcdMatrix` is fuel-indexed (avoiding the size-reduction proof
+obligation in the definition); det ±1 invariant is proved by induction on
+fuel; GCD preservation follows from `cofactor_apply_gcd`.
 
 ## Blockers
 
-- **Complexity claim only**: O(M(n)·log n) is currently unfalsifiable in Lean. Mathlib has no bit-complexity model for arithmetic operations and no fast multiplication (Karatsuba / Toom-Cook / FFT). Filling these gaps is a multi-thousand-line foundational project that should not be attempted as part of an HGCD formalization.
-
-No blocker on the correctness side; all needed cofactor-matrix machinery exists.
+- **Complexity claim**: O(M(n)·log n) remains unfalsifiable in Lean.
+  Requires Mathlib bit-complexity model + fast multiplication. Multi-
+  thousand-line foundational project; explicitly out of scope.
+- **Size-reduction lemma**: stated as `hgcdMatrix_size_reduction`
+  placeholder. The lemma asserts that applying the recursively computed
+  HGCD matrix halves the bitsize of (a, b) up to an O(1) constant. Stehlé
+  and Zimmermann (2004) give explicit constants for the binary-recursive
+  variant. Estimated effort: 150-300 self-contained Lean lines for a
+  precise statement and proof, depending on the bitsize formulation
+  chosen.
 
 ## Next Action
 
-1. Confirm scope decision (correctness-only).
-2. Draft `hgcdMatrix` definition + termination measure (`bitsize a + bitsize b`).
-3. State and prove the size-reduction lemma: applying `hgcdMatrix(a,b)` to `(a,b)` yields `(a',b')` with `bitsize(max a' b') ≤ bitsize(max a b)/2 + O(1)`. This is the only genuinely new mathematical content vs. the existing Lehmer formalization.
+1. (Optional) Prove the size-reduction lemma. Pick a bitsize measure
+   (`Nat.log 2 + 1`), state advance for one HGCD step, recursive
+   composition for two steps. Self-contained — does not need new Mathlib.
+2. (Optional) Wire `hgcdMatrix` into a top-level recursive GCD: take input
+   pair, iterate `hgcdMatrix` until below threshold, run `euclidGcd` at
+   the leaf. Prove correctness by composing `hgcdMatrix_preserves_gcd`
+   with `euclidGcd_eq_gcd`. ~50-100 lines.
+3. (Deferred — separate initiative) Bit-complexity O(M(n)·log n) requires
+   Mathlib upstream work (fast multiplication, bit-complexity model).
 
 ## Attempt Counts
 
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1 (Path A: fuel-indexed correctness, succeeded)
