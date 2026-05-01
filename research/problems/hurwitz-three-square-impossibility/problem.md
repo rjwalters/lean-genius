@@ -2,8 +2,16 @@
 
 **Slug**: hurwitz-three-square-impossibility
 **Created**: 2025-12-30T16:59:27-08:00
-**Status**: Active
+**Status**: COMPLETED (2025-12-30; verified 2026-04-27)
 **Source**: gallery-gap
+
+## Resolution
+
+The axiom was successfully replaced. As of 2026-04-27, `proofs/Proofs/HurwitzTheorem.lean`:
+- Contains `theorem no_three_square_identity_proof` at line 944 (full proof, 0 sorries for n=3)
+- Contains `theorem no_three_square_identity` at line 1316 (clean wrapper)
+- Has 0 axioms (down from 1)
+- The single remaining sorry at line 1937 is for the unrelated general n∉{1,2,4,8} case, which is BLOCKED on Clifford algebra structure theorem + Bott periodicity (none of which exist in Mathlib as of 2026-04).
 
 ## Problem Statement
 
