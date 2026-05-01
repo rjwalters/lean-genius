@@ -1,5 +1,50 @@
 # Knowledge Base: Erdős #263 - Irrationality Sequences
 
+## Session 2026-05-01 (Session 11) — Confirmed BLOCKED; updated pool/DB
+
+**Mode**: REVISIT (RICH, score 48)
+**Outcome**: BLOCKED — 4 sorries are all deep, all confirmed not-in-Mathlib
+
+### What I Verified
+
+- Re-checked the 4 remaining sorries in `proofs/Proofs/Erdos263Problem.lean`:
+  - line 84: `folklore_irrationality` — Mahler-type criterion
+  - line 144: `kovac_tao_not_irrationality` — Kovač-Tao 2024 Egyptian fraction
+  - line 178: `positive_condition_irrationality` — liminf analysis
+  - line 503: `truncation_insufficient` — needs irrationality-sequence witness
+- Searched Mathlib v4.26.0 (live snapshot at `.loom/worktrees/stokes-dd/proofs/.lake/packages/mathlib/`):
+  - `Mathlib/NumberTheory/Transcendental/Liouville/` exists but covers only the classical Liouville construction `∑ 1/m^{i!}` (factorial denominators) and proves transcendence (and hence irrationality) of those specific Liouville constants.
+  - No general Mahler-type irrationality criterion found.
+  - No Kovač-Tao theorem or related Egyptian-fraction construction.
+- The Liouville construction in Mathlib does NOT imply `folklore_irrationality`: Liouville requires factorial-rate denominators, while folklore growth `aₙ^{1/2^n} → ∞` is much weaker. The two conditions are incomparable on most sequences (and `doubleExp` has neither — already proved).
+
+### Pool / DB Reconciliation
+
+- DB row `erdos-263` was `in-progress`. Pool entry was `in-progress`.
+- The problem JSON (`src/data/research/problems/erdos-263.json`) already had `status: blocked`
+  and a clear progressSummary ("BLOCKED (session 11): All tractable work complete..."),
+  so the gallery side was already correct. Only the operational pool/DB needed to be aligned.
+- Updated:
+  - `research/db/knowledge.db`: `status='blocked', phase='BLOCKED'`
+  - `.lean/state/candidate-pool.json`: `status: blocked` (via `claim-problem.sh update`)
+- Did NOT run `sync_pool.py` — the DB is currently regressed (~790 fewer `completed`
+  entries than the pool, per session 12's note). Running sync would propagate the
+  regression. The DB and pool are now both internally consistent for `erdos-263`
+  even though they diverge on other entries.
+
+### Why No Code Change
+
+- 0 axioms, 4 deep sorries, all confirmed Mathlib-blocked across multiple prior sessions
+- Per protocol "3+ sessions stuck on same sorry → flag BLOCKED, move on" — this problem
+  has been BLOCKED in every session since at least session 5 (2026-04-21)
+- No new Mathlib content has appeared that would unblock any of the four sorries
+- Docker remains hung (other agent's BinaryGcdOQ03OQ02 build stuck for 16+ hours), so
+  even small refactors would be unverified
+
+### Sorry Count: 4 (unchanged — all genuinely BLOCKED)
+
+---
+
 ## Session 2026-04-22 (Session 9) — Prove doubleExp_sum_irrational (5→4 sorries)
 
 **Mode**: REVISIT (RICH knowledge tier)

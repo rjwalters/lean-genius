@@ -99,7 +99,8 @@
       "doubleExp_sum_summable proved from doubleExp_convergent via congr",
       "doubleExp_fin_mul_nat: 2^{2^N} * finsum ∈ ℕ — each term 2^{2^N-2^k} ∈ ℕ, uses pow_sub₀",
       "Key Aristotle candidates: doubleExp_tail_pos, doubleExp_fin_mul_nat, doubleExp_tail_bound, tsum_split_at",
-      "Aristotle companion file sorries were redundant — proofs existed in main file but not ported; session 10 fixed this gap"
+      "Aristotle companion file sorries were redundant — proofs existed in main file but not ported; session 10 fixed this gap",
+      "2026-05-01 (Session 11): Re-verified all 4 sorries (lines 84, 144, 178, 503) against live Mathlib v4.26.0 snapshot. Mathlib has Liouville construction for ∑ 1/m^{i!} but no general Mahler criterion, no Kovač-Tao theorem, no liminf-based irrationality criterion. Problem remains BLOCKED on Mathlib analytic number theory expansion."
     ],
     "mathlibGaps": [
       "No elementary tendsto proof for 2^n/n → ∞ directly — need to go via Nat.log or exponential comparison for doubleExp_superexponential",
@@ -113,7 +114,8 @@
       "positive_condition_irrationality: needs deep liminf analysis on growth rates",
       "truncation_insufficient: needs witnesses from folklore_irrationality or kovac_tao (dependent on above)",
       "Revisit when Mathlib analytic number theory expands significantly"
-    ]
+    ],
+    "phase": "BLOCKED"
   },
   "tags": [
     "erdos-problems",
@@ -149,7 +151,7 @@
     ]
   },
   "started": "2026-04-13T22:43:37.492Z",
-  "lastUpdate": "2026-04-27T17:21:05Z",
+  "lastUpdate": "2026-05-01T19:55:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
