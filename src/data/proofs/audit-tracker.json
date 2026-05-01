@@ -6978,10 +6978,13 @@
       "result": "issues-fixed"
     },
     "erdos-475": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-87018",
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T18:49:45Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom-axiom narrative: Kravitz/graham_full_set/graham_constructive not declared (issue #14358)"
+      ]
     },
     "erdos-476": {
       "agentId": "auditor-cycle-20-batch",
