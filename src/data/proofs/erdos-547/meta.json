@@ -49,11 +49,11 @@
       }
     ],
     "originalContributions": [
-      "Complete Ramsey number framework: EdgeColoring, HasMonochromaticCopy, ramseyNumber with existence, specification, and minimality axioms",
-      "Tree predicate hierarchy: IsTree, IsPath, IsStar, IsCaterpillar with inclusion proofs and degree axioms",
-      "Exact Ramsey numbers: R(P_n) = n (paths, minimum) and R(S_n) = 2n-2 (stars, maximum)",
-      "Chvátal's degree-dependent bound R(T) ≤ (Δ-1)(n-1)+1 with analysis showing it beats 2n-2 only for Δ ≤ 2",
-      "Main theorem erdos_547: R(T) ≤ 2n-2 for all trees, with tightness and ordering n ≤ R(T) ≤ 2n-2"
+      "Edge coloring framework: EdgeColoring (Sym2 (Fin n) → Bool) and HasMonochromaticCopy definitions for 2-color Ramsey theory",
+      "Axiom ramseyNumber: axiomatizes the Ramsey number R(G) as a natural number for finite graphs",
+      "Axiom IsTree: axiomatizes the tree predicate; IsPath, IsStar, IsCaterpillar and degree axioms are docstring outlines only",
+      "Axiom tree_ramsey_bound: axiomatizes R(T) ≤ 2n-2 for trees T on n ≥ 2 vertices (the Erdős-Burr conjecture, proved for large n)",
+      "Theorem erdos_547: trivial wrapper re-exposing tree_ramsey_bound; tightness and bound ordering are outline comments only"
     ],
     "axiomCount": 3,
     "prerequisites": [
@@ -71,7 +71,7 @@
     "historicalContext": "**The Tree Ramsey Number Problem**\n\nBurr conjectured in 1974 that $R(T) \\leq 2n - 2$ for all trees $T$ on $n$ vertices, predicting that the star $S_n$ is the hardest tree for Ramsey theory. Chvátal (1977) proved the degree-dependent bound $R(T) \\leq (\\Delta-1)(n-1) + 1$, which is tight for paths but weak for high-degree trees. The Burr conjecture stood as a central open problem in graph Ramsey theory for nearly four decades. The full conjecture was proved for all sufficiently large $n$ by Zhao, Hladký, Komlós, Piguet, Simonovits, Stein, and Szemerédi (2012+), using the Szemerédi regularity lemma and the blow-up lemma — heavy machinery from the regularity method developed in the 1970s–90s. The bound is best possible since stars achieve $R(S_n) = 2n - 2$ by a pigeonhole argument on vertex colors in $K_{2n-3}$. The problem connects to the broader program of understanding Ramsey numbers for sparse graphs, including the Erdős-Sós conjecture (1963) that $R(T) \\leq (k-2)(n-1)/2 + 1$ for trees with at most $k$ edges.",
     "problemStatement": "**Problem Statement**\n\nLet T be a tree on n vertices. Prove that:\n\nR(T) ≤ 2n - 2\n\nwhere R(T) is the 2-color Ramsey number: the minimum N such that any 2-coloring of K_N contains a monochromatic copy of T.\n\n**Answer:** YES, the conjecture is true (proved for large n).\n\n**Key Results:**\n- Paths: R(P_n) = n (minimum among trees)\n- Stars: R(S_n) = 2n - 2 (maximum among trees)\n- Chvátal: R(T) ≤ (Δ-1)(n-1) + 1 for max degree Δ\n- Universal: R(T) ≤ 2n - 2 for all trees",
     "text": "For any tree T on n vertices, R(T) ≤ 2n - 2. The bound is tight: stars achieve R(S_n) = 2n - 2.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Edge Colorings:** Define 2-colorings of complete graphs using Sym2 for edges, Bool for colors\n2. **Ramsey Numbers:** Axiomatize existence (Ramsey's theorem), specification, and minimality\n3. **Tree Predicates:** Define IsTree, IsPath, IsStar, IsCaterpillar with inclusion hierarchy\n4. **Exact Values:** State R(P_n) = n and R(S_n) = 2n - 2\n5. **Chvátal's Theorem:** The degree-dependent bound (Δ-1)(n-1) + 1\n6. **Main Conjecture:** R(T) ≤ 2n - 2 for all trees, with tightness and bound comparison\n\nThe actual proofs use the Szemerédi regularity lemma and blow-up lemma; these are axiomatized here.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Edge Colorings (formalized):** Define 2-colorings of complete graphs using Sym2 for edges, Bool for colors\n2. **Ramsey Number (axiomatized):** axiom ramseyNumber G : ℕ. Specification and minimality axioms are docstring outline only.\n3. **Tree Predicates (partial):** axiom IsTree. IsPath, IsStar, IsCaterpillar, inclusion proofs, and degree axioms are docstring outlines only.\n4. **Exact Values (outline only):** R(P_n) = n and R(S_n) = 2n - 2 mentioned in section headers, not stated as theorems.\n5. **Chvátal's Theorem (outline only):** Section header exists; no axiom or theorem for the (Δ-1)(n-1) + 1 bound.\n6. **Main Conjecture (axiomatized):** axiom tree_ramsey_bound states R(T) ≤ 2n-2. Tightness and bound comparison are outline only.\n\nThe actual proofs use the Szemerédi regularity lemma and blow-up lemma; the main bound is axiomatized here.",
     "keyInsights": [
       "**Paths are Extremal (Minimum):** R(P_n) = n because paths have low maximum degree, and Gerencsér-Gyárfás guarantees long monochromatic paths",
       "**Stars are Extremal (Maximum):** R(S_n) = 2n - 2 because finding a monochromatic star requires a high-degree vertex in one color (pigeonhole on K_{2n-2})",
@@ -109,7 +109,7 @@
       "title": "Ramsey Number Axioms: ramseyNumber",
       "startLine": 54,
       "endLine": 77,
-      "summary": "Part II: axiom ramseyNumber G : ℕ — axiomatized since computing R(G) exactly is infeasible. Axioms: ramsey_spec (K_{R(G)} is 'Ramsey' for G under any 2-coloring), ramsey_min (R(G) is minimal with this property). These two axioms characterize R(G) uniquely.",
+      "summary": "Part II: axiom ramseyNumber G : ℕ — axiomatized since computing R(G) exactly is infeasible. Only ONE axiom is declared; ramsey_spec and ramsey_min are mentioned in the docstring section header (Part II) but not formalized in this file.",
       "mathContext": "The Ramsey number $R(G)$ satisfies: (1) any 2-coloring of $K_{R(G)}$ has a monochromatic copy of $G$; (2) there exists a 2-coloring of $K_{R(G)-1}$ with no monochromatic $G$. Both properties are axiomatized. Computing $R(G)$ exactly is infeasible even for small $G$ (e.g., $R(K_5, K_5)$ is unknown)."
     },
     {
@@ -117,7 +117,7 @@
       "title": "Trees: Predicates and Degree Bounds",
       "startLine": 78,
       "endLine": 104,
-      "summary": "IsTree (connected, n-1 edges), tree_exists, maxDegree, tree_degree_bounds (1 ≤ Δ ≤ n-1).",
+      "summary": "Part III: axiom IsTree G : Prop — axiomatizes the tree predicate. Declarations tree_exists, maxDegree, and tree_degree_bounds are listed in Part IV's docstring outline but not formalized in this file.",
       "mathContext": "A tree on $n$ vertices is connected and has exactly $n-1$ edges. Max degree $\\Delta$: $1 \\leq \\Delta \\leq n-1$ for trees (lower bound from connectivity, upper bound from edge count). The Chvátal bound $R(T) \\leq (\\Delta-1)(n-1)+1$ is tight when $\\Delta$ is large."
     },
     {
@@ -125,7 +125,7 @@
       "title": "Special Tree Families: Paths, Stars, Caterpillars",
       "startLine": 105,
       "endLine": 132,
-      "summary": "IsPath (Δ ≤ 2), IsStar (one center with n-1 leaves), IsCaterpillar (path after leaf removal); inclusion proofs and degree axioms.",
+      "summary": "Parts IV-IX: only axiom tree_ramsey_bound (R(T) ≤ 2n-2 for trees with ≥ 2 vertices) and theorem erdos_547 (trivial wrapper) are declared. IsPath, IsStar, IsCaterpillar, exact Ramsey value theorems, Chvátal's bound, and tightness results are docstring outlines with no supporting declarations.",
       "mathContext": "Path $P_n$: $\\Delta \\leq 2$, $R(P_n) = n-1$ (known exactly). Star $S_n$: center + $n-1$ leaves, $R(S_n) = 2n-2$ (tight example for the $2n-2$ conjecture). Caterpillar: $P_k$ with pendant vertices — an intermediate case between paths and general trees. These families test the $2n-2$ bound with increasing difficulty."
     }
   ],
@@ -136,7 +136,7 @@
       "Determine R(T) exactly for all trees (not just paths and stars) — caterpillars and binary trees are partially understood",
       "Characterize which trees achieve R(T) = 2n - 2 besides stars (double stars come close)",
       "Extend to k-color Ramsey numbers for trees: is R_k(T) ≤ (k+1)(n-1)?",
-      "Complete formal proofs of the axiomatized results (27 axioms), especially Chvátal's embedding theorem",
+      "Complete formal proofs of the 3 axiomatized results (ramseyNumber, IsTree, tree_ramsey_bound), especially Chvátal's embedding theorem",
       "Connect to size Ramsey numbers: ŝ(T) ≤ cn for some constant c (Beck's theorem)"
     ]
   },
