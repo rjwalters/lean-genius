@@ -19,10 +19,10 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-24",
-    "axiomCount": 4,
-    "assumptions": "Four axioms: (1) baker_homogeneous — Baker's qualitative theorem for linear forms in logarithms (Q-independent logs remain Q̄-independent); (2) baker_inhomogeneous — strengthening with algebraic constant β₀; (3) baker_quantitative — effective lower bound B^{-C}; (4) baker_wustholz_bound — Baker-Wüstholz 1993 optimal log(B) exponent. All four encode the unformalized analytic content of Baker's proof (Siegel's lemma + auxiliary function + extrapolation).",
-    "lineCount": 640,
-    "theoremCount": 12,
+    "axiomCount": 3,
+    "assumptions": "Three independent axioms: (1) baker_homogeneous — Baker's qualitative theorem for linear forms in logarithms (Q-independent logs remain Q̄-independent); (2) baker_inhomogeneous — strengthening with algebraic constant β₀; (3) baker_wustholz_bound — Baker-Wüstholz 1993 optimal log(B) exponent. The previously-axiomatized baker_quantitative (effective lower bound |Λ| > B^{-C}) is now PROVED as a theorem from baker_homogeneous (Λ ≠ 0) plus baker_wustholz_bound (explicit log lower bound), reducing axiom count 4 → 3. All three remaining axioms encode the unformalized analytic content of Baker's proof (Siegel's lemma + auxiliary function + extrapolation).",
+    "lineCount": 758,
+    "theoremCount": 13,
     "definitionCount": 0,
     "originalContributions": [
       "two_pow_ne_three_pow: 2^p ≠ 3^q for positive p, q (proved from Nat.Prime.dvd_of_dvd_pow)",
@@ -30,7 +30,9 @@
       "log2_log3_rat_indep: ℚ-linear independence of {log 2, log 3} (from irrationality of log₂(3))",
       "log2_3_transcendental: Transcendence of log₂(3) (derived from baker_homogeneous)",
       "log2_log3_alg_indep: Q̄-linear independence of {log 2, log 3} (direct application of Baker)",
-      "baker_n1_log_independence: log α is not annihilated by nonzero algebraic β (n=1 case of Baker, derived from baker_homogeneous)"
+      "baker_n1_log_independence: log α is not annihilated by nonzero algebraic β (n=1 case of Baker, derived from baker_homogeneous)",
+      "baker_wustholz_bound: Baker-Wüstholz 1993 effective lower bound (state-of-the-art quantitative form)",
+      "baker_quantitative (PART VI): Effective lower bound |Λ| > B^(-C) — DERIVED as a theorem from baker_homogeneous (Λ ≠ 0 via algebraicity of integer coefficients) and baker_wustholz_bound (explicit log lower bound), reducing axiom count from 4 → 3"
     ]
   },
   "overview": {
@@ -108,9 +110,17 @@
       "id": "sec-baker-wustholz",
       "title": "Part V: Baker-Wustholz Quantitative Theorem",
       "startLine": 591,
-      "endLine": 640,
+      "endLine": 633,
       "summary": "States Baker-Wustholz 1993 theorem with explicit constant C(n,d). Documents improvement from Baker 1966 to Baker-Wustholz 1993. Applications to Thue equations, Mordell equation, S-unit equations.",
       "mathContext": "Baker-Wustholz bound: log|Lambda| > -C(n,d) * prod_i log(A_i) * log(B) where C(n,d) = 18*(n+1)! * n^{n+1} * (32d)^{n+2} * log(2nd)."
+    },
+    {
+      "id": "sec-baker-quantitative",
+      "title": "Part VI: Baker Quantitative Theorem as a Derived Consequence",
+      "startLine": 634,
+      "endLine": 758,
+      "summary": "Proves baker_quantitative (effective lower bound |Lambda| > B^(-C)) as a theorem derived from baker_homogeneous (Lambda != 0) and baker_wustholz_bound (explicit log lower bound). Reduces axiom count from 4 to 3.",
+      "mathContext": "Key derivation: integers b_i are algebraic (isAlgebraic_int), so baker_homogeneous gives Lambda != 0. Height witnesses A_i = alpha_i + 1 satisfy 1 < A_i and log|alpha_i| <= log(A_i). Baker-Wustholz gives log|Lambda| > -C0 * prod log(A_i) * log(B). Setting C = C0 * prod log(A_i) > 0 and converting via Real.log_rpow gives B^(-C) < |Lambda|."
     }
   ],
   "crossReferences": [
@@ -244,10 +254,10 @@
   "sorries": 0,
   "leanFile": {
     "path": "Proofs/AlgebraicNumbersCountableOQ04.lean",
-    "lineCount": 640,
-    "theoremCount": 12,
+    "lineCount": 758,
+    "theoremCount": 13,
     "definitionCount": 0,
-    "axiomCount": 4,
+    "axiomCount": 3,
     "sorries": 0
   }
 }
