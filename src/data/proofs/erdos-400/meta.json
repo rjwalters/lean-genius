@@ -50,11 +50,8 @@
       "`sumExcess` and `gExcess`: the excess function $g_k(n) = \\sup\\{\\sum a_i - n\\}$",
       "`ErdosProblem400a`: average growth $\\sum_{n \\le x} g_k(n) \\sim c_k \\cdot x \\log x$",
       "`ErdosProblem400b`: concentration $g_k(n) = c_k \\log x + o(\\log x)$ a.e.",
-      "`gExcess_upper_bound` (axiom): Erdős-Graham bound $g_k(n) = O(\\log n)$",
-      "`gExcess_nonneg` (axiom): $g_k(n) \\ge 0$ from trivial tuple",
-      "`g2_binomial_connection` (axiom): $k = 2$ binomial coefficient link",
-      "`g2_excess_characterization` (axiom): supremum attained for $k = 2$",
-      "`average_g2_growth` (axiom): average growth constant $c_2$ exists"
+      "`gExcess_nonneg` (theorem): $g_k(n) \\ge 0$ from trivial tuple",
+      "`g2_binomial_connection` (theorem): $k = 2$ binomial coefficient link"
     ],
     "axiomCount": 0,
     "lineCount": 171,
