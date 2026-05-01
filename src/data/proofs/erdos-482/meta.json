@@ -28,7 +28,6 @@
     "originalContributions": [
       "Lean 4 definition of the Graham-Pollak recurrence via structural recursion",
       "Formalization of Stoll's generalization to arbitrary quadratic irrationals via quadratic equation characterization",
-      "Non-periodicity axiom connecting digit extraction to irrationality of \u221a2",
       "Two proved theorems synthesizing the original and generalized results"
     ],
     "mathlib_version": "4.26.0"
@@ -64,7 +63,7 @@
       "title": "The Sequence Definition",
       "startLine": 38,
       "endLine": 54,
-      "summary": "Defines the Graham-Pollak recurrence and axiomatizes the first few computed values.",
+      "summary": "Defines the Graham-Pollak recurrence grahamPollakSeq via structural recursion.",
       "mathContext": "`grahamPollakSeq : \u2115 \u2192 \u2124` with base case 1 and step $\\lfloor\\sqrt{2}(a_n + 1/2)\\rfloor$. First terms: $1, 2, 3, 4, 7, 10, 14, 20, 28, \\ldots$ The $+1/2$ shift is crucial: without it, rounding errors accumulate and the digit-extraction property fails."
     },
     {
@@ -80,7 +79,7 @@
       "title": "Properties of the Recurrence",
       "startLine": 66,
       "endLine": 79,
-      "summary": "Growth rate approximation and bounds on \u221a2.",
+      "summary": "Discussion of growth rate and bounds on \u221a2 (docstring commentary only; no formal declarations in this section).",
       "mathContext": "The bound $|a_{n+1}/a_n - \\sqrt{2}| < 1/n$ shows the ratio converges to $\\sqrt{2}$ at rate $O(1/n)$. This means $a_n \\sim c \\cdot (\\sqrt{2})^n$ for some constant $c$, explaining why the recurrence captures the arithmetic of $\\sqrt{2}$: each term is approximately $\\sqrt{2}$ times the previous, with controlled rounding errors."
     },
     {
@@ -96,7 +95,7 @@
       "title": "Non-Periodicity",
       "startLine": 104,
       "endLine": 116,
-      "summary": "Non-periodicity of the binary digit sequence from irrationality of \u221a2.",
+      "summary": "Discussion of non-periodicity of the binary digit sequence (docstring commentary only; no formal declaration in this section).",
       "mathContext": "A real number is rational iff its binary (or any base-$b$) expansion is eventually periodic. Since $\\sqrt{2}$ is irrational, the sequence $d_n = a_{2n+1} - 2a_{2n-1}$ is not eventually periodic: $\\neg\\exists p > 0, N,\\; \\forall n \\geq N,\\; d_{n+p} = d_n$."
     },
     {
