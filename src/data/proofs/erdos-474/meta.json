@@ -115,10 +115,10 @@
     {
       "id": "two-color",
       "title": "The Two-Color Case (Solved)",
-      "summary": "sierpinski_kurepa axiom, two_color_partition axiom",
+      "summary": "sierpinski_kurepa axiom",
       "startLine": 102,
       "endLine": 124,
-      "mathContext": "Axiomatized: sierpinski_kurepa axiom, two_color_partition axiom"
+      "mathContext": "Axiomatized: sierpinski_kurepa axiom"
     },
     {
       "id": "under-ch",
@@ -131,10 +131,10 @@
     {
       "id": "shelah",
       "title": "Shelah's Consistency Result",
-      "summary": "shelah_consistency axiom, shelah_large_c axiom",
+      "summary": "shelah_consistency axiom",
       "startLine": 143,
       "endLine": 167,
-      "mathContext": "Axiomatized: shelah_consistency axiom, shelah_large_c axiom"
+      "mathContext": "Axiomatized: shelah_consistency axiom"
     },
     {
       "id": "open-question",
@@ -147,26 +147,26 @@
     {
       "id": "related",
       "title": "Related Results",
-      "summary": "NegativePartition, higher_colors_harder, erdos_rado_two_color",
+      "summary": "motivational docstrings: higher color numbers, Erdős-Rado connection (NegativePartition def is in open-question section)",
       "startLine": 201,
       "endLine": 237,
-      "mathContext": "Mathematical content: NegativePartition, higher_colors_harder, erdos_rado_two_color"
+      "mathContext": "Documentation only: motivational docstrings for higher colors and Erdős-Rado"
     },
     {
       "id": "argument",
       "title": "The Argument Structure",
-      "summary": "ch_argument axiom, large_c_failure axiom",
+      "summary": "erdos_474_summary theorem (line 249), erdos_474 theorem (starts line 265)",
       "startLine": 238,
       "endLine": 266,
-      "mathContext": "Axiomatized: ch_argument axiom, large_c_failure axiom"
+      "mathContext": "Verified: erdos_474_summary theorem (line 249), erdos_474 theorem (starts line 265)"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_474_summary theorem, erdos_474 theorem",
+      "summary": "erdos_474 theorem proof conclusion, end Erdos474",
       "startLine": 267,
       "endLine": 277,
-      "mathContext": "Verified: erdos_474_summary theorem, erdos_474 theorem"
+      "mathContext": "Closing: remainder of erdos_474 theorem body (lines 267-275), namespace end"
     }
   ],
   "conclusion": {
