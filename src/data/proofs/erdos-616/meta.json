@@ -56,7 +56,7 @@
       "erdos_616_summary theorem combining bounds"
     ],
     "axiomCount": 2,
-    "assumptions": "optimalCoveringBound (existence of an optimal constant t(r) for all r-uniform hypergraphs satisfying the local condition), eht_lower_bound (Erdos-Hajnal-Tuza 1991 lower bound: t(r) >= (3/16)r + 7/8 via explicit constructions), eht_upper_bound (Erdos-Hajnal-Tuza 1991 upper bound: t(r) <= (1/5)r via counting arguments), fractionalCoveringNumber (LP relaxation of covering number allowing fractional vertex weights)",
+    "assumptions": "eht_lower_bound (Erdos-Hajnal-Tuza 1991 lower bound: t(r) >= (3/16)r + 7/8 via explicit constructions), eht_upper_bound (Erdos-Hajnal-Tuza 1991 upper bound: t(r) <= (1/5)r via counting arguments). The existence of an optimal t(r) and the LP relaxation (fractional covering number) are documented in source comments only; no formal axiom or declaration exists for them.",
     "lineCount": 281,
     "relatedProblems": [
       {
@@ -116,10 +116,10 @@
     {
       "id": "main-question",
       "title": "The Main Question: ErdosProblem616",
-      "summary": "Formal statement parameterized by r and t, plus axiomatized optimalCoveringBound asserting existence of the extremal function",
+      "summary": "Formal statement ErdosProblem616 parameterized by r and t; the existence of the optimal extremal function is discussed in source comments only (no axiom declared)",
       "startLine": 100,
       "endLine": 119,
-      "mathContext": "Axiomatized: Formal statement parameterized by r and t, plus axiomatized optimalCoveringBound asserting existence of the extremal function"
+      "mathContext": "Formal definition: ErdosProblem616 parameterized by r and t; the existence of the optimal extremal function is discussed in source comments only"
     },
     {
       "id": "known-bounds",
@@ -156,10 +156,10 @@
     {
       "id": "fractional-relaxation",
       "title": "Fractional Relaxation",
-      "summary": "Axiomatized fractional covering number τ*(G) as the LP relaxation, connecting to duality theory and integrality gap analysis",
+      "summary": "Documents the fractional covering number τ*(G) and integrality gap discussion in source comments; no formal declaration exists in this section",
       "startLine": 230,
       "endLine": 245,
-      "mathContext": "Axiomatized: Axiomatized fractional covering number τ*(G) as the LP relaxation, connecting to duality theory and integrality gap analysis"
+      "mathContext": "Documentation only: fractional covering number τ*(G) and integrality gap discussion; no axiom or definition declared in this section"
     },
     {
       "id": "summary-theorem",
