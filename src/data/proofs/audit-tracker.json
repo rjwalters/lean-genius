@@ -7414,10 +7414,13 @@
       "result": "clean"
     },
     "erdos-535": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-64117",
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T15:24:33Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom-axiom narrative + section line drift (#14284)"
+      ]
     },
     "erdos-536": {
       "auditCount": 2,
