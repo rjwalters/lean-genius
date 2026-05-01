@@ -77,50 +77,50 @@
   "sections": [
     {
       "id": "prime-gap",
-      "title": "Prime Gap Definition",
-      "summary": "Definition of d_n = p_{n+1} - p_n using Mathlib's prime enumeration",
+      "title": "Prime Gap Definition and Basic Properties",
+      "summary": "Definition of d_n = p_{n+1} - p_n and basic prime gap lemmas",
       "mathContext": "$d_n = p_{n+1} - p_n$, where $p_n$ denotes the $n$-th prime (0-indexed via `Nat.nth Nat.Prime`)",
       "startLine": 32,
-      "endLine": 56
+      "endLine": 67
     },
     {
       "id": "monotone",
       "title": "Monotone Sequences",
       "summary": "HasIncreasingGaps, HasDecreasingGaps, InfinitelyMany predicates",
       "mathContext": "`HasIncreasingGaps n m` $\\iff$ $\\forall i < m,\\; d_{n+i} < d_{n+i+1}$; similarly for decreasing",
-      "startLine": 57,
-      "endLine": 74
+      "startLine": 68,
+      "endLine": 85
     },
     {
       "id": "conjecture",
       "title": "Original Conjecture",
       "summary": "Erdős Problem 6 as InfinitelyManyIncreasing 2",
       "mathContext": "$\\exists^\\infty n,\\; d_n < d_{n+1} < d_{n+2}$, i.e., `InfinitelyManyIncreasing 2`",
-      "startLine": 75,
-      "endLine": 85
+      "startLine": 86,
+      "endLine": 96
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem",
-      "summary": "Banks-Freiberg-Turnage-Butterbaugh (2015) resolution",
+      "title": "Main Theorem and Resolution",
+      "summary": "Banks-Freiberg-Turnage-Butterbaugh (2015) axioms and erdos_6_solved",
       "mathContext": "$\\forall m \\geq 1,\\; \\forall N,\\; \\exists n > N,\\; d_n < d_{n+1} < \\cdots < d_{n+m}$",
-      "startLine": 86,
-      "endLine": 113
+      "startLine": 97,
+      "endLine": 124
     },
     {
       "id": "machinery",
       "title": "Maynard-Tao Machinery",
       "summary": "Key ingredients: bounded gaps theorems of Maynard-Tao and Zhang",
       "mathContext": "$\\exists H,\\; \\forall N,\\; \\exists n > N,\\; |\\{p \\text{ prime} : p \\in [n, n+H]\\}| \\geq m$",
-      "startLine": 114,
-      "endLine": 136
+      "startLine": 125,
+      "endLine": 139
     },
     {
       "id": "generalizations",
-      "title": "Generalizations",
+      "title": "Generalizations and Related Results",
       "summary": "Arbitrarily long runs and oscillation theorems",
       "mathContext": "$\\forall m \\geq 1$, both `InfinitelyManyIncreasing m` and `InfinitelyManyDecreasing m` hold; prime gaps oscillate without eventual monotonicity",
-      "startLine": 148,
+      "startLine": 140,
       "endLine": 191
     }
   ],
