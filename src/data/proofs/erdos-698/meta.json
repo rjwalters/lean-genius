@@ -58,7 +58,6 @@
       "bergmanH definition: the growth function h(n) = ⌊c · √n⌋",
       "bergmanH_unbounded theorem: h(n) → ∞",
       "erdos698_answer theorem: YES answer",
-      "kummer_theorem, lucas_theorem axioms: number-theoretic connections",
       "erdos_698 theorem: main result"
     ],
     "axiomCount": 2,
@@ -115,7 +114,7 @@
     {
       "id": "sharpness",
       "title": "Sharpness of Bound",
-      "summary": "sharpness_example axiom",
+      "summary": "Commentary on sharpness of the 2^i bound — section is docstring only, no formal axiom or theorem declared.",
       "startLine": 98,
       "endLine": 111,
       "mathContext": "Sharpness: $\\exists$ pairs with $g(n,i,j)$ as small as 2 (when $n = 2^k$, Kummer's theorem gives $\\gcd = 2$ for certain $i,j$)."
@@ -131,7 +130,7 @@
     {
       "id": "bergman-theorem",
       "title": "Bergman's Theorem (2011)",
-      "summary": "bergman_bound_exists, bergman_theorem, min_gcd_growth",
+      "summary": "min_gcd_growth axiom: minimum GCD grows like Ω(√n). Note: bergman_bound_exists and bergman_theorem are docstring placeholders only — no formal declarations.",
       "startLine": 134,
       "endLine": 163,
       "mathContext": "Bergman (2007): $h(n) \\to \\infty$. Specifically, $h(n) \\geq c \\cdot n^\\delta$ for some $\\delta > 0$. Resolves the problem affirmatively."
@@ -147,7 +146,7 @@
     {
       "id": "implications",
       "title": "Implications and Generalizations",
-      "summary": "divisibility_structure, pascal_primes, multinomial_generalization",
+      "summary": "Commentary on implications and generalizations — section is docstring only, no formal declarations (divisibility_structure, pascal_primes, multinomial_generalization are not declared in the Lean file).",
       "startLine": 197,
       "endLine": 232,
       "mathContext": "Implications: divisibility structure of Pascal's triangle, prime factors shared by central binomial coefficients, and multinomial generalizations $\\gcd(\\binom{n}{\\mathbf{k}})$."
@@ -155,7 +154,7 @@
     {
       "id": "kummer-lucas",
       "title": "Kummer and Lucas Theorems",
-      "summary": "kummer_theorem, lucas_theorem",
+      "summary": "Commentary on Kummer and Lucas theorems — section is docstring only, no formal declarations (kummer_theorem and lucas_theorem are not declared in the Lean file).",
       "startLine": 233,
       "endLine": 253,
       "mathContext": "Kummer (1852): $v_p(\\binom{m+n}{m}) = $ number of carries in base-$p$ addition $m + n$. Lucas: $\\binom{n}{k} \\equiv \\prod \\binom{n_i}{k_i} \\pmod{p}$ where $n = \\sum n_i p^i$."
@@ -165,7 +164,7 @@
       "title": "Summary",
       "summary": "erdos_698_summary, erdos_698 main theorem",
       "startLine": 254,
-      "endLine": 283,
+      "endLine": 293,
       "mathContext": "Summary: Problem #698 is RESOLVED. $h(n) \\to \\infty$ (Bergman 2007). The min GCD of central binomial coefficient pairs grows without bound."
     }
   ],
