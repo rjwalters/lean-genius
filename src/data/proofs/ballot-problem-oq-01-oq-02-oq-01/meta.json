@@ -84,7 +84,7 @@
       "id": "summary",
       "title": "Proof Status Summary",
       "startLine": 177,
-      "endLine": 208,
+      "endLine": 207,
       "summary": "Documents what is proved (fiber decomposition, disjointness, positive decomposition, ENNReal ratio) vs. remaining sorry steps (ncard_biUnion API, uniformOn assembly).",
       "mathContext": "Pipeline: $\\text{fiber\\_card\\_uniform} \\xrightarrow{\\text{ncard\\_biUnion}} |\\text{MCS}| = k|\\text{CS}| \\xrightarrow{\\text{ENNReal}} \\text{uniformOn equality}$. Mathematical content complete; remaining work is Mathlib API navigation."
     }

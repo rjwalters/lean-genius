@@ -174,7 +174,7 @@
       "id": "commentary",
       "title": "III. Commentary: Significance, Architecture, Mathlib Facts",
       "startLine": 154,
-      "endLine": 191,
+      "endLine": 190,
       "summary": "End-of-file documentation of the WIP01-WIP05 architecture (squarefree → prime-power → general → UFD-wrapped) and an enumerated list of Mathlib facts used. Explains why WIP05 supersedes WIP01's axiom-based version.",
       "mathContext": "Architectural summary of the cluster's axiom-elimination strategy. Documents the dependency chain: WIP02 (squarefree, CRT) → WIP03 (prime power, induction) → WIP04 (general factored, primary decomposition) → WIP05 (UFD factorization wrapper)."
     }
