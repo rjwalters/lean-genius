@@ -7775,9 +7775,12 @@
     },
     "erdos-588": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "originalContributions lists 11 phantom identifiers (Line, OnLine, Collinear, InKGeneralPosition, IsKRich, karteszi_lower_bound, grunbaum_lower_bound, solymosi_stojakovic, erdos_588_conjecture, problem_101, szemeredi_trotter); section k4-open summary claims axioms lower_bound_k4 and erdos_conjecture_k4 that are docstring-only (issue #14192)"
+      ],
+      "lastAudited": "2026-05-01T08:11:06Z",
+      "result": "issues-found"
     },
     "erdos-589": {
       "agentId": "auditor-cycle-20-batch",
