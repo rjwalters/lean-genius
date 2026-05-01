@@ -153,10 +153,10 @@
     {
       "id": "hales-jewett",
       "title": "Hales-Jewett Approach",
-      "summary": "Defines `CombinatorialLine k n` structure with fixed/varying coordinate partition. Axiomatizes `hales_jewett` (monochromatic line guarantee), `generic_projection` (injective line-preserving map [k]ⁿ → Point), and `hunter_observation` (combining both for HasRamseyProperty).",
+      "summary": "Defines `CombinatorialLine k n` structure with fixed/varying coordinate partition. documents in source comments `hales_jewett` (no Lean declaration exists) (monochromatic line guarantee), `generic_projection` (injective line-preserving map [k]ⁿ → Point), and `hunter_observation` (combining both for HasRamseyProperty).",
       "startLine": 148,
       "endLine": 201,
-      "mathContext": "Defines `CombinatorialLine k n` structure with fixed/varying coordinate partition. Axiomatizes `hales_jewett` (monochromatic line guarantee), `generic_projection` (injective line-preserving map [k]ⁿ → Point), and `hunter_observation` (combining both for HasRamseyProperty)."
+      "mathContext": "Defines `CombinatorialLine k n` structure with fixed/varying coordinate partition. documents in source comments `hales_jewett` (no Lean declaration exists) (monochromatic line guarantee), `generic_projection` (injective line-preserving map [k]ⁿ → Point), and `hunter_observation` (combining both for HasRamseyProperty)."
     },
     {
       "id": "main-result",
@@ -177,26 +177,26 @@
     {
       "id": "bounds",
       "title": "Size Bounds",
-      "summary": "Defines `ramseyNumber k` (minimum |A| with Ramsey property, using noncomputable Nat.find). States `ramsey_lower_bound` (R(k) ≥ k, sorry). Axiomatizes `r3_small` (∃ A, A.card ≤ 9 ∧ HasRamseyProperty A 3).",
+      "summary": "Defines `ramseyNumber k` (minimum |A| with Ramsey property, using noncomputable Nat.find). States `ramsey_lower_bound` (R(k) ≥ k, sorry). documents in source comments `r3_small` (no Lean declaration exists) (∃ A, A.card ≤ 9 ∧ HasRamseyProperty A 3).",
       "startLine": 240,
       "endLine": 265,
-      "mathContext": "Defines `ramseyNumber k` (minimum |A| with Ramsey property, using noncomputable Nat.find). States `ramsey_lower_bound` (R(k) ≥ k, sorry). Axiomatizes `r3_small` (∃ A, A.card ≤ 9 ∧ HasRamseyProperty A 3)."
+      "mathContext": "Defines `ramseyNumber k` (minimum |A| with Ramsey property, using noncomputable Nat.find). States `ramsey_lower_bound` (R(k) ≥ k, sorry). documents in source comments `r3_small` (no Lean declaration exists) (∃ A, A.card ≤ 9 ∧ HasRamseyProperty A 3)."
     },
     {
       "id": "related",
       "title": "Related Results",
-      "summary": "Defines `SylvesterGallai` (ordinary line existence) and `HellyProperty` (d+1 convex sets with pairwise intersections have common point). Axiomatizes `sylvester_gallai` for ≥ 3 non-collinear points.",
+      "summary": "Defines `SylvesterGallai` (ordinary line existence) and `HellyProperty` (d+1 convex sets with pairwise intersections have common point). documents in source comments `sylvester_gallai` (no Lean declaration exists) for ≥ 3 non-collinear points.",
       "startLine": 266,
       "endLine": 295,
-      "mathContext": "Defines `SylvesterGallai` (ordinary line existence) and `HellyProperty` (d+1 convex sets with pairwise intersections have common point). Axiomatizes `sylvester_gallai` for $\\geq$ 3 non-collinear points."
+      "mathContext": "Defines `SylvesterGallai` (ordinary line existence) and `HellyProperty` (d+1 convex sets with pairwise intersections have common point). documents in source comments `sylvester_gallai` (no Lean declaration exists) for $\\geq$ 3 non-collinear points."
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
-      "summary": "Defines `Erdos1090Generalized k r` (r-coloring version) and `Erdos1090HigherDim d k` (hyperplanes in ℝᵈ). Axiomatizes `erdos_1090_generalized` via Hales-Jewett for r colors.",
+      "summary": "Defines `Erdos1090Generalized k r` (r-coloring version) and `Erdos1090HigherDim d k` (hyperplanes in ℝᵈ). documents in source comments `erdos_1090_generalized` (no Lean declaration exists) via Hales-Jewett for r colors.",
       "startLine": 296,
       "endLine": 328,
-      "mathContext": "Formal definition: Defines `Erdos1090Generalized k r` (r-coloring version) and `Erdos1090HigherDim d k` (hyperplanes in ℝᵈ). Axiomatizes `erdos_1090_generalized` via Hales-Jewett for r colors."
+      "mathContext": "Formal definition: Defines `Erdos1090Generalized k r` (r-coloring version) and `Erdos1090HigherDim d k` (hyperplanes in ℝᵈ). documents in source comments `erdos_1090_generalized` (no Lean declaration exists) via Hales-Jewett for r colors."
     },
     {
       "id": "summary",

@@ -96,7 +96,7 @@
     {
       "id": "lindstrom",
       "title": "Lindström's Theorem (1998)",
-      "summary": "Axiomatizes `lindstrom_sidon_distribution`: for Sidon $A \\subset \\{1,\\ldots,N\\}$, $\\forall m \\geq 2$, $\\forall \\varepsilon > 0$, $A$ is $\\varepsilon$-well-distributed mod $m$ for large $N$. Uses fourth moment bounds on character sums.",
+      "summary": "documents in source comments `lindstrom_sidon_distribution` (no Lean declaration exists): for Sidon $A \\subset \\{1,\\ldots,N\\}$, $\\forall m \\geq 2$, $\\forall \\varepsilon > 0$, $A$ is $\\varepsilon$-well-distributed mod $m$ for large $N$. Uses fourth moment bounds on character sums.",
       "startLine": 50,
       "endLine": 62
     },
@@ -110,7 +110,7 @@
     {
       "id": "even-odd",
       "title": "Even-Odd Balance",
-      "summary": "Axiomatizes `even_odd_balance`: the $m = 2$ case. About half of $A+A$ is even ($\\binom{k}{2} + \\binom{|A|-k}{2}$ sums) and half odd ($k(|A|-k)$ sums), where $k \\approx |A|/2$ from Lindström.",
+      "summary": "documents in source comments `even_odd_balance` (no Lean declaration exists): the $m = 2$ case. About half of $A+A$ is even ($\\binom{k}{2} + \\binom{|A|-k}{2}$ sums) and half odd ($k(|A|-k)$ sums), where $k \\approx |A|/2$ from Lindström.",
       "startLine": 77,
       "endLine": 89
     },

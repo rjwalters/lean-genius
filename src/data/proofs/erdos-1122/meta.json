@@ -76,7 +76,7 @@
     "keyInsights": [
       "**Additive Determined by Primes:** Additive functions are determined by values on prime powers, since any n factors as a product of coprime prime powers. The `valueDeterminedByPrimes` definition captures this via `Nat.primeFactors` and `Nat.factorization`.",
       "**log is the Unique Monotone Additive:** Erdős proved that the only increasing additive function is c·log. The formalization captures this as `erdos_empty_defect`: empty defect set + additive → logarithmic.",
-      "**Condition Hierarchy:** Empty defect ⊂ Mangerel density ⊂ o(X) density forms a strict chain. The formalization proves `empty_implies_littleO` directly and axiomatizes `mangerel_implies_littleO`.",
+      "**Condition Hierarchy:** Empty defect ⊂ Mangerel density ⊂ o(X) density forms a strict chain. The formalization proves `empty_implies_littleO` directly and documents in source comments `mangerel_implies_littleO` (no Lean declaration exists).",
       "**The Gap:** Between Mangerel's O(X/(log X)^{2+c}) and the conjecture's o(X) lies the open problem. The `hasBoundedPrimeValues` condition in Mangerel's theorem is an additional restriction not present in the conjecture.",
       "**omega as Counterexample:** ω(n) = |{p : p | n}| is additive but not logarithmic, showing additivity alone doesn't force logarithmic form — some monotonicity condition is essential."
     ],
@@ -172,16 +172,16 @@
       "title": "Condition Hierarchy",
       "startLine": 156,
       "endLine": 180,
-      "summary": "Proves `empty_implies_littleO` via `Finset.filter_eq_empty_iff` and `Set.not_mem_empty`. Axiomatizes `mangerel_implies_littleO`. Defines `conditionHierarchy` as the conjunction of both implications.",
-      "mathContext": "Formal definition: Proves `empty_implies_littleO` via `Finset.filter_eq_empty_iff` and `Set.not_mem_empty`. Axiomatizes `mangerel_implies_littleO`. Defines `conditionHierarchy` as the conjunction of both implications."
+      "summary": "Proves `empty_implies_littleO` via `Finset.filter_eq_empty_iff` and `Set.not_mem_empty`. documents in source comments `mangerel_implies_littleO` (no Lean declaration exists). Defines `conditionHierarchy` as the conjunction of both implications.",
+      "mathContext": "Formal definition: Proves `empty_implies_littleO` via `Finset.filter_eq_empty_iff` and `Set.not_mem_empty`. documents in source comments `mangerel_implies_littleO` (no Lean declaration exists). Defines `conditionHierarchy` as the conjunction of both implications."
     },
     {
       "id": "sec-examples",
       "title": "Examples",
       "startLine": 181,
       "endLine": 200,
-      "summary": "Proves `log_has_empty_defect` via `Real.log_le_log` and `ext`/`simp`. Defines `omega` via `Nat.primeFactors.card`. Axiomatizes `omega_is_additive` and `omega_not_logarithmic`.",
-      "mathContext": "Formal definition: Proves `log_has_empty_defect` via `Real.log_le_log` and `ext`/`simp`. Defines `omega` via `Nat.primeFactors.card`. Axiomatizes `omega_is_additive` and `omega_not_logarithmic`."
+      "summary": "Proves `log_has_empty_defect` via `Real.log_le_log` and `ext`/`simp`. Defines `omega` via `Nat.primeFactors.card`. documents in source comments `omega_is_additive` (no Lean declaration exists) and `omega_not_logarithmic`.",
+      "mathContext": "Formal definition: Proves `log_has_empty_defect` via `Real.log_le_log` and `ext`/`simp`. Defines `omega` via `Nat.primeFactors.card`. documents in source comments `omega_is_additive` (no Lean declaration exists) and `omega_not_logarithmic`."
     },
     {
       "id": "sec-summary",
