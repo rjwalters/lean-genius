@@ -230,3 +230,48 @@ The remaining sorry covers **even non-admissible n** (n = 6, 10, 12, ...):
 1. **Track Mathlib**: When Bott periodicity for Clifford algebras is formalized, sorry closes directly.
 2. **Gallery status**: Proof maximally complete — 1 sorry, 0 axioms, badge `wip`. No further progress possible without Clifford library.
 3. **Alternative**: Build Artin-Wedderburn for matrix algebras (~200 lines) as stepping stone toward Bott.
+
+---
+
+## Session 2026-04-27 (Session 5) — Independent Re-Verification, Status → BLOCKED
+
+**Mode**: REVISIT (5th session)
+**Outcome**: NO PROOF PROGRESS — applied 3+ session BLOCKED rule, transitioned status
+
+### What I Did
+
+1. Re-read all prior session notes (sessions 1–4).
+2. Verified `HurwitzTheorem.lean` current state:
+   - `grep -c "^axiom " proofs/Proofs/HurwitzTheorem.lean` → 0
+   - Real `sorry` count (excluding doc-comment occurrences): 1 at line 1937
+   - File line count: 2042 (matches JSON)
+3. Inspected Mathlib v4.26.0 (`./.lake/packages/mathlib/Mathlib/LinearAlgebra/CliffordAlgebra/`):
+   - Files present: BaseChange, Basic, CategoryTheory, Conjugation, Contraction, Equivs, Even, EvenEquiv, Fold, Grading, Inversion, Prod, SpinGroup, Star
+   - `grep -rl -E "(Bott|Wedderburn|RadonHurwitz)"` over Mathlib: **no matches** in any Clifford algebra file
+   - Conclusion: the structural ingredients flagged by Session 4 (Bott periodicity, Artin-Wedderburn for real semisimple algebras, Clifford rep classification) are still absent in v4.26.0.
+4. Considered candidate incremental contributions:
+   - **Direct n=6 proof via volume element + complex eigenspace decomposition.** Sketch: J = M_1 M_2 M_3 M_4 M_5 satisfies J² = -I and commutes with each M_j (5 odd → 4 transpositions per slide). Complexify ℝ^6 → ℂ^6, decompose into ±i eigenspaces of J (each ℂ-dim 3). Restrict M_j to E_+; iM_j become 5 anticommuting involutions on ℂ^3. iM_1's ±1 eigenspaces are swapped by iM_2, so they have equal ℂ-dim → 2k = 3, contradiction. Estimated cost: ~300–500 lines of Lean (complexification machinery, eigenspace decomposition, ℂ-linear restriction). Even if completed, sorry would still cover n ≡ 0 (mod 4) with n ∉ {4, 8} — i.e., n ∈ {12, 16, 20, 24, ...}, requiring different (likely Clifford-structural) arguments.
+   - **`halving_lemma` as Session 3 proposed.** Session 4 already documented why this is mathematically insufficient (n=16, 32, 64, ... reduce to admissible 8). Pursuing this would not honestly close the sorry.
+   - **Build partial Wedderburn / Bott infrastructure.** Out of scope (~1000+ lines).
+5. Applied the methodology rule: *"If 3+ sessions stuck on same sorry: flag as BLOCKED, move on"* — sessions 2/3/4/5 have all targeted the same even-n sorry.
+
+### Decision
+
+**Status → BLOCKED.** The proof is maximally complete given current Mathlib. Adding partial decompositions (e.g., n=6 only) would not reduce the sorry count and would create maintenance burden without unblocking the broader case. The right path is to wait for Mathlib's Clifford rep theory to land or to pursue a separate effort to build it.
+
+### Files Modified
+
+- `research/problems/hurwitz-theorem-oq-03-oq-01/knowledge.md` (this entry)
+- `research/problems/hurwitz-theorem-oq-03-oq-01/state.md` (Phase BLOCKED, history updated)
+- `src/data/research/problems/hurwitz-theorem-oq-03-oq-01.json` (status, progressSummary, sorryCount fix)
+
+### Knowledge Delta
+
+- Insights: 1 (Mathlib v4.26.0 verification — no Clifford rep theory present)
+- Built items: 0
+- Sorry delta: 0 (1 → 1)
+- Axiom delta: 0 (0 → 0)
+
+### Why I Did Not Push Further
+
+This problem has had four substantive prior research sessions with detailed mathematical analysis. Session 4 already declared the proof "maximally complete." A fifth session adding speculative decompositions (n=6 alone, partial halving) would inflate scope without making the sorry false. Per the *Honesty Standards* in the researcher role: "When uncertain about significance, default to understating rather than overstating" — and the only honest characterization of further partial-case work here is that it does not advance the actual blocker.

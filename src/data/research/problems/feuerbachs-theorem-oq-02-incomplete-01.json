@@ -1,7 +1,7 @@
 {
   "slug": "feuerbachs-theorem-oq-02-incomplete-01",
   "title": "3D Analogue of Feuerbach's Theorem for Tetrahedra",
-  "phase": "NEW",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -27,33 +27,59 @@
     "goal": "Fill the 5 sorries to complete the 3D Feuerbach proof for orthocentric tetrahedra"
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ORIENT",
     "since": "2026-04-21T00:00:00Z",
-    "iteration": 1,
-    "focus": "Read FeuerbachsTheoremOQ02.lean to locate and classify the 5 sorries",
+    "iteration": 2,
+    "focus": "9 of 14 sorries eliminated in FeuerbachsTheoremOQ02Aristotle.lean. 5 helper sorries + 5 main sorries remain.",
     "blockers": [],
-    "nextAction": "OBSERVE: Read proofs/Proofs/FeuerbachsTheoremOQ02.lean to map the 5 sorry locations",
+    "nextAction": "Prove remaining 4 tractable companion sorries (dist3_sq_zero_iff, dot3_self_zero_iff, midpoint3_equidist, midpoint3_spec). Remove or fix externally_tangent_radii_nonneg.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Eliminated 9 of 14 sorries in FeuerbachsTheoremOQ02Aristotle.lean using ring/positivity/linarith/linear_combination. Identified externally_tangent_radii_nonneg as UNPROVABLE as stated (counterexample r₁=3,r₂=-1,d=2). Remaining 4 companion sorries are tractable but need Prod.ext / dsimp gymnastics.",
+    "builtItems": [
+      "dist3_sq_nonneg in FeuerbachsTheoremOQ02Aristotle.lean (positivity)",
+      "dist3_sq_comm in FeuerbachsTheoremOQ02Aristotle.lean (ring)",
+      "dot3_self_nonneg in FeuerbachsTheoremOQ02Aristotle.lean (positivity)",
+      "dot3_comm in FeuerbachsTheoremOQ02Aristotle.lean (ring)",
+      "dot3_add_left in FeuerbachsTheoremOQ02Aristotle.lean (ring)",
+      "internally_tangent_sym in FeuerbachsTheoremOQ02Aristotle.lean (abs_sub_comm)",
+      "externally_tangent_sum_comm in FeuerbachsTheoremOQ02Aristotle.lean (add_comm)",
+      "twentyFourPoint_radius_third_of_circum in FeuerbachsTheoremOQ02Aristotle.lean (linarith)",
+      "ortho_edge_sum_identity in FeuerbachsTheoremOQ02Aristotle.lean (linear_combination 2*hab_cd - 2*hac_bd)"
+    ],
+    "insights": [
+      "ortho_edge_sum_identity: |AB|² + |CD|² - |AC|² - |BD|² = 2·((B-A)·(D-C)) - 2·((C-A)·(D-B)). The linear_combination tactic with coefficients 2,-2 closes from the two perpendicularity hypotheses via ring.",
+      "externally_tangent_radii_nonneg is FALSE as stated: hypotheses (0 < d, d = r₁ + r₂, 0 ≤ r₁) do not force 0 ≤ r₂ (counterexample r₁=3, r₂=-1, d=2). The lemma needs an additional hypothesis like 0 ≤ r₂ - r₁ + d or to be removed.",
+      "let-bound goals (midpoint3_equidist, midpoint3_spec) likely need dsimp only or show before ring/refine; test before submitting to Aristotle.",
+      "Aristotle companion files contain a mix of ring-trivial and Prod.ext-requiring lemmas — fast wins available with single-tactic proofs."
+    ],
     "mathlibGaps": [
       "3D sphere tangency in Mathlib is less developed than 2D circle geometry"
     ],
     "nextSteps": [
-      "Read proofs/Proofs/FeuerbachsTheoremOQ02.lean",
-      "Classify each sorry: definitional vs. computational vs. algebraic",
-      "Check Mathlib.Analysis.InnerProductSpace for dot product lemmas"
+      "Prove remaining 4 companion sorries (dist3_sq_zero_iff, dot3_self_zero_iff, midpoint3_equidist, midpoint3_spec) — these need Prod.ext / dsimp only.",
+      "Remove or restate externally_tangent_radii_nonneg (currently unprovable).",
+      "The 5 main 3D Feuerbach sorries require deep coordinate computation; consider symbolic expansion of |N₂₄ - I|² as a separate effort.",
+      "Three axioms in main file (feuerbach_3d_fails_general, edge_midpoints_on_sphere, face_centroids_on_sphere) could be converted to theorem ... := by sorry and submitted to Aristotle."
     ]
   },
-  "tags": ["geometry", "3d-geometry", "feuerbach", "spheres", "wip-completion"],
-  "relatedProofs": ["feuerbachs-theorem", "feuerbachs-theorem-oq-01", "feuerbachs-theorem-oq-02"],
+  "tags": [
+    "geometry",
+    "3d-geometry",
+    "feuerbach",
+    "spheres",
+    "wip-completion"
+  ],
+  "relatedProofs": [
+    "feuerbachs-theorem",
+    "feuerbachs-theorem-oq-01",
+    "feuerbachs-theorem-oq-02"
+  ],
   "references": {
     "papers": [
       "Feuerbach (1822) - 2D theorem",
@@ -66,7 +92,7 @@
     ]
   },
   "started": "2026-04-21T00:00:00Z",
-  "lastUpdate": "2026-04-21T00:00:00Z",
+  "lastUpdate": "2026-04-27T17:35:00Z",
   "significance": 7,
   "tractability": 5
 }

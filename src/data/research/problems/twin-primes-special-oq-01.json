@@ -16,24 +16,38 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-22T13:03:46.384Z",
+    "phase": "SURVEYED",
+    "since": "2026-04-27",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Session 1: SURVEYED. No existing Lean file or gallery entry. Documented direct port plan from sophie-germain-oq-01.",
+    "blockers": [
+      "No mathematical blocker; execution blocker is Docker-only build (~10 min/iteration) — too slow to safely write/test a new ~200-line Lean file in one no-build session"
+    ],
+    "nextAction": "Code-iterating session: port SophieGermainOQ01.lean → TwinPrimesSpecialOQ01.lean (rename SGC → TPC, IsSophieGermainPrime → IsTwinPrimePair, drop SafePrimeConjecture as it has no twin-prime dual). Create matching gallery entry. Estimated 30-60 min with build access.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED 2026-04-27: no Lean file or gallery entry exists yet. Concrete port plan from sophie-germain-oq-01 documented in knowledge.md. Ready for execution by next code-iterating session.",
+    "builtItems": [
+      "Port plan documented: SophieGermainOQ01 → TwinPrimesSpecialOQ01 with substitution table (knowledge.md)",
+      "Suggested 25 twin-prime examples for the new file: 3, 5, 11, 17, 29, 41, 59, 71 (already in parent) + 101, 107, 137, 149, 179, 191, 197, 227, 239, 269, 281, 311, 347, 419, 431, 461, 521, 569, 599, 617"
+    ],
+    "insights": [
+      "Parent TwinPrimes.lean (190 lines) already defines TwinPrimeConjecture as axiom and verifies several twin prime pairs via decide — the foundation needed for OQ-01",
+      "SophieGermainOQ01.lean is the structural template: axiomatize → 4 equivalent formulations → 25 verified examples → 3 conditional consequences. Port to twin primes is mostly renaming.",
+      "Twin primes lack the safe-prime dual that SG has (p ↔ 2p+1). The TPC equivalent reduction is just unfolding IsTwinPrimePair, not a non-trivial bijection."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Create proofs/Proofs/TwinPrimesSpecialOQ01.lean (~200 lines, 0 sorries, 1 inherited axiom)",
+      "Create src/data/proofs/twin-primes-special-oq-01/{meta.json,annotations.json,index.ts}",
+      "Run docker-build.sh Proofs.TwinPrimesSpecialOQ01 to verify",
+      "Run pnpm build to verify gallery integration"
+    ]
   },
   "tags": [
     "number-theory",
@@ -51,7 +65,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.384Z",
-  "lastUpdate": "2026-04-22T13:03:46.384Z",
+  "lastUpdate": "2026-04-27T00:00:00.000Z",
   "significance": 8,
   "tractability": 2
 }
