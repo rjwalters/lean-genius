@@ -32,7 +32,7 @@
     "historicalContext": "Erdős Problem #665, posed by Erdős and Larson, concerns pairwise balanced designs (PBDs) with nearly equal block sizes. A PBD for {1,...,n} is a collection of sets where every pair of elements appears in exactly one block, with block sizes between 2 and n-1. The question asks whether block sizes can all exceed √n - C for some absolute constant C. Erdős and Larson proved block sizes satisfy |Aᵢ| > √n - h(n) where h(n) ≪ n^{1/2-c}. The answer may be negative: Shrikhande and Singhi showed it is 'no' conditional on the prime power conjecture for projective planes. The problem is closely tied to understanding prime gaps in number theory, as near-square primes play a key role in projective plane constructions.",
     "problemStatement": "Is there some constant $c$ such that for every $n$ there are $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ such that $\\lvert A_i\\rvert >n^{1/2}-c$ for all $i$, and $\\lvert A_i\\cap A_j\\rvert \\leq 1$ for all $i\\neq j$, and every pair $1\\leq x<y\\leq n$ has $\\{x,y\\}\\subseteq A_i$ for some $i$?\n\n\n\nA problem of Erd\\H{o}s and Larson \\cite{ErLa82}.\n\nShrikhande and Singhi \\cite{ShSi85} have proved that the answer is no conditional on the conjecture that the order of every projective plane is a prime power (see [723]), by proving that every pairwise balanced design on $n$ points in which each block is of size $\\geq n^{1/2}-c$ can be embedded in a projective plane of order $n+i$ for some $i\\leq c+2$, if $n$ is sufficiently large.\n\nErd\\H{o}s asks if this is false for constant, for which functions $h(n)$ will the condition $\\lvert A_i\\rvert \\geq n^{1/2}-h(n)$ make the conjecture true?\n\n\n\n\nReferences\n\n\n[ErLa82] Erd\\H{o}s, P. and Larson, J., On pairwise balanced block designs with the sizes of blocks as uniform as possible. Annals of Discrete Mathematics (1982), 129-134.\n\n[ShSi85] S. S. Shrikhande and N. M. Singhi, On a problem of Erd\\H{o}s and Larson. Combinatorica (1985), 351-358.",
     "text": "Can a pairwise balanced design on n points always have all block sizes exceeding √n - C for some absolute constant C? Conditionally no: Shrikhande-Singhi (1985) showed such designs embed in projective planes, so the prime power conjecture would imply the answer is negative.",
-    "proofStrategy": "The formalization defines pairwise balanced designs as structures with blocks covering all pairs exactly once. The central function h(n) measures the minimum block-size deficiency below √n. Key results are axiomatized: Erdős-Larson's unconditional bound h(n) ≤ n^{1/2-c}, Shrikhande-Singhi's embedding theorem (PBDs with large blocks embed in projective planes), and the connection to prime gaps via Cramér's conjecture. Special cases for perfect square primes (affine planes) are included.",
+    "proofStrategy": "The formalization defines pairwise balanced designs as structures with blocks covering all pairs exactly once. The central function h(n) measures the minimum block-size deficiency below √n. Three substantive results are axiomatized: Erdős-Larson's unconditional bound h(n) ≤ n^{1/2-c} (`erdos_larson_bound`); the conditional negative answer `prime_power_planes_implies_unbounded` (a corollary of Shrikhande-Singhi's embedding theorem, which itself is documented in a docstring but not formalized as an axiom); and `h_correlates_with_prime_gap`, which connects h(n) to the largest-prime-gap function (Cramér's conjecture appears only as docstring motivation, not as a Lean axiom). Special cases for perfect square primes (affine planes) are included.",
     "keyInsights": [
       "**Pairwise balanced designs**: Collections of blocks where every pair of points appears in exactly one block — generalizations of finite geometries",
       "**h(n) measures deficiency**: The function h(n) quantifies how far below √n the smallest block must be in the optimal design on n points",
@@ -50,38 +50,38 @@
       "id": "erd-s-problem-665-pairwise-bal",
       "title": "Problem Statement and Background",
       "startLine": 1,
-      "endLine": 33,
+      "endLine": 34,
       "summary": "Header documentation with the problem statement, known results, and references.",
       "mathContext": "Mathematical content: Header documentation with the problem statement, known results, and references."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "startLine": 34,
-      "endLine": 54,
+      "startLine": 35,
+      "endLine": 55,
       "summary": "Defines ground set, PairwiseBalancedDesign structure, and HasLargeBlocks predicate.",
       "mathContext": "Formal definition: Defines ground set, PairwiseBalancedDesign structure, and HasLargeBlocks predicate."
     },
     {
       "id": "the-main-question",
       "title": "The Main Question",
-      "startLine": 55,
-      "endLine": 80,
+      "startLine": 56,
+      "endLine": 75,
       "summary": "States ErdosQuestion and defines the deficiency function h(n) with its specification.",
       "mathContext": "Formal definition: States ErdosQuestion and defines the deficiency function h(n) with its specification."
     },
     {
       "id": "known-upper-bounds-on-h-n",
       "title": "Known Upper Bounds on h(n)",
-      "startLine": 81,
-      "endLine": 93,
+      "startLine": 76,
+      "endLine": 88,
       "summary": "Erdős-Larson unconditional bound h(n) ≤ n^{1/2-c}.",
       "mathContext": "Erdős-Larson unconditional bound h(n) $\\leq$ n^{1/2-c}."
     },
     {
       "id": "connection-to-projective-plane",
       "title": "Connection to Projective Planes",
-      "startLine": 94,
+      "startLine": 89,
       "endLine": 112,
       "summary": "Defines projectivePlanePoints, projectivePlaneLineSize; axiomatizes prime_power_planes_implies_unbounded (conditional negative answer). Shrikhande-Singhi is referenced only in docstring narrative.",
       "mathContext": "Formal definition: projectivePlanePoints, projectivePlaneLineSize; axiom: prime_power_planes_implies_unbounded."
@@ -90,14 +90,14 @@
       "id": "connection-to-prime-gaps",
       "title": "Connection to Prime Gaps",
       "startLine": 113,
-      "endLine": 132,
+      "endLine": 133,
       "summary": "Axiomatizes largestPrimeGap and h_correlates_with_prime_gap. Cramér's conjecture is referenced only in docstring narrative.",
       "mathContext": "Axioms: largestPrimeGap, h_correlates_with_prime_gap."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "startLine": 133,
+      "startLine": 134,
       "endLine": 143,
       "summary": "Section header and orphan docstrings discussing affine planes for n=q²; contains no Lean declarations.",
       "mathContext": "Commentary only; no Lean declarations in this range."
