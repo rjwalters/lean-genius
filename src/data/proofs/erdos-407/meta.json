@@ -44,8 +44,8 @@
       "DistinctReps definition: counting distinct term-sets",
       "egst_1988 axiom: w(n) is bounded",
       "tijdeman_wang_1988 axiom: w(n) ≤ 4 for large n",
-      "bajpai_bennett_2024 axioms: w(n) ≤ 9 always, ≤ 4 for n ≥ 131082",
-      "FourRepFamily definition: infinitely many n with w(n) = 4"
+      "bajpai_bennett_2024_all axiom: w(n) ≤ 9 for all n. The ≤ 4 for n ≥ 131082 result and the maximum w(299) = 9 are documented in the axiom's docstring but not formalized as separate axioms.",
+      "FourRepFamily definition: candidate family for n with multiple representations (algebraic identities and infinitude documented in docstrings only — no theorem)."
     ],
     "axiomCount": 3,
     "lineCount": 219,
@@ -55,7 +55,7 @@
     "historicalContext": "**Erdős Problem #407** asks whether the function w(n), counting representations of n as 2^a + 3^b + 2^c·3^d, is uniformly bounded.\n\n**Historical Development:**\n- **Newman (original):** Conjectured w(n) is bounded.\n- **Evertse-Győry-Stewart-Tijdeman (1988):** Proved the conjecture using S-unit equation theory.\n- **Tijdeman-Wang (1988):** Showed w(n) ≤ 4 for sufficiently large n.\n- **Bajpai-Bennett (2024):** Made bounds fully effective: w(n) ≤ 4 for n ≥ 131082, and w(n) ≤ 9 for all n.\n\nThe maximum w(n) = 9 occurs at n = 299.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $w(n)$ count solutions to $n = 2^a + 3^b + 2^c \\cdot 3^d$ with $a, b, c, d \\geq 0$.\n\n**Question:** Is $w(n)$ bounded by some absolute constant?\n\n**Answer:** YES.\n- $w(n) \\leq 9$ for all $n$\n- $w(n) \\leq 4$ for $n \\geq 131082$\n- $\\max_n w(n) = w(299) = 9$",
     "text": "Is w(n) bounded, where w(n) counts representations n = 2^a + 3^b + 2^c·3^d? Solved: w(n) ≤ 9 always, w(n) ≤ 4 for large n (EGST 1988, Bajpai-Bennett 2024).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define powers of 2, powers of 3, {2,3}-smooth numbers, and valid representations.\n\n2. **Counting Function:** Define w(n) and the alternative counting by distinct term-sets.\n\n3. **Examples:** Prove specific representations exist (e.g., for n = 5).\n\n4. **Main Results:** Axiomatize EGST 1988, Tijdeman-Wang 1988, and Bajpai-Bennett 2024.\n\n5. **Infinite Family:** Show infinitely many n achieve w(n) = 4 via algebraic identities.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define powers of 2, powers of 3, {2,3}-smooth numbers, and valid representations.\n\n2. **Counting Function:** Define w(n) and the alternative counting by distinct term-sets.\n\n3. **Examples:** Prove specific representations exist (e.g., for n = 5).\n\n4. **Main Results:** Axiomatize EGST 1988, Tijdeman-Wang 1988, and Bajpai-Bennett 2024.\n\n5. **Infinite Family:** Define `FourRepFamily` as a candidate family. The claim that infinitely many n achieve w(n) = 4 via algebraic identities is documented in docstrings but not formalized.",
     "keyInsights": [
       "**S-Unit Equations:** The equation n = 2^a + 3^b + 2^c·3^d is a three-term S-unit equation for S = {2, 3}.",
       "**Baker's Method:** The proof uses linear forms in logarithms to bound solutions.",
@@ -96,20 +96,20 @@
       "title": "Main Results",
       "summary": "EGST 1988, Tijdeman-Wang 1988, Bajpai-Bennett 2024",
       "startLine": 137,
-      "endLine": 171
+      "endLine": 165
     },
     {
       "id": "infinite-family",
       "title": "Infinitely Many with w(n) = 4",
-      "summary": "Algebraic identities giving 4 representations",
-      "startLine": 172,
-      "endLine": 205
+      "summary": "Definition of `FourRepFamily`; algebraic-identity claims and infinitude documented in docstrings but no Lean declarations follow them.",
+      "startLine": 166,
+      "endLine": 189
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_407_summary combining all main results",
-      "startLine": 206,
+      "startLine": 190,
       "endLine": 219
     }
   ],
