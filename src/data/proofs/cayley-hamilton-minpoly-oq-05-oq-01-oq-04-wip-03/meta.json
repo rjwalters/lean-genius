@@ -2,7 +2,7 @@
   "id": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
   "title": "Nonderogatory to Cyclic Vector: Prime Power Case (All Fields)",
   "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
-  "description": "Proves the cyclic vector theorem for nonderogatory matrices whose minimal polynomial is a prime power p^e (p irreducible monic, e ≥ 1), over any field K. The proof is axiom-free, using an induction on the exponent e via a new divisibility lemma.",
+  "description": "Proves the cyclic vector theorem for nonderogatory matrices whose minimal polynomial is a prime power p^e (p irreducible monic, e ≥ 1), over any field K. The proof is axiom-free and avoids the PID structure theorem, using an inductive divisibility lemma (`pow_irred_dvd_of_annihilated`) that descends the p-adic filtration via the shift trick v ↦ p(M)v. Together with the squarefree case (WIP02), this covers both structural pillars of the general nonderogatory cyclic vector theorem with no cardinality restriction on K.",
   "meta": {
     "author": "Classical linear algebra (cyclic decomposition)",
     "sourceUrl": "",
@@ -65,6 +65,8 @@
       "The Bezout/coprimality argument (irreducible_dvd_of_annihilated from WIP02) is reused as the base case and the p-divisibility step, avoiding code duplication.",
       "Commutativity of polynomial evaluation: r(M)(p^k(M)v) = p^k(M)(r(M)v) because polynomials in M commute. This is used repeatedly in the mulVec calculations.",
       "Degree counting closes the proof cleanly: p^e | r with deg(r) < deg(p^e) = n forces r = 0, directly giving the cyclic vector condition.",
+      "The proof formalizes the prime power case directly without invoking primary decomposition. By contrast, the textbook PID approach (Dummit-Foote, Lang) factors $\\mu_M = \\prod p_i^{e_i}$, decomposes $K^n = \\bigoplus \\ker p_i^{e_i}(M)$ via Chinese remainder, and proves cyclicity on each summand. This file’s elementary descent on $e$ obtains the same conclusion within a single primary block while sidestepping the underlying module decomposition — useful for Lean formalizations where the PID structure theorem is not yet available, and pedagogically illuminating because it isolates exactly which fact (Bézout in $K[X]$ plus polynomial commutativity) does the work.",
+      "The cyclic vector for the prime power case has a direct interpretation in Jordan normal form: when $K$ is algebraically closed and $p = X - \\lambda$, the condition $\\mu_M = (X-\\lambda)^e$ over $K^n$ ($n = e$) means $M$ is a single Jordan block $J_e(\\lambda)$, and the cyclic vector is any vector outside $\\ker (M - \\lambda I)^{e-1}$ (e.g., the last standard basis vector $e_n$ in the canonical Jordan form). The result thus generalizes the well-known fact that a Jordan block has a cyclic vector to arbitrary irreducible $p$ and arbitrary base field $K$, including the inseparable cases that are invisible over algebraically closed fields.",
       "**p-adic valuation perspective**: The proof can be read through the lens of $p$-adic valuation $v_p$ on $K[X]$ (with $p$ irreducible monic). Every polynomial $r \\in K[X]$ has a $p$-adic valuation $v_p(r) = \\max\\{k : p^k \\mid r\\}$, and the lemma `pow_irred_dvd_of_annihilated` is precisely the assertion: if $v$ has $p$-adic level exactly $e$ in the filtration $V \\supset p(M)V \\supset p^2(M)V \\supset \\cdots$ (i.e., $v \\in \\ker(p^{e+1}(M)) \\setminus \\ker(p^e(M))$), then any annihilator $r$ must have $v_p(r) \\geq e+1$. This valuation-theoretic framing (familiar from local rings and Henselization) makes the structure of the descent argument transparent — even though the formal Lean proof uses only elementary divisibility.",
       "**Bypassing the Krull-Schmidt machinery**: The classical proof of rational canonical form via the PID structure theorem (Smith normal form for $K[X]$-modules) factors $K^n$ as a direct sum $\\bigoplus_i K[X]/(p_i^{e_i})$ of primary cyclic modules — a deep theorem requiring Krull-Schmidt uniqueness. WIP03 demonstrates that for the prime power case, this entire structural machinery is unnecessary: a single inductive argument on the exponent suffices. The trade-off is that the prime power restriction is essential: without primary decomposition (which WIP02 handles via squarefree CRT), the general case requires combining the two approaches.",
       "**Module-theoretic shadow**: Although the proof avoids the PID structure theorem, the inductive argument is the *p*-adic valuation reasoning hidden behind it. In the language of $K[X]$-modules, $K^n$ acted on by $M$ is a torsion module with annihilator $(p^e)$, and `pow_irred_dvd_of_annihilated` is the assertion that any vector $v$ with annihilator exactly $(p^{k+1})$ has $\\text{ord}_p(\\text{Ann}(v)) = k+1$. The 'shift trick' $v \\mapsto p(M)v$ corresponds to the canonical map $K^n/(p^{e+1}) \\to K^n/(p^e)$ that decreases the *p*-adic level by one. The full PID theorem unpacks this as a direct sum decomposition $K^n \\cong \\bigoplus_i K[X]/(p^{e_i})$, but for the *single-summand* (cyclic) case the inductive lemma suffices on its own — providing an axiom-free path that avoids constructing the decomposition while still extracting its quantitative content. The same reasoning generalizes to any DVR-like setting with a notion of valuation: replace $K[X]$ with a discrete valuation ring, $p$ with the uniformizer, and the inductive lemma transports verbatim. This makes WIP03 a template for *p*-adic descent arguments in algebraic-geometry settings (e.g., reductions modulo prime ideals in number rings)."
@@ -257,6 +259,18 @@
       "type": "core",
       "description": "For nonderogatory M with minpoly = p^e (p monic irreducible, e ≥ 1), M has a cyclic vector over any field K",
       "leanType": "(M : Matrix (Fin n) (Fin n) K) → IsNonderogatory M → (p : K[X]) → (e : ℕ) → Irreducible p → p.Monic → 0 < e → minpoly K M = p ^ e → ∃ v, IsCyclicVector M v"
+    },
+    {
+      "name": "nonderogatory_pw_has_cyclic_vector_finite",
+      "type": "specialization",
+      "description": "Finite-field corollary: same statement specialized to [Fintype K]. No cardinality restriction |K| > n is required (unlike the Vandermonde-based proofs for the general nonderogatory case).",
+      "leanType": "[Fintype K] → (M : Matrix (Fin n) (Fin n) K) → IsNonderogatory M → (p : K[X]) → (e : ℕ) → Irreducible p → p.Monic → 0 < e → minpoly K M = p ^ e → ∃ v, IsCyclicVector M v"
+    },
+    {
+      "name": "irreducible_dvd_of_annihilated",
+      "type": "supporting",
+      "description": "Bézout coprimality argument (private helper, imported from WIP02). If p is irreducible, v ≠ 0, p(M)v = 0, and r(M)v = 0, then p ∣ r. Used as both the base case and a sub-step of the prime power induction.",
+      "leanType": "Irreducible p → v ≠ 0 → (aeval M p).mulVec v = 0 → (aeval M r).mulVec v = 0 → p ∣ r"
     }
   ],
   "crossReferences": [
