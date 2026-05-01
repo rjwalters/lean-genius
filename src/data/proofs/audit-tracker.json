@@ -6943,9 +6943,12 @@
     },
     "erdos-47": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T20:20:16Z",
+      "result": "issues-found",
+      "issues": [
+        "Phantom-axiom narrative: originalContributions lists bloom_quantitative, liu_sawhney_improvement, pomerance_lower_bound as axiomatized but only docstrings exist (no axiom decls). Issue #14373, PR #14375 in flight."
+      ]
     },
     "erdos-470": {
       "agentId": "auditor-cycle-20-batch",
