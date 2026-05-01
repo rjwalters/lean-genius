@@ -53,6 +53,12 @@
         "description": "If p(M) = 0 then minpoly(M) divides p",
         "module": "Mathlib.FieldTheory.Minpoly.Basic"
       }
+    ],
+    "originalContributions": [
+      "pow_irred_dvd_of_annihilated: the inductive divisibility lemma replacing the PID structure theorem — if p irreducible, p^e(M)v ≠ 0, p^(e+1)(M)v = 0, and r(M)v = 0, then p^(e+1) | r",
+      "Shift trick formalization: the descent v ↦ p(M)v decreasing the p-adic filtration level by 1, enabling the induction on e",
+      "nonderogatory_pw_has_cyclic_vector: cyclic vector existence for nonderogatory matrices with prime-power minimal polynomial, valid over any field K with no cardinality restriction (covers finite fields)",
+      "Axiom-free, sorry-free formalization avoiding Mathlib's not-yet-available PID structure theorem and Smith normal form machinery"
     ]
   },
   "overview": {
@@ -67,6 +73,15 @@
       "Degree counting closes the proof cleanly: p^e | r with deg(r) < deg(p^e) = n forces r = 0, directly giving the cyclic vector condition.",
       "**p-adic valuation perspective**: The proof can be read through the lens of $p$-adic valuation $v_p$ on $K[X]$ (with $p$ irreducible monic). Every polynomial $r \\in K[X]$ has a $p$-adic valuation $v_p(r) = \\max\\{k : p^k \\mid r\\}$, and the lemma `pow_irred_dvd_of_annihilated` is precisely the assertion: if $v$ has $p$-adic level exactly $e$ in the filtration $V \\supset p(M)V \\supset p^2(M)V \\supset \\cdots$ (i.e., $v \\in \\ker(p^{e+1}(M)) \\setminus \\ker(p^e(M))$), then any annihilator $r$ must have $v_p(r) \\geq e+1$. This valuation-theoretic framing (familiar from local rings and Henselization) makes the structure of the descent argument transparent — even though the formal Lean proof uses only elementary divisibility.",
       "**Bypassing the Krull-Schmidt machinery**: The classical proof of rational canonical form via the PID structure theorem (Smith normal form for $K[X]$-modules) factors $K^n$ as a direct sum $\\bigoplus_i K[X]/(p_i^{e_i})$ of primary cyclic modules — a deep theorem requiring Krull-Schmidt uniqueness. WIP03 demonstrates that for the prime power case, this entire structural machinery is unnecessary: a single inductive argument on the exponent suffices. The trade-off is that the prime power restriction is essential: without primary decomposition (which WIP02 handles via squarefree CRT), the general case requires combining the two approaches."
+    ],
+    "prerequisites": [
+      "Field theory and matrix algebra over a field $K$",
+      "Polynomial ring $K[X]$ as a UFD; Bézout's identity for coprime polynomials",
+      "Minimal polynomial $\\mu_M$ and its divisibility property: $r(M) = 0 \\Rightarrow \\mu_M \\mid r$",
+      "Characteristic polynomial $\\chi_M$ and Cayley-Hamilton ($\\mu_M \\mid \\chi_M$, $\\deg(\\chi_M) = n$)",
+      "Polynomial evaluation map $\\text{aeval}_M : K[X] \\to K^{n \\times n}$ as a ring homomorphism — gives commutativity $r(M) \\cdot p^k(M) = p^k(M) \\cdot r(M)$",
+      "Strong induction on natural numbers; the Lean tactic `induction e using Nat.strong_induction_on`",
+      "Irreducibility in a UFD: $p$ irreducible ⟺ $p$ prime, hence $p \\nmid r \\Leftrightarrow \\gcd(p, r) = 1$"
     ]
   },
   "sections": [
@@ -127,7 +142,9 @@
       "The prime power case proved here covers fields K of any characteristic. Does the proof simplify when char(K) = 0 or when K is algebraically closed (so that irreducible p must be linear)?",
       "Can the key lemma be generalized to non-matrix settings — e.g., cyclic vectors for endomorphisms of infinite-dimensional spaces, or modules over other PIDs besides K[X]?",
       "**Computational complexity**: The proof is constructive — given $M$ with $\\mu_M = p^e$, it picks $v$ such that $p^{e-1}(M)v \\neq 0$ via standard basis enumeration. Can a Lean-formalized algorithm be extracted that finds a cyclic vector in $O(n^3)$ field operations? This would match the complexity of the Berkowitz or Krylov algorithm and provide an axiom-free, machine-verified counterpart to the standard computational linear algebra.",
-      "**Differential analog**: The cyclic vector theorem has a differential-algebraic counterpart: every irreducible linear differential operator over $\\mathbb{C}(x)$ has a cyclic vector in its solution space (Deligne's theorem in differential Galois theory). Can the inductive shift trick used in WIP03 be adapted to differential modules over $\\mathbb{C}(x)\\{\\partial\\}$, giving an axiom-free proof of the differential cyclic vector theorem for the prime power case of the differential minimal polynomial?"
+      "**Differential analog**: The cyclic vector theorem has a differential-algebraic counterpart: every irreducible linear differential operator over $\\mathbb{C}(x)$ has a cyclic vector in its solution space (Deligne's theorem in differential Galois theory). Can the inductive shift trick used in WIP03 be adapted to differential modules over $\\mathbb{C}(x)\\{\\partial\\}$, giving an axiom-free proof of the differential cyclic vector theorem for the prime power case of the differential minimal polynomial?",
+      "**Can the shift-trick technique be axiomatized?** The shift $v \\mapsto p(M)v$ as a level-decreasing operator on the $p$-adic filtration is a recurring pattern. Can a Lean tactic or structure encode this as a general 'induction on filtration depth' principle, applicable to any module $M$ over a UFD with a chain of submodules indexed by $p$-adic valuation?",
+      "**Generalization to local rings**: The proof structure should generalize from $K[X]$ (a PID) to any local UFD with maximal ideal $\\mathfrak{m} = (p)$ — the irreducible $p$ generates $\\mathfrak{m}$, and the filtration $V_k = \\ker(p^k)$ becomes the standard $\\mathfrak{m}$-adic filtration. Can the Lean formalization be parameterized over such rings to cover, e.g., $p$-adic integers $\\mathbb{Z}_p$ where similar cyclic decomposition theorems hold?"
     ]
   },
   "leanFile": {
@@ -146,122 +163,6 @@
     "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP03.lean",
     "sorries": 0
   },
-  "references": [
-    {
-      "authors": "Frobenius, Ferdinand Georg",
-      "title": "Ueber lineare Substitutionen und bilineare Formen",
-      "year": "1878",
-      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), vol. 84, pp. 1–63",
-      "note": "Foundational paper on the rational canonical form and elementary divisors of matrices over polynomial rings — the original context for the cyclic vector theorem"
-    },
-    {
-      "authors": "Hoffman, Kenneth; Kunze, Ray",
-      "title": "Linear Algebra",
-      "year": "1971",
-      "venue": "Prentice-Hall, 2nd edition",
-      "note": "Standard reference for the cyclic decomposition theorem and nonderogatory matrices. Chapter 7 develops the theory of cyclic vectors and rational canonical form via the PID structure theorem"
-    },
-    {
-      "authors": "Horn, Roger A.; Johnson, Charles R.",
-      "title": "Matrix Analysis",
-      "year": "2013",
-      "venue": "Cambridge University Press, 2nd edition",
-      "note": "Section 3.2 covers nonderogatory matrices and their characterization via cyclic vectors. Theorem 3.2.4 proves the equivalence: M is nonderogatory iff M has a cyclic vector"
-    }
-  ],
-  "mainTheorems": [
-    {
-      "name": "nonderogatory_pw_has_cyclic_vector",
-      "type": "core",
-      "description": "For nonderogatory M with minpoly = p^e (p monic irreducible, e ≥ 1), M has a cyclic vector over any field K",
-      "leanType": "(M : Matrix (Fin n) (Fin n) K) → IsNonderogatory M → (p : K[X]) → (e : ℕ) → Irreducible p → p.Monic → 0 < e → minpoly K M = p ^ e → ∃ v, IsCyclicVector M v"
-    },
-    {
-      "name": "pow_irred_dvd_of_annihilated",
-      "type": "key",
-      "description": "If p is irreducible, p^e(M)v ≠ 0, p^(e+1)(M)v = 0, and r(M)v = 0, then p^(e+1) divides r",
-      "leanType": "Irreducible p → ∀ (e : ℕ) (v : Fin n → K), (aeval M (p^e)).mulVec v ≠ 0 → (aeval M (p^(e+1))).mulVec v = 0 → ∀ r, (aeval M r).mulVec v = 0 → p^(e+1) ∣ r"
-    }
-  ],
-  "crossReferences": [
-    {
-      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
-      "relationship": "extends",
-      "description": "Parent: the general nonderogatory cyclic vector theorem (sorry-bearing). WIP03 proves the prime power sub-case axiom-free."
-    },
-    {
-      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
-      "relationship": "related",
-      "description": "WIP01: full theorem with 1 axiom (rational canonical form). WIP03 provides the prime power case that WIP01 handles implicitly."
-    },
-    {
-      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-02",
-      "relationship": "companion",
-      "description": "WIP02: squarefree case (axiom-free). WIP03 is the complementary prime power case. Together they cover all structural cases of the general theorem."
-    },
-    {
-      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
-      "relationship": "related",
-      "description": "Nonderogatory cyclic vector for infinite fields (axiom-free). WIP03 extends coverage to ALL fields including finite fields with no cardinality restriction."
-    },
-    {
-      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
-      "relationship": "related",
-      "description": "Finite field version requiring |K| > n. WIP03 removes the cardinality constraint entirely for the prime power case."
-    },
-    {
-      "targetId": "cayley-hamilton",
-      "relationship": "uses",
-      "description": "The Cayley-Hamilton theorem provides charpoly_natDegree_eq_dim and the fact that minpoly divides charpoly, both used in the degree arithmetic."
-    },
-    {
-      "targetId": "cayley-hamilton-reduction-oq-02-oq-01",
-      "relationship": "related",
-      "description": "Rational canonical form via companion matrices. WIP03's prime power cyclic vector is a building block for showing each primary component has companion form."
-    },
-    {
-      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-      "relationship": "extended_by",
-      "description": "WIP04 generalizes WIP03 to arbitrary factored minimal polynomials by combining the prime power engine (pow_irred_dvd_of_annihilated) with CRT/Bezout projections from WIP02."
-    }
-  ],
-  "mainTheorems": [
-    {
-      "name": "pow_irred_dvd_of_annihilated",
-      "type": "key",
-      "description": "If p is irreducible, p^e(M)v ≠ 0, p^(e+1)(M)v = 0, and r(M)v = 0, then p^(e+1) | r",
-      "leanType": "{p : K[X]} → Irreducible p → (e : ℕ) → (v : Fin n → K) → (aeval M (p ^ e)).mulVec v ≠ 0 → (aeval M (p ^ (e + 1))).mulVec v = 0 → (r : K[X]) → (aeval M r).mulVec v = 0 → p ^ (e + 1) ∣ r"
-    },
-    {
-      "name": "nonderogatory_pw_has_cyclic_vector",
-      "type": "core",
-      "description": "For nonderogatory M with minpoly = p^e (p monic irreducible, e ≥ 1), M has a cyclic vector over any field K",
-      "leanType": "(M : Matrix (Fin n) (Fin n) K) → IsNonderogatory M → (p : K[X]) → (e : ℕ) → Irreducible p → p.Monic → 0 < e → minpoly K M = p ^ e → ∃ v, IsCyclicVector M v"
-    }
-  ],
-  "references": [
-    {
-      "authors": "Frobenius, Ferdinand Georg",
-      "title": "Über lineare Substitutionen und bilineare Formen",
-      "year": "1879",
-      "venue": "Journal für die reine und angewandte Mathematik, vol. 84, pp. 1-63",
-      "note": "Introduced the rational canonical form and elementary divisors for matrices. The cyclic vector theorem for nonderogatory matrices is equivalent to Frobenius's characterization of matrices with a single invariant factor."
-    },
-    {
-      "authors": "Hoffman, Kenneth; Kunze, Ray",
-      "title": "Linear Algebra",
-      "year": "1971",
-      "venue": "Prentice-Hall, 2nd edition",
-      "note": "Chapter 7 develops the primary decomposition theorem and rational canonical form via the PID structure theorem. The prime power case proved here corresponds to the single-block case in their decomposition, but avoids the module-theoretic machinery entirely."
-    },
-    {
-      "authors": "Lancaster, Peter; Tismenetsky, Miron",
-      "title": "The Theory of Matrices",
-      "year": "1985",
-      "venue": "Academic Press, 2nd edition",
-      "note": "Chapter 6 treats the cyclic decomposition theorem with explicit construction of cyclic vectors via prime power factorization of the minimal polynomial. The 'level-shifting' technique in their proof (applying p(M) to descend one level) is the same strategy formalized here as the inductive step of pow_irred_dvd_of_annihilated."
-    }
-  ],
   "references": [
     {
       "authors": "Frobenius, Ferdinand Georg",
@@ -304,6 +205,62 @@
       "year": "2003",
       "venue": "Springer Grundlehren der mathematischen Wissenschaften, vol. 328",
       "note": "Chapter 2 develops the differential analog of cyclic vectors for D-modules over differential rings. The Deligne cyclic vector theorem (Theorem 2.9) parallels the matrix-theoretic result proved here, suggesting the inductive shift trick may extend to the differential setting — see openQuestions"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "pow_irred_dvd_of_annihilated",
+      "type": "key",
+      "description": "If p is irreducible, p^e(M)v ≠ 0, p^(e+1)(M)v = 0, and r(M)v = 0, then p^(e+1) | r",
+      "leanType": "{p : K[X]} → Irreducible p → (e : ℕ) → (v : Fin n → K) → (aeval M (p ^ e)).mulVec v ≠ 0 → (aeval M (p ^ (e + 1))).mulVec v = 0 → (r : K[X]) → (aeval M r).mulVec v = 0 → p ^ (e + 1) ∣ r"
+    },
+    {
+      "name": "nonderogatory_pw_has_cyclic_vector",
+      "type": "core",
+      "description": "For nonderogatory M with minpoly = p^e (p monic irreducible, e ≥ 1), M has a cyclic vector over any field K",
+      "leanType": "(M : Matrix (Fin n) (Fin n) K) → IsNonderogatory M → (p : K[X]) → (e : ℕ) → Irreducible p → p.Monic → 0 < e → minpoly K M = p ^ e → ∃ v, IsCyclicVector M v"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
+      "relationship": "extends",
+      "description": "Parent: the general nonderogatory cyclic vector theorem (sorry-bearing). WIP03 proves the prime power sub-case axiom-free."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+      "relationship": "related",
+      "description": "WIP01: full theorem with 1 axiom (rational canonical form). WIP03 provides the prime power case that WIP01 handles implicitly."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-02",
+      "relationship": "companion",
+      "description": "WIP02: squarefree case (axiom-free). WIP03 is the complementary prime power case. Together they cover all structural cases of the general theorem."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
+      "relationship": "related",
+      "description": "Nonderogatory cyclic vector for infinite fields (axiom-free). WIP03 extends coverage to ALL fields including finite fields with no cardinality restriction."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Finite field version requiring |K| > n. WIP03 removes the cardinality constraint entirely for the prime power case."
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "uses",
+      "description": "The Cayley-Hamilton theorem provides charpoly_natDegree_eq_dim and the fact that minpoly divides charpoly, both used in the degree arithmetic."
+    },
+    {
+      "targetId": "cayley-hamilton-reduction-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Rational canonical form via companion matrices. WIP03's prime power cyclic vector is a building block for showing each primary component has companion form."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
+      "relationship": "extended_by",
+      "description": "WIP04 generalizes WIP03 to arbitrary factored minimal polynomials by combining the prime power engine (pow_irred_dvd_of_annihilated) with CRT/Bezout projections from WIP02."
     }
   ],
   "sorries": 0
