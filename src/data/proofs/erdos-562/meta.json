@@ -59,34 +59,34 @@
     },
     {
       "id": "stepping-up",
-      "title": "Erdős-Rado Stepping-Up Upper Bound",
-      "summary": "For $r \\geq 3$: $R_r(n) \\leq \\mathrm{twr}_{r-1}(c_r \\cdot n^2)$ — each uniformity increase adds one tower level with quadratic penalty",
+      "title": "Erdős-Rado Stepping-Up Upper Bound (Docstring Placeholder)",
+      "summary": "Docstring placeholder describing the Erdős–Rado stepping-up upper bound $R_r(n) \\leq \\mathrm{twr}_{r-1}(c_r \\cdot n^2)$ for $r \\geq 3$; no Lean axiom or theorem is declared in this section",
       "startLine": 66,
       "endLine": 72,
-      "mathContext": "For $r \\geq 3$: $R_r(n) \\leq \\mathrm{twr}_{r-1}(c_r \\cdot $n^{2}$)$ — each uniformity increase adds one tower level with quadratic penalty"
+      "mathContext": "Documentation only. The Erdős–Rado stepping-up lemma (1952) shows each uniformity increase adds one tower level with quadratic penalty: $R_r(n) \\leq \\mathrm{twr}_{r-1}(c_r \\cdot n^2)$. Not yet formalized in this file."
     },
     {
       "id": "r3-lower",
-      "title": "Erdős-Hajnal Lower Bound ($r = 3$)",
-      "summary": "$R_3(n) \\geq \\mathrm{twr}_2(c \\cdot n^2) = 2^{2^{cn^2}}$, matching the upper bound tower height and resolving the $r=3$ case",
+      "title": "Erdős-Hajnal Lower Bound ($r = 3$) (Docstring Placeholder)",
+      "summary": "Docstring placeholder describing the Erdős–Hajnal lower bound $R_3(n) \\geq \\mathrm{twr}_2(c \\cdot n^2)$ for $r=3$; no Lean axiom or theorem is declared in this section",
       "startLine": 74,
       "endLine": 80,
-      "mathContext": "$R_3(n) \\geq \\mathrm{twr}_2(c \\cdot $n^{2}$) = $$2^{{2^{cn^2}$}$}$, matching the upper bound tower height and resolving the $r=3$ case"
+      "mathContext": "Documentation only. Erdős and Hajnal proved $R_3(n) \\geq \\mathrm{twr}_2(c \\cdot n^2) = 2^{2^{cn^2}}$, matching the upper bound tower height for $r=3$. Not yet formalized in this file."
     },
     {
       "id": "general-lower",
-      "title": "General Lower Bound ($r \\geq 3$)",
-      "summary": "$R_r(n) \\geq \\mathrm{twr}_{r-1}(cn)$: tower height is exactly $r-1$, with gap in argument ($n$ vs $n^2$)",
+      "title": "General Lower Bound ($r \\geq 3$) (Docstring Placeholder)",
+      "summary": "Docstring placeholder describing the general lower bound $R_r(n) \\geq \\mathrm{twr}_{r-1}(cn)$ establishing tower height $r-1$; no Lean axiom or theorem is declared in this section",
       "startLine": 82,
       "endLine": 85,
-      "mathContext": "$R_r(n) \\geq \\mathrm{twr}_{r-1}(cn)$: tower height is exactly $r-1$, with gap in argument ($n$ vs $$n^{2}$$)"
+      "mathContext": "Documentation only. The general lower bound $R_r(n) \\geq \\mathrm{twr}_{r-1}(cn)$ shows tower height is exactly $r-1$, with a polynomial gap ($n$ vs $n^2$) in the argument remaining open for $r \\geq 4$. Not yet formalized in this file."
     }
   ],
   "overview": {
     "historicalContext": "Erdős, Hajnal, and Rado formulated this conjecture in 1965 as the central question in hypergraph Ramsey theory. The story begins with the 1935 Erdős-Szekeres theorem establishing that graph Ramsey numbers R(n,n) grow exponentially — as a tower of height 1. The Erdős-Rado stepping-up lemma (1952) showed that each increase in uniformity r adds one tower level, giving R_r(n) ≤ twr_{r-1}(c·n²). For the lower bound, Erdős and Hajnal proved R_3(n) ≥ twr_2(c·n²), matching the upper bound for r=3. The general lower bound twr_{r-1}(Ω(n)) establishes the tower height as exactly r-1, but with a polynomial gap (linear vs quadratic) in the argument. The conjecture asks whether this gap can be closed to linear. For r=3, the answer is now known to be quadratic (Θ(n²)), so the strongest form of the linear conjecture is false. The problem remains open for r ≥ 4 and is considered one of the most fundamental challenges in combinatorics. Recent progress on graph Ramsey numbers by Campos-Griffiths-Morris-Sahasrabudhe (2023) has renewed interest in hypergraph analogues.",
     "problemStatement": "For r ≥ 3, prove that the (r-1)-fold iterated logarithm of R_r(n) is Θ(n). Equivalently, R_r(n) = twr_{r-1}(Θ(n)).",
     "text": "For r ≥ 3, prove that log_{r-1} R_r(n) ≍ n, where R_r(n) is the r-uniform hypergraph Ramsey number. Upper bound: twr_{r-1}(O(n²)) from Erdős–Rado. Lower: twr_{r-1}(Ω(n)). Status: OPEN.",
-    "proofStrategy": "We formalize the tower function twr(k,n) by recursion on k, define hypergraph Ramsey numbers R_r(n) via sInf over valid 2-colorings of r-uniform hypergraphs, state the Erdős-Szekeres graph bounds as axioms, prove their conjunction as a theorem, state the Erdős-Rado stepping-up upper bound and the Erdős-Hajnal lower bounds as axioms, and formalize the main conjecture as an axiom asserting the existence of constants c₁, c₂ bounding the tower argument.",
+    "proofStrategy": "We formalize the tower function `twr(k,n)` by recursion on k, define hypergraph Ramsey numbers `R_r(n)` via `sInf` over valid 2-colorings of r-uniform hypergraphs, state the Erdős–Szekeres graph bounds (r=2) as two axioms `erdos_szekeres_lower` and `erdos_szekeres_upper`, and prove their conjunction as `graph_ramsey_exponential`. The Erdős–Rado stepping-up upper bound, Erdős–Hajnal lower bound for r=3, general lower bound for r ≥ 3, and the main conjecture itself appear as docstring placeholders only — the file is a scaffold for future formalization.",
     "keyInsights": [
       "**Tower hierarchy**: Each increase in uniformity $r$ adds one level to the tower: $R_2(n) = 2^{\\Theta(n)}$, $R_3(n) = 2^{2^{\\Theta(n^2)}}$, and conjecturally $R_r(n) = \\mathrm{twr}_{r-1}(\\Theta(n^?))$",
       "**Stepping-up penalty**: The Erdős-Rado lemma incurs a quadratic penalty $n \\mapsto cn^2$ at each step, which may or may not be inherent",
