@@ -173,6 +173,7 @@ import Proofs.BinaryGcdOQ01OQ03
 import Proofs.BinaryGcdOQ01OQ04
 import Proofs.BinaryGcdOQ03
 import Proofs.BinaryGcdOQ03OQ01
+import Proofs.BinaryGcdOQ03OQ02
 import Proofs.BinomialTheorem
 import Proofs.BinomialTheoremOQ01
 import Proofs.BinomialTheoremOQ01Aristotle

@@ -6,14 +6,27 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Can Schönhage's recursive HGCD (half-GCD) be formalized, achieving O(M(n) log n) bit complexity through recursive cofactor matrix computation on the top half of the bits?.",
-    "whyMatters": []
+    "formal": "\\text{(A) Correctness: } \\exists\\, \\mathtt{hgcdMatrix} : \\mathbb{N} \\to \\mathbb{N} \\to \\mathtt{CofactorMatrix} \\text{ such that for all } a,b \\in \\mathbb{N}: \\det(\\mathtt{hgcdMatrix}\\, a\\, b) \\in \\{1, -1\\} \\text{ and } \\gcd(\\mathtt{hgcdMatrix}\\, a\\, b \\cdot (a,b)) = \\gcd(a,b). \\\\ \\text{(B) Size reduction: } \\forall a, b, \\text{ if } \\mathtt{bitsize}(\\max(a,b)) \\geq k_0 \\text{ then } \\mathtt{bitsize}(\\max(\\mathtt{hgcdMatrix}\\, a\\, b \\cdot (a,b))) \\leq \\lceil \\mathtt{bitsize}(\\max(a,b))/2 \\rceil + c. \\\\ \\text{(C) Complexity: } T_{\\mathtt{hgcd}}(n) = O(M(n) \\log n) \\text{ in a bit-complexity model. (Deferred — Mathlib gap.)}",
+    "plain": "Can Schönhage's recursive HGCD (half-GCD) be formalized? Three sub-claims: (A) gcd-preserving cofactor matrix; (B) halves the bitsize; (C) runs in O(M(n) log n) bit operations. (A)+(B) are tractable in Lean; (C) is blocked on Mathlib's lack of a bit-complexity model and fast multiplication.",
+    "whyMatters": [
+      "HGCD (Lehmer-Schönhage hybrid) is the asymptotically fastest deterministic GCD algorithm in classical models — formalizing the correctness side completes the gallery's GCD-algorithm progression from naive Euclid through Lehmer to HGCD.",
+      "The size-reduction step is the only genuinely new mathematical content beyond the existing Lehmer cofactor framework; everything else reuses BinaryGcdOQ03 infrastructure.",
+      "Identifying (C) as Mathlib-blocked is itself a contribution: it documents a foundational gap (no bit-complexity model) that prevents stating asymptotic claims about any arithmetic algorithm in Mathlib today."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Schönhage (1971) established correctness and O(M(n) log n) bit complexity of recursive HGCD.",
+      "Stehlé–Zimmermann (2004, 'A binary recursive gcd algorithm') give a binary variant and a careful complexity analysis.",
+      "Brent–Zimmermann, 'Modern Computer Arithmetic', §1.6.3, gives a textbook-level treatment used as the formalization reference.",
+      "All required 2x2 cofactor-matrix invariants (det ∈ {±1}, gcd preservation) are already proved in proofs/Proofs/BinaryGcdOQ03.lean."
+    ],
+    "open": [
+      "Recursive hgcdMatrix definition that splits on the top half of bits, with structural termination (Mathlib gap: no native HGCD).",
+      "Size-reduction lemma: applying hgcdMatrix(a,b) reduces bitsize(max a b) by roughly half.",
+      "Formal statement of O(M(n) log n) bit complexity — currently inexpressible in Mathlib (no bit-complexity model)."
+    ],
+    "goal": "Formalize parts (A) and (B) of the problem statement in BinaryGcdOQ03OQ02.lean. Document part (C) as deferred with a precise enumeration of the missing Mathlib infrastructure."
   },
   "currentState": {
     "phase": "ORIENT",
