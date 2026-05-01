@@ -7492,10 +7492,13 @@
       "result": "clean"
     },
     "erdos-547": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-erdos-547-phantom-narrative",
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T14:48:12Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom narrative: originalContributions/proofStrategy/sections claim IsPath/IsStar/IsCaterpillar/Chvátal bound/exact path-star Ramsey numbers/tightness theorem; Lean file has only 3 axioms + erdos_547 wrapper. Filed #14275"
+      ]
     },
     "erdos-548": {
       "agentId": "auditor-cycle-20-batch",
