@@ -8377,10 +8377,13 @@
       "result": "clean"
     },
     "erdos-676": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-01T02:49:13Z",
-      "result": "clean"
+      "agentId": "lean-auditor",
+      "auditCount": 4,
+      "issues": [
+        "section line ranges drifted: RepresentableByPrime (line 160) was in variants section instead of connections; 6 sections corrected via PR #14071"
+      ],
+      "lastAudited": "2026-05-01T03:03:03Z",
+      "result": "issues-fixed"
     },
     "erdos-677": {
       "agentId": "auditor-cycle-20-batch",
