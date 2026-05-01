@@ -150,10 +150,10 @@
     {
       "id": "examples",
       "title": "Concrete Examples",
-      "summary": "Axiomatizes example_n3 (IsBlockCompatible [3] 3) and verifies pair-counting for n=4 ([4] and [2,2,2,2,2,2]) and n=6 ([3,3,3,3,3]) using simp/norm_num.",
+      "summary": "Verifies PairCountCondition for n=4 ([4] and [2,2,2,2,2,2]) and n=6 ([3,3,3,3,3]) via anonymous `example` blocks using simp/norm_num. Docstrings describe the n=3 case. No named declaration — `example_n3` does not exist as a theorem or axiom.",
       "startLine": 219,
       "endLine": 257,
-      "mathContext": "Axiomatized: Axiomatizes example_n3 (IsBlockCompatible [3] 3) and verifies pair-counting for n=4 ([4] and [2,2,2,2,2,2]) and n=6 ([3,3,3,3,3]) using simp/norm_num."
+      "mathContext": "Mathematical content: anonymous example blocks verifying PairCountCondition for specific sequences; n=3 case is docstring only."
     },
     {
       "id": "related",
