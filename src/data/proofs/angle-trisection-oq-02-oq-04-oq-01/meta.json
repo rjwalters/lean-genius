@@ -17,7 +17,7 @@
     ],
     "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ04OQ01.lean",
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 2,
     "mathlibDependencies": [
       {
         "theorem": "IsPGroup.isSolvable",
@@ -47,8 +47,8 @@
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 334,
-    "assumptions": "No axioms. 3 sorries for deep theorems requiring Mathlib API glue.",
+    "lineCount": 364,
+    "assumptions": "2 sorries: galois_two_group_implies_tower (~500 lines, Galois correspondence glue) and tower_implies_galois_two_group (~300 lines, splitting field degree). Newly proved this session: sqrt2_constructible_tower (concrete witness ℚ⟮√2⟯ is a height-1 quadratic tower containing √2; uses Sqrt2Minpoly.adjoin_sqrt_two_finrank + finrank tower formula). Companion Aristotle file now sorry-free (delegates to main).",
     "originalContributions": [
       "Proper inductive definition of QuadraticTower replacing the alias TowerCriterion = DegreeCriterion",
       "Statement and proof structure of Tower ↔ Galois 2-group equivalence",

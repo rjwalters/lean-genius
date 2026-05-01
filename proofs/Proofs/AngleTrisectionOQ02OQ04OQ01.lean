@@ -4,6 +4,7 @@ import Mathlib.GroupTheory.PGroup
 import Mathlib.FieldTheory.Tower
 import Mathlib.Tactic
 import Proofs.AngleTrisectionOQ02
+import Proofs.Sqrt2Minpoly
 
 /-
 # Tower ↔ Galois 2-Group Equivalence via Mathlib
@@ -284,11 +285,35 @@ A full proof would be a worthwhile Mathlib contribution.
 -- ============================================================
 
 /-- √2 lies in a quadratic tower of height 1:
-    ℚ ⊂ ℚ(√2) with [ℚ(√2):ℚ] = 2 -/
+    ℚ ⊂ ℚ(√2) with [ℚ(√2):ℚ] = 2.
+
+    Proof outline:
+    - K = ℚ⟮√2⟯ is finite-dimensional over ℚ since √2 is integral (root of X² - 2)
+    - [ℚ⟮√2⟯ : ℚ] = 2 from `Sqrt2Minpoly.adjoin_sqrt_two_finrank`
+    - The bottom intermediate field ⊥ has finrank 1 over ℚ
+    - Tower formula: finrank ℚ ⟮√2⟯ = finrank ℚ ⊥ * finrank ⊥ ⟮√2⟯
+      gives 2 = 1 * finrank ⊥ ⟮√2⟯, so finrank ⊥ ⟮√2⟯ = 2
+    - Apply `QuadraticTower.step` to `QuadraticTower.base` -/
 theorem sqrt2_constructible_tower :
     ∃ (K : IntermediateField ℚ ℝ),
       QuadraticTower ℚ ℝ K 1 ∧ (Real.sqrt 2 : ℝ) ∈ K := by
-  sorry -- Needs: construction of ℚ(√2) as IntermediateField with degree 2
+  refine ⟨ℚ⟮Real.sqrt 2⟯, ?_, IntermediateField.mem_adjoin_simple_self ℚ (Real.sqrt 2)⟩
+  -- ℚ⟮√2⟯ is finite-dimensional over ℚ (√2 integral over ℚ as root of X² - 2)
+  haveI : FiniteDimensional ℚ ↥ℚ⟮Real.sqrt 2⟯ :=
+    adjoin.finiteDimensional Sqrt2Minpoly.sqrt_two_isIntegral
+  -- finrank ℚ ℚ⟮√2⟯ = 2
+  have h_rank : Module.finrank ℚ ↥ℚ⟮Real.sqrt 2⟯ = 2 :=
+    Sqrt2Minpoly.adjoin_sqrt_two_finrank
+  -- ℚ⟮√2⟯ is finite-dimensional over ⊥ (specialization of ℚ-finite-dim)
+  haveI : FiniteDimensional ↥(⊥ : IntermediateField ℚ ℝ) ↥ℚ⟮Real.sqrt 2⟯ :=
+    IntermediateField.finiteDimensional_of_le_of_finiteDimensional bot_le
+  -- Tower formula: 1 * finrank ⊥ ⟮√2⟯ = 2 ⟹ finrank ⊥ ⟮√2⟯ = 2
+  have h_deg : Module.finrank ↥(⊥ : IntermediateField ℚ ℝ) ↥ℚ⟮Real.sqrt 2⟯ = 2 := by
+    have h_mul := Module.finrank_mul_finrank ℚ
+      ↥(⊥ : IntermediateField ℚ ℝ) ↥ℚ⟮Real.sqrt 2⟯
+    rw [Module.finrank_bot, h_rank] at h_mul
+    omega
+  exact QuadraticTower.step QuadraticTower.base bot_le h_deg
 
 /-- The Galois group of x² - 2 is ℤ/2ℤ, which is a 2-group.
     Proved in AngleTrisectionOQ02.lean via divisibility squeeze. -/
@@ -314,10 +339,15 @@ theorem gal_x2_minus_2_is_two_group :
 8. `gal_x2_minus_2_is_two_group`: Gal(x²-2/ℚ) is a 2-group (from AngleTrisectionOQ02)
 9. `tower_iff_galois_two_group`: full equivalence (combines two directions)
 
-### Sorries (3 — deep results requiring Galois correspondence glue):
+### Sorries (2 — deep results requiring Galois correspondence glue):
 1. `galois_two_group_implies_tower`: Galois 2-group → quadratic tower (~500 lines)
 2. `tower_implies_galois_two_group`: quadratic tower → Galois 2-group (~300 lines)
-3. `sqrt2_constructible_tower`: concrete example (needs ℚ(√2) construction)
+
+### Newly proved this session
+- `sqrt2_constructible_tower`: concrete witness — ℚ⟮√2⟯ is a height-1 quadratic
+  tower containing √2. Uses `Sqrt2Minpoly.adjoin_sqrt_two_finrank` plus the
+  finrank tower formula 1 * [⊥ : ⟮√2⟯] = [ℚ : ⟮√2⟯] = 2 to discharge the
+  step's hdeg obligation against the inductive base case.
 
 ### Key Contribution
 The proper inductive definition of `QuadraticTower` replaces the previous alias

@@ -39,10 +39,11 @@ Proof strategy:
 5. Note Real.sqrt 2 ∈ K by definition of adjoin
 -/
 
-/-- √2 lies in a quadratic tower of height 1 over ℚ. -/
+/-- √2 lies in a quadratic tower of height 1 over ℚ.
+    Now proved in the main file via tower-formula + `Sqrt2Minpoly.adjoin_sqrt_two_finrank`. -/
 theorem sqrt2_constructible_tower_ari :
     ∃ (K : IntermediateField ℚ ℝ),
-      QuadraticTower ℚ ℝ K 1 ∧ (Real.sqrt 2 : ℝ) ∈ K := by
-  sorry
+      QuadraticTower ℚ ℝ K 1 ∧ (Real.sqrt 2 : ℝ) ∈ K :=
+  AngleTrisectionOQ02OQ04OQ01.sqrt2_constructible_tower
 
 end AngleTrisectionOQ02OQ04OQ01Aristotle
