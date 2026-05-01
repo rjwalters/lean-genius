@@ -1,8 +1,8 @@
 {
   "slug": "szemeredi-regularity",
   "title": "Szemeredi Regularity Lemma",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "S",
   "path": "full",
   "problemStatement": {
@@ -16,15 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-22",
+    "phase": "COMPLETED",
+    "since": "2026-04-27T00:00:00+00:00",
     "iteration": 5,
-    "focus": "energy_increment_step decomposed into Case A (equitable, too many irregular pairs) and Case B (non-equitable). Core difficulty identified: 1/k² normalization.",
-    "blockers": [
-      "energy_increment_step Case A: 1/k² normalization not monotone under refinement — standard Komlos-Simonovits eps^5 bound uses size-weighted energy, not unweighted. Splitting one part changes denominator from k² to (k+1)², diluting energy. Need either: (a) all-parts-simultaneous refinement showing gain overcomes 4^k normalization dilution, (b) k-preserving vertex rearrangement, or (c) change energy definition to size-weighted.",
-      "energy_increment_step Case B: non-equitable case requires separate construction."
-    ],
-    "nextAction": "Consider changing partitionEnergy to size-weighted Σ(nᵢnⱼ/n²)d² which is monotone under refinement, then energy_increment_step follows from standard argument. Alternatively, prove Case A by showing enough irregular pairs (>eps*k²) produce total gain exceeding the normalization dilution.",
+    "focus": "Gallery formalization complete: SzemerediRegularity.lean is verified (0 axioms, 0 sorries, 533 lines, badge 'mathlib') — main result bridged to Mathlib's `szemeredi_regularity`. The unused standalone `energy_increment_step` infrastructure was removed in earlier iterations.",
+    "blockers": [],
+    "nextAction": "None — formalization is complete. The OQ02 child problem has its own JSON entry.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -110,31 +107,20 @@
     "mathlib": []
   },
   "started": "2026-03-22T06:10:36.236Z",
-  "lastUpdate": "2026-03-22T21:00:00Z",
+  "lastUpdate": "2026-04-27T00:00:00+00:00",
   "significance": 9,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/SzemerediRegularity.lean",
       "filename": "SzemerediRegularity.lean",
-      "lineCount": 534,
+      "lineCount": 533,
       "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularity.lean"
-    },
-    {
-      "path": "Proofs/SzemerediRegularityOQ02.lean",
-      "filename": "SzemerediRegularityOQ02.lean",
-      "lineCount": 400,
-      "theoremCount": 8,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ02.lean"
     }
   ]
 }
