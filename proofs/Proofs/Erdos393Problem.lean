@@ -134,9 +134,9 @@ def UnconditionalTendsto : Prop :=
 ## Part 6: Lower Bounds on f(n)
 -/
 
-/-- If n! = a₁ · ... · aₜ with aₜ = a₁ + m, then each aᵢ ≤ n! -/
-/-- The trivial factorization 1 · 2 · ... · n has span n - 1 -/
-/-- f(n) ≥ 1 for n ≥ 2 -/
+-- If n! = a₁ · ... · aₜ with aₜ = a₁ + m, then each aᵢ ≤ n! (not yet formalized)
+-- The trivial factorization 1 · 2 · ... · n has span n - 1 (not yet formalized)
+-- f(n) ≥ 1 for n ≥ 2 (not yet formalized)
 /-
 ## Part 7: Connection to Diophantine Equations
 -/
