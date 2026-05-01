@@ -48,13 +48,13 @@
     ],
     "axiomCount": 1,
     "lineCount": 276,
-    "assumptions": "1 axiom: KacPolynomialData. 0 sorries."
+    "assumptions": "1 axiom: KacPolynomialData.isRademacher. 0 sorries."
   },
   "overview": {
     "historicalContext": "Random polynomials with independently identically distributed coefficients are called **Kac polynomials** after Mark Kac's pioneering 1943 paper. When the coefficients are ±1 with equal probability, they are called **Rademacher polynomials** or **Littlewood polynomials** (the latter also includes 0 as a possible coefficient).\n\nErdős and Offord (1956) proved a foundational result: random degree-n polynomials with ±1 coefficients have approximately (2/π) log n real roots on average. This was one of the first precise results in the theory of random polynomials.\n\nProblem #522 asks about roots in the complex unit disk {z : |z| ≤ 1}. The natural conjecture is that about half the roots should lie inside the disk, with R_n/(n/2) → 1 as n → ∞. The question is whether this convergence holds almost surely (for almost all sequences of random polynomials) or only in probability.\n\nYakir (2021) proved convergence in probability: lim P(|R_n - n/2| ≥ n^{9/10}) = 0. This confirms that 'most' random polynomials have about n/2 roots in the unit disk, but the stronger almost sure statement remains open.",
     "problemStatement": "**Erdős Problem #522**: Let $f(z) = \\sum_{k=0}^n \\varepsilon_k z^k$ be a random polynomial where $\\varepsilon_k \\in \\{-1, 1\\}$ independently uniformly at random. Let $R_n$ denote the number of roots of $f(z)$ in the unit disk $\\{z \\in \\mathbb{C} : |z| \\leq 1\\}$.\n\n**Question**: Does $R_n / (n/2) \\to 1$ almost surely as $n \\to \\infty$?\n\n**Status**: PARTIALLY SOLVED\n\n**Known Results**:\n- Erdős-Offord (1956): Expected number of real roots is $(2/\\pi + o(1)) \\log n$\n- Yakir (2021): $R_n / (n/2) \\to 1$ in probability (i.e., $\\lim_{n \\to \\infty} P(|R_n - n/2| \\geq n^{9/10}) = 0$)\n\n**OPEN**: Almost sure convergence remains unresolved.",
     "text": "For random polynomials with ±1 coefficients, does the number of roots in the unit disk converge to n/2 almost surely? Yakir (2021) proved convergence in probability.",
-    "proofStrategy": "We formalize this problem using a layered approach:\n\n1. **Define polynomial classes**: Littlewood polynomials (coefficients in {-1, 0, 1}) and Rademacher polynomials (coefficients in {-1, 1}).\n\n2. **Define geometric objects**: The unit disk and unit circle in the complex plane.\n\n3. **Axiomatize known results**: The Erdős-Offord theorem on real roots and Yakir's theorem on convergence in probability.\n\n4. **Axiomatize open question**: The almost sure convergence is stated as an unknown Prop.\n\n5. **Define Kac polynomial structure**: A structure holding polynomial data with coefficient constraints.\n\n6. **State connections**: Links to Salem numbers and Mahler measure that motivate this problem.",
+    "proofStrategy": "We formalize this problem using a layered approach:\n\n1. **Define polynomial classes**: Littlewood polynomials (coefficients in {-1, 0, 1}) and Rademacher polynomials (coefficients in {-1, 1}).\n\n2. **Define geometric objects**: The unit disk and unit circle in the complex plane.\n\n3. **Document known results**: The Erdős-Offord theorem (1956) on real roots and Yakir's theorem (2021) on convergence in probability are stated in docstring comments; no axioms are declared for these results.\n\n4. **Axiomatize one coefficient property**: The single axiom `KacPolynomialData.isRademacher` asserts that the polynomial in a `KacPolynomialData` structure satisfies the Rademacher coefficient constraint.\n\n5. **Leave open question implicit**: The almost sure convergence question is described in a docstring comment; no `Prop` declaration is made for it.\n\n6. **State connections**: Links to Salem numbers and Mahler measure that motivate this problem.",
     "keyInsights": [
       "**Kac polynomials**: Random polynomials with i.i.d. coefficients. Named after Mark Kac who studied their expected number of real zeros in 1943.",
       "**Why n/2?**: By the symmetry z ↔ 1/z, roots pair up inside and outside the unit disk. For 'generic' polynomials, we expect half inside.",
@@ -106,8 +106,8 @@
       "title": "Root Counting",
       "startLine": 136,
       "endLine": 146,
-      "summary": "Axiomatized root counting function for the unit disk.",
-      "mathContext": "Axiomatized: Axiomatized root counting function for the unit disk."
+      "summary": "Doc comment describing what an axiomatized root-counting function would require; no actual definition or axiom is declared in this section.",
+      "mathContext": "Mathematical content: Doc comment outlining the intended root-counting function (requires splitting fields and careful counting); no declaration present in this section."
     },
     {
       "id": "main-results",
