@@ -30,7 +30,7 @@
     "historicalContext": "Erdős and Graham studied n_k, the smallest integer n > 2k such that the descending product (n-1)(n-2)⋯(n-k) has no prime factor in the interval (k, 2k). By Bertrand's postulate, such primes always exist, so avoidance is non-trivial. The question connects to the Chinese Remainder Theorem: for each Bertrand-range prime p, the condition p ∤ ∏(n-i) translates to a residue constraint n mod p ∈ {0, k+1, ..., p-1}, giving p-k 'safe' residues out of p possibilities.\n\nErdős and Graham proved n_k > k^{1+c} for some constant c > 0, showing the growth is superlinear. Adenwalla observed the upper bound n_k ≤ ∏_{k<p<2k} p = e^{O(k)} by taking n ≡ 0 (mod p) for all Bertrand-range primes via CRT. The exact growth rate between polynomial and exponential remains open.\n\nThe conjecture has two parts: (1) n_k is superpolynomial (n_k > k^d for every fixed d), and (2) n_k is sub-exponential (n_k < e^{o(k)}). Computed values include n_1=3, n_2=6, n_3=9, n_4=20, n_5=13, n_9=65, n_10=220, n_12=338, n_20=550. The formalization at 135 lines includes CRT structural lemmas and proved bounds.",
     "problemStatement": "Estimate n_k. Is n_k > k^d for every d? Is n_k < e^{o(k)}?",
     "text": "Estimate n_k, the smallest n > 2k such that (n-1)(n-2)⋯(n-k) has no prime factor in (k, 2k). Conjectured superpolynomial but sub-exponential.",
-    "proofStrategy": "We define descendingProduct via Finset.Icc.prod, IsInBertrandRange (k < p < 2k and prime), AvoidsBertrandPrimes (no Bertrand-range prime divides the product). The function nk is axiomatized with nk_gt_2k, nk_avoids, and nk_minimal. CRT structural lemmas (at_most_one_div, prime_dvd_descendingProduct, card_safeResidues) are stated with sorries. Both conjectures are defined as Prop.",
+    "proofStrategy": "We define descendingProduct via Finset.Icc.prod, IsInBertrandRange (k < p < 2k and prime), AvoidsBertrandPrimes (no Bertrand-range prime divides the product). The function nk is axiomatized with nk_gt_2k and nk_minimal. CRT structural lemmas (at_most_one_div, prime_dvd_descendingProduct, card_safeResidues, avoidsBertrand_iff_finset) are fully proved. Both conjectures are defined as Prop.",
     "keyInsights": [
       "**CRT reduction**: For each Bertrand prime p, avoidance means n mod p ∉ {1,...,k}. The safe residues are {0, k+1, ..., p-1}, giving p-k choices. Finding n satisfying all constraints simultaneously is a CRT problem.",
       "**Erdős-Graham lower bound**: n_k > k^{1+c} for some c > 0 — the growth is strictly superlinear, already ruling out polynomial growth of fixed degree.",
@@ -70,41 +70,41 @@
     {
       "id": "product-primes",
       "title": "Product and Prime Avoidance",
-      "startLine": 27,
-      "endLine": 47,
+      "startLine": 26,
+      "endLine": 50,
       "summary": "Defines descendingProduct, IsInBertrandRange, AvoidsBertrandPrimes, bertrandPrimes, and safeResidues."
     },
     {
       "id": "nk-definition",
       "title": "The Function n_k",
-      "startLine": 53,
-      "endLine": 66,
-      "summary": "Axiomatizes nk with nk_gt_2k, nk_avoids, and nk_minimal (minimality)."
+      "startLine": 52,
+      "endLine": 64,
+      "summary": "Axiomatizes nk (the function), nk_gt_2k (lower bound n_k > 2k), and nk_minimal (minimality)."
     },
     {
       "id": "crt-lemmas",
       "title": "CRT Structural Lemmas",
-      "startLine": 67,
-      "endLine": 93,
-      "summary": "States at_most_one_div (at most one factor divisible by p), prime_dvd_descendingProduct (product divisibility), card_safeResidues (p-k safe residues). All have sorries."
+      "startLine": 66,
+      "endLine": 152,
+      "summary": "Proves at_most_one_div (at most one factor divisible by p), prime_dvd_descendingProduct (product divisibility), card_safeResidues (p-k safe residues), prime_not_dvd_factor_when_dvd_n, avoids_when_divisible_by_all, and avoidsBertrand_iff_finset (finite check equivalence)."
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "startLine": 94,
-      "endLine": 119,
-      "summary": "Axiomatizes Erdős-Graham lower bound k^{1+c} and Adenwalla upper bound 2^{Ck}. Proves nk_trivial_lower and adenwalla_crt_idea."
+      "startLine": 154,
+      "endLine": 169,
+      "summary": "Proves nk_trivial_lower (2k < n_k from axioms) and adenwalla_crt_idea (CRT upper bound reduction)."
     },
     {
       "id": "main-conjectures",
       "title": "Main Conjectures",
-      "startLine": 120,
-      "endLine": 155,
+      "startLine": 171,
+      "endLine": 185,
       "summary": "Defines ErdosProblem451_superpolynomial, ErdosProblem451_subexponential, and ErdosProblem451 (conjunction)."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 451 asks for the growth rate of n_k — the smallest integer whose descending product avoids all Bertrand-range prime factors. The formalization captures CRT structure, known bounds, and both conjectures. 3 sorries for CRT lemmas.",
+    "summary": "Erdős Problem 451 asks for the growth rate of n_k — the smallest integer whose descending product avoids all Bertrand-range prime factors. The formalization captures CRT structure, known bounds, and both conjectures. CRT structural lemmas are fully proved; the three axiomatized assumptions concern the n_k function itself.",
     "implications": "Determining the growth of n_k would illuminate the distribution of primes dividing products of consecutive integers and the multiplicative structure of shifted integers.",
     "openQuestions": [
       "Is n_k superpolynomial in k?",
