@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACTIVE: cluster has 8 sorries on origin/main (SpernerFreudenthal 6 + SpernerGrid 2). Four orphaned commits on the long-running feature/researcher-1 branch (never PR'd, dropped during a 2026-04-27 reset to main) would reduce this to 2 if cherry-picked + Docker-verified. The boundary_doors_odd sorry (SpernerGrid.lean:1756) is documented FALSE for d=1 with explicit counterexample and requires gridAdj redesign. Mathlib contribution is blocked on a [USER ACTION] comment to mathlib4#25231 (Dillies has not yet been pointed to SpernerSimplicialInstance.lean as the Part 2 implementation).",
+    "progressSummary": "BLOCKED (2026-05-01): Mathlib-targeted formalization complete. SpernerGridAristotle.lean cleaned up (session 13, 2026-04-27): 3 stale stub sorries removed (duplicates of proven main-file theorems). Mathlib contribution blocked on USER ACTION (see blockers). Remaining sorries: SpernerGrid.lean (2 documented blockers), SpernerNDimOQ04.lean (1), SpernerFreudenthal.lean (4).",
     "builtItems": [
       "SpernerMathlib4Opt.lean: optimized proof proposal for even_card_of_fpf_invol using sum_involution (research/problems/sperner-ndim-oq-05/lean/)",
       "even_card_of_fpf_invol: 53-line strongInduction proof replaced with 11-line sum_involution proof in SpernerMathlib4.lean",
@@ -41,7 +41,8 @@
       "gridAdj_ne: proved in SpernerGrid.lean (1 sorry removed, 6 → 5 remaining)",
       "gridAdj_symm: proved in SpernerGrid.lean using boundaryFlip0_invol, boundaryFlipLast_invol (5 → 4 sorries)",
       "gridAdj_vertex: proved in SpernerGrid.lean by case analysis on k value (4 → 3 sorries)",
-      "gridAdj_ne additional: proved (3 sorries remain: CellComplex.sperner ref + boundary_verts_on_face + boundary_doors_odd)"
+      "gridAdj_ne additional: proved (3 sorries remain: CellComplex.sperner ref + boundary_verts_on_face + boundary_doors_odd)",
+      "SpernerGridAristotle.lean: removed 3 stale stub sorries (gridAdj_symm/vertex/ne) — duplicates of proven main-file theorems; file now a placeholder (49 → 28 LOC)"
     ],
     "insights": [
       "All gallery files (SpernerMathlib4, SpernerSimplicialInstance, etc.) have 0 sorries — mathematical work complete",
@@ -70,7 +71,8 @@
       "sperner_grid requires N≥d for non-empty complex, not just N>0. For d=2, N=1: gridComplex 2 1 is empty, making ∃ s, IsPanchromatic false.",
       "Root cause: gridAdj treats 'boundaryFlip returns none' as 'geometric boundary', but this is wrong when the adjacent simplex exists with a different miss direction. Redesign required.",
       "gridAdj_symm proved using: boundaryFlip0_invol, boundaryFlipLast_invol, interiorFlip_invol + interiorFlip symmetry argument",
-      "gridAdj_vertex proved by case split: k=0 uses boundaryFlip0 vertex property, k=d uses boundaryFlipLast vertex property, 0<k<d uses interiorFlip vertex property"
+      "gridAdj_vertex proved by case split: k=0 uses boundaryFlip0 vertex property, k=d uses boundaryFlipLast vertex property, 0<k<d uses interiorFlip vertex property",
+      "SpernerGridAristotle.lean (2026-04-14, last untouched) declared gridAdj_symm/gridAdj_vertex/gridAdj_ne as sorry stubs in namespace SpernerGrid AFTER PRs #11358 and #12534 proved them in SpernerGrid.lean — duplicate-definition source. No automated CI build workflow exists for proofs, only label-external-issues + Proofs.lean sync; Docker builds are local-only, so duplicates went unnoticed."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -103,7 +105,7 @@
     "mathlib": []
   },
   "started": "2026-04-14T21:25:05.895Z",
-  "lastUpdate": "2026-04-27T16:50:00+00:00",
+  "lastUpdate": "2026-04-27T17:00:00Z",
   "significance": 8,
   "tractability": 5
 }

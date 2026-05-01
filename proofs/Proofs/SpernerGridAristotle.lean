@@ -1,49 +1,28 @@
 /-
   Aristotle targets for SpernerGrid.lean
-  Routine supporting lemmas for the grid adjacency relation.
-  See SpernerGrid.lean for the main formalization.
 
-  Criteria for inclusion:
-  - NOT the main abstract Sperner theorem (proved in SpernerMathlib4.lean)
-  - NOT boundary_doors_odd (hard: requires induction on dimension)
-  - NOT boundary_verts_on_face (incorrect, pending architectural redesign)
-  - Structural properties of gridAdj: symmetry, shared-face, distinctness
+  STATUS (2026-04-27): Previously contained stub `sorry` declarations for
+  `gridAdj_symm`, `gridAdj_vertex`, and `gridAdj_ne`. All three theorems are
+  now fully proved directly in `SpernerGrid.lean` (PR #12534, #11358), so the
+  stubs were both redundant and a duplicate-definition source for the
+  `SpernerGrid` namespace.
 
-  These three lemmas follow from the definitions of gridAdj, interiorFlip,
-  boundaryFlip0, and boundaryFlipLast: the flip operations are involutions
-  that change exactly one vertex while preserving the rest.
+  This file is retained as a placeholder for future Aristotle targets relating
+  to grid adjacency. No active targets at present.
+
+  See `SpernerGrid.lean` for the main formalization. Remaining sorries in
+  `SpernerGrid.lean`:
+    1. `CellComplex.sperner` (intentional duplication; proved in
+       `SpernerMathlib4.lean` and pending an architectural decision on
+       whether to import from there or inline the proof).
+    2. `boundary_doors_odd` (mathematically false as currently stated for
+       `d = 1` due to GridSimplex orientation double-counting; awaits
+       fundamental redesign).
 -/
-import Mathlib
 import Proofs.SpernerGrid
 
 namespace SpernerGrid
 
-/-- Adjacency is symmetric: if s is adjacent to s' through facet k,
-    then s' is adjacent to s through some facet k'. -/
-theorem gridAdj_symm (s : GridSimplex d N)
-    (k : Fin (d + 1)) (s' : GridSimplex d N)
-    (k' : Fin (d + 1))
-    (h : gridAdj d N s k = some (s', k')) :
-    gridAdj d N s' k' = some (s, k) := by
-  sorry
-
-/-- Adjacent cells share their codimension-1 face:
-    if s adj s' via k and k', then their faces (all vertices except k and k'
-    respectively) are equal as sets. -/
-theorem gridAdj_vertex (s : GridSimplex d N)
-    (k : Fin (d + 1)) (s' : GridSimplex d N)
-    (k' : Fin (d + 1))
-    (h : gridAdj d N s k = some (s', k')) :
-    (Finset.univ.erase k).image s.verts =
-    (Finset.univ.erase k').image s'.verts := by
-  sorry
-
-/-- Adjacent cells are distinct: the flip changes at least one vertex. -/
-theorem gridAdj_ne (s : GridSimplex d N)
-    (k : Fin (d + 1)) (s' : GridSimplex d N)
-    (k' : Fin (d + 1))
-    (h : gridAdj d N s k = some (s', k')) :
-    s ≠ s' := by
-  sorry
+-- (No active Aristotle targets in this file.)
 
 end SpernerGrid

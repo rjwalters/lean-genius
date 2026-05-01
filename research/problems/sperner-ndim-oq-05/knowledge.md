@@ -505,3 +505,70 @@ If reclaiming this problem: first check `feature/researcher-1` and `feature/rese
   → Removed; replaced by `no_boundary_door_k_lt` with correct geometric hypothesis
 - `no_boundary_doors_face_lt` was using unprovable sorry via `boundary_verts_on_face`
   → Fixed: now uses geometric boundary condition and delegates to `no_boundary_door_k_lt`
+
+---
+
+## Session 2026-04-27 (Session 13) - Clean up stale Aristotle companion file
+
+**Mode**: REVISIT
+**Outcome**: PROGRESS — eliminated 3 stale-stub sorries by repurposing
+`SpernerGridAristotle.lean` (3 sorries → 0 sorries).
+
+### What I Did
+
+1. Surveyed every `Sperner*.lean` file's sorry count. Two non-comment sorries in
+   `SpernerGrid.lean` are documented blockers (intentional duplication for
+   `CellComplex.sperner`; mathematically false-as-stated for `boundary_doors_odd`).
+   `SpernerNDimOQ04.lean` has 1 sorry (`walkTrace_reversal`, ~100 LoC induction).
+   `SpernerFreudenthal.lean` had 6 sorries — researcher-7 is actively reducing
+   them (PR #13222 takes 6 → 4).
+2. Discovered `SpernerGridAristotle.lean` (last touched 2026-04-14) still
+   declares `theorem gridAdj_symm`, `gridAdj_vertex`, `gridAdj_ne` as `sorry`
+   stubs in `namespace SpernerGrid`. The same theorems were proved in the main
+   file `SpernerGrid.lean` by PRs #11358 and #12534, so the file became a
+   duplicate-definition source for the `SpernerGrid` namespace.
+3. Replaced the stub bodies with explanatory comments and an empty namespace
+   block. The file is retained as a placeholder (still imported by
+   `Proofs.lean`) so future Aristotle targets relating to grid adjacency can be
+   added back.
+
+### Why the Build Did Not Visibly Break
+
+Lake/CI does not have an automated build workflow on this repo (only
+`label-external-issues.yml` and a `Proofs.lean sync` workflow appear in
+`gh workflow list`); Docker builds are local-only via
+`./proofs/scripts/docker-build.sh`. So the duplicate declaration likely
+compiled with a "redefinition" warning that no automated check surfaced.
+
+### Files Modified
+
+- `proofs/Proofs/SpernerGridAristotle.lean` (49 → 28 lines, 3 sorries → 0)
+
+### Build Verification
+
+NOT performed this session: host disk hit 99% capacity (≤376 MiB free) which
+makes Docker container creation unreliable (see
+`feedback_disk_full_blocks_research.md`). The change is structural — removing
+duplicate declarations whose proven counterparts in `SpernerGrid.lean` already
+build — so it cannot regress correctness.
+
+### Remaining Sorries on this Problem (Honest Snapshot)
+
+- `SpernerGrid.lean:158` — `CellComplex.sperner` (intentional; proved in
+  `SpernerMathlib4.lean`). To fix: import + bridge.
+- `SpernerGrid.lean:1756` — `boundary_doors_odd` (false as stated for d=1).
+  Requires fundamental redesign to avoid GridSimplex orientation
+  double-counting.
+- `SpernerNDimOQ04.lean:980` — `walkTrace_reversal` (~100-line induction).
+- `SpernerFreudenthal.lean` — 4 sorries (per researcher-7's PR #13222).
+
+### Next Steps
+
+1. **[USER ACTION]** Refresh Mathlib fork + comment on mathlib4#25231 pointing
+   to `SpernerSimplicialInstance.lean` as Part 2.
+2. Architectural decision: import `SpernerMathlib4` from `SpernerGrid` and
+   bridge the two structurally-identical `CellComplex` types, eliminating the
+   intentional `sperner` duplication. Tradeoff: gives up the
+   "self-contained build" property the comment block defends.
+3. Resume `SpernerGrid.boundary_doors_odd` redesign once GridSimplex orientation
+   model is settled.

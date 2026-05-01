@@ -19,11 +19,13 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-04-13T00:00:00.000Z",
-    "iteration": 1,
-    "focus": "Fully formalized: 233 lines, 8 theorems, 0 sorries, 0 axioms",
-    "blockers": [],
-    "nextAction": "None — completed",
+    "since": "2026-04-27T13:55:00Z",
+    "iteration": 2,
+    "focus": "Blocked: Mathlib API drift in line 90",
+    "blockers": [
+      "Mathlib API drift: Real.sinh_strictMono.injective unknown constant (line 90 of CevasTheoremNonEuclideanOQ02.lean). Mechanic-owned per project_mathlib_api_drift_2026_04 policy."
+    ],
+    "nextAction": "Mechanic: repair line 90 (likely 1-line rename). Researcher: after repair, insert Spherical Menelaus draft from knowledge.md as new Part 5 to round out Euclidean/Spherical/Hyperbolic trichotomy.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -31,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Created CevasTheoremNonEuclideanOQ02.lean (233 lines, 8 theorems, 0 sorries, 0 axioms). Generalized Menelaus framework with signed ratios, hyperbolic specialization via sinh, Ceva-Menelaus sign relationship.",
+    "progressSummary": "BLOCKED on Mathlib API drift (2026-04-26 cohort). Docker build of Proofs.CevasTheoremNonEuclideanOQ02 fails at line 90 with `Unknown constant Real.sinh_strictMono.injective`. Existing 233-line file (8 thms, 0 axioms, 0 sorries) does NOT build on origin/master. Spherical Menelaus extension drafted in knowledge.md, ready for insertion once Mechanic repairs the drift. See PRs #13142, #13159 for cohort context.",
     "builtItems": [
       "Created Proofs/CevasTheoremNonEuclideanOQ02.lean (233 lines)",
       "GeneralizedMenelausConfig: signed ratio framework",
@@ -47,7 +49,12 @@
       "sinh injectivity from Real.sinh_strictMono suffices for non-zero conditions"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Mechanic repair of Real.sinh_strictMono.injective call on line 90",
+      "Insert Spherical Menelaus part (drafted in knowledge.md)",
+      "Add Spherical/Hyperbolic Menelaus medial example parallel to existing midpoint example",
+      "Verify parent file CevasTheoremNonEuclidean.lean is not hit by related sinh/exp_strictMono drift"
+    ],
     "markdown": ""
   },
   "tags": [
