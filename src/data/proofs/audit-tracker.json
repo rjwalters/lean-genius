@@ -8159,10 +8159,13 @@
       "result": "clean"
     },
     "erdos-645": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-loop-2026-05-01",
+      "auditCount": 3,
+      "issues": [
+        "Section main-theorem claims phantom axiomatized theorem; status overstated (Tier C narrative on Tier D content); see #14118"
+      ],
+      "lastAudited": "2026-05-01T05:10:00Z",
+      "result": "issues-found"
     },
     "erdos-646": {
       "agentId": "auditor-cycle-20-batch",
