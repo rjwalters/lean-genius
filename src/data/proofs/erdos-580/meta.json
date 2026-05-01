@@ -56,11 +56,9 @@
       "satisfiesGeneralizedLKS: Koml\u00f3s-S\u00f3s generalization",
       "LKSConjecture: formal statement of conjecture",
       "KomlosSosConjecture: generalized conjecture",
-      "AKS_theorem: asymptotic version (1995)",
-      "zhao_theorem: full result for large n (2011)",
-      "erdos_580: main theorem",
-      "path_case and star_case: special cases",
-      "LKS_tightness: sharpness of the condition"
+      "zhao_theorem: full result for large n (2011) (the only axiom)",
+      "erdos_580: main theorem proved from zhao_theorem",
+      "AKS asymptotic (1995), path/star special cases, and tightness construction documented in source comments only"
     ],
     "axiomCount": 1,
     "lineCount": 236,
@@ -70,7 +68,7 @@
     "historicalContext": "**Erd\u0151s Problem #580: The Loebl-Koml\u00f3s-S\u00f3s Conjecture**\n\nThe Loebl-Koml\u00f3s-S\u00f3s (LKS) conjecture, also known as the $(n/2, n/2, n/2)$ conjecture, is one of the central problems in extremal graph theory concerning forced tree embeddings under degree conditions.\n\n**Origins and Formulation:**\nThe conjecture was posed by Erd\u0151s, F\u00fcredi, Loebl, and S\u00f3s in their 1995 paper (EFLS95), growing out of earlier work by Loebl who conjectured a weaker version. The problem sits at the intersection of extremal graph theory and structural graph theory, asking how global degree conditions force the existence of all small tree subgraphs.\n\n**Progress Timeline:**\n- **1995**: Ajtai, Koml\u00f3s, and Szemer\u00e9di proved an asymptotic version [AKS95], requiring $(1+\\varepsilon)n/2$ vertices of degree $\\geq (1+\\varepsilon)n/2$ for any $\\varepsilon > 0$. Their proof introduced key structural decomposition techniques.\n- **2000s**: Piguet and Stein proved special cases including spiders (caterpillar trees) and trees with bounded degree. Hladk\u00fd and Piguet established the conjecture for dense graphs.\n- **2011**: Yi Zhao proved the full conjecture for all sufficiently large $n$ in the *Electronic Journal of Combinatorics* (Paper 27, 2011). Zhao's proof is a tour de force application of Szemer\u00e9di's Regularity Lemma combined with the blow-up technique and careful probabilistic arguments.\n- **2017**: Hladk\u00fd, Koml\u00f3s, Piguet, Simonovits, Stein, and Szemer\u00e9di announced a proof of the full (exact) conjecture for all $n$ sufficiently large, as part of a broader program resolving the Koml\u00f3s-S\u00f3s conjecture.\n\n**Broader Context:**\nThe LKS conjecture belongs to a family of extremal problems asking what minimum degree or density conditions force specific subgraphs. Related milestones include the Erd\u0151s-S\u00f3s conjecture (if $G$ has average degree $> k-2$ then $G$ contains all trees on $k$ vertices), the Koml\u00f3s-S\u00f3s generalization (decoupling tree size from the degree threshold), and the Bandwidth Theorem of B\u00f6ttcher, Schacht, and Taraz. The regularity-based approach used in Zhao's proof has become a paradigmatic tool in modern combinatorics.",
     "problemStatement": "**Problem Statement (Proved for large $n$)**\n\nLet $G$ be a graph on $n$ vertices such that at least $n/2$ vertices have degree at least $n/2$. Must $G$ contain every tree on at most $n/2$ vertices?\n\n**Answer: YES** for sufficiently large $n$ (Zhao, 2011)\n\n**Formal Statement:** $\\exists N_0 \\in \\mathbb{N}$ such that $\\forall n \\geq N_0$, if $G$ is a graph on $n$ vertices with $|\\{v : \\deg(v) \\geq n/2\\}| \\geq n/2$, then $G$ contains a copy of every tree $T$ with $|V(T)| \\leq n/2$.\n\n**Generalization (Koml\u00f3s-S\u00f3s Conjecture):**\nIf at least $n/2$ vertices have degree at least $k$, then $G$ contains every tree on at most $k+1$ vertices. This decouples the tree size from the number of vertices.\n\n**Tightness:**\nThe condition is sharp: the disjoint union $K_{\\lfloor n/2 \\rfloor - 1} \\cup K_{\\lceil n/2 \\rceil + 1}$ has exactly $\\lfloor n/2 \\rfloor - 1$ vertices of degree $\\geq \\lfloor n/2 \\rfloor - 1$ and fails to contain certain paths spanning both components.",
     "text": "If a graph G on n vertices has at least n/2 vertices of degree at least n/2, must G contain every tree on at most n/2 vertices? YES for large n - proved by Zhao (2011).",
-    "proofStrategy": "**Formalization Approach**\n\nThe Lean formalization captures the full statement hierarchy from definitions through the main theorem:\n\n1. **Graph Infrastructure:** Defines `vertexDegree` and `highDegreeVertices` using Mathlib's `SimpleGraph.neighborFinset`, providing a computable degree function and filterable high-degree set.\n\n2. **Tree Representation:** Introduces a `Tree k` structure carrying a vertex set, edge set, and cardinality proof. The collection `allTrees k` represents all trees on $k$ vertices.\n\n3. **Embedding Predicate:** `TreeEmbeds T G` asserts existence of an injective edge-preserving map $f: \\mathrm{Fin}\\, k \\to V$, formalizing graph homomorphism with injectivity (subgraph isomorphism for trees).\n\n4. **LKS Conditions:** `satisfiesLKS` captures the $(n/2, n/2, n/2)$ condition; `satisfiesGeneralizedLKS` captures the Koml\u00f3s-S\u00f3s generalization with independent parameter $k$.\n\n5. **Axiomatized Deep Results:** The AKS asymptotic theorem and Zhao's exact theorem are axiomatized, since their proofs require the full Regularity Lemma machinery not yet in Mathlib.\n\n6. **Derived Main Result:** `erdos_580` follows directly from `zhao_theorem`, demonstrating the logical chain.\n\n7. **Special Cases and Tightness:** Path and star embedding under LKS are axiomatized as illustrative special cases, and `LKS_tightness` axiomatizes the sharpness construction.",
+    "proofStrategy": "**Formalization Approach**\n\nThe Lean formalization captures the full statement hierarchy from definitions through the main theorem:\n\n1. **Graph Infrastructure:** Defines `vertexDegree` and `highDegreeVertices` using Mathlib's `SimpleGraph.neighborFinset`, providing a computable degree function and filterable high-degree set.\n\n2. **Tree Representation:** Introduces a `Tree k` structure carrying a vertex set, edge set, and cardinality proof. The collection `allTrees k` represents all trees on $k$ vertices.\n\n3. **Embedding Predicate:** `TreeEmbeds T G` asserts existence of an injective edge-preserving map $f: \\mathrm{Fin}\\, k \\to V$, formalizing graph homomorphism with injectivity (subgraph isomorphism for trees).\n\n4. **LKS Conditions:** `satisfiesLKS` captures the $(n/2, n/2, n/2)$ condition; `satisfiesGeneralizedLKS` captures the Koml\u00f3s-S\u00f3s generalization with independent parameter $k$.\n\n5. **Axiomatized Deep Result:** Only `zhao_theorem` (Zhao 2011) is declared as an axiom, since its proof requires the full Regularity Lemma machinery not yet in Mathlib. The AKS asymptotic theorem (1995) is documented in a docstring comment, not formalized as an axiom.\n\n6. **Derived Main Result:** `erdos_580` follows directly from `zhao_theorem`, demonstrating the logical chain.\n\n7. **Special Cases and Tightness:** Path, star, and tightness examples are discussed in docstring comments only; no `path_case`, `star_case`, or `LKS_tightness` axioms are declared.",
     "keyInsights": [
       "**The $(n/2, n/2, n/2)$ Pattern:** The conjecture's elegant symmetry \u2014 at least $n/2$ vertices of degree $\\geq n/2$ forces all trees of size $\\leq n/2$ \u2014 makes it a natural extremal threshold problem where all three parameters coincide",
       "**Sharpness via Disjoint Cliques:** The condition cannot be weakened: $K_{n/2-1} \\cup K_{n/2+1}$ has only $n/2 - 1$ high-degree vertices and fails to embed a path of length $n/2 - 1$ spanning both components, showing the threshold is tight",
@@ -103,7 +101,7 @@
     {
       "id": "trees",
       "title": "Tree Structure and Cayley's Formula",
-      "summary": "Introduces the `Tree k` structure carrying a vertex Finset, edge Finset, and cardinality proof. Defines `allTrees k` as the universal set. Axiomatizes Cayley's formula: the number of labeled trees on $k$ vertices is $k^{k-2}$.",
+      "summary": "Introduces the `Tree k` structure carrying a vertex Finset, edge Finset, and cardinality proof. Defines `allTrees k` as the universal set. Cayley's formula ($k^{k-2}$ labeled trees on $k$ vertices) is mentioned in a docstring comment, not declared as an axiom.",
       "startLine": 62,
       "endLine": 89,
       "mathContext": "Defines `allTrees k` as the universal set. Axiomatizes Cayley's formula: the number of labeled trees on $k$ vertices is $k^{k-2}$."
@@ -135,7 +133,7 @@
     {
       "id": "partial-results",
       "title": "Asymptotic and Exact Results",
-      "summary": "Axiomatizes `AKS_theorem` (the 1995 asymptotic version with $(1+\\varepsilon)$ factor) and `zhao_theorem` (the 2011 exact result for large $n$). Derives `erdos_580` directly from Zhao's theorem, establishing the main result as a one-line proof.",
+      "summary": "Axiomatizes only `zhao_theorem` (the 2011 exact result for large $n$). The AKS asymptotic theorem (1995, $(1+\\varepsilon)$ factor) is documented in a docstring comment, not formalized as an axiom. Derives `erdos_580` directly from Zhao's theorem as a one-line proof.",
       "startLine": 159,
       "endLine": 196,
       "mathContext": "Axiomatizes `AKS_theorem` (the 1995 asymptotic version with $(1+\\varepsilon)$ factor) and `zhao_theorem` (the 2011 exact result for large $n$). Derives `erdos_580` directly from Zhao's theorem, establishing the main result as a one-line proof."
@@ -143,7 +141,7 @@
     {
       "id": "special-cases",
       "title": "Special Cases: Paths and Stars",
-      "summary": "Axiomatizes `path_case` (all paths of length $\\leq n/2 - 1$ embed under LKS) and `star_case` (all stars $K_{1,k-1}$ with $k \\leq n/2$ embed). These represent the 'easy' end of the tree difficulty spectrum where greedy arguments suffice.",
+      "summary": "Path and star special cases documented in docstring comments only. No `path_case` or `star_case` axioms are declared in this range.",
       "startLine": 197,
       "endLine": 222,
       "mathContext": "Axiomatizes `path_case` (all paths of length $\\leq n/2 - 1$ embed under LKS) and `star_case` (all stars $K_{1,k-1}$ with $k \\leq n/2$ embed)."
@@ -151,7 +149,7 @@
     {
       "id": "tightness",
       "title": "Tightness of the LKS Condition",
-      "summary": "Axiomatizes `LKS_tightness`: for every $n \\geq 4$, there exists a graph with $n/2 - 1$ vertices of degree $n/2 - 1$ that fails to contain some tree on $n/2$ vertices, proving the $(n/2, n/2, n/2)$ threshold is sharp.",
+      "summary": "Tightness of the LKS condition documented in a docstring comment only. No `LKS_tightness` axiom is declared in this range.",
       "startLine": 223,
       "endLine": 236,
       "mathContext": "Axiomatizes `LKS_tightness`: for every $n \\geq 4$, there exists a graph with $n/2 - 1$ vertices of degree $n/2 - 1$ that fails to contain some tree on $n/2$ vertices, proving the $(n/2, n/2, n/2)$ threshold is sharp."
