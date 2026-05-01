@@ -7811,9 +7811,12 @@
     },
     "erdos-596": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T07:44:52Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom axioms in narrative: section summaries claim Axiom erdos_596 (Part IV) and Axiom erdos_595_k4_k3 (Part V) — neither declared in Lean file; only nesetril_rodl_c4_c6 and erdos_hajnal_c4_trees exist — issue #14179"
+      ]
     },
     "erdos-597": {
       "agentId": "auditor-cycle-20-batch",
