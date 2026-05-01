@@ -22,9 +22,9 @@
     "erdosNumber": 1155,
     "erdosUrl": "https://erdosproblems.com/1155",
     "erdosProblemStatus": "open",
-    "axiomCount": 6,
-    "lineCount": 224,
-    "assumptions": "6 axioms: triangleRemovalEdges (process function), nonneg/complete bounds, BFL upper/lower bounds, Mantel bound. Grable bound now proved from BFL. All 3 former sorries filled.",
+    "axiomCount": 5,
+    "lineCount": 230,
+    "assumptions": "5 axioms: triangleRemovalEdges (process function), nonneg bound, BFL upper/lower bounds, Mantel bound. Grable bound and the n²/2 complete-graph bound are now proved (derived from BFL and Mantel respectively). All 3 former sorries filled.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -40,48 +40,48 @@
       "id": "process-axioms",
       "title": "Process Axiomatization",
       "startLine": 40,
-      "endLine": 62,
-      "summary": "Axiomatizes f(n) = triangleRemovalEdges as ℕ → ℝ with basic bounds: f(n) ≥ 0 and f(n) ≤ n(n-1)/2.",
-      "mathContext": "`triangleRemovalEdges : ℕ → ℝ` axiomatized with: $f(n) \\ge 0$ (non-negative edge count) and $f(n) \\le n(n-1)/2$ (cannot exceed $|E(K_n)|$). The function represents $\\mathbb{E}[f(n)]$ or a typical realization — the formalization is agnostic about this distinction."
+      "endLine": 71,
+      "summary": "Axiomatizes f(n) = triangleRemovalEdges as ℕ → ℝ with basic bounds: f(n) ≥ 0 (axiom) and the Mantel bound f(n) ≤ n²/4 (axiom). The weaker complete-graph bound f(n) ≤ n²/2 is now derived from Mantel as a theorem.",
+      "mathContext": "`triangleRemovalEdges : ℕ → ℝ` axiomatized with: $f(n) \\ge 0$ (non-negative edge count) and the **Mantel bound** $f(n) \\le n^2/4$ (since the process terminates at a triangle-free graph). The weaker $f(n) \\le n^2/2$ bound (cannot exceed $|E(K_n)|$) is **derived** from Mantel since $n^2/4 \\le n^2/2$. The function represents $\\mathbb{E}[f(n)]$ or a typical realization — the formalization is agnostic about this distinction."
     },
     {
       "id": "known-results",
       "title": "Known Results: BFL and Grable Bounds",
-      "startLine": 63,
-      "endLine": 95,
+      "startLine": 72,
+      "endLine": 101,
       "summary": "BFL (2015): n^{3/2-ε} ≤ f(n) ≤ n^{3/2+ε} eventually (axiomatized). Grable (1997): f(n) ≤ n^{7/4+ε} (now proved from BFL, no longer an axiom).",
       "mathContext": "Bohman-Frieze-Lubetzky (2015): $\\forall \\varepsilon > 0,\\; \\forall^\\infty n,\\; n^{3/2 - \\varepsilon} \\le f(n) \\le n^{3/2 + \\varepsilon}$, i.e., $f(n) = n^{3/2 + o(1)}$. Grable (1997): $f(n) \\le n^{7/4 + o(1)}$ — now a proved consequence of BFL since $3/2 + \\varepsilon < 7/4 + \\varepsilon$ for small $\\varepsilon$."
     },
     {
       "id": "conjecture",
       "title": "Erdős Conjecture",
-      "startLine": 96,
-      "endLine": 111,
+      "startLine": 102,
+      "endLine": 117,
       "summary": "The open conjecture: ∃ c₁,c₂ > 0 such that c₁·n^{3/2} ≤ f(n) ≤ c₂·n^{3/2} for large n. Stronger than BFL's sub-polynomial precision.",
       "mathContext": "**Conjecture (Erdős):** $\\exists\\, c_1, c_2 > 0$ such that $c_1 \\cdot n^{3/2} \\le f(n) \\le c_2 \\cdot n^{3/2}$ for all large $n$, i.e., $f(n) = \\Theta(n^{3/2})$. This is strictly stronger than BFL's $f(n) = n^{3/2 + o(1)}$ because it excludes logarithmic corrections like $n^{3/2} \\sqrt{\\log n}$. Status: OPEN."
     },
     {
       "id": "derived-results",
       "title": "Derived Theorems",
-      "startLine": 112,
-      "endLine": 154,
+      "startLine": 118,
+      "endLine": 160,
       "summary": "Four proved theorems: BFL implies Grable (via exponent arithmetic), the conjecture implies Θ(n^{3/2}), BFL exponent characterization, and the generic implication.",
       "mathContext": "Proved theorems: (1) BFL $\\Rightarrow$ Grable: $n^{3/2+\\varepsilon} \\le n^{7/4+\\varepsilon}$ for $\\varepsilon < 1/4$; (2) Conjecture $\\Rightarrow \\Theta(n^{3/2})$: linear bounds $c_1 n^{3/2} \\le f(n) \\le c_2 n^{3/2}$ imply $n^{3/2-\\varepsilon} \\le f(n) \\le n^{3/2+\\varepsilon}$; (3) BFL exponent sandwich: $\\forall \\varepsilon > 0,\\; \\alpha - \\varepsilon \\le \\liminf \\frac{\\log f(n)}{\\log n} \\le \\limsup \\le \\alpha + \\varepsilon$ with $\\alpha = 3/2$."
     },
     {
       "id": "graph-basics",
       "title": "Graph-Theoretic Foundations",
-      "startLine": 155,
-      "endLine": 211,
+      "startLine": 161,
+      "endLine": 217,
       "summary": "Defines IsTriangle, IsTriangleFree'. Proves equivalence with CliqueFree 3 (via Finset.card_eq_three) and that K_n has triangles for n ≥ 3. All proofs complete.",
       "mathContext": "`IsTriangle G a b c` := edges $ab$, $bc$, $ac$ all present with $a, b, c$ distinct. `IsTriangleFree' G` := $\\neg \\exists\\, a\\,b\\,c,\\; \\text{IsTriangle}\\,G\\,a\\,b\\,c$. Proved equivalent to Mathlib's `CliqueFree G 3` via `Finset.card_eq_three`. `complete_has_triangles`: $K_n$ has triangles for $n \\ge 3$ — explicit construction with vertices $0, 1, 2 \\in \\text{Fin}\\,n$."
     },
     {
       "id": "mantel",
-      "title": "Mantel Bound and Trivial Upper Bound",
-      "startLine": 212,
-      "endLine": 224,
-      "summary": "Axiomatizes the direct Mantel bound f(n) ≤ n²/4 and derives it as an eventually-true statement. Fully proved.",
+      "title": "Mantel Bound (Trivial Upper Bound)",
+      "startLine": 218,
+      "endLine": 230,
+      "summary": "Derives the Mantel bound as an eventually-true statement (Filter.Eventually) for comparison with BFL. The Mantel axiom itself is declared at the top of the file alongside other process axioms.",
       "mathContext": "Mantel's theorem (1907): every triangle-free graph on $n$ vertices has $\\le \\lfloor n^2/4 \\rfloor$ edges (achieved by $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$). Since the removal process terminates at a triangle-free graph, $f(n) \\le n^2/4$. This is a trivial upper bound — much weaker than BFL's $n^{3/2+o(1)}$ but useful as a sanity check."
     }
   ],
@@ -89,7 +89,7 @@
     "historicalContext": "The triangle removal process was introduced as a natural random graph process: begin with the complete graph $K_n$, repeatedly select a triangle uniformly at random and delete all three of its edges, and continue until no triangles remain. The question of how many edges survive — formalized as $f(n)$ — connects to fundamental problems in probabilistic combinatorics and extremal graph theory. The first non-trivial bound was obtained by Grable (1997), who used the differential equations method to show $f(n) \\leq n^{7/4+o(1)}$. The differential equations method, pioneered by Wormald in the 1990s, approximates discrete random processes by continuous ODEs and shows concentration around the deterministic trajectory. The breakthrough came from Bohman, Frieze, and Lubetzky (2015), who proved $f(n) = n^{3/2+o(1)}$ almost surely by refining the tracking of the evolving graph's structure. Their analysis required controlling not just edge and triangle counts but the full neighborhood profile. Erdős's original conjecture asks for the stronger statement $\\mathbb{E}[f(n)] \\asymp n^{3/2}$ — that is, $f(n) = \\Theta(n^{3/2})$ without sub-polynomial corrections. This remains open: the BFL result allows factors like $\\sqrt{\\log n}$ hidden in the $o(1)$ exponent.",
     "problemStatement": "Begin with the complete graph $K_n$. Repeatedly select a uniformly random triangle and delete all its edges until the graph is triangle-free. Let $f(n)$ denote the number of remaining edges. Is it true that $\\mathbb{E}[f(n)] \\asymp n^{3/2}$ and $f(n) \\ll n^{3/2}$ almost surely?",
     "text": "Is it true that E[f(n)] ≍ n^{3/2} and f(n) ≪ n^{3/2} almost surely?",
-    "proofStrategy": "The formalization axiomatizes $f(n)$ as a function $\\mathbb{N} \\to \\mathbb{R}$ with 6 axioms (process function, non-negativity, complete graph bound, BFL upper/lower bounds, Mantel bound). Grable's $n^{7/4+\\varepsilon}$ bound is now proved as a theorem from BFL (no longer an axiom). All graph-theoretic foundations are fully proved: triangle-free ↔ CliqueFree 3 (via Finset.card_eq_three), complete graphs contain triangles (explicit vertex construction). The trivial upper bound $f(n) \\leq n^2/4$ follows directly from the Mantel axiom. Zero sorries remain.",
+    "proofStrategy": "The formalization axiomatizes $f(n)$ as a function $\\mathbb{N} \\to \\mathbb{R}$ with 5 axioms (process function, non-negativity, BFL upper/lower bounds, Mantel bound $f(n) \\le n^2/4$). The weaker complete-graph bound $f(n) \\le n^2/2$ is **derived** as a theorem from Mantel (since $n^2/4 \\le n^2/2$). Grable's $n^{7/4+\\varepsilon}$ bound is also proved as a theorem from BFL. All graph-theoretic foundations are fully proved: triangle-free ↔ CliqueFree 3 (via Finset.card_eq_three), complete graphs contain triangles (explicit vertex construction). Zero sorries remain.",
     "keyInsights": [
       "The triangle removal process exhibits a phase transition: it runs for Θ(n^{3/2}) steps before the graph becomes triangle-free, because each step removes 3 edges from the ~n²/2 total, and the triangle density controls the rate",
       "Grable's differential equations method (1997) tracks the ODE approximation of the triangle count t(i) as a function of step i, yielding the first bound f(n) ≤ n^{7/4+o(1)} — a factor n^{1/4} above the truth",
@@ -131,9 +131,9 @@
       "SimpleGraph"
     ],
     "namespace": null,
-    "lineCount": 224,
-    "axiomCount": 6,
-    "theoremCount": 7,
+    "lineCount": 230,
+    "axiomCount": 5,
+    "theoremCount": 8,
     "definitionCount": 3,
     "path": "Proofs/Erdos1155Problem.lean",
     "sorries": 0
