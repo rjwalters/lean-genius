@@ -169,17 +169,44 @@
     {
       "name": "galois_criterion",
       "type": "core",
-      "description": "solvableByRad F α ↔ IsSolvable q.Gal — the full biconditional Galois solvability criterion (forward proved, reverse axiomatized)"
+      "description": "solvableByRad F α ↔ IsSolvable q.Gal — the full biconditional Galois solvability criterion (forward proved, reverse axiomatized)",
+      "leanType": "(q : Polynomial F) → Irreducible q → [CharZero F] → (α : E) → Polynomial.aeval α q = 0 → IsSolvableByRad F α ↔ IsSolvable q.Gal"
     },
     {
       "name": "solvableByRad_implies_solvableGal",
       "type": "key",
-      "description": "Forward direction: radical solvability implies solvable Galois group (fully proved via Mathlib)"
+      "description": "Forward direction: radical solvability implies solvable Galois group (fully proved via Mathlib's solvableByRad.isSolvable')",
+      "leanType": "(q : Polynomial F) → Irreducible q → [CharZero F] → (α : E) → Polynomial.aeval α q = 0 → IsSolvableByRad F α → IsSolvable q.Gal"
     },
     {
       "name": "not_solvableByRad_of_not_solvableGal",
       "type": "key",
-      "description": "Contrapositive: non-solvable Galois group implies not solvable by radicals — the logical heart of Abel-Ruffini"
+      "description": "Contrapositive: non-solvable Galois group implies not solvable by radicals — the logical heart of Abel-Ruffini",
+      "leanType": "(q : Polynomial F) → Irreducible q → [CharZero F] → (α : E) → Polynomial.aeval α q = 0 → ¬IsSolvable q.Gal → ¬IsSolvableByRad F α"
+    },
+    {
+      "name": "solvableGal_implies_solvableByRad",
+      "type": "axiom",
+      "description": "Reverse direction (axiomatized): solvable Galois group implies the root is solvable by radicals. Requires Kummer theory for cyclic extensions, not yet in Mathlib 4.26. The classical proof descends through the composition series of the solvable group, applying Kummer theory at each cyclic-of-prime-order quotient to produce a radical extension step.",
+      "leanType": "(q : Polynomial F) → Irreducible q → [CharZero F] → (α : E) → Polynomial.aeval α q = 0 → IsSolvable q.Gal → IsSolvableByRad F α"
+    },
+    {
+      "name": "galois_criterion_rationals",
+      "type": "specialization",
+      "description": "Specialization of galois_criterion to F = ℚ — the primary classical setting. Polynomial solvability over the rationals is characterized entirely by the structure of the Galois group as an abstract finite group.",
+      "leanType": "(q : Polynomial ℚ) → Irreducible q → (α : E) → Polynomial.aeval α q = 0 → IsSolvableByRad ℚ α ↔ IsSolvable q.Gal"
+    },
+    {
+      "name": "solvable_gal_means_radical_formula",
+      "type": "key",
+      "description": "Converse of Abel-Ruffini: if a polynomial's Galois group IS solvable, then its roots ARE expressible by radicals. This justifies the existence of the quadratic, cubic, and quartic formulas (degrees with Galois group ⊆ S₄, all solvable).",
+      "leanType": "(q : Polynomial F) → Irreducible q → [CharZero F] → (α : E) → Polynomial.aeval α q = 0 → IsSolvable q.Gal → IsSolvableByRad F α"
+    },
+    {
+      "name": "abel_ruffini_as_galois_special_case",
+      "type": "key",
+      "description": "Re-derives Abel-Ruffini directly from galois_criterion: any polynomial with a non-solvable Galois group (e.g., S₅ for the generic quintic) is not solvable by radicals. The criterion makes this both necessary and sufficient — non-solvable Galois group is the COMPLETE obstruction.",
+      "leanType": "(q : Polynomial F) → Irreducible q → [CharZero F] → (α : E) → Polynomial.aeval α q = 0 → ¬IsSolvable q.Gal → ¬IsSolvableByRad F α"
     }
   ],
   "crossReferences": [
