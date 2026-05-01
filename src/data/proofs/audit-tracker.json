@@ -7105,9 +7105,12 @@
     },
     "erdos-490": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 4,
+      "lastAudited": "2026-05-01T17:54:26Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom sidon_bound axiom + van_doorn_observation + their-equivalence narrative; section line drift (issue #14335)"
+      ]
     },
     "erdos-490-oq-01": {
       "auditCount": 2,
