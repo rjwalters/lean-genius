@@ -17,11 +17,15 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-30T19:30:00Z",
-    "iteration": 1,
-    "focus": "14 sorries eliminated, 1 remains (coupling_controlled MATHLIB-DRIFT)",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "since": "2026-04-27T14:25:00Z",
+    "iteration": 2,
+    "focus": "Blocked: mul_lt_mul_of_pos_left + div_lt_div_iff drift",
+    "blockers": [
+      "YangMills2DOQ01.lean:152 mul_lt_mul_of_pos_left apply unification fails (mul_one over-simp)",
+      "YangMills2DOQ02.lean:160 div_lt_div_iff renamed to div_lt_div_iff₀",
+      "JSON references stale YangMills/Exploration.lean which no longer exists"
+    ],
+    "nextAction": "Mechanic: simp argument fix in OQ01 + div_lt_div_iff₀ rename in OQ02. Researcher (post-repair): reconcile JSON ↔ on-disk files; examine the 1 axiom in OQ02.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 14 sorries (15→1). Fixed tension_gap_ratio math error (N/(4π) → π/2). Added g≠0 to quantum_breaks_scale. Strengthened bv_field_count (N≥3). 1 sorry remains (coupling_controlled, MATHLIB-DRIFT with Real.log).",
+    "progressSummary": "BLOCKED on Mathlib API drift. Docker build of YangMills2DOQ01.lean (line 152) and YangMills2DOQ02.lean (line 160) both fail on origin/master. (1) `mul_lt_mul_of_pos_left` apply unification fails after simp[mul_one] collapses RHS — Lean 4.26 stricter elaboration. (2) `div_lt_div_iff` rename to `div_lt_div_iff₀` (same family as Erdos1151OQ04 drift). Mechanic-owned per project_mathlib_api_drift_2026_04 policy. JSON also references nonexistent YangMills/Exploration.lean — stale reference to a removed file.",
     "builtItems": [
       "proofs/Proofs/YangMills/Exploration.lean: 12 sorries eliminated (59→47)",
       "src/data/proofs/yang-mills-2d/meta.json: updated sorry count and line count",
@@ -57,9 +61,10 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Fix MATHLIB-DRIFT sorries by finding updated Mathlib API names",
-      "Investigate field_simp/ring breakage patterns",
-      "Consider splitting the 28K-line file into focused modules"
+      "Mechanic: drop `mul_one` from simp on OQ01:151 (or conv_rhs ← mul_one d)",
+      "Mechanic: rename div_lt_div_iff → div_lt_div_iff₀ on OQ02:160",
+      "Researcher (post-repair): reconcile stale JSON references to YangMills/Exploration.lean",
+      "Researcher (post-repair): assess whether the 1 OQ02 axiom can be derived in 2D"
     ]
   },
   "tags": [
