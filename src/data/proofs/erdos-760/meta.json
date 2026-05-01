@@ -107,14 +107,14 @@
     {
       "id": "erdos-gimbel",
       "title": "Erdős-Gimbel Partial Result",
-      "summary": "aks_theorem (axiom, AKS bound ζ(H) ≥ cm/log m), erdos_760_solved (theorem reducing to aks_theorem)",
+      "summary": "Prose description of the Erdős-Gimbel (1993) weaker bound ζ(H) ≥ c√(m/log m) — docstrings only, no formal declarations in lines 124–138.",
       "startLine": 124,
       "endLine": 138
     },
     {
       "id": "aks-theorem",
       "title": "Alon-Krivelevich-Sudakov Theorem",
-      "summary": "Body of erdos_760_solved and proof technique commentary (no new declarations)",
+      "summary": "axiom aks_theorem (L152): AKS bound ζ(H) ≥ cm/log m. theorem erdos_760_solved (L164): forwards to aks_theorem.",
       "startLine": 139,
       "endLine": 171
     },
@@ -128,14 +128,14 @@
     {
       "id": "related",
       "title": "Related Results",
-      "summary": "erdos_760 summary theorem (lines 224–230, reduces to aks_theorem)",
+      "summary": "Section comment and docstring on Ramsey number connections — no formal declarations in lines 185–193.",
       "startLine": 185,
       "endLine": 193
     },
     {
       "id": "summary",
       "title": "Main Results Summary",
-      "summary": "Closing namespace (end Erdos760)",
+      "summary": "erdos_760 theorem (L224): main result forwards to aks_theorem. Closes namespace.",
       "startLine": 194,
       "endLine": 232
     }
