@@ -124,63 +124,63 @@
       "title": "The Ramsey Condition",
       "summary": "Defines ramseyBound k = 2^(2k) as a rough R(k,k) upper bound, and IsRamseyGraph G C requiring ω(G), α(G) ≤ ⌈C log n⌉. No axiom for Ramsey graph existence — existence is noted in commentary (random G(n,1/2) satisfies this with high probability).",
       "startLine": 102,
-      "endLine": 119,
+      "endLine": 116,
       "mathContext": "def ramseyBound k = 2^(2k) and def IsRamseyGraph. No axiom for Ramsey graph existence — the probabilistic argument is described in commentary only."
     },
     {
       "id": "efs",
       "title": "Erdős-Faudree-Sós Result",
-      "summary": "Documents the Erdős-Faudree-Sós O(n^(3/2)) lower bound via def efs_exponent = 3/2; no Lean axiom for this bound. The kwan_sudakov axiom (line 134) begins at the end of this section's range and formalizes the improved Kwan-Sudakov bound.",
-      "startLine": 120,
-      "endLine": 134,
-      "mathContext": "def efs_exponent = 3/2 documents the EFS exponent. No axiom for the EFS bound — it is recorded as a constant only. The actual kwan_sudakov axiom for the optimal n^(5/2) lower bound starts at line 134."
+      "summary": "Documents the Erdős-Faudree-Sós O(n^(3/2)) lower bound via def efs_exponent = 3/2; no Lean axiom for this bound.",
+      "startLine": 117,
+      "endLine": 126,
+      "mathContext": "def efs_exponent = 3/2 documents the EFS exponent. No axiom for the EFS bound — it is recorded as a constant only."
     },
     {
       "id": "kwan-sudakov",
       "title": "Kwan-Sudakov Theorem",
       "summary": "Axiomatizes the optimal lower bound cn^(5/2) and formally verifies ks_improves_efs (5/2 > 3/2) by norm_num. The dramatic improvement from 3/2 to 5/2 comes from showing Ω(v^(3/2)) edge counts per vertex count, not Ω(v^(1/2)).",
-      "startLine": 135,
-      "endLine": 152,
+      "startLine": 127,
+      "endLine": 144,
       "mathContext": "Axiomatizes the optimal lower bound cn^(5/2) and formally verifies ks_improves_efs (5/2 > 3/2) by norm_num. The dramatic improvement from 3/2 to 5/2 comes from showing Ω(v^(3/2)) edge counts per vertex count, not Ω(v^(1/2))."
     },
     {
       "id": "optimality",
       "title": "Optimality",
       "summary": "Axiomatizes the matching upper bound O(n^(5/2)) and proves theta_bound by extracting existential witnesses from both axioms. The proof is a clean combination: obtain c₁ from Kwan-Sudakov, c₂ from the upper bound, and package them together.",
-      "startLine": 153,
-      "endLine": 177,
+      "startLine": 145,
+      "endLine": 169,
       "mathContext": "Axiomatizes the matching upper bound O(n^(5/2)) and proves theta_bound by extracting existential witnesses from both axioms. The proof is a clean combination: obtain c₁ from Kwan-Sudakov, c₂ from the upper bound, and package them together."
     },
     {
       "id": "techniques",
       "title": "Proof Techniques",
       "summary": "Proves vertex_count_range (|S| ≤ n, no sorry) and edge_count_range (|E(G[S])| ≤ |S|(|S|-1)/2, sorry). Probabilistic method and signature distribution ideas are described in dangling docstrings only — no Lean declarations for these proof techniques.",
-      "startLine": 178,
-      "endLine": 204,
+      "startLine": 170,
+      "endLine": 187,
       "mathContext": "theorem vertex_count_range (proved) and edge_count_range (sorry'd). Probabilistic method and signature distribution appear only as docstring comments, not as Lean declarations."
     },
     {
       "id": "ramsey-theory",
       "title": "Connections to Ramsey Theory",
       "summary": "Stub theorems clique_few_signatures and empty_few_signatures (both sorry'd) show extreme cases have ≤ n+1 distinct signatures. The Ramsey condition forcing complexity is stated in a dangling docstring only — no axiom or theorem formalizes this claim.",
-      "startLine": 205,
-      "endLine": 233,
+      "startLine": 188,
+      "endLine": 205,
       "mathContext": "clique_few_signatures and empty_few_signatures (both := by sorry). The claim that the Ramsey condition forces signature complexity is a docstring comment, not a Lean declaration."
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Connects to counting isomorphism types (much harder than signatures), the Erdős-Hajnal conjecture (forbidden induced subgraphs force large homogeneous sets — the converse direction), and counting specific induced structures like paths.",
-      "startLine": 234,
-      "endLine": 256,
+      "startLine": 206,
+      "endLine": 225,
       "mathContext": "Connects to counting isomorphism types (much harder than signatures), the Erdős-Hajnal conjecture (forbidden induced subgraphs force large homogeneous sets — the converse direction), and counting specific induced structures like paths."
     },
     {
       "id": "main-result",
       "title": "Main Result",
       "summary": "The final theorem erdos_636 directly invokes kwan_sudakov, cleanly stating: for any C > 0, there exists c > 0 such that every (C)-Ramsey graph on n ≥ 10 vertices has ≥ ⌊cn^(5/2)⌋ distinct signatures. Includes utility definitions for the answer string and optimal exponent.",
-      "startLine": 257,
-      "endLine": 261,
+      "startLine": 226,
+      "endLine": 260,
       "mathContext": "The final theorem erdos_636 directly invokes kwan_sudakov, cleanly stating: for any C > 0, there exists c > 0 such that every (C)-Ramsey graph on n ≥ 10 vertices has ≥ ⌊cn^(5/2)⌋ distinct signatures. Includes utility definitions for the answer string and optimal exponent."
     }
   ],
