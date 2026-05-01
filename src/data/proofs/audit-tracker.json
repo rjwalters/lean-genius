@@ -7403,9 +7403,12 @@
     },
     "erdos-532": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T15:43:01Z",
+      "result": "issues-found",
+      "issues": [
+        "Issue #14289: phantom-axiom narrative (axiomCount=2 correct, but originalContributions claims 3 ultrafilter/Hales-Jewett axioms that are docstring-only) + section line drift Parts VI-IX (~20-30 lines off)"
+      ]
     },
     "erdos-533": {
       "agentId": "auditor-cycle-20-batch",
