@@ -7829,9 +7829,9 @@
     },
     "erdos-599": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T08:47:23Z",
+      "result": "clean"
     },
     "erdos-6": {
       "agentId": "auditor-loop-1777619133",
@@ -13263,6 +13263,12 @@
     "isoperimetric-theorem-oq-02": {
       "auditCount": 3,
       "lastAudited": "2026-04-29T05:43:30Z",
+      "result": "clean",
+      "issues": []
+    },
+    "bezout-identity-oq-03-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-01T08:33:09Z",
       "result": "clean",
       "issues": []
     }
