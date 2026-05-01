@@ -20,7 +20,7 @@
     "erdosNumber": 513,
     "erdosUrl": "https://erdosproblems.com/513",
     "erdosProblemStatus": "open",
-    "axiomCount": 6,
+    "axiomCount": 4,
     "lineCount": 159,
     "dateAdded": "2026-02-10",
     "prerequisites": [
@@ -28,7 +28,7 @@
       "Wiman-Valiron theory: maximum term μ(r), central index, and their relation to M(r)",
       "Lacunary series: gap series with controlled coefficient growth"
     ],
-    "assumptions": "6 axioms: maxModulus, maxModulus_nonneg, maxTerm_le_maxModulus, kovari_lower_bound, clunie_hayman_upper_bound, erdos_513_exact_value. 0 sorries.",
+    "assumptions": "4 axioms: maxTerm_le_maxModulus, kovari_lower_bound, clunie_hayman_upper_bound, erdos_513_exact_value. maxModulus and maxModulus_nonneg were proved from Mathlib. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "crossReferences": [
@@ -127,8 +127,8 @@
     ],
     "opens": [],
     "namespace": "Erdos513",
-    "lineCount": 159,
-    "axiomCount": 6,
+    "lineCount": 167,
+    "axiomCount": 4,
     "theoremCount": 10,
     "definitionCount": 3,
     "path": "Proofs/Erdos513Problem.lean",
