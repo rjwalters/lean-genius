@@ -40,8 +40,7 @@
       "FourCycle: 4-cycle structure definition",
       "DisjointFourCycles: disjointness condition",
       "ErdosFaudreeConjecture: formal statement",
-      "wang_theorem: main result axiom",
-      "degree_bound_sharp: sharpness result"
+      "wang_theorem: main result axiom"
     ],
     "axiomCount": 2,
     "lineCount": 192,
@@ -51,10 +50,10 @@
     "historicalContext": "Erdős and Faudree conjectured in 1985 that graphs with 4k vertices and minimum degree at least 2k contain k vertex-disjoint 4-cycles (quadrilaterals). This conjecture belongs to a rich family of 'cycle partition' problems in extremal graph theory, with roots in Dirac's theorem (1952) that δ(G) ≥ n/2 implies Hamiltonicity. The Corrádi-Hajnal theorem (1963) established the triangle case: 3k vertices with δ(G) ≥ 2k contain k vertex-disjoint triangles. El-Zahar (1984) proposed the general conjecture for mixed cycle lengths. The Erdős-Faudree conjecture is notable because the degree threshold 2k = n/2 exactly matches the Dirac threshold — unlike the Corrádi-Hajnal case where 2k on 3k vertices gives δ ≥ 2n/3 (above Dirac). After 25 years open, Hong Wang completely resolved the conjecture in a 45-page proof published in Graphs and Combinatorics (2010). Wang's approach analyzes minimal counterexamples, studying the neighborhood structure of high-degree vertices and using greedy cycle extraction with careful bookkeeping to derive contradictions. The degree bound 2k is sharp: there exist counterexample graphs with δ = 2k - 1.",
     "problemStatement": "If G is a graph with 4k vertices and minimum degree at least 2k, must G contain k vertex-disjoint 4-cycles?",
     "text": "If G is a graph with 4k vertices and minimum degree at least 2k, must G contain k vertex-disjoint 4-cycles? SOLVED by Wang (2010): YES, the Erdős-Faudree conjecture is true.",
-    "proofStrategy": "The formalization defines FourCycle as a Lean structure with 4 distinct vertices and 4 edges forming a cycle, then builds vertex sets, disjointness predicates, and pairwise disjointness. The Erdős-Faudree conjecture is stated as a Prop universally quantifying over all finite simple graphs. Wang's theorem is axiomatized, and two consequences are derived: the base case k=1 (from Wang's theorem with norm_num) and the final resolution erdos_577. Sharpness is axiomatized separately. Related results (Dirac, El-Zahar, Corrádi-Hajnal) are documented as comments.",
+    "proofStrategy": "The formalization defines FourCycle as a Lean structure with 4 distinct vertices and 4 edges forming a cycle, then builds vertex sets, disjointness predicates, and pairwise disjointness. The Erdős-Faudree conjecture is stated as a Prop universally quantifying over all finite simple graphs. Wang's theorem is axiomatized, and two consequences are derived: the base case k=1 (from Wang's theorem with norm_num) and the final resolution erdos_577. Sharpness of the degree bound 2k is noted in a docstring commentary; no formal counterexample is constructed in this file. Related results (Dirac, El-Zahar, Corrádi-Hajnal) are documented as comments.",
     "keyInsights": [
       "**Dirac threshold is exact**: The condition $\\delta(G) \\geq 2k = n/2$ on $4k$ vertices is exactly the Dirac Hamiltonicity threshold, and it suffices for the much stronger $C_4$-partition property",
-      "**Degree bound is sharp**: Cannot weaken to $\\delta(G) \\geq 2k - 1$ — counterexamples exist for every $k$",
+      "**Degree bound is sharp** (per Wang 2010): Cannot weaken to $\\delta(G) \\geq 2k - 1$ — counterexamples exist for every $k$, though no formal counterexample is constructed in this file",
       "**Cycle partition hierarchy**: Corrádi-Hajnal (1963, triangles) → Erdős-Faudree (1985/2010, quadrilaterals) → El-Zahar (1984, general, still open)",
       "**25-year proof gap**: The conjecture required 25 years and a 45-page proof by Wang, reflecting the difficulty of upgrading Hamiltonicity to cycle partitions",
       "**Structural method**: Wang's proof uses minimal counterexample analysis and neighborhood structure — no algebraic or probabilistic techniques"
@@ -109,10 +108,10 @@
     {
       "id": "special-cases",
       "title": "Special Cases and Sharpness",
-      "summary": "Base case $k=1$ (4 vertices, $\\delta \\geq 2$ implies $C_4$ exists) and sharpness: $\\delta = 2k-1$ admits counterexamples",
+      "summary": "Base case $k=1$ (4 vertices, $\\delta \\geq 2$ implies $C_4$ exists) axiomatized via `four_cycle_base_case`. Sharpness of $\\delta = 2k-1$ is noted in a docstring comment; no formal counterexample is constructed.",
       "startLine": 109,
       "endLine": 140,
-      "mathContext": "Base case $k=1$ (4 vertices, $\\$\\delta$ \\geq 2$ implies $C_4$ exists) and sharpness: $\\$\\delta$ = 2k-1$ admits counterexamples"
+      "mathContext": "Base case $k=1$ axiomatized via `four_cycle_base_case`. Sharpness of $\\delta = 2k-1$ documented in docstring commentary only; no `degree_bound_sharp` declaration exists."
     },
     {
       "id": "related",
@@ -148,7 +147,7 @@
     "https://erdosproblems.com/577"
   ],
   "conclusion": {
-    "summary": "Erdős Problem #577 (the Erdős-Faudree conjecture) was SOLVED by Hong Wang in 2010 after 25 years open. The result establishes that graphs with 4k vertices and minimum degree at least 2k contain k vertex-disjoint 4-cycles. The Lean formalization defines the FourCycle structure, disjointness predicates, and the conjecture as a universally quantified Prop, with Wang's theorem axiomatized and the final resolution derived. The degree bound 2k is proved sharp.",
+    "summary": "Erdős Problem #577 (the Erdős-Faudree conjecture) was SOLVED by Hong Wang in 2010 after 25 years open. The result establishes that graphs with 4k vertices and minimum degree at least 2k contain k vertex-disjoint 4-cycles. The Lean formalization defines the FourCycle structure, disjointness predicates, and the conjecture as a universally quantified Prop, with Wang's theorem axiomatized and the final resolution derived. The degree bound 2k is documented as sharp in Wang's paper; no formal counterexample is constructed in this file.",
     "implications": "**Theoretical Significance**: Wang's theorem confirms the C₄ case of the cycle partition program, validating a special case of El-Zahar's general conjecture.\n\nThe result shows that the Dirac threshold δ ≥ n/2 — originally sufficient only for Hamiltonicity — actually guarantees the much stronger partition-into-quadrilaterals property. The structural proof technique (minimal counterexample with neighborhood analysis) has influenced subsequent work on cycle decomposition problems.",
     "openQuestions": [
       "Does El-Zahar's conjecture hold in full generality for all cycle length sequences (n₁, ..., nₖ)?",
