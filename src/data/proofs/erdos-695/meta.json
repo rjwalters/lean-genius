@@ -53,7 +53,7 @@
       "Question2 definition: can p_k ≤ exp(k(log k)^{1+o(1)})?",
       "small_prime_conjecture axiom: conjectured polynomial bound",
       "IsCunninghamChainFirst definition: 2p+1 chains",
-      "exponential_lower_bound axiom: p_k ≥ c^k"
+      "exponential_lower_bound theorem: p_k ≥ c^k (proved from chain_step_ge, no axioms needed)"
     ],
     "axiomCount": 1,
     "prerequisites": [
@@ -99,42 +99,42 @@
       "title": "Growth Questions",
       "summary": "kthRoot, Question1, Question2, question1_equiv",
       "startLine": 58,
-      "endLine": 84
+      "endLine": 134
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "summary": "linnik_bound, greedy_chain_exists, greedy_doubly_exponential, small_prime_conjecture",
-      "startLine": 85,
-      "endLine": 114
+      "summary": "small_prime_conjecture axiom (conjectured polynomial bound on next prime in chain), conjecture_implies_question2 theorem (sorry: implication from conjecture to Question2)",
+      "startLine": 136,
+      "endLine": 152
     },
     {
       "id": "related-sequences",
       "title": "Related Sequences",
       "summary": "smallestPrimeCongruentOne, IsCunninghamChainFirst, cunningham_is_prime_chain",
-      "startLine": 115,
-      "endLine": 134
+      "startLine": 154,
+      "endLine": 185
     },
     {
       "id": "fkl",
       "title": "Ford-Konyagin-Luca Analysis",
-      "summary": "fkl_analysis, exponential_lower_bound",
-      "startLine": 135,
-      "endLine": 150
+      "summary": "chain_step_ge theorem (proved: any prime q ≡ 1 mod p satisfies q ≥ 2p+1), exponential_lower_bound theorem (proved: p_k ≥ 2^k for any prime chain). FKL (2010) bounds discussed in commentary only; no fkl_analysis declaration exists.",
+      "startLine": 187,
+      "endLine": 252
     },
     {
       "id": "status",
       "title": "Problem Status",
       "summary": "erdos_695_status, ErdosProblem695Part1, ErdosProblem695Part2",
-      "startLine": 151,
-      "endLine": 169
+      "startLine": 254,
+      "endLine": 271
     },
     {
       "id": "formal",
       "title": "Formal Statements",
       "summary": "erdos_695_main, erdos_695_variant",
-      "startLine": 170,
-      "endLine": 196
+      "startLine": 273,
+      "endLine": 298
     }
   ],
   "conclusion": {
