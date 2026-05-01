@@ -1,0 +1,210 @@
+{
+  "id": "binary-gcd-oq-02",
+  "title": "Binary GCD for Integers",
+  "slug": "binary-gcd-oq-02",
+  "description": "Extends Stein's binary GCD algorithm from ℕ to ℤ via natAbs reduction. Defines `binaryGcdInt : ℤ → ℤ → ℕ` and proves it equal to Mathlib's `Int.gcd`. All results fully verified, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Binary_GCD_algorithm",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BinaryGcdOQ02.lean",
+    "tags": [
+      "algorithms",
+      "number-theory",
+      "gcd",
+      "integers",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-01",
+    "axiomCount": 0,
+    "lineCount": 135,
+    "assumptions": "None. 0 axiom declarations, 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.gcd",
+        "description": "GCD on integers, defined as natAbs.gcd of natAbs",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Int.gcd_dvd_left",
+        "description": "(Int.gcd a b : ℤ) divides a",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Int.gcd_dvd_right",
+        "description": "(Int.gcd a b : ℤ) divides b",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Int.dvd_gcd",
+        "description": "Universal property of Int.gcd",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Int.gcd_comm",
+        "description": "Commutativity of Int.gcd",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Int.gcd_self",
+        "description": "Int.gcd a a = a.natAbs",
+        "module": "Mathlib.Data.Int.GCD"
+      }
+    ],
+    "originalContributions": [
+      "Definition of `binaryGcdInt : ℤ → ℤ → ℕ` via natAbs reduction (Proofs/BinaryGcdOQ02.lean:32)",
+      "Correctness theorem `binaryGcdInt_eq_intGcd` connecting Stein's algorithm to Mathlib's Int.gcd (Proofs/BinaryGcdOQ02.lean:48)",
+      "Sign-invariance lemmas marked `@[simp]` for unhindered rewriting under negation",
+      "Universal property: `dvd_binaryGcdInt` reduces ℤ-divisibility back to natAbs",
+      "Concrete `decide`-checked sanity examples covering every sign pattern"
+    ],
+    "prerequisites": [
+      "Binary GCD on ℕ (Proofs/GcdAlgorithmOQ02.lean) and its correctness proof",
+      "Mathlib's Int.gcd defined via natAbs",
+      "Basic absolute-value identities on ℤ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Integer Binary GCD Definition",
+      "startLine": 28,
+      "endLine": 35,
+      "summary": "Defines `binaryGcdInt a b := binaryGcd a.natAbs b.natAbs`, taking absolute values and delegating to the natural-number Stein algorithm.",
+      "mathContext": "GCD is sign-invariant on ℤ. Reducing to absolute values before invoking the ℕ algorithm is the canonical way to extend GCD from ℕ to ℤ in Mathlib (mirrors Int.gcd itself)."
+    },
+    {
+      "id": "natabs-reduction",
+      "title": "Reduction to ℕ Binary GCD",
+      "startLine": 37,
+      "endLine": 50,
+      "summary": "States the natAbs reduction as a `@[simp]` lemma and shows the natCast specialization.",
+      "mathContext": "These reductions decouple the integer extension from the original ℕ algorithm: any reasoning about `binaryGcdInt` rewrites cleanly back to `BinaryGcd.binaryGcd`."
+    },
+    {
+      "id": "correctness",
+      "title": "Correctness vs Int.gcd",
+      "startLine": 52,
+      "endLine": 60,
+      "summary": "`binaryGcdInt_eq_intGcd` proves the integer extension equals Mathlib's `Int.gcd`. Proof unfolds both sides and applies `binaryGcd_eq_gcd`.",
+      "mathContext": "Mathlib defines `Int.gcd m n = m.natAbs.gcd n.natAbs`. Composing with `binaryGcd_eq_gcd` (which proves `binaryGcd = Nat.gcd`) yields equality with two unfoldings."
+    },
+    {
+      "id": "sign-invariance",
+      "title": "Sign Invariance",
+      "startLine": 62,
+      "endLine": 80,
+      "summary": "Negating either or both arguments leaves `binaryGcdInt` unchanged (`@[simp]` lemmas).",
+      "mathContext": "GCD on ℤ is invariant under sign flips because `(-a).natAbs = a.natAbs`. Marking these as simp lemmas means downstream proofs over ℤ never need to reason about signs explicitly."
+    },
+    {
+      "id": "edges-and-properties",
+      "title": "Edge Cases and Universal Property",
+      "startLine": 82,
+      "endLine": 115,
+      "summary": "Zero edges, commutativity, self-application, and the divisibility universal property `c ∣ a → c ∣ b → c ∣ binaryGcdInt a b`.",
+      "mathContext": "These are the ℤ-level mirror of the standard ℕ-level GCD lemmas. Each reduces in one rewrite to the corresponding `Int.gcd_*` Mathlib lemma."
+    },
+    {
+      "id": "decide-examples",
+      "title": "Concrete Sanity Examples",
+      "startLine": 117,
+      "endLine": 130,
+      "summary": "Eight `decide`-checked examples covering all sign combinations and zero/self cases.",
+      "mathContext": "`decide` reduces fully because `binaryGcdInt` is a concrete computable definition; this gives kernel-level confidence in the extension's runtime behavior."
+    }
+  ],
+  "overview": {
+    "historicalContext": "**Stein's algorithm and the integer extension question**\n\nJosef Stein published the binary GCD in 1967 as a way to compute gcd on early binary computers without expensive division: only subtraction and bit shifts. Knuth (TAOCP §4.5.2) treats it as a textbook algorithm and notes that the original publication considered only non-negative integers, leaving the integer extension as an exercise.\n\nIn modern computer-algebra systems (GMP, Pari/GP, FLINT), the integer extension is universally implemented by the same trick used here: take absolute values and delegate to the unsigned routine. From a verification standpoint, the question is whether this informal trick goes through cleanly in a formal setting — and whether it composes with the existing ℕ correctness proof without re-deriving anything. The answer turns out to be yes, in a single `unfold` plus `binaryGcd_eq_gcd` rewrite, exhibiting the modular value of having proved the ℕ-level correctness once and for all.",
+    "problemStatement": "**Open question OQ-02**: Can the binary GCD algorithm be extended to integers (handling negative inputs) or bignums?\n\nThis entry resolves the integer half: define `binaryGcdInt : ℤ → ℤ → ℕ` by reducing to absolute values, and prove it equal to Mathlib's `Int.gcd`. Verify sign invariance, edge cases, and the divisibility universal property.\n\nThe bignum half is deferred: Lean 4's `Nat` is already a kernel-level GMP-backed bignum, so the algorithm runs on bignums automatically. A formal bit-sequence equivalence proof (showing the algorithm does the right thing limb-by-limb) would be project-scale and is out of scope for this entry.",
+    "text": "Integer extension of Stein's binary GCD algorithm with full Mathlib correctness.",
+    "proofStrategy": "1. **Definition by delegation**: `binaryGcdInt a b := binaryGcd a.natAbs b.natAbs`. The result lives in ℕ since gcd is non-negative.\n2. **Reduction lemmas**: prove `binaryGcdInt = binaryGcd ∘ natAbs ∘ natAbs` as a definitional `rfl`-grade simp lemma; specialize for natCast inputs.\n3. **Main correctness**: unfold both `binaryGcdInt` and Mathlib's `Int.gcd`, then apply the existing `BinaryGcd.binaryGcd_eq_gcd`. Two-line proof.\n4. **Inherited properties**: derive sign invariance, edge cases, commutativity, self-application, divisibility, and universal property by rewriting through `binaryGcdInt_eq_intGcd` to the corresponding Mathlib `Int.gcd_*` lemma.\n5. **Decide-checked examples**: cover every sign combination plus zero and self cases.",
+    "keyInsights": [
+      "The `natAbs` reduction is the canonical formal idiom for lifting ℕ-level algorithms to ℤ, mirroring how Mathlib itself defines `Int.gcd`. This makes the integer extension a one-line `rfl`-grade reduction rather than a re-derivation.",
+      "Marking sign-invariance lemmas as `@[simp]` means downstream proofs over ℤ never need to reason about negation explicitly — the simp set normalizes through them silently.",
+      "All algebraic properties (commutativity, edges, divisibility) inherit through the single bridge `binaryGcdInt_eq_intGcd`. Each becomes a one-line proof: `rw [binaryGcdInt_eq_intGcd]; exact Int.gcd_*`. This is the textbook example of when introducing a definitional bridge eliminates redundant proof work.",
+      "The bignum half of OQ-02 is automatically resolved by Lean's kernel: `Nat` operations compile to GMP, so binary GCD on `ℕ` already runs on bignums. The remaining mathematical question (formal bit-sequence equivalence) is a separate, larger project."
+    ],
+    "prerequisites": [
+      "Binary GCD on ℕ (`Proofs.GcdAlgorithmOQ02`) including `binaryGcd_eq_gcd`",
+      "Mathlib `Int.gcd` and its standard lemmas (`gcd_dvd_left`, `gcd_dvd_right`, `dvd_gcd`, `gcd_comm`, `gcd_self`)",
+      "`Int.natAbs` and its sign-invariance properties"
+    ]
+  },
+  "conclusion": {
+    "summary": "Integer extension of Stein's binary GCD: defined via `natAbs` reduction, proved equal to Mathlib's `Int.gcd`, with full sign-invariance, edge case, and divisibility coverage. 0 axioms, 0 sorries.",
+    "implications": "Provides a verified `binaryGcdInt` that downstream proofs can use whenever a fast bit-shift-only GCD algorithm is needed on ℤ. The modular design — natAbs reduction plus single bridge to Int.gcd — is reusable for any ℤ-level extension of an ℕ-level number-theoretic algorithm (e.g., Lehmer's GCD, extended Euclidean for Bézout, modular inverse).",
+    "openQuestions": [
+      "Bignum bit-sequence equivalence: prove the binary GCD on `Nat` (computed via GMP-backed kernel arithmetic) agrees limb-by-limb with the textbook bit-shifting bignum implementation. Project-scale (~200+ lines) and requires a formal model of multi-precision representation.",
+      "Lehmer's GCD for ℤ: extend the Lehmer algorithm (which estimates quotients from leading digits) to ℤ via the same natAbs reduction and prove correctness vs `Int.gcd`. This would close a more practically relevant complexity gap.",
+      "Extended binary GCD: define `binaryXgcdInt : ℤ → ℤ → ℕ × ℤ × ℤ` returning (gcd, u, v) with `u·a + v·b = gcd` and prove it equivalent to Mathlib's `Int.gcdA`/`Int.gcdB`."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "binary-gcd",
+      "relationship": "extends",
+      "description": "Extends the parent Binary GCD correctness proof from ℕ to ℤ"
+    },
+    {
+      "targetId": "binary-gcd-oq-01",
+      "relationship": "related",
+      "description": "Sibling open question on binary GCD: step count comparison vs Euclidean (this entry handles signed-integer extension instead)"
+    },
+    {
+      "targetId": "gcd-algorithm-oq-02",
+      "relationship": "depends-on",
+      "description": "Imports the canonical `binaryGcd : ℕ → ℕ → ℕ` definition and its correctness proof `binaryGcd_eq_gcd`"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "related",
+      "description": "Bézout's identity for integers uses Mathlib's `Int.gcd` — the same bridge the present entry connects to"
+    }
+  ],
+  "references": [
+    {
+      "title": "Computational problems associated with Racah algebra",
+      "author": "Josef Stein",
+      "year": "1967",
+      "venue": "Journal of Computational Physics",
+      "description": "Original publication of the binary GCD algorithm"
+    },
+    {
+      "title": "The Art of Computer Programming, Volume 2: Seminumerical Algorithms (§4.5.2)",
+      "author": "Donald E. Knuth",
+      "year": "1981",
+      "venue": "Addison-Wesley",
+      "description": "Standard textbook treatment of binary GCD; notes the integer extension as exercise"
+    },
+    {
+      "title": "Mathlib4 Int.gcd",
+      "author": "Mathlib Contributors",
+      "year": "2024",
+      "venue": "Mathlib4 repository",
+      "description": "Reference Mathlib definition `Int.gcd m n := m.natAbs.gcd n.natAbs` against which `binaryGcdInt` is proved equal"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Tactic",
+      "Proofs.GcdAlgorithmOQ02"
+    ],
+    "opens": [
+      "BinaryGcd"
+    ],
+    "namespace": "BinaryGcdOQ02",
+    "lineCount": 135,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 1,
+    "path": "Proofs/BinaryGcdOQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

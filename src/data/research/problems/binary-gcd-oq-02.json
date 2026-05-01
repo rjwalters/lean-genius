@@ -1,8 +1,8 @@
 {
   "slug": "binary-gcd-oq-02",
   "title": "Binary GCD Algorithm for Integers or Bignums",
-  "phase": "ORIENT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -16,35 +16,46 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-04-27",
-    "iteration": 1,
-    "focus": "Survey complete. Path: extend Nat binaryGcd to Int via natAbs reduction; defer bignum extension.",
+    "phase": "COMPLETED",
+    "since": "2026-05-01",
+    "iteration": 2,
+    "focus": "Integer half of OQ-02 closed in PR. Bignum half deferred.",
     "blockers": [],
-    "nextAction": "Create proofs/Proofs/BinaryGcdOQ02.lean (~50-80 lines) with Docker verification.",
+    "nextAction": "(Optional) Pursue Lehmer GCD or extended binary xgcd as separate follow-ups.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Located binaryGcd:ℕ→ℕ→ℕ at GcdAlgorithmOQ02.lean:74. Identified clean path: binaryGcdInt a b := binaryGcd a.natAbs b.natAbs, prove = Int.gcd (~50 lines). Bignum extension is project-scale, deferred.",
-    "builtItems": [],
+    "progressSummary": "ACT (completed integer half): Created proofs/Proofs/BinaryGcdOQ02.lean (~135 lines, 0 sorries, 0 axioms). Defines binaryGcdInt:ℤ→ℤ→ℕ via natAbs reduction; binaryGcdInt_eq_intGcd proves correctness vs Mathlib Int.gcd via two-line unfold + binaryGcd_eq_gcd. Sign invariance, edges, commutativity, divisibility universal property all derived through the bridge. Bignum half deferred (project-scale).",
+    "builtItems": [
+      "Created Proofs/BinaryGcdOQ02.lean: binaryGcdInt definition + 13 theorems + 8 decide sanity examples (~135 lines)",
+      "binaryGcdInt_eq_intGcd : ∀ a b : ℤ, binaryGcdInt a b = Int.gcd a b — main correctness theorem",
+      "@[simp] sign-invariance lemmas: binaryGcdInt_neg_left/right/neg_neg",
+      "Edge cases: binaryGcdInt_zero_left/right, binaryGcdInt_self",
+      "Universal property: dvd_binaryGcdInt + binaryGcdInt_dvd_left/right",
+      "Created src/data/proofs/binary-gcd-oq-02/{meta.json,index.ts,annotations.json}",
+      "Added Proofs.BinaryGcdOQ02 import to proofs/Proofs.lean"
+    ],
     "insights": [
       "binaryGcd:ℕ→ℕ→ℕ already defined at proofs/Proofs/GcdAlgorithmOQ02.lean:74 (with both-even/one-even/both-odd cases)",
       "Mathlib has Int.gcd a b := a.natAbs.gcd b.natAbs — correct comparison target for integer extension",
       "Integer extension is mechanical: binaryGcdInt a b := binaryGcd a.natAbs b.natAbs, prove correct via existing binaryGcd_correct + Int.gcd unfold (~50 lines)",
       "Bignum extension is project-scale: would require formalizing bit-sequence representations (Nat.bits / Nat.digits 2) since Lean Nat is already unbounded — ~200+ lines for non-trivial reformulation",
       "5 sibling files (BinaryGcdOQ01, OQ01OQ03, OQ01OQ04, OQ03, OQ03OQ01) all 0 sorries / 0 axioms — established formalization style available",
-      "Did not create OQ02 file this session due to no Docker availability — submitting unverified Int extension with surrogate sorry would be lower-value than a clear survey"
+      "Did not create OQ02 file this session due to no Docker availability — submitting unverified Int extension with surrogate sorry would be lower-value than a clear survey",
+      "The natAbs reduction is the canonical idiom for ℕ→ℤ extension of GCD-style algorithms; Mathlib Int.gcd uses the exact same pattern, so the bridge proof is two unfoldings",
+      "Marking sign-invariance as @[simp] makes downstream ℤ-level reasoning negation-blind without explicit case-splits",
+      "All algebraic properties (comm, divisibility, edges, self) inherit through the single bridge — each is one rewrite to the corresponding Int.gcd_* Mathlib lemma",
+      "Bignum half resolves automatically via Lean kernel: Nat ops compile to GMP, so binaryGcd already runs on bignums — formal bit-sequence proof is a separate project"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Create proofs/Proofs/BinaryGcdOQ02.lean defining binaryGcdInt and proving binaryGcdInt_eq_intGcd",
-      "Verify via ./proofs/scripts/docker-build.sh Proofs.BinaryGcdOQ02",
-      "Add gallery meta.json once verified",
-      "Document bignum question as deferred sub-problem (project-scale)"
+      "(Optional) Add Lehmer GCD ℤ-extension as follow-up open question via the same natAbs idiom",
+      "(Optional) Extended binary GCD: define binaryXgcdInt and prove equivalence to Int.gcdA/Int.gcdB",
+      "(Project-scale) Formal bit-sequence equivalence between binaryGcd on Nat and limb-by-limb bignum implementation"
     ]
   },
   "tags": [
@@ -65,7 +76,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T12:03:52.282Z",
-  "lastUpdate": "2026-04-27T00:00:00Z",
+  "lastUpdate": "2026-05-01T16:55:00Z",
   "significance": 5,
   "tractability": 7,
   "leanFiles": [
