@@ -49,7 +49,7 @@
       "Connected Wilson's theorem and Fermat's little theorem to the Diophantine structure",
       "Formalized p-adic analysis framework including Legendre's formula and factorial valuation",
       "Proved case analysis for p = 3 and p = 5 from the Yu-Liu characterization",
-      "Formalized the Erdős-Graham perfect-power generalization"
+      "Stated the Erdős–Graham perfect-power notion and verified one Erdős–Graham example ($6! + 2^6 = 28^2$) by `norm_num`"
     ],
     "axiomCount": 3,
     "relatedProblems": [
@@ -104,63 +104,63 @@
       "id": "finiteness-results",
       "title": "The Finiteness Results",
       "startLine": 95,
-      "endLine": 114,
+      "endLine": 105,
       "summary": "Axiomatizes the Brindza–Erdős (1991) finiteness theorem (via Baker's theory) and the Yu–Liu (1996) complete characterization identifying all three solutions.",
       "mathContext": "Verified: Axiomatizes the Brindza–Erdős (1991) finiteness theorem (via Baker's theory) and the Yu–Liu (1996) complete characterization identifying all three solutions."
     },
     {
       "id": "wilson-theorem",
       "title": "Wilson's Theorem Connection",
-      "startLine": 115,
-      "endLine": 133,
-      "summary": "Axiomatizes Wilson's theorem $((p-1)! \\equiv -1 \\pmod{p})$, Fermat's little theorem $(a^{p-1} \\equiv 1 \\pmod{p})$, and their combination showing $p \\mid (p-1)! + a^{p-1}$.",
-      "mathContext": "Verified: Axiomatizes Wilson's theorem $((p-1)! \\equiv -1 \\pmod{p})$, Fermat's little theorem $(a^{p-1} \\equiv 1 \\pmod{p})$, and their combination showing $p \\mid (p-1)! + a^{p-1}$."
+      "startLine": 106,
+      "endLine": 147,
+      "summary": "Proves Wilson's theorem $((p-1)! \\equiv -1 \\pmod{p})$ and Fermat's little theorem $(a^{p-1} \\equiv 1 \\pmod{p})$ via Mathlib `ZMod` lemmas, and derives their combination showing $p \\mid (p-1)! + a^{p-1}$.",
+      "mathContext": "Proved via Mathlib `ZMod.wilsons_lemma` and `ZMod.pow_card_sub_one_eq_one`: Wilson's theorem $((p-1)! \\equiv -1 \\pmod{p})$ and Fermat's little theorem $(a^{p-1} \\equiv 1 \\pmod{p})$, then their combination showing $p \\mid (p-1)! + a^{p-1}$."
     },
     {
       "id": "exceptional-case",
       "title": "The Exceptional Case $p \\mid a$",
-      "startLine": 134,
-      "endLine": 148,
+      "startLine": 149,
+      "endLine": 165,
       "summary": "Analysis when $p \\mid a$: the power $a^{p-1}$ is divisible by $p^{p-1}$, severely constraining $k$ since $v_p((p-1)!) = 0$.",
       "mathContext": "Mathematical content: Analysis when $p \\mid a$: the power $a^{p-1}$ is divisible by $p^{p-1}$, severely constraining $k$ since $v_p((p-1)!) = 0$."
     },
     {
       "id": "padic-analysis",
       "title": "$p$-adic Analysis",
-      "startLine": 149,
-      "endLine": 167,
+      "startLine": 167,
+      "endLine": 207,
       "summary": "Defines factorial $p$-adic valuation via Legendre's formula $v_p(n!) = \\sum \\lfloor n/p^i \\rfloor$ and proves the pivotal constraint $v_p((p-1)!) = 0$.",
       "mathContext": "Formal definition: Defines factorial $p$-adic valuation via Legendre's formula $v_p(n!) = \\sum \\lfloor n/p^i \\rfloor$ and proves the pivotal constraint $v_p((p-1)!) = 0$."
     },
     {
       "id": "only-these-solutions",
       "title": "Why Only These Solutions",
-      "startLine": 168,
-      "endLine": 203,
+      "startLine": 209,
+      "endLine": 238,
       "summary": "Growth-rate elimination of $p \\geq 7$, then explicit case analysis for $p = 3$ (two solutions: $a = 1, 5$) and $p = 5$ (one solution: $a = 1$) using Yu–Liu.",
       "mathContext": "Mathematical content: Growth-rate elimination of $p \\geq 7$, then explicit case analysis for $p = 3$ (two solutions: $a = 1, 5$) and $p = 5$ (one solution: $a = 1$) using Yu–Liu."
     },
     {
       "id": "perfect-power",
       "title": "General Perfect Power Question",
-      "startLine": 204,
-      "endLine": 224,
+      "startLine": 240,
+      "endLine": 253,
       "summary": "Explores the Erdős–Graham observation that $(p-1)! + a^{p-1}$ is rarely a perfect power, with the example $6! + 2^6 = 28^2$ and a generalized conjecture.",
       "mathContext": "Explores the Erdős–Graham observation that $(p-1)! + a^{p-1}$ is rarely a perfect power, with the example $6! + $2^{6}$ = $28^{2}$$ and a generalized conjecture."
     },
     {
       "id": "main-statement",
       "title": "Main Problem Statement",
-      "startLine": 225,
-      "endLine": 239,
+      "startLine": 255,
+      "endLine": 268,
       "summary": "Complete formalization combining finiteness (Brindza–Erdős) and full characterization (Yu–Liu) into the main theorem `erdos_405_statement`.",
       "mathContext": "Verified: Complete formalization combining finiteness (Brindza–Erdős) and full characterization (Yu–Liu) into the main theorem `erdos_405_statement`."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 240,
-      "endLine": 269,
+      "startLine": 270,
+      "endLine": 299,
       "summary": "Summary theorem combining existence (three verified solutions) with uniqueness (Yu–Liu), plus the canonical `erdos_405` term-mode proof.",
       "mathContext": "Verified: Summary theorem combining existence (three verified solutions) with uniqueness (Yu–Liu), plus the canonical `erdos_405` term-mode proof."
     }
