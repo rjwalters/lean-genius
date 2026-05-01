@@ -66,7 +66,8 @@
       "ColStrictSym def + Decidable instance (file:BallotProblemOQ03OQ01OQ01OQ01.lean)",
       "sum_all_sym_pairs: ∑ PQ : Sym n a × Sym n b, prod*prod = h_a * h_b (file:BallotProblemOQ03OQ01OQ01OQ01.lean)",
       "ssytFin_two_row_eq_sum_colstrict (file:BallotProblemOQ03OQ01OQ01OQ01.lean, ~90 lines)",
-      "jdt_weight_sum b=0 case: proved ColStrictSym a 0 P Q is vacuously true (Fin 0 empty), non-cs subtype empty, sum = 0"
+      "jdt_weight_sum b=0 case: proved ColStrictSym a 0 P Q is vacuously true (Fin 0 empty), non-cs subtype empty, sum = 0",
+      "jdt_weight_preserved (PROVED): multiplicative weight identity for JDT bijection step — moving v from Q (size b+1) to P (size a) preserves total weight; proof via Multiset.cons_erase + prod_cons (~10 lines)"
     ],
     "insights": [
       "Mathlib has hsymm σ R n (complete homogeneous symmetric polynomials) in RingTheory.MvPolynomial.Symmetric.Defs — directly usable for Jacobi-Trudi matrix entries",
@@ -103,7 +104,8 @@
       "Sym.oneEquiv is @[simps apply], so oneEquiv_apply rewrites oneEquiv a to ⟨{a}, _⟩ definitionally — cleanest way to handle Sym (Fin n) 1 in proofs",
       "Session 13 (2026-04-27): metadata leanFile.sorryCount was stale (3) since PR #12933 reduced to 2 — no auto-sync runs. lineCount also stale (458 vs 666). Synced. No proof work — disk constraint (1.3GB free, no Docker) makes b=1 implementation risky without local validation.",
       "Mathlib has 'hsymm_zero : hsymm σ R 0 = 1' as a simp lemma (Symmetric/Defs.lean:318), so the b=1 jdt_weight_sum RHS 'hsymm (a+1) * hsymm 0' simplifies to hsymm (a+1) via 'rw [hsymm_zero, mul_one]'. Eliminates one open question from the Session 13 recipe.",
-      "Sym.uniqueZero gives Unique (Sym α 0) (Mathlib Sym/Basic.lean:261), so reducing RHS via '← sum_all_sym_pairs n (a+1) 0' is equivalent to a Sym (Fin n) (a+1) sum after collapsing the trivial Sym (Fin n) 0 factor — both routes (hsymm_zero rewrite, or sum_all_sym_pairs reduction with Unique handling) are open."
+      "Sym.uniqueZero gives Unique (Sym α 0) (Mathlib Sym/Basic.lean:261), so reducing RHS via '← sum_all_sym_pairs n (a+1) 0' is equivalent to a Sym (Fin n) (a+1) sum after collapsing the trivial Sym (Fin n) 0 factor — both routes (hsymm_zero rewrite, or sum_all_sym_pairs reduction with Unique handling) are open.",
+      "jdt_weight_preserved isolates the algebraic core of JDT bijection: weight preservation does not depend on the combinatorics of choosing v=Q.sort[firstViolIdx], only on v ∈ Q. Future bijection proof can apply Fintype.sum_equiv and reuse this lemma."
     ],
     "mathlibGaps": [
       "No Mathlib SchurPolynomial definition — we provide one via Jacobi-Trudi formula",

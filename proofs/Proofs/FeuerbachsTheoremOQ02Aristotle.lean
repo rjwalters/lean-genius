@@ -59,10 +59,7 @@ theorem dist3_sq_comm (P Q : ℝ × ℝ × ℝ) :
 /-- The dot product of a vector with itself is nonneg. -/
 theorem dot3_self_nonneg (u : ℝ × ℝ × ℝ) :
     0 ≤ u.1 * u.1 + u.2.1 * u.2.1 + u.2.2 * u.2.2 := by
-  have h1 : 0 ≤ u.1 * u.1 := mul_self_nonneg _
-  have h2 : 0 ≤ u.2.1 * u.2.1 := mul_self_nonneg _
-  have h3 : 0 ≤ u.2.2 * u.2.2 := mul_self_nonneg _
-  linarith
+  positivity
 
 /-- The dot product is zero iff the vector is zero. -/
 theorem dot3_self_zero_iff (u : ℝ × ℝ × ℝ) :
@@ -122,11 +119,11 @@ theorem internally_tangent_radius_le (r₁ r₂ d : ℝ) (hr₁ : 0 < r₁) (hr�
 
 /-- The internally tangent condition is symmetric in the radii direction. -/
 theorem internally_tangent_sym (r₁ r₂ : ℝ) : |r₁ - r₂| = |r₂ - r₁| :=
-  abs_sub_comm r₁ r₂
+  abs_sub_comm _ _
 
 /-- For external tangency, r₁ + r₂ = r₂ + r₁. -/
-theorem externally_tangent_sum_comm (r₁ r₂ : ℝ) : r₁ + r₂ = r₂ + r₁ := by
-  ring
+theorem externally_tangent_sum_comm (r₁ r₂ : ℝ) : r₁ + r₂ = r₂ + r₁ :=
+  add_comm _ _
 
 /-- If d = r₁ + r₂ with d > 0, r₁ ≤ d, then r₂ ≥ 0.
     (The original statement without `r₁ ≤ d` is false; corrected here.) -/
@@ -138,12 +135,8 @@ theorem externally_tangent_radii_nonneg (r₁ r₂ d : ℝ) (hd : 0 < d)
 -- PART V: Orthocentric Tetrahedron Properties
 -- ═══════════════════════════════════════════════════════════════════
 
-/-- In an orthocentric tetrahedron, AB·CD = 0 and AC·BD = 0 imply
-    |AB|² + |CD|² = |AC|² + |BD|². This is a known identity for orthocentric
-    tetrahedra (see Court, "Modern Pure Solid Geometry"). The proof reduces
-    to a polynomial identity: per coordinate i,
-    (B-A)² + (D-C)² - (C-A)² - (D-B)² = 2((B-A)(D-C) - (C-A)(D-B))_i,
-    which sums to 2·hab_cd - 2·hac_bd = 0. -/
+/-- In an orthocentric tetrahedron, AB ⊥ CD and AC ⊥ BD imply
+    |AB|² + |CD|² = |AC|² + |BD|² (the equal sums of opposite edges). -/
 theorem ortho_edge_sum_identity (A B C D : ℝ × ℝ × ℝ)
     (hab_cd : (B.1 - A.1) * (D.1 - C.1) + (B.2.1 - A.2.1) * (D.2.1 - C.2.1) +
               (B.2.2 - A.2.2) * (D.2.2 - C.2.2) = 0)

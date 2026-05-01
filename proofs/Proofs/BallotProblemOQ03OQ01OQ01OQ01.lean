@@ -360,6 +360,27 @@ Lean estimate: ~200 lines for steps (1)-(3). The bijection proof is the hard cor
   - Weight preservation: ~20 lines
 -/
 
+/-- Weight preservation for the JDT bijection step.
+    Moving a single element `v` from `Q` (size b+1) to `P` (size a) yields
+    `P' = Sym.cons v P` (size a+1) and `Q' = Sym.erase Q v hv` (size b),
+    with the same product weight. This is the core algebraic identity behind
+    `jdt_weight_sum` — the bijection itself is the remaining combinatorial work. -/
+private lemma jdt_weight_preserved (n a b : ℕ)
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) (b + 1))
+    (v : Fin n) (hv : v ∈ Q) :
+    ((Sym.cons v P).1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+      ((Sym.erase Q v hv).1.map (X : Fin n → MvPolynomial (Fin n) R)).prod =
+    (P.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+      (Q.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod := by
+  -- (Sym.cons v P).1 = v ::ₘ P.1 and (Sym.erase Q v hv).1 = Q.1.erase v are rfl
+  show ((v ::ₘ P.1).map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+       ((Q.1.erase v).map (X : Fin n → MvPolynomial (Fin n) R)).prod = _
+  rw [Multiset.map_cons, Multiset.prod_cons]
+  -- Goal: X v * (P.1.map X).prod * ((Q.1.erase v).map X).prod = (P.1.map X).prod * (Q.1.map X).prod
+  have hQ : Q.1 = v ::ₘ Q.1.erase v := (Multiset.cons_erase hv).symm
+  conv_rhs => rw [hQ, Multiset.map_cons, Multiset.prod_cons]
+  ring
+
 /-- **Jeu de Taquin weight sum** (key step for two-row Jacobi-Trudi).
     The sum of pair-weights over NON-col-strict (a,b) pairs equals h_{a+1}*h_{b-1}.
 

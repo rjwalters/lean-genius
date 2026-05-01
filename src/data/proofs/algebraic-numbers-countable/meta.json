@@ -264,6 +264,27 @@
       "year": "1882",
       "venue": "Mathematische Annalen",
       "note": "Proves \u03c0 is transcendental using Hermite's exponential method; together with Cantor's countability result, establishes that specific transcendentals are hard to identify despite 'almost all' reals being transcendental"
+    },
+    {
+      "authors": "Ivan Niven",
+      "title": "Irrational Numbers",
+      "year": "1956",
+      "venue": "Carus Mathematical Monographs No. 11, Mathematical Association of America",
+      "note": "The standard introductory reference on algebraic and transcendental number theory. Chapter 5 develops the countability of algebraic numbers via the height-function approach, complementing the abstract Mathlib-based proof formalized here. Provides accessible elementary proofs of e and \u03c0 transcendence, the Lindemann-Weierstrass theorem, and the Gelfond-Schneider theorem."
+    },
+    {
+      "authors": "Edward B. Burger; Robert Tubbs",
+      "title": "Making Transcendence Transparent: An Intuitive Approach to Classical Transcendental Number Theory",
+      "year": "2004",
+      "venue": "Springer",
+      "note": "Modern accessible treatment of transcendence theory connecting Cantor's countability argument (Chapter 1) to Liouville's construction (Chapter 2), Hermite-Lindemann (Chapter 3), Gelfond-Schneider (Chapter 4), and Baker's theorem (Chapter 5). Particularly valuable for understanding the dialectic between cardinality-based and construction-based approaches to identifying transcendental numbers \u2014 the very contrast highlighted in this entry's openQuestions and cross-references to liouville-theorem and hermite-lindemann."
+    },
+    {
+      "authors": "Richard Dedekind",
+      "title": "Was sind und was sollen die Zahlen?",
+      "year": "1888",
+      "venue": "Vieweg, Braunschweig",
+      "note": "Dedekind's foundational treatise on set theory and the natural numbers, published 14 years after Cantor's 1874 result. Introduces the formal definition of an infinite set as one equinumerous with a proper subset \u2014 the precise property exhibited here as $|\\text{algebraic reals}| = |\\mathbb{Q}|$ despite $\\mathbb{Q} \\subsetneq \\text{algebraic reals}$. This is the conceptual underpinning of the 'cardinal paradox' formalized in `card_algebraic_eq_card_rat`."
     }
   ],
   "leanFile": {

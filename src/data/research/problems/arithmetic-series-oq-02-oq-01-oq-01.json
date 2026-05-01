@@ -1,8 +1,8 @@
 {
   "slug": "arithmetic-series-oq-02-oq-01-oq-01",
   "title": "q-Vandermonde Identity",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,14 +29,12 @@
     "goal": "Eliminate both sorries: prove sum_split_pascal via direct Finset sum manipulation"
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-04-04T00:00:00-07:00",
     "iteration": 1,
-    "focus": "Proof 80% complete. Base case and all helper lemmas proved. 2 sorries: sum_split_pascal and main inductive assembly.",
-    "blockers": [
-      "sum_split_pascal: Finset.sum_add_sum_compl requires Fintype for ambient type; ℕ is infinite. Need direct sum manipulation proof instead."
-    ],
-    "nextAction": "Prove sum_split_pascal by applying Finset.sum_add_distrib after expanding qBinom q (m+1) (r+1-k) via Pascal rule term-by-term",
+    "focus": "Proof complete: q-Vandermonde verified, 0 sorries, 0 axioms",
+    "blockers": [],
+    "nextAction": "Optional: q=1 specialization corollary linking qVandermonde to classical Vandermonde-Chu identity.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -44,29 +42,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Key lemmas proved (partA_exp via zify+ring, partA_eq, partB_eq_ih). Base case complete. 2 sorries remain for sum_split_pascal and main assembly.",
+    "progressSummary": "VERIFIED 2026-04-27: q-Vandermonde Identity is fully proved (0 sorries, 0 axioms, 217 lines). Pool record was stale; this session syncs state to match gallery meta.json. No further work needed on this problem itself; potential follow-up: q→1 specialization to classical Vandermonde, or extension to negative-q (signed) variant.",
     "builtItems": [
       "ArithmeticSeriesOQ02OQ01OQ01.lean: partA_exp (proved, zify+ring)",
       "ArithmeticSeriesOQ02OQ01OQ01.lean: succ_sub_succ_key (proved, omega)",
       "ArithmeticSeriesOQ02OQ01OQ01.lean: partA_eq (proved, case split on r+1 ≤ m+k)",
       "ArithmeticSeriesOQ02OQ01OQ01.lean: partB_eq_ih (proved, omega+rw)",
       "ArithmeticSeriesOQ02OQ01OQ01.lean: qVandermonde base case m=0 (proved)",
-      "Gallery entry: src/data/proofs/arithmetic-series-oq-02-oq-01-oq-01/"
+      "Gallery entry: src/data/proofs/arithmetic-series-oq-02-oq-01-oq-01/",
+      "VERIFIED 2026-04-27: file fully proved (0 sorries, 0 axioms) — sum_split_pascal completed via Finset.sum_add_distrib + indicator-elimination on the k=r+1 endpoint; main qVandermonde inductive assembly closes via term-mode `rw [show ... from ...]` substitution unifying the (m+1)-sum with q^(r+1)·(m-sum at r+1) + (m-sum at r). Meta.json already reflects verified state."
     ],
     "insights": [
       "zify hint requirement: must provide `have h1 : r ≤ m + k := by omega` before zify to handle m+k-r in ℕ; [hm, hk] alone leaves ↑(m+k-r) unexpanded",
       "Finset.sum_add_sum_compl unavailable for infinite types: ℕ is infinite so no Fintype instance; must use direct sum manipulation for sum_split_pascal",
       "Base case m=0: destructuring r-k = l+1 via ⟨r-k-1, by omega⟩ is the right approach when hrkpos : 0 < r-k",
-      "Proof is by induction on m (not r): this aligns with q-Pascal on the LHS [m+n+1 choose r+1]_q = q^{r+1}*[m+n choose r+1]_q + [m+n choose r]_q"
+      "Proof is by induction on m (not r): this aligns with q-Pascal on the LHS [m+n+1 choose r+1]_q = q^{r+1}*[m+n choose r+1]_q + [m+n choose r]_q",
+      "Discrepancy detected 2026-04-27: candidate-pool JSON still showed 2 sorries/active while gallery meta.json showed 0 sorries/verified. The pool record was stale relative to the file. Resync points: pool .currentState mirrors the actual file (217 lines, 0 sorries, 0 axioms, verified)."
     ],
     "mathlibGaps": [
       "No direct Finset lemma for splitting range(r+2) sum by range(r+1) + complement when complement is a singleton {r+1} — must prove sum_split_pascal manually",
       "Finset.sum_add_sum_compl only works for Fintype ambient types, not ℕ"
     ],
     "nextSteps": [
-      "Prove sum_split_pascal: rewrite ∑ k in range(r+2), f(k) * qBinom q (m+1) (r+1-k) as ∑ k in range(r+2), f(k) * (q^(r+1-k) * qBinom q m (r+1-k) + qBinom q m (r-k)) using qBinom_succ_succ, then distribute with Finset.sum_add_distrib",
-      "Close main inductive case: rw [sum_split_pascal, partA_eq, partB_eq_ih] to match the q^(r+1)*S + S structure from LHS",
-      "Add q=1 specialization theorem connecting qVandermonde to classical Vandermonde"
+      "q=1 specialization theorem connecting qVandermonde to classical Vandermonde — clean corollary with broad utility",
+      "(Lower priority) negative q-binomial identity for signed Stirling numbers — requires CommRing → CommGroup widening"
     ],
     "markdown": "# Knowledge Base: arithmetic-series-oq-02-oq-01-oq-01\n\nSee research/problems/arithmetic-series-oq-02-oq-01-oq-01/knowledge.md for full history.\n\n## Summary\n\nq-Vandermonde identity proof by induction on m. Key lemmas (partA_exp, partA_eq, partB_eq_ih) proved. 2 sorries remain: sum_split_pascal and main inductive assembly. Root cause of sum_split_pascal sorry: Finset.sum_add_sum_compl requires Fintype, unavailable for ℕ.\n"
   },

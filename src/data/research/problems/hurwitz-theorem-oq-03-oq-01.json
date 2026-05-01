@@ -2,7 +2,7 @@
   "slug": "hurwitz-theorem-oq-03-oq-01",
   "title": "Hurwitz Only-If: Clifford Algebra Proof",
   "phase": "ACT",
-  "status": "active",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -27,12 +27,14 @@
     "goal": "Prove hurwitz_only_if, or at minimum prove the n=3 impossibility as a first step"
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-04-27T17:00:00Z",
-    "iteration": 3,
-    "focus": "BLOCKED on Mathlib gap (Bott periodicity for Cl(0,n)); 1 sorry in HurwitzOnlyIf.lean",
-    "blockers": [],
-    "nextAction": "Resume when Mathlib gains Clifford algebra periodicity infrastructure",
+    "phase": "BLOCKED",
+    "since": "2026-04-27",
+    "iteration": 5,
+    "focus": "Session 5: Confirmed BLOCKED via independent re-verification. Mathlib v4.26.0 still lacks Bott periodicity / Wedderburn for Clifford reps.",
+    "blockers": [
+      "Mathlib v4.26.0 has no Clifford rep classification, no Bott periodicity, no Artin-Wedderburn for real semisimple algebras — all required to close even-n sorry"
+    ],
+    "nextAction": "Track Mathlib upstream for Clifford rep theory. No further session value until that lands.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -40,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: Even n sorry remains. crossMat_sq_neg_one proved. Blocker: Bott periodicity for Cl(0,n) not in Mathlib. Proof is maximally complete.",
+    "progressSummary": "BLOCKED (5 sessions, status transitioned 2026-04-27). 0 axioms, 1 sorry covering even non-admissible n. Final blocker is Clifford algebra structure theorem (Bott periodicity + Artin-Wedderburn) absent in Mathlib v4.26.0. Direct case-by-case (n=6 alone) doable in ~300-500 lines but does not advance the broader sorry. Methodology rule: 3+ sessions stuck → BLOCKED.",
     "builtItems": [
       "colMat(nsi, j₀): orthogonal matrix from j₀-th column of multiplication table (HurwitzTheorem.lean)",
       "crossMat(nsi, j₁, j₂) = colMat(j₁)ᵀ × colMat(j₂): skew-symmetric AND orthogonal (HurwitzTheorem.lean)",
@@ -67,7 +69,8 @@
       "eight_square_identity_norm: two-step simp pattern needed — first simp only unfolds defs, second simp (not only) evaluates ![...] i via Matrix.cons_val_* for all 8 indices",
       "Fixed 5 pre-existing build errors: right_polarization spurious ring, no_odd_nsquare ring for non-comm, Nat.eq_or_ne → eq_or_ne, eight_square_identity_exists theorem→def, eight_square_identity_norm simp pattern",
       "Even-n sorry: all paths (halving, volume element, trace/det) require Clifford Bott periodicity. Cl(0,5)≅M(4,ℂ) has min rep dim 8>6; Cl(0,9)≅M(16,ℝ) has dim 16>10. Table embedded in sorry comment.",
-      "Audit 2026-04-27: pool leanFiles listed HurwitzTheorem.lean and HurwitzTheoremOQ04.lean; the actual subject file (per gallery proofRepoPath) is HurwitzOnlyIf.lean (113 lines, 1 sorry, 0 axioms). Gallery status=formalized, badge=wip, sorries=1."
+      "Session 5 (2026-04-27): independently re-verified Mathlib v4.26.0 has no Bott/Wedderburn/RadonHurwitz content under Mathlib/LinearAlgebra/CliffordAlgebra/. Status transitioned to BLOCKED per 3+ session rule.",
+      "Direct n=6 proof exists via volume element J = M_1 M_2 M_3 M_4 M_5 (J² = -I, J commutes with M_j) + complex eigenspace decomposition (E_+ has ℂ-dim 3; iM_1 splits into ±1 eigenspaces of equal dim → 2k = 3 contradiction). Estimated ~300-500 Lean lines but only handles n ≡ 2 (mod 4) cases, leaves n ∈ {12, 16, 20, ...} untouched."
     ],
     "mathlibGaps": [
       "Radon-Hurwitz numbers not in Mathlib (as of 2026-04)",
@@ -122,11 +125,11 @@
       "lineCount": 113,
       "theoremCount": 4,
       "axiomCount": 0,
-      "defCount": 0,
+      "defCount": 16,
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzOnlyIf.lean"
     }
   ],
-  "lastUpdate": "2026-04-27T17:00:00Z"
+  "lastUpdate": "2026-04-27T00:00:00.000Z"
 }

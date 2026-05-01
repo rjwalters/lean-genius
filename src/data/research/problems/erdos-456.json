@@ -20,8 +20,10 @@
     "since": "2026-01-13T04:11:10.511Z",
     "iteration": 3,
     "focus": "All provable content proved. 2 deep axioms (Linnik, m/n divergence) remain — genuinely unprovable from Mathlib.",
-    "blockers": [],
-    "nextAction": "None — problem is complete.",
+    "blockers": [
+      "Mathlib API drift on origin/main: Mathlib.Data.Rat.Order module no longer exists. Affects both Erdos456Problem.lean (line 38) and Erdos456Aristotle.lean (line 16). Verified via Docker build 2026-04-27."
+    ],
+    "nextAction": "Wait for Mechanic to repair import drift; then SOLVED follow-up (van Doorn unconditional infinitely-many).",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 1,
@@ -29,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 0 sorries, 2 deep axioms (linnik_bound, m_over_n_diverges). 9 formerly-axiom properties proved from sInf + Dirichlet (Mathlib PrimesInAP). Gallery sections updated.",
+    "progressSummary": "BLOCKED (upstream): file fails to build on origin/main because Mathlib.Data.Rat.Order module no longer exists in Mathlib (verified by Docker build 2026-04-27). Once the import is repaired, the actual file state is 0 axioms / 0 sorries across both Erdos456Problem.lean and Erdos456Aristotle.lean (the prior progressSummary mentioning 2 deep axioms is stale — those were eliminated; only the conjectures Part1/Part2/Part3 remain unproved as open Props).",
     "builtItems": [
       "part2_implies_part1: SORRY FILLED — Part2 implies Part1 via C=2 argument",
       "part1_implies_infinitely_many: SORRY FILLED — using erdos_strict_inequality axiom",
@@ -60,7 +62,8 @@
       "part1_implies_infinitely_many: uses erdos_strict_inequality axiom directly (cleaner than density→counting conversion)",
       "All 3 sorries eliminated: file now has 4 axioms (all deep) and 0 sorries",
       "Eliminated erdos_strict_inequality axiom via pigeonhole: AlmostAll P → ∀ N, ∃ n ≥ N, P n (take ε=1/2, M=max(N₀,2N+1), contradiction on [N,M))",
-      "Eliminated dirichlet_primes_mod1 axiom: Mathlib PrimesInAP has Nat.forall_exists_prime_gt_and_modEq, converted via modEq_iff_dvd_prime"
+      "Eliminated dirichlet_primes_mod1 axiom: Mathlib PrimesInAP has Nat.forall_exists_prime_gt_and_modEq, converted via modEq_iff_dvd_prime",
+      "Session 1 (2026-04-27): Erdos456Problem.lean and Erdos456Aristotle.lean both fail to build on origin/main: import Mathlib.Data.Rat.Order is gone (module removed). Same 2026-04-26 Mathlib upgrade cohort as Erdos1151OQ04 and AngleTrisectionOQ02OQ01OQ02Incomplete01."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -82,7 +85,7 @@
     "mathlib": []
   },
   "started": "2026-01-13T04:11:10.511Z",
-  "lastUpdate": "2026-03-28T11:57:00.000Z",
+  "lastUpdate": "2026-04-27T12:50:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [

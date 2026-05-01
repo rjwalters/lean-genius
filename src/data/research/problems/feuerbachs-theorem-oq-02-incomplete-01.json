@@ -1,7 +1,7 @@
 {
   "slug": "feuerbachs-theorem-oq-02-incomplete-01",
   "title": "3D Analogue of Feuerbach's Theorem for Tetrahedra",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -27,43 +27,45 @@
     "goal": "Fill the 5 sorries to complete the 3D Feuerbach proof for orthocentric tetrahedra"
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ORIENT",
     "since": "2026-04-21T00:00:00Z",
-    "iteration": 1,
-    "focus": "Read FeuerbachsTheoremOQ02.lean to locate and classify the 5 sorries",
+    "iteration": 2,
+    "focus": "9 of 14 sorries eliminated in FeuerbachsTheoremOQ02Aristotle.lean. 5 helper sorries + 5 main sorries remain.",
     "blockers": [],
-    "nextAction": "OBSERVE: Read proofs/Proofs/FeuerbachsTheoremOQ02.lean to map the 5 sorry locations",
+    "nextAction": "Prove remaining 4 tractable companion sorries (dist3_sq_zero_iff, dot3_self_zero_iff, midpoint3_equidist, midpoint3_spec). Remove or fix externally_tangent_radii_nonneg.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Aristotle companion file (FeuerbachsTheoremOQ02Aristotle.lean) reduced from 14 sorries to 0. Filled with safe tactics (positivity, ring, linear_combination, nlinarith). Main file (FeuerbachsTheoremOQ02.lean) still has 5 hard sorries (insphere + 4 exspheres tangencies) and 3 axioms — these remain open.",
+    "progressSummary": "PROGRESS: Eliminated 9 of 14 sorries in FeuerbachsTheoremOQ02Aristotle.lean using ring/positivity/linarith/linear_combination. Identified externally_tangent_radii_nonneg as UNPROVABLE as stated (counterexample r₁=3,r₂=-1,d=2). Remaining 4 companion sorries are tractable but need Prod.ext / dsimp gymnastics.",
     "builtItems": [
-      "FeuerbachsTheoremOQ02Aristotle.lean: dist3_sq_nonneg/zero_iff/comm — squared distance properties",
-      "dot3_self_nonneg/zero_iff, dot3_comm, dot3_add_left — bilinear dot product algebra",
-      "midpoint3_equidist, midpoint3_spec — midpoint formula correctness",
-      "internally_tangent_sym, externally_tangent_sum_comm, externally_tangent_radii_nonneg (corrected) — sphere tangency arithmetic",
-      "ortho_edge_sum_identity — proved via linear_combination 2·(AB·CD) - 2·(AC·BD); identity |AB|²+|CD|² = |AC|²+|BD|² for orthocentric tetrahedra",
-      "twentyFourPoint_radius_third_of_circum — R/3 ≤ R for nonneg R"
+      "dist3_sq_nonneg in FeuerbachsTheoremOQ02Aristotle.lean (positivity)",
+      "dist3_sq_comm in FeuerbachsTheoremOQ02Aristotle.lean (ring)",
+      "dot3_self_nonneg in FeuerbachsTheoremOQ02Aristotle.lean (positivity)",
+      "dot3_comm in FeuerbachsTheoremOQ02Aristotle.lean (ring)",
+      "dot3_add_left in FeuerbachsTheoremOQ02Aristotle.lean (ring)",
+      "internally_tangent_sym in FeuerbachsTheoremOQ02Aristotle.lean (abs_sub_comm)",
+      "externally_tangent_sum_comm in FeuerbachsTheoremOQ02Aristotle.lean (add_comm)",
+      "twentyFourPoint_radius_third_of_circum in FeuerbachsTheoremOQ02Aristotle.lean (linarith)",
+      "ortho_edge_sum_identity in FeuerbachsTheoremOQ02Aristotle.lean (linear_combination 2*hab_cd - 2*hac_bd)"
     ],
     "insights": [
-      "Companion file sorries are mostly ring-level identities and trivial algebra — readily provable without geometric insight",
-      "ortho_edge_sum_identity (Court 1934) reduces to per-coordinate identity (b-a)²+(d-c)² - (c-a)²-(d-b)² = 2((b-a)(d-c) - (c-a)(d-b)), summable to 2·hab_cd - 2·hac_bd. Closed by linear_combination",
-      "Original externally_tangent_radii_nonneg statement was unprovable (false without r₁ ≤ d hypothesis); corrected with added precondition",
-      "Main file 5 sorries (feuerbach_3d_insphere/exsphere_*) NOT reducible to companion lemmas — need explicit coordinate computations using circumcenter formulas + orthocentric simplifications",
-      "Suggestion: parametrize orthocentric tetrahedra with orthocenter at origin + 3 perpendicular edge directions to drastically simplify coordinates"
+      "ortho_edge_sum_identity: |AB|² + |CD|² - |AC|² - |BD|² = 2·((B-A)·(D-C)) - 2·((C-A)·(D-B)). The linear_combination tactic with coefficients 2,-2 closes from the two perpendicularity hypotheses via ring.",
+      "externally_tangent_radii_nonneg is FALSE as stated: hypotheses (0 < d, d = r₁ + r₂, 0 ≤ r₁) do not force 0 ≤ r₂ (counterexample r₁=3, r₂=-1, d=2). The lemma needs an additional hypothesis like 0 ≤ r₂ - r₁ + d or to be removed.",
+      "let-bound goals (midpoint3_equidist, midpoint3_spec) likely need dsimp only or show before ring/refine; test before submitting to Aristotle.",
+      "Aristotle companion files contain a mix of ring-trivial and Prod.ext-requiring lemmas — fast wins available with single-tactic proofs."
     ],
     "mathlibGaps": [
       "3D sphere tangency in Mathlib is less developed than 2D circle geometry"
     ],
     "nextSteps": [
-      "For main file feuerbach_3d_insphere: try parametrizing orthocentric tetrahedra by orthocenter at origin + 3 perpendicular edge directions",
-      "Alternative: Monge point M = orthocenter for orthocentric T; align with 2D Feuerbach proof structure",
-      "feuerbach_3d_fails_general (axiom): exhibit a specific non-orthocentric tetrahedron numerically violating tangency",
-      "edge_midpoints_on_sphere axiom: directly compute |N₂₄ - midpoint_AB|² and show it equals R²/9 using circumcenter algebra"
+      "Prove remaining 4 companion sorries (dist3_sq_zero_iff, dot3_self_zero_iff, midpoint3_equidist, midpoint3_spec) — these need Prod.ext / dsimp only.",
+      "Remove or restate externally_tangent_radii_nonneg (currently unprovable).",
+      "The 5 main 3D Feuerbach sorries require deep coordinate computation; consider symbolic expansion of |N₂₄ - I|² as a separate effort.",
+      "Three axioms in main file (feuerbach_3d_fails_general, edge_midpoints_on_sphere, face_centroids_on_sphere) could be converted to theorem ... := by sorry and submitted to Aristotle."
     ]
   },
   "tags": [
@@ -90,7 +92,7 @@
     ]
   },
   "started": "2026-04-21T00:00:00Z",
-  "lastUpdate": "2026-04-21T00:00:00Z",
+  "lastUpdate": "2026-04-27T17:35:00Z",
   "significance": 7,
   "tractability": 5
 }

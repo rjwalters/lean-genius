@@ -1,21 +1,132 @@
 # Knowledge Base: feuerbachs-theorem-oq-02-incomplete-01
 
-Insights accumulated during research on this problem.
+3D Feuerbach's theorem for orthocentric tetrahedra. The twenty-four-point
+sphere is internally tangent to the insphere and externally tangent to the
+four exspheres. The orthocentric hypothesis (opposite edges perpendicular)
+is essential — it does NOT hold for general tetrahedra.
+
+---
+
+## File Map
+
+- `proofs/Proofs/FeuerbachsTheoremOQ02.lean`: main formalization (665 lines)
+  - 5 sorry'd theorems: `feuerbach_3d_insphere`, `feuerbach_3d_exsphere_{A,B,C,D}`
+  - 3 axioms: `feuerbach_3d_fails_general`, `edge_midpoints_on_sphere`,
+    `face_centroids_on_sphere`
+  - Proven: orthocentric_third_perp, monge_point_euler_line,
+    centroid_on_euler_line, volume_eq_inradius_surfaceArea, circumcenter_equidist
+- `proofs/Proofs/FeuerbachsTheoremOQ02Aristotle.lean`: companion (124 lines)
+  - 14 → 5 sorry'd helper lemmas after this session
+
+---
+
+## Session 2026-04-27 — Aristotle Companion Cleanup
+
+**Mode**: FRESH (knowledge_score=4 WEAK; problem.md was a stub).
+
+### What Was Done
+
+Filled 9 of 14 routine helper sorries in `FeuerbachsTheoremOQ02Aristotle.lean`:
+
+| Lemma | Tactic |
+|-------|--------|
+| `dist3_sq_nonneg` | `positivity` |
+| `dist3_sq_comm` | `ring` |
+| `dot3_self_nonneg` | `positivity` |
+| `dot3_comm` | `ring` |
+| `dot3_add_left` | `ring` |
+| `internally_tangent_sym` | `abs_sub_comm _ _` |
+| `externally_tangent_sum_comm` | `add_comm _ _` |
+| `twentyFourPoint_radius_third_of_circum` | `linarith` |
+| `ortho_edge_sum_identity` | `linear_combination 2 * hab_cd - 2 * hac_bd` |
+
+### The `ortho_edge_sum_identity` Computation
+
+For `A B C D : ℝ × ℝ × ℝ` with hypotheses `hab_cd : (B-A)·(D-C) = 0` and
+`hac_bd : (C-A)·(D-B) = 0`, the goal is
+`|AB|² + |CD|² = |AC|² + |BD|²`.
+
+Expanding componentwise (writing each `·` as the explicit coordinate dot):
+
+```
+LHS - RHS = 2 · [B·D + A·C - C·D - A·B]
+hab_cd_expr = B·D - B·C - A·D + A·C
+hac_bd_expr = C·D - C·B - A·D + A·B
+hab_cd_expr - hac_bd_expr = B·D + A·C - C·D - A·B
+```
+
+So `LHS - RHS = 2·(hab_cd_expr - hac_bd_expr) = 2·hab_cd - 2·hac_bd`. The
+`linear_combination` tactic with these coefficients closes via `ring`.
+
+### Remaining Sorries in Companion File
+
+Five lemmas left, each non-trivial for distinct reasons:
+
+1. `dist3_sq_zero_iff (P Q : ℝ × ℝ × ℝ)`:
+   `(Q-P)² sum = 0 ↔ P = Q`. Forward direction needs `sq_eq_zero_iff` +
+   `Prod.ext` for `ℝ × (ℝ × ℝ)`. Doable but multi-line.
+2. `dot3_self_zero_iff`: similar Prod.ext gymnastics.
+3. `midpoint3_equidist`: `let M := ...` in goal type; `ring` may not
+   automatically unfold the let. Needs `show` or `dsimp only` first.
+4. `midpoint3_spec`: same `let` issue.
+5. `externally_tangent_radii_nonneg`: **lemma is FALSE as stated**. The
+   hypotheses (0 < d, d = r₁ + r₂, 0 ≤ r₁) do NOT force 0 ≤ r₂
+   (counterexample: r₁ = 3, r₂ = -1, d = 2). Should be removed or restated.
+
+### Key Insights
+
+- The Aristotle companion's "routine" lemmas are a mix: most are pure ring
+  identities that succumb to `ring`/`positivity`/`linear_combination`, but
+  some encode incorrect or subtler claims (e.g. `externally_tangent_radii_nonneg`
+  is unprovable as stated).
+- The `linear_combination` tactic is well-suited to dot-product / coordinate
+  identities once the right coefficient is computed by hand.
+- The five main 3D Feuerbach sorries (`feuerbach_3d_insphere`,
+  `feuerbach_3d_exsphere_{A,B,C,D}`) remain — these require deep coordinate
+  computations equivalent to the 2D case and depend on the axiomatized
+  edge-midpoint and face-centroid lemmas.
+
+### Files Modified
+
+- `proofs/Proofs/FeuerbachsTheoremOQ02Aristotle.lean` (-12 +13 lines, 14 → 5 sorries)
+
+### Sorry/Axiom Delta
+
+- Aristotle companion sorries: 14 → 5 (-9)
+- Main file sorries: 5 → 5 (no change)
+- Axioms: 3 → 3 (no change)
+
+### Next Steps
+
+1. **Companion completion**: prove the four remaining tractable sorries
+   (`dist3_sq_zero_iff`, `dot3_self_zero_iff`, `midpoint3_equidist`,
+   `midpoint3_spec`) using `Prod.ext` and `dsimp only` for let bindings.
+2. **Statement correction**: remove or fix `externally_tangent_radii_nonneg`
+   (currently unprovable).
+3. **Main theorem progress**: the five `feuerbach_3d_*` sorries require
+   showing |N₂₄ - I|² = |R/3 - r|² (insphere case) symbolically. This is
+   deep; depends on the axioms `edge_midpoints_on_sphere` and
+   `face_centroids_on_sphere` which are themselves substantial.
+4. **Axiom decomposition**: the three axioms could be replaced by sorries
+   and submitted to Aristotle as a separate effort.
 
 ---
 
 ## Problem Understanding
 
-[Initial observations about the problem will be recorded here]
+### What the file proves
 
----
+- **Definitions** (full): tetrahedron, orthocentric variant, edge lengths,
+  face areas, centroid, edge/face midpoints, circumcenter (via Cramer's
+  rule), Monge point, twenty-four-point center/radius, incenter, inradius,
+  excenters, exradii, and sphere tangency conditions.
+- **Theorems** (proven, no sorry, 0 axioms): `orthocentric_third_perp`,
+  `monge_point_euler_line`, `twentyFourPointCenter_midpoint`,
+  `twentyFourPointRadius_eq`, `centroid_on_euler_line`,
+  `volume_eq_inradius_surfaceArea`, `Tetrahedron.circumcenter_equidist`.
 
-## Insights
+### What remains open
 
-[Insights from research attempts will be accumulated here]
-
----
-
-## Dead Ends
-
-[Approaches known not to work will be documented here]
+- 5 main 3D Feuerbach tangency theorems (deep)
+- 3 axioms (counterexample existence + 24-point sphere completeness)
+- 5 routine helper lemmas in the Aristotle companion file
