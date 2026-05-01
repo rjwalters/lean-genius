@@ -7390,10 +7390,13 @@
       "result": "clean"
     },
     "erdos-531": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-session-1777649716",
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T15:51:52Z",
+      "result": "issues-found",
+      "issues": [
+        "Phantom-axiom narrative: proofStrategy claims 3 axioms (only 2 declared); F_3 phantom; F_1/F_2 still sorry-stubbed (#14295)"
+      ]
     },
     "erdos-532": {
       "agentId": "auditor-cycle-20-batch",
