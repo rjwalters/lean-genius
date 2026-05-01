@@ -48,11 +48,11 @@
     "originalContributions": [
       "RandomPlusMinus1Polynomial: f_n(z) = Σ εₖ z^k",
       "IsValidCoeffSeq: each coefficient is ±1",
-      "realRootCount, realRootCountInUnit axiomatized",
+      "realRootCount axiomatized as ℕ-valued root counter",
       "kacConstant (2/π) and halfKacConstant (1/π)",
-      "erdos_offord_expectation: E[Rₙ] = (2/π + o(1))log n",
-      "do_theorem_2024: a.s. Rₙ[-1,1]/log n → 1/π",
-      "kac_integral_formula: integral formula for expected roots",
+      "varianceRealRoots and variance_bound axioms (Var(Rₙ) = O((log n)²))",
+      "real_root_bound axiom (Rₙ ≤ n + 1)",
+      "kac_constant_pos axiom (2/π > 0)",
       "erdos_521_summary combining variance bound, root bound, and Kac positivity"
     ],
     "dateAdded": "2026-01-19",
@@ -64,7 +64,7 @@
     "historicalContext": "The study of real roots of random polynomials began with Bloch and Pólya (1932) and was revolutionized by Kac's 1943 integral formula, which computes E[Rₙ] as an explicit integral of a root density function. For Gaussian coefficients, Kac showed E[Rₙ] = (2/π + o(1))log n, where the logarithmic growth comes from the root density ρ_n(x) ≈ 1/(π|1-x²|^{1/2}) near x = ±1.\n\nErdős and Offord (1956) extended Kac's result to discrete ±1 coefficients, proving E[Rₙ] = (2/π + o(1))log n for random Littlewood polynomials f_n(z) = Σ εₖ z^k. Their proof uses combinatorial counting arguments rather than Kac's analytic integral. The natural follow-up question, attributed to Erdős, asks whether Rₙ/log n → 2/π holds almost surely (for almost every coefficient sequence), not just in expectation.\n\nDo (2024) made breakthrough progress by proving the almost sure result for roots in [-1,1]: a.s. lim Rₙ[-1,1]/log n = 1/π. Since asymptotically half the real roots lie in [-1,1] and half outside, this resolves exactly half the problem. The full conjecture — a.s. convergence for all real roots — remains open, requiring new techniques to handle roots near ±∞.",
     "problemStatement": "**Problem Statement (PARTIALLY SOLVED / OPEN)**\n\nLet (εₖ) be i.i.d. uniform on {-1, 1}. If Rₙ counts real roots of f_n(z) = Σ_{k=0}^n εₖ z^k, is it true that almost surely:\n  lim_{n→∞} Rₙ/log n = 2/π?\n\n**Known:** E[Rₙ] = (2/π + o(1))log n (Erdős-Offord 1956)\n\n**Partial:** A.s. lim Rₙ[-1,1]/log n = 1/π (Do 2024)\n\n**Open:** Full a.s. convergence Rₙ/log n → 2/π",
     "text": "For random ±1 polynomials, is Rₙ/log n → 2/π almost surely? Erdős-Offord (1956) proved E[Rₙ] = (2/π + o(1))log n. Do (2024) proved a.s. limit 1/π for roots in [-1,1]. Full a.s. convergence remains OPEN.",
-    "proofStrategy": "The formalization defines random ±1 polynomials and axiomatizes root counting functions. The Kac constant 2/π and half-Kac constant 1/π are defined from Real.pi. The Erdős-Offord expectation result, Do's 2024 partial theorem, variance bound, and Kac's integral formula are axiomatized with meaningful type signatures using Filter.atTop for asymptotic statements. The summary theorem combines variance bound, root bound, and Kac positivity.",
+    "proofStrategy": "The formalization defines random ±1 polynomials and axiomatizes root counting functions. The Kac constant 2/π and half-Kac constant 1/π are defined from Real.pi. The variance bound (Var(Rₙ) = O((log n)²)), the deterministic root bound (Rₙ ≤ n + 1), and Kac-constant positivity are axiomatized; the Erdős-Offord expectation result, Do's 2024 partial theorem, and Kac's integral formula are described in docstrings as historical context but are not declared as axioms. The summary theorem combines the three axioms that ARE declared.",
     "keyInsights": [
       "**Kac Constant:** 2/π ≈ 0.6366 appears in root counting from integrating the root density",
       "**Expectation Known:** E[Rₙ] = (2/π + o(1))log n (Erdős-Offord 1956)",
@@ -124,7 +124,7 @@
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 174,
+      "startLine": 155,
       "endLine": 174,
       "summary": "erdos_521_summary combining key results"
     }

@@ -7327,9 +7327,14 @@
     },
     "erdos-521": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T16:41:03Z",
+      "result": "issues-fixed",
+      "issuesFixed": [
+        "originalContributions: removed phantom items (realRootCountInUnit, erdos_offord_expectation, do_theorem_2024, kac_integral_formula) that exist only in docstrings; replaced with declarations actually present in the Lean file (varianceRealRoots, variance_bound, real_root_bound, kac_constant_pos)",
+        "proofStrategy: corrected to state which axioms are declared vs which are docstring-only historical context",
+        "sections: summary section line range 174 -> 155-174 to cover the actual erdos_521_summary block"
+      ]
     },
     "erdos-522": {
       "auditCount": 3,
@@ -13373,12 +13378,6 @@
       "issues": [
         "badge=original for proof whose reduction lemmas are 1-line Mathlib wrappers; tracked in #14250 + PR #14251"
       ]
-    },
-    "binary-gcd-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-01T16:19:22Z",
-      "result": "clean",
-      "issues": []
     }
   },
   "erdos-1097-oq-01": {
