@@ -70,10 +70,10 @@
       "SingletonIntersection: |A ∩ B| = 1 predicate",
       "AvoidsSingletonIntersections: universal avoidance over distinct pairs",
       "HasSingletonPair: existential singleton pair predicate",
-      "extremal_construction: axiomatized tight C(n-2, k-2) construction",
+      "extremal_construction: docstring-only narrative on tight C(n-2, k-2) construction (no axiom)",
       "frankl_theorem: axiomatized main result for k ≥ 4",
-      "katona_k4: axiomatized k = 4 special case",
-      "k3_fails: axiomatized failure for k = 3",
+      "katona_k4: docstring-only note on k = 4 special case (not separately axiomatized)",
+      "k3_fails: docstring-only note on failure for k = 3 (not axiomatized)",
       "erdos_702: main theorem as application of frankl_theorem"
     ],
     "axiomCount": 1,
@@ -84,7 +84,7 @@
     "historicalContext": "Erdős and Sós conjectured that for k ≥ 4, any k-uniform family over {1,...,n} with more than C(n-2, k-2) sets must contain two sets sharing exactly one element. The bound C(n-2, k-2) is natural: fixing two elements x, y and taking all k-sets containing both gives a family of this size where every pair shares at least {x, y}.\n\nKatona first proved the k = 4 case (unpublished). Frankl resolved the full conjecture in 1977 using the shifting (compression) technique — a method that systematically simplifies set families while preserving structural properties. His proof established the shifting technique as a central tool in extremal set theory.\n\nThe condition k ≥ 4 is necessary: for k = 3, large families avoiding singleton intersections exist beyond the C(n-2, 1) = n-2 bound, due to combinatorial designs (Steiner triple systems). The problem is closely related to #703, where Frankl and Rödl extended to general r-intersection avoidance.",
     "problemStatement": "Let k ≥ 4. If F is a family of k-subsets of {1,...,n} with |F| > C(n-2, k-2), then there exist A, B ∈ F with |A ∩ B| = 1. Answer: YES (Frankl 1977). The bound C(n-2, k-2) is tight.",
     "text": "For k ≥ 4, if F is a k-uniform family over {1,...,n} with |F| > C(n-2, k-2), must some pair have |A ∩ B| = 1? SOLVED by Frankl (1977): YES, the bound is tight.",
-    "proofStrategy": "The formalization defines k-uniform families over a ground set, introduces SingletonIntersection and avoidance predicates, axiomatizes the extremal construction (all k-sets through two fixed points), axiomatizes Frankl's theorem and Katona's k = 4 case, records the k = 3 failure, and derives the main theorem erdos_702 from frankl_theorem.",
+    "proofStrategy": "The formalization defines k-uniform families over a ground set, introduces SingletonIntersection and avoidance predicates, discusses the extremal construction and special cases via docstrings, axiomatizes Frankl's theorem (the sole formal axiom), and derives the main theorem erdos_702 from frankl_theorem.",
     "keyInsights": [
       "Extremal construction: all k-sets containing two fixed elements give C(n-2, k-2) sets avoiding singleton intersections",
       "Frankl (1977): this bound is tight — any larger family must contain a singleton pair",
@@ -103,49 +103,49 @@
       "id": "families",
       "title": "Set Families",
       "summary": "Defines `groundSet` ({1,...,n} via Finset.range with shift), `IsKUniform` (all sets have cardinality k), and `IsOverGroundSet` (all sets are subsets of ground set).",
-      "startLine": 34,
-      "endLine": 48
+      "startLine": 35,
+      "endLine": 49
     },
     {
       "id": "intersections",
       "title": "Intersection Patterns",
       "summary": "Defines `SingletonIntersection` (|A ∩ B| = 1), `AvoidsSingletonIntersections` (no distinct pair has singleton intersection), and `HasSingletonPair` (existential).",
-      "startLine": 49,
-      "endLine": 65
+      "startLine": 50,
+      "endLine": 66
     },
     {
       "id": "extremal",
       "title": "Extremal Bound",
-      "summary": "Axiomatizes the extremal construction: fix {x, y}, take all k-sets through both. Family has C(n-2, k-2) sets and avoids singleton intersections (every pair shares ≥ 2 elements).",
-      "startLine": 66,
-      "endLine": 85
+      "summary": "Discusses the extremal construction: fixing {x, y} and taking all k-sets through both yields C(n-2, k-2) sets where every pair shares ≥ 2 elements. Docstring-only narrative; no formal axiom in this section.",
+      "startLine": 67,
+      "endLine": 77
     },
     {
       "id": "frankl",
       "title": "Frankl's Theorem",
-      "summary": "Axiomatizes `frankl_theorem` (k ≥ 4, |F| > C(n-2, k-2) implies singleton pair exists) and `katona_k4` (the k = 4 special case).",
-      "startLine": 86,
-      "endLine": 111
+      "summary": "Axiomatizes `frankl_theorem` (k ≥ 4, |F| > C(n-2, k-2) implies singleton pair exists). Notes Katona's k = 4 case in docstring (not separately axiomatized).",
+      "startLine": 78,
+      "endLine": 95
     },
     {
       "id": "special",
       "title": "Special Cases",
-      "summary": "Verifies C(4,2) = 6 by `native_decide`. Axiomatizes `k3_fails`: for k = 3, large families avoiding singleton intersections exist beyond the C(n-2, 1) bound.",
-      "startLine": 112,
-      "endLine": 131
+      "summary": "Verifies C(4,2) = 6 by `native_decide`. Notes that the k = 3 case fails in docstring (not axiomatized).",
+      "startLine": 96,
+      "endLine": 108
     },
     {
       "id": "proof",
       "title": "Proof Technique",
       "summary": "Notes Frankl's shifting method and the connection to Problem #703 (general r-intersection avoidance).",
-      "startLine": 132,
-      "endLine": 143
+      "startLine": 109,
+      "endLine": 118
     },
     {
       "id": "summary",
       "title": "Summary and Main Theorem",
       "summary": "Defines `erdos_702 := frankl_theorem` as the main result. Includes answer and status strings. Verifies key definitions with `#check`.",
-      "startLine": 144,
+      "startLine": 119,
       "endLine": 155
     }
   ],
