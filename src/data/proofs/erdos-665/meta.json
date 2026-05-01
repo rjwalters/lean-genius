@@ -82,33 +82,33 @@
       "id": "connection-to-projective-plane",
       "title": "Connection to Projective Planes",
       "startLine": 94,
-      "endLine": 122,
-      "summary": "Shrikhande-Singhi embedding theorem and conditional negative answer via prime power conjecture.",
-      "mathContext": "Verified: Shrikhande-Singhi embedding theorem and conditional negative answer via prime power conjecture."
+      "endLine": 112,
+      "summary": "Defines projectivePlanePoints, projectivePlaneLineSize; axiomatizes prime_power_planes_implies_unbounded (conditional negative answer). Shrikhande-Singhi is referenced only in docstring narrative.",
+      "mathContext": "Formal definition: projectivePlanePoints, projectivePlaneLineSize; axiom: prime_power_planes_implies_unbounded."
     },
     {
       "id": "connection-to-prime-gaps",
       "title": "Connection to Prime Gaps",
-      "startLine": 123,
-      "endLine": 147,
-      "summary": "Correlation between h(n) and largest prime gap; Cramér's conjecture implications.",
-      "mathContext": "Mathematical content: Correlation between h(n) and largest prime gap; Cramér's conjecture implications."
+      "startLine": 113,
+      "endLine": 132,
+      "summary": "Axiomatizes largestPrimeGap and h_correlates_with_prime_gap. Cramér's conjecture is referenced only in docstring narrative.",
+      "mathContext": "Axioms: largestPrimeGap, h_correlates_with_prime_gap."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "startLine": 148,
-      "endLine": 167,
-      "summary": "Perfect square primes give affine planes with blocks of size exactly √n; near-square constructions.",
-      "mathContext": "Mathematical content: Perfect square primes give affine planes with blocks of size exactly √n; near-square constructions."
+      "startLine": 133,
+      "endLine": 143,
+      "summary": "Section header and orphan docstrings discussing affine planes for n=q²; contains no Lean declarations.",
+      "mathContext": "Commentary only; no Lean declarations in this range."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 168,
+      "startLine": 144,
       "endLine": 170,
-      "summary": "Combines all results into a summary theorem: unconditional bound, conditional negative answer, and prime gap correlation.",
-      "mathContext": "Verified: Combines all results into a summary theorem: unconditional bound, conditional negative answer, and prime gap correlation."
+      "summary": "Combines axioms via erdos_665_summary theorem.",
+      "mathContext": "Verified: erdos_665_summary theorem combines erdos_larson_bound, prime_power_planes_implies_unbounded, h_correlates_with_prime_gap."
     }
   ],
   "conclusion": {
