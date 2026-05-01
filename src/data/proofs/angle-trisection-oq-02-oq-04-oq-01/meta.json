@@ -170,14 +170,14 @@
       "FiniteDimensional"
     ],
     "namespace": "AngleTrisectionOQ02OQ04OQ01",
-    "lineCount": 334,
+    "lineCount": 364,
     "axiomCount": 0,
     "theoremCount": 12,
     "substantiveTheoremCount": 8,
     "duplicateTheorems": 0,
     "definitionCount": 1,
     "path": "Proofs/AngleTrisectionOQ02OQ04OQ01.lean",
-    "sorries": 3
+    "sorries": 2
   },
   "mainTheorems": [
     {
@@ -199,5 +199,5 @@
       "leanType": "{G : Type*} → [Group G] → [Fintype G] → IsPGroup 2 G → Fintype.card G > 1 → ∃ H : Subgroup G, H.index = 2"
     }
   ],
-  "sorries": 3
+  "sorries": 2
 }
