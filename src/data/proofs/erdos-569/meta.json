@@ -55,7 +55,7 @@
     "historicalContext": "**Erdős Problem #569: Odd Cycle Ramsey Numbers Linear in Edges**\n\nThis problem was posed by Erdős, Faudree, Rousseau, and Schelp in 1993 (referenced as [EFRS93]). It asks a fundamental question about Ramsey numbers: how does the two-color Ramsey number R(C_{2k+1}, H) scale with the number of edges m of a graph H that has no isolated vertices?\n\n**Historical Development:**\n- **Classical Ramsey theory** establishes that R(G₁, G₂) exists for all finite graphs G₁, G₂. The challenge is finding tight bounds.\n- **Triangle case (k=1):** R(C_3, H) ≤ 2m + 1 is known, giving c_1 ≤ 3. This follows from Turán-type arguments.\n- **EFRS93:** The general bound R(C_{2k+1}, H) ≤ c · k · m was established, showing linearity in m but with a k-dependent factor.\n- **Burr-Erdős (proved by Lee 2017):** R(G, G) ≤ c(d) · n for d-degenerate G on n vertices, a related but distinct result.\n\n**Current Status:**\nThe problem remains OPEN. No exact value of c_k is known for any k ≥ 1. The restriction to odd cycles is essential — even cycles have fundamentally different Ramsey behavior. The problem cannot be resolved by finite computation.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nFor k ≥ 1, determine the best possible constant c_k such that\n  R(C_{2k+1}, H) ≤ c_k · m\nfor any graph H on m edges without isolated vertices.\n\n**Known:**\n- EFRS93: R(C_{2k+1}, H) ≤ c · k · m for some absolute constant c\n- Triangle case: c_1 ≤ 3\n- Pentagon case: c_2 ≤ 5\n- Lower bound: c_k ≥ 2 for all k\n\nCannot be resolved by finite computation.",
     "text": "For k ≥ 1, determine the best constant c_k such that R(C_{2k+1}, H) ≤ c_k · m for any graph H on m edges without isolated vertices. The EFRS93 bound R ≤ c·k·m is known, but optimal c_k remains open.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Odd cycle length:** Define OddCycleLength k = 2k + 1, prove oddness and lower bound.\n\n2. **Graph properties:** Define NoIsolatedVertices and axiomatize the vertex-edge bound.\n\n3. **Ramsey number:** Axiomatize R_cycle_graph(k, m) as the Ramsey number R(C_{2k+1}, H).\n\n4. **Linear bound:** Define LinearRamseyBound as the target property R ≤ c · m.\n\n5. **Known results:** Axiomatize triangle case, pentagon case, EFRS93 bound, and lower bounds.\n\n6. **Summary:** Combine EFRS bound and triangle case into summary theorem.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Odd cycle length:** Define OddCycleLength k = 2k + 1, prove oddness and lower bound.\n\n2. **Graph properties:** Define NoIsolatedVertices; vertex-edge bound noted in docstring only.\n\n3. **Ramsey number:** Axiomatize R_cycle_graph(k, m) as the Ramsey number R(C_{2k+1}, H).\n\n4. **Linear bound:** Define LinearRamseyBound as the target property R ≤ c · m.\n\n5. **Known results:** Axiomatize triangle case (c_1 ≤ 3) and EFRS93 general bound; pentagon case (c_2 ≤ 5) and lower bounds are noted in docstrings only.\n\n6. **Summary:** Combine EFRS bound and triangle case into summary theorem.",
     "keyInsights": [
       "**Odd vs Even Parity**: Odd cycles C_{2k+1} have much nicer Ramsey behavior than even cycles. A graph contains no odd cycle iff it is bipartite — this structural characterization is key.",
       "**Edge Count vs Vertex Count**: Problem #569 measures complexity by edge count m. Since H has no isolated vertices, n ≤ 2m, so linear in edges implies linear in vertices.",
@@ -84,8 +84,8 @@
       "title": "Edge Count and Isolated Vertices",
       "startLine": 56,
       "endLine": 74,
-      "summary": "NoIsolatedVertices definition and vertex bound axiom",
-      "mathContext": "Formal definition: NoIsolatedVertices definition and vertex bound axiom"
+      "summary": "NoIsolatedVertices definition",
+      "mathContext": "Formal definition: NoIsolatedVertices definition"
     },
     {
       "id": "ramsey-number",
@@ -108,8 +108,8 @@
       "title": "Known Results",
       "startLine": 108,
       "endLine": 132,
-      "summary": "Triangle case, pentagon case axioms",
-      "mathContext": "Axiomatized: Triangle case, pentagon case axioms"
+      "summary": "Triangle case axiom (pentagon case noted in docstring only)",
+      "mathContext": "Axiomatized: Triangle case axiom; pentagon case in docstring only"
     },
     {
       "id": "general-bounds",
@@ -124,8 +124,8 @@
       "title": "Lower Bounds",
       "startLine": 152,
       "endLine": 167,
-      "summary": "Star lower bound and c_k ≥ 2",
-      "mathContext": "Star lower bound and c_k $\\geq$ 2"
+      "summary": "Lower bounds noted in docstrings only (c_k ≥ 2)",
+      "mathContext": "Docstring: lower bounds c_k $\\geq$ 2 (star graph construction)"
     }
   ],
   "conclusion": {
