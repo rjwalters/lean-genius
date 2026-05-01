@@ -7290,10 +7290,13 @@
       "result": "clean"
     },
     "erdos-516": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-agent",
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T16:56:28Z",
+      "result": "issues-found",
+      "issues": [
+        "Issue #14314: originalContributions claims 3 phantom Statement-of-theorem items (Wiman 1914, Erdős-Macintyre 1954, Kovári 1965) that exist only as doc-comments; numerical fields (axiomCount=1, sorries=1, lineCount=196) are correct"
+      ]
     },
     "erdos-517": {
       "agentId": "auditor-cycle-20-batch",
