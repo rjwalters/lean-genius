@@ -86,34 +86,41 @@
       "title": "f_k and F_k Functions",
       "summary": "ExactlyKPoints, AtLeastKPoints, f_k, F_k",
       "startLine": 53,
-      "endLine": 72
+      "endLine": 71
     },
     {
       "id": "orchard",
       "title": "The Orchard Problem (k=3)",
-      "summary": "orchardProblem, burr_grunbaum_sloane, k3_limit",
+      "summary": "orchardProblem, k3_limit",
       "startLine": 73,
-      "endLine": 95
+      "endLine": 87
     },
     {
       "id": "upper-bound",
       "title": "Trivial Upper Bound",
-      "summary": "trivial_upper_bound, limit_upper",
-      "startLine": 96,
-      "endLine": 108
+      "summary": "Section header and docstring commentary on trivial upper bound; contains no Lean declarations.",
+      "startLine": 89,
+      "endLine": 94
     },
     {
       "id": "conjecture",
       "title": "The General Conjecture",
       "summary": "limit_conjecture, k3_matches, k3_conjecture_true",
-      "startLine": 109,
-      "endLine": 122
+      "startLine": 95,
+      "endLine": 107
     },
     {
       "id": "configs",
       "title": "Optimal Configurations",
-      "summary": "optimal_configs_exist",
-      "startLine": 123,
+      "summary": "Section header and docstring discussing optimal configurations; contains no Lean declarations.",
+      "startLine": 109,
+      "endLine": 113
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_669_summary",
+      "startLine": 114,
       "endLine": 128
     }
   ],
