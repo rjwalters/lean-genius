@@ -45,7 +45,7 @@
       "ESS 1989 partial results axiomatization (2 and 3 colors)",
       "Khalfalah-Szemerédi main theorem axiomatization",
       "Polynomial generalization (PolyIsEvenSomewhere, HasMonochromaticPolyPair)",
-      "k-th power generalization (IsKthPower, kth_power_result)",
+      "k-th power generalization (IsKthPower, kthPowerGraph) — result stated only as Part VI docstring",
       "kthPowerGraph definition with square_is_second_power theorem",
       "erdos_439_summary combining main result with ESS partial results"
     ],
@@ -124,24 +124,24 @@
       "id": "kth-powers",
       "title": "k-th Power Generalization",
       "summary": "Defines `IsKthPower m k`, `SumIsKthPower x y k`, and `HasMonochromaticKthPowerPair`. documents in source comments `kth_power_result` (no Lean declaration exists) for $k \\geq 2$: any finite coloring has monochromatic pairs with $k$-th power sums. Follows from the polynomial case since $f(z) = z^k$ satisfies $2 \\mid f(0)$.",
-      "startLine": 137,
-      "endLine": 168,
+      "startLine": 133,
+      "endLine": 161,
       "mathContext": "Defines `IsKthPower m k`, `SumIsKthPower x y k`, and `HasMonochromaticKthPowerPair`. documents in source comments `kth_power_result` (no Lean declaration exists) for $k \\geq 2$: any finite coloring has monochromatic pairs with $k$-th power sums. Follows from the polynomial case since $f(z) = z^k$ satisfies $2 \\mid f(0)$."
     },
     {
       "id": "graph-perspective",
       "title": "Graph Perspective: Power Graphs",
       "summary": "Defines `kthPowerGraph k : SimpleGraph ℕ` and proves `square_is_second_power : squareGraph = kthPowerGraph 2` via extensionality and `pow_two`. This formally unifies the square and power perspectives into a single graph-theoretic framework.",
-      "startLine": 169,
-      "endLine": 193,
+      "startLine": 162,
+      "endLine": 186,
       "mathContext": "Defines `kthPowerGraph k : SimpleGraph ℕ` and proves `square_is_second_power : squareGraph = kthPowerGraph 2` via extensionality and `pow_two`. This formally unifies the square and power perspectives into a single graph-theoretic framework."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "Proves `erdos_439_summary` packaging three results: (1) Khalfalah-Szemerédi for all $k \\geq 1$, (2) ESS for 2 colors, (3) ESS for 3 colors. Uses `refine ⟨?_, ess_two_colors, ess_three_colors⟩` to split the conjunction.",
-      "startLine": 194,
-      "endLine": 218,
+      "startLine": 187,
+      "endLine": 219,
       "mathContext": "Proves `erdos_439_summary` packaging three results: (1) Khalfalah-Szemerédi for all $k \\geq 1$, (2) ESS for 2 colors, (3) ESS for 3 colors."
     }
   ],
