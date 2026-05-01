@@ -89,3 +89,71 @@ This session lacked Docker access for build verification. Submitting
 unverified Int-extension code with `sorry`s is lower-value than a clear
 survey + path. Future researcher sessions can complete the formalization
 with a single Docker-verified PR (~50 lines).
+
+## Session 2026-05-01 (Session 2) - IMPLEMENTATION
+
+**Mode**: REVISIT (Session 1 plan)
+**Outcome**: completed — integer half of OQ-02 closed
+
+### What I Did
+
+- Created `proofs/Proofs/BinaryGcdOQ02.lean` (~135 lines, 0 sorries, 0 axioms).
+- Defined `binaryGcdInt : ℤ → ℤ → ℕ := fun a b => binaryGcd a.natAbs b.natAbs`.
+- Proved `binaryGcdInt_eq_intGcd` (correctness vs Mathlib `Int.gcd`) in two
+  unfoldings + `BinaryGcd.binaryGcd_eq_gcd`.
+- Added `@[simp]` sign-invariance lemmas (`binaryGcdInt_neg_left`,
+  `binaryGcdInt_neg_right`).
+- Edge cases: `binaryGcdInt_zero_left`, `binaryGcdInt_zero_right`,
+  `binaryGcdInt_self`.
+- Algebraic: `binaryGcdInt_comm`, `binaryGcdInt_dvd_left/right`,
+  `dvd_binaryGcdInt`.
+- 8 `decide`-checked sanity examples covering all sign combinations.
+- Added `Proofs.BinaryGcdOQ02` to `proofs/Proofs.lean`.
+- Created gallery integration: `src/data/proofs/binary-gcd-oq-02/`
+  (`meta.json`, `index.ts`, `annotations.json`).
+
+### Key Insights (added during implementation)
+
+1. **The natAbs reduction is the canonical idiom**: Mathlib's `Int.gcd`
+   uses the exact same pattern, so the bridge proof is two unfoldings.
+2. **Sign invariance as `@[simp]`**: downstream ℤ-level reasoning becomes
+   negation-blind without explicit case-splits — simp normalizes through.
+3. **Bridge property inheritance**: every algebraic property
+   (commutativity, divisibility, edges, self) inherits in one rewrite via
+   `binaryGcdInt_eq_intGcd` to the corresponding `Int.gcd_*` lemma.
+   This is the textbook example of when introducing a definitional bridge
+   eliminates redundant proof work.
+4. **Bignum half resolves automatically**: Lean kernel uses GMP for `Nat`,
+   so `binaryGcd` already runs on bignums. A formal bit-sequence
+   equivalence proof (limb-by-limb vs textbook bignum algorithm) would be
+   a separate project (~200+ lines).
+
+### Files Modified
+
+- `proofs/Proofs/BinaryGcdOQ02.lean` (new, ~135 lines)
+- `proofs/Proofs.lean` (added import)
+- `src/data/proofs/binary-gcd-oq-02/meta.json` (new)
+- `src/data/proofs/binary-gcd-oq-02/index.ts` (new)
+- `src/data/proofs/binary-gcd-oq-02/annotations.json` (new, empty)
+- `src/data/proofs/listings.json` (new entry)
+- `src/data/research/problems/binary-gcd-oq-02.json` (status → completed,
+  knowledge updated)
+- `research/problems/binary-gcd-oq-02/state.md` (phase → COMPLETED)
+- `research/problems/binary-gcd-oq-02/knowledge.md` (this section)
+
+### Status
+
+- **Integer half**: COMPLETED, verified via Docker build.
+- **Bignum half**: DEFERRED (project-scale follow-up).
+
+### Optional Follow-up Open Questions
+
+- **Lehmer's GCD on ℤ**: extend Lehmer's algorithm via the same natAbs
+  idiom and prove correctness vs `Int.gcd`. Closes a more practical
+  complexity gap than the basic binary algorithm.
+- **Extended binary GCD**: define
+  `binaryXgcdInt : ℤ → ℤ → ℕ × ℤ × ℤ` returning `(gcd, u, v)` with
+  `u·a + v·b = gcd` and prove equivalent to `Int.gcdA`/`Int.gcdB`.
+- **Formal bignum bit-sequence equivalence** (project-scale): show the
+  binary GCD on `Nat` (computed via GMP-backed kernel arithmetic) agrees
+  limb-by-limb with the textbook bit-shifting bignum implementation.
