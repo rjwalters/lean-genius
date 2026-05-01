@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 13 (2026-04-27) confirmed file state (666 lines, 10 theorems, 0 axioms, 2 sorries — was tracked as 458 lines / 3 sorries; metadata stale since PR #12933 sorries 3→2). Synced leanFile.lineCount/sorryCount/defCount. No proof work this session: disk constraint (1.3GB free) blocks Docker, and the b=1 jdt_weight_sum proof needs Docker validation. 2 sorries remain (b=1 case at line 421 with documented recipe; k≥3 case at line 664 blocked on algebraic LGV).",
+    "progressSummary": "Session 14 (2026-05-01) confirmed Mathlib API for the b=1 jdt_weight_sum recipe: hsymm_zero (Symmetric/Defs.lean:318), Sym.cons_erase (Sym/Basic.lean:219), Sym.erase_cons_head (:223), Sym.oneEquiv (:477), Sym.uniqueZero (:261), Multiset.sort_cons (Multiset/Sort.lean:69) all present and applicable. Confirmed lineCount drift 666→694 (recipe docstring grew via PR #13365). No proof work this session — local Docker daemon hung (server unresponsive); attempt deferred to next session with fresh Docker. Sorry count remains 2.",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -101,7 +101,9 @@
       "Session 10 (2026-04-27, survey only): both remaining sorries (jdt_weight_sum, jacobi_trudi_ssyt_eq k>=3) are correctly stated as of session 9. No fast fixes available; each is a focused 100-300 line proof body. Released for an agent with budget for sustained work.",
       "Session 11 (2026-04-27): documented concrete b=1 recipe using Sym.oneEquiv (alpha ≃ Sym alpha 1, Mathlib.Data.Sym.Basic:477), Sym.cons/cons_erase/erase_cons_head, and Multiset.sort_cons. Recipe lives in jdt_weight_sum b≥1 branch comment as actionable Lean plan. Next session can implement jdt_weight_sum_b_one directly without re-discovering API.",
       "Sym.oneEquiv is @[simps apply], so oneEquiv_apply rewrites oneEquiv a to ⟨{a}, _⟩ definitionally — cleanest way to handle Sym (Fin n) 1 in proofs",
-      "Session 13 (2026-04-27): metadata leanFile.sorryCount was stale (3) since PR #12933 reduced to 2 — no auto-sync runs. lineCount also stale (458 vs 666). Synced. No proof work — disk constraint (1.3GB free, no Docker) makes b=1 implementation risky without local validation."
+      "Session 13 (2026-04-27): metadata leanFile.sorryCount was stale (3) since PR #12933 reduced to 2 — no auto-sync runs. lineCount also stale (458 vs 666). Synced. No proof work — disk constraint (1.3GB free, no Docker) makes b=1 implementation risky without local validation.",
+      "Mathlib has 'hsymm_zero : hsymm σ R 0 = 1' as a simp lemma (Symmetric/Defs.lean:318), so the b=1 jdt_weight_sum RHS 'hsymm (a+1) * hsymm 0' simplifies to hsymm (a+1) via 'rw [hsymm_zero, mul_one]'. Eliminates one open question from the Session 13 recipe.",
+      "Sym.uniqueZero gives Unique (Sym α 0) (Mathlib Sym/Basic.lean:261), so reducing RHS via '← sum_all_sym_pairs n (a+1) 0' is equivalent to a Sym (Fin n) (a+1) sum after collapsing the trivial Sym (Fin n) 0 factor — both routes (hsymm_zero rewrite, or sum_all_sym_pairs reduction with Unique handling) are open."
     ],
     "mathlibGaps": [
       "No Mathlib SchurPolynomial definition — we provide one via Jacobi-Trudi formula",
@@ -109,6 +111,8 @@
       "RSK correspondence not formalized in Mathlib — needed for jacobiTrudi_lgv_proof"
     ],
     "nextSteps": [
+      "Implement jdt_weight_sum_b_one helper using the simp-lemma route: by rw [hsymm_zero, mul_one]; then build Equiv {(P,Q) : Sym n a × Sym n 1 // ¬ColStrictSym a 1 P Q} ≃ Sym (Fin n) (a+1) directly. Forward (P,Q,h) ↦ (Sym.oneEquiv.symm Q) ::ₛ P; inverse P' ↦ ((P'.erase q', oneEquiv q'), proof) where q' := head of P'.sort. Needs hsymm definition unfolded for RHS sum, then Fintype.sum_equiv.",
+      "Verify Docker functionality at session start before attempting proof — Session 14 hit unresponsive daemon (timeout on 'docker info'), wasting cycles. Disk had 138GB free so this was Docker Desktop infrastructure, not disk.",
       "Implement jdt_weight_sum_b_one (~60-90 lines) using documented recipe: bijection {(P, q): q ≤ P.sort[0]} ≃ Sym n (a+1) via cons/erase, with weight preserved by prod_cons + map_cons",
       "Refactor jdt_weight_sum to dispatch on b ∈ {0, 1, ≥2} cases, eliminating the b=1 sorry",
       "Tackle b≥2 JDT seam construction (~150 lines) — the genuine frontier",
@@ -146,7 +150,7 @@
     "mathlib": []
   },
   "started": "2026-04-23T11:05:51.190Z",
-  "lastUpdate": "2026-04-27T22:34:00.000Z",
+  "lastUpdate": "2026-05-01T13:30:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/BallotProblem.lean",
@@ -305,7 +309,7 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
       "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 666,
+      "lineCount": 694,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 6,
