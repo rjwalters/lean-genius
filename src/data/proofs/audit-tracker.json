@@ -6958,13 +6958,12 @@
       "result": "clean"
     },
     "erdos-47": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-01T20:20:16Z",
-      "result": "issues-found",
-      "issues": [
-        "Phantom-axiom narrative: originalContributions lists bloom_quantitative, liu_sawhney_improvement, pomerance_lower_bound as axiomatized but only docstrings exist (no axiom decls). Issue #14373, PR #14375 in flight."
-      ]
+      "agentId": "auditor-agent-2026-05-01",
+      "auditCount": 4,
+      "lastAudited": "2026-05-01T20:29:45Z",
+      "result": "clean",
+      "issues": [],
+      "notes": "Re-audit after PR #14375 merged. Lean: 1 axiom (bloom_theorem L100), 0 sorries, 1 theorem (erdos_47_summary L130), 6 defs. meta originalContributions/proofStrategy correctly distinguish axiom from docstrings; section line ranges (90-107, 108-114, 115-122, 123-132) match actual file structure."
     },
     "erdos-470": {
       "agentId": "auditor-cycle-20-batch",
