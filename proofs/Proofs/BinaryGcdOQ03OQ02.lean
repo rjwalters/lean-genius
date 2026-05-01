@@ -324,6 +324,97 @@ theorem lehmerCofactors_id_apply_eq (fuel ahat bhat : ℕ) :
   · simp [CofactorMatrix.id]
   · simp [CofactorMatrix.id]
 
+/-! ### Residue monotonicity (Step 2 toward size reduction)
+
+The Lehmer-step machine never grows the residues: each successful
+inner step sets `ahat' = bhat` and `bhat' = ahat % bhat`, so the
+maximum of the pair is non-increasing. Composed over multiple
+steps, this gives the bound `max ahat_final bhat_final ≤
+max ahat_initial bhat_initial` for the iterated `lehmerCofactors`.
+
+Combined with the matrix-vector invariant from PART IV, this
+is the residue-bound half of the size-reduction proof: applying
+the accumulated matrix to the input pair yields a Euclidean-
+residue pair whose max is bounded by the input max. The
+remaining piece is the cofactor-entry bound (Cramer inversion
+applied to the invariant), which is the focus of follow-up
+sessions. -/
+
+/-- One successful Lehmer inner step strictly decreases `bhat` and
+    sets `ahat' = bhat`. -/
+theorem lehmerInnerStep_residue_le {ahat bhat : ℕ} {M : CofactorMatrix}
+    {ahat' bhat' : ℕ} {M' : CofactorMatrix}
+    (h : lehmerInnerStep ahat bhat M = some (ahat', bhat', M')) :
+    bhat' < bhat ∧ ahat' = bhat := by
+  simp [lehmerInnerStep] at h
+  split at h <;> simp_all
+  split at h <;> simp_all
+  -- Surviving case: bhat ≠ 0 and ahat % bhat ≠ 0; substitution gives
+  -- ahat' = bhat, bhat' = ahat % bhat, M' = explicit matrix.
+  obtain ⟨rfl, rfl, _⟩ := h
+  refine ⟨?_, rfl⟩
+  -- Goal: ahat % bhat < bhat. omega uses bhat ≠ 0 from context.
+  omega
+
+/-- One successful Lehmer inner step does not increase the maximum
+    of the pair `(ahat, bhat)`. -/
+theorem lehmerInnerStep_max_le {ahat bhat : ℕ} {M : CofactorMatrix}
+    {ahat' bhat' : ℕ} {M' : CofactorMatrix}
+    (h : lehmerInnerStep ahat bhat M = some (ahat', bhat', M')) :
+    max ahat' bhat' ≤ max ahat bhat := by
+  obtain ⟨hb_lt, ha_eq⟩ := lehmerInnerStep_residue_le h
+  -- ahat' = bhat ≤ max ahat bhat; bhat' < bhat ≤ max ahat bhat.
+  have h1 : ahat' ≤ max ahat bhat := by rw [ha_eq]; exact le_max_right _ _
+  have h2 : bhat' ≤ max ahat bhat :=
+    le_trans (le_of_lt hb_lt) (le_max_right _ _)
+  exact max_le h1 h2
+
+/-- Multi-step matrix-vector invariant for `lehmerCofactors` with the
+    additional bound that the final residues do not exceed the initial
+    `(ahat, bhat)` in maximum. Strengthens `lehmerCofactors_invariant`. -/
+theorem lehmerCofactors_invariant_le {a₀ b₀ : ℤ} (fuel ahat bhat : ℕ)
+    (M : CofactorMatrix)
+    (h_inv₁ : a₀ * M.α + b₀ * M.γ = (ahat : ℤ))
+    (h_inv₂ : a₀ * M.β + b₀ * M.δ = (bhat : ℤ)) :
+    ∃ ahat' bhat' : ℕ,
+      a₀ * (lehmerCofactors fuel ahat bhat M).α
+        + b₀ * (lehmerCofactors fuel ahat bhat M).γ = (ahat' : ℤ) ∧
+      a₀ * (lehmerCofactors fuel ahat bhat M).β
+        + b₀ * (lehmerCofactors fuel ahat bhat M).δ = (bhat' : ℤ) ∧
+      max ahat' bhat' ≤ max ahat bhat := by
+  induction fuel generalizing ahat bhat M with
+  | zero => exact ⟨ahat, bhat, h_inv₁, h_inv₂, le_refl _⟩
+  | succ n ih =>
+    simp only [lehmerCofactors]
+    match hstep : lehmerInnerStep ahat bhat M with
+    | none => exact ⟨ahat, bhat, h_inv₁, h_inv₂, le_refl _⟩
+    | some (ahat'', bhat'', M'') =>
+      have ⟨h₁', h₂'⟩ := lehmerInnerStep_invariant h_inv₁ h_inv₂ hstep
+      have hbound := lehmerInnerStep_max_le hstep
+      have ⟨ahat', bhat', hα, hβ, hmax⟩ := ih ahat'' bhat'' M'' h₁' h₂'
+      exact ⟨ahat', bhat', hα, hβ, le_trans hmax hbound⟩
+
+/-- Specialisation of `lehmerCofactors_invariant_le` to `M = id` and
+    the "ghost original pair" being the actual input pair `(ahat, bhat)`.
+
+    Combined statement: row-applying the accumulated cofactor matrix to
+    `(ahat, bhat)` yields a residue pair `(ahat', bhat')` with
+    `max ahat' bhat' ≤ max ahat bhat`. This is the residue-side bound
+    used in the size-reduction argument; together with an entry-bound
+    on the cofactor matrix it gives the bitsize halving. -/
+theorem lehmerCofactors_id_apply_le (fuel ahat bhat : ℕ) :
+    ∃ ahat' bhat' : ℕ,
+      (ahat : ℤ) * (lehmerCofactors fuel ahat bhat CofactorMatrix.id).α
+        + (bhat : ℤ) * (lehmerCofactors fuel ahat bhat CofactorMatrix.id).γ
+            = (ahat' : ℤ) ∧
+      (ahat : ℤ) * (lehmerCofactors fuel ahat bhat CofactorMatrix.id).β
+        + (bhat : ℤ) * (lehmerCofactors fuel ahat bhat CofactorMatrix.id).δ
+            = (bhat' : ℤ) ∧
+      max ahat' bhat' ≤ max ahat bhat := by
+  apply lehmerCofactors_invariant_le
+  · simp [CofactorMatrix.id]
+  · simp [CofactorMatrix.id]
+
 -- ═══════════════════════════════════════════════════════════════
 -- PART V: SIZE REDUCTION (the genuinely new content)
 -- ═══════════════════════════════════════════════════════════════
