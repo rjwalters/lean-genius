@@ -6631,9 +6631,12 @@
     },
     "erdos-423": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T21:56:17Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom axioms consSeq_is_consecutive_sum/consSeq_minimal in section consecutive-sum-predicate (only docstrings); section line ranges drift across Parts IV-XII (#14412)"
+      ]
     },
     "erdos-424": {
       "agentId": "auditor-cycle-20-batch",
