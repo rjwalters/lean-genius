@@ -49,10 +49,8 @@
       "hasLargeChromaticNumber: chromatic number ≥ κ predicate",
       "hasCycleOfLength: cycle of specific length",
       "containsAllLargeOddCycles: eventual odd cycle containment",
-      "erdos_hajnal_aleph2: partial result for χ ≥ ℵ₂",
       "erdos_hajnal_shelah: main theorem for χ ≥ ℵ₁",
-      "aleph1_is_optimal: threshold optimality",
-      "thomassen_1983: strengthening with cycles through edges"
+      "aleph1_is_optimal: threshold optimality"
     ],
     "axiomCount": 3,
     "lineCount": 245,
@@ -62,7 +60,7 @@
     "historicalContext": "This problem is part of the Erdős-Hajnal program studying infinite chromatic numbers, which began in the 1960s. The central question: what substructures must appear in graphs with uncountable chromatic number?\n\nThe **De Bruijn-Erdős theorem** (1951) provides the foundational result: a graph has finite chromatic number $k$ if and only if every finite subgraph has chromatic number $\\leq k$. For infinite chromatic numbers, the landscape is richer. Erdős and Hajnal first proved that graphs with $\\chi(G) \\geq \\aleph_2$ contain all sufficiently large odd cycles. The key difficulty in improving this to $\\aleph_1$ is that $\\aleph_1$ is the first uncountable cardinal, so one cannot use simple counting arguments that work for $\\aleph_2$.\n\nErdős, Hajnal, and Saharon Shelah proved the full result for $\\chi(G) \\geq \\aleph_1$ in their 1974 paper 'On some general properties of chromatic number' (Colloquia Math. Soc. János Bolyai, Topics in Topology). Shelah's contribution was crucial: his set-theoretic techniques (partition calculus and the Erdős-Rado theorem) bridged the gap between $\\aleph_2$ and $\\aleph_1$.\n\nCarsten Thomassen (1983) later strengthened the result: not only do such graphs contain all large odd cycles, but the cycles can be found passing through any specified edge. The threshold $\\aleph_1$ is optimal — Erdős constructed graphs with chromatic number $\\aleph_0$ that avoid arbitrarily long odd cycles. The $\\$500$ prize Problem #593 asks the analogous question for 3-uniform hypergraphs and remains open.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nDoes every graph $G$ with chromatic number $\\geq \\aleph_1$ contain all sufficiently large odd cycles?\n\n**Answer:** YES\n\n**More precisely:** For any graph $G$ with $\\chi(G) \\geq \\aleph_1$, there exists $N_0$ such that for all odd $n \\geq N_0$, $G$ contains a cycle of length $n$.\n\n**Note:** Erdős and Hajnal first proved this for $\\chi(G) \\geq \\aleph_2$. The improvement to $\\aleph_1$ is the main content of this problem.",
     "text": "Does every graph with chromatic number ≥ ℵ₁ contain all sufficiently large odd cycles? YES - proved by Erdős, Hajnal, and Shelah (1974).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Cardinals:** Define ℵ₀, ℵ₁, ℵ₂ using Mathlib's Cardinal.aleph\n\n2. **Chromatic Number:** Define colorability and chromatic number for infinite graphs\n\n3. **Cycles:** Define hasCycleOfLength and containsAllLargeOddCycles\n\n4. **Main Results:**\n   - erdos_hajnal_aleph2: partial result\n   - erdos_hajnal_shelah: full theorem\n   - aleph1_is_optimal: threshold optimality\n\n5. **Extensions:** Thomassen's strengthening about cycles through edges",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Cardinals:** Define ℵ₀, ℵ₁, ℵ₂ using Mathlib's Cardinal.aleph\n\n2. **Chromatic Number:** Define colorability and chromatic number for infinite graphs\n\n3. **Cycles:** Define hasCycleOfLength and containsAllLargeOddCycles\n\n4. **Main Results:**\n   - erdos_hajnal_shelah: full theorem (Erdős-Hajnal partial result for ℵ₂ referenced in docstring only — no Lean declaration)\n   - aleph1_is_optimal: threshold optimality\n\n5. **Extensions:** Thomassen's strengthening about cycles through edges",
     "keyInsights": [
       "**Uncountable Threshold:** ℵ₁ (first uncountable cardinal) is the critical threshold",
       "**Optimality:** ℵ₀ is insufficient - counterexamples exist",
@@ -107,38 +105,38 @@
       "title": "Main Results",
       "summary": "erdos_hajnal_shelah axiom, erdos_594 theorem",
       "startLine": 109,
-      "endLine": 139,
+      "endLine": 136,
       "mathContext": "Verified: erdos_hajnal_shelah axiom, erdos_594 theorem"
     },
     {
       "id": "optimality",
       "title": "Threshold Optimality",
       "summary": "countable_chromatic_insufficient, aleph1_is_optimal",
-      "startLine": 140,
-      "endLine": 164,
+      "startLine": 137,
+      "endLine": 161,
       "mathContext": "Mathematical content: countable_chromatic_insufficient, aleph1_is_optimal"
     },
     {
       "id": "related",
       "title": "Related Properties",
       "summary": "Bipartite containment, triangle-free graphs",
-      "startLine": 165,
-      "endLine": 190,
+      "startLine": 162,
+      "endLine": 183,
       "mathContext": "Mathematical content: Bipartite containment, triangle-free graphs"
     },
     {
       "id": "thomassen",
       "title": "Thomassen's Strengthening",
-      "summary": "hasCycleThroughEdge, thomassen_1983",
-      "startLine": 191,
-      "endLine": 211,
-      "mathContext": "Mathematical content: hasCycleThroughEdge, thomassen_1983"
+      "summary": "hasCycleThroughEdge def; Thomassen (1983) result referenced in docstring only — no thomassen_1983 axiom declared",
+      "startLine": 184,
+      "endLine": 201,
+      "mathContext": "Mathematical content: hasCycleThroughEdge def; Thomassen (1983) result in docstring only"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_594_summary theorem combining main results",
-      "startLine": 238,
+      "startLine": 213,
       "endLine": 245,
       "mathContext": "Verified: erdos_594_summary theorem combining main results"
     }
