@@ -132,32 +132,32 @@
     {
       "id": "upper-bound",
       "title": "Upper Bound",
-      "summary": "f(n) ≤ exp(C√n) via Szemerédi-Trotter.",
+      "summary": "upper_bound axiom (L166): f(n) ≤ exp(C√n) via Szemerédi-Trotter. Lines 163–184 only.",
       "startLine": 163,
-      "endLine": 191,
+      "endLine": 184,
       "mathContext": "Szemerédi-Trotter limits the number of $k$-rich lines, which bounds the possible sequence patterns to $\\exp(O(\\sqrt{n}))$."
     },
     {
       "id": "main-result",
       "title": "The Main Result",
-      "summary": "tight_bounds combining lower and upper, erdos_733 main theorem.",
-      "startLine": 192,
+      "summary": "tight_bounds theorem (L185) combining lower and upper bounds. erdos_733 main theorem (L199). limitConstant def (L222).",
+      "startLine": 185,
       "endLine": 228,
       "mathContext": "$\\exp(c\\sqrt{n}) \\leq f(n) \\leq \\exp(C\\sqrt{n})$, i.e., $f(n) = \\exp(\\Theta(\\sqrt{n}))$."
     },
     {
       "id": "limit-question",
       "title": "The Limit Question",
-      "summary": "limitConstant: does lim log(f(n))/√n exist? What is its value?",
+      "summary": "limit_bounds theorem (L232): lim log(f(n))/√n ∈ [c, C]. erdos_733_summary (L252) is in the summary section.",
       "startLine": 229,
-      "endLine": 254,
+      "endLine": 251,
       "mathContext": "$\\lim_{n \\to \\infty} \\frac{\\log f(n)}{\\sqrt{n}} \\in [c, C]$ if the limit exists. An interesting follow-up posed by Erdős."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Complete solution summary and erdos_733_answer theorem.",
-      "startLine": 255,
+      "summary": "erdos_733_summary theorem (L252) and erdos_733_answer theorem (L267): complete solution summary.",
+      "startLine": 252,
       "endLine": 274,
       "mathContext": "Erdős #733 fully resolved: $f(n) = \\exp(\\Theta(\\sqrt{n}))$ by Szemerédi-Trotter (1983)."
     }
