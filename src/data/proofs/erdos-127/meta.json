@@ -28,7 +28,7 @@
     "historicalContext": "Edwards (1973) proved a foundational result in extremal graph theory: every graph with $m$ edges contains a bipartite subgraph with at least $m/2 + (\\sqrt{8m+1} - 1)/8$ edges. His proof uses a simple but elegant greedy algorithm — assign each vertex to the side that maximizes the cut. The bound beats the trivial $m/2$ (from random partition) by $\\Theta(\\sqrt{m})$, and is tight for complete graphs $K_n$.\n\nErdős, Kohayakawa, and Gyárfás then asked a subtle question: is the Edwards bound tight for *all* values of $m$, or only at the triangular numbers $\\binom{n}{2}$? Formally, if $f(m)$ denotes the excess above Edwards' bound, is $f$ bounded or can it grow without limit?\n\nAlon (1996) resolved this by proving $f(n^2/2) \\ge c\\sqrt{n}$, showing that midway between consecutive triangular numbers, Edwards' bound can be substantially improved. He also proved $f(m) \\le C \\cdot m^{1/4}$, establishing that the excess grows at most like $m^{1/4}$. At $m = n^2/2$, both bounds give $\\Theta(\\sqrt{n})$, so the result is essentially sharp.",
     "problemStatement": "Let $f(m)$ be the maximum value such that every graph with $m$ edges contains a bipartite subgraph with at least $m/2 + (\\sqrt{8m+1} - 1)/8 + f(m)$ edges. Is there an infinite sequence $m_i$ with $f(m_i) \\to \\infty$?",
     "text": "Let f(m) be the excess beyond Edwards' bound for bipartite subgraphs of m-edge graphs. Is there a sequence mᵢ with f(mᵢ) → ∞? SOLVED: YES (Alon 1996).",
-    "proofStrategy": "The formalization axiomatizes `maxBipartiteEdges` and `excessF`, defines `edwardsBound` as the explicit formula $m/2 + (\\sqrt{8m+1}-1)/8$, and states the conjecture `ErdosProblem127` using `StrictMono` and `Filter.Tendsto`. Alon's lower bound $f(n^2/2) \\ge c\\sqrt{n}$, his upper bound $f(m) \\le C \\cdot m^{1/4}$, and the complete graph tightness $f(\\binom{n}{2}) = 0$ are all axiomatized. Structural properties (bounded variation, proximity to complete graph numbers) are included.",
+    "proofStrategy": "The formalization axiomatizes `excessF` (the excess function $f(m)$), defines `edwardsBound` as the explicit formula $m/2 + (\\sqrt{8m+1}-1)/8$, and states `ErdosProblem127` using `StrictMono` and `Filter.Tendsto`. `OptimalConstantQuestion` captures the open question on the sharp constant in Alon's $f(m) \\le C \\cdot m^{1/4}$ bound. The complete graph tightness $f(\\binom{n}{2}) = 0$ and structural properties are documented in source comments.",
     "keyInsights": [
       "Edwards' bound $m/2 + \\Theta(\\sqrt{m})$ is tight at triangular numbers $\\binom{n}{2}$ (complete graphs), where the maximum cut of $K_n$ is exactly $\\lfloor n^2/4 \\rfloor$",
       "Alon's $f(n^2/2) \\ge c\\sqrt{n}$ shows that midway between triangular numbers, graphs admit significantly larger cuts than Edwards predicts",
@@ -55,7 +55,7 @@
       "title": "Bipartite Subgraph Size",
       "startLine": 24,
       "endLine": 35,
-      "summary": "Axiomatizes `maxBipartiteEdges` and defines the Edwards bound formula."
+      "summary": "Defines `edwardsBound` as the explicit formula $m/2 + (\\sqrt{8m+1}-1)/8$."
     },
     {
       "id": "excess-function",
