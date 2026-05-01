@@ -52,7 +52,7 @@ namespace HGcd
 theorem cofactor_mul_apply (M N : CofactorMatrix) (a b : ℤ) :
     (M.mul N).apply a b =
       M.apply (N.apply a b).1 (N.apply a b).2 := by
-  simp [CofactorMatrix.mul, CofactorMatrix.apply]
+  simp only [CofactorMatrix.mul, CofactorMatrix.apply, Prod.mk.injEq]
   refine ⟨?_, ?_⟩ <;> ring
 
 -- ═══════════════════════════════════════════════════════════════
@@ -63,6 +63,9 @@ theorem cofactor_mul_apply (M N : CofactorMatrix) (a b : ℤ) :
     full Lehmer cofactor accumulation (which itself bottoms out at
     a Euclidean iteration on small approximations). -/
 def hgcdThreshold : ℕ := 64
+
+/-- The half-bit shift used by HGCD recursion: ⌈bits(max a b) / 2⌉. -/
+def hgcdShift (a b : ℕ) : ℕ := (Nat.log 2 (max a b) + 1) / 2
 
 /-- Schönhage's recursive HGCD, fuel-indexed for totality.
 
@@ -78,7 +81,7 @@ def hgcdThreshold : ℕ := 64
           fall back to lehmerCofactors (single-precision
           Euclidean acceleration)
         else:
-          let s = ⌈bits(max a b) / 2⌉
+          s = ⌈bits(max a b) / 2⌉
           â, b̂ = top-half-bit truncations a >> s, b >> s
           M₁ = hgcdMatrix(â, b̂)              -- top-half subproblem
           (u, v) = M₁ applied to full (a, b)   -- full-precision reduce
@@ -87,25 +90,56 @@ def hgcdThreshold : ℕ := 64
 
     Termination by `fuel`: the recursive calls always pass `fuel`
     decreased by one. With `fuel = a + b + 1` (or any large enough
-    bound), the algorithm always reaches its natural base. -/
+    bound), the algorithm always reaches its natural base.
+
+    The body is structured to avoid `let`-bindings in the recursive
+    branch: the same `M₁ := hgcdMatrix fuel (a >> s) (b >> s)` term
+    appears explicitly twice. This is intentional — it keeps the
+    equation-compiler-generated reduction lemma simple, so proofs
+    can `rw [hgcdMatrix]` without needing to unfold any lets. -/
 def hgcdMatrix : ℕ → ℕ → ℕ → CofactorMatrix
   | 0, _, _ => CofactorMatrix.id
   | fuel + 1, a, b =>
     if max a b < hgcdThreshold then
       lehmerCofactors hgcdThreshold a b CofactorMatrix.id
     else
-      let n := Nat.log 2 (max a b) + 1
-      let s := n / 2
-      let ahat := a / 2 ^ s
-      let bhat := b / 2 ^ s
-      let M₁ := hgcdMatrix fuel ahat bhat
-      let uv := M₁.apply (a : ℤ) (b : ℤ)
-      let M₂ := hgcdMatrix fuel uv.1.natAbs uv.2.natAbs
-      M₂.mul M₁
+      (hgcdMatrix fuel
+        ((hgcdMatrix fuel (a / 2 ^ hgcdShift a b)
+                          (b / 2 ^ hgcdShift a b)).apply
+          (a : ℤ) (b : ℤ)).1.natAbs
+        ((hgcdMatrix fuel (a / 2 ^ hgcdShift a b)
+                          (b / 2 ^ hgcdShift a b)).apply
+          (a : ℤ) (b : ℤ)).2.natAbs).mul
+      (hgcdMatrix fuel (a / 2 ^ hgcdShift a b)
+                       (b / 2 ^ hgcdShift a b))
 
 /-- Top-level entry point: HGCD with sufficient fuel to terminate. -/
 def hgcdMatrixOf (a b : ℕ) : CofactorMatrix :=
   hgcdMatrix (a + b + 1) a b
+
+/-- Reduction equation for `hgcdMatrix` at `fuel + 1`.
+
+    Stated explicitly so proofs can `rw` instead of `unfold`/`simp`,
+    avoiding fragility with the equation compiler's auto-generated
+    lemmas. -/
+private theorem hgcdMatrix_succ (f a b : ℕ) :
+    hgcdMatrix (f + 1) a b =
+      (if max a b < hgcdThreshold then
+        lehmerCofactors hgcdThreshold a b CofactorMatrix.id
+      else
+        (hgcdMatrix f
+          ((hgcdMatrix f (a / 2 ^ hgcdShift a b)
+                         (b / 2 ^ hgcdShift a b)).apply
+            (a : ℤ) (b : ℤ)).1.natAbs
+          ((hgcdMatrix f (a / 2 ^ hgcdShift a b)
+                         (b / 2 ^ hgcdShift a b)).apply
+            (a : ℤ) (b : ℤ)).2.natAbs).mul
+        (hgcdMatrix f (a / 2 ^ hgcdShift a b)
+                      (b / 2 ^ hgcdShift a b))) := rfl
+
+/-- Reduction equation for `hgcdMatrix` at fuel 0. -/
+private theorem hgcdMatrix_zero (a b : ℕ) :
+    hgcdMatrix 0 a b = CofactorMatrix.id := rfl
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART III: DETERMINANT IS ±1 (the operational invariant)
@@ -122,25 +156,23 @@ theorem hgcdMatrix_det_unit (fuel a b : ℕ) :
     (hgcdMatrix fuel a b).det = 1 ∨ (hgcdMatrix fuel a b).det = -1 := by
   induction fuel generalizing a b with
   | zero =>
-    simp [hgcdMatrix, CofactorMatrix.det_id]
+    rw [hgcdMatrix_zero]
+    exact Or.inl CofactorMatrix.det_id
   | succ f ih =>
-    rw [hgcdMatrix]
+    rw [hgcdMatrix_succ]
     by_cases hsmall : max a b < hgcdThreshold
-    · simp [hsmall]
+    · rw [if_pos hsmall]
       exact lehmerCofactors_det_unit hgcdThreshold a b CofactorMatrix.id
         (Or.inl CofactorMatrix.det_id)
-    · simp [hsmall]
-      -- Recursive case: result is M₂.mul M₁
-      set s := (Nat.log 2 (max a b) + 1) / 2 with hs
-      set ahat := a / 2 ^ s with hahat
-      set bhat := b / 2 ^ s with hbhat
-      set M₁ := hgcdMatrix f ahat bhat with hM1
-      set uv := M₁.apply (a : ℤ) (b : ℤ) with huv
-      set M₂ := hgcdMatrix f uv.1.natAbs uv.2.natAbs with hM2
-      -- (M₂.mul M₁).det = M₂.det * M₁.det = ±1 * ±1 = ±1
-      rw [CofactorMatrix.det_mul]
-      have h1 : M₁.det = 1 ∨ M₁.det = -1 := ih ahat bhat
-      have h2 : M₂.det = 1 ∨ M₂.det = -1 := ih uv.1.natAbs uv.2.natAbs
+    · rw [if_neg hsmall, CofactorMatrix.det_mul]
+      -- Recursive case: result is `(hgcdMatrix f _ _).mul (hgcdMatrix f _ _)`.
+      -- Each factor has det ±1 by IH; product of ±1 with ±1 is ±1.
+      have h1 := ih (a / 2 ^ hgcdShift a b) (b / 2 ^ hgcdShift a b)
+      have h2 := ih
+        ((hgcdMatrix f (a / 2 ^ hgcdShift a b)
+                       (b / 2 ^ hgcdShift a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+        ((hgcdMatrix f (a / 2 ^ hgcdShift a b)
+                       (b / 2 ^ hgcdShift a b)).apply (a : ℤ) (b : ℤ)).2.natAbs
       rcases h1 with h1 | h1 <;> rcases h2 with h2 | h2 <;>
         rw [h1, h2] <;> norm_num
 
@@ -163,16 +195,16 @@ theorem hgcdMatrixOf_det_unit (a b : ℕ) :
     GCD algorithm that performs Θ(log n) Lehmer-style reductions
     instead of Θ(n) Euclidean steps. -/
 theorem hgcdMatrix_preserves_gcd (fuel a b : ℕ) :
-    let M := hgcdMatrix fuel a b
-    Int.gcd (M.α * (a : ℤ) + M.β * (b : ℤ))
-            (M.γ * (a : ℤ) + M.δ * (b : ℤ)) = Nat.gcd a b := by
-  exact cofactor_apply_gcd (hgcdMatrix_det_unit fuel a b)
+    Int.gcd ((hgcdMatrix fuel a b).α * (a : ℤ) + (hgcdMatrix fuel a b).β * (b : ℤ))
+            ((hgcdMatrix fuel a b).γ * (a : ℤ) + (hgcdMatrix fuel a b).δ * (b : ℤ))
+      = Nat.gcd a b :=
+  cofactor_apply_gcd (hgcdMatrix_det_unit fuel a b)
 
 /-- Top-level HGCD preserves GCD. -/
 theorem hgcdMatrixOf_preserves_gcd (a b : ℕ) :
-    let M := hgcdMatrixOf a b
-    Int.gcd (M.α * (a : ℤ) + M.β * (b : ℤ))
-            (M.γ * (a : ℤ) + M.δ * (b : ℤ)) = Nat.gcd a b :=
+    Int.gcd ((hgcdMatrixOf a b).α * (a : ℤ) + (hgcdMatrixOf a b).β * (b : ℤ))
+            ((hgcdMatrixOf a b).γ * (a : ℤ) + (hgcdMatrixOf a b).δ * (b : ℤ))
+      = Nat.gcd a b :=
   hgcdMatrix_preserves_gcd _ a b
 
 -- ═══════════════════════════════════════════════════════════════
@@ -183,13 +215,10 @@ theorem hgcdMatrixOf_preserves_gcd (a b : ℕ) :
 theorem hgcdMatrix_small (fuel a b : ℕ) (h : max a b < hgcdThreshold) :
     hgcdMatrix (fuel + 1) a b =
       lehmerCofactors hgcdThreshold a b CofactorMatrix.id := by
-  rw [hgcdMatrix]
-  simp [h]
+  rw [hgcdMatrix_succ, if_pos h]
 
 /-- HGCD of (0, 0) is the identity matrix (only the base case fires). -/
-example : hgcdMatrix 5 0 0 = CofactorMatrix.id := by
-  rw [hgcdMatrix]
-  simp [hgcdThreshold, lehmerCofactors, lehmerInnerStep]
+example : hgcdMatrix 5 0 0 = CofactorMatrix.id := by native_decide
 
 -- Verify det ±1 on small concrete inputs
 example : (hgcdMatrixOf 89 55).det = 1 ∨ (hgcdMatrixOf 89 55).det = -1 :=
