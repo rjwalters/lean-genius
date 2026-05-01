@@ -7642,10 +7642,13 @@
       "result": "clean"
     },
     "erdos-569": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-session-1777632838",
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T10:59:06Z",
+      "result": "issues-found",
+      "issues": [
+        "Phantom axioms in narrative: pentagon case + lower bounds in proofStrategy; vertex-bound axiom in section summary; pentagon axiom claimed in known-results section — issue #14242"
+      ]
     },
     "erdos-57": {
       "agentId": "auditor-cycle-20-batch",
