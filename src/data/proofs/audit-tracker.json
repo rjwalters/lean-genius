@@ -6757,9 +6757,10 @@
     },
     "erdos-442": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T20:55:00Z",
+      "result": "clean",
+      "notes": "2026-05-01: Verified 2 axioms (tao_counterexample, tao_construction) match declared. axiomCount=2, sorries=0, theorems=8, lineCount=255. Narrative consistent with Lean source. Section line ranges drift by 2 on Parts V/VI/VII (minor, not actionable)."
     },
     "erdos-443": {
       "agentId": "auditor-cycle-20-batch",
