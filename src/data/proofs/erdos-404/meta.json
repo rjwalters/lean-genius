@@ -59,7 +59,7 @@
       "Two proved examples by native_decide",
       "erdos_404_summary: proved conjunction of Lin's bounds"
     ],
-    "axiomCount": 2,
+    "axiomCount": 1,
     "prerequisites": [
       "p-adic valuation (padicValNat) and basic properties",
       "Factorials and divisibility in number theory",
@@ -68,7 +68,7 @@
       "Filter.Tendsto and convergence in Lean/Mathlib"
     ],
     "lineCount": 291,
-    "assumptions": "2 axioms: lin_bound (f(2,2) <= 254), lin_bound_meaning (2^255 never divides such sums). 0 sorries.",
+    "assumptions": "1 axiom: lin_bound_meaning (2^255 never divides such sums). lin_bound was derived from lin_bound_meaning. 0 sorries.",
     "theoremCount": 9
   },
   "overview": {
@@ -204,8 +204,8 @@
       "Filter"
     ],
     "namespace": "Erdos404",
-    "lineCount": 291,
-    "axiomCount": 2,
+    "lineCount": 310,
+    "axiomCount": 1,
     "theoremCount": 9,
     "definitionCount": 8,
     "path": "Proofs/Erdos404Problem.lean",

@@ -22,9 +22,9 @@
     "erdosUrl": "https://erdosproblems.com/1017",
     "erdosProblemStatus": "open",
     "relatedProblems": [],
-    "axiomCount": 3,
+    "axiomCount": 2,
     "lineCount": 696,
-    "assumptions": "3 axioms inherited from Erdos1017OQ01.lean: egp_theorem (Erdős-Gallai-type partitioning theorem), gyori_keszegh_triangles (Győri-Keszegh triangle counting result), k4free_partition_number (K₄-free partition number bound). 0 own axioms. 0 sorries.",
+    "assumptions": "2 axioms inherited from Erdos1017OQ01.lean: egp_theorem (Erdős-Gallai-type partitioning theorem), k4free_partition_number (K₄-free partition number bound). gyori_keszegh_triangles was removed. 0 own axioms. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -188,7 +188,7 @@
     "opens": [],
     "namespace": null,
     "lineCount": 696,
-    "axiomCount": 3,
+    "axiomCount": 2,
     "theoremCount": 37,
     "definitionCount": 6,
     "path": "Proofs/Erdos1017OQ01.lean",
