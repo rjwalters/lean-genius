@@ -73,7 +73,7 @@
     "historicalContext": "This problem originates from Erdős's extensive work on extremal hypergraph theory during the late 1980s and early 1990s. The covering number (transversal number) τ(G) is a fundamental parameter in combinatorial optimization, dual to the matching number by König-type theorems. The question of how local structure constrains global covering was formalized by Erdős, Hajnal, and Tuza in their 1991 paper 'Local constraints ensuring small representing sets' published in the *Journal of Combinatorial Theory, Series A* (vol. 58, pp. 78-84). The problem sits at the intersection of Helly-type combinatorics (where local intersection properties imply global ones) and extremal set theory. András Hajnal was Erdős's longtime collaborator on set-theoretic combinatorics, while Zsolt Tuza contributed deep expertise in hypergraph transversals. The problem is reminiscent of the classical Helly theorem (1923), which states that for convex sets in $\\mathbb{R}^d$, pairwise intersection in every $d+1$ sets implies a common point. Here the 'dimension' is replaced by the uniformity $r$, and the threshold $3r-3$ plays the role of $d+1$. The bounds $(3/16)r \\le t(r) \\le (1/5)r$ have stood unchanged since 1991, making this one of the more persistent open problems in extremal hypergraph theory.",
     "problemStatement": "Let $r \\ge 3$. For an $r$-uniform hypergraph $G$, let $\\tau(G)$ denote the covering number — the minimum size of a vertex set intersecting every edge. Determine the best $t = t(r)$ such that: if every induced subhypergraph on at most $3r-3$ vertices has $\\tau \\le 1$ (i.e., has a vertex common to all its edges), then $\\tau(G) \\le t$. Erdős, Hajnal, and Tuza proved $\\frac{3}{16}r + \\frac{7}{8} \\le t(r) \\le \\frac{1}{5}r$.",
     "text": "Determine the best constant t(r) such that if every subgraph on ≤ 3r-3 vertices of an r-uniform hypergraph has covering number ≤ 1, then the global covering number is ≤ t(r). Erdős-Hajnal-Tuza proved (3/16)r ≤ t(r) ≤ (1/5)r but the exact coefficient remains OPEN.",
-    "proofStrategy": "The problem remains OPEN: the exact value of $t(r)$ is unknown. The Lean formalization captures all key definitions ($r$-uniform hypergraph, covering set, covering number, induced subhypergraph, local covering condition) and axiomatizes the known bounds from Erdős-Hajnal-Tuza (1991). The lower bound $(3/16)r + 7/8$ is established via explicit constructions — carefully designed hypergraphs where edges locally always share a vertex but globally require many vertices to cover. The upper bound $(1/5)r$ is proved via a combinatorial counting argument showing that the local intersection property constrains the global edge structure enough to guarantee a small transversal. The only proved theorem in the file is `tau_one_iff_kernel`, establishing the equivalence between singleton covers and kernel vertices. The summary theorem combines both axiomatized bounds into a single statement using `linarith`.",
+    "proofStrategy": "The problem remains OPEN: the exact value of $t(r)$ is unknown. The Lean formalization captures all key definitions ($r$-uniform hypergraph, covering set, covering number, induced subhypergraph, local covering condition) and axiomatizes the known bounds from Erdős-Hajnal-Tuza (1991). The lower bound $(3/16)r + 7/8$ is established via explicit constructions — carefully designed hypergraphs where edges locally always share a vertex but globally require many vertices to cover. The upper bound $(1/5)r$ is proved via a combinatorial counting argument showing that the local intersection property constrains the global edge structure enough to guarantee a small transversal. The proved theorems in the file are `tau_one_iff_kernel` (equivalence between singleton covers and kernel vertices), `coefficient_bounds` (verifying the numerical relationship between the two bound coefficients), and `erdos_616_summary` (combining both axiomatized bounds into a single conjunction using `linarith`).",
     "keyInsights": [
       "The local condition τ(G') ≤ 1 for small subhypergraphs means every small piece has a 'kernel' vertex — a vertex in every edge. This is a strong structural constraint that forces edges to cluster around common vertices locally.",
       "The threshold 3r-3 is precisely chosen so that at most 2 pairwise disjoint r-edges can fit within the vertex set. Three disjoint r-edges would need 3r > 3r-3 vertices, making the condition non-trivially constraining.",
@@ -118,54 +118,54 @@
       "title": "The Main Question: ErdosProblem616",
       "summary": "Formal statement ErdosProblem616 parameterized by r and t; the existence of the optimal extremal function is discussed in source comments only (no axiom declared)",
       "startLine": 100,
-      "endLine": 119,
+      "endLine": 117,
       "mathContext": "Formal definition: ErdosProblem616 parameterized by r and t; the existence of the optimal extremal function is discussed in source comments only"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds: Erdős-Hajnal-Tuza 1991",
       "summary": "Axiomatized lower bound (3/16)r + 7/8 via explicit constructions and upper bound (1/5)r via counting arguments, with coefficient definitions and consistency check",
-      "startLine": 120,
-      "endLine": 161,
+      "startLine": 118,
+      "endLine": 159,
       "mathContext": "Formal definition: Axiomatized lower bound (3/16)r + 7/8 via explicit constructions and upper bound (1/5)r via counting arguments, with coefficient definitions and consistency check"
     },
     {
       "id": "special-cases",
       "title": "Special Cases and Small r",
       "summary": "Concrete threshold values for r = 3 (k = 6) and r = 4 (k = 9), with analysis showing bounds become meaningful only for large r",
-      "startLine": 162,
-      "endLine": 186,
+      "startLine": 160,
+      "endLine": 184,
       "mathContext": "Bound: Concrete threshold values for r = 3 (k = 6) and r = 4 (k = 9), with analysis showing bounds become meaningful only for large r"
     },
     {
       "id": "threshold-analysis",
       "title": "Why the Threshold 3r-3?",
       "summary": "Structural analysis of why 3r-3 is the critical threshold: connection to disjoint edge packings, sunflower structures, and the Erdős-Ko-Rado framework",
-      "startLine": 187,
-      "endLine": 202,
+      "startLine": 185,
+      "endLine": 200,
       "mathContext": "Formal definition: Structural analysis of why 3r-3 is the critical threshold: connection to disjoint edge packings, sunflower structures, and the Erdős-Ko-Rado framework"
     },
     {
       "id": "equivalent-formulations",
       "title": "Equivalent Formulations: Kernel Property",
       "summary": "HasKernel definition and the proved theorem tau_one_iff_kernel establishing that τ ≤ 1 is equivalent to having a vertex common to all edges",
-      "startLine": 203,
-      "endLine": 229,
+      "startLine": 201,
+      "endLine": 227,
       "mathContext": "HasKernel definition and the proved theorem tau_one_iff_kernel establishing that τ $\\leq$ 1 is equivalent to having a vertex common to all edges"
     },
     {
       "id": "fractional-relaxation",
       "title": "Fractional Relaxation",
       "summary": "Documents the fractional covering number τ*(G) and integrality gap discussion in source comments; no formal declaration exists in this section",
-      "startLine": 230,
-      "endLine": 245,
+      "startLine": 228,
+      "endLine": 240,
       "mathContext": "Documentation only: fractional covering number τ*(G) and integrality gap discussion; no axiom or definition declared in this section"
     },
     {
       "id": "summary-theorem",
       "title": "Summary: Combined Bounds Theorem",
       "summary": "The erdos_616_summary theorem combining both EHT bounds into a single conjunction, proved via axiom application and linarith",
-      "startLine": 246,
+      "startLine": 241,
       "endLine": 281,
       "mathContext": "Verified: The erdos_616_summary theorem combining both EHT bounds into a single conjunction, proved via axiom application and linarith"
     }
