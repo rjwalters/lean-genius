@@ -1,14 +1,18 @@
 {
   "slug": "erdos-1099-oq-01",
-  "title": "Does h_α(n",
-  "phase": "NEW",
+  "title": "Erdős #1099 OQ-01: Boundedness of h_α on factorials and lcm sequences",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: Does h_α(n.",
-    "whyMatters": []
+    "formal": "Erdős's two specific candidate sequences for liminf h_α: (a) ∀ α > 1, ∃ C, ∀ n ≥ 2, h_α(n!) ≤ C  ?  (b) ∀ α > 1, ∃ C, ∀ n ≥ 1, h_α(lcm{1,...,n}) ≤ C  ?  Both OPEN. Vose (1984) proved the existence form ∃ C, ∀ N, ∀ ε > 0, ∃ n ≥ N, h_α(n) < C + ε via a different (non-factorial, non-lcm) construction.",
+    "plain": "Erdős asked whether either (a) the factorials or (b) the lcm{1,...,n} sequence give uniformly bounded h_α, where h_α(n) = Σ((d_{i+1}/d_i) - 1)^α over the divisors of n. Vose (1984) settled the existence question with a different construction; whether Erdős's specific candidates work remains open.",
+    "whyMatters": [
+      "Tests whether the bounded-liminf phenomenon arises naturally on canonical sequences, not just custom constructions.",
+      "Connects multiplicative structure (factorials, lcm) to fine-grained divisor spacing.",
+      "A positive answer for either candidate would give a constructive, named witness; a negative answer would refine our understanding of what Vose's construction does that these don't."
+    ]
   },
   "knownResults": {
     "proven": [],
@@ -16,12 +20,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-24T00:48:59.905Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ORIENT",
+    "since": "2026-04-27T17:55:00.000Z",
+    "iteration": 2,
+    "focus": "Open sub-questions formalised as Prop defs; main file's vose_bounded_sequence theorem uses trivial constant witness — strong-liminf form (proper Vose) stated separately.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Future work: formalise Vose's actual construction to prove erdos_1099_strong_liminf; investigate whether factorial or lcm candidates can be ruled out by computation/asymptotics.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0 sorries, 1 axiom (vose_bounded_sequence). All helper lemmas proved.",
+    "progressSummary": "OQ-01 STATED (2026-04-27): Two Erdős open sub-questions added as Prop defs in Erdos1099Problem.lean — erdos_1099_factorial_open (∀α>1, ∃C, ∀n≥2, h_α(n!) ≤ C) and erdos_1099_lcm_open (∀α>1, ∃C, ∀n≥1, h_α(lcm{1..n}) ≤ C). Also added erdos_1099_strong_liminf — the proper liminf form Vose actually proved, distinct from the existing weaker erdos_1099 theorem (which is satisfied by the trivial constant n_k=2 witness).",
     "builtItems": [
       "17 new infrastructure theorems for sorted divisor properties",
       "first_divisor_is_one theorem (was axiom)",
@@ -52,7 +56,10 @@
       "vose_liminf_bounded theorem (was axiom)",
       "zipWith_ratios_eq_two: all ratios of a doubling list are 2",
       "sortedDivisors_two_pow_geom: doubling property for sorted divisors of 2^k",
-      "divisorRatios_two_pow: proved (was sorry)"
+      "divisorRatios_two_pow: proved (was sorry)",
+      "Stated erdos_1099_factorial_open : Prop (Part XI of Erdos1099Problem.lean)",
+      "Stated erdos_1099_lcm_open : Prop (Part XI of Erdos1099Problem.lean)",
+      "Stated erdos_1099_strong_liminf : Prop — proper liminf form, distinct from weak erdos_1099"
     ],
     "insights": [
       "divisorRatios had a critical bug: computed d_i/d_{i+1} instead of d_{i+1}/d_i",
@@ -69,15 +76,21 @@
       "sortedDivisors_two_pow proved via List.perm_ext_iff_of_nodup + Perm.eq_of_pairwise with explicit antisymmetry",
       "divisorRatios_two_pow blocked by Lean4 monadic normalization: zipWith with ℕ→ℚ cast creates do/pure form that breaks type matching with structural recursion helper",
       "vose_liminf_bounded follows trivially from vose_bounded_sequence (pick any seq element)",
-      "divisorRatios_two_pow proved via membership+length decomposition: all elements = 2 (by zipWith_ratios_eq_two using doubling property) and length = k"
+      "divisorRatios_two_pow proved via membership+length decomposition: all elements = 2 (by zipWith_ratios_eq_two using doubling property) and length = k",
+      "vose_bounded_sequence's current proof uses constant n_k = 2 (trivial witness) since h_α(2) = 1 — formally valid for the stated weaker theorem, but does NOT capture liminf. Documented in Part XI.",
+      "erdos_1099 (weak) and erdos_1099_strong_liminf (proper) differ by the ∀ N quantifier: the strong form requires arbitrarily large n with bounded h_α, which is what makes liminf meaningful.",
+      "Pre-existing lcmDivisors n in Part IV is buggy: List.range (n+1) includes 0, so foldl Nat.lcm 1 collapses to 0 (since lcm 1 0 = 0). The new erdos_1099_lcm_open uses List.range' 1 n to start at 1.",
+      "Erdős's two named candidate sequences (n!, lcm{1..n}) are mathematically distinct from Vose's construction; settling either remains open."
     ],
     "mathlibGaps": [
-      "No direct Finset.sort getLast = max lemma"
+      "No direct Finset.sort getLast = max lemma",
+      "lcm{1, 2, ..., n} as a clean Mathlib def — current candidates List.foldr and Finset.lcm both require boilerplate."
     ],
     "nextSteps": [
-      "Fill divisorRatios_two_pow sorry (needs zipWith computation on power lists)",
-      "Fix Mathlib API breakage: le_div_iff, List.single_le_sum, rpow_le_rpow_left",
-      "Consider proving vose_bounded_sequence (deep Vose 1984 construction, 500+ lines)"
+      "Investigate whether factorial OR lcm candidates can be RULED OUT (negative result) via small-n computation: tabulate h_α(n!) and h_α(lcm{1..n}) for small n and large α to see if bounds blow up.",
+      "Survey post-Vose literature: any progress on Erdős's specific candidates since 1984?",
+      "Consider whether divisor spacing in n! grows like a known function — if so, h_α(n!) asymptotics may be tractable.",
+      "Long-term: formalise Vose's construction as a proof of erdos_1099_strong_liminf (substantial work, separate research session)."
     ]
   },
   "tags": [
@@ -100,17 +113,17 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.905Z",
-  "lastUpdate": "2026-03-24T00:48:59.905Z",
+  "lastUpdate": "2026-04-27T17:55:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1099Problem.lean",
       "filename": "Erdos1099Problem.lean",
-      "lineCount": 655,
+      "lineCount": 723,
       "theoremCount": 23,
       "axiomCount": 0,
-      "defCount": 7,
+      "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1099Problem.lean"
