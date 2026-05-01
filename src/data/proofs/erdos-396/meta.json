@@ -29,7 +29,7 @@
     "historicalContext": "Erdős and Graham posed Problem #396 in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory,' asking about the divisibility of central binomial coefficients $\\binom{2n}{n}$ by descending factorial products. The question is motivated by the classical fact that $n+1$ always divides $\\binom{2n}{n}$ (giving the Catalan numbers $C_n = \\binom{2n}{n}/(n+1)$), but $n$ itself rarely divides $\\binom{2n}{n}$. The problem asks how far 'downward' from $n$ one can push simultaneous divisibility.\n\nCarl Pomerance made the most significant progress in 2014. He showed that for any fixed $k$, each individual factor $(n-k)$ divides $\\binom{2n}{n}$ for infinitely many $n$, but the set of such $n$ has upper density less than $1/3$. In contrast, the ascending product $(n+1)(n+2)\\cdots(n+k)$ divides $\\binom{2n}{n}$ with asymptotic density 1 — a striking asymmetry between descending and ascending factorials. The key difficulty lies in the $p$-adic structure: by Kummer's theorem, $\\nu_p(\\binom{2n}{n})$ equals the number of carries when adding $n$ to $n$ in base $p$, and simultaneous divisibility by $n(n-1)\\cdots(n-k)$ places correlated constraints across multiple primes.\n\nThe OEIS sequence A375077 catalogues the smallest witness $n$ for each $k$. The problem remains open: even the existence of a single $n$ for each $k$ is unproved, let alone the natural strengthening that infinitely many witnesses exist.",
     "problemStatement": "For every positive integer $k$, does there exist $n$ such that $n(n-1)(n-2)\\cdots(n-k) \\mid \\binom{2n}{n}$? Equivalently, does $n^{\\underline{k+1}} \\mid \\binom{2n}{n}$ for some $n$?",
     "text": "For every k, does there exist n such that n(n−1)⋯(n−k) divides C(2n,n)? Pomerance proved individual factors divide for infinitely many n. The full product conjecture remains open.",
-    "proofStrategy": "The formalization uses Mathlib's `Nat.descFactorial` and `Nat.centralBinom` to express the problem cleanly. The Catalan divisibility $(n+1) \\mid \\binom{2n}{n}$ is axiomatized as the base case. Pomerance's results are captured as three axioms: single-factor divisibility (infinitely many $n$), the $1/3$ density bound, and the density-1 result for ascending factorials. The main conjecture and its infinitely-many strengthening are stated as axioms. A smallest-witness function is axiomatized with a validity property for computational verification.",
+    "proofStrategy": "The formalization uses Mathlib's `Nat.descFactorial` and `Nat.centralBinom` to express the problem cleanly. The Catalan divisibility $(n+1) \\mid \\binom{2n}{n}$ is proved directly via Mathlib's `Nat.succ_dvd_centralBinom`. The file also contains `n_divides_rarely`, a vacuous placeholder theorem (witnessed by the empty set). Pomerance's results, the main conjecture, and its infinitely-many strengthening appear only as docstring comments — no Lean axioms or theorems capture these. The single axiom in the file is `smallest_witness : ℕ → ℕ`, a function-typed axiom with no validity property stated.",
     "keyInsights": [
       "**Ascending vs descending asymmetry**: The ascending product $(n+1)\\cdots(n+k)$ divides $\\binom{2n}{n}$ with density 1, but the descending product $n(n-1)\\cdots(n-k)$ divides only rarely. This reflects the different interactions with the denominator $(n!)^2$ in the formula $\\binom{2n}{n} = (2n)!/(n!)^2$.",
       "**Kummer's theorem is the key tool**: The $p$-adic valuation $\\nu_p(\\binom{2n}{n})$ equals the number of carries when adding $n+n$ in base $p$. Simultaneous divisibility by $n, n-1, \\ldots, n-k$ constrains the base-$p$ digits of $n$ for each prime $p \\leq n$, creating a complex system of correlated conditions.",
@@ -62,38 +62,38 @@
       "title": "Basic Divisibility Results",
       "startLine": 35,
       "endLine": 46,
-      "summary": "Axiomatizes Catalan divisibility $(n+1) \\mid \\binom{2n}{n}$ and the rarity of $n \\mid \\binom{2n}{n}$."
+      "summary": "Proves Catalan divisibility $(n+1) \\mid \\binom{2n}{n}$ via Mathlib's `Nat.succ_dvd_centralBinom`. Also includes `n_divides_rarely`, a vacuous placeholder theorem (witnessed by the empty set S=∅ with a `True` conjunct) that says nothing substantive about the rarity of divisibility."
     },
     {
       "id": "pomerance-results",
       "title": "Pomerance's Results (2014)",
       "startLine": 47,
       "endLine": 62,
-      "summary": "Three results: single-factor divisibility for infinitely many $n$, upper density $< 1/3$ for single factors, and density 1 for ascending factorials."
+      "summary": "Docstring comments summarizing Pomerance's 2014 results (single-factor divisibility for infinitely many $n$, upper density $< 1/3$, density 1 for ascending factorials). No Lean axioms or theorems formalize these results in this file — the section contains only commented-out narrative."
     },
     {
       "id": "main-conjecture",
       "title": "The Erdős–Graham Conjecture",
       "startLine": 63,
       "endLine": 69,
-      "summary": "States the main open conjecture: $\\forall k, \\exists n: n^{\\underline{k+1}} \\mid \\binom{2n}{n}$."
+      "summary": "Docstring commentary on the Erdős–Graham conjecture ($\\forall k, \\exists n: n^{\\underline{k+1}} \\mid \\binom{2n}{n}$). No formal Lean axiom or theorem stating the conjecture is present in this section."
     },
     {
       "id": "computational-evidence",
       "title": "Computational Evidence",
       "startLine": 70,
       "endLine": 78,
-      "summary": "Axiomatizes a smallest-witness function with validity, referencing OEIS A375077."
+      "summary": "Axiomatizes `smallest_witness : ℕ → ℕ`, a function-typed axiom for the witness sequence (OEIS A375077). No validity property relating the function to actual smallest witnesses is stated."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #396 on descending factorial divisibility of central binomial coefficients. It includes the Catalan base case, Pomerance's 2014 partial results (single-factor, density bounds, ascending contrast), the open conjecture, computational evidence via OEIS, and the infinitely-many strengthening.",
+    "summary": "This formalization scaffolds Erdős Problem #396 on descending factorial divisibility of central binomial coefficients. The Catalan divisibility base case is proved via Mathlib. Pomerance's 2014 results, the open conjecture, and the infinitely-many strengthening appear as documented aspirational structure (docstring comments) but are not yet formalized as Lean axioms or theorems. The single axiom is a function-typed witness sequence.",
     "implications": "Resolution would deepen understanding of the $p$-adic structure of central binomial coefficients and the interplay between Kummer's theorem carries and factorial divisibility. The ascending-vs-descending asymmetry highlights fundamental differences in how the numerator and denominator of $\\binom{2n}{n}$ interact with shifted factorial products.",
     "openQuestions": [
       "For every $k$, does $n^{\\underline{k+1}} \\mid \\binom{2n}{n}$ hold for some $n$?",
       "How fast does the smallest witness $w(k) = \\min\\{n : n^{\\underline{k+1}} \\mid \\binom{2n}{n}\\}$ grow with $k$?",
       "What is the density (if it exists) of $\\{n : n^{\\underline{k+1}} \\mid \\binom{2n}{n}\\}$ for fixed $k \\geq 1$?",
-      "Can the Catalan divisibility axiom be proved from Mathlib's existing `Nat.centralBinom` API rather than axiomatized?"
+      "Should the Pomerance results and main conjecture be formalized as Lean axioms to match the section structure, or remain as documented aspirational scaffolding?"
     ]
   },
   "leanFile": {
