@@ -80,40 +80,40 @@
     {
       "id": "natabs-reduction",
       "title": "Reduction to ℕ Binary GCD",
-      "startLine": 37,
-      "endLine": 50,
+      "startLine": 36,
+      "endLine": 46,
       "summary": "States the natAbs reduction as a `@[simp]` lemma and shows the natCast specialization.",
       "mathContext": "These reductions decouple the integer extension from the original ℕ algorithm: any reasoning about `binaryGcdInt` rewrites cleanly back to `BinaryGcd.binaryGcd`."
     },
     {
       "id": "correctness",
       "title": "Correctness vs Int.gcd",
-      "startLine": 52,
-      "endLine": 60,
+      "startLine": 50,
+      "endLine": 54,
       "summary": "`binaryGcdInt_eq_intGcd` proves the integer extension equals Mathlib's `Int.gcd`. Proof unfolds both sides and applies `binaryGcd_eq_gcd`.",
       "mathContext": "Mathlib defines `Int.gcd m n = m.natAbs.gcd n.natAbs`. Composing with `binaryGcd_eq_gcd` (which proves `binaryGcd = Nat.gcd`) yields equality with two unfoldings."
     },
     {
       "id": "sign-invariance",
       "title": "Sign Invariance",
-      "startLine": 62,
-      "endLine": 80,
+      "startLine": 56,
+      "endLine": 71,
       "summary": "Negating either or both arguments leaves `binaryGcdInt` unchanged (`@[simp]` lemmas).",
       "mathContext": "GCD on ℤ is invariant under sign flips because `(-a).natAbs = a.natAbs`. Marking these as simp lemmas means downstream proofs over ℤ never need to reason about signs explicitly."
     },
     {
       "id": "edges-and-properties",
       "title": "Edge Cases and Universal Property",
-      "startLine": 82,
-      "endLine": 115,
+      "startLine": 73,
+      "endLine": 113,
       "summary": "Zero edges, commutativity, self-application, and the divisibility universal property `c ∣ a → c ∣ b → c ∣ binaryGcdInt a b`.",
       "mathContext": "These are the ℤ-level mirror of the standard ℕ-level GCD lemmas. Each reduces in one rewrite to the corresponding `Int.gcd_*` Mathlib lemma."
     },
     {
       "id": "decide-examples",
       "title": "Concrete Sanity Examples",
-      "startLine": 117,
-      "endLine": 130,
+      "startLine": 115,
+      "endLine": 124,
       "summary": "Eight `decide`-checked examples covering all sign combinations and zero/self cases.",
       "mathContext": "`decide` reduces fully because `binaryGcdInt` is a concrete computable definition; this gives kernel-level confidence in the extension's runtime behavior."
     }
@@ -201,7 +201,7 @@
     "namespace": "BinaryGcdOQ02",
     "lineCount": 135,
     "axiomCount": 0,
-    "theoremCount": 13,
+    "theoremCount": 14,
     "definitionCount": 1,
     "path": "Proofs/BinaryGcdOQ02.lean",
     "sorries": 0
