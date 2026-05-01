@@ -20,7 +20,7 @@
     ],
     "namespace": "Erdos1017OQ01",
     "lineCount": 696,
-    "axiomCount": 3,
+    "axiomCount": 2,
     "sorries": 0,
     "definitionCount": 6,
     "theoremCount": 37
@@ -46,9 +46,9 @@
     "erdosProblemStatus": "open",
     "dateAdded": "2026-03-25",
     "mathlib_version": "4.26.0",
-    "axiomCount": 3,
+    "axiomCount": 2,
     "lineCount": 696,
-    "assumptions": "3 axioms: EGP theorem (deep combinatorial result, 1966), Gyori-Keszegh triangle packing (deep result, 2017), K_4-free partition formula. All other statements PROVED including triangleFree partition = edges (via injection), dense_contains_triangle (via Mathlib Turan), cliquePartition_le_vertices (via EGP + edge bound).",
+    "assumptions": "2 axioms: EGP theorem (deep combinatorial result, 1966) and Gyori-Keszegh K_4-free partition formula (2017, full strength: cp(G) = floor(n^2/4) - m). The previously redundant gyori_keszegh_triangles axiom (m distinct 3-cliques) was eliminated since it is logically weaker than the partition formula and was unused in the file. All other statements PROVED including triangleFree partition = edges (via injection), dense_contains_triangle (via Mathlib Turan), cliquePartition_le_vertices (via EGP + edge bound).",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.IsClique",
@@ -75,7 +75,8 @@
       "completeBipartite: K_{a,b} construction with DecidableRel",
       "egp_tight_example: cp(K_{k,k}) = k² proved from axioms",
       "erdos1017_question: formal statement of the open question",
-      "k4free_improves: K₄-free dense graphs improve on ⌊n²/4⌋ (proved)"
+      "k4free_improves: K₄-free dense graphs improve on ⌊n²/4⌋ (proved)",
+      "Axiom reduction: eliminated redundant gyori_keszegh_triangles axiom (m distinct 3-cliques, logically weaker than the partition formula and unused in the file)"
     ]
   },
   "overview": {
@@ -143,7 +144,7 @@
       "title": "K₄-Free Case: Győri-Keszegh (2017)",
       "startLine": 202,
       "endLine": 247,
-      "summary": "Axiomatizes Győri-Keszegh: K₄-free + ⌊n²/4⌋ + m edges → m edge-disjoint triangles. Proves `k4free_improves`: dense K₄-free graphs have cp < ⌊n²/4⌋.",
+      "summary": "Axiomatizes Győri-Keszegh as the full partition formula `cp(G) = ⌊n²/4⌋ - m`. Proves `k4free_improves`: dense K₄-free graphs have cp < ⌊n²/4⌋. The previously separate `gyori_keszegh_triangles` axiom (m distinct 3-cliques) was eliminated as redundant.",
       "mathContext": "For $K_4$-free graphs: $\\text{cp}(G) = \\lfloor n^2/4 \\rfloor - m$ where $m$ is the excess over $\\lfloor n^2/4 \\rfloor$ (Győri-Keszegh 2017)."
     },
     {

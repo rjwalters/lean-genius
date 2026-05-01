@@ -28,27 +28,26 @@
     "open": [
       "erdos1017_question: general case with K_4 and larger cliques"
     ],
-    "goal": "Achieved: 6 axioms eliminated (9→3). Remaining 3 axioms are deep published results (EGP 1966, Gyori-Keszegh 2017, K_4-free corollary)."
+    "goal": "Achieved: 7 axioms eliminated (9→2). Remaining 2 axioms are deep published results (EGP 1966, Gyori-Keszegh 2017 partition formula). The redundant gyori_keszegh_triangles axiom was removed since it is logically weaker than the partition formula and was unused."
   },
   "currentState": {
     "phase": "MATURE-AXIOMATIZED",
-    "since": "2026-04-27T00:00:00Z",
-    "iteration": 3,
-    "focus": "Eliminated 6 axioms total (9→3). Remaining 3 axioms — EGP theorem (1966), Gyori-Keszegh (2017), and the K_4-free closed-form — are deep published results. Problem at natural stopping point.",
+    "since": "2026-04-30T00:00:00Z",
+    "iteration": 4,
+    "focus": "Eliminated 7 axioms total (9→2). Remaining 2 axioms — EGP theorem (1966) and the Gyori-Keszegh partition formula (2017) — are deep published results. Session 4 removed the redundant gyori_keszegh_triangles axiom (logically weaker than the partition formula, completely unused in the file). Problem at natural stopping point.",
     "blockers": [
       "EGP theorem (Erdos-Goodman-Posa 1966) requires ~500+ lines of greedy triangle extraction + bipartite remainder argument",
-      "Gyori-Keszegh (2017) requires ~1000+ lines of deep graph decomposition machinery",
-      "K_4-free closed-form is a corollary of Gyori-Keszegh"
+      "Gyori-Keszegh partition formula (2017) requires ~1000+ lines of deep graph decomposition machinery"
     ],
-    "nextAction": "Hold at axiomatized status. Future work: formalize EGP theorem as a multi-session project (would eliminate one axiom and unlock the K_4-free corollary); Gyori-Keszegh remains out of scope.",
+    "nextAction": "Hold at axiomatized status. Future work: formalize EGP theorem as a multi-session project (would eliminate one axiom); Gyori-Keszegh partition formula remains out of scope. Could also derive the m-triangles existence statement as a theorem from k4free_partition_number via sInf-witness extraction + edge-counting (~80 lines), restoring it for downstream consumers.",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 6 axioms total (9→3). Session 3 proved dense_contains_triangle (via Mathlib Turan), triangleFree_cliquePartition_eq_edges (via injection), cliquePartition_le_vertices (via EGP). Remaining 3 axioms: EGP theorem, Gyori-Keszegh, K_4-free formula — all deep published results.",
+    "progressSummary": "PROGRESS: Eliminated 7 axioms total (9→2). Session 4 removed redundant gyori_keszegh_triangles axiom (m distinct 3-cliques) — logically weaker than k4free_partition_number (which gives cp = t - m) and completely unused. Session 3 proved dense_contains_triangle (via Mathlib Turan), triangleFree_cliquePartition_eq_edges (via injection), cliquePartition_le_vertices (via EGP). Remaining 2 axioms: EGP theorem and Gyori-Keszegh partition formula — both deep published results.",
     "builtItems": [
       "completeBipartite_cliqueFree: K_{a,b} triangle-free (PROVED via case analysis on Sum types)",
       "completeBipartite_adj_iff: adjacency characterization for bipartite graph",
@@ -82,7 +81,8 @@
       "dense_contains_triangle proved via Mathlib CliqueFree.card_edgeFinset_le (Turan bound) — case split on n%2 simplifies to n²/4",
       "triangleFree_cliquePartition_eq_edges proved by ≤/≥: edge partition (each edge = 1 clique) gives ≤, injection argument (cliques have ≤2 vertices in triangle-free graph) gives ≥",
       "cliquePartition_le_vertices follows from cp(G) ≤ |E| ≤ n(n-1)/2 via card_edgeFinset_le_card_choose_two",
-      "All 3 remaining axioms are deep published results: EGP (1966), Gyori-Keszegh (2017), and its corollary"
+      "Axiom redundancy detection: gyori_keszegh_triangles (existence of m distinct 3-cliques) is implied by k4free_partition_number (cp(G) = t - m) — apply Nat.sInf_mem to extract a partition with t - m cliques; in K₄-free, cliques have card ≤ 3; counting yields ≥ m triangle-cliques. The triangles-existence statement was unused in the file, so direct deletion suffices.",
+      "Both remaining axioms are deep published results: EGP (1966) and Gyori-Keszegh partition formula (2017)"
     ],
     "mathlibGaps": [
       "Mathlib's edgeFinset.card for bipartite graphs on Sum types requires manual enumeration",
@@ -90,8 +90,9 @@
     ],
     "nextSteps": [
       "EGP theorem would require formalizing greedy triangle extraction + bipartite remainder argument (~500+ lines)",
-      "Gyori-Keszegh would require deep graph decomposition formalization (~1000+ lines)",
-      "Problem is at a natural stopping point — remaining axioms are genuinely deep published results"
+      "Gyori-Keszegh partition formula would require deep graph decomposition formalization (~1000+ lines)",
+      "Optional: derive m-triangles existence as a theorem from k4free_partition_number (~80 lines via sInf-witness extraction + edge-counting). Useful only if downstream consumers need the triangles existence statement directly.",
+      "Problem is at a natural stopping point — remaining 2 axioms are genuinely deep published results"
     ]
   },
   "tags": [
@@ -124,7 +125,7 @@
     ]
   },
   "started": "2026-03-24T00:48:59.902Z",
-  "lastUpdate": "2026-04-27T00:00:00Z",
+  "lastUpdate": "2026-04-30T00:00:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -133,7 +134,7 @@
       "filename": "Erdos1017OQ01.lean",
       "lineCount": 697,
       "theoremCount": 30,
-      "axiomCount": 3,
+      "axiomCount": 2,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,

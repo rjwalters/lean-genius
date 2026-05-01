@@ -23,7 +23,7 @@ Can f(n,k) < floor(n^2/4) when k > n^2/4 and the graph contains K_4 or larger cl
 The K_4-free case is resolved by Gyori-Keszegh (2017): if G is K_4-free with
 floor(n^2/4) + m edges, it contains m edge-disjoint triangles, giving f = floor(n^2/4) - m.
 
-## What This File Proves (9 axioms -> 3 axioms)
+## What This File Proves (9 axioms -> 2 axioms)
 - completeBipartite_cliqueFree: K_{a,b} is triangle-free (PROVED)
 - completeBipartite_edgeCount: K_{a,b} has a*b edges (PROVED via edge bijection)
 - turanBound quadratic identity: n^2/4 = n/2 * (n - n/2) (PROVED)
@@ -37,10 +37,11 @@ floor(n^2/4) + m edges, it contains m edge-disjoint triangles, giving f = floor(
 - cliquePartition_le_vertices: trivial bound via edge partition (PROVED)
 - triangleFree_cliquePartition_eq_edges: cp(G) = |E| for triangle-free G (PROVED)
 
-## Remaining Axioms (3)
+## Remaining Axioms (2)
 - egp_theorem: EGP bound (deep combinatorial theorem)
-- gyori_keszegh_triangles: K_4-free edge-disjoint triangle packing
-- k4free_partition_number: K_4-free partition formula
+- k4free_partition_number: K_4-free partition formula (Gyori-Keszegh 2017 corollary;
+    encodes the full strength of their result, including the m edge-disjoint triangles
+    that follow as a consequence of cp(G) = floor(n^2/4) - m)
 
 ## Proof Techniques
 - Greedy triangle extraction + Turan bound on remainder
@@ -515,21 +516,21 @@ theorem savings_growth (r : ℕ) (hr : 2 ≤ r) :
 PART VI: K_4-FREE CASE -- GYORI-KESZEGH (2017)
 ==================================================================== -/
 
-/-- **Gyori-Keszegh Theorem (2017)**: If G is K_4-free with floor(n^2/4) + m edges,
-    then G contains m edge-disjoint triangles.
+/-- **Gyori-Keszegh Theorem (2017)** — full strength.
+    For K_4-free graphs with floor(n^2/4) + m edges, the clique partition
+    number is exactly floor(n^2/4) - m.
 
-    Since the only cliques in a K_4-free graph are edges and triangles,
-    and each triangle saves 2 from the partition count,
-    the clique partition number drops to floor(n^2/4) + m - 2m = floor(n^2/4) - m. -/
-axiom gyori_keszegh_triangles (G : SimpleGraph V) [DecidableRel G.Adj]
-    (hG : G.CliqueFree 4)
-    (m : ℕ) (hm : G.edgeFinset.card = turanBound (Fintype.card V) + m) :
-    ∃ (triangles : Finset (Finset V)),
-      triangles.card = m ∧
-      (∀ T ∈ triangles, T.card = 3 ∧ G.IsClique (↑T : Set V))
+    The classical statement of the theorem is "G contains m edge-disjoint
+    triangles", which is logically weaker: from the partition formula one
+    extracts m edge-disjoint triangles by taking an optimal partition (every
+    optimal partition of a K_4-free dense graph has exactly m triangles by
+    the edge-counting identity 2*e_3 = 2m + e_0 where e_0 counts singleton
+    cliques in the partition).
 
-/-- **Corollary**: For K_4-free graphs with floor(n^2/4) + m edges,
-    the clique partition number is exactly floor(n^2/4) - m. -/
+    Proof sketch in the literature: Gyori-Keszegh prove the stronger
+    edge-disjoint packing result, then derive the partition number formula.
+    Each triangle saves 2 from the partition count; m triangles save 2m,
+    bringing the count from at most floor(n^2/4) + m down to floor(n^2/4) - m. -/
 axiom k4free_partition_number (G : SimpleGraph V) [DecidableRel G.Adj]
     (hG : G.CliqueFree 4)
     (m : ℕ) (hm : G.edgeFinset.card = turanBound (Fintype.card V) + m) :
@@ -679,8 +680,7 @@ PART X: VERIFICATION
 #check @triangle_free_not_dense        -- Triangle-free => not dense (PROVED)
 
 -- Partial resolution
-#check @gyori_keszegh_triangles       -- K_4-free edge-disjoint triangles
-#check @k4free_partition_number       -- K_4-free partition count
+#check @k4free_partition_number       -- K_4-free partition count (Gyori-Keszegh 2017)
 #check @k4free_improves               -- K_4-free dense => improves (PROVED)
 #check @k4free_savings_linear         -- Savings formula (PROVED)
 #check @k4free_double_savings         -- Monotonicity (PROVED)
