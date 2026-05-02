@@ -4,7 +4,7 @@
   "slug": "erdos-379",
   "description": "Let S(n) be the largest s such that every C(n,k) for 1 <= k < n is divisible by some p^s. Is limsup S(n) = infinity?",
   "meta": {
-    "author": "Cambie, Kovac, Tao (Lean verified)",
+    "author": "Cambie, Kovač, Tao (math); gallery scaffold (3-axiom reduction)",
     "sourceUrl": "https://erdosproblems.com/379",
     "date": "2024",
     "status": "axiomatized",
@@ -57,8 +57,8 @@
     "assumptions": "3 axioms: witness_divisibility (divisibility property of witness sequence), S_witness_bound (S(3^{2^m}) ≥ m), erdos_379 (limsup of S(n) is infinite). 0 sorries."
   },
   "overview": {
-    "historicalContext": "Erdos Problem #379 concerns a subtle question about prime power divisibility of binomial coefficients. The function S(n) measures a 'uniform' divisibility property: the largest power s such that EVERY binomial coefficient C(n,k) for 1 <= k < n is divisible by some prime power p^s (where the prime p can depend on k).\n\nThe problem appeared in Erdos and Graham's 1980 collection [ErGr80, p.72]. An easier related function s(n) - where we only require ONE k to have high prime power divisibility - was known to satisfy s(n) ~ log(n).\n\nThe problem was solved affirmatively by Cambie, Kovac, and Tao, who showed that the key is to consider n = 3^{2^m}. For such n, Lucas' theorem on binomial coefficients modulo primes reveals that every C(n,k) is divisible by 3^m, giving S(n) >= m. Since m can be arbitrarily large, we get limsup S(n) = infinity.\n\nThe solution was formally verified in Lean, making this one of the Erdos problems with computer-verified proofs.",
-    "problemStatement": "Let $S(n)$ denote the largest integer such that, for all $1 \\leq k < n$, the binomial coefficient $\\binom{n}{k}$ is divisible by $p^{S(n)}$ for some prime $p$ (depending on $k$). Is it true that\n$$\\limsup_{n \\to \\infty} S(n) = \\infty?$$\n\n**Answer**: YES\n\n**Key Construction**: $n = 3^{2^m}$ gives $S(n) \\geq m$.\n\n**Status**: SOLVED (Lean verified by Cambie, Kovac, Tao)",
+    "historicalContext": "Erdos Problem #379 concerns a subtle question about prime power divisibility of binomial coefficients. The function S(n) measures a 'uniform' divisibility property: the largest power s such that EVERY binomial coefficient C(n,k) for 1 <= k < n is divisible by some prime power p^s (where the prime p can depend on k).\n\nThe problem appeared in Erdos and Graham's 1980 collection [ErGr80, p.72]. An easier related function s(n) - where we only require ONE k to have high prime power divisibility - was known to satisfy s(n) ~ log(n).\n\nThe problem was solved affirmatively by Cambie, Kovac, and Tao, who showed that the key is to consider n = 3^{2^m}. For such n, Lucas' theorem on binomial coefficients modulo primes reveals that every C(n,k) is divisible by 3^m, giving S(n) >= m. Since m can be arbitrarily large, we get limsup S(n) = infinity.\n\nThe result was formally verified in Lean by Cambie, Kovač, and Tao in an external library (formal-conjectures); the gallery file axiomatizes the key lemmas as a scaffold.",
+    "problemStatement": "Let $S(n)$ denote the largest integer such that, for all $1 \\leq k < n$, the binomial coefficient $\\binom{n}{k}$ is divisible by $p^{S(n)}$ for some prime $p$ (depending on $k$). Is it true that\n$$\\limsup_{n \\to \\infty} S(n) = \\infty?$$\n\n**Answer**: YES\n\n**Key Construction**: $n = 3^{2^m}$ gives $S(n) \\geq m$.\n\n**Status**: SOLVED (external Lean formalization by Cambie, Kovač, Tao; gallery file is a 3-axiom scaffold)",
     "text": "Let S(n) be the largest s such that every C(n,k) for 1 <= k < n is divisible by some p^s. Is limsup S(n) = infinity?",
     "proofStrategy": "We formalize the problem by defining:\n\n1. **maxPrimePowerExp(n,k)**: The maximum s such that p^s | C(n,k) for some prime p\n2. **S(n)**: The minimum of maxPrimePowerExp(n,k) over all 1 <= k < n\n3. **witnessSeq(m)**: The sequence n_m = 3^{2^m}\n\nThe key lemma is that for n = 3^{2^m}, every C(n,k) is divisible by 3^m. This follows from Lucas' theorem: the base-3 representation of 3^{2^m} is a 1 followed by 2^m zeros, and the combinatorics of Lucas' theorem forces high 3-divisibility.\n\nWe verify concrete examples (C(3,k) divisible by 3, C(9,k) divisible by 3 but not always 9) and state the main theorem that limsup S(n) = infinity as an axiom referencing the Lean-verified proof.",
     "keyInsights": [
@@ -66,7 +66,7 @@
       "**The witness 3^{2^m}**: Powers of 3 with very composite exponents (like 2^m) have special structure that forces uniform divisibility. The base-3 representation is key.",
       "**Lucas' Theorem**: Binomial coefficients C(m,n) mod p depend only on the base-p digits. When m = 3^{2^k} (a 1 followed by 2^k zeros in base 3), this structure forces divisibility.",
       "**Connection to Problem #175**: Related problem about binomial coefficient divisibility properties.",
-      "**Lean Verification**: This is one of few Erdos problems with computer-verified proofs, providing high confidence in the solution."
+      "**External Lean Verification**: Cambie, Kovač, and Tao verified this result in Lean in an external library (formal-conjectures); the gallery file presents a 3-axiom scaffold referencing that formalization."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -78,54 +78,54 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 35,
-      "endLine": 56,
+      "endLine": 55,
       "summary": "maxPrimePowerExp, S(n), S'(n) definitions for the main function.",
       "mathContext": "$S(n) = \\inf_{1 \\le k < n} \\sup\\{s \\mid \\exists p \\text{ prime},\\ p^s \\mid \\binom{n}{k}\\}$"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "startLine": 57,
-      "endLine": 68,
-      "summary": "S(n) >= 1 for n >= 2, and S bounds any prime power dividing all C(n,k).",
+      "startLine": 56,
+      "endLine": 63,
+      "summary": "Informal properties of S(n) documented as comments (no theorems formalized in this section).",
       "mathContext": "$S(n) \\ge 1$ for all $n \\ge 2$; if $p^s \\mid \\binom{n}{k}$ for all $1 \\le k < n$, then $s \\le S(n)$"
     },
     {
       "id": "witness-construction",
       "title": "The Key Construction",
-      "startLine": 69,
-      "endLine": 85,
+      "startLine": 64,
+      "endLine": 80,
       "summary": "The witness sequence n_m = 3^{2^m} and the key divisibility lemma.",
       "mathContext": "$n_m = 3^{2^m}$; the key lemma: $3^m \\mid \\binom{3^{2^m}}{k}$ for all $1 \\le k < 3^{2^m}$"
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
-      "startLine": 86,
-      "endLine": 111,
+      "startLine": 81,
+      "endLine": 106,
       "summary": "Verified divisibility for C(3,k) and C(9,k), showing 3 divides all but 9 doesn't.",
       "mathContext": "$3 \\mid \\binom{9}{k}$ for all $1 \\le k \\le 8$, but $9 \\nmid \\binom{9}{3} = 84$"
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
-      "startLine": 112,
-      "endLine": 127,
+      "startLine": 107,
+      "endLine": 121,
       "summary": "The solved theorem: limsup S(n) = infinity.",
       "mathContext": "$\\limsup_{n \\to \\infty} S(n) = \\infty$, equivalently $\\mathop{\\mathrm{atTop}}\\!.\\limsup(S\\,\\colon\\mathbb{N} \\to \\mathbb{N}^\\infty) = \\top$"
     },
     {
       "id": "comparison",
       "title": "Comparison with s(n)",
-      "startLine": 128,
-      "endLine": 147,
+      "startLine": 122,
+      "endLine": 135,
       "summary": "The easier function s(n) with existential quantifier grows like log(n).",
       "mathContext": "$s(n) = \\sup_{1 \\le k < n} \\sup\\{s \\mid \\exists p \\text{ prime},\\ p^s \\mid \\binom{n}{k}\\} \\sim c \\log n$"
     },
     {
       "id": "lucas",
       "title": "Lucas' Theorem Connection",
-      "startLine": 148,
+      "startLine": 136,
       "endLine": 178,
       "summary": "How Lucas' theorem on base-p digits explains the 3^{2^m} construction.",
       "mathContext": "Lucas: $\\binom{m}{n} \\equiv \\prod_i \\binom{m_i}{n_i} \\pmod{p}$ where $m = \\sum m_i p^i$, $n = \\sum n_i p^i$"
@@ -133,7 +133,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdos Problem #379 about uniform prime power divisibility of binomial coefficients. The answer is YES: limsup S(n) = infinity. The key construction uses n = 3^{2^m}, which gives S(n) >= m by Lucas' theorem analysis of base-3 representations.",
-    "implications": "**Theoretical Significance**: This problem demonstrates several important themes:\n\n1. **Universal vs Existential Quantifiers**: The difference between 'for all k' (hard) and 'for some k' (easy) in divisibility questions.\n\n**2. Lucas' Theorem Applications**: Base-p representations provide powerful tools for analyzing binomial coefficients modulo primes.\n\n3. **Computer-Verified Mathematics**: The Lean formalization by Cambie, Kovac, and Tao represents a gold standard for proof reliability.",
+    "implications": "**Theoretical Significance**: This problem demonstrates several important themes:\n\n1. **Universal vs Existential Quantifiers**: The difference between 'for all k' (hard) and 'for some k' (easy) in divisibility questions.\n\n**2. Lucas' Theorem Applications**: Base-p representations provide powerful tools for analyzing binomial coefficients modulo primes.\n\n3. **External Lean Formalization**: Cambie, Kovač, and Tao's Lean proof (in the formal-conjectures library) provides verification; the gallery file axiomatizes the key lemmas as a scaffold.",
     "openQuestions": [
       "What is the exact growth rate of S(n)?",
       "Can the construction 3^{2^m} be improved to give faster-growing S(n)?",

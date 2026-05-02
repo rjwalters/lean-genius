@@ -57,10 +57,10 @@ noncomputable def S' (n : ℕ) : ℕ :=
 ## Part II: Basic Properties
 -/
 
-/-- S(n) is always at least 1 for n ≥ 2, since every C(n,k) for 1 ≤ k < n
+/- S(n) is always at least 1 for n ≥ 2, since every C(n,k) for 1 ≤ k < n
     is divisible by at least 1 = p^0 for any prime p trivially, but actually
     by some prime p^1 since C(n,k) > 1 for such k when n ≥ 2. -/
-/-- For any prime p and s such that p^s divides all C(n,k), we have s ≤ S(n). -/
+/- For any prime p and s such that p^s divides all C(n,k), we have s ≤ S(n). -/
 /-
 ## Part III: The Key Construction
 
