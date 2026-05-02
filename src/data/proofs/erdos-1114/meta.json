@@ -62,7 +62,7 @@
     "historicalContext": "**Erdős Problem #1114** concerns the behavior of critical points of polynomials whose roots form arithmetic progressions. Erdős conjectured that the gaps between consecutive critical points exhibit a monotonicity property, communicating the conjecture personally to Bálint.\n\n**Key History:**\n- Erdős posed this problem, likely in the late 1950s, motivated by questions about root-derivative relationships\n- Bálint (1960) proved the conjecture: the gaps between consecutive zeros of f' increase monotonically from the midpoint outward\n- Lorch (1976) generalized the result to higher derivatives f'', f''', etc.\n\n**Mathematical Context:** By Rolle's theorem, a degree-(n+1) polynomial with n+1 distinct real roots has exactly n critical points (roots of its derivative). When the roots are evenly spaced, the polynomial inherits a symmetry about the midpoint of its root interval. This symmetry forces the critical points to cluster toward the center, making the gaps between them smallest near the middle and largest near the endpoints.",
     "problemStatement": "**Problem Statement (Proved)**\n\nLet $f(x) \\in \\mathbb{R}[x]$ be a polynomial of degree $n$ whose roots $\\{a_0 < a_1 < \\cdots < a_n\\}$ are all real and form an arithmetic progression. Then the differences between consecutive zeros of $f'(x)$, beginning from the midpoint of $(a_0, a_n)$ towards the endpoints, are monotonically increasing.\n\n**Answer: PROVED** by Bálint (1960).\n\nAll zeros of $f'(x)$ are distinct real numbers in $(a_0, a_n)$ by Rolle's theorem, and their gaps increase outward from the center.",
     "text": "For a polynomial with all real roots in arithmetic progression, the gaps between consecutive critical points of its derivative increase monotonically from the midpoint outward.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Setup:** Define IsAPRoots and HasAPRoots to capture polynomials with arithmetic progression roots\n\n2. **Rolle Application:** Axiomatize that f' has n strictly increasing critical points between consecutive roots\n\n3. **Gap Definitions:** Define Gap, Midpoint, and DistFromMidpoint to measure the outward monotonicity\n\n4. **Main Theorem:** Axiomatize Bálint's result: gaps increase as distance from midpoint increases\n\n5. **Special Cases:** Formalize the quartic case and Lorch's generalization to higher derivatives\n\n6. **Summary:** Combine the main theorem and quartic case into a proved summary theorem",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Setup:** Define IsAPRoots and HasAPRoots to capture polynomials with arithmetic progression roots\n\n2. **Rolle Application:** Define `CriticalPoints` as a type alias (Fin n → ℝ). Strict ordering and bounds between consecutive roots appear as hypotheses of `balint_theorem`, not as separate axiom declarations.\n\n3. **Gap Definitions:** Define Gap, Midpoint, and DistFromMidpoint to measure the outward monotonicity\n\n4. **Main Theorem:** Axiomatize Bálint's result: gaps increase as distance from midpoint increases\n\n5. **Special Cases:** Formalize the quartic case and Lorch's generalization to higher derivatives\n\n6. **Summary:** Combine the main theorem and quartic case into a proved summary theorem",
     "keyInsights": [
       "**Rolle's Theorem:** Between any two consecutive roots of f, there exists exactly one root of f' — giving n critical points for a degree-(n+1) polynomial",
       "**Symmetry of AP Roots:** Polynomials with evenly spaced roots have a natural symmetry about the midpoint of the root interval",
@@ -88,47 +88,47 @@
       "id": "critical-points",
       "title": "Critical Points",
       "startLine": 60,
-      "endLine": 81,
-      "summary": "Rolle's theorem gives n critical points between n+1 roots, axiomatized with strict ordering and bounds.",
-      "mathContext": "Rolle's theorem gives n critical points between n+1 roots, axiomatized with strict ordering and bounds."
+      "endLine": 73,
+      "summary": "Defines `CriticalPoints n` as a type alias `Fin n → ℝ`. Strict ordering (`hc`) and between-root bounds (`hc_bounds`) are hypotheses of `balint_theorem`, not separate axiom declarations.",
+      "mathContext": "`CriticalPoints` type alias. Strict ordering and bounds appear as `balint_theorem` hypotheses, not standalone axioms."
     },
     {
       "id": "gaps",
       "title": "The Gaps",
-      "startLine": 82,
-      "endLine": 106,
+      "startLine": 74,
+      "endLine": 98,
       "summary": "Definitions of Gap (distance between consecutive critical points), Midpoint, and DistFromMidpoint.",
       "mathContext": "Definitions of Gap (distance between consecutive critical points), Midpoint, and DistFromMidpoint."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
-      "startLine": 107,
-      "endLine": 139,
+      "startLine": 99,
+      "endLine": 126,
       "summary": "Bálint's theorem: gaps increase outward from midpoint. Also symmetric formulation: outer gaps dominate inner gaps.",
       "mathContext": "Bálint's theorem: gaps increase outward from midpoint. Also symmetric formulation: outer gaps dominate inner gaps."
     },
     {
       "id": "quartic-case",
       "title": "Quartic Case",
-      "startLine": 140,
-      "endLine": 152,
+      "startLine": 127,
+      "endLine": 139,
       "summary": "Explicit quartic case: 5 roots, 4 critical points, 3 gaps with outer > middle.",
       "mathContext": "Explicit quartic case: 5 roots, 4 critical points, 3 gaps with outer > middle."
     },
     {
       "id": "generalizations",
       "title": "Lorch's Generalizations (1976)",
-      "startLine": 153,
-      "endLine": 168,
+      "startLine": 140,
+      "endLine": 146,
       "summary": "Extension to higher derivatives: zeros of f^(k) also exhibit outward gap monotonicity.",
       "mathContext": "Extension to higher derivatives: zeros of f^(k) also exhibit outward gap monotonicity."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 169,
-      "endLine": 171,
+      "startLine": 147,
+      "endLine": 170,
       "summary": "erdos_1114_summary theorem combining Bálint's main result with the quartic special case.",
       "mathContext": "erdos_1114_summary theorem combining Bálint's main result with the quartic special case."
     }
