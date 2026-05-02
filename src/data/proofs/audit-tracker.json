@@ -6083,9 +6083,12 @@
     },
     "erdos-342": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T00:33:54Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom axioms in sections (ulamSeq_unique_representation, ulamSeq_minimal, ulamSeq_values, five_not_ulam, six_is_ulam, twin_examples, erdos_342, ulamSeq_growth, ulamSeq_growth_constant, ulam_characterization); section line-range drift across all parts; theoremCount 20→19; imports drift (#14463)"
+      ]
     },
     "erdos-343": {
       "agentId": "auditor-cycle-20-batch",
