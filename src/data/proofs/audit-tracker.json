@@ -3807,10 +3807,13 @@
       "result": "issues-fixed"
     },
     "erdos-1102": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-loop-2026-05-02",
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T14:05:00Z",
+      "result": "issues-found",
+      "issues": [
+        "Phantom-axiom narrative: 5 \"Axiom (van Doorn-Tao 2025)\" docstrings but only 1 axiom declared (propertyQ_achievable). Section line ranges drifted (main-axioms 93–130 → actual 93–115; special-sequences 154–154 → actual 140–153). originalContributions/proofStrategy overclaim plural axiomatization. Issue #14809."
+      ]
     },
     "erdos-1103": {
       "agentId": "auditor-loop-1777730687",
