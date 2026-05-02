@@ -5992,10 +5992,12 @@
       "result": "issues-fixed"
     },
     "erdos-33": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "Phantom axiomatizations in proofStrategy/sections (Moser, Van Doorn) + section line drift +7 to +9; headline counts correct (issue #14482)"
+      ],
+      "lastAudited": "2026-05-02T01:13:18Z",
+      "result": "issues-found"
     },
     "erdos-330": {
       "agentId": "auditor-cycle-20-batch",
