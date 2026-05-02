@@ -29,7 +29,7 @@
     "historicalContext": "Erdős posed Problem #1175 as part of his broader program on chromatic number and graph structure, asking whether large chromatic number forces the existence of triangle-free subgraphs with large chromatic number. The question sits at the intersection of infinite combinatorics and set theory. Mycielski (1955) showed that for every finite $k$, triangle-free graphs with $\\chi = k$ exist, via an iterative construction producing graphs $M_k$ on $3 \\cdot 2^{k-2} - 1$ vertices. Erdős (1959) proved the stronger result that for every $k \\geq 1$ and $g \\geq 3$, there exist finite graphs with girth $\\geq g$ and $\\chi \\geq k$, using the probabilistic method — one of its earliest applications. These results show the finite case of the conjecture holds (via Ramsey-type arguments), but the uncountable case is fundamentally different. Shelah proved that a negative answer is consistent with ZFC for $\\kappa = \\lambda = \\aleph_1$: there consistently exists a graph $G$ with $\\chi(G) = \\aleph_1$ whose every triangle-free induced subgraph has countable chromatic number. This uses sophisticated forcing techniques and demonstrates that the problem is genuinely set-theoretic — its answer may depend on which axioms of set theory one adopts beyond ZFC.",
     "problemStatement": "For each uncountable cardinal $\\kappa$, does there exist a cardinal $\\lambda$ such that every graph $G$ with $\\chi(G) \\geq \\lambda$ contains a triangle-free subgraph $H$ with $\\chi(H) \\geq \\kappa$?",
     "text": "For each uncountable cardinal κ, does there exist λ such that every graph with χ(G) ≥ λ contains a triangle-free subgraph with χ ≥ κ? Shelah showed a negative answer is consistent with ZFC for κ = λ = ℵ₁. Open.",
-    "proofStrategy": "The formalization axiomatizes cardinal-indexed graph coloring (IsProperColoring, IsColorable, cardinalChromaticNumber) to handle uncountable chromatic numbers, avoiding universe issues inherent in defining infima over proper classes. Triangle-freeness and induced subgraphs use subtypes inheriting symmetry and irreflexivity. The main conjecture is stated universally over all types and graphs. Shelah's consistency result is encoded as an axiom (shelah_consistency) and used to derive shelah_implies_failure_at_aleph1 by contradiction. Positive results (Mycielski's theorem, finite case, Erdős 1959 existence) are axiomatized. A girth variant generalizes triangle-freeness to cycles of length $< g$.",
+    "proofStrategy": "The formalization axiomatizes cardinal-indexed graph coloring (IsProperColoring, IsColorable, cardinalChromaticNumber) to handle uncountable chromatic numbers, avoiding universe issues inherent in defining infima over proper classes. Triangle-freeness and induced subgraphs use subtypes inheriting symmetry and irreflexivity. The main conjecture is stated universally over all types and graphs. Shelah's consistency result is encoded as an axiom (shelah_consistency) and used to derive shelah_implies_failure_at_aleph1 by contradiction. Positive results (Mycielski's theorem, the finite case, and Erdős's 1959 high-girth construction) are noted in docstrings as context but are not formalized in this file. A girth variant generalizes triangle-freeness to cycles of length $< g$.",
     "keyInsights": [
       "The problem is **set-theoretically independent**: Shelah's forcing construction shows a negative answer is consistent with ZFC for $\\kappa = \\lambda = \\aleph_1$, meaning no proof or disproof from ZFC alone is possible at this parameter",
       "The **finite-to-infinite gap** is the core difficulty: Ramsey theory and the Erdős-Hajnal theorem resolve the finite case, but these tools fail for uncountable cardinals where compactness arguments break down",
@@ -89,9 +89,9 @@
       "id": "finite-case",
       "title": "Finite Case and Mycielski",
       "startLine": 132,
-      "endLine": 151,
-      "summary": "Two positive results: Mycielski's theorem (∀ k ≥ 1, ∃ triangle-free G with χ(G) = k) and the finite case of the conjecture (∀ finite k, ∃ n such that χ(G) ≥ n implies G has triangle-free subgraph with χ ≥ k).",
-      "mathContext": "Two positive results: Mycielski's theorem (∀ k ≥ 1, ∃ triangle-free G with χ(G) = k) and the finite case of the conjecture (∀ finite k, ∃ n such that χ(G) ≥ n implies G has triangle-free subgraph with χ ≥ k)."
+      "endLine": 139,
+      "summary": "Documents two positive results from the literature as background context in docstrings: Mycielski's theorem (1955, ∀ k ≥ 1, ∃ triangle-free G with χ(G) = k) and the finite case of the conjecture via Ramsey-type bounds. Neither is formalized — the docstrings are not followed by any axiom, theorem, or definition.",
+      "mathContext": "Documents two positive results from the literature as background context in docstrings: Mycielski's theorem (1955, ∀ k ≥ 1, ∃ triangle-free G with χ(G) = k) and the finite case of the conjecture via Ramsey-type bounds. Neither is formalized — the docstrings are not followed by any axiom, theorem, or definition."
     },
     {
       "id": "girth-variant",
@@ -106,8 +106,8 @@
       "title": "Erdős 1959 Existence and Summary",
       "startLine": 174,
       "endLine": 186,
-      "summary": "Axiomatizes Erdős (1959): ∀ k ≥ 1, g ≥ 3, ∃ finite graph with girth ≥ g and χ ≥ k (probabilistic method). Summary theorem confirms Shelah's result as the main known result. ErdosProblem1175 := erdos1175.",
-      "mathContext": "Axiomatizes Erdős (1959): ∀ k ≥ 1, g ≥ 3, ∃ finite graph with girth ≥ g and χ ≥ k (probabilistic method). Summary theorem confirms Shelah's result as the main known result. ErdosProblem1175 := erdos1175."
+      "summary": "Documents Erdős's 1959 probabilistic-method existence result as background context (docstring at lines 169–170; not formalized — no axiom or theorem follows). Defines `ErdosProblem1175 := erdos1175`. Proves `erdos1175_summary` by applying `shelah_consistency`.",
+      "mathContext": "Documents Erdős's 1959 probabilistic-method existence result as background context (docstring; not formalized). Defines `ErdosProblem1175 := erdos1175`. Proves `erdos1175_summary` by applying `shelah_consistency`: consistently ∃ G with χ(G) = ℵ₁ whose triangle-free subgraphs all have χ ≤ ℵ₀."
     }
   ],
   "conclusion": {
