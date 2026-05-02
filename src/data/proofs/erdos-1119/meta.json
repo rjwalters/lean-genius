@@ -51,11 +51,9 @@
       "IsEntire axiom for entire functions",
       "valuesAtPoint and IsWetzelFamily definitions",
       "WetzelProblem and WetzelQuestion definitions",
-      "erdos_1964_wetzel and erdos_1964_wetzel_ch axioms",
+      "erdos_1964_wetzel axiom (Erdős 1964)",
       "easy_case axiom (Hayman 1974)",
-      "kumar_shelah_2017 and schilhan_weinert_2024 axioms",
-      "identity_theorem_entire axiom",
-      "wetzel_equivalent_to_ch axiom",
+      "continuum_eq_two_aleph_zero theorem",
       "erdos_1119_summary theorem"
     ],
     "axiomCount": 3,
@@ -66,7 +64,7 @@
     "historicalContext": "Erdős Problem #1119 generalizes Wetzel's 1963 question, which asked whether a family of entire functions with only countably many values at each point must itself be countable. Erdős solved Wetzel's problem in 1964 by showing the answer is equivalent to the negation of the Continuum Hypothesis: YES if 𝔠 > ℵ₁, but NO under CH. Problem #1119 extends this to arbitrary intermediate cardinals 𝔪 with ℵ₀ < 𝔪 < 𝔠.\n\nThe answer splits into two cases based on the cardinal successor 𝔪⁺. If 𝔪⁺ < 𝔠, the answer is YES — this was noted as 'easy to see' by Hayman (1974), using the identity theorem for entire functions (distinct entire functions agree on at most countably many points). The key insight is that a diagonalization argument over the value sets forces the family to be small.\n\nThe deep case occurs when 𝔪⁺ = 𝔠, particularly 𝔪 = ℵ₁ and 𝔠 = ℵ₂. Kumar and Shelah (2017) constructed a ZFC model where YES holds in this case, while Schilhan and Weinert (2024) constructed a different model where NO holds. Together, these results show the problem is independent of ZFC when 𝔪⁺ = 𝔠, completely resolving Erdős's question.",
     "problemStatement": "**Problem Statement (Solved — Independent of ZFC)**\n\nLet $\\mathfrak{m}$ be an infinite cardinal with $\\aleph_0 < \\mathfrak{m} < \\mathfrak{c} = 2^{\\aleph_0}$. Let $\\{f_\\alpha\\}$ be a family of entire functions such that, for every $z_0 \\in \\mathbb{C}$, there are at most $\\mathfrak{m}$ distinct values of $f_\\alpha(z_0)$. Must $\\{f_\\alpha\\}$ have cardinality at most $\\mathfrak{m}$?\n\n**Answer:** YES if $\\mathfrak{m}^+ < \\mathfrak{c}$ (provable in ZFC). INDEPENDENT of ZFC if $\\mathfrak{m}^+ = \\mathfrak{c}$.",
     "text": "If a family of entire functions has at most 𝔪 distinct values at each point, must the family have cardinality ≤ 𝔪? Answer: YES if 𝔪⁺ < 𝔠, INDEPENDENT of ZFC if 𝔪⁺ = 𝔠.",
-    "proofStrategy": "**Formalization Approach**\n\nThe formalization axiomatizes entire functions (IsEntire) and defines Wetzel families via cardinality bounds on value sets. The original Wetzel problem (𝔪 = ℵ₀) is axiomatized via Erdős's 1964 result and its CH counterpart. The easy case (𝔪⁺ < 𝔠) is axiomatized following Hayman. The independence results are captured as structured axioms: Kumar-Shelah gives a model where the bound holds, Schilhan-Weinert gives one where it fails. The summary theorem combines the Erdős and Hayman results into a conjunction proved by exact ⟨...⟩.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization axiomatizes entire functions (IsEntire) and defines Wetzel families via cardinality bounds on value sets. The original Wetzel problem (𝔪 = ℵ₀) is axiomatized via Erdős's 1964 result and its CH counterpart. The easy case (𝔪⁺ < 𝔠) is axiomatized following Hayman. The Kumar-Shelah (2017) and Schilhan-Weinert (2024) independence results are documented in source comments — they are not formalized as Lean axioms or theorems. The summary theorem combines the Erdős and Hayman results into a conjunction proved by exact ⟨...⟩.",
     "keyInsights": [
       "**Generalized Wetzel:** Problem #1119 extends Wetzel's ℵ₀ question to arbitrary intermediate cardinals 𝔪",
       "**Identity Theorem is Key:** Distinct entire functions agree on at most countably many points, constraining value sets",
@@ -91,42 +89,58 @@
     {
       "id": "wetzel-problem",
       "title": "The Original Wetzel Problem (Erdős 1964)",
-      "summary": "WetzelProblem, erdos_1964_wetzel, erdos_1964_wetzel_ch",
+      "summary": "WetzelProblem definition and erdos_1964_wetzel axiom (Erdős 1964: ¬CH implies countable Wetzel families). The CH counterpart (line 63) is a docstring only — no erdos_1964_wetzel_ch declaration exists.",
       "startLine": 50,
-      "endLine": 70,
-      "mathContext": "Mathematical content: WetzelProblem, erdos_1964_wetzel, erdos_1964_wetzel_ch"
+      "endLine": 63,
+      "mathContext": "WetzelProblem definition and erdos_1964_wetzel axiom (Erdős 1964). The CH counterpart is noted in a docstring; not formalized as a Lean axiom."
     },
     {
       "id": "easy-case",
       "title": "The Easy Case (𝔪⁺ < 𝔠)",
       "summary": "succCard, easy_case axiom (Hayman 1974)",
-      "startLine": 71,
-      "endLine": 85,
+      "startLine": 64,
+      "endLine": 78,
       "mathContext": "Axiomatized: succCard, easy_case axiom (Hayman 1974)"
     },
     {
       "id": "undecidable-case",
       "title": "The Undecidable Case (𝔪⁺ = 𝔠)",
-      "summary": "SuccessorEqualsContinuum, kumar_shelah_2017, schilhan_weinert_2024",
-      "startLine": 86,
-      "endLine": 110,
-      "mathContext": "Mathematical content: SuccessorEqualsContinuum, kumar_shelah_2017, schilhan_weinert_2024"
+      "summary": "SuccessorEqualsContinuum definition. Kumar-Shelah (2017) and Schilhan-Weinert (2024) independence results are documented in source comments — no kumar_shelah_2017 or schilhan_weinert_2024 declarations exist.",
+      "startLine": 79,
+      "endLine": 89,
+      "mathContext": "SuccessorEqualsContinuum definition. Independence results (Kumar-Shelah, Schilhan-Weinert) are in docstrings only — not formalized as Lean axioms."
     },
     {
       "id": "identity-theorem",
       "title": "The Identity Theorem",
-      "summary": "identity_theorem_entire axiom",
-      "startLine": 111,
-      "endLine": 120,
-      "mathContext": "Verified: identity_theorem_entire axiom"
+      "summary": "The identity theorem for entire functions is referenced in a source comment — not formalized as a Lean axiom (Part V contains only a docstring placeholder).",
+      "startLine": 90,
+      "endLine": 93,
+      "mathContext": "Identity theorem referenced in docstring. No identity_theorem_entire declaration exists."
     },
     {
       "id": "cardinal-arithmetic",
       "title": "Cardinal Arithmetic Background",
-      "summary": "continuum_eq_two_aleph_zero, gch_implies_no_intermediate, not_ch_intermediate",
-      "startLine": 121,
+      "summary": "continuum_eq_two_aleph_zero theorem. GCH and ¬CH remarks are bare docstrings — no gch_implies_no_intermediate or not_ch_intermediate declarations exist.",
+      "startLine": 94,
+      "endLine": 100,
+      "mathContext": "continuum_eq_two_aleph_zero theorem (continuum = 2^ℵ₀). Surrounding docstrings are background only."
+    },
+    {
+      "id": "wetzel-ch",
+      "title": "Wetzel's Question and CH",
+      "summary": "WetzelQuestion definition and bare docstring noting equivalence to ¬CH. No wetzel_equivalent_to_ch axiom exists.",
+      "startLine": 101,
+      "endLine": 110,
+      "mathContext": "WetzelQuestion definition. Equivalence to ¬CH is noted in a docstring — not formalized as a Lean declaration."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_1119_summary theorem: conjunction of erdos_1964_wetzel and easy_case proved by exact ⟨...⟩.",
+      "startLine": 111,
       "endLine": 133,
-      "mathContext": "Mathematical content: continuum_eq_two_aleph_zero, gch_implies_no_intermediate, not_ch_intermediate"
+      "mathContext": "erdos_1119_summary theorem combining Erdős 1964 and Hayman 1974 results."
     }
   ],
   "conclusion": {
