@@ -53,7 +53,7 @@
     "historicalContext": "This problem concerns the distribution of gaps between consecutive squarefree numbers. A number is squarefree if it is not divisible by any perfect square greater than 1. The density of squarefrees is 6/π² ≈ 60.8%, but the finer structure of gaps is more subtle.\n\nThe question asks whether the αth moment of these gaps, normalized by x, has a limit as x → ∞. The progression of results shows the power of increasingly sophisticated analytic number theory techniques:\n\n- **Erdős (1951)**: Proved for α ≤ 2 using elementary sieve methods\n- **Hooley (1973)**: Extended to α ≤ 3 via exponential sums\n- **Greaves-Harman-Huxley (1997)**: Reached α ≤ 11/3 ≈ 3.67 using sieve methods and exponential sums\n- **Chan (2023)**: Current record of α ≤ 3.75\n- **Granville (1998)**: Complete resolution (all α ≥ 0) conditional on the ABC conjecture",
     "problemStatement": "Let $s_1 < s_2 < \\cdots$ be the sequence of squarefree numbers. Is it true that, for any $\\alpha \\geq 0$, the limit\n$$\\lim_{x \\to \\infty} \\frac{1}{x} \\sum_{s_n \\leq x} (s_{n+1} - s_n)^\\alpha$$\nexists?\n\n**Partially Solved**: Yes for $\\alpha \\leq 3.75$ (Chan 2023), and yes for all $\\alpha \\geq 0$ assuming the ABC conjecture (Granville 1998).\n\n**Still Open**: The unconditional case for $\\alpha > 3.75$.",
     "text": "Let s₁ < s₂ < ... be the sequence of squarefree numbers. Does the limit of (1/x) ∑_{sₙ≤x} (s_{n+1} - sₙ)^α exist for all α ≥ 0?",
-    "proofStrategy": "We formalize the definitions and axiomatize the known results:\n\n1. **squarefreeSeq**: The nth squarefree number using Nat.nth\n2. **momentSum**: The normalized moment sum (1/x) ∑_{sₙ≤x} (s_{n+1} - sₙ)^α\n3. **Historical theorems**: Axioms for Erdős, Hooley, GHH, and Chan's results\n4. **Conditional result**: Granville's theorem assuming ABC\n\nThe proofs are axiomatized because they require:\n- Sieve methods and exponential sum bounds\n- Careful estimates on squarefree distribution\n- Advanced analytic number theory not yet in Mathlib",
+    "proofStrategy": "We formalize the definitions and axiomatize the known results:\n\n1. **squarefreeSeq**: The nth squarefree number using Nat.nth\n2. **momentSum**: The normalized moment sum (1/x) ∑_{sₙ≤x} (s_{n+1} - sₙ)^α\n3. **Chan's result axiomatized**: `chan_2023` (α ≤ 3.75) is the single unconditional axiom; Erdős (1951), Hooley (1973), and GHH (1997) bounds are documented as narrative context only (docstrings preceding `chan_2023`), not as separate axiom declarations\n4. **Conditional result**: Granville's theorem assuming ABC (`granville_1998_conditional`)\n\nThe proofs are axiomatized because they require:\n- Sieve methods and exponential sum bounds\n- Careful estimates on squarefree distribution\n- Advanced analytic number theory not yet in Mathlib",
     "keyInsights": [
       "**Squarefree density**: About 60.8% of integers are squarefree, giving an average gap of π²/6 ≈ 1.64",
       "**Moment difficulty increases with α**: Higher moments are harder because they're more sensitive to rare large gaps",
@@ -94,7 +94,7 @@
       "title": "Historical Results",
       "startLine": 66,
       "endLine": 110,
-      "summary": "Axioms for Erdős, Hooley, GHH, Chan, and Granville"
+      "summary": "Axioms for Chan (2023) and Granville (1998 conditional); Erdős, Hooley, GHH bounds documented as narrative context only"
     },
     {
       "id": "summary",
