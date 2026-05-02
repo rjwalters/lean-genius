@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 17: jdt_weight_sum_b_one proved (sorry 3→2). Remaining: jdt_weight_sum b≥2 seam bijection and jacobi_trudi_ssyt_eq k≥3 (RSK).",
+    "progressSummary": "Session 18: Diagnosed non-injective bijection flaw (b≥2 sorry, 17 sessions stalled). Correct path: weight factorization + counting identity via ballot principle. ~100-150 lines needed for b≥2. 2 sorries remain.",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -115,7 +115,11 @@
       "Session 15 (2026-05-02): Decomposed jdt_weight_sum b ≥ 1 case into b = 1 (jdt_weight_sum_b_one helper, with sorry on bijection) + b ≥ 2 (still sorry, the genuine JDT seam). Sorry count went 1 → 2 in jdt_weight_sum, but the b = 1 base is now an explicit sub-problem with named statement matching the recipe.",
       "Session 15: Proved sym_one_sort_head_singleton: for Q : Sym (Fin n) 1, ∃ q. Q.1.sort = [q] ∧ Q.1 = {q}. Reusable infrastructure for Sym/Multiset proofs (List.length_eq_one_iff + Multiset.sort_eq, ~6 lines). Will be used when filling in the jdt_weight_sum_b_one bijection.",
       "Session 16: With a ≥ 1, min a 1 = 1, so ColStrictSym a 1 P Q reduces to a single inequality on the head of each sort. The negation form ¬ColStrictSym ↔ q ≤ (P.sort)[0] is exactly the precondition the b=1 bijection forward map (P, q) ↦ q ::ₛ P needs to align the sortedness invariant.",
-      "jdt_weight_sum_b_one proved (S17): bijection {(P,Q)//¬CS a 1} ≃ Sym n (a+1) via (P,Q)↦q::ₛP where q=unique element of Q. Key: getq via sym_one_sort_head_singleton.choose, left_inv uses Multiset.sort_cons + Sym.erase_cons_head, right_inv uses Sym.cons_erase, weight by ring."
+      "jdt_weight_sum_b_one proved (S17): bijection {(P,Q)//¬CS a 1} ≃ Sym n (a+1) via (P,Q)↦q::ₛP where q=unique element of Q. Key: getq via sym_one_sort_head_singleton.choose, left_inv uses Multiset.sort_cons + Sym.erase_cons_head, right_inv uses Sym.cons_erase, weight by ring.",
+      "S18: The \"insert violation element\" bijection is NON-INJECTIVE for b≥2. Counterexample: (P={1,3,4},Q={0,2,3}) and (P={0,1,4},Q={2,3,3}) both map to (P={0,1,3,4},Q={2,3}) under the forward map. This explains 17 sessions of failed proof attempts.",
+      "S18: Weight factorization insight: wt(P)*wt(Q) = ((P.1+Q.1).map X).prod — weight depends only on total multiset, not the split. Follows from jdt_weight_preserved applied to each element.",
+      "S18: The polynomial identity for jdt_weight_sum reduces to a COUNTING identity: for every M : Sym n (a+b), #{non-cs (a,b) splits of M} = #{all (a+1,b-1) splits of M}. No ring-valued LGV needed.",
+      "S18: Correct proof path for b≥2: group LHS by total multiset M, count non-cs splits per fiber via ballot bijection, regroup RHS. Estimated ~100-150 lines standard Lean combinatorics."
     ],
     "mathlibGaps": [
       "No Mathlib SchurPolynomial definition — we provide one via Jacobi-Trudi formula",
@@ -123,9 +127,11 @@
       "RSK correspondence not formalized in Mathlib — needed for jacobiTrudi_lgv_proof"
     ],
     "nextSteps": [
-      "Implement jdt_weight_sum b≥2 seam bijection (~150-200 lines): find first violation c, insert Q.sort[c] into P, track the seam index through inverses.",
-      "Or: attempt Aristotle on jdt_weight_sum b≥2 sorry — it is a HARD sorry with known combinatorial proof.",
-      "Then tackle jacobi_trudi_ssyt_eq k≥3 (algebraic LGV + RSK, ~300 lines)."
+      "CRITICAL: Do NOT use the insert-violation-element bijection — it is non-injective for b≥2 (S18 counterexample). Use weight-factorization + counting-identity approach instead.",
+      "Implement weight_eq_total_multiset: wt(P)*wt(Q) = ((P.1+Q.1).map X).prod — use jdt_weight_preserved iteratively or direct Multiset.prod lemmas.",
+      "Restructure jdt_weight_sum LHS sum to group by total multiset M : Sym n (a+b). Use Fintype.sum_sigma or equiv to fiber product.",
+      "State and prove ballot_counting_identity: for M : Sym n (a+b), #{non-cs (a,b) splits of M} = C(a+b,a+1). This is the core counting argument — implement as a separate lemma via Fintype.card_congr + ballot bijection.",
+      "For jacobi_trudi_ssyt_eq k≥3: RSK or algebraic LGV remain the only paths. ~300 lines. Consider building BallotProblemOQ03AlgebraicLGV.lean first."
     ],
     "markdown": "# Knowledge Base: LGV Lemma → Jacobi-Trudi Identity\n\n**Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01\n**Last Updated**: 2026-04-23\n**Knowledge Items**: 0\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nNewly selected. Jacobi-Trudi identity expresses Schur polynomials as determinants of\ncomplete homogeneous symmetric polynomials. The LGV lemma (in parent gallery proof)\nprovides the combinatorial proof route via non-intersecting lattice paths.\n\n---\n\n## Insights\n\n_None yet — begin with OBSERVE phase: check Mathlib for SSYT formalization._\n\n---\n\n## Dead Ends\n\n_None identified yet._\n",
     "insightsCount": 38,
