@@ -54,18 +54,15 @@
       "DivisibilityFree: predicate for sets without bad triples",
       "divisibilityFree_iff: proved equivalence of two formulations",
       "upperThird: construction of the optimal (2N/3, N] set",
-      "upperThird_divisibilityFree: axiom that upper third is divisibility-free",
-      "upperThird_card: axiom giving exact cardinality",
-      "upperThird_achieves_bound: axiom that upper third achieves N/3",
-      "bedert_theorem: axiom stating Bedert's N/3 + O(1) bound",
-      "upperThird_optimal: axiom that upper third is essentially optimal",
+      "upperThird_card: proved exact cardinality N - 2⌊N/3⌋",
+      "upperThird_achieves_bound: proved cardinality ≥ N/3 for N ≥ 3",
+      "bedert_theorem: axiom stating Bedert's N/3 + O(1) bound (the only axiom in the file)",
       "RDivisibilityFree: generalization to r-element sums",
       "rDivisibilityFree_two: proved r=2 recovers original condition",
       "ErdosRSumConjecture: formal statement of the r-sum conjecture",
-      "erdos_rsum_two: proved r=2 case equals Bedert's theorem",
+      "erdos_rsum_two: proved r=2 case equals Bedert's theorem (deriving from bedert_theorem)",
       "mem_upperThird_iff: proved membership characterization",
-      "SumFree: definition of sum-free sets",
-      "upperThird_sumFree: axiom that upper third is sum-free"
+      "SumFree: definition of sum-free sets"
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 1,
@@ -109,14 +106,14 @@
     {
       "id": "upper-third",
       "title": "The Upper Third Construction",
-      "summary": "Defines upperThird(N) = {k : 2N < 3k, k \u2264 N}, axiomatizes it is divisibility-free and has cardinality N - 2N/3.",
+      "summary": "Defines upperThird(N) = {k : 2N < 3k, k \u2264 N}; proves exact cardinality N - 2\u230aN/3\u230b and lower bound \u2265 N/3 for N \u2265 3. No divisibility-free property is currently asserted as a Lean declaration.",
       "startLine": 69,
       "endLine": 101
     },
     {
       "id": "bedert",
       "title": "Bedert's Theorem (2023)",
-      "summary": "Axiomatizes the main result: |A| \u2264 N/3 + C for divisibility-free A \u2286 {1,...,N}, and the optimality of the upper third.",
+      "summary": "Axiomatizes the main result: bedert_theorem asserts \u2203 C, \u2200 N A, DivisibilityFree A \u2192 |A| \u2264 N/3 + C. This is the only axiom in the file.",
       "startLine": 102,
       "endLine": 127
     },
@@ -137,7 +134,7 @@
     {
       "id": "sum-free",
       "title": "Connection to Sum-Free Sets",
-      "summary": "Defines SumFree and axiomatizes that the upper third is also sum-free: a + b > 4N/3 > N \u2265 c.",
+      "summary": "Defines SumFree. The upper-third sum-free property is described in the docstring as motivation but is not currently asserted as a Lean declaration.",
       "startLine": 206,
       "endLine": 227
     },
