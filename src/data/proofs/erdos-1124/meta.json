@@ -54,9 +54,6 @@
       "TranslationEquidecomposable/IsometryEquidecomposable: equidecomposability",
       "TarskiProblem: formalized original 1925 question",
       "laczkovich_theorem: Laczkovich's 1990 solution axiomatized",
-      "laczkovich_piece_count: upper bound of 10^51 on pieces",
-      "pieces_not_measurable: non-measurability of decomposition pieces",
-      "dubins_hirsch_karush: impossibility with measurable pieces (1963)",
       "erdos_1124: combined main result closing the problem"
     ],
     "axiomCount": 2,
@@ -67,7 +64,7 @@
     "historicalContext": "Alfred Tarski posed the circle-squaring problem in 1925 as Problem 38 in Fundamenta Mathematicae: can a circle be decomposed into finitely many pieces and reassembled into a square of equal area? The problem was inspired by the classical Wallace-Bolyai-Gerwien theorem (1807–1833), which establishes that any two polygons of equal area are scissors-congruent — but that result requires polygonal pieces and does not extend to curved regions.\n\nThe problem attracted enormous interest because of its connections to the Banach-Tarski paradox (1924), which showed that a solid sphere can be decomposed into finitely many pieces and reassembled into two spheres of the same size — but using volume-changing, non-measurable pieces. Tarski's question asked whether similar pathological decompositions could achieve the more modest goal of area-preserving rearrangement in the plane.\n\nPaul Erdős called it 'a very beautiful problem' and reportedly said he would offer $1000 for its solution. In 1963, Dubins, Hirsch, and Karush proved a crucial negative result: no decomposition into Lebesgue measurable pieces can work, since translations preserve measure and the disk and square have different measures ($\\pi \\neq 1$ for unit versions). This showed that any solution must involve non-measurable, Axiom-of-Choice-dependent sets.\n\nThe breakthrough came in 1990 when Miklós Laczkovich (b. 1948, Budapest) resolved the problem affirmatively. His proof, published in Crelle's Journal, used deep ideas from discrepancy theory — specifically, he analyzed the discrepancy of the disk boundary with respect to half-planes and showed it was small enough ($O(r^{2/3})$) to permit equidecomposition. Remarkably, Laczkovich proved that translations alone suffice — no rotations or reflections needed — using approximately $10^{50}$ pieces. The proof is non-constructive, relying essentially on the Axiom of Choice.\n\nIn 2017, Grabowski, Máthé, and Pikhurko achieved a further breakthrough: they showed the decomposition can be done with pieces that are Lebesgue measurable and have the property of Baire, answering a question left open by Laczkovich (though their pieces use a different, weaker notion of congruence involving Borel isomorphisms).",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nCan a circle and square of equal area be decomposed into a finite number of congruent parts?\n\n**Answer: YES** (Laczkovich 1990)\n\nFormally: for all $r, s > 0$ with $\\pi r^2 = s^2$, the disk $D(r) = \\{p : \\|p\\| \\leq r\\}$ and square $S(s) = [0,s]^2$ are translation equidecomposable — there exist partitions $D(r) = \\bigsqcup_{i=1}^n A_i$ and $S(s) = \\bigsqcup_{i=1}^n B_i$ with $B_i = A_i + v_i$.\n\nKey features:\n- Translations alone suffice (stronger than the original isometry question)\n- Uses approximately $10^{50}$ pieces\n- Proof is non-constructive (requires Axiom of Choice)\n- Pieces cannot all be Lebesgue measurable (Dubins-Hirsch-Karush 1963)",
     "text": "Can a circle and square of equal area be decomposed into finitely many congruent pieces? SOLVED by Laczkovich (1990): YES, using translations only with approximately 10^50 pieces.",
-    "proofStrategy": "The formalization proceeds in seven parts:\n\n1. **Basic geometry**: Define `Point` as $\\mathbb{R}^2$ via Mathlib's `EuclideanSpace`, then `disk r` and `square s` as subsets.\n2. **Congruence relations**: Define `TranslationCongruent` ($B = A + v$) and `IsometryCongruent` ($B = f(A)$ for isometry $f$).\n3. **Decomposition framework**: `IsDecomposition S pieces` requires pairwise disjointness and union = $S$. `TranslationEquidecomposable` and `IsometryEquidecomposable` pair two such decompositions with matching pieces.\n4. **Equal area**: `SameArea r s` encodes $\\pi r^2 = s^2$; the theorem `equal_areas` verifies this for $r = 1/\\sqrt{\\pi}$, $s = 1$ via `field_simp; ring`.\n5. **Tarski's Problem**: Formalized as a $\\forall$-statement using isometry equidecomposability.\n6. **Laczkovich's Theorem**: Axiomatized with the stronger translation form. The piece count bound ($< 10^{51}$) and the implication to isometry equidecomposability are derived.\n7. **Non-measurability**: The Dubins-Hirsch-Karush impossibility result and non-measurability of pieces are axiomatized.",
+    "proofStrategy": "The formalization proceeds in seven parts:\n\n1. **Basic geometry**: Define `Point` as $\\mathbb{R}^2$ via Mathlib's `EuclideanSpace`, then `disk r` and `square s` as subsets.\n2. **Congruence relations**: Define `TranslationCongruent` ($B = A + v$) and `IsometryCongruent` ($B = f(A)$ for isometry $f$).\n3. **Decomposition framework**: `IsDecomposition S pieces` requires pairwise disjointness and union = $S$. `TranslationEquidecomposable` and `IsometryEquidecomposable` pair two such decompositions with matching pieces.\n4. **Equal area**: `SameArea r s` encodes $\\pi r^2 = s^2$; the theorem `equal_areas` verifies this for $r = 1/\\sqrt{\\pi}$, $s = 1$ via `field_simp; ring`.\n5. **Tarski's Problem**: Formalized as a $\\forall$-statement using isometry equidecomposability.\n6. **Laczkovich's Theorem**: Axiomatized with the stronger translation form (`laczkovich_theorem`). The implication to isometry equidecomposability is derived via `translation_implies_isometry`. The piece count bound is mentioned in source comments only — not formalized as a Lean declaration.\n7. **Non-measurability**: The Dubins-Hirsch-Karush impossibility result and non-measurability of pieces are referenced in source comments only — not formalized as Lean axioms or theorems.",
     "keyInsights": [
       "**65 years open (1925–1990)**: Tarski's problem resisted all approaches until Laczkovich's discrepancy-theoretic breakthrough, making it one of the longest-standing open problems in combinatorial geometry",
       "**Translations suffice**: Laczkovich proved the stronger result that only translations are needed — no rotations or reflections — which was unexpected and uses the abelian structure of the translation group",
@@ -128,29 +125,29 @@
       "summary": "Formalizes `TarskiProblem` as: $\\forall\\, r, s > 0$, $\\pi r^2 = s^2 \\implies D(r) \\sim_E S(s)$. This was open for 65 years and considered one of the most beautiful problems in combinatorial geometry.",
       "startLine": 120,
       "endLine": 132,
-      "mathContext": "Formalizes `TarskiProblem` as: $\\forall\\, r, s > 0$, $\\$\\pi$ r^2 = s^2 \\implies D(r) \\sim_E S(s)$. This was open for 65 years and considered one of the most beautiful problems in combinatorial geometry."
+      "mathContext": "Formalizes `TarskiProblem` as: $\\forall\\, r, s > 0$, $\\pi r^2 = s^2 \\implies D(r) \\sim_E S(s)$. This was open for 65 years and considered one of the most beautiful problems in combinatorial geometry."
     },
     {
       "id": "laczkovich-theorem",
       "title": "Laczkovich's Solution (1990)",
-      "summary": "Axiomatizes `laczkovich_theorem` ($D(r) \\sim_T S(s)$ for equal-area pairs), `laczkovich_piece_count` ($< 10^{51}$ pieces), `translation_implies_isometry` (since translations are isometries), and derives `tarski_solved : TarskiProblem`.",
+      "summary": "Axiomatizes `laczkovich_theorem` ($D(r) \\sim_T S(s)$ for equal-area pairs) and `translation_implies_isometry` (since translations are isometries), and derives `tarski_solved : TarskiProblem`. The piece count bound is in a source comment only — no `laczkovich_piece_count` declaration exists.",
       "startLine": 133,
-      "endLine": 166,
-      "mathContext": "Axiomatizes `laczkovich_theorem` ($D(r) \\sim_T S(s)$ for equal-area pairs), `laczkovich_piece_count` ($< 10^{51}$ pieces), `translation_implies_isometry` (since translations are isometries), and derives `tarski_solved : TarskiProblem`."
+      "endLine": 157,
+      "mathContext": "Axiomatizes `laczkovich_theorem` ($D(r) \\sim_T S(s)$ for equal-area pairs) and `translation_implies_isometry` (since translations are isometries), and derives `tarski_solved : TarskiProblem`."
     },
     {
       "id": "non-measurability",
       "title": "Non-Measurability Results",
       "summary": "documents in source comments `pieces_not_measurable` (no Lean declaration exists) (any disk decomposition has a non-measurable piece) and `dubins_hirsch_karush` (1963): no decomposition into measurable, translation-congruent pieces exists, since $\\lambda^2(D) = \\pi \\neq 1 = \\lambda^2(S)$.",
-      "startLine": 167,
-      "endLine": 185,
+      "startLine": 159,
+      "endLine": 164,
       "mathContext": "documents in source comments `pieces_not_measurable` (no Lean declaration exists) (any disk decomposition has a non-measurable piece) and `dubins_hirsch_karush` (1963): no decomposition into measurable, translation-congruent pieces exists, since $\\lambda^2(D) = \\pi \\neq 1 = \\lambda^2(S)$."
     },
     {
       "id": "main-result",
       "title": "Main Result: erdos_1124",
       "summary": "The summary theorem: `TarskiProblem ∧ (∀ r s, ... → TranslationEquidecomposable ...)`. Proved via `exact ⟨tarski_solved, laczkovich_theorem⟩`, packaging Tarski's answer with Laczkovich's stronger translation-only result.",
-      "startLine": 186,
+      "startLine": 182,
       "endLine": 190,
       "mathContext": "The summary theorem: `TarskiProblem ∧ (∀ r s, ... → TranslationEquidecomposable ...)`. Proved via `exact ⟨tarski_solved, laczkovich_theorem⟩`, packaging Tarski's answer with Laczkovich's stronger translation-only result."
     }
