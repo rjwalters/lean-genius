@@ -42,13 +42,9 @@
       "pair_is_nonAveraging verified theorem",
       "nonAveraging_subset hereditary property (verified)",
       "nonAveraging_no_centered_AP symmetry lemma (verified)",
-      "bosznay_lower_bound axiom for N^(1/4) lower bound",
-      "erdos_sarkozy_upper_bound_1990 axiom for original bound",
-      "conlon_fox_pham_upper_bound_2023 axiom",
-      "pham_zakharov_upper_bound_2024 axiom for sharp bound",
-      "erdos_186_bounds theorem combining lower and upper bounds",
-      "roth_bound_comparison axiom relating to Roth's theorem",
-      "exponent_is_quarter and upper_exponent_not_exact optimality axioms"
+      "lower_bound_quarter axiom: F(N) ≥ N^(1/4)/2 for N ≥ 1 (Bosznay 1989)",
+      "pham_zakharov_upper_bound_2024 axiom: F(N) ≤ C·N^(1/4+ε) for all ε > 0 (Pham-Zakharov 2024)",
+      "erdos_186_bounds theorem combining lower_bound_quarter and pham_zakharov_upper_bound_2024"
     ],
     "axiomCount": 2,
     "lineCount": 243,
@@ -77,7 +73,7 @@
       "title": "Non-Averaging Sets",
       "summary": "IsNonAveraging definition and alternative formulation",
       "startLine": 39,
-      "endLine": 70,
+      "endLine": 69,
       "mathContext": "Formal definition: IsNonAveraging definition and alternative formulation"
     },
     {
@@ -85,7 +81,7 @@
       "title": "Simple Examples",
       "summary": "Verified theorems for empty, singleton, and pair sets",
       "startLine": 71,
-      "endLine": 100,
+      "endLine": 99,
       "mathContext": "Verified: Verified theorems for empty, singleton, and pair sets"
     },
     {
@@ -93,47 +89,47 @@
       "title": "Lower Bound (Bosznay 1989)",
       "summary": "Construction achieving N^(1/4) and corollary",
       "startLine": 101,
-      "endLine": 127,
+      "endLine": 121,
       "mathContext": "Mathematical content: Construction achieving N^(1/4) and corollary"
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "summary": "Erdős-Sárközy, Conlon-Fox-Pham, Pham-Zakharov bounds",
-      "startLine": 128,
-      "endLine": 161,
+      "startLine": 123,
+      "endLine": 145,
       "mathContext": "Bound: Erdős-Sárközy, Conlon-Fox-Pham, Pham-Zakharov bounds"
     },
     {
       "id": "main-results",
       "title": "Main Results",
-      "summary": "erdos_186_bounds theorem and erdos_186 axiom",
-      "startLine": 162,
-      "endLine": 205,
-      "mathContext": "Verified: erdos_186_bounds theorem and erdos_186 axiom"
+      "summary": "erdos_186_bounds theorem combining lower and upper bounds",
+      "startLine": 147,
+      "endLine": 173,
+      "mathContext": "Verified: erdos_186_bounds theorem combining lower_bound_quarter and pham_zakharov_upper_bound_2024"
     },
     {
       "id": "properties",
       "title": "Properties of Non-Averaging Sets",
       "summary": "Hereditary property and centered AP avoidance",
-      "startLine": 206,
-      "endLine": 226,
+      "startLine": 185,
+      "endLine": 204,
       "mathContext": "Mathematical content: Hereditary property and centered AP avoidance"
     },
     {
       "id": "connections",
       "title": "Connection to Arithmetic Progressions",
-      "summary": "Roth's theorem comparison axiom",
-      "startLine": 227,
-      "endLine": 241,
-      "mathContext": "Verified: Roth's theorem comparison axiom"
+      "summary": "Roth's theorem connection: non-averaging vs AP-free comparison",
+      "startLine": 206,
+      "endLine": 214,
+      "mathContext": "Context: Roth's theorem connection and non-averaging vs AP-free comparison"
     },
     {
       "id": "growth-rate",
       "title": "The Growth Rate",
       "summary": "Exponent 1/4 correctness and o(1) necessity",
-      "startLine": 242,
-      "endLine": 243,
+      "startLine": 216,
+      "endLine": 225,
       "mathContext": "Mathematical content: Exponent 1/4 correctness and o(1) necessity"
     }
   ],
