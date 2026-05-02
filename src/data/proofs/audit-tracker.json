@@ -4884,10 +4884,12 @@
       "result": "clean"
     },
     "erdos-174": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "section line drift in 5/9 sections (Parts V-IX); known-ramsey endLine 160→158, examples 161-187→159-178, non-ramsey 188-206→179-197, characterization 207-221→198-212, summary 222-247→213-247; not_spherical_not_ramsey at L182 falls outside its claimed section by line; counts/axioms/narrative all accurate (#14671)"
+      ],
+      "lastAudited": "2026-05-02T08:42:30Z",
+      "result": "issues-found"
     },
     "erdos-175": {
       "auditCount": 2,
