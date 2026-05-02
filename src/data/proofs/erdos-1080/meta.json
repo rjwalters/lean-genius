@@ -103,10 +103,10 @@
     {
       "id": "extremal-function",
       "title": "The Extremal Function f(n,m)",
-      "summary": "maxC4C6FreeEdges definition and achievability axiom",
+      "summary": "maxC4C6FreeEdges definition (lines 152-154); lines 156-158 contain an orphaned achievability docstring with no corresponding Lean declaration",
       "startLine": 139,
-      "endLine": 154,
-      "mathContext": "Formal definition: maxC4C6FreeEdges definition and achievability axiom"
+      "endLine": 158,
+      "mathContext": "Formal definition: maxC4C6FreeEdges (sSup-based def, lines 152-154). Lines 156-158: orphaned '/-- f(n,m) is achieved by some bipartite graph. -/' docstring — no formal axiom declaration follows."
     },
     {
       "id": "decaen-szekely",
@@ -114,7 +114,7 @@
       "summary": "Upper and lower bounds, Faudree-Simonovits general bound — discussed in source comments; no formal axiom for deCaen-Székely bounds in the kernel",
       "startLine": 159,
       "endLine": 181,
-      "mathContext": "Discussion only: De Caen-Székely upper/lower bounds and Faudree-Simonovits referenced in docstrings at lines 165-176; no formal declaration follows"
+      "mathContext": "Discussion only: De Caen-Székely upper/lower bounds and Faudree-Simonovits general bound referenced in docstrings at lines 165-181; no formal declaration follows"
     },
     {
       "id": "lazebnik-improvement",
@@ -222,7 +222,7 @@
       "year": "1954",
       "volume": 3,
       "pages": "50–57",
-      "note": "Classical theorem bounding the number of edges in K_{s,t}-free bipartite graphs; the formalization includes a kovari_sos_turan theorem as a related extremal result."
+      "note": "Classical theorem bounding the number of edges in K_{s,t}-free bipartite graphs; referenced in source comments as context for extremal results. No formal kovari_sos_turan declaration in the kernel — only a docstring at lines 290–295."
     },
     {
       "authors": "Faudree, R. J. and Simonovits, M.",
