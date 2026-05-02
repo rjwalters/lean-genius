@@ -105,8 +105,8 @@
       "title": "Known Upper and Lower Bounds",
       "startLine": 133,
       "endLine": 173,
-      "summary": "Axiomatizes three bounds: Erdős–Gallai's $O(n \\log n)$, the $(1+c)n$ lower bound from $K_{3,n-3}$, Bucić–Montgomery's $O(n \\log^* n)$, and defines the iterated logarithm `logStar`.",
-      "mathContext": "Axiomatizes three bounds: Erdős–Gallai's $$O(n \\$\\log n$)$$, the $(1+c)n$ lower bound from $K_{3,n-3}$, Bucić–Montgomery's $$O(n \\log^* n)$$, and defines the iterated logarithm `logStar`."
+      "summary": "Axiomatizes two bounds: the $(1+c)n$ lower bound from $K_{3,n-3}$ and Bucić–Montgomery's $O(n \\log^* n)$. The original Erdős–Gallai $O(n \\log n)$ bound is mentioned in a docstring but not formally axiomatized. Defines the iterated logarithm `logStar`.",
+      "mathContext": "Axiomatizes two bounds: the $(1+c)n$ lower bound from $K_{3,n-3}$ and Bucić–Montgomery's $$O(n \\log^* n)$$. The original Erdős–Gallai $$O(n \\log n)$$ bound is mentioned in a docstring but not formally axiomatized. Defines the iterated logarithm `logStar`."
     },
     {
       "id": "dense-graphs",
@@ -121,8 +121,8 @@
       "title": "Non-Disjoint Covering",
       "startLine": 194,
       "endLine": 217,
-      "summary": "Defines `IsValidCovering` (drops disjointness) and `coverNumber`. Axiomatizes Erdős's result: $\\text{cov}(G) \\leq n - 1$, showing the disjointness constraint is the source of difficulty.",
-      "mathContext": "Formal definition: Defines `IsValidCovering` (drops disjointness) and `coverNumber`. Axiomatizes Erdős's result: $\\text{cov}(G) \\leq n - 1$, showing the disjointness constraint is the source of difficulty."
+      "summary": "Defines `IsValidCovering` (drops disjointness) and axiomatizes the `coverNumber` function symbol. Erdős's bound $\\text{cov}(G) \\leq n - 1$ is mentioned in a docstring but not formally axiomatized.",
+      "mathContext": "Formal definition: Defines `IsValidCovering` (drops disjointness) and axiomatizes the `coverNumber` function symbol. Erdős's bound $$\\text{cov}(G) \\leq n - 1$$ is mentioned in a docstring but not formally axiomatized."
     },
     {
       "id": "summary",
@@ -137,7 +137,7 @@
     "historicalContext": "**The Erdős-Gallai Conjecture**\n\nErdős and Gallai conjectured in 1966 that any graph on n vertices can be decomposed into O(n) edge-disjoint cycles and edges. This is a fundamental question in graph decomposition theory: how efficiently can a graph's edge set be partitioned into simple structural pieces? They proved the first upper bound of O(n log n), establishing the order of magnitude up to a logarithmic factor.\n\n**Progress Toward the Conjecture**\n\nConlon, Fox, and Sudakov (2014) proved that O(n) pieces suffice for dense graphs — those with minimum degree at least εn for any fixed ε > 0. This resolved the conjecture for the dense case using Szemerédi's regularity lemma. Bucić and Montgomery (2022) achieved the current best general bound of O(n log* n), where log* is the iterated logarithm — a function that grows so slowly that log*(10^{10^{10}}) ≈ 5. Their proof introduced an iterative peeling technique that extracts dense subgraphs and decomposes them layer by layer.\n\n**The Remaining Gap**\n\nThe gap between the lower bound of (1+c)n (from K_{3,n-3}) and the upper bound of O(n log* n) is remarkably small in practical terms, since log* n ≤ 5 for all feasible n. Yet closing this gap and proving O(n) in full generality has resisted all attempts. The iterated logarithm barrier appears to be a fundamental obstacle in current peeling-based approaches.",
     "problemStatement": "Any graph on $n$ vertices can be decomposed into $O(n)$ many edge-disjoint cycles and edges.",
     "text": "The Erdős-Gallai Conjecture: Any graph on n vertices can be decomposed into O(n) edge-disjoint cycles and edges. OPEN. Best known: O(n log* n) by Bucić-Montgomery (2022). Lower bound: (1+c)n from K_{3,n-3}.",
-    "proofStrategy": "The formalization defines cycles, edges, and valid decompositions using Mathlib's `SimpleGraph` infrastructure. Key bounds are axiomatized: the original $O(n \\log n)$, Bucić–Montgomery's $O(n \\log^* n)$, the $(1+c)n$ lower bound, the dense graph result, and the non-disjoint covering bound. The summary theorem combines the three main bounds into a single conjunction.",
+    "proofStrategy": "The formalization defines cycles, edges, and valid decompositions using Mathlib's `SimpleGraph` infrastructure. Key bounds are axiomatized: Bucić–Montgomery's $O(n \\log^* n)$, the $(1+c)n$ lower bound, and the dense graph result (Conlon–Fox–Sudakov). The original Erdős–Gallai $O(n \\log n)$ bound and the non-disjoint covering bound $\\text{cov}(G) \\leq n-1$ are referenced in docstrings but not formally axiomatized. The summary theorem combines the three main axiomatized bounds into a single conjunction.",
     "keyInsights": [
       "**Iterated logarithm barrier**: The gap between $O(n)$ and $O(n \\log^* n)$ is tiny in practice ($\\log^* n \\leq 5$ for all feasible $n$) but closing it requires fundamentally new techniques beyond iterative peeling",
       "**Dense vs. sparse dichotomy**: The conjecture is fully resolved for dense graphs ($\\delta(G) \\geq \\varepsilon n$) by Conlon–Fox–Sudakov via Szemerédi regularity; only sparse graphs remain open",
