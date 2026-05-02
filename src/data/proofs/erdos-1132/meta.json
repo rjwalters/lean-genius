@@ -62,7 +62,6 @@
       "almostEverywhereGrowth predicate: Erdős Question 2",
       "denseGoodPoints predicate: Bernstein's result",
       "bernstein_density_theorem: dense good points",
-      "erdos_lower_bound: (2/π)log(n) lower bound",
       "erdos_max_theorem: maximum exceeds threshold"
     ],
     "axiomCount": 2,
@@ -91,50 +90,50 @@
       "id": "lagrange-basis",
       "title": "Lagrange Basis Polynomials",
       "summary": "lagrangeBasis definition and fundamental properties",
-      "startLine": 39,
-      "endLine": 68
+      "startLine": 40,
+      "endLine": 78
     },
     {
       "id": "lebesgue-function",
       "title": "The Lebesgue Function",
       "summary": "lebesgueFunction, lebesgueConstant, lower bound ≥ 1",
-      "startLine": 69,
-      "endLine": 94
+      "startLine": 80,
+      "endLine": 152
     },
     {
       "id": "growth-bounds",
       "title": "Growth of Lebesgue Constants",
       "summary": "Erdős lower bound, Chebyshev nodes, optimal growth rate",
-      "startLine": 95,
-      "endLine": 125
+      "startLine": 154,
+      "endLine": 180
     },
     {
       "id": "main-questions",
       "title": "The Main Questions",
       "summary": "existsGoodPoint, almostEverywhereGrowth predicates",
-      "startLine": 126,
-      "endLine": 161
+      "startLine": 181,
+      "endLine": 215
     },
     {
       "id": "partial-results",
       "title": "Partial Results",
       "summary": "bernstein_density_theorem, erdos_max_theorem",
-      "startLine": 162,
-      "endLine": 191
+      "startLine": 217,
+      "endLine": 245
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "equidistantNodes and exponential growth",
-      "startLine": 192,
-      "endLine": 208
+      "startLine": 247,
+      "endLine": 260
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_1132 and erdos_1132_summary theorems",
-      "startLine": 209,
-      "endLine": 245
+      "startLine": 261,
+      "endLine": 297
     }
   ],
   "conclusion": {
@@ -229,10 +228,10 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Analysis.Calculus.LagrangeInterpolation",
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
       "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
-      "Mathlib.Topology.MetricSpace.Basic"
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.LinearAlgebra.Lagrange"
     ],
     "opens": [
       "Real",
