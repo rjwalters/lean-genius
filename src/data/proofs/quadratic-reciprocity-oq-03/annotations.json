@@ -114,7 +114,7 @@
     "title": "Verified Examples via decide",
     "content": "Seven Legendre symbol computations verified by Lean's `decide` tactic:\n\n| Symbol | Value | Hand calculation |\n|---|---|---|\n| $(3/7)$ | $-1$ | Reciprocity: $(3/7) = -(7/3) = -(1/3) = -1$ |\n| $(2/7)$ | $+1$ | $7 \\equiv -1 \\pmod 8$, so $2$ is QR |\n| $(5/13)$ | $-1$ | $5 \\equiv 1 \\pmod 4$, swap: $(5/13) = (13/5) = (3/5) = -1$ |\n| $(7/11)$ | $-1$ | Both $\\equiv 3 \\pmod 4$, swap with sign |\n| $(3/5)$ | $-1$ | $3$ not in $\\{0, 1, 4\\}$ (QRs mod 5) |\n| $(2/17)$ | $+1$ | $17 \\equiv 1 \\pmod 8$, so $2$ is QR |\n| $(6/7)$ | $-1$ | Multiplicativity: $(6/7) = (2/7) \\cdot (3/7) = 1 \\cdot (-1) = -1$ |",
     "mathContext": "`decide` works here because Mathlib's `legendreSym p a` is implemented via Euler's criterion in `ZMod p` — for a concrete small prime $p$, `ZMod p` is a `Fintype`, so the equality $a^{(p-1)/2} = \\pm 1$ in `ZMod p` is decidable and Lean can evaluate it during elaboration. No `native_decide` is needed because the search space is tiny ($p \\le 17$). The seven examples are not just illustrative: they exercise multiplicativity (last row), the second supplementary law (rows 2 and 6), and the reciprocity swap (rows 1, 3, 4) — each reduction lemma in this file gets a worked instance.",
-    "significance": "supplementary",
+    "significance": "supporting",
     "relatedConcepts": [
       "decide tactic",
       "Euler's criterion",
@@ -149,5 +149,17 @@
       "Termination of recursive functions",
       "Well-founded induction"
     ]
+  },
+  {
+    "id": "ann-qroq03-exports",
+    "proofId": "quadratic-reciprocity-oq-03",
+    "range": { "startLine": 108, "endLine": 119 },
+    "type": "context",
+    "title": "Exports: Making the Toolkit Accessible",
+    "content": "The file ends with `end QRAlgorithm` and four `#check` declarations verifying the four main results are accessible under their fully qualified names. This documents the complete public API: anyone importing this file can use `QRAlgorithm.legendreSym_mul_eq`, `QRAlgorithm.legendreSym_neg_one_eq`, `QRAlgorithm.reciprocity_swap`, and `QRAlgorithm.algorithm_descent` directly. The four names correspond exactly to the four reduction steps of the algorithm: factorization, sign, swap, and termination.",
+    "mathContext": "Public API summary: $\\left(\\tfrac{ab}{p}\\right) = \\left(\\tfrac{a}{p}\\right)\\left(\\tfrac{b}{p}\\right)$ (`legendreSym_mul_eq`); $\\left(\\tfrac{-1}{p}\\right) = (-1)^{(p-1)/2}$ (`legendreSym_neg_one_eq`); $\\left(\\tfrac{q}{p}\\right) = (-1)^{\\ldots}\\left(\\tfrac{p}{q}\\right)$ (`reciprocity_swap`); same with $q < p$ hypothesis (`algorithm_descent`).",
+    "significance": "context",
+    "relatedConcepts": ["namespace", "#check", "public API design", "verified toolkit"],
+    "prerequisites": ["Lean 4 namespace system", "import semantics"]
   }
 ]
