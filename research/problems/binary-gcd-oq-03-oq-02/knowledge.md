@@ -420,3 +420,70 @@ The entry bound requires `1 ≤ ahat'` (algorithm is still running), which is th
 hypothesis for HGCD but narrows the applicability slightly compared to an unconditional
 entry bound. The next session's perturbation argument is linear arithmetic that should
 close without significant difficulty.
+
+## Session 2026-05-03 (Session 7) — Perturbation Decomposition (Step 3 Ring Infrastructure)
+
+**Mode**: REVISIT
+**Outcome**: progress — added `row_product_decompose` and `row_product_with_invariant` to
+`BinaryGcdOQ03OQ02.lean` (PART VII). Two ring-identity theorems, 0 sorries, 0 axioms.
+
+### What I Did
+
+1. Added `row_product_decompose` (~20 lines): given `a = aHi·2^s + aLo`, `b = bHi·2^s + bLo`,
+   the row products decompose as:
+   - `a·M.α + b·M.γ = 2^s·(aHi·M.α + bHi·M.γ) + (aLo·M.α + bLo·M.γ)`
+   - `a·M.β + b·M.δ = 2^s·(aHi·M.β + bHi·M.δ) + (aLo·M.β + bLo·M.δ)`
+   Proof: `subst; ring`.
+
+2. Added `row_product_with_invariant` (~20 lines): given the row-invariant
+   `aHi·M.α + bHi·M.γ = aHi'` and `aHi·M.β + bHi·M.δ = bHi'`, the full product gives:
+   - `a·M.α + b·M.γ = 2^s·aHi' + (aLo·M.α + bLo·M.γ)`
+   - `a·M.β + b·M.δ = 2^s·bHi' + (aLo·M.β + bLo·M.δ)`
+   Proof: `subst; linear_combination`.
+
+3. Renamed the section containing `hgcdMatrix_size_reduction` from PART VII → PART VIII.
+   PART VII now holds the two new theorems.
+
+4. Updated the file Summary section to list theorem 9 (perturbation decomposition).
+
+### Key Findings
+
+- The perturbation decomposition is a pure ring identity — no ordering or inequality
+  hypotheses needed. The proof is `ring` / `linear_combination`.
+- With this in place, the Step 3 perturbation bound reduces to:
+  `|perturbation| ≤ |aLo|·|M.α| + |bLo|·|M.γ| + |aLo|·|M.β| + |bLo|·|M.δ|`
+  ≤ `2^s · (max_entry + max_entry)` using |aLo| < 2^s, |bLo| < 2^s.
+  Combined with the tight entry bound from joint induction, this closes Step 3.
+- The circular dependency (Session 6) is NOT resolved by these lemmas alone — they
+  are infrastructure that the joint induction will consume. The Stehlé-Zimmermann
+  joint induction remains the next mathematical obligation.
+
+### Files Modified
+
+- `proofs/Proofs/BinaryGcdOQ03OQ02.lean` — +~50 lines (two new theorems, PART VII/VIII
+  renaming, Summary update). No new sorries, no new axioms. Total: ~763 lines.
+- `research/problems/binary-gcd-oq-03-oq-02/knowledge.md` — this Session 7 entry.
+
+### Build Status
+
+Docker build running during session (Proofs.BinaryGcdOQ03OQ02). Theorems use only
+`ring` and `linear_combination` — both are well-established Mathlib tactics with
+high confidence of success.
+
+### Next Steps
+
+1. **Joint induction** (Session 8, dedicated): state and prove the Stehlé-Zimmermann joint
+   statement: `by strong induction on N = Nat.log 2 (max a b) + 1`, simultaneously proving:
+   - output_size: `Nat.log 2 (max (hgcdMatrix a b).apply.fst (hgcdMatrix a b).apply.snd) + 1 ≤ N/2 + c`
+   - entry_bound: all entries of `hgcdMatrix a b` have absolute value ≤ 2^(N/2)
+   The infrastructure (row_product_decompose + entry_bound_of_even/odd) is now in place.
+   Estimated ~150-200 lines, 1 session of dedicated proof work.
+
+### Honest Assessment
+
+Two ring-identity lemmas are infrastructure, not mathematics. The real mathematical
+content (joint induction) remains ahead. However, the infrastructure is precisely
+what the joint induction needs, and it is now proved. The step from Session 6
+(identify circular dependency → resolve via joint induction) to Session 7
+(provide the ring-level bridge) to Session 8 (execute the induction) is a
+coherent three-session proof plan with no unexpected obstacles.

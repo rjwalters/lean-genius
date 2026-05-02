@@ -618,7 +618,48 @@ theorem entry_bound_of_odd {a₀ b₀ ahat' bhat' : ℤ} {M : CofactorMatrix}
                mul_nonneg (by linarith : (0:ℤ) ≤ ahat') hβ]
 
 -- ═══════════════════════════════════════════════════════════════
--- PART VII: SIZE REDUCTION (deferred — open mathematical content)
+-- PART VII: PERTURBATION DECOMPOSITION (Step 3 infrastructure)
+-- ═══════════════════════════════════════════════════════════════
+
+/-- Perturbation decomposition: when a = aHi * 2^s + aLo and b = bHi * 2^s + bLo,
+    the row product (a, b) · M decomposes as a coarse term from the top bits
+    plus a perturbation from the low bits.
+
+    That is:
+      a·M.α + b·M.γ  =  2^s·(aHi·M.α + bHi·M.γ)  +  (aLo·M.α + bLo·M.γ)
+      a·M.β + b·M.δ  =  2^s·(aHi·M.β + bHi·M.δ)  +  (aLo·M.β + bLo·M.δ)
+
+    This is a pure ring identity; proof is by substitution and ring. -/
+theorem row_product_decompose (M : CofactorMatrix)
+    (a aHi aLo b bHi bLo : ℤ) (s : ℕ)
+    (ha : a = aHi * 2 ^ s + aLo)
+    (hb : b = bHi * 2 ^ s + bLo) :
+    a * M.α + b * M.γ =
+      (2 : ℤ) ^ s * (aHi * M.α + bHi * M.γ) + (aLo * M.α + bLo * M.γ) ∧
+    a * M.β + b * M.δ =
+      (2 : ℤ) ^ s * (aHi * M.β + bHi * M.δ) + (aLo * M.β + bLo * M.δ) := by
+  subst ha; subst hb; constructor <;> ring
+
+/-- When the row invariant `(aHi, bHi) · M = (aHi', bHi')` holds (i.e., the top
+    half bits produce the coarse output), the full row product of `(a, b)` with M
+    equals `2^s * (aHi', bHi')` plus the low-bit perturbation.
+
+    This bridges `row_product_decompose` and the entry bounds: the perturbation
+    `|aLo·M.α + bLo·M.γ|` is controlled by `entry_bound_of_even/odd` once we
+    know the entry magnitude. Step 3 of the size-reduction argument. -/
+theorem row_product_with_invariant (M : CofactorMatrix)
+    (a aHi aLo b bHi bLo : ℤ) (s : ℕ) (aHi' bHi' : ℤ)
+    (ha : a = aHi * 2 ^ s + aLo) (hb : b = bHi * 2 ^ s + bLo)
+    (hinv₁ : aHi * M.α + bHi * M.γ = aHi')
+    (hinv₂ : aHi * M.β + bHi * M.δ = bHi') :
+    a * M.α + b * M.γ = (2 : ℤ) ^ s * aHi' + (aLo * M.α + bLo * M.γ) ∧
+    a * M.β + b * M.δ = (2 : ℤ) ^ s * bHi' + (aLo * M.β + bLo * M.δ) := by
+  subst ha; subst hb
+  exact ⟨by linear_combination (2 : ℤ) ^ s * hinv₁,
+         by linear_combination (2 : ℤ) ^ s * hinv₂⟩
+
+-- ═══════════════════════════════════════════════════════════════
+-- PART VIII: SIZE REDUCTION (deferred — open mathematical content)
 -- ═══════════════════════════════════════════════════════════════
 
 /-- The HGCD size-reduction lemma: applying `hgcdMatrix` to `(a, b)`
@@ -699,9 +740,16 @@ theorem hgcdMatrix_size_reduction :
    in absolute value by the initial inputs a₀ and b₀. Proved using
    Cramer + sign pattern. This is Step 2b.
 
+9. **Perturbation decomposition** (`row_product_decompose`,
+   `row_product_with_invariant`): when a = aHi·2^s + aLo, the full
+   row product splits into 2^s·(coarse output) + (low-bit perturbation).
+   Proved by ring + linear_combination. This is Step 3 infrastructure.
+
 **Remaining for size reduction:**
-- Step 3: perturbation bound between full-precision (a, b) and
-  top-half-truncated (aHi·2^s, bHi·2^s) after applying M.
+- Step 3 completion: bound `|aLo·M.α + bLo·M.γ|` using entry_bound +
+  the joint induction on N (Stehlé-Zimmermann 2004): simultaneously prove
+  output_size ≤ 2^(N/2+c) AND entry_bound ≤ 2^(N/2). Circular dependency
+  between the two bounds forces joint induction on N = bits(max a b).
 - Step 4: compose 2a + 2b + 3 to close `hgcdMatrix_size_reduction`
   with explicit bitsize constants.
 
