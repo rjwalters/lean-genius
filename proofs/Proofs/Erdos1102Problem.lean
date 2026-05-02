@@ -92,18 +92,21 @@ noncomputable def squarefreeDensity : ℝ := 6 / Real.pi^2
 
 /- ## Main Results (van Doorn-Tao 2025) -/
 
-/-- **Axiom (van Doorn-Tao 2025):**
+/- **Result (van Doorn-Tao 2025):**
     Any sequence with property P has density 0.
 
-    If A = {a₁ < a₂ < ...} has property P, then aⱼ / j → ∞. -/
-/-- **Axiom (van Doorn-Tao 2025):**
+    If A = {a₁ < a₂ < ...} has property P, then aⱼ / j → ∞.
+    (Not axiomatized: documented in source commentary only.) -/
+/- **Result (van Doorn-Tao 2025):**
     Sequences with property P can have density going to 0 arbitrarily slowly.
 
-    For any function f → ∞, there exists A with property P and aⱼ/j ≤ f(j). -/
-/-- **Axiom (van Doorn-Tao 2025):**
+    For any function f → ∞, there exists A with property P and aⱼ/j ≤ f(j).
+    (Not axiomatized: documented in source commentary only.) -/
+/- **Result (van Doorn-Tao 2025):**
     Any sequence with property Q has upper density at most 6/π².
 
-    If A = {a₁ < a₂ < ...} has property Q, then limsup (j/aⱼ) ≤ 6/π². -/
+    If A = {a₁ < a₂ < ...} has property Q, then limsup (j/aⱼ) ≤ 6/π².
+    (Not axiomatized: documented in source commentary only.) -/
 /-- **Axiom (van Doorn-Tao 2025):**
     There exists a sequence with property Q achieving density 6/π².
 
@@ -147,8 +150,9 @@ def powersOfTwoMinus1 : ℕ → ℕ := fun n => 2^n - 1
 /-- The sequence 2^n + 1 -/
 def powersOfTwoPlus1 : ℕ → ℕ := fun n => 2^n + 1
 
-/-- **Axiom (van Doorn-Tao 2025):**
+/- **Conjecture/Result (van Doorn-Tao 2025):**
     The sequences 2^n ± 1 and n! ± 1 have property Q.
 
-    Whether they have property P remains open. -/
+    Whether they have property P remains open.
+    (Not axiomatized: documented in source commentary only.) -/
 end Erdos1102
