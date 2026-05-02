@@ -40,7 +40,7 @@
       }
     ],
     "originalContributions": [
-      "Complete formalization of the conjecture and known partial results",
+      "Statement of the conjecture and the related Cramér conjecture in Lean",
       "Clear exposition of the relationship between prime gaps and the Riemann Hypothesis",
       "Connection to Cramér's conjecture on individual prime gaps"
     ],
@@ -52,7 +52,7 @@
     "historicalContext": "This problem concerns the distribution of prime gaps dₙ = pₙ₊₁ - pₙ. The prime number theorem tells us that the average gap near x is approximately log x, but individual gaps can be much larger or smaller.\n\nThe conjecture that Σ dₙ² ≪ N(log N)² is sometimes attributed to Heath-Brown. It says that, on average, prime gaps are 'typically' of size log p - the squares don't accumulate faster than expected.\n\nCramér (1936) proved that, assuming the Riemann Hypothesis, Σ dₙ² = O(N(log N)⁴). Selberg (1943) improved this to Σ dₙ²/n = O((log N)⁴). The prime number theorem immediately gives the matching lower bound N(log N)², so the gap between lower and upper bounds is (log N)².\n\nThis problem is intimately connected to Cramér's famous conjecture that dₙ = O((log pₙ)²), which remains one of the most important open problems about prime gaps.",
     "problemStatement": "Let $d_n = p_{n+1} - p_n$ denote the $n$-th prime gap. Prove that\n$$\\sum_{n \\leq N} d_n^2 \\ll N(\\log N)^2.$$\n\n**Status:** OPEN\n\n**Known bounds:**\n- Lower bound: $\\sum d_n^2 \\gg N(\\log N)^2$ (unconditional, from PNT)\n- Upper bound: $\\sum d_n^2 \\ll N(\\log N)^4$ (conditional on RH, Cramér 1936)",
     "text": "Prove that the sum of squares of prime gaps satisfies Σ dₙ² ≪ N(log N)², where dₙ = pₙ₊₁ - pₙ is the n-th prime gap.",
-    "proofStrategy": "We formalize the conjecture and all known partial results:\n\n1. **Definitions**: The n-th prime via Nat.nth, prime gap function, and sum of squares\n2. **Lower bound**: Axiomatized from the prime number theorem\n3. **Cramér's upper bound**: Axiomatized conditional result assuming RH\n4. **Selberg's improvement**: The weighted sum variant\n5. **Cramér's conjecture**: Defined and shown to imply the main conjecture\n\nThe main conjecture itself is stated but cannot be proved - it remains an open problem.",
+    "proofStrategy": "We formalize the conjecture statement and stub the surrounding partial results:\n\n1. **Definitions**: nthPrime via Nat.nth, primeGap, sumSquaresGaps, selbergSum, Erdos233Conjecture, and CramerConjecture\n2. **Initial prime-gap values**: A single axiom (`first_prime_gaps`) records primeGap 0 = 1, primeGap 1 = 2, primeGap 2 = 2 because nthPrime is noncomputable\n3. **Open conjecture**: `erdos_233_open` is the trivial decidability statement Erdos233Conjecture \\u2228 \\u00acErdos233Conjecture; the conjecture itself is not proved\n4. **Summary theorem**: `summary_erdos_233` combines the prime-gap axiom with the decidability statement\n\nThe known partial results (PNT lower bound, Cram\\u00e9r 1936, Selberg 1943, Cram\\u00e9r's conjecture implication) are described in docstrings only — they are not formalized as axioms or theorems in this file.",
     "keyInsights": [
       "**Prime Gap Statistics**: The conjecture is about the 'second moment' of prime gaps - how their squares accumulate",
       "**PNT Connection**: The lower bound follows because the average gap is log p, so squares average to (log p)²",
@@ -113,8 +113,8 @@
       "title": "Connection to Cramér's Conjecture",
       "startLine": 118,
       "endLine": 134,
-      "summary": "Define Cramér's conjecture and show it implies the sum bound",
-      "mathContext": "Bound: Define Cramér's conjecture and show it implies the sum bound"
+      "summary": "Define Cramér's conjecture (CramerConjecture); the implication to the sum bound is described in a docstring only — no implication theorem in this file.",
+      "mathContext": "CramerConjecture defined. The claim that Cramér's conjecture implies the sum-of-squares bound appears only as a docstring; no Lean theorem proves the implication."
     },
     {
       "id": "examples",
