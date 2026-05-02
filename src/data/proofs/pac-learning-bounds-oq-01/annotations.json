@@ -33,7 +33,7 @@
     "title": "Shatters Predicate",
     "content": "A hypothesis class $H \\subseteq \\mathcal{P}(\\alpha)$ shatters a finite set $S$ if every subset $T \\subseteq S$ is exactly $h \\cap S$ for some $h \\in H$. Equivalently, $H$ produces all $2^{|S|}$ possible labelings of $S$. We use a Finset-valued $T$ for cleaner reasoning over finite traces, and quantify over $T \\subseteq S$ via Finset subset.\n\n**VC dimension and the growth function:** The VC dimension $\\operatorname{VCdim}(H)$ is the size of the largest set $H$ shatters (or $\\infty$ if arbitrarily large sets are shattered). The closely related *growth function* $\\Pi_H(n) = \\max_{|S|=n} |\\{h \\cap S : h \\in H\\}|$ counts the maximum number of distinct labelings $H$ produces on any $n$-point set. By definition, $\\Pi_H(n) = 2^n$ iff some $n$-set is shattered, so $\\operatorname{VCdim}(H)$ is the largest $n$ with $\\Pi_H(n) = 2^n$.\n\n**Sauer-Shelah lemma:** The combinatorial heart of VC theory says that a class of VC dimension $d$ has growth function bounded by a polynomial of degree $d$:\n$$\\Pi_H(n) \\leq \\sum_{i=0}^{d} \\binom{n}{i} \\leq \\left(\\frac{en}{d}\\right)^d.$$\nThis is the dichotomy: either $\\Pi_H(n) = 2^n$ (full shattering, infinite VC dim) or $\\Pi_H(n)$ is polynomial in $n$. There is no intermediate behavior. For thresholds, $\\operatorname{VCdim} = 1$ gives $\\Pi_{H_{thr}}(n) \\leq n + 1$, and equality holds: the $n + 1$ thresholds $t \\in \\{0, 1, \\ldots, n\\}$ produce $n + 1$ distinct labelings of a sorted $n$-point set, witnessing tightness of Sauer-Shelah at $d = 1$.\n\n**Use of Finset-valued $T$:** Mathlib's `Finset.Subset` is computational and decidable, simplifying case-analysis tactics. The semantically equivalent set-valued formulation would require classical decidability instances throughout — the Finset choice is a Lean-engineering optimization, not a mathematical commitment.",
     "mathContext": "$H$ shatters $S$ $\\iff$ $\\forall T \\subseteq S, \\exists h \\in H : \\forall x \\in S, (x \\in h \\iff x \\in T)$. Growth function: $\\Pi_H(n) = \\max_{|S|=n}|\\{h \\cap S : h \\in H\\}|$. Sauer-Shelah: $\\operatorname{VCdim}(H) = d \\Rightarrow \\Pi_H(n) \\leq \\sum_{i \\leq d}\\binom{n}{i}$.",
-    "significance": "core",
+    "significance": "key",
     "relatedConcepts": [
       "VC dimension",
       "growth function",
@@ -57,7 +57,7 @@
     "title": "Threshold Hypothesis Class",
     "content": "$H_{thr} = \\{ \\{x : x < t\\} : t \\in \\mathbb{N} \\}$ — the family of half-lines below a threshold. Each hypothesis is parameterized by a single natural number $t$ and includes exactly the points strictly below $t$. This is the simplest nontrivial hypothesis class: monotone, ordered, and parameterized by one degree of freedom.",
     "mathContext": "$h_t(x) = [\\![ x < t ]\\!]$, indicator of the half-line.",
-    "significance": "core",
+    "significance": "key",
     "relatedConcepts": [
       "monotone hypothesis class",
       "concept class"
@@ -77,7 +77,7 @@
     "title": "Lower Bound: Singletons Are Shattered",
     "content": "To shatter $\\{a\\}$ we must realize both labelings $\\emptyset$ and $\\{a\\}$. Two threshold witnesses suffice: $t = a + 1$ produces $h_t = \\{x : x < a + 1\\}$ which contains $a$, and $t = 0$ produces $h_t = \\{x : x < 0\\} = \\emptyset$ which excludes $a$. The proof case-splits on whether $a \\in T$ and supplies the appropriate $t$.",
     "mathContext": "Witnesses: $t = a + 1$ for the labeling $T = \\{a\\}$; $t = 0$ for the labeling $T = \\emptyset$.",
-    "significance": "core",
+    "significance": "key",
     "relatedConcepts": [
       "case analysis",
       "Finset.mem_singleton",
@@ -99,7 +99,7 @@
     "title": "Upper Bound: No Pair Is Shattered",
     "content": "For $a < b$, consider the labeling $T = \\{b\\}$ (only $b$ included). If realized by $h_t$, then $a \\notin h_t$ forces $\\neg(a < t)$, i.e., $t \\leq a$. Simultaneously $b \\in h_t$ forces $b < t$. Combined: $b < t \\leq a$, contradicting $a < b$. The argument is purely order-theoretic: monotone classifiers cannot selectively include the larger of two ordered points without also including the smaller.",
     "mathContext": "$T = \\{b\\}$ requires both $a \\notin h_t \\Rightarrow t \\leq a$ and $b \\in h_t \\Rightarrow b < t$, an impossibility under $a < b$.",
-    "significance": "core",
+    "significance": "key",
     "relatedConcepts": [
       "monotonicity obstruction",
       "Finset.mem_singleton"
@@ -120,7 +120,7 @@
     "title": "Combined Bound: VC dim = 1",
     "content": "Packaging the singleton lower bound and the pair upper bound: every singleton is shattered, and no two-point set is. The pair theorem is stated for $a < b$ and lifted to arbitrary distinct pairs via $\\{a, b\\} = \\{b, a\\}$ (Finset extensionality, `Or.comm`). Together these constraints pin VC dim of thresholds at exactly 1 — though we do not formally introduce a `vcDim` function here.",
     "mathContext": "$\\operatorname{VCdim}(H_{thr}) = 1$.",
-    "significance": "core",
+    "significance": "key",
     "relatedConcepts": [
       "VC dimension definition",
       "Finset extensionality"
