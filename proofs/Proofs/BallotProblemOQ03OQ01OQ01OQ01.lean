@@ -599,23 +599,18 @@ private lemma jdt_weight_sum (n a b : ℕ) (hba : b ≤ a) :
       exact jdt_weight_sum_b_one n a hba
     · -- b ≥ 2: weight-factorization + counting argument (S18 discovery)
       rw [← sum_all_sym_pairs n (a + 1) (b - 1)]
-      -- APPROACH (S18): The "first violation element" bijection is NON-INJECTIVE for b≥2.
-      -- Concrete counterexample (a=3, b=2):
-      --   Pair A: P={1,3,4}, Q={0,2,3} → violation c=0, move v=0 → P'={0,1,3,4}, Q'={2,3}
-      --   Pair B: P={0,1,4}, Q={2,3,3} → violation c=2, move v=3 → P'={0,1,3,4}, Q'={2,3}
-      -- Both map to the same (P',Q'). Do NOT use this approach.
-      --
-      -- CORRECT APPROACH (weight factorization):
-      --   Key: wt(P)*wt(Q) = ((P.1+Q.1).map X).prod — weight depends only on the TOTAL multiset M.
-      --   Strategy:
-      --     1. Group LHS by M := P.1 + Q.1 : Sym (Fin n) (a+b)
-      --     2. For each M, count #{non-cs (a,b) splits of M} = C(a+b, a) - ... via ballot principle
-      --     3. Show this count equals #{all (a+1,b-1) splits of M} = C(a+b, a+1)
-      --     4. The ballot bijection: given non-cs split, move the minimum of Q to P.
-      --        This is INJECTIVE (unlike the violation-element bijection) because we always
-      --        move the same element (min of Q, not min of the violation column).
-      --   Infrastructure: Multiset.split_bySize or similar; Fintype.card_congr on fibers.
-      --   Estimated ~100-150 lines, no ring-valued bijections needed.
+      -- BLOCKED: All simple bijections between non-cs (a,b) and all (a+1,b-1) pairs fail.
+      -- Failure evidence (a=2, b=2, M={1,2,3,4}):
+      --   Violation-element bijection: {1,3,4}×{0,2,3} and {0,1,4}×{2,3,3} → same image.
+      --   Min-of-Q bijection (always move Q.sort[0]):
+      --     {1,4}×{2,3}: Q[0]=2 → P'={1,2,4}, Q'={3}
+      --     {2,4}×{1,3}: Q[0]=1 → P'={1,2,4}, Q'={3}   ← same image, non-injective!
+      --   Case-split bijection (Case1: move Q[0] if Q[0]≤P[0]; Case2: move Q[1] if Q[0]>P[0]):
+      --     {3,4}×{1,2}: case1, move 1 → {1,3,4}×{2}
+      --     {1,4}×{2,3}: case2, move 3 → {1,3,4}×{2}   ← same image, non-injective!
+      -- The correct bijection is RSK/JDT: a ~300-500 line formalization of jeu de taquin.
+      -- The fiber-counting equality #{non-cs splits} = #{(a+1,b-1) splits} for each M holds
+      -- numerically and is the combinatorial content of the two-row Jacobi-Trudi identity.
       sorry
   · -- b = 0: ColStrictSym a 0 P Q is vacuously true (quantifies over Fin (min a 0) = Fin 0)
     -- So ¬ColStrictSym = False, the subtype is empty, and the sum equals 0
