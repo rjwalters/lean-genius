@@ -5580,10 +5580,12 @@
       "result": "clean"
     },
     "erdos-272": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "phantom-axiom narrative: 5+ phantom axioms (simonovits_sos_lower, erdos_graham_conjecture_false, small_sets_count/has_AP, szabo_leading_constant) claimed in originalContributions/proofStrategy/sections; only 3 real axioms in Lean (#14545)"
+      ],
+      "lastAudited": "2026-05-02T04:10:53Z",
+      "result": "issues-found"
     },
     "erdos-273": {
       "agentId": "auditor-cycle-20-batch",
