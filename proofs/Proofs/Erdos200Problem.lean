@@ -45,7 +45,7 @@ noncomputable def longestPrimeAP (N : ℕ) : ℕ :=
 
 /- ## Upper Bound from PNT -/
 
-/-- The Prime Number Theorem implies: any AP of primes in {1,...,N}
+/- The Prime Number Theorem implies: any AP of primes in {1,...,N}
     has length at most (1 + o(1)) · log N.
 
     Proof sketch: an AP {a, a+d, ..., a+(k-1)d} ⊆ {1,...,N} has
@@ -74,7 +74,7 @@ theorem longest_prime_ap_unbounded :
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #200** (OPEN): The longest prime AP in {1,...,N}
+/- **Erdős Problem #200** (OPEN): The longest prime AP in {1,...,N}
     has length o(log N), i.e., longestPrimeAP(N) / log(N) → 0.
 
     This asks whether the PNT upper bound of ~ log N is far from
@@ -97,7 +97,7 @@ theorem prime_ap_6 : IsPrimeAP 6 157 :=
   ⟨7, 30, by omega, fun i hi => by interval_cases i <;> native_decide,
    fun i hi => by interval_cases i <;> omega⟩
 
-/-- Green–Tao–Maynard: quantitative bounds on the least N containing
+/- Green–Tao–Maynard: quantitative bounds on the least N containing
     a prime AP of length k. The best bounds give
     N(k) ≤ exp(exp(exp(ck))). -/
 /- ## Relationship to Other Conjectures
