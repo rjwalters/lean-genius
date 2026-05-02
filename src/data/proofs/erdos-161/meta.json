@@ -44,9 +44,7 @@
       "IsBalanced predicate: (α,m)-balanced coloring",
       "F axiom: the function F^(t)(n,α)",
       "FZero and HasJumpAt definitions",
-      "erdos_hajnal_rado_conjecture axiom",
       "erdos_spencer_lower_bound axiom",
-      "conlon_fox_sudakov_upper axiom",
       "F3_characterization axiom",
       "one_jump_for_t3 axiom",
       "erdos_161_summary theorem"
@@ -60,7 +58,7 @@
     "historicalContext": "**Erdős Problem #161** is a $500 prize problem about phase transitions in hypergraph coloring. It asks whether the function F^(t)(n,α), which measures how well 2-colorings of t-uniform hypergraphs can be balanced, has discontinuities as α varies from 0 to 1/2.\n\nThe α=0 case reduces to classical Ramsey theory, where F^(t)(n,0) grows like the iterated logarithm log_{t-1}(n). For positive α, the Erdős-Spencer lower bound shows F grows much faster, like (log n)^{1/(t-1)}. Erdős believed there is exactly one jump, at α=0, where the behavior changes dramatically.\n\nConlon, Fox, and Sudakov (2011) resolved the t=3 case by proving F^(3)(n,α) = Θ(√(log n)) for all α > 0, confirming the one-jump structure. For t > 3, the exact behavior remains open, though the same phase transition pattern is expected.",
     "problemStatement": "**Problem Statement (SOLVED for t = 3)**\n\nLet α ∈ [0, 1/2) and n, t ≥ 1. Define F^(t)(n, α) as the largest m such that we can 2-color the edges of the complete t-uniform hypergraph on n vertices so that for every X ⊆ [n] with |X| ≥ m, there are at least α · C(|X|, t) t-subsets of X of each color.\n\n**Question:** As α varies from 0 to 1/2, does F^(t)(n, α) increase continuously or are there jumps?\n\n**Answer (t = 3):** Exactly one jump at α = 0 (Conlon-Fox-Sudakov 2011)\n\n**Key values:**\n- α = 0: F^(3)(n, 0) = Θ(log log n)\n- α > 0: F^(3)(n, α) = Θ(√(log n))",
     "text": "Does F^(t)(n,α) have jumps as α varies from 0 to 1/2? SOLVED for t=3 by Conlon-Fox-Sudakov (2011): exactly one jump at α=0. F^(t)(n,α) measures the largest m ensuring every large subset has balanced colors.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Complete t-uniform hypergraph, 2-colorings, balanced coloring property, the function F^(t)(n,α).\n\n2. **α = 0 (Ramsey):** Axiomatize the Erdős-Hajnal-Rado conjecture on iterated logarithm growth.\n\n3. **α > 0 (Bounds):** Axiomatize Erdős-Spencer lower bound and upper bounds.\n\n4. **Jump formalization:** Define HasJumpAt and erdos_one_jump_belief.\n\n5. **Main result:** Axiomatize Conlon-Fox-Sudakov upper bound and F^(3) characterization.\n\n6. **Summary:** Combine results into erdos_161_summary theorem using exact ⟨...⟩.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Complete t-uniform hypergraph, 2-colorings, balanced coloring property, the function F^(t)(n,α).\n\n2. **α = 0 (Ramsey):** Define `iterLog` for iterated logarithm growth; the Erdős-Hajnal-Rado conjecture (#562) on F^(t)(n,0) ≍ log_{t-1}(n) is stated as context (docstring), not axiomatized.\n\n3. **α > 0 (Bounds):** Axiomatize Erdős-Spencer lower bound and upper bounds.\n\n4. **Jump formalization:** Define HasJumpAt and erdos_one_jump_belief.\n\n5. **Main result:** Axiomatize `F3_characterization`: F^(3)(n,α) = Θ(√(log n)) for all α > 0 (combines both the Conlon-Fox-Sudakov upper bound and the lower bound).\n\n6. **Summary:** Combine results into erdos_161_summary theorem using exact ⟨...⟩.",
     "keyInsights": [
       "At α=0, F^(t)(n,0) ≈ log_{t-1}(n) (iterated logarithm—very slow growth)",
       "At α>0, F^(t)(n,α) ≈ (log n)^{1/(t-1)} (power of log—much faster)",
@@ -88,54 +86,54 @@
       "title": "The Function F^(t)(n,α)",
       "summary": "F axiom and specification",
       "startLine": 60,
-      "endLine": 70,
+      "endLine": 66,
       "mathContext": "Axiomatized: F axiom and specification"
     },
     {
       "id": "ramsey-case",
       "title": "Classical Ramsey Case (α = 0)",
-      "summary": "FZero, Erdős-Hajnal-Rado conjecture, iterated logarithm",
-      "startLine": 71,
-      "endLine": 87,
-      "mathContext": "Mathematical content: FZero, Erdős-Hajnal-Rado conjecture, iterated logarithm"
+      "summary": "FZero, iterLog (iterated logarithm definition); Erdős-Hajnal-Rado conjecture noted as docstring context",
+      "startLine": 67,
+      "endLine": 77,
+      "mathContext": "Definitions: FZero, iterLog; Erdős-Hajnal-Rado conjecture (#562) as docstring reference only"
     },
     {
       "id": "positive-alpha",
       "title": "Positive α: Bounds",
-      "summary": "Erdős-Spencer lower bound, upper bound near 1/2",
-      "startLine": 88,
-      "endLine": 101,
-      "mathContext": "Bound: Erdős-Spencer lower bound, upper bound near 1/2"
+      "summary": "Erdős-Spencer lower bound axiom: F^(t)(n,α) ≥ c·(log n)^{1/(t-1)} for α > 0",
+      "startLine": 78,
+      "endLine": 86,
+      "mathContext": "Axiomatized: erdos_spencer_lower_bound"
     },
     {
       "id": "jump-question",
       "title": "The Jump Question",
       "summary": "HasJumpAt, erdos_one_jump_belief",
-      "startLine": 102,
-      "endLine": 115,
+      "startLine": 87,
+      "endLine": 100,
       "mathContext": "Mathematical content: HasJumpAt, erdos_one_jump_belief"
     },
     {
       "id": "main-result",
       "title": "Main Result: t = 3",
-      "summary": "Conlon-Fox-Sudakov upper bound, F3_characterization, one_jump_for_t3",
-      "startLine": 116,
-      "endLine": 133,
-      "mathContext": "Bound: Conlon-Fox-Sudakov upper bound, F3_characterization, one_jump_for_t3"
+      "summary": "F3_characterization axiom (Θ(√(log n)) for α > 0), one_jump_for_t3 axiom",
+      "startLine": 101,
+      "endLine": 113,
+      "mathContext": "Axiomatized: F3_characterization, one_jump_for_t3"
     },
     {
       "id": "general-t",
       "title": "General t and Gap Analysis",
-      "summary": "general_lower_bound, alpha_zero_growth, alpha_positive_growth",
-      "startLine": 134,
-      "endLine": 156,
-      "mathContext": "Bound: general_lower_bound, alpha_zero_growth, alpha_positive_growth"
+      "summary": "alpha_positive_growth theorem (derived from erdos_spencer_lower_bound); iterated-log docstring context for α = 0 case",
+      "startLine": 114,
+      "endLine": 126,
+      "mathContext": "Theorem: alpha_positive_growth (proved from erdos_spencer_lower_bound)"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_161_summary theorem",
-      "startLine": 157,
+      "startLine": 127,
       "endLine": 158,
       "mathContext": "Verified: erdos_161_summary theorem"
     }
