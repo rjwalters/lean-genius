@@ -13723,6 +13723,14 @@
       "lastAudited": "2026-05-02T21:39:04Z",
       "result": "clean",
       "issues": []
+    },
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-02T22:45:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "lineCount 230 → 220 (file ends at line 220, not 230)"
+      ]
     }
   },
   "erdos-1097-oq-01": {
