@@ -56,7 +56,7 @@
       "halasz_characterization: when limit is nonzero (axiom)",
       "wintner_renyi_counterexample: n^i has no convergent mean",
       "constOne: trivial example with mean 1",
-      "liouville_mean_zero: connection to Prime Number Theorem"
+      "liouville_mean_zero: connection to Prime Number Theorem (axiom)"
     ],
     "axiomCount": 6,
     "lineCount": 275,
@@ -110,62 +110,62 @@
       "title": "Completely Multiplicative Case",
       "summary": "IsCompletelyMultiplicative, determination by prime values",
       "startLine": 103,
-      "endLine": 123,
+      "endLine": 119,
       "mathContext": "Mathematical content: IsCompletelyMultiplicative, determination by prime values"
     },
     {
       "id": "wintner-counterexample",
       "title": "Wintner-Renyi Counterexample",
       "summary": "powerI function, why {-1,1} restriction is needed",
-      "startLine": 124,
-      "endLine": 145,
+      "startLine": 120,
+      "endLine": 136,
       "mathContext": "Mathematical content: powerI function, why {-1,1} restriction is needed"
     },
     {
       "id": "wirsing-theorem",
       "title": "Wirsing's Theorem",
       "summary": "Main convergence theorem, erdos_239",
-      "startLine": 146,
-      "endLine": 166,
+      "startLine": 137,
+      "endLine": 156,
       "mathContext": "Verified: Main convergence theorem, erdos_239"
     },
     {
       "id": "halasz-generalization",
       "title": "Halasz Generalization",
       "summary": "meanLimit, halasz_characterization",
-      "startLine": 167,
-      "endLine": 189,
+      "startLine": 158,
+      "endLine": 179,
       "mathContext": "Mathematical content: meanLimit, halasz_characterization"
     },
     {
       "id": "constant-function",
       "title": "Constant Function Example",
       "summary": "constOne with mean 1",
-      "startLine": 190,
-      "endLine": 217
+      "startLine": 181,
+      "endLine": 207
     },
     {
       "id": "liouville-mean",
       "title": "Liouville Function Mean",
       "summary": "liouville_mean_zero, connection to PNT",
-      "startLine": 218,
-      "endLine": 238,
+      "startLine": 209,
+      "endLine": 228,
       "mathContext": "Mathematical content: liouville_mean_zero, connection to PNT"
     },
     {
       "id": "prime-distribution",
       "title": "Connection to Prime Distribution",
       "summary": "liouville_pnt_equivalence, Riemann Hypothesis",
-      "startLine": 239,
-      "endLine": 257,
+      "startLine": 230,
+      "endLine": 239,
       "mathContext": "Mathematical content: liouville_pnt_equivalence, Riemann Hypothesis"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_239_summary, erdos_239_answer",
-      "startLine": 258,
-      "endLine": 275,
+      "startLine": 240,
+      "endLine": 274,
       "mathContext": "Mathematical content: erdos_239_summary, erdos_239_answer"
     }
   ],
