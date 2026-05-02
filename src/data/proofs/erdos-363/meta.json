@@ -52,13 +52,11 @@
     "originalContributions": [
       "Definition of ConsecutiveInterval and DisjointIntervalCollection structures",
       "Formalization of isPerfectSquare predicate",
-      "Axiomatization of Ulas's theorem for n=4 or n≥6",
-      "Axiomatization of Bauer-Bennett theorem for n=3 or n=5",
-      "Axiomatization of Bennett-Van Luijk theorem for size-5 intervals",
-      "Proof that the conjecture is false using these results",
-      "Fixed false single_block_not_square (added nonzero hypothesis)",
-      "Proved single_block_not_square from erdos_selfridge axiom",
-      "product_eq_range_prod: Icc/range reindexing (1 sorry, technical)"
+      "Axiomatization of Ulas's theorem for n=4 or n≥6 (ulas_theorem)",
+      "Statement of Bauer-Bennett theorem (2007) in docstring (not axiomatized, not used in disproof)",
+      "Statement of Bennett-Van Luijk theorem (2012) in docstring (not axiomatized, not used in disproof)",
+      "Proof that the conjecture is false using ulas_theorem 4",
+      "Proved single_block_not_square from erdos_selfridge axiom (with nonzero hypothesis)"
     ],
     "axiomCount": 3,
     "lineCount": 293,
@@ -68,7 +66,7 @@
     "historicalContext": "This problem connects to the famous Erdős-Selfridge theorem (1975), which states that the product of consecutive integers is never a perfect power. Erdős asked whether this constraint could be circumvented using multiple disjoint blocks of consecutive integers.\n\nPomerance observed that if we allow intervals of size 3, there are infinitely many counterexamples using blocks built from powers of 2. This motivated the condition |Iᵢ| ≥ 4.\n\nThe conjecture was spectacularly disproved in the 2000s. Ulas (2005) found infinitely many solutions for most values of n using size-4 intervals. Bauer-Bennett (2007) filled in the remaining cases n=3 and n=5. Bennett-Van Luijk (2012) extended the result to size-5 intervals, suggesting a general pattern.",
     "problemStatement": "Let $I_1, \\ldots, I_n$ be disjoint intervals of consecutive integers with $|I_i| \\geq 4$ for all $i$.\n\n**Conjecture**: There are only finitely many such collections where\n$$\\prod_{1 \\leq i \\leq n} \\prod_{m \\in I_i} m$$\nis a perfect square.\n\n**Answer**: NO - the conjecture is FALSE.\n\nThere are infinitely many solutions for any $n \\geq 3$ when all intervals have size 4.",
     "text": "Are there only finitely many collections of disjoint intervals I₁,...,Iₙ with |Iᵢ| ≥ 4 such that the product ∏ᵢ ∏_{m ∈ Iᵢ} m is a perfect square?",
-    "proofStrategy": "We formalize disjoint interval collections and the perfect square condition. The main results are axiomatized:\n\n1. **Ulas (2005)**: Infinitely many solutions exist for n=4 or n≥6 with size-4 intervals.\n\n2. **Bauer-Bennett (2007)**: Infinitely many solutions exist for n=3 or n=5 with size-4 intervals.\n\n3. **Bennett-Van Luijk (2012)**: Infinitely many solutions exist for n≥5 with size-5 intervals.\n\nCombining these, we show the set of square-product collections is infinite, contradicting the conjecture.",
+    "proofStrategy": "We formalize disjoint interval collections and the perfect square condition. The disproof uses a single axiom:\n\n1. **Ulas (2005)** (`ulas_theorem`): Infinitely many solutions exist for n=4 or n≥6 with size-4 intervals. This is the only axiom used in the disproof — `ulas_theorem 4` directly yields `infinitely_many_size4_collections`, which contradicts finiteness.\n\nBauer-Bennett (2007) (n=3 or n=5) and Bennett-Van Luijk (2012) (size-5 intervals) are stated as docstrings for context but are NOT axiomatized and NOT used in the Lean disproof. The auxiliary `single_block_not_square` is proved separately from the `erdos_selfridge` axiom.",
     "keyInsights": [
       "**Erdős-Selfridge Constraint**: A single block of consecutive integers is never a perfect power. But DISJOINT blocks can combine to give squares.",
       "**Pomerance's Observation**: Size-3 intervals already give infinitely many solutions using powers of 2, necessitating the |Iᵢ| ≥ 4 condition.",
@@ -136,41 +134,41 @@
     {
       "id": "bennett-van-luijk",
       "title": "Bennett-Van Luijk Theorem (2012)",
-      "summary": "Infinitely many solutions with size-5 intervals",
-      "startLine": 157,
-      "endLine": 172,
+      "summary": "Statement of Bennett-Van Luijk theorem in docstring (not axiomatized)",
+      "startLine": 151,
+      "endLine": 158,
       "mathContext": "Infinitely many solutions with size-5 intervals"
     },
     {
       "id": "disproof",
       "title": "The Conjecture is FALSE",
       "summary": "Combining results to disprove the conjecture",
-      "startLine": 173,
-      "endLine": 217,
+      "startLine": 160,
+      "endLine": 192,
       "mathContext": "Combining results to disprove the conjecture"
     },
     {
       "id": "ulas-conjecture",
       "title": "Ulas's Conjecture",
       "summary": "Generalization to arbitrary interval sizes",
-      "startLine": 218,
-      "endLine": 234,
+      "startLine": 205,
+      "endLine": 219,
       "mathContext": "Generalization to arbitrary interval sizes"
     },
     {
       "id": "erdos-selfridge",
       "title": "Connection to Erdős-Selfridge",
       "summary": "Single blocks vs disjoint blocks",
-      "startLine": 235,
-      "endLine": 256,
+      "startLine": 222,
+      "endLine": 272,
       "mathContext": "Single blocks vs disjoint blocks"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Complete summary of results",
-      "startLine": 257,
-      "endLine": 276,
+      "startLine": 275,
+      "endLine": 292,
       "mathContext": "OPEN: whether only finitely many valid collections exist. A curious geometric-number-theoretic question."
     }
   ],
