@@ -17,7 +17,7 @@
     "badge": "formalized",
     "sorries": 3,
     "axiomCount": 0,
-    "lineCount": 230,
+    "lineCount": 220,
     "assumptions": "3 HARD sorries (not OPEN): lp_truncation_tendsto_zero (~80 lines, Vitali's theorem API), localization_existence (~150 lines, Lp restriction map), density extension (~50 lines, port of parent's integral_representation). Classical proofs: Folland §6.2, Rudin Theorem 6.16.",
     "dateAdded": "2026-05-03"
   },
@@ -88,7 +88,7 @@
     "imports": [
       "Mathlib"
     ],
-    "lineCount": 230,
+    "lineCount": 220,
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 0,
