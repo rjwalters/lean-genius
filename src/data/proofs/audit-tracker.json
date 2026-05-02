@@ -3870,10 +3870,12 @@
       "result": "clean"
     },
     "erdos-1111": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-loop",
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T13:55:59Z",
+      "result": "issues-found",
+      "notes": "Issue #14804 — phantom-axiom narrative: proofStrategy/sections claim axioms for Reduction-to-t<=c, general c=3 bound, Ramsey/chi-boundedness; only orphan docstrings exist (numerical counts correct)",
+      "issues": []
     },
     "erdos-1112": {
       "agentId": "auditor-cycle-20-batch",
