@@ -89,15 +89,15 @@ The set A = {2^k : k ≥ 0}.
 -/
 def powersOfTwo : Set ℕ := {n | ∃ k : ℕ, n = 2^k}
 
-/--
+/-
 **Erdős (1950):**
 The powers of two satisfy the conjecture.
 -/
-/--
+/-
 **Powers of Two Have Logarithmic Density:**
 |{2^k : k ≤ N}| = ⌊log₂(N)⌋ + 1 ~ log(N).
 -/
-/--
+/-
 **Arithmetic Progressions:**
 Sets containing long arithmetic progressions tend to have
 many prime representations due to Goldbach-like phenomena.
