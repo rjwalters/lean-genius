@@ -35,7 +35,7 @@
       "Formal definitions of valid sequences with dual rational sum constraints",
       "Growth rate hierarchy: single, double, and generalized exponential measures",
       "Formal statement of Kova\u010d-Tao (2024) doubly exponential result",
-      "Formal statement of irrationality threshold at \u03b2 = 2"
+      "erdos_265_main: open problem formalized as a classical disjunction (limsup a\u2099^(1/2\u207f) > 1 achievable, or all valid sequences satisfy a\u2099^(1/2\u207f) \u2192 1)"
     ],
     "axiomCount": 2,
     "lineCount": 233,
@@ -46,7 +46,7 @@
     "historicalContext": "Georg Cantor discovered in the 19th century that the triangular numbers $a_n = \\binom{n}{2} = n(n-1)/2$ produce a sequence where both $\\sum 1/a_n$ and $\\sum 1/(a_n - 1)$ are rational. This elegant example grows only polynomially ($a_n \\sim n^2/2$), so $a_n^{1/n} \\to 1$. Erd\u0151s asked a deeper question: how fast can such sequences grow?\n\nErd\u0151s conjectured two things: (1) that sequences with $a_n^{1/n} \\to \\infty$ (super-exponential growth) exist, and (2) that $a_n^{1/2^n} \\to 1$ is necessary (double-exponential growth is the limit). The first conjecture was confirmed in a landmark 2024 paper by Vjekoslav Kova\u010d and Terence Tao, who constructed sequences achieving doubly exponential growth $a_n^{1/\\beta^n} \\to \\infty$ for some $\\beta > 1$, published in the *Annals of Mathematics*.\n\nThe second conjecture \u2014 whether $\\beta = 2$ is a hard barrier \u2014 remains one of the most intriguing open problems at the intersection of number theory and analysis. A folklore result shows that if $a_n^{1/2^n} \\to c > 1$, then $\\sum 1/a_n$ is automatically irrational, suggesting $\\beta = 2$ is indeed special. The problem connects rationality of infinite series to growth rates via transcendence theory.",
     "problemStatement": "Let $1 \\leq a_1 < a_2 < \\cdots$ be strictly increasing integers. How fast can $a_n$ grow if both $\\sum_{n=1}^\\infty \\frac{1}{a_n}$ and $\\sum_{n=1}^\\infty \\frac{1}{a_n - 1}$ are rational?\n\nSpecifically: can $\\limsup a_n^{1/2^n} > 1$?",
     "text": "How fast can a sequence grow if both \u2211 1/a\u2099 and \u2211 1/(a\u2099-1) are rational?",
-    "proofStrategy": "The formalization introduces a hierarchy of definitions. First, valid sequences are characterized by positivity, strict monotonicity, and dual rationality of reciprocal sums. Then three growth measures are defined: single exponential $a_n^{1/n}$, double exponential $a_n^{1/2^n}$, and generalized $a_n^{1/\\beta^n}$. Cantor's triangular number example is defined with a proved monotonicity theorem. The main conjectures, Kova\u010d-Tao's result, and the irrationality threshold are stated as axioms, since the proofs involve deep analytic number theory beyond current Mathlib capabilities.",
+    "proofStrategy": "The formalization introduces a hierarchy of definitions. First, valid sequences are characterized by positivity, strict monotonicity, and dual rationality of reciprocal sums. Then three growth measures are defined: single exponential $a_n^{1/n}$, double exponential $a_n^{1/2^n}$, and generalized $a_n^{1/\\beta^n}$. Cantor's triangular number example is defined with proved theorems (cantorSeq_increasing, cantorSeq_rational_sum, cantorSeq_shifted_rational). The 2 main conjectures and Kova\u010d-Tao's result are stated as axioms (erdos_265_doubleExp_necessary, kovac_tao_theorem). The irrationality threshold and polynomial family examples are noted in informal block comments — not formalized as Lean declarations. The open problem is formalized as a classical disjunction in erdos_265_main.",
     "keyInsights": [
       "**Cantor's triangular numbers are the prototype**: $a_n = n(n+1)/2$ gives polynomial growth with both sums rational. The telescoping identity $\\sum 2/(n(n+1)) = 2$ underlies the rationality",
       "**Higher polynomials work with shifted constraints**: Cubic sequences like $n^3 + 6n^2 + 5n$ can satisfy the dual rationality condition with a different shift constant, expanding the family of examples",
@@ -80,55 +80,55 @@
       "id": "cantor-example",
       "title": "Cantor's Example",
       "startLine": 48,
-      "endLine": 71,
-      "summary": "Defines Cantor's sequence (triangular numbers n(n+1)/2), proves strict monotonicity, and states rationality of both sums as axioms.",
-      "mathContext": "Formal definition: Defines Cantor's sequence (triangular numbers n(n+1)/2), proves strict monotonicity, and states rationality of both sums as axioms."
+      "endLine": 97,
+      "summary": "Defines Cantor's sequence (triangular numbers n(n+1)/2). Proves strict monotonicity (cantorSeq_increasing), rationality of reciprocal sum (cantorSeq_rational_sum), and rationality of shifted reciprocal sum (cantorSeq_shifted_rational) via telescoping series.",
+      "mathContext": "cantorSeq n = n*(n+1)/2. Proved theorems: cantorSeq_increasing, cantorSeq_rational_sum (telescoping via TriangularNumberReciprocals), cantorSeq_shifted_rational."
     },
     {
       "id": "growth-rates",
       "title": "Growth Rate Measures",
-      "startLine": 72,
-      "endLine": 90,
+      "startLine": 99,
+      "endLine": 116,
       "summary": "Three growth measures: singleExpGrowth (a\u2099^(1/n)), doubleExpGrowth (a\u2099^(1/2\u207f)), and genExpGrowth (a\u2099^(1/\u03b2\u207f)) for parameterized \u03b2 > 1.",
       "mathContext": "Mathematical content: Three growth measures: singleExpGrowth (a\u2099^(1/n)), doubleExpGrowth (a\u2099^(1/2\u207f)), and genExpGrowth (a\u2099^(1/\u03b2\u207f)) for parameterized \u03b2 > 1."
     },
     {
       "id": "erdos-conjectures",
       "title": "Erd\u0151s's Conjectures",
-      "startLine": 91,
-      "endLine": 110,
+      "startLine": 118,
+      "endLine": 137,
       "summary": "Two conjectures: (1) a\u2099^(1/n) \u2192 \u221e is achievable (proved by Kova\u010d-Tao), (2) a\u2099^(1/2\u207f) \u2192 1 is necessary (still open).",
       "mathContext": "Two conjectures: (1) a\u2099^(1/n) $\\to$ \u221e is achievable (proved by Kova\u010d-Tao), (2) a\u2099^(1/2\u207f) $\\to$ 1 is necessary (still open)."
     },
     {
       "id": "kovac-tao",
       "title": "Kova\u010d-Tao Result and Open Question",
-      "startLine": 111,
-      "endLine": 132,
+      "startLine": 139,
+      "endLine": 161,
       "summary": "Kova\u010d-Tao theorem: \u2203 \u03b2 > 1 with a\u2099^(1/\u03b2\u207f) \u2192 \u221e achievable. The remaining open question: can \u03b2 = 2 work?",
       "mathContext": "Kova\u010d-Tao theorem: \u2203 \u03b2 > 1 with a\u2099^(1/\u03b2\u207f) $\\to$ \u221e achievable. The remaining open question: can \u03b2 = 2 work?"
     },
     {
       "id": "irrationality",
       "title": "Irrationality Threshold",
-      "startLine": 133,
-      "endLine": 145,
-      "summary": "Folklore result: if a\u2099^(1/2\u207f) \u2192 c > 1, then \u2211 1/a\u2099 is irrational. This explains why \u03b2 = 2 might be the natural barrier.",
-      "mathContext": "Folklore result: if a\u2099^(1/2\u207f) $\\to$ c > 1, then \u2211 1/a\u2099 is irrational. This explains why \u03b2 = 2 might be the natural barrier."
+      "startLine": 163,
+      "endLine": 175,
+      "summary": "Informal block comment noting the folklore irrationality threshold: if a\u2099^(1/2\u207f) \u2192 c > 1, then \u2211 1/a\u2099 is irrational. No Lean declaration — block comment only (line 170 is a block comment, not a formalized axiom or theorem).",
+      "mathContext": "Folklore result (not formalized): if a\u2099^(1/2\u207f) $\\to$ c > 1, then \u2211 1/a\u2099 is irrational. Described in block comments at lines 163\u2013175."
     },
     {
       "id": "valid-set-poly",
       "title": "Valid Set and Polynomial Examples",
-      "startLine": 146,
-      "endLine": 173,
-      "summary": "Defines the set of valid sequences and states that higher-degree polynomial families (e.g., n\u00b3+6n\u00b2+5n with shift 12) can satisfy the constraint.",
-      "mathContext": "Formal definition: Defines the set of valid sequences and states that higher-degree polynomial families (e.g., n\u00b3+6n\u00b2+5n with shift 12) can satisfy the constraint."
+      "startLine": 177,
+      "endLine": 195,
+      "summary": "Defines validSequences (set of all valid sequences) and maxGrowthRate (sup of single-exponential growth rates). Polynomial families that can satisfy the constraint are noted in an informal block comment — not formalized as a Lean declaration.",
+      "mathContext": "validSequences := {a | IsPositiveIntSeq a \u2227 IsStrictlyIncreasing a \u2227 hasBothRationalSums a}. maxGrowthRate := \u22c3 (a \u2208 validSequences), limsup singleExpGrowth a. Polynomial examples noted in block comment only."
     },
     {
       "id": "main-open",
       "title": "Main Open Problem",
-      "startLine": 174,
-      "endLine": 205,
+      "startLine": 197,
+      "endLine": 232,
       "summary": "The formal statement of Erd\u0151s #265 as a disjunction: either \u2203 valid sequence with limsup a\u2099^(1/2\u207f) > 1, or all valid sequences have limsup \u2264 1.",
       "mathContext": "The formal statement of Erd\u0151s #265 as a disjunction: either \u2203 valid sequence with limsup a\u2099^(1/2\u207f) > 1, or all valid sequences have limsup $\\leq$ 1."
     }
