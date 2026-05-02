@@ -104,30 +104,30 @@
       "title": "Admissibility and Triple Count",
       "summary": "Defines `IsAdmissible(n)$: $n \\bmod 6 \\in \\{1,3\\}$ and `stsTripleCount $= n(n-1)/6$. Axiomatizes Kirkman's 1847 theorem characterizing STS existence.",
       "startLine": 96,
-      "endLine": 125,
+      "endLine": 130,
       "mathContext": "Formal definition: Defines `IsAdmissible(n)$: $n \\bmod 6 \\in \\{1,3\\}$ and `stsTripleCount $= n(n-1)/6$. Axiomatizes Kirkman's 1847 theorem characterizing STS existence."
     },
     {
       "id": "conjecture",
       "title": "The Erdős Conjecture",
       "summary": "Formalizes erdos207Conjecture: $\\forall g \\geq 2, \\exists N: \\forall n \\geq N$, IsAdmissible$(n) \\implies \\exists$ STS$(n)$ with girth $\\geq g$.",
-      "startLine": 126,
-      "endLine": 139,
+      "startLine": 132,
+      "endLine": 144,
       "mathContext": "Mathematical content: Formalizes erdos207Conjecture: $\\forall g \\geq 2, \\exists N: \\forall n \\geq N$, IsAdmissible$(n) \\implies \\exists$ STS$(n)$ with girth $\\geq g$."
     },
     {
       "id": "solution",
       "title": "The KSSS Solution",
       "summary": "Axiomatizes `kwan_sah_sawhney_simkin_2022 : erdos207Conjecture` and derives `erdos_207 : erdos207Conjecture` as the main result of the formalization.",
-      "startLine": 140,
-      "endLine": 158,
+      "startLine": 146,
+      "endLine": 163,
       "mathContext": "Axiomatized: Axiomatizes `kwan_sah_sawhney_simkin_2022 : erdos207Conjecture` and derives `erdos_207 : erdos207Conjecture` as the main result of the formalization."
     },
     {
       "id": "special-cases",
       "title": "Girth 2, Pasch, and Anti-Pasch",
       "summary": "Proves `sts_has_girth_at_least_2` (trivial from unique pair coverage). Defines `IsPaschConfiguration` ($|S|=4, |\\bigcup S|=6$) and states `girth_3_iff_pasch_free`.",
-      "startLine": 159,
+      "startLine": 165,
       "endLine": 197,
       "mathContext": "Formal definition: Proves `sts_has_girth_at_least_2` (trivial from unique pair coverage). Defines `IsPaschConfiguration` ($|S|=4, |\\bigcup S|=6$) and states `girth_3_iff_pasch_free`."
     },
