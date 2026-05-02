@@ -50,9 +50,6 @@
       "nicolas_upper_bound axiom (1971)",
       "erdos_question_false theorem: disproof",
       "Q_bounds combined asymptotic bounds",
-      "HC_exponent_decreasing: prime factorization structure",
-      "ramanujan_characterization: largest prime factor property",
-      "HC_sparser_than_primes: Q(x)/π(x) → 0",
       "IsSuperiorHighlyComposite definition",
       "erdos_381_summary: combines lower bound, upper bound, and disproof",
       "Proofs: one_highly_composite, two_highly_composite, four_highly_composite, six_highly_composite, twelve_highly_composite",
@@ -125,30 +122,30 @@
       "title": "Tight Bounds",
       "summary": "(log x)^{1+c} ≪ Q(x) ≪ (log x)^C",
       "startLine": 220,
-      "endLine": 241,
+      "endLine": 237,
       "mathContext": "Mathematical content: (log x)^{1+c} ≪ Q(x) ≪ (log x)^C"
     },
     {
       "id": "structure",
       "title": "Structure of HC Numbers",
       "summary": "Prime factorization properties, Ramanujan characterization, superior HC numbers",
-      "startLine": 242,
-      "endLine": 272,
+      "startLine": 238,
+      "endLine": 260,
       "mathContext": "Mathematical content: Prime factorization properties, Ramanujan characterization, superior HC numbers"
     },
     {
       "id": "comparison",
       "title": "Comparison with Other Sequences",
       "summary": "HC vs primes (Q(x)/π(x) → 0), highly abundant numbers",
-      "startLine": 273,
-      "endLine": 293,
+      "startLine": 261,
+      "endLine": 278,
       "mathContext": "HC vs primes (Q(x)/π(x) $\\to$ 0), highly abundant numbers"
     },
     {
       "id": "summary",
       "title": "Summary and Main Results",
       "summary": "erdos_381 theorem: the conjecture is FALSE; erdos_381_summary combines all key results",
-      "startLine": 294,
+      "startLine": 279,
       "endLine": 335,
       "mathContext": "Verified: erdos_381 theorem: the conjecture is FALSE; erdos_381_summary combines all key results"
     }
