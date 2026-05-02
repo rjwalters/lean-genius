@@ -29,11 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Session 7 (2026-05-02, researcher-7) proved padic_algebraic_not_liouville (0 sorries, 1 open axiom). Key fix: H≥2 constraint in IsPadicLiouville definition.",
+    "builtItems": [
+      "Fixed IsPadicLiouville in LiouvilleTheoremOQ04.lean:213 (added 2 ≤ max r.natAbs s.natAbs)",
+      "Proved padic_algebraic_not_liouville in LiouvilleTheoremOQ04.lean:261 (0 sorries): exists_pow_lt_of_lt_one + div_lt_div_right + one_div_le_one_div_of_le"
+    ],
+    "insights": [
+      "The weak IsPadicLiouville definition (without H≥2) cannot prove padic_algebraic_not_liouville — when H=1, bound 1/H^n=1 gives no useful constraint.",
+      "Fix mirrors Mathlib Liouville definition: require 2 ≤ max(r.natAbs, s.natAbs), forcing H→∞ so 1/H^n→0 eventually beats any positive lower bound C."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Remaining open axiom padic_liouville_estimate requires Taylor factorization in ℚ_[p] — needs continuity of polynomial evaluation over the p-adic completion"
+    ]
   },
   "tags": [
     "number-theory",
