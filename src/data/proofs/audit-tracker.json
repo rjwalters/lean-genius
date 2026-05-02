@@ -5277,9 +5277,12 @@
     },
     "erdos-229": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T05:43:06Z",
+      "result": "issues-found",
+      "issues": [
+        "Section line drift for 4 sections + 2 sections missing from meta.json. Filed issue #14587"
+      ]
     },
     "erdos-23": {
       "agentId": "auditor-cycle-20-batch",
