@@ -73,43 +73,50 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 32,
-      "endLine": 46,
+      "endLine": 42,
       "summary": "Define arithmetic progressions and when they consist of primes."
     },
     {
       "id": "examples-k3",
       "title": "Example: k = 3",
-      "startLine": 47,
-      "endLine": 71,
+      "startLine": 43,
+      "endLine": 55,
       "summary": "Verify {3, 5, 7} is a prime AP of length 3."
     },
     {
       "id": "examples-k5",
       "title": "Example: k = 5",
-      "startLine": 72,
-      "endLine": 92,
+      "startLine": 57,
+      "endLine": 69,
       "summary": "Verify {5, 11, 17, 23, 29} is a prime AP of length 5."
     },
     {
       "id": "green-tao",
       "title": "The Green-Tao Theorem",
-      "startLine": 93,
-      "endLine": 124,
+      "startLine": 71,
+      "endLine": 98,
       "summary": "Axiomatize the main result and answer."
     },
     {
       "id": "records",
       "title": "Records and Computations",
-      "startLine": 125,
-      "endLine": 136,
+      "startLine": 100,
+      "endLine": 109,
       "summary": "State the longest known AP (k = 23)."
     },
     {
       "id": "open",
       "title": "Related Open Problem",
-      "startLine": 137,
-      "endLine": 143,
+      "startLine": 110,
+      "endLine": 127,
       "summary": "The consecutive prime AP question."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 129,
+      "endLine": 146,
+      "summary": "Summary theorem `summary_erdos_219` combining `green_tao_theorem` and the verified small examples."
     }
   ],
   "conclusion": {
