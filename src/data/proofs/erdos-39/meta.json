@@ -44,7 +44,7 @@
     "originalContributions": [
       "Formal statement of the open conjecture in Lean 4",
       "Axiomatization of known upper bound (Erdős's liminf theorem)",
-      "Axiomatization of Ruzsa's construction achieving N^{sqrt(2)-1}",
+      "Documentation of known constructions: greedy (N^{1/3}), AKS ((N log N)^{1/3}), Ruzsa (N^{sqrt(2)-1})",
       "Verified computational facts about square roots establishing the gap"
     ],
     "axiomCount": 1,
@@ -61,7 +61,7 @@
     "historicalContext": "Erdős Problem #39 asks one of the central questions in additive combinatorics: how dense can an infinite Sidon set be? A Sidon set (also called a B₂ sequence) is a set where all pairwise sums are distinct. For finite Sidon sets in {1,...,N}, the maximum size is approximately √N (see Problem #30). But for infinite Sidon sets, the situation is more subtle.\n\nErdős proved a fundamental upper bound: for any infinite Sidon set A, the limit inferior of A(N)/√N equals zero. This means no infinite Sidon set can have counting function consistently above c√N. The natural question is whether we can achieve A(N) >> N^{1/2-ε} for all ε > 0.\n\nProgress has been slow but steady. The trivial greedy algorithm gives N^{1/3}. Ajtai, Komlós, and Szemerédi (1981) achieved (N log N)^{1/3}, earning $25 from Erdős. Ruzsa (1998) broke the 1/3 barrier with N^{√2-1} ≈ N^{0.414}, earning $100. The gap to N^{1/2-ε} remains open, with a $500 prize.",
     "problemStatement": "**Question**: Does there exist an infinite Sidon set $A \\subset \\mathbb{N}$ such that\n$$|A \\cap \\{1,\\ldots,N\\}| \\gg_\\varepsilon N^{1/2-\\varepsilon}$$\nfor all $\\varepsilon > 0$?\n\n**Status**: OPEN ($500 prize)\n\n**Best known**: Ruzsa's construction achieves $N^{\\sqrt{2}-1-o(1)} \\approx N^{0.414}$\n\n**Upper limit**: Erdős proved $\\liminf A(N)/\\sqrt{N} = 0$ for any infinite Sidon set",
     "text": "Does there exist an infinite Sidon set with counting function approaching N^{1/2}?",
-    "proofStrategy": "Since this is an open problem, we cannot prove the conjecture. Instead, we formalize:\n\n1. **The conjecture statement** as a precise proposition in Lean\n2. **Erdős's upper bound** as an axiom: liminf A(N)/√N = 0\n3. **Known constructions** as axioms: greedy (N^{1/3}), AKS ((N log N)^{1/3}), Ruzsa (N^{√2-1})\n4. **The gap** as a verified theorem: √2 - 1 < 1/2\n\nThe Erdős-Rényi construction shows that N^{1/2-ε} is achievable if we allow bounded (not zero) collision count, highlighting that the Sidon condition r(n) ≤ 1 is the essential difficulty.",
+    "proofStrategy": "Since this is an open problem, we cannot prove the conjecture. Instead, we formalize:\n\n1. **The conjecture statement** as a precise proposition in Lean\n2. **Erdős's upper bound** as an axiom: liminf A(N)/√N = 0\n3. **Known constructions** as documented historical results: greedy (N^{1/3}), AKS ((N log N)^{1/3}), Ruzsa (N^{√2-1})\n4. **The gap** as a verified theorem: √2 - 1 < 1/2\n\nThe Erdős-Rényi construction shows that N^{1/2-ε} is achievable if we allow bounded (not zero) collision count, highlighting that the Sidon condition r(n) ≤ 1 is the essential difficulty.",
     "keyInsights": [
       "**Sidon set**: A set A where all pairwise sums a + b (a ≤ b, a,b ∈ A) are distinct. Named after Simon Sidon.",
       "**Counting function**: A(N) = |A ∩ {1,...,N}| measures how dense the set is up to N.",
@@ -105,17 +105,17 @@
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
       "startLine": 57,
-      "endLine": 73,
+      "endLine": 87,
       "summary": "Erdős's theorem that liminf A(N)/√N = 0 for any infinite Sidon set.",
       "mathContext": "Verified: Erdős's theorem that liminf A(N)/√N = 0 for any infinite Sidon set."
     },
     {
       "id": "constructions",
       "title": "Known Constructions",
-      "startLine": 74,
-      "endLine": 110,
-      "summary": "Axioms encoding greedy (N^{1/3}), AKS ((N log N)^{1/3}), and Ruzsa (N^{√2-1}) constructions.",
-      "mathContext": "Axiomatized: Axioms encoding greedy (N^{1/3}), AKS ((N log N)^{1/3}), and Ruzsa (N^{√2-1}) constructions."
+      "startLine": 88,
+      "endLine": 109,
+      "summary": "Historical construction summaries as doc-comments (greedy N^{1/3}, AKS (N log N)^{1/3}, Ruzsa N^{√2-1}); verified Ruzsa exponent > 0.41.",
+      "mathContext": "Documented: Historical construction summaries (greedy, AKS, Ruzsa) as doc-comments; Verified: ruzsa_exponent_value > 0.41."
     },
     {
       "id": "gap",
@@ -129,14 +129,14 @@
       "id": "related",
       "title": "Related Results",
       "startLine": 134,
-      "endLine": 149,
+      "endLine": 167,
       "summary": "Erdős-Rényi construction achieving N^{1/2-ε} with bounded representation numbers.",
       "mathContext": "Bound: Erdős-Rényi construction achieving N^{1/2-ε} with bounded representation numbers."
     },
     {
       "id": "examples",
-      "title": "Verified Examples",
-      "startLine": 170,
+      "title": "Verified Facts",
+      "startLine": 168,
       "endLine": 186,
       "summary": "Concrete Sidon sets verified in Lean: singletons and {1,2,5,10}.",
       "mathContext": "Mathematical content: Concrete Sidon sets verified in Lean: singletons and {1,2,5,10}."
