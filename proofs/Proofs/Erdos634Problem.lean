@@ -86,11 +86,22 @@ theorem congruent_implies_similar {T₁ T₂ : Triangle} :
 The central concept of the problem.
 -/
 
-/-- A dissection of triangle T into n pieces. -/
+/-- Semiperimeter of a triangle (used in Heron's formula). -/
+noncomputable def Triangle.semiperimeter (T : Triangle) : ℝ :=
+  (T.a + T.b + T.c) / 2
+
+/-- Area of a triangle via Heron's formula: √(s(s-a)(s-b)(s-c)). -/
+noncomputable def Triangle.area (T : Triangle) : ℝ :=
+  Real.sqrt (T.semiperimeter * (T.semiperimeter - T.a) *
+             (T.semiperimeter - T.b) * (T.semiperimeter - T.c))
+
+/-- A dissection of triangle T into n pieces where the pieces partition T by area.
+    Note: area equality is necessary but not sufficient for a genuine tiling;
+    a full formalization would also require disjointness and coverage. -/
 structure Dissection (T : Triangle) (n : ℕ) where
   pieces : Fin n → Triangle
-  -- The pieces tile T exactly (area condition)
-  area_sum : (∑ i, (pieces i).a * (pieces i).b) > 0  -- Placeholder for proper area
+  -- The pieces partition T by area (necessary condition for a real dissection)
+  area_partition : (∑ i, (pieces i).area) = T.area
 
 /-- A valid congruent dissection: all pieces are congruent to each other. -/
 def IsCongruentDissection (T : Triangle) (n : ℕ) (D : Dissection T n) : Prop :=
@@ -118,51 +129,40 @@ private noncomputable def unitEquil : Triangle where
   triangle_ineq_bc := by norm_num
   triangle_ineq_ca := by norm_num
 
-/-- Perfect squares are dissectable (divide each side into k parts). -/
+/-- Perfect squares are dissectable (divide each side into k parts).
+    The explicit construction subdivides an equilateral triangle into k² congruent sub-triangles
+    via affine subdivision; area equality follows from the k²-fold scaling of each sub-triangle.
+    Awaiting formalization of the explicit subdivision map. -/
 theorem squares_dissectable (k : ℕ) (hk : k ≥ 1) : IsDissectable (k^2) := by
-  refine ⟨unitEquil, ⟨fun _ => unitEquil, ?_⟩, fun _ _ => rfl⟩
-  simp only [unitEquil, mul_one, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
-    nsmul_eq_mul]
-  push_cast
-  positivity
+  sorry
 
-/-- 2n² is dissectable. -/
+/-- 2n² is dissectable.
+    Construction: subdivide a right-isoceles triangle; area equality pending formalization. -/
 theorem two_squares_dissectable (n : ℕ) (hn : n ≥ 1) : IsDissectable (2 * n^2) := by
-  refine ⟨unitEquil, ⟨fun _ => unitEquil, ?_⟩, fun _ _ => rfl⟩
-  simp only [unitEquil, mul_one, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
-    nsmul_eq_mul]
-  push_cast
-  positivity
+  sorry
 
-/-- 3n² is dissectable (equilateral triangle). -/
+/-- 3n² is dissectable (equilateral triangle subdivision).
+    Construction: subdivide into 3n² congruent pieces; area equality pending formalization. -/
 theorem three_squares_dissectable (n : ℕ) (hn : n ≥ 1) : IsDissectable (3 * n^2) := by
-  refine ⟨unitEquil, ⟨fun _ => unitEquil, ?_⟩, fun _ _ => rfl⟩
-  simp only [unitEquil, mul_one, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
-    nsmul_eq_mul]
-  push_cast
-  positivity
+  sorry
 
-/-- 6n² is dissectable. -/
+/-- 6n² is dissectable.
+    Construction: combine k²- and 2k²-type subdivisions; pending formalization. -/
 theorem six_squares_dissectable (n : ℕ) (hn : n ≥ 1) : IsDissectable (6 * n^2) := by
-  refine ⟨unitEquil, ⟨fun _ => unitEquil, ?_⟩, fun _ _ => rfl⟩
-  simp only [unitEquil, mul_one, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
-    nsmul_eq_mul]
-  push_cast
-  positivity
+  sorry
 
-/-- n² + m² is dissectable for n, m ≥ 1. -/
+/-- n² + m² is dissectable for n, m ≥ 1.
+    Construction: juxtapose k²- and m²-type pieces sharing a common base;
+    area equality pending formalization. -/
 theorem sum_squares_dissectable (n m : ℕ) (hn : n ≥ 1) (hm : m ≥ 1) :
     IsDissectable (n^2 + m^2) := by
-  refine ⟨unitEquil, ⟨fun _ => unitEquil, ?_⟩, fun _ _ => rfl⟩
-  simp only [unitEquil, mul_one, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
-    nsmul_eq_mul]
-  push_cast
-  positivity
+  sorry
 
-/-- 27 is dissectable (special equilateral construction). -/
+/-- 27 is dissectable (special equilateral construction; 27 = 3·3²). -/
 theorem twenty_seven_dissectable : IsDissectable 27 := by
   have : 27 = 3 * 3^2 := by norm_num
-  rw [this]; exact three_squares_dissectable 3 (by norm_num)
+  rw [this]
+  exact three_squares_dissectable 3 (by norm_num)
 
 /-
 ## Part V: Beeson's Negative Results
