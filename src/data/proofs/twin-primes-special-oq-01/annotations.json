@@ -48,9 +48,21 @@
     "prerequisites": ["TwinPrimeConjecture and IsTwinPrimePair definitions"]
   },
   {
+    "id": "ann-tpsoq01-trivial-conditional",
+    "proofId": "twin-primes-special-oq-01",
+    "range": { "startLine": 125, "endLine": 129 },
+    "type": "insight",
+    "title": "1-Line Proof: Axiom Instantly Gives Infinitely Many Twin Primes",
+    "content": "`infinite_twin_prime_pairs` is a 1-line proof: `twin_prime_conjecture N`. This is the whole point of axiomatization — once TPC is declared as an axiom, every consequence that follows from TPC alone is a 1-line application of that axiom. The theorem is still meaningful: it names the consequence, gives it a discoverable type signature, and makes the logical dependency on `twin_prime_conjecture` explicit in the term structure. In a formal library, callers use `infinite_twin_prime_pairs` without even knowing that TPC is axiomatized — they just import and apply the theorem.",
+    "mathContext": "The full proof term is `fun N => twin_prime_conjecture N`, where `twin_prime_conjecture : TwinPrimeConjecture = ∀ N, ∃ p > N, IsTwinPrimePair p`. This is a $\\beta$-reduction: the axiom is exactly the statement being named. No computation, no simplification. The formalization value lies in the packaging: it wraps the axiom under a stable theorem name that clients can use without depending on implementation details of the axiom.",
+    "significance": "context",
+    "relatedConcepts": ["twin_prime_conjecture axiom", "axiom application", "1-line proofs", "TwinPrimeConjecture"],
+    "prerequisites": ["twin_prime_conjecture axiom", "TwinPrimeConjecture definition"]
+  },
+  {
     "id": "ann-tpsoq01-mod-six-consequence",
     "proofId": "twin-primes-special-oq-01",
-    "range": { "startLine": 125, "endLine": 138 },
+    "range": { "startLine": 130, "endLine": 138 },
     "type": "insight",
     "title": "Conditional: Infinite Primes ≡ 5 (mod 6) via max(N, 3) Trick",
     "content": "`infinite_twin_primes_mod_six` is the most interesting conditional theorem. It needs `twin_prime_mod_six` which requires `p > 3`. The trick is to apply TPC at `max N 3` rather than `N`, getting a twin prime `p > max(N, 3)`. Then `Nat.le_max_left` and `Nat.le_max_right` extract both `p > N` and `p > 3` as corollaries, enabling the application of the structure theorem.",
