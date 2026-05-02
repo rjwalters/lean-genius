@@ -3889,9 +3889,12 @@
     },
     "erdos-1114": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T13:36:47Z",
+      "result": "issues-found",
+      "issues": [
+        "systemic section drift (6 of 7 sections, +8 to +22 lines), proofStrategy claims a phantom axiomatization (filed #14789)"
+      ]
     },
     "erdos-1115": {
       "agentId": "auditor-cycle-20-batch",
