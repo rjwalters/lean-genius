@@ -42,6 +42,11 @@
         "theorem": "dist",
         "description": "Metric space distance function",
         "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real numbers and arithmetic",
+        "module": "Mathlib.Data.Real.Basic"
       }
     ],
     "originalContributions": [
@@ -49,19 +54,18 @@
       "Definition of countable decomposition",
       "Formalization of the Continuum Hypothesis",
       "ℚ-linear independence definition",
-      "Axiomatization of Erdős-Kakutani, Davies, and Kunen theorems",
-      "Statement of Erdős-Hajnal necessity result"
+      "Axiomatization of Erdős-Kakutani, Davies, and Kunen theorems"
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 5,
-    "assumptions": "5 axiom declarations: erdos_kakutani_equivalence (CH iff countable Q-independent union), ch_implies_1d_image_distinct (CH implies 1D distinct distances), ch_implies_1d_union_cover (CH implies 1D countable cover), davies_theorem (CH implies 2D decomposition), kunen_theorem (CH implies all-n decomposition). Former axioms q_linear_independent_distinct_distances, erdos_hajnal_necessity, finite_partition_impossible_without_ch, countable_vs_finite_distinction, erdos_distinct_distances_lower_bound now proved as theorems or definitions.",
+    "assumptions": "5 axiom declarations: erdos_kakutani_equivalence (CH iff countable Q-independent union), ch_implies_1d_image_distinct (CH implies 1D distinct distances), ch_implies_1d_union_cover (CH implies 1D countable cover), davies_theorem (CH implies 2D decomposition), kunen_theorem (CH implies all-n decomposition).",
     "lineCount": 279
   },
   "overview": {
     "historicalContext": "This problem connects geometry to set theory in a surprising way. Erdős and Kakutani (1943) showed that for n=1, the decomposition exists if and only if the Continuum Hypothesis holds. Davies (1972) proved the n=2 case under CH, and Kunen (1987) proved it for all dimensions. Erdős and Hajnal showed that CH is necessary - without it, even finite partitions fail. The interplay between geometric decomposition problems and set-theoretic axioms is characteristic of mid-20th century descriptive set theory: the Axiom of Choice enables wild decompositions (as in the Banach-Tarski paradox), while the Continuum Hypothesis provides the precise combinatorial power needed to partition space into countably many sets each intersecting every line in at most 1 point.",
     "problemStatement": "Can ℝⁿ be decomposed into countably many sets, such that within each set all pairwise distances are distinct?",
     "text": "Can ℝⁿ be decomposed into countably many sets where all pairwise distances within each set are distinct? YES assuming the Continuum Hypothesis (Erdős-Kakutani 1943 for n=1, Davies 1972 for n=2, Kunen 1987 for all n). CH is necessary.",
-    "proofStrategy": "The formalization defines the distinct distances property, countable decomposition, and the Continuum Hypothesis. Key results are axiomatized: Erdős-Kakutani equivalence (CH ↔ ℝ = countable union of ℚ-linearly independent sets), Davies' theorem for n=2, Kunen's theorem for all n, and the Erdős-Hajnal necessity result.",
+    "proofStrategy": "The formalization defines the distinct distances property, countable decomposition, and the Continuum Hypothesis. Key results are axiomatized: Erdős-Kakutani equivalence (CH ↔ ℝ = countable union of ℚ-linearly independent sets), Davies' theorem for n=2, and Kunen's theorem for all n. The Erdős-Hajnal necessity result is discussed in comments but not formalized as a Lean axiom.",
     "keyInsights": [
       "The answer is YES assuming the Continuum Hypothesis",
       "Erdős-Kakutani: CH is EQUIVALENT to ℝ being a countable union of ℚ-linearly independent sets",
@@ -104,38 +108,38 @@
       "id": "erdos-kakutani",
       "title": "The Erdős-Kakutani Theorem",
       "startLine": 125,
-      "endLine": 167,
+      "endLine": 173,
       "summary": "CH ↔ countable union of ℚ-linearly independent sets",
       "mathContext": "CH ↔ countable union of $\\mathbb{Q}$-linearly independent sets"
     },
     {
       "id": "davies-theorem",
       "title": "Davies' Theorem (1972)",
-      "startLine": 168,
-      "endLine": 177,
+      "startLine": 174,
+      "endLine": 183,
       "summary": "Extension to n=2 under CH",
       "mathContext": "Mathematical content: Extension to n=2 under CH"
     },
     {
       "id": "kunen-theorem",
       "title": "Kunen's Theorem (1987)",
-      "startLine": 178,
-      "endLine": 188,
+      "startLine": 184,
+      "endLine": 194,
       "summary": "Full solution for all dimensions under CH",
       "mathContext": "Mathematical content: Full solution for all dimensions under CH"
     },
     {
       "id": "necessity-of-ch",
       "title": "The Necessity of CH",
-      "startLine": 189,
-      "endLine": 220,
+      "startLine": 195,
+      "endLine": 209,
       "summary": "Erdős-Hajnal: finite partition fails without CH",
       "mathContext": "Mathematical content: Erdős-Hajnal: finite partition fails without CH"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 259,
+      "startLine": 237,
       "endLine": 279,
       "summary": "Main theorem and key results combined",
       "mathContext": "Verified: Main theorem and key results combined"
