@@ -5644,12 +5644,13 @@
       "result": "clean"
     },
     "erdos-280": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-02T03:50:26Z",
+      "agentId": "auditor-cycle-21-issue-14552",
+      "auditCount": 4,
+      "lastAudited": "2026-05-02T04:18:24Z",
       "result": "issues-found",
       "issues": [
-        "phantom axiom 'cambie_only_one_avoider' in originalContributions; section summaries reference cambie_satisfies_growth/cambie_only_one_avoider/cambie_count_is_one/prime_number_theorem_approx that exist only as docstrings; section line ranges drifted — issue #14535"
+        "phantom axiom 'cambie_only_one_avoider' in originalContributions; section summaries reference cambie_satisfies_growth/cambie_only_one_avoider/cambie_count_is_one/prime_number_theorem_approx that exist only as docstrings; section line ranges drifted — issue #14535",
+        "phantom-axiom narrative in proofStrategy: claims 'growth bound, covering property, exact count, and conjecture refutation are axiomatized' but only original_conjecture_false exists; growth/covering/count are dangling docstrings (lines 78-83) — issue #14552"
       ]
     },
     "erdos-281": {
