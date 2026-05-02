@@ -55,7 +55,7 @@
       }
     ],
     "originalContributions": [
-      "IsNonDividing, IsNonDividingAlt: two equivalent formulations of non-dividing sets",
+      "IsNonDividing, IsNonDividingAlt: two related formulations (Alt is strictly stronger; `nondividing_not_iff_alt` proves the inequivalence)",
       "IsNonAveraging: non-averaging set definition with Q-valued averages",
       "nondividing_implies_nonaveraging: key implication (fully proved via exact_mod_cast)",
       "F(N), g(N): extremal functions via Finset.powerset enumeration",
@@ -95,7 +95,7 @@
       "title": "Non-Dividing and Non-Averaging Definitions",
       "startLine": 43,
       "endLine": 91,
-      "summary": "Defines `IsNonDividing` ($a \\nmid \\sum S$ for $S \\subseteq A \\setminus \\{a\\}$, $|S| \\geq 2$), the alternative `IsNonDividingAlt`, and `IsNonAveraging` ($\\frac{\\sum S}{|S|} \\neq a$ in $\\mathbb{Q}$). The equivalence `nondividing_equiv` between the two non-dividing formulations is stated but unproved.",
+      "summary": "Defines `IsNonDividing` ($a \\nmid \\sum S$ for $S \\subseteq A \\setminus \\{a\\}$, $|S| \\geq 2$), the alternative `IsNonDividingAlt`, and `IsNonAveraging` ($\\frac{\\sum S}{|S|} \\neq a$ in $\\mathbb{Q}$). Theorem `nondividingAlt_implies_nondividing` proves the easy direction, while `nondividing_not_iff_alt` shows the two formulations are inequivalent (Alt is strictly stronger).",
       "mathContext": "Defines `IsNonDividing` ($a \\nmid \\sum S$ for $S \\subseteq A \\setminus \\{a\\}$, $|S| \\geq 2$), the alternative `IsNonDividingAlt`, and `IsNonAveraging` ($\\frac{\\sum S}{|S|} \\neq a$ in $\\mathbb{Q}$)."
     },
     {
@@ -104,7 +104,7 @@
       "startLine": 92,
       "endLine": 105,
       "summary": "Fully proves the key implication: if $a = \\text{avg}(S)$ in $\\mathbb{Q}$ then $a \\mid \\sum S$ in $\\mathbb{N}$, via `exact_mod_cast`. No sorry remains; the $\\mathbb{N}$-divisibility is extracted directly from the $\\mathbb{Q}$-equation.",
-      "mathContext": "Proves the key structural implication: if $a = \\text{avg}(S)$ then $a \\mid \\sum S$. The proof structure is complete except for extracting $\\mathbb{N}$-divisibility from the $\\mathbb{Q}$-equation $\\sum S = a \\cdot |S|$."
+      "mathContext": "Fully proves the key implication: if $a = \\text{avg}(S)$ in $\\mathbb{Q}$ then $a \\mid \\sum S$ in $\\mathbb{N}$, via `exact_mod_cast`. No sorry remains; the $\\mathbb{N}$-divisibility is extracted directly from the $\\mathbb{Q}$-equation."
     },
     {
       "id": "f-function",
@@ -136,7 +136,7 @@
       "startLine": 213,
       "endLine": 296,
       "summary": "Formalizes the remaining open problem: the gap $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$. Also proves Erdős's original conjecture $F(N) < (\\log N)^{O(1)}$ was false.",
-      "mathContext": "Formalizes the remaining open problem: the gap $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$. Also proves Erdős's original conjecture $F(N) < (\\log N)^{$O(1)$}$ was false."
+      "mathContext": "Formalizes the remaining open problem: the gap $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$. Also proves Erdős's original conjecture $F(N) < (\\log N)^{O(1)}$ was false."
     },
     {
       "id": "examples",
@@ -144,7 +144,7 @@
       "startLine": 297,
       "endLine": 378,
       "summary": "Verified: `singleton_nondividing` (trivial), `two_three_nondividing` (direct), `two_four_five_nondividing` (direct), `three_five_eleven_eighteen_nondividing` (computation). Counterexample: `primes_not_nondividing` proves $\\{2,3,5\\}$ is **not** non-dividing. Also `nondividing_hard_to_find` shows $\\{3,5,7\\}$ is not non-dividing.",
-      "mathContext": "Mathematical content: Verified: `singleton_nondividing` (vacuous truth). Partially verified: $\\{2,3\\}$ non-dividing (cardinality contradiction). Stated: primes form non-dividing sets."
+      "mathContext": "Verified: `singleton_nondividing`, `two_three_nondividing`, `two_four_five_nondividing`, `three_five_eleven_eighteen_nondividing`. Counterexamples: `primes_not_nondividing` ($\\{2,3,5\\}$ is **not** non-dividing); `nondividing_hard_to_find` ($\\{3,5,7\\}$ is not non-dividing)."
     },
     {
       "id": "connection",
