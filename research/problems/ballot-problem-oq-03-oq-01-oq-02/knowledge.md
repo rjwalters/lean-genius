@@ -41,6 +41,57 @@ Key infrastructure already available:
 
 > **Note**: 4 older sessions archived to `sessions/` directory.
 
+## Session 2026-05-02 (Session 35) — Modularize: Helpers + Main split
+
+**Mode**: FRESH (claimed from pool, RICH knowledge tier, score 163)
+**Outcome**: PROGRESS — file split completed; Docker build in progress via CI
+
+### What I Did
+
+1. Analyzed the full dependency structure of the 14022-line file:
+   - `hook_walk_identity` dispatcher is at line 13868 (the LAST function before HLF)
+   - PARTS I-XXIV (lines 1-13674) are all helpers; PART XXV + dispatcher + HLF are lines 13675+
+   - 22 `private` declarations needed to become non-private for cross-file access
+
+2. Created `BallotProblemOQ03OQ01OQ02Helpers.lean` (13645 lines, 0 sorries):
+   - Contains PARTS I-XXIV (all infrastructure, row-by-row hook walk helpers)
+   - 22 declarations de-privatized: isCorner, corners, removeCorner, mem_corners,
+     mem_removeCorner, removeCorner_card, removeCorner_proof_irrel, emptyTableau,
+     gHookYD, hookProdQ_ne_zero, hookProd_ratio_formula,
+     hook_walk_identity_atMostTwoRows/gHookYD/atMostTwoCols/threeRow through nineRow,
+     hook_walk_identity_atMostNineCols
+
+3. Shrunk `BallotProblemOQ03OQ01OQ02.lean` from 14022 → 392 lines:
+   - Imports Helpers
+   - Contains PART XXV (rectangular case) + dispatcher + `hook_length_formula_Q` + main theorems
+   - The 1 sorry is now at line 302 (was line 13932)
+
+4. Committed to `feature/researcher-11` and created PR
+
+### Key Findings
+
+- The modularization is clean: no circular dependencies, 22 clean private→public changes
+- Helpers has 0 sorries; the single sorry is now in a 392-line file
+- Docker build for Helpers is likely within memory limits (no heavy proof elaboration,
+  mostly definitions + computational checks via field_simp/ring)
+- GNW Route A (~300 lines) can now be added to the 392-line Main file and will build
+  well within any reasonable Docker memory limit
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (14022 → 392 lines)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean` (new, 13645 lines)
+
+### Next Steps
+
+1. Verify Docker/CI build succeeds for both Helpers and Main
+2. Once build passes: implement GNW Route A in Main (~300 lines)
+   - Start with the probabilistic argument; deterministic recasting avoids ProbabilityTheory
+   - The sorry is at line 302 of the new 392-line Main file
+3. Update meta.json once the build is confirmed
+
+---
+
 ## Session 2026-05-01 (Session 34) — Reconcile state.md with sessions 5–33 progress
 
 **Mode**: REVISIT (RICH knowledge tier, score 163)
