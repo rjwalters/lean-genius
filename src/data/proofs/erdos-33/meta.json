@@ -36,7 +36,7 @@
     "historicalContext": "This problem concerns 'additive complements of squares' - sets A ⊆ ℕ such that every natural number can be written as n² + a for some a ∈ A. Erdős asked: how sparse can such a set be?\n\nMoser (1965) proved the first quantitative lower bound: liminf |A ∩ {1,...,N}|/√N > 1.06. This was improved by Cilleruelo (1993), Habsieger (1995), and Balasubramanian-Ramana (2001) to the current best bound of 4/π ≈ 1.273.\n\nFor upper bounds, Van Doorn constructed a set achieving limsup ≤ 2φ^(5/2) ≈ 6.66 where φ is the golden ratio. The exact minimum of the limsup remains open.",
     "problemStatement": "Let A ⊆ ℕ be such that every integer can be written as n² + a for some a ∈ A and n ≥ 0. What is the smallest possible value of limsup |A ∩ {1,...,N}|/√N? Is liminf |A ∩ {1,...,N}|/√N > 1?\n\n**Status**: Partially solved. Best bounds: liminf ≥ 4/π ≈ 1.273, limsup ≤ 2φ^(5/2) ≈ 6.66. Exact minimum OPEN.",
     "text": "For sets A such that every integer is n² + a for some a ∈ A, what is the minimum possible density? Best known: liminf ≥ 4/π ≈ 1.273 and limsup ≤ 2φ^(5/2) ≈ 6.66.",
-    "proofStrategy": "The formalization defines additive complements of squares and the normalized density function |A ∩ {1,...,N}|/√N. We axiomatize:\n\n1. **Moser's bound**: liminf > 1.06 for any such A\n2. **Best lower bound**: liminf ≥ 4/π (Cilleruelo-Habsieger)\n3. **Van Doorn's construction**: There exists A with limsup ≤ 2φ^(5/2)\n\nWe also prove the golden ratio satisfies φ² = φ + 1 and derive that liminf > 1 from the 4/π bound.",
+    "proofStrategy": "The formalization defines additive complements of squares and the normalized density function |A ∩ {1,...,N}|/√N. A single axiom is used:\n\n1. **Best known lower bound** (axiomatized): liminf ≥ 4/π (Cilleruelo–1993, Habsieger–1995, Balasubramanian-Ramana–2001)\n\nMoser's earlier 1.06 lower bound and Van Doorn's limsup construction are described in docstrings as historical and expository context but are not separately axiomatized in this formalization. We also prove the golden ratio satisfies φ² = φ + 1 and derive that liminf > 1 from the 4/π bound.",
     "keyInsights": [
       "**Additive complement**: A set A 'completes' the squares if every integer is a square plus something from A",
       "**Why √N normalization?**: Squares grow like n², so up to N there are ~√N squares. A complementing set needs ~√N elements per interval",
@@ -56,34 +56,34 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 38,
-      "endLine": 60,
+      "endLine": 55,
       "summary": "Defines additive complements of squares, counting function, and normalized density"
     },
     {
       "id": "existence",
       "title": "Existence Results",
-      "startLine": 61,
-      "endLine": 70,
+      "startLine": 56,
+      "endLine": 65,
       "summary": "Erdős: such sets exist with finite limsup > 1"
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds on liminf",
-      "startLine": 71,
-      "endLine": 94,
-      "summary": "Moser's 1.06 bound and the best known 4/π bound"
+      "startLine": 66,
+      "endLine": 91,
+      "summary": "Historical: Moser's 1.06 lower bound (docstring at lines 68–72, not axiomatized). Axiomatized: cilleruelo_habsieger_lower_bound — liminf ≥ 4/π (lines 80–82). Proved: four_over_pi_approx showing 4/π > 1.27 (lines 85–90)."
     },
     {
       "id": "golden-ratio",
       "title": "Golden Ratio and Van Doorn",
-      "startLine": 95,
-      "endLine": 123,
-      "summary": "Defines φ, proves φ² = φ + 1, states Van Doorn's upper bound"
+      "startLine": 92,
+      "endLine": 114,
+      "summary": "Defines goldenRatio = (1 + √5)/2 (line 95). Proves goldenRatio_squared: φ² = φ + 1 (lines 98–102). Defines vanDoornConstant = 2φ^(5/2) (line 105). Van Doorn's limsup ≤ 2φ^(5/2) construction is described in a docstring (lines 107–113) but is not axiomatized."
     },
     {
       "id": "open-questions",
       "title": "Open Questions",
-      "startLine": 124,
+      "startLine": 115,
       "endLine": 172,
       "summary": "Exact minimum of limsup, whether liminf can equal 1"
     }
