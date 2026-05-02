@@ -4,34 +4,43 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Iteration**: 12
+**Last Updated**: 2026-05-02
+**Iteration**: 15
 
 ## Current Focus
 
-Proving the Jacobi-Trudi identity via SSYT infrastructure.
-- `ssytSchurFin_one_row`: k=1 case connecting SSYTFin to Sym bijection
-- `jacobi_trudi_ssyt_eq`: general case via RSK correspondence
+Proving `jdt_weight_sum_b_one` — the `b = 1` base case of `jdt_weight_sum`,
+extracted as a focused subproblem in Session 15.
 
 ## Active Approach
 
-SSYT-based proof:
-1. SSYTFin type defined (entries in Fin n, σ-type domain)
-2. ssytSchurFin generating function defined
-3. k=0 base case proved
-4. k=1 and general cases remain (2 sorries)
+Build the bijection
+`ψ : { (P, Q) : Sym (Fin n) a × Sym (Fin n) 1 // ¬ColStrictSym a 1 P Q } ≃ Sym (Fin n) (a+1)`:
+- forward: `(P, Q, _) ↦ q ::ₛ P`, where `q` is the unique element of `Q`
+- inverse: `S ↦ ((S.erase qS hS, ⟨{qS}, _⟩), _)`, where `qS = (S.1.sort)[0]`
+
+Helper `sym_one_sort_head_singleton` (proved Session 15) extracts `q` cleanly.
+Estimated 100-130 lines for the full bijection.
 
 ## Attempt Count
-- Total attempts: 1
-- Current approach attempts: 1
-- Approaches tried: 1 (SSYT infrastructure approach)
+- Total attempts: 15 (sessions 1-15)
+- Current approach attempts: 1 (jdt_weight_sum_b_one decomposition, Session 15)
+- Approaches tried:
+  1. SSYT infrastructure approach (sessions 1-14): defined `SSYTFin`, proved
+     k=0, k=1, k=2 (modulo `jdt_weight_sum`); `jdt_weight_sum` b ≥ 1 was stuck.
+  2. Decompose `jdt_weight_sum` b ≥ 1 (session 15): split into b=1 helper +
+     b ≥ 2 sorry. b=1 is now focused.
 
 ## Blockers
 
 - Pre-existing build failure in `BallotProblemOQ03OQ02.lean` (upstream dependency)
-  prevents Docker build verification. Not caused by our changes.
+  may prevent Docker build verification. Not caused by our changes.
 
 ## Next Action
 
-1. Prove `ssytSchurFin_one_row` via `List.sortedLE_ofFn_iff` and Sym bijection
-2. Prove `jacobi_trudi_ssyt_eq` — either via RSK (~300 lines) or algebraic transfer matrix approach
-3. File issue for Mechanic to fix `BallotProblemOQ03OQ02.lean` upstream error
+1. Implement the bijection in `jdt_weight_sum_b_one` (the sorry at line ~426).
+   Use `sym_one_sort_head_singleton` for the Q-side decomposition.
+2. After b=1 closes: tackle `jdt_weight_sum` b ≥ 2 (the seam algorithm,
+   ~150-200 lines).
+3. After `jdt_weight_sum` closes: `jacobi_trudi_ssyt_eq` k=2 is proved
+   (only k ≥ 3 RSK/LGV remains).
