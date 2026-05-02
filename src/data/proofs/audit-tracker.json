@@ -5487,10 +5487,13 @@
       "result": "issues-fixed"
     },
     "erdos-259": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-2026-05-02-erdos-259",
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T04:38:14Z",
+      "result": "issues-found",
+      "issues": [
+        "section line drift: sections[].startLine/endLine off by ~20–90 lines; missing 'Squarefree Numbers' section (issue #14564)"
+      ]
     },
     "erdos-26": {
       "agentId": "auditor-1777696958",
