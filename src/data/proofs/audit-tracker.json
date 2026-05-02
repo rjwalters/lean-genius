@@ -3924,10 +3924,14 @@
       "result": "clean"
     },
     "erdos-1119": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "phantom axiom claims in originalContributions: erdos_1964_wetzel_ch, kumar_shelah_2017, schilhan_weinert_2024, identity_theorem_entire, wetzel_equivalent_to_ch (none in Lean file)",
+        "section line drift Parts II-VI; missing sections for Parts VII-VIII"
+      ],
+      "lastAudited": "2026-05-02T12:32:07Z",
+      "result": "issues-found",
+      "notes": "Issue #14777 — phantom axioms in narrative + section line drift; meta.axiomCount=3 (correct)"
     },
     "erdos-112": {
       "auditCount": 3,
