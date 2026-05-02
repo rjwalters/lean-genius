@@ -231,19 +231,19 @@ theorem Q_bounds :
                     (Q x : ℝ) ≤ K₂ * (Real.log x)^C) := by
   sorry
 
-/--
+/-
 **Q(x) has polynomial growth in log x:**
 Q(x) ~ (log x)^α for some 1 < α ≤ C.
 -/
 /- ## Part VII: Structure of Highly Composite Numbers -/
 
-/--
+/-
 **Prime factorization structure:**
 Highly composite numbers have a specific form: they are products of
 primorials with decreasing exponents. If n = 2^{a₁} · 3^{a₂} · ... · p^{a_k},
 then a₁ ≥ a₂ ≥ ... ≥ a_k ≥ 1.
 -/
-/--
+/-
 **Ramanujan's characterization:**
 Ramanujan (1915) gave a complete characterization of highly composite numbers
 based on their prime factorizations. The exponents are non-increasing and the
@@ -260,7 +260,7 @@ def IsSuperiorHighlyComposite (n : ℕ) : Prop :=
 
 /- ## Part VIII: Comparison with Other Sequences -/
 
-/--
+/-
 **Highly composite vs primes:**
 The count Q(x) of highly composite numbers up to x grows much slower
 than π(x), the count of primes: π(x) ~ x/log x, while Q(x) ~ (log x)^α.
