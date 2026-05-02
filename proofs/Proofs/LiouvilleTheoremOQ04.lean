@@ -199,64 +199,85 @@ Definition and basic properties
 ═══════════════════════════════════════════════════════════════════════════ -/
 
 /-- A p-adic number β is **p-adically Liouville** if for every positive integer n,
-    there exist coprime integers r, s with s ≠ 0 and height H = max(|r|, |s|) ≥ 2 such that:
-      `‖β - r/s‖_p < 1 / max(|r|, |s|)^n`
+    there exist coprime integers r, s with s ≠ 0 and height H = max(|r|, |s|) ≥ 2 such that
+    the approximation is STRICTLY POSITIVE and smaller than 1/H^n:
+      `0 < ‖β - r/s‖_p < 1 / max(|r|, |s|)^n`
 
-    This is the p-adic analog of the classical Liouville condition, using
-    the naive height max(|r|, |s|) instead of the denominator s alone.
-    The condition H ≥ 2 mirrors the classical `1 < q` requirement in Mathlib's
-    `Liouville` definition — without it H = 1 gives 1/H^n = 1 for all n,
-    making the condition trivially satisfiable and padic_algebraic_not_liouville unprovable.
+    This is the p-adic analog of the classical Liouville condition (Mathlib's `Liouville` uses
+    `0 < |x - a/b|` to prevent the trivial witness a/b = x). Without strict positivity,
+    every rational number would be trivially Liouville (take r/s = β exactly, giving ‖β - r/s‖ = 0
+    < anything), making the theorem vacuously false for rational β.
 
-    **Why height instead of denominator?** In the p-adic world:
-    - |r/s|_p = p^(v_p(r) - v_p(s)), which depends on BOTH numerator and denominator
-    - The denominator alone (v_p(s)) doesn't control the p-adic distance
-    - The height max(|r|, |s|) appears naturally from the polynomial bound -/
+    The condition H ≥ 2 mirrors the classical `1 < q` requirement.
+    The height max(|r|, |s|) appears naturally from the polynomial bound (height incorporates
+    both numerator and denominator, reflecting the p-adic |r/s|_p = p^(v_p(r) - v_p(s))). -/
 def IsPadicLiouville (β : ℚ_[p]) : Prop :=
   ∀ n : ℕ, ∃ r s : ℤ, s ≠ 0 ∧
     2 ≤ max r.natAbs s.natAbs ∧
     Int.gcd r s = 1 ∧
+    0 < ‖β - (r : ℚ_[p]) / s‖ ∧
     ‖β - (r : ℚ_[p]) / s‖ < 1 / (max r.natAbs s.natAbs : ℝ)^n
 
-/-- IsPadicLiouville requires approximations for all n ≥ 1 too (dropping the gcd condition). -/
+/-- IsPadicLiouville gives both strict positivity and smallness of approximations. -/
 theorem isPadicLiouville_forall (β : ℚ_[p]) (h : IsPadicLiouville p β) :
-    ∀ n : ℕ, ∃ r s : ℤ, s ≠ 0 ∧ ‖β - (r : ℚ_[p]) / s‖ < 1 / (max r.natAbs s.natAbs : ℝ)^n :=
-  fun n => let ⟨r, s, hs, _, _, happrox⟩ := h n; ⟨r, s, hs, happrox⟩
+    ∀ n : ℕ, ∃ r s : ℤ, s ≠ 0 ∧
+      0 < ‖β - (r : ℚ_[p]) / s‖ ∧
+      ‖β - (r : ℚ_[p]) / s‖ < 1 / (max r.natAbs s.natAbs : ℝ)^n :=
+  fun n => let ⟨r, s, hs, _, _, hpos, happrox⟩ := h n; ⟨r, s, hs, hpos, happrox⟩
 
 /-! ═══════════════════════════════════════════════════════════════════════════
 PART V: MAIN THEOREM
 P-adic algebraic numbers are not p-adically Liouville
 ═══════════════════════════════════════════════════════════════════════════ -/
 
-/-- **P-adic Liouville Theorem** (key estimate, axiomatized):
-    If α ∈ ℚ_[p] is algebraic over ℚ with minimal polynomial f ∈ ℤ[X] of degree d,
-    then for all r, s : ℤ with s ≠ 0:
-      ‖α - r/s‖_p ≥ C_α / max(|r|, |s|)^d
+/-- **P-adic Liouville Theorem** (key estimate):
+    If α ∈ ℚ_[p] is algebraic over ℚ with a polynomial f ∈ ℤ[X] of degree d having α as root,
+    then for all r, s : ℤ with s ≠ 0 and α ≠ (r : ℚ_[p]) / s:
+      ‖α - r/s‖_p ≥ C_α / max(|r|, |s|)^(2d)
 
-    where C_α > 0 depends only on α (not on r, s).
+    where C_α > 0 depends only on α and f (not on r, s).
 
-    **Proof outline**:
-    1. f(r/s) = (r/s - α) · h(r/s) by polynomial factorization (Taylor expansion)
-    2. ‖f(r/s)‖_p = ‖r/s - α‖_p · ‖h(r/s)‖_p
-    3. ‖h(r/s)‖_p ≤ M for r/s p-adically close to α (continuity/non-Archimedean bound)
-    4. ‖f(r/s)‖_p ≥ 1/(C_f · max(|r|,|s|)^d) by the polynomial evaluation bound
-    5. Therefore ‖r/s - α‖_p ≥ 1/(M · C_f · max(|r|,|s|)^d)
+    **Proof sketch**:
+    1. Since f(α) = 0, we have (X - C α) ∣ f.map alg, so f.map alg = (X - C α) * g.
+    2. For r/s ≠ α: (f.map alg)(r/s) = (r/s - α) * g(r/s), so
+         ‖α - r/s‖ = ‖(f.map alg)(r/s)‖ / ‖g(r/s)‖
+    3. Lower bound on ‖(f.map alg)(r/s)‖: Since f has integer coefficients,
+         s^d · f(r/s) = N ∈ ℤ with |N| ≤ (d+1) · ‖f‖_∞ · H^d.
+         The Archimedean Complement Lemma (Part I) then gives:
+         ‖f(r/s)‖_p = ‖N‖_p / ‖s‖_p^d ≥ ‖N‖_p ≥ 1/|N| ≥ C_f / H^d   (when N ≠ 0).
+         The case N = 0 (r/s is a rational root of f) uses the finite-root separation.
+    4. Upper bound on ‖g(r/s)‖: g has coefficients in ℚ_[p] with norms ≤ (1 + ‖α‖)^d.
+         Since ‖r/s‖_p ≤ H (p-adic norm of integers is ≤ 1, and ‖1/s‖_p ≤ |s| ≤ H),
+         ‖g(r/s)‖_p ≤ M_g · H^(d-1) for M_g depending only on f and α.
+    5. Therefore ‖α - r/s‖ ≥ (C_f/H^d) / (M_g · H^(d-1)) = C / H^(2d-1) ≥ C / H^(2d).
 
-    **Infrastructure gap**: This axiom requires working in ℚ_[p]:
-    - The Taylor factorization f(x) - f(α) = (x-α)·g(x,α) over ℚ_[p]
-    - Continuity bounds in the p-adic ultrametric topology
-    - The embedding ℚ → ℚ_[p] and norm compatibility -/
-axiom padic_liouville_estimate (α : ℚ_[p]) (f : ℤ[X])
+    **Remark**: The exponent 2d can be improved to d with the ultrametric argument
+    (case split on whether ‖r/s - α‖ < ‖α‖), but 2d is sufficient for the main theorem. -/
+theorem padic_liouville_estimate (α : ℚ_[p]) (f : ℤ[X])
     (hf_root : (f.map (algebraMap ℤ ℚ_[p])).eval α = 0)
     (hf_deg : 1 ≤ f.natDegree) :
-    ∃ C : ℝ, 0 < C ∧ ∀ r s : ℤ, s ≠ 0 →
-      C / (max r.natAbs s.natAbs : ℝ) ^ f.natDegree ≤ ‖α - (r : ℚ_[p]) / s‖
+    ∃ C : ℝ, 0 < C ∧ ∀ r s : ℤ, s ≠ 0 → α ≠ (r : ℚ_[p]) / s →
+      C / (max r.natAbs s.natAbs : ℝ) ^ (2 * f.natDegree) ≤ ‖α - (r : ℚ_[p]) / s‖ := by
+  -- Step 1: Polynomial factorization f.map alg = (X - C α) * g
+  have hroot : IsRoot (f.map (algebraMap ℤ ℚ_[p])) α := hf_root
+  obtain ⟨g, hg⟩ : (X - C α) ∣ f.map (algebraMap ℤ ℚ_[p]) :=
+    Polynomial.dvd_iff_isRoot.mpr hroot
+  -- Step 2: Key evaluation identity: (f.map alg)(x) = (x - α) * g(x)
+  have heval : ∀ x : ℚ_[p],
+      (f.map (algebraMap ℤ ℚ_[p])).eval x = (x - α) * g.eval x := fun x => by
+    rw [hg, Polynomial.eval_mul, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]
+  -- Step 3: For x = r/s ≠ α, we have x - α ≠ 0
+  -- ‖x - α‖ = ‖f.map alg (x)‖ / ‖g.eval x‖  (when g.eval x ≠ 0)
+  -- Step 4: Establish existence of C via norm of α and g coefficients
+  -- The key ingredients are all in place; what remains is bounding the norms.
+  sorry -- HARD: Requires norm compatibility ℚ → ℚ_[p] + uniform polynomial bound
 
 /-- **Main Result**: Every p-adic algebraic number is NOT p-adically Liouville.
 
-    Proof: If α is algebraic of degree d, the Liouville estimate gives C/H^d ≤ ‖α - r/s‖
-    for all r/s. Pick n₀ with 2^n₀ > 1/C. Apply the Liouville condition with n = n₀ + d
-    to get r, s with H ≥ 2 and ‖α - r/s‖ < 1/H^(n₀+d). Combining:
+    Proof: If α is algebraic of degree d, the Liouville estimate gives C/H^(2d) ≤ ‖α - r/s‖
+    for all r/s with α ≠ r/s (which is guaranteed by strict positivity in IsPadicLiouville).
+    Pick n₀ with 2^n₀ > 1/C. Apply the Liouville condition with n = n₀ + 2*d
+    to get r, s with H ≥ 2 and 0 < ‖α - r/s‖ < 1/H^(n₀+2d). Combining:
       C < 1/H^n₀ ≤ 1/2^n₀ < C (from n₀ choice). Contradiction. -/
 theorem padic_algebraic_not_liouville
     (α : ℚ_[p]) (f : ℤ[X])
@@ -267,23 +288,29 @@ theorem padic_algebraic_not_liouville
   obtain ⟨C, hC, hbound⟩ := padic_liouville_estimate p α f hf_root hf_deg
   -- Pick n₀ such that (1/2)^n₀ < C, equivalently 2^n₀ > 1/C
   obtain ⟨n₀, hn₀⟩ := exists_pow_lt_of_lt_one hC (by norm_num : (1 / 2 : ℝ) < 1)
-  -- Apply the Liouville condition with n = n₀ + f.natDegree
-  obtain ⟨r, s, hs, hH2, _hgcd, happrox⟩ := hLiou (n₀ + f.natDegree)
+  -- Apply the Liouville condition with n = n₀ + 2 * f.natDegree
+  obtain ⟨r, s, hs, hH2, _hgcd, hpos, happrox⟩ := hLiou (n₀ + 2 * f.natDegree)
+  -- From strict positivity: α ≠ r/s (in ℚ_[p])
+  have hne : α ≠ (r : ℚ_[p]) / s := by
+    intro heq
+    rw [heq, sub_self, norm_zero] at hpos
+    exact lt_irrefl 0 hpos
   -- Work with H : ℕ := max r.natAbs s.natAbs
   set H : ℕ := max r.natAbs s.natAbs with hH_def
   -- H ≥ 2 (from Liouville condition), so (H : ℝ) ≥ 2
   have hH_ge2 : (2 : ℝ) ≤ (H : ℝ) := by exact_mod_cast hH2
   have hH_pos : (0 : ℝ) < (H : ℝ) := lt_of_lt_of_le (by norm_num) hH_ge2
-  have hHd_pos : (0 : ℝ) < (H : ℝ) ^ f.natDegree := pow_pos hH_pos _
-  -- Lower bound from axiom: C / H^d ≤ ‖α - r/s‖
-  have hlower : C / (H : ℝ) ^ f.natDegree ≤ ‖α - (r : ℚ_[p]) / s‖ := hbound r s hs
-  -- Combine with Liouville upper bound to get C / H^d < 1 / H^(n₀+d)
-  have hcomb : C / (H : ℝ) ^ f.natDegree < 1 / (H : ℝ) ^ (n₀ + f.natDegree) :=
+  have hH2d_pos : (0 : ℝ) < (H : ℝ) ^ (2 * f.natDegree) := pow_pos hH_pos _
+  -- Lower bound from estimate: C / H^(2d) ≤ ‖α - r/s‖
+  have hlower : C / (H : ℝ) ^ (2 * f.natDegree) ≤ ‖α - (r : ℚ_[p]) / s‖ :=
+    hbound r s hs hne
+  -- Combine with Liouville upper bound: C / H^(2d) < 1 / H^(n₀ + 2d)
+  have hcomb : C / (H : ℝ) ^ (2 * f.natDegree) < 1 / (H : ℝ) ^ (n₀ + 2 * f.natDegree) :=
     lt_of_le_of_lt hlower happrox
-  -- H^(n₀+d) = H^n₀ * H^d, so 1/H^(n₀+d) = (1/H^n₀) / H^d
+  -- H^(n₀+2d) = H^n₀ * H^(2d), so 1/H^(n₀+2d) = (1/H^n₀) / H^(2d)
   rw [pow_add, ← div_div] at hcomb
-  -- Cancel H^d from both sides: C < 1/H^n₀
-  have hC_lt : C < 1 / (H : ℝ) ^ n₀ := (div_lt_div_right hHd_pos).mp hcomb
+  -- Cancel H^(2d) from both sides: C < 1/H^n₀
+  have hC_lt : C < 1 / (H : ℝ) ^ n₀ := (div_lt_div_right hH2d_pos).mp hcomb
   -- H ≥ 2 implies H^n₀ ≥ 2^n₀, so 1/H^n₀ ≤ 1/2^n₀
   have h2n0_le : (2 : ℝ) ^ n₀ ≤ (H : ℝ) ^ n₀ :=
     pow_le_pow_left (by norm_num) hH_ge2 n₀
@@ -406,7 +433,7 @@ PART IX: SORRY SUMMARY
 
 | Location | Classification | Notes |
 |----------|---------------|-------|
-| padic_liouville_estimate | OPEN (axiom) | Core p-adic Taylor expansion in ℚ_[p] |
+| padic_liouville_estimate | HARD (sorry) | Polynomial factorization + norm bounds in ℚ_[p] |
 
 **Proved (no sorry)**:
 - `padicNorm_nat_ge_inv`: The Archimedean Complement Lemma (heart of proof)
@@ -416,15 +443,27 @@ PART IX: SORRY SUMMARY
 - `padicNorm_nat_bounds`: Combined bounds
 - `padicNorm_int_le_one`: From Mathlib
 - `padicNorm_poly_eval_bound`: Trivial witness C = padicNorm(f(r/s)) * H^d
-- `padic_algebraic_not_liouville`: Main theorem (proved 2026-05-02 using exists_pow_lt_of_lt_one)
+- `padic_algebraic_not_liouville`: Main theorem (proved using `exists_pow_lt_of_lt_one`)
 - All three examples (2|6, 5|25, 3∤7)
 
-The axiom `padic_liouville_estimate` is the only OPEN result.
-It states the p-adic Liouville bound and requires:
-1. Working in ℚ_[p] (completion of ℚ at p)
-2. The Taylor expansion f(x) - f(α) = (x-α)·g(x,α) over ℚ_[p]
-3. Continuity of polynomial evaluation in the p-adic ultrametric topology
-4. The connection between padicNorm (on ℚ) and ‖·‖ (norm on ℚ_[p])
+**Session 8 changes (2026-05-03)**:
+- Fixed `IsPadicLiouville` definition: added `0 < ‖β - r/s‖` (strict positivity, matching Mathlib's
+  real Liouville definition — prevents trivial witnesses where r/s = β, which would make every
+  rational number vacuously Liouville and render the main theorem false).
+- Changed `padic_liouville_estimate` from `axiom` to `theorem ... := by sorry` — it is now
+  classified as HARD (known mathematical result needing formalization) rather than OPEN (axiom).
+  The exponent was adjusted from d to 2d to match the provable bound (simpler than the tight d).
+- Updated `padic_algebraic_not_liouville` to use `n₀ + 2 * f.natDegree` (adjusted for 2d exponent)
+  and to extract `α ≠ r/s` from the strict positivity condition.
+
+**The remaining sorry** (`padic_liouville_estimate`) requires:
+1. Polynomial factorization: `Polynomial.dvd_iff_isRoot` to get `f.map alg = (X - C α) * g`
+2. Norm compatibility ℚ → ℚ_[p]: `‖algebraMap ℚ ℚ_[p] x‖ = padicNorm p x`
+   (from PadicCompletion structure, should be in Mathlib)
+3. Uniform polynomial evaluation bound: ‖(f.map alg)(r/s)‖ ≥ C_f/H^d
+   (uses Archimedean Complement Lemma from Part I, already proved)
+4. Coefficient bound for cofactor g: ‖g.eval (r/s)‖ ≤ M_g * H^(d-1)
+   (from ‖r/s‖_p ≤ H and bounded g-coefficients)
 
 -/
 
