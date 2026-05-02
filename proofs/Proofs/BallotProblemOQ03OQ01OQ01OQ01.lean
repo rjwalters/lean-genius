@@ -381,6 +381,50 @@ private lemma jdt_weight_preserved (n a b : ℕ)
   conv_rhs => rw [hQ, Multiset.map_cons, Multiset.prod_cons]
   ring
 
+/-- For `Q : Sym (Fin n) 1`, the underlying multiset is the singleton `{q}` where `q` is the
+    unique element of `Q`. We extract `q` and the equation `Q.1.sort = [q]` simultaneously. -/
+private lemma sym_one_sort_head_singleton (n : ℕ) (Q : Sym (Fin n) 1) :
+    ∃ q : Fin n, Q.1.sort (· ≤ ·) = [q] ∧ Q.1 = ({q} : Multiset (Fin n)) := by
+  have hlen : (Q.1.sort (· ≤ ·)).length = 1 := (Multiset.length_sort _ Q.1).trans Q.2
+  obtain ⟨q, hq⟩ := List.length_eq_one_iff.mp hlen
+  refine ⟨q, hq, ?_⟩
+  have hcoe := congrArg (Multiset.ofList) hq
+  rw [Multiset.sort_eq] at hcoe
+  simpa using hcoe
+
+/-- **JDT weight sum, `b = 1` base case.**
+    For `a ≥ 1`, the sum of weights over non-col-strict
+    `(P : Sym (Fin n) a, Q : Sym (Fin n) 1)` pairs equals `h_{a+1} * h_0 = h_{a+1}`.
+
+    **Recipe (bijection ψ : `LHS-subtype ≃ Sym (Fin n) (a+1)`):**
+      * forward: `(P, Q, _) ↦ q ::ₛ P`, where `q` is the unique element of `Q`
+        (i.e. `(Q.1.sort)[0]`).
+      * inverse: `S ↦ ((S.erase qS hS, ⟨{qS}, _⟩), proof_¬ColStrict)`,
+        where `qS = (S.1.sort)[0]` is the smallest element of `S`.
+
+    **Why the bijection respects `¬ColStrictSym a 1 P Q`:**
+    With `a ≥ 1`, `min a 1 = 1`, so `ColStrictSym a 1 P Q ⇔ (P.sort)[0] < (Q.sort)[0] = q`,
+    and `¬ColStrictSym ⇔ q ≤ (P.sort)[0]`. By sortedness of `P.sort`, this means
+    `q ≤ x` for all `x ∈ P.1`. Then `Multiset.sort_cons` gives
+    `(q ::ₘ P.1).sort = q :: P.1.sort`, so `q` is the head of `(q ::ₛ P).1.sort`,
+    making `Sym.erase` and `Sym.cons_erase`/`Sym.erase_cons_head` close the inverses.
+
+    **Status (2026-05-02 session 15):** the helper `sym_one_sort_head_singleton` and the
+    statement of this lemma are now in place. The bijection construction with weight
+    preservation proof is the focused `sorry` below; estimated 100-130 lines using
+    `Sym.cons_erase` (`Data/Sym/Basic.lean:219`), `Sym.erase_cons_head` (`:223`),
+    `Multiset.sort_cons` (`Data/Multiset/Sort.lean:69`). -/
+private lemma jdt_weight_sum_b_one (n a : ℕ) (ha : 1 ≤ a) :
+    ∑ PQ : { PQ : Sym (Fin n) a × Sym (Fin n) 1 // ¬ColStrictSym a 1 PQ.1 PQ.2 },
+      (PQ.1.1.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+      (PQ.1.2.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod =
+    hsymm (Fin n) R (a + 1) * hsymm (Fin n) R 0 := by
+  -- Simplify RHS via hsymm 0 = 1
+  rw [hsymm_zero, mul_one]
+  -- Bijection construction is the focused next-session task. See the recipe above
+  -- and lines ~415-465 for the existing detailed comment block.
+  sorry
+
 /-- **Jeu de Taquin weight sum** (key step for two-row Jacobi-Trudi).
     The sum of pair-weights over NON-col-strict (a,b) pairs equals h_{a+1}*h_{b-1}.
 
