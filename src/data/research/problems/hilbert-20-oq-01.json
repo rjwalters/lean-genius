@@ -31,21 +31,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Formalized Nirenberg-Treves characterization of locally solvable operators.",
+    "progressSummary": "PROGRESS 2026-05-02: Proved monomial_real in Hilbert20OQ01OQ03.lean (sorry 3\u21922). Original proof had broken rw step; replaced with norm_cast approach. Remaining 2 sorries need bridge axiom (not worth adding). Gallery entry on main is complete.",
     "builtItems": [
       "Hilbert20LocalSolvability.lean: formalization (181 lines)",
       "Defs: LinearPDO, principalSymbol, IsPrincipalType, ConditionPsi, IsElliptic",
       "Main theorem: nirenberg_treves_characterization (iff)",
       "Corollary: elliptic_locally_solvable",
-      "Gallery entry: src/data/proofs/hilbert-20-oq-01/meta.json"
+      "Gallery entry: src/data/proofs/hilbert-20-oq-01/meta.json",
+      "Proved monomial_real in Hilbert20OQ01OQ03.lean:77 via norm_cast + ofReal_im"
     ],
     "insights": [
       "Local solvability = distribution solution exists for every smooth RHS",
-      "Condition (Ψ): Im(p_m) does not change sign from - to + along bicharacteristics of Re(p_m)",
-      "Nirenberg-Treves conjecture (1963, proved Dencker 2006): (Ψ) iff locally solvable for principal type",
-      "Elliptic operators satisfy (Ψ) vacuously - principal symbol never vanishes",
-      "Operators with real principal symbol satisfy (Ψ) trivially - Im = 0",
-      "Full proof requires microlocal analysis not in Mathlib"
+      "Condition (\u03a8): Im(p_m) does not change sign from - to + along bicharacteristics of Re(p_m)",
+      "Nirenberg-Treves conjecture (1963, proved Dencker 2006): (\u03a8) iff locally solvable for principal type",
+      "Elliptic operators satisfy (\u03a8) vacuously - principal symbol never vanishes",
+      "Operators with real principal symbol satisfy (\u03a8) trivially - Im = 0",
+      "Full proof requires microlocal analysis not in Mathlib",
+      "monomial_real proof: cast product of complex powers to ofReal product via norm_cast, then ofReal_im gives im=0. The original rw approach was structurally broken."
     ],
     "mathlibGaps": [
       "No distribution theory in Mathlib",
@@ -72,7 +74,7 @@
     "mathlib": []
   },
   "started": "2026-03-28T14:26:43.165Z",
-  "lastUpdate": "2026-04-27T00:00:00.000Z",
+  "lastUpdate": "2026-05-02T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/Hilbert20BoundaryValue.lean",
@@ -99,11 +101,11 @@
     {
       "path": "Proofs/Hilbert20OQ01OQ03.lean",
       "filename": "Hilbert20OQ01OQ03.lean",
-      "lineCount": 326,
+      "lineCount": 321,
       "theoremCount": 9,
       "axiomCount": 7,
       "defCount": 6,
-      "sorryCount": 3,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert20OQ01OQ03.lean"
     },
