@@ -67,7 +67,7 @@ Two lines are parallel if they have proportional direction vectors (same slope).
 def areParallel (l₁ l₂ : Line2D) : Prop :=
   l₁.a * l₂.b = l₁.b * l₂.a
 
-/--
+/-
 **Line intersection:**
 Non-parallel lines intersect at exactly one point.
 This is a standard result in linear algebra (solving 2×2 linear systems).
@@ -143,7 +143,7 @@ def HasGallaiTriangle (A : LineArrangement) : Prop :=
 This classical theorem guarantees ordinary points exist.
 -/
 
-/--
+/-
 **Sylvester-Gallai Theorem:**
 Any finite set of non-collinear points in ℝ² determines at least one
 ordinary line (containing exactly 2 points).
@@ -151,7 +151,7 @@ ordinary line (containing exactly 2 points).
 Dual version: Any arrangement of ≥ 3 non-concurrent lines has at least
 one ordinary point (where exactly 2 lines meet).
 -/
-/--
+/-
 **Corollary: At least 3 ordinary points exist**
 For arrangements with d ≥ 3 lines and no parallels, there are at least
 3 ordinary points. (But they might not form a triangle!)
@@ -162,14 +162,14 @@ For arrangements with d ≥ 3 lines and no parallels, there are at least
 Erdős asked: must these ordinary points form a Gallai triangle?
 -/
 
-/--
+/-
 **Erdős's Question:**
 If A is a line arrangement with d ≥ 4 lines, no parallels, and no 4
 concurrent lines, must there exist a Gallai triangle?
 
 Answer: NO!
 -/
-/--
+/-
 **Füredi-Palásti Construction (1984):**
 For d not divisible by 9, there exist d-line arrangements with no
 parallels, no 4-concurrent points, and no Gallai triangles.
