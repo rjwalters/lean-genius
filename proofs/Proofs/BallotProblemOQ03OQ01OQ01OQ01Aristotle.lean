@@ -88,8 +88,10 @@ TARGET: jdt_weight_sum_b_one
 The b = 1 specialization of the Jeu de Taquin weight sum identity. For a ≥ 1, the
 sum of pair-weights over non-col-strict (P, Q) pairs of shapes (a, 1) equals h_{a+1}.
 
-This is the helper that closes the b = 1 branch of `JacobiTrudi.jdt_weight_sum`
-(currently a `sorry` in `BallotProblemOQ03OQ01OQ01OQ01.lean:448`).
+This is the helper that closes the b = 1 branch of `JacobiTrudi.jdt_weight_sum`.
+**Status (2026-05-02):** The private lemma `jdt_weight_sum_b_one` in the main file
+now proves this (via the same bijection construction). This companion target remains
+as a standalone Aristotle submission for the standalone form.
 
 Proof strategy: bijection
   ψ : {(P, Q) // ¬ColStrictSym a 1 P Q} ≃ Sym (Fin n) (a + 1)
