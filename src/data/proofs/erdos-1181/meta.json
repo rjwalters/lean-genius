@@ -72,7 +72,8 @@
       "tao_heuristic_bound definition: q ≪ (log log n / log log log n) · log n",
       "chebyshev_theta definition: Chebyshev function θ(x)",
       "erdos457_conjecture definition: related lower bound conjecture",
-      "conjectures_compatible theorem stub: compatibility of #457 and #1181"
+      "conjectures_compatible theorem: compatibility of #457 and #1181 (fully proved, no sorry)",
+      "tao_implies_erdos1181 theorem: tao_heuristic_bound implies erdos1181_conjecture (fully proved, no sorry)"
     ],
     "axiomCount": 1,
     "assumptions": "1 axiom: erdos_1181 (main open conjecture, Erdős 1979, remains open). 0 sorries. Properties of q(n,k) proved constructively from Mathlib."
@@ -106,7 +107,7 @@
     {
       "id": "q-definition",
       "title": "Part II: Properties of q(n, k)",
-      "startLine": 46,
+      "startLine": 59,
       "endLine": 79,
       "summary": "Defines q(n,k) constructively via Nat.find. Proves q_prime, q_not_dvd, q_minimal.",
       "mathContext": "q(n,k) is the smallest prime not dividing the consecutive product. Properties proved from Nat.find."
@@ -115,47 +116,47 @@
       "id": "trivial-bound",
       "title": "Part III: Trivial Upper Bound",
       "startLine": 80,
-      "endLine": 96,
-      "summary": "Axiomatizes q(n, log n) ≤ (1+o(1))(log n)² from the primorial/PNT argument.",
+      "endLine": 99,
+      "summary": "Discusses q(n, log n) ≤ (1+o(1))(log n)² from the primorial/PNT argument in comments; no axiom is declared in this section.",
       "mathContext": "The primorial of q divides the product, giving θ(q) ≤ k·log(n+k). By PNT: q ≤ (1+o(1))(log n)²."
     },
     {
       "id": "main-conjecture",
       "title": "Part IV: The Main Conjecture (OPEN)",
-      "startLine": 97,
-      "endLine": 115,
+      "startLine": 100,
+      "endLine": 109,
       "summary": "erdos1181_conjecture: ∃ c > 0, q(n, log n) < (1-c)(log n)² eventually. Axiom erdos_1181.",
       "mathContext": "The open conjecture asks whether the constant in the upper bound can be improved from (1+o(1)) to (1-c) for fixed c > 0."
     },
     {
       "id": "tao-heuristic",
       "title": "Part V: Tao's Heuristic Bound",
-      "startLine": 116,
-      "endLine": 140,
-      "summary": "Tao's heuristic: q ≪ (log log n / log log log n) · log n. Theorem stub: this implies #1181.",
+      "startLine": 110,
+      "endLine": 199,
+      "summary": "Tao's heuristic: q ≪ (log log n / log log log n) · log n. tao_implies_erdos1181: fully proved implication (no sorry, no axiom).",
       "mathContext": "Probabilistic heuristics predict a bound dramatically stronger than the conjecture."
     },
     {
       "id": "chebyshev-pnt",
       "title": "Part VI: Connection to Primorials and PNT",
-      "startLine": 141,
-      "endLine": 167,
-      "summary": "Chebyshev theta function definition. PNT axiom. Primorial divides bound axiom.",
+      "startLine": 201,
+      "endLine": 230,
+      "summary": "Chebyshev theta function definition. PNT and primorial bound discussed in comments (no separate axioms declared).",
       "mathContext": "θ(x) = ∑_{p≤x} log p ~ x by PNT. Used to derive the trivial upper bound on q."
     },
     {
       "id": "connection-457",
       "title": "Part VII: Connection to Problem #457",
-      "startLine": 168,
-      "endLine": 193,
-      "summary": "erdos457_conjecture definition. conjectures_compatible theorem stub.",
+      "startLine": 232,
+      "endLine": 262,
+      "summary": "erdos457_conjecture definition. conjectures_compatible theorem (fully proved, no sorry).",
       "mathContext": "Problem #457 (lower bound) and #1181 (upper bound) together sandwich q(n, log n) between Ω(log n) and O((log n)²)."
     },
     {
       "id": "summary",
       "title": "Part VIII: Summary",
-      "startLine": 207,
-      "endLine": 235,
+      "startLine": 264,
+      "endLine": 290,
       "summary": "erdos_1181_main theorem. The (1+o(1)) vs (1-c) gap is the central open question.",
       "mathContext": "The gap between the trivial (1+o(1)) and conjectured (1-c) represents genuine content about prime distribution."
     }
