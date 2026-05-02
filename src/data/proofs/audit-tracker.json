@@ -3943,10 +3943,12 @@
       "result": "issues-fixed"
     },
     "erdos-1120": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "section line drift across all sections + missing main-open-problem section (filed #14785)"
+      ],
+      "lastAudited": "2026-05-02T13:32:17Z",
+      "result": "issues-found"
     },
     "erdos-1121": {
       "auditCount": 3,
