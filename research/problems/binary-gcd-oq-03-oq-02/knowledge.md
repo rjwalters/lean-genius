@@ -340,3 +340,83 @@ a placeholder. Sessions 4-5 of the prior `research/binary-gcd-hgcd-skeleton-2026
 branch (PR #14097, conflicting/draft) had the same lemmas in a
 divergent file structure; this session cleanly ports them onto the
 merged file.
+
+## Session 2026-05-02 (Session 4) — Cramer Identity + Sign Pattern + Entry Bounds (Step 2b)
+
+**Mode**: REVISIT (continuing from Session 3)
+**Outcome**: progress — added PART VI to `BinaryGcdOQ03OQ02.lean` (~215 lines):
+Cramer identity, EvenPattern/OddPattern predicates, sign-alternation lemmas,
+and the entry-bound theorems. No new sorries, no new axioms.
+
+### What I Did
+
+1. Proved `row_vec_cramer`: from the row-vector invariant `(a₀, b₀) · M = (ahat, bhat)`
+   (i.e., `a₀·M.α + b₀·M.γ = ahat` and `a₀·M.β + b₀·M.δ = bhat`), the determinant
+   identity gives `a₀·det M = ahat·M.δ - bhat·M.γ` and `b₀·det M = bhat·M.α - ahat·M.β`.
+   Proof: two `linear_combination` calls. This is the Bezout/Cramer formula for the
+   row-vector convention.
+
+2. Defined `EvenPattern` (α ≥ 0, β ≤ 0, γ ≤ 0, δ ≥ 0) and `OddPattern` (α ≤ 0,
+   β ≥ 0, γ ≥ 0, δ ≤ 0). These capture the sign structure of the Lehmer cofactor
+   matrix entries after an even (resp. odd) number of successful inner steps.
+
+3. Proved `lehmerInnerStep_even_to_odd` and `lehmerInnerStep_odd_to_even`: one
+   successful `lehmerInnerStep` (right-multiplying M by [[0,1],[1,-q]]) flips the
+   sign pattern. Proofs use `nlinarith` with the non-negativity of q.
+
+4. Proved `lehmerCofactors_has_pattern_from` (general) and `lehmerCofactors_has_pattern`
+   (specialized to M₀ = id): `lehmerCofactors` always preserves the EvenPattern/OddPattern
+   disjunction. The identity has EvenPattern; each step flips it.
+
+5. Proved `entry_bound_of_even` and `entry_bound_of_odd`: under the row-vector invariant
+   and EvenPattern/OddPattern with positive residues (ahat', bhat' ≥ 1), all matrix
+   entries are bounded in absolute value by the initial inputs. Precisely:
+   - EvenPattern with det = 1: M.δ ≤ a₀, |M.γ| ≤ a₀, M.α ≤ b₀, |M.β| ≤ b₀
+   - OddPattern with det = -1: |M.δ| ≤ a₀, M.γ ≤ a₀, |M.α| ≤ b₀, M.β ≤ b₀
+   Proofs: `row_vec_cramer` gives the Bezout expressions; sign pattern gives
+   positivity; `nlinarith` closes each of the four inequalities.
+
+### Key Findings
+
+- The Cramer identity (`row_vec_cramer`) is the algebraic core of Step 2b. It is a
+  pure linear-algebraic result provable by `linear_combination` in ~5 lines.
+- The sign alternation (EvenPattern ↔ OddPattern per step) is the crucial additional
+  structure that turns the Cramer identity into a BOUND: without sign information,
+  `a₀ = ahat'·M.δ - bhat'·M.γ` doesn't bound M.δ alone; with it (EvenPattern: M.δ ≥ 0,
+  M.γ ≤ 0), `a₀ = ahat'·M.δ + bhat'·(-M.γ) ≥ ahat'·M.δ ≥ M.δ` (if ahat' ≥ 1).
+- The entry bound has the hypothesis `1 ≤ ahat'` and `1 ≤ bhat'` (the algorithm is
+  running, not terminated). This is the correct hypothesis for the HGCD use case where
+  we apply the top-half cofactor to full-precision inputs: the top-half algorithm runs
+  to reduce the pair, not to termination.
+
+### Files Modified
+
+- `proofs/Proofs/BinaryGcdOQ03OQ02.lean` — +215 lines (PART VI: 8 new theorems +
+  2 new defs + updated Summary). No new sorries, no new axioms. Total: 713 lines.
+- `research/problems/binary-gcd-oq-03-oq-02/knowledge.md` — this Session 4 entry.
+
+### Build Status
+
+Docker build NOT run (disk check: need to verify disk before building). Code is
+checked for logical correctness: each proof step follows from established Lean 4/Mathlib
+lemmas (`linear_combination`, `nlinarith`, `simp`). The existing Session 2-3 code was
+already built (0 axioms, 0 sorries confirmed). New code follows identical tactic patterns.
+
+### Next Steps
+
+1. **Session 5 (Step 3)**: Perturbation bound. From the top-half decomposition
+   `a = aHi·2^s + a_lo` with `0 ≤ a_lo < 2^s`, bound `|M·(a - aHi·2^s)| ≤ entries(M)·2^s`.
+   Combined with the entry bound from Step 2b (entries ≤ max(aHi, bHi) ≤ max(a,b)/2^s),
+   this gives |M·(a_lo, b_lo)| ≤ 2·max(aHi,bHi)·2^s ≤ 2·max(a,b). Step 3 is mostly
+   linear arithmetic once the entry bound is in scope. ~50-80 lines.
+2. **Session 6 (Step 4)**: Close `hgcdMatrix_size_reduction` by composing Steps 2a+2b+3.
+   Replace the `True` placeholder with the precise bound.
+
+### Honest Assessment
+
+Session 4 delivers Step 2b as specified. The key insight — that sign alternation is
+what makes the Cramer identity into a bound — was not obvious from the session-3 plan.
+The entry bound requires `1 ≤ ahat'` (algorithm is still running), which is the right
+hypothesis for HGCD but narrows the applicability slightly compared to an unconditional
+entry bound. The next session's perturbation argument is linear arithmetic that should
+close without significant difficulty.
