@@ -66,7 +66,7 @@
       "erdos_111_summary theorem: combining known bounds"
     ],
     "axiomCount": 4,
-    "lineCount": 320,
+    "lineCount": 300,
     "assumptions": "4 axioms: edgeDeletionFunction, cardinalChromaticNumber, h_at_least_linear, ehs_upper_bound. 0 sorries."
   },
   "overview": {
@@ -95,88 +95,88 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Bipartite graphs and edge sets",
-      "startLine": 38,
-      "endLine": 62,
+      "startLine": 39,
+      "endLine": 61,
       "mathContext": "Bipartite graph: vertex set splits into $A \\\\cup B$ with edges only between $A$ and $B$. Equivalently: no odd cycle."
     },
     {
       "id": "edge-deletion",
       "title": "Edge Deletion to Bipartiteness",
-      "summary": "edgesToRemoveForBipartite and edgeDeletionFunction h_G (axiomatized)",
-      "startLine": 63,
-      "endLine": 92,
+      "summary": "edgeDeletionFunction h_G (axiomatized)",
+      "startLine": 62,
+      "endLine": 89,
       "mathContext": "$h_G(n)$: min edges to remove from $G[S]$ to make it bipartite, maximized over $|S| = n$. Measures non-bipartiteness of $n$-vertex subgraphs."
     },
     {
       "id": "chromatic-number",
       "title": "Chromatic Number",
-      "summary": "IsProperColoring, IsKColorable, chromaticNumber (axiomatized)",
-      "startLine": 93,
-      "endLine": 125,
+      "summary": "IsProperColoring, IsKColorable",
+      "startLine": 90,
+      "endLine": 110,
       "mathContext": "$\\\\chi(G)$: minimum colors for proper coloring. $\\\\chi(G) = 2 \\\\iff G$ bipartite (for connected graphs)."
     },
     {
       "id": "infinite-chromatic",
       "title": "Infinite Chromatic Number",
       "summary": "cardinalChromaticNumber (axiomatized), hasAleph1ChromaticNumber",
-      "startLine": 126,
-      "endLine": 146,
+      "startLine": 111,
+      "endLine": 131,
       "mathContext": "Cardinal chromatic number: $\\\\chi(G) = \\\\aleph_1$ (uncountably many colors needed). Requires $G$ to be an uncountable graph."
     },
     {
       "id": "odd-cycles",
       "title": "Odd Cycles and Bipartiteness",
-      "summary": "hasOddCycle, bipartite_iff_no_odd_cycle axiom",
-      "startLine": 147,
-      "endLine": 169,
+      "summary": "hasOddCycle",
+      "startLine": 132,
+      "endLine": 146,
       "mathContext": "Odd cycle in $G \\\\Rightarrow G$ not bipartite. Bipartite iff no odd cycle (characterization). $h_G(n)$ counts how far from bipartite."
     },
     {
       "id": "vertex-disjoint-cycles",
       "title": "Vertex-Disjoint Odd Cycles",
-      "summary": "hasVertexDisjointOddCycles, ehs_lower_bound, h_at_least_linear",
-      "startLine": 170,
-      "endLine": 208,
+      "summary": "hasVertexDisjointOddCycles, h_at_least_linear",
+      "startLine": 147,
+      "endLine": 173,
       "mathContext": "Erdos-Hajnal-Szemeredi: $h_G(n) \\\\geq cn$ (linear lower bound). From vertex-disjoint odd cycles in non-bipartite subgraphs."
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound Construction",
       "summary": "ehs_upper_bound axiom",
-      "startLine": 209,
-      "endLine": 227,
+      "startLine": 174,
+      "endLine": 192,
       "mathContext": "EHS upper bound: $h_G(n) \\\\leq Cn$ for some constant $C$ depending on $G$."
     },
     {
       "id": "erdos-conjecture",
       "title": "Erdős's Conjecture",
       "summary": "erdosConjecture111 definition",
-      "startLine": 228,
-      "endLine": 247,
+      "startLine": 193,
+      "endLine": 212,
       "mathContext": "Erdos conjecture: $h_G(n)/n \\\\to \\\\infty$ for graphs with $\\\\chi(G) = \\\\aleph_1$. Super-linear growth of non-bipartiteness."
     },
     {
       "id": "main-question",
       "title": "The Main Open Question",
       "summary": "erdos111_question, erdos_111_gap_exists",
-      "startLine": 248,
-      "endLine": 276,
+      "startLine": 213,
+      "endLine": 242,
       "mathContext": "OPEN: does $h_G(n)/n \\\\to \\\\infty$? Known: $h_G(n) \\\\geq cn$ (linear). Unknown: super-linear."
     },
     {
       "id": "related-results",
       "title": "Related Results",
-      "summary": "Connection to Problem #74, finite_bipartite_zero",
-      "startLine": 277,
-      "endLine": 301,
+      "summary": "Connection to Problem #74, finite graph comparison",
+      "startLine": 243,
+      "endLine": 264,
       "mathContext": "Connection to Problem #74. Finite bipartite: $h_G(n) = 0$ (trivially bipartite subgraphs)."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_111_summary theorem combining known bounds",
-      "startLine": 302,
-      "endLine": 320,
+      "startLine": 265,
+      "endLine": 300,
       "mathContext": "OPEN. Known: $cn \\\\leq h_G(n) \\\\leq Cn$ (linear bounds). Conjecture: $h_G(n)/n \\\\to \\\\infty$ for $\\\\aleph_1$-chromatic graphs."
     }
   ],
@@ -303,7 +303,7 @@
       "Set"
     ],
     "namespace": "Erdos111",
-    "lineCount": 320,
+    "lineCount": 300,
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 9,
