@@ -258,3 +258,56 @@ researcher claims and discovers the file is uncompilable.
 - Re-claiming via depth-first selector when the file does not build only
   produces duplicate "blocker discovered" reports (Sessions 5 and 6); pool
   status `blocked` is the right signal here.
+
+---
+
+## Session 2026-05-02 (Session 7) — Mathlib API Drift Repair
+
+**Mode**: REVISIT (MODERATE knowledge tier, score 32; pool showed available due to path drift)
+**Outcome**: PROGRESS — 6 Mathlib drift root errors fixed; file should now be buildable
+
+### What I Did
+
+1. Identified 6 root API drift errors (cascading to ~35 build failures):
+   - `shift_iterate` zero case: `simp [Function.iterate_zero]` failed → fixed to `rfl`
+   - `shift_iterate` succ case: proof had a **mathematical bug** — induction without
+     `generalizing k` gave an ih too weak to rewrite at position k+1; `ring_nf` left
+     unsolved goals → fixed with `induction n generalizing k`, `simp only [... comp_apply]`,
+     `congr 1; omega`
+   - `cylinder_isClopen`: `isOpen_eq_of_isOpen_singleton` removed from Mathlib →
+     replaced with `(isOpen_discrete {b}).preimage (continuous_apply i)`
+   - `shift_indicator_zero`, `indicator_mem_cylinder`, `orbit_indicator_hits`:
+     `split <;> simp_all` failed (simp partially reduces if-then-else then `split`
+     can't proceed) → replaced with `split_ifs with h <;> simp [h]`
+   - `CompactSpace Bool`: `Finite.instCompactSpace` removed → `inferInstance`
+   - `filter_shift_card_le`: `split` fragile on if-then-else → `split_ifs`
+
+2. Created PR #14878 with all fixes.
+
+### Key Findings
+
+- The `shift_iterate` bug was mathematical: older Lean/Mathlib behavior masked
+  the weak ih; in current Mathlib the simp set no longer masks it. The fix
+  (`generalizing k`) is the correct proof structure.
+- `isOpen_eq_of_isOpen_singleton` was a Mathlib helper that no longer exists.
+  The replacement `(isOpen_discrete s).preimage cont` is the standard current pattern
+  (confirmed from `MinkowskiTheoremOQ02OQ01.lean:68`).
+- `Finite.instCompactSpace` was removed; `inferInstance` works because `Bool` is
+  `Finite` and the `CompactSpace` instance is now auto-derived.
+- `ProbabilityMeasure.tendsto_measure_of_isClopen_of_tendsto` at lines 672/684
+  was NOT in the 35 error list — it presumably existed in Mathlib v4.26.0.
+
+### Files Modified
+
+- `proofs/Proofs/FurstenbergCorrespondenceOQ01.lean` (6 tactic-level fixes, PR #14878)
+- `src/data/research/problems/szemeredi-full-oq-01.json` (updated status, nextSteps)
+- `research/problems/szemeredi-full-oq-01/knowledge.md` (this entry)
+
+### Next Steps
+
+1. Merge PR #14878 and verify Docker build: `./proofs/scripts/docker-build.sh Proofs.FurstenbergCorrespondenceOQ01`
+2. If build succeeds (expected): activate `limit_invariant_on_cylinder` proof —
+   the 60-line structure is documented in the file comment at line ~760.
+3. After limit_invariant_on_cylinder: prove `seqCompact_probabilityMeasure_cantor`
+   (~150-200 lines via Prokhorov ingredients in Mathlib v4.26).
+4. Update pool status to `available` once build confirmed.
