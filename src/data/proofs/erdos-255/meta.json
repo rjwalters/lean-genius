@@ -47,10 +47,10 @@
       "schmidt_theorem_1968: affirmative answer",
       "no_uniformly_bounded_discrepancy: proved corollary by contradiction",
       "schmidt_theorem_1972: uncountably many intervals",
-      "hasLogarithmicDiscrepancy and tijdeman_wagner_theorem",
-      "van_der_corput_sequence_exists: optimality of log N",
-      "isUniformlyDistributed and weyl_theorem",
-      "starDiscrepancy and star_discrepancy_unbounded",
+      "hasLogarithmicDiscrepancy definition (Tijdeman-Wagner statement is documentation only)",
+      "van_der_corput_sequence_exists: optimality of log N (axiom)",
+      "isUniformlyDistributed definition (Weyl's theorem is documentation only)",
+      "starDiscrepancy definition (star discrepancy unboundedness is documentation only)",
       "erdos_255_summary: three-part conjunction"
     ],
     "axiomCount": 3,
@@ -61,7 +61,7 @@
     "historicalContext": "Erdős posed this problem in the early 1960s, asking whether every sequence in [0,1] must have unbounded discrepancy for some interval. This connects to the classical theory of uniform distribution initiated by Weyl (1916) and the study of irregularities of distribution.\n\nSchmidt proved the affirmative answer in 1968, showing that no sequence can have bounded discrepancy for all intervals simultaneously. He strengthened this in 1972, proving that for any sequence, all but countably many intervals [0,x] have unbounded discrepancy.\n\nTijdeman and Wagner (1980) proved the quantitatively optimal result: for almost all x ∈ [0,1], the discrepancy |D_N([0,x))| grows at least as fast as c·log N for some constant c > 0. Van der Corput's classical low-discrepancy sequence achieves O(log N), showing that logarithmic growth is the best possible rate. Together, these results give a complete picture: discrepancy grows exactly like Θ(log N) for typical intervals.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $z_1, z_2, \\ldots \\in [0,1]$ be an infinite sequence. Define discrepancy:\n$$D_N(I) = \\#\\{n \\leq N : z_n \\in I\\} - N \\cdot |I|$$\n\n**Question:** Must there exist some interval $I \\subseteq [0,1]$ such that $\\limsup_{N \\to \\infty} |D_N(I)| = \\infty$?\n\n**Answer: YES** (Schmidt 1968). Moreover, $|D_N| \\gg \\log N$ for almost all intervals (Tijdeman-Wagner 1980), and this is optimal.",
     "text": "For any sequence in [0,1], must some interval have unbounded discrepancy? YES (Schmidt 1968). Discrepancy ≫ log N for almost all intervals (Tijdeman-Wagner 1980), and this is optimal.",
-    "proofStrategy": "The formalization builds the discrepancy framework: sequences in [0,1], counting functions, and the discrepancy D_N(I). Schmidt's 1968 theorem is axiomatized as the main result, and a corollary (no sequence has uniformly bounded discrepancy) is proved by contradiction. Schmidt's 1972 strengthening, Tijdeman-Wagner's logarithmic bound, and van der Corput's matching upper bound are axiomatized. The summary theorem combines Schmidt 1968, Schmidt 1972, and van der Corput.",
+    "proofStrategy": "The formalization builds the discrepancy framework: sequences in [0,1], counting functions, and the discrepancy D_N(I). Schmidt's 1968 theorem is axiomatized as the main result, and a corollary (no sequence has uniformly bounded discrepancy) is proved by contradiction. Schmidt's 1972 strengthening and van der Corput's matching upper bound are axiomatized. Tijdeman-Wagner's logarithmic bound and Weyl's theorem appear as documentation only (docstring comments without corresponding declarations). The summary theorem combines Schmidt 1968, Schmidt 1972, and van der Corput.",
     "keyInsights": [
       "**Discrepancy Measures Irregularity:** D_N(I) quantifies how far a finite sequence deviates from perfect uniformity in interval I",
       "**Schmidt (1968):** No sequence can have bounded discrepancy for all intervals — irregularities must occur somewhere",
@@ -111,40 +111,40 @@
     {
       "id": "tijdeman-wagner",
       "title": "Tijdeman-Wagner Theorem (1980)",
-      "summary": "hasLogarithmicDiscrepancy, tijdeman_wagner_theorem",
+      "summary": "hasLogarithmicDiscrepancy definition; Tijdeman-Wagner result is stated as documentation only",
       "startLine": 105,
-      "endLine": 117,
-      "mathContext": "Verified: hasLogarithmicDiscrepancy, tijdeman_wagner_theorem"
+      "endLine": 114,
+      "mathContext": "hasLogarithmicDiscrepancy definition; Tijdeman-Wagner result is documentation only"
     },
     {
       "id": "optimality",
       "title": "Optimality",
       "summary": "van_der_corput_sequence_exists: O(log N) is achievable",
-      "startLine": 118,
-      "endLine": 127,
+      "startLine": 115,
+      "endLine": 124,
       "mathContext": "van_der_corput_sequence_exists: $O(log N)$ is achievable"
     },
     {
       "id": "connections",
       "title": "Connections",
-      "summary": "isUniformlyDistributed, weyl_theorem",
-      "startLine": 128,
-      "endLine": 139,
-      "mathContext": "Verified: isUniformlyDistributed, weyl_theorem"
+      "summary": "isUniformlyDistributed definition; Weyl's theorem is stated as documentation only",
+      "startLine": 125,
+      "endLine": 133,
+      "mathContext": "isUniformlyDistributed definition; Weyl's theorem is documentation only"
     },
     {
       "id": "star-discrepancy",
       "title": "Star Discrepancy",
-      "summary": "starDiscrepancy, star_discrepancy_unbounded",
-      "startLine": 140,
-      "endLine": 149,
-      "mathContext": "Bound: starDiscrepancy, star_discrepancy_unbounded"
+      "summary": "starDiscrepancy definition; star discrepancy unboundedness is stated as documentation only",
+      "startLine": 134,
+      "endLine": 140,
+      "mathContext": "starDiscrepancy definition; star discrepancy unboundedness is documentation only"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_255_summary: three-part conjunction",
-      "startLine": 150,
+      "summary": "erdos_255_summary: three-part conjunction (Schmidt 1968, Schmidt 1972, van der Corput)",
+      "startLine": 141,
       "endLine": 163,
       "mathContext": "Mathematical content: erdos_255_summary: three-part conjunction"
     }
