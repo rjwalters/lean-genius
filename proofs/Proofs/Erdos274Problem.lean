@@ -78,10 +78,9 @@ theorem abelian_has_repeated_index (G : Type*) [CommGroup G] [Fintype G]
 
 /- ## Computational Verification -/
 
-/--
-**Margolis-Schnabel Theorem** (2019):
+/- Margolis-Schnabel Theorem (2019):
 The conjecture holds for all groups of order < 1440.
--/
+(Not separately axiomatized.) -/
 /- ## The Open Problem -/
 
 /--
@@ -101,13 +100,11 @@ theorem erdos_274_abelian_solved (G : Type*) [CommGroup G] [Fintype G] :
 
 /- ## Index Sum Lemma -/
 
-/--
-**Necessary Condition**:
+/- Necessary Condition (Index Sum):
 If k cosets partition G with indices n₁, ..., nₖ, then
 |G| = Σᵢ |Hᵢ| = |G| · Σᵢ (1/nᵢ), so Σᵢ (1/nᵢ) = 1.
-
 Example: Indices 2, 3, 6 satisfy 1/2 + 1/3 + 1/6 = 1.
--/
+(Noted as context; not separately formalized.) -/
 /- ## Summary -/
 
 /--
