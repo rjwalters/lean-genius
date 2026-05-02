@@ -4804,10 +4804,12 @@
       "result": "issues-fixed"
     },
     "erdos-162": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "#14689: stale 'sorry' narrative claims for colourEdgeCount_total/balanced_requires_le_half + 214→237 lineCount drift in historicalContext/conclusion (file has 0 sorries, 237 lines)"
+      ],
+      "lastAudited": "2026-05-02T09:14:15Z",
+      "result": "issues-found"
     },
     "erdos-163": {
       "auditCount": 2,
