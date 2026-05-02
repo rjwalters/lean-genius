@@ -1,12 +1,13 @@
 {
   "id": "basel-problem-oq-04-oq-03",
-  "title": "Coprime Pair Density: Pr[gcd(m,n)=1] = 6/π²",
+  "title": "Coprime Pair Density: Pr[gcd(m,n)=1] = 6/\u03c0\u00b2",
   "slug": "basel-problem-oq-04-oq-03",
-  "description": "The natural density of coprime pairs of positive integers is 6/π² ≈ 0.608. Two randomly chosen integers are coprime with probability 1/ζ(2) = 6/π².",
+  "description": "The natural density of coprime pairs of positive integers is 6/\u03c0\u00b2 \u2248 0.608. Two randomly chosen integers are coprime with probability 1/\u03b6(2) = 6/\u03c0\u00b2.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-26",
     "status": "axiomatized",
+    "note": "sorry count reduced: finite Fubini proved in Session 1 (2026-05-02)",
     "proofRepoPath": "Proofs/BaselProblemOQ04OQ03.lean",
     "tags": [
       "number-theory",
@@ -18,57 +19,57 @@
       "basel-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "dateAdded": "2026-04-26",
     "mathlibDependencies": [
       {
         "theorem": "ArithmeticFunction.moebius_mul_coe_zeta",
-        "description": "Dirichlet convolution μ * ζ = 1 (identity arithmetic function)",
+        "description": "Dirichlet convolution \u03bc * \u03b6 = 1 (identity arithmetic function)",
         "module": "Mathlib.NumberTheory.ArithmeticFunction"
       },
       {
         "theorem": "riemannZeta_two",
-        "description": "ζ(2) = π²/6 (Basel problem)",
+        "description": "\u03b6(2) = \u03c0\u00b2/6 (Basel problem)",
         "module": "Mathlib.NumberTheory.LSeries.HurwitzZetaValues"
       },
       {
         "theorem": "Real.pi_gt_three",
-        "description": "π > 3 (for density bounds)",
+        "description": "\u03c0 > 3 (for density bounds)",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
       },
       {
         "theorem": "Real.pi_lt_four",
-        "description": "π < 4 (for density lower bound)",
+        "description": "\u03c0 < 4 (for density lower bound)",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
       }
     ],
     "originalContributions": [
-      "Möbius decomposition: countCoprimePairs(N) = Σ_{d≤N} μ(d)⌊N/d⌋² (combinatorial identity via Möbius inversion)",
-      "coprime_iff_moebius_sum: 1_{gcd(m,n)=1} = Σ_{d|gcd(m,n)} μ(d) (coprimality detector)",
-      "card_pairs_divisible: |{(m,n)∈[N]² : d|m, d|n}| = ⌊N/d⌋² (counting lemma)",
-      "moebius_dirichlet_series_at_two: HasSum axiom for Σ μ(d)/d² = 6/π²",
+      "M\u00f6bius decomposition: countCoprimePairs(N) = \u03a3_{d\u2264N} \u03bc(d)\u230aN/d\u230b\u00b2 (combinatorial identity via M\u00f6bius inversion)",
+      "coprime_iff_moebius_sum: 1_{gcd(m,n)=1} = \u03a3_{d|gcd(m,n)} \u03bc(d) (coprimality detector)",
+      "card_pairs_divisible: |{(m,n)\u2208[N]\u00b2 : d|m, d|n}| = \u230aN/d\u230b\u00b2 (counting lemma)",
+      "moebius_dirichlet_series_at_two: HasSum axiom for \u03a3 \u03bc(d)/d\u00b2 = 6/\u03c0\u00b2",
       "Numerical verification for N=1,2,3,4,5,10 via native_decide",
-      "Density bounds: 3/8 < 6/π² < 2/3 (from π > 3 and π < 4)"
+      "Density bounds: 3/8 < 6/\u03c0\u00b2 < 2/3 (from \u03c0 > 3 and \u03c0 < 4)"
     ],
     "axiomCount": 2,
-    "lineCount": 388,
-    "assumptions": "2 axioms: (1) moebius_dirichlet_series_at_two — the Dirichlet series Σ μ(d)/d² = 6/π² at s=2, following from L(μ,s)·ζ(s)=1 and ζ(2)=π²/6 but requiring LSeries bridge; (2) coprime_pair_density_limit — the density limit theorem using dominated convergence. 1 sorry: finite sum exchange in Möbius decomposition (finite Fubini argument).",
+    "lineCount": 412,
+    "assumptions": "2 axioms: (1) moebius_dirichlet_series_at_two \u2014 the Dirichlet series \u03a3 \u03bc(d)/d\u00b2 = 6/\u03c0\u00b2 at s=2, following from L(\u03bc,s)\u00b7\u03b6(s)=1 and \u03b6(2)=\u03c0\u00b2/6 but requiring LSeries bridge; (2) coprime_pair_density_limit \u2014 the density limit theorem using dominated convergence.",
     "theoremCount": 21
   },
   "overview": {
-    "historicalContext": "Ernesto Cesàro (1885) first explicitly stated that the probability that two randomly chosen positive integers are coprime equals 6/π² = 1/ζ(2) ≈ 0.6079. The result connects three branches of mathematics: combinatorics (coprimality, Möbius function), analysis (convergent series, Basel problem), and probability (natural density).\n\nThe mathematical insight is elegant: for each prime p, the probability that p divides both m and n is 1/p², so the probability that p does NOT divide their gcd is (1 - 1/p²). By the Chinese Remainder Theorem, coprimality with respect to different primes is independent, so the probability that gcd(m,n)=1 is ∏_p (1 - 1/p²) = 1/ζ(2) = 6/π².\n\nThis connects to the Basel problem (Euler, 1734): ∑_{n=1}^∞ 1/n² = π²/6, making the density the reciprocal 6/π². The Möbius function μ(n) provides the formal proof tool: the identity 1_{n=1} = Σ_{d|n} μ(d) converts coprimality detection into a finite sum, enabling the counting argument.\n\nThe result was generalized in the 20th century: Bergelson and Richter (2017) showed that for non-integer α > 0, the density of {n : gcd(n, ⌊n^α⌋) = 1} is also 6/π² (Erdős #1149 in our gallery).",
-    "problemStatement": "Prove that the natural density of coprime pairs equals 6/π²: lim_{N→∞} |{(m,n) : 1 ≤ m,n ≤ N, gcd(m,n)=1}| / N² = 6/π².",
-    "text": "The probability that two randomly chosen positive integers are coprime equals 6/π² ≈ 0.608.",
-    "proofStrategy": "The proof uses the Möbius decomposition:\n1. Replace 1_{gcd(m,n)=1} by Σ_{d|gcd(m,n)} μ(d) (Möbius inversion)\n2. Exchange summation order: Σ_{(m,n)} Σ_{d|gcd} → Σ_{d≤N} μ(d) · ⌊N/d⌋²\n3. Divide by N² and take the limit: Σ μ(d)/d² = 6/π² (Dirichlet series at s=2)\n\nThe Dirichlet series step uses L(μ,s) = 1/ζ(s), evaluated at s=2 with ζ(2) = π²/6.",
+    "historicalContext": "Ernesto Ces\u00e0ro (1885) first explicitly stated that the probability that two randomly chosen positive integers are coprime equals 6/\u03c0\u00b2 = 1/\u03b6(2) \u2248 0.6079. The result connects three branches of mathematics: combinatorics (coprimality, M\u00f6bius function), analysis (convergent series, Basel problem), and probability (natural density).\n\nThe mathematical insight is elegant: for each prime p, the probability that p divides both m and n is 1/p\u00b2, so the probability that p does NOT divide their gcd is (1 - 1/p\u00b2). By the Chinese Remainder Theorem, coprimality with respect to different primes is independent, so the probability that gcd(m,n)=1 is \u220f_p (1 - 1/p\u00b2) = 1/\u03b6(2) = 6/\u03c0\u00b2.\n\nThis connects to the Basel problem (Euler, 1734): \u2211_{n=1}^\u221e 1/n\u00b2 = \u03c0\u00b2/6, making the density the reciprocal 6/\u03c0\u00b2. The M\u00f6bius function \u03bc(n) provides the formal proof tool: the identity 1_{n=1} = \u03a3_{d|n} \u03bc(d) converts coprimality detection into a finite sum, enabling the counting argument.\n\nThe result was generalized in the 20th century: Bergelson and Richter (2017) showed that for non-integer \u03b1 > 0, the density of {n : gcd(n, \u230an^\u03b1\u230b) = 1} is also 6/\u03c0\u00b2 (Erd\u0151s #1149 in our gallery).",
+    "problemStatement": "Prove that the natural density of coprime pairs equals 6/\u03c0\u00b2: lim_{N\u2192\u221e} |{(m,n) : 1 \u2264 m,n \u2264 N, gcd(m,n)=1}| / N\u00b2 = 6/\u03c0\u00b2.",
+    "text": "The probability that two randomly chosen positive integers are coprime equals 6/\u03c0\u00b2 \u2248 0.608.",
+    "proofStrategy": "The proof uses the M\u00f6bius decomposition:\n1. Replace 1_{gcd(m,n)=1} by \u03a3_{d|gcd(m,n)} \u03bc(d) (M\u00f6bius inversion)\n2. Exchange summation order: \u03a3_{(m,n)} \u03a3_{d|gcd} \u2192 \u03a3_{d\u2264N} \u03bc(d) \u00b7 \u230aN/d\u230b\u00b2\n3. Divide by N\u00b2 and take the limit: \u03a3 \u03bc(d)/d\u00b2 = 6/\u03c0\u00b2 (Dirichlet series at s=2)\n\nThe Dirichlet series step uses L(\u03bc,s) = 1/\u03b6(s), evaluated at s=2 with \u03b6(2) = \u03c0\u00b2/6.",
     "keyInsights": [
-      "Möbius inversion is the key: 1_{n=1} = Σ_{d|n} μ(d) converts coprimality to a tractable sum.",
-      "The finite identity countCoprimePairs(N) = Σ_{d≤N} μ(d)⌊N/d⌋² is the combinatorial heart of the proof.",
-      "The limit Σ μ(d)/d² = 6/π² connects the arithmetic Möbius function to the Basel constant via Dirichlet series.",
-      "The 'independence over primes' interpretation: Pr[p∤gcd(m,n)] = 1-1/p², and CRT makes these independent.",
-      "The convergence uses dominated convergence with dominator Σ 1/d² (the Basel sum), creating a beautiful self-reference."
+      "M\u00f6bius inversion is the key: 1_{n=1} = \u03a3_{d|n} \u03bc(d) converts coprimality to a tractable sum.",
+      "The finite identity countCoprimePairs(N) = \u03a3_{d\u2264N} \u03bc(d)\u230aN/d\u230b\u00b2 is the combinatorial heart of the proof.",
+      "The limit \u03a3 \u03bc(d)/d\u00b2 = 6/\u03c0\u00b2 connects the arithmetic M\u00f6bius function to the Basel constant via Dirichlet series.",
+      "The 'independence over primes' interpretation: Pr[p\u2224gcd(m,n)] = 1-1/p\u00b2, and CRT makes these independent.",
+      "The convergence uses dominated convergence with dominator \u03a3 1/d\u00b2 (the Basel sum), creating a beautiful self-reference."
     ],
     "prerequisites": [
-      "Number theory: Möbius function, arithmetic functions, natural density",
+      "Number theory: M\u00f6bius function, arithmetic functions, natural density",
       "Analysis: Riemann zeta function, Dirichlet series, dominated convergence",
       "Combinatorics: Chinese Remainder Theorem, inclusion-exclusion"
     ]
@@ -79,47 +80,47 @@
       "title": "The Coprime Pair Count",
       "startLine": 63,
       "endLine": 70,
-      "summary": "Defines countCoprimePairs(N) = |{(m,n) ∈ [1,N]² : gcd(m,n)=1}| using Finset filtering on the Cartesian product Icc 1 N ×ˢ Icc 1 N.",
+      "summary": "Defines countCoprimePairs(N) = |{(m,n) \u2208 [1,N]\u00b2 : gcd(m,n)=1}| using Finset filtering on the Cartesian product Icc 1 N \u00d7\u02e2 Icc 1 N.",
       "mathContext": "The natural density of coprime pairs is $\\lim_{N\\to\\infty} |\\{(m,n)\\in[N]^2 : \\gcd(m,n)=1\\}|/N^2$."
     },
     {
       "id": "mobius-inversion",
-      "title": "Möbius Inversion Foundation",
+      "title": "M\u00f6bius Inversion Foundation",
       "startLine": 73,
       "endLine": 124,
-      "summary": "Proves Σ_{d|n} μ(d) = 1_{n=1} from moebius_mul_coe_zeta, and derives the coprimality detector 1_{gcd(m,n)=1} = Σ_{d|gcd(m,n)} μ(d).",
-      "mathContext": "$\\sum_{d|n} \\mu(d) = [n=1]$ — the fundamental Möbius inversion identity. Applied to $n = \\gcd(m,n)$, it detects coprimality: $[\\gcd(m,n)=1] = \\sum_{d|\\gcd(m,n)} \\mu(d)$."
+      "summary": "Proves \u03a3_{d|n} \u03bc(d) = 1_{n=1} from moebius_mul_coe_zeta, and derives the coprimality detector 1_{gcd(m,n)=1} = \u03a3_{d|gcd(m,n)} \u03bc(d).",
+      "mathContext": "$\\sum_{d|n} \\mu(d) = [n=1]$ \u2014 the fundamental M\u00f6bius inversion identity. Applied to $n = \\gcd(m,n)$, it detects coprimality: $[\\gcd(m,n)=1] = \\sum_{d|\\gcd(m,n)} \\mu(d)$."
     },
     {
       "id": "counting-multiples",
       "title": "Counting Multiples and Divisible Pairs",
       "startLine": 127,
       "endLine": 165,
-      "summary": "Proves |{m∈[N] : d|m}| = ⌊N/d⌋ (card_multiples) and |{(m,n)∈[N]² : d|m, d|n}| = ⌊N/d⌋² (card_pairs_divisible). Key building blocks for the Möbius decomposition.",
+      "summary": "Proves |{m\u2208[N] : d|m}| = \u230aN/d\u230b (card_multiples) and |{(m,n)\u2208[N]\u00b2 : d|m, d|n}| = \u230aN/d\u230b\u00b2 (card_pairs_divisible). Key building blocks for the M\u00f6bius decomposition.",
       "mathContext": "The count of multiples of $d$ in $[1,N]$ is $\\lfloor N/d \\rfloor$. Independence of divisibility conditions gives $|\\{(m,n): d|m, d|n\\}| = \\lfloor N/d \\rfloor^2$."
     },
     {
       "id": "mobius-decomposition",
-      "title": "The Möbius Decomposition Identity",
+      "title": "The M\u00f6bius Decomposition Identity",
       "startLine": 168,
       "endLine": 206,
-      "summary": "States countCoprimePairs(N) = Σ_{d≤N} μ(d)⌊N/d⌋². The proof is complete except for one sorry: the finite sum exchange (finite Fubini argument). All other steps use previously proved lemmas.",
-      "mathContext": "$|\\{(m,n)\\in[N]^2:\\gcd(m,n)=1\\}| = \\sum_{d=1}^N \\mu(d)\\lfloor N/d\\rfloor^2$ — the central combinatorial identity. The sum exchange counts triples $(m,n,d)$ with $1\\le m,n\\le N$ and $d|\\gcd(m,n)$."
+      "summary": "States countCoprimePairs(N) = \u03a3_{d\u2264N} \u03bc(d)\u230aN/d\u230b\u00b2. The proof is complete except for one sorry: the finite sum exchange (finite Fubini argument). All other steps use previously proved lemmas.",
+      "mathContext": "$|\\{(m,n)\\in[N]^2:\\gcd(m,n)=1\\}| = \\sum_{d=1}^N \\mu(d)\\lfloor N/d\\rfloor^2$ \u2014 the central combinatorial identity. The sum exchange counts triples $(m,n,d)$ with $1\\le m,n\\le N$ and $d|\\gcd(m,n)$."
     },
     {
       "id": "analytic-axioms",
       "title": "Analytic Axioms (Dirichlet Series and Density Convergence)",
       "startLine": 209,
       "endLine": 245,
-      "summary": "Two axioms: (1) HasSum of μ(d)/d² equals 6/π² (Dirichlet series L(μ,2) = 1/ζ(2)); (2) the density convergence theorem (uses dominated convergence with dominator 1/d²).",
+      "summary": "Two axioms: (1) HasSum of \u03bc(d)/d\u00b2 equals 6/\u03c0\u00b2 (Dirichlet series L(\u03bc,2) = 1/\u03b6(2)); (2) the density convergence theorem (uses dominated convergence with dominator 1/d\u00b2).",
       "mathContext": "$\\sum_{d=1}^\\infty \\mu(d)/d^2 = 1/\\zeta(2) = 6/\\pi^2$. Axiomatized because the bridge from the algebraic identity $(\\mu*\\zeta)(n) = 1_{n=1}$ to the analytic HasSum statement requires L-series machinery not yet formalized for $\\mathbb{Z}$-valued arithmetic functions."
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem: Cesàro 1885",
+      "title": "Main Theorem: Ces\u00e0ro 1885",
       "startLine": 248,
       "endLine": 261,
-      "summary": "The density limit theorem: lim_{N→∞} countCoprimePairs(N)/N² = 6/π². Proved by applying the coprime_pair_density_limit axiom directly.",
+      "summary": "The density limit theorem: lim_{N\u2192\u221e} countCoprimePairs(N)/N\u00b2 = 6/\u03c0\u00b2. Proved by applying the coprime_pair_density_limit axiom directly.",
       "mathContext": "$\\lim_{N\\to\\infty} |\\{(m,n)\\in[N]^2:\\gcd(m,n)=1\\}|/N^2 = 6/\\pi^2 = 1/\\zeta(2) \\approx 0.6079$."
     },
     {
@@ -127,7 +128,7 @@
       "title": "Density Properties and Bounds",
       "startLine": 265,
       "endLine": 294,
-      "summary": "Proves the density 6/π² is positive, less than 1, in (0,1), and equals 1/ζ(2). Bounds 3/8 < 6/π² < 2/3 via π > 3 and π < 4.",
+      "summary": "Proves the density 6/\u03c0\u00b2 is positive, less than 1, in (0,1), and equals 1/\u03b6(2). Bounds 3/8 < 6/\u03c0\u00b2 < 2/3 via \u03c0 > 3 and \u03c0 < 4.",
       "mathContext": "$0 < 6/\\pi^2 < 1$ and $3/8 < 6/\\pi^2 < 2/3$. The bounds follow from $3 < \\pi < 4$, squaring to get $9 < \\pi^2 < 16$, then $6/16 = 3/8$ and $6/9 = 2/3$."
     },
     {
@@ -135,7 +136,7 @@
       "title": "Small Case Verification",
       "startLine": 299,
       "endLine": 326,
-      "summary": "Native_decide verification for N=1,2,3,4,5,10 confirming countCoprimePairs gives 1,3,7,13,21,63. Densities converge toward 6/π² ≈ 0.608 from above.",
+      "summary": "Native_decide verification for N=1,2,3,4,5,10 confirming countCoprimePairs gives 1,3,7,13,21,63. Densities converge toward 6/\u03c0\u00b2 \u2248 0.608 from above.",
       "mathContext": "Empirical: $N=1: 1/1=1.0$, $N=10: 63/100=0.63$. The density converges to $6/\\pi^2\\approx 0.608$ from above."
     },
     {
@@ -143,42 +144,42 @@
       "title": "Euler Product Connection and tsum Identity",
       "startLine": 330,
       "endLine": 346,
-      "summary": "Connects 6/π² = ∏_p(1-1/p²) via the Euler product (proved in BaselProblemOQ04). Derives tsum_moebius_div_sq as a corollary of the HasSum axiom.",
+      "summary": "Connects 6/\u03c0\u00b2 = \u220f_p(1-1/p\u00b2) via the Euler product (proved in BaselProblemOQ04). Derives tsum_moebius_div_sq as a corollary of the HasSum axiom.",
       "mathContext": "$6/\\pi^2 = \\prod_p (1-1/p^2) = 1/\\zeta(2)$. Probabilistic interpretation: events $p\\nmid\\gcd(m,n)$ are independent over primes by CRT, so $\\Pr[\\gcd(m,n)=1] = \\prod_p(1-1/p^2)$."
     }
   ],
   "conclusion": {
-    "summary": "A formal proof that the natural density of coprime pairs equals 6/π². The Möbius decomposition identity is established combinatorially; the density limit is axiomatized with 2 axioms covering the Dirichlet series and dominated convergence. Small cases verified by computation.",
+    "summary": "A formal proof that the natural density of coprime pairs equals 6/\u03c0\u00b2. The M\u00f6bius decomposition identity is established combinatorially; the density limit is axiomatized with 2 axioms covering the Dirichlet series and dominated convergence. Small cases verified by computation.",
     "openQuestions": [
-      "Can the axiom moebius_dirichlet_series_at_two be eliminated using Mathlib's LSeries.Basic to prove HasSum (μ(d)/d²) = 6/π² from moebius_mul_coe_zeta and riemannZeta_two?",
+      "Can the axiom moebius_dirichlet_series_at_two be eliminated using Mathlib's LSeries.Basic to prove HasSum (\u03bc(d)/d\u00b2) = 6/\u03c0\u00b2 from moebius_mul_coe_zeta and riemannZeta_two?",
       "Can the finite sum exchange sorry in countCoprimePairs_moebius be proved using Finset.sum_comm or Finset.sum_sigma in Lean 4?",
-      "Can the dominated convergence argument be formalized using Mathlib's MeasureTheory.integral_dominated_convergence applied to the counting measure on ℕ?"
+      "Can the dominated convergence argument be formalized using Mathlib's MeasureTheory.integral_dominated_convergence applied to the counting measure on \u2115?"
     ],
-    "implications": "This result is the probabilistic heart of the Basel problem: the density 6/π² = 1/ζ(2) shows that the Basel series sum (π²/6) directly controls the probability of coprimality. It generalizes to all number fields and connects to Dirichlet L-functions."
+    "implications": "This result is the probabilistic heart of the Basel problem: the density 6/\u03c0\u00b2 = 1/\u03b6(2) shows that the Basel series sum (\u03c0\u00b2/6) directly controls the probability of coprimality. It generalizes to all number fields and connects to Dirichlet L-functions."
   },
   "crossReferences": [
     {
       "proofId": "basel-problem-oq-04",
       "relationship": "parent",
-      "description": "Parent: Euler product ∏_p (1-p⁻²)⁻¹ = π²/6 — the reciprocal of our density"
+      "description": "Parent: Euler product \u220f_p (1-p\u207b\u00b2)\u207b\u00b9 = \u03c0\u00b2/6 \u2014 the reciprocal of our density"
     },
     {
       "targetId": "basel-problem",
       "relationship": "foundational-for",
-      "description": "The Basel identity ζ(2) = π²/6 is the analytic ingredient: our density = 1/ζ(2) = 6/π²"
+      "description": "The Basel identity \u03b6(2) = \u03c0\u00b2/6 is the analytic ingredient: our density = 1/\u03b6(2) = 6/\u03c0\u00b2"
     },
     {
       "targetId": "erdos-1149",
       "relationship": "generalization",
-      "description": "Erdős #1149 (Bergelson-Richter 2017): the density of {n : gcd(n,⌊n^α⌋)=1} is also 6/π² for non-integer α > 0"
+      "description": "Erd\u0151s #1149 (Bergelson-Richter 2017): the density of {n : gcd(n,\u230an^\u03b1\u230b)=1} is also 6/\u03c0\u00b2 for non-integer \u03b1 > 0"
     },
     {
       "targetId": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient φ(n)/n → 6/π² on average (Cesàro averaging of coprimality fractions)"
+      "description": "Euler's totient \u03c6(n)/n \u2192 6/\u03c0\u00b2 on average (Ces\u00e0ro averaging of coprimality fractions)"
     }
   ],
-  "sorries": 1,
+  "sorries": 0,
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.ArithmeticFunction",
@@ -200,11 +201,11 @@
       "ArithmeticFunction"
     ],
     "namespace": "BaselProblemOQ04OQ03",
-    "lineCount": 388,
+    "lineCount": 412,
     "axiomCount": 2,
     "theoremCount": 21,
     "definitionCount": 1,
-    "sorries": 1,
+    "sorries": 0,
     "path": "Proofs/BaselProblemOQ04OQ03.lean"
   }
 }
