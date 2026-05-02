@@ -5,15 +5,16 @@
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
 **Last Updated**: 2026-05-03
-**Iteration**: 19
+**Iteration**: 20
 
 ## Current Focus
 
-Proving `jdt_weight_sum` b ≥ 2 — via weight factorization (S18 correct approach).
+Proving `jdt_weight_sum` b ≥ 2 — the RSK/JDT bijection is the standard approach.
 Session 17 proved `jdt_weight_sum_b_one` (b=1 base case, ~95 lines).
 Session 18 discovered the "violation element" bijection is NON-INJECTIVE for b≥2.
-Session 19 fixed `rel_head` bug in b=1 proof; submitted Aristotle (ID: c6967eb8).
-2 sorries remain in main file.
+Session 19 fixed `rel_head` bug in b=1 proof.
+Session 20 integrated Aristotle proof into companion file (0 sorries remaining there).
+1 sorry in main file (b≥2), 1 long-term sorry (jacobi_trudi_ssyt_eq k≥3).
 
 ## Active Approach
 
@@ -45,16 +46,17 @@ Completed:
 
 ## Blockers
 
-None. Weight-factorization approach is combinatorially sound.
+b≥2 bijection is genuinely hard. Both "min-of-Q" and "violation-element" bijections
+are non-injective. The correct bijection is RSK/JDT (standard but ~300-500 lines).
 Remaining sorries:
-- `jdt_weight_sum` b≥2 (line ~617): weight-factorization approach, ~100-150 lines
+- `jdt_weight_sum` b≥2 (line ~617): RSK or algebraic approach, ~300-500 lines
 - `jacobi_trudi_ssyt_eq` k≥3 (line ~848): RSK/LGV, long-term open
+
+Companion file: 0 sorries (Aristotle job 9ddf3174 proved b=1 standalone form).
 
 ## Next Action
 
-1. Implement b≥2 via weight factorization:
-   - Prove `wt(P)*wt(Q) = ((P.1+Q.1).map X).prod`
-   - Group sum by total multiset M
-   - Ballot bijection: #{non-cs (a,b) splits} = #{all (a+1,b-1) splits}
-2. Aristotle (ID: c6967eb8) may solve companion file b=1 proof independently.
-3. After b≥2 closes: `jacobi_trudi_ssyt_eq` k ≥ 3 (RSK/LGV).
+1. Try b=2 special case first: for b=2, violation at i=0 or i=1, case-split (~50 lines).
+2. Submit b≥2 sorry to Aristotle as standalone (fiber counting identity).
+3. Investigate algebraic approach: h_a*h_b - h_{a+1}*h_{b-1} = ∑_{cs} wt via Mathlib ring lemmas.
+4. After b≥2 closes: `jacobi_trudi_ssyt_eq` k ≥ 3 (RSK/LGV).
