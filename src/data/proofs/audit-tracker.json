@@ -5637,9 +5637,12 @@
     },
     "erdos-280": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T03:50:26Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom axiom 'cambie_only_one_avoider' in originalContributions; section summaries reference cambie_satisfies_growth/cambie_only_one_avoider/cambie_count_is_one/prime_number_theorem_approx that exist only as docstrings; section line ranges drifted — issue #14535"
+      ]
     },
     "erdos-281": {
       "agentId": "auditor-cycle-20-batch",
