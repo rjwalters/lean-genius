@@ -105,55 +105,55 @@
       "id": "turan-result",
       "title": "Turán's Original Result",
       "startLine": 73,
-      "endLine": 95,
+      "endLine": 90,
       "summary": "Axiomatizes Turán's bound $\\max_k |S_k| \\ge c/n$ and formally states the question of whether an absolute (n-independent) constant exists",
       "mathContext": "Turán's power sum method: the bound $c/n$ degrades with $n$, leaving open whether the dependence is essential."
     },
     {
       "id": "atkinson",
       "title": "Atkinson's Theorem (1961)",
-      "startLine": 96,
-      "endLine": 118,
+      "startLine": 91,
+      "endLine": 112,
       "summary": "Axiomatizes Atkinson's breakthrough: $\\max_k |S_k| > 1/6$ for all $n$ and all $z$ with $z_1 = 1$. Derives `turan_question_yes` as a direct corollary",
       "mathContext": "Atkinson's result settles Turán's question affirmatively: the constant $c = 1/6$ is absolute, independent of $n$."
     },
     {
       "id": "biro",
       "title": "Biró's Improvements",
-      "startLine": 119,
-      "endLine": 149,
-      "summary": "Axiomatizes Biró's improved bounds: $c = 1/2$ (1994) and $c > 1/2$ (2000), plus the placeholder conjecture that the optimal constant is approximately $0.7$",
+      "startLine": 113,
+      "endLine": 136,
+      "summary": "Axiomatizes Biró's c > 1/2 bound (2000); Biró 1994 (c = 1/2) and the conjectured optimal c ≈ 0.7 are mentioned in comments but not axiomatized.",
       "mathContext": "Biró's refinements doubled Atkinson's constant and broke the $1/2$ barrier, but the conjectured optimal $c \\approx 0.7$ remains unproved."
     },
     {
       "id": "key-observations",
       "title": "Key Observations",
-      "startLine": 150,
-      "endLine": 179,
+      "startLine": 137,
+      "endLine": 188,
       "summary": "Proves the trivial case $n=1$ directly ($S_k = 1^k = 1$ for all $k$) and explains why the constraint $z_1 = 1$ is essential: without it, taking all $z_i = 0$ trivializes the problem",
       "mathContext": "The decomposition $S_k = 1 + \\sum_{i > 0} z_i^k$ shows that each power sum includes the anchor term $1^k = 1$, so cancellation must come from the remaining terms."
     },
     {
       "id": "special-cases",
       "title": "Roots of Unity and Special Cases",
-      "startLine": 180,
-      "endLine": 221,
+      "startLine": 189,
+      "endLine": 227,
       "summary": "Defines $n$-th roots of unity via $\\omega_k = e^{2\\pi i k/n}$ and axiomatizes their power sum behavior: $\\sum \\omega_k^j = n$ if $n | j$, else $0$. Notes connection to Problem #973",
       "mathContext": "Roots of unity exhibit the orthogonality relation $\\sum_{k=0}^{n-1} e^{2\\pi i jk/n} = n \\cdot \\mathbf{1}_{n | j}$, a cornerstone of discrete Fourier analysis."
     },
     {
       "id": "optimal-constant",
       "title": "The Optimal Constant",
-      "startLine": 222,
-      "endLine": 248,
-      "summary": "Packages Biró's result as `optimal_lower_bound` and axiomatizes the computational evidence that $c \\approx 0.7$; notes the remaining gap between proved and conjectured values",
+      "startLine": 228,
+      "endLine": 252,
+      "summary": "Packages Biró's result as `optimal_lower_bound` and notes the computational evidence that $c \\approx 0.7$ as a documentation comment (not axiomatized); notes the remaining gap between proved and conjectured values.",
       "mathContext": "The gap $1/2 < c_{\\text{proved}} < c_{\\text{optimal}} \\approx 0.7$ represents the frontier of the problem."
     },
     {
       "id": "summary",
       "title": "Summary Theorems",
-      "startLine": 249,
-      "endLine": 284,
+      "startLine": 253,
+      "endLine": 287,
       "summary": "States the main results as `erdos_519 : turanQuestion` and `erdos_519_summary` bundling Atkinson's and Biró's bounds into a single conjunction",
       "mathContext": "The summary theorem certifies: $\\forall n \\ge 1, \\forall z$ with $z_1 = 1$: $\\max_k |S_k| > 1/6$ and $\\exists c > 1/2$ with $\\max_k |S_k| > c$."
     }
@@ -170,10 +170,8 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Complex.Basic",
       "Mathlib.Analysis.SpecialFunctions.Pow.Complex",
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Finset.Basic"
+      "Mathlib.Tactic"
     ],
     "opens": [
       "Complex",
