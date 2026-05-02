@@ -454,19 +454,14 @@ private lemma not_colStrictSym_a_one_iff_qhead_le_phead {n a : ℕ} (ha : 1 ≤ 
     `(q ::ₘ P.1).sort = q :: P.1.sort`, so `q` is the head of `(q ::ₛ P).1.sort`,
     making `Sym.erase` and `Sym.cons_erase`/`Sym.erase_cons_head` close the inverses.
 
-    **Status (2026-05-02 session 16):** infrastructure for the bijection is in place:
+    **Status (2026-05-02 session 17):** bijection fully implemented (~95 lines):
       * `sym_one_sort_head_singleton` (S15) — extracts the unique q from Q : Sym n 1.
       * `colStrictSym_a_one_iff_phead_lt_qhead` (S16) — `ColStrictSym a 1 P Q` reduces
         to a single inequality `(P.sort)[0] < (Q.sort)[0]` for a ≥ 1.
       * `not_colStrictSym_a_one_iff_qhead_le_phead` (S16) — negation form
-        `¬ColStrictSym ↔ q ≤ (P.sort)[0]` ready for direct use in the bijection.
-
-    The remaining `sorry` is the bijection construction itself with weight
-    preservation; estimated 80-100 lines using
-    `Sym.oneEquiv` (`Data/Sym/Basic.lean:477`), `Sym.cons_erase` (`:219`),
-    `Sym.erase_cons_head` (`:223`), `Multiset.sort_cons` (`Data/Multiset/Sort.lean:69`),
-    plus the existing `jdt_weight_preserved` (line 368) for the weight algebra at b=0.
-    Aristotle target: `BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean`. -/
+        `¬ColStrictSym ↔ q ≤ (P.sort)[0]` used directly in the bijection proof.
+      * Bijection `ψ` implemented using `Multiset.sort_cons`, `Sym.erase_cons_head`,
+        `Sym.cons_erase`, and `Fintype.sum_equiv` for weight preservation. -/
 private lemma jdt_weight_sum_b_one (n a : ℕ) (ha : 1 ≤ a) :
     ∑ PQ : { PQ : Sym (Fin n) a × Sym (Fin n) 1 // ¬ColStrictSym a 1 PQ.1 PQ.2 },
       (PQ.1.1.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
@@ -480,18 +475,35 @@ private lemma jdt_weight_sum_b_one (n a : ℕ) (ha : 1 ≤ a) :
   have slen : ∀ S : Sym (Fin n) (a + 1), (S.1.sort (· ≤ ·)).length = a + 1 :=
     fun S => (Multiset.length_sort _ S.1).trans S.2
   -- Sorted multiset minimum ≤ every element
+  -- Uses cases on the sorted list to handle x = head (le_refl) and x ∈ tail separately.
   have sort_min_le_sym : ∀ (m : Sym (Fin n) (a + 1)) (x : Fin n), x ∈ m.1 →
       (m.1.sort (· ≤ ·))[0]'(slen m ▸ Nat.succ_pos a) ≤ x := fun m x hx => by
-    have hx_s := (Multiset.mem_sort (· ≤ ·)).mpr hx
-    have hne := List.ne_nil_of_mem hx_s
-    have hpw := (Multiset.pairwise_sort (· ≤ ·) m.1).rel_head hx_s
-    rwa [List.head_eq_getElem_zero hne] at hpw
+    have hmem : x ∈ m.1.sort (· ≤ ·) := (Multiset.mem_sort _).mpr hx
+    have hpw : (m.1.sort (· ≤ ·)).Pairwise (· ≤ ·) := Multiset.pairwise_sort _ m.1
+    cases hm : m.1.sort (· ≤ ·) with
+    | nil => exact absurd (hm ▸ hmem) (List.not_mem_nil x)
+    | cons hd tl =>
+      have hgoal : (m.1.sort (· ≤ ·))[0]'(slen m ▸ Nat.succ_pos a) = hd := by
+        conv_lhs => rw [hm]; simp
+      rw [hgoal]
+      rw [hm] at hmem hpw
+      rcases List.mem_cons.mp hmem with rfl | htl
+      · exact le_refl _
+      · exact (List.pairwise_cons.mp hpw).1 x htl
   have sort_min_le_p : ∀ (P : Sym (Fin n) a) (x : Fin n), x ∈ P.1 →
       (P.1.sort (· ≤ ·))[0]'(plen P ▸ ha) ≤ x := fun P x hx => by
-    have hx_s := (Multiset.mem_sort (· ≤ ·)).mpr hx
-    have hne := List.ne_nil_of_mem hx_s
-    have hpw := (Multiset.pairwise_sort (· ≤ ·) P.1).rel_head hx_s
-    rwa [List.head_eq_getElem_zero hne] at hpw
+    have hmem : x ∈ P.1.sort (· ≤ ·) := (Multiset.mem_sort _).mpr hx
+    have hpw : (P.1.sort (· ≤ ·)).Pairwise (· ≤ ·) := Multiset.pairwise_sort _ P.1
+    cases hm : P.1.sort (· ≤ ·) with
+    | nil => exact absurd (hm ▸ hmem) (List.not_mem_nil x)
+    | cons hd tl =>
+      have hgoal : (P.1.sort (· ≤ ·))[0]'(plen P ▸ ha) = hd := by
+        conv_lhs => rw [hm]; simp
+      rw [hgoal]
+      rw [hm] at hmem hpw
+      rcases List.mem_cons.mp hmem with rfl | htl
+      · exact le_refl _
+      · exact (List.pairwise_cons.mp hpw).1 x htl
   -- Extract unique element of Sym n 1
   let getq : Sym (Fin n) 1 → Fin n := fun Q => (sym_one_sort_head_singleton n Q).choose
   have getq_spec : ∀ Q : Sym (Fin n) 1, Q.1 = ({getq Q} : Multiset (Fin n)) :=
