@@ -2,7 +2,7 @@
   "id": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
   "title": "Jacobi-Trudi Identity: Schur Polynomials as Determinants of Complete Homogeneous Symmetric Polynomials",
   "slug": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
-  "description": "Defines Schur polynomials via the Jacobi-Trudi determinant formula and the SSYT generating function. Proves k=0,1,2 SSYT bijections (k=2 via row-decomp Equiv + JDT partition argument). Session 9: ssytFin_two_row_eq_sum_colstrict proved (explicit bijection SSYTFin n 2 sh ≃ col-strict Sym pairs); 2 sorries remain (jdt_weight_sum, jacobi_trudi_ssyt_eq k≥3).",
+  "description": "Defines Schur polynomials via the Jacobi-Trudi determinant formula and the SSYT generating function. Proves k=0,1,2 SSYT bijections (k=2 via row-decomp Equiv + JDT partition argument). Session 9: ssytFin_two_row_eq_sum_colstrict proved (explicit bijection SSYTFin n 2 sh ≃ col-strict Sym pairs); 3 sorries remain (jdt_weight_sum_b_one, jdt_weight_sum b≥2 case, jacobi_trudi_ssyt_eq k≥3).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-24",
@@ -19,10 +19,10 @@
       "ssyt"
     ],
     "badge": "formalized",
-    "sorries": 2,
+    "sorries": 3,
     "dateAdded": "2026-04-23",
     "axiomCount": 0,
-    "assumptions": "2 sorries remain: (1) jdt_weight_sum — weight-preserving JDT bijection {non-col-strict (a,b)} ≃ {all (a+1,b-1)} (~80 lines); (2) jacobi_trudi_ssyt_eq k≥3 — algebraic LGV + RSK (~300 lines). ssytFin_two_row_eq_sum_colstrict proved (row-decomp bijection, no sorry). ssytSchurFin_two_row main theorem proved. k=0,1,2 proved.",
+    "assumptions": "3 sorries remain: (1) jdt_weight_sum_b_one — weight-preserving bijection helper for the b=1 case ({non-col-strict (a,1)} ≃ {all (a+1,0)}, ~100-130 lines using Sym.cons_erase / Sym.erase_cons_head / Multiset.sort_cons); (2) jdt_weight_sum b≥2 case — the general JDT seam bijection (~150-200 lines); (3) jacobi_trudi_ssyt_eq k≥3 — algebraic LGV + RSK (~300 lines). ssytFin_two_row_eq_sum_colstrict proved (row-decomp bijection, no sorry). ssytSchurFin_two_row main theorem proved. k=0,1,2 proved.",
     "lineCount": 714,
     "theoremCount": 14,
     "definitionCount": 8,
@@ -83,7 +83,7 @@
     "theoremCount": 14,
     "definitionCount": 6,
     "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
-    "sorries": 2
+    "sorries": 3
   },
   "crossReferences": [
     {
@@ -170,5 +170,5 @@
       "mathContext": "SSYTFin n k sh = subtype of ((i:Fin k)×Fin(sh i)→Fin n) satisfying row-weak (weakly increasing rows) and col-strict (strictly increasing columns). Fintype instance via Subtype.fintype (decidable predicates over finite types). ssytSchurFin = ∑_T T.weight where T.weight = ∏_p X(T p). k=0 proved by Unique (empty SSYT, both conditions vacuous) + IsEmpty (empty product = 1). k=1 proved via Fintype.sum_equiv with bijection ψ: SSYTFin n 1 ≃ Sym (Fin n) m using List.sortedLE_ofFn_iff (Monotone ↔ SortedLE). General case (k ≥ 2): RSK correspondence (~300 lines), 2 sorries remain (ssytSchurFin_two_row + jacobi_trudi_ssyt_eq k≥3)."
     }
   ],
-  "sorries": 2
+  "sorries": 3
 }
