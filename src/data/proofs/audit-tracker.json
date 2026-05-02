@@ -3600,10 +3600,13 @@
       "result": "clean"
     },
     "erdos-1080": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "phantom contribution names (deCaen_szekely_*, lazebnik_*, kovari_sos_turan)",
+        "section line drift (~25 lines)"
+      ],
+      "lastAudited": "2026-05-02T14:19:06Z",
+      "result": "issues-found"
     },
     "erdos-1081": {
       "agentId": "auditor-cycle-20-batch",
