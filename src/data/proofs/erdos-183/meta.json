@@ -100,64 +100,64 @@
   "sections": [
     {
       "title": "Basic Definitions",
-      "startLine": 29,
-      "endLine": 55,
+      "startLine": 38,
+      "endLine": 64,
       "summary": "Defines edge colorings, symmetry conditions, and monochromatic triangle predicates",
       "mathContext": "Formal definition: Defines edge colorings, symmetry conditions, and monochromatic triangle predicates",
       "id": "basic-definitions"
     },
     {
       "title": "Ramsey Number Definition",
-      "startLine": 56,
-      "endLine": 75,
-      "summary": "Defines R(3;k) as the minimum n forcing monochromatic triangles",
-      "mathContext": "Formal definition: Defines R(3;k) as the minimum n forcing monochromatic triangles",
+      "startLine": 65,
+      "endLine": 188,
+      "summary": "Defines R(3;k) and proves forcing_set_nonempty (Ramsey's theorem for triangles) by induction on k via pigeonhole",
+      "mathContext": "Formal definition: Defines R(3;k) as the minimum n forcing monochromatic triangles, with proof of existence via pigeonhole induction",
       "id": "ramsey-number-definition"
     },
     {
       "title": "Known Small Values",
-      "startLine": 76,
-      "endLine": 90,
-      "summary": "States R(3;1)=3, R(3;2)=6, R(3;3)=17",
-      "mathContext": "Mathematical content: States R(3;1)=3, R(3;2)=6, R(3;3)=17",
+      "startLine": 189,
+      "endLine": 374,
+      "summary": "Proves R(3;1) = 3, R(3;2) = 6 (classical R(3,3) via pigeonhole + C₅ lower bound) and monotonicity R3k_mono",
+      "mathContext": "Mathematical content: Proves R(3;1) = 3 and R(3;2) = 6 (classical Greenwood-Gleason result) plus monotonicity",
       "id": "known-small-values"
     },
     {
       "title": "Upper Bound",
-      "startLine": 91,
-      "endLine": 112,
-      "summary": "The pigeonhole bound R(3;k) ≤ ⌈e·k!⌉",
-      "mathContext": "The pigeonhole bound R(3;k) $\\leq$ ⌈e·k!⌉",
+      "startLine": 375,
+      "endLine": 482,
+      "summary": "The pigeonhole bound R(3;k) ≤ 3·k! via the inductive recurrence R(3;k) ≤ 2 + k·(R(3;k-1) - 1)",
+      "mathContext": "The pigeonhole bound R(3;k) $\\leq$ 3·k!, proved from forcing_step + induction",
       "id": "upper-bound"
     },
     {
       "title": "Lower Bound",
-      "startLine": 113,
-      "endLine": 136,
-      "summary": "Schur number connection and the 380^{k/5} lower bound",
-      "mathContext": "Schur number connection and the $$380^{{k/5}$}$ lower bound",
+      "startLine": 483,
+      "endLine": 536,
+      "summary": "Schur number connection and the axiomatized 380^{k/5} lower bound (R3k_exponential_lower)",
+      "mathContext": "Schur number connection and the $$380^{{k/5}}$$ lower bound (Ageron et al. 2021), stated as axiom",
       "id": "lower-bound"
     },
     {
       "title": "Main Question",
-      "startLine": 137,
-      "endLine": 172,
+      "startLine": 537,
+      "endLine": 572,
       "summary": "The limit lim R(3;k)^{1/k} and its possible values",
       "mathContext": "Mathematical content: The limit lim R(3;k)^{1/k} and its possible values",
       "id": "main-question"
     },
     {
       "title": "Growth Rate Analysis",
-      "startLine": 173,
-      "endLine": 207,
+      "startLine": 573,
+      "endLine": 592,
       "summary": "Summary of bounds and the enormous gap",
       "mathContext": "Bound: Summary of bounds and the enormous gap",
       "id": "growth-rate-analysis"
     },
     {
       "title": "Formal Statement",
-      "startLine": 222,
-      "endLine": 241,
+      "startLine": 601,
+      "endLine": 613,
       "summary": "Main theorem combining existence and bounds",
       "mathContext": "Verified: Main theorem combining existence and bounds",
       "id": "formal-statement"
@@ -186,8 +186,8 @@
     "namespace": "Erdos183",
     "lineCount": 613,
     "axiomCount": 1,
-    "theoremCount": 18,
-    "definitionCount": 14,
+    "theoremCount": 10,
+    "definitionCount": 15,
     "path": "Proofs/Erdos183Problem.lean",
     "sorries": 0
   },
