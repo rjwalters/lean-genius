@@ -57,10 +57,9 @@
       "hasStrictlySmaller definition: partition pieces with r < C",
       "erdos_newman_question definition: formal statement of the conjecture",
       "nesetril_rodl_theorem axiom: complete negative answer for all C",
-      "erdos_newman_disproved theorem: the conjecture is false",
+      "erdos_newman_disproved axiom: the conjecture is false",
       "hasUniqueSums definition: r_A(n) ≤ 1 for all n",
-      "isSumFree definition: sum-free sets",
-      "erdos_328_status theorem: complete disproof statement"
+      "erdos_328_summary theorem: combined Nešetřil-Rödl + disproof statement"
     ],
     "axiomCount": 2,
     "lineCount": 207,
@@ -70,7 +69,7 @@
     "historicalContext": "The representation function $r_A(n) = |\\{(a,b) \\in A^2 : a+b=n\\}|$ is a central object in additive combinatorics, measuring how 'additively rich' a set is. Simon Sidon (1932) initiated the study of sets where all pairwise sums are distinct ($r_A \\leq 2$), now called Sidon or $B_2$ sets. Erdős and Turán (1941) proved the foundational upper bound $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$ for Sidon sets, launching a rich theory connecting additive number theory to combinatorics.\n\nProblem #328, posed by Erdős and Donald J. Newman (see [ErGr80, p.48]), asks whether bounded convolution ($r_A \\leq C$) can always be 'improved' by partitioning: can we split $A$ into $t(C)$ pieces each with $r_{A_i} < C$? Erdős (1980) [Er80e] first showed the answer is NO for $C=3,4$ and infinitely many other values. The complete resolution came from Jaroslav Nešetřil and Vojtěch Rödl (1985) [NeRo85], who proved the answer is NO for ALL $C \\geq 1$, using Ramsey-theoretic methods. Their result is even stronger: no partition works even when $t$ is allowed to depend on $A$ itself, not just on $C$. This reveals a fundamental rigidity in additive structure: the representation function cannot be reduced by any combinatorial decomposition.",
     "problemStatement": "Suppose $A \\subseteq \\mathbb{N}$ and $C > 0$ such that $\\mathbf{1}_A * \\mathbf{1}_A(n) \\leq C$ for all $n \\in \\mathbb{N}$ (i.e., every integer has at most $C$ representations as a sum of two elements from $A$). Can $A$ be partitioned into $t = t(C)$ subsets $A_1, \\ldots, A_t$ such that $\\mathbf{1}_{A_i} * \\mathbf{1}_{A_i}(n) < C$ for all $1 \\leq i \\leq t$ and $n \\in \\mathbb{N}$?\n\n**Answer: NO** (Nešetřil-Rödl 1985). For every $C \\geq 1$, there exist sets $A$ with $r_A \\leq C$ that cannot be partitioned into ANY number of pieces with $r_{A_i} < C$.",
     "text": "Can sets A with bounded convolution r_A ≤ C be partitioned into pieces with strictly smaller convolution? DISPROVED: NO for all C (Nešetřil-Rödl 1985).",
-    "proofStrategy": "The formalization defines the representation function $r_A(n)$, bounded convolution, Sidon/$B_h$ sets, and the partition question. Erdős's partial results for $C=3,4$ are axiomatized, followed by the full Nešetřil-Rödl theorem for all $C$. The proof of the disproof follows from the Nešetřil-Rödl theorem applied to the Erdős-Newman question. Special cases (Sidon sets, unique-sum sets) and density bounds ($|A \\cap [1,N]| \\leq C\\sqrt{N}+1$) round out the formalization.",
+    "proofStrategy": "The formalization defines the representation function $r_A(n)$, bounded convolution, Sidon/$B_h$ sets, and the partition question. Erdős's partial results for C=3,4 are described in docstrings as historical context (lines 115–122) but are not separately axiomatized. The full Nešetřil-Rödl theorem for all C is axiomatized. The proof of the disproof follows from the Nešetřil-Rödl theorem applied to the Erdős-Newman question. Special cases (Sidon sets, unique-sum sets) and density bounds ($|A \\cap [1,N]| \\leq C\\sqrt{N}+1$) round out the formalization.",
     "keyInsights": [
       "**Representation function**: $r_A(n) = |\\{(a,b) \\in A^2 : a+b=n\\}|$ measures additive richness; bounded $r_A$ characterizes 'thin' sets",
       "**Sidon sets as $C=2$**: Sidon ($B_2$) sets have $r_A \\leq 2$; even these cannot be partitioned into unique-sum sets ($r \\leq 1$)",
@@ -120,49 +119,57 @@
       "id": "sidon-sets",
       "title": "$B_h$ Sets (Sidon Sets)",
       "startLine": 60,
-      "endLine": 84,
-      "summary": "`isSidonSet` (all pairwise sums distinct, $r_A \\leq 2$), `isBhSet` ($B_h$ generalization), and `sidon_bounded_convolution` linking Sidon sets to $C=2$",
-      "mathContext": "Bound: `isSidonSet` (all pairwise sums distinct, $r_A \\leq 2$), `isBhSet` ($B_h$ generalization), and `sidon_bounded_convolution` linking Sidon sets to $C=2$"
+      "endLine": 81,
+      "summary": "`isSidonSet` (all pairwise sums distinct, r_A ≤ 2), `isBhSet` (B_h generalization). An orphaned docstring at lines 78–81 discusses the bounded-convolution property of Sidon sets but no `sidon_bounded_convolution` theorem is declared.",
+      "mathContext": "`isSidonSet` (lines 67–68), `isBhSet` (lines 75–76). Orphaned docstring at lines 78–81."
     },
     {
       "id": "partition-question",
       "title": "The Partition Question",
-      "startLine": 85,
-      "endLine": 115,
+      "startLine": 82,
+      "endLine": 112,
       "summary": "`isPartition`, `hasStrictlySmaller`, and `erdos_newman_question`: $\\forall C, \\exists t(C), \\forall A$ with $r_A \\leq C$, can $A$ be split into $\\leq t$ pieces with $r_{A_i} < C$?",
       "mathContext": "Mathematical content: `isPartition`, `hasStrictlySmaller`, and `erdos_newman_question`: $\\forall C, \\exists t(C), \\forall A$ with $r_A \\leq C$, can $A$ be split into $\\leq t$ pieces with $r_{A_i} < C$?"
     },
     {
       "id": "erdos-partial",
       "title": "Erdős's Partial Results (1980)",
-      "startLine": 116,
-      "endLine": 140,
-      "summary": "`erdos_C3_counterexample` and `erdos_C4_counterexample`: for $C=3$ and $C=4$, there exist bad sets with no valid partition",
-      "mathContext": "Mathematical content: `erdos_C3_counterexample` and `erdos_C4_counterexample`: for $C=3$ and $C=4$, there exist bad sets with no valid partition"
+      "startLine": 113,
+      "endLine": 123,
+      "summary": "Erdős's C=3 and C=4 partial results described in docstrings at lines 115–122. These are expository only — no `erdos_C3_counterexample` or `erdos_C4_counterexample` declarations are present in the file.",
+      "mathContext": "Orphaned docstrings only (lines 115–122). No axiom/theorem declarations."
     },
     {
       "id": "nesetril-rodl",
       "title": "Nešetřil-Rödl Complete Solution (1985)",
-      "startLine": 141,
-      "endLine": 175,
-      "summary": "`nesetril_rodl_theorem` ($\\forall C \\geq 1$, counterexamples exist), `erdos_newman_disproved` ($\\neg$ Erdős-Newman), `nesetril_rodl_strong` (no partition works even with $t$ depending on $A$)",
-      "mathContext": "Verified: `nesetril_rodl_theorem` ($\\forall C \\geq 1$, counterexamples exist), `erdos_newman_disproved` ($\\neg$ Erdős-Newman), `nesetril_rodl_strong` (no partition works even with $t$ depending on $A$)"
+      "startLine": 124,
+      "endLine": 149,
+      "summary": "Axiom: `nesetril_rodl_theorem` (lines 131–137): for all C ≥ 1, counterexamples exist. Axiom: `erdos_newman_disproved` (lines 143–144): ¬erdos_newman_question. An orphaned docstring at lines 146–149 describes a stronger form; no `nesetril_rodl_strong` declaration is present.",
+      "mathContext": "Axioms: `nesetril_rodl_theorem` (lines 131–137), `erdos_newman_disproved` (lines 143–144). Orphaned docstring at lines 146–149."
     },
     {
       "id": "special-cases",
       "title": "Special Cases: Sidon and Unique Sums",
-      "startLine": 176,
-      "endLine": 203,
-      "summary": "`sidon_case` (even Sidon sets fail), `hasUniqueSums` ($r_A \\leq 1$), `unique_sums_hereditary` (unique sums closed under subsets)",
-      "mathContext": "Mathematical content: `sidon_case` (even Sidon sets fail), `hasUniqueSums` ($r_A \\leq 1$), `unique_sums_hereditary` (unique sums closed under subsets)"
+      "startLine": 150,
+      "endLine": 168,
+      "summary": "Orphaned docstrings about Sidon case (C=2) and unique sum sets (lines 152–161). Def: `hasUniqueSums` r_A(n) ≤ 1 (lines 162–163). Orphaned docstring about hereditary property (lines 165–168). No `sidon_case` or `unique_sums_hereditary` declarations are present.",
+      "mathContext": "def `hasUniqueSums` (lines 162–163). Orphaned docstrings at lines 152–155, 157–161, 165–168."
     },
     {
       "id": "density",
       "title": "Density Considerations",
-      "startLine": 204,
+      "startLine": 169,
+      "endLine": 175,
+      "summary": "Orphaned docstring at lines 171–175 describes the density bound |A ∩ [1,N]| = O(C√N) for sets with bounded convolution. No `density_bound` declaration is present.",
+      "mathContext": "Orphaned docstring only (lines 171–175). No declarations."
+    },
+    {
+      "id": "summary",
+      "title": "Part VIII: Summary",
+      "startLine": 176,
       "endLine": 207,
-      "summary": "`density_bound`: $|A \\cap [1,N]| \\leq C\\sqrt{N}+1$ for sets with bounded convolution; counterexamples achieve this bound",
-      "mathContext": "Bound: `density_bound`: $|A \\cap [1,N]| \\leq C\\sqrt{N}+1$ for sets with bounded convolution; counterexamples achieve this bound"
+      "summary": "Summary docstring (lines 178–194). GENUINELY PROVED: `erdos_328_summary` theorem (lines 195–205) combining `nesetril_rodl_theorem` and `erdos_newman_disproved` into a single statement. Closes the namespace (line 207).",
+      "mathContext": "Proved: `erdos_328_summary` theorem (lines 195–205). 2 axioms, 1 theorem total."
     }
   ],
   "conclusion": {
