@@ -167,7 +167,7 @@ A folklore result states that sufficiently fast doubly-exponential growth
 forces ∑ 1/aₙ to be irrational.
 -/
 
-/-- Fast double-exponential growth implies irrational sum -/
+/- Fast double-exponential growth implies irrational sum -/
 /-
 ## The Valid Set
 
@@ -189,7 +189,7 @@ noncomputable def maxGrowthRate : ℝ :=
 Higher-degree polynomials can work with different shifts.
 -/
 
-/-- Polynomial sequences can work with appropriate shifts -/
+/- Polynomial sequences can work with appropriate shifts -/
 /-
 ## Main Open Problem Statement
 -/
