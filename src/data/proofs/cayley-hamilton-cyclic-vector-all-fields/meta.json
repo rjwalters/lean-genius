@@ -21,7 +21,7 @@
         "badge": "verified",
         "sorries": 0,
         "axiomCount": 0,
-        "lineCount": 189,
+        "lineCount": 268,
         "assumptions": "",
         "mathlib_version": "4.26.0",
         "mathlibDependencies": [
@@ -57,51 +57,51 @@
         "keyInsights": [
             "The union avoidance argument (used in `cayley-hamilton-minpoly-oq-05-oq-01` for infinite fields) is a cardinality argument that fails over $\\mathbb{F}_2$ when $n = 2$: all 3 nonzero vectors of $\\mathbb{F}_2^2$ are covered by 3 proper subspaces. Yet the theorem still holds — the RCF similarity approach is purely algebraic and works over any field.",
             "The companion matrix $C(p)$ has a built-in cyclic vector: $e_0 = (1, 0, \\ldots, 0)^T$. The orbit $\\{e_0, C(p)e_0, C(p)^2 e_0, \\ldots\\} = \\{e_0, e_1, e_2, \\ldots\\}$ is simply the standard basis. This is proved in `companionMatrix_cyclic_e0` without any hypothesis on the base field.",
-            "The single axiom `nonderogatory_similar_companion` isolates the one Mathlib gap: the structure theorem for f.g. modules over a PID (K[X]). The axiom is mathematically equivalent to the rational canonical form for nonderogatory matrices. Once Mathlib gains this infrastructure (~800 lines of Smith normal form for polynomial matrices), the axiom can be replaced by a proof.",
-            "The proof chain has minimal dependencies: `nonderogatory_similar_companion` (axiom) → `companionMatrix_cyclic_e0` (proved, uses orbit) → `cyclic_vector_of_similar` (proved, uses AlgHom) → main theorem. Each step is clean and independently verifiable.",
-            "**The $K[X]$-module interpretation of cyclicity**: Giving $K^n$ the $K[X]$-module structure where $X$ acts as $M$, cyclicity of $v$ means exactly that $v$ generates $K^n$ as a $K[X]$-module: $K[X] \\cdot v = K^n$. For nonderogatory $M$, this generator exists because $K^n \\cong K[X]/(\\mathrm{minpoly}\\, M)$ as $K[X]$-modules — the image of $1$ under this isomorphism is the cyclic generator. The companion matrix $C(p)$ makes this structure concrete: acting on $K[X]/(p)$ via $X$, the class $\\bar{1}$ satisfies $X^k \\cdot \\bar{1} = \\bar{X^k}$, recovering exactly the orbit property $C(p)^k e_0 = e_k$ that makes $e_0$ cyclic. The axiom `nonderogatory_similar_companion` is precisely the statement that this $K[X]$-module isomorphism exists — the single gap until Mathlib formalizes the PID structure theorem for $K[X]$."
+            "The factorization bridge (`monic_factored_form`) is the key abstraction: it converts Mathlib's UFD `Multiset` output to the `Fin k`-indexed array that WIP04 expects. Four private lemmas accomplish this translation: UFD multiset factorization, coprimality of distinct monic irreducibles, coprimality lifting to prime powers, and the multiset-to-Fin-array conversion. This API translation layer is what makes the primary decomposition theorem from WIP04 applicable here.",
+            "The V2 proof chain is cleaner than V1: `monic_factored_form` (Section II, proved) → `GeneralCyclicVector.nonderogatory_general_has_cyclic_vector` (WIP04, proved) → main theorem. Compared to V1's chain through `nonderogatory_similar_companion` (axiom) → `companionMatrix_cyclic_e0` → `cyclic_vector_of_similar`, V2 requires no companion matrix machinery and works by annihilator algebra alone.",
+            "**The $K[X]$-module interpretation of cyclicity**: Giving $K^n$ the $K[X]$-module structure where $X$ acts as $M$, cyclicity of $v$ means exactly that $v$ generates $K^n$ as a $K[X]$-module: $K[X] \\cdot v = K^n$. For nonderogatory $M$, this generator exists because $K^n \\cong K[X]/(\\mathrm{minpoly}\\, M)$ as $K[X]$-modules. The primary decomposition proof constructs this generator directly: $v = \\sum_i v_i$ where $v_i$ generates the $p_i^{e_i}$-primary component, and the Bezout projections ensure $v$ generates the full module. No companion matrix or RCF similarity is needed — the isomorphism is realized via the CRT combination."
         ]
     },
     "sections": [
         {
             "id": "definitions",
             "title": "§ I. Definitions",
-            "startLine": 50,
-            "endLine": 74,
-            "summary": "Defines `IsCyclicVector` and `IsNonderogatory` as abbreviations for the definitions in `GeneralCyclicVector` (WIP04), ensuring type-level compatibility with the primary decomposition theorem.",
-            "mathContext": "A vector $v \\in K^n$ is cyclic for $M$ when $\\{v, Mv, \\ldots, M^{n-1}v\\}$ is linearly independent (equivalently, no nonzero polynomial of degree $< n$ annihilates both $M$ and $v$). A matrix is nonderogatory when $\\mathrm{minpoly}_K(M) = \\mathrm{charpoly}(M)$, both of degree $n$."
+            "startLine": 48,
+            "endLine": 68,
+            "summary": "Defines `IsCyclicVector` and `IsNonderogatory` as `abbrev` (reducible) aliases for the definitions in `GeneralCyclicVector` (WIP04), ensuring type-level compatibility when delegating to the primary decomposition theorem.",
+            "mathContext": "A vector $v \\in K^n$ is cyclic for $M$ when $\\{v, Mv, \\ldots, M^{n-1}v\\}$ is linearly independent (equivalently, no nonzero polynomial of degree $< n$ annihilates both $M$ and $v$). A matrix is nonderogatory when $\\mathrm{minpoly}_K(M) = \\mathrm{charpoly}(M)$, both of degree $n$. Using `abbrev` (not `def`) ensures that WIP04's theorem result type unifies with this file's goal type without explicit coercions."
         },
         {
             "id": "factorization-bridge",
             "title": "§ II. Factorization Bridge",
-            "startLine": 76,
-            "endLine": 98,
-            "summary": "States `monic_factored_form` (sorry): every monic polynomial of positive degree factors into coprime monic irreducible prime powers. This is a routine consequence of K[X] being a UFD; the sorry is purely Mathlib API navigation.",
-            "mathContext": "In $K[X]$ (a UFD with normalization), `normalizedFactors` decomposes any nonzero non-unit polynomial into monic irreducible factors. Grouping by multiplicity gives the prime power factorization $\\mu = \\prod_{i=1}^k p_i^{e_i}$ with pairwise coprimality (distinct primes are coprime in a UFD). The sorry isolates the Lean 4 API challenge of converting between `Multiset` (normalizedFactors output) and `Fin k`-indexed arrays (WIP04 input)."
+            "startLine": 69,
+            "endLine": 170,
+            "summary": "Four private theorems build up to `monic_factored_form`: every monic polynomial of positive degree factors into coprime monic irreducible prime powers (Fin k-indexed). All four are fully proved — the sorry described in the Section V docstring has been filled.",
+            "mathContext": "The bridge converts Mathlib's UFD output (a `Multiset` of primes from `UniqueFactorizationMonoid.exists_prime_factors`) to the `Fin k`-indexed form that WIP04 expects. Four lemmas: (1) multiset factorization from UFD; (2) distinct monic irreducibles are coprime; (3) coprimality lifts to prime powers; (4) multiset → Fin k conversion grouping by multiplicity. The combined result matches WIP04's interface contract exactly."
         },
         {
             "id": "main-theorem",
             "title": "§ III. Main Theorem",
-            "startLine": 100,
-            "endLine": 135,
-            "summary": "Proves nonderogatory_has_cyclic_vector: dispatches n=0, factors minpoly via monic_factored_form, applies WIP04's primary decomposition theorem. Zero axioms.",
-            "mathContext": "Proof: (1) Factor $\\mathrm{minpoly}_K(M) = \\prod_i p_i^{e_i}$ into coprime prime powers. (2) For each $i$, construct primary vector $v_i$ with $p_i^{e_i}(M)v_i = 0$ and $p_i^{e_i-1}(M)v_i \\neq 0$ via minimality of minpoly. (3) $v = \\sum v_i$ is cyclic: Bezout projections extract $r(M)v_i = 0$ from $r(M)v = 0$, giving $p_i^{e_i} | r$ for all $i$, hence $\\mathrm{minpoly} | r$, contradicting $\\deg(r) < n$."
+            "startLine": 172,
+            "endLine": 205,
+            "summary": "Proves `nonderogatory_has_cyclic_vector`: dispatches n=0 (trivial), then factors minpoly via `monic_factored_form` and delegates to WIP04's primary decomposition theorem. Zero axioms, zero sorries.",
+            "mathContext": "Proof: (1) $n = 0$: trivial via `Fin.elim0`. (2) $n > 0$: nonderogatory gives $\\deg(\\mathrm{minpoly}) = n$; `monic_factored_form` gives $\\mathrm{minpoly} = \\prod_i p_i^{e_i}$ (coprime prime powers); `GeneralCyclicVector.nonderogatory_general_has_cyclic_vector` (WIP04) constructs the cyclic vector via Bezout projections."
         },
         {
             "id": "corollaries",
             "title": "§ IV. Corollaries",
-            "startLine": 137,
-            "endLine": 168,
-            "summary": "Two corollaries: nonderogatory_has_cyclic_vector_finite (specializes to finite fields) and cyclic_iff_not_killed_below_degree (polynomial annihilator reformulation).",
-            "mathContext": "The finite field corollary demonstrates that the primary decomposition approach works even when $|K| \\leq n$ — the regime where union avoidance fails. The equivalence corollary: $v$ is cyclic iff $\\forall p \\neq 0$ with $\\deg(p) < n$, $p(M)v \\neq 0$."
+            "startLine": 207,
+            "endLine": 230,
+            "summary": "Two corollaries: `nonderogatory_has_cyclic_vector_finite` (specializes to finite fields, where union avoidance fails) and `cyclic_iff_not_killed_below_degree` (polynomial annihilator reformulation).",
+            "mathContext": "The finite field corollary demonstrates that the primary decomposition approach works even when $|K| \\leq n$ — the regime where union avoidance fails over $\\mathbb{F}_2$. The equivalence corollary: $v$ is cyclic iff $\\forall p \\neq 0$ with $\\deg(p) < n$, $p(M)v \\neq 0$. Both corollaries are one-liners from the main theorem."
         },
         {
             "id": "summary-block",
             "title": "§ V. Proof Summary",
-            "startLine": 170,
-            "endLine": 189,
-            "summary": "Closing docstring: enumerates V2 improvements over V1 (axiom eliminated), the single remaining sorry (routine Mathlib API), and the delta: deep axiom → routine sorry.",
-            "mathContext": "V1 → V2 delta: RCF similarity axiom ($\\sim$800 lines to prove from PID structure theorem) replaced by `monic_factored_form` sorry ($\\sim$50 lines of `normalizedFactors` API). Net effect: the mathematical content of the proof is now fully verified; only the boilerplate of extracting a prime power factorization from Mathlib's UFD API remains."
+            "startLine": 232,
+            "endLine": 268,
+            "summary": "Closing docstring: enumerates the V2 upgrade (axiom eliminated, factorization bridge proved), lists all five proved results, and documents the V1→V2 delta. Note: the 'one sorry' in lines 253–258 refers to an earlier V2-beta state; the sorry is filled in the current file.",
+            "mathContext": "V1 → V2 delta: RCF similarity axiom ($\\sim$800 lines from PID structure theorem + Smith normal form) replaced by direct UFD-based `monic_factored_form` proof. Net: the mathematical content is fully verified with 0 axioms and 0 sorries. The Section V docstring's claim of 'one sorry' describes an intermediate development state."
         }
     ],
     "conclusion": {
@@ -122,23 +122,23 @@
             "Polynomial"
         ],
         "namespace": "CayleyHamiltonCyclicVectorAllFields",
-        "lineCount": 189,
+        "lineCount": 268,
         "axiomCount": 0,
         "theoremCount": 4,
         "definitionCount": 2,
         "path": "Proofs/CayleyHamiltonCyclicVectorAllFields.lean",
-        "sorries": 1
+        "sorries": 0
     },
     "crossReferences": [
         {
             "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
             "relationship": "extends",
-            "description": "Converse: nonderogatory ← cyclic (proved for infinite fields using union avoidance). This file proves the opposite direction for ALL fields via the RCF similarity axiom, bypassing cardinality arguments entirely."
+            "description": "Converse: nonderogatory ← cyclic (proved for infinite fields using union avoidance). This file proves the opposite direction for ALL fields via primary decomposition (WIP04), bypassing both cardinality arguments and the RCF similarity theorem."
         },
         {
             "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
             "relationship": "companion",
-            "description": "Alternative approach using module theory with sorry. This file uses the axiom approach, giving 0 sorries and explicit axiom declaration — contrasting proof architectures for the same theorem."
+            "description": "Alternative approach using module theory with sorry. Both files now use 0 axioms; this file (V2) uses primary decomposition from WIP04 while OQ-04 uses a different module-theory approach — contrasting proof architectures for the same theorem."
         },
         {
             "targetId": "cayley-hamilton-reduction-oq-02-oq-01",
