@@ -5493,10 +5493,13 @@
       "result": "issues-fixed"
     },
     "erdos-26": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-1777696958",
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T04:51:42Z",
+      "result": "issues-found",
+      "issues": [
+        "Section line drift in 5 of 8 sections (davenport-erdos +5, conjecture +5, counterexamples +5, tenenbaum-variant +2, supporting-lemmas +2). Filed #14568."
+      ]
     },
     "erdos-260": {
       "agentId": "auditor-cycle-20-batch",
