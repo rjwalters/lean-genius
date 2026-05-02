@@ -454,11 +454,19 @@ private lemma not_colStrictSym_a_one_iff_qhead_le_phead {n a : ℕ} (ha : 1 ≤ 
     `(q ::ₘ P.1).sort = q :: P.1.sort`, so `q` is the head of `(q ::ₛ P).1.sort`,
     making `Sym.erase` and `Sym.cons_erase`/`Sym.erase_cons_head` close the inverses.
 
-    **Status (2026-05-02 session 15):** the helper `sym_one_sort_head_singleton` and the
-    statement of this lemma are now in place. The bijection construction with weight
-    preservation proof is the focused `sorry` below; estimated 100-130 lines using
-    `Sym.cons_erase` (`Data/Sym/Basic.lean:219`), `Sym.erase_cons_head` (`:223`),
-    `Multiset.sort_cons` (`Data/Multiset/Sort.lean:69`). -/
+    **Status (2026-05-02 session 16):** infrastructure for the bijection is in place:
+      * `sym_one_sort_head_singleton` (S15) — extracts the unique q from Q : Sym n 1.
+      * `colStrictSym_a_one_iff_phead_lt_qhead` (S16) — `ColStrictSym a 1 P Q` reduces
+        to a single inequality `(P.sort)[0] < (Q.sort)[0]` for a ≥ 1.
+      * `not_colStrictSym_a_one_iff_qhead_le_phead` (S16) — negation form
+        `¬ColStrictSym ↔ q ≤ (P.sort)[0]` ready for direct use in the bijection.
+
+    The remaining `sorry` is the bijection construction itself with weight
+    preservation; estimated 80-100 lines using
+    `Sym.oneEquiv` (`Data/Sym/Basic.lean:477`), `Sym.cons_erase` (`:219`),
+    `Sym.erase_cons_head` (`:223`), `Multiset.sort_cons` (`Data/Multiset/Sort.lean:69`),
+    plus the existing `jdt_weight_preserved` (line 368) for the weight algebra at b=0.
+    Aristotle target: `BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean`. -/
 private lemma jdt_weight_sum_b_one (n a : ℕ) (ha : 1 ≤ a) :
     ∑ PQ : { PQ : Sym (Fin n) a × Sym (Fin n) 1 // ¬ColStrictSym a 1 PQ.1 PQ.2 },
       (PQ.1.1.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
