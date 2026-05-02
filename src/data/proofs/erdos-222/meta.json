@@ -89,43 +89,43 @@
     {
       "id": "fermat-criterion",
       "title": "Fermat's Criterion",
-      "summary": "States the Fermat-Euler characterization: $n > 0$ is a sum of two squares iff every prime $p \\equiv 3 \\pmod{4}$ has even $p$-adic valuation in $n$. Also states that primes $p \\equiv 1 \\pmod{4}$ are themselves sums of two squares.",
+      "summary": "Defines `IsPrime3Mod4`. Proves `prime_1_mod_4_sum_two_squares` (primes $p \\equiv 1 \\pmod{4}$ are sums of two squares, via Mathlib) and `two_is_sum_two_squares`. The full Fermat-Euler iff appears as a docstring only — not formalized as an axiom.",
       "startLine": 63,
-      "endLine": 81
+      "endLine": 83
     },
     {
       "id": "gap-function",
       "title": "The Gap Function",
-      "summary": "Axiomatizes `nthSumTwoSquares : ℕ → ℕ` as a strictly increasing enumeration of sums of two squares, and defines `gap k = nthSumTwoSquares(k+1) - nthSumTwoSquares(k)` as the consecutive difference.",
-      "startLine": 82,
-      "endLine": 99
+      "summary": "Axiomatizes `nthSumTwoSquares : ℕ → ℕ` and defines `gap k = nthSumTwoSquares(k+1) - nthSumTwoSquares(k)`. Strict monotonicity and membership in `SumTwoSquaresSeq` appear as dangling docstrings only — not formalized as axioms.",
+      "startLine": 84,
+      "endLine": 97
     },
     {
       "id": "density",
       "title": "Density of Sums of Two Squares",
-      "summary": "States Landau's theorem (1908): $\\texttt{countSumTwoSquares}(x) \\cdot \\sqrt{\\log x} / x \\to c$ as $x \\to \\infty$, where $c \\approx 0.7642$ is the Landau-Ramanujan constant. Formalized via `Tendsto` and the `atTop` filter.",
-      "startLine": 100,
-      "endLine": 111
+      "summary": "Defines `countSumTwoSquares`. Landau's theorem (1908) — that the count is asymptotic to $cx/\\sqrt{\\log x}$ — appears as a docstring only; no `axiom Landau...` is declared.",
+      "startLine": 98,
+      "endLine": 105
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds on Gaps",
-      "summary": "Three progressively stronger lower bounds: Erdős (1951) gives $\\text{gap} \\ge c \\log n / \\sqrt{\\log \\log n}$ infinitely often; Richards (1982) gives $\\limsup(\\text{gap}/\\log n) \\ge 1/4$; DEKKM (2022) improves to $\\ge 0.868$.",
-      "startLine": 112,
-      "endLine": 133
+      "summary": "Axiomatizes `erdos_1951_lower_bound`: gaps $\\ge c \\log n / \\sqrt{\\log \\log n}$ infinitely often. Richards (1982) and DEKKM (2022) improvements appear as dangling docstrings only — not formalized as axioms.",
+      "startLine": 106,
+      "endLine": 117
     },
     {
       "id": "upper-bound",
       "title": "Bambah-Chowla Upper Bound",
       "summary": "States the universal upper bound: $\\text{gap}_k \\le C \\cdot n_k^{1/4}$ for all $k$, meaning every interval $[n, n + Cn^{1/4}]$ contains a sum of two squares.",
-      "startLine": 134,
-      "endLine": 140
+      "startLine": 118,
+      "endLine": 124
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "Proves `erdos_222_summary`: the conjunction of the Erdős lower bound (infinitely many gaps $\\ge c \\log n / \\sqrt{\\log \\log n}$) and the Bambah-Chowla upper bound ($\\text{gap} \\le Cn^{1/4}$), by extracting witnesses from the axiomatized results.",
-      "startLine": 141,
+      "startLine": 125,
       "endLine": 147
     }
   ],
