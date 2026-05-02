@@ -392,6 +392,38 @@ private lemma sym_one_sort_head_singleton (n : ℕ) (Q : Sym (Fin n) 1) :
   rw [Multiset.sort_eq] at hcoe
   simpa using hcoe
 
+/-- **Characterisation of `ColStrictSym a 1 P Q` for `a ≥ 1`.**
+
+    With `a ≥ 1` we have `min a 1 = 1`, so `Fin (min a 1)` has the unique inhabitant `0`,
+    and the column-strict condition reduces to a single inequality on the head of each sort.
+    Combined with `sym_one_sort_head_singleton`, the right-hand side simplifies to
+    `(P.1.sort)[0] < q` where `q` is the unique element of `Q`.
+
+    **Use:** characterising the subtype `{(P, Q) // ¬ColStrictSym a 1 P Q}` as
+    `{(P, q) // q ≤ (P.1.sort)[0]}`, which the bijection in `jdt_weight_sum_b_one`
+    targets. The negation form `¬ColStrictSym ↔ q ≤ (P.1.sort)[0]` follows by
+    `not_lt`. -/
+private lemma colStrictSym_a_one_iff_phead_lt_qhead {n a : ℕ} (ha : 1 ≤ a)
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) 1) :
+    ColStrictSym a 1 P Q ↔
+      (P.1.sort (· ≤ ·))[0]'((Multiset.length_sort _ P.1).trans P.2 ▸ ha) <
+      (Q.1.sort (· ≤ ·))[0]'((Multiset.length_sort _ Q.1).trans Q.2 ▸ Nat.one_pos) := by
+  unfold ColStrictSym
+  have hmin : min a 1 = 1 := Nat.min_eq_right ha
+  constructor
+  · intro h
+    -- Apply at the unique element of `Fin (min a 1) = Fin 1`
+    exact h ⟨0, hmin ▸ Nat.one_pos⟩
+  · intro h j
+    -- Every `j : Fin (min a 1)` has `j.val = 0`
+    have hj0 : j.val = 0 := by
+      have : j.val < min a 1 := j.isLt
+      omega
+    -- Cast `j` to `⟨0, _⟩` and reduce the indexing
+    have hjeq : j = ⟨0, hmin ▸ Nat.one_pos⟩ := Fin.ext hj0
+    subst hjeq
+    exact h
+
 /-- **JDT weight sum, `b = 1` base case.**
     For `a ≥ 1`, the sum of weights over non-col-strict
     `(P : Sym (Fin n) a, Q : Sym (Fin n) 1)` pairs equals `h_{a+1} * h_0 = h_{a+1}`.
