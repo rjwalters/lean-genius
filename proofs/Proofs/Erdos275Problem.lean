@@ -86,11 +86,10 @@ axiom erdos_275_theorem (C : CoveringSystem) (a : ℤ) :
     CoversSet C (ConsecutiveIntegers a (2 ^ C.size)) →
     CoversAll C
 
-/--
-**Alternative Formulation (Crittenden-Vanden Eynden 1970):**
+/- Alternative Formulation (Crittenden-Vanden Eynden 1970):
 If r arithmetic progressions cover the first 2^r positive integers,
-they cover all integers.
--/
+they cover all integers. (Not separately axiomatized; follows from
+erdos_275_theorem with a = 0.) -/
 /- ## Part III: Optimality — The 2^r Bound is Tight -/
 
 /--
