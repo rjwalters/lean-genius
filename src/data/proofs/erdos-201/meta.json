@@ -28,7 +28,7 @@
     "historicalContext": "Riddell (1969) first investigated the function $G_k(N)$ — the guaranteed size of a $k$-AP-free subset in any $N$-element integer set. The natural comparison with $R_k(N)$ (the maximum AP-free subset of $\\{1, \\ldots, N\\}$, studied by Roth and later Szemerédi) reveals a subtle gap: $\\{1, \\ldots, N\\}$ is not always the worst case for AP avoidance. Komlós, Sulyok, and Szemerédi (1975) proved the fundamental result that $R_k(N) \\asymp G_k(N)$, showing the two functions have the same order of magnitude. Erdős then asked the sharper question: does the ratio $R_3(N)/G_3(N)$ tend to 1? This connects to the broader program of understanding how the structure of the ambient set affects AP density, a theme central to Szemerédi's theorem (1975) and the subsequent work of Gowers, Green–Tao, and Kelley–Meka on quantitative bounds for $R_3(N)$.",
     "problemStatement": "Let $G_k(N)$ denote the minimum size of a $k$-AP-free subset guaranteed in any set of $N$ integers, and $R_k(N)$ the maximum size of a $k$-AP-free subset of $\\{1, \\ldots, N\\}$. Is $\\lim_{N \\to \\infty} R_3(N)/G_3(N) = 1$?",
     "text": "Let G_k(N) be the minimum AP-free subset size guaranteed in any N-element integer set, and R_k(N) the maximum AP-free subset of {1,…,N}. Is lim R_3(N)/G_3(N) = 1?",
-    "proofStrategy": "The formalization defines $k$-term APs via `Fin k`-indexed arithmetic sequences, AP-free sets, $R_k(N)$ as a computable supremum over the powerset of Icc$\\,1\\,N$, and $G_k(N)$ axiomatically. Structural lemmas (AP transfer, subset inheritance) are proved. The KSS bound, concrete examples ($G_3(5) = 3 < 4 = R_3(5)$), monotonicity properties, and the main conjecture in $\\varepsilon$-$N_0$ form are all formalized.",
+    "proofStrategy": "The formalization defines $k$-term APs via `Fin k`-indexed arithmetic sequences, AP-free sets, $R_k(N)$ as a `noncomputable` supremum over the powerset of Icc$\\,1\\,N$, and $G_k(N)$ as `sSup { m | gk_prop k N m }` (the greatest lower bound over all $N$-element integer sets), with a single specific value `g3_5_eq : gk 3 5 = 3` axiomatized for the strict-inequality example. Structural lemmas (AP transfer, subset inheritance) are proved. The KSS bound, concrete examples ($G_3(5) = 3 < 4 = R_3(5)$), monotonicity properties, and the main conjecture in $\\varepsilon$-$N_0$ form are all formalized.",
     "keyInsights": [
       "**Trivial bound with strict gap**: $G_k(N) \\leq R_k(N)$ always, but $G_3(5) = 3 < 4 = R_3(5)$ shows $\\{1, \\ldots, N\\}$ is not the worst case for 3-AP avoidance",
       "**Komlós–Sulyok–Szemerédi (1975)**: $R_k(N) \\leq C(k) \\cdot G_k(N)$, establishing order-of-magnitude equivalence. The conjecture asks whether $C(3) \\to 1$",
@@ -53,7 +53,7 @@
     {
       "id": "ap-definitions",
       "title": "Arithmetic Progressions and AP-Free Sets",
-      "startLine": 33,
+      "startLine": 32,
       "endLine": 39,
       "summary": "Defines ContainsAPOfLength$(A, k)$ via $\\exists a, d \\neq 0: \\{a, a+d, \\ldots\\} \\subseteq A$ and IsAPFree as its negation.",
       "mathContext": "Formal definition: Defines ContainsAPOfLength$(A, k)$ via $\\exists a, d \\neq 0: \\{a, a+d, \\ldots\\} \\subseteq A$ and IsAPFree as its negation."
@@ -61,7 +61,7 @@
     {
       "id": "structural-lemmas",
       "title": "Structural Lemmas (Proved)",
-      "startLine": 42,
+      "startLine": 41,
       "endLine": 57,
       "summary": "AP transfer ($k \\leq l$ AP containment), AP-freeness inheritance ($k$-free $\\implies$ $l$-free), and subset closure — all proved in Lean.",
       "mathContext": "Mathematical content: AP transfer ($k \\leq l$ AP containment), AP-freeness inheritance ($k$-free $\\implies$ $l$-free), and subset closure — all proved in Lean."
@@ -69,7 +69,7 @@
     {
       "id": "rk-definition",
       "title": "$R_k(N)$ Definition",
-      "startLine": 64,
+      "startLine": 63,
       "endLine": 67,
       "summary": "$R_k(N) = \\sup\\{|A| : A \\subseteq \\text{Icc}\\,1\\,N, \\text{IsAPFree}\\,A\\,k\\}$ via powerset filtration.",
       "mathContext": "Mathematical content: $R_k(N) = \\sup\\{|A| : A \\subseteq \\text{Icc}\\,1\\,N, \\text{IsAPFree}\\,A\\,k\\}$ via powerset filtration."
@@ -77,48 +77,48 @@
     {
       "id": "gk-definition",
       "title": "$G_k(N)$ Definition and Properties",
-      "startLine": 74,
-      "endLine": 83,
-      "summary": "$G_k(N)$ axiomatized with Prop-level characterization gk_prop$(k, N, m)$. Quantification over all $N$-element sets makes this non-computable.",
-      "mathContext": "Axiomatized: $G_k(N)$ axiomatized with Prop-level characterization gk_prop$(k, N, m)$. Quantification over all $N$-element sets makes this non-computable."
+      "startLine": 69,
+      "endLine": 117,
+      "summary": "$G_k(N)$ defined as `sSup { m | gk_prop k N m }` (greatest lower bound via Prop-level characterization). Includes `HasAPFreeSubsetOfSize`, `gk_prop`, `gk`, `gk_prop_zero`, `gk_bddAbove`, `gk_ge_one`, and `gk_anti_k`. Quantification over all $N$-element sets makes this `noncomputable`.",
+      "mathContext": "Mathematical content: $G_k(N)$ defined as `sSup { m | gk_prop k N m }` where `gk_prop k N m` asserts every $N$-element integer set has a $k$-AP-free subset of size $\\geq m$. The set of valid lower bounds is nonempty (0 is valid) and bounded above by $N$, so the sSup is well-defined. The `noncomputable` tag reflects that quantification over all finite integer sets is not computably reducible."
     },
     {
       "id": "basic-bounds",
       "title": "Basic Bounds and Examples",
-      "startLine": 89,
-      "endLine": 100,
+      "startLine": 119,
+      "endLine": 201,
       "summary": "$G_k(N) \\leq R_k(N)$ (trivial) with strict examples: $G_3(5) = 3 < 4 = R_3(5)$ and $G_3(14) \\leq 7 < 8 = R_3(14)$.",
       "mathContext": "Mathematical content: $G_k(N) \\leq R_k(N)$ (trivial) with strict examples: $G_3(5) = 3 < 4 = R_3(5)$ and $G_3(14) \\leq 7 < 8 = R_3(14)$."
     },
     {
       "id": "kss-bound",
       "title": "Komlós–Sulyok–Szemerédi Bound",
-      "startLine": 108,
-      "endLine": 109,
+      "startLine": 206,
+      "endLine": 212,
       "summary": "$\\exists C > 0: R_k(N) \\leq C \\cdot G_k(N)$ for all $N$, establishing $R_k \\asymp G_k$ (1975).",
       "mathContext": "Mathematical content: $\\exists C > 0: R_k(N) \\leq C \\cdot G_k(N)$ for all $N$, establishing $R_k \\asymp G_k$ (1975)."
     },
     {
       "id": "main-conjecture",
       "title": "The Open Conjecture",
-      "startLine": 119,
-      "endLine": 122,
+      "startLine": 214,
+      "endLine": 225,
       "summary": "ErdosProblem201: $\\forall \\varepsilon > 0, \\exists N_0: \\forall N \\geq N_0, R_3(N) \\leq (1 + \\varepsilon) \\cdot G_3(N)$.",
       "mathContext": "Mathematical content: ErdosProblem201: $\\forall \\varepsilon > 0, \\exists N_0: \\forall N \\geq N_0, R_3(N) \\leq (1 + \\varepsilon) \\cdot G_3(N)$."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity Properties (Proved)",
-      "startLine": 129,
-      "endLine": 149,
+      "startLine": 227,
+      "endLine": 252,
       "summary": "$R_k$ monotone in $N$ and anti-monotone in $k$, both proved structurally using Icc nesting and AP transfer.",
       "mathContext": "Mathematical content: $R_k$ monotone in $N$ and anti-monotone in $k$, both proved structurally using Icc nesting and AP transfer."
     },
     {
       "id": "consequences",
       "title": "Consequences and Base Cases",
-      "startLine": 156,
-      "endLine": 197,
+      "startLine": 254,
+      "endLine": 351,
       "summary": "Proved: $G_3(5) < R_3(5)$, empty/singleton AP-freeness, $R_k(N) \\geq 1$, and a summary theorem via `Classical.em`.",
       "mathContext": "Verified: Proved: $G_3(5) < R_3(5)$, empty/singleton AP-freeness, $R_k(N) \\geq 1$, and a summary theorem via `Classical.em`."
     }
