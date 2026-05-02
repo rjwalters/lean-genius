@@ -67,63 +67,63 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 37,
-      "endLine": 47,
+      "endLine": 50,
       "summary": "Defines IsLittlewoodPolynomial (all coefficients in {-1,+1}) and supNorm (supremum of |P(z)| over the unit circle). These are the foundational concepts for the entire formalization.",
       "mathContext": "Defines IsLittlewoodPolynomial (all coefficients in {-1,+1}) and supNorm (supremum of |P(z)| over the unit circle). These are the foundational concepts for the entire formalization."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
-      "startLine": 48,
-      "endLine": 63,
+      "startLine": 51,
+      "endLine": 66,
       "summary": "States Erdos1150Conjecture as a Prop: ∃ c > 0 such that eventually all degree-n Littlewood polynomials satisfy supNorm P > (1+c)√n. Uses Lean's Filter.Eventually (∀ᶠ) for the 'for all large n' quantifier.",
       "mathContext": "States Erdos1150Conjecture as a Prop: ∃ c > 0 such that eventually all degree-n Littlewood polynomials satisfy supNorm P > (1+c)√n. Uses Lean's Filter.Eventually (∀ᶠ) for the 'for all large n' quantifier."
     },
     {
       "id": "parseval",
       "title": "Parseval Lower Bound",
-      "startLine": 64,
-      "endLine": 82,
+      "startLine": 67,
+      "endLine": 114,
       "summary": "The trivial bound ‖P‖∞ ≥ √(n+1) from Parseval's identity. Axiomatized as parseval_lower_bound. Also proves parseval_bound_pos: √(n+1) > 0 for n ≥ 1 using the positivity tactic.",
       "mathContext": "The trivial bound ‖P‖∞ $\\geq$ √(n+1) from Parseval's identity. Axiomatized as parseval_lower_bound. Also proves parseval_bound_pos: √(n+1) > 0 for n $\\geq$ 1 using the positivity tactic."
     },
     {
       "id": "ultraflat-equivalence",
       "title": "Ultraflat Equivalence",
-      "startLine": 83,
-      "endLine": 141,
+      "startLine": 115,
+      "endLine": 226,
       "summary": "Defines IsUltraflat (supNorm/√n → 1). Proves both directions of the equivalence: forward by contradiction with Filter.Tendsto, backward by contrapositive diagonal extraction + squeeze theorem. Full equivalence is a proved theorem.",
       "mathContext": "Defines IsUltraflat (supNorm/√n → 1). Proves both directions of the equivalence: forward by contradiction with Filter.Tendsto, backward by contrapositive diagonal extraction + squeeze theorem. Full equivalence is a proved theorem."
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "startLine": 142,
-      "endLine": 183,
+      "startLine": 227,
+      "endLine": 259,
       "summary": "Axiomatizes BBMST flat polynomials (2019, bbmst_flat) and proves the BBMST sup-norm bound consequence from the pointwise bound via ciSup_le (bbmst_upper_bound_exists). Kahane's unimodular ultraflat theorem (1980) is referenced in docstrings as background but is not axiomatized.",
       "mathContext": "Axiomatizes BBMST flat polynomials (2019, bbmst_flat) and proves the BBMST sup-norm bound consequence from the pointwise bound via ciSup_le (bbmst_upper_bound_exists). Kahane's unimodular ultraflat theorem (1980) is referenced in docstrings as background but is not axiomatized."
     },
     {
       "id": "gap-analysis",
       "title": "Flat vs Ultraflat Gap",
-      "startLine": 184,
-      "endLine": 200,
+      "startLine": 260,
+      "endLine": 291,
       "summary": "Formally shows that flat does not logically imply ultraflat. The existence of bounded-ratio polynomials (BBMST) does not give ratio-converging-to-1 polynomials (ultraflat). This is the essential gap that Problem #1150 asks about.",
       "mathContext": "Formally shows that flat does not logically imply ultraflat. The existence of bounded-ratio polynomials (BBMST) does not give ratio-converging-to-1 polynomials (ultraflat). This is the essential gap that Problem #1150 asks about."
     },
     {
       "id": "rudin-shapiro",
       "title": "Rudin-Shapiro Bound",
-      "startLine": 201,
-      "endLine": 213,
+      "startLine": 292,
+      "endLine": 298,
       "summary": "Discusses the Rudin-Shapiro construction in a docstring as background context: for each k ≥ 1, a degree-(2^k - 1) Littlewood polynomial with sup norm at most √(2·2^k), the best known explicit upper bound on minimal sup norm. NOT axiomatized or formalized in this file.",
       "mathContext": "Discusses the Rudin-Shapiro construction in a docstring as background context: for each k $\\geq$ 1, a degree-($2^{k}$ - 1) Littlewood polynomial with sup norm at most √(2·$2^{k}$), the best known explicit upper bound on minimal sup norm. NOT axiomatized or formalized in this file."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
-      "startLine": 214,
-      "endLine": 250,
+      "startLine": 299,
+      "endLine": 341,
       "summary": "Packages Parseval bound + BBMST flat existence + ultraflat equivalence into erdos_1150_summary, proved from axioms. Now includes the equivalence conjecture ↔ ¬ultraflat as a proved component.",
       "mathContext": "Axiomatized: Packages Parseval bound + BBMST flat existence + ultraflat equivalence into erdos_1150_summary, proved from axioms. Now includes the equivalence conjecture ↔ ¬ultraflat as a proved component."
     }
