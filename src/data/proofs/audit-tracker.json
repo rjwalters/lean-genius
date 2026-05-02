@@ -8534,11 +8534,12 @@
     },
     "erdos-634": {
       "agentId": "auditor-loop-1777752145",
-      "auditCount": 3,
-      "lastAudited": "2026-05-02T20:07:55Z",
+      "auditCount": 4,
+      "lastAudited": "2026-05-02T21:25:00Z",
       "result": "issues-found",
       "issues": [
-        "sorries claim 7 actual 1 (PR #14856 reduced 7→1 but meta.json not refreshed); lineCount 298→332; assumptions string still says \"7 sorries\"; deeper concern: Dissection structure has placeholder area condition (line 93), so *_dissectable theorems use trivial constant-function witness — issue #14859"
+        "sorries claim 7 actual 1 (PR #14856 reduced 7→1 but meta.json not refreshed); lineCount 298→332; assumptions string still says \"7 sorries\"; deeper concern: Dissection structure has placeholder area condition (line 93), so *_dissectable theorems use trivial constant-function witness — issue #14859",
+        "Re-audit 2026-05-02 vs origin/main a0a5957: PR #14866 fixed only meta.json text; deeper Dissection placeholder + axiom inconsistency unresolved -> issue #14888"
       ]
     },
     "erdos-635": {
