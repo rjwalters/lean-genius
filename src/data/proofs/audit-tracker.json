@@ -5104,10 +5104,13 @@
       "result": "issues-found"
     },
     "erdos-201": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-loop-1777705064",
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T07:01:17Z",
+      "result": "issues-found",
+      "issues": [
+        "section line drift: basic-bounds 89-100, kss-bound 108-109, main-conjecture 119-122, monotonicity 129-149, consequences 156-197 all misaligned; narrative claims gk axiomatized but Lean has noncomputable def gk (only g3_5_eq value axiomatized); filed #14629"
+      ]
     },
     "erdos-202": {
       "agentId": "auditor-cycle-20-batch",
