@@ -5935,10 +5935,13 @@
       "result": "issues-fixed"
     },
     "erdos-322": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-agent",
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T01:37:11Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom originalContributions (mahler_theorem, erdos_positive_density_claim — neither axiom exists); proofStrategy + sections.positive-density falsely claim Part VII axiomatizes positive density (orphan docstring only); overview.text says '5 axioms' (actual 3) and '191-line' (actual 182); section line drift +4 from Part III onward (#14493)"
+      ]
     },
     "erdos-323": {
       "agentId": "auditor-cycle-20-batch",
