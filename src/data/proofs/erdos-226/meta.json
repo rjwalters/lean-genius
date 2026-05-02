@@ -61,7 +61,7 @@
     "historicalContext": "The question of arithmetic control over analytic functions dates to Stäckel (1895), who showed a transcendental entire function can take rational values at all rationals — but his construction did not control irrational inputs. Erdős sharpened this to an $\\textit{if and only if}$ question: can $f(x) \\in \\mathbb{Q} \\Leftrightarrow x \\in \\mathbb{Q}$? Hayman included it as Problem 2.31 in his 1974 collection, attributing it to Erdős. Barth and Schneider solved it affirmatively in 1970, proving the much stronger result that for ANY countable dense $A, B \\subset \\mathbb{R}$, a transcendental entire $f$ with $f(A) = B$ exists — and can be made strictly monotone on $\\mathbb{R}$. Their 1971 follow-up extended this to countable dense subsets of $\\mathbb{C}$. The construction uses Weierstrass products and careful interpolation on the countable dense set.",
     "problemStatement": "Is there an entire non-linear function f : ℂ → ℂ such that for all x ∈ ℝ, x ∈ ℚ ↔ f(x) ∈ ℚ? More generally, for any countable dense A, B ⊆ ℝ, does an entire function with f(A) = B exist? SOLVED: YES (Barth-Schneider, 1970).",
     "text": "Is there an entire non-linear function f such that x ∈ ℚ ↔ f(x) ∈ ℚ for all real x? SOLVED: YES by Barth-Schneider (1970). For any two countable dense sets A, B ⊂ ℝ, a transcendental entire function mapping A to B exists.",
-    "proofStrategy": "The formalization axiomatizes the Barth-Schneider existence theorem and derives both the original and generalized answers. The key proof step in `erdos_question_affirmative` instantiates the axiom with $A = B = \\mathbb{Q}$ (via `rationals_countable_dense`), then shows transcendental $\\Rightarrow$ non-linear by encoding any linear function $f(z) = az + b$ as a degree-1 polynomial, contradicting transcendence. The `general_question_affirmative` follows directly. The formalization also axiomatizes the $\\mathbb{C}$ extension and the impossibility of polynomial solutions.",
+    "proofStrategy": "The formalization axiomatizes the Barth-Schneider existence theorem and derives both the original and generalized answers. The key proof step in `erdos_question_affirmative` instantiates the axiom with $A = B = \\mathbb{Q}$ (via `rationals_countable_dense`), then shows transcendental $\\Rightarrow$ non-linear by encoding any linear function $f(z) = az + b$ as a degree-1 polynomial, contradicting transcendence. The `general_question_affirmative` follows directly. The 1971 $\\mathbb{C}$ extension and the impossibility of polynomial solutions are discussed in docstrings within the file but are not separately axiomatized.",
     "keyInsights": [
       "The function must be transcendental — no polynomial can preserve rationality while being non-linear",
       "The function can be made strictly monotone on ℝ",
@@ -121,38 +121,38 @@
       "id": "barth-schneider",
       "title": "Part 6: Barth-Schneider Theorem",
       "startLine": 130,
-      "endLine": 161,
-      "summary": "barth_schneider_1970 axiom (transcendental entire f with f(A) = B) and barth_schneider_monotone axiom (monotone version).",
-      "mathContext": "Axiomatized: barth_schneider_1970 axiom (transcendental entire f with f(A) = B) and barth_schneider_monotone axiom (monotone version)."
+      "endLine": 152,
+      "summary": "barth_schneider_1970 axiom (transcendental entire f with f(A) = B). The monotonicity result is described in a docstring but not declared as an axiom.",
+      "mathContext": "Axiomatized: barth_schneider_1970 axiom (transcendental entire f with f(A) = B). The monotonicity commentary at lines 153-155 is a docstring only; no barth_schneider_monotone axiom is declared."
     },
     {
       "id": "main-answer",
       "title": "Part 7: The Answer",
-      "startLine": 162,
-      "endLine": 207,
+      "startLine": 153,
+      "endLine": 198,
       "summary": "erdos_question_affirmative (proved from barth_schneider_1970 with A=B=ℚ) and general_question_affirmative (proved directly).",
       "mathContext": "erdos_question_affirmative (proved from barth_schneider_1970 with A=B=$\\mathbb{Q}$) and general_question_affirmative (proved directly)."
     },
     {
       "id": "extensions",
       "title": "Part 8: Extensions",
-      "startLine": 208,
-      "endLine": 223,
-      "summary": "barth_schneider_complex axiom (1971 extension to countable dense subsets of ℂ).",
-      "mathContext": "Axiomatized: barth_schneider_complex axiom (1971 extension to countable dense subsets of ℂ)."
+      "startLine": 199,
+      "endLine": 206,
+      "summary": "Docstring discussion of the 1971 ℂ extension (Barth-Schneider 1971); no axiom is declared.",
+      "mathContext": "Commentary on the 1971 extension to countable dense subsets of ℂ. No barth_schneider_complex axiom is declared; lines 199-206 are a docstring only."
     },
     {
       "id": "insights",
       "title": "Part 9: Why This Works",
-      "startLine": 224,
-      "endLine": 241,
-      "summary": "no_polynomial_works axiom: no polynomial of degree > 1 can preserve rationality.",
-      "mathContext": "Axiomatized: no_polynomial_works axiom: no polynomial of degree > 1 can preserve rationality."
+      "startLine": 207,
+      "endLine": 220,
+      "summary": "Docstring discussion of why transcendence is necessary: no polynomial of degree > 1 can preserve rationality. Not axiomatized.",
+      "mathContext": "Commentary on the transcendence argument. Lines 207-220 are a docstring discussing why no polynomial works; no no_polynomial_works axiom is declared."
     },
     {
       "id": "summary",
       "title": "Part 10: Summary",
-      "startLine": 242,
+      "startLine": 221,
       "endLine": 268,
       "summary": "erdos_226_summary (proved), erdos_226, erdos_226_answer theorems. Problem SOLVED.",
       "mathContext": "Verified: erdos_226_summary (proved), erdos_226, erdos_226_answer theorems. Problem SOLVED."
