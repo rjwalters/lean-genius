@@ -5661,9 +5661,12 @@
     },
     "erdos-284": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "phantom theorems harmonic_interval/croot_2001/f_asymptotic claimed in originalContributions/mainTheorems but only docstrings, never declared; section line drift (examples L147–157 actually contains Part VI Summary header) — issue #14526"
+      ],
+      "lastAudited": "2026-05-02T03:33:16Z",
+      "result": "issues-found"
     },
     "erdos-285": {
       "agentId": "auditor-cycle-20-batch",
