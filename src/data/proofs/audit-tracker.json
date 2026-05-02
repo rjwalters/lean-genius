@@ -8531,10 +8531,13 @@
       "result": "clean"
     },
     "erdos-634": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T17:24:04Z",
-      "result": "clean"
+      "agentId": "auditor-loop-1777752145",
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T20:07:55Z",
+      "result": "issues-found",
+      "issues": [
+        "sorries claim 7 actual 1 (PR #14856 reduced 7→1 but meta.json not refreshed); lineCount 298→332; assumptions string still says \"7 sorries\"; deeper concern: Dissection structure has placeholder area condition (line 93), so *_dissectable theorems use trivial constant-function witness — issue #14859"
+      ]
     },
     "erdos-635": {
       "agentId": "auditor-cycle-20-batch",
