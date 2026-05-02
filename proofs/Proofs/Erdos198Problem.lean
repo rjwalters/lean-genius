@@ -68,7 +68,7 @@ for an infinite AP in the complement.
 def Erdos198_Question : Prop :=
   ∀ A : Set ℕ, IsSidonSet A → ∃ Y : Set ℕ, IsInfiniteAP Y ∧ Y ⊆ Aᶜ
 
-/-- The answer to Erdős Problem #198 is FALSE. -/
+/- The answer to Erdős Problem #198 is FALSE. -/
 /- ## The Constructions -/
 
 /-- The factorial construction: A = {n! + n : n ≥ 0}. -/
@@ -106,13 +106,13 @@ theorem factorial_counterexample :
 def IsLacunary (A : Set ℕ) : Prop :=
   ∃ f : ℕ → ℕ, StrictMono f ∧ A = range f ∧ ∀ n, f (n + 1) > 2 * f n
 
-/-- Lacunary sets are Sidon sets.
+/- Lacunary sets are Sidon sets.
 
 Proof: If a + b = c + d with a < b and c < d from a lacunary sequence,
 then b > 2a and d > 2c. WLOG b ≥ d. If b > d, then b > a + d > a + c,
 so b > a + c + d - b, giving 2b > a + c + d = a + b, so b > a.
 This leads to a contradiction. Hence b = d and a = c. -/
-/--
+/-
 **Baumgartner's Construction**: There exists a lacunary Sidon set that
 intersects every infinite AP.
 

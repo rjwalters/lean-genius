@@ -42,7 +42,6 @@
     ],
     "originalContributions": [
       "Clean formalization of Sidon sets and arithmetic progressions",
-      "Axiomatization of Baumgartner's lacunary construction",
       "Axiomatization of AlphaProof's explicit factorial construction",
       "Verified factorial computations for small cases"
     ],
@@ -54,7 +53,7 @@
     "historicalContext": "This problem explores the relationship between Sidon sets (sets with all pairwise sums distinct) and arithmetic progressions. Erdős asked whether every Sidon set must be 'sparse enough' that its complement contains an infinite AP.\n\nBaumgartner (1975) showed the answer is NO by constructing a Sidon set that intersects every infinite AP. His method was implicit - enumerate all APs and greedily select elements to form a lacunary (hence Sidon) sequence.\n\nMore recently, AlphaProof found an explicit construction: A = {n! + n : n ≥ 0}. This set is Sidon and intersects every AP, providing a concrete counterexample.",
     "problemStatement": "**Question**: If $A \\subset \\mathbb{N}$ is a Sidon set, must the complement $A^c$ contain an infinite arithmetic progression?\n\n**Answer**: NO\n\nThere exist Sidon sets that intersect every infinite AP, leaving no room for an infinite AP in the complement.\n\n**Constructions**:\n1. Baumgartner (1975): Lacunary construction via enumeration\n2. AlphaProof: $A = \\{n! + n : n \\geq 0\\}$",
     "text": "If A ⊆ ℕ is a Sidon set, must the complement of A contain an infinite arithmetic progression? Answer: NO.",
-    "proofStrategy": "We formalize the disproof by axiomatizing two constructions:\n\n1. **Factorial construction** ({n! + n}): Axiomatize that it's Sidon and intersects all APs\n2. **Lacunary construction**: Axiomatize Baumgartner's enumeration method\n\nThe key insight for the factorial set: for any AP with first term a and difference d, the element (a+d+1)! + (a+d) is in the set and lies in the AP (since d divides (a+d+1)!).\n\nWe also prove verified examples showing the first few elements: 0! + 0 = 1, 1! + 1 = 2, 2! + 2 = 4, etc.",
+    "proofStrategy": "We formalize the disproof by axiomatizing the factorial construction:\n\n1. **Factorial construction** ({n! + n}): Axiomatize that it's Sidon and intersects all APs\n\nThe key insight: for any AP with first term a and difference d, the element (a+d+1)! + (a+d) is in the set and lies in the AP (since d divides (a+d+1)!).\n\nThe file also discusses Baumgartner's lacunary construction as exposition (comments only, not axiomatized).\n\nWe also prove verified examples showing the first few elements: 0! + 0 = 1, 1! + 1 = 2, 2! + 2 = 4, etc.",
     "keyInsights": [
       "**Sidon sets**: Sets where all pairwise sums a + b (a ≤ b) are distinct. Also called B₂ sequences.",
       "**Lacunary sets**: Sets where consecutive elements satisfy aₙ₊₁ > 2aₙ. These are automatically Sidon.",
@@ -79,27 +78,27 @@
       "id": "main-result",
       "title": "The Main Result",
       "startLine": 57,
-      "endLine": 73,
+      "endLine": 71,
       "summary": "State Erdős's question and axiomatize that the answer is NO."
     },
     {
       "id": "factorial",
-      "title": "Factorial Construction",
-      "startLine": 74,
-      "endLine": 104,
+      "title": "The Constructions",
+      "startLine": 72,
+      "endLine": 101,
       "summary": "AlphaProof's explicit construction {n! + n} and its properties."
     },
     {
       "id": "lacunary",
       "title": "Lacunary Sets",
-      "startLine": 105,
-      "endLine": 130,
-      "summary": "Baumgartner's general construction using lacunary sequences."
+      "startLine": 103,
+      "endLine": 123,
+      "summary": "Baumgartner's general construction using lacunary sequences (exposition only)."
     },
     {
       "id": "examples",
-      "title": "Verified Examples",
-      "startLine": 131,
+      "title": "First Few Elements",
+      "startLine": 124,
       "endLine": 151,
       "summary": "Concrete computations of factorial values."
     }
