@@ -1,7 +1,7 @@
 {
   "slug": "feuerbachs-theorem-oq-02-incomplete-01",
   "title": "3D Analogue of Feuerbach's Theorem for Tetrahedra",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -28,19 +28,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-04-21T00:00:00Z",
-    "iteration": 2,
-    "focus": "Companion file fully proved; main file 5 tangency sorries documented as likely false",
+    "since": "2026-05-02T00:50:00Z",
+    "iteration": 3,
+    "focus": "Closed-form refutation of the (N24, R/3)-Feuerbach sphere candidate; 5 sorry-stated tangency theorems removed; new direction is identifying the correct (Murakami / Court) Feuerbach sphere.",
     "blockers": [],
-    "nextAction": "BLOCKED: literature search needed to identify correct 3D Feuerbach formulation (Murakami/Court)",
+    "nextAction": "Survey Murakami (1952) face-circumcircle and Court (1934) isodynamic constructions to identify the correct 3D Feuerbach sphere; record formulas in problem.md for a future session.",
     "attemptCounts": {
-      "total": 1,
+      "total": 3,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (session 2, 2026-04-27): Filled all 13 routine sorries in FeuerbachsTheoremOQ02Aristotle.lean (companion file). Fixed 1 mathematically false statement (externally_tangent_radii_nonneg, added missing precondition r₁≤d). Build verified with 64GB memory budget. Proved isodynamic property (ortho_edge_sum_identity) via linear_combination. Main file 5 tangency sorries remain (likely incorrect per session 1).\n\nPROGRESS (session 1): Discovered 2 FALSE axioms - removed. Added correct theorem edge_midpoints_equidist_from_centroid. Fixed Monge point docstring. Axioms: 3 -> 1.",
+    "progressSummary": "REFUTATION (session 3, 2026-05-02): Closed-form symbolic counterexample at the orthocentric tetrahedron T0 = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)) shows the (N24, R/3)-sphere is NOT internally tangent to the insphere; tangency would require 3r^2 = (7/6 - r)^2 with r = 3(6 - sqrt 14)/11, which fails component-wise in the Q-basis {1, sqrt 14}. The 5 sorry-stated theorems (feuerbach_3d_insphere, feuerbach_3d_exsphere_{A,B,C,D}) and the bundled feuerbach_3d_theorem are REMOVED; line count 723 -> 688; sorries 5 -> 0; axioms 1 -> 1. Identifying the correct 3D Feuerbach sphere is now the open problem.\n\nPROGRESS (session 2, 2026-04-27): Filled all 13 routine sorries in FeuerbachsTheoremOQ02Aristotle.lean (companion file). Fixed 1 mathematically false statement (externally_tangent_radii_nonneg, added missing precondition r1 <= d). Build verified with 64GB memory budget. Proved isodynamic property (ortho_edge_sum_identity) via linear_combination. Main file 5 tangency sorries remain (likely incorrect per session 1).\n\nPROGRESS (session 1): Discovered 2 FALSE axioms - removed. Added correct theorem edge_midpoints_equidist_from_centroid. Fixed Monge point docstring. Axioms: 3 -> 1.",
     "builtItems": [
       "edge_midpoints_equidist_from_centroid: 6 midpoints equidistant from G (proved via nlinarith)",
       "REMOVED axiom edge_midpoints_on_sphere (was FALSE)",
@@ -58,7 +58,13 @@
       "internally_tangent_sym in FeuerbachsTheoremOQ02Aristotle.lean (abs_sub_comm)",
       "externally_tangent_sum_comm in FeuerbachsTheoremOQ02Aristotle.lean (ring)",
       "twentyFourPoint_radius_third_of_circum in FeuerbachsTheoremOQ02Aristotle.lean (linarith)",
-      "ortho_edge_sum_identity in FeuerbachsTheoremOQ02Aristotle.lean (linear_combination 2*hab_cd - 2*hac_bd)"
+      "ortho_edge_sum_identity in FeuerbachsTheoremOQ02Aristotle.lean (linear_combination 2*hab_cd - 2*hac_bd)",
+      "Session 3 (2026-05-02): Removed feuerbach_3d_insphere sorry (false claim, refuted at T0)",
+      "Session 3 (2026-05-02): Removed feuerbach_3d_exsphere_{A,B,C,D} sorries (false claims)",
+      "Session 3 (2026-05-02): Removed bundled feuerbach_3d_theorem (depended on the 5 false sorries)",
+      "Session 3 (2026-05-02): Added closed-form refutation in PART 10 docstring with full symbolic counterexample at T0",
+      "Session 3 (2026-05-02): Updated meta.json (sorries 5->0, mainTheorems list, sections, conclusion, openQuestions)",
+      "Session 3 (2026-05-02): Replaced ann-main-theorem annotation with ann-3d-feuerbach-refutation; updated ann-proved-theorems"
     ],
     "insights": [
       "edge_midpoints_on_sphere is FALSE: regular tet has midpoints at dist 1, not R/3~0.577",
@@ -70,18 +76,21 @@
       "ortho_edge_sum_identity: |AB|²+|CD|² = |AC|²+|BD|² for orthocentric tetrahedra (proved via linear_combination 2*hab_cd - 2*hac_bd)",
       "Aristotle file proof tactics: positivity for nonneg sums, ring for poly identities, nlinarith with mul_self_nonneg for zero-iff",
       "externally_tangent_radii_nonneg is FALSE as stated: hypotheses (0 < d, d = r₁ + r₂, 0 ≤ r₁) do not force 0 ≤ r₂ (counterexample r₁=3, r₂=-1, d=2). Added precondition r₁≤d fixes it.",
-      "let-bound goals (midpoint3_equidist, midpoint3_spec) need dsimp only or show before ring/refine."
+      "let-bound goals (midpoint3_equidist, midpoint3_spec) need dsimp only or show before ring/refine.",
+      "Closed-form refutation: at orthocentric T0 = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)), dist(N24, I)^2 = 3r^2 = (1350 - 324 sqrt 14)/121 while (R/3 - r)^2 = (5497 - 1116 sqrt 14)/4356; equality reduces to 48600 - 11664 sqrt 14 = 5497 - 1116 sqrt 14, false in the Q-basis {1, sqrt 14}",
+      "The orthocentric hypothesis does NOT save the candidate Feuerbach sphere: T0 IS orthocentric and the tangency still fails",
+      "The midedge sphere (center G, radius R/2) is also NOT tangent to the insphere of T0 (dist(G,I)^2 ~ 0.812 vs (R/2-r)^2 ~ 1.286), so the obvious midedge replacement also fails",
+      "The phrase twenty-four-point sphere may be a misnomer with these definitions: only 6 (edge midpoints, via centroid G and radius R/2) of the 24 named points have been verified to lie on a common sphere"
     ],
     "mathlibGaps": [
       "3D sphere tangency in Mathlib is less developed than 2D circle geometry",
       "The correct 3D Feuerbach theorem statement needs literature research"
     ],
     "nextSteps": [
-      "BLOCKED: 5 main-file tangency sorries appear mathematically FALSE as stated",
-      "Future researcher: investigate Murakami (1952) and Court (1934) for the correct 3D Feuerbach formulation",
-      "The correct 3D Feuerbach analogue may use face circumcircles (Murakami 1952), not insphere/exspheres",
-      "Possibly the correct sphere is the midedge sphere (center G, radius R/2) — already proved equidistant in session 1",
-      "feuerbach_3d_fails_general axiom remains (deep counterexample construction)"
+      "Survey Murakami (1952) and Court (1934) to extract the precise center / radius formulas for the correct 3D Feuerbach sphere; record in problem.md",
+      "Once a sqrt-arithmetic tactic is available, promote the refutation to a Lean theorem: there exists T : OrthocentricTetrahedron with not(spheresInternallyTangent ...)",
+      "Adapt the T0 counterexample to a non-orthocentric specimen to discharge the existing axiom feuerbach_3d_fails_general",
+      "Optionally restructure to put the candidate sphere definitions inside an Investigations / Refuted namespace to avoid suggesting the candidate is the standard 3D Feuerbach sphere"
     ]
   },
   "tags": [
@@ -108,7 +117,7 @@
     ]
   },
   "started": "2026-04-21T00:00:00Z",
-  "lastUpdate": "2026-04-27T17:35:00Z",
+  "lastUpdate": "2026-05-02T00:50:00Z",
   "significance": 7,
   "tractability": 5
 }

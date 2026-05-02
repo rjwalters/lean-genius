@@ -1,9 +1,12 @@
 # Knowledge Base: feuerbachs-theorem-oq-02-incomplete-01
 
-3D Feuerbach's theorem for orthocentric tetrahedra. The twenty-four-point
-sphere is internally tangent to the insphere and externally tangent to the
-four exspheres. The orthocentric hypothesis (opposite edges perpendicular)
-is essential — it does NOT hold for general tetrahedra.
+3D analogue of Feuerbach's theorem for tetrahedra. **STATUS (2026-05-02):**
+the candidate (N₂₄, R/3)-sphere is FALSE as a Feuerbach sphere — refuted in
+closed form at the orthocentric tetrahedron T₀ = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)).
+The five tangency theorems and the bundled `feuerbach_3d_theorem` have been
+REMOVED from the Lean file (sorries 5 → 0). Identifying and formalizing the
+correct Feuerbach sphere (Murakami 1952 / Court 1934, likely face-circumcircle
+based) remains an open formalization target.
 
 ---
 
@@ -206,3 +209,119 @@ The 5 main sorries appear to require:
 - 5 main 3D Feuerbach tangency theorems (deep)
 - 3 axioms (counterexample existence + 24-point sphere completeness)
 - 5 routine helper lemmas in the Aristotle companion file
+
+---
+
+## Session 2026-05-02 (Session 3) — Closed-Form Refutation
+
+**Mode**: ACT on RICH-tier problem (knowledge_score=34).
+**Outcome**: Symbolic counterexample → 5 false sorry theorems removed → 5
+sorries → 0. ACT phase advanced (refutation, not yet replacement).
+
+### What Was Done
+
+For the orthocentric tetrahedron `T₀` with vertices
+
+  A = (2, 0, 0), B = (0, 3, 0), C = (0, 0, 6), D = (0, 0, 0),
+
+orthocentricity is verified directly:
+
+  AB · CD = (-2, 3, 0) · (0, 0, -6) = 0
+  AC · BD = (-2, 0, 6) · (0, -3, 0) = 0
+  AD · BC = (-2, 0, 0) · (0, -3, 6) = 0
+
+Symbolic computation:
+
+  O   = (1, 3/2, 3),  R = 7/2,  R/3 = 7/6
+  G   = (1/2, 3/4, 3/2)
+  M   = 4G − 3O = (-1, -3/2, -3)
+  N₂₄ = midpoint(O, M) = (0, 0, 0)
+  S_A = 9, S_B = 6, S_C = 3, S_D = 3√14
+  S   = 18 + 3√14 = 3(6 + √14)
+  V   = 6
+  r   = 3V/S = 6/(6 + √14) = 3(6 − √14)/11
+  I   = (r, r, r)
+  dist(N₂₄, I) = r√3
+  |R/3 − r|    = 7/6 − r
+
+Tangency would require 3r² = (7/6 − r)². With r = 3(6−√14)/11:
+
+  3r²       = 27(6−√14)²/121 = (1350 − 324√14)/121
+  (7/6 − r)² = ((-31 + 18√14)/66)² = (5497 − 1116√14)/4356
+
+After multiplying both sides by 4356 = 36·121, equality reduces to
+
+  48600 − 11664√14 = 5497 − 1116√14
+
+which fails component-wise in the ℚ-basis {1, √14}: 48600 ≠ 5497 and
+11664 ≠ 1116. Therefore the (N₂₄, R/3)-sphere is NOT internally tangent
+to the insphere of T₀.
+
+### Files Modified
+
+- `proofs/Proofs/FeuerbachsTheoremOQ02.lean`:
+  - Removed `feuerbach_3d_insphere`, `feuerbach_3d_exsphere_{A,B,C,D}`,
+    `feuerbach_3d_theorem`, and the corresponding `#check`.
+  - Replaced PART 10 with a refutation comment that records the closed-form
+    counterexample and points to Murakami (1952) and Court (1934) as
+    candidate correct constructions.
+  - Updated the file header status block and the PART 15 summary.
+  - Line count: 723 → 688.
+  - Sorries: 5 → 0; axioms: 1 → 1.
+- `src/data/proofs/feuerbachs-theorem-oq-02/meta.json`:
+  - `meta.sorries`: 5 → 0; `leanFile.sorries`: 5 → 0.
+  - `leanFile.lineCount`: 723 → 688; `theoremCount`: 21 → 15;
+    `substantiveTheoremCount`: 7 → 6.
+  - Rewrote `description`, `assumptions`, `originalContributions`,
+    `historicalContext`, `text`, `proofStrategy`, `keyInsights`,
+    `conclusion`, `openQuestions`, `mainTheorems`, and the `feuerbach-3d`
+    section to reflect the refutation.
+- `src/data/proofs/feuerbachs-theorem-oq-02/annotations.json`:
+  - Replaced `ann-main-theorem` (the "5 sorries" annotation) with
+    `ann-3d-feuerbach-refutation` (the closed-form disproof).
+  - Rewrote `ann-proved-theorems` to reflect post-refutation status.
+- `src/data/research/problems/feuerbachs-theorem-oq-02-incomplete-01.json`:
+  - `phase`: ORIENT → ACT.
+  - Knowledge insights / built items / progress summary updated.
+
+### Sorry / Axiom Delta
+
+- Main file sorries: 5 → 0 (-5)
+- Companion file sorries: 0 → 0 (no change)
+- Axioms: 1 → 1 (no change)
+
+### Honest Assessment
+
+This session DOES NOT prove a 3D Feuerbach theorem. It proves that the
+candidate sphere previously formalized is the WRONG sphere, and it removes
+the five sorry theorems that asserted otherwise. This is meaningful
+progress because:
+
+1. It eliminates 5 sorries that no future session could honestly close
+   (the underlying claims are false in closed form).
+2. It converts a numerical/floating-point intuition (sessions 1–2) into a
+   reproducible symbolic argument visible in the source.
+3. It leaves the surrounding infrastructure intact for any future attempt
+   at the correct (Murakami / Court) Feuerbach sphere.
+
+What this session does NOT do: identify or formalize the correct
+3D Feuerbach sphere, prove the existential axiom
+`feuerbach_3d_fails_general` (which remains an axiom), or attempt the
+midedge-sphere variant (which is also disproved at T₀: dist(G, I)² ≈ 0.812
+vs (R/2 − r)² ≈ 1.286).
+
+### Next Steps
+
+1. **Identify the correct Feuerbach sphere.** Murakami (1952) builds it
+   from face circumcircles; Court (1934) uses isodynamic data. Either
+   construction would require new infrastructure (face circumcircles in
+   ℝ³, signed isodynamic ratios) — likely 200–500 lines.
+2. **Prove the existential axiom** `feuerbach_3d_fails_general` by
+   adapting the T₀ counterexample to a non-orthocentric specimen. The
+   √14 arithmetic is the main obstacle; once a Lean tactic for
+   "polynomial-in-√d" comparison is available, this becomes routine.
+3. **Optionally promote the refutation to a formal theorem** of the
+   form `∃ T : OrthocentricTetrahedron, ¬ spheresInternallyTangent
+   T.toTetrahedron.twentyFourPointCenter T.toTetrahedron.incenter
+   T.toTetrahedron.twentyFourPointRadius T.toTetrahedron.inradius`.
+   Same √14 obstacle.

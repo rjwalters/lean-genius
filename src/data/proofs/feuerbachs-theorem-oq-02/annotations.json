@@ -175,50 +175,52 @@
     ]
   },
   {
-    "id": "ann-main-theorem",
+    "id": "ann-3d-feuerbach-refutation",
     "proofId": "feuerbachs-theorem-oq-02",
     "range": {
-      "startLine": 464,
-      "endLine": 532
+      "startLine": 459,
+      "endLine": 521
     },
-    "type": "theorem",
-    "title": "The 3D Feuerbach Theorem: 5 Sorries + Bundle + Orthocentric Necessity",
-    "content": "Five theorems are stated but proved by `sorry`: `feuerbach_3d_insphere` (N₂₄ internally tangent to insphere), `feuerbach_3d_exsphere_A/B/C/D` (externally tangent to each exsphere). `feuerbach_3d_theorem` bundles all five via an `And.intro` tuple — this compiles since it only uses the individual sorry-proofs. The docstring explicitly states this is the 3D analogue of Feuerbach 1822 and that the orthocentric hypothesis is essential.",
-    "mathContext": "The tangency conditions reduce to distance formulas: internal tangency $|N_{24} - I| = |R/3 - r|$ and external tangency $|N_{24} - E_X| = R/3 + r_X$. These require a coordinate computation expressing $N_{24}$, $I$, $E_X$ in terms of vertex coordinates, then proving the distance identity. The computation is deep: it requires: (a) the Cramer-rule circumcenter coordinates, (b) the Monge point formula, (c) the face-area-weighted incenter/excenter formulas, (d) the inradius $r = 3V/S$, and (e) the orthocentric condition to collapse cross-terms. The five sorries represent genuine open formalization work.",
+    "type": "insight",
+    "title": "Refutation of the (N₂₄, R/3) Candidate '3D Feuerbach Theorem'",
+    "content": "The candidate '3D Feuerbach theorem' — that the (N₂₄, R/3)-sphere is internally tangent to the insphere and externally tangent to all four exspheres of every orthocentric tetrahedron — is FALSE with the standard definitions. PART 10 records a closed-form symbolic counterexample at the orthocentric tetrahedron T₀ = ((2,0,0), (0,3,0), (0,0,6), (0,0,0)) (orthocentricity is verified directly: AB·CD = AC·BD = AD·BC = 0). The five tangency theorems and the bundled `feuerbach_3d_theorem`, previously stated as `theorem ... := by sorry`, have been REMOVED. The supporting infrastructure (Tetrahedron, OrthocentricTetrahedron, circumcenter via Cramer's rule, Monge point, Euler line, edge-midpoint equidistance, V = rS/3) is preserved.",
+    "mathContext": "At T₀: O = (1, 3/2, 3), R = 7/2, R/3 = 7/6, M = (-1, -3/2, -3), N₂₄ = midpoint(O, M) = (0, 0, 0). Face areas: S_A = 9, S_B = 6, S_C = 3, S_D = 3√14, total surface S = 3(6 + √14). Volume V = 6, inradius r = 3V/S = 6/(6 + √14) = 3(6 − √14)/11 (rationalising). Incenter I = (r, r, r) (each coordinate is 18/S, which equals r). Hence dist(N₂₄, I) = r√3 and |R/3 − r| = 7/6 − r. Squaring removes the square root: tangency would require 3r² = (7/6 − r)². With r = 3(6−√14)/11 these become 3r² = 27(6−√14)²/121 = (1350 − 324√14)/121 and (7/6 − r)² = ((-31 + 18√14)/66)² = (5497 − 1116√14)/4356 = (5497 − 1116√14)/4356. Multiplying both sides by 4356 = 36·121, the equality would require (1350 − 324√14)·36 = 5497 − 1116√14, i.e. 48600 − 11664√14 = 5497 − 1116√14. Equating rational and √14 parts independently (legal since √14 is irrational and {1, √14} is a ℚ-basis of ℚ(√14)) gives 48600 = 5497 and 11664 = 1116, both manifestly false. Therefore the (N₂₄, R/3)-sphere is not internally tangent to the insphere of T₀, and the candidate '3D Feuerbach theorem' is false in closed form. Two prior sessions reached the same conclusion via floating-point checks; the symbolic version above is unambiguous and reproducible.",
     "significance": "key",
     "relatedConcepts": [
-      "Feuerbach's theorem",
-      "sorry",
-      "internal tangency",
-      "external tangency",
-      "orthocentric hypothesis"
+      "refutation",
+      "candidate theorem",
+      "orthocentric counterexample",
+      "Murakami (1952)",
+      "Court (1934)",
+      "midedge sphere"
     ],
     "prerequisites": [
-      "feuerbach_3d_insphere",
-      "feuerbach_3d_exsphere_A",
-      "spheresInternallyTangent",
-      "spheresExternallyTangent"
+      "Tetrahedron.twentyFourPointCenter",
+      "Tetrahedron.twentyFourPointRadius",
+      "Tetrahedron.incenter",
+      "Tetrahedron.inradius",
+      "OrthocentricTetrahedron"
     ]
   },
   {
     "id": "ann-proved-theorems",
     "proofId": "feuerbachs-theorem-oq-02",
     "range": {
-      "startLine": 540,
-      "endLine": 663
+      "startLine": 522,
+      "endLine": 660
     },
     "type": "insight",
-    "title": "What IS Proved: Euler Line, Volume-Inradius, and the Structural Axioms",
-    "content": "Four theorems are fully proved: `monge_point_euler_line` (M = 4G - 3O, by `rfl` since it unfolds by definition), `twentyFourPointCenter_midpoint` (`rfl`), `twentyFourPointRadius_eq` (`rfl`), `centroid_on_euler_line` (G = (3O + M)/4, by `constructor; ring; constructor; ring`), and `volume_eq_inradius_surfaceArea` (V = rS/3, by `field_simp`). Three `axiom` declarations state deep geometric facts: `feuerbach_3d_fails_general` (existence of non-orthocentric counterexample), `edge_midpoints_on_sphere` (6 edge midpoints lie on N₂₄), `face_centroids_on_sphere` (4 face centroids lie on N₂₄). The axioms are marked as such because proving them requires the same depth of coordinate computation as the 5 sorry theorems.",
-    "mathContext": "The `rfl` proofs reflect a design choice: definitions are arranged so that the key identities hold by definition-unfolding. `M = 4G - 3O` is literally the definition of `mongePoint`. `centroid_on_euler_line` requires `ring` after unfolding because it's a consequence of the definition ($(3O + M)/4 = (3O + 4G - 3O)/4 = G$), not a literal unfolding. The three axioms encode known classical results (Court 1934, Murakami 1952) whose formal proofs would require the same coordinate machinery as the tangency proofs. The distinction between `sorry` (for theorems we expect to prove later) and `axiom` (for facts we're taking on mathematical authority) reflects the CLAUDE.md axiom integrity policy.",
+    "title": "What IS Proved: Euler Line, Volume–Inradius, Edge-Midpoint Equidistance",
+    "content": "After the 2026-05-02 refutation removed the five sorry tangency theorems, what remains and is fully proved: `orthocentric_third_perp` (AB ⊥ CD ∧ AC ⊥ BD ⟹ AD ⊥ BC, via `nlinarith`), `Tetrahedron.circumcenter_equidist` (Cramer-rule circumcenter is equidistant from all four vertices), `monge_point_euler_line` (M = 4G − 3O, by `rfl`), `twentyFourPointCenter_midpoint` (`rfl`), `twentyFourPointRadius_eq` (`rfl`), `centroid_on_euler_line` (G = (3O + M)/4, by `unfold` + `ring`), `volume_eq_inradius_surfaceArea` (V = rS/3, by `field_simp` after unfolding `inradius`), and `edge_midpoints_equidist_from_centroid` (all six edge midpoints are equidistant from G in an orthocentric tetrahedron). One `axiom` remains: `feuerbach_3d_fails_general` (existence of a non-orthocentric tetrahedron for which the (N₂₄, R/3)-sphere is not internally tangent to the insphere). It is preserved because (a) the existential is true (the candidate also fails on orthocentric tetrahedra, per PART 10), and (b) constructing a Lean witness would require the same √-arithmetic that the symbolic refutation in PART 10 already carries out.",
+    "mathContext": "The `rfl` proofs reflect a deliberate design choice: definitions are arranged so the key identities hold by definition-unfolding. `M = 4G − 3O` is literally the definition of `mongePoint`. `centroid_on_euler_line` reduces to ring arithmetic after unfolding ((3O + 4G − 3O)/4 = G). The orthocentricity-driven proofs (`orthocentric_third_perp`, `edge_midpoints_equidist_from_centroid`) work because the two orthogonality hypotheses unlock enough linear identities for `nlinarith` to close the goal once dot products are expanded coordinatewise. `Tetrahedron.circumcenter_equidist` factors through three private Cramer-rule helpers (`circumcenter_dot_eq`, `_v`, `_w`) that each reduce to `ring` after `field_simp` on the nondegeneracy denominator. The single remaining axiom is consistent with the CLAUDE.md axiom-integrity policy: it states a true existential whose Lean witness is left as future work.",
     "significance": "supporting",
     "relatedConcepts": [
       "Euler line in 3D",
       "rfl tactic",
       "ring tactic",
+      "nlinarith",
       "field_simp",
-      "axiom vs sorry distinction",
-      "Court (1934)"
+      "axiom integrity policy"
     ],
     "prerequisites": [
       "Tetrahedron.mongePoint",
