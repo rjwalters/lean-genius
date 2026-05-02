@@ -43,7 +43,7 @@
     ],
     "originalContributions": [
       "Formal statement of the OPEN Erdős problem in Lean 4",
-      "Axiomatization of k(N) function with existence and minimality",
+      "Axiomatization of k(N) as an opaque ℕ→ℕ function; existence and minimality described in prose",
       "Formalization of Erdős-Straus bounds: -c < k(N) - (e-1)N < O(N/log N)",
       "Verified concrete Egyptian fraction examples summing to 1"
     ],
@@ -98,16 +98,16 @@
       "title": "Existence of Representations",
       "startLine": 45,
       "endLine": 63,
-      "summary": "Axiom stating that for each N, a representation of 1 exists with denominators ≥ N.",
-      "mathContext": "Axiom stating that for each N, a representation of 1 exists with denominators $\\geq$ N."
+      "summary": "Background prose describing Egyptian fraction existence (no existence axiom declared); `axiom k (N : ℕ) : ℕ` declares k(N) as an opaque ℕ→ℕ function.",
+      "mathContext": "Background: Existence described in prose only; `axiom k (N : ℕ) : ℕ` declares k(N) as an opaque ℕ→ℕ function with no existence or minimality constraints."
     },
     {
       "id": "k-definition",
       "title": "The Function k(N)",
       "startLine": 64,
       "endLine": 87,
-      "summary": "Axioms defining k(N) as the minimal number of terms, with existence and minimality properties.",
-      "mathContext": "Axiomatized: Axioms defining k(N) as the minimal number of terms, with existence and minimality properties."
+      "summary": "Background prose describing achievability and minimality of k(N) (not axioms); `axiom erdos_straus_bounds` stating the Erdős-Straus asymptotic bounds.",
+      "mathContext": "Axiomatized: `axiom erdos_straus_bounds` (-c < k(N) - (e-1)N < O(N/log N)); achievability and minimality of k described in prose only."
     },
     {
       "id": "erdos-straus",
