@@ -47,8 +47,8 @@
       "Stated Nash (1993) upper bound: 1/2",
       "Stated specific values: h(2) = 4, h(3) = 7, 10 ≤ h(4) ≤ 11",
       "Formalized Erdős-Graham example where order ≠ exact order",
-      "Stated characterization: exact order exists iff differences coprime",
-      "Plagne lower-order refinement axiom",
+      "Stated characterization: exact order exists iff differences coprime (docstring only — no axiom declared)",
+      "Plagne (2004) refinement noted in docstring only — no axiom declared",
       "erdos_336_main: combined main result theorem",
       "erdos_336: summary bounds theorem"
     ],
@@ -96,46 +96,46 @@
       "title": "Part 3: Known Bounds",
       "summary": "Erdős-Graham 1980 bounds, Grekos 1988 lower, Nash 1993 upper, current_bounds theorem.",
       "startLine": 67,
-      "endLine": 90,
+      "endLine": 84,
       "mathContext": "Verified: Erdős-Graham 1980 bounds, Grekos 1988 lower, Nash 1993 upper, current_bounds theorem."
     },
     {
       "id": "specific-values",
       "title": "Part 4: Specific Values",
       "summary": "h(2) = 4, h(3) = 7, 10 ≤ h(4) ≤ 11, ratio verification examples.",
-      "startLine": 91,
-      "endLine": 111,
+      "startLine": 85,
+      "endLine": 102,
       "mathContext": "h(2) = 4, h(3) = 7, 10 $\\leq$ h(4) $\\leq$ 11, ratio verification examples."
     },
     {
       "id": "order-differ",
       "title": "Part 5: Order vs Exact Order",
       "summary": "erdosGrahamExample, example_order_2, example_exact_order_3, order_exact_order_differ theorem.",
-      "startLine": 112,
-      "endLine": 131,
+      "startLine": 103,
+      "endLine": 122,
       "mathContext": "Verified: erdosGrahamExample, example_order_2, example_exact_order_3, order_exact_order_differ theorem."
     },
     {
       "id": "characterization",
       "title": "Part 6: Characterization",
-      "summary": "consecutiveDiffs, erdos_graham_characterization axiom (exact order ↔ coprime differences).",
-      "startLine": 132,
-      "endLine": 147,
-      "mathContext": "Axiomatized: consecutiveDiffs, erdos_graham_characterization axiom (exact order ↔ coprime differences)."
+      "summary": "consecutiveDiffs def; characterization theorem (exact order ↔ coprime differences) described in docstring only — no `erdos_graham_characterization` axiom or theorem declared.",
+      "startLine": 123,
+      "endLine": 132,
+      "mathContext": "consecutiveDiffs def at line 129. The Erdős-Graham coprimality characterization is mentioned in the section-header docstring only; no `erdos_graham_characterization` axiom or theorem exists in the file."
     },
     {
       "id": "plagne-refinement",
       "title": "Part 7: Plagne's Refinement",
-      "summary": "plagne_lower_order_2004 axiom: refined lower-order term bounds.",
-      "startLine": 148,
-      "endLine": 159,
-      "mathContext": "Axiomatized: plagne_lower_order_2004 axiom: refined lower-order term bounds."
+      "summary": "Plagne (2004) lower-order refinement described in section-header docstring only — no `plagne_lower_order_2004` axiom or theorem declared.",
+      "startLine": 133,
+      "endLine": 140,
+      "mathContext": "Docstring-only section: Plagne's 2004 refinement of lower-order terms for h(r) is noted in prose; no Lean axiom or theorem formalizes this result in this section."
     },
     {
       "id": "main-results",
       "title": "Part 8: Main Results",
       "summary": "erdos_336_main combining all results, erdos_336 summary bounds theorem.",
-      "startLine": 160,
+      "startLine": 141,
       "endLine": 161,
       "mathContext": "Verified: erdos_336_main combining all results, erdos_336 summary bounds theorem."
     }
