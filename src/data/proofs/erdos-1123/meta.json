@@ -64,7 +64,7 @@
     "historicalContext": "This problem arose during Erdős's visit to Stanisław Ulam at the University of Wisconsin-Madison in 1943-44. They studied the Boolean algebras $\\mathcal{P}(\\omega)/\\text{fin}$ (power set modulo finite sets) and $\\mathcal{P}(\\omega)/\\text{density 0}$ (modulo density-zero sets), believing they had proved these algebras are non-isomorphic, but the proof was 'lost.'\n\nWinfried Just and Adam Krawczyk (1984) proved that under the Continuum Hypothesis (CH), the algebras ARE isomorphic — the opposite of what Erdős and Ulam expected. Shelah later showed their non-isomorphism is consistent with ZFC as well, making the answer genuinely set-theoretically independent: it depends on which set-theoretic axioms beyond ZFC one adopts. This is one of the earliest examples of a 'natural' mathematical question whose answer is independent of ZFC.",
     "problemStatement": "Let B₁ = P(ℕ)/I₁ (mod density-zero sets) and B₂ = P(ℕ)/I₂ (mod log-density-zero sets). Are B₁ and B₂ isomorphic? Under CH: YES (Just-Krawczyk 1984). In ZFC alone: independent.",
     "text": "Are B₁ = P(ℕ)/I₁ and B₂ = P(ℕ)/I₂ isomorphic, where I₁, I₂ are the density-zero and log-density-zero ideals? Set-theoretically dependent: YES under CH (Just-Krawczyk 1984).",
-    "proofStrategy": "The formalization defines density-zero and log-density-zero predicates, constructs the quotient Boolean algebras B₁ and B₂ using Lean's Quotient type, and axiomatizes the Just-Krawczyk conditional isomorphism and ZFC independence. The summary theorem proves the conjunction of the density implication and strict containment.",
+    "proofStrategy": "The formalization defines density-zero and log-density-zero predicates, constructs the quotient Boolean algebras B₁ and B₂ using Lean's Quotient type, and axiomatizes two density-set implications (`density_zero_implies_log_density_zero` and `log_density_ideal_strictly_larger`). The Just-Krawczyk conditional isomorphism and ZFC independence are documented in source docstrings (lines 82-88) as historical context — they are not axiomatized as Lean declarations. The summary theorem proves the conjunction of the density implication and strict containment.",
     "keyInsights": [
       "Natural density 0 implies logarithmic density 0, but not conversely",
       "Both P(ℕ)/I₁ and P(ℕ)/I₂ are Boolean algebras",
@@ -107,17 +107,25 @@
       "id": "just-krawczyk",
       "title": "Just-Krawczyk's Resolution",
       "startLine": 80,
-      "endLine": 97,
-      "summary": "Conditional isomorphism under CH, ZFC independence",
-      "mathContext": "Conditional isomorphism under CH, ZFC independence"
+      "endLine": 88,
+      "summary": "Historical context in docstrings: Just-Krawczyk (1984) B₁ ≅ B₂ under CH, and ZFC independence. No Lean axiom or theorem declarations in this section.",
+      "mathContext": "Docstring-only: Just-Krawczyk conditional isomorphism under CH and ZFC independence. No Lean declarations exist for these results."
     },
     {
       "id": "ideal-properties",
       "title": "Ideal Properties",
-      "startLine": 98,
+      "startLine": 89,
+      "endLine": 94,
+      "summary": "Docstring context: both I₁ and I₂ are σ-ideals; P(ℕ)/Fin is not isomorphic to B₁ or B₂. No Lean declarations in this section.",
+      "mathContext": "Docstring-only: σ-ideal closure properties and comparison with P(ℕ)/Fin."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 95,
       "endLine": 110,
-      "summary": "σ-ideal closure, finite sets have density zero",
-      "mathContext": "σ-ideal closure, finite sets have density zero"
+      "summary": "erdos_1123_summary theorem: conjunction of density_zero_implies_log_density_zero and log_density_ideal_strictly_larger, proved by exact ⟨..., ...⟩.",
+      "mathContext": "erdos_1123_summary theorem combining the two axioms into a conjunction via exact ⟨density_zero_implies_log_density_zero, log_density_ideal_strictly_larger⟩."
     }
   ],
   "conclusion": {
