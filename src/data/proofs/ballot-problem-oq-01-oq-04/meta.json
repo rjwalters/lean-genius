@@ -128,7 +128,8 @@
     "implications": "**Mathematical Significance**\n\n1. **Cycle Lemma Bridge**: The prepend-one-good-rotation theorem is the key structural fact: the 2n+1 cyclic rotations of a prepended balanced path contain exactly 1 good rotation, creating the foundation for the (n+1)-uniform partition.\n\n2. **Catalan Connection**: Via balanced_path_total, the total count C(2n,n) factors as Cₙ × (n+1), so the uniform (n+1)-partition yields Cₙ members per type.\n\n3. **Explicit Bijection**: The cycle-lemma route to Chung-Feller is constructive. The map l ↦ (Dyck-tail of good rotation, upstepsAboveAxis l) is bijective, with no appeal to algebraic topology or generating functions.\n\n4. **Architectural Note**: The previously stated axiom chung_feller_uniform was eliminated by extracting shared definitions to a Core file and flipping the import direction so the gallery face can re-export the bijection-proved theorem under its conventional name.",
     "openQuestions": [
       "Can a q-analog of the Chung-Feller theorem be formalized, tracking the area under the path?",
-      "Does chungFellerMap admit a description in terms of the RSK correspondence, given that Dyck paths and Catalan structures are RSK-related?"
+      "Does chungFellerMap admit a description in terms of the RSK correspondence, given that Dyck paths and Catalan structures are RSK-related?",
+      "Can the Chung-Feller proof be extended to the Lindström-Gessel-Viennot lemma setting, where balanced paths in a planar DAG replace ±1 lattice paths and the cycle lemma generalizes to non-intersecting path families?"
     ]
   },
   "mainTheorems": [
