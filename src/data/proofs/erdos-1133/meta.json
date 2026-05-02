@@ -96,7 +96,7 @@
     "historicalContext": "**Polynomial Interpolation: From Lagrange to Erdős**\n\nThe problem of polynomial interpolation — finding a polynomial passing through given points — dates to Lagrange (1795) and Newton. While the existence and uniqueness of the interpolating polynomial of degree < n through n points is elementary, the BEHAVIOR of this polynomial between the sample points is a deep and subtle question.\n\n**Runge's Phenomenon (1901)**\n\nCarl Runge discovered that polynomial interpolation of f(x) = 1/(1+25x²) on uniform nodes in [-1,1] diverges wildly near the endpoints. This showed that more sample points can make interpolation WORSE — a counterintuitive phenomenon that launched modern approximation theory.\n\n**The Lebesgue Constant**\n\nThe Lebesgue constant Λ_n = max_x Σ|ℓ_i(x)| measures the worst-case amplification of interpolation error. Faber (1914) proved that for ANY node sequence, Λ_n → ∞, meaning interpolation diverges for some continuous function. Chebyshev nodes achieve the minimal Λ_n = (2/π)log n + O(1).\n\n**Erdős's Contribution (1967)**\n\nIn his 1967 paper 'Problems and results on the convergence and divergence properties of the Lagrange interpolation polynomials,' Erdős posed Problem #1133 as a strengthening of the divergence phenomenon. He proved a weaker result: one can always FIND a polynomial bounded at sample points that explodes elsewhere. The conjecture asks whether one can CHOOSE target values to force this for ALL approximating polynomials — an adversarial strengthening that remains open after nearly 60 years.\n\n**Why It's Hard**\n\nThe difficulty is the quantifier reversal: proving existence (∃P with ‖P‖_∞ > C) is easier than proving universality (∀P satisfying constraints has ‖P‖_∞ > C). The latter requires a strategy for choosing y_i that simultaneously defeats all possible polynomials — an infinite-dimensional minimax problem.",
     "problemStatement": "**Conjecture:** For any C > 0, there exists ε > 0 such that if n is sufficiently large: Given any x₁,...,xₙ ∈ [-1,1], one can choose y₁,...,yₙ ∈ [-1,1] such that if P is a polynomial of degree < (1+ε)n with P(xᵢ) = yᵢ for at least (1-ε)n many i, then max_{x ∈ [-1,1]} |P(x)| > C.\n\n**Status: OPEN** (since 1967)",
     "text": "For any C > 0, can one always choose target values y_i in [-1,1] for sample points x_i such that any low-degree polynomial approximating most points must exceed C somewhere in [-1,1]? OPEN.",
-    "proofStrategy": "**Formalization Structure**\n\nThe Lean file builds the problem in seven parts:\n\n1. **Basic definitions**: polyEval (P.eval x), maxNormOnInterval (sSup of |P(x)| on [-1,1]), SamplePoints and TargetValues as subtypes restricted to [-1,1]\n\n2. **Interpolation conditions**: ApproximatelyInterpolates (Finset S with |S| ≥ n - ⌊εn⌋ and P(x_i) = y_i on S), HasBoundedDegree (natDegree P < ⌊(1+ε)n⌋)\n\n3. **The conjecture**: ErdosConjecture1133 as a Prop with the full five-quantifier structure\n\n4. **Known weaker result**: erdos_related_result axiom — existence of polynomial bounded at sample points but large on [-1,1]\n\n5. **Lagrange theory**: lagrange_interpolation (existence and uniqueness), lagrange_divergence (divergence for uniform nodes)\n\n6. **Chebyshev connection**: chebyshevNodes definition (cos(π(2k+1)/(2n))), chebyshev_optimal axiom (bounded at Chebyshev nodes implies bounded everywhere)\n\n7. **Summary**: exact_interpolation_case proved from lagrange_interpolation, erdos_1133_summary wrapping it\n\n**What is Proved vs Axiomatized**\n\n- **Proved**: exact_interpolation_case (ε = 0 reduction to Lagrange), erdos_1133_summary\n- **Axiomatized**: erdos_related_result (Erdős's weaker theorem), lagrange_interpolation (existence/uniqueness), lagrange_divergence (Runge phenomenon), chebyshev_optimal (node optimality)\n- **Open**: ErdosConjecture1133 (formalized but neither proved nor disproved)",
+    "proofStrategy": "**Formalization Structure**\n\nThe Lean file builds the problem in seven parts:\n\n1. **Basic definitions**: polyEval (P.eval x), maxNormOnInterval (sSup of |P(x)| on [-1,1]), SamplePoints and TargetValues as subtypes restricted to [-1,1]\n\n2. **Interpolation conditions**: ApproximatelyInterpolates (Finset S with |S| ≥ n - ⌊εn⌋ and P(x_i) = y_i on S), HasBoundedDegree (natDegree P < ⌊(1+ε)n⌋)\n\n3. **The conjecture**: ErdosConjecture1133 as a Prop with the full five-quantifier structure\n\n4. **Known weaker result**: Erdős's existence result is described in a docstring (Part IV) — existence of polynomial bounded at sample points but large on [-1,1]. Not declared as a Lean axiom.\n\n5. **Lagrange theory**: lagrange_interpolation (existence and uniqueness, axiomatized). The Runge divergence phenomenon is described in a background docstring only.\n\n6. **Chebyshev connection**: chebyshevNodes definition (cos(π(2k+1)/(2n))). Chebyshev node optimality is noted in a docstring — not axiomatized.\n\n7. **Summary**: exact_interpolation_case proved from lagrange_interpolation, erdos_1133_summary wrapping it\n\n**What is Proved vs Axiomatized**\n\n- **Proved**: exact_interpolation_case (ε = 0 reduction to Lagrange), erdos_1133_summary\n- **Axiomatized**: lagrange_interpolation only (existence/uniqueness of degree-<n polynomial through n distinct points). The other three results (Erdős's weaker theorem, Runge divergence, Chebyshev optimality) are described in docstrings only — not declared as Lean axioms.\n- **Open**: ErdosConjecture1133 (formalized but neither proved nor disproved)",
     "keyInsights": [
       "The adversarial quantifier structure ∃y ∀P is the core difficulty: choosing y_i that defeats ALL polynomials simultaneously requires a strategy immune to infinite-dimensional counterplay",
       "For ε = 0 (exact interpolation), the problem reduces to: can we choose y_i so the Lagrange polynomial has large ‖·‖_∞? This is related to the Lebesgue constant Λ_n, but even this case is open",
@@ -135,29 +135,29 @@
     {
       "id": "related",
       "title": "Related Result (Known by Erdős)",
-      "summary": "Axiomatizes Erdős's weaker existence theorem: for any C > 0, ∃ ε > 0 such that for large n and m = ⌊(1+ε)n⌋ sample points, ∃ P of degree ≤ n with |P(x_i)| ≤ 1 for all i yet ‖P‖_∞ > C. The key difference: this quantifies ∃P (finds one bad polynomial) while the conjecture quantifies ∀P (all polynomials matching y are bad).",
+      "summary": "Documents Erdős's weaker existence theorem in a docstring (Part IV): for any C > 0, ∃ ε > 0 such that for large n and m = ⌊(1+ε)n⌋ sample points, ∃ P of degree ≤ n with |P(x_i)| ≤ 1 for all i yet ‖P‖_∞ > C. The key difference: this quantifies ∃P (finds one bad polynomial) while the conjecture quantifies ∀P (all polynomials matching y are bad). No Lean declaration is made here — background context only.",
       "startLine": 117,
-      "endLine": 138
+      "endLine": 128
     },
     {
       "id": "lagrange",
       "title": "Lagrange Interpolation Theory",
-      "summary": "Two axioms: lagrange_interpolation (∃! P of degree < n through n distinct points — the classical existence-uniqueness theorem) and lagrange_divergence (∃ f ∈ C[-1,1] such that Lagrange interpolation on uniform nodes diverges — Runge's phenomenon). The Lebesgue constant Λ_n → ∞ for ANY node sequence (Faber 1914).",
-      "startLine": 139,
-      "endLine": 163
+      "summary": "One axiom: lagrange_interpolation (∃! P of degree < n through n distinct points — the classical existence-uniqueness theorem). The divergence of Lagrange interpolation on uniform nodes (Runge's phenomenon) is documented in a surrounding docstring as background only — no `axiom lagrange_divergence` is declared. The Lebesgue constant Λ_n → ∞ for ANY node sequence (Faber 1914).",
+      "startLine": 129,
+      "endLine": 146
     },
     {
       "id": "chebyshev",
       "title": "Chebyshev Connection",
-      "summary": "Defines chebyshevNodes(n, k) = cos(π(2k+1)/(2n)) — the roots of the Chebyshev polynomial T_n. Axiomatizes chebyshev_optimal: if deg P = n and |P(x_k)| ≤ 1 at all n+1 Chebyshev nodes, then ‖P‖_∞ ≤ 1. These nodes minimize the Lebesgue constant at (2/π)log n + O(1), but don't resolve the conjecture since the adversary chooses arbitrary nodes.",
-      "startLine": 164,
-      "endLine": 184
+      "summary": "Defines `chebyshevNodes(n, k) = cos(π(2k+1)/(2n))` — the roots of the Chebyshev polynomial T_n. Notes in a docstring that Chebyshev nodes minimize the Lebesgue constant (optimality property), but no `axiom chebyshev_optimal` is declared — only the definition and background context. These nodes don't resolve the conjecture since the adversary chooses arbitrary nodes.",
+      "startLine": 147,
+      "endLine": 161
     },
     {
       "id": "summary",
       "title": "Summary and Main Results",
       "summary": "exact_interpolation_case: for ε = 0, Lagrange gives the unique polynomial through all n points (proved from lagrange_interpolation via Classical.choose_spec). erdos_1133_summary wraps this as the main result. ErdosConjecture1133 remains OPEN — formalized as a Lean Prop but with no proof or disproof.",
-      "startLine": 185,
+      "startLine": 162,
       "endLine": 195
     }
   ],
@@ -203,7 +203,7 @@
       "year": "1967",
       "volume": "9",
       "pages": "65–73",
-      "note": "Primary source: Erdős poses Problem #1133 and proves the weaker existence result (∃P with large norm), which is formalized as the erdos_related_result axiom."
+      "note": "Primary source: Erdős poses Problem #1133 and proves the weaker existence result (∃P with large norm), which is described in a docstring in Part IV of the formalization (not declared as a Lean axiom)."
     },
     {
       "authors": [
@@ -214,7 +214,7 @@
       "year": "1914",
       "volume": "23",
       "pages": "192–210",
-      "note": "Proves that the Lebesgue constant Λ_n → ∞ for ANY node sequence — the fundamental obstruction theorem (lagrange_divergence axiom) underlying Problem #1133."
+      "note": "Proves that the Lebesgue constant Λ_n → ∞ for ANY node sequence — the fundamental obstruction theorem underlying Problem #1133 (described in a docstring in the formalization; not declared as a Lean axiom)."
     },
     {
       "authors": [
