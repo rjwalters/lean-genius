@@ -49,8 +49,8 @@
       "Clean Lean 4 definition of Sidon sets (IsSidon)",
       "Definition of sqrt-normalized partial density and upper density",
       "Definition of perfect difference sets",
-      "Axiomatization of Erdős, Krückeberg, and Erdős-Turán bounds",
-      "Conditional equivalence with perfect difference set embedding",
+      "Axiomatization of Krückeberg (1/√2) and Erdős-Turán (upper bound 1) — Erdős's 1/2 bound is mentioned in a docstring but not separately axiomatized",
+      "Conditional equivalence with perfect difference set embedding described in docstrings (not formalized as axioms)",
       "Proved theorems: empty_is_sidon, singleton_is_sidon",
       "Educational commentary on Sidon set theory"
     ],
@@ -62,7 +62,7 @@
     "historicalContext": "Sidon sets (also called B₂ sequences) were introduced by Simon Sidon in 1932, who asked about sets of integers where all pairwise sums are distinct. These sets have been central to additive combinatorics ever since.\n\nThe counting argument of Erdős and Turán (1941) established the fundamental upper bound: any Sidon set A ⊆ {1,...,N} has |A| ≤ √N + O(N^{1/4}). This gives the upper bound 1 for the normalized density limsup |A ∩ {1,...,N}| / √N.\n\nFor lower bounds, Erdős showed density 1/2 is achievable. Krückeberg (1961) improved this to 1/√2 ≈ 0.707 using an algebraic construction. The exact supremum between 1/√2 and 1 remains unknown.\n\nInterestingly, the supremum equals 1 if and only if every finite Sidon set can be embedded in a perfect difference set - connecting this problem to projective geometry.",
     "problemStatement": "**Erdős Problem #329**: For a Sidon set $A \\subseteq \\mathbb{N}$, how large can\n$$\\limsup_{N \\to \\infty} \\frac{|A \\cap \\{1,\\ldots,N\\}|}{\\sqrt{N}}$$\nbe?\n\n**Status**: OPEN (exact supremum unknown)\n\n**Known Results**:\n- Erdős: $1/2$ is achievable\n- Krückeberg (1961): $1/\\sqrt{2} \\approx 0.707$ is achievable\n- Erdős-Turán (1941): Upper bound is $1$\n\n**Conditional**: If every finite Sidon set embeds in a perfect difference set, then the supremum is exactly $1$.",
     "text": "For a Sidon set A (where all pairwise sums are distinct), how large can limsup |A ∩ {1,...,N}| / √N be? Known bounds: 1/√2 ≤ sup ≤ 1. The exact supremum remains OPEN.",
-    "proofStrategy": "We formalize the problem and its known partial results:\n\n1. **Define Sidon sets**: A set A is Sidon if whenever a + b = c + d with a ≤ b, c ≤ d and all in A, then (a,b) = (c,d)\n\n2. **Define density measures**: sqrtPartialDensity(A, N) = |A ∩ [1,N]| / √N, and sidonUpperDensity(A) = limsup of this\n\n3. **Axiomatize bounds**: Erdős's 1/2, Krückeberg's 1/√2, Erdős-Turán's upper bound 1\n\n4. **Define perfect difference sets**: Sets where every nonzero integer appears as exactly one difference\n\n5. **State conditional equivalence**: supremum = 1 iff embedding property holds\n\n6. **Prove basic lemmas**: Empty set and singletons are trivially Sidon",
+    "proofStrategy": "We formalize the problem and its known partial results:\n\n1. **Define Sidon sets**: A set A is Sidon if whenever a + b = c + d with a ≤ b, c ≤ d and all in A, then (a,b) = (c,d)\n\n2. **Define density measures**: sqrtPartialDensity(A, N) = |A ∩ [1,N]| / √N, and sidonUpperDensity(A) = limsup of this\n\n3. **Axiomatize bounds**: Krückeberg's 1/√2 (`kruckeberg_1961`) and Erdős-Turán's upper bound 1 (`erdos_turan_upper_bound`). Erdős's 1/2 bound is noted in a docstring only\n\n4. **Define perfect difference sets**: Sets where every nonzero integer appears as exactly one difference\n\n5. **State conditional equivalence**: described in docstrings (lines 135–144) as an open question; not formalized as axioms or theorems\n\n6. **Prove basic lemmas**: Empty set and singletons are trivially Sidon",
     "keyInsights": [
       "**The Sidon property**: All pairwise sums distinct. If a + b = c + d with elements from A, then {a,b} = {c,d}. This severely restricts how many elements can fit in [1,N].",
       "**Why √N normalization**: The Erdős-Turán counting argument shows |A ∩ [1,N]| ≤ √(2N) + O(1). This makes √N the natural normalization for density.",
@@ -121,38 +121,38 @@
       "id": "lower-bounds",
       "title": "Known Lower Bounds",
       "startLine": 92,
-      "endLine": 116,
-      "summary": "Erdős (1/2), Krückeberg (1/√2), and corollary theorem.",
-      "mathContext": "Verified: Erdős (1/2), Krückeberg (1/√2), and corollary theorem."
+      "endLine": 113,
+      "summary": "Orphaned docstring at lines 94–96 notes Erdős's 1/2 bound (not axiomatized). Axiom: kruckeberg_1961 (lines 103–104): Sidon set with density 1/√2. Proved: max_density_ge_inv_sqrt2 (lines 109–112).",
+      "mathContext": "Orphaned docstring mentions Erdős 1/2 (not axiomatized). Axiom: kruckeberg_1961 (lines 103–104). Proved: max_density_ge_inv_sqrt2 (lines 109–112)."
     },
     {
       "id": "upper-bound",
       "title": "Known Upper Bound",
-      "startLine": 117,
-      "endLine": 137,
-      "summary": "Erdős-Turán upper bound of 1.",
-      "mathContext": "Bound: Erdős-Turán upper bound of 1."
+      "startLine": 114,
+      "endLine": 134,
+      "summary": "Axiom: erdos_turan_upper_bound — every Sidon set has density ≤ 1 (lines 123–124). Proved: max_density_le_one (lines 129–133).",
+      "mathContext": "Axiom: erdos_turan_upper_bound (lines 123–124). Proved: max_density_le_one (lines 129–133)."
     },
     {
       "id": "conditional",
       "title": "Conditional Results",
-      "startLine": 138,
-      "endLine": 157,
-      "summary": "Equivalence between density 1 and perfect difference set embedding.",
-      "mathContext": "Mathematical content: Equivalence between density 1 and perfect difference set embedding."
+      "startLine": 135,
+      "endLine": 144,
+      "summary": "Two orphaned docstrings at lines 137–144 state the conditional equivalence between density 1 and perfect difference set embedding, and the converse. These are not formalized as axioms or theorems — historical context only.",
+      "mathContext": "Orphaned docstrings (lines 137–144) about conditional equivalence. No axioms or theorems in this section."
     },
     {
       "id": "examples",
       "title": "Basic Examples",
-      "startLine": 158,
-      "endLine": 196,
+      "startLine": 145,
+      "endLine": 181,
       "summary": "Proved: empty_is_sidon, singleton_is_sidon. Verified sum computations.",
       "mathContext": "Mathematical content: Proved: empty_is_sidon, singleton_is_sidon. Verified sum computations."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
-      "startLine": 197,
+      "startLine": 182,
       "endLine": 198,
       "summary": "Combined statement of Krückeberg and Erdős-Turán results.",
       "mathContext": "Mathematical content: Combined statement of Krückeberg and Erdős-Turán results."
