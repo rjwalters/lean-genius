@@ -5234,10 +5234,13 @@
       "result": "issues-fixed"
     },
     "erdos-222": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-1777701908",
+      "auditCount": 3,
+      "issues": [
+        "phantom axioms in sections (Fermat criterion, Landau, Richards 1982, DEKKM 2022, monotonicity) + section line drift Parts II–VII (#14599)"
+      ],
+      "lastAudited": "2026-05-02T06:09:26Z",
+      "result": "issues-found"
     },
     "erdos-223": {
       "agentId": "auditor-cycle-20-batch",
