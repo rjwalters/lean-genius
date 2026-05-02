@@ -53,7 +53,7 @@
       "HasDenominatorDrop: the key property that adding a term decreases the denominator",
       "bFunction: smallest b with denominator drop, defined via Nat.find",
       "ErdosQuestion290 and GrowthQuestion: formal problem statements",
-      "van_doorn_main/upper_bound/lower_bound/explicit: axiomatized solution",
+      "van_doorn_main, van_doorn_upper_bound: axiomatized solution (lower bound and explicit construction are block comments only, not declared axioms)",
       "b_linear_growth: genuine proof of GrowthQuestion from upper bound",
       "example_calculation/example_denominator_drop: computationally verified via native_decide",
       "lcmRange, HasNewPrimeFactor: prime factorization connection",
@@ -69,7 +69,7 @@
     "historicalContext": "**Erdős Problem #290: Denominator Non-Monotonicity in Harmonic Sums**\n\nThis problem concerns a counterintuitive phenomenon in the arithmetic of partial harmonic sums. The partial harmonic sum Σ_{n=a}^{b} 1/n is a rational number p/q in lowest terms. One might expect that extending the sum by one more term (adding 1/(b+1)) would increase the denominator, since we are adding a fraction with a new denominator. But sometimes the opposite occurs: the denominator actually DECREASES.\n\n**The Motivating Example:**\nΣ_{n=3}^{5} 1/n = 1/3 + 1/4 + 1/5 = 47/60 (denominator 60)\nΣ_{n=3}^{6} 1/n = 47/60 + 1/6 = 57/60 = 19/20 (denominator 20)\n\nAdding 1/6 caused the denominator to drop from 60 to 20! The mechanism is GCD cancellation: 47/60 + 1/6 = 57/60, and gcd(57, 60) = 3, so the fraction reduces to 19/20.\n\nErdős asked: does this phenomenon always occur? For any starting point a, must there always exist some b where adding the next term decreases the denominator?\n\n**van Doorn's Resolution (2024):**\nIn a paper posted to arXiv (2411.03073), van Doorn proved the answer is YES. His key innovation was an explicit construction based on powers of 3: for a ∈ (3ᵏ, 3ᵏ⁺¹], taking b = 2·3ᵏ⁺¹ − 1 always gives a denominator drop. This yields the linear upper bound b(a) < 4.374a. He also proved a logarithmic lower bound b(a) > a + 0.54 log a, showing the first drop cannot happen immediately.\n\nThe connection to prime factorization is central: the denominator of a harmonic sum divides the LCM of the summation range, and denominator drops occur when adding a new term enables cancellation in the prime factorization of the numerator-denominator pair. Powers of 3 play a special role because the prime 3 has controlled multiplicity in nearby integers.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $a \\ge 1$. Must there exist some $b > a$ such that:\n$$\\text{denom}\\left(\\sum_{n=a}^{b+1} \\frac{1}{n}\\right) < \\text{denom}\\left(\\sum_{n=a}^{b} \\frac{1}{n}\\right)$$\nwhere $\\text{denom}$ denotes the reduced (lowest-terms) denominator?\n\n**Answer: YES** (van Doorn, 2024)\n\n**Key Results:**\n- $b(a)$ always exists for all $a \\ge 1$\n- $b(a) < 4.374a$ for all $a > 1$ (linear upper bound)\n- $b(a) > a + 0.54 \\log a$ for large $a$ (logarithmic lower bound)\n- Explicit: if $a \\in (3^k, 3^{k+1}]$, then $b = 2 \\cdot 3^{k+1} - 1$ works\n\n**Example:** $47/60 + 1/6 = 19/20$, so $b(3) = 5$.\n\n**Status**: SOLVED",
     "text": "Must there exist b > a such that adding 1/(b+1) to ∑_{a≤n≤b} 1/n decreases the reduced denominator? SOLVED: YES (van Doorn 2024) with b(a) < 4.374a.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Harmonic Sums:** partialHarmonic(a,b) = Σ_{a≤n≤b} 1/n as ℚ via Finset.Icc. reducedDenominator extracts Rat.den. harmonicDenom composes them\n\n2. **Drop Property:** HasDenominatorDrop(a,b) ↔ b > a ∧ denom drops at b+1. bFunction(a) = Nat.find of the smallest such b (requires van Doorn's existence as sorry)\n\n3. **Problem Statements:** ErdosQuestion290 (existence for all a) and GrowthQuestion (b(a) ≤ Ca) as Prop definitions\n\n4. **van Doorn's Solution:** 4 axioms: main (YES), upper (< 4.374a), lower (> a + 0.54 log a), explicit (powers of 3). b_linear_growth genuinely proves GrowthQuestion\n\n5. **Computational Verification:** example_calculation and example_denominator_drop fully proved by native_decide, verifying 47/60 → 19/20 and 60 > 20\n\n6. **Extensions:** Finer bounds, open conjectures, LCM connection, generalized sums Σ 1/n^s, OEIS sequence, asymptotic ratio analysis\n\n7. **Proof Quality:** 3 genuine proofs (native_decide, norm_num/linarith), 6 axioms, 2 sorries, 3 open conjectures as Prop definitions",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Harmonic Sums:** partialHarmonic(a,b) = Σ_{a≤n≤b} 1/n as ℚ via Finset.Icc. reducedDenominator extracts Rat.den. harmonicDenom composes them\n\n2. **Drop Property:** HasDenominatorDrop(a,b) ↔ b > a ∧ denom drops at b+1. bFunction(a) = Nat.find of the smallest such b (requires van Doorn's existence as sorry)\n\n3. **Problem Statements:** ErdosQuestion290 (existence for all a) and GrowthQuestion (b(a) ≤ Ca) as Prop definitions\n\n4. **van Doorn's Solution:** 2 axioms — van_doorn_main (YES) and van_doorn_upper_bound (< 4.374a). Lower bound and explicit construction documented in block comments (/- … -/) only — not declared axioms. b_linear_growth genuinely proves GrowthQuestion from the upper bound.\n\n5. **Computational Verification:** example_calculation and example_denominator_drop fully proved by native_decide, verifying 47/60 → 19/20 and 60 > 20\n\n6. **Extensions:** Finer bounds, open conjectures, LCM connection, generalized sums Σ 1/n^s, OEIS sequence, asymptotic ratio analysis\n\n7. **Proof Quality:** 5 genuine theorems (b_linear_growth, example_calculation, example_denominator_drop, b_of_3_bound, erdos_290_growth), 2 axioms, 0 sorries, 3 open conjectures as Prop definitions",
     "keyInsights": [
       "**GCD Cancellation Mechanism:** Denominator drops occur when the accumulated numerator and the new LCM share a common factor. In the example 47/60 + 1/6 = 57/60 = 19/20, the factor gcd(57, 60) = 3 causes the reduction. The key is that adding 1/(b+1) can introduce a prime factor that cancels with the existing numerator",
       "**Powers of 3 Construction:** van Doorn's explicit construction uses the fact that near 3ᵏ, the prime 3 has controlled behavior. For a ∈ (3ᵏ, 3ᵏ⁺¹], taking b = 2·3ᵏ⁺¹ − 1 ensures the term 1/(2·3ᵏ⁺¹) introduces a factor of 3 that cancels. This gives the constant 4.374 ≈ 2·log 3/log(3/2) in the upper bound",
@@ -87,93 +87,93 @@
       "id": "partial-harmonic-sums",
       "title": "Partial Harmonic Sums",
       "summary": "Defines partialHarmonic(a,b) = Σ_{a≤n≤b} 1/n as ℚ via Finset.Icc, reducedDenominator via Rat.den, and reducedNumerator via Rat.num. These are noncomputable due to classical choice in rational canonicalization.",
-      "startLine": 38,
-      "endLine": 53,
+      "startLine": 37,
+      "endLine": 52,
       "mathContext": "Defines partialHarmonic(a,b) = Σ_{a≤n≤b} 1/n as ℚ via Finset.Icc, reducedDenominator via Rat.den, and reducedNumerator via Rat.num. These are noncomputable due to classical choice in rational canonicalization."
     },
     {
       "id": "denominator-drop",
       "title": "The Denominator Drop Property",
-      "summary": "Defines harmonicDenom (composition of partialHarmonic and reducedDenominator), HasDenominatorDrop (b > a and denominator decreases at b+1), and bFunction (smallest b with drop, via Nat.find with sorry for van Doorn's existence theorem).",
-      "startLine": 54,
-      "endLine": 73,
-      "mathContext": "Defines harmonicDenom (composition of partialHarmonic and reducedDenominator), HasDenominatorDrop (b > a and denominator decreases at b+1), and bFunction (smallest b with drop, via Nat.find with sorry for van Doorn's existence theorem)."
+      "summary": "Defines harmonicDenom (composition of partialHarmonic and reducedDenominator), HasDenominatorDrop (b > a and denominator decreases at b+1), and bFunction(a) uses Classical.choose applied to van_doorn_main (no sorry needed — van_doorn_main is an axiom).",
+      "startLine": 53,
+      "endLine": 64,
+      "mathContext": "Defines harmonicDenom (composition of partialHarmonic and reducedDenominator), HasDenominatorDrop (b > a and denominator decreases at b+1), and bFunction(a) uses Classical.choose applied to van_doorn_main (no sorry needed — van_doorn_main is an axiom)."
     },
     {
       "id": "erdos-question",
       "title": "The Erdős Question",
       "summary": "Defines ErdosQuestion290 (∀ a ≥ 1, ∃ b with drop) and GrowthQuestion (∃ c > 0, b(a) ≤ ca). These are the two main questions: does b(a) exist, and how fast does it grow?",
-      "startLine": 74,
-      "endLine": 85,
+      "startLine": 65,
+      "endLine": 72,
       "mathContext": "Defines ErdosQuestion290 (∀ a $\\geq$ 1, ∃ b with drop) and GrowthQuestion (∃ c > 0, b(a) $\\leq$ ca). These are the two main questions: does b(a) exist, and how fast does it grow?"
     },
     {
       "id": "van-doorn-solution",
       "title": "van Doorn's Solution (2024)",
-      "summary": "Four axioms capture van Doorn's results: van_doorn_main (YES), van_doorn_upper_bound (< 4.374a), van_doorn_lower_bound (> a + 0.54 log a), van_doorn_explicit (powers-of-3 construction). The theorem b_linear_growth genuinely proves GrowthQuestion with c = 4.374 via norm_num and linarith.",
-      "startLine": 86,
-      "endLine": 114,
-      "mathContext": "Four axioms capture van Doorn's results: van_doorn_main (YES), van_doorn_upper_bound (< 4.374a), van_doorn_lower_bound (> a + 0.54 log a), van_doorn_explicit (powers-of-3 construction). The theorem b_linear_growth genuinely proves GrowthQuestion with c = 4.374 via norm_num and linarith."
+      "summary": "Two axioms: van_doorn_main (YES — ErdosQuestion290) and van_doorn_upper_bound (b(a) < 4.374a). Lower bound and explicit construction are documented in block comments only, not declared axioms. The theorem b_linear_growth genuinely proves GrowthQuestion with c = 4.374 via norm_num and linarith.",
+      "startLine": 73,
+      "endLine": 104,
+      "mathContext": "Two axioms: van_doorn_main (YES — ErdosQuestion290) and van_doorn_upper_bound (b(a) < 4.374a). Lower bound and explicit construction are documented in block comments only, not declared axioms. The theorem b_linear_growth genuinely proves GrowthQuestion with c = 4.374 via norm_num and linarith."
     },
     {
       "id": "example",
       "title": "The Canonical Example",
-      "summary": "Defines example sums (1/3+1/4+1/5 = 47/60, +1/6 = 19/20). Theorems example_calculation and example_denominator_drop are fully proved by native_decide. The bound b_of_3_bound has one sorry for the noncomputable harmonicDenom.",
-      "startLine": 115,
-      "endLine": 144,
-      "mathContext": "Defines example sums (1/3+1/4+1/5 = 47/60, +1/6 = 19/20). Theorems example_calculation and example_denominator_drop are fully proved by native_decide. The bound b_of_3_bound has one sorry for the noncomputable harmonicDenom."
+      "summary": "Defines example sums (1/3+1/4+1/5 = 47/60, +1/6 = 19/20). Theorems example_calculation and example_denominator_drop are fully proved by native_decide. The theorem b_of_3_bound is fully proved by connecting to the computed examples — no sorry.",
+      "startLine": 105,
+      "endLine": 157,
+      "mathContext": "Defines example sums (1/3+1/4+1/5 = 47/60, +1/6 = 19/20). Theorems example_calculation and example_denominator_drop are fully proved by native_decide. The theorem b_of_3_bound is fully proved by connecting to the computed examples — no sorry."
     },
     {
       "id": "finer-bounds",
       "title": "Finer Bounds (van Doorn 2024)",
-      "summary": "Axiomatizes van_doorn_infinitely_many_small (b(a) < a + 0.61 log a infinitely often). Defines three open conjectures as Prop: LargeGapsConjecture, AsymptoticLinearConjecture (b(a)/a → 1), PolylogConjecture (b(a) - a polylogarithmic).",
-      "startLine": 145,
-      "endLine": 164,
-      "mathContext": "Axiomatizes van_doorn_infinitely_many_small (b(a) < a + 0.61 log a infinitely often). Defines three open conjectures as Prop: LargeGapsConjecture, AsymptoticLinearConjecture (b(a)/a → 1), PolylogConjecture (b(a) - a polylogarithmic)."
+      "summary": "Three open conjectures as Prop definitions: LargeGapsConjecture, AsymptoticLinearConjecture (b(a)/a → 1), PolylogConjecture (b(a) - a polylogarithmic). The finer bound b(a) < a + 0.61 log a appears in a block comment only — no axiom declared.",
+      "startLine": 158,
+      "endLine": 174,
+      "mathContext": "Three open conjectures as Prop definitions: LargeGapsConjecture, AsymptoticLinearConjecture (b(a)/a → 1), PolylogConjecture (b(a) - a polylogarithmic). The finer bound b(a) < a + 0.61 log a appears in a block comment only — no axiom declared."
     },
     {
       "id": "prime-factorization",
       "title": "Connection to Prime Factorization",
-      "summary": "Defines lcmRange(a,b) = lcm of [a,b]. Axiomatizes denom_divides_lcm. Defines HasNewPrimeFactor for detecting new primes at b+1. Axiomatizes powers_of_3_key: van Doorn's construction near 3ᵏ always works.",
-      "startLine": 165,
-      "endLine": 184,
-      "mathContext": "Defines lcmRange(a,b) = lcm of [a,b]. Axiomatizes denom_divides_lcm. Defines HasNewPrimeFactor for detecting new primes at b+1. Axiomatizes powers_of_3_key: van Doorn's construction near 3ᵏ always works."
+      "summary": "Defines lcmRange(a,b) = lcm of [a,b] and HasNewPrimeFactor for detecting new primes at b+1. The claim that the harmonic denominator divides the LCM and the powers-of-3 construction appear in block comments only — no axioms declared.",
+      "startLine": 175,
+      "endLine": 188,
+      "mathContext": "Defines lcmRange(a,b) = lcm of [a,b] and HasNewPrimeFactor for detecting new primes at b+1. The claim that the harmonic denominator divides the LCM and the powers-of-3 construction appear in block comments only — no axioms declared."
     },
     {
       "id": "oeis",
       "title": "OEIS Sequence A375081",
-      "summary": "Records computed values b(1)=2, ..., b(9)=17 as a list of pairs. The axiom oeis_values asserts these match bFunction. Values cluster near powers of 3.",
-      "startLine": 185,
-      "endLine": 195,
-      "mathContext": "Axiomatized: Records computed values b(1)=2, ..., b(9)=17 as a list of pairs. The axiom oeis_values asserts these match bFunction. Values cluster near powers of 3."
+      "summary": "Records computed values b(1)=2, ..., b(9)=17 as oeis_A375081 list. The OEIS match claim appears in a block comment only — no oeis_values axiom declared. Values cluster near powers of 3.",
+      "startLine": 189,
+      "endLine": 197,
+      "mathContext": "Records computed values b(1)=2, ..., b(9)=17 as oeis_A375081 list. The OEIS match claim appears in a block comment only — no oeis_values axiom declared. Values cluster near powers of 3."
     },
     {
       "id": "generalized",
       "title": "Generalized Harmonic Sums",
       "summary": "Extends to generalizedHarmonic(a,b,s) = Σ 1/n^s. Defines GeneralizedDenominatorDrop and GeneralizedQuestion for arbitrary power s. van Doorn's paper discusses these generalizations.",
-      "startLine": 196,
-      "endLine": 212,
+      "startLine": 198,
+      "endLine": 214,
       "mathContext": "Extends to generalizedHarmonic(a,b,s) = $\\sum$ 1/n^s. Defines GeneralizedDenominatorDrop and GeneralizedQuestion for arbitrary power s. van Doorn's paper discusses these generalizations."
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Analysis",
-      "summary": "Defines ratioBA(a) = b(a)/a. Axiomatizes ratio_bounds (1 < ratio < 4.374). Defines LimitOneConjecture: does b(a)/a → 1? Formalizes the precise growth question.",
-      "startLine": 213,
-      "endLine": 229,
-      "mathContext": "Defines ratioBA(a) = b(a)/a. Axiomatizes ratio_bounds (1 < ratio < 4.374). Defines LimitOneConjecture: does b(a)/a $\\to$ 1? Formalizes the precise growth question."
+      "summary": "Defines ratioBA(a) = b(a)/a and LimitOneConjecture (does b(a)/a → 1?). Van Doorn's liminf/limsup bounds appear in a block comment only — no ratio_bounds axiom declared.",
+      "startLine": 215,
+      "endLine": 227,
+      "mathContext": "Defines ratioBA(a) = b(a)/a and LimitOneConjecture (does b(a)/a $\\to$ 1?). Van Doorn's liminf/limsup bounds appear in a block comment only — no ratio_bounds axiom declared."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Three summary theorems: erdos_290 = van_doorn_main (YES answer), erdos_290_answer (unfolded existential), erdos_290_growth (linear bound c = 4.374, genuinely proved). The file totals 265 lines with 6 axioms, 2 sorries, and 3 genuine proofs.",
-      "startLine": 230,
+      "summary": "Three summary theorems: erdos_290 = van_doorn_main (YES answer), erdos_290_answer (unfolded existential), erdos_290_growth (linear bound c = 4.374, genuinely proved). The file totals 263 lines with 2 axioms, 0 sorries, and 5 genuine theorems.",
+      "startLine": 228,
       "endLine": 263,
-      "mathContext": "Three summary theorems: erdos_290 = van_doorn_main (YES answer), erdos_290_answer (unfolded existential), erdos_290_growth (linear bound c = 4.374, genuinely proved). The file totals 265 lines with 6 axioms, 2 sorries, and 3 genuine proofs."
+      "mathContext": "Three summary theorems: erdos_290 = van_doorn_main (YES answer), erdos_290_answer (unfolded existential), erdos_290_growth (linear bound c = 4.374, genuinely proved). The file totals 263 lines with 2 axioms, 0 sorries, and 5 genuine theorems."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #290 asked whether partial harmonic sums always have a point where adding one more term decreases the reduced denominator. van Doorn (2024) proved YES with the linear bound b(a) < 4.374a and logarithmic lower bound b(a) > a + 0.54 log a. The formalization captures this in 265 lines of Lean 4 with 6 axioms (van Doorn's analytical results), 2 sorries, and 3 genuine proofs (native_decide for the example, norm_num/linarith for the growth bound). Three open conjectures about the precise growth rate are recorded as Prop definitions.",
+    "summary": "Erdős Problem #290 asked whether partial harmonic sums always have a point where adding one more term decreases the reduced denominator. van Doorn (2024) proved YES with the linear bound b(a) < 4.374a and logarithmic lower bound b(a) > a + 0.54 log a. The formalization captures this in 263 lines of Lean 4 with 2 axioms (van_doorn_main and van_doorn_upper_bound), 0 sorries, and 5 genuine theorems (native_decide for the example, norm_num/linarith for the growth bound). Three open conjectures about the precise growth rate are recorded as Prop definitions.",
     "implications": "**Theoretical Significance**: **Connections to Number Theory and Rational Arithmetic**\n\n1. **Harmonic Number Theory:** Problem #290 reveals unexpected structure in the denominators of partial harmonic sums. The harmonic numbers H_n = 1 + 1/2 + ··· + 1/n have denominators studied since Wolstenholme (1862), who showed p² | denom(H_{p-1}) for prime p ≥ 5. The denominator drop phenomenon adds a dynamic dimension to this classical subject\n\n2. **LCM and Prime Distribution:** The denominator of Σ 1/n divides lcm(a, ..., b), connecting drops to prime factorization changes. The prime number theorem governs how quickly new primes appear, and Bertrand's postulate ensures a prime in every interval [n, 2n]. The powers-of-3 construction exploits specific prime structure near 3ᵏ\n\n3. **Farey Sequences:** Denominator drops relate to the theory of Farey fractions and mediants.\n\nWhen two fractions a/b and c/d satisfy |ad - bc| = 1, their mediant (a+c)/(b+d) has a small denominator. Denominator drops in harmonic sums involve similar cancellation phenomena\n\n4. **Computational Number Theory:** The OEIS sequence A375081 invites algorithmic study. Computing b(a) for large a requires efficient rational arithmetic and GCD computation. The clustering of b-values near powers of 3 suggests deeper arithmetic structure\n\n5. **Generalized Harmonic Sums:** van Doorn's extension to Σ 1/n^s opens a family of related problems. For s = 2, the sums relate to ζ(2) = π²/6, connecting to the Basel problem. The denominator drop question for general s remains largely unexplored.",
     "openQuestions": [
       "Is b(a)/a → 1 as a → ∞? (The Asymptotic Linear Conjecture)",
