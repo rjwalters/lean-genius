@@ -1,8 +1,8 @@
 {
   "id": "amgm-inequality-oq-03-oq-03",
-  "title": "Power Mean Extreme Cases: Limits as r \u2192 \u00b1\u221e",
+  "title": "Power Mean Definition: M\u2081 = Arithmetic Mean and M\u208b\u2081 = Harmonic Mean",
   "slug": "amgm-inequality-oq-03-oq-03",
-  "description": "Formalizes the power mean family and proves special cases: M\u2081 = arithmetic mean, M\u208b\u2081 = harmonic mean. Documents the extreme cases M_r \u2192 max as r \u2192 +\u221e and M_r \u2192 min as r \u2192 -\u221e, completing the continuous interpolation from min to max.",
+  "description": "Defines the power mean family and proves two identities for n=2: M\u2081(a,b) = (a+b)/2 (arithmetic mean) and M\u208b\u2081(a,b) = 2ab/(a+b) (harmonic mean). The extreme cases M_r \u2192 max/min as r \u2192 \u00b1\u221e are outlined in source comments for future formalization.",
   "meta": {
     "author": "Hardy-Littlewood-P\u00f3lya (1934)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Generalized_mean",
@@ -63,18 +63,18 @@
       "summary": "Docstring outlines for the three main theorems to be formalized: $M_r \\to \\max$ as $r \\to +\\infty$, $M_r \\to \\min$ as $r \\to -\\infty$, and monotonicity $r \\leq s \\Rightarrow M_r \\leq M_s$. These include proof sketches but are not yet stated as Lean theorems."
     },
     {
-      "id": "special-cases",
-      "title": "Arithmetic and Harmonic Mean Instances",
+      "id": "am-instance",
+      "title": "Arithmetic Mean Instance",
       "startLine": 45,
-      "endLine": 55,
-      "summary": "Two concrete theorems for pairs of positive reals: `powerMean_1_is_am` proves $M_1(a,b) = (a+b)/2$ (arithmetic mean) via Fin.sum_univ_two and rpow_one. `powerMean_neg1_is_hm` proves $M_{-1}(a,b) = 2ab/(a+b)$ (harmonic mean) via rpow_neg_one, field_simp, and ring. Both fully proved with 0 sorries."
+      "endLine": 52,
+      "summary": "`powerMean_1_is_am`: proves $M_1(a,b) = (a+b)/2$ (arithmetic mean) via Fin.sum_univ_two and rpow_one. Fully proved, 0 sorries."
     },
     {
-      "id": "section-56",
-      "title": "Arithmetic and Harmonic Mean Instances (continued)",
-      "startLine": 56,
+      "id": "hm-instance",
+      "title": "Harmonic Mean Instance",
+      "startLine": 54,
       "endLine": 65,
-      "summary": "Continuation of Arithmetic and Harmonic Mean Instances."
+      "summary": "`powerMean_neg1_is_hm`: proves $M_{-1}(a,b) = 2ab/(a+b)$ (harmonic mean) via rpow_neg_one, field_simp, and ring. Fully proved, 0 sorries."
     }
   ],
   "conclusion": {
