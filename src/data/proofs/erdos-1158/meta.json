@@ -58,7 +58,7 @@
     "historicalContext": "**Hypergraph Turán Problems**\n\nThis problem generalizes the classical Zarankiewicz problem (Erdős #714) from graphs to $t$-uniform hypergraphs. While the graph case ($t = 2$) has been extensively studied since the 1950s via algebraic and probabilistic methods, the hypergraph generalization remains one of the central open problems in extremal combinatorics.\n\n**Historical Timeline:**\n- 1954: Kővári, Sós, and Turán proved the graph upper bound $\\mathrm{ex}(n; K_{r,r}) \\leq O(n^{2 - 1/r})$ using a double-counting argument that would become a template for all subsequent generalizations.\n- 1964: Erdős, in his landmark paper 'On extremal problems of graphs and generalized graphs' [Er64f], extended both the upper and lower bounds to $t$-uniform hypergraphs and posed the question of tightness.\n- 1966: Brown proved $\\mathrm{ex}(n; K_{3,3}) \\geq cn^{5/3}$ using norm graphs over finite fields; independently, Erdős, Rényi, and Sós obtained the same result with a different algebraic construction.\n- 1975: Erdős and Hajnal introduced the stepping-up lemma, the only known method for converting graph Turán bounds to hypergraph bounds.\n- Present: The conjecture remains open for all $t \\geq 3$ and for $t = 2, r \\geq 4$. Recent progress by Conlon, Fox, and Sudakov has improved constants but not the exponent.\n\n**Connection to Problem #714:**\nThe $t = 2$ specialization is exactly the Zarankiewicz problem (Erdős #714). This file formalizes the full hypergraph generalization, showing how the exponent $2 - 1/r$ naturally extends to $t - r^{1-t}$.",
     "problemStatement": "**Problem Statement (Open)**\n\nIs it true that $\\mathrm{ex}_t(n, K_t(r)) \\geq n^{t - r^{1-t} - o(1)}$?\n\nHere $K_t(r)$ is the complete $t$-partite $t$-uniform hypergraph with $r$ vertices per class, and $\\mathrm{ex}_t(n, K_t(r))$ is the maximum number of hyperedges in a $K_t(r)$-free $t$-uniform hypergraph on $n$ vertices.\n\n**Known Results:**\n1. **Upper bound:** $\\mathrm{ex}_t(n, K_t(r)) \\leq O(n^{t - r^{1-t}})$ (Erdős 1964)\n2. **Weaker lower bound:** $\\mathrm{ex}_t(n, K_t(r)) \\geq n^{t - Cr^{1-t}}$ for some constant $C$ (Erdős 1964)\n3. **t=2, r=2:** Solved via projective planes\n4. **t=2, r=3:** Solved by Brown (1966)\n5. **t=2, r≥4 and t≥3:** OPEN",
     "text": "Is ex_t(n, K_t(r)) ≥ n^{t - r^{1-t} - o(1)}? The hypergraph generalization of the Zarankiewicz problem. Only known for t=2 with r=2,3.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Hypergraph Definitions:** Define t-uniform hypergraphs as collections of t-element Finsets.\n\n2. **K_t(r) Containment:** Define via transversals of t pairwise-disjoint r-element parts.\n\n3. **Turán Number:** Define ex_t(n, K_t(r)) as supremum over edge counts.\n\n4. **Conjecture Statement:** Formalize the o(1) lower bound using ε-formulation.\n\n5. **Known Bounds:** Axiomatize the upper bound and weaker lower bound from Erdős (1964).\n\n6. **Stepping-Up:** Axiomatize the Erdős-Hajnal stepping-up lemma for induction on uniformity.\n\n**Why Axioms?** The bounds use probabilistic methods and algebraic constructions not in Mathlib.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Hypergraph Definitions:** Define t-uniform hypergraphs as collections of t-element Finsets.\n\n2. **K_t(r) Containment:** Define via transversals of t pairwise-disjoint r-element parts.\n\n3. **Turán Number:** Define ex_t(n, K_t(r)) as supremum over edge counts.\n\n4. **Conjecture Statement:** Formalize the o(1) lower bound using ε-formulation.\n\n5. **Known Bounds:** Document the upper bound and weaker lower bound from Erdős (1964) via docstrings; these results are not formalized as axioms in this file.\n\n6. **Stepping-Up:** Document the Erdős–Hajnal stepping-up lemma in a docstring; not formalized in this file.\n\n**Why Axioms?** The bounds use probabilistic methods and algebraic constructions not in Mathlib.",
     "keyInsights": [
       "**Exponent Structure:** The conjectured exponent t - r^{1-t} unifies the graph case (2 - 1/r) with the general hypergraph case.",
       "**Stepping-Up Lemma:** Erdős-Hajnal showed how to lift (t-1)-uniform bounds to t-uniform, but with a loss that prevents matching the conjectured exponent.",
@@ -108,48 +108,48 @@
     {
       "id": "upper-bound",
       "title": "Known Upper Bound (Erdős 1964)",
-      "summary": "Defines `hypergraphExponent t r = t - r^{1-t}` and axiomatizes the Erdős (1964) upper bound: $\\mathrm{ex}_t(n, K_t(r)) \\leq C \\cdot n^{t - r^{1-t}}$. This generalizes the Kővári–Sós–Turán theorem from graphs to $t$-uniform hypergraphs via a double-counting argument on co-degrees.",
-      "startLine": 105,
-      "endLine": 135,
-      "mathContext": "Defines `hypergraphExponent t r = t - r^{1-t}` and axiomatizes the Erdős (1964) upper bound: $\\mathrm{ex}_t(n, K_t(r)) \\leq C \\cdot n^{t - r^{1-t}}$. This generalizes the Kővári–Sós–Turán theorem from graphs to $t$-uniform hypergraphs via a double-counting argument on co-degrees."
+      "summary": "Defines `hypergraphExponent t r = t - r^{1-t}`. Documents the Erdős (1964) upper bound $\\mathrm{ex}_t(n, K_t(r)) \\leq C \\cdot n^{t - r^{1-t}}$ via a docstring (no axiom declaration in this section).",
+      "startLine": 107,
+      "endLine": 133,
+      "mathContext": "Defines `hypergraphExponent t r = t - r^{1-t}`. Documents the Erdős (1964) upper bound via a docstring; no axiom declaration. The exponent generalizes the KST exponent $2 - 1/r$ to arbitrary uniformity $t$."
     },
     {
       "id": "lower-bound",
       "title": "Known Lower Bound (Weaker, Probabilistic)",
-      "summary": "Axiomatizes Erdős's weaker lower bound $\\mathrm{ex}_t(n, K_t(r)) \\geq c \\cdot n^{t - C r^{1-t}}$ with $C > 1$, obtained via the probabilistic method (random hypergraph + deletion). The gap $C > 1$ vs the conjectured $C = 1$ is the central open problem.",
-      "startLine": 136,
-      "endLine": 156,
-      "mathContext": "Axiomatizes Erdős's weaker lower bound $\\mathrm{ex}_t(n, K_t(r)) \\geq c \\cdot n^{t - C r^{1-t}}$ with $C > 1$, obtained via the probabilistic method (random hypergraph + deletion). The gap $C > 1$ vs the conjectured $C = 1$ is the central open problem."
+      "summary": "Documents Erdős's weaker lower bound $\\mathrm{ex}_t(n, K_t(r)) \\geq c \\cdot n^{t - C r^{1-t}}$ ($C > 1$) via a docstring (no axiom declaration in this section). The gap $C > 1$ vs the conjectured $C = 1$ is the central open problem.",
+      "startLine": 134,
+      "endLine": 150,
+      "mathContext": "Documents Erdős's weaker lower bound $\\mathrm{ex}_t(n, K_t(r)) \\geq c \\cdot n^{t - C r^{1-t}}$ with $C > 1$ via a docstring; no axiom declaration. The bound is obtained by probabilistic methods; the gap $C > 1$ vs conjectured $C = 1$ is the open problem."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture (Erdős Problem #1158)",
       "summary": "Defines `erdos1158Conjecture t r` using the $\\varepsilon$-formulation: for every $\\varepsilon > 0$, there exist $c > 0$ and $N_0$ such that $\\mathrm{ex}_t(n, K_t(r)) \\geq c \\cdot n^{t - r^{1-t} - \\varepsilon}$ for $n \\geq N_0$. This is the standard way to formalize $o(1)$ asymptotic bounds in Lean.",
-      "startLine": 157,
-      "endLine": 181,
+      "startLine": 151,
+      "endLine": 174,
       "mathContext": "Defines `erdos1158Conjecture t r` using the $\\varepsilon$-formulation: for every $\\varepsilon > 0$, there exist $c > 0$ and $N_0$ such that $\\mathrm{ex}_t(n, K_t(r)) \\geq c \\cdot n^{t - r^{1-t} - \\varepsilon}$ for $n \\geq N_0$. This is the standard way to formalize $o(1)$ asymptotic bounds in Lean."
     },
     {
       "id": "graph-reduction",
       "title": "Reduction to the Graph Case ($t = 2$)",
       "summary": "Proves the exponent specializes correctly for graphs: `exponent_t2` proves $\\alpha(2, r) = 2 - 1/r$ using `Real.rpow_neg_one`, and `exponent_t2_r2`/`exponent_t2_r3` compute the exact values $3/2$ and $5/3$. This connects Problem #1158 to Problem #714 (Zarankiewicz).",
-      "startLine": 182,
-      "endLine": 216,
+      "startLine": 176,
+      "endLine": 207,
       "mathContext": "Proves the exponent specializes correctly for graphs: `exponent_t2` proves $\\alpha(2, r) = 2 - 1/r$ using `Real.rpow_neg_one`, and `exponent_t2_r2`/`exponent_t2_r3` compute the exact values $3/2$ and $5/3$."
     },
     {
       "id": "known-cases",
       "title": "Known Cases and Stepping-Up",
-      "summary": "Axiomatizes the two solved cases ($t = 2, r \\in \\{2, 3\\}$ via algebraic constructions) and the Erdős–Hajnal stepping-up lemma that lifts $(t-1)$-uniform bounds to $t$-uniform bounds with exponent $\\alpha + 1$. The final theorem `erdos_1158_known_cases` packages both solved cases. Stepping-up is the only tool for $t \\geq 3$ but compounds the constant gap.",
-      "startLine": 217,
-      "endLine": 279,
-      "mathContext": "Axiomatizes the two solved cases ($t = 2, r \\in \\{2, 3\\}$ via algebraic constructions) and the Erdős–Hajnal stepping-up lemma that lifts $(t-1)$-uniform bounds to $t$-uniform bounds with exponent $\\alpha + 1$. The final theorem `erdos_1158_known_cases` packages both solved cases. Stepping-up is the only tool for $t \\geq 3$ but compounds the constant gap."
+      "summary": "Axiomatizes the two solved cases (`conjecture_t2_r2`: $t=2, r=2$ via projective planes; `conjecture_t2_r3`: $t=2, r=3$ via Brown 1966). The Erdős–Hajnal stepping-up lemma is documented in a docstring (Part IX) but not formalized. The theorem `erdos_1158_known_cases` packages both solved cases.",
+      "startLine": 209,
+      "endLine": 263,
+      "mathContext": "Axiomatizes `conjecture_t2_r2` and `conjecture_t2_r3` (the only known cases). Documents the stepping-up lemma (Erdős–Hajnal) as a docstring; not an axiom. The theorem `erdos_1158_known_cases` proves `erdos1158Conjecture 2 2 ∧ erdos1158Conjecture 2 3` from these axioms."
     },
     {
       "id": "structural-properties",
       "title": "Structural Properties of the Exponent",
       "summary": "Three fully proved theorems bounding `hypergraphExponent`: `exponent_lt_t` ($\\alpha < t$), `exponent_ge_t_sub_one` ($\\alpha \\geq t - 1$), and `exponent_pos` ($\\alpha > 0$ for $t \\geq 2$). Together these show the exponent lies in the interval $(t-1, t)$, matching combinatorial intuition.",
-      "startLine": 280,
+      "startLine": 265,
       "endLine": 306,
       "mathContext": "Three fully proved theorems bounding `hypergraphExponent`: `exponent_lt_t` ($\\alpha < t$), `exponent_ge_t_sub_one` ($\\alpha \\geq t - 1$), and `exponent_pos` ($\\alpha > 0$ for $t \\geq 2$). Together these show the exponent lies in the interval $(t-1, t)$, matching combinatorial intuition."
     }
