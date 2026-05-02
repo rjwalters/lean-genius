@@ -43,13 +43,11 @@
     "originalContributions": [
       "IsUnitFractionDecomp predicate encoding Egyptian fraction representations of 1",
       "maxGap definition via List.zip/tail/foldl for efficient gap computation",
-      "example_2_3_6: canonical representation achieving the conjectured optimal gap",
       "no_consecutive_reciprocals: Erdős's 1932 theorem axiomatized as gap ≥ 2",
-      "erdos_287_conjecture: the open gap ≥ 3 conjecture axiomatized",
       "erdos_287 theorem: proved gap ≥ 2 by invoking no_consecutive_reciprocals"
     ],
     "axiomCount": 1,
-    "assumptions": "example_2_3_6 (1 = 1/2 + 1/3 + 1/6 is a valid Egyptian fraction decomposition with max gap 3), no_consecutive_reciprocals (Erdos 1932: the sum of reciprocals of consecutive integers n, n+1, ..., n+k never equals 1, implying gap >= 2), erdos_287_conjecture (the open conjecture that every Egyptian fraction representation of 1 has max gap >= 3)",
+    "assumptions": "1 axiom: no_consecutive_reciprocals (Erdős's theorem: consecutive integer reciprocals never sum to 1, implying maxGap ≥ 2). 0 sorries.",
     "lineCount": 85,
     "relatedProblems": [
       {
@@ -66,7 +64,7 @@
     "historicalContext": "**Erdős Problem #287: Egyptian Fraction Gap**\n\nThis problem concerns Egyptian fraction representations of 1 — writing 1 = 1/n₁ + 1/n₂ + ··· + 1/nₖ with distinct integers n₁ < n₂ < ··· < nₖ. Egyptian fractions have a remarkably long history: the Rhind Mathematical Papyrus (c. 1650 BCE, copied by the scribe Ahmes from an even older document) contains extensive tables for decomposing fractions as sums of distinct unit fractions. The ancient Egyptians used only unit fractions (with the exception of 2/3), making these decompositions a practical necessity for arithmetic.\n\nThe specific question of how 'dense' such a representation can be — how small the maximum gap between consecutive denominators can be — was posed by Erdős in connection with his 1932 result on consecutive integer reciprocals.\n\n**Erdős's 1932 Theorem:** The sum 1/n + 1/(n+1) + ··· + 1/(n+k) is never equal to 1 for n ≥ 2. The elegant proof uses Bertrand's postulate (Chebyshev's theorem): the largest prime p ≤ n+k satisfies p > (n+k)/2, so p appears exactly once among {n, ..., n+k}. Multiplying the sum by lcm(n, ..., n+k), exactly one term has odd p-adic valuation, making the numerator indivisible by p and hence not equal to the denominator.\n\nThis theorem immediately implies maxGap ≥ 2 for any Egyptian fraction representation of 1 (since gap 1 everywhere means consecutive integers). Erdős then asked the natural strengthening: must the maximum gap be at least 3?\n\n**The Conjecture (OPEN):** Every representation 1 = Σ 1/nᵢ has max(nᵢ₊₁ − nᵢ) ≥ 3. The example 1 = 1/2 + 1/3 + 1/6 with max gap 3 shows this would be sharp. Despite over 90 years of attention, the conjecture remains open. The difficulty lies in ruling out representations where gaps alternate between 1 and 2 — such sequences have more complex LCM structure than purely consecutive integers.\n\n**Connection to Prime Distribution:** Erdős observed that the conjecture would follow (for all but finitely many cases) from a conjecture in prime distribution theory: for all sufficiently large N, there exists a prime p ∈ [N, 2N] such that (p+1)/2 is also prime. This connects the Egyptian fraction gap problem to deep questions about prime pairs.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet $k \\ge 2$. For any distinct integers $1 < n_1 < n_2 < \\cdots < n_k$ such that\n$$1 = \\frac{1}{n_1} + \\frac{1}{n_2} + \\cdots + \\frac{1}{n_k},$$\nmust we have $\\max_{1 \\le i < k}(n_{i+1} - n_i) \\ge 3$?\n\n**Known Results:**\n- $\\max(n_{i+1} - n_i) \\ge 2$: **PROVED** (Erdős, 1932)\n- $\\max(n_{i+1} - n_i) = 3$ achievable: $1 = 1/2 + 1/3 + 1/6$\n- $\\max(n_{i+1} - n_i) \\ge 3$: **OPEN CONJECTURE**\n\n**Status**: OPEN",
     "text": "For 1 = 1/n₁ + ⋯ + 1/nₖ with distinct integers, must max(nᵢ₊₁ - nᵢ) ≥ 3? The example 1 = 1/2 + 1/3 + 1/6 shows 3 is optimal. Gap ≥ 2 is proven. Status: OPEN.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** IsUnitFractionDecomp encodes a valid representation as a sorted list of distinct integers > 1 with rational reciprocals summing to 1. maxGap computes the maximum consecutive difference via zip/fold (a single-pass O(k) computation)\n\n2. **The Example:** example_2_3_6 axiomatizes that [2, 3, 6] is valid with maxGap = 3. This is a purely computational fact: IsUnitFractionDecomp requires checking sortedness, all-elements->1, and 1/2 + 1/3 + 1/6 = 1 over ℚ — all decidable. **Aristotle candidate**: norm_num or decide could prove this automatically\n\n3. **Lower Bound:** no_consecutive_reciprocals axiomatizes Erdős's 1932 result (gap ≥ 2). The proof via Bertrand's postulate + p-adic valuation argument is non-trivial; formalizing it would require Mathlib's Nat.bertrand and padicValNat infrastructure\n\n4. **Conjecture:** erdos_287_conjecture axiomatizes the OPEN gap ≥ 3 conjecture. Recording open conjectures as axioms is a principled approach: it makes the assumed-but-unproved status machine-checkable\n\n5. **Main Theorem:** erdos_287 is a genuine theorem proving gap ≥ 2 by direct invocation of no_consecutive_reciprocals. The 1-line proof highlights the clean separation between the deep number theory (axiomatized) and the logical structure (proved)\n\n6. **Compactness:** The entire formalization is 91 lines in 5 logical parts, with 3 axioms (one computationally trivial, one deep theorem, one open conjecture) and 1 genuine theorem",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** IsUnitFractionDecomp encodes a valid representation as a sorted list of distinct integers > 1 with rational reciprocals summing to 1. maxGap computes the maximum consecutive difference via zip/fold (a single-pass O(k) computation)\n\n2. **The Example:** The fact that [2, 3, 6] is a valid decomposition with maxGap = 3 is documented in a dangling docstring (line 47) — no axiom is declared. This is trivially decidable and could be promoted to a theorem by norm_num/decide (Aristotle candidate).\n\n3. **Lower Bound:** no_consecutive_reciprocals axiomatizes Erdős's 1932 result (gap ≥ 2). The proof via Bertrand's postulate + p-adic valuation argument is non-trivial; formalizing it would require Mathlib's Nat.bertrand and padicValNat infrastructure\n\n4. **The Conjecture:** Erdős's open conjecture that maxGap ≥ 3 for all representations is described in a dangling docstring (lines 65–69) — no axiom is declared in this formalization.\n\n5. **Main Theorem:** erdos_287 is a genuine theorem proving gap ≥ 2 by direct invocation of no_consecutive_reciprocals. The 1-line proof highlights the clean separation between the deep number theory (axiomatized) and the logical structure (proved)\n\n6. **Compactness:** The entire formalization is 85 lines in 5 logical parts, with 1 axiom (no_consecutive_reciprocals, the deep number-theoretic theorem) and 1 genuine theorem (erdos_287).",
     "keyInsights": [
       "**LCM Obstruction via Bertrand's Postulate:** The proof that gap ≥ 2 works because consecutive integers always contain a prime p > (n+k)/2, and this prime appears exactly once in {n, ..., n+k}. Multiplying the sum by the LCM, the p-adic valuation argument shows the numerator cannot equal the denominator. For gap ≥ 3, one would need to handle sequences with gaps of 1 and 2, where the prime structure is more complex",
       "**Optimal Example Is Minimal:** The representation 1 = 1/2 + 1/3 + 1/6 is the unique 3-term decomposition and has max gap exactly 3. Any representation must include 1/2 (since the sum of 1/n for n ≥ 3 can never reach 1 with finitely many terms — more precisely, 1/3 + 1/4 + ··· + 1/N < 1 for all N). This forces the first term, and then 1/3 + 1/6 = 1/2 is forced for k = 3",
@@ -101,38 +99,38 @@
     {
       "id": "example",
       "title": "The Canonical Example",
-      "summary": "Axiomatizes example_2_3_6: [2, 3, 6] is a valid decomposition with maxGap = 3. This is the simplest representation of 1 and shows the conjectured bound 3 would be tight. Note: this axiom is trivially provable by computation (norm_num/decide) — an Aristotle candidate.",
+      "summary": "A dangling docstring documents that [2, 3, 6] is a valid decomposition with maxGap = 3 — no axiom is declared. This is commentary only. The fact is trivially decidable (norm_num/decide) and is an Aristotle candidate to promote to a theorem.",
       "mathContext": "$1/2 + 1/3 + 1/6 = 1$, gaps $= (1, 3)$, maxGap $= 3$. Provable axiom.",
       "startLine": 43,
-      "endLine": 50
+      "endLine": 47
     },
     {
       "id": "known-lower-bound",
       "title": "Known Lower Bound: Gap ≥ 2",
       "summary": "Axiomatizes no_consecutive_reciprocals: Erdős's 1932 theorem that consecutive integer reciprocals never sum to 1, implying maxGap ≥ 2 for all representations. The proof uses Bertrand's postulate and p-adic valuation arguments.",
       "mathContext": "Erdős 1932: $\\sum_{i=n}^{n+k} 1/i \\neq 1$ for $n \\ge 2$. Proof uses Bertrand's postulate: the largest prime $p \\le n+k$ satisfies $v_p(\\text{lcm}(n,\\ldots,n+k)) = 1$.",
-      "startLine": 51,
-      "endLine": 63
+      "startLine": 48,
+      "endLine": 60
     },
     {
       "id": "conjecture",
       "title": "The Open Conjecture",
-      "summary": "Axiomatizes erdos_287_conjecture: the OPEN conjecture that maxGap ≥ 3 for all representations. Combined with the example [2, 3, 6], this would give a complete characterization: the minimum achievable maximum gap is exactly 3.",
+      "summary": "A dangling docstring describes Erdős's open conjecture that maxGap ≥ 3 for all representations — no axiom is declared in this formalization. Combined with the example [2, 3, 6], a proof would give a complete characterization: the minimum achievable maximum gap is exactly 3.",
       "mathContext": "Conjecture: $\\max_i(n_{i+1} - n_i) \\ge 3$ for all representations $\\sum 1/n_i = 1$. OPEN since 1932.",
-      "startLine": 64,
-      "endLine": 75
+      "startLine": 61,
+      "endLine": 69
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "summary": "The theorem erdos_287 proves maxGap ≥ 2 by invoking no_consecutive_reciprocals. This is a genuine Lean theorem (not axiom), recording the strongest proved result on the problem. The file closes the Erdos287 namespace.",
       "mathContext": "Theorem: $\\text{maxGap}(ns) \\ge 2$ for all valid decompositions. Proof: direct application of $\\text{no\\_consecutive\\_reciprocals}$. The 1-line proof highlights how the formalization cleanly separates the deep number theory (axiomatized) from the logical conclusion (proved).",
-      "startLine": 76,
+      "startLine": 70,
       "endLine": 85
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #287 asks whether every Egyptian fraction representation of 1 must have a gap of at least 3 between some pair of consecutive denominators. The lower bound of 2 is proved (Erdős 1932, via Bertrand's postulate and p-adic valuation), and the bound 3 is achieved by the canonical example 1 = 1/2 + 1/3 + 1/6. The gap ≥ 3 conjecture remains OPEN after over 90 years. The formalization captures the problem in 91 lines of Lean 4 with 0 sorries, 3 axioms (the example, the gap ≥ 2 theorem, and the open conjecture), and 1 genuine theorem (erdos_287 proving gap ≥ 2).",
+    "summary": "Erdős Problem #287 asks whether every Egyptian fraction representation of 1 must have a gap of at least 3 between some pair of consecutive denominators. The lower bound of 2 is proved (Erdős 1932, via Bertrand's postulate and p-adic valuation), and the bound 3 is achieved by the canonical example 1 = 1/2 + 1/3 + 1/6. The gap ≥ 3 conjecture remains OPEN after over 90 years. The formalization captures the problem in 85 lines of Lean 4 with 0 sorries, 1 axiom (no_consecutive_reciprocals, the gap ≥ 2 theorem), and 1 genuine theorem (erdos_287 proving gap ≥ 2). The example and conjecture appear only as dangling docstrings.",
     "implications": "**1. Egyptian Fraction Theory:** Problem #287 is part of a broader program studying the structure of Egyptian fraction representations. Erdős and Straus conjectured that 4/n always has a 3-term representation (still open for general n). The gap question adds a combinatorial dimension to this classical area.\n\n**2. Consecutive Integer Reciprocals:** The gap ≥ 2 proof connects to a family of results about sums of consecutive reciprocals. The harmonic number $H_n = 1 + 1/2 + \\cdots + 1/n$ is never an integer for $n \\geq 2$ (Theisinger 1915), and Erdős's result is a far-reaching generalization: no contiguous block of unit fractions sums to 1.\n\n**3. Bertrand's Postulate Applications:** The use of Bertrand's postulate in the gap ≥ 2 proof is a beautiful application of prime distribution to a seemingly unrelated combinatorial problem. Stronger prime distribution results (Chen-Iwaniec sieve) might be needed for gap ≥ 3.\n\n**4. Prime Pair Conjectures:** The reduction to prime pairs — finding $p \\in [N, 2N]$ with $(p+1)/2$ also prime — connects to the broader landscape of prime tuple conjectures. Progress on bounded prime gaps (Zhang 2013, Maynard 2015) could eventually impact this question.\n\n**5. Computational Verification:** The conjecture has been verified computationally for all representations up to moderate size. Systematic enumeration of Egyptian fraction representations of 1 is itself a rich computational problem, connecting to algorithmic number theory.",
     "openQuestions": [
       "Is the gap ≥ 3 conjecture true for all Egyptian fraction representations of 1?",
