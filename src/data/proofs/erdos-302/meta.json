@@ -104,90 +104,90 @@
     {
       "id": "definitions",
       "title": "Part 1: Basic Definitions",
-      "startLine": 33,
-      "endLine": 53,
+      "startLine": 34,
+      "endLine": 64,
       "summary": "Defines UnitFractionSum (1/a = 1/b + 1/c), proves equivalence bc = a(b+c), and defines IsUnitFractionSumFree property.",
       "mathContext": "The fundamental equation $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$ is equivalent to $bc = a(b+c)$ after clearing denominators. A set $A$ is unit-fraction-sum-free if no triple of distinct elements satisfies this equation."
     },
     {
       "id": "f-function",
       "title": "Part 2: The Function f(N)",
-      "startLine": 54,
-      "endLine": 66,
+      "startLine": 65,
+      "endLine": 89,
       "summary": "Defines f(N) as max |A| over sum-free A ⊆ {1,...,N} using Finset.sup. Trivial upper bound f(N) ≤ N.",
       "mathContext": "$f(N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\; A \\text{ is unit-fraction-sum-free}\\}$. The trivial bound $f(N) \\leq N$ holds since $A \\subseteq \\{1,\\ldots,N\\}$."
     },
     {
       "id": "lower-bounds",
       "title": "Part 3: Lower Bound Constructions",
-      "startLine": 67,
-      "endLine": 110,
+      "startLine": 90,
+      "endLine": 218,
       "summary": "Three constructions: oddIntegers (~N/2), upperHalf (~N/2), and Cambie's combined set (~5N/8). Axiom cambie_lower_bound: f(N) ≥ (5/8+o(1))N.",
       "mathContext": "Three sum-free constructions of increasing density: (1) odd integers in $[1,N]$ give $\\sim N/2$ elements; (2) the interval $[N/2, N]$ also gives $\\sim N/2$; (3) Cambie's set $\\{n \\leq N/4 : n \\text{ odd}\\} \\cup [N/2, N]$ achieves $\\sim \\frac{5N}{8}$ elements."
     },
     {
       "id": "upper-bound",
       "title": "Part 4: Upper Bound (van Doorn)",
-      "startLine": 111,
-      "endLine": 121,
+      "startLine": 219,
+      "endLine": 229,
       "summary": "Axiom van_doorn_upper_bound: f(N) ≤ (9/10+o(1))N. Verified theorem known_bounds_gap: 5/8 < 9/10.",
       "mathContext": "$f(N) \\leq (\\frac{9}{10} + o(1))N$, so no sum-free subset can contain more than 90% of $\\{1,\\ldots,N\\}$. The verified inequality $\\frac{5}{8} < \\frac{9}{10}$ confirms the bounds are consistent."
     },
     {
       "id": "main-question",
       "title": "Part 5: The Main Question",
-      "startLine": 122,
-      "endLine": 145,
+      "startLine": 230,
+      "endLine": 271,
       "summary": "Original question f(N) = (1/2+o(1))N is FALSE (sorry, uses cambie_lower_bound). Refined density_question: ∃ c ∈ [5/8, 9/10] with f(N)/N → c.",
       "mathContext": "The original conjecture $f(N) = (\\frac{1}{2}+o(1))N$ is false since $\\frac{5}{8} > \\frac{1}{2}$. The refined question asks whether $\\lim_{N\\to\\infty} f(N)/N$ exists and equals some $c \\in [\\frac{5}{8}, \\frac{9}{10}]$."
     },
     {
       "id": "doubling",
       "title": "Part 6: Related Observation (Cambie)",
-      "startLine": 146,
-      "endLine": 166,
-      "summary": "HasDoubling (contains n and 2n). Axiom: |A| > 2N/3 forces doubling. Verified: 2/3 > 5/8 (equal case less restrictive than distinct).",
-      "mathContext": "If $b = c$, then $\\frac{1}{a} = \\frac{2}{b}$ means $b = 2a$. Any $A$ with $|A| > \\frac{2N}{3}$ must contain such a pair by pigeonhole on the partition $\\{n, 2n\\}$. The threshold $\\frac{2}{3} > \\frac{5}{8}$ shows the equal-element case is less restrictive."
+      "startLine": 272,
+      "endLine": 286,
+      "summary": "HasDoubling (contains n and 2n). Background docstring notes |A| > 2N/3 forces doubling (not stated as axiom). Verified: 2/3 > 5/8 (equal case less restrictive than distinct).",
+      "mathContext": "If $b = c$, then $\\frac{1}{a} = \\frac{2}{b}$ means $b = 2a$. The observation that any $A$ with $|A| > \\frac{2N}{3}$ must contain such a pair is described in a docstring; no axiom is declared. Verified: $\\frac{2}{3} > \\frac{5}{8}$."
     },
     {
       "id": "coloring",
       "title": "Part 7: The Coloring Version (Problem #303)",
-      "startLine": 167,
-      "endLine": 182,
+      "startLine": 287,
+      "endLine": 302,
       "summary": "Defines coloring_version (2-color avoiding monochromatic solutions). Axiom brown_rodl_coloring: always possible. Completely solved.",
       "mathContext": "The Ramsey-type variant: does there exist a 2-coloring $\\chi: \\{1,\\ldots,N\\} \\to \\{0,1\\}$ such that no monochromatic triple $(a,b,c)$ satisfies $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$? Brown-Rödl (1991) proved the answer is yes for all $N$."
     },
     {
       "id": "algebra",
       "title": "Part 8: Algebraic Structure",
-      "startLine": 183,
-      "endLine": 201,
+      "startLine": 303,
+      "endLine": 353,
       "summary": "algebraic_form: UnitFractionSum ↔ bc = ab + ac. solution_b_lt_2a: b < 2a. solution_c_bound: c ≤ a(a+1).",
       "mathContext": "The polynomial form $bc = ab + ac$ reveals solutions on a quadric. Proved bounds: $b < 2a$ (from $2ac \\leq bc \\Rightarrow c \\leq b$, contradiction) and $c \\leq a(a+1)$ (from $(b{-}a{-}1)(c{-}a) = a(a{+}1){-}c \\geq 0$)."
     },
     {
       "id": "examples",
       "title": "Part 9: Examples of Solutions",
-      "startLine": 202,
-      "endLine": 222,
+      "startLine": 354,
+      "endLine": 378,
       "summary": "Explicit examples via norm_num (1/2=1/3+1/6, 1/3=1/4+1/12, etc.) and standard_pattern: 1/n = 1/(n+1) + 1/(n(n+1)).",
       "mathContext": "The telescoping identity $\\frac{1}{n} = \\frac{1}{n+1} + \\frac{1}{n(n+1)}$ generates an infinite family of solutions. Combined with examples like $\\frac{1}{2} = \\frac{1}{3} + \\frac{1}{6}$, this shows solutions are dense among small integers."
     },
     {
       "id": "hardness",
       "title": "Part 10: Why the Problem is Hard",
-      "startLine": 223,
-      "endLine": 236,
+      "startLine": 379,
+      "endLine": 392,
       "summary": "Each element forbids many pairs. Proved coloring_always_possible from Brown-Rödl. Verified lower_bound_improvement: 5/8 > 1/2.",
       "mathContext": "Each element $a$ forbids all pairs $(b,c)$ with $bc = a(b+c)$. The number of forbidden pairs grows with $a$, creating a complex dependency structure. The Brown-Rödl coloring result shows this structure is not rigid enough to prevent partition regularity."
     },
     {
       "id": "summary",
       "title": "Part 11: Main Results Summary",
-      "startLine": 237,
-      "endLine": 261,
-      "summary": "erdos_302: combines Cambie lower bound + van Doorn upper bound + original question false. erdos_302_summary packages bounds. Axiom erdos_302_density_open for exact density.",
-      "mathContext": "The main theorem packages three results: $f(N) \\geq (\\frac{5}{8}+o(1))N$ (Cambie), $f(N) \\leq (\\frac{9}{10}+o(1))N$ (van Doorn), and $\\neg(f(N) = (\\frac{1}{2}+o(1))N)$. The exact $\\lim f(N)/N$ remains axiomatized as an open problem."
+      "startLine": 393,
+      "endLine": 414,
+      "summary": "erdos_302: combines Cambie lower bound + van Doorn upper bound + original question false. erdos_302_summary packages bounds. Exact density lim f(N)/N is an open question stated as density_question : Prop.",
+      "mathContext": "The main theorem packages three results: $f(N) \\geq (\\frac{5}{8}+o(1))N$ (Cambie), $f(N) \\leq (\\frac{9}{10}+o(1))N$ (van Doorn), and $\\neg(f(N) = (\\frac{1}{2}+o(1))N)$. The exact $\\lim f(N)/N$ is the open `density_question : Prop`; no axiom for the exact limit is declared."
     }
   ],
   "conclusion": {
