@@ -89,10 +89,7 @@ def grimmsConjecture : Prop :=
   ∀ n k : ℕ, k ≥ 1 → isCompositeBlock n k →
     ∃ f : PrimeDivisorAssignment n k, isValidAssignment n k f
 
-/--
-**Erdős Problem #375:**
-Grimm's Conjecture - currently OPEN.
--/
+/- Tautological placeholder: proves ¬False by classical logic; does not express openness of the conjecture. -/
 theorem erdos_375_open : ¬ (grimmsConjecture ∨ ¬grimmsConjecture → False) :=
   fun h => h (Classical.em _)
 
