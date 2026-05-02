@@ -106,8 +106,8 @@ def HasOptimalDensity (A : Set ℕ) : Prop :=
 ## Part III: Folkman's Result
 -/
 
-/--
-**Folkman's Theorem:**
+/-
+**Folkman's Theorem (1966, not axiomatized):**
 If |A ∩ {1,...,N}| ≫ N^{1/2+ε} for some ε > 0, then A is subcomplete.
 -/
 /-
