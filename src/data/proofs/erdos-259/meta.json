@@ -78,30 +78,37 @@
     {
       "id": "moebius",
       "title": "The Möbius Function",
-      "startLine": 30,
-      "endLine": 46,
-      "summary": "Definition of squarefree numbers and the connection to μ(n)²."
+      "startLine": 51,
+      "endLine": 81,
+      "summary": "Möbius function values μ(1)…μ(10) computed via native_decide."
+    },
+    {
+      "id": "squarefree",
+      "title": "Squarefree Numbers",
+      "startLine": 82,
+      "endLine": 106,
+      "summary": "Squarefree definition and the μ(n)² indicator characterization."
     },
     {
       "id": "series",
       "title": "The Series Definition",
-      "startLine": 47,
-      "endLine": 62,
-      "summary": "Definition of the series terms and the full infinite sum, with summability."
+      "startLine": 107,
+      "endLine": 134,
+      "summary": "Series term, partial sums, and the summability axiom."
     },
     {
       "id": "main-theorem",
-      "title": "Main Result",
-      "startLine": 63,
-      "endLine": 82,
-      "summary": "Chen-Ruzsa theorem (axiom) and the main Erdős #259 result."
+      "title": "Chen-Ruzsa Theorem and Main Result",
+      "startLine": 135,
+      "endLine": 169,
+      "summary": "Chen-Ruzsa axiom and erdos_259 (main theorem)."
     },
     {
       "id": "examples",
-      "title": "Examples and Computations",
-      "startLine": 83,
+      "title": "Numerical Approximation and Related Results",
+      "startLine": 170,
       "endLine": 239,
-      "summary": "Verified examples of squarefree (1, 6) and non-squarefree (4) numbers."
+      "summary": "Partial sums, infinite squarefree subsets, density, and related problems."
     }
   ],
   "conclusion": {
