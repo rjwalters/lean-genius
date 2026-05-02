@@ -3990,10 +3990,12 @@
       "result": "clean"
     },
     "erdos-1127": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "#14765: phantom 'Statement of Erdős-Hajnal necessity result' contribution + false 'former axioms now proved as theorems or definitions' claim (none of the named identifiers exist) + section line drift starting at davies-theorem (Parts VIII/IX missing entirely)"
+      ],
+      "lastAudited": "2026-05-02T12:11:47Z",
+      "result": "issues-found"
     },
     "erdos-1128": {
       "auditCount": 2,
