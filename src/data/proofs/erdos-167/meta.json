@@ -28,7 +28,7 @@
       "extremal combinatorics",
       "linear programming relaxation"
     ],
-    "lineCount": 275,
+    "lineCount": 274,
     "assumptions": "1 axiom: IsPlanar. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
@@ -36,7 +36,7 @@
     "historicalContext": "Zsolt Tuza conjectured in 1981 that $\\tau(G) \\leq 2\\nu(G)$ for every graph $G$, where $\\tau(G)$ is the minimum number of edges whose removal destroys all triangles and $\\nu(G)$ is the maximum number of edge-disjoint triangles. The trivial bound $\\tau \\leq 3\\nu$ follows from removing all three edges of each triangle in a maximum packing. Penny Haxell and Yoshiharu Kohayakawa (1998) proved $\\tau \\leq (3 - 3/23)\\nu \\approx 2.87\\nu$ using probabilistic and structural methods. Haxell (1999) verified the conjecture for $K_4$-free graphs. The conjecture also holds for planar graphs (Tuza 1994, Krivelevich 1995) and Erd\u0151s-R\u00e9nyi random graphs $G(n,p)$ for most $p$. The fractional relaxation $\\tau^*(G) \\leq 2\\nu^*(G)$ was proved by Krivelevich via LP duality. Despite four decades of work, the integral conjecture remains open, and the gap between the best general bound 2.87 and the conjectured 2 has resisted improvement.",
     "problemStatement": "Let $\\nu(G)$ be the maximum number of edge-disjoint triangles in $G$, and $\\tau(G)$ the minimum number of edges whose removal makes $G$ triangle-free. **Tuza's Conjecture**: $\\tau(G) \\leq 2\\nu(G)$ for all graphs $G$. Complete graphs $K_4$ and $K_5$ show the factor 2 is best possible.",
     "text": "If G is a graph with at most k edge-disjoint triangles, can G be made triangle-free by removing at most 2k edges? Tuza's Conjecture (1981) remains open in general.",
-    "proofStrategy": "The formalization builds from first principles: triangles as 3-element vertex subsets, edge-disjoint packings as sets of non-overlapping triangles, and triangle covers as edge sets whose removal eliminates all triangles. Aristotle verified three key theorems: (1) `trivial_bound`: $\\tau \\leq 3\\nu$ via constructing a cover by taking all edges from a maximum packing, using `Finset.biUnion` and `offDiag` to enumerate edges; (2) `k4_tight`: $\\nu(K_4)=1, \\tau(K_4)=2$ by exhaustive search over `Fin 4`; (3) `k5_tight`: $\\nu(K_5)=2, \\tau(K_5)=4$ using `native_decide` for finite verification. The remaining axioms capture deep results (Haxell-Kohayakawa bound, special graph classes, fractional version) whose proofs rely on probabilistic and LP duality methods beyond the current formalization scope.",
+    "proofStrategy": "The formalization builds from first principles: triangles as 3-element vertex subsets, edge-disjoint packings as sets of non-overlapping triangles, and triangle covers as edge sets whose removal eliminates all triangles. Aristotle verified three key theorems: (1) `trivial_bound`: $\\tau \\leq 3\\nu$ via constructing a cover by taking all edges from a maximum packing, using `Finset.biUnion` and `offDiag` to enumerate edges; (2) `k4_tight`: $\\nu(K_4)=1, \\tau(K_4)=2$ by exhaustive search over `Fin 4`; (3) `k5_tight`: $\\nu(K_5)=2, \\tau(K_5)=4$ using `native_decide` for finite verification. One axiom is declared: `IsPlanar`, which axiomatizes the planar graph predicate. The Haxell-Kohayakawa bound, K\u2084-free special case, and fractional version are described in docstrings only — no corresponding axioms are declared in the file.",
     "keyInsights": [
       "Trivial bound: remove one edge per triangle in maximum packing \u2192 \u03c4 \u2264 3\u03bd",
       "K\u2084 achieves equality in Tuza: \u03bd(K\u2084) = 1, \u03c4(K\u2084) = 2",
@@ -72,7 +72,7 @@
       "title": "Tuza's Conjecture Statement",
       "startLine": 86,
       "endLine": 94,
-      "summary": "Formal statement of Tuza's conjecture: for every graph G, the minimum triangle cover size \u03c4(G) is at most 2\u03bd(G) where \u03bd(G) is the maximum triangle packing size. Axiomatized as the conjecture is open."
+      "summary": "Formal statement of Tuza's conjecture: for every graph G, the minimum triangle cover size \u03c4(G) is at most 2\u03bd(G) where \u03bd(G) is the maximum triangle packing size. `TuzaConjecture` is a `def : Prop` — not an axiom."
     },
     {
       "id": "trivial-bound",
@@ -83,24 +83,24 @@
     },
     {
       "id": "known-results",
-      "title": "Known Results: K\u2084 and K\u2085 Tightness, Haxell-Kohayakawa",
+      "title": "Known Results: K\u2084 and K\u2085 Tightness",
       "startLine": 176,
-      "endLine": 253,
-      "summary": "Tightness examples: K\u2084 has \u03bd=1, \u03c4=2 (ratio 2, matching conjecture) and K\u2085 has \u03bd=2, \u03c4=4 (also ratio 2). Both verified by native_decide. Axiomatizes the Haxell-Kohayakawa bound \u03c4 \u2264 (3-3/23)\u03bd \u2248 2.87\u03bd and special cases (K\u2084-free, planar)."
+      "endLine": 244,
+      "summary": "Tightness examples: K\u2084 has \u03bd=1, \u03c4=2 (ratio 2, matching conjecture) and K\u2085 has \u03bd=2, \u03c4=4 (also ratio 2). Both verified by native_decide. The Haxell-Kohayakawa bound and K\u2084-free/planar special cases appear as docstrings — not axiomatized in the file."
     },
     {
       "id": "fractional-version",
       "title": "Fractional Version",
-      "startLine": 254,
-      "endLine": 265,
-      "summary": "Axiomatizes the fractional relaxation \u03c4*(G) \u2264 2\u03bd*(G), which is known to be true via LP duality. The integral conjecture would follow from suitable rounding."
+      "startLine": 245,
+      "endLine": 251,
+      "summary": "Documents the fractional relaxation \u03c4*(G) \u2264 2\u03bd*(G) (proved via LP duality) and the fractional Tuza conjecture in docstrings — no axioms are declared here."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 266,
-      "endLine": 275,
-      "summary": "Summary of formalization status: 3 Aristotle-verified theorems (trivial bound, K\u2084 tightness, K\u2085 tightness), 5 axioms (Tuza conjecture, Haxell-Kohayakawa bound, special cases, fractional version). The main conjecture remains open."
+      "startLine": 252,
+      "endLine": 274,
+      "summary": "Summary of formalization status: 4 theorems (trivial bound, K\u2084 tightness, K\u2085 tightness, plus planar-related), 1 axiom (`IsPlanar`). The Haxell-Kohayakawa bound, K\u2084-free, and fractional version appear in docstrings only. The main conjecture \u03c4 \u2264 2\u03bd remains open."
     }
   ],
   "conclusion": {
@@ -136,7 +136,7 @@
       "Set"
     ],
     "namespace": "Erdos167",
-    "lineCount": 275,
+    "lineCount": 274,
     "axiomCount": 1,
     "theoremCount": 4,
     "definitionCount": 7,
