@@ -103,7 +103,7 @@
       "startLine": 105,
       "endLine": 115,
       "summary": "Folkman's theorem for N^{1/2+ε} density",
-      "mathContext": "Axiomatized as `folkman_theorem`: $\\text{HasFolkmanDensity}(A) \\to \\text{IsSubcomplete}(A)$. Folkman's 1966 proof was the first to show density forces arithmetic structure in subset sums."
+      "mathContext": "Folkman's 1966 result $\\text{HasFolkmanDensity}(A) \\to \\text{IsSubcomplete}(A)$ is described in a documentation comment but is **not** declared as an axiom or theorem — only the predicate `HasFolkmanDensity` is defined. Folkman's original proof was the first to show density forces arithmetic structure in subset sums."
     },
     {
       "id": "szemeredi-vu",
