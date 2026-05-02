@@ -2,12 +2,12 @@
   "id": "cayley-hamilton-cyclic-vector-all-fields",
   "title": "Nonderogatory → Cyclic Vector: All Fields (Primary Decomposition)",
   "slug": "cayley-hamilton-cyclic-vector-all-fields",
-  "description": "Every nonderogatory matrix over ANY field (including finite fields F_q with q ≤ n) has a cyclic vector. Proved axiom-free via primary decomposition and CRT (WIP04): factor minpoly into coprime prime powers, construct primary vectors via minimality, combine with Bezout projections. One routine sorry remains (polynomial factorization bridge).",
+  "description": "Every nonderogatory matrix over ANY field (including finite fields F_q with q ≤ n) has a cyclic vector. Fully verified (0 axioms, 0 sorries) via primary decomposition and CRT (WIP04): factor minpoly into coprime prime powers, construct primary vectors via minimality, combine with Bezout projections. Factorization bridge proved by Aristotle via UniqueFactorizationMonoid API.",
   "meta": {
     "author": "Classical linear algebra (F.G. Frobenius, 1878)",
     "sourceUrl": "",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CayleyHamiltonCyclicVectorAllFields.lean",
     "tags": [
       "linear-algebra",
@@ -18,11 +18,11 @@
       "finite-fields",
       "minimal-polynomial"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 189,
-    "assumptions": "1 sorry: monic_factored_form (routine fact that monic polynomials over a field factor into coprime prime powers via UniqueFactorizationMonoid.normalizedFactors). NOT a mathematical assumption — purely Mathlib API navigation (~50 lines). All mathematical content (primary decomposition, CRT construction) is fully verified via WIP04.",
+    "lineCount": 183,
+    "assumptions": "",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -43,10 +43,10 @@
     ],
     "originalContributions": [
       "V2 upgrade: eliminated RCF similarity axiom via primary decomposition (WIP04)",
-      "Main theorem: nonderogatory_has_cyclic_vector (0 axioms, 1 routine sorry)",
+      "V3 upgrade: proved monic_factored_form via Aristotle (UFD factorization bridge), achieving 0 axioms / 0 sorries",
+      "Main theorem: nonderogatory_has_cyclic_vector (fully verified, all fields including finite)",
       "Corollary: nonderogatory_has_cyclic_vector_finite for any finite field",
-      "Corollary: cyclic_iff_not_killed_below_degree equivalence",
-      "Factorization bridge: monic_factored_form isolates the single remaining sorry (routine Mathlib API)"
+      "Corollary: cyclic_iff_not_killed_below_degree equivalence"
     ],
     "dateAdded": "2026-04-26"
   },
@@ -76,15 +76,15 @@
       "title": "§ II. Factorization Bridge",
       "startLine": 76,
       "endLine": 98,
-      "summary": "States `monic_factored_form` (sorry): every monic polynomial of positive degree factors into coprime monic irreducible prime powers. This is a routine consequence of K[X] being a UFD; the sorry is purely Mathlib API navigation.",
-      "mathContext": "In $K[X]$ (a UFD with normalization), `normalizedFactors` decomposes any nonzero non-unit polynomial into monic irreducible factors. Grouping by multiplicity gives the prime power factorization $\\mu = \\prod_{i=1}^k p_i^{e_i}$ with pairwise coprimality (distinct primes are coprime in a UFD). The sorry isolates the Lean 4 API challenge of converting between `Multiset` (normalizedFactors output) and `Fin k`-indexed arrays (WIP04 input)."
+      "summary": "States and proves `monic_factored_form`: every monic polynomial of positive degree factors into coprime monic irreducible prime powers. Proved by Aristotle via UniqueFactorizationMonoid.normalizedFactors API (companion file CayleyHamiltonCyclicVectorAllFieldsAristotle.lean).",
+      "mathContext": "In $K[X]$ (a UFD with normalization), `normalizedFactors` decomposes any nonzero non-unit polynomial into monic irreducible factors. Grouping by multiplicity gives the prime power factorization $\\mu = \\prod_{i=1}^k p_i^{e_i}$ with pairwise coprimality (distinct primes are coprime in a UFD). The proof converts between `Multiset` (normalizedFactors output) and `Fin k`-indexed arrays (WIP04 input) via an auxiliary finset_factorization_from_multiset lemma."
     },
     {
       "id": "main-theorem",
       "title": "§ III. Main Theorem",
       "startLine": 100,
       "endLine": 135,
-      "summary": "Proves nonderogatory_has_cyclic_vector: dispatches n=0, factors minpoly via monic_factored_form, applies WIP04's primary decomposition theorem. Zero axioms.",
+      "summary": "Proves nonderogatory_has_cyclic_vector: dispatches n=0, factors minpoly via monic_factored_form (proved), applies WIP04's primary decomposition theorem. Zero axioms, zero sorries.",
       "mathContext": "Proof: (1) Factor $\\mathrm{minpoly}_K(M) = \\prod_i p_i^{e_i}$ into coprime prime powers. (2) For each $i$, construct primary vector $v_i$ with $p_i^{e_i}(M)v_i = 0$ and $p_i^{e_i-1}(M)v_i \\neq 0$ via minimality of minpoly. (3) $v = \\sum v_i$ is cyclic: Bezout projections extract $r(M)v_i = 0$ from $r(M)v = 0$, giving $p_i^{e_i} | r$ for all $i$, hence $\\mathrm{minpoly} | r$, contradicting $\\deg(r) < n$."
     },
     {
@@ -100,31 +100,29 @@
       "title": "§ V. Proof Summary",
       "startLine": 170,
       "endLine": 189,
-      "summary": "Closing docstring: enumerates V2 improvements over V1 (axiom eliminated), the single remaining sorry (routine Mathlib API), and the delta: deep axiom → routine sorry.",
-      "mathContext": "V1 → V2 delta: RCF similarity axiom ($\\sim$800 lines to prove from PID structure theorem) replaced by `monic_factored_form` sorry ($\\sim$50 lines of `normalizedFactors` API). Net effect: the mathematical content of the proof is now fully verified; only the boilerplate of extracting a prime power factorization from Mathlib's UFD API remains."
+      "summary": "Closing docstring: V1→V2→V3 delta. V2 eliminated RCF similarity axiom. V3 (this version) proves monic_factored_form via Aristotle, achieving 0 axioms / 0 sorries.",
+      "mathContext": "V1→V2: RCF similarity axiom ($\\sim$800 lines to prove from PID structure theorem) replaced by `monic_factored_form` sorry. V2→V3: Aristotle proved `monic_factored_form` via UFD normalizedFactors API (~130 lines in companion file). Net: fully machine-verified proof over ALL fields."
     }
   ],
   "conclusion": {
-    "summary": "V2 of this formalization eliminates the RCF similarity axiom, proving the cyclic vector theorem axiom-free via primary decomposition (WIP04). The single remaining sorry (monic_factored_form) is routine Mathlib API work, not a mathematical assumption.",
-    "implications": "The upgrade from V1 (1 axiom, 0 sorries) to V2 (0 axioms, 1 sorry) replaces a deep mathematical assumption (PID structure theorem, ~800 lines to formalize) with a routine API exercise (~50 lines of normalizedFactors navigation). The primary decomposition approach (Bezout projections + CRT) is the key innovation: it bypasses companion matrices entirely, working directly with polynomial annihilators.",
-    "openQuestions": [
-      "Fill the monic_factored_form sorry using Mathlib's UniqueFactorizationMonoid.normalizedFactors API + Finset.equivFin. Estimated ~50 lines. Suitable for Aristotle submission.",
-      "Can the factorization bridge be proved without Finset.equivFin? A direct Finset-indexed version of WIP04's theorem would eliminate the Fin k conversion overhead."
-    ]
+    "summary": "V3 of this formalization is fully verified: 0 axioms, 0 sorries. The cyclic vector theorem holds over ALL fields (including finite fields F_q with q ≤ n) via primary decomposition (WIP04). The factorization bridge monic_factored_form was proved by Aristotle via UniqueFactorizationMonoid.normalizedFactors.",
+    "implications": "The V1→V2→V3 progression: V1 (1 axiom, 0 sorries) axiomatized RCF similarity. V2 (0 axioms, 1 sorry) replaced the deep PID structure theorem axiom with a routine UFD API sorry. V3 (0 axioms, 0 sorries) closes the final sorry via Aristotle. The primary decomposition approach (Bezout projections + CRT) bypasses companion matrices and cardinality arguments, working over any field.",
+    "openQuestions": []
   },
   "leanFile": {
     "imports": [
       "Mathlib",
-      "Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04"
+      "Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04",
+      "Proofs.CayleyHamiltonCyclicVectorAllFieldsAristotle"
     ],
     "opens": ["Matrix", "Polynomial"],
     "namespace": "CayleyHamiltonCyclicVectorAllFields",
-    "lineCount": 189,
+    "lineCount": 183,
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 2,
     "path": "Proofs/CayleyHamiltonCyclicVectorAllFields.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -157,7 +155,7 @@
     {
       "name": "CayleyHamiltonCyclicVectorAllFields.nonderogatory_has_cyclic_vector",
       "statement": "∀ (M : Matrix (Fin n) (Fin n) K), IsNonderogatory M → ∃ v, IsCyclicVector M v",
-      "description": "Main theorem: every nonderogatory matrix over ANY field has a cyclic vector. 0 axioms, 1 sorry (routine factorization bridge)."
+      "description": "Main theorem: every nonderogatory matrix over ANY field has a cyclic vector. Fully verified: 0 axioms, 0 sorries."
     },
     {
       "name": "CayleyHamiltonCyclicVectorAllFields.nonderogatory_has_cyclic_vector_finite",
@@ -170,5 +168,5 @@
       "description": "Polynomial annihilator characterization: cyclic iff not killed by any nonzero polynomial of degree < n."
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }

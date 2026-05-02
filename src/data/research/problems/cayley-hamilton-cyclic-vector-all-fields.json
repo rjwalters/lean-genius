@@ -19,9 +19,9 @@
     "phase": "COMPLETED",
     "since": "2026-04-25T13:30:37+02:00",
     "iteration": 2,
-    "focus": "Gallery entry CayleyHamiltonCyclicVectorAllFields.lean V2 (axiom-free): 0 axioms, 1 sorry (monic_factored_form, routine ~50-line Mathlib UFM API). Eliminated RCF similarity axiom by routing through WIP04 primary decomposition (PR #13041, 2026-04-27).",
+    "focus": "Gallery entry CayleyHamiltonCyclicVectorAllFields.lean V3 (fully verified): 0 axioms, 0 sorries. monic_factored_form proved via Aristotle companion file (PR pending, 2026-05-02).",
     "blockers": [],
-    "nextAction": "Submit monic_factored_form (routine UFM/normalizedFactors API) to Aristotle to reach 0 sorries / 0 axioms.",
+    "nextAction": "",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOMATIZED-COMPLETE → V2 AXIOM-FREE: PR #13041 (2026-04-27) eliminated nonderogatory_similar_companion axiom by routing through WIP04 primary decomposition (GeneralCyclicVector.nonderogatory_general_has_cyclic_vector). Gallery file now has 0 axioms, 1 routine sorry (monic_factored_form: monic μ over a field factors into coprime monic prime powers — UniqueFactorizationMonoid API, ~50 lines, Aristotle-suitable). Mathematical content fully verified.",
+    "progressSummary": "VERIFIED (0 axioms, 0 sorries): V3 integrates Aristotle's proof of monic_factored_form from companion file into main gallery entry. All content fully machine-checked. V1 (1 axiom) → V2 (0 axioms, 1 sorry) → V3 (0/0) progression complete.",
     "builtItems": [
       "exists_strongly_cyclic: helper theorem stated with detailed proof sketch (CayleyHamiltonMinpolyOQ05OQ01OQ04WIP02.lean:301)",
       "nonderogatory_squarefree_has_cyclic_vector: PROVED assuming exists_strongly_cyclic (line 325) — main theorem complete",
@@ -50,17 +50,14 @@
       "Route B (axiomatize) succeeded: declare nonderogatory_similar_companion as axiom, prove main theorem from it + proved lemmas from CyclicVectorArbitrary namespace",
       "axiom vs sorry: using explicit Lean 4 axiom declaration is cleaner than sorry — the assumption is named, documented, and intentional",
       "Gallery entry created at src/data/proofs/cayley-hamilton-cyclic-vector-all-fields/ with 1 axiom, 0 sorries, status=axiomatized",
-      "PR #13041 (2026-04-27) eliminated the RCF similarity axiom: V2 routes through WIP04 primary decomposition + Bezout/CRT, leaving only monic_factored_form as a routine UFM Mathlib API sorry (~50 lines). The deep mathematical axiom (PID structure theorem) is now replaced by a routine API navigation."
+      "PR #13041 (2026-04-27) eliminated the RCF similarity axiom: V2 routes through WIP04 primary decomposition + Bezout/CRT, leaving only monic_factored_form as a routine UFM Mathlib API sorry (~50 lines). The deep mathematical axiom (PID structure theorem) is now replaced by a routine API navigation.",
+      "V3 (2026-05-02): Aristotle proved monic_factored_form in companion file CayleyHamiltonCyclicVectorAllFieldsAristotle.lean. Main file imports companion and delegates to its theorem. File now 0 axioms / 0 sorries — fully machine-verified."
     ],
     "mathlibGaps": [
       "monic_factored_form: routine consequence of K[X] being a UniqueFactorizationMonoid (normalizedFactors → toFinset/count → coprime prime-power product). Not actually a Mathlib gap — just API assembly (~50 lines). Aristotle-suitable.",
       "Rational Canonical Form (PID structure theorem) is a real Mathlib gap (~800 lines), but V2 no longer depends on it."
     ],
-    "nextSteps": [
-      "Submit monic_factored_form to Aristotle (routine UFM API, ~50 lines) — would close the file to 0 sorries / 0 axioms.",
-      "Alternative manual route: normalizedFactors μ → toFinset for distinct primes → count for exponents → use Polynomial.normalizedFactors_prod + Polynomial.Monic.normalizedFactors_prod to recover μ. Coprimality from Prime.coprime_iff_not_dvd on distinct primes.",
-      "After 0/0: optionally upstream monic_factored_form to Mathlib as Polynomial.UniqueFactorizationMonoid lemma — generally useful."
-    ],
+    "nextSteps": [],
     "markdown": "# Knowledge Base: cayley-hamilton-cyclic-vector-all-fields\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
