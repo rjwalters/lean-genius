@@ -743,6 +743,7 @@ import Proofs.Erdos10PrimePlusPowers
 import Proofs.Erdos10Problem
 import Proofs.Erdos1100OQ01Aristotle
 import Proofs.Erdos1100Problem
+import Proofs.Erdos1100ProblemAristotle
 import Proofs.Erdos1100ProblemProvable
 import Proofs.Erdos1101Problem
 import Proofs.Erdos1102Problem
