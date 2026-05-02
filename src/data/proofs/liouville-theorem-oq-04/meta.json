@@ -19,9 +19,9 @@
       "ultrametric"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "1 OPEN axiom: padic_liouville_estimate — the p-adic Liouville lower bound requires Taylor expansion in ℚ_[p], continuity in the p-adic ultrametric topology, and compatibility of padicNorm (on ℚ) with the ‖·‖ norm on ℚ_[p]. 1 HARD sorry: padic_algebraic_not_liouville contradiction step (requires showing Liouville approximations exist with height ≥ 1/C).",
+    "assumptions": "1 OPEN axiom: padic_liouville_estimate — the p-adic Liouville lower bound requires Taylor expansion in ℚ_[p], continuity in the p-adic ultrametric topology, and compatibility of padicNorm (on ℚ) with the ‖·‖ norm on ℚ_[p]. The main theorem padic_algebraic_not_liouville is now fully proved (0 sorries): uses exists_pow_lt_of_lt_one to find n₀ with 2^n₀ > 1/C, then derives C < 1/H^n₀ ≤ 1/2^n₀ < C from the Liouville and axiom bounds.",
     "dateAdded": "2026-04-26",
     "mathlibDependencies": [
       {
@@ -194,7 +194,9 @@
       "Mathlib.Algebra.Polynomial.Eval.Defs",
       "Mathlib.Tactic"
     ],
-    "opens": ["Polynomial"],
+    "opens": [
+      "Polynomial"
+    ],
     "namespace": "LiouvilleTheoremOQ04",
     "lineCount": 404,
     "axiomCount": 1,
