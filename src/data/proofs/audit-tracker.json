@@ -6094,10 +6094,13 @@
       "result": "clean"
     },
     "erdos-344": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-2026-05-02-0204",
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T00:10:00Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom folkman_theorem axiom claim in sections[2].mathContext (orphan /-- ... -/ doc comment, no declaration); numerical counts and tier all clean (#14454)"
+      ]
     },
     "erdos-345": {
       "agentId": "auditor-cycle-20-batch",
