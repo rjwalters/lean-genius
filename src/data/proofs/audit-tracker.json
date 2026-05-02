@@ -4560,10 +4560,13 @@
       "result": "issues-fixed"
     },
     "erdos-13": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-agent",
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T10:15:31Z",
+      "result": "issues-found",
+      "issues": [
+        "#14718: phantom axiom claims in originalContributions and sections (5 of 6 listed axioms are not real declarations)"
+      ]
     },
     "erdos-130": {
       "agentId": "auditor-cycle-20-batch",
