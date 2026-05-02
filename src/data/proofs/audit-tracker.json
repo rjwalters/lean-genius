@@ -3964,10 +3964,12 @@
       "result": "issues-fixed"
     },
     "erdos-1124": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "phantom originalContributions: laczkovich_piece_count, pieces_not_measurable, dubins_hirsch_karush; phantom proofStrategy axiomatize claims; section line drift (laczkovich-theorem, non-measurability, main-result); LaTeX bug in tarski-problem mathContext (issue #14773)"
+      ],
+      "lastAudited": "2026-05-02T12:28:16Z",
+      "result": "issues-found"
     },
     "erdos-1124-oq-01": {
       "auditCount": 2,
