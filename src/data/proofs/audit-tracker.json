@@ -13660,10 +13660,12 @@
       "result": "clean"
     },
     "yang-mills-transfer-matrix": {
-      "auditCount": 6,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:22:07Z",
-      "result": "clean"
+      "auditCount": 7,
+      "issues": [
+        "axiomCount inconsistency with same-file precedent: yang-mills-lattice fixed to 12 (PR #14832), yang-mills-transfer-matrix still 1 — same Exploration.lean, same 11 :True structure-encoded fields. Issue #14840."
+      ],
+      "lastAudited": "2026-05-02T15:30:00Z",
+      "result": "issues-found"
     },
     "yang-mills-transfer-matrix-oq-01": {
       "auditCount": 2,
