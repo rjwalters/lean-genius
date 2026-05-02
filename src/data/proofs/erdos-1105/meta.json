@@ -55,7 +55,6 @@
       "pathL, pathEpsilon, pathFormula definitions",
       "PathConjecture definition: exact formula",
       "ar_triangle axiom: AR(n, C_3) = n - 1",
-      "yuan_path_announced axiom",
       "turan definition: extremal graph theory connection"
     ],
     "axiomCount": 1,
@@ -133,7 +132,7 @@
     {
       "id": "path-conjecture",
       "title": "The Path Conjecture",
-      "summary": "pathL, pathEpsilon, pathFormula, PathConjecture, simonovits_sos_path, yuan_path_announced",
+      "summary": "pathL, pathEpsilon, pathFormula, PathConjecture (historical literature: Simonovits-Sós and Yuan results cited in comments, not axiomatized)",
       "startLine": 149,
       "endLine": 183,
       "mathContext": "Conjecture: for $n \\geq k \\geq 5$, $\\text{AR}(n, P_k) = \\max(\\binom{k-2}{2}+1,\\; \\binom{\\ell-1}{2}+(\\ell-1)(n-\\ell+1)+\\varepsilon)$ where $\\ell = \\lfloor(k-1)/2\\rfloor$ and $\\varepsilon = 1$ (odd $k$) or $2$ (even $k$). Simonovits-Sós (1984) proved this for $n \\geq ck^2$. Yuan (2021) announced the full proof for all $n \\geq k \\geq 5$."
@@ -141,7 +140,7 @@
     {
       "id": "bounds",
       "title": "Lower and Upper Bounds",
-      "summary": "Proves `ar_lower_bound` ($\\text{AR}(n,H) \\geq 1$ for $n \\geq 2$) via constant coloring and `le_csSup`; helper lemmas `numColors_const_one` and `const_avoids_rainbow`; proves `ar_upper_bound` ($\\text{AR}(n,H) \\leq \\binom{n}{2}$) via `csSup_le`; helper lemmas `choose_two_add_eq`, `card_edges_eq_choose` (trichotomy bijection proof that $|\\{(i,j) : i < j\\}| = \\binom{n}{2}$), `numColors_le_edges`; axiom `ar_mono_n` (monotonicity in $n$).",
+      "summary": "Proves `ar_lower_bound` ($\\text{AR}(n,H) \\geq 1$ for $n \\geq 2$) via constant coloring and `le_csSup`; helper lemmas `numColors_const_one` and `const_avoids_rainbow`; proves `ar_upper_bound` ($\\text{AR}(n,H) \\leq \\binom{n}{2}$) via `csSup_le`; helper lemmas `choose_two_add_eq`, `card_edges_eq_choose` (trichotomy bijection proof that $|\\{(i,j) : i < j\\}| = \\binom{n}{2}$), `numColors_le_edges`.",
       "startLine": 184,
       "endLine": 323,
       "mathContext": "General bounds: $1 \\leq \\text{AR}(n, H) \\leq \\binom{n}{2}$. The lower bound uses a constant coloring (1 color, trivially avoids rainbow) and `le_csSup` for the supremum. The upper bound uses `csSup_le` with the fact that `numColors` $\\leq \\binom{n}{2}$, proved via a trichotomy argument partitioning $\\text{Fin}\\,n \\times \\text{Fin}\\,n$ into $\\{i < j\\}$, $\\{i = j\\}$, $\\{i > j\\}$ with a swap bijection showing $|\\{i < j\\}| = |\\{i > j\\}|$. The identity $\\binom{n}{2} \\cdot 2 + n = n^2$ closes the counting. Both proofs are fully machine-checked."
@@ -157,7 +156,7 @@
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "summary": "Axiomatizes known exact values: `ar_path_3` ($\\text{AR}(n, P_3) = 1$), `ar_k3` ($\\text{AR}(n, K_3) = n - 1$). The triangle case `ar_triangle` was stated earlier in the cycle conjecture section.",
+      "summary": "Known exact values documented in source comments: $\\text{AR}(n, P_3) = 1$, $\\text{AR}(n, K_3) = n - 1$; no `ar_path_3` or `ar_k3` declarations exist. The only declared axiom in the file is `ar_triangle` in the cycle-conjecture section.",
       "startLine": 343,
       "endLine": 357,
       "mathContext": "Known exact values: $\\text{AR}(n, P_3) = 1$ (trivial: any 2-colored edge coloring avoids rainbow $P_3$), $\\text{AR}(n, K_3) = n - 1$ (same as $C_3$ since $K_3 = C_3$). These base cases anchor the general conjectures."
