@@ -74,33 +74,33 @@
       "id": "main-theorems",
       "title": "Main Theorems (Original Bug + Corrected)",
       "startLine": 99,
-      "endLine": 129,
+      "endLine": 127,
       "summary": "Original `erdos_225_main` (known false, retained for reference) and corrected `erdos_225` with `Nonconstant` hypothesis. Both have `sorry`.",
       "mathContext": "Corrected theorem: $\\|f\\|_1 \\leq 4$ for nonconstant trigonometric polynomials with unit-circle roots and $\\|f\\|_\\infty = 1$."
     },
     {
       "id": "optimality",
       "title": "Optimality (Aristotle + Corrected)",
-      "startLine": 131,
-      "endLine": 209,
+      "startLine": 129,
+      "endLine": 233,
       "summary": "Aristotle's original optimality proof (uses constant polynomial). New: `constant_not_nonconstant` (proved), `unit_circle_difference_integral`, `degree_one_l1_norm_eq_four`, `erdos_225_tight`.",
       "mathContext": "Key identity: $\\int_0^{2\\pi} |e^{i\\theta} - \\alpha| \\, d\\theta = 8$ for $|\\alpha| = 1$. Degree-1 polynomials achieve $\\|f\\|_1 = 4$ exactly."
     },
     {
       "id": "equivalences",
       "title": "Equivalent Formulations and Supremum Equivalence",
-      "startLine": 211,
-      "endLine": 257,
+      "startLine": 235,
+      "endLine": 281,
       "summary": "Defines `PolynomialHasUnitCircleRoots`. Aristotle proved `sup_on_circle_eq_trig_sup`: the $L^\\infty$ norm of $P(z)$ on $S^1$ equals $\\sup_{\\theta} |f(\\theta)|$.",
       "mathContext": "Aristotle proved `sup_on_circle_eq_trig_sup`: the $L^\\infty$ norm of $P(z)$ on $S^1$ equals $\\sup_{\\theta} |f(\\theta)|$."
     },
     {
       "id": "related-results",
       "title": "Related Results: Fejér–Riesz and Littlewood",
-      "startLine": 259,
-      "endLine": 315,
-      "summary": "Axiomatizes the Fejér–Riesz theorem and Littlewood's lower bound. Summary reviews the solved status and proof architecture.",
-      "mathContext": "Axiomatizes the Fejér–Riesz theorem ($f \\geq 0 \\Rightarrow f = |g|^2$) and Littlewood's lower bound ($\\|f\\|_1 \\geq C \\log n$ for unimodular coefficients)."
+      "startLine": 283,
+      "endLine": 326,
+      "summary": "Discusses the Fejér–Riesz theorem and Littlewood's lower bound as related context. Summary reviews the solved status and proof architecture. No axioms or theorems are formalized in this section — only docstrings and comments.",
+      "mathContext": "Discusses the Fejér–Riesz theorem ($f \\geq 0 \\Rightarrow f = |g|^2$) and Littlewood's lower bound ($\\|f\\|_1 \\geq C \\log n$ for unimodular coefficients) as related context (no axioms formalized here)."
     }
   ],
   "conclusion": {
