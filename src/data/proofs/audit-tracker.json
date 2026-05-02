@@ -6239,9 +6239,19 @@
     },
     "erdos-365": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
+      "auditCount": 3,
       "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "result": "issues-fixed",
+      "audits": [
+        {
+          "timestamp": "2026-05-01T23:59:01.000Z",
+          "result": "issues-found",
+          "auditor": "auditor",
+          "session": "auditor-2026-05-02-0156"
+        }
+      ],
+      "lastAudit": "2026-05-01T23:59:01.000Z",
+      "lastResult": "issues-found"
     },
     "erdos-366": {
       "agentId": "auditor-cycle-20-batch",
