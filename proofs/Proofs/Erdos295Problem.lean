@@ -42,7 +42,7 @@ This problem asks about representations of 1 as an Egyptian fraction where all
 denominators are at least N. As N grows, we need more terms to sum to 1.
 -/
 
-/--
+/-
 For each N, there exists a representation of 1 as a sum of distinct unit fractions
 with all denominators ≥ N. This is a foundational existence result.
 
@@ -61,10 +61,10 @@ This axiom asserts the existence of this minimal value.
 -/
 axiom k (N : ℕ) : ℕ
 
-/--
+/-
 k(N) achieves a representation of 1 with all denominators ≥ N.
 -/
-/--
+/-
 k(N) is minimal: any representation with denominators ≥ N needs at least k(N) terms.
 -/
 /--
