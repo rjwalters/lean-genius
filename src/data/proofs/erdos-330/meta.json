@@ -52,7 +52,7 @@
     {
       "id": "known-results",
       "title": "Known Results: Stöhr-Härtter and Minimality Hierarchy",
-      "startLine": 56,
+      "startLine": 55,
       "endLine": 60,
       "summary": "Comments on the known hierarchy: (1) minimal bases exist for all h ≥ 2 (elementary via greedy construction), (2) minimal bases with positive upper density exist (Härtter 1956, Stöhr 1955 for h=2). The section header /- ## Known Results -/ at line 53 (also covered in minimality-definitions) and these results form the backdrop against which Problem #330 is posed.",
       "mathContext": "Stöhr (1955): for $h = 2$, there exists a minimal additive basis $A$ with $\\bar{d}(A) > 0$. Härtter (1956): generalized to all $h \\geq 2$. These show that density and minimality are compatible. Problem #330 asks whether the stronger quantitative minimality (positive density of unrepresentable integers upon removal) is also achievable."
@@ -62,15 +62,15 @@
       "title": "The Formal Open Question: Problem #330",
       "startLine": 61,
       "endLine": 65,
-      "summary": "The formal Lean statement of Erdős Problem #330: Does there exist A ⊂ ℕ, h ≥ 2, with IsMinimalBasis A h ∧ HasPosDensity A ∧ ∀ n ∈ A, HasPosDensity (unrepresentableWithout A n h)? The question formalizes using the definitions from earlier sections.",
-      "mathContext": "$\\exists A \\subseteq \\mathbb{N},\\, h \\geq 2,\\; \\text{IsMinimalBasis}(A,h) \\wedge \\bar{d}(A) > 0 \\wedge \\forall n \\in A,\\, \\bar{d}(\\text{unrepresentableWithout}(A,n,h)) > 0$. This is the Lean formalization of the open question. The gap from known (2) to this (3) is replacing '$\\text{infinitely many}$' with '$\\bar{d} > 0$' for unrepresentable integers after removal."
+      "summary": "Docstring statement of the open question (no `def`/`axiom`/`theorem` — the proposition `IsMinimalBasis A h ∧ HasPosDensity A ∧ ∀ n ∈ A, HasPosDensity (unrepresentableWithout A n h)` is described in prose only). The file ends at line 65 with the closing `-/` of this docstring; no Lean formalization of this proposition exists.",
+      "mathContext": "$\\exists A \\subseteq \\mathbb{N},\\, h \\geq 2,\\; \\text{IsMinimalBasis}(A,h) \\wedge \\bar{d}(A) > 0 \\wedge \\forall n \\in A,\\, \\bar{d}(\\text{unrepresentableWithout}(A,n,h)) > 0$. Prose statement only; no Lean formalization of this proposition exists in this file. The gap from known (2) to this (3) is replacing '$\\text{infinitely many}$' with '$\\bar{d} > 0$' for unrepresentable integers after removal."
     }
   ],
   "overview": {
     "historicalContext": "**Erdős Problem #330** was posed by Erdős and Nathanson in their study of minimal additive bases. A set $A \\subseteq \\mathbb{N}$ is an **asymptotic basis of order $h$** if every sufficiently large integer is representable as a sum of at most $h$ elements from $A$. A basis is **minimal** if removing any single element destroys this property — every element is qualitatively essential.\n\nThe foundational existence results come from Stöhr (1955) and Härtter (1956), who showed that minimal asymptotic bases with **positive upper density** exist for every order $h \\geq 2$. Problem #330 asks for a stronger quantitative property: not just that each removal destroys the basis, but that it leaves a **positive-density set** of integers unrepresentable. This remains an **open problem** as of 2025.",
     "problemStatement": "Does there exist a minimal asymptotic additive basis A ⊂ ℕ of order h with positive upper density such that for every n ∈ A, the set of integers not representable without n also has positive upper density?",
     "text": "Does there exist a minimal asymptotic additive basis A with positive density such that for every n ∈ A, the integers unrepresentable without n also have positive upper density? Open (Erdős–Nathanson).",
-    "proofStrategy": "We define representability, asymptotic basis, upper density (axiomatized), minimality, and the unrepresentable set constructively. Known existence results are recorded as axioms. The open question is formalized as an existential statement.",
+    "proofStrategy": "We define representability, asymptotic basis, upper density (axiomatized), minimality, and the unrepresentable set constructively. Known existence results (Stöhr, Härtter) are noted in docstring comments only — no Lean axioms or theorems formalize them. The open question is recorded as a docstring; it is not yet formalized as a Lean proposition.",
     "keyInsights": [
       "A minimal basis requires every element to be essential: removal leaves infinitely many unrep. integers",
       "Minimal bases with positive density exist (Härtter 1956, Stöhr 1955)",
