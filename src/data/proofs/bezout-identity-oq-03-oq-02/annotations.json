@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-header-crt",
+    "proofId": "bezout-identity-oq-03-oq-02",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "context",
+    "title": "File Header: Extending 2-Moduli CRT to k Moduli",
+    "content": "The file header documents the strategy for lifting the 2-moduli Chinese Remainder Theorem to k pairwise coprime moduli. The key insight stated upfront is that the induction is purely mechanical: the base case (k=0) is vacuous, and the inductive step peels off the last modulus, applies the hypothesis to get a solution for the first k, then combines it with the last modulus via the 2-moduli theorem. The file opens `BezoutIdentityOQ03` so that `crt_iscop` (the 2-moduli CRT) is in scope. The `set_option maxHeartbeats 400000` is required because the inductive existence proof is elaboration-heavy — the fin-indexed approach has many universe polymorphism constraints for Lean 4's unifier.",
+    "mathContext": "Suppose $m_0, \\ldots, m_{k-1}$ are pairwise coprime integers and $a_0, \\ldots, a_{k-1}$ are arbitrary. An inductive strategy: get $y$ satisfying $y \\equiv a_i \\pmod{m_i}$ for $i < k-1$, then combine with $a_{k-1}$ mod $m_{k-1}$ via the 2-moduli CRT applied to $(\\prod_{i<k-1} m_i,\\, m_{k-1})$.",
+    "significance": "context",
+    "relatedConcepts": ["Chinese Remainder Theorem", "induction on Fin k", "IsCoprime", "BezoutIdentityOQ03"],
+    "prerequisites": ["Lean 4 induction on ℕ", "Fin types", "IsCoprime from Mathlib", "Int.ModEq"]
+  },
+  {
+    "id": "ann-lifting-lemma",
+    "proofId": "bezout-identity-oq-03-oq-02",
+    "range": { "startLine": 33, "endLine": 42 },
+    "type": "technique",
+    "title": "Lifting Congruences: Finer Modulus Implies Coarser",
+    "content": "`modEq_of_dvd_modulus` formalizes the basic fact that if a | b and x ≡ y (mod b), then x ≡ y (mod a). This is used in the inductive existence step: the combined solution x satisfies x ≡ y (mod M) where M = ∏ m_i, and we need x ≡ y (mod m_j) for each j. Since m_j | M (as a factor of the product), `modEq_of_dvd_modulus` performs the lift. The proof is a one-liner: unfold both congruences as divisibility via `Int.modEq_iff_dvd`, then apply `dvd_trans`.",
+    "mathContext": "If $a \\mid b$ and $b \\mid (x - y)$, then $a \\mid (x - y)$, i.e., $x \\equiv y \\pmod{a}$. Applied with $a = m_j$ and $b = \\prod_{i} m_i$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Int.modEq_iff_dvd", "dvd_trans", "divisibility lifting", "modular arithmetic"],
+    "prerequisites": ["Int.ModEq in Lean 4", "dvd_trans from Mathlib.Order.Basic"]
+  },
+  {
+    "id": "ann-pairwise-coprime",
+    "proofId": "bezout-identity-oq-03-oq-02",
+    "range": { "startLine": 44, "endLine": 65 },
+    "type": "technique",
+    "title": "Coprimality Helpers: Product and Restriction",
+    "content": "Two auxiliary lemmas set up the inductive step. `isCoprime_last_prod` proves that the last modulus m(Fin.last k) is coprime with the product M = ∏ m(i.castSucc). The proof applies `IsCoprime.prod_right`, which lifts pointwise coprimality to a product: since m(Fin.last k) is coprime to each m(i.castSucc) (by pairwise coprimality and the strict inequality Fin.castSucc_lt_last), it is coprime to their product. `pairwise_castSucc` restricts pairwise coprimality from Fin (k+1) to Fin k by using the injectivity of castSucc to convert index inequality.",
+    "mathContext": "If $\\gcd(m_{k}, m_i) = 1$ for each $i < k$, then $\\gcd(m_k, \\prod_{i<k} m_i) = 1$ — this is `IsCoprime.prod_right`. The restriction `pairwise_castSucc` uses $\\mathrm{castSucc}$ injectivity: $i \\ne j$ in $\\mathrm{Fin}\\, k$ iff $i.\\mathrm{castSucc} \\ne j.\\mathrm{castSucc}$ in $\\mathrm{Fin}\\, (k+1)$.",
+    "significance": "key",
+    "relatedConcepts": ["IsCoprime.prod_right", "Fin.castSucc_lt_last", "Fin.castSucc_injective", "pairwise coprimality"],
+    "prerequisites": ["Mathlib.RingTheory.Coprime.Lemmas", "Fin.castSucc", "Pairwise predicate"]
+  },
+  {
+    "id": "ann-existence-proof",
+    "proofId": "bezout-identity-oq-03-oq-02",
+    "range": { "startLine": 67, "endLine": 105 },
+    "type": "insight",
+    "title": "k-Moduli CRT: Existence by Induction",
+    "content": "The existence proof is the heart of the file. It proceeds by structural recursion on k, with the inductive step in three stages: (1) apply the IH to the first k moduli m' = m ∘ castSucc to get a solution y; (2) apply `crt_iscop` (the 2-moduli CRT from the parent) to combine y (mod M) with a(last) (mod m(last)), using `isCoprime_last_prod` for the coprimality hypothesis; (3) verify the combined solution x satisfies all k+1 congruences via `Fin.lastCases`. The last case is direct from the 2-moduli output. The castSucc cases use `Finset.dvd_prod_of_mem` (each m_j divides M) followed by `modEq_of_dvd_modulus` to lift x ≡ y (mod M) to x ≡ y (mod m_j).",
+    "mathContext": "Given $y \\equiv a_i \\pmod{m_i}$ for $i < k$ and $x \\equiv y \\pmod{M}$, $x \\equiv a_k \\pmod{m_k}$ (from `crt_iscop`): for any $j < k$, $m_j \\mid M$ (by `Finset.dvd_prod_of_mem`), so $x \\equiv y \\equiv a_j \\pmod{m_j}$.",
+    "significance": "key",
+    "relatedConcepts": ["crt_iscop", "Fin.lastCases", "Finset.dvd_prod_of_mem", "IsCoprime.prod_right", "structural recursion"],
+    "prerequisites": ["BezoutIdentityOQ03 (parent module)", "Finset.dvd_prod_of_mem", "Fin.lastCases recursor"]
+  },
+  {
+    "id": "ann-uniqueness-proof",
+    "proofId": "bezout-identity-oq-03-oq-02",
+    "range": { "startLine": 107, "endLine": 138 },
+    "type": "technique",
+    "title": "k-Moduli CRT: Uniqueness via IsCoprime.mul_dvd",
+    "content": "The uniqueness proof shows that any two simultaneous solutions are congruent modulo the full product ∏ m_i. The inductive step uses `IsCoprime.mul_dvd`: given that M | (x-y) and m(last) | (x-y), and that IsCoprime(m(last), M), we conclude m(last) * M | (x-y). The theorem `Fin.prod_univ_castSucc` rewrites ∏ over Fin(k+1) as (∏ over Fin k of castSucc) * m(last), which matches the mul_dvd output after a `ring` rearrangement. The base case (k=0) is trivial: the empty product is 1, and x ≡ y (mod 1) holds vacuously via `simp`.",
+    "mathContext": "If $m_k \\mid (x-y)$, $M = \\prod_{i<k} m_i \\mid (x-y)$, and $\\gcd(m_k, M) = 1$, then $m_k \\cdot M \\mid (x-y)$, i.e., $x \\equiv y \\pmod{\\prod_{i \\le k} m_i}$. This is `IsCoprime.mul_dvd` in Lean's `IsCoprime` API.",
+    "significance": "key",
+    "relatedConcepts": ["IsCoprime.mul_dvd", "Fin.prod_univ_castSucc", "Int.modEq_iff_dvd", "uniqueness modulo product"],
+    "prerequisites": ["IsCoprime.mul_dvd from Mathlib.RingTheory.Coprime.Basic", "Fin.prod_univ_castSucc"]
+  },
+  {
+    "id": "ann-combined-statement",
+    "proofId": "bezout-identity-oq-03-oq-02",
+    "range": { "startLine": 140, "endLine": 154 },
+    "type": "insight",
+    "title": "Combined Statement: Existence + Uniqueness in One ∃",
+    "content": "`crt_finitely_many` packages existence and uniqueness into a single existential: there is some x satisfying all congruences, and any other solution y is congruent to x modulo the full product. The proof assembles the two halves: existence via `crt_finitely_many_exists`, uniqueness via `crt_finitely_many_unique` applied to x - y (noting that y ≡ a_i and x ≡ a_i implies x ≡ y via transitivity and symmetry). This is the canonical 'CRT theorem' form: an existence witness with a uniqueness-up-to-modulus guarantee.",
+    "mathContext": "$\\exists x \\in \\mathbb{Z},\\ (\\forall i,\\ x \\equiv a_i \\pmod{m_i}) \\land (\\forall y,\\ (\\forall i,\\ y \\equiv a_i \\pmod{m_i}) \\Rightarrow x \\equiv y \\pmod{\\prod m_i})$",
+    "significance": "key",
+    "relatedConcepts": ["Chinese Remainder Theorem", "existence and uniqueness", "IsCoprime", "Int.ModEq"],
+    "prerequisites": ["crt_finitely_many_exists", "crt_finitely_many_unique"]
+  },
+  {
+    "id": "ann-worked-example",
+    "proofId": "bezout-identity-oq-03-oq-02",
+    "range": { "startLine": 156, "endLine": 176 },
+    "type": "context",
+    "title": "Sun Tzu's Original Problem: x ≡ 2 (mod 3), x ≡ 3 (mod 5), x ≡ 2 (mod 7)",
+    "content": "The worked example formalizes the problem from Sunzi Suanjing (~4th century CE): find a number with remainders 2, 3, 2 when divided by 3, 5, 7. The answer is 23, verified by `decide`. Uniqueness modulo 105 = 3·5·7 is illustrated by noting that 128 = 23 + 105 also satisfies the system and that 128 ≡ 23 (mod 105). This directly instantiates `crt_finitely_many` with k=3, m357 = [3,5,7], a357 = [2,3,2]. The `decide` tactic works here because all moduli and residues are small concrete integers, and Int.ModEq reduces to decidable integer arithmetic.",
+    "mathContext": "For $m = [3,5,7]$, $a = [2,3,2]$: solution $x = 23$ satisfies $23 = 7 \\cdot 3 + 2$, $23 = 4 \\cdot 5 + 3$, $23 = 3 \\cdot 7 + 2$. Uniqueness: $\\prod m_i = 105$, so solutions form the coset $23 + 105\\mathbb{Z}$.",
+    "significance": "context",
+    "relatedConcepts": ["Sunzi Suanjing", "Fin.lastCases", "decide tactic", "concrete verification", "Fin 3"],
+    "prerequisites": ["Fin types in Lean 4", "decide tactic for decidable propositions", "Matrix.cons notation ![]"]
+  }
+]
