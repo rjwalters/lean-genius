@@ -919,6 +919,7 @@ import Proofs.Erdos155Problem
 import Proofs.Erdos156Aristotle
 import Proofs.Erdos156OQ02
 import Proofs.Erdos156Problem
+import Proofs.Erdos156ProblemAristotle
 import Proofs.Erdos157Problem
 import Proofs.Erdos158Problem
 import Proofs.Erdos159Problem
