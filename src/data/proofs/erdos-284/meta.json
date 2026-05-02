@@ -46,13 +46,13 @@
       }
     ],
     "originalContributions": [
-      "UnitFraction, IsEgyptianRep, RepresentsOne definitions",
+      "UnitFraction, IsEgyptianRep, RepresentsOne, minElement definitions",
       "f (axiomatized): maximum first denominator function",
-      "harmonic_interval: discrete harmonic sum approximation",
-      "f_upper_bound: trivial upper bound via counting",
-      "croot_2001: constructive existence in (N, eN]",
-      "f_lower_bound and f_asymptotic: matching lower bound",
-      "erdos_284_summary combining both bounds"
+      "f_upper_bound: trivial upper bound axiom",
+      "f_lower_bound: Croot's matching lower bound axiom",
+      "example_k4: k=4 representation verified by norm_num",
+      "erdos_284_summary: combines both bounds into the asymptotic formula",
+      "erdos_284: main theorem wrapping erdos_284_summary"
     ],
     "relatedProblems": [
       {
@@ -69,7 +69,7 @@
     "historicalContext": "Erdős Problem #284 asks about the asymptotic behavior of Egyptian fraction decompositions of 1. An Egyptian fraction representation of 1 is an equation 1 = 1/n₁ + 1/n₂ + ... + 1/nₖ with distinct positive integers n₁ < n₂ < ... < nₖ. The function f(k) denotes the maximum possible first denominator n₁ in such a k-term representation.\n\nThe upper bound f(k) ≤ (1+o(1))·k/(e-1) follows from a simple counting argument: if the first denominator is u, the harmonic sum over [u, eu] is approximately 1 (since ∫₁ᵉ 1/x dx = 1), so we need about (e-1)u terms. Hence k ≥ (e-1-o(1))u, giving u ≤ (1+o(1))k/(e-1).\n\nThe matching lower bound was proved by Croot in 2001. He showed that for any N > 1, one can find distinct integers in the interval (N, eN] whose reciprocals sum to exactly 1. This constructive result implies f(k) ≥ (1-o(1))·k/(e-1), completing the asymptotic determination. The constant 1/(e-1) ≈ 0.582 arises from the integral identity ∫₁ᵉ 1/x dx = 1.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $f(k)$ be the maximal value of $n_1$ such that there exist $n_1 < n_2 < \\cdots < n_k$ with\n$$1 = \\frac{1}{n_1} + \\frac{1}{n_2} + \\cdots + \\frac{1}{n_k}.$$\n\nIs it true that $f(k) = (1 + o(1)) \\cdot \\frac{k}{e-1}$?\n\n**Answer**: YES — proved by Croot (2001)",
     "text": "The maximum first denominator f(k) in a k-term Egyptian fraction representation of 1 satisfies f(k) = (1+o(1))·k/(e-1). Solved by Croot (2001).",
-    "proofStrategy": "We formalize this by:\n\n1. **Egyptian fraction framework**: UnitFraction, IsEgyptianRep, RepresentsOne definitions\n2. **The function f(k)**: Axiomatized as the maximum first denominator\n3. **Upper bound**: Via harmonic series counting — trivial direction\n4. **Croot's theorem**: Constructive existence of representations in (N, eN]\n5. **Lower bound**: Consequence of Croot's result\n6. **Asymptotic formula**: f(k) = (1+o(1))·k/(e-1) combining both bounds\n7. **Example**: k=4 with 1 = 1/2 + 1/4 + 1/5 + 1/20",
+    "proofStrategy": "We formalize this by:\n\n1. **Egyptian fraction framework**: UnitFraction, IsEgyptianRep, RepresentsOne definitions\n2. **The function f(k)**: Axiomatized as the maximum first denominator\n3. **Upper bound**: Via harmonic series counting — trivial direction\n4. **Lower bound**: f_lower_bound axiom states f(k) ≥ (1-ε)·k/(e-1) for large k — Croot's 2001 result (the proof is too deep to formalize; axiomatized with constructive justification described in docstring at lines 112–116)\n5. **Example**: k=4 with 1 = 1/2 + 1/4 + 1/5 + 1/20, verified by norm_num\n6. **Summary theorems**: erdos_284_summary proves the asymptotic formula by combining f_upper_bound and f_lower_bound; erdos_284 wraps the same result",
     "keyInsights": [
       "**The constant e-1**: The interval [N, eN] has multiplicative length e, and ∫_N^{eN} 1/x dx = 1, so its harmonic sum approximates 1",
       "**Upper bound is trivial**: If n₁ = u, the interval [u, eu] has ~(e-1)u integers, so k ≥ (e-1)u",
@@ -97,38 +97,38 @@
       "id": "f-function",
       "title": "The Function f(k)",
       "startLine": 64,
-      "endLine": 83,
+      "endLine": 81,
       "summary": "Axiomatizes the function $f(k)$: the maximum possible value of the smallest denominator in a $k$-term Egyptian representation of 1. Well-definedness for $k \\geq 2$ follows from the existence of at least one representation (e.g., the greedy Sylvester-Fibonacci algorithm).",
       "mathContext": "$f(k) = \\max\\{\\min(n_i) : \\{n_1, \\ldots, n_k\\}$ is a $k$-term Egyptian representation of $1\\}$. For $k = 3$: $1 = 1/2 + 1/3 + 1/6$, so $f(3) \\geq 2$."
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound",
-      "startLine": 84,
-      "endLine": 116,
+      "startLine": 82,
+      "endLine": 108,
       "summary": "The harmonic series gives the upper bound: if $\\min(n_i) = m$, then $\\sum 1/n_i \\leq \\sum_{n=m}^{m+k-1} 1/n \\approx \\ln(1 + k/m)$. For this to reach 1, we need $k/m \\geq e - 1$, giving $f(k) \\leq k/(e-1) + o(k)$. The constant $e - 1 \\approx 1.718$ arises from $\\int_1^e 1/x\\,dx = 1$.",
       "mathContext": "Upper bound: $f(k) \\leq (1+o(1)) \\cdot k/(e-1)$ where $e - 1 = \\int_1^e 1/x\\,dx$. Proof: if all $n_i \\geq m$, then $1 = \\sum 1/n_i \\leq \\sum_{n=m}^{\\infty} 1/n$; the harmonic tail forces $m \\leq k/(e-1) + O(\\log k)$."
     },
     {
       "id": "croot",
       "title": "Croot's Lower Bound (2001)",
-      "startLine": 117,
-      "endLine": 146,
+      "startLine": 109,
+      "endLine": 129,
       "summary": "Ernie Croot (2001) proved the matching lower bound $f(k) \\geq (1-o(1)) \\cdot k/(e-1)$, establishing $f(k) \\sim k/(e-1)$. Croot's constructive proof finds $k$-term representations of 1 with all denominators in the interval $[m, m+k-1]$ for $m \\approx k/(e-1)$.",
       "mathContext": "Croot (2001): $f(k) \\geq (1-o(1)) \\cdot k/(e-1)$. Combined with the upper bound: $f(k) = (1+o(1)) \\cdot k/(e-1) \\approx 0.582k$. The asymptotic is sharp: the constant $1/(e-1)$ is exact."
     },
     {
       "id": "examples",
       "title": "Examples",
-      "startLine": 147,
-      "endLine": 157,
-      "summary": "Verified example: $k = 4$ with $1 = 1/2 + 1/4 + 1/5 + 1/20$, giving $\\min(n_i) = 2$ and $f(4) \\geq 2$. The representation is verified via `native_decide` on the rational arithmetic.",
+      "startLine": 130,
+      "endLine": 147,
+      "summary": "Verified example: $k = 4$ with $1 = 1/2 + 1/4 + 1/5 + 1/20$, giving $\\min(n_i) = 2$ and $f(4) \\geq 2$. The representation is verified via `norm_num` on the rational arithmetic.",
       "mathContext": "$1/2 + 1/4 + 1/5 + 1/20 = 10/20 + 5/20 + 4/20 + 1/20 = 20/20 = 1$."
     },
     {
       "id": "summary",
       "title": "Summary Theorems",
-      "startLine": 158,
+      "startLine": 148,
       "endLine": 183,
       "summary": "`erdos_284_summary` combines both bounds into a single theorem: $(1-\\varepsilon)k/(e-1) \\leq f(k) \\leq (1+\\varepsilon)k/(e-1)$ for large $k$. `erdos_284` wraps this as the definitive resolution of the problem.",
       "mathContext": "The final result: $\\lim_{k \\to \\infty} f(k) \\cdot (e-1)/k = 1$. Formalized as: $\\forall \\varepsilon > 0$, $\\exists K$, $\\forall k \\geq K$: $(1-\\varepsilon)k/(e-1) \\leq f(k) \\leq (1+\\varepsilon)k/(e-1)$."
@@ -145,19 +145,19 @@
   },
   "mainTheorems": [
     {
-      "name": "f_asymptotic",
-      "type": "core",
-      "description": "The asymptotic formula f(k) = (1+o(1))·k/(e-1): for any ε > 0 there exists K such that (1-ε)k/(e-1) ≤ f(k) ≤ (1+ε)k/(e-1) for all k ≥ K, combining the upper bound and Croot's lower bound."
-    },
-    {
-      "name": "croot_2001",
-      "type": "core",
-      "description": "Croot's 2001 constructive theorem: for any N > 1 there exist distinct integers in (N, eN] whose reciprocals sum to exactly 1, establishing the lower bound f(k) ≥ (1-o(1))·k/(e-1)."
-    },
-    {
       "name": "erdos_284_summary",
+      "type": "core",
+      "description": "Summary theorem combining both bounds into the definitive resolution of Erdős Problem #284: f(k) = (1+o(1))·k/(e-1). Proved by applying f_upper_bound and f_lower_bound axioms. The constant 1/(e-1) arises from the integral ∫₁ᵉ 1/x dx = 1."
+    },
+    {
+      "name": "erdos_284",
+      "type": "core",
+      "description": "Main theorem wrapping erdos_284_summary: the asymptotic formula f(k) = (1+o(1))·k/(e-1) for the maximum first denominator in a k-term Egyptian fraction representation of 1."
+    },
+    {
+      "name": "example_k4",
       "type": "supporting",
-      "description": "Summary theorem combining both bounds into the definitive resolution of Erdős Problem #284: f(k) = (1+o(1))·k/(e-1) where the constant 1/(e-1) arises from the integral ∫₁ᵉ 1/x dx = 1."
+      "description": "Concrete example: k=4 with 1 = 1/2 + 1/4 + 1/5 + 1/20, verified by norm_num. Establishes f(4) ≥ 2 via RepresentsOne {2, 4, 5, 20}."
     }
   ],
   "leanFile": {
