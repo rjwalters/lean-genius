@@ -6340,9 +6340,12 @@
     },
     "erdos-379": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-01T23:46:04Z",
+      "result": "issues-found",
+      "issues": [
+        "Issue #14440: narrative claims Lean-verified but main result is axiom (3 axioms total); section line drift; basic-properties section has no Lean theorems"
+      ]
     },
     "erdos-38": {
       "agentId": "auditor-cycle-20-batch",
