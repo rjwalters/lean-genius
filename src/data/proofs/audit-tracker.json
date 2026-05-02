@@ -4399,10 +4399,12 @@
       "result": "clean"
     },
     "erdos-1181": {
-      "auditCount": 3,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 4,
+      "issues": [
+        "#14737: proofStrategy step 3 claims trivial-bound axiomatization (no axiom declared in Lean source)"
+      ],
+      "lastAudited": "2026-05-02T11:04:20Z",
+      "result": "issues-found"
     },
     "erdos-1182": {
       "auditCount": 1,
