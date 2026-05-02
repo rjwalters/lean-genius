@@ -49,11 +49,10 @@
       "Definition of N-perfect rulers (difference bases)",
       "Definition of restricted perfect rulers (A ⊆ {0,...,N})",
       "Proved trivial_is_perfect (full ruler works)",
+      "Proved F_nonempty (the F-defining set is nonempty)",
       "Proved F_upper_trivial (F(N) ≤ N+1)",
-      "Axiomatized F_lower_two (F(N) ≥ 2 for N ≥ 1)",
-      "Axiomatized Erdős-Gál limit existence theorem",
-      "Axiomatized Leech lower bound (≥1.56) and Wichmann upper bound (≤√3)",
-      "Example sparse rulers for N=3 and N=30"
+      "Axiomatized erdos_gal_limit_exists, leech_lower_bound, wichmann_upper_bound",
+      "Proved limit_in_interval (1.56 ≤ L ≤ √3 conditional on the three axioms)"
     ],
     "axiomCount": 3,
     "lineCount": 146,
@@ -120,24 +119,45 @@
     },
     {
       "id": "F-def",
-      "title": "The Function F(N)",
+      "title": "The Function F(N) and Basic Bounds",
       "startLine": 61,
-      "endLine": 87,
-      "summary": "Define F(N) as minimum cardinality and prove basic bounds."
+      "endLine": 85,
+      "summary": "Define F(N) as minimum cardinality, prove F_nonempty and F_upper_trivial."
     },
     {
       "id": "limit",
       "title": "The Limit Theorem",
-      "startLine": 88,
-      "endLine": 124,
-      "summary": "Erdős-Gál limit existence and Leech/Wichmann bounds."
+      "startLine": 86,
+      "endLine": 104,
+      "summary": "Erdős-Gál limit existence axiom, Leech/Wichmann bound axioms, and limit_in_interval theorem."
     },
     {
       "id": "constructions",
-      "title": "Constructions",
-      "startLine": 125,
+      "title": "Known Constructions",
+      "startLine": 105,
+      "endLine": 110,
+      "summary": "Doc-comments describing Wichmann rulers and Redei-Renyi lower bound constructions."
+    },
+    {
+      "id": "unrestricted",
+      "title": "Unrestricted Version",
+      "startLine": 111,
+      "endLine": 121,
+      "summary": "Unrestricted perfect rulers and F'(N) definition."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 122,
+      "endLine": 127,
+      "summary": "Doc-comment examples of small sparse rulers (N=3, N=30)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 128,
       "endLine": 146,
-      "summary": "Wichmann construction and example sparse rulers."
+      "summary": "Problem status summary: limit known to be in [1.56, √3], exact value open."
     }
   ],
   "conclusion": {
