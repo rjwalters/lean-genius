@@ -94,7 +94,7 @@ def Erdos221Conjecture : Prop :=
 ## Part IV: Lorentz's Result (1954)
 -/
 
-/-- Lorentz (1954): There exists a complement with (log log N / log N) · N density -/
+/- Lorentz (1954): There exists a complement with (log log N / log N) · N density -/
 /-
 ## Part V: Ruzsa's Construction (1972)
 -/
@@ -110,7 +110,7 @@ def RuzsaCoreSet : Set ℕ :=
 def RuzsaSet : Set ℕ :=
   { x | x ∈ RuzsaCoreSet ∨ x + 1 ∈ RuzsaCoreSet }
 
-/-- 2 is a primitive root modulo 5^n for all n ≥ 1 -/
+/- 2 is a primitive root modulo 5^n for all n ≥ 1 -/
 /-- Ruzsa (1972): RuzsaSet is a complement to powers of 2 -/
 axiom ruzsa_is_complement : IsComplementToPowersOfTwo RuzsaSet
 
@@ -164,10 +164,10 @@ theorem optimal_density :
 ## Part IX: Connection to Primitive Roots
 -/
 
-/-- Why 5 is special: 2 is a primitive root mod 5^n.
+/- Why 5 is special: 2 is a primitive root mod 5^n.
     The multiplicative order of 2 mod 5^n is φ(5^n) = 4 · 5^(n-1).
     This means powers of 2 cycle through all residues coprime to 5^n. -/
-/-- The powers of 2 mod 5^n cover all residues coprime to 5 -/
+/- The powers of 2 mod 5^n cover all residues coprime to 5 -/
 /-
 ## Part X: Generalizations
 -/
@@ -176,16 +176,16 @@ theorem optimal_density :
 def GeneralizedComplement (g : ℕ) (A : Set ℕ) : Prop :=
   ∃ N₀ : ℕ, ∀ n ≥ N₀, ∃ a ∈ A, ∃ k : ℕ, n = a + g^k
 
-/-- For any base g ≥ 2, sparse complements to powers of g exist.
+/- For any base g ≥ 2, sparse complements to powers of g exist.
     The density depends on the multiplicative structure of g modulo primes. -/
 /-
 ## Part XI: Related Problems
 -/
 
-/-- Connection to sumset problems:
+/- Connection to sumset problems:
     A + {2^k : k ≥ 0} covers all large integers.
     This is a "structured sumset" problem where one summand is fixed. -/
-/-- Additive bases connection:
+/- Additive bases connection:
     A set B is an additive basis of order h if hB covers all large integers.
     Problem #221 asks: can {2^k} + A = ℕ eventually, with A having density N/log N?
     This is an "order 2" basis question with one summand being powers of 2. -/
