@@ -4978,10 +4978,14 @@
       "result": "issues-fixed"
     },
     "erdos-187": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-1777707734",
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T07:46:50Z",
+      "result": "issues-found",
+      "issues": [
+        "Narrative drift: meta.json sections.definitions.summary and overview.proofStrategy reference non-existent maxMonoAPLength definition; classify optAPBound as a definition rather than the axiom it actually is. sections.definitions.endLine drifts by 1. Numerical counts (4 axioms, 0 sorries, 2 defs, 60 lines) are correct. Filed issue #14649."
+      ],
+      "notes": "Phantom maxMonoAPLength + optAPBound miscategorization. See issue #14649."
     },
     "erdos-188": {
       "agentId": "auditor-cycle-20-batch",
