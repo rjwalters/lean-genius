@@ -2,7 +2,7 @@
   "id": "feuerbachs-theorem-oq-02",
   "title": "3D Analogue of Feuerbach's Theorem for Tetrahedra",
   "slug": "feuerbachs-theorem-oq-02",
-  "description": "Formalizes the 3D analogue of Feuerbach's theorem: for an orthocentric tetrahedron, the twenty-four-point sphere is tangent to the insphere and all four exspheres",
+  "description": "Investigates the 3D analogue of Feuerbach's theorem for tetrahedra. The natural candidate sphere (center N₂₄ = midpoint(O, M), radius R/3) is REFUTED for orthocentric tetrahedra by an explicit closed-form counterexample; the correct analogue (Murakami 1952, Court 1934) remains an open formalization target.",
   "meta": {
     "author": "Murakami (1952), Court (1934)",
     "date": "2026-03-30",
@@ -19,7 +19,7 @@
     ],
     "proofRepoPath": "Proofs/FeuerbachsTheoremOQ02.lean",
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Real.sqrt",
@@ -29,26 +29,28 @@
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 1,
-    "lineCount": 723,
-    "assumptions": "1 axiom: feuerbach_3d_fails_general (Feuerbach tangency fails for general tetrahedra — counterexample). 2 former axioms REMOVED as mathematically false: edge_midpoints_on_sphere used incorrect center/radius (correct: center=centroid, radius=R/2, not N24 and R/3), face_centroids_on_sphere was false for non-regular orthocentric tetrahedra. Replaced with proved theorem edge_midpoints_equidist_from_centroid. 5 sorries for the main tangency theorems — mathematical status uncertain.",
+    "lineCount": 688,
+    "assumptions": "1 axiom: feuerbach_3d_fails_general (existence of a non-orthocentric tetrahedron for which the (N₂₄, R/3)-sphere is not tangent to the insphere). Note: per the 2026-05-02 refutation, tangency also fails for many orthocentric tetrahedra, so the orthocentric hypothesis does not save the conjecture as originally stated. Two former axioms REMOVED as mathematically false (edge_midpoints_on_sphere, face_centroids_on_sphere). Five tangency theorems (feuerbach_3d_insphere, feuerbach_3d_exsphere_{A,B,C,D}) and the bundled feuerbach_3d_theorem REMOVED on 2026-05-02 after a closed-form counterexample at T₀ = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)) showed dist(N₂₄, I)² = 3r² ≠ (R/3 − r)². Net delta: 5 sorries → 0.",
     "originalContributions": [
       "Complete 3D coordinate geometry infrastructure for tetrahedra in Lean 4",
       "Formalization of orthocentric tetrahedra with proof that third perpendicularity follows from first two",
-      "Definition of the twenty-four-point sphere (3D nine-point circle analogue) with center and radius",
-      "Statement and structure of the 3D Feuerbach theorem for orthocentric tetrahedra",
-      "Proof of the 3D Euler line relation: centroid divides circumcenter-Monge point segment in ratio 3:1"
+      "Definitions of the twenty-four-point sphere (center, radius) preserved for downstream work, with documentation that they are NOT the correct Feuerbach sphere",
+      "Closed-form refutation of the candidate '3D Feuerbach theorem' (the (N₂₄, R/3)-sphere is not tangent to the insphere of every orthocentric tetrahedron); explicit symbolic counterexample at T₀ = ((2,0,0),(0,3,0),(0,0,6),(0,0,0))",
+      "Proof of the 3D Euler line relation: centroid divides circumcenter-Monge point segment in ratio 3:1",
+      "Proof that the six edge midpoints of an orthocentric tetrahedron are equidistant from the centroid (the midedge-sphere result; also shown not to be Feuerbach-tangent at T₀)"
     ]
   },
   "overview": {
-    "historicalContext": "Feuerbach's theorem (1822) that the nine-point circle is tangent to the incircle and all three excircles is considered one of the most beautiful results in classical triangle geometry. The natural question of its 3D analogue was studied by Court (1934) and Murakami (1952): for orthocentric tetrahedra (where all pairs of opposite edges are perpendicular), the twenty-four-point sphere plays the role of the nine-point circle, being internally tangent to the insphere and externally tangent to all four exspheres. This generalization is strictly special: unlike the 2D theorem which holds for all triangles, the 3D analogue fails for general tetrahedra. The twenty-four-point sphere has center at the midpoint of the circumcenter and Monge point, with radius exactly R/3 (vs R/2 for the nine-point circle), reflecting the different combinatorial structure of 3D incidence geometry.",
+    "historicalContext": "Feuerbach's theorem (1822) that the nine-point circle is tangent to the incircle and all three excircles is considered one of the most beautiful results in classical triangle geometry. The natural question of its 3D analogue was studied by Court (1934) and Murakami (1952): for orthocentric tetrahedra, a sphere related to the circumcenter and Monge point should play the role of the nine-point circle. This formalization began with the candidate `(N₂₄, R/3)`-sphere (center = midpoint of circumcenter and Monge point, radius R/3 vs R/2 for the nine-point circle). Numerical experiments (sessions 1–2, April 2026) flagged the candidate as suspect; on 2026-05-02 a closed-form symbolic computation at the orthocentric tetrahedron T₀ = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)) refuted the candidate outright, and the previously sorry-stated tangency theorems were removed. Identifying and formalizing the correct 3D Feuerbach sphere — Murakami's construction uses face circumcircles — remains open.",
     "problemStatement": "What is the 3D analogue of Feuerbach's theorem for tetrahedra? Specifically: is there a natural sphere that is tangent to the insphere and all exspheres of a tetrahedron?",
-    "text": "For an orthocentric tetrahedron (opposite edges perpendicular), the twenty-four-point sphere is internally tangent to the insphere and externally tangent to all four exspheres",
-    "proofStrategy": "Coordinate geometry in R^3. Define tetrahedra, orthocentric condition, insphere/exspheres, and key spheres. The midedge sphere (center = centroid G, radius = R/2) passes through all 6 edge midpoints for orthocentric tetrahedra (proved). The tangency claims (center = N24, radius = R/3) are under review.",
+    "text": "Working hypothesis investigated: for an orthocentric tetrahedron, the (N₂₄, R/3)-sphere is internally tangent to the insphere and externally tangent to all four exspheres. This formalization REFUTES that hypothesis at T₀ = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)) and therefore states no positive 3D Feuerbach theorem.",
+    "proofStrategy": "Coordinate geometry in R^3. Build the tetrahedron / orthocentric / circumcenter / Monge point / insphere / exsphere infrastructure (done). Use that infrastructure to (a) prove the surviving structural results (Euler line, edge-midpoint equidistance, V = rS/3) and (b) refute the (N₂₄, R/3)-Feuerbach candidate by closed-form computation at an explicit orthocentric tetrahedron. The correct 3D analogue (Murakami's face-circumcircle sphere, or a still-to-be-determined alternative) is not formalized here.",
     "keyInsights": [
-      "The 3D Feuerbach theorem requires the orthocentric hypothesis — it fails for general tetrahedra",
-      "The midedge sphere (through 6 edge midpoints) has center G and radius R/2, not R/3",
+      "The (N₂₄, R/3)-sphere is NOT the 3D Feuerbach sphere: at the orthocentric tetrahedron T₀ = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)) one has dist(N₂₄, I)² = 3r² but (R/3 − r)² = (7/6 − r)², which are unequal in closed form",
+      "The orthocentric hypothesis alone does NOT salvage the candidate sphere: T₀ is orthocentric and the tangency still fails",
+      "The midedge sphere (through 6 edge midpoints) has center G and radius R/2, and is also NOT in general tangent to the insphere (verified at T₀)",
       "The Monge point M = 4G - 3O does NOT coincide with the orthocenter H = 2G - O; H = midpoint(O, M)",
-      "Only 2 of the 3 orthogonality conditions need be imposed — the third follows algebraically",
+      "Only 2 of the 3 orthogonality conditions need be imposed — the third follows algebraically (proved as `orthocentric_third_perp`)",
       "The Euler line of a tetrahedron places O, G, H, M at parameter ratios 0:1:2:4",
       "Face centroids are NOT equidistant from any single center (unlike edge midpoints)"
     ],
@@ -109,12 +111,12 @@
       "mathContext": "The twenty-four-point sphere is the 3D analogue of the nine-point circle. It passes through the 6 edge midpoints, 4 face centroids, and 14 other distinguished points."
     },
     {
-      "id": "feuerbach-3d",
-      "title": "The 3D Feuerbach Theorem",
-      "startLine": 340,
-      "endLine": 410,
-      "summary": "Statement of the complete 3D Feuerbach theorem: the twenty-four-point sphere is tangent to the insphere and all four exspheres.",
-      "mathContext": "For an orthocentric tetrahedron, the twenty-four-point sphere is internally tangent to the insphere (dist = |R/3 - r|) and externally tangent to all four exspheres (dist = R/3 + r_i)."
+      "id": "feuerbach-3d-refutation",
+      "title": "Refutation of the (N₂₄, R/3)-Sphere Candidate",
+      "startLine": 459,
+      "endLine": 521,
+      "summary": "Closed-form symbolic counterexample showing that for the orthocentric tetrahedron T₀ = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)), the (N₂₄, R/3)-sphere is NOT internally tangent to the insphere; the previously sorry-stated tangency theorems have been removed.",
+      "mathContext": "At T₀: O = (1, 3/2, 3), R = 7/2, N₂₄ = (0, 0, 0), face areas (S_A, S_B, S_C, S_D) = (9, 6, 3, 3√14), V = 6, r = 6/(6 + √14), I = (r, r, r). Hence dist(N₂₄, I) = r√3 and |R/3 − r| = 7/6 − r, which differ in closed form (squaring: 3r² ≠ (7/6 − r)²). The same tetrahedron also refutes the midedge-sphere variant (center G, radius R/2)."
     }
   ],
   "crossReferences": [
@@ -140,11 +142,13 @@
     }
   ],
   "conclusion": {
-    "summary": "The 3D analogue of Feuerbach's theorem states that for orthocentric tetrahedra, the twenty-four-point sphere is tangent to the insphere and all four exspheres. This requires the orthocentric hypothesis — it fails for general tetrahedra.",
-    "implications": "The formalization reveals how the 2D-to-3D generalization introduces essential new structure: the orthocentric condition, the Monge point replacing the orthocenter, and the twenty-four-point sphere replacing the nine-point circle with radius R/3 instead of R/2.",
+    "summary": "The natural candidate '3D Feuerbach theorem' — the (N₂₄, R/3)-sphere is tangent to the insphere/exspheres of every orthocentric tetrahedron — is FALSE with the standard definitions, refuted in closed form at the orthocentric tetrahedron T₀ = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)). The orthocentric hypothesis does not save the candidate. What survives is the coordinate-geometry infrastructure plus several structural results (Euler line, edge-midpoint equidistance, V = rS/3, etc.).",
+    "implications": "The 2D-to-3D generalization is more subtle than the surface analogy suggests: neither (N₂₄, R/3) nor (G, R/2) is tangent to the insphere, even on the orthocentric class. A correct 3D Feuerbach sphere — Murakami's face-circumcircle construction is one candidate, Court's isodynamic version another — must be identified and formalized separately. The closed-form refutation also illustrates the value of returning to candidate theorems with symbolic, rather than purely numerical, scrutiny.",
     "openQuestions": [
-      "Can the 3D Feuerbach theorem be extended to isogonal tetrahedra (a broader class than orthocentric)?",
-      "What is the analogue for n-dimensional simplices?"
+      "Identify the correct 3D Feuerbach sphere (e.g. via Murakami's face circumcircles) and formalize the corresponding tangency result for orthocentric tetrahedra.",
+      "Determine whether any natural sphere is tangent to BOTH the insphere and all four exspheres for general orthocentric tetrahedra, or whether the joint tangency fails inherently.",
+      "Extend any successful formalization to isogonal tetrahedra (broader than orthocentric).",
+      "Investigate the analogue for n-dimensional simplices."
     ]
   },
   "leanFile": {
@@ -157,46 +161,52 @@
       "Real"
     ],
     "namespace": "FeuerbachsTheoremOQ02",
-    "lineCount": 723,
+    "lineCount": 688,
     "axiomCount": 1,
-    "theoremCount": 21,
-    "substantiveTheoremCount": 7,
+    "theoremCount": 15,
+    "substantiveTheoremCount": 6,
     "duplicateTheorems": 0,
     "definitionCount": 48,
     "path": "Proofs/FeuerbachsTheoremOQ02.lean",
-    "sorries": 5
+    "sorries": 0
   },
   "mainTheorems": [
     {
-      "name": "feuerbach_3d_theorem",
-      "type": "core",
-      "description": "The complete 3D Feuerbach theorem for orthocentric tetrahedra",
-      "leanType": "(T : OrthocentricTetrahedron) → spheresInternallyTangent ... ∧ spheresExternallyTangent ... (×4)"
-    },
-    {
       "name": "orthocentric_third_perp",
       "type": "core",
-      "description": "Third orthogonality condition follows from first two (proved by nlinarith)",
+      "description": "Third orthogonality condition (AD ⊥ BC) follows algebraically from the first two (AB ⊥ CD ∧ AC ⊥ BD), proved by nlinarith",
       "leanType": "(T : OrthocentricTetrahedron) → dot3 (vec3 T.A T.D) (vec3 T.B T.C) = 0"
     },
     {
+      "name": "edge_midpoints_equidist_from_centroid",
+      "type": "core",
+      "description": "All six edge midpoints of an orthocentric tetrahedron are equidistant from the centroid G (the midedge-sphere result, with center G and radius R/2)",
+      "leanType": "(T : OrthocentricTetrahedron) → dist3_sq G M_AB = dist3_sq G M_CD ∧ … (5 conjuncts)"
+    },
+    {
       "name": "centroid_on_euler_line",
-      "type": "supporting",
-      "description": "3D Euler line: centroid divides circumcenter-Monge point in ratio 3:1",
+      "type": "core",
+      "description": "3D Euler line: the centroid divides the circumcenter–Monge point segment in ratio 3:1, i.e. G = (3O + M)/4",
       "leanType": "(T : Tetrahedron) → T.centroid = ((3 * O + M) / 4)"
+    },
+    {
+      "name": "Tetrahedron.circumcenter_equidist",
+      "type": "core",
+      "description": "The Cramer-rule circumcenter is equidistant from all four vertices",
+      "leanType": "(T : Tetrahedron) → dist3_sq T.circumcenter T.A = dist3_sq T.circumcenter T.B ∧ … "
+    },
+    {
+      "name": "monge_point_euler_line",
+      "type": "supporting",
+      "description": "Monge point formula M = 4G − 3O (definition-level identity, holds by rfl)",
+      "leanType": "(T : Tetrahedron) → T.mongePoint = (4 * G − 3 * O)"
     },
     {
       "name": "volume_eq_inradius_surfaceArea",
       "type": "supporting",
       "description": "Volume = inradius × surface area / 3",
       "leanType": "(T : Tetrahedron) → (hS : T.surfaceArea > 0) → T.volume = T.inradius * T.surfaceArea / 3"
-    },
-    {
-      "name": "edge_midpoints_equidist_from_centroid",
-      "type": "core",
-      "description": "All 6 edge midpoints equidistant from centroid G for orthocentric tetrahedra",
-      "leanType": "(T : OrthocentricTetrahedron) -> dist3_sq G M_AB = dist3_sq G M_CD /\\ ..."
     }
   ],
-  "sorries": 5
+  "sorries": 0
 }
