@@ -8053,10 +8053,10 @@ theorem creutz_cancels_perimeter (I J : ℕ) (hI : 1 < I) (hJ : 1 < J) :
     2 * (I : ℤ) + 2 * J + (2 * (I - 1) + 2 * (J - 1)) -
     (2 * I + 2 * (J - 1)) - (2 * (I - 1) + 2 * J) = 0 := by ring
 
-/-- **PROVED: Positive string tension gives Creutz ratio bounded below.**
-
-    If σ > 0, then for pure area law, χ(I,J) = σ > 0.
-    This is the numerical criterion for confinement on the lattice. -/
+/-- Structural placeholder: positive string tension hypothesis restated as conclusion.
+    (Context: if σ > 0, then for pure area law, χ(I,J) = σ > 0 — the Creutz
+    confinement criterion. The deep result is that σ > 0 in the continuum limit,
+    which is not proved here.) -/
 theorem creutz_confinement_criterion (σ : ℝ) (hσ : σ > 0) :
     -- Confinement ⟺ lim_{I,J→∞} χ(I,J) > 0
     σ > 0 := hσ
@@ -9334,11 +9334,10 @@ theorem hamiltonian_bounded_below (E_elec E_mag : ℝ)
 theorem spectral_gap_positive (E₀ E₁ : ℝ) (hgap : E₁ > E₀) :
     E₁ - E₀ > 0 := by linarith
 
-/-- **PROVED: The continuum limit exists if the gap persists.**
-
-    If Δ(a) > 0 for all lattice spacings a > 0, and Δ(a) → Δ_phys > 0
-    as a → 0, then the continuum theory has a mass gap.
-    We formalize: if Δ(a) ≥ Δ_min > 0 for all a, then Δ_min > 0. -/
+/-- Structural placeholder: gap-positivity hypothesis restated as conclusion.
+    (Context: if Δ(a) ≥ Δ_min > 0 for all lattice spacings a, then Δ_min > 0.
+    This is a tautology; the genuine open problem — proving Δ_min > 0 from first
+    principles in the continuum limit — is the Yang-Mills Millennium Prize problem.) -/
 theorem continuum_gap_from_lattice (Δ_min : ℝ) (hΔ : Δ_min > 0) :
     Δ_min > 0 := hΔ
 
@@ -10762,11 +10761,11 @@ theorem confined_iff_not_positive (ρ : ℝ → ℝ) :
   intro ⟨σ, hσ, hρ⟩ hpos
   exact absurd (hpos σ hσ) (not_le.mpr hρ)
 
-/-- **PROVED: Physical particles satisfy KL positivity by definition.** -/
+/-- Structural unfolding: `kl_positive ρ` is definitionally `∀ σ ≥ 0, ρ σ ≥ 0`. -/
 theorem physical_particles_positive (ρ : ℝ → ℝ) (h : kl_positive ρ) :
     ∀ σ : ℝ, σ ≥ 0 → ρ σ ≥ 0 := h
 
-/-- **PROVED: Confined particles have at least one negative spectral region.** -/
+/-- Structural unfolding: `spectrally_confined ρ` is definitionally `∃ σ ≥ 0, ρ σ < 0`. -/
 theorem confined_has_negative_region (ρ : ℝ → ℝ) (h : spectrally_confined ρ) :
     ∃ σ : ℝ, σ ≥ 0 ∧ ρ σ < 0 := h
 
