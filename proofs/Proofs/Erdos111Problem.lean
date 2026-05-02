@@ -108,13 +108,6 @@ A graph is k-colorable if it admits a proper coloring with at most k colors.
 def IsKColorable {V : Type*} (G : SimpleGraph V) (k : ℕ) : Prop :=
   ∃ f : V → Fin k, IsProperColoring G f
 
-/--
-**Chromatic Number (for finite graphs):**
-The minimum number of colors needed for a proper coloring.
-
-Axiomatized to avoid decidability issues with IsKColorable.
--/
-/-- Every finite graph is k-colorable for some k. -/
 /-
 ## Part IV: Infinite Chromatic Number
 
@@ -151,11 +144,6 @@ def hasOddCycle {V : Type*} (G : SimpleGraph V) : Prop :=
     (∀ i : Fin (2*n + 1), G.Adj (c i) (c ⟨(i.val + 1) % (2*n + 1), Nat.mod_lt _ (by omega)⟩)) ∧
     Function.Injective (fun i : Fin (2*n) => c ⟨i.val, by omega⟩)
 
-/--
-**Bipartite iff No Odd Cycles:**
-A graph is bipartite if and only if it contains no odd cycle.
-This is a classical theorem in graph theory.
--/
 /-
 ## Part VI: Vertex-Disjoint Odd Cycles
 
@@ -174,14 +162,6 @@ def hasVertexDisjointOddCycles {V : Type*} (G : SimpleGraph V) (κ : Cardinal) :
       Set.range path = cycles i ∧
       ∀ k : Fin (2*n + 1), G.Adj (path k) (path ⟨(k.val + 1) % (2*n + 1), Nat.mod_lt _ (by omega)⟩))
 
-/--
-**Erdős-Hajnal-Szemerédi Lower Bound:**
-Every graph with chromatic number ℵ₁ contains ℵ₁ many vertex-disjoint odd cycles
-of some fixed odd length 2r+1. This implies h_G(n) ≫ n.
-
-Proof sketch: If χ(G) = ℵ₁, then G is not countably colorable.
-By a compactness argument, G must contain uncountably many vertex-disjoint odd cycles.
--/
 /--
 **h_G(n) ≫ n for χ(G) = ℵ₁:**
 If G has chromatic number ℵ₁, then h_G(n)/n → ∞ at least linearly.
