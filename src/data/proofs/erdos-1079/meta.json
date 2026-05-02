@@ -52,7 +52,7 @@
     "historicalContext": "Erdős Problem #1079 was posed by Erdős around 1975 (referenced in [Er75]) as a natural refinement of Turán's theorem. Turán's theorem says that a K_r-free graph on n vertices has at most ex(n, K_r) edges; Erdős asked whether having this many edges forces not just a global clique but also local density — specifically, a vertex whose neighborhood is itself Turán-dense for the next smaller clique.\n\nBollobás and Thomason proved the conjecture in 1981: if G has at least ex(n, K_r) edges and is not the Turán graph itself, then some vertex v with degree d = Ω_r(n) has at least ex(d, K_{r−1}) edges in its neighborhood. In 1983, Bondy strengthened this by showing that when G has strictly more than ex(n, K_r) edges, the maximum-degree vertex always works. This means one need not search for the right vertex — the most connected one is guaranteed to have a dense neighborhood.\n\nErdős described this result as 'a nice generalisation of Turán's theorem.' The Turán graph T(n, r−1) is the unique exception: its neighborhoods are themselves Turán graphs T(d, r−2), achieving exactly ex(d, K_{r−1}) edges rather than exceeding it. The result sits at the foundation of extremal graph theory and has influenced stability results and algorithmic approaches to finding dense substructures.",
     "problemStatement": "**Problem (SOLVED)**\n\nLet $r \\geq 4$. If $G$ is a graph on $n$ vertices with at least $\\mathrm{ex}(n; K_r)$ edges, must $G$ contain a vertex $v$ with degree $d \\gg_r n$ whose neighborhood contains at least $\\mathrm{ex}(d; K_{r-1})$ edges?\n\n**Answer:** YES, unless $G$ is the Turán graph $T(n, r-1)$.\n\n- **Bollobás–Thomason (1981):** Proved the statement\n- **Bondy (1983):** The vertex can be chosen to have maximum degree",
     "text": "For r ≥ 4, if G has n vertices and at least ex(n; K_r) edges, must G contain a vertex whose neighborhood is also Turán-dense? YES, proved by Bollobás–Thomason (1981) and strengthened by Bondy (1983).",
-    "proofStrategy": "The formalization defines the Turán number ex(n, K_r), graph neighborhoods, induced subgraphs, and edge counting. The Bollobás–Thomason theorem is axiomatized as the existence of a constant c > 0 such that some vertex of degree ≥ c·n has a Turán-dense neighborhood. Bondy's strengthening is axiomatized separately, asserting the max-degree vertex works when edges strictly exceed ex(n, K_r). Turán's classical theorem provides context. The summary axiom collects both results, and the main theorem erdos_1079 is proved directly from the summary.",
+    "proofStrategy": "The formalization defines the Turán number ex(n, K_r), graph neighborhoods, induced subgraphs, and edge counting. A single `erdos_1079_summary` axiom captures the Bollobás–Thomason theorem (existence of a constant c > 0 such that some vertex of degree ≥ c·n has a Turán-dense neighborhood) together with Turán's classical clique-free bound. Bondy's strengthening (the max-degree vertex always works) is discussed in docstrings as historical context but is not separately axiomatized. The main theorem `erdos_1079` is proved directly from the summary axiom.",
     "keyInsights": [
       "**Local-Global Density:** Turán's theorem is about global edge count; this result shows global density propagates to local neighborhoods, creating a recursive density structure.",
       "**Turán Graph Exception:** The Turán graph T(n, r−1) is the unique exception because its neighborhoods are themselves Turán graphs, achieving the threshold exactly without exceeding it.",
@@ -77,34 +77,34 @@
     {
       "id": "bollobas-thomason",
       "title": "Bollobás–Thomason Theorem (1981)",
-      "summary": "Main theorem: dense graphs have vertices with dense neighborhoods",
-      "startLine": 63,
-      "endLine": 88,
-      "mathContext": "Main theorem: dense graphs have vertices with dense neighborhoods"
+      "summary": "Narrative and docstring — formally captured in the summary axiom",
+      "startLine": 64,
+      "endLine": 79,
+      "mathContext": "Narrative and docstring — formally captured in the summary axiom"
     },
     {
       "id": "bondy",
       "title": "Bondy's Strengthening (1983)",
-      "summary": "The max-degree vertex always works",
-      "startLine": 89,
-      "endLine": 111,
-      "mathContext": "The max-degree vertex always works"
+      "summary": "Historical context only — Bondy's max-degree strengthening is not separately axiomatized in this formalization",
+      "startLine": 80,
+      "endLine": 92,
+      "mathContext": "Historical context only — Bondy's max-degree strengthening is not separately axiomatized"
     },
     {
       "id": "turan-context",
       "title": "Turán's Theorem (Context)",
-      "summary": "Classical Turán bound providing context",
-      "startLine": 112,
-      "endLine": 128,
-      "mathContext": "Classical Turán bound providing context"
+      "summary": "Historical context — Turán's classical bound is included in the summary axiom",
+      "startLine": 93,
+      "endLine": 103,
+      "mathContext": "Historical context — Turán's classical bound is included in the summary axiom"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Conjunction of results and main entry point",
-      "startLine": 129,
+      "summary": "Summary axiom (erdos_1079_summary) and main theorem (erdos_1079)",
+      "startLine": 104,
       "endLine": 150,
-      "mathContext": "Conjunction of results and main entry point"
+      "mathContext": "Summary axiom (erdos_1079_summary) and main theorem (erdos_1079)"
     }
   ],
   "conclusion": {
