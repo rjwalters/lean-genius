@@ -27,7 +27,7 @@
     "assumptions": "4 axioms: discrepancyF, discrepancyF_mono_alpha, discrepancy_lower, discrepancy_upper. 0 sorries."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem around 1990, asking for the precise asymptotic of F(n, α) — the largest k such that some 2-colouring of K_n has every induced subgraph on at least k vertices α-balanced (each colour appears on more than α fraction of edges). The problem sits at the intersection of Ramsey theory and discrepancy theory.\n\nThe probabilistic method readily establishes that F(n, α) = Θ(log n) for each fixed 0 < α ≤ 1/2: a random 2-colouring of K_n is α-balanced on all sets of size ≤ c₁ log n with positive probability (via Chernoff bounds and a union bound over subsets), while a Ramsey-type counting argument shows any colouring must have an imbalanced induced subgraph of size ≤ c₂ log n.\n\nThe conjecture goes beyond these order-of-magnitude bounds to assert that the ratio F(n, α)/log n converges to a definite limit c_α. Determining this constant as a function of α would give a precise quantitative understanding of how balanced large 2-colourings can be. The case α = 1/2 is extremal (requiring near-equal colour distribution) and is related to Problems #161, #163, and #617 on balanced colourings. The formalization at 214 lines includes 1 sorry for a counting lemma (colourEdgeCount_total).",
+    "historicalContext": "Erdős posed this problem around 1990, asking for the precise asymptotic of F(n, α) — the largest k such that some 2-colouring of K_n has every induced subgraph on at least k vertices α-balanced (each colour appears on more than α fraction of edges). The problem sits at the intersection of Ramsey theory and discrepancy theory.\n\nThe probabilistic method readily establishes that F(n, α) = Θ(log n) for each fixed 0 < α ≤ 1/2: a random 2-colouring of K_n is α-balanced on all sets of size ≤ c₁ log n with positive probability (via Chernoff bounds and a union bound over subsets), while a Ramsey-type counting argument shows any colouring must have an imbalanced induced subgraph of size ≤ c₂ log n.\n\nThe conjecture goes beyond these order-of-magnitude bounds to assert that the ratio F(n, α)/log n converges to a definite limit c_α. Determining this constant as a function of α would give a precise quantitative understanding of how balanced large 2-colourings can be. The case α = 1/2 is extremal (requiring near-equal colour distribution) and is related to Problems #161, #163, and #617 on balanced colourings. The formalization at 237 lines covers the full structure; all supporting lemmas are proved and only the four-axiom skeleton encodes the open conjecture.",
     "problemStatement": "Prove that F(n, α) ~ c_α log n for some constant c_α depending on α.",
     "text": "For 0 < α ≤ 1/2, is F(n, α) ~ c_α log n, where F(n, α) is the largest k such that some 2-colouring of K_n has every k-vertex subgraph α-balanced?",
     "proofStrategy": "The formalization defines EdgeColouring as a symmetric Bool-valued function on pairs, IsBalancedOn requiring each colour class to exceed α · C(|S|,2) edges, and IsKBalanced for all subsets of size ≥ k. The function discrepancyF is axiomatized with characterization spec and monotonicity properties. Logarithmic bounds from the probabilistic method are stated. The main conjecture asserts ε-δ convergence of F(n,α)/log n to c_α.",
@@ -45,7 +45,7 @@
     "originalContributions": [
       "EdgeColouring: symmetric Bool-valued function with irreflexivity",
       "colourEdgeCount: count edges of given colour in induced subgraph",
-      "colourEdgeCount_total: total edges equals C(|S|,2) (sorry)",
+      "colourEdgeCount_total: total edges equals C(|S|,2)",
       "IsBalancedOn: α-balanced colouring on vertex set S",
       "IsKBalanced: every subset of size ≥ k is α-balanced",
       "balanced_requires_le_half: α > 1/2 makes balance impossible (proved via nlinarith)",
@@ -68,7 +68,7 @@
       "title": "Edge Colouring and Balance",
       "startLine": 32,
       "endLine": 75,
-      "summary": "Defines EdgeColouring (symmetric Bool on pairs), colourEdgeCount (filtered product count), colourEdgeCount_total (sorry), IsBalancedOn, IsKBalanced, and balanced_requires_le_half (sorry)."
+      "summary": "Defines EdgeColouring (symmetric Bool on pairs), colourEdgeCount (filtered product count), colourEdgeCount_total, IsBalancedOn, IsKBalanced, and balanced_requires_le_half."
     },
     {
       "id": "function-f",
@@ -107,7 +107,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 162 at 214 lines, defining edge 2-colourings, α-balanced subgraphs, the function F(n,α), and the convergence conjecture. The Θ(log n) sandwich is proved from axiomatized bounds. 1 sorry remains for a counting lemma (colourEdgeCount_total).",
+    "summary": "The formalization captures Erdős Problem 162 at 237 lines, defining edge 2-colourings, α-balanced subgraphs, the function F(n,α), and the convergence conjecture. The Θ(log n) sandwich is proved from axiomatized bounds. All supporting lemmas are fully proved; the four open-conjecture axioms encode the remaining open mathematical content.",
     "implications": "Determining c_α would give a precise quantitative understanding of how balanced large 2-colourings can be across all induced subgraphs, bridging Ramsey theory and discrepancy theory.",
     "openQuestions": [
       "Does the limit c_α = lim F(n,α)/log n exist for each α?",
