@@ -108,62 +108,62 @@
       "title": "Egyptian Fraction Property",
       "summary": "The key identity $u_{n+1} - 1 = u_n(u_n - 1)$ proved by direct computation, enabling the telescoping proof that $\\sum 1/u_n = 1$ (axiomatized).",
       "startLine": 99,
-      "endLine": 125,
+      "endLine": 121,
       "mathContext": "$\\frac{1}{u_n} = \\frac{1}{u_n - 1} - \\frac{1}{u_{n+1} - 1}$ telescopes to give $\\sum_{n=0}^{\\infty} \\frac{1}{u_n} = 1$"
     },
     {
       "id": "vardi",
       "title": "The Vardi Constant",
       "summary": "Defines $c_0 = \\lim u_n^{1/2^n}$ with axiomatized existence and bounds $1.264 < c_0 < 1.265$. Named after Ilan Vardi (1991).",
-      "startLine": 126,
-      "endLine": 142,
+      "startLine": 122,
+      "endLine": 138,
       "mathContext": "$c_0 = \\lim_{n \\to \\infty} u_n^{1/2^n} \\approx 1.264085\\ldots$ (OEIS A076393)"
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "summary": "EgyptianSequence structure (strictly increasing, positive terms, sum = 1), growthRate as liminf, and the formal conjecture: for any non-Sylvester Egyptian sequence, growthRate < vardiConstant.",
-      "startLine": 143,
-      "endLine": 173,
+      "startLine": 139,
+      "endLine": 169,
       "mathContext": "$\\forall (a_n)$ with $a_n$ strictly increasing and $\\sum 1/a_n = 1$: $\\liminf a_n^{1/2^n} < c_0$ unless $a = u$"
     },
     {
       "id": "solution",
       "title": "The Solution",
       "summary": "Axiom kamio_li_tang_2025 asserts erdosGrahamConjecture holds, citing the 2025 independent proofs by Kamio and Li-Tang.",
-      "startLine": 174,
-      "endLine": 186,
+      "startLine": 170,
+      "endLine": 182,
       "mathContext": "Solved independently: Kamio (arXiv:2503.02317), Li-Tang (arXiv:2503.12277), both 2025"
     },
     {
       "id": "special",
       "title": "Why Sylvester Is Special",
       "summary": "The greedy property (each term is the greedy choice) and proved double exponential growth: $u_n \\sim c_0^{2^n}$ derived from the Vardi constant limit.",
-      "startLine": 187,
-      "endLine": 210,
+      "startLine": 183,
+      "endLine": 202,
       "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists N : n \\geq N \\implies |u_n^{1/2^n} - c_0| < \\varepsilon$"
     },
     {
       "id": "related",
       "title": "Connection to Other Problems",
       "summary": "Links to Erdős-Straus conjecture ($4/n = 1/a + 1/b + 1/c$), odd greedy expansion, and OEIS references A000058 and A076393.",
-      "startLine": 211,
-      "endLine": 227,
+      "startLine": 203,
+      "endLine": 219,
       "mathContext": "Erdős-Straus: $\\forall n \\geq 2, \\exists a,b,c : 4/n = 1/a + 1/b + 1/c$"
     },
     {
       "id": "historical",
       "title": "Historical Note",
       "summary": "The original [ErGr80] formulation used $u_1=1, u_{n+1}=u_n(u_n+1)$, which doesn't satisfy $\\sum 1/u_n = 1$. Corrected by Quanyu Tang to the standard $u_1=2$ version.",
-      "startLine": 228,
-      "endLine": 237,
+      "startLine": 220,
+      "endLine": 229,
       "mathContext": "With $u_1=1$: $\\sum 1/u_n = 1/1 + 1/2 + 1/6 + \\cdots > 1$, violating the condition"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_315 and erdos_315_summary combine the solved conjecture with Vardi constant bounds $1.264 < c_0 < 1.265$. Status: SOLVED.",
-      "startLine": 238,
+      "startLine": 230,
       "endLine": 258,
       "mathContext": "$(\\text{erdosGrahamConjecture}) \\wedge (1.264 < c_0 < 1.265)$"
     }
