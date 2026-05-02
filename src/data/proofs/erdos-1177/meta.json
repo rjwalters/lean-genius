@@ -30,7 +30,7 @@
     "historicalContext": "Erdos, Galvin, and Hajnal posed three interrelated conjectures about 3-uniform hypergraph families F_G(kappa) = {H : chi(H) = kappa, G not a subhypergraph of H}. These generalize the classical question 'can high chromatic number force the presence of specific substructures?' to the setting of forbidden subhypergraphs. For ordinary graphs (2-uniform), Erdos (1959) showed that high chromatic number does not force short cycles (high-chromatic-number high-girth graphs exist). The 3-uniform case with uncountable chromatic numbers is much harder. Conjecture 1 asks for a beth_2 = 2^(2^aleph_0) bound on witness size. Conjecture 2 asks for joint avoidance. Conjecture 3 asks for cardinal transfer. Referenced in Vaughan (1999) Problem 7.94.",
     "problemStatement": "Let G be a finite 3-uniform hypergraph. Three conjectures: (1) If F_G(aleph_1) is nonempty, it has a member with <= 2^(2^aleph_0) vertices. (2) If F_G(aleph_1) and F_H(aleph_1) are both nonempty, their intersection is nonempty. (3) Nonemptiness of F_G(kappa) transfers between uncountable cardinals.",
     "text": "Three conjectures about F_G(kappa) = {3-uniform hypergraphs with chi = kappa avoiding G}: bounded witness size, intersection of families, and cardinal transfer of nonemptiness. All open.",
-    "proofStrategy": "Axiomatizes an abstract cardinal type and 3-uniform hypergraph type to avoid heavy SetTheory imports. Defines forbiddenFamily and the three conjectures formally. Proves relations between conjectures (Conjecture 3 implies simultaneous nonemptiness), anti-monotonicity of forbidden families, and connects to Erdos 1959 (high chromatic number with high girth). States the combined problem as a conjunction.",
+    "proofStrategy": "Derives cardinal theorems (ℵ₀ < ℵ₁, ℵ₁ uncountable, ℵ₁ ≤ 2^(2^ℵ₀)) from Mathlib's `Cardinal` type (the original 10 cardinal axioms are eliminated). Axiomatizes the abstract `Hypergraph3` type with 5 structure axioms (vertexCard, ContainsSubgraph, IsFinite, chromaticNumber) to avoid heavy SetTheory imports. Defines `forbiddenFamily` and the three conjectures formally. Proves relations between conjectures (Conjecture 3 implies simultaneous nonemptiness) and anti-monotonicity of forbidden families. States the combined problem as a conjunction.",
     "keyInsights": [
       "The three conjectures form a hierarchy: Conjecture 3 (cardinal transfer) implies a weak form of Conjecture 2 (simultaneous nonemptiness), but not the full intersection property",
       "The beth_2 bound in Conjecture 1 is the natural set-theoretic bound: the power set of the power set of a countable set, which governs constructions from countable building blocks",
@@ -47,64 +47,56 @@
     {
       "id": "cardinals",
       "title": "Abstract Cardinal Framework",
-      "startLine": 28,
-      "endLine": 52,
-      "summary": "Axiomatizes Card type, aleph_0, aleph_1, beth_2, and basic cardinal inequalities.",
-      "mathContext": "Axiomatized: Axiomatizes Card type, aleph_0, aleph_1, beth_2, and basic cardinal inequalities."
+      "startLine": 27,
+      "endLine": 58,
+      "summary": "Derives ℵ₀ < ℵ₁, ℵ₁ uncountable, and ℵ₁ ≤ 2^(2^ℵ₀) from Mathlib's `Cardinal` type. No axioms are declared in this section; the original 10 cardinal axioms were eliminated by using Mathlib.",
+      "mathContext": "Three proved theorems using `Mathlib.Cardinal`: `aleph0_lt_aleph1` ($\\aleph_0 < \\aleph_1$), `aleph1_uncountable` ($\\aleph_0 < \\aleph_1$), `aleph1_le_beth2` ($\\aleph_1 \\leq 2^{2^{\\aleph_0}}$). The original formalization used 10 axioms for an abstract `Card` type; these are now proved from Mathlib."
     },
     {
       "id": "hypergraph",
       "title": "3-Uniform Hypergraphs",
-      "startLine": 53,
-      "endLine": 77,
+      "startLine": 60,
+      "endLine": 83,
       "summary": "Axiomatizes Hypergraph3 with vertexCard, ContainsSubgraph, IsFinite, chromaticNumber.",
       "mathContext": "Axiomatized: Axiomatizes Hypergraph3 with vertexCard, ContainsSubgraph, IsFinite, chromaticNumber."
     },
     {
       "id": "forbidden-family",
       "title": "Forbidden Subgraph Family",
-      "startLine": 78,
-      "endLine": 94,
+      "startLine": 85,
+      "endLine": 100,
       "summary": "Defines forbiddenFamily G kappa and its nonemptiness predicate.",
       "mathContext": "Formal definition: Defines forbiddenFamily G kappa and its nonemptiness predicate."
     },
     {
       "id": "conjectures",
       "title": "The Three Conjectures",
-      "startLine": 95,
-      "endLine": 127,
+      "startLine": 102,
+      "endLine": 135,
       "summary": "Formalizes Conjectures 1 (bounded witness), 2 (intersection), 3 (cardinal transfer).",
       "mathContext": "Bound: Formalizes Conjectures 1 (bounded witness), 2 (intersection), 3 (cardinal transfer)."
     },
     {
       "id": "relations",
       "title": "Relations Between Conjectures",
-      "startLine": 128,
-      "endLine": 154,
+      "startLine": 137,
+      "endLine": 162,
       "summary": "Conjecture 3 implies simultaneous nonemptiness; trivial G=H case of Conjecture 2.",
       "mathContext": "Mathematical content: Conjecture 3 implies simultaneous nonemptiness; trivial G=H case of Conjecture 2."
     },
     {
       "id": "structural",
       "title": "Structural Observations",
-      "startLine": 155,
-      "endLine": 178,
+      "startLine": 164,
+      "endLine": 183,
       "summary": "Anti-monotonicity of forbidden families in the subgraph ordering.",
       "mathContext": "Mathematical content: Anti-monotonicity of forbidden families in the subgraph ordering."
     },
     {
-      "id": "erdos1959",
-      "title": "Connection to Erdos 1959",
-      "startLine": 179,
-      "endLine": 193,
-      "summary": "2-uniform analogue: high chromatic number with high girth (probabilistic method).",
-      "mathContext": "Mathematical content: 2-uniform analogue: high chromatic number with high girth (probabilistic method)."
-    },
-    {
       "id": "main-statement",
       "title": "Combined Problem Statement",
-      "startLine": 194,
-      "endLine": 206,
+      "startLine": 185,
+      "endLine": 204,
       "summary": "erdos_1177 = Conjecture1 AND Conjecture2 AND Conjecture3 (all open).",
       "mathContext": "Mathematical content: erdos_1177 = Conjecture1 AND Conjecture2 AND Conjecture3 (all open)."
     }
