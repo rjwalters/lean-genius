@@ -92,6 +92,18 @@
     ]
   },
   {
+    "id": "ann-examples-section",
+    "proofId": "quadratic-reciprocity-oq-03",
+    "range": { "startLine": 65, "endLine": 73 },
+    "type": "context",
+    "title": "Verified Computations Section: From Theory to Numbers",
+    "content": "The examples section opens with two simple cases: (3/7) = -1 (verified with a full docstring explaining the reciprocity derivation) and (2/7) = 1 (4 is 2² ≡ 4 and 3² = 9 ≡ 2 mod 7, so 2 is a QR mod 7). These two examples immediately demonstrate the algorithm: (3/7) uses the reciprocity swap and (2/7) uses the second supplementary law. The docstring for (3/7) writes out the derivation step by step, providing a human-readable proof trace alongside the machine-verified `decide` check. This dual presentation — hand proof + decide — is the pedagogically ideal format: the reader sees why the algorithm works while the kernel confirms it produces the right number.",
+    "mathContext": "$\\left(\\tfrac{3}{7}\\right) \\cdot \\left(\\tfrac{7}{3}\\right) = (-1)^{\\frac{3-1}{2} \\cdot \\frac{7-1}{2}} = (-1)^{1 \\cdot 3} = -1$. Since $\\left(\\tfrac{7}{3}\\right) = \\left(\\tfrac{1}{3}\\right) = 1$, we get $\\left(\\tfrac{3}{7}\\right) = -1$. And $3^2 = 9 \\equiv 2 \\pmod{7}$, so $\\left(\\tfrac{2}{7}\\right) = 1$.",
+    "significance": "context",
+    "relatedConcepts": ["decide tactic", "second supplementary law", "reciprocity derivation trace", "hand proof vs machine proof"],
+    "prerequisites": ["Legendre symbol", "legendreSym in Lean 4", "p mod 4 and p mod 8 case analysis"]
+  },
+  {
     "id": "ann-decide-examples",
     "proofId": "quadratic-reciprocity-oq-03",
     "range": {

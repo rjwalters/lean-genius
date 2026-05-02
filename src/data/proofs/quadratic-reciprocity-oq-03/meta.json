@@ -88,7 +88,8 @@
     "implications": "The companion proof `quadratic-reciprocity-algorithm-oq-01` builds on this packaging by implementing the full recursive algorithm (Jacobi-symbol form, well-founded termination, native_decide-verified examples). This entry exposes the *minimum* set of lemmas needed to turn QR into a computation, useful as a teaching artifact and as a stepping stone for downstream verified applications such as Solovay-Strassen primality testing and Tonelli-Shanks square roots.",
     "openQuestions": [
       "Can the second supplementary law $\\left(\\tfrac{2}{p}\\right) = (-1)^{(p^2-1)/8}$ be packaged as a fourth reduction lemma in the same one-line wrapper style, completing the standalone algorithmic toolkit?",
-      "Can the descent statement be strengthened to a recursion principle that takes the three reduction lemmas as inputs and produces a verified Legendre symbol computer, without going through the Jacobi-symbol detour of `quadratic-reciprocity-algorithm-oq-01`?"
+      "Can the descent statement be strengthened to a recursion principle that takes the three reduction lemmas as inputs and produces a verified Legendre symbol computer, without going through the Jacobi-symbol detour of `quadratic-reciprocity-algorithm-oq-01`?",
+      "Can the verified Legendre symbol computation be extended to the Jacobi symbol (a/n) for composite n via the same three-step reduction, and proved correct against Mathlib's JacobiSym, giving a unified algorithmic toolkit for primality testing via Solovay-Strassen?"
     ]
   },
   "crossReferences": [
