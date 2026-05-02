@@ -51,23 +51,21 @@
       "IsEpsUniform: ε-uniformity of representation counts",
       "total_reprCount: ∑_g F_A(g) = 2^|A|",
       "gEps: the function g_ε(N)",
-      "trivial_lower_bound: g_ε(N) ≥ log₂ N",
-      "erdos_renyi_upper: g_ε(N) ≤ (2+o(1)) log₂ N",
+      "basic_lower_bound: g_ε(N) ≥ log₂ N",
       "erdos_hall_upper: g_ε(N) ≤ (1+o(1)) log₂ N",
-      "main_asymptotic: g_ε(N) ~ log₂ N",
-      "uniform_implies_spanning: ε-uniform ⟹ spanning",
-      "gEps_mono: monotonicity in ε"
+      "main_asymptotic_derived: g_ε(N)/log₂ N → 1 as N → ∞ (theorem, derived in Part X via squeeze theorem)",
+      "uniform_implies_spanning: ε-uniform ⟹ spanning"
     ],
     "axiomCount": 3,
     "lineCount": 316,
-    "assumptions": "3 axioms: gEps, trivial_lower_bound, erdos_hall_upper. 0 sorries.",
+    "assumptions": "3 axioms: gEps, basic_lower_bound, erdos_hall_upper. 0 sorries.",
     "theoremCount": 10
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1179: Uniform Subset Sum Representations**\n\n**Background: Additive Combinatorics in Groups**\nThis problem lies at the intersection of additive combinatorics and probabilistic number theory. It concerns how well a random subset of a finite abelian group can 'represent' all group elements via subset sums.\n\n**The Representation Function:**\nFor a subset $A$ of a finite abelian group $G$ with $|G| = N$, define $F_A(g) = |\\{S \\subseteq A : \\sum_{x \\in S} x = g\\}|$ for each $g \\in G$. If $|A| = k$, there are $2^k$ subsets total, so the 'expected' count is $2^k/N$ per element.\n\n**Erdős-Rényi (1965):**\nPaul Erdős and Alfréd Rényi studied random subsets of abelian groups in their foundational paper on probabilistic group theory. They showed that a random set of size $k \\approx 2\\log_2 N$ gives approximately uniform representations, establishing $g_\\varepsilon(N) \\leq (2 + o(1))\\log_2 N$. Their proof uses the second moment method.\n\n**Erdős-Hall (1976):**\nErdős and Richard R. Hall improved the bound to $g_\\varepsilon(N) \\leq (1 + o(1))\\log_2 N$ using character sum estimates (discrete Fourier analysis on $G$) and large deviation bounds. This reduced the leading coefficient from 2 to $1 + o(1)$.\n\n**Main Result:**\nCombined with the trivial lower bound $g_\\varepsilon(N) \\geq \\log_2 N$ (counting argument), this gives $g_\\varepsilon(N) \\sim \\log_2 N$: the answer to Erdős's question is YES.\n\n**Connection to Problem #543:**\nProblem #543 asks about *spanning* (every element represented at least once), while #1179 asks for *uniform* representations. Uniformity is stronger but, remarkably, requires the same leading term $\\log_2 N$.",
     "problemStatement": "**Problem Statement (PROVED)**\n\nFor $0 < \\varepsilon < 1$, let $g_\\varepsilon(N)$ be the minimal $k$ such that: if $G$ is an abelian group of order $N$ and $A \\subseteq G$ is a uniformly random subset of size $k$, then with probability $\\to 1$ as $N \\to \\infty$, the representation function\n$$F_A(g) = |\\{S \\subseteq A : \\textstyle\\sum_{x \\in S} x = g\\}|$$\nsatisfies $|F_A(g) - 2^k/N| \\leq \\varepsilon \\cdot 2^k/N$ for all $g \\in G$.\n\n**Question:** Is $g_\\varepsilon(N) = (1 + o_\\varepsilon(1))\\log_2 N$?\n\n**Answer: YES.** The trivial lower bound $\\log_2 N$ and the Erdős-Hall upper bound $(1+o(1))\\log_2 N$ combine to give $g_\\varepsilon(N) \\sim \\log_2 N$.",
     "text": "Question: Estimate g_ε(N). In particular, is g_ε(N) = (1 + o_ε(1)) log₂ N?",
-    "proofStrategy": "**Formalization Strategy**\n\nThe 179-line Lean 4 file formalizes the problem structure and key results:\n\n1. **Representation Counts** (lines 47-57): Defines `reprCount A g` as the number of subsets of $A$ summing to $g$ (via `Finset.powerset.filter`), and `expectedReprCount k N = 2^k/N`.\n\n2. **Uniformity** (lines 59-66): `IsEpsUniform A ε` requires $|F_A(g) - 2^k/N| \\leq \\varepsilon \\cdot 2^k/N$ for all $g \\in G$.\n\n3. **Elementary Properties** (lines 68-81): `total_reprCount` ($\\sum_g F_A(g) = 2^{|A|}$), and empty-set base cases.\n\n4. **The Function $g_\\varepsilon(N)$** (lines 83-93): Axiomatized since it involves quantification over all groups and probabilistic convergence.\n\n5. **Lower Bound** (lines 95-105): `trivial_lower_bound`: $g_\\varepsilon(N) \\geq \\log_2 N$ from the counting argument $2^k \\geq N$.\n\n6. **Upper Bounds** (lines 107-127): `erdos_renyi_upper` (Erdős-Rényi 1965, coefficient 2) and `erdos_hall_upper` (Erdős-Hall 1976, coefficient $1 + o(1)$).\n\n7. **Main Asymptotic** (lines 129-137): $g_\\varepsilon(N)/\\log_2 N \\to 1$.\n\n8. **Comparison with #543** (lines 139-151): `uniform_implies_spanning` shows uniformity implies spanning.\n\n9. **Summary** (lines 160-176): Combines lower bound and main asymptotic into `erdos_1179_summary`.",
+    "proofStrategy": "**Formalization Strategy**\n\nThe 316-line Lean 4 file formalizes the problem structure and key results:\n\n1. **Representation Counts** (lines 47-58): Defines `reprCount A g` as the number of subsets of $A$ summing to $g$ (via `Finset.powerset.filter`), and `expectedReprCount k N = 2^k/N`.\n\n2. **Uniformity** (lines 59-67): `IsEpsUniform A ε` requires $|F_A(g) - 2^k/N| \\leq \\varepsilon \\cdot 2^k/N$ for all $g \\in G$.\n\n3. **Elementary Properties** (lines 68-105): `total_reprCount` ($\\sum_g F_A(g) = 2^{|A|}$), and empty-set base cases.\n\n4. **The Function $g_\\varepsilon(N)$** (lines 106-113): Axiomatized since it involves quantification over all groups and probabilistic convergence.\n\n5. **Lower Bound** (lines 114-136): `basic_lower_bound`: $g_\\varepsilon(N) \\geq \\log_2 N$ from the counting argument $2^k \\geq N$.\n\n6. **Upper Bounds** (lines 137-148): `erdos_hall_upper` (Erdős-Hall 1976, coefficient $1 + o(1)$). The Erdős-Rényi 1965 bound (coefficient 2) is referenced in a code comment only and is not separately declared.\n\n7. **Main Asymptotic** (lines 149-155, comment block): Originally axiomatized as `main_asymptotic`; now derived as theorem `main_asymptotic_derived` in Part X (see below).\n\n8. **Comparison with #543** (lines 156-194): `uniform_implies_spanning` shows uniformity implies spanning.\n\n9. **Monotonicity** (lines 195-197, comment-only stub).\n\n10. **Axiom Elimination** (lines 198-306): `logloglog_div_loglog_tendsto_zero` shows log(log(log N))/log(log N) → 0; `main_asymptotic_derived` derives the main asymptotic from `basic_lower_bound` + `erdos_hall_upper` via the squeeze theorem, eliminating the original axiom.\n\n11. **Summary** (lines 307-316): Combines lower bound and main asymptotic into `erdos_1179_summary`.",
     "keyInsights": [
       "**Counting Argument:** $g_\\varepsilon(N) \\geq \\log_2 N$ because $|A| = k$ gives only $2^k$ subsets; for uniformity at level $\\approx 2^k/N \\geq 1$, we need $k \\geq \\log_2 N$",
       "**Second Moment Method:** Erdős-Rényi (1965) proved $g_\\varepsilon(N) \\leq 2\\log_2 N + O(1)$ by showing variance of $F_A(g)$ is small when $k \\approx 2\\log_2 N$",
@@ -113,63 +111,71 @@
       "id": "elementary",
       "title": "Elementary Properties",
       "startLine": 68,
-      "endLine": 82,
-      "summary": "Three axioms: `total_reprCount` ($\\sum_g F_A(g) = 2^{|A|}$, each subset sums to exactly one element), `reprCount_empty_zero` ($F_\\emptyset(0) = 1$), `reprCount_empty_nonzero` ($F_\\emptyset(g) = 0$ for $g \\neq 0$)",
-      "mathContext": "Three axioms: `total_reprCount` ($\\sum_g F_A(g) = 2^{|A|}$, each subset sums to exactly one element), `reprCount_empty_zero` ($F_\\emptyset(0) = 1$), `reprCount_empty_nonzero` ($F_\\emptyset(g) = 0$ for $g \\neq 0$)"
+      "endLine": 105,
+      "summary": "Five theorems: `total_reprCount` ($\\sum_g F_A(g) = 2^{|A|}$, each subset sums to exactly one element), `reprCount_empty_zero` ($F_\\emptyset(0) = 1$), `reprCount_empty_nonzero` ($F_\\emptyset(g) = 0$ for $g \\neq 0$)",
+      "mathContext": "Five theorems: `total_reprCount` ($\\sum_g F_A(g) = 2^{|A|}$, each subset sums to exactly one element), `reprCount_empty_zero` ($F_\\emptyset(0) = 1$), `reprCount_empty_nonzero` ($F_\\emptyset(g) = 0$ for $g \\neq 0$)"
     },
     {
       "id": "geps-function",
       "title": "The Function $g_\\varepsilon(N)$",
-      "startLine": 83,
-      "endLine": 94,
-      "summary": "Axiomatizes `gEps ε N` (minimal $k$ for high-probability $\\varepsilon$-uniformity) and `gEps_pos` ($g_\\varepsilon(N) \\geq 1$ for valid parameters)",
-      "mathContext": "Axiomatized: Axiomatizes `gEps ε N` (minimal $k$ for high-probability $\\varepsilon$-uniformity) and `gEps_pos` ($g_\\varepsilon(N) \\geq 1$ for valid parameters)"
+      "startLine": 106,
+      "endLine": 113,
+      "summary": "Axiomatizes `gEps ε N` (minimal $k$ for high-probability $\\varepsilon$-uniformity). Declared as an axiom since it requires quantification over all groups and probabilistic convergence.",
+      "mathContext": "Axiomatized: `gEps ε N` is the minimal $k$ such that a random $k$-subset of any abelian group of order $N$ has $\\varepsilon$-uniform representations with high probability."
     },
     {
       "id": "lower-bound",
       "title": "Trivial Lower Bound",
-      "startLine": 95,
-      "endLine": 106,
-      "summary": "Axiom `trivial_lower_bound`: $g_\\varepsilon(N) \\geq \\log_2 N$. If $k < \\log_2 N$ then $2^k < N$, so $\\sum_g F_A(g) < N$ and some element has $F_A(g) = 0$, violating $\\varepsilon$-uniformity",
-      "mathContext": "Axiom `trivial_lower_bound`: $g_\\varepsilon(N) \\geq \\log_2 N$. If $k < \\log_2 N$ then $$2^{k}$ < N$, so $\\sum_g F_A(g) < N$ and some element has $F_A(g) = 0$, violating $\\varepsilon$-uniformity"
+      "startLine": 114,
+      "endLine": 136,
+      "summary": "Axiom `basic_lower_bound`: $g_\\varepsilon(N) \\geq \\log_2 N$. If $k < \\log_2 N$ then $2^k < N$, so $\\sum_g F_A(g) < N$ and some element has $F_A(g) = 0$, violating $\\varepsilon$-uniformity",
+      "mathContext": "Axiom `basic_lower_bound`: $g_\\varepsilon(N) \\geq \\log_2 N$. If $k < \\log_2 N$ then $$2^{k}$ < N$, so $\\sum_g F_A(g) < N$ and some element has $F_A(g) = 0$, violating $\\varepsilon$-uniformity"
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
-      "startLine": 107,
-      "endLine": 128,
-      "summary": "Two axioms: `erdos_renyi_upper` ($g_\\varepsilon(N) \\leq 2\\log_2 N + C$, via second moment method) and `erdos_hall_upper` ($g_\\varepsilon(N) \\leq (1 + O(\\log\\log\\log N/\\log\\log N))\\log_2 N$, via character sums)",
-      "mathContext": "Two axioms: `erdos_renyi_upper` ($g_\\varepsilon(N) \\leq 2\\log_2 N + C$, via second moment method) and `erdos_hall_upper` ($g_\\varepsilon(N) \\leq (1 + O(\\log\\log\\log N/\\log\\log N))\\log_2 N$, via character sums)"
+      "startLine": 137,
+      "endLine": 148,
+      "summary": "One axiom: `erdos_hall_upper` ($g_\\varepsilon(N) \\leq (1 + O(\\log\\log\\log N/\\log\\log N))\\log_2 N$, via character sums). The Erdős-Rényi (1965) coefficient-2 bound is discussed in the docstring comment only and is not separately declared.",
+      "mathContext": "Axiom `erdos_hall_upper`: $g_\\varepsilon(N) \\leq (1 + C \\cdot \\log\\log\\log N / \\log\\log N) \\cdot \\log_2 N$ for some $C > 0$. The Erdős-Rényi 1965 bound (coefficient 2) appears in the block comment above but is not declared as a separate axiom or theorem."
     },
     {
       "id": "main-result",
       "title": "The Main Asymptotic Result",
-      "startLine": 129,
-      "endLine": 138,
-      "summary": "Axiom `main_asymptotic`: $g_\\varepsilon(N)/\\log_2 N \\to 1$ as $N \\to \\infty$. Formalized as: $\\forall \\delta > 0,\\, \\exists N_0,\\, \\forall N \\geq N_0,\\, |g_\\varepsilon(N)/\\log_2 N - 1| < \\delta$",
-      "mathContext": "Axiom `main_asymptotic`: $g_\\varepsilon(N)/\\log_2 N \\to 1$ as $N \\to \\infty$. Formalized as: $\\forall \\delta > 0,\\, \\exists N_0,\\, \\forall N \\geq N_0,\\, |g_\\varepsilon(N)/\\log_2 N - 1| < \\delta$"
+      "startLine": 149,
+      "endLine": 155,
+      "summary": "Part VII is a comment block noting that the main asymptotic $g_\\varepsilon(N)/\\log_2 N \\to 1$ was originally axiomatized as `main_asymptotic` but is now derived as theorem `main_asymptotic_derived` in Part X via the squeeze theorem.",
+      "mathContext": "Comment block only (no declarations). Originally contained axiom `main_asymptotic`; the axiom was eliminated in Part X. The derived theorem `main_asymptotic_derived` (lines 252-306) proves the same statement from `basic_lower_bound` and `erdos_hall_upper`."
     },
     {
       "id": "comparison-543",
       "title": "Comparison with Problem #543",
-      "startLine": 139,
-      "endLine": 152,
-      "summary": "Axiom `uniform_implies_spanning`: $\\varepsilon$-uniformity implies every element has $F_A(g) \\geq 1$, so #1179 is strictly stronger than #543 (spanning). Shows $g_\\varepsilon(N) \\geq f(N)$ where $f(N)$ is the #543 threshold",
-      "mathContext": "Axiom `uniform_implies_spanning`: $\\varepsilon$-uniformity implies every element has $F_A(g) \\geq 1$, so #1179 is strictly stronger than #543 (spanning). Shows $g_\\varepsilon(N) \\geq f(N)$ where $f(N)$ is the #543 threshold"
+      "startLine": 156,
+      "endLine": 194,
+      "summary": "Theorem `uniform_implies_spanning`: $\\varepsilon$-uniformity implies every element has $F_A(g) \\geq 1$, so #1179 is strictly stronger than #543 (spanning). Shows $g_\\varepsilon(N) \\geq f(N)$ where $f(N)$ is the #543 threshold",
+      "mathContext": "Theorem `uniform_implies_spanning`: $\\varepsilon$-uniformity implies every element has $F_A(g) \\geq 1$, so #1179 is strictly stronger than #543 (spanning). Shows $g_\\varepsilon(N) \\geq f(N)$ where $f(N)$ is the #543 threshold"
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity",
-      "startLine": 153,
-      "endLine": 159,
-      "summary": "Axiom `gEps_mono`: $\\varepsilon_1 \\leq \\varepsilon_2 \\Rightarrow g_{\\varepsilon_1}(N) \\geq g_{\\varepsilon_2}(N)$. Tighter tolerance requires more elements",
-      "mathContext": "Axiomatized: Axiom `gEps_mono`: $\\varepsilon_1 \\leq \\varepsilon_2 \\Rightarrow g_{\\varepsilon_1}(N) \\geq g_{\\varepsilon_2}(N)$. Tighter tolerance requires more elements"
+      "startLine": 195,
+      "endLine": 197,
+      "summary": "Part IX is a comment-only stub noting that $g_\\varepsilon$ is non-increasing in $\\varepsilon$. No `gEps_mono` declaration is present in the Lean source.",
+      "mathContext": "Comment stub only. The monotonicity property ($\\varepsilon_1 \\leq \\varepsilon_2 \\Rightarrow g_{\\varepsilon_1}(N) \\geq g_{\\varepsilon_2}(N)$) is stated in the comment but not formalized as a Lean declaration."
+    },
+    {
+      "id": "axiom-elimination",
+      "title": "Axiom Elimination — Deriving main_asymptotic",
+      "startLine": 198,
+      "endLine": 306,
+      "summary": "Part X eliminates the original `main_asymptotic` axiom. Lemma `logloglog_div_loglog_tendsto_zero` (lines 212-246) proves $\\log(\\log(\\log N))/\\log(\\log N) \\to 0$. Theorem `main_asymptotic_derived` (lines 252-305) derives $g_\\varepsilon(N)/\\log_2 N \\to 1$ from `basic_lower_bound` and `erdos_hall_upper` via the squeeze theorem.",
+      "mathContext": "Two theorems: (1) `logloglog_div_loglog_tendsto_zero`: uses Mathlib's `isLittleO_log_rpow_atTop` to show $|\\log\\log\\log N / \\log\\log N| < c$ for all $N \\geq N_0$. (2) `main_asymptotic_derived`: combines lower bound $\\geq \\log_2 N$ and upper bound $\\leq (1 + C \\cdot f(N))\\log_2 N$ via squeeze to prove $|g_\\varepsilon(N)/\\log_2 N - 1| < \\delta$ for large $N$."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
-      "startLine": 160,
-      "endLine": 178,
+      "startLine": 307,
+      "endLine": 316,
       "summary": "Theorem `erdos_1179_summary`: combines lower bound ($\\geq \\log_2 N$) and main asymptotic ($\\to 1$) into a single statement. Proved from the axiomatized results. Notes comparison with #543",
       "mathContext": "Verified: Theorem `erdos_1179_summary`: combines lower bound ($\\geq \\log_2 N$) and main asymptotic ($\\to 1$) into a single statement. Proved from the axiomatized results. Notes comparison with #543"
     }
