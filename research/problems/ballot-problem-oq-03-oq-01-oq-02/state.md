@@ -1,24 +1,23 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (modularize-then-prove)
+**Phase**: ACT (GNW proof ready to implement)
 **Path**: full
 **Since**: 2026-04-21T20:08:44+02:00
-**Last Updated**: 2026-05-01
-**Iteration**: 33
+**Last Updated**: 2026-05-02
+**Iteration**: 35
 
 ## Current Focus
 Close the sole remaining `sorry` in `BallotProblemOQ03OQ01OQ02.lean` — the
 `hook_walk_identity` dispatcher branch covering Young diagrams with **≥10 rows
-AND ≥10 cols AND non-rectangular** (line 13932). All other shapes (≤9 rows,
-≤9 cols via transpose duality, all rectangles, all gHookYD `[a, 1^b]`,
-exactly-3 through exactly-9-row shapes) are already proved.
+AND ≥10 cols AND non-rectangular** (line 302 of the NEW 392-line file).
 
-The file has reached **14022 lines** and exceeds the Docker 32 GB build envelope,
-so the row-by-row mechanical pattern (~2200 lines per new row case, see
-sessions 22–32) has hit a hard scaling wall. Further progress requires either
-(a) a uniform proof that closes ≥10×≥10 in one shot, or (b) splitting the file
-to restore buildability before any large additions.
+**Modularization completed (session 35):** The 14022-line file has been split:
+- `BallotProblemOQ03OQ01OQ02Helpers.lean` (13645 lines, PARTS I-XXIV, 0 sorries)
+- `BallotProblemOQ03OQ01OQ02.lean` (392 lines, PART XXV + dispatcher + HLF, 1 sorry)
+
+The Docker build envelope is no longer a blocker. GNW Route A can be added
+directly to the 392-line Main file.
 
 ## Active Approach
 Three routes are characterised in
