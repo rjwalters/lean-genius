@@ -53,7 +53,7 @@
     "keyInsights": [
       "The Eremenko-Lempert bound $\\max|p'| \\leq (1/2 + o(1))n^2$ is asymptotically sharp: Chebyshev polynomials achieve $\\max|T_n'| \\sim (1/2)n^2$. The correction $\\delta(n)$ measures how close the supremum over all connected lemniscate polynomials comes to the Chebyshev benchmark.",
       "The factor $1/2$ (vs 1 for Bernstein or $n$ for Markov) reflects the geometry of connected lemniscates. The lemniscate $\\{|p(z)| = 1\\}$ being connected imposes a topological constraint that forces polynomial derivatives to be smaller — it is analogous to requiring the polynomial to 'wrap around' the disk rather than concentrate near a point.",
-      "The three candidate rates O(1/n), O(1/√n), O(1/log n) form a hierarchy: O(1/n) ⊂ O(1/√n) ⊂ O(1/log n). The file formalizes this via `inverseN_implies_inverseSqrtN` and `inverseN_implies_inverseLogN`, making precise what is known structurally about the relationship between the rates.",
+      "The three candidate rates O(1/n), O(1/√n), O(1/log n) form a hierarchy: O(1/n) ⊂ O(1/√n) ⊂ O(1/log n). The file defines these rates as propositions (`IsRateInverseN`, `IsRateInverseSqrtN`, `IsRateInverseLogN`), making precise what is known structurally about the relationship between the candidates. Which rate holds for δ(n) is the open question.",
       "Pommerenke's bound $\\max|p'| \\leq (e/2)n^2 \\approx 1.359 n^2$ gives a constant correction of $(e-1)/2 \\approx 0.859$ — large but finite. It shows the problem makes sense (the correction is bounded) but does not capture the asymptotic behavior.",
       "Formalizing an open question about asymptotic rates requires a clean definition of the rate hypotheses (O(1/n), O(1/log n), etc.) as propositions. This file demonstrates how to structure an open question as a disjunction of rate hypotheses in Lean 4, making the mathematical alternatives precise enough for future proof search."
     ]
@@ -96,8 +96,8 @@
       "title": "Summary",
       "startLine": 154,
       "endLine": 176,
-      "summary": "Documents the 11 axioms and 3+ proved theorems. Rate hierarchy proofs (inverseN_implies_inverseSqrtN, inverseN_implies_inverseLogN) and Chebyshev lower bound are the main verified results.",
-      "mathContext": "**Proved theorems (no axioms)**: `inverseN_implies_inverseSqrtN : IsRateInverseN → IsRateInverseSqrtN` (since $1/n \\leq 1/\\sqrt{n}$ for $n \\geq 1$). `inverseN_implies_inverseLogN : IsRateInverseN → IsRateInverseLogN` (since $1/n \\leq 1/\\log n$ for large $n$). `power_decay_implies_o1`. `PommerenkeCorrectionBound`. `chebyshev_achieves_bound`. **11 axioms**: `ComplexPoly` (3 definitional), `maxDeriv_nonneg`, `eremenko_lempert`, `chebyshev_poly/connected/asymptotic` (3), `supCorrection`, `supCorrection_upper`, `correction_tends_to_zero`. The open question `IsRateInverseN ∨ IsRateInverseSqrtN ∨ IsRateInverseLogN ∨ ∃ α, IsRatePowerDecay α` is left unanswered."
+      "summary": "Documents the 11 axioms and 2 proved theorems. power_decay_implies_o1 shows any power-decay rate implies o(1); chebyshev_achieves_bound confirms the Chebyshev correction approaches 0.",
+      "mathContext": "**Proved theorems**: `power_decay_implies_o1 (α : ℝ) (h : IsRatePowerDecay α) : Filter.Tendsto supCorrection Filter.atTop (nhds 0)` — any power decay implies $o(1)$. `chebyshev_achieves_bound` — Chebyshev polynomials have correction approaching 0 (proved via `chebyshev_asymptotic`). **11 axioms**: `ComplexPoly`, `IsLemniscateConnected`, `maxDerivOnLemniscate` (3 definitional), `maxDeriv_nonneg`, `eremenko_lempert`, `chebyshev_poly`, `chebyshev_connected`, `chebyshev_asymptotic`, `supCorrection`, `supCorrection_upper`, `correction_tends_to_zero`. The open question `IsRateInverseN ∨ IsRateInverseSqrtN ∨ IsRateInverseLogN ∨ ∃ α, IsRatePowerDecay α` is left unanswered."
     }
   ],
   "conclusion": {
