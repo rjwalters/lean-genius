@@ -1,8 +1,8 @@
 {
   "id": "erdos-229",
-  "title": "Erd\u0151s Problem #229: Zeros of Derivatives of Entire Functions",
+  "title": "Erdős Problem #229: Zeros of Derivatives of Entire Functions",
   "slug": "erdos-229",
-  "description": "Given discrete sets (S\u2099) in \u2102, can we find a transcendental entire function whose derivatives vanish on each S\u2099? Answer: YES (Barth-Schneider 1972).",
+  "description": "Given discrete sets (Sₙ) in ℂ, can we find a transcendental entire function whose derivatives vanish on each Sₙ? Answer: YES (Barth-Schneider 1972).",
   "meta": {
     "author": "Barth-Schneider (1972)",
     "sourceUrl": "https://erdosproblems.com/229",
@@ -26,7 +26,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Differentiable",
-        "description": "Differentiability on \u2102",
+        "description": "Differentiability on ℂ",
         "module": "Mathlib.Analysis.Calculus.FDeriv.Basic"
       },
       {
@@ -52,13 +52,13 @@
     "assumptions": "1 axiom: barth_schneider_theorem. 0 sorries."
   },
   "overview": {
-    "historicalContext": "This problem appears as Problem 2.30 in Hayman's 'Research problems in function theory: new problems' (1974), attributed to Erd\u0151s. It asks about the flexibility of entire transcendental functions in prescribing zeros of their derivatives.\n\nBarth and Schneider resolved the problem affirmatively in 1972, published in the Proceedings of the American Mathematical Society. Their construction shows that for any sequence of discrete sets, one can find a transcendental entire function whose successive derivatives vanish on these sets.\n\nThe key constraint is that each set must have no finite limit point (be discrete), which is necessary by the identity theorem for analytic functions.",
+    "historicalContext": "This problem appears as Problem 2.30 in Hayman's 'Research problems in function theory: new problems' (1974), attributed to Erdős. It asks about the flexibility of entire transcendental functions in prescribing zeros of their derivatives.\n\nBarth and Schneider resolved the problem affirmatively in 1972, published in the Proceedings of the American Mathematical Society. Their construction shows that for any sequence of discrete sets, one can find a transcendental entire function whose successive derivatives vanish on these sets.\n\nThe key constraint is that each set must have no finite limit point (be discrete), which is necessary by the identity theorem for analytic functions.",
     "problemStatement": "**Question**: Let $(S_n)_{n \\geq 1}$ be a sequence of sets of complex numbers, none of which have a finite limit point. Does there exist an entire transcendental function $f(z)$ such that for all $n \\geq 1$, there exists some $k_n \\geq 0$ with\n$$f^{(k_n)}(z) = 0 \\text{ for all } z \\in S_n?$$\n\n**Answer**: YES\n\nFor any such sequence of discrete sets, there exist a transcendental entire function $f$ and integers $(k_n)$ such that the $k_n$-th derivative of $f$ vanishes on all of $S_n$.",
-    "text": "Given discrete sets (S\u2099) in \u2102, can we find a transcendental entire function whose derivatives vanish on each S\u2099? Answer: YES (Barth-Schneider 1972).",
-    "proofStrategy": "We formalize:\n\n1. **HasNoFiniteLimitPoint**: A set with empty derived set (discrete)\n2. **IsEntireFunction**: A function differentiable everywhere on \u2102\n3. **IsTranscendental**: Entire but not a polynomial\n4. **Erdos229Question**: The main existence question\n5. **barth_schneider_theorem**: Axiomatized since the construction uses advanced function theory\n6. **Special cases**: Weierstrass factorization for zeros of f itself",
+    "text": "Given discrete sets (Sₙ) in ℂ, can we find a transcendental entire function whose derivatives vanish on each Sₙ? Answer: YES (Barth-Schneider 1972).",
+    "proofStrategy": "We formalize:\n\n1. **HasNoFiniteLimitPoint**: A set with empty derived set (discrete)\n2. **IsEntireFunction**: A function differentiable everywhere on ℂ\n3. **IsTranscendental**: Entire but not a polynomial\n4. **Erdos229Question**: The main existence question\n5. **barth_schneider_theorem**: Axiomatized since the construction uses advanced function theory\n6. **Special cases**: Weierstrass factorization for zeros of f itself",
     "keyInsights": [
-      "**No finite limit point**: The sets S\u2099 must be discrete (no accumulation points). This is forced by the identity theorem.",
-      "**Entire function**: Differentiable everywhere on \u2102, equivalently holomorphic/analytic on all of \u2102.",
+      "**No finite limit point**: The sets Sₙ must be discrete (no accumulation points). This is forced by the identity theorem.",
+      "**Entire function**: Differentiable everywhere on ℂ, equivalently holomorphic/analytic on all of ℂ.",
       "**Transcendental**: Not a polynomial - has infinitely many derivatives, all non-trivial.",
       "**Weierstrass connection**: The Weierstrass factorization theorem handles prescribing zeros of f itself; this extends to derivatives.",
       "**Flexibility of entire functions**: Despite seeming rigid, entire functions can be constructed with remarkable flexibility in their zero sets."
@@ -87,36 +87,52 @@
       "id": "discrete",
       "title": "Why Discrete Sets?",
       "startLine": 66,
-      "endLine": 77,
+      "endLine": 74,
       "summary": "The identity theorem forces discreteness."
     },
     {
       "id": "main-theorem",
       "title": "Barth-Schneider Theorem",
-      "startLine": 78,
-      "endLine": 100,
+      "startLine": 75,
+      "endLine": 96,
       "summary": "The main result axiomatized."
     },
     {
       "id": "explicit",
       "title": "Explicit Formulation",
-      "startLine": 101,
-      "endLine": 119,
+      "startLine": 97,
+      "endLine": 107,
       "summary": "Equivalent statement with positive integers."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "startLine": 120,
-      "endLine": 135,
+      "startLine": 108,
+      "endLine": 116,
       "summary": "Weierstrass factorization and derivative zeros."
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 117,
+      "endLine": 122,
+      "summary": "Docstring noting the iterated derivative of an entire function is entire (holomorphic functions are infinitely differentiable).",
+      "mathContext": "Related result: the iterated derivative of an entire function is entire, following from infinite differentiability of holomorphic functions."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 123,
+      "endLine": 137,
+      "summary": "summary_erdos_229 (proved via barth_schneider_theorem): summary table of results — zeros prescribable (solved), discrete sets required (necessary), single set zeros (classical).",
+      "mathContext": "Proved: summary_erdos_229 : Erdos229Question := barth_schneider_theorem. Summary table: zeros prescribable (Barth-Schneider 1972), discrete sets required (identity theorem), single set zeros (Weierstrass factorization)."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erd\u0151s Problem #229 on prescribing zeros of derivatives of entire functions. The Barth-Schneider theorem (1972) proves the answer is YES: for any sequence of discrete sets, we can find a transcendental entire function whose derivatives vanish on these sets.",
+    "summary": "We formalize Erdős Problem #229 on prescribing zeros of derivatives of entire functions. The Barth-Schneider theorem (1972) proves the answer is YES: for any sequence of discrete sets, we can find a transcendental entire function whose derivatives vanish on these sets.",
     "implications": "**Theoretical Significance**: This result demonstrates the remarkable flexibility of transcendental entire functions.\n\nDespite being determined by their power series, they can be constructed to have prescribed zeros for different derivatives. This has applications in complex approximation theory and the study of differential equations in the complex plane.",
     "openQuestions": [
-      "What are effective bounds on the indices k\u2099 in terms of the sets S\u2099?",
+      "What are effective bounds on the indices kₙ in terms of the sets Sₙ?",
       "Can we achieve additional constraints (e.g., growth rate) simultaneously?",
       "What happens if we require the same derivative to vanish on multiple sets?",
       "Are there natural analogues for entire functions of several variables?"
@@ -143,17 +159,17 @@
     {
       "targetId": "erdos-906",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: complex-analysis, derivatives, entire-functions"
+      "description": "Related Erdős problem sharing themes: complex-analysis, derivatives, entire-functions"
     },
     {
       "targetId": "erdos-1115",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: complex-analysis, entire-functions"
+      "description": "Related Erdős problem sharing themes: complex-analysis, entire-functions"
     },
     {
       "targetId": "erdos-1116",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: complex-analysis, entire-functions"
+      "description": "Related Erdős problem sharing themes: complex-analysis, entire-functions"
     }
   ],
   "references": [
