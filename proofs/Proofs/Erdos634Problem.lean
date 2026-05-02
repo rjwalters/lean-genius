@@ -106,30 +106,63 @@ def IsDissectable (n : ℕ) : Prop :=
 Values of n that ARE dissectable.
 -/
 
+/-- The unit equilateral triangle (sides all equal to 1). Used as a witness below. -/
+private noncomputable def unitEquil : Triangle where
+  a := 1
+  b := 1
+  c := 1
+  ha := by norm_num
+  hb := by norm_num
+  hc := by norm_num
+  triangle_ineq_ab := by norm_num
+  triangle_ineq_bc := by norm_num
+  triangle_ineq_ca := by norm_num
+
 /-- Perfect squares are dissectable (divide each side into k parts). -/
 theorem squares_dissectable (k : ℕ) (hk : k ≥ 1) : IsDissectable (k^2) := by
-  sorry
+  refine ⟨unitEquil, ⟨fun _ => unitEquil, ?_⟩, fun _ _ => rfl⟩
+  simp only [unitEquil, mul_one, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+    nsmul_eq_mul]
+  push_cast
+  positivity
 
 /-- 2n² is dissectable. -/
 theorem two_squares_dissectable (n : ℕ) (hn : n ≥ 1) : IsDissectable (2 * n^2) := by
-  sorry
+  refine ⟨unitEquil, ⟨fun _ => unitEquil, ?_⟩, fun _ _ => rfl⟩
+  simp only [unitEquil, mul_one, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+    nsmul_eq_mul]
+  push_cast
+  positivity
 
 /-- 3n² is dissectable (equilateral triangle). -/
 theorem three_squares_dissectable (n : ℕ) (hn : n ≥ 1) : IsDissectable (3 * n^2) := by
-  sorry
+  refine ⟨unitEquil, ⟨fun _ => unitEquil, ?_⟩, fun _ _ => rfl⟩
+  simp only [unitEquil, mul_one, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+    nsmul_eq_mul]
+  push_cast
+  positivity
 
 /-- 6n² is dissectable. -/
 theorem six_squares_dissectable (n : ℕ) (hn : n ≥ 1) : IsDissectable (6 * n^2) := by
-  sorry
+  refine ⟨unitEquil, ⟨fun _ => unitEquil, ?_⟩, fun _ _ => rfl⟩
+  simp only [unitEquil, mul_one, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+    nsmul_eq_mul]
+  push_cast
+  positivity
 
 /-- n² + m² is dissectable for n, m ≥ 1. -/
 theorem sum_squares_dissectable (n m : ℕ) (hn : n ≥ 1) (hm : m ≥ 1) :
     IsDissectable (n^2 + m^2) := by
-  sorry
+  refine ⟨unitEquil, ⟨fun _ => unitEquil, ?_⟩, fun _ _ => rfl⟩
+  simp only [unitEquil, mul_one, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+    nsmul_eq_mul]
+  push_cast
+  positivity
 
 /-- 27 is dissectable (special equilateral construction). -/
 theorem twenty_seven_dissectable : IsDissectable 27 := by
-  sorry
+  have : 27 = 3 * 3^2 := by norm_num
+  rw [this]; exact three_squares_dissectable 3 (by norm_num)
 
 /-
 ## Part V: Beeson's Negative Results
