@@ -73,8 +73,8 @@
     "proofId": "erdos-1104",
     "type": "insight",
     "range": {
-      "startLine": 109,
-      "endLine": 125
+      "startLine": 116,
+      "endLine": 121
     },
     "title": "Ramsey Duality and Kim's Bound",
     "content": "The key structural insight: f(n) ≥ k if and only if R(3,k) ≤ n, where R(3,k) is the diagonal Ramsey number. Kim (1995) proved R(3,k) = Θ(k²/log k) using a semi-random (triangle-free) process, which was later refined by Bohman (2009) and Fiz Pontiveros–Griffiths–Morris (2020). Inverting R(3,k) = Θ(k²/log k) gives f(n) = Θ(√(n/log n)). The Ramsey bound is axiomatized with constants c₁, c₂.",

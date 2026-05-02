@@ -46,48 +46,56 @@
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 40,
-      "endLine": 108,
-      "summary": "f(n) ≤ n for all n (identity coloring), f(0) = 0, f(1) ≤ 1, f(n) ≥ 1 for n ≥ 1 (one sorry in empty graph chromatic number).",
-      "mathContext": "f(n) $\\leq$ n for all n (identity coloring), f(0) = 0, f(1) $\\leq$ 1, f(n) $\\geq$ 1 for n $\\geq$ 1 (one sorry in empty graph chromatic number)."
+      "endLine": 109,
+      "summary": "f(n) ≤ n for all n (identity coloring), f(0) = 0, f(1) ≤ 1, f(n) ≥ 1 for n ≥ 1. All 9 theorems fully proved — 0 sorries.",
+      "mathContext": "f(n) $\\leq$ n for all n (identity coloring), f(0) = 0, f(1) $\\leq$ 1, f(n) $\\geq$ 1 for n $\\geq$ 1. All proved; no sorries."
     },
     {
       "id": "ramsey-duality",
       "title": "Ramsey Duality",
-      "startLine": 109,
-      "endLine": 126,
-      "summary": "f(n) ≥ k iff R(3,k) ≤ n. Kim's R(3,k) = Θ(k²/log k) axiomatized with constants c₁, c₂.",
-      "mathContext": "f(n) $\\geq$ k iff R(3,k) $\\leq$ n. Kim's R(3,k) = Θ(k²/log k) axiomatized with constants c₁, c₂."
+      "startLine": 110,
+      "endLine": 121,
+      "summary": "Placeholder `RamseyTriangle` definition and free-standing docstrings describing Kim 1995/Bohman 2009/FPGM 2020 results. No Kim axiom exists — no axiom or theorem follows these docstrings in the source.",
+      "mathContext": "Discussion only: `RamseyTriangle` is a placeholder def (lines 116–117); lines 119–121 are orphan docstrings describing Kim's R(3,k) = Θ(k²/log k) result but no formal declaration follows. The Ramsey duality f(n) ≥ k iff R(3,k) ≤ n is not established as a theorem."
     },
     {
       "id": "asymptotic-bounds",
       "title": "Main Asymptotic Bounds",
-      "startLine": 127,
-      "endLine": 151,
+      "startLine": 122,
+      "endLine": 146,
       "summary": "Lower bound (HHKP 2025): f(n) ≥ (1−o(1))√(n/log n). Upper bound (DI 2022): f(n) ≤ (2+o(1))√(n/log n). Exact constant open.",
       "mathContext": "Lower bound (HHKP 2025): f(n) $\\geq$ (1−o(1))√(n/$\\log n$). Upper bound (DI 2022): f(n) $\\leq$ (2+o(1))√(n/$\\log n$). Exact constant open."
     },
     {
       "id": "edge-variant",
       "title": "Edge Variant",
-      "startLine": 152,
-      "endLine": 175,
-      "summary": "g(m) = max χ over triangle-free graphs with m edges. Θ((m/(log m)²)^{1/3}) with upper constant 3^{5/3}.",
-      "mathContext": "g(m) = max χ over triangle-free graphs with m edges. Θ((m/(log m)²)^{1/3}) with upper constant $$3^{{5/3}$}$."
+      "startLine": 147,
+      "endLine": 159,
+      "summary": "Defines `triangleFreeMaxChiEdges` (g(m) = sup χ over triangle-free m-edge graphs). The Θ((m/(log m)²)^{1/3}) bound and the 3^{5/3} upper constant exist only as free-standing docstrings (lines 156–159) — no axiom or theorem follows them.",
+      "mathContext": "Definition only: `triangleFreeMaxChiEdges` at lines 150–154. Lines 156–157 and 158–159 are orphan docstrings for the Davies–Illingworth upper bound and Kim's edge lower bound respectively; neither is followed by a formal declaration."
     },
     {
       "id": "mycielski",
       "title": "Mycielski Construction",
-      "startLine": 176,
-      "endLine": 196,
+      "startLine": 160,
+      "endLine": 186,
       "summary": "Classical triangle-free graphs M_k with χ(M_k) = k on 3·2^{k−2} − 1 vertices. Gives weak f(n) ≥ Ω(log n) bound.",
       "mathContext": "Classical triangle-free graphs M_k with χ(M_k) = k on 3·$$2^{{k−2}$}$ − 1 vertices. Gives weak f(n) $\\geq$ Ω($\\log n$) bound."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 187,
+      "endLine": 196,
+      "summary": "Theorem `bounds_summary` packages the two main axioms: f(n) = Θ(√(n/log n)) with lower constant 1 (HHKP 2025) and upper constant 2 (DI 2022).",
+      "mathContext": "Verified: `bounds_summary` combines `erdos_1104_lower` and `erdos_1104_upper` into a single conjunction establishing f(n) = Θ(√(n/log n))."
     }
   ],
   "overview": {
     "historicalContext": "Erdős posed this problem in 1967 as a quantitative refinement of the observation (due to Mycielski, 1955, and Zykov, 1949) that triangle-free graphs can have arbitrarily large chromatic number. The problem is intimately connected to the Ramsey number $R(3,k)$: since $f(n) \\geq k$ iff $R(3,k) \\leq n$, estimating $f(n)$ is equivalent to estimating $R(3,k)$. The breakthrough came from Jeong Han Kim (1995), who proved $R(3,k) = \\Theta(k^2/\\log k)$ using a brilliant semi-random method (the 'triangle-free process'), yielding $f(n) = \\Theta(\\sqrt{n/\\log n})$. The upper bound was sharpened by Davies and Illingworth (2022), who proved $f(n) \\leq (2+o(1))\\sqrt{n/\\log n}$ using fractional chromatic number techniques. The matching lower bound $f(n) \\geq (1-o(1))\\sqrt{n/\\log n}$ was achieved by Hefty, Horn, King, and Pfender (2025), completing the asymptotic picture up to the leading constant. The exact constant $c^*$ where $f(n) \\sim c^*\\sqrt{n/\\log n}$ remains the central open question.",
     "problemStatement": "Let $f(n)$ be the maximum chromatic number of a triangle-free graph on $n$ vertices. Estimate $f(n)$.",
     "text": "Let f(n) = max χ(G) over triangle-free graphs on n vertices. Estimate f(n). Known: f(n) = Θ(√(n/log n)). Exact constant open. Lower: Hefty–Horn–King–Pfender (2025). Upper: Davies–Illingworth (2022).",
-    "proofStrategy": "The formalization defines $f(n)$ as the supremum of chromatic numbers over all triangle-free graphs on $\\operatorname{Fin}(n)$. Basic properties ($f(0)=0$, $f(n) \\leq n$) are proved directly. The Ramsey duality $f(n) \\geq k \\iff R(3,k) \\leq n$ is established with Kim's bound axiomatized. The main asymptotic bounds are axiomatized as ε-N₀ statements. The Mycielski construction is axiomatized to give a concrete lower bound $f(3 \\cdot 2^{k-2} - 1) \\geq k$. An edge variant $g(m) = \\Theta((m/(\\log m)^2)^{1/3})$ extends the theory.",
+    "proofStrategy": "The formalization defines $f(n)$ as the supremum of chromatic numbers over all triangle-free graphs on $\\operatorname{Fin}(n)$. Basic properties ($f(0)=0$, $f(n) \\leq n$) are proved directly (0 sorries). A placeholder `RamseyTriangle` def and free-standing docstrings describe the Ramsey duality $f(n) \\geq k \\iff R(3,k) \\leq n$ and Kim's bound, but neither is established as a formal theorem or axiom. The main asymptotic bounds are axiomatized as ε-N₀ statements (`erdos_1104_lower`, `erdos_1104_upper`). The Mycielski construction is axiomatized to give a concrete lower bound $f(3 \\cdot 2^{k-2} - 1) \\geq k$. An edge variant definition `triangleFreeMaxChiEdges` is provided; its bounds are mentioned only in comments. `bounds_summary` packages the two main axioms.",
     "keyInsights": [
       "The Ramsey duality $f(n) \\geq k \\iff R(3,k) \\leq n$ reduces estimating $f(n)$ to the classical problem of bounding $R(3,k)$, connecting chromatic extremality to Ramsey theory",
       "Kim's semi-random method (1995) was a paradigm shift: instead of constructing graphs deterministically, the triangle-free process builds a random graph that avoids triangles and achieves high independence number",
@@ -101,7 +109,7 @@
     ]
   },
   "conclusion": {
-    "summary": "This formalization captures the complete state of knowledge for Erdős Problem 1104: the order of magnitude $f(n) = \\Theta(\\sqrt{n/\\log n})$ is established with constants 1 (lower) and 2 (upper), the Ramsey duality is formalized, the Mycielski construction provides a concrete lower bound, and the edge variant extends the theory. One sorry remains in establishing $f(n) \\geq 1$ for $n \\geq 1$.",
+    "summary": "This formalization captures the complete state of knowledge for Erdős Problem 1104: the order of magnitude $f(n) = \\Theta(\\sqrt{n/\\log n})$ is established with constants 1 (lower) and 2 (upper) via 3 axioms. The Mycielski construction provides a concrete lower bound. The Ramsey duality and Kim's bound are discussed in comments but not formally established. 0 sorries.",
     "implications": "**Theoretical Significance**: Determining the exact constant $c^*$ would resolve one of the most fundamental questions in extremal graph theory and probabilistic combinatorics.\n\nIt would also pin down the Ramsey number $R(3,k)$ up to a constant, with implications for random graph theory, the probabilistic method, and the behavior of the triangle-free process. The technique of using fractional relaxation (Davies-Illingworth) versus probabilistic construction (Hefty et al.) exemplifies a broader duality in combinatorial optimization.",
     "openQuestions": [
       "What is the exact leading constant $c^*$ in $f(n) \\sim c^*\\sqrt{n/\\log n}$? Is it 1, 2, $\\sqrt{2}$, or something else?",
