@@ -48,7 +48,7 @@
     "historicalContext": "Erdős posed this problem around the 1970s as part of his program to understand how multiplicative constraints (squarefreeness) interact with additive structure (sumsets). A number $n$ is squarefree if no prime square $p^2$ divides it — the squarefree numbers have asymptotic density $6/\\pi^2 \\approx 0.608$ by Euler's product formula. Requiring ALL pairwise sums $a + b$ to be squarefree is vastly more restrictive: for each prime $p$, the elements of $A$ must avoid collisions modulo $p^2$, and these constraints interact across all primes simultaneously. The problem connects to the Erdős–Sárközy tradition of studying divisibility properties of sumsets. Van Doorn and Tao (2025) made the first significant quantitative progress, establishing both a polynomial lower bound $a_j > 0.24 \\cdot j^{4/3}$ (via sieve methods and the large sieve inequality) and an upper construction achieving $a_j < \\exp(5j/\\log j)$ (subexponential but superpolynomial). Konyagin complemented this with finite-set bounds: $|A \\cap [1,N]| \\le C \\cdot N^{11/15}$, where the exponent $11/15$ arises from large sieve estimates for squarefree residues. The central question — whether true exponential growth $C^j$ for some $C > 1$ is unavoidable — remains open, with a substantial gap between the known polynomial lower bound and subexponential upper bound.",
     "problemStatement": "Let A be an infinite set of positive integers such that a + b is squarefree for all a, b ∈ A. Must A grow at least exponentially?",
     "text": "For an infinite A ⊆ ℕ with every a+b squarefree, how fast must A grow? Erdős conjectured exponential growth is necessary. van Doorn–Tao (2025) proved bounds: a_j > 0.24·j^{4/3} and a_j < exp(5j/log j).",
-    "proofStrategy": "We define SquarefreeSumset as the condition that all pairwise sums are squarefree, define the increasing enumeration enumSet via Mathlib's Nat.nth, and state the conjecture ErdosProblem1103. Known bounds by van Doorn–Tao and Konyagin are stated as axioms. We then prove erdos_1103_false: the van Doorn–Tao upper bound (subexponential growth exp(5j/log j)) directly refutes the exponential growth conjecture, since for any C > 1, C^j eventually exceeds exp(5j/log j).",
+    "proofStrategy": "We define SquarefreeSumset as the condition that all pairwise sums are squarefree, define the increasing enumeration enumSet via Mathlib's Nat.nth, and prove enumSet_spec (strict monotonicity + range surjectivity). The conjecture ErdosProblem1103 is stated as a Prop definition. One result is axiomatized: vanDoorn_tao_upper (the existence of a subexponential construction with a_j < exp(5j/log j)). The van Doorn–Tao lower bound (a_j > 0.24·j^{4/3}) and Konyagin's finite-set bound are mentioned in comments but not axiomatized. We then prove erdos_1103_false: the upper bound directly refutes ErdosProblem1103, since for any C > 1, C^j eventually exceeds exp(5j/log j).",
     "keyInsights": [
       "The **squarefree sumset condition** links additive combinatorics to multiplicative number theory: $a + b$ must avoid all $p^2$ for every pair, creating a global constraint from local divisibility conditions modulo $p^2$ for each prime $p$",
       "**Van Doorn–Tao's polynomial lower bound** $a_j > 0.24 \\cdot j^{4/3}$ rules out slow polynomial growth but leaves a wide gap to the conjectured exponential growth — the proof uses sieve methods bounding how densely a squarefree-sumset can pack into intervals",
@@ -76,56 +76,64 @@
       "title": "Imports and Setup",
       "startLine": 21,
       "endLine": 27,
-      "summary": "Imports `Mathlib.Data.Nat.Squarefree` for the `Squarefree` predicate, `Finset.Basic` for finite-set operations in Konyagin's bound, and `Order.Filter.Basic` for the $\\forall^\\infty$ (eventually) quantifier.",
-      "mathContext": "Imports `Mathlib.Data.Nat.Squarefree` for the `Squarefree` predicate, `Finset.Basic` for finite-set operations in Konyagin's bound, and `Order.Filter.Basic` for the $\\forall^\\infty$ (eventually) quantifier."
+      "summary": "Imports `Mathlib.Data.Nat.Squarefree` for the `Squarefree` predicate, `Finset.Basic` for finite-set operations, `Order.Filter.Basic` for the $\\forall^\\infty$ (eventually) quantifier, and `Analysis.SpecialFunctions.Log.Deriv` for real logarithm facts.",
+      "mathContext": "Imports `Mathlib.Data.Nat.Squarefree` for the `Squarefree` predicate, `Finset.Basic` for finite-set operations, `Order.Filter.Basic` for the $\\forall^\\infty$ (eventually) quantifier, and `Analysis.SpecialFunctions.Log.Deriv` for real logarithm facts."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 28,
-      "endLine": 42,
-      "summary": "Defines `SquarefreeSumset A` requiring $\\forall a, b \\in A, \\text{Squarefree}(a+b)$. Axiomatizes `enumSet A j` as the $j$-th smallest element via `StrictMono` and range surjectivity.",
-      "mathContext": "Formal definition: Defines `SquarefreeSumset A` requiring $\\forall a, b \\in A, \\text{Squarefree}(a+b)$. Axiomatizes `enumSet A j` as the $j$-th smallest element via `StrictMono` and range surjectivity."
+      "startLine": 29,
+      "endLine": 49,
+      "summary": "Defines `SquarefreeSumset A` requiring $\\forall a, b \\in A, \\text{Squarefree}(a+b)$. Defines `enumSet A j` as `Nat.nth (· ∈ A) j` and proves `enumSet_spec`: strictly monotone with range equal to $A$.",
+      "mathContext": "Defines `SquarefreeSumset A` (all pairwise sums squarefree) and `enumSet` (increasing enumeration via Mathlib's `Nat.nth`). Proves `enumSet_spec` from `Nat.nth_strictMono`, `Nat.nth_mem_of_infinite`, `Nat.nth_count`."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
-      "startLine": 43,
-      "endLine": 52,
-      "summary": "States `ErdosProblem1103`: $\\exists C > 1$ such that $C^j \\le a_j$ eventually, for every infinite squarefree-sumset $A$. Uses `Filter.atTop` for the asymptotic quantifier.",
+      "startLine": 51,
+      "endLine": 59,
+      "summary": "States `ErdosProblem1103` as a Prop: $\\forall$ infinite squarefree-sumset $A$, $\\exists C > 1$ with $C^j \\le a_j$ eventually. This is the open conjecture — not axiomatized, not proved.",
       "mathContext": "Mathematical content: States `ErdosProblem1103`: $\\exists C > 1$ such that $C^j \\le a_j$ eventually, for every infinite squarefree-sumset $A$. Uses `Filter.atTop` for the asymptotic quantifier."
     },
     {
       "id": "upper-bound",
-      "title": "Van Doorn–Tao Upper Bound",
-      "startLine": 53,
-      "endLine": 61,
-      "summary": "Axiomatizes existence of an infinite squarefree-sumset sequence with $a_j < \\exp(5j/\\log j)$ — a subexponential construction showing exponential growth is not the only possibility.",
-      "mathContext": "Axiomatized: Axiomatizes existence of an infinite squarefree-sumset sequence with $a_j < \\exp(5j/\\log j)$ — a subexponential construction showing exponential growth is not the only possibility."
+      "title": "Van Doorn–Tao Upper Bound (Axiom)",
+      "startLine": 61,
+      "endLine": 68,
+      "summary": "Axiom `vanDoorn_tao_upper`: existence of an infinite squarefree-sumset sequence with $a_j < \\exp(5j/\\log j)$ — a subexponential construction, the sole axiom in this file.",
+      "mathContext": "Axiomatized: `vanDoorn_tao_upper` — $\\exists A$ infinite squarefree-sumset with $a_j < \\exp(5j/\\log j)$ eventually. This is the only axiom in the file."
     },
     {
       "id": "lower-bound",
-      "title": "Van Doorn–Tao Lower Bound",
-      "startLine": 62,
-      "endLine": 66,
-      "summary": "Axiomatizes the universal lower bound $a_j > 0.24 \\cdot j^{4/3}$ for all infinite squarefree-sumset sequences, ruling out polynomial growth slower than $j^{4/3}$.",
-      "mathContext": "Axiomatized: Axiomatizes the universal lower bound $a_j > 0.24 \\cdot j^{4/3}$ for all infinite squarefree-sumset sequences, ruling out polynomial growth slower than $j^{4/3}$."
+      "title": "Van Doorn–Tao Lower Bound (Discussion Only)",
+      "startLine": 70,
+      "endLine": 71,
+      "summary": "Comment only (no declaration): van Doorn–Tao lower bound $a_j > 0.24 \\cdot j^{4/3}$ is mentioned but not axiomatized in this file.",
+      "mathContext": "Discussion only: the lower bound $a_j > 0.24 \\cdot j^{4/3}$ appears as a plain comment; no axiom or theorem for it exists in this file."
     },
     {
       "id": "konyagin",
-      "title": "Konyagin Finite Bound",
-      "startLine": 67,
-      "endLine": 74,
-      "summary": "Axiomatizes $|A| \\le C \\cdot N^{11/15}$ for finite $A \\subseteq \\{1,\\ldots,N\\}$ with squarefree sumset, quantifying sparsity via the large sieve.",
-      "mathContext": "Axiomatized: Axiomatizes $|A| \\le C \\cdot N^{11/15}$ for finite $A \\subseteq \\{1,\\ldots,N\\}$ with squarefree sumset, quantifying sparsity via the large sieve."
+      "title": "Konyagin Finite Bound (Discussion Only)",
+      "startLine": 72,
+      "endLine": 73,
+      "summary": "Comment only (no declaration): Konyagin's finite-set bound $|A| \\le C \\cdot N^{11/15}$ is mentioned but not axiomatized in this file.",
+      "mathContext": "Discussion only: Konyagin's bound $|A \\cap [1,N]| \\le C \\cdot N^{11/15}$ appears as a plain comment; no axiom or theorem for it exists in this file."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "startLine": 75,
-      "endLine": 92,
-      "summary": "Proves `SquarefreeSumset \\emptyset` (vacuous), subset monotonicity, and `squarefree_one`. Axiomatizes the singleton characterization: $\\text{SquarefreeSumset}\\{a\\} \\iff \\text{Squarefree}(2a)$.",
-      "mathContext": "Verified: Proves `SquarefreeSumset \\emptyset` (vacuous), subset monotonicity, and `squarefree_one`. Axiomatizes the singleton characterization: $\\text{SquarefreeSumset}\\{a\\} \\iff \\text{Squarefree}(2a)$."
+      "startLine": 74,
+      "endLine": 112,
+      "summary": "Proves (all verified): `squarefreeSumset_singleton` (iff characterization), `squarefreeSumset_empty` (vacuous), `squarefreeSumset_subset` (monotonicity), `one_squarefree`, `squarefreeSumset_one`, and `squarefreeSumset_pair` (two-element characterization).",
+      "mathContext": "Verified: Six proved theorems about the squarefree-sumset predicate — singleton iff, empty set, subset monotonicity, squarefree_one, {1} example, and two-element pair characterization. None are axiomatized."
+    },
+    {
+      "id": "refutation",
+      "title": "Refutation of the Exponential Growth Conjecture",
+      "startLine": 114,
+      "endLine": 162,
+      "summary": "Proves `subexp_eventually_lt_exp` (for any $C > 1$, $\\exp(5j/\\log j) < C^j$ eventually) and `erdos_1103_false` ($\\neg$ ErdosProblem1103) — the van Doorn–Tao upper bound refutes the exponential growth conjecture.",
+      "mathContext": "Verified: `erdos_1103_false : ¬ ErdosProblem1103` — proved by combining `vanDoorn_tao_upper` with `subexp_eventually_lt_exp` to derive a contradiction. This is the headline result of the formalization."
     }
   ],
   "crossReferences": [
@@ -146,7 +154,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 1103 on squarefree sumsets with the main conjecture and state-of-the-art bounds by van Doorn–Tao and Konyagin. The open conjecture is stated as a definition (Prop), and deep results are axiomatized.",
+    "summary": "The formalization captures Erdős Problem 1103 on squarefree sumsets. The open exponential growth conjecture is stated as a Prop (`ErdosProblem1103`) and then disproved: `erdos_1103_false` proves it false using the axiomatized van Doorn–Tao upper bound (`vanDoorn_tao_upper`). The lower bound and Konyagin's finite bound are discussed in comments but not axiomatized.",
     "implications": "Resolving whether exponential growth is necessary would illuminate the fundamental interaction between additive structure and multiplicative constraints in number theory, with connections to sieve methods, the distribution of squarefree numbers, and the geometry of numbers.",
     "openQuestions": [
       "Is exponential growth necessary for infinite squarefree-sumset sequences, or can subexponential constructions like exp(j/log j) be improved to polynomial?",

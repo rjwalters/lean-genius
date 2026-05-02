@@ -27,8 +27,8 @@
     "proofId": "erdos-1103",
     "type": "definition",
     "range": {
-      "startLine": 30,
-      "endLine": 33
+      "startLine": 33,
+      "endLine": 34
     },
     "title": "Squarefree Sumset",
     "content": "SquarefreeSumset A requires that a + b is squarefree for ALL a, b ∈ A (including a = b, so 2a must also be squarefree). This links additive structure to multiplicative constraints: for each prime p, the elements of A must avoid collisions modulo p², and these constraints interact across all primes simultaneously.",
@@ -53,8 +53,8 @@
     "proofId": "erdos-1103",
     "type": "definition",
     "range": {
-      "startLine": 35,
-      "endLine": 41
+      "startLine": 39,
+      "endLine": 49
     },
     "title": "Set Enumeration Axiom",
     "content": "Axiomatizes enumSet A j as the j-th smallest element of an infinite set A. The specification enumSet_spec guarantees StrictMono (enumSet A) and Set.range (enumSet A) = A, providing a canonical increasing enumeration. This avoids constructive well-ordering issues in Lean while enabling growth rate analysis.",
@@ -78,8 +78,8 @@
     "proofId": "erdos-1103",
     "type": "definition",
     "range": {
-      "startLine": 48,
-      "endLine": 51
+      "startLine": 56,
+      "endLine": 59
     },
     "title": "Exponential Growth Conjecture",
     "content": "ErdosProblem1103 states: for every infinite A with SquarefreeSumset, ∃ C > 1 such that C^j ≤ a_j for all sufficiently large j. Defined as a Prop (not axiom) since it is an open conjecture. Uses Filter.atTop for the 'eventually' quantifier and real-valued exponential comparison via C ^ (j : ℝ).",
@@ -151,7 +151,7 @@
     "proofId": "erdos-1103",
     "type": "concept",
     "range": {
-      "startLine": 69,
+      "startLine": 72,
       "endLine": 73
     },
     "title": "Konyagin Finite Bound",

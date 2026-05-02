@@ -67,10 +67,10 @@ axiom vanDoorn_tao_upper :
       ∀ᶠ j in atTop,
         (enumSet A j : ℝ) < Real.exp (5 * (j : ℝ) / Real.log j)
 
-/-- van Doorn–Tao lower bound: `a_j > 0.24 · j^{4/3}` for any infinite
-squarefree-sumset sequence. -/
-/-- Konyagin's bound for finite sets: for `A ⊆ {1,...,N}` with squarefree sumset,
-`|A| ≪ N^{11/15 + o(1)}`. -/
+/- van Doorn–Tao lower bound: `a_j > 0.24 · j^{4/3}` for any infinite
+squarefree-sumset sequence. (Not axiomatized in this file.) -/
+/- Konyagin's bound for finite sets: for `A ⊆ {1,...,N}` with squarefree sumset,
+`|A| ≪ N^{11/15 + o(1)}`. (Not axiomatized in this file.) -/
 /- ## Basic properties -/
 
 /-- Every singleton set has a squarefree sumset iff `2a` is squarefree. -/
