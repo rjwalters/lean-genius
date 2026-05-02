@@ -434,7 +434,191 @@ theorem lehmerCofactors_id_apply_le (fuel ahat bhat : ℕ) :
   · simp [CofactorMatrix.id]
 
 -- ═══════════════════════════════════════════════════════════════
--- PART VI: SIZE REDUCTION (deferred — open mathematical content)
+-- PART VI: CRAMER IDENTITY AND SIGN PATTERN (Step 2b)
+-- ═══════════════════════════════════════════════════════════════
+
+/-- Cramer recovery formula in the row-vector convention.
+
+    From `(a₀, b₀) · M = (ahat, bhat)` — i.e.,
+      a₀·M.α + b₀·M.γ = ahat  and  a₀·M.β + b₀·M.δ = bhat —
+    the determinant identity gives:
+
+      a₀ · det M = ahat · M.δ - bhat · M.γ
+      b₀ · det M = bhat · M.α - ahat · M.β
+
+    Proof: pure algebra. `linear_combination M.δ * h₁ - M.γ * h₂` for
+    the first goal, `M.α * h₂ - M.β * h₁` for the second. -/
+theorem row_vec_cramer {a₀ b₀ ahat bhat : ℤ} {M : CofactorMatrix}
+    (h₁ : a₀ * M.α + b₀ * M.γ = ahat)
+    (h₂ : a₀ * M.β + b₀ * M.δ = bhat) :
+    a₀ * M.det = ahat * M.δ - bhat * M.γ ∧
+    b₀ * M.det = bhat * M.α - ahat * M.β := by
+  simp only [CofactorMatrix.det]
+  exact ⟨by linear_combination M.δ * h₁ - M.γ * h₂,
+         by linear_combination M.α * h₂ - M.β * h₁⟩
+
+/-- The "even-step" sign pattern: entries after an even number of
+    `lehmerInnerStep` applications starting from `CofactorMatrix.id`.
+    The identity has α = δ = 1 ≥ 0 and β = γ = 0 ≤ 0, so it is even. -/
+def EvenPattern (M : CofactorMatrix) : Prop :=
+  0 ≤ M.α ∧ M.β ≤ 0 ∧ M.γ ≤ 0 ∧ 0 ≤ M.δ
+
+/-- The "odd-step" sign pattern: α ≤ 0, δ ≤ 0, β ≥ 0, γ ≥ 0. -/
+def OddPattern (M : CofactorMatrix) : Prop :=
+  M.α ≤ 0 ∧ 0 ≤ M.β ∧ 0 ≤ M.γ ∧ M.δ ≤ 0
+
+/-- The identity matrix has EvenPattern. -/
+theorem CofactorMatrix.id_even_pattern : EvenPattern CofactorMatrix.id := by
+  simp [EvenPattern, CofactorMatrix.id]
+
+/-- One successful `lehmerInnerStep` takes EvenPattern to OddPattern.
+
+    M' = M.mul [[0,1],[1,-q]]:
+      M'.α = M.β,         M'.γ = M.δ
+      M'.β = M.α - q·M.β, M'.δ = M.γ - q·M.δ
+
+    For EvenPattern (α ≥ 0, β ≤ 0, γ ≤ 0, δ ≥ 0) and q ≥ 0:
+      M'.α = M.β ≤ 0  ✓
+      M'.β = M.α + q·(-M.β) ≥ 0  ✓  (both terms non-negative)
+      M'.γ = M.δ ≥ 0  ✓
+      M'.δ = M.γ - q·M.δ ≤ 0  ✓  (M.γ ≤ 0, -q·M.δ ≤ 0) -/
+theorem lehmerInnerStep_even_to_odd {ahat bhat : ℕ} {M M' : CofactorMatrix}
+    {ahat' bhat' : ℕ}
+    (hstep : lehmerInnerStep ahat bhat M = some (ahat', bhat', M'))
+    (heven : EvenPattern M) :
+    OddPattern M' := by
+  simp [lehmerInnerStep] at hstep
+  split at hstep <;> simp_all
+  split at hstep <;> simp_all
+  obtain ⟨_, _, rfl⟩ := hstep
+  obtain ⟨hα, hβ, hγ, hδ⟩ := heven
+  simp only [OddPattern]
+  have hq : (0 : ℤ) ≤ (ahat / bhat : ℕ) := Int.ofNat_nonneg _
+  refine ⟨hβ, ?_, hδ, ?_⟩
+  · nlinarith
+  · nlinarith
+
+/-- One successful `lehmerInnerStep` takes OddPattern to EvenPattern. -/
+theorem lehmerInnerStep_odd_to_even {ahat bhat : ℕ} {M M' : CofactorMatrix}
+    {ahat' bhat' : ℕ}
+    (hstep : lehmerInnerStep ahat bhat M = some (ahat', bhat', M'))
+    (hodd : OddPattern M) :
+    EvenPattern M' := by
+  simp [lehmerInnerStep] at hstep
+  split at hstep <;> simp_all
+  split at hstep <;> simp_all
+  obtain ⟨_, _, rfl⟩ := hstep
+  obtain ⟨hα, hβ, hγ, hδ⟩ := hodd
+  simp only [EvenPattern]
+  have hq : (0 : ℤ) ≤ (ahat / bhat : ℕ) := Int.ofNat_nonneg _
+  -- M' = [[M.β, M.α - q·M.β], [M.δ, M.γ - q·M.δ]]
+  -- EvenPattern: M'.α = M.β ≥ 0, M'.β = M.α - q·M.β ≤ 0, M'.γ = M.δ ≤ 0, M'.δ = M.γ - q·M.δ ≥ 0
+  refine ⟨hβ, ?_, hδ, ?_⟩
+  · -- M.α - q*M.β ≤ 0: M.α ≤ 0, q*M.β ≥ 0
+    nlinarith
+  · -- 0 ≤ M.γ - q*M.δ: M.γ ≥ 0, -q*M.δ ≥ 0 (since M.δ ≤ 0)
+    nlinarith
+
+/-- `lehmerCofactors` preserves the EvenPattern/OddPattern disjunction
+    from any starting matrix that has one.
+
+    Induction on fuel: base returns the initial pattern unchanged.
+    Each successful step flips even↔odd via the alternation lemmas. -/
+theorem lehmerCofactors_has_pattern_from
+    (fuel ahat bhat : ℕ) (M₀ : CofactorMatrix)
+    (h₀ : EvenPattern M₀ ∨ OddPattern M₀) :
+    EvenPattern (lehmerCofactors fuel ahat bhat M₀) ∨
+    OddPattern (lehmerCofactors fuel ahat bhat M₀) := by
+  induction fuel generalizing ahat bhat M₀ with
+  | zero => simp [lehmerCofactors]; exact h₀
+  | succ n ih =>
+    simp only [lehmerCofactors]
+    match hstep : lehmerInnerStep ahat bhat M₀ with
+    | none => exact h₀
+    | some (ahat', bhat', M') =>
+      rcases h₀ with heven | hodd
+      · exact ih ahat' bhat' M' (Or.inr (lehmerInnerStep_even_to_odd hstep heven))
+      · exact ih ahat' bhat' M' (Or.inl (lehmerInnerStep_odd_to_even hstep hodd))
+
+/-- `lehmerCofactors` starting from `CofactorMatrix.id` always has
+    EvenPattern or OddPattern. -/
+theorem lehmerCofactors_has_pattern (fuel ahat bhat : ℕ) :
+    EvenPattern (lehmerCofactors fuel ahat bhat CofactorMatrix.id) ∨
+    OddPattern (lehmerCofactors fuel ahat bhat CofactorMatrix.id) :=
+  lehmerCofactors_has_pattern_from fuel ahat bhat CofactorMatrix.id
+    (Or.inl CofactorMatrix.id_even_pattern)
+
+/-- Entry bound for `lehmerCofactors` starting from `id`:
+    when EvenPattern holds, the non-negative entries δ and α are
+    bounded by the initial inputs, and the non-positive entries
+    γ and β are bounded in absolute value.
+
+    Precisely: under EvenPattern (so M.δ ≥ 0, M.γ ≤ 0) and the
+    row-vector invariant
+      `ahat * M.α + bhat * M.γ = ahat'`  (with ahat' : ℤ, ≥ 0)
+      `ahat * M.β + bhat * M.δ = bhat'`  (with bhat' : ℤ, ≥ 0)
+    and det M = 1:
+      ahat = ahat' * M.δ + bhat' * (-M.γ) ≥ ahat' * M.δ ≥ M.δ  (if ahat' ≥ 1)
+      bhat = bhat' * M.α + ahat' * (-M.β) ≥ bhat' * M.α ≥ M.α  (if bhat' ≥ 1) -/
+theorem entry_bound_of_even {a₀ b₀ ahat' bhat' : ℤ} {M : CofactorMatrix}
+    (h₁ : a₀ * M.α + b₀ * M.γ = ahat')
+    (h₂ : a₀ * M.β + b₀ * M.δ = bhat')
+    (hdet : M.det = 1)
+    (heven : EvenPattern M)
+    (ha₀ : 0 < a₀) (hb₀ : 0 < b₀)
+    (hahat' : 1 ≤ ahat') (hbhat' : 1 ≤ bhat') :
+    M.δ ≤ a₀ ∧ -(a₀) ≤ M.γ ∧ M.α ≤ b₀ ∧ -(b₀) ≤ M.β := by
+  obtain ⟨hα, hβ, hγ, hδ⟩ := heven
+  obtain ⟨hcr_a, hcr_b⟩ := row_vec_cramer h₁ h₂
+  rw [hdet, mul_one] at hcr_a hcr_b
+  -- hcr_a : a₀ = ahat' * M.δ - bhat' * M.γ
+  -- hcr_b : b₀ = bhat' * M.α - ahat' * M.β
+  -- Since EvenPattern: M.γ ≤ 0 so -bhat' * M.γ ≥ 0,
+  -- and M.δ ≥ 0, ahat' ≥ 1 → a₀ ≥ ahat' * M.δ ≥ M.δ
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · -- M.δ ≤ a₀
+    nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ bhat') (neg_nonneg.mpr hγ),
+               mul_le_mul_of_nonneg_left (by linarith : (1:ℤ) ≤ ahat') hδ]
+  · -- -a₀ ≤ M.γ, i.e., M.γ ≥ -a₀
+    nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ ahat') hδ,
+               mul_nonneg (by linarith : (0:ℤ) ≤ bhat') (neg_nonneg.mpr hγ)]
+  · -- M.α ≤ b₀
+    nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ ahat') (neg_nonneg.mpr hβ),
+               mul_le_mul_of_nonneg_left (by linarith : (1:ℤ) ≤ bhat') hα]
+  · -- -b₀ ≤ M.β, i.e., M.β ≥ -b₀
+    nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ bhat') hα,
+               mul_nonneg (by linarith : (0:ℤ) ≤ ahat') (neg_nonneg.mpr hβ)]
+
+/-- Entry bound for OddPattern (symmetric to EvenPattern case). -/
+theorem entry_bound_of_odd {a₀ b₀ ahat' bhat' : ℤ} {M : CofactorMatrix}
+    (h₁ : a₀ * M.α + b₀ * M.γ = ahat')
+    (h₂ : a₀ * M.β + b₀ * M.δ = bhat')
+    (hdet : M.det = -1)
+    (hodd : OddPattern M)
+    (ha₀ : 0 < a₀) (hb₀ : 0 < b₀)
+    (hahat' : 1 ≤ ahat') (hbhat' : 1 ≤ bhat') :
+    -(a₀) ≤ M.δ ∧ M.γ ≤ a₀ ∧ -(b₀) ≤ M.α ∧ M.β ≤ b₀ := by
+  obtain ⟨hα, hβ, hγ, hδ⟩ := hodd
+  obtain ⟨hcr_a, hcr_b⟩ := row_vec_cramer h₁ h₂
+  rw [hdet] at hcr_a hcr_b
+  -- hcr_a : a₀ * (-1) = ahat' * M.δ - bhat' * M.γ
+  -- → -a₀ = ahat' * M.δ - bhat' * M.γ
+  -- OddPattern: M.δ ≤ 0, M.γ ≥ 0
+  -- ahat' * M.δ ≤ 0 and bhat' * M.γ ≥ 0
+  -- -a₀ = ahat' * M.δ - bhat' * M.γ ≤ ahat' * M.δ ≤ M.δ (if ahat' ≥ 1)
+  -- → M.δ ≥ -a₀ ✓
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ bhat') hγ,
+               mul_le_mul_of_nonneg_left (by linarith : (1:ℤ) ≤ ahat') (neg_nonneg.mpr hδ)]
+  · nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ ahat') (neg_nonneg.mpr hδ),
+               mul_nonneg (by linarith : (0:ℤ) ≤ bhat') hγ]
+  · nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ ahat') hβ,
+               mul_le_mul_of_nonneg_left (by linarith : (1:ℤ) ≤ bhat') (neg_nonneg.mpr hα)]
+  · nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ bhat') (neg_nonneg.mpr hα),
+               mul_nonneg (by linarith : (0:ℤ) ≤ ahat') hβ]
+
+-- ═══════════════════════════════════════════════════════════════
+-- PART VII: SIZE REDUCTION (deferred — open mathematical content)
 -- ═══════════════════════════════════════════════════════════════
 
 /-- The HGCD size-reduction lemma: applying `hgcdMatrix` to `(a, b)`
@@ -479,53 +663,51 @@ theorem hgcdMatrix_size_reduction :
 **Proved (0 axioms, 0 sorries):**
 
 1. **Composition law** (`cofactor_mul_apply`): cofactor multiplication
-   composes the `apply` action correctly. This is the algebraic kernel
-   that justifies returning `M₂.mul M₁` from the recursion.
+   composes the `apply` action correctly.
 
 2. **Determinant invariant** (`hgcdMatrix_det_unit`): every matrix
-   returned by `hgcdMatrix` has det ±1. Proof by induction on fuel,
-   using `lehmerCofactors_det_unit` (BinaryGcdOQ03.lean) at the leaf
-   and `det_mul` for the recursive case.
+   returned by `hgcdMatrix` has det ±1.
 
 3. **GCD preservation** (`hgcdMatrix_preserves_gcd`): applying the
-   HGCD matrix to (a, b) yields a pair with the same GCD. Immediate
-   corollary of `cofactor_apply_gcd` (BinaryGcdOQ03.lean) given the
-   determinant invariant.
+   HGCD matrix to (a, b) yields a pair with the same GCD.
 
 4. **Matrix-vector invariant for Lehmer cofactors**
    (`lehmerInnerStep_invariant`, `lehmerCofactors_invariant`,
    `lehmerCofactors_id_apply_eq`): the row-vector relation
    `(a₀, b₀) · M = (current pair)` is preserved by `lehmerInnerStep`
-   and hence by `lehmerCofactors`. This is Step 1 of the size-reduction
-   proof plan, working in the row convention dictated by the right-
-   multiplication update rule of `lehmerInnerStep` (PART V.5 docstring).
+   and hence by `lehmerCofactors`. Step 1 of the size-reduction proof.
 
 5. **Residue monotonicity** (`lehmerInnerStep_residue_le`,
    `lehmerInnerStep_max_le`, `lehmerCofactors_invariant_le`,
-   `lehmerCofactors_id_apply_le`): each Lehmer inner step satisfies
-   `bhat' < bhat ∧ ahat' = bhat`, so `max ahat' bhat' ≤ max ahat bhat`;
-   this composes through `lehmerCofactors`. Combined with (4), this
-   gives the residue-side bound for the size-reduction argument.
-   Step 2a of the proof plan.
+   `lehmerCofactors_id_apply_le`): each step has `bhat' < bhat` and
+   `max ahat' bhat' ≤ max ahat bhat`. Step 2a.
 
-**Architectural significance:** This file establishes that the
-*operational correctness* of Schönhage's recursive HGCD reduces to
-the matrix-determinant invariant already proved for Lehmer's
-algorithm. The recursion structure adds no new GCD-preservation
-obligation — it only redistributes work across recursion levels for
-asymptotic complexity gain. The new PART V.5 lays the row-convention
-foundation that `hgcdMatrix_size_reduction` (currently a `True`
-placeholder) requires; what remains is the Cramer-inversion entry
-bound on the cofactor matrix (Step 2b) and a perturbation argument
-for the truncated top-half input (Step 3).
+6. **Cramer identity** (`row_vec_cramer`): from `(a₀, b₀)·M = (ahat, bhat)`
+   and the determinant, derives `a₀·det = ahat·M.δ - bhat·M.γ` and
+   `b₀·det = bhat·M.α - ahat·M.β`. Proved by `linear_combination`.
+
+7. **Sign pattern** (`EvenPattern`, `OddPattern`,
+   `lehmerInnerStep_even_to_odd`, `lehmerInnerStep_odd_to_even`,
+   `lehmerCofactors_has_pattern_from`, `lehmerCofactors_has_pattern`):
+   each `lehmerInnerStep` flips the sign pattern of the matrix entries
+   (EvenPattern ↔ OddPattern). `lehmerCofactors` starting from id
+   always has EvenPattern or OddPattern. Step 2b foundation.
+
+8. **Entry bounds** (`entry_bound_of_even`, `entry_bound_of_odd`):
+   under the row-vector invariant with positive residues (ahat', bhat' ≥ 1)
+   and EvenPattern (resp. OddPattern), all matrix entries are bounded
+   in absolute value by the initial inputs a₀ and b₀. Proved using
+   Cramer + sign pattern. This is Step 2b.
+
+**Remaining for size reduction:**
+- Step 3: perturbation bound between full-precision (a, b) and
+  top-half-truncated (aHi·2^s, bHi·2^s) after applying M.
+- Step 4: compose 2a + 2b + 3 to close `hgcdMatrix_size_reduction`
+  with explicit bitsize constants.
 
 **Out of scope (deferred):**
-
-- Bit-complexity bound O(M(n)·log n) (`hgcdMatrix_size_reduction`):
-  requires Mathlib infrastructure (fast multiplication, bit-complexity
-  model) that does not yet exist. The size-reduction lemma is stated
-  as a placeholder; filling it requires a separate Mathlib-contribution
-  initiative. See knowledge.md for the breakdown.
+- Bit-complexity bound O(M(n)·log n): requires Mathlib infrastructure
+  (fast multiplication, bit-complexity model) that does not yet exist.
 -/
 
 end HGcd
