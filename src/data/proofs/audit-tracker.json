@@ -4020,10 +4020,12 @@
       "result": "clean"
     },
     "erdos-1130": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "phantom axiom narrative: sections sqrt-bound and de-boor-pinkus claim Axiomatizes when only logarithmic_bound is declared; section line drift on main-result (claims 87-95, actually 126-154); proofStrategy overclaims \"All deep results are axiomatized\" (only 1 of 3). Issue #14763."
+      ],
+      "lastAudited": "2026-05-02T00:00:00Z",
+      "result": "issues-found"
     },
     "erdos-1131": {
       "auditCount": 2,
