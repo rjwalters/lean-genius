@@ -46,10 +46,10 @@
       }
     ],
     "originalContributions": [
-      "Formal definition of irrationality sequences in Lean 4",
-      "Statement of Kovač-Tao negative criterion",
-      "Statement of Kovač-Tao positive criterion",
-      "Growth rate analysis for 2ⁿ, 2^(2ⁿ), and n!"
+      "Formal definition of irrationality sequences in Lean 4 (IsIrrationalitySequence)",
+      "Axiom `powers_of_two_not_irrationality_seq`: 2ⁿ is not an irrationality sequence (Kovač-Tao negative criterion)",
+      "Theorem `erdos_264_part_i`: 2ⁿ is not an irrationality sequence (re-export of axiom)",
+      "Growth-rate example computations for 2ⁿ, 2^(2ⁿ), and n!"
     ],
     "axiomCount": 1,
     "lineCount": 137,
@@ -59,7 +59,7 @@
     "historicalContext": "This problem explores the concept of 'irrationality sequences' — sequences so robust that perturbing them by any bounded amount still yields irrational sums. Erdős and Graham introduced this concept in 1980.\n\nErdős asked specifically about 2ⁿ and n!, and initially speculated that polynomial-growth sequences might work. He later retracted this, noting irrationality sequences must grow at least exponentially.\n\nIn 2024, Vjekoslav Kovač and Terence Tao made breakthrough progress, proving 2ⁿ is NOT an irrationality sequence and establishing precise criteria for when sequences can or cannot be irrationality sequences. Their paper unified many related Erdős problems about irrationality.",
     "problemStatement": "**Definition**: A sequence $a_n$ is an **irrationality sequence** if for every bounded integer sequence $b_n$ (with $a_n + b_n \\neq 0$ and $b_n \\neq 0$), the sum\n$$\\sum_{n=1}^{\\infty} \\frac{1}{a_n + b_n}$$\nis irrational.\n\n**Questions**:\n1. Is $a_n = 2^n$ an irrationality sequence? **NO** (Kovač-Tao 2024)\n2. Is $a_n = n!$ an irrationality sequence? **OPEN**\n\n**Known Example**: $a_n = 2^{2^n}$ IS an irrationality sequence.",
     "text": "A sequence aₙ is an 'irrationality sequence' if ∑1/(aₙ+bₙ) is irrational for all bounded bₙ. Is 2ⁿ or n! such a sequence? Kovač-Tao (2024) showed 2ⁿ is not; n! remains open.",
-    "proofStrategy": "We formalize:\n\n1. **The definition**: IsIrrationalitySequence captures the universal quantification over bounded perturbations\n\n2. **Kovač-Tao negative criterion**: If aₙ is strictly increasing with convergent ∑1/aₙ and positive liminf condition, then NOT an irrationality sequence. This shows 2ⁿ fails.\n\n3. **Kovač-Tao positive criterion**: For any F with F(n+1)/F(n) → ∞, irrationality sequences exist at that growth rate.\n\n4. **Known example**: 2^(2ⁿ) is an irrationality sequence.\n\nThe criteria are stated as axioms since their proofs require sophisticated analysis.",
+    "proofStrategy": "We formalize:\n\n1. **The definition**: IsIrrationalitySequence captures the universal quantification over bounded perturbations\n\n2. **Axiomatized result**: `powers_of_two_not_irrationality_seq` states that 2ⁿ is not an irrationality sequence (Kovač-Tao negative criterion). `erdos_264_part_i` re-exports this as a theorem.\n\n3. **Background (docstring only, not formalized)**: The Kovač-Tao negative criterion (if aₙ is strictly increasing with convergent ∑1/aₙ and positive liminf condition, then NOT an irrationality sequence) and positive criterion (for any F with F(n+1)/F(n) → ∞, irrationality sequences exist at that growth rate) are described in docstring comments at lines 85–101 but not declared as Lean axioms or theorems.\n\n4. **Background (docstring only)**: 2^(2ⁿ) is an irrationality sequence — noted in a docstring at lines 77–88 but not formalized.",
     "keyInsights": [
       "**Robustness condition**: An irrationality sequence must stay irrational under ALL bounded perturbations. This is much stronger than just being irrational for the original sequence.",
       "**Growth rate boundary**: The Kovač-Tao criteria show the boundary is superexponential. Bounded ratio (like 2ⁿ) ⟹ fails. Ratio → ∞ (like 2^(2ⁿ)) ⟹ can succeed.",
@@ -99,14 +99,14 @@
       "title": "Known Positive Example",
       "startLine": 77,
       "endLine": 88,
-      "summary": "The sequence 2^(2ⁿ) is an irrationality sequence."
+      "summary": "Docstring describing the known result that 2^(2ⁿ) is an irrationality sequence (not formalized here)."
     },
     {
       "id": "criteria",
       "title": "Kovač-Tao Criteria",
       "startLine": 89,
       "endLine": 118,
-      "summary": "The negative and positive criteria for when sequences are/aren't irrationality sequences."
+      "summary": "Docstring discussion of the Kovač-Tao negative and positive criteria for irrationality sequences (not formalized here)."
     },
     {
       "id": "examples",
