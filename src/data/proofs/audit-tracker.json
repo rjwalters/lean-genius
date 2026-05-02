@@ -4842,10 +4842,13 @@
       "result": "issues-found"
     },
     "erdos-168": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-agent",
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T09:00:00Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom 0.5564 axiom claim in originalContributions; better_construction missing from proofStrategy (issue #14675)"
+      ]
     },
     "erdos-169": {
       "auditCount": 2,
