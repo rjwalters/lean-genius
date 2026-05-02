@@ -110,47 +110,47 @@
       "title": "Historical Results",
       "summary": "Defines powersOfTwo = {2^k}. Axiomatizes Erdős's 1950 result for powers of two. Axiomatizes that powers of two have logarithmic density. Axiomatizes the arithmetic progression representation bound.",
       "startLine": 82,
-      "endLine": 113,
+      "endLine": 104,
       "mathContext": "Erdős (1950): proved for $A = \\{2^k\\}$ (powers of two). Uses sieve methods: PNT gives $\\sim n/\\log n$ primes $\\leq n$."
     },
     {
       "id": "chen-ding",
       "title": "Chen and Ding's Theorem",
       "summary": "Axiomatizes chen_ding_2022: every infinite set has unbounded representation count. Derives erdos_conjecture_true by showing log-density implies infinitude (with one sorry for the Set.Infinite deduction from bounded intersection cardinality).",
-      "startLine": 114,
-      "endLine": 142,
+      "startLine": 105,
+      "endLine": 158,
       "mathContext": "Chen-Ding (2022): resolved the conjecture. Every infinite $A \\subseteq \\mathbb{N}$ has $\\limsup f_A(n) = \\infty$."
     },
     {
       "id": "proof-strategy",
       "title": "Understanding the Proof Strategy",
       "summary": "Comment sections explaining why infinite sets suffice: the PNT guarantees enough primes, the density-vs-cardinality gap between Erdős's hypothesis and Chen-Ding's, and the key role of the Prime Number Theorem.",
-      "startLine": 143,
-      "endLine": 168,
+      "startLine": 159,
+      "endLine": 181,
       "mathContext": "PNT gives $\\pi(n) \\sim n/\\log n$ primes $\\leq n$. For each $n$, $f_A(n) = |\\{p \\leq n : n - p \\in A\\}|$."
     },
     {
       "id": "examples",
       "title": "Examples and Special Cases",
       "summary": "Defines squares = {k² : k ≥ 1} and primePowers = {p^k : p prime, k ≥ 1} as concrete infinite sets. Axiomatizes their unbounded representation counts as corollaries of Chen-Ding.",
-      "startLine": 169,
-      "endLine": 197,
+      "startLine": 182,
+      "endLine": 203,
       "mathContext": "Examples: $A = \\{k^2\\}$ (squares), $A = \\{p^k\\}$ (prime powers). Both infinite, so Chen-Ding applies."
     },
     {
       "id": "goldbach",
       "title": "Relation to Goldbach-type Problems",
       "summary": "Comment sections connecting n = p + a to the Goldbach conjecture (A = primes), the Waring-Goldbach problem (A = kth powers), and the general landscape of binary additive problems in number theory.",
-      "startLine": 198,
-      "endLine": 216,
+      "startLine": 204,
+      "endLine": 220,
       "mathContext": "Connection to Goldbach: $A = \\mathbb{P}$ gives $f_A(n) = $ number of Goldbach representations. Goldbach is the $A = \\text{primes}$ special case."
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "Defines erdos_237 as an alias for erdos_conjecture_true. The summary theorem erdos_237_summary combines both ErdosConjecture and StrongerVersion in a single conjunction.",
-      "startLine": 217,
-      "endLine": 244,
+      "startLine": 221,
+      "endLine": 254,
       "mathContext": "Summary: Problem #237 is RESOLVED (Chen-Ding 2022). Every infinite set $A$ has unbounded prime-plus-$A$ representation function."
     }
   ],
