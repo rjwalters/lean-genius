@@ -210,3 +210,133 @@ law. But it removes one of the genuine open questions in the candidate
 pool (binary-gcd-oq-03-oq-02 was MODERATE knowledge tier, phase ORIENT)
 by reducing it to a focused size-reduction subproblem and a separable
 complexity initiative. The phase advances ORIENT → ACT.
+
+## Session 2026-05-02 (Session 3) — Matrix-vector invariant + residue monotonicity
+
+**Mode**: REVISIT (continuing from Session 2)
+**Outcome**: progress — added Steps 1 + 2a of the size-reduction
+proof plan to `BinaryGcdOQ03OQ02.lean`. Still 1 placeholder
+`hgcdMatrix_size_reduction` (`True`); now backed by row-convention
+infrastructure that the eventual proof will consume.
+
+### What I Did
+
+1. Identified that the size-reduction lemma cannot be expressed
+   (faithfully) using `CofactorMatrix.apply` (the column-vector
+   action `M·(a,b)ᵀ`). Concrete reason: `lehmerInnerStep` updates
+   the cofactor accumulator via `M' = M.mul ⟨0, 1, 1, -q⟩`
+   (right-multiplication by the Euclidean step matrix). Under
+   right-multiplication, the invariant that tracks the algorithm's
+   actual state is the *row*-vector relation
+   `(a₀, b₀) · M = (current pair)`, i.e.
+   `a₀·M.α + b₀·M.γ = ahat ∧ a₀·M.β + b₀·M.δ = bhat`.
+   The column action `M.apply a₀ b₀ = (M.α·a₀ + M.β·b₀, ...)` does
+   not satisfy this invariant in general (it tracks a different
+   intermediate state).
+2. Added a new section PART V.5 to `BinaryGcdOQ03OQ02.lean`
+   with the row-convention infrastructure (8 theorems, ~140 lines):
+   - `lehmerInnerStep_invariant`: the row-vector relation persists
+     across one inner step. Proof: unfold the `lehmerInnerStep`
+     definition, eliminate the `if`s, then `linarith` using
+     `Nat.div_add_mod`.
+   - `lehmerCofactors_invariant`: existential multi-step version,
+     by induction on `fuel` with the per-step lemma.
+   - `lehmerCofactors_id_apply_eq`: specialisation to `M = id` and
+     ghost pair = input pair.
+   - `lehmerInnerStep_residue_le`: per-step bound. A successful
+     `lehmerInnerStep` returns `(ahat', bhat')` with `bhat' < bhat`
+     and `ahat' = bhat`. Proof: `omega` after splitting the `if`s.
+   - `lehmerInnerStep_max_le`: corollary, `max ahat' bhat' ≤
+     max ahat bhat`.
+   - `lehmerCofactors_invariant_le`: strengthened multi-step
+     invariant carrying the residue bound through the induction
+     via transitivity.
+   - `lehmerCofactors_id_apply_le`: specialisation to `M = id`.
+3. Updated the file docstring + Summary to reflect the new section
+   and the convention finding.
+4. Build pending (Docker), see "Build status" below.
+
+### Key Findings
+
+- **Convention dichotomy is a real obstruction.** The `apply`
+  action used by `cofactor_apply_gcd` and `hgcdMatrix_preserves_gcd`
+  is the column-vector convention. For size reduction, we need the
+  row-vector convention. They are not interchangeable: the row
+  convention tracks `(a₀, b₀) · M = (current pair)` (preserved by
+  right-multiplication, which is exactly what `lehmerInnerStep`
+  does); the column convention tracks a different, less useful
+  invariant. The two conventions agree on det-based theorems
+  (because det doesn't care which side acts) but disagree on
+  state-tracking.
+- **Residue monotonicity is self-contained.** The bound
+  `max ahat' bhat' ≤ max ahat bhat` follows directly from
+  `Nat.mod_lt`, with no need for the matrix-vector invariant. It
+  composes cleanly through `lehmerCofactors` by transitivity.
+- **The remaining work is a clean entry-bound problem.** Given
+  the row-vector invariant `(a₀, b₀) · M = (ahat', bhat')` and
+  `det M = ±1`, Cramer's rule gives the cofactor entries as
+  `M.α = ±(δ₀ · ahat' - β₀ · bhat')` etc. — but here `δ₀` and
+  `β₀` are themselves matrix entries. The actual entry bound
+  comes from inverting the relation: from `(a₀, b₀) · M = (ahat',
+  bhat')` and unimodularity of M, `(a₀, b₀) = (ahat', bhat') ·
+  M⁻¹`, which bounds M⁻¹'s entries by the original `(a₀, b₀)`
+  divided by the new `(ahat', bhat')`. Composed with residue
+  monotonicity (`max ahat' bhat' ≤ max ahat bhat`), this gives
+  the multiplicative entry bound for M⁻¹, hence for M (whose
+  entries are bounded by `det · entries(M⁻¹) = entries(M⁻¹)`).
+  This is Step 2b — the next-session focus.
+
+### Files Modified
+
+- `proofs/Proofs/BinaryGcdOQ03OQ02.lean` — +207 lines:
+  PART V.5 (8 theorems for matrix-vector invariant + residue
+  monotonicity), updated file docstring, updated Summary.
+  No new sorries, no new axioms.
+- `research/problems/binary-gcd-oq-03-oq-02/knowledge.md` — this
+  Session 3 entry.
+- `research/problems/binary-gcd-oq-03-oq-02/state.md` — synced.
+- `src/data/research/problems/binary-gcd-oq-03-oq-02.json` — phase
+  remains ACT, knowledge updated.
+
+### Build Status
+
+Docker build in progress at session-end (Mathlib + new lemmas).
+Each individual proof was checked tactic-by-tactic against the
+identical proof from a prior commit (38b9ccfc10d, where Session 4
+of an earlier branch had the same lemmas compiling); the only
+adaptations made are namespace (the new file is in `HGcd`, the
+prior file was in `LehmerGcd`) and references to existing
+infrastructure remain identical.
+
+### Next Steps
+
+1. **Step 2b (next session)**: Cramer-inversion entry bound.
+   From `(a₀, b₀) · M = (ahat', bhat')` and `det M = ±1`,
+   invert to `(a₀, b₀) = (ahat', bhat') · M⁻¹`, where
+   `M⁻¹.α = δ`, `M⁻¹.β = -β`, `M⁻¹.γ = -γ`, `M⁻¹.δ = α` (up to
+   sign of det). Bound each entry of `M⁻¹` by the input pair
+   divided by the residue pair; combine with `lehmerCofactors_id_apply_le`
+   (residue monotonicity) for the final entry bound.
+2. **Step 3**: perturbation argument bounding the difference
+   between `(a, b) · M` and the truncated top-half input
+   `(aHi · 2^shift, bHi · 2^shift) · M`.
+3. **Step 4**: closing `hgcdMatrix_size_reduction` by composing
+   the entry bound (Step 2b) with the residue bound (Step 2a) and
+   the perturbation bound (Step 3).
+
+### Honest Assessment
+
+This session is **incremental but on the critical path**. The two
+new lemma families (matrix-vector invariant + residue monotonicity)
+are exactly Steps 1 and 2a of the canonical Stehlé–Zimmermann (2004)
+size-reduction proof. Neither lemma is mathematically deep — both
+follow from existing Mathlib by routine induction — but their
+*statement* required identifying the convention obstruction, which
+was non-obvious from the merged correctness layer (where everything
+is column-convention and `True` placeholder hides the issue).
+
+The phase remains ACT because `hgcdMatrix_size_reduction` is still
+a placeholder. Sessions 4-5 of the prior `research/binary-gcd-hgcd-skeleton-2026-05-01`
+branch (PR #14097, conflicting/draft) had the same lemmas in a
+divergent file structure; this session cleanly ports them onto the
+merged file.
