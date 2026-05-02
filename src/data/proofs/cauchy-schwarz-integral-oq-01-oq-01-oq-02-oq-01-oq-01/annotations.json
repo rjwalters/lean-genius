@@ -1,1 +1,158 @@
-[]
+[
+  {
+    "id": "ann-architecture",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 65
+    },
+    "type": "context",
+    "title": "Proof Architecture: Finite → Sigma-Finite via Localization",
+    "content": "The file header (lines 1–55) lays out the three-step localization strategy for lifting a finite-measure result to the sigma-finite setting. This is a standard technique in abstract measure theory, but its Lean formalization exposes specific infrastructure gaps worth understanding.\n\n**The core idea — spanning-set localization.** A sigma-finite measure $\\mu$ admits an exhaustion $S_0 \\subseteq S_1 \\subseteq \\cdots$ with $\\mu(S_n) < \\infty$ and $\\bigcup_n S_n = \\alpha$. Every $\\mu$-integrable fact about all of $\\alpha$ can be proved by:\n1. Proving the result for the restriction $\\mu|_{S_n}$ (which is finite)\n2. Taking limits as $n \\to \\infty$ using continuity-of-measure type arguments\n\nThe three steps (A: localization, B: Lp approximation, C: density extension) mirror the three classical ingredients for the sigma-finite Riesz representation.\n\n**Lean variable and namespace setup (lines 57–65).** The file uses `variable {α : Type*} [MeasurableSpace α] {μ : Measure α}` with no measure hypothesis — the `[SigmaFinite μ]` instance is threaded into each theorem individually. This is idiomatic Lean: use `variable` for the type and measurable structure, add hypotheses at the theorem level. The namespace `RieszSigmaFinite` scopes the lemmas to avoid collision with parent-file names. The `noncomputable section` is needed because Lp spaces involve `Classical.choice` in their construction.\n\n**Key Mathlib infrastructure used.** The file depends on three Mathlib components:\n- `spanningSets μ n : Set α` — the canonical sigma-finite exhaustion in Mathlib (`MeasureTheory.SigmaFinite`)\n- `tendsto_Lp_of_tendsto_ae` — Vitali's convergence theorem for Lp spaces\n- `Lp.induction` — the density argument for Lp spaces (valid under `[SigmaFinite μ]`)",
+    "mathContext": "Sigma-finite: $\\mu = \\sum_n \\mu|_{S_n}$ where each $\\mu(S_n) < \\infty$. The spanning sets satisfy $S_n \\nearrow \\alpha$ and `spanningSets_mono μ`.",
+    "significance": "context",
+    "relatedConcepts": [
+      "sigma-finite measure",
+      "spanning sets",
+      "Lp spaces",
+      "localization principle",
+      "measure restriction"
+    ],
+    "prerequisites": [
+      "Measure theory basics",
+      "Lp space construction",
+      "Lean 4 noncomputable sections"
+    ]
+  },
+  {
+    "id": "ann-mem-spanning-eventually",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 71,
+      "endLine": 78
+    },
+    "type": "technique",
+    "title": "mem_spanningSets_eventually: Exhaustion via iUnion_spanningSets",
+    "content": "This lemma proves that for sigma-finite $\\mu$, every point $a \\in \\alpha$ is eventually in $S_n$: for all large enough $n$, $a \\in S_n$. The proof is a textbook $\\epsilon/N$ argument in disguise:\n\n1. `iUnion_spanningSets μ : ⋃ n, spanningSets μ n = univ` — the exhaustion covers everything.\n2. Since $a \\in \\text{univ}$, we get $a \\in \\bigcup_n S_n$, so $\\exists N, a \\in S_N$.\n3. The sets are monotone (`spanningSets_mono μ hn hN`), so $a \\in S_n$ for all $n \\geq N$.\n4. `(eventually_ge_atTop N).mono` converts 'for all $n \\geq N$' to the filter `atTop` form.\n\n**Why `∀ᶠ n in atTop`?** Lean's filter-based eventuality `∀ᶠ n in atTop` is the correct formalization of 'for all sufficiently large $n$'. It composes cleanly with Mathlib's `Tendsto` framework and lets downstream lemmas use `filter_upwards` directly. The alternative `∃ N, ∀ n ≥ N, ...` would require a `simp [Filter.eventually_atTop]` rewrite at each use site.\n\n**Role in the larger proof.** This lemma is the pointwise foundation for both the $L^p$ approximation (Step B) and the localization argument (Step A): it guarantees that the indicator functions $\\mathbf{1}_{S_n}$ converge to $\\mathbf{1}_{\\alpha}$ pointwise, which is the input to the a.e. convergence argument in `pointwise_mul_indicator_tendsto`.",
+    "mathContext": "$\\forall a \\in \\alpha, \\forall^{\\infty} n, a \\in S_n$, i.e., $\\mathbf{1}_{S_n}(a) \\to 1$ pointwise. Uses monotonicity: $S_0 \\subseteq S_1 \\subseteq \\cdots$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "spanningSets_mono",
+      "iUnion_spanningSets",
+      "filter atTop",
+      "eventually_ge_atTop",
+      "sigma-finite exhaustion"
+    ],
+    "prerequisites": [
+      "Filter-based convergence in Mathlib",
+      "SigmaFinite typeclass",
+      "Monotone sequences of sets"
+    ]
+  },
+  {
+    "id": "ann-pointwise-tendsto",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 80,
+      "endLine": 88
+    },
+    "type": "insight",
+    "title": "pointwise_mul_indicator_tendsto: From Set Exhaustion to Function Convergence",
+    "content": "This lemma converts the set-exhaustion fact (`mem_spanningSets_eventually`) into a convergence statement about functions: $f(a) \\cdot \\mathbf{1}_{S_n}(a) \\to f(a)$ for every $a$.\n\n**Proof structure.** The proof has two clean steps:\n1. Show that $\\mathbf{1}_{S_n}(a) \\to 1$: use `tendsto_nhds_of_eventually_eq` with the eventual equality from `mem_spanningSets_eventually`.\n2. Multiply by $f(a)$ via `h1.const_mul (f a)`: Lean's `Tendsto.const_mul` gives $f(a) \\cdot \\mathbf{1}_{S_n}(a) \\to f(a) \\cdot 1 = f(a)$. The `simpa` closes the final algebraic simplification.\n\n**Why this is the right pointwise convergence.** The function $f \\cdot \\mathbf{1}_{S_n}$ is the natural 'truncation' of $f$ to the finite-measure piece $S_n$. Pointwise convergence is the weakest and most fundamental convergence — it's what enables a.e. convergence (which holds $\\mu$-a.e. trivially since convergence is everywhere, not just a.e.), which is in turn the input to Vitali's theorem.\n\n**Lean idiom — `tendsto_nhds_of_eventually_eq`.** This Mathlib lemma says: if $x_n = L$ eventually, then $x_n \\to L$. It's the filter-world version of 'a sequence that is eventually constant at $L$ converges to $L$'. For indicator functions, `indicator_of_mem hn _` gives the eventual equality $\\mathbf{1}_{S_n}(a) = 1$ once $a \\in S_n$.",
+    "mathContext": "$f(a) \\cdot \\mathbf{1}_{S_n}(a) \\xrightarrow{n \\to \\infty} f(a)$ for every $a \\in \\alpha$. Key: $\\mathbf{1}_{S_n}(a) = 1$ for all $n \\geq N(a)$, so the product converges.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "tendsto_nhds_of_eventually_eq",
+      "indicator_of_mem",
+      "Tendsto.const_mul",
+      "pointwise convergence",
+      "a.e. convergence"
+    ],
+    "prerequisites": [
+      "mem_spanningSets_eventually",
+      "Indicator functions in Mathlib",
+      "Tendsto and filter-based limits"
+    ]
+  },
+  {
+    "id": "ann-vitali-step-b",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 90,
+      "endLine": 120
+    },
+    "type": "insight",
+    "title": "Step B (HARD sorry): Vitali's Theorem and Lp Truncation Convergence",
+    "content": "This is the genuinely new analytic ingredient absent from the finite-measure proof. The claim is that the $L^p$ norm of the difference $f - f \\cdot \\mathbf{1}_{S_n}$ tends to 0.\n\n**Why this is non-trivial.** Pointwise convergence does NOT automatically give $L^p$ convergence — one needs to control the integral of the tail. The classical route is the *dominated convergence theorem*, which requires a dominator in $L^1$. For $L^p$ norm convergence, the right tool is **Vitali's convergence theorem**: a sequence in $L^p$ converges in $L^p$ norm iff it converges a.e. AND is uniformly integrable AND uniformly tight.\n\n**The three hypotheses for Vitali's theorem in Lean.**\n\n**(1) UnifIntegrable** (uniform integrability): $\\sup_n \\|\\Delta_n \\cdot \\mathbf{1}_{\\|\\Delta_n\\| \\geq C}\\|_p \\to 0$ as $C \\to \\infty$. Here $\\Delta_n = f - f \\cdot \\mathbf{1}_{S_n}$. Since $|\\Delta_n| \\leq 2|f|$ pointwise, the large-value set $\\{|\\Delta_n| \\geq C\\}$ is a subset of $\\{2|f| \\geq C\\}$, and the $L^p$ norm of $2f$ on that set tends to 0 by $f \\in L^p(\\mu)$ (the tail of an $L^p$ function is negligible). Mathlib's `unifIntegrable_of` captures this via a cutoff argument.\n\n**(2) UnifTight** (tightness): $\\sup_n \\|\\Delta_n \\cdot \\mathbf{1}_E\\|_p \\to 0$ as $\\mu(E) \\to 0$. Follows from `unifTight_const` applied to the dominator $2f \\in L^p$, plus `eLpNorm_mono` from $|\\Delta_n| \\leq 2|f|$. **Crucially, this does not use `IsFiniteMeasure`** — Mathlib's `unifTight_const` works for sigma-finite measures. This is the specific point where the finite-measure hypothesis is dropped.\n\n**(3) a.e. convergence**: $\\Delta_n(a) \\to 0$ for a.e. $a$. Follows directly from `pointwise_mul_indicator_tendsto` (proved above) — convergence holds *everywhere*, not just a.e.\n\n**Mathlib API note.** The sorry comments correctly identify that the right lemma is `tendsto_Lp_of_tendsto_ae` (Vitali's theorem), NOT `tendsto_Lp_of_dominated_convergence` (which doesn't exist). The blocked ~80 lines are purely API plumbing: unfolding the `Lp` subtype, constructing the `UnifIntegrable` and `UnifTight` witnesses, and applying the filter `filter_upwards`.",
+    "mathContext": "$\\|f - f \\cdot \\mathbf{1}_{S_n}\\|_p \\to 0$. Proof: `tendsto_Lp_of_tendsto_ae` (Vitali) with $|\\Delta_n| \\leq 2|f| \\in L^p$ supplying UnifIntegrable + UnifTight, and pointwise convergence supplying a.e. convergence.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Vitali's convergence theorem",
+      "unifIntegrable_of",
+      "unifTight_const",
+      "tendsto_Lp_of_tendsto_ae",
+      "dominated convergence theorem",
+      "eLpNorm_mono"
+    ],
+    "prerequisites": [
+      "Lp spaces and eLpNorm",
+      "Uniform integrability and tightness",
+      "pointwise_mul_indicator_tendsto",
+      "MemLp hypothesis"
+    ]
+  },
+  {
+    "id": "ann-localization-step-a",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 122,
+      "endLine": 155
+    },
+    "type": "concept",
+    "title": "Step A (HARD sorry): Localization Construction and Lp Restriction Map",
+    "content": "The localization step constructs the representing function $g \\in L^q(\\mu)$ from the sigma-finite data. The classical 7-step argument is spelled out in the sorry docstring:\n\n1. For each $n$: $\\mu|_{S_n}$ is finite, so the parent's `riesz_lp_surjective_from_rn` yields $g_n \\in L^q(\\mu|_{S_n})$ with $\\phi(f \\cdot \\mathbf{1}_{S_n}) = \\int f g_n \\,d(\\mu|_{S_n})$.\n2. **Consistency** ($g_{n+1} = g_n$ a.e. on $S_n$): follows from $L^q$ uniqueness — two $L^q$ functions that represent the same functional on $L^p(\\mu|_{S_n})$ agree a.e.\n3. **Gluing** $g = \\lim_n g_n \\cdot \\mathbf{1}_{S_n \\setminus S_{n-1}}$ gives a well-defined a.e. limit.\n4. **$g \\in L^q(\\mu)$**: by MCT, $\\int |g|^q \\,d\\mu = \\sup_n \\int |g_n|^q \\,d(\\mu|_{S_n}) \\leq \\|\\phi\\|^q$ by the norm bound from Riesz.\n\n**The Lean infrastructure gap.** The classical proof treats the Lp restriction map $L^p(\\mu) \\to L^p(\\mu|_S)$ and its adjoint as folklore. In Lean's Mathlib, this map requires a non-trivial isometric embedding construction. The sorry estimates ~150 lines for:\n- The isometric inclusion $\\iota_n: L^p(\\mu|_{S_n}) \\hookrightarrow L^p(\\mu)$ (extend by zero outside $S_n$)\n- The restriction map $\\rho_n: L^p(\\mu) \\to L^p(\\mu|_{S_n})$ (restrict to $S_n$)\n- The adjoint relationship $\\iota_n^* = \\rho_n$ (so $\\phi \\circ \\iota_n$ is the 'restricted functional')\n- The MCT argument for gluing (via `lintegral_iUnion_of_tendsto_sum`)\n\n**Connection to the theorem type.** The conclusion `∀ (E : Set α) (hE : MeasurableSet E) (hfin : μ E ≠ ⊤), φ(1_E^{Lp}) = ∫_E g dμ` is *indicator agreement* — $\\phi$ agrees with integration against $g$ on all indicator functions of finite-measure sets. This is the Radon-Nikodym flavor of the result: $\\phi(1_E) = \\nu(E)$ where $\\nu \\ll \\mu$ and $g = d\\nu/d\\mu$.",
+    "mathContext": "Constructs $g \\in L^q(\\mu)$ with $\\phi(\\mathbf{1}_E) = \\int_E g \\,d\\mu$ for all measurable $E$ with $\\mu(E) < \\infty$. Key: $g_n$ consistent on $S_n$, $\\|g_n\\|_q \\leq \\|\\phi\\|$, MCT gives $g \\in L^q(\\mu)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lp restriction map",
+      "Radon-Nikodym derivative",
+      "Lq uniqueness",
+      "monotone convergence theorem",
+      "spanningSets",
+      "measure restriction"
+    ],
+    "prerequisites": [
+      "Parent file riesz_lp_surjective_from_rn",
+      "IsFiniteMeasure for restrictions",
+      "MCT for sigma-finite measures",
+      "Lp norm bounds"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 161,
+      "endLine": 218
+    },
+    "type": "insight",
+    "title": "Main Theorem: Assembly via Density Extension (Step C)",
+    "content": "The main theorem `riesz_lp_surjective_sigma_finite` assembles the localization (Step A) and density extension (Step C) into the full Riesz representation for sigma-finite $\\mu$.\n\n**The statement.** For $1 < p < \\infty$ with $1/p + 1/q = 1$ and $\\mu$ sigma-finite, every bounded linear functional $\\phi: L^p(\\mu) \\to \\mathbb{R}$ is represented by integration against some $g \\in L^q(\\mu)$: $\\phi(f) = \\int f \\cdot g \\,d\\mu$ for all $f \\in L^p(\\mu)$.\n\n**Why density extension works.** The functional $\\psi = \\phi - (f \\mapsto \\int fg \\,d\\mu)$ is a bounded linear functional (difference of two CLMs) that vanishes on all indicator functions $\\mathbf{1}_E$ with $\\mu(E) < \\infty$ (by the indicator agreement from `localization_existence`). The simple functions with finite-measure support form a dense subspace of $L^p(\\mu)$ when $\\mu$ is sigma-finite (this is the point where sigma-finiteness enters — it guarantees every $L^p$ function can be approximated by such simple functions). By continuity, $\\psi \\equiv 0$, so $\\phi = (f \\mapsto \\int fg)$.\n\n**The Lean proof sketch.** The partial proof already applies `localization_existence` and introduces $g$. The sorry is for the density extension: `Lp.induction` over simple functions supported on finite-measure sets, combined with `integrationCLM` (the CLM $f \\mapsto \\int fg \\,d\\mu$). The parent file's `integral_representation` proof accomplishes exactly this, and the key observation is that neither `Lp.induction` nor `integrationCLM` uses `[IsFiniteMeasure μ]` — they only need `[SigmaFinite μ]` and `[Fact (1 ≤ p)]`.\n\n**The theorem removes `IsFiniteMeasure` from the parent.** This is the capstone of the sigma-finite generalization: Folland's Theorem 6.15 and Rudin's Theorem 6.16 both state the result for all sigma-finite measures. The parent file's result holds only for finite measures. This file completes the classical scope.\n\n**Why `[Fact (1 ≤ p)]`?** Mathlib's `Lp` spaces require `1 ≤ p` as a `Fact` instance (not just a hypothesis) for technical reasons related to metric-space structures on `Lp`. The `[Fact (1 ≤ p)]` combined with `hp1 : 1 < p` means both the instance and the strict inequality are available.",
+    "mathContext": "$\\forall \\phi \\in (L^p(\\mu))^*, \\exists g \\in L^q(\\mu): \\phi(f) = \\int f \\cdot g \\,d\\mu$. Proof: indicator agreement (Step A) + density of simple functions in $L^p$ for sigma-finite $\\mu$ (Step C). This is $L^p(\\mu)^* \\cong L^q(\\mu)$ (isometric isomorphism) for sigma-finite $\\mu$, $1 < p < \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Riesz representation theorem",
+      "Lp duality",
+      "density extension",
+      "Lp.induction",
+      "integrationCLM",
+      "sigma-finite Lp density"
+    ],
+    "prerequisites": [
+      "localization_existence (Step A)",
+      "lp_truncation_tendsto_zero (Step B)",
+      "Bounded linear maps in Lean",
+      "Lp.induction in Mathlib"
+    ]
+  }
+]
