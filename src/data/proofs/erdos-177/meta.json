@@ -122,22 +122,29 @@
       "endLine": 56
     },
     {
+      "id": "basic-properties",
+      "title": "Basic Properties of apSum and Colorings",
+      "summary": "Nine proved theorems: apSum_zero, apSum_one, apSum_succ, valid_abs_eq_one, valid_sq_eq_one, apSum_abs_le, alternating (def), alternating_valid, alternating_apSum_d1_even",
+      "startLine": 58,
+      "endLine": 126
+    },
+    {
       "id": "bounds",
-      "title": "Known Bounds (Axiomatized)",
-      "summary": "Axiomatizes Roth's lower bound $h(d) \\geq c\\sqrt{d}$, Beck's upper bound $h(d) \\leq Cd^{8+\\varepsilon}$, and the factorial bound $h(d) \\leq d!$",
-      "startLine": 57,
-      "endLine": 84
+      "title": "Known Bounds",
+      "summary": "Axiomatizes Roth's lower bound $h(d) \\geq c\\sqrt{d}$ (`roth_lower_bound`). Beck's polynomial upper bound and the factorial bound appear as docstring descriptions only — no corresponding axioms are declared in the file.",
+      "startLine": 127,
+      "endLine": 147
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: erdos_177",
       "summary": "States $\\exists c > 0,\\; \\forall d \\geq 1,\\; h(d) \\geq c\\sqrt{d}$, proved via the `roth_lower_bound` axiom",
-      "startLine": 85,
-      "endLine": 163
+      "startLine": 148,
+      "endLine": 162
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #177 asks for the optimal growth rate of the discrepancy function $h(d)$ for arithmetic progressions. The formalization defines colorings $f : \\mathbb{N} \\to \\{-1,+1\\}$, the discrepancy $\\text{disc}(f,d)$ as the worst-case absolute partial sum over all APs with common difference $d$, and $h(d) = \\inf_f \\text{disc}(f,d)$. Three key bounds are axiomatized: Roth's lower bound $h(d) \\geq c\\sqrt{d}$ (1964), Beck's polynomial upper bound $h(d) \\leq Cd^{8+\\varepsilon}$ (2017), and the historical factorial bound $h(d) \\leq d!$ (1966). The main theorem states the Roth lower bound.",
+    "summary": "Erdős Problem #177 asks for the optimal growth rate of the discrepancy function $h(d)$ for arithmetic progressions. The formalization defines colorings $f : \\mathbb{N} \\to \\{-1,+1\\}$, the discrepancy $\\text{disc}(f,d)$ as the worst-case absolute partial sum over all APs with common difference $d$, and $h(d) = \\inf_f \\text{disc}(f,d)$. One bound is axiomatized: Roth's lower bound $h(d) \\geq c\\sqrt{d}$ (1964). Beck's polynomial upper bound $h(d) \\leq Cd^{8+\\varepsilon}$ (2017) and the historical factorial bound $h(d) \\leq d!$ (1966) appear as docstring descriptions only — no corresponding axioms are declared in the Lean file. The main theorem states the Roth lower bound.",
     "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Erdős Discrepancy Problem**: Tao (2015) proved that for any $f : \\mathbb{N} \\to \\{-1,+1\\}$, the partial sums $\\sum_{i=1}^{n} f(id)$ are unbounded — the homogeneous case of this problem\n**2. Harmonic Analysis**: Roth's proof pioneered Fourier-analytic methods in discrepancy theory, later refined by Matoušek and Spencer\n3. **Probabilistic Combinatorics**: Beck's upper bound uses the probabilistic method with derandomization, connecting to the Lovász Local Lemma framework\n4. **Van der Waerden Theory**: The finiteness of $h(d)$ and its growth rate are quantitative refinements of Van der Waerden's theorem on monochromatic arithmetic progressions.",
     "openQuestions": [
       "What is the correct polynomial exponent $\\alpha$ in $h(d) \\approx d^\\alpha$? Is $\\alpha = 1/2$?",
