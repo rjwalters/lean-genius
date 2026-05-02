@@ -37,8 +37,8 @@
       "Lean definitions of Circle, Line, and geometric predicates",
       "Formal statement of 'no separating line' condition",
       "ErdosConjecture1121 and Goodman-Goodman theorem axiom",
-      "Special cases: two circles, overlapping implies connected",
-      "Higher-dimensional Ball structure and generalization axiom"
+      "CirclesOverlap predicate definition",
+      "Higher-dimensional Ball structure (no generalization axiom declared)"
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 1,
@@ -106,17 +106,25 @@
       "id": "special-cases",
       "title": "Part V: Special Cases",
       "startLine": 165,
-      "endLine": 194,
-      "summary": "Two circles case and overlapping circles.",
-      "mathContext": "Two circles case and overlapping circles."
+      "endLine": 184,
+      "summary": "Defines `CirclesOverlap` predicate. Two-circle case and 'overlapping implies connected' are documented in source docstrings — no corresponding Lean theorem declarations exist.",
+      "mathContext": "`CirclesOverlap` definition. Docstring-only: two-circles case and overlapping-implies-no-separating-line (no Lean declarations)."
     },
     {
       "id": "higher-dim",
       "title": "Part VI: Higher Dimensional Generalization",
-      "startLine": 195,
-      "endLine": 218,
-      "summary": "Ball structure in ℝⁿ and generalization axiom.",
-      "mathContext": "Ball structure in ℝⁿ and generalization axiom."
+      "startLine": 185,
+      "endLine": 201,
+      "summary": "Defines `Ball` structure for higher-dimensional generalization. Generalization axiom is mentioned in a docstring — no Lean axiom declaration exists in this section.",
+      "mathContext": "`Ball` structure definition. Docstring-only: higher-dimensional generalization (no axiom declared)."
+    },
+    {
+      "id": "summary",
+      "title": "Part VII: Summary",
+      "startLine": 203,
+      "endLine": 217,
+      "summary": "`erdos_1121_summary` theorem: proved conjunction of the Goodman-Goodman theorem and related results.",
+      "mathContext": "`erdos_1121_summary` theorem combining the main axiom and definitions."
     }
   ],
   "conclusion": {
