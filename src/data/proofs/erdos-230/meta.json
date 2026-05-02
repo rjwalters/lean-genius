@@ -71,31 +71,31 @@
       "id": "korner",
       "title": "Körner's Construction (1980)",
       "summary": "Körner's stepping-stone result: unimodular polynomials with $c_1\\sqrt{n} \\leq |P(z)| \\leq c_2\\sqrt{n}$, achieving bounded oscillation ratio but not ultraflat behavior.",
-      "startLine": 157,
-      "endLine": 172,
+      "startLine": 158,
+      "endLine": 165,
       "mathContext": "Bound: Körner's stepping-stone result: unimodular polynomials with $c_1\\sqrt{n} \\leq |P(z)| \\leq c_2\\sqrt{n}$, achieving bounded oscillation ratio but not ultraflat behavior."
     },
     {
       "id": "bombieri-bourgain",
       "title": "Bombieri-Bourgain Improvement (2009)",
       "summary": "Quantitative ultraflat bound: $|P(z)| = \\sqrt{n} + O(n^{7/18} (\\log n)^{O(1)})$. Records the error exponent $7/18 \\approx 0.389$ as a rational constant.",
-      "startLine": 173,
-      "endLine": 195,
+      "startLine": 167,
+      "endLine": 181,
       "mathContext": "Quantitative ultraflat bound: $|P(z)| = \\sqrt{n} + $O(n^{7/18} (\\$\\log n$)$^{$O(1)$})$. Records the error exponent $7/18 \\approx 0.389$ as a rational constant."
     },
     {
       "id": "rudin-shapiro",
       "title": "Rudin-Shapiro Polynomials",
       "summary": "Deterministic $\\pm 1$ polynomials with $\\|P\\|_\\infty \\leq 2\\sqrt{n}$. Controls the sup norm but not the minimum — not ultraflat. Connected to the Littlewood variant (Problem #228).",
-      "startLine": 196,
-      "endLine": 208,
+      "startLine": 183,
+      "endLine": 190,
       "mathContext": "Mathematical content: Deterministic $\\pm 1$ polynomials with $\\|P\\|_\\infty \\leq 2\\sqrt{n}$. Controls the sup norm but not the minimum — not ultraflat. Connected to the Littlewood variant (Problem #228)."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "Concluding theorem: $\\neg\\texttt{ErdosNewmanConjecture} \\wedge (\\forall P, \\|P\\|_\\infty \\geq \\sqrt{n})$. Together these establish $\\inf_{P \\in \\mathcal{U}_n} \\|P\\|_\\infty / \\sqrt{n} \\to 1$.",
-      "startLine": 209,
+      "startLine": 192,
       "endLine": 230,
       "mathContext": "Verified: Concluding theorem: $\\neg\\texttt{ErdosNewmanConjecture} \\wedge (\\forall P, \\|P\\|_\\infty \\geq \\sqrt{n})$. Together these establish $\\inf_{P \\in \\mathcal{U}_n} \\|P\\|_\\infty / \\sqrt{n} \\to 1$."
     }
