@@ -5713,9 +5713,12 @@
     },
     "erdos-290": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T02:52:57Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom axiom narrative + section drift: proofStrategy claims '6 axioms, 2 sorries' (actual 2/0); 5 section summaries claim axioms that are only block comments (van_doorn_lower_bound, van_doorn_explicit, van_doorn_infinitely_many_small, denom_divides_lcm, oeis_values, ratio_bounds); originalContributions overstates van_doorn axioms; section line ranges off by ~1-2 (#14518)"
+      ]
     },
     "erdos-291": {
       "agentId": "auditor-cycle-20-batch",
