@@ -171,27 +171,24 @@ theorem sturmSeq_head (p : ℝ[X]) : (sturmSeq p).head? = some p :=
 theorem sturmSeq_length_ge_two (p : ℝ[X]) (hp : p ≠ 0) (hd : 0 < p.natDegree) :
     (sturmSeq p).length ≥ 2 := by
   unfold sturmSeq sturmSeqAux
+  -- In char 0, derivative p ≠ 0 when natDegree p ≥ 1
+  -- The key: natDegree (derivative p) = natDegree p - 1 (char 0), so deriv p ≠ 0 for natDeg ≥ 1
   have hdp : derivative p ≠ 0 := by
+    -- In char 0, leading coeff of derivative is natDegree * leadingCoeff ≠ 0
     intro h
-    rw [Polynomial.derivative_eq_zero] at h
-    omega
-  simp only [Nat.add_eq, Nat.add_zero]
-  -- natDegree + 1 ≥ 1, so we enter the succ branch
-  cases hp' : p.natDegree + 1 with
-  | zero => omega
-  | succ n =>
-    simp only [sturmSeqAux]
-    -- derivative p ≠ 0, so the if-branch is false
-    have : ¬(derivative p = 0) := hdp
-    simp only [this, ↓reduceIte, List.length_cons]
-    cases n with
-    | zero =>
-      -- p.natDegree = 0, contradicts hd
-      have : p.natDegree = 0 := by omega
-      exact absurd this (by omega)
-    | succ m =>
-      simp [sturmSeqAux]
-      omega
+    have hcoeff : (p.natDegree : ℝ) * p.leadingCoeff = 0 := by
+      have := congr_arg (Polynomial.coeff · (p.natDegree - 1)) h
+      simp only [Polynomial.coeff_zero, Polynomial.coeff_derivative] at this
+      have hk : p.natDegree - 1 + 1 = p.natDegree := by omega
+      rw [hk] at this
+      exact_mod_cast this
+    have hlc : p.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.mpr hp
+    have hnd : (p.natDegree : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    exact hnd (or_iff_not_imp_right.mp (mul_eq_zero.mp hcoeff) hlc)
+  obtain ⟨m, hm⟩ : ∃ m, p.natDegree + 1 = m + 1 := ⟨p.natDegree, rfl⟩
+  rw [hm]
+  simp only [sturmSeqAux, hdp, ↓reduceIte, List.length_cons]
+  exact Nat.succ_le_succ (sturmSeqAux_ne_empty _ _ _)
 
 -- ============================================================================
 -- § 4. The Sturm Sign-Variation Count
@@ -335,44 +332,44 @@ variable (c : ℝ)
 
 /-- The derivative of x - c is 1. -/
 theorem linear_deriv : derivative (X - C c) = (1 : ℝ[X]) := by
-  simp [derivative_sub, derivative_X, derivative_C]
+  simp [Polynomial.derivative_sub, Polynomial.derivative_X, Polynomial.derivative_C]
 
-/-- For the linear polynomial x - c, the Sturm sign count at x < c equals 1. -/
+/-- The Sturm sequence of x - c is [x - c, 1]:
+    p₁ = derivative(x - c) = 1, and (x - c) % 1 = 0 terminating the sequence. -/
+theorem sturmSeq_linear : sturmSeq (X - C c) = [X - C c, 1] := by
+  simp only [sturmSeq, sturmSeqAux, linear_deriv, Polynomial.natDegree_X_sub_C]
+  norm_num [sturmSeqAux]
+  -- (X - C c) % 1 = 0: any polynomial mod 1 is 0
+  have hmod : (X - C c) % (1 : ℝ[X]) = 0 :=
+    (EuclideanDomain.dvd_iff_mod_eq_zero.mp (one_dvd _))
+  simp [sturmSeqAux, hmod]
+
+/-- For the linear polynomial x - c, the Sturm sign count at x < c equals 1.
+    At x < c: evaluate [X-c, 1] to get [x-c, 1]; x-c < 0 and 1 > 0, so 1 sign change. -/
 theorem sturm_linear_left (x : ℝ) (hx : x < c) :
     sturmVariations (X - C c) x = 1 := by
-  simp only [sturmVariations, sturmSeq, sturmSeqAux]
-  simp only [linear_deriv]
-  -- derivative is 1, which is nonzero, so we enter the cons branch
-  norm_num
-  simp only [sturmSeqAux]
-  -- After one step: p % 1 = 0, so seq = [x - c, 1]
-  have : (X - C c) % (1 : ℝ[X]) = 0 := by simp [EuclideanDomain.mod_one]
-  simp only [this, neg_zero, sturmSeqAux, List.map, signVariations, eval_sub, eval_X, eval_C,
-             eval_one]
-  -- The list of values is [x - c, 1]
-  -- x - c < 0 (since x < c), and 1 > 0, so one sign change
+  simp only [sturmVariations, sturmSeq_linear, List.map, Polynomial.eval_sub, Polynomial.eval_X,
+             Polynomial.eval_C, Polynomial.eval_one]
   have hxc : x - c < 0 := by linarith
-  have : x - c ≠ 0 := ne_of_lt hxc
-  simp [signVariations, List.filter, this, hxc, countSignAlts]
-  constructor
-  · exact ne_of_lt hxc
-  · norm_num
+  have hne : x - c ≠ 0 := ne_of_lt hxc
+  -- The list [x-c, 1] filtered is [x-c, 1] (both nonzero), mapped to [-1, 1], 1 sign change
+  simp only [signVariations, List.filter, hne, ne_eq, not_false_eq_true, ↓reduceIte,
+             one_ne_zero, List.map]
+  simp only [show ¬(x - c > 0) from not_lt.mpr (le_of_lt hxc)]
+  simp [countSignAlts]
 
-/-- For the linear polynomial x - c, the Sturm sign count at x > c equals 0. -/
+/-- For the linear polynomial x - c, the Sturm sign count at x > c equals 0.
+    At x > c: evaluate [X-c, 1] to get [x-c, 1]; x-c > 0 and 1 > 0, so 0 sign changes. -/
 theorem sturm_linear_right (x : ℝ) (hx : x > c) :
     sturmVariations (X - C c) x = 0 := by
-  simp only [sturmVariations, sturmSeq, sturmSeqAux]
-  simp only [linear_deriv]
-  norm_num
-  simp only [sturmSeqAux]
-  have : (X - C c) % (1 : ℝ[X]) = 0 := by simp [EuclideanDomain.mod_one]
-  simp only [this, neg_zero, sturmSeqAux, List.map, eval_sub, eval_X, eval_C, eval_one]
-  -- x - c > 0 and 1 > 0: same sign, zero changes
+  simp only [sturmVariations, sturmSeq_linear, List.map, Polynomial.eval_sub, Polynomial.eval_X,
+             Polynomial.eval_C, Polynomial.eval_one]
   have hxc : x - c > 0 := by linarith
   have hne : x - c ≠ 0 := ne_of_gt hxc
-  simp [signVariations, List.filter, hne, countSignAlts]
-  intro h
-  exact absurd hxc (not_lt.mpr (le_of_lt h))
+  -- The list [x-c, 1] filtered is [x-c, 1] (both nonzero), mapped to [1, 1], 0 sign changes
+  simp only [signVariations, List.filter, hne, ne_eq, not_false_eq_true, ↓reduceIte,
+             one_ne_zero, List.map, hxc]
+  simp [countSignAlts]
 
 end LinearExample
 
@@ -389,32 +386,45 @@ theorem squarefree_no_common_roots (p : ℝ[X]) (hpsc : Squarefree p) (r : ℝ) 
     ¬(p.eval r = 0 ∧ (derivative p).eval r = 0) := by
   intro ⟨hp, hdp⟩
   -- If p(r) = 0 and p'(r) = 0, then (X - r)² | p
-  -- But Squarefree p means no such perfect square divides p
-  have : (X - C r) ^ 2 ∣ p := by
-    rw [← Polynomial.dvd_iff_isRoot] at hp
-    rw [← Polynomial.dvd_iff_isRoot] at hdp
-    -- (X - r) | p and (X - r) | p' and dvd_antisymm gives (X - r)² | p
-    exact Polynomial.sq_dvd_iff.mpr ⟨hp, hdp⟩
-  have hunit : IsUnit (X - C r) := by
-    apply hpsc
-    exact this
+  -- Write p = (X - r) * q (from the root). Differentiate: p' = q + (X - r) * q'.
+  -- At r: p'(r) = q(r), so q(r) = 0. Hence (X - r) | q, giving (X - r)² | p.
+  have hdvd : (X - C r) ∣ p := Polynomial.dvd_iff_isRoot.mpr hp
+  obtain ⟨q, hq⟩ := hdvd
+  have hqr : q.eval r = 0 := by
+    have hpd : (derivative p).eval r = 0 := hdp
+    rw [hq, Polynomial.derivative_mul] at hpd
+    simp [Polynomial.derivative_sub, Polynomial.derivative_X, Polynomial.derivative_C,
+          Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_sub,
+          Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_one] at hpd
+    linarith
+  have hsq : (X - C r) ^ 2 ∣ p := by
+    rw [hq, pow_two]
+    exact Dvd.dvd.mul_left (Polynomial.dvd_iff_isRoot.mpr hqr) _
+  have hunit : IsUnit (X - C r) := hpsc (X - C r) hsq
   rw [Polynomial.isUnit_iff] at hunit
   obtain ⟨u, _, hu⟩ := hunit
-  simp [Polynomial.ext_iff] at hu
-  -- X - C r is linear, cannot be a constant unit
-  have hdeg : (X - C r).natDegree = 1 := by
-    simp [Polynomial.natDegree_X_sub_C]
-  have := Polynomial.natDegree_C (u : ℝ)
-  rw [← hu] at this
+  have hdeg : (X - C r).natDegree = 1 := Polynomial.natDegree_X_sub_C r
+  have hcu : (C (u : ℝ)).natDegree = 0 := Polynomial.natDegree_C _
+  rw [← hu] at hcu
   omega
 
 /-- A squarefree polynomial p of degree ≥ 1 cannot satisfy p' = 0.
     (Since p' = 0 would mean p is a constant, contradicting degree ≥ 1.) -/
 theorem squarefree_deriv_ne_zero_of_pos_degree (p : ℝ[X]) (hpsc : Squarefree p)
     (hd : 0 < p.natDegree) : derivative p ≠ 0 := by
+  -- In char 0, leading coeff of derivative p is natDegree * leadingCoeff ≠ 0 for deg ≥ 1
   intro h
-  rw [Polynomial.derivative_eq_zero] at h
-  omega
+  have hne : p ≠ 0 := by
+    intro hp0; rw [hp0] at hd; simp at hd
+  have hcoeff : (p.natDegree : ℝ) * p.leadingCoeff = 0 := by
+    have := congr_arg (Polynomial.coeff · (p.natDegree - 1)) h
+    simp only [Polynomial.coeff_zero, Polynomial.coeff_derivative] at this
+    have hk : p.natDegree - 1 + 1 = p.natDegree := by omega
+    rw [hk] at this
+    exact_mod_cast this
+  have hlc : p.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.mpr hne
+  have hnd : (p.natDegree : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  exact hnd (or_iff_not_imp_right.mp (mul_eq_zero.mp hcoeff) hlc)
 
 -- ============================================================================
 -- § 10. Comparison with Budan's Theorem
