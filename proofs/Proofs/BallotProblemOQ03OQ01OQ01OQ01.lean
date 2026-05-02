@@ -575,13 +575,13 @@ private lemma jdt_weight_sum_b_one (n a : ℕ) (ha : 1 ≤ a) :
 /-- **Jeu de Taquin weight sum** (key step for two-row Jacobi-Trudi).
     The sum of pair-weights over NON-col-strict (a,b) pairs equals h_{a+1}*h_{b-1}.
 
-    Proof by constructing a weight-preserving bijection
-      φ : {non-col-strict (P: Sym n a, Q: Sym n b)} ≃ {all (P': Sym n (a+1), Q': Sym n (b-1))}
-    where c := min{j : P.sort[j] ≥ Q.sort[j]} (first column violation), and
-      P' := P.underlying + {Q.sort[c]}  (multiset-add, maintains sort since P[c-1] < Q.sort[c] ≤ P[c])
-      Q' := Q.underlying - {Q.sort[c]}  (multiset-erase)
-    Weight-preserved: wt(P)*wt(Q) = wt(P+{v})*wt(Q-{v}) by Multiset.prod_erase.
-    Surjective: every (P', Q') has a unique preimage (find the "seam" element in P'.sort). -/
+    b=1 case: proved via bijection ψ: {(P,Q)//¬ColStrict} ≃ Sym n (a+1)
+    (forward: q ::ₛ P where q is unique element of Q; inverse: erase minimum of S).
+
+    b≥2 case: approach via weight factorization (S18).
+    Key: wt(P)*wt(Q) = ((P.1+Q.1).map X).prod. Group LHS by total multiset M,
+    show #{non-cs (a,b) splits of M} = #{all (a+1,b-1) splits of M} via ballot bijection.
+    NOTE: the "first violation element" bijection is NON-INJECTIVE for b≥2 (S18 counterexample). -/
 private lemma jdt_weight_sum (n a b : ℕ) (hba : b ≤ a) :
     ∑ PQ : { PQ : Sym (Fin n) a × Sym (Fin n) b // ¬ColStrictSym a b PQ.1 PQ.2 },
       (PQ.1.1.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
@@ -597,23 +597,25 @@ private lemma jdt_weight_sum (n a b : ℕ) (hba : b ≤ a) :
       -- After subst, hba : 1 ≤ a, and the RHS is hsymm (a+1) * hsymm (1 - 1)
       -- which is hsymm (a+1) * hsymm 0 by rfl on Nat subtraction.
       exact jdt_weight_sum_b_one n a hba
-    · -- b ≥ 2: the general JDT seam bijection (still sorry)
+    · -- b ≥ 2: weight-factorization + counting argument (S18 discovery)
       rw [← sum_all_sym_pairs n (a + 1) (b - 1)]
-      -- Need: weight-preserving bijection
-      --   {non-col-strict (a,b) pairs} ≃ {all (a+1, b-1) pairs}
-      -- Forward map: find first violation c in ColStrictSym, let v = Q.sort[c],
-      --   then P' = Sym.cons v P, Q' = Sym.erase Q v (need v ∈ Q.1)
-      -- Inverse map: find the "seam" element in P'.sort to move back to Q'
-      -- Weight preserved by Multiset.prod_cons + Multiset.prod_erase
+      -- APPROACH (S18): The "first violation element" bijection is NON-INJECTIVE for b≥2.
+      -- Concrete counterexample (a=3, b=2):
+      --   Pair A: P={1,3,4}, Q={0,2,3} → violation c=0, move v=0 → P'={0,1,3,4}, Q'={2,3}
+      --   Pair B: P={0,1,4}, Q={2,3,3} → violation c=2, move v=3 → P'={0,1,3,4}, Q'={2,3}
+      -- Both map to the same (P',Q'). Do NOT use this approach.
       --
-      -- For b ≥ 2, the bijection generalizes: insert Q.sort[c] into P at position c,
-      -- where c is the first violation index. The inverse map is the JDT seam
-      -- algorithm (find c such that P'.sort[c] came from Q's c-th violation column).
-      -- This is genuinely intricate; ~150-200 lines of focused Lean work.
-      --
-      -- The b = 1 base case (above) demonstrates the construction with q = Q.sort[0]
-      -- and the inverse via head-of-sort. Generalizing requires tracking the
-      -- "seam index" c through the bijection invariants.
+      -- CORRECT APPROACH (weight factorization):
+      --   Key: wt(P)*wt(Q) = ((P.1+Q.1).map X).prod — weight depends only on the TOTAL multiset M.
+      --   Strategy:
+      --     1. Group LHS by M := P.1 + Q.1 : Sym (Fin n) (a+b)
+      --     2. For each M, count #{non-cs (a,b) splits of M} = C(a+b, a) - ... via ballot principle
+      --     3. Show this count equals #{all (a+1,b-1) splits of M} = C(a+b, a+1)
+      --     4. The ballot bijection: given non-cs split, move the minimum of Q to P.
+      --        This is INJECTIVE (unlike the violation-element bijection) because we always
+      --        move the same element (min of Q, not min of the violation column).
+      --   Infrastructure: Multiset.split_bySize or similar; Fintype.card_congr on fibers.
+      --   Estimated ~100-150 lines, no ring-valued bijections needed.
       sorry
   · -- b = 0: ColStrictSym a 0 P Q is vacuously true (quantifies over Fin (min a 0) = Fin 0)
     -- So ¬ColStrictSym = False, the subtype is empty, and the sum equals 0
