@@ -29,14 +29,17 @@
   5. `lehmerCofactors_invariant_le` — strengthens (4) with the
      residue-monotonicity bound `max ahat' bhat' ≤ max ahat bhat`.
 
-  Out of scope (deferred — see `hgcdMatrix_size_reduction`):
+  Toward size reduction (PARTS VIII–IX):
+  We also prove `hgcdShift_pos` (shift ≥ 1 for large inputs) and
+  `hgcdShift_top_lt` (top-half inputs strictly decrease), which
+  enable the strong induction for Step 4. The joint bound
+  `hgcdMatrix_joint_bound` is stated as a sorry; the missing piece
+  is a "quotient stability" lemma not yet formalized here.
+
+  Out of scope (deferred):
   The bit-complexity claim O(M(n)·log n) requires a Mathlib model of
   fast multiplication and bit operations that does not yet exist.
-  Filling that gap is a multi-thousand-line foundational project. The
-  size-reduction lemma needed for the complexity claim is stated as
-  `hgcdMatrix_size_reduction` below with a focused open question; the
-  remaining piece for closing it is a Cramer-inversion entry bound on
-  the cofactor matrix.
+  Filling that gap is a multi-thousand-line foundational project.
 
   References:
     - Schönhage (1971), "Schnelle Berechnung von Kettenbruchentwicklungen"
@@ -731,45 +734,129 @@ theorem cofactor_apply_err_bound_snd (M : CofactorMatrix) (ea eb : ℤ) (C B : �
     _ = 2 * C * B := by ring
 
 -- ═══════════════════════════════════════════════════════════════
--- PART VIII: SIZE REDUCTION (deferred — open mathematical content)
+-- PART VIII: SIZE REDUCTION PREREQUISITES (Step 4 foundations)
 -- ═══════════════════════════════════════════════════════════════
 
-/-- The HGCD size-reduction lemma: applying `hgcdMatrix` to `(a, b)`
-    yields a pair `(a', b')` whose magnitude is about half of `max a b`.
+/-! ### Shift bounds — prerequisite for strong induction
 
-    This is the only non-trivial mathematical claim that distinguishes
-    HGCD from Lehmer's algorithm. Once established (with the right
-    constants), iterating HGCD gives O(log n) reductions to size 1,
-    each costing one M(n) full-precision matrix-vector multiplication
-    — yielding the O(M(n)·log n) complexity bound.
+The size-reduction proof proceeds by strong induction on `max a b`.
+The key fact enabling the induction is that the top-half inputs
+`(a / 2^s, b / 2^s)` are **strictly smaller** than `(a, b)`, so the
+induction hypothesis applies.
 
-    Stating the lemma precisely requires choosing a `bitsize` measure
-    and the constant in front of `bitsize/2`. Standard formulations:
+These lemmas establish that `hgcdShift a b ≥ 1` (for large enough
+inputs) and hence the top-half truncation truly reduces the input
+magnitude. -/
 
-      ‖M·(a,b)‖∞ ≤ ‖(a,b)‖∞ / 2 + O(1)
+/-- The half-bit shift is at least 1 when `max a b ≥ 4`.
 
-    where ‖·‖∞ is the max of bit-lengths. The O(1) absorbs the
-    "rounding" introduced by truncation of the top half.
+    Proof: `hgcdShift a b = (Nat.log 2 (max a b) + 1) / 2`.
+    Since `max a b ≥ 4 = 2²`, we have `Nat.log 2 (max a b) ≥ 2`,
+    so `(2 + 1) / 2 = 1`. -/
+theorem hgcdShift_pos (a b : ℕ) (h : 4 ≤ max a b) : 1 ≤ hgcdShift a b := by
+  simp only [hgcdShift]
+  have hlog2 : 2 ≤ Nat.log 2 (max a b) := by
+    calc 2 = Nat.log 2 4 := by native_decide
+      _ ≤ Nat.log 2 (max a b) := Nat.log_mono_right h
+  omega
 
-    A complete proof requires:
-      (a) A clean Lean definition of `bitsize` (or use Nat.log 2 + 1).
-      (b) The "advance" lemma for one HGCD step: starting from
-          (a, b) with max bitsize n, after applying the recursively
-          computed M₁ to full precision, the new max bitsize is
-          ≤ n - n/2 + c for some explicit constant c independent of n.
-      (c) Composing two such steps for the recursive call structure.
+/-- The top-half inputs `(a / 2^s, b / 2^s)` are strictly less than
+    `max a b` when `hgcdThreshold ≤ max a b`.
 
-    Open question (this proof obligation):
-    Is there a Lean-friendly statement of this lemma that avoids
-    deep dependencies on bit-complexity infrastructure? Stehlé and
-    Zimmermann (2004) give a careful analysis with explicit constants
-    for the binary-recursive variant. -/
-theorem hgcdMatrix_size_reduction :
-    ∀ (a b : ℕ), 4 ≤ max a b → True := by
-  -- Placeholder statement: when filled in, this will assert
-  -- a precise size-reduction bound on `hgcdMatrixOf a b`.
-  -- See research/problems/binary-gcd-oq-03-oq-02/knowledge.md.
-  intros; trivial
+    This is the key induction-measure decrease: the recursive calls in
+    `hgcdMatrix` pass inputs strictly smaller than the current inputs,
+    enabling strong induction on `max a b`.
+
+    Proof: since `hgcdThreshold = 64 ≥ 4`, `hgcdShift ≥ 1`, so
+    `2^s ≥ 2`, and dividing by ≥ 2 strictly decreases a positive value. -/
+theorem hgcdShift_top_lt (a b : ℕ) (h : hgcdThreshold ≤ max a b) :
+    max (a / 2 ^ hgcdShift a b) (b / 2 ^ hgcdShift a b) < max a b := by
+  have h4 : 4 ≤ max a b := by simp only [hgcdThreshold] at h; omega
+  have hpos : 1 ≤ hgcdShift a b := hgcdShift_pos a b h4
+  have hmax_pos : 0 < max a b := by omega
+  have h1lt2s : 1 < 2 ^ hgcdShift a b :=
+    Nat.one_lt_pow (by omega) (by norm_num)
+  calc max (a / 2 ^ hgcdShift a b) (b / 2 ^ hgcdShift a b)
+      ≤ max a b / 2 ^ hgcdShift a b := by
+          apply max_le
+          · exact Nat.div_le_div_right (le_max_left _ _)
+          · exact Nat.div_le_div_right (le_max_right _ _)
+    _ < max a b := Nat.div_lt_self hmax_pos h1lt2s
+
+-- ═══════════════════════════════════════════════════════════════
+-- PART IX: SIZE REDUCTION CLAIM (joint bound — Step 4 proper)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### The joint size-reduction theorem
+
+The complete Step 4 proof proceeds by strong induction on `max a b`,
+using `hgcdShift_top_lt` to ensure the induction measure decreases at
+each recursive call.
+
+The proof requires one additional ingredient not yet in this file:
+
+**Quotient stability** (`hgcd_quotient_stable`, not yet proved):
+  The Euclidean quotients computed from the top-half approximations
+  `(a / 2^s, b / 2^s)` agree with the quotients from the full-precision
+  `(a, b)` for a sufficient number of steps.
+
+  Formally: for each step k of `lehmerCofactors`:
+    `(aHi_k / bHi_k) = (a_k / b_k)`
+  where `aHi_k, bHi_k` are the approximation residues and `a_k, b_k`
+  are the full-precision Euclidean residues.
+
+  This is proved in Stehlé-Zimmermann (2004) using the approximation
+  quality bound from `topBitsApprox_lt` in `BinaryGcdOQ03.lean`. The
+  formalization bridges the ROW-convention output (which `entry_bound`
+  bounds) to the COLUMN-convention output `M.apply(a, b)` (what we
+  actually want to bound for size reduction).
+
+**Proof sketch** (joint induction on `max a b`):
+  - Base (max a b < hgcdThreshold = 64):
+      M = lehmerCofactors 64 a b id.
+      Entry bound: entries ≤ max(a, b) < 64 from entry_bound_of_even/odd.
+      Output bound: M.apply(a, b) gives the Euclidean residues of (a, b),
+      which are bounded by max(a, b). (Requires quotient stability.)
+  - Recursive (hgcdThreshold ≤ max a b):
+      s = hgcdShift a b; M₁ = hgcdMatrix(a/2^s, b/2^s); M = M₂ · M₁.
+      By hgcdShift_top_lt: max(a/2^s, b/2^s) < max a b → IH applies.
+      IH on M₁ gives: entries(M₁) ≤ 2^(s₁+2) where s₁ = hgcdShift(a/2^s, b/2^s).
+      Full-precision apply via cofactor_apply_shift_decomp:
+        M₁.apply(a,b) = 2^s · M₁.apply(a/2^s, b/2^s) + M₁.apply(a%2^s, b%2^s).
+      Signal term: ≤ 2^s · 2^(s₁+2) ≈ 2^(3s/2 + 2) (IH output bound).
+      Error term: ≤ 2 · entries(M₁) · 2^s ≤ 2 · 2^(s₁+2) · 2^s ≈ 2^(3s/2+3).
+      Combined: max(|M₁.apply(a,b)|) ≤ 2^(3s/2 + 3).
+      IH on M₂ (applied to outputs of size ≤ 2^(3s/2+3)):
+        output M.apply(a,b) = M₂.apply(M₁.apply(a,b)) ≤ 2^s + (some additive term).
+
+  The constants above are schematic; Stehlé-Zimmermann give precise bounds
+  with C = O(1) for the binary-recursive variant.
+
+  **Classification**: HARD (requires new Lean infrastructure — quotient
+  stability proof + careful induction setup). Aristotle cannot help. -/
+
+/-- [Sorry] HGCD joint size-reduction bound.
+
+    For sufficient fuel, the column output and all matrix entries of
+    `hgcdMatrix fuel a b` are bounded by `2 ^ (hgcdShift a b + 3)`.
+
+    The `+ 3` constant is conservative (absorbs rounding and two levels
+    of recursion); a tighter analysis would give `+ 2` or `+ 1`.
+    See the proof sketch in the PART IX docstring above.
+
+    **Missing**: `hgcd_quotient_stable` — the quotient stability lemma
+    that connects the row-convention output (bounded by existing lemmas)
+    to the column-convention output `M.apply(a, b)`. -/
+theorem hgcdMatrix_joint_bound (fuel a b : ℕ) (hfuel : a + b ≤ fuel) :
+    let M := hgcdMatrix fuel a b
+    let s := hgcdShift a b
+    (M.apply (a : ℤ) (b : ℤ)).1.natAbs ≤ 2 ^ (s + 3) ∧
+    (M.apply (a : ℤ) (b : ℤ)).2.natAbs ≤ 2 ^ (s + 3) ∧
+    M.α.natAbs ≤ 2 ^ (s + 3) ∧
+    M.β.natAbs ≤ 2 ^ (s + 3) ∧
+    M.γ.natAbs ≤ 2 ^ (s + 3) ∧
+    M.δ.natAbs ≤ 2 ^ (s + 3) := by
+  sorry
 
 /-! ## Summary
 
@@ -823,11 +910,23 @@ theorem hgcdMatrix_size_reduction :
      the error component is at most `2·C·B`. This is the quantitative error
      bound combining Step 2b entry bounds with the low-bit size.
 
-**Remaining for size reduction:**
-- Step 4 (inductive): prove `hgcdMatrix_size_reduction` by fuel induction,
-  combining Steps 2a + 2b + Step 3 error bound with a bitsize argument.
-  Requires showing that `hgcdMatrix fuel aHi bHi` reduces `max(aHi, bHi)`
-  by at least half — which is the recursive core of the HGCD analysis.
+10. **Shift-position bound** (`hgcdShift_pos`): `hgcdShift a b ≥ 1` when
+    `max a b ≥ 4`. Proof: `Nat.log 2 (max a b) ≥ 2` for input ≥ 4, so
+    `(2+1)/2 = 1`. Uses `Nat.log_mono_right`.
+
+11. **Top-half strictly smaller** (`hgcdShift_top_lt`): for threshold inputs,
+    `max (a / 2^s) (b / 2^s) < max a b`. This is the **induction-measure
+    decrease** needed for the Step 4 strong induction. Proof: `2^s ≥ 2`
+    from hgcdShift_pos, then `Nat.div_lt_self`.
+
+**Remaining for size reduction (1 sorry):**
+- `hgcdMatrix_joint_bound` (PART IX): the full joint bound —
+  output and entries ≤ 2^(s+3). The induction structure is set up by
+  `hgcdShift_top_lt` (proved above). The **missing piece** is quotient
+  stability: showing that Lehmer quotients computed from top-half
+  approximations match full-precision Euclidean quotients. This connects
+  the row-convention output (bounded by entry_bound_of_even/odd) to the
+  column-convention output (M.apply a b). See PART IX docstring.
 
 **Out of scope (deferred):**
 - Bit-complexity bound O(M(n)·log n): requires Mathlib infrastructure
