@@ -52,7 +52,7 @@
     "historicalContext": "**Erdős Problem #275** lies at the heart of *covering systems*, a subject Erdős pioneered starting in the 1950s. A covering system is a finite collection of congruence classes $a_i \\pmod{n_i}$ whose union is all of $\\mathbb{Z}$. Erdős asked: if $r$ congruences cover $2^r$ consecutive integers, must they cover all integers?\n\n**Historical Development:**\n- **Erdős (1950s):** Introduced covering systems and formulated numerous problems, including #275. His earliest covering system work dates to his 1950 proof that there exist infinitely many odd integers not of the form $2^k + p$, using a covering system with moduli $\\{2, 3, 4, 8, 12, 24\\}$.\n- **Selfridge (1970):** Independently solved Problem #275, showing $2^r$ is the exact threshold.\n- **Crittenden and Vanden Eynden (1970):** Published the proof in *Proceedings of the AMS*, using induction on the structure of moduli with careful analysis modulo 2.\n- **Hough (2015):** Proved the minimum modulus conjecture (Erdős #2), showing every covering system with distinct moduli $> 1$ must have a modulus $\\leq 10^{16}$ — later improved to $616{,}000$ by Balister, Bollobás, Morris, Sahasrabudhe, and Tiba (2022).\n\n**Key Insight:** The exponential bound $2^r$ reflects binary structure — the optimal counterexample uses powers of 2 as moduli, and coverage depends on the binary digits of integers.",
     "problemStatement": "**Problem Statement**\n\nLet $\\{a_i \\pmod{n_i} : 1 \\leq i \\leq r\\}$ be a finite system of $r$ congruence classes with $n_i \\geq 1$. If this system covers $2^r$ consecutive integers, then it covers all of $\\mathbb{Z}$.\n\n**This bound is tight:** The system $\\{2^{i-1} \\pmod{2^i} : 1 \\leq i \\leq r\\}$ covers exactly the integers NOT divisible by $2^r$, showing that $2^r - 1$ consecutive integers do not suffice.",
     "text": "If r congruences {aᵢ (mod nᵢ)} cover 2^r consecutive integers, they cover all integers. This bound is tight: {2^(i-1) (mod 2^i)} shows 2^r-1 doesn't suffice.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** CongruenceClass, CoveringSystem (as a Lean structure with residues, moduli, positivity), IsCovered, CoversSet, CoversAll, ConsecutiveIntegers.\n\n2. **Main Theorem:** Axiomatized — if $r$ congruences cover $2^r$ consecutive integers starting at any $a \\in \\mathbb{Z}$, they cover all integers.\n\n3. **Alternative Formulation:** Crittenden–Vanden Eynden's version phrased over $\\{0, \\ldots, 2^r - 1\\}$.\n\n4. **Tightness:** Constructive OptimalExample using $\\{2^{i-1} \\pmod{2^i}\\}$, with axiomatized coverage characterization.\n\n5. **Summary Theorem:** Proved by combining the main result and tightness via $\\langle$erdos_275_theorem, not_covered_2r_minus_1$\\rangle$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** CongruenceClass, CoveringSystem (as a Lean structure with residues, moduli, positivity), IsCovered, CoversSet, CoversAll, ConsecutiveIntegers.\n\n2. **Main Theorem:** Axiomatized — if $r$ congruences cover $2^r$ consecutive integers starting at any $a \\in \\mathbb{Z}$, they cover all integers.\n\n3. **Alternative Formulation (informal):** Crittenden–Vanden Eynden's equivalent phrasing is noted in a block comment (L89–93) but not separately axiomatized — it follows from `erdos_275_theorem` with $a = 0$.\n\n4. **Tightness:** Constructive OptimalExample using $\\{2^{i-1} \\pmod{2^i}\\}$, with axiomatized coverage characterization.\n\n5. **Summary Theorem:** Proved by combining the main result and tightness via $\\langle$erdos_275_theorem, not_covered_2r_minus_1$\\rangle$.",
     "keyInsights": [
       "**Exponential threshold $2^r$:** The number of consecutive integers needed grows exponentially with the number of congruences $r$, not polynomially — reflecting the $2^r$ possible bit patterns in binary representations of residues.",
       "**Binary structure of the optimal example:** The system $\\{2^{i-1} \\pmod{2^i} : 1 \\leq i \\leq r\\}$ covers $x$ iff the $i$-th binary digit of $x$ is 1 for some $1 \\leq i \\leq r$. Only multiples of $2^r$ (with all first $r$ bits zero) escape coverage.",
@@ -103,38 +103,30 @@
       "title": "The $2^r$ Bound (Main Theorem)",
       "summary": "Axiomatizes: if $r$ congruences cover $2^r$ consecutive integers starting at $a$, then $\\text{CoversAll}(C)$ holds for all $x \\in \\mathbb{Z}$",
       "startLine": 78,
-      "endLine": 88,
+      "endLine": 93,
       "mathContext": "Axiomatizes: if $r$ congruences cover $$2^{r}$$ consecutive integers starting at $a$, then $\\text{CoversAll}(C)$ holds for all $x \\in \\mathbb{Z}$"
-    },
-    {
-      "id": "alternative-formulation",
-      "title": "Crittenden–Vanden Eynden Formulation",
-      "summary": "Alternative axiom: $r$ progressions covering $\\{0, 1, \\ldots, 2^r - 1\\}$ cover all of $\\mathbb{Z}$; published in *Proc. AMS* (1970)",
-      "startLine": 89,
-      "endLine": 99,
-      "mathContext": "Alternative axiom: $r$ progressions covering $\\{0, 1, \\ldots, $2^{r}$ - 1\\}$ cover all of $\\mathbb{Z}$; published in *Proc. AMS* (1970)"
     },
     {
       "id": "optimal-example",
       "title": "Optimal Example Construction",
       "summary": "Constructive definition: `OptimalExample(r)` uses moduli $2^{i+1}$ and residues $2^i$ for $i = 0, \\ldots, r-1$, covering $x$ iff $2^r \\nmid x$",
-      "startLine": 100,
-      "endLine": 121,
+      "startLine": 94,
+      "endLine": 117,
       "mathContext": "Constructive definition: `OptimalExample(r)` uses moduli $$$2^{{i+1}$}$$ and residues $$2^{i}$$ for $i = 0, \\ldots, r-1$, covering $x$ iff $$2^{r}$ \\nmid x$"
     },
     {
       "id": "tightness",
       "title": "Tightness of the $2^r$ Bound",
       "summary": "Axiomatizes that $\\exists C$ with $|C| = r$ covering $2^r - 1$ consecutive integers but $\\neg \\text{CoversAll}(C)$, proving $2^r$ is sharp",
-      "startLine": 122,
-      "endLine": 131,
+      "startLine": 118,
+      "endLine": 121,
       "mathContext": "Axiomatizes that $\\exists C$ with $|C| = r$ covering $$2^{r}$ - 1$ consecutive integers but $\\neg \\text{CoversAll}(C)$, proving $$2^{r}$$ is sharp"
     },
     {
       "id": "related-definitions",
       "title": "Related Definitions",
       "summary": "Defines `IsCoveringSystem` (complete coverage) and `IsExactlyCovering(C, k)` for $k$-fold coverage where each $x$ is covered exactly $k$ times; $k = 1$ gives disjoint covering systems",
-      "startLine": 132,
+      "startLine": 122,
       "endLine": 150,
       "mathContext": "Formal definition: Defines `IsCoveringSystem` (complete coverage) and `IsExactlyCovering(C, k)` for $k$-fold coverage where each $x$ is covered exactly $k$ times; $k = 1$ gives disjoint covering systems"
     },
