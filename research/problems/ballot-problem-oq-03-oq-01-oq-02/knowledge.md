@@ -868,3 +868,59 @@ File at 14022 lines remains beyond practical Docker 32GB build envelope. The edi
 1. **GNW probabilistic hook-walk proof** (~300 lines) is the cleanest path to a sorry-free `hook_walk_identity`; it would also obviate further row-by-row extensions.
 2. **Canonical-config LGV path**: implement `youngLGVConfigOf` plus (A) and (B), giving a second independent proof of `hook_length_formula`. Note the transpose-duality wrinkle for tall shapes.
 3. **File modularization**: at 14022 lines the file no longer fits the Docker memory envelope. PARTS XII–XXIII (~10000 lines of row-by-row coverage) could be split off into a dedicated module to restore buildability before any further large additions.
+
+---
+
+## Session 2026-05-03 (Session 37) — GNW infrastructure: isolate gnwProb_key sorry
+
+**Mode**: FRESH (claimed from pool, RICH knowledge tier)
+**Outcome**: PROGRESS — GNW skeleton added to Helpers PART XXVI; dispatcher now sorry-free
+
+### What I Did
+
+1. Rebased `feature/researcher-6` worktree onto current main (worktree was 50+ commits behind;
+   Helpers file added in commit 61edf3c111c was missing from worktree).
+
+2. Added PART XXVI to `BallotProblemOQ03OQ01OQ02Helpers.lean` (lines 13645–13748, +104 lines):
+   - `strictHookCells μ i j`: arm + leg cells strictly beyond (i,j), card = hookLen - 1
+   - `strictHookCells_mem`: proved — each strict hook cell is in μ
+   - `strictHookCells_card`: sorry (TRIVIAL)
+   - `strictHookCells_nonempty`: sorry (TRIVIAL)
+   - `strictHookCells_hookLen_lt`: sorry (TRIVIAL)
+   - `gnwProb μ c K x`: probability walk from x ends at corner c, bounded by K
+     - `| 0, _ => 0`
+     - `| K+1, x => if isCorner μ x then (if x = c then 1 else 0) else ...`
+   - `gnwProb_sum_corners`: sorry (HARD: standard induction on K, not GNW itself)
+   - `gnwProb_key`: sorry (GNW 1979 KEY theorem — the hard combinatorial identity)
+   - `hook_walk_identity_gnw`: PROVED using gnwProb_key + gnwProb_sum_corners + sum_comm
+
+3. Updated `BallotProblemOQ03OQ01OQ02.lean`:
+   - Replaced `sorry` at line 302 with `exact hook_walk_identity_gnw μ hn`
+   - Updated header and docstring comments to reflect new state
+
+4. Committed to `feature/researcher-6` (commit 53c1033051).
+
+### Key Findings
+
+- `hook_walk_identity_gnw` proof structure: h1 (rewrite each ratio via ← gnwProb_key) →
+  sum_comm (swap Σ_c Σ_x) → gnwProb_sum_corners (each inner Σ = 1) → Finset.sum_const_one
+- The dispatcher `hook_walk_identity` in Main is now 0 sorries (sorry-free)
+- Net sorry count: was 1 (vague dispatcher sorry) → now 5 (all in Helpers PART XXVI):
+  1. `gnwProb_key` (GNW 1979 KEY — the genuinely hard theorem)
+  2. `gnwProb_sum_corners` (HARD: induction on K; provable but ~50 lines)
+  3. `strictHookCells_card` (TRIVIAL: disjointness + card_Ico + omega)
+  4. `strictHookCells_nonempty` (TRIVIAL: non-corner ↔ arm or leg > 0)
+  5. `strictHookCells_hookLen_lt` (TRIVIAL: hookLength_add_eq comparison)
+- Sorries 3–5 are good Aristotle candidates
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean` (added PART XXVI, +104 lines)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (sorry at 302 → GNW call; comment updates)
+
+### Next Steps
+
+1. Create PR for feature/researcher-6 → main
+2. Submit sorries 3–5 to Aristotle (likely fast proofs)
+3. Tackle `gnwProb_sum_corners` manually (standard induction on K, ~50 lines)
+4. `gnwProb_key` is the remaining hard mathematical content (GNW 1979)
