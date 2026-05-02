@@ -53,10 +53,10 @@
       "isValidAssignment: validity predicate for assignments",
       "grimmsConjecture: the main conjecture statement",
       "grimm_k_eq_1, grimm_k_eq_2: trivial cases",
-      "grimm_original, erdos_selfridge: historical partial results",
       "ramachandra_shorey_tijdeman: best current bound",
-      "Connection to prime gaps and Legendre's conjecture",
-      "Hall's marriage theorem formulation"
+      "Historical partial results (Grimm, Erdős-Selfridge) referenced in docstring commentary",
+      "Connection to prime gaps and Legendre's conjecture (primeGap, legendresConjecture; placeholder defs)",
+      "Hall's marriage theorem formulation (grimmBipartiteGraph, hallsCondition; placeholder defs)"
     ],
     "axiomCount": 2,
     "lineCount": 357,
@@ -86,7 +86,7 @@
       "title": "Basic Definitions",
       "summary": "isComposite, isCompositeBlock, PrimeDivisorAssignment, isValidAssignment",
       "startLine": 40,
-      "endLine": 76,
+      "endLine": 75,
       "mathContext": "Mathematical content: isComposite, isCompositeBlock, PrimeDivisorAssignment, isValidAssignment"
     },
     {
@@ -101,56 +101,56 @@
       "id": "trivial-cases",
       "title": "Trivial Cases",
       "summary": "k = 1 and k = 2 are provable",
-      "startLine": 98,
-      "endLine": 125,
+      "startLine": 99,
+      "endLine": 159,
       "mathContext": "Mathematical content: k = 1 and k = 2 are provable"
     },
     {
       "id": "partial-results",
       "title": "Known Partial Results",
       "summary": "Grimm, Erdos-Selfridge, Ramachandra-Shorey-Tijdeman bounds",
-      "startLine": 126,
-      "endLine": 160,
+      "startLine": 161,
+      "endLine": 182,
       "mathContext": "Bound: Grimm, Erdos-Selfridge, Ramachandra-Shorey-Tijdeman bounds"
     },
     {
       "id": "prime-gaps",
       "title": "Connection to Prime Gaps",
       "summary": "primeGap, grimm_implies_prime_gap, Legendre's conjecture",
-      "startLine": 161,
-      "endLine": 193,
+      "startLine": 184,
+      "endLine": 208,
       "mathContext": "Mathematical content: primeGap, grimm_implies_prime_gap, Legendre's conjecture"
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Concrete examples: 24-25-26, 90-95",
-      "startLine": 194,
-      "endLine": 234,
+      "startLine": 210,
+      "endLine": 260,
       "mathContext": "Mathematical content: Concrete examples: 24-25-26, 90-95"
     },
     {
       "id": "counting",
       "title": "Counting Arguments",
       "summary": "Prime factor bounds, small prime divisors",
-      "startLine": 235,
-      "endLine": 254,
+      "startLine": 262,
+      "endLine": 274,
       "mathContext": "Bound: Prime factor bounds, small prime divisors"
     },
     {
       "id": "halls-theorem",
       "title": "Hall's Marriage Theorem Connection",
       "summary": "Bipartite graph formulation, Hall's condition, equivalence",
-      "startLine": 255,
-      "endLine": 293,
+      "startLine": 275,
+      "endLine": 310,
       "mathContext": "Mathematical content: Bipartite graph formulation, Hall's condition, equivalence"
     },
     {
       "id": "main-results",
       "title": "Main Results Summary",
       "summary": "erdos_375_summary, grimm_difficulty",
-      "startLine": 294,
-      "endLine": 308,
+      "startLine": 311,
+      "endLine": 356,
       "mathContext": "Mathematical content: erdos_375_summary, grimm_difficulty"
     }
   ],
