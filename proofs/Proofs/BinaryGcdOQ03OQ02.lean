@@ -618,7 +618,120 @@ theorem entry_bound_of_odd {a₀ b₀ ahat' bhat' : ℤ} {M : CofactorMatrix}
                mul_nonneg (by linarith : (0:ℤ) ≤ ahat') hβ]
 
 -- ═══════════════════════════════════════════════════════════════
--- PART VII: SIZE REDUCTION (deferred — open mathematical content)
+-- PART VII: PERTURBATION INFRASTRUCTURE (Step 3 building blocks)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Step 3 infrastructure
+
+The HGCD algorithm computes `M₁ = hgcdMatrix fuel (a >> s) (b >> s)` using
+the top-half truncation of `(a, b)`, then applies `M₁` to the full-precision
+`(a, b)`. Step 3 bounds the discrepancy introduced by this truncation.
+
+Write `aHi = a / 2^s`, `bHi = b / 2^s`, `ea = a % 2^s`, `eb = b % 2^s`, so
+that `a = aHi * 2^s + ea` and `b = bHi * 2^s + eb` with `0 ≤ ea, eb < 2^s`.
+
+Linearity of `apply` gives:
+  `M.apply a b = M.apply (aHi*2^s) (bHi*2^s) + M.apply ea eb`
+           `= 2^s · M.apply aHi bHi + M.apply ea eb`.
+
+The first term is bounded by `2^s · max(aHi, bHi)` from residue monotonicity
+(Step 2a applied to the top-half subproblem).  The second (error) term is:
+  `|M.α · ea + M.β · eb| ≤ (|M.α| + |M.β|) · 2^s`
+                        `≤ 2 · max(aHi, bHi) · 2^s`
+using the entry bounds from Step 2b (`entry_bound_of_even/odd`).
+
+The lemmas in this section establish the algebraic pieces.  The
+inductive bitsize argument needed to close `hgcdMatrix_size_reduction`
+is deferred (Step 4). -/
+
+/-- `CofactorMatrix.apply` distributes over addition of inputs.
+    This is pure ring algebra: apply(a₁ + a₂, b₁ + b₂) splits into
+    apply(a₁, b₁) + apply(a₂, b₂) component-wise. -/
+theorem cofactor_apply_add (M : CofactorMatrix) (a₁ a₂ b₁ b₂ : ℤ) :
+    (M.apply (a₁ + a₂) (b₁ + b₂)).1 = (M.apply a₁ b₁).1 + (M.apply a₂ b₂).1 ∧
+    (M.apply (a₁ + a₂) (b₁ + b₂)).2 = (M.apply a₁ b₁).2 + (M.apply a₂ b₂).2 := by
+  simp only [CofactorMatrix.apply]
+  exact ⟨by ring, by ring⟩
+
+/-- `CofactorMatrix.apply` commutes with scalar multiplication.
+    For any scalar `k : ℤ`, `M.apply (k · a) (k · b) = k · M.apply a b`
+    component-wise. -/
+theorem cofactor_apply_smul (M : CofactorMatrix) (k a b : ℤ) :
+    (M.apply (k * a) (k * b)).1 = k * (M.apply a b).1 ∧
+    (M.apply (k * a) (k * b)).2 = k * (M.apply a b).2 := by
+  simp only [CofactorMatrix.apply]
+  exact ⟨by ring, by ring⟩
+
+/-- The full-precision apply equals `2^s` times the top-half apply, plus the
+    error from the low-bits `(ea, eb)`.
+
+    Concretely: `a = aHi * 2^s + ea` and `b = bHi * 2^s + eb`, so by
+    `cofactor_apply_add` and `cofactor_apply_smul`:
+      `(M.apply a b).1 = 2^s · (M.apply aHi bHi).1 + (M.apply ea eb).1`.
+    This is the key decomposition for the perturbation argument. -/
+theorem cofactor_apply_shift_decomp (M : CofactorMatrix) (aHi bHi ea eb : ℤ) (s : ℕ) :
+    let pow2s : ℤ := 2 ^ s
+    (M.apply (aHi * pow2s + ea) (bHi * pow2s + eb)).1 =
+      pow2s * (M.apply aHi bHi).1 + (M.apply ea eb).1 ∧
+    (M.apply (aHi * pow2s + ea) (bHi * pow2s + eb)).2 =
+      pow2s * (M.apply aHi bHi).2 + (M.apply ea eb).2 := by
+  simp only [CofactorMatrix.apply]
+  exact ⟨by ring, by ring⟩
+
+/-- Triangle bound: |M.α · ea + M.β · eb| ≤ |M.α| · |ea| + |M.β| · |eb|.
+
+    This is Int.natAbs triangle inequality for the first component of
+    `M.apply ea eb`. Used to bound the error term in Step 3 given
+    entry bounds on M from Step 2b. -/
+theorem cofactor_apply_natAbs_le (M : CofactorMatrix) (ea eb : ℤ) :
+    (M.apply ea eb).1.natAbs ≤ M.α.natAbs * ea.natAbs + M.β.natAbs * eb.natAbs ∧
+    (M.apply ea eb).2.natAbs ≤ M.γ.natAbs * ea.natAbs + M.δ.natAbs * eb.natAbs := by
+  simp only [CofactorMatrix.apply]
+  constructor
+  · calc (M.α * ea + M.β * eb).natAbs
+        ≤ (M.α * ea).natAbs + (M.β * eb).natAbs := Int.natAbs_add_le _ _
+      _ = M.α.natAbs * ea.natAbs + M.β.natAbs * eb.natAbs := by
+            simp [Int.natAbs_mul]
+  · calc (M.γ * ea + M.δ * eb).natAbs
+        ≤ (M.γ * ea).natAbs + (M.δ * eb).natAbs := Int.natAbs_add_le _ _
+      _ = M.γ.natAbs * ea.natAbs + M.δ.natAbs * eb.natAbs := by
+            simp [Int.natAbs_mul]
+
+/-- Error bound for the first component of `M.apply ea eb` when entries are
+    bounded by `C` and inputs are bounded by `B` (all in ℕ).
+
+    From `cofactor_apply_natAbs_le` with `|M.α|, |M.β| ≤ C` and
+    `|ea|, |eb| ≤ B`, the first component is at most `2 · C · B`. -/
+theorem cofactor_apply_err_bound (M : CofactorMatrix) (ea eb : ℤ) (C B : ℕ)
+    (hα : M.α.natAbs ≤ C) (hβ : M.β.natAbs ≤ C)
+    (hea : ea.natAbs ≤ B) (heb : eb.natAbs ≤ B) :
+    (M.apply ea eb).1.natAbs ≤ 2 * C * B := by
+  have ⟨h, _⟩ := cofactor_apply_natAbs_le M ea eb
+  calc (M.apply ea eb).1.natAbs
+      ≤ M.α.natAbs * ea.natAbs + M.β.natAbs * eb.natAbs := h
+    _ ≤ C * B + C * B := by
+          apply Nat.add_le_add
+          · exact Nat.mul_le_mul hα hea
+          · exact Nat.mul_le_mul hβ heb
+    _ = 2 * C * B := by ring
+
+/-- Error bound for the second component of `M.apply ea eb`. Symmetric to
+    `cofactor_apply_err_bound` using `|M.γ|` and `|M.δ|`. -/
+theorem cofactor_apply_err_bound_snd (M : CofactorMatrix) (ea eb : ℤ) (C B : ℕ)
+    (hγ : M.γ.natAbs ≤ C) (hδ : M.δ.natAbs ≤ C)
+    (hea : ea.natAbs ≤ B) (heb : eb.natAbs ≤ B) :
+    (M.apply ea eb).2.natAbs ≤ 2 * C * B := by
+  have ⟨_, h⟩ := cofactor_apply_natAbs_le M ea eb
+  calc (M.apply ea eb).2.natAbs
+      ≤ M.γ.natAbs * ea.natAbs + M.δ.natAbs * eb.natAbs := h
+    _ ≤ C * B + C * B := by
+          apply Nat.add_le_add
+          · exact Nat.mul_le_mul hγ hea
+          · exact Nat.mul_le_mul hδ heb
+    _ = 2 * C * B := by ring
+
+-- ═══════════════════════════════════════════════════════════════
+-- PART VIII: SIZE REDUCTION (deferred — open mathematical content)
 -- ═══════════════════════════════════════════════════════════════
 
 /-- The HGCD size-reduction lemma: applying `hgcdMatrix` to `(a, b)`
@@ -699,11 +812,22 @@ theorem hgcdMatrix_size_reduction :
    in absolute value by the initial inputs a₀ and b₀. Proved using
    Cramer + sign pattern. This is Step 2b.
 
+9. **Perturbation infrastructure** (PART VII, Step 3 building blocks):
+   - `cofactor_apply_add`: `apply` distributes over addition of inputs.
+   - `cofactor_apply_smul`: `apply` commutes with scalar multiplication.
+   - `cofactor_apply_shift_decomp`: full-precision `apply(aHi·2^s + ea, bHi·2^s + eb)`
+     decomposes as `2^s · apply(aHi, bHi) + apply(ea, eb)`.
+   - `cofactor_apply_natAbs_le`: triangle bound for `natAbs` of both components.
+   - `cofactor_apply_err_bound` / `cofactor_apply_err_bound_snd`: given
+     entry bounds `|M.α|, |M.β| ≤ C` and input bounds `|ea|, |eb| ≤ B`,
+     the error component is at most `2·C·B`. This is the quantitative error
+     bound combining Step 2b entry bounds with the low-bit size.
+
 **Remaining for size reduction:**
-- Step 3: perturbation bound between full-precision (a, b) and
-  top-half-truncated (aHi·2^s, bHi·2^s) after applying M.
-- Step 4: compose 2a + 2b + 3 to close `hgcdMatrix_size_reduction`
-  with explicit bitsize constants.
+- Step 4 (inductive): prove `hgcdMatrix_size_reduction` by fuel induction,
+  combining Steps 2a + 2b + Step 3 error bound with a bitsize argument.
+  Requires showing that `hgcdMatrix fuel aHi bHi` reduces `max(aHi, bHi)`
+  by at least half — which is the recursive core of the HGCD analysis.
 
 **Out of scope (deferred):**
 - Bit-complexity bound O(M(n)·log n): requires Mathlib infrastructure

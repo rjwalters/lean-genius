@@ -373,3 +373,42 @@ The TIGHT bound requires max_entry ≤ 2^(N/4) — which comes from knowing the 
 1. **Restate `hgcdMatrix_size_reduction`** with a joint statement: `max output ≤ 2^(N/2 + c) ∧ entry_bound ≤ 2^(N/2)`. ~50 lines setup.
 2. **Joint induction proof** by strong induction on `Nat.log 2 (max a b)`. ~150-200 lines.
 3. This is a dedicated session of ~4-6 hours.
+
+## Session 2026-05-03 (Session 5) — Perturbation Infrastructure (Step 3)
+
+**Mode**: REVISIT
+**Outcome**: progress (Step 3 infrastructure added)
+
+### What I Did
+
+- Verified that Sessions 3 and 4 work (Steps 1, 2a, 2b) is already merged into main (PRs #14522 and #14881).
+- Added PART VII (~114 lines) to `BinaryGcdOQ03OQ02.lean` with 6 theorems forming the perturbation infrastructure for Step 3:
+
+  1. `cofactor_apply_add`: `apply` distributes over addition of inputs (ring).
+  2. `cofactor_apply_smul`: `apply` commutes with scalar multiplication (ring).
+  3. `cofactor_apply_shift_decomp`: Decomposes `apply(aHi·2^s + ea, bHi·2^s + eb)` as `2^s · apply(aHi, bHi) + apply(ea, eb)`. This is the key algebraic identity for the perturbation argument.
+  4. `cofactor_apply_natAbs_le`: Triangle bound `|M.apply(ea, eb).1| ≤ |M.α|·|ea| + |M.β|·|eb|` using `Int.natAbs_add_le` + `Int.natAbs_mul`.
+  5. `cofactor_apply_err_bound`: Given `|M.α|, |M.β| ≤ C` and `|ea|, |eb| ≤ B`, then `|apply(ea, eb).1| ≤ 2·C·B`.
+  6. `cofactor_apply_err_bound_snd`: Same for the second component using `|M.γ|` and `|M.δ|`.
+
+- 0 new sorries, 0 new axioms.
+
+### Key Findings
+
+- Steps 1, 2a, 2b all complete in main. The size-reduction proof structure is clear:
+  - `cofactor_apply_shift_decomp` gives the algebraic split: `apply(a, b) = 2^s·apply(aHi, bHi) + apply(ea, eb)`.
+  - `cofactor_apply_err_bound` bounds the error term using Step 2b entry bounds.
+  - The MISSING piece (Step 4) is an inductive proof that `hgcdMatrix fuel aHi bHi` reduces `max(aHi, bHi)` by half — this requires induction on bitsize and is inherently recursive.
+
+- The PART VII placeholder `hgcdMatrix_size_reduction := True` is renamed PART VIII.
+
+### Files Modified
+
+- `proofs/Proofs/BinaryGcdOQ03OQ02.lean` — +124 lines (PART VII: 6 theorems + renamed PART VIII, updated Summary).
+
+### Next Steps
+
+1. **Step 4 (inductive)**: Prove `hgcdMatrix` reduces bitsize by half. Requires fuel-based induction with a strengthened IH tracking `Nat.log 2 (max output) ≤ Nat.log 2 (max input) / 2`. May need a `bitsize_reduction_for_lehmerCofactors` lemma first (that lehmerCofactors on (aHi, bHi) reduces max by at least 1 step).
+
+2. **Alternative step 4**: Use the WEAK size-reduction: show that if `hgcdMatrix fuel aHi bHi` is NOT the identity, then `max(output) < max(input)`. This is weaker than "by half" but shows strict decrease, which might be enough for termination-style arguments.
+
