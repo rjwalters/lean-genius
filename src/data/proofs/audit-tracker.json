@@ -6022,10 +6022,23 @@
       "result": "clean"
     },
     "erdos-334": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor",
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T00:55:00Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom (proved) claim for small_has_repr (has sorry); phantom minSmoothness_exists axiom + de_bruijn_asymptotic theorem in section summaries; section line drift Parts III-VIII (#14467)"
+      ],
+      "audits": [
+        {
+          "timestamp": "2026-05-02T00:55:00Z",
+          "result": "issues-found",
+          "auditor": "auditor",
+          "session": "auditor-loop-2026-05-02"
+        }
+      ],
+      "lastAudit": "2026-05-02T00:55:00Z",
+      "lastResult": "issues-found"
     },
     "erdos-335": {
       "agentId": "auditor-cycle-20-batch",
