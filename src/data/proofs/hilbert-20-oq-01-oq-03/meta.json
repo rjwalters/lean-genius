@@ -17,7 +17,7 @@
     ],
     "proofRepoPath": "Proofs/Hilbert20OQ01OQ03.lean",
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 2,
     "axiomCount": 7,
     "theoremCount": 9,
     "mathlibDependencies": [
@@ -38,7 +38,7 @@
       "Dencker sufficiency theorem assembled from weight->estimate->solvability chain",
       "Adjoint preserves principal type property"
     ],
-    "lineCount": 325,
+    "lineCount": 322,
     "assumptions": [
       "HasAPrioriEstimate: Sobolev a priori estimates (needs Sobolev spaces)",
       "IsLocallySolvable: local solvability (needs distribution theory)",
@@ -125,12 +125,12 @@
   ],
   "leanFile": {
     "namespace": "Hilbert20OQ01OQ03",
-    "lineCount": 325,
+    "lineCount": 322,
     "axiomCount": 7,
     "theoremCount": 9,
     "definitionCount": 7,
     "path": "Proofs/Hilbert20OQ01OQ03.lean",
-    "sorries": 3
+    "sorries": 2
   },
-  "sorries": 3
+  "sorries": 2
 }
