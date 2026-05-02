@@ -4688,10 +4688,12 @@
       "result": "issues-fixed"
     },
     "erdos-146": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "phantom axioms in originalContributions/proofStrategy/sections (#14705) + section line drift"
+      ],
+      "lastAudited": "2026-05-02T09:45:33Z",
+      "result": "issues-found"
     },
     "erdos-147": {
       "auditCount": 2,
