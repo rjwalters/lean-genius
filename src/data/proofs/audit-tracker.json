@@ -4536,10 +4536,13 @@
       "result": "issues-fixed"
     },
     "erdos-126": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-agent",
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T10:30:00Z",
+      "result": "issues-found",
+      "issues": [
+        "#14722: phantom axiom claims for erdos_126, erdos_126_littleo, trivial_upper_bound, f_monotone, conjecture_implies_not_O_log in sections/proofStrategy + section line drift"
+      ]
     },
     "erdos-127": {
       "agentId": "auditor-cycle-20-batch",
