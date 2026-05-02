@@ -31,8 +31,13 @@ Two-step LGV proof:
    route below remains open)
 
 ### Status
-- Main theorem `hook_length_formula` is proved modulo a single remaining sorry in
-  `hook_walk_identity` (the ≥10×≥10 non-rectangular case; ~300-line GNW argument).
+- Main theorem `hook_length_formula` is proved modulo sorries in the GNW infrastructure
+  (PART XXVI of Helpers). The dispatcher `hook_walk_identity` is now sorry-free; it
+  delegates the ≥10×≥10 non-rectangular case to `hook_walk_identity_gnw`.
+- Remaining sorries (all in BallotProblemOQ03OQ01OQ02Helpers.lean PART XXVI):
+  1. `gnwProb_key` (GNW 1979 KEY theorem — hard combinatorial identity)
+  2. `gnwProb_sum_corners` (standard induction on K — not GNW itself)
+  3. Four TRIVIAL supporting lemmas (strictHookCells_card/nonempty/hookLen_lt)
 - The alternate LGV proof path remains open. See the OPEN comment block in PART V
   for the canonical-config restatement that future work should target.
 -/
@@ -298,8 +303,8 @@ private lemma hook_walk_identity (μ : YoungDiagram) (hn : 0 < μ.card) :
                             omega
                           rw [hrect]
                           exact hook_walk_identity_rectYD hk ha
-                        · -- Non-rectangular ≥10×≥10: requires GNW hook walk
-                          sorry
+                        · -- Non-rectangular ≥10×≥10: GNW hook walk identity
+                          exact hook_walk_identity_gnw μ hn
 
 /-- The general hook-length formula in ℚ, proved by well-founded recursion on μ.card.
     Uses card_SYT_corner_step (Part XIII) + hook_walk_identity. -/
@@ -372,8 +377,9 @@ decreasing_by
 /-- **General Hook-Length Formula (Frame-Robinson-Thrall 1954).**
     For any Young diagram μ: card(SYT(μ)) × hookProd(μ) = μ.card!
     Proof: well-founded induction using card_SYT_corner_step + hook_walk_identity.
-    The sole remaining sorry is hook_walk_identity (verified for all special cases up to
-    9 rows and 9 cols; ≥10×≥10 case requires GNW hook walk proof, ~300 lines). -/
+    The dispatcher hook_walk_identity is now sorry-free; remaining sorries are in
+    PART XXVI (GNW infrastructure): gnwProb_key (GNW 1979 KEY), gnwProb_sum_corners
+    (standard induction), and four TRIVIAL supporting lemmas. -/
 theorem hook_length_formula_general (μ : YoungDiagram) :
     Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.card.factorial := by
   exact_mod_cast hook_length_formula_Q μ
@@ -383,8 +389,8 @@ theorem hook_length_formula_general (μ : YoungDiagram) :
     `hook_length_formula_general`.  The alternate LGV proof path is documented
     as the canonical-config restatement at the top of PART V; it remains open.
     Mathematical status: proved for all shapes with ≤9 rows or ≤9 columns and
-    for all rectangles; `≥10 × ≥10` non-rectangular case is the sole remaining
-    sorry, pending the GNW hook-walk argument (~300 lines). -/
+    for all rectangles; ≥10×≥10 non-rectangular case uses GNW infrastructure
+    (PART XXVI of Helpers) with gnwProb_key as the hard remaining sorry. -/
 theorem hook_length_formula (μ : YoungDiagram) :
     Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.card.factorial :=
   hook_length_formula_general μ

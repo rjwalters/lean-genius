@@ -13642,4 +13642,107 @@ lemma hook_walk_identity_atMostNineCols (μ : YoungDiagram) (h9c : μ.colLen 9 =
   have hpost : 0 < μ.transpose.card := by rwa [card_transpose]
   exact hook_walk_identity_le9rows μ.transpose h9t hpost
 
+-- ============================================================
+-- PART XXVI: GNW Hook Walk Infrastructure (Greene-Nijenhuis-Wilf 1979)
+-- ============================================================
+/-
+  The Greene-Nijenhuis-Wilf 1979 random-walk proof of the hook-walk identity for
+  non-rectangular Young diagrams with ≥10 rows and ≥10 cols.
+
+  GNW walk from x ∈ μ:
+  - If x is a corner: stop.
+  - Otherwise: pick uniformly from strictHookCells(x) (arm + leg cells strictly
+    beyond x) and recurse.
+
+  Key identity: Σ_{c ∈ corners μ} gnwProb(μ,c,hookLen(x),x) = 1 for all x ∈ μ.
+  GNW KEY: Σ_{x ∈ μ} gnwProb(μ,c,hookLen(x),x) = hookProd(μ) / hookProd(μ\c).
+
+  Hook-walk identity: swap the double sum to obtain μ.card.
+-/
+
+/-- Strict hook cells beyond (i,j): arm cells (i,s) with s > j, and leg cells
+    (r,j) with r > i. These are the cells the GNW walk can jump to from (i,j).
+    Card = hookLength μ i j - 1. -/
+private def strictHookCells (μ : YoungDiagram) (i j : ℕ) : Finset (ℕ × ℕ) :=
+  (Finset.Ico (j + 1) (μ.rowLen i)).image (Prod.mk i) ∪
+  (Finset.Ico (i + 1) (μ.colLen j)).image (fun r => (r, j))
+
+/-- Every cell in strictHookCells μ i j is a member of μ. -/
+private lemma strictHookCells_mem {μ : YoungDiagram} {i j : ℕ} {y : ℕ × ℕ}
+    (hy : y ∈ strictHookCells μ i j) : y ∈ μ := by
+  simp only [strictHookCells, mem_union, mem_image, mem_Ico] at hy
+  rcases hy with ⟨s, ⟨_, hsr⟩, rfl⟩ | ⟨r, ⟨_, hrc⟩, rfl⟩
+  · exact YoungDiagram.mem_iff_lt_rowLen.mpr hsr
+  · exact YoungDiagram.mem_iff_lt_colLen.mpr hrc
+
+/-- Cardinality of strictHookCells is hookLength - 1.
+    The arm and leg image sets are disjoint (arm has first coord i; leg has first coord > i). -/
+private lemma strictHookCells_card {μ : YoungDiagram} {i j : ℕ} (h : (i, j) ∈ μ) :
+    (strictHookCells μ i j).card = hookLength μ i j - 1 := by
+  sorry  -- TRIVIAL: disjointness + card_Ico + hookLength def + omega
+
+/-- For a non-corner cell (i,j), strictHookCells is nonempty. -/
+private lemma strictHookCells_nonempty {μ : YoungDiagram} {i j : ℕ}
+    (hmem : (i, j) ∈ μ) (hnc : ¬isCorner μ (i, j)) :
+    (strictHookCells μ i j).Nonempty := by
+  sorry  -- TRIVIAL: non-corner means rowLen > j+1 or colLen > i+1
+
+/-- Each strict hook cell has strictly smaller hookLength than the base cell. -/
+private lemma strictHookCells_hookLen_lt {μ : YoungDiagram} {i j : ℕ}
+    (hmem : (i, j) ∈ μ) {y : ℕ × ℕ} (hy : y ∈ strictHookCells μ i j) :
+    hookLength μ y.1 y.2 < hookLength μ i j := by
+  sorry  -- TRIVIAL: arm/leg cells satisfy hookLength_add_eq comparison + omega
+
+/-- GNW walk probability: gnwProb μ c K x = probability that a GNW walk started at
+    x ends at corner c, with K as a termination bound (correct when hookLen(x) ≤ K). -/
+noncomputable private def gnwProb (μ : YoungDiagram) (c : ℕ × ℕ) : ℕ → ℕ × ℕ → ℚ
+  | 0, _ => 0
+  | K + 1, x =>
+    if isCorner μ x then (if x = c then 1 else 0)
+    else (1 / (strictHookCells μ x.1 x.2).card : ℚ) *
+         ∑ y ∈ strictHookCells μ x.1 x.2, gnwProb μ c K y
+
+/-- For any cell x ∈ μ with hookLength(x) ≤ K, the sum of gnwProb over all corners = 1.
+    Proof: induction on K.
+    - K = 0: vacuous (hookLen ≥ 1 contradicts hookLen ≤ 0).
+    - K+1, x a corner: sum = indicator{x = c over corners} = 1 (x is the unique corner c=x).
+    - K+1, x not a corner: pull (1/|H*(x)|) out, swap Σ_c Σ_{y∈H*(x)},
+      apply IH to each y (hookLen y < hookLen x ≤ K+1 ⟹ hookLen y ≤ K). -/
+private lemma gnwProb_sum_corners (μ : YoungDiagram) :
+    ∀ K : ℕ, ∀ x : ℕ × ℕ, x ∈ μ → hookLength μ x.1 x.2 ≤ K →
+      ∑ c ∈ (corners μ).attach, gnwProb μ c.val K x = 1 := by
+  sorry  -- HARD (standard induction; not the GNW KEY step)
+
+/-- GNW KEY theorem (Greene-Nijenhuis-Wilf 1979):
+    The sum of GNW walk probabilities over all cells in μ equals the hookProd ratio.
+    This is the hard combinatorial core of the GNW 1979 proof. -/
+private lemma gnwProb_key (μ : YoungDiagram) {c : ℕ × ℕ} (hc : isCorner μ c) :
+    ∑ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x =
+    (hookProd μ : ℚ) / hookProd (removeCorner μ c hc) := by
+  sorry  -- GNW 1979 KEY theorem (hard combinatorial identity)
+
+/-- Hook-walk identity for arbitrary non-empty Young diagrams via GNW walk.
+    Proof: rewrite each ratio using gnwProb_key, swap the double sum, and apply
+    gnwProb_sum_corners to collapse each inner sum to 1. -/
+lemma hook_walk_identity_gnw (μ : YoungDiagram) (hn : 0 < μ.card) :
+    ∑ c ∈ (corners μ).attach,
+      ((hookProd μ : ℚ) / hookProd (removeCorner μ c.val (mem_corners.mp c.prop)))
+    = (μ.card : ℚ) := by
+  -- Step 1: rewrite each ratio as Σ_{x∈μ} gnwProb via gnwProb_key
+  have h1 : ∑ c ∈ (corners μ).attach,
+      (hookProd μ : ℚ) / hookProd (removeCorner μ c.val (mem_corners.mp c.prop)) =
+      ∑ c ∈ (corners μ).attach, ∑ x ∈ μ.cells,
+        gnwProb μ c.val (hookLength μ x.1 x.2) x :=
+    Finset.sum_congr rfl (fun c _ => gnwProb_key μ (mem_corners.mp c.prop))
+  rw [h1]
+  -- Step 2: swap Σ_c Σ_x → Σ_x Σ_c
+  rw [Finset.sum_comm]
+  -- Step 3: each inner Σ_c gnwProb = 1 by gnwProb_sum_corners
+  trans (∑ _x ∈ μ.cells, (1 : ℚ))
+  · exact Finset.sum_congr rfl (fun x hx =>
+      gnwProb_sum_corners μ (hookLength μ x.1 x.2) x hx le_rfl)
+  -- Step 4: Σ 1 = μ.card
+  · rw [sum_const_one]
+    simp [YoungDiagram.card]
+
 end HookLengthFormula
