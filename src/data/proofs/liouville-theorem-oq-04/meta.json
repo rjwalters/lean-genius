@@ -177,7 +177,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Archimedean Complement Lemma padicNorm p n ≥ 1/n is proved in Lean 4 without sorry, establishing the core bridge between the p-adic and Archimedean metrics. The remaining one sorry is HARD (padic_algebraic_not_liouville contradiction step) and one OPEN axiom (p-adic Taylor expansion in ℚ_[p]).",
+    "summary": "The Archimedean Complement Lemma padicNorm p n ≥ 1/n is proved in Lean 4 without sorry, establishing the core bridge between the p-adic and Archimedean metrics. The main theorem padic_algebraic_not_liouville is also fully proved without sorry. The sole open assumption is the axiom padic_liouville_estimate (p-adic Taylor expansion in ℚ_[p]).",
     "implications": "The p-adic Liouville theorem belongs to a family of results showing that the ultrametric property of p-adic norms does not fundamentally change the transcendence theory — algebraic numbers remain resistant to efficient rational approximation. The height function appears naturally because the p-adic norm of a ratio r/s depends symmetrically on both numerator and denominator. In Mahler's classification of transcendental numbers (1932), Liouville numbers occupy the U-class ('universal') — approximable super-polynomially by rationals at every metric place simultaneously. The p-adic irrationality measure $\\mu_p(\\alpha) \\leq d$ for algebraic $\\alpha$ of degree $d$ (shown here with axiom) is the p-adic analog of Roth's theorem (1955, Fields Medal), and together they establish that the Mahler classification is uniform across all places of $\\mathbb{Q}$: an algebraic number of degree $d$ satisfies $\\mu_v \\leq d$ at every place $v$ (Archimedean or p-adic).",
     "openQuestions": [
       "Can the padic_liouville_estimate axiom be proved? This requires: Taylor factorization f(x) = (x-α)·g(x,α) over ℚ_[p], continuity bounds for g in the ultrametric topology.",
@@ -203,7 +203,7 @@
     "theoremCount": 15,
     "definitionCount": 3,
     "path": "Proofs/LiouvilleTheoremOQ04.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "references": [
     {
@@ -242,5 +242,5 @@
       "leanType": "(α : ℚ_[p]) → f : ℤ[X] → f.eval α = 0 → 1 ≤ f.natDegree → IsPadicLiouville p α → False"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
