@@ -66,7 +66,7 @@ def ExistsIntDistSetGP (n : ℕ) : Prop :=
 
 /- ## Main Results -/
 
-/--
+/-
 **Anning-Erdős Theorem (1945)**: There is no infinite set of points in the plane,
 no three collinear, with all pairwise distances being integers.
 
@@ -117,13 +117,13 @@ theorem exists_seven : ExistsIntDistSetGP 7 := kreisel_kurz_seven
 
 /- ## Upper Bounds -/
 
-/--
+/-
 **Greenfeld-Iliopoulou-Peluse (2024)**: Any integer distance set in general
 position contained in [-N, N]² has size at most O((log N)^C) for some constant C.
 
 This shows such sets must be extremely sparse.
 -/
-/--
+/-
 **Ascher-Braune-Turchet (2020)**: Conditional on the Bombieri-Lang conjecture,
 there is a uniform upper bound on the size of integer distance sets in general position.
 -/
