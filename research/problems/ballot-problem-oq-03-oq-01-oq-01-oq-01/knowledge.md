@@ -895,6 +895,75 @@ with ~150 lines of ring-valued LGV would complete the framework.
 
 ---
 
+## Session 2026-05-02 (Session 18) — Non-injective bijection diagnosis + correct proof path
+
+**Mode**: REVISIT (RICH knowledge tier, score 88)
+**Outcome**: analysis — discovered fundamental flaw in described b≥2 bijection; identified correct proof path via weight factorization + counting identity
+
+### What I Did
+
+1. **Rebased worktree to origin/main** to pick up PR #14882 (Session 17: `jdt_weight_sum_b_one` proved). Confirmed the file now has exactly 2 sorries (not 3):
+   - Line 598: `jdt_weight_sum` b ≥ 2 seam bijection
+   - Line 841: `jacobi_trudi_ssyt_eq` k ≥ 3 (RSK)
+
+2. **Analyzed the "insert violation element" bijection** described in the file's b≥2 sorry comment:
+   - Forward: find first-violation column c; move `Q.sort[c]` from Q to P at position c.
+   - This is the bijection that has been described across sessions 5–17 but never proved.
+
+3. **Discovered it is NON-INJECTIVE for b ≥ 2.** Concrete counterexample (a=3, b=2):
+   - Pair A: `P={1,3,4}`, `Q={0,2,3}`. First violation at c=0 (P.sort[0]=1 ≥ Q.sort[0]=0). Move v=0 from Q to P: `P'={0,1,3,4}`, `Q'={2,3}`.
+   - Pair B: `P={0,1,4}`, `Q={2,3,3}`. First violation at c=2 (P.sort[2]=4 ≥ Q.sort[2]=3). Move v=3 from Q to P: `P'={0,1,3,4}`, `Q'={2,3}`.
+   - Both pairs map to `(P', Q') = ({0,1,3,4}, {2,3})`. The forward map is NOT injective.
+
+4. **Identified the correct proof path.** Key observation:
+   `wt(P) * wt(Q) = ((P.1 + Q.1).map X).prod` — weight depends only on the TOTAL multiset, not the split.
+   
+   Therefore, the polynomial identity `∑_{non-cs (P,Q)} wt = h_{a+1} * h_{b-1}` is equivalent to:
+   
+   **Counting identity**: for every `M : Sym (Fin n) (a+b)`,
+   `#{non-cs (a,b) splits of M} = #{all (a+1,b-1) splits of M}`
+   
+   where `#{all (a+1,b-1) splits of M} = C(a+b, a+1)` (purely combinatorial, no ring structure needed).
+
+5. **The counting identity is provable by the ballot/reflection principle.** For a multiset M of size a+b, splits into (P:a, Q:b) and (P':a+1, Q':b-1) both correspond to choosing k elements from M. The non-col-strict condition picks exactly the splits where `P.sort[0] ≥ Q.sort[0]` (the "bad" ones) — and a ballot-principle bijection maps these exactly to all (a+1,b-1) splits.
+
+### Key Findings
+
+- **The "insert violation element" bijection is provably non-injective for b ≥ 2.** The counterexample above is concrete and definitive. This explains why 17 sessions have failed to prove it — the approach is mathematically wrong.
+
+- **Weight factorization is the key insight**: `wt(P)*wt(Q) = ((P.1+Q.1).map X).prod`. This was already observed in the proof of `jdt_weight_preserved` (which moves one element between P and Q without changing the weight). For the full sum, it means we only need to count splits by total multiset.
+
+- **The correct proof strategy** (no ring-valued LGV or bijection of pairs needed):
+  1. Group the LHS sum by total multiset M: `∑_M ∑_{non-cs splits of M} wt(M)`.
+  2. Each M contributes `|{non-cs splits of M}| * wt(M)`.
+  3. Show `|{non-cs splits of M}| = |{all (a+1,b-1) splits of M}|` by ballot principle bijection.
+  4. Regroup RHS: `h_{a+1} * h_{b-1} = ∑_M |{all (a+1,b-1) splits of M}| * wt(M)`.
+  
+- **Infrastructure needed** (~100-150 lines):
+  - `sym_split_of_union` or similar: for M : Sym n (a+b), a split is a pair (P:a, Q:b) with P.1 + Q.1 = M.1.
+  - `ballot_bijection`: for fixed M, non-cs (a,b) splits ≃ all (a+1,b-1) splits. The bijection: given a non-cs split (P,Q) with violation at c, move Q.sort[c] → minimum element of {P.sort[c+1..], Q.sort[c+1..]}; this is weight-NEUTRAL since M is fixed.
+  - Actually the counting argument may be even simpler: just `Fintype.card_congr` using the ballot principle bijection on fixed M.
+
+### Files Modified
+
+- `research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01/knowledge.md` (this entry)
+
+### Next Steps
+
+1. **Implement weight-factorization approach** for `jdt_weight_sum` b ≥ 2:
+   - Prove `weight_eq_total_multiset` (or use `jdt_weight_preserved` iteratively): `wt(P)*wt(Q) = ((P.1+Q.1).map X).prod`.
+   - Restructure the LHS sum to group by total multiset M.
+   - State and prove the counting identity via ballot bijection on each fiber.
+   - Estimated ~100-150 lines, all within standard Lean combinatorics API.
+
+2. **The b≥2 sorry does NOT need ring-valued LGV.** The counting argument avoids algebra entirely — it's a bijection on a finite set indexed by M.
+
+3. **Do NOT pursue the "insert violation element" approach further.** It is non-injective.
+
+4. **For `jacobi_trudi_ssyt_eq` k ≥ 3**: RSK or algebraic LGV remain the only known paths. This is the harder open sorry.
+
+---
+
 ## Session 2026-05-02 (Session 17) — Prove jdt_weight_sum_b_one bijection
 
 **Mode**: REVISIT (RICH knowledge tier, score 88 → 90)
