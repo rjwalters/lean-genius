@@ -199,10 +199,34 @@ theorem countCoprimePairs_moebius (N : ℕ) (hN : 0 < N) :
     simp only [Finset.mem_product, Finset.mem_Icc] at hp
     exact coprime_iff_moebius_sum p.1 p.2 (by omega) (by omega)
   rw [Finset.sum_congr rfl h_moebius]
-  -- Step 3: Exchange the order of summation
-  -- The triple (m, n, d) with d | gcd(m,n), 1 ≤ m,n ≤ N
-  -- corresponds to d ∈ [1,N], m ∈ multiples of d in [1,N], n ∈ multiples of d in [1,N]
-  sorry -- finite Fubini: exchange Σ_{m,n} Σ_{d|gcd(m,n)} = Σ_{d≤N} Σ_{m,n: d|m, d|n}
+  -- Step 3: Exchange the order of summation (finite Fubini)
+  -- For (m,n) ∈ [1,N]², divisors of gcd(m,n) = {d ∈ [1,N] : d|m ∧ d|n}
+  have h_step3 : ∀ p ∈ Finset.Icc 1 N ×ˢ Finset.Icc 1 N,
+      ∑ d ∈ (Nat.gcd p.1 p.2).divisors, (ArithmeticFunction.moebius d : ℤ) =
+      ∑ d ∈ Finset.Icc 1 N,
+        if (d ∣ p.1 ∧ d ∣ p.2) then (ArithmeticFunction.moebius d : ℤ) else 0 := by
+    intro ⟨m, n⟩ hp
+    simp only [Finset.mem_product, Finset.mem_Icc] at hp
+    rw [← Finset.sum_filter]
+    congr 1
+    ext d
+    simp only [Nat.mem_divisors, Nat.dvd_gcd_iff, Finset.mem_filter, Finset.mem_Icc]
+    constructor
+    · rintro ⟨⟨hdm, hdn⟩, _⟩
+      exact ⟨⟨Nat.pos_of_dvd_of_pos hdm (by omega), Nat.le_of_dvd (by omega) hdm⟩, hdm, hdn⟩
+    · rintro ⟨_, hdm, hdn⟩
+      refine ⟨⟨hdm, hdn⟩, ?_⟩
+      intro h
+      have := (Nat.gcd_eq_zero_iff.mp h).1
+      omega
+  rw [Finset.sum_congr rfl h_step3, Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro d hd_mem
+  simp only [Finset.mem_Icc] at hd_mem
+  rw [← Finset.sum_filter, Finset.sum_const, card_pairs_divisible d N (by omega)]
+  simp only [nsmul_eq_mul]
+  push_cast
+  ring
 
 -- ============================================================
 -- SECTION V: Analytic Axioms
