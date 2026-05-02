@@ -92,8 +92,8 @@
       "title": "Sum of Divisors",
       "startLine": 38,
       "endLine": 67,
-      "summary": "Defines the sum of divisors $\\sigma(n) = \\sum_{d \\mid n} d$ via Mathlib's `Nat.divisors`. Proves $\\sigma(1) = 1$, states $\\sigma(p) = p+1$ for primes (sorry), and $\\sigma(n) \\geq n$ for $n \\geq 1$ (sorry). Defines the abundancy ratio $\\sigma(n)/n$ and the predicate `IsAbundant n c` for $\\sigma(n) > cn$.",
-      "mathContext": "Defines the sum of divisors $\\sigma(n) = \\sum_{d \\mid n} d$ via Mathlib's `Nat.divisors`. Proves $\\sigma(1) = 1$, states $\\sigma(p) = p+1$ for primes (sorry), and $\\sigma(n) \\geq n$ for $n \\geq 1$ (sorry). Defines the abundancy ratio $\\sigma(n)/n$ and the predicate `IsAbundant n c` for $\\sigma(n) > cn$."
+      "summary": "Defines the sum of divisors $\\sigma(n) = \\sum_{d \\mid n} d$ via Mathlib's `Nat.divisors`. Proves $\\sigma(1) = 1$, $\\sigma(p) = p+1$ for primes, and $\\sigma(n) \\geq n$ for $n \\geq 1$. Defines the abundancy ratio $\\sigma(n)/n$ and the predicate `IsAbundant n c` for $\\sigma(n) > cn$.",
+      "mathContext": "Defines the sum of divisors $\\sigma(n) = \\sum_{d \\mid n} d$ via Mathlib's `Nat.divisors`. Proves $\\sigma(1) = 1$, $\\sigma(p) = p+1$ for primes, and $\\sigma(n) \\geq n$ for $n \\geq 1$. Defines the abundancy ratio $\\sigma(n)/n$ and the predicate `IsAbundant n c` for $\\sigma(n) > cn$."
     },
     {
       "id": "covering-systems",
@@ -140,23 +140,23 @@
       "title": "Key Properties of Covering Systems",
       "startLine": 192,
       "endLine": 214,
-      "summary": "Defines the reciprocal sum $\\sum_{c \\in S} 1/m_c$ and axiomatizes the bound $\\sum 1/m_i \\geq 1$ for covering systems with distinct moduli. Axiomatizes the CRT connection: every modulus in a covering system has at least one congruence.",
-      "mathContext": "Defines the reciprocal sum $\\sum_{c \\in S} 1/m_c$ and axiomatizes the bound $\\sum 1/m_i \\geq 1$ for covering systems with distinct moduli. Axiomatizes the CRT connection: every modulus in a covering system has at least one congruence."
+      "summary": "Defines the reciprocal sum $\\sum_{c \\in S} 1/m_c$ and states the bound $\\sum 1/m_i \\geq 1$ in a docstring (no Lean declaration). Proves `covering_crt_connection` via `Finset.mem_image`: every modulus in a covering system has at least one congruence.",
+      "mathContext": "Defines the reciprocal sum $\\sum_{c \\in S} 1/m_c$ and states the bound $\\sum 1/m_i \\geq 1$ in a docstring (no Lean declaration). Proves `covering_crt_connection` via `Finset.mem_image`: every modulus in a covering system has at least one congruence."
     },
     {
       "id": "haight-construction",
       "title": "Haight's Construction Insight",
       "startLine": 215,
       "endLine": 243,
-      "summary": "Placeholder definitions (`haightConstruction`, `primorialApproach`) sketching Haight's strategy: primorial-like products $n = p_1 \\cdots p_k$ achieve high $\\sigma(n)/n$ via $\\prod (1 + 1/p_i)$ while having divisor reciprocal sums too small for covering.",
-      "mathContext": "Placeholder definitions (`haightConstruction`, `primorialApproach`) sketching Haight's strategy: primorial-like products $n = p_1 \\cdots p_k$ achieve high $\\sigma(n)/n$ via $\\prod (1 + 1/p_i)$ while having divisor reciprocal sums too small for covering."
+      "summary": "Source comments outline Haight's strategy: primorial-like products $n = p_1 \\cdots p_k$ achieve high $\\sigma(n)/n$ via $\\prod (1 + 1/p_i)$ while having divisor reciprocal sums too small for covering. No Lean definitions are introduced in this section.",
+      "mathContext": "Source comments outline Haight's strategy: primorial-like products $n = p_1 \\cdots p_k$ achieve high $\\sigma(n)/n$ via $\\prod (1 + 1/p_i)$ while having divisor reciprocal sums too small for covering. No Lean definitions are introduced in this section."
     },
     {
       "id": "related-concepts",
       "title": "Related Concepts",
       "startLine": 244,
       "endLine": 263,
-      "summary": "Defines `coveringLCM` (period of covering system), `IsHighlyComposite` ($n$ maximizes $d(n)$ up to $n$), `IsSuperabundant` ($n$ maximizes $\\sigma(n)/n$ up to $n$). States `lcm_divides_of_all_divide` (sorry) and `haight_superabundance_connection`.",
+      "summary": "Defines `coveringLCM` (period of covering system), `IsHighlyComposite` ($n$ maximizes $d(n)$ up to $n$), `IsSuperabundant` ($n$ maximizes $\\sigma(n)/n$ up to $n$). Proves `lcm_divides_of_all_divide` and `haight_superabundance_connection`.",
       "mathContext": "Defines `coveringLCM` (period of covering system), `IsHighlyComposite` ($n$ maximizes $d(n)$ up to $n$), `IsSuperabundant` ($n$ maximizes $\\sigma(n)/n$ up to $n$)."
     },
     {
@@ -253,9 +253,7 @@
     "implications": "**Theoretical Significance**: **Number Theory Insights**\n\n1. **Divisor Structure:** The pattern of divisors matters, not just their sum\n\n**2. Covering Systems:** Highly constrained by reciprocal sum and Chinese Remainder Theorem\n\n3. **Superabundant Numbers:** Related to Haight's constructions\n\n4. **Computational:** Finding explicit examples for given c is non-trivial.",
     "openQuestions": [
       "What is the growth rate of the minimal uncoverable n as a function of c? Is it polynomial or exponential in c?",
-      "Can the definition sorries (σ(p) = p+1, σ(n) ≥ n, lcm divisibility) be proved from Mathlib's Nat.divisors API?",
       "Does Haight's construction extend to exact covering systems (partitions of ℤ into congruence classes)?",
-      "Can the placeholder True definitions (haightConstruction, primorialApproach) be replaced with explicit Lean constructions of Haight's examples?",
       "What is the relationship between superabundant numbers and the explicit bounds in Haight's theorem?"
     ]
   },
