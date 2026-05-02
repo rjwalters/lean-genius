@@ -62,7 +62,8 @@
       "The no-max reformulation — TPC ↔ ¬∃M, ∀p twin prime, p ≤ M — is the constructive equivalent: for any claimed bound M, TPC yields a larger twin prime. This avoids cardinality language and is the practical form used in applications.",
       "Brun's theorem (1919) gives the strongest known unconditional result: the sum ∑(1/p + 1/(p+2)) over twin prime pairs converges. Brun's constant B₂ ≈ 1.9021 is irrational but its irrationality is not proved. Notably, if there were only finitely many twin primes, Brun's constant would be a rational number — so its irrationality would imply the conjecture.",
       "Zhang's breakthrough (2014) proves ∃k ≤ 246 such that infinitely many pairs (p, p+k) exist with both prime. This is tight: 246 is not a provable upper bound for k=2 specifically. The gap between 'bounded gaps' (proved) and 'k=2' (open) illustrates the difficulty.",
-      "Selberg's parity obstruction (1950s) is the fundamental barrier: elementary sieves cannot distinguish numbers with an even vs. odd number of prime factors. Since a pair (p, p+2) requires both to be prime (each having exactly one prime factor), the parity problem blocks any sieve-only approach. Any proof of TPC must bypass this obstruction, explaining why Zhang's method (exponential sum estimates beyond pure sieve theory) was necessary even for bounded gaps."
+      "Selberg's parity obstruction (1950s) is the fundamental barrier: elementary sieves cannot distinguish numbers with an even vs. odd number of prime factors. Since a pair (p, p+2) requires both to be prime (each having exactly one prime factor), the parity problem blocks any sieve-only approach. Any proof of TPC must bypass this obstruction, explaining why Zhang's method (exponential sum estimates beyond pure sieve theory) was necessary even for bounded gaps.",
+      "Goldston-Pintz-Yıldırım (2005) proved conditional on the Elliott-Halberstam conjecture that infinitely many prime pairs with gap ≤ 16 exist. Zhang's 2014 breakthrough replaced the Elliott-Halberstam hypothesis with an unconditional Bombieri-Vinogradov-type estimate at a cost of the gap widening to 70,000,000. The gap between the conditional result (16) and k=2 shows how conditional lower bounds on prime distribution directly translate to smaller provable prime gaps."
     ],
     "prerequisites": [
       "Twin primes and the mod-6 structure theorem (parent entry)",
@@ -78,7 +79,8 @@
       "startLine": 1,
       "endLine": 52,
       "summary": "Imports TwinPrimes (parent), Mathlib.Data.Finset.Lattice, Mathlib.Tactic. Module docstring explains the historical background (de Polignac, Hardy-Littlewood, Brun, Zhang-Maynard), states unconditional and conditional results, and summarizes what is formalized.",
-      "mathContext": "Key imported items: IsTwinPrimePair (p : ℕ) := Prime p ∧ Prime (p+2); TwinPrimeConjecture := ∀ N, ∃ p > N, IsTwinPrimePair p; axiom twin_prime_conjecture; structural theorems twin_prime_mod_six and twin_prime_form (form (6k-1, 6k+1))."
+      "mathContext": "Key imported items: IsTwinPrimePair (p : ℕ) := Prime p ∧ Prime (p+2); TwinPrimeConjecture := ∀ N, ∃ p > N, IsTwinPrimePair p; axiom twin_prime_conjecture; structural theorems twin_prime_mod_six and twin_prime_form (form (6k-1, 6k+1)).",
+      "relatedConcepts": ["TwinPrimeConjecture", "IsTwinPrimePair", "Brun's constant", "Hardy-Littlewood Conjecture B", "Zhang-Maynard bounded gaps"]
     },
     {
       "id": "examples",
@@ -86,7 +88,8 @@
       "startLine": 54,
       "endLine": 100,
       "summary": "Adds 19 twin prime pairs beyond the parent's 6, reaching 25 total. Each is proved by `constructor <;> decide` — Lean's certified primality check for both p and p+2. The exists_twentyfive_twin_primes theorem packages all 25 in a single conjunction.",
-      "mathContext": "New pairs (lower elements): 59, 71, 101, 107, 137, 149, 179, 191, 197, 227, 239, 269, 281, 311, 347, 419, 431, 461, 521. All have p ≡ 5 (mod 6) since p > 3. Full verified set of 25: {3,5,11,17,29,41,59,71,101,107,137,149,179,191,197,227,239,269,281,311,347,419,431,461,521}."
+      "mathContext": "New pairs (lower elements): 59, 71, 101, 107, 137, 149, 179, 191, 197, 227, 239, 269, 281, 311, 347, 419, 431, 461, 521. All have p ≡ 5 (mod 6) since p > 3. Full verified set of 25: {3,5,11,17,29,41,59,71,101,107,137,149,179,191,197,227,239,269,281,311,347,419,431,461,521}.",
+      "relatedConcepts": ["decide tactic", "certified computation", "IsTwinPrimePair", "Nat.Prime decidability"]
     },
     {
       "id": "equivalences",
@@ -94,7 +97,8 @@
       "startLine": 102,
       "endLine": 123,
       "summary": "Proves two equivalent forms of TPC: the no-max condition (no finite bound exists for twin prime lower elements) and the prime-pair unfolding (direct unfold of IsTwinPrimePair definition). The no-max direction uses push_neg to convert the negation and omega for the arithmetic.",
-      "mathContext": "TPC ↔ ¬(∃ M, ∀ p, IsTwinPrimePair p → p ≤ M) ↔ (∀ N, ∃ p > N, Prime(p) ∧ Prime(p+2)). The unbounded equivalence: forward uses the TPC to find p > M contradicting the bound; backward uses push_neg to extract a witness exceeding any N."
+      "mathContext": "TPC ↔ ¬(∃ M, ∀ p, IsTwinPrimePair p → p ≤ M) ↔ (∀ N, ∃ p > N, Prime(p) ∧ Prime(p+2)). The unbounded equivalence: forward uses the TPC to find p > M contradicting the bound; backward uses push_neg to extract a witness exceeding any N.",
+      "relatedConcepts": ["push_neg tactic", "omega tactic", "equivalent reformulation", "unbounded sets", "TwinPrimeConjecture"]
     },
     {
       "id": "conditional",
@@ -102,7 +106,8 @@
       "startLine": 125,
       "endLine": 150,
       "summary": "Three theorems conditional on twin_prime_conjecture: infinite twin prime pairs (1-line from axiom), infinite primes ≡ 5 (mod 6) (uses max(N,3) to apply structure theorem), and no-finite-cover (Finset.sup upper-bound argument).",
-      "mathContext": "Under twin_prime_conjecture: (1) ∀ N, ∃ p > N, IsTwinPrimePair p; (2) ∀ N, ∃ p > N, IsTwinPrimePair p ∧ p % 6 = 5 — uses max(N,3) so that p > 3 for the structure theorem; (3) ∀ S ⊆_fin ℕ, ∃ p twin, p ∉ S — Finset.le_sup (f := id) gives p ≤ sup S, contradicting p > sup S from TPC."
+      "mathContext": "Under twin_prime_conjecture: (1) ∀ N, ∃ p > N, IsTwinPrimePair p; (2) ∀ N, ∃ p > N, IsTwinPrimePair p ∧ p % 6 = 5 — uses max(N,3) so that p > 3 for the structure theorem; (3) ∀ S ⊆_fin ℕ, ∃ p twin, p ∉ S — Finset.le_sup (f := id) gives p ≤ sup S, contradicting p > sup S from TPC.",
+      "relatedConcepts": ["twin_prime_mod_six", "Finset.sup", "Finset.le_sup", "arithmetic progressions", "max(N,3) trick"]
     }
   ],
   "conclusion": {
@@ -135,6 +140,16 @@
       "targetId": "weak-goldbach",
       "relationship": "related",
       "description": "Both TPC and Goldbach's conjecture concern simultaneous prime conditions. Helfgott's proof of Weak Goldbach (2013) used circle method techniques that informed the Zhang approach."
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Zhang (2014) and Maynard (2015) proved infinitely many prime pairs with gap ≤ 246. This is the closest known result to TPC: gap ≤ 246 vs. gap = 2. The TPC remains open even with these bounds."
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Under TPC, the mod-6 consequence gives infinitely many primes ≡ 5 (mod 6), a specific instance of Dirichlet's theorem. The structural constraint on twin primes — all must lie in the 5 (mod 6) residue class — shows how simultaneous primality restricts distribution."
     }
   ],
   "references": [
