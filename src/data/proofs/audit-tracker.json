@@ -5235,9 +5235,12 @@
     },
     "erdos-221": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T06:00:57Z",
+      "result": "issues-found",
+      "issues": [
+        "Phantom axioms in originalContributions/proofStrategy: lorentz_1954, two_primitive_root_mod_five_power, generalization_to_any_base, sumset_covering, additive_basis_order_two are listed but not declared in source (only dangling docstrings). Stale lineCount 274 in proofStrategy (file is 239 lines). Issue #14597 filed."
+      ]
     },
     "erdos-222": {
       "agentId": "auditor-1777701908",
