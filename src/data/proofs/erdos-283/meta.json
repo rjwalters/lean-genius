@@ -119,22 +119,22 @@
       "title": "Extensions and Related Results",
       "summary": "van Doorn (2025) extended to many linear ($ax+b$) and quadratic ($ax^2+bx+c$) polynomials. Cassels' theorem (1960): without the Egyptian constraint, representation by polynomial values always holds under the same conditions — showing the Egyptian constraint is the essential difficulty.",
       "startLine": 119,
-      "endLine": 141,
+      "endLine": 126,
       "mathContext": "Van Doorn extended to $p(x) = ax + b$ and $p(x) = ax^2 + bx + c$ for specific $(a,b,c)$. Cassels (1960): if $p$ has positive leading coefficient and no universal divisor, then every sufficiently large $m$ is a sum of distinct values $p(n_i)$ (no Egyptian constraint). The gap: Cassels needs only $\\sum p(n_i) = m$; Erdős additionally requires $\\sum 1/n_i = 1$."
     },
     {
       "id": "structure",
       "title": "Egyptian Fraction Structure",
-      "summary": "Proves `trivial_egyptian`: $\\{1\\}$ is an Egyptian decomposition (1/1 = 1). Axiomatizes that infinitely many Egyptian decompositions of 1 exist.",
-      "startLine": 142,
-      "endLine": 155,
+      "summary": "Proves `trivial_egyptian`: $\\{1\\}$ is an Egyptian decomposition (1/1 = 1). Notes (in a docstring comment) that infinitely many Egyptian decompositions of 1 exist.",
+      "startLine": 127,
+      "endLine": 137,
       "mathContext": "The trivial decomposition $\\{1\\}$ with $1/1 = 1$. More interesting: the splitting identity $1/n = 1/(n+1) + 1/n(n+1)$ generates infinitely many decompositions from any starting one. The Sylvester-Fibonacci sequence $2, 3, 7, 43, 1807, \\ldots$ where $a_{n+1} = a_1 \\cdots a_n + 1$ gives the greedy Egyptian fraction for 1."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_283_summary: Graham + Alekseyev conjunction",
-      "startLine": 156,
+      "startLine": 138,
       "endLine": 157,
       "mathContext": "Mathematical content: erdos_283_summary: Graham + Alekseyev conjunction"
     }
