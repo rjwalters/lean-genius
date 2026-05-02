@@ -13679,19 +13679,67 @@ private lemma strictHookCells_mem {μ : YoungDiagram} {i j : ℕ} {y : ℕ × �
     The arm and leg image sets are disjoint (arm has first coord i; leg has first coord > i). -/
 private lemma strictHookCells_card {μ : YoungDiagram} {i j : ℕ} (h : (i, j) ∈ μ) :
     (strictHookCells μ i j).card = hookLength μ i j - 1 := by
-  sorry  -- TRIVIAL: disjointness + card_Ico + hookLength def + omega
+  have hrow : j < μ.rowLen i := YoungDiagram.mem_iff_lt_rowLen.mp h
+  have hcol : i < μ.colLen j := YoungDiagram.mem_iff_lt_colLen.mp h
+  have hdisj : Disjoint
+      ((Finset.Ico (j + 1) (μ.rowLen i)).image (Prod.mk i))
+      ((Finset.Ico (i + 1) (μ.colLen j)).image (fun r => (r, j))) := by
+    apply Finset.disjoint_left.mpr
+    intro ⟨a, b⟩ hxL hxR
+    simp only [Finset.mem_image, Finset.mem_Ico, Prod.mk.injEq] at hxL hxR
+    obtain ⟨s, ⟨_, _⟩, rfl, rfl⟩ := hxL
+    obtain ⟨r, ⟨hr, _⟩, rfl, _⟩ := hxR
+    omega
+  have arm_card : ((Finset.Ico (j + 1) (μ.rowLen i)).image (Prod.mk i)).card =
+      μ.rowLen i - (j + 1) := by
+    rw [Finset.card_image_of_injective _ (fun a b h => (Prod.mk.inj h).2)]
+    exact Finset.card_Ico _ _
+  have leg_card : ((Finset.Ico (i + 1) (μ.colLen j)).image (fun r => (r, j))).card =
+      μ.colLen j - (i + 1) := by
+    rw [Finset.card_image_of_injective _ (fun a b h => (Prod.mk.inj h).1)]
+    exact Finset.card_Ico _ _
+  simp only [strictHookCells, Finset.card_union_of_disjoint hdisj, arm_card, leg_card]
+  unfold hookLength armLen legLen
+  omega
 
 /-- For a non-corner cell (i,j), strictHookCells is nonempty. -/
 private lemma strictHookCells_nonempty {μ : YoungDiagram} {i j : ℕ}
     (hmem : (i, j) ∈ μ) (hnc : ¬isCorner μ (i, j)) :
     (strictHookCells μ i j).Nonempty := by
-  sorry  -- TRIVIAL: non-corner means rowLen > j+1 or colLen > i+1
+  have h : (i, j + 1) ∈ μ ∨ (i + 1, j) ∈ μ := by
+    by_contra hab
+    push_neg at hab
+    exact hnc ⟨hmem, hab.1, hab.2⟩
+  rcases h with h1 | h2
+  · exact ⟨(i, j + 1), Finset.mem_union_left _
+        (Finset.mem_image.mpr ⟨j + 1, Finset.mem_Ico.mpr
+          ⟨Nat.le_refl _, YoungDiagram.mem_iff_lt_rowLen.mp h1⟩, rfl⟩)⟩
+  · exact ⟨(i + 1, j), Finset.mem_union_right _
+        (Finset.mem_image.mpr ⟨i + 1, Finset.mem_Ico.mpr
+          ⟨Nat.le_refl _, YoungDiagram.mem_iff_lt_colLen.mp h2⟩, rfl⟩)⟩
 
 /-- Each strict hook cell has strictly smaller hookLength than the base cell. -/
 private lemma strictHookCells_hookLen_lt {μ : YoungDiagram} {i j : ℕ}
     (hmem : (i, j) ∈ μ) {y : ℕ × ℕ} (hy : y ∈ strictHookCells μ i j) :
     hookLength μ y.1 y.2 < hookLength μ i j := by
-  sorry  -- TRIVIAL: arm/leg cells satisfy hookLength_add_eq comparison + omega
+  simp only [strictHookCells, Finset.mem_union, Finset.mem_image, Finset.mem_Ico] at hy
+  rcases hy with ⟨s, ⟨hjs, hsr⟩, rfl⟩ | ⟨r, ⟨hir, hrc⟩, rfl⟩
+  · -- y = (i, s) with j < s < rowLen i
+    simp only [Prod.fst, Prod.snd]
+    have hy_mem : (i, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr hsr
+    have h1 : hookLength μ i j + i + j + 1 = μ.rowLen i + μ.colLen j := hookLength_add_eq μ hmem
+    have h2 : hookLength μ i s + i + s + 1 = μ.rowLen i + μ.colLen s := hookLength_add_eq μ hy_mem
+    have h3 : μ.colLen s ≤ μ.colLen j := by
+      rw [← YoungDiagram.rowLen_transpose, ← YoungDiagram.rowLen_transpose]
+      exact μ.transpose.rowLen_anti j s (by omega)
+    omega
+  · -- y = (r, j) with i < r < colLen j
+    simp only [Prod.fst, Prod.snd]
+    have hy_mem : (r, j) ∈ μ := YoungDiagram.mem_iff_lt_colLen.mpr hrc
+    have h1 : hookLength μ i j + i + j + 1 = μ.rowLen i + μ.colLen j := hookLength_add_eq μ hmem
+    have h2 : hookLength μ r j + r + j + 1 = μ.rowLen r + μ.colLen j := hookLength_add_eq μ hy_mem
+    have h3 : μ.rowLen r ≤ μ.rowLen i := μ.rowLen_anti i r (by omega)
+    omega
 
 /-- GNW walk probability: gnwProb μ c K x = probability that a GNW walk started at
     x ends at corner c, with K as a termination bound (correct when hookLen(x) ≤ K). -/
@@ -13711,7 +13759,41 @@ noncomputable private def gnwProb (μ : YoungDiagram) (c : ℕ × ℕ) : ℕ →
 private lemma gnwProb_sum_corners (μ : YoungDiagram) :
     ∀ K : ℕ, ∀ x : ℕ × ℕ, x ∈ μ → hookLength μ x.1 x.2 ≤ K →
       ∑ c ∈ (corners μ).attach, gnwProb μ c.val K x = 1 := by
-  sorry  -- HARD (standard induction; not the GNW KEY step)
+  intro K
+  induction K with
+  | zero =>
+    intro x _ hle
+    exact absurd (hookLength_pos μ x.1 x.2) (by omega)
+  | succ K IH =>
+    intro x hx hle
+    by_cases hcx : isCorner μ x
+    · -- Corner: gnwProb (K+1) x = if x = c then 1 else 0
+      have expand : ∀ c : ↑(corners μ),
+          gnwProb μ c.val (K + 1) x = if x = c.val then (1 : ℚ) else 0 := fun c => by
+        unfold gnwProb; simp [hcx]
+      simp_rw [expand]
+      rw [Finset.sum_attach (f := fun c => if x = c then (1 : ℚ) else 0)]
+      rw [Finset.sum_ite_eq]
+      simp [mem_corners.mpr hcx]
+    · -- Non-corner: factor out 1/|H*(x)|, swap sums, apply IH
+      have expand : ∀ c : ↑(corners μ),
+          gnwProb μ c.val (K + 1) x =
+          (1 / (strictHookCells μ x.1 x.2).card : ℚ) *
+          ∑ y ∈ strictHookCells μ x.1 x.2, gnwProb μ c.val K y := fun c => by
+        unfold gnwProb; simp [hcx]
+      simp_rw [expand]
+      have hne : (strictHookCells μ x.1 x.2).Nonempty := strictHookCells_nonempty hx hcx
+      have hcard_pos : 0 < (strictHookCells μ x.1 x.2).card := Finset.card_pos.mpr hne
+      have hcard_ne : ((strictHookCells μ x.1 x.2).card : ℚ) ≠ 0 :=
+        Nat.cast_ne_zero.mpr hcard_pos.ne'
+      rw [← Finset.mul_sum, Finset.sum_comm]
+      have inner_eq : ∀ y ∈ strictHookCells μ x.1 x.2,
+          ∑ c ∈ (corners μ).attach, gnwProb μ c.val K y = 1 := fun y hy =>
+        IH y (strictHookCells_mem hy) (by
+          have := strictHookCells_hookLen_lt hx hy
+          omega)
+      rw [Finset.sum_congr rfl inner_eq, Finset.sum_const_one]
+      field_simp [hcard_ne]
 
 /-- GNW KEY theorem (Greene-Nijenhuis-Wilf 1979):
     The sum of GNW walk probabilities over all cells in μ equals the hookProd ratio.
