@@ -4381,9 +4381,10 @@
     },
     "erdos-1179": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 4,
+      "lastAudited": "2026-05-02T10:47:13Z",
+      "result": "issues-found",
+      "notes": "#14732: phantom axioms (erdos_renyi_upper, gEps_mono not declared; main_asymptotic now theorem main_asymptotic_derived; trivial_lower_bound→basic_lower_bound) in originalContributions/sections; section line drift (sections cover 1-178 of 316-line file; Parts IX, X missing); proofStrategy says 179-line file"
     },
     "erdos-1179-oq-01": {
       "auditCount": 2,
