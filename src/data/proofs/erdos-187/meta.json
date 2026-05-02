@@ -23,14 +23,14 @@
     ],
     "axiomCount": 4,
     "assumptions": "4 axioms: (1) optAPBound — the optimal AP bound function f(d) itself, declared as an axiom because computing the infimum over all 2-colorings is not constructive; (2) optAPBound_unbounded — van der Waerden's theorem implication that f(d) → ∞ (∀ k, ∃ d, k ≤ optAPBound d); (3) beck_upper_bound — Beck's 1980 result f(d) = O(log d) (∃ C D₀, ∀ d ≥ D₀, optAPBound d ≤ C·(log₂ d + 1)); (4) erdos_187_conjecture — the open question f(d) = Θ(log d) stated as an axiom (∃ c D₀, ∀ d ≥ D₀, c·log₂ d ≤ optAPBound d).",
-    "lineCount": 60,
+    "lineCount": 59,
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The problem of finding long monochromatic arithmetic progressions (APs) in 2-colorings of the integers has its roots in van der Waerden's 1927 theorem, which guarantees that any finite coloring of ℤ contains arbitrarily long monochromatic APs. Van der Waerden's original proof was non-constructive and gave tower-type bounds; Shelah (1988) later gave a primitive-recursive proof, but the quantitative bounds remain astronomical. Cohen and Erdős sharpened the question by fixing the common difference d: what is f(d), the maximum AP length that every 2-coloring must contain with difference d for infinitely many d? Erdős noted that the irrational rotation coloring χ(n) = ⌊√2 · n⌋ mod 2 limits monochromatic AP lengths, illustrating that Diophantine approximation governs the extremal colorings. The landmark result of Beck (1980) used discrepancy-theoretic methods to show f(d) ≤ (1+o(1))log₂ d — a striking logarithmic upper bound from probabilistic combinatorics. As of 2025, no lower bound beyond f(d) → ∞ (from van der Waerden) is known, making the gap between O(log d) and ω(1) the central open difficulty.",
     "problemStatement": "Find the optimal function f(d) such that in any 2-coloring of ℤ, at least one color class contains a monochromatic arithmetic progression of length f(d) with common difference d, for infinitely many d.",
     "text": "Find optimal f(d) such that any 2-coloring of ℤ has a monochromatic AP of length f(d) with difference d for infinitely many d. Known: f(d) → ∞ (van der Waerden), f(d) ≤ (1+o(1))log₂ d (Beck). Open.",
-    "proofStrategy": "The formalization axiomatizes 2-colorings (ℕ → Fin 2), monochromatic APs (IsMonoAP χ a d k), and the optimal bound function f(d). Known results — van der Waerden's growth guarantee, Beck's logarithmic upper bound, and Erdős's √2-coloring — are recorded as axioms. The conjecture that f(d) = Θ(log d) is stated as the open question. Key structural definitions include maxMonoAPLength (per-coloring AP bound) and optAPBound (the infimum over all colorings), encoding the minimax nature of f(d).",
+    "proofStrategy": "The formalization defines 2-colorings (TwoColoring = ℕ → Fin 2) and monochromatic APs (IsMonoAP χ a d k). The optimal bound function optAPBound d is axiomatized rather than defined, since computing the infimum over all 2-colorings is non-constructive. Known results — van der Waerden's growth guarantee and Beck's logarithmic upper bound — are recorded as axioms. The conjecture that f(d) = Θ(log d) is stated as the open question.",
     "keyInsights": [
       "Van der Waerden's theorem (1927) guarantees f(d) → ∞ as d → ∞: any 2-coloring must contain arbitrarily long monochromatic APs with any fixed common difference d, but gives no quantitative rate",
       "Beck's 1980 upper bound f(d) ≤ (1+o(1))log₂ d is proved by constructing a low-discrepancy 2-coloring; discrepancy theory measures how evenly a coloring distributes ±1 across all arithmetic progressions simultaneously",
@@ -57,35 +57,35 @@
       "id": "definitions",
       "title": "Part I: Definitions",
       "startLine": 22,
-      "endLine": 33,
-      "summary": "TwoColoring = ℕ → Fin 2. IsMonoAP χ a d k: {a, a+d, ..., a+(k-1)d} is monochromatic under χ. maxMonoAPLength χ d: longest monochromatic AP with difference d. optAPBound d = f(d): infimum over all 2-colorings."
+      "endLine": 31,
+      "summary": "TwoColoring = ℕ → Fin 2. IsMonoAP χ a d k: {a, a+d, ..., a+(k-1)d} is monochromatic under χ. The optimal bound function optAPBound is declared as an axiom in the next section."
     },
     {
       "id": "opt-ap-bound",
       "title": "Part II: optAPBound Axiom",
-      "startLine": 34,
-      "endLine": 37,
+      "startLine": 32,
+      "endLine": 36,
       "summary": "Axiom: optAPBound d — the optimal function f(d), declared as an axiom since computing the infimum over all 2-colorings requires reasoning beyond Mathlib's current scope."
     },
     {
       "id": "van-der-waerden",
       "title": "Part III: Van der Waerden's Theorem Implication",
-      "startLine": 38,
-      "endLine": 46,
+      "startLine": 37,
+      "endLine": 45,
       "summary": "Axiom optAPBound_unbounded: ∀ k, ∃ d, k ≤ optAPBound d — van der Waerden guarantees f(d) → ∞. Every 2-coloring of [1, W(2,k)] contains a monochromatic k-AP."
     },
     {
       "id": "beck-bound",
       "title": "Part IV: Beck's Upper Bound",
-      "startLine": 47,
-      "endLine": 55,
+      "startLine": 46,
+      "endLine": 54,
       "summary": "Axiom beck_upper_bound: ∃ C D₀, ∀ d ≥ D₀, f(d) ≤ C·(log₂ d + 1). Beck (1980) uses discrepancy theory to construct a 2-coloring limiting monochromatic AP length to O(log d)."
     },
     {
       "id": "open-conjecture",
       "title": "Part V: The Open Conjecture",
-      "startLine": 56,
-      "endLine": 60,
+      "startLine": 55,
+      "endLine": 59,
       "summary": "Axiom erdos_187_conjecture: ∃ c D₀, ∀ d ≥ D₀, c·log₂ d ≤ optAPBound d. The open lower bound that would give f(d) = Θ(log d). Combined with Beck, this would close the problem."
     }
   ],
@@ -107,7 +107,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 60,
+    "lineCount": 59,
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 2,

@@ -29,7 +29,6 @@ def TwoColoring := ℕ → Fin 2
 def IsMonoAP (χ : TwoColoring) (a d k : ℕ) : Prop :=
   0 < d ∧ 0 < k ∧ ∃ c : Fin 2, ∀ i : Fin k, χ (a + i.val * d) = c
 
-/-- maxMonoAPLength is at least 1 for positive d. -/
 /-- The optimal function f(d) = inf over all 2-colorings of the
     supremum of monochromatic AP lengths with difference d,
     required to hold for infinitely many d. Axiomatized. -/
