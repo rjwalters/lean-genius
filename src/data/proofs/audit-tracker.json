@@ -4858,10 +4858,12 @@
       "result": "clean"
     },
     "erdos-170": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "phantom F_lower_two axiom + non-existent N=3/N=30 examples + section line drift (issue #14673)"
+      ],
+      "lastAudited": "2026-05-02T08:45:39Z",
+      "result": "issues-found"
     },
     "erdos-171": {
       "auditCount": 2,
