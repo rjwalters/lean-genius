@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 5 (2026-05-03): PROGRESS — added PART VII with 6 perturbation-infrastructure theorems (Step 3 algebraic pieces). 0 new sorries, 0 new axioms. The algebraic decomposition apply(aHi·2^s+ea, bHi·2^s+eb) = 2^s·apply(aHi,bHi) + apply(ea,eb) is proved, plus the error bound |apply(ea,eb)| ≤ 2·C·B when entries ≤ C and low-bits ≤ B. Remaining: inductive bitsize argument (Step 4).",
+    "progressSummary": "Session 7 (2026-05-03): CRITICAL FINDING — hgcdMatrix_joint_bound (the 1 remaining sorry) is FALSE as stated. Two concrete counterexamples found: (31,20) gives M.apply=(-118,187) vs bound=32; (256,141) gives hgcdMatrix=id for all fuel, id.apply=(256,141) vs bound=128. Two issues: (1) COLUMN vs ROW convention mismatch, (2) structural defect in hgcdMatrix when top-half gives r=0. Added hgcdMatrix_row_reduction_small (proved) in ROW convention. Problem now BLOCKED on definitional fix.",
     "builtItems": [
       "BinaryGcdOQ03OQ02.lean: hgcdMatrix def — fuel-indexed recursive HGCD (Schönhage). Threshold-based bottoming via lehmerCofactors; otherwise top-half-shift recursion + apply + bottom-half recursion + matrix product.",
       "BinaryGcdOQ03OQ02.lean: cofactor_mul_apply — proves CofactorMatrix.mul corresponds to composition of CofactorMatrix.apply. Algebraic kernel justifying the M₂.mul M₁ return.",
@@ -54,7 +54,8 @@
       "BinaryGcdOQ03OQ02.lean PART VII: cofactor_apply_shift_decomp — apply(aHi·2^s+ea, bHi·2^s+eb) = 2^s·apply(aHi,bHi) + apply(ea,eb). Key algebraic identity for perturbation argument.",
       "BinaryGcdOQ03OQ02.lean PART VII: cofactor_apply_natAbs_le — triangle bound |apply(ea,eb).1| ≤ |M.α|·|ea| + |M.β|·|eb| via Int.natAbs_add_le + Int.natAbs_mul.",
       "BinaryGcdOQ03OQ02.lean PART VII: cofactor_apply_err_bound — given |M.α|,|M.β| ≤ C and |ea|,|eb| ≤ B, error component ≤ 2·C·B.",
-      "BinaryGcdOQ03OQ02.lean PART VII: cofactor_apply_err_bound_snd — same bound for second component using |M.γ|,|M.δ|."
+      "BinaryGcdOQ03OQ02.lean PART VII: cofactor_apply_err_bound_snd — same bound for second component using |M.γ|,|M.δ|.",
+      "BinaryGcdOQ03OQ02.lean PART VIII.5: hgcdMatrix_row_reduction_small — for small inputs (max<hgcdThreshold), ROW action of hgcdMatrix gives residues bounded by max(a,b). Proved: rw [hgcdMatrix_small h]; exact lehmerCofactors_id_apply_le hgcdThreshold a b."
     ],
     "insights": [
       "All 2x2 cofactor matrix invariants needed for HGCD correctness already exist in BinaryGcdOQ03.lean (gcd_cofactor_eq, lehmerCofactors_det_unit, cofactor_apply_gcd). The HGCD formalization is the recursive wiring of these.",
@@ -71,7 +72,12 @@
       "Sign alternation converts the Cramer identity into an entry BOUND (Session 4). Without sign info, the Bezout formula does not bound individual entries. With EvenPattern, all terms separate and bound M.delta <= a0 when ahat' >= 1.",
       "Entry bound hypothesis 1 <= ahat': requires algorithm to still be running. For HGCD, always satisfied: top-half cofactor applied to full-precision inputs strictly larger than top-half residues.",
       "Step 3 algebraic split is clean: apply(aHi·2^s+ea, bHi·2^s+eb) = 2^s·apply(aHi,bHi) + apply(ea,eb). Proved by ring. This reduces Step 3 to bounding the error apply(ea,eb) using Step 2b entry bounds (|M.α|,|M.β| ≤ max(aHi,bHi)) and the fact ea,eb < 2^s.",
-      "The MISSING piece for closing hgcdMatrix_size_reduction is inductive: need to show hgcdMatrix fuel aHi bHi reduces max(aHi,bHi) by at least half. This is an induction on bitsize that requires fuel to track depth — genuinely recursive and multi-session."
+      "The MISSING piece for closing hgcdMatrix_size_reduction is inductive: need to show hgcdMatrix fuel aHi bHi reduces max(aHi,bHi) by at least half. This is an induction on bitsize that requires fuel to track depth — genuinely recursive and multi-session.",
+      "hgcdMatrix_joint_bound is FALSE for the COLUMN convention. Counterexample a=31,b=20: lehmerCofactors 64 31 20 id = (2,-9,-3,14), M.apply(31,20)=(-118,187), but 2^(hgcdShift(31,20)+3)=32. 187>32.",
+      "hgcdMatrix has a structural defect: when bHi | aHi (top-half r=0 on first Euclidean step), lehmerCofactors returns id. With M1=id, the recursive call computes hgcdMatrix on the same (a,b) again. hgcdMatrix k 256 141 = id for all k.",
+      "COLUMN vs ROW convention: M.apply(a,b) = (M.alpha*a + M.beta*b, ...) is NOT the same as the row action a*M.alpha + b*M.gamma. All existing bounds use ROW convention; the sorry claimed COLUMN. Fix: re-state size-reduction in ROW convention.",
+      "hgcdMatrix_row_reduction_small (proved, Session 7): for max(a,b) < hgcdThreshold, the ROW action of hgcdMatrix gives residues bounded by max(a,b). One-line proof via hgcdMatrix_small + lehmerCofactors_id_apply_le.",
+      "Required fix for hgcdMatrix: add fallback branch — if M1 = id (top-half made no progress), use lehmerCofactors hgcdThreshold a b id on the full inputs. This prevents the infinite-loop degenerate case."
     ],
     "mathlibGaps": [
       "Half-GCD / HGCD: no formalization in Mathlib or this gallery (verified by grep 2026-04-28).",
@@ -80,9 +86,10 @@
       "Big-integer abstraction: Mathlib operates on Nat/Int as opaque algebraic structures; there is no big-integer-as-array-of-words representation that would let bit-complexity reasoning attach to actual arithmetic primitives."
     ],
     "nextSteps": [
-      "Session 5 (Step 3): Perturbation bound. From a = aHi*2^s + a_lo and entries <= max(aHi,bHi), bound |M*(a_lo, b_lo)|. ~50-80 lines.",
-      "Session 6 (Step 4): Close hgcdMatrix_size_reduction with explicit constants by composing Steps 2a+2b+3.",
-      "(Optional) Wire hgcdMatrix into a recursive GCD function. ~50-100 lines.",
+      "Fix hgcdMatrix definition: add guard — if M1 = id, fall back to lehmerCofactors hgcdThreshold a b id on full inputs.",
+      "Re-state the size-reduction sorry in ROW convention: a*M.alpha + b*M.gamma <= 2^(s+3) and a*M.beta + b*M.delta <= 2^(s+3).",
+      "Quotient stability: prove that Lehmer quotients from top-half approximations match full-precision Euclidean quotients. Still the deep missing lemma.",
+      "After definition fix + ROW re-statement: attempt joint induction for size reduction.",
       "(Deferred) O(M(n)log n) complexity: blocked on Mathlib infrastructure."
     ]
   },

@@ -784,69 +784,135 @@ theorem hgcdShift_top_lt (a b : ℕ) (h : hgcdThreshold ≤ max a b) :
     _ < max a b := Nat.div_lt_self hmax_pos h1lt2s
 
 -- ═══════════════════════════════════════════════════════════════
+-- PART VIII.5: ROW-CONVENTION OUTPUT BOUND (small case, proved)
+-- ═══════════════════════════════════════════════════════════════
+
+/-- For small inputs, the HGCD matrix's ROW action yields bounded residues.
+
+    When `max a b < hgcdThreshold`, the HGCD matrix equals
+    `lehmerCofactors hgcdThreshold a b id`, and the row-vector product
+    `(a · M.α + b · M.γ, a · M.β + b · M.δ)` gives Euclidean residues
+    bounded by `max a b`.
+
+    **Convention note**: this theorem uses the ROW action, not
+    `M.apply(a, b)` (COLUMN action). The distinction is critical:
+    the row action gives GCD residues (bounded), while the column
+    action can be much larger. See the counterexample at
+    `hgcdMatrix_joint_bound` for details.
+
+    This is the small-case component of the size-reduction argument,
+    proved from `lehmerCofactors_id_apply_le` by one rewrite. -/
+theorem hgcdMatrix_row_reduction_small (fuel a b : ℕ) (h : max a b < hgcdThreshold) :
+    ∃ a' b' : ℕ,
+      (a : ℤ) * (hgcdMatrix (fuel + 1) a b).α
+        + (b : ℤ) * (hgcdMatrix (fuel + 1) a b).γ = ↑a' ∧
+      (a : ℤ) * (hgcdMatrix (fuel + 1) a b).β
+        + (b : ℤ) * (hgcdMatrix (fuel + 1) a b).δ = ↑b' ∧
+      max a' b' ≤ max a b := by
+  rw [hgcdMatrix_small h]
+  exact lehmerCofactors_id_apply_le hgcdThreshold a b
+
+-- ═══════════════════════════════════════════════════════════════
 -- PART IX: SIZE REDUCTION CLAIM (joint bound — Step 4 proper)
 -- ═══════════════════════════════════════════════════════════════
 
-/-! ### The joint size-reduction theorem
+/-! ### The joint size-reduction theorem (statement needs correction)
 
-The complete Step 4 proof proceeds by strong induction on `max a b`,
-using `hgcdShift_top_lt` to ensure the induction measure decreases at
-each recursive call.
+**FINDING (2026-05-03)**: The theorem `hgcdMatrix_joint_bound` as stated
+is **FALSE**. The column action `M.apply(a, b)` is NOT bounded by
+`2 ^ (hgcdShift a b + 3)`. Two concrete counterexamples:
 
-The proof requires one additional ingredient not yet in this file:
+**Counterexample 1** (base case, a = 31, b = 20, any fuel ≥ 1):
 
-**Quotient stability** (`hgcd_quotient_stable`, not yet proved):
-  The Euclidean quotients computed from the top-half approximations
-  `(a / 2^s, b / 2^s)` agree with the quotients from the full-precision
-  `(a, b)` for a sufficient number of steps.
+  hgcdMatrix (fuel+1) 31 20 = lehmerCofactors 64 31 20 id
+                             = ⟨α=2, β=-9, γ=-3, δ=14⟩
 
-  Formally: for each step k of `lehmerCofactors`:
-    `(aHi_k / bHi_k) = (a_k / b_k)`
-  where `aHi_k, bHi_k` are the approximation residues and `a_k, b_k`
-  are the full-precision Euclidean residues.
+  Derivation: five Lehmer steps of (31,20) with q=1,1,1,4 (stopping at r=0):
+    step 1 q=1: (20,11), M = (0, 1, 1,-1)
+    step 2 q=1: (11, 9), M = (1,-1,-1, 2)
+    step 3 q=1: ( 9, 2), M = (-1, 2, 2,-3)
+    step 4 q=4: ( 2, 1), M = (2,-9,-3,14)
+    step 5 q=2:     r=0 → STOP (r=0 returns None, final state not included)
 
-  This is proved in Stehlé-Zimmermann (2004) using the approximation
-  quality bound from `topBitsApprox_lt` in `BinaryGcdOQ03.lean`. The
-  formalization bridges the ROW-convention output (which `entry_bound`
-  bounds) to the COLUMN-convention output `M.apply(a, b)` (what we
-  actually want to bound for size reduction).
+  Column output: M.apply(31, 20) = (2·31 + (-9)·20, (-3)·31 + 14·20)
+                                 = (62 - 180, -93 + 280) = (-118, 187)
+  natAbs max = 187.
+  Required bound: 2^(hgcdShift 31 20 + 3) = 2^(2+3) = 32.
+  187 > 32 → **VIOLATED**.
 
-**Proof sketch** (joint induction on `max a b`):
-  - Base (max a b < hgcdThreshold = 64):
-      M = lehmerCofactors 64 a b id.
-      Entry bound: entries ≤ max(a, b) < 64 from entry_bound_of_even/odd.
-      Output bound: M.apply(a, b) gives the Euclidean residues of (a, b),
-      which are bounded by max(a, b). (Requires quotient stability.)
-  - Recursive (hgcdThreshold ≤ max a b):
-      s = hgcdShift a b; M₁ = hgcdMatrix(a/2^s, b/2^s); M = M₂ · M₁.
-      By hgcdShift_top_lt: max(a/2^s, b/2^s) < max a b → IH applies.
-      IH on M₁ gives: entries(M₁) ≤ 2^(s₁+2) where s₁ = hgcdShift(a/2^s, b/2^s).
-      Full-precision apply via cofactor_apply_shift_decomp:
-        M₁.apply(a,b) = 2^s · M₁.apply(a/2^s, b/2^s) + M₁.apply(a%2^s, b%2^s).
-      Signal term: ≤ 2^s · 2^(s₁+2) ≈ 2^(3s/2 + 2) (IH output bound).
-      Error term: ≤ 2 · entries(M₁) · 2^s ≤ 2 · 2^(s₁+2) · 2^s ≈ 2^(3s/2+3).
-      Combined: max(|M₁.apply(a,b)|) ≤ 2^(3s/2 + 3).
-      IH on M₂ (applied to outputs of size ≤ 2^(3s/2+3)):
-        output M.apply(a,b) = M₂.apply(M₁.apply(a,b)) ≤ 2^s + (some additive term).
+  (Note the ROW action IS bounded: 31·2 + 20·(-3) = 2, 31·(-9) + 20·14 = 1,
+   max(2,1) = 2 ≤ 31. So `hgcdMatrix_row_reduction_small` is correct.)
 
-  The constants above are schematic; Stehlé-Zimmermann give precise bounds
-  with C = O(1) for the binary-recursive variant.
+**Counterexample 2** (recursive case, a = 256, b = 141, any fuel):
 
-  **Classification**: HARD (requires new Lean infrastructure — quotient
-  stability proof + careful induction setup). Aristotle cannot help. -/
+  s = hgcdShift 256 141 = (Nat.log 2 256 + 1)/2 = 4.
+  aHi = 256/16 = 16, bHi = 141/16 = 8.
+  M₁ = lehmerCofactors 64 16 8 id: first step q=2, r=0 → STOP immediately.
+  M₁ = id.
 
-/-- [Sorry] HGCD joint size-reduction bound.
+  With M₁ = id: M₁.apply(256, 141) = (256, 141), so M₂ = hgcdMatrix fuel 256 141.
+  But this is the SAME recursion we started with! For any finite fuel k:
+    hgcdMatrix 0 256 141 = id
+    hgcdMatrix (k+1) 256 141 = (hgcdMatrix k 256 141).mul id = hgcdMatrix k 256 141
+  By induction: hgcdMatrix k 256 141 = id for ALL k.
 
-    For sufficient fuel, the column output and all matrix entries of
-    `hgcdMatrix fuel a b` are bounded by `2 ^ (hgcdShift a b + 3)`.
+  id.apply(256, 141) = (256, 141), natAbs max = 256.
+  Required bound: 2^(4+3) = 128.  256 > 128 → **VIOLATED**.
 
-    The `+ 3` constant is conservative (absorbs rounding and two levels
-    of recursion); a tighter analysis would give `+ 2` or `+ 1`.
-    See the proof sketch in the PART IX docstring above.
+**Root cause — structural issue in `hgcdMatrix`**:
 
-    **Missing**: `hgcd_quotient_stable` — the quotient stability lemma
-    that connects the row-convention output (bounded by existing lemmas)
-    to the column-convention output `M.apply(a, b)`. -/
+  When bHi | aHi (i.e., the top-half pair has r = 0 on the very first
+  Euclidean step), `lehmerCofactors` returns `id` without making any
+  progress. With M₁ = id, the recursive call gets the same (a, b) back,
+  causing the recursion to loop until fuel=0. The fuel hypothesis
+  `a + b ≤ fuel` does NOT prevent this — the natural termination
+  condition for hgcdMatrix is structural (bit-size decrease), not
+  sum-decrease.
+
+  **Fix**: add a guard in `hgcdMatrix`: if M₁ = id, fall back to
+  `lehmerCofactors hgcdThreshold a b id` on the full inputs (which
+  always terminates and is correct, though not size-reducing in one step).
+
+**What IS provable with the current definition**:
+
+  1. `hgcdMatrix_row_reduction_small` (proved above): for small inputs,
+     the ROW action `a·M.α + b·M.γ` and `a·M.β + b·M.δ` are bounded
+     by `max a b`. This is the correct formulation for small inputs.
+
+  2. Entry bounds for the SMALL case: `M.α.natAbs ≤ max a b` etc. follow
+     from `entry_bound_of_even/odd` under the row invariant.
+
+  3. For the LARGE case (recursive), the claim fails both for entries
+     and outputs when M₁ = id (trivial recursion).
+
+  **Next step**: fix `hgcdMatrix` to detect the M₁ = id case and fall
+  back, then re-state `hgcdMatrix_joint_bound` using the ROW convention:
+    `a · M.α + b · M.γ ≤ 2^(s+3)` and `a · M.β + b · M.δ ≤ 2^(s+3)`.
+
+  **Classification**: OPEN (requires fixing the definition, then a new
+  induction argument). This is more than a missing lemma — the definition
+  has a structural defect for the degenerate bHi | aHi case. -/
+
+/-- [Sorry — STATEMENT IS FALSE] HGCD joint size-reduction bound.
+
+    **⚠ WARNING: This theorem as stated is false.**
+    The COLUMN action `M.apply(a, b)` is NOT bounded by `2^(hgcdShift a b + 3)`.
+
+    Counterexample: a=31, b=20, any fuel≥1.
+      M = lehmerCofactors 64 31 20 id = ⟨2,-9,-3,14⟩.
+      M.apply(31,20) = (-118, 187).  max natAbs = 187.
+      2^(hgcdShift 31 20 + 3) = 2^5 = 32.  187 > 32.
+
+    The error is a CONVENTION MISMATCH: the existing infrastructure bounds
+    the ROW action `a·M.α + b·M.γ` (which gives Euclidean residues), not
+    the COLUMN action `M.α·a + M.β·b` (which does not).
+
+    Additionally, `hgcdMatrix` has a structural defect: when the top-half
+    approximation gives M₁ = id (degenerate case bHi | aHi), the recursion
+    loops until fuel=0. Counterexample: a=256, b=141 → id for all fuel.
+
+    See the PART IX docstring for the full analysis.
+    See `hgcdMatrix_row_reduction_small` (proved) for the correct small case. -/
 theorem hgcdMatrix_joint_bound (fuel a b : ℕ) (hfuel : a + b ≤ fuel) :
     let M := hgcdMatrix fuel a b
     let s := hgcdShift a b
@@ -919,14 +985,28 @@ theorem hgcdMatrix_joint_bound (fuel a b : ℕ) (hfuel : a + b ≤ fuel) :
     decrease** needed for the Step 4 strong induction. Proof: `2^s ≥ 2`
     from hgcdShift_pos, then `Nat.div_lt_self`.
 
-**Remaining for size reduction (1 sorry):**
-- `hgcdMatrix_joint_bound` (PART IX): the full joint bound —
-  output and entries ≤ 2^(s+3). The induction structure is set up by
-  `hgcdShift_top_lt` (proved above). The **missing piece** is quotient
-  stability: showing that Lehmer quotients computed from top-half
-  approximations match full-precision Euclidean quotients. This connects
-  the row-convention output (bounded by entry_bound_of_even/odd) to the
-  column-convention output (M.apply a b). See PART IX docstring.
+12. **Row-action bound for small inputs** (`hgcdMatrix_row_reduction_small`,
+    PART VIII.5): for `max a b < hgcdThreshold`, the HGCD matrix's ROW
+    action `(a·M.α + b·M.γ, a·M.β + b·M.δ)` gives residues bounded by
+    `max a b`. One-line proof: `rw [hgcdMatrix_small h]; exact
+    lehmerCofactors_id_apply_le hgcdThreshold a b`. This is the CORRECT
+    small-case formulation (ROW convention, not COLUMN).
+
+**Remaining for size reduction (1 sorry — statement needs correction):**
+- `hgcdMatrix_joint_bound` (PART IX): **STATEMENT IS FALSE** as written.
+  The COLUMN action `M.apply(a, b)` is NOT bounded by `2^(s+3)`.
+  Counterexample: a=31, b=20 → M.apply = (-118,187), bound = 32. VIOLATED.
+
+  **Two issues identified**:
+  1. CONVENTION MISMATCH: existing lemmas bound the ROW action; the sorry
+     claims the COLUMN action. For general matrices these differ.
+  2. STRUCTURAL DEFECT in `hgcdMatrix`: when the top-half pair has r=0
+     immediately (bHi | aHi), M₁ = id and the recursion loops until
+     fuel=0. Example: a=256, b=141 → hgcdMatrix k 256 141 = id for all k.
+
+  **Required fix**: correct `hgcdMatrix` to fall back to
+  `lehmerCofactors hgcdThreshold a b id` when M₁ = id, then re-state the
+  theorem in the ROW convention. See PART IX docstring for full analysis.
 
 **Out of scope (deferred):**
 - Bit-complexity bound O(M(n)·log n): requires Mathlib infrastructure

@@ -412,3 +412,89 @@ The TIGHT bound requires max_entry ≤ 2^(N/4) — which comes from knowing the 
 
 2. **Alternative step 4**: Use the WEAK size-reduction: show that if `hgcdMatrix fuel aHi bHi` is NOT the identity, then `max(output) < max(input)`. This is weaker than "by half" but shows strict decrease, which might be enough for termination-style arguments.
 
+## Session 2026-05-03 (Session 7) — Sorry Falsity + Convention Counterexamples
+
+**Mode**: REVISIT
+**Outcome**: critical finding — sorry statement is FALSE; new proved theorem added
+
+### What I Did
+
+- Analyzed `hgcdMatrix_joint_bound` (the 1 remaining sorry) in detail.
+- Traced through the Euclidean steps for concrete inputs to determine whether the COLUMN-convention bound `M.apply(a,b) ≤ 2^(s+3)` actually holds.
+- Found two concrete counterexamples proving the sorry is FALSE.
+- Added `hgcdMatrix_row_reduction_small` (proved): the CORRECT small-case bound in ROW convention.
+- Documented the falsity in the sorry docstring and PART IX header comment.
+- Updated the Summary section (now item 12).
+
+### Key Findings
+
+**Counterexample 1 — base case (a=31, b=20)**:
+
+  Tracing 5 Lehmer steps (q=1,1,1,4, stopping at r=0):
+  ```
+  M = lehmerCofactors 64 31 20 id = (α=2, β=-9, γ=-3, δ=14)
+  ```
+  Column output: `M.apply(31,20) = (-118, 187)`, natAbs max = 187.
+  Bound: `2^(hgcdShift(31,20) + 3) = 2^5 = 32`. **187 > 32 — VIOLATED.**
+
+  The ROW action IS bounded: `31·2 + 20·(-3) = 2`, `31·(-9) + 20·14 = 1`.
+  max(2,1) = 2 ≤ 31. So the row convention is fine; only column fails.
+
+**Counterexample 2 — recursive / degenerate case (a=256, b=141)**:
+
+  `hgcdShift = 4`, top-half = (16, 8).
+  `lehmerCofactors 64 16 8 id`: first step q=2, r=0 → STOP → returns `id`.
+  With M₁ = id: `M₁.apply(256,141) = (256,141)`.
+  Recursion body: `M₂ = hgcdMatrix (fuel-1) 256 141 = id` (inductive).
+  `hgcdMatrix k 256 141 = id` for ALL k.
+  `id.apply(256,141) = (256,141)`, bound = `2^7 = 128`. **256 > 128 — VIOLATED.**
+
+**Root cause — two distinct issues**:
+
+1. **Convention mismatch**: the sorry claims the COLUMN action; existing infrastructure
+   (entry_bound, lehmerCofactors_id_apply_le) bounds the ROW action. For products of
+   step matrices, these differ (row applies quotients in forward order, column in reverse).
+
+2. **Structural defect in `hgcdMatrix`**: when `bHi | aHi` (top-half gives r=0 immediately),
+   `lehmerCofactors` returns `id`, and the recursive call gets the same (a,b) back.
+   The fuel decreases but the input never reduces. This is a correctness bug in the definition,
+   not just a missing proof lemma.
+
+**New proved theorem** (`hgcdMatrix_row_reduction_small`):
+
+  ```lean
+  theorem hgcdMatrix_row_reduction_small (fuel a b : ℕ) (h : max a b < hgcdThreshold) :
+      ∃ a' b' : ℕ,
+        (a : ℤ) * (hgcdMatrix (fuel + 1) a b).α + (b : ℤ) * (hgcdMatrix (fuel + 1) a b).γ = ↑a' ∧
+        (a : ℤ) * (hgcdMatrix (fuel + 1) a b).β + (b : ℤ) * (hgcdMatrix (fuel + 1) a b).δ = ↑b' ∧
+        max a' b' ≤ max a b := by
+    rw [hgcdMatrix_small h]
+    exact lehmerCofactors_id_apply_le hgcdThreshold a b
+  ```
+
+  One-line proof using existing infrastructure. This is the correct small-case
+  size-reduction statement (ROW action bounded by max(a,b)).
+
+### Files Modified
+
+- `proofs/Proofs/BinaryGcdOQ03OQ02.lean` — added PART VIII.5 (proved theorem),
+  replaced PART IX header/sorry docstring with counterexample analysis, updated Summary.
+
+### Next Steps
+
+1. **Fix `hgcdMatrix` definition**: add fallback branch — if M₁ = id, use
+   `lehmerCofactors hgcdThreshold a b id` on the full inputs instead of recursing.
+   This restores the property that every call reduces or terminates.
+
+2. **Re-state the size-reduction theorem** in ROW convention:
+   `a · M.α + b · M.γ ≤ 2^(s+3)` and `a · M.β + b · M.δ ≤ 2^(s+3)`.
+   The COLUMN action bound is derivable from the ROW bound only if M is known
+   to be the GCD-reducing matrix (which requires quotient stability first).
+
+3. **Quotient stability**: still needed to connect the top-half Lehmer steps
+   to the full-precision Euclidean quotients. This remains the missing deep lemma.
+
+4. This session clarified that the proof plan has TWO distinct blockers (not one),
+   making the problem harder than previously assessed. BLOCKED in current form
+   until `hgcdMatrix` is fixed.
+
