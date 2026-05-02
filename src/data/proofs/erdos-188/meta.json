@@ -78,7 +78,7 @@
       "**Red as an independent set:** The constraint `RedUnitDistanceFree` means the red set is independent in the unit distance graph $G(\\mathbb{R}^2)$. This connects to the Hadwiger-Nelson problem: $\\chi(G(\\mathbb{R}^2)) \\in [5, 7]$ (de Grey 2018 proved $\\geq 5$). Since at most $1 - 1/\\chi$ of the plane can be red, the blue set must be dense.",
       "**Tsaturian's improvement:** The lower bound improvement from $k \\geq 5$ to $k \\geq 6$ required constructing an explicit unit-distance configuration in $\\mathbb{R}^2$ that forces any red-independent coloring to contain a 6-term blue AP. Such configurations must be carefully designed since the plane has uncountable many directions.",
       "**The gap problem:** The six-order-of-magnitude gap between $k \\geq 6$ and $k \\leq 10^7$ is one of the widest in combinatorial geometry. Even determining whether $k$ is closer to 6 or to $10^7$ would be a major breakthrough. The Erdős-Graham upper bound construction uses stripe-based colorings whose analysis is technically demanding.",
-      "**Formalization as axioms:** The 5 axioms (`lower_bound_5`, `lower_bound_6`, `upper_bound_exists`, `vanDerWaerden`, `alon_observation`) reflect mathematically deep results. The proved theorems (`achievable_nonempty`, `red_is_independent`, `erdos_188_bounds`, `erdos_188_statement`) demonstrate meaningful deductions from these axioms."
+      "**Formalization as axioms:** The 2 axioms (`lower_bound_6` (Tsaturian 2017) and `upper_bound_exists` (Erdős–Graham)) reflect mathematically deep results requiring combinatorial geometry beyond current Mathlib. The proved theorems (`achievable_nonempty`, `red_is_independent`, `erdos_188_bounds`, `erdos_188_statement`) demonstrate meaningful deductions from these axioms."
     ],
     "prerequisites": [
       "Metric spaces and distance functions in ℝ²",
@@ -110,10 +110,10 @@
     {
       "id": "bounds",
       "title": "Known Bounds",
-      "summary": "Axiomatizes the lower bounds $k \\geq 5$ (EGMRSS 1973) and $k \\geq 6$ (Tsaturian 2017), the upper bound existence ($\\exists k \\in s,\\, k \\leq 10^7$), and proves `achievable_nonempty` and the combined `erdos_188_bounds` theorem.",
+      "summary": "Axiomatizes `lower_bound_6` ($k \\geq 6$, Tsaturian 2017) and `upper_bound_exists` ($\\exists k \\in s,\\, k \\leq 10^7$, Erdős–Graham). Proves `achievable_nonempty` and the combined `erdos_188_bounds` theorem. The EGMRSS 1973 lower bound $k \\geq 5$ is discussed in comments but not axiomatized separately.",
       "startLine": 82,
       "endLine": 106,
-      "mathContext": "Axiomatizes the lower bounds $k \\geq 5$ (EGMRSS 1973) and $k \\geq 6$ (Tsaturian 2017), the upper bound existence ($\\exists k \\in s,\\, k \\leq 10^7$), and proves `achievable_nonempty` and the combined `erdos_188_bounds` theorem."
+      "mathContext": "Axiomatizes `lower_bound_6` ($k \\geq 6$, Tsaturian 2017) and `upper_bound_exists` ($\\exists k \\in s,\\, k \\leq 10^7$, Erdős–Graham). No `lower_bound_5` axiom is declared — only `lower_bound_6` and `upper_bound_exists` exist in the Lean file."
     },
     {
       "id": "unitgraph",
@@ -126,10 +126,10 @@
     {
       "id": "vanderwaerden",
       "title": "Van der Waerden Connection",
-      "summary": "Axiomatizes van der Waerden's theorem (any finite coloring of $\\mathbb{N}$ has arbitrarily long monochromatic APs) and Alon's observation that the original problem without the unit-step restriction has no solution.",
+      "summary": "Docstring commentary on van der Waerden's theorem (any finite coloring of $\\mathbb{N}$ has arbitrarily long monochromatic APs) and Alon's observation that the original problem without the unit-step restriction has no solution. No axiom or theorem declarations appear in this section — it contains only inline comments.",
       "startLine": 130,
       "endLine": 147,
-      "mathContext": "Axiomatizes van der Waerden's theorem (any finite coloring of $\\mathbb{N}$ has arbitrarily long monochromatic APs) and Alon's observation that the original problem without the unit-step restriction has no solution."
+      "mathContext": "Commentary only: discusses van der Waerden's theorem and Alon's observation via inline comments. No `axiom vanDerWaerden` or `axiom alon_observation` declarations exist in the Lean file."
     },
     {
       "id": "constructions",
