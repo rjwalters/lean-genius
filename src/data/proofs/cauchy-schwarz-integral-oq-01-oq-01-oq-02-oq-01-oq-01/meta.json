@@ -1,0 +1,126 @@
+{
+  "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01",
+  "title": "Lp Riesz Representation for Sigma-Finite Measures",
+  "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01",
+  "description": "Can the Riesz representation theorem for Lp duality be generalized from finite to purely sigma-finite measures? Answer: yes in principle — the key Lp approximation ingredient (spanning-set truncation) is partially formalized, with the full generalization reduced to three HARD (not OPEN) sorries.",
+  "meta": {
+    "status": "formalized",
+    "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01.lean",
+    "tags": [
+      "functional-analysis",
+      "lp-spaces",
+      "riesz-representation",
+      "sigma-finite",
+      "measure-theory",
+      "vitali-convergence"
+    ],
+    "badge": "formalized",
+    "sorries": 3,
+    "axiomCount": 0,
+    "lineCount": 230,
+    "assumptions": "3 HARD sorries (not OPEN): lp_truncation_tendsto_zero (~80 lines, Vitali's theorem API), localization_existence (~150 lines, Lp restriction map), density extension (~50 lines, port of parent's integral_representation). Classical proofs: Folland §6.2, Rudin Theorem 6.16.",
+    "dateAdded": "2026-05-03"
+  },
+  "overview": {
+    "problemStatement": "Can Mathlib's sigma-finite infrastructure (`spanningSets`, `SigmaFinite`) be composed with the finite-measure Riesz representation proof to eliminate the `IsFiniteMeasure` hypothesis?",
+    "text": "The parent file (CauchySchwarzIntegralOQ01OQ01OQ02OQ01) proves the Riesz representation theorem for $L^p$ duality under $[\\mathrm{IsFiniteMeasure}\\, \\mu]$. This file explores the generalization to purely sigma-finite measures, identifying the key new analytic ingredient: for $f \\in L^p(\\mu)$ with $\\mu$ sigma-finite, the spanning-set truncations $f \\cdot \\mathbf{1}_{S_n}$ converge to $f$ in $L^p$ norm. Two foundational results are proved; the full theorem is reduced to three HARD (non-OPEN) sorries.",
+    "historicalContext": "The $L^p$ duality theorem $L^p(\\mu)^* \\cong L^q(\\mu)$ holds for all sigma-finite measures (see Folland, Real Analysis, Theorem 6.15; Rudin, Real and Complex Analysis, Theorem 6.16). The finite-measure case is often proved first (as in the parent file) and the sigma-finite generalization requires a localization argument: restrict to the spanning sets $S_n$, apply the finite-measure result on each, and glue via a.e.-consistency.",
+    "proofStrategy": "**Step A** (HARD sorry, ~150 lines): Localize via spanningSets. For each n, $\\mu.\\mathrm{restrict}\\, S_n$ is finite; apply the parent's 7-step proof to get $g_n \\in L^q(\\mu.\\mathrm{restrict}\\, S_n)$ representing $\\varphi$ on $S_n$-supported functions. The $g_n$ are a.e.-consistent; $g := a.e.$-limit is in $L^q(\\mu)$ by MCT. **Step B** (HARD sorry, ~80 lines): For $f \\in L^p(\\mu)$, the truncations $f \\cdot \\mathbf{1}_{S_n}$ converge to $f$ in $L^p$ via Vitali's convergence theorem (UnifIntegrable + UnifTight from domination by $2|f| \\in L^p$, a.e. convergence from spanning-set exhaustion). **Step C** (HARD sorry, ~50 lines): Density extension — port of the parent's `integral_representation`, which doesn't use `IsFiniteMeasure`.",
+    "keyInsights": [
+      "The spanning-set exhaustion (spanningSets_eventually_mem) gives pointwise convergence of truncations; this is proved without sorry",
+      "UnifTight for the truncation sequence follows from unifTight_const applied to the dominator 2|f| ∈ Lp, combined with eLpNorm_mono",
+      "Vitali's convergence theorem (tendsto_Lp_of_tendsto_ae) is the correct Mathlib API — there is no tendsto_Lp_of_dominated_convergence",
+      "The density extension step (Step C) is a direct port of the parent proof: Lp.induction does not use IsFiniteMeasure",
+      "Lp restriction map infrastructure (Lp(μ) → Lp(μ.restrict S)) is the main Lean gap for Step A (~150 lines)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "spanning-set-pointwise",
+      "title": "Spanning-Set Pointwise Convergence (Proved)",
+      "startLine": 67,
+      "endLine": 86,
+      "summary": "Proves mem_spanningSets_eventually and pointwise_mul_indicator_tendsto: every point eventually enters the sigma-finite exhaustion, so f(a)·1_{Sₙ}(a) → f(a) pointwise."
+    },
+    {
+      "id": "lp-truncation",
+      "title": "Step B: Lp Truncation Convergence (HARD sorry)",
+      "startLine": 87,
+      "endLine": 130,
+      "summary": "HARD sorry: f·1_{Sₙ} → f in Lp norm. Proof via tendsto_Lp_of_tendsto_ae (Vitali) with UnifIntegrable/UnifTight from domination by 2|f| ∈ Lp."
+    },
+    {
+      "id": "localization",
+      "title": "Step A: Localization Construction (HARD sorry)",
+      "startLine": 132,
+      "endLine": 165,
+      "summary": "HARD sorry (~150 lines): constructs g ∈ Lq(μ) from localizations to μ.restrict Sₙ using the parent's finite-measure proof. Blocked by Lp restriction map infrastructure."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Sigma-Finite Riesz Representation (HARD sorry)",
+      "startLine": 167,
+      "endLine": 205,
+      "summary": "HARD sorry (~50 lines): assembles localization + density extension to prove riesz_lp_surjective_sigma_finite. Density extension ports the parent's integral_representation."
+    }
+  ],
+  "conclusion": {
+    "summary": "Two foundational lemmas proved (spanning-set pointwise convergence). The full sigma-finite Riesz representation is reduced to three HARD sorries totaling ~280 lines, none involving unsolved mathematics.",
+    "implications": "Once the three sorries are filled, this completes the Riesz representation theorem for all sigma-finite measures in Lean 4, matching the classical scope of Folland Theorem 6.15 / Rudin Theorem 6.16.",
+    "openQuestions": [
+      "Does the proof extend to complex-valued Lp spaces (Riesz representation for complex functionals)?",
+      "Can the localization argument be abstracted into a general 'finite-to-sigma-finite lifting' infrastructure for Lp results?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "The parent file which proves the finite-measure Riesz representation; this file generalizes to sigma-finite measures"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
+      "relationship": "related",
+      "description": "The grandparent file axiomatizing Lp surjectivity; the finite-measure parent proved it; this file aims to remove IsFiniteMeasure"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "lineCount": 230,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "mem_spanningSets_eventually",
+        "type": "proved",
+        "description": "Every point eventually enters the sigma-finite spanning sets"
+      },
+      {
+        "name": "pointwise_mul_indicator_tendsto",
+        "type": "proved",
+        "description": "f(a)·1_{Sₙ}(a) → f(a) pointwise as n → ∞"
+      },
+      {
+        "name": "lp_truncation_tendsto_zero",
+        "type": "sorry",
+        "description": "HARD: f·1_{Sₙ} → f in Lp norm via Vitali's convergence theorem"
+      },
+      {
+        "name": "localization_existence",
+        "type": "sorry",
+        "description": "HARD: constructs representing function g ∈ Lq via localization to spanning sets"
+      },
+      {
+        "name": "riesz_lp_surjective_sigma_finite",
+        "type": "sorry",
+        "description": "HARD: main sigma-finite Riesz representation — assembles localization + density extension"
+      }
+    ],
+    "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01.lean",
+    "sorries": 3
+  },
+  "sorries": 3
+}
