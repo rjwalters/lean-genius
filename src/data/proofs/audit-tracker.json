@@ -5174,9 +5174,12 @@
     },
     "erdos-213": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T06:25:46Z",
+      "result": "issues-found",
+      "issues": [
+        "Phantom axiom narrative: originalContributions/proofStrategy claim anning_erdos_finite and gip_sparsity_bound axioms that do not exist in Erdos213Problem.lean (only dangling /-- ... -/ docstrings); section line ranges drift for main-results, constructions, bounds, summary; 3 dangling docstrings in Lean source. Numerical fields (axiomCount=4, sorries=0) accurate. Issue #14608."
+      ]
     },
     "erdos-214": {
       "agentId": "auditor-cycle-20-batch",
