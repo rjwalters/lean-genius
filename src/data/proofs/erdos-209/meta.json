@@ -55,7 +55,7 @@
     "historicalContext": "**Erdős Problem #209** is a question in incidence geometry about the structure of line arrangements. The classical Sylvester-Gallai theorem (1893) guarantees that any finite set of points not all collinear determines at least one \"ordinary line\" (containing exactly 2 points). Erdős asked: can we extend this to triangles?\n\n**Historical Development:**\n- **1893 (Sylvester-Gallai):** Ordinary points/lines must exist.\n- **1984 (Füredi-Palásti):** Disproved the conjecture for most d.\n- **2016 (Escudero):** Completed the disproof for ALL d ≥ 4.\n\n**Key Insight:** While ordinary points always exist, they can be positioned to avoid forming triangles with only ordinary vertices.",
     "problemStatement": "**Problem Statement (Disproved)**\n\nLet $A$ be a finite collection of $d \\geq 4$ non-parallel lines in $\\mathbb{R}^2$ such that no point lies on 4 or more lines. Must there exist a **Gallai triangle** (or **ordinary triangle**): three lines from $A$ that form a triangle where each vertex involves exactly two lines?\n\n**Answer: NO!**\n\n**Resolution:**\n- Füredi-Palásti (1984): No for $d$ not divisible by 9\n- Escudero (2016): No for ALL $d \\geq 4$\n\n**Dual Formulation:** Given $n$ points with no 4 collinear, must there exist 3 points where each pair determines an ordinary line?",
     "text": "Must every line arrangement (d ≥ 4 lines, no parallels, no 4-concurrent) have a Gallai triangle? NO, disproved by Füredi-Palásti (1984) and Escudero (2016).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Lines and Arrangements:** Define lines via coefficients, parallel criterion, and line arrangements as finite sets.\n\n2. **Incidence Properties:** Define ordinary points (2 lines), 3-rich points (3+ lines), and Gallai triangles.\n\n3. **Sylvester-Gallai:** Axiomatize that ordinary points always exist.\n\n4. **Counterexamples:** Axiomatize Füredi-Palásti (1984) and Escudero (2016) constructions.\n\n5. **Main Result:** Prove the conjecture is false for all d ≥ 4.\n\n6. **Dual Problem:** Explain the point-line duality.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Lines and Arrangements:** Define lines via coefficients, parallel criterion, and line arrangements as finite sets.\n\n2. **Incidence Properties:** Define ordinary points (2 lines), 3-rich points (3+ lines), and Gallai triangles.\n\n3. **Sylvester-Gallai:** Describe ordinary points and the Sylvester-Gallai theorem in docstrings; not axiomatized in this formalization.\n\n4. **Counterexamples:** Axiomatize the Escudero (2016) construction (`escudero_2016`); cite Füredi-Palásti (1984) in docstrings without a separate axiom.\n\n5. **Main Result:** Prove the conjecture is false for all d ≥ 4.\n\n6. **Dual Problem:** Explain the point-line duality.",
     "keyInsights": [
       "**Ordinary Points Exist:** Sylvester-Gallai guarantees at least one point where exactly 2 lines meet.",
       "**Triangles Blocked:** Ordinary points can be positioned so that every triangle has at least one 3-rich vertex.",
@@ -74,42 +74,49 @@
       "id": "lines-plane",
       "title": "Lines in the Plane",
       "summary": "Line2D structure, containment, parallel criterion, and unique intersection",
-      "startLine": 40,
-      "endLine": 77
+      "startLine": 41,
+      "endLine": 75
     },
     {
       "id": "arrangements",
       "title": "Line Arrangements",
       "summary": "LineArrangement, NoFourConcurrent, NoParallels definitions",
-      "startLine": 78,
-      "endLine": 103
+      "startLine": 76,
+      "endLine": 101
     },
     {
       "id": "ordinary-gallai",
       "title": "Ordinary Points and Gallai Triangles",
       "summary": "IsOrdinaryPoint, Is3RichPoint, IsGallaiTriangle, HasGallaiTriangle definitions",
-      "startLine": 104,
-      "endLine": 142
+      "startLine": 102,
+      "endLine": 140
     },
     {
       "id": "sylvester-gallai",
       "title": "The Sylvester-Gallai Theorem",
-      "summary": "Classical theorem and corollary: at least 3 ordinary points exist",
-      "startLine": 143,
-      "endLine": 177
+      "summary": "Classical theorem and corollary: at least 3 ordinary points exist (not axiomatized)",
+      "startLine": 141,
+      "endLine": 159
     },
     {
       "id": "disproof",
       "title": "The Erdős Question and Its Disproof",
-      "summary": "Füredi-Palásti (1984) and Escudero (2016) counterexamples",
-      "startLine": 178,
-      "endLine": 223
+      "summary": "Füredi-Palásti (1984) and Escudero (2016) counterexamples; escudero_2016 axiom",
+      "startLine": 160,
+      "endLine": 191
     },
     {
       "id": "main-result",
       "title": "Main Result",
       "summary": "erdos_209 theorem: disproved for all d ≥ 4 via Escudero",
-      "startLine": 224,
+      "startLine": 192,
+      "endLine": 215
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_209_summary theorem: alias restating the main disproof",
+      "startLine": 216,
       "endLine": 241
     }
   ],
