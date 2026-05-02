@@ -92,14 +92,14 @@ Reference: Annals of Mathematics 167 (2008), 481-547.
 -/
 axiom green_tao_theorem : Erdos219Question
 
-/-- Equivalent formulation: for all k, there exist a, d with d > 0 such that
+/- Equivalent formulation: for all k, there exist a, d with d > 0 such that
     a, a+d, a+2d, ..., a+(k-1)d are all prime. -/
 /-- The answer to Erdős Problem #219 is YES. -/
 theorem erdos_219_answer : Erdos219Question := green_tao_theorem
 
 /- ## Records and Computations -/
 
-/-- Known record (as of 2019): The longest known AP of primes has 23 terms.
+/- Known record (as of 2019): The longest known AP of primes has 23 terms.
 
     The progression is:
     a = 56211383760397, d = 44546738095860 * 23#
