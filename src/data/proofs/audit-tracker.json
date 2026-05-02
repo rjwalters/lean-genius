@@ -4838,10 +4838,13 @@
       "result": "clean"
     },
     "erdos-166": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-agent",
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T09:05:04Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom axioms in originalContributions/proofStrategy/sections (only aks_upper_bound + mattheus_verstraete declared; spencer_lower_bound/R(3,3)/R(4,4)/R(4,5)/R(3,k) are doc-comment only); section line drift sections 4-8 (issue #14685)"
+      ]
     },
     "erdos-167": {
       "auditCount": 3,
