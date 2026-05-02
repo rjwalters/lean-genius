@@ -46,9 +46,8 @@
       "infiniteAP definition for infinite arithmetic progressions",
       "containsInfiniteAP predicate",
       "ErdosConjecture199 formalization of the original question",
-      "baumgartner_partition axiom for the counterexample",
+      "baumgartner_3AP_free axiom encoding the counterexample existence",
       "erdos_199_disproved theorem showing the conjecture is false",
-      "van_der_waerden axiom connecting to Ramsey theory",
       "Concrete examples with naturals and rationals"
     ],
     "axiomCount": 1,
@@ -111,14 +110,14 @@
     {
       "id": "examples",
       "title": "Examples",
-      "startLine": 120,
-      "endLine": 151,
+      "startLine": 116,
+      "endLine": 140,
       "summary": "Concrete examples with naturals and rationals"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 152,
+      "startLine": 142,
       "endLine": 174,
       "summary": "Complete statement of the disproved result"
     }
