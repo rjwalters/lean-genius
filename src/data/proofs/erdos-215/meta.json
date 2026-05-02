@@ -61,7 +61,7 @@
     "historicalContext": "**The Steinhaus Lattice Point Problem**\n\n**Origins:** Hugo Steinhaus, one of the founders of the Lwów School of Mathematics (alongside Banach and Kuratowski), posed this question: can you find a planar set $S$ such that no matter how you rigidly move $S$ (translate, rotate, reflect), it always covers exactly one point of the integer lattice $\\mathbb{Z}^2$? Such a set would be a 'universal selector' for lattice points under rigid motions.\n\n**Erdős's Intuition:** Erdős was 'almost certain that such a set does not exist.' His reasoning: the constraint is extraordinarily restrictive — $S$ must meet every orbit of $\\mathbb{Z}^2$ under the isometry group in exactly one point, and the isometry group of $\\mathbb{R}^2$ has continuum cardinality (uncountably many rotations alone).\n\n**The Jackson-Mauldin Surprise (2002):** Steve Jackson and R. Daniel Mauldin proved that such a set **does** exist, in their paper *On a lattice problem of H. Steinhaus* published in the *Journal of the American Mathematical Society* (2002). Their earlier announcement appeared in *Proc. Natl. Acad. Sci. USA* 99 (2002), 15883–15887.\n\n**The Role of Choice:** The proof fundamentally requires the Axiom of Choice. Jackson and Mauldin well-order the isometry group $E(2)$ and construct $S$ by transfinite induction: at each ordinal stage $\\alpha$, they add or remove a point from $S$ to satisfy the constraint for the $\\alpha$-th isometry, ensuring consistency with all previous stages. The construction is a 2-dimensional analogue of Vitali's construction of a non-measurable set.\n\n**Non-Constructive Nature:** No explicit description of a Steinhaus set is known, and Steinhaus sets are necessarily pathological: they must be unbounded and cannot have finite positive Lebesgue measure. It is an open question whether such sets can be constructed without the Axiom of Choice — the answer may be independent of ZF.\n\n**Connections to Descriptive Set Theory:** The Jackson-Mauldin construction connects to deeper questions about the interaction between group actions and point sets, particularly the theory of Borel equivalence relations and selection principles in descriptive set theory.",
     "problemStatement": "**Problem Statement (Solved)**\n\nDoes there exist a set $S \\subseteq \\mathbb{R}^2$ such that every set congruent to $S$ (i.e., any isometric image $f(S)$ for an isometry $f : \\mathbb{R}^2 \\to \\mathbb{R}^2$) contains exactly one point from the integer lattice $\\mathbb{Z}^2$?\n\n**Answer:** YES (Jackson-Mauldin 2002)\n\nThe construction uses the Axiom of Choice via transfinite induction on the group of Euclidean isometries $E(2)$.",
     "text": "Does there exist S ⊆ ℝ² such that every congruent copy of S contains exactly one integer lattice point? Surprisingly YES, proved by Jackson-Mauldin (2002) using the Axiom of Choice.",
-    "proofStrategy": "**Formalization Approach**\n\nThe 209-line formalization in the `Erdos215` namespace:\n\n1. **Integer Lattice (lines 38–62):** `integerLattice` as $\\{p \\mid \\forall i,\\, \\exists n : \\mathbb{Z},\\, p\\, i = n\\}$ in `EuclideanSpace ℝ (Fin 2)`. `isLatticePoint` gives the explicit 2-coordinate form. Equivalence proved by `fin_cases`.\n\n2. **Congruence (lines 65–93):** `IsCongruent S T` via isometric image. Reflexivity proved; symmetry axiomatized.\n\n3. **Steinhaus Property (lines 95–115):** `HasSteinhausProperty S` requires $\\exists!\\, p \\in T \\cap \\mathbb{Z}^2$ for every congruent $T$. `latticePointCount` via `Set.ncard`.\n\n4. **Jackson-Mauldin Theorem (lines 117–146):** Existence axiomatized. `erdos_215_answer` unfolds the axiom.\n\n5. **Properties (lines 148–164):** Unboundedness and measure-theoretic pathology axiomatized.\n\n6. **Selector (lines 166–192):** `steinhausSelector` extracts the unique lattice point, with membership and uniqueness theorems.\n\n7. **Higher Dimensions (lines 194–209):** `HigherDimensionalSteinhaus n` and `jackson_mauldin_general` for $n \\geq 2$.",
+    "proofStrategy": "**Formalization Approach**\n\nThe 187-line formalization in the `Erdos215` namespace:\n\n1. **Integer Lattice (lines 37–63):** `integerLattice` as $\\{p \\mid \\forall i,\\, \\exists n : \\mathbb{Z},\\, p\\, i = n\\}$ in `EuclideanSpace ℝ (Fin 2)`. `isLatticePoint` gives the explicit 2-coordinate form. Equivalence proved by `fin_cases`.\n\n2. **Congruence (lines 64–85):** `IsCongruent S T` via isometric image. `isCongruent_refl` proved via identity isometry. A docstring annotation at line 84 notes symmetry informally; no axiom is declared for it.\n\n3. **Steinhaus Property (lines 86–100):** `HasSteinhausProperty S` requires $\\exists!\\, p \\in T \\cap \\mathbb{Z}^2$ for every congruent $T$. `latticePointCount` via `Set.ncard`.\n\n4. **Jackson-Mauldin Theorem (lines 101–133):** `jackson_mauldin_theorem` axiomatized (the 1 real axiom). `erdos_215_answer` unfolds the axiom.\n\n5. **Properties (lines 134–141):** Part V contains docstring annotations about unboundedness and measure pathology; no axioms are declared here.\n\n6. **Constructive Question and Selector (lines 142–173):** `ConstructiveSteinhausQuestion` as a True-placeholder def; `steinhausSelector` noncomputable extraction of the unique lattice point, with membership and uniqueness theorems proved from the $\\exists!$ API.\n\n7. **Higher Dimensions (lines 174–187):** `HigherDimensionalSteinhaus n` as a def for the generalization to $\\mathbb{Z}^n \\subset \\mathbb{R}^n$; a docstring annotation at line 186 notes the Jackson-Mauldin extension (no axiom declared).",
     "keyInsights": [
       "**Erdős's intuition was wrong:** One of the few cases where Erdős's mathematical intuition was contradicted. He expected the constraint to be too restrictive, but the Axiom of Choice provides enough freedom to satisfy uncountably many constraints simultaneously via transfinite induction.",
       "**Axiom of Choice is essential:** The construction well-orders the continuum-many isometries and builds $S$ stage-by-stage. This is analogous to Vitali's construction of a non-measurable set: both use AC to make consistent choices from orbits of a group action on $\\mathbb{R}^n$. The necessity of AC for this result is an open question.",
@@ -88,7 +88,7 @@
     {
       "id": "lattice",
       "title": "Part I: The Integer Lattice",
-      "startLine": 32,
+      "startLine": 37,
       "endLine": 63,
       "summary": "Defines integerLattice as {p | ∀ i, ∃ n : ℤ, p i = n} in EuclideanSpace ℝ (Fin 2); isLatticePoint via explicit (m, n) coordinates; equivalence proved by fin_cases",
       "mathContext": "Defines integerLattice as {p | ∀ i, ∃ n : $\\mathbb{Z}$, p i = n} in EuclideanSpace $\\mathbb{R}$ (Fin 2); isLatticePoint via explicit (m, n) coordinates; equivalence proved by fin_cases"
@@ -97,45 +97,53 @@
       "id": "congruence",
       "title": "Part II: Isometries and Congruence",
       "startLine": 64,
-      "endLine": 94,
-      "summary": "Defines IsCongruent S T via isometric image T = f '' S; proves isCongruent_refl via identity; axiomatizes isCongruent_symm",
-      "mathContext": "Formal definition: Defines IsCongruent S T via isometric image T = f '' S; proves isCongruent_refl via identity; axiomatizes isCongruent_symm"
+      "endLine": 85,
+      "summary": "Defines IsCongruent S T via isometric image T = f '' S; proves isCongruent_refl via identity isometry; docstring at line 84 annotates symmetry informally (no axiom declared)",
+      "mathContext": "Formal definition: Defines IsCongruent S T via isometric image T = f '' S; proves isCongruent_refl via identity isometry; docstring at line 84 annotates symmetry informally (no axiom declared)"
     },
     {
       "id": "steinhaus",
       "title": "Part III: The Steinhaus Property",
-      "startLine": 95,
-      "endLine": 116,
+      "startLine": 86,
+      "endLine": 100,
       "summary": "Defines HasSteinhausProperty: ∀ congruent T, ∃! p ∈ T ∩ integerLattice; defines latticePointCount via Set.ncard",
       "mathContext": "Formal definition: Defines HasSteinhausProperty: ∀ congruent T, ∃! p ∈ T ∩ integerLattice; defines latticePointCount via Set.ncard"
     },
     {
       "id": "jackson-mauldin",
       "title": "Part IV: Jackson-Mauldin Theorem",
-      "startLine": 117,
-      "endLine": 147,
+      "startLine": 101,
+      "endLine": 133,
       "summary": "Axiom jackson_mauldin_theorem: ∃ S with Steinhaus property; theorem erdos_215_answer: YES, the answer is affirmative",
       "mathContext": "Verified: Axiom jackson_mauldin_theorem: ∃ S with Steinhaus property; theorem erdos_215_answer: YES, the answer is affirmative"
     },
     {
       "id": "properties",
       "title": "Part V: Properties of Steinhaus Sets",
-      "startLine": 148,
-      "endLine": 165,
-      "summary": "Axiom steinhaus_set_unbounded: Steinhaus sets are unbounded; axiom steinhaus_set_measure_pathological: not measure-theoretically nice; ConstructiveSteinhausQuestion placeholder",
-      "mathContext": "Axiomatized: Axiom steinhaus_set_unbounded: Steinhaus sets are unbounded; axiom steinhaus_set_measure_pathological: not measure-theoretically nice; ConstructiveSteinhausQuestion placeholder"
+      "startLine": 134,
+      "endLine": 141,
+      "summary": "Docstring annotations note that Steinhaus sets must be unbounded and cannot have finite positive Lebesgue measure; no axioms declared here (these are informal placeholders only)",
+      "mathContext": "Informal placeholders: docstring annotations note unboundedness and measure pathology of Steinhaus sets; no axioms declared in this section"
     },
     {
       "id": "selector",
-      "title": "Part VI: The Lattice Point Selector",
-      "startLine": 166,
+      "title": "Part VI: Constructive Question and Selector",
+      "startLine": 142,
+      "endLine": 173,
+      "summary": "ConstructiveSteinhausQuestion as True-placeholder def (open question: does a Steinhaus set exist in ZF without Choice?); noncomputable steinhausSelector extracts unique lattice point from congruent copies; steinhausSelector_mem and steinhausSelector_unique proved from ∃! API",
+      "mathContext": "Verified theorems: noncomputable steinhausSelector extracts unique lattice point via ∃! elimination; steinhausSelector_mem and steinhausSelector_unique proved; ConstructiveSteinhausQuestion is a True-placeholder for an open problem"
+    },
+    {
+      "id": "related",
+      "title": "Part VII: Related Problems",
+      "startLine": 174,
       "endLine": 187,
-      "summary": "Noncomputable steinhausSelector extracts unique lattice point from congruent copies; steinhausSelector_mem and steinhausSelector_unique theorems proved from ∃! API",
-      "mathContext": "Verified: Noncomputable steinhausSelector extracts unique lattice point from congruent copies; steinhausSelector_mem and steinhausSelector_unique theorems proved from ∃! API"
+      "summary": "HigherDimensionalSteinhaus n defines the generalization to ℤⁿ ⊂ ℝⁿ as a def; docstring at line 186 notes the Jackson-Mauldin extension to n ≥ 2 (no axiom declared)",
+      "mathContext": "Generalization def: HigherDimensionalSteinhaus n defines Steinhaus property in EuclideanSpace ℝ (Fin n); orphan docstring at line 186 notes extension (no axiom declared)"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #215 (the Steinhaus lattice point problem) asks whether there exists $S \\subseteq \\mathbb{R}^2$ such that every congruent copy meets $\\mathbb{Z}^2$ in exactly one point. The surprising answer is YES, proved by Jackson and Mauldin (2002) using the Axiom of Choice via transfinite induction. The 209-line formalization axiomatizes the main existence theorem, proves the answer is affirmative, establishes necessary conditions (unboundedness, measure pathology), constructs a noncomputable selector function, and generalizes to $\\mathbb{Z}^n \\subset \\mathbb{R}^n$ for $n \\geq 2$.",
+    "summary": "Erdős Problem #215 (the Steinhaus lattice point problem) asks whether there exists $S \\subseteq \\mathbb{R}^2$ such that every congruent copy meets $\\mathbb{Z}^2$ in exactly one point. The surprising answer is YES, proved by Jackson and Mauldin (2002) using the Axiom of Choice via transfinite induction. The 187-line formalization axiomatizes the main existence theorem, proves the answer is affirmative, notes necessary conditions (unboundedness, measure pathology) as docstring annotations, constructs a noncomputable selector function, and defines the generalization to $\\mathbb{Z}^n \\subset \\mathbb{R}^n$ for $n \\geq 2$.",
     "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Axiom of Choice in Geometry:** The Jackson-Mauldin theorem is a striking example of AC producing counter-intuitive geometric existence results, alongside Vitali sets and Banach-Tarski. It shows that set-theoretic foundations can resolve geometric questions that defy constructive intuition.\n\n2. **Descriptive Set Theory:** The problem connects to Borel cross-sections of smooth equivalence relations.\n\nThe orbits of $\\mathbb{Z}^2$ under $E(2)$ are well-understood, but selecting one point from each orbit is a delicate task requiring AC.\n\n3. **Tilings and Packings:** Steinhaus sets are related to lattice tilings of $\\mathbb{R}^2$: a Steinhaus set provides a 'fundamental domain' for $\\mathbb{Z}^2$ under the isometry group, though not in the classical sense since $S$ is not a tiling domain.\n\n4. **Non-Constructive Mathematics:** The impossibility of explicitly describing $S$ makes this a paradigmatic example for discussions of constructivism vs. classical mathematics in combinatorial geometry.",
     "openQuestions": [
       "Is the Axiom of Choice necessary? Can a Steinhaus set be constructed in ZF, or is the existence statement independent of ZF?",
