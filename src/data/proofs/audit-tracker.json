@@ -4578,10 +4578,12 @@
       "result": "clean"
     },
     "erdos-131": {
-      "auditCount": 4,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 5,
+      "issues": [
+        "Phantom sorry/partial-verification claims for nondividing_implies_nonaveraging + section line drift across all 8 sections; counts correct; issue #14716"
+      ],
+      "lastAudited": "2026-05-02T10:15:00Z",
+      "result": "issues-found"
     },
     "erdos-131-oq-01": {
       "auditCount": 2,
