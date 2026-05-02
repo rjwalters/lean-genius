@@ -29,25 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Replaced parent isEmbeddable sorry-def with concrete vertex-map + convex-hull intersection definition. Now defeq with child Erdos1018OQ04Incomplete01.isEmbeddableConc. Parent sorry count 2→1.",
+    "progressSummary": "PROGRESS 2026-05-02: Proved r2_implies_main_r2 sorry (4\u21923 sorries). isEmbeddableConc and isEmbeddable have identical definition bodies, so definitional equality allows exact proof. Remaining 3 sorries: K\u2083/K\u2084 geometric verifications and Euler's formula.",
     "builtItems": [
       "Created Erdos1018OQ04Incomplete01.lean with 11 theorems, 1 axiom, 7 sorries",
       "Defined isEmbeddableConc with concrete vertex map + simplex separation condition",
       "Proved embeddable_injective and embeddable_mono (higher dim helps)",
       "Provided explicit coordinates for K3_planar and K4_planar (injectivity proved)",
-      "Proved dense_graph_not_planar: n^{1+ε} > 3n eventually (using n^ε → ∞)",
+      "Proved dense_graph_not_planar: n^{1+\u03b5} > 3n eventually (using n^\u03b5 \u2192 \u221e)",
       "Proved K5_edges=10, K3_edges=3, K4_edges=6",
       "Created src/data/proofs/erdos-1018-oq-04-incomplete-01/ gallery entry",
-      "Replaced Erdos1018OQ04.isEmbeddable sorry-def with concrete definition (vertex map + convex hull edge separation). Eliminates sorry-def cascade — downstream proofs can now reason about geometric embeddings."
+      "Replaced Erdos1018OQ04.isEmbeddable sorry-def with concrete definition (vertex map + convex hull edge separation). Eliminates sorry-def cascade \u2014 downstream proofs can now reason about geometric embeddings.",
+      "Proved r2_implies_main_r2 in Erdos1018OQ04Incomplete01.lean \u2014 definitional equality between isEmbeddableConc and isEmbeddable"
     ],
     "insights": [
       "Parent Erdos1018OQ04.lean has isEmbeddable := sorry, making all dependent results vacuous",
-      "New concrete definition: isEmbeddableConc via vertex maps to Fin d → ℝ with convex hull separation",
-      "K₃ planar with explicit coords: (0,0),(1,0),(0,1); K₄ with (0,0),(3,0),(1,2),(2,2)",
-      "Dense graphs (n^{1+ε} edges) exceed planar bound 3n-6 eventually (n^ε → ∞)",
-      "Kostochka-Pyber (r=2, 1988): dense graphs contain non-planar subgraphs on O_ε(1) vertices",
+      "New concrete definition: isEmbeddableConc via vertex maps to Fin d \u2192 \u211d with convex hull separation",
+      "K\u2083 planar with explicit coords: (0,0),(1,0),(0,1); K\u2084 with (0,0),(3,0),(1,2),(2,2)",
+      "Dense graphs (n^{1+\u03b5} edges) exceed planar bound 3n-6 eventually (n^\u03b5 \u2192 \u221e)",
+      "Kostochka-Pyber (r=2, 1988): dense graphs contain non-planar subgraphs on O_\u03b5(1) vertices",
       "Geometric crossing sorries remain: need convex hull intersection theory from Mathlib",
-      "Sorry-defs (def := sorry) are worse than axiom: they make the type opaque so no proof can reason through them. Replacing with a concrete def using available Mathlib API (convexHull, Set.image) unblocks downstream work."
+      "Sorry-defs (def := sorry) are worse than axiom: they make the type opaque so no proof can reason through them. Replacing with a concrete def using available Mathlib API (convexHull, Set.image) unblocks downstream work.",
+      "r2_implies_main_r2 was marked sorry because comment said isEmbeddable was a sorry-def, but it had been fixed to a concrete definition with identical body to isEmbeddableConc. Definitional equality + criticalDim 2 = 2 closes the proof."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -74,7 +76,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T16:34:54.972Z",
-  "lastUpdate": "2026-04-27T00:00:00Z",
+  "lastUpdate": "2026-05-02T00:00:00.000Z",
   "significance": 6,
   "tractability": 5
 }
