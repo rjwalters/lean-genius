@@ -130,7 +130,7 @@
       "title": "Positive Density Sets",
       "startLine": 140,
       "endLine": 149,
-      "summary": "Documentation placeholder for Erdős's claim: if $S \\subseteq \\mathbb{N}$ has positive lower density and $B = \\{s^k : s \\in S\\}$, then $\\limsup r_B^{(k)}(n) = \\infty$. This section contains an orphaned docstring but no axiom is declared.",
+      "summary": "Docstring describing Erdős's positive density claim (no corresponding axiom declaration).",
       "mathContext": "This generalizes the representation problem to $k$-th powers of arbitrary dense subsets. If $|S \\cap [1,N]| \\geq \\delta N$, then $|B \\cap [1,N^k]| \\geq \\delta N$, so the set of $k$-th powers from $S$ has density $\\sim \\delta N^{1-1/k}$ among integers up to $N^k$. The claim says this density always suffices for unbounded $k$-fold sums — a strong structural result about the additive properties of power sets."
     },
     {
