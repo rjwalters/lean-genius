@@ -6005,9 +6005,12 @@
     },
     "erdos-331": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T01:08:37Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom axioms in sections/originalContributions (ruzsa_unique_representation, ruzsaB_eq_double_ruzsaA, ruzsa_exact_growth, ruzsaVariantOpen, ruzsaA_sparse_differences, larger_density_common_differences); section line-range drift; summary claims 9 axioms but file has 3; conclusion 245 lines vs 223 actual (#14480)"
+      ]
     },
     "erdos-332": {
       "agentId": "auditor-cycle-20-batch",
