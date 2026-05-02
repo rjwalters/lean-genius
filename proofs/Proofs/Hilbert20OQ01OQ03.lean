@@ -77,13 +77,9 @@ def monomial {n : ℕ} (α : MultiIndex n) (ξ : Fin n → ℝ) : ℂ :=
 theorem monomial_real {n : ℕ} (α : MultiIndex n) (ξ : Fin n → ℝ) :
     (monomial α ξ).im = 0 := by
   unfold monomial
-  rw [Complex.prod_im_eq_zero]
-  intro i _
-  simp [Complex.ofReal_im, Complex.im_pow_ofReal]
-  where
-    Complex.prod_im_eq_zero {ι : Type*} {s : Finset ι} {f : ι → ℂ}
-        (h : ∀ i ∈ s, (f i).im = 0) : (s.prod f).im = 0 := by
-      sorry -- Product of reals (embedded in ℂ) is real
+  have : Finset.univ.prod (fun i : Fin n => (ξ i : ℂ) ^ α i) =
+         ↑(Finset.univ.prod (fun i : Fin n => ξ i ^ α i)) := by norm_cast
+  rw [this, Complex.ofReal_im]
 
 /-- The complex conjugate of a monomial at real arguments equals itself. -/
 theorem conj_monomial {n : ℕ} (α : MultiIndex n) (ξ : Fin n → ℝ) :
@@ -290,26 +286,27 @@ theorem self_adjoint_solvable {n m : ℕ} (P : LinearPDO n m)
 ## Summary of Results
 
 ### Proved (0 axioms):
-1. conj_monomial: conjugate of real monomial is itself
-2. principalSymbol_adjoint: p*(x,ξ) = conj(p(x,ξ))
-3. formalAdjoint_involutive: (P*)* = P
-4. self_adjoint_of_real_coeff: real coefficients → P = P*
-5. adjoint_principal_type: P principal type → P* principal type
-6. dencker_sufficiency: condition (Ψ) → local solvability
+1. monomial_real: product of real monomials has zero imaginary part
+2. conj_monomial: conjugate of real monomial is itself
+3. principalSymbol_adjoint: p*(x,ξ) = conj(p(x,ξ))
+4. formalAdjoint_involutive: (P*)* = P
+5. self_adjoint_of_real_coeff: real coefficients → P = P*
+6. adjoint_principal_type: P principal type → P* principal type
+7. dencker_sufficiency: condition (Ψ) → local solvability
    (assembled from axioms via the energy estimate chain)
 
-### Axioms (6):
+### Axioms (7):
 - HasAPrioriEstimate: a priori Sobolev estimates (needs Sobolev spaces)
 - IsLocallySolvable: local solvability (needs distributions)
 - hormander_duality: solvability ↔ estimates for adjoint
-- BicharacteristicCurve, imSymbolAlongCurve: bicharacteristic flow
+- BicharacteristicCurve: bicharacteristic curves (needs Hamilton flow)
+- imSymbolAlongCurve: Im of symbol along bicharacteristic (needs microlocal analysis)
 - dencker_weight_exists: Dencker's weight construction
 - weight_implies_estimate: weight → a priori estimates
 
-### Sorries (3):
-- monomial_real: product of reals is real (helper lemma)
-- real_symbol_solvable: needs bridge axiom
-- self_adjoint_solvable: needs bridge axiom
+### Sorries (2):
+- real_symbol_solvable: needs bridge axiom connecting imSymbolAlongCurve to principalSymbol
+- self_adjoint_solvable: same bridge axiom issue
 
 ### Key Contribution
 Formalizes the STRUCTURAL FRAMEWORK of Dencker's proof:
