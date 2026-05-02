@@ -4225,10 +4225,12 @@
       "result": "clean"
     },
     "erdos-115-oq-01": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T11:22:57Z",
-      "result": "clean"
+      "auditCount": 3,
+      "issues": [
+        "phantom theorem citations in meta.json + Lean summary docstring: inverseN_implies_inverseSqrtN, inverseN_implies_inverseLogN, chebyshev_correction_nonneg_eventually do not exist in proofs/Proofs/Erdos115OQ01Problem.lean. Lean docstring also says \"Axioms (8 total)\" while file has 11. Issue #14862."
+      ],
+      "lastAudited": "2026-05-02T20:12:14Z",
+      "result": "issues-found"
     },
     "erdos-1150": {
       "auditCount": 3,
