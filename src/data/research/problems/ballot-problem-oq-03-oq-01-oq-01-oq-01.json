@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 14 (2026-05-01) confirmed Mathlib API for the b=1 jdt_weight_sum recipe: hsymm_zero (Symmetric/Defs.lean:318), Sym.cons_erase (Sym/Basic.lean:219), Sym.erase_cons_head (:223), Sym.oneEquiv (:477), Sym.uniqueZero (:261), Multiset.sort_cons (Multiset/Sort.lean:69) all present and applicable. Confirmed lineCount drift 666→694 (recipe docstring grew via PR #13365). No proof work this session — local Docker daemon hung (server unresponsive); attempt deferred to next session with fresh Docker. Sorry count remains 2.",
+    "progressSummary": "Session 15 (2026-05-02): Architectural progress on jdt_weight_sum. Added proved helper sym_one_sort_head_singleton (Sym(α)1 → ∃ q. sort = [q]). Decomposed b ≥ 1 sorry into named b = 1 helper (sorry, with detailed bijection recipe in docstring) + b ≥ 2 (still sorry). The b = 1 case now has clean signature: jdt_weight_sum_b_one (n a : ℕ) (ha : 1 ≤ a) → ∑_{¬ColStrict} = hsymm (a+1) * hsymm 0. PR #14XXX (research label, deployer auto-merge). File grew 714 → 715 lines net (+44 helper, -43 long comment block).",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -67,7 +67,10 @@
       "sum_all_sym_pairs: ∑ PQ : Sym n a × Sym n b, prod*prod = h_a * h_b (file:BallotProblemOQ03OQ01OQ01OQ01.lean)",
       "ssytFin_two_row_eq_sum_colstrict (file:BallotProblemOQ03OQ01OQ01OQ01.lean, ~90 lines)",
       "jdt_weight_sum b=0 case: proved ColStrictSym a 0 P Q is vacuously true (Fin 0 empty), non-cs subtype empty, sum = 0",
-      "jdt_weight_preserved (PROVED): multiplicative weight identity for JDT bijection step — moving v from Q (size b+1) to P (size a) preserves total weight; proof via Multiset.cons_erase + prod_cons (~10 lines)"
+      "jdt_weight_preserved (PROVED): multiplicative weight identity for JDT bijection step — moving v from Q (size b+1) to P (size a) preserves total weight; proof via Multiset.cons_erase + prod_cons (~10 lines)",
+      "BallotProblemOQ03OQ01OQ01OQ01.lean: sym_one_sort_head_singleton (line ~384, proved, 6 lines) — extracts unique element of Sym (Fin n) 1 with sort and multiset equations.",
+      "BallotProblemOQ03OQ01OQ01OQ01.lean: jdt_weight_sum_b_one (line ~399, stated, body = sorry) — b=1 base case, signature returns hsymm (a+1) * hsymm 0.",
+      "BallotProblemOQ03OQ01OQ01OQ01.lean: jdt_weight_sum dispatches on b = 1 (calls helper) vs b ≥ 2 (original seam bijection sorry)."
     ],
     "insights": [
       "Mathlib has hsymm σ R n (complete homogeneous symmetric polynomials) in RingTheory.MvPolynomial.Symmetric.Defs — directly usable for Jacobi-Trudi matrix entries",
@@ -105,7 +108,9 @@
       "Session 13 (2026-04-27): metadata leanFile.sorryCount was stale (3) since PR #12933 reduced to 2 — no auto-sync runs. lineCount also stale (458 vs 666). Synced. No proof work — disk constraint (1.3GB free, no Docker) makes b=1 implementation risky without local validation.",
       "Mathlib has 'hsymm_zero : hsymm σ R 0 = 1' as a simp lemma (Symmetric/Defs.lean:318), so the b=1 jdt_weight_sum RHS 'hsymm (a+1) * hsymm 0' simplifies to hsymm (a+1) via 'rw [hsymm_zero, mul_one]'. Eliminates one open question from the Session 13 recipe.",
       "Sym.uniqueZero gives Unique (Sym α 0) (Mathlib Sym/Basic.lean:261), so reducing RHS via '← sum_all_sym_pairs n (a+1) 0' is equivalent to a Sym (Fin n) (a+1) sum after collapsing the trivial Sym (Fin n) 0 factor — both routes (hsymm_zero rewrite, or sum_all_sym_pairs reduction with Unique handling) are open.",
-      "jdt_weight_preserved isolates the algebraic core of JDT bijection: weight preservation does not depend on the combinatorics of choosing v=Q.sort[firstViolIdx], only on v ∈ Q. Future bijection proof can apply Fintype.sum_equiv and reuse this lemma."
+      "jdt_weight_preserved isolates the algebraic core of JDT bijection: weight preservation does not depend on the combinatorics of choosing v=Q.sort[firstViolIdx], only on v ∈ Q. Future bijection proof can apply Fintype.sum_equiv and reuse this lemma.",
+      "Session 15 (2026-05-02): Decomposed jdt_weight_sum b ≥ 1 case into b = 1 (jdt_weight_sum_b_one helper, with sorry on bijection) + b ≥ 2 (still sorry, the genuine JDT seam). Sorry count went 1 → 2 in jdt_weight_sum, but the b = 1 base is now an explicit sub-problem with named statement matching the recipe.",
+      "Session 15: Proved sym_one_sort_head_singleton: for Q : Sym (Fin n) 1, ∃ q. Q.1.sort = [q] ∧ Q.1 = {q}. Reusable infrastructure for Sym/Multiset proofs (List.length_eq_one_iff + Multiset.sort_eq, ~6 lines). Will be used when filling in the jdt_weight_sum_b_one bijection."
     ],
     "mathlibGaps": [
       "No Mathlib SchurPolynomial definition — we provide one via Jacobi-Trudi formula",
@@ -113,14 +118,15 @@
       "RSK correspondence not formalized in Mathlib — needed for jacobiTrudi_lgv_proof"
     ],
     "nextSteps": [
-      "Implement jdt_weight_sum_b_one helper using the simp-lemma route: by rw [hsymm_zero, mul_one]; then build Equiv {(P,Q) : Sym n a × Sym n 1 // ¬ColStrictSym a 1 P Q} ≃ Sym (Fin n) (a+1) directly. Forward (P,Q,h) ↦ (Sym.oneEquiv.symm Q) ::ₛ P; inverse P' ↦ ((P'.erase q', oneEquiv q'), proof) where q' := head of P'.sort. Needs hsymm definition unfolded for RHS sum, then Fintype.sum_equiv.",
-      "Verify Docker functionality at session start before attempting proof — Session 14 hit unresponsive daemon (timeout on 'docker info'), wasting cycles. Disk had 138GB free so this was Docker Desktop infrastructure, not disk.",
-      "Implement jdt_weight_sum_b_one (~60-90 lines) using documented recipe: bijection {(P, q): q ≤ P.sort[0]} ≃ Sym n (a+1) via cons/erase, with weight preserved by prod_cons + map_cons",
-      "Refactor jdt_weight_sum to dispatch on b ∈ {0, 1, ≥2} cases, eliminating the b=1 sorry",
-      "Tackle b≥2 JDT seam construction (~150 lines) — the genuine frontier",
-      "Alternative: build algebraic LGV in BallotProblemOQ03AlgebraicLGV.lean for k≥3 case (~150 lines)"
+      "Implement the bijection ψ : { (P, Q) : Sym a × Sym 1 // ¬ColStrictSym a 1 P Q } ≃ Sym (Fin n) (a+1) inside jdt_weight_sum_b_one. Use sym_one_sort_head_singleton to extract q from Q cleanly. Forward: q ::ₛ P. Inverse: head-of-sort + erase. ~100-130 lines.",
+      "Key obstacles for the bijection: (1) inverse output ¬ColStrict witness needs (S.erase q).sort[0] ≥ q via Multiset.erase_le + sortedness; (2) left_inv P-component via Sym.erase_cons_head once head-of-(cons q P).sort = q is computed via Multiset.sort_cons.",
+      "After b=1 lands: tackle b ≥ 2 (genuine JDT seam algorithm, ~150-200 lines).",
+      "If bijection construction stalls 2+ sessions, consider proving via Sym.oneEquiv-based reformulation: { (P, q) : Sym a × Fin n // q ≤ P.sort[0] } ≃ Sym (a+1)."
     ],
-    "markdown": "# Knowledge Base: LGV Lemma → Jacobi-Trudi Identity\n\n**Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01\n**Last Updated**: 2026-04-23\n**Knowledge Items**: 0\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nNewly selected. Jacobi-Trudi identity expresses Schur polynomials as determinants of\ncomplete homogeneous symmetric polynomials. The LGV lemma (in parent gallery proof)\nprovides the combinatorial proof route via non-intersecting lattice paths.\n\n---\n\n## Insights\n\n_None yet — begin with OBSERVE phase: check Mathlib for SSYT formalization._\n\n---\n\n## Dead Ends\n\n_None identified yet._\n"
+    "markdown": "# Knowledge Base: LGV Lemma → Jacobi-Trudi Identity\n\n**Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01\n**Last Updated**: 2026-04-23\n**Knowledge Items**: 0\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nNewly selected. Jacobi-Trudi identity expresses Schur polynomials as determinants of\ncomplete homogeneous symmetric polynomials. The LGV lemma (in parent gallery proof)\nprovides the combinatorial proof route via non-intersecting lattice paths.\n\n---\n\n## Insights\n\n_None yet — begin with OBSERVE phase: check Mathlib for SSYT formalization._\n\n---\n\n## Dead Ends\n\n_None identified yet._\n",
+    "insightsCount": 38,
+    "builtItemsCount": 40,
+    "nextStepsCount": 4
   },
   "tags": [
     "algebraic-combinatorics",
@@ -152,7 +158,7 @@
     "mathlib": []
   },
   "started": "2026-04-23T11:05:51.190Z",
-  "lastUpdate": "2026-05-01T13:30:00.000Z",
+  "lastUpdate": "2026-05-02T06:50:00Z",
   "leanFiles": [
     {
       "path": "Proofs/BallotProblem.lean",

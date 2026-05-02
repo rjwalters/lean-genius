@@ -381,6 +381,50 @@ private lemma jdt_weight_preserved (n a b : ℕ)
   conv_rhs => rw [hQ, Multiset.map_cons, Multiset.prod_cons]
   ring
 
+/-- For `Q : Sym (Fin n) 1`, the underlying multiset is the singleton `{q}` where `q` is the
+    unique element of `Q`. We extract `q` and the equation `Q.1.sort = [q]` simultaneously. -/
+private lemma sym_one_sort_head_singleton (n : ℕ) (Q : Sym (Fin n) 1) :
+    ∃ q : Fin n, Q.1.sort (· ≤ ·) = [q] ∧ Q.1 = ({q} : Multiset (Fin n)) := by
+  have hlen : (Q.1.sort (· ≤ ·)).length = 1 := (Multiset.length_sort _ Q.1).trans Q.2
+  obtain ⟨q, hq⟩ := List.length_eq_one_iff.mp hlen
+  refine ⟨q, hq, ?_⟩
+  have hcoe := congrArg (Multiset.ofList) hq
+  rw [Multiset.sort_eq] at hcoe
+  simpa using hcoe
+
+/-- **JDT weight sum, `b = 1` base case.**
+    For `a ≥ 1`, the sum of weights over non-col-strict
+    `(P : Sym (Fin n) a, Q : Sym (Fin n) 1)` pairs equals `h_{a+1} * h_0 = h_{a+1}`.
+
+    **Recipe (bijection ψ : `LHS-subtype ≃ Sym (Fin n) (a+1)`):**
+      * forward: `(P, Q, _) ↦ q ::ₛ P`, where `q` is the unique element of `Q`
+        (i.e. `(Q.1.sort)[0]`).
+      * inverse: `S ↦ ((S.erase qS hS, ⟨{qS}, _⟩), proof_¬ColStrict)`,
+        where `qS = (S.1.sort)[0]` is the smallest element of `S`.
+
+    **Why the bijection respects `¬ColStrictSym a 1 P Q`:**
+    With `a ≥ 1`, `min a 1 = 1`, so `ColStrictSym a 1 P Q ⇔ (P.sort)[0] < (Q.sort)[0] = q`,
+    and `¬ColStrictSym ⇔ q ≤ (P.sort)[0]`. By sortedness of `P.sort`, this means
+    `q ≤ x` for all `x ∈ P.1`. Then `Multiset.sort_cons` gives
+    `(q ::ₘ P.1).sort = q :: P.1.sort`, so `q` is the head of `(q ::ₛ P).1.sort`,
+    making `Sym.erase` and `Sym.cons_erase`/`Sym.erase_cons_head` close the inverses.
+
+    **Status (2026-05-02 session 15):** the helper `sym_one_sort_head_singleton` and the
+    statement of this lemma are now in place. The bijection construction with weight
+    preservation proof is the focused `sorry` below; estimated 100-130 lines using
+    `Sym.cons_erase` (`Data/Sym/Basic.lean:219`), `Sym.erase_cons_head` (`:223`),
+    `Multiset.sort_cons` (`Data/Multiset/Sort.lean:69`). -/
+private lemma jdt_weight_sum_b_one (n a : ℕ) (ha : 1 ≤ a) :
+    ∑ PQ : { PQ : Sym (Fin n) a × Sym (Fin n) 1 // ¬ColStrictSym a 1 PQ.1 PQ.2 },
+      (PQ.1.1.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+      (PQ.1.2.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod =
+    hsymm (Fin n) R (a + 1) * hsymm (Fin n) R 0 := by
+  -- Simplify RHS via hsymm 0 = 1
+  rw [hsymm_zero, mul_one]
+  -- Bijection construction is the focused next-session task. See the recipe above
+  -- and lines ~415-465 for the existing detailed comment block.
+  sorry
+
 /-- **Jeu de Taquin weight sum** (key step for two-row Jacobi-Trudi).
     The sum of pair-weights over NON-col-strict (a,b) pairs equals h_{a+1}*h_{b-1}.
 
@@ -397,76 +441,33 @@ private lemma jdt_weight_sum (n a b : ℕ) (hba : b ≤ a) :
       (PQ.1.2.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod =
     hsymm (Fin n) R (a + 1) * (if 1 ≤ b then hsymm (Fin n) R (b - 1) else 0) := by
   by_cases hb : 1 ≤ b
-  · -- b ≥ 1: JDT bijection
+  · -- b ≥ 1: dispatch on b = 1 vs b ≥ 2
     simp only [if_pos hb]
-    rw [← sum_all_sym_pairs n (a + 1) (b - 1)]
-    -- Need: weight-preserving bijection
-    --   {non-col-strict (a,b) pairs} ≃ {all (a+1, b-1) pairs}
-    -- Forward map: find first violation c in ColStrictSym, let v = Q.sort[c],
-    --   then P' = Sym.cons v P, Q' = Sym.erase Q v (need v ∈ Q.1)
-    -- Inverse map: find the "seam" element in P'.sort to move back to Q'
-    -- Weight preserved by Multiset.prod_cons + Multiset.prod_erase
-    --
-    -- ============================================================================
-    -- DETAILED RECIPE FOR b = 1 BASE CASE (helper for next session)
-    -- ============================================================================
-    -- When b = 1, ColStrictSym a 1 P Q says P.sort[0] < Q.sort[0]; ¬cs gives the
-    -- opposite. Q has size 1, so by Sym.oneEquiv we have Q = oneEquiv q for some
-    -- q : Fin n, with q = Q.sort[0] (only element). Goal becomes:
-    --
-    --   ∑_{(P, q): q ≤ P.sort[0]} wt(P) * X q = h_{a+1}
-    --
-    -- BIJECTION ψ : {(P, q) : q ≤ P.sort[0]} ≃ Sym (Fin n) (a+1)
-    --   forward (P, q) ↦ q ::ₛ P            -- Sym.cons; coe = q ::ₘ P.1
-    --   inverse P' ↦ ((P'.erase q', oneEquiv q')) where
-    --     q' := (P'.1.sort (· ≤ ·)).head    -- smallest element
-    --     proof q' ∈ P'.1: q' is the head of (length a+1) sorted list
-    --     proof q' ≤ (P'.erase q').sort[0]: erase preserves sortedness; q' was min
-    --   weight preservation:
-    --     wt(P) * X q
-    --     = (P.1.map X).prod * X q
-    --     = ((q ::ₘ P.1).map X).prod          -- by Multiset.prod_cons + map_cons
-    --     = wt(q ::ₛ P)
-    -- KEY LEMMAS (verified Mathlib v4.26.0, paths confirmed 2026-04-27 session 13):
-    --   * Multiset.sort_cons (Data/Multiset/Sort.lean:69):
-    --       (∀ b ∈ s, r a b) → sort(a ::ₘ s) r = a :: sort s r
-    --     Applied with: q ≤ P.sort[0] + sortedness ⇒ q ≤ all of P
-    --   * Sym.cons (Data/Sym/Basic.lean:106), coe_cons:123 (rfl):
-    --       (a ::ₛ s : Multiset α) = a ::ₘ s.1
-    --   * Sym.cons_erase (Data/Sym/Basic.lean:219, simp):
-    --       a ::ₛ s.erase a h = s   — closes left_inv
-    --   * Sym.erase_cons_head (Data/Sym/Basic.lean:223, simp):
-    --       (a ::ₛ s).erase a _ = s — closes right_inv direction
-    --   * Sym.oneEquiv (Data/Sym/Basic.lean:477, @[simps apply]):
-    --       α ≃ Sym α 1; oneEquiv_apply rewrites oneEquiv a to ⟨{a}, _⟩
-    --
-    -- INVERSE DIRECTION MECHANISM (the trickiest piece, fleshed out session 13):
-    --   Given P' : Sym (Fin n) (a+1):
-    --     L := (P'.1 : Multiset).sort (· ≤ ·) : List (Fin n), length = a+1, sorted
-    --     L_pos : 0 < L.length := by simp [Multiset.length_sort, P'.2]
-    --     q' := L.head L_pos.ne' : Fin n
-    --   Show q' ∈ P'.1 (need this to apply Sym.erase):
-    --     have : q' ∈ L := List.head_mem L_pos.ne'
-    --     have : q' ∈ (L : Multiset) := Multiset.mem_coe.mpr this
-    --     rw [Multiset.sort_eq] at this
-    --     exact this -- q' ∈ P'.1
-    --   Show q' ≤ (P'.1.erase q').sort[0] (the bijection's domain constraint):
-    --     L = q' :: L.tail (by List.head_cons_tail)
-    --     P'.1 = (q' ::ₘ (L.tail : Multiset)) by Multiset.sort_eq + List congruence
-    --     (P'.1.erase q' : Multiset) = (L.tail : Multiset)
-    --       by Multiset.erase_cons_head (Data/Multiset/AddSub.lean:156):
-    --         (a ::ₘ s).erase a = s
-    --     (P'.1.erase q').sort[0] = L.tail[0] = L[1] (when a ≥ 1)
-    --     Sortedness of L gives L[0] ≤ L[1], so q' ≤ L.tail[0]. ✓
-    --     For a = 0 case: tail is empty, so erased multiset is 0; ColStrictSym is vacuous.
-    -- ESTIMATE: ~80-100 lines for jdt_weight_sum_b_one as a separate helper.
-    -- ============================================================================
-    --
-    -- For b ≥ 2, the bijection generalizes: insert Q.sort[c] into P at position c,
-    -- where c is the first violation index. The inverse map is the JDT seam
-    -- algorithm (find c such that P'.sort[c] came from Q's c-th violation column).
-    -- This is genuinely intricate; ~150-200 lines of focused Lean work.
-    sorry
+    rcases Nat.lt_or_ge b 2 with hb1 | hb2
+    · -- b = 1: use jdt_weight_sum_b_one (RHS is hsymm (a+1) * hsymm 0)
+      have hbeq : b = 1 := by omega
+      subst hbeq
+      -- After subst, hba : 1 ≤ a, and the RHS is hsymm (a+1) * hsymm (1 - 1)
+      -- which is hsymm (a+1) * hsymm 0 by rfl on Nat subtraction.
+      exact jdt_weight_sum_b_one n a hba
+    · -- b ≥ 2: the general JDT seam bijection (still sorry)
+      rw [← sum_all_sym_pairs n (a + 1) (b - 1)]
+      -- Need: weight-preserving bijection
+      --   {non-col-strict (a,b) pairs} ≃ {all (a+1, b-1) pairs}
+      -- Forward map: find first violation c in ColStrictSym, let v = Q.sort[c],
+      --   then P' = Sym.cons v P, Q' = Sym.erase Q v (need v ∈ Q.1)
+      -- Inverse map: find the "seam" element in P'.sort to move back to Q'
+      -- Weight preserved by Multiset.prod_cons + Multiset.prod_erase
+      --
+      -- For b ≥ 2, the bijection generalizes: insert Q.sort[c] into P at position c,
+      -- where c is the first violation index. The inverse map is the JDT seam
+      -- algorithm (find c such that P'.sort[c] came from Q's c-th violation column).
+      -- This is genuinely intricate; ~150-200 lines of focused Lean work.
+      --
+      -- The b = 1 base case (above) demonstrates the construction with q = Q.sort[0]
+      -- and the inverse via head-of-sort. Generalizing requires tracking the
+      -- "seam index" c through the bijection invariants.
+      sorry
   · -- b = 0: ColStrictSym a 0 P Q is vacuously true (quantifies over Fin (min a 0) = Fin 0)
     -- So ¬ColStrictSym = False, the subtype is empty, and the sum equals 0
     push_neg at hb
