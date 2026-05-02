@@ -6221,9 +6221,12 @@
     },
     "erdos-363": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T00:05:00Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom Bauer-Bennett/Bennett-Van Luijk axioms in originalContributions; phantom product_eq_range_prod theorem (no such name, 0 sorries); proofStrategy claims combining 3 axioms but only ulas_theorem used in disproof; section line drift Parts VIII-XII (#14451)"
+      ]
     },
     "erdos-364": {
       "agentId": "auditor-cycle-20-batch",
