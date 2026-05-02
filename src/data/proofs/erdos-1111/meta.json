@@ -68,7 +68,7 @@
     "historicalContext": "**Erdős Problem #1111: Anticomplete High-Chromatic Subgraphs**\n\nThis problem was posed by El Zahar and Erdős in 1985.\n\n**Key History:**\n- **Wagon (1980):** Bound implying d(t, 2) ≤ C(t, 2) + 1\n- **El Zahar-Erdős (1985):** Original problem, reduction to t ≤ c, bounds for c = 3\n- **Nguyen-Scott-Seymour (2024):** Strengthened existence with minimum degree constraint\n\n**Mathematical Context:**\nHigh chromatic number with bounded clique number forces rich structure. This problem asks what anticomplete high-chromatic substructures must exist.",
     "problemStatement": "**Problem Statement (Open)**\n\nTwo vertex sets A, B are **anticomplete** if there are no edges between them.\n\n**Conjecture:** For t, c ≥ 1, there exists d = d(t, c) such that any graph G with χ(G) ≥ d and ω(G) < t contains anticomplete sets A, B with χ(A) ≥ χ(B) ≥ c.\n\n**Known Values:**\n- d(2, 2) = 2, d(3, 2) = 4, d(4, 2) = 5\n- d(t, 2) ≤ C(t, 2) + 1 (Wagon 1980)\n- d(3, 3) ≤ 8 (El Zahar-Erdős 1985)\n\n**Open:** Exact values of d(t, c) for general t, c.",
     "text": "For t, c ≥ 1, find d(t, c): minimal d such that any graph with χ(G) ≥ d and ω(G) < t has anticomplete sets A, B with χ(A) ≥ χ(B) ≥ c. Known: d(2,2)=2, d(3,2)=4, d(4,2)=5. Status: OPEN.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - IsAnticomplete: disjoint sets with no edges between them\n   - inducedChromaticNumber: χ of induced subgraph\n   - cliqueNumber: ω(G)\n\n2. **The (t, c, d) Property:**\n   - HasElZaharErdosProperty: the main property\n   - d_func: minimal d for the property to hold\n\n3. **Known Results as Axioms:**\n   - Exact values: d(2,2), d(3,2), d(4,2)\n   - Wagon's bound: d(t, 2) ≤ C(t, 2) + 1\n   - El Zahar-Erdős: d(3, 3) ≤ 8, reduction to t ≤ c\n\n4. **NSS Strengthening:**\n   - HasNSSProperty with minimum degree constraint",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - IsAnticomplete: disjoint sets with no edges between them\n   - inducedChromaticNumber: χ of induced subgraph\n   - cliqueNumber: ω(G)\n\n2. **The (t, c, d) Property:**\n   - HasElZaharErdosProperty: the main property\n   - d_func: minimal d for the property to hold\n\n3. **Known Results as Axioms:**\n   - Exact values: d(2,2), d(3,2), d(4,2)\n   - Wagon's bound: d(t, 2) ≤ C(t, 2) + 1\n   - El Zahar-Erdős: d(3, 3) ≤ 8 (axiom `d_3_3_bound`; reduction to t ≤ c is discussion only)\n\n4. **NSS Strengthening:**\n   - HasNSSProperty with minimum degree constraint",
     "keyInsights": [
       "**Anticomplete = No Edges:** A and B share no edges at all",
       "**High χ, Low ω:** Graphs with large chromatic but small clique number have rich structure",
@@ -120,7 +120,7 @@
       "summary": "Reduction to t ≤ c, d(3, 3) ≤ 8, general c = 3 bound",
       "startLine": 135,
       "endLine": 160,
-      "mathContext": "Reduction to t $\\leq$ c, d(3, 3) $\\leq$ 8, general c = 3 bound"
+      "mathContext": "Axiomatized: d(3, 3) $\\leq$ 8 (axiom `d_3_3_bound`); discussion only (orphan docstrings): reduction to t $\\leq$ c, general c = 3 bound"
     },
     {
       "id": "nss",
@@ -133,10 +133,10 @@
     {
       "id": "connections",
       "title": "Connections to Ramsey Theory",
-      "summary": "Ramsey connection and chi-boundedness axioms",
+      "summary": "Ramsey connection and chi-boundedness (discussion only, no declarations)",
       "startLine": 184,
       "endLine": 208,
-      "mathContext": "Axiomatized: Ramsey connection and chi-boundedness axioms"
+      "mathContext": "Discussion only (orphan docstrings): Ramsey connection, $\\chi$-boundedness connection — no formal declarations in this section"
     },
     {
       "id": "summary",
