@@ -4248,10 +4248,12 @@
       "result": "clean"
     },
     "erdos-1158": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "#14745 phantom \"axiomatize\" claims for upper bound, lower bound, stepping-up + section line drift"
+      ],
+      "lastAudited": "2026-05-02T11:31:08Z",
+      "result": "issues-found"
     },
     "erdos-1159": {
       "auditCount": 2,
