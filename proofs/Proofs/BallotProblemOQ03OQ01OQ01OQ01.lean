@@ -536,19 +536,16 @@ private lemma jdt_weight_sum_b_one (n a : ℕ) (ha : 1 ≤ a) :
         have hqS_q : (Sym.cons q P).1.sort (· ≤ ·)[0]'(slen _ ▸ Nat.succ_pos a) = q := by
           change (q ::ₘ P.1).sort (· ≤ ·)[0]'_ = q
           simp [hcons_sort]
-        -- Now assemble: invFun (toFun ⟨(P, Q), h⟩) = ⟨(P, Q), h⟩
+        -- Unfold ψ and apply all rewrites in one simp call
+        simp only [ψ, hgq, hqS_q]
+        -- Goal is now: ⟨(Sym.erase (Sym.cons q P) q _, ⟨{q},_⟩),_⟩ = ⟨(P,Q),h⟩
         apply Subtype.ext; apply Prod.ext
-        · -- First component: Sym.erase (Sym.cons q P) q _ = P
-          apply Subtype.ext
-          simp only [hgq, hqS_q]
-          exact congrArg Sym.val (Sym.erase_cons_head P q)
-        · -- Second component: ⟨{q}, _⟩ = Q
-          apply Subtype.ext
-          simp only [hgq, hqS_q, hqms]
+        · exact Sym.erase_cons_head P q
+        · exact Subtype.ext hqms.symm
       right_inv := fun S => by
         have hmem : (S.1.sort (· ≤ ·))[0]'(slen S ▸ Nat.succ_pos a) ∈ S.1 :=
           (Multiset.mem_sort _).mp (getElem_mem (slen S ▸ Nat.succ_pos a))
-        apply Subtype.ext
+        simp only [ψ]
         rw [show getq ⟨{(S.1.sort (· ≤ ·))[0]'(slen S ▸ Nat.succ_pos a)},
                         Multiset.card_singleton _⟩ =
                 (S.1.sort (· ≤ ·))[0]'(slen S ▸ Nat.succ_pos a) from
