@@ -5679,9 +5679,12 @@
     },
     "erdos-287": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T03:16:47Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom axiom narrative + dangling docstrings: 2 phantom axioms (example_2_3_6, erdos_287_conjecture) listed in assumptions/originalContributions/proofStrategy/sections but never declared; proofStrategy claims '3 axioms, 91 lines' (actual 1/85); section line drift on example/conjecture (#14521)"
+      ]
     },
     "erdos-288": {
       "agentId": "auditor-cycle-20-batch",
