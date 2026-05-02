@@ -57,7 +57,7 @@
     "originalContributions": [
       "IsNonDividing, IsNonDividingAlt: two equivalent formulations of non-dividing sets",
       "IsNonAveraging: non-averaging set definition with Q-valued averages",
-      "nondividing_implies_nonaveraging: key implication (partially verified)",
+      "nondividing_implies_nonaveraging: key implication (fully proved via exact_mod_cast)",
       "F(N), g(N): extremal functions via Finset.powerset enumeration",
       "F_le_g: non-dividing maximum bounded by non-averaging maximum",
       "pham_zakharov_chain: bound transfer mechanism",
@@ -81,7 +81,7 @@
       "**Subexponential-to-polynomial gap:** The current bounds $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$ span an immense range. The lower bound is slower than any $N^\\alpha$, the upper bound is polynomial. Whether $F$ is polynomial or 'truly intermediate' is wide open.",
       "**Bound transfer via set property hierarchy:** The chain $\\text{non-dividing} \\subseteq \\text{non-averaging} \\implies F(N) \\leq g(N)$ exemplifies how implications between combinatorial properties transfer extremal bounds. Pham-Zakharov's work was on non-averaging sets, not non-dividing ones.",
       "**ELRSS to Pham-Zakharov: exponent halved:** The upper bound exponent dropped from $1/2$ (ELRSS: $F < 3\\sqrt{N}+1$) to $1/4$ (Pham-Zakharov: $F \\leq N^{1/4+o(1)}$). This halving was enough to resolve the original question.",
-      "**Formalization challenge: $\\mathbb{Q}$-to-$\\mathbb{N}$ lifting:** The non-averaging definition requires rational arithmetic ($a = \\text{avg}(S)$), but divisibility lives in $\\mathbb{N}$. The sorry in `nondividing_implies_nonaveraging` is precisely this type-theoretic gap."
+      "**Formalization challenge: $\\mathbb{Q}$-to-$\\mathbb{N}$ lifting:** The non-averaging definition requires rational arithmetic ($a = \\text{avg}(S)$), but divisibility lives in $\\mathbb{N}$. This is resolved via `exact_mod_cast`: since $\\sum S = a \\cdot |S|$ holds in $\\mathbb{Q}$, we cast to obtain $a \\mid \\sum S$ in $\\mathbb{N}$."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -93,64 +93,64 @@
     {
       "id": "definitions",
       "title": "Non-Dividing and Non-Averaging Definitions",
-      "startLine": 41,
-      "endLine": 63,
+      "startLine": 43,
+      "endLine": 91,
       "summary": "Defines `IsNonDividing` ($a \\nmid \\sum S$ for $S \\subseteq A \\setminus \\{a\\}$, $|S| \\geq 2$), the alternative `IsNonDividingAlt`, and `IsNonAveraging` ($\\frac{\\sum S}{|S|} \\neq a$ in $\\mathbb{Q}$). The equivalence `nondividing_equiv` between the two non-dividing formulations is stated but unproved.",
       "mathContext": "Defines `IsNonDividing` ($a \\nmid \\sum S$ for $S \\subseteq A \\setminus \\{a\\}$, $|S| \\geq 2$), the alternative `IsNonDividingAlt`, and `IsNonAveraging` ($\\frac{\\sum S}{|S|} \\neq a$ in $\\mathbb{Q}$)."
     },
     {
       "id": "relationship",
       "title": "Non-dividing Implies Non-averaging",
-      "startLine": 64,
-      "endLine": 78,
-      "summary": "Proves the key structural implication: if $a = \\text{avg}(S)$ then $a \\mid \\sum S$. The proof structure is complete except for extracting $\\mathbb{N}$-divisibility from the $\\mathbb{Q}$-equation $\\sum S = a \\cdot |S|$.",
+      "startLine": 92,
+      "endLine": 105,
+      "summary": "Fully proves the key implication: if $a = \\text{avg}(S)$ in $\\mathbb{Q}$ then $a \\mid \\sum S$ in $\\mathbb{N}$, via `exact_mod_cast`. No sorry remains; the $\\mathbb{N}$-divisibility is extracted directly from the $\\mathbb{Q}$-equation.",
       "mathContext": "Proves the key structural implication: if $a = \\text{avg}(S)$ then $a \\mid \\sum S$. The proof structure is complete except for extracting $\\mathbb{N}$-divisibility from the $\\mathbb{Q}$-equation $\\sum S = a \\cdot |S|$."
     },
     {
       "id": "f-function",
       "title": "The Extremal Function F(N)",
-      "startLine": 79,
-      "endLine": 90,
+      "startLine": 106,
+      "endLine": 124,
       "summary": "Defines $F(N) = \\sup\\{|A| : A \\subseteq [N],\\; \\text{IsNonDividing}(A)\\}$ via `Finset.powerset` enumeration. States monotonicity $N \\leq M \\implies F(N) \\leq F(M)$.",
       "mathContext": "Formal definition: Defines $F(N) = \\sup\\{|A| : A \\subseteq [N],\\; \\text{IsNonDividing}(A)\\}$ via `Finset.powerset` enumeration. States monotonicity $N \\leq M \\implies F(N) \\leq F(M)$."
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
-      "startLine": 91,
-      "endLine": 111,
+      "startLine": 125,
+      "endLine": 166,
       "summary": "Three upper bound results: ELRSS (1999) $F(N) < 3\\sqrt{N} + 1$, Pham-Zakharov (2024) $F(N) \\leq N^{1/4+o(1)}$ (via non-averaging connection), and the resolution `original_question_answered_no`: $F(N) \\not> N^{1/2-o(1)}$.",
       "mathContext": "Three upper bound results: ELRSS (1999) $F(N) < 3\\sqrt{N} + 1$, Pham-Zakharov (2024) $F(N) \\leq N^{1/4+o(1)}$ (via non-averaging connection), and the resolution `original_question_answered_no`: $F(N) \\not> N^{1/2-o(1)}$."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
-      "startLine": 112,
-      "endLine": 131,
+      "startLine": 167,
+      "endLine": 212,
       "summary": "Two lower bound constructions: Csaba's polynomial $F(N) \\gg N^{1/5}$ and Straus's subexponential $F(N) > \\exp((\\sqrt{2/\\log 2} + o(1))\\sqrt{\\log N})$, with numerical bounds $1.6 < \\sqrt{2/\\log 2} < 1.8$ on Straus's constant.",
       "mathContext": "Two lower bound constructions: Csaba's polynomial $F(N) \\gg N^{1/5}$ and Straus's subexponential $F(N) > \\exp((\\sqrt{2/\\log 2} + o(1))\\sqrt{\\log N})$, with numerical bounds $1.6 < \\sqrt{2/\\log 2} < 1.8$ on Straus's constant."
     },
     {
       "id": "open-question",
       "title": "The Open Gap",
-      "startLine": 132,
-      "endLine": 153,
+      "startLine": 213,
+      "endLine": 296,
       "summary": "Formalizes the remaining open problem: the gap $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$. Also proves Erdős's original conjecture $F(N) < (\\log N)^{O(1)}$ was false.",
       "mathContext": "Formalizes the remaining open problem: the gap $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$. Also proves Erdős's original conjecture $F(N) < (\\log N)^{$O(1)$}$ was false."
     },
     {
       "id": "examples",
       "title": "Small Examples",
-      "startLine": 154,
-      "endLine": 188,
-      "summary": "Verified: `singleton_nondividing` (vacuous truth). Partially verified: $\\{2,3\\}$ non-dividing (cardinality contradiction). Stated: primes form non-dividing sets.",
+      "startLine": 297,
+      "endLine": 378,
+      "summary": "Verified: `singleton_nondividing` (trivial), `two_three_nondividing` (direct), `two_four_five_nondividing` (direct), `three_five_eleven_eighteen_nondividing` (computation). Counterexample: `primes_not_nondividing` proves $\\{2,3,5\\}$ is **not** non-dividing. Also `nondividing_hard_to_find` shows $\\{3,5,7\\}$ is not non-dividing.",
       "mathContext": "Mathematical content: Verified: `singleton_nondividing` (vacuous truth). Partially verified: $\\{2,3\\}$ non-dividing (cardinality contradiction). Stated: primes form non-dividing sets."
     },
     {
       "id": "connection",
       "title": "Connection to Non-Averaging (Problem #186)",
-      "startLine": 189,
-      "endLine": 477,
+      "startLine": 379,
+      "endLine": 556,
       "summary": "Defines $g(N)$ (non-averaging extremal function), proves $F(N) \\leq g(N)$ via `F_le_g`, and chains Pham-Zakharov's bound: $g(N) \\leq N^{1/4+\\varepsilon} \\implies F(N) \\leq N^{1/4+\\varepsilon}$.",
       "mathContext": "Formal definition: Defines $g(N)$ (non-averaging extremal function), proves $F(N) \\leq g(N)$ via `F_le_g`, and chains Pham-Zakharov's bound: $g(N) \\leq N^{1/4+\\varepsilon} \\implies F(N) \\leq N^{1/4+\\varepsilon}$."
     }
