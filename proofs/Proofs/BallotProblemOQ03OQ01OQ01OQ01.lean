@@ -424,6 +424,19 @@ private lemma colStrictSym_a_one_iff_phead_lt_qhead {n a : ℕ} (ha : 1 ≤ a)
     subst hjeq
     exact h
 
+/-- **Negation form of the b=1 column-strict characterisation.**
+
+    For `a ≥ 1` and `Q : Sym (Fin n) 1` with unique element `q = (Q.1.sort)[0]`,
+    `¬ColStrictSym a 1 P Q` iff `q ≤ (P.1.sort)[0]`. This is the precise condition
+    that the b=1 bijection forward map needs: when we form `q ::ₛ P`, the `q`
+    must be ≤ every element of `P` for the sortedness invariant to align. -/
+private lemma not_colStrictSym_a_one_iff_qhead_le_phead {n a : ℕ} (ha : 1 ≤ a)
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) 1) :
+    ¬ ColStrictSym a 1 P Q ↔
+      (Q.1.sort (· ≤ ·))[0]'((Multiset.length_sort _ Q.1).trans Q.2 ▸ Nat.one_pos) ≤
+      (P.1.sort (· ≤ ·))[0]'((Multiset.length_sort _ P.1).trans P.2 ▸ ha) := by
+  rw [colStrictSym_a_one_iff_phead_lt_qhead ha P Q, not_lt]
+
 /-- **JDT weight sum, `b = 1` base case.**
     For `a ≥ 1`, the sum of weights over non-col-strict
     `(P : Sym (Fin n) a, Q : Sym (Fin n) 1)` pairs equals `h_{a+1} * h_0 = h_{a+1}`.
