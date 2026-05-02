@@ -24,14 +24,9 @@
     "axiomCount": 3,
     "lineCount": 181,
     "assumptions": [
-      "square_is_powerful: every perfect square k^2 (k >= 1) is powerful",
-      "cube_is_powerful: every perfect cube k^3 (k >= 1) is powerful",
-      "mahler_pell_gives_powerful: Pell solutions (x,y) of x^2 = 8y^2 + 1 yield consecutive powerful pairs (8y^2, 8y^2+1)",
-      "infinitely_many_pell: the Pell equation x^2 - 8y^2 = 1 has infinitely many solutions with strictly increasing y",
       "question1_false: the assertion that every consecutive powerful pair has a square member is false",
       "golomb_counterexample: (12167, 12168) is a consecutive powerful pair with neither element a perfect square",
-      "walker_infinitely_many: the equation 7^3 x^2 = 3^3 y^2 + 1 has infinitely many solutions with strictly increasing y",
-      "walker_gives_nonsquare: every solution to Walker's equation yields a consecutive powerful pair where neither element is a perfect square"
+      "walker_infinitely_many: the equation 7^3 x^2 = 3^3 y^2 + 1 has infinitely many solutions with strictly increasing y"
     ],
     "originalContributions": [
       "Formal definition of powerful numbers via prime factorization (p^2 | n for all p | n) and alternative characterization (n = a^2 b^3)",
@@ -80,7 +75,7 @@
     "historicalContext": "Erdős asked Mahler whether infinitely many consecutive powerful pairs exist. Mahler immediately answered yes, observing that solutions to the Pell equation x² - 8y² = 1 yield pairs (8y², 8y² + 1) where both terms are powerful. The fundamental solution (3, 1) gives the pair (8, 9). Erdős then posed the deeper question: must all such pairs arise from Pell equations? Equivalently, must either n or n+1 be a perfect square?\n\nGolomb (1970) answered this decisively: NO. He exhibited the counterexample 12167 = 23³ and 12168 = 2³·3²·13², both powerful with neither being a perfect square. Walker (1976) went further, showing that the generalized Pell equation 343x² = 27y² + 1 has infinitely many solutions, each producing a consecutive powerful pair where neither element is a square. This demonstrated that non-Pell counterexamples are not isolated curiosities but form infinite families.\n\nThe second part of the problem — whether the counting function P(x) = |{n ≤ x : n and n+1 both powerful}| satisfies P(x) = O((log x)^C) — remains open. Since most known pairs come from Pell-type equations, whose solution counts grow polylogarithmically, the bound is widely expected to hold. The problem connects to fundamental questions about the distribution of powerful numbers and the structure of Diophantine equations.",
     "problemStatement": "Q1: Do all pairs of consecutive powerful numbers n, n+1 come from Pell equations? Equivalently, must either n or n+1 be a square? Q2: Is the number of such n ≤ x bounded by (log x)^O(1)?",
     "text": "A powerful (or squarefull) number n satisfies p^2 | n for every prime p | n, equivalently n = a^2 b^3. These numbers have density ~c sqrt(x) up to x, but consecutive powerful pairs are far rarer. Mahler showed Pell equations produce infinitely many such pairs, e.g. (8, 9) from x^2 - 8y^2 = 1. Erdos asked: must every consecutive powerful pair arise from a Pell equation -- i.e., must one element be a perfect square? Golomb (1970) disproved this with the pair (12167, 12168) = (23^3, 2^3 * 3^2 * 13^2), and Walker (1976) showed infinitely many non-Pell pairs exist via the generalized equation 343x^2 = 27y^2 + 1. The counting question -- whether the number of pairs up to x is O((log x)^C) -- remains open.",
-    "proofStrategy": "The formalization proceeds in seven parts, building from definitions through proved examples to axiomatized deep results, culminating in a summary theorem that packages the resolved portion of the problem. Part I: Powerful Numbers: Defines IsPowerful via prime factorization (p^2 | n for all primes p | n) and the equivalent characterization IsPowerfulAlt (n = a^2 b^3). Axiomatizes that all perfect squares and cubes are powerful. Part II: Consecutive Powerful Pairs: Defines IsConsecutivePowerfulPair and proves the smallest example (8, 9) by enumerating prime divisors with interval_cases and verifying divisibility conditions with decide. Part III: Pell Equation Connection: Formalizes IsPellSolution and axiomatizes Mahler's observation that solutions to x^2 = 8y^2 + 1 yield consecutive powerful pairs, together with the existence of infinitely many such solutions. Part IV: Question 1 Refutation: Formalizes Question1 as a Prop and axiomatizes its negation. Records Golomb's specific counterexample (12167, 12168) with verified factorizations 12167 = 23^3 and 12168 = 2^3 * 3^2 * 13^2 via native_decide. Part V: Walker's Infinite Family: Formalizes WalkerEquation (7^3 x^2 = 3^3 y^2 + 1) and axiomatizes both the existence of infinitely many solutions and the fact that each solution yields a non-square consecutive powerful pair. Part VI: Question 2: Defines the counting function P(x) as a Finset.card computation and formalizes the open Question2 as the existence of constants C, K such that P(x) <= K (log x)^C. Part VII: Summary: The theorem erdos_365_summary packages three results into a conjunction: negation of Question1, Golomb's counterexample, and Walker's infinite family, using the axioms directly.",
+    "proofStrategy": "The formalization proceeds in seven parts, building from definitions through proved examples to axiomatized deep results, culminating in a summary theorem that packages the resolved portion of the problem. Part I: Powerful Numbers: Defines IsPowerful via prime factorization (p^2 | n for all primes p | n) and the equivalent characterization IsPowerfulAlt (n = a^2 b^3). Proves that all perfect squares and cubes are powerful (square_is_powerful, cube_is_powerful — both are theorems, not axioms). Part II: Consecutive Powerful Pairs: Defines IsConsecutivePowerfulPair and proves the smallest example (8, 9) by enumerating prime divisors with interval_cases and verifying divisibility conditions with decide. Part III: Pell Equation Connection: Defines IsPellSolution and records Mahler's observation that solutions to x^2 = 8y^2 + 1 yield consecutive powerful pairs and the existence of infinitely many such solutions as doc-comments; no axioms are declared in this part. Part IV: Question 1 Refutation: Formalizes Question1 as a Prop and axiomatizes its negation (question1_false). Records Golomb's specific counterexample (12167, 12168) with verified factorizations 12167 = 23^3 and 12168 = 2^3 * 3^2 * 13^2 via native_decide. Part V: Walker's Infinite Family: Formalizes WalkerEquation (7^3 x^2 = 3^3 y^2 + 1) and axiomatizes the existence of infinitely many solutions (walker_infinitely_many); the non-square property is noted only as a doc-comment, not an axiom. Part VI: Question 2: Defines the counting function P(x) as a Finset.card computation and formalizes the open Question2 as the existence of constants C, K such that P(x) <= K (log x)^C. Part VII: Summary: The theorem erdos_365_summary packages three results into a conjunction: negation of Question1, Golomb's counterexample, and Walker's infinite family, using the three axioms directly.",
     "keyInsights": [
       "Q1 is FALSE: Golomb found 12167 = 23³, 12168 = 2³·3²·13² (neither square)",
       "Walker: infinitely many counterexamples via 7³x² = 3³y² + 1",
@@ -100,54 +95,54 @@
       "id": "powerful",
       "title": "Powerful Numbers",
       "startLine": 40,
-      "endLine": 58,
-      "summary": "Definition of powerful numbers and basic axioms about squares and cubes",
-      "mathContext": "A powerful (squarefull) number n satisfies p^2 | n for every prime p dividing n. Equivalently, n = a^2 b^3 for some positive integers a, b. The equivalence follows by writing each prime exponent e_i = 2q_i + 3r_i with r_i in {0,1}. Powerful numbers up to x number approximately c * sqrt(x) where c = zeta(3/2)/zeta(3) ~ 2.17. The axioms square_is_powerful and cube_is_powerful avoid detailed factorization arithmetic: for k^m with m >= 2, every prime in the factorization of k appears with exponent at least m >= 2."
+      "endLine": 64,
+      "summary": "Definition of powerful numbers and proved theorems about squares and cubes",
+      "mathContext": "A powerful (squarefull) number n satisfies p^2 | n for every prime p dividing n. Equivalently, n = a^2 b^3 for some positive integers a, b. The equivalence follows by writing each prime exponent e_i = 2q_i + 3r_i with r_i in {0,1}. Powerful numbers up to x number approximately c * sqrt(x) where c = zeta(3/2)/zeta(3) ~ 2.17. The theorems square_is_powerful and cube_is_powerful are proved (not axiomatized): for k^m with m >= 2, every prime in the factorization of k appears with exponent at least m >= 2."
     },
     {
       "id": "consecutive",
       "title": "Consecutive Powerful Numbers",
-      "startLine": 59,
-      "endLine": 78,
+      "startLine": 66,
+      "endLine": 84,
       "summary": "Definition of consecutive powerful pairs and proved example (8, 9)",
       "mathContext": "The pair (8, 9) = (2^3, 3^2) is the smallest consecutive powerful pair. It arises from the fundamental Pell solution (3, 1) to x^2 - 8y^2 = 1 since 8 * 1^2 = 8 and 3^2 = 9 = 8 + 1. The Lean proof uses interval_cases to enumerate primes up to 8 and 9, then checks p^2 | n for each prime divisor p computationally with decide. The next Pell-derived pair is (288, 289) = (2^5 * 3^2, 17^2) from the solution (17, 6)."
     },
     {
       "id": "pell",
       "title": "Pell Equation Connection",
-      "startLine": 79,
-      "endLine": 100,
+      "startLine": 86,
+      "endLine": 99,
       "summary": "Mahler's observation and infinitely many Pell solutions",
       "mathContext": "Mahler's key insight: if x^2 = 8y^2 + 1, then 8y^2 = x^2 - 1 = (x-1)(x+1). Since x must be odd (x^2 = 1 mod 8), both x-1 and x+1 are even. The factorization gives 8y^2 enough prime-power structure: 8y^2 = 2^3 * y^2 is automatically powerful (cube times square). Meanwhile x^2 = 8y^2 + 1 is a perfect square, hence powerful. The Pell equation x^2 - 8y^2 = 1 has fundamental solution (3, 1) and generates all solutions via the recurrence (x_{k+1}, y_{k+1}) = (3x_k + 8y_k, x_k + 3y_k), producing pairs at y = 1, 6, 35, 204, ..."
     },
     {
       "id": "question1",
       "title": "Question 1 - Square Requirement",
-      "startLine": 101,
-      "endLine": 126,
+      "startLine": 100,
+      "endLine": 124,
       "summary": "Q1 is FALSE: Golomb's counterexample with verified factorizations",
       "mathContext": "Golomb's 1970 paper in the American Mathematical Monthly introduced the term 'powerful number' and exhibited the pair (12167, 12168) where 12167 = 23^3 is a perfect cube and 12168 = 2^3 * 3^2 * 13^2 has all prime exponents >= 2. Neither is a perfect square: sqrt(12167) ~ 110.30 and sqrt(12168) ~ 110.31. The factorizations are computationally verified in Lean via native_decide. This answered Erdos's question decisively: not all consecutive powerful pairs require a square member."
     },
     {
       "id": "walker",
       "title": "Walker's Infinite Family",
-      "startLine": 127,
-      "endLine": 147,
+      "startLine": 126,
+      "endLine": 139,
       "summary": "Infinitely many non-Pell counterexamples via Walker's equation",
       "mathContext": "Walker (1976) showed that the generalized Pell equation 7^3 x^2 = 3^3 y^2 + 1 (i.e. 343x^2 = 27y^2 + 1) has infinitely many positive integer solutions. Each solution (x, y) gives the consecutive powerful pair (27y^2, 343x^2) = (3^3 * y^2, 7^3 * x^2), where both elements are products of a cube and a square and hence powerful, but neither is a perfect square (since 3^3 and 7^3 are not squares). The equation is a Pell-like equation in the ring Z[sqrt(21)], and its solutions grow exponentially."
     },
     {
       "id": "counting",
       "title": "Question 2 - Counting",
-      "startLine": 148,
-      "endLine": 164,
+      "startLine": 140,
+      "endLine": 155,
       "summary": "Open question about polylogarithmic bound on P(x)",
       "mathContext": "Let P(x) count pairs (n, n+1) with n <= x where both are powerful. Each family of Pell-type equations a^3 x^2 - b^3 y^2 = 1 contributes O(log x) pairs up to x (since Pell solutions grow exponentially). If only finitely many such equation families produce consecutive powerful pairs, then P(x) = O((log x)^C) for some constant C depending on the number of families. The formalization defines P(x) using Finset.filter over Finset.range and expresses Question2 as the existence of constants C > 0, K > 0 bounding P(x) by K * (log x)^C."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 165,
+      "startLine": 157,
       "endLine": 181,
       "summary": "Three-part conjunction: Q1 false, Golomb counterexample, Walker family",
       "mathContext": "The summary theorem erdos_365_summary combines the complete resolution of Q1 into a single statement: the negation of Question1, Golomb's explicit counterexample, and Walker's infinite family. This captures three levels of generality -- qualitative (Q1 fails), concrete (specific counterexample), and structural (infinitely many counterexamples). Question 2 is deliberately excluded since it remains open. The Lean proof is a direct tuple construction from the three axioms."
