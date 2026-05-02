@@ -51,7 +51,7 @@
       "motzkin_theorem axiom and f_tends_to_infinity theorem (proved)",
       "kelly_moser, csima_sawyer axioms",
       "green_tao_even, green_tao_odd axioms",
-      "structure_theorem axiom (cubic curve structure)",
+      "LiesOnCubic axiom (predicate for points lying on a cubic curve)",
       "erdos_210 and erdos_210_summary theorems (proved)"
     ],
     "axiomCount": 9,
@@ -112,47 +112,47 @@
       "id": "motzkin",
       "title": "Motzkin's Theorem",
       "summary": "f(n) → ∞, with f_tends_to_infinity proved",
-      "startLine": 106,
-      "endLine": 119,
+      "startLine": 104,
+      "endLine": 117,
       "mathContext": "f(n) $\\to$ ∞, with f_tends_to_infinity proved"
     },
     {
       "id": "kelly-moser-csima-sawyer",
       "title": "Kelly-Moser and Csima-Sawyer Bounds",
       "summary": "f(n) ≥ 3n/7 and f(n) ≥ 6n/13 for n ≥ 8",
-      "startLine": 120,
-      "endLine": 131,
+      "startLine": 118,
+      "endLine": 129,
       "mathContext": "f(n) $\\geq$ 3n/7 and f(n) $\\geq$ 6n/13 for n $\\geq$ 8"
     },
     {
       "id": "green-tao",
       "title": "Green-Tao Theorem",
       "summary": "f(n) ≥ n/2 for large even n, f(n) ≥ 3⌊n/4⌋ for large odd n, tightness",
-      "startLine": 132,
-      "endLine": 149,
+      "startLine": 130,
+      "endLine": 143,
       "mathContext": "f(n) $\\geq$ n/2 for large even n, f(n) $\\geq$ 3⌊n/4⌋ for large odd n, tightness"
     },
     {
       "id": "extremal",
       "title": "Extremal Configurations",
       "summary": "Böröczky construction, small n values",
-      "startLine": 150,
-      "endLine": 169,
+      "startLine": 144,
+      "endLine": 153,
       "mathContext": "Mathematical content: Böröczky construction, small n values"
     },
     {
       "id": "structure-theory",
       "title": "Structure Theory",
-      "summary": "LiesOnCubic axiom and structure_theorem",
-      "startLine": 170,
-      "endLine": 182,
-      "mathContext": "Formal definition: LiesOnCubic axiom and structure_theorem"
+      "summary": "LiesOnCubic axiom (predicate for points on a cubic curve); no structure_theorem declared",
+      "startLine": 154,
+      "endLine": 161,
+      "mathContext": "Formal definition: LiesOnCubic predicate axiom for points on a cubic curve; no structure_theorem declared"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_210 and erdos_210_summary theorems",
-      "startLine": 183,
+      "startLine": 162,
       "endLine": 196,
       "mathContext": "Verified: erdos_210 and erdos_210_summary theorems"
     }
@@ -181,7 +181,7 @@
     "namespace": "Erdos210",
     "lineCount": 196,
     "axiomCount": 9,
-    "theoremCount": 4,
+    "theoremCount": 3,
     "definitionCount": 8,
     "path": "Proofs/Erdos210Problem.lean",
     "sorries": 0

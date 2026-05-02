@@ -100,7 +100,7 @@ axiom sylvester_gallai :
   ∀ (S : PointSet), S.card ≥ 3 → NotAllCollinear S →
     ∃ (l : Line), l.p1 ∈ S ∧ l.p2 ∈ S ∧ IsOrdinaryLine S l
 
-/-- f(n) ≥ 1 for n ≥ 3 (immediate consequence of Sylvester-Gallai). -/
+/- f(n) ≥ 1 for n ≥ 3 (immediate consequence of Sylvester-Gallai). -/
 /- ## Part V: Motzkin's Theorem -/
 
 /-- **Motzkin's Theorem (1951):** f(n) → ∞ as n → ∞.
@@ -140,7 +140,7 @@ axiom green_tao_even :
 axiom green_tao_odd :
   ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ → Odd n → f n ≥ 3 * (n / 4)
 
-/-- The even bound n/2 is tight: take n/2 points on a circle and n/2 at infinity. -/
+/- The even bound n/2 is tight: take n/2 points on a circle and n/2 at infinity. -/
 /- ## Part VIII: Extremal Configurations -/
 
 /-- The Böröczky configuration achieves the minimum for even n.
@@ -149,8 +149,8 @@ It consists of n/2 points on a circle and n/2 points "at infinity"
 def BoroczykyConfiguration (n : ℕ) (hEven : Even n) : Prop :=
   ∃ S : PointSet, S.card = n ∧ OrdinaryLineCount S = n / 2
 
-/-- Böröczky configurations exist for all even n ≥ 4. -/
-/-- For small n, exact values are known. -/
+/- Böröczky configurations exist for all even n ≥ 4. -/
+/- For small n, exact values are known. -/
 /- ## Part IX: The Structure Theory -/
 
 /-- Sets with few ordinary lines have algebraic structure.
@@ -158,7 +158,7 @@ Green-Tao showed: if a set has fewer than n/2 ordinary lines,
 it must lie (mostly) on a cubic curve. -/
 axiom LiesOnCubic (S : PointSet) : Prop
 
-/-- If S has very few ordinary lines, it lies mostly on a cubic. -/
+/- If S has very few ordinary lines, it lies mostly on a cubic. -/
 /- ## Part X: Summary
 
 **Erdős Problem #210: SOLVED (Green-Tao, 2013)**
