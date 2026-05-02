@@ -64,7 +64,7 @@
       "title": "Probability Events",
       "startLine": 71,
       "endLine": 95,
-      "summary": "Axiomatizes the probability of the infinitely-often event for favourite site counts, with basic probability bounds (non-negative, at most 1).",
+      "summary": "Axiomatizes the probability of the infinitely-often event for favourite site counts (`prob_favourite_count_io`). A docstring mentions basic probability bounds (0 ≤ p ≤ 1), but no corresponding axiom or theorem is declared in this section.",
       "mathContext": "$\\mathbb{P}(|F(n)| = r \\text{ i.o.}) \\in [0, 1]$. Limsup event: $\\bigcap_N \\bigcup_{n \\ge N} \\{|F(n)| = r\\}$."
     },
     {
