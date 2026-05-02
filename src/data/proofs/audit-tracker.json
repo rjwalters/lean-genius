@@ -5185,10 +5185,13 @@
       "result": "clean"
     },
     "erdos-215": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-session-1777703363",
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T06:35:11Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom axiom narrative (isCongruent_symm, steinhaus_set_unbounded, steinhaus_set_measure_pathological, jackson_mauldin_general) + section line drift Parts II-VI + 209-line claim contradicts 187-line file (#14613)"
+      ]
     },
     "erdos-216": {
       "agentId": "auditor-cycle-20-batch",
