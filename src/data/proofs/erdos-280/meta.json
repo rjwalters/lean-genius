@@ -52,7 +52,6 @@
       "OriginalConjecture definition",
       "cambie_n and cambie_a constructions",
       "cambie_increasing theorem (constructive)",
-      "cambie_only_one_avoider axiom",
       "original_conjecture_false axiom",
       "erdos_280_summary theorem"
     ],
@@ -95,29 +94,29 @@
     {
       "id": "counterexample",
       "title": "Cambie's Counterexample",
-      "summary": "cambie_n, cambie_a, cambie_increasing, cambie_satisfies_growth, cambie_only_one_avoider, cambie_count_is_one",
+      "summary": "cambie_n, cambie_a definitions and cambie_increasing theorem (proved). Docstrings note growth bound, covering insight, and count = 1 result.",
       "startLine": 64,
-      "endLine": 93
+      "endLine": 83
     },
     {
       "id": "refutation",
       "title": "Refutation of the Conjecture",
       "summary": "original_conjecture_false, erdos_280_disproved",
-      "startLine": 94,
-      "endLine": 102
+      "startLine": 84,
+      "endLine": 92
     },
     {
       "id": "bound-optimality",
       "title": "Why the Bound is Best Possible",
-      "summary": "prime_number_theorem_approx axiom",
-      "startLine": 103,
-      "endLine": 112
+      "summary": "Block comment explaining why the (1+ε)k log k bound is tight (PNT argument: pₖ ~ k log k). No Lean declarations in this section.",
+      "startLine": 93,
+      "endLine": 97
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_280_summary theorem",
-      "startLine": 113,
+      "startLine": 98,
       "endLine": 113
     }
   ],
