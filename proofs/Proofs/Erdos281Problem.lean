@@ -214,8 +214,8 @@ theorem valid_increasing_lower_bound {moduli : ℕ → ℕ}
 
 /- ## Divergence and coprime results (axiomatized) -/
 
-/-- The hypothesis implies Σ 1/nᵢ = ∞. -/
-/-- When moduli are pairwise coprime, divergence of reciprocals suffices
+/- The hypothesis implies Σ 1/nᵢ = ∞. -/
+/- When moduli are pairwise coprime, divergence of reciprocals suffices
     for full covering. -/
 /- ## Main Theorem (Erdős Problem 281) -/
 

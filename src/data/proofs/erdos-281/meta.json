@@ -38,7 +38,7 @@
       "Formalization of covering systems via CongruenceChoice and IsCoveredByFirst",
       "12 infrastructure lemmas proved constructively (monotonicity, antitonicity, bounds)",
       "Easy direction (uniform → full) proved via uncoveredDensity_antitone",
-      "Axiomatization of Davenport–Erdős and Rogers theorems for the hard direction",
+      "Single axiom `erdos_281_proved` for the hard direction (full covering → uniform finite ε-coverage), citing Davenport–Erdős and Rogers in its docstring",
       "Biconditional equivalence combining both directions"
     ],
     "axiomCount": 1,
@@ -50,12 +50,12 @@
     "historicalContext": "Covering systems were introduced by Erdős in the 1950s. A covering system of congruences is a finite set of residue classes whose union is all integers; Erdős conjectured (and it was proved by Hough in 2015) that no covering system exists with all moduli distinct and greater than any given bound. Problem 281 is a density-theoretic variant: Erdős asked in 1980 whether the full-covering condition (every choice of congruence classes leaves density-0 uncovered) automatically gives *uniform* finite approximation. The affirmative resolution uses the Davenport–Erdős theorem (1951) — that upper and lower density coincide for divisibility-defined sets — and Rogers' maximization theorem from Halberstam–Roth's 'Sequences' (1966).",
     "problemStatement": "Let n₁ < n₂ < ⋯ be such that for any choice of classes aᵢ (mod nᵢ), the uncovered integers have density 0. Must there exist, for every ε > 0, a finite k achieving density < ε uniformly over all choices?",
     "text": "If a sequence of moduli has full covering (every congruence class choice leaves density-0 uncovered), must finitely many classes already achieve density < ε for every ε > 0?",
-    "proofStrategy": "The formalization defines congruence class assignments, coverage, and uncovered density. It axiomatises the divergence of reciprocals, the coprime special case, and the main theorem that full covering implies uniform finite approximation.",
+    "proofStrategy": "Defines covering choice, coverage, and uncovered density. Proves the easy direction (uniform → full) constructively along with 12 infrastructure lemmas. Axiomatises the hard direction (full → uniform) as `erdos_281_proved`.",
     "keyInsights": [
       "Full covering implies Σ 1/nᵢ = ∞",
       "For pairwise coprime moduli, divergent reciprocals suffice",
-      "The Davenport–Erdős theorem upgrades upper density 0 to a uniform finite bound",
-      "Rogers' theorem provides the maximization step",
+      "The Davenport–Erdős theorem is cited in the axiom docstring as the key analytic tool (not formalized)",
+      "Rogers' maximization theorem is cited in the axiom docstring (not formalized)",
       "12 infrastructure lemmas are proved constructively, forming a verified foundation independent of the axiomatized main theorem"
     ],
     "prerequisites": [
@@ -101,8 +101,7 @@
       "title": "Divergence and Coprime Results",
       "startLine": 215,
       "endLine": 231,
-      "summary": "Full covering implies $\\sum 1/n_i = \\infty$. When moduli are pairwise coprime, divergence is also sufficient (by CRT).",
-      "mathContext": "$\\text{HasFullCovering} \\implies \\sum_{i} 1/n_i = \\infty$; coprime + divergence $\\implies$ full covering"
+      "summary": "Informal block comments noting the divergence-of-reciprocals and coprime conditions that inform the axiom. Defines `ErdosProblem281 : Prop`, the formal statement of the problem."
     },
     {
       "id": "main-theorem",
