@@ -5743,9 +5743,12 @@
     },
     "erdos-295": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T02:28:13Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom axiom narrative + section drift: 3 dangling docstrings claim existence/k-existence/k-minimality axioms not declared; meta.originalContributions and sections.existence/k-definition overstate axiomatization (#14513)"
+      ]
     },
     "erdos-296": {
       "agentId": "auditor-cycle-20-batch",
