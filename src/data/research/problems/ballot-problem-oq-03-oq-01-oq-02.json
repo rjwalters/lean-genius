@@ -48,7 +48,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Modularization complete (session 35). The 1 sorry is at line 302 of a 392-line Main file. GNW Route A (~300 lines) is the clear next step.",
+    "progressSummary": "PROGRESS: GNW infrastructure added (session 37). hook_walk_identity_gnw PROVED. Remaining: gnwProb_key (GNW 1979 KEY), gnwProb_sum_corners (standard induction), 3 TRIVIAL lemmas. Dispatcher sorry-free.",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -132,7 +132,11 @@
       "Session 32 (2026-04-27): removed ni_count_eq_syt_count and lgv_det_factors_as_hook_quotient (dead, unprovable scaffolding with arbitrary (r,σ,m) untied to μ)",
       "Session 32: replaced removed sorries with OPEN comment block in PART V documenting canonical-config restatement (A) RSK bijection and (B) Lindström/Jacobi-Trudi det identity",
       "Session 32: documented LGV well-formedness obstruction r-1 ≤ μ.rowLen(r-1), which fails for tall/narrow shapes — needs transpose-duality case split",
-      "BallotProblemOQ03OQ01OQ02Helpers.lean: PARTS I-XXIV extracted; 22 private declarations de-privatized for cross-file access"
+      "BallotProblemOQ03OQ01OQ02Helpers.lean: PARTS I-XXIV extracted; 22 private declarations de-privatized for cross-file access",
+      "strictHookCells: arm+leg strict hook cells def (Helpers:13666)",
+      "strictHookCells_mem: proved — each strict hook cell is in μ (Helpers:13671)",
+      "gnwProb: GNW walk probability by Nat.rec on K bound (Helpers:13698)",
+      "hook_walk_identity_gnw: PROVED via gnwProb_key + gnwProb_sum_corners + sum_comm (Helpers:13727)"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -210,7 +214,11 @@
       "The two LGV auxiliary lemmas were stated for arbitrary (r, σ, m) with no link to μ. Most parameter choices yield false numerical equalities (e.g. μ=⊥ vs r=1, σ=fun _ => 5). Removing them is honest housekeeping, not a content regression.",
       "youngLGVConfig wellFormed condition r-1 ≤ σ⟨0⟩ reduces to μ.rowLen(numRows-1) ≥ numRows-1 — fails for tall shapes like (1,1,…,1). The general LGV statement requires applying LGV to whichever of μ, μᵀ is wide enough.",
       "Session 33 (2026-04-27): row-by-row tower has hit diminishing returns at 14022 lines. Adding row N+1 costs ~2200 lines for one branch and worsens the build envelope. The remaining sorry is uniformly closeable only by GNW (~300 lines, probability) or RSK/Fomin growth (~600 lines, also gives full HLF). Modularization (split PARTS XIVc-XXVI) must precede further additions to restore buildability.",
-      "Session 35: Modularization — split 14022-line file into Helpers (13645 lines, 0 sorries) + Main (392 lines, 1 sorry). The sorry is now at line 302 of a 392-line file."
+      "Session 35: Modularization — split 14022-line file into Helpers (13645 lines, 0 sorries) + Main (392 lines, 1 sorry). The sorry is now at line 302 of a 392-line file.",
+      "GNW structure: hook_walk_identity_gnw proved once gnwProb_key and gnwProb_sum_corners accepted; proof uses sum_comm to swap Σ_c Σ_x",
+      "Dispatcher hook_walk_identity now sorry-free; sorries isolated to PART XXVI GNW infrastructure",
+      "gnwProb_sum_corners is HARD but NOT the GNW KEY step — it is a standard induction on hookLen bound K (~50 lines)",
+      "gnwProb_key (GNW 1979 KEY) is the sole mathematically deep sorry; 3 TRIVIAL supporting lemmas also remain"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
@@ -218,10 +226,10 @@
       "BallotProblemOQ03.lean regression (omega failure near minSharedStepIdx_preserved) blocks all builds"
     ],
     "nextSteps": [
-      "Verify CI/Docker build succeeds for Helpers + Main",
-      "Implement GNW Route A in Main (line 302, ~300 lines)",
-      "GNW: deterministic recasting avoids ProbabilityTheory; ~300 lines for hook walk argument",
-      "After GNW proof: update meta.json sorries 1→0, status formalized→verified"
+      "Submit strictHookCells_card/nonempty/hookLen_lt to Aristotle (TRIVIAL)",
+      "Prove gnwProb_sum_corners manually: induction on K, ~50 lines",
+      "Tackle gnwProb_key (GNW 1979 KEY): hard combinatorial identity, core of GNW 1979",
+      "Create PR for feature/researcher-6 → main with current PART XXVI skeleton"
     ]
   },
   "tags": [
