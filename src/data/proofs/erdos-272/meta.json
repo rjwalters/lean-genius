@@ -51,10 +51,9 @@
       "singleton_is_ap and pair_is_ap theorems (constructive)",
       "hasAPIntersectionProperty definition",
       "maxAPFamily axiom",
-      "simonovits_sos_upper and simonovits_sos_lower axioms",
-      "erdos_graham_conjecture_false axiom",
+      "simonovits_sos_upper axiom (lower bound noted only in docstring at L91)",
       "smallSetsThroughElement construction",
-      "szabo_theorem and szabo_leading_constant axioms",
+      "szabo_theorem axiom (leading constant noted only in docstring at L120)",
       "erdos_272_summary theorem"
     ],
     "axiomCount": 3,
@@ -65,7 +64,7 @@
     "historicalContext": "Erdős Problem #272 asks for the maximum number of subsets of {1,...,N} such that every pairwise intersection is a non-empty arithmetic progression. The problem was posed by Erdős and Graham, who conjectured that the optimal family consists of all arithmetic progressions passing through the middle element ⌊N/2⌋, giving approximately π²N²/24 sets.\n\nSimonovits and Sós (1981) made two key contributions: they proved the upper bound t = O(N²), establishing the quadratic growth rate, and they disproved the Erdős-Graham conjecture by showing that a simpler construction — all subsets of size ≤ 3 containing a fixed element — gives C(N-1,2) + 1 ≈ N²/2 sets, beating the π²N²/24 ≈ N²/2.4 from arithmetic progressions. The key insight is that any two sets of size ≤ 3 sharing a common element intersect in {k} (a singleton, which is trivially an AP).\n\nSzabó (1999) resolved the problem completely by determining the exact asymptotic: t = N²/2 + O(N^{5/3}(log N)³). He improved the lower bound to C(N,2) + ⌊(N-1)/4⌋ + 1 and conjectured that the exact answer is C(N,2) + O(N) and that every extremal family has a common element contained in all sets.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $N \\geq 1$. What is the largest $t$ such that there exist $A_1, \\ldots, A_t \\subseteq \\{1,\\ldots,N\\}$ with $A_i \\cap A_j$ a non-empty arithmetic progression for all $i \\neq j$?\n\n**Answer (Szabó 1999):** $t = N^2/2 + O(N^{5/3}(\\log N)^3)$.\n\nThe Erdős-Graham conjecture (APs through $\\lfloor N/2 \\rfloor$ are optimal) is FALSE.",
     "text": "Maximum number of sets A_1,...,A_t ⊆ {1,...,N} with all pairwise intersections being non-empty arithmetic progressions. Answer: t ~ N²/2. Solved by Szabó (1999).",
-    "proofStrategy": "**Formalization Approach**\n\nThe formalization defines arithmetic progressions via the ArithProg structure and proves constructively that singletons and pairs are APs. The AP-intersection property and maxAPFamily are defined, with maxAPFamily axiomatized as a function from ℕ to ℕ.\n\nThe main results are axiomatized: Simonovits-Sós upper/lower bounds (establishing t = Θ(N²)), the disproved Erdős-Graham conjecture, the small-sets construction with its count and AP property, and Szabó's main theorem with the leading constant 1/2.\n\nThe summary theorem combines the upper bound and Szabó's asymptotic into a single conjunction proved by exact ⟨...⟩.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization defines arithmetic progressions via the ArithProg structure and proves constructively that singletons and pairs are APs. The AP-intersection property and maxAPFamily are defined, with maxAPFamily axiomatized as a function from ℕ to ℕ.\n\nThe main formalized results are: `simonovits_sos_upper` axiom (upper bound t = O(N²)), `szabo_theorem` axiom (asymptotic t ~ N²/2), and `smallSetsThroughElement` construction. The lower bound (t = Ω(N²)), disproof of the Erdős-Graham conjecture, small-sets count/AP property, and leading constant 1/2 are noted only in docstring comments — not declared as Lean axioms or theorems.\n\nThe summary theorem combines the upper bound and Szabó's asymptotic into a single conjunction proved by exact ⟨...⟩.",
     "keyInsights": [
       "**Small Sets Beat APs:** Sets of size ≤ 3 through a fixed element give ~N²/2 sets, beating the ~N²/2.4 from APs through the middle",
       "**Erdős-Graham Conjecture is False:** The optimal construction is NOT arithmetic progressions through a central element",
@@ -98,34 +97,34 @@
     {
       "id": "simonovits-sos",
       "title": "The Simonovits-Sós Bounds",
-      "summary": "simonovits_sos_upper, simonovits_sos_lower axioms",
+      "summary": "`simonovits_sos_upper` axiom (upper bound t = O(N²)). Lower bound noted only in a docstring (L91) — not separately axiomatized.",
       "startLine": 84,
       "endLine": 93,
-      "mathContext": "Axiomatized: simonovits_sos_upper, simonovits_sos_lower axioms"
+      "mathContext": "`simonovits_sos_upper` axiom: upper bound t = O(N²). Lower bound t = Ω(N²) discussed in docstring only."
     },
     {
       "id": "erdos-graham",
       "title": "Erdős-Graham Conjecture (Disproved)",
-      "summary": "erdos_graham_conjecture_false axiom",
+      "summary": "Docstring discussion of the disproved Erdős-Graham conjecture (lines 102–107). No axiom or theorem declaration — not formalized in this file.",
       "startLine": 94,
       "endLine": 111,
-      "mathContext": "Axiomatized: erdos_graham_conjecture_false axiom"
+      "mathContext": "Erdős-Graham conjecture disproof discussed in docstring; not formalized as a Lean declaration."
     },
     {
       "id": "small-sets",
       "title": "Simonovits-Sós Construction",
-      "summary": "smallSetsThroughElement, small_sets_count, small_sets_has_AP",
+      "summary": "`smallSetsThroughElement` construction (line 101). Count and AP property noted only in docstrings (lines 113–115) — not formalized as declarations.",
       "startLine": 112,
       "endLine": 126,
-      "mathContext": "Mathematical content: smallSetsThroughElement, small_sets_count, small_sets_has_AP"
+      "mathContext": "`smallSetsThroughElement`: all subsets of size ≤ 3 containing a fixed element. Count C(N-1,2)+1 and AP property discussed in docstrings only."
     },
     {
       "id": "szabo-theorem",
       "title": "Szabó's Theorem (1999)",
-      "summary": "szabo_theorem, szabo_leading_constant",
+      "summary": "`szabo_theorem` axiom (t ~ N²/2). Leading constant 1/2 noted only in a docstring (L120) — not separately axiomatized.",
       "startLine": 127,
       "endLine": 135,
-      "mathContext": "Verified: szabo_theorem, szabo_leading_constant"
+      "mathContext": "`szabo_theorem` axiom: t = N²/2 + O(N^{5/3}(log N)³). Leading constant discussed in docstring only."
     }
   ],
   "conclusion": {
