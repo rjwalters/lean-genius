@@ -62,6 +62,14 @@
   },
   "sections": [
     {
+      "id": "file-setup",
+      "title": "Imports, Doc-Comment, and Namespace Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Imports Mathlib's LegendreSymbol.QuadraticReciprocity and Tactic modules. The doc-comment (lines 4–36) describes the five-step algorithm (reduce, handle zero/one, factor via supplementary laws, swap via QR, recurse). Sets linter option, opens ZMod, and establishes the QRAlgorithm namespace.",
+      "mathContext": "Algorithm overview: to compute $\\left(\\tfrac{a}{p}\\right)$, (1) reduce $a \\bmod p$, (2) factor via multiplicativity, (3) handle $-1$ and $2$ via supplementary laws, (4) swap odd prime factors via QR, (5) recurse on smaller modulus."
+    },
+    {
       "id": "reduction-lemmas",
       "title": "Algorithm Reduction Lemmas",
       "startLine": 44,
@@ -81,12 +89,20 @@
     },
     {
       "id": "descent",
-      "title": "Algorithm Termination",
+      "title": "Algorithm Termination (algorithm_descent)",
       "startLine": 97,
-      "endLine": 119,
-      "summary": "Proves `algorithm_descent`: under the hypothesis `q < p`, the reciprocity swap (q/p) = ±(p/q) reduces the modulus from p to q. This makes the Euclidean-style termination argument explicit at the type level. The `#check` exports at lines 111-118 verify that all four lemmas are accessible.",
-      "mathContext": "Termination: `hqp : q < p` in `algorithm_descent` guarantees the modulus decreases. After the swap, applying `legendreSym_mod_left` gives $(p/q) = (p \\bmod q/q)$ with $p \\bmod q < q$. The type-level hypothesis forces callers to supply a proof of strict decrease, exactly the decreasing measure needed for `decreasing_by` in the full recursive algorithm.",
-      "relatedConcepts": ["well-founded recursion", "algorithm_descent", "decreasing_by", "Euclidean algorithm analogy", "#check exports"]
+      "endLine": 108,
+      "summary": "Proves `algorithm_descent`: under `q < p`, the reciprocity swap (q/p) = ±(p/q) reduces the modulus from p to q. The `hqp` hypothesis is unused in the proof body (one-line `exact reciprocity_swap`) but encodes the termination contract at the type level, forcing callers to supply a decreasing measure.",
+      "mathContext": "Termination: `hqp : q < p` guarantees modulus decrease. After the swap, $p \\bmod q < q < p$, so each call to `algorithm_descent` strictly reduces the modulus — the decreasing measure for well-founded recursion.",
+      "relatedConcepts": ["well-founded recursion", "algorithm_descent", "decreasing_by", "Euclidean algorithm analogy"]
+    },
+    {
+      "id": "exports",
+      "title": "Public API Exports",
+      "startLine": 109,
+      "endLine": 118,
+      "summary": "Four `#check` declarations confirm that `legendreSym_mul_eq`, `legendreSym_neg_one_eq`, `reciprocity_swap`, and `algorithm_descent` are accessible under their fully qualified `QRAlgorithm.*` names. These are the complete public API for the reduction toolkit.",
+      "mathContext": "Public API: (1) $\\left(\\tfrac{ab}{p}\\right) = \\left(\\tfrac{a}{p}\\right)\\left(\\tfrac{b}{p}\\right)$, (2) $\\left(\\tfrac{-1}{p}\\right) = (-1)^{(p-1)/2}$, (3) swap $\\left(\\tfrac{q}{p}\\right) \\leftrightarrow \\left(\\tfrac{p}{q}\\right)$, (4) same swap with $q < p$ descent contract."
     }
   ],
   "conclusion": {
