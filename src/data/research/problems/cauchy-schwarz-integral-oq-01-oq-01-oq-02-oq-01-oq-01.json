@@ -1,0 +1,32 @@
+{
+  "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01",
+  "title": "Lp Riesz Representation for Sigma-Finite Measures",
+  "tractability": 6,
+  "status": "in-progress",
+  "phase": "ACT",
+  "knowledge": {
+    "insights": [
+      "Mathlib uses tendsto_Lp_of_tendsto_ae (Vitali theorem) not tendsto_Lp_of_dominated_convergence \u2014 the latter does not exist",
+      "UnifTight for dominated sequence follows from unifTight_const for the dominator + eLpNorm_mono",
+      "UnifIntegrable for dominated sequence follows from unifIntegrable_of + cutoff argument",
+      "The density extension step (Step C) is a direct port from parent file \u2014 Lp.induction does not use IsFiniteMeasure",
+      "Lp restriction map Lp(mu) -> Lp(mu.restrict S) is the main Lean infrastructure gap for Step A (~150 lines)",
+      "eLpNorm_eq_lintegral_rpow_enorm converts eLpNorm to lintegral for DCT application"
+    ],
+    "builtItems": [
+      "mem_spanningSets_eventually (proved): every point eventually in spanning sets",
+      "pointwise_mul_indicator_tendsto (proved): f(a)*1_{Sn}(a) -> f(a) pointwise",
+      "CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01.lean created with 3 HARD sorries"
+    ],
+    "mathlibGaps": [
+      "No tendsto_Lp_of_dominated_convergence \u2014 must use Vitali theorem (tendsto_Lp_of_tendsto_ae) + UnifIntegrable/UnifTight",
+      "Lp restriction map Lp(mu) -> Lp(mu.restrict S) not found as standalone infrastructure"
+    ],
+    "nextSteps": [
+      "Prove lp_truncation_tendsto_zero using tendsto_Lp_of_tendsto_ae + unifIntegrable_of + unifTight_const (~80 lines)",
+      "Port parent integral_representation to SigmaFinite case for density extension step (~50 lines)",
+      "Build localization construction via Lp restriction map (~150 lines)"
+    ],
+    "progressSummary": "ACT: 2 lemmas proved (pointwise convergence), 3 HARD sorries identified and blueprinted. Gallery entry created."
+  }
+}
