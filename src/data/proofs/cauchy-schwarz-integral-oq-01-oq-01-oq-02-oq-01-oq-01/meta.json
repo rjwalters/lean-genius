@@ -38,6 +38,14 @@
   },
   "sections": [
     {
+      "id": "file-header",
+      "title": "Proof Architecture: Three-Step Sigma-Finite Extension",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "The header doc-comment lays out the three-step proof architecture (localization, Lp approximation, density extension), explains why each step requires a sorry, and identifies which ingredients are proved. Lines 58-66 are imports and namespace setup.",
+      "mathContext": "The three-step architecture mirrors the classical proof in Folland §6.2 / Rudin Theorem 6.16: (A) restrict to finite-measure sub-problems, (B) Lp truncation convergence via Vitali, (C) extend by density. The header explicitly distinguishes HARD sorries (known proofs, bounded coding effort) from OPEN questions (no known proof), establishing the gallery's sorry taxonomy for the entry."
+    },
+    {
       "id": "spanning-set-pointwise",
       "title": "Spanning-Set Pointwise Convergence (Proved)",
       "startLine": 67,
