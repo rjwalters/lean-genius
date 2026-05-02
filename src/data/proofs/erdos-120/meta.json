@@ -71,55 +71,55 @@
       "id": "known-cases",
       "title": "Part 4: Known Avoidable Cases",
       "startLine": 118,
-      "endLine": 144,
+      "endLine": 140,
       "summary": "Unbounded sets and interval-dense sets are avoidable.",
-      "mathContext": "Unbounded sets and sets dense in some interval are *avoidable* (not universal): one can construct positive-measure sets avoiding all similar copies. For unbounded $A$, take $E \\subseteq [0, 1]$; for interval-dense $A$, remove the dense interval's preimage. These cases are axiomatized as `unbounded_avoidable` and `interval_dense_avoidable`."
+      "mathContext": "Unbounded sets and sets dense in some interval are *avoidable* (not universal): one can construct positive-measure sets avoiding all similar copies. For unbounded $A$, take $E \\subseteq [0, 1]$; for interval-dense $A$, remove the dense interval's preimage. The unbounded case is axiomatized as `unbounded_avoidable`; the interval-dense case is described in the docstring but not separately declared."
     },
     {
       "id": "conjecture",
       "title": "Part 5: The Erd\u0151s Conjecture",
-      "startLine": 145,
-      "endLine": 173,
+      "startLine": 141,
+      "endLine": 169,
       "summary": "The main conjecture: every infinite set is avoidable. Plus the negation.",
       "mathContext": "Erd\u0151s's conjecture (\\$100 prize): every infinite set $A \\subseteq \\mathbb{R}$ is avoidable, i.e., $\\exists E$ with $\\mu(E) > 0$ containing no similar copy of $A$. The hardest cases are bounded, nowhere-dense infinite sets like $\\{1, 1/2, 1/4, \\ldots\\}$ (geometric sequences converging to 0)."
     },
     {
       "id": "geometric",
       "title": "Part 6: The Geometric Sequence Case",
-      "startLine": 174,
-      "endLine": 204,
+      "startLine": 170,
+      "endLine": 214,
       "summary": "The geometric sequence {(1/2)^n}, its properties, and the open question of avoidability.",
       "mathContext": "The geometric sequence $A = \\{(1/2)^n : n \\in \\mathbb{N}\\}$ is the critical test case. It accumulates at 0, is bounded and nowhere dense, so the known results (unbounded/dense avoidability) do not apply. If this sequence is universal, the conjecture fails; if avoidable, it provides evidence for the conjecture."
     },
     {
       "id": "ratio-invariance",
       "title": "Part 7: Ratio Invariance",
-      "startLine": 205,
-      "endLine": 228,
+      "startLine": 215,
+      "endLine": 238,
       "summary": "Proved theorem: similar copies preserve ratios of differences via ring_nf.",
       "mathContext": "Proved theorem: similar copies preserve ratios between elements. If $x, y, z \\in A$ with $x \\neq z$, then $(ax+b - ay - b)/(ax+b - az - b) = (x-y)/(x-z)$. This is the key structural property: similarity transformations form a group acting on $\\mathbb{R}$ that preserves the affine invariant of cross-ratios."
     },
     {
       "id": "measure-tools",
       "title": "Part 8: Measure-Theoretic Tools",
-      "startLine": 229,
-      "endLine": 256,
+      "startLine": 239,
+      "endLine": 258,
       "summary": "Steinhaus difference theorem and Lebesgue density theorem as analytical tools.",
-      "mathContext": "The Steinhaus difference theorem (`steinhaus_difference`): if $\\mu(E) > 0$, then $E - E = \\{x - y : x, y \\in E\\}$ contains an open interval around 0. This is the engine behind Steinhaus's universality theorem for finite sets: the difference set contains the pattern's differences, which are finitely many. The Lebesgue density theorem provides the local version needed for inductive arguments."
+      "mathContext": "The Steinhaus difference theorem: if $\\mu(E) > 0$, then $E - E = \\{x - y : x, y \\in E\\}$ contains an open interval around 0. This is the engine behind Steinhaus's universality theorem for finite sets: the difference set contains the pattern's differences, which are finitely many. The Lebesgue density theorem provides the local version needed for inductive arguments."
     },
     {
       "id": "connections",
       "title": "Part 9: Connections and Related Problems",
-      "startLine": 257,
-      "endLine": 295,
+      "startLine": 259,
+      "endLine": 297,
       "summary": "Proved: universal \u2194 \u00acavoidable. Proved: conjecture \u2194 no infinite set is universal.",
       "mathContext": "Proved equivalence: $A$ is universal $\\iff$ $A$ is not avoidable (`universal_iff_not_avoidable`). Proved: every positive-measure avoidance set has measure $< 1$ in any bounded interval. These structural results constrain the form of potential avoidance constructions."
     },
     {
       "id": "summary",
       "title": "Part 10: Summary",
-      "startLine": 296,
-      "endLine": 331,
+      "startLine": 298,
+      "endLine": 332,
       "summary": "Known results theorem: finite=universal \u2227 unbounded=avoidable. Status: OPEN ($100).",
       "mathContext": "Main results: finite sets are universal (Steinhaus), unbounded and interval-dense sets are avoidable. The `erdos_120` theorem packages the conjecture: every infinite $A$ is avoidable. Status: OPEN with \\$100 Erd\u0151s prize. The geometric sequence $\\{(1/2)^n\\}$ is the key unresolved case."
     }
