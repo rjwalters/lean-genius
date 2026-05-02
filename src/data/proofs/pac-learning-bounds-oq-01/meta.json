@@ -97,9 +97,17 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "File Structure and Namespace Setup",
+      "startLine": 1,
+      "endLine": 18,
+      "summary": "File doc-comment outlines the four-part proof structure (definitions, lower bound ≥1, upper bound ≤1, combined = 1). Import Mathlib, establish LearningTheory.VCDimension namespace (structured for future extension to intervals, half-spaces, etc.), and open Finset to surface membership lemmas for simp.",
+      "mathContext": "Three-part VC scaffold: (i) define class, (ii) prove $\\operatorname{VCdim} \\geq d$ by shattering a $d$-set, (iii) prove $\\operatorname{VCdim} \\leq d$ by ruling out $(d+1)$-set shattering."
+    },
+    {
       "id": "definitions",
       "title": "Definitions: Shatters and Threshold Classifiers",
-      "startLine": 16,
+      "startLine": 20,
       "endLine": 27,
       "summary": "Sets up the standard set-based shattering predicate and defines the threshold hypothesis class on ℕ as { x ↦ x < t : t ∈ ℕ }.",
       "mathContext": "$H$ shatters $S$ iff $\\forall T \\subseteq S, \\exists h \\in H : h \\cap S = T$.",
