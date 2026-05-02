@@ -83,13 +83,22 @@
       "relatedConcepts": ["TwinPrimeConjecture", "IsTwinPrimePair", "Brun's constant", "Hardy-Littlewood Conjecture B", "Zhang-Maynard bounded gaps"]
     },
     {
-      "id": "examples",
-      "title": "I. Extended Verified Examples (25 Total)",
+      "id": "twin-prime-list",
+      "title": "I.a. 19 Individual Twin Prime Pair Proofs",
       "startLine": 54,
+      "endLine": 82,
+      "summary": "Opens namespace TwinPrimesSpecialOQ01 and proves 19 individual twin prime pairs (59 through 521) using `constructor <;> decide`. Each one-liner certifies both primality conditions (p prime and p+2 prime) at elaboration time.",
+      "mathContext": "Each `theorem twin_N : IsTwinPrimePair N := by constructor <;> decide` checks both `Nat.Prime N` and `Nat.Prime (N+2)` by exhaustive finite computation. For $p > 3$, all twin primes satisfy $p \\equiv 5 \\pmod{6}$ (proven in parent file).",
+      "relatedConcepts": ["decide tactic", "IsTwinPrimePair", "Nat.Prime decidability", "certified primality"]
+    },
+    {
+      "id": "existence-theorem",
+      "title": "I.b. Combined Existence Theorem (25 Pairs)",
+      "startLine": 83,
       "endLine": 100,
-      "summary": "Adds 19 twin prime pairs beyond the parent's 6, reaching 25 total. Each is proved by `constructor <;> decide` — Lean's certified primality check for both p and p+2. The exists_twentyfive_twin_primes theorem packages all 25 in a single conjunction.",
-      "mathContext": "New pairs (lower elements): 59, 71, 101, 107, 137, 149, 179, 191, 197, 227, 239, 269, 281, 311, 347, 419, 431, 461, 521. All have p ≡ 5 (mod 6) since p > 3. Full verified set of 25: {3,5,11,17,29,41,59,71,101,107,137,149,179,191,197,227,239,269,281,311,347,419,431,461,521}.",
-      "relatedConcepts": ["decide tactic", "certified computation", "IsTwinPrimePair", "Nat.Prime decidability"]
+      "summary": "Packages all 25 verified pairs into a single conjunction: exists_twentyfive_twin_primes. The proof is a conjunction of the individual theorems from the parent file and this one. Serves as a single importable witness that the first 25 twin prime lower elements are machine-verified.",
+      "mathContext": "Full verified set: $\\{3, 5, 11, 17, 29, 41, 59, 71, 101, 107, 137, 149, 179, 191, 197, 227, 239, 269, 281, 311, 347, 419, 431, 461, 521\\}$.",
+      "relatedConcepts": ["conjunction introduction", "verified examples", "twin prime lower elements"]
     },
     {
       "id": "equivalences",
