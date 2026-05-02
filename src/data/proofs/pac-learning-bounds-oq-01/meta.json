@@ -102,7 +102,8 @@
       "startLine": 16,
       "endLine": 27,
       "summary": "Sets up the standard set-based shattering predicate and defines the threshold hypothesis class on ℕ as { x ↦ x < t : t ∈ ℕ }.",
-      "mathContext": "$H$ shatters $S$ iff $\\forall T \\subseteq S, \\exists h \\in H : h \\cap S = T$."
+      "mathContext": "$H$ shatters $S$ iff $\\forall T \\subseteq S, \\exists h \\in H : h \\cap S = T$.",
+      "relatedConcepts": ["Shatters predicate", "thresholdClassifiers", "Finset.subset", "hypothesis class", "VC dimension definition"]
     },
     {
       "id": "lower-bound",
@@ -110,7 +111,8 @@
       "startLine": 29,
       "endLine": 49,
       "summary": "Every singleton {a} is shattered by thresholds: t = a+1 includes a, t = 0 excludes a.",
-      "mathContext": "$\\forall a \\in \\mathbb{N}: H_{thr}$ shatters $\\{a\\}$."
+      "mathContext": "$\\forall a \\in \\mathbb{N}: H_{thr}$ shatters $\\{a\\}$.",
+      "relatedConcepts": ["threshold_shatters_singleton", "Nat.lt_succ_self", "anonymous constructor witness", "refine with rfl"]
     },
     {
       "id": "upper-bound",
@@ -118,7 +120,8 @@
       "startLine": 51,
       "endLine": 77,
       "summary": "For a < b, labeling T = {b} is unrealizable: would need t ≤ a (exclude a) and t > b (include b), contradicting a < b.",
-      "mathContext": "$\\forall a < b: \\neg H_{thr}$ shatters $\\{a, b\\}$."
+      "mathContext": "$\\forall a < b: \\neg H_{thr}$ shatters $\\{a, b\\}$.",
+      "relatedConcepts": ["threshold_not_shatters_pair", "monotonicity obstruction", "Nat.not_lt_zero", "omega tactic"]
     },
     {
       "id": "combined",
@@ -126,7 +129,8 @@
       "startLine": 79,
       "endLine": 92,
       "summary": "Together: every singleton is shattered, and no two-point set is. Symmetric pairs handled via Finset extensionality.",
-      "mathContext": "$\\operatorname{VCdim}(H_{thr}) = 1$."
+      "mathContext": "$\\operatorname{VCdim}(H_{thr}) = 1$.",
+      "relatedConcepts": ["threshold_vcdim_bounds", "Finset.ext", "Or.comm", "symmetry reduction", "wlog pattern"]
     }
   ],
   "conclusion": {
