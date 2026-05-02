@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 16: Added two characterisation helpers (colStrictSym_a_one_iff_phead_lt_qhead and its negation form). The subtype condition ¬ColStrictSym a 1 P Q now has a clean reformulation as q ≤ (P.sort)[0], reducing the residual bijection sorry estimate from 100-130 lines to 80-100 lines. Sorry count unchanged (jdt_weight_sum_b_one still has 1 sorry; jdt_weight_sum b ≥ 2 still has 1 sorry).",
+    "progressSummary": "Session 17: jdt_weight_sum_b_one proved (sorry 3→2). Remaining: jdt_weight_sum b≥2 seam bijection and jacobi_trudi_ssyt_eq k≥3 (RSK).",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -72,7 +72,8 @@
       "BallotProblemOQ03OQ01OQ01OQ01.lean: jdt_weight_sum_b_one (line ~399, stated, body = sorry) — b=1 base case, signature returns hsymm (a+1) * hsymm 0.",
       "BallotProblemOQ03OQ01OQ01OQ01.lean: jdt_weight_sum dispatches on b = 1 (calls helper) vs b ≥ 2 (original seam bijection sorry).",
       "colStrictSym_a_one_iff_phead_lt_qhead (BallotProblemOQ03OQ01OQ01OQ01.lean:406): characterise ColStrictSym at b=1 as a single inequality (P.sort)[0] < (Q.sort)[0]",
-      "not_colStrictSym_a_one_iff_qhead_le_phead (BallotProblemOQ03OQ01OQ01OQ01.lean:421): negation form q ≤ (P.sort)[0] for direct use in the bijection"
+      "not_colStrictSym_a_one_iff_qhead_le_phead (BallotProblemOQ03OQ01OQ01OQ01.lean:421): negation form q ≤ (P.sort)[0] for direct use in the bijection",
+      "jdt_weight_sum_b_one proved at BallotProblemOQ03OQ01OQ01OQ01.lean:474 (S17) — bijection {non-col-strict (a,1) pairs} ≃ Sym (Fin n) (a+1), sorry eliminated"
     ],
     "insights": [
       "Mathlib has hsymm σ R n (complete homogeneous symmetric polynomials) in RingTheory.MvPolynomial.Symmetric.Defs — directly usable for Jacobi-Trudi matrix entries",
@@ -113,7 +114,8 @@
       "jdt_weight_preserved isolates the algebraic core of JDT bijection: weight preservation does not depend on the combinatorics of choosing v=Q.sort[firstViolIdx], only on v ∈ Q. Future bijection proof can apply Fintype.sum_equiv and reuse this lemma.",
       "Session 15 (2026-05-02): Decomposed jdt_weight_sum b ≥ 1 case into b = 1 (jdt_weight_sum_b_one helper, with sorry on bijection) + b ≥ 2 (still sorry, the genuine JDT seam). Sorry count went 1 → 2 in jdt_weight_sum, but the b = 1 base is now an explicit sub-problem with named statement matching the recipe.",
       "Session 15: Proved sym_one_sort_head_singleton: for Q : Sym (Fin n) 1, ∃ q. Q.1.sort = [q] ∧ Q.1 = {q}. Reusable infrastructure for Sym/Multiset proofs (List.length_eq_one_iff + Multiset.sort_eq, ~6 lines). Will be used when filling in the jdt_weight_sum_b_one bijection.",
-      "Session 16: With a ≥ 1, min a 1 = 1, so ColStrictSym a 1 P Q reduces to a single inequality on the head of each sort. The negation form ¬ColStrictSym ↔ q ≤ (P.sort)[0] is exactly the precondition the b=1 bijection forward map (P, q) ↦ q ::ₛ P needs to align the sortedness invariant."
+      "Session 16: With a ≥ 1, min a 1 = 1, so ColStrictSym a 1 P Q reduces to a single inequality on the head of each sort. The negation form ¬ColStrictSym ↔ q ≤ (P.sort)[0] is exactly the precondition the b=1 bijection forward map (P, q) ↦ q ::ₛ P needs to align the sortedness invariant.",
+      "jdt_weight_sum_b_one proved (S17): bijection {(P,Q)//¬CS a 1} ≃ Sym n (a+1) via (P,Q)↦q::ₛP where q=unique element of Q. Key: getq via sym_one_sort_head_singleton.choose, left_inv uses Multiset.sort_cons + Sym.erase_cons_head, right_inv uses Sym.cons_erase, weight by ring."
     ],
     "mathlibGaps": [
       "No Mathlib SchurPolynomial definition — we provide one via Jacobi-Trudi formula",
@@ -121,10 +123,9 @@
       "RSK correspondence not formalized in Mathlib — needed for jacobiTrudi_lgv_proof"
     ],
     "nextSteps": [
-      "Implement b_one_equiv : { (P, Q) // ¬ColStrictSym a 1 P Q } ≃ Sym (Fin n) (a+1) using Sym.oneEquiv (chain via Fin n) and Sym.cons_erase / Sym.erase_cons_head; ~80 lines.",
-      "Apply the equivalence in jdt_weight_sum_b_one via Fintype.sum_equiv with weight preservation by jdt_weight_preserved (b=0 specialisation).",
-      "After b=1 closes: tackle jdt_weight_sum b ≥ 2 (the seam algorithm, ~150-200 lines).",
-      "Consider submitting BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean to Aristotle now that the characterisation helpers are in place — the bijection construction is the only remaining sub-goal."
+      "Implement jdt_weight_sum b≥2 seam bijection (~150-200 lines): find first violation c, insert Q.sort[c] into P, track the seam index through inverses.",
+      "Or: attempt Aristotle on jdt_weight_sum b≥2 sorry — it is a HARD sorry with known combinatorial proof.",
+      "Then tackle jacobi_trudi_ssyt_eq k≥3 (algebraic LGV + RSK, ~300 lines)."
     ],
     "markdown": "# Knowledge Base: LGV Lemma → Jacobi-Trudi Identity\n\n**Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01\n**Last Updated**: 2026-04-23\n**Knowledge Items**: 0\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nNewly selected. Jacobi-Trudi identity expresses Schur polynomials as determinants of\ncomplete homogeneous symmetric polynomials. The LGV lemma (in parent gallery proof)\nprovides the combinatorial proof route via non-intersecting lattice paths.\n\n---\n\n## Insights\n\n_None yet — begin with OBSERVE phase: check Mathlib for SSYT formalization._\n\n---\n\n## Dead Ends\n\n_None identified yet._\n",
     "insightsCount": 38,
