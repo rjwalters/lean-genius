@@ -47,7 +47,7 @@
     "historicalContext": "Erdős posed this problem in 1947, motivated by understanding the quality of polynomial interpolation on $[-1,1]$. The Lebesgue function $\\Lambda(x) = \\sum_k |l_k(x)|$ measures worst-case error amplification: if $f$ is approximated by its Lagrange interpolant $p$, then $|f(x) - p(x)| \\le (1 + \\Lambda(x)) \\cdot E_n(f)$ where $E_n(f)$ is the best polynomial approximation error (Chebyshev's theorem). The classical Lebesgue constant $\\Lambda_n = \\max_x \\Lambda(x)$ grows as $(2/\\pi) \\log n + O(1)$ for Chebyshev nodes $x_k = \\cos((2k-1)\\pi/2n)$, and Erdős knew this was optimal among all node choices. His Problem 1130 asks about a more refined quantity: $\\Upsilon = \\min_i \\max_{x \\in [x_i, x_{i+1}]} \\Lambda(x)$, the 'best subinterval's worst case.' Erdős proved $\\Upsilon < \\sqrt{n}$ — far from optimal. Bernstein had conjectured a logarithmic bound. De Boor and Pinkus (1978) resolved the problem completely: $\\Upsilon \\le (2/\\pi) \\log n + O(1)$ with the optimal node configuration characterized by an equioscillation property — the maximum of $\\Lambda$ is equal on every subinterval. This parallels the Chebyshev equioscillation theorem in minimax approximation.",
     "problemStatement": "For points x₁,...,xₙ ∈ [-1,1], is Υ(x₁,...,xₙ) = min_i max_{x∈[xᵢ,xᵢ₊₁]} Σ|l_k(x)| at most O(log n)?",
     "text": "For nodes in [-1,1], is the minimum over subintervals of the max Lebesgue function at most O(log n)? PROVED: Υ ≤ (2/π) log n + O(1). De Boor–Pinkus characterized the optimal nodes.",
-    "proofStrategy": "Defines Lagrange basis polynomials, the Lebesgue function, and the Υ functional. States Erdős's initial √n bound, the optimal (2/π) log n + O(1) bound, and the de Boor–Pinkus characterization of maximizing nodes. All deep results are axiomatized.",
+    "proofStrategy": "Defines Lagrange basis polynomials, the Lebesgue function, and the Υ functional. Notes Erdős's initial √n bound and the de Boor–Pinkus equioscillation characterization in docstrings as background. Only the logarithmic bound is axiomatized (`logarithmic_bound`): $\\Upsilon \\le (2/\\pi)\\log n + C$. Proves four supporting structural theorems (nodes_injective, lagrangeBasis_self, lagrangeBasis_other, lebesgue_at_node) and the main result (erdosProblem1130) from the axiom.",
     "prerequisites": [
       "Polynomial interpolation: Lagrange basis functions and their construction from distinct nodes",
       "Approximation theory: best polynomial approximation, Chebyshev nodes, and the Weierstrass theorem",
@@ -99,31 +99,31 @@
       "id": "sqrt-bound",
       "title": "Erdős's √n Bound",
       "startLine": 63,
-      "endLine": 68,
-      "summary": "Axiomatizes Erdős (1947): $\\Upsilon(P) < \\sqrt{n}$ for all node configurations $P$ with $n \\ge 1$.",
-      "mathContext": "Axiomatized: Axiomatizes Erdős (1947): $\\Upsilon(P) < \\sqrt{n}$ for all node configurations $P$ with $n \\ge 1$."
+      "endLine": 65,
+      "summary": "Notes Erdős's (1947) $\\Upsilon(P) < \\sqrt{n}$ initial bound in a docstring (line 65); no axiom is declared in this section — background context only.",
+      "mathContext": "Docstring only: $\\Upsilon(P) < \\sqrt{n}$ for all node configurations $P$ with $n \\ge 1$ (Erdős 1947). Not formalized as a Lean axiom here."
     },
     {
       "id": "log-bound",
       "title": "Sharp Logarithmic Bound",
-      "startLine": 69,
-      "endLine": 76,
+      "startLine": 66,
+      "endLine": 73,
       "summary": "Axiomatizes the optimal bound: $\\Upsilon \\le (2/\\pi) \\log n + C$ for an absolute constant $C$, confirming Erdős's conjecture that $\\Upsilon = O(\\log n)$.",
       "mathContext": "Axiomatizes the optimal bound: $\\Upsilon \\le (2/\\$\\pi$) \\$\\log n$ + C$ for an absolute constant $C$, confirming Erdős's conjecture that $\\Upsilon = $O(\\$\\log n$)$$."
     },
     {
       "id": "de-boor-pinkus",
       "title": "De Boor–Pinkus Equioscillation",
-      "startLine": 77,
-      "endLine": 86,
-      "summary": "Axiomatizes de Boor–Pinkus (1978): optimal nodes equalize $\\max_{[x_i,x_{i+1}]} \\Lambda$ across all subintervals. The optimal $P$ satisfies both maximality ($\\forall Q, \\Upsilon(Q) \\le \\Upsilon(P)$) and equalization.",
-      "mathContext": "Axiomatizes de Boor–Pinkus (1978): optimal nodes equalize $\\max_{[x_i,x_{i+1}]} \\Lambda$ across all subintervals. The optimal $P$ satisfies both maximality ($\\forall Q, \\Upsilon(Q) \\le \\Upsilon(P)$) and equalization."
+      "startLine": 74,
+      "endLine": 77,
+      "summary": "Notes de Boor–Pinkus (1978) equioscillation result in a docstring: optimal nodes equalize $\\max_{[x_i,x_{i+1}]} \\Lambda$ across all subintervals. No axiom is declared here — background context only.",
+      "mathContext": "Docstring only: de Boor–Pinkus (1978) equioscillation characterization. No `axiom de_boor_pinkus` is declared in this section."
     },
     {
       "id": "main-result",
       "title": "Erdős Problem 1130 (Proved)",
-      "startLine": 87,
-      "endLine": 95,
+      "startLine": 122,
+      "endLine": 154,
       "summary": "States `ErdosProblem1130`: $\\exists C > 0,\\, \\forall n \\ge 2,\\, \\forall P,\\, \\Upsilon(P) \\le C \\cdot \\log n$. This is the final $O(\\log n)$ statement combining all prior results.",
       "mathContext": "States `ErdosProblem1130`: $\\exists C > 0,\\, \\forall n \\ge 2,\\, \\forall P,\\, \\Upsilon(P) \\le C \\cdot \\$\\log n$$. This is the final $$O(\\$\\log n$)$$ statement combining all prior results."
     }
