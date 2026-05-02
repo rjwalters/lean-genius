@@ -4044,10 +4044,12 @@
       "result": "issues-fixed"
     },
     "erdos-1133": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "#14755: phantom axiom narrative (proofStrategy + sections related/lagrange/chebyshev claim 4 axioms; only lagrange_interpolation declared) + section line drift"
+      ],
+      "lastAudited": "2026-05-02T11:57:28Z",
+      "result": "issues-found"
     },
     "erdos-1134": {
       "auditCount": 3,
