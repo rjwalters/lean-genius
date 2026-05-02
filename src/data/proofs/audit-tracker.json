@@ -4585,11 +4585,12 @@
       "result": "clean"
     },
     "erdos-131": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [
-        "Phantom sorry/partial-verification claims for nondividing_implies_nonaveraging + section line drift across all 8 sections; counts correct; issue #14716"
+        "Phantom sorry/partial-verification claims for nondividing_implies_nonaveraging + section line drift across all 8 sections; counts correct; issue #14716",
+        "#14734: residual phantom claims after PR #14724 — sections[0].summary still references nonexistent nondividing_equiv; originalContributions[0] claims false equivalence (nondividing_not_iff_alt proves they are NOT equivalent); sections[1].mathContext + sections[6].mathContext stale (summaries fixed, mathContext not); sections[4].mathContext LaTeX bug"
       ],
-      "lastAudited": "2026-05-02T10:15:00Z",
+      "lastAudited": "2026-05-02T10:54:29Z",
       "result": "issues-found"
     },
     "erdos-131-oq-01": {
