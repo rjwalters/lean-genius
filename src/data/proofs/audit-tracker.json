@@ -4834,10 +4834,12 @@
       "result": "issues-fixed"
     },
     "erdos-167": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "#14679: phantom axioms in proofStrategy/sections (5 axioms claimed; only IsPlanar declared); lineCount 275→274; section line drift in known-results/fractional-version/summary"
+      ],
+      "lastAudited": "2026-05-02T08:57:53Z",
+      "result": "issues-found"
     },
     "erdos-168": {
       "auditCount": 2,
