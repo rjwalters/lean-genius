@@ -42,8 +42,7 @@
     "originalContributions": [
       "Formalization of exact covering structure for groups",
       "Definition of distinct indices property",
-      "Axiomatization of Sun's theorem for abelian groups",
-      "Axiomatization of Margolis-Schnabel computational verification"
+      "Axiomatization of Sun's theorem for abelian groups"
     ],
     "axiomCount": 1,
     "lineCount": 130,
@@ -53,7 +52,7 @@
     "historicalContext": "The Herzog-Schönheim conjecture, posed in the 1970s, asks whether a group G can be partitioned by cosets of subgroups with pairwise distinct indices. Erdős included this as Problem #274, specifically asking about the abelian case.\n\nSun Zhi-Wei proved in 2004 that for finite abelian groups (and more generally, when all subgroups are subnormal), the answer is NO - at least two cosets must have the same index. This settled Erdős's original question.\n\nMargolis and Schnabel (2019) verified computationally that the conjecture holds for all groups of order less than 1440. The general case remains open.",
     "problemStatement": "**Herzog-Schönheim Conjecture:** Let G be a group and let a₁G₁, ..., aₖGₖ be k > 1 cosets of subgroups that partition G. Must at least two of the indices [G:Gᵢ] be equal?\n\n**Erdős asked** (Problem #274): Can an abelian group be exactly covered by cosets with distinct indices?\n\n**Answer (Abelian):** NO (Sun 2004)\n**Answer (General):** OPEN\n\n**Known cases:**\n- Abelian groups: Proved (Sun 2004)\n- Subnormal subgroups: Proved (Sun 2004)\n- |G| < 1440: Verified (Margolis-Schnabel 2019)",
     "text": "Can a group be exactly covered by cosets with pairwise distinct indices? NO for abelian groups (Sun 2004). OPEN in general.",
-    "proofStrategy": "The formalization defines:\n\n1. **ExactCovering**: A structure with k subgroups and k coset representatives that partition G\n2. **hasDistinctIndices**: Property that all [G:Hᵢ] are pairwise different\n3. **HerzogSchonheimConjecture**: No exact covering with k > 1 can have distinct indices\n\nWe axiomatize:\n- Sun's theorem: The conjecture holds for finite abelian groups\n- Margolis-Schnabel: The conjecture holds for |G| < 1440\n\nThe main theorem `erdos_274_abelian_solved` shows that Sun's axiom implies the full conjecture for abelian groups.",
+    "proofStrategy": "The formalization defines:\n\n1. **ExactCovering**: A structure with k subgroups and k coset representatives that partition G\n2. **hasDistinctIndices**: Property that all [G:Hᵢ] are pairwise different\n3. **HerzogSchonheimConjecture**: No exact covering with k > 1 can have distinct indices\n\nWe axiomatize:\n- Sun's theorem: The conjecture holds for finite abelian groups\n\nThe Margolis-Schnabel (2019) computational verification (|G| < 1440) is noted in a block comment but not separately axiomatized.\n\nThe main theorem `erdos_274_abelian_solved` shows that Sun's axiom implies the full conjecture for abelian groups.",
     "keyInsights": [
       "**Egyptian fractions constraint:** If k cosets partition G with indices n₁,...,nₖ, then 1/n₁ + ... + 1/nₖ = 1. Distinct indices must satisfy this equation.",
       "**Abelian vs non-abelian:** The abelian case was solved in 2004, but the structure of non-abelian groups may allow exotic partitions not possible in abelian groups.",
@@ -91,29 +90,29 @@
     {
       "id": "computational",
       "title": "Computational Verification",
-      "summary": "Margolis-Schnabel result for small groups",
+      "summary": "Margolis-Schnabel result (2019) noted as a block comment: the conjecture holds for |G| < 1440. Not separately axiomatized.",
       "startLine": 79,
-      "endLine": 88
+      "endLine": 84
     },
     {
       "id": "problem",
       "title": "The Open Problem",
-      "summary": "Statement of Erdős Problem #274",
-      "startLine": 89,
-      "endLine": 105
+      "summary": "Statement of Erdős Problem #274 and `erdos_274_abelian_solved` theorem",
+      "startLine": 85,
+      "endLine": 100
     },
     {
       "id": "index-sum",
       "title": "Index Sum Lemma",
-      "summary": "Necessary condition: reciprocals of indices sum to 1",
-      "startLine": 106,
-      "endLine": 118
+      "summary": "Informal note (as block comment) on the necessary index-sum condition ∑ 1/nᵢ = 1; not separately formalized.",
+      "startLine": 101,
+      "endLine": 110
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_274_summary: abelian case proved via Sun's theorem",
-      "startLine": 119,
+      "startLine": 111,
       "endLine": 130
     }
   ],
