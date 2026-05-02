@@ -19,21 +19,21 @@
      p_i^{e_i} | r by pow_irred_dvd_of_annihilated. Then ∏ p_i^{e_i} | r by
      pairwise coprimality, so deg(r) ≥ n — contradiction with deg(r) < n.
 
-  3. **[Sorry: routine]** Factorization bridge: Every monic polynomial of positive
+  3. **[Proved, Aristotle]** Factorization bridge: Every monic polynomial of positive
      degree over a field factors into coprime monic irreducible prime powers.
-     This is a standard consequence of K[X] being a UFD. The sorry is strictly
-     routine Mathlib API work, NOT a mathematical assumption.
+     Proved via UniqueFactorizationMonoid.normalizedFactors in the companion file
+     CayleyHamiltonCyclicVectorAllFieldsAristotle.lean.
 
-  ## Status: 0 axioms, 1 sorry (polynomial factorization bridge)
+  ## Status: 0 axioms, 0 sorries (fully verified)
 
-  The mathematical content is fully verified. The single sorry is a routine
-  application of UniqueFactorizationMonoid.normalizedFactors in Mathlib.
+  All mathematical content is machine-checked. The factorization bridge was proved
+  by Aristotle proof search using Mathlib's UniqueFactorizationMonoid API.
 
   ## Why V2 is Stronger than V1
 
   V1's axiom (RCF similarity) required the structure theorem for finitely
   generated modules over a PID — ~800 lines to formalize, fundamentally deep.
-  V2's sorry is ~50 lines of Mathlib API navigation — routine and Aristotle-suitable.
+  V2 delegates only to standard UFD API in Mathlib.
 
   ## Related Gallery Entries
 
@@ -43,6 +43,7 @@
 -/
 import Mathlib
 import Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04
+import Proofs.CayleyHamiltonCyclicVectorAllFieldsAristotle
 
 noncomputable section
 
@@ -87,8 +88,8 @@ private theorem monic_factored_form {K : Type*} [Field K]
       (∀ i, (p i).Monic) ∧
       (∀ i, 0 < e i) ∧
       (∀ i j : Fin k, i ≠ j → IsCoprime (p i ^ e i) (p j ^ e j)) ∧
-      μ = ∏ i : Fin k, p i ^ e i := by
-  sorry
+      μ = ∏ i : Fin k, p i ^ e i :=
+  CayleyHamiltonCyclicVectorAllFieldsAristotle.monic_factored_form μ hμ_monic hμ_deg
 
 -- ============================================================
 -- SECTION III: Main Theorem
@@ -167,21 +168,14 @@ finitely generated modules over PIDs.
 **What is fully proved (sorry-free, axiom-free)**:
 - Primary decomposition construction (GeneralCyclicVector, WIP04)
 - Bezout projections and CRT-based cyclic vector construction (WIP04)
-- `nonderogatory_has_cyclic_vector`: main theorem (modulo factorization bridge)
+- `monic_factored_form`: proved by Aristotle via UFD API (companion file)
+- `nonderogatory_has_cyclic_vector`: main theorem
 - `nonderogatory_has_cyclic_vector_finite`: finite field corollary
 - `cyclic_iff_not_killed_below_degree`: characterization corollary
 
-**The one sorry**:
-- `monic_factored_form`: monic polynomial factors into coprime prime powers
-  This is a routine consequence of K[X] being a UFD (UniqueFactorizationMonoid).
-  NOT a mathematical assumption — purely Mathlib API navigation.
-  Estimated: ~50 lines using normalizedFactors + Finset.equivFin.
-  Suitable for Aristotle submission.
-
-**V1 → V2 delta**:
-- Removed: `axiom nonderogatory_similar_companion` (RCF similarity, ~800 lines to prove)
-- Added: `sorry` in `monic_factored_form` (routine Mathlib API, ~50 lines to prove)
-- Net: Deep mathematical axiom → routine API sorry
+**V1 → V2 → V3 delta**:
+- V1→V2: Removed `axiom nonderogatory_similar_companion` (RCF similarity), added `sorry` in `monic_factored_form`
+- V2→V3: Proved `monic_factored_form` via Aristotle (companion file); file now 0 axioms, 0 sorries
 -/
 
 end CayleyHamiltonCyclicVectorAllFields
