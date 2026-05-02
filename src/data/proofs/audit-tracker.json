@@ -5198,9 +5198,12 @@
     },
     "erdos-217": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-05-02T06:22:03Z",
+      "result": "issues-found",
+      "issues": [
+        "phantom axioms palasti_small_n + erdos_217_conjecture (only docstrings); phantom small_cases_exist/ErdosConjecture217 in originalContributions; proofStrategy overclaims Palásti axiomatization (#14603)"
+      ]
     },
     "erdos-218": {
       "agentId": "auditor-cycle-20-batch",
