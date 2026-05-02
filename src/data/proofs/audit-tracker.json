@@ -13726,10 +13726,12 @@
     },
     "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01": {
       "status": "completed",
-      "result": "issues-fixed",
+      "result": "clean",
       "auditor": "auditor-agent",
       "completedAt": "2026-05-02T23:12:30Z",
-      "notes": "meta.json lineCount stale: 230 → 220 (file is 220 lines). Fixed in both meta.lineCount and leanFile.lineCount. All other fields verified clean: 3 sorries (lines 120/155/192) match meta, 0 axioms, 5 theorems, status/badge formalized appropriate for Tier C scaffold."
+      "notes": "meta.json lineCount stale: 230 → 220 (file is 220 lines). Fixed in both meta.lineCount and leanFile.lineCount. All other fields verified clean: 3 sorries (lines 120/155/192) match meta, 0 axioms, 5 theorems, status/badge formalized appropriate for Tier C scaffold.",
+      "auditCount": 1,
+      "lastAudited": "2026-05-02T23:37:33Z"
     }
   },
   "erdos-1097-oq-01": {
