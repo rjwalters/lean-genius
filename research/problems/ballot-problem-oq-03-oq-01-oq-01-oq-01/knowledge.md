@@ -892,3 +892,59 @@ The b=1 helper is now mechanical to implement given Docker access. Estimated 80-
 lines using the documented recipe. The b≥2 JDT seam construction remains the genuine
 frontier (~150 lines). For k≥3, a separate file `BallotProblemOQ03AlgebraicLGV.lean`
 with ~150 lines of ring-valued LGV would complete the framework.
+
+---
+
+## Session 2026-05-02 (Session 17) — Prove jdt_weight_sum_b_one bijection
+
+**Mode**: REVISIT (RICH knowledge tier, score 88 → 90)
+**Outcome**: progress — `jdt_weight_sum_b_one` proved; sorry count 3 → 2
+
+### What I Did
+
+Implemented the bijection in `jdt_weight_sum_b_one` (lines 474-554):
+
+- **`getq Q`**: extract unique element q from Q : Sym (Fin n) 1 via
+  `(sym_one_sort_head_singleton n Q).choose`, with helpers:
+  - `getq_spec`: Q.1 = {getq Q}
+  - `getq_sort`: Q.1.sort = [getq Q]
+  - `getq_eq`: if Q.1 = {q} then getq Q = q
+
+- **Forward map**: `⟨(P, Q), _⟩ ↦ Sym.cons (getq Q) P`
+
+- **Inverse map**: `S ↦ (S.erase qS hmem, ⟨{qS}, _⟩, proof_¬CS)` where
+  `qS = S.1.sort[0]` (the minimum of S). The ¬CS proof:
+  - Extract q' from singleton ⟨{qS}, _⟩ via sym_one_sort_head_singleton, get q' = qS
+  - Need qS ≤ (S.erase qS).sort[0]: since qS is minimum of S, and S.erase ⊆ S,
+    every element of S.erase is ≥ qS. Use Multiset.mem_of_mem_erase + pairwise_sort.
+
+- **left_inv**: From ¬CS: getq Q ≤ P.sort[0]. Use `le_all_of_le_head` to deduce
+  getq Q ≤ every element of P. Then `Multiset.sort_cons` gives
+  (getq Q ::ₘ P).sort = getq Q :: P.sort, so S.sort[0] = getq Q, and
+  `Sym.erase_cons_head` gives S.erase qS = P.
+
+- **right_inv**: qS = S.sort[0]; getq_eq gives getq ⟨{qS}, _⟩ = qS; then
+  `Sym.cons_erase` gives Sym.cons qS (S.erase qS _) = S.
+
+- **Weight**: `Fintype.sum_equiv ψ` + ring after `getq_spec Q` (Q.1 = {getq Q}).
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (768 → 843 lines, +75)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-01-oq-01/meta.json` (sorries: 3→2)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01.json`
+
+### Build Status
+
+Docker build deferred to CI (Docker daemon may still be recovering from yesterday's
+stuck build). The implementation follows the same API usage pattern as the
+existing `ssytSchurFin_one_row` bijection in this file and the helper lemmas
+already proved in sessions 15-16.
+
+### Next Steps
+
+1. `jdt_weight_sum` b ≥ 2 seam bijection (~150-200 lines): find first violation
+   column c, insert Q.sort[c] into P, track the seam index in inverses.
+2. Alternative: submit b≥2 sorry to Aristotle (it is a HARD sorry for a known
+   combinatorial result).
+3. Long-term: `jacobi_trudi_ssyt_eq` k ≥ 3 (RSK bijection, ~300 lines).

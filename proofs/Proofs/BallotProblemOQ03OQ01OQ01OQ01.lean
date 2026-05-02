@@ -454,29 +454,104 @@ private lemma not_colStrictSym_a_one_iff_qhead_le_phead {n a : ℕ} (ha : 1 ≤ 
     `(q ::ₘ P.1).sort = q :: P.1.sort`, so `q` is the head of `(q ::ₛ P).1.sort`,
     making `Sym.erase` and `Sym.cons_erase`/`Sym.erase_cons_head` close the inverses.
 
-    **Status (2026-05-02 session 16):** infrastructure for the bijection is in place:
-      * `sym_one_sort_head_singleton` (S15) — extracts the unique q from Q : Sym n 1.
-      * `colStrictSym_a_one_iff_phead_lt_qhead` (S16) — `ColStrictSym a 1 P Q` reduces
-        to a single inequality `(P.sort)[0] < (Q.sort)[0]` for a ≥ 1.
-      * `not_colStrictSym_a_one_iff_qhead_le_phead` (S16) — negation form
-        `¬ColStrictSym ↔ q ≤ (P.sort)[0]` ready for direct use in the bijection.
-
-    The remaining `sorry` is the bijection construction itself with weight
-    preservation; estimated 80-100 lines using
-    `Sym.oneEquiv` (`Data/Sym/Basic.lean:477`), `Sym.cons_erase` (`:219`),
-    `Sym.erase_cons_head` (`:223`), `Multiset.sort_cons` (`Data/Multiset/Sort.lean:69`),
-    plus the existing `jdt_weight_preserved` (line 368) for the weight algebra at b=0.
-    Aristotle target: `BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean`. -/
+    **Status (2026-05-02 session 17):** proved.
+    Session 16 built the helpers; Session 17 implemented the bijection using:
+      * `getq Q` via `sym_one_sort_head_singleton.choose` to extract q from Q : Sym n 1,
+      * `Multiset.sort_cons` to show sort(q ::ₘ P) = q :: P.sort when q ≤ P.sort[0],
+      * `Sym.erase_cons_head` / `Sym.cons_erase` for the left/right inverses,
+      * `Fintype.sum_equiv` for the final weight-preservation step. -/
 private lemma jdt_weight_sum_b_one (n a : ℕ) (ha : 1 ≤ a) :
     ∑ PQ : { PQ : Sym (Fin n) a × Sym (Fin n) 1 // ¬ColStrictSym a 1 PQ.1 PQ.2 },
       (PQ.1.1.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
       (PQ.1.2.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod =
     hsymm (Fin n) R (a + 1) * hsymm (Fin n) R 0 := by
-  -- Simplify RHS via hsymm 0 = 1
-  rw [hsymm_zero, mul_one]
-  -- Bijection construction is the focused next-session task. See the recipe above
-  -- and lines ~415-465 for the existing detailed comment block.
-  sorry
+  rw [hsymm_zero, mul_one, hsymm]
+  -- Bijection ψ : {(P,Q) // ¬ColStrictSym a 1 P Q} ≃ Sym (Fin n) (a+1)
+  -- forward: (P, Q, _) ↦ Sym.cons q P  where q = unique element of Q
+  -- inverse: S ↦ (Sym.erase S qS h, ⟨{qS}, _⟩, proof)  where qS = S.sort[0]
+  have plen : ∀ P : Sym (Fin n) a, (P.1.sort (· ≤ ·)).length = a :=
+    fun P => (Multiset.length_sort _ P.1).trans P.2
+  have slen : ∀ S : Sym (Fin n) (a + 1), (S.1.sort (· ≤ ·)).length = a + 1 :=
+    fun S => (Multiset.length_sort _ S.1).trans S.2
+  -- Helper: from q ≤ P.sort[0], deduce q ≤ all elements of P
+  have le_all_of_le_head : ∀ (P : Sym (Fin n) a) (q : Fin n),
+      q ≤ (P.1.sort (· ≤ ·))[0]'(plen P ▸ ha) → ∀ b ∈ P.1, q ≤ b :=
+    fun P q hq b hb => by
+      have hb_s : b ∈ P.1.sort (· ≤ ·) := (Multiset.mem_sort _).mpr hb
+      obtain ⟨⟨i, hi⟩, hig⟩ := List.mem_iff_get.mp hb_s
+      calc q ≤ (P.1.sort (· ≤ ·))[0]'(plen P ▸ ha) := hq
+           _ ≤ (P.1.sort (· ≤ ·)).get ⟨i, hi⟩ :=
+               (Multiset.pairwise_sort (· ≤ ·) P.1).sortedLE
+                 .getElem_le_getElem_of_le (plen P ▸ ha) hi (Nat.zero_le _)
+           _ = b := hig
+  -- Extract the unique element of Q : Sym n 1 via choose
+  let getq : Sym (Fin n) 1 → Fin n := fun Q => (sym_one_sort_head_singleton n Q).choose
+  have getq_spec : ∀ Q : Sym (Fin n) 1, Q.1 = ({getq Q} : Multiset (Fin n)) :=
+    fun Q => (sym_one_sort_head_singleton n Q).choose_spec.2
+  have getq_sort : ∀ Q : Sym (Fin n) 1, Q.1.sort (· ≤ ·) = [getq Q] :=
+    fun Q => (sym_one_sort_head_singleton n Q).choose_spec.1
+  have getq_eq : ∀ (Q : Sym (Fin n) 1) (q : Fin n), Q.1 = {q} → getq Q = q := fun Q q hq => by
+    have := getq_spec Q; rw [hq] at this
+    exact (Multiset.singleton_inj.mp this).symm
+  let ψ : { PQ : Sym (Fin n) a × Sym (Fin n) 1 // ¬ColStrictSym a 1 PQ.1 PQ.2 } ≃
+          Sym (Fin n) (a + 1) :=
+    { toFun := fun ⟨(P, Q), _⟩ => Sym.cons (getq Q) P
+      invFun := fun S =>
+        let qS := (S.1.sort (· ≤ ·))[0]'(slen S ▸ Nat.succ_pos a)
+        have hmem : qS ∈ S.1 :=
+          (Multiset.mem_sort _).mp (List.getElem_mem (slen S ▸ Nat.succ_pos a))
+        let P' := Sym.erase S qS hmem
+        have hP'len : (P'.1.sort (· ≤ ·)).length = a :=
+          (Multiset.length_sort _ P'.1).trans P'.2
+        ⟨(P', ⟨{qS}, Multiset.card_singleton qS⟩),
+         by
+           rw [not_colStrictSym_a_one_iff_qhead_le_phead ha]
+           obtain ⟨q', hq'sort, hq'ms⟩ :=
+             sym_one_sort_head_singleton n ⟨{qS}, Multiset.card_singleton qS⟩
+           have hq'_qS : q' = qS := Multiset.singleton_inj.mp hq'ms.symm
+           subst hq'_qS
+           rw [hq'sort, List.getElem_cons_zero]
+           have hp'0_in_S : P'.1.sort (· ≤ ·)[0]'(hP'len ▸ ha) ∈ S.1 :=
+             Multiset.mem_of_mem_erase ((Multiset.mem_sort _).mp
+               (List.getElem_mem (hP'len ▸ ha)))
+           obtain ⟨⟨i, hi⟩, hig⟩ :=
+             List.mem_iff_get.mp ((Multiset.mem_sort _).mpr hp'0_in_S)
+           calc (S.1.sort (· ≤ ·))[0]'(slen S ▸ Nat.succ_pos a)
+               ≤ (S.1.sort (· ≤ ·))[i]'hi :=
+                 (Multiset.pairwise_sort (· ≤ ·) S.1).sortedLE
+                   .getElem_le_getElem_of_le (slen S ▸ Nat.succ_pos a) hi (Nat.zero_le _)
+             _ = P'.1.sort (· ≤ ·)[0]'(hP'len ▸ ha) := by exact_mod_cast hig⟩
+      left_inv := fun ⟨(P, Q), h⟩ => by
+        obtain ⟨q, hqsort, hqms⟩ := sym_one_sort_head_singleton n Q
+        have hgq : getq Q = q := getq_eq Q q hqms
+        have hq_le_ph : q ≤ (P.1.sort (· ≤ ·))[0]'(plen P ▸ ha) := by
+          have := (not_colStrictSym_a_one_iff_qhead_le_phead ha P Q).mp h
+          simp only [hqsort, List.getElem_cons_zero] at this
+          exact this
+        have hcons_sort : (q ::ₘ P.1).sort (· ≤ ·) = q :: P.1.sort (· ≤ ·) :=
+          Multiset.sort_cons (· ≤ ·) q P.1 (le_all_of_le_head P q hq_le_ph)
+        have hqS_q : (Sym.cons q P).1.sort (· ≤ ·)[0]'(slen _ ▸ Nat.succ_pos a) = q := by
+          simp only [Sym.cons, hcons_sort, List.getElem_cons_zero]
+        apply Subtype.ext; apply Prod.ext
+        · apply Subtype.ext
+          rw [hgq, hqS_q]
+          exact congrArg Sym.val (Sym.erase_cons_head q P)
+        · apply Subtype.ext
+          rw [hgq, hqS_q, hqms]
+      right_inv := fun S => by
+        have hmem : (S.1.sort (· ≤ ·))[0]'(slen S ▸ Nat.succ_pos a) ∈ S.1 :=
+          (Multiset.mem_sort _).mp (List.getElem_mem (slen S ▸ Nat.succ_pos a))
+        rw [show getq ⟨{(S.1.sort (· ≤ ·))[0]'(slen S ▸ Nat.succ_pos a)},
+                        Multiset.card_singleton _⟩ =
+              (S.1.sort (· ≤ ·))[0]'(slen S ▸ Nat.succ_pos a) from
+          getq_eq _ _ rfl]
+        apply Subtype.ext
+        exact Sym.cons_erase hmem }
+  refine Fintype.sum_equiv ψ _ _ fun ⟨(P, Q), _⟩ => ?_
+  simp only [ψ, Equiv.coe_mk, Sym.cons]
+  rw [getq_spec Q, Multiset.map_singleton, Multiset.prod_singleton, Multiset.map_cons,
+      Multiset.prod_cons]
+  ring
 
 /-- **Jeu de Taquin weight sum** (key step for two-row Jacobi-Trudi).
     The sum of pair-weights over NON-col-strict (a,b) pairs equals h_{a+1}*h_{b-1}.
