@@ -95,13 +95,13 @@
     "historicalContext": "**Discrepancy Theory and Sequence Balancing**\n\nErdős Problem #178 is a fundamental question in combinatorial discrepancy theory: can we assign ±1 values to integers in a way that balances arbitrary infinite families of sequences?\n\n**Historical Development:**\n- **Erdős:** Posed the problem, remarking 'it seems certain that the answer is affirmative'\n- **Beck (1981):** Proved the existence of such a signing (the answer is YES)\n- **Beck (2017):** Quantified the bound as O(d^(4+ε)) for any ε > 0\n\nThe problem connects to fundamental questions about how well structured sets can be balanced.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $A_1, A_2, \\ldots$ be an infinite collection of infinite sets of integers, say $A_i = \\{a_{i1} < a_{i2} < \\cdots\\}$.\n\nDoes there exist $f : \\mathbb{N} \\to \\{-1, 1\\}$ such that\n$$\\max_{m, 1 \\leq i \\leq d} \\left|\\sum_{1 \\leq j \\leq m} f(a_{ij})\\right| \\ll_d 1$$\nfor all $d \\geq 1$?\n\n**Answer:** YES (Beck, 1981)\n\n**Quantitative Bound:** The bound can be made $\\ll d^{4+\\varepsilon}$ for any $\\varepsilon > 0$ (Beck, 2017).",
     "text": "Does there exist f : ℕ → {-1,1} such that the discrepancy over any d sequences is bounded independently of m? SOLVED (Beck 1981): YES, with bound O(d^(4+ε)) (Beck 2017).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Signing Functions:** Define SigningFunction as ℕ → ℤ, with IsValidSigning ensuring values in {-1, 1}\n\n2. **Sequence Families:** Define InfiniteIntSeq and SeqFamily for collections of sequences\n\n3. **Discrepancy Measures:** Define partialSum, seqDiscrepancy, and maxDiscrepancy\n\n4. **Main Property:** Define HasBoundedDiscrepancy and ExistsBoundedSigning\n\n5. **Beck's Theorems:** Axiomatize Beck 1981 (existence), Beck uniform bound, and Beck 2017 (quantitative bound d^(4+ε))",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Signing Functions:** Define SigningFunction as ℕ → ℤ, with IsValidSigning ensuring values in {-1, 1}\n\n2. **Sequence Families:** Define InfiniteIntSeq and SeqFamily for collections of sequences\n\n3. **Discrepancy Measures:** Define partialSum, seqDiscrepancy, and maxDiscrepancy\n\n4. **Main Property:** Define HasBoundedDiscrepancy and ExistsBoundedSigning\n\n5. **Beck's Theorems:** Axiomatize Beck 1981 (existence) and Beck 2017 (quantitative bound d^(4+ε))",
     "keyInsights": [
       "The bound $C(d)$ depends only on $d$ (number of sequences considered), not on the prefix length $m$ or the specific family — this universality is what makes Beck's result deep. A family-dependent bound is trivial by compactness; the family-independent bound requires fundamentally new methods",
       "Random signings give expected discrepancy $\\Theta(\\sqrt{m})$ by the central limit theorem, which grows without bound. Beck's deterministic construction achieves $O_d(1)$ — a qualitative breakthrough showing that structured signings vastly outperform random ones for this problem",
       "The 36-year gap from existence (Beck 1981) to quantitative bound $O(d^{4+\\varepsilon})$ (Beck 2017) illustrates a common pattern in combinatorics: proving existence is often much easier than determining the right growth rate",
       "Spencer's finite discrepancy theorem ($O(\\sqrt{n})$ for $n$ sets over $n$ elements) is the finite analogue. The infinite version studied here requires the signing to work for all prefix lengths simultaneously — a much stronger requirement that changes the problem qualitatively",
-      "The formalization uses 6 axioms to capture the three layers of Beck's results: (1) existence per family, (2) uniform bound over all families, (3) explicit polynomial bound $d^{4+\\varepsilon}$ — each strictly strengthening the previous"
+      "The formalization uses 2 axioms to capture the two layers of Beck's results: (1) existence per family, (2) explicit polynomial bound $d^{4+\\varepsilon}$ — each strictly strengthening the previous"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -138,7 +138,7 @@
       "title": "Beck's Theorem (1981)",
       "startLine": 87,
       "endLine": 102,
-      "summary": "Axiomatizes `beck_1981`: for any family, `ExistsBoundedSigning` holds. Also `beck_uniform_bound`: the bound $C(d)$ depends only on $d$, not on the family.",
+      "summary": "Axiomatizes `beck_1981`: for any family, `ExistsBoundedSigning` holds. The uniform bound (C depends only on d, not on the family) appears as a docstring note — no `beck_uniform_bound` axiom is declared.",
       "mathContext": "Beck (1981): $\\forall$ family, $\\forall d$, $\\exists f$ valid, $\\exists C$, discrepancy $\\leq C$. The uniform strengthening: $\\exists C : \\mathbb{N} \\to \\mathbb{N}$ such that $\\forall$ family, $\\forall d$, $\\exists f$ with discrepancy $\\leq C(d)$."
     },
     {
@@ -154,7 +154,7 @@
       "title": "Related Results",
       "startLine": 116,
       "endLine": 133,
-      "summary": "Axiomatizes Spencer's finite discrepancy theorem ($O(\\sqrt{n})$ for $n$ sets over $n$ elements) and the Erdős-Ginzburg-Ziv theorem (among $2n-1$ integers, $n$ have sum divisible by $n$) as contextual results.",
+      "summary": "Documents Spencer's finite discrepancy theorem ($O(\\sqrt{n})$ for $n$ sets over $n$ elements) and the Erdős-Ginzburg-Ziv theorem (among $2n-1$ integers, $n$ have sum divisible by $n$) as contextual results in docstrings — not axiomatized in the Lean file.",
       "mathContext": "Spencer (1985): for $n$ subsets of an $n$-element universe, discrepancy $\\leq 6\\sqrt{n}$. EGZ: among any $2n-1$ integers, some $n$ have sum $\\equiv 0 \\pmod{n}$. Both are finite-system results; Problem #178 extends to infinite families."
     },
     {
