@@ -103,9 +103,51 @@
     {
       "id": "su2-migdal-concrete",
       "title": "Concrete SU(2) Migdal Instantiation (Part XX)",
-      "summary": "Constructs `su2MigdalFundamental` and `su2MigdalAdjoint` with concrete parameters. Proves the normalization $W(0) = 2$, the exact string tension $3g^2/16$, and Casimir scaling for the adjoint.",
+      "summary": "Constructs `su2MigdalFundamental` and `su2MigdalAdjoint` with concrete parameters. Proves the normalization $W(0) = 2$, the exact string tension $3g^2/16$, Casimir scaling ratio $\\sigma_{\\text{adj}}/\\sigma_{\\text{fund}} = 16/9$.",
       "startLine": 901,
-      "endLine": 950
+      "endLine": 968
+    },
+    {
+      "id": "su2-heat-kernel",
+      "title": "SU(2) Heat Kernel Expansion (Part XXI)",
+      "summary": "Defines the heat kernel expansion $Z(A) = \\sum_j (2j+1)^2 \\exp(-j(j+1) g^2 A)$. Constructs `su2HeatKernelTruncated` (j = 0, 1/2, 1) and proves: $Z(0) = 1^2 + 2^2 + 3^2 = 14$, positivity, lower bound $Z \\geq 1$, and exponential decay of non-trivial terms. The mass gap mechanism: higher representations are suppressed at large area.",
+      "startLine": 969,
+      "endLine": 1074
+    },
+    {
+      "id": "center-group-structure",
+      "title": "Center Symmetry $\\mathbb{Z}_N$ Group Structure (Part XXII)",
+      "summary": "Proves that center elements form a group under `centerMul`: associativity, identity (`centerIdentity`), inverse (`centerInv`), commutativity, and self-inverse for SU(2) ($(-1)^2 = 1$). Proves the general `casimir_scaling_general` theorem: $\\sigma_{R_1}/\\sigma_{R_2} = (C_2(R_1) \\cdot \\dim R_2)/(C_2(R_2) \\cdot \\dim R_1)$.",
+      "startLine": 1075,
+      "endLine": 1172
+    },
+    {
+      "id": "suN-casimir",
+      "title": "General SU(N) Casimir Formulas (Part XXIV)",
+      "summary": "Defines universal formulas: $C_2(\\text{fund}) = (N^2-1)/(2N)$ and $C_2(\\text{adj}) = N$. Proves values for SU(2), SU(3), SU(4); positivity for $N \\geq 2$; adjoint $>$ fundamental; ratio $C_2(\\text{adj})/C_2(\\text{fund}) = 2N^2/(N^2-1)$; consistency with SU(2)-specific definitions; and monotonicity of $C_2(\\text{fund})$ in $N$.",
+      "startLine": 1173,
+      "endLine": 1309
+    },
+    {
+      "id": "su3-migdal-concrete",
+      "title": "SU(3) Migdal Formula Instances (Part XXV)",
+      "summary": "Constructs `su3MigdalFundamental` ($C_2 = 4/3$, $\\dim = 3$) and `su3MigdalAdjoint` ($C_2 = 3$, $\\dim = 8$). Proves string tensions $\\sigma_{\\text{fund}} = 2g^2/9$ and $\\sigma_{\\text{adj}} = 3g^2/16$; Casimir scaling ratio $27/32$; and the counterintuitive result $\\sigma_{\\text{fund}}^{\\text{SU(3)}} > \\sigma_{\\text{adj}}^{\\text{SU(3)}}$; plus SU(3) confines more strongly than SU(2).",
+      "startLine": 1310,
+      "endLine": 1411
+    },
+    {
+      "id": "n-ality",
+      "title": "N-ality and String Tension Classification (Part XXVI)",
+      "summary": "Defines `NAlit N` (N-ality $k \\in \\{0,\\ldots,N-1\\}$) and `NalityStringTension` encoding: $\\sigma(k=0) = 0$ (screening by gluons), $\\sigma(k > 0) > 0$ (confinement). Proves adjoint screens, fundamental confines for SU(3), and that SU(N) has $N-1$ confining sectors.",
+      "startLine": 1412,
+      "endLine": 1492
+    },
+    {
+      "id": "su3-heat-kernel",
+      "title": "SU(3) Heat Kernel and Confinement (Part XXVII)",
+      "summary": "Defines `su3HeatKernelTruncated` (trivial + fundamental + adjoint contributions). Proves $Z(0) = 1 + 9 + 64 = 74$, positivity, lower bound $Z \\geq 1$, decay of non-trivial terms $< 73$, and the key comparison: SU(3) mass gap $\\propto C_2(\\text{fund},3) = 4/3 > 3/4 = C_2(\\text{fund},2)$ — SU(3) has a larger 2D mass gap than SU(2).",
+      "startLine": 1493,
+      "endLine": 1570
     }
   ],
   "conclusion": {
