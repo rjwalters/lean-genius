@@ -157,20 +157,22 @@ theorem chebyshev_achieves_bound :
 **Problem**: Erdos-115-oq-01 — Rate of o(1) correction in lemniscate derivatives
 **Status**: Formalized with structural theorems
 
-**Axioms** (8 total):
+**Axioms** (11 total):
 1. ComplexPoly — polynomial type (definitional)
 2. IsLemniscateConnected — connectivity predicate (definitional)
 3. maxDerivOnLemniscate — max derivative (definitional)
 4. maxDeriv_nonneg — non-negativity
 5. eremenko_lempert — main upper bound result
-6. chebyshev_poly, chebyshev_connected — Chebyshev polynomials
-7. chebyshev_asymptotic — Chebyshev achieves ~ n^2/2
-8. supCorrection, supCorrection_upper, correction_tends_to_zero — correction bounds
+6. chebyshev_poly — Chebyshev polynomial
+7. chebyshev_connected — Chebyshev lemniscate is connected
+8. chebyshev_asymptotic — Chebyshev achieves ~ n^2/2
+9. supCorrection — correction supremum
+10. supCorrection_upper — upper bound on correction
+11. correction_tends_to_zero — correction is o(1)
 
-**Proved** (3+ theorems):
-1. inverseN_implies_inverseSqrtN — rate hierarchy
-2. inverseN_implies_inverseLogN — rate hierarchy
-3. chebyshev_correction_nonneg_eventually — lower bound from Chebyshev
+**Proved** (2 theorems):
+1. power_decay_implies_o1 — any power-decay rate implies o(1)
+2. chebyshev_achieves_bound — Chebyshev correction approaches 0
 -/
 
 end Erdos115OQ01
