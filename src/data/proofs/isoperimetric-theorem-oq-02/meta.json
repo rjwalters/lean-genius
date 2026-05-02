@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Context: Discrete Isoperimetric Hierarchy",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Module docstring places the 1D result at the base of the discrete isoperimetric hierarchy: Harper (1966) for hypercubes, Bollobás-Leader (1991) compression for ℤ^d. Imports Mathlib and opens the DiscreteIsoperimetric1D namespace.",
+      "mathContext": "The general discrete isoperimetric problem: minimize $|\\partial S|$ over sets $S$ of fixed size in a graph $G$. For $G = \\mathbb{Z}$: intervals minimize; for $G = \\{0,1\\}^n$: Harper's initial segments; for $G = \\mathbb{Z}^d$: Bollobás–Leader cubes. The 1D case is the base of this hierarchy."
+    },
+    {
       "id": "definitions",
       "title": "Edge Boundary on ℤ",
       "startLine": 33,
