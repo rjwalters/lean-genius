@@ -54,75 +54,67 @@
   "sections": [
     {
       "id": "definition",
-      "title": "Part I: The Ulam Sequence Definition",
-      "startLine": 33,
-      "endLine": 46,
-      "summary": "Defines ulamSeq as ℕ → ℕ with initial values a(0)=1, a(1)=2. Axiom: strict monotonicity.",
-      "mathContext": "Defines ulamSeq as $\\mathbb{N}$ $\\to$ $\\mathbb{N}$ with initial values a(0)=1, a(1)=2. Axiom: strict monotonicity."
-    },
-    {
-      "id": "representation",
-      "title": "Part II: Unique Representation Property",
-      "startLine": 47,
-      "endLine": 63,
-      "summary": "Defines representationCount. Axioms: ulamSeq_unique_representation (exactly 1 representation) and ulamSeq_minimal (no smaller candidate).",
-      "mathContext": "Formal definition: Defines representationCount. Axioms: ulamSeq_unique_representation (exactly 1 representation) and ulamSeq_minimal (no smaller candidate)."
+      "title": "Part I: Computable Ulam Sequence",
+      "startLine": 35,
+      "endLine": 78,
+      "summary": "Defines the computable Ulam sequence: repCount (representation counter), nextUlam (next term finder), buildUlam (list builder), and ulam (0-indexed accessor).",
+      "mathContext": "Four computable definitions build the Ulam sequence bottom-up. `repCount` counts representations of m as xs[i]+xs[j] with i<j. `nextUlam` finds the smallest m > last with exactly one representation. `buildUlam` constructs the prefix list. `ulam n` extracts the (n+1)-th term."
     },
     {
       "id": "initial-values",
-      "title": "Part III: Known Initial Values",
-      "startLine": 64,
-      "endLine": 79,
-      "summary": "Axiom ulamSeq_values (first 12 terms). Axioms: five_not_ulam (5 excluded, two representations), six_is_ulam.",
-      "mathContext": "Axiomatized: Axiom ulamSeq_values (first 12 terms). Axioms: five_not_ulam (5 excluded, two representations), six_is_ulam."
+      "title": "Part II: Verified Initial Values (OEIS A002858)",
+      "startLine": 79,
+      "endLine": 95,
+      "summary": "12 theorems ulam_0 through ulam_11, each proved by native_decide, verify the first 12 terms: 1, 2, 3, 4, 6, 8, 11, 13, 16, 18, 26, 28.",
+      "mathContext": "Each `ulam_N : ulam N = k := by native_decide` is a machine-verified ground truth for the OEIS A002858 sequence. Note that 5 is absent (it has two representations: 1+4 and 2+3)."
+    },
+    {
+      "id": "opaque-sequence",
+      "title": "Part III: The Opaque Sequence",
+      "startLine": 97,
+      "endLine": 110,
+      "summary": "Introduces the three axioms: ulamSeq (opaque ℕ→ℕ function), ulamSeq_initial (agrees with computable ulam for n<12), ulamSeq_strictMono (strictly increasing). These are the only axioms in this file.",
+      "mathContext": "To reason about all indices, the computable `ulam` is lifted to an opaque axiom `ulamSeq : ℕ → ℕ`. The axiom `ulamSeq_initial` ties the opaque version to verified initial values. `ulamSeq_strictMono : StrictMono ulamSeq` is the third and final axiom, enabling growth lower-bounds."
+    },
+    {
+      "id": "unique-representation",
+      "title": "Part IV: Unique Representation Property",
+      "startLine": 112,
+      "endLine": 143,
+      "summary": "Defines representationCount (noncomputable). Proves four theorems: ulamSeq_injective (from strict monotonicity), ulamSeq_ge (n+1 ≤ ulamSeq n), ulamSeq_zero (= 1), ulamSeq_one (= 2). Two orphan doc-comments describe properties not yet formalized.",
+      "mathContext": "`representationCount m n` counts pairs (i,j) with i<j<n and ulamSeq i + ulamSeq j = m. Injectivity follows from StrictMono. The lower bound `ulamSeq_ge` is proved by induction using strict monotonicity and the initial-value axiom."
     },
     {
       "id": "twin-pairs",
-      "title": "Part IV: Twin Pairs",
-      "startLine": 80,
-      "endLine": 96,
-      "summary": "Defines IsUlamTwin(n): a(n+1) = a(n) + 2. Defines twinIndices as the set of such n. Axiom twin_examples.",
-      "mathContext": "Formal definition: Defines IsUlamTwin(n): a(n+1) = a(n) + 2. Defines twinIndices as the set of such n. Axiom twin_examples."
-    },
-    {
-      "id": "conjecture",
-      "title": "Part V: The Erdős Conjecture",
-      "startLine": 97,
-      "endLine": 108,
-      "summary": "Defines ErdosConjecture342: Set.Infinite twinIndices. Axiom erdos_342.",
-      "mathContext": "Formal definition: Defines ErdosConjecture342: Set.Infinite twinIndices. Axiom erdos_342."
+      "title": "Part VI: Twin Pairs",
+      "startLine": 145,
+      "endLine": 159,
+      "summary": "Defines IsUlamTwin(n): ulamSeq(n+1) = ulamSeq(n) + 2. Defines twinIndices as the set of such n. Defines ErdosConjecture342: Set.Infinite twinIndices.",
+      "mathContext": "The open conjecture is formalized as `ErdosConjecture342 : Prop := Set.Infinite twinIndices`. Known twin pairs include (26,28) and (478,480). No axiom is declared for these examples — they are described in the Part IX summary comment only."
     },
     {
       "id": "density",
-      "title": "Part VI: Density Questions",
-      "startLine": 109,
-      "endLine": 123,
-      "summary": "Defines ulamCount and DensityZero via Filter.Tendsto. Axiom: density question is undecided.",
-      "mathContext": "Formal definition: Defines ulamCount and DensityZero via Filter.Tendsto. Axiom: density question is undecided."
-    },
-    {
-      "id": "growth",
-      "title": "Part VII: Growth Rate",
-      "startLine": 124,
-      "endLine": 135,
-      "summary": "Axioms: ulamSeq_growth (linear growth with constant C) and ulamSeq_growth_constant (C ≈ 13.5).",
-      "mathContext": "Axiomatized: Axioms: ulamSeq_growth (linear growth with constant C) and ulamSeq_growth_constant (C ≈ 13.5)."
+      "title": "Part VII: Density Questions",
+      "startLine": 161,
+      "endLine": 174,
+      "summary": "Defines ulamCount (noncomputable counting function) and DensityZero (Filter.Tendsto of ulamCount N / N to 0). Both are open conjectures, formalized as Prop definitions without proofs.",
+      "mathContext": "`DensityZero : Prop` is formalized via `Filter.Tendsto (fun N => (ulamCount N : ℝ) / N) atTop (nhds 0)`. Empirical computation suggests the density converges to ≈ 0.074, but no axiom encoding this is declared."
     },
     {
       "id": "additive-structure",
       "title": "Part VIII: Additive Structure",
-      "startLine": 136,
-      "endLine": 153,
-      "summary": "Defines ulamSet, uniqueSumset. Axiom ulam_characterization: members are unique sums exceeding all previous terms.",
-      "mathContext": "Formal definition: Defines ulamSet, uniqueSumset. Axiom ulam_characterization: members are unique sums exceeding all previous terms."
+      "startLine": 176,
+      "endLine": 191,
+      "summary": "Defines ulamSet as the range of ulamSeq. Proves three theorems: one_mem_ulamSet, two_mem_ulamSet, zero_not_ulamSet.",
+      "mathContext": "`ulamSet := {n | ∃ k, ulamSeq k = n}`. Membership of 1 and 2 follows from the ulamSeq_zero and ulamSeq_one theorems. Non-membership of 0 uses ulamSeq_ge."
     },
     {
       "id": "summary",
       "title": "Part IX: Summary",
-      "startLine": 154,
-      "endLine": 180,
-      "summary": "Proved: erdos_342_statement (simp), erdos_342_status (trivial). Problem remains OPEN.",
-      "mathContext": "Mathematical content: Proved: erdos_342_statement (simp), erdos_342_status (trivial). Problem remains OPEN."
+      "startLine": 193,
+      "endLine": 221,
+      "summary": "Contains a summary comment block and the theorem erdos_342_statement, which proves ErdosConjecture342 ↔ Set.Infinite {n | ulamSeq(n+1) = ulamSeq n + 2} by simp.",
+      "mathContext": "`erdos_342_statement` unfolds the definitions of ErdosConjecture342, twinIndices, and IsUlamTwin to expose the set directly. The proof is by `simp only [...]`, making the statement self-evident once definitions are unfolded."
     }
   ],
   "conclusion": {
@@ -139,9 +131,7 @@
     "imports": [
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Set.Finite.Basic",
-      "Mathlib.Order.Filter.Basic",
-      "Mathlib.Tactic"
+      "Mathlib"
     ],
     "opens": [
       "Nat",
@@ -150,7 +140,7 @@
     "namespace": "Erdos342",
     "lineCount": 221,
     "axiomCount": 3,
-    "theoremCount": 20,
+    "theoremCount": 19,
     "definitionCount": 11,
     "path": "Proofs/Erdos342Problem.lean",
     "sorries": 0
