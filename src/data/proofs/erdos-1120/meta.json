@@ -80,58 +80,66 @@
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 22,
-      "endLine": 52,
+      "startLine": 29,
+      "endLine": 55,
       "summary": "Defines `UnitRootedPoly` (monic polynomial with unit-disk roots), `polyVal` (product-form evaluation), `sublevelSet` (the lemniscate $E$), `shortestPathLength` (infimum of path lengths in $E$), and `worstCasePathLength` (supremum over all polynomials).",
       "mathContext": "Defines `UnitRootedPoly` (monic polynomial with unit-disk roots), `polyVal` (product-form evaluation), `sublevelSet` (the lemniscate $E$), `shortestPathLength` (infimum of path lengths in $E$), and `worstCasePathLength` (supremum over all polynomials)."
     },
     {
       "id": "f-at-zero",
       "title": "Properties of f(0)",
-      "startLine": 53,
-      "endLine": 77,
+      "startLine": 57,
+      "endLine": 83,
       "summary": "Proves $f(0) = \\prod(-r_i)$, $|f(0)| = \\prod|r_i| \\le 1$, and therefore $0 \\in E$ for all unit-rooted polynomials, establishing well-posedness of the path problem.",
       "mathContext": "Verified: Proves $f(0) = \\prod(-r_i)$, $|f(0)| = \\prod|r_i| \\le 1$, and therefore $0 \\in E$ for all unit-rooted polynomials, establishing well-posedness of the path problem."
     },
     {
       "id": "z-to-n-case",
       "title": "The Case f(z) = z^n",
-      "startLine": 78,
-      "endLine": 98,
+      "startLine": 85,
+      "endLine": 105,
       "summary": "Shows that when all roots are 0, $E$ is the closed unit disk. The proof that $|z|^n \\le 1 \\iff |z| \\le 1$ establishes the trivial case where $\\ell = 1$.",
       "mathContext": "Verified: Shows that when all roots are 0, $E$ is the closed unit disk. The proof that $|z|^n \\le 1 \\iff |z| \\le 1$ establishes the trivial case where $\\ell = 1$."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
-      "startLine": 99,
-      "endLine": 113,
+      "startLine": 107,
+      "endLine": 122,
       "summary": "Proves nonemptiness of $E$, unwraps the membership condition, and handles the degree-0 edge case ($E = \\mathbb{C}$).",
       "mathContext": "Verified: Proves nonemptiness of $E$, unwraps the membership condition, and handles the degree-0 edge case ($E = \\mathbb{C}$)."
     },
     {
       "id": "degree-one",
       "title": "Degree 1: Single Root Case",
-      "startLine": 114,
-      "endLine": 127,
+      "startLine": 124,
+      "endLine": 136,
       "summary": "For $f(z) = z - r$, shows $E = \\overline{B}(r, 1)$ is a shifted disk. Proves $0 \\in E$ since $|r| \\le 1$.",
       "mathContext": "Verified: For $f(z) = z - r$, shows $E = \\overline{B}(r, 1)$ is a shifted disk. Proves $0 \\in E$ since $|r| \\le 1$."
     },
     {
       "id": "unimodular",
       "title": "|f(0)| Properties and Unimodular Case",
-      "startLine": 128,
-      "endLine": 138,
+      "startLine": 138,
+      "endLine": 149,
       "summary": "Proves $|f(0)| \\le 1$ in general and $|f(0)| = 1$ for unimodular roots (all $|r_i| = 1$), identifying the boundary case that produces extremal configurations.",
       "mathContext": "Verified: Proves $|f(0)| \\le 1$ in general and $|f(0)| = 1$ for unimodular roots (all $|r_i| = 1$), identifying the boundary case that produces extremal configurations."
     },
     {
       "id": "conjectures",
       "title": "Main Conjectures and Known Results",
-      "startLine": 139,
-      "endLine": 183,
-      "summary": "States the main conjecture $W(n) \\to \\infty$ (axiom), the trivial lower bound $W(n) \\ge 1$, the Clunie-Netanyahu existence theorem, and the linear upper bound conjecture $W(n) \\le Cn$. Concludes with the combined statement.",
-      "mathContext": "States the main conjecture $W(n) \\to \\infty$ (axiom), the trivial lower bound $W(n) \\ge 1$, the Clunie-Netanyahu existence theorem, and the linear upper bound conjecture $W(n) \\le Cn$."
+      "startLine": 151,
+      "endLine": 161,
+      "summary": "Axiomatizes `erdos_1120_conjecture` ($W(n) \\to \\infty$) and `erdos_growth_bound` ($W(n) \\le Cn$). Three surrounding docstrings note the trivial lower bound and Clunie-Netanyahu existence theorem (not axiomatized as Lean declarations).",
+      "mathContext": "Axioms: `erdos_1120_conjecture` and `erdos_growth_bound`. Docstring-only: trivial lower bound (W(n)≥1) and Clunie–Netanyahu existence theorem."
+    },
+    {
+      "id": "main-open-problem",
+      "title": "Main Open Problem Statement",
+      "startLine": 163,
+      "endLine": 181,
+      "summary": "`erdos_1120_main` theorem: conjunction of `erdos_1120_conjecture` and `erdos_growth_bound`, proved by `⟨erdos_1120_conjecture, erdos_growth_bound⟩`.",
+      "mathContext": "`erdos_1120_main` theorem combining both axioms into a single Prop via exact ⟨...⟩."
     }
   ],
   "conclusion": {
