@@ -3964,10 +3964,14 @@
       "notes": "Issue #14781 — phantom axioms (erdos_1122, omega_*) in narrative; meta.axiomCount=3 is correct"
     },
     "erdos-1123": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "proofStrategy claims 'axiomatizes the Just-Krawczyk conditional isomorphism and ZFC independence' — neither is axiomatized (only docstring placeholders)",
+        "section line drift: just-krawczyk (80-97 vs actual 80-88), ideal-properties (98-110 vs actual 89-94); Part V Summary missing from sections array"
+      ],
+      "lastAudited": "2026-05-02T13:17:48Z",
+      "result": "issues-found",
+      "notes": "Issue #14783 — proofStrategy overstates axiomatization; meta.axiomCount=2 is correct"
     },
     "erdos-1124": {
       "auditCount": 3,
