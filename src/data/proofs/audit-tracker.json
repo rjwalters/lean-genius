@@ -3949,10 +3949,12 @@
       "result": "issues-fixed"
     },
     "erdos-1121": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "section drift in special-cases/higher-dim, missing summary section, originalContributions overstates two phantom claims (filed #14787)"
+      ],
+      "lastAudited": "2026-05-02T13:34:52Z",
+      "result": "issues-found"
     },
     "erdos-1122": {
       "auditCount": 3,
