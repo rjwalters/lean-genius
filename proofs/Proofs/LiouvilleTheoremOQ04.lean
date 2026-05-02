@@ -199,11 +199,14 @@ Definition and basic properties
 ═══════════════════════════════════════════════════════════════════════════ -/
 
 /-- A p-adic number β is **p-adically Liouville** if for every positive integer n,
-    there exist coprime integers r, s with s ≠ 0 such that:
+    there exist coprime integers r, s with s ≠ 0 and height H = max(|r|, |s|) ≥ 2 such that:
       `‖β - r/s‖_p < 1 / max(|r|, |s|)^n`
 
     This is the p-adic analog of the classical Liouville condition, using
     the naive height max(|r|, |s|) instead of the denominator s alone.
+    The condition H ≥ 2 mirrors the classical `1 < q` requirement in Mathlib's
+    `Liouville` definition — without it H = 1 gives 1/H^n = 1 for all n,
+    making the condition trivially satisfiable and padic_algebraic_not_liouville unprovable.
 
     **Why height instead of denominator?** In the p-adic world:
     - |r/s|_p = p^(v_p(r) - v_p(s)), which depends on BOTH numerator and denominator
@@ -211,13 +214,14 @@ Definition and basic properties
     - The height max(|r|, |s|) appears naturally from the polynomial bound -/
 def IsPadicLiouville (β : ℚ_[p]) : Prop :=
   ∀ n : ℕ, ∃ r s : ℤ, s ≠ 0 ∧
+    2 ≤ max r.natAbs s.natAbs ∧
     Int.gcd r s = 1 ∧
     ‖β - (r : ℚ_[p]) / s‖ < 1 / (max r.natAbs s.natAbs : ℝ)^n
 
-/-- IsPadicLiouville requires approximations for all n ≥ 1 too. -/
+/-- IsPadicLiouville requires approximations for all n ≥ 1 too (dropping the gcd condition). -/
 theorem isPadicLiouville_forall (β : ℚ_[p]) (h : IsPadicLiouville p β) :
     ∀ n : ℕ, ∃ r s : ℤ, s ≠ 0 ∧ ‖β - (r : ℚ_[p]) / s‖ < 1 / (max r.natAbs s.natAbs : ℝ)^n :=
-  fun n => let ⟨r, s, hs, _, happrox⟩ := h n; ⟨r, s, hs, happrox⟩
+  fun n => let ⟨r, s, hs, _, _, happrox⟩ := h n; ⟨r, s, hs, happrox⟩
 
 /-! ═══════════════════════════════════════════════════════════════════════════
 PART V: MAIN THEOREM
@@ -250,9 +254,10 @@ axiom padic_liouville_estimate (α : ℚ_[p]) (f : ℤ[X])
 
 /-- **Main Result**: Every p-adic algebraic number is NOT p-adically Liouville.
 
-    Proof: If α is algebraic of degree d, the Liouville estimate gives
-    ‖α - r/s‖_p ≥ C/H^d. But the Liouville condition gives ‖α - r/s‖_p < 1/H^{d+k}
-    for all k, which for large H contradicts the lower bound. -/
+    Proof: If α is algebraic of degree d, the Liouville estimate gives C/H^d ≤ ‖α - r/s‖
+    for all r/s. Pick n₀ with 2^n₀ > 1/C. Apply the Liouville condition with n = n₀ + d
+    to get r, s with H ≥ 2 and ‖α - r/s‖ < 1/H^(n₀+d). Combining:
+      C < 1/H^n₀ ≤ 1/2^n₀ < C (from n₀ choice). Contradiction. -/
 theorem padic_algebraic_not_liouville
     (α : ℚ_[p]) (f : ℤ[X])
     (hf_root : (f.map (algebraMap ℤ ℚ_[p])).eval α = 0)
@@ -260,14 +265,36 @@ theorem padic_algebraic_not_liouville
     (hLiou : IsPadicLiouville p α) :
     False := by
   obtain ⟨C, hC, hbound⟩ := padic_liouville_estimate p α f hf_root hf_deg
-  -- Strategy: The Liouville estimate gives ‖α - r/s‖_p ≥ C/H^d for all r/s.
-  -- The Liouville condition gives ‖α - r/s‖_p < 1/H^(d+1) for some r/s with
-  -- arbitrarily large H. For large H (H > 1/C), these bounds contradict:
-  --   C/H^d ≤ ‖α - r/s‖_p < 1/H^(d+1) = 1/(H·H^d) < C/H^d.
-  -- The formal argument requires constructing r/s with H ≥ ⌈1/C⌉.
-  sorry -- HARD: requires showing Liouville approximations exist with H ≥ 1/C
-        -- The estimate and Liouville condition together imply C/H^d ≤ ‖·‖ < 1/H^(d+1)
-        -- which collapses to C·H < 1 — contradicted by taking H large enough
+  -- Pick n₀ such that (1/2)^n₀ < C, equivalently 2^n₀ > 1/C
+  obtain ⟨n₀, hn₀⟩ := exists_pow_lt_of_lt_one hC (by norm_num : (1 / 2 : ℝ) < 1)
+  -- Apply the Liouville condition with n = n₀ + f.natDegree
+  obtain ⟨r, s, hs, hH2, _hgcd, happrox⟩ := hLiou (n₀ + f.natDegree)
+  -- Work with H : ℕ := max r.natAbs s.natAbs
+  set H : ℕ := max r.natAbs s.natAbs with hH_def
+  -- H ≥ 2 (from Liouville condition), so (H : ℝ) ≥ 2
+  have hH_ge2 : (2 : ℝ) ≤ (H : ℝ) := by exact_mod_cast hH2
+  have hH_pos : (0 : ℝ) < (H : ℝ) := lt_of_lt_of_le (by norm_num) hH_ge2
+  have hHd_pos : (0 : ℝ) < (H : ℝ) ^ f.natDegree := pow_pos hH_pos _
+  -- Lower bound from axiom: C / H^d ≤ ‖α - r/s‖
+  have hlower : C / (H : ℝ) ^ f.natDegree ≤ ‖α - (r : ℚ_[p]) / s‖ := hbound r s hs
+  -- Combine with Liouville upper bound to get C / H^d < 1 / H^(n₀+d)
+  have hcomb : C / (H : ℝ) ^ f.natDegree < 1 / (H : ℝ) ^ (n₀ + f.natDegree) :=
+    lt_of_le_of_lt hlower happrox
+  -- H^(n₀+d) = H^n₀ * H^d, so 1/H^(n₀+d) = (1/H^n₀) / H^d
+  rw [pow_add, ← div_div] at hcomb
+  -- Cancel H^d from both sides: C < 1/H^n₀
+  have hC_lt : C < 1 / (H : ℝ) ^ n₀ := (div_lt_div_right hHd_pos).mp hcomb
+  -- H ≥ 2 implies H^n₀ ≥ 2^n₀, so 1/H^n₀ ≤ 1/2^n₀
+  have h2n0_le : (2 : ℝ) ^ n₀ ≤ (H : ℝ) ^ n₀ :=
+    pow_le_pow_left (by norm_num) hH_ge2 n₀
+  have h_mono : 1 / (H : ℝ) ^ n₀ ≤ 1 / (2 : ℝ) ^ n₀ :=
+    one_div_le_one_div_of_le (pow_pos (by norm_num : (0:ℝ) < 2) n₀) h2n0_le
+  -- hn₀ : (1/2)^n₀ < C. Rewrite as 1/2^n₀ < C.
+  have h_2n0_lt : 1 / (2 : ℝ) ^ n₀ < C := by
+    have : (1 / 2 : ℝ) ^ n₀ = 1 / (2 : ℝ) ^ n₀ := by ring
+    linarith
+  -- Chain: C < 1/H^n₀ ≤ 1/2^n₀ < C. Contradiction.
+  linarith
 
 /-! ═════════════════════════════════════════════��═════════════════════════════
 PART VI: FUNCTION FIELD ANALOG
@@ -379,7 +406,6 @@ PART IX: SORRY SUMMARY
 
 | Location | Classification | Notes |
 |----------|---------------|-------|
-| padic_algebraic_not_liouville (one step) | HARD | Formal contradiction for large H |
 | padic_liouville_estimate | OPEN (axiom) | Core p-adic Taylor expansion in ℚ_[p] |
 
 **Proved (no sorry)**:
@@ -390,6 +416,7 @@ PART IX: SORRY SUMMARY
 - `padicNorm_nat_bounds`: Combined bounds
 - `padicNorm_int_le_one`: From Mathlib
 - `padicNorm_poly_eval_bound`: Trivial witness C = padicNorm(f(r/s)) * H^d
+- `padic_algebraic_not_liouville`: Main theorem (proved 2026-05-02 using exists_pow_lt_of_lt_one)
 - All three examples (2|6, 5|25, 3∤7)
 
 The axiom `padic_liouville_estimate` is the only OPEN result.
