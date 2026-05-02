@@ -4040,10 +4040,12 @@
       "result": "issues-fixed"
     },
     "erdos-1132": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "issues": [
+        "#14759: phantom erdos_lower_bound contribution + section line drift + imports drift"
+      ],
+      "lastAudited": "2026-05-02T12:03:07Z",
+      "result": "issues-found"
     },
     "erdos-1133": {
       "auditCount": 2,
