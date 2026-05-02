@@ -248,9 +248,14 @@ theorem r2_implies_main_r2 :
           ∀ H : Erdos1018OQ04.Hypergraph W 2,
             Erdos1018OQ04.isDenseHypergraph H ε →
             Erdos1018OQ04.hasSmallNonEmbeddable H C) := by
-  -- This would follow if isEmbeddableConc = isEmbeddable (the sorry definition)
-  -- Since isEmbeddable is a sorry, we can't prove this directly
-  sorry -- Connects our concrete definition to the abstract sorry in the parent
+  -- isEmbeddableConc and Erdos1018OQ04.isEmbeddable have identical definition bodies,
+  -- so they are definitionally equal. hasSmallNonEmbeddable unfolds via isNonEmbeddable
+  -- to ¬isEmbeddable, and criticalDim 2 = 2 * (2-1) = 2 (by rfl).
+  intro hkp ε hε
+  obtain ⟨C, N, hCN⟩ := hkp ε hε
+  refine ⟨C, N, fun W _ _ hN H hD => ?_⟩
+  obtain ⟨S, hS, hne⟩ := hCN W hN H hD
+  exact ⟨S, hS, hne⟩
 
 /-! ## Part VIII: Summary -/
 
@@ -267,13 +272,16 @@ theorem r2_implies_main_r2 :
     4. K₄ planar (parent axiom) → K4_planar (theorem with remaining sorry)
        Now has explicit coordinates, sorry only on geometric verification.
 
+    5. `r2_implies_main_r2` → proved (2026-05-02) ✓
+       isEmbeddableConc and isEmbeddable have identical bodies so are definitionally equal.
+       criticalDim 2 = 2 * (2-1) = 2, and hasSmallNonEmbeddable/isNonEmbeddable unfold cleanly.
+
     **Remaining work**:
-    - Fill in the geometric verification sorries (require convex hull intersection theory)
-    - Fill in `turanNumber` definition from Mathlib
-    - Prove `dense_graph_not_planar` via proper filter limits
+    - Fill in the geometric verification sorries for K₃ and K₄ (require convex hull intersection theory)
+    - Euler's formula bound for planar_graphs_edge_bound
 
     **Axiom count**: 1 (Kostochka-Pyber r=2 case, proven but deep)
-    **Sorry count**: 7 (geometric verifications and density limit)
+    **Sorry count**: 3 (geometric verifications + Euler's formula; down from 4 after r2_implies_main_r2)
 -/
 
 end Erdos1018OQ04Completion

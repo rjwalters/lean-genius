@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: walkTrace_reversal sorry (line 980) requires kuhnWalkSeq infrastructure (~150 lines, Path A) or Mathlib SimpleGraph framing (~200+ lines, Path B). 9 sessions stuck on same sorry; flagged BLOCKED per research-rules. File: 1126 lines, 0 axioms, 1 sorry.",
+    "progressSummary": "Re-axiomatized: 0 sorries, 1 axiom (bdry_all_even_of_no_fc_walks). Proved hMem and hNe for the τ involution; hInv (walkTrace_reversal, ~150-line kuhnWalkSeq induction) remains BLOCKED after 9+ sessions. Re-axiomatized per Session 9 recommendation.",
     "builtItems": [
       "doorDegree def: SpernerNDimOQ04.lean:60",
       "IsKuhnCompatible def: SpernerNDimOQ04.lean:65",
