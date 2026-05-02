@@ -36,7 +36,7 @@
     "originalContributions": [
       "isSmooth and hasSmootPairRepr definitions",
       "smooth_mul: product of smooth numbers is smooth (proved)",
-      "small_has_repr: n ≤ 3 has smooth pair representation (proved)",
+      "small_has_repr: n ≤ 3 has smooth pair representation (theorem stub — currently `sorry`)",
       "minSmoothness function definition",
       "balogExponent = 4/(9·√e) ≈ 0.2695 definition",
       "Conjectured bounds formalized: weakConjecture and strongConjecture",
@@ -97,17 +97,17 @@
     {
       "id": "minimal-smoothness",
       "title": "Part III: The Minimal Smoothness Function",
-      "summary": "minSmoothness definition, minSmoothness_exists axiom",
+      "summary": "minSmoothness definition (placeholder returning 0); existence of f(n) is described in a docstring comment only — no `minSmoothness_exists` axiom or theorem is declared",
       "startLine": 93,
-      "endLine": 112,
-      "mathContext": "Formal definition: minSmoothness definition, minSmoothness_exists axiom"
+      "endLine": 109,
+      "mathContext": "Formal definition: minSmoothness noncomputable def (placeholder). The docstring at lines 105–109 notes that every n has a smooth pair representation, but no Lean axiom or theorem formalizes this claim in this section."
     },
     {
       "id": "known-bounds",
       "title": "Part IV: Known Bounds",
       "summary": "erdos_cube_root_bound, balogExponent, balog_bound axiom",
-      "startLine": 113,
-      "endLine": 141,
+      "startLine": 110,
+      "endLine": 138,
       "mathContext": "Axiomatized: erdos_cube_root_bound, balogExponent, balog_bound axiom"
     },
     {
@@ -129,10 +129,10 @@
     {
       "id": "connections",
       "title": "Part VII: Connection to Other Problems",
-      "summary": "smoothCount ψ(x,y), de_bruijn_asymptotic, Goldbach connection",
+      "summary": "smoothCount ψ(x,y) placeholder def; de Bruijn asymptotic described in docstring only (no `de_bruijn_asymptotic` theorem/axiom declared); goldbachTypeProperty def",
       "startLine": 223,
-      "endLine": 252,
-      "mathContext": "Mathematical content: smoothCount ψ(x,y), de_bruijn_asymptotic, Goldbach connection"
+      "endLine": 246,
+      "mathContext": "smoothCount ψ(x,y) placeholder def; de Bruijn asymptotic $\\psi(x,y) \\sim x\\rho(u)$ mentioned in docstring only — no theorem or axiom in the file; goldbachTypeProperty def (simplified to True)"
     },
     {
       "id": "summary",
