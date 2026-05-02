@@ -74,7 +74,7 @@
     "historicalContext": "Erdős and Graham posed this question in the late 1970s [ErGr79, ErGr80], asking whether the longest prime AP in $\\{1, \\ldots, N\\}$ grows sublogarithmically. The Prime Number Theorem gives a natural upper bound: $\\text{longestPrimeAP}(N) \\leq (1+o(1))\\log N$, since primes have density $\\sim 1/\\log N$. For decades, even the existence of arbitrarily long prime APs was unknown. The breakthrough came in 2008 when Green and Tao proved that primes contain APs of every length, using a transference principle that lifts Szemerédi's theorem to the primes. However, their quantitative bounds are tower-type ($N(k) \\leq \\exp^{(3)}(ck)$), far from establishing the growth rate of $\\text{longestPrimeAP}(N)$. The Hardy-Littlewood $k$-tuple conjecture predicts $\\text{longestPrimeAP}(N) \\sim c \\cdot \\log N$ for some $c \\in (0,1)$, suggesting the answer to Erdős's question may be NO. This tension between the conjecture and the heuristic makes Problem #200 particularly delicate and deep.",
     "problemStatement": "Does the longest arithmetic progression of primes in $\\{1, \\ldots, N\\}$ have length $o(\\log N)$? That is, does $\\text{longestPrimeAP}(N)/\\log N \\to 0$ as $N \\to \\infty$?",
     "text": "Does the longest arithmetic progression of primes in {1,...,N} have length o(log N)? PNT gives an upper bound of (1+o(1))·log N. Green-Tao proved primes contain arbitrarily long APs. Status: OPEN.",
-    "proofStrategy": "The formalization defines prime APs via `IsPrimeAP k N` (existential over first term $a$ and common difference $d > 0$ with all terms prime and $\\leq N$), and `longestPrimeAP N` via `sSup`. The PNT upper bound, Green-Tao existence theorem, and the $o(\\log N)$ conjecture are axiomatized. Concrete examples ($\\{3,5,7\\}$, $\\{5,11,17,23,29\\}$) are verified computationally. The primorial constraint ($p \\leq k \\Rightarrow p \\mid d$ when all AP terms exceed $k$) is PROVED via modular arithmetic in `ZMod p` — the original axiom was false (counterexample: $\\{3,5,7\\}$, $k=3$, $p=3$, $3 \\nmid 2$) and has been corrected and fully proved.",
+    "proofStrategy": "The formalization defines prime APs via `IsPrimeAP k N` (existential over first term $a$ and common difference $d > 0$ with all terms prime and $\\leq N$), and `longestPrimeAP N` via `sSup`. Only the Green-Tao existence theorem (`green_tao`) is axiomatized; the PNT upper bound and the $o(\\log N)$ conjecture are stated only in expository docstrings. Concrete examples ($\\{3,5,7\\}$, $\\{5,11,17,23,29\\}$) are verified computationally. The primorial constraint ($p \\leq k \\Rightarrow p \\mid d$ when all AP terms exceed $k$) is PROVED via modular arithmetic in `ZMod p` — the original axiom was false (counterexample: $\\{3,5,7\\}$, $k=3$, $p=3$, $3 \\nmid 2$) and has been corrected and fully proved.",
     "keyInsights": [
       "**PNT gives the ceiling:** $\\text{longestPrimeAP}(N) \\leq (1+o(1))\\log N$ because prime density in $[1,N]$ is $\\sim 1/\\log N$, constraining how many terms of an AP can simultaneously be prime.",
       "**Green-Tao (2008) gives the floor:** $\\text{longestPrimeAP}(N) \\to \\infty$, but quantitative bounds are triple-exponential tower functions, far from establishing the precise growth rate.",
@@ -100,43 +100,43 @@
     {
       "id": "upper-bound",
       "title": "Upper Bound from PNT",
-      "startLine": 45,
-      "endLine": 58,
+      "startLine": 46,
+      "endLine": 55,
       "summary": "Docstring comment about PNT upper bound (lines 46–56) — no `axiom prime_ap_upper_pnt` or theorem declaration exists in this section. The upper bound $\\text{longestPrimeAP}(N) \\leq (1+\\varepsilon)\\log N$ is described mathematically but not formalized as a Lean declaration."
     },
     {
       "id": "green-tao",
       "title": "Green-Tao Theorem",
-      "startLine": 59,
-      "endLine": 69,
+      "startLine": 56,
+      "endLine": 74,
       "summary": "`green_tao` (axiom, line 60): $\\forall k,\\, \\exists N:\\, \\text{IsPrimeAP}(k, N)$. `longest_prime_ap_unbounded` (theorem, line 66): PROVED from `green_tao` — $\\forall M,\\, \\exists N:\\, \\text{longestPrimeAP}(N) \\geq M$. The Green-Tao 2008 landmark result is axiomatized; its consequence is proved."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture: $o(\\log N)$",
-      "startLine": 70,
-      "endLine": 80,
+      "startLine": 75,
+      "endLine": 81,
       "summary": "Docstring comment (lines 77–81) stating the $o(\\log N)$ open problem — no `axiom erdos_200_conjecture` or theorem is declared in this section. The conjecture $\\text{longestPrimeAP}(N) = o(\\log N)$ is described but not formalized as a Lean declaration."
     },
     {
       "id": "known-examples",
       "title": "Concrete Prime APs and Quantitative Bounds",
-      "startLine": 81,
-      "endLine": 96,
+      "startLine": 82,
+      "endLine": 102,
       "summary": "`prime_ap_3` (theorem, line 85): PROVED via `native_decide` — $\\{3,5,7\\}$ is a prime AP. `prime_ap_5` (theorem, line 90): PROVED. `prime_ap_6` (theorem, line 96): PROVED — $\\{7,37,67,97,127,157\\}$. The Green-Tao-Maynard quantitative bound $N(k) \\leq e^{e^{e^{ck}}}$ is mentioned in a docstring (lines 100–102) — no `axiom green_tao_quantitative` is declared."
     },
     {
       "id": "other-conjectures",
       "title": "Hardy-Littlewood Heuristics",
-      "startLine": 97,
-      "endLine": 111,
+      "startLine": 103,
+      "endLine": 110,
       "summary": "Docstring comment (lines 103–110) discussing the Hardy-Littlewood $k$-tuple prediction: $\\text{longestPrimeAP}(N) \\sim c \\cdot \\log N$ with $c < 1$. This section is commentary only — no Lean declarations or `True` placeholders are present. The heuristic tension with the $o(\\log N)$ conjecture is described mathematically but not formalized."
     },
     {
       "id": "structural",
       "title": "Structural: Primorial Constraint",
-      "startLine": 112,
-      "endLine": 125,
+      "startLine": 111,
+      "endLine": 151,
       "summary": "PROVED `ap_difference_primorial`: in a prime AP of length $k \\geq 3$ with all terms $> k$, every prime $p \\leq k$ divides $d$. Uses `ZMod p` field arithmetic — $d$ invertible mod $p$ yields a witness index $i = -a \\cdot d^{-1}$ giving $p \\mid (a + id)$. The primorial $k\\# \\sim e^k$ forces long APs to span exponentially large intervals."
     }
   ],
