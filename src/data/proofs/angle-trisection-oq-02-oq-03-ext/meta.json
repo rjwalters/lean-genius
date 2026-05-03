@@ -1,0 +1,134 @@
+{
+  "id": "angle-trisection-oq-02-oq-03-ext",
+  "title": "Angle Trisection OQ02-OQ03 Extension: Gauss-Wantzel Arithmetic Bridge",
+  "slug": "angle-trisection-oq-02-oq-03-ext",
+  "description": "Bridges Gauss-Wantzel axiom to Mathlib cyclotomic infrastructure. Proves arithmetic lemmas connecting φ(n) = 2^k to φ(n)/2 = 2^{k-1}, complete constructibility classification for n ∈ [3,50], and structural characterization via prime factorization. 55 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius OQ02-OQ03-Ext",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ03Ext.lean",
+    "tags": [
+      "constructibility",
+      "angle-trisection",
+      "gauss-wantzel",
+      "totient",
+      "cyclotomic",
+      "number-theory",
+      "galois-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 297,
+    "theoremCount": 55,
+    "assumptions": "None. All 55 theorems proved. Classification by native_decide and decide.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient_even",
+        "description": "φ(n) is even for n ≥ 3",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.totient_prime",
+        "description": "φ(p) = p-1 for prime p",
+        "module": "Mathlib.Data.Nat.Totient"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Gauss-Wantzel theorem (1837) characterizes constructible regular polygons: n-gon constructible iff n = 2^a × (Fermat primes). The algebraic proof goes: n-gon constructible iff [ℚ(cos 2π/n):ℚ] is a power of 2 iff φ(n) is a power of 2. The key arithmetic step — that φ(n)/2 is a power of 2 iff φ(n) is — requires knowing φ(n) is even for n ≥ 3, which follows because (ℤ/nℤ)* contains -1 as an element of order 2.",
+    "problemStatement": "Prove: (1) φ(n) is a power of 2 iff φ(n)/2 is a power of 2 (for n ≥ 3). (2) A regular n-gon is constructible iff φ(n) is a power of 2. (3) Complete classification for n ∈ [3,50]: 17 constructible values (3,4,5,6,8,10,12,15,16,17,20,24,30,32,34,40,48).",
+    "proofStrategy": "Section I: arithmetic of powers of 2 (pow2_of_half_pow2, totient_pow2_iff_half_pow2). Section II: non-constructibility via odd prime divisors (not_totient_pow2_of_odd_prime_dvd). Sections III-VI: batch verification via decide/native_decide for all n ∈ [3,50]. Section VII: summary with explicit constructible list.",
+    "keyInsights": [
+      "**Arithmetic bridge**: φ(n) even for n≥3 (since -1 ∈ (ℤ/nℤ)* has order 2). So φ(n) = 2^k iff φ(n)/2 = 2^{k-1}. This connects the maximal real subfield degree to the cyclotomic degree.",
+      "**Non-constructibility criterion**: If p | φ(n) for an odd prime p ≥ 3, then φ(n) is NOT a power of 2 — n-gon is not constructible. This handles all non-Fermat cases.",
+      "**Complete n ∈ [3,50] table**: 17 constructible n-gons: n = 2^a × (distinct Fermat primes). The remaining 31 values all have odd prime divisors in φ(n).",
+      "**Fermat primes in range**: Only 3, 5, 17 appear as relevant Fermat primes for n ≤ 50. Products: 3×5=15, 3×17=51>50, 5×17=85>50, so 15 is the only Fermat-prime product ≤ 50."
+    ]
+  },
+  "sections": [
+    {
+      "id": "pow2-arithmetic",
+      "title": "Section I: Arithmetic of Powers of 2",
+      "startLine": 30,
+      "endLine": 78,
+      "summary": "pow2_of_half_pow2: m/2 = 2^k ⟹ m = 2^{k+1}. half_pow2_of_pow2. even_of_pow2_ge_two. totient_even_of_ge_three. totient_pow2_iff_half_pow2.",
+      "mathContext": "$\\varphi(n)$ even for $n \\geq 3$ (element $-1 \\in (\\mathbb{Z}/n\\mathbb{Z})^*$ has order 2). Key: $\\varphi(n) = 2^k \\iff \\varphi(n)/2 = 2^{k-1}$."
+    },
+    {
+      "id": "non-constructibility",
+      "title": "Section II: Non-Constructibility via Odd Prime Divisors",
+      "startLine": 78,
+      "endLine": 158,
+      "summary": "not_totient_pow2_of_odd_prime_dvd: if odd prime p | φ(n), then ¬TotientIsPow2 n. Specific non-constructible proofs: n=7,9,11,13,14,18,19,21,22,23,25,26,27,28,29.",
+      "mathContext": "If $q | \\varphi(n)$ for odd prime $q$, then $\\varphi(n) \\neq 2^k$ for any $k$."
+    },
+    {
+      "id": "classification",
+      "title": "Sections III–VI: Complete Classification for n ∈ [3,50]",
+      "startLine": 96,
+      "endLine": 276,
+      "summary": "All 17 constructible n ∈ [3,50] verified (TotientIsPow2). All 31 non-constructible verified. Totient of products and prime powers. Structural: TotientIsPow2 p ↔ p-1 = 2^k for primes p.",
+      "mathContext": "Constructible: $n \\in \\{3,4,5,6,8,10,12,15,16,17,20,24,30,32,34,40,48\\}$."
+    },
+    {
+      "id": "summary",
+      "title": "Section VII: Summary",
+      "startLine": 276,
+      "endLine": 297,
+      "summary": "Complete constructibility classification theorem: lists all constructible n in [3,50] and provides the structural characterization.",
+      "mathContext": "17 of 48 values in $[3,50]$ have $\\varphi(n)$ a power of 2."
+    }
+  ],
+  "conclusion": {
+    "summary": "Gauss-Wantzel arithmetic bridge fully formalized: 55 theorems, 0 sorries, 0 axioms. The arithmetic gap between cyclotomic field degree and real subfield degree is closed, with complete n ∈ [3,50] classification.",
+    "implications": "This file provides the arithmetic infrastructure needed to bridge Mathlib's cyclotomic field machinery (IsCyclotomicExtension.finrank) to the Gauss-Wantzel constructibility criterion. Once the geometric steps (cos 2π/n generates the maximal real subfield) are formalized, the full theorem would follow.",
+    "openQuestions": [
+      "Can the full Gauss-Wantzel theorem be proved without the axiom conic_constructible_iff_power_of_two?",
+      "Can the classification be extended to all n (not just n ≤ 50) using Mathlib's Fermat prime formalization?",
+      "Are there infinitely many Fermat primes? (Open problem — only 5 known: 3, 5, 17, 257, 65537)"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": [],
+    "namespace": "AngleTrisectionOQ02OQ03Ext",
+    "lineCount": 297,
+    "axiomCount": 0,
+    "theoremCount": 55,
+    "definitionCount": 2,
+    "path": "Proofs/AngleTrisectionOQ02OQ03Ext.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-oq-02-oq-03",
+      "relationship": "extends",
+      "description": "Extension of OQ02-OQ03: completes arithmetic bridge and n ∈ [3,50] classification"
+    },
+    {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "sub-question",
+      "description": "OQ02: characterizing constructibility via degree conditions"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "totient_pow2_iff_half_pow2",
+      "type": "core",
+      "statement": "∀ n ≥ 3, (∃ k, φ(n) = 2^k) ↔ (∃ j, φ(n)/2 = 2^j)",
+      "description": "Arithmetic bridge: φ(n) a power of 2 iff φ(n)/2 is, for n ≥ 3.",
+      "significance": "Closes the gap between cyclotomic degree and real subfield degree"
+    },
+    {
+      "name": "constructibility_classification_3_50",
+      "type": "corollary",
+      "statement": "Complete list of n ∈ [3,50] with TotientIsPow2 n",
+      "description": "17 constructible regular polygons in range [3,50].",
+      "significance": "Complete Gauss-Wantzel classification for small n"
+    }
+  ],
+  "sorries": 0
+}
