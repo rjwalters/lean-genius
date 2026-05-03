@@ -355,6 +355,30 @@ theorem gpfConsecutive_gt_pred_self (n : ℕ) (hn : 2 ≤ n) :
   have h := gpfConsecutive_succ_gt_k (n - 1) (by omega)
   rwa [Nat.sub_add_cancel (by omega : 1 ≤ n)] at h
 
+/-- **Sylvester-Schur (n = k+2 case)**: For k ≥ 1, gpfConsecutive (k+2) k > k.
+    Bertrand's postulate gives prime p in (k+1, 2(k+1)] = (k+1, 2k+2].
+    Since p ≥ k+2 and p ≤ 2k+2 = (k+2)+k, p lies in the window [n, n+k]. -/
+theorem gpfConsecutive_succ_succ_gt_k (k : ℕ) (hk : 1 ≤ k) :
+    k < gpfConsecutive (k + 2) k := by
+  obtain ⟨p, hp_prime, hkp, hp_le⟩ := Nat.exists_prime_lt_and_le_two_mul (k + 1) (by omega)
+  exact gpfConsecutive_gt_k_of_prime_in_window (k + 2) k (by omega) p hp_prime
+    (by omega) (by omega)
+
+/-- **Sylvester-Schur (n = k+3 case)**: For k ≥ 1, gpfConsecutive (k+3) k > k.
+    Bertrand gives prime p in (k+2, 2(k+2)] = (k+2, 2k+4]. Since 2(k+2) = 2k+4 is
+    even and ≥ 6, it is composite, forcing p ≤ 2k+3 = (k+3)+k. Thus p lies in [k+3, 2k+3]. -/
+theorem gpfConsecutive_succ_succ_succ_gt_k (k : ℕ) (hk : 1 ≤ k) :
+    k < gpfConsecutive (k + 3) k := by
+  obtain ⟨p, hp_prime, hkp, hp_le⟩ := Nat.exists_prime_lt_and_le_two_mul (k + 2) (by omega)
+  have hp_ne : p ≠ 2 * (k + 2) := by
+    intro heq
+    subst heq
+    rcases hp_prime.eq_one_or_self_of_dvd 2 (dvd_mul_right 2 (k + 2)) with h | h
+    · norm_num at h
+    · omega
+  exact gpfConsecutive_gt_k_of_prime_in_window (k + 3) k (by omega) p hp_prime
+    (by omega) (by omega)
+
 /-
 ## Infinitely Many n with Large GPF
 -/
@@ -373,6 +397,64 @@ theorem erdos_1201_infinitely_many (k : ℕ) (ε : ℝ) (hε₀ : 0 < ε) (_hε�
       < (n : ℝ) ^ (1 : ℝ) := Real.rpow_lt_rpow_of_exponent_lt hn1 (by linarith)
     _ = (n : ℝ) := Real.rpow_one _
     _ ≤ (gpfConsecutive n k : ℝ) := h_real
+
+/-
+## Monotonicity in Window Width
+-/
+
+/-- **Good-set monotonicity (pointwise)**: if P(n,k) > n^(1-ε), then P(n,k+1) > n^(1-ε),
+    since gpfConsecutive is non-decreasing in k. -/
+theorem erdos_1201_good_implies_good_succ (n k : ℕ) (ε : ℝ) (hn : 2 ≤ n)
+    (hgood : (n : ℝ) ^ (1 - ε) < gpfConsecutive n k) :
+    (n : ℝ) ^ (1 - ε) < gpfConsecutive n (k + 1) :=
+  hgood.trans_le (by exact_mod_cast gpfConsecutive_mono n k hn)
+
+/-- **Good-set containment**: the set of n with P(n,k) > n^(1-ε) grows with k.
+    This is the key structural property: enlarging the window never removes good n. -/
+theorem erdos_1201_good_set_mono_k (ε : ℝ) (k : ℕ) :
+    {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε) < gpfConsecutive n k} ⊆
+    {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε) < gpfConsecutive n (k + 1)} := by
+  intro n ⟨hn2, hgood⟩
+  exact ⟨hn2, erdos_1201_good_implies_good_succ n k ε hn2 hgood⟩
+
+/-- **Upper density is monotone**: if S ⊆ T, then upperDensity S ≤ upperDensity T.
+    The counting function for S is dominated by that of T on every finite window,
+    so the limsup of the ratio is also dominated. -/
+theorem upperDensity_mono {S T : Set ℕ} (hST : S ⊆ T) :
+    upperDensity S ≤ upperDensity T := by
+  simp only [upperDensity]
+  apply Filter.limsup_le_limsup
+  · apply Filter.eventually_of_forall
+    intro N
+    rcases Nat.eq_zero_or_pos N with rfl | hN
+    · simp
+    · rw [div_le_div_right (Nat.cast_pos.mpr hN)]
+      exact_mod_cast Finset.card_le_card (Finset.filter_subset_filter _ hST)
+  · -- IsCoboundedUnder: density_S ≥ 0, so any eventual upper bound is ≥ 0
+    use 0
+    intro a ha
+    by_contra hlt
+    push_neg at hlt
+    obtain ⟨N, hN⟩ := ha.exists
+    have h0 : (0 : ℝ) ≤ (((Finset.Icc 1 N).filter (fun n => n ∈ S)).card : ℝ) / (N : ℝ) :=
+      div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+    linarith
+  · -- IsBoundedUnder: density_T ≤ 1
+    exact ⟨1, Filter.eventually_of_forall fun N => by
+      rcases Nat.eq_zero_or_pos N with rfl | hN
+      · simp
+      · apply div_le_one_of_le _ (Nat.cast_nonneg N)
+        have hcard : (Finset.Icc 1 N).card = N := by
+          rw [Finset.Nat.card_Icc]; omega
+        exact_mod_cast (Finset.card_filter_le _ _).trans hcard.le⟩
+
+/-- **Density monotonicity in k**: the upper density of the good set is non-decreasing
+    as the window width grows. Formally: more n satisfy P(n,k+1) > n^(1-ε) than P(n,k) > n^(1-ε).
+    This is the key density property that underpins the Erdős conjecture. -/
+theorem erdos_1201_density_mono_k (ε : ℝ) (k : ℕ) :
+    upperDensity {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε) < gpfConsecutive n k} ≤
+    upperDensity {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε) < gpfConsecutive n (k + 1)} :=
+  upperDensity_mono (erdos_1201_good_set_mono_k ε k)
 
 /-
 ## Upper Bounds and Tight Estimates
@@ -775,55 +857,5 @@ theorem gpfConsecutive_eq_term_gpf (n k : ℕ) (hn : 2 ≤ n) (hk : k < gpfConse
     (gpf_ge_prime_dvd (n + j) _ hnj hp hpj)
     (gpf_ge_prime_dvd _ (greatestPrimeFactor (n + j)) hcp (gpf_prime _ hnj)
       (dvd_trans (gpf_dvd _ hnj) (dvd_consecutiveProduct_term n k j (by omega))))⟩
-
-/-
-## Right-Endpoint Characterization: P(n,k) = n+k ↔ n+k is Prime
--/
-
-/-- **Right-endpoint biconditional**: P(n,k) = n+k if and only if n+k is prime,
-    for n ≥ 1 and n+k ≥ 2.
-
-    Forward: if P(n,k) = n+k, then n+k is prime. Since n+k divides the consecutive
-    product and the product is ≥ n+k ≥ 2, the GPF of the product is prime; and since
-    P = n+k, n+k equals this prime value.
-
-    Backward: if n+k is prime, gpfConsecutive_eq_of_prime_right applies directly. -/
-theorem gpfConsecutive_eq_right_iff (n k : ℕ) (hn : 1 ≤ n) (hnk : 2 ≤ n + k) :
-    gpfConsecutive n k = n + k ↔ (n + k).Prime := by
-  constructor
-  · intro h
-    have h_dvd : n + k ∣ consecutiveProduct n k := dvd_consecutiveProduct_right n k
-    have h_pos : 0 < consecutiveProduct n k := consecutiveProduct_pos n k hn
-    have h_ge2 : 2 ≤ consecutiveProduct n k := Nat.le_trans hnk (Nat.le_of_dvd h_pos h_dvd)
-    rw [← h]; exact gpf_prime _ h_ge2
-  · exact gpfConsecutive_eq_of_prime_right n k hn
-
-/-- For any k, the set of n where (n+k) is prime is infinite.
-    For any bound N, pick a prime p > N+k; then n = p-k satisfies (n+k) = p prime and n > N. -/
-theorem erdos_1201_prime_right_infinite (k : ℕ) :
-    Set.Infinite {n : ℕ | (n + k).Prime} := by
-  apply Set.infinite_of_not_bddAbove
-  rw [not_bddAbove_iff]
-  intro N
-  obtain ⟨p, hp_ge, hp_prime⟩ := Nat.exists_infinite_primes (N + k + 1)
-  refine ⟨p - k, ?_, by omega⟩
-  simp only [Set.mem_setOf_eq]
-  rwa [Nat.sub_add_cancel (by omega)]
-
-/-- For any k ≥ 1, infinitely many n satisfy P(n,k) = n+k: the upper bound n+k is achieved
-    infinitely often. By gpfConsecutive_eq_right_iff, this is equivalent to n+k being prime,
-    and primes are infinite. Complements erdos_1201_infinitely_many (prime starts n). -/
-theorem erdos_1201_eq_right_infinite (k : ℕ) (hk : 0 < k) :
-    Set.Infinite {n : ℕ | gpfConsecutive n k = n + k} := by
-  apply Set.infinite_of_not_bddAbove
-  rw [not_bddAbove_iff]
-  intro N
-  obtain ⟨p, hp_ge, hp_prime⟩ := Nat.exists_infinite_primes (N + k + 1)
-  have hkp : k ≤ p := by omega
-  have hn1 : 1 ≤ p - k := by omega
-  refine ⟨p - k, ?_, by omega⟩
-  simp only [Set.mem_setOf_eq]
-  have hprime_rw : (p - k + k).Prime := by rwa [Nat.sub_add_cancel hkp]
-  exact gpfConsecutive_eq_of_prime_right _ k hn1 hprime_rw
 
 end Erdos1201
