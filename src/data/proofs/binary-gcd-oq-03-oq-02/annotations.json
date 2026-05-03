@@ -122,6 +122,32 @@
     ]
   },
   {
+    "id": "ann-hgcd-perturbation",
+    "proofId": "binary-gcd-oq-03-oq-02",
+    "range": {
+      "startLine": 623,
+      "endLine": 785
+    },
+    "type": "technique",
+    "title": "Perturbation Infrastructure (Parts VII–VIIb): Decomposing Full-Precision Inputs",
+    "content": "Parts VII and VIIb establish the algebraic machinery for splitting full-precision inputs into top-half and low-bit components.\n\n**PART VII: Column-convention perturbation** (lines 623–735)\n- `cofactor_apply_add`: apply distributes over additive decomposition of inputs\n- `cofactor_apply_smul`: apply commutes with scalar multiplication\n- `cofactor_apply_shift_decomp`: the key identity — for `a = aHi*2^s + ea`, `b = bHi*2^s + eb`, the full apply decomposes as `2^s * apply(aHi,bHi) + apply(ea,eb)`. Proved by `ring`.\n- `cofactor_apply_natAbs_le`: triangle bound `|apply(ea,eb).1| ≤ |M.α|·|ea| + |M.β|·|eb|`\n- `cofactor_apply_err_bound` + `cofactor_apply_err_bound_snd`: given entry bounds `|M.α|,|M.β| ≤ C` and input bound `|ea|,|eb| ≤ B`, the error component is `≤ 2·C·B`\n\n**PART VIIb: Row-convention decomposition** (lines 736–775)\n- `row_product_decompose`: row products `a*M.α + b*M.γ` decompose as `2^s*(aHi*M.α + bHi*M.γ) + (aLo*M.α + bLo*M.γ)`. The row analogue of cofactor_apply_shift_decomp.\n- `row_product_with_invariant`: if the Lehmer invariant holds for `(aHi, bHi)` (i.e., `aHi*M.α + bHi*M.γ = aHi'`), then the full-precision row products simplify to `2^s*aHi' + low-bits`. Proved by `linear_combination`.\n\nThese are the two sides of the convention dichotomy: column decomposition for error bounds on the HGCD column outputs; row decomposition for tracking the Euclidean residue outputs across the recursive split.",
+    "mathContext": "Write $a = a_H \\cdot 2^s + e_a$, $b = b_H \\cdot 2^s + e_b$ with $0 \\leq e_a, e_b < 2^s$. Then: **Column** $M(a,b) = 2^s \\cdot M(a_H,b_H) + M(e_a,e_b)$. **Row** $a \\cdot M.\\alpha + b \\cdot M.\\gamma = 2^s(a_H \\cdot M.\\alpha + b_H \\cdot M.\\gamma) + (e_a \\cdot M.\\alpha + e_b \\cdot M.\\gamma)$. Both follow from linearity (ring). The error term $|M(e_a,e_b)| \\leq 2 \\cdot C \\cdot 2^s$ where $C = \\max(a,b)$ bounds each matrix entry (from Part VI entry bounds). Combined with the IH giving $M(a_H,b_H) \\leq \\max(a_H,b_H)$, the full-precision column output is $\\leq 3 \\cdot \\max(a,b)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "cofactor_apply_shift_decomp",
+      "row_product_decompose",
+      "entry bounds (Part VI)",
+      "row vs column convention",
+      "Lehmer invariant"
+    ],
+    "prerequisites": [
+      "CofactorMatrix.apply definition",
+      "entry_bound_of_even / entry_bound_of_odd (Part VI)",
+      "Int.natAbs triangle inequality",
+      "ring and linear_combination tactics"
+    ]
+  },
+  {
     "id": "ann-hgcd-sorry",
     "proofId": "binary-gcd-oq-03-oq-02",
     "range": {
@@ -129,21 +155,22 @@
       "endLine": 935
     },
     "type": "insight",
-    "title": "The Open Sorry: Quotient Stability for Recursive Size Reduction",
-    "content": "The single sorry is at the **recursive case of `hgcdMatrix_joint_bound`** (Part IX). This theorem would state: for sufficient fuel, the HGCD output $(u,v) = M(a,b)$ and matrix entries all satisfy $\\max(|u|,|v|) \\leq 2^{s+3}$ where $s = \\text{hgcdShift}(a,b)$.\n\n**What's proved**: base cases (Lehmer leaf) and the column-convention counterexample showing the bound fails without the row convention. Parts VIII establishes the induction prerequisites: $s \\geq 1$ for large inputs and the strict decrease $a/2^s < a$.\n\n**The missing piece** is *quotient stability* (Stehlé-Zimmermann 2004, §3–4): the Euclidean quotients from the top-half approximation $(a/2^s, b/2^s)$ must match those from the full pair $(a,b)$ for the first $O(n/2)$ steps. This requires approximately 200 lines of new Lean infrastructure.\n\n**Why it's hard**: quotient stability is a delicate approximation argument bounding how far the remainder sequences of $(a/2^s, b/2^s)$ and $(a,b)$ diverge due to bit-truncation errors. The key lemma is Stehlé–Zimmermann's Theorem 4: 'the first $k$ quotients match' under a mild divisibility condition.",
-    "mathContext": "Quotient stability (informal): if $a = 2^s a_H + e_a$, $b = 2^s b_H + e_b$ with $|e_a|,|e_b| < 2^s$, and the HGCD of $(a_H, b_H)$ computes quotients $q_1,\\ldots,q_k$, then the Euclidean algorithm on $(a,b)$ starts with the same quotients. This holds for $k = O(n/2)$ quotients when $s = \\lceil n/2 \\rceil$ — see Stehlé-Zimmermann Theorem 4. With quotient stability, the perturbation bound (Part VII) gives $|M_1(a,b) - 2^s \\cdot M_1(a_H,b_H)| \\leq 2 \\cdot C \\cdot 2^s$ where $C \\leq \\max(a,b)$, completing the recursive case.",
+    "title": "The Open Sorry: Row-Output Bound for Recursive HGCD",
+    "content": "Parts VIII–IX establish size-reduction prerequisites and the row-output bound theorem, with one sorry remaining.\n\n**PART VIII: Shift bounds** (lines 776–825): `hgcdShift_pos` proves the shift is ≥ 1 for inputs ≥ 4 (Nat.log 2 (max a b) ≥ 2). `hgcdShift_top_lt` proves the top-half inputs strictly decrease: max(a/2^s, b/2^s) < max(a,b). These establish the induction measure decrease.\n\n**PART IX: Row-output bound** (lines 826–935): `hgcdMatrix_small_row_output_le` (proved) handles the base case: for max(a,b) < hgcdThreshold, the row output is ≤ max(a,b) via lehmerCofactors_id_apply_le. The **counterexample** (`native_decide`) confirms the column convention bound is false: for (37,5), column output component = 184 > 64 = 2^(hgcdShift+3).\n\n**`hgcdMatrix_row_output_le`** (theorem with 1 sorry, line 924): the full row-output bound for all fuel. Base case (fuel=0: identity) and threshold case are proved; the recursive case is sorry.\n\n**Why the recursive case is hard**: The recursive structure computes `M₂.mul M₁` where M₁ acts on top-half inputs (a/2^s, b/2^s) and M₂ acts on the column output of M₁ applied to (a,b). The row output of M₂.mul M₁ at (a,b) equals the column output of M₂ at the row output of M₁. M₂'s IH bounds its row output at its own inputs (the column output of M₁), but we need M₂'s column output at a different point (the row output of M₁). Closing this requires joint induction tracking both row AND column output bounds simultaneously — the Stehlé-Zimmermann (2004) §4 approach.",
+    "mathContext": "The row output of $(M_2 \\cdot M_1)$ at $(a,b)$: by matrix algebra, $a \\cdot (M_2.\\text{mul}\\, M_1).\\alpha + b \\cdot (M_2.\\text{mul}\\, M_1).\\gamma = M_2.\\alpha \\cdot (a M_1.\\alpha + b M_1.\\gamma) + M_2.\\gamma \\cdot (a M_1.\\beta + b M_1.\\delta)$. This is the column output of $M_2$ at the row output of $M_1$. But $M_2 = \\text{hgcdMatrix}\\,f\\,(M_1(a,b)^T)$ was built for the **column** output of $M_1$, not the row output. The required bound: $\\text{colOut}(M_2, \\text{rowOut}(M_1, a, b)) \\leq \\max(a,b)$, which demands knowing how $M_2$ behaves on inputs it wasn't designed for — a dual-convention joint induction.",
     "significance": "key",
     "relatedConcepts": [
-      "quotient stability",
-      "Stehlé-Zimmermann algorithm (2004)",
-      "Euclidean continued fractions",
-      "half-GCD bit complexity"
+      "hgcdMatrix_row_output_le",
+      "hgcdMatrix_small_row_output_le",
+      "row vs column convention dichotomy",
+      "Stehlé-Zimmermann (2004)",
+      "joint induction on max(a,b)"
     ],
     "prerequisites": [
-      "Euclidean quotients and remainders",
-      "perturbation bounds (Part VII)",
-      "entry bounds (Part VI)",
-      "Nat.div truncation"
+      "row_product_decompose (Part VIIb)",
+      "entry_bound_of_even/odd (Part VI)",
+      "cofactor_mul_apply",
+      "hgcdShift_top_lt"
     ]
   }
 ]
