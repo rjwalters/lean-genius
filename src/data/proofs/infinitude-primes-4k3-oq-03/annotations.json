@@ -17,9 +17,9 @@
     "range": { "startLine": 26, "endLine": 44 },
     "type": "technique",
     "title": "Two Parallel Constructions: ≡ 3 vs ≡ 1 (mod 4)",
-    "content": "The module comment compares both constructions side-by-side. For ≡ 3: N = 4(n+1)! − 1 is ≡ 3 (mod 4), and since a product of ≡ 1 numbers is ≡ 1, N must have a prime factor ≡ 3 (mod 4). For ≡ 1: N = (2(n+1)!)² + 1 has an odd prime factor p, and since p | k² + 1, we have −1 ≡ k² (mod p), so −1 is a QR mod p, forcing p ≡ 1 (mod 4). In both cases, the new prime p > n follows by the same argument: if p ≤ n, then p | (n+1)!, so p | N ∓ 1 = ±1, contradiction.",
+    "content": "The module comment compares both constructions side-by-side. For ≡ 3: N = 4(n+1)! − 1 is ≡ 3 (mod 4), and since a product of ≡ 1 numbers is ≡ 1, N must have a prime factor ≡ 3 (mod 4). For ≡ 1: N = (2(n+1)!)² + 1 has an odd prime factor p, and since p | k² + 1, we have −1 ≡ k² (mod p), so −1 is a QR mod p, forcing p ≡ 1 (mod 4). In both cases, the new prime p > n follows by the same argument: if p ≤ n, then p | (n+1)!, so p | N ∓ 1 = ±1, contradiction. The difficulty difference is real: the ≡ 3 argument is completely self-contained in elementary arithmetic, while the ≡ 1 argument requires Euler's criterion (a theorem of quadratic residue theory).",
     "mathContext": "\\begin{array}{l|l|l} & p \\equiv 3 \\pmod 4 & p \\equiv 1 \\pmod 4 \\\\ \\hline N & 4(n+1)!-1 & (2(n+1)!)^2+1 \\\\ \\text{Key lemma} & \\prod_{p_i\\equiv 1} \\equiv 1 & (-1/p)=1 \\Rightarrow p\\equiv 1 \\\\ \\text{p > n} & p\\mid (n+1)! \\Rightarrow p\\mid 1 & \\text{same} \\end{array}",
-    "significance": "key",
+    "significance": "supporting",
     "relatedConcepts": ["Euclid's argument", "Dirichlet's theorem", "arithmetic progressions", "product of residues"],
     "prerequisites": ["mod 4 arithmetic", "Nat.dvd_factorial", "prime factorization"]
   },
@@ -38,13 +38,29 @@
   {
     "id": "classification-theorem",
     "proofId": "infinitude-primes-4k3-oq-03",
-    "range": { "startLine": 68, "endLine": 103 },
+    "range": { "startLine": 68, "endLine": 82 },
     "type": "insight",
-    "title": "Complete mod-4 Classification: Both Classes Infinite",
-    "content": "Three theorems complete the mod-4 picture. both_classes_infinite packages the conjunction of InfinitudePrimes4k1.primes_1_mod_4_infinite and InfinitudePrimes4k3.primes_3_mod_4_infinite — both residue classes {p prime | p ≡ 1 mod 4} and {p prime | p ≡ 3 mod 4} are Set.Infinite. odd_prime_mod_four_classification delegates to prime_mod_four from InfinitudePrimes4k3: every odd prime satisfies p % 4 ∈ {1, 3} (since p odd means p % 2 = 1, hence p % 4 ∈ {1, 3}). constructions_cover_all_odd_primes wraps everything into a single statement matching each odd prime to a construction witnessing its class.",
-    "mathContext": "Every prime $p$ belongs to exactly one of: $\\{2\\}$, $\\{p: p\\equiv 1\\pmod 4\\}$, $\\{p: p\\equiv 3\\pmod 4\\}$. The first set has one element; the latter two are each countably infinite. Together: $\\{\\text{primes}\\} = \\{2\\} \\cup \\{p: 4\\mid p-1\\} \\cup \\{p: 4\\mid p-3\\}$ — a complete partition. This is the mod-4 special case of Dirichlet's theorem proved without L-functions.",
-    "significance": "key",
+    "title": "Both Classes Infinite and Complete mod-4 Classification",
+    "content": "Two theorems complete the mod-4 picture. both_classes_infinite packages the conjunction of InfinitudePrimes4k1.primes_1_mod_4_infinite and InfinitudePrimes4k3.primes_3_mod_4_infinite — both residue classes {p prime | p ≡ 1 mod 4} and {p prime | p ≡ 3 mod 4} are Set.Infinite. odd_prime_mod_four_classification delegates to prime_mod_four from InfinitudePrimes4k3: every odd prime satisfies p % 4 ∈ {1, 3} since p odd means p % 2 = 1, forcing p % 4 ∈ {1, 3}. Together these give the complete elementary classification of primes by residue mod 4 — all without Dirichlet L-functions.",
+    "mathContext": "Every prime $p$ belongs to exactly one of: $\\{2\\}$, $\\{p: p\\equiv 1\\pmod 4\\}$, $\\{p: p\\equiv 3\\pmod 4\\}$. Together: $\\{\\text{primes}\\} = \\{2\\} \\cup \\{p: 4\\mid p-1\\} \\cup \\{p: 4\\mid p-3\\}$ — a complete partition, the mod-4 special case of Dirichlet's theorem proved elementarily.",
+    "significance": "supporting",
     "relatedConcepts": ["Dirichlet's theorem", "arithmetic progressions", "Set.Infinite", "modular arithmetic classification"],
     "prerequisites": ["InfinitudePrimes4k3", "InfinitudePrimes4k1", "Set.Infinite API"]
+  },
+  {
+    "id": "constructions-cover",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": { "startLine": 84, "endLine": 103 },
+    "type": "technique",
+    "title": "constructions_cover_all_odd_primes: rcases Pattern for Classification",
+    "content": "The final theorem constructions_cover_all_odd_primes is the most structurally interesting: given any odd prime p, it exhibits a witness showing p lies in an infinite family. The proof uses `rcases InfinitudePrimes4k3.prime_mod_four hp hp2 with h1 | h3` to split on whether p ≡ 1 or p ≡ 3 (mod 4), then `refine ⟨h1, 0, p, hp, hp.two_le, h1, rfl⟩` to provide the witness n=0 (any n works since p > n=0 is p.two_le ≥ 2 > 0). The statement uses a disjunctive type `A ∨ B` with existential witnesses, which is idiomatic Lean for 'the prime belongs to one of two infinite families, and here is the witness'. This pattern shows both sets are covering families, not just abstract infinite sets.",
+    "mathContext": "\\forall p \\text{ prime}, p \\neq 2: \\;(p\\%4=1 \\wedge \\exists n,q.\\; q>n \\wedge q\\%4=1 \\wedge q=p) \\vee (p\\%4=3 \\wedge \\exists n,q.\\; q>n \\wedge q\\%4=3 \\wedge q=p). \\text{ Witness: } n=0, q=p, \\text{ valid since } p \\geq 2 > 0.",
+    "significance": "technical",
+    "relatedConcepts": ["rcases tactic", "refine with anonymous constructor", "disjunctive types", "existential witness"],
+    "prerequisites": [
+      "odd_prime_mod_four_classification",
+      "InfinitudePrimes4k3.prime_mod_four",
+      "Lean 4 rcases pattern matching"
+    ]
   }
 ]
