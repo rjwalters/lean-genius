@@ -2,65 +2,73 @@
   {
     "id": "ann-1210-problem-statement",
     "proofId": "erdos-1210",
-    "range": { "start": 1, "end": 22 },
-    "type": "context",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "concept",
     "title": "The Problem",
-    "body": "Erdős conjectured that among all pairwise coprime sets A ⊆ {1,...,n-1}, the set of all primes below n maximizes the weighted harmonic sum ∑_{a∈A} 1/(n-a). The weight 1/(n-a) is large when a is close to n, so the question is whether primes occupy the 'best' positions near n among all pairwise coprime configurations."
+    "content": "Erdős conjectured that among all pairwise coprime sets A ⊆ {1,...,n-1}, the set of all primes below n maximizes the weighted harmonic sum ∑_{a∈A} 1/(n-a). The weight 1/(n-a) is large when a is close to n, so the question is whether primes occupy the 'best' positions near n among all pairwise coprime configurations.",
+    "significance": "key"
   },
   {
     "id": "ann-1210-primesBelow",
     "proofId": "erdos-1210",
-    "range": { "start": 50, "end": 53 },
+    "range": { "startLine": 50, "endLine": 53 },
     "type": "definition",
     "title": "primesBelow n",
-    "body": "The candidate optimal set: all primes strictly less than n. For n = 10, this is {2, 3, 5, 7}. The conjecture says this set maximizes ∑ 1/(n-a) among all pairwise coprime subsets of {1,...,n-1}."
+    "content": "The candidate optimal set: all primes strictly less than n. For n = 10, this is {2, 3, 5, 7}. The conjecture says this set maximizes ∑ 1/(n-a) among all pairwise coprime subsets of {1,...,n-1}.",
+    "significance": "supporting"
   },
   {
     "id": "ann-1210-pairwiseCoprime",
     "proofId": "erdos-1210",
-    "range": { "start": 55, "end": 58 },
+    "range": { "startLine": 55, "endLine": 58 },
     "type": "definition",
     "title": "Pairwise Coprime",
-    "body": "A set A is pairwise coprime if every two distinct elements share no common factor greater than 1. Primes are the canonical example: any two distinct primes p, q are coprime since p's only divisors are 1 and p, and p ≠ q means p cannot divide q."
+    "content": "A set A is pairwise coprime if every two distinct elements share no common factor greater than 1. Primes are the canonical example: any two distinct primes p, q are coprime since p's only divisors are 1 and p, and p ≠ q means p cannot divide q.",
+    "significance": "supporting"
   },
   {
     "id": "ann-1210-primes-coprime",
     "proofId": "erdos-1210",
-    "range": { "start": 68, "end": 73 },
+    "range": { "startLine": 68, "endLine": 73 },
     "type": "lemma",
     "title": "Distinct Primes Are Coprime",
-    "body": "Key structural fact: if p ≠ q are both prime, then gcd(p,q) = 1. Proof: if d = gcd(p,q) then d | p, so d ∈ {1, p}. If d = p then p | q, so q = p (since q is prime and p > 1), contradicting p ≠ q. Hence d = 1."
+    "content": "Key structural fact: if p ≠ q are both prime, then gcd(p,q) = 1. Proof: if d = gcd(p,q) then d | p, so d ∈ {1, p}. If d = p then p | q, so q = p (since q is prime and p > 1), contradicting p ≠ q. Hence d = 1.",
+    "significance": "key"
   },
   {
     "id": "ann-1210-at-most-one-even",
     "proofId": "erdos-1210",
-    "range": { "start": 93, "end": 102 },
+    "range": { "startLine": 93, "endLine": 102 },
     "type": "insight",
     "title": "At Most One Even Element",
-    "body": "Any pairwise coprime set can contain at most one even number. If both a and b were even, then 2 | gcd(a,b), violating coprimality. This is why the number 1 (the only odd 'unit') can coexist with primes, but 4 and 6 cannot both appear in a pairwise coprime set."
+    "content": "Any pairwise coprime set can contain at most one even number. If both a and b were even, then 2 | gcd(a,b), violating coprimality. This is why the number 1 (the only odd 'unit') can coexist with primes, but 4 and 6 cannot both appear in a pairwise coprime set.",
+    "significance": "key"
   },
   {
     "id": "ann-1210-prime-sum-positive",
     "proofId": "erdos-1210",
-    "range": { "start": 118, "end": 130 },
+    "range": { "startLine": 118, "endLine": 130 },
     "type": "lemma",
     "title": "Prime Sum Is Positive",
-    "body": "For n ≥ 3, the prime 2 satisfies 2 < n, so 1/(n-2) > 0 appears in the prime sum. This confirms the bound is nontrivial. For n = 3: sum = 1/(3-2) = 1. For n = 10: sum = 1/8 + 1/7 + 1/5 + 1/3 ≈ 0.125 + 0.143 + 0.2 + 0.333 ≈ 0.801."
+    "content": "For n ≥ 3, the prime 2 satisfies 2 < n, so 1/(n-2) > 0 appears in the prime sum. This confirms the bound is nontrivial. For n = 3: sum = 1/(3-2) = 1. For n = 10: sum = 1/8 + 1/7 + 1/5 + 1/3 ≈ 0.125 + 0.143 + 0.2 + 0.333 ≈ 0.801.",
+    "significance": "supporting"
   },
   {
     "id": "ann-1210-main-axiom",
     "proofId": "erdos-1210",
-    "range": { "start": 134, "end": 142 },
-    "type": "axiom",
+    "range": { "startLine": 134, "endLine": 142 },
+    "type": "insight",
     "title": "The Open Conjecture",
-    "body": "The main statement is axiomatized: we cannot prove it from known Mathlib results. A proof would likely require deep analytic number theory — estimates on how prime gaps distribute near n, and how pairwise coprime sets can 'compete' with primes. The conjecture is open as of 2026."
+    "content": "The main statement is axiomatized: we cannot prove it from known Mathlib results. A proof would likely require deep analytic number theory — estimates on how prime gaps distribute near n, and how pairwise coprime sets can 'compete' with primes. The conjecture is open as of 2026.",
+    "significance": "critical"
   },
   {
     "id": "ann-1210-singleton-bound",
     "proofId": "erdos-1210",
-    "range": { "start": 163, "end": 178 },
-    "type": "corollary",
+    "range": { "startLine": 163, "endLine": 178 },
+    "type": "concept",
     "title": "Singleton Bounds",
-    "body": "Any singleton {k} ⊆ {1,...,n-1} (trivially pairwise coprime) satisfies 1/(n-k) ≤ prime sum. In particular, the element k = n-1 gives 1/1 = 1 ≤ prime sum only when the prime sum is large enough. For n = 3: prime sum = 1, and k = 2 gives 1/(3-2) = 1. So the bound is tight in this small case."
+    "content": "Any singleton {k} ⊆ {1,...,n-1} (trivially pairwise coprime) satisfies 1/(n-k) ≤ prime sum. In particular, the element k = n-1 gives 1/1 = 1 ≤ prime sum only when the prime sum is large enough. For n = 3: prime sum = 1, and k = 2 gives 1/(3-2) = 1. So the bound is tight in this small case.",
+    "significance": "supporting"
   }
 ]
