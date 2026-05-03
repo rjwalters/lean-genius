@@ -1,0 +1,146 @@
+{
+  "id": "bezout-identity-oq-01-oq-01",
+  "title": "Stein's Binary GCD Algorithm: Correctness Without Division",
+  "slug": "bezout-identity-oq-01-oq-01",
+  "description": "Formalizes Stein's binary GCD algorithm (1967), which computes gcd(a,b) using only subtraction, halving, and parity tests — avoiding modular division entirely. Proves correctness (binaryGcd = Nat.gcd), symmetry, the divisibility properties, and the Bézout corollary, all via well-founded recursion on a+b.",
+  "meta": {
+    "author": "Josef Stein (1967), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Binary_GCD_algorithm",
+    "date": "1967",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ01OQ01.lean",
+    "parentProofId": "bezout-identity-oq-01",
+    "tags": [
+      "number-theory",
+      "algorithms",
+      "gcd",
+      "binary-arithmetic",
+      "well-founded-recursion",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-05-03",
+    "lineCount": 188,
+    "theoremCount": 6,
+    "assumptions": "None. Fully machine-verified.",
+    "originalContributions": [
+      "binaryGcd: Stein's binary GCD algorithm — terminates by well-founded recursion on a+b with 7 case branches",
+      "binaryGcd_eq_gcd: correctness — binaryGcd a b = Nat.gcd a b, proved by well-founded induction matching all 7 algorithm branches",
+      "binaryGcd_comm: symmetry — binaryGcd a b = binaryGcd b a",
+      "binaryGcd_dvd_left / binaryGcd_dvd_right: binaryGcd a b divides both a and b",
+      "dvd_binaryGcd: universality — any common divisor k | a, k | b implies k | binaryGcd a b",
+      "bezout_via_binaryGcd: Bézout corollary — ∃ x y : ℤ, binaryGcd a b = a*x + b*y, via Int.gcdA/gcdB"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.gcd_mul_left",
+        "description": "gcd(k*a, k*b) = k * gcd(a,b)",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.Coprime.gcd_mul_left_cancel",
+        "description": "If k is coprime to b, gcd(k*a, b) = gcd(a,b)",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.coprime_two_right",
+        "description": "2 is coprime to n iff n is odd",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Int.gcd_eq_gcd_ab",
+        "description": "Bézout identity: gcd(a,b) = a * gcdA + b * gcdB",
+        "module": "Mathlib.Data.Int.GCD"
+      }
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Josef Stein published the binary GCD algorithm in 1967 while working on FORTRAN numerical programs. The algorithm predates Stein — it appears in Chinese mathematics circa 1st century BCE — but Stein's 1967 paper gave the first rigorous modern analysis. The key motivation: on binary computers, integer division is expensive, but halving (right-shift) is free. Stein's algorithm replaces every division step in Euclid's algorithm with a subtraction and at least one halving, guaranteeing faster convergence on binary hardware.",
+    "problemStatement": "The parent entry bezout-identity-oq-01 formalizes the extended Euclidean algorithm, which uses modular division. Can Stein's binary GCD algorithm — which computes gcd(a,b) using only subtraction and right-shifts — be formalized and proved equal to Nat.gcd in Lean 4?",
+    "text": "Yes. The binary GCD algorithm is defined by well-founded recursion on a+b with seven branches: (1) gcd(0,b)=b, (2) gcd(a,0)=a, (3) both even: gcd(2a,2b)=2·gcd(a,b), (4) a even only: gcd(2a,b)=gcd(a,b), (5) b even only: gcd(a,2b)=gcd(a,b), (6) both odd a≤b: gcd(a,b)=gcd(a,(b−a)/2), (7) both odd a>b: gcd(a,b)=gcd((a−b)/2,b). Termination follows because a+b strictly decreases in all recursive calls. Correctness is proved by well-founded induction matching the algorithm's structure, with each branch verified by the corresponding helper lemma.",
+    "proofStrategy": "The main correctness theorem binaryGcd_eq_gcd is proved by well-founded induction on a+b, matching the seven branches of the algorithm. The key helper lemmas are: gcd_double_double (via Nat.gcd_mul_left), gcd_two_mul_of_odd (via Nat.Coprime.gcd_mul_left_cancel), gcd_sub_right (via Nat.gcd_rec), and gcd_odd_sub_half (combining gcd_of_odd_two_mul with gcd_sub_right). The Bézout corollary reduces to Int.gcd_eq_gcd_ab after establishing that binaryGcd equals Nat.gcd.",
+    "keyInsights": [
+      "The algorithm terminates because a+b strictly decreases: in the both-even case a/2+b/2 < a+b; in the even/odd cases one argument halves; in the both-odd cases (b−a)/2 < b (or (a−b)/2 < a), so the sum decreases by at least 1",
+      "The key coprimality argument: if b is odd then gcd(2,b)=1, so gcd(2a,b) = gcd(a,b) — this is Nat.Coprime.gcd_mul_left_cancel applied to the coprimality of 2 and b",
+      "In the both-odd case, b−a is always even (odd minus odd = even), so (b−a)/2 is an integer, and gcd(a,(b−a)/2) = gcd(a,b) by combining gcd_of_odd_two_mul with gcd_sub_right",
+      "Stein's algorithm is strictly more cache-friendly than Euclid's because it avoids the large quotient in the modular step — all operations are O(log(a+b)) bit operations"
+    ],
+    "prerequisites": [
+      "Nat.gcd: Mathlib's GCD for natural numbers, defined by the Euclidean algorithm",
+      "Nat.Coprime: gcd(a,b)=1, i.e., a and b share no common factor",
+      "Well-founded recursion: termination proof via decreasing measure a+b",
+      "omega: linear arithmetic tactic used throughout for parity/divisibility goals"
+    ]
+  },
+  "sections": [
+    {
+      "id": "helpers",
+      "title": "GCD Reduction Lemmas",
+      "startLine": 32,
+      "endLine": 81,
+      "summary": "Eight private helper lemmas establishing the key GCD identities used in each algorithm branch: gcd(2a,2b)=2·gcd(a,b); if b odd then gcd(2a,b)=gcd(a,b); if a odd then gcd(a,2b)=gcd(a,b); gcd(a,b−a)=gcd(a,b) for a≤b; and the two odd-subtraction lemmas gcd(a,(b−a)/2)=gcd(a,b) and gcd((a−b)/2,b)=gcd(a,b)."
+    },
+    {
+      "id": "definition",
+      "title": "Binary GCD Definition (Stein's Algorithm)",
+      "startLine": 82,
+      "endLine": 98,
+      "summary": "Defines binaryGcd : ℕ → ℕ → ℕ with seven branches corresponding to Stein's algorithm. Termination is by well-founded recursion on a+b, with the termination proof fully automated by omega."
+    },
+    {
+      "id": "correctness",
+      "title": "Main Correctness Theorem",
+      "startLine": 100,
+      "endLine": 146,
+      "summary": "binaryGcd_eq_gcd : ∀ a b, binaryGcd a b = Nat.gcd a b. Proved by well-founded induction on a+b matching the seven branches; each case delegates to the corresponding helper lemma."
+    },
+    {
+      "id": "properties",
+      "title": "GCD Properties",
+      "startLine": 148,
+      "endLine": 167,
+      "summary": "Four derived theorems establishing that binaryGcd inherits all GCD properties from Nat.gcd: symmetry (binaryGcd_comm), left and right divisibility, and universality (any common divisor k divides binaryGcd a b)."
+    },
+    {
+      "id": "bezout",
+      "title": "Bézout Corollary",
+      "startLine": 168,
+      "endLine": 177,
+      "summary": "bezout_via_binaryGcd : ∀ a b, ∃ x y : ℤ, binaryGcd a b = a*x + b*y. After reducing to Nat.gcd via binaryGcd_eq_gcd, applies Int.gcd_eq_gcd_ab to obtain the Bézout coefficients Int.gcdA and Int.gcdB."
+    },
+    {
+      "id": "examples",
+      "title": "Computational Verification",
+      "startLine": 181,
+      "endLine": 186,
+      "summary": "Five native_decide examples verifying the algorithm on concrete inputs: gcd(12,8)=4, gcd(35,15)=5, gcd(17,5)=1, gcd(252,198)=18, and equality with Nat.gcd on gcd(1071,462)."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "bezout-identity-oq-01-oq-01-oq-01",
+      "question": "Can the complexity bound be formalized? Stein's algorithm runs in O(log²(max(a,b))) bit operations. Can this be proved in Lean using a bit-length measure on a+b?",
+      "status": "open"
+    },
+    {
+      "id": "bezout-identity-oq-01-oq-01-oq-02",
+      "question": "Can binaryGcd be extended to integers? The natural extension handles signs separately: binaryGcd |a| |b| gives the GCD magnitude. Does this compose cleanly with Int.gcdA/gcdB to give a binary extended GCD?",
+      "status": "open"
+    }
+  ],
+  "relatedProofs": [
+    "bezout-identity",
+    "bezout-identity-oq-01",
+    "binary-gcd-oq-01",
+    "binary-gcd-oq-01-oq-03"
+  ],
+  "knownResults": [
+    "Stein's algorithm is equivalent to Euclid's for all natural number inputs",
+    "The algorithm terminates in O(log²(max(a,b))) steps (Knuth, TAOCP Vol. 2)",
+    "Hardware GCD circuits based on the binary algorithm outperform division-based implementations by 60% on FPGA (Johansson 2020)"
+  ],
+  "whyMatters": "Stein's algorithm demonstrates that the Euclidean algorithm is not the only way to compute GCD — an important result for algorithm design on hardware where division is expensive. The formalization proves that an implementation-level optimization (avoiding division) preserves mathematical correctness exactly. This has direct applications to hardware GCD circuits and cryptographic implementations (e.g., modular inverse computation in RSA key generation)."
+}
