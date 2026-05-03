@@ -1,0 +1,110 @@
+{
+  "id": "chinese-remainder-constructive-oq-03-oq-03",
+  "title": "CRT RNS: Power-of-2 Channels for Hardware Arithmetic",
+  "slug": "chinese-remainder-constructive-oq-03-oq-03",
+  "description": "Proves that the RNS framework extends to include a power-of-2 modulus 2^k alongside pairwise coprime odd moduli: one power of 2 is always valid (coprime to all odd numbers), but exactly one can appear (two powers of 2 are never coprime). Includes the Pow2RNSBase structure, pairwise coprimality proofs, dynamic range formula, concrete examples ({4,3,5,7}, {8,3,5,7,11}, {16,3,5,7,11,13}), and hardware efficiency results.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ChineseRemainderConstructiveOQ03OQ03.lean",
+    "tags": [
+      "number-theory",
+      "modular-arithmetic",
+      "rns",
+      "power-of-2",
+      "hardware"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 203,
+    "assumptions": "None. All theorems fully proved. pow2_coprime_odd proved via Nat.Coprime.pow_left and Nat.coprime_two_right. pow2_not_coprime_pow2 proved via dvd_pow_self and Nat.dvd_gcd. All concrete examples verified by decide/norm_num.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 18
+  },
+  "overview": {
+    "historicalContext": "Residue Number Systems were introduced by Harvey Garner in 1959 for parallel computer arithmetic. The question of which moduli to use is critical for hardware efficiency. Power-of-2 moduli are attractive because x mod 2^k reduces to a bitwise AND operation (x &&& (2^k - 1)), requiring a single hardware instruction. However, the CRT foundation requires pairwise coprimality, which limits how many powers of 2 can appear in a base. This entry resolves the question by proving that exactly one power of 2 can appear alongside any collection of pairwise coprime odd moduli.",
+    "problemStatement": "Can the RNS framework be extended to handle bases with 2 as a modulus — where the standard CRT requires extra care — for hardware implementations that use power-of-2 channels? Specifically: (1) Is 2^k coprime to odd numbers? (2) Can two powers of 2 be coprime? (3) What is the dynamic range of a base {2^k, m₁, ..., mₙ} with odd pairwise-coprime mᵢ?",
+    "proofStrategy": "Three-part structure: (1) Prove the fundamental coprimality results: 2^k is coprime to any odd m (via Nat.Coprime.pow_left and Nat.coprime_two_right), and two positive powers of 2 are never coprime (via dvd_pow_self showing 2 divides both, hence divides their gcd > 1). (2) Define the Pow2RNSBase structure encapsulating the validity conditions and prove it embeds into the standard RNSBase via pairwise_coprime and moduli_ge_two. (3) Verify concrete examples by decide (coprimality) and norm_num (ranges), and prove the hardware efficiency formula via Nat.log_pow.",
+    "keyInsights": [
+      "The coprimality of 2^k with any odd m follows cleanly from the Mathlib chain Nat.Coprime.pow_left → Nat.coprime_two_right → Nat.odd_iff: the base case Nat.Coprime 2 m when m is odd lifts immediately to any power of 2.",
+      "The uniqueness constraint — exactly one power of 2 — follows from the divisibility argument: 2 ∣ 2^k for all k ≥ 1, so 2 ∣ gcd(2^k, 2^j) for any two positive powers, making their gcd ≥ 2 and breaking coprimality.",
+      "The Pow2RNSBase structure cleanly separates the two concerns: (a) the power-of-2 channel's coprimality with all odd channels (proved once via pow2_coprime_odd), and (b) the mutual coprimality of odd channels (assumed as a hypothesis). This mirrors the proof structure of the parent RNSBase.",
+      "Replacing the 2 channel with 4 = 2² doubles the dynamic range with no additional hardware cost for the power-of-2 reduction (both use a bitwise AND, just with a wider mask). More generally, {2^k, m₁,...,mₙ} achieves 2^(k-1) times the range of {2, m₁,...,mₙ} at identical hardware overhead per channel.",
+      "The hardware efficiency identity x mod 2^k = x &&& (2^k - 1) is a well-known bit trick; the logarithm theorem pow2_bit_length formalizes that 2^k requires exactly k+1 bits to represent, confirming the mask width."
+    ]
+  },
+  "sections": [
+    {
+      "id": "coprimality-basics",
+      "title": "Coprimality of Powers of 2 with Odd Numbers",
+      "startLine": 54,
+      "endLine": 79,
+      "summary": "Proves pow2_coprime_odd (2^k coprime to odd m), its symmetric form odd_coprime_pow2, and pow2_not_coprime_pow2 (two positive powers of 2 are not coprime). These are the core mathematical facts underlying the power-of-2 RNS constraint."
+    },
+    {
+      "id": "pow2-rns-structure",
+      "title": "The Pow2RNSBase Structure",
+      "startLine": 82,
+      "endLine": 133,
+      "summary": "Defines Pow2RNSBase (power exponent ≥ 1, odd moduli ≥ 3, pairwise coprime odd moduli). Proves pairwise_coprime (the full base is pairwise coprime), moduli_ge_two (all moduli ≥ 2), toRNSBase embedding, and dynamicRange_eq (dynamic range = 2^power × product of odd moduli)."
+    },
+    {
+      "id": "concrete-examples",
+      "title": "Concrete Power-of-2 RNS Bases",
+      "startLine": 136,
+      "endLine": 161,
+      "summary": "Verifies three concrete bases by decide and norm_num: {4,3,5,7} (range 420), {8,3,5,7,11} (range 9240), {16,3,5,7,11,13} (range 240240). Proves pow2_channel_doubles_range showing {4,3,5,7} achieves 2× the range of {2,3,5,7}."
+    },
+    {
+      "id": "uniqueness-constraint",
+      "title": "The Exactly-One-Power-of-2 Constraint",
+      "startLine": 164,
+      "endLine": 180,
+      "summary": "Proves invalidity of bases with two powers of 2: {2,4}, {4,8}, {2,4,3,5} all fail by decide. Proves the general principle exactly_one_pow2_allowed via pow2_not_coprime_pow2."
+    },
+    {
+      "id": "hardware-efficiency",
+      "title": "Hardware Efficiency Results",
+      "startLine": 183,
+      "endLine": 195,
+      "summary": "Proves pow2_bit_length (Nat.log 2 (2^k) = k, formalizing the bit-width), and pow2_efficiency_example showing {4,3,5,7} achieves twice the range of {2,3,5,7} with the same channel count."
+    }
+  ],
+  "conclusion": {
+    "summary": "YES — the RNS framework extends to include exactly one power-of-2 modulus 2^k alongside any pairwise coprime odd moduli. The key constraints are: (1) 2^k is coprime to every odd number, so one power of 2 fits naturally into any RNS base with odd moduli; (2) two powers of 2 are never coprime, so at most one power of 2 can appear. The Pow2RNSBase structure formalizes these conditions with a complete sorry-free Lean 4 proof.",
+    "implications": "Hardware RNS implementations can safely include a power-of-2 channel for efficient modular reduction via bitwise AND. The choice of k trades off dynamic range (larger k means more range) against channel width (k-bit AND mask). Using 4 instead of 2 as the power-of-2 channel doubles the dynamic range at no additional hardware cost for that channel.",
+    "openQuestions": [
+      "Can the framework be extended to mixed-radix representations where two power-of-2 channels appear at different levels of a hierarchical RNS structure?",
+      "What is the optimal choice of k in {2^k, m₁,...,mₙ} that maximizes dynamic range for a given total bit budget across all channels?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-constructive-oq-03",
+      "relationship": "extends",
+      "description": "Parent entry: the RNS base framework. This entry adds the power-of-2 channel extension, answering one of the open questions posed at the end of the parent entry."
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "foundational",
+      "description": "The constructive CRT proof providing the RNSBase structure and dynamicRange definition that this entry builds on."
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's identity underlies the coprimality conditions. Nat.Coprime (Nat.gcd a b = 1) is the Bézout condition."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 203,
+    "path": "Proofs/ChineseRemainderConstructiveOQ03OQ03.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 3,
+    "theoremCount": 18
+  },
+  "sorries": 0
+}
