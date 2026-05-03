@@ -299,10 +299,12 @@
       "result": "clean"
     },
     "angle-trisection-oq-02-oq-01-oq-02-incomplete-01": {
-      "auditCount": 1,
-      "issues": [],
-      "lastAudited": "2026-04-26T10:22:11Z",
-      "result": "clean"
+      "auditCount": 2,
+      "issues": [
+        "sorry count mismatch: claimed 3 actual 2; lineCount stale 383->438"
+      ],
+      "lastAudited": "2026-05-03T08:00:00Z",
+      "result": "issues-fixed"
     },
     "angle-trisection-oq-02-oq-02": {
       "auditCount": 2,
@@ -13877,6 +13879,62 @@
       "lastAudited": "2026-05-03T04:51:00Z",
       "result": "clean",
       "issues": []
+    },
+    "angle-trisection-oq-02-oq-03-ext": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-05-03T08:00:00Z",
+      "result": "clean"
+    },
+    "angle-trisection-oq-04-oq-03": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-05-03T08:00:00Z",
+      "result": "clean"
+    },
+    "angle-trisection-oq-04-oq-04": {
+      "auditCount": 1,
+      "issues": [
+        "missing top-level sorries field; lineCount stale 155->152"
+      ],
+      "lastAudited": "2026-05-03T08:00:00Z",
+      "result": "issues-fixed"
+    },
+    "binary-gcd-oq-03-oq-02": {
+      "auditCount": 1,
+      "issues": [
+        "missing top-level sorries field; lineCount stale 936->1020"
+      ],
+      "lastAudited": "2026-05-03T08:00:00Z",
+      "result": "issues-fixed"
+    },
+    "brouwer-fixed-point-oq-01-oq-02-oq-03": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-05-03T08:00:00Z",
+      "result": "clean"
+    },
+    "erdos-1054-oq-02": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-05-03T08:00:00Z",
+      "result": "clean"
+    },
+    "godel-first-incompleteness-oq01-oq-04": {
+      "auditCount": 1,
+      "issues": [
+        "missing top-level sorries field"
+      ],
+      "lastAudited": "2026-05-03T08:00:00Z",
+      "result": "issues-fixed"
+    },
+    "infinitude-primes-4k3-oq-03": {
+      "auditCount": 1,
+      "issues": [
+        "lineCount stale 100->103 in meta and leanFile blocks"
+      ],
+      "lastAudited": "2026-05-03T08:00:00Z",
+      "result": "issues-fixed"
     }
   },
   "erdos-1097-oq-01": {
