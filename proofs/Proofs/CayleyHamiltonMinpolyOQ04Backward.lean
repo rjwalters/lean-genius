@@ -296,23 +296,14 @@ theorem gcd_aeval_mulVec_eq_zero {M : Matrix (Fin n) (Fin n) K}
     (hp_ann : (aeval M p).mulVec v = 0) :
     (aeval M (EuclideanDomain.gcd p (minpoly K M))).mulVec v = 0 := by
   set μ := minpoly K M with hμ_set
-  set d := EuclideanDomain.gcd p μ with hd_def
-  have bezout := EuclideanDomain.gcd_eq_gcd_ab p μ
   have hμ_ann : (aeval M μ : Matrix (Fin n) (Fin n) K) = 0 := minpoly.aeval K M
-  calc (aeval M d).mulVec v
-      = (aeval M (EuclideanDomain.gcdA p μ * p +
-          EuclideanDomain.gcdB p μ * μ)).mulVec v := by
-        congr 2; rw [hd_def, bezout]; ring
-    _ = (aeval M (EuclideanDomain.gcdA p μ * p)).mulVec v +
-        (aeval M (EuclideanDomain.gcdB p μ * μ)).mulVec v := by
-        rw [map_add, Matrix.add_mulVec]
-    _ = (aeval M (EuclideanDomain.gcdA p μ) * aeval M p).mulVec v +
-        (aeval M (EuclideanDomain.gcdB p μ) * aeval M μ).mulVec v := by
-        rw [map_mul, map_mul]
-    _ = (aeval M (EuclideanDomain.gcdA p μ)).mulVec ((aeval M p).mulVec v) +
-        (aeval M (EuclideanDomain.gcdB p μ)).mulVec ((aeval M μ).mulVec v) := by
-        rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
-    _ = 0 := by simp [hp_ann, hμ_ann, Matrix.zero_mulVec, Matrix.mulVec_zero]
+  have hbez : EuclideanDomain.gcd p μ =
+      EuclideanDomain.gcdA p μ * p + EuclideanDomain.gcdB p μ * μ :=
+    (EuclideanDomain.gcd_eq_gcd_ab p μ).trans (by ring)
+  rw [hbez, map_add, Matrix.add_mulVec, map_mul, map_mul,
+      Matrix.mulVec_mulVec, Matrix.mulVec_mulVec,
+      hp_ann, hμ_ann, Matrix.zero_mulVec, Matrix.mulVec_zero,
+      Matrix.mulVec_zero, add_zero]
 
 -- ============================================================
 -- PART IV-C: Kernel Properness Helper
