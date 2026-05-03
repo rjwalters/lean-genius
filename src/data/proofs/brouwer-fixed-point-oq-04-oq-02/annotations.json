@@ -122,5 +122,73 @@
       "Finset.prod_univ_eq_prod_range",
       "Fin.prod_univ_succ"
     ]
+  },
+  {
+    "id": "ann-nash-simplex-and-continuity",
+    "proofId": "brouwer-fixed-point-oq-04-oq-02",
+    "range": { "startLine": 261, "endLine": 329 },
+    "type": "proof-technique",
+    "title": "Nash Map Preserves Simplex and Is Continuous",
+    "content": "Lines 261-329 verify the two pre-conditions for Brouwer's fixed point theorem.\n\n**nashMapComp_nonneg** (258-263): Each component of the Nash map is nonneg. Since σᵢ(k) ≥ 0 and nashExcess ≥ 0, the numerator is nonneg; denominator is positive.\n\n**nashMapComp_sum_one** (265-279): The components sum to 1. Key: ∑ₖ (σᵢ(k) + excess_ik) = nashDenom_i (proved by sum_add_distrib + (hσ i).2 which says ∑ σᵢ = 1, plus the definition of nashDenom). Then ∑ₖ (comp k) = ∑ₖ (numer k / denom) = (∑ numer k)/denom = denom/denom = 1.\n\n**nashMap_maps_simplex** (282-286): The Nash map sends ProductSimplex to itself. Uses nashMapComp_nonneg + nashMapComp_sum_one component-wise.\n\n**nashExcess_continuous** (292-316): The excess function excess_ik(σ) is continuous. Since excess = max(0, EU_i(eₖ, σ⁻ᵢ) - EU_i(σ)) and EU_i is continuous (polynomial in σ), the excess is a composition of continuous functions. The delicate case is j=i in the product (the pure strategy update is constant in σ for that index), handled by simp_rw [key].\n\n**nashMap_continuous** (318-329): The Nash map is continuous. By continuous_pi, enough to show each component is continuous — ratio of continuous functions with positive denominator.",
+    "mathContext": "For Brouwer FPT: the map must (1) map a compact convex set to itself, and (2) be continuous. Both are verified here. Continuity of nashExcess relies on the polynomial structure: $EU_i(e_k, \\sigma) = \\sum_{s_{-i}} u_i(k, s_{-i}) \\prod_{j \\neq i} \\sigma_j(s_j)$ is a polynomial in the components of $\\sigma$.",
+    "significance": "structural",
+    "relatedConcepts": [
+      "ProductSimplex",
+      "Nash map continuity",
+      "continuous_pi",
+      "Continuous.div",
+      "nashExcess"
+    ],
+    "prerequisites": [
+      "nashMapComp_nonneg",
+      "nashMapComp_sum_one",
+      "nashExcess_continuous",
+      "continuous_pi"
+    ]
+  },
+  {
+    "id": "ann-nash-fixed-point-proof",
+    "proofId": "brouwer-fixed-point-oq-04-oq-02",
+    "range": { "startLine": 330, "endLine": 435 },
+    "type": "proof-technique",
+    "title": "Part 7: Fixed Points Are Nash Equilibria (Full Proof)",
+    "content": "Lines 330-435 contain the formal proof of fixed_point_is_nash.\n\n**IsNashEq** (336-340): Definition — σ ∈ ProductSimplex G and no player can improve by switching to any pure strategy k.\n\n**fixed_point_is_nash** (353-435): At a fixed point σ* of the Nash map, every excess is zero, making σ* a Nash equilibrium. The proof proceeds by:\n1. Suppose the Nash map at σ* is σ*: φ(σ*)ᵢₖ = σ*ᵢ(k) for all i, k\n2. Cross multiply: σ*ᵢ(k) + excess_ik = σ*ᵢ(k) · nashDenom_i\n3. Rearrange: excess_ik = σ*ᵢ(k) · Cᵢ where Cᵢ = Σₗ excess_il\n4. By contradiction: if excess_ik > 0 for some k (meaning some deviation improves utility), then k-th pure strategy is strictly better than σ* for player i.\n5. Key inequality (lines 410-435): Using Finset.sum_lt_sum, show that EU_i(σ*) = Σₖ σ*ᵢ(k)·EU_i(eₖ,σ*) would be strictly less than itself — contradiction. The sum inequality uses: for each k with σ*ᵢ(k) > 0, σ*ᵢ(k)·EU_i(eₖ,σ*) > σ*ᵢ(k)·EU_i(σ*) (since excess > 0); and at least one k contributes positively.\n6. Conclude: excess_ik = 0 for all i,k, so EU_i(eₖ,σ*) ≤ EU_i(σ*) for all i,k.",
+    "mathContext": "At fixed point: $e_{ik} = \\sigma^*_i(k) \\cdot C_i$. The contradiction uses linearity: $EU_i(\\sigma^*) = \\sum_k \\sigma^*_i(k) EU_i(e_k, \\sigma^*_{-i})$. If $C_i > 0$, the sum is strictly greater than $\\sum_k \\sigma^*_i(k) EU_i(\\sigma^*) = EU_i(\\sigma^*)$ — contradiction via `Finset.sum_lt_sum`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fixed_point_is_nash",
+      "IsNashEq",
+      "Finset.sum_lt_sum",
+      "excess payoff",
+      "Nash equilibrium"
+    ],
+    "prerequisites": [
+      "nashMapComp_nonneg",
+      "nashDenom_pos",
+      "mixedUtility_linear"
+    ]
+  },
+  {
+    "id": "ann-nash-existence-closing",
+    "proofId": "brouwer-fixed-point-oq-04-oq-02",
+    "range": { "startLine": 436, "endLine": 519 },
+    "type": "summary",
+    "title": "Brouwer FPT on Product Simplex and Nash Existence Theorem",
+    "content": "Lines 436-519 apply Brouwer's fixed point theorem and assemble the Nash existence proof.\n\n**brouwer_product_simplex** (457-474): Brouwer FPT for the product simplex. Translates the problem into the form required by brouwer_pi_compact_convex (from BrouwerFixedPointOQ04.lean), providing:\n- Nonemptiness: mixed_strategy_nonempty (each player has ≥ 1 strategy)\n- Compactness: mixed_strategy_compact (simplex is closed+bounded)\n- Convexity: mixed_strategy_convex\nThe result: every continuous self-map of ProductSimplex has a fixed point.\n\n**nash_existence_multilinear** (494-500): The main theorem — every finite N-player game with multilinear expected utility has a Nash equilibrium. Four-step proof: (1) define Nash map φ; (2) φ maps simplex to simplex; (3) φ is continuous; (4) Brouwer gives fixed point σ*; (5) σ* is Nash by fixed_point_is_nash.\n\n**progress_summary** (513-515): Alias for nash_existence_multilinear — confirms the result.\n\n**Architecture note** (docstring 502-512): This approach needs only Brouwer (not Kakutani), avoids Berge's maximum theorem and UHC of best-response correspondences. One axiom remains (brouwer_pi_compact_convex from OQ04), vs. two axioms in the OQ01 approach.",
+    "mathContext": "Nash (1950): Every finite $N$-player game has a mixed-strategy Nash equilibrium. Proof via Brouwer: $\\phi: \\prod_i \\Delta_i \\to \\prod_i \\Delta_i$, $\\phi_i(\\sigma)_k = \\frac{\\sigma_i(k) + \\max(0, EU_i(e_k, \\sigma_{-i}) - EU_i(\\sigma))}{1 + \\sum_l \\max(0, EU_i(e_l, \\sigma_{-i}) - EU_i(\\sigma))}$. Fixed points are exactly Nash equilibria.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nash equilibrium existence",
+      "Brouwer FPT",
+      "brouwer_pi_compact_convex",
+      "mixed strategy",
+      "multilinear game"
+    ],
+    "prerequisites": [
+      "brouwer_pi_compact_convex",
+      "fixed_point_is_nash",
+      "nashMap_maps_simplex",
+      "nashMap_continuous"
+    ]
   }
 ]
