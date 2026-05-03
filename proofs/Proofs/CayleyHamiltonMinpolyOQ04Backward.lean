@@ -20,10 +20,7 @@
   - Roman, "Advanced Linear Algebra" §10.4
   - CayleyHamiltonMinpolyOQ04.lean (forward direction and definitions)
 -/
-import Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly
-import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
-import Mathlib.LinearAlgebra.LinearIndependent.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Nonderogatory.Backward
 
@@ -290,35 +287,46 @@ theorem linearIndependent_of_isCyclicVector
 /-- **GCD annihilation**: if p(M)v = 0, then gcd(p, minpoly)(M)v = 0.
     Follows from Bezout's identity: gcd = a*p + b*minpoly, and
     both p(M)v = 0 and minpoly(M) = 0. -/
-theorem gcd_aeval_mulVec_eq_zero [DecidableEq K[X]] {M : Matrix (Fin n) (Fin n) K}
+theorem gcd_aeval_mulVec_eq_zero {M : Matrix (Fin n) (Fin n) K}
     {p : K[X]} {v : Fin n → K}
     (hp_ann : (aeval M p).mulVec v = 0) :
     (aeval M (EuclideanDomain.gcd p (minpoly K M))).mulVec v = 0 := by
-  set μ := minpoly K M
-  set d := EuclideanDomain.gcd p μ
-  -- Bezout: d = p * gcdA + μ * gcdB
+  set μ := minpoly K M with hμ_set
+  set d := EuclideanDomain.gcd p μ with hd_def
   have bezout := EuclideanDomain.gcd_eq_gcd_ab p μ
-  -- Rewrite with commutativity: d = gcdA * p + gcdB * μ
-  have bezout' : d = EuclideanDomain.gcdA p μ * p + EuclideanDomain.gcdB p μ * μ := by
-    rw [bezout]; ring
-  -- μ(M) = 0
   have hμ_ann : (aeval M μ : Matrix (Fin n) (Fin n) K) = 0 := minpoly.aeval K M
-  -- Compute d(M)v using Bezout, commutativity, and mulVec_mulVec
   calc (aeval M d).mulVec v
       = (aeval M (EuclideanDomain.gcdA p μ * p +
-          EuclideanDomain.gcdB p μ * μ)).mulVec v := by rw [bezout']
-    _ = ((aeval M (EuclideanDomain.gcdA p μ * p)) +
-         (aeval M (EuclideanDomain.gcdB p μ * μ))).mulVec v := by rw [map_add]
+          EuclideanDomain.gcdB p μ * μ)).mulVec v := by
+        show (aeval M d).mulVec v = _
+        congr 1; congr 1; rw [show d = _ from bezout]; ring
     _ = (aeval M (EuclideanDomain.gcdA p μ * p)).mulVec v +
-        (aeval M (EuclideanDomain.gcdB p μ * μ)).mulVec v :=
-        Matrix.add_mulVec _ _ _
+        (aeval M (EuclideanDomain.gcdB p μ * μ)).mulVec v := by
+        rw [map_add, Matrix.add_mulVec]
     _ = (aeval M (EuclideanDomain.gcdA p μ) * aeval M p).mulVec v +
         (aeval M (EuclideanDomain.gcdB p μ) * aeval M μ).mulVec v := by
         rw [map_mul, map_mul]
     _ = (aeval M (EuclideanDomain.gcdA p μ)).mulVec ((aeval M p).mulVec v) +
         (aeval M (EuclideanDomain.gcdB p μ)).mulVec ((aeval M μ).mulVec v) := by
         rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
-    _ = 0 := by simp [hp_ann, hμ_ann, Matrix.zero_mulVec, Matrix.mulVec_zero]
+    _ = 0 := by rw [hp_ann, hμ_ann, Matrix.zero_mulVec, Matrix.mulVec_zero, add_zero]
+
+-- ============================================================
+-- PART IV-C: Kernel Properness Helper
+-- ============================================================
+
+/-- A nonzero matrix has a proper kernel (as a linear map). -/
+theorem ker_mulVecLin_ne_top
+    {A : Matrix (Fin n) (Fin n) K} (hA : A ≠ 0) :
+    LinearMap.ker A.mulVecLin ≠ ⊤ := by
+  intro h
+  apply hA
+  funext i j
+  have h2 : A.mulVecLin (Pi.single j 1) = 0 := by
+    rw [← LinearMap.mem_ker]; rw [h]; trivial
+  have := congr_fun h2 i
+  simp only [mulVecLin_apply, mulVec, dotProduct, Pi.single_apply] at this
+  simpa using this
 
 -- ============================================================
 -- PART V: Main Theorem
@@ -333,43 +341,102 @@ theorem gcd_aeval_mulVec_eq_zero [DecidableEq K[X]] {M : Matrix (Fin n) (Fin n) 
     d = gcd(p, μ) properly divides μ and d(M)v = 0 (Bezout). The quotient
     μ/d has an irreducible factor q, and d | (μ/q), so by commutativity
     (μ/q)(M)v = 0, contradicting the choice of v. -/
+open UniqueFactorizationMonoid in
 theorem nonderogatory_has_cyclic_vector_infinite [Infinite K]
     (M : Matrix (Fin n) (Fin n) K) (h : IsNonderogatory M) :
     ∃ v, IsCyclicVector M v := by
-  -- Base case: n = 0
   rcases Nat.eq_zero_or_pos n with rfl | hn
   · exact ⟨Fin.elim0, fun p hp _ => by omega⟩
-  -- Setup
   have h_deg : (minpoly K M).natDegree = n := by
     unfold IsNonderogatory at h; rw [h, charpoly_natDegree_eq_dim, Fintype.card_fin]
   set μ := minpoly K M with hμ_def
   have hμ_monic : μ.Monic := minpoly.monic (isIntegral M)
   have hμ_ne : μ ≠ 0 := hμ_monic.ne_zero
-  -- V = (Fin n → K) is nontrivial since n > 0
   haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
   haveI : Nontrivial (Fin n → K) := Function.nontrivial
-  -- ======================================
-  -- Phase 1: Construct finite set of proper subspaces via irreducible factors
-  -- ======================================
-  -- We need: normalizedFactors from UniqueFactorizationMonoid
-  -- API ISSUE: importing Mathlib.RingTheory.UniqueFactorizationDomain.Basic
-  -- breaks existing proofs in this file (changes DecidableEq instance resolution).
-  -- The proof architecture below is complete — the sorry encapsulates only
-  -- the interaction with the normalizedFactors API.
-  --
-  -- Mathematical proof:
-  -- 1. For each q ∈ normalizedFactors(μ), ker((μ/q)(M)) is a proper subspace
-  --    (since deg(μ/q) < n, so (μ/q)(M) ≠ 0 by aeval_ne_zero_of_ne_zero)
-  -- 2. Union avoidance (not_union_proper_subspaces) gives v outside all such kernels
-  -- 3. If p(M)v = 0 for nonzero p with deg(p) < n:
-  --    a. d = gcd(p,μ)(M)v = 0 (by gcd_aeval_mulVec_eq_zero)
-  --    b. d is a proper divisor of μ (deg(d) ≤ deg(p) < n)
-  --    c. μ/d has an irreducible factor q (since μ/d is not a unit)
-  --    d. d | (μ/q) by factorization: μ = d*(q*s), so μ/q = d*s
-  --    e. (μ/q)(M)v = s(M)(d(M)v) = 0 by commutativity
-  --    f. Contradiction: v ∈ ker((μ/q)(M)) but v was chosen outside all such kernels
-  -- 4. Therefore p = 0, so v is a cyclic vector
-  sorry
+  have hμ_not_unit : ¬IsUnit μ := by
+    intro hu; exact absurd (natDegree_eq_zero_of_isUnit hu) (by omega)
+  haveI : DecidableEq K[X] := Classical.propDecidable
+  set nf := (normalizedFactors μ).toFinset with nf_def
+  let S : K[X] → Submodule K (Fin n → K) := fun q =>
+    LinearMap.ker ((aeval M (μ / q) : Matrix (Fin n) (Fin n) K).mulVecLin)
+  have hS_proper : ∀ q ∈ nf, S q ≠ ⊤ := by
+    intro q hq
+    have hq_mem : q ∈ normalizedFactors μ := Multiset.mem_toFinset.mp hq
+    have hq_dvd : q ∣ μ := dvd_of_mem_normalizedFactors hq_mem
+    have hq_ne : q ≠ 0 := ne_zero_of_mem_normalizedFactors hq_mem
+    have hq_irr : Irreducible q := (prime_of_normalized_factor q hq_mem).irreducible
+    obtain ⟨cf, hcf_eq⟩ := hq_dvd
+    have hcf_ne : cf ≠ 0 := right_ne_zero_of_mul (hcf_eq ▸ hμ_ne)
+    have hdeg_sum : μ.natDegree = q.natDegree + cf.natDegree :=
+      hcf_eq ▸ natDegree_mul hq_ne hcf_ne
+    have hq_deg_pos : 0 < q.natDegree := by
+      rcases Nat.eq_zero_or_pos q.natDegree with h0 | hpos
+      · exfalso; apply hq_irr.1
+        have h_coeff_ne : q.coeff 0 ≠ 0 := by
+          intro h_eq; exact hq_ne
+            (by rw [Polynomial.eq_C_of_natDegree_eq_zero h0, h_eq, map_zero])
+        exact Polynomial.eq_C_of_natDegree_eq_zero h0 ▸
+          isUnit_C.mpr (IsUnit.mk0 _ h_coeff_ne)
+      · exact hpos
+    have hcf_deg : cf.natDegree < n := by omega
+    have hdiv_eq : μ / q = cf := by
+      have hmod : μ % q = 0 := EuclideanDomain.mod_eq_zero.mpr ⟨cf, hcf_eq⟩
+      have h1 := EuclideanDomain.div_add_mod μ q
+      rw [hmod, add_zero] at h1
+      exact mul_left_cancel₀ hq_ne (h1.trans hcf_eq)
+    have heval_ne : (aeval M cf : Matrix (Fin n) (Fin n) K) ≠ 0 :=
+      aeval_ne_zero_of_ne_zero hcf_ne (by rw [h_deg]; exact hcf_deg)
+    show S q ≠ ⊤
+    change LinearMap.ker ((aeval M (μ / q) : Matrix (Fin n) (Fin n) K).mulVecLin) ≠ ⊤
+    rw [hdiv_eq]
+    exact ker_mulVecLin_ne_top heval_ne
+  obtain ⟨v, hv⟩ := not_union_proper_subspaces nf S hS_proper
+  refine ⟨v, fun p hp hann => ?_⟩
+  by_contra hp_ne
+  set d := EuclideanDomain.gcd p μ with hd_def
+  have hd_ann : (aeval M d).mulVec v = 0 := gcd_aeval_mulVec_eq_zero hann
+  have hd_dvd_μ : d ∣ μ := EuclideanDomain.gcd_dvd_right p μ
+  have hd_dvd_p : d ∣ p := EuclideanDomain.gcd_dvd_left p μ
+  have hd_ne : d ≠ 0 := by
+    intro h0; rw [h0] at hd_dvd_μ; exact hμ_ne (eq_zero_of_zero_dvd hd_dvd_μ)
+  have hd_deg : d.natDegree < n :=
+    lt_of_le_of_lt (Polynomial.natDegree_le_of_dvd hd_dvd_p hp_ne) hp
+  obtain ⟨s, hs_eq⟩ := hd_dvd_μ
+  have hs_ne : s ≠ 0 := right_ne_zero_of_mul (hs_eq ▸ hμ_ne)
+  have hs_deg_pos : 0 < s.natDegree := by
+    have := (hs_eq ▸ natDegree_mul hd_ne hs_ne : μ.natDegree = d.natDegree + s.natDegree)
+    omega
+  have hs_not_unit : ¬IsUnit s := by
+    intro hu; exact absurd (natDegree_eq_zero_of_isUnit hu) (by omega)
+  obtain ⟨q₀, hq₀_mem_s⟩ := exists_mem_normalizedFactors hs_ne hs_not_unit
+  have hq₀_irr : Irreducible q₀ := (prime_of_normalized_factor q₀ hq₀_mem_s).irreducible
+  have hq₀_dvd_s : q₀ ∣ s := dvd_of_mem_normalizedFactors hq₀_mem_s
+  have hq₀_dvd_μ : q₀ ∣ μ := dvd_trans hq₀_dvd_s ⟨d, by rw [hs_eq]; ring⟩
+  obtain ⟨q', hq'_mem, hq'_assoc⟩ :=
+    exists_mem_normalizedFactors_of_dvd hμ_ne hq₀_irr hq₀_dvd_μ
+  have hq'_in_nf : q' ∈ nf := Multiset.mem_toFinset.mpr hq'_mem
+  have hq'_dvd_q₀ : q' ∣ q₀ := hq'_assoc.symm.dvd
+  have hq'_dvd_s : q' ∣ s := dvd_trans hq'_dvd_q₀ hq₀_dvd_s
+  have hv_in : v ∈ S q' := by
+    change v ∈ LinearMap.ker ((aeval M (μ / q') : Matrix (Fin n) (Fin n) K).mulVecLin)
+    rw [LinearMap.mem_ker, mulVecLin_apply]
+    obtain ⟨t, ht_eq⟩ := hq'_dvd_s
+    have hq'_ne : q' ≠ 0 := ne_zero_of_mem_normalizedFactors hq'_mem
+    have hμ_eq : μ = q' * (d * t) := by rw [hs_eq, ht_eq]; ring
+    have hdiv_eq : μ / q' = d * t := by
+      have hmod : μ % q' = 0 := EuclideanDomain.mod_eq_zero.mpr ⟨d * t, hμ_eq⟩
+      have h1 := EuclideanDomain.div_add_mod μ q'
+      rw [hmod, add_zero] at h1
+      exact mul_left_cancel₀ hq'_ne (h1.trans hμ_eq)
+    rw [hdiv_eq]
+    calc (aeval M (d * t) : Matrix (Fin n) (Fin n) K).mulVec v
+        = (aeval M (t * d) : Matrix (Fin n) (Fin n) K).mulVec v := by rw [mul_comm]
+      _ = (aeval M t * aeval M d).mulVec v := by rw [map_mul]
+      _ = (aeval M t).mulVec ((aeval M d).mulVec v) :=
+          (Matrix.mulVec_mulVec _ _ _).symm
+      _ = 0 := by rw [hd_ann, Matrix.mulVec_zero]
+  exact absurd hv_in (hv q' hq'_in_nf)
 
 -- ============================================================
 -- PART VI: Single Eigenvalue Case (Nilpotent)
