@@ -3,6 +3,7 @@ import Mathlib.FieldTheory.Minpoly.Field
 import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
 import Mathlib.GroupTheory.SpecificGroups.Cyclic
 import Mathlib.Tactic
+import Mathlib.RingTheory.Polynomial.Eisenstein.Basic
 
 /-
 # Wantzel-Galois Constructibility from Mathlib Galois Theory
@@ -122,9 +123,34 @@ theorem not_constructible_of_bad_degree {p : ℚ[X]} (hp : Irreducible p)
 -- PART 4: Specific Non-Constructibility Results
 -- ============================================================
 
+/-- x³ - 2 is irreducible over ℤ (Eisenstein at p=2). -/
+private theorem cube_root_2_irred_int :
+    Irreducible (X ^ 3 - C (2 : ℤ) : ℤ[X]) := by
+  apply Polynomial.irreducible_of_eisenstein_criterion (P := Ideal.span {(2 : ℤ)})
+  · rw [Ideal.span_singleton_prime (show (2 : ℤ) ≠ 0 from by norm_num)]
+    exact Int.prime_iff_natAbs_prime.mpr (by norm_num)
+  · rw [leadingCoeff_X_pow_sub_C (show (0 : ℕ) < 3 from by norm_num),
+        Ideal.mem_span_singleton]
+    norm_num
+  · intro k hk
+    rw [degree_X_pow_sub_C (show (0 : ℕ) < 3 from by norm_num) (2 : ℤ)] at hk
+    have hk3 : k < 3 := WithBot.coe_lt_coe.mp hk
+    interval_cases k <;> simp [Ideal.mem_span_singleton, coeff_sub, coeff_X_pow]
+  · rw [degree_X_pow_sub_C (show (0 : ℕ) < 3 from by norm_num) (2 : ℤ)]; norm_cast
+  · rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton]
+    simp only [coeff_sub, coeff_X_pow, coeff_C, show ¬(0 = 3) from by norm_num,
+               ite_false, zero_sub, dvd_neg]
+    norm_num
+  · exact (monic_X_pow_sub_C (2 : ℤ) (show 3 ≠ 0 from by norm_num)).isPrimitive
+
 /-- x³ - 2 is irreducible over ℚ. This is the minimal polynomial of ∛2. -/
 theorem cube_root_2_minpoly_irred : Irreducible (X ^ 3 - C 2 : ℚ[X]) := by
-  sorry -- Standard: Eisenstein at p=2 or rational root theorem
+  have hprim : (X ^ 3 - C (2 : ℤ) : ℤ[X]).IsPrimitive :=
+    (monic_X_pow_sub_C (2 : ℤ) (show 3 ≠ 0 from by norm_num)).isPrimitive
+  have hirr := (IsPrimitive.Int.irreducible_iff_irreducible_map_cast hprim).mp
+    cube_root_2_irred_int
+  rwa [show Polynomial.map (Int.castRingHom ℚ) (X ^ 3 - C (2 : ℤ)) = X ^ 3 - C (2 : ℚ) from
+    by simp [Polynomial.map_sub, Polynomial.map_pow, Polynomial.map_X, map_ofNat]] at hirr
 
 /-- The degree of x³ - 2 is 3, which is NOT a power of 2. -/
 theorem cube_root_2_degree : (X ^ 3 - C 2 : ℚ[X]).natDegree = 3 := by
@@ -141,7 +167,8 @@ theorem three_not_pow_two : ¬ DegreePowerOfTwo (X ^ 3 - C 2 : ℚ[X]) := by
     of cos(20°) (up to scaling). It arises from the triple angle formula:
     cos(3θ) = 4cos³(θ) - 3cos(θ), with θ = 20°, cos(60°) = 1/2. -/
 theorem cos20_minpoly_degree : (8 * X ^ 3 - 6 * X - 1 : ℚ[X]).natDegree = 3 := by
-  sorry -- Degree computation
+  norm_num [natDegree_sub_eq_left_of_natDegree_lt, natDegree_mul, natDegree_pow,
+    natDegree_X, natDegree_C, natDegree_one]
 
 theorem cos20_degree_not_pow_two :
     ¬ DegreePowerOfTwo (8 * X ^ 3 - 6 * X - 1 : ℚ[X]) := by
@@ -174,7 +201,11 @@ theorem doubling_cube_impossible_degree :
 theorem regular_7gon_impossible_degree :
     ¬ DegreePowerOfTwo (8 * X ^ 3 + 4 * X ^ 2 - 4 * X - 1 : ℚ[X]) := by
   intro ⟨k, hk⟩
-  sorry -- degree = 3, same argument as above
+  have hdeg : (8 * X ^ 3 + 4 * X ^ 2 - 4 * X - 1 : ℚ[X]).natDegree = 3 := by
+    norm_num [natDegree_sub_eq_left_of_natDegree_lt, natDegree_add_eq_left_of_natDegree_lt,
+      natDegree_mul, natDegree_pow, natDegree_X, natDegree_C, natDegree_one]
+  rw [hdeg] at hk
+  interval_cases k <;> simp_all
 
 -- ============================================================
 -- PART 6: Galois Characterization (Sufficient Condition)
@@ -212,13 +243,13 @@ theorem wantzel_galois_iff {p : ℚ[X]} (hp : Irreducible p) (α : ℂ)
 4. cos20_degree_not_pow_two: cos(20°)'s degree is not a power of 2
 5. angle_trisection_impossible_degree: trisection is impossible
 6. doubling_cube_impossible_degree: cube doubling is impossible
+7. cube_root_2_minpoly_irred: x³-2 irreducible over ℚ (Eisenstein at p=2)
+8. cos20_minpoly_degree: deg(8x³-6x-1) = 3
+9. regular_7gon_impossible_degree: regular 7-gon impossible (degree 3 ≠ 2^k)
 
-### Sorries (5):
-- not_constructible_of_bad_degree: needs tower → degree argument
-- cube_root_2_minpoly_irred: Eisenstein criterion
-- cos20_minpoly_degree: degree computation
-- regular_7gon_impossible_degree: degree computation
-- wantzel_galois_iff: full Galois characterization
+### Sorries (2):
+- not_constructible_of_bad_degree: needs tower → degree argument (FTGT)
+- wantzel_galois_iff: full Galois characterization (deep result)
 
 ### Key Contribution
 Provides the Wantzel degree framework in Lean 4 and proves the concrete
