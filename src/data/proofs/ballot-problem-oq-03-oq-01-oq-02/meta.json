@@ -127,6 +127,7 @@
     {
       "id": "sec-hook-infra",
       "title": "Part I: Hook Length Infrastructure",
+      "file": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "startLine": 38,
       "endLine": 80,
       "summary": "Defines armLen, legLen, hookLength. Proves hookLength_pos (always > 0) and hookLength_add_eq (avoids ℕ subtraction).",
@@ -135,6 +136,7 @@
     {
       "id": "sec-hook-prod",
       "title": "Part II: Hook Product",
+      "file": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "startLine": 85,
       "endLine": 105,
       "summary": "Defines hookProd as ∏ over μ.cells. Proves hookProd_pos and hookProd_empty = 1.",
@@ -143,6 +145,7 @@
     {
       "id": "sec-syt",
       "title": "Part III: Standard Young Tableaux",
+      "file": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "startLine": 110,
       "endLine": 140,
       "summary": "Defines StandardYoungTableau structure with entry function, entry_zero, entry_range, entry_injOn, row_strict, col_strict.",
@@ -151,6 +154,7 @@
     {
       "id": "sec-lgv-config",
       "title": "Part IV: LGV Configuration",
+      "file": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "startLine": 145,
       "endLine": 175,
       "summary": "Defines youngLGVConfig with sources(k)=k, targets(k)=σ(k)+k for weakly increasing σ. Proves wellFormed under σ(0) ≥ r-1.",
@@ -159,6 +163,7 @@
     {
       "id": "sec-main-theorem",
       "title": "Parts V-VI: Main Theorems",
+      "file": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "startLine": 180,
       "endLine": 210,
       "summary": "hook_length_formula_2row_rect (proved via OQ03OQ03), hook_length_formula (sorry), ni_count_eq_syt_count (sorry), lgv_det_factors_as_hook_quotient (sorry), card_SYT_twoRectYD (sorry — SYT count for 2-row rect = C_m).",
@@ -167,6 +172,7 @@
     {
       "id": "sec-numerical",
       "title": "Part VI: Numerical Verification",
+      "file": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "startLine": 215,
       "endLine": 240,
       "summary": "Proves hook-length formula for 8 specific shapes via norm_num.",
