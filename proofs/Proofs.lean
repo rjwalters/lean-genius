@@ -66,6 +66,7 @@ import Proofs.AngleTrisectionOQ02OQ04
 import Proofs.AngleTrisectionOQ02OQ04OQ01
 import Proofs.AngleTrisectionOQ02OQ04OQ01Aristotle
 import Proofs.AngleTrisectionOQ03
+import Proofs.AngleTrisectionOQ03OQ01
 import Proofs.AngleTrisectionOQ04
 import Proofs.AngleTrisectionOQ04OQ03
 import Proofs.AngleTrisectionOQ05
