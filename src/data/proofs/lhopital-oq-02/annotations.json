@@ -214,5 +214,55 @@
       "L'Hôpital 0/0 form",
       "Cauchy's Mean Value Theorem"
     ]
+  },
+  {
+    "id": "ann-lhop-atbot-body",
+    "proofId": "lhopital-oq-02",
+    "range": {
+      "startLine": 358,
+      "endLine": 378
+    },
+    "type": "proof-technique",
+    "title": "atBot Proof: Reduction to atTop via Negation",
+    "content": "lhopital_infty_atBot (lines 358-377) is the atBot variant: given g(x) → +∞ as x → -∞ and f'(x)/g'(x) → c as x → -∞, conclude f(x)/g(x) → c.\n\nThe proof uses the substitution u = -x, which swaps atBot and atTop and negates the functions. Key steps:\n1. Compose f, g with Neg.neg to get (f ∘ (-·)) and (g ∘ (-·)) on Ioi(-a)\n2. Compute derivatives: HasDerivAt.comp with hasDerivAt_neg gives derivative f'(-x)·(-1)\n3. The negation telescopes in the ratio: (-f')/(-g') = f'/g', so hdiv.comp tendsto_neg_atTop_atBot preserves the limit\n4. Apply lhopital_infty_atTop to the composed functions, then compose result with tendsto_neg_atBot_atTop\n5. Use simpa [neg_neg] to cancel double negation\n\nThis reduction pattern avoids a separate epsilon-delta argument: all the hard work is in lhopital_infty_right and lhopital_infty_atTop.",
+    "mathContext": "Substitution $u = -x$: maps $(-\\infty, a) \\leftrightarrow (-a, \\infty)$, $\\text{atBot} \\leftrightarrow \\text{atTop}$. Derivative chain rule: $(f \\circ \\text{neg})'(x) = f'(-x) \\cdot (-1)$. Ratio: $\\frac{f'(-x) \\cdot (-1)}{g'(-x) \\cdot (-1)} = \\frac{f'(-x)}{g'(-x)}$, so the ratio limit is preserved. The `neg_div_neg_eq` simp lemma handles this cancellation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "atBot filter",
+      "negation substitution",
+      "filter composition",
+      "tendsto_neg_atBot_atTop"
+    ],
+    "prerequisites": [
+      "lhopital_infty_atTop",
+      "hasDerivAt_neg",
+      "Filter.Tendsto.comp"
+    ]
+  },
+  {
+    "id": "ann-lhop-summary-close",
+    "proofId": "lhopital-oq-02",
+    "range": {
+      "startLine": 379,
+      "endLine": 428
+    },
+    "type": "summary",
+    "title": "Example Applications, Proof Architecture, and Closing",
+    "content": "Lines 379-428 serve as the file's mathematical documentation:\n\n**Part III (379-397): Classic Examples**\n• x/eˣ → 0 as x → ∞: both diverge, lhopital_infty_atTop gives lim 1/eˣ = 0\n• ln(x)/cot(x) → 0 as x → 0⁺: ln(x) → -∞, cot(x) → +∞; derivative ratio (1/x)/(-csc²x) = -sin²(x)/x → 0\n\nNote: these are stated as Lean comments (/-...-/), not formal theorems. They illustrate the theorem's scope.\n\n**Part IV (399-421): Why ∞/∞ Needs a Separate Proof**\nExtended explanation of the 0/0 vs ∞/∞ gap: the 0/0 case uses MVT on [a,x] with f(a)=g(a)=0 directly giving f/g = f'(ξ)/g'(ξ). For ∞/∞, a is not in the domain (f,g diverge there), so an anchor x₀ > a must be used. The algebraic identity f/g = [(f-f(x₀))/(g-g(x₀))]·[1-g(x₀)/g] + f(x₀)/g decomposes the ratio into an MVT term and correction terms that vanish as g → ∞.\n\n**Closing (423-428): #check Summary**\nFour #check commands confirm the final export: lhopital_infty_right, lhopital_infty_left, lhopital_infty_atTop, lhopital_infty_atBot. All four are present in namespace LHopitalInfty, verified (0 sorries, 0 axioms).",
+    "mathContext": "For $\\infty/\\infty$: the anchor identity is $\\frac{f(x)}{g(x)} = \\frac{f(x)-f(x_0)}{g(x)-g(x_0)} \\cdot \\left(1 - \\frac{g(x_0)}{g(x)}\\right) + \\frac{f(x_0)}{g(x)}$. As $g(x) \\to \\infty$, terms $g(x_0)/g(x) \\to 0$ and $f(x_0)/g(x) \\to 0$, leaving $f/g \\to f'(\\xi)/g'(\\xi) \\to c$ via the MVT ratio.",
+    "significance": "contextual",
+    "relatedConcepts": [
+      "L'Hôpital examples",
+      "x/eˣ limit",
+      "0/0 vs ∞/∞ comparison",
+      "proof architecture",
+      "Lean namespace export"
+    ],
+    "prerequisites": [
+      "lhopital_infty_right",
+      "lhopital_infty_left",
+      "lhopital_infty_atTop",
+      "lhopital_infty_atBot"
+    ]
   }
 ]
