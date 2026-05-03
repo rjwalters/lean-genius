@@ -137,71 +137,113 @@ theorem ENNReal.div_eq_div_of_mul_eq {a b c d : ℕ} {k : ℕ} (hk : 0 < k)
     This is the missing step that completes the Multi-Candidate Ballot Theorem
     (replacing the axiom `uniformOn_fiber_transfer` in BallotProblemOQ01OQ02.lean).
 
-    **Strategy**: Since all fibers have equal ncard k (from `fiber_card_uniform`),
-    and the multiCountedSequence decomposes as a disjoint union of fibers,
-    both numerator and denominator of the uniformOn fraction are k times the
-    corresponding values for countedSequence, so the k cancels.
+    **Strategy**: Proven via fiber-counting assembly. All fibers over CS
+    have equal ncard k (fiber_card_uniform via fiberSwap). The disjoint union
+    decompositions give ncard(MCS) = k·ncard(CS) and ncard(MCS∩MSP) = k·ncard(CS∩SP),
+    so the ratio k cancels.
 
-    **Status**: The combinatorial core (fiber_card_uniform, partition, disjointness)
-    is proved. The remaining steps require ENNReal arithmetic and ncard
-    additivity for disjoint unions, which depend on specific Mathlib API
-    navigation. The 2 sorries below are for:
-    1. ncard additivity for the disjoint fiber union (Mathlib API)
-    2. The main ENNReal ratio cancellation step -/
+    `ProbabilityTheory.uniformOn` unfolds (via `simp only [ProbabilityTheory.uniformOn]`)
+    to `↑(S ∩ P).ncard / ↑S.ncard` in ENNReal, consistent with condCount.
+    ENNReal.div_eq_div_iff reduces the equality to cross-multiplication in ℕ. -/
 theorem uniformOn_fiber_transfer' (m : ℕ) (hm : 2 ≤ m) (a b : ℕ)
     (hab : b < a) :
     ProbabilityTheory.uniformOn (multiCountedSequence m (by omega) a b)
       (multiStaysPositive m (by omega)) =
     ProbabilityTheory.uniformOn (Ballot.countedSequence a b)
       Ballot.staysPositive := by
-  -- The proof follows from fiber_card_uniform: all fibers have equal ncard.
-  -- Pick any target t0 ∈ countedSequence a b as a reference.
-  -- Let k = ncard(fiber(t0)).
-  -- Then:
-  --   ncard(multiCountedSequence) = k * ncard(countedSequence a b)
-  --   ncard(multiCountedSequence ∩ multiStaysPositive)
-  --     = k * ncard(countedSequence a b ∩ staysPositive)
-  -- And uniformOn S P = ncard(S ∩ P) / ncard(S), so the k cancels.
-  --
-  -- The key facts are:
-  -- 1. multiCountedSequence = ⋃ fibers (multiCountedSequence_eq_biUnion)
-  -- 2. Fibers are disjoint (multiProjectionFiber_pairwise_disjoint)
-  -- 3. All fibers have equal ncard (fiber_card_uniform)
-  -- 4. multiStaysPositive pulls back through projection (multi_stays_iff_projected)
-  --
-  -- The 2 sorry steps below are the ncard/ENNReal translation,
-  -- pending Mathlib API for ncard_biUnion and ENNReal division.
-  sorry
+  set hm1 : m ≥ 1 := by omega
+  -- Finiteness (inline the private proofs from parent)
+  have hMCS_fin : (multiCountedSequence m hm1 a b).Finite :=
+    Set.Finite.subset (Set.finite_range (List.ofFn : (Fin (a + b) → Fin m) → _))
+      fun s ⟨_, hlen⟩ => ⟨fun i => s.get ⟨i.val, by omega⟩,
+        List.ext_get (by simp [hlen]) (fun i _ _ => by simp)⟩
+  have hCS_fin := Ballot.countedSequence_finite a b
+  -- Nonemptiness
+  have hCS_ne := Ballot.countedSequence_nonempty a b
+  have hMCS_ne : (multiCountedSequence m hm1 a b).Nonempty := by
+    refine ⟨List.replicate a (leader m hm1) ++ List.replicate b ⟨1, by omega⟩, ?_, ?_⟩
+    · simp only [List.count_append, List.count_replicate, leader]
+      have hne : (⟨0, by omega⟩ : Fin m) ≠ ⟨1, by omega⟩ := by
+        intro h; exact absurd (Fin.val_eq_of_eq h) (by omega)
+      simp [hne]
+    · simp
+  -- Positive ncard
+  have hMCS_pos : 0 < (multiCountedSequence m hm1 a b).ncard :=
+    Set.ncard_pos hMCS_fin ⟨_, hMCS_ne.choose_spec⟩
+  have hCS_pos : 0 < (Ballot.countedSequence a b).ncard :=
+    Set.ncard_pos hCS_fin ⟨_, hCS_ne.choose_spec⟩
+  -- Reference target and fiber witness
+  obtain ⟨t0, ht0⟩ := hCS_ne
+  obtain ⟨s0, hs0⟩ := hMCS_ne
+  have ht1 : project (leader m hm1) s0 ∈ Ballot.countedSequence a b :=
+    project_multi_to_counted hm1 hs0
+  -- All fibers have equal ncard (fiber_card_uniform)
+  have hk_uniform : ∀ t ∈ Ballot.countedSequence a b,
+      (multiProjectionFiber m hm1 a b t).ncard =
+      (multiProjectionFiber m hm1 a b t0).ncard := fun t ht =>
+    fiber_card_uniform m hm a b t t0 ht ht0
+  -- Fiber over t0 is nonempty (since fiber over project(s0) is nonempty)
+  set k := (multiProjectionFiber m hm1 a b t0).ncard with hk_def
+  have hk_pos : 0 < k := by
+    rw [hk_def, ← fiber_card_uniform m hm a b t0 (project (leader m hm1) s0) ht0 ht1]
+    exact Set.ncard_pos (multiProjectionFiber_finite m hm1 a b _)
+      ⟨s0, hs0, rfl⟩
+  -- ncard(MCS) = k * ncard(CS)
+  have hMCS_ncard : (multiCountedSequence m hm1 a b).ncard =
+      k * (Ballot.countedSequence a b).ncard := by
+    rw [multiCountedSequence_eq_biUnion hm1 a b]
+    exact ncard_biUnion_eq_of_uniform
+      (multiProjectionFiber m hm1 a b) (Ballot.countedSequence a b) hCS_fin
+      (fun t _ => multiProjectionFiber_finite m hm1 a b t)
+      (multiProjectionFiber_pairwise_disjoint hm1 a b)
+      k hk_uniform
+  -- ncard(MCS ∩ MSP) = k * ncard(CS ∩ SP)
+  have hMCS_pos_ncard :
+      (multiCountedSequence m hm1 a b ∩ multiStaysPositive m hm1).ncard =
+      k * (Ballot.countedSequence a b ∩ Ballot.staysPositive).ncard := by
+    rw [multiStaysPositive_eq_biUnion hm1 a b]
+    exact ncard_biUnion_eq_of_uniform
+      (multiProjectionFiber m hm1 a b)
+      (Ballot.countedSequence a b ∩ Ballot.staysPositive)
+      (hCS_fin.subset Set.inter_subset_left)
+      (fun t _ => multiProjectionFiber_finite m hm1 a b t)
+      (fun t1 ht1 t2 ht2 hne =>
+        multiProjectionFiber_pairwise_disjoint hm1 a b t1 ht1.1 t2 ht2.1 hne)
+      k (fun t ht => hk_uniform t ht.1)
+  -- Assemble via ENNReal ratio: simp [uniformOn] gives ncard ratio,
+  -- div_eq_div_iff reduces to cross-multiplication, fiber counting closes it.
+  simp only [ProbabilityTheory.uniformOn]
+  rw [ENNReal.div_eq_div_iff
+    (by exact_mod_cast hMCS_pos.ne' :
+      (↑(multiCountedSequence m hm1 a b).ncard : ENNReal) ≠ 0)
+    (ENNReal.natCast_ne_top _)
+    (by exact_mod_cast hCS_pos.ne' :
+      (↑(Ballot.countedSequence a b).ncard : ENNReal) ≠ 0)
+    (ENNReal.natCast_ne_top _)]
+  exact_mod_cast (show
+      (multiCountedSequence m hm1 a b ∩ multiStaysPositive m hm1).ncard *
+        (Ballot.countedSequence a b).ncard =
+      (Ballot.countedSequence a b ∩ Ballot.staysPositive).ncard *
+        (multiCountedSequence m hm1 a b).ncard by
+    rw [hMCS_pos_ncard, hMCS_ncard]; ring)
 
 /-! ## Summary
 
-**Proved (0 axioms):**
-1. `multiCountedSequence_eq_biUnion`: The multi-candidate counted sequences
-   decompose as a disjoint union of fibers over ±1 targets.
-2. `multiProjectionFiber_pairwise_disjoint`: Fibers over distinct targets
-   are disjoint sets.
-3. `multiStaysPositive_eq_biUnion`: The "stays positive" intersection
-   decomposes as the union of fibers over positive targets.
-4. `ENNReal.div_eq_div_of_mul_eq`: If both numerator and denominator
-   are k× the respective values (k > 0), the ratio is preserved.
+**Proved (0 axioms, 0 sorries):**
+1. `multiCountedSequence_eq_biUnion`: MCS decomposes as disjoint union of fibers over CS.
+2. `multiProjectionFiber_pairwise_disjoint`: Fibers over distinct targets are disjoint.
+3. `multiStaysPositive_eq_biUnion`: (MCS ∩ MSP) decomposes as union of fibers over (CS ∩ SP).
+4. `ENNReal.div_eq_div_of_mul_eq`: Ratio preserved under uniform k-scaling.
+5. `ncard_biUnion_eq_of_uniform`: ncard of uniform-fiber disjoint union = k × count.
+6. `uniformOn_fiber_transfer'`: Uniform fibers preserve uniformOn probability.
 
-**Infrastructure gap (sorry count: 2):**
-- `ncard_biUnion_eq_of_uniform`: ncard of a uniform-fiber disjoint union
-  equals k × number_of_fibers. Requires `Set.ncard_biUnion` from Mathlib.
-- `uniformOn_fiber_transfer'`: The final assembly connecting ncard
-  computation to ENNReal division in `uniformOn`. Requires knowing the
-  exact definition of `ProbabilityTheory.uniformOn` (likely `condCount`).
+**Key insight for OQ-02**: `ProbabilityTheory.uniformOn S P` unfolds via
+`simp only [ProbabilityTheory.uniformOn]` to `↑(S ∩ P).ncard / ↑S.ncard` in ENNReal,
+consistent with its `condCount`-based definition. This enables direct ncard-based
+reasoning about conditional probabilities on finite uniform distributions.
 
-**Key insight**: The mathematical content is complete. The `fiber_card_uniform`
-theorem (proved in the parent file via the fiberSwap bijection) provides the
-combinatorial core. The remaining work is translating between Set.ncard
-(natural numbers) and ENNReal (extended non-negative reals) via Mathlib's
-measure-theoretic API.
-
-**To eliminate the axiom**: Once the 2 sorry steps are completed (requiring
-Mathlib API access to verify), replace `axiom uniformOn_fiber_transfer` in
-BallotProblemOQ01OQ02.lean with `theorem uniformOn_fiber_transfer := ...`
-using `uniformOn_fiber_transfer'` from this file.
--/
+**Proof strategy**: Fiber counting (ncard biUnion decomposition + ENNReal cross-mult)
+provides a modular alternative to the bijection-based proof in the parent file.
+Both proofs give 0 axioms. -/
 
 end BallotFiberTransfer
