@@ -285,8 +285,8 @@ private lemma rischOp_iter_ne_zero (g : Polynomial ℝ) (hg : g ≠ 0) :
   | succ n ih =>
     simp only [Function.iterate_succ_apply']
     intro heq
-    have hdeg := risch_ode_raises_degree (rischOp^[n] g) ih
-    unfold rischOp at heq
+    have hdeg : (rischOp^[n] g).natDegree < (rischOp (rischOp^[n] g)).natDegree :=
+      risch_ode_raises_degree (rischOp^[n] g) ih
     rw [heq, Polynomial.natDegree_zero] at hdeg
     exact Nat.not_lt_zero _ hdeg
 
@@ -372,7 +372,7 @@ theorem gaussian_not_elementary :
     have := hiter x
     rw [hzero, Polynomial.eval_zero] at this
     exact (mul_eq_zero.mp this.symm).resolve_right (Real.exp_pos _).ne'
-  exact hne (Polynomial.funext (fun x => (hall x).trans (Polynomial.eval_zero x).symm))
+  exact hne (Polynomial.funext fun x => by simp [hall x])
 
 
 /-! ══════════════════════════════════════════════════════════════════
