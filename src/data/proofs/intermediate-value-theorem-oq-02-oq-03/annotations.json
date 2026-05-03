@@ -1,0 +1,161 @@
+[
+  {
+    "id": "ann-param-bisect-defs",
+    "proofId": "intermediate-value-theorem-oq-02-oq-03",
+    "range": {
+      "startLine": 57,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Computable Parameterized Bisection Definitions",
+    "content": "Three computable definitions encode the oracle-parameterized bisection algorithm. paramBisectStep takes a pair (left, right) and a Bool choice c: if c=true it takes the right half [mid, right]; if c=false it takes the left half [left, mid]. paramBisect iterates this n times using an oracle sequence choices : ℕ → Bool. paramBisectMid extracts the midpoint. Crucially, all three are regular def (not noncomputable) — the oracle supplies branch decisions instead of computing 'if f(mid) ≤ 0'.",
+    "mathContext": "$\\text{paramBisect}(\\text{choices}, 0, p) = p$\n$\\text{paramBisect}(\\text{choices}, n+1, p) = \\text{paramBisectStep}(\\text{paramBisect}(\\text{choices}, n, p),\\, \\text{choices}(n))$",
+    "significance": "key",
+    "relatedConcepts": [
+      "bisection algorithm",
+      "oracle computation",
+      "computable vs noncomputable",
+      "constructive mathematics"
+    ],
+    "prerequisites": [
+      "Bool type in Lean 4",
+      "structural recursion",
+      "ℝ × ℝ pairs"
+    ]
+  },
+  {
+    "id": "ann-width-formula",
+    "proofId": "intermediate-value-theorem-oq-02-oq-03",
+    "range": {
+      "startLine": 76,
+      "endLine": 89
+    },
+    "type": "theorem",
+    "title": "Width Formula: (b-a)/2^n — No Classical Logic",
+    "content": "paramBisect_width proves that after n bisection steps with any choice sequence, the interval width equals exactly (b-a)/2^n. The proof uses induction: the base case is immediate; the inductive step rewrites via paramBisectStep_width (which holds by cases on Bool) and then uses ring. No Classical.em or Classical.choice appears — Bool case analysis is fully computable.",
+    "mathContext": "$(\\text{paramBisect}(\\text{choices}, n, (a,b)).2 - \\text{paramBisect}(\\text{choices}, n, (a,b)).1) = \\frac{b-a}{2^n}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "geometric series",
+      "halving algorithm",
+      "Bool case analysis"
+    ],
+    "prerequisites": [
+      "induction on ℕ",
+      "ring arithmetic in ℝ"
+    ]
+  },
+  {
+    "id": "ann-sign-consistency",
+    "proofId": "intermediate-value-theorem-oq-02-oq-03",
+    "range": {
+      "startLine": 157,
+      "endLine": 183
+    },
+    "type": "definition",
+    "title": "SignConsistent Oracle and Sign Invariant",
+    "content": "SignConsistent f choices p n asserts that the oracle choices correctly records f's sign at each midpoint: choices(k) = true iff f(mid_k) ≤ 0. This is a HYPOTHESIS about the oracle — it is never proved constructively (decidability of real comparisons is not available in general). Given SignConsistent, paramBisect_sign proves the sign invariant: f(left_n) ≤ 0 ≤ f(right_n) holds for all n. The proof is by induction, case-splitting on the Bool choice and using the consistency hypothesis directly — no classical reasoning required.",
+    "mathContext": "$\\text{SignConsistent}(f, \\text{choices}, p, n) \\equiv \\forall k < n,\\ \\text{choices}(k) = \\text{true} \\iff f(\\text{mid}_k) \\leq 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "decidability",
+      "oracle hypothesis",
+      "sign invariant",
+      "Bishop-style constructive analysis"
+    ],
+    "prerequisites": [
+      "IVT sign invariant",
+      "induction with case analysis"
+    ]
+  },
+  {
+    "id": "ann-width-tendsto-zero",
+    "proofId": "intermediate-value-theorem-oq-02-oq-03",
+    "range": {
+      "startLine": 190,
+      "endLine": 199
+    },
+    "type": "theorem",
+    "title": "Width Converges to Zero",
+    "content": "paramBisect_width_tendsto_zero proves that the interval widths tend to 0 as n → ∞ for any choice sequence. The proof rewrites width as (b-a)·(1/2)^n pointwise (avoiding a simp loop between div/inv), then applies tendsto_pow_atTop_nhds_zero_of_lt_one since |1/2| < 1. This step requires no classical axioms beyond those implicit in ℝ's topology.",
+    "mathContext": "$\\lim_{n \\to \\infty} \\left(\\text{width at step } n\\right) = \\lim_{n \\to \\infty} \\frac{b-a}{2^n} = 0$",
+    "significance": "high",
+    "relatedConcepts": [
+      "geometric sequence convergence",
+      "tendsto",
+      "nhds filter"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto in Mathlib",
+      "tendsto_pow_atTop_nhds_zero_of_lt_one"
+    ]
+  },
+  {
+    "id": "ann-endpoint-convergence",
+    "proofId": "intermediate-value-theorem-oq-02-oq-03",
+    "range": {
+      "startLine": 209,
+      "endLine": 241
+    },
+    "type": "theorem",
+    "title": "Endpoint Convergence — Classical Boundary",
+    "content": "paramBisect_endpoints_converge proves that the left and right endpoints converge to a common limit. This is where Classical.choice enters: Mathlib's tendsto_atTop_ciSup and tendsto_atTop_ciInf use completeness of ℝ (the supremum/infimum of a bounded monotone/antitone sequence). The proof constructs xl = ⊔ left_n and xr = ⊓ right_n, proves they tend to their respective limits, then shows xl = xr using the width-to-zero fact. This is the first classically non-constructive step.",
+    "mathContext": "$x_L = \\sup_n l_n,\\ x_R = \\inf_n r_n,\\ \\text{and } x_R - x_L = \\lim_{n}(r_n - l_n) = 0 \\Rightarrow x_L = x_R$",
+    "significance": "key",
+    "relatedConcepts": [
+      "least upper bound property",
+      "completeness of ℝ",
+      "Classical.choice",
+      "ciSup/ciInf"
+    ],
+    "prerequisites": [
+      "tendsto_atTop_ciSup in Mathlib",
+      "Monotone/Antitone sequences"
+    ]
+  },
+  {
+    "id": "ann-root-theorem",
+    "proofId": "intermediate-value-theorem-oq-02-oq-03",
+    "range": {
+      "startLine": 248,
+      "endLine": 269
+    },
+    "type": "theorem",
+    "title": "Root Theorem: Limit is a Root",
+    "content": "bisection_limit_is_root proves that if f is continuous, the choices are sign-consistent, and x is the left-endpoint limit, then f(x) = 0. The proof uses le_of_tendsto and ge_of_tendsto: since f(left_n) ≤ 0 for all n and left_n → x continuously, we get f(x) ≤ 0; similarly f(x) ≥ 0 from the right endpoints. Hence f(x) = 0.",
+    "mathContext": "$f(l_n) \\leq 0 \\leq f(r_n) \\text{ and } l_n, r_n \\to x \\Rightarrow f(x) \\leq 0 \\text{ and } f(x) \\geq 0 \\Rightarrow f(x) = 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "continuity in Lean 4",
+      "le_of_tendsto",
+      "squeeze theorem",
+      "IVT"
+    ],
+    "prerequisites": [
+      "Continuous.tendsto",
+      "Filter.Tendsto composition"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "intermediate-value-theorem-oq-02-oq-03",
+    "range": {
+      "startLine": 286,
+      "endLine": 306
+    },
+    "type": "theorem",
+    "title": "Main Theorem: Constructive vs Classical Boundary",
+    "content": "constructive_vs_classical_ivt assembles all results into a single conjunction that precisely characterizes where classical logic enters bisection-based IVT proofs. Three parts are constructive (no Classical.em or Classical.choice): the exact width formula, sign invariant preservation under an oracle, and width-to-zero. One part is classical: endpoint convergence (requires Classical.choice via completeness). The proof term is a direct application of the component theorems.",
+    "mathContext": "Parts (1)–(3): provable in Bishop-style constructive mathematics. Part (4): requires the law of excluded middle for real comparisons (or Classical.choice via completeness).",
+    "significance": "key",
+    "relatedConcepts": [
+      "constructive mathematics",
+      "Bishop-style analysis",
+      "classical logic boundary",
+      "LEM"
+    ],
+    "prerequisites": [
+      "all prior theorems in this file"
+    ]
+  }
+]

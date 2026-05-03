@@ -46,38 +46,42 @@
         "status": "open"
       }
     ],
-    "proofStrategy": "Separates the bisection algorithm into a computable part (structural theorems, proved without Classical.em) and a classical part (which branch to take, requires Classical.em). Proves the constructive core by induction using explicit Bool choice sequence. Classical convergence uses tendsto_atTop_ciSup and tendsto_atTop_ciInf from Mathlib.",
-    "sections": [
-      {
-        "title": "Computable Parameterized Bisection",
-        "description": "Defines paramBisect as a regular (computable) def that takes choices: ℕ → Bool instead of computing the branch decision from f."
-      },
-      {
-        "title": "Width Bounds (Constructive)",
-        "description": "Proves the exact width formula (b-a)/2^n by induction, without classical logic."
-      },
-      {
-        "title": "Ordering and Containment (Constructive)",
-        "description": "Proves left≤right, left-nondecreasing, right-nonincreasing, containment in [a,b], and interval nesting — all without classical logic."
-      },
-      {
-        "title": "Sign Preservation (Constructive)",
-        "description": "Proves the sign invariant f(left_n)≤0≤f(right_n) holds when the choice sequence is sign-consistent — no classical logic."
-      },
-      {
-        "title": "Width Convergence",
-        "description": "Proves width→0 using tendsto_const_nhds and tendsto_pow_atTop_nhds_zero_of_lt_one."
-      },
-      {
-        "title": "Endpoint Convergence (Classical)",
-        "description": "Proves endpoints converge to a common limit using tendsto_atTop_ciSup and tendsto_atTop_ciInf — requires Classical.choice via completeness."
-      },
-      {
-        "title": "Root Theorem (Classical)",
-        "description": "Proves the limit is a root of f when f is continuous and choices are sign-consistent — uses le_of_tendsto and ge_of_tendsto."
-      }
-    ]
+    "proofStrategy": "Separates the bisection algorithm into a computable part (structural theorems, proved without Classical.em) and a classical part (which branch to take, requires Classical.em). Proves the constructive core by induction using explicit Bool choice sequence. Classical convergence uses tendsto_atTop_ciSup and tendsto_atTop_ciInf from Mathlib."
   },
+  "sections": [
+    {
+      "title": "Computable Parameterized Bisection",
+      "description": "Defines paramBisect as a regular (computable) def that takes choices: ℕ → Bool instead of computing the branch decision from f."
+    },
+    {
+      "title": "Width Bounds (Constructive)",
+      "description": "Proves the exact width formula (b-a)/2^n by induction, without classical logic."
+    },
+    {
+      "title": "Ordering and Containment (Constructive)",
+      "description": "Proves left≤right, left-nondecreasing, right-nonincreasing, containment in [a,b], and interval nesting — all without classical logic."
+    },
+    {
+      "title": "Sign Preservation (Constructive)",
+      "description": "Proves the sign invariant f(left_n)≤0≤f(right_n) holds when the choice sequence is sign-consistent — no classical logic."
+    },
+    {
+      "title": "Width Convergence",
+      "description": "Proves width→0 using tendsto_const_nhds and tendsto_pow_atTop_nhds_zero_of_lt_one."
+    },
+    {
+      "title": "Endpoint Convergence (Classical)",
+      "description": "Proves endpoints converge to a common limit using tendsto_atTop_ciSup and tendsto_atTop_ciInf — requires Classical.choice via completeness."
+    },
+    {
+      "title": "Root Theorem (Classical)",
+      "description": "Proves the limit is a root of f when f is continuous and choices are sign-consistent — uses le_of_tendsto and ge_of_tendsto."
+    },
+    {
+      "title": "Main Summary Theorem",
+      "description": "Assembles all results into constructive_vs_classical_ivt, a single theorem that precisely states which parts of bisection-based IVT are constructive and which require Classical.choice."
+    }
+  ],
   "leanFile": {
     "path": "Proofs/IntermediateValueTheoremOQ02OQ03.lean",
     "theoremCount": 14,
