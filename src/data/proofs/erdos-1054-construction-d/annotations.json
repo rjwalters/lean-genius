@@ -1,1 +1,123 @@
-[]
+[
+  {
+    "id": "ann-cd-overview",
+    "proofId": "erdos-1054-construction-d",
+    "range": {
+      "startLine": 1,
+      "endLine": 39
+    },
+    "type": "context",
+    "title": "Construction D: Prime Squares in Erdős #1054",
+    "content": "**Construction D** exploits the simplest non-trivial prime power: $m = p^2$ for any prime $p$. Since $p^2$ has exactly 3 divisors ($\\{1, p, p^2\\}$), its partial divisor sums are $[1,\\; 1+p,\\; 1+p+p^2]$ — fully explicit and easy to enumerate.\n\nThis gives two representability results simultaneously: $p+1$ is representable (second partial sum) and $1+p+p^2$ is representable (third partial sum), both with the same witness $m = p^2$.\n\nThe **Mersenne bonus**: for $p=2$, Construction D gives $7 = 1+2+4$ (Mersenne number $M_3 = 2^3-1$). More generally, $m = 2^k$ has divisors $\\{1,2,4,\\ldots,2^k\\}$, so all Mersenne numbers $2^{k+1}-1$ are representable with witnesses $2^k$. The ratio $f(2^{k+1}-1)/(2^{k+1}-1) \\leq 2^k/(2^{k+1}-1) \\to 1/2$ as $k \\to \\infty$.\n\nThis file also implicitly proves that every prime $p$ satisfies $f(p+1) \\leq p^2$ via `one_plus_p_via_sq`, complementing OQ-01's bound $f(p+1) \\leq p$.",
+    "mathContext": "The key identity: $1 + p + p^2 = \\frac{p^3-1}{p-1}$ (geometric series). For all $k \\geq 1$: $1+p+p^2+\\cdots+p^k = \\frac{p^{k+1}-1}{p-1}$ is representable with witness $p^k$ (divisors $\\{1,p,\\ldots,p^k\\}$, last partial sum = geometric sum). For $p=2$: these are the Mersenne numbers $M_{k+1} = 2^{k+1}-1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős #1054",
+      "prime powers",
+      "geometric series",
+      "Mersenne numbers",
+      "partial divisor sums"
+    ],
+    "prerequisites": [
+      "Erdős #1054 base definitions (IsRepresentable)",
+      "prime number theory",
+      "Mersenne numbers background"
+    ]
+  },
+  {
+    "id": "ann-cd-divisors",
+    "proofId": "erdos-1054-construction-d",
+    "range": {
+      "startLine": 41,
+      "endLine": 75
+    },
+    "type": "technique",
+    "title": "Divisors of p²: Case Analysis by Primality",
+    "content": "**`divisors_of_prime_sq`** proves that any divisor $d \\mid p^2$ is in $\\{1, p, p^2\\}$ by the same case analysis used in OQ-02 for $qp$:\n\n- If $p \\mid d$: write $d = pe$, then $e \\mid p$ (since $pe \\mid p^2$ iff $e \\mid p$). Primality gives $e \\in \\{1, p\\}$, so $d \\in \\{p, p^2\\}$.\n- If $p \\nmid d$: $\\gcd(d,p) = 1$ (since $p$ is prime), so $d \\mid p$, giving $d \\in \\{1, p\\}$. But $d = p$ would require $p \\mid d$, contradiction; so $d = 1$.\n\n**`divisors_prime_sq`** lifts this to the Finset equality $(p^2).\\text{divisors} = \\{1, p, p^2\\}$ using `ext` and the classification.\n\nThis is simpler than the two-prime case (OQ-02) because both factors are the same prime $p$, so the coprimality case always forces $d \\in \\{1, p\\}$ or $d \\in \\{p, p^2\\}$ with no mixed cases.",
+    "mathContext": "$p^2$ has exactly $\\tau(p^2) = 2+1 = 3$ divisors (by the formula $\\tau(p^k) = k+1$ for prime $p$). The three divisors $1 < p < p^2$ are distinct since $p \\geq 2$, confirming $|\\text{divisors}(p^2)| = 3$ as a Finset.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "fundamental theorem of arithmetic",
+      "τ(n) divisor count formula",
+      "prime power divisors",
+      "Nat.Coprime"
+    ],
+    "prerequisites": [
+      "Nat.Prime.coprime_iff_not_dvd",
+      "Nat.Prime.eq_one_or_self_of_dvd",
+      "Nat.mul_dvd_mul_iff"
+    ]
+  },
+  {
+    "id": "ann-cd-sorted-partial",
+    "proofId": "erdos-1054-construction-d",
+    "range": {
+      "startLine": 77,
+      "endLine": 133
+    },
+    "type": "technique",
+    "title": "Sorted Divisors and Partial Sums of p²",
+    "content": "**`sortedDivisors_prime_sq`** (lines 84–120): proves the sorted divisor list is $[1, p, p^2]$. The proof requires showing:\n1. The Finset sort of $\\{1, p, p^2\\}$ has no duplicates (it's a Finset)\n2. The target list $[1, p, p^2]$ has no duplicates ($1 < p < p^2$)\n3. They have the same membership (both contain $\\{1, p, p^2\\}$)\n4. Both are pairwise-sorted by $\\leq$\n\nThis uses `List.perm_ext_iff_of_nodup` to reduce to membership equivalence, then `List.Perm.eq_of_pairwise` to conclude sorted lists with the same elements are equal. This is more subtle than it looks — Lean's Finset.sort doesn't directly expose list equality.\n\n**`partialDivisorSums_prime_sq`** (lines 129–133): once sorted divisors are known to be $[1, p, p^2]$, the `simp [List.scanl, List.tail]` reduces the computation to $[1, 1+p, 1+p+p^2]$ by evaluation.",
+    "mathContext": "$\\text{sortedDivisors}(p^2) = [1, p, p^2]$ because $1 < p < p^2$ for any prime $p \\geq 2$. The partial sums: $\\sum_{i=1}^{1} = 1$, $\\sum_{i=1}^{2} = 1+p$, $\\sum_{i=1}^{3} = 1+p+p^2$. These are the only partial sums since $\\tau(p^2) = 3$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.sort",
+      "List.Perm",
+      "List.scanl",
+      "sorted list equality"
+    ],
+    "prerequisites": [
+      "Lean 4 List.perm_ext_iff_of_nodup",
+      "Finset.sort_nodup",
+      "Finset.pairwise_sort"
+    ]
+  },
+  {
+    "id": "ann-cd-main-theorem",
+    "proofId": "erdos-1054-construction-d",
+    "range": {
+      "startLine": 135,
+      "endLine": 174
+    },
+    "type": "insight",
+    "title": "Construction D: prime_sq_sum_representable and f-Bounds",
+    "content": "Three theorems completing Construction D:\n\n**`prime_sq_sum_representable`** (lines 146–151): For any prime $p$, $1+p+p^2$ is representable. The proof provides the explicit witness $m = p^2$, verifies $m \\geq 1$ (from primality), and checks membership via `partialDivisorSums_prime_sq`.\n\n**`one_plus_p_via_sq`** (lines 156–161): $1+p$ is also representable via $p^2$ (second partial sum). This is an alternative to OQ-01's proof which uses $m = p$ directly — here the same witness $p^2$ covers both representable values $1+p$ and $1+p+p^2$.\n\n**`f_bound_prime_sq`** (lines 170–174): $f(1+p+p^2) \\leq p^2$. This is the key f-bound: the witness for $n = 1+p+p^2$ is at most $p^2 \\approx (n-1)$ since $n \\approx p^2$ for large $p$. So $f(n)/n \\leq p^2/(1+p+p^2) = (p-1)/(p+1/p) \\to 1$ as $p \\to \\infty$.",
+    "mathContext": "For $n = 1+p+p^2$: witness $m = p^2$, so $f(n) \\leq p^2$. Since $n = 1+p+p^2 > p^2$, we have $f(n)/n \\leq p^2/n = p^2/(1+p+p^2) < 1$. As $p \\to \\infty$: $p^2/(1+p+p^2) \\to 1$ from below. For $p=2$: $f(7) \\leq 4$, ratio $4/7 \\approx 0.57$. For $p=13$: $f(183) \\leq 169$, ratio $169/183 \\approx 0.92$. This family has $f(n)/n \\to 1$, contributing to Tao's result $\\limsup f(n)/n = 1$ (the Construction D family approaches the supremum).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős #1054 f-bounds",
+      "one_plus_p_via_sq (alternative witness)",
+      "Tao's limsup result",
+      "OQ-01 (prime + 1 representability)"
+    ],
+    "prerequisites": [
+      "partialDivisorSums_prime_sq (proved above)",
+      "IsRepresentable definition",
+      "Lean 4 existential introduction"
+    ]
+  },
+  {
+    "id": "ann-cd-mersenne",
+    "proofId": "erdos-1054-construction-d",
+    "range": {
+      "startLine": 193,
+      "endLine": 248
+    },
+    "type": "insight",
+    "title": "Mersenne Numbers: Powers of 2 as Witnesses",
+    "content": "**Parts 7–8** verify that Mersenne numbers $2^{k+1}-1 = 1+2+4+\\cdots+2^k$ are representable with witness $2^k$.\n\nFor $m = 2^k$: divisors are $\\{1, 2, 4, \\ldots, 2^k\\}$ (exactly $k+1$ divisors), all powers of 2. The sorted order is already $[1,2,4,\\ldots,2^k]$, and the last partial sum is $1+2+4+\\cdots+2^k = 2^{k+1}-1$. So $f(2^{k+1}-1) \\leq 2^k$.\n\nThe file verifies: $M_1=1$, $M_2=3$, $M_3=7$, $M_4=15$, $M_5=31$, $M_6=63$, $M_7=127$, $M_8=255$, $M_9=511$ (all by `native_decide`).\n\n**f(n)/n ratio**: $f(2^{k+1}-1) \\leq 2^k$, so $f(n)/n \\leq 2^k/(2^{k+1}-1) \\to 1/2$. This gives the infinite family with $\\liminf_{\\text{Mersenne}} f(n)/n = 1/2$, showing the ratio can be persistently small (but not $o(n)$ for this construction).",
+    "mathContext": "$2^{k+1} - 1 = \\sum_{i=0}^{k} 2^i$ (binary $\\underbrace{11\\cdots1}_{k+1}$). The partial divisor sum: $m = 2^k$ has divisors $1, 2, 4, \\ldots, 2^k$ (since $\\tau(2^k) = k+1$), summing to $2^{k+1}-1$. Ratio: $\\frac{f(2^{k+1}-1)}{2^{k+1}-1} \\leq \\frac{2^k}{2^{k+1}-1} = \\frac{1}{2-2^{-k}} \\to \\frac{1}{2}$. So $f(n)/n$ can be made as close to $1/2$ as desired, but not below (on this family).",
+    "significance": "context",
+    "relatedConcepts": [
+      "Mersenne numbers",
+      "powers of 2 divisors",
+      "geometric series",
+      "Mersenne primes (conjectured infinite family)"
+    ],
+    "prerequisites": [
+      "prime powers and divisor counts",
+      "binary representation",
+      "geometric series formula"
+    ]
+  }
+]
