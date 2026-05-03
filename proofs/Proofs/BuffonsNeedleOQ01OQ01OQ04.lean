@@ -98,6 +98,37 @@ theorem sphereArea_three : sphereArea 3 = 2 * π ^ 2 := by
   rw [rpow_natCast]
   ring
 
+/-- σ_4 = 8π²/3 (surface area of S^4 ⊂ ℝ^5).
+    Proof: 2π^{5/2}/Γ(5/2) = 2π^{5/2}/((3/4)√π) = 8π²/3. -/
+theorem sphereArea_four : sphereArea 4 = 8 * π ^ 2 / 3 := by
+  unfold sphereArea
+  simp only [Nat.cast_ofNat]
+  rw [show (4 + 1 : ℝ) / 2 = 5 / 2 from by ring]
+  have h52 : Gamma (5 / 2 : ℝ) = 3 / 4 * √π := by
+    have h32 := Gamma_add_one (show (3 / 2 : ℝ) ≠ 0 from by norm_num)
+    rw [show (3 : ℝ) / 2 + 1 = 5 / 2 from by ring] at h32
+    rw [h32]
+    have h12 := Gamma_add_one (show (1 / 2 : ℝ) ≠ 0 from by norm_num)
+    rw [show (1 : ℝ) / 2 + 1 = 3 / 2 from by ring] at h12
+    rw [h12, Gamma_one_half_eq]; ring
+  rw [h52, show (5 : ℝ) / 2 = 2 + 1 / 2 from by ring, rpow_add pi_pos, rpow_natCast,
+      ← Real.sqrt_eq_rpow]
+  have hpi : (0 : ℝ) < √π := Real.sqrt_pos.mpr pi_pos
+  field_simp [hpi.ne']
+  ring
+
+/-- σ_5 = π³ (surface area of S^5 ⊂ ℝ^6).
+    Proof: 2π^3/Γ(3) = 2π^3/2 = π^3. -/
+theorem sphereArea_five : sphereArea 5 = π ^ 3 := by
+  unfold sphereArea
+  simp only [Nat.cast_ofNat]
+  rw [show (5 + 1 : ℝ) / 2 = 3 from by ring]
+  rw [show Gamma (3 : ℝ) = 2 from by
+    rw [show (3 : ℝ) = 2 + 1 from by norm_num,
+        Gamma_add_one (show (2 : ℝ) ≠ 0 from by norm_num),
+        show (2 : ℝ) = 1 + 1 from by norm_num, Gamma_add_one one_ne_zero, Gamma_one]; ring]
+  rw [rpow_natCast]; ring
+
 /-- The n-sphere/n-ball relationship: σ_{n-1} = n · ω_n where
     ω_n = π^{n/2}/Γ(n/2+1) is the unit n-ball volume.
     This is because differentiating Vol(B^n(r)) = ω_n r^n gives
@@ -159,6 +190,29 @@ theorem cauchyCrofton_four : cauchyCroftonConst 4 = 4 / (3 * π) := by
   push_cast
   have hpi : (0 : ℝ) < π := pi_pos
   field_simp [hpi.ne']
+  ring
+
+/-- c_5 = 3/8: the 5D crossing constant.
+    Proof: c_5 = 2σ_3/(4·σ_4) = 2·2π²/(4·8π²/3) = 3/8. -/
+theorem cauchyCrofton_five : cauchyCroftonConst 5 = 3 / 8 := by
+  unfold cauchyCroftonConst
+  simp only [show (5 : ℕ) - 2 = 3 from rfl, show (5 : ℕ) - 1 = 4 from rfl]
+  rw [sphereArea_three, sphereArea_four]
+  push_cast
+  have hpi2 : (π : ℝ) ^ 2 ≠ 0 := by positivity
+  field_simp [hpi2]
+  ring
+
+/-- c_6 = 16/(15π): the 6D crossing constant.
+    Proof: c_6 = 2σ_4/(5·σ_5) = 2·8π²/3/(5·π³) = 16/(15π). -/
+theorem cauchyCrofton_six : cauchyCroftonConst 6 = 16 / (15 * π) := by
+  unfold cauchyCroftonConst
+  simp only [show (6 : ℕ) - 2 = 4 from rfl, show (6 : ℕ) - 1 = 5 from rfl]
+  rw [sphereArea_four, sphereArea_five]
+  push_cast
+  have hpi : (0 : ℝ) < π := pi_pos
+  have hpi3 : (π : ℝ) ^ 3 ≠ 0 := by positivity
+  field_simp [hpi.ne', hpi3]
   ring
 
 /-- c_n is positive for n ≥ 2. -/
@@ -271,23 +325,22 @@ The constants c_n satisfy a recurrence related to the sphere area recurrence.
 The ratio σ_n/σ_{n-1} controls the geometry.
 -/
 
-/-- The sphere area recurrence: σ_n = 2π/(n) · σ_{n-2} for n ≥ 2.
+/-- The sphere area recurrence: σ_n = 2π/(n-1) · σ_{n-2} for n ≥ 2.
     This follows from Γ((n+1)/2) = ((n-1)/2) · Γ((n-1)/2). -/
 theorem sphereArea_recurrence (n : ℕ) (hn : 2 ≤ n) :
-    sphereArea n = 2 * π / n * sphereArea (n - 2) := by
+    sphereArea n = 2 * π / ((n : ℝ) - 1) * sphereArea (n - 2) := by
   unfold sphereArea
-  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
+  have hn1_pos : (0 : ℝ) < (n : ℝ) - 1 := by
+    have h : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    linarith
+  have hn1_ne : (n : ℝ) - 1 ≠ 0 := hn1_pos.ne'
   have h_cast : ((n : ℕ) : ℝ) + 1 = ((n - 2 : ℕ) : ℝ) + 3 := by push_cast; omega
-  rw [show ((n : ℝ) + 1) / 2 = ((n - 2 : ℕ) : ℝ) / 2 + 3 / 2 from by
-    rw [h_cast]; ring]
-  rw [show ((n - 2 : ℕ) : ℝ) / 2 + 3 / 2 = (((n - 2 : ℕ) : ℝ) + 1) / 2 + 1 from by
-    push_cast; ring]
-  rw [Gamma_add_one (show (((n - 2 : ℕ) : ℝ) + 1) / 2 ≠ 0 from by positivity)]
-  rw [rpow_add pi_pos, rpow_one]
-  rw [show ((n - 2 : ℕ) : ℝ) / 2 + 3 / 2 = ((n : ℝ) + 1) / 2 from by
-    push_cast; omega]
+  rw [show ((n : ℝ) + 1) / 2 = (((n - 2 : ℕ) : ℝ) + 1) / 2 + 1 from by rw [h_cast]; ring]
   rw [show (((n - 2 : ℕ) : ℝ) + 1) / 2 = ((n : ℝ) - 1) / 2 from by push_cast; omega]
-  field_simp [hn_pos.ne']
+  rw [Gamma_add_one (show ((n : ℝ) - 1) / 2 ≠ 0 from by positivity)]
+  rw [rpow_add pi_pos, rpow_one]
+  have hG : Gamma (((n : ℝ) - 1) / 2) ≠ 0 := (Gamma_pos_of_pos (by positivity)).ne'
+  field_simp [hn1_ne, hG]
   ring
 
 /-
@@ -328,5 +381,14 @@ theorem cauchyCrofton_le_one_dim2 : cauchyCroftonConst 2 ≤ 1 := by
   rw [cauchyCrofton_two]
   rw [div_le_one pi_pos]
   linarith [pi_gt_three]
+
+/-- The Cauchy-Crofton constant decays to zero: c_n → 0 as n → ∞.
+
+    Proof sketch: c_n · c_{n+1} = 2/(n·π) (by cancellation via the sphere area recurrence),
+    so c_n^2 ≤ c_{n-1}·c_n = 2/((n-1)·π) for all n ≥ 3 (using c_{n-1} ≥ c_n),
+    hence c_n ≤ √(2/((n-1)·π)) → 0. -/
+theorem cauchyCroftonConst_tendsto_zero :
+    Filter.Tendsto cauchyCroftonConst Filter.atTop (nhds 0) := by
+  sorry
 
 end CauchyCrofton

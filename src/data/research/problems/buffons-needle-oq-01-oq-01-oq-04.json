@@ -29,19 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED (audit 2026-04-27): n-dim Cauchy-Crofton formalized end-to-end. 333 lines, 20 theorems, 4 defs, 0 sorries, 0 axiom declarations, 2 structure-encoded assumptions in AngularAverageData (Mathlib gap: spherical Haar measure). Sphere areas computed for n in {0,1,2,3} and the recurrence; Cauchy-Crofton constants for n in {2,3,4} (c_2=2/pi, c_3=1/2, c_4=4/(3 pi)); expectedCrossings formula with linearity, scaling, and unit-circle sanity check. Gallery shipped with badge=axiom, status=axiomatized.",
+    "progressSummary": "PROGRESS: Extended dimension ladder (c_5=3/8, c_6=16/(15π)), fixed sphereArea_recurrence bug (2π/n→2π/(n-1)), tendsTo theorem sorry for Aristotle",
     "builtItems": [
       "Created Proofs/BuffonsNeedleOQ01OQ01OQ04.lean (255 lines, 16 theorems, 5 defs, 0 sorries)",
       "Created gallery data: src/data/proofs/buffons-needle-oq-01-oq-01-oq-04/{meta,annotations,index}",
       "sphereArea, cauchyCroftonConst, AngularAverageData, expectedCrossings definitions",
-      "Dimensional specializations: dim2 (2L/pid), dim3 (L/2d)"
+      "Dimensional specializations: dim2 (2L/pid), dim3 (L/2d)",
+      "sphereArea_four: sphereArea 4 = 8*π^2/3 (BuffonsNeedleOQ01OQ01OQ04.lean)",
+      "sphereArea_five: sphereArea 5 = π^3 (BuffonsNeedleOQ01OQ01OQ04.lean)",
+      "cauchyCrofton_five: cauchyCroftonConst 5 = 3/8 (BuffonsNeedleOQ01OQ01OQ04.lean)",
+      "cauchyCrofton_six: cauchyCroftonConst 6 = 16/(15π) (BuffonsNeedleOQ01OQ01OQ04.lean)"
     ],
     "insights": [
       "n-dim Cauchy-Crofton constant c_n = 2*sigma_{n-2}/((n-1)*sigma_{n-1})",
       "c_2 = 2/pi recovers Buffon-Barbier, c_3 = 1/2 for 3D",
       "Sphere surface area sigma_n = 2*pi^{(n+1)/2}/Gamma((n+1)/2) computed for n=0,1,2",
       "Angular averaging on RP^{n-1} requires sphere measure not in Mathlib - axiomatized",
-      "Unit circle sanity check: 4 expected crossings with unit grid"
+      "Unit circle sanity check: 4 expected crossings with unit grid",
+      "sphereArea_recurrence had a bug: claimed 2π/n but correct formula is 2π/(n-1). Fixed in this session. Was not used downstream so did not affect other proofs.",
+      "sphereArea_four = 8π²/3, sphereArea_five = π³ proved by direct Gamma computation",
+      "cauchyCrofton_five = 3/8, cauchyCrofton_six = 16/(15π) proved by substitution",
+      "cauchyCroftonConst_tendsto_zero: c_n→0 follows from c_n^2 ≤ c_{n-1}·c_n = 2/((n-1)π); submitted to Aristotle"
     ],
     "mathlibGaps": [
       "Spherical Haar measure / surface measure on S^(n-1) (blocks discharging AngularAverageData)",
@@ -66,7 +74,8 @@
     "buffons-needle-oq-01-oq-02",
     "buffons-needle-oq-02",
     "buffons-needle-oq-02-oq-01",
-    "buffons-needle-oq-02-oq-02"
+    "buffons-needle-oq-02-oq-02",
+    "buffons-needle-oq-02-oq-03"
   ],
   "references": {
     "papers": [],
@@ -173,6 +182,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ03.lean",
+      "filename": "BuffonsNeedleOQ02OQ03.lean",
+      "lineCount": 256,
+      "theoremCount": 13,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ03.lean"
     }
   ]
 }
