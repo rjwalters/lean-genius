@@ -21,8 +21,8 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 2,
-    "lineCount": 437,
-    "theoremCount": 25,
+    "lineCount": 438,
+    "theoremCount": 24,
     "defCount": 6,
     "assumptions": "Two axioms (both require Eisenstein integers ℤ[ω] not in Mathlib): (1) cubicResidueSymbol — definition of the cubic residue symbol (ρ/π)₃ for Eisenstein primes. (2) cubic_reciprocity — (ρ/π)₃ = (π/ρ)₃ for primary Eisenstein primes; proved via Jacobi sums. The hard Euler criterion (cubicEuler_hard) is now fully proved using discrete logarithm in the cyclic group (ZMod p)ˣ.",
     "mathlib_version": "4.26.0"
@@ -159,9 +159,9 @@
       "ZMod"
     ],
     "namespace": "CubicCharacter",
-    "lineCount": 437,
+    "lineCount": 438,
     "axiomCount": 2,
-    "theoremCount": 25,
+    "theoremCount": 24,
     "definitionCount": 6,
     "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ02.lean",
     "sorries": 0
