@@ -1,6 +1,6 @@
 /-
   Aristotle targets for AreaOfCircleOQ05OQ01 (Polar-Coordinate Proof of Gaussian Integral)
-  These are the 2 remaining sorry steps — both product-measure integrability conditions.
+  These are the 2 remaining proof obligations — both product-measure integrability conditions.
 
   Proved so far (no longer sorried in main file):
     - angular_integral (∫_{-π}^π 1 = 2π): proved via set_integral_const + volume_Ioo
