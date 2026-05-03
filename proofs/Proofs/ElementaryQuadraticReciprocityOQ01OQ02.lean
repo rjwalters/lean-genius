@@ -272,11 +272,33 @@ theorem isCubicResidue_iff_cubicChar_one (h3 : p % 3 = 1) (a : (ZMod p)ˣ) :
     Combined with: image of cubing has order n/3, so kernel also has order exactly n/3. -/
 theorem cubicChar_kernel_card (h3 : p % 3 = 1) :
     Fintype.card {a : (ZMod p)ˣ | cubicChar a = 1} = (p - 1) / 3 := by
-  -- The set {a | cubicChar a = 1} = {a | a^cubExp p = 1}
-  -- In cyclic group of order p-1, this has card = gcd(cubExp p, p-1)
-  -- gcd((p-1)/3, p-1) = (p-1)/3 (since (p-1)/3 divides p-1)
-  -- This needs: IsCyclic.card_pow_eq_one_eq or similar precise card lemma
-  sorry -- Requires: Fintype.card {x : G | x^k = 1} = gcd(k, |G|) for cyclic G
+  have h3dvd : 3 ∣ p - 1 := three_dvd_of_congr_one h3
+  have hcubpos : 0 < cubExp p :=
+    Nat.div_pos (Nat.le_of_dvd (by have := hp.out.one_lt; omega) h3dvd) (by norm_num)
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (ZMod p)ˣ)
+  have hcardG : Fintype.card (ZMod p)ˣ = p - 1 := by
+    rw [ZMod.card_units_eq_totient]; exact Nat.totient_prime hp.out
+  have hordg : orderOf g = p - 1 := by
+    rw [orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card, hcardG]
+  have hgcd3 : Nat.gcd (p - 1) 3 = 3 :=
+    Nat.dvd_antisymm (Nat.gcd_dvd_right _ _) (Nat.dvd_gcd h3dvd (dvd_refl 3))
+  have hord3 : orderOf (g ^ 3) = cubExp p := by
+    rw [orderOf_pow, hordg, hgcd3]
+  have hg3_pow : (g ^ 3) ^ cubExp p = 1 := by
+    rw [← pow_mul, show 3 * cubExp p = p - 1 from cubExp_mul h3, ← hordg, pow_orderOf_eq_one]
+  have hfilter_eq :
+      (Finset.univ.filter fun a : (ZMod p)ˣ => a ^ cubExp p = 1).card = cubExp p := by
+    apply Nat.le_antisymm (IsCyclic.card_pow_eq_one_le hcubpos)
+    apply Finset.le_card_of_inj_on_range (fun k => (g ^ 3) ^ k)
+    · intro k _
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      rw [← pow_mul, Nat.mul_comm, pow_mul, hg3_pow, one_pow]
+    · intro k₁ hk₁ k₂ hk₂ heq
+      exact pow_injOn_Iio_orderOf
+        (Set.mem_Iio.mpr (hord3 ▸ hk₁)) (Set.mem_Iio.mpr (hord3 ▸ hk₂)) heq
+  rw [Fintype.card_subtype]
+  simp only [cubicChar_apply]
+  exact hfilter_eq
 
 -- ============================================================
 -- PART 7: Quartic Character (Parallel Construction)
