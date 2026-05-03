@@ -1,0 +1,31 @@
+{
+  "id": "pac-learning-bounds-oq-01-oq-01",
+  "title": "VC Dimension of Interval Classifiers on ℕ",
+  "status": "completed",
+  "difficulty": "easy",
+  "tags": ["learning-theory", "vc-dimension", "combinatorics", "cs-math-bridge"],
+  "problemStatement": {
+    "informal": "What is the VC dimension of interval classifiers H = {[a,b] | a,b ∈ ℕ} on ℕ?",
+    "formal": "Prove VCDim(intervalClassifiers) = 2, i.e., (1) ∀ p q, p < q → Shatters H {p,q} and (2) ∀ a b c, a < b → b < c → ¬Shatters H {a,b,c}."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Proved by researcher-3 on feature/researcher-3. intervalClassifiers has VC dimension exactly 2: intervals shatter every pair (4 explicit witnesses), but no ordered triple (convexity obstruction forces middle point in). 3 theorems, 0 sorries, 0 axioms.",
+    "insights": [
+      "Key obstruction: any interval [lo,hi] containing outer points a and c of a < b < c must contain b by transitivity: lo ≤ a < b < c ≤ hi",
+      "Empty interval trick: [q+1, q] = ∅ since q+1 > q — no special empty-class constructor needed",
+      "Comparison: threshold classifiers have VC dim 1 (one free parameter), intervals have VC dim 2 (two free parameters: left and right endpoint)",
+      "General pattern: k-interval classifiers on ℕ should have VC dim 2k (each interval contributes 2 degrees of freedom)"
+    ],
+    "builtItems": [
+      "intervalClassifiers: definition of interval hypothesis class {x | a ≤ x ∧ x ≤ b} in PACLearningOQ01OQ01.lean",
+      "interval_shatters_pair: every 2-element set {p,q} with p<q is shattered by 4 explicit intervals",
+      "interval_not_shatters_triple: no ordered triple {a,b,c} is shattered (convexity obstruction)",
+      "interval_vcdim_bounds: combined VC dim = 2 theorem"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove VCDim of k-interval classifiers on ℕ is 2k (generalization)",
+      "Formalize Sauer-Shelah lemma to give growth function bound from VCDim"
+    ]
+  }
+}

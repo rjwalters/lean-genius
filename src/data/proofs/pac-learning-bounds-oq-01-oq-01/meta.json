@@ -1,0 +1,212 @@
+{
+  "id": "pac-learning-bounds-oq-01-oq-01",
+  "title": "VC Dimension of Interval Classifiers on ℕ",
+  "slug": "pac-learning-bounds-oq-01-oq-01",
+  "description": "Interval classifiers on ℕ — sets of the form [a,b] = {x | a ≤ x ∧ x ≤ b} — have VC dimension exactly 2. Every 2-element set is shattered (lower bound), and no 3-element set is shattered (upper bound) because any interval containing the outer points must contain the middle. Builds on pac-learning-bounds-oq-01 (threshold VC dim = 1) with one additional dimension of expressiveness.",
+  "meta": {
+    "author": "Vapnik-Chervonenkis (1971), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vapnik%E2%80%93Chervonenkis_dimension",
+    "date": "1971",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PACLearningOQ01OQ01.lean",
+    "tags": [
+      "learning-theory",
+      "combinatorics",
+      "vc-dimension",
+      "cs-math-bridge",
+      "intervals"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. All three theorems are fully proved. The key lemma — that any interval containing the outer points of a triple must contain the middle — follows from transitivity of ≤.",
+    "dateAdded": "2026-05-03",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.mem_setOf_eq",
+        "description": "Membership in a set-builder expression {x | P x}",
+        "module": "Mathlib.Data.Set.Defs"
+      },
+      {
+        "theorem": "Finset.mem_insert",
+        "description": "Membership in insert a s",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.mem_singleton",
+        "description": "Membership in a Finset singleton",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "le_of_lt",
+        "description": "a < b → a ≤ b",
+        "module": "Mathlib.Order.Defs"
+      },
+      {
+        "theorem": "le_trans",
+        "description": "Transitivity of ≤ used for the interval containment argument",
+        "module": "Mathlib.Order.Defs"
+      }
+    ],
+    "originalContributions": [
+      "intervalClassifiers: hypothesis class of all intervals [a,b] = {x | a ≤ x ∧ x ≤ b} on ℕ (includes ∅ when a > b)",
+      "interval_shatters_pair: every 2-element set {p,q} with p < q is shattered, with explicit witnesses: [q+1,q]=∅, [p,p]={p}, [q,q]={q}, [p,q]={p,q}",
+      "interval_not_shatters_triple: the subset {a,c} of any triple {a,b,c} with a<b<c cannot be achieved — any interval [lo,hi] containing a and c satisfies lo≤a<b<c≤hi, forcing b∈[lo,hi]",
+      "interval_vcdim_bounds: combines both bounds to establish VCDim(intervalClassifiers) = 2"
+    ],
+    "keyInsights": [
+      "Interval obstruction: convexity of [a,b] forces middle points in — the subset {outer points only} is never achievable",
+      "Empty interval: [q+1,q] = ∅ because q+1 > q, giving ∅ as a realizable subset without an explicit empty-class constructor",
+      "Comparison with thresholds: threshold classifiers have VC dim 1 (one degree of freedom); interval classifiers have VC dim 2 (two degrees of freedom: left and right endpoint)",
+      "General pattern: VC dim of k-interval classifiers on ℕ is 2k (each interval contributes 2 degrees of freedom)"
+    ],
+    "prerequisites": [
+      "VC dimension and shattering (see pac-learning-bounds-oq-01)",
+      "Basic Finset and Set operations in Mathlib",
+      "Order properties of ℕ"
+    ],
+    "mathlib_version": "4.26.0",
+    "lineCount": 129,
+    "relatedProblems": [
+      {
+        "id": "pac-learning-bounds-oq-01",
+        "relationship": "Parent problem: established VC dim = 1 for threshold classifiers; this extends to interval classifiers with VC dim = 2"
+      },
+      {
+        "id": "pac-learning-bounds",
+        "relationship": "Grandparent: PAC learning framework and VC dimension theory"
+      }
+    ],
+    "theoremCount": 3
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.PACLearningOQ01"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "LearningTheory.VCDimension.Intervals",
+    "lineCount": 129,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "path": "Proofs/PACLearningOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "interval_vcdim_bounds",
+      "type": "core",
+      "description": "VC dimension of interval classifiers on ℕ equals 2: every 2-element set is shattered, and no 3-element set is shattered.",
+      "leanType": "(∀ p q : ℕ, p < q → Shatters intervalClassifiers {p, q}) ∧ (∀ a b c : ℕ, a < b → b < c → ¬ Shatters intervalClassifiers {a, b, c})"
+    },
+    {
+      "name": "interval_shatters_pair",
+      "type": "supporting",
+      "description": "Every 2-element set {p, q} with p < q is shattered by intervalClassifiers (VCDim ≥ 2).",
+      "leanType": "∀ p q : ℕ, p < q → Shatters intervalClassifiers {p, q}"
+    },
+    {
+      "name": "interval_not_shatters_triple",
+      "type": "supporting",
+      "description": "No 3-element set {a, b, c} with a < b < c is shattered by intervalClassifiers (VCDim ≤ 2).",
+      "leanType": "∀ a b c : ℕ, a < b → b < c → ¬ Shatters intervalClassifiers {a, b, c}"
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "File Structure and Namespace Setup",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Doc-comment outlines the two-part proof structure (lower bound ≥2 via shattering, upper bound ≤2 via convexity obstruction). Imports Mathlib and PACLearningOQ01 (for Shatters), establishes LearningTheory.VCDimension.Intervals namespace, and opens Finset.",
+      "mathContext": "Standard VC scaffold: (i) define hypothesis class, (ii) prove VCdim ≥ d by shattering a d-set, (iii) prove VCdim ≤ d by ruling out (d+1)-set shattering."
+    },
+    {
+      "id": "definition",
+      "title": "Definition: Interval Classifiers",
+      "startLine": 25,
+      "endLine": 29,
+      "summary": "Defines intervalClassifiers as the set of all intervals {x | a ≤ x ∧ x ≤ b} for a b : ℕ. When a > b the set is empty, so ∅ ∈ intervalClassifiers.",
+      "mathContext": "$H_{\\mathrm{int}} = \\{ \\{x \\mid a \\le x \\le b\\} \\mid a, b \\in \\mathbb{N} \\}$. Includes $\\emptyset$ (take $a = b+1$).",
+      "relatedConcepts": [
+        "intervalClassifiers",
+        "Set.setOf",
+        "hypothesis class",
+        "empty interval"
+      ]
+    },
+    {
+      "id": "lower-bound",
+      "title": "Pair Shattering (VCDim ≥ 2)",
+      "startLine": 31,
+      "endLine": 78,
+      "summary": "For any p < q, all four subsets of {p, q} are realized: ∅ via [q+1,q], {p} via [p,p], {q} via [q,q], {p,q} via [p,q]. Proof by cases on membership of p and q in T.",
+      "mathContext": "$\\forall p < q : H_{\\mathrm{int}}$ shatters $\\{p, q\\}$.",
+      "relatedConcepts": [
+        "interval_shatters_pair",
+        "by_cases tactic",
+        "empty interval witness",
+        "Shatters predicate"
+      ]
+    },
+    {
+      "id": "upper-bound",
+      "title": "No Triple Shattered (VCDim ≤ 2)",
+      "startLine": 79,
+      "endLine": 117,
+      "summary": "For a < b < c, the labeling {a, c} is unrealizable. Any [lo, hi] with a, c ∈ [lo, hi] forces lo ≤ a < b < c ≤ hi, hence b ∈ [lo, hi] by le_trans — contradiction.",
+      "mathContext": "$\\forall a < b < c : \\neg H_{\\mathrm{int}}$ shatters $\\{a, b, c\\}$. Key: convexity of intervals.",
+      "relatedConcepts": [
+        "interval_not_shatters_triple",
+        "le_trans",
+        "convexity obstruction",
+        "omega tactic"
+      ]
+    },
+    {
+      "id": "combined",
+      "title": "Combined Bound (VCDim = 2)",
+      "startLine": 119,
+      "endLine": 129,
+      "summary": "interval_vcdim_bounds packages both halves as a conjunction, establishing VCDim(intervalClassifiers) = 2.",
+      "mathContext": "$\\operatorname{VCdim}(H_{\\mathrm{int}}) = 2$.",
+      "relatedConcepts": [
+        "interval_vcdim_bounds",
+        "And.intro",
+        "VC dimension exact value"
+      ]
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Vapnik-Chervonenkis dimension, introduced in 1971, is the central combinatorial complexity measure in statistical learning theory. The fundamental theorem of statistical learning equates PAC learnability with finite VC dimension. Computing VC dimensions for specific hypothesis classes is both theoretically important and pedagogically illustrative.",
+    "problemStatement": "What is the VC dimension of the class of interval classifiers H = {[a,b] | a,b ∈ ℕ} on ℕ?",
+    "text": "We prove VCDim(intervalClassifiers) = 2 via matching lower and upper bounds. Lower bound: every pair {p,q} with p<q is shattered by four explicit intervals. Upper bound: the convexity obstruction shows no triple {a,b,c} with a<b<c can be shattered, since the labeling {a,c} is unrealizable.",
+    "proofStrategy": "Two-part proof. For the lower bound, for each of the four subsets T ⊆ {p,q} we exhibit the interval: ∅ via [q+1,q], {p} via [p,p], {q} via [q,q], {p,q} via [p,q]. For the upper bound, we use the critical labeling T = {a,c}: any interval containing a and c must satisfy lo ≤ a < b < c ≤ hi, hence b ∈ [lo,hi], contradicting b ∉ T.",
+    "keyInsights": [
+      "Interval obstruction: convexity of [a,b] forces middle points in",
+      "Empty interval: [q+1,q] = ∅ because q+1 > q",
+      "VC dim 2 reflects exactly 2 degrees of freedom (left and right endpoint)"
+    ],
+    "prerequisites": [
+      "VC dimension and shattering (see pac-learning-bounds-oq-01)",
+      "Basic Finset and Set operations in Mathlib",
+      "Order properties of ℕ"
+    ],
+    "openQuestions": [
+      {
+        "id": "oq-01",
+        "question": "What is the VC dimension of k-interval classifiers (unions of at most k disjoint intervals) on ℕ? The expected answer is 2k.",
+        "difficulty": "medium"
+      },
+      {
+        "id": "oq-02",
+        "question": "Can Sauer's lemma be formalized to give a general growth function bound: |{h ∩ S : h ∈ H}| ≤ sum_{i=0}^{d} C(|S|, i) when VCDim(H) = d?",
+        "difficulty": "hard"
+      }
+    ]
+  }
+}
