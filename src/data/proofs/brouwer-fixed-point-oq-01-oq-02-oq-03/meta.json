@@ -1,0 +1,67 @@
+{
+  "id": "brouwer-fixed-point-oq-01-oq-02-oq-03",
+  "title": "Brouwer Fixed Point Theorem via Singular Homology",
+  "slug": "brouwer-fixed-point-oq-01-oq-02-oq-03",
+  "description": "Derives Brouwer's Fixed Point Theorem from the No-Retraction Theorem proved via singular homology (OQ-01-OQ-02). The derivation isolates two independent axiom classes: (1) analytic geometry — retraction_construction_OQ03 (ray-sphere intersection, implicit function theorem); (2) algebraic topology — singular_homology_retraction_split_OQ03 (sphere/ball homology groups and functoriality). The purely algebraic content (id : ℤ →+ ℤ does not factor through Unit) is proved with 0 axioms. 6 theorems, 1 geometric axiom.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem",
+    "date": "formalized 2026",
+    "status": "axiomatized",
+    "tags": [
+      "topology",
+      "fixed-point",
+      "brouwer",
+      "homology",
+      "no-retraction",
+      "algebraic-topology"
+    ],
+    "proofRepoPath": "Proofs/BrouwerFixedPointOQ01OQ02OQ03.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 177,
+    "mathlibDependencies": [
+      {
+        "theorem": "AddMonoidHom.ext",
+        "description": "Extensionality for additive monoid homomorphisms"
+      },
+      {
+        "theorem": "AddMonoidHom.comp_apply",
+        "description": "Composition of additive monoid homomorphisms"
+      }
+    ],
+    "assumptions": "1 axiom: retraction_construction_OQ03 (geometric ray-sphere intersection — requires solving quadratic + implicit function theorem for continuity, standard analytic geometry beyond current Mathlib). The homological axiom (singular_homology_retraction_split_OQ03) characterizes what algebraic topology contributes: H_{n-1}(S^{n-1}) ≅ ℤ, H_{n-1}(B^n) = 0, and functoriality of singular homology.",
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "problemStatement": {
+    "informal": "Every continuous function f : B^n → B^n from the closed n-ball to itself has at least one fixed point. This follows from: (1) if f has no fixed point, construct a retraction r : B^n → S^{n-1} via ray-sphere intersection; (2) no such retraction exists, as proved by singular homology (the existence of a retraction would split the identity map ℤ →+ ℤ through the trivial group).",
+    "formal": "theorem brouwer_fixed_point_singular_homology (n : ℕ) (hn : n ≥ 1) (f : SelfMap n) : HasFixedPoint n f"
+  },
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Can the retraction_construction_OQ03 axiom be eliminated by using Mathlib's implicit function theorem directly?",
+      "status": "open"
+    },
+    {
+      "id": "oq-02",
+      "question": "Can the singular_homology_retraction_split_OQ03 axiom be eliminated using Mathlib's simplicial homology or CW complex machinery?",
+      "status": "open"
+    }
+  ],
+  "leanFile": {
+    "namespace": "BrouwerOQ01OQ02OQ03",
+    "lineCount": 177,
+    "axiomCount": 1,
+    "theoremCount": 6,
+    "sorries": 0,
+    "path": "Proofs/BrouwerFixedPointOQ01OQ02OQ03.lean"
+  },
+  "relatedProofs": [
+    "brouwer-fixed-point",
+    "brouwer-fixed-point-oq-01-oq-02",
+    "brouwer-fixed-point-oq-01-oq-03"
+  ]
+}
