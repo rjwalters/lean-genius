@@ -142,7 +142,7 @@
   ],
   "conclusion": {
     "summary": "The Cauchy-Crofton formula for arbitrary measures on S^{n-1} is formalized in n-dimensional EuclideanSpace. The crossing-measure computation is fully proved; the Fubini exchange and isotropy reduction are axiomatized with clear statements of the required measure-theoretic hypotheses. Classical 2D and 3D Buffon formulas are recovered as special cases.",
-    "significance": "This provides the abstract framework unifying all Buffon-type results: the 2D needle, 3D noodle, and their higher-dimensional analogues follow from a single integral geometry identity. The key crossing-measure lemma demonstrates that Mathlib's real analysis infrastructure is sufficient for non-trivial integral geometry computations.",
+    "implications": "This provides the abstract framework unifying all Buffon-type results: the 2D needle, 3D noodle, and their higher-dimensional analogues follow from a single integral geometry identity. The key crossing-measure lemma demonstrates that Mathlib's real analysis infrastructure is sufficient for non-trivial integral geometry computations. The two axiomatized lemmas (Fubini exchange and isotropy reduction) precisely identify the remaining measure-theoretic gaps in Mathlib's library — they are concrete formalization targets for anyone seeking to fully mechanize integral geometry in Lean 4. The α_n factor's dimensional behavior (α_n → 0 as n → ∞ by measure concentration) also points toward a connection with the Johnson-Lindenstrauss lemma and random projections.",
     "openQuestions": [
       {
         "id": "oq-01",
