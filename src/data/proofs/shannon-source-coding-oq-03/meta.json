@@ -45,7 +45,7 @@
     "assumptions": [],
     "dateAdded": "2026-05-03",
     "axiomCount": 0,
-    "lineCount": 260,
+    "lineCount": 355,
     "prerequisites": [
       "Shannon entropy H(X) = -∑ p(x) log p(x)",
       "Chebyshev's inequality for finite probability spaces",
@@ -143,9 +143,9 @@
     "imports": ["Mathlib"],
     "opens": ["Real", "Finset", "BigOperators"],
     "namespace": "AEPFormalization",
-    "lineCount": 260,
+    "lineCount": 355,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 12,
     "definitionCount": 6,
     "path": "Proofs/ShannonSourceCodingOQ03.lean",
     "sorries": 1

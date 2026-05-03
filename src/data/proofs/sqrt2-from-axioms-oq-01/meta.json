@@ -44,7 +44,7 @@
     "lineCount": 365,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 18
+    "theoremCount": 19
   },
   "overview": {
     "historicalContext": "The irrationality of $\\sqrt{2}$ was first proved by the ancient Greeks, traditionally attributed to Hippasus of Metapontum (~500 BCE). According to legend, Hippasus was drowned at sea by fellow Pythagoreans for revealing that $\\sqrt{2}$ is incommensurable with 1, shattering their belief that all quantities are ratios of whole numbers.\n\nThe proof by contradiction—assuming $\\sqrt{2} = a/b$ in lowest terms and deriving that both $a$ and $b$ must be even—is one of the most celebrated arguments in mathematics. Theodorus of Cyrene (~465–398 BCE) extended the result to $\\sqrt{3}, \\sqrt{5}, \\ldots, \\sqrt{17}$ (as reported in Plato's *Theaetetus*), though his methods are debated. His student Theaetetus provided a general classification: $\\sqrt{n}$ is irrational whenever $n$ is not a perfect square.\n\nThe key insight enabling the generalization is Euclid's lemma (Elements VII.30, ~300 BCE): if a prime divides a product, it divides one of the factors. This property was used implicitly in the $\\sqrt{2}$ proof (the \"even/odd\" trick) but Euclid recognized it as a general property of primes. In modern algebra, this multiplicative property is taken as the *definition* of a prime element in a ring, distinguishing it from the weaker notion of irreducibility.\n\nThis formalization makes the connection explicit by defining primality via Euclid's criterion rather than the divisor property, revealing why the $\\sqrt{2}$ proof generalizes immediately to all primes.",
@@ -164,7 +164,7 @@
     "namespace": "SqrtPrimeFromAxioms",
     "lineCount": 365,
     "axiomCount": 0,
-    "theoremCount": 18,
+    "theoremCount": 19,
     "definitionCount": 3,
     "path": "Proofs/Sqrt2FromAxiomsOQ01.lean",
     "sorries": 0

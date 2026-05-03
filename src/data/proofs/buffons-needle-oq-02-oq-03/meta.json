@@ -69,7 +69,7 @@
     "lineCount": 255,
     "assumptions": "2 axioms: cauchy_crofton_fubini (Fubini-Tonelli exchange for the crossing double integral over S^{n-1} × ℝ); isotropy_yields_alpha (O(n)-invariant sphere measures yield α_n factor). No sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 12
+    "theoremCount": 13
   },
   "overview": {
     "historicalContext": "Cauchy (1832) observed that for convex bodies the mean width determines the surface area up to a constant. Crofton (1868) systematized this into his formula: for any curve of length L in the plane, the expected number of crossings with a random line is 2L/π. Blaschke, Santaló, and others extended the formula to arbitrary dimensions and arbitrary Borel measures on the sphere. This file formalizes the abstract framework: the key crossing-measure lemma (|{t : H(u,t) crosses [A,B]}| = |⟪u,B-A⟫|) is proved directly in Lean, while the Fubini exchange and isotropy reduction are axiomatized.",
@@ -197,7 +197,7 @@
     "namespace": "CauchyCrofton",
     "lineCount": 255,
     "axiomCount": 2,
-    "theoremCount": 12,
+    "theoremCount": 13,
     "definitionCount": 4,
     "path": "Proofs/BuffonsNeedleOQ02OQ03.lean",
     "sorries": 0
