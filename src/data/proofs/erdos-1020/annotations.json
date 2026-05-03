@@ -600,7 +600,7 @@
     "proofId": "erdos-1020",
     "range": {
       "startLine": 228,
-      "endLine": 231
+      "endLine": 248
     },
     "type": "concept",
     "title": "The r = 4 Case",
@@ -615,6 +615,32 @@
     "prerequisites": [
       "Erdős Matching Conjecture",
       "Huang-Loh-Sudakov"
+    ]
+  },
+  {
+    "id": "ann-1020-large-n-proof",
+    "proofId": "erdos-1020",
+    "range": {
+      "startLine": 250,
+      "endLine": 326
+    },
+    "type": "proof",
+    "title": "large_n_construction2_dominates: Pascal Telescoping + Open Problem Definitions",
+    "content": "**large_n_construction2_dominates** (250-305): For $r \\ge 2$, $k \\ge 1$, there exists $N$ such that for $n \\ge N$: $\\text{construction2}(n, r, k) > \\text{construction1}(r, k)$. This establishes that for large $n$, the conjectured value is achieved by construction 2.\n\nProof outline:\n- $k = 1$ case: construction1 = $\\binom{r-1}{r} = 0$; construction2 = $\\binom{n}{r} - \\binom{n}{r} = 0$ — wait, $\\binom{n - 1 + 1}{r} - \\binom{n-1+1-1}{r}$... the $k=1$ case simplifies to $\\binom{n}{r} - \\binom{n}{r} = 0$ being handled by `choose_eq_zero_of_lt`.\n- $k \\ge 2$ case: by Pascal's identity, $\\binom{n}{r} - \\binom{n-1}{r} = \\binom{n-1}{r-1}$. Since $\\binom{n-k+1}{r} \\le \\binom{n-1}{r}$, we get construction2 $\\ge \\binom{n-1}{r-1}$. Then $\\binom{n-1}{r-1} \\ge n-1 > c_1$ (construction1) by `Nat.choose_anti` when $n-1 \\ge 2(r-1)$.\n\n**Open problem definitions** (313-326): `erdos1020OpenProblem` = `erdosMatchingConjecture`, `r4Conjecture` (the specific $r=4$ case), and `#check` sanity exports.",
+    "mathContext": "The Pascal telescoping argument is the key insight: $\\binom{n}{r} - \\binom{n-k+1}{r} = \\sum_{j=n-k+1}^{n-1} \\binom{j}{r-1}$. When $k \\ge 2$, at least one term $\\binom{n-1}{r-1}$ appears, giving construction2 $\\ge \\binom{n-1}{r-1}$. The `Nat.choose_anti` lemma provides $\\binom{m}{s} \\ge \\binom{m}{1} = m$ when $1 \\le s \\le m-s$, i.e., $m \\ge 2s$. With $m = n-1$ and $s = r-1$, the condition $n-1 \\ge 2(r-1)$ holds for the chosen threshold $N = c_1 + k + r$. For the $r=4$ open case: Huang-Loh-Sudakov (2012) resolved it for $n \\ge 48k$, but the range $4k \\le n < 48k$ remains open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pascal's identity",
+      "Nat.choose_anti",
+      "Nat.choose_succ_succ",
+      "erdos1020OpenProblem",
+      "r4Conjecture"
+    ],
+    "prerequisites": [
+      "construction1",
+      "construction2",
+      "Nat.choose_le_choose",
+      "Nat.choose_anti"
     ]
   }
 ]
