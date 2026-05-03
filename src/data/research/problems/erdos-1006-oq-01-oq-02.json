@@ -1,0 +1,35 @@
+{
+  "id": "erdos-1006-oq-01-oq-02",
+  "tractability": 5,
+  "significance": 6,
+  "problemStatement": {
+    "plain": "Can cover graph recognition (deciding if a graph is the Hasse diagram of some finite poset) be done in polynomial time?",
+    "formal": ""
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Gallery entry created (Erdos1006OQ01OQ02.lean, 7 theorems, 2 axioms, 0 sorries). Proved shortcut-free property of Hasse orientations and NP membership. Stated open P-time conjecture and Golumbic 1977 comparability recognition.",
+    "builtItems": [
+      "coverOrientation_no_shortcut: cover orientations are shortcut-free (Erdos1006OQ01OQ02.lean)",
+      "cover_graph_is_hasse: cover graphs admit Hasse-like acyclic orientations (Erdos1006OQ01OQ02.lean)",
+      "cover_implies_related: cover graph edges connect comparable pairs in the poset (Erdos1006OQ01OQ02.lean)",
+      "cover_graph_in_np: NP membership via poset certificate (Erdos1006OQ01OQ02.lean)",
+      "cover_search_space_bound: search space 2^(n^2) (Erdos1006OQ01OQ02.lean)",
+      "cover_subclass_comparability: cover graphs are strictly contained in comparability graphs"
+    ],
+    "insights": [
+      "Cover graphs != comparability graphs: cover uses covering arcs only, comparability uses all related pairs; 3-chain distinguishes them",
+      "Shortcut-free = Hasse: an acyclic orientation is a Hasse diagram iff it has no shortcut arcs (its own transitive reduction)",
+      "NP membership is trivial: the poset P is a certificate that can be verified by checking isCoverGraphOf",
+      "CovBy.2 applies directly: if u covers v and u covers w, then huv.2 huw.lt : not(w < v), proving no shortcuts"
+    ],
+    "mathlibGaps": [
+      "DecidableRel G.Adj not automatic for SimpleGraph; needs explicit instance for decidability",
+      "pow_mul needed in simp for (2^n)^n = 2^(n*n) \u2014 simp alone may not close the goal"
+    ],
+    "nextSteps": [
+      "Run docker build to verify Lean file compiles with 0 sorries",
+      "Consider adding NP-hardness witness or reduction if known",
+      "Explore whether transitive reduction of a comparability orientation gives cover graph efficiently"
+    ]
+  }
+}

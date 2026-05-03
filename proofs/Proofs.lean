@@ -554,6 +554,7 @@ import Proofs.Erdos1004Problem
 import Proofs.Erdos1005Problem
 import Proofs.Erdos1005ProblemProvable
 import Proofs.Erdos1006OQ01
+import Proofs.Erdos1006OQ01OQ02
 import Proofs.Erdos1006OQ02
 import Proofs.Erdos1006OQ03
 import Proofs.Erdos1006OQ04
