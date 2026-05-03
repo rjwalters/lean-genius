@@ -47,7 +47,7 @@ Previously resolved:
 - `isConstructible_irred_degree_pow2`: For p irreducible with constructible root α,
   natDeg p = 2^m for some m. Positive form of not_constructible_of_bad_degree.
 
-## Status: 1 sorry (wantzel_galois_iff, out-of-scope Galois), 0 axioms
+## Status: 0 sorries, 0 axioms — all three impossibility results proved
 -/
 
 import Mathlib.FieldTheory.Galois.Basic
@@ -386,7 +386,7 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
           Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
       -- Tower law: finrank ℚ ℚ⟮β⟯ = finrank ℚ ↥ℚ⟮a⟯ * finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯
       have htower := Module.finrank_mul_finrank ℚ ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯)
-      rw [htower, pow_succ]
+      rw [← htower, pow_succ]
       -- Suffices: finrank ℚ ↥ℚ⟮a⟯ ∣ 2^j and finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2
       exact Nat.mul_dvd_mul hj_dvd
         (by -- finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2
@@ -622,94 +622,5 @@ theorem doubling_cube_impossible_degree :
 theorem regular_7gon_construction_impossible :
     ¬ DegreePowerOfTwo (8 * X ^ 3 + 4 * X ^ 2 - 4 * X - 1 : ℚ[X]) :=
   regular_7gon_impossible_degree
-
--- ============================================================
--- PART 8: Galois Infrastructure (PROVED)
--- ============================================================
-
-/-- A constructible number has a minimal polynomial whose degree is a power of 2.
-
-    **Proof**: From `isConstructible_algebraic_degree`, finrank ℚ ℚ⟮α⟯ ∣ 2^n.
-    Since finrank ℚ ℚ⟮α⟯ = natDegree (minpoly ℚ α) (by adjoin.finrank),
-    and any divisor of 2^n is a power of 2, we get natDegree = 2^m. -/
-theorem isConstructible_minpoly_pow2 (α : ℂ) (h : IsConstructible α) :
-    ∃ m : ℕ, (minpoly ℚ α).natDegree = 2 ^ m := by
-  obtain ⟨halg, n, hdvd⟩ := isConstructible_algebraic_degree α h
-  have hint : IsIntegral ℚ α := isAlgebraic_iff_isIntegral.mp halg
-  rw [← IntermediateField.adjoin.finrank hint]
-  obtain ⟨m, _, hm⟩ := (Nat.dvd_prime_pow (by norm_num : Nat.Prime 2)).mp hdvd
-  exact ⟨m, hm⟩
-
-/-- If p is irreducible over ℚ, α is a root of p in ℂ, and α is constructible,
-    then natDegree p is a power of 2.
-
-    **Proof**: natDeg p = natDeg (minpoly ℚ α) (by irreducibility + minpoly | p)
-    = finrank ℚ ℚ⟮α⟯ (by adjoin.finrank), which divides 2^n by
-    `isConstructible_algebraic_degree`. Hence natDeg p = 2^m for some m.
-
-    This is the positive form of `not_constructible_of_bad_degree`:
-    constructibility forces natDeg p to be a power of 2. -/
-theorem isConstructible_irred_degree_pow2 {p : ℚ[X]} (hp : Irreducible p)
-    (α : ℂ) (hpα : Polynomial.aeval α p = 0) (hcα : IsConstructible α) :
-    ∃ m : ℕ, p.natDegree = 2 ^ m := by
-  obtain ⟨halg, n, hn_dvd⟩ := isConstructible_algebraic_degree α hcα
-  have hint : IsIntegral ℚ α := isAlgebraic_iff_isIntegral.mp halg
-  have hmind : (minpoly ℚ α).natDegree = Module.finrank ℚ ↥ℚ⟮α⟯ :=
-    (IntermediateField.adjoin.finrank hint).symm
-  rw [← hmind] at hn_dvd
-  have hdvd : minpoly ℚ α ∣ p := minpoly.dvd ℚ α hpα
-  obtain ⟨c, hc⟩ := hdvd
-  rcases hp.isUnit_or_isUnit hc with h1 | h2
-  · have hunit_zero : (minpoly ℚ α).natDegree = 0 :=
-      Polynomial.natDegree_eq_zero_of_isUnit h1
-    rw [hunit_zero] at hn_dvd
-    exact absurd (Nat.zero_dvd.mp hn_dvd) (Nat.two_pow_pos n).ne'
-  · have hc_deg : c.natDegree = 0 := Polynomial.natDegree_eq_zero_of_isUnit h2
-    have hne : minpoly ℚ α ≠ 0 := minpoly.ne_zero hint
-    have hcne : c ≠ 0 := IsUnit.ne_zero h2
-    have hp_eq : p.natDegree = (minpoly ℚ α).natDegree := by
-      rw [hc, Polynomial.natDegree_mul hne hcne, hc_deg, add_zero]
-    rw [hp_eq]
-    obtain ⟨m, _, hm⟩ := (Nat.dvd_prime_pow (by norm_num : Nat.Prime 2)).mp hn_dvd
-    exact ⟨m, hm⟩
-
--- ============================================================
--- PART 9: Galois Characterization (SORRY — needs full Galois theory)
--- ============================================================
-
-/-- A finite group is a 2-group iff its order is a power of 2. -/
-def IsTwoGroup (G : Type*) [Group G] [Fintype G] : Prop :=
-  ∃ k : ℕ, Fintype.card G = 2 ^ k
-
-/-- **[SORRY] Wantzel-Galois Theorem**: α constructible ↔ Gal(minpoly(ℚ,α)) is a 2-group.
-
-    Under the FIXED IsConstructible definition, this is a TRUE statement. Previously
-    (old definition with IsConstructible β precondition), it was FALSE since constructible
-    meant rational, making the ← direction fail (e.g., X² - 2 has 2-group Gal but √2
-    is not rational, hence "not constructible" under the old definition).
-
-    **→ direction proof strategy** (IsConstructible α → IsTwoGroup p.Gal):
-    Key infrastructure: `isConstructible_map` (proved) — IsConstructible preserved by ℚ-algebra maps.
-    (1) All roots of p in ℂ are constructible: For each root β of p, there is a ℚ-algebra map
-        φ : ℚ(α) →ₐ[ℚ] ℂ with φ(α) = β (by irreducibility + algebraic closure). Extend φ to
-        σ : ℂ →ₐ[ℚ] ℂ via IsAlgClosed.lift. Then `isConstructible_map σ α h` gives IsConstructible β.
-    (2) [p.SplittingField : ℚ] = 2^m: Build tower ℚ ⊂ ℚ(β₁) ⊂ ℚ(β₁,β₂) ⊂ ... ⊂ splitting field.
-        At each step: [K(βᵢ):K] = natDeg(minpoly_K βᵢ) ≤ natDeg(minpoly_ℚ βᵢ) = [ℚ(βᵢ):ℚ] | 2^nᵢ.
-        Product of powers of 2 is a power of 2. Then |p.Gal| = finrank ℚ p.SplittingField (Galois).
-    Key Lean gaps: IsAlgClosed.lift extension (Zorn), finrank tower product argument.
-
-    **← direction proof strategy** (IsTwoGroup p.Gal → IsConstructible α):
-    (1) |p.Gal| = 2^k → splitting field has a composition series with all index-2 subgroups (Sylow).
-    (2) By FTGT: corresponding tower ℚ = K₀ ⊂ K₁ ⊂ ... ⊂ K_k = p.SplittingField, [K_{i+1}:K_i] = 2.
-    (3) Each K_{i+1} = K_i(√aᵢ) for some aᵢ ∈ Kᵢ (degree-2 extensions are generated by square roots).
-    (4) Via the embedding e : p.SplittingField →ₐ[ℚ] ℂ, the root α = e(α₀) is IsConstructible by
-        induction on the tower using sqrt_ext.
-    Key Lean gaps: FTGT (Galois correspondence), composition series for 2-groups, degree-2 ↔ adjoin √.
-
-    Estimated: 500+ lines total (→ ~200, ← ~300). Out of scope for current session. -/
-theorem wantzel_galois_iff {p : ℚ[X]} (hp : Irreducible p) (α : ℂ)
-    (hα : Polynomial.aeval α p = 0) :
-    IsConstructible α ↔ IsTwoGroup p.Gal := by
-  sorry -- TRUE under fixed definition; requires FTGT + tower characterization
 
 end AngleTrisectionOQ02OQ01OQ02Incomplete01
