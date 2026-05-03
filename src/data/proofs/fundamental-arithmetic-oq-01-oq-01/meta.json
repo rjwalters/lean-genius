@@ -97,7 +97,14 @@
       "summary": "Injectivity of factorization on positive naturals; m = n iff factorizations agree at every prime; n = 1 iff factorization is zero; coprime numbers have disjoint factorization supports. Includes native_decide examples for 12, 30, and coprimality."
     }
   ],
-  "conclusion": "The FTA has a clean algebraic formulation via Finsupp: every positive natural has a unique prime exponent map. This self-contained proof avoids the parent file entirely, demonstrating that Mathlib's Nat.factorization machinery is sufficient to prove both existence and uniqueness from scratch. The key insight is that factorization and reconstruction are mutual inverses — a consequence of Nat.factorization_prod_pow_eq_self combined with the distribution of factorization over products.",
+  "conclusion": {
+    "summary": "The FTA has a clean algebraic formulation via Finsupp: every positive natural has a unique prime exponent map. This self-contained proof avoids the parent file entirely, demonstrating that Mathlib's Nat.factorization machinery is sufficient to prove both existence and uniqueness from scratch.",
+    "implications": "The key insight is that factorization and reconstruction are mutual inverses — a consequence of Nat.factorization_prod_pow_eq_self combined with the distribution of factorization over products. This algebraic approach complements the sorted-list FTA: the Finsupp formulation has cleaner multiplicative structure (factorization is a monoid homomorphism) while the list formulation is more computationally explicit.",
+    "openQuestions": [
+      "Can the Finsupp FTA be extended to prove the Euler product formula ζ(s) = ∏(1-p^{-s})^{-1}?",
+      "Does the Finsupp approach simplify the proof of unique factorization in number fields via Dedekind domains?"
+    ]
+  },
   "leanFile": {
     "path": "Proofs/FundamentalArithmeticOQ01OQ01.lean",
     "namespace": "FundamentalArithmeticOQ01OQ01",
