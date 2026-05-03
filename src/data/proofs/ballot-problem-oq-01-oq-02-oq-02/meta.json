@@ -1,0 +1,82 @@
+{
+  "id": "ballot-problem-oq-01-oq-02-oq-02",
+  "title": "Ballot Problem OQ-01-OQ-02-OQ-02: LGV Determinant for Path Orderings",
+  "slug": "ballot-problem-oq-01-oq-02-oq-02",
+  "description": "Formalizes the MacMahon-LGV product formula for the probability that ballot lead ordering is maintained throughout counting: P = ∏_{i<j} (aᵢ - aⱼ)/(aᵢ + aⱼ). Proves the 2-candidate case from Mathlib's ballot theorem, concrete numerical verifications for small cases, monotonicity of ballot ratio, and the 2×2 determinant structure. 2 axioms for the 3-candidate LGV extension. 15 theorems.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BallotProblemOQ01OQ02OQ02.lean",
+    "tags": [
+      "probability",
+      "combinatorics",
+      "ballot-problem",
+      "lattice-paths",
+      "lgv-lemma",
+      "determinant"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "lineCount": 260,
+    "theoremCount": 15,
+    "assumptions": "2 axioms: three_candidate_ordering_formula, three_ordering_product_conjecture (require LGV lemma).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "MacMahon (1915) found the product formula via non-intersecting lattice paths (LGV lemma).",
+    "problemStatement": "Prove the ordering probability formula via Lindström-Gessel-Viennot.",
+    "proofStrategy": "2-candidate case from Mathlib ballot theorem; concrete verifications for (3,1), (4,2), (4,2,1), (5,3,1); 2 axioms for 3-candidate LGV.",
+    "keyInsights": [
+      "**orderingProbability_two**: Classical ballot theorem for 2-candidate ordering probability",
+      "**Assumptions**: 2 axioms: three_candidate_ordering_formula, three_ordering_product_conjecture (require LGV lemma)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "ballot-problem-oq-01-oq-02-oq-02",
+      "title": "Ballot Problem OQ-01-OQ-02-OQ-02",
+      "startLine": 1,
+      "endLine": 260,
+      "summary": "orderingProbability_two and supporting lemmas.",
+      "mathContext": "$P(ordering maintained) = (a₁ - a₂)/(a₁ + a₂)$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Ballot Problem OQ-01-OQ-02-OQ-02: 15 theorems, 0 sorries, 2 axioms.",
+    "implications": "Classical ballot theorem for 2-candidate ordering probability",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 260,
+    "axiomCount": 2,
+    "theoremCount": 15,
+    "definitionCount": 0,
+    "path": "Proofs/BallotProblemOQ01OQ02OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "orderingProbability_two",
+      "type": "core",
+      "statement": "P(ordering maintained) = (a₁ - a₂)/(a₁ + a₂)",
+      "description": "Classical ballot theorem for 2-candidate ordering probability",
+      "significance": "Classical ballot theorem for 2-candidate ordering probability"
+    }
+  ],
+  "sorries": 0
+}

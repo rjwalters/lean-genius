@@ -1,0 +1,81 @@
+{
+  "id": "wolstenholme-theorem-oq-02-oq-02",
+  "title": "Wolstenholme's Theorem OQ-02-OQ-02: Mod p³ and Wolstenholme Primes",
+  "slug": "wolstenholme-theorem-oq-02-oq-02",
+  "description": "Proves Wolstenholme's theorem (1862): C(2p-1,p-1) ≡ 1 (mod p³) for prime p ≥ 5. Strategy: power sum vanishing via cyclic group generator + Vandermonde identity. Defines Wolstenholme primes (mod p⁴ condition) and states the open question: does any Wolstenholme prime exist with p ≡ 1 (mod 4)? 1 axiom for the Vandermonde reduction. 14 theorems.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/WolstenholmeTheoremOQ02OQ02.lean",
+    "tags": [
+      "number-theory",
+      "wolstenholme",
+      "binomial-coefficients",
+      "modular-arithmetic",
+      "primes"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 316,
+    "theoremCount": 14,
+    "assumptions": "1 axiom: Vandermonde-to-p³ reduction step.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Wolstenholme (1862) proved C(2p-1,p-1) ≡ 1 (mod p³). Strengthens Babbage's mod p² result.",
+    "problemStatement": "Prove Wolstenholme's theorem via power sum vanishing.",
+    "proofStrategy": "Sum units power vanishing: pick generator g, reindex x ↦ gx to show sum = 0 when (p-1) ∤ m; combine with Vandermonde to get mod p³.",
+    "keyInsights": [
+      "**wolstenholme_mod_p3**: Wolstenholme's theorem: the central binomial coefficient satisfies a strong congruence mod p³",
+      "**Assumptions**: 1 axiom: Vandermonde-to-p³ reduction step."
+    ]
+  },
+  "sections": [
+    {
+      "id": "wolstenholme-theorem-oq-02-oq-02",
+      "title": "Wolstenholme's Theorem OQ-02-OQ-02",
+      "startLine": 1,
+      "endLine": 316,
+      "summary": "wolstenholme_mod_p3 and supporting lemmas.",
+      "mathContext": "$C(2p-1, p-1) ≡ 1 (mod p³) for prime p ≥ 5$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Wolstenholme's Theorem OQ-02-OQ-02: 14 theorems, 0 sorries, 1 axioms.",
+    "implications": "Wolstenholme's theorem: the central binomial coefficient satisfies a strong congruence mod p³",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 316,
+    "axiomCount": 1,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "path": "Proofs/WolstenholmeTheoremOQ02OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "wolstenholme_mod_p3",
+      "type": "core",
+      "statement": "C(2p-1, p-1) ≡ 1 (mod p³) for prime p ≥ 5",
+      "description": "Wolstenholme's theorem: the central binomial coefficient satisfies a strong congruence mod p³",
+      "significance": "Wolstenholme's theorem: the central binomial coefficient satisfies a strong congruence mod p³"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,82 @@
+{
+  "id": "central-limit-theorem-oq-03-oq-02",
+  "title": "Infinitely Divisible Distributions and Lévy-Khintchine Theorem (OQ-03-OQ-02)",
+  "slug": "central-limit-theorem-oq-03-oq-02",
+  "description": "Formalizes infinitely divisible probability distributions and the Lévy-Khintchine theorem. Proves: convolution power distributes over products, δ₀ is infinitely divisible, ID closed under convolution and convPow. Axiomatizes Gaussian as ID and the full Lévy-Khintchine classification (requires characteristic functions). 11 axioms. 13 theorems.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/CentralLimitTheoremOQ03OQ02.lean",
+    "tags": [
+      "probability",
+      "measure-theory",
+      "infinitely-divisible",
+      "lévy-khintchine",
+      "clt",
+      "stable-distributions"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 11,
+    "lineCount": 291,
+    "theoremCount": 13,
+    "assumptions": "11 axioms for Gaussian ID, Lévy-Khintchine, and characteristic function properties.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Lévy-Khintchine theorem classifies all infinitely divisible distributions via (b, σ², ν): drift + diffusion + Lévy jump measure.",
+    "problemStatement": "Formalize infinitely divisible distributions and prove basic properties.",
+    "proofStrategy": "Define convolution monoid on measures; prove convPow_dist; define IsInfDivisible; prove closure properties; axiomatize Lévy-Khintchine.",
+    "keyInsights": [
+      "**convPow_dist**: Convolution power distributes over product of measures",
+      "**Assumptions**: 11 axioms for Gaussian ID, Lévy-Khintchine, and characteristic function properties."
+    ]
+  },
+  "sections": [
+    {
+      "id": "central-limit-theorem-oq-03-oq-02",
+      "title": "Infinitely Divisible Distributions and Lévy-Khintchine Theorem (OQ-03-OQ-02)",
+      "startLine": 1,
+      "endLine": 291,
+      "summary": "convPow_dist and supporting lemmas.",
+      "mathContext": "$(μ * ν)^{*n} = μ^{*n} * ν^{*n}$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Infinitely Divisible Distributions and Lévy-Khintchine Theorem (OQ-03-OQ-02): 13 theorems, 0 sorries, 11 axioms.",
+    "implications": "Convolution power distributes over product of measures",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 291,
+    "axiomCount": 11,
+    "theoremCount": 13,
+    "definitionCount": 0,
+    "path": "Proofs/CentralLimitTheoremOQ03OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "convPow_dist",
+      "type": "core",
+      "statement": "(μ * ν)^{*n} = μ^{*n} * ν^{*n}",
+      "description": "Convolution power distributes over product of measures",
+      "significance": "Convolution power distributes over product of measures"
+    }
+  ],
+  "sorries": 0
+}

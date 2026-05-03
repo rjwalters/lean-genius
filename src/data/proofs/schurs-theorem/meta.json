@@ -1,0 +1,82 @@
+{
+  "id": "schurs-theorem",
+  "title": "Schur's Theorem: Monochromatic Sum Solutions in Ramsey Theory",
+  "slug": "schurs-theorem",
+  "description": "Proves Schur's Theorem (1916): for any r-coloring of positive integers, there exists a monochromatic solution to x + y = z. Derives from Ramsey's theorem via edge-coloring construction: color {i,j} by color of |j-i|, extract monochromatic triangle to get Schur triple. Proves Schur number lower bounds and S(2)=5. Imports Proofs.RamseysTheorem (1 axiom) + 4 own axioms = 5 total.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/SchursTheorem.lean",
+    "tags": [
+      "combinatorics",
+      "ramsey-theory",
+      "schur",
+      "coloring",
+      "monochromatic",
+      "number-theory"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 5,
+    "lineCount": 547,
+    "theoremCount": 14,
+    "assumptions": "5 axioms total: 1 from Proofs.RamseysTheorem (ramsey_theorem) + 4 own (Schur number bounds).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Schur (1916) proved the theorem using Ramsey theory. Schur numbers S(r) grow rapidly: S(1)=2, S(2)=5, S(3)=14, S(4)=45, S(5)=161.",
+    "problemStatement": "Prove Schur's theorem as a consequence of Ramsey's theorem.",
+    "proofStrategy": "Given r-coloring of [1,n], color edge {i,j} by color of |j-i|; Ramsey gives monochromatic triangle {a,b,c}; (b-a),(c-b),(c-a) form Schur triple.",
+    "keyInsights": [
+      "**schurs_theorem**: Every finite coloring of positive integers contains a monochromatic Schur triple",
+      "**Assumptions**: 5 axioms total: 1 from Proofs.RamseysTheorem (ramsey_theorem) + 4 own (Schur number bounds)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "schurs-theorem",
+      "title": "Schur's Theorem",
+      "startLine": 1,
+      "endLine": 547,
+      "summary": "schurs_theorem and supporting lemmas.",
+      "mathContext": "$∀ r-coloring of [1,S(r)], ∃ x y z same color with x + y = z$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Schur's Theorem: 14 theorems, 0 sorries, 5 axioms.",
+    "implications": "Every finite coloring of positive integers contains a monochromatic Schur triple",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 547,
+    "axiomCount": 5,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "path": "Proofs/SchursTheorem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "schurs_theorem",
+      "type": "core",
+      "statement": "∀ r-coloring of [1,S(r)], ∃ x y z same color with x + y = z",
+      "description": "Every finite coloring of positive integers contains a monochromatic Schur triple",
+      "significance": "Every finite coloring of positive integers contains a monochromatic Schur triple"
+    }
+  ],
+  "sorries": 0
+}

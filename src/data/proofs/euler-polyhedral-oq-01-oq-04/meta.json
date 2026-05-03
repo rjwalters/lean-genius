@@ -1,0 +1,82 @@
+{
+  "id": "euler-polyhedral-oq-01-oq-04",
+  "title": "Kuratowski's Theorem: Planarity via Forbidden Minors (OQ-01-OQ-04)",
+  "slug": "euler-polyhedral-oq-01-oq-04",
+  "description": "Formalizes Kuratowski's theorem (1930): a finite graph is planar iff it contains no subdivision of K₅ or K₃,₃. Includes Wagner's equivalent minor characterization. Proves: graph minor relation is reflexive and transitive, K₅ and K₃,₃ edge counts, planarity implies degree bounds and coloring bounds. 12 axioms for the characterization iff; structural consequences proved. 29 theorems.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/EulerPolyhedralOQ01OQ04.lean",
+    "tags": [
+      "combinatorics",
+      "graph-theory",
+      "planarity",
+      "kuratowski",
+      "euler-formula",
+      "minors"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 12,
+    "lineCount": 401,
+    "theoremCount": 29,
+    "assumptions": "12 axioms for Kuratowski/Wagner characterization; minor transitivity proved.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Kuratowski (1930) proved the planarity characterization. Wagner (1937) gave the equivalent minor version.",
+    "problemStatement": "Formalize Kuratowski's theorem and derive structural consequences.",
+    "proofStrategy": "Graph minor and subdivision definitions; K₅, K₃,₃ definitions with edge counts; iff statement via 12 axioms.",
+    "keyInsights": [
+      "**kuratowski_theorem**: Kuratowski's characterization of planar graphs via forbidden topological minors",
+      "**Assumptions**: 12 axioms for Kuratowski/Wagner characterization; minor transitivity proved."
+    ]
+  },
+  "sections": [
+    {
+      "id": "euler-polyhedral-oq-01-oq-04",
+      "title": "Kuratowski's Theorem",
+      "startLine": 1,
+      "endLine": 401,
+      "summary": "kuratowski_theorem and supporting lemmas.",
+      "mathContext": "$G is planar ↔ G has no K₅ or K₃,₃ subdivision$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Kuratowski's Theorem: 29 theorems, 0 sorries, 12 axioms.",
+    "implications": "Kuratowski's characterization of planar graphs via forbidden topological minors",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 401,
+    "axiomCount": 12,
+    "theoremCount": 29,
+    "definitionCount": 0,
+    "path": "Proofs/EulerPolyhedralOQ01OQ04.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "kuratowski_theorem",
+      "type": "core",
+      "statement": "G is planar ↔ G has no K₅ or K₃,₃ subdivision",
+      "description": "Kuratowski's characterization of planar graphs via forbidden topological minors",
+      "significance": "Kuratowski's characterization of planar graphs via forbidden topological minors"
+    }
+  ],
+  "sorries": 0
+}

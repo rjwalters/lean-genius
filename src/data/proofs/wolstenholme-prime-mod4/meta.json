@@ -1,0 +1,81 @@
+{
+  "id": "wolstenholme-prime-mod4",
+  "title": "Wolstenholme Primes and the Mod 4 Open Question",
+  "slug": "wolstenholme-prime-mod4",
+  "description": "Formalizes Wolstenholme primes (primes p where C(2p-1,p-1) ≡ 1 mod p⁴). Proves computationally that primes 5-23 are NOT Wolstenholme primes. Axiomatizes the two known Wolstenholme primes (16843 and 2124679, both ≡ 3 mod 4). Proves structural results and formalizes the open question: does any Wolstenholme prime exist with p ≡ 1 mod 4? 3 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/WolstenholmePrimeMod4.lean",
+    "tags": [
+      "number-theory",
+      "wolstenholme",
+      "primes",
+      "binomial-coefficients",
+      "open-problems"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "lineCount": 262,
+    "theoremCount": 30,
+    "assumptions": "3 axioms: the two known Wolstenholme prime facts (binomial too large for kernel computation).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Wolstenholme's theorem (1862): C(2p-1,p-1) ≡ 1 mod p³ for p ≥ 5. Only two Wolstenholme primes (satisfying mod p⁴) are known.",
+    "problemStatement": "Define Wolstenholme primes and prove properties of the two known examples.",
+    "proofStrategy": "Compute C(2p-1,p-1) mod p⁴ for small primes to verify non-Wolstenholme; axiomatize large known examples.",
+    "keyInsights": [
+      "**known_wolstenholme_primes_mod4**: Both known Wolstenholme primes are congruent to 3 mod 4",
+      "**Assumptions**: 3 axioms: the two known Wolstenholme prime facts (binomial too large for kernel computation)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "wolstenholme-prime-mod4",
+      "title": "Wolstenholme Primes and the Mod 4 Open Question",
+      "startLine": 1,
+      "endLine": 262,
+      "summary": "known_wolstenholme_primes_mod4 and supporting lemmas.",
+      "mathContext": "$16843 ≡ 3 (mod 4) ∧ 2124679 ≡ 3 (mod 4)$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Wolstenholme Primes and the Mod 4 Open Question: 30 theorems, 0 sorries, 3 axioms.",
+    "implications": "Both known Wolstenholme primes are congruent to 3 mod 4",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 262,
+    "axiomCount": 3,
+    "theoremCount": 30,
+    "definitionCount": 0,
+    "path": "Proofs/WolstenholmePrimeMod4.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "known_wolstenholme_primes_mod4",
+      "type": "core",
+      "statement": "16843 ≡ 3 (mod 4) ∧ 2124679 ≡ 3 (mod 4)",
+      "description": "Both known Wolstenholme primes are congruent to 3 mod 4",
+      "significance": "Both known Wolstenholme primes are congruent to 3 mod 4"
+    }
+  ],
+  "sorries": 0
+}

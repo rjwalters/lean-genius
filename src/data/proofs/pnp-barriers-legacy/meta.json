@@ -1,0 +1,88 @@
+{
+  "id": "pnp-barriers-legacy",
+  "title": "P≠NP Barriers Legacy: Relativization and Natural Proofs (Deprecated)",
+  "slug": "pnp-barriers-legacy",
+  "description": "DEPRECATED: Unsound formalization of P≠NP barriers using an inconsistent computation model where OracleProgram.compute is an arbitrary Lean function, collapsing P = NP = Set.univ. Retains historical value: formalizes Baker-Gill-Solovay (1975) and Razborov-Rudich (1997) barrier theorems and includes self-documenting proof that the model is inconsistent. 88 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/PNPBarriersLegacy.lean",
+    "tags": [
+      "complexity-theory",
+      "p-vs-np",
+      "barriers",
+      "deprecated",
+      "unsound",
+      "historical"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 88,
+    "lineCount": 17968,
+    "theoremCount": 644,
+    "assumptions": "88 axioms (inconsistent model). File is deprecated; use ComplexityCore.lean or PNPBarriersUnified.lean instead.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Baker-Gill-Solovay (1975) showed relativization prevents certain proof techniques. Razborov-Rudich (1997) showed natural proofs cannot prove P≠NP under crypto assumptions.",
+    "problemStatement": "Formalize relativization and natural proofs barriers for P≠NP.",
+    "proofStrategy": "DEPRECATED model: OracleProgram.compute is arbitrary, making trivialSolver constructible for any problem.",
+    "keyInsights": [
+      "**abstract_model_inconsistent**: Proves the computation model is internally inconsistent — P = NP = EXP = Set.univ under this model",
+      "**Assumptions**: 88 axioms (inconsistent model). File is deprecated; use ComplexityCore.lean or PNPBarriersUnified.lean instead."
+    ]
+  },
+  "sections": [
+    {
+      "id": "pnp-barriers-legacy",
+      "title": "P≠NP Barriers Legacy",
+      "startLine": 1,
+      "endLine": 17968,
+      "summary": "abstract_model_inconsistent and supporting lemmas.",
+      "mathContext": "$abstract_model_inconsistent : False$"
+    }
+  ],
+  "conclusion": {
+    "summary": "P≠NP Barriers Legacy: 644 theorems, 0 sorries, 88 axioms.",
+    "implications": "Proves the computation model is internally inconsistent — P = NP = EXP = Set.univ under this model",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 17968,
+    "axiomCount": 88,
+    "theoremCount": 644,
+    "definitionCount": 0,
+    "path": "Proofs/PNPBarriersLegacy.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "pvs-np",
+      "relationship": "extends",
+      "description": "Extends pvs-np"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "abstract_model_inconsistent",
+      "type": "core",
+      "statement": "abstract_model_inconsistent : False",
+      "description": "Proves the computation model is internally inconsistent — P = NP = EXP = Set.univ under this model",
+      "significance": "Proves the computation model is internally inconsistent — P = NP = EXP = Set.univ under this model"
+    }
+  ],
+  "sorries": 0
+}

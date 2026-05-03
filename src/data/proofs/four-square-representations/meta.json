@@ -1,0 +1,81 @@
+{
+  "id": "four-square-representations",
+  "title": "Four-Square Representations: Jacobi's Four-Square Theorem",
+  "slug": "four-square-representations",
+  "description": "Formalizes Jacobi's Four-Square Theorem (1834): r₄(n) = 8 × Σ_{d|n, 4∤d} d. Proves consequences: r₄(n) > 0 for all n > 0 (recovering Lagrange's theorem), exact values for small n, r₄(p) = 8(p+1) for odd primes p, and 8 | r₄(n) for all n > 0. Jacobi's formula requires modular forms (1 axiom); counting consequences proved. 45 theorems, 2 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/FourSquareRepresentations.lean",
+    "tags": [
+      "number-theory",
+      "sum-of-squares",
+      "jacobi",
+      "four-squares",
+      "lagrange"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "lineCount": 453,
+    "theoremCount": 45,
+    "assumptions": "1 axiom: jacobi_formula (r₄(n) = 8σ*(n)). All consequences proved.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Lagrange (1770) proved every positive integer is a sum of four squares. Jacobi (1834) gave the exact count r₄(n) via divisor sums.",
+    "problemStatement": "Formalize r₄(n) counting function and Jacobi's exact formula.",
+    "proofStrategy": "Define modified divisor sum σ*(n) = Σ_{d|n, 4∤d} d. Jacobi axiomatized (requires modular forms); consequences proved.",
+    "keyInsights": [
+      "**jacobi_four_square**: Jacobi's formula for the number of representations as sum of four squares",
+      "**Assumptions**: 1 axiom: jacobi_formula (r₄(n) = 8σ*(n)). All consequences proved."
+    ]
+  },
+  "sections": [
+    {
+      "id": "four-square-representations",
+      "title": "Four-Square Representations",
+      "startLine": 1,
+      "endLine": 453,
+      "summary": "jacobi_four_square and supporting lemmas.",
+      "mathContext": "$r₄(n) = 8 × σ*(n)$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Four-Square Representations: 45 theorems, 0 sorries, 2 axioms.",
+    "implications": "Jacobi's formula for the number of representations as sum of four squares",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 453,
+    "axiomCount": 2,
+    "theoremCount": 45,
+    "definitionCount": 0,
+    "path": "Proofs/FourSquareRepresentations.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "jacobi_four_square",
+      "type": "core",
+      "statement": "r₄(n) = 8 × σ*(n)",
+      "description": "Jacobi's formula for the number of representations as sum of four squares",
+      "significance": "Jacobi's formula for the number of representations as sum of four squares"
+    }
+  ],
+  "sorries": 0
+}

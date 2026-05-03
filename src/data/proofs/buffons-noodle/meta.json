@@ -1,0 +1,81 @@
+{
+  "id": "buffons-noodle",
+  "title": "Buffon's Noodle Theorem: Expected Crossings for Curved Needles",
+  "slug": "buffons-noodle",
+  "description": "Formalizes Buffon's Noodle Theorem (Barbier 1860): for a curve of length L dropped randomly on a floor with parallel lines spaced distance d apart, E[crossings] = 2L/(πd) regardless of the curve's shape. The key insight is linearity of expectation. Includes connection to the Cauchy-Crofton formula. 1 axiom for the probabilistic integral. 19 theorems.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BuffonsNoodle.lean",
+    "tags": [
+      "probability",
+      "integral-geometry",
+      "buffon",
+      "geometric-probability",
+      "cauchy-crofton"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 456,
+    "theoremCount": 19,
+    "assumptions": "1 axiom for integral probability of needle crossing a line.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Buffon (1777) posed the needle problem; Barbier (1860) extended to curved needles using linearity of expectation.",
+    "problemStatement": "Prove Buffon's Noodle formula via linearity of expectation and segment-wise Buffon needle.",
+    "proofStrategy": "Decompose noodle into segments; apply E[crossings_i] = 2Lᵢ/(πd); sum via linearity of expectation.",
+    "keyInsights": [
+      "**buffon_noodle_theorem**: Expected number of crossings depends only on total arc length, not curve shape",
+      "**Assumptions**: 1 axiom for integral probability of needle crossing a line."
+    ]
+  },
+  "sections": [
+    {
+      "id": "buffons-noodle",
+      "title": "Buffon's Noodle Theorem",
+      "startLine": 1,
+      "endLine": 456,
+      "summary": "buffon_noodle_theorem and supporting lemmas.",
+      "mathContext": "$E[crossings] = 2L / (π * d)$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Buffon's Noodle Theorem: 19 theorems, 0 sorries, 1 axioms.",
+    "implications": "Expected number of crossings depends only on total arc length, not curve shape",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 456,
+    "axiomCount": 1,
+    "theoremCount": 19,
+    "definitionCount": 0,
+    "path": "Proofs/BuffonsNoodle.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "buffon_noodle_theorem",
+      "type": "core",
+      "statement": "E[crossings] = 2L / (π * d)",
+      "description": "Expected number of crossings depends only on total arc length, not curve shape",
+      "significance": "Expected number of crossings depends only on total arc length, not curve shape"
+    }
+  ],
+  "sorries": 0
+}

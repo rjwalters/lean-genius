@@ -1,0 +1,81 @@
+{
+  "id": "ehrhart-polynomials",
+  "title": "Ehrhart Polynomials for Lattice Polytopes",
+  "slug": "ehrhart-polynomials",
+  "description": "Formalizes Ehrhart's theorem (1962): for a d-dimensional convex lattice polytope P, L_P(n) = |nP ∩ ℤᵈ| is a polynomial of degree d in n. Proves coefficient interpretations, Pick's theorem recovery in 2D, unit simplex formula L_Δ(n) = C(n+d,d), Reeve tetrahedra analysis, and Ehrhart-Macdonald reciprocity. 3 axioms for the main Ehrhart polynomial theorem. 25 theorems.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/EhrhartPolynomials.lean",
+    "tags": [
+      "combinatorics",
+      "lattice-polytopes",
+      "ehrhart",
+      "picks-theorem",
+      "generating-functions"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "lineCount": 521,
+    "theoremCount": 25,
+    "assumptions": "3 axioms for Ehrhart polynomial existence, leading coefficient, and Ehrhart-Macdonald reciprocity.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Ehrhart (1962) proved L_P(n) is a polynomial. This generalizes Pick's theorem to higher dimensions.",
+    "problemStatement": "Formalize Ehrhart polynomials, their properties, and the connection to Pick's theorem.",
+    "proofStrategy": "Define Ehrhart counting function; axiomatize polynomial existence; prove Pick's recovery in 2D and unit simplex formula.",
+    "keyInsights": [
+      "**ehrhart_theorem**: The Ehrhart polynomial exists and its leading coefficient is the volume",
+      "**Assumptions**: 3 axioms for Ehrhart polynomial existence, leading coefficient, and Ehrhart-Macdonald reciprocity."
+    ]
+  },
+  "sections": [
+    {
+      "id": "ehrhart-polynomials",
+      "title": "Ehrhart Polynomials for Lattice Polytopes",
+      "startLine": 1,
+      "endLine": 521,
+      "summary": "ehrhart_theorem and supporting lemmas.",
+      "mathContext": "$L_P(n) is a polynomial of degree d with leading coefficient $"
+    }
+  ],
+  "conclusion": {
+    "summary": "Ehrhart Polynomials for Lattice Polytopes: 25 theorems, 0 sorries, 3 axioms.",
+    "implications": "The Ehrhart polynomial exists and its leading coefficient is the volume",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 521,
+    "axiomCount": 3,
+    "theoremCount": 25,
+    "definitionCount": 0,
+    "path": "Proofs/EhrhartPolynomials.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "ehrhart_theorem",
+      "type": "core",
+      "statement": "L_P(n) is a polynomial of degree d with leading coefficient vol(P)",
+      "description": "The Ehrhart polynomial exists and its leading coefficient is the volume",
+      "significance": "The Ehrhart polynomial exists and its leading coefficient is the volume"
+    }
+  ],
+  "sorries": 0
+}

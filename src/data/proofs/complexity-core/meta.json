@@ -1,0 +1,87 @@
+{
+  "id": "complexity-core",
+  "title": "Complexity Theory Core: Canonical Sound Gödelized Computation Model",
+  "slug": "complexity-core",
+  "description": "Provides the canonical sound computation model for P vs NP formalizations, fixing the soundness flaw in PNPBarriersLegacy.lean. Programs are natural numbers (Gödel codes); computation is via an opaque universal function Φ preventing trivial solver construction. Defines P, NP, coNP, EXP, oracle computation, and NP-completeness. 5 axioms for the opaque universal function. 16 theorems.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/ComplexityCore.lean",
+    "tags": [
+      "complexity-theory",
+      "computation-model",
+      "godel-numbering",
+      "p-vs-np",
+      "oracle-computation"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 5,
+    "lineCount": 407,
+    "theoremCount": 16,
+    "assumptions": "5 axioms for universal computation function Φ and its time-bounded properties.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The key design principle: programs are countable (indexed by ℕ) but decision problems (ℕ → Bool) are uncountable, preventing trivial solver construction.",
+    "problemStatement": "Provide a sound computation model for complexity-theoretic formalizations.",
+    "proofStrategy": "Opaque universal function Φ : ℕ → ℕ → Bool; oracle queries tracked in step count; P, NP, EXP defined via Φ.",
+    "keyInsights": [
+      "**P_subset_NP**: Every polynomial-time decidable problem is also polynomial-time verifiable",
+      "**Assumptions**: 5 axioms for universal computation function Φ and its time-bounded properties."
+    ]
+  },
+  "sections": [
+    {
+      "id": "complexity-core",
+      "title": "Complexity Theory Core",
+      "startLine": 1,
+      "endLine": 407,
+      "summary": "P_subset_NP and supporting lemmas.",
+      "mathContext": "$P ⊆ NP$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complexity Theory Core: 16 theorems, 0 sorries, 5 axioms.",
+    "implications": "Every polynomial-time decidable problem is also polynomial-time verifiable",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 407,
+    "axiomCount": 5,
+    "theoremCount": 16,
+    "definitionCount": 0,
+    "path": "Proofs/ComplexityCore.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "pvs-np",
+      "relationship": "extends",
+      "description": "Extends pvs-np"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "P_subset_NP",
+      "type": "core",
+      "statement": "P ⊆ NP",
+      "description": "Every polynomial-time decidable problem is also polynomial-time verifiable",
+      "significance": "Every polynomial-time decidable problem is also polynomial-time verifiable"
+    }
+  ],
+  "sorries": 0
+}

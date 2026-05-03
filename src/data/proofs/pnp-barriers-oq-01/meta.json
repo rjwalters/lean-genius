@@ -1,0 +1,88 @@
+{
+  "id": "pnp-barriers-oq-01",
+  "title": "P≠NP Barriers OQ-01: Sound Axiomatic Formalization (Three Barriers)",
+  "slug": "pnp-barriers-oq-01",
+  "description": "Sound axiomatic formalization of the three major P≠NP barriers using opaque complexity class constants with axiomatized properties (no trivial solver). Formalizes Relativization (Baker-Gill-Solovay 1975), Natural Proofs (Razborov-Rudich 1997), and Algebrization (Aaronson-Wigderson 2009). Includes polynomial hierarchy and Karp-Lipton theorem. 28 axioms (3 eliminated from prior 31).",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/PNPBarriersOQ01.lean",
+    "tags": [
+      "complexity-theory",
+      "p-vs-np",
+      "barriers",
+      "relativization",
+      "natural-proofs",
+      "algebrization"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 28,
+    "lineCount": 672,
+    "theoremCount": 42,
+    "assumptions": "28 axioms (down from 31; 3 redundant axioms eliminated).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Baker-Gill-Solovay (1975), Razborov-Rudich (1997), Aaronson-Wigderson (2009) explain why standard techniques fail to resolve P vs NP.",
+    "problemStatement": "Prove all three major barriers using sound opaque axiomatic complexity classes.",
+    "proofStrategy": "Opaque complexity class constants prevent trivial solver construction; axioms capture proved complexity theory facts.",
+    "keyInsights": [
+      "**barrier_unified**: Unified statement of relativization, natural proofs, and algebrization barriers",
+      "**Assumptions**: 28 axioms (down from 31; 3 redundant axioms eliminated)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "pnp-barriers-oq-01",
+      "title": "P≠NP Barriers OQ-01",
+      "startLine": 1,
+      "endLine": 672,
+      "summary": "barrier_unified and supporting lemmas.",
+      "mathContext": "$No elementary proof technique can resolve P vs NP$"
+    }
+  ],
+  "conclusion": {
+    "summary": "P≠NP Barriers OQ-01: 42 theorems, 0 sorries, 28 axioms.",
+    "implications": "Unified statement of relativization, natural proofs, and algebrization barriers",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 672,
+    "axiomCount": 28,
+    "theoremCount": 42,
+    "definitionCount": 0,
+    "path": "Proofs/PNPBarriersOQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "pvs-np",
+      "relationship": "extends",
+      "description": "Extends pvs-np"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "barrier_unified",
+      "type": "core",
+      "statement": "No elementary proof technique can resolve P vs NP",
+      "description": "Unified statement of relativization, natural proofs, and algebrization barriers",
+      "significance": "Unified statement of relativization, natural proofs, and algebrization barriers"
+    }
+  ],
+  "sorries": 0
+}

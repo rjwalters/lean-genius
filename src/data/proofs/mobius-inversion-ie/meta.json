@@ -1,0 +1,82 @@
+{
+  "id": "mobius-inversion-ie",
+  "title": "Möbius Inversion and Inclusion-Exclusion: Boolean Lattice Connection",
+  "slug": "mobius-inversion-ie",
+  "description": "Formalizes Gian-Carlo Rota's (1964) insight that the Inclusion-Exclusion Principle is Möbius inversion on the Boolean lattice. Defines the Möbius function on Finset subsets, proves alternating binomial sum identities, zeta/Möbius transform properties, and the classical PIE as a special case. 2 axioms. 24 theorems.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/MobiusInversionIE.lean",
+    "tags": [
+      "combinatorics",
+      "mobius-inversion",
+      "inclusion-exclusion",
+      "boolean-lattice",
+      "rota",
+      "posets"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "lineCount": 349,
+    "theoremCount": 24,
+    "assumptions": "2 axioms for Möbius function uniqueness on general posets.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Rota (1964) unified combinatorial identities as Möbius inversions on posets: Boolean lattice → PIE, divisor lattice → number-theoretic Möbius function.",
+    "problemStatement": "Prove that PIE is Möbius inversion on the Boolean lattice of finite sets.",
+    "proofStrategy": "Define posetZeta and Möbius function; prove alternating binomial identity; express PIE formula via Möbius function.",
+    "keyInsights": [
+      "**IE_is_mobius_inversion**: The Inclusion-Exclusion Principle is a special case of Möbius inversion on the Boolean lattice",
+      "**Assumptions**: 2 axioms for Möbius function uniqueness on general posets."
+    ]
+  },
+  "sections": [
+    {
+      "id": "mobius-inversion-ie",
+      "title": "Möbius Inversion and Inclusion-Exclusion",
+      "startLine": 1,
+      "endLine": 349,
+      "summary": "IE_is_mobius_inversion and supporting lemmas.",
+      "mathContext": "$PIE formula = Möbius inversion on Boolean lattice$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Möbius Inversion and Inclusion-Exclusion: 24 theorems, 0 sorries, 2 axioms.",
+    "implications": "The Inclusion-Exclusion Principle is a special case of Möbius inversion on the Boolean lattice",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 349,
+    "axiomCount": 2,
+    "theoremCount": 24,
+    "definitionCount": 0,
+    "path": "Proofs/MobiusInversionIE.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "IE_is_mobius_inversion",
+      "type": "core",
+      "statement": "PIE formula = Möbius inversion on Boolean lattice",
+      "description": "The Inclusion-Exclusion Principle is a special case of Möbius inversion on the Boolean lattice",
+      "significance": "The Inclusion-Exclusion Principle is a special case of Möbius inversion on the Boolean lattice"
+    }
+  ],
+  "sorries": 0
+}

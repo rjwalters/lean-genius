@@ -1,0 +1,82 @@
+{
+  "id": "birch-swinnerton-dyer-oq-01",
+  "title": "BSD OQ-01: Finiteness of Ш(E/ℚ) via Kolyvagin's Euler System",
+  "slug": "birch-swinnerton-dyer-oq-01",
+  "description": "Proves finiteness of the Tate-Shafarevich group Ш(E/ℚ)[p^∞] for elliptic curves E/ℚ with analytic rank ≤ 1, using Kolyvagin's Euler system. Rank 0: L(E,1)≠0 → Kolyvagin bounds p-Selmer rank 0 → Ш[p^∞] finite. Rank 1: Gross-Zagier (1986) gives non-torsion Heegner point → Kolyvagin bounds rank 1 → Ш[p^∞] finite. Imports BirchSwinnertonDyer (17 axioms) + 8 own = 25 total.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BirchSwinnertonDyerOQ01.lean",
+    "tags": [
+      "number-theory",
+      "elliptic-curves",
+      "bsd",
+      "kolyvagin",
+      "tate-shafarevich",
+      "heegner-points"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 25,
+    "lineCount": 297,
+    "theoremCount": 8,
+    "assumptions": "8 axioms own (Kolyvagin, Gross-Zagier, Selmer bounds) + 17 from BirchSwinnertonDyer parent = 25 total.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Kolyvagin (1990) and Gross-Zagier (1986) gave the first unconditional results toward BSD.",
+    "problemStatement": "Prove finiteness of Ш(E/ℚ) for rank ≤ 1 cases using Kolyvagin's Euler system.",
+    "proofStrategy": "Rank 0: L(E,1)≠0 via Kolyvagin Euler system → Selmer rank 0 → Ш finite. Rank 1: Gross-Zagier gives non-torsion Heegner point → Kolyvagin bounds rank 1 → Ш finite.",
+    "keyInsights": [
+      "**sha_finite_rank_zero**: Kolyvagin's theorem: non-vanishing L-value implies finite Tate-Shafarevich group",
+      "**Assumptions**: 8 axioms own (Kolyvagin, Gross-Zagier, Selmer bounds) + 17 from BirchSwinnertonDyer parent = 25 total."
+    ]
+  },
+  "sections": [
+    {
+      "id": "birch-swinnerton-dyer-oq-01",
+      "title": "BSD OQ-01",
+      "startLine": 1,
+      "endLine": 297,
+      "summary": "sha_finite_rank_zero and supporting lemmas.",
+      "mathContext": "$L(E,1) ≠ 0 → Ш(E/ℚ)[p^∞] is finite$"
+    }
+  ],
+  "conclusion": {
+    "summary": "BSD OQ-01: 8 theorems, 0 sorries, 25 axioms.",
+    "implications": "Kolyvagin's theorem: non-vanishing L-value implies finite Tate-Shafarevich group",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 297,
+    "axiomCount": 25,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/BirchSwinnertonDyerOQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "sha_finite_rank_zero",
+      "type": "core",
+      "statement": "L(E,1) ≠ 0 → Ш(E/ℚ)[p^∞] is finite",
+      "description": "Kolyvagin's theorem: non-vanishing L-value implies finite Tate-Shafarevich group",
+      "significance": "Kolyvagin's theorem: non-vanishing L-value implies finite Tate-Shafarevich group"
+    }
+  ],
+  "sorries": 0
+}

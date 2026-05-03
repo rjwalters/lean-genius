@@ -1,0 +1,81 @@
+{
+  "id": "erdos-25-log-density",
+  "title": "Erdős #25: Logarithmic Density of Residue-Avoiding Sets",
+  "slug": "erdos-25-log-density",
+  "description": "Infrastructure for Erdős Problem #25: must the logarithmic density of residue-avoiding sets always exist? Formalizes logarithmic density (upper, lower, and exact), the residue-avoiding set construction, and proves basic properties. Related to the Davenport-Erdős theorem on log density of multiples. 3 axioms for density limit results. 25 theorems.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos25LogDensity.lean",
+    "tags": [
+      "number-theory",
+      "erdos-problems",
+      "density",
+      "logarithmic-density",
+      "modular-arithmetic"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "lineCount": 736,
+    "theoremCount": 25,
+    "assumptions": "3 axioms for Davenport-Erdős density bounds.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erdős #25 asks whether log density always exists for residue-avoiding sets.",
+    "problemStatement": "Define logarithmic density and residue-avoiding sets; prove basic properties; state the open question.",
+    "proofStrategy": "Define log density as lim of (1/log N) Σ_{n≤N, n∈A} 1/n; prove upper/lower density properties.",
+    "keyInsights": [
+      "**log_density_residue_avoiding**: Logarithmic density may fail to exist for residue-avoiding sets (open question)",
+      "**Assumptions**: 3 axioms for Davenport-Erdős density bounds."
+    ]
+  },
+  "sections": [
+    {
+      "id": "erdos-25-log-density",
+      "title": "Erdős #25",
+      "startLine": 1,
+      "endLine": 736,
+      "summary": "log_density_residue_avoiding and supporting lemmas.",
+      "mathContext": "$∀ A residue-avoiding, log_density A may or may not exist (op$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős #25: 25 theorems, 0 sorries, 3 axioms.",
+    "implications": "Logarithmic density may fail to exist for residue-avoiding sets (open question)",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 736,
+    "axiomCount": 3,
+    "theoremCount": 25,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos25LogDensity.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "log_density_residue_avoiding",
+      "type": "core",
+      "statement": "∀ A residue-avoiding, log_density A may or may not exist (open)",
+      "description": "Logarithmic density may fail to exist for residue-avoiding sets (open question)",
+      "significance": "Logarithmic density may fail to exist for residue-avoiding sets (open question)"
+    }
+  ],
+  "sorries": 0
+}

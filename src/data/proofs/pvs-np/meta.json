@@ -1,0 +1,87 @@
+{
+  "id": "pvs-np",
+  "title": "P vs NP: Complexity Classes, Reductions, and NP-Completeness",
+  "slug": "pvs-np",
+  "description": "Formalizes the P vs NP problem. Defines complexity classes P and NP, polynomial-time reductions, NP-completeness, and states the central conjecture. Proves P ⊆ NP, states Cook-Levin theorem (SAT is NP-complete), and derives structural consequences. 7 axioms using an abstract computation model.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/PvsNP.lean",
+    "tags": [
+      "complexity-theory",
+      "p-vs-np",
+      "np-completeness",
+      "polynomial-reduction",
+      "sat"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 7,
+    "lineCount": 2462,
+    "theoremCount": 83,
+    "assumptions": "7 axioms for Cook-Levin and NP-completeness transfer.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The P vs NP problem is one of the seven Millennium Prize Problems, asking whether every problem whose solution can be quickly verified can also be quickly solved.",
+    "problemStatement": "Formalize complexity classes P and NP and state the central P≠NP conjecture.",
+    "proofStrategy": "Abstract Turing machine model (programs as natural numbers), polynomial arithmetic bounds proved.",
+    "keyInsights": [
+      "**P_subset_NP**: Every problem solvable in polynomial time is also verifiable in polynomial time",
+      "**Assumptions**: 7 axioms for Cook-Levin and NP-completeness transfer."
+    ]
+  },
+  "sections": [
+    {
+      "id": "pvs-np",
+      "title": "P vs NP",
+      "startLine": 1,
+      "endLine": 2462,
+      "summary": "P_subset_NP and supporting lemmas.",
+      "mathContext": "$P ⊆ NP$"
+    }
+  ],
+  "conclusion": {
+    "summary": "P vs NP: 83 theorems, 0 sorries, 7 axioms.",
+    "implications": "Every problem solvable in polynomial time is also verifiable in polynomial time",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 2462,
+    "axiomCount": 7,
+    "theoremCount": 83,
+    "definitionCount": 0,
+    "path": "Proofs/PvsNP.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "pnp-barriers-sound",
+      "relationship": "extends",
+      "description": "Extends pnp-barriers-sound"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "P_subset_NP",
+      "type": "core",
+      "statement": "P ⊆ NP",
+      "description": "Every problem solvable in polynomial time is also verifiable in polynomial time",
+      "significance": "Every problem solvable in polynomial time is also verifiable in polynomial time"
+    }
+  ],
+  "sorries": 0
+}

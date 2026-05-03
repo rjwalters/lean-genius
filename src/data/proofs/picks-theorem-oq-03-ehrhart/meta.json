@@ -1,0 +1,91 @@
+{
+  "id": "picks-theorem-oq-03-ehrhart",
+  "title": "Ehrhart Polynomials: Pick's Theorem OQ-03 (Unit Simplex, Reeve Tetrahedra, Reciprocity)",
+  "slug": "picks-theorem-oq-03-ehrhart",
+  "description": "Formalizes Ehrhart polynomials as the higher-dimensional generalization of Pick's theorem. Proves: Ehrhart polynomial structure (degree d, leading coefficient vol(P)), Pick's theorem recovery in 2D via L_P(n) = A·n² + (b/2)·n + 1, unit simplex formula L_Δ(n) = C(n+d,d), Reeve tetrahedra analysis (distinct volumes give distinct Ehrhart polynomials in 3D), and Ehrhart-Macdonald reciprocity. 19 theorems, 1 axiom.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/PicksTheoremOQ03.lean",
+    "tags": [
+      "combinatorics",
+      "lattice-polytopes",
+      "picks-theorem",
+      "ehrhart",
+      "higher-dimensions",
+      "reciprocity"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 437,
+    "theoremCount": 19,
+    "assumptions": "1 axiom: ehrhart_polynomial_existence (Ehrhart polynomial existence theorem).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.eval",
+        "description": "Polynomial evaluation for Ehrhart polynomial",
+        "module": "Mathlib.Algebra.Polynomial.Eval"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Ehrhart (1962) proved that for a d-dimensional convex lattice polytope P, the function L_P(n) = |nP ∩ ℤᵈ| is a polynomial of degree d in n. In 2D this recovers Pick's formula A = i + b/2 - 1. In 3D, Reeve tetrahedra show no simple Pick-type formula: two tetrahedra with the same boundary count can have different volumes.",
+    "problemStatement": "Formalize Ehrhart polynomials, recover Pick's theorem as the 2D case, and prove the Reeve tetrahedra counterexample to naive 3D generalization.",
+    "proofStrategy": "Define EhrhartData structure with polynomial coefficients; axiomatize existence theorem; prove L_P(1) = total lattice points; derive Pick's formula from 2D Ehrhart polynomial; prove unit simplex formula L_Δ(n) = C(n+d,d).",
+    "keyInsights": [
+      "**Ehrhart polynomial**: L_P(n) = |nP ∩ ℤᵈ| is polynomial of degree d, leading coefficient = vol(P).",
+      "**Pick's recovery**: In 2D, L_P(n) = A·n² + (b/2)·n + 1; setting n=1 gives Pick's formula A = i + b/2 - 1.",
+      "**Reeve tetrahedra**: Counterexample showing no simple higher-dimensional Pick formula exists."
+    ]
+  },
+  "sections": [
+    {
+      "id": "picks-theorem-oq-03-ehrhart",
+      "title": "Ehrhart Polynomials and Pick's Theorem OQ-03",
+      "startLine": 1,
+      "endLine": 437,
+      "summary": "ehrhart_polynomial_existence, picks_theorem_recovery, unit_simplex_formula, reeve_tetrahedra.",
+      "mathContext": "$L_P(n) = \\text{vol}(P)\\cdot n^d + \\cdots + 1$. In 2D: $A = i + b/2 - 1$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Ehrhart polynomials OQ-03: 19 theorems, 0 sorries, 1 axiom. Pick's theorem recovered as 2D case.",
+    "implications": "Ehrhart polynomials are the correct higher-dimensional generalization of Pick's theorem. Reeve tetrahedra show why a simple boundary-count formula is impossible in 3D.",
+    "openQuestions": [
+      "Can the full Ehrhart polynomial existence theorem be proved from scratch in Lean?",
+      "Can the h*-vector and its combinatorial interpretations be formalized?",
+      "Can the Ehrhart-Macdonald reciprocity be proved from first principles?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Polynomial"],
+    "namespace": "PicksTheoremOQ03",
+    "lineCount": 437,
+    "axiomCount": 1,
+    "theoremCount": 19,
+    "definitionCount": 2,
+    "path": "Proofs/PicksTheoremOQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "picks-theorem-oq-03",
+      "relationship": "extends",
+      "description": "Higher-dimensional generalization via Ehrhart polynomials"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "ehrhart_polynomial_existence",
+      "type": "core",
+      "statement": "∀ lattice polytope P, ∃ polynomial L_P s.t. L_P(n) = |nP ∩ ℤᵈ|",
+      "description": "Ehrhart's theorem: lattice point count of dilated polytope is polynomial in dilation factor",
+      "significance": "Foundation of Ehrhart theory; in 2D recovers Pick's theorem"
+    }
+  ],
+  "sorries": 0
+}

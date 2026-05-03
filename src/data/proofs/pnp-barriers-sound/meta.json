@@ -1,0 +1,88 @@
+{
+  "id": "pnp-barriers-sound",
+  "title": "Sound P≠NP Barrier Formalization (Baker-Gill-Solovay, Razborov-Rudich, Aaronson-Wigderson)",
+  "slug": "pnp-barriers-sound",
+  "description": "Sound consistent formalization of the three major P≠NP barriers using a Gödelized computation model where programs are natural numbers and computation is via an opaque universal function Φ. Proves: Relativization Barrier (Baker-Gill-Solovay 1975), Natural Proofs Barrier (Razborov-Rudich 1997), Algebrization Barrier (Aaronson-Wigderson 2009). 123 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/PNPBarriersSound.lean",
+    "tags": [
+      "complexity-theory",
+      "p-vs-np",
+      "barriers",
+      "relativization",
+      "natural-proofs",
+      "algebrization"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 123,
+    "lineCount": 6764,
+    "theoremCount": 312,
+    "assumptions": "123 axioms capturing well-established complexity theory facts.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Baker-Gill-Solovay (1975), Razborov-Rudich (1997), Aaronson-Wigderson (2009) identified why standard proof techniques cannot resolve P vs NP.",
+    "problemStatement": "Prove the three major barriers to P≠NP using a sound Gödelized computation model.",
+    "proofStrategy": "Gödelized computation: programs are ℕ (Gödel codes), computation via opaque Φ prevents trivial solver construction.",
+    "keyInsights": [
+      "**relativization_barrier**: Relativization barrier: oracles separate P and NP in opposite directions",
+      "**Assumptions**: 123 axioms capturing well-established complexity theory facts."
+    ]
+  },
+  "sections": [
+    {
+      "id": "pnp-barriers-sound",
+      "title": "Sound P≠NP Barrier Formalization (Baker-Gill-Solovay, Razborov-Rudich, Aaronson-Wigderson)",
+      "startLine": 1,
+      "endLine": 6764,
+      "summary": "relativization_barrier and supporting lemmas.",
+      "mathContext": "$relativization_barrier : ∃ oracle, P^oracle = NP^oracle ∧ ∃ $"
+    }
+  ],
+  "conclusion": {
+    "summary": "Sound P≠NP Barrier Formalization (Baker-Gill-Solovay, Razborov-Rudich, Aaronson-Wigderson): 312 theorems, 0 sorries, 123 axioms.",
+    "implications": "Relativization barrier: oracles separate P and NP in opposite directions",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 6764,
+    "axiomCount": 123,
+    "theoremCount": 312,
+    "definitionCount": 0,
+    "path": "Proofs/PNPBarriersSound.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "pvs-np",
+      "relationship": "extends",
+      "description": "Extends pvs-np"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "relativization_barrier",
+      "type": "core",
+      "statement": "relativization_barrier : ∃ oracle, P^oracle = NP^oracle ∧ ∃ oracle', P^oracle' ≠ NP^oracle'",
+      "description": "Relativization barrier: oracles separate P and NP in opposite directions",
+      "significance": "Relativization barrier: oracles separate P and NP in opposite directions"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,82 @@
+{
+  "id": "brouwer-fixed-point-oq-04-oq-01",
+  "title": "Nash Equilibrium via Kakutani Fixed Point (OQ-04-OQ-01)",
+  "slug": "brouwer-fixed-point-oq-04-oq-01",
+  "description": "Proves Nash equilibrium existence for finite N-player normal-form games via Kakutani's fixed point theorem. Defines expected utility, best response correspondence, proves best response nonemptiness (EVT), convexity (multilinearity), and closedness. Nash existence follows from Kakutani applied to the joint best response map. Imports BrouwerFixedPointOQ04 (2 axioms) + 2 own = 4 total axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BrouwerFixedPointOQ04OQ01.lean",
+    "tags": [
+      "game-theory",
+      "fixed-points",
+      "nash-equilibrium",
+      "kakutani",
+      "best-response",
+      "upper-hemicontinuity"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 4,
+    "lineCount": 296,
+    "theoremCount": 8,
+    "assumptions": "2 axioms own (UHC of best response, kakutani_product_simplex) + 2 from BrouwerFixedPointOQ04 = 4 total.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Nash (1950) proved equilibrium existence using Kakutani's fixed point theorem applied to the best-response correspondence.",
+    "problemStatement": "Prove Nash equilibrium existence via Kakutani fixed point theorem.",
+    "proofStrategy": "Define expected utility, best response BR_i(σ₋ᵢ); prove nonemptiness (EVT), convexity (multilinearity), closedness; Nash = fixed point of joint BR.",
+    "keyInsights": [
+      "**nash_equilibrium_exists**: Nash's theorem: every finite normal-form game has a mixed strategy equilibrium",
+      "**Assumptions**: 2 axioms own (UHC of best response, kakutani_product_simplex) + 2 from BrouwerFixedPointOQ04 = 4 total."
+    ]
+  },
+  "sections": [
+    {
+      "id": "brouwer-fixed-point-oq-04-oq-01",
+      "title": "Nash Equilibrium via Kakutani Fixed Point (OQ-04-OQ-01)",
+      "startLine": 1,
+      "endLine": 296,
+      "summary": "nash_equilibrium_exists and supporting lemmas.",
+      "mathContext": "$∀ finite N-player game, ∃ Nash equilibrium in mixed strategi$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Nash Equilibrium via Kakutani Fixed Point (OQ-04-OQ-01): 8 theorems, 0 sorries, 4 axioms.",
+    "implications": "Nash's theorem: every finite normal-form game has a mixed strategy equilibrium",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 296,
+    "axiomCount": 4,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/BrouwerFixedPointOQ04OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "nash_equilibrium_exists",
+      "type": "core",
+      "statement": "∀ finite N-player game, ∃ Nash equilibrium in mixed strategies",
+      "description": "Nash's theorem: every finite normal-form game has a mixed strategy equilibrium",
+      "significance": "Nash's theorem: every finite normal-form game has a mixed strategy equilibrium"
+    }
+  ],
+  "sorries": 0
+}

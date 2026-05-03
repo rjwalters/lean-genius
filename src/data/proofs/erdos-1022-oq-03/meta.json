@@ -1,0 +1,82 @@
+{
+  "id": "erdos-1022-oq-03",
+  "title": "Erdős #1022 OQ-03: Lovász Local Lemma for Property B",
+  "slug": "erdos-1022-oq-03",
+  "description": "Extends Erdős #1022 with the Lovász Local Lemma bound for Property B (2-colorability of hypergraphs). Proves: intersection dependency graph structure, element frequency bounds on intersection degree, LLL threshold computation, and the LLL → Property B bridge. The LLL gives much stronger guarantees than the first-moment bound. 1 axiom for the probabilistic LLL step. 21 theorems.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1022OQ03.lean",
+    "tags": [
+      "combinatorics",
+      "erdos-problems",
+      "lovász-local-lemma",
+      "property-b",
+      "hypergraph-coloring",
+      "probabilistic-method"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 419,
+    "theoremCount": 21,
+    "assumptions": "1 axiom: probabilistic LLL step (requires external probability space).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erdős-Lovász (1975) introduced the LLL for Property B. Spencer's 'Ten Lectures' provides modern treatment.",
+    "problemStatement": "Prove LLL bound for Property B and the dependency graph structure.",
+    "proofStrategy": "Define intNeighbors and intersection degree; prove degree bounds; compute LLL threshold; bridge via 1 probabilistic axiom.",
+    "keyInsights": [
+      "**LLL_implies_property_B**: The Lovász Local Lemma gives Property B for hypergraph families with bounded local dependency",
+      "**Assumptions**: 1 axiom: probabilistic LLL step (requires external probability space)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "erdos-1022-oq-03",
+      "title": "Erdős #1022 OQ-03",
+      "startLine": 1,
+      "endLine": 419,
+      "summary": "LLL_implies_property_B and supporting lemmas.",
+      "mathContext": "$LLL condition satisfied → HasPropertyB$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős #1022 OQ-03: 21 theorems, 0 sorries, 1 axioms.",
+    "implications": "The Lovász Local Lemma gives Property B for hypergraph families with bounded local dependency",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 419,
+    "axiomCount": 1,
+    "theoremCount": 21,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos1022OQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "LLL_implies_property_B",
+      "type": "core",
+      "statement": "LLL condition satisfied → HasPropertyB",
+      "description": "The Lovász Local Lemma gives Property B for hypergraph families with bounded local dependency",
+      "significance": "The Lovász Local Lemma gives Property B for hypergraph families with bounded local dependency"
+    }
+  ],
+  "sorries": 0
+}

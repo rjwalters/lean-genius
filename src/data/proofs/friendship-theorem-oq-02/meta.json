@@ -1,0 +1,82 @@
+{
+  "id": "friendship-theorem-oq-02",
+  "title": "Friendship Theorem OQ-02: Directed and Hypergraph Generalizations",
+  "slug": "friendship-theorem-oq-02",
+  "description": "Formalizes directed and hypergraph generalizations of the Friendship Theorem (Erdős-Rényi-Sós 1966). Proves: directed friendship property definitions, Longyear-Parsons regularity (n ≡ 3 mod 4), Steiner triple system vertex degree formula, triple count formula n(n-1)/6, and mod 6 necessary condition (n ≡ 1 or 3 mod 6). Spectral characterization axiomatized. 1 axiom. 11 theorems.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/FriendshipTheoremOQ02.lean",
+    "tags": [
+      "combinatorics",
+      "graph-theory",
+      "friendship-theorem",
+      "steiner-systems",
+      "directed-graphs",
+      "hypergraphs"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 377,
+    "theoremCount": 11,
+    "assumptions": "1 axiom: spectral characterization of directed friendship tournaments.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erdős-Rényi-Sós (1966) proved the undirected Friendship Theorem. Longyear-Parsons (1972) extended to directed tournaments.",
+    "problemStatement": "Formalize Steiner triple systems and directed friendship theorem.",
+    "proofStrategy": "Counting argument: each vertex in (n-1)/2 triples → 2|(n-1); total n(n-1)/6 triples → 6|n(n-1); combined: n ≡ 1 or 3 mod 6.",
+    "keyInsights": [
+      "**STS_mod6_necessary**: Necessary divisibility condition for Steiner triple systems",
+      "**Assumptions**: 1 axiom: spectral characterization of directed friendship tournaments."
+    ]
+  },
+  "sections": [
+    {
+      "id": "friendship-theorem-oq-02",
+      "title": "Friendship Theorem OQ-02",
+      "startLine": 1,
+      "endLine": 377,
+      "summary": "STS_mod6_necessary and supporting lemmas.",
+      "mathContext": "$STS(n) exists → n ≡ 1 or 3 (mod 6)$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Friendship Theorem OQ-02: 11 theorems, 0 sorries, 1 axioms.",
+    "implications": "Necessary divisibility condition for Steiner triple systems",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 377,
+    "axiomCount": 1,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "path": "Proofs/FriendshipTheoremOQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "STS_mod6_necessary",
+      "type": "core",
+      "statement": "STS(n) exists → n ≡ 1 or 3 (mod 6)",
+      "description": "Necessary divisibility condition for Steiner triple systems",
+      "significance": "Necessary divisibility condition for Steiner triple systems"
+    }
+  ],
+  "sorries": 0
+}

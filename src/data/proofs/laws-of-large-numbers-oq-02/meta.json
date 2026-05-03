@@ -1,0 +1,82 @@
+{
+  "id": "laws-of-large-numbers-oq-02",
+  "title": "Convergence Rates for Laws of Large Numbers: Chebyshev, CLT, Berry-Esseen",
+  "slug": "laws-of-large-numbers-oq-02",
+  "description": "Formalizes quantitative convergence rates for the law of large numbers. Proves Chebyshev rate (P(|X̄ₙ - μ| ≥ ε) ≤ σ²/(nε²)) from Mathlib's Chebyshev inequality. Axiomatizes CLT (requires characteristic functions, not in Mathlib v4.26) and Berry-Esseen bound. Proves rate ordering and that Chebyshev rate implies WLLN. 3 axioms. 8 theorems.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/LawsOfLargeNumbersOQ02.lean",
+    "tags": [
+      "probability",
+      "statistics",
+      "law-of-large-numbers",
+      "central-limit-theorem",
+      "berry-esseen",
+      "convergence"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "lineCount": 338,
+    "theoremCount": 8,
+    "assumptions": "3 axioms: CLT (characteristic functions needed), Berry-Esseen bound, moment conditions.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Chebyshev (1867) proved the WLLN quantitatively. CLT (Lindeberg 1922) gives the precise 1/√n scale. Berry-Esseen gives explicit CLT error bounds.",
+    "problemStatement": "Prove quantitative LLN convergence rates and the CLT-WLLN connection.",
+    "proofStrategy": "Chebyshev rate from Var(X̄ₙ) = σ²/n + Mathlib Chebyshev inequality; CLT and Berry-Esseen axiomatized.",
+    "keyInsights": [
+      "**chebyshev_rate**: Chebyshev quantitative rate for weak law of large numbers convergence",
+      "**Assumptions**: 3 axioms: CLT (characteristic functions needed), Berry-Esseen bound, moment conditions."
+    ]
+  },
+  "sections": [
+    {
+      "id": "laws-of-large-numbers-oq-02",
+      "title": "Convergence Rates for Laws of Large Numbers",
+      "startLine": 1,
+      "endLine": 338,
+      "summary": "chebyshev_rate and supporting lemmas.",
+      "mathContext": "$P(|X̄ₙ - μ| ≥ ε) ≤ σ² / (n * ε²)$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Convergence Rates for Laws of Large Numbers: 8 theorems, 0 sorries, 3 axioms.",
+    "implications": "Chebyshev quantitative rate for weak law of large numbers convergence",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 338,
+    "axiomCount": 3,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/LawsOfLargeNumbersOQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "chebyshev_rate",
+      "type": "core",
+      "statement": "P(|X̄ₙ - μ| ≥ ε) ≤ σ² / (n * ε²)",
+      "description": "Chebyshev quantitative rate for weak law of large numbers convergence",
+      "significance": "Chebyshev quantitative rate for weak law of large numbers convergence"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,82 @@
+{
+  "id": "amgm-operator-means",
+  "title": "Operator AM-GM Inequality: Loewner Order on Positive Definite Matrices",
+  "slug": "amgm-operator-means",
+  "description": "Formalizes the matrix AM-GM inequality (A+B)/2 ≥_L A#B for positive definite matrices in the Loewner semidefinite order. Proves: PSD/PD basics, trace non-negativity, Loewner order properties, arithmetic mean PSD preservation, trace inequality tr(AM) ≥ tr(GM), and weighted arithmetic mean. Matrix square root and geometric mean are axiomatized (require spectral theorem). 18 theorems, 5 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AMGMOperatorMeans.lean",
+    "tags": [
+      "analysis",
+      "matrix-analysis",
+      "semidefinite",
+      "am-gm",
+      "operator-means",
+      "loewner-order"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 5,
+    "lineCount": 274,
+    "theoremCount": 18,
+    "assumptions": "5 axioms for matrix square root and geometric mean existence (require spectral theorem).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Ando (1979) and Kubo-Ando (1980) developed the theory of operator means extending AM-GM to matrices.",
+    "problemStatement": "Prove the operator AM-GM inequality via Loewner ordering.",
+    "proofStrategy": "Define PSD/PD predicates and Loewner order; prove order properties; axiomatize matrix square root and geometric mean; prove operator AM-GM.",
+    "keyInsights": [
+      "**operator_amgm**: Operator arithmetic-geometric mean inequality for positive definite matrices",
+      "**Assumptions**: 5 axioms for matrix square root and geometric mean existence (require spectral theorem)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "amgm-operator-means",
+      "title": "Operator AM-GM Inequality",
+      "startLine": 1,
+      "endLine": 274,
+      "summary": "operator_amgm and supporting lemmas.",
+      "mathContext": "$(A + B) / 2 ≥_L A # B$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Operator AM-GM Inequality: 18 theorems, 0 sorries, 5 axioms.",
+    "implications": "Operator arithmetic-geometric mean inequality for positive definite matrices",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 274,
+    "axiomCount": 5,
+    "theoremCount": 18,
+    "definitionCount": 0,
+    "path": "Proofs/AMGMOperatorMeans.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "operator_amgm",
+      "type": "core",
+      "statement": "(A + B) / 2 ≥_L A # B",
+      "description": "Operator arithmetic-geometric mean inequality for positive definite matrices",
+      "significance": "Operator arithmetic-geometric mean inequality for positive definite matrices"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,82 @@
+{
+  "id": "hadamard-three-lines",
+  "title": "Hadamard Three-Lines Lemma: Log-Convexity on Complex Strips",
+  "slug": "hadamard-three-lines",
+  "description": "Formalizes the Hadamard three-lines lemma for complex analysis: if f is bounded and analytic on the strip 0 ≤ Re(z) ≤ 1, then log M(x) is convex where M(x) = sup_y ‖f(x+iy)‖. The bound M(θ) ≤ M(0)^{1-θ} M(1)^θ is the key lemma for the Riesz-Thorin interpolation theorem. 1 axiom for maximum modulus principle on strips. 23 theorems.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/HadamardThreeLines.lean",
+    "tags": [
+      "analysis",
+      "complex-analysis",
+      "hadamard",
+      "interpolation",
+      "three-lines",
+      "riesz-thorin"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 398,
+    "theoremCount": 23,
+    "assumptions": "1 axiom: maximum_modulus_strip (MMP applied to the vertical strip).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Hadamard (1896) proved log M(x) is convex. This lemma is the key tool for proving the Riesz-Thorin interpolation theorem (1926-1927).",
+    "problemStatement": "Prove Hadamard's three-lines lemma from the maximum modulus principle.",
+    "proofStrategy": "Define closed/open strips; prove boundary inclusions; derive log-convexity from MMP on strips via 1 axiom.",
+    "keyInsights": [
+      "**three_lines_lemma**: Hadamard's log-convexity bound on complex strips via the maximum modulus principle",
+      "**Assumptions**: 1 axiom: maximum_modulus_strip (MMP applied to the vertical strip)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "hadamard-three-lines",
+      "title": "Hadamard Three-Lines Lemma",
+      "startLine": 1,
+      "endLine": 398,
+      "summary": "three_lines_lemma and supporting lemmas.",
+      "mathContext": "$M(θ) ≤ M(0)^{1-θ} · M(1)^θ for θ ∈ [0,1]$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Hadamard Three-Lines Lemma: 23 theorems, 0 sorries, 1 axioms.",
+    "implications": "Hadamard's log-convexity bound on complex strips via the maximum modulus principle",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 398,
+    "axiomCount": 1,
+    "theoremCount": 23,
+    "definitionCount": 0,
+    "path": "Proofs/HadamardThreeLines.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "three_lines_lemma",
+      "type": "core",
+      "statement": "M(θ) ≤ M(0)^{1-θ} · M(1)^θ for θ ∈ [0,1]",
+      "description": "Hadamard's log-convexity bound on complex strips via the maximum modulus principle",
+      "significance": "Hadamard's log-convexity bound on complex strips via the maximum modulus principle"
+    }
+  ],
+  "sorries": 0
+}

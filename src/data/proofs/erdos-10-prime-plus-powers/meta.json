@@ -1,0 +1,82 @@
+{
+  "id": "erdos-10-prime-plus-powers",
+  "title": "Erdős #10: Prime Plus Powers of 2 — Romanoff Density and Open Conjecture",
+  "slug": "erdos-10-prime-plus-powers",
+  "description": "Infrastructure for Erdős Problem #10: can every integer be expressed as a prime plus at most k powers of 2? Formalizes Romanoff's theorem (positive density of integers representable as p + 2^k), proves small-case verification infrastructure, and states the conjecture formally. Erdős believed no such constant k exists. 5 axioms for Romanoff density and sieve bounds. 34 theorems.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos10PrimePlusPowers.lean",
+    "tags": [
+      "number-theory",
+      "erdos-problems",
+      "primes",
+      "additive-combinatorics",
+      "romanoff",
+      "powers-of-2"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 5,
+    "lineCount": 720,
+    "theoremCount": 34,
+    "assumptions": "5 axioms for Romanoff density and sieve estimates.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erdős #10 (erdosproblems.com/10): probably unattackable; expected k doesn't exist. Romanoff (1934) showed positive density.",
+    "problemStatement": "Prove infrastructure and Romanoff density for Erdős #10.",
+    "proofStrategy": "Define representation predicate; verify small cases; state conjecture; axiomatize Romanoff density.",
+    "keyInsights": [
+      "**romanoff_positive_density**: A positive fraction of integers are representable as prime plus a power of 2",
+      "**Assumptions**: 5 axioms for Romanoff density and sieve estimates."
+    ]
+  },
+  "sections": [
+    {
+      "id": "erdos-10-prime-plus-powers",
+      "title": "Erdős #10",
+      "startLine": 1,
+      "endLine": 720,
+      "summary": "romanoff_positive_density and supporting lemmas.",
+      "mathContext": "$d({n : n = p + 2^k for some prime p, k}) > 0$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős #10: 34 theorems, 0 sorries, 5 axioms.",
+    "implications": "A positive fraction of integers are representable as prime plus a power of 2",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 720,
+    "axiomCount": 5,
+    "theoremCount": 34,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos10PrimePlusPowers.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "romanoff_positive_density",
+      "type": "core",
+      "statement": "d({n : n = p + 2^k for some prime p, k}) > 0",
+      "description": "A positive fraction of integers are representable as prime plus a power of 2",
+      "significance": "A positive fraction of integers are representable as prime plus a power of 2"
+    }
+  ],
+  "sorries": 0
+}

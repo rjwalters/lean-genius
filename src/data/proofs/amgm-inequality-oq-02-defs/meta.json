@@ -1,0 +1,82 @@
+{
+  "id": "amgm-inequality-oq-02-defs",
+  "title": "Maclaurin Inequalities: Core Definitions for Elementary Symmetric Polynomials",
+  "slug": "amgm-inequality-oq-02-defs",
+  "description": "Core definitions and standalone theorems for elementary symmetric polynomials and Maclaurin means, independent of Newton's log-concavity (which is in AmgmInequalityOQ02OQ02.lean). Proves: e₀=1, e₁=sum, eₖ≥0, recurrence, extremal cases, M₁²≥M₂ via Cauchy-Schwarz for n=2,3,4, and AM-GM from Mathlib. 12 theorems, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ02Defs.lean",
+    "tags": [
+      "analysis",
+      "inequalities",
+      "maclaurin",
+      "am-gm",
+      "symmetric-polynomials",
+      "combinatorics"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 393,
+    "theoremCount": 12,
+    "assumptions": "None. All 12 theorems proved with 0 axioms.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Maclaurin (1729) proved M₁ ≥ M₂ ≥ ... ≥ Mₙ for non-negative reals. This file provides the core definitions and special cases.",
+    "problemStatement": "Define elementary symmetric polynomials and Maclaurin means; prove basic properties and M₁≥M₂.",
+    "proofStrategy": "elemSymm as sum over powersetCard; maclaurinMean as (eₖ/C(n,k))^{1/k}; M₁≥M₂ via Cauchy-Schwarz.",
+    "keyInsights": [
+      "**maclaurin_m1_ge_m2_n2**: Classical AM-GM as M₁ ≥ M₂ for n=2",
+      "**Assumptions**: None. All 12 theorems proved with 0 axioms."
+    ]
+  },
+  "sections": [
+    {
+      "id": "amgm-inequality-oq-02-defs",
+      "title": "Maclaurin Inequalities",
+      "startLine": 1,
+      "endLine": 393,
+      "summary": "maclaurin_m1_ge_m2_n2 and supporting lemmas.",
+      "mathContext": "$(a + b) / 2 ≥ √(ab)$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Maclaurin Inequalities: 12 theorems, 0 sorries, 0 axioms.",
+    "implications": "Classical AM-GM as M₁ ≥ M₂ for n=2",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 393,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "path": "Proofs/AmgmInequalityOQ02Defs.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "maclaurin_m1_ge_m2_n2",
+      "type": "core",
+      "statement": "(a + b) / 2 ≥ √(ab)",
+      "description": "Classical AM-GM as M₁ ≥ M₂ for n=2",
+      "significance": "Classical AM-GM as M₁ ≥ M₂ for n=2"
+    }
+  ],
+  "sorries": 0
+}

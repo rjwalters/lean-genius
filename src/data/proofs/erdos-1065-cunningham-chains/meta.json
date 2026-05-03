@@ -1,0 +1,82 @@
+{
+  "id": "erdos-1065-cunningham-chains",
+  "title": "Erdős #1065 OQ-06: Cunningham Chains and Safe Primes (Long Chain Existence)",
+  "slug": "erdos-1065-cunningham-chains",
+  "description": "Formalizes Cunningham chains of the first kind and their connection to Erdős #1065 (safe primes). Proves: concrete chain examples [2,5], [3,7], [2,5,11,23], structural properties (valid chains, Sophie Germain condition), prime congruence constraints, and the open conjecture that chains of every length exist. 1 axiom for the long chain existence conjecture. 24 theorems.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1065CunninghamChains.lean",
+    "tags": [
+      "number-theory",
+      "erdos-problems",
+      "primes",
+      "cunningham-chains",
+      "safe-primes",
+      "sophie-germain"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 285,
+    "theoremCount": 24,
+    "assumptions": "1 axiom: long chain existence conjecture (open problem).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Standard Mathlib tactics and definitions",
+        "module": "Mathlib"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Cunningham chains: sequences p₁, 2p₁+1, 2(2p₁+1)+1, ... where all terms are prime. Infinitely many safe primes would follow from chains of all lengths.",
+    "problemStatement": "Prove structural properties of Cunningham chains and formalize the open length conjecture.",
+    "proofStrategy": "Define IsCunninghamChain inductively; verify concrete examples; prove constraints; axiomatize long chain existence.",
+    "keyInsights": [
+      "**cunningham_chain_length_n**: For every n, there exists a Cunningham chain of the first kind of length n (open conjecture)",
+      "**Assumptions**: 1 axiom: long chain existence conjecture (open problem)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "erdos-1065-cunningham-chains",
+      "title": "Erdős #1065 OQ-06",
+      "startLine": 1,
+      "endLine": 285,
+      "summary": "cunningham_chain_length_n and supporting lemmas.",
+      "mathContext": "$∀ n, ∃ Cunningham chain of length n$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős #1065 OQ-06: 24 theorems, 0 sorries, 1 axioms.",
+    "implications": "For every n, there exists a Cunningham chain of the first kind of length n (open conjecture)",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 285,
+    "axiomCount": 1,
+    "theoremCount": 24,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos1065CunninghamChains.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "cunningham_chain_length_n",
+      "type": "core",
+      "statement": "∀ n, ∃ Cunningham chain of length n",
+      "description": "For every n, there exists a Cunningham chain of the first kind of length n (open conjecture)",
+      "significance": "For every n, there exists a Cunningham chain of the first kind of length n (open conjecture)"
+    }
+  ],
+  "sorries": 0
+}
