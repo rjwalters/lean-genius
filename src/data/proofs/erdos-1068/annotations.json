@@ -1,5 +1,32 @@
 [
   {
+    "id": "erdos-1068-overview",
+    "proofId": "erdos-1068",
+    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 50
+    },
+    "title": "Problem #1068: Countable Infinitely-Connected Subgraphs — Overview and Setup",
+    "content": "The module docstring frames Problem #1068 (Erdős-Hajnal): does every graph with chromatic number ℵ₁ contain a countable subgraph that is infinitely connected? This is a weakening of Problem #1067 (asking for an uncountable subgraph with the same chromatic number), which was disproved by Soukup (2015) — who constructed a graph with χ = ℵ₁ where every uncountable vertex set induces only finitely vertex-connected subgraphs. Problem #1068 targets countable subgraphs specifically, which Soukup's construction leaves open. The answer may depend on set-theoretic axioms beyond ZFC. The setup imports Mathlib's SimpleGraph, Cardinal, and Set.Countable, then opens the Erdos1068 namespace.",
+    "mathContext": "Problem #1068: $\\forall G$ with $\\chi(G) \\geq \\aleph_1$, $\\exists S \\subseteq V(G)$ countable such that $G[S]$ is $\\infty$-connected? Known: Soukup (2015) proved $\\exists G$ with $\\chi(G) \\geq \\aleph_1$ where every uncountable $S$ gives finitely-connected $G[S]$. Open: same for countable $S$. References: [ErHa66] (Erdős-Hajnal 1966), [Va99, 7.90] (Väänänen survey 1999).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Hajnal problem",
+      "uncountable chromatic number",
+      "countable subgraphs",
+      "infinite connectivity",
+      "Soukup (2015)",
+      "ZFC independence"
+    ],
+    "prerequisites": [
+      "infinite graph theory",
+      "cardinal arithmetic (ℵ₀, ℵ₁)",
+      "graph coloring",
+      "vertex connectivity"
+    ]
+  },
+  {
     "id": "erdos-1068-imports",
     "proofId": "erdos-1068",
     "type": "concept",
@@ -75,12 +102,12 @@
     "proofId": "erdos-1068",
     "type": "definition",
     "range": {
-      "startLine": 75,
-      "endLine": 76
+      "startLine": 67,
+      "endLine": 78
     },
-    "title": "Infinite Vertex-Connectivity",
-    "content": "A graph is infinitely connected if any two distinct vertices are joined by infinitely many pairwise internally disjoint paths. This is an extremely strong structural property: by the infinite Menger theorem (Aharoni-Berger, 2009), it is equivalent to saying no finite vertex cut can disconnect the graph.",
-    "mathContext": "$$G \\text{ is } \\infty\\text{-connected} \\iff \\forall u \\neq v,\\; \\exists \\text{ infinitely many pairwise internally disjoint } u\\text{-}v \\text{ paths}$$\nBy the infinite Menger theorem: $\\kappa(u,v) = \\aleph_0$ for all $u \\neq v$, equivalently no finite vertex cut separates any two vertices.",
+    "title": "Infinite Vertex-Connectivity: InfinitelyManyDisjointPaths and InfinitelyConnected",
+    "content": "`InfinitelyManyDisjointPaths G u v` asserts the existence of an infinite pairwise internally disjoint set of paths from u to v — the definition is existential over `Set (PathInGraph G)`, requiring the set to be infinite, pairwise internally disjoint, and all members to run from u to v. `InfinitelyConnected G` then requires this for all pairs of distinct vertices. This is an extremely strong property: by the infinite Menger theorem (Aharoni-Berger, 2009), it is equivalent to having no finite vertex cut separating any two vertices.",
+    "mathContext": "$$G \\text{ is } \\infty\\text{-connected} \\iff \\forall u \\neq v,\\; \\exists \\text{ infinite set } \\mathcal{P} \\text{ of pairwise internally disjoint } u\\text{-}v \\text{ paths}$$\nBy the infinite Menger theorem (Aharoni-Berger 2009, *Inventiones Mathematicae*): $\\kappa(u,v) = \\aleph_0$ for all $u \\neq v$, equivalently no finite vertex cut separates any two vertices.",
     "significance": "key",
     "relatedConcepts": [
       "infinite Menger theorem",
@@ -212,25 +239,27 @@
   {
     "id": "erdos-1068-separator",
     "proofId": "erdos-1068",
-    "type": "concept",
+    "type": "technique",
     "range": {
       "startLine": 134,
-      "endLine": 141
+      "endLine": 188
     },
-    "title": "No Finite Vertex Separator",
-    "content": "In an infinitely connected graph, removing any finite set of vertices leaves any two remaining vertices connected. This is a consequence of the infinite Menger theorem (Aharoni-Berger, 2009, *Inventiones mathematicae*), which resolved the Erdős-Menger conjecture: in infinite graphs, the max number of disjoint $A$-$B$ paths equals the min size of an $A$-$B$ separator.",
-    "mathContext": "If $G$ is $\\infty$-connected and $S$ is finite with $u, v \\notin S$, then $\\exists$ $u$-$v$ path in $G - S$. Follows from $\\kappa(u,v) = \\aleph_0 > |S|$.",
+    "title": "No Finite Vertex Separator: Proof via Pigeonhole on Internally Disjoint Paths",
+    "content": "`inf_connected_no_finite_separator` proves that in an infinitely connected graph, removing any finite set S of vertices still allows a path between any two non-S vertices. The proof uses a pigeonhole argument: define 'bad' paths as those with an internal vertex in S. By pairwise internal disjointness, each vertex of S is internal to at most ONE path (subsingleton fiber), so the set of bad paths is finite (bounded by |S|). Since infinitely many paths exist but only finitely many are bad, some 'good' path avoids S. The endpoint argument (lines 167-188) then shows vertices of p not in the interior must be endpoints u or v — if the head or last vertex of p is in S, that contradicts u ∉ S or v ∉ S.",
+    "mathContext": "If $G$ is $\\infty$-connected with paths $\\mathcal{P}$ between $u,v$, and $S$ is finite with $u,v \\notin S$: $\\text{bad} = \\{p \\in \\mathcal{P} : \\exists s \\in S, s \\in \\text{int}(p)\\}$. Pairwise internal disjointness gives $|\\text{bad}| \\leq |S|$, so $\\mathcal{P} \\setminus \\text{bad} \\neq \\emptyset$. In Lean: `Set.Finite.biUnion` with `Set.Subsingleton.finite` for the fiber bound.",
     "significance": "key",
     "relatedConcepts": [
       "Aharoni-Berger theorem",
       "infinite Menger theorem",
       "vertex cuts",
-      "graph resilience"
+      "pigeonhole on path fibers",
+      "Set.Subsingleton.finite"
     ],
     "prerequisites": [
       "Menger's theorem",
       "vertex connectivity",
-      "infinite combinatorics"
+      "Set.Finite.biUnion",
+      "pairwise internal disjointness"
     ]
   },
   {
@@ -238,18 +267,19 @@
     "proofId": "erdos-1068",
     "type": "insight",
     "range": {
-      "startLine": 148,
-      "endLine": 149
+      "startLine": 189,
+      "endLine": 203
     },
-    "title": "Set-Theoretic Sensitivity",
-    "content": "Komjáth (2013, *Israel J. Math.*) showed that a related question (graphs of cardinality $\\aleph_1$ with $\\chi \\geq \\aleph_1$ and uncountable infinitely connected subgraphs) is independent of ZFC. Problem 1068 may also be sensitive to set-theoretic axioms, though independence has not been established for this specific variant. Axiomatized as `True` (placeholder).",
-    "mathContext": "Komjáth's independence result uses forcing: in one model of ZFC the answer is yes, in another no. The ZFC-independence status of Problem 1068 specifically remains unknown.",
+    "title": "Set-Theoretic Sensitivity and Bowler-Pikhurko Simplification",
+    "content": "Lines 189-203 contain two docstring-only theorems (axiomatized as `True`). `set_theoretic_sensitivity` notes that Komjáth (2013, *Israel J. Math.*) showed a related question is independent of ZFC — the problem may also be sensitive to set-theoretic axioms beyond ZFC. `bowler_pikhurko_simplified_construction` records that Bowler and Pitz (2024, *Electronic J. Combinatorics*) simplified Soukup's counterexample for Problem #1067 using tree-like 'ladder' graphs (arXiv:2402.05984), though this doesn't resolve Problem #1068.",
+    "mathContext": "Komjáth's independence result: a related question (#1067 with $\\aleph_1$ vertices) is ZFC-independent via forcing. For Problem 1068, independence has not been established. Bowler-Pitz 2024: elementary ladder-graph construction replacing Soukup's non-special tree approach, preserving the key finite-vertex-cut property for uncountable sets.",
     "significance": "supporting",
     "relatedConcepts": [
       "ZFC independence",
       "forcing",
       "Komjáth's results",
-      "set-theoretic combinatorics"
+      "Bowler-Pitz (2024)",
+      "ladder graphs"
     ],
     "prerequisites": [
       "set theory",
@@ -258,47 +288,27 @@
     ]
   },
   {
-    "id": "erdos-1068-bowler",
-    "proofId": "erdos-1068",
-    "type": "insight",
-    "range": {
-      "startLine": 155,
-      "endLine": 156
-    },
-    "title": "Bowler-Pitz Simplification (2024)",
-    "content": "Bowler and Pitz (2024, *Electronic J. Combinatorics*) provided an elementary construction of an uncountably chromatic graph without uncountable infinitely connected subgraphs, simplifying Soukup's 2015 proof. Their tree-like \"ladder\" approach is more transparent. Axiomatized as `True` (placeholder for the simplification technique).",
-    "mathContext": "The simplified construction (arXiv:2402.05984) replaces Soukup's non-special tree technique with a more direct ladder-graph approach, preserving the key property that uncountable vertex sets have finite vertex cuts.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "proof simplification",
-      "elementary constructions",
-      "ladder graphs"
-    ],
-    "prerequisites": [
-      "Soukup's counterexample",
-      "tree-based graph constructions"
-    ]
-  },
-  {
     "id": "erdos-1068-proved-theorems",
     "proofId": "erdos-1068",
     "type": "concept",
     "range": {
-      "startLine": 165,
-      "endLine": 179
+      "startLine": 204,
+      "endLine": 264
     },
-    "title": "Structural Implications of Infinite Connectivity",
-    "content": "Two fully proved (non-axiomatized) theorems: (1) `inf_connected_implies_path`: infinite connectivity implies the existence of a path between any two distinct vertices (extracting one path from the infinite family), and (2) `inf_connected_subgraph_has_paths`: if $G[S]$ is infinitely connected, then any two vertices in $S$ are path-connected within $S$. These are verified by Lean's kernel.",
-    "mathContext": "$\\infty$-connected $\\implies$ connected: the infinite family of disjoint paths is nonempty, yielding at least one $u$-$v$ path. For induced subgraphs: $G[S]$ $\\infty$-connected $\\implies$ $G[S]$ connected.",
-    "significance": "supporting",
+    "title": "Part VII: Proved Structural Implications and Summary",
+    "content": "Part VII contains three fully proved theorems (no sorries, no axioms) establishing structural consequences of infinite connectivity. `inf_connected_implies_path` (lines 211-216): an infinitely connected graph is connected — extract one path from the infinite family. `inf_connected_subgraph_has_paths` (lines 218-225): if G[S] is infinitely connected, then any two vertices of S are path-connected within S. `inf_connected_k_connected` (lines 227-238): infinitely connected graphs are k-vertex-connected for every finite k — follows directly from `inf_connected_no_finite_separator` since no finite set S with |S| ≤ k blocks a path. The summary (lines 240-264) recaps the open status, Soukup's result, and the difficulty at the intersection of infinite combinatorics and set theory.",
+    "mathContext": "$G$ $\\infty$-connected $\\Rightarrow$ $G$ is $k$-vertex-connected for all finite $k$: $\\forall u \\neq v$, $\\forall S$ finite with $|S| \\leq k$, $u,v \\notin S$, $\\exists u$-$v$ path avoiding $S$. The three proved theorems form a chain: $\\infty$-connected $\\Rightarrow$ path-connected $\\Rightarrow$ $k$-connected for all $k$.",
+    "significance": "key",
     "relatedConcepts": [
-      "connectivity implies paths",
-      "structural monotonicity",
-      "proof extraction"
+      "k-vertex-connectivity",
+      "graph connectivity hierarchy",
+      "inf_connected_no_finite_separator",
+      "structural implications"
     ],
     "prerequisites": [
       "graph connectivity",
-      "basic graph theory"
+      "basic graph theory",
+      "inf_connected_no_finite_separator"
     ]
   }
 ]
