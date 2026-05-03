@@ -32,7 +32,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The Gaussian binomial coefficient [n,k]_q counts the number of k-dimensional subspaces of an n-dimensional vector space over F_q. It was introduced by Gauss in the study of cyclotomic polynomials and appears throughout combinatorics: in the Rogers-Ramanujan identities, quantum group representations, and the theory of partitions. As q→1, [n,k]_q → C(n,k) (ordinary binomial coefficient).",
+    "historicalContext": "Gaussian binomial coefficients [n,k]_q were introduced by Gauss (1811) in his study of cyclotomic polynomials, and independently by Heine (1847) in the context of q-hypergeometric series. The central geometric interpretation — [n,k]_q counts k-dimensional subspaces of F_q^n — was recognized by Goldman and Rota (1970) as fundamental to the combinatorics of finite vector spaces. These coefficients pervade modern mathematics: they appear in Rogers-Ramanujan identities (1894/1919), MacMahon's partition theory, Kazhdan-Lusztig polynomials, quantum group representations (Jimbo and Drinfeld, 1985), and the cohomology ring of Grassmannian varieties. As q→1, [n,k]_q → C(n,k) (ordinary binomial coefficient). At q→0, [n,k]_q → 0 or 1 (indicator for k=0 or k=n). The q-Pascal recurrence (defining identity used here) works over any commutative ring, making the theory fully algebraic without requiring q to be a prime power or even nonzero.",
     "problemStatement": "Define q-numbers [n]_q = 1 + q + q² + ... + q^{n-1} = (q^n - 1)/(q-1), q-factorials [n]_q! = [1]_q·[2]_q···[n]_q, and q-binomials [n,k]_q = [n]_q! / ([k]_q!·[n-k]_q!). Prove key identities without division (using q-Pascal recurrence as definition).",
     "proofStrategy": "Define q_number and q_binomial over a CommRing using the q-Pascal recurrence (avoiding division). Key identities proved by induction on n: [n,0]_q = 1, [n,n]_q = 1, [n,k]_q = [n,n-k]_q (symmetry), [n,1]_q = [n]_q. Specialization at q=1 connects to ordinary binomial coefficients.",
     "keyInsights": [
@@ -40,33 +40,50 @@
       "**Geometric sum**: [n]_q·(q-1) = q^n - 1. This is the key property of q-numbers — a geometric series sum.",
       "**Symmetry**: [n,k]_q = [n,n-k]_q. Follows from the recurrence by induction.",
       "**q-Vandermonde**: [m+n,k]_q = Σ_j q^{j(m-k+j)} [m,k-j]_q [n,j]_q — a q-analog of the Vandermonde convolution.",
-      "**Subspace counting**: [n,k]_q = |Gr(k,F_q^n)| = number of k-dim subspaces of F_q^n."
+      "**Subspace counting**: [n,k]_q = |Gr(k,F_q^n)| = number of k-dim subspaces of F_q^n.",
+      "**Commutative ring generality**: All theorems hold over any CommRing (not just fields). The q-Pascal definition avoids division by [k]_q! entirely, so q need not be a unit or prime power. This unlocks use in polynomial rings, p-adic integers, and formal power series."
     ]
   },
   "sections": [
     {
-      "id": "q-numbers",
+      "id": "q-numbers-factorials",
       "title": "Parts I–II: q-Numbers and q-Factorials",
       "startLine": 68,
-      "endLine": 148,
-      "summary": "Defines q_number [n]_q and q_factorial [n]_q!. Proves [0]_q=0, [1]_q=1, [n]_q·(q-1)=q^n-1. Base structure for q-analog theory.",
-      "mathContext": "$[n]_q = 1 + q + \\cdots + q^{n-1}$, $[n]_q! = \\prod_{i=1}^n [i]_q$."
+      "endLine": 147,
+      "summary": "Defines qNumber [n]_q (geometric sum) and qFactorial [n]_q!. Key theorems: qNumber_geometric (q-1)·[n]_q = q^n - 1, qNumber_split [a+b]_q = [a]_q + q^a·[b]_q, qFactorial_spec at q=1. Base infrastructure for all q-analog identities.",
+      "mathContext": "$[n]_q = 1 + q + \\cdots + q^{n-1}$; $(q-1)[n]_q = q^n - 1$; $[n]_q! = \\prod_{i=1}^n [i]_q$."
     },
     {
-      "id": "q-binomial",
-      "title": "Parts III–IV: q-Binomial Coefficients and Specialization",
+      "id": "q-binomial-defn",
+      "title": "Part III: q-Binomial Definition via Pascal Recurrence",
       "startLine": 148,
-      "endLine": 224,
-      "summary": "Defines q_binomial [n,k]_q via q-Pascal recurrence. Boundary cases: [n,0]=[n,n]=1, [n,k]=0 for k>n. Specialization: [n,k]_1 = C(n,k).",
-      "mathContext": "$\\binom{n}{k}_q = \\binom{n-1}{k-1}_q + q^k \\binom{n-1}{k}_q$."
+      "endLine": 201,
+      "summary": "Defines qBinom via q-Pascal recurrence: qBinom q (n+1) (k+1) = qBinom q n k + q^(k+1) * qBinom q n (k+1). Boundary: [n,0]=[n,n]=1, [0,k+1]=0, [k>n]=0. Proves qBinom_one: [n,1]_q = [n]_q.",
+      "mathContext": "$\\binom{n+1}{k+1}_q = \\binom{n}{k}_q + q^{k+1} \\binom{n}{k+1}_q$; $\\binom{n}{0}_q = \\binom{n}{n}_q = 1$."
     },
     {
-      "id": "identities",
-      "title": "Parts V–XIII: Identities (Product, Absorption, Symmetry, Vandermonde)",
-      "startLine": 224,
+      "id": "specialization",
+      "title": "Part IV–VI: Specializations at q=1 and q=0",
+      "startLine": 202,
+      "endLine": 309,
+      "summary": "qBinom_at_one: qBinom 1 n k = Nat.choose n k. Concrete verifications: [4,2]_q = 1+q+q²+q³, [3,2]_q = 1+q+q². qBinom_zero: [n,k]_0 = [k=0 or k=n]. Validates the definition against classical and limiting cases.",
+      "mathContext": "$\\binom{n}{k}_1 = \\binom{n}{k}$; $\\binom{n}{k}_0 = [k=0 \\vee k=n]$."
+    },
+    {
+      "id": "core-identities",
+      "title": "Parts VII–X: Absorption, Symmetry, and Product Formula",
+      "startLine": 310,
+      "endLine": 579,
+      "summary": "qBinom_absorption: [n,k]_q·[k]_q = [n]_q·[n-1,k-1]_q. qBinom_symm: [n,k]_q = [n,n-k]_q. qBinom_product: [n,k]_q·[k]_q!·[n-k]_q! = [n]_q!. These validate the factorial quotient formula and establish structural symmetry.",
+      "mathContext": "$\\binom{n}{k}_q [k]_q = [n]_q \\binom{n-1}{k-1}_q$; $\\binom{n}{k}_q = \\binom{n}{n-k}_q$; $\\binom{n}{k}_q [k]_q! [n-k]_q! = [n]_q!$."
+    },
+    {
+      "id": "advanced-identities",
+      "title": "Parts XI–XIII: Hockey Stick and q-Vandermonde",
+      "startLine": 580,
       "endLine": 750,
-      "summary": "Product formula. Absorption: [n,k]_q·[k]_q = [n]_q·[n-1,k-1]_q. Symmetry: [n,k]=[n,n-k]. q-Hockey stick (column sum). q=0 specialization. Symmetry verifications. q-Vandermonde.",
-      "mathContext": "$\\binom{n}{k}_q = \\binom{n}{n-k}_q$; q-Vandermonde: $\\binom{m+n}{k}_q = \\sum_j q^{j(m-k+j)} \\binom{m}{k-j}_q \\binom{n}{j}_q$."
+      "summary": "q-hockey stick (column sum): closed form for weighted column sums of q-binomials. q-Vandermonde (qBinom_vandermonde): [m+n,k]_q = Σ_j q^{j(m-k+j)}·[m,k-j]_q·[n,j]_q. These connect to Rogers-Ramanujan theory and quantum group representations.",
+      "mathContext": "$\\binom{m+n}{k}_q = \\sum_j q^{j(m-k+j)} \\binom{m}{k-j}_q \\binom{n}{j}_q$."
     }
   ],
   "conclusion": {
@@ -96,7 +113,22 @@
     {
       "targetId": "combinations-formula",
       "relationship": "extends",
-      "description": "OQ-03: q-analog generalization of binomial coefficients"
+      "description": "OQ-03: q-analog generalization of the main binomial coefficient formalization"
+    },
+    {
+      "targetId": "combinations-formula-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01: another sub-question of combinations-formula covering a complementary combinatorial identity"
+    },
+    {
+      "targetId": "combinations-formula-oq-02",
+      "relationship": "sibling",
+      "description": "OQ-02: sibling sub-question covering further combinatorial extensions"
+    },
+    {
+      "targetId": "picks-theorem-oq-03",
+      "relationship": "related",
+      "description": "Ehrhart polynomial theory also generalizes classical counting via polynomial q-analogs and generating functions"
     }
   ],
   "mainTheorems": [

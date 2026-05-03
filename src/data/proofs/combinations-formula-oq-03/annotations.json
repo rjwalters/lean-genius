@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-qbinom-context",
+    "type": "context",
+    "title": "q-Analog Binomial Coefficients: From Gauss to Quantum Groups",
+    "body": "Gaussian binomial coefficients [n,k]_q generalize ordinary binomial coefficients C(n,k) by inserting a parameter q. The key geometric interpretation: [n,k]_q counts k-dimensional subspaces of an n-dimensional vector space over the finite field F_q. As q→1, [n,k]_q → C(n,k), recovering the ordinary count. Gauss introduced them in the study of cyclotomic polynomials (1811), and they appear throughout: Rogers-Ramanujan partition identities (1894/1919), quantum group representations (Jimbo/Drinfeld 1985), and the cohomology of Grassmannian varieties. The q deformation is not just aesthetic — it encodes finer combinatorial data, distinguishing subspace structure from mere subset structure. This formalization works over arbitrary commutative rings, making no assumption that q is a prime power or even nonzero.",
+    "startLine": 1,
+    "endLine": 67,
+    "mathContext": "$\\binom{n}{k}_q = |\\mathrm{Gr}(k, \\mathbb{F}_q^n)|$ for prime powers $q$. At $q \\to 1$: $\\binom{n}{k}_q \\to \\binom{n}{k}$.",
+    "significance": "context",
+    "relatedConcepts": ["Grassmannian varieties", "finite field geometry", "quantum groups", "Rogers-Ramanujan identities", "partition theory"],
+    "prerequisites": ["binomial coefficients", "finite fields", "vector spaces"]
+  },
+  {
+    "id": "ann-qnumber-geometric",
+    "type": "insight",
+    "title": "q-Numbers as Geometric Sums: [n]_q = 1 + q + ⋯ + q^{n-1}",
+    "body": "The q-number [n]_q = 1 + q + q² + ⋯ + q^{n-1} is a geometric sum, the q-analog of the integer n. The key identity (q-1)·[n]_q = q^n - 1 (theorem qNumber_geometric) is both the closed-form evaluation and the tool for inductive proofs. When q = 1, [n]_1 = n (sum of n ones). The splitting identity [a+b]_q = [a]_q + q^a·[b]_q (theorem qNumber_split) is the q-analog of a+b = a+b — trivially true classically, but encoding the shift structure of q-series. The definition is recursive: qNumber q 0 = 0, qNumber q (n+1) = 1 + q * qNumber q n. This recursion is essential for ring-theoretic proofs since it avoids division by q-1.",
+    "startLine": 68,
+    "endLine": 119,
+    "mathContext": "$[n]_q = 1 + q + \\cdots + q^{n-1}$; $(q-1)[n]_q = q^n - 1$; $[a+b]_q = [a]_q + q^a [b]_q$.",
+    "significance": "key",
+    "relatedConcepts": ["geometric series", "q-analogs", "q-shift operator", "cyclotomic polynomials"],
+    "prerequisites": ["commutative ring arithmetic", "induction on natural numbers"]
+  },
+  {
+    "id": "ann-qbinom-pascal-defn",
+    "type": "technique",
+    "title": "Division-Free Definition via q-Pascal Recurrence",
+    "body": "The classical definition [n,k]_q = [n]_q! / ([k]_q! · [n-k]_q!) requires division, which fails in a general ring. Instead, this file defines q_binomial via the q-Pascal recurrence: qBinom q (n+1) (k+1) = qBinom q n k + q^(k+1) * qBinom q n (k+1). This is the q-analog of Pascal's identity C(n+1,k+1) = C(n,k) + C(n+1,k). Boundary conditions: qBinom q n 0 = 1 and qBinom q 0 (k+1) = 0. This recursive definition works over any CommRing without requiring q to be a unit. The theorem qBinom_one shows [n,1]_q = [n]_q, connecting q-binomials back to q-numbers. The qBinom_product theorem then proves post-hoc that the product formula [n,k]_q · [k]_q! · [n-k]_q! = [n]_q! holds, validating the recursive definition.",
+    "startLine": 148,
+    "endLine": 222,
+    "mathContext": "$\\binom{n+1}{k+1}_q = \\binom{n}{k}_q + q^{k+1} \\binom{n}{k+1}_q$; $\\binom{n}{0}_q = \\binom{n}{n}_q = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Pascal's triangle", "division-free algebra", "recurrence relations", "q-Pascal triangle"],
+    "prerequisites": ["Pascal's identity for C(n,k)", "induction on pairs (n,k)", "commutative ring theory"]
+  },
+  {
+    "id": "ann-qbinom-specialization",
+    "type": "insight",
+    "title": "At q = 1: q-Binomials Reduce to Ordinary Binomials",
+    "body": "The fundamental validation of the q-analog theory is the specialization theorem qBinom_at_one: qBinom (1:R) n k = Nat.choose n k (cast to R). This confirms that setting q=1 in the q-Pascal recurrence recovers the classical Pascal recurrence, and thus the classical binomial coefficients. The proof is by simultaneous induction on n and k: the base cases match, and the inductive step uses q^(k+1) = 1^(k+1) = 1 to collapse the q-Pascal recurrence to ordinary Pascal. This theorem also validates the definition retroactively — had the recursive definition been incorrectly set up, the specialization would fail. Additionally, qBinom_zero (q=0 specialization) shows [n,k]_0 equals 1 if k=0 or k=n, and 0 otherwise — corresponding to the indicator function for extreme values.",
+    "startLine": 202,
+    "endLine": 309,
+    "mathContext": "$\\binom{n}{k}_1 = \\binom{n}{k}$ (ordinary binomial); $\\binom{n}{k}_0 = [k=0 \\text{ or } k=n]$ (indicator function).",
+    "significance": "key",
+    "relatedConcepts": ["ordinary binomial coefficients", "specialization limits", "generating functions", "combinatorial identities"],
+    "prerequisites": ["Nat.choose", "induction on pairs (n,k)"]
+  },
+  {
+    "id": "ann-qbinom-identities",
+    "type": "technique",
+    "title": "Core Identities: Absorption, Symmetry, and Product Formula",
+    "body": "Three fundamental identities are proved in Parts V-VIII. Absorption (qBinom_absorption): [n,k]_q · [k]_q = [n]_q · [n-1,k-1]_q for k ≤ n. This is the q-analog of k·C(n,k) = n·C(n-1,k-1), and is used to prove the product formula by induction. Symmetry (qBinom_symm): [n,k]_q = [n,n-k]_q. Follows by induction from the q-Pascal recurrence. Geometrically, k-dimensional subspaces of F_q^n correspond bijectively to (n-k)-dimensional subspaces via orthogonal complement or linear duality. Product formula (qBinom_product): [n,k]_q · [k]_q! · [n-k]_q! = [n]_q!. This retrospectively validates the factorial quotient definition. The proof requires careful handling of the inductive step using both Pascal recurrences and the absorption identity.",
+    "startLine": 310,
+    "endLine": 580,
+    "mathContext": "$\\binom{n}{k}_q [k]_q = [n]_q \\binom{n-1}{k-1}_q$; $\\binom{n}{k}_q = \\binom{n}{n-k}_q$; $\\binom{n}{k}_q [k]_q! [n-k]_q! = [n]_q!$.",
+    "significance": "key",
+    "relatedConcepts": ["absorption identity", "duality in Grassmannians", "factorial product formula", "induction strategies"],
+    "prerequisites": ["q-numbers and q-factorials", "q-Pascal recurrence", "induction on k ≤ n"]
+  },
+  {
+    "id": "ann-qbinom-vandermonde",
+    "type": "insight",
+    "title": "q-Hockey Stick and q-Vandermonde: Advanced Identities",
+    "body": "The final sections prove two advanced identities. The q-Hockey Stick (column sum identity) gives a closed form for Σ_{i=0}^{r} [n+i, k]_q weighted by q-powers, generalizing the classical hockey stick identity Σ_{i=0}^{r} C(n+i,k) = C(n+r+1,k+1). The q-Vandermonde identity (qBinom_vandermonde): [m+n,k]_q = Σ_j q^{j(m-k+j)} · [m,k-j]_q · [n,j]_q. This is the q-analog of Vandermonde's convolution Σ_j C(m,k-j)·C(n,j) = C(m+n,k). The q-powers q^{j(m-k+j)} encode the additional structure arising from choosing which elements come from the two components of F_q^m ⊕ F_q^n. These identities are key in proving Rogers-Ramanujan-type results and appear in quantum group character theory.",
+    "startLine": 580,
+    "endLine": 750,
+    "mathContext": "$\\binom{m+n}{k}_q = \\sum_j q^{j(m-k+j)} \\binom{m}{k-j}_q \\binom{n}{j}_q$ (q-Vandermonde convolution).",
+    "significance": "key",
+    "relatedConcepts": ["Vandermonde convolution", "hockey stick identity", "Rogers-Ramanujan identities", "quantum group characters", "partition generating functions"],
+    "prerequisites": ["q-binomial basics", "finite summation manipulations", "q-Pascal recurrence"]
+  }
+]
