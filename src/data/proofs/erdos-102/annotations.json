@@ -229,25 +229,50 @@
     ]
   },
   {
+    "id": "ann-102-proved-connections",
+    "proofId": "erdos-102",
+    "range": {
+      "startLine": 96,
+      "endLine": 141
+    },
+    "type": "proof",
+    "title": "Proved Theorems: connection_101 is Derivable from Stronger Divergence",
+    "content": "Three proved theorems reducing `connection_101` from an axiom to a derivable consequence:\n\n**connection_101_for_same_c** (96-111): If $h_c(n) \\to \\infty$ for a fixed $c$, then for large $n$, any config with $\\ge cn^2$ rich lines has maxCollinear $\\ge 5$. Proof: use `hdiv 5` to extract $N_0$ where $h_c \\ge 5$; if richLineCount $\\ge cn^2$ then maxCollinear $\\ge 5 > 4$, contradiction.\n\n**connection_101_for_larger_eps** (115-125): Same for any $\\varepsilon \\ge c$ — use `calc` to chain $c \\le \\varepsilon$.\n\n**connection_101_from_full_divergence** (131-140): If divergence holds for ALL $c > 0$ (full conjecture), then `connection_101` is redundant: apply `connection_101_for_same_c` with $c' = \\varepsilon$. This is the key insight: the axiom `connection_101` is not needed if the full divergence axiom is available.",
+    "mathContext": "The three theorems collectively show that `connection_101` can be eliminated as an axiom if the full `erdos_102_divergence` (∀c) is assumed. In the current formalization, `connection_101` is still listed as an axiom because the full divergence is not proved — but the proved theorems demonstrate the logical redundancy. This is typical in axiom-reduction work: axioms that can be derived from stronger conjectures should be retired once the conjectures are proved.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom elimination",
+      "contrapositive argument",
+      "o(n²) bounds",
+      "connection_101"
+    ],
+    "prerequisites": [
+      "connection_101_for_same_c",
+      "erdos_102_divergence"
+    ]
+  },
+  {
     "id": "erdos-102-ann-erdospurdy",
     "proofId": "erdos-102",
     "range": {
-      "startLine": 100,
-      "endLine": 103
+      "startLine": 142,
+      "endLine": 173
     },
-    "type": "concept",
-    "title": "Erdős–Purdy: Rich Lines Force $\\ge 4$ Collinear",
-    "content": "An elementary observation connecting to the problem's origin: if $cn^2$ lines each contain $\\ge 4$ points, then trivially some line contains $\\ge 4$ points (i.e., $h_c(n) \\ge 4$). This is the starting point — the real question is whether $h_c(n)$ grows with $n$. The axiom serves as a formalized acknowledgment of the Erdős–Purdy survey context.",
-    "mathContext": "$\\forall c > 0,\\, \\forall P: \\text{richLineCount}(P) \\ge cn^2 \\Rightarrow h_c(n) \\ge 4$. This is trivial since each rich line already has $\\ge 4$ points.",
-    "significance": "supporting",
+    "type": "proof",
+    "title": "Erdős–Purdy: Rich Lines Force $\\ge 4$ Collinear (Proved)",
+    "content": "The Szemerédi–Trotter incidence bound (documented at line 144) constrains how many rich lines can pass through $n$ points.\n\n**erdos_purdy_connection** (150-173): PROVED. If $cn^2$ rich lines exist, then maxCollinear $\\ge 4$. Proof structure:\n1. `richLineCount > 0` since $c > 0$ and $n \\ge 1$ (by `sq_nonneg` + `nlinarith`)\n2. `Finset.card_pos` gives a witness $S$ in the rich line filter\n3. Destructure $S$ to get $a, b \\in S$ with $a \\ne b$ and all points of $S$ collinear via $a, b$\n4. Put $S$ in the `maxCollinear` sup via `Finset.le_sup`\n5. Close with `calc 4 = S.card ≤ _`\n\nKey: `richLineCount` is defined as `Finset.card` of a filter — membership gives `S.card ≥ 2 ∧ collinear₃` directly. The `calc 4 = S.card` uses `by omega` on `hS4 : S.card ≥ 4` (S is a rich 4-point line).",
+    "mathContext": "The proof is elementary but exhibits a typical Lean pattern: Finset membership destructuring. `Finset.mem_filter.mpr` builds the sup witness from the destructured components. The Szemerédi–Trotter bound is used implicitly in the problem's context (it gives the $O(n^{3/2})$ upper bound on 4-point rich lines) but is not needed in the `erdos_purdy_connection` proof itself, which only needs `richLineCount > 0`.",
+    "significance": "key",
     "relatedConcepts": [
-      "trivial lower bounds",
-      "Erdős–Purdy surveys",
-      "combinatorial geometry surveys"
+      "Finset.le_sup",
+      "Finset.card_pos",
+      "richLineCount",
+      "Szemerédi-Trotter"
     ],
     "prerequisites": [
-      "richLineCount definition",
-      "maxCollinear definition"
+      "richLineCount",
+      "maxCollinear",
+      "Finset.mem_filter"
     ]
   }
 ]
