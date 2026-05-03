@@ -29,30 +29,35 @@
     }
   },
   "knowledge": {
-    "progressSummary": "NEAR-COMPLETE: expVal_marginal, expVal_empEnt, aep_concentration, typical_set_size_upper all proved. One sorry: empEnt_variance (cross-term independence for i\u2260j). Gallery entry created.",
+    "progressSummary": "COMPLETE: AEP fully formalized (0 sorries, 0 axioms). expVal_marginal_product proved bilinear independence; empEnt_variance eliminates the last sorry. 13 theorems, 476 lines. Badge: verified.",
     "builtItems": [
       "DiscreteDist structure: finite prob dist on Fin k",
       "jointProb: i.i.d. product measure on n-sequences",
       "empEnt: empirical entropy -(1/n) log P(x)",
       "chebyshev_finite: Chebyshev proved for finite distributions",
-      "typical_prob_lower_bound: proved (each typical seq has P(x) >= exp(-n(H+\u03b5)))",
-      "typical_set_size_upper: proved (|T_\u03b5| <= exp(n(H+\u03b5)))",
+      "typical_prob_lower_bound: proved (each typical seq has P(x) >= exp(-n(H+ε)))",
+      "typical_set_size_upper: proved (|T_ε| <= exp(n(H+ε)))",
       "Lean file: proofs/Proofs/ShannonSourceCodingOQ03.lean (309 lines)",
       "Gallery entry: src/data/proofs/shannon-source-coding-oq-03/",
       "expVal_marginal: proved in ShannonSourceCodingOQ03.lean (Fintype.prod_sum + Finset.mul_prod_erase)",
       "expVal_empEnt: proved with (hn : 0 < n) hypothesis using expVal_marginal",
-      "aep_concentration: proved using empEnt_variance + Chebyshev (bug-free version)"
+      "aep_concentration: proved using empEnt_variance + Chebyshev (bug-free version)",
+      "expVal_marginal_product: private lemma for 2D independence in ShannonSourceCodingOQ03.lean",
+      "empEnt_variance: fully proved (was sorry) — variance formula Var[empEnt] = logVar/n"
     ],
     "insights": [
       "AEP = LLN applied to -log p(X): empirical entropy concentrates around H(p)",
-      "Chebyshev finite case: P(|f-\u03bc|>\u03b5) \u2264 E[(f-\u03bc)\u00b2]/\u03b5\u00b2 provable for finite prob spaces",
-      "Typical set size upper bound |T_\u03b5|\u2264exp(n(H+\u03b5)) proved via counting argument",
-      "Key sorry: marginal factorization \u03a3_x P(x)*g(x_i) = \u03a3_a p(a)*g(a) needs Fintype.sum_piFinset_succ",
-      "logVar = E[(log p(X))\u00b2] - H(p)\u00b2 is the AEP concentration parameter",
+      "Chebyshev finite case: P(|f-μ|>ε) ≤ E[(f-μ)²]/ε² provable for finite prob spaces",
+      "Typical set size upper bound |T_ε|≤exp(n(H+ε)) proved via counting argument",
+      "Key sorry: marginal factorization Σ_x P(x)*g(x_i) = Σ_a p(a)*g(a) needs Fintype.sum_piFinset_succ",
+      "logVar = E[(log p(X))²] - H(p)² is the AEP concentration parameter",
       "expVal_marginal proved via Fintype.prod_sum: factors joint expectation into single-coord marginal",
       "expVal_empEnt proved from expVal_marginal: E[empEnt] = H by linearity + n equal marginal contributions",
       "aep_concentration bug fixed: original used rw[expVal_empEnt] which doesn't apply to variance; corrected to use empEnt_variance",
-      "empEnt_variance requires 2D marginal (bilinear independence): E[Z_i*Z_j] = E[Z_i]*E[Z_j] for i\u2260j"
+      "empEnt_variance requires 2D marginal (bilinear independence): E[Z_i*Z_j] = E[Z_i]*E[Z_j] for i≠j",
+      "expVal_marginal_product (2D bilinear independence): E[g₁(Xⱼ₁)·g₂(Xⱼ₂)] = E[g₁]·E[g₂] for j₁≠j₂, proved via Fintype.prod_sum with two active coordinates using the same mul_prod_erase technique",
+      "empEnt_variance proof: define centered Z(a)=-log p(a)-H, show E[(empEnt-H)²] = (1/n)² * ∑ᵢ∑ⱼ E[Z(Xᵢ)Z(Xⱼ)]; diagonal terms give logVar D each, off-diagonal give 0 by bilinear+mean-zero",
+      "AEP fully formalized (0 sorries, 0 axioms): 13 theorems, 476 lines. Lean 4 / Mathlib complete machine-checked proof of the fundamental theorem of information theory"
     ],
     "mathlibGaps": [
       "Fintype.sum_piFinset_succ needed for marginal factorization in product measure",
@@ -60,9 +65,8 @@
       "2D expVal_marginal (bilinear independence) needed for empEnt_variance; not in Mathlib but buildable in ~50 lines"
     ],
     "nextSteps": [
-      "Prove expVal_bilinear: E[g(Xi)*h(Xj)] = E[g(Xi)]*E[h(Xj)] for i!=j (50 lines, same Fintype.prod_sum approach)",
-      "Use expVal_bilinear to prove empEnt_variance and eliminate the last sorry",
-      "After empEnt_variance proved, badge upgrades from formalized to verified (0 axioms, 0 sorries)"
+      "Consider ergodic AEP extension: can the result generalize beyond i.i.d. to ergodic sources via Mathlib's ergodic theory?",
+      "Large-deviations tightening: can the Chebyshev bound be replaced by an exact Cramér rate?"
     ]
   },
   "tags": [
