@@ -1,8 +1,8 @@
 {
   "slug": "bezout-identity-oq-01-oq-01",
   "title": "Bézout Identity: Binary Extended GCD Correctness",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -29,11 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: 6 public theorems, 0 sorries, 0 axioms. Gallery entry created 2026-05-03.",
+    "builtItems": [
+      "BezoutIdentityOQ01OQ01.lean:106 - binaryGcd_eq_gcd: binaryGcd a b = Nat.gcd a b (main correctness theorem)",
+      "BezoutIdentityOQ01OQ01.lean:169 - bezout_via_binaryGcd: ∃ x y : ℤ, binaryGcd a b = a*x + b*y"
+    ],
+    "insights": [
+      "Stein binary GCD algorithm: binaryGcd defined with 7 branches, termination by well-founded recursion on a+b"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Formalize complexity bound O(log²(max(a,b)))",
+      "Extend to integers with sign handling"
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -60,6 +68,7 @@
     "bezout-identity-oq-03-oq-01-oq-01",
     "bezout-identity-oq-03-oq-01-oq-01-oq-01",
     "bezout-identity-oq-03-oq-01-oq-02",
+    "bezout-identity-oq-03-oq-02",
     "bezout-identity-oq-03-oq-04",
     "bezout-identity-oq-03-oq-04-oq-01",
     "bezout-identity-oq-04",
@@ -306,6 +315,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BezoutIdentityOQ03OQ02.lean",
+      "filename": "BezoutIdentityOQ03OQ02.lean",
+      "lineCount": 188,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ03OQ02.lean"
     },
     {
       "path": "Proofs/BezoutIdentityOQ03OQ04.lean",
