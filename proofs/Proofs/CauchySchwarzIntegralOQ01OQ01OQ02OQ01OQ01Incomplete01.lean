@@ -548,8 +548,38 @@ theorem localization_existence
   -- so νn n E = νn (n+1) E, hence ∫_E gₙ = ∫_E g_{n+1} for all E ⊆ Sₙ,
   -- so gₙ = g_{n+1} a.e. on Sₙ by uniqueness of the density.
   have hconsist : ∀ n, gn n =ᵐ[μ.restrict (spanningSets μ n)] gn (n + 1) := by
-    sorry  -- [HARD] ae_eq_of_forall_set_integral_eq on spanningSets μ n
-    -- For E ⊆ Sₙ measurable: ∫_E gₙ = νn n E = φ(1_{E∩Sₙ}) = φ(1_E) = φ(1_{E∩Sₙ₊₁}) = νn (n+1) E = ∫_E g_{n+1}
+    intro n
+    haveI : IsFiniteMeasure (μ.restrict (spanningSets μ n)) :=
+      ⟨by rw [Measure.restrict_apply MeasurableSet.univ, Set.univ_inter]; exact hS_fin n⟩
+    apply ae_eq_of_forall_set_integral_eq_of_sigmaFinite
+    · exact (SignedMeasure.integrable_rnDeriv (νn n) μ).mono_measure Measure.restrict_le_self
+    · exact (SignedMeasure.integrable_rnDeriv (νn (n + 1)) μ).mono_measure Measure.restrict_le_self
+    intro E hE _
+    have hESn : MeasurableSet (E ∩ spanningSets μ n) := hE.inter (hS_meas n)
+    -- For k = n or n+1: ∫_E gₖ ∂(μ.restrict Sₙ) = φ(1_{E∩Sₙ})
+    -- via restrict_restrict + R-N identity + νn definition
+    have hchain : ∀ k, ∫ a in E, gn k a ∂(μ.restrict (spanningSets μ n)) =
+        φ ((hmemLp k (E ∩ spanningSets μ n) hESn).toLp _) := fun k => by
+      have hstep1 : ∫ a in E, gn k a ∂(μ.restrict (spanningSets μ n)) =
+          ∫ a in E ∩ spanningSets μ n, gn k a ∂μ := by
+        show integral ((μ.restrict (spanningSets μ n)).restrict E) (gn k) =
+             integral (μ.restrict (E ∩ spanningSets μ n)) (gn k)
+        rw [Measure.restrict_restrict hE]
+      rw [hstep1, ← hgn_rn k _ hESn, hνn_eq k _ hESn]
+    rw [hchain n, hchain (n + 1)]
+    congr 1
+    -- The Lp elements are equal because (E∩Sₙ)∩Sₙ = (E∩Sₙ)∩Sₙ₊₁ (since Sₙ ⊆ Sₙ₊₁)
+    apply Lp.ext
+    filter_upwards [(hmemLp n (E ∩ spanningSets μ n) hESn).coeFn_toLp,
+                    (hmemLp (n + 1) (E ∩ spanningSets μ n) hESn).coeFn_toLp] with a h1 h2
+    rw [h1, h2]
+    have hset_eq : E ∩ spanningSets μ n ∩ spanningSets μ n =
+                   E ∩ spanningSets μ n ∩ spanningSets μ (n + 1) := by
+      ext x; simp only [Set.mem_inter_iff]
+      exact ⟨fun ⟨⟨hxE, hxSn⟩, _⟩ =>
+               ⟨⟨hxE, hxSn⟩, monotone_spanningSets μ (Nat.le_succ n) hxSn⟩,
+             fun ⟨⟨hxE, hxSn⟩, _⟩ => ⟨⟨hxE, hxSn⟩, hxSn⟩⟩
+    simp only [hset_eq]
   -- Step 6: Construct g ∈ Lq(μ) as the consistent a.e. limit of gₙ
   -- Proof: by consistency, gₙ is eventually constant a.e. at each point;
   -- ‖g‖_q ≤ ‖φ‖ by Fatou applied to ‖gₙ‖_q ≤ ‖φ‖.
@@ -622,9 +652,8 @@ end RieszSigmaFiniteComplete
 11. `indicator_lp_hasSum_sf`: **Session 3** — HasSum of Lp indicators for sigma-finite (via DCT + tendsto_indicatorConstLp_set)
 12. `localization_existence` skeleton: νn construction, AC, R-N integral identity all proved
 
-**Sorries remaining (5, down from 1 monolithic)**:
+**Sorries remaining (4, down from 5)**:
 - `hgn_bound`: Hölder extremizer — ‖gₙ‖_q ≤ ‖φ‖. HARD (~100 lines, for Aristotle).
-- `hconsist`: Consistency — gₙ = g_{n+1} a.e. on Sₙ. HARD.
 - `hg_exists`: Construct g as consistent a.e. limit + MemLq via Fatou. HARD.
 - `hLp_conv` inner sorry: Lp convergence of 1_{E∩Sₙ} → 1_E (μ(E)<∞). MEDIUM.
 - `hMCT`: ∫_{E∩Sₙ} g → ∫_E g by DCT. MEDIUM.
@@ -632,6 +661,7 @@ end RieszSigmaFiniteComplete
 **Parent's 3rd sorry (density extension) eliminated in Session 1.**
 **Step B (Lp truncation convergence) eliminated in Session 2.**
 **Session 3: decomposed Step A into 5 targeted sub-sorries; σ-additivity + AC + R-N proved.**
+**Session 4: proved hconsist via restrict_restrict + ae_eq uniqueness on μ.restrict Sₙ.**
 -/
 
 end
