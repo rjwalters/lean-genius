@@ -13938,13 +13938,19 @@
       "result": "issues-fixed"
     },
     "angle-trisection-oq-03-oq-02": {
-      "auditCount": 4,
-      "lastAudited": "2026-05-03T06:29:52Z",
-      "result": "issues-found",
+      "auditCount": 5,
+      "lastAudited": "2026-05-03T07:17:17Z",
+      "result": "issues-fixed",
       "issues": [
-        "meta.meta.sorries/axiomCount fields missing; leanFile.lineCount 140→156, theoremCount 12→13"
+        "theoremCount 12→13 (3 @[simp] theorems missed by original count)"
       ],
-      "notes": "Fix PR #15099 in-flight; tracker PR #15105 in-flight"
+      "notes": "Fixed: theoremCount corrected to 13. Previous issues (missing sorries/axiomCount, stale lineCount) fixed by prior PRs. Conflicting PRs #15099 and #15105 superseded by this fix."
+    },
+    "abel-ruffini-oq-09": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-03T07:17:17Z",
+      "result": "issues-fixed",
+      "issues": []
     }
   },
   "erdos-1097-oq-01": {
