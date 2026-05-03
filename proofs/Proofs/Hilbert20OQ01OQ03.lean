@@ -185,6 +185,13 @@ axiom BicharacteristicCurve {n m : ℕ} (P : LinearPDO n m) : Type
 axiom imSymbolAlongCurve {n m : ℕ} {P : LinearPDO n m}
     (γ : BicharacteristicCurve P) (t : ℝ) : ℝ
 
+/-- The imaginary symbol along a bicharacteristic equals the imaginary part of
+    the principal symbol at some point (x, ξ) on the curve. This connects the
+    abstract bicharacteristic parameterization to the concrete principal symbol. -/
+axiom imSymbolAlongCurve_spec {n m : ℕ} (P : LinearPDO n m)
+    (γ : BicharacteristicCurve P) (t : ℝ) :
+    ∃ x ξ : Fin n → ℝ, imSymbolAlongCurve γ t = (principalSymbol P x ξ).im
+
 def ConditionPsi {n m : ℕ} (P : LinearPDO n m) : Prop :=
   ∀ (γ : BicharacteristicCurve P) (t₁ t₂ : ℝ),
     t₁ < t₂ → imSymbolAlongCurve γ t₁ < 0 → ¬(imSymbolAlongCurve γ t₂ > 0)
@@ -262,9 +269,10 @@ theorem real_symbol_solvable {n m : ℕ} (P : LinearPDO n m)
     (x₀ : Fin n → ℝ) :
     IsLocallySolvable P x₀ := by
   apply dencker_sufficiency
-  intro γ t₁ t₂ _ hneg hpos
-  -- imSymbolAlongCurve ≠ 0 contradicts hreal + bridge axiom
-  sorry -- Needs bridge axiom connecting imSymbolAlongCurve to principalSymbol
+  intro γ t₁ t₂ _ hneg _
+  obtain ⟨x, ξ, hspec⟩ := imSymbolAlongCurve_spec P γ t₁
+  rw [hspec] at hneg
+  linarith [hreal x ξ]
 
 /-- **Self-adjoint operators are locally solvable.**
     If P = P* (at principal level), then P is locally solvable.
@@ -274,9 +282,13 @@ theorem real_symbol_solvable {n m : ℕ} (P : LinearPDO n m)
 theorem self_adjoint_solvable {n m : ℕ} (P : LinearPDO n m)
     (hsa : formalAdjoint P = P) (x₀ : Fin n → ℝ) :
     IsLocallySolvable P x₀ := by
-  apply dencker_sufficiency
-  intro γ t₁ t₂ _ hneg _
-  sorry -- Same bridge axiom issue
+  apply real_symbol_solvable P _ x₀
+  intro x ξ
+  have heq : principalSymbol P x ξ = starRingEnd ℂ (principalSymbol P x ξ) := by
+    have := principalSymbol_adjoint P x ξ
+    rw [hsa] at this
+    exact this
+  exact Complex.conj_eq_iff_im.mp heq.symm
 
 -- ============================================================
 -- PART 8: Summary
@@ -293,20 +305,20 @@ theorem self_adjoint_solvable {n m : ℕ} (P : LinearPDO n m)
 5. self_adjoint_of_real_coeff: real coefficients → P = P*
 6. adjoint_principal_type: P principal type → P* principal type
 7. dencker_sufficiency: condition (Ψ) → local solvability
-   (assembled from axioms via the energy estimate chain)
+8. real_symbol_solvable: real principal symbol → locally solvable
+9. self_adjoint_solvable: self-adjoint → locally solvable
 
-### Axioms (7):
+### Axioms (8):
 - HasAPrioriEstimate: a priori Sobolev estimates (needs Sobolev spaces)
 - IsLocallySolvable: local solvability (needs distributions)
 - hormander_duality: solvability ↔ estimates for adjoint
 - BicharacteristicCurve: bicharacteristic curves (needs Hamilton flow)
 - imSymbolAlongCurve: Im of symbol along bicharacteristic (needs microlocal analysis)
+- imSymbolAlongCurve_spec: bridge connecting bicharacteristic Im to principalSymbol
 - dencker_weight_exists: Dencker's weight construction
 - weight_implies_estimate: weight → a priori estimates
 
-### Sorries (2):
-- real_symbol_solvable: needs bridge axiom connecting imSymbolAlongCurve to principalSymbol
-- self_adjoint_solvable: same bridge axiom issue
+### Sorries (0): all proofs complete
 
 ### Key Contribution
 Formalizes the STRUCTURAL FRAMEWORK of Dencker's proof:

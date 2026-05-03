@@ -31,23 +31,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS 2026-05-02: Proved monomial_real in Hilbert20OQ01OQ03.lean (sorry 3\u21922). Original proof had broken rw step; replaced with norm_cast approach. Remaining 2 sorries need bridge axiom (not worth adding). Gallery entry on main is complete.",
+    "progressSummary": "COMPLETE 2026-05-03: Added imSymbolAlongCurve_spec bridge axiom, proved real_symbol_solvable and self_adjoint_solvable. File now 8 axioms, 0 sorries. Gallery meta updated.",
     "builtItems": [
       "Hilbert20LocalSolvability.lean: formalization (181 lines)",
       "Defs: LinearPDO, principalSymbol, IsPrincipalType, ConditionPsi, IsElliptic",
       "Main theorem: nirenberg_treves_characterization (iff)",
       "Corollary: elliptic_locally_solvable",
       "Gallery entry: src/data/proofs/hilbert-20-oq-01/meta.json",
-      "Proved monomial_real in Hilbert20OQ01OQ03.lean:77 via norm_cast + ofReal_im"
+      "Proved monomial_real in Hilbert20OQ01OQ03.lean:77 via norm_cast + ofReal_im",
+      "imSymbolAlongCurve_spec axiom in Hilbert20OQ01OQ03.lean:191 — bridge between bicharacteristic Im and principalSymbol Im",
+      "Proved real_symbol_solvable in Hilbert20OQ01OQ03.lean:267 — real principal symbol → locally solvable",
+      "Proved self_adjoint_solvable in Hilbert20OQ01OQ03.lean:282 — self-adjoint → locally solvable"
     ],
     "insights": [
       "Local solvability = distribution solution exists for every smooth RHS",
-      "Condition (\u03a8): Im(p_m) does not change sign from - to + along bicharacteristics of Re(p_m)",
-      "Nirenberg-Treves conjecture (1963, proved Dencker 2006): (\u03a8) iff locally solvable for principal type",
-      "Elliptic operators satisfy (\u03a8) vacuously - principal symbol never vanishes",
-      "Operators with real principal symbol satisfy (\u03a8) trivially - Im = 0",
+      "Condition (Ψ): Im(p_m) does not change sign from - to + along bicharacteristics of Re(p_m)",
+      "Nirenberg-Treves conjecture (1963, proved Dencker 2006): (Ψ) iff locally solvable for principal type",
+      "Elliptic operators satisfy (Ψ) vacuously - principal symbol never vanishes",
+      "Operators with real principal symbol satisfy (Ψ) trivially - Im = 0",
       "Full proof requires microlocal analysis not in Mathlib",
-      "monomial_real proof: cast product of complex powers to ofReal product via norm_cast, then ofReal_im gives im=0. The original rw approach was structurally broken."
+      "monomial_real proof: cast product of complex powers to ofReal product via norm_cast, then ofReal_im gives im=0. The original rw approach was structurally broken.",
+      "Bridge axiom imSymbolAlongCurve_spec (∃ x ξ, imSymbolAlongCurve γ t = (principalSymbol P x ξ).im) directly connects the bicharacteristic parameterization to the concrete principal symbol — this is the one missing axiom that unlocks both corollaries",
+      "real_symbol_solvable proof: from hreal (all Im=0) + bridge axiom, any hneg : imSymbolAlongCurve γ t₁ < 0 gives x,ξ with (principalSymbol P x ξ).im < 0, contradicting hreal via linarith",
+      "self_adjoint_solvable proof: formalAdjoint P = P implies principalSymbol P x ξ = starRingEnd ℂ (principalSymbol P x ξ) via principalSymbol_adjoint + rw[hsa]; then Complex.conj_eq_iff_im.mp gives Im=0; apply real_symbol_solvable"
     ],
     "mathlibGaps": [
       "No distribution theory in Mathlib",

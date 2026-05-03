@@ -17,8 +17,8 @@
     ],
     "proofRepoPath": "Proofs/Hilbert20OQ01OQ03.lean",
     "badge": "axiom",
-    "sorries": 2,
-    "axiomCount": 7,
+    "sorries": 0,
+    "axiomCount": 8,
     "theoremCount": 9,
     "mathlibDependencies": [
       {
@@ -36,16 +36,18 @@
       "Formal adjoint of PDOs with proved principal symbol relation",
       "Involutivity of adjoint: (P*)* = P",
       "Dencker sufficiency theorem assembled from weight->estimate->solvability chain",
-      "Adjoint preserves principal type property"
+      "Adjoint preserves principal type property",
+      "Proved real-symbol solvability and self-adjoint solvability as corollaries of Dencker sufficiency"
     ],
-    "lineCount": 322,
+    "lineCount": 334,
     "assumptions": [
       "HasAPrioriEstimate: Sobolev a priori estimates (needs Sobolev spaces)",
       "IsLocallySolvable: local solvability (needs distribution theory)",
-      "hormander_duality: solvability ↔ adjoint estimates",
+      "hormander_duality: solvability <=> adjoint estimates",
       "BicharacteristicCurve/imSymbolAlongCurve: Hamilton flow",
-      "dencker_weight_exists: Dencker's weight construction (2006)",
-      "weight_implies_estimate: weight → a priori estimates"
+      "imSymbolAlongCurve_spec: bridge axiom — bicharacteristic Im equals principalSymbol Im at some point",
+      "dencker_weight_exists: Dencker weight construction (2006)",
+      "weight_implies_estimate: weight => a priori estimates"
     ]
   },
   "parent": "hilbert-20-oq-01",
@@ -125,12 +127,12 @@
   ],
   "leanFile": {
     "namespace": "Hilbert20OQ01OQ03",
-    "lineCount": 322,
-    "axiomCount": 7,
+    "lineCount": 334,
+    "axiomCount": 8,
     "theoremCount": 9,
     "definitionCount": 7,
     "path": "Proofs/Hilbert20OQ01OQ03.lean",
-    "sorries": 2
+    "sorries": 0
   },
-  "sorries": 2
+  "sorries": 0
 }
