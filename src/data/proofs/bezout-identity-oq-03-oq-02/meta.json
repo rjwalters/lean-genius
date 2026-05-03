@@ -90,7 +90,10 @@
       "IsCoprime.prod_right is the critical bridge: it lifts pairwise coprimality to coprimality with the product, which is exactly the hypothesis required by the 2-moduli step",
       "Working over ℤ (not ℕ) avoids subtraction issues and matches the algebraic interface of IsCoprime, IsCoprime.mul_dvd, and Int.ModEq",
       "Fin.lastCases gives the cleanest case split for the verification step: the last coordinate is verified directly, the others use the IH plus a divisibility lift",
-      "The empty-product base case (k = 0) is non-trivial in form but trivial in content: ∏ over Fin 0 = 1, and ZMOD 1 is the universal congruence"
+      "The empty-product base case (k = 0) is non-trivial in form but trivial in content: ∏ over Fin 0 = 1, and ZMOD 1 is the universal congruence",
+      "**CRT as a Ring Isomorphism**: The sister entry `bezout-identity-oq-03-oq-01-oq-01` gives the abstract perspective: ℤ/∏mᵢℤ ≅ ∏ℤ/mᵢℤ as rings when mᵢ are pairwise coprime. This file gives the complementary explicit-witness perspective: for any target residues aᵢ, the isomorphism is constructive — the inductive combination of `crt_iscop` applications actually computes the preimage. Both views are needed: the isomorphism gives structural insight (e.g. idempotents, group units), the witness gives algorithmic content.",
+      "**Algorithmic Applications — RSA and Garner's Algorithm**: The CRT is the engine behind RSA decryption speedup via CRT (computing m^d mod n by working mod p and mod q separately and recombining, halving the exponent size). Garner's mixed-radix representation x = a₀ + m₀(a₁ + m₁(a₂ + ...)) gives an O(k²) sequential algorithm avoiding multi-precision arithmetic entirely — the open question in this file about a `crtListInt` computable definition points directly at this. Formally verified CRT implementations underpin cryptographic proof systems (e.g. Lean-based RSA verification).",
+      "**Euler Totient Multiplicativity**: A direct consequence of this k-moduli CRT is that φ(∏mᵢ) = ∏φ(mᵢ) when m₁, ..., mₖ are pairwise coprime. The isomorphism (ℤ/∏mᵢ)× ≅ ∏(ℤ/mᵢ)× (units of a product ring are a product of unit groups) follows from the CRT ring isomorphism, and taking cardinalities gives the multiplicativity formula. This connects the present file to `euler-totient` and explains why Euler's theorem a^φ(n) ≡ 1 (mod n) has the multiplicative structure it does."
     ],
     "prerequisites": [
       "Number theory (modular arithmetic, Bézout's identity, divisibility)",
@@ -176,6 +179,26 @@
       "targetId": "bezout-identity",
       "relationship": "ancestor",
       "description": "Foundational: Bézout's identity gcd(a,b) = ax + by underlies the parent crt_iscop solution formula."
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "complementary",
+      "description": "Alternative constructive CRT formalization: uses direct Bézout coefficients (via natAbs and Bezout's lemma directly) rather than Fin-induction on IsCoprime. The Sun Tzu (3, 5, 7) example appears in both — cross-checking the two implementations validates both approaches."
+    },
+    {
+      "targetId": "bezout-identity-oq-03-oq-04",
+      "relationship": "complementary",
+      "description": "Efficient CRT variant: avoids modular reduction by working directly with Bézout coefficients, giving a more computationally efficient form. Where this file proves correctness by Fin-induction (existence + uniqueness), that file optimizes the solution formula for practical computation."
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "generalizes-to",
+      "description": "The non-coprime generalization: for general moduli m, n (not necessarily coprime), x ≡ a (mod m), x ≡ b (mod n) is solvable iff gcd(m,n) | (a-b), with solutions unique modulo lcm(m,n). This entry handles only the pairwise-coprime case; `chinese-remainder-non-coprime` covers the general case and can be used to remove the coprimality hypothesis at the cost of a solvability condition."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "application",
+      "description": "Euler's totient multiplicativity φ(mn) = φ(m)φ(n) for gcd(m,n)=1 is a direct corollary of the CRT ring isomorphism (ℤ/mn)× ≅ (ℤ/m)× × (ℤ/n)× — take unit groups on both sides of the CRT isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ. The k-moduli version proved here gives φ(∏mᵢ) = ∏φ(mᵢ) for pairwise coprime moduli, which is the structural reason Euler's theorem a^φ(n) ≡ 1 (mod n) has multiplicative order structure."
     }
   ],
   "references": [
