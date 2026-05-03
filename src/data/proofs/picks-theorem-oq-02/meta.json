@@ -2,7 +2,7 @@
   "id": "picks-theorem-oq-02",
   "title": "GCD Boundary Formula for Lattice Points on a Segment",
   "slug": "picks-theorem-oq-02",
-  "description": "Proves the GCD boundary formula: the segment from (0,0) to (a,b) contains exactly gcd(a,b)+1 integer lattice points, parameterized by k ↦ (k·(a/g), k·(b/g)) for k=0,...,g. Complete proof: injectivity of the parameterization (at least one of a/g or b/g is positive), and completeness via coprimality (gcd(a/g, b/g)=1 forces p|x from x·q=y·p). 12 theorems, 0 axioms.",
+  "description": "Proves the GCD boundary formula: the segment from (0,0) to (a,b) contains exactly gcd(a,b)+1 integer lattice points, parameterized by k ↦ (k·(a/g), k·(b/g)) for k=0,...,g. Complete proof: injectivity of the parameterization (at least one of a/g or b/g is positive), and completeness via coprimality (gcd(a/g, b/g)=1 forces p|x from x·q=y·p). 13 theorems, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-05-03",
@@ -21,8 +21,8 @@
     "dateAdded": "2026-05-03",
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified.",
-    "lineCount": 215,
-    "theoremCount": 12,
+    "lineCount": 245,
+    "theoremCount": 13,
     "definitionCount": 2,
     "originalContributions": [
       "card_segmentPoints: the GCD boundary formula — gcd(a,b)+1 lattice points on segment (0,0)→(a,b)",
@@ -104,7 +104,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Fully proves the GCD boundary formula for lattice points on a segment: card(segmentPoints(a,b)) = gcd(a,b)+1. The proof is machine-verified with 0 axioms and 0 sorries. Key techniques: Finset.card_image_of_injective for the cardinality, Nat.coprime_div_gcd_div_gcd + Nat.Coprime.dvd_of_dvd_mul_right for completeness. 12 theorems, 2 definitions, 215 lines.",
+    "summary": "Fully proves the GCD boundary formula for lattice points on a segment: card(segmentPoints(a,b)) = gcd(a,b)+1. The proof is machine-verified with 0 axioms and 0 sorries. Key techniques: Finset.card_image_of_injective for the cardinality, Nat.coprime_div_gcd_div_gcd + Nat.Coprime.dvd_of_dvd_mul_right for completeness. 13 theorems, 2 definitions, 245 lines.",
     "implications": "This formula is the foundation of the boundary count B in Pick's theorem. A polygon with n edges, each going from (xᵢ,yᵢ) to (xᵢ₊₁,yᵢ₊₁), has boundary count B = Σ gcd(|Δxᵢ|, |Δyᵢ|). With this formula formalized, a constructive proof of Pick's theorem (as opposed to the axiomatized version) requires formalizing triangulation of lattice polygons.",
     "openQuestions": [
       "Can Pick's theorem itself be fully proved in Lean by combining this GCD formula with a triangulation argument (ear-clipping or diagonal decomposition)?",
@@ -114,9 +114,9 @@
   },
   "leanFile": {
     "namespace": "PicksTheoremOQ02",
-    "lineCount": 215,
+    "lineCount": 245,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 13,
     "definitionCount": 2,
     "path": "Proofs/PicksTheoremOQ02.lean",
     "sorries": 0
