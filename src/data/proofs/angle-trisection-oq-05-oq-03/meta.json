@@ -1,0 +1,182 @@
+{
+  "id": "angle-trisection-oq-05-oq-03",
+  "title": "Minimum Simultaneous Folds to Solve a Polynomial Equation",
+  "slug": "angle-trisection-oq-05-oq-03",
+  "description": "Characterizes the minimum number of simultaneous origami folds needed to construct a root of a polynomial of degree d. Proves that the minimum fold level equals the prime-sequence index of the largest prime factor of d, that it is multiplicative (minFoldLevel(m·n) = max(minFoldLevel m, minFoldLevel n)), and computes concrete values for small degrees.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Huzita%E2%80%93Hatori_axioms#Multi-fold_axioms",
+    "date": "2026-05-03",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "constructibility",
+      "origami",
+      "number-theory",
+      "smooth-numbers",
+      "optimization"
+    ],
+    "proofRepoPath": "Proofs/AngleTrisectionOQ05OQ03.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.nth_strictMono",
+        "description": "Strict monotonicity of the prime enumeration, used for generalized fold-level monotonicity",
+        "module": "Mathlib.Data.Nat.Nth"
+      },
+      {
+        "theorem": "Nat.find / Nat.find_spec / Nat.find_min / Nat.find_min'",
+        "description": "Minimum witness for existential predicates, used to define minFoldLevel as the least valid fold level",
+        "module": "Mathlib.Init.Data.Nat.Lemmas"
+      },
+      {
+        "theorem": "Nat.Prime.dvd_mul",
+        "description": "If p prime divides a*b then p divides a or p divides b — core of multiplicativity proof",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "constructible_mono_le: generalized monotonicity (k ≤ k' → k-fold → k'-fold), extending the +1 version from OQ-01",
+      "constructible_mul_iff: multiplicativity characterization (product is k-fold iff both factors are)",
+      "minFoldLevel: definition as Nat.find of the minimum valid fold level for degree d",
+      "minFoldLevel_le_iff: complete characterization (minFoldLevel d ≤ k ↔ d is k-fold constructible)",
+      "minFoldLevel_nth_prime: exact fold level for primes (minFoldLevel(p_j) = j for j ≥ 1)",
+      "minFoldLevel_mul: multiplicative property (minFoldLevel(m·n) = max(minFoldLevel m, minFoldLevel n))",
+      "Concrete computations: d ∈ {1,2,3,5,6,7,10,11,14,15,42} with exact fold levels",
+      "minFoldLevel_unbounded: for any K, there exists d with minFoldLevel(d) > K"
+    ],
+    "dateAdded": "2026-05-03",
+    "axiomCount": 0,
+    "lineCount": 272,
+    "assumptions": "None. 0 axioms, 0 sorries. All results follow from the IsKFoldConstructible definition from AngleTrisectionOQ05OQ01 and the completeness theorems from AngleTrisectionOQ05OQ02.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 20
+  },
+  "overview": {
+    "historicalContext": "Alperin and Lang (2006) established that 1-fold origami constructs exactly the 3-smooth degrees and 2-fold origami the 5-smooth degrees. The OQ-01 and OQ-02 entries in this gallery generalize this to all $k$: $k$-fold origami constructs exactly the $p_k$-smooth degrees, and every degree is eventually constructible. A natural follow-up is the optimization question: given a polynomial of degree $d$, what is the *minimum* number of simultaneous folds required? This is equivalent to finding the smallest $k$ such that $d$ is $p_k$-smooth — i.e., identifying the prime-sequence index of the largest prime factor of $d$.",
+    "problemStatement": "What is the minimum number of simultaneous origami folds needed to construct a root of a polynomial of degree $d$? Concretely: what is $\\min\\{k \\geq 1 : d \\text{ is } p_k\\text{-smooth}\\}$, and what algebraic properties does this function have?",
+    "text": "Defines minFoldLevel(d) as the minimum fold count needed for degree d. Proves it is multiplicative: minFoldLevel(m·n) = max(minFoldLevel m, minFoldLevel n). The minimum fold level of a prime p_j is exactly j.",
+    "proofStrategy": "Define minFoldLevel via Nat.find on the predicate 'k ≥ 1 ∧ IsKFoldConstructible d k', whose existence is guaranteed by algebraic completeness (OQ-02). Prove the complete characterization minFoldLevel(d) ≤ k ↔ d is k-fold constructible using Nat.find_min and Nat.find_min'. Derive the multiplicative property from constructible_mul_iff: if m·n is k-fold constructible, then both m and n are (and conversely), so the minimum fold level of the product is the max of the individual levels.",
+    "keyInsights": [
+      "The minimum fold level is exactly the prime-sequence index of the largest prime factor: minFoldLevel(d) = max{j : p_j | d} (0-indexed, with the convention that minFoldLevel(1) = 1 as 1-fold is the minimum)",
+      "Multiplicativity is the key structural property: minFoldLevel(m·n) = max(minFoldLevel m, minFoldLevel n), so the fold complexity is determined by the 'hardest' prime factor",
+      "The constructible_mono_le generalization (from +1 to arbitrary increase) is the critical technical lemma: it converts the Nat.find minimum into a usable ↔ characterization",
+      "Nat.find gives a clean definition of minimum fold level without case analysis on prime factorizations — the definition is computable in principle and directly mirrors the mathematical notion",
+      "minFoldLevel is unbounded: for any K, the (K+1)-th prime p_{K+1} requires exactly K+1 folds, confirming no fixed fold count suffices for all polynomial degrees"
+    ],
+    "prerequisites": [
+      "AngleTrisectionOQ05OQ01: IsSmooth, IsKFoldConstructible, foldPrimeBound, constructible_mono",
+      "AngleTrisectionOQ05OQ02: nth_prime_constructible_at, nth_prime_not_constructible_below, multi_fold_algebraically_complete",
+      "Nat.find from Lean/Mathlib (classical minimum of existential predicates)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "generalized-mono",
+      "title": "Generalized Monotonicity",
+      "startLine": 28,
+      "endLine": 42,
+      "summary": "Proves constructible_mono_le: if d is k-fold constructible and k ≤ k', then d is k'-fold constructible. Generalizes the +1 version from OQ-01 to arbitrary increase using Nat.nth_strictMono.",
+      "mathContext": "The strict monotonicity of the prime sequence ($p_k < p_{k+1}$) implies $p_k \\leq p_{k'}$ for $k \\leq k'$, so $p_k$-smooth implies $p_{k'}$-smooth for any $k \\leq k'$."
+    },
+    {
+      "id": "multiplicativity",
+      "title": "Multiplicativity of k-Fold Constructibility",
+      "startLine": 44,
+      "endLine": 58,
+      "summary": "Proves constructible_mul_iff: IsKFoldConstructible(m*n) k ↔ IsKFoldConstructible m k ∧ IsKFoldConstructible n k. Uses Nat.Prime.dvd_mul for the forward direction.",
+      "mathContext": "A product $m \\cdot n$ is $p$-smooth iff both $m$ and $n$ are $p$-smooth: the prime factors of $m \\cdot n$ are exactly the prime factors of $m$ together with those of $n$."
+    },
+    {
+      "id": "min-fold-def",
+      "title": "Minimum Fold Level: Definition and Characterization",
+      "startLine": 60,
+      "endLine": 110,
+      "summary": "Defines minFoldLevel via Nat.find. Proves: minFoldLevel_pos (≥ 1), minFoldLevel_constructible (attained), minFoldLevel_minimal (not constructible below), minFoldLevel_le_of_constructible (upper bound), minFoldLevel_le_iff (complete ↔ characterization).",
+      "mathContext": "$\\mathrm{minFoldLevel}(d) = \\min\\{k \\geq 1 : d \\text{ is } k\\text{-fold constructible}\\}$. The complete characterization: $\\mathrm{minFoldLevel}(d) \\leq k \\iff d$ is $k$-fold constructible (for $k \\geq 1$)."
+    },
+    {
+      "id": "prime-fold-levels",
+      "title": "Exact Fold Level for Primes and Concrete Values",
+      "startLine": 112,
+      "endLine": 170,
+      "summary": "Proves minFoldLevel(foldPrimeBound j) = j for j ≥ 1. Computes concrete values: minFoldLevel 1 = 1, minFoldLevel 2 = 1, minFoldLevel 3 = 1, minFoldLevel 5 = 2, minFoldLevel 7 = 3, minFoldLevel 11 = 4.",
+      "mathContext": "The $j$-th prime $p_j$ requires exactly $j$ simultaneous folds: it is $j$-fold constructible (since $p_j = p_j$) but not $(j-1)$-fold (since $p_j > p_{j-1}$)."
+    },
+    {
+      "id": "multiplicative-property",
+      "title": "Multiplicative Property and Product Computations",
+      "startLine": 172,
+      "endLine": 225,
+      "summary": "Proves minFoldLevel(m*n) = max(minFoldLevel m, minFoldLevel n). Computes: minFoldLevel 6 = 1, minFoldLevel 10 = 2, minFoldLevel 15 = 2, minFoldLevel 14 = 3, minFoldLevel 42 = 3.",
+      "mathContext": "The minimum fold level of a product is the max of the individual levels: $\\mathrm{minFoldLevel}(2 \\cdot 3 \\cdot 7) = \\max(1, 1, 3) = 3$."
+    },
+    {
+      "id": "unboundedness",
+      "title": "Unboundedness of minFoldLevel",
+      "startLine": 227,
+      "endLine": 232,
+      "summary": "Proves minFoldLevel is unbounded: for any K, there exists d with minFoldLevel(d) > K. The witness is foldPrimeBound(K+1) = p_{K+1}.",
+      "mathContext": "No fixed fold count suffices for all degrees: for each $K$, the $(K+1)$-th prime $p_{K+1}$ requires exactly $K+1$ folds. The set of fold levels is $\\{1, 2, 3, \\ldots\\}$, achieved by successive primes."
+    }
+  ],
+  "conclusion": {
+    "summary": "The minimum number of simultaneous origami folds for degree $d$ is the prime-sequence index of the largest prime factor of $d$. This is a clean, computable, multiplicative function: $\\mathrm{minFoldLevel}(m \\cdot n) = \\max(\\mathrm{minFoldLevel}(m), \\mathrm{minFoldLevel}(n))$.",
+    "implications": "The multiplicativity of minFoldLevel shows that origami fold complexity is determined entirely by the 'hardest' prime factor of the degree — a factorization-based complexity measure that mirrors the prime factorization itself. The unboundedness result confirms that the multi-fold origami hierarchy is genuinely infinite: no finite collection of fold operations suffices for all polynomial degrees.",
+    "openQuestions": [
+      "Can minFoldLevel be extended to general algebraic numbers (not just polynomial degrees), characterizing the minimum folds to construct a specific real number rather than any root of a degree-d polynomial?",
+      "Is there a connection between minFoldLevel and the tree-width or complexity of the Galois group of the polynomial, beyond the degree-based bound?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-oq-05-oq-01",
+      "relationship": "extends",
+      "description": "Builds on the k-fold constructibility framework (IsSmooth, IsKFoldConstructible, foldPrimeBound, constructible_mono)"
+    },
+    {
+      "targetId": "angle-trisection-oq-05-oq-02",
+      "relationship": "extends",
+      "description": "Uses the completeness and exact fold level results for primes (nth_prime_constructible_at, nth_prime_not_constructible_below)"
+    },
+    {
+      "targetId": "angle-trisection-oq-05",
+      "relationship": "related",
+      "description": "Parent entry with Huzita-Hatori axioms and IsMultiFoldConstructible"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Prime.Nth",
+      "Mathlib.Data.Nat.Prime.Infinite",
+      "Mathlib.Tactic",
+      "Proofs.AngleTrisectionOQ05OQ01",
+      "Proofs.AngleTrisectionOQ05OQ02"
+    ],
+    "opens": [
+      "AngleTrisectionOQ05OQ01",
+      "AngleTrisectionOQ05OQ02",
+      "Nat"
+    ],
+    "namespace": "AngleTrisectionOQ05OQ03",
+    "lineCount": 272,
+    "axiomCount": 0,
+    "theoremCount": 20,
+    "definitionCount": 3,
+    "path": "Proofs/AngleTrisectionOQ05OQ03.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Alperin, R.C. & Lang, R.J.",
+      "title": "One-, Two-, and Multi-fold Origami Axioms",
+      "year": "2006",
+      "venue": "4th International Meeting of Origami Science, Mathematics, and Education, pp. 371-393",
+      "note": "Establishes the algebraic characterization of 1-fold (3-smooth) and 2-fold (5-smooth) origami constructibility; the OQ-01 through OQ-03 entries generalize and optimize this characterization"
+    }
+  ],
+  "sorries": 0,
+  "openQuestion": "What is the minimum number of simultaneous origami folds needed to construct a root of a polynomial of degree d?"
+}
