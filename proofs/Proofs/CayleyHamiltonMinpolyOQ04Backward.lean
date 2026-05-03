@@ -301,8 +301,7 @@ theorem gcd_aeval_mulVec_eq_zero {M : Matrix (Fin n) (Fin n) K}
       EuclideanDomain.gcdA p μ * p + EuclideanDomain.gcdB p μ * μ :=
     (EuclideanDomain.gcd_eq_gcd_ab p μ).trans (by ring)
   rw [hbez, map_add, map_mul, map_mul, Matrix.add_mulVec]
-  simp only [Matrix.mul_mulVec, hp_ann, hμ_ann, Matrix.mulVec_zero,
-             Matrix.zero_mulVec, add_zero]
+  simp only [Matrix.mul_mulVec, hp_ann, hμ_ann, Matrix.mulVec_zero]
 
 -- ============================================================
 -- PART IV-C: Kernel Properness Helper
@@ -325,15 +324,8 @@ theorem ker_mulVecLin_ne_top
 -- PART V: Main Theorem
 -- ============================================================
 
-/-- Over an infinite field, a nonderogatory matrix has a cyclic vector.
-
-    **Proof strategy**: For each irreducible factor q of the minimal polynomial μ,
-    the quotient μ/q has degree < n, so (μ/q)(M) ≠ 0, giving ker((μ/q)(M)) as
-    a proper subspace. By union avoidance (infinite K), there exists v outside
-    all these kernels. If p(M)v = 0 for nonzero p with deg(p) < n, then
-    d = gcd(p, μ) properly divides μ and d(M)v = 0 (Bezout). The quotient
-    μ/d has an irreducible factor q, and d | (μ/q), so by commutativity
-    (μ/q)(M)v = 0, contradicting the choice of v. -/
+-- Over an infinite field, a nonderogatory matrix has a cyclic vector.
+-- Uses normalizedFactors union-avoidance + GCD/Bezout contradiction.
 open UniqueFactorizationMonoid in
 theorem nonderogatory_has_cyclic_vector_infinite [Infinite K]
     (M : Matrix (Fin n) (Fin n) K) (h : IsNonderogatory M) :
