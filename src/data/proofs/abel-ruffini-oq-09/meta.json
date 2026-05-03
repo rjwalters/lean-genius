@@ -20,6 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 3,
+    "theoremCount": 20,
     "assumptions": "3 axioms: liouville_integration_theorem (structural form of elementary antiderivatives requires differential Galois/Picard-Vessiot theory not in Mathlib), risch_exp_criterion_gaussian (Risch criterion: ∫e^(-x²)dx elementary iff rational Q with Q'-2xQ=1; requires partial fraction analysis), gaussian_not_elementary (∫e^(-x²) has no elementary antiderivative expressible as a rational function; the main theorem). The polynomial obstruction (no polynomial p satisfies p'-2xp=1) is fully proved without axioms.",
     "dateAdded": "2026-05-03",
     "lineCount": 435,

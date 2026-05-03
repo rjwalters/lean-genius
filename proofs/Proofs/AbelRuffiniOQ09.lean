@@ -131,6 +131,19 @@ theorem deriv_sub {F : Type*} [DiffField F] (f g : F) :
 ## Part II: Liouville Integration Theorem (Axiom)
 ══════════════════════════════════════════════════════════════════ -/
 
+/-- Elementarity predicate: g belongs to an elementary extension of F.
+    Opaque placeholder — formalization requires Picard-Vessiot theory (not in Mathlib). -/
+opaque IsElementaryOver {F : Type*} [DiffField F] (f g : F) : Prop
+
+/-- Liouville logarithmic-sum predicate: g = v₀ + Σᵢ cᵢ·ln(vᵢ) in an elementary extension.
+    Opaque placeholder — requires a `log` function on DiffField elements (not in Mathlib). -/
+opaque IsLiouvilleForm {F : Type*} [DiffField F]
+    (g v₀ : F) {n : ℕ} (c : Fin n → F) (v : Fin n → F) : Prop
+
+/-- Elementary function predicate for ℝ → ℝ.
+    Opaque placeholder — formalization requires differential Galois theory (not in Mathlib). -/
+opaque IsElementaryFn (f : ℝ → ℝ) : Prop
+
 /-- **Liouville's Integration Theorem** (Liouville 1835, Risch 1969):
     If f ∈ F has an elementary antiderivative, the antiderivative has the form
     g = v₀ + Σᵢ cᵢ·ln(vᵢ) where v₀, vᵢ ∈ F and cᵢ ∈ C (constant subfield).
@@ -143,11 +156,11 @@ axiom liouville_integration_theorem
     {F : Type*} [DiffField F]
     (f : F) (g : F)
     (hantideriv : DiffField.deriv g = f)
-    (helem : True)  -- g belongs to an elementary extension (axiomatized)
+    (helem : IsElementaryOver f g)
     : ∃ (n : ℕ) (v₀ : F) (c : Fin n → F) (v : Fin n → F),
         (∀ i, isConst (c i)) ∧
         (∀ i, v i ≠ 0) ∧
-        True  -- g = v₀ + Σ cᵢ · ln(vᵢ) in the logarithmic extension
+        IsLiouvilleForm g v₀ c v  -- g = v₀ + Σ cᵢ · ln(vᵢ) in the logarithmic extension
 
 /-! ══════════════════════════════════════════════════════════════════
 ## Part III: Risch Criterion and Gaussian Non-Elementarity (Axioms)
@@ -167,7 +180,7 @@ axiom risch_exp_criterion_gaussian :
         p.eval x * (Polynomial.derivative q).eval x -
         2 * x * p.eval x * q.eval x = q.eval x ^ 2) ↔
     ∃ (F : ℝ → ℝ),
-      (∀ x : ℝ, HasDerivAt F (Real.exp (-(x^2))) x) ∧ True
+      (∀ x : ℝ, HasDerivAt F (Real.exp (-(x^2))) x) ∧ IsElementaryFn F
 
 /-- **Gaussian integral is not elementary** (Liouville 1835).
     The antiderivative of e^(-x²) cannot be expressed as a rational function.
