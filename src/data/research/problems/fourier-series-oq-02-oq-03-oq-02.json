@@ -19,12 +19,13 @@
     "phase": "ACT",
     "since": "2026-04-27T00:00:00-07:00",
     "iteration": 3,
-    "focus": "Sorry-elimination + axiom-elimination roadmap recorded. 2 sorries (exp_dominates_polynomial, analytic_hierarchy) and 3 axioms (contour_shift_decay, rate_is_sharp, paley_wiener_converse) remain. Awaiting Docker availability for Lean execution.",
+    "focus": "Sorry-elimination roadmap clear; disk now available (117 GB free as of 2026-05-03). 2 sorries (exp_dominates_polynomial, analytic_hierarchy) and 3 axioms (contour_shift_decay, rate_is_sharp, paley_wiener_converse) remain.",
     "blockers": [
-      "Docker / disk: this session 921 MB free, below 1 GB safe threshold for Lean builds.",
+      "exp_dominates_polynomial needs Filter.cofinite on ℤ + Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero + rpow ≤ npow bound for |n| ≥ 1. API verification needed before writing (~50-80 lines).",
+      "analytic_hierarchy needs exp_dominates_polynomial + Summable.of_nonneg_of_le with exp_decay_summable(δ/2) as comparison (~40 lines).",
       "Axiom elimination requires substantial Mathlib infrastructure (~700-1100 lines per file roadmap)."
     ],
-    "nextAction": "Future session: close exp_dominates_polynomial via Real.tendsto_pow_mul_exp_neg_atTop_nhds (~30-80 lines); close analytic_hierarchy via Summable.of_nonneg_of_le (~40 lines).",
+    "nextAction": "Close exp_dominates_polynomial via: (1) rw [Filter.eventually_cofinite]; (2) show {n : ℤ | M*exp(-c|n|) > C*|n|⁻¹^α} ⊆ {n : ℤ | |n| ≤ N} for large N; (3) use Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero (Nat.ceil α + 1) + composition with (c *·). Then close analytic_hierarchy via Summable.of_nonneg_of_le.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
