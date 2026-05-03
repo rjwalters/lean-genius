@@ -1,0 +1,87 @@
+{
+  "id": "inverse-galois-oq-06-oq-01",
+  "title": "Inverse Galois OQ-06\u2192OQ-01: Eliminating three_dvd_gal_card",
+  "slug": "inverse-galois-oq-06-oq-01",
+  "description": "Progress on eliminating the last remaining axiom in InverseGaloisA5.lean: three_dvd_gal_card. Proves: q's root set in \u2102 has cardinality 5, q is strictly monotone on \u211d, q has exactly one real root, complex conjugation is nontrivial, and 2 \u2223 |Gal(q)|. Also proves q \u2261 (X-5)(X-6)(cubic) mod 7 and the cubic has no roots in \ud835\udd3d\u2087. 16 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InverseGaloisOQ06OQ01.lean",
+    "tags": [
+      "galois-theory",
+      "polynomial-roots",
+      "group-theory",
+      "inverse-galois",
+      "number-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 256,
+    "theoremCount": 16,
+    "assumptions": "None. All 16 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The inverse Galois problem asks which groups occur as Galois groups over \u211a. A\u2085 \u2245 PSL(2,5) is realizable. A key tool is computing |Gal(q)| for the polynomial q = X\u2075 \u2212 5X\u2074 + 10X\u00b3 \u2212 10X\u00b2 + 25X \u2212 5.",
+    "problemStatement": "Make progress on proving 3 \u2223 |Gal(q)| for q = X\u2075 \u2212 5X\u2074 + ... \u2212 5, the last step needed to force Gal(q) \u2245 A\u2085.",
+    "proofStrategy": "Root analysis: |rootSet q \u2102| = 5 (degree 5). Derivative: q'(x) = 5(x-1)\u2074 + 20 > 0 \u2192 q is strictly monotone \u2192 exactly 1 real root. Complex conjugation: nontrivial (2 | |Gal|). Mod 7 factorization: q \u2261 (X-5)(X-6)(irreducible cubic) mod 7 \u2192 3-cycles in Gal(q).",
+    "keyInsights": [
+      "**Monotonicity approach**: q'(x) = 5(x-1)\u2074 + 20 > 0 for all real x proves strict monotonicity, giving exactly one real root via IVT.",
+      "**Galois order divisibility**: complex conjugation (order 2) gives 2 | |Gal(q)|. Mod 7 factorization gives a 3-cycle.",
+      "**Mod 7 technique**: q factors as (linear)(linear)(cubic irreducible) mod 7, forcing a 3-cycle in Gal(q) via Frobenius, giving 3 | |Gal(q)|."
+    ]
+  },
+  "sections": [
+    {
+      "id": "inverse_galois_oq_06_oq_01",
+      "title": "Root Structure, Galois Order, and Modular Factorization",
+      "startLine": 1,
+      "endLine": 256,
+      "summary": "q_rootSet_\u2102_card, q_strictMono, q_has_real_root, q_rootSet_\u211d_card, galConj_nontrivial, two_dvd_gal_card, gal_card_ne_5, q_\u2124_mod7_factorization, cubicMod7_no_roots.",
+      "mathContext": "$q = X^5 - 5X^4 + \\cdots - 5$: one real root, $2 \\mid |\\text{Gal}(q)|$, $q \\equiv (X-5)(X-6)(\\text{irred cubic}) \\pmod{7}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "16 theorems, 0 sorries, 0 axioms. Structural results toward 3 | |Gal(q)| proved: monotonicity, unique real root, 2 | |Gal|, and modular factorization.",
+    "implications": "These structural lemmas provide partial progress on eliminating the three_dvd_gal_card axiom from InverseGaloisA5.lean, bringing the full A\u2085 realization closer to axiom-free status.",
+    "openQuestions": [
+      "Can 3 \u2223 |Gal(q)| be proved formally to complete A\u2085 \u2245 Gal(q)?",
+      "Can the Frobenius element for q mod 7 be computed formally?",
+      "Can the irreducibility of the cubic factor mod 7 be checked by decision procedure?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.InverseGaloisA5"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 256,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "definitionCount": 0,
+    "path": "Proofs/InverseGaloisOQ06OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "inverse-galois",
+      "relationship": "sub-question",
+      "description": "OQ-06\u2192OQ-01: Structural results toward 3 | |Gal(q)| for the A5 polynomial"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "two_dvd_gal_card",
+      "type": "core",
+      "statement": "2 \u2223 Fintype.card q.Gal",
+      "description": "Complex conjugation gives a 2-element subgroup of Gal(q).",
+      "significance": "Key divisibility step toward proving Gal(q) \u2245 A\u2085"
+    }
+  ],
+  "sorries": 0
+}

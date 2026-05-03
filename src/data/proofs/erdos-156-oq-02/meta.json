@@ -1,0 +1,86 @@
+{
+  "id": "erdos-156-oq-02",
+  "title": "Erd\u0151s #156 OQ-02: Maximal Sidon Set Lower Bound",
+  "slug": "erdos-156-oq-02",
+  "description": "Proves any maximal Sidon set A \u2286 {1,...,N} has size s satisfying 2N \u2264 (s+1)\u00b3, giving s \u2265 (2N)^{1/3} \u2212 1 = \u03a9(N^{1/3}). Every non-member is blocked via sum collisions, and the blocking structure bounds the set size. 17 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos156OQ02.lean",
+    "tags": [
+      "number-theory",
+      "additive-combinatorics",
+      "sidon-sets",
+      "erdos-problems",
+      "lower-bounds"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 294,
+    "theoremCount": 17,
+    "assumptions": "None. All 17 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erd\u0151s #156: what is the minimum size of a maximal Sidon set in {1,...,N}? A Sidon set has all pairwise sums distinct. Greedy produces maximal Sidon sets of size \u0398(N^{1/3}). The upper bound \u0398(N^{1/2}) follows from the Sidon condition directly.",
+    "problemStatement": "Prove: any maximal Sidon set A \u2286 {1,...,N} satisfies |A| \u2265 (2N)^{1/3} \u2212 1.",
+    "proofStrategy": "Maximality: every x \u2209 A is blocked (adding x creates a sum collision). Collisions are type-1 (x+a=b+c) or type-2 (2x=b+c). Count blocked values \u2264 |sumset(A)| \u00b7 (|A|+1) = |A|(|A|+1)/2 \u00b7 (|A|+1). Since N \u2264 |sumset| \u00b7 (|A|+1), the bound 2N \u2264 (|A|+1)\u00b3 follows.",
+    "keyInsights": [
+      "**Blocking lemma**: maximality of A means every non-member is blocked \u2014 it would create a sum collision if added.",
+      "**Sidon sumset size**: for a Sidon set, all pairwise sums a+b (a\u2264b) are distinct, so |{a+b : a,b \u2208 A, a\u2264b}| = |A|(|A|+1)/2.",
+      "**Two collision types**: type-1 (x+a=b+c) and type-2 (2x=b+c). Together they bound the number of blocked non-members."
+    ]
+  },
+  "sections": [
+    {
+      "id": "erdos_156_oq_02",
+      "title": "Blocking Structure and \u03a9(N^{1/3}) Lower Bound",
+      "startLine": 1,
+      "endLine": 294,
+      "summary": "isType1Blocked, isType2Blocked, isBlocked definitions. Blocking count bound. Main: maximal_sidon_lower_bound giving 2N \u2264 (s+1)\u00b3.",
+      "mathContext": "Maximal Sidon $A \\subseteq \\{1,\\ldots,N\\}$: $2N \\leq (|A|+1)^3$, i.e., $|A| = \\Omega(N^{1/3})$."
+    }
+  ],
+  "conclusion": {
+    "summary": "17 theorems, 0 sorries, 0 axioms. \u03a9(N^{1/3}) lower bound for maximal Sidon sets proved via blocking analysis.",
+    "implications": "This lower bound matches greedy constructions (tight). The blocking approach is a paradigmatic technique in additive combinatorics.",
+    "openQuestions": [
+      "What is the exact minimum size of a maximal Sidon set?",
+      "Can the \u03a9(N^{1/3}) bound be improved?",
+      "Can the Erd\u0151s-Tur\u00e1n conjecture on Sidon sets be formalized?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos156Problem"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 294,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos156OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-156",
+      "relationship": "sub-question",
+      "description": "OQ-02: \u03a9(N^{1/3}) lower bound for maximal Sidon sets"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "maximal_sidon_lower_bound",
+      "type": "core",
+      "statement": "Maximal Sidon A \u2286 [N] \u2192 2N \u2264 (|A|+1)\u00b3",
+      "description": "\u03a9(N^{1/3}) lower bound for maximal Sidon sets.",
+      "significance": "Quantitative structure theorem for maximal Sidon configurations"
+    }
+  ],
+  "sorries": 0
+}

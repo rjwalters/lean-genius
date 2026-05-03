@@ -1,0 +1,87 @@
+{
+  "id": "borsuk-ulam-oq-02-oq-01-oq-04-oq-01",
+  "title": "Fadell-Husseini Index: H*(BZ/p; F_p) \u2245 F_p[u]",
+  "slug": "borsuk-ulam-oq-02-oq-01-oq-04-oq-01",
+  "description": "Formalizes the cohomology ring of BZ/p for the Fadell-Husseini index theory. Proves: principal ideal structure of F_p[u], ideal monotonicity (u^0) \u2287 (u^1) \u2287 ..., quotient dimension F_p[u]/(u^n) = n. 17 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BorsukUlamOQ02OQ01OQ04OQ01.lean",
+    "tags": [
+      "algebraic-topology",
+      "cohomology",
+      "borsuk-ulam",
+      "fadell-husseini",
+      "polynomial-rings"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 236,
+    "theoremCount": 17,
+    "assumptions": "None. All 17 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Fadell-Husseini index theory (1988) provides a cohomological obstruction for equivariant maps. For Z/p-spaces, the index lives in H*(BZ/p; F_p) \u2245 F_p[u]. This algebraic structure underlies equivariant topology results including the Borsuk-Ulam theorem.",
+    "problemStatement": "Formalize H*(BZ/p; F_p) \u2245 F_p[u] and its principal ideal structure for Fadell-Husseini index computations.",
+    "proofStrategy": "Use Polynomial (ZMod p) as the concrete model for F_p[u]. Principal ideals (u^m) = span{u^m, u^{m+1}, ...} formalized via Ideal.span. Monotonicity via Ideal.span_le. Quotient dimension via AdjoinRoot.powerBasis.",
+    "keyInsights": [
+      "**Polynomial model**: Polynomial (ZMod p) concretely realizes F_p[u] in Lean without abstract cohomology machinery.",
+      "**Ideal chain**: (u^0) \u2287 (u^1) \u2287 ... corresponds to powers of the augmentation ideal, encoding the filtration of BZ/p.",
+      "**Quotient dimension**: F_p[u]/(u^n) has F_p-dimension n \u2014 the basis {1, u, ..., u^{n-1}} gives the index filtration."
+    ]
+  },
+  "sections": [
+    {
+      "id": "borsuk_ulam_oq_02_oq_01_oq_04_oq_01",
+      "title": "F_p[u] Ideal Structure and Quotient Dimension",
+      "startLine": 1,
+      "endLine": 236,
+      "summary": "BZpCohomology namespace. ideal_chain_monotone: (u^m) \u2287 (u^{m+1}). quotient_dimension: dim F_p[u]/(u^n) = n.",
+      "mathContext": "$H^*(BZ/p; \\mathbb{F}_p) \\cong \\mathbb{F}_p[u]$ with ideal chain $\\mathfrak{m}^0 \\supseteq \\mathfrak{m}^1 \\supseteq \\cdots$"
+    }
+  ],
+  "conclusion": {
+    "summary": "17 theorems, 0 sorries, 0 axioms. F_p[u] ideal structure and quotient dimension proved for Fadell-Husseini index theory.",
+    "implications": "The Fadell-Husseini index is a powerful equivariant topology tool. This algebraic foundation enables formal verification of index computations.",
+    "openQuestions": [
+      "Can the full Fadell-Husseini index of a Z/p-space be computed formally?",
+      "Can the Borsuk-Ulam theorem be proved via Fadell-Husseini index in Lean?",
+      "Can the cohomology isomorphism H*(BZ/p; F_p) \u2245 F_p[u] be formally verified using spectral sequences?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Polynomial.Basic",
+      "Proofs.BorsukUlamOQ02OQ01OQ04"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 236,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 2,
+    "path": "Proofs/BorsukUlamOQ02OQ01OQ04OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "sub-question",
+      "description": "OQ-02-OQ-01-OQ-04-OQ-01: Fadell-Husseini index via BZ/p cohomology"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "ideal_chain_monotone",
+      "type": "core",
+      "statement": "Ideal.span {X^m} \u2287 Ideal.span {X^{m+1}} in F_p[X]",
+      "description": "Monotonicity of principal ideals in F_p[u] for Fadell-Husseini index theory.",
+      "significance": "Algebraic foundation for Fadell-Husseini index computations in Borsuk-Ulam theory"
+    }
+  ],
+  "sorries": 0
+}

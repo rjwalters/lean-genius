@@ -1,0 +1,87 @@
+{
+  "id": "sperner-simplicial-instance",
+  "title": "Sperner's Lemma: Simplicial Complex to CellComplex Bridge",
+  "slug": "sperner-simplicial-instance",
+  "description": "Bridges simplicial complexes and the abstract CellComplex structure for Sperner's lemma. Defines Triangulation with ordered vertices, AbstractSimplicialData for unordered simplices, and a concrete 1D interval example. Proves Sperner's lemma for triangulations. 34 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SpernerSimplicialInstance.lean",
+    "tags": [
+      "combinatorics",
+      "topology",
+      "sperner",
+      "simplicial-complex",
+      "cell-complex"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 995,
+    "theoremCount": 34,
+    "assumptions": "None. All 34 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Sperner's lemma (1928): any Sperner-labeled triangulation of an n-simplex has an odd number of fully-labeled simplices. This file bridges Mathlib's SimplicialComplex to the abstract CellComplex proof framework.",
+    "problemStatement": "Show that a triangulation of the standard simplex satisfying a pseudomanifold condition gives rise to a CellComplex instance, and thereby proves Sperner's lemma for triangulations.",
+    "proofStrategy": "Define Triangulation structure axiomatizing a finite pure simplicial complex with pseudomanifold property. Bridge to CellComplex via Triangulation.toCellComplex. Verify all CellComplex axioms. Prove Sperner's lemma via Triangulation.sperner.",
+    "keyInsights": [
+      "**Pseudomanifold property**: each codimension-1 face lies in at most 2 top-dimensional cells \u2014 the geometric condition enabling the parity argument.",
+      "**Vertex ordering via Finset.sort**: unordered vertex sets become ordered tuples with a LinearOrder E, enabling canonical adjacency computation.",
+      "**Concrete 1D example**: intervalTriangulation m provides a fully proved instance with all axioms verified (0 sorries)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "sperner_simplicial_instance",
+      "title": "Triangulation Structure, Bridge, and Concrete Instance",
+      "startLine": 1,
+      "endLine": 995,
+      "summary": "Triangulation V n structure. Triangulation.toCellComplex bridge. AbstractSimplicialData for unordered input. intervalTriangulation m concrete example.",
+      "mathContext": "Pseudomanifold triangulation $\\Rightarrow$ CellComplex instance $\\Rightarrow$ Sperner's lemma."
+    }
+  ],
+  "conclusion": {
+    "summary": "34 theorems, 0 sorries, 0 axioms. Provides the concrete simplicial complex \u2192 CellComplex bridge needed to apply abstract Sperner's lemma to geometric triangulations.",
+    "implications": "This bridge makes Sperner's lemma applicable to Mathlib's SimplicialComplex type, enabling topological applications like Brouwer fixed-point theorem via combinatorics.",
+    "openQuestions": [
+      "Can the n-dimensional Sperner's lemma be proved for arbitrary triangulations?",
+      "Can the bridge be used to derive the Brouwer fixed-point theorem formally?",
+      "Can Mathlib's Geometry.SimplicialComplex be used directly without the bridge structure?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Sort",
+      "Proofs.SpernerMathlib4"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 995,
+    "axiomCount": 0,
+    "theoremCount": 34,
+    "definitionCount": 5,
+    "path": "Proofs/SpernerSimplicialInstance.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "sperner-ndim",
+      "relationship": "extends",
+      "description": "Concrete simplicial complex instance for abstract CellComplex Sperner"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "Triangulation.sperner",
+      "type": "core",
+      "statement": "Any Sperner-labeled triangulation has odd #panchromatic simplices",
+      "description": "Sperner's lemma for triangulations via CellComplex bridge.",
+      "significance": "Concrete instantiation making abstract Sperner applicable to simplicial geometry"
+    }
+  ],
+  "sorries": 0
+}

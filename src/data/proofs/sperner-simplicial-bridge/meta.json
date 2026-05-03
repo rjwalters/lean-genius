@@ -1,0 +1,86 @@
+{
+  "id": "sperner-simplicial-bridge",
+  "title": "Sperner's Lemma: SimplicialComplex to Exists-Panchromatic Bridge",
+  "slug": "sperner-simplicial-bridge",
+  "description": "Bridges Mathlib's Geometry.SimplicialComplex to Sperner's lemma: given a pure pseudomanifold simplicial complex, instantiates the abstract exists_panchromatic theorem. 26 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SpernerSimplicialBridge.lean",
+    "tags": [
+      "combinatorics",
+      "topology",
+      "sperner",
+      "simplicial-complex",
+      "pseudomanifold"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 612,
+    "theoremCount": 26,
+    "assumptions": "None. All 26 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Sperner's lemma is the combinatorial backbone of Brouwer's fixed-point theorem. This file provides the concrete bridge from Mathlib's standard simplicial complex structures.",
+    "problemStatement": "For a pure simplicial complex with pseudomanifold property, prove existence of a panchromatic (fully-colored) simplex under any Sperner coloring.",
+    "proofStrategy": "Cells are subtypes of facets. Vertex ordering via Finset.sort. Adjacency via shared codimension-1 faces. Three adjacency axioms (adj_symm, adj_vertex, adj_ne) follow from pseudomanifold property.",
+    "keyInsights": [
+      "**Direct hypothesis approach**: uses hypotheses matching SpernerMathlib.lean style rather than intermediate structures.",
+      "**Adjacency via erase**: for cell s at face position k, erase the k-th sorted vertex and find the adjacent cell sharing that face.",
+      "**Pseudomanifold axiom**: each codimension-1 face in exactly 1 or 2 top cells \u2014 gives well-defined adjacency."
+    ]
+  },
+  "sections": [
+    {
+      "id": "sperner_simplicial_bridge",
+      "title": "Pseudomanifold Bridge to Exists-Panchromatic",
+      "startLine": 1,
+      "endLine": 612,
+      "summary": "Sperner.SimplicialComplex.exists_panchromatic: Sperner's lemma for pure pseudomanifold simplicial complexes.",
+      "mathContext": "Pure pseudomanifold simplicial complex with Sperner coloring $\\Rightarrow$ $\\exists$ panchromatic facet."
+    }
+  ],
+  "conclusion": {
+    "summary": "26 theorems, 0 sorries, 0 axioms. Direct bridge from pseudomanifold simplicial complexes to Sperner's panchromatic simplex theorem.",
+    "implications": "Provides the concrete geometric foundation for topological applications of Sperner's lemma in Lean.",
+    "openQuestions": [
+      "Can the bridge be extended to non-pseudomanifold complexes?",
+      "Can this be used to prove the Brouwer fixed-point theorem via the KKM theorem?",
+      "Can the adjacency axioms be weakened?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.SpernerMathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 612,
+    "axiomCount": 0,
+    "theoremCount": 26,
+    "definitionCount": 3,
+    "path": "Proofs/SpernerSimplicialBridge.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "sperner-ndim",
+      "relationship": "extends",
+      "description": "Direct bridge from Mathlib SimplicialComplex to Sperner's exists_panchromatic"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "Sperner.SimplicialComplex.exists_panchromatic",
+      "type": "core",
+      "statement": "\u2203 panchromatic facet in any Sperner-colored pure pseudomanifold",
+      "description": "Sperner's lemma for pure pseudomanifold simplicial complexes.",
+      "significance": "Connects abstract Sperner parity theorem to concrete geometric setting"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,87 @@
+{
+  "id": "brouwer-fixed-point-oq-02-oq-01",
+  "title": "2D Sperner's Lemma and PPAD Complexity Connection",
+  "slug": "brouwer-fixed-point-oq-02-oq-01",
+  "description": "Formalizes 2D Sperner's lemma on a standard grid triangulation via door-counting. Proves the number of fully-colored triangles is odd. Connects to Brouwer OQ-02 (PPAD complexity): Chen-Deng (2009) showed finding a fully-colored simplex in a Sperner triangulation is PPAD-complete. 20 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BrouwerFixedPointOQ02OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "topology",
+      "sperner",
+      "ppad",
+      "computational-complexity",
+      "brouwer"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 1072,
+    "theoremCount": 20,
+    "assumptions": "None. All 20 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Chen-Deng (2009) proved that finding a fully-colored simplex in a 2D Sperner triangulation is PPAD-complete. This is the combinatorial backbone of Brouwer fixed-point hardness results.",
+    "problemStatement": "Prove the 2D Sperner's lemma: on a grid triangulation of the unit triangle with a valid Sperner coloring, the number of fully-colored triangles is odd (\u2265 1).",
+    "proofStrategy": "Door-counting: (1) each fully-colored triangle has exactly 1 door (edge colored {0,1}). (2) Each non-fully-colored triangle has 0 or 2 doors. (3) Boundary {0,1} doors are odd (1D Sperner on bottom edge). (4) Interior doors pair up. Therefore #(fully-colored triangles) is odd.",
+    "keyInsights": [
+      "**Door-counting parity**: count edges colored {0,1} (doors). Each fully-colored triangle contributes 1 door; the parity of fully-colored triangles equals the parity of boundary doors.",
+      "**1D Sperner boundary**: the bottom edge of the grid gives a 1D Sperner instance \u2014 a walk from 0 to 1 must have an odd number of {0,1} crossings.",
+      "**PPAD connection**: PPAD (Polynomial Parity Arguments on Directed graphs) captures search problems whose solution existence follows from a parity argument \u2014 exactly Sperner's structure."
+    ]
+  },
+  "sections": [
+    {
+      "id": "brouwer_fixed_point_oq_02_oq_01",
+      "title": "2D Grid Sperner via Door-Counting",
+      "startLine": 1,
+      "endLine": 1072,
+      "summary": "Grid triangulation definitions, Sperner coloring constraints, door-counting lemmas, parity argument. Main result: odd #fully-colored triangles.",
+      "mathContext": "$\\#\\{\\text{fully-colored triangles}\\} \\equiv 1 \\pmod{2}$ on any 2D Sperner triangulation."
+    }
+  ],
+  "conclusion": {
+    "summary": "20 theorems, 0 sorries, 0 axioms. 2D Sperner's lemma proved via door-counting. PPAD connection documented.",
+    "implications": "The 2D Sperner lemma is the foundation for Chen-Deng PPAD-completeness of Brouwer fixed-point computation. This formalization supports the connection between combinatorics and computational complexity.",
+    "openQuestions": [
+      "Can the n-dimensional Sperner's lemma be proved by the same door-counting technique?",
+      "Can the PPAD-completeness reduction from 2D Sperner to Brouwer be formalized?",
+      "Can the Kakutani fixed-point theorem be derived from the 2D Sperner lemma?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 1072,
+    "axiomCount": 0,
+    "theoremCount": 20,
+    "definitionCount": 6,
+    "path": "Proofs/BrouwerFixedPointOQ02OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point-oq-02",
+      "relationship": "sub-question",
+      "description": "OQ-02-OQ-01: 2D Sperner as the PPAD-complete primitive"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "Sperner2D.odd_panchromatic_count",
+      "type": "core",
+      "statement": "#panchromatic triangles in 2D Sperner triangulation is odd",
+      "description": "2D Sperner's lemma via door-counting argument.",
+      "significance": "Combinatorial primitive for PPAD complexity and Brouwer fixed-point theorem"
+    }
+  ],
+  "sorries": 0
+}

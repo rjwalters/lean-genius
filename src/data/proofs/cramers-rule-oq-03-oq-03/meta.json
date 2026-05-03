@@ -1,0 +1,87 @@
+{
+  "id": "cramers-rule-oq-03-oq-03",
+  "title": "Quaternionic Cramer's Rule via Quasideterminants",
+  "slug": "cramers-rule-oq-03-oq-03",
+  "description": "Instantiates the non-commutative Cramer's Rule from CramersRuleOQ03 with quaternions (Quaternion \u211d). Proves quaternionic linear systems solve correctly via Gelfand-Retakh quasideterminants. 17 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CramersRuleOQ03OQ03.lean",
+    "tags": [
+      "linear-algebra",
+      "quaternions",
+      "cramers-rule",
+      "non-commutative",
+      "quasideterminants"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 156,
+    "theoremCount": 17,
+    "assumptions": "None. All 17 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Quaternions (Hamilton, 1843) extend complex numbers non-commutatively: i\u00b7j = k, j\u00b7i = \u2212k. Classical Cramer's Rule fails for non-commutative fields. The Gelfand-Retakh quasideterminant approach (1991) provides the correct generalization.",
+    "problemStatement": "Prove Cramer's Rule for quaternionic linear systems using the quasideterminant solver ncSolve from CramersRuleOQ03.",
+    "proofStrategy": "Since Quaternion \u211d is a DivisionRing in Mathlib, all results from CramersRuleOQ03 apply directly. Verify: qi \u2260 0, diagonal systems solve correctly, general quaternionic Cramer's Rule, and uniqueness.",
+    "keyInsights": [
+      "**DivisionRing instantiation**: Quaternion \u211d satisfies DivisionRing in Lean, so the abstract ncSolve solver applies without modification.",
+      "**Non-commutativity**: i\u00b7j = k but j\u00b7i = \u2212k requires quasideterminants rather than ordinary determinants for the solution formula.",
+      "**Uniqueness**: quaternionic Cramer's Rule gives a unique solution to each linear system, extending classical uniqueness to the non-commutative setting."
+    ]
+  },
+  "sections": [
+    {
+      "id": "cramers_rule_oq_03_oq_03",
+      "title": "Quaternionic Linear Systems via Quasideterminants",
+      "startLine": 1,
+      "endLine": 156,
+      "summary": "quaternion_is_division_ring. qi_ne_zero, quat_diag_correct. quaternion_cramers_rule, quaternion_cramers_unique.",
+      "mathContext": "For $A \\in M_n(\\mathbb{H})$, $x = \\text{ncSolve}(A, b)$ satisfies $Ax = b$."
+    }
+  ],
+  "conclusion": {
+    "summary": "17 theorems, 0 sorries, 0 axioms. Quaternionic Cramer's Rule via quasideterminants proved.",
+    "implications": "The quasideterminant approach generalizes classical Cramer's Rule to any division ring, with quaternions as the paradigmatic non-commutative example.",
+    "openQuestions": [
+      "Can the quasideterminant formula be extended to octonions (non-associative)?",
+      "Can Cramer's Rule be proved for matrix rings over division rings?",
+      "Can the formula be used for quaternionic quantum mechanics applications?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.CramersRuleOQ03"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 156,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 2,
+    "path": "Proofs/CramersRuleOQ03OQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cramers-rule",
+      "relationship": "sub-question",
+      "description": "OQ-03-OQ-03: Quaternionic instantiation of non-commutative Cramer's Rule"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "quaternion_cramers_rule",
+      "type": "core",
+      "statement": "ncSolve correctly solves quaternionic linear systems",
+      "description": "Non-commutative Cramer's Rule instantiated for Hamilton's quaternions.",
+      "significance": "Answers OQ-03-OQ-03: Cramer's Rule fully extends to concrete quaternionic linear algebra"
+    }
+  ],
+  "sorries": 0
+}
