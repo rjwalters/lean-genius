@@ -22,12 +22,17 @@ This file proves **Step C** (density extension), reducing from 3 sorries to 2.
    for sigma-finite μ is represented by integration against some g ∈ Lq(μ).
    The structure is complete; only `localization_existence` (Step A) remains sorry.
 
-### Sorries Remaining (2, down from 3)
+### Sorries Remaining (1, down from 2)
 
 - **`localization_existence`** (Step A, ~150 lines): constructs g ∈ Lq(μ) via
   finite-measure localization on spanning sets + MCT gluing. HARD sorry.
-- **`lp_truncation_tendsto_zero`** (Step B, ~80 lines): Lp norm convergence of
-  spanning-set truncations f · 1_{Sₙ} → f via Vitali's convergence theorem. HARD sorry.
+
+### Proved This Session (Step B)
+
+- **`lp_truncation_tendsto_zero`** (Step B, proved): Lp norm convergence of
+  spanning-set truncations f · 1_{Sₙ} → f via Vitali's convergence theorem
+  (`tendsto_Lp_of_tendsto_ae`). Uses domination |Δ n| ≤ |f| for uniform integrability
+  and tightness, plus pointwise a.e. convergence from `pointwise_mul_indicator_tendsto`.
 
 ### Key Mathematical Insight
 
@@ -233,19 +238,19 @@ theorem pointwise_mul_indicator_tendsto [SigmaFinite μ] (f : α → ℝ) (a : �
   simpa using h1.const_mul (f a)
 
 -- ============================================================================
--- § 4. Lp truncation convergence (Step B — HARD sorry)
+-- § 4. Lp truncation convergence (Step B — PROVED)
 -- ============================================================================
 
-/-- **Step B** [HARD sorry, ~80 lines]: For sigma-finite μ and f ∈ Lp(μ), the truncations
+/-- **Step B** (PROVED): For sigma-finite μ and f ∈ Lp(μ), the truncations
     f · 1_{Sₙ} converge to f in Lp norm.
 
-    Proof strategy: Vitali's convergence theorem (`tendsto_Lp_of_tendsto_ae`) with:
-    1. a.e. convergence: from `pointwise_mul_indicator_tendsto` (proved above)
-    2. UnifIntegrable: `unifIntegrable_of` + |f - f·1_{Sₙ}| ≤ 2|f| ∈ Lp
-    3. UnifTight: `unifTight_const` (dominator 2f ∈ Lp) + `eLpNorm_mono`
+    Proof via Vitali's convergence theorem (`tendsto_Lp_of_tendsto_ae`):
+    1. a.e. convergence: `pointwise_mul_indicator_tendsto` (proved above)
+    2. UnifIntegrable: |Δ n| ≤ |f| + `unifIntegrable_const` + `eLpNorm_mono`
+    3. UnifTight: |Δ n| ≤ |f| + `unifTight_const` + `eLpNorm_mono`
 
-    This is independent of the main theorem; it establishes the analytic foundation
-    for the localization gluing in Step A. -/
+    The key insight: the difference Δ n = f - f·1_{Sₙ} is dominated pointwise by |f|,
+    so uniform integrability and tightness follow from those of the constant sequence f. -/
 theorem lp_truncation_tendsto_zero [SigmaFinite μ]
     (p : ℝ≥0∞) (_ : 1 ≤ p) (hptop : p ≠ ⊤)
     {f : α → ℝ} (hf : MemLp f p μ) :
@@ -253,7 +258,57 @@ theorem lp_truncation_tendsto_zero [SigmaFinite μ]
       (fun n : ℕ =>
         eLpNorm (fun a => f a - f a * (spanningSets μ n).indicator (1 : α → ℝ) a) p μ)
       atTop (nhds 0) := by
-  sorry
+  -- Δ n a = f a - f a · 1_{Sₙ}(a); dominated pointwise by f
+  let Δ : ℕ → α → ℝ := fun n a => f a - f a * (spanningSets μ n).indicator (1 : α → ℝ) a
+  -- |Δ n a| ≤ |f a| : when a ∈ Sₙ the difference is 0; when a ∉ Sₙ it equals f a
+  have hbound : ∀ n a, ‖Δ n a‖ ≤ ‖f a‖ := by
+    intro n a
+    simp only [Δ, Set.indicator_apply, Pi.one_apply]
+    split_ifs with hn
+    · simp [mul_one, sub_self]
+    · simp [mul_zero, sub_zero]
+  -- Each Δ n is AEStronglyMeasurable (difference of measurable functions)
+  have haef : ∀ n, AEStronglyMeasurable (Δ n) μ := by
+    intro n
+    exact hf.aestronglyMeasurable.sub
+      (hf.aestronglyMeasurable.mul
+        (measurable_const.indicator (measurableSet_spanningSets μ n) |>.aestronglyMeasurable))
+  -- The Lp limit is the zero function
+  have hg : MemLp (0 : α → ℝ) p μ :=
+    ⟨aestronglyMeasurable_zero, by simp⟩
+  -- Uniform integrability: |Δ n| ≤ |f| dominates, so inherit from the constant-f sequence
+  have hcf : UnifIntegrable (fun (_ : ℕ) => f) p μ :=
+    unifIntegrable_const ‹1 ≤ p› hptop hf
+  have hui : UnifIntegrable Δ p μ := by
+    intro ε hε
+    obtain ⟨δ, hδ, h⟩ := hcf hε
+    exact ⟨δ, hδ, fun n s hs hμs =>
+      (eLpNorm_mono fun a => by
+        simp only [Set.indicator_apply]
+        split_ifs with ha
+        · exact hbound n a
+        · simp).trans (h n s hs hμs)⟩
+  -- Uniform tightness: same domination argument via unifTight_const
+  have hcf' : UnifTight (fun (_ : ℕ) => f) p μ :=
+    unifTight_const hptop hf
+  have hut : UnifTight Δ p μ := by
+    intro ε hε
+    obtain ⟨s, hμs, h⟩ := hcf' hε
+    exact ⟨s, hμs, fun n =>
+      (eLpNorm_mono fun a => by
+        simp only [Set.indicator_apply, Set.mem_compl_iff]
+        split_ifs with ha
+        · exact hbound n a
+        · simp).trans (h n)⟩
+  -- A.e. convergence: Δ n a → 0 since f a · 1_{Sₙ}(a) → f a pointwise
+  have hae : ∀ᵐ a ∂μ, Tendsto (fun n => Δ n a) atTop (𝓝 0) :=
+    Filter.eventually_of_forall fun a => by
+      have h : Tendsto (fun n => f a - f a * (spanningSets μ n).indicator (1 : α → ℝ) a)
+          atTop (𝓝 (f a - f a)) :=
+        tendsto_const_nhds.sub (pointwise_mul_indicator_tendsto f a)
+      simp only [sub_self] at h; exact h
+  -- Apply Vitali's convergence theorem: Δ n → 0 in Lp
+  simpa only [sub_zero] using tendsto_Lp_of_tendsto_ae ‹1 ≤ p› hptop haef hg hui hut hae
 
 -- ============================================================================
 -- § 5. Localization step (Step A — HARD sorry)
@@ -331,13 +386,14 @@ end RieszSigmaFiniteComplete
 6. `integral_representation_sf`: **Step C** — density extension via Lp.induction
 7. `mem_spanningSets_eventually`: Pointwise coverage lemma
 8. `pointwise_mul_indicator_tendsto`: Pointwise convergence of truncations
-9. `riesz_lp_surjective_sigma_finite`: Main theorem (assuming Step A)
+9. `lp_truncation_tendsto_zero`: **Step B** — Vitali's theorem for Lp truncations
+10. `riesz_lp_surjective_sigma_finite`: Main theorem (assuming Step A)
 
-**Sorries remaining (2)**:
-- `lp_truncation_tendsto_zero`: Step B — Vitali's theorem for Lp truncations
-- `localization_existence`: Step A — constructing g via finite-measure localization
+**Sorries remaining (1)**:
+- `localization_existence`: Step A — constructing g via finite-measure localization (~150 lines)
 
-**Parent's 3rd sorry (density extension) is eliminated.**
+**Parent's 3rd sorry (density extension) eliminated in Session 1.**
+**Step B (Lp truncation convergence) eliminated in Session 2.**
 -/
 
 end
