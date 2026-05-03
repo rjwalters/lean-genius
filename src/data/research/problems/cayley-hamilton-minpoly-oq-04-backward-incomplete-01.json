@@ -1,52 +1,102 @@
 {
   "slug": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01",
-  "title": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Backward Direction: Nonderogatory Implies Cyclic Vector (Infinite Fields)",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "theorem nonderogatory_has_cyclic_vector_infinite [Infinite K] (M : Matrix (Fin n) (Fin n) K) (h : IsNonderogatory M) : ∃ v, IsCyclicVector M v",
+    "plain": "Over an infinite field K, if M is nonderogatory (minpoly = charpoly), then M has a cyclic vector v such that {v, Mv, ..., M^{n-1}v} spans K^n.",
+    "whyMatters": [
+      "Eliminates the main axiom from CayleyHamiltonMinpolyOQ04.lean for all infinite fields",
+      "The proof uses a union-avoidance argument: non-cyclic vectors lie in finitely many proper subspaces, and over infinite fields these cannot cover the whole space"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "nonderogatory_has_cyclic_vector_infinite: over any infinite field, nonderogatory ↔ has cyclic vector (backward direction)"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Proved over infinite fields using normalizedFactors + GCD/Bezout argument"
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-03T08:33:50.248Z",
-    "iteration": 1,
-    "focus": "",
+    "phase": "ACT",
+    "since": "2026-05-03T22:00:00.000Z",
+    "iteration": 3,
+    "focus": "All proofs complete, 0 sorries",
     "blockers": [],
-    "nextAction": "",
+    "nextAction": "Completed",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: 0 sorries, 0 axioms. Proved nonderogatory_has_cyclic_vector_infinite over infinite fields via union-avoidance + GCD/Bezout. All supporting lemmas proved.",
+    "builtItems": [
+      "IsCyclicVector, IsNonderogatory predicates",
+      "aeval_ne_zero_of_ne_zero: nonzero low-degree polynomials evaluate to nonzero matrices",
+      "exists_mulVec_ne_zero: nonzero matrices have vectors not in their kernel",
+      "not_union_proper_subspaces: over infinite fields, K^n ≠ finite union of proper subspaces",
+      "powers_linearIndependent: {I, M, ..., M^{n-1}} linearly independent when deg(minpoly)=n",
+      "isCyclicVector_of_linearIndependent: LI Krylov vectors implies IsCyclicVector",
+      "linearIndependent_of_isCyclicVector: IsCyclicVector implies LI Krylov vectors",
+      "gcd_aeval_mulVec_eq_zero: if p(M)v=0 then gcd(p,μ)(M)v=0 via Bezout identity",
+      "ker_mulVecLin_ne_top: nonzero matrix has proper kernel",
+      "nilpotent_krylov_independent: nilpotent N with N^{n-1}≠0 implies LI Krylov vectors",
+      "nonderogatory_has_cyclic_vector_infinite: main theorem via normalizedFactors union-avoidance"
+    ],
+    "insights": [
+      "Key technique: non-cyclic vectors lie in ker((μ/q)(M)) for each normalized factor q of μ",
+      "Union avoidance: over infinite fields K^n cannot be a finite union of proper subspaces",
+      "GCD/Bezout: if p(M)v=0 and μ(M)=0, then gcd(p,μ)(M)v=0 by Bezout identity",
+      "Factor extraction: if gcd(p,μ) has irreducible factor q' dividing some factor of μ, contradiction with v ∉ ker((μ/q')(M))",
+      "noncomputable section + Classical.propDecidable needed for normalizedFactors to elaborate",
+      "Matrix.mulVec_mulVec is correct lemma name (not Matrix.mul_mulVec) in current Mathlib"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge: cayley-hamilton-minpoly-oq-04-backward-incomplete-01\n*No research conducted yet*\n"
+    "nextSteps": [
+      "Consider integrating CayleyHamiltonMinpolyOQ04Backward into gallery entry cayley-hamilton-minpoly-oq-04 to reduce the main axiom count"
+    ]
   },
-  "tags": [],
+  "tags": [
+    "linear-algebra",
+    "cyclic-vectors",
+    "nonderogatory"
+  ],
   "relatedProofs": [
     "cayley-hamilton",
     "cayley-hamilton-minpoly",
     "cayley-hamilton-minpoly-oq-04"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Hoffman & Kunze, Linear Algebra §7.2",
+      "Roman, Advanced Linear Algebra §10.4"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "EuclideanDomain.gcd_eq_gcd_ab",
+      "UniqueFactorizationMonoid.normalizedFactors",
+      "minpoly.aeval"
+    ]
   },
   "started": "2026-04-03T08:33:50.248Z",
-  "lastUpdate": "2026-04-03T08:33:50.248Z"
+  "lastUpdate": "2026-05-03T22:05:00.000Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ04Backward.lean",
+      "filename": "CayleyHamiltonMinpolyOQ04Backward.lean",
+      "lineCount": 533,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false
+    }
+  ]
 }
