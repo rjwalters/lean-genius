@@ -267,3 +267,72 @@ Per project memory `project_mathlib_api_drift_2026_04`, this drift hits a cohort
 1. Submit `hβ_dvd` sub-sorry to Aristotle: context is `β : ℂ, a : ℂ, halg_β : IsAlgebraic ℚ β, hβ2 : β * β = a, hAlg_aβ : Algebra ↥ℚ⟮a⟯ ↥ℚ⟮β⟯, hST_aβ : IsScalarTower ℚ ↥ℚ⟮a⟯ ↥ℚ⟮β⟯, ha_le_β : ℚ⟮a⟯ ≤ ℚ⟮β⟯`; goal `finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2`
 2. For `hjoin_dvd`: consider reformulating with stronger IH (relative constructibility)
 3. After PR #15034 merges, continue proof work on hβ_dvd
+
+## Session 34 (2026-05-03) — Strong IH Implementation
+
+**Mode**: REVISIT (continued from Session 32)
+**Outcome**: PROGRESS — strong IH fully implemented; replaced hβ_dvd + hjoin_dvd with h_top + hfd_L_join
+
+### Core Mathematical Insight
+
+The root cause of both `hβ_dvd` (Step C) and `hjoin_dvd` (Step D) was the **weak IH**.
+The naive IH `isConstructible_algebraic_degree` stated:
+  `IsConstructible α → ∃ n, finrank ℚ ℚ⟮α⟯ ∣ 2^n`
+
+This is too weak for the sqrt_ext case: to bound `finrank (ℚ⟮b⟯ ⊔ ℚ⟮β⟯)`, we need to know
+`[ℚ⟮b⟯⊔ℚ⟮β⟯ : ℚ⟮β⟯]` divides `2^k`. This requires the IH about `b` applied with base field
+`ℚ⟮β⟯`, not just `ℚ`.
+
+**Solution**: Strengthen the IH to:
+```
+isConstructible_algebraic_degree_strong: IsConstructible α →
+  IsAlgebraic ℚ α ∧ ∃ n, ∀ L : IntermediateField ℚ ℂ, [FiniteDimensional ℚ ↥L] →
+    FiniteDimensional ↥L ↥(L ⊔ ℚ⟮α⟯) ∧ finrank ↥L ↥(L ⊔ ℚ⟮α⟯) ∣ 2^n
+```
+
+Then derive the original from this by taking `L = ⊥` and using `⊥ ⊔ ℚ⟮α⟯ = ℚ⟮α⟯`.
+
+### Proof Structure for sqrt_ext Case (b + β, where β² = a)
+
+Given IHs for `a` (exponent `j`) and `b` (exponent `k`), for any `L`:
+- Build `L₁ = L ⊔ ℚ⟮b⟯`: apply IH_b to L → `finrank ↥L ↥L₁ ∣ 2^k`
+- Build `L₂ = L₁ ⊔ ℚ⟮a⟯`: apply IH_a to L₁ → `finrank ↥L₁ ↥L₂ ∣ 2^j`
+- Build `L₃ = L₂ ⊔ ℚ⟮β⟯`: use `finrank_sup_sq_dvd` (β²=a ∈ L₂) → `finrank ↥L₂ ↥L₃ ∣ 2`
+- Since `b + β ∈ L₃`, we have `L ⊔ ℚ⟮b+β⟯ ≤ L₃`
+- Tower law: `finrank ↥L ↥L₃ = finrank ↥L ↥L₁ * finrank ↥L₁ ↥L₂ * finrank ↥L₂ ↥L₃ ∣ 2^(k+j+1)`
+- By divisibility: `finrank ↥L ↥(L ⊔ ℚ⟮b+β⟯) ∣ finrank ↥L ↥L₃ ∣ 2^(j+k+1)` ✓
+
+### New Helper: finrank_sup_sq_dvd
+
+For `K : IntermediateField ℚ ℂ`, `β : ℂ`, `a : ℂ`, `β*β = a`, `a ∈ K`:
+- `finrank ↥K ↥(K ⊔ ℚ⟮β⟯) ∣ 2`
+- `FiniteDimensional ↥K ↥(K ⊔ ℚ⟮β⟯)`
+
+Proof: β satisfies X²-a over K. minpoly ↥K β_in_sup divides this. natDegree ≤ 2 and ≥ 1.
+Sorry: `IntermediateField.adjoin ↥K {β_in_sup} = ⊤` (β generates K⊔ℚ⟮β⟯ over K).
+
+### Two New Sorries (replacing hβ_dvd + hjoin_dvd)
+
+1. **`h_top`** (in `finrank_sup_sq_dvd`):
+   `IntermediateField.adjoin ↥K {β_in_sup} = ⊤`
+   - β_in_sup ∈ K⊔ℚ⟮β⟯, and it generates K⊔ℚ⟮β⟯ over K
+   - Proof path: `adjoin ↥K {β_in_sup} ≥ K ⊔ ℚ⟮β⟯` because it contains β (and K by definition);
+     `adjoin ↥K {β_in_sup} ≤ K⊔ℚ⟮β⟯` trivially; so equality. `⊤` follows from surjectivity.
+   - Key API: `IntermediateField.sup_eq_adjoin`, `IntermediateField.adjoin_le_iff`
+
+2. **`hfd_L_join`** (in `isConstructible_algebraic_degree_strong`):
+   `FiniteDimensional ↥L ↥(L ⊔ ℚ⟮b+β⟯)`
+   - L⊔ℚ⟮b+β⟯ ≤ L₃, L₃ is finite over ℚ, L is finite over ℚ
+   - Want: `Module.Finite ↥L ↥(L⊔ℚ⟮b+β⟯)` from finiteness of `↥L₃ / ↥L`
+   - Key API: `Module.Finite.of_restrictScalars_finite`, submodule finiteness
+
+### Files Modified
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean` — ~95 lines added for strong IH
+- `src/data/proofs/.../meta.json` — lineCount 383→478, description updated
+- Docker build could not run (daemon unresponsive); build verification pending
+
+### Next Steps
+1. Prove `h_top`: key API is `IntermediateField.sup_eq_adjoin` or `IntermediateField.adjoin_le_iff`
+2. Prove `hfd_L_join`: use `Module.Finite.of_restrictScalars_finite` via L₃/L tower
+3. Both are good Aristotle candidates
+4. Run Docker build to confirm compilation

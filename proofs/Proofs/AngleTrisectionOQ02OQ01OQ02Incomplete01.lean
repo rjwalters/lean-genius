@@ -25,18 +25,23 @@ Session 28: Structured the single tower sorry into 5-step proof (Steps A-E).
 Session 29: Restored sessions 26-28 work (accidentally reverted in PR #12782).
            Also improved not_constructible_of_bad_degree to use Dvd (not Eq).
 
-## Remaining Sorries
+## Remaining Sorries (Session 34 — Strong IH implementation)
 
-1. `hβ_dvd` (Step C): finrank ℚ ℚ⟮β⟯ ∣ 2^(j+1)
-   Proof plan: ℚ⟮a⟯ ≤ ℚ⟮β⟯, tower law gives finrank_β = [ℚ⟮β⟯:ℚ⟮a⟯] * 2^j.
-   β satisfies X²-a over ℚ⟮a⟯ → [ℚ⟮β⟯:ℚ⟮a⟯] ≤ 2 → [ℚ⟮β⟯:ℚ⟮a⟯] ∣ 2 → finrank_β ∣ 2^(j+1).
-   Needs: Algebra (↥ℚ⟮a⟯) (↥ℚ⟮β⟯) from ha_le_β, and simple extension fact
-   Module.finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ = natDegree (minpoly ↥ℚ⟮a⟯ β) (β generates ℚ⟮β⟯ over ℚ⟮a⟯).
+Sessions 26-33 had sorries `hβ_dvd` (tower via ℚ⟮a⟯) and `hjoin_dvd` (join degree).
+Session 34 introduced `isConstructible_algebraic_degree_strong` with strong IH:
+  "For any L/ℚ finite, FiniteDimensional ↥L ↥(L ⊔ ℚ⟮α⟯) ∧ finrank ↥L ↥(L ⊔ ℚ⟮α⟯) ∣ 2^n"
+This strong IH subsumes both hβ_dvd and hjoin_dvd, replacing them with:
 
-2. `hjoin_dvd` (Step D): finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+k+1)
-   Proof plan: tower via ℚ⟮β⟯ gives finrank_join = [join:ℚ⟮β⟯] * finrank_β.
-   Need [join:ℚ⟮β⟯] ∣ 2^k. This requires STRONGER IH for b: not just finrank ℚ ℚ⟮b⟯ ∣ 2^k,
-   but "for any K/ℚ, finrank K K⟮b⟯ divides a power of 2". Current IH is too weak.
+1. `h_top` (in finrank_sup_sq_dvd): IntermediateField.adjoin ↥K {β_in_sup} = ⊤
+   Proof plan: β_in_sup ∈ K⊔ℚ⟮β⟯ and it generates K⊔ℚ⟮β⟯ over K because the
+   ℚ-intermediate field spanned by K and β is exactly K⊔ℚ⟮β⟯.
+   Key API: IntermediateField.adjoin_le_iff, IntermediateField.sup_eq_adjoin.
+
+2. `hfd_L_join` (in isConstructible_algebraic_degree_strong, sqrt_ext case):
+   FiniteDimensional ↥L ↥(L ⊔ ℚ⟮b+β⟯)
+   Proof plan: L⊔ℚ⟮b+β⟯ embeds into L₃ = L₂⊔ℚ⟮β⟯ (finite over ℚ); both L and L₃
+   are finite over ℚ → L₃/L is finite → subspace L⊔ℚ⟮b+β⟯/L is finite.
+   Key API: Module.Finite.of_restrictScalars_finite.
 
 3. `wantzel_galois_iff` (out-of-scope): Requires full Galois correspondence + 2-group structure.
    Estimated: 500+ lines of new Galois theory infrastructure. Out of scope.
