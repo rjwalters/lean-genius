@@ -1,1 +1,150 @@
-[]
+[
+  {
+    "id": "ann-cross-poly-ehrhart-defs",
+    "proofId": "picks-theorem-oq-03-cross-poly",
+    "range": { "startLine": 51, "endLine": 109 },
+    "type": "definition",
+    "title": "Ehrhart Polynomials of β₁, β₂, β₃",
+    "content": "The three Ehrhart polynomials are defined as rational functions of n: cross1_L (segment), cross2_L (diamond), cross3_L (octahedron). The evaluations at small integers confirm direct combinatorial counts: β₁ at n gives the 2n+1 integers in [-n,n]; β₂ at n gives the lattice points (x,y) with |x|+|y|≤n (centered diamond); β₃ at n gives (x,y,z) with |x|+|y|+|z|≤n (octahedron). The proofs are all `ring` or `norm_num` — once the polynomial is stated, arithmetic confirms the values.",
+    "mathContext": "$L_{\\beta_1}(n) = 2n+1$, $L_{\\beta_2}(n) = 2n^2+2n+1$, $L_{\\beta_3}(n) = \\tfrac{4}{3}n^3+2n^2+\\tfrac{8}{3}n+1$. Spot checks: $L_{\\beta_2}(1)=5$ (origin + 4 axis points), $L_{\\beta_3}(1)=7$ (origin + 6 axis points), $L_{\\beta_3}(2)=25$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ehrhart polynomial",
+      "lattice point counting",
+      "hyperoctahedron / cross-polytope",
+      "ℓ¹-ball lattice points"
+    ],
+    "prerequisites": [
+      "Ehrhart's theorem: |{x∈ℤ^d : x∈nP}| is a polynomial in n for any rational polytope P",
+      "cross-polytope β_d = {x∈ℝ^d : ‖x‖₁ ≤ 1}",
+      "ring tactic: closes goals by polynomial identity"
+    ]
+  },
+  {
+    "id": "ann-cross-poly-volume",
+    "proofId": "picks-theorem-oq-03-cross-poly",
+    "range": { "startLine": 125, "endLine": 151 },
+    "type": "insight",
+    "title": "Volume 2ᵈ/d! and the Leading Coefficient Law",
+    "content": "A fundamental theorem of Ehrhart theory states that the leading coefficient of the Ehrhart polynomial L_P(n) equals the d-dimensional volume of P. For β_d, vol(β_d) = 2^d/d!: in d=1 that is 2, in d=2 that is 2, in d=3 that is 4/3. The volume formula uses the recurrence for the cross-polytope: it decomposes into 2d simplices each of volume 1/d! (since β_d = conv{±e₁,...,±e_d} has 2d facets symmetrically arranged). The decreasing volume for d≥2 reflects the 'curse of dimensionality': high-dimensional cross-polytopes become increasingly sparse.",
+    "mathContext": "$\\text{vol}(\\beta_d) = \\frac{2^d}{d!}$: $d=1: 2$, $d=2: 2$, $d=3: \\frac{4}{3}$, $d=4: \\frac{2}{3}$, $d=10: \\frac{1024}{10!} \\approx 2.8 \\times 10^{-4}$. The leading coefficient of $L_{\\beta_d}(n) = \\text{vol}(\\beta_d) \\cdot n^d + \\ldots$ is $\\text{vol}(\\beta_d)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ehrhart leading coefficient = volume",
+      "curse of dimensionality",
+      "simplex decomposition of cross-polytope",
+      "Nat.factorial"
+    ],
+    "prerequisites": [
+      "Ehrhart leading coefficient theorem: leading coeff of L_P = vol(P)",
+      "factorial growth vs. 2^d: Stirling's formula shows vol(β_d) → 0 rapidly",
+      "norm_num tactic: numerical arithmetic in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-cross-poly-reciprocity",
+    "proofId": "picks-theorem-oq-03-cross-poly",
+    "range": { "startLine": 167, "endLine": 235 },
+    "type": "concept",
+    "title": "Ehrhart-Macdonald Reciprocity: L*(n) = (−1)ᵈ L(−n)",
+    "content": "Ehrhart-Macdonald reciprocity (1971) states that for any lattice polytope P, L*(n) = (-1)^d L(-n), where L*(n) counts strictly interior lattice points. For cross-polytopes, the interior points of nβ_d are those with ‖x‖₁ < n, i.e., ‖x‖₁ ≤ n-1, so L*(n) = L(n-1). This gives a clean shift formula: cross*_d_L(n) = cross_d_L(n-1). The reciprocity is then a pure ring computation: substituting -n into L and multiplying by (-1)^d recovers L(n-1). The sign alternation (-1)^d reflects whether the interior polynomial counts positively (even d) or negatively (odd d) at n=0.",
+    "mathContext": "Ehrhart-Macdonald: $L^*_P(n) = (-1)^d L_P(-n)$ for a lattice polytope $P \\subset \\mathbb{R}^d$. Cross-polytope special case: $L^*(n) = L(n-1)$. Check: $d=3$, $L^*(n) = -L(-n) = -(4(-n)^3/3 + 2(-n)^2 + 8(-n)/3 + 1) = 4n^3/3 - 2n^2 + 8n/3 - 1 = L(n-1)$ ✓.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ehrhart-Macdonald reciprocity (1971)",
+      "interior Ehrhart polynomial L*",
+      "reflexive polytopes",
+      "functional equation L*(n) = L(n-1)"
+    ],
+    "prerequisites": [
+      "interior lattice points: ‖x‖₁ < n for β_d, equivalently ‖x‖₁ ≤ n-1 for integers",
+      "(-1)^d sign in reciprocity: dimension parity",
+      "ring tactic: polynomial identity verification"
+    ]
+  },
+  {
+    "id": "ann-cross-poly-hstar",
+    "proofId": "picks-theorem-oq-03-cross-poly",
+    "range": { "startLine": 257, "endLine": 325 },
+    "type": "insight",
+    "title": "h*-Vectors (1,1), (1,2,1), (1,3,3,1) = Binomial Coefficients",
+    "content": "The h*-vector of a lattice polytope P encodes the numerator of its Ehrhart series: Ehr_P(z) = Σ_n L(n)z^n = h*(z)/(1-z)^{d+1}. For β_d, the remarkable identity h*(z) = (1+z)^d means the h*-vector is the row of Pascal's triangle: (C(d,0), C(d,1), ..., C(d,d)). Palindromy h*_i = h*_{d-i} holds because β_d is reflexive (palindromic h*-vector ↔ reflexive, by Hibi's theorem 1991). The sum Σ h*_i = 2^d = d! × vol(β_d) gives the normalized volume. All these properties are verified by `decide` on the Fin 4 → ℕ vector definitions.",
+    "mathContext": "$h^*_{\\beta_1} = (1,1)$, $h^*_{\\beta_2} = (1,2,1)$, $h^*_{\\beta_3} = (1,3,3,1) = \\binom{3}{0},\\binom{3}{1},\\binom{3}{2},\\binom{3}{3}$. Identity: $h^*_{\\beta_d}(z) = (1+z)^d$. Sum: $\\sum_i h^*_i = 2^d$. Palindromy: $h^*_i = h^*_{d-i}$ (reflexivity via Hibi 1991).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ehrhart series and h*-vector",
+      "Hibi's reflexivity theorem (1991)",
+      "Pascal's triangle row = h*-vector of β_d",
+      "Fin n → ℕ in Lean 4"
+    ],
+    "prerequisites": [
+      "Ehrhart series: Ehr_P(z) = Σ_{n≥0} L_P(n)z^n, rational with denominator (1-z)^{d+1}",
+      "h*-vector: numerator coefficients of Ehr_P(z) × (1-z)^{d+1}",
+      "decide tactic: decidable propositions on Fin types",
+      "Hibi's theorem: palindromic h*-vector ↔ P is reflexive"
+    ]
+  },
+  {
+    "id": "ann-cross-poly-reflexive",
+    "proofId": "picks-theorem-oq-03-cross-poly",
+    "range": { "startLine": 344, "endLine": 370 },
+    "type": "concept",
+    "title": "Reflexivity: Origin is the Unique Interior Point",
+    "content": "A lattice polytope P is reflexive if the origin is the unique interior lattice point: L*(1) = 1. For β_d, this follows from L*(n) = L(n-1): L*(1) = L(0) = 1 (the origin is the only lattice point in the 0-th dilate). The reflexive property of β_d is equivalent to it being self-dual with respect to the lattice — the cube □_d = [-1,1]^d is the polar dual of β_d. The evaluations L*(0) = (-1)^d reflect reciprocity at n=0: L*(0) = (-1)^d L(0) = (-1)^d × 1 = ±1, with odd dimensions giving -1 (negative interior count at n=0 is a formal algebraic phenomenon).",
+    "mathContext": "$L^*(1) = L(0) = 1$ for all $d$ — the origin is the only interior point of $\\beta_d$ itself. $L^*(0) = (-1)^d$ (formal: $L(0-1) = L(-1)$). Reflexive polytopes characterized by: (a) unique interior lattice point at origin, (b) polar dual $P^\\circ$ is also a lattice polytope, (c) palindromic $h^*$-vector (Hibi 1991).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "reflexive polytope",
+      "polar dual / polar body",
+      "Hibi's theorem connecting palindromy and reflexivity",
+      "Fano polytopes"
+    ],
+    "prerequisites": [
+      "polar dual: P° = {y : ⟨x,y⟩ ≤ 1 ∀x∈P}",
+      "reflexive: origin is unique interior lattice point",
+      "L*(1)=1 test for reflexivity"
+    ]
+  },
+  {
+    "id": "ann-cross-poly-duality",
+    "proofId": "picks-theorem-oq-03-cross-poly",
+    "range": { "startLine": 390, "endLine": 448 },
+    "type": "concept",
+    "title": "Duality β_d ↔ □_d and Volume Product 4ᵈ/d!",
+    "content": "The cross-polytope β_d and the unit cube □_d = [-1,1]^d are polar duals: β_d = {x : ‖x‖_∞ ≤ 1}° = {y : ‖y‖₁ ≤ 1}. Their Ehrhart polynomials differ significantly: L_□(n) = (2n+1)^d while L_β(n) is a degree-d polynomial with fractional coefficients. The 1D case is special: β₁ = □₁ = [-1,1], so they agree. The volume product vol(β_d) × vol(□_d) = (2^d/d!) × 2^d = 4^d/d! is proved by factoring out from the cross_volume definition and applying pow_add. This Mahler product vol(P)×vol(P°) bounds the Bourgain-Milman constant in functional analysis.",
+    "mathContext": "$\\text{vol}(\\beta_d) \\cdot \\text{vol}(\\square_d) = \\frac{2^d}{d!} \\cdot 2^d = \\frac{4^d}{d!}$. Equality of Ehrhart polynomials only in $d=1$ ($L_{\\beta_1} = L_{\\square_1} = 2n+1$). Mahler conjecture: $\\text{vol}(P) \\cdot \\text{vol}(P^\\circ) \\geq 4^d/d!$ for symmetric convex bodies.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polar duality in convex geometry",
+      "Mahler volume and Mahler conjecture",
+      "ℓ¹-ℓ∞ duality",
+      "pow_add in Lean 4"
+    ],
+    "prerequisites": [
+      "polar dual: P° = {y : ⟨x,y⟩ ≤ 1 ∀x∈P}",
+      "volume of cube [-1,1]^d = 2^d",
+      "Mahler conjecture: open problem for general convex bodies, equality for cross-polytopes and simplices"
+    ]
+  },
+  {
+    "id": "ann-cross-poly-recurrence",
+    "proofId": "picks-theorem-oq-03-cross-poly",
+    "range": { "startLine": 430, "endLine": 487 },
+    "type": "technique",
+    "title": "Dimension Recurrence L_{β_d}(n) = L_{β_{d-1}}(n) + 2Σ_{k=1}^n L_{β_{d-1}}(n-k)",
+    "content": "The cross-polytope recurrence reflects a columnar decomposition: fix the last coordinate x_d = ±j (for j=1,...,n) or x_d = 0. The points with x_d = ±j in nβ_d biject with points in (n-j)β_{d-1}, giving 2L_{β_{d-1}}(n-j) points per value j. The column-sum formula Σ_{j=0}^{n-1} L_{β_{d-1}}(j) = n(2n²+1)/3 for d=2→3 is verified by `ring`. The recurrence itself reduces to a polynomial identity verified by `ring`: no combinatorial induction needed, just algebraic manipulation once the Ehrhart polynomials are defined.",
+    "mathContext": "$L_{\\beta_2}(n) = L_{\\beta_1}(n) + 2n^2 = (2n+1) + 2n^2 = 2n^2+2n+1$ ✓. $L_{\\beta_3}(n) = L_{\\beta_2}(n) + \\frac{2n(2n^2+1)}{3}$. The sum $\\sum_{j=0}^{n-1}(2j^2+2j+1) = \\frac{n(2n^2+1)}{3}$ is the key identity. General: $L_{\\beta_d}(n) = \\sum_{j=-n}^{n} L_{\\beta_{d-1}}(n-|j|)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Ehrhart polynomial recurrence",
+      "cross-section decomposition",
+      "polynomial identity via ring",
+      "dimension reduction"
+    ],
+    "prerequisites": [
+      "columnar decomposition: points in nβ_d with fixed first coordinate",
+      "ring tactic: closes polynomial identities over ℚ",
+      "linarith: linear arithmetic with hypotheses"
+    ]
+  }
+]
