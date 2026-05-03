@@ -267,3 +267,37 @@ Per project memory `project_mathlib_api_drift_2026_04`, this drift hits a cohort
 1. Submit `hβ_dvd` sub-sorry to Aristotle: context is `β : ℂ, a : ℂ, halg_β : IsAlgebraic ℚ β, hβ2 : β * β = a, hAlg_aβ : Algebra ↥ℚ⟮a⟯ ↥ℚ⟮β⟯, hST_aβ : IsScalarTower ℚ ↥ℚ⟮a⟯ ↥ℚ⟮β⟯, ha_le_β : ℚ⟮a⟯ ≤ ℚ⟮β⟯`; goal `finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2`
 2. For `hjoin_dvd`: consider reformulating with stronger IH (relative constructibility)
 3. After PR #15034 merges, continue proof work on hβ_dvd
+
+## Session 33 (2026-05-03) — Stronger IH Architecture; hjoin_dvd Eliminated
+
+**Mode**: REVISIT (continued from Session 32)
+**Outcome**: PROGRESS — restructured PART 2 with three-lemma architecture; hjoin_dvd sorry eliminated; PR #15111
+
+### What I Did
+- Discovered Session 32 knowledge.md was wrong about sorry count: hβ_dvd was ALREADY PROVED (3 sorries → 2)
+- Determined `hjoin_dvd` is intractable under current monolithic IH structure
+- Replaced PART 2 (monolithic `isConstructible_algebraic_degree` with `hjoin_dvd` sorry) with three lemmas:
+  1. `finrank_sup_β_dvd_two`: proves `[K⊔ℚ⟮β⟯:K] ∣ 2` for any K∋a with β²=a (has `h_gen_Q` sorry)
+  2. `isConstructible_relative_power2`: stronger IH — constructible α lands in 2-power extension of any 2-power K (no sorry)
+  3. `isConstructible_algebraic_degree`: derives from stronger IH cleanly (no sorry)
+- Created PR #15111 on branch `feature/angle-trisection-stronger-ih`
+
+### Key Mathematical Insight
+`hjoin_dvd` needed `[ℚ⟮b⟯⊔ℚ⟮β⟯:ℚ] ∣ 2^(j+k+1)`. The current IH on b gives only
+`finrank ℚ ℚ⟮b⟯ ∣ 2^k` — not enough to bound the compositum. Solution: build the chain
+`ℚ ⊆ L₁` (IH_a) → `L₁ ⊆ L₂` (IH_b applied to L₁) → `L₂ ⊆ L₃ = L₂⊔ℚ⟮β⟯` (β²=a∈L₂).
+This requires the IH be stated for any base field K, not just ℚ.
+
+### Remaining Sorries (2, same count, better architecture)
+1. **`h_gen_Q`** in `finrank_sup_β_dvd_two` (~line 126): shows β generates K⊔ℚ⟮β⟯ over ℚ
+   - Mathematically identical to the already-proved `h_gen_Q` in old `hβ_dvd` (generalized from ℚ⟮a⟯ to K)
+   - Path: use `adjoin_eq_top_of_adjoin_eq_top` after showing β generates ℚ⟮β⟯ over ℚ
+2. **`wantzel_galois_iff`** (~line 436): full Galois theory — out of scope (500+ lines)
+
+### Files Modified
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean` — PART 2 restructure
+
+### Next Steps
+1. Submit `h_gen_Q` to Aristotle (same mathematical content as proved `h_top` in old hβ_dvd proof)
+2. After PR #15111 merges, update meta.json lineCount (was 439, new is ~490)
+3. `wantzel_galois_iff` remains out-of-scope
