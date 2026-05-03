@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-oq03oq02-context",
+    "proofId": "angle-trisection-oq-03-oq-02",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "context",
+    "title": "Complexity of the Constructibility Check: Closing the Gap",
+    "content": "This file completes the complexity picture for the halvings-based constructibility check introduced in AngleTrisectionOQ03. That entry proved an O(log d) upper bound: the halvings algorithm terminates in at most Nat.log 2 d steps. This entry proves the bound is tight: inputs d = 2^k require exactly k halvings, so Ω(log d) is a genuine lower bound. The file imports AngleTrisectionOQ03 directly and works in its namespace to access the halvings function and its basic properties.",
+    "mathContext": "Upper bound (OQ-03): $\\mathrm{halvings}(d) \\leq \\lfloor \\log_2 d \\rfloor$. Lower bound (this file): $\\mathrm{halvings}(2^k) = k = \\lfloor \\log_2(2^k) \\rfloor$. Together: $\\Theta(\\log d)$ on input family $\\{2^k\\}$.",
+    "significance": "context",
+    "relatedConcepts": ["algorithm complexity", "tight bounds", "2-adic valuation", "constructibility"],
+    "prerequisites": ["AngleTrisectionOQ03", "Nat.log in Mathlib"]
+  },
+  {
+    "id": "ann-oq03oq02-def",
+    "proofId": "angle-trisection-oq-03-oq-02",
+    "range": { "startLine": 35, "endLine": 57 },
+    "type": "definition",
+    "title": "The halvings Function: Counting Divisions by 2",
+    "content": "halvings counts how many times d is divisible by 2 before becoming odd. Structurally: halvings 0 = 0; halvings (n+1) = 1 + halvings((n+1)/2) if even, else 0. This is exactly the 2-adic valuation v₂(d) — the exponent of 2 in the prime factorization of d. For d = 12 = 4·3: halvings(12) = 1 + halvings(6) = 2 + halvings(3) = 2 + 0 = 2 (since v₂(12) = 2). The `@[simp]` lemmas (halvings_zero, halvings_one, halvings_succ) enable automatic unfolding in tactic proofs. halvings_odd establishes the base case: any odd input terminates immediately.",
+    "mathContext": "$\\mathrm{halvings}(d) = v_2(d) = \\max\\{k : 2^k \\mid d\\}$. $\\mathrm{halvings}(2^a \\cdot m) = a$ when $m$ is odd.",
+    "significance": "key",
+    "relatedConcepts": ["2-adic valuation", "p-adic valuation", "structural recursion", "termination"],
+    "prerequisites": ["natural number recursion", "modular arithmetic"]
+  },
+  {
+    "id": "ann-oq03oq02-two-mul",
+    "proofId": "angle-trisection-oq-03-oq-02",
+    "range": { "startLine": 59, "endLine": 63 },
+    "type": "technique",
+    "title": "halvings_two_mul: The Recursive Equation for Even Inputs",
+    "content": "halvings_two_mul states halvings(2k) = 1 + halvings(k) for k > 0. This is the key recursion unrolled: halvings first checks that 2k is even (it is), then halves to k and adds 1. The proof massages the expression: 2k = (2k−1)+1, then applies halvings_succ with the parity condition, and simplifies (2k−1+1)/2 = k by omega. This lemma is what makes the induction in halvings_pow2 go through, and it also directly gives the O(log d) analysis: each halving reduces d by a factor of 2, so after log₂ d halvings we reach an odd number.",
+    "mathContext": "$\\mathrm{halvings}(2k) = 1 + \\mathrm{halvings}(k)$. Iterating: $\\mathrm{halvings}(2^k \\cdot m) = k + \\mathrm{halvings}(m)$ for odd $m$.",
+    "significance": "key",
+    "relatedConcepts": ["recursion unrolling", "recurrence relation", "Euclidean algorithm"],
+    "prerequisites": ["halvings definition", "omega tactic"]
+  },
+  {
+    "id": "ann-oq03oq02-main",
+    "proofId": "angle-trisection-oq-03-oq-02",
+    "range": { "startLine": 71, "endLine": 83 },
+    "type": "insight",
+    "title": "halvings_pow2: Powers of 2 Achieve the Logarithm Exactly",
+    "content": "halvings_pow2 is the central result: halvings(2^k) = k. The induction step: halvings(2^(k+1)) = halvings(2·2^k) = 1 + halvings(2^k) [by halvings_two_mul, since 2^k > 0] = 1 + k [IH]. The identity halvings(2^k) = Nat.log 2 (2^k) then follows immediately from Mathlib's Nat.log_pow lemma, which proves log_b(b^k) = k for b > 1. Together these establish that halvings is exactly the discrete logarithm on the family of powers of 2 — computing log₂(d) exactly when d is a pure power of 2.",
+    "mathContext": "$\\mathrm{halvings}(2^k) = k = \\lfloor \\log_2(2^k) \\rfloor$. Proof: $\\mathrm{halvings}(2^{k+1}) = \\mathrm{halvings}(2 \\cdot 2^k) = 1 + \\mathrm{halvings}(2^k) = 1 + k$.",
+    "significance": "key",
+    "relatedConcepts": ["discrete logarithm", "Nat.log_pow", "induction", "powers of two"],
+    "prerequisites": ["halvings_two_mul", "Mathlib.Data.Nat.Log"]
+  },
+  {
+    "id": "ann-oq03oq02-lower-bound",
+    "proofId": "angle-trisection-oq-03-oq-02",
+    "range": { "startLine": 85, "endLine": 109 },
+    "type": "technique",
+    "title": "The Ω(log d) Lower Bound: Tightness and Unboundedness",
+    "content": "Three tightness results: (1) constructibility_lower_bound: Nat.log 2 (2^k) ≤ halvings(2^k) follows immediately from halvings_eq_log_pow2 by reflexivity (equality implies ≤). (2) halvings_unbounded: ∀c, ∃d, halvings(d) ≥ c — witnessed by d = 2^c, since halvings(2^c) = c. This proves that no constant-time algorithm can decide the halvings count: for any claimed O(1) bound, the input 2^c witnesses the failure. (3) halvings_complexity_tight packages both equalities. The unboundedness result is the decisive statement: it means O(log d) halvings are not just sufficient but necessary.",
+    "mathContext": "$\\forall c, \\mathrm{halvings}(2^c) = c \\geq c$. So the decision function $d \\mapsto \\mathrm{halvings}(d)$ is unbounded, ruling out any $O(1)$ algorithm. The lower bound $\\Omega(\\log d)$ follows on the input family $\\{2^k\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["algorithm lower bound", "unboundedness", "tight complexity", "Omega notation"],
+    "prerequisites": ["halvings_pow2", "asymptotic complexity"]
+  },
+  {
+    "id": "ann-oq03oq02-separation",
+    "proofId": "angle-trisection-oq-03-oq-02",
+    "range": { "startLine": 111, "endLine": 135 },
+    "type": "insight",
+    "title": "2^k − 1 vs 2^k: Maximal Separation Between Consecutive Inputs",
+    "content": "halvings_pred_pow2 proves halvings(2^k − 1) = 0 for k ≥ 1. The key: 2^k − 1 is odd (since 2^k ≡ 0 mod 2, so 2^k − 1 ≡ 1 mod 2), proved by omega after unfolding the successor structure. Combined with halvings_pow2, the separation theorem halvings_separates_pred gives halvings(2^k − 1) = 0 < k = halvings(2^k). This means consecutive inputs 2^k − 1 and 2^k have maximally different halvings counts: 0 vs k. The interpretation: the constructibility check immediately rejects 2^k − 1 (an odd non-power-of-2) but must process 2^k through all k halvings — confirming the YES-path is expensive and the Ω(log d) lower bound is not vacuous.",
+    "mathContext": "$2^k - 1 \\equiv 1 \\pmod{2}$ for $k \\geq 1$, so $\\mathrm{halvings}(2^k - 1) = 0$. Gap: $|\\mathrm{halvings}(2^k) - \\mathrm{halvings}(2^k - 1)| = k$.",
+    "significance": "supporting",
+    "relatedConcepts": ["separation", "YES-path complexity", "parity", "powers of two"],
+    "prerequisites": ["halvings_odd", "halvings_pow2", "modular arithmetic"]
+  },
+  {
+    "id": "ann-oq03oq02-examples",
+    "proofId": "angle-trisection-oq-03-oq-02",
+    "range": { "startLine": 137, "endLine": 156 },
+    "type": "context",
+    "title": "Concrete Verifications via native_decide",
+    "content": "Eleven examples verify halvings directly: halvings(2^k) = k for k = 0,1,2,3,4,5,8; halvings(3) = halvings(15) = 0 (odd inputs); halvings(6) = 1 (6 = 2·3, one halving); halvings(12) = 2 (12 = 4·3, two halvings). These use native_decide, which compiles the term to native code for efficient evaluation. The examples serve as a sanity check and illustrate the formula at concrete values, making the abstract theorem more accessible.",
+    "mathContext": "Verification: $\\mathrm{halvings}(256) = 8$, $\\mathrm{halvings}(6) = v_2(6) = 1$, $\\mathrm{halvings}(12) = v_2(12) = 2$. The examples collectively confirm the 2-adic valuation interpretation.",
+    "significance": "context",
+    "relatedConcepts": ["native_decide", "concrete verification", "2-adic valuation"],
+    "prerequisites": ["halvings definition", "powers of two"]
+  }
+]
