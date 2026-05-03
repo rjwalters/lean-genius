@@ -290,5 +290,81 @@
       "logarithmic growth",
       "Bochner integral"
     ]
+  },
+  {
+    "id": "ann-e225-optimality",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 216,
+      "endLine": 233
+    },
+    "type": "theorem",
+    "title": "Degree-1 Optimality: degree_one_l1_norm_eq_four and erdos_225_tight",
+    "content": "**degree_one_l1_norm_eq_four** (219-223, sorry): For degree-1 trigonometric polynomials $p$ with unit-circle roots, nonconstant, and $\\|p\\|_\\infty = 1$: $\\|p\\|_1 = 4$. The proof sketch in the docstring: $p(\\theta) = c_1 (c_0/c_1 + e^{i\\theta})$, where $\\|p\\|_\\infty = |c_1| \\cdot (1 + 1) = 1$ forces $|c_1| = 1/2$. Then $\\|p\\|_1 = (1/2) \\cdot \\int_0^{2\\pi} |c_0/c_1 + e^{i\\theta}| d\\theta = (1/2) \\cdot 8 = 4$ using `unit_circle_difference_integral`. Currently sorry — requires connecting the integral identity to the $L^1$ norm computation.\n\n**erdos_225_tight** (230-233, sorry): Existential witness — there exists a nonconstant degree-1 trigonometric polynomial with unit-circle roots, $\\|p\\|_\\infty = 1$, and $\\|p\\|_1 = 4$. The witness is the explicit $p(\\theta) = \\frac{1}{2}(e^{i\\theta} + 1)$, but the proof is sorry pending the above.",
+    "mathContext": "For $p(\\theta) = c_1(e^{i\\theta} + \\alpha)$ with $|\\alpha| = 1$: the sup norm is $|c_1| \\cdot \\max_\\theta |e^{i\\theta} + \\alpha| = |c_1| \\cdot 2$ (maximum of $|e^{i\\theta} + \\alpha|$ over $\\theta$ is 2, achieved when $e^{i\\theta} = \\alpha$). So $\\|p\\|_\\infty = 1 \\Rightarrow |c_1| = 1/2$. The $L^1$ norm uses $\\int_0^{2\\pi} |e^{i\\theta} + \\alpha| d\\theta = 8$ (the `unit_circle_difference_integral` identity from the earlier sections). Hence $\\|p\\|_1 = (1/2) \\cdot 8 = 4$. This confirms the bound in `erdos_225` is tight.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit_circle_difference_integral",
+      "degree-1 polynomials",
+      "Nonconstant",
+      "tightness of the bound"
+    ],
+    "prerequisites": [
+      "TrigPoly",
+      "HasUnitCircleRoots",
+      "l1Norm",
+      "supNorm"
+    ]
+  },
+  {
+    "id": "ann-e225-equiv-and-fejer",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 234,
+      "endLine": 298
+    },
+    "type": "concept",
+    "title": "Equivalent Formulations: sup_on_circle, Fejér-Riesz, and Littlewood Connection",
+    "content": "**PolynomialHasUnitCircleRoots** (241-243): Alternative formulation using the algebraic polynomial $P(z) = \\sum_k c_k z^k$ — all zeros of $P$ lie on the unit circle.\n\n**sup_on_circle_eq_trig_sup** (250-281, Aristotle proved): The supremum of $|\\sum_k p_k z^k|$ over $\\{z : |z| = 1\\}$ equals `p.supNorm`. Proved via a bijection between the unit circle and $[0, 2\\pi]$ using `Complex.norm_eq_one_iff` and `Complex.exp_eq_exp_iff_exists_int`. The proof uses `ciSup_le` + `le_ciSup` with compactness.\n\n**Fejér-Riesz connection** (285-289, comment): A non-negative trigonometric polynomial can be written as $|g(\\theta)|^2$ for some trigonometric polynomial $g$.\n\n**Littlewood comparison** (291-297, comment): Littlewood's conjecture (now theorem) gives $\\Omega(\\log n)$ lower bounds for unimodular polynomials — related but distinct from Erdős #225's upper bound under unit-circle-roots condition.",
+    "mathContext": "The equivalence `sup_on_circle_eq_trig_sup` is the key bridge between the algebraic (polynomial in $z$) and trigonometric (function of $\\theta$) formulations. The proof's `h_bij` establishes that any unit-circle point $z = e^{i\\theta}$ for some $\\theta$ (via `Complex.norm_eq_one_iff`), and the two `h_bij_sup` helpers map in both directions. The `ciSup` bounds require bounding the sup over a compact set, established by `IsCompact.bddAbove`. The Fejér-Riesz theorem (not proved here) would give an alternative proof route via factorization of non-negative trigonometric polynomials.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ciSup",
+      "IsCompact.bddAbove",
+      "Complex.norm_eq_one_iff",
+      "Fejér-Riesz theorem",
+      "Littlewood conjecture"
+    ],
+    "prerequisites": [
+      "TrigPoly",
+      "supNorm",
+      "Complex.exp",
+      "Complex.norm_exp"
+    ]
+  },
+  {
+    "id": "ann-e225-summary",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 299,
+      "endLine": 329
+    },
+    "type": "concept",
+    "title": "Problem Summary: Status, Formalization History, and References",
+    "content": "**Problem Status**: SOLVED (Kristiansen 1974, Saff–Sheil-Small 1973). If $f$ is nonconstant with unit-circle roots and $\\max|f(\\theta)| = 1$, then $\\int|f(\\theta)| d\\theta \\le 4$. Bound is optimal.\n\n**Formalization History**: The original statement omitted the `Nonconstant p` hypothesis. Aristotle (Harmonic) discovered the counterexample: a constant polynomial has $L^1 = 2\\pi > 4$. The corrected theorem `erdos_225` adds `Nonconstant p`. The key integral identity: $\\int_0^{2\\pi} |e^{i\\theta} - \\alpha| d\\theta = 8$ for $|\\alpha| = 1$.\n\n**Proof Architecture**: (1) Factor $P(z) = c_n \\prod_j(z - \\alpha_j)$ with $|\\alpha_j| = 1$. (2) $L^1 = |c_n| \\cdot \\int_0^{2\\pi} \\prod_j|e^{i\\theta} - \\alpha_j| d\\theta$. (3) Sub-multiplicativity and the integral identity give $L^1 \\le 4$.\n\n**References**: Hayman (1974) Research Problems in Function Theory, Kristiansen (1974), Saff–Sheil-Small (1973).",
+    "mathContext": "The bound $L^1 \\le 4$ is the Krishnaswami-Nitsche inequality (also attributed to Kristiansen). The factor $8 = 4 \\cdot 2$ in the identity $\\int_0^{2\\pi} |e^{i\\theta} - \\alpha| d\\theta = 8$ appears via an elliptic integral computation: for $|\\alpha| = 1$, $\\int|e^{i\\theta} - \\alpha| d\\theta = 4 \\cdot 2 = 8$ (the factor 4 from the average of $|e^{i\\theta}|$ and the factor 2 from the specific geometry). The formalization bug (omitting `Nonconstant`) is a cautionary tale: machine-checking finds counterexamples that human proofs miss.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kristiansen-Nitsche inequality",
+      "formalization bug",
+      "Aristotle discovery",
+      "Nonconstant hypothesis"
+    ],
+    "prerequisites": [
+      "TrigPoly",
+      "HasUnitCircleRoots",
+      "l1Norm",
+      "unit_circle_difference_integral"
+    ]
   }
 ]
