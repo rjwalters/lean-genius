@@ -303,13 +303,25 @@
   {
     "id": "ann-final-theorem",
     "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": { "startLine": 13634, "endLine": 13638 },
+    "range": { "startLine": 13634, "endLine": 13644 },
     "type": "insight",
-    "title": "hook_length_formula_general: The Capstone of 13,638 Lines",
-    "content": "`hook_length_formula_general` at line 13634 is the logical culmination of the entire file. Its proof is a one-liner: `exact_mod_cast hook_length_formula_Q μ`. The ℚ version (hook_length_formula_Q) was proved by corner induction in Part XIV using hook_walk_identity. The `exact_mod_cast` coercion from ℚ to ℕ is valid because both sides are natural numbers and the equality holds in ℚ. This represents the first Lean 4 formalization of the hook-length formula for all currently verified shape families, and the most comprehensive formalization of the Frame-Robinson-Thrall theorem in any proof assistant. The remaining sorry (hook_walk_identity for ≥10-row, ≥3-col, non-gHookYD shapes) is the only obstacle to a complete axiom-free proof.",
-    "mathContext": "The **Frame-Robinson-Thrall theorem** (1954): for any Young diagram $\\mu$ with $n$ cells, $|\\text{SYT}(\\mu)| = n! / \\prod_{(i,j) \\in \\mu} h(i,j)$. The GNW (Greene-Nijenhuis-Wilf 1979) proof via the hook walk identity is the most elegant known proof. This formalization implements GNW for small cases and uses it to drive the corner induction that gives the general result, modulo the one remaining sorry.",
+    "title": "hook_walk_identity_atMostNineCols: Dispatching to the 9-Row Bound",
+    "content": "`hook_walk_identity_atMostNineCols` at line 13634 dispatches the hook walk identity for shapes with ≤9 columns to `hook_walk_identity_le9rows` by transposition (μᵀ has ≤9 rows when μ has ≤9 columns). Its proof is: transpose to get h9t (μᵀ.rowLen 9 = 0), then apply hook_walk_identity_le9rows μᵀ. This closes the direct algebraic case for all shapes with ≤9 columns. PART XXVI follows (lines 13645–13898), which provides the GNW random-walk alternative for the remaining shapes (≥10 rows, ≥10 cols).",
+    "mathContext": "For a Young diagram $\\mu$ with $\\mu.\\text{rowLen}(9) = 0$ (i.e., $\\leq 9$ rows), the hook walk identity was proved in PARTS XIVc–XXIII by direct algebraic computation (ring tactic). By the transpose symmetry $h(\\mu,i,j) = h(\\mu^\\top,j,i)$, the same holds for $\\leq 9$ columns: apply the 9-row bound to $\\mu^\\top$. The GNW probabilistic approach in PART XXVI covers the remaining case where both $\\mu$ and $\\mu^\\top$ have $\\geq 10$ rows.",
+    "significance": "supporting",
+    "relatedConcepts": ["hook_walk_identity_le9rows", "YoungDiagram.transpose", "hookLength_transpose", "hook_walk_identity_gnw"],
+    "prerequisites": ["hook_walk_identity_le9rows", "transpose symmetry", "hookLength_transpose"]
+  },
+  {
+    "id": "ann-gnw-infrastructure",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
+    "range": { "startLine": 13645, "endLine": 13898 },
+    "type": "technique",
+    "title": "PART XXVI: GNW Random-Walk Infrastructure (Greene-Nijenhuis-Wilf 1979)",
+    "content": "PART XXVI formalizes the probabilistic infrastructure for the Greene-Nijenhuis-Wilf (1979) hook-length proof. The GNW walk from cell x: if x is a corner, stop; otherwise pick uniformly from strictHookCells(x) (arm cells (i,s) with s>j and leg cells (r,j) with r>i) and recurse. The walk probability gnwProb μ c K x (K = fuel/termination bound) is defined by Nat.rec.\n\n**Proved in PART XXVI:**\n- `strictHookCells`: arm+leg cells strictly beyond (i,j), with card = hookLength−1\n- `strictHookCells_mem`, `strictHookCells_card`, `strictHookCells_nonempty` (for non-corners), `strictHookCells_hookLen_lt` (each step strictly decreases hookLength)\n- `gnwProb_sum_corners` (lines 13754–13803): Σ_{c∈corners} gnwProb(K,x,c) = 1 for any x∈μ with hookLen(x)≤K. Proved by induction on K using `sum_eq_single_of_mem` (corner case) and `Finset.sum_comm` + `Finset.mul_sum` (non-corner case)\n- `hookLength_isCorner_one`: corners have hookLength 1\n- `gnwProb_step`: gnwProb(K+1,x) = gnwProb(K,x) when hookLen(x)≤K (stability, by strong induction)\n- `gnwProb_stable`: gnwProb(K,x) = gnwProb(hookLen(x),x) for K≥hookLen(x)\n- `hook_walk_identity_gnw` (lines 13877–13896): proved assuming gnwProb_key, by swapping Σ_c Σ_x via `Finset.sum_comm` then applying gnwProb_sum_corners\n\n**Sorry remaining:** `gnwProb_key` (line 13869–13872): Σ_{x∈μ} gnwProb(hookLen(x),x,c) = hookProd(μ)/hookProd(μ\\c). This is the hard combinatorial core — induction on |μ| with a telescoping double-sum argument using the hook product ratio formula.",
+    "mathContext": "**GNW walk probability**: $p_{\\mu,c}(x) = \\mathbb{P}[\\text{walk from } x \\text{ ends at corner } c]$. For corner $x$: $p_{\\mu,c}(x) = \\mathbf{1}[x=c]$. For non-corner: $p_{\\mu,c}(x) = \\frac{1}{h(x)-1} \\sum_{y \\in H^*(x)} p_{\\mu,c}(y)$ where $H^*(x)$ are the strict hook cells. **GNW KEY** (the remaining sorry): $\\sum_{x \\in \\mu} p_{\\mu,c}(x) = \\frac{\\text{hookProd}(\\mu)}{\\text{hookProd}(\\mu \\setminus c)}$. Combined with `gnwProb_sum_corners` ($\\sum_c p_{\\mu,c}(x)=1$) and a double-sum swap, the hook walk identity $\\sum_{c \\in \\text{corners}(\\mu)} \\frac{\\text{hookProd}(\\mu)}{\\text{hookProd}(\\mu \\setminus c)} = |\\mu|$ follows.",
     "significance": "key",
-    "relatedConcepts": ["hook_length_formula_Q", "exact_mod_cast", "hook_walk_identity", "Frame-Robinson-Thrall 1954", "GNW 1979"],
-    "prerequisites": ["hook_length_formula_Q", "corner induction", "hook_walk_identity"]
+    "relatedConcepts": ["GNW 1979", "hook walk identity", "gnwProb", "strictHookCells", "gnwProb_sum_corners", "gnwProb_key", "hook_walk_identity_gnw"],
+    "prerequisites": ["isCorner definition", "hookLength definition", "hookProd definition", "removeCorner", "gnwProb_sum_corners"]
   }
 ]
