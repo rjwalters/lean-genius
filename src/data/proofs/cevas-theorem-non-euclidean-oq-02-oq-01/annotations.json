@@ -38,14 +38,14 @@
   {
     "id": "ann-ceva-neuc-oq02-oq01-algebraic-core",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
-    "range": { "startLine": 90, "endLine": 103 },
+    "range": { "startLine": 90, "endLine": 96 },
     "type": "technique",
     "title": "menelaus_algebraic_core: Shared Algebraic Engine for All Menelaus Variants",
-    "content": "menelaus_algebraic_core is the algebraic heart of the proof — and it is independent of geometry. The theorem reduces the three-ratio product condition a/b · c/d · e/f = -1 to a simple multiplicative identity a·c·e = -(b·d·f). The proof uses field_simp with [hb, hd, hf] to clear denominators (telling Lean all three are nonzero), then ring to assemble the product. This is more robust than manual div_mul_div_comm rewrites and produces a goal that linarith can close. The same algebraic structure underlies all three Menelaus variants: Euclidean (m=id), hyperbolic (m=sinh), and spherical (m=sin).",
-    "mathContext": "\\frac{a}{b} \\cdot \\frac{c}{d} \\cdot \\frac{e}{f} = -1 \\iff a \\cdot c \\cdot e = -(b \\cdot d \\cdot f). \\quad \\text{Proved via field\\_simp + div\\_eq\\_iff + linarith.}",
+    "content": "menelaus_algebraic_core is the algebraic heart of the proof — and it is independent of geometry. The theorem reduces the three-ratio product condition a/b · c/d · e/f = -1 to a simple multiplicative identity a·c·e = -(b·d·f). The theorem statement takes six real numbers plus three nonzero proofs. The first proof step combines them into a single product nonzero witness hD = b*d*f ≠ 0 via mul_ne_zero, then uses field_simp + ring to rewrite the three-ratio product as a single fraction a*c*e/(b*d*f). This normalization is the key step: it converts the messy product-of-fractions into a single fraction ready for the iff proof.",
+    "mathContext": "\\frac{a}{b} \\cdot \\frac{c}{d} \\cdot \\frac{e}{f} = \\frac{ace}{bdf}. \\quad \\text{Proved via } \\texttt{field\\_simp}[hb, hd, hf]\\text{; ring}. \\text{ Then: } \\frac{ace}{bdf} = -1 \\iff ace = -(bdf).",
     "significance": "key",
-    "relatedConcepts": ["field_simp tactic", "div_eq_iff", "algebraic abstraction", "linarith tactic"],
-    "prerequisites": ["Lean 4 field_simp", "div_eq_iff lemma", "ring tactic", "nonzero hypotheses"]
+    "relatedConcepts": ["field_simp tactic", "mul_ne_zero", "algebraic abstraction", "single-fraction normalization"],
+    "prerequisites": ["Lean 4 field_simp", "mul_ne_zero lemma", "ring tactic", "nonzero hypotheses"]
   },
   {
     "id": "ann-ceva-neuc-oq02-oq01-iff-proof",
@@ -53,11 +53,23 @@
     "range": { "startLine": 97, "endLine": 103 },
     "type": "technique",
     "title": "Iff Proof Pattern: div_eq_iff + linarith for Both Directions",
-    "content": "After normalizing to a*c*e/(b*d*f) = -1 (via field_simp + ring), the iff proof uses div_eq_iff to convert both directions to multiplicative form. The forward direction extracts a*c*e = -1*(b*d*f) via (div_eq_iff hD).mp, then closes with linarith (since -1*x = -x). The backward direction reverses: rw [div_eq_iff hD] followed by linarith again. This two-step pattern (div_eq_iff → linarith) avoids needing ring in the iff body and generalizes cleanly to any scalar target (not just -1).",
+    "content": "After normalizing to a*c*e/(b*d*f) = -1 (via field_simp + ring), the iff proof uses div_eq_iff to convert both directions to multiplicative form. The forward direction extracts a*c*e = -1*(b*d*f) via (div_eq_iff hD).mp h, then closes with linarith (since -1*x = -x). The backward direction reverses: rw [div_eq_iff hD] followed by linarith again. This two-step pattern (div_eq_iff → linarith) avoids needing ring in the iff body and generalizes cleanly to any scalar target (not just -1).",
     "mathContext": "\\text{div\\_eq\\_iff}(hD): \\frac{p}{q} = r \\iff p = r \\cdot q. \\quad \\text{Then linarith handles } r \\cdot q = -1 \\cdot q \\iff r \\cdot q = -q.",
     "significance": "supporting",
     "relatedConcepts": ["div_eq_iff", "linarith", "iff proofs in Lean 4", "field arithmetic"],
     "prerequisites": ["div_eq_iff lemma", "linarith arithmetic solver", "Lean 4 iff proof structure"]
+  },
+  {
+    "id": "ann-ceva-neuc-oq02-oq01-config-struct",
+    "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
+    "range": { "startLine": 109, "endLine": 126 },
+    "type": "definition",
+    "title": "SphericalMenelausConfig: Encoding Nonzero Conditions as Structure Invariants",
+    "content": "SphericalMenelausConfig bundles six signed arc lengths (bd, dc, ce, ea, af, fb) together with three hypothesis fields (hdc, hea, hfb) asserting sin(DC) ≠ 0, sin(EA) ≠ 0, sin(FB) ≠ 0. Encoding these nonzero conditions as structure fields — rather than as separate theorem hypotheses — means Lean enforces them at construction time: any cfg : SphericalMenelausConfig carries the proofs automatically. The companion definition sphericalMenelausProduct is noncomputable (sin is a real transcendental function, not computably decidable) and takes a config as its sole argument. This directly mirrors HyperbolicMenelausConfig from the parent file OQ-02, with sin replacing sinh and sin(·) ≠ 0 replacing the simpler dc ≠ 0.",
+    "mathContext": "\\text{Config}: (bd, dc, ce, ea, af, fb) \\in \\mathbb{R}^6,\\; \\sin(dc) \\neq 0,\\; \\sin(ea) \\neq 0,\\; \\sin(fb) \\neq 0. \\quad P(\\text{cfg}) = \\frac{\\sin(bd)}{\\sin(dc)} \\cdot \\frac{\\sin(ce)}{\\sin(ea)} \\cdot \\frac{\\sin(af)}{\\sin(fb)}. \\text{ The three nonzero conditions exclude arc lengths } k\\pi \\text{ (antipodal points).}",
+    "significance": "key",
+    "relatedConcepts": ["structure fields as invariants", "noncomputable definitions", "HyperbolicMenelausConfig", "sin vs sinh zero sets"],
+    "prerequisites": ["Lean 4 structures", "noncomputable in Lean 4", "sin periodic zeros at kπ"]
   },
   {
     "id": "ann-ceva-neuc-oq02-oq01-main-theorem",
@@ -118,5 +130,17 @@
     "significance": "key",
     "relatedConcepts": ["Ceva theorem", "Menelaus theorem", "projective duality", "div_eq_iff", "menelaus_algebraic_core"],
     "prerequisites": ["spherical_menelaus", "Ceva's theorem statement", "div_eq_iff + linarith pattern", "refine tactic with conjunction"]
+  },
+  {
+    "id": "ann-ceva-neuc-oq02-oq01-summary",
+    "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
+    "range": { "startLine": 237, "endLine": 272 },
+    "type": "context",
+    "title": "Module Summary: Completing the Euclidean/Hyperbolic/Spherical Menelaus Triad",
+    "content": "The closing summary section (/-! ... -/ doc syntax) catalogues all 10 theorems and confirms 0 sorries, 0 axioms. The architecture section makes the 'measure function' pattern explicit: (1) establish sin properties, (2) prove the algebraic core once (geometry-free), (3) define a config struct encoding the nonzero constraints, (4) main theorem reduces to the core by definition unfolding. The connection section links to the four related files: CevasTheoremNonEuclidean.lean (spherical Ceva via abstract arcs), CevasTheoremNonEuclideanOQ02.lean (hyperbolic Menelaus via sinh, the direct parent), CevasTheoremOQ02OQ01.lean (spherical Ceva via unit vectors), and this file (spherical Menelaus via sin). Together these four files formalize the complete non-Euclidean Ceva/Menelaus landscape.",
+    "mathContext": "Measure triad: $m = \\mathrm{id}$ (Euclidean, no specialized file), $m = \\sinh$ (hyperbolic, OQ-02), $m = \\sin$ (spherical, this file). The /-! ... -/ notation produces Lean 4 doc comments visible in generated documentation. The summary is not executable code — it is an informational block placed after the end CevasTheoremNonEuclideanOQ02OQ01 namespace.",
+    "significance": "context",
+    "relatedConcepts": ["measure function triad", "/-! docstring syntax", "Lean 4 doc comments", "Ceva-Menelaus correspondence"],
+    "prerequisites": ["all theorems in this file", "Lean 4 documentation syntax", "parent file structure"]
   }
 ]
