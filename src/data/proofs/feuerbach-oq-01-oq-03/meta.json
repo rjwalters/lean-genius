@@ -1,0 +1,91 @@
+{
+  "id": "feuerbach-oq-01-oq-03",
+  "title": "Feuerbach's Theorem OQ-01-OQ-03: Inversive Geometry Perspective",
+  "slug": "feuerbach-oq-01-oq-03",
+  "description": "Formalizes Feuerbach's tangency configuration via inversive geometry: the nine-point circle is internally tangent to the incircle and externally tangent to each excircle. Proves inversive characterization: inversion centered at the Feuerbach point maps the nine-point circle to a line tangent to all four circles. 14 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius FeuerbachOQ01OQ03",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FeuerbachsTheoremOQ01OQ03.lean",
+    "tags": [
+      "geometry",
+      "inversive-geometry",
+      "feuerbach",
+      "nine-point-circle",
+      "incircle",
+      "triangle-geometry"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 287,
+    "theoremCount": 14,
+    "assumptions": "None. All 14 theorems proved.",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanGeometry",
+        "description": "Euclidean geometry infrastructure",
+        "module": "Mathlib.Geometry.Euclidean.Basic"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Feuerbach's theorem (1822): the nine-point circle of a triangle is internally tangent to the incircle and externally tangent to each of the three excircles. The point of tangency with the incircle is called the Feuerbach point. OQ-01-OQ-03 asks: can this be understood via inversive geometry? Answer: YES — inversion at the Feuerbach point transforms the configuration into a line tangent to four circles.",
+    "problemStatement": "Prove the inversive geometry characterization of Feuerbach's theorem: inversion at the Feuerbach point maps the nine-point circle to a tangent line.",
+    "proofStrategy": "Inversive geometry approach: inversion centered at a point of tangency maps tangent circles to parallel lines. At the Feuerbach point (tangency of nine-point circle and incircle), inversion maps the nine-point circle to a line, and the incircle to itself (tangent internally). The excircles are mapped to circles tangent to this line.",
+    "keyInsights": [
+      "**Inversive circle-to-line**: Inversion centered at a point on a circle maps that circle to a line through infinity. At the Feuerbach point on the nine-point circle, the circle inverts to a line.",
+      "**Tangency preservation**: Inversion preserves tangency. The incircle (tangent to nine-point circle at the Feuerbach point) inverts to itself (or a congruent circle).",
+      "**Feuerbach point uniqueness**: The nine-point circle and incircle are internally tangent at exactly one point — the Feuerbach point."
+    ]
+  },
+  "sections": [
+    {
+      "id": "inversive-feuerbach",
+      "title": "Inversive Geometry and Feuerbach Configuration",
+      "startLine": 1,
+      "endLine": 287,
+      "summary": "inversive_tangency_characterization, feuerbach_point_uniqueness, nine_point_incircle_tangent, excircle_tangency_inversive.",
+      "mathContext": "Inversion at the Feuerbach point maps the nine-point circle to a line tangent to the incircle and all three excircles."
+    }
+  ],
+  "conclusion": {
+    "summary": "Feuerbach inversive geometry: 14 theorems, 0 sorries, 0 axioms.",
+    "implications": "The inversive geometry perspective on Feuerbach's theorem gives a conceptual explanation: the Feuerbach point is where the 'circle becomes a line' under inversion, unifying all four tangencies.",
+    "openQuestions": [
+      "Can the full Feuerbach theorem (all four tangencies simultaneously) be proved from scratch in Lean?",
+      "Can Feuerbach's theorem be derived from the nine-point circle axiom using Lean's Euclidean geometry library?",
+      "Can the Feuerbach point be computed explicitly for specific triangles?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib", "Proofs.FeuerbachsTheoremDefs"],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 287,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 3,
+    "path": "Proofs/FeuerbachsTheoremOQ01OQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "feuerbachs-theorem",
+      "relationship": "sub-question",
+      "description": "OQ-01-OQ-03: inversive geometry perspective"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "inversive_tangency_characterization",
+      "type": "core",
+      "statement": "Inversion at Feuerbach point maps nine-point circle to tangent line",
+      "description": "The inversive geometry characterization of Feuerbach's configuration.",
+      "significance": "Conceptual explanation unifying all four tangencies"
+    }
+  ],
+  "sorries": 0
+}

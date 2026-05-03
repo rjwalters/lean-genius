@@ -1,0 +1,95 @@
+{
+  "id": "inclusion-exclusion-general",
+  "title": "General Inclusion-Exclusion Principle for n Finite Sets",
+  "slug": "inclusion-exclusion-general",
+  "description": "Formalizes the Principle of Inclusion-Exclusion for n finite sets: |A₁ ∪ ... ∪ Aₙ| = Σ|Aᵢ| − Σ|Aᵢ∩Aⱼ| + ... ± |A₁∩...∩Aₙ|. Extends the two-set and three-set cases to arbitrary n. Includes Bonferroni inequalities and applications. 13 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius InclusionExclusionGeneral",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InclusionExclusionGeneral.lean",
+    "tags": [
+      "combinatorics",
+      "inclusion-exclusion",
+      "set-theory",
+      "counting",
+      "finset"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 276,
+    "theoremCount": 13,
+    "assumptions": "None. All 13 theorems proved.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_biUnion",
+        "description": "Cardinality of finite unions for inclusion-exclusion",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.inclExcl",
+        "description": "Mathlib's inclusion-exclusion principle",
+        "module": "Mathlib.Combinatorics.Enumerative.InclusionExclusion"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Principle of Inclusion-Exclusion (PIE) is a fundamental combinatorial counting formula. For n sets A₁,...,Aₙ: |∪Aᵢ| = Σ|Aᵢ| − Σᵢ<ⱼ|Aᵢ∩Aⱼ| + Σᵢ<ⱼ<ₖ|Aᵢ∩Aⱼ∩Aₖ| − ... This is related to Wiedijk's theorem #96 and has applications in probability (inclusion-exclusion for events), combinatorics (Euler totient, derangements), and number theory (Möbius function).",
+    "problemStatement": "Generalize inclusion-exclusion to arbitrary n finite sets over a commutative monoid (or ring). Prove the alternating sum formula and Bonferroni inequalities.",
+    "proofStrategy": "Use Mathlib's Finset.inclExcl and build on top. Prove the general formula by induction on n or using Mathlib's existing infrastructure. Applications: derangement count, Euler totient, and Möbius inversion.",
+    "keyInsights": [
+      "**Alternating formula**: |∪Aᵢ| = Σ_{∅≠S⊆[n]} (−1)^{|S|+1} |∩_{i∈S} Aᵢ|. The signs alternate: positive for odd |S|, negative for even.",
+      "**Bonferroni inequalities**: Partial sums of PIE provide alternating upper/lower bounds: Σ|Aᵢ| ≥ |∪Aᵢ| ≥ Σ|Aᵢ| − Σ|Aᵢ∩Aⱼ|, etc.",
+      "**Derangements**: D(n) = n!(1−1 + 1/2! − 1/3! + ... ± 1/n!) via inclusion-exclusion on fixed points.",
+      "**Euler totient**: φ(n) = n ∏_{p|n} (1 − 1/p) from inclusion-exclusion on multiples of prime factors."
+    ]
+  },
+  "sections": [
+    {
+      "id": "general-pie",
+      "title": "General Inclusion-Exclusion Formula",
+      "startLine": 39,
+      "endLine": 276,
+      "summary": "inclusion_exclusion_general: |∪Aᵢ| = alternating sum of intersections. Bonferroni inequalities. Applications to derangements and totient.",
+      "mathContext": "$|A_1 \\cup \\cdots \\cup A_n| = \\sum_{\\emptyset \\neq S \\subseteq [n]} (-1)^{|S|+1} |\\bigcap_{i \\in S} A_i|$."
+    }
+  ],
+  "conclusion": {
+    "summary": "General inclusion-exclusion proved: 13 theorems, 0 sorries, 0 axioms. Full alternating sum formula and Bonferroni inequalities for arbitrary n sets.",
+    "implications": "This provides a formal foundation for inclusion-exclusion arguments in combinatorics. The n-set version subsumes all special cases and enables systematic application to counting problems.",
+    "openQuestions": [
+      "Can the Möbius inversion formula (lattice-theoretic generalization of PIE) be formalized?",
+      "Can PIE be used to formally prove the derangement formula D(n) = n! · Σ(−1)^k/k!?",
+      "Can the probabilistic version (Boole's inequality, Bonferroni) be fully formalized?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Lattice.Basic",
+      "Mathlib.Combinatorics.Enumerative.InclusionExclusion",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "InclusionExclusionGeneral",
+    "lineCount": 276,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 2,
+    "path": "Proofs/InclusionExclusionGeneral.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "inclusion_exclusion_general",
+      "type": "core",
+      "statement": "∀ n, ∀ A : Fin n → Finset α, |⋃ i, Aᵢ| = Σ sign(S) · |⋂_{i∈S} Aᵢ|",
+      "description": "General PIE formula for n finite sets.",
+      "significance": "Extends PIE from 2–3 sets to arbitrary n"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,90 @@
+{
+  "id": "triangle-inequality-oq-02",
+  "title": "Ultrametric Triangle Inequality in p-adic Analysis (OQ-02)",
+  "slug": "triangle-inequality-oq-02",
+  "description": "Formalizes the ultrametric (strong) triangle inequality for p-adic numbers: ‖q+r‖_p ≤ max(‖q‖_p, ‖r‖_p). Proves the equality case: ‖q‖_p ≠ ‖r‖_p → ‖q+r‖_p = max(‖q‖_p, ‖r‖_p). Applications: isosceles triangle property, ultrametric balls. 14 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius TriangleInequalityOQ02",
+    "status": "verified",
+    "proofRepoPath": "Proofs/TriangleInequalityOQ02.lean",
+    "tags": [
+      "analysis",
+      "p-adic",
+      "metric-space",
+      "ultrametric",
+      "number-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 192,
+    "theoremCount": 14,
+    "assumptions": "None. All 14 theorems proved.",
+    "mathlibDependencies": [
+      {
+        "theorem": "PadicNorm",
+        "description": "p-adic norm for the ultrametric inequality",
+        "module": "Mathlib.NumberTheory.Padics.PadicNorm"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The p-adic numbers ℚ_p carry the p-adic norm ‖·‖_p satisfying the ultrametric inequality ‖q+r‖_p ≤ max(‖q‖_p, ‖r‖_p). This is much stronger than the usual triangle inequality. Consequences: all triangles in ℚ_p are 'isosceles' (two sides equal), and all points in an open ball are centers.",
+    "problemStatement": "Prove the ultrametric inequality for ℚ_p and its consequences: equality when norms differ, isosceles triangles, and ball properties.",
+    "proofStrategy": "padicNorm.ultrametric: v_p(q+r) ≥ min(v_p(q), v_p(r)) → ‖q+r‖_p ≤ max(‖q‖_p, ‖r‖_p). Equality case: WLOG v_p(q) > v_p(r), then v_p(q+r) = v_p(r) (the minimum). This gives ‖q+r‖_p = ‖r‖_p = max(‖q‖_p, ‖r‖_p).",
+    "keyInsights": [
+      "**Ultrametric**: ‖q+r‖_p ≤ max(‖q‖_p, ‖r‖_p) follows from v_p(q+r) ≥ min(v_p(q), v_p(r)) and ‖·‖_p = p^{-v_p(·)}.",
+      "**Isosceles triangles**: All triangles in ℚ_p are isosceles. If ‖q‖_p ≠ ‖r‖_p, then ‖q+r‖_p = max(‖q‖_p, ‖r‖_p), so two sides equal the third.",
+      "**Ultra-balls**: Every point in an open ball B(x,r) is its center. B(x,r) = B(y,r) for any y ∈ B(x,r)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "ultrametric",
+      "title": "Ultrametric Inequality and Consequences",
+      "startLine": 1,
+      "endLine": 192,
+      "summary": "padicNorm_ultrametric, equality_when_norms_differ, isosceles_triangle_property, ball_center_independence.",
+      "mathContext": "$\\|q+r\\|_p \\leq \\max(\\|q\\|_p, \\|r\\|_p)$; equality when $\\|q\\|_p \\neq \\|r\\|_p$."
+    }
+  ],
+  "conclusion": {
+    "summary": "p-adic ultrametric theory: 14 theorems, 0 sorries, 0 axioms.",
+    "implications": "The ultrametric inequality is the foundation of p-adic analysis and has deep number-theoretic implications. The isosceles triangle property distinguishes p-adic geometry from Euclidean geometry.",
+    "openQuestions": [
+      "Can the p-adic Mahler measure and its properties be formalized?",
+      "Can the Weierstrass preparation theorem for ℤ_p be proved?",
+      "Can Hensel's lemma be formally derived from the ultrametric property?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 192,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "path": "Proofs/TriangleInequalityOQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "extends",
+      "description": "OQ-02: ultrametric version in p-adic analysis"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "padicNorm_ultrametric",
+      "type": "core",
+      "statement": "‖q + r‖_p ≤ max ‖q‖_p ‖r‖_p",
+      "description": "Strong triangle inequality for p-adic norm.",
+      "significance": "Core property distinguishing p-adic from real/complex analysis"
+    }
+  ],
+  "sorries": 0
+}

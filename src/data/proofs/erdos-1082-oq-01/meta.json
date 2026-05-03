@@ -1,0 +1,95 @@
+{
+  "id": "erdos-1082-oq-01",
+  "title": "Erdős #1082 OQ-01: Distinct Distances — No Four Mutually Equidistant Points",
+  "slug": "erdos-1082-oq-01",
+  "description": "Partial progress on Erdős #1082 (distinct distances conjecture). Proves: at most 3 points in ℝ² can be mutually equidistant (4 would require an equilateral tetrahedron in 2D, contradicting planarity). Infrastructure for counting distinct squared distances. Small-case verification of n/2 lower bound. 13 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Erdos1082OQ01",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1082OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "discrete-geometry",
+      "erdos-problems",
+      "distinct-distances",
+      "equidistant"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 288,
+    "theoremCount": 13,
+    "assumptions": "None. All 13 theorems proved.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for distance computations",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erdős #1082 asks: for n points in ℝ², what is the minimum number of distinct distances? Erdős conjectured Ω(n/√log n). The Guth-Katz theorem (2015) proved Ω(n/log n). OQ-01 asks about the n/2 lower bound and equidistance constraints. A key structural observation: at most 3 points in ℝ² can be mutually equidistant (an equilateral triangle), since 4 mutually equidistant points require 3D (regular tetrahedron).",
+    "problemStatement": "Prove: (1) No 4 points in ℝ² can be mutually equidistant. (2) Infrastructure for counting distinct distances. (3) Small-case n/2 lower bound.",
+    "proofStrategy": "no_four_equidistant: assume 4 points at equal distance d. Place first three as equilateral triangle. The fourth point must be equidistant from all three — this is the centroid. But centroid distance ≠ d (it equals d/√3 ≠ d). Contradiction via Lagrange identity: overdetermined linear system gives 3d⁴/4 = d⁴/4 → d = 0.",
+    "keyInsights": [
+      "**Maximum equidistant in 2D = 3**: In ℝ², 3 mutually equidistant points form an equilateral triangle. A 4th point equidistant from all 3 vertices would be at the circumcenter (distance d/√3, not d) or in 3D.",
+      "**Lagrange identity**: For equilateral triangle A,B,C with side d and point P equidistant from all: PA² + PB² + PC² = 3·(PG² + d²/3) where G is centroid. If PA=PB=PC=d, then 3d² = 3(PG² + d²/3), giving PG² = 2d²/3 ≠ 0. But then no 4th equidistant point exists in the plane of A,B,C.",
+      "**Connection to distinct distances**: If few distinct distances, many equidistant pairs → near-equidistant configurations. The n/2 bound follows from avoiding too many equidistances."
+    ]
+  },
+  "sections": [
+    {
+      "id": "equidistant-and-counting",
+      "title": "No Four Equidistant and Distance Counting",
+      "startLine": 1,
+      "endLine": 288,
+      "summary": "no_four_equidistant: proof by contradiction using Lagrange identity. squared_distance_counting infrastructure. small_case_n_over_2_verified.",
+      "mathContext": "$\\nexists$ four mutually equidistant points in $\\mathbb{R}^2$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős #1082 OQ-01 partial progress: 13 theorems, 0 sorries, 0 axioms. No four equidistant points in ℝ² proved.",
+    "implications": "The no-four-equidistant result is a key structural lemma for distinct distance problems. It bounds the maximum 'equidistant clique' in 2D to size 3.",
+    "openQuestions": [
+      "Can the Guth-Katz Ω(n/log n) distinct distances bound be formalized?",
+      "Can the Erdős n/√log n conjecture be resolved?",
+      "Can the ≥ n/2 distinct distances lower bound be formally proved for all n?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Finset"],
+    "namespace": "",
+    "lineCount": 288,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos1082OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1082",
+      "relationship": "sub-question",
+      "description": "OQ-01: equidistance constraints and n/2 lower bound"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "no_four_equidistant",
+      "type": "core",
+      "statement": "¬∃ A B C D : ℝ², all pairwise distances equal",
+      "description": "At most 3 points in ℝ² can be mutually equidistant.",
+      "significance": "Key structural constraint for distinct distance problems in 2D"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,90 @@
+{
+  "id": "perfect-numbers-oq-03",
+  "title": "Perfect Numbers OQ-03: Mersenne Prime Distribution",
+  "slug": "perfect-numbers-oq-03",
+  "description": "Explores the distribution of Mersenne primes 2^p − 1. Proves: p prime is necessary for 2^p−1 prime (Lucas-Lehmer necessity), prime factors of 2^p−1 satisfy q ≡ 1 (mod 2p), structural results on Mersenne prime density. Formalized Lenstra-Pomerance-Wagstaff heuristic context. 14 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius PerfectNumbersOQ03",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PerfectNumbersOQ03.lean",
+    "tags": [
+      "number-theory",
+      "perfect-numbers",
+      "mersenne-primes",
+      "density",
+      "primality"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 259,
+    "theoremCount": 14,
+    "assumptions": "None. All 14 theorems proved.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for Mersenne prime analysis",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Mersenne primes are primes of the form M_p = 2^p − 1. Known Mersenne primes: M_2=3, M_3=7, M_5=31, M_7=127, M_13=8191, ... (51 known as of 2024). The Lenstra-Pomerance-Wagstaff conjecture predicts (e^γ/log 2) · log log x ≈ 2.57 · log log x Mersenne primes with exponent ≤ x. If p is composite, 2^p − 1 is composite (factorization 2^{ab}−1 = (2^a−1)(...)). If q | M_p, then q ≡ 1 (mod 2p) (Lucas-Lehmer congruence).",
+    "problemStatement": "Prove: (1) p composite → M_p composite. (2) If q | M_p and q prime, then q ≡ 1 (mod 2p). (3) Structural density bounds.",
+    "proofStrategy": "p composite p=ab: 2^{ab}−1 = (2^a−1)(2^{a(b-1)}+...+1), so M_p composite. Factor congruence: ord_q(2) | 2p and q ≡ 1 (mod ord_q(2)) by Fermat's little theorem. Since ord_q(2) | gcd(p-1, 2p) = 2p (as p prime), ord_q(2) = 2p → q ≡ 1 (mod 2p).",
+    "keyInsights": [
+      "**Necessary condition**: 2^p − 1 prime → p prime. Because 2^{ab} − 1 = (2^a − 1) · (2^{a(b-1)} + ... + 1).",
+      "**Lucas-Lehmer congruence**: If q | 2^p − 1, then ord_q(2) | 2p. Since q ≡ 1 (mod ord_q(2)) (Fermat), and ord_q(2) = 2p for prime q | M_p, we get q ≡ 1 (mod 2p).",
+      "**Density conjecture**: Heuristically, the probability that a random n is Mersenne prime is ∝ 1/(log n), suggesting O(log log x) Mersenne primes up to x."
+    ]
+  },
+  "sections": [
+    {
+      "id": "mersenne-structure",
+      "title": "Mersenne Prime Structure and Density",
+      "startLine": 1,
+      "endLine": 259,
+      "summary": "mersenne_prime_necessity: p prime ← 2^p-1 prime. lucas_lehmer_congruence: q | M_p prime → q ≡ 1 mod 2p. Density bounds.",
+      "mathContext": "$2^p-1$ prime $\\Rightarrow$ $p$ prime. Prime $q \\mid 2^p-1 \\Rightarrow q \\equiv 1 \\pmod{2p}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Mersenne prime distribution: 14 theorems, 0 sorries, 0 axioms. Necessity of p prime and Lucas-Lehmer congruence proved.",
+    "implications": "These structural results are the foundation of Mersenne prime testing. The Lucas-Lehmer test (for primality of M_p) relies on this congruence to know which factors to test.",
+    "openQuestions": [
+      "Are there infinitely many Mersenne primes? (Open)",
+      "Can the Lenstra-Pomerance-Wagstaff heuristic be formalized probabilistically?",
+      "Can the Lucas-Lehmer primality test itself be formalized in Lean?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 259,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 2,
+    "path": "Proofs/PerfectNumbersOQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "extends",
+      "description": "OQ-03: Mersenne prime distribution"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "mersenne_prime_necessity",
+      "type": "core",
+      "statement": "2^p - 1 prime → p prime",
+      "description": "Primality of M_p requires primality of p.",
+      "significance": "Necessary condition filtering Mersenne prime candidates"
+    }
+  ],
+  "sorries": 0
+}

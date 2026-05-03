@@ -1,0 +1,90 @@
+{
+  "id": "mean-value-theorem-oq-04",
+  "title": "Fundamental Theorem of Calculus via MVT Structure (OQ-04)",
+  "slug": "mean-value-theorem-oq-04",
+  "description": "Establishes the Fundamental Theorem of Calculus and shows how MVT is the local/discrete counterpart to FTC's global/integral structure. Proves: FTC first and second forms, MVT as a consequence, and the precise connection: FTC = quantitative average of MVT pointwise bounds. 14 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius MeanValueTheoremOQ04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MeanValueTheoremOQ04.lean",
+    "tags": [
+      "analysis",
+      "calculus",
+      "ftc",
+      "mean-value-theorem",
+      "integral"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 293,
+    "theoremCount": 14,
+    "assumptions": "None. All 14 theorems proved.",
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.intervalIntegral",
+        "description": "Lebesgue integral for FTC",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Fundamental Theorem of Calculus (FTC) states: if F is antiderivative of f, then ∫ₐᵇ f(x)dx = F(b) − F(a). The Mean Value Theorem (MVT) states: F(b) − F(a) = F'(c) · (b−a) for some c ∈ (a,b). The FTC is the 'global' version of MVT: instead of one value F'(c), it uses the integral average ∫f = (1/(b-a))·∫f(x)dx as the 'mean value'.",
+    "problemStatement": "Formalize FTC and MVT, and prove the structural connection: FTC is the exact version while MVT gives an existential point, and the two are related by the mean value interpretation.",
+    "proofStrategy": "FTC: use Mathlib's intervalIntegral.integral_eq_sub_of_hasDerivAt. MVT: Mathlib's exists_deriv_eq_slope. Connection: f(b)-f(a) = ∫f'dt = mean(f') · (b-a), while MVT gives f(b)-f(a) = f'(c) · (b-a) for some c.",
+    "keyInsights": [
+      "**FTC-MVT duality**: FTC says f(b)-f(a) = ∫ₐᵇ f'(t)dt (exact). MVT says f(b)-f(a) = f'(c)(b-a) (existential). FTC gives the true average; MVT says the average is attained somewhere.",
+      "**Mean value interpretation**: ∫ₐᵇ f'(t)dt / (b-a) = 'average' of f'. MVT: this average equals f'(c) for some c — the average is achieved.",
+      "**Integral Mean Value Theorem**: ∃ c ∈ [a,b], f(c) = (1/(b-a)) ∫ₐᵇ f(t)dt — the integral mean is attained by continuous functions."
+    ]
+  },
+  "sections": [
+    {
+      "id": "ftc-mvt",
+      "title": "FTC, MVT, and their Structural Connection",
+      "startLine": 1,
+      "endLine": 293,
+      "summary": "FTC_first_form, FTC_second_form, MVT, integral_mean_value. Connection: FTC_implies_MVT and MVT_FTC_duality.",
+      "mathContext": "FTC: $f(b)-f(a) = \\int_a^b f'(t)\\,dt$. MVT: $f(b)-f(a) = f'(c)(b-a)$ for some $c \\in (a,b)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "FTC-MVT structural connection: 14 theorems, 0 sorries, 0 axioms.",
+    "implications": "The formal connection between FTC and MVT clarifies why both theorems are 'about the same thing' — the difference quotient. FTC gives the exact answer; MVT gives an existential sample point.",
+    "openQuestions": [
+      "Can the higher-dimensional MVT (gradient form) be connected to Stokes' theorem?",
+      "Can the Cauchy MVT be formalized and related to L'Hôpital's rule?",
+      "Can the connection between MVT and Taylor's theorem be made explicit in Lean?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 293,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "path": "Proofs/MeanValueTheoremOQ04.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "extends",
+      "description": "OQ-04: MVT-FTC structural connection"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "FTC_implies_MVT",
+      "type": "core",
+      "statement": "FTC → MVT (via integral mean value)",
+      "description": "The Fundamental Theorem of Calculus implies the Mean Value Theorem.",
+      "significance": "Structural connection between global (FTC) and local (MVT) differentiation"
+    }
+  ],
+  "sorries": 0
+}

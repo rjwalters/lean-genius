@@ -1,0 +1,98 @@
+{
+  "id": "bounded-prime-gaps-sieve",
+  "title": "Bounded Prime Gaps: Dense Clusters and Sieve Reduction",
+  "slug": "bounded-prime-gaps-sieve",
+  "description": "Formalizes structural consequences of the Maynard-Tao bounded prime gaps theorem: dense prime clusters in bounded intervals, generalized gap telescoping, and sieve reduction lemmas. Proves that gaps sum to p_{n+m} − p_n. 17 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius BoundedPrimeGapsSieve",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BoundedPrimeGapsSieve.lean",
+    "tags": [
+      "number-theory",
+      "prime-gaps",
+      "analytic-number-theory",
+      "sieve-theory",
+      "maynard-tao"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 367,
+    "theoremCount": 17,
+    "assumptions": "None. All 17 theorems proved.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality for prime gap analysis",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Zhang (2013) proved that lim inf(p_{n+1} − p_n) < 70,000,000. Maynard-Tao (2014) improved this to 246 and proved infinitely many prime clusters in bounded gaps: lim inf(p_{n+k} − p_n) < C(k) for explicit C(k). This file formalizes structural consequences: gap sum formulas, dense cluster implications, and reduction to sieve bounds.",
+    "problemStatement": "Formalize: (1) Telescoping sum Σ primeGap(n+i, i<m) = p_{n+m} − p_n. (2) Dense cluster implications of bounded gap results. (3) Sieve reduction lemmas.",
+    "proofStrategy": "gap_sum_range: telescoping sum by definition of primeGap. Dense cluster: if gap bound ≤ H, then among m consecutive primes, any interval of length H·m contains all of them. Sieve reductions: relate prime gap density to sieve admissibility.",
+    "keyInsights": [
+      "**Gap telescoping**: Σᵢ₌₀^{m-1} primeGap(p_n + i) = p_{n+m} − p_n. This is a simple telescoping identity but fundamental to cluster analysis.",
+      "**Dense clusters**: If liminf(p_{n+1} − p_n) ≤ H, then infinitely often, m primes lie in an interval of length H·(m-1). Maynard-Tao: H = 246 for all m.",
+      "**Sieve admissibility**: A k-tuple (h₁,...,hₖ) is admissible if it doesn't cover all residues mod p for any prime p. Admissibility is necessary (but not sufficient alone) for the tuple to contain infinitely many prime tuples."
+    ]
+  },
+  "sections": [
+    {
+      "id": "gap-formulas",
+      "title": "Gap Sum and Dense Cluster Analysis",
+      "startLine": 43,
+      "endLine": 200,
+      "summary": "gap_sum_range: telescoping sum formula. Dense cluster structural lemmas. Bounds on prime clusters in intervals.",
+      "mathContext": "$\\sum_{i=0}^{m-1} (p_{n+i+1} - p_{n+i}) = p_{n+m} - p_n$."
+    },
+    {
+      "id": "sieve-reduction",
+      "title": "Sieve Reduction Lemmas",
+      "startLine": 200,
+      "endLine": 367,
+      "summary": "Sieve admissibility, reduction to linear sieve, structural bounds.",
+      "mathContext": "Admissible k-tuples: no residue class covers all of $\\{h_1,...,h_k\\}$ mod $p$ for any prime $p$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Bounded prime gaps sieve theory: 17 theorems, 0 sorries, 0 axioms. Gap telescoping, dense cluster implications, sieve reduction all proved.",
+    "implications": "These results provide formal infrastructure for reasoning about prime gap clustering. The gap telescoping identity is fundamental; combined with the Zhang/Maynard-Tao bounds, it enables quantitative statements about prime cluster density.",
+    "openQuestions": [
+      "Can the Maynard-Tao bounded gaps theorem (liminf(p_{n+1}−p_n) ≤ 246) be formally proved?",
+      "Can the Green-Tao primes in arithmetic progressions theorem be formalized?",
+      "Can the twin prime conjecture (liminf = 2) be resolved formally?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib.Data.Nat.Prime.Basic", "Mathlib.Tactic"],
+    "opens": [],
+    "namespace": "BoundedPrimeGapsSieve",
+    "lineCount": 367,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 3,
+    "path": "Proofs/BoundedPrimeGapsSieve.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "extends",
+      "description": "Extends bounded prime gaps with sieve theory and cluster analysis"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "gap_sum_range",
+      "type": "core",
+      "statement": "Σᵢ primeGap(n+i) = p_{n+m} − p_n",
+      "description": "Telescoping sum of consecutive prime gaps equals the total spread.",
+      "significance": "Foundation for dense cluster analysis"
+    }
+  ],
+  "sorries": 0
+}

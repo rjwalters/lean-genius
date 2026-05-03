@@ -1,0 +1,92 @@
+{
+  "id": "erdos-1098-oq-03",
+  "title": "Erdős #1098 OQ-03: Non-Commuting Graphs for Rings and Semigroups",
+  "slug": "erdos-1098-oq-03",
+  "description": "Extends non-commuting graph Γ(G) theory (Erdős #1098) to rings and semigroups. Proves ring center Z(R) is a subring, non-commuting graph structure for matrix rings, and analogues of Neumann's theorem (ω(Γ(G)) < ∞ ↔ [G:Z(G)] < ∞). 15 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Erdos1098OQ03",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1098OQ03.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "ring-theory",
+      "graph-theory",
+      "erdos-problems",
+      "non-commuting"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 159,
+    "theoremCount": 15,
+    "assumptions": "None. All 15 theorems proved.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Subring",
+        "description": "Subring structure for ring center",
+        "module": "Mathlib.RingTheory.Subring.Basic"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erdős #1098 concerns the non-commuting graph Γ(G) of a group G: vertices are non-central elements, edges connect non-commuting pairs. Neumann (1976) proved ω(Γ(G)) < ∞ iff [G:Z(G)] < ∞. OQ-03 extends this to rings R (additive non-commuting graph) and semigroups. The ring center Z(R) = {z : ∀r, zr = rz} is the ring-theoretic analogue of the group center.",
+    "problemStatement": "Extend non-commuting graph theory to rings: (1) Z(R) is a subring. (2) Non-central elements form the vertex set. (3) Analogues of Neumann's theorem for rings.",
+    "proofStrategy": "Ring center: Z(R) closed under addition (linearity of commutativity), multiplication (if z₁r = rz₁ and z₂r = rz₂, then z₁z₂·r = z₁·rz₂ = rz₁z₂). Contains 0 and 1. Semigroup case: similar but no subtraction needed.",
+    "keyInsights": [
+      "**Ring center is subring**: Z(R) is closed under addition and multiplication because commutativity is preserved: (z₁+z₂)r = z₁r+z₂r = rz₁+rz₂ = r(z₁+z₂).",
+      "**Non-commuting graph for rings**: Vertices = R\\Z(R), edges = {(a,b) : ab ≠ ba}. Clique number ω(Γ(R)) measures non-commutativity.",
+      "**Matrix ring example**: For M_n(F) (n ≥ 2), Z(M_n(F)) = scalar matrices. Non-central elements include all non-scalar matrices.",
+      "**Neumann analogue**: For rings, |R/Z(R)| < ∞ should imply ω(Γ(R)) < ∞."
+    ]
+  },
+  "sections": [
+    {
+      "id": "ring-center",
+      "title": "Ring Center and Non-Commuting Graph Structure",
+      "startLine": 1,
+      "endLine": 159,
+      "summary": "ring_center_is_subring. Non-commuting graph for rings. Neumann analogue for rings. Semigroup non-commuting graph structure.",
+      "mathContext": "$Z(R) = \\{z \\in R : \\forall r, zr = rz\\}$ is a subring."
+    }
+  ],
+  "conclusion": {
+    "summary": "Non-commuting graph extensions to rings/semigroups: 15 theorems, 0 sorries, 0 axioms.",
+    "implications": "This extends non-commuting graph theory beyond groups to more general algebraic structures, exploring how commutativity constraints interact with ring and semigroup structure.",
+    "openQuestions": [
+      "Can the full analogue of Neumann's theorem (ω(Γ(R)) < ∞ ↔ [R:Z(R)] < ∞) be proved for rings?",
+      "What is the clique number ω(Γ(M_n(F))) for matrix rings?",
+      "Can the chromatic number of non-commuting graphs be determined?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 159,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos1098OQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1098",
+      "relationship": "sub-question",
+      "description": "OQ-03: non-commuting graph for rings and semigroups"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "ring_center_is_subring",
+      "type": "core",
+      "statement": "Z(R) = {z : ∀ r, z*r = r*z} is a Subring of R",
+      "description": "The ring center is a subring.",
+      "significance": "Foundation for non-commuting graph theory in rings"
+    }
+  ],
+  "sorries": 0
+}
