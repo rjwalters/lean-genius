@@ -734,6 +734,46 @@ theorem cofactor_apply_err_bound_snd (M : CofactorMatrix) (ea eb : ℤ) (C B : �
     _ = 2 * C * B := by ring
 
 -- ═══════════════════════════════════════════════════════════════
+-- PART VIIb: ROW-CONVENTION DECOMPOSITION LEMMAS
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Row-product decomposition
+
+When `a = aHi * 2^s + aLo` and `b = bHi * 2^s + bLo`, the row products
+`a * M.α + b * M.γ` and `a * M.β + b * M.δ` decompose as:
+
+  `2^s * (aHi * M.α + bHi * M.γ) + (aLo * M.α + bLo * M.γ)`
+  `2^s * (aHi * M.β + bHi * M.δ) + (aLo * M.β + bLo * M.δ)`
+
+This is the **row-convention** analogue of `cofactor_apply_shift_decomp`.
+It is used in Step 4 to relate the full-precision row output to the
+reduced inputs `(aHi, bHi) = (a / 2^s, b / 2^s)`. -/
+
+/-- Row products distribute over the `2^s` decomposition of inputs. -/
+theorem row_product_decompose (M : CofactorMatrix)
+    (a aHi aLo b bHi bLo : ℤ) (s : ℕ)
+    (ha : a = aHi * 2 ^ s + aLo) (hb : b = bHi * 2 ^ s + bLo) :
+    a * M.α + b * M.γ =
+      (2 : ℤ) ^ s * (aHi * M.α + bHi * M.γ) + (aLo * M.α + bLo * M.γ) ∧
+    a * M.β + b * M.δ =
+      (2 : ℤ) ^ s * (aHi * M.β + bHi * M.δ) + (aLo * M.β + bLo * M.δ) := by
+  subst ha; subst hb; constructor <;> ring
+
+/-- If `aHi * M.α + bHi * M.γ = aHi'` and `aHi * M.β + bHi * M.δ = bHi'`, the
+    row products of `(a, b) = (aHi * 2^s + aLo, bHi * 2^s + bLo)` simplify
+    to `2^s * aHi' + (aLo * M.α + bLo * M.γ)` and `2^s * bHi' + (aLo * M.β + bLo * M.δ)`. -/
+theorem row_product_with_invariant (M : CofactorMatrix)
+    (a aHi aLo b bHi bLo : ℤ) (s : ℕ) (aHi' bHi' : ℤ)
+    (ha : a = aHi * 2 ^ s + aLo) (hb : b = bHi * 2 ^ s + bLo)
+    (hinv₁ : aHi * M.α + bHi * M.γ = aHi')
+    (hinv₂ : aHi * M.β + bHi * M.δ = bHi') :
+    a * M.α + b * M.γ = (2 : ℤ) ^ s * aHi' + (aLo * M.α + bLo * M.γ) ∧
+    a * M.β + b * M.δ = (2 : ℤ) ^ s * bHi' + (aLo * M.β + bLo * M.δ) := by
+  subst ha; subst hb
+  exact ⟨by linear_combination (2 : ℤ) ^ s * hinv₁,
+         by linear_combination (2 : ℤ) ^ s * hinv₂⟩
+
+-- ═══════════════════════════════════════════════════════════════
 -- PART VIII: SIZE REDUCTION PREREQUISITES (Step 4 foundations)
 -- ═══════════════════════════════════════════════════════════════
 
@@ -839,14 +879,35 @@ theorem hgcdMatrix_small_row_output_le (fuel a b : ℕ) (h : max a b < hgcdThres
 
     **Base case** (`fuel = 0`): `M = id`, row output = `(a, b)` ≤ `max a b`. ✓
     **Threshold case** (`max a b < hgcdThreshold`): `hgcdMatrix_small_row_output_le`. ✓
-    **Recursive case**: `M = M₂.mul M₁` where `M₁ = hgcdMatrix f (a/2^s) (b/2^s)`.
-      The identity `rowOut(M₂·M₁, a,b) = rowOut(M₁, rowOut(M₂, a,b))` holds, but
-      the induction hypothesis for `M₂` applies to *its own intended inputs* (outputs
-      of `M₁` applied to `a/2^s, b/2^s`), not to `rowOut(M₁, a, b)`. Bridging
-      these requires tracking an invariant relating the two input sequences.
+    **Recursive case** (Session 11 analysis):
+      `hgcdMatrix (f+1) a b = (hgcdMatrix f aHi bHi).mul M₂` where
+      `aHi = a / 2^s`, `bHi = b / 2^s`, `s = hgcdShift a b`, and
+      `M₂ = hgcdMatrix f (rowOut(hgcdMatrix f aHi bHi))`.
 
-    **Classification**: HARD (requires new invariant tracking the recursive input
-    correspondence). Aristotle cannot help with this structural lemma. -/
+      By `cofactor_mul_apply` + `row_product_decompose`, the row output decomposes as:
+        `a·(M₁.mul M₂).α + b·(M₁.mul M₂).γ`
+        `= rowOut(M₂, rowOut(M₁, aHi, bHi))` + low-order term from `(aLo, bLo)`.
+
+      The IH gives `|rowOut(M₁, aHi, bHi)| ≤ max(aHi, bHi) < max(a,b)`.
+      But M₂ was built for inputs *from M₁'s column output*, not the row output:
+      `M₂ = hgcdMatrix f (M₁.apply aHi bHi).1 (M₁.apply aHi bHi).2`.
+
+      Sign-pattern analysis (EvenPattern/OddPattern) bounds each *individual* entry
+      of M₁ and M₂ by `max(aHi, bHi) < max(a,b)`, but when applied to the row
+      output of M₁ (which can be up to `max(a,b)`), the second-stage row products
+      `rowOut(M₂, rowOut(M₁))` can reach `2 · max(a,b)`.
+
+      The fundamental obstacle: the IH for M₂ is at its *own* inputs (column output of
+      M₁ applied to `aHi,bHi`), not at `rowOut(M₁, aHi, bHi)`.
+
+    **Required**: Joint induction on `max(a,b)` tracking simultaneously:
+      (1) row output ≤ max(a,b), and
+      (2) column output ≤ max(a,b) · C for some entry-bound constant C.
+    This follows Stehlé–Zimmermann (2004) §4 and requires stronger intermediate lemmas
+    connecting the two conventions via the Lehmer invariant.
+
+    **Classification**: HARD (structural invariant linking row and column conventions
+    across recursive calls). Not amenable to Aristotle. -/
 theorem hgcdMatrix_row_output_le (fuel a b : ℕ) :
     ((a : ℤ) * (hgcdMatrix fuel a b).α
         + (b : ℤ) * (hgcdMatrix fuel a b).γ).natAbs ≤ max a b ∧
@@ -914,32 +975,42 @@ theorem hgcdMatrix_row_output_le (fuel a b : ℕ) :
      the error component is at most `2·C·B`. This is the quantitative error
      bound combining Step 2b entry bounds with the low-bit size.
 
-10. **Shift-position bound** (`hgcdShift_pos`): `hgcdShift a b ≥ 1` when
+10. **Row-convention decomposition** (PART VIIb, Session 11):
+    - `row_product_decompose`: for `a = aHi·2^s + aLo`, `b = bHi·2^s + bLo`,
+      the row products `a·M.α + b·M.γ` and `a·M.β + b·M.δ` factor as
+      `2^s · (aHi·M.α + bHi·M.γ) + (aLo·M.α + bLo·M.γ)` (and symmetrically).
+    - `row_product_with_invariant`: if `aHi·M.α + bHi·M.γ = aHi'` and
+      `aHi·M.β + bHi·M.δ = bHi'`, then the full-precision row products simplify
+      to `2^s · aHi' + low-order term`. Both proved by `ring` / `linear_combination`.
+
+11. **Shift-position bound** (`hgcdShift_pos`): `hgcdShift a b ≥ 1` when
     `max a b ≥ 4`. Proof: `Nat.log 2 (max a b) ≥ 2` for input ≥ 4, so
     `(2+1)/2 = 1`. Uses `Nat.log_mono_right`.
 
-11. **Top-half strictly smaller** (`hgcdShift_top_lt`): for threshold inputs,
+12. **Top-half strictly smaller** (`hgcdShift_top_lt`): for threshold inputs,
     `max (a / 2^s) (b / 2^s) < max a b`. This is the **induction-measure
     decrease** needed for the Step 4 strong induction. Proof: `2^s ≥ 2`
     from hgcdShift_pos, then `Nat.div_lt_self`.
 
-12. **Column-convention counterexample** (PART IX): `hgcdMatrix_joint_bound`
+13. **Column-convention counterexample** (PART IX): `hgcdMatrix_joint_bound`
     as previously stated is FALSE. For (a, b) = (37, 5), the column output
     component has natAbs = 184 > 64 = 2^(hgcdShift 37 5 + 3). Verified by
     `native_decide`. The column convention `M.apply(a,b)` does NOT bound
     Euclidean residues for a right-accumulated Lehmer matrix.
 
-13. **Base-case row output bound** (`hgcdMatrix_small_row_output_le`): for
+14. **Base-case row output bound** (`hgcdMatrix_small_row_output_le`): for
     `max a b < hgcdThreshold`, the ROW output `(a·M.α + b·M.γ, a·M.β + b·M.δ)`
     of `hgcdMatrix (fuel+1) a b` is ≤ `max a b`. Proved using `hgcdMatrix_small`
     and `lehmerCofactors_id_apply_le`.
 
 **Remaining for size reduction (1 sorry):**
 - `hgcdMatrix_row_output_le` (PART IX): the full row-output bound for all fuel.
-  Base cases (fuel=0 and threshold case) are proved; the **missing piece** is
-  the recursive case: showing that `rowOut(M₂·M₁, a, b) ≤ max a b` given IH on
-  M₂ and M₁. The IH for M₂ applies to inputs `(a/2^s, b/2^s)`, not to the
-  full-precision row output of M₁; bridging these requires a new invariant.
+  Base cases (fuel=0 and threshold case) are proved; the **missing piece** is the
+  recursive case. Session 11 sign-pattern analysis: individual entries of M₁ and M₂
+  are bounded by `max(aHi,bHi)`, but `rowOut(M₂, rowOut(M₁))` can reach `2·max(a,b)`
+  because M₂'s IH is at its column-output inputs (from M₁), not the row-output.
+  The proof requires joint induction tracking both row and column output bounds
+  (Stehlé–Zimmermann 2004 §4 approach).
 
 **Out of scope (deferred):**
 - Bit-complexity bound O(M(n)·log n): requires Mathlib infrastructure
