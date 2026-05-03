@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1201",
   "title": "Erdős #1201",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,24 +16,65 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-04-16T17:08:10.920Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Formalized main conjecture, partial result (ε=1/2 axiom), and 14 structural theorems.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Submit for Docker build verification. Potential: prove more structural lemmas or attempt connection to Sylvester-Schur.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "PROGRESS: Formalized Erdős Problem 1201. Defined greatestPrimeFactor, consecutiveProduct, gpfConsecutive, upperDensity, main conjecture, and ε=1/2 partial axiom. Proved 14 structural theorems: gpf primality/divisibility/maximality, consecutive product recursion/positivity/divisibility, gpfConsecutive monotonicity and large-prime criterion, and ε=1/2 equivalence. 0 sorries, 1 axiom.",
+    "builtItems": [
+      "greatestPrimeFactor: def using Nat.primeFactors.max' (Erdos1201Problem.lean:28)",
+      "consecutiveProduct: def using Finset.range.prod (Erdos1201Problem.lean:32)",
+      "gpfConsecutive: def combining the two (Erdos1201Problem.lean:36)",
+      "upperDensity: def via Filter.limsup atTop (Erdos1201Problem.lean:44)",
+      "ErdosProblem1201: main conjecture as Prop (Erdos1201Problem.lean:55)",
+      "erdos_1201_half_case: axiom for ε=1/2 partial result (Erdos1201Problem.lean:67)",
+      "gpf_prime: greatestPrimeFactor n is prime for n≥2 (Erdos1201Problem.lean:76)",
+      "gpf_mem_primeFactors: gpf ∈ primeFactors for n≥2 (Erdos1201Problem.lean:83)",
+      "gpf_dvd: gpf divides n for n≥2 (Erdos1201Problem.lean:91)",
+      "gpf_le: gpf ≤ n for n≥2 (Erdos1201Problem.lean:96)",
+      "gpf_ge_two: gpf ≥ 2 for n≥2 (Erdos1201Problem.lean:100)",
+      "gpf_max: any prime divisor ≤ gpf (Erdos1201Problem.lean:104)",
+      "gpf_ge_prime_dvd: prime divisor bound (Erdos1201Problem.lean:111)",
+      "consecutiveProduct_zero: product with k=0 equals n (Erdos1201Problem.lean:120)",
+      "consecutiveProduct_pos: product positive for n≥1 (Erdos1201Problem.lean:124)",
+      "dvd_consecutiveProduct_left: n divides product (Erdos1201Problem.lean:130)",
+      "dvd_consecutiveProduct_right: n+k divides product (Erdos1201Problem.lean:135)",
+      "consecutiveProduct_succ: recursion formula (Erdos1201Problem.lean:140)",
+      "dvd_consecutiveProduct_of_dvd_lt: divisibility monotone in k (Erdos1201Problem.lean:154)",
+      "gpfConsecutive_mono: gpfConsecutive monotone in k (Erdos1201Problem.lean:162)",
+      "gpfConsecutive_large_of_prime_dvd: prime in window witnesses density (Erdos1201Problem.lean:191)",
+      "consecutiveProduct_ge_n: product ≥ n for n≥1 (Erdos1201Problem.lean:214)",
+      "gpfConsecutive_ge_two: gpfConsecutive ≥ 2 for n≥2 (Erdos1201Problem.lean:224)",
+      "gpfConsecutive_half_iff: sqrt equiv for ε=1/2 (Erdos1201Problem.lean:235)",
+      "erdos_1201_half_squared: ε=1/2 stated with squared GPF (Erdos1201Problem.lean:243)"
+    ],
+    "insights": [
+      "greatestPrimeFactor defined via Nat.primeFactors.max' — cleanly handles n=0,1 by returning 0",
+      "gpfConsecutive monotone in k: Finset.prod_dvd_prod_of_subset proves prime-factor containment",
+      "gpfConsecutive_large_of_prime_dvd is the key structural lemma: a single prime p in the window with p > n^(1-ε) suffices to witness the density condition",
+      "ε=1/2 condition P(n,k) > √n ↔ P(n,k)² > n via Real.sqrt_lt' — avoids non-computable square root comparisons",
+      "upperDensity via Filter.limsup over atTop — matches standard analytic number theory definition",
+      "erdos_1201_half_squared derives from the axiom by set extensionality and the ε=1/2 iff lemma",
+      "interval_cases handles n=0,1 edge cases in gpfConsecutive_half_iff cleanly"
+    ],
+    "mathlibGaps": [
+      "No Mathlib lemma directly connecting upper density thresholds to prime gaps — needed for full conjecture",
+      "Smooth number theory (Dickman's function ρ(u)) not formalized in Mathlib — needed for quantitative density estimates"
+    ],
+    "nextSteps": [
+      "Docker build to verify the Lean file compiles",
+      "Potential: prove connection to Sylvester-Schur theorem (every product of k consecutive integers ≥ k+1 has a prime factor > k)",
+      "Potential: prove lower bound: gpfConsecutive n k ≥ n+k for appropriate k (uses Bertrand's postulate from Mathlib)"
+    ],
     "markdown": "# Erdős #1201 - Knowledge Base\n\n## Problem Statement\n\nIs it true that for every $\\epsilon,\\eta>0$ there exists a $k$ such that the density of $n$ for which\\[P(n(n+1)\\cdots(n+k))>n^{1-\\epsilon}\\]is at least $1-\\eta$ (where $P(m)$ is the greatest prime divisor of $m$)? Erdős wrote he could prove this for $\\epsilon=1/2$.## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #62\n- Problem #2\n- Problem #1200\n- Problem #1202\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n"
   },
   "tags": [
@@ -52,5 +93,18 @@
   "started": "2026-04-16T17:08:10.939Z",
   "lastUpdate": "2026-04-21T11:09:40.248Z",
   "significance": 7,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1201Problem.lean",
+      "filename": "Erdos1201Problem.lean",
+      "lineCount": 267,
+      "theoremCount": 14,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1201Problem.lean"
+    }
+  ]
 }
