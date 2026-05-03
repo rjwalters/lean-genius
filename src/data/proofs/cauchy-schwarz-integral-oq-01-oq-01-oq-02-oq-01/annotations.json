@@ -185,5 +185,128 @@
       "proof engineering"
     ],
     "prerequisites": []
+  },
+  {
+    "id": "ann-integration-clm",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 281,
+      "endLine": 408
+    },
+    "type": "proof",
+    "title": "integrationCLM Construction and integral_representation via Lp Induction",
+    "content": "**integrationCLM** (299-333): Constructs the continuous linear map $f \\mapsto \\int f \\cdot g \\, d\\mu$ as a CLM on $L^p$ via `LinearMap.mkContinuous`. Linear map: $f \\mapsto \\int (f : \\alpha \\to \\mathbb{R}) \\cdot g \\, d\\mu$ (uses `integral_add` + `integral_const_mul`). Bound: $\\|\\int fg\\| \\le \\|g\\|_{L^q} \\cdot \\|f\\|_{L^p}$ via Hölder (`lintegral_mul_le_of_memLp`) + `norm_integral_le_integral_norm`.\n\n**integrationCLM_apply** (335-342): Proves the CLM evaluates to the integral — by `simp [integrationCLM, LinearMap.mkContinuous_apply]`.\n\n**integral_representation** (344-407): Proves that if $\\phi$ agrees with $f \\mapsto \\int_E g$ on indicator functions, then $\\phi(f) = \\int f \\cdot g$ for all $f \\in L^p$. Uses `Lp.induction` with: indicator case (from `hagree`), addition case (linearity of $\\phi$ and integral), closedness case (`isClosed_eq ψ.continuous continuous_const` where $\\psi = \\phi - \\text{integrationCLM}$).",
+    "mathContext": "The `LinearMap.mkContinuous` approach is the standard Lean way to build a CLM: provide the underlying linear map and a norm bound, and Lean packages them into a CLM. The bound $\\|\\int fg\\| \\le \\|g\\|_{L^q} \\|f\\|_{L^p}$ is Hölder's inequality in functional form. The `Lp.induction` principle says: to prove a closed property for all $f \\in L^p$, it suffices to prove it for indicator functions and show it is stable under addition and closedness in $L^p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LinearMap.mkContinuous",
+      "Lp.induction",
+      "Hölder's inequality",
+      "CLM construction"
+    ],
+    "prerequisites": [
+      "MemLp",
+      "integrable_mul_of_memLp",
+      "Lp.coeFn_add",
+      "norm_integral_le_integral_norm"
+    ]
+  },
+  {
+    "id": "ann-indicator-hassum",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 409,
+      "endLine": 517
+    },
+    "type": "proof",
+    "title": "Intermediate Lemmas: indicator_lp_hasSum (Lp Convergence of Disjoint Indicators)",
+    "content": "**Intermediate lemmas overview** (409-423): Three focused sorries replaced the monolithic sorry in `riesz_lp_surjective_from_rn`: (1) `indicator_lp_hasSum` — $L^p$ convergence of disjoint indicator sums; (2) `rnDeriv_integrable_of_finite` — RN derivative in $L^1$; (3) `holder_extremizer_lq_bound` — Hölder extremizer gives $\\|g_n\\|_q \\le \\|\\phi\\|$.\n\n**indicator_lp_hasSum** (425-517): For pairwise disjoint measurable sets $f_0, f_1, \\ldots$, the partial sums $\\sum_{i < N} \\mathbf{1}_{f_i}$ converge in $L^p$ norm to $\\mathbf{1}_{\\bigcup f_i}$. Strategy: identify each indicator with `indicatorConstLp`; show the tail $L^p$ norm satisfies $\\|\\mathbf{1}_{\\bigcup_{i \\ge N} f_i}\\|_p = \\mu(\\bigcup_{i \\ge N} f_i)^{1/p} \\to 0$ (finite total measure, tail of convergent series). Uses `hcoe_sum` (a.e. equality of partial sums with pointwise sums) + `eLpNorm_indicator_le` + `measure_iUnion`.",
+    "mathContext": "The key insight: for disjoint measurable sets, $\\mathbf{1}_{\\bigcup_{i \\ge N} f_i} = \\sum_{i \\ge N} \\mathbf{1}_{f_i}$ a.e., and $\\mu(\\bigcup_{i \\ge N} f_i) = \\sum_{i \\ge N} \\mu(f_i) \\to 0$ (tail of a convergent series). Hence $\\|\\sum_{i \\ge N} \\mathbf{1}_{f_i}\\|_{L^p} = \\mu(\\bigcup_{i \\ge N} f_i)^{1/p} \\to 0$. This is needed to prove σ-additivity of the functional-induced signed measure in the next section.",
+    "significance": "key",
+    "relatedConcepts": [
+      "indicatorConstLp",
+      "HasSum",
+      "measure_iUnion",
+      "eLpNorm convergence"
+    ],
+    "prerequisites": [
+      "indicator_memLp",
+      "indicatorConstLp_coeFn",
+      "Lp.coeFn_add"
+    ]
+  },
+  {
+    "id": "ann-signed-measure-rn",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 518,
+      "endLine": 611
+    },
+    "type": "proof",
+    "title": "Signed Measure from Functional, Absolute Continuity, and RN Derivative",
+    "content": "**functional_hasSum_parts** (518-532): σ-additivity of $E \\mapsto \\phi(\\mathbf{1}_E)$. For disjoint sets, $\\phi(\\mathbf{1}_{\\bigcup f_i}) = \\sum_i \\phi(\\mathbf{1}_{f_i})$ by CLM continuity + `indicator_lp_hasSum`.\n\n**signedMeasureOfFunctional** (533-549): Constructs a signed measure $\\nu(E) = \\phi(\\mathbf{1}_E)$ from a bounded $L^p$ functional. Uses `SignedMeasure.ofMeasurable` with the σ-additivity proved above.\n\n**signedMeasureOfFunctional_indicator** (550-557): $\\nu E = \\phi(\\mathbf{1}_E)$, confirmed by `simp [signedMeasureOfFunctional, SignedMeasure.ofMeasurable_apply]`.\n\n**signedMeasureOfFunctional_ac** (558-574): $\\nu \\ll \\mu$ (absolute continuity). If $\\mu E = 0$, then $\\|\\mathbf{1}_E\\|_{L^p} = 0$, so $|\\phi(\\mathbf{1}_E)| \\le \\|\\phi\\| \\cdot \\|\\mathbf{1}_E\\|_{L^p} = 0$.\n\n**rnDeriv_integrable_of_finite / rnDeriv_integral_eq** (575-601): For finite $\\nu \\ll \\mu$, the RN derivative $g = d\\nu/d\\mu$ is in $L^1$ and reconstructs $\\nu$ on sets: $\\nu E = \\int_E g \\, d\\mu$. Uses Mathlib's `Measure.integrable_rnDeriv` + `MeasureTheory.integral_rnDeriv_smul`.",
+    "mathContext": "The signed measure $\\nu$ is the bridge: $\\nu(E) = \\phi(\\mathbf{1}_E)$ connects the functional to a measure-theoretic object. The RN theorem then gives $\\nu = g \\cdot \\mu$ for some $L^1$ function $g$. The key facts: $\\nu \\ll \\mu$ (from $\\mu E = 0 \\Rightarrow \\|\\mathbf{1}_E\\|_p = 0$) and the RN derivative $g = \\nu.\\text{rnDeriv}(\\mu)$ is the candidate density for the Riesz representation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "SignedMeasure.ofMeasurable",
+      "MeasureTheory.Measure.rnDeriv",
+      "absolute continuity",
+      "Radon-Nikodym theorem"
+    ],
+    "prerequisites": [
+      "indicator_lp_hasSum",
+      "functional_hasSum_parts",
+      "SignedMeasure.AbsolutelyContinuous"
+    ]
+  },
+  {
+    "id": "ann-holder-extremizer",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 612,
+      "endLine": 986
+    },
+    "type": "proof",
+    "title": "holder_extremizer_lq_bound: Bounding ‖g‖_Lq ≤ ‖φ‖ via Truncated Extremizers",
+    "content": "**holder_extremizer_lq_bound** (612-986): The main technical lemma. Given $g = \\nu.\\text{rnDeriv}(\\mu)$, proves $\\|g\\|_{L^q} \\le \\|\\phi\\|$. Strategy:\n- Define truncations $g_n = \\text{clamp}(g, -n, n)$ (bounded, hence in $L^q$ and $L^p$)\n- Define extremizers $h_n = \\text{sign}(g_n) \\cdot |g_n|^{q-1}$ — the function achieving Hölder equality\n- Show $h_n \\in L^p$ with $\\|h_n\\|_p = \\|g_n\\|_q^{q/p}$\n- Chain: $\\|g_n\\|_q^q = \\int h_n g_n \\le \\int h_n g = \\phi(h_n) \\le \\|\\phi\\| \\cdot \\|h_n\\|_p$\n- Solve: $x^q \\le \\|\\phi\\| \\cdot x^{q/p}$ for $x = \\|g_n\\|_q$ → $x^{q - q/p} = x^1 \\le \\|\\phi\\|$\n- Take $n \\to \\infty$: $\\|g\\|_q = \\lim \\|g_n\\|_q \\le \\|\\phi\\|$\n\nKey Lean steps: `hqp_eq` ($q/p + 1 = q$ from Hölder conjugacy), `hchain` ($x^q \\le \\|\\phi\\| \\cdot x^{q/p}$), `ENNReal.rpow_le_one_of_one_le_rpow` for the monotone limit.",
+    "mathContext": "The Hölder extremizer construction is the standard technique for proving the Riesz representation: to show a function $g$ is in $L^q$, exhibit functions $h_n \\in L^p$ that 'test' the $L^q$ norm via duality. The key identity: for $h = \\text{sign}(g)|g|^{q-1}$, $\\int h \\cdot g = \\|g\\|_q^q$ and $\\|h\\|_p = \\|g\\|_q^{q/p}$ (since $p(q-1) = q$ from $1/p + 1/q = 1$). The arithmetic identity $q/p + 1 = q$ (proved from $p^{-1} + q^{-1} = 1$) is the key algebraic fact.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hölder extremizer",
+      "truncation g_n",
+      "L^q norm via duality",
+      "Monotone convergence",
+      "ENNReal.rpow"
+    ],
+    "prerequisites": [
+      "rnDeriv_integral_eq",
+      "integrable_mul_of_memLp",
+      "ContinuousLinearMap.le_opNorm"
+    ]
+  },
+  {
+    "id": "ann-riesz-main-proof",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 987,
+      "endLine": 1077
+    },
+    "type": "proof",
+    "title": "riesz_lp_surjective_from_rn: Full Proof Assembly (0 sorries, 0 axioms)",
+    "content": "**Main theorem comment** (987-1001): Documents the 5-step proof structure:\n1. $\\nu(E) = \\phi(\\mathbf{1}_E)$ via `signedMeasureOfFunctional`\n2. $g = \\nu.\\text{rnDeriv}(\\mu)$ (measurable)\n3. $\\phi(\\mathbf{1}_E) = \\int_E g$ via `rnDeriv_integral_eq`\n4. $g \\in L^q$ via `holder_extremizer_lq_bound` + `rn_deriv_memLq_from_trunc`\n5. Full $\\phi(f) = \\int fg$ via `integral_representation` (Lp induction)\n\n**riesz_lp_surjective_from_rn** (1008-1077): Assembles all intermediate results. For each $\\phi \\in (L^p)^*$, constructs $g = \\nu.\\text{rnDeriv}(\\mu)$ and proves:\n- `hac`: $\\nu \\ll \\mu$ (from `signedMeasureOfFunctional_ac`)\n- `hagree`: $\\phi(\\mathbf{1}_E) = \\int_E g$ (from `rnDeriv_integral_eq` + `hν_eq`)\n- `g \\in L^q` (from `rn_deriv_memLq_from_trunc`)\n- `\\phi(f) = \\int fg$ (from `integral_representation` applied to `hagree`)\n\nThis eliminates the `riesz_lp_surjective` axiom from the parent file. 0 sorries, 0 axioms.",
+    "mathContext": "The `rn_deriv_memLq_from_trunc` lemma (called at line 1033) combines `holder_extremizer_lq_bound` (which bounds $\\|g_n\\|_q \\le \\|\\phi\\|$ for truncations $g_n$) with monotone convergence to get $g \\in L^q$. The final `integral_representation` call at line 1043 invokes the `Lp.induction` theorem proved earlier: since $\\phi$ and `integrationCLM g` agree on indicators (by `hagree`), they agree on all of $L^p$. The proof is a showcase of modular functional analysis in Lean 4.",
+    "significance": "key",
+    "relatedConcepts": [
+      "riesz_lp_surjective",
+      "signedMeasureOfFunctional",
+      "rn_deriv_memLq_from_trunc",
+      "integral_representation"
+    ],
+    "prerequisites": [
+      "holder_extremizer_lq_bound",
+      "rnDeriv_integral_eq",
+      "integral_representation",
+      "integrationCLM"
+    ]
   }
 ]
