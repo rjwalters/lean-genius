@@ -171,5 +171,32 @@
       "Polynomial.bernoulli",
       "Mathlib.NumberTheory.BernoulliPolynomials"
     ]
+  },
+  {
+    "id": "ann-as-oq04-summary",
+    "proofId": "arithmetic-series-oq-04",
+    "range": {
+      "startLine": 174,
+      "endLine": 197
+    },
+    "type": "summary",
+    "title": "Formalization Summary: Faulhaber's Formula via Mathlib",
+    "content": "Lines 174-197 close the namespace and provide a mathematical summary of the full formalization.\n\n**Structure**: The file ends with `end ArithmeticSeriesOQ04` and `end` (closing the noncomputable section), followed by a summary comment block.\n\n**Faulhaber's formula** (Mathlib `sum_Ico_pow`): ∑_{k=1}^{n} k^p = ∑_{i=0}^{p} B'_i · C(p+1,i) · n^(p+1-i) / (p+1), where B'_i is the modified Bernoulli number with B'_1 = +1/2 (not -1/2).\n\n**Four proved corollaries** (0 sorries, 0 axioms):\n- sum_powers_zero: ∑ 1 = n\n- sum_powers_one: ∑ k = n(n+1)/2 (Gauss)\n- sum_powers_two: ∑ k² = n(n+1)(2n+1)/6\n- sum_powers_three: ∑ k³ = (n(n+1)/2)² (square of Gauss sum)\n\n**Concrete checks** for k=1..10: ∑k=55, ∑k²=385, ∑k³=3025=55².\n\n**Bernoulli number values**: B'_0=1, B'_1=1/2, B'_2=1/6, B'_3=0; all odd B'_n=0 for n≥3.\n\nThe formalization delegates the hard analytic content entirely to Mathlib's `sum_Ico_pow`, proving only the algebraic corollaries by induction and norm_num.",
+    "mathContext": "Faulhaber (1631) stated power sum formulas up to $p=17$. The Bernoulli polynomial form $\\sum_{k=0}^{n-1} k^p = \\frac{B_{p+1}(n) - B_{p+1}(0)}{p+1}$ was given by Bernoulli (1713). The identity $\\sum_{k=1}^{n} k^3 = \\left(\\sum_{k=1}^{n} k\\right)^2$ (Nicomachus' theorem) is the $p=3$ case.",
+    "significance": "contextual",
+    "relatedConcepts": [
+      "Faulhaber's formula",
+      "Gauss sum",
+      "Nicomachus' theorem",
+      "Bernoulli numbers",
+      "Mathlib sum_Ico_pow"
+    ],
+    "prerequisites": [
+      "sum_powers_zero",
+      "sum_powers_one",
+      "sum_powers_two",
+      "sum_powers_three",
+      "faulhaber_bernoulli_polynomial"
+    ]
   }
 ]
