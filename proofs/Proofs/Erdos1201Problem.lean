@@ -317,6 +317,40 @@ theorem dvd_consecutiveProduct_term (n k i : ℕ) (hi : i ≤ k) :
   exact Finset.dvd_prod_of_mem _ (Finset.mem_range.mpr (by omega))
 
 /-
+## Sylvester-Schur: Prime Factor Exceeds Window Size
+-/
+
+/-- If a prime p lies inside the window [n, n+k] and n > k,
+    then gpfConsecutive n k > k (since p ≥ n > k is a prime factor of the product). -/
+theorem gpfConsecutive_gt_k_of_prime_in_window (n k : ℕ) (hkn : k < n)
+    (p : ℕ) (hp_prime : p.Prime) (hn_le : n ≤ p) (hp_le : p ≤ n + k) :
+    k < gpfConsecutive n k := by
+  have h_pos : 0 < consecutiveProduct n k := consecutiveProduct_pos n k (by omega)
+  have h_dvd : p ∣ consecutiveProduct n k := by
+    have h_offset : p - n ≤ k := by omega
+    have heq : n + (p - n) = p := by omega
+    exact heq ▸ dvd_consecutiveProduct_term n k (p - n) h_offset
+  have h_in : p ∈ (consecutiveProduct n k).primeFactors :=
+    Nat.mem_primeFactors.mpr ⟨hp_prime, h_dvd, h_pos.ne'⟩
+  exact Nat.lt_of_lt_of_le (by omega) (gpf_max _ p h_in)
+
+/-- **Sylvester-Schur (base case)**: For k ≥ 1, gpfConsecutive (k+1) k > k.
+    The Bertrand prime p ∈ (k, 2k] lies inside [k+1, 2k+1] = [n, n+k], giving a
+    prime factor p > k of the consecutive product n(n+1)···(2k+1). -/
+theorem gpfConsecutive_succ_gt_k (k : ℕ) (hk : 1 ≤ k) :
+    k < gpfConsecutive (k + 1) k := by
+  obtain ⟨p, hp_prime, hk_lt, hp_le⟩ := Nat.exists_prime_lt_and_le_two_mul k (by omega)
+  exact gpfConsecutive_gt_k_of_prime_in_window (k + 1) k (by omega) p hp_prime
+    (by omega) (by omega)
+
+/-- **Sylvester-Schur (diagonal)**: For n ≥ 2, gpfConsecutive n (n-1) > n-1.
+    The product n(n+1)···(2n-1) always has a prime factor exceeding n-1. -/
+theorem gpfConsecutive_gt_pred_self (n : ℕ) (hn : 2 ≤ n) :
+    n - 1 < gpfConsecutive n (n - 1) := by
+  have h := gpfConsecutive_succ_gt_k (n - 1) (by omega)
+  rwa [Nat.sub_add_cancel (by omega : 1 ≤ n)] at h
+
+/-
 ## Infinitely Many n with Large GPF
 -/
 
