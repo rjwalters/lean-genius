@@ -19,11 +19,11 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 3,
-    "theoremCount": 20,
-    "assumptions": "3 axioms: liouville_integration_theorem (structural form of elementary antiderivatives requires differential Galois/Picard-Vessiot theory not in Mathlib), risch_exp_criterion_gaussian (Risch criterion: ∫e^(-x²)dx elementary iff rational Q with Q'-2xQ=1; requires partial fraction analysis), gaussian_not_elementary (∫e^(-x²) has no elementary antiderivative expressible as a rational function; the main theorem). The polynomial obstruction (no polynomial p satisfies p'-2xp=1) is fully proved without axioms.",
+    "axiomCount": 2,
+    "theoremCount": 21,
+    "assumptions": "2 axioms: liouville_integration_theorem (structural form of elementary antiderivatives requires differential Galois/Picard-Vessiot theory not in Mathlib), risch_exp_criterion_gaussian (Risch criterion: ∫e^(-x²)dx elementary iff rational Q with Q'-2xQ=1; requires partial fraction analysis and extension from polynomial to rational case). The Gaussian non-elementarity (gaussian_not_elementary) is now fully proved as a theorem via the iterated Risch operator degree-raising argument.",
     "dateAdded": "2026-05-03",
-    "lineCount": 448,
+    "lineCount": 540,
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "risch_ode_coeff_top: coefficient identity showing L[p] = p'-C(2)·X·p has coefficient -2·leadingCoeff(p) at degree natDeg(p)+1 — the key lemma driving the degree-raising argument",
@@ -33,7 +33,8 @@
       "gaussian_vs_linear_contrast: side-by-side comparison of degree-raising (L₂: Gaussian) vs degree-preserving (L₁: linear exponent) operators, with explicit solutions for the elementary case",
       "DiffField typeclass: basic differential field infrastructure with proved constants_zero/one/add/mul and deriv_neg/sub",
       "risch_linear_surjective_monomial: L₁[Q]=Q'+Q is surjective onto every monomial X^n — proved by induction using recurrence Q_{n+1}=X^{n+1}-C(n+1)·Q_n",
-      "risch_linear_surjective_all: L₁ is surjective onto ALL polynomials — proved by linearity (Polynomial.induction_on') using monomial surjectivity"
+      "risch_linear_surjective_all: L₁ is surjective onto ALL polynomials — proved by linearity (Polynomial.induction_on') using monomial surjectivity",
+      "gaussian_not_elementary: fully machine-checked proof that ∫e^(-x²)dx has no elementary antiderivative expressible as a rational function p(x)/q(x). Proof: quotient rule gives f=g·e^(-x²) with f=p'q-pq', g=q²; iterated Risch operator L^n(g)·e^(-x²)=0 (from iterate_derivative_eq_zero); since e^(-x²)>0 and L raises degree (L^n(g)≠0), contradiction. Reduces gaussian_not_elementary from axiom to theorem."
     ],
     "mathlibDependencies": [
       {
@@ -198,10 +199,10 @@
       "Real"
     ],
     "namespace": "AbelRuffiniOQ09",
-    "lineCount": 448,
-    "axiomCount": 3,
-    "theoremCount": 20,
-    "definitionCount": 2,
+    "lineCount": 540,
+    "axiomCount": 2,
+    "theoremCount": 21,
+    "definitionCount": 3,
     "path": "Proofs/AbelRuffiniOQ09.lean",
     "sorries": 0
   },
