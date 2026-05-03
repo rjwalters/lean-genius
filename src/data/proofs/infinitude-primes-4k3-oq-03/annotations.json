@@ -1,0 +1,30 @@
+[
+  {
+    "id": "oq-answer",
+    "range": { "startLine": 1, "endLine": 52 },
+    "title": "Answering OQ-03: Elementary ≡ 1 (mod 4) Proof",
+    "body": "**Open question from infinitude-primes-4k3**: Can the Euclid-style argument for primes ≡ 3 (mod 4) be adapted to prove infinitely many primes ≡ 1 (mod 4)?\n\n**Answer: Yes**, but with a different construction. The ≡ 3 proof uses N = 4(n+1)! − 1 (which is ≡ 3 mod 4 and forces a prime factor ≡ 3 mod 4 by a product argument). For ≡ 1, we use N = (2(n+1)!)² + 1 — any odd prime p dividing this satisfies p² ≡ −1 (mod p), so −1 is a quadratic residue mod p, which by Euler's criterion forces p ≡ 1 (mod 4).\n\nThe ≡ 1 case requires deeper arithmetic: Euler's criterion, not just closure under multiplication.",
+    "type": "overview"
+  },
+  {
+    "id": "comparison-table",
+    "range": { "startLine": 32, "endLine": 44 },
+    "title": "The Two Constructions Compared",
+    "body": "The module comment shows both proofs side-by-side:\n\n| | Primes ≡ 3 (mod 4) | Primes ≡ 1 (mod 4) |\n|-|---------------------|---------------------|\n| Construction | 4(n+1)! − 1 | (2(n+1)!)² + 1 |\n| Key insight | Product of 1 mod 4 stays 1 mod 4 | Primes dividing k²+1 are ≡ 1 mod 4 |\n| Difficulty | Elementary multiplication | Euler's criterion |\n\nBoth constructions ensure the candidate N has a prime factor with the target residue AND is larger than n (because any factor ≤ n would divide (n+1)! and hence divide N ∓ 1 = ±1, contradiction).",
+    "type": "technique"
+  },
+  {
+    "id": "main-theorem",
+    "range": { "startLine": 60, "endLine": 72 },
+    "title": "infinitely_many_primes_1_mod_4 — The OQ Answer",
+    "body": "```lean\ntheorem infinitely_many_primes_1_mod_4 :\n    ∀ n : ℕ, ∃ p : ℕ, Nat.Prime p ∧ p > n ∧ p % 4 = 1 :=\n  InfinitudePrimes4k1.infinitely_many_primes_1_mod_4\n```\n\nThis delegates directly to the proof in `InfinitudePrimes4k1.lean`. The proof is fully verified: 0 sorries, 0 axioms. The key steps are:\n1. Take N = (2·(n+1)!)² + 1\n2. N is odd and > 1, so has an odd prime factor p\n3. By `prime_dvd_sq_add_one_mod_four`: p ≡ 1 (mod 4)\n4. If p ≤ n then p | (n+1)!, so p | N − 1 = (2(n+1)!)², forcing p | 1 — contradiction\n\nThe `prime_dvd_sq_add_one_mod_four` lemma uses `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one` from Mathlib's SumTwoSquares module, which encodes Euler's criterion.",
+    "type": "proof-step"
+  },
+  {
+    "id": "classification-theorem",
+    "range": { "startLine": 74, "endLine": 100 },
+    "title": "Complete mod-4 Classification of Primes",
+    "body": "```lean\ntheorem both_classes_infinite :\n    Set.Infinite {p : ℕ | Nat.Prime p ∧ p % 4 = 1} ∧\n    Set.Infinite {p : ℕ | Nat.Prime p ∧ p % 4 = 3}\n\ntheorem odd_prime_mod_four_classification :\n    p % 4 = 1 ∨ p % 4 = 3  -- for any odd prime p\n```\n\n**The complete picture**: Every prime is either 2 (even) or odd. Every odd prime $p$ has $p \\bmod 4 \\in \\{0,1,2,3\\}$; since $p$ is odd, $p \\bmod 4 \\in \\{1,3\\}$. Both cases occur infinitely often.\n\nThis is the best possible elementary result for mod-4 residues: Dirichlet's theorem in full generality (for all moduli) requires analytic machinery, but the mod-4 case is completely accessible by elementary means.",
+    "type": "insight"
+  }
+]
