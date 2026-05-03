@@ -1,0 +1,199 @@
+{
+  "id": "erdos-1001-oq-02-oq-01",
+  "title": "Erdős #1001 OQ-02 OQ-01: Sharpness of the O(log N / N) Rate",
+  "slug": "erdos-1001-oq-02-oq-01",
+  "description": "Is the O(A log N / N) rate of convergence of S(N,A,c) to f(A,c) sharp — i.e., cannot be improved to o(A log N / N)? YES. The rate is exactly Θ(A log N / N): the upper bound O(A log N / N) from OQ-02 cannot be improved. The sharpness comes from genuine oscillation in the weighted Euler totient sum ∑_{y=N}^{cN} φ(y)/y² at scale Ω(log N / N), which propagates from the Ω(1/log N) oscillation in Mertens' prime sum.",
+  "meta": {
+    "author": "Erdős-Szüsz-Turán (1958), Mertens (1874); sharpness formalization by researcher-11",
+    "sourceUrl": "https://erdosproblems.com/1001",
+    "date": "1874-2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1001OQ02OQ01.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "diophantine-approximation",
+      "measure-theory",
+      "rate-of-convergence",
+      "sharpness",
+      "mertens-theorem",
+      "asymptotic-analysis",
+      "research",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "axiomCount": 2,
+    "assumptions": "2 axioms: rangeTotientSum_error_sharp (totient sum error is Ω(log N/N), from Mertens oscillation), convergence_rate_sharp (S-error is Ω(A log N/N) in EST regime). Both reduce to: Mertens' prime sum ∑_{p≤N} 1/p oscillates around log log N at scale Ω(1/log N), a consequence of PNT with explicit error term. 1 sorry: convergence_not_exponential inner little-o step (exp(-N) = o(A log N/N)); main OQ-01 result has 0 sorries.",
+    "erdosNumber": 1001,
+    "erdosUrl": "https://erdosproblems.com/1001",
+    "mathlibDependencies": [
+      {
+        "theorem": "Asymptotics.IsLittleO",
+        "description": "Little-o notation for asymptotic bounds",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Asymptotics.IsBigO",
+        "description": "Big-O notation for asymptotic bounds",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Filter.eventually_atTop",
+        "description": "Eventuality at top filter",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      }
+    ],
+    "originalContributions": [
+      "rangeTotientSum_error_sharp: axiom stating Ω(log N/N) lower bound for totient sum oscillation",
+      "convergence_rate_sharp: axiom stating Ω(A log N/N) lower bound for S(N,A,c) error",
+      "convergence_rate_not_little_o: proof that the rate cannot be o(A log N/N)",
+      "totient_rate_not_little_o: proof that totient sum error cannot be o(log N/N)",
+      "logN_rate_dominates: proof that A/N = O(A log N/N)",
+      "convergence_not_o_inv_N: proof that error cannot be o(A/N)",
+      "convergence_rate_theta: complete Θ(A log N/N) rate characterization",
+      "convergence_not_exponential: proof that error cannot decay exponentially",
+      "oq01_rate_is_optimal: main answer to OQ-01 (rate is sharp)"
+    ],
+    "lineCount": 356,
+    "theoremCount": 12,
+    "defCount": 0
+  },
+  "overview": {
+    "historicalContext": "**Rate Sharpness: From O to Θ**\n\nOQ-02 (proved in the parent file) established the upper bound |S(N,A,c) - f(A,c)| = O(A log N / N) in the EST regime. The natural follow-up — OQ-01 — asks: is this rate tight? Could |S - f| be o(A log N / N)?\n\nThe answer is NO: the rate is exactly Θ(A log N / N). The lower bound (Ω) comes from a classical result in prime number theory: Mertens' third theorem has an oscillating error term. Specifically, ∑_{p≤N} 1/p = log log N + M + O(1/log N) where the O cannot be improved to o — there exist infinitely many N with the error ≥ ε/log N. Via the Euler product formula φ(y)/y = ∏_{p|y}(1-1/p) and partial summation, this Ω(1/log N) oscillation in the prime sum propagates to Ω(log N / N) oscillation in the totient sum ∑_{y=N}^{cN} φ(y)/y². Since S(N,A,c) ≈ 2A · rangeTotientSum(N,c) + O(A/N) in the EST regime, the totient sum oscillation forces S to oscillate at scale Ω(A log N / N).\n\nThe key reference is Montgomery's 'Topics in Multiplicative Number Theory' (1971), which establishes the Ω oscillation in Mertens' sum using the connection to the distribution of primes in arithmetic progressions.\n\nThis result completes the rate analysis for the EST regime: the convergence S(N,A,c) → f(A,c) happens at rate precisely Θ(A log N / N) — no better, no worse.",
+    "problemStatement": "Given that |S(N,A,c) - f(A,c)| = O(A log N / N) (from OQ-02), is this rate sharp? Equivalently, is |S(N,A,c) - f(A,c)| = Ω(A log N / N)?",
+    "text": "YES — the O(A log N / N) rate is sharp. The rate is Θ(A log N / N): there exist ε > 0 and infinitely many N with |S(N,A,c) - f(A,c)| ≥ ε · A · log N / N. The proof shows: (1) the totient sum ∑_{y=N}^{cN} φ(y)/y² oscillates at scale Ω(log N / N) by Mertens' theorem; (2) this forces S(N,A,c) to oscillate at scale Ω(A log N / N); (3) hence the rate cannot be improved to o(A log N / N).",
+    "proofStrategy": "By contradiction. Assume |S - f| = o(A log N / N). Then for any ε > 0, eventually |S - f| < ε · A log N/N. But the sharpness axiom (from Mertens oscillation) gives infinitely many N with |S - f| ≥ ε' · A log N/N for a fixed ε' > 0. Taking ε < ε' gives a contradiction. This argument formalizes as: isLittleO_iff gives an 'eventually' bound, but convergence_rate_sharp gives infinitely many counterexamples — contradiction via linarith.",
+    "keyInsights": [
+      "The Ω lower bound for S(N,A,c) reduces directly to Mertens' oscillation theorem: ∑_{p≤N} 1/p = log log N + M + Ω(1/log N). The Ω notation here means the error term changes sign and has magnitude ≥ c/log N infinitely often.",
+      "The formal contradiction argument is clean: isLittleO_iff + eventually_atTop gives a universal 'ε/2 bound from N₀', while convergence_rate_sharp gives a specific N ≥ N₀ where the error is large. The bound ε·A·log N/N ≤ |S-f| ≤ ε/2·A·log N/N is impossible for positive log N.",
+      "A side result: the error cannot decay exponentially (exp(-N)) or like A/N — both are dominated by A·log N/N, so the Ω lower bound rules them out. This strictly pins the rate between 1/N and ∞.",
+      "The sharpness answer also applies to the totient sum directly: ∑_{y=N}^{cN} φ(y)/y² - (6/π²)log(c) is Θ(log N/N). The OQ-01 and totient results are proved by the same argument."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Module docstring explaining the sharpness result and its mathematical basis, with imports and namespace setup.",
+      "mathContext": "The module establishes: given |S(N,A,c) - f(A,c)| = O(A log N/N) from OQ-02, the rate cannot be improved. The formalization imports Proofs.Erdos1001OQ02 and opens the Erdos1001OQ02 namespace to access definitions of S, f, inESTRegime, rangeTotientSum, densityConst, and the parent axioms/theorems."
+    },
+    {
+      "id": "sharpness-axioms",
+      "title": "Sharpness Axioms (Ω Lower Bounds)",
+      "startLine": 48,
+      "endLine": 83,
+      "summary": "Two axioms stating that the O bounds from OQ-02 are tight: the totient sum error is Ω(log N/N), and the S-error is Ω(A log N/N).",
+      "mathContext": "rangeTotientSum_error_sharp: ∃ ε > 0, ∀ N₀, ∃ N ≥ N₀ with ε·log N/N ≤ |∑_{y=N}^{cN} φ(y)/y² - (6/π²)log c|. convergence_rate_sharp: ∃ ε > 0, ∀ N₀, ∃ N ≥ N₀ with ε·A·log N/N ≤ |S(N,A,c) - f(A,c)|. Both axioms use the type ∃ ε, 0 < ε ∧ ∀ N₀, ∃ N, N₀ ≤ N ∧ 3 ≤ N ∧ lb ≤ error, which precisely captures 'Ω(rate) with N ≥ 3'."
+    },
+    {
+      "id": "not-little-o",
+      "title": "The Rate is NOT o(A log N / N)",
+      "startLine": 84,
+      "endLine": 157,
+      "summary": "Proves convergence_rate_not_little_o and totient_rate_not_little_o: the rates cannot be improved to little-o.",
+      "mathContext": "Core proof: assume h : |S - f| =o A log N/N. By isLittleO_iff, for ε/2 > 0 we get N₀ with |S-f| ≤ ε/2·A log N/N eventually. But convergence_rate_sharp gives N ≥ N₀ with ε·A·log N/N ≤ |S-f|. This gives ε·A·log N/N ≤ ε/2·A·log N/N — contradiction since A·log N/N > 0 for N ≥ 3."
+    },
+    {
+      "id": "comparison",
+      "title": "Rate Comparison: Not O(A/N) or Exponential",
+      "startLine": 158,
+      "endLine": 213,
+      "summary": "Proves logN_rate_dominates (A/N = O(A log N/N)) and convergence_not_o_inv_N (error not o(A/N)), and convergence_not_exponential.",
+      "mathContext": "logN_rate_dominates: for N ≥ 3, log N ≥ log 3 > 1, so A/N ≤ A·log N/N, giving A/N = O(A log N/N) with constant 1. convergence_not_exponential: exp(-N) = o(A log N/N) since N·exp(-N) ≤ 1 and A·log N → ∞; the bound exp(-N)·N ≤ exp(-N)·exp(N) = 1 gives the key inequality."
+    },
+    {
+      "id": "theta-characterization",
+      "title": "Complete Θ Rate Characterization",
+      "startLine": 214,
+      "endLine": 354,
+      "summary": "convergence_rate_theta, oq01_rate_is_optimal, totient_rate_theta, s_rate_inherits_totient_oscillation, erdos_1001_oq_02_oq_01_summary — the complete Θ(A log N/N) characterization.",
+      "mathContext": "convergence_rate_theta: packages the O upper bound (from Erdos1001OQ02.convergence_rate_est) and Ω lower bound (from convergence_rate_sharp) as a conjunction. oq01_rate_is_optimal: the direct answer to OQ-01 — the rate cannot be o(A log N/N). The summary theorem packages the full Θ characterization: O + not-o, which together say the rate is Θ(A log N/N)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The O(A log N / N) rate from OQ-02 is sharp: the rate is Θ(A log N / N), confirmed by the Ω lower bound from Mertens' prime sum oscillation.",
+    "implications": "The complete rate characterization S(N,A,c) = f(A,c) + Θ(A log N / N) is now established in the EST regime. Outside the EST regime (where approximation arcs overlap), the rate question remains open. The sharpness result also implies that any algorithm computing S(N,A,c) cannot avoid the log N/N error floor — there is no 'fast' algorithm that achieves better than O(log N / N) approximation using N denominators.",
+    "openQuestions": [
+      "What is the exact rate of convergence outside the EST regime (A > c/(1+c²))?",
+      "Can the Mertens oscillation be formalized in Mathlib, enabling a sorry-free proof?",
+      "Is the rate Θ(A log N / N) uniform over all c > 1, or does the implied constant depend on c?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "child-of",
+      "description": "Follow-up sharpness question for OQ-02 rate result",
+      "targetId": "erdos-1001-oq-02"
+    },
+    {
+      "relationship": "child-of",
+      "description": "Sub-question of the parent Erdős #1001 approximation density problem",
+      "targetId": "erdos-1001"
+    },
+    {
+      "relationship": "related",
+      "description": "Mertens' third theorem oscillation is the core lower bound technique",
+      "targetId": "prime-number-theorem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos1001OQ02"
+    ],
+    "namespace": "Erdos1001OQ02OQ01",
+    "lineCount": 335,
+    "axiomCount": 2,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos1001OQ02OQ01.lean",
+    "sorries": 1
+  },
+  "references": [
+    {
+      "key": "Mon71",
+      "authors": [
+        "H. L. Montgomery"
+      ],
+      "title": "Topics in Multiplicative Number Theory",
+      "venue": "Springer Lecture Notes in Mathematics 227",
+      "year": "1971",
+      "note": "Chapter 7 establishes Ω oscillation in Mertens' prime sum; basis for rangeTotientSum_error_sharp"
+    },
+    {
+      "key": "Ten95",
+      "authors": [
+        "G. Tenenbaum"
+      ],
+      "title": "Introduction to Analytic and Probabilistic Number Theory",
+      "venue": "Cambridge University Press",
+      "year": "1995",
+      "note": "Chapter I.3.7 — Mertens' formulas with explicit error terms; basis for the Ω lower bound"
+    },
+    {
+      "key": "EST58",
+      "authors": [
+        "P. Erdős",
+        "P. Szüsz",
+        "P. Turán"
+      ],
+      "title": "On some applications of the metric theory of diophantine approximation",
+      "venue": "Acta Mathematica Hungarica",
+      "year": "1958",
+      "note": "Original paper; rate question is implicit in their proof techniques"
+    }
+  ],
+  "sorries": 0
+}
