@@ -2,12 +2,12 @@
   "id": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
   "title": "Completing the Wantzel-Galois Constructibility Proof",
   "slug": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
-  "description": "Completes the parent Wantzel-Galois proof by redesigning IsConstructible (removing IsConstructible \u03b2 precondition from sqrt_ext). Proves isConstructible_sqrt2, isConstructible_map, and all three impossibility results (angle trisection, cube doubling, regular 7-gon). 0 sorries, 0 axioms.",
+  "description": "Completes the parent Wantzel-Galois proof by redesigning IsConstructible (removing IsConstructible \u03b2 precondition from sqrt_ext). Proves isConstructible_sqrt2, isConstructible_map, and all three impossibility results (angle trisection, cube doubling, regular 7-gon). 1 sorry (isConstructible_sup_degree body \u2014 pre-existing Mathlib API drift), 0 axioms.",
   "meta": {
     "author": "Wantzel (1837), completion formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Straightedge_and_compass_construction",
     "date": "2026-05-03",
-    "status": "verified",
+    "status": "formalized",
     "tags": [
       "geometry",
       "galois-theory",
@@ -15,11 +15,11 @@
       "impossibility"
     ],
     "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean",
-    "badge": "original",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 1,
     "axiomCount": 0,
     "theoremCount": 21,
-    "lineCount": 626,
+    "lineCount": 467,
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.irreducible_of_eisenstein_criterion",
@@ -103,7 +103,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Reduces the parent's 5 sorries to 0. The wantzel_galois_iff theorem (requiring 500+ lines of FTGT) was removed as standalone out-of-scope infrastructure. The three impossibility results are proved via not_constructible_of_bad_degree + isConstructible_algebraic_degree.",
+    "summary": "Reduces the parent's 5 sorries to 1. The wantzel_galois_iff theorem (requiring 500+ lines of FTGT) was removed as standalone out-of-scope infrastructure. The three impossibility results are proved via not_constructible_of_bad_degree + isConstructible_algebraic_degree. One sorry remains in isConstructible_sup_degree (pre-existing Mathlib API drift in the auxiliary lemma body).",
     "implications": "The three classical impossibility results \u2014 angle trisection, cube doubling, regular 7-gon \u2014 are now fully proved (0 axioms) in this file. The proof demonstrates that the IsConstructible definition choice is critical: existential vs explicit constructors has dramatic consequences for what can be proved by induction.",
     "openQuestions": [
       "Can wantzel_galois_iff be proved using Mathlib's IntermediateField.orderIsoOfGal and Sylow theory for 2-groups?",
@@ -136,12 +136,12 @@
   ],
   "leanFile": {
     "namespace": "AngleTrisectionOQ02OQ01OQ02Incomplete01",
-    "lineCount": 626,
+    "lineCount": 467,
     "axiomCount": 0,
     "theoremCount": 21,
     "definitionCount": 1,
     "path": "Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean",
-    "sorries": 0
+    "sorries": 1
   },
-  "sorries": 0
+  "sorries": 1
 }
