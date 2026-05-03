@@ -15,9 +15,6 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-// Import the Lean source file
-const leanSource = () => import('../../../../proofs/Proofs/GodelFirstIncompletenessOQ01OQ04.lean?raw')
-
 export const proof: Proof = {
   id: meta.id,
   title: meta.title,
