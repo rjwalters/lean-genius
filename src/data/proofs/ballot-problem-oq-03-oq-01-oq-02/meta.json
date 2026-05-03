@@ -2,7 +2,7 @@
   "id": "ballot-problem-oq-03-oq-01-oq-02",
   "title": "Hook-Length Formula for Standard Young Tableaux via LGV",
   "slug": "ballot-problem-oq-03-oq-01-oq-02",
-  "description": "Formalizes the hook-length formula f^λ = n!/∏h(u) for Standard Young Tableaux. Proves: 1-row, 1-col, hook shapes, 2-rect, general 2-row, all gHookYD [a,1^b], ≤2-col (transpose duality), exactly 3-row ALL [a,b,c] shapes, exactly 4-row ALL [a,b,c,d] shapes (PART XVIII), exactly 5-row ALL [a,b,c,d,e] shapes (PART XIX), exactly 6-row ALL [a,b,c,d,e,f] shapes (PART XX), exactly 7-row ALL [a,b,c,d,e,f,g] shapes (PART XXI), exactly 8-row ALL [a,b,c,d,e,f,g,h] shapes (PART XXII), exactly 9-row ALL [a,b,c,d,e,f,g,h,i] shapes (PART XXIII). General formula has 5 remaining sorries in GNW infrastructure: gnwProb_key (GNW 1979 probabilistic identity, hard), gnwProb_sum_corners (standard induction), and three TRIVIAL strictHookCells_* lemmas. The 2 previously-stated LGV sorries were dead scaffolding and have been removed; hookProd_ratio_formula is now sorry-free.",
+  "description": "Formalizes the hook-length formula f^λ = n!/∏h(u) for Standard Young Tableaux. Proves: 1-row, 1-col, hook shapes, 2-rect, general 2-row, all gHookYD [a,1^b], ≤2-col (transpose duality), exactly 3-row ALL [a,b,c] shapes, exactly 4-row ALL [a,b,c,d] shapes (PART XVIII), exactly 5-row ALL [a,b,c,d,e] shapes (PART XIX), exactly 6-row ALL [a,b,c,d,e,f] shapes (PART XX), exactly 7-row ALL [a,b,c,d,e,f,g] shapes (PART XXI), exactly 8-row ALL [a,b,c,d,e,f,g,h] shapes (PART XXII), exactly 9-row ALL [a,b,c,d,e,f,g,h,i] shapes (PART XXIII). General formula has 1 remaining sorry in GNW infrastructure: gnwProb_key (GNW 1979 probabilistic identity for ≥10-row, ≥10-col, non-rectangular shapes — hard combinatorial identity). The three strictHookCells_* lemmas and gnwProb_sum_corners were proved in PR #14960 (4 sorries → 1). The 2 previously-stated LGV sorries were dead scaffolding and have been removed; hookProd_ratio_formula is now sorry-free.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-21",
@@ -22,11 +22,11 @@
       "representation-theory"
     ],
     "badge": "wip",
-    "sorries": 5,
+    "sorries": 1,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "5 open sorries in GNW infrastructure (BallotProblemOQ03OQ01OQ02Helpers.lean): (1) gnwProb_key — the GNW 1979 probabilistic identity for ≥10-row, ≥10-col, non-rectangular shapes (hard); (2) gnwProb_sum_corners — standard induction step (hard); (3-5) strictHookCells_card, strictHookCells_nonempty, strictHookCells_hookLen_lt — TRIVIAL (disjointness/cardinality/inequality lemmas, omega-provable). hook_walk_identity_gnw (the dispatcher in the gallery face) calls these and is otherwise complete. hookProd_ratio_formula is now sorry-free. Proved cases: at-most-2-row, gHookYD, ≤2-col, exactly 3-row through 9-row, ≤9-col (transpose duality), all rectangles.",
-    "lineCount": 14148,
+    "assumptions": "1 open sorry in GNW infrastructure (BallotProblemOQ03OQ01OQ02Helpers.lean): gnwProb_key — the GNW 1979 probabilistic identity for ≥10-row, ≥10-col, non-rectangular shapes (hard combinatorial identity). The supporting lemmas gnwProb_sum_corners, strictHookCells_card, strictHookCells_nonempty, and strictHookCells_hookLen_lt were proved in PR #14960. hook_walk_identity_gnw (the dispatcher in the gallery face) calls gnwProb_key and is otherwise complete. hookProd_ratio_formula is sorry-free. Proved cases: at-most-2-row, gHookYD, ≤2-col, exactly 3-row through 9-row, ≤9-col (transpose duality), all rectangles.",
+    "lineCount": 14235,
     "theoremCount": 484,
     "definitionCount": 14,
     "originalContributions": [
@@ -52,9 +52,6 @@
       "hook_walk_identity_gHookYD: hook walk identity Σ_c hookProd/hookProd(μ\\c)=|μ| proved for all [a,1^b] with b≥1, non-circular via hook_length_formula_gHookYD (session 19)",
       "hook_walk_identity_eightRow: hook walk identity proved for ALL exactly-8-row Young diagrams [a,b,c,d,e,f,g,h] via 7 colLen zones, 36 hookLen lemmas, 8 arm product lemmas, field_simp+ring; 1612 lines, 0 sorries (PART XXII)",
       "hook_walk_identity_nineRow: hook walk identity proved for ALL exactly-9-row Young diagrams [a,b,c,d,e,f,g,h,i] via colLen zones, hookLen lemmas, arm product lemmas, field_simp+ring; 0 sorries (PART XXIII)"
-    ],
-    "additionalFiles": [
-      "Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean"
     ]
   },
   "overview": {
@@ -78,7 +75,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Hook-length formula fully proved for five infinite families: 1×n (direct), n×1 (direct), hook-shape (m+1,1) (bijection), 2×m rect (Lindstrom reflection), and general 2-row [a,b]. hookProd for [a,b] = (a+1).descFactorial(b) × (a-b)! × b! proved with 0 sorries. hookProd_ratio_formula is sorry-free. Part XIV proves hook_length_formula_general via corner induction; hook_walk_identity_gnw dispatcher is complete. 5 open sorries remain in GNW infrastructure: gnwProb_key (hard), gnwProb_sum_corners (hard), and three TRIVIAL strictHookCells_* lemmas.",
+    "summary": "Hook-length formula fully proved for five infinite families: 1×n (direct), n×1 (direct), hook-shape (m+1,1) (bijection), 2×m rect (Lindstrom reflection), and general 2-row [a,b]. hookProd for [a,b] = (a+1).descFactorial(b) × (a-b)! × b! proved with 0 sorries. hookProd_ratio_formula is sorry-free. Part XIV proves hook_length_formula_general via corner induction; hook_walk_identity_gnw dispatcher is complete. 1 open sorry remains: gnwProb_key (GNW 1979 probabilistic identity, hard). The supporting strictHookCells_* lemmas and gnwProb_sum_corners were proved in PR #14960.",
     "implications": "A complete formalization would be the first Lean 4 proof of the hook-length formula, a milestone in formal combinatorics. The LGV approach connects our existing ballot problem proofs to representation theory via the Specht module dimension formula f^λ = dim S^λ.",
     "openQuestions": [
       "Formalize the SYT ↔ NI bijection via Fomin's growth diagrams or the RSK correspondence (~200 lines)",
@@ -97,9 +94,9 @@
       "LGV"
     ],
     "namespace": "HookLengthFormula",
-    "lineCount": 13749,
+    "lineCount": 13837,
     "axiomCount": 0,
-    "sorries": 5,
+    "sorries": 1,
     "path": "Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean",
     "theoremCount": 482,
     "definitionCount": 22
