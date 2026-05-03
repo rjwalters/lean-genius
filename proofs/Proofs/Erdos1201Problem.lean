@@ -1,0 +1,266 @@
+/-
+# Erdős Problem #1201: Greatest Prime Factor of Consecutive Products
+
+Let P(m) denote the greatest prime divisor of m (with P(1) = 0 by convention).
+Let P(n, k) = P(n(n+1)···(n+k)) be the greatest prime factor of k+1 consecutive
+integers starting at n.
+
+**Main Conjecture**: For every ε, η > 0 there exists k such that the upper density
+of {n : P(n, k) > n^(1-ε)} is at least 1 - η.
+
+**Partial Result** (Erdős): The conjecture holds for ε = 1/2.
+
+*Reference*: [erdosproblems.com/1201](https://erdosproblems.com/1201)
+-/
+
+import Mathlib.Data.Nat.Factors
+import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Real.Basic
+import Mathlib.Tactic
+
+namespace Erdos1201
+
+/-
+## Greatest Prime Factor
+-/
+
+/-- The greatest prime divisor of n. Returns 0 for n = 0 or n = 1 (no prime factors). -/
+noncomputable def greatestPrimeFactor (n : ℕ) : ℕ :=
+  if h : n.primeFactors.Nonempty then n.primeFactors.max' h else 0
+
+/-- The product of k+1 consecutive integers starting at n: n(n+1)···(n+k). -/
+def consecutiveProduct (n k : ℕ) : ℕ :=
+  (Finset.range (k + 1)).prod (fun i => n + i)
+
+/-- The greatest prime factor of the consecutive product P(n, k). -/
+noncomputable def gpfConsecutive (n k : ℕ) : ℕ :=
+  greatestPrimeFactor (consecutiveProduct n k)
+
+/-
+## Upper Density
+-/
+
+/-- Upper density of a set S ⊆ ℕ: lim sup of |S ∩ [1,N]| / N. -/
+noncomputable def upperDensity (S : Set ℕ) : ℝ :=
+  Filter.limsup (fun N : ℕ =>
+    ((Finset.Icc 1 N).filter (fun n => n ∈ S)).card / (N : ℝ))
+  Filter.atTop
+
+/-
+## Main Conjecture (Open)
+-/
+
+/-- **Erdős Problem 1201**: For every ε ∈ (0,1) and η > 0, there exists k such that
+    the upper density of {n | P(n,k) > n^(1-ε)} is at least 1 - η. -/
+def ErdosProblem1201 : Prop :=
+  ∀ (ε η : ℝ) (hε₀ : 0 < ε) (hε₁ : ε < 1) (hη : 0 < η),
+  ∃ k : ℕ,
+    upperDensity {n : ℕ | (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ)} ≥ 1 - η
+
+/-
+## Partial Result (Erdős, ε = 1/2)
+-/
+
+/-- **Erdős (partial)**: The conjecture holds for ε = 1/2.
+    For every η > 0, there exists k such that the upper density of
+    {n | P(n,k) > √n} is at least 1 - η. -/
+axiom erdos_1201_half_case (η : ℝ) (hη : 0 < η) :
+    ∃ k : ℕ,
+      upperDensity {n : ℕ | Real.sqrt n < (gpfConsecutive n k : ℝ)} ≥ 1 - η
+
+/-
+## Basic Properties of Greatest Prime Factor
+-/
+
+/-- For n ≥ 2, greatestPrimeFactor n is prime. -/
+theorem gpf_prime (n : ℕ) (hn : 2 ≤ n) : (greatestPrimeFactor n).Prime := by
+  unfold greatestPrimeFactor
+  have h : n.primeFactors.Nonempty := Nat.primeFactors_nonempty.mpr (by omega)
+  rw [dif_pos h]
+  exact Nat.prime_of_mem_primeFactors (Finset.max'_mem _ h)
+
+/-- greatestPrimeFactor n ∈ n.primeFactors when n ≥ 2. -/
+theorem gpf_mem_primeFactors (n : ℕ) (hn : 2 ≤ n) :
+    greatestPrimeFactor n ∈ n.primeFactors := by
+  unfold greatestPrimeFactor
+  have h : n.primeFactors.Nonempty := Nat.primeFactors_nonempty.mpr (by omega)
+  rw [dif_pos h]
+  exact Finset.max'_mem _ h
+
+/-- greatestPrimeFactor n divides n when n ≥ 2. -/
+theorem gpf_dvd (n : ℕ) (hn : 2 ≤ n) : greatestPrimeFactor n ∣ n := by
+  have h := gpf_mem_primeFactors n hn
+  exact (Nat.mem_primeFactors.mp h).2.1
+
+/-- greatestPrimeFactor n ≤ n when n ≥ 2. -/
+theorem gpf_le (n : ℕ) (hn : 2 ≤ n) : greatestPrimeFactor n ≤ n :=
+  Nat.le_of_dvd (by omega) (gpf_dvd n hn)
+
+/-- greatestPrimeFactor n ≥ 2 when n ≥ 2. -/
+theorem gpf_ge_two (n : ℕ) (hn : 2 ≤ n) : 2 ≤ greatestPrimeFactor n :=
+  (gpf_prime n hn).two_le
+
+/-- Any prime factor of n is ≤ greatestPrimeFactor n. -/
+theorem gpf_max (n p : ℕ) (hp : p ∈ n.primeFactors) : p ≤ greatestPrimeFactor n := by
+  unfold greatestPrimeFactor
+  have h : n.primeFactors.Nonempty := ⟨p, hp⟩
+  rw [dif_pos h]
+  exact Finset.le_max' _ _ hp
+
+/-- If p is prime and p ∣ n then p ≤ greatestPrimeFactor n. -/
+theorem gpf_ge_prime_dvd (n p : ℕ) (hn : 2 ≤ n) (hp : p.Prime) (hpn : p ∣ n) :
+    p ≤ greatestPrimeFactor n :=
+  gpf_max n p (Nat.mem_primeFactors.mpr ⟨hp, hpn, by omega⟩)
+
+/-
+## Basic Properties of Consecutive Products
+-/
+
+/-- consecutiveProduct n 0 = n. -/
+theorem consecutiveProduct_zero (n : ℕ) : consecutiveProduct n 0 = n := by
+  simp [consecutiveProduct]
+
+/-- consecutiveProduct n k is positive when n ≥ 1. -/
+theorem consecutiveProduct_pos (n k : ℕ) (hn : 1 ≤ n) : 0 < consecutiveProduct n k := by
+  apply Finset.prod_pos
+  intro i _
+  omega
+
+/-- n divides consecutiveProduct n k. -/
+theorem dvd_consecutiveProduct_left (n k : ℕ) : n ∣ consecutiveProduct n k := by
+  apply Finset.dvd_prod_of_mem
+  simp [Finset.mem_range]
+
+/-- (n+k) divides consecutiveProduct n k. -/
+theorem dvd_consecutiveProduct_right (n k : ℕ) : n + k ∣ consecutiveProduct n k := by
+  apply Finset.dvd_prod_of_mem
+  simp [consecutiveProduct, Finset.mem_range]
+
+/-- consecutiveProduct n k = n * consecutiveProduct (n+1) (k-1) for k ≥ 1. -/
+theorem consecutiveProduct_succ (n k : ℕ) :
+    consecutiveProduct n (k + 1) = n * consecutiveProduct (n + 1) k := by
+  unfold consecutiveProduct
+  rw [Finset.range_succ', Finset.prod_insert (by simp)]
+  congr 1
+  apply Finset.prod_congr rfl
+  intro i _
+  ring
+
+/-
+## Monotonicity of gpfConsecutive in k
+-/
+
+/-- If p divides consecutiveProduct n k, it divides consecutiveProduct n (k+1). -/
+theorem dvd_consecutiveProduct_of_dvd_lt (n k : ℕ) (p : ℕ) (hp : p ∣ consecutiveProduct n k) :
+    p ∣ consecutiveProduct n (k + 1) := by
+  unfold consecutiveProduct at *
+  apply Dvd.dvd.trans hp
+  apply Finset.prod_dvd_prod_of_subset
+  simp [Finset.range_subset]
+
+/-- gpfConsecutive is monotone in k: increasing k can only increase or maintain the gpf. -/
+theorem gpfConsecutive_mono (n k : ℕ) (hn : 2 ≤ n) :
+    gpfConsecutive n k ≤ gpfConsecutive n (k + 1) := by
+  unfold gpfConsecutive greatestPrimeFactor
+  have h1 : (consecutiveProduct n k).primeFactors.Nonempty := by
+    apply Nat.primeFactors_nonempty.mpr
+    have := consecutiveProduct_pos n k (by omega)
+    omega
+  rw [dif_pos h1]
+  have h2 : (consecutiveProduct n (k + 1)).primeFactors.Nonempty := by
+    apply Nat.primeFactors_nonempty.mpr
+    have := consecutiveProduct_pos n (k + 1) (by omega)
+    omega
+  rw [dif_pos h2]
+  apply Finset.max'_le _ _ _ h2
+  intro p hp
+  apply Finset.le_max'
+  -- p ∈ (consecutiveProduct n (k+1)).primeFactors
+  -- from p ∈ (consecutiveProduct n k).primeFactors
+  rw [Nat.mem_primeFactors] at hp ⊢
+  obtain ⟨hpp, hpdvd, hne⟩ := hp
+  refine ⟨hpp, ?_, by
+    have := consecutiveProduct_pos n (k + 1) (by omega); omega⟩
+  exact dvd_consecutiveProduct_of_dvd_lt n k p hpdvd
+
+/-
+## Large Prime Factor Criterion
+-/
+
+/-- If there is a prime p ≤ n+k with p ∣ n and p > n^(1-ε), then gpfConsecutive n k > n^(1-ε). -/
+theorem gpfConsecutive_large_of_prime_dvd (n k : ℕ) (p : ℕ)
+    (hp : p.Prime) (hpk : p ≤ n + k) (hpdvd : ∃ i ≤ k, p ∣ n + i)
+    (hn : 2 ≤ n) (ε : ℝ) (hpε : (n : ℝ) ^ (1 - ε) < p) :
+    (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ) := by
+  obtain ⟨i, hi, hpi⟩ := hpdvd
+  -- p ∈ (consecutiveProduct n k).primeFactors
+  have h_in_cf : p ∈ (consecutiveProduct n k).primeFactors := by
+    rw [Nat.mem_primeFactors]
+    refine ⟨hp, ?_, by
+      have := consecutiveProduct_pos n k (by omega); omega⟩
+    apply dvd_trans hpi
+    apply Finset.dvd_prod_of_mem
+    simp [consecutiveProduct, Finset.mem_range]
+    omega
+  have h_le := gpf_max (consecutiveProduct n k) p h_in_cf
+  calc (n : ℝ) ^ (1 - ε) < (p : ℝ) := hpε
+    _ ≤ (gpfConsecutive n k : ℝ) := by exact_mod_cast h_le
+
+/-
+## Asymptotic Growth
+-/
+
+/-- consecutiveProduct n k ≥ n when n ≥ 1. -/
+theorem consecutiveProduct_ge_n (n k : ℕ) (hn : 1 ≤ n) :
+    n ≤ consecutiveProduct n k := by
+  calc n = consecutiveProduct n 0 := (consecutiveProduct_zero n).symm
+    _ ≤ consecutiveProduct n k := by
+        apply Finset.prod_le_prod_of_subset
+        · exact Finset.range_mono (by omega)
+        · intro i _
+          exact le_refl _
+
+/-- gpfConsecutive n k ≥ 2 when n ≥ 2. -/
+theorem gpfConsecutive_ge_two (n k : ℕ) (hn : 2 ≤ n) : 2 ≤ gpfConsecutive n k := by
+  unfold gpfConsecutive
+  apply gpf_ge_two
+  calc 2 ≤ n := hn
+    _ ≤ consecutiveProduct n k := consecutiveProduct_ge_n n k (by omega)
+
+/-
+## Comparison with ε = 1/2 case
+-/
+
+/-- The ε = 1/2 condition: P(n, k) > √n is equivalent to P(n,k)² > n when P(n,k) ≥ 1. -/
+theorem gpfConsecutive_half_iff (n k : ℕ) (hn : 2 ≤ n) :
+    Real.sqrt n < (gpfConsecutive n k : ℝ) ↔
+    n < (gpfConsecutive n k) ^ 2 := by
+  rw [← Real.sqrt_lt' (by positivity)]
+  simp [Real.sqrt_lt_sqrt_iff (by positivity)]
+
+/-- The ε = 1/2 partial result specializes to: ∀ η > 0, ∃ k, density of
+    {n | gpfConsecutive n k² > n} ≥ 1 - η. -/
+theorem erdos_1201_half_squared (η : ℝ) (hη : 0 < η) :
+    ∃ k : ℕ,
+      upperDensity {n : ℕ | n < (gpfConsecutive n k) ^ 2} ≥ 1 - η := by
+  obtain ⟨k, hk⟩ := erdos_1201_half_case η hη
+  refine ⟨k, ?_⟩
+  have : {n : ℕ | Real.sqrt n < (gpfConsecutive n k : ℝ)} =
+         {n : ℕ | n < (gpfConsecutive n k) ^ 2} := by
+    ext n
+    constructor
+    · intro h
+      have hn2 : 2 ≤ n := by
+        by_contra hlt
+        push_neg at hlt
+        interval_cases n <;> simp [gpfConsecutive, consecutiveProduct, greatestPrimeFactor] at h ⊢
+      rwa [gpfConsecutive_half_iff n k hn2] at h
+    · intro h
+      have hn2 : 2 ≤ n := by
+        by_contra hlt
+        push_neg at hlt
+        interval_cases n <;> simp [gpfConsecutive, consecutiveProduct, greatestPrimeFactor] at h ⊢
+      rwa [← gpfConsecutive_half_iff n k hn2]
+  rwa [this] at hk
+
+end Erdos1201
