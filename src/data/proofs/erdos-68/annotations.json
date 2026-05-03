@@ -321,5 +321,81 @@
       "erdos"
     ],
     "prerequisites": []
+  },
+  {
+    "id": "ann-68-numerical-bounds",
+    "proofId": "erdos-68",
+    "range": {
+      "startLine": 276,
+      "endLine": 404
+    },
+    "type": "technique",
+    "title": "Numerical Bounds: 1.253 < factorialSum < 1.254 via Partial Sums and Geometric Tail",
+    "content": "Lines 276-404 prove the two-sided bound 1253/1000 < factorialSum < 1254/1000 from first principles. `factorialSum_lower_bound` (lines 276-293): peels off 5 terms using `tsum_eq_zero_add` with the shifted summability `(summable_nat_add_iff k).mpr hs`, verifies S₅ > 1253/1000 by `norm_num`, and uses tail non-negativity. `factorialSum_tighter_lower` (lines 295-326): 6-term partial sum giving > 6267/5000, needed for the perturbation computation. Helper lemmas: `summand_le_two_div_factorial` (summand n ≤ 2/(n+2)! since (n+2)!-1 ≥ (n+2)!/2); `factorial_ge_base_mul_pow` (m! ≥ 5040·8^(m-7) for m ≥ 7, by induction); `inv_factorial_le_geometric` (1/(n+7)! ≤ (1/5040)·(1/8)^n). `factorialSum_lt` (lines 365-404): decomposes the sum into a 5-term partial sum plus geometric tail bounded via the factorial growth lemmas, giving the upper bound.",
+    "mathContext": "Lower bound: $S_5 = \\sum_{k=0}^4 s_k > 1.253$ (norm_num), tail $\\geq 0$ by positivity. Upper bound: tail $\\leq \\sum_{n \\geq 0} 2/(n+7)! \\leq (2/5040)\\sum_{n \\geq 0}(1/8)^n < 1/2000$. Combined: $1.253 < \\sum_{n\\geq 0} 1/(n+2)!-1) < 1.254$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tsum_eq_zero_add",
+      "summable_nat_add_iff",
+      "geometric series tail bound",
+      "partial sum verification",
+      "norm_num"
+    ],
+    "prerequisites": [
+      "Summable type in Mathlib",
+      "tsum shifting",
+      "factorial growth estimates"
+    ]
+  },
+  {
+    "id": "ann-68-erelated-perturbation",
+    "proofId": "erdos-68",
+    "range": {
+      "startLine": 405,
+      "endLine": 604
+    },
+    "type": "insight",
+    "title": "Connection to e: eRelatedSum = e - 2 and Perturbation Difference Proved",
+    "content": "Part 7 (lines 405-421) explains the difficulty: proving irrationality of Σ 1/(n!-1) is hard because the -1 perturbation breaks the factorial structure that made Euler's proof of e's irrationality possible. `eRelatedSum` (line 422) defines Σ_{n≥0} 1/(n+2)! = Σ_{k≥2} 1/k!. `eRelatedSum_value` (lines 433-459) proves this equals e-2: uses `Real.exp_eq_exp_ℝ` and `NormedSpace.exp_eq_tsum` to unfold the Taylor series, peels off n=0 and n=1 terms (both = 1). Previously an axiom; now fully proved from Mathlib. Helper lemmas for numerical bounds on eRelatedSum (lines 460-592) mirror the factorialSum analysis. `perturbation_difference` (lines 600-603) proves factorialSum - eRelatedSum ∈ (535/1000, 536/1000) in two lines by `linarith` from the previously proved bounds.",
+    "mathContext": "$\\sum_{n \\geq 2} \\frac{1}{n!} = e - 2$ (Taylor series for $e$). Perturbation $= \\sum_{n\\geq 0}\\left(\\frac{1}{(n+2)!-1} - \\frac{1}{(n+2)!}\\right) = \\sum_{n\\geq 0} \\frac{1}{(n+2)!((n+2)!-1)}$. Proved: $0.535 < \\text{perturbation} < 0.536$, so factorialSum $\\approx (e-2) + 0.5354 \\approx 1.2534$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "eRelatedSum = e - 2",
+      "Real.exp_eq_exp_ℝ",
+      "NormedSpace.exp_eq_tsum",
+      "perturbation difference",
+      "Taylor series for e"
+    ],
+    "prerequisites": [
+      "Real.exp in Mathlib",
+      "summable_pow_div_factorial",
+      "tsum shifting via summable_nat_add_iff"
+    ]
+  },
+  {
+    "id": "ann-68-synthesis-status",
+    "proofId": "erdos-68",
+    "range": {
+      "startLine": 605,
+      "endLine": 680
+    },
+    "type": "context",
+    "title": "Final Synthesis: Combined Bounds, Transcendence Connection, and Open Status",
+    "content": "Part 8 (lines 605-619): `factorialSum_bounds` packages both bounds as a conjunction, confirming factorialSum ≈ 1.25349... (OEIS A331373). Part 9 (lines 620-647): `transcendence_implies_irrationality` proves Transcendental ℚ x → Irrational x in one line via `h.irrational`. `transcendence_implies_68` shows Erdős's stronger transcendence conjecture (for t=-1) implies Problem 68. Part 10 (lines 648-680): `erdos_68_status = \"OPEN\"` is a documentary definition. `erdos_68_statement` proves `ErdosConjecture68 ↔ Irrational factorialSum` by `rfl`. The closing summary recaps: OEIS A331373, Weisenberg's double-sum identity, Erdős's general transcendence conjecture (Σ 1/(n!+t) transcendental for all t ∈ ℤ), and why the -1 perturbation is the key obstacle.",
+    "mathContext": "$1.253 < \\text{factorialSum} < 1.254$ (proved). Erdős's conjecture: $\\sum_{n \\geq 1} \\frac{1}{n! + t}$ is transcendental for every $t \\in \\mathbb{Z}$. Known: $t = 0$ gives $e - 1$ (transcendental, Hermite 1873). Open: $t = -1$ (this problem). `Transcendental ℚ x → Irrational x` via Mathlib's `IsAlgebraic` contrapositive.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "factorialSum_bounds",
+      "OEIS A331373",
+      "transcendence conjecture",
+      "Hermite 1873 for e",
+      "erdos_68_statement"
+    ],
+    "prerequisites": [
+      "Transcendental in Mathlib",
+      "ErdosConjecture68 definition",
+      "factorialSum_lower_bound",
+      "factorialSum_lt"
+    ]
   }
 ]
