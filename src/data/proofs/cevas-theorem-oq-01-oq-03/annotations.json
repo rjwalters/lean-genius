@@ -1,0 +1,40 @@
+{
+  "annotations": [
+    {
+      "id": "ann-1",
+      "type": "technique",
+      "title": "field_simp + ring for rational identities",
+      "body": "The core proof (routh_area_standard) reduces Routh's theorem to a polynomial identity in d, e, f. After clearing the denominators w₁=1-e+de, w₂=1-f+ef, w₃=1-d+fd via field_simp, the resulting polynomial equality is discharged by ring. This is the power of computer-verified algebra.",
+      "location": { "startLine": 52, "endLine": 68 }
+    },
+    {
+      "id": "ann-2",
+      "type": "insight",
+      "title": "Three explicit intersection points",
+      "body": "P₁₂=AD∩BE = ((1-d)(1-e)/w₁, d(1-e)/w₁), P₂₃=BE∩CF = (ef/w₂, (1-e)(1-f)/w₂), P₃₁=CF∩AD = (f(1-d)/w₃, fd/w₃). Each denominator wᵢ is positive on (0,1)², ensuring all intersections are well-defined.",
+      "location": { "startLine": 28, "endLine": 50 }
+    },
+    {
+      "id": "ann-3",
+      "type": "technique",
+      "title": "Affine area scaling",
+      "body": "affine_signedArea proves signedArea(M(P), M(Q), M(R)) = M.det × signedArea(P,Q,R). Combined with stdToTriangle_det (the standard-to-general map's determinant equals the triangle's signed area), this transfers the standard triangle result to all non-degenerate triangles.",
+      "location": { "startLine": 70, "endLine": 90 }
+    },
+    {
+      "id": "ann-4",
+      "type": "result",
+      "title": "Routh's theorem (complete)",
+      "body": "routh_ratio_formula: signedArea(inner)/signedArea(ABC) = routhRatio(d,e,f) for any non-degenerate triangle and any d,e,f ∈ (0,1). The formula (def-(1-d)(1-e)(1-f))²/((1-e+de)(1-f+ef)(1-d+fd)) is always ≥ 0 and equals 0 iff the cevians are concurrent.",
+      "location": { "startLine": 92, "endLine": 112 }
+    },
+    {
+      "id": "ann-5",
+      "type": "insight",
+      "title": "Symmetry: d=e=f=1/3 and d=e=f=2/3 give the same ratio",
+      "body": "routh_two_thirds shows d=e=f=2/3 also gives area ratio 1/7. This reflects the symmetry routhRatio(d,d,d) = routhRatio(1-d,1-d,1-d), which follows because (def-(1-d)³)² is the same as ((1-d)³-def)² when d=e=f.",
+      "location": { "startLine": 140, "endLine": 155 }
+    }
+  ],
+  "source": "annotations.json"
+}
