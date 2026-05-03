@@ -1,1 +1,131 @@
-[]
+[
+  {
+    "id": "ann-gd-overview",
+    "proofId": "godel-first-incompleteness-oq01-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 51
+    },
+    "type": "context",
+    "title": "Diagonal Lemma: The Heart of Gödel's Self-Reference Construction",
+    "content": "**OQ-04** is a companion to OQ-01, providing a more principled axiomatization of Gödel's First Incompleteness Theorem. Both use 5 axioms; the key difference is what's axiomatized vs. derived:\n\n| | OQ-01 | OQ-04 (this file) |\n|--|-------|-------------------|\n| G definition | `G := ⟨42⟩` (fixed code) | `G := (diagonal_lem ...).choose` |\n| G_self_reference | **Axiom** | **Derived** from diagonal_lem |\n| Diagonal Lemma | Not stated | General **Axiom** |\n\nThe docstring (lines 1–50) makes explicit the **three independent components** of the incompleteness proof:\n1. **D1 Representability**: provability is internally representable (a property of Robinson arithmetic Q)\n2. **Diagonal Lemma**: the combinatorial fixed-point construction (arithmetic + substitution function)\n3. **ω-Consistency**: an additional hypothesis that rules out ¬G\n\nThis decomposition is mathematically cleaner: it shows that G's self-reference isn't an ad hoc axiom but follows from a general principle applicable to ANY formula predicate.",
+    "mathContext": "The **Diagonal Lemma** (Carnap 1934, made explicit): for any formula $\\psi(x)$ with one free variable in a sufficiently strong theory $F$, there exists a sentence $\\sigma$ such that $F \\vdash \\sigma \\leftrightarrow \\psi(\\lceil\\sigma\\rceil)$. The metalevel form: $(\\vdash \\sigma) \\leftrightarrow (\\vdash \\psi(\\lceil\\sigma\\rceil))$. The standard construction: let $\\phi(x) = \\psi(\\text{sub}(x,x))$ (diagonalization of $\\psi$), then $\\sigma = \\phi(\\lceil\\phi\\rceil)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gödel's First Incompleteness Theorem (1931)",
+      "Diagonal Lemma (Carnap-Smullyan fixed-point theorem)",
+      "D1 representability condition",
+      "ω-consistency vs simple consistency",
+      "OQ-01 (companion formalization)"
+    ],
+    "prerequisites": [
+      "Mathematical logic: formal systems, provability predicates",
+      "Gödel numbering and arithmetization of metamathematics",
+      "Classical.choose in Lean 4 (for noncomputable choice)",
+      "GodelFirstIncompletenessOQ01.lean (companion file)"
+    ]
+  },
+  {
+    "id": "ann-gd-axioms",
+    "proofId": "godel-first-incompleteness-oq01-oq-04",
+    "range": {
+      "startLine": 52,
+      "endLine": 110
+    },
+    "type": "definition",
+    "title": "Formula Infrastructure and the Three Foundational Axioms",
+    "content": "**Infrastructure** (lines 52–71): The Formula type (a structure wrapping a Nat code) is a minimal model of a formal language — just enough to state Gödel's theorem. Negation maps code $n$ to $n+1$; Prov maps code $n$ to $2n$. This encoding is not important for the proof; what matters is that formulas have Gödel numbers via `godelNum`.\n\n**Axiom 1 — D1 Representability** (line 84): `d1 : ∀ φ, (⊢ φ) → (⊢ Prov (godelNum φ))`. If F proves φ, then F proves the statement 'φ is provable'. This is `Σ₁-completeness` — any provable formula is in the provability predicate's extension.\n\n**Axiom 2 — Diagonal Lemma** (lines 86–100): `diagonal_lem : ∀ ψ : ℕ → Formula, ∃ σ, (⊢ σ) ↔ (⊢ ψ (godelNum σ))`. This is the **meta-level** form: the biconditional is in Lean (the metatheory), not in F. The docstring carefully notes that the **object-level** form ($F \\vdash \\sigma \\leftrightarrow \\psi(\\lceil\\sigma\\rceil)$ as a formula inside F) is stronger and is needed for Axiom 3.",
+    "mathContext": "D1 is a provability condition introduced by Löb (1955). Together with D2 ($\\vdash \\text{Prov}(\\lceil\\phi\\rceil) \\wedge \\text{Prov}(\\lceil\\phi \\to \\psi\\rceil) \\to \\text{Prov}(\\lceil\\psi\\rceil)$) and D3 ($\\vdash \\text{Prov}(\\lceil\\phi\\rceil) \\to \\text{Prov}(\\lceil\\text{Prov}(\\lceil\\phi\\rceil)\\rceil)$), D1 axiomatizes the derivability conditions for Löb's theorem. This file uses only D1; D2 and D3 are not needed for the basic incompleteness argument.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Löb's derivability conditions (D1, D2, D3)",
+      "Σ₁-completeness",
+      "meta-level vs object-level biconditional",
+      "Gödel numbering (godelNum)"
+    ],
+    "prerequisites": [
+      "Lean 4 axiom declarations",
+      "iff (↔) as a Lean proposition",
+      "Structure with Nat field (Formula)",
+      "notation:50 for ⊢ provability"
+    ]
+  },
+  {
+    "id": "ann-gd-construction",
+    "proofId": "godel-first-incompleteness-oq01-oq-04",
+    "range": {
+      "startLine": 103,
+      "endLine": 148
+    },
+    "type": "insight",
+    "title": "Constructing G via Classical.choose — G_spec as a Theorem",
+    "content": "**G is constructed, not assumed** (lines 109–118):\n```lean\nnoncomputable def G : Formula := (diagonal_lem (fun n => ¬ᶠ Prov n)).choose\ntheorem G_spec : (⊢ G) ↔ (⊢ ¬ᶠ Prov (godelNum G)) := (diagonal_lem ...).choose_spec\n```\n\nThe `diagonal_lem` applied to $\\psi(n) = \\neg\\text{Prov}(n)$ gives `∃ σ, (⊢ σ) ↔ (⊢ ¬Prov(⌈σ⌉))`. Lean's `Classical.choose` (`.choose`) extracts the existential witness $\\sigma$, and `.choose_spec` gives the specification that the witness satisfies. This is a one-line derivation of OQ-01's `G_self_reference` axiom.\n\n**Why `noncomputable`**: `Classical.choose` uses the axiom of choice in Lean's classical logic — it's logically valid but has no computational content. The formula G exists but cannot be computed from the proof alone (its code depends on the particular model).\n\n**Axioms 3 and 4** (lines 133–138): `neg_G_prov` and `omega_cons` cannot be derived from the meta-level `diagonal_lem` alone. They require the object-level form of the Diagonal Lemma (F ⊢ G ↔ ¬Prov(⌈G⌉) as a formula inside F) and ω-consistency respectively — two genuinely independent mathematical hypotheses.",
+    "mathContext": "The construction: $G = \\text{Classical.choose}(\\text{diagonal\\_lem}(\\lambda n.\\, \\neg\\text{Prov}(n)))$. By `.choose_spec`: $(\\vdash G) \\leftrightarrow (\\vdash \\neg\\text{Prov}(\\lceil G\\rceil))$, i.e., $G$ says 'I am not provable'. In the actual arithmetic construction: $G = \\phi(\\lceil\\phi\\rceil)$ where $\\phi(x) = \\psi(\\text{sub}(x,x))$; the code of $G$ is computable from the Gödel numbering. Here the code is abstract (`.choose` extracts it without specifying it).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Classical.choose and choose_spec (Lean 4)",
+      "axiom of choice in constructive logic",
+      "G_self_reference as theorem vs axiom (OQ-01 comparison)",
+      "object-level vs meta-level Diagonal Lemma",
+      "ω-consistency (Rosser 1936 weakening)"
+    ],
+    "prerequisites": [
+      "Classical.choose and choose_spec in Lean 4",
+      "noncomputable definitions",
+      "Existential elimination via choice",
+      "prefix:75 ¬ᶠ notation for neg"
+    ]
+  },
+  {
+    "id": "ann-gd-incompleteness",
+    "proofId": "godel-first-incompleteness-oq01-oq-04",
+    "range": {
+      "startLine": 151,
+      "endLine": 197
+    },
+    "type": "insight",
+    "title": "Proof of Incompleteness: Three Components Working Together",
+    "content": "The main theorems derive incompleteness cleanly from the 5 axioms.\n\n**`G_not_provable`** (lines 165–169):\n```\n1. Assume ⊢ G\n2. d1: ⊢ Prov(⌈G⌉)\n3. G_spec.mp: ⊢ ¬Prov(⌈G⌉)   ← from Diagonal Lemma!\n4. Consistent: contradiction with (2) and (3)\n```\nThe key step is `G_spec.mp` — the **forward direction** of G_spec, which says 'if G is provable, then ¬Prov(⌈G⌉) is provable'. This is where the Diagonal Lemma's contribution enters the incompleteness proof directly.\n\n**`neg_G_not_provable`** (lines 179–183): similar structure using `neg_G_prov` (Axiom 3) and `omega_cons` (Axiom 4).\n\n**`first_incompleteness`** (lines 189–193): a 3-line proof by case split on G vs ¬G via completeness, delegating to the two `not_provable` results.\n\n**`G_undecidable`** (lines 196–197): packages both into `¬(⊢G) ∧ ¬(⊢¬G)` as the undecidability pair.\n\nThe entire 4-theorem block is 33 lines, including docstrings — a model of how logical structure, once separated into D1 + Diagonal Lemma + ω-consistency, leads to clean proofs.",
+    "mathContext": "$G_\\text{not\\_provable}$: Suppose $\\vdash G$. By D1: $\\vdash \\text{Prov}(\\lceil G\\rceil)$. By $G$-spec (Diagonal Lemma): $\\vdash \\neg\\text{Prov}(\\lceil G\\rceil)$. Consistent gives contradiction. This uses ONLY Axioms 1+2; it does not use Axioms 3+4. The full incompleteness ($G$ is undecidable) needs all 5 axioms. The proof structure exactly mirrors the pen-and-paper argument: D1 derives Prov(⌈G⌉) from G, then G's self-referential property (from Diagonal Lemma) produces ¬Prov(⌈G⌉), and consistency yields contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "G_spec (key theorem from Diagonal Lemma)",
+      "D1 representability",
+      "ω-consistency (Axiom 4)",
+      "Consistent, Complete definitions",
+      "Rosser's improvement (not used here)"
+    ],
+    "prerequisites": [
+      "G_spec theorem",
+      "Consistent/Complete definitions (lines 144-148)",
+      "iff.mp and iff.mpr in Lean 4",
+      "intro/exact/exact h ⟨,⟩ proof pattern"
+    ]
+  },
+  {
+    "id": "ann-gd-generality",
+    "proofId": "godel-first-incompleteness-oq01-oq-04",
+    "range": {
+      "startLine": 199,
+      "endLine": 235
+    },
+    "type": "insight",
+    "title": "Generality: Other Diagonal Lemma Instances and OQ-01 Comparison",
+    "content": "**Three more instances of the Diagonal Lemma** (lines 205–217):\n\n- **`prov_fixed_point_exists`**: fixed point of $\\psi(n) = \\text{Prov}(n)$ — a sentence σ that is provable iff its own provability is provable. This is related to Löb's theorem.\n\n- **`arb_fixed_point_exists`**: for ANY predicate $\\psi : \\mathbb{N} \\to \\text{Formula}$, a fixed point exists. This is just `diagonal_lem ψ` — one line, the full generality of the lemma.\n\n- **`consistency_sentence_exists`**: fixed point of $\\psi(n) = \\neg\\text{Prov}(n)$ — this is precisely how G was constructed! It's listed here to make the connection explicit: `consistency_sentence_exists` and G's construction are the SAME thing.\n\n**OQ-01 comparison** (lines 222–233): `G_self_reference_fwd` derives the forward direction of OQ-01's G_self_reference axiom — showing OQ-01's axiom was stronger than needed. The backward direction ($\\neg\\text{Prov}(\\lceil G\\rceil) \\to \\vdash G$) would require completeness and is not provable here, confirming that OQ-01 over-assumed.\n\nThis analysis reveals a subtle point: OQ-01 used a biconditional for G_self_reference, but only the **forward direction** is needed for G_not_provable. OQ-04's `G_spec` provides the correct biconditional (both directions), but only `G_spec.mp` is used in the incompleteness proof.",
+    "mathContext": "Löb's theorem (1955): for a provability predicate satisfying D1-D3, $F \\vdash \\text{Prov}(\\lceil\\phi\\rceil) \\to \\phi$ implies $F \\vdash \\phi$. The `prov_fixed_point_exists` sentence (call it $\\lambda$: $\\lambda \\leftrightarrow \\text{Prov}(\\lceil\\lambda\\rceil)$) is relevant: by Löb's theorem, such a $\\lambda$ would be provable, showing the Diagonal Lemma produces provable fixed points in strong enough systems. The consistency sentence `consistency_sentence_exists` is exactly $G$, confirming it's the unique (up to provable equivalence) self-referential sentence about non-provability.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Löb's theorem and provability logic GL",
+      "consistency_sentence_exists = G construction",
+      "arb_fixed_point_exists (universal form)",
+      "Tarski's undefinability theorem (another Diagonal Lemma application)",
+      "OQ-01 G_self_reference comparison"
+    ],
+    "prerequisites": [
+      "diagonal_lem axiom",
+      "G construction via choose",
+      "Löb's theorem background",
+      "G_spec and G_self_reference_fwd"
+    ]
+  }
+]
