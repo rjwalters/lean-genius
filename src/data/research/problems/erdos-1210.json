@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1210",
   "title": "Erdős #1210",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,24 +16,49 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-04-16T17:10:06.887Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Formalized main conjecture, prime coprimality structure, and 11 structural theorems.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Docker build verification.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "PROGRESS (Session 1, 2026-05-03): Formalized Erdős Problem 1210. Defined primesBelow, PairwiseCoprime, ValidSubset. Proved primes are pairwise coprime, primesBelow nonempty for n≥3, at-most-one-even lemma, prime sum positivity. Stated main conjecture as axiom. Derived consequences including singleton bounds. 11 theorems, 1 axiom, 0 sorries.",
+    "builtItems": [
+      "primesBelow: Finset.range(n).filter Nat.Prime (Erdos1210Problem.lean:50)",
+      "PairwiseCoprime: pairwise gcd=1 predicate (line:54)",
+      "ValidSubset: A ⊆ [1,n) predicate (line:58)",
+      "primes_coprime: distinct primes are coprime (line:66)",
+      "primesBelow_pairwiseCoprime: primesBelow is pairwise coprime (line:72)",
+      "primesBelow_valid: primesBelow is a valid subset (line:78)",
+      "primesBelow_nonempty: nonempty for n≥3 since 2∈primesBelow (line:84)",
+      "pairwiseCoprime_at_most_one_even: ≤1 even element (line:88)",
+      "primesBelow_sum_nonneg: sum ≥ 0 (line:105)",
+      "primesBelow_sum_pos: sum > 0 for n≥3 (line:115)",
+      "erdos_1210: main axiom — primes maximize the sum (line:131)",
+      "erdos_1210_bound, erdos_1210_empty, erdos_1210_prime_singleton, erdos_1210_singleton_bounded: consequences (line:141)"
+    ],
+    "insights": [
+      "Distinct primes coprime proof: p∣q with q prime implies p=1 or p=q; since p≥2, p=q contradicts p≠q",
+      "At-most-one-even: two distinct even elements a,b in pairwise coprime set → 2∣gcd(a,b)=1 → contradiction",
+      "Finset.sum_pos requires nonemptiness + positivity of each term — clean API for prime sum positivity",
+      "Finset.sum_le_sum_of_subset_of_nonneg handles singleton subset sum bound correctly",
+      "The conjecture is about global optimality of primes — no elementary proof known",
+      "Problem statement in JSON was truncated at '\\sum_{p' — likely '\\sum_{p prime, p<n} 1/(n-p)'"
+    ],
+    "mathlibGaps": [
+      "No direct Mathlib theorem about optimality of primes for harmonic-type sums over coprime sets"
+    ],
+    "nextSteps": [
+      "Docker build verification",
+      "Extension: prove asymptotic bound ∑_{p<n} 1/(n-p) ~ log log n using prime counting"
+    ],
     "markdown": "# Erdős #1210 - Knowledge Base\n\n## Problem Statement\n\nLet $A\\subseteq [1,n)$ be a set of integers such that $(a,b)=1$ for all distinct $a,b\\in A$. Is it true that\\[\\sum_{a\\in A}\\frac{1}{n-a}\\leq \\sum_{p## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #460\n- Problem #950\n- Problem #1209\n- Problem #1211\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er80\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n"
   },
   "tags": [
@@ -52,5 +77,18 @@
   "started": "2026-04-16T17:10:06.887Z",
   "lastUpdate": "2026-04-21T11:09:40.249Z",
   "significance": 7,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1210Problem.lean",
+      "filename": "Erdos1210Problem.lean",
+      "lineCount": 178,
+      "theoremCount": 11,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1210Problem.lean"
+    }
+  ]
 }
