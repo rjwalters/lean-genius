@@ -412,3 +412,45 @@ The TIGHT bound requires max_entry ≤ 2^(N/4) — which comes from knowing the 
 
 2. **Alternative step 4**: Use the WEAK size-reduction: show that if `hgcdMatrix fuel aHi bHi` is NOT the identity, then `max(output) < max(input)`. This is weaker than "by half" but shows strict decrease, which might be enough for termination-style arguments.
 
+
+## Session 2026-05-03 (Session 7) - Convention Correction and Base-Case Row Bound
+
+**Mode**: REVISIT
+**Outcome**: progress (false theorem removed, correct statement + base cases proved)
+
+### What I Did
+
+- Analyzed `hgcdMatrix_joint_bound` and discovered it is **FALSE** as stated.
+- Computed the counterexample: for a=37, b=5, `hgcdMatrix 1 37 5 = ⟨1,-2,-7,15⟩` and
+  the column output component `(−7)·37 + 15·5 = −184`, giving natAbs = 184.
+  But `hgcdShift(37,5) = 3` and `2^(3+3) = 64`. So 184 > 64 — theorem violated.
+- Identified root cause: `M.apply(a,b) = (M.α·a + M.β·b, M.γ·a + M.δ·b)` is the
+  **column convention** and is NOT bounded for a right-accumulated Lehmer matrix.
+  The ROW convention `(a·M.α + b·M.γ, a·M.β + b·M.δ)` gives Euclidean residues
+  and IS bounded by `max a b`.
+- Replaced PART IX: removed false theorem, added `native_decide` counterexample,
+  proved `hgcdMatrix_small_row_output_le` (base case), and stated corrected
+  `hgcdMatrix_row_output_le` with 1 sorry (recursive case).
+
+### Key Findings
+
+- `hgcdMatrix_small_row_output_le` (proved): for `max a b < hgcdThreshold`, after
+  `hgcdMatrix_small` reduces to `lehmerCofactors hgcdThreshold a b id`, the theorem
+  `lehmerCofactors_id_apply_le` directly gives the row output ≤ `max a b`.
+- Recursive case blocker: the IH for M₂ applies to M₂'s own intended inputs
+  `(a/2^s, b/2^s)` (outputs of M₁ on the half-size inputs). It does NOT directly
+  bound `rowOut(M₂, rowOut(M₁, a, b))` which is what we need. Bridging requires
+  a new invariant tracking the relationship between the two input sequences.
+
+### Files Modified
+
+- `proofs/Proofs/BinaryGcdOQ03OQ02.lean` — PART IX replaced (+91 lines, -78 lines)
+
+### Next Steps
+
+1. **Recursive case of `hgcdMatrix_row_output_le`**: Need invariant that `hgcdMatrix f a b`
+   was constructed for inputs `(a,b)`, so `rowOut(M₂·M₁, a, b)` feeds correctly
+   into the IH for `M₂`.
+2. **Alternative approach**: Prove the full Euclidean relation directly — that
+   `rowOut(hgcdMatrix fuel a b, a, b)` gives the Euclidean residues of `(a,b)` —
+   rather than going via matrix induction.
