@@ -405,6 +405,7 @@ import Proofs.CevasTheoremOQ02OQ02
 import Proofs.CevasTheoremOQ04
 import Proofs.CevasTheoremSinRatio
 import Proofs.ChebyshevBounds
+import Proofs.ChebyshevBoundsOQ04
 import Proofs.ChebyshevPNTBridge
 import Proofs.ChebyshevPNTBridgeOQ01
 import Proofs.ChebyshevPNTBridgeOQ01Aristotle
