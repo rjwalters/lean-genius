@@ -94,5 +94,195 @@
     "significance": "supporting",
     "relatedConcepts": ["LGV lemma", "RSK correspondence", "semistandard Young tableaux (SSYT)", "non-intersecting lattice paths", "Schur polynomial combinatorial definition", "Robinson-Schensted-Knuth"],
     "prerequisites": ["LGV lemma (parent proof)", "Young tableaux theory", "RSK correspondence", "generating functions", "ballot-problem-oq-03-oq-01-oq-01"]
+  },
+  {
+    "id": "ann-jt-one-row-eval-at-one",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 130,
+      "endLine": 158
+    },
+    "type": "theorem",
+    "title": "One-Row Schur Polynomial at All-Ones: Stars-and-Bars",
+    "content": "`schurPolynomial_one_row_at_one` (130–158): evaluating the one-row Schur polynomial at all variables = 1 gives the binomial coefficient C(k+n−1, n). This is the combinatorial identity for the number of weak compositions.\n\nProof: rewrite schurPolynomial_one_row to get hsymm, then eval_sum distributes over the Sym sum. Each monomial `(s.1.map X).prod` evaluates to 1 at all-ones via `map_multiset_prod` + `eval_X` + `Multiset.prod_map_one`. The sum of |Sym (Fin k) n| ones equals `Fintype.card (Sym (Fin k) n) : R`, and `Sym.card_sym_eq_choose` gives the formula C(|Fin k|+n−1, n) = C(k+n−1, n).\n\nNote on the k=0 convention: the formula C(k+n−1, n) handles k=0 correctly (giving 0 for n≥1, since C(n−1, n) = 0), while the equivalent form C(n+k−1, k−1) would fail at k=0 due to Nat subtraction underflow.",
+    "mathContext": "The complete homogeneous symmetric polynomial $h_n(x_1, \\ldots, x_k) = \\sum_{1 \\leq i_1 \\leq \\cdots \\leq i_n \\leq k} x_{i_1} \\cdots x_{i_n}$ evaluates at $(1,\\ldots,1)$ to the number of weakly increasing sequences of length $n$ from $\\{1,\\ldots,k\\}$, which equals $\\binom{k+n-1}{n}$ by stars and bars.",
+    "significance": "key",
+    "relatedConcepts": [
+      "stars and bars",
+      "Sym.card_sym_eq_choose",
+      "Fintype.card",
+      "eval_X",
+      "map_multiset_prod"
+    ],
+    "prerequisites": [
+      "Sym.card_sym_eq_choose",
+      "Fintype.card_eq_sum_ones",
+      "map_multiset_prod",
+      "eval_sum"
+    ]
+  },
+  {
+    "id": "ann-jt-ssyt-definition-and-base",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 160,
+      "endLine": 221
+    },
+    "type": "definition",
+    "title": "SSYT Definition, Fintype Instance, Weight Monomial, and k=0 Base Case",
+    "content": "Part VI (160–221) introduces the SSYT (semistandard Young tableau) formalization.\n\n**`SSYTFin n k sh`** (174–183): An SSYT of shape `sh : Fin k → ℕ` with entries in `Fin n`. Encoded as a subtype of functions `(i : Fin k) × Fin (sh i) → Fin n` satisfying: (1) rows weakly increasing (T(i,j₁) ≤ T(i,j₂) for j₁ < j₂); (2) columns strictly increasing (T(i₁,j) < T(i₂,j) for i₁ < i₂). The sigma-type `(i : Fin k) × Fin (sh i)` encodes all cells (row i, column j < sh(i)).\n\n**Fintype instance** (185–188): `Subtype.fintype _` — the Pi type over finite types is finite, and both predicates are decidable.\n\n**`SSYTFin.weight`** (190–193): The weight monomial `∏ p : cells, X(T.1 p)` — the product of variables indexed by tableau entries.\n\n**`ssytSchurFin n k sh`** (195–198): The SSYT Schur polynomial — sum of weight monomials over all SSYT of shape sh in n variables.\n\n**`ssytSchurFin_empty`** (206–220): Base case k=0. The sigma-type `(i : Fin 0) × ...` is empty (`Fin.elim0`), so there is a unique SSYT (the empty filling), its weight is the empty product = 1, and `Finset.sum_unique` gives the sum = 1.",
+    "mathContext": "A SSYT of shape $\\lambda = (\\lambda_1, \\ldots, \\lambda_k)$ with entries from $\\{1,\\ldots,n\\}$ is a filling of the Young diagram satisfying weak row increase and strict column increase. The weight monomial is $x^T = \\prod_{(i,j) \\in \\lambda} x_{T(i,j)}$. The SSYT Schur polynomial $s_\\lambda(x_1,\\ldots,x_n) = \\sum_{T \\in \\text{SSYT}(\\lambda,n)} x^T$ is the canonical combinatorial definition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "semistandard Young tableau",
+      "weight monomial",
+      "sigma-type cell encoding",
+      "Subtype.fintype",
+      "Fin.elim0"
+    ],
+    "prerequisites": [
+      "SSYTFin",
+      "SSYTFin.weight",
+      "ssytSchurFin",
+      "Finset.sum_unique",
+      "Finset.prod_empty"
+    ]
+  },
+  {
+    "id": "ann-jt-ssyt-one-row-bijection",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 222,
+      "endLine": 292
+    },
+    "type": "theorem",
+    "title": "SSYT One-Row = Complete Homogeneous: Sorted-Representative Bijection",
+    "content": "`ssytSchurFin_one_row` (239–291): For a one-row shape, the SSYT generating function equals hsymm. Proof by constructing an explicit equivalence `ψ : SSYTFin n 1 (fun _ => m) ≃ Sym (Fin n) m`.\n\n**Forward** `toFun`: T ↦ `⟨↑(List.ofFn (fun j => T.1 ⟨0,j⟩)), card_proof⟩` — the multiset of row-0 entries.\n\n**Backward** `invFun`: s ↦ fill row 0 with the sorted representative `s.1.sort`, using indexing `(s.1.sort)[p.2.val]`. The row-weak condition holds by `(Multiset.pairwise_sort).sortedLE.getElem_le_getElem_of_le`. The col-strict condition is vacuous (no two rows).\n\n**`left_inv`**: T = ψ⁻¹(ψ(T)). The key step: `T`'s row 0 is already weakly sorted (SSYT row-weak), so `List.mergeSort_eq_self` applies and `sort(ofFn(T.row0)) = ofFn(T.row0)`. Then `List.getElem_ofFn` closes.\n\n**`right_inv`**: `ψ(ψ⁻¹(s)) = s`. Rewrite via `List.ext_getElem` to get `ofFn(sort[j]) = sort`, then `Multiset.sort_eq` gives the multiset identity.\n\nWeight match: `Fintype.sum_equiv ψ` + `Fin.prod_univ_one` + `Multiset.prod_coe` + `List.map_ofFn`.",
+    "mathContext": "One-row SSYT of shape $[m]$ with entries from $\\{0,\\ldots,n-1\\}$ are exactly weakly increasing sequences $a_1 \\leq \\cdots \\leq a_m$, which biject with multisets of size $m$ from $\\{0,\\ldots,n-1\\}$ (i.e., $\\text{Sym}(\\text{Fin}\\,n, m)$). The bijection uses sorted representatives: every multiset has a unique sorted list representative.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sym (Fin n) m",
+      "List.mergeSort_eq_self",
+      "Multiset.sort",
+      "Fintype.sum_equiv",
+      "sorted representative"
+    ],
+    "prerequisites": [
+      "ssytSchurFin_one_row",
+      "Multiset.pairwise_sort",
+      "List.mergeSort_eq_self",
+      "Multiset.sort_eq",
+      "Fintype.sum_equiv"
+    ]
+  },
+  {
+    "id": "ann-jt-two-row-infrastructure",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 293,
+      "endLine": 394
+    },
+    "type": "concept",
+    "title": "Two-Row Infrastructure: ColStrictSym, Weight Preservation, b=1 Setup",
+    "content": "Part VII (293–394) introduces the machinery for the two-row case.\n\n**`ColStrictSym a b P Q`** (300–311): P and Q (as Sym n a and Sym n b) are column-strict if their sorted representatives satisfy P.sort[j] < Q.sort[j] for all j < min(a,b). Uses `getElem` with omega-proved bounds.\n\n**Decidable instance** (313–315): `Fintype.decidable_forall_fintype` — the condition is a finite conjunction of decidable comparisons.\n\n**`sum_all_sym_pairs`** (320–327): ∑_{P,Q : Sym n a × Sym n b} wt(P)·wt(Q) = h_a · h_b. Proof: `Fintype.sum_prod_type` + `Finset.mul_sum` + `Finset.sum_mul` unfolds to the product of two hsymm sums.\n\n**`jdt_weight_preserved`** (368–382): Moving element v from Q to P preserves the pair weight: wt(P+v) · wt(Q-v) = wt(P) · wt(Q). Uses `Multiset.map_cons` + `Multiset.prod_cons` on the left and `Multiset.cons_erase hv` on the right, then `ring`.\n\n**`sym_one_sort_head_singleton`** (386–393): For `Q : Sym n 1`, the sort is a singleton `[q]` and `Q.1 = {q}`. Proof: length 1 list has a head by `List.length_eq_one_iff`, then multiset cast + `Multiset.sort_eq`.",
+    "mathContext": "The column-strict condition captures the SSYT constraint between rows: if row 0 has entries sorted as $p_1 \\leq \\cdots \\leq p_a$ and row 1 as $q_1 \\leq \\cdots \\leq q_b$, then col-strict means $p_j < q_j$ for all $j \\leq \\min(a,b)$. The JDT (jeu de taquin) bijection maps non-col-strict pairs to pairs of shapes (a+1, b-1) by moving the first violation element from Q to P.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ColStrictSym",
+      "jdt_weight_preserved",
+      "Multiset.prod_erase",
+      "Sym.cons",
+      "Sym.erase"
+    ],
+    "prerequisites": [
+      "ColStrictSym",
+      "sum_all_sym_pairs",
+      "jdt_weight_preserved",
+      "sym_one_sort_head_singleton",
+      "Multiset.length_sort"
+    ]
+  },
+  {
+    "id": "ann-jt-jdt-b-one-bijection",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 395,
+      "endLine": 562
+    },
+    "type": "theorem",
+    "title": "JDT b=1 Base Case: Fully Proved Bijection",
+    "content": "Lines 395–561 contain the fully proved b=1 base case of the JDT weight sum, plus its two characterization lemmas.\n\n**`colStrictSym_a_one_iff_phead_lt_qhead`** (406–425): For a≥1 and Q: Sym n 1, `ColStrictSym a 1 P Q ↔ P.sort[0] < Q.sort[0]`. Proof: min(a,1)=1, so Fin(min a 1) has unique element ⟨0,_⟩; the forward direction applies h at 0, backward uses Fin.ext to show all j.val=0.\n\n**`not_colStrictSym_a_one_iff_qhead_le_phead`** (427–438): The negation: `¬ColStrictSym ↔ Q.sort[0] ≤ P.sort[0]`. One-line proof: `rw [colStrict_iff, not_lt]`.\n\n**`jdt_weight_sum_b_one`** (440–561): ∑_{non-col-strict (P: Sym n a, Q: Sym n 1)} wt(P)·wt(Q) = h_{a+1}·h_0 = h_{a+1}. The proof constructs a bijection `ψ` between non-col-strict pairs and Sym n (a+1):\n- **Forward**: (P, Q) ↦ `getq(Q) ::ₛ P` (prepend the unique element of Q)\n- **Backward**: S ↦ `(S.erase S.sort[0], ⟨{S.sort[0]}, _⟩)` (peel the minimum)\n- **left_inv**: use `¬ColStrict ↔ q ≤ P.sort[0]`, then `Multiset.sort_cons` (sort of q prepended to P is q :: P.sort, since q is ≤ all elements), giving `Sym.erase_cons_head`\n- **right_inv**: `Sym.cons_erase` and `getq_eq`\n- **Weight**: `getq_spec Q` gives Q.1 = {q}, then `Multiset.map_cons` + `ring`",
+    "mathContext": "The b=1 JDT bijection: a non-col-strict pair $(P, Q)$ with $Q = \\{q\\}$ satisfies $q \\leq P.\\text{sort}[0]$ (first element of $P$). Moving $q$ to the front of $P$ gives $P' = q :: P.\\text{sort}$ (still sorted since $q$ is minimal), and $Q' = \\emptyset$ (size 0). This gives a bijection $\\{(P,Q) : \\neg\\text{ColStrict}\\} \\simeq \\text{Sym}\\,n\\,(a+1)$ matching weights.",
+    "significance": "key",
+    "relatedConcepts": [
+      "jdt_weight_sum_b_one",
+      "Sym.cons",
+      "Sym.erase",
+      "Multiset.sort_cons",
+      "Sym.erase_cons_head",
+      "Sym.cons_erase"
+    ],
+    "prerequisites": [
+      "colStrictSym_a_one_iff_phead_lt_qhead",
+      "not_colStrictSym_a_one_iff_qhead_le_phead",
+      "sym_one_sort_head_singleton",
+      "Multiset.sort_cons",
+      "Sym.erase_cons_head"
+    ]
+  },
+  {
+    "id": "ann-jt-row-decomp-and-partition",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 563,
+      "endLine": 766
+    },
+    "type": "theorem",
+    "title": "JDT General Weight Sum, Row Decomposition, and Partition Lemma",
+    "content": "Lines 563–766 contain three key theorems completing the two-row case infrastructure.\n\n**`jdt_weight_sum`** (573–622): ∑_{non-col-strict (a,b)} wt = h_{a+1}·(if b≥1 then h_{b-1} else 0). Cases on b: b=0 (sum is vacuously 0, since ColStrict is trivially true), b=1 (dispatches to jdt_weight_sum_b_one), b≥2 (sorry — requires the general JDT seam bijection). The b=0 case uses `Fin.elim0` via j.isLt < 0.\n\n**`ssytFin_two_row_eq_sum_colstrict`** (632–750): SSYTFin n 2 sh = ∑_{col-strict Sym pairs} wt. The bijection ψ: SSYTFin n 2 sh ≃ {(P,Q) col-strict} maps T to the pair of row-multisets (row0 and row1 of T), with inverse mapping sorted representatives back. Row-weak ↔ sorted-list; col-strict ↔ ColStrictSym. Weight: `Fin.prod_univ_two` splits the sigma-type product into two rows. Left/right inverses use `sortedRow0/1` (rows already sorted → mergeSort = identity) + `Multiset.sort_eq`.\n\n**`sym_pair_sum_partition`** (754–766): (∑_{col-strict} + ∑_{¬col-strict}) = h_a · h_b. One-line proof: `sum_all_sym_pairs` + `Fintype.sum_subtype_add_sum_subtype` (splits any sum over a type into a subtype sum + its complement).",
+    "mathContext": "The row decomposition is the bijection SSYTFin → col-strict Sym pairs, which separates the SSYT generating function into: $s_\\lambda = \\sum_{\\text{col-strict}} \\text{wt}(P)\\cdot\\text{wt}(Q)$. Combined with the partition and JDT: $s_\\lambda = h_a h_b - h_{a+1} h_{b-1}$ for $\\lambda = (a, b)$ with $b \\leq a$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "row decomposition bijection",
+      "Fintype.sum_subtype_add_sum_subtype",
+      "ssytFin_two_row_eq_sum_colstrict",
+      "sym_pair_sum_partition",
+      "jdt_weight_sum"
+    ],
+    "prerequisites": [
+      "Fin.prod_univ_two",
+      "Fintype.sum_subtype_add_sum_subtype",
+      "Multiset.sort_eq",
+      "sortedRow0",
+      "ColStrictSym"
+    ]
+  },
+  {
+    "id": "ann-jt-two-row-theorem-and-main",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 768,
+      "endLine": 851
+    },
+    "type": "theorem",
+    "title": "Two-Row Jacobi-Trudi Assembly and Main Theorem (k≥3 Open)",
+    "content": "**`ssytSchurFin_two_row`** (776–796): The two-row SSYT generating function equals the Jacobi-Trudi determinant for shapes sh with sh(1) ≤ sh(0). Assembly:\n1. Rewrite `schurPolynomial 2 sh = h_a·h_b − h_{a+1}·(if b≥1 then h_{b-1} else 0)` via `schurPolynomial_two_row`\n2. Rewrite SSYT sum as ∑_{col-strict} via `ssytFin_two_row_eq_sum_colstrict`\n3. Use `eq_sub_of_add_eq`: ∑_{col-strict} = h_a·h_b − ∑_{¬col-strict}, where the RHS uses `sym_pair_sum_partition` + `jdt_weight_sum`\n\n**`jacobi_trudi_ssyt_eq`** (814–848): The main theorem — Jacobi-Trudi determinant = SSYT generating function for any antitone shape sh. Proof by case split on k:\n- k=0: both sides = 1 (schurPolynomial_empty + ssytSchurFin_empty)\n- k=1: both sides = h_{sh(0)} (schurPolynomial_one_row + ssytSchurFin_one_row)\n- k=2: `ssytSchurFin_two_row` with hsh(0≤1) from Antitone hypothesis\n- k≥3: **sorry** — requires algebraic LGV (~150 lines) + RSK bijection (~150 lines). Comment outlines the plan: (1) ring-valued det = ∑ NI path weights via algebraic LGV; (2) RSK: SSYTFin n k sh ↔ NI tuples of 1-row SSYTs; (3) weight match.",
+    "mathContext": "The Jacobi-Trudi identity (full): $s_\\lambda(x_1,\\ldots,x_n) = \\det[h_{\\lambda_i - i + j}]_{1 \\leq i,j \\leq k}$ where $h_r = 0$ for $r < 0$. Proved for $k \\leq 2$ by explicit computation; the general case requires the Lindström-Gessel-Viennot lemma for ring-valued weights. The k=3 case alone would need the bijection $\\text{SSYT}(\\lambda, n) \\simeq \\text{NI}(\\lambda)$ (non-intersecting lattice paths) for $3 \\times 3$ determinants.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Jacobi-Trudi identity",
+      "LGV lemma",
+      "RSK correspondence",
+      "eq_sub_of_add_eq",
+      "ssytSchurFin_two_row",
+      "jacobi_trudi_ssyt_eq"
+    ],
+    "prerequisites": [
+      "ssytSchurFin_two_row",
+      "schurPolynomial_two_row",
+      "sym_pair_sum_partition",
+      "jdt_weight_sum",
+      "Antitone"
+    ]
   }
 ]
