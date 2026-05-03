@@ -430,12 +430,23 @@ theorem upperDensity_mono {S T : Set ℕ} (hST : S ⊆ T) :
     · simp
     · rw [div_le_div_right (Nat.cast_pos.mpr hN)]
       exact_mod_cast Finset.card_le_card (Finset.filter_subset_filter _ hST)
-  · exact ⟨1, Filter.eventually_of_forall fun N => by
+  · -- IsCoboundedUnder: density_S ≥ 0, so any eventual upper bound is ≥ 0
+    use 0
+    intro a ha
+    by_contra hlt
+    push_neg at hlt
+    obtain ⟨N, hN⟩ := ha.exists
+    have h0 : (0 : ℝ) ≤ (((Finset.Icc 1 N).filter (fun n => n ∈ S)).card : ℝ) / (N : ℝ) :=
+      div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+    linarith
+  · -- IsBoundedUnder: density_T ≤ 1
+    exact ⟨1, Filter.eventually_of_forall fun N => by
       rcases Nat.eq_zero_or_pos N with rfl | hN
       · simp
       · apply div_le_one_of_le _ (Nat.cast_nonneg N)
-        exact_mod_cast (Finset.card_filter_le _ _).trans
-          (by simp [Finset.Nat.card_Icc])⟩
+        have hcard : (Finset.Icc 1 N).card = N := by
+          rw [Finset.Nat.card_Icc]; omega
+        exact_mod_cast (Finset.card_filter_le _ _).trans hcard.le⟩
 
 /-- **Density monotonicity in k**: the upper density of the good set is non-decreasing
     as the window width grows. Formally: more n satisfy P(n,k+1) > n^(1-ε) than P(n,k) > n^(1-ε).
