@@ -1,0 +1,183 @@
+{
+  "id": "shannon-channel-coding-oq-02-oq-03",
+  "title": "Channel Coding Converse via Fano's Inequality",
+  "slug": "shannon-channel-coding-oq-02-oq-03",
+  "description": "Proves the converse direction of Shannon's channel coding theorem: if the coding rate R exceeds channel capacity C, then the average decoding error probability Pe is bounded below by (R-C)/(2R) > 0 for block lengths n \u2265 \u23082\u00b7log 2/(R-C)\u2309. The algebraic core reduces Fano's inequality and the multi-letter capacity bound to a sharp error floor, with all algebraic steps machine-verified.",
+  "meta": {
+    "author": "Claude Shannon (1948) / Robert Fano (1952), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Noisy-channel_coding_theorem",
+    "date": "1948",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/ShannonChannelCodingOQ02OQ03.lean",
+    "tags": [
+      "information-theory",
+      "channel-coding",
+      "converse",
+      "fano",
+      "shannon",
+      "research",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "InformationTheory.BinaryEntropy.h_le_log_two",
+        "description": "Binary entropy h(p) \u2264 log 2 for p \u2208 [0,1]",
+        "module": "Proofs.ShannonChannelCodingOQ04"
+      },
+      {
+        "theorem": "Real.log_le_log",
+        "description": "Monotonicity of real logarithm",
+        "module": "Mathlib"
+      },
+      {
+        "theorem": "Real.log_pos",
+        "description": "log M > 0 for M > 1",
+        "module": "Mathlib"
+      }
+    ],
+    "originalContributions": [
+      "converse_pe_lower_bound: core algebraic inequality Pe \u2265 (log M - nC - log 2)/log M, fully machine-verified without axioms",
+      "converse_pe_lower_bound_rate: rate form Pe \u2265 1 - C/R - (log 2)/(nR) via field_simp + ring",
+      "converse_threshold_dimension: explicit threshold n \u2265 \u23082\u00b7log 2/(R-C)\u2309 gives Pe \u2265 (R-C)/(2R)",
+      "sub_div_mono: monotonicity of f(x)=(x-k)/x, used to compare bound at log M vs n\u00b7R",
+      "channel_coding_converse_from_fano: main converse theorem integrating Fano axiom + algebraic chain"
+    ],
+    "assumptions": "2 axioms: fano_for_block_code (Fano inequality for the n-letter product distribution; follows from OQ-03 + OQ-02-OQ-01 with n-letter setup formalized) and the multi-letter capacity bound (I(X^n;Y^n) \u2264 n\u00b7C via chain rule; encoded inside fano_for_block_code). The 10 proved theorems have 0 axioms each \u2014 all algebraic content is machine-verified.",
+    "dateAdded": "2026-05-03",
+    "axiomCount": 2,
+    "lineCount": 277,
+    "prerequisites": [
+      "Fano's inequality: H(X|Y) \u2264 h(Pe) + Pe\u00b7log(|X|-1) (proved in OQ-03)",
+      "Binary entropy upper bound: h(p) \u2264 log 2 (proved in OQ-04)",
+      "Channel capacity definition (ShannonChannelCoding.lean)",
+      "Real analysis: monotonicity of log, field arithmetic"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Shannon's 1948 paper established that reliable communication is possible at any rate below channel capacity C. The converse \u2014 that reliable communication is impossible above C \u2014 is the harder direction, and requires Fano's inequality as its key ingredient.\n\nFano (1952) observed that if a decoder correctly identifies the transmitted codeword with high probability, then the conditional entropy H(X|decoder output) must be small. His inequality H(X|Y) \u2264 h(Pe) + Pe\u00b7log(M-1) precisely quantifies this: if Pe is small, then H(X|Y) is small, forcing I(X;Y) = H(X) - H(X|Y) to be close to H(X) = log M.\n\nThe converse argument combines Fano's bound with the multi-letter capacity inequality I(X^n;Y^n) \u2264 nC (which follows from the chain rule for mutual information and the memoryless property of the channel): if Pe were small (approaching 0), then I(X^n;Y^n) would approach log M = nR, contradicting I(X^n;Y^n) \u2264 nC when R > C.\n\nThis formalization proves all algebraic steps machine-verified and identifies exactly two non-trivial assumptions: Fano applied to the block code setting, and the multi-letter capacity bound.",
+    "problemStatement": "Prove the converse of Shannon's channel coding theorem: for any DMChannel with capacity C and any rate R > C, every block code of length n with M codewords (log M \u2265 nR) and any decoder has average error probability satisfying Pe \u2265 \u03b4 > 0, where \u03b4 = (R-C)/(2R) and the bound holds for n \u2265 \u23082\u00b7log 2/(R-C)\u2309.",
+    "proofStrategy": "The proof reduces to a chain of algebraic inequalities:\n\n1. **Fano's inequality** (axiomatized): H(X|Y^n) \u2264 h(Pe) + Pe\u00b7log(M-1)\n\n2. **Multi-letter capacity** (axiomatized): I(X;Y^n) = log M - H(X|Y^n) \u2264 n\u00b7C\n\n3. **Chain**: log M - n\u00b7C \u2264 H(X|Y^n) \u2264 h(Pe) + Pe\u00b7log(M-1)\n\n4. **Simplification** (h(Pe) \u2264 log 2; log(M-1) \u2264 log M):\n   log M - n\u00b7C \u2264 log 2 + Pe\u00b7log M\n\n5. **Rearrangement**: Pe \u2265 (log M - n\u00b7C - log 2) / log M\n\n6. **Rate form** (R = log M / n): Pe \u2265 1 - C/R - (log 2)/(n\u00b7R)\n\n7. **Threshold**: for n \u2265 2\u00b7log 2/(R-C), we have (log 2)/(n\u00b7R) \u2264 (R-C)/(2R),\n   giving Pe \u2265 (R-C)/(2R) > 0.",
+    "keyInsights": [
+      "The core inequality Pe \u2265 (log M - nC - log 2)/log M is purely algebraic from Fano + multi-letter: all the information-theoretic content is encapsulated in the two axioms, and the rest is just arithmetic.",
+      "The bound 1 - C/R - log2/(nR) approaches 1 - C/R = (R-C)/R as n \u2192 \u221e. The threshold n \u2265 \u23082\u00b7log2/(R-C)\u2309 is the smallest n at which the lower bound first exceeds half its asymptotic value (R-C)/R.",
+      "The monotonicity lemma sub_div_mono (f(x)=(x-k)/x is increasing) connects the bound at n\u00b7R (computable from R,C,n) to the bound at log M (what the proof gives), since log M \u2265 n\u00b7R by hypothesis.",
+      "The two axioms have a natural asymmetry: fano_for_block_code is combinatorial (product distribution setup), while the multi_letter bound is information-theoretic (chain rule). Both are finite statements over Fin-types, not limits.",
+      "The error floor \u03b4 = (R-C)/(2R) is a factor of 2 below the asymptotic value (R-C)/R. A tighter analysis gives \u03b4 = (R-C)/R - log2/(nR), which approaches (R-C)/R. The factor-of-2 threshold gives a clean explicit N\u2080."
+    ],
+    "prerequisites": [
+      "Shannon's channel capacity and coding theorem setup",
+      "Fano's inequality (proved in OQ-03, bridged in OQ-02-OQ-01)",
+      "Binary entropy upper bound h(p) \u2264 log 2 (OQ-04)",
+      "Real analysis: monotonicity of log, field arithmetic"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Module documentation and imports. Imports ShannonChannelCoding.lean (DMChannel, BlockCode, channelCapacity) and ShannonChannelCodingOQ04.lean (binary entropy h_le_log_two)."
+    },
+    {
+      "id": "supporting-lemmas",
+      "title": "Supporting Lemmas",
+      "startLine": 31,
+      "endLine": 65,
+      "summary": "Three supporting lemmas: (1) log(M-1) \u2264 log M for M \u2265 2; (2) 0 < log M when M \u2265 2; (3) monotonicity of f(x)=(x-k)/x for increasing x with fixed k \u2265 0.",
+      "mathContext": "$\\log(M-1) \\leq \\log M$ for $M \\geq 2$; $f(x) = (x-k)/x$ increasing"
+    },
+    {
+      "id": "core-inequality",
+      "title": "Core Converse Inequality",
+      "startLine": 66,
+      "endLine": 111,
+      "summary": "The key algebraic result: given Fano bound H_cond \u2264 h(Pe)+Pe\u00b7log(M-1) and multi-letter bound log M - H_cond \u2264 nC, derives Pe \u2265 (log M - nC - log 2)/log M. Also provides rate form and positivity condition.",
+      "mathContext": "$P_e \\geq \\frac{\\log M - nC - \\log 2}{\\log M}$"
+    },
+    {
+      "id": "threshold",
+      "title": "Threshold Dimension and Error Floor",
+      "startLine": 112,
+      "endLine": 133,
+      "summary": "Proves that for n \u2265 \u23082\u00b7log 2/(R-C)\u2309 (condition: 2\u00b7log 2 \u2264 n\u00b7(R-C)), the error lower bound is at least (R-C)/(2R). Also proves \u03b4 > 0 when R > C.",
+      "mathContext": "$n \\geq \\lceil 2\\log 2/(R-C) \\rceil \\Rightarrow P_e \\geq (R-C)/(2R)$"
+    },
+    {
+      "id": "axioms",
+      "title": "The Two Axioms",
+      "startLine": 134,
+      "endLine": 179,
+      "summary": "Two axioms capturing the non-algebraic content: fano_for_block_code (Fano inequality for n-letter product distribution, pe \u2208 [0,1]) and multi_letter_from_fano (consequence of fano axiom). Documents proof sketches for both.",
+      "mathContext": "$H(X|Y^n) \\leq h(P_e) + P_e \\log(M-1)$; $I(X;Y^n) \\leq nC$"
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Converse Theorems",
+      "startLine": 180,
+      "endLine": 277,
+      "summary": "Two main results: converse_from_axioms (direct integration giving Pe \u2265 (logM-nC-log2)/logM) and channel_coding_converse_from_fano (existential statement \u2203 \u03b4 > 0 bounding Pe for large n).",
+      "mathContext": "$\\exists \\delta > 0, \\forall n \\geq N_0, P_e \\geq \\delta$ when $R > C$"
+    }
+  ],
+  "conclusion": {
+    "summary": "This proof formalizes all algebraic steps in the channel coding converse with 0 sorries. The 10 proved theorems form a complete chain from Fano's inequality and multi-letter capacity to an explicit error floor (R-C)/(2R) with an explicit threshold block length \u23082\u00b7log 2/(R-C)\u2309. The two remaining axioms are non-algebraic: Fano for the block code product distribution, and the multi-letter capacity inequality via the chain rule. Both are finite-type statements requiring only combinatorial setup to formalize fully.",
+    "implications": "With these algebraic foundations in place, eliminating the two axioms requires: (1) connecting FanoInequality.fano_theorem (proved in OQ-03) to the block code product distribution P(X,Y^n); and (2) formalizing the chain rule I(X;Y\u2081,...,Y\u2099) \u2264 \u2211 I(X\u1d62;Y\u1d62) for product channels. Neither requires deep new mathematics \u2014 both are finite combinatorial arguments. This provides a clear roadmap to a fully axiom-free converse proof in Lean 4.",
+    "openQuestions": [
+      "Formalize the n-letter product distribution P(X=m, Y^n=y) = (1/M)\u00b7\u220f\u2c7c W(encode(m,j), y\u2c7c) and connect it to FanoInequality.fano_theorem to eliminate fano_for_block_code",
+      "Prove the chain rule I(X;Y\u2081,...,Y\u2099) \u2264 \u2211 I(X\u1d62;Y\u1d62) for memoryless channels to eliminate the multi-letter bound axiom",
+      "Tighten the error floor: prove Pe \u2265 (R-C)/R - log2/(nR) for all n (not just n above threshold)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "shannon-channel-coding-oq-03",
+      "relationship": "uses",
+      "description": "fano_for_block_code axiom is grounded in fano_theorem from OQ-03"
+    },
+    {
+      "targetId": "shannon-channel-coding-oq-02-oq-01",
+      "relationship": "uses",
+      "description": "OQ-02-OQ-01 bridges Fano to the project's conditional entropy; this file uses the same Fano infrastructure"
+    },
+    {
+      "targetId": "shannon-channel-coding-oq-04",
+      "relationship": "uses",
+      "description": "Uses h_le_log_two (binary entropy \u2264 log 2) from the binary entropy formalization"
+    },
+    {
+      "targetId": "shannon-channel-coding",
+      "relationship": "reduces",
+      "description": "Proves channel_coding_converse_from_fano, which corresponds to the channel_coding_converse axiom in ShannonChannelCoding.lean"
+    },
+    {
+      "targetId": "shannon-channel-coding-oq-02",
+      "relationship": "extends",
+      "description": "Extends OQ-02 (achievability direction) by formalizing the converse direction"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.ShannonChannelCoding",
+      "Proofs.ShannonChannelCodingOQ04"
+    ],
+    "opens": [
+      "Real",
+      "InformationTheory",
+      "InformationTheory.BinaryEntropy",
+      "InformationTheory.ChannelCoding"
+    ],
+    "namespace": "ChannelCodingConverse",
+    "lineCount": 277,
+    "axiomCount": 2,
+    "sorries": 0,
+    "path": "Proofs/ShannonChannelCodingOQ02OQ03.lean",
+    "theoremCount": 10,
+    "definitionCount": 0
+  },
+  "sorries": 0
+}

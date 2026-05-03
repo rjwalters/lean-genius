@@ -1,0 +1,167 @@
+[
+  {
+    "id": "ann-converse-overview",
+    "proofId": "shannon-channel-coding-oq-02-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "concept",
+    "title": "Algebraic Core of the Converse",
+    "content": "The channel coding converse is sometimes presented as a limiting argument, but its mathematical substance is entirely algebraic: given three inequalities (Fano, multi-letter capacity, h(Pe) \u2264 log 2), one derives Pe \u2265 (log M - nC - log 2)/log M by simple rearrangement. This file formalizes exactly that algebraic core. The two 'hard' steps (Fano for block codes, chain rule for capacity) are axiomatized with proof sketches, making explicit what remains to be formalized.",
+    "mathContext": "The argument: $\\log M - nC \\leq H(X|Y^n) \\leq h(P_e) + P_e \\log(M-1) \\leq \\log 2 + P_e \\log M$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fano's inequality",
+      "multi-letter capacity",
+      "algebraic proof structure"
+    ],
+    "prerequisites": [
+      "Fano's inequality (OQ-03)",
+      "Binary entropy bound (OQ-04)"
+    ]
+  },
+  {
+    "id": "ann-log-pred-le",
+    "proofId": "shannon-channel-coding-oq-02-oq-03",
+    "range": {
+      "startLine": 44,
+      "endLine": 53
+    },
+    "type": "technique",
+    "title": "log(M-1) \u2264 log M: Monotonicity with Positivity Check",
+    "content": "Bounding Pe\u00b7log(M-1) by Pe\u00b7log M requires log(M-1) \u2264 log M, which uses Real.log_le_log (monotonicity). The key hypothesis is M-1 > 0, which requires M \u2265 2 (not just M \u2265 1). For M = 1 there is only one codeword and no communication takes place.",
+    "mathContext": "Real.log_le_log : 0 < x \u2192 x \u2264 y \u2192 log x \u2264 log y",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "real logarithm monotonicity",
+      "Lean natural number casting"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-sub-div-mono",
+    "proofId": "shannon-channel-coding-oq-02-oq-03",
+    "range": {
+      "startLine": 56,
+      "endLine": 65
+    },
+    "type": "technique",
+    "title": "Monotonicity of (x-k)/x via Division Iff",
+    "content": "The function f(x) = (x-k)/x = 1 - k/x is increasing for x > 0, k \u2265 0: as x grows, k/x shrinks. This is used to compare the bound (logM - nC - log2)/logM with the bound (nR - nC - log2)/(nR) when logM \u2265 nR. After cross-multiplying with div_le_div_iff, the goal becomes (a-k)\u00b7b \u2264 (b-k)\u00b7a, which simplifies to k\u00b7a \u2264 k\u00b7b, handled by nlinarith.",
+    "mathContext": "$f(x) = (x-k)/x$ increasing iff $k \\geq 0$; cross-multiply: $(a-k)b \\leq (b-k)a \\Leftrightarrow ka \\leq kb$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone functions",
+      "div_le_div_iff"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-core-bound",
+    "proofId": "shannon-channel-coding-oq-02-oq-03",
+    "range": {
+      "startLine": 70,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Core Converse Inequality: Five-Step Algebraic Chain",
+    "content": "The theorem converse_pe_lower_bound formalizes the full algebraic argument in five steps:\n1. Combine multi-letter (H_cond \u2265 logM - nC) with Fano (H_cond \u2264 h(Pe)+Pe\u00b7log(M-1))\n2. Apply h(Pe) \u2264 log 2 (from h_le_log_two in OQ-04)\n3. Apply Pe\u00b7log(M-1) \u2264 Pe\u00b7log M (from log_pred_le_log, uses Pe \u2265 0)\n4. Combine: logM - nC \u2264 log 2 + Pe\u00b7logM\n5. Rearrange and divide by logM > 0: Pe \u2265 (logM-nC-log2)/logM\n\nThe div_le_iff tactic is used for the final division step.",
+    "mathContext": "$P_e \\geq \\frac{\\log M - nC - \\log 2}{\\log M} = 1 - \\frac{C}{R} - \\frac{\\log 2}{nR}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fano's inequality",
+      "binary entropy bound",
+      "error probability"
+    ],
+    "prerequisites": [
+      "h_le_log_two (OQ-04)",
+      "log_pred_le_log (this file)"
+    ]
+  },
+  {
+    "id": "ann-rate-form",
+    "proofId": "shannon-channel-coding-oq-02-oq-03",
+    "range": {
+      "startLine": 86,
+      "endLine": 101
+    },
+    "type": "technique",
+    "title": "Rate Form via Field Simplification",
+    "content": "The rate form Pe \u2265 1 - C/R - log2/(nR) is algebraically equivalent to the raw bound (logM-nC-log2)/logM when R = logM/n. The proof uses field_simp (to clear denominators, given R \u2260 0 and n \u2260 0) followed by ring (to verify the polynomial identity). This is a recurring pattern when converting between 'absolute' (logM-based) and 'rate' (R-based) forms of Shannon bounds.",
+    "mathContext": "With $R = \\log M/n$: $1 - C/R - \\log 2/(nR) = (\\log M - nC - \\log 2)/\\log M$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "field_simp tactic",
+      "rate vs absolute form"
+    ],
+    "prerequisites": [
+      "converse_pe_lower_bound"
+    ]
+  },
+  {
+    "id": "ann-threshold",
+    "proofId": "shannon-channel-coding-oq-02-oq-03",
+    "range": {
+      "startLine": 112,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "Explicit Threshold Dimension N\u2080 = \u23082\u00b7log 2/(R-C)\u2309",
+    "content": "The threshold condition 2\u00b7log 2 \u2264 n\u00b7(R-C) ensures the error lower bound 1-C/R-log2/(nR) is at least (R-C)/(2R). The proof: the bound minus (R-C)/(2R) equals (R-C)/(2R) - log2/(nR), which is non-negative iff n\u00b7(R-C)/2 \u2265 log2, i.e., n\u00b7(R-C) \u2265 2\u00b7log2.\n\nFor a rate-1 bit/channel-use (R=1) and capacity C=0.9 bits: N\u2080 = \u23082\u00b7log2/(1-0.9)\u2309 = \u23082\u00b7log2/0.1\u2309 = \u230814\u00b7log2\u2309 \u2248 10 uses. At N\u2080, Pe \u2265 5%.",
+    "mathContext": "$n \\geq \\lceil 2\\log 2/(R-C) \\rceil \\Leftrightarrow n(R-C) \\geq 2\\log 2 \\Rightarrow P_e \\geq (R-C)/(2R)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "block length threshold",
+      "explicit converse bound"
+    ],
+    "prerequisites": [
+      "converse_pe_lower_bound_rate"
+    ]
+  },
+  {
+    "id": "ann-axiom-fano",
+    "proofId": "shannon-channel-coding-oq-02-oq-03",
+    "range": {
+      "startLine": 147,
+      "endLine": 179
+    },
+    "type": "concept",
+    "title": "Axiom: Fano for Block Codes \u2014 What's Missing",
+    "content": "The fano_for_block_code axiom captures what's needed from OQ-03's fano_theorem but not yet connected. The connection requires:\n1. Defining the joint distribution P(X=m, Y^n=y) = (1/M)\u00b7\u220f\u2c7c W(encode(m,j), y\u2c7c) as a fintype function\n2. Proving it sums to 1 and is non-negative\n3. Connecting the 'formula Pe' from fano_theorem to the average error probability formula\n\nStep 3 uses formula_pe_ge_map_pe (already proved in OQ-03) and the fact that average error \u2264 MAP error. All steps are finite combinatorics.",
+    "mathContext": "$P(X=m, Y^n=y) = \\frac{1}{M} \\prod_j W(\\text{encode}(m,j), y_j)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "product distribution",
+      "n-letter channel",
+      "Fano theorem (OQ-03)"
+    ],
+    "prerequisites": [
+      "FanoInequality.fano_theorem (OQ-03)"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "shannon-channel-coding-oq-02-oq-03",
+    "range": {
+      "startLine": 201,
+      "endLine": 244
+    },
+    "type": "concept",
+    "title": "Main Converse: Combining Axioms with Algebraic Chain",
+    "content": "The main theorem channel_coding_converse_from_fano assembles three pieces:\n1. fano_for_block_code \u2192 get H_cond, hPe0, hPe1, h_fano, h_multi\n2. converse_pe_lower_bound \u2192 Pe \u2265 (logM-nC-log2)/logM (algebraic)\n3. sub_div_mono + converse_threshold_dimension \u2192 Pe \u2265 (R-C)/(2R)\n\nThe sub_div_mono step connects the bound at log M (what step 2 gives) to the bound at nR (what step 3 uses), via monotonicity of (x-k)/x and the hypothesis logM \u2265 nR.",
+    "mathContext": "Chain: $(R-C)/(2R) \\leq (nR-nC-\\log 2)/(nR) \\leq (\\log M-nC-\\log 2)/\\log M \\leq P_e$",
+    "significance": "key",
+    "relatedConcepts": [
+      "converse proof assembly",
+      "monotonicity bridging",
+      "existential theorem"
+    ],
+    "prerequisites": [
+      "fano_for_block_code",
+      "converse_pe_lower_bound",
+      "sub_div_mono",
+      "converse_threshold_dimension"
+    ]
+  }
+]
