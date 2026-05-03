@@ -469,4 +469,46 @@ theorem gpfConsecutive_bertrand (n : ℕ) (hn : 1 ≤ n) :
   · rwa [hsum]
   · exact gpfConsecutive_eq_of_prime_right n (p - n) hn (hsum ▸ hp_prime)
 
+/-
+## Max Formula and Smooth-Number Reformulation
+-/
+
+/-- **Max Formula**: P(n,k) equals the supremum of individual term GPFs.
+    The prime factors of n(n+1)···(n+k) are exactly the union of prime factors
+    of each term, so the greatest prime factor of the product equals the maximum
+    greatest prime factor of the individual terms.
+
+    Consequence: P(n,k) > T iff some term n+i (i ≤ k) has a prime factor > T.
+    This connects the Erdős conjecture to the density of windows where all k+1
+    consecutive integers are T-smooth (have no prime factor > T). -/
+theorem gpfConsecutive_eq_sup_range (n k : ℕ) (hn : 2 ≤ n) :
+    gpfConsecutive n k = (Finset.range (k + 1)).sup (fun i => greatestPrimeFactor (n + i)) := by
+  have hprod_ge : 2 ≤ consecutiveProduct n k :=
+    le_trans hn (consecutiveProduct_ge_n n k (by omega))
+  apply Nat.le_antisymm
+  · -- gpfConsecutive n k ≤ sup: the product's GPF divides some term n+i, so ≤ GPF(n+i) ≤ sup
+    obtain ⟨i, hi_lt, hi_dvd⟩ :=
+      prime_dvd_consecutive_range n k _ (gpf_prime _ hprod_ge) (gpf_dvd _ hprod_ge)
+    exact le_trans (gpf_ge_prime_dvd _ _ (by omega) (gpf_prime _ hprod_ge) hi_dvd)
+                   (Finset.le_sup (Finset.mem_range.mpr hi_lt))
+  · -- sup ≤ gpfConsecutive n k: for each i, GPF(n+i) | n+i | product, so ≤ GPF(product)
+    apply Finset.sup_le
+    intro i hi
+    rw [Finset.mem_range] at hi
+    exact gpf_ge_prime_dvd _ _ hprod_ge (gpf_prime _ (by omega))
+      (Nat.dvd_trans (gpf_dvd _ (by omega)) (dvd_consecutiveProduct_term n k i (by omega)))
+
+/-- **Smooth-Window Reformulation**: P(n,k) ≤ t iff all k+1 consecutive integers n+i (i ≤ k)
+    have greatest prime factor ≤ t (i.e., are t-smooth).
+
+    This reformulates "n is a bad case for the Erdős conjecture" as "all consecutive integers
+    in the window [n, n+k] are t-smooth." The density of such smooth windows → 0 as k → ∞
+    (by smooth number theory), which is the key to proving the conjecture. -/
+theorem gpfConsecutive_le_iff (n k : ℕ) (hn : 2 ≤ n) (t : ℕ) :
+    gpfConsecutive n k ≤ t ↔ ∀ i ≤ k, greatestPrimeFactor (n + i) ≤ t := by
+  rw [gpfConsecutive_eq_sup_range n k hn, Finset.sup_le_iff]
+  constructor
+  · intro h i hi; exact h i (Finset.mem_range.mpr (by omega))
+  · intro h i hi; rw [Finset.mem_range] at hi; exact h i (by omega)
+
 end Erdos1201
