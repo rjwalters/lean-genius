@@ -272,7 +272,7 @@ theorem erdos_1201_half_squared (η : ℝ) (hη : 0 < η) :
     The window [n, 2n] always contains a prime exceeding n. -/
 theorem gpfConsecutive_self_gt (n : ℕ) (hn : 1 ≤ n) :
     n < gpfConsecutive n n := by
-  obtain ⟨p, hp_prime, hn_lt, _⟩ := Nat.exists_prime_lt_and_le_two_mul n (by omega)
+  obtain ⟨p, hp_prime, hn_lt, hp_le⟩ := Nat.exists_prime_lt_and_le_two_mul n (by omega)
   -- p ∈ (n, 2n], so p = n + (p - n) with 1 ≤ p - n ≤ n
   have h_dvd : p ∣ consecutiveProduct n n := by
     unfold consecutiveProduct
