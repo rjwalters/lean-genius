@@ -1,0 +1,134 @@
+{
+  "id": "chebyshev-bounds-oq-04",
+  "title": "Chebyshev's Second Function: ψ(n) Bounds",
+  "slug": "chebyshev-bounds-oq-04",
+  "description": "The second Chebyshev function ψ(n) = Σ_{k ≤ n} Λ(k) sums the von Mangoldt function Λ over all integers up to n. Unlike the first Chebyshev function θ which sums log p over primes, ψ includes all prime powers p^j. This entry proves θ(n) ≤ ψ(n) (directly from the subset structure), derives the lower bound ψ(2n) - ψ(n) ≥ log(n+1) from Bertrand's postulate, and axiomatizes the upper bound ψ(n) ≤ 2n·log 2 and the Prime Number Theorem equivalence ψ(n)/n → 1.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-03",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/ChebyshevBoundsOQ04.lean",
+    "tags": [
+      "number-theory",
+      "chebyshev-bounds",
+      "von-mangoldt",
+      "prime-number-theorem",
+      "bertrand-postulate",
+      "analytic-number-theory"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-05-03",
+    "axiomCount": 4,
+    "assumptions": "4 axioms: (1) chebyshevPsi_doubling_le — ψ(2n) − ψ(n) ≤ 2n·log 2 via the central binomial coefficient C(2n,n) ≤ 4^n; (2) chebyshevPsi_upper_bound — ψ(n) ≤ 2n·log 2 by telescoping the doubling lemma; (3) chebyshevPsi_asymptotic — ψ(n)/n → 1, the Prime Number Theorem for ψ; (4) pnt_equivalence — ψ(n)/n → 1 ↔ π(n) ~ n/log n, the equivalence of PNT forms.",
+    "lineCount": 186,
+    "theoremCount": 8,
+    "definitionCount": 2,
+    "originalContributions": [
+      "Definition of the second Chebyshev function ψ(n) = Σ_{k ≤ n} Λ(k) using Mathlib's vonMangoldt function",
+      "Proof that θ(n) ≤ ψ(n): rewrites log p as vonMangoldt p for primes (chebyshevThetaOQ_eq_sumVonMangoldt), then uses subset sum monotonicity",
+      "Proof of chebyshevPsi_doubling_lower: ψ(2n) − ψ(n) ≥ log(n+1) from Bertrand's postulate — the Bertrand prime p in (n, 2n] contributes Λ(p) = log p ≥ log(n+1) to the difference",
+      "Summary theorem chebyshevPsi_bounds combining θ ≤ ψ and the Bertrand lower bound"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The second Chebyshev function ψ(x) = Σ_{p^k ≤ x} log p was introduced by Chebyshev alongside θ(x) = Σ_{p ≤ x} log p. While θ counts primes with logarithmic weight, ψ also counts prime powers, making it analytic ally more tractable: ψ(x) = Σ_p ⌊log_p(x)⌋ · log p, which connects to the logarithmic derivative of the Riemann zeta function via ψ(x) = -Σ_ρ x^ρ/ρ + x - log(2π) - ½log(1 - x^{-2}) (Riemann's explicit formula). The Prime Number Theorem — proved independently by Hadamard and de la Vallée Poussin in 1896 — is equivalent to ψ(x) ~ x.",
+    "problemStatement": "Define the second Chebyshev function ψ(n) = Σ_{k ≤ n} Λ(k) where Λ is the von Mangoldt function, and prove:\n\n1. **θ(n) ≤ ψ(n)**: the first Chebyshev function is bounded by the second\n2. **ψ(2n) − ψ(n) ≥ log(n+1)** for n ≥ 1: the Bertrand lower bound on increments\n3. **ψ(n) ≤ 2n·log 2**: the Chebyshev upper bound (axiomatized)\n4. **ψ(n)/n → 1**: the Prime Number Theorem for ψ (axiomatized)",
+    "proofStrategy": "The bound θ(n) ≤ ψ(n) follows cleanly: for any prime p ≤ n, Λ(p) = log p, so the sum defining θ is a sub-sum of ψ with the same summand (after rewriting via vonMangoldt_apply_prime). Since Λ(k) ≥ 0 for all k, adding more terms only increases the sum.\n\nThe lower bound ψ(2n) − ψ(n) ≥ log(n+1) uses Bertrand's postulate: there exists a prime p with n < p ≤ 2n (Mathlib's Nat.exists_prime_lt_and_le_two_mul_add_one). Since p > n, we have log p ≥ log(n+1). Since p ∈ range(2n+1) but p ∉ range(n+1), its contribution Λ(p) = log p appears in ψ(2n) but not ψ(n), giving ψ(2n) − ψ(n) ≥ Λ(p) ≥ log(n+1).\n\nThe upper bound ψ(n) ≤ 2n·log 2 follows by telescoping: applying the doubling lemma ψ(m) − ψ(m/2) ≤ m·log 2 repeatedly, the geometric series Σ m·2^{-k} converges to 2m. The doubling lemma itself follows from the central binomial estimate: prime powers in (m/2, m] divide C(m, ⌊m/2⌋) ≤ 2^m.",
+    "keyInsights": [
+      "The key identity vonMangoldt_apply_prime (Λ(p) = log p for primes) allows rewriting θ as a sum of vonMangoldt values over primes, making the θ ≤ ψ comparison immediate via Finset.sum_le_sum_of_subset_of_nonneg",
+      "Bertrand's postulate gives a concrete witness for the gap ψ(2n) − ψ(n): the Bertrand prime p falls in range(2n+1) \\ range(n+1), contributing Λ(p) = log p ≥ log(n+1) to the difference",
+      "The difference ψ(n) − θ(n) consists of contributions from prime powers p^j with j ≥ 2, each contributing log p. The total O(√n·log n) is asymptotically negligible compared to ψ(n) ~ n",
+      "The equivalence ψ(n) ~ n ↔ π(n) ~ n/log n (the two forms of PNT) is a classical result via Abel summation / Mertens' theorem; axiomatizing it captures the statement without the analytic machinery"
+    ],
+    "prerequisites": [
+      "Number theory (von Mangoldt function, prime powers, primorial)",
+      "Real analysis (logarithms, summation by parts)",
+      "Bertrand's postulate",
+      "Mathlib: ArithmeticFunction.vonMangoldt, vonMangoldt_apply_prime, vonMangoldt_nonneg"
+    ]
+  },
+  "conclusion": {
+    "summary": "This entry defines the second Chebyshev function ψ(n) in Lean 4 using Mathlib's von Mangoldt function, proves the key inequality θ(n) ≤ ψ(n) from the subset structure of the defining sums, and establishes the Bertrand lower bound ψ(2n) − ψ(n) ≥ log(n+1). The Chebyshev upper bound and PNT equivalence are axiomatized with proof sketches.",
+    "implications": "The second Chebyshev function ψ is the most analytically tractable of the prime-counting functions: its explicit formula connects it directly to zeros of the Riemann zeta function. Proving ψ(n) ~ n is equivalent to proving the Prime Number Theorem, and the Riemann Hypothesis is equivalent to the error term |ψ(n) − n| = O(√n · log²n).",
+    "openQuestions": [
+      "Prove chebyshevPsi_upper_bound in Lean via the geometric series telescoping argument: formalize ψ(n) = Σ_{k=0}^{K} [ψ(n/2^k) − ψ(n/2^{k+1})] + ψ(n/2^K) where n/2^K ≤ 1",
+      "Prove the full PNT ψ(n)/n → 1 from scratch in Lean 4 — currently requires either complex analysis of ζ(s) or an elementary proof (Selberg/Erdős 1949 style)",
+      "Formalize the explicit formula ψ(x) = x − Σ_ρ x^ρ/ρ − log(2π) connecting ψ to nontrivial zeros of ζ(s)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-psi-definition",
+      "title": "Definitions: ψ(n) and θ(n)",
+      "startLine": 36,
+      "endLine": 63,
+      "description": "Defines chebyshevPsi n = Σ_{k ∈ range(n+1)} vonMangoldt k and chebyshevThetaOQ n = Σ_{p prime ≤ n} log p. Proves non-negativity of both (chebyshevPsi_nonneg, chebyshevThetaOQ_nonneg) and the key identity vonMangoldt_prime_eq: Λ(p) = log p for primes."
+    },
+    {
+      "id": "sec-theta-le-psi",
+      "title": "θ(n) ≤ ψ(n)",
+      "startLine": 64,
+      "endLine": 99,
+      "description": "Proves chebyshevTheta_le_chebyshevPsi via two steps: (1) chebyshevThetaOQ_eq_sumVonMangoldt rewrites log p as vonMangoldt p for primes using Finset.sum_congr; (2) theta_le_psi_via_vonMangoldt applies Finset.sum_le_sum_of_subset_of_nonneg since the prime filter is a subset of the full range."
+    },
+    {
+      "id": "sec-upper-bound",
+      "title": "Upper Bound ψ(n) ≤ 2n·log 2",
+      "startLine": 100,
+      "endLine": 119,
+      "description": "Axiomatizes chebyshevPsi_doubling_le (the key step: ψ(2n) − ψ(n) ≤ 2n·log 2 from the central binomial coefficient C(2n,n) ≤ 4^n) and chebyshevPsi_upper_bound (the full bound by geometric series telescoping)."
+    },
+    {
+      "id": "sec-lower-bound",
+      "title": "Lower Bound from Bertrand's Postulate",
+      "startLine": 120,
+      "endLine": 156,
+      "description": "Proves chebyshevPsi_doubling_lower: ψ(2n) − ψ(n) ≥ log(n+1) for n ≥ 1. Uses Bertrand's postulate (Nat.exists_prime_lt_and_le_two_mul_add_one) to find a prime p ∈ (n, 2n]. The prime p contributes vonMangoldt p = log p ≥ log(n+1) to ψ(2n) but not to ψ(n), so the difference is bounded below by Finset.single_le_sum."
+    },
+    {
+      "id": "sec-pnt",
+      "title": "PNT Equivalence (Axiomatized)",
+      "startLine": 157,
+      "endLine": 184,
+      "description": "Axiomatizes chebyshevPsi_asymptotic (ψ(n)/n → 1, the PNT for ψ) and pnt_equivalence (ψ(n)/n → 1 ↔ π(n) ~ n/log n). Summary theorem chebyshevPsi_bounds packages θ ≤ ψ and the Bertrand lower bound."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "chebyshev-bounds",
+      "relationship": "extends",
+      "description": "ChebyshevBounds proves bounds on the first Chebyshev function θ(n) and π(n); this entry introduces the second Chebyshev function ψ(n) which extends θ by including prime powers"
+    },
+    {
+      "targetId": "chebyshev-pnt-bridge",
+      "relationship": "related",
+      "description": "The PNT Bridge connects Chebyshev bounds toward the full Prime Number Theorem; the PNT equivalence axiomatized here (ψ(n)/n → 1 ↔ π(n) ~ n/log n) is central to that bridge"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "uses",
+      "description": "Bertrand's postulate (existence of a prime in (n, 2n]) is the key tool for the lower bound proof"
+    }
+  ],
+  "leanFile": {
+    "namespace": "ChebyshevBoundsOQ04",
+    "lineCount": 186,
+    "path": "Proofs/ChebyshevBoundsOQ04.lean",
+    "axiomCount": 4,
+    "theoremCount": 8,
+    "definitionCount": 2,
+    "sorries": 0,
+    "imports": [
+      "Mathlib.NumberTheory.VonMangoldt",
+      "Mathlib.NumberTheory.Primorial",
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.NumberTheory.Bertrand",
+      "Mathlib.Data.Nat.Choose.Central",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Nat", "Finset", "ArithmeticFunction"]
+  },
+  "sorries": 0
+}
