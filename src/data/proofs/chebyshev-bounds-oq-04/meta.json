@@ -39,7 +39,8 @@
       "The key identity vonMangoldt_apply_prime (Λ(p) = log p for primes) allows rewriting θ as a sum of vonMangoldt values over primes, making the θ ≤ ψ comparison immediate via Finset.sum_le_sum_of_subset_of_nonneg",
       "Bertrand's postulate gives a concrete witness for the gap ψ(2n) − ψ(n): the Bertrand prime p falls in range(2n+1) \\ range(n+1), contributing Λ(p) = log p ≥ log(n+1) to the difference",
       "The difference ψ(n) − θ(n) consists of contributions from prime powers p^j with j ≥ 2, each contributing log p. The total O(√n·log n) is asymptotically negligible compared to ψ(n) ~ n",
-      "The equivalence ψ(n) ~ n ↔ π(n) ~ n/log n (the two forms of PNT) is a classical result via Abel summation / Mertens' theorem; axiomatizing it captures the statement without the analytic machinery"
+      "The equivalence ψ(n) ~ n ↔ π(n) ~ n/log n (the two forms of PNT) is a classical result via Abel summation / Mertens' theorem; axiomatizing it captures the statement without the analytic machinery",
+      "The Riemann Hypothesis is equivalent to the sharp error bound |ψ(n) − n| = O(√n · log²n); the current axiomatized upper ψ(n) ≤ 2n·log 2 and Bertrand lower bounds are far weaker, leaving the region between the Chebyshev estimates and RH as a major open frontier"
     ],
     "prerequisites": [
       "Number theory (von Mangoldt function, prime powers, primorial)",

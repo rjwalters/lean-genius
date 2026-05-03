@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-cheboq04-header",
+    "proofId": "chebyshev-bounds-oq-04",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "context",
+    "title": "The Second Chebyshev Function: From θ to ψ",
+    "content": "The module docstring explains ψ(n) as the natural extension of θ(n): where θ sums log p over primes p ≤ n, ψ sums log p over all prime powers p^j ≤ n. Since von Mangoldt Λ(p) = log p and Λ(p^j) = log p for all j ≥ 1, the definition ψ(n) = Σ_{k ≤ n} Λ(k) neatly unifies both. The difference ψ(n) - θ(n) counts contributions from prime squares, cubes, etc. — only O(√n · log n) total, so asymptotically negligible. The key results listed (θ ≤ ψ, upper bound ψ ≤ 2n·log 2, Bertrand lower bound, PNT equivalence) build from most concrete to most profound.",
+    "mathContext": "$\\psi(n) = \\sum_{k=1}^n \\Lambda(k) = \\sum_{p^j \\leq n} \\log p$ where $\\Lambda(k) = \\log p$ if $k = p^j$ for some prime $p$ and $j \\geq 1$, else $\\Lambda(k) = 0$. The excess $\\psi(n) - \\theta(n) = \\sum_{p^j \\leq n,\\, j \\geq 2} \\log p = O(\\sqrt{n} \\log n)$.",
+    "significance": "context",
+    "relatedConcepts": ["von Mangoldt function", "first Chebyshev function θ", "prime powers", "prime number theorem"],
+    "prerequisites": ["prime factorization", "logarithms", "Chebyshev theta function"]
+  },
+  {
+    "id": "ann-cheboq04-definitions",
+    "proofId": "chebyshev-bounds-oq-04",
+    "range": { "startLine": 36, "endLine": 63 },
+    "type": "definition",
+    "title": "Definitions of ψ and θ Using Mathlib's vonMangoldt",
+    "content": "Both Chebyshev functions are defined as Finset sums over ranges. `chebyshevPsi n` sums Mathlib's `vonMangoldt k` over k ∈ range(n+1), matching the classical ψ(n) = Σ_{k ≤ n} Λ(k). `chebyshevThetaOQ n` restricts to primes in range(n+1) and sums Real.log p, giving θ(n) = Σ_{p prime, p ≤ n} log p. Both are proved non-negative: ψ via `vonMangoldt_nonneg`, and θ via `Real.log_nonneg` using p ≥ 2 for primes. The key identity `vonMangoldt_prime_eq` applies Mathlib's `vonMangoldt_apply_prime` to confirm Λ(p) = log p for primes — the bridge between the two definitions.",
+    "mathContext": "\\text{chebyshevPsi}(n) = \\sum_{k \\in \\text{range}(n+1)} \\Lambda(k), \\quad \\text{chebyshevThetaOQ}(n) = \\sum_{\\substack{p \\in \\text{range}(n+1) \\\\ p \\text{ prime}}} \\log p. \\quad \\Lambda(k) \\geq 0 \\text{ always, and } \\Lambda(p) = \\log p \\text{ for prime } p.",
+    "significance": "key",
+    "relatedConcepts": ["vonMangoldt Mathlib API", "Finset.sum over ranges", "noncomputable def", "Real.log_nonneg"],
+    "prerequisites": ["Mathlib.NumberTheory.VonMangoldt", "ArithmeticFunction.vonMangoldt", "Finset.filter"]
+  },
+  {
+    "id": "ann-cheboq04-theta-le-psi",
+    "proofId": "chebyshev-bounds-oq-04",
+    "range": { "startLine": 64, "endLine": 99 },
+    "type": "technique",
+    "title": "θ(n) ≤ ψ(n): Subset Sum Monotonicity via vonMangoldt",
+    "content": "The proof of θ(n) ≤ ψ(n) uses a two-step strategy. First, `chebyshevThetaOQ_eq_sumVonMangoldt` rewrites θ(n) by replacing log p with vonMangoldt p for each prime p, using `Finset.sum_congr` with `vonMangoldt_apply_prime`. This converts the θ sum from 'log p over primes' to 'vonMangoldt over primes'. Second, `theta_le_psi_via_vonMangoldt` applies `Finset.sum_le_sum_of_subset_of_nonneg`: since filter Nat.Prime (range n+1) ⊆ range (n+1), and vonMangoldt ≥ 0, the sum over the prime subset ≤ the sum over all of range(n+1). Chaining these two steps yields θ ≤ ψ.",
+    "mathContext": "\\theta(n) = \\sum_{p \\leq n,\\, p \\text{ prime}} \\log p = \\sum_{p \\leq n,\\, p \\text{ prime}} \\Lambda(p) \\leq \\sum_{k \\leq n} \\Lambda(k) = \\psi(n). \\text{ The inequality holds since } \\Lambda(k) \\geq 0 \\text{ and the prime filter is a subset.}",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_le_sum_of_subset_of_nonneg", "Finset.filter_subset", "Finset.sum_congr", "vonMangoldt_apply_prime"],
+    "prerequisites": ["Mathlib subset sum monotonicity", "filter subset lemma", "vonMangoldt_apply_prime"]
+  },
+  {
+    "id": "ann-cheboq04-upper-bound-axiom",
+    "proofId": "chebyshev-bounds-oq-04",
+    "range": { "startLine": 100, "endLine": 119 },
+    "type": "concept",
+    "title": "Upper Bound ψ(n) ≤ 2n·log 2 via Central Binomial Coefficients",
+    "content": "The two axioms here capture the Chebyshev upper bound. `chebyshevPsi_doubling_le` axiomatizes ψ(2n) - ψ(n) ≤ 2n·log 2: the classical proof observes that any prime power p^j in (n, 2n] divides C(2n, n) (the central binomial), and C(2n, n) ≤ 4^n = 2^{2n}, so the product of all such prime powers is ≤ 4^n, giving ψ(2n) - ψ(n) ≤ log(4^n) = 2n·log 2. The full bound `chebyshevPsi_upper_bound` follows by the telescoping argument ψ(n) = Σ_{k} [ψ(n/2^k) - ψ(n/2^{k+1})] ≤ Σ_k (n/2^k)·log 2 ≤ 2n·log 2. Both are axiomatized because the Lean formalization of the binomial coefficient argument requires careful work.",
+    "mathContext": "\\psi(2n) - \\psi(n) \\leq \\log \\binom{2n}{n} \\leq \\log 4^n = 2n \\log 2. \\text{ Telescoping: } \\psi(n) = \\sum_{k=0}^{K} [\\psi(n/2^k) - \\psi(n/2^{k+1})] \\leq \\sum_{k=0}^{K} \\frac{n}{2^k} \\log 2 < 2n \\log 2.",
+    "significance": "supporting",
+    "relatedConcepts": ["central binomial coefficient", "C(2n,n) ≤ 4^n", "telescoping sums", "Mathlib.Data.Nat.Choose.Central"],
+    "prerequisites": ["binomial coefficient bounds", "geometric series", "logarithm properties"]
+  },
+  {
+    "id": "ann-cheboq04-bertrand-lower",
+    "proofId": "chebyshev-bounds-oq-04",
+    "range": { "startLine": 120, "endLine": 156 },
+    "type": "technique",
+    "title": "Lower Bound via Bertrand's Postulate: ψ(2n) - ψ(n) ≥ log(n+1)",
+    "content": "This is the most substantial proved (non-axiom) result in the file. The proof uses Bertrand's postulate (`Nat.exists_prime_lt_and_le_two_mul_add_one`) to obtain a prime p with n < p ≤ 2n. Since p > n, we have log p ≥ log(n+1). The key step shows p contributes vonMangoldt p = log p to ψ(2n) but not to ψ(n), so the difference is at least log p ≥ log(n+1). The Lean tactic proof uses `Finset.sum_sdiff` and `Finset.single_le_sum` to extract p's contribution from the set-difference (range(2n+1) \\ range(n+1)). The calc block chains: log(n+1) ≤ log p = Λ(p) ≤ ψ(2n) - ψ(n).",
+    "mathContext": "\\text{Bertrand: } \\exists p \\text{ prime, } n < p \\leq 2n. \\text{ Then } \\log(n+1) \\leq \\log p = \\Lambda(p) \\leq \\psi(2n) - \\psi(n) \\text{ since } p \\in [1,2n] \\setminus [1,n].",
+    "significance": "key",
+    "relatedConcepts": ["Bertrand's postulate", "Nat.exists_prime_lt_and_le_two_mul_add_one", "Finset.single_le_sum", "Finset.sum_sdiff", "set difference argument"],
+    "prerequisites": ["Mathlib.NumberTheory.Bertrand", "Finset.sum_sdiff", "vonMangoldt_apply_prime", "Real.log_le_log"]
+  },
+  {
+    "id": "ann-cheboq04-pnt-axioms",
+    "proofId": "chebyshev-bounds-oq-04",
+    "range": { "startLine": 157, "endLine": 170 },
+    "type": "concept",
+    "title": "The Prime Number Theorem as an Axiom: ψ(n)/n → 1",
+    "content": "These two axioms capture the deepest results. `chebyshevPsi_asymptotic` asserts ψ(n)/n → 1 in Filter.atTop as a Lean Filter.Tendsto statement — this is the Prime Number Theorem (PNT) in its ψ-form. `pnt_equivalence` states the classical equivalence between this and the more familiar π(n) ~ n/log n form. Both are axiomatized because the full PNT proof requires either complex analysis of the Riemann zeta function (Hadamard-de la Vallée Poussin 1896) or the elementary but highly technical Selberg-Erdős proof (1949). Lean formalizations of PNT exist but are not yet in Mathlib main.",
+    "mathContext": "\\frac{\\psi(n)}{n} \\to 1 \\iff \\pi(n) \\sim \\frac{n}{\\log n}. \\text{ Both forms follow from showing } \\zeta(s) \\text{ has no zeros on } \\Re(s)=1 \\text{ (PNT criterion)}. \\text{ Equivalence proved via Abel summation.}",
+    "significance": "key",
+    "relatedConcepts": ["Prime Number Theorem", "Riemann zeta function", "Selberg-Erdős elementary proof", "Filter.Tendsto", "π(n) ~ n/log n", "Abel summation"],
+    "prerequisites": ["analytic number theory", "complex analysis basics", "Lean filter topology"]
+  },
+  {
+    "id": "ann-cheboq04-summary",
+    "proofId": "chebyshev-bounds-oq-04",
+    "range": { "startLine": 171, "endLine": 185 },
+    "type": "insight",
+    "title": "Summary Theorem: Sandwich of ψ(n) Between θ(n) and 2n·log 2",
+    "content": "The final theorem `chebyshevPsi_bounds` packages the two proved results: θ(n) ≤ ψ(n) (from the vonMangoldt subset argument) and the Bertrand lower bound ψ(n) ≥ log(n/2 + 1). The lower bound is obtained by applying `chebyshevPsi_doubling_lower` to n/2 and using non-negativity of ψ(n/2). Combined with the axiomatized upper bound, this gives the Chebyshev sandwich: log(n/2 + 1) ≤ ψ(n) ≤ 2n·log 2. Asymptotically, both bounds are Θ(n), consistent with ψ(n) ~ n (PNT). The proof uses linarith to close the lower bound from the Bertrand lemma.",
+    "mathContext": "\\log\\!\\left(\\tfrac{n}{2}+1\\right) \\leq \\psi(n) \\leq 2n \\log 2, \\quad \\theta(n) \\leq \\psi(n). \\text{ Chebyshev (1852) proved } \\frac{5}{6} n \\leq \\psi(n) \\leq \\frac{12}{10} n \\text{ (improving the constants); PNT gives } \\psi(n) \\sim n.",
+    "significance": "key",
+    "relatedConcepts": ["Chebyshev sandwich", "asymptotic equivalence", "linarith", "prime counting function bounds"],
+    "prerequisites": ["chebyshevPsi_doubling_lower", "chebyshevPsi_nonneg", "chebyshevTheta_le_chebyshevPsi"]
+  }
+]
