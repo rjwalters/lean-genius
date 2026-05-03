@@ -65,7 +65,11 @@
       "Rademacher's theorem (Lipschitz → differentiable a.e.) underpins all the integrability claims, but is used implicitly via the Wirtinger axiom",
       "LipschitzWith K f → f is continuous → f² is integrable on compact intervals; the derivative squared requires more care",
       "The unit square (piecewise-linear, Lipschitz not smooth) is the canonical non-circular example: C=4a, A=a², ratio 4πA/C² = π/4 < 1, fully proved without sorries",
-      "The SmoothClosedCurve → LipschitzClosedCurve embedding preserves circumference and area by definitional equality (rfl)"
+      "The SmoothClosedCurve → LipschitzClosedCurve embedding preserves circumference and area by definitional equality (rfl)",
+      "Lipschitz regularity (W^{1,∞}) is the natural level for the isoperimetric inequality: it covers polygons, convex bodies, and all piecewise-smooth boundaries while still supporting Fourier analysis via Sobolev embedding W^{1,∞} ↪ H¹(S¹)",
+      "The two axioms (wirtinger_ac, exists_lip_nice_reparam) are exactly the Mathlib gaps — both are classical results whose absence is a Mathlib infrastructure issue, not a mathematical open question",
+      "The degenerate case sorry (harea_zero: C=0 → A=0) has a clean measure-theoretic proof: if ∫|γ'|=0 then |γ'|=0 a.e., so γ is a.e. constant; a constant curve encloses no area by Green's theorem",
+      "The arithmetic kernel isoperimetric_from_wirtinger_bounds is extracted as a standalone lemma in the parent file and reused here — this modularity is what allows the Lipschitz generalization to cost only two axioms"
     ],
     "prerequisites": [
       "Lipschitz functions and their properties (LipschitzWith in Mathlib)",
@@ -199,6 +203,21 @@
       "targetId": "area-of-circle-oq-01-oq-03-oq-01",
       "relationship": "sibling",
       "description": "oq-01 proves arc-length reparametrization for smooth curves; this file's axiom extends it to Lipschitz"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "ancestor",
+      "description": "The original area-of-circle proof establishes SmoothClosedCurve, circumference, and area definitions that this Lipschitz extension generalizes"
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "oq-01-oq-02 explores alternative proof strategies; this file focuses on the Fourier/Wirtinger approach generalized to Lipschitz"
+    },
+    {
+      "targetId": "area-of-circle-oq-03-oq-02",
+      "relationship": "sibling",
+      "description": "oq-03-oq-02 explores geometric measure theory extensions; both address generalizations of the classical isoperimetric result beyond smooth curves"
     }
   ],
   "sorries": 6
