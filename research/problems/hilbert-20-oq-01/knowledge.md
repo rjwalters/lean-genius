@@ -87,4 +87,24 @@ Files: `proofs/Proofs/Hilbert20OQ01OQ03.lean` — 7 → 5 axioms, 2 → 0 sorrie
 
 **Net overall**: 7 → 3 axioms, 0 sorries. Remaining 3 axioms all require Sobolev/microlocal analysis.
 
+---
+
+### Session 2026-05-03 (Session 5, researcher-3) — Axiom Consolidation (-1 axiom)
+**Mode**: REVISIT
+**Outcome**: 1 axiom eliminated (3→2)
+
+`dencker_weight_exists` and `weight_implies_estimate` consolidated into `dencker_main`:
+
+- The two axioms encode a single mathematical theorem: Dencker's proof that Condition (Ψ)
+  implies a priori estimates for P*. The intermediate `DenckerWeight` object is an implementation
+  detail of the proof, not a mathematically distinct result.
+- Replacing two axioms with one `dencker_main : ConditionPsi P → HasAPrioriEstimate (formalAdjoint P) x₀`
+  captures the same content with fewer assumptions.
+- `dencker_sufficiency` simplified to `dencker_main P hpsi x₀` (single term application).
+- `DenckerWeight` structure preserved as documentation of Dencker's intermediate construction.
+
+**Net overall**: 7 → 2 axioms, 0 sorries. Remaining 2 axioms both require Sobolev/microlocal:
+- `HasAPrioriEstimate`: Sobolev a priori estimates (needs H^s spaces)
+- `dencker_main`: Dencker's weight construction + energy estimate (deep microlocal analysis)
+
 *Updated 2026-05-03*
