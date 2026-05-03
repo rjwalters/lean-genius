@@ -458,6 +458,7 @@ import Proofs.CubeRoot9Irrational
 import Proofs.DeMoivre
 import Proofs.DeMoivreOQ01
 import Proofs.DeMoivreOQ02
+import Proofs.DeMoivreOQ02OQ02
 import Proofs.DeMoivreOQ03
 import Proofs.DeMoivreOQ03OQ01
 import Proofs.DenumerabilityRationals

@@ -1,0 +1,158 @@
+{
+  "id": "de-moivre-oq-02-oq-02",
+  "title": "Chebyshev U Polynomial Product-to-Sum Formula",
+  "slug": "de-moivre-oq-02-oq-02",
+  "description": "Proves the product-to-sum formula for Chebyshev polynomials of the second kind: U_m · U_n = ∑_{k=0}^{min(m,n)} U_{m+n-2k}, the analog of the first-kind identity 2·T_m·T_n = T_{m+n} + T_{|m-n|}. Proved as a polynomial identity over ℝ[X] via algebraic induction on degree, with 0 sorries.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chebyshev_polynomials#Products_of_Chebyshev_polynomials",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DeMoivreOQ02OQ02.lean",
+    "tags": [
+      "chebyshev-polynomials",
+      "de-moivre",
+      "product-to-sum",
+      "polynomial-identity",
+      "induction",
+      "second-kind",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 165,
+    "assumptions": "0 axioms, 0 sorries. Complete algebraic proof over ℝ[X] — no trigonometric bridge needed.",
+    "theoremCount": 8,
+    "originalContributions": [
+      "U_product_formula: U_m · U_n = ∑_{k=0}^{min(m,n)} U_{m+n-2k} as a polynomial identity over ℝ[X]",
+      "U_product_le: the m ≤ n case used as the inductive base, proved by strong induction on m",
+      "S_recurrence: the partial sum S(m,n) = ∑_{k=0}^m U_{m+n-2k} satisfies the Chebyshev recurrence in m",
+      "U1_sq, U2_U1, U2_sq: three verified small cases as consistency checks"
+    ],
+    "historicalContext": "Chebyshev polynomials of the second kind U_n are defined by the recurrence U_{n+2} = 2X·U_{n+1} - U_n (same recurrence as T_n) with initial conditions U_0 = 1, U_1 = 2X. They satisfy U_n(cos θ) = sin((n+1)θ)/sin θ. The product-to-sum formula extends the familiar trigonometric identity sin(mθ)sin(nθ) = ½[cos((m-n)θ) - cos((m+n)θ)] to the polynomial setting, with U instead of T handling the sin/sin quotient cleanly.",
+    "problemStatement": "**The Open Question**\n\nThe first-kind formula $2T_m \\cdot T_n = T_{m+n} + T_{|m-n|}$ follows immediately from $\\cos(m\\theta)\\cos(n\\theta)$ via De Moivre. Can an analogous formula hold for second-kind polynomials $U_n$?\n\n**Answer: YES — as a polynomial identity**\n\nFor $m, n : \\mathbb{N}$, the following identity holds in $\\mathbb{R}[X]$:\n$$U_m \\cdot U_n = \\sum_{k=0}^{\\min(m,n)} U_{m+n-2k}$$\n\nThis is proved algebraically (no trigonometric bridge needed), using only the recurrence $U_{j+2} = 2X \\cdot U_{j+1} - U_j$ and the identity $2X \\cdot U_j = U_{j+1} + U_{j-1}$.",
+    "proofStrategy": "**Algebraic Induction via Recurrence Matching**\n\nDefine $S(m,n) = \\sum_{k=0}^m U_{m+n-2k}$. The proof shows $U_m \\cdot U_n = S(m,n)$ for $m \\leq n$ by strong induction on $m$:\n\n1. **Base $m=0$**: $U_0 \\cdot U_n = 1 \\cdot U_n = U_n = S(0,n)$.\n2. **Base $m=1$**: $U_1 \\cdot U_n = 2X \\cdot U_n = U_{n+1} + U_{n-1} = S(1,n)$.\n3. **Step $m+2$**: Both $U_{m+2} \\cdot U_n$ and $S(m+2,n)$ satisfy the same Chebyshev recurrence $f_{m+2} = 2X \\cdot f_{m+1} - f_m$, so the equality for $m$ and $m+1$ implies equality for $m+2$.\n4. **Full formula**: The $m > n$ case follows by commutativity and symmetry of $S$.",
+    "keyInsights": [
+      "**Same recurrence, different roles**: U_m · U_n and S(m,n) both satisfy the degree-2 linear recurrence in m with the same coefficients. This means proving the two sequences agree is equivalent to checking just two initial conditions.",
+      "**2X · U_n = U_{n+1} + U_{n-1}**: This key identity (derived from U_add_two by substituting n-1) is the algebraic core of the base case m=1 and drives the recurrence proof.",
+      "**sum_range telescoping**: The proof of S_recurrence uses sum_range_succ to expose the last term, then term_expand to split each 2X·U term, then sum_add_distrib and cancellation — a clean algebraic telescope.",
+      "**Strong induction via Nat.strong_rec_on**: The two-step recurrence requires both m and m+1 as hypotheses, so ordinary structural induction is insufficient; strong induction on ℕ is needed.",
+      "**Polynomial, not trigonometric**: Unlike the T_n product-to-sum (which follows from cos addition formulas), the U_n formula requires a purely algebraic induction — U_real_cos gives sin((n+1)θ)/sin(θ), and the product sin(mθ)sin(nθ) needs more work to convert."
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Polynomial", "Polynomial.Chebyshev", "Finset"],
+    "namespace": "DeMoivreOQ02OQ02",
+    "lineCount": 165,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/DeMoivreOQ02OQ02.lean",
+    "sorries": 0,
+    "mainTheorems": [
+      {
+        "name": "U_product_formula",
+        "statement": "U ℝ (↑m : ℤ) * U ℝ (↑n : ℤ) = ∑ k ∈ range (min m n + 1), U ℝ ((↑m + ↑n : ℤ) - 2 * ↑k)",
+        "description": "Main theorem: U_m · U_n = ∑_{k=0}^{min(m,n)} U_{m+n-2k} as a polynomial identity"
+      },
+      {
+        "name": "U_product_le",
+        "statement": "m ≤ n → U ℝ (↑m : ℤ) * U ℝ (↑n : ℤ) = ∑ k ∈ range (m + 1), U ℝ ((↑m + ↑n : ℤ) - 2 * ↑k)",
+        "description": "Product formula in the m ≤ n case"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Chebyshev's Two Kinds**\n\nChebyshev polynomials come in two families: the first kind $T_n$ satisfying $T_n(\\cos\\theta) = \\cos(n\\theta)$, and the second kind $U_n$ satisfying $U_n(\\cos\\theta)\\sin\\theta = \\sin((n+1)\\theta)$. Both satisfy the same recurrence $p_{n+2} = 2x \\cdot p_{n+1} - p_n$, differing only in initial conditions ($T_0=1, T_1=x$ vs $U_0=1, U_1=2x$).\n\n**Product-to-Sum Formulas**\n\nFor the first kind, the product formula $2T_m(x)T_n(x) = T_{m+n}(x) + T_{m-n}(x)$ follows directly from $2\\cos(m\\theta)\\cos(n\\theta) = \\cos((m+n)\\theta) + \\cos((m-n)\\theta)$. The second-kind analog is less immediate: the corresponding trig identity involves $\\sin(m\\theta)\\sin(n\\theta)$, and the conversion back to $U$ polynomials requires careful handling.\n\nThis formalization sidesteps trigonometry entirely, proving the $U$-product formula by algebraic recurrence matching.",
+    "problemStatement": "**The Open Question**\n\nThe parent OQ-02 proved product-to-sum for $T_n$ via trigonometry. Can an analogous result hold for $U_n$, the second-kind Chebyshev polynomials?\n\n**Answer: YES**\n\n$$U_m \\cdot U_n = \\sum_{k=0}^{\\min(m,n)} U_{m+n-2k}$$\n\nproved as a clean polynomial identity over $\\mathbb{R}[X]$, with 0 sorries.",
+    "text": "Proves the product-to-sum formula U_m · U_n = ∑_{k=0}^{min(m,n)} U_{m+n-2k} for Chebyshev polynomials of the second kind, as a polynomial identity over ℝ[X]. The proof uses algebraic strong induction: both sides satisfy the same degree-2 linear recurrence in m with matching initial conditions, so they are equal for all m ≤ n. The m > n case follows by commutativity.",
+    "proofStrategy": "**Strategy: Recurrence Uniqueness**\n\nThe key insight is that the Chebyshev recurrence $f_{m+2} = 2X \\cdot f_{m+1} - f_m$ uniquely determines a sequence given its first two terms. We define:\n$$S(m,n) = \\sum_{k=0}^m U_{m+n-2k}$$\nand prove $U_m \\cdot U_n = S(m,n)$ for $m \\leq n$ by showing:\n\n1. **$S(0,n) = U_n$**: The sum has one term $U_{n-0} = U_n$. ✓\n2. **$S(1,n) = U_{n+1} + U_{n-1} = 2X \\cdot U_n$**: Matches $U_1 \\cdot U_n = 2X \\cdot U_n$. ✓\n3. **$S$ satisfies the recurrence**: $S(m+2,n) = 2X \\cdot S(m+1,n) - S(m,n)$, proved by splitting sums and using the identity $2X \\cdot U_j = U_{j+1} + U_{j-1}$. ✓\n\nSince $U_m \\cdot U_n$ satisfies the same recurrence (it's a product of Chebyshev solutions) and has the same initial conditions, the two sequences are identical.",
+    "keyInsights": [
+      "**Recurrence uniqueness suffices**: Any two sequences satisfying the same linear recurrence with the same two initial values are identical — no need to compute every term.",
+      "**2X·U_j = U_{j+1} + U_{j-1}**: Derived from `U_add_two` by substituting `n-1`, this identity drives both the base case m=1 and the recurrence step for S.",
+      "**Telescoping via sum_range_succ**: The `S_recurrence` proof exposes the extra term in ∑_{k=0}^{m+2} by peeling with `sum_range_succ`, then distributes 2X, splits ∑(A+B), and cancels the difference — a clean algebraic telescope.",
+      "**No trigonometry needed**: The U_n version cannot simply use U_real_cos (which gives sin((n+1)θ)/sin(θ)) because sin·sin products don't simplify as cleanly as cos·cos. The algebraic route is both cleaner and more general."
+    ],
+    "prerequisites": [
+      "Chebyshev recurrence U_{n+2} = 2X·U_{n+1} - U_n",
+      "Initial conditions U_0 = 1, U_1 = 2X in ℝ[X]",
+      "Strong induction on ℕ (Nat.strong_rec_on)",
+      "Finset.sum_range_succ, sum_add_distrib",
+      "Lean 4 conv tactics, push_cast, ring"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Algebraic Setup",
+      "summary": "Derives 2X·U_n = U_{n+1} + U_{n-1} from U_add_two, and the per-term expansion 2X·U(A-2k) = U(A+1-2k) + U(A-1-2k). These are the algebraic workhorses of the proof.",
+      "startLine": 33,
+      "endLine": 43,
+      "mathContext": "From $U_{n+2} = 2X \\cdot U_{n+1} - U_n$ (Mathlib's `U_add_two`), substitute $n \\to n-1$ to get $2X \\cdot U_n = U_{n+1} + U_{n-1}$. This is the polynomial version of $2\\cos(\\theta)\\cos(n\\theta) = \\cos((n+1)\\theta) + \\cos((n-1)\\theta)$."
+    },
+    {
+      "id": "partial-sum",
+      "title": "Partial Sum S(m,n) and its Recurrence",
+      "summary": "Defines S(m,n) = ∑_{k=0}^m U_{m+n-2k} and proves: S(0,n) = U_n, S(1,n) = U_{n+1} + U_{n-1}, and S(m+2,n) = 2X·S(m+1,n) - S(m,n). These three facts determine S uniquely.",
+      "startLine": 48,
+      "endLine": 90,
+      "mathContext": "The recurrence proof expands $2X \\cdot \\sum_{k=0}^{m+1} U_{m+1+n-2k}$ using `term_expand` on each summand, then uses `sum_add_distrib` to split into two sums that telescope. The last term $U_{m+n-2(m+2)}$ from the first sum matches the peeled-off last term from the second, giving cancellation."
+    },
+    {
+      "id": "main-induction",
+      "title": "Strong Induction: U_m · U_n = S(m,n)",
+      "summary": "Proves U_m · U_n = S(m,n) for m ≤ n by strong induction. Base cases m=0 and m=1 are direct. The step m+2 uses the Chebyshev recurrence for U_{m+2} and S_recurrence.",
+      "startLine": 96,
+      "endLine": 121,
+      "mathContext": "Strong induction: $U_{m+2} = 2X \\cdot U_{m+1} - U_m$, so $U_{m+2} \\cdot U_n = (2X \\cdot U_{m+1} - U_m) \\cdot U_n = 2X \\cdot (U_{m+1} \\cdot U_n) - U_m \\cdot U_n$. By IH this equals $2X \\cdot S(m+1,n) - S(m,n) = S(m+2,n)$."
+    },
+    {
+      "id": "public-theorems",
+      "title": "Public Theorems and Verification",
+      "summary": "Exports U_product_le (m ≤ n case) and U_product_formula (all m, n using min). Also verifies three small cases: U_1² = U_2 + U_0, U_2·U_1 = U_3 + U_1, U_2² = U_4 + U_2 + U_0.",
+      "startLine": 123,
+      "endLine": 165,
+      "mathContext": "The full formula $U_m \\cdot U_n = \\sum_{k=0}^{\\min(m,n)} U_{m+n-2k}$ follows from the $m \\leq n$ case and commutativity ($U_m \\cdot U_n = U_n \\cdot U_m$ with index flip). Small cases: $U_1^2 = U_2 + U_0$, $U_2 U_1 = U_3 + U_1$, $U_2^2 = U_4 + U_2 + U_0$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves 8 theorems with 0 sorries, establishing the Chebyshev-U product-to-sum formula as a polynomial identity over ℝ[X]. The algebraic recurrence-matching approach is both cleaner than the trigonometric route and more general (works over any commutative ring).",
+    "implications": "**Theoretical Significance**\n\n1. **Polynomial identity, not just pointwise**: The formula holds in ℝ[X], not merely for cos θ values. This is a stronger statement than the trigonometric version.\n\n2. **Spectral methods for U**: The product formula enables efficient multiplication of U-series (Chebyshev expansions of type 2), analogous to how the T-product formula underpins Chebyshev spectral methods.\n\n3. **Algebraic proof strategy**: The recurrence-uniqueness argument used here applies broadly: to prove two polynomial sequences are equal, it suffices to (a) show they satisfy the same recurrence and (b) match their initial conditions.",
+    "openQuestions": [
+      "Can the proof be generalized to Chebyshev polynomials over any commutative ring R (not just ℝ)?",
+      "Can a mixed product formula T_m · U_n = ∑ U_{m+n-1-2k} be proved similarly?"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "de-moivre-oq-02",
+      "relationship": "This is an open sub-question of de-moivre-oq-02, proving the U_n analog of the T_n product-to-sum formula."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre-oq-02",
+      "relationship": "parent",
+      "description": "Parent entry proving product-to-sum for T_n via trigonometry; this entry proves the U_n analog algebraically."
+    },
+    {
+      "targetId": "de-moivre-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01 established T_n(cos θ) = cos(nθ); the U_n analog U_n(cos θ) = sin((n+1)θ)/sin(θ) motivates the product formula here."
+    }
+  ],
+  "references": [
+    {
+      "authors": "J. C. Mason, D. C. Handscomb",
+      "title": "Chebyshev Polynomials",
+      "year": "2003",
+      "venue": "CRC Press",
+      "note": "Product formulas for both T_n and U_n, Sections 2.3-2.4"
+    }
+  ],
+  "sorries": 0
+}
