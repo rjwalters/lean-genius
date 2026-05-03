@@ -1,0 +1,148 @@
+[
+  {
+    "id": "ann-koe02-digraph-defs",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": { "startLine": 49, "endLine": 71 },
+    "type": "definition",
+    "title": "DiGraph Structure: Finset-Based Directed Graphs with No Self-Loops",
+    "content": "`DiGraph V` is a simple structure: a `Finset (V×V)` of directed edges plus a proof of `noSelfLoops`. This minimalist encoding lets Lean's `Finset` machinery handle all cardinality arguments automatically. `outDegree G v` and `inDegree G v` are defined by `Finset.filter` on the first or second component — this makes the handshaking proof a clean algebraic manipulation. `IsBalanced` and `IsEulerianBalanced` are the core predicates: a vertex is balanced iff in-degree = out-degree, and a graph is Eulerian-balanced iff all vertices are balanced.",
+    "mathContext": "$\\text{DiGraph}(V) = (E \\subseteq V \\times V, \\text{no self-loops})$. $\\text{outDeg}(v) = |\\{e \\in E : e.1 = v\\}|$, $\\text{inDeg}(v) = |\\{e \\in E : e.2 = v\\}|$. $\\text{IsBalanced}(v) \\iff \\text{inDeg}(v) = \\text{outDeg}(v)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.filter: filter a finite set by a predicate",
+      "directed graph (digraph)",
+      "in-degree and out-degree",
+      "Eulerian balance condition"
+    ],
+    "prerequisites": [
+      "Finset: finite sets in Mathlib with decidable membership",
+      "structure in Lean 4: named fields with invariants",
+      "DecidableEq V: required for Finset.filter on vertex type"
+    ]
+  },
+  {
+    "id": "ann-koe02-handshaking",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": { "startLine": 77, "endLine": 106 },
+    "type": "technique",
+    "title": "Double-Counting via Finset.sum_comm: The Directed Handshaking Lemma",
+    "content": "Both handshaking lemmas (`sum_outDegree_eq_edgeCount` and `sum_inDegree_eq_edgeCount`) use the same two-step proof. First, rewrite the filter-card as a sum of indicator functions: `|{e : e.1=v}| = ∑_{e∈E} [e.1=v ? 1 : 0]`. Then swap the summation order with `Finset.sum_comm`: `∑_v ∑_{e∈E} [e.1=v] = ∑_{e∈E} ∑_v [e.1=v] = ∑_{e∈E} 1 = |E|`. The directed handshaking equality ∑ outDeg = ∑ inDeg then follows by transitivity through |E|.",
+    "mathContext": "$\\sum_{v} \\text{outDeg}(v) = \\sum_v |\\{e \\in E : e.1=v\\}| = \\sum_v \\sum_{e \\in E} [e.1=v] \\stackrel{\\text{sum\\_comm}}{=} \\sum_{e \\in E} 1 = |E| = \\sum_v \\text{inDeg}(v)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum_comm: exchange order of double summation",
+      "indicator function technique for double-counting",
+      "directed handshaking lemma",
+      "Finset.card_eq_sum_ones"
+    ],
+    "prerequisites": [
+      "Finset.sum_comm: ∑_a ∑_b f(a,b) = ∑_b ∑_a f(a,b) for finite sums",
+      "Finset.card_eq_sum_ones: |S| = ∑_{x∈S} 1",
+      "Finset.sum_ite_eq': collapses a sum of indicators over a type"
+    ]
+  },
+  {
+    "id": "ann-koe02-eulerian-circuit-def",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": { "startLine": 112, "endLine": 122 },
+    "type": "definition",
+    "title": "HasEulerianCircuit: Strengthened with ∃! Coverage for Bijectivity",
+    "content": "The key design choice for `HasEulerianCircuit` is the use of `∃!` (unique existence) for edge coverage rather than a simple `∃`. The definition requires: (1) walk length = |E|+1, (2) every edge has a *unique* position in the walk (∃!), (3) the walk is closed (head? = getLast?), and (4) every walk step uses a graph edge (hsteps). The uniqueness condition is essential: `ExistsUnique.unique` allows extracting that any two witnesses to the coverage condition must be equal, enabling the bijection-based proof of necessity. Without ∃!, necessity would fail because a multi-use edge could appear at two positions.",
+    "mathContext": "$\\text{HasEulerianCircuit}(G)$: $\\exists$ walk of length $|E|+1$, $\\forall e \\in E,\\ \\exists! i < |E| : \\text{walk}[i]=e.1 \\wedge \\text{walk}[i+1]=e.2$, and $\\text{walk}[0]=\\text{walk}[|E|]$ (closed).",
+    "significance": "key",
+    "relatedConcepts": [
+      "ExistsUnique (∃!) in Lean 4",
+      "ExistsUnique.unique: any two witnesses to ∃! are equal",
+      "bijection between edges and walk positions",
+      "closed walk condition"
+    ],
+    "prerequisites": [
+      "List.get: safe index into a list with an in-bounds proof",
+      "ExistsUnique: ∃! x, P x means exactly one x satisfies P",
+      "hsteps condition: walk steps must correspond to actual graph edges"
+    ]
+  },
+  {
+    "id": "ann-koe02-closed-walk-balance",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": { "startLine": 128, "endLine": 172 },
+    "type": "insight",
+    "title": "Circular Shift Bijection: Why Closed Walks Balance Source and Target Counts",
+    "content": "`closed_walk_balance` proves: for a closed walk (walk[0] = walk[n]), the number of positions where walk[i] = v equals the number where walk[i+1] = v. The proof uses Finset.card_bij with the bijection φ(i) = (i=0 ? n-1 : i-1). At i=0: walk[0]=v implies walk[n]=v (closed walk), so target-position n-1 satisfies walk[n] = v. At i>0: walk[i]=v directly gives target-position i-1. Surjectivity uses the inverse ψ(j) = (j=n-1 ? 0 : j+1). All obligations close with `omega` after `split_ifs`.",
+    "mathContext": "Closed walk $\\implies |\\{i < n : w_i = v\\}| = |\\{i < n : w_{i+1} = v\\}|$ for all $v$. Bijection: $\\varphi(i) = \\begin{cases} n-1 & i=0 \\\\ i-1 & i > 0 \\end{cases}$, inverse $\\psi(j) = \\begin{cases} 0 & j=n-1 \\\\ j+1 & j < n-1 \\end{cases}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card_bij: cardinality equality via explicit bijection",
+      "circular shift bijection for closed sequences",
+      "split_ifs: case-split on if-then-else in Lean 4",
+      "omega: linear arithmetic"
+    ],
+    "prerequisites": [
+      "Finset.card_bij: requires maps_to, injectivity, surjectivity proofs",
+      "Finset.mem_filter: membership in filter ↔ membership + predicate",
+      "closed walk: walk.head? = walk.getLast? encoded as walk[0] = walk[n]"
+    ]
+  },
+  {
+    "id": "ann-koe02-walk-bijection",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": { "startLine": 173, "endLine": 266 },
+    "type": "technique",
+    "title": "Classical.choose + ExistsUnique: Walk Position to Edge Bijections",
+    "content": "`walk_source_eq_outDegree` proves that |{i < n : walk[i] = v}| = outDeg(v). The bijection maps each edge e ∈ {e∈G.edges : e.1=v} to its unique walk position via `Classical.choose (hcov e he.mem).exists`. Injectivity: if pos(e1) = pos(e2), both endpoints are determined by the walk, so e1 = e2 as pairs. Surjectivity: for position i with walk[i]=v, the edge (walk[i],walk[i+1]) is in G.edges by hsteps, and by `(hcov e he_mem).unique` its canonical position is exactly i. `walk_target_eq_inDegree` is structurally identical, matching on the second endpoint.",
+    "mathContext": "$|\\{i < n : w_i = v\\}| = \\text{outDeg}(v)$. Bijection: $e \\mapsto \\text{pos}(e) = \\text{Classical.choose}(\\exists! \\text{ clause for } e)$. Uniqueness: `(hcov e he_mem).unique hspec.1 hi_spec` gives `pos(e) = i` when $i$ also satisfies the coverage condition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Classical.choose: nonconstructive choice from existence proof",
+      "ExistsUnique.unique: any two witnesses to ∃! are equal",
+      "Prod.ext: two pairs equal iff both components equal"
+    ],
+    "prerequisites": [
+      "Classical.choose_spec: the chosen element satisfies the property",
+      "ExistsUnique.unique: applied as (hcov e hmem).unique to equate walk positions",
+      "hsteps: ensures every consecutive walk pair is a graph edge"
+    ]
+  },
+  {
+    "id": "ann-koe02-necessity",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": { "startLine": 268, "endLine": 312 },
+    "type": "insight",
+    "title": "Necessity: Chain inDeg = target-count = source-count = outDeg",
+    "content": "`eulerian_circuit_implies_balanced` chains four equalities: inDeg(v) = |{i : walk[i+1]=v}| (walk_target_eq_inDegree) = |{i : walk[i]=v}| (closed_walk_balance) = outDeg(v) (walk_source_eq_outDegree). Setup normalizes hcov and hsteps from walk.length-1 to n = G.edges.card, and extracts walk[0]=walk[n] from the head?=getLast? form using List.getLast?_eq_getLast and List.getLast_eq_get. The chain closes with `omega` in three lines.",
+    "mathContext": "$\\text{inDeg}(v) \\stackrel{\\text{bij}}{=} |\\{i < n : w_{i+1}=v\\}| \\stackrel{\\text{closed}}{=} |\\{i < n : w_i=v\\}| \\stackrel{\\text{bij}}{=} \\text{outDeg}(v)$. Proof: three helper lemmas + omega.",
+    "significance": "key",
+    "relatedConcepts": [
+      "necessity direction of Euler's theorem for directed graphs",
+      "List.getLast?_eq_getLast",
+      "omega: closes natural number arithmetic goals",
+      "chain-of-equalities proof pattern"
+    ],
+    "prerequisites": [
+      "closed_walk_balance: rotation bijection equates source and target counts",
+      "walk_source_eq_outDegree: source positions biject with outgoing edges",
+      "walk_target_eq_inDegree: target positions biject with incoming edges"
+    ]
+  },
+  {
+    "id": "ann-koe02-axioms-examples",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": { "startLine": 314, "endLine": 390 },
+    "type": "context",
+    "title": "Hierholzer Axioms, Concrete Examples, and Integer Consequences",
+    "content": "`directed_eulerian_iff` (Hierholzer sufficiency) and `directed_euler_path_iff` (path characterization) are axiomatized — the sufficiency direction requires constructing an Eulerian walk, which demands graph connectivity infrastructure not yet in Mathlib. The concrete examples validate the theory: `directedTriangle` (3-cycle A→B→C→A on Fin 3) is Eulerian-balanced by `native_decide`; `directedPath` (0→1→2) satisfies the Eulerian path degree conditions by `native_decide` and `fin_cases`. The integer consequence `eulerian_balanced_sum_zero` lifts ∑ outDeg = ∑ inDeg to ℤ via `exact_mod_cast`.",
+    "mathContext": "Hierholzer (1873): balanced + weakly connected → Eulerian circuit exists (axiomatized). Directed path degree conditions: $\\text{outDeg}(s) = \\text{inDeg}(s)+1$, $\\text{inDeg}(t) = \\text{outDeg}(t)+1$, all others balanced. Integer form: $\\sum_v (\\text{outDeg}(v) : \\mathbb{Z}) = \\sum_v (\\text{inDeg}(v) : \\mathbb{Z})$ (flow conservation).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hierholzer's algorithm O(|E|) for constructing Eulerian circuits",
+      "BEST theorem: counting Eulerian circuits",
+      "de Bruijn sequences as Eulerian circuits in de Bruijn graphs",
+      "native_decide on Fin types"
+    ],
+    "prerequisites": [
+      "axiom in Lean 4: introduces a proposition without proof",
+      "native_decide: native compilation for decidable propositions on finite types",
+      "exact_mod_cast: coercion from ℕ to ℤ arithmetic"
+    ]
+  }
+]
