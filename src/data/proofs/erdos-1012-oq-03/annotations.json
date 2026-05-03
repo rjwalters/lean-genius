@@ -321,5 +321,31 @@
       "probabilistic method",
       "directed_hamiltonian_threshold"
     ]
+  },
+  {
+    "id": "ann-1012-roadmap-and-close",
+    "proofId": "erdos-1012-oq-03",
+    "range": {
+      "startLine": 1828,
+      "endLine": 1884
+    },
+    "type": "summary",
+    "title": "Proof Roadmap: Completion Status and Future Work",
+    "content": "Lines 1828-1884 give the proof roadmap comment and closing exports.\n\n**directed_hamiltonian_threshold completion** (lines 1827-1841): The threshold theorem is fully proved (0 sorries) via the chain: missing_arcs_le → perm_arc_bad_card_le → counting_factorial_lt → hamiltonian_of_few_missing_arcs → directed_hamiltonian_threshold.\n\n**Ghouila-Houri status** (lines 1843-1873): 0 sorries, 1 axiom (gh_longest_cycle_is_hamiltonian). Historical context on the false statement bug (all_neighbors_on_longest_cycle was refuted by a 5-vertex counterexample). The grow-cycle approach: sc_degree_has_cycle → ghouila_houri_cycle_extendable → exists_longest_cycle → grow_cycle_gh → ghouila_houri. The remaining hard case (k < n-1, non-insertable) is delegated to the axiom. Future path surgery would need Menger's theorem (~150-200 lines): the cross case is proved (gh_cross_gives_longer_cycle), but the no-cross Menger step is not.\n\n**Note on directed graph path rotation**: path rotation does NOT close directed paths into cycles (unlike undirected Hamiltonian paths), so the grow-cycle strategy is the correct approach for directed graphs.\n\n**Rédei** (line 1875): proved by induction via the tournament insertion lemma.\n\n**#check exports** (lines 1879-1882): ghouila_houri, moon_moser, redei, directed_hamiltonian_threshold — all four main theorems confirmed present in namespace Erdos1012OQ03.",
+    "mathContext": "The 1884-line file proves four Hamiltonian cycle theorems: Rédei (1934, every tournament has a Hamiltonian path), Ghouila-Houri (1960, $\\delta^+ + \\delta^- \\geq n$ implies Hamiltonian cycle), Moon-Moser (1966, tournament variant), and a probabilistic arc-threshold theorem (if $|E| > (n-1)^2$ then Hamiltonian). Residual: 4 sorries in `ghouila_houri_cycle_extendable` helpers (the no-cross path surgery case), 1 axiom `gh_longest_cycle_is_hamiltonian`.",
+    "significance": "contextual",
+    "relatedConcepts": [
+      "Ghouila-Houri theorem",
+      "directed Hamiltonian cycle",
+      "path surgery",
+      "Menger's theorem",
+      "proof roadmap"
+    ],
+    "prerequisites": [
+      "ghouila_houri",
+      "moon_moser",
+      "redei",
+      "directed_hamiltonian_threshold"
+    ]
   }
 ]
