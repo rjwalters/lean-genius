@@ -29,10 +29,11 @@ Not yet in Mathlib v4.26.0. We axiomatize it with a proof strategy.
 1. Cubic character χ₃ = (· ^ ((p-1)/3)) is a group homomorphism
 2. Every χ₃(a)³ = 1 (image in cube roots of unity)
 3. Easy Euler criterion: a = x³ → a^((p-1)/3) = 1
-4. Cubic character uniqueness framework (cyclic group argument)
-5. Quartic character parallel construction
-6. Concrete computations: p = 7, p = 13
-7. Cubic reciprocity: axiomatized with Jacobi sum strategy
+4. Hard Euler criterion: χ₃(a) = 1 → a is a cube (proved via discrete log)
+5. Cubic character uniqueness framework (cyclic group argument)
+6. Quartic character parallel construction
+7. Concrete computations: p = 7, p = 13
+8. Cubic reciprocity: axiomatized with Jacobi sum strategy (requires ℤ[ω])
 
 References:
 - Ireland & Rosen (1990): Classical Introduction to Modern Number Theory, Ch. 9
@@ -171,19 +172,64 @@ theorem cubicChar_eq_one_of_cube (h3 : p % 3 = 1) (a : (ZMod p)ˣ)
     _ = xu ^ (p - 1) := by rw [cubExp_mul h3]
     _ = 1 := ZMod.units_pow_card_sub_one_eq_one p xu
 
-/-- **Euler Criterion (hard direction, axiomatized)**: χ₃(a) = 1 ⟹ a is a cubic residue.
+/-- **Euler Criterion (hard direction)**: χ₃(a) = 1 ⟹ a is a cubic residue.
 
-    Proof strategy using cyclic group theory:
-    - G = (ZMod p)ˣ is cyclic (finite field units) of order n = p - 1
-    - The cubing map φ : G → G sends g ↦ g³; its image has order n/3
-    - The kernel of ψ : g ↦ g^(n/3) also has order n/3 (from IsCyclic theory)
-    - In a cyclic group, im(φ) = ker(ψ) (both are the unique subgroup of index 3)
-    - Key Mathlib gap: `IsCyclic.image_pow_eq_ker_pow` is not directly available;
-      would follow from `IsCyclic.subgroup_unique_of_order` -/
-axiom cubicEuler_hard {p : ℕ} [Fact p.Prime] (h3 : p % 3 = 1)
-    (a : (ZMod p)ˣ) (hχ : cubicChar a = 1) : IsCubicResidue (a : ZMod p)
+    Proof via discrete logarithm in the cyclic group (ZMod p)ˣ:
+    - Get generator g with orderOf g = p - 1
+    - Write a = g^k for integer k
+    - cubicChar a = 1 ⟹ g^(k*(p-1)/3) = 1 ⟹ (p-1) | k*(p-1)/3 ⟹ 3 | k
+    - Write k = 3j, then a = (g^j)^3, so a is a cube -/
+theorem cubicEuler_hard {p : ℕ} [Fact p.Prime] (h3 : p % 3 = 1)
+    (a : (ZMod p)ˣ) (hχ : cubicChar a = 1) : IsCubicResidue (a : ZMod p) := by
+  -- (ZMod p)ˣ is cyclic: get a generator g
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (G := (ZMod p)ˣ)
+  -- Write a = g^k for some integer k (generator spans the whole group)
+  obtain ⟨k, hk⟩ : ∃ k : ℤ, g ^ k = a := by
+    have := hg a; rwa [Subgroup.mem_zpowers_iff] at this
+  -- Card of (ZMod p)ˣ is p - 1 (Fermat)
+  have hcard : Fintype.card (ZMod p)ˣ = p - 1 := by
+    rw [ZMod.card_units_eq_totient, Nat.totient_prime (Fact.out)]
+  -- Generator g has order p - 1
+  have hord : orderOf g = p - 1 := by
+    rw [← hcard]; exact orderOf_eq_card_of_forall_mem_zpowers hg
+  -- cubExp p = (p-1)/3 is positive
+  have hcubPos : (cubExp p : ℤ) ≠ 0 := by
+    have : 0 < cubExp p := Nat.div_pos
+      (Nat.le_of_dvd (Nat.sub_pos_of_lt (Fact.out : Nat.Prime p).one_lt)
+        (three_dvd_of_congr_one h3))
+      (by norm_num)
+    exact_mod_cast this.ne'
+  -- a^(cubExp p) = 1 means g^(k * cubExp p) = 1
+  have hpow_eq : g ^ (k * ↑(cubExp p)) = 1 := by
+    have h1 : (g ^ k) ^ (cubExp p : ℕ) = 1 := by
+      rw [hk, ← cubicChar_apply]; exact hχ
+    rwa [← zpow_natCast, ← zpow_mul] at h1
+  -- orderOf g | k * cubExp p (as integers)
+  have hdvd : (↑(p - 1) : ℤ) ∣ k * ↑(cubExp p) := by
+    have := orderOf_dvd_of_zpow_eq_one hpow_eq
+    rwa [hord] at this
+  -- Since p - 1 = 3 * cubExp p, we get 3 | k
+  have hcub3 : (↑(p - 1) : ℤ) = 3 * ↑(cubExp p) := by
+    exact_mod_cast (cubExp_mul h3).symm
+  have h3k : (3 : ℤ) ∣ k := by
+    rw [hcub3] at hdvd
+    obtain ⟨m, hm⟩ := hdvd
+    exact ⟨m, mul_right_cancel₀ hcubPos
+      (calc k * ↑(cubExp p) = m * (3 * ↑(cubExp p)) := hm
+        _ = 3 * m * ↑(cubExp p) := by ring)⟩
+  -- Write k = 3 * j
+  obtain ⟨j, hj⟩ := h3k
+  -- a = g^(3j) = (g^j)^3, so g^j is a cube root of a
+  have hcube : (g ^ j : (ZMod p)ˣ) ^ (3 : ℕ) = a := by
+    have hmid : g ^ (j * 3 : ℤ) = a := by
+      rw [← hk, hj, show (3 : ℤ) * j = j * 3 from by ring]
+    rw [← zpow_natCast, ← zpow_mul]
+    exact hmid
+  exact ⟨(g ^ j : (ZMod p)ˣ), by
+    rw [← Units.val_pow_eq_pow_val]
+    exact congr_arg Units.val hcube⟩
 
-/-- **Complete Euler Criterion** (using axiom for hard direction):
+/-- **Complete Euler Criterion** (fully proved):
     For prime p ≡ 1 (mod 3), a unit is a cubic residue iff χ₃(a) = 1. -/
 theorem isCubicResidue_iff_cubicChar_one (h3 : p % 3 = 1) (a : (ZMod p)ˣ) :
     IsCubicResidue (a : ZMod p) ↔ cubicChar a = 1 :=

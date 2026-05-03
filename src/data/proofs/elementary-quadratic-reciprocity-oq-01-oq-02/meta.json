@@ -19,12 +19,12 @@
       "open-question"
     ],
     "badge": "axiom",
-    "sorries": 1,
-    "axiomCount": 3,
-    "lineCount": 391,
-    "theoremCount": 24,
+    "sorries": 0,
+    "axiomCount": 2,
+    "lineCount": 437,
+    "theoremCount": 25,
     "defCount": 6,
-    "assumptions": "Three axioms: (1) cubicEuler_hard — the hard direction of the cubic Euler criterion (χ₃(a)=1 implies a is a cube mod p); requires cyclic group structure of (ZMod p)ˣ and kernel cardinality argument. (2) cubicResidueSymbol — definition of the cubic residue symbol (ρ/π)₃ for Eisenstein primes; requires ℤ[ω] formalization not in Mathlib. (3) cubic_reciprocity — (ρ/π)₃ = (π/ρ)₃ for primary Eisenstein primes; proved via Jacobi sums but no Mathlib infrastructure for Eisenstein integers.",
+    "assumptions": "Two axioms (both require Eisenstein integers ℤ[ω] not in Mathlib): (1) cubicResidueSymbol — definition of the cubic residue symbol (ρ/π)₃ for Eisenstein primes. (2) cubic_reciprocity — (ρ/π)₃ = (π/ρ)₃ for primary Eisenstein primes; proved via Jacobi sums. The hard Euler criterion (cubicEuler_hard) is now fully proved using discrete logarithm in the cyclic group (ZMod p)ˣ.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -36,7 +36,7 @@
       "The cubic character χ₃ = powMonoidHom((p-1)/3) is a well-defined group homomorphism by cyclicity of (ZMod p)ˣ and 3 | (p-1) when p ≡ 1 (mod 3)",
       "χ₃(a)³ = a^(p-1) = 1 by Fermat, so the image of χ₃ consists of cube roots of unity in (ZMod p)ˣ",
       "Easy Euler criterion: x³ = a implies a^((p-1)/3) = (x^3)^((p-1)/3) = x^(p-1) = 1, proved via Units.mk0 lift and pow_mul",
-      "Hard Euler criterion (χ₃(a) = 1 implies a is a cube) requires showing |ker χ₃| = (p-1)/3 × 3 = p-1 — i.e., the kernel is the cubic residues, which needs cyclic group kernel cardinality",
+      "Hard Euler criterion (χ₃(a) = 1 implies a is a cube) proved by discrete log: write a = g^k for generator g of (ZMod p)ˣ; χ₃(a)=1 implies (p-1)|k(p-1)/3, so 3|k; then a = (g^(k/3))³",
       "Cubic reciprocity requires Eisenstein integers ℤ[ω] for the Jacobi sum J(χ₃, χ₃); this ring is not in Mathlib 4.26"
     ],
     "prerequisites": [
@@ -60,8 +60,8 @@
       "title": "Cubic Euler Criterion",
       "startLine": 156,
       "endLine": 238,
-      "summary": "Proves the easy direction: a = x³ implies χ₃(a) = 1. The hard direction (χ₃(a) = 1 implies cube) is axiomatized as cubicEuler_hard. Together they give the iff: a is a cubic residue iff a^((p-1)/3) = 1. The kernel cardinality lemma (|ker χ₃| = (p-1)/3) has one sorry pending cyclic group API.",
-      "mathContext": "∀ a : (ZMod p)ˣ, IsCubicResidue a ↔ χ₃(a) = 1 (modulo cubicEuler_hard axiom)"
+      "summary": "Proves both directions: easy (a = x³ → χ₃(a) = 1 via Fermat) and hard (χ₃(a) = 1 → a is a cube via discrete log in cyclic group). The hard direction uses IsCyclic.exists_generator + Subgroup.mem_zpowers_iff + orderOf_dvd_of_zpow_eq_one to get 3 | k, then a = (g^(k/3))³. Together gives the full Euler criterion iff.",
+      "mathContext": "∀ a : (ZMod p)ˣ, IsCubicResidue a ↔ χ₃(a) = 1 (fully proved, 0 axioms)"
     },
     {
       "id": "quartic-character",
@@ -89,12 +89,13 @@
     }
   ],
   "conclusion": {
-    "summary": "The cubic character χ₃ and quartic character χ₄ are constructed as group homomorphisms in Lean 4. The easy direction of the cubic Euler criterion is fully proved. Full cubic reciprocity requires Eisenstein integers (ℤ[ω]) which are not yet in Mathlib 4.26; it is axiomatized with a detailed Jacobi sum proof strategy. The hard Euler criterion direction is axiomatized as cubicEuler_hard.",
+    "summary": "The cubic character χ₃ and quartic character χ₄ are constructed as group homomorphisms in Lean 4. The complete Euler criterion (both directions) is now fully proved: the hard direction uses discrete logarithm in the cyclic group (ZMod p)ˣ. Full cubic reciprocity requires Eisenstein integers (ℤ[ω]) not yet in Mathlib 4.26, and is axiomatized with a detailed Jacobi sum proof strategy.",
     "implications": "This file provides the foundation for cubic and quartic reciprocity formalization once Mathlib gains Eisenstein integer support. The character construction technique (powMonoidHom + Fermat's little theorem for units) extends naturally to any prime power character.",
     "openQuestions": [
       "Can the Eisenstein integers ℤ[ω] be added to Mathlib 4? (This is the key blocker for cubic reciprocity)",
-      "Can the hard Euler criterion direction be proved using only (ZMod p)ˣ cyclic group structure without Eisenstein integers?",
-      "Can the Jacobi sum J(χ₃, χ₃) computation be formalized in ℤ[ω]?"
+      "Can the Eisenstein integers ℤ[ω] be added to Mathlib 4? This is the key blocker for cubic_reciprocity.",
+      "Can the quartic Euler criterion hard direction be proved by the same discrete log method?",
+      "Can the Jacobi sum J(χ₃, χ₃) computation be formalized once ℤ[ω] is in Mathlib?"
     ]
   },
   "crossReferences": [
@@ -158,12 +159,12 @@
       "ZMod"
     ],
     "namespace": "CubicCharacter",
-    "lineCount": 391,
-    "axiomCount": 3,
-    "theoremCount": 24,
+    "lineCount": 437,
+    "axiomCount": 2,
+    "theoremCount": 25,
     "definitionCount": 6,
     "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ02.lean",
-    "sorries": 1
+    "sorries": 0
   },
-  "sorries": 1
+  "sorries": 0
 }
