@@ -200,10 +200,18 @@ theorem expVal_empEnt (D : DiscreteDist k) (n : ℕ) :
     simp_rw [show ∀ x : Fin n → Fin k,
       (∏ i, D.p (x i)) * (-(1 / ↑n) * ∑ j : Fin n, Real.log (D.p (x j))) =
       -(1 / ↑n) * ∑ j : Fin n, ((∏ i, D.p (x i)) * Real.log (D.p (x j)))
-      from fun x => by rw [Finset.mul_sum]; ring]
+      from fun x => by
+        rw [show (∏ i, D.p (x i)) * (-(1/↑n) * ∑ j, Real.log (D.p (x j))) =
+                 -(1/↑n) * ((∏ i, D.p (x i)) * ∑ j, Real.log (D.p (x j))) from by ring]
+        rw [Finset.mul_sum]]
     rw [← Finset.mul_sum, Finset.sum_comm]
-    simp_rw [marginal, neg_shannonH_eq]
-    simp [Finset.sum_const, Fintype.card_fin, nsmul_eq_mul, hn']
+    -- After sum_comm: -(1/n) * ∑_j (∑_x P(x) * log p(x_j)) = shannonH D
+    -- Apply marginal to each j: -(1/n) * ∑_j (∑_a D.p a * log D.p a) = shannonH D
+    -- Use ← neg_shannonH_eq to replace inner sum with -shannonH D
+    simp_rw [marginal, ← neg_shannonH_eq]
+    -- Goal: -(1/n) * ∑_j (-shannonH D) = shannonH D
+    simp only [Finset.sum_const, Fintype.card_fin, nsmul_eq_mul]
+    field_simp [hn']
 
 -- ════════════════════════════════════════════════════════════════
 -- SECTION IV: Chebyshev's Inequality (Finite Probability Space)
