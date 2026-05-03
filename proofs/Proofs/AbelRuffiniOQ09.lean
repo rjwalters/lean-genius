@@ -482,7 +482,7 @@ theorem risch_linear_surjective_monomial (n : ℕ) :
     refine ⟨Polynomial.X ^ (n + 1) - Polynomial.C (↑(n + 1) : ℝ) * Qn, ?_⟩
     have hd_pow : Polynomial.derivative (Polynomial.X ^ (n + 1) : Polynomial ℝ) =
         Polynomial.C (↑(n + 1) : ℝ) * Polynomial.X ^ n := by
-      simp [Polynomial.derivative_X_pow, Nat.add_sub_cancel]
+      simp [Polynomial.derivative_X_pow]
     simp only [Polynomial.derivative_sub, Polynomial.derivative_mul, Polynomial.derivative_C,
                zero_mul, zero_add, hd_pow]
     linear_combination -Polynomial.C (↑(n + 1) : ℝ) * hQn
