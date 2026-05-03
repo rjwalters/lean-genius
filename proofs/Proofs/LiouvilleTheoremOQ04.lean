@@ -263,27 +263,33 @@ lemma irred_no_rational_roots (f : ℤ[X]) (hf_irred : Irreducible (f.map (algeb
   -- Factor theorem: (X - q) divides fQ
   have hdvd : (X - C q) ∣ f.map (algebraMap ℤ ℚ) := dvd_iff_isRoot.mpr hroot
   obtain ⟨g, hfg⟩ := hdvd
-  -- fQ is nonzero (irreducible elements are nonzero)
-  have hfQ_ne : f.map (algebraMap ℤ ℚ) ≠ 0 := hf_irred.ne_zero
-  -- g ≠ 0 (else fQ = 0)
-  have hg_ne : g ≠ 0 := by
-    rintro rfl; simp only [mul_zero] at hfg; exact hfQ_ne hfg
   -- natDegree of fQ ≥ 2 (map over injective ring hom preserves degree)
   have hfQ_deg : 2 ≤ (f.map (algebraMap ℤ ℚ)).natDegree := by
-    have heq : (f.map (algebraMap ℤ ℚ)).natDegree = f.natDegree :=
-      natDegree_map_eq_of_injective (algebraMap ℤ ℚ).injective
+    rw [natDegree_map_eq_of_injective (algebraMap ℤ ℚ).injective]; exact hf_deg
+  -- g ≠ 0: if g = 0 then fQ = 0, natDegree 0 = 0, contradicting hfQ_deg
+  have hg_ne : g ≠ 0 := by
+    intro hg0
+    have : (f.map (algebraMap ℤ ℚ)).natDegree = 0 := by
+      rw [hfg, hg0, mul_zero]; simp
     omega
   -- natDegree of the factorization: deg(fQ) = 1 + deg(g)
   have hndeg : (f.map (algebraMap ℤ ℚ)).natDegree = 1 + g.natDegree := by
     rw [hfg, natDegree_mul (X_sub_C_ne_zero q) hg_ne, natDegree_X_sub_C]
   -- deg(g) ≥ 1
   have hg_deg : 1 ≤ g.natDegree := by omega
-  -- X - C q is not a unit (degree 1 > 0)
-  have hXq_not_unit : ¬IsUnit (X - C q) :=
-    not_isUnit_of_degree_pos (by simp [degree_X_sub_C])
-  -- g is not a unit (degree ≥ 1 > 0)
-  have hg_not_unit : ¬IsUnit g :=
-    not_isUnit_of_degree_pos (by rw [degree_eq_natDegree hg_ne]; norm_cast; omega)
+  -- X - C q is not a unit: isUnit iff constant, but X - C q has degree 1
+  have hXq_not_unit : ¬IsUnit (X - C q) := by
+    rw [Polynomial.isUnit_iff]
+    rintro ⟨c, _, hc⟩
+    have := congr_arg Polynomial.natDegree hc
+    simp [natDegree_X_sub_C, Polynomial.natDegree_C] at this
+  -- g is not a unit: isUnit iff constant, but g has degree ≥ 1
+  have hg_not_unit : ¬IsUnit g := by
+    rw [Polynomial.isUnit_iff]
+    rintro ⟨c, _, hc⟩
+    have hnd := congr_arg Polynomial.natDegree hc
+    simp [Polynomial.natDegree_C] at hnd
+    omega
   -- Irreducibility: one factor must be a unit → contradiction
   rcases hf_irred.isUnit_or_isUnit hfg with h | h
   · exact hXq_not_unit h
