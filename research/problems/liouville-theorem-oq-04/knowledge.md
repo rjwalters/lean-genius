@@ -46,6 +46,33 @@ P-adic extension of Liouville's approximation theorem.
 
 ---
 
+## Session 2026-05-03 (Session 9) — Prove polyCoeffL1_pos and irred_no_rational_roots
+
+**Mode**: REVISIT
+**Outcome**: progress (2 of 4 helper sorries proved)
+
+### What I Did
+
+- Proved **`polyCoeffL1_pos`**: apply `Finset.sum_pos` with `support_nonempty.mpr hf` and `Int.natAbs_pos.mpr (mem_support_iff.mp hi)`.
+- Proved **`irred_no_rational_roots`**: factor theorem (`dvd_iff_isRoot`), degree argument via `natDegree_map_eq_of_injective` + `natDegree_mul`, then `not_isUnit_of_degree_pos` + `Irreducible.isUnit_or_isUnit`.
+
+### Key Findings
+
+- Correct name is `natDegree_map_eq_of_injective` (not `natDegree_map_of_injective`).
+- `Irreducible.isUnit_or_isUnit hfg` where `hfg : f.map ... = (X-q)*g` gives `IsUnit (X-q) ∨ IsUnit g`.
+
+### Pending Sorries (2 of 4 remain)
+
+- **`padicNorm_poly_eval_lb`** (HARD): norm compatibility `‖(q:ℚ_p)‖ = padicNorm p q`, clearing-denominator bound.
+- **`cofactor_uniform_bound`** (HARD): Taylor factorization over ℚ_p; uniform bound on cofactor norm.
+
+### Next Steps
+
+1. `padicNorm_poly_eval_lb`: bridge ℚ and ℚ_p via `Polynomial.eval_map` + norm compatibility.
+2. `cofactor_uniform_bound`: use polynomial division in ℚ_p (`Polynomial.divByMonic`).
+
+---
+
 ## Dead Ends
 
 - `div_le_div_of_nonneg_left` generates unexpected metavariable goal `⊢ 0 ≤ ?m` — use `one_div_le_one_div_of_le` instead
