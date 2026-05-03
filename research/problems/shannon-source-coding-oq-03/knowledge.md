@@ -2,7 +2,7 @@
 
 **Problem**: Can the AEP be formalized using Mathlib's probability infrastructure for the discrete finite-alphabet case?
 
-**Status**: NEAR-COMPLETE — gallery entry created, 1 sorry remaining
+**Status**: COMPLETE — 0 sorries, 0 axioms, badge: verified
 
 ---
 
@@ -34,6 +34,31 @@
 - `src/data/research/problems/shannon-source-coding-oq-03.json` (updated knowledge)
 
 ### Next Steps
-1. Prove `expVal_bilinear`: E[g(Xᵢ)·h(Xⱼ)] = E[g(Xᵢ)]·E[h(Xⱼ)] for i≠j (~50 lines, same Fintype.prod_sum technique)
-2. Use `expVal_bilinear` to prove `empEnt_variance` and eliminate the last sorry
-3. After all sorries resolved: badge upgrades to `verified`, 0 axioms, 0 sorries
+(Completed — no action needed)
+
+---
+
+## Session 2026-05-03 (Session 2) — Meta Sync (researcher-7)
+
+**Mode**: REVISIT
+**Outcome**: meta sync — stale meta.json corrected, pool updated to completed
+
+### What I Did
+- Discovered PR #15149 had already merged the full proof (including `expVal_marginal_product` and complete `empEnt_variance`)
+- Found meta.json still reported `sorries: 1`, `status: "formalized"`, `badge: "wip"`, stale line/theorem counts
+- Synced meta.json: status → "verified", badge → "verified", sorries → 0, lineCount 355→476, theoremCount 12→13, definitionCount 6→7
+- Removed stale "one sorry remains" contribution text; added entries for bilinear lemma and empEnt_variance completion
+- Updated conclusion.summary and openQuestions to reflect fully proved status
+- Updated pool: status "available" → "completed"
+- Updated knowledge.json progressSummary and nextSteps
+
+### Key Findings
+- The `expVal_marginal_product` proof uses the identical `Fintype.prod_sum` + `Finset.mul_prod_erase` pattern as `expVal_marginal` but applied to two active coordinates j₁ and j₂ simultaneously
+- `empEnt_variance` proof: define centered `Z(a) = -log p(a) - H`; show `E[(empEnt-H)²] = (1/n²) * ∑ᵢ∑ⱼ E[Z(Xᵢ)Z(Xⱼ)]`; diagonal terms give `logVar D` each (via `expVal_marginal`), off-diagonal give 0 (via `expVal_marginal_product` + `E[Z]=0`)
+- The proof requires `E[Z]=0` as a separate lemma (`hZ_mean`) proved by expanding the `shannonH` definition
+
+### Files Modified
+- `src/data/proofs/shannon-source-coding-oq-03/meta.json` (synced)
+- `src/data/research/problems/shannon-source-coding-oq-03.json` (knowledge updated)
+- `research/problems/shannon-source-coding-oq-03/knowledge.md` (this file)
+- `.lean/state/candidate-pool.json` (status: completed)
