@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-ballot-gft-preamble",
+    "proofId": "ballot-problem-oq-01-oq-02-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 44 },
+    "type": "context",
+    "title": "Module Overview: Answering the 'All Events' Generalization",
+    "content": "The module docstring poses and immediately answers the open question from the parent file: YES, uniform-fiber surjections preserve uniformOn for ALL events, not just the specific ballot event. The four-step proof strategy is described in the docstring itself — decompose via surjectivity, decompose the P-fiber, count uniformly, cancel k in the ratio — which serves as a roadmap for the entire file. The distinction from OQ-01 is sharpened: OQ-01 proved the result for one function (ballot projection) and one event (staysPositive); this file proves it for ANY f and ANY P. The import `Proofs.BallotProblemOQ01OQ02OQ01` brings in `BallotFiberTransfer.ncard_biUnion_eq_of_uniform`, the parent's key counting lemma that will be reused directly in Part II.",
+    "mathContext": "The generalization gap: OQ-01 proved $\\text{uniformOn}(S)(\\text{staysPositive})$; this file proves $\\forall P \\subseteq T,\\; \\text{uniformOn}(S)(f^{-1}(P)) = \\text{uniformOn}(T)(P)$ for any $f$ with uniform fibers. Same formula, maximal generality.",
+    "significance": "context",
+    "relatedConcepts": ["uniformOn", "fiber transfer", "all-events preservation", "open question answer"],
+    "prerequisites": ["BallotProblemOQ01OQ02OQ01 (parent)", "ProbabilityTheory.uniformOn", "fiber decomposition pattern"]
+  },
+  {
     "id": "ann-ballot-fiber-preimage-decomp",
     "proofId": "ballot-problem-oq-01-oq-02-oq-01-oq-02",
     "range": { "startLine": 46, "endLine": 56 },
