@@ -469,4 +469,37 @@ theorem gpfConsecutive_bertrand (n : ℕ) (hn : 1 ≤ n) :
   · rwa [hsum]
   · exact gpfConsecutive_eq_of_prime_right n (p - n) hn (hsum ▸ hp_prime)
 
+/-
+## Product of Two Consecutive Integers
+-/
+
+/-- consecutiveProduct n 1 = n * (n + 1). -/
+theorem consecutiveProduct_one (n : ℕ) : consecutiveProduct n 1 = n * (n + 1) := by
+  have := consecutiveProduct_succ n 0
+  rwa [consecutiveProduct_zero] at this
+
+/-- For n ≥ 2, gpfConsecutive n 1 = max(greatestPrimeFactor n, greatestPrimeFactor (n+1)).
+    The greatest prime factor of n(n+1) equals the larger of the two individual GPFs,
+    because any prime dividing n(n+1) must divide n or n+1 (by primality). -/
+theorem gpfConsecutive_one_eq_max (n : ℕ) (hn : 2 ≤ n) :
+    gpfConsecutive n 1 = max (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) := by
+  have hn1 : 2 ≤ n + 1 := by omega
+  have hn_prod : 2 ≤ n * (n + 1) := by nlinarith
+  have h_eq : gpfConsecutive n 1 = greatestPrimeFactor (n * (n + 1)) := by
+    unfold gpfConsecutive; rw [consecutiveProduct_one]
+  rw [h_eq]
+  apply Nat.le_antisymm
+  · have hprime : (greatestPrimeFactor (n * (n + 1))).Prime := gpf_prime (n * (n + 1)) hn_prod
+    have hdvd : greatestPrimeFactor (n * (n + 1)) ∣ n * (n + 1) := gpf_dvd (n * (n + 1)) hn_prod
+    rcases hprime.dvd_mul.mp hdvd with h | h
+    · exact le_trans (gpf_max n _ (Nat.mem_primeFactors.mpr ⟨hprime, h, by omega⟩))
+                     (le_max_left _ _)
+    · exact le_trans (gpf_max (n + 1) _ (Nat.mem_primeFactors.mpr ⟨hprime, h, by omega⟩))
+                     (le_max_right _ _)
+  · apply max_le
+    · exact gpf_ge_prime_dvd (n * (n + 1)) _ hn_prod (gpf_prime n hn)
+        (dvd_trans (gpf_dvd n hn) (dvd_mul_right n (n + 1)))
+    · exact gpf_ge_prime_dvd (n * (n + 1)) _ hn_prod (gpf_prime (n + 1) hn1)
+        (dvd_trans (gpf_dvd (n + 1) hn1) (dvd_mul_left (n + 1) n))
+
 end Erdos1201

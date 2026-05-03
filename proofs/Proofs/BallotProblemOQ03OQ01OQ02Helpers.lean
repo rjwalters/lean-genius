@@ -13802,13 +13802,74 @@ private lemma gnwProb_sum_corners (μ : YoungDiagram) :
       -- (1/N) * ↑N = 1
       exact one_div_mul_cancel hN
 
+/-- For any corner c = (i,j) of μ, its hook length equals 1.
+    Proof: isCorner gives rowLen i = j+1 and colLen j = i+1; hookLength_add_eq then forces hookLength = 1. -/
+private lemma hookLength_isCorner_one {μ : YoungDiagram} {i j : ℕ}
+    (hc : isCorner μ (i, j)) : hookLength μ i j = 1 := by
+  obtain ⟨hmem, hright, hbelow⟩ := hc
+  have heq := hookLength_add_eq μ hmem
+  have hrow_lt : j < μ.rowLen i := YoungDiagram.mem_iff_lt_rowLen.mp hmem
+  have hrow_ge : ¬(j + 1 < μ.rowLen i) := fun h =>
+    hright (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+  have hcol_lt : i < μ.colLen j := YoungDiagram.mem_iff_lt_colLen.mp hmem
+  have hcol_ge : ¬(i + 1 < μ.colLen j) := fun h =>
+    hbelow (YoungDiagram.mem_iff_lt_colLen.mpr (by omega))
+  omega
+
+/-- GNW stability step: gnwProb (n+1) x = gnwProb n x whenever hookLength x ≤ n.
+    Proved by strong induction on n: for corners, both sides are (if x=c then 1 else 0);
+    for non-corners, the sums over strictHookCells agree by IH (hookLength y < hookLength x ≤ n). -/
+private lemma gnwProb_step (μ : YoungDiagram) (c : ℕ × ℕ) :
+    ∀ n : ℕ, ∀ x : ℕ × ℕ, x ∈ μ → hookLength μ x.1 x.2 ≤ n →
+    gnwProb μ c (n + 1) x = gnwProb μ c n x := by
+  intro n
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    intro x hx hK
+    rcases n with _ | n'
+    · exact absurd hK (by have := hookLength_pos μ x.1 x.2; omega)
+    · by_cases hcorn : isCorner μ x
+      · simp only [gnwProb, if_pos hcorn]
+      · simp only [gnwProb, if_neg hcorn]
+        congr 1
+        apply Finset.sum_congr rfl
+        intro y hy
+        have hy_mem := strictHookCells_mem hy
+        have hy_lt := strictHookCells_hookLen_lt hx hy
+        exact ih n' (Nat.lt_succ_self n') y hy_mem (by omega)
+
+/-- GNW stability: gnwProb K x = gnwProb (hookLength x) x for any K ≥ hookLength x.
+    Proved by induction on d = K - hookLength x, using gnwProb_step at each step. -/
+private lemma gnwProb_stable (μ : YoungDiagram) (c : ℕ × ℕ) (x : ℕ × ℕ) (hx : x ∈ μ)
+    (K : ℕ) (hK : hookLength μ x.1 x.2 ≤ K) :
+    gnwProb μ c K x = gnwProb μ c (hookLength μ x.1 x.2) x := by
+  obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hK
+  induction d with
+  | zero => rfl
+  | succ d ihd =>
+    rw [Nat.add_succ, gnwProb_step μ c (hookLength μ x.1 x.2 + d) x hx (Nat.le_add_right _ _)]
+    exact ihd
+
 /-- GNW KEY theorem (Greene-Nijenhuis-Wilf 1979):
     The sum of GNW walk probabilities over all cells in μ equals the hookProd ratio.
-    This is the hard combinatorial core of the GNW 1979 proof. -/
+    This is the hard combinatorial core of the GNW 1979 proof.
+
+    Prerequisites now proved:
+    - hookLength_isCorner_one: corners have hookLength 1
+    - gnwProb_step: gnwProb (K+1) x = gnwProb K x for K ≥ hookLength x
+    - gnwProb_stable: gnwProb K x = gnwProb (hookLength x) x for K ≥ hookLength x
+
+    Proof strategy (GNW 1979 induction on |μ|):
+    For |μ|=1, μ={c}: sum = 1, ratio = hookProd({c})/hookProd(∅) = 1. ✓
+    Inductive step: split sum into corners (contribute 1 for c, 0 for c'≠c) and non-corners.
+    For non-corner x: gnwProb (hookLength x) x = (1/|H*(x)|)*Σ_{y∈H*(x)} gnwProb (hookLength y) y
+    (using gnwProb_stable to replace gnwProb (hookLength x - 1) y with gnwProb (hookLength y) y).
+    The resulting double sum telescopes using the hook product formula:
+    hookProd(μ)/hookProd(μ\c) = Π_{y∈preHook(c)} hookLength(y)/(hookLength(y)-1). -/
 private lemma gnwProb_key (μ : YoungDiagram) {c : ℕ × ℕ} (hc : isCorner μ c) :
     ∑ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x =
     (hookProd μ : ℚ) / hookProd (removeCorner μ c hc) := by
-  sorry  -- GNW 1979 KEY theorem (hard combinatorial identity)
+  sorry  -- GNW 1979 KEY theorem: requires deep combinatorial induction (see comment above)
 
 /-- Hook-walk identity for arbitrary non-empty Young diagrams via GNW walk.
     Proof: rewrite each ratio using gnwProb_key, swap the double sum, and apply
