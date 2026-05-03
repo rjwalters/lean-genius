@@ -18,10 +18,10 @@
       "erdos"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 1,
-    "lineCount": 378,
-    "assumptions": "1 axiom: kostochka_pyber_r2 (the r=2 graph case of Kostochka-Pyber theorem, proven 1988). 2 sorries remain: K4_planar geometric verification and planar_graphs_edge_bound (Euler formula).",
+    "lineCount": 738,
+    "assumptions": "1 axiom: kostochka_pyber_r2 (the r=2 graph case of Kostochka-Pyber theorem, proven 1988). 1 sorry remains: planar_graphs_edge_bound (requires Euler's formula V-E+F=2, not yet in Mathlib).",
     "dateAdded": "2026-04-03",
     "mathlib_version": "4.26.0"
   },
@@ -127,12 +127,12 @@
       "Proofs.Erdos1018OQ04"
     ],
     "namespace": "Erdos1018OQ04Completion",
-    "lineCount": 378,
+    "lineCount": 738,
     "axiomCount": 1,
     "theoremCount": 11,
     "path": "Proofs/Erdos1018OQ04Incomplete01.lean",
-    "sorries": 2,
+    "sorries": 1,
     "definitionCount": 1
   },
-  "sorries": 2
+  "sorries": 1
 }
