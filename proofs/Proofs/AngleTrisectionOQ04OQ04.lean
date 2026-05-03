@@ -59,7 +59,7 @@ theorem totient_23_eq : Nat.totient 23 = 22 := by decide
 theorem not_twoThree_of_large_prime_dvd {d q : ℕ}
     (hq : Nat.Prime q) (hq3 : q > 3) (hqd : q ∣ d) :
     ¬ IsTwoThreeNumber d := by
-  intro ⟨_, a, b, hdvd⟩
+  rintro ⟨-, a, b, hdvd⟩
   have hq_dvd : q ∣ 2 ^ a * 3 ^ b := dvd_trans hqd hdvd
   rcases hq.dvd_mul.mp hq_dvd with h | h
   · have : q ≤ 2 := Nat.le_of_dvd (by omega) (hq.dvd_of_dvd_pow h)
