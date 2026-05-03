@@ -1,0 +1,97 @@
+{
+  "id": "shannon-source-coding-oq-03",
+  "title": "Asymptotic Equipartition Property (AEP)",
+  "slug": "shannon-source-coding-oq-03",
+  "description": "Formalizes the Asymptotic Equipartition Property: for i.i.d. sequences from a finite alphabet, the empirical entropy -(1/n) log P(X₁,...,Xₙ) concentrates around H(p) in probability. Proves Chebyshev's inequality for finite distributions, the typical set size upper bound, and documents the full AEP proof structure.",
+  "meta": {
+    "status": "axiomatized",
+    "tags": [
+      "information-theory",
+      "probability",
+      "source-coding",
+      "entropy",
+      "typical-sequences",
+      "law-of-large-numbers",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/ShannonSourceCodingOQ03.lean",
+    "badge": "axiom",
+    "sorries": 3,
+    "axiomCount": 0,
+    "assumptions": "3 sorries: (1) expVal_marginal — marginal factorization of joint expectation over i.i.d. product measure; (2) empEnt_variance — variance of empirical entropy = logVar/n (i.i.d. sum variance formula); (3) aep_concentration — the main AEP concentration bound (follows from Chebyshev + variance sorry). All structural theorems (Chebyshev's inequality, typical set size bound) are proved without sorry.",
+    "originalContributions": [
+      "DiscreteDist structure: finite probability distributions with nonneg + sum_one",
+      "jointProb: i.i.d. joint distribution over n-block sequences",
+      "empEnt: empirical entropy -(1/n) log P(x) for n-sequences",
+      "chebyshev_finite: Chebyshev's inequality for finite probability spaces (proved)",
+      "typical_prob_lower_bound: each typical sequence satisfies P(x) ≥ exp(-n(H+ε)) (proved)",
+      "typical_set_size_upper: |T_ε^n| ≤ exp(n(H(p)+ε)) (proved)",
+      "logVar: variance of -log p(X) — the AEP concentration parameter",
+      "AEP → source coding connection documented with achievability argument"
+    ],
+    "dateAdded": "2026-05-03",
+    "lineCount": 309,
+    "theoremCount": 14,
+    "definitionCount": 8,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Asymptotic Equipartition Property was first proved by Claude Shannon in 1948 as part of his foundational paper 'A Mathematical Theory of Communication.' Shannon informally described the phenomenon: for large n, almost all n-symbol sequences from a memoryless source fall in a 'typical set' of size approximately 2^(nH). Brockway McMillan gave the first rigorous proof in 1953, extending the result to ergodic processes. The term 'AEP' was coined by Cover and Thomas in their 1991 textbook. The AEP is the central lemma connecting information theory to data compression: it shows that only about 2^(nH) sequences need codewords for reliable communication, making compression at rate H(p) achievable. This formalization uses Chebyshev's inequality rather than the measure-theoretic ergodic theorem, working with a purely finite and combinatorial probability space.",
+    "problemStatement": "For a memoryless source with distribution p on a finite alphabet of size k, and for any ε > 0, does the empirical entropy -(1/n) log P(X₁,...,Xₙ) converge in probability to H(p) as n → ∞? Formally, can this be proved using Mathlib's probability infrastructure for finite probability spaces?",
+    "proofStrategy": "The proof uses Chebyshev's inequality applied to the finite probability space (Fin n → Fin k, jointProb p n). The empirical entropy empEnt(x) = -(1/n) Σᵢ log p(xᵢ) is a sum of i.i.d. terms, so by linearity E[empEnt] = H(p) and Var[empEnt] = Var[-log p(X₁)]/n. By Chebyshev: P(|empEnt - H| > ε) ≤ Var/(n·ε²) → 0. The typical set size bound |T_ε^n| ≤ exp(n(H+ε)) follows directly: each typical x has P(x) ≥ exp(-n(H+ε)), and Σ_{T_ε} P(x) ≤ 1, so |T_ε| * exp(-n(H+ε)) ≤ 1.",
+    "keyInsights": [
+      "The AEP is precisely the law of large numbers applied to the random variable -log p(X): since E[-log p(X)] = H(p), the average (1/n) Σᵢ (-log p(xᵢ)) concentrates around H(p). The empirical entropy empEnt is exactly this average.",
+      "Chebyshev's inequality for finite distributions is proved directly as: P(|f-μ| > ε) = Σ_{bad x} P(x) ≤ Σ_{bad x} P(x)·(f(x)-μ)²/ε² ≤ E[(f-μ)²]/ε². The key step uses |f(x)-μ| > ε ⟹ ε² ≤ (f(x)-μ)².",
+      "The typical set size bound |T_ε^n| ≤ exp(n(H+ε)) follows from a simple counting argument: each x ∈ T_ε satisfies empEnt(x) ≤ H+ε, which gives P(x) = exp(log P(x)) = exp(-n·empEnt(x)) ≥ exp(-n(H+ε)). Summing over T_ε: |T_ε| · exp(-n(H+ε)) ≤ Σ P(x) ≤ 1.",
+      "The marginal factorization step (currently a sorry) requires showing that Σ_{x: Fin n → Fin k} (∏ᵢ p(xᵢ)) * g(xⱼ) = (Σₐ p(a) * g(a)) for each coordinate j. This is the key independence property of the product measure, following from Fintype.sum_piFinset_succ and sum factorization.",
+      "The AEP implies Shannon's source coding theorem: (achievability) typical set encoding uses at most exp(n(H+ε)) codewords, and P(X ∉ T_ε) → 0, so error probability → 0 for rate R > H; (converse) for R < H, any encoding must fail for a non-negligible fraction of sequences."
+    ],
+    "text": "For i.i.d. random variables X₁,...,Xₙ from a finite alphabet with distribution p, the empirical entropy -(1/n) log P(X₁,...,Xₙ) concentrates around H(p) in probability."
+  },
+  "crossReferences": [
+    {
+      "targetId": "shannon-source-coding",
+      "relationship": "proves",
+      "description": "The AEP is the probabilistic foundation for proving Shannon's source coding theorem"
+    },
+    {
+      "targetId": "shannon-source-coding-oq-04",
+      "relationship": "complements",
+      "description": "The method of types (OQ-04) gives a combinatorial proof; this gives the probabilistic (Chebyshev) proof"
+    },
+    {
+      "targetId": "shannon-entropy",
+      "relationship": "uses",
+      "description": "The AEP involves the Shannon entropy H(p) as the concentration point"
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Can the marginal factorization lemma (expVal_marginal) be proved using Fintype.sum_piFinset_succ?",
+      "context": "The key step Σ_{x: Fin n → Fin k} (∏ᵢ p(xᵢ)) * g(xⱼ) = (Σₐ p(a) * g(a)) requires induction on the block length n, using the product measure factorization. Mathlib's Fintype.sum_piFinset_succ provides the inductive step.",
+      "significance": 7
+    },
+    {
+      "id": "oq-02",
+      "question": "Can the AEP be extended to ergodic stationary sources (not just i.i.d.) using Birkhoff's ergodic theorem?",
+      "context": "The Shannon-McMillan-Breiman theorem extends AEP to ergodic processes. CantorDiagonalizationOQ01OQ02.lean explores ergodic theory; connecting to probability theory would give the general AEP.",
+      "significance": 8
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "namespace": "AEPFormalization",
+    "lineCount": 309,
+    "axiomCount": 0,
+    "sorryCount": 3,
+    "theoremCount": 14,
+    "definitionCount": 8,
+    "keyTheorems": [
+      "chebyshev_finite: P(|f-μ| > ε) ≤ E[(f-μ)²] / ε² for finite probability spaces",
+      "typical_prob_lower_bound: x ∈ T_ε → P(x) ≥ exp(-n(H+ε))",
+      "typical_set_size_upper: |T_ε^n| ≤ exp(n·(H(p)+ε))",
+      "aep_concentration: P(|empEnt-H| > ε) ≤ logVar/(n·ε²) [sorry in variance]"
+    ]
+  }
+}
