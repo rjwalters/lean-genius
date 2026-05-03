@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 290,
+    "lineCount": 306,
     "assumptions": "1 axiom: nonderogatory_similar_to_companion (nonderogatory matrix is similar to its companion matrix). NOTE (audit 2026-04-27): the PID structure theorem IS in Mathlib (Module.equiv_directSum_of_isTorsion, Module.equiv_free_prod_directSum at Mathlib.Algebra.Module.PID), and Module.exists_ker_toSpanSingleton_eq_annihilator combined with Module.AEval' (Mathlib.Algebra.Polynomial.Module.AEval) directly gives a cyclic vector for nonderogatory matrices without needing similarity to a companion matrix at all. The remaining work is bridging code, not a missing structure theorem.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -143,7 +143,7 @@
       "BigOperators"
     ],
     "namespace": "CompanionCyclicVector",
-    "lineCount": 290,
+    "lineCount": 306,
     "axiomCount": 1,
     "theoremCount": 11,
     "definitionCount": 2,
