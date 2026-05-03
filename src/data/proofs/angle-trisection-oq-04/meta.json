@@ -117,12 +117,32 @@
     {
       "targetId": "angle-trisection",
       "relationship": "extends",
-      "description": "Parent formalization establishing compass-and-straightedge impossibility of angle trisection"
+      "description": "Parent formalization establishing compass-and-straightedge impossibility of angle trisection via Wantzel's degree criterion (degree ∣ 2^n). This entry answers OQ-04 from the parent: what becomes possible with stronger tools?"
     },
     {
       "targetId": "angle-trisection-cos-20-gal",
       "relationship": "sibling",
-      "description": "Proves the Galois group of the cos(20°) minimal polynomial has order 3, eliminating an axiom"
+      "description": "Proves the Galois group Gal(8x³-6x-1/ℚ) has order 3 (companion file computation), confirming the irreducibility used in the parent entry and establishing the complete Galois picture"
+    },
+    {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "related",
+      "description": "OQ-02 extends the degree argument to a full Galois characterization: α is constructible iff Gal(minpoly(α)/ℚ) is a 2-group. The neusis analogue would require the Galois group to be a {2,3}-group — groups of order 2^a·3^b. This entry captures the degree part; OQ-02 completes the group-theoretic picture"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-03",
+      "relationship": "related",
+      "description": "Gauss-Wantzel theorem for regular n-gons: constructible iff φ(n) is a power of 2 (Fermat prime characterization). This entry's Pierpont prime section is the neusis analogue: the 7-gon is the first regular polygon accessible with the marked ruler that compass-and-straightedge cannot build"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Abel-Ruffini proves quintics unsolvable by radicals (degree 5 fields). Both results use the same algebraic framework: the solvability (or constructibility) of an equation is determined by the prime factorization of the Galois group order. Degree-3 cubic equations (neusis-solvable) correspond to Galois groups of order 2^a·3^b"
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "related",
+      "description": "∛2 satisfies x³-2=0 (degree 3 over ℚ): the minimal case of the degree-3 obstruction to compass-constructibility. This entry proves both the impossibility (cube doubling with compass) and the possibility (cube doubling with marked ruler) — ∛2 is neusis-constructible because 3 = 2^0·3^1 is a 2-3 number"
     }
   ],
   "leanFile": {
