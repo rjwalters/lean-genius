@@ -1,0 +1,82 @@
+[
+  {
+    "id": "ann-w1-positivity",
+    "type": "definition",
+    "startLine": 37,
+    "endLine": 38,
+    "title": "Denominator w₁ = 1 - e + de > 0",
+    "content": "The denominator w₁ for point P appears because cevian AD meets BE at a parameter t = (1-e)/w₁. Since d,e ∈ (0,1), we have w₁ = 1 - e(1-d) > 0. Similarly for w₂, w₃. These positivity results are needed to show the intersection points are well-defined (denominators nonzero).",
+    "mathContext": "$w_1 = 1 - e + de = 1 - e(1-d)$. For $d,e \\in (0,1)$: $0 < 1-e$ and $de > 0$, so $w_1 > 0$.",
+    "tags": ["denominator", "positivity", "nlinarith"]
+  },
+  {
+    "id": "ann-inner-vertex-P",
+    "type": "definition",
+    "startLine": 57,
+    "endLine": 58,
+    "title": "P = intersection of cevians AD and BE",
+    "content": "Solving the linear system: AD parametric (t(1-d), td) = BE parametric (1-s, s(1-e)) gives t = (1-e)/w₁. So P = ((1-d)(1-e)/w₁, d(1-e)/w₁). The x-coordinate equals t·(1-d) and the y-coordinate equals t·d.",
+    "mathContext": "From $t(1-d) = 1-s$ and $td = s(1-e)$: eliminate $s$ to get $t(d + (1-d)(1-e)) = 1-e$, so $t = (1-e)/w_1$ where $w_1 = d + (1-d)(1-e) = 1-e+de$.",
+    "tags": ["intersection", "cevian", "coordinate"]
+  },
+  {
+    "id": "ann-inner-vertex-Q",
+    "type": "definition",
+    "startLine": 62,
+    "endLine": 63,
+    "title": "Q = intersection of cevians BE and CF",
+    "content": "Solving BE parametric (1-s, s(1-e)) = CF parametric (uf, 1-u) gives s = (1-f)/w₂. So Q = (ef/w₂, (1-e)(1-f)/w₂). Note that ef/w₂ < 1 and (1-e)(1-f)/w₂ < 1 for parameters in (0,1).",
+    "mathContext": "From $1-s = uf$ and $s(1-e) = 1-u$: eliminate $u$ to get $s(1-f+ef) = 1-f$, so $s = (1-f)/w_2$ and $Q_1 = 1-s = 1-(1-f)/w_2 = ef/w_2$.",
+    "tags": ["intersection", "cevian", "coordinate"]
+  },
+  {
+    "id": "ann-inner-vertex-R",
+    "type": "definition",
+    "startLine": 67,
+    "endLine": 68,
+    "title": "R = intersection of cevians CF and AD",
+    "content": "Solving CF parametric (uf, 1-u) = AD parametric (t(1-d), td) gives t = f/w₃. So R = (f(1-d)/w₃, fd/w₃). The three inner triangle vertices P, Q, R complete the cyclic structure AD→BE→CF→AD.",
+    "mathContext": "From $uf = t(1-d)$ and $1-u = td$: eliminate $u$ to get $t(1-d+fd) = f$, so $t = f/w_3$.",
+    "tags": ["intersection", "cevian", "coordinate"]
+  },
+  {
+    "id": "ann-membership-P-AD",
+    "type": "theorem",
+    "startLine": 73,
+    "endLine": 80,
+    "title": "P lies on cevian AD",
+    "content": "The membership proof uses parameter witness t = (1-e)/w₁. The goal reduces to verifying that P's coordinates match A + t*(D-A). After field_simp clears denominators, the resulting polynomial equality is closed by ring.",
+    "mathContext": "Need $P_1 = t(1-d)$ and $P_2 = td$ for $t = (1-e)/w_1$. Check: $t(1-d) = (1-e)(1-d)/w_1 = P_1$ ✓.",
+    "tags": ["membership", "cevian", "field_simp", "ring"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "type": "theorem",
+    "startLine": 148,
+    "endLine": 168,
+    "title": "Routh's theorem: the key polynomial identity",
+    "content": "After unfolding all definitions, the proof goal is a rational function equality in d, e, f. Three nonvanishing hypotheses (hw1, hw2, hw3) are provided to field_simp. The tactic clears all denominators (multiplying through by w₁·w₂·w₃), reducing to a polynomial identity in d, e, f of degree ~6. The ring tactic verifies this automatically.",
+    "mathContext": "After clearing denominators: $(Q_1-P_1)(R_2-P_2) - (R_1-P_1)(Q_2-P_2) = \\frac{(def-(1-d)(1-e)(1-f))^2}{w_1 w_2 w_3}$ becomes a polynomial identity.",
+    "tags": ["routh", "field_simp", "ring", "polynomial-identity", "area-formula"]
+  },
+  {
+    "id": "ann-concurrent-degenerate",
+    "type": "theorem",
+    "startLine": 194,
+    "endLine": 207,
+    "title": "Concurrent cevians give zero inner area",
+    "content": "When the Ceva condition def = (1-d)(1-e)(1-f) holds, the three cevians are concurrent. The Routh formula gives routhRatio = 0 (numerator vanishes), so the inner triangle has zero area — consistent with the three 'intersection points' P, Q, R all coinciding at the concurrency point.",
+    "mathContext": "Ceva condition $def = (1-d)(1-e)(1-f)$ implies numerator $(def-(1-d)(1-e)(1-f))^2 = 0$, giving $\\text{routhRatio} = 0$.",
+    "tags": ["ceva-condition", "degenerate", "concurrency"]
+  },
+  {
+    "id": "ann-1-7-case",
+    "type": "theorem",
+    "startLine": 185,
+    "endLine": 192,
+    "title": "The 1/3 case: inner triangle has 1/7 the area",
+    "content": "For d = e = f = 1/3, the cevians divide each side at the 1/3 point from B, C, A respectively. The Ceva condition does NOT hold (1/27 ≠ 8/27), so the three cevians form a genuine inner triangle. The routh_medial_thirds theorem from the parent file gives the area ratio as 1/7.",
+    "mathContext": "At $d=e=f=1/3$: $def = 1/27 \\neq 8/27 = (1-d)(1-e)(1-f)$. Routh ratio $= (1/27-8/27)^2/(7/9)^3 = 49/729 \\cdot 729/343 = 1/7$.",
+    "tags": ["special-case", "one-third", "one-seventh", "verification"]
+  }
+]
