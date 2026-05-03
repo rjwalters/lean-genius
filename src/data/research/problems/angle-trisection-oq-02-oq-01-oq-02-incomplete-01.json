@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 32, 2026-05-03): All 4 Mathlib API drift errors fixed (PR #15034). File compiles with 3 expected sorries. Next: submit h\u03b2_dvd to Aristotle and reformulate hjoin_dvd IH.",
+    "progressSummary": "PROGRESS: finrank_dvd_two proved by Aristotle; h_top_Ka full proof written (unverified); adjoin_\u03b2_in_sup_eq_top submitted to Aristotle (3127b935)",
     "builtItems": [
       "isConstructible_mem_range: all constructible numbers are rational (Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:89)",
       "not_constructible_of_bad_degree: proved via rationality + minpoly.eq_X_sub_C (line 179)",
@@ -48,7 +48,9 @@
       "Session 29: Restored isConstructible_sqrt2 \u2014 \u221a2 IS constructible under fixed definition",
       "Session 29: isConstructible_algebraic_degree (private lemma): IsConstructible \u03b1 \u2192 IsAlgebraic \u211a \u03b1 \u2227 \u2203n, finrank \u211a \u211a\u27ee\u03b1\u27ef \u2223 2^n (2 sorries remain: h\u03b2_dvd, hjoin_dvd)",
       "Session 29: not_constructible_of_bad_degree: Dvd-based proof using isConstructible_algebraic_degree",
-      "Session 32 PR #15034: 4 API drift fixes applied to AngleTrisectionOQ02OQ01OQ02Incomplete01.lean, file compiles"
+      "Session 32 PR #15034: 4 API drift fixes applied to AngleTrisectionOQ02OQ01OQ02Incomplete01.lean, file compiles",
+      "finrank_adjoin_\u03b2_over_adjoin_a_dvd_two: PROVED by Aristotle job 594e3160 (2026-05-03)",
+      "h_top_Ka full proof attempt in AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:182 (Session 34, unverified)"
     ],
     "insights": [
       "IsConstructible with existential sqrt_ext blocks induction \u2014 must make a,b explicit constructor params to get proper IHs",
@@ -73,7 +75,9 @@
       "Session 31 (2026-04-27): Docker build fails on origin/main with 4 Mathlib API drift errors at lines 155,156,176,332,338. Released claim \u2014 Mechanic should repair across the angle-trisection/erdos-1151 cohort affected by 2026-04-26 Mathlib upgrade.",
       "Session 32: le_sup_left/le_sup_right replaces mem_sup_left/mem_sup_right in IntermediateField lattice (Mathlib 2026-04-26 rename)",
       "Session 32: Module.finrank_mul_finrank requires have-then-rw pattern; direct rw with explicit type args fails due to implicit instance resolution",
-      "Session 32: Nat.eq_zero_of_dvd_of_lt removed; replacement is Nat.zero_dvd.mp when hypothesis is 0 dvd n"
+      "Session 32: Nat.eq_zero_of_dvd_of_lt removed; replacement is Nat.zero_dvd.mp when hypothesis is 0 dvd n",
+      "restrict_algEquiv bridge: IntermediateField.restrict h converts K_a:IntermediateField \u211a \u2102 into K_a_im:IntermediateField \u211a \u21a5K_a\u03b2, enabling restrictScalars_adjoin_of_algEquiv to switch scalar field",
+      "Aristotle finrank strategy: tower law + minpoly \u211a \u03b2 \u2223 (minpoly \u211a a).comp(X\u00b2) + interval_cases proves finrank \u21a5\u211a\u27eea\u27ef \u21a5\u211a\u27ee\u03b2\u27ef \u2223 2"
     ],
     "mathlibGaps": [
       "isConstructible_algebraic_degree: tower degree induction \u2014 IsConstructible \u03b1 \u2192 IsAlgebraic \u211a \u03b1 \u2227 \u2203 n, finrank \u211a \u211a\u27ee\u03b1\u27ef = 2^n. Needs FiniteDimensional.finrank_mul_finrank + IntermediateField tower lemmas. Estimated ~120 lines.",
@@ -81,9 +85,9 @@
       "finrank \u21a5\u211a\u27eea\u27ef \u21a5\u211a\u27ee\u03b2\u27ef \u2223 2 requires showing \u03b2element generates \u21a5\u211a\u27ee\u03b2\u27ef over \u21a5\u211a\u27eea\u27ef (adjoin = top in IntermediateField \u21a5\u211a\u27eea\u27ef \u21a5\u211a\u27ee\u03b2\u27ef)"
     ],
     "nextSteps": [
-      "Submit h\u03b2_dvd sub-sorry to Aristotle: prove finrank \u21a5\u211a\u27eea\u27ef \u21a5\u211a\u27ee\u03b2\u27ef \u2223 2 given \u03b2*\u03b2=a, hAlg_a\u03b2, hST_a\u03b2, ha_le_\u03b2",
-      "For hjoin_dvd: reformulate IsConstructible IH to be K-relative (finrank K K\u27eeb\u27ef \u2223 2^k for all K/\u211a)",
-      "wantzel_galois_iff remains out-of-scope (500+ lines Galois theory)"
+      "Check Aristotle job 3127b935 for adjoin_\u03b2_in_sup_eq_top",
+      "Run Docker build to verify h_top_Ka proof (restrict + restrictScalars_adjoin_of_algEquiv strategy)",
+      "If h_top_Ka compiles: update PR #15128; only wantzel_galois_iff sorry remains"
     ]
   },
   "tags": [
