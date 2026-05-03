@@ -63,35 +63,35 @@
       "title": "Definitions: ψ(n) and θ(n)",
       "startLine": 36,
       "endLine": 63,
-      "description": "Defines chebyshevPsi n = Σ_{k ∈ range(n+1)} vonMangoldt k and chebyshevThetaOQ n = Σ_{p prime ≤ n} log p. Proves non-negativity of both (chebyshevPsi_nonneg, chebyshevThetaOQ_nonneg) and the key identity vonMangoldt_prime_eq: Λ(p) = log p for primes."
+      "summary": "Defines chebyshevPsi n = Σ_{k ∈ range(n+1)} vonMangoldt k and chebyshevThetaOQ n = Σ_{p prime ≤ n} log p. Proves non-negativity of both (chebyshevPsi_nonneg, chebyshevThetaOQ_nonneg) and the key identity vonMangoldt_prime_eq: Λ(p) = log p for primes."
     },
     {
       "id": "sec-theta-le-psi",
       "title": "θ(n) ≤ ψ(n)",
       "startLine": 64,
       "endLine": 99,
-      "description": "Proves chebyshevTheta_le_chebyshevPsi via two steps: (1) chebyshevThetaOQ_eq_sumVonMangoldt rewrites log p as vonMangoldt p for primes using Finset.sum_congr; (2) theta_le_psi_via_vonMangoldt applies Finset.sum_le_sum_of_subset_of_nonneg since the prime filter is a subset of the full range."
+      "summary": "Proves chebyshevTheta_le_chebyshevPsi via two steps: (1) chebyshevThetaOQ_eq_sumVonMangoldt rewrites log p as vonMangoldt p for primes using Finset.sum_congr; (2) theta_le_psi_via_vonMangoldt applies Finset.sum_le_sum_of_subset_of_nonneg since the prime filter is a subset of the full range."
     },
     {
       "id": "sec-upper-bound",
       "title": "Upper Bound ψ(n) ≤ 2n·log 2",
       "startLine": 100,
       "endLine": 119,
-      "description": "Axiomatizes chebyshevPsi_doubling_le (the key step: ψ(2n) − ψ(n) ≤ 2n·log 2 from the central binomial coefficient C(2n,n) ≤ 4^n) and chebyshevPsi_upper_bound (the full bound by geometric series telescoping)."
+      "summary": "Axiomatizes chebyshevPsi_doubling_le (the key step: ψ(2n) − ψ(n) ≤ 2n·log 2 from the central binomial coefficient C(2n,n) ≤ 4^n) and chebyshevPsi_upper_bound (the full bound by geometric series telescoping)."
     },
     {
       "id": "sec-lower-bound",
       "title": "Lower Bound from Bertrand's Postulate",
       "startLine": 120,
       "endLine": 156,
-      "description": "Proves chebyshevPsi_doubling_lower: ψ(2n) − ψ(n) ≥ log(n+1) for n ≥ 1. Uses Bertrand's postulate (Nat.exists_prime_lt_and_le_two_mul_add_one) to find a prime p ∈ (n, 2n]. The prime p contributes vonMangoldt p = log p ≥ log(n+1) to ψ(2n) but not to ψ(n), so the difference is bounded below by Finset.single_le_sum."
+      "summary": "Proves chebyshevPsi_doubling_lower: ψ(2n) − ψ(n) ≥ log(n+1) for n ≥ 1. Uses Bertrand's postulate (Nat.exists_prime_lt_and_le_two_mul_add_one) to find a prime p ∈ (n, 2n]. The prime p contributes vonMangoldt p = log p ≥ log(n+1) to ψ(2n) but not to ψ(n), so the difference is bounded below by Finset.single_le_sum."
     },
     {
       "id": "sec-pnt",
       "title": "PNT Equivalence (Axiomatized)",
       "startLine": 157,
       "endLine": 184,
-      "description": "Axiomatizes chebyshevPsi_asymptotic (ψ(n)/n → 1, the PNT for ψ) and pnt_equivalence (ψ(n)/n → 1 ↔ π(n) ~ n/log n). Summary theorem chebyshevPsi_bounds packages θ ≤ ψ and the Bertrand lower bound."
+      "summary": "Axiomatizes chebyshevPsi_asymptotic (ψ(n)/n → 1, the PNT for ψ) and pnt_equivalence (ψ(n)/n → 1 ↔ π(n) ~ n/log n). Summary theorem chebyshevPsi_bounds packages θ ≤ ψ and the Bertrand lower bound."
     }
   ],
   "crossReferences": [
