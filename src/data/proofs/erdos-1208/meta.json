@@ -17,10 +17,10 @@
       "incidence-geometry"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 2,
-    "lineCount": 137,
-    "assumptions": "2 axioms: fd2_lower_bound (Spencer–Szemerédi–Trotter lower bound F₂(n) ≥ Ω(n^(1/3))), fd2_upper_bound (grid construction upper bound F₂(n) ≤ O(n^(1/2))). 1 sorry in distance_sidon_size_bound.",
+    "lineCount": 169,
+    "assumptions": "2 axioms: fd2_lower_bound (Spencer–Szemerédi–Trotter lower bound F₂(n) ≥ Ω(n^(1/3))), fd2_upper_bound (grid construction upper bound F₂(n) ≤ O(n^(1/2))).",
     "erdosNumber": 1208,
     "erdosUrl": "https://erdosproblems.com/1208",
     "erdosProblemStatus": "open",
@@ -143,11 +143,11 @@
       "description": "Erdős #1202 (Prime Sets with Quantitative Density Conditions) is in the same Erdős 1200s cluster. Both #1202 and #1208 formalize open/solved Erdős problems with quantitative lower bound structure, both using axioms to capture deep results (sieve theory for #1202, Szemerédi-Trotter incidence bounds for #1208). The 1200-numbered problems in Erdős's archive span analytic number theory and combinatorial geometry, reflecting his unified interest in threshold phenomena."
     }
   ],
-  "sorries": 1,
+  "sorries": 0,
   "leanFile": {
     "axiomCount": 2,
-    "lineCount": 137,
-    "sorries": 1,
+    "lineCount": 169,
+    "sorries": 0,
     "path": "Proofs/Erdos1208Problem.lean",
     "definitionCount": 1,
     "theoremCount": 4
