@@ -29,19 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 4A appropriate (all deep), 5T proved, 0S.",
+    "progressSummary": "PROGRESS: 3A in file (was 1A — added prime_ap_pnt_upper and erdos_200), 7T proved (was 6T — added pnt_green_tao_bracket), 0S. 180 lines.",
     "builtItems": [
       "Proved exists_dvd_in_ap helper lemma (ZMod witness) in Erdos200Problem.lean:129",
       "Proved ap_difference_primorial theorem in Erdos200Problem.lean:150 (was false axiom)",
       "prime_ap_6 theorem: IsPrimeAP 6 157 with d=30",
-      "Cleanup: removed 3 misleading True-body theorems, replaced with comments"
+      "Cleanup: removed 3 misleading True-body theorems, replaced with comments",
+      "Added prime_ap_pnt_upper axiom: PNT upper bound (1+ε)·log N on longestPrimeAP (line 59)",
+      "Added erdos_200 axiom: formally states open conjecture longestPrimeAP(N) < ε·log N (line 92)",
+      "Proved pnt_green_tao_bracket: brackets longestPrimeAP between ω(1) and (1+ε)·log N (line 173)"
     ],
     "insights": [
       "ap_difference_primorial axiom was FALSE: {3,5,7} counterexample (k=3, p=3, 3∤2). Corrected by adding hypothesis all terms > k",
       "Proved corrected theorem via ZMod p field arithmetic: witness i = -a·d⁻¹ solves a + id ≡ 0 mod p",
-      "Axiom count reduced from 5 to 4 — only deep results (PNT, Green-Tao, open conjecture, quantitative bounds) remain as axioms",
-      "All 4 axioms are deep (PNT, Green-Tao, open conjecture, quantitative G-T) — none provable from Mathlib",
-      "Removed 3 True-placeholder theorems (hardy_littlewood_prediction, hl_suggests_negative, primorial_growth) — replaced with documentation comments",
+      "Prior sessions claimed '4A' but file only had 1 axiom (green_tao); PNT upper bound and erdos_200 conjecture were only docstrings",
+      "Added prime_ap_pnt_upper and erdos_200 as proper axioms with ∀ε>0 formulation (standard o(f) encoding)",
+      "pnt_green_tao_bracket combines the two bounds to formally state the known bracket on longestPrimeAP",
+      "Hardy-Littlewood heuristic predicts Θ(log N) — would refute erdos_200 if true; tension captured in docstring",
       "Added prime_ap_6: {7,37,67,97,127,157} with d=30=5# illustrates primorial constraint"
     ],
     "mathlibGaps": [],
