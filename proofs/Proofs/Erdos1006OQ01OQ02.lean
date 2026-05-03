@@ -116,11 +116,6 @@ theorem cover_implies_related
   · exact Or.inl huv.lt
   · exact Or.inr hvu.lt
 
-/-- Strict separation: the cover graph of a 3-chain is a path (2 edges),
-    while the comparability graph of a 3-chain is a triangle (3 edges).
-    So cover graphs are a strict subset of comparability graphs. -/
-example : True := trivial  -- The separation witnesses conceptually above
-
 /-
 ## NP Certificate for Cover Graph Membership
 -/
