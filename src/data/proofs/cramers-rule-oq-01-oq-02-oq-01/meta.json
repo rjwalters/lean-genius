@@ -21,7 +21,7 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 312,
+    "lineCount": 313,
     "assumptions": "None. Fully verified over any DivisionRing D (non-commutative results) and Field F (commutative reductions).",
     "originalContributions": [
       "Defined block3 A i j: the complementary 2×2 submatrix obtained by deleting row i and column j from a 3×3 matrix",
@@ -29,14 +29,22 @@
       "Proved 3 minor determinant formulas (block3_00_det, block3_11_det, block3_22_det)",
       "Defined qdet3: the (i,j)-quasideterminant over a field as det(A)/minor-det",
       "Proved qdet3_mul_minor_eq_det: the core identity qdet₃ · minor_det = det(A)",
+      "Proved qdet3_ne_zero: nonzero criterion for quasideterminants",
+      "Proved qdet3_00_explicit, qdet3_11_explicit, qdet3_22_explicit: explicit formulas for diagonal quasideterminants",
       "Proved qdet3_00_schur_expand: explicit Schur complement expansion of the (0,0) quasideterminant",
+      "Proved qdet3_00_schur_nodiv: division-free Schur expansion multiplied by minor determinant",
       "Defined schurComp3: the Schur complement of the lower-right 2×2 block (= qdet00 of block3 A 0 0)",
       "Defined qdet3_00_nc: the non-commutative (0,0)-quasideterminant via iterated Schur complement inverse",
+      "Proved qdet3_00_nc_unfold: explicit expansion of the non-commutative quasideterminant",
+      "Proved schurComp3_eq_qdet00_block: Schur complement equals qdet00 of block3",
+      "Proved qdet3_00_nc_of_zero_offdiag: non-commutative quasideterminant simplifies when offdiagonals are zero",
       "Proved qdet3_00_nc_eq_qdet3: consistency theorem connecting non-commutative and field definitions",
+      "Proved schurComp3_mul_eq_minor_det: Schur complement times A22 equals minor determinant",
       "Proved cramer_rule_3x3: 3×3 Cramer's rule using Mathlib's Matrix.cramer",
+      "Proved cramer_denom_qdet: denominator in Cramer equals the quasideterminant minor",
       "Proved qdet3_recurrence_summary: the complete recurrence theorem in one conjunction"
     ],
-    "theoremCount": 20
+    "theoremCount": 30
   },
   "sections": [
     {
@@ -143,9 +151,9 @@
       "Matrix"
     ],
     "namespace": "CramersRuleOQ01OQ02OQ01",
-    "lineCount": 312,
+    "lineCount": 313,
     "axiomCount": 0,
-    "theoremCount": 20,
+    "theoremCount": 30,
     "definitionCount": 5,
     "path": "Proofs/CramersRuleOQ01OQ02OQ01.lean",
     "sorries": 0
