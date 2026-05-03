@@ -301,7 +301,7 @@ theorem gcd_aeval_mulVec_eq_zero {M : Matrix (Fin n) (Fin n) K}
       EuclideanDomain.gcdA p μ * p + EuclideanDomain.gcdB p μ * μ :=
     (EuclideanDomain.gcd_eq_gcd_ab p μ).trans (by ring)
   rw [hbez, map_add, map_mul, map_mul, Matrix.add_mulVec]
-  simp only [Matrix.mul_mulVec, hp_ann, hμ_ann, Matrix.mulVec_zero]
+  simp only [Matrix.mul_mulVec, hp_ann, hμ_ann]
 
 -- ============================================================
 -- PART IV-C: Kernel Properness Helper
