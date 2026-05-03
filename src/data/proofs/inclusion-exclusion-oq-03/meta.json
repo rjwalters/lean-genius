@@ -1,0 +1,88 @@
+{
+  "id": "inclusion-exclusion-oq-03",
+  "title": "Inclusion-Exclusion OQ-03: Zeta and M\u00f6bius Transforms",
+  "slug": "inclusion-exclusion-oq-03",
+  "description": "Formalizes the algebraic structure of inclusion-exclusion via Zeta/M\u00f6bius transforms on the subset lattice. Proves M\u00f6bius inversion \u03bc\u2218\u03b6 = id. Connects to fast subset convolution (O(n\u00b72\u207f) algorithm). 14 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InclusionExclusionOQ03.lean",
+    "tags": [
+      "combinatorics",
+      "algorithms",
+      "m\u00f6bius-inversion",
+      "subset-lattice",
+      "fast-subset-convolution"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 338,
+    "theoremCount": 14,
+    "assumptions": "None. All 14 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The M\u00f6bius function of the subset lattice gives the inclusion-exclusion principle its algebraic meaning. M\u00f6bius inversion (Rota, 1964) generalizes PIE to arbitrary posets. The fast subset convolution algorithm (Bj\u00f6rklund-Husfeldt-Kaski-Koivisto, 2007) computes M\u00f6bius transforms in O(n\u00b72\u207f).",
+    "problemStatement": "Formalize the Zeta and M\u00f6bius transforms on 2^[n] and prove M\u00f6bius inversion \u03bc\u2218\u03b6 = id, revealing PIE as M\u00f6bius inversion on the subset lattice.",
+    "proofStrategy": "Define zetaTransform: (\u03b6f)(S) = \u03a3_{T\u2286S} f(T) and mobiusTransform: (\u03bcg)(S) = \u03a3_{T\u2286S} (-1)^|S\\T| g(T). Prove cancellation via signed inclusion-exclusion of subsets.",
+    "keyInsights": [
+      "**PIE = M\u00f6bius inversion**: the inclusion-exclusion formula is exactly M\u00f6bius inversion on the boolean lattice 2^[n], where \u03bc(T,S) = (-1)^{|S\\T|}.",
+      "**Algorithmic efficiency**: naive computation of \u03b6f or \u03bcg costs O(3^n) (iterate over pairs T\u2286S); fast subset sum (SOS) achieves O(n\u00b72^n) using dimension-by-dimension processing.",
+      "**Duality**: \u03b6 and \u03bc are inverses \u2014 knowing either transform determines the other, giving a 'change of basis' between pointwise and cumulative representations."
+    ]
+  },
+  "sections": [
+    {
+      "id": "inclusion_exclusion_oq_03",
+      "title": "Zeta/M\u00f6bius Transforms and M\u00f6bius Inversion",
+      "startLine": 1,
+      "endLine": 338,
+      "summary": "zetaTransform, mobiusTransform definitions. mobius_inversion: \u03bc \u2218 \u03b6 = id on 2^[n]. Algorithmic complexity discussion.",
+      "mathContext": "$(\\mu \\circ \\zeta) f = f$ on $2^{[n]}$; $\\mu(T,S) = (-1)^{|S \\setminus T|}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "14 theorems, 0 sorries, 0 axioms. M\u00f6bius inversion on the subset lattice proved, giving the algebraic foundation of inclusion-exclusion.",
+    "implications": "The M\u00f6bius inversion perspective on PIE connects combinatorics to algebraic number theory and explains why many counting formulas have an inclusion-exclusion structure.",
+    "openQuestions": [
+      "Can Rota's generalized M\u00f6bius inversion be proved for arbitrary finite posets?",
+      "Can the fast subset sum algorithm be verified as computing the M\u00f6bius transform?",
+      "Can the Dedekind zeta function be connected to M\u00f6bius inversion on divisibility lattices?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 338,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 3,
+    "path": "Proofs/InclusionExclusionOQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "sub-question",
+      "description": "OQ-03: Algebraic structure of PIE via M\u00f6bius inversion"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "mobius_inversion",
+      "type": "core",
+      "statement": "mobiusTransform (zetaTransform f) = f",
+      "description": "M\u00f6bius inversion on the subset lattice.",
+      "significance": "Algebraic structure theorem explaining inclusion-exclusion as a lattice M\u00f6bius function"
+    }
+  ],
+  "sorries": 0
+}

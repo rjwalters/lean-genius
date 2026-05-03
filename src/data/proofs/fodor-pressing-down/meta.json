@@ -1,0 +1,88 @@
+{
+  "id": "fodor-pressing-down",
+  "title": "Fodor's Pressing-Down Lemma for Regular Uncountable Cardinals",
+  "slug": "fodor-pressing-down",
+  "description": "Formalizes Fodor's pressing-down lemma: for any regular uncountable cardinal \u03ba, any regressive function on a stationary set S \u2286 \u03ba.ord is constant on some stationary subset. Builds infrastructure not in Mathlib: IsClubBelow, diagInter with both parts proved. 15 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FodorPressingDown.lean",
+    "tags": [
+      "set-theory",
+      "cardinal-arithmetic",
+      "stationary-sets",
+      "ordinals",
+      "fodor"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 386,
+    "theoremCount": 15,
+    "assumptions": "None. All 15 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Fodor (1956) proved the pressing-down lemma, fundamental to set-theoretic combinatorics. A function f: S \u2192 \u03ba is regressive if f(\u03b3) < \u03b3 for all \u03b3 > 0. The lemma says such functions are 'eventually constant' on any stationary set.",
+    "problemStatement": "Prove Fodor's pressing-down lemma: any regressive function on a stationary set S \u2286 \u03ba.ord (\u03ba regular uncountable) is constant on some stationary subset of S.",
+    "proofStrategy": "Diagonal intersection: \u0394_{\u03b2<\u03ba}(f \u03b2) = {\u03b3 < \u03ba | \u2200 \u03b2 < \u03b3, \u03b3 \u2208 f \u03b2} is a club when each f \u03b2 is a club (two parts: closed = diagInter_isClosedBelow, unbounded = diagInter_isUnboundedBelow via zipper). Fodor: suppose not \u2014 pick clubs C_\u03b1 avoiding fiber \u03b1. Diagonal intersection D meets S at some \u03b3. But then \u03b3 \u2208 C_{f(\u03b3)} by regressiveness \u2014 contradiction.",
+    "keyInsights": [
+      "**Diagonal intersection lemma**: \u0394(f \u03b2) is a club when each f \u03b2 is a club \u2014 the unbounded part requires a 'zipper' construction to find arbitrarily large points in the intersection.",
+      "**Stationary-club intersection**: every stationary set meets every club (definition of stationarity) \u2014 this is the key interface between the two worlds.",
+      "**New infrastructure**: IsUnboundedBelow, IsClubBelow, IsStationaryBelow are defined fresh as Mathlib (2026-04) lacked them."
+    ]
+  },
+  "sections": [
+    {
+      "id": "fodor_pressing_down",
+      "title": "Fodor's Lemma via Diagonal Intersection",
+      "startLine": 1,
+      "endLine": 386,
+      "summary": "IsUnboundedBelow, IsClubBelow, IsStationaryBelow. diagInter. diagInter_isClosedBelow, diagInter_isUnboundedBelow. fodor: regressive \u2192 constant on stationary subset.",
+      "mathContext": "Regressive $f: S \\to \\kappa$ on stationary $S \\subseteq \\kappa$: $\\exists$ stationary $T \\subseteq S$, $f\\restriction_T$ constant."
+    }
+  ],
+  "conclusion": {
+    "summary": "15 theorems, 0 sorries, 0 axioms. Fodor's pressing-down lemma proved with complete diagonal intersection infrastructure.",
+    "implications": "Fodor's lemma is a key tool in set theory with applications in combinatorial set theory, infinite graph theory, and forcing arguments.",
+    "openQuestions": [
+      "Can Fodor's lemma be contributed to Mathlib?",
+      "Can the club filter on a regular cardinal be formalized?",
+      "Can Silver's theorem (SCH fails at singular strong limit) be derived using Fodor?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 386,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 4,
+    "path": "Proofs/FodorPressingDown.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-problems",
+      "relationship": "extends",
+      "description": "Fodor's lemma \u2014 fundamental set-theoretic tool for combinatorics of stationary sets"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "fodor",
+      "type": "core",
+      "statement": "Regressive f: S \u2192 \u03ba.ord on stationary S \u2192 constant on stationary T \u2286 S",
+      "description": "Fodor's pressing-down lemma for regular uncountable cardinals.",
+      "significance": "Fundamental set-theoretic combinatorics tool, not previously in Mathlib"
+    }
+  ],
+  "sorries": 0
+}

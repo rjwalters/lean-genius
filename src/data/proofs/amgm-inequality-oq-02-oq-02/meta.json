@@ -1,0 +1,87 @@
+{
+  "id": "amgm-inequality-oq-02-oq-02",
+  "title": "Newton's Log-Concavity and Maclaurin's Inequality (OQ-02-OQ-02)",
+  "slug": "amgm-inequality-oq-02-oq-02",
+  "description": "Proves Newton's log-concavity for elementary symmetric polynomials: (e\u2096/C(n,k))\u00b2 \u2265 (e\u2096\u208b\u2081/C(n,k-1))\u00b7(e\u2096\u208a\u2081/C(n,k+1)). Derives Maclaurin's step M\u2096 \u2265 M\u2096\u208a\u2081. Both results derived as theorems (0 axioms). 15 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ02.lean",
+    "tags": [
+      "analysis",
+      "inequalities",
+      "symmetric-polynomials",
+      "newton-inequalities",
+      "log-concavity"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 960,
+    "theoremCount": 15,
+    "assumptions": "None. All 15 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Newton's inequalities (1707): (e\u2096/C(n,k))\u00b2 \u2265 (e\u2096\u208b\u2081/C(n,k-1))\u00b7(e\u2096\u208a\u2081/C(n,k+1)) for elementary symmetric polynomials. Maclaurin's inequality (1729): M\u2081 \u2265 M\u2082 \u2265 ... \u2265 M\u2099 where M\u2096 = (e\u2096/C(n,k))^(1/k).",
+    "problemStatement": "Prove Newton's log-concavity and Maclaurin's step as theorems, eliminating the axioms in AmgmInequalityOQ02.lean.",
+    "proofStrategy": "8-part proof: (I) structural properties, (II) unnormalized Newton e\u2096\u00b2 \u2265 e\u2096\u208b\u2081\u00b7e\u2096\u208a\u2081 by induction, (III) binomial log-concavity, (IV)-(V) cleared-denominator induction, (VI) normalized Newton, (VII) power inequality a\u2096^(k+1) \u2265 a\u2096\u208a\u2081^k, (VIII) Maclaurin step.",
+    "keyInsights": [
+      "**Log-concavity via induction**: e\u2096\u00b2 \u2265 e\u2096\u208b\u2081\u00b7e\u2096\u208a\u2081 proved by induction on n using the absorption identity e\u2096(x\u2081,...,x\u2099) = e\u2096(x\u2081,...,x\u2099\u208b\u2081) + x\u2099\u00b7e\u2096\u208b\u2081(x\u2081,...,x\u2099\u208b\u2081).",
+      "**Cleared-denominator form**: working with C(n,k)\u00b2\u00b7e\u2096\u00b2 instead of normalized quantities avoids division and makes Lean's ring tactics applicable.",
+      "**Maclaurin from Newton**: each step M\u2096 \u2265 M\u2096\u208a\u2081 follows from Newton's inequality via the power inequality a\u2096^(k+1) \u2265 a\u2096\u208a\u2081^k."
+    ]
+  },
+  "sections": [
+    {
+      "id": "amgm_inequality_oq_02_oq_02",
+      "title": "Newton Log-Concavity and Maclaurin's Step",
+      "startLine": 1,
+      "endLine": 960,
+      "summary": "newton_log_concavity_proved: (e\u2096/C(n,k))\u00b2 \u2265 (e\u2096\u208b\u2081/C(n,k-1))\u00b7(e\u2096\u208a\u2081/C(n,k+1)). maclaurin_step_derived: M\u2096 \u2265 M\u2096\u208a\u2081.",
+      "mathContext": "$(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$; $M_k \\geq M_{k+1}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "15 theorems, 0 sorries, 0 axioms. Newton's log-concavity and Maclaurin's step proved from first principles.",
+    "implications": "Newton's inequalities are foundational in the theory of symmetric functions, with applications to correlation inequalities and unimodal sequences.",
+    "openQuestions": [
+      "Can the full Maclaurin inequality chain M\u2081 \u2265 M\u2082 \u2265 ... \u2265 M\u2099 \u2265 M\u2099\u208a\u2081 be formally proved?",
+      "Can Newton's inequalities be proved for general log-concave sequences?",
+      "Can the equality cases of Maclaurin's inequality be characterized?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.AmgmInequalityOQ02",
+      "Proofs.NewtonInductiveStep"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 960,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 2,
+    "path": "Proofs/AmgmInequalityOQ02OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality-oq-02",
+      "relationship": "sub-question",
+      "description": "OQ-02-OQ-02: Newton's log-concavity and Maclaurin's step inequality"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "newton_log_concavity_proved",
+      "type": "core",
+      "statement": "(e\u2096/C(n,k))\u00b2 \u2265 (e\u2096\u208b\u2081/C(n,k-1))\u00b7(e\u2096\u208a\u2081/C(n,k+1))",
+      "description": "Newton's log-concavity for normalized elementary symmetric polynomials.",
+      "significance": "Key result connecting AM-GM to the Maclaurin inequality chain"
+    }
+  ],
+  "sorries": 0
+}

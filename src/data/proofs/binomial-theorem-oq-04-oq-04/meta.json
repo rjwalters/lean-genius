@@ -1,0 +1,86 @@
+{
+  "id": "binomial-theorem-oq-04-oq-04",
+  "title": "LGV-Vandermonde Bridge: Lattice Paths and Combinatorial Identity (OQ-04-OQ-04)",
+  "slug": "binomial-theorem-oq-04-oq-04",
+  "description": "Proves Vandermonde's identity as a degenerate case of the LGV (Lindstr\u00f6m-Gessel-Viennot) lemma for non-crossing lattice paths. Shows C(m+n,r) = \u03a3 C(m,k)\u00b7C(n,r-k) via path-matrix decomposition. 15 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BinomialTheoremOQ04OQ04.lean",
+    "tags": [
+      "combinatorics",
+      "lattice-paths",
+      "lgv-lemma",
+      "vandermonde",
+      "generating-functions"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 229,
+    "theoremCount": 15,
+    "assumptions": "None. All 15 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The LGV lemma (1970s) computes non-intersecting lattice path counts via determinants. Vandermonde's identity C(m+n,r) = \u03a3 C(m,k)\u00b7C(n,r-k) appears as the degenerate (single-path) case where all paths are non-crossing.",
+    "problemStatement": "Show Vandermonde's identity C(m+n,r) = \u03a3 C(m,k)\u00b7C(n,r-k) arises as the single-path LGV case applied to sequential grid segments.",
+    "proofStrategy": "vandermonde_via_powersetCard: combinatorial proof via Finset.powersetCard partition. vandermonde_as_disjoint_path_products: each term as disjoint segment path counts. lgvPathMatrix_vandermonde: the path count = C(m+n,r) decomposes as Vandermonde through intermediate column cut.",
+    "keyInsights": [
+      "**LGV degenerate case**: Vandermonde = LGV with r=1 (single path) and two sequential segments of widths m and n. The non-crossing condition is automatic for single paths.",
+      "**Path matrix view**: M[0][j] = C(m,j) and M[1][r-j] = C(n,r-j) \u2014 the path matrix has Vandermonde terms as entries.",
+      "**Combinatorial proof via powersetCard**: Finset.powersetCard_biUnion gives a bijective proof: (r-subset of [m+n]) \u2194 (k-subset of [m]) \u00d7 ((r-k)-subset of [n])."
+    ]
+  },
+  "sections": [
+    {
+      "id": "binomial_theorem_oq_04_oq_04",
+      "title": "Vandermonde Identity via LGV Non-Crossing Paths",
+      "startLine": 1,
+      "endLine": 229,
+      "summary": "vandermonde_via_powersetCard. vandermonde_as_disjoint_path_products. lgvPathMatrix_vandermonde. lgv_det_2x2_formula.",
+      "mathContext": "$\\binom{m+n}{r} = \\sum_{k=0}^r \\binom{m}{k}\\binom{n}{r-k}$ via LGV non-crossing path decomposition."
+    }
+  ],
+  "conclusion": {
+    "summary": "15 theorems, 0 sorries, 0 axioms. LGV-Vandermonde connection proved via combinatorial path decomposition.",
+    "implications": "The LGV-Vandermonde connection suggests that many combinatorial identities are instances of the more general non-intersecting path framework.",
+    "openQuestions": [
+      "Can the LGV lemma itself be proved for k-tuples of non-intersecting paths?",
+      "Can the Cauchy-Binet formula be derived from LGV?",
+      "Can the Gessel-Viennot approach be applied to prove the Lindstr\u00f6m theorem for matroids?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 229,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 3,
+    "path": "Proofs/BinomialTheoremOQ04OQ04.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-04",
+      "relationship": "sub-question",
+      "description": "OQ-04-OQ-04: LGV-Vandermonde connection via non-crossing lattice paths"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "lgvPathMatrix_vandermonde",
+      "type": "core",
+      "statement": "LGV path count C(m+n,r) = \u03a3 C(m,k)\u00b7C(n,r-k) via Vandermonde",
+      "description": "Vandermonde's identity as the degenerate single-path LGV case.",
+      "significance": "Reveals Vandermonde as a special case of the deep LGV lattice path principle"
+    }
+  ],
+  "sorries": 0
+}

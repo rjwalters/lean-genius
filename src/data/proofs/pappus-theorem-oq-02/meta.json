@@ -1,0 +1,87 @@
+{
+  "id": "pappus-theorem-oq-02",
+  "title": "Pappus's Hexagon Theorem via Algebraic Cross-Product (OQ-02)",
+  "slug": "pappus-theorem-oq-02",
+  "description": "Proves Pappus's Hexagon Theorem over any CommRing K using Lagrange cross-product identity. Given collinear points A,B,C on L\u2081 and A',B',C' on L\u2082, the cross-join intersections P,Q,R are collinear. 15 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PappusTheoremOQ02.lean",
+    "tags": [
+      "geometry",
+      "projective-geometry",
+      "pappus",
+      "determinants",
+      "commutative-algebra"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 466,
+    "theoremCount": 15,
+    "assumptions": "None. All 15 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Pappus's theorem (~320 AD) is one of the earliest projective geometry theorems. Remarkably, it holds over any field/ring \u2014 and conversely, Pappus's theorem characterizes commutative coordinate rings (Pappus \u2194 commutativity).",
+    "problemStatement": "Prove Pappus's Hexagon Theorem: for collinear A,B,C and A',B',C', the three cross-join points P=AB'\u2229A'B, Q=AC'\u2229A'C, R=BC'\u2229B'C are collinear.",
+    "proofStrategy": "Express P,Q,R via the Lagrange cross-product identity: cross(cross(a,b),cross(c,d)) = det(a,b,d)\u00b7c \u2212 det(a,b,c)\u00b7d. The collinearity condition det(P,Q,R)=0 expands to a degree-6 polynomial identity provable by `ring`.",
+    "keyInsights": [
+      "**Cross-product framework**: same framework as Desargues OQ-01 \u2014 expressing intersection points via cross products enables algebraic verification of collinearity.",
+      "**Degree-6 ring identity**: the collinearity condition becomes a polynomial identity of degree 6 in the original coordinates, directly provable by Lean's `ring` tactic.",
+      "**Commutativity characterization**: Pappus's theorem holds exactly over commutative rings \u2014 the commutativity of coordinate multiplication is what enables the algebraic proof."
+    ]
+  },
+  "sections": [
+    {
+      "id": "pappus_theorem_oq_02",
+      "title": "Pappus Collinearity via Lagrange Cross-Product",
+      "startLine": 1,
+      "endLine": 466,
+      "summary": "Cross-product definitions. Collinearity via determinant. pappus_collinear: det(P,Q,R) = 0 proved by ring.",
+      "mathContext": "Pappus: $P, Q, R$ collinear where $P = AB' \\cap A'B$, $Q = AC' \\cap A'C$, $R = BC' \\cap B'C$."
+    }
+  ],
+  "conclusion": {
+    "summary": "15 theorems, 0 sorries, 0 axioms. Pappus's Hexagon Theorem proved algebraically over any CommRing.",
+    "implications": "The algebraic proof demonstrates that Pappus's theorem is a pure ring identity, explaining its universality over all commutative coordinate rings.",
+    "openQuestions": [
+      "Can the equivalence Pappus \u2194 commutativity be formally proved in Lean?",
+      "Can Pappus imply Desargues be formalized (classical order of implications)?",
+      "Can the projective plane axioms be derived from Pappus in Lean?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 466,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 3,
+    "path": "Proofs/PappusTheoremOQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "pascals-hexagon",
+      "relationship": "extends",
+      "description": "OQ-02: Pappus using the same algebraic framework as Desargues OQ-01"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "pappus_collinear",
+      "type": "core",
+      "statement": "det(P, Q, R) = 0 for cross-join intersection points",
+      "description": "Pappus's Hexagon Theorem: cross-join points are collinear over any CommRing.",
+      "significance": "Algebraic proof valid over any commutative ring, connecting to projective geometry axiomatics"
+    }
+  ],
+  "sorries": 0
+}

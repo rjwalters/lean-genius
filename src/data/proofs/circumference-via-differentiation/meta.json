@@ -1,0 +1,89 @@
+{
+  "id": "circumference-via-differentiation",
+  "title": "Circumference Formula via Differentiation of Area",
+  "slug": "circumference-via-differentiation",
+  "description": "Derives the circumference formula C(r) = 2\u03c0r by differentiating the area formula A(r) = \u03c0r\u00b2. Formalizes the deep connection: C(r) = dA/dr. Extends Wiedijk #9 (Area of a Circle) with the circumference derivation. 15 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CircumferenceViaDifferentiation.lean",
+    "tags": [
+      "analysis",
+      "calculus",
+      "geometry",
+      "pi",
+      "circle"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 200,
+    "theoremCount": 15,
+    "assumptions": "None. All 15 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The formula C(r) = 2\u03c0r is usually taken as a definition or proved geometrically. The differentiation approach (C = dA/dr) provides a deeper analytic understanding: the circumference is the rate of change of area, reflecting that a thin annular strip has area \u2248 C(r)\u00b7dr.",
+    "problemStatement": "Prove C(r) = 2\u03c0r by formally differentiating A(r) = \u03c0r\u00b2 using Mathlib's calculus library.",
+    "proofStrategy": "Define A(r) = \u03c0\u00b7r\u00b2 as a real function. Prove it has derivative 2\u03c0r using HasDerivAt. Connect to measure-theoretic area via ENNReal.toReal. State circumference as the derivative.",
+    "keyInsights": [
+      "**Geometric interpretation**: when a disk grows by dr, the added area is a thin annular strip of width dr and circumference C(r): dA \u2248 C(r)\u00b7dr. Differentiating gives C(r) = dA/dr.",
+      "**Higher-dimensional generalization**: surface area of n-ball = derivative of n-ball volume w.r.t. radius \u2014 the same pattern holds in all dimensions.",
+      "**Wiedijk #9 extension**: the formal area A(r) = \u03c0r\u00b2 is Wiedijk's result; this adds the differentiation step to get circumference."
+    ]
+  },
+  "sections": [
+    {
+      "id": "circumference_via_differentiation",
+      "title": "Area Differentiation Gives Circumference",
+      "startLine": 1,
+      "endLine": 200,
+      "summary": "circleArea, circleArea_deriv: A'(r) = 2\u03c0r. circumferenceFormula: C(r) = 2\u03c0r derived from dA/dr.",
+      "mathContext": "$C(r) = \\frac{d}{dr}[\\pi r^2] = 2\\pi r$."
+    }
+  ],
+  "conclusion": {
+    "summary": "15 theorems, 0 sorries, 0 axioms. Circumference C(r) = 2\u03c0r derived by differentiating A(r) = \u03c0r\u00b2.",
+    "implications": "The differentiation derivation of circumference is arguably the most elegant proof and generalizes to higher dimensions (surface area = derivative of volume).",
+    "openQuestions": [
+      "Can the n-ball surface area = derivative of volume be proved in Lean?",
+      "Can the isoperimetric inequality (C\u00b2 \u2265 4\u03c0A) be derived from this framework?",
+      "Can the Brunn-Minkowski inequality be formally proved?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Calculus.Deriv.Polynomial",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 200,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 2,
+    "path": "Proofs/CircumferenceViaDifferentiation.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "extends",
+      "description": "Circumference = d/dr[Area] via FTC/differentiation"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "circumferenceFormula",
+      "type": "core",
+      "statement": "\u2200 r > 0, circleCircumference r = 2 * \u03c0 * r",
+      "description": "Circumference formula derived by differentiating the area formula.",
+      "significance": "Demonstrates the deep connection between area and boundary length via differentiation"
+    }
+  ],
+  "sorries": 0
+}

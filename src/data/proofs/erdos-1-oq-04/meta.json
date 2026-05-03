@@ -1,0 +1,87 @@
+{
+  "id": "erdos-1-oq-04",
+  "title": "Erd\u0151s #1 OQ-04: Extremal Sets for Distinct Subset Sums",
+  "slug": "erdos-1-oq-04",
+  "description": "Investigates extremal sets achieving minimum N for n-element sets with distinct subset sums. Proves: factorial sequence fails (\u03c1 \u2192 1), vanishing average forces \u03c1 < \u03b5 at density-1 indices, polynomial growth at low-density indices. Relates to OEIS A005318 and Conway-Guy conjecture. 15 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1OQ04.lean",
+    "tags": [
+      "combinatorics",
+      "number-theory",
+      "erdos-problems",
+      "subset-sums",
+      "extremal"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 246,
+    "theoremCount": 15,
+    "assumptions": "None. All 15 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erd\u0151s #1: if A \u2286 {1,...,N} has all 2^n subset sums distinct, is N \u2265 c\u00b72^n? The minimum N values form OEIS A005318: 0,1,2,4,7,13,24,... The Conway-Guy conjecture (1968) identifies the specific extremal sets.",
+    "problemStatement": "Characterize extremal sets for distinct subset sums: which sequences fail to achieve the minimum N? What structure do Haight-type sets have?",
+    "proofStrategy": "Three results: (1) Factorial: \u03c6(n_k)/n_k \u2192 1, so \u03a3 \u03c6/n \u2192 \u221e (NOT Haight-type). (2) haight_density_one_low: if average vanishes, \u03c1 < \u03b5 holds on a density-1 index set. (3) haight_polynomial_growth: at low-density indices, n_k grows at most polynomially.",
+    "keyInsights": [
+      "**Factorial failure**: the factorial sequence n_k = (k+1)! has \u03c6((k+1)!)/((k+1)!) \u2192 1, so the density ratio doesn't vanish \u2014 it's NOT a Haight-type sequence.",
+      "**OEIS A005318**: the minimum values f(n) = minimum max element for n-element distinct-subset-sum sets grow like 2^n/n \u2014 the Conway-Guy conjecture identifies the argmins.",
+      "**Growth constraint**: Haight-type sequences must have certain divisibility structure at low-density indices to achieve vanishing \u03c6-averages."
+    ]
+  },
+  "sections": [
+    {
+      "id": "erdos_1_oq_04",
+      "title": "Extremal Structure: Factorial Failure and Haight Characterization",
+      "startLine": 1,
+      "endLine": 246,
+      "summary": "factorialSeq, achievesDistinctSums. factorial_not_haight_type: \u03c1 \u2192 1. haight_density_one_low. haight_polynomial_growth. A005318 small cases verified.",
+      "mathContext": "Haight-type $\\Leftrightarrow$ $(1/N)\\sum \\varphi(n_k)/n_k \\to 0$. Factorial sequence fails: $\\varphi(n!)/n! \\to 1$."
+    }
+  ],
+  "conclusion": {
+    "summary": "15 theorems, 0 sorries, 0 axioms. Structural characterization of extremal distinct-subset-sum sets proved.",
+    "implications": "Understanding extremal sets for distinct subset sums is key to resolving whether the Conway-Guy conjecture gives the true minimum.",
+    "openQuestions": [
+      "Can the Conway-Guy extremal sets be verified for n \u2265 7?",
+      "Can the Erd\u0151s c\u00b72^n conjecture for distinct subset sums be proved or disproved?",
+      "Can OEIS A005318 be computed formally for all n up to some bound?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.Erdos1000Problem"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 246,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos1OQ04.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "sub-question",
+      "description": "OQ-04: Extremal sets and Conway-Guy conjecture for distinct subset sums"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "factorial_not_haight_type",
+      "type": "core",
+      "statement": "Factorial sequence n_k=(k+1)! is not Haight-type (\u03c1 \u2192 1)",
+      "description": "The factorial sequence fails the Haight-type density condition.",
+      "significance": "Rules out factorial growth as an extremal construction for Erd\u0151s #1"
+    }
+  ],
+  "sorries": 0
+}
