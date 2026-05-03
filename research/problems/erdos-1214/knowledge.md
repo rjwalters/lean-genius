@@ -43,7 +43,7 @@ orders modulo every prime p (coprime to xy). By Kummer theory, this forces x = y
   "equal orders ⟹ x = y" direction requires Kummer theory and is axiomatized
 
 ### Files Modified
-- `proofs/Proofs/Erdos1214Problem.lean` (new, 232 lines)
+- `proofs/Proofs/Erdos1214Problem.lean` (new, 308 lines)
 - `src/data/proofs/erdos-1214/meta.json` (new)
 - `research/problems/erdos-1214/knowledge.md` (this file)
 - `src/data/research/problems/erdos-1214.json` (updated)
@@ -51,5 +51,5 @@ orders modulo every prime p (coprime to xy). By Kummer theory, this forces x = y
 ### Status
 - **Axiom count**: 2 (corrales_schoof, zsygmondy)
 - **Sorry count**: 0 (pending Docker build verification)
-- **Theorems proved**: 22
-- **Phase**: ACT (pending PR)
+- **Theorems proved**: 26
+- **Phase**: COMPLETED (PR #15052 open)
