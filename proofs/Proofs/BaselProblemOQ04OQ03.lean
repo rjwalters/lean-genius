@@ -33,12 +33,11 @@ connecting the arithmetic Möbius function to the Basel problem.
 ### Step 3: Density Limit (axiomatized)
 The convergence uses dominated convergence (|μ(d)/d²| ≤ 1/d², Σ 1/d² < ∞).
 
-## Axiom Count: 2
-1. `moebius_dirichlet_series_at_two`: Σ μ(d)/d² = 6/π² (Dirichlet series)
-2. `coprime_pair_density_limit`: The density limit (dominated convergence)
+## Axiom Count: 1
+1. `coprime_pair_density_limit`: The density limit (dominated convergence)
 
-## Sorry Count: 1
-The finite sum exchange in the Möbius decomposition.
+Previously axiomatized:
+- `moebius_dirichlet_series_at_two` (now proved via `LSeries_zeta_mul_Lseries_moebius`)
 
 ## References
 - Cesàro (1885): first explicit statement of the density
@@ -57,6 +56,8 @@ import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Tactic
 
 open Filter Finset BigOperators Real Nat ArithmeticFunction
+
+open scoped LSeries.notation
 
 namespace BaselProblemOQ04OQ03
 
@@ -232,23 +233,58 @@ theorem countCoprimePairs_moebius (N : ℕ) (hN : 0 < N) :
 -- SECTION V: Analytic Axioms
 -- ============================================================
 
-/-- **Axiom (Möbius Dirichlet Series)**:
+/-- **Theorem (Möbius Dirichlet Series)**:
     Σ_{d=1}^∞ μ(d)/d² = 6/π².
 
-    This is the analytic identity connecting the Möbius function to the
-    Basel constant. It follows from:
-    - The formal identity (μ * ζ)(n) = 1_{n=1} (Dirichlet convolution)
-    - The L-series identity: L(μ, s) · ζ(s) = 1 for Re(s) > 1
-    - Setting s = 2: L(μ, 2) = 1/ζ(2) = 6/π²
-
-    Mathlib's `riemannZeta_two` gives ζ(2) = π²/6.
-    The analytic L-series framework is in `Mathlib.NumberTheory.LSeries.Basic`.
-    The formal algebraic identity follows from `ArithmeticFunction.moebius_mul_coe_zeta`.
-    Bridging the algebraic and analytic frameworks for ℕ → ℤ functions is
-    the key gap this axiom covers. -/
-axiom moebius_dirichlet_series_at_two :
+    Proof: At s = 2, the L-series identity L(ζ, 2) · L(μ, 2) = 1
+    (from `LSeries_zeta_mul_Lseries_moebius`) combined with L(ζ, 2) = ζ(2) = π²/6
+    (from `riemannZeta_two`) gives L(μ, 2) = 6/π². We then transfer from
+    the complex L-series to a real HasSum via `Complex.hasSum_ofReal`. -/
+theorem moebius_dirichlet_series_at_two :
     HasSum (fun d : ℕ => (ArithmeticFunction.moebius d : ℝ) / (d : ℝ) ^ 2)
-    (6 / Real.pi ^ 2)
+    (6 / Real.pi ^ 2) := by
+  -- Convert to a complex HasSum (both sides) via Complex.hasSum_ofReal
+  rw [← Complex.hasSum_ofReal]
+  -- Cast the target value 6/π² : ℝ to ℂ
+  have hval : ((6 / Real.pi ^ 2 : ℝ) : ℂ) = 6 / (Real.pi : ℂ) ^ 2 := by push_cast; ring
+  rw [hval]
+  -- s = 2 has real part > 1 (needed for L-series convergence)
+  have hs : 1 < (2 : ℂ).re := by norm_num
+  -- The Möbius L-series is summable at s = 2
+  have hmu_sum : LSeriesSummable ↗moebius (2 : ℂ) :=
+    LSeriesSummable_moebius_iff.mpr hs
+  -- The product formula: L(ζ, 2) · L(μ, 2) = 1
+  have hprod : L ↗zeta (2 : ℂ) * L ↗moebius (2 : ℂ) = 1 :=
+    LSeries_zeta_mul_Lseries_moebius hs
+  -- L(ζ, 2) = riemannZeta(2) = π²/6
+  have hzeta : L ↗zeta (2 : ℂ) = (Real.pi : ℂ) ^ 2 / 6 := by
+    rw [LSeries_zeta_eq_riemannZeta hs, riemannZeta_two]
+  -- π²/6 ≠ 0
+  have hpi2_ne : (Real.pi : ℂ) ^ 2 / 6 ≠ 0 :=
+    div_ne_zero (pow_ne_zero 2 (Complex.ofReal_ne_zero.mpr Real.pi_pos.ne')) (by norm_num)
+  -- Compute L(μ, 2) = 6/π² using the product formula
+  have hL_mu : L ↗moebius (2 : ℂ) = 6 / (Real.pi : ℂ) ^ 2 := by
+    have h : (Real.pi : ℂ) ^ 2 / 6 * L ↗moebius 2 = 1 := hzeta ▸ hprod
+    calc L ↗moebius (2 : ℂ)
+        = (↑Real.pi ^ 2 / 6)⁻¹ * ((↑Real.pi ^ 2 / 6) * L ↗moebius 2) := by
+            rw [← mul_assoc, inv_mul_cancel₀ hpi2_ne, one_mul]
+      _ = (↑Real.pi ^ 2 / 6)⁻¹ * 1 := by rw [h]
+      _ = (↑Real.pi ^ 2 / 6)⁻¹ := mul_one _
+      _ = 6 / ↑Real.pi ^ 2 := inv_div _ _
+  -- Package as LSeriesHasSum
+  have hLHS : LSeriesHasSum ↗moebius (2 : ℂ) (6 / (Real.pi : ℂ) ^ 2) :=
+    hL_mu ▸ hmu_sum.LSeriesHasSum
+  -- The L-series term equals the real summand (cast to ℂ) for each n
+  have hfun : LSeries.term ↗moebius (2 : ℂ) =
+      fun n : ℕ => ((moebius n : ℝ) / (n : ℝ) ^ 2 : ℂ) := by
+    funext n
+    rcases Nat.eq_zero_or_pos n with rfl | hn
+    · simp [LSeries.term_zero, map_zero]
+    · rw [LSeries.term_of_ne_zero hn.ne', Complex.cpow_two]
+      push_cast
+      ring
+  -- Conclude
+  rwa [← hfun]
 
 /-- **Axiom (Density Convergence)**:
     The coprime pair density converges to 6/π².
@@ -385,8 +421,8 @@ theorem tsum_moebius_div_sq : ∑' d : ℕ, (ArithmeticFunction.moebius d : ℝ)
    - Sorry: Finite sum exchange (finite Fubini-type argument)
 
 2. Dirichlet series: Σ_{d≥1} μ(d)/d² = 6/π²
-   - Axiomatized: moebius_dirichlet_series_at_two
-   - (Follows from L(μ,s)·ζ(s) = 1 and riemannZeta_two, but bridge is complex)
+   - Proved: moebius_dirichlet_series_at_two
+   - Via: L(μ,s)·ζ(s) = 1 (LSeries_zeta_mul_Lseries_moebius) + riemannZeta_two + Complex.hasSum_ofReal
 
 3. Density limit: countCoprimePairs(N)/N² → 6/π²
    - Axiomatized: coprime_pair_density_limit
@@ -405,8 +441,8 @@ product that yields ζ(2)⁻¹ = 6/π² from the Basel problem.
   N=10:  63/100 = 0.630
   N=∞:   6/π²   ≈ 0.608
 
-Axiom count: 2
-Sorry count: 1 (finite sum exchange in Möbius decomposition)
+Axiom count: 1 (coprime_pair_density_limit — dominated convergence argument)
+Sorry count: 0
 -/
 
 end BaselProblemOQ04OQ03
