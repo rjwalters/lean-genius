@@ -14079,16 +14079,20 @@
       "issues": []
     },
     "inclusion-exclusion-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-03T14:44:39Z",
-      "result": "issues-found",
-      "issues": []
+      "auditCount": 2,
+      "issues": [
+        "badge was original but main theorem wraps Mathlib's Finset.inclusion_exclusion_card_biUnion; corrected to mathlib in PR #15263"
+      ],
+      "lastAudited": "2026-05-03T18:35:00Z",
+      "result": "issues-fixed"
     },
     "lebesgue-measure-oq-01-oq-01-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-03T14:47:09Z",
-      "result": "issues-found",
-      "issues": []
+      "auditCount": 2,
+      "issues": [
+        "Lean source file LebesgueMeasureOQ01OQ01OQ02.lean was missing from main repo; added in PR #15264"
+      ],
+      "lastAudited": "2026-05-03T18:35:00Z",
+      "result": "issues-fixed"
     },
     "cevas-theorem-non-euclidean-oq-02-oq-01": {
       "auditCount": 1,
