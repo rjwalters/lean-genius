@@ -168,6 +168,30 @@ theorem strong_bound_k2 : strongBound 2 := by
              sq_nonneg ((n : ℝ) - 1)]
 
 /-
+# Part 5b: Weak Bound for k ≤ 2
+
+The strong bound n² implies the weak bound n^{2+ε}, so the Erdős conjecture
+holds for k = 1 and k = 2.
+-/
+
+/-- Strong bound implies weak bound: product ≤ C·n² implies ≤ C·n^{2+ε} for ε > 0. -/
+lemma strongBound_implies_weakBound {k : ℕ} (h : strongBound k) : weakBound k := by
+  obtain ⟨C, hC, hbound⟩ := h
+  intro ε hε
+  refine ⟨C, hC, fun n hn => ?_⟩
+  have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have h_rpow : (n : ℝ) ^ 2 ≤ (n : ℝ) ^ (2 + ε) := by
+    rw [← Real.rpow_natCast (n : ℝ) 2]
+    exact Real.rpow_le_rpow_of_exponent_le hn1 (le_add_of_nonneg_right hε.le)
+  exact (hbound n hn).trans (mul_le_mul_of_nonneg_left h_rpow hC.le)
+
+/-- Erdős conjecture holds for k = 1: ∏B₂(m) ≤ n^{2+ε} for all ε > 0. -/
+theorem weak_bound_k1 : weakBound 1 := strongBound_implies_weakBound strong_bound_k1
+
+/-- Erdős conjecture holds for k = 2: ∏B₂(m) ≤ 2·n^{2+ε} for all ε > 0. -/
+theorem weak_bound_k2 : weakBound 2 := strongBound_implies_weakBound strong_bound_k2
+
+/-
 # Part 6: Known Results — Failure of Strong Bound
 
 van Doorn showed the strong bound fails for k ≥ 3.
@@ -396,11 +420,15 @@ and the weak bound conjecture remains open.
 theorem erdos_367_summary :
     -- Strong bound holds for k = 1 and k = 2
     (strongBound 1 ∧ strongBound 2) ∧
+    -- Weak bound (Erdős conjecture) holds for k = 1 and k = 2
+    (weakBound 1 ∧ weakBound 2) ∧
     -- Strong bound fails for k = 3
     ¬ strongBound 3 ∧
-    -- The weak bound conjecture is stated
+    -- The weak bound conjecture for k ≥ 3 remains open
     True :=
-  ⟨⟨strong_bound_k1, strong_bound_k2⟩, strong_bound_fails_k3, trivial⟩
+  ⟨⟨strong_bound_k1, strong_bound_k2⟩,
+   ⟨weak_bound_k1, weak_bound_k2⟩,
+   strong_bound_fails_k3, trivial⟩
 
 /-- The problem remains OPEN. -/
 def erdos_367_status : String := "OPEN"
