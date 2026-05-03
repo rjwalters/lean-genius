@@ -121,46 +121,466 @@ theorem embeddable_mono {r : ℕ} {H : Erdos1018OQ04.Hypergraph V r}
 /-! ## Part III: K₃ (Triangle) is Planar -/
 
 /-- Explicit planar embedding of K₃:
-    Vertices {0, 1, 2} mapped to (0,0), (1,0), (0,1) in ℝ².
-    These form a non-degenerate triangle with no edge crossings. -/
+    Vertices 0=(0,0), 1=(1,0), 2=(0,1).
+    All three edge pairs are adjacent (share a vertex); separation proved by coordinate projections.
+    Functionals: hull({0,1}): y=0, hull({0,2}): x=0, hull({1,2}): x+y=1. -/
 theorem K3_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 3 2) 2 := by
-  -- Use vertices at (0,0), (1,0), (0,1)
   use fun i => match i with
     | ⟨0, _⟩ => ![0, 0]
     | ⟨1, _⟩ => ![1, 0]
     | ⟨2, _⟩ => ![0, 1]
-    | ⟨_, _⟩ => ![0, 0]  -- unreachable
+    | ⟨_, _⟩ => ![0, 0]
   constructor
-  · -- Injectivity: the three points are distinct
-    intro ⟨i, hi⟩ ⟨j, hj⟩ h
+  · intro ⟨i, hi⟩ ⟨j, hj⟩ h
     simp only at h
     fin_cases i <;> fin_cases j <;> simp_all <;> omega
-  · -- No improper edge intersections
-    -- For K₃ with r=2, each "edge" is a pair of vertices, convex hull is a line segment
-    -- The three line segments {AB, BC, AC} only share endpoints
-    sorry -- Geometric verification: the three edges of a triangle meet only at vertices
+  · let φ₃ : Fin 3 → Fin 2 → ℝ := fun i => match i with
+      | ⟨0, _⟩ => ![0, 0] | ⟨1, _⟩ => ![1, 0] | ⟨2, _⟩ => ![0, 1] | ⟨_, _⟩ => ![0, 0]
+    -- If f is linear and constant cv on vertex images of e, then f = cv on hull(φ₃(e))
+    have pc : ∀ (e : Finset (Fin 3)) (f : (Fin 2 → ℝ) → ℝ) (cv : ℝ),
+        IsLinearMap ℝ f → (∀ v ∈ e, f (φ₃ v) = cv) →
+        ∀ y ∈ convexHull ℝ (Set.image φ₃ ↑e), f y = cv := by
+      intro e f cv hlin hconst y hy
+      apply convexHull_min _ _ hy
+      · rintro z ⟨v, hv, rfl⟩; exact hconst v (Finset.mem_coe.mp hv)
+      · intro p hp q hq s t hs ht hst
+        simp only [Set.mem_setOf_eq] at *
+        rw [hlin.1 (s • p) (t • q), hlin.2 s p, hlin.2 t q, hp, hq]
+        simp only [smul_eq_mul]; nlinarith
+    intro e₁ he₁ e₂ he₂ hne
+    simp only [Erdos1018OQ04.completeHypergraph, Finset.mem_filter, Finset.mem_univ,
+               true_and] at he₁ he₂
+    obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp he₁
+    obtain ⟨c, d, hcd, rfl⟩ := Finset.card_eq_two.mp he₂
+    fin_cases a <;> fin_cases b <;> fin_cases c <;> fin_cases d <;>
+    simp_all only [Fin.mk.injEq, ne_eq, not_false_eq_true, Finset.mem_insert,
+                   Finset.mem_singleton, forall_eq_or_imp, forall_eq] <;>
+    intro x ⟨hx₁, hx₂⟩ <;>
+    simp only [convexHull_singleton, Set.mem_singleton_iff] <;>
+    (first
+    | (-- {0,1}∩{0,2} → vertex 0=(0,0): y=0 ∧ x=0
+       have hy : x 1 = 0 := pc _ (fun v => v 1) 0
+         ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ₃, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hx : x 0 = 0 := pc _ (fun v => v 0) 0
+         ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ₃, Matrix.cons_val_zero]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ₃, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons])
+    | (-- {0,2}∩{0,1} → vertex 0=(0,0): symmetric
+       have hx : x 0 = 0 := pc _ (fun v => v 0) 0
+         ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ₃, Matrix.cons_val_zero]) x hx₁
+       have hy : x 1 = 0 := pc _ (fun v => v 1) 0
+         ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ₃, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ₃, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons])
+    | (-- {0,1}∩{1,2} → vertex 1=(1,0): y=0 ∧ x+y=1 → x=1
+       have hy : x 1 = 0 := pc _ (fun v => v 1) 0
+         ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ₃, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hxy : x 0 + x 1 = 1 := pc _ (fun v => v 0 + v 1) 1
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ₃, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ₃, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {1,2}∩{0,1} → vertex 1=(1,0): symmetric
+       have hxy : x 0 + x 1 = 1 := pc _ (fun v => v 0 + v 1) 1
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ₃, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hy : x 1 = 0 := pc _ (fun v => v 1) 0
+         ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ₃, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ₃, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {0,2}∩{1,2} → vertex 2=(0,1): x=0 ∧ x+y=1 → y=1
+       have hx : x 0 = 0 := pc _ (fun v => v 0) 0
+         ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ₃, Matrix.cons_val_zero]) x hx₁
+       have hxy : x 0 + x 1 = 1 := pc _ (fun v => v 0 + v 1) 1
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ₃, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ₃, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {1,2}∩{0,2} → vertex 2=(0,1): symmetric
+       have hxy : x 0 + x 1 = 1 := pc _ (fun v => v 0 + v 1) 1
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ₃, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hx : x 0 = 0 := pc _ (fun v => v 0) 0
+         ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ₃, Matrix.cons_val_zero]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ₃, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith))
 
 /-! ## Part IV: K₄ is Planar -/
 
 /-- Explicit planar embedding of K₄:
-    We use coordinates: (0,0), (3,0), (1,2), (2,2).
-    K₄ is planar: any drawing can be made crossing-free. -/
+    Vertices: 0=(0,0), 1=(2,0), 2=(1,2), 3=(1,1).
+    Vertex 3 placed inside triangle 0-1-2 gives a valid crossing-free embedding.
+
+    Note: the original (3,0) coordinates had edges {0,3}/{1,2} crossing at (3/2,3/2).
+
+    Functionals used for separation:
+      hull({0,1}): y=0      hull({0,2}): 2x-y=0   hull({0,3}): x-y=0
+      hull({1,2}): 2x+y=4  hull({1,3}): x+y=2    hull({2,3}): x=1
+
+    Non-adjacent pairs ({0,1}/{2,3}, {0,2}/{1,3}, {0,3}/{1,2}) handled by contradiction. -/
 theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 := by
-  -- Use vertices at (0,0), (3,0), (1,2), (2,2)
-  -- This gives a valid planar embedding (K₄ is planar by Euler's formula: V-E+F = 2, 4-6+4 = 2)
   use fun i => match i with
     | ⟨0, _⟩ => ![0, 0]
-    | ⟨1, _⟩ => ![3, 0]
+    | ⟨1, _⟩ => ![2, 0]
     | ⟨2, _⟩ => ![1, 2]
-    | ⟨3, _⟩ => ![2, 2]
+    | ⟨3, _⟩ => ![1, 1]
     | ⟨_, _⟩ => ![0, 0]
   constructor
-  · -- Injectivity: the four points are pairwise distinct
-    intro ⟨i, hi⟩ ⟨j, hj⟩ h
+  · intro ⟨i, hi⟩ ⟨j, hj⟩ h
     simp only at h
     fin_cases i <;> fin_cases j <;> simp_all (config := { decide := true }) <;> omega
-  · -- Edge separation
-    sorry -- K₄ planarity requires checking 6 edges don't improperly cross
+  · let φ : Fin 4 → Fin 2 → ℝ := fun i => match i with
+      | ⟨0, _⟩ => ![0, 0] | ⟨1, _⟩ => ![2, 0] | ⟨2, _⟩ => ![1, 2] | ⟨3, _⟩ => ![1, 1]
+      | ⟨_, _⟩ => ![0, 0]
+    -- f linear and constant cv on vertex images → f = cv on convex hull
+    have pc : ∀ (e : Finset (Fin 4)) (f : (Fin 2 → ℝ) → ℝ) (cv : ℝ),
+        IsLinearMap ℝ f → (∀ v ∈ e, f (φ v) = cv) →
+        ∀ y ∈ convexHull ℝ (Set.image φ ↑e), f y = cv := by
+      intro e f cv hlin hconst y hy
+      apply convexHull_min _ _ hy
+      · rintro z ⟨v, hv, rfl⟩; exact hconst v (Finset.mem_coe.mp hv)
+      · intro p hp q hq s t hs ht hst
+        simp only [Set.mem_setOf_eq] at *
+        rw [hlin.1 (s • p) (t • q), hlin.2 s p, hlin.2 t q, hp, hq]
+        simp only [smul_eq_mul]; nlinarith
+    -- f linear and f(v) ≥ c for all v ∈ e → f ≥ c on convex hull
+    have plb : ∀ (e : Finset (Fin 4)) (f : (Fin 2 → ℝ) → ℝ) (c : ℝ),
+        IsLinearMap ℝ f → (∀ v ∈ e, f (φ v) ≥ c) →
+        ∀ y ∈ convexHull ℝ (Set.image φ ↑e), f y ≥ c := by
+      intro e f c hlin hlb y hy
+      apply convexHull_min _ _ hy
+      · rintro z ⟨v, hv, rfl⟩; exact hlb v (Finset.mem_coe.mp hv)
+      · intro p hp q hq s t hs ht hst
+        simp only [Set.mem_setOf_eq] at *
+        rw [hlin.1 (s • p) (t • q), hlin.2 s p, hlin.2 t q]
+        simp only [smul_eq_mul]
+        nlinarith [mul_nonneg hs (show f p - c ≥ 0 from by linarith),
+                   mul_nonneg ht (show f q - c ≥ 0 from by linarith)]
+    -- f linear and f(v) ≤ c for all v ∈ e → f ≤ c on convex hull (via negation of plb)
+    have pub : ∀ (e : Finset (Fin 4)) (f : (Fin 2 → ℝ) → ℝ) (c : ℝ),
+        IsLinearMap ℝ f → (∀ v ∈ e, f (φ v) ≤ c) →
+        ∀ y ∈ convexHull ℝ (Set.image φ ↑e), f y ≤ c := by
+      intro e f c hlin hub y hy
+      have hlin_neg : IsLinearMap ℝ (fun x => -f x) :=
+        ⟨fun a b => by simp [hlin.1 a b], fun r a => by simp [hlin.2 r a]⟩
+      have hub_neg : ∀ v ∈ e, (-f) (φ v) ≥ -c := fun v hv => by
+        simp only; linarith [hub v hv]
+      linarith [plb e (fun x => -f x) (-c) hlin_neg hub_neg y hy]
+    intro e₁ he₁ e₂ he₂ hne
+    simp only [Erdos1018OQ04.completeHypergraph, Finset.mem_filter, Finset.mem_univ,
+               true_and] at he₁ he₂
+    obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp he₁
+    obtain ⟨c, d, hcd, rfl⟩ := Finset.card_eq_two.mp he₂
+    fin_cases a <;> fin_cases b <;> fin_cases c <;> fin_cases d <;>
+    simp_all only [Fin.mk.injEq, ne_eq, not_false_eq_true, Finset.mem_insert,
+                   Finset.mem_singleton, forall_eq_or_imp, forall_eq] <;>
+    intro x ⟨hx₁, hx₂⟩ <;>
+    simp only [convexHull_singleton, Set.mem_singleton_iff] <;>
+    (first
+    | (-- {0,1}∩{0,2} → vertex 0=(0,0): y=0 ∧ 2x-y=0 → x=0,y=0
+       have hy : x 1 = 0 := pc _ (fun v => v 1) 0
+         ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have h2xy : 2 * x 0 - x 1 = 0 := pc _ (fun v => 2 * v 0 - v 1) 0
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {0,2}∩{0,1} → vertex 0=(0,0): 2x-y=0 ∧ y=0 → x=0
+       have h2xy : 2 * x 0 - x 1 = 0 := pc _ (fun v => 2 * v 0 - v 1) 0
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hy : x 1 = 0 := pc _ (fun v => v 1) 0
+         ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {0,1}∩{0,3} → vertex 0=(0,0): y=0 ∧ x-y=0 → x=0
+       have hy : x 1 = 0 := pc _ (fun v => v 1) 0
+         ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hxy : x 0 - x 1 = 0 := pc _ (fun v => v 0 - v 1) 0
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {0,3}∩{0,1} → vertex 0=(0,0): symmetric
+       have hxy : x 0 - x 1 = 0 := pc _ (fun v => v 0 - v 1) 0
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hy : x 1 = 0 := pc _ (fun v => v 1) 0
+         ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {0,1}∩{1,2} → vertex 1=(2,0): y=0 ∧ 2x+y=4 → x=2
+       have hy : x 1 = 0 := pc _ (fun v => v 1) 0
+         ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have h2xpy : 2 * x 0 + x 1 = 4 := pc _ (fun v => 2 * v 0 + v 1) 4
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {1,2}∩{0,1} → vertex 1=(2,0): symmetric
+       have h2xpy : 2 * x 0 + x 1 = 4 := pc _ (fun v => 2 * v 0 + v 1) 4
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hy : x 1 = 0 := pc _ (fun v => v 1) 0
+         ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {0,1}∩{1,3} → vertex 1=(2,0): y=0 ∧ x+y=2 → x=2
+       have hy : x 1 = 0 := pc _ (fun v => v 1) 0
+         ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hxpy : x 0 + x 1 = 2 := pc _ (fun v => v 0 + v 1) 2
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {1,3}∩{0,1} → vertex 1=(2,0): symmetric
+       have hxpy : x 0 + x 1 = 2 := pc _ (fun v => v 0 + v 1) 2
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hy : x 1 = 0 := pc _ (fun v => v 1) 0
+         ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {0,2}∩{1,2} → vertex 2=(1,2): 2x-y=0 ∧ 2x+y=4 → x=1,y=2
+       have h2xmy : 2 * x 0 - x 1 = 0 := pc _ (fun v => 2 * v 0 - v 1) 0
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have h2xpy : 2 * x 0 + x 1 = 4 := pc _ (fun v => 2 * v 0 + v 1) 4
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {1,2}∩{0,2} → vertex 2=(1,2): symmetric
+       have h2xpy : 2 * x 0 + x 1 = 4 := pc _ (fun v => 2 * v 0 + v 1) 4
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have h2xmy : 2 * x 0 - x 1 = 0 := pc _ (fun v => 2 * v 0 - v 1) 0
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {0,2}∩{2,3} → vertex 2=(1,2): 2x-y=0 ∧ x=1 → y=2
+       have h2xmy : 2 * x 0 - x 1 = 0 := pc _ (fun v => 2 * v 0 - v 1) 0
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hx1 : x 0 = 1 := pc _ (fun v => v 0) 1
+         ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_zero]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {2,3}∩{0,2} → vertex 2=(1,2): symmetric
+       have hx1 : x 0 = 1 := pc _ (fun v => v 0) 1
+         ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_zero]) x hx₁
+       have h2xmy : 2 * x 0 - x 1 = 0 := pc _ (fun v => 2 * v 0 - v 1) 0
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {0,3}∩{1,3} → vertex 3=(1,1): x-y=0 ∧ x+y=2 → x=1,y=1
+       have hxmy : x 0 - x 1 = 0 := pc _ (fun v => v 0 - v 1) 0
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hxpy : x 0 + x 1 = 2 := pc _ (fun v => v 0 + v 1) 2
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {1,3}∩{0,3} → vertex 3=(1,1): symmetric
+       have hxpy : x 0 + x 1 = 2 := pc _ (fun v => v 0 + v 1) 2
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hxmy : x 0 - x 1 = 0 := pc _ (fun v => v 0 - v 1) 0
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {0,3}∩{2,3} → vertex 3=(1,1): x-y=0 ∧ x=1 → y=1
+       have hxmy : x 0 - x 1 = 0 := pc _ (fun v => v 0 - v 1) 0
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hx1 : x 0 = 1 := pc _ (fun v => v 0) 1
+         ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_zero]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {2,3}∩{0,3} → vertex 3=(1,1): symmetric
+       have hx1 : x 0 = 1 := pc _ (fun v => v 0) 1
+         ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_zero]) x hx₁
+       have hxmy : x 0 - x 1 = 0 := pc _ (fun v => v 0 - v 1) 0
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {1,2}∩{1,3} → vertex 1=(2,0): 2x+y=4 ∧ x+y=2 → x=2
+       have h2xpy : 2 * x 0 + x 1 = 4 := pc _ (fun v => 2 * v 0 + v 1) 4
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hxpy : x 0 + x 1 = 2 := pc _ (fun v => v 0 + v 1) 2
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {1,3}∩{1,2} → vertex 1=(2,0): symmetric
+       have hxpy : x 0 + x 1 = 2 := pc _ (fun v => v 0 + v 1) 2
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have h2xpy : 2 * x 0 + x 1 = 4 := pc _ (fun v => 2 * v 0 + v 1) 4
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {1,2}∩{2,3} → vertex 2=(1,2): 2x+y=4 ∧ x=1 → y=2
+       have h2xpy : 2 * x 0 + x 1 = 4 := pc _ (fun v => 2 * v 0 + v 1) 4
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hx1 : x 0 = 1 := pc _ (fun v => v 0) 1
+         ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_zero]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {2,3}∩{1,2} → vertex 2=(1,2): symmetric
+       have hx1 : x 0 = 1 := pc _ (fun v => v 0) 1
+         ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_zero]) x hx₁
+       have h2xpy : 2 * x 0 + x 1 = 4 := pc _ (fun v => 2 * v 0 + v 1) 4
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {1,3}∩{2,3} → vertex 3=(1,1): x+y=2 ∧ x=1 → y=1
+       have hxpy : x 0 + x 1 = 2 := pc _ (fun v => v 0 + v 1) 2
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hx1 : x 0 = 1 := pc _ (fun v => v 0) 1
+         ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_zero]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- {2,3}∩{1,3} → vertex 3=(1,1): symmetric
+       have hx1 : x 0 = 1 := pc _ (fun v => v 0) 1
+         ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_zero]) x hx₁
+       have hxpy : x 0 + x 1 = 2 := pc _ (fun v => v 0 + v 1) 2
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (-- NON-ADJACENT {0,1}/{2,3}: y=0 on hull({0,1}), y≥1 on hull({2,3}) → contradiction
+       have hy0 : x 1 = 0 := pc _ (fun v => v 1) 0
+         ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hy1 : x 1 ≥ 1 := plb _ (fun v => v 1) 1
+         ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]; norm_num) x hx₂
+       linarith)
+    | (-- NON-ADJACENT {2,3}/{0,1}: symmetric
+       have hy1 : x 1 ≥ 1 := plb _ (fun v => v 1) 1
+         ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]; norm_num) x hx₁
+       have hy0 : x 1 = 0 := pc _ (fun v => v 1) 0
+         ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+         (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       linarith)
+    | (-- NON-ADJACENT {0,2}/{1,3}: 2x-y=0, x+y=2, x≥1 → 3x=2 but 3≥3*1=3>2 → contradiction
+       have h2xmy : 2 * x 0 - x 1 = 0 := pc _ (fun v => 2 * v 0 - v 1) 0
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hxpy : x 0 + x 1 = 2 := pc _ (fun v => v 0 + v 1) 2
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       have hxlb : x 0 ≥ 1 := plb _ (fun v => v 0) 1
+         ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero]; norm_num) x hx₂
+       linarith)
+    | (-- NON-ADJACENT {1,3}/{0,2}: symmetric
+       have hxpy : x 0 + x 1 = 2 := pc _ (fun v => v 0 + v 1) 2
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have h2xmy : 2 * x 0 - x 1 = 0 := pc _ (fun v => 2 * v 0 - v 1) 0
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       have hxlb : x 0 ≥ 1 := plb _ (fun v => v 0) 1
+         ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero]; norm_num) x hx₁
+       linarith)
+    | (-- NON-ADJACENT {0,3}/{1,2}: 2x+y≤3 on hull({0,3}), 2x+y=4 on hull({1,2}) → contradiction
+       have hub : 2 * x 0 + x 1 ≤ 3 := pub _ (fun v => 2 * v 0 + v 1) 3
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num) x hx₁
+       have heq : 2 * x 0 + x 1 = 4 := pc _ (fun v => 2 * v 0 + v 1) 4
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       linarith)
+    | (-- NON-ADJACENT {1,2}/{0,3}: symmetric
+       have heq : 2 * x 0 + x 1 = 4 := pc _ (fun v => 2 * v 0 + v 1) 4
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hub : 2 * x 0 + x 1 ≤ 3 := pub _ (fun v => 2 * v 0 + v 1) 3
+         ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+         (by rintro v hv; fin_cases v <;>
+             simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num) x hx₂
+       linarith))
 
 /-! ## Part V: Graph Case Recovery -/
 
@@ -199,7 +619,7 @@ theorem planar_graphs_edge_bound (n : ℕ) (hn : n ≥ 3) :
   use 3
   intro W _ _ hn_card H _hE
   -- Any planar graph satisfies |E| ≤ 3|V| - 6 (for V ≥ 3)
-  sorry -- Requires Euler's formula for planar graphs
+  sorry -- Requires Euler's formula for planar graphs (E ≤ 3V-6, not yet in Lean Mathlib)
 
 /-- For n^(1+ε) edge density (ε > 0), eventually > 3n edges, so NOT planar. -/
 theorem dense_graph_not_planar (ε : ℝ) (hε : ε > 0) :
@@ -266,22 +686,23 @@ theorem r2_implies_main_r2 :
 
     2. `turanNumber` (parent sorry) → still sorry (deep, requires Turán theory)
 
-    3. K₃ planar (parent axiom) → K3_planar (theorem with remaining sorry in geom part)
-       Now has explicit coordinates, sorry only on the geometric non-crossing verification.
+    3. K₃ planar (parent axiom) → K3_planar ✓ (proved 2026-05-03)
+       Coordinates (0,0),(1,0),(0,1); 6 adjacent-pair cases; y=0/x=0/x+y=1 projections.
 
-    4. K₄ planar (parent axiom) → K4_planar (theorem with remaining sorry)
-       Now has explicit coordinates, sorry only on geometric verification.
+    4. K₄ planar (parent axiom) → K4_planar ✓ (proved 2026-05-03)
+       Corrected to (0,0),(2,0),(1,2),(1,1) — vertex 3 inside triangle 0-1-2.
+       Bug fix: original (3,0) had {0,3}/{1,2} crossing at (3/2,3/2).
+       30 cases: 24 adjacent (proj_const), 6 non-adjacent (plb/pub separating functionals).
 
     5. `r2_implies_main_r2` → proved (2026-05-02) ✓
        isEmbeddableConc and isEmbeddable have identical bodies so are definitionally equal.
        criticalDim 2 = 2 * (2-1) = 2, and hasSmallNonEmbeddable/isNonEmbeddable unfold cleanly.
 
     **Remaining work**:
-    - Fill in the geometric verification sorries for K₃ and K₄ (require convex hull intersection theory)
-    - Euler's formula bound for planar_graphs_edge_bound
+    - Euler's formula bound for planar_graphs_edge_bound (E ≤ 3V-6; not in Lean Mathlib)
 
     **Axiom count**: 1 (Kostochka-Pyber r=2 case, proven but deep)
-    **Sorry count**: 3 (geometric verifications + Euler's formula; down from 4 after r2_implies_main_r2)
+    **Sorry count**: 1 (planar_graphs_edge_bound; down from 3 after K3+K4_planar proved 2026-05-03)
 -/
 
 end Erdos1018OQ04Completion
