@@ -346,6 +346,62 @@ theorem gaussian_vs_linear_contrast (c : ℝ) (hc : c ≠ 0) :
    fun ⟨Q, hQ⟩ => no_poly_risch_constant c hc Q hQ⟩
 
 /-! ══════════════════════════════════════════════════════════════════
+## Part VIb: L₁ is Surjective — All Polynomial Integrands are Elementary
+══════════════════════════════════════════════════════════════════ -/
+
+/-!
+### Universal Surjectivity of the Linear Risch Operator
+
+The operator L₁[Q] = Q' + Q (for g = x) maps onto ALL polynomials, not just constants.
+This means ∫p(x)eˣdx is elementary for every polynomial p.
+
+**Recurrence**: Q₀ = 1; Q_{n+1} = X^{n+1} - C(n+1)·Qₙ.
+
+Verification: L₁[Q_{n+1}] = Q_{n+1}' + Q_{n+1}
+  = C(n+1)·Xⁿ - C(n+1)·Qₙ' + X^{n+1} - C(n+1)·Qₙ
+  = X^{n+1} + C(n+1)·(Xⁿ - (Qₙ' + Qₙ))
+  = X^{n+1} + C(n+1)·0 = X^{n+1}  ✓   (by induction hypothesis Qₙ' + Qₙ = Xⁿ)
+
+In sharp contrast, L₂[Q] = Q' - 2xQ is NEVER surjective onto nonzero constants
+(proved as no_poly_risch_constant). This asymmetry is the algebraic core of the
+non-elementarity of ∫e^(-x²)dx.
+-/
+
+/-- For each monomial X^n, there exists a polynomial Q with derivative Q + Q = X^n.
+    Recurrence: Q_0 = 1; Q_{n+1} = X^(n+1) - C(n+1)·Q_n. -/
+theorem risch_linear_surjective_monomial (n : ℕ) :
+    ∃ Q : Polynomial ℝ, Polynomial.derivative Q + Q = Polynomial.X ^ n := by
+  induction n with
+  | zero => exact ⟨1, by simp [Polynomial.derivative_one]⟩
+  | succ n ih =>
+    obtain ⟨Qn, hQn⟩ := ih
+    refine ⟨Polynomial.X ^ (n + 1) - Polynomial.C (↑(n + 1) : ℝ) * Qn, ?_⟩
+    have hd_pow : Polynomial.derivative (Polynomial.X ^ (n + 1) : Polynomial ℝ) =
+        Polynomial.C (↑(n + 1) : ℝ) * Polynomial.X ^ n := by
+      simp [Polynomial.derivative_X_pow, Nat.add_sub_cancel]
+    simp only [Polynomial.derivative_sub, Polynomial.derivative_mul, Polynomial.derivative_C,
+               zero_mul, zero_add, hd_pow]
+    linear_combination -Polynomial.C (↑(n + 1) : ℝ) * hQn
+
+/-- L₁[Q] = Q' + Q is surjective onto all polynomials over ℝ.
+    For every polynomial p there exists Q with derivative Q + Q = p.
+    Proved by linearity of L₁ and surjectivity onto monomials. -/
+theorem risch_linear_surjective_all (p : Polynomial ℝ) :
+    ∃ Q : Polynomial ℝ, Polynomial.derivative Q + Q = p := by
+  induction p using Polynomial.induction_on' with
+  | h_add p q hp hq =>
+    obtain ⟨Qp, hQp⟩ := hp
+    obtain ⟨Qq, hQq⟩ := hq
+    exact ⟨Qp + Qq, by
+      simp only [Polynomial.derivative_add]
+      linear_combination hQp + hQq⟩
+  | h_monomial n a =>
+    obtain ⟨Qn, hQn⟩ := risch_linear_surjective_monomial n
+    refine ⟨Polynomial.C a * Qn, ?_⟩
+    simp only [Polynomial.derivative_mul, Polynomial.derivative_C, zero_mul, zero_add]
+    linear_combination Polynomial.C a * hQn
+
+/-! ══════════════════════════════════════════════════════════════════
 ## Part VII: Abel-Ruffini Analogy
 ══════════════════════════════════════════════════════════════════ -/
 
