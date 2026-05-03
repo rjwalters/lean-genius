@@ -42,6 +42,7 @@
       "no_retraction_axiom_iff_sh: equivalence of the two no-retraction formulations"
     ],
     "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0",
     "lineCount": 171,
     "assumptions": "2 axioms (inherited, no new axioms introduced): (A1) Brouwer.retraction_construction — if a continuous self-map of B^n has no fixed point, we can construct a retraction B^n → S^{n-1} by the ray construction; (A2) BrouwerOQ01OQ02.singular_homology_retraction_split — a retraction induces a split of H_{n-1}(S^{n-1}) ≅ ℤ through H_{n-1}(B^n) = 0. These are the same two axioms as in BrouwerFixedPoint.lean, except no_retraction_axiom is replaced by the more informative singular_homology_retraction_split."
   },
