@@ -173,11 +173,15 @@ private lemma isConstructible_sup_degree (α : ℂ) (h : IsConstructible α) :
       have hβ_int_ℚβ : IsIntegral ℚ β_in_Kaβ := by
         rw [← isIntegral_algebraMap_iff (algebraMap ↥K_aβ ℂ).injective]; exact hβ_int_ℚ
       have hβ_int_Ka : IsIntegral ↥K_a β_in_Kaβ := hβ_int_ℚβ.tower_top
-      -- β generates K_aβ over K_a: any K_a-subfield of K_aβ containing β contains ℚ⟮β⟯
-      -- (since β generates ℚ⟮β⟯ over ℚ ≤ K_a), hence equals K_aβ = K_a ⊔ ℚ⟮β⟯.
-      -- The adjoin_eq_top_of_adjoin_eq_top approach requires ambient field = ℚ⟮β⟯ ≠ K_aβ.
+      -- β generates K_aβ over K_a because K_aβ = K_a ⊔ ℚ⟮β⟯ = K_a(β).
+      -- Proof plan: apply restrictScalars_injective ℚ, then rw [restrictScalars_top].
+      -- LHS = (adjoin ↥K_a {β_in_Kaβ}).restrictScalars ℚ.
+      -- By restrictScalars_adjoin: = adjoin ℚ (↑K_a_image ∪ {β_in_Kaβ}) in IntermField ℚ ↥K_aβ.
+      -- This equals ⊤ because K_a_image ∪ {β} generates K_aβ = K_a ⊔ ℚ⟮β⟯ over ℚ.
+      -- Blocker: restrictScalars_adjoin needs K' : IntermediateField ℚ ↥K_aβ with ↥K' = ↥K_a,
+      -- but ↥K_a and ↥K' are distinct Lean types (subtypes of ℂ vs ↥K_aβ respectively).
       have h_top_Ka : IntermediateField.adjoin ↥K_a ({β_in_Kaβ} : Set ↥K_aβ) = ⊤ := by
-        sorry -- K_aβ = K_a⊔ℚ⟮β⟯; β generates ℚ⟮β⟯/ℚ ≤ K_a, so generates K_aβ/K_a
+        sorry -- K_aβ = K_a⊔ℚ⟮β⟯ = K_a(β); β generates K_aβ/K_a
       have h_finrank_eq : Module.finrank ↥K_a ↥K_aβ =
           (minpoly ↥K_a β_in_Kaβ).natDegree := by
         have := IntermediateField.adjoin.finrank hβ_int_Ka
