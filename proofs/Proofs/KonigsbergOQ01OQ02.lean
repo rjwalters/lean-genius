@@ -623,12 +623,75 @@ private lemma maxTrail_steps_in_E (E : Finset (V × V)) (v : V) :
         exact Finset.mem_of_mem_erase hinner
     · simp only [hout, ↓reduceDite, List.length_singleton] at hi; omega
 
+/-- Helper: first element of maxTrail is v (via get). -/
+private lemma maxTrail_get_zero (E : Finset (V × V)) (v : V)
+    (h : 0 < (maxTrail E v).length) :
+    (maxTrail E v).get ⟨0, h⟩ = v := by
+  have hhead := maxTrail_head' E v
+  cases h_trail : maxTrail E v with
+  | nil => exact absurd h_trail (maxTrail_nonempty' E v)
+  | cons a rest =>
+    rw [h_trail] at hhead
+    simp only [List.head?_cons, Option.some.injEq] at hhead
+    simp [List.get_cons_zero, hhead]
+
 /-- No edge is used twice in maxTrail (distinct edges). -/
 private lemma maxTrail_steps_distinct (E : Finset (V × V)) (v : V) :
     ∀ i j, i + 1 < (maxTrail E v).length → j + 1 < (maxTrail E v).length → i ≠ j →
       ((maxTrail E v).get ⟨i, by omega⟩, (maxTrail E v).get ⟨i + 1, by omega⟩) ≠
       ((maxTrail E v).get ⟨j, by omega⟩, (maxTrail E v).get ⟨j + 1, by omega⟩) := by
-  sorry -- Key: edge erased at each step prevents reuse; provable by induction
+  induction h_n : E.card using Nat.strong_rec_on generalizing E v with
+  | _ n ih =>
+    intro i j hi hj hij
+    unfold maxTrail at hi hj ⊢
+    by_cases hout : (E.filter (fun e => e.1 = v)).Nonempty
+    · simp only [hout, ↓reduceDite] at hi hj ⊢
+      simp only [List.length_cons] at hi hj
+      have he₀ : hout.choose ∈ E := (Finset.mem_filter.mp hout.choose_spec).1
+      have hv : hout.choose.1 = v := (Finset.mem_filter.mp hout.choose_spec).2
+      have hcard : (E.erase hout.choose).card < n :=
+        h_n ▸ Finset.card_erase_lt_of_mem he₀
+      -- Useful: get[0] of inner trail = hout.choose.2
+      have hinner_g0 : ∀ (h0 : 0 < (maxTrail (E.erase hout.choose) hout.choose.2).length),
+          (maxTrail (E.erase hout.choose) hout.choose.2).get ⟨0, h0⟩ = hout.choose.2 := fun h0 =>
+        maxTrail_get_zero (E.erase hout.choose) hout.choose.2 h0
+      cases i with
+      | zero =>
+        cases j with
+        | zero => exact absurd rfl hij
+        | succ k =>
+          -- Step at pos 0 = e₀; step at pos k+1 is inner step ∈ E.erase e₀ ≠ e₀
+          simp only [List.get_cons_zero, List.get_cons_succ]
+          have hinner_k : ((maxTrail (E.erase hout.choose) hout.choose.2).get ⟨k, by omega⟩,
+              (maxTrail (E.erase hout.choose) hout.choose.2).get ⟨k + 1, by omega⟩) ∈
+              E.erase hout.choose :=
+            maxTrail_steps_in_E (E.erase hout.choose) hout.choose.2 k (by omega)
+          -- Step at pos 0: (v, inner[0]) = (hout.choose.1, hout.choose.2) = hout.choose
+          intro h_eq
+          have hg0 : (maxTrail (E.erase hout.choose) hout.choose.2).get ⟨0, by omega⟩ =
+              hout.choose.2 := hinner_g0 (by omega)
+          rw [hg0, show (v, hout.choose.2) = hout.choose from Prod.ext hv.symm rfl] at h_eq
+          exact Finset.not_mem_erase hout.choose E (h_eq ▸ hinner_k)
+      | succ k_i =>
+        cases j with
+        | zero =>
+          -- Symmetric: step at pos 0 = e₀; step at pos k_i+1 is inner step ∈ E.erase e₀ ≠ e₀
+          simp only [List.get_cons_zero, List.get_cons_succ]
+          have hinner_ki : ((maxTrail (E.erase hout.choose) hout.choose.2).get ⟨k_i, by omega⟩,
+              (maxTrail (E.erase hout.choose) hout.choose.2).get ⟨k_i + 1, by omega⟩) ∈
+              E.erase hout.choose :=
+            maxTrail_steps_in_E (E.erase hout.choose) hout.choose.2 k_i (by omega)
+          intro h_eq
+          have hg0 : (maxTrail (E.erase hout.choose) hout.choose.2).get ⟨0, by omega⟩ =
+              hout.choose.2 := hinner_g0 (by omega)
+          rw [hg0, show (v, hout.choose.2) = hout.choose from Prod.ext hv.symm rfl] at h_eq
+          exact Finset.not_mem_erase hout.choose E (h_eq.symm ▸ hinner_ki)
+        | succ k_j =>
+          -- Both from inner trail (k_i and k_j with k_i ≠ k_j): use induction
+          simp only [List.get_cons_succ]
+          exact ih _ hcard (E.erase hout.choose) hout.choose.2 rfl k_i k_j (by omega) (by omega)
+            (by intro h; exact hij (congrArg Nat.succ h))
+    · simp only [hout, ↓reduceDite, List.length_singleton] at hi; omega
 
 /-
   STEP 3: MAXIMAL TRAIL IS CLOSED IN A BALANCED GRAPH
