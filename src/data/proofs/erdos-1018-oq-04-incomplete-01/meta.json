@@ -20,8 +20,8 @@
     "badge": "axiom",
     "sorries": 3,
     "axiomCount": 1,
-    "lineCount": 279,
-    "assumptions": "1 axiom: kostochka_pyber_r2 (the r=2 graph case of Kostochka-Pyber theorem, proven 1988). 4 sorries in this file (geometric edge-crossing verifications).",
+    "lineCount": 287,
+    "assumptions": "1 axiom: kostochka_pyber_r2 (the r=2 graph case of Kostochka-Pyber theorem, proven 1988). 3 sorries in this file (geometric edge-crossing verifications).",
     "dateAdded": "2026-04-03",
     "mathlib_version": "4.26.0"
   },
@@ -88,7 +88,7 @@
   ],
   "conclusion": {
     "summary": "This completion pass replaces the vacuous sorry-based `isEmbeddable` with a concrete definition via vertex maps and convex hull separation. K\u2083 and K\u2084 planarity are established with explicit coordinates, reducing them from axioms to theorems (pending geometric verification sorries). The density argument shows n^(1+\u03b5) edges eventually exceed the planar bound 3n, and the Kostochka-Pyber r=2 result is axiomatized as a bridge to the main conjecture.",
-    "implications": "With `isEmbeddableConc` in place, the van Kampen-Flores axioms in the parent formalization now make genuine mathematical claims. The 5 remaining sorries are more tractable than the original `isEmbeddable` sorry: 4 are geometric intersection verifications (potentially provable with Mathlib's convex set library), and 1 is a definition-equivalence sorry whose resolution would unify the two formalizations. This pattern \u2014 resolving a central conceptual sorry to expose finer technical sorries \u2014 represents steady progress in formalization. If the convex hull intersection sorries are filled, the file would establish K\u2083 and K\u2084 planarity as proper theorems in Lean 4, which are not yet in Mathlib.",
+    "implications": "With `isEmbeddableConc` in place, the van Kampen-Flores axioms in the parent formalization now make genuine mathematical claims. The 3 remaining sorries are more tractable than the original `isEmbeddable` sorry: 2 are geometric edge-crossing verifications for the K\u2083 and K\u2084 explicit embeddings (potentially provable with Mathlib's convex set library), and 1 is the planar edge bound |E| \u2264 3|V| - 6 (Euler's formula for planar graphs, not yet in Mathlib). This pattern \u2014 resolving a central conceptual sorry to expose finer technical sorries \u2014 represents steady progress in formalization. If the convex hull intersection sorries are filled, the file would establish K\u2083 and K\u2084 planarity as proper theorems in Lean 4, which are not yet in Mathlib.",
     "openQuestions": [
       "Can Mathlib's `Convex.Hull` and `Set.inter` machinery prove that two non-parallel line segments in \u211d\u00b2 in general position share at most one point (needed for K\u2083 and K\u2084 planarity)?",
       "Can `turanNumber` be defined using Mathlib's extremal graph theory (which is under active development)?",
@@ -127,12 +127,12 @@
       "Proofs.Erdos1018OQ04"
     ],
     "namespace": "Erdos1018OQ04Completion",
-    "lineCount": 279,
+    "lineCount": 287,
     "axiomCount": 1,
     "theoremCount": 11,
     "path": "Proofs/Erdos1018OQ04Incomplete01.lean",
-    "sorries": 4,
+    "sorries": 3,
     "definitionCount": 1
   },
-  "sorries": 4
+  "sorries": 3
 }
