@@ -49,7 +49,10 @@
       "Remaining axioms: goldberg_toppila_existence (deep construction), polynomial_not_extreme (needs FTA)"
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "To prove polynomial_not_extreme: use Polynomial.card_roots_le_degree + IsDomain ℂ to show aPoints(p,a) is finite, then show countingFunction stabilizes at natDegree p for large r, making HasUnboundedRatio impossible",
+      "The deeper OQ about explicit computable bounds for the Goldberg-Toppila construction would require formalizing quantitative Nevanlinna theory - no clear Mathlib infrastructure exists"
+    ]
   },
   "tags": [
     "erdos",
