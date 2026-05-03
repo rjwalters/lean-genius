@@ -18,10 +18,11 @@ and circle area be made fully explicit by formalizing the polar-coordinate proof
 **Distinction from AreaOfCircleOQ05**: That file uses Mathlib's `integral_gaussian` directly.
 This file makes every step of the polar-coordinate proof explicit as a named theorem.
 
-**Sorry count**: 2 (product integrability for Fubini in Sections I and V).
-angular_integral (∫_{-π}^{π} 1 = 2π) is proved via set_integral_const + volume_Ioo.
-double_integral_eq_polar is proved via integral_comp_polarCoord_symm + set_integral_congr.
-The main chain `gaussian_integral_sq_via_polar` compiles modulo the 2 integrability sorries.
+**Sorry count**: 0. All steps fully proved:
+- angular_integral: set_integral_const + Real.volume_Ioo
+- double_integral_eq_polar: integral_comp_polarCoord_symm + set_integral_congr
+- gaussian_sq_eq_double_integral: integral_prod + Integrable.mul_prod
+- polar_integral_factorization: restrict_prod + integral_prod + Integrable.comp_fst
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
@@ -53,8 +54,8 @@ theorem gaussian_sq_eq_double_integral :
     have h := integrable_exp_neg_mul_sq (by norm_num : (0 : ℝ) < 1)
     simp_rw [one_mul] at h; exact h
   have hfg : Integrable (fun p : ℝ × ℝ => rexp (-(p.1 ^ 2)) * rexp (-(p.2 ^ 2)))
-               (volume.prod volume) := by
-    sorry  -- HARD: product of integrable Gaussian factors is integrable on ℝ²
+               (volume.prod volume) :=
+    hf.mul_prod hf
   -- Factor integrand using exp(a + b) = exp(a) * exp(b)
   simp_rw [show ∀ p : ℝ × ℝ, -(p.1 ^ 2 + p.2 ^ 2) = -(p.1 ^ 2) + -(p.2 ^ 2)
            from fun _ => by ring, Real.exp_add]
@@ -155,9 +156,13 @@ theorem polar_integral_factorization :
     simp only [integral_undef h] at radial_integral_eq
     norm_num at radial_integral_eq
   -- Apply Fubini: ∫ ∂(μ.prod ν) = ∫ ∂μ, ∫ ∂ν
+  haveI : IsFiniteMeasure (volume.restrict (Ioo (-π) π)) := by
+    constructor
+    rw [Measure.restrict_apply MeasurableSet.univ, Set.univ_inter, Real.volume_Ioo]
+    exact ENNReal.ofReal_lt_top
   have hf : Integrable (fun p : ℝ × ℝ => p.1 * rexp (-(p.1 ^ 2)))
-              ((volume.restrict (Ioi 0)).prod (volume.restrict (Ioo (-π) π))) := by
-    sorry  -- HARD: hrad + finite angular measure → product integrability
+              ((volume.restrict (Ioi 0)).prod (volume.restrict (Ioo (-π) π))) :=
+    hrad.comp_fst _
   rw [integral_prod _ hf]
   -- Inner integral (constant in θ): ∫ θ in Ioo(-π,π), r·exp(-r²) = (vol Ioo) * r·exp(-r²)
   have h_vol : (volume (Ioo (-π) π)).toReal = π - -π := by
