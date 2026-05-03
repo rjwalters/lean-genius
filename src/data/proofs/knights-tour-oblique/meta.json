@@ -20,7 +20,7 @@
       "winding-number"
     ],
     "axiomCount": 1,
-    "assumptions": "None.",
+    "assumptions": "1 axiom: knuth_unique_four_oblique — any closed knight's tour with exactly 4 oblique turns is D4-equivalent to the minimal oblique tour. Accepted based on Knuth's exhaustive computational verification of all ~13.3 trillion closed knight's tours (TAOCP Vol 4 Fascicle 8a, December 2025).",
     "proofRepoPath": "Proofs/KnightsTourOblique.lean",
     "mathlib_version": "4.26.0",
     "lineCount": 2469,
