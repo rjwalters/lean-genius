@@ -787,33 +787,9 @@ private def DiGraph.removeEdgeSet (G : DiGraph V) (S : Finset (V × V)) : DiGrap
     so inDegree and outDegree both decrease by the same amount. -/
 theorem remove_circuit_balanced (G : DiGraph V) (C : DirectedCircuit G) :
     IsEulerianBalanced (G.removeEdgeSet (walkEdges C.walk).toFinset) := by
-  intro v
-  unfold IsBalanced inDegree outDegree DiGraph.removeEdgeSet
-  simp only [Finset.sdiff_filter]
-  -- For each vertex v: the edges removed that touch v as source
-  -- equal the edges removed that touch v as target (circuit balance).
-  -- This follows from the closed-walk balance lemma applied to C.walk.
-  set n := C.walk.length - 1
-  have hlen : C.walk.length = n + 1 := by omega
-  have hclosed_get : C.walk.get ⟨0, by omega⟩ = C.walk.get ⟨n, by omega⟩ := by
-    have := C.head_eq_last
-    have hne : C.walk ≠ [] := by intro h; simp [h] at C.length_ge_2
-    have h1 : C.walk.head? = some (C.walk.get ⟨0, by omega⟩) := by
-      cases C.walk with | nil => simp at hne | cons a t => rfl
-    have h2 : C.walk.getLast? = some (C.walk.get ⟨n, by omega⟩) := by
-      rw [List.getLast?_eq_getLast hne]
-      congr 1
-      simp only [List.getLast_eq_getElem, List.get_eq_getElem]
-      congr 1; omega
-    rw [h1, h2] at this; exact Option.some.inj this
-  -- The circuit edges from v equal those into v (circuit balance)
-  have hcirc_balance : ((walkEdges C.walk).toFinset.filter (fun e => e.1 = v)).card =
-      ((walkEdges C.walk).toFinset.filter (fun e => e.2 = v)).card := by
-    sorry -- Follows from closed_walk_balance applied to C.walk; deferred
-  -- Now the sdiff calculation: (G.edges \ circuit).filter = G.edges.filter \ circuit.filter
-  simp [Finset.filter_sdiff]
-  congr 1
-  exact hcirc_balance
+  sorry -- TODO: circuit passes through each vertex same #times as src and tgt;
+        -- inDeg/outDeg each decrease by same amount. Requires Finset sdiff/filter
+        -- distributivity API and closed_walk_balance on C.walk.
 
 /-
   STEP 6: NECESSITY DIRECTION FOR EULERIAN PATHS
@@ -836,17 +812,23 @@ theorem euler_path_implies_degree_balance (G : DiGraph V) (s t : V) (hst : s ≠
   set n := G.edges.card with hn_def
   have hlen : walk.length = n + 1 := hwlen
   have hn_ge_1 : 1 ≤ n := by
-    -- s ≠ t so the path has at least one edge
+    -- If n = 0, walk has length 1, so head = last, meaning s = t — contradiction.
     by_contra h; push_neg at h
     have hn0 : n = 0 := by omega
-    have : G.edges = ∅ := Finset.card_eq_zero.mp (hn_def ▸ hn0)
-    simp [this] at hcov
+    have hlen1 : walk.length = 1 := by omega
+    have hhead_last : walk.head? = walk.getLast? := by
+      cases walk with
+      | nil => simp at hlen1
+      | cons a [] => simp
+      | cons a (b :: l) => simp at hlen1
+    rw [hhead, hlast] at hhead_last
+    exact hst (Option.some.inj hhead_last)
   have hget_head : walk.get ⟨0, by omega⟩ = s := by
     cases walk with
-    | nil => simp [List.length_nil] at hlen; omega
-    | cons a t => simp at hhead; exact hhead
+    | nil => simp [List.length_nil] at hlen
+    | cons a v => simp at hhead; exact hhead
   have hget_last : walk.get ⟨n, by omega⟩ = t := by
-    have hne : walk ≠ [] := by intro h; simp [h] at hlen; omega
+    have hne : walk ≠ [] := by intro h; simp [h] at hlen
     have h2 : walk.getLast? = some (walk.get ⟨n, by omega⟩) := by
       rw [List.getLast?_eq_getLast hne]
       congr 1
