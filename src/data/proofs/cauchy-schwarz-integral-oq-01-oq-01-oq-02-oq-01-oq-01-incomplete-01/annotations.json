@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-cs-riesz-preamble",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
+    "range": { "startLine": 1, "endLine": 60 },
+    "type": "context",
+    "title": "Module Overview: 3→1 Sorry Reduction for Sigma-Finite Lp Riesz",
+    "content": "The module preamble was written at Session 1, when only Step C had been proved (reducing 3 sorries to 2). Session 2 subsequently proved Step B (lp_truncation_tendsto_zero via Vitali's theorem), reducing the total to 1 sorry. The current state is: Step A (localization_existence, ~150 lines) is the sole remaining sorry; Steps B and C are both fully proved. The key architectural claim in the preamble remains valid: IsFiniteMeasure was superfluous for Step C because Lp.induction and Hölder's inequality both hold for SigmaFinite μ. The preamble's 2-sorry count is stale but its mathematical substance is correct.",
+    "mathContext": "The three steps of the sigma-finite Riesz theorem: (A) localize via sigma-finite exhaustion to construct $g \\in L^q$; (B) prove $\\|f \\cdot \\mathbf{1}_{S_n} - f\\|_{L^p} \\to 0$; (C) extend indicator agreement to all $f \\in L^p$ via density.",
+    "significance": "context",
+    "relatedConcepts": ["Riesz representation theorem", "sigma-finite measures", "3→1 sorry reduction", "IsFiniteMeasure vs SigmaFinite"],
+    "prerequisites": ["functional analysis", "Lp spaces", "CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01 (parent)"]
+  },
+  {
     "id": "ann-cs-riesz-holder-infra",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
     "range": { "startLine": 61, "endLine": 99 },
@@ -29,7 +41,7 @@
     "range": { "startLine": 141, "endLine": 215 },
     "type": "insight",
     "title": "integral_representation_sf: Step C Proved — Lp.induction is Valid for SigmaFinite",
-    "content": "integral_representation_sf proves Step C of the sigma-finite Riesz theorem: if a CLM φ on Lp(μ) agrees with ∫ f·g on all indicators 1_E (μ(E) < ∞), then φ = ∫ f·g everywhere. The proof uses Lp.induction, which in Mathlib holds for any SigmaFinite measure (not just finite measures). The three Lp.induction cases are: (1) indicators c·1_s with μ(s) < ∞ — φ = Λ by hypothesis; (2) additivity — both φ and Λ are linear; (3) closedness — {f | φ(f) = Λ(f)} is closed since φ and Λ are continuous. All three cases work for SigmaFinite without IsFiniteMeasure. This is the main contribution of the entry.",
+    "content": "integral_representation_sf proves Step C of the sigma-finite Riesz theorem: if a CLM φ on Lp(μ) agrees with ∫ f·g on all indicators 1_E (μ(E) < ∞), then φ = ∫ f·g everywhere. The proof uses Lp.induction, which in Mathlib holds for any SigmaFinite measure (not just finite measures). The three Lp.induction cases are: (1) indicators c·1_s with μ(s) < ∞ — φ = Λ by hypothesis; (2) additivity — both φ and Λ are linear; (3) closedness — {f | φ(f) = Λ(f)} is closed since φ and Λ are continuous. All three cases work for SigmaFinite without IsFiniteMeasure. This is the main contribution of Session 1.",
     "mathContext": "\\varphi(c \\cdot \\mathbf{1}_E) = c \\int_E g \\, d\\mu \\; \\forall E \\text{ finite} \\implies \\varphi(f) = \\int f g \\, d\\mu \\; \\forall f \\in L^p(\\mu). \\quad \\text{(Lp.induction for SigmaFinite)}",
     "significance": "key",
     "relatedConcepts": ["Lp.induction", "density extension argument", "ContinuousLinearMap equality", "sigma-finite Riesz theorem"],
@@ -50,14 +62,14 @@
   {
     "id": "ann-cs-riesz-step-b-vitali",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
-    "range": { "startLine": 241, "endLine": 270 },
-    "type": "context",
-    "title": "Step B (HARD sorry): Vitali's Convergence Theorem for Lp Truncation",
-    "content": "lp_truncation_tendsto_zero asserts eLpNorm(f - f·1_{S_n}, p, μ) → 0, i.e., the Lp norm of the tail f·1_{Sₙᶜ} vanishes as n → ∞. The proof strategy: (1) pointwise convergence f·1_{S_n} → f a.e. (from spanning set lemmas); (2) dominated convergence — Vitali's theorem from Mathlib (tendsto_Lp_of_tendsto_ae) requires unifIntegrable_of and unifTight_const. The sorry is HARD (≈80 lines) because the Vitali API requires careful setup of uniform integrability bounds in the Lp space. The open question (oq-02) asks whether Mathlib's unifIntegrable_of + unifTight_const suffice directly.",
-    "mathContext": "\\|f \\cdot \\mathbf{1}_{S_n^c}\\|_{L^p(\\mu)} \\to 0 \\; (n \\to \\infty). \\quad \\text{Follows from Vitali if } f \\in L^p(\\mu) \\text{ and } S_n \\nearrow \\Omega.",
-    "significance": "context",
-    "relatedConcepts": ["Vitali convergence theorem", "unifIntegrable_of", "tendsto_Lp_of_tendsto_ae", "uniform tightness"],
-    "prerequisites": ["Mathlib Vitali API", "spanning set lemmas", "eLpNorm convergence in Lean 4"]
+    "range": { "startLine": 241, "endLine": 300 },
+    "type": "technique",
+    "title": "Step B (PROVED in Session 2): Lp Truncation via Dominated Convergence",
+    "content": "lp_truncation_tendsto_zero is fully proved (Session 2). The proof uses `tendsto_lintegral_of_dominated_convergence` (NOT Vitali's theorem directly) with dominator |f(a)|^p. The three verification conditions are: (1) AEMeasurable: ‖gₙ‖^p is measurable via subtraction and indicator measurability; (2) Domination: |f(a) - f(a)·1_{Sₙ}(a)|^p ≤ |f(a)|^p by cases on a ∈ Sₙ; (3) Integrability: ∫⁻ |f|^p dμ < ∞ from MemLp. The final step uses `ENNReal.rpow_natCast` to extract the p-th root. The earlier title annotation 'HARD sorry' reflects Session 1 state; this is now a complete proof.",
+    "mathContext": "\\text{For the domination step: } |f(a) - f(a) \\cdot \\mathbf{1}_{S_n}(a)|^p = \\begin{cases} 0 & a \\in S_n \\\\ |f(a)|^p & a \\notin S_n \\end{cases} \\leq |f(a)|^p.",
+    "significance": "key",
+    "relatedConcepts": ["tendsto_lintegral_of_dominated_convergence", "dominated convergence theorem", "eLpNorm convergence", "Lp truncation"],
+    "prerequisites": ["Lean 4 ENNReal rpow API", "tendsto_lintegral_of_dominated_convergence", "spanningSets exhaustion"]
   },
   {
     "id": "ann-cs-riesz-step-a-localization",
@@ -76,11 +88,23 @@
     "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
     "range": { "startLine": 306, "endLine": 345 },
     "type": "insight",
-    "title": "riesz_lp_surjective_sigma_finite: Full Assembly with Step C Proved",
-    "content": "The main theorem riesz_lp_surjective_sigma_finite assembles all steps: Step A (sorry: localization_existence) produces g ∈ Lq with indicator agreement; Step C (proved: integral_representation_sf) extends indicator agreement to all of Lp via density; Step B (sorry: lp_truncation_tendsto_zero) provides the Lp norm convergence needed for the extension. The theorem structure is complete — only localization (Step A) remains as a sorry. The 3→2 sorry reduction confirms the parent entry was architecturally sound: density extension (Step C) did not require IsFiniteMeasure, only the harder localization (Step A) does.",
+    "title": "riesz_lp_surjective_sigma_finite: Full Assembly — Only Step A Remains",
+    "content": "The main theorem riesz_lp_surjective_sigma_finite assembles all steps: Step A (sorry: localization_existence) produces g ∈ Lq with indicator agreement; Step C (proved: integral_representation_sf) extends indicator agreement to all of Lp via density. Note: Step B (lp_truncation_tendsto_zero) is called implicitly through the assembly structure. The theorem structure is complete — only localization (Step A) remains as a sorry. The 3→1 sorry reduction (Step C in Session 1, Step B in Session 2) confirms the parent entry was architecturally sound: the two density/convergence steps did not require IsFiniteMeasure, only the harder localization does.",
     "mathContext": "\\forall \\varphi \\in (L^p(\\mu))^*, \\; \\exists g \\in L^q(\\mu): \\varphi(f) = \\int f g \\, d\\mu \\quad \\forall f \\in L^p(\\mu). \\quad (1 < p < \\infty, \\; \\mu \\text{ sigma-finite})",
     "significance": "key",
-    "relatedConcepts": ["Riesz representation theorem", "ContinuousLinearEquiv", "sigma-finite measure theory", "3→2 sorry reduction"],
-    "prerequisites": ["Steps A, B, C", "localization_existence (sorry)", "lp_truncation_tendsto_zero (sorry)", "integral_representation_sf (proved)"]
+    "relatedConcepts": ["Riesz representation theorem", "ContinuousLinearEquiv", "sigma-finite measure theory", "3→1 sorry reduction"],
+    "prerequisites": ["Steps A (sorry), B (proved), C (proved)", "localization_existence", "integral_representation_sf"]
+  },
+  {
+    "id": "ann-cs-riesz-closing-summary",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
+    "range": { "startLine": 346, "endLine": 386 },
+    "type": "context",
+    "title": "Closing Summary Block: Session 1 State — Stale Sorry Count",
+    "content": "The closing summary comment (lines 369-386) lists 'Sorries remaining (2)' and names both lp_truncation_tendsto_zero (Step B) and localization_existence (Step A). This count is stale: lp_truncation_tendsto_zero was proved in Session 2 (via `tendsto_lintegral_of_dominated_convergence`), reducing the actual sorry count to 1. The code at lines 346-368 (the main theorem body) is correct and uses only localization_existence as a sorry. The stale summary is a documentation gap only — the `#check @riesz_lp_surjective_sigma_finite` axioms confirm 1 sorry, matching meta.json's `sorries: 1` field. The oq-02 answer field in meta.json correctly notes that Step B was answered YES.",
+    "mathContext": "Current state: $1$ sorry remaining ($\\text{localization\\_existence}$, Step A). Steps B and C are fully proved. The closing summary's '2 sorries' was accurate at Session 1 end but not at Session 2 end.",
+    "significance": "context",
+    "relatedConcepts": ["documentation staleness", "sorry tracking", "session-based development"],
+    "prerequisites": ["Sessions 1 and 2 history", "meta.json sorries field"]
   }
 ]

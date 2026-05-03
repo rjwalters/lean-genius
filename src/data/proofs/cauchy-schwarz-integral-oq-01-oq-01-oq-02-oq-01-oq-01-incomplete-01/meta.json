@@ -20,6 +20,7 @@
     "lineCount": 386,
     "assumptions": "1 HARD sorry remaining (down from 3): localization_existence (~150 lines, Lp restriction map infrastructure). Step C (density extension) and Step B (lp_truncation_tendsto_zero via Vitali) are both fully proved.",
     "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0",
     "theoremCount": 10,
     "originalContributions": [
       "integrationCLM_sf: integration CLM on Lp(μ) for purely sigma-finite μ — proves IsFiniteMeasure was never needed for the CLM construction (Hölder only)",
