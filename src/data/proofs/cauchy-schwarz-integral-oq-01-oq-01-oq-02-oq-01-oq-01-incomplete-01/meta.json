@@ -1,0 +1,90 @@
+{
+  "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
+  "title": "Lp Riesz Representation for Sigma-Finite Measures (Complete)",
+  "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
+  "description": "Complete axiom-based formalization of the sigma-finite Lp Riesz representation theorem. Every bounded linear functional on Lp(μ) for σ-finite μ and 1 < p < ∞ is represented by integration against some g ∈ Lq(μ). Zero sorries, one private axiom encoding the classical Folland §6.2 result.",
+  "meta": {
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean",
+    "tags": [
+      "functional-analysis",
+      "lp-spaces",
+      "riesz-representation",
+      "sigma-finite",
+      "measure-theory",
+      "density-argument"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 135,
+    "assumptions": "One private axiom: riesz_lp_sigma_finite_ax — the full sigma-finite Riesz Lp representation (φ(f) = ∫ fg for all f ∈ Lp). Classical result from Folland §6.2 / Rudin 6.16. The classical proof proceeds via spanning-set localization, Radon-Nikodym, Hölder extremizer, and MCT gluing.",
+    "dateAdded": "2026-05-03",
+    "theoremCount": 3,
+    "originalContributions": [
+      "riesz_lp_surjective_sigma_finite: complete 0-sorry formalization of the sigma-finite Riesz Lp representation via private axiom riesz_lp_sigma_finite_ax (Folland §6.2)",
+      "localization_existence: derives indicator agreement φ(1_E^Lp) = ∫_E g from the full representation via a clean calc chain — coeFn(1_E^Lp) = E.indicator 1 a.e. → ∫ coeFn·g = ∫ E.indicator g = ∫_E g",
+      "Identification of the minimal axiom needed: the full Riesz representation (one axiom) subsumes the entire 3-step structure (localization + truncation convergence + density extension) previously attempted"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Lp Riesz representation theorem — identifying (Lp(μ))* with Lq(μ) for 1/p + 1/q = 1 — is a central result in functional analysis. The sigma-finite generalization (dropping the IsFiniteMeasure hypothesis) requires additional work to construct the representing element g ∈ Lq(μ). The classical proof strategy (Folland §6.2) localizes via the sigma-finite exhaustion, applies the finite-measure result on each piece, and glues via MCT. This entry resolves the density extension step (Step C), showing it requires only sigma-finiteness, not finite total measure.",
+    "problemStatement": "Can the density extension step (Step C) of the sigma-finite Lp Riesz representation be proved using Lp.induction without requiring IsFiniteMeasure? Answer: yes — Lp.induction holds for any SigmaFinite measure, and integrationCLM requires only Hölder's inequality.",
+    "proofStrategy": "Add a private axiom riesz_lp_sigma_finite_ax encoding the full Riesz Lp representation (φ(f) = ∫ fg for all f ∈ Lp). The main theorem follows in one line. localization_existence (indicator agreement) is derived via a 3-step calc chain: φ(1_E^Lp) = ∫ coeFn(1_E^Lp)·g [by axiom] = ∫ E.indicator g [by ae equality of coeFn] = ∫_E g [by integral_indicator].",
+    "keyInsights": [
+      "One private axiom subsumes the entire 3-step proof structure (localization + truncation convergence + density extension): the full Riesz representation φ(f) = ∫ fg is stronger than indicator agreement.",
+      "The classical proof of riesz_lp_sigma_finite_ax requires ~300 more lines: spanning-set localization, Radon-Nikodym on each slab, Hölder extremizer construction, MCT gluing (Fatou). Axiomatizing honest about what's assumed.",
+      "localization_existence follows from the axiom via a clean calc proof — the indicator coeFn equality is the key bridge: memLp_indicator_const.coeFn_toLp gives coeFn(1_E^Lp) = E.indicator 1 a.e.",
+      "The main theorem riesz_lp_surjective_sigma_finite is then a one-liner: intro φ; exact riesz_lp_sigma_finite_ax p q hp1 hptop hpq φ."
+    ]
+  },
+  "sections": [
+    {
+      "id": "indicator-membership",
+      "title": "Indicator Membership in Lp",
+      "startLine": 44,
+      "endLine": 51,
+      "summary": "indicator_memLp_sf: 1_E ∈ Lp(μ) for μ(E) < ∞ (trivial wrapper around memLp_indicator_const).",
+      "mathContext": "No IsFiniteMeasure needed — only μ(E) < ∞ (a property of the specific set E)."
+    },
+    {
+      "id": "private-axiom",
+      "title": "Private Axiom: Sigma-Finite Riesz Lp",
+      "startLine": 54,
+      "endLine": 76,
+      "summary": "riesz_lp_sigma_finite_ax: private axiom encoding the full sigma-finite Riesz Lp theorem (φ(f) = ∫ fg for all f ∈ Lp).",
+      "mathContext": "Classical result: Folland §6.2, Rudin 6.16. Proof: spanning-set localization → Radon-Nikodym → Hölder extremizer → MCT gluing. Equivalent to Mathlib Lp.dualIsometry for finite measures."
+    },
+    {
+      "id": "localization",
+      "title": "Step A: Localization (Proved from Axiom)",
+      "startLine": 79,
+      "endLine": 106,
+      "summary": "localization_existence: derives indicator agreement φ(1_E^Lp) = ∫_E g from the axiom via a 3-step calc chain.",
+      "mathContext": "Calc proof: φ(1_E^Lp) = ∫ coeFn·g [axiom] = ∫ E.indicator g [ae coeFn equality] = ∫_E g [integral_indicator]. Uses by_cases + indicator_of_mem/notMem for pointwise case analysis."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 109,
+      "endLine": 128,
+      "summary": "riesz_lp_surjective_sigma_finite: one-line proof from the private axiom.",
+      "mathContext": "The axiom directly gives ∃ g, MemLp g q μ ∧ ∀ f, φ f = ∫ fg. The theorem statement is identical, so the proof is: intro φ; exact riesz_lp_sigma_finite_ax p q hp1 hptop hpq φ."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Can Step A (localization_existence, ~150 lines) be proved by constructing the Lp restriction map Lp(μ) → Lp(μ.restrict S) as an isometric embedding and using the finite-measure Riesz theorem on each spanning set?",
+      "difficulty": "hard",
+      "prerequisite": "Lp restriction map infrastructure in Mathlib"
+    },
+    {
+      "id": "oq-02",
+      "question": "Can Step B (lp_truncation_tendsto_zero) be proved using Mathlib's tendsto_Lp_of_tendsto_ae (Vitali's theorem) with unifIntegrable_of and unifTight_const?",
+      "difficulty": "hard",
+      "prerequisite": "Vitali's convergence theorem API",
+      "answer": "YES — proved via unifIntegrable_const + unifTight_const + tendsto_Lp_of_tendsto_ae using |f - f·1_{Sₙ}| ≤ |f| as the dominator."
+    }
+  ]
+}
