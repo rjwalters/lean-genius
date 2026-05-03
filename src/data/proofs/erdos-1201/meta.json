@@ -121,21 +121,29 @@
       "id": "gpf-product-and-recursion",
       "title": "GPF Product Formula and Recursive Window Formulas",
       "startLine": 561,
-      "endLine": 606,
+      "endLine": 598,
       "summary": "greatestPrimeFactor_mul: gpf(a*b)=max(gpf(a),gpf(b)). gpfConsecutive_le_of_le_k: general k-monotonicity via Finset.sup subset. gpfConsecutive_succ_right: P(n,k+1)=max(P(n,k),gpf(n+k+1)) one-step recursion.",
       "mathContext": "For $a,b \\geq 2$: $P(ab) = \\max(P(a), P(b))$ (prime divisor of product divides a factor). General monotonicity: $k_1 \\leq k_2 \\Rightarrow P(n,k_1) \\leq P(n,k_2)$ (sup over larger range). One-step recursion: $P(n,k+1) = \\max(P(n,k), P(n+k+1))$ from inserting last range element."
     },
     {
+      "id": "right-endpoint-biconditional",
+      "title": "Right-Endpoint Biconditional and Infinite Sets",
+      "startLine": 606,
+      "endLine": 648,
+      "summary": "gpfConsecutive_eq_right_iff: P(n,k) = n+k ↔ (n+k).Prime (sharp biconditional). erdos_1201_prime_right_infinite: {n | (n+k).Prime} is infinite. erdos_1201_eq_right_infinite: {n | P(n,k)=n+k} is infinite for k≥1.",
+      "mathContext": "The upper bound $P(n,k) \\leq n+k$ is achieved exactly at prime right endpoints. $\\{n : P(n,k) = n+k\\}$ is infinite by Dirichlet/Euclid: for any $N$, find prime $p \\geq N+k$ and set $n = p-k$. Complements the prime-start infinite-set result from earlier sessions."
+    },
+    {
       "id": "window-extension-and-prime-terms",
       "title": "Window Extension, Concatenation, and Prime Term Bounds",
-      "startLine": 663,
-      "endLine": 753,
+      "startLine": 649,
+      "endLine": 734,
       "summary": "gpfConsecutive_succ_left: left-endpoint extension P(n,k+1)=max(gpf(n),P(n+1,k)). gpfConsecutive_window_concat: window splitting P(n,j+k+1)=max(P(n,j),P(n+j+1,k)). gpfConsecutive_ge_prime_term: prime term gives lower bound n+i ≤ P(n,k). erdos_1201_good_of_prime_in_window: sufficient condition for good n.",
       "mathContext": "Left extension: $P(n,k+1) = \\max(P(n), P(n+1,k))$ (symmetric to succ_right). Window concat: $P(n,j+k+1) = \\max(P(n,j), P(n+j+1,k))$ (split at position $j$). Prime term: if $(n+i)$ prime and $i \\leq k$ then $n+i \\leq P(n,k)$ (since $P(n+i) = n+i$ and $P(n+i) \\leq P(n,k)$). Good n: if $\\exists i \\leq k$ with $n+i$ prime and $n+i > n^{1-\\varepsilon}$, then $P(n,k) > n^{1-\\varepsilon}$."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erd\u0151s Problem 1201 on greatest prime factors of consecutive products, the partial \u03b5=1/2 result, and 48 structural theorems. 0 sorries, 1 axiom (the partial result). Session 6 adds: gpfConsecutive_succ_left (left-endpoint extension), gpfConsecutive_window_concat (window concatenation formula), gpfConsecutive_ge_prime_term (prime term lower bound), erdos_1201_good_of_prime_in_window (sufficient condition for good n).",
+    "summary": "The formalization captures Erd\u0151s Problem 1201 on greatest prime factors of consecutive products, the partial \u03b5=1/2 result, and 51 structural theorems. 0 sorries, 1 axiom (the partial result). Sessions 5-7 add: greatestPrimeFactor_mul (product formula), gpfConsecutive_le_of_le_k (general monotonicity), gpfConsecutive_succ_right (recursive formula), gpfConsecutive_eq_right_iff (biconditional), erdos_1201_prime_right_infinite, erdos_1201_eq_right_infinite, gpfConsecutive_succ_left (left-endpoint extension), gpfConsecutive_window_concat (window concatenation), gpfConsecutive_ge_prime_term, erdos_1201_good_of_prime_in_window.",
     "implications": "Resolution would advance our understanding of the distribution of prime factors in consecutive integer products and connect to the Sylvester-Schur theorem and smooth number theory.",
     "openQuestions": [
       "Does the full conjecture hold for all \u03b5 > 0?",
