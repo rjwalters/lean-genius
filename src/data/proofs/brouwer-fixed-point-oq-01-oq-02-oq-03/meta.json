@@ -1,0 +1,119 @@
+{
+  "id": "brouwer-fixed-point-oq-01-oq-02-oq-03",
+  "title": "Brouwer Fixed Point Theorem via Singular Homology",
+  "slug": "brouwer-fixed-point-oq-01-oq-02-oq-03",
+  "description": "Derives Brouwer's Fixed Point Theorem from the singular homology no-retraction result (BrouwerFixedPointOQ01OQ02.lean), completing the equivalence chain. Introduces 0 new axioms — reuses `retraction_construction` from BrouwerFixedPoint.lean and `singular_homology_retraction_split` from OQ01OQ02. 5 theorems, 2 axioms (inherited), 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem",
+    "date": "formalized 2026",
+    "status": "axiomatized",
+    "tags": [
+      "topology",
+      "fixed-point",
+      "brouwer",
+      "homology",
+      "no-retraction",
+      "algebraic-topology",
+      "equivalence"
+    ],
+    "proofRepoPath": "Proofs/BrouwerFixedPointOQ01OQ02OQ03.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "mathlibDependencies": [
+      {
+        "theorem": "Metric.closedBall",
+        "description": "Closed ball definition in metric spaces",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "Metric.sphere",
+        "description": "Sphere definition in metric spaces",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "toSingularRetraction: conversion from Brouwer.Retraction to BrouwerOQ01OQ02.Retraction (definitional, 0 axioms)",
+      "brouwer_fixed_point_via_singular_homology: BFP derived from singular homology no-retraction",
+      "no_retraction_from_bfp: converse — BFP implies no-retraction result",
+      "singular_homology_implies_bfp: alias making the full logical chain explicit",
+      "no_retraction_axiom_iff_sh: equivalence of the two no-retraction formulations"
+    ],
+    "dateAdded": "2026-05-03",
+    "lineCount": 171,
+    "assumptions": "2 axioms (inherited, no new axioms introduced): (A1) Brouwer.retraction_construction — if a continuous self-map of B^n has no fixed point, we can construct a retraction B^n → S^{n-1} by the ray construction; (A2) BrouwerOQ01OQ02.singular_homology_retraction_split — a retraction induces a split of H_{n-1}(S^{n-1}) ≅ ℤ through H_{n-1}(B^n) = 0. These are the same two axioms as in BrouwerFixedPoint.lean, except no_retraction_axiom is replaced by the more informative singular_homology_retraction_split."
+  },
+  "overview": {
+    "historicalContext": "The equivalence between Brouwer's Fixed Point Theorem (BFP) and the No-Retraction Theorem is classical. BFP was proved by Brouwer in 1911. The No-Retraction Theorem (no continuous retraction $r: B^n \\to S^{n-1}$) was proved by Borsuk in 1931. These are logically equivalent: given no-retraction, BFP follows by the ray construction (if $f$ has no fixed point, draw rays from $f(x)$ through $x$ to build a retraction); given BFP, no-retraction follows since a retraction would compose with itself to give a fixed-point-free self-map.\n\nThe singular homology proof of no-retraction (from BrouwerFixedPointOQ01OQ02.lean) explains *why* no retraction exists: a retraction $r \\circ i = \\mathrm{id}$ on $S^{n-1}$ would force $H_{n-1}(r_*) \\circ H_{n-1}(i_*)$ to equal the identity on $H_{n-1}(S^{n-1}) \\cong \\mathbb{Z}$, but $H_{n-1}(B^n) = 0$ makes this impossible.\n\nThis file closes the circle: singular homology not only explains the no-retraction theorem but also, via the classical ray construction, yields BFP itself.",
+    "problemStatement": "**Open Question (brouwer-fixed-point-oq-01-oq-02-oq-03)**: Can Brouwer's Fixed Point Theorem itself be derived from `no_retraction_singular_homology` (from BrouwerFixedPointOQ01OQ02.lean) within this framework, completing the equivalence?\n\n**Answer**: Yes. The proof requires 0 new axioms beyond what BrouwerFixedPoint.lean already uses. The key step is converting between the two `Retraction` types (which are definitionally identical) to bridge the `no_retraction_singular_homology` result to the `retraction_construction` machinery.",
+    "text": "This file completes the equivalence chain by deriving Brouwer's Fixed Point Theorem from the singular homology no-retraction result. The proof is short because all the hard work was done in the parent files:\n\n- **BrouwerFixedPoint.lean** provides the geometric ray construction (`retraction_construction`) and the classical BFP proof structure.\n- **BrouwerFixedPointOQ01OQ02.lean** provides `no_retraction_singular_homology` derived from the algebraic impossibility of splitting $\\mathbb{Z}$ through the trivial group.\n\nThis file connects them: assume $f: B^n \\to B^n$ has no fixed point → build a retraction (geometric construction) → convert to OQ01OQ02 Retraction type → derive contradiction from singular homology.\n\nThe type conversion (`toSingularRetraction`) is logically trivial: `Brouwer.ClosedBall n` and `BrouwerOQ01OQ02.ClosedBall n` both unfold to `Metric.closedBall 0 1`, so they are definitionally equal and the field values transfer directly.",
+    "proofStrategy": "**Main Theorem (`brouwer_fixed_point_via_singular_homology`)**:\n1. Assume by contradiction that $f: B^n \\to B^n$ has no fixed point.\n2. Apply `Brouwer.retraction_construction f h` to get `r_brouwer : Brouwer.Retraction n`.\n3. Convert via `toSingularRetraction r_brouwer : BrouwerOQ01OQ02.Retraction n` (definitional equality).\n4. Apply `BrouwerOQ01OQ02.no_retraction_singular_homology n hn` to derive `False`.\n\n**Type Conversion (`toSingularRetraction`)**:\nBoth `Brouwer.Retraction n` and `BrouwerOQ01OQ02.Retraction n` have the same fields with types that are definitionally equal (since `ClosedBall n = Metric.closedBall 0 1` in both namespaces). The conversion assigns fields directly.",
+    "keyInsights": [
+      "**0 new axioms**: The derivation uses only existing axioms from parent files. BFP via singular homology is an immediate corollary of combining the ray construction with the homological no-retraction result.",
+      "**Definitional equality bridges the gap**: The `Retraction` types in the two namespaces are not syntactically identical but are definitionally equal (both ClosedBall/UnitSphere definitions reduce to the same Mathlib terms). Lean's kernel accepts the field transfer.",
+      "**Same axiom count, better justification**: The original BrouwerFixedPoint.lean uses 2 axioms (no_retraction_axiom + retraction_construction). This file also uses 2 axioms, but replaces the opaque no_retraction_axiom with the more informative singular_homology_retraction_split, which explains *why* no retraction exists.",
+      "**Complete equivalence chain**: singular_homology_retraction_split → no_retraction_singular_homology → brouwer_fixed_point_via_singular_homology. Each arrow has a clean Lean proof."
+    ],
+    "prerequisites": [
+      "BrouwerFixedPoint.lean: SelfMap, HasFixedPoint, retraction_construction",
+      "BrouwerFixedPointOQ01OQ02.lean: no_retraction_singular_homology, singular_homology_retraction_split",
+      "Definitional equality in Lean 4: how the kernel unfolds definitions"
+    ]
+  },
+  "sections": [
+    {
+      "id": "type-conversion",
+      "title": "Part I: Retraction Type Conversion",
+      "startLine": 48,
+      "endLine": 75,
+      "summary": "Defines toSingularRetraction: converts Brouwer.Retraction n to BrouwerOQ01OQ02.Retraction n. Logically trivial since both types have definitionally equal fields.",
+      "mathContext": "Both Brouwer.ClosedBall n and BrouwerOQ01OQ02.ClosedBall n reduce to Metric.closedBall 0 1, and similarly for UnitSphere. The field values transfer directly."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part II: BFP via Singular Homology",
+      "startLine": 76,
+      "endLine": 120,
+      "summary": "Main theorem: brouwer_fixed_point_via_singular_homology. Assumes no fixed point, builds retraction, converts type, applies no_retraction_singular_homology for contradiction.",
+      "mathContext": "The proof is: ¬HasFixedPoint → Brouwer.Retraction (ray construction) → BrouwerOQ01OQ02.Retraction (conversion) → False (singular homology contradiction)."
+    },
+    {
+      "id": "equivalence",
+      "title": "Part III: The Complete Equivalence",
+      "startLine": 121,
+      "endLine": 171,
+      "summary": "Supporting theorems: no_retraction_from_bfp, singular_homology_implies_bfp, no_retraction_axiom_iff_sh. Establishes that the two no-retraction formulations are equivalent.",
+      "mathContext": "no_retraction_axiom_iff_sh proves that Brouwer.Retraction and BrouwerOQ01OQ02.Retraction are interchangeable: a retraction in one type converts to the other, showing both no-retraction theorems are equivalent."
+    }
+  ],
+  "conclusion": {
+    "summary": "BFP is derived from singular homology with 0 new axioms. The proof combines the geometric ray construction (BrouwerFixedPoint.lean) with the homological no-retraction theorem (BrouwerFixedPointOQ01OQ02.lean) via a definitional type conversion.",
+    "implications": "This completes the equivalence chain: singular homology axioms imply both the no-retraction theorem and BFP. The formalization shows that the two classical proof architectures for BFP (via direct axiom vs. via singular homology) use the same number and type of assumptions — singular_homology_retraction_split is a more informative replacement for no_retraction_axiom, not an additional assumption.",
+    "openQuestions": [
+      "Can the retraction_construction axiom be eliminated by formalizing the geometric ray construction (solving the quadratic ‖f(x) + t(x-f(x))‖² = 1 and proving continuity via the implicit function theorem)?",
+      "Can singular_homology_retraction_split be proved once Mathlib gains a complete singular homology library (Mayer-Vietoris, excision, sphere computations)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "parent",
+      "description": "Provides retraction_construction axiom and the classical BFP structure that this file builds on"
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-01-oq-02",
+      "relationship": "parent",
+      "description": "Provides no_retraction_singular_homology from which BFP is derived here"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 171,
+    "path": "Proofs/BrouwerFixedPointOQ01OQ02OQ03.lean",
+    "axiomCount": 2,
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 5
+  },
+  "sorries": 0
+}
