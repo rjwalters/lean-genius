@@ -35,12 +35,16 @@
       "Partial fractions decomposition: 2/(d(d+2)) = 1/d - 1/(d+2), revealing telescoping structure",
       "SV exponent 2(d+1)/(d(d+2)) is itself strictly decreasing (sv_exponent_strictly_decreasing for d≥1)",
       "For ALL d≥4 (SV range): SV covers ≥2/3 of gap (sv_covers_two_thirds_all_d; threshold exact at d=4)",
-      "Dimensional evaluations at d=5: gap 2/35, SV exponent 12/35, SV fraction 6/7, progress fraction 5/7"
+      "Dimensional evaluations at d=5: gap 2/35, SV exponent 12/35, SV fraction 6/7, progress fraction 5/7",
+      "Adjacent even-gap telescoping: gap(d) + gap(d+2) = 1/d - 1/(d+4), showing the gap sequence telescopes with step 4",
+      "Ratio of consecutive even-indexed gaps: gap(d+2)/gap(d) = d/(d+4), revealing near-geometric decay",
+      "General parametric coverage threshold (sv_coverage_fraction_threshold): d/(d+2) ≥ p/(p+1) iff d ≥ 2p, unifying all previous specific threshold theorems",
+      "Sharpness of the threshold (sv_coverage_fraction_threshold_sharp): d < 2p implies strict inequality, completing the iff characterization"
     ],
     "axiomCount": 6,
-    "lineCount": 431,
+    "lineCount": 502,
     "assumptions": "6 axioms: f (extremal function), erdos_lower/grid_upper (Erdős 1946), solymosi_vu (2008 bound), erdos_1083_conjecture (the open conjecture), guth_katz (Guth-Katz 2015 for d=2).",
-    "theoremCount": 39
+    "theoremCount": 43
   },
   "overview": {
     "historicalContext": "The distinct distances problem is one of Erdős's most celebrated open questions. Erdős (1946) asked: how many distinct distances must n points in ℝ^d determine? He conjectured the answer is Θ(n^{2/d}). His initial lower bound of n^{1/d} came from a simple pigeonhole argument: if there are only k distinct distances, then n concentric spheres around any point cover at most n-1 other points, forcing k ≥ n^{1/d}.\n\nFor d=2 (the plane), this was the famous Erdős distinct distances conjecture. Successive improvements by Spencer-Szemerédi-Trotter (1984), Solymosi-Tóth (2001), and others narrowed the gap, culminating in the near-definitive Guth-Katz theorem (2015) proving f_2(n) ≥ cn/log n — essentially matching the conjectured n^{2/2} = n.\n\nFor d ≥ 3, Solymosi and Vu (2008) proved f_d(n) ≥ n^{2(d+1)/(d(d+2))} using incidence geometry and the Szemerédi-Trotter theorem applied to high-dimensional projections. Their exponent 2(d+1)/(d(d+2)) brought the lower bound within O(1/d²) of the conjectured 2/d. The gap 2/(d(d+2)) is the subject of this formalization.",
@@ -115,6 +119,14 @@
       "endLine": 431,
       "summary": "Axiomatizes the Erdős conjecture (f_d(n) ≥ c·n^{2/d-ε} for all ε>0) and the Guth-Katz theorem (2015: f_2(n) ≥ c·n^{1-ε}). Proves GK implies d=2 conjecture; shows GK exponent (1-ε) exceeds SV formula (3/4) for d=2; gives dimensional evaluations at d=2 (SV gives 3/4, gap 1/4) and d=3 (SV gives 8/15, gap 2/15). The d=2 success highlights why d≥3 remains hard.",
       "mathContext": "Guth-Katz: $f_2(n) \\geq c \\cdot n^{1-\\varepsilon}$ for any $\\varepsilon > 0$, closing the $d=2$ Erdős conjecture. SV formula at $d=2$: $2(3)/(2 \\cdot 4) = 3/4$; gap at $d=2$: $1 - 3/4 = 1/4$ (the largest gap in the sequence). The polynomial method (Dvir, Guth-Katz) does not generalize to $d \\geq 3$ without new ideas."
+    },
+    {
+      "id": "coverage-characterization",
+      "title": "Complete Coverage Characterization",
+      "startLine": 396,
+      "endLine": 502,
+      "summary": "General parametric threshold: d/(d+2) ≥ p/(p+1) iff d ≥ 2p, with sharpness. Adjacent even-gap telescoping: gap(d)+gap(d+2)=1/d-1/(d+4). Gap ratio: gap(d+2)/gap(d) = d/(d+4).",
+      "mathContext": "The iff characterization d/(d+2) >= p/(p+1) iff d >= 2p gives the exact threshold dimension for any target coverage fraction. Telescoping: gap sequence over even indices satisfies gap(d)+gap(d+2) = 1/d - 1/(d+4)."
     }
   ],
   "conclusion": {
@@ -164,10 +176,10 @@
   "sorries": 0,
   "leanFile": {
     "axiomCount": 6,
-    "lineCount": 431,
+    "lineCount": 502,
     "sorries": 0,
     "path": "Proofs/Erdos1083OQ02.lean",
     "definitionCount": 0,
-    "theoremCount": 39
+    "theoremCount": 43
   }
 }

@@ -209,3 +209,38 @@ These sessions are documented in PR #14975 (research/erdos-1083-oq-02-asymptotic
   is the most mathematically novel result — it provides the simplest proof of monotonicity
   and the clearest explanation of the O(1/d²) asymptotics. Mathematical gap reduction (d≥3)
   remains open; no new approach identified.
+
+## Session 2026-05-03 (Session 7) - Complete Coverage Characterization (39→43 theorems)
+
+**Mode**: REVISIT
+**Outcome**: progress — 4 new theorems
+
+### What I Did
+- Added `gap_adjacent_even_telescope`: gap(d) + gap(d+2) = 1/d - 1/(d+4)
+  (the 1/(d+2) terms cancel via partial fractions; even-indexed subsequences telescope with step 4)
+- Added `gap_consecutive_ratio`: gap(d+2)/gap(d) = d/(d+4) (near-geometric decay rate)
+- Added `sv_coverage_fraction_threshold`: general parametric threshold proving d/(d+2) ≥ p/(p+1)
+  whenever d ≥ 2p; unifies sv_covers_two_thirds_all_d (p=2), sv_covers_three_quarters (p=3),
+  and sv_covers_eleven_twelfths (p=11)
+- Added `sv_coverage_fraction_threshold_sharp`: sharpness — d < 2p implies strict inequality,
+  completing the iff: d/(d+2) ≥ p/(p+1) ↔ d ≥ 2p
+- Updated summary comment (43 theorems), meta.json, knowledge.json
+
+### Key Findings
+- Coverage threshold is a clean iff: coverage ≥ p/(p+1) exactly when d ≥ 2p
+- Concrete thresholds: p=4 → d≥8 gives ≥4/5 coverage; p=10 → d≥20 gives ≥10/11 coverage
+- Gap ratio formula: each even-step gap is exactly d/(d+4) of the previous
+- All proofs algebraic: field_simp+ring (telescoping) and div_le/lt_div_iff+nlinarith (threshold)
+
+### Files Modified
+- `proofs/Proofs/Erdos1083OQ02.lean` (431→502 lines, 39→43 theorems)
+- `src/data/proofs/erdos-1083-oq-02/meta.json` (43 theorems, 502 lines, new section, new contributions)
+- `src/data/research/problems/erdos-1083-oq-02.json` (4 builtItems + 3 insights added)
+
+### Status
+- **Axiom count**: 6 (unchanged)
+- **Sorry count**: 0
+- **Theorems proved**: 43 (added 4 coverage characterization theorems)
+- **Assessment**: Gallery formalization COMPLETE. The coverage threshold iff is the final major
+  structural result. The open problem (gap elimination for any fixed d≥3) remains genuinely
+  unsolved with no known approach. Phase: ACT (Lean code complete, PR updated).

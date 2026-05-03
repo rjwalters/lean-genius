@@ -39,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 39 theorems (was 30). Added partial fractions identity, SV exponent monotonicity, universal coverage bound, d=5 evaluations. Formalization fully complete. Mathematical gap reduction OPEN.",
+    "progressSummary": "PROGRESS: 43 theorems (was 39). Added complete coverage characterization: general parametric threshold (d/(d+2)>=p/(p+1) iff d>=2p), sharpness, pair telescoping gap(d)+gap(d+2)=1/d-1/(d+4), and gap ratio d/(d+4). Gallery formalization COMPLETE for known theory.",
     "builtItems": [
       "Created Erdos1083OQ02.lean with SV bound formalization",
       "Proved sv_improves_erdos and sv_below_conjecture (exact exponent comparison)",
@@ -67,7 +67,11 @@
       "gap_partial_fractions: 2/(d(d+2)) = 1/d - 1/(d+2) — partial fractions decomposition [Erdos1083OQ02.lean:272]",
       "sv_exponent_strictly_decreasing: SV exponent 2(d+1)/(d(d+2)) is itself strictly decreasing for d≥1 [Erdos1083OQ02.lean:284]",
       "sv_covers_two_thirds_all_d: for ALL d≥4 (SV range), coverage ≥2/3; threshold exact at d=4 [Erdos1083OQ02.lean:296]",
-      "Dimensional evaluations at d=5: gap 2/35, SV exponent 12/35, SV fraction 6/7, progress 5/7 [Erdos1083OQ02.lean:304]"
+      "Dimensional evaluations at d=5: gap 2/35, SV exponent 12/35, SV fraction 6/7, progress 5/7 [Erdos1083OQ02.lean:304]",
+      "gap_adjacent_even_telescope in Erdos1083OQ02.lean:409 — gap(d)+gap(d+2)=1/d-1/(d+4)",
+      "gap_consecutive_ratio in Erdos1083OQ02.lean:423 — gap(d+2)/gap(d) = d/(d+4)",
+      "sv_coverage_fraction_threshold in Erdos1083OQ02.lean:440 — general threshold: d>=2p iff coverage>=p/(p+1)",
+      "sv_coverage_fraction_threshold_sharp in Erdos1083OQ02.lean:452 — sharpness of the threshold"
     ],
     "insights": [
       "SV exponent 2(d+1)/(d(d+2)) is strictly between 1/d and 2/d for d≥4",
@@ -85,7 +89,10 @@
       "General threshold pattern: d/(d+2)≥(k-1)/k ↔ d≥2(k-1); covers 3/4 for d≥6, 11/12 for d≥22",
       "Formalization is complete: 25 theorems, 0 sorries, 5 axioms — gap reduction itself is genuinely open",
       "Partial fractions: 2/(d(d+2)) = 1/d - 1/(d+2); explains telescoping and O(1/d²) behavior at once",
-      "SV exponent itself is strictly DECREASING (not the gap, the actual bound value) — both conjecture and SV exponent tend to 0 as d→∞; the gap decreases faster"
+      "SV exponent itself is strictly DECREASING (not the gap, the actual bound value) — both conjecture and SV exponent tend to 0 as d→∞; the gap decreases faster",
+      "Coverage threshold is exactly d=2p for fraction p/(p+1): proved as iff, unifying the 2/3, 3/4, 11/12 threshold cases",
+      "Adjacent even-indexed gaps telescope: gap(d)+gap(d+2) = 1/d-1/(d+4) — 1/(d+2) terms cancel via partial fractions",
+      "Gap ratio gap(d+2)/gap(d) = d/(d+4), approaching 1 from below — near-geometric decay"
     ],
     "mathlibGaps": [
       "No formalization of incidence geometry in ℝ^d",

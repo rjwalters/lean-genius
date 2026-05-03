@@ -394,6 +394,73 @@ theorem guth_katz_exceeds_sv_formula_d2 (ε : ℝ) (hε_pos : ε > 0) (hε_lt : 
 theorem sv_formula_below_conjecture_d2 : (3 : ℝ) / 4 < (2 : ℝ) / 2 := by norm_num
 
 /-
+## Complete Coverage Characterization
+
+The coverage fraction d/(d+2) satisfies an exact threshold law:
+d/(d+2) ≥ p/(p+1) if and only if d ≥ 2p.
+This gives a parametric family of threshold results, of which
+sv_covers_two_thirds_all_d (p=2), sv_covers_three_quarters (p=3),
+and sv_covers_eleven_twelfths (p=11) are special cases.
+-/
+
+/-- Adjacent even-gap telescoping: gap(d) + gap(d+2) = 1/d - 1/(d+4).
+    Via partial fractions, gap(d) = 1/d - 1/(d+2) and gap(d+2) = 1/(d+2) - 1/(d+4),
+    so the 1/(d+2) terms cancel. Even-indexed subsequences telescope with step 4. -/
+theorem gap_adjacent_even_telescope (d : ℕ) (hd : d ≥ 1) :
+    2 / ((↑d : ℝ) * ((↑d : ℝ) + 2)) + 2 / (((↑d : ℝ) + 2) * ((↑d : ℝ) + 4)) =
+    1 / (↑d : ℝ) - 1 / ((↑d : ℝ) + 4) := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  have hd4_pos : (0 : ℝ) < (↑d : ℝ) + 4 := by linarith
+  have hd_ne : (d : ℝ) ≠ 0 := ne_of_gt hd_pos
+  have hd2_ne : (↑d : ℝ) + 2 ≠ 0 := ne_of_gt hd2_pos
+  have hd4_ne : (↑d : ℝ) + 4 ≠ 0 := ne_of_gt hd4_pos
+  field_simp [hd_ne, hd2_ne, hd4_ne]
+  ring
+
+/-- Ratio of consecutive even-indexed gaps: gap(d+2) / gap(d) = d/(d+4).
+    Confirms strict decrease and reveals near-geometric decay: ratio → 1 as d → ∞. -/
+theorem gap_consecutive_ratio (d : ℕ) (hd : d ≥ 1) :
+    (2 / (((↑d : ℝ) + 2) * ((↑d : ℝ) + 4))) /
+    (2 / ((↑d : ℝ) * ((↑d : ℝ) + 2))) = (↑d : ℝ) / ((↑d : ℝ) + 4) := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  have hd4_pos : (0 : ℝ) < (↑d : ℝ) + 4 := by linarith
+  have hd_ne : (d : ℝ) ≠ 0 := ne_of_gt hd_pos
+  have hd2_ne : (↑d : ℝ) + 2 ≠ 0 := ne_of_gt hd2_pos
+  have hd4_ne : (↑d : ℝ) + 4 ≠ 0 := ne_of_gt hd4_pos
+  field_simp [hd_ne, hd2_ne, hd4_ne]
+  ring
+
+/-- General coverage threshold: d/(d+2) ≥ p/(p+1) whenever d ≥ 2p.
+    Proof: d ≥ 2p ↔ p(d+2) ≤ d(p+1) (cross-multiply). The threshold d=2p is sharp
+    (see sv_coverage_fraction_threshold_sharp). Unifies three existing results:
+    p=2 → sv_covers_two_thirds_all_d, p=3 → sv_covers_three_quarters,
+    p=11 → sv_covers_eleven_twelfths. -/
+theorem sv_coverage_fraction_threshold (d p : ℕ) (hp : p ≥ 2) (hd : d ≥ 2 * p) :
+    (d : ℝ) / ((↑d : ℝ) + 2) ≥ (↑p : ℝ) / ((↑p : ℝ) + 1) := by
+  have hp_pos : (0 : ℝ) < (p : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by
+    have := Nat.cast_nonneg (α := ℝ) d; linarith
+  have hp1_pos : (0 : ℝ) < (↑p : ℝ) + 1 := by linarith
+  have hd_cast : 2 * (↑p : ℝ) ≤ (↑d : ℝ) := by exact_mod_cast hd
+  rw [ge_iff_le, div_le_div_iff hp1_pos hd2_pos]
+  nlinarith
+
+/-- Sharpness of the threshold: if d < 2p, SV covers strictly below p/(p+1).
+    Together with sv_coverage_fraction_threshold: d/(d+2) ≥ p/(p+1) ↔ d ≥ 2p. -/
+theorem sv_coverage_fraction_threshold_sharp (d p : ℕ) (hp : p ≥ 1)
+    (hd_pos : d ≥ 1) (hd : d < 2 * p) :
+    (d : ℝ) / ((↑d : ℝ) + 2) < (↑p : ℝ) / ((↑p : ℝ) + 1) := by
+  have hd_pos_r : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr hd_pos
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  have hp1_pos : (0 : ℝ) < (↑p : ℝ) + 1 := by
+    have := Nat.cast_nonneg (α := ℝ) p; linarith
+  have hd_cast : (↑d : ℝ) < 2 * (↑p : ℝ) := by exact_mod_cast hd
+  rw [div_lt_div_iff hd2_pos hp1_pos]
+  nlinarith
+
+/-
 ## Summary
 
 State of Erdős #1083:
@@ -405,25 +472,29 @@ State of Erdős #1083:
 
 Axiom count: 6 (f, erdos_lower, grid_upper, solymosi_vu, erdos_1083_conjecture, guth_katz)
 Sorry count: 0
-Proved: 39 theorems (gap analysis, exponent comparison, structural properties, progress fractions,
-         partial fractions, SV monotonicity, d=2 comparison)
+Proved: 43 theorems (gap analysis, exponent comparison, structural properties, progress fractions,
+         partial fractions, SV monotonicity, d=2 comparison, coverage characterization)
 
 Key structural results:
 - sv_fraction_of_conjecture: SV exponent = (d+1)/(d+2) · (2/d)
 - gap_exceeds_reciprocal_sq + gap_below_twice_reciprocal_sq: 1/d² < gap < 2/d²
 - gap_partial_fractions: 2/(d(d+2)) = 1/d - 1/(d+2) (partial fractions decomposition)
+- gap_adjacent_even_telescope: gap(d) + gap(d+2) = 1/d - 1/(d+4) (pair telescoping)
+- gap_consecutive_ratio: gap(d+2)/gap(d) = d/(d+4) (near-geometric decay)
 - gap_strictly_decreasing: gap(d) > gap(d+1) (converges to 0)
 - sv_exponent_strictly_decreasing: SV exponent 2(d+1)/(d(d+2)) itself strictly decreases in d
 - sv_fraction_increasing: (d+1)/(d+2) strictly increases toward 1
 - sv_improvement_over_erdos: SV improvement over Erdős = 1/(d+2)
 - sv_covers_d_over_d_plus_2_of_total_gap: SV closes d/(d+2) of full Erdős→conjecture gap
 - sv_remaining_gap_fraction: remaining open fraction = 2/(d+2)
-- sv_covers_two_thirds_all_d: for ALL d ≥ 4 (SV range), coverage ≥ 2/3
+- sv_coverage_fraction_threshold: d/(d+2) ≥ p/(p+1) ↔ d ≥ 2p [general threshold]
+- sv_coverage_fraction_threshold_sharp: sharpness — d < 2p ↔ coverage < p/(p+1)
 - guth_katz_implies_erdos_d2: Guth-Katz resolves the d=2 case of Erdős #1083
 
 The gap 2/(d(d+2)) is precisely characterized: it lies in (1/d², 2/d²),
 strictly decreases with d, and vanishes asymptotically. Key: 2/(d(d+2)) = 1/d - 1/(d+2).
 The SV method closes d/(d+2) of the Erdős→conjecture gap (e.g., 2/3 for d=4, 5/6 for d=10).
+The exact threshold for coverage ≥ p/(p+1) is d = 2p (e.g., p=4 → d≥8 → ≥4/5 coverage).
 For d=2, Guth-Katz eliminates the gap entirely using polynomial partitioning.
 For d ≥ 4, no known approach eliminates the remaining 2/(d+2) fraction.
 -/
