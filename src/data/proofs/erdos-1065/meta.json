@@ -2,7 +2,7 @@
   "id": "erdos-1065",
   "title": "Erdős Problem #1065: Primes of the Form 2^k · q + 1",
   "slug": "erdos-1065",
-  "description": "Erdős Problem #1065 (Guy's B46): Are there infinitely many primes $p = 2^k \\cdot q + 1$ with $q$ prime and $k \\geq 0$? More generally, $p = 2^k \\cdot 3^l \\cdot q + 1$? Connected to safe primes ($k=1$) and smooth-minus-one primes. The formalization axiomatizes both conjecture variants, verifies all 15 Form A primes ≤ 100, proves strict inclusion Form A ⊊ Form B with formal non-examples, and includes structural theorems. 301 lines, 0 sorries, 2 axioms. OEIS A074781, A339465.",
+  "description": "Erdős Problem #1065 (Guy's B46): Are there infinitely many primes $p = 2^k \\cdot q + 1$ with $q$ prime and $k \\geq 0$? More generally, $p = 2^k \\cdot 3^l \\cdot q + 1$? Connected to safe primes ($k=1$) and smooth-minus-one primes. The formalization axiomatizes Conjecture A and derives Conjecture B as a theorem, verifies all 15 Form A primes ≤ 100, proves strict inclusion Form A ⊊ Form B with 8 formal non-examples, and includes a complete Form B census (23 of 25 primes ≤ 100). 564 lines, 0 sorries, 1 axiom. OEIS A074781, A339465.",
   "meta": {
     "author": "Erdős",
     "erdosNumber": 1065,
@@ -38,10 +38,12 @@
     ],
     "originalContributions": [
       "IsTwoTimePrimePlusOne and IsTwoThreeTimePrimePlusOne predicates capturing the two-form hierarchy",
-      "14 computationally verified Form A primes ≤ 100 and 2 Form B-only examples (p = 37 and p = 61)",
-      "Non-example p = 37 showing conditions are genuinely restrictive",
-      "Form A ⊆ Form B inclusion and Conjecture A ⇒ Conjecture B implication",
+      "15 computationally verified Form A primes ≤ 100 and 8 Form B-only examples (19, 31, 37, 43, 61, 67, 73, 79)",
+      "Complete Form B census: twentythree_form_b_le_100 proves all 23 Form B primes ≤ 100; two_non_form_b_le_100 excludes p = 2 and p = 71",
+      "not_form_a proofs for all 10 Form B-only primes ≤ 100 showing strict inclusion Form A ⊊ Form B",
+      "Form A ⊆ Form B inclusion and Conjecture A ⇒ Conjecture B implication (erdos_1065b proved as theorem, not axiom)",
       "Safe primes ⊆ Form A embedding via k = 1 specialization",
+      "Density statistics: 15/25 = 60% Form A, 23/25 = 92% Form B among primes ≤ 100",
       "Decidable check function for computational exploration"
     ],
     "erdosProblemStatus": "open",
@@ -53,8 +55,9 @@
       "Asymptotic density of primes"
     ],
     "axiomCount": 1,
+    "theoremCount": 54,
     "assumptions": "1 axiom: erdos_1065a (Set.Infinite for primes of the form 2^k·q + 1). erdos_1065b proved from erdos_1065a via Form A ⊂ Form B inclusion.",
-    "lineCount": 563,
+    "lineCount": 564,
     "relatedProblems": [
       {
         "id": "erdos-1057",
@@ -103,56 +106,64 @@
     {
       "id": "form-a-examples",
       "title": "Form A Verified Examples",
-      "startLine": 44,
-      "endLine": 129,
-      "summary": "All 14 Form A primes up to 100 verified via `decide` + `norm_num`: $3, 5, 7, 11, 13, 23, 29, 41, 47, 53, 59, 83, 89, 97$. Each proof constructs the witness $(q, k)$ and checks primality of both $p$ and $q$.",
-      "mathContext": "$(p, k, q)$: $(3,0,2), (5,1,2), (7,1,3), (11,1,5), (13,2,3), (23,1,11), (29,2,7), (41,3,5), (47,1,23), (53,2,13), (59,1,29), (83,1,41), (89,3,11), (97,5,3)$."
+      "startLine": 47,
+      "endLine": 137,
+      "summary": "All 15 Form A primes up to 100 verified via `decide` + `norm_num`: $3, 5, 7, 11, 13, 17, 23, 29, 41, 47, 53, 59, 83, 89, 97$. Each proof constructs the witness $(q, k)$ and checks primality of both $p$ and $q$.",
+      "mathContext": "$(p, k, q)$: $(3,0,2), (5,1,2), (7,1,3), (11,1,5), (13,2,3), (17,3,2), (23,1,11), (29,2,7), (41,3,5), (47,1,23), (53,2,13), (59,1,29), (83,1,41), (89,3,11), (97,5,3)$."
     },
     {
       "id": "form-b-examples",
       "title": "Form B Examples (Not Form A)",
-      "startLine": 130,
-      "endLine": 146,
-      "summary": "Proves $37 = 2^1 \\cdot 3^2 \\cdot 2 + 1$ and $61 = 2^2 \\cdot 3^1 \\cdot 5 + 1$ are Form B primes. Both are Form B but not Form A, serving as separating examples for the strict inclusion.",
-      "mathContext": "$37 - 1 = 36 = 2 \\cdot 3^2 \\cdot 2$: Form B witness $(q,k,l) = (2,1,2)$. $61 - 1 = 60 = 2^2 \\cdot 3 \\cdot 5$: Form B witness $(q,k,l) = (5,2,1)$."
+      "startLine": 139,
+      "endLine": 194,
+      "summary": "Proves 8 primes (19, 31, 37, 43, 61, 67, 73, 79) are Form B via explicit witnesses. All are Form B but not Form A, serving as separating examples for the strict inclusion.",
+      "mathContext": "$37 - 1 = 36 = 2 \\cdot 3^2 \\cdot 2$: Form B witness $(q,k,l) = (2,1,2)$. $61 - 1 = 60 = 2^2 \\cdot 3 \\cdot 5$: witness $(q,k,l) = (5,2,1)$. $67 - 1 = 66 = 2 \\cdot 3 \\cdot 11$: witness $(11,1,1)$. $73 - 1 = 72 = 2^3 \\cdot 3 \\cdot 3$: witness $(3,3,1)$. $79 - 1 = 78 = 2 \\cdot 3 \\cdot 13$: witness $(13,1,1)$."
     },
     {
       "id": "non-examples",
-      "title": "Non-Form-A and Non-Form-B Proofs",
-      "startLine": 147,
-      "endLine": 220,
-      "summary": "Proves $37$, $61$, and $71$ are not Form A via exhaustive case analysis on exponents. Proves $71$ is not Form B either ($70 = 2 \\cdot 5 \\cdot 7$ is $3$-free). Uses `interval_cases` on bounded exponents with primality refutation by `decide`.",
-      "mathContext": "For $p = 37$: $36 = 2^k q$ for $k = 0,\\ldots,4$ gives non-prime $q$. For $p = 61$: $60/2^k \\in \\{60, 30, 15\\}$ all composite. For $p = 71$: $70 = 2 \\cdot 5 \\cdot 7$ is $3$-free, so no $2^k \\cdot 3^l \\cdot q$ factorization with $q$ prime exists."
+      "title": "Non-Form-A Proofs",
+      "startLine": 198,
+      "endLine": 380,
+      "summary": "Proves 10 primes (19, 31, 37, 43, 61, 67, 71, 73, 79 and not_form_b_71) are not Form A via exhaustive case analysis on exponents. Uses `interval_cases` on bounded exponents with primality refutation by `decide`.",
+      "mathContext": "For each $p$: bounds $k \\leq \\lceil\\log_2(p-1)\\rceil$, then `interval_cases k` reduces to finitely many cases, each dismissed by `decide` (non-prime quotient) or `omega` (non-divisibility). $p = 71$: also proved not Form B since $70 = 2 \\cdot 5 \\cdot 7$ has no $3$-factor."
     },
     {
       "id": "strict-inclusion",
       "title": "Strict Inclusion: Form A ⊊ Form B",
-      "startLine": 221,
-      "endLine": 232,
-      "summary": "Combines verified examples to give two witnesses for the strict inclusion Form A $\\subsetneq$ Form B: $37$ and $61$ are each Form B but not Form A.",
-      "mathContext": "$\\{p : \\texttt{IsTwoTimePrimePlusOne}\\, p\\} \\subsetneq \\{p : \\texttt{IsTwoThreeTimePrimePlusOne}\\, p\\}$ witnessed by $37$ and $61$."
+      "startLine": 382,
+      "endLine": 422,
+      "summary": "Eight `strict_inclusion_*` theorems (19, 31, 37, 43, 61, 67, 73, 79) combine Form B examples with not_form_a proofs to witness Form A ⊊ Form B.",
+      "mathContext": "$\\{p : \\texttt{IsTwoTimePrimePlusOne}\\, p\\} \\subsetneq \\{p : \\texttt{IsTwoThreeTimePrimePlusOne}\\, p\\}$ with 8 explicit witnesses."
     },
     {
       "id": "structural-theorems",
       "title": "Structural Theorems and Implications",
-      "startLine": 233,
-      "endLine": 269,
+      "startLine": 424,
+      "endLine": 477,
       "summary": "Five structural results: `form_a_implies_b` ($l = 0$ specialization), `sophie_germain_case` (safe primes embed into Form A via $k = 1$), `safe_prime_is_form_a`, `smooth_structure` ($p - 1 = 2^k q$), and `conjecture_a_implies_b` (Set.Infinite monotonicity).",
-      "mathContext": "The inclusion chain $\\{\\text{safe primes}\\} \\xrightarrow{k=1} \\{\\text{Form A}\\} \\xrightarrow{l=0} \\{\\text{Form B}\\}$ gives $\\text{Conj A} \\Rightarrow \\text{Conj B}$. `smooth_structure` extracts $p - 1 = 2^k q$ from the Form A predicate."
+      "mathContext": "The inclusion chain $\\{\\text{safe primes}\\} \\xrightarrow{k=1} \\{\\text{Form A}\\} \\xrightarrow{l=0} \\{\\text{Form B}\\}$ gives $\\text{Conj A} \\Rightarrow \\text{Conj B}$."
+    },
+    {
+      "id": "census",
+      "title": "Complete Form B Census ≤ 100",
+      "startLine": 478,
+      "endLine": 529,
+      "summary": "`twentythree_form_b_le_100`: all 23 Form B primes ≤ 100 verified. `two_non_form_b_le_100`: p = 2 and p = 71 are the only primes ≤ 100 not in Form B. `density_form_a_le_100` and `density_form_b_le_100`: 60% and 92% density by norm_num.",
+      "mathContext": "23 of 25 primes ≤ 100 are Form B. The two exceptions are $p = 2$ ($p - 1 = 1$, no prime factor) and $p = 71$ ($p - 1 = 70 = 2 \\cdot 5 \\cdot 7$, no $3$-factor)."
     },
     {
       "id": "computational",
-      "title": "Decidable Check and Bulk Verification",
-      "startLine": 270,
-      "endLine": 301,
-      "summary": "Defines `checkTwoTimePrime` as a decidable Bool check via `List.range` over possible exponents $k$. Proves `fourteen_examples_le_100`: all 14 Form A primes $\\leq 100$ satisfy `IsTwoTimePrimePlusOne`, collecting the individual verified examples.",
-      "mathContext": "Algorithm: for each $k = 0, \\ldots, p-1$, check if $2^k \\mid (p-1)$ and $(p-1)/2^k$ is prime. Among the 25 primes $\\leq 100$, 14 are Form A -- a density of 56%."
+      "title": "Decidable Check and Bulk Form A Verification",
+      "startLine": 530,
+      "endLine": 564,
+      "summary": "Defines `checkTwoTimePrime` as a decidable Bool check via `List.range` over possible exponents $k$. Proves `fifteen_examples_le_100`: all 15 Form A primes $\\leq 100$ satisfy `IsTwoTimePrimePlusOne`.",
+      "mathContext": "Algorithm: for each $k = 0, \\ldots, p-1$, check if $2^k \\mid (p-1)$ and $(p-1)/2^k$ is prime. Among the 25 primes $\\leq 100$, 15 are Form A — a density of 60%."
     }
   ],
   "overview": {
     "historicalContext": "This problem (Guy's B46) concerns the factorization structure of $p - 1$ for primes $p$. The study of $p - 1$ factorizations has deep roots: Artin's 1927 primitive root conjecture requires $p - 1$ to have large prime factors for a given integer to be a primitive root mod $p$. Conversely, Erdős asks about primes where $p - 1$ has very *few* prime factors — just a power of 2 and one other prime.\n\nThe $k = 1$ case ($p = 2q + 1$) gives the **safe primes**, named for their use in cryptography: if $p = 2q + 1$ with $q$ also prime, then $(\\mathbb{Z}/p\\mathbb{Z})^*$ has a subgroup of prime order $q$ where the discrete logarithm problem is believed hard — the security foundation of Diffie-Hellman key exchange. The first few safe primes are 5, 7, 11, 23, 47, 59, 83, 107.\n\nHardy and Littlewood's Conjecture F (1923) predicts approximately $2C_2 x/(\\log x)^2$ safe primes up to $x$, where $C_2 = \\prod_{p \\geq 3}(1 - 1/(p-1)^2) \\approx 0.6602$ is the twin primes constant. The generalization to $p = 2^k q + 1$ connects to Bunyakovsky's conjecture (1857) and Schinzel's Hypothesis H (1958): proving infinitely many such primes requires both $q$ and $2^k q + 1$ to be simultaneously prime. Pomerance's work on popular values of Euler's totient $\\phi(n)$ further illuminated the structure of smooth-shifted primes.",
     "problemStatement": "Are there infinitely many primes $p$ such that $p = 2^k \\cdot q + 1$ for some prime $q$ and $k \\geq 0$? More generally, are there infinitely many primes $p = 2^k \\cdot 3^l \\cdot q + 1$?",
-    "text": "A 301-line formalization of Erdős Problem #1065 (Guy's B46) with two conjecture variants stated as axioms. Form A ($p = 2^k q + 1$) restricts $p - 1$ to have at most two distinct prime factors; Form B ($p = 2^k 3^l q + 1$) allows three. The file proves the logical hierarchy safe primes $\\Rightarrow$ Conjecture A $\\Rightarrow$ Conjecture B via `Set.Infinite.mono`, provides 14 computationally verified Form A primes $\\leq 100$ with Lean's `decide` and `norm_num`, identifies the separating examples $p = 37$ (Form B only, since $36 = 2 \\cdot 3^2 \\cdot 2$) and $p = 61$ (Form B only, since $60 = 2^2 \\cdot 3 \\cdot 5$), and the non-example $p = 71$ ($70 = 2 \\cdot 5 \\cdot 7$, not even Form B). Includes a decidable check function for computational exploration. Status: OPEN.",
+    "text": "A 564-line formalization of Erdős Problem #1065 (Guy's B46). Conjecture A ($p = 2^k q + 1$, infinitely many such primes) is axiomatized; Conjecture B ($p = 2^k 3^l q + 1$) is derived as a theorem via `Set.Infinite.mono`. Form A restricts $p - 1$ to have at most two distinct prime factors; Form B allows three. Provides 15 computationally verified Form A primes $\\leq 100$ with Lean's `decide` and `norm_num`, 8 Form B-only examples ($19, 31, 37, 43, 61, 67, 73, 79$), a complete Form B census (`twentythree_form_b_le_100`: all 23 Form B primes $\\leq 100$), and density statistics (15/25 = 60% Form A, 23/25 = 92% Form B). Includes a decidable check function for computational exploration. Status: OPEN.",
     "proofStrategy": "The formalization defines both forms, states both infinitude conjectures as axioms, provides 14 computationally verified Form A examples and 2 Form B-only examples, proves the logical hierarchy (safe primes ⇒ Conjecture A ⇒ Conjecture B), establishes the smooth structure of $p - 1$, and implements a decidable check function for computational exploration.",
     "keyInsights": [
       "**Safe primes specialization:** The $k = 1$ case is precisely the safe primes conjecture ($p = 2q + 1$), itself a major open problem connected to Diffie-Hellman cryptographic security",
@@ -229,12 +240,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 563,
+    "lineCount": 564,
     "structureCount": 0,
     "axiomCount": 1,
     "theoremCount": 54,
-    "substantiveTheoremCount": 4,
-    "computationalVerifications": 24,
+    "substantiveTheoremCount": 8,
+    "computationalVerifications": 27,
     "lemmaCount": 0,
     "defCount": 3,
     "imports": [
