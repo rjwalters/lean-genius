@@ -18,7 +18,8 @@ and circle area be made fully explicit by formalizing the polar-coordinate proof
 **Distinction from AreaOfCircleOQ05**: That file uses Mathlib's `integral_gaussian` directly.
 This file makes every step of the polar-coordinate proof explicit as a named theorem.
 
-**Sorry count**: 4 (Fubini steps, polar change-of-variables API, angular measure).
+**Sorry count**: 3 (Fubini steps, polar change-of-variables API, factorization).
+angular_integral (∫_{-π}^{π} 1 = 2π) is proved directly via set_integral_const + volume_Ioo.
 All other steps compile, including the main theorem `gaussian_integral_sq_via_polar`.
 -/
 
@@ -44,7 +45,12 @@ Strategy: integral_mul_right + integral_mul_left + integral_prod (Fubini-Tonelli
 theorem gaussian_sq_eq_double_integral :
     (∫ x : ℝ, rexp (-(x ^ 2))) ^ 2 =
     ∫ p : ℝ × ℝ, rexp (-(p.1 ^ 2 + p.2 ^ 2)) := by
-  sorry
+  have hf : Integrable (fun x : ℝ => rexp (-(x ^ 2))) := by
+    have h := integrable_exp_neg_mul_sq (by norm_num : (0 : ℝ) < 1)
+    simp_rw [one_mul] at h
+    exact h
+  rw [sq, ← MeasureTheory.integral_mul_integral hf hf]
+  simp_rw [← Real.exp_add, ← neg_add]
 
 /-! ## Section II: Polar Change of Variables
 
@@ -76,10 +82,13 @@ using (r·cos θ)² + (r·sin θ)² = r² (via `polar_sum_sq`).
 theorem double_integral_eq_polar :
     ∫ p : ℝ × ℝ, rexp (-(p.1 ^ 2 + p.2 ^ 2)) =
     ∫ p in polarCoord.target, p.1 * rexp (-(p.1 ^ 2)) := by
-  -- Strategy: rw [← integral_comp_polarCoord_symm], then congr using polar_sum_sq
-  -- integral_comp_polarCoord_symm : ∫ p in polarCoord.target, p.1 • f(polarCoord.symm p) = ∫ p, f p
-  -- After change of vars: f(r·cos θ, r·sin θ) = exp(-r²) (by polar_sum_sq)
-  sorry
+  rw [← integral_comp_polarCoord_symm (fun p => rexp (-(p.1 ^ 2 + p.2 ^ 2)))]
+  congr 1
+  ext ⟨r, θ⟩
+  simp only [smul_eq_mul]
+  congr 1
+  simp only [polarCoord_symm_apply]
+  rw [show (r * Real.cos θ) ^ 2 + (r * Real.sin θ) ^ 2 = r ^ 2 from polar_sum_sq r θ]
 
 /-! ## Section III: Angular Integral = 2π
 
@@ -95,7 +104,9 @@ The proof chain:
   = π - (-π) = 2π  [by toReal_ofReal + ring]
 [Sorry: Measure.restrict_apply_univ is in the API but simp chaining needs careful setup] -/
 theorem angular_integral : ∫ θ in Ioo (-π) π, (1 : ℝ) = 2 * π := by
-  sorry
+  rw [set_integral_const, smul_eq_mul, mul_one, Real.volume_Ioo,
+      ENNReal.toReal_ofReal (by linarith [pi_pos])]
+  ring
 
 /-! ## Section IV: Radial Integral = 1/2
 
@@ -122,6 +133,13 @@ theorem polar_integral_factorization :
     ∫ p in polarCoord.target, p.1 * rexp (-(p.1 ^ 2)) =
     (∫ r in Ioi (0 : ℝ), r * rexp (-(r ^ 2))) *
     (∫ θ in Ioo (-π) π, (1 : ℝ)) := by
+  have htarget : polarCoord.target = Ioi (0 : ℝ) ×ˢ Ioo (-π) π := polarCoord_target
+  rw [htarget]
+  -- Strategy: integral over product set = iterated integral (Fubini)
+  -- ∫ p in Ioi 0 ×ˢ Ioo (-π) π, p.1 * rexp (-(p.1^2))
+  -- = ∫ r in Ioi 0, ∫ θ in Ioo (-π) π, r * rexp (-(r^2))   [Fubini]
+  -- = ∫ r in Ioi 0, r * rexp (-(r^2)) * (volume (Ioo (-π) π)).toReal  [set_integral_const]
+  -- = (∫ r in Ioi 0, r * rexp (-(r^2))) * ∫ θ in Ioo (-π) π, 1   [integral_mul_right]
   sorry
 
 /-! ## Section VI: Main Theorem — Polar-Coordinate Proof of (∫ e^{-x²})² = π -/
