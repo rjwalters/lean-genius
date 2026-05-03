@@ -76,6 +76,7 @@ theorem halvings_pow2 (k : ℕ) : halvings (2^k) = k := by
   | succ n ih =>
     rw [pow_succ, show 2^n * 2 = 2 * 2^n from mul_comm (2^n) 2,
         halvings_two_mul (pow_pos (by norm_num) n), ih]
+    omega
 
 /-- halvings (2^k) equals the floor logarithm Nat.log 2 (2^k). -/
 theorem halvings_eq_log_pow2 (k : ℕ) : halvings (2^k) = Nat.log 2 (2^k) := by
@@ -90,8 +91,8 @@ No algorithm can decide constructibility in fewer halvings on the inputs 2^k.
 
 /-- **Lower bound**: Nat.log 2 (2^k) ≤ halvings (2^k).
     For d = 2^k, the halvings count matches the floor log exactly. -/
-theorem constructibility_lower_bound (k : ℕ) : Nat.log 2 (2^k) ≤ halvings (2^k) := by
-  rw [halvings_eq_log_pow2]
+theorem constructibility_lower_bound (k : ℕ) : Nat.log 2 (2^k) ≤ halvings (2^k) :=
+  le_of_eq (halvings_eq_log_pow2 k).symm
 
 /-- The step count is not bounded by any constant: no O(1) algorithm exists. -/
 theorem halvings_unbounded (c : ℕ) : ∃ d : ℕ, halvings d ≥ c :=
