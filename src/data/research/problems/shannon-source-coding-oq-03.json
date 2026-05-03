@@ -1,0 +1,145 @@
+{
+  "slug": "shannon-source-coding-oq-03",
+  "title": "Can the AEP be formalized using Mathlib's probability measure framework",
+  "phase": "ACT",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in probability theory: Can the AEP be formalized using Mathlib's probability measure framework.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-03T07:32:10.538Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "NEAR-COMPLETE: expVal_marginal, expVal_empEnt, aep_concentration, typical_set_size_upper all proved. One sorry: empEnt_variance (cross-term independence for i\u2260j). Gallery entry created.",
+    "builtItems": [
+      "DiscreteDist structure: finite prob dist on Fin k",
+      "jointProb: i.i.d. product measure on n-sequences",
+      "empEnt: empirical entropy -(1/n) log P(x)",
+      "chebyshev_finite: Chebyshev proved for finite distributions",
+      "typical_prob_lower_bound: proved (each typical seq has P(x) >= exp(-n(H+\u03b5)))",
+      "typical_set_size_upper: proved (|T_\u03b5| <= exp(n(H+\u03b5)))",
+      "Lean file: proofs/Proofs/ShannonSourceCodingOQ03.lean (309 lines)",
+      "Gallery entry: src/data/proofs/shannon-source-coding-oq-03/",
+      "expVal_marginal: proved in ShannonSourceCodingOQ03.lean (Fintype.prod_sum + Finset.mul_prod_erase)",
+      "expVal_empEnt: proved with (hn : 0 < n) hypothesis using expVal_marginal",
+      "aep_concentration: proved using empEnt_variance + Chebyshev (bug-free version)"
+    ],
+    "insights": [
+      "AEP = LLN applied to -log p(X): empirical entropy concentrates around H(p)",
+      "Chebyshev finite case: P(|f-\u03bc|>\u03b5) \u2264 E[(f-\u03bc)\u00b2]/\u03b5\u00b2 provable for finite prob spaces",
+      "Typical set size upper bound |T_\u03b5|\u2264exp(n(H+\u03b5)) proved via counting argument",
+      "Key sorry: marginal factorization \u03a3_x P(x)*g(x_i) = \u03a3_a p(a)*g(a) needs Fintype.sum_piFinset_succ",
+      "logVar = E[(log p(X))\u00b2] - H(p)\u00b2 is the AEP concentration parameter",
+      "expVal_marginal proved via Fintype.prod_sum: factors joint expectation into single-coord marginal",
+      "expVal_empEnt proved from expVal_marginal: E[empEnt] = H by linearity + n equal marginal contributions",
+      "aep_concentration bug fixed: original used rw[expVal_empEnt] which doesn't apply to variance; corrected to use empEnt_variance",
+      "empEnt_variance requires 2D marginal (bilinear independence): E[Z_i*Z_j] = E[Z_i]*E[Z_j] for i\u2260j"
+    ],
+    "mathlibGaps": [
+      "Fintype.sum_piFinset_succ needed for marginal factorization in product measure",
+      "No simple product-measure marginalization lemma readily available",
+      "2D expVal_marginal (bilinear independence) needed for empEnt_variance; not in Mathlib but buildable in ~50 lines"
+    ],
+    "nextSteps": [
+      "Prove expVal_bilinear: E[g(Xi)*h(Xj)] = E[g(Xi)]*E[h(Xj)] for i!=j (50 lines, same Fintype.prod_sum approach)",
+      "Use expVal_bilinear to prove empEnt_variance and eliminate the last sorry",
+      "After empEnt_variance proved, badge upgrades from formalized to verified (0 axioms, 0 sorries)"
+    ]
+  },
+  "tags": [
+    "information-theory",
+    "probability",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "shannon-source-coding",
+    "shannon-source-coding-oq-01",
+    "shannon-source-coding-oq-02",
+    "shannon-source-coding-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T07:32:10.538Z",
+  "lastUpdate": "2026-05-03T07:32:10.538Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/ShannonSourceCoding.lean",
+      "filename": "ShannonSourceCoding.lean",
+      "lineCount": 33,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCoding.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingOQ01.lean",
+      "filename": "ShannonSourceCodingOQ01.lean",
+      "lineCount": 293,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ01.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingOQ02.lean",
+      "filename": "ShannonSourceCodingOQ02.lean",
+      "lineCount": 358,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ02.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingOQ04.lean",
+      "filename": "ShannonSourceCodingOQ04.lean",
+      "lineCount": 463,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ04.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingOQ04Aristotle.lean",
+      "filename": "ShannonSourceCodingOQ04Aristotle.lean",
+      "lineCount": 234,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ04Aristotle.lean"
+    }
+  ]
+}
