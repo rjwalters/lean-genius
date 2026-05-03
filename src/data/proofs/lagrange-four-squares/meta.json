@@ -34,8 +34,8 @@
     ],
     "dateAdded": "2025-12-26",
     "axiomCount": 5,
-    "assumptions": "5 axiom declarations: legendre_three_squares (3-square obstruction criterion), hilbert_waring (g(k) exists for all k), wieferich_nine_cubes (g(3)=9), waring_general_formula (g(k) general formula), vinogradov_waring_bound (G(k) upper bound). Previously axiomatized fermat_two_squares, jacobi_four_squares, hurwitz_quaternions_euclidean now proved.",
-    "lineCount": 417,
+    "assumptions": "5 axiom declarations: legendre_three_squares (3-square obstruction criterion), hilbert_waring (g(k) exists for all k), wieferich_nine_cubes (g(3)=9), waring_general_formula (g(k) general formula), vinogradov_waring_bound (G(k) upper bound). fermat_two_squares has been formally proved. jacobi_four_squares (True stub) removed — Jacobi's r₄(n) formula is not formalized. hurwitz_quaternions_euclidean and hurwitz_representation_count remain as True stubs.",
+    "lineCount": 410,
     "prerequisites": [
       "Quaternion algebra and norm multiplicativity",
       "Euler's four-square identity",
@@ -44,7 +44,7 @@
       "Waring's problem and additive number theory"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 18
+    "theoremCount": 17
   },
   "overview": {
     "historicalContext": "Lagrange's four squares theorem was proved by Joseph-Louis Lagrange in 1770, building on earlier work by Euler. The result answered a question that had puzzled mathematicians since antiquity: Diophantus had noted around 250 CE that certain numbers seemed to require many squares.\n\nThe deeper story involves one of mathematics' greatest coincidences: Euler discovered the four-square identity in 1748, showing that the product of two sums-of-four-squares is itself a sum of four squares. Nearly a century later, Hamilton discovered quaternions in 1843. The four-square identity IS quaternion multiplication! The norm of a product equals the product of norms.\n\nThis explains WHY four squares work when three don't: quaternions form a division algebra, but there is no 3-dimensional division algebra (proved by Frobenius in 1877). The algebraic structure that makes four squares work simply doesn't exist for three.\n\nAs one reviewer put it: \"The four squares theorem is astounding, it says something utterly profound about the universe... that's what binds the galaxies together.\"",
@@ -170,9 +170,9 @@
     ],
     "opens": [],
     "namespace": "LagrangeFourSquares",
-    "lineCount": 417,
+    "lineCount": 410,
     "axiomCount": 5,
-    "theoremCount": 18,
+    "theoremCount": 17,
     "definitionCount": 8,
     "path": "Proofs/LagrangeFourSquares.lean",
     "sorries": 0
