@@ -2,7 +2,7 @@
   "id": "erdos-1006-oq-01-oq-02",
   "title": "Cover Graph Recognition",
   "slug": "erdos-1006-oq-01-oq-02",
-  "description": "Investigates the computational complexity of recognizing cover graphs — graphs that are Hasse diagrams of finite posets. Proves NP membership, the shortcut-free characterization, and that cover graphs are STRICTLY contained in comparability graphs (K₃ is comparability but not cover). States the open P-time conjecture. 10 theorems, 2 axioms, 0 sorries.",
+  "description": "Investigates the computational complexity of recognizing cover graphs — graphs that are Hasse diagrams of finite posets. Proves NP membership, the shortcut-free characterization, and that cover graphs are STRICTLY contained in comparability graphs (K₃ is comparability but not cover). States the open P-time conjecture. 9 theorems, 2 axioms, 0 sorries.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://erdosproblems.com/1006",
@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 2,
-    "theoremCount": 7,
+    "theoremCount": 9,
     "newAxiomCount": 2,
     "mathlibDependencies": [
       {
@@ -46,7 +46,7 @@
       "cover_strictly_subset_comparability: strict separation witness — K₃ is comparability but not cover"
     ],
     "dateAdded": "2026-05-03",
-    "lineCount": 261,
+    "lineCount": 256,
     "assumptions": "2 axioms: (1) cover_graph_recognition_in_p — the open conjecture that cover recognition is in P; (2) comparability_recognition_in_p — Golumbic's 1977 theorem that comparability graphs are recognized in polynomial time."
   },
   "overview": {
@@ -79,23 +79,23 @@
       "id": "np-certificate",
       "title": "NP Certificate and Comparability Relation",
       "startLine": 91,
-      "endLine": 145,
+      "endLine": 140,
       "summary": "Proves cover_graph_in_np (poset is NP certificate), cover_implies_related (edges connect comparable pairs), and cover_search_space_bound (search space is 2^(n²)).",
       "mathContext": "NP membership formalizes as: given [PartialOrder V] and hcover : isCoverGraphOf G, the pair (inferInstance, hcover) witnesses isCoverGraph G. The decidability instance uses Fintype.decidableForallFintype."
     },
     {
       "id": "complexity",
       "title": "Algorithmic Complexity (Open)",
-      "startLine": 146,
-      "endLine": 199,
+      "startLine": 141,
+      "endLine": 195,
       "summary": "States two axioms: cover_graph_recognition_in_p (open conjecture) and comparability_recognition_in_p (Golumbic 1977). Proves cover_subclass_comparability.",
       "mathContext": "The open conjecture cover_graph_recognition_in_p is axiomatized as existence of a Bool-valued decision function that correctly classifies cover graphs. Golumbic's result is similarly axiomatized."
     },
     {
       "id": "k3-separation",
       "title": "K₃: Strict Separation Between Cover and Comparability Graphs",
-      "startLine": 200,
-      "endLine": 261,
+      "startLine": 196,
+      "endLine": 256,
       "summary": "Proves k3_is_comparability_graph (K₃ is comparability via standard Fin 3 order), k3_not_cover_graph (8-case proof no partial order makes all 3 edges covering), and cover_strictly_subset_comparability (strict containment witness).",
       "mathContext": "Core argument: x ⋖ y and y ⋖ z forces ¬(x ⋖ z) since y lies between x and z. With 3 pairs each requiring a covering direction, every orientation either creates a 3-chain (making the long edge non-covering) or a directed cycle (impossible in a partial order). The 8 cases correspond to the 2^3 orientations of covering edges {0,1}, {0,2}, {1,2}."
     }
@@ -127,12 +127,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 261,
+    "lineCount": 256,
     "path": "Proofs/Erdos1006OQ01OQ02.lean",
     "axiomCount": 2,
     "sorries": 0,
     "definitionCount": 5,
-    "theoremCount": 10
+    "theoremCount": 9
   },
   "sorries": 0
 }
