@@ -2,12 +2,12 @@
   "id": "liouville-theorem-oq-04",
   "title": "P-adic Liouville Theorem: The Archimedean Complement Lemma",
   "slug": "liouville-theorem-oq-04",
-  "description": "Extension of Liouville's approximation theorem to the p-adic setting. Proves the key Archimedean Complement Lemma: padicNorm p n ≥ 1/n for nonzero naturals. Defines p-adic Liouville numbers (with correct strict-positivity condition matching Mathlib) using height max(|r|,|s|) and proves the main theorem that p-adic algebraic numbers are not p-adically Liouville (1 sorry in the key estimate).",
+  "description": "Extension of Liouville's approximation theorem to the p-adic setting. Proves the key Archimedean Complement Lemma: padicNorm p n ≥ 1/n for nonzero naturals. Defines p-adic Liouville numbers using height max(|r|,|s|) and proves the main theorem that p-adic algebraic numbers are not p-adically Liouville. 1 axiom (padic_liouville_norm_bridge: norm compatibility ℚ → ℚ_[p] step), 0 sorries.",
   "meta": {
     "author": "lean-genius research agent",
     "sourceUrl": "https://mathworld.wolfram.com/p-adicNumber.html",
     "date": "2026",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/LiouvilleTheoremOQ04.lean",
     "tags": [
       "number-theory",
@@ -18,10 +18,10 @@
       "liouville",
       "ultrametric"
     ],
-    "badge": "wip",
-    "sorries": 1,
-    "axiomCount": 0,
-    "assumptions": "1 HARD sorry: padic_liouville_estimate — the p-adic Liouville lower bound requires Taylor factorization f = (X-α)·g over ℚ_[p], norm compatibility algebraMap ℚ → ℚ_[p], and a uniform bound on ‖g(r/s)‖_p. Session 8 fix: IsPadicLiouville now requires 0 < ‖β - r/s‖ (strict positivity, matching Mathlib Liouville), and the sorry theorem adds hne hypothesis; main theorem updated to use 2*d exponent.",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "assumptions": "1 axiom: padic_liouville_norm_bridge — connects the factorization f = (X-C α)·g and evaluation identity to the p-adic Liouville lower bound. Requires (1) norm compatibility ‖algebraMap ℚ ℚ_[p] q‖ = padicNorm p q, and (2) cofactor evaluation bound ‖g.eval(r/s)‖_p ≤ M·H^(d-1). The Archimedean Complement Lemma and all other results are fully proved.",
     "dateAdded": "2026-04-26",
     "mathlibDependencies": [
       {
@@ -198,12 +198,12 @@
       "Polynomial"
     ],
     "namespace": "LiouvilleTheoremOQ04",
-    "lineCount": 470,
-    "axiomCount": 0,
+    "lineCount": 467,
+    "axiomCount": 1,
     "theoremCount": 15,
     "definitionCount": 3,
     "path": "Proofs/LiouvilleTheoremOQ04.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "references": [
     {
@@ -242,5 +242,5 @@
       "leanType": "(α : ℚ_[p]) → f : ℤ[X] → f.eval α = 0 → 1 ≤ f.natDegree → IsPadicLiouville p α → False"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
