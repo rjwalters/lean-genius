@@ -412,3 +412,66 @@ The TIGHT bound requires max_entry ≤ 2^(N/4) — which comes from knowing the 
 
 2. **Alternative step 4**: Use the WEAK size-reduction: show that if `hgcdMatrix fuel aHi bHi` is NOT the identity, then `max(output) < max(input)`. This is weaker than "by half" but shows strict decrease, which might be enough for termination-style arguments.
 
+## Session 2026-05-02 (Session 6) — Audit + Circular-Dependency Insight
+
+**Mode**: REVISIT
+**Outcome**: knowledge-sync — sessions 4-5 (Steps 2b) already committed; circular dependency identified in Step 3.
+
+### Key Findings
+
+- Step 2b is complete (commits 8595544 and 67e6d6c): `row_vec_cramer`, `EvenPattern`/`OddPattern`, `entry_bound_of_even`/`entry_bound_of_odd`.
+- **Circular dependency in Step 3**: perturbation `|aLo·M.α + bLo·M.γ|` ≤ `2^s · max_entry`. With entry_bound, max_entry ≤ max(a₀, b₀) ≤ 2^(N/2), perturbation ≤ 2^N — equal to input size, useless. Tight bound requires max_entry ≤ 2^(N/4) which comes from knowing the REDUCED pair has N/4 bits — which IS size reduction. Circular.
+- **Resolution**: joint induction on N, proving size-of-output AND entry-bound simultaneously, matching Stehlé-Zimmermann (2004) Theorem 1.
+
+## Session 2026-05-03 (Session 7) — Convention Correction and Base-Case Row Bound
+
+**Mode**: REVISIT
+**Outcome**: progress — removed false `hgcdMatrix_joint_bound` column-convention theorem, proved base case of row-output bound, identified recursive-case blocker.
+
+### Key Findings
+
+- `hgcdMatrix_joint_bound` as previously stated (column output ≤ 2^(s+3)) was initially suspected to be false; a `native_decide` counterexample was identified but not yet added.
+- The CORRECT bounded quantity for `lehmerCofactors` is the ROW output (tracked by the invariant), not the COLUMN output.
+- Base case `hgcdMatrix_small_row_output_le` proved: for small inputs, `lehmerCofactors_id_apply_le` directly gives the row output ≤ max(a,b).
+- Recursive case blocked: IH for M₂ applies to M₂'s intended inputs `(a/2^s, b/2^s)`, not to `rowOut(M₂, rowOut(M₁, a, b))`. Bridging requires a new invariant.
+
+## Session 2026-05-03 (Session 8) — Counterexample Confirmed + Gallery Entry
+
+**Mode**: REVISIT
+**Outcome**: blocker documented — `hgcdMatrix_joint_bound` FALSE as stated; native_decide counterexample added; gallery entry created.
+
+### What I Did
+
+1. Traced through `lehmerCofactors 64 60 7 id` manually and via `native_decide`:
+   - 3 steps fire (q=8 giving r=4, q=1 giving r=3, q=1 giving r=1); step 4 has r=3%1=0 → none.
+   - Final M = ⟨-1, 2, 9, -17⟩.
+   - Column output: M.apply(60, 7) = (-46, 421). |421| >> 64 = 2^(hgcdShift 60 7 + 3).
+2. Added 3 `native_decide` examples to PART IX confirming the counterexample.
+3. Rewrote PART IX docstring explaining the root cause (base case runs full Euclidean for unbalanced inputs → large column output) and what a correct theorem requires (`hgcdMatrixProper` with identity base case).
+4. Updated `hgcdMatrix_joint_bound` sorry comment to say BLOCKED/false.
+5. Updated Summary section.
+6. Created gallery entry `src/data/proofs/binary-gcd-oq-03-oq-02/` (meta.json, annotations.json, index.ts).
+
+### Key Findings
+
+- **`hgcdMatrix_joint_bound` is FALSE**: the current base case runs the full Euclidean algorithm for unbalanced inputs. Column output is O(a·b/gcd²) — quadratic in the input, not bounded by 2^(n/2).
+- **Counterexample**: a=60, b=7 gives M=⟨-1,2,9,-17⟩ and column output 421 > 64. Verified by native_decide.
+- **What IS provable** (already proved): entries ≤ max(a,b) for base case (entry_bound_of_even/odd). GCD preservation and det ±1 are unconditional.
+- **Correct fix**: define `hgcdMatrixProper` where the base case returns IDENTITY when b < 2^(hgcdShift a b) (Stehlé-Zimmermann 2004 Alg. HGCD). The joint bound then holds because the base case never accumulates large column output.
+
+### Files Modified
+
+- `proofs/Proofs/BinaryGcdOQ03OQ02.lean` — PART IX rewritten with counterexample + blocked sorry (~80 lines changed).
+- `src/data/proofs/binary-gcd-oq-03-oq-02/` — gallery entry created (meta.json, annotations.json, index.ts).
+- This knowledge.md — Sessions 6, 7, 8 added.
+
+### Next Steps
+
+1. **`hgcdMatrixProper` definition** (~100 lines): define a new HGCD that returns identity for b < 2^(hgcdShift a b). This is the standard Stehlé-Zimmermann structure.
+2. **Joint bound for `hgcdMatrixProper`** (~300 lines): the joint induction now works cleanly since the base case contributes identity (trivially bounded). This is a separate multi-session project.
+3. **Gallery entry** is live; the correctness results are published.
+
+### Honest Assessment
+
+This session documents a critical finding (false theorem) and adds the gallery entry for the proved correctness results. No new Lean theorems are proved. The sorry count remains 1. The value is preventing future wasted work on an unprovable theorem and making the proved results visible in the gallery.
+

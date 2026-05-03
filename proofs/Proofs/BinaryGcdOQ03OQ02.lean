@@ -784,69 +784,65 @@ theorem hgcdShift_top_lt (a b : ℕ) (h : hgcdThreshold ≤ max a b) :
     _ < max a b := Nat.div_lt_self hmax_pos h1lt2s
 
 -- ═══════════════════════════════════════════════════════════════
--- PART IX: SIZE REDUCTION CLAIM (joint bound — Step 4 proper)
+-- PART IX: SIZE REDUCTION — COUNTEREXAMPLE AND BLOCKED CLAIM
 -- ═══════════════════════════════════════════════════════════════
 
-/-! ### The joint size-reduction theorem
+/-! ### Why the naive joint bound is false for the current definition
 
-The complete Step 4 proof proceeds by strong induction on `max a b`,
-using `hgcdShift_top_lt` to ensure the induction measure decreases at
-each recursive call.
+`hgcdMatrix_joint_bound` as originally stated — that the column output
+`M.apply(a, b)` is bounded by `2 ^ (hgcdShift a b + 3)` for ALL (a, b)
+— is **FALSE** for the current `hgcdMatrix` definition.
 
-The proof requires one additional ingredient not yet in this file:
+**Root cause**: for `max a b < hgcdThreshold`, the base case runs
+`lehmerCofactors hgcdThreshold a b id`, the FULL Euclidean cofactor
+accumulation. For unbalanced inputs (a >> b), this produces a matrix
+whose column output is O(a · b / gcd²), far exceeding the O(2^(n/2))
+bound claimed by the theorem.
 
-**Quotient stability** (`hgcd_quotient_stable`, not yet proved):
-  The Euclidean quotients computed from the top-half approximations
-  `(a / 2^s, b / 2^s)` agree with the quotients from the full-precision
-  `(a, b)` for a sufficient number of steps.
+**Concrete counterexample** (a=60, b=7, verified by `native_decide`):
+- max(60, 7) = 60 < 64 = hgcdThreshold → base case fires.
+- lehmerCofactors 64 60 7 id runs 3 steps (step 4 has 3 % 1 = 0) and
+  terminates with M = ⟨-1, 2, 9, -17⟩.
+- Column output: M.apply(60, 7) = (–1·60 + 2·7, 9·60 – 17·7) = (–46, 421).
+- hgcdShift 60 7 = (Nat.log 2 60 + 1) / 2 = (5+1)/2 = 3.
+  So 2^(s+3) = 2^6 = 64.  But 421 > 64 — theorem violated.
 
-  Formally: for each step k of `lehmerCofactors`:
-    `(aHi_k / bHi_k) = (a_k / b_k)`
-  where `aHi_k, bHi_k` are the approximation residues and `a_k, b_k`
-  are the full-precision Euclidean residues.
+**What IS proved** (this file, all 0 axioms, 0 sorries):
+- GCD preservation and det ±1 hold unconditionally (PARTS III–IV).
+- Entry bound: entries ≤ max(a, b), from entry_bound_of_even/odd (PART VI).
+- Perturbation infrastructure and shift bounds (PARTS VII–VIII).
 
-  This is proved in Stehlé-Zimmermann (2004) using the approximation
-  quality bound from `topBitsApprox_lt` in `BinaryGcdOQ03.lean`. The
-  formalization bridges the ROW-convention output (which `entry_bound`
-  bounds) to the COLUMN-convention output `M.apply(a, b)` (what we
-  actually want to bound for size reduction).
+**What the correct size-reduction theorem requires**:
+A correct HGCD for the size-reduction bound needs a differently
+structured algorithm where the base case returns the IDENTITY when
+b < 2^(hgcdShift a b) (inputs too unbalanced for a half-step). This
+is the standard HGCD of Stehlé-Zimmermann (2004, Alg. HGCD) — a
+more complex definition than the current `hgcdMatrix`.
 
-**Proof sketch** (joint induction on `max a b`):
-  - Base (max a b < hgcdThreshold = 64):
-      M = lehmerCofactors 64 a b id.
-      Entry bound: entries ≤ max(a, b) < 64 from entry_bound_of_even/odd.
-      Output bound: M.apply(a, b) gives the Euclidean residues of (a, b),
-      which are bounded by max(a, b). (Requires quotient stability.)
-  - Recursive (hgcdThreshold ≤ max a b):
-      s = hgcdShift a b; M₁ = hgcdMatrix(a/2^s, b/2^s); M = M₂ · M₁.
-      By hgcdShift_top_lt: max(a/2^s, b/2^s) < max a b → IH applies.
-      IH on M₁ gives: entries(M₁) ≤ 2^(s₁+2) where s₁ = hgcdShift(a/2^s, b/2^s).
-      Full-precision apply via cofactor_apply_shift_decomp:
-        M₁.apply(a,b) = 2^s · M₁.apply(a/2^s, b/2^s) + M₁.apply(a%2^s, b%2^s).
-      Signal term: ≤ 2^s · 2^(s₁+2) ≈ 2^(3s/2 + 2) (IH output bound).
-      Error term: ≤ 2 · entries(M₁) · 2^s ≤ 2 · 2^(s₁+2) · 2^s ≈ 2^(3s/2+3).
-      Combined: max(|M₁.apply(a,b)|) ≤ 2^(3s/2 + 3).
-      IH on M₂ (applied to outputs of size ≤ 2^(3s/2+3)):
-        output M.apply(a,b) = M₂.apply(M₁.apply(a,b)) ≤ 2^s + (some additive term).
+**Future work**: define `hgcdMatrixProper` with the identity base case
+and prove the joint bound for it.  Estimated ~300–500 new lines. -/
 
-  The constants above are schematic; Stehlé-Zimmermann give precise bounds
-  with C = O(1) for the binary-recursive variant.
+-- Verified counterexample: base-case matrix for (60, 7)
+private example : hgcdMatrix 68 60 7 = (⟨-1, 2, 9, -17⟩ : CofactorMatrix) := by
+  native_decide
 
-  **Classification**: HARD (requires new Lean infrastructure — quotient
-  stability proof + careful induction setup). Aristotle cannot help. -/
+-- Column output second component natAbs = 421
+private example : ((hgcdMatrix 68 60 7).apply (60 : ℤ) 7).2.natAbs = 421 := by
+  native_decide
 
-/-- [Sorry] HGCD joint size-reduction bound.
+-- 421 > 64 = 2^(hgcdShift 60 7 + 3): theorem is false
+private example : ¬ ((hgcdMatrix 68 60 7).apply (60 : ℤ) 7).2.natAbs ≤
+    2 ^ (hgcdShift 60 7 + 3) := by native_decide
 
-    For sufficient fuel, the column output and all matrix entries of
-    `hgcdMatrix fuel a b` are bounded by `2 ^ (hgcdShift a b + 3)`.
+/-- [BLOCKED — false as stated] The joint size-reduction bound.
 
-    The `+ 3` constant is conservative (absorbs rounding and two levels
-    of recursion); a tighter analysis would give `+ 2` or `+ 1`.
-    See the proof sketch in the PART IX docstring above.
+    The theorem is FALSE for the current `hgcdMatrix` definition; see
+    the PART IX docstring and the `native_decide` counterexample above
+    (a=60, b=7 gives column output 421 >> 64 = 2^(3+3)).
 
-    **Missing**: `hgcd_quotient_stable` — the quotient stability lemma
-    that connects the row-convention output (bounded by existing lemmas)
-    to the column-convention output `M.apply(a, b)`. -/
+    Kept as a sorry to mark the open problem.  A correct statement
+    requires redefining `hgcdMatrix` with an identity base case for
+    imbalanced inputs (see future-work note above). -/
 theorem hgcdMatrix_joint_bound (fuel a b : ℕ) (hfuel : a + b ≤ fuel) :
     let M := hgcdMatrix fuel a b
     let s := hgcdShift a b
@@ -919,18 +915,18 @@ theorem hgcdMatrix_joint_bound (fuel a b : ℕ) (hfuel : a + b ≤ fuel) :
     decrease** needed for the Step 4 strong induction. Proof: `2^s ≥ 2`
     from hgcdShift_pos, then `Nat.div_lt_self`.
 
-**Remaining for size reduction (1 sorry):**
-- `hgcdMatrix_joint_bound` (PART IX): the full joint bound —
-  output and entries ≤ 2^(s+3). The induction structure is set up by
-  `hgcdShift_top_lt` (proved above). The **missing piece** is quotient
-  stability: showing that Lehmer quotients computed from top-half
-  approximations match full-precision Euclidean quotients. This connects
-  the row-convention output (bounded by entry_bound_of_even/odd) to the
-  column-convention output (M.apply a b). See PART IX docstring.
+**Remaining (1 sorry — BLOCKED, not merely hard):**
+- `hgcdMatrix_joint_bound` (PART IX): **false as stated** for the current
+  `hgcdMatrix` definition. Counterexample: a=60, b=7 gives column output 421
+  while the bound claims ≤ 64. Root cause: base case runs the full Euclidean
+  algorithm for unbalanced inputs, giving large column output. A correct
+  theorem requires `hgcdMatrixProper` with an identity base case for
+  imbalanced inputs (Stehlé-Zimmermann HGCD). See PART IX docstring.
 
 **Out of scope (deferred):**
 - Bit-complexity bound O(M(n)·log n): requires Mathlib infrastructure
   (fast multiplication, bit-complexity model) that does not yet exist.
+- `hgcdMatrixProper` (correct HGCD for size reduction): separate project.
 -/
 
 end HGcd
