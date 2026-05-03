@@ -301,10 +301,11 @@
     "angle-trisection-oq-02-oq-01-oq-02-incomplete-01": {
       "auditCount": 3,
       "issues": [
-        "sorry count mismatch: claimed 2, actual 1 (wantzel_galois_iff only); lineCount stale 436→625, theoremCount stale 19→21. Fixes in PRs #15140 and #15155."
+        "sorry count mismatch: claimed 2, actual 1 (wantzel_galois_iff only); lineCount stale 436→625, theoremCount stale 19→21. Fixes in PRs #15140 and #15155.",
+        "Resolved by PRs #15165 (sync leanFile + lineCount 618), #15143 (reconcile meta), #15156 (tracker correction). Current state: meta.sorries=1, lineCount=618, theoremCount=21 — matches Lean source."
       ],
       "lastAudited": "2026-05-03T09:09:49Z",
-      "result": "issues-found"
+      "result": "issues-fixed"
     },
     "angle-trisection-oq-02-oq-02": {
       "auditCount": 2,
