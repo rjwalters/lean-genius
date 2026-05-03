@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 20 theorems (was 18). Added risch_linear_surjective_monomial and risch_linear_surjective_all: L₁ is surjective onto all polynomials, completing the L₁/L₂ contrast. 3 axioms, 0 sorries, 435 lines.",
+    "progressSummary": "COMPLETE: axioms reduced 3→2, gaussian_not_elementary proved as theorem, all API drift fixed, Docker build passes",
     "builtItems": [
       "DiffField typeclass: field with derivation (2 axioms: additivity + Leibniz). File: Proofs/AbelRuffiniOQ09.lean:79",
       "constants_zero/one/add/mul: constants form a subfield. Lines 90-113",
@@ -43,7 +43,8 @@
       "gaussian_vs_linear_contrast: conjunction packaging the L₁ vs L₂ dichotomy. Line 341",
       "Gallery entry: src/data/proofs/abel-ruffini-oq-09/ (meta.json, annotations.json, index.ts, tacticStates.json)",
       "risch_linear_surjective_monomial: L₁[Q]=Q'+Q surjective onto X^n via induction with recurrence Q_{n+1}=X^{n+1}-C(n+1)·Q_n [AbelRuffiniOQ09.lean:372]",
-      "risch_linear_surjective_all: L₁ surjective onto all polynomials by Polynomial.induction_on' + linearity [AbelRuffiniOQ09.lean:389]"
+      "risch_linear_surjective_all: L₁ surjective onto all polynomials by Polynomial.induction_on' + linearity [AbelRuffiniOQ09.lean:389]",
+      "rischOp def + rischOp_iter_ne_zero + hasDerivAt_mul_gauss + risch_iterate_eq + gaussian_not_elementary theorem in AbelRuffiniOQ09.lean:276-375"
     ],
     "insights": [
       "The operator L[p] = p' - C(2)·X·p raises polynomial degree by exactly 1 for any nonzero p (L is degree-raising), so its image consists only of polynomials of degree ≥ 1, excluding all nonzero constants",
@@ -52,7 +53,9 @@
       "Polynomial.funext allows converting pointwise ODE equalities to polynomial ring equalities, using ℝ being an infinite integral domain",
       "Mathlib has no Picard-Vessiot / differential Galois theory, requiring 3 axioms: Liouville structure theorem, Risch criterion, and Gaussian non-elementarity",
       "The Abel-Ruffini/Liouville analogy is structural: A₅ simplicity (algebraic Galois) corresponds to degree-raising of L₂ (differential Galois) — both witness obstruction to expressibility in prescribed form",
-      "L₁[Q]=Q'+Q is surjective onto ALL polynomials: proved by induction Q_{n+1}=X^{n+1}-C(n+1)·Q_n and linearity. Completes the contrast: L₁ onto everything, L₂ onto nothing nonzero-constant."
+      "L₁[Q]=Q'+Q is surjective onto ALL polynomials: proved by induction Q_{n+1}=X^{n+1}-C(n+1)·Q_n and linearity. Completes the contrast: L₁ onto everything, L₂ onto nothing nonzero-constant.",
+      "gaussian_not_elementary proved as a theorem (not axiom) via iterated Risch operator: L^n(g)·exp(-x²)=0 forces L^n(g)=0 by exp_pos, but rischOp_iter_ne_zero shows L^n(g)≠0 for g=q²≠0",
+      "Key API drift fixes needed: Polynomial.induction_on' case names h_add→add, h_monomial→monomial; push_cast mul_zero→zero_mul; congr_arg lambda→Polynomial.ext_iff.mp; Polynomial.monomial_eq_C_mul_X→C_mul_X_pow_eq_monomial; linarith fails on abstract DiffField type, use linear_combination instead"
     ],
     "mathlibGaps": [
       "Mathlib has no Picard-Vessiot theory (Picard-Vessiot extensions, differential Galois groups) — estimated >1000 lines to formalize the Liouville structure theorem",

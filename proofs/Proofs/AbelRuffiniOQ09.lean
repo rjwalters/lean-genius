@@ -3,6 +3,7 @@ import Mathlib.Algebra.Polynomial.Basic
 import Mathlib.Algebra.Polynomial.Degree.Definitions
 import Mathlib.RingTheory.Algebraic.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+import Mathlib.Analysis.Calculus.Deriv.Polynomial
 import Mathlib.Tactic
 
 /-!
@@ -51,10 +52,9 @@ The operator L₁[Q] = Q' + Q preserves degree (unlike L₂[Q] = Q' - 2xQ which 
 
 ## Status
 
-- **Axiom count**: 3 (liouville_integration_theorem, risch_exp_criterion_gaussian,
-  gaussian_not_elementary)
+- **Axiom count**: 2 (liouville_integration_theorem, risch_exp_criterion_gaussian)
 - **Sorry count**: 0
-- **Theorems proved**: 16
+- **Theorems proved**: 21 (including gaussian_not_elementary, proved from polynomial degree obstruction)
 
 ## References
 
@@ -91,14 +91,14 @@ theorem constants_zero {F : Type*} [DiffField F] : isConst (0 : F) := by
   unfold isConst
   have h := DiffField.deriv_add (0 : F) 0
   simp only [add_zero] at h
-  linarith
+  linear_combination -h
 
 /-- D(1) = 0: one is a constant. Proof: D(1·1) = D(1)·1 + 1·D(1) → D(1) = 0. -/
 theorem constants_one {F : Type*} [DiffField F] : isConst (1 : F) := by
   unfold isConst
   have h := DiffField.deriv_mul (1 : F) 1
   simp only [mul_one, one_mul] at h
-  linarith
+  linear_combination -h
 
 /-- Constants are closed under addition. -/
 theorem constants_add {F : Type*} [DiffField F] {f g : F}
@@ -120,7 +120,7 @@ theorem deriv_neg {F : Type*} [DiffField F] (f : F) :
   have h0 : DiffField.deriv (0 : F) = 0 := constants_zero
   have h := DiffField.deriv_add f (-f)
   rw [add_neg_cancel, h0] at h
-  linarith
+  linear_combination h.symm
 
 /-- D(f - g) = D(f) - D(g). -/
 theorem deriv_sub {F : Type*} [DiffField F] (f g : F) :
@@ -163,7 +163,7 @@ axiom liouville_integration_theorem
         IsLiouvilleForm g v₀ c v  -- g = v₀ + Σ cᵢ · ln(vᵢ) in the logarithmic extension
 
 /-! ══════════════════════════════════════════════════════════════════
-## Part III: Risch Criterion and Gaussian Non-Elementarity (Axioms)
+## Part III: Risch Criterion and Gaussian Non-Elementarity
 ══════════════════════════════════════════════════════════════════ -/
 
 /-- **Risch Criterion for ∫e^(-x²)dx**:
@@ -181,18 +181,6 @@ axiom risch_exp_criterion_gaussian :
         2 * x * p.eval x * q.eval x = q.eval x ^ 2) ↔
     ∃ (F : ℝ → ℝ),
       (∀ x : ℝ, HasDerivAt F (Real.exp (-(x^2))) x) ∧ IsElementaryFn F
-
-/-- **Gaussian integral is not elementary** (Liouville 1835).
-    The antiderivative of e^(-x²) cannot be expressed as a rational function.
-
-    Proof sketch: Risch criterion reduces to finding rational Q with Q' - 2xQ = 1.
-    The polynomial obstruction (no_poly_risch_soln) handles polynomial Q.
-    Rational Q is axiomatized: partial fractions show poles of Q' and 2xQ
-    cannot cancel except when Q is polynomial, reducing to the proved case. -/
-axiom gaussian_not_elementary :
-    ¬∃ (p q : Polynomial ℝ),
-      (∀ x : ℝ, q.eval x ≠ 0) ∧
-      ∀ x : ℝ, HasDerivAt (fun t => p.eval t / q.eval t) (Real.exp (-(x^2))) x
 
 /-! ══════════════════════════════════════════════════════════════════
 ## Part IV: The Core Algebraic Proof — No Polynomial Risch Solution
@@ -226,7 +214,7 @@ theorem risch_ode_coeff_top (p : Polynomial ℝ) :
   have h0 : p.coeff (p.natDegree + 2) = 0 :=
     Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)
   push_cast
-  rw [h0, mul_zero, zero_sub]
+  rw [h0, zero_mul, zero_sub]
   simp only [Polynomial.leadingCoeff]
   ring
 
@@ -252,7 +240,7 @@ theorem no_poly_risch_soln :
   by_cases hp : p = 0
   · simp [hp] at h
   · have hlc : p.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.mpr hp
-    have hcoeff := congr_arg (fun q : Polynomial ℝ => q.coeff (p.natDegree + 1)) h
+    have hcoeff := Polynomial.ext_iff.mp h (p.natDegree + 1)
     rw [risch_ode_coeff_top, poly_one_coeff_pos _ (by omega)] at hcoeff
     exact absurd hcoeff (mul_ne_zero (by norm_num) hlc)
 
@@ -266,7 +254,7 @@ theorem no_poly_risch_constant (c : ℝ) (hc : c ≠ 0) :
   · simp [hp] at h
     exact hc (Polynomial.C_eq_zero.mp h.symm)
   · have hlc : p.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.mpr hp
-    have hcoeff := congr_arg (fun q : Polynomial ℝ => q.coeff (p.natDegree + 1)) h
+    have hcoeff := Polynomial.ext_iff.mp h (p.natDegree + 1)
     rw [risch_ode_coeff_top] at hcoeff
     simp only [Polynomial.coeff_C, Nat.succ_ne_zero, ↓reduceIte] at hcoeff
     exact absurd hcoeff (mul_ne_zero (by norm_num) hlc)
@@ -283,6 +271,109 @@ theorem risch_ode_raises_degree (p : Polynomial ℝ) (hp : p ≠ 0) :
     exact mul_ne_zero (by norm_num) hlc
   calc p.natDegree < p.natDegree + 1 := Nat.lt_succ_self _
     _ ≤ _ := Polynomial.le_natDegree_of_ne_zero hne
+
+/-- The Risch operator L[h] = h' - C(2)·X·h. -/
+private def rischOp (h : Polynomial ℝ) : Polynomial ℝ :=
+  Polynomial.derivative h - Polynomial.C 2 * (Polynomial.X * h)
+
+/-- Iterating L raises degree, so L^n(g) ≠ 0 whenever g ≠ 0. -/
+private lemma rischOp_iter_ne_zero (g : Polynomial ℝ) (hg : g ≠ 0) :
+    ∀ n : ℕ, rischOp^[n] g ≠ 0 := by
+  intro n
+  induction n with
+  | zero => simpa
+  | succ n ih =>
+    simp only [Function.iterate_succ_apply']
+    intro heq
+    have hdeg : (rischOp^[n] g).natDegree < (rischOp (rischOp^[n] g)).natDegree :=
+      risch_ode_raises_degree (rischOp^[n] g) ih
+    rw [heq, Polynomial.natDegree_zero] at hdeg
+    exact Nat.not_lt_zero _ hdeg
+
+/-- HasDerivAt for h(t)·exp(-t²): derivative is L[h](x)·exp(-x²). -/
+private lemma hasDerivAt_mul_gauss (h : Polynomial ℝ) (x : ℝ) :
+    HasDerivAt (fun t => h.eval t * Real.exp (-(t ^ 2)))
+      ((rischOp h).eval x * Real.exp (-(x ^ 2))) x := by
+  have h1 : HasDerivAt (fun t => h.eval t) (h.derivative.eval x) x := h.hasDerivAt x
+  have hg : HasDerivAt (fun t : ℝ => -(t ^ 2)) (-2 * x) x := by
+    have h' := (hasDerivAt_pow 2 x).neg
+    simp only [Nat.cast_ofNat] at h'
+    have heq : -(2 * x ^ (2 - 1)) = -2 * x := by norm_num
+    rwa [heq] at h'
+  have h2 : HasDerivAt (fun t => Real.exp (-(t ^ 2)))
+      (Real.exp (-(x ^ 2)) * (-2 * x)) x :=
+    (Real.hasDerivAt_exp _).comp x hg
+  have h3 := h1.mul h2
+  convert h3 using 1
+  unfold rischOp
+  simp only [Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]
+  ring
+
+/-- The n-th real derivative of (f.eval) equals (L^n g).eval · exp(-·²)
+    whenever f.eval = g.eval · exp(-·²) pointwise. -/
+private lemma risch_iterate_eq (f g : Polynomial ℝ)
+    (h0 : ∀ x : ℝ, f.eval x = g.eval x * Real.exp (-(x ^ 2))) (n : ℕ) :
+    ∀ x : ℝ, (Polynomial.derivative^[n] f).eval x =
+              (rischOp^[n] g).eval x * Real.exp (-(x ^ 2)) := by
+  induction n with
+  | zero => simpa
+  | succ n ih =>
+    intro x
+    have hLHS : HasDerivAt (fun t => (Polynomial.derivative^[n] f).eval t)
+        ((Polynomial.derivative (Polynomial.derivative^[n] f)).eval x) x :=
+      (Polynomial.derivative^[n] f).hasDerivAt x
+    have hRHS : HasDerivAt (fun t => (rischOp^[n] g).eval t * Real.exp (-(t ^ 2)))
+        ((rischOp (rischOp^[n] g)).eval x * Real.exp (-(x ^ 2))) x :=
+      hasDerivAt_mul_gauss (rischOp^[n] g) x
+    have heq_fn : (fun t => (Polynomial.derivative^[n] f).eval t) =
+                  (fun t => (rischOp^[n] g).eval t * Real.exp (-(t ^ 2))) :=
+      funext ih
+    rw [heq_fn] at hLHS
+    have huniq := HasDerivAt.unique hLHS hRHS
+    rw [Function.iterate_succ_apply' Polynomial.derivative n f,
+        Function.iterate_succ_apply' rischOp n g]
+    exact huniq
+
+/-- **Gaussian integral is not elementary** (Liouville 1835).
+    The antiderivative of e^(-x²) cannot be expressed as a rational function.
+
+    **Proof**: If d/dx[p(x)/q(x)] = e^(-x²) with q never vanishing, the quotient
+    rule gives f(x) = g(x)·e^(-x²) where f = p'q - pq' and g = q². The iterated
+    Risch operator L[h] = h' - 2xh satisfies d/dx[h·e^(-x²)] = L[h]·e^(-x²),
+    so differentiating n = deg(f)+1 times yields 0 = L^n(g)·e^(-x²). Since
+    e^(-x²) > 0 and L raises degree (so L^n(g) ≠ 0), this is a contradiction. -/
+theorem gaussian_not_elementary :
+    ¬∃ (p q : Polynomial ℝ),
+      (∀ x : ℝ, q.eval x ≠ 0) ∧
+      ∀ x : ℝ, HasDerivAt (fun t => p.eval t / q.eval t) (Real.exp (-(x^2))) x := by
+  rintro ⟨p, q, hq, hderiv⟩
+  have hq_ne : q ≠ 0 := by intro h; simp [h] at hq
+  set f := Polynomial.derivative p * q - p * Polynomial.derivative q with hf_def
+  set g := q ^ 2 with hg_def
+  have hg_ne : g ≠ 0 := pow_ne_zero _ hq_ne
+  have hfg : ∀ x : ℝ, f.eval x = g.eval x * Real.exp (-(x ^ 2)) := by
+    intro x
+    have hdiv : HasDerivAt (fun t => p.eval t / q.eval t)
+        (((Polynomial.derivative p).eval x * q.eval x -
+          p.eval x * (Polynomial.derivative q).eval x) / q.eval x ^ 2) x :=
+      (p.hasDerivAt x).div (q.hasDerivAt x) (hq x)
+    have heq := HasDerivAt.unique hdiv (hderiv x)
+    have hqne : q.eval x ^ 2 ≠ 0 := pow_ne_zero _ (hq x)
+    rw [div_eq_iff hqne] at heq
+    simp only [hf_def, hg_def, Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_pow]
+    linear_combination heq
+  set n := f.natDegree + 1 with hn_def
+  have hzero : Polynomial.derivative^[n] f = 0 :=
+    Polynomial.iterate_derivative_eq_zero (Nat.lt_succ_self _)
+  have hiter := risch_iterate_eq f g hfg n
+  have hne : rischOp^[n] g ≠ 0 := rischOp_iter_ne_zero g hg_ne n
+  have hall : ∀ x : ℝ, (rischOp^[n] g).eval x = 0 := by
+    intro x
+    have := hiter x
+    rw [hzero, Polynomial.eval_zero] at this
+    exact (mul_eq_zero.mp this.symm).resolve_right (Real.exp_pos _).ne'
+  exact hne (Polynomial.funext fun x => by simp [hall x])
+
 
 /-! ══════════════════════════════════════════════════════════════════
 ## Part V: Pointwise Reformulation
@@ -391,7 +482,7 @@ theorem risch_linear_surjective_monomial (n : ℕ) :
     refine ⟨Polynomial.X ^ (n + 1) - Polynomial.C (↑(n + 1) : ℝ) * Qn, ?_⟩
     have hd_pow : Polynomial.derivative (Polynomial.X ^ (n + 1) : Polynomial ℝ) =
         Polynomial.C (↑(n + 1) : ℝ) * Polynomial.X ^ n := by
-      simp [Polynomial.derivative_X_pow, Nat.add_sub_cancel]
+      simp [Polynomial.derivative_X_pow]
     simp only [Polynomial.derivative_sub, Polynomial.derivative_mul, Polynomial.derivative_C,
                zero_mul, zero_add, hd_pow]
     linear_combination -Polynomial.C (↑(n + 1) : ℝ) * hQn
@@ -402,16 +493,17 @@ theorem risch_linear_surjective_monomial (n : ℕ) :
 theorem risch_linear_surjective_all (p : Polynomial ℝ) :
     ∃ Q : Polynomial ℝ, Polynomial.derivative Q + Q = p := by
   induction p using Polynomial.induction_on' with
-  | h_add p q hp hq =>
+  | add p q hp hq =>
     obtain ⟨Qp, hQp⟩ := hp
     obtain ⟨Qq, hQq⟩ := hq
     exact ⟨Qp + Qq, by
       simp only [Polynomial.derivative_add]
       linear_combination hQp + hQq⟩
-  | h_monomial n a =>
+  | monomial n a =>
     obtain ⟨Qn, hQn⟩ := risch_linear_surjective_monomial n
     refine ⟨Polynomial.C a * Qn, ?_⟩
     simp only [Polynomial.derivative_mul, Polynomial.derivative_C, zero_mul, zero_add]
+    rw [← Polynomial.C_mul_X_pow_eq_monomial]
     linear_combination Polynomial.C a * hQn
 
 /-! ══════════════════════════════════════════════════════════════════
