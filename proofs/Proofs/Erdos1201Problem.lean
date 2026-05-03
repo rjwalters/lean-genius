@@ -307,4 +307,35 @@ theorem gpfConsecutive_ge_self_of_prime (n k : ℕ) (hn : n.Prime) :
   exact gpf_ge_prime_dvd (consecutiveProduct n k) n
     (le_trans hn.two_le h_cp_ge_n) hn (dvd_consecutiveProduct_left n k)
 
+/-
+## Term Divisibility
+-/
+
+/-- Each term (n+i) for i ≤ k divides consecutiveProduct n k.
+    Generalizes dvd_consecutiveProduct_right (the i=k case). -/
+theorem dvd_consecutiveProduct_term (n k i : ℕ) (hi : i ≤ k) :
+    n + i ∣ consecutiveProduct n k := by
+  apply Finset.dvd_prod_of_mem
+  simp [consecutiveProduct, Finset.mem_range]
+  omega
+
+/-
+## Infinitely Many n with Large GPF
+-/
+
+/-- For any fixed k and ε ∈ (0,1), infinitely many n satisfy P(n,k) > n^(1-ε).
+    Every prime n satisfies P(n,k) ≥ n > n^(1-ε), so the set of good n contains all primes. -/
+theorem erdos_1201_infinitely_many (k : ℕ) (ε : ℝ) (hε₀ : 0 < ε) (hε₁ : ε < 1) :
+    Set.Infinite {n : ℕ | (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ)} := by
+  apply Nat.infinite_setOf_prime.mono
+  intro n hn
+  simp only [Set.mem_setOf_eq] at *
+  have h_ge : n ≤ gpfConsecutive n k := gpfConsecutive_ge_self_of_prime n k hn
+  have h_real : (n : ℝ) ≤ (gpfConsecutive n k : ℝ) := by exact_mod_cast h_ge
+  have hn1 : 1 < (n : ℝ) := by exact_mod_cast hn.one_lt
+  calc (n : ℝ) ^ (1 - ε)
+      < (n : ℝ) ^ (1 : ℝ) := Real.rpow_lt_rpow_of_exponent_lt hn1 (by linarith)
+    _ = (n : ℝ) := Real.rpow_one _
+    _ ≤ (gpfConsecutive n k : ℝ) := h_real
+
 end Erdos1201
