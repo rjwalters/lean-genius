@@ -46,17 +46,17 @@
     "proofId": "erdos-1171",
     "range": {
       "startLine": 52,
-      "endLine": 68
+      "endLine": 85
     },
     "type": "definition",
-    "title": "Partition Relation Definitions",
-    "content": "Two axiomatized predicates capture the partition calculus:\n\n**ordinalPartitionRel2 α β k**: The 2-color relation α → (β, k)². For any 2-coloring of pairs from α, either color 0 contains a homogeneous set of order type β, or color 1 contains a complete subgraph of size k.\n\n**ordinalPartitionRelMulti α β clique numColors**: The multicolor generalization α → (β, clique, …, clique)²_{numColors}. Color 0 seeks order type β; colors 1 through numColors-1 each seek a clique of size 'clique'.\n\nThese are axiomatized rather than defined because a full definition would require formalizing the combinatorics of order-preserving embeddings into well-ordered sets, which is beyond current Mathlib infrastructure.",
-    "mathContext": "The arrow notation $\\alpha \\to (\\beta_0, \\beta_1, \\ldots, \\beta_{r-1})^n_r$ means: for any $r$-coloring of $[\\alpha]^n$, $\\exists i < r$ and $H \\subseteq \\alpha$ of order type $\\beta_i$ with $[H]^n$ monochromatic in color $i$.",
+    "title": "Partition Relation Definitions (Concrete)",
+    "content": "Two concrete definitions capture the partition calculus. These are full Lean `def` declarations — not axioms — that make the quantification over colorings and embeddings explicit.\n\n**ordinalPartitionRelMulti α β clique numColors**: For any numColors-coloring c of pairs from α (with validity hypothesis c(i,j) < numColors for i < j < α), either a StrictMono embedding f: β → α exists with all pairs colored 0, or there is a color i > 0 and a Fin-indexed clique S with all pairs colored i.\n\n**ordinalPartitionRel2 α β k**: The 2-color specialization α → (β, k)². Color 0 seeks a monochromatic-0 order-embedding of β; color 1 seeks a monochromatic k-clique.\n\nOrder type β is represented via a StrictMono embedding from ordinal β into α (so the image has the right order type). The `Fin clique` type indexes triangle witnesses. The 2-color and multicolor definitions are linked by multi_two_eq (PART 5): at exactly 2 colors, they are logically equivalent.",
+    "mathContext": "The arrow notation $\\alpha \\to (\\beta_0, \\beta_1, \\ldots, \\beta_{r-1})^n_r$ means: for any $r$-coloring of $[\\alpha]^n$, $\\exists i < r$ and a StrictMono $f: \\beta_i \\to \\alpha$ with $[\\text{im}(f)]^n$ monochromatic in color $i$.",
     "significance": "key",
     "relatedConcepts": [
       "Ramsey theory",
       "partition calculus",
-      "Erdős-Rado theorem"
+      "StrictMono embeddings"
     ],
     "prerequisites": [
       "ordinal arithmetic",
@@ -67,12 +67,12 @@
     "id": "ann-e1171-ordinal-arithmetic",
     "proofId": "erdos-1171",
     "range": {
-      "startLine": 70,
-      "endLine": 96
+      "startLine": 87,
+      "endLine": 119
     },
     "type": "concept",
-    "title": "Ordinal Arithmetic: Proved and Axiomatized Properties",
-    "content": "Several ordinal inequalities and properties are established:\n\n**Proved** (using Mathlib's ordinal API):\n- **omega_lt_omega1**: ω < ω₁, from Cardinal.aleph_lt_aleph and ord monotonicity\n- **omega1_pos**: 0 < ω₁, by transitivity through ω\n- **omega1TimesOmega_lt_omega1Sq**: ω₁·ω < ω₁², using left-cancellation and ω < ω₁\n\n**Axiomatized**:\n- **omega1TimesOmega_isLimit**: ω₁·ω is a limit ordinal (product of a limit by a limit is limit)\n- **omega1_isLimit**: ω₁ is a limit ordinal (initial ordinals of uncountable cofinality are limits)\n\nThe proof of ω < ω₁ is the most interesting: it computes ω = (ℵ₀).ord, then uses ℵ₀ < ℵ₁ and ord-monotonicity.",
+    "title": "Ordinal Arithmetic: Five Proved Properties",
+    "content": "All five ordinal properties in PART 3 are proved from Mathlib — none are axioms:\n\n**omega_lt_omega1**: ω < ω₁, proved by computing ω = (ℵ₀).ord and applying Cardinal.aleph_lt_aleph and ord monotonicity.\n\n**omega1_pos**: 0 < ω₁, by transitivity through ω.\n\n**omega1TimesOmega_lt_omega1Sq**: ω₁·ω < ω₁², via Ordinal.mul_lt_mul_iff_left (left-cancellation) and ω < ω₁.\n\n**omega1_isLimit**: ω₁ is a limit ordinal, proved via Cardinal.ord_isLimit applied to ℵ₁ ≥ ℵ₀ (infinite cardinal).\n\n**omega1TimesOmega_isLimit**: ω₁·ω is a limit ordinal, proved via Ordinal.mul_isLimit since ω₁ > 0 and ω is itself a limit ordinal (Ordinal.omega0_isLimit).\n\nThe isLimit proofs were nontrivial to discover: Cardinal.ord_isLimit requires showing the cardinal is infinite (≥ ℵ₀), and Ordinal.mul_isLimit requires the right factor (not the left) to be a limit ordinal.",
     "mathContext": "$$\\omega = (\\aleph_0).\\text{ord}, \\quad \\omega_1 = (\\aleph_1).\\text{ord}, \\quad \\aleph_0 < \\aleph_1 \\implies \\omega < \\omega_1$$",
     "significance": "key",
     "relatedConcepts": [
@@ -86,8 +86,8 @@
     "id": "ann-e1171-conjecture",
     "proofId": "erdos-1171",
     "range": {
-      "startLine": 98,
-      "endLine": 109
+      "startLine": 121,
+      "endLine": 132
     },
     "type": "definition",
     "title": "The Conjecture: Universal Multicolor Partition",
@@ -105,12 +105,12 @@
     "id": "ann-e1171-monotonicity",
     "proofId": "erdos-1171",
     "range": {
-      "startLine": 111,
-      "endLine": 134
+      "startLine": 133,
+      "endLine": 197
     },
     "type": "concept",
-    "title": "Monotonicity Properties of Partition Relations",
-    "content": "Four monotonicity axioms capture how partition relations behave under parameter changes:\n\n1. **partition_multi_mono_colors**: Fewer colors makes the relation easier — if α → (β, k, …, k)²_n holds, it holds for any m ≤ n colors. (Merge excess colors into one.)\n\n2. **partition_multi_mono_target**: Weakening the primary target preserves the relation — if you can find order type β, you can certainly find a subset of order type γ ≤ β.\n\n3. **partition_multi_mono_source**: Enlarging the source preserves the relation — more elements to color means more opportunities for monochromatic structures.\n\n4. **multi_two_eq**: The 2-color multicolor relation reduces to the standard 2-color relation, providing the bridge between the two formalizations.\n\nThese are the workhorses that connect Hajnal's and Baumgartner's results to Problem #1171.",
+    "title": "Monotonicity Theorems for Partition Relations",
+    "content": "Four proved theorems capture how partition relations behave under parameter changes:\n\n1. **partition_multi_mono_colors**: Fewer colors makes the relation easier — if α → (β, k, …, k)²_n holds, it holds for any m ≤ n colors. The proof requires a 2-element clique (hclique : 2 ≤ clique) to extract color bounds from the merged coloring and confirm m is in range.\n\n2. **partition_multi_mono_target**: Weakening the primary target preserves the relation — if you can find order type β, you can find a subset of order type γ ≤ β by restricting the embedding.\n\n3. **partition_multi_mono_source**: Enlarging the source preserves the relation — a coloring of pairs from α' restricts to pairs from α ≤ α'.\n\n4. **multi_two_eq**: At exactly numColors=2, ordinalPartitionRelMulti and ordinalPartitionRel2 are logically equivalent, providing the bridge between the two formalizations.\n\nThese theorems are the workhorses that connect Hajnal's and Baumgartner's 2-color results to the multicolor Problem #1171.",
     "mathContext": "Monotonicity: $m \\leq n \\implies [\\alpha \\to (\\beta, k)^2_n \\Rightarrow \\alpha \\to (\\beta, k)^2_m]$. Source: $\\alpha \\leq \\alpha' \\implies [\\alpha \\to (\\beta, k)^2 \\Rightarrow \\alpha' \\to (\\beta, k)^2]$.",
     "significance": "key",
     "relatedConcepts": [
@@ -124,19 +124,18 @@
     "id": "ann-e1171-ch-resolution",
     "proofId": "erdos-1171",
     "range": {
-      "startLine": 136,
-      "endLine": 164
+      "startLine": 198,
+      "endLine": 241
     },
     "type": "concept",
-    "title": "CH Resolution: Hajnal's Theorem and Color Merging",
-    "content": "Under the Continuum Hypothesis (2^ℵ₀ = ℵ₁), Problem #1171 is fully resolved in two stages:\n\n**Stage 1 — The k=1 case** (erdos_1171_k1_under_ch): Hajnal's theorem gives ω₁² → (ω₁², 3)² under CH. Since ω₁·ω < ω₁², monotonicity in the target weakens this to ω₁² → (ω₁·ω, 3)², which is the k=1 case. The proof uses multi_two_eq to convert between 2-color frameworks.\n\n**Stage 2 — All finite k** (erdos_1171_under_ch via ch_implies_multicolor): Given a (k+1)-coloring, merge colors 1 through k into a single color. Apply Hajnal's 2-color result. If color 0 wins, it has order type ω₁² ⊇ ω₁·ω. If the merged color wins with a triangle {a,b,c}, then all three pairs had non-zero colors; by pigeonhole, some original color contains a monochromatic triangle.\n\nThis shows the problem's difficulty is purely a ZFC question — CH trivially resolves it.",
-    "mathContext": "Under CH: $\\omega_1^2 \\to (\\omega_1^2, k)^2$ (Hajnal) $\\implies \\omega_1^2 \\to (\\omega_1 \\cdot \\omega, 3)^2$ $\\implies \\omega_1^2 \\to (\\omega_1 \\cdot \\omega, 3, \\ldots, 3)^2_{k+1}$ (color merging).",
+    "title": "CH Resolution: Hajnal's Theorem Applied",
+    "content": "Under the Continuum Hypothesis (2^ℵ₀ = ℵ₁), the k=1 case of Problem #1171 is resolved by composing Hajnal's theorem with target monotonicity:\n\n**Hajnal's theorem** (axiom hajnal_ch): Under CH, ω₁² → (ω₁², k)² for all k ≥ 2. This is a deep published result from the 1960s, kept as an axiom.\n\n**erdos_1171_k1_under_ch**: Hajnal gives ω₁² → (ω₁², 3)². Target monotonicity (partition2_mono_target) weakens this to ω₁² → (ω₁·ω, 3)² since ω₁·ω < ω₁². multi_two_eq then converts to the multicolor framework.\n\nTwo supporting 2-color monotonicity theorems (partition2_mono_target and partition2_mono_source) are also proved here; they parallel the multicolor versions from PART 5 but for ordinalPartitionRel2 specifically.\n\nThe full multicolor resolution for all k — using induction on the number of colors — is deferred to PART 10 (reduction_to_1169).",
+    "mathContext": "Under CH: $\\omega_1^2 \\to (\\omega_1^2, 3)^2$ (Hajnal) $\\xrightarrow{\\text{target mono}}$ $\\omega_1^2 \\to (\\omega_1 \\cdot \\omega, 3)^2$ $\\xrightarrow{\\text{multi\\_two\\_eq}}$ $\\omega_1^2 \\to (\\omega_1 \\cdot \\omega, 3)^2_2$.",
     "significance": "key",
     "relatedConcepts": [
       "Continuum Hypothesis",
       "Hajnal's theorem",
-      "color merging argument",
-      "pigeonhole principle"
+      "target monotonicity"
     ],
     "prerequisites": [
       "ann-e1171-partition-defs",
@@ -147,17 +146,18 @@
     "id": "ann-e1171-baumgartner",
     "proofId": "erdos-1171",
     "range": {
-      "startLine": 166,
-      "endLine": 185
+      "startLine": 242,
+      "endLine": 284
     },
     "type": "concept",
-    "title": "Baumgartner's Partial Result Under Martin's Axiom",
-    "content": "Baumgartner [Ba89b] proved that assuming Martin's Axiom (MA), ω₁·ω → (ω₁·ω, 3)². This directly gives the k=1 case of #1171 under MA.\n\nThe proof (erdos_1171_k1_under_ma) works by source monotonicity: since ω₁·ω < ω₁², Baumgartner's result for the smaller source ω₁·ω lifts to the larger source ω₁². The multi_two_eq bridge converts back to the multicolor framework.\n\nMA is strictly weaker than CH (CH implies MA, but not conversely), so this gives an alternative path to the k=1 case under a weaker hypothesis. However, extending Baumgartner's approach to k ≥ 2 under MA remains open.",
-    "mathContext": "MA $\\implies \\omega_1 \\cdot \\omega \\to (\\omega_1 \\cdot \\omega, 3)^2$ (Baumgartner). Since $\\omega_1 \\cdot \\omega \\leq \\omega_1^2$, source monotonicity gives $\\omega_1^2 \\to (\\omega_1 \\cdot \\omega, 3)^2_{2}$.",
+    "title": "Baumgartner's Result and Martin's Axiom",
+    "content": "Martin's Axiom (MA) is formalized concretely as a Prop: for every CCC preorder P and every family of fewer than 2^ℵ₀ dense subsets, there exists a generic filter meeting all of them. The definition spells out compatibility, CCC (every antichain is countable), density, and the filter properties (nonempty, upward-closed, downward-directed).\n\n**Baumgartner's theorem** [Ba89b] (axiom baumgartner_ma): Assuming MA, ω₁·ω → (ω₁·ω, 3)².\n\n**erdos_1171_k1_under_ma**: Source monotonicity lifts Baumgartner's result from the smaller source ω₁·ω to ω₁². Since ω₁·ω ≤ ω₁², a coloring of pairs from ω₁² restricts to pairs from ω₁·ω. multi_two_eq converts back to the multicolor framework.\n\nMA is strictly weaker than CH (CH implies MA, but MA does not imply CH). This provides an alternative conditional path to the k=1 case. Extending Baumgartner's MA techniques to k ≥ 2 remains open.",
+    "mathContext": "MA $\\implies \\omega_1 \\cdot \\omega \\to (\\omega_1 \\cdot \\omega, 3)^2$ (Baumgartner). Source monotonicity: $\\omega_1 \\cdot \\omega \\leq \\omega_1^2 \\implies \\omega_1^2 \\to (\\omega_1 \\cdot \\omega, 3)^2_2$.",
     "significance": "key",
     "relatedConcepts": [
       "Martin's Axiom",
-      "Baumgartner",
+      "CCC partial orders",
+      "generic filters",
       "source monotonicity",
       "set-theoretic independence"
     ],
@@ -170,12 +170,12 @@
     "id": "ann-e1171-ordinal-structure",
     "proofId": "erdos-1171",
     "range": {
-      "startLine": 187,
-      "endLine": 206
+      "startLine": 285,
+      "endLine": 305
     },
     "type": "concept",
     "title": "Ordinal Sandwich and Structural Properties",
-    "content": "Three structural theorems about the ordinal hierarchy:\n\n**omega1_lt_omega1TimesOmega**: ω₁ < ω₁·ω, proved by rewriting ω₁ = ω₁·1 and using 1 < ω with left-cancellation.\n\n**omega1TimesOmega_structure**: The sandwich ω₁ < ω₁·ω < ω₁², packaging both strict inequalities. This shows ω₁·ω occupies a precise intermediate position — large enough to be interesting as a Ramsey target, but small enough that the partition relation might hold in ZFC.\n\n**omega1Sq_pos**: ω₁² > 0, from ω₁ > 0 and closure of positive ordinals under multiplication.",
+    "content": "Three structural theorems about the ordinal hierarchy:\n\n**omega1_lt_omega1TimesOmega**: ω₁ < ω₁·ω, proved by rewriting ω₁ = ω₁·1 and using 1 < ω with left-cancellation (Ordinal.mul_lt_mul_iff_left).\n\n**omega1TimesOmega_structure**: The sandwich ω₁ < ω₁·ω < ω₁², packaging both strict inequalities. This shows ω₁·ω occupies a precise intermediate position — large enough to be interesting as a Ramsey target, but small enough that the partition relation might hold in ZFC where ω₁² does not.\n\n**omega1Sq_pos**: ω₁² > 0, from ω₁ > 0 and closure of positive ordinals under multiplication.",
     "mathContext": "$$\\omega_1 = \\omega_1 \\cdot 1 < \\omega_1 \\cdot \\omega < \\omega_1 \\cdot \\omega_1 = \\omega_1^2$$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -186,24 +186,50 @@
     "prerequisites": []
   },
   {
-    "id": "ann-e1171-erdos-rado",
+    "id": "ann-e1171-multicolor-cases",
     "proofId": "erdos-1171",
     "range": {
-      "startLine": 243,
-      "endLine": 251
+      "startLine": 306,
+      "endLine": 329
     },
     "type": "concept",
-    "title": "Connection to Erdős-Rado Partition Theorem",
-    "content": "The Erdős-Rado partition theorem (1956) is axiomatized as a landmark reference point:\n\n  (2^κ)⁺ → (κ⁺ + 1)²_κ for every infinite cardinal κ\n\nFor κ = ℵ₀, this gives (2^ℵ₀)⁺ → (ω₁ + 1)²_{ℵ₀}. Under CH (2^ℵ₀ = ℵ₁), the source becomes ℵ₂, and we get ℵ₂ → (ω₁ + 1)²_{ℵ₀}. This is a different flavor of partition relation — it uses a cardinal source rather than ω₁² — but it illustrates the broader landscape in which Problem #1171 sits.\n\nThe Erdős-Rado theorem is one of the most fundamental results in infinite Ramsey theory and shows that partition relations become increasingly hard as the number of colors grows relative to the source ordinal.",
-    "mathContext": "$$(2^\\kappa)^+ \\to (\\kappa^+ + 1)^2_\\kappa \\quad \\text{for all infinite } \\kappa$$",
+    "title": "Multicolor Hierarchy: Trivial Case and Consequence Theorems",
+    "content": "PART 9 establishes three theorems that bracket the problem from both ends:\n\n**partition_multi_trivial**: With only 1 color (numColors=1), the partition relation holds trivially for any β ≤ α. The identity embedding witnesses a monochromatic-0 subset. Every pair must have color 0 (since c(i,j) < 1 forces c(i,j) = 0), so the embedding trivially satisfies the monochromaticity condition. This is the base case of the induction used in reduction_to_1169.\n\n**erdos_1171_implies_k1** and **erdos_1171_implies_k2**: If the full conjecture holds (for all k), then the k=1 case (2 colors: ω₁² → (ω₁·ω, 3)²) and the k=2 case (3 colors: ω₁² → (ω₁·ω, 3, 3)³) follow immediately by instantiating with k=1 and k=2.\n\nThese consequence theorems serve as sanity checks: any proof of the conjecture must in particular imply these cases, which are already known conditionally (k=1 under both CH and MA; k=2 under CH).",
+    "mathContext": "1-color trivial: $\\beta \\leq \\alpha \\implies \\alpha \\to (\\beta, \\text{clique})^2_1$ — the identity is the witness. Consequences: erdos\\_1171\\_statement $\\implies$ k=1 and k=2 cases by $\\forall$-elimination at k=1,2.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Erdős-Rado theorem",
-      "infinite Ramsey theory",
-      "cardinal exponentiation"
+      "partition calculus",
+      "trivial base case",
+      "universal elimination"
     ],
     "prerequisites": [
+      "ann-e1171-conjecture",
       "ann-e1171-partition-defs"
+    ]
+  },
+  {
+    "id": "ann-e1171-reduction",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 330,
+      "endLine": 400
+    },
+    "type": "proof",
+    "title": "Reduction to Problem #1169: The Central Structural Result",
+    "content": "The theorem reduction_to_1169 is the crown jewel of this formalization: if ω₁² → (ω₁², 3)² holds (the 2-color Problem #1169, in any set-theoretic context), then the full multicolor statement ω₁² → (ω₁·ω, 3, …, 3)²_{k+1} follows for all k by a purely combinatorial argument — no CH or MA needed.\n\n**Proof by induction on k:**\n\n**Base case (k=0, 1 color)**: partition_multi_trivial gives this directly.\n\n**Inductive step (k = n+1, so n+2 colors)**: Given a (n+2)-coloring c with colors {0, …, n+1}, define a merged 2-coloring c'(i,j) = 0 if c(i,j) ≤ n, else 1. Apply hypothesis h1169 (ω₁² → (ω₁², 3)²) to c':\n\n- **Case 1** (c'-color 0 wins, producing a ω₁²-copy via StrictMono f): Every pair through f satisfies c ≤ n. Define the pullback coloring c''(a,b) = c(f(a), f(b)). Now c'' is an (n+1)-coloring on ω₁². Apply the inductive hypothesis: either a ω₁·ω-copy in c''-color 0 (compose with f) or a triangle in some color 1..n (map through f).\n\n- **Case 2** (c'-color 1 wins, producing a triangle S): All pairs in S have c > n. Since c < n+2 (the validity bound), all pairs have c = n+1. This is a monochromatic triangle in color n+1.\n\n**Mathematical significance**: This separation theorem shows the difficulty of #1171 lies entirely in the 2-color case #1169. The multicolor generalization is a purely combinatorial consequence requiring only finite induction. Under CH, hajnal_ch immediately provides the 2-color input, making ch_implies_multicolor and erdos_1171_under_ch one-line corollaries.",
+    "mathContext": "$$[\\omega_1^2 \\to (\\omega_1^2, 3)^2] \\implies [\\forall k \\in \\mathbb{N},\\; \\omega_1^2 \\to (\\omega_1 \\cdot \\omega, \\underbrace{3,\\ldots,3}_k)^2_{k+1}]$$\nProof: induct on k. Merge to 2 colors, apply h1169, case split, induct or extract triangle. Entirely ZFC.",
+    "significance": "key",
+    "relatedConcepts": [
+      "color merging",
+      "induction on number of colors",
+      "reduction between partition problems",
+      "problem #1169",
+      "combinatorial argument"
+    ],
+    "prerequisites": [
+      "ann-e1171-partition-defs",
+      "ann-e1171-monotonicity",
+      "ann-e1171-multicolor-cases"
     ]
   }
 ]

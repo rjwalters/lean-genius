@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0 sorries, 2 deep axioms. Added reduction_to_1169 showing #1171 reduces to #1169 purely combinatorially.",
+    "progressSummary": "COMPLETE: 0 sorries, 2 deep axioms (hajnal_ch, baumgartner_ma). Corrected all annotation line ranges (were stale after file grew), fixed 3 content accuracy errors, removed stale erdos-rado annotation, added 2 new annotations for PART 9 and PART 10 (reduction_to_1169).",
     "builtItems": [
       "omega1_isLimit: proved (was axiom) using Cardinal.ord_isLimit",
       "omega1TimesOmega_isLimit: proved (was axiom) using Ordinal.mul_isLimit",
@@ -47,7 +47,12 @@
       "MartinsAxiom: concrete def via CCC/dense sets/generic filters (was axiom)",
       "Removed erdos_rado_partition: unused axiom eliminated",
       "reduction_to_1169: structural theorem showing #1171 reduces to #1169 by inductive color merging",
-      "ch_implies_multicolor: simplified to one-line corollary of reduction_to_1169 + hajnal_ch"
+      "ch_implies_multicolor: simplified to one-line corollary of reduction_to_1169 + hajnal_ch",
+      "Corrected 7 stale annotation line ranges in annotations.json",
+      "Fixed 3 content accuracy errors (partition-defs, ordinal-arithmetic, monotonicity)",
+      "Removed stale ann-e1171-erdos-rado (described removed axiom)",
+      "Added ann-e1171-multicolor-cases for PART 9",
+      "Added ann-e1171-reduction for PART 10 (reduction_to_1169 crown jewel)"
     ],
     "insights": [
       "16 axioms classified: 2 definition-axioms (ordinalPartitionRel2, ordinalPartitionRelMulti), 2 limit ordinals (NOW PROVED), 7 monotonicity/structural, 4 deep results (Hajnal, Baumgartner, Erdős-Rado, CH multicolor), 1 concept declaration (MartinsAxiom)",
@@ -61,7 +66,10 @@
       "MartinsAxiom: Prop axiom adds no logical strength (Prop is inhabited), but formalizing the standard CCC/filter formulation is mathematically more informative",
       "erdos_rado_partition was declared but never referenced in any theorem — pure dead code",
       "Remaining 2 axioms (hajnal_ch, baumgartner_ma) are deep published results that genuinely require axiom status",
-      "reduction_to_1169: #1171 reduces purely combinatorially to #1169 (ω₁² → (ω₁², 3)²). The multicolor generalization needs only the 2-color partition relation."
+      "reduction_to_1169: #1171 reduces purely combinatorially to #1169 (ω₁² → (ω₁², 3)²). The multicolor generalization needs only the 2-color partition relation.",
+      "All 10 prior annotations had wrong line ranges (file grew from earlier session, lines shifted by ~50-100); regenerated all ranges from current file",
+      "ann-e1171-erdos-rado was entirely stale: described an axiom removed as dead code; lines 243-251 now contain MartinsAxiom def",
+      "reduction_to_1169 (lines 330-400) is the crown jewel: purely combinatorial color-merging induction; no annotation existed for it"
     ],
     "mathlibGaps": [
       "Ordinal partition relation API (not in Mathlib — would need custom definitions)",
