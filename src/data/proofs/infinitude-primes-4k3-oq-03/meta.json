@@ -39,7 +39,7 @@
       "constructions_cover_all_odd_primes: both constructions (4k!−1 and (2k!)²+1) cover all odd primes"
     ],
     "dateAdded": "2026-05-03",
-    "lineCount": 100,
+    "lineCount": 103,
     "assumptions": "0 new axioms — all results follow from InfinitudePrimes4k1 and InfinitudePrimes4k3, which together use only standard Mathlib and the SumTwoSquares module."
   },
   "overview": {
@@ -104,7 +104,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 100,
+    "lineCount": 103,
     "path": "Proofs/InfinitudePrimes4k3OQ03.lean",
     "axiomCount": 0,
     "sorries": 0,
