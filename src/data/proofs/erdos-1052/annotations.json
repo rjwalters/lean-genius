@@ -310,5 +310,71 @@
       "computational search bounds"
     ],
     "prerequisites": []
+  },
+  {
+    "id": "ann-e1052-helpers-examples-primepow",
+    "proofId": "erdos-1052",
+    "range": { "startLine": 195, "endLine": 272 },
+    "type": "proof-technique",
+    "title": "Helpers, Native-Decide Examples, and Prime Power Case",
+    "content": "Lines 195-272 contain a private helper lemma, three verified examples, and the prime power unitary divisor sum.\n\n**div_gcd_coprime_div_of_unitary** (193-208, private): If m, n are coprime and d is a unitary divisor of m·n, then d/gcd(d,m) is a unitary divisor of n. Used in the multiplicativity bijection: the map d ↦ (gcd(d,m), d/gcd(d,m)) sends unitary divisors of m·n to pairs of unitary divisors of (m, n).\n\n**Verified examples** (218-226): isUnitaryPerfect_6 (6=2·3, sum of {1,2,3}=6), isUnitaryPerfect_60 (60=2²·3·5, sum of {1,3,4,5,12,15,20}=60), isUnitaryPerfect_90 (90=2·3²·5, sum of {1,2,5,9,10,18,45}=90). All proved by native_decide.\n\n**unitaryDivisors_primePow** (235-265): For prime p^k, the unitary divisors are exactly {1, p^k}. Proof: any unitary divisor d = p^j; if 0 < j < k, then p | p^j and p | p^(k-j), contradicting coprimality.\n\n**unitaryDivisorSum_prime_pow** (268-272): σ*(p^k) = 1 + p^k for k > 0. Immediate from unitaryDivisors_primePow + Finset.sum_pair.",
+    "mathContext": "For prime powers: $\\sigma^*(p^k) = 1 + p^k$. This is even when $p$ is odd (since $1 + p^k \\equiv 1 + 1 = 2 \\pmod{2}$). The unitary-perfect condition $\\sigma^*(n) = 2n$ for a prime power would require $1 + p^k = 2p^k$, giving $1 = p^k$, impossible.",
+    "significance": "structural",
+    "relatedConcepts": [
+      "unitary divisors of prime powers",
+      "native_decide",
+      "unitaryDivisorSum_prime_pow",
+      "Nat.dvd_prime_pow"
+    ],
+    "prerequisites": [
+      "unitaryDivisors_primePow",
+      "Finset.sum_pair",
+      "Nat.Prime.coprime_iff_not_dvd"
+    ]
+  },
+  {
+    "id": "ann-e1052-multiplicativity",
+    "proofId": "erdos-1052",
+    "range": { "startLine": 273, "endLine": 401 },
+    "type": "proof-technique",
+    "title": "Multiplicativity of σ* and Auxiliary Lemmas",
+    "content": "Lines 273-401 prove the multiplicativity of the unitary divisor sum and helper lemmas needed for the main theorem.\n\n**unitaryDivisorSum_mul_coprime** (277-369): For coprime m, n: σ*(m·n) = σ*(m)·σ*(n). The proof uses Finset.sum_nbij' to establish a bijection between unitary divisors of m·n and pairs (d₁, d₂) where d₁ | m and d₂ | n are unitary:\n- Forward: d ↦ (gcd(d,m), d/gcd(d,m))\n- Backward: (d₁, d₂) ↦ d₁·d₂\nThe coprimality conditions are verified by div_gcd_coprime_div_of_unitary and the forward/inverse checks.\n\n**pow_factorization_dvd** (373-385, private): p^(v_p(n)) | n where v_p(n) is the p-adic valuation of n. Uses Nat.factorization and Nat.pow_div.\n\n**coprime_pow_factorization_div** (private): p^(v_p(n)) is coprime to n/p^(v_p(n)). The primefactor decomposition has this coprimality by definition of valuations.\n\n**unitaryDivisorSum_one** (388): σ*(1) = 1 by native_decide.\n\n**unitaryDivisorSum_eq_proper_add** (391-401): σ*(n) = (proper unitary divisors sum) + n. Proved by splitting Finset.Ico 1 (n+1) = {n} ∪ Finset.Ico 1 n.\n\n**even_unitaryDivisorSum_of_odd** (405-433): σ*(m) is even for odd m > 1. Key: m has an odd prime factor p; σ*(p^a) = 1 + p^a is even (odd + odd = even); by multiplicativity σ*(m) is even.",
+    "mathContext": "The multiplicativity $\\sigma^*(mn) = \\sigma^*(m) \\sigma^*(n)$ for $\\gcd(m,n)=1$ is the key structural fact. Combined with $\\sigma^*(p^k) = 1+p^k$, it gives the prime factorization formula: $\\sigma^*(n) = \\prod_{p^k \\| n} (1+p^k)$ (where $p^k \\| n$ means $p^k$ exactly divides $n$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiplicativity",
+      "unitary divisor sum",
+      "Finset.sum_nbij'",
+      "coprime factorization"
+    ],
+    "prerequisites": [
+      "div_gcd_coprime_div_of_unitary",
+      "unitaryDivisorSum_prime_pow",
+      "Nat.Coprime",
+      "Finset.sum_product'"
+    ]
+  },
+  {
+    "id": "ann-e1052-main-theorem-and-conjecture",
+    "proofId": "erdos-1052",
+    "range": { "startLine": 402, "endLine": 518 },
+    "type": "theorem",
+    "title": "Main Theorem: All Unitary Perfect Numbers Are Even",
+    "content": "Lines 402-518 contain the main theorem and closing conjecture.\n\n**even_of_isUnitaryPerfect** (443-508): Every unitary perfect number is even. Proof by contradiction: assume n is odd and unitary perfect (σ*(n) = 2n). Decompose n = p^a · m via n's smallest prime factor p.\n\n**Key steps**:\n1. σ*(n) = (1 + p^a) · σ*(m) = 2n (by multiplicativity)\n2. p is odd (since n is odd and p | n)\n3. Therefore 1 + p^a is EVEN (odd + odd)\n\n**Two cases**:\n- m = 1 (n = p^a): (1 + p^a) · 1 = 2p^a → p^a = 1, impossible since p ≥ 2 and a ≥ 1\n- m > 1 (m odd, m > 1): by even_unitaryDivisorSum_of_odd, σ*(m) is also even → 4 | (1+p^a)·σ*(m) = 2n → 2 | n → contradicts n odd\n\nThe proof uses omega for arithmetic, Nat.even_or_odd, and the multiplicativity infrastructure built in lines 273-401.\n\n**Main conjecture comment** (510-517): The conjecture (finitely many unitary perfect numbers) is documented in a comment with the 5 known values: 6, 60, 90, 87360, 146361946186458562560000. The axiom erdos_1052_conjecture was stated earlier at lines 187-194.",
+    "mathContext": "The proof that all unitary perfect numbers are even was given by Wall (1972). The argument uses the prime factorization formula $\\sigma^*(n) = \\prod_{p^k \\| n}(1+p^k)$: if $n$ is odd, all factors $(1+p^k)$ are even (odd prime to odd power = odd, +1 = even), making $\\sigma^*(n)$ divisible by $2^{\\omega(n)}$ where $\\omega(n) \\geq 1$. For $\\sigma^*(n) = 2n$ to hold, exactly one factor must contribute the factor of 2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Wall's theorem",
+      "unitary perfect numbers",
+      "prime factorization",
+      "parity argument",
+      "even_unitaryDivisorSum_of_odd"
+    ],
+    "prerequisites": [
+      "unitaryDivisorSum_mul_coprime",
+      "unitaryDivisorSum_prime_pow",
+      "even_unitaryDivisorSum_of_odd",
+      "unitaryDivisorSum_eq_proper_add"
+    ]
   }
 ]
