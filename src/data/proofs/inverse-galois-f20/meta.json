@@ -45,7 +45,9 @@
       "**Cyclotomic root in splitting field**: The ratio (⁵√2·ζ)/(⁵√2) = ζ of two distinct roots gives a primitive 5th root of unity ζ₅ in the splitting field.",
       "**Φ₅ irreducible**: The 5th cyclotomic polynomial Φ₅ = X⁴+X³+X²+X+1 is irreducible over ℚ, so [ℚ(ζ₅):ℚ] = 4 and 4 | degree.",
       "**F₂₀ structure**: F₂₀ = ℤ/5ℤ ⋊ ℤ/4ℤ acts: translation by ⁵√2→ζ₅·⁵√2 (order 5) and Galois automorphism ζ₅→ζ₅² (order 4).",
-      "**Solvability**: F₂₀ is solvable (it's a semidirect product of cyclic groups), consistent with X⁵−2 being solvable by radicals (roots are ⁵√2·ζ₅ᵏ)."
+      "**Solvability**: F₂₀ is solvable (it's a semidirect product of cyclic groups), consistent with X⁵−2 being solvable by radicals (roots are ⁵√2·ζ₅ᵏ).",
+      "**Series pattern X^n−2**: The gallery forms a complete pattern — X³−2 (S₃, order 6), X⁴−2 (D₄, order 8), X⁵−2 (F₂₀, order 20). The group order grows as n! (which S_n action saturates) for n=3, then collapses to smaller groups for n=4,5 due to the cyclotomic splitting structure. X⁶−2 would give a more complex solvable group.",
+      "**Φ₅ as minpoly**: The trick of identifying Φ₅(ζ) = 0 with the cyclotomic polynomial in Mathlib (`cyclotomic 5 ℚ`) via `linear_combination` is a key formalization move — Mathlib defines cyclotomic polynomials abstractly, so the identification requires an explicit ring equality proof."
     ]
   },
   "sections": [
@@ -98,12 +100,17 @@
     {
       "targetId": "inverse-galois",
       "relationship": "extends",
-      "description": "F₂₀ realization: third non-trivial Galois group over ℚ"
+      "description": "Base Inverse Galois Problem formalization; X³−2 gives Gal = S₃ (order 6)"
+    },
+    {
+      "targetId": "inverse-galois-d4",
+      "relationship": "sibling",
+      "description": "D₄ realization via X⁴−2 (order 8) — second entry in the X^n−2 series"
     },
     {
       "targetId": "inverse-galois-oq-01",
       "relationship": "related",
-      "description": "Related: inverse Galois problem sub-questions"
+      "description": "Inverse Galois OQ-01: sub-questions on realizability of other groups"
     }
   ],
   "mainTheorems": [
