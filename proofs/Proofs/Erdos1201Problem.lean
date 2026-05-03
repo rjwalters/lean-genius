@@ -126,8 +126,7 @@ theorem consecutiveProduct_zero (n : ℕ) : consecutiveProduct n 0 = n := by
 
 /-- consecutiveProduct n 1 = n * (n + 1). -/
 theorem consecutiveProduct_one (n : ℕ) : consecutiveProduct n 1 = n * (n + 1) := by
-  have := consecutiveProduct_succ n 0
-  rwa [consecutiveProduct_zero] at this
+  simp [consecutiveProduct, Finset.prod_range_succ]
 
 /-- consecutiveProduct n k is positive when n ≥ 1. -/
 theorem consecutiveProduct_pos (n k : ℕ) (hn : 1 ≤ n) : 0 < consecutiveProduct n k := by
@@ -544,7 +543,11 @@ theorem gpfConsecutive_one_coprime (n : ℕ) (hn : 2 ≤ n) :
     Nat.Coprime (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) := by
   have hdn : greatestPrimeFactor n ∣ n := gpf_dvd n hn
   have hdn1 : greatestPrimeFactor (n + 1) ∣ n + 1 := gpf_dvd (n + 1) (by omega)
-  have hcop : Nat.Coprime n (n + 1) := Nat.coprime_succ_self n
+  have hcop : Nat.Coprime n (n + 1) := by
+    unfold Nat.Coprime
+    apply Nat.eq_one_of_dvd_one
+    have h := Nat.dvd_sub' (Nat.gcd_dvd_right n (n + 1)) (Nat.gcd_dvd_left n (n + 1))
+    rwa [show n + 1 - n = 1 from by omega] at h
   have h1 : Nat.gcd (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) ∣ n :=
     dvd_trans (Nat.gcd_dvd_left _ _) hdn
   have h2 : Nat.gcd (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) ∣ n + 1 :=
@@ -611,9 +614,9 @@ theorem gpfConsecutive_le_of_le_k (n : ℕ) (hn : 2 ≤ n) {k₁ k₂ : ℕ} (hk
   rw [gpfConsecutive_eq_sup_range n k₁ hn, gpfConsecutive_eq_sup_range n k₂ hn]
   apply Finset.sup_le
   intro i hi
-  apply Finset.le_sup
-  rw [Finset.mem_range] at hi ⊢
-  omega
+  rw [Finset.mem_range] at hi
+  exact Finset.le_sup (f := fun i => greatestPrimeFactor (n + i))
+    (Finset.mem_range.mpr (by omega))
 
 /-- **One-Step Recursive Formula**: P(n, k+1) = max(P(n, k), gpf(n+k+1)) for n ≥ 2.
     Extending the window by one term on the right adds at most one new maximal prime factor.
@@ -624,49 +627,6 @@ theorem gpfConsecutive_succ_right (n k : ℕ) (hn : 2 ≤ n) :
       show k + 1 + 1 = (k + 1) + 1 from rfl, Finset.range_succ, Finset.sup_insert]
   simp only [show n + (k + 1) = n + k + 1 from by ring]
   rw [sup_comm]
-
-/-
-## Right-Endpoint Biconditional and Infinite Sets
--/
-
-/-- **Right-Endpoint Biconditional**: P(n,k) = n+k ↔ (n+k).Prime.
-    The upper bound gpfConsecutive_upper_bound (P ≤ n+k) is achieved exactly when the right
-    endpoint n+k is prime. -/
-theorem gpfConsecutive_eq_right_iff (n k : ℕ) (hn : 1 ≤ n) (hnk : 2 ≤ n + k) :
-    gpfConsecutive n k = n + k ↔ (n + k).Prime := by
-  constructor
-  · intro h
-    have hcp_ge : 2 ≤ consecutiveProduct n k :=
-      le_trans hnk (Nat.le_of_dvd (consecutiveProduct_pos n k hn)
-        (dvd_consecutiveProduct_right n k))
-    have hprime : (gpfConsecutive n k).Prime := by
-      unfold gpfConsecutive; exact gpf_prime _ hcp_ge
-    rwa [h] at hprime
-  · exact gpfConsecutive_eq_of_prime_right n k hn
-
-/-- For any fixed k, the set {n | n+k is prime} is infinite. -/
-theorem erdos_1201_prime_right_infinite (k : ℕ) :
-    Set.Infinite {n : ℕ | (n + k).Prime} := by
-  apply Set.infinite_of_not_bddAbove
-  rw [not_bddAbove_iff]
-  intro N
-  obtain ⟨p, hp_ge, hp_prime⟩ := Nat.exists_infinite_primes (N + k + 1)
-  refine ⟨p - k, ?_, by omega⟩
-  simp only [Set.mem_setOf_eq]
-  rwa [Nat.sub_add_cancel (by omega)]
-
-/-- For any k ≥ 1, infinitely many n satisfy P(n,k) = n+k: the upper bound is achieved
-    infinitely often. -/
-theorem erdos_1201_eq_right_infinite (k : ℕ) (hk : 0 < k) :
-    Set.Infinite {n : ℕ | gpfConsecutive n k = n + k} := by
-  apply Set.infinite_of_not_bddAbove
-  rw [not_bddAbove_iff]
-  intro N
-  obtain ⟨p, hp_ge, hp_prime⟩ := Nat.exists_infinite_primes (max N 1 + k + 1)
-  refine ⟨p - k, ?_, by omega⟩
-  simp only [Set.mem_setOf_eq]
-  exact gpfConsecutive_eq_of_prime_right (p - k) k (by omega)
-    (by rwa [Nat.sub_add_cancel (by omega)])
 
 /-
 ## Window Extension and Concatenation Formulas
@@ -825,5 +785,49 @@ theorem erdos_1201_eq_right_infinite (k : ℕ) (hk : 0 < k) :
   simp only [Set.mem_setOf_eq]
   have hprime_rw : (p - k + k).Prime := by rwa [Nat.sub_add_cancel hkp]
   exact gpfConsecutive_eq_of_prime_right _ k hn1 hprime_rw
+
+/-
+## Sylvester-Schur: Additional Cases and Consequences
+-/
+
+/-- **Sylvester-Schur (n = k+2)**: For any k, gpfConsecutive (k+2) k > k.
+    Bertrand applied to k+1 gives prime p ∈ (k+1, 2(k+1)]. Then p ≥ k+2 (from p > k+1)
+    and p ≤ 2k+2 = (k+2)+k, so p lies in the window [k+2, (k+2)+k]. -/
+theorem gpfConsecutive_succ_succ_gt_k (k : ℕ) :
+    k < gpfConsecutive (k + 2) k := by
+  obtain ⟨p, hp_prime, hk1_lt, hp_le⟩ := Nat.exists_prime_lt_and_le_two_mul (k + 1) (by omega)
+  exact gpfConsecutive_gt_k_of_prime_in_window (k + 2) k (by omega) p hp_prime (by omega) (by omega)
+
+/-- For prime n with n > k, gpfConsecutive n k > k.
+    Since n is prime, P(n,k) ≥ n (gpfConsecutive_ge_self_of_prime), and n > k. -/
+theorem gpfConsecutive_prime_gt_k (n k : ℕ) (hn_prime : n.Prime) (hnk : k < n) :
+    k < gpfConsecutive n k :=
+  lt_of_lt_of_le hnk (gpfConsecutive_ge_self_of_prime n k hn_prime)
+
+/-
+## Individual Threshold and Monotone Structure
+-/
+
+/-- **Individual Threshold**: For each n ≥ 2 and ε ∈ (0,1), there exists k such that
+    P(n,k) > n^(1-ε). Specifically k = n works: P(n,n) > n > n^(1-ε) by Bertrand. -/
+theorem erdos_1201_individual_threshold (n : ℕ) (hn : 2 ≤ n) (ε : ℝ)
+    (hε₀ : 0 < ε) (hε₁ : ε < 1) :
+    ∃ k : ℕ, (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ) := by
+  refine ⟨n, ?_⟩
+  have h_gt : n < gpfConsecutive n n := gpfConsecutive_self_gt n (by omega)
+  have h_ncast : (1 : ℝ) < (n : ℝ) := by exact_mod_cast (show 1 < n from by omega)
+  have h_bound : (n : ℝ) ^ (1 - ε) < (n : ℝ) :=
+    calc (n : ℝ) ^ (1 - ε) < (n : ℝ) ^ (1 : ℝ) :=
+          Real.rpow_lt_rpow_of_exponent_lt h_ncast (by linarith)
+      _ = (n : ℝ) := Real.rpow_one _
+  linarith [show (n : ℝ) ≤ gpfConsecutive n n from by exact_mod_cast h_gt.le]
+
+/-- **Good Set Monotonicity**: Increasing k only enlarges {n | P(n,k) > n^(1-ε)}.
+    This justifies the Erdős conjecture strategy: for large enough k, the good set
+    achieves density ≥ 1-η. -/
+theorem erdos_1201_good_set_mono (ε : ℝ) {k₁ k₂ : ℕ} (hk : k₁ ≤ k₂) (n : ℕ) (hn : 2 ≤ n)
+    (h : (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k₁ : ℝ)) :
+    (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k₂ : ℝ) :=
+  h.trans_le (by exact_mod_cast gpfConsecutive_le_of_le_k n hn hk)
 
 end Erdos1201
