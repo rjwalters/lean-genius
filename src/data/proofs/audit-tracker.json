@@ -10673,9 +10673,9 @@
     },
     "erdos-936": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T17:20:06Z",
-      "result": "clean"
+      "auditCount": 3,
+      "lastAudited": "2026-05-03T23:47:08Z",
+      "result": "issues-fixed"
     },
     "erdos-937": {
       "agentId": "auditor-cycle-20-batch",
@@ -12090,7 +12090,12 @@
       "agentId": "auditor-cycle-20-batch",
       "auditCount": 3,
       "lastAudited": "2026-05-03T22:58:18Z",
-      "result": "issues-found"
+      "result": "issues-fixed",
+      "issues": [
+        "true-stub-theorems"
+      ],
+      "lastFixed": "2026-05-04T00:00:00Z",
+      "notes": "hurwitz_quaternions_euclidean and hurwitz_representation_count True stubs removed. lineCount 410\u2192392, theoremCount 17\u219215, section endLine corrected."
     },
     "lagrange-four-squares-oq-01": {
       "auditCount": 1,
