@@ -107,5 +107,32 @@
       "dalzell_niven_integral",
       "dalzell_integrand_pos"
     ]
+  },
+  {
+    "id": "ann-dalzell-final-theorems",
+    "proofId": "area-of-circle-oq-03-oq-02-oq-02",
+    "range": {
+      "startLine": 166,
+      "endLine": 204
+    },
+    "type": "theorem",
+    "title": "Parts V–VI: π < 22/7, Quantitative Form, and Error Bound",
+    "content": "The final section proves three theorems completing the formalization.\n\n**Part V: π < 22/7 (lines 167-187)**\n\n`pi_lt_twentytwo_over_seven` (lines 174-183): Uses the Dalzell-Niven integral identity (22/7 - π = ∫₀¹ x⁴(1-x)⁴/(1+x²)) combined with positivity of the integral. `integral_pos` requires: a non-zero interval (0 < 1), continuity of the integrand (via `continuous_dalzell_integrand.continuousOn`), non-negativity everywhere (from `dalzell_integrand_nonneg`), and a strict positivity witness (at x = 1/2, `dalzell_integrand_pos`). With h_pos > 0 and h_integral: 22/7 - π = h_pos, `linarith` closes the goal.\n\n`twentytwo_over_seven_minus_pi_pos` (lines 186-187): Immediate corollary: 0 < 22/7 - π, by `linarith [pi_lt_twentytwo_over_seven]`.\n\n**Part VI: Error Bound (lines 189-204)**\n\n`dalzell_integrand_le_numerator` (lines 194-202): x⁴(1-x)⁴/(1+x²) ≤ x⁴(1-x)⁴ on [0,1]. Since 1 + x² ≥ 1, dividing by 1+x² can only decrease the value. Proof: rewrite div_le_iff (using 1+x² > 0 from positivity), then bound x⁴(1-x)⁴ ≤ x⁴(1-x)⁴·(1+x²) by mul_le_mul_of_nonneg_left h1 with h1 : 1 ≤ 1+x².\n\nThis bound enables the numerical estimate: since ∫₀¹ x⁴(1-x)⁴ = 1/630 (the Beta function B(5,5) = 4!·4!/9!), we get 22/7 - π ≤ 1/630.",
+    "mathContext": "The Dalzell-Niven result gives $\\frac{22}{7} - \\pi = \\int_0^1 \\frac{x^4(1-x)^4}{1+x^2}\\,dx$. From Part VI: $\\int_0^1 x^4(1-x)^4\\,dx = B(5,5) = \\frac{4! \\cdot 4!}{9!} = \\frac{1}{630}$. So $0 < \\frac{22}{7} - \\pi < \\frac{1}{630}$, giving $\\pi > \\frac{22}{7} - \\frac{1}{630} = \\frac{3927}{1250}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pi < 22/7",
+      "Dalzell-Niven integral",
+      "error bound",
+      "Beta function B(5,5)",
+      "integral_pos",
+      "div_le_iff"
+    ],
+    "prerequisites": [
+      "dalzell_niven_integral",
+      "dalzell_integrand_nonneg",
+      "dalzell_integrand_pos",
+      "continuous_dalzell_integrand"
+    ]
   }
 ]
