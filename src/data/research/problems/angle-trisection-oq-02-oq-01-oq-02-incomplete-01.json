@@ -51,7 +51,9 @@
       "Session 32 PR #15034: 4 API drift fixes applied to AngleTrisectionOQ02OQ01OQ02Incomplete01.lean, file compiles",
       "finrank_adjoin_β_over_adjoin_a_dvd_two: PROVED by Aristotle job 594e3160 (2026-05-03)",
       "h_top_Ka full proof attempt in AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:182 (Session 34, unverified)",
-      "isConstructible_map: ∀ (σ : ℂ →ₐ[ℚ] ℂ), IsConstructible α → IsConstructible (σ α). Proved by induction. (AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:114-124)"
+      "isConstructible_map: ∀ (σ : ℂ →ₐ[ℚ] ℂ), IsConstructible α → IsConstructible (σ α). Proved by induction. (AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:114-124)",
+      "isConstructible_minpoly_pow2: ∃ m, (minpoly ℚ α).natDegree = 2^m (line 635, Session 37)",
+      "isConstructible_irred_degree_pow2: p irred + α root + IsConstructible α → ∃ m, p.natDegree = 2^m (line 652, Session 37)"
     ],
     "insights": [
       "IsConstructible with existential sqrt_ext blocks induction — must make a,b explicit constructor params to get proper IHs",
@@ -80,7 +82,10 @@
       "restrict_algEquiv bridge: IntermediateField.restrict h converts K_a:IntermediateField ℚ ℂ into K_a_im:IntermediateField ℚ ↥K_aβ, enabling restrictScalars_adjoin_of_algEquiv to switch scalar field",
       "Aristotle finrank strategy: tower law + minpoly ℚ β ∣ (minpoly ℚ a).comp(X²) + interval_cases proves finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2",
       "h_top_Ka proved via IntermediateField.restrict + restrict_algEquiv + restrictScalars_adjoin_of_algEquiv + lift_injective pattern (Session 34, PR #15128)",
-      "Session 36: isConstructible_map: IsConstructible preserved by ℚ-algebra maps ℂ→ℂ (induction on sqrt_ext: σ(β·β)=σ(a) gives sqrt_ext (σβ) (σa) (σb)). Key for wantzel_galois_iff → direction."
+      "Session 36: isConstructible_map: IsConstructible preserved by ℚ-algebra maps ℂ→ℂ (induction on sqrt_ext: σ(β·β)=σ(a) gives sqrt_ext (σβ) (σa) (σb)). Key for wantzel_galois_iff → direction.",
+      "isConstructible_irred_degree_pow2 is the positive form of not_constructible_of_bad_degree: constructibility forces natDeg p to be a power of 2",
+      "IsAlgClosed.lift gap: extending ℚ(α)→ℂ maps to ℂ→ℂ endomorphisms requires Zorns lemma infrastructure not available in Mathlib for this purpose",
+      "Nat.dvd_prime_pow pattern: (Nat.dvd_prime_pow hprime).mp hdvd gives ⟨m, _, hm⟩ extracting 2-power witnesses"
     ],
     "mathlibGaps": [
       "isConstructible_algebraic_degree: tower degree induction — IsConstructible α → IsAlgebraic ℚ α ∧ ∃ n, finrank ℚ ℚ⟮α⟯ = 2^n. Needs FiniteDimensional.finrank_mul_finrank + IntermediateField tower lemmas. Estimated ~120 lines.",
@@ -88,9 +93,9 @@
       "finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2 requires showing βelement generates ↥ℚ⟮β⟯ over ↥ℚ⟮a⟯ (adjoin = top in IntermediateField ↥ℚ⟮a⟯ ↥ℚ⟮β⟯)"
     ],
     "nextSteps": [
-      "wantzel_galois_iff → direction: All roots of p in ℂ are constructible via isConstructible_map + IsAlgClosed.lift extension. Then tower argument gives [splitting field:ℚ] = 2^m.",
-      "wantzel_galois_iff ← direction: |p.Gal| = 2^k → FTGT gives tower with [K_{i+1}:K_i]=2 → each step is adjoin square root → IsConstructible via sqrt_ext induction.",
-      "Key Lean gap for both directions: IsAlgClosed.lift for extending ℚ-algebra maps to ℂ→ℂ; also tower induction for finrank product."
+      "→ direction intermediate: prove ∃ σ : ℂ →ₐ[ℚ] ℂ, σ(α) = β for another root β (needs full ℂ endomorphism extension)",
+      "← direction: FTGT + Sylow composition series for 2-groups; needs IntermediateField.orderIsoOfGal + degree-2 ↔ adjoin √",
+      "If → direction proves infeasible (Zorn + FTGT gap), mark wantzel_galois_iff as long-term blocked and move to new problem"
     ]
   },
   "tags": [

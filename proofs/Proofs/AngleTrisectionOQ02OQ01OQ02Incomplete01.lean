@@ -40,6 +40,13 @@ Previously resolved:
 - `isConstructible_map`: IsConstructible preserved under ℚ-algebra endomorphisms of ℂ.
   Key infrastructure for wantzel_galois_iff → direction.
 
+## New Lemmas (Session 37)
+
+- `isConstructible_minpoly_pow2`: IsConstructible α → ∃ m, natDeg(minpoly ℚ α) = 2^m.
+  Clean consequence of isConstructible_algebraic_degree + adjoin.finrank.
+- `isConstructible_irred_degree_pow2`: For p irreducible with constructible root α,
+  natDeg p = 2^m for some m. Positive form of not_constructible_of_bad_degree.
+
 ## Status: 1 sorry (wantzel_galois_iff, out-of-scope Galois), 0 axioms
 -/
 
@@ -617,7 +624,57 @@ theorem regular_7gon_construction_impossible :
   regular_7gon_impossible_degree
 
 -- ============================================================
--- PART 8: Galois Characterization (SORRY — needs full Galois theory)
+-- PART 8: Galois Infrastructure (PROVED)
+-- ============================================================
+
+/-- A constructible number has a minimal polynomial whose degree is a power of 2.
+
+    **Proof**: From `isConstructible_algebraic_degree`, finrank ℚ ℚ⟮α⟯ ∣ 2^n.
+    Since finrank ℚ ℚ⟮α⟯ = natDegree (minpoly ℚ α) (by adjoin.finrank),
+    and any divisor of 2^n is a power of 2, we get natDegree = 2^m. -/
+theorem isConstructible_minpoly_pow2 (α : ℂ) (h : IsConstructible α) :
+    ∃ m : ℕ, (minpoly ℚ α).natDegree = 2 ^ m := by
+  obtain ⟨halg, n, hdvd⟩ := isConstructible_algebraic_degree α h
+  have hint : IsIntegral ℚ α := isAlgebraic_iff_isIntegral.mp halg
+  rw [← IntermediateField.adjoin.finrank hint]
+  obtain ⟨m, _, hm⟩ := (Nat.dvd_prime_pow (by norm_num : Nat.Prime 2)).mp hdvd
+  exact ⟨m, hm⟩
+
+/-- If p is irreducible over ℚ, α is a root of p in ℂ, and α is constructible,
+    then natDegree p is a power of 2.
+
+    **Proof**: natDeg p = natDeg (minpoly ℚ α) (by irreducibility + minpoly | p)
+    = finrank ℚ ℚ⟮α⟯ (by adjoin.finrank), which divides 2^n by
+    `isConstructible_algebraic_degree`. Hence natDeg p = 2^m for some m.
+
+    This is the positive form of `not_constructible_of_bad_degree`:
+    constructibility forces natDeg p to be a power of 2. -/
+theorem isConstructible_irred_degree_pow2 {p : ℚ[X]} (hp : Irreducible p)
+    (α : ℂ) (hpα : Polynomial.aeval α p = 0) (hcα : IsConstructible α) :
+    ∃ m : ℕ, p.natDegree = 2 ^ m := by
+  obtain ⟨halg, n, hn_dvd⟩ := isConstructible_algebraic_degree α hcα
+  have hint : IsIntegral ℚ α := isAlgebraic_iff_isIntegral.mp halg
+  have hmind : (minpoly ℚ α).natDegree = Module.finrank ℚ ↥ℚ⟮α⟯ :=
+    (IntermediateField.adjoin.finrank hint).symm
+  rw [← hmind] at hn_dvd
+  have hdvd : minpoly ℚ α ∣ p := minpoly.dvd ℚ α hpα
+  obtain ⟨c, hc⟩ := hdvd
+  rcases hp.isUnit_or_isUnit hc with h1 | h2
+  · have hunit_zero : (minpoly ℚ α).natDegree = 0 :=
+      Polynomial.natDegree_eq_zero_of_isUnit h1
+    rw [hunit_zero] at hn_dvd
+    exact absurd (Nat.zero_dvd.mp hn_dvd) (Nat.two_pow_pos n).ne'
+  · have hc_deg : c.natDegree = 0 := Polynomial.natDegree_eq_zero_of_isUnit h2
+    have hne : minpoly ℚ α ≠ 0 := minpoly.ne_zero hint
+    have hcne : c ≠ 0 := IsUnit.ne_zero h2
+    have hp_eq : p.natDegree = (minpoly ℚ α).natDegree := by
+      rw [hc, Polynomial.natDegree_mul hne hcne, hc_deg, add_zero]
+    rw [hp_eq]
+    obtain ⟨m, _, hm⟩ := (Nat.dvd_prime_pow (by norm_num : Nat.Prime 2)).mp hn_dvd
+    exact ⟨m, hm⟩
+
+-- ============================================================
+-- PART 9: Galois Characterization (SORRY — needs full Galois theory)
 -- ============================================================
 
 /-- A finite group is a 2-group iff its order is a power of 2. -/

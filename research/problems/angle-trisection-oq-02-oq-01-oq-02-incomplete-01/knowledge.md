@@ -390,3 +390,37 @@ Per project memory `project_mathlib_api_drift_2026_04`, this drift hits a cohort
 1. → direction: Prove `isConstructible_map_algHom` variant for splitting field embeddings using IsAlgClosed.lift
 2. Then prove "all roots of p constructible" and tower argument for finrank
 3. ← direction requires FTGT composition series (much harder, requires Sylow + IntermediateField correspondence)
+
+## Session 2026-05-03 (Session 37) - Galois Infrastructure: minpoly and irred degree theorems
+
+**Mode**: REVISIT
+**Outcome**: progress — two new proved theorems; key building blocks for wantzel_galois_iff → direction
+
+### What I Did
+- Proved `isConstructible_minpoly_pow2`: ∀ (α : ℂ), IsConstructible α → ∃ m, (minpoly ℚ α).natDegree = 2^m
+  - Proof: `isConstructible_algebraic_degree` gives `finrank ℚ ℚ⟮α⟯ ∣ 2^n`; by `IntermediateField.adjoin.finrank` this equals `(minpoly ℚ α).natDegree`; `Nat.dvd_prime_pow` gives the 2-power form
+  - ~7 lines
+- Proved `isConstructible_irred_degree_pow2`: ∀ {p} (hp : Irreducible p) (α : ℂ), aeval α p = 0 → IsConstructible α → ∃ m, p.natDegree = 2^m
+  - Proof: minpoly.dvd gives minpoly ∣ p; hp.isUnit_or_isUnit rules out both unit cases; when minpoly is the unit, degree = 0 contradicts being a divisor of 2^n; when c is the unit, p.natDegree = minpoly.natDegree (c has degree 0), then apply 2-power conclusion
+  - ~23 lines
+- Updated meta.json: theoremCount 22→24, lineCount 658→715, date 2026-04-26→2026-05-03, added galois-infrastructure section
+- Ran Docker build to verify compilation
+
+### Key Findings
+- **isConstructible_irred_degree_pow2 vs not_constructible_of_bad_degree**: These are dual forms of the same fact. `not_constructible_of_bad_degree` says "natDeg p ≠ 2^k → ¬IsConstructible". The new theorem says "IsConstructible → natDeg p = 2^k". The positive form is cleaner for the → direction of wantzel_galois_iff.
+- **Lean pattern**: `rcases hp.isUnit_or_isUnit hc with h1 | h2` where hc : minpoly ∣ p (written p = minpoly * c). When minpoly is unit: `Polynomial.natDegree_eq_zero_of_isUnit h1` gives degree 0; contradiction via `Nat.zero_dvd + Nat.two_pow_pos`. When c is unit: same lemma gives c.natDegree = 0; then `Polynomial.natDegree_mul + add_zero` gives p.natDegree = minpoly.natDegree.
+- **IsAlgClosed.lift gap**: The → direction of wantzel_galois_iff still needs to extend ℚ(α)→ℂ (sending α↦β) to a full ℂ→ℂ map. `IsAlgClosed.lift` only works for algebraic fields; ℂ is not algebraic over ℚ. This gap remains the fundamental obstacle.
+- **Nat.dvd_prime_pow pattern**: `(Nat.dvd_prime_pow hprime).mp hdvd` gives `⟨m, _, hm⟩` where `hm : n = p^m`. Works for any prime, including p=2 with `by norm_num`.
+
+### Files Modified
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean` — two new theorems (lines 626-675)
+- `src/data/proofs/angle-trisection-oq-02-oq-01-oq-02-incomplete-01/meta.json` — counts updated, new section added
+
+### Current Sorries (1 total)
+1. **wantzel_galois_iff** (line ~713): Full Galois theory — requires FTGT + IsAlgClosed extension (Zorn's lemma infrastructure)
+
+### Next Steps
+1. → direction intermediate goal: Prove that for β another root of p, there exists σ : ℂ →ₐ[ℚ] ℂ with σ(α) = β — needs ℂ endomorphism extension, not just ℚ(α)→ℂ lift
+2. Consider whether `algClosure.lift` (for algebraic closures) provides the missing bridge
+3. ← direction: FTGT + Sylow composition series; requires IntermediateField.orderIsoOfGal and degree-2 extension ↔ adjoin √ characterization
+4. If → direction proves infeasible, mark wantzel_galois_iff as long-term blocked (500+ lines, Zorn + FTGT)
