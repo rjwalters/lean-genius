@@ -84,7 +84,8 @@
     "implications": "The tightness result means the O(log d) halvings algorithm from OQ-03 is optimal on the worst-case input family {2^k}. Any decision procedure for 'is d a power of 2?' must handle inputs requiring Ω(log d) halvings, so no asymptotically faster algorithm exists within the halvings model. More broadly, the result illustrates that information-theoretic lower bounds (log d bits to encode k in d = 2^k) translate directly to algorithmic lower bounds when the model of computation is itself counting halvings. The separation between halvings(2^k − 1) = 0 and halvings(2^k) = k further shows the function distinguishes YES from NO instances with maximal sharpness.",
     "openQuestions": [
       "Can a tight lower bound be proved for the full constructibility test (not just the 'is d a power of 2?' subproblem), using more of the angle-trisection Galois theory from the parent entry?",
-      "What is the complexity of deciding constructibility of a polygon with n sides in terms of n, if we allow arbitrary arithmetic operations rather than just halvings?"
+      "What is the complexity of deciding constructibility of a polygon with n sides in terms of n, if we allow arbitrary arithmetic operations rather than just halvings?",
+      "The halvings function is exactly the 2-adic valuation v₂(d). Can the Θ(log d) complexity result be generalized to any prime p — proving that counting p-adic halvings requires Θ(logₚ d) steps — and can this be formalized for the p-adic Gauss-Wantzel condition (d | 2ᵏ · 3 · 5 · 17 · …)?"
     ]
   },
   "crossReferences": [
@@ -97,6 +98,16 @@
       "targetId": "angle-trisection",
       "relationship": "parent",
       "description": "The parent angle-trisection proof establishes impossibility via Galois theory; OQ-03/OQ-02 analyze the complexity of the constructibility check"
+    },
+    {
+      "targetId": "angle-trisection-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "OQ-03-OQ-01 builds an executable constructibility checker (ngonConstructible : ℕ → Bool) whose correctness relies on the halvings algorithm; the Ω(log d) lower bound here shows that checker is asymptotically optimal"
+    },
+    {
+      "targetId": "angle-trisection-oq-04",
+      "relationship": "related",
+      "description": "OQ-04 analyzes generalized constructibility with additional tools (neusis, origami); the halvings complexity result contextualizes why simple compass-straightedge constructibility is decidable in O(log d) and tight"
     }
   ]
 }
