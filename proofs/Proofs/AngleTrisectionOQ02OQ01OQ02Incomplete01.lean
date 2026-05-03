@@ -41,7 +41,19 @@ Session 29: Restored sessions 26-28 work (accidentally reverted in PR #12782).
 3. `wantzel_galois_iff` (out-of-scope): Requires full Galois correspondence + 2-group structure.
    Estimated: 500+ lines of new Galois theory infrastructure. Out of scope.
 
-## Status: 3 sorries (2 targeted tower + 1 out-of-scope Galois), 0 axioms
+Previously resolved:
+- `hβ_dvd` (Step C): proved in Sessions 31-32 via tower law + minpoly degree bound (#15067, #15103)
+- `hjoin_dvd` (Step D): proved in Session 34 via stronger IH `isConstructible_sup_degree` (#15128)
+- `h_top_Ka` (inner sup-degree step): proved in Session 34 via restrict + restrictScalars_adjoin
+
+## Status: 1 sorry (wantzel_galois_iff, out-of-scope Galois), 0 axioms
+
+## Session 35 additions (PART 8, researcher-8):
+- isConstructible_neg: negation closure (proved, structural induction)
+- isConstructible_add: addition closure (proved, double structural induction)
+- isConstructible_sub: subtraction closure (proved, from add+neg)
+- isConstructible_rat_mul: rational scalar multiplication closure (proved, `induction hy generalizing q`)
+  Key insight: universally quantified IH over rational scalars allows IH at q² for radicand.
 -/
 
 import Mathlib.FieldTheory.Galois.Basic
@@ -598,14 +610,80 @@ theorem regular_7gon_construction_impossible :
   regular_7gon_impossible_degree
 
 -- ============================================================
--- PART 8: Galois Characterization (SORRY — needs full Galois theory)
+-- PART 8: IsConstructible Subfield Properties
+-- (Infrastructure toward the Wantzel-Galois backward direction)
+-- ============================================================
+
+/-- Negation preserves constructibility: if x is constructible, so is -x. -/
+private lemma isConstructible_neg {x : ℂ} (hx : IsConstructible x) :
+    IsConstructible (-x) := by
+  induction hx with
+  | rational α hα =>
+    obtain ⟨q, rfl⟩ := hα
+    simpa [map_neg] using isConstructible_rat (-q)
+  | sqrt_ext β a b ha hb hβ ih_a ih_b =>
+    -- -(b + β) = (-b) + (-β), and (-β)² = β² = a
+    rw [show -(b + β) = (-b) + (-β) by ring]
+    exact IsConstructible.sqrt_ext (-β) a (-b) ha ih_b (by rw [neg_mul_neg]; exact hβ)
+
+/-- Addition preserves constructibility.
+
+    Double structural induction: outer on hx, inner on hy in the rational base case.
+    In the sqrt_ext case, (b + β) + y = (b + y) + β, and IH gives IsConstructible (b + y). -/
+private lemma isConstructible_add {x y : ℂ} (hx : IsConstructible x) (hy : IsConstructible y) :
+    IsConstructible (x + y) := by
+  induction hx with
+  | rational α hα =>
+    obtain ⟨q, rfl⟩ := hα
+    induction hy with
+    | rational β hβ =>
+      obtain ⟨q', rfl⟩ := hβ
+      simp only [← map_add]; exact isConstructible_rat (q + q')
+    | sqrt_ext β' a' b' ha' hb' hβ' ih_a' ih_b' =>
+      -- algebraMap q + (b' + β') = (algebraMap q + b') + β'
+      rw [show algebraMap ℚ ℂ q + (b' + β') = (algebraMap ℚ ℂ q + b') + β' by ring]
+      exact IsConstructible.sqrt_ext β' a' _ ha' ih_b' hβ'
+  | sqrt_ext β a b ha hb hβ ih_a ih_b =>
+    -- (b + β) + y = (b + y) + β; IH gives IsConstructible (b + y)
+    rw [show b + β + y = (b + y) + β by ring]
+    exact IsConstructible.sqrt_ext β a _ ha ih_b hβ
+
+/-- Subtraction preserves constructibility. -/
+private lemma isConstructible_sub {x y : ℂ} (hx : IsConstructible x) (hy : IsConstructible y) :
+    IsConstructible (x - y) := by
+  rw [sub_eq_add_neg]; exact isConstructible_add hx (isConstructible_neg hy)
+
+/-- Scalar multiplication by a rational number preserves constructibility.
+
+    Key technique: `induction hy generalizing q` gives a universally quantified IH
+    (over all rationals q'), so the sqrt_ext case can instantiate IH at q*q for
+    the radicand: (q·β)² = q²·a, and IsConstructible (q²·a) = ih_a (q*q). -/
+private lemma isConstructible_rat_mul (q : ℚ) {y : ℂ} (hy : IsConstructible y) :
+    IsConstructible (algebraMap ℚ ℂ q * y) := by
+  induction hy generalizing q with
+  | rational β hβ =>
+    obtain ⟨q', rfl⟩ := hβ
+    simp only [← map_mul]; exact isConstructible_rat (q * q')
+  | sqrt_ext β a b ha hb hβ ih_a ih_b =>
+    -- q*(b + β) = (q*b) + (q*β); (q*β)² = q²*a; use IH at q*q for radicand
+    rw [show algebraMap ℚ ℂ q * (b + β) = (algebraMap ℚ ℂ q * b) + (algebraMap ℚ ℂ q * β) by ring]
+    have hq2a : IsConstructible (algebraMap ℚ ℂ (q * q) * a) := ih_a (q * q)
+    have hβq : (algebraMap ℚ ℂ q * β) * (algebraMap ℚ ℂ q * β) = algebraMap ℚ ℂ (q * q) * a := by
+      rw [show (algebraMap ℚ ℂ q * β) * (algebraMap ℚ ℂ q * β) =
+          algebraMap ℚ ℂ (q * q) * (β * β) from by push_cast; ring]
+      rw [hβ]
+    exact IsConstructible.sqrt_ext (algebraMap ℚ ℂ q * β) (algebraMap ℚ ℂ (q * q) * a)
+      (algebraMap ℚ ℂ q * b) hq2a (ih_b q) hβq
+
+-- ============================================================
+-- PART 9: Galois Characterization (SORRY — needs full Galois theory)
 -- ============================================================
 
 /-- A finite group is a 2-group iff its order is a power of 2. -/
 def IsTwoGroup (G : Type*) [Group G] [Fintype G] : Prop :=
   ∃ k : ℕ, Fintype.card G = 2 ^ k
 
-/-- **[SORRY 3/3] Wantzel-Galois Theorem**: α constructible ↔ Gal(minpoly(ℚ,α)) is a 2-group.
+/-- **[SORRY 1/1] Wantzel-Galois Theorem**: α constructible ↔ Gal(minpoly(ℚ,α)) is a 2-group.
 
     Under the FIXED IsConstructible definition, this is a TRUE statement. Previously
     (old definition with IsConstructible β precondition), it was FALSE since constructible
