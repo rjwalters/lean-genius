@@ -132,11 +132,14 @@ lemma prod_sum_one (D : DiscreteDist k) (m : ℕ) :
 lemma expVal_marginal (D : DiscreteDist k) (n : ℕ) (g : Fin k → ℝ) (i : Fin n) :
     expVal D n (fun x => g (x i)) = ∑ a : Fin k, D.p a * g a := by
   simp only [expVal, jointProb]
+  revert i  -- generalize i before induction so ih is ∀ i : Fin m, ...
   induction n with
-  | zero => exact i.elim0
+  | zero => intro i; exact i.elim0
   | succ m ih =>
+    intro i
     rw [Fintype.sum_piFinset_succ]
     -- After this, sum is over a : Fin k and x' : Fin m → Fin k, with f(Fin.cons a x')
+    -- ih : ∀ i : Fin m, ∑ x' : Fin m → Fin k, (∏ j, D.p (x' j)) * g (x' i) = ∑ a, D.p a * g a
     cases i using Fin.cases with
     | zero =>
       -- i = 0: (Fin.cons a x') 0 = a
