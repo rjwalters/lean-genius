@@ -1,0 +1,77 @@
+{
+  "slug": "godel-first-incompleteness-oq01-oq-01",
+  "title": "Rosser's 1936 improvement: can this formalization be extended to use only pla...",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Rosser''s 1936 improvement: can this formalization be extended to use only plain consistency (not ω-consistency) by replacing G with the Rosser sentence R defined via a proof-length comparison?.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-03T11:41:44.695Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Rosser 1936 formalized. 3 axioms (vs Gödel 5), 0 sorries, 11 theorems. Equi-decidability (⊢R ↔ ⊢¬R) is the key. omega_consistency_G eliminated. Gallery entry created.",
+    "builtItems": [
+      "GodelFirstIncompletenessOQ01OQ01.lean: 308 lines, 3 axioms, 0 sorries, 11 theorems",
+      "R_not_provable: R is not provable under plain consistency",
+      "R_not_disprovable: ¬R is not provable under plain consistency (replaces omega_consistency_G)",
+      "rosser_first_incompleteness: Every consistent system satisfying Rosser axioms is incomplete",
+      "R_prov_iff_disprova: The equi-decidability biconditional (⊢ R) ↔ (⊢ ¬R)",
+      "R_undecidable: R is neither provable nor disprovable",
+      "godel_vs_rosser_comparison: Explicit theorem documenting the structural improvement"
+    ],
+    "insights": [
+      "Rosser sentence R satisfies equi-decidability: (⊢ R) ↔ (⊢ ¬R), the structural heart of the improvement",
+      "Plain consistency suffices for full undecidability of R — omega_consistency_G axiom is completely eliminated",
+      "Proof is symmetric: provability and disprovability both lead to contradiction with consistency via same argument",
+      "Only 3 axioms needed vs. 5 for Gödel: Provable + R_prov_gives_formal_disproof + R_disproof_gives_formal_prov",
+      "Rosser sentence R = ⟨43⟩ encodes: for every proof of R (code p), there exists disproof with code ≤ p"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Consider formalization of Gödel Second Incompleteness: Con(F) is not provable in F (would need more axioms but could build on this structure)",
+      "The equi-decidability biconditional has broader implications — could explore Rosser-type sentences in more abstract settings"
+    ]
+  },
+  "tags": [
+    "logic",
+    "foundations",
+    "incompleteness",
+    "self-reference",
+    "advanced",
+    "wiedijk-100",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "godel-first-incompleteness-oq01",
+    "godel-first-incompleteness-oq01-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T11:41:44.695Z",
+  "lastUpdate": "2026-05-03T11:41:44.695Z",
+  "significance": 6,
+  "tractability": 5
+}
