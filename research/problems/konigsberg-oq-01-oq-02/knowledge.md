@@ -8,6 +8,47 @@ Königsberg bridges.
 
 ---
 
+## Session 2026-05-03 (Session 4) - Meta sync + Docker verification
+
+**Mode**: REVISIT (continued from Session 3)
+**Outcome**: progress — meta.json corrected; Docker build in progress to verify PR #15232
+
+### What I Did
+
+- Discovered meta.json was stale: claimed 0 sorries / 390 lines / 8 theorems when actual
+  file has 8 sorries / 733 lines / 12 theorems
+- Updated meta.json: sorries 0→8, lineCount 390→733, theoremCount 8→12
+- Added "hierholzer-infrastructure" section to meta.json sections array
+- Updated assumptions string to list all 8 sorry sources by name
+- Committed and pushed meta.json fix (commit 44bde2ee6e)
+- Started Docker build of current 733-line file to verify PR #15232 compiles
+- Confirmed PR #15244 (erdos-1201) was already merged by deployer (no action needed)
+
+### Key Findings
+
+- Session 3 knowledge.md claimed `maxTrail_closed` and `circuit_exists` were proved,
+  but current file shows both still have sorries — the "fix compilation errors" commit
+  (6f99e99d93e) reverted those proofs back to sorries when they failed to compile
+- Current actual state: 8 sorries (4 public theorem sorries, 4 private lemma sorries)
+- `maxTrail_steps_in_E` is provable by `Nat.strong_rec_on` induction on E.card,
+  same pattern as `maxTrailRem_subset` and `maxTrailRem_last_no_out` (already proved)
+
+### Files Modified
+
+- `src/data/proofs/konigsberg-oq-01-oq-02/meta.json` (synced to actual file state)
+
+### Next Steps
+
+1. Wait for Docker build result to confirm compilation
+2. If build succeeds: PR #15232 ready for deployer merge
+3. Next session: try to close the 4 private lemma sorries using `Nat.strong_rec_on` pattern
+4. `maxTrail_steps_in_E` — base case: empty list, no steps; inductive case: step 0 is e₀∈E,
+   later steps in E.erase e₀ ⊆ E (same structure as maxTrailRem_subset proof)
+5. Consider adding `∃!` unique coverage to `HasEulerianPath` definition to unlock
+   `euler_path_implies_degree_balance` proof
+
+---
+
 ## Session 2026-05-03 (Session 3) - Hierholzer Infrastructure
 
 **Mode**: FRESH (continued from Session 2)
