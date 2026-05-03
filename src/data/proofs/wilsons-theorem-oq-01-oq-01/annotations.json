@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-1",
+    "line": 35,
+    "type": "context",
+    "content": "**563 is axiomatized, not computed**: 563² = 316,969 divides 562! + 1, first discovered by Goldberg in 1953. Lean's `native_decide` compiles checks to native code using GMP, but 562! has over 1,300 decimal digits — the modular computation at this scale overflows the tactic's practical capacity. An axiom is the honest choice here: the fact is computationally verified mathematics, just not by Lean itself."
+  },
+  {
+    "id": "ann-2",
+    "line": 50,
+    "type": "context",
+    "content": "**The heuristic for infinitely many Wilson primes**: Model W_p mod p as uniformly distributed on {0, ..., p-1}. Then each prime p contributes probability 1/p to being a Wilson prime. The expected count up to N is Σ_{p≤N} 1/p ≈ ln(ln(N)) by Mertens' theorem. For N = 2×10¹³, this predicts ≈ 3.1 Wilson primes — exactly matching the three known examples (5, 13, 563). While this heuristic is compelling, it does not constitute a proof. The same argument applies to Wieferich primes."
+  },
+  {
+    "id": "ann-3",
+    "line": 72,
+    "type": "proof-technique",
+    "content": "**Cofinal from the universal axiom**: The axiom `infinitely_many_wilson_primes` is stated as `∀ N, ∃ p > N, Prime p ∧ IsWilsonPrime p`, which is precisely the cofinal (unbounded) formulation. The proof of `wilson_primes_unbounded` is a one-liner: apply the axiom, destructure, and extract the divisibility witness from the `IsWilsonPrime` pair. This ∀ N form is the most useful for deriving unboundedness consequences."
+  },
+  {
+    "id": "ann-4",
+    "line": 79,
+    "type": "proof-technique",
+    "content": "**Exhibiting a fourth Wilson prime**: The proof applies the conjecture axiom with N = 563 to get a prime p₄ > 563 with p₄ Wilson prime. The four witnesses are 5, 13, 563, p₄. Distinctness of the first three from each other is handled by `decide`; distinctness from p₄ uses `simp [← heq] at h` where `h : p₄ > 563` (or 5, 13) — substituting the hypothesis gives a numeric contradiction. The `refine` with three `?_` goals makes the proof structure transparent."
+  },
+  {
+    "id": "ann-5",
+    "line": 95,
+    "type": "insight",
+    "content": "**Wilson quotient perspective**: A prime p is a Wilson prime iff p | W_p = ((p-1)! + 1)/p. This is `isWilsonPrime_iff_quotient` from the parent file. The theorem `five_sixty_three_divides_wilson_quotient` applies this equivalence to 563: from the axiom that 563 is a Wilson prime, we extract that 563 | W_{563}. The quotient formulation connects Wilson primality to congruence conditions and Bernoulli numbers."
+  },
+  {
+    "id": "ann-6",
+    "line": 113,
+    "type": "insight",
+    "content": "**Wieferich primes as analogy**: A Wieferich prime satisfies p² | 2^(p-1) - 1, the multiplicative counterpart to the Wilson prime condition p² | (p-1)! + 1. Only 1093 and 3511 are known (as of 2026). The `native_decide` verification works here — unlike Wilson prime 563, the Wieferich check computes 2^1092 mod 1093² and 2^3510 mod 3511², which are feasible modular exponentiations. Both conjectures (infinitely many Wilson primes, infinitely many Wieferich primes) rest on the same heuristic and remain open."
+  }
+]

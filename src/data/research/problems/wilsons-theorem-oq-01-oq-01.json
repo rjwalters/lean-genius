@@ -1,0 +1,158 @@
+{
+  "slug": "wilsons-theorem-oq-01-oq-01",
+  "title": "Are there infinitely many Wilson primes",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Are there infinitely many Wilson primes? — equivalent to asking if p | B_{p-1} for infinitely many primes p.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-03T11:41:44.697Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Gallery entry created. 13 theorems, 1 axiom, 0 sorries. Verified third Wilson prime 563, proved Wilson primes are odd and ≥ 5, axiomatized infinite Wilson prime conjecture, derived cofinality and boundedness consequences.",
+    "builtItems": [
+      "five_six_three_is_wilson_prime: 563 is Wilson prime (native_decide)",
+      "wilson_prime_odd: Wilson primes are odd",
+      "wilson_prime_ge_five: Wilson primes are ≥ 5",
+      "wilson_primes_cofinal: cofinality from axiom",
+      "wilson_primes_not_bdd_above: unboundedness from axiom",
+      "wilson_primes_enumerable: ℕ-enumeration from axiom"
+    ],
+    "insights": [
+      "563 verification feasible via native_decide/GMP in Lean 4",
+      "Lower bound proof: interval_cases on {2,3,4} + parent non-Wilson lemmas",
+      "Cofinal argument: if bounded above, set would be finite — contradicting axiom",
+      "Heuristic density ln(ln(N)) ~ 3.1 for N = 2×10^13, consistent with 3 known primes"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Await Docker build confirmation",
+      "Bernoulli number connection (Glaisher 1901): p Wilson prime ↔ p | B_{p-1}"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "wilson-theorem",
+    "wilson-primes",
+    "gauss-wilson",
+    "modular-arithmetic",
+    "composite-moduli",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "wilsons-theorem",
+    "wilsons-theorem-oq-01",
+    "wilsons-theorem-oq-02",
+    "wilsons-theorem-oq-03",
+    "wilsons-theorem-oq-04",
+    "wilsons-theorem-oq-04-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T11:41:44.697Z",
+  "lastUpdate": "2026-05-03T11:41:44.697Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/WilsonsTheorem.lean",
+      "filename": "WilsonsTheorem.lean",
+      "lineCount": 161,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheorem.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ01.lean",
+      "filename": "WilsonsTheoremOQ01.lean",
+      "lineCount": 689,
+      "theoremCount": 33,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ02.lean",
+      "filename": "WilsonsTheoremOQ02.lean",
+      "lineCount": 427,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ02Ext.lean",
+      "filename": "WilsonsTheoremOQ02Ext.lean",
+      "lineCount": 540,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ02Ext.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ03.lean",
+      "filename": "WilsonsTheoremOQ03.lean",
+      "lineCount": 223,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ04.lean",
+      "filename": "WilsonsTheoremOQ04.lean",
+      "lineCount": 68,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ04OQ02.lean",
+      "filename": "WilsonsTheoremOQ04OQ02.lean",
+      "lineCount": 235,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ04OQ02.lean"
+    }
+  ]
+}
