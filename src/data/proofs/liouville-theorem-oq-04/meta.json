@@ -21,6 +21,7 @@
     "badge": "wip",
     "sorries": 2,
     "axiomCount": 0,
+    "theoremCount": 15,
     "assumptions": "2 OPEN sorries inside helper lemmas of `padic_liouville_estimate`: (1) `padicNorm_poly_eval_lb` — the clearing-denominator lower bound `1/(polyCoeffL1(f) · H^d) ≤ ‖f(r/s)‖_p` (line 255); (2) `cofactor_uniform_bound` — the Taylor factorization upper bound `‖f(r/s)‖_p ≤ M · ‖α − r/s‖_p` over ℚ_[p] (line 306). `padic_liouville_estimate` itself is now a theorem (no longer an axiom) that combines these two helpers with `irred_no_rational_roots` to deliver the p-adic Liouville bound. The main theorem `padic_algebraic_not_liouville` is fully proved (no sorry): uses `exists_pow_lt_of_lt_one` to find n₀ with 2^n₀ > 1/C, then derives C < 1/H^n₀ ≤ 1/2^n₀ < C from the Liouville and estimate bounds.",
     "dateAdded": "2026-04-26",
     "mathlibDependencies": [
