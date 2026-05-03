@@ -1,0 +1,101 @@
+[
+  {
+    "id": "ann-discrete-dist",
+    "proofId": "shannon-source-coding-oq-03",
+    "range": { "startLine": 57, "endLine": 62 },
+    "type": "definition",
+    "title": "Discrete Probability Distribution",
+    "content": "A probability distribution on a finite alphabet of size k: a function p : Fin k → ℝ with p(i) ≥ 0 for all i and ∑ p(i) = 1.",
+    "mathContext": "This self-contained formulation avoids MeasureTheory, making all proofs elementary."
+  },
+  {
+    "id": "ann-shannon-entropy",
+    "proofId": "shannon-source-coding-oq-03",
+    "range": { "startLine": 65, "endLine": 67 },
+    "type": "definition",
+    "title": "Shannon Entropy",
+    "content": "H(D) = -∑ p(i) log p(i), with the convention 0 log 0 = 0 (encoded as `if D.p i = 0 then 0 else ...`).",
+    "mathContext": "The entropy is non-negative since p ∈ [0,1] implies log p ≤ 0."
+  },
+  {
+    "id": "ann-joint-prob",
+    "proofId": "shannon-source-coding-oq-03",
+    "range": { "startLine": 100, "endLine": 102 },
+    "type": "definition",
+    "title": "Joint Probability (i.i.d.)",
+    "content": "P(x₁,...,xₙ) = ∏ᵢ p(xᵢ). This is the product measure for independent, identically distributed random variables.",
+    "mathContext": "The i.i.d. assumption is encoded directly as a product: no measure theory needed."
+  },
+  {
+    "id": "ann-joint-sum-one",
+    "proofId": "shannon-source-coding-oq-03",
+    "range": { "startLine": 108, "endLine": 120 },
+    "type": "proof",
+    "title": "Joint Distribution Sums to 1",
+    "content": "∑_{x : Fin n → Fin k} ∏ᵢ p(xᵢ) = 1. Proved by induction on n: the successor case uses Fintype.sum_piFinset_succ to peel off the first coordinate, then Fin.prod_univ_succ and the normalization ∑ p = 1.",
+    "mathContext": "This is the discrete product measure normalization: ∏ᵢ (∑_a p(a)) = 1."
+  },
+  {
+    "id": "ann-emp-ent",
+    "proofId": "shannon-source-coding-oq-03",
+    "range": { "startLine": 125, "endLine": 127 },
+    "type": "definition",
+    "title": "Empirical Entropy",
+    "content": "empEnt(x) := -(1/n) ∑ᵢ log p(xᵢ) = -(1/n) log P(x). This is the negative average log-probability per symbol.",
+    "mathContext": "For typical sequences, empEnt ≈ H(p). The AEP quantifies how tightly empEnt concentrates."
+  },
+  {
+    "id": "ann-expval-marginal",
+    "proofId": "shannon-source-coding-oq-03",
+    "range": { "startLine": 150, "endLine": 195 },
+    "type": "proof",
+    "title": "Marginal Factorization (Key Lemma)",
+    "content": "E[g(Xⱼ)] = ∑_a p(a)·g(a) for any function g and coordinate j. Proof: (1) Rewrite (∏ᵢ p(xᵢ))·g(xⱼ) = ∏ᵢ hᵢ(xᵢ) where hᵢ(a) = p(a)·g(a) if i=j, else p(a). (2) Apply ← Fintype.prod_sum to exchange sum-over-sequences with product-over-coordinates. (3) The j-th factor is ∑_a p(a)·g(a); all other factors are ∑_a p(a) = 1.",
+    "mathContext": "This lemma formalizes the i.i.d. independence: the marginal distribution of Xⱼ is p regardless of j or the other coordinates."
+  },
+  {
+    "id": "ann-prod-sum",
+    "proofId": "shannon-source-coding-oq-03",
+    "range": { "startLine": 170, "endLine": 175 },
+    "type": "technique",
+    "title": "Fintype.prod_sum: Sum-Product Exchange",
+    "content": "The key identity: ∏_a (∑_b f(a,b)) = ∑_{g:α→β} ∏_a f(a, g(a)). Applied in reverse: a sum over all functions x : Fin n → Fin k of a product-over-coordinates equals a product-over-coordinates of sums. This exchanges the order of summation and multiplication, separating independent contributions.",
+    "mathContext": "This is the discrete analogue of Fubini's theorem for product measures."
+  },
+  {
+    "id": "ann-expval-empent",
+    "proofId": "shannon-source-coding-oq-03",
+    "range": { "startLine": 197, "endLine": 230 },
+    "type": "proof",
+    "title": "Expected Empirical Entropy = H(p)",
+    "content": "E[empEnt(X₁,...,Xₙ)] = H(p). Proof: E[empEnt] = E[-(1/n)∑ᵢ log p(Xᵢ)] = -(1/n)∑ᵢ E[log p(Xᵢ)]. By marginal factorization, E[log p(Xᵢ)] = ∑_a p(a) log p(a) for each i. Summing n equal terms: -(1/n)·n·∑_a p(a) log p(a) = -∑_a p(a) log p(a) = H(p).",
+    "mathContext": "This is the direct application of the LLN spirit: empEnt is an average of n i.i.d. terms, each with expectation H(p)."
+  },
+  {
+    "id": "ann-chebyshev",
+    "proofId": "shannon-source-coding-oq-03",
+    "range": { "startLine": 235, "endLine": 265 },
+    "type": "proof",
+    "title": "Chebyshev's Inequality for Finite Distributions",
+    "content": "P(|f(X)-μ| > ε) ≤ E[(f(X)-μ)²]/ε². Proof: on the event {|f(x)-μ| > ε}, we have ε² ≤ (f(x)-μ)², so ε² * P(event) ≤ E[(f-μ)²].",
+    "mathContext": "The finite-probability-space version avoids all measure-theoretic formalism: the sum is finite and the bound is elementary."
+  },
+  {
+    "id": "ann-aep-concentration",
+    "proofId": "shannon-source-coding-oq-03",
+    "range": { "startLine": 275, "endLine": 290 },
+    "type": "proof",
+    "title": "AEP Concentration Bound",
+    "content": "P(|empEnt - H| > ε) ≤ logVar(D)/(n·ε²). Proved by: (1) Chebyshev gives ≤ Var[empEnt]/ε²; (2) empEnt_variance gives Var[empEnt] = logVar/n; (3) simple algebra. Note: the original proof had a bug — it incorrectly applied expVal_empEnt (which rewrites E[empEnt], not Var[empEnt]); fixed here to use empEnt_variance.",
+    "mathContext": "logVar(D) = E[(log p(X))²] - H(p)² is the variance of the single-symbol log-probability."
+  },
+  {
+    "id": "ann-typical-set",
+    "proofId": "shannon-source-coding-oq-03",
+    "range": { "startLine": 295, "endLine": 330 },
+    "type": "proof",
+    "title": "Typical Set Size Upper Bound",
+    "content": "|T_ε^(n)| ≤ exp(n(H+ε)). Proof: for each x ∈ T_ε, since |empEnt(x)-H| ≤ ε we get P(x) ≥ exp(-n(H+ε)). Summing: |T_ε| · exp(-n(H+ε)) ≤ ∑_{x∈T_ε} P(x) ≤ 1. Divide by exp(-n(H+ε)).",
+    "mathContext": "This is one half of Shannon's source coding theorem: typical sequences can be compressed to nH bits. The other half (P(T_ε) → 1) follows from the AEP concentration bound."
+  }
+]

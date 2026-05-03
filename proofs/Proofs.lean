@@ -2479,6 +2479,7 @@ import Proofs.ShannonEntropySSAAristotle
 import Proofs.ShannonSourceCoding
 import Proofs.ShannonSourceCodingOQ01
 import Proofs.ShannonSourceCodingOQ02
+import Proofs.ShannonSourceCodingOQ03
 import Proofs.ShannonSourceCodingOQ04
 import Proofs.ShannonSourceCodingOQ04Aristotle
 import Proofs.ShapleyFolkman
