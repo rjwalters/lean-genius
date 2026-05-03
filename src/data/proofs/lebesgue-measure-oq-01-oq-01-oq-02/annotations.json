@@ -1,0 +1,192 @@
+[
+  {
+    "id": "ann-thomae-def",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 44,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "Thomae's Function via Classical Choice",
+    "content": "Thomae's function is defined by case-splitting on whether x is rational. If so, `h.choose` extracts a rational q with cast equal to x, and we return 1/q.den (the reduced denominator). Otherwise, return 0. The definition is noncomputable because it uses classical choice to extract the rational representative.",
+    "mathContext": "$$f(x) = \\begin{cases} \\frac{1}{q} & x = \\frac{p}{q} \\text{ in lowest terms}, \\\\ 0 & x \\in \\mathbb{R} \\setminus \\mathbb{Q}. \\end{cases}$$\nLean: `if h : ∃ q : ℚ, (q : ℝ) = x then 1 / (h.choose.den : ℝ) else 0`",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "classical-choice",
+      "rational-denominator",
+      "noncomputable-definition"
+    ],
+    "prerequisites": [
+      "Lean 4 classical choice (h.choose)",
+      "Rat.den field (reduced denominator)",
+      "Rat.cast embedding ℚ → ℝ"
+    ]
+  },
+  {
+    "id": "ann-basic-properties",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 49,
+      "endLine": 68
+    },
+    "type": "theorem",
+    "title": "Basic Properties: Zero at Irrationals, Value at Rationals, Nonnegativity",
+    "content": "Three foundational properties are proved. (1) `thomae_irrational`: at irrational x, the `dif_neg` rewrite triggers the else branch giving 0. (2) `thomae_rat`: at rational q, `Rat.cast_inj.mp` proves uniqueness of the choice, recovering q itself; returns 1/q.den. (3) `thomae_nonneg`: both branches are nonneg, closed by `positivity`.",
+    "mathContext": "- $f(x) = 0$ for $x \\notin \\mathbb{Q}$\n- $f(q) = 1/q.\\mathrm{den}$ for $q \\in \\mathbb{Q}$ (reduced)\n- $f(x) \\geq 0$ for all $x \\in \\mathbb{R}$\n\nKey: `Rat.cast_inj` ensures the classically chosen rational equals q, since the cast ℚ → ℝ is injective.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "dif_neg",
+      "dif_pos",
+      "rat-cast-injectivity",
+      "positivity-tactic"
+    ],
+    "prerequisites": [
+      "Irrational definition in Mathlib",
+      "Rat.cast_inj",
+      "positivity tactic"
+    ]
+  },
+  {
+    "id": "ann-irrational-sequence",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 74,
+      "endLine": 95
+    },
+    "type": "insight",
+    "title": "Irrational Sequence Converging to a Rational",
+    "content": "The key tool for discontinuity: the sequence $y_n = r + \\sqrt{2}/(n+1)$ converges to $r$ and consists entirely of irrationals. Irrationality follows because if $y_n$ were rational, $\\sqrt{2} = (q - r)(n+1)$ would be rational (contradiction). Convergence follows from $\\sqrt{2}/(n+1) \\to 0$ using `tendsto_const_nhds.div_atTop`.",
+    "mathContext": "**Irrationality**: If $r + \\frac{\\sqrt{2}}{n+1} = q \\in \\mathbb{Q}$, then $\\sqrt{2} = (q - r)(n+1) \\in \\mathbb{Q}$ — contradiction.\n\n**Convergence**: $y_n = r + \\frac{\\sqrt{2}}{n+1} \\to r + 0 = r$ as $n \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "irrational-sqrt-two",
+      "tendsto",
+      "div-atTop",
+      "sequential-continuity"
+    ],
+    "prerequisites": [
+      "irrational_sqrt_two",
+      "Filter.Tendsto",
+      "tendsto_natCast_atTop_atTop"
+    ]
+  },
+  {
+    "id": "ann-discontinuity",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 97,
+      "endLine": 113
+    },
+    "type": "theorem",
+    "title": "Discontinuity at Every Rational",
+    "content": "For rational r, assume ContinuousAt thomae (r : ℝ). Composing the continuity hypothesis with the irrational sequence y_n → r gives thomae(y_n) → thomae(r) = 1/r.den. But thomae(y_n) = 0 for all n (each y_n is irrational). By `tendsto_nhds_unique`, 1/r.den = 0, contradicting positivity of the denominator.",
+    "mathContext": "**Sequential argument**: $f(y_n) = 0 \\to 0 \\neq 1/r.\\mathrm{den} = f(r)$. Formally:\n- `h.tendsto.comp hlim` gives thomae(y_n) → thomae(r)\n- Rewrite using `hzero` (thomae(y_n) = 0) gives constant 0 → 1/r.den\n- `tendsto_nhds_unique` gives 1/r.den = 0\n- `linarith [show 0 < 1/r.den from by positivity]` closes",
+    "significance": "key",
+    "relatedConcepts": [
+      "sequential-continuity",
+      "tendsto_nhds_unique",
+      "ContinuousAt.tendsto"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto.comp",
+      "tendsto_nhds_unique",
+      "positivity"
+    ]
+  },
+  {
+    "id": "ann-finite-rationals",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 127,
+      "endLine": 149
+    },
+    "type": "lemma",
+    "title": "Finite Low-Denominator Rationals in Any Bounded Interval",
+    "content": "The key lemma for continuity at irrationals: for any x ∈ ℝ and N : ℕ, the set {q : ℚ | |q - x| ≤ 1 ∧ q.den ≤ N} is finite. Proof: for each denominator d ≤ N, the numerators p with |p/d - x| ≤ 1 lie in the integer interval [⌊(x-1)·d⌋, ⌈(x+1)·d⌉]. The full set is a finite biUnion over denominators.",
+    "mathContext": "For fixed $d \\leq N$: rationals $p/d$ in $[x-1, x+1]$ have $p \\in [\\lfloor(x-1)d\\rfloor, \\lceil(x+1)d\\rceil]$ — a finite integer range.\n$$\\{q \\in \\mathbb{Q} : |q - x| \\leq 1,\\, q.\\mathrm{den} \\leq N\\} \\subseteq \\bigcup_{d=1}^{N} \\left\\{\\frac{p}{d} : p \\in [\\lfloor(x-1)d\\rfloor, \\lceil(x+1)d\\rceil]\\right\\}$$\nKey Lean: `Finset.biUnion`, `Int.floor_le`, `Int.le_ceil`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rational-approximation",
+      "Farey-sequence",
+      "bounded-denominator",
+      "Finset.biUnion"
+    ],
+    "prerequisites": [
+      "Rat.num_div_den",
+      "Int.floor_le, Int.le_ceil",
+      "Finset.biUnion"
+    ]
+  },
+  {
+    "id": "ann-pos-min-dist",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 152,
+      "endLine": 162
+    },
+    "type": "lemma",
+    "title": "Positive Minimum Distance from Irrational to Finite Set of Rationals",
+    "content": "For irrational x and any finite set S of rationals, there exists δ > 0 with δ ≤ |x - q| for all q ∈ S. Proved by induction on S: empty set gives δ = 1; for {a} ∪ S', combine δ₀ (from S') with |x - a| (positive since x ≠ a as x is irrational) using min.",
+    "mathContext": "$$\\exists \\delta > 0,\\, \\forall q \\in S,\\, \\delta \\leq |x - q|$$\nThis is a compactness/finiteness argument: a finite set of points all distinct from $x$ has positive minimum distance to $x$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimum-distance",
+      "Finset.induction",
+      "irrational-separation"
+    ],
+    "prerequisites": [
+      "Finset.induction_on",
+      "abs_pos",
+      "sub_ne_zero"
+    ]
+  },
+  {
+    "id": "ann-continuity",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 165,
+      "endLine": 222
+    },
+    "type": "theorem",
+    "title": "Continuity at Every Irrational: Epsilon-Delta Argument",
+    "content": "Main continuity result. Given irrational x and ε > 0: (1) Choose N with 1/(N+1) < ε using Archimedean property. (2) Let δ = min(δ₀, 1) where δ₀ is the positive min distance from x to the finite set S of rationals with denominator ≤ N near x. (3) For |y - x| < δ: if y is irrational, f(y) = 0 < ε; if y = p/q rational, then q.den > N (else y ∈ S, so |x - q| ≥ δ₀ ≥ |y - x|, contradiction), giving f(y) = 1/q.den ≤ 1/(N+1) < ε.",
+    "mathContext": "**Choosing δ**:\n1. $N$ with $1/(N+1) < \\varepsilon$ via `exists_nat_gt (1/ε)`\n2. $S = \\{q : |q - x| \\leq 1,\\, q.\\mathrm{den} \\leq N\\}$ finite by `finite_rat_bounded`\n3. $\\delta_0 > 0$ via `pos_min_dist hx S.toFinset`\n4. Take $\\delta = \\min(\\delta_0, 1)$\n\n**Case y rational, q.den > N**: $f(y) = 1/q.\\mathrm{den} \\leq 1/(N+1) < \\varepsilon$ ✓",
+    "significance": "key",
+    "relatedConcepts": [
+      "epsilon-delta",
+      "Metric.continuousAt_iff",
+      "Archimedean-property",
+      "by-cases-irrational"
+    ],
+    "prerequisites": [
+      "Metric.continuousAt_iff",
+      "exists_nat_gt",
+      "by_cases (Irrational y)",
+      "div_le_div_of_nonneg_left"
+    ]
+  },
+  {
+    "id": "ann-iff",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 229,
+      "endLine": 239
+    },
+    "type": "theorem",
+    "title": "Complete Characterization: Continuous Exactly at Irrationals",
+    "content": "The biconditional `thomae_continuous_iff` combines both directions. (→) Contrapositive: if x is rational, apply discontinuity at rationals. (←) If x is irrational, apply continuity at irrationals. The set of continuity points is exactly ℝ \\ ℚ — a dense Gδ set.",
+    "mathContext": "$$\\mathrm{ContinuousAt}\\, f\\, x \\iff x \\in \\mathbb{R} \\setminus \\mathbb{Q}$$\nThe irrationals form a dense $G_\\delta$ set (countable intersection of open dense sets), while the rationals form a dense $F_\\sigma$ set. Thomae's function is the canonical example of a function whose continuity set is exactly the irrationals.",
+    "significance": "key",
+    "relatedConcepts": [
+      "G-delta-set",
+      "Baire-category",
+      "continuity-set",
+      "dense-sets"
+    ],
+    "prerequisites": [
+      "thomae_discontinuous_at_rat",
+      "thomae_continuous_at_irrational",
+      "Irrational definition"
+    ]
+  }
+]

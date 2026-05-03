@@ -389,4 +389,50 @@ theorem gpfConsecutive_between (n : ℕ) (hn : 1 ≤ n) :
   exact ⟨gpfConsecutive_self_gt n hn,
          by have := gpfConsecutive_upper_bound n n hn; omega⟩
 
+/-
+## Upper Bounds and Bertrand Structure
+-/
+
+/-- The GPF of k+1 consecutive integers starting at n is at most n+k: every prime dividing
+    the product divides some factor n+i ≤ n+k. -/
+theorem gpfConsecutive_le_right (n k : ℕ) (hn : 1 ≤ n) :
+    gpfConsecutive n k ≤ n + k := by
+  unfold gpfConsecutive greatestPrimeFactor
+  by_cases h : (consecutiveProduct n k).primeFactors.Nonempty
+  · rw [dif_pos h]
+    apply Finset.max'_le _ h
+    intro p hp_mem
+    rw [Nat.mem_primeFactors] at hp_mem
+    obtain ⟨hp_prime, hp_dvd, _⟩ := hp_mem
+    unfold consecutiveProduct at hp_dvd
+    obtain ⟨i, hi_mem, hi_dvd⟩ := hp_prime.prime.dvd_finset_prod_iff.mp hp_dvd
+    rw [Finset.mem_range] at hi_mem
+    have hp_le_ni : p ≤ n + i := Nat.le_of_dvd (by omega) hi_dvd
+    omega
+  · rw [dif_neg h]; omega
+
+/-- When n+k is prime, gpfConsecutive n k = n+k: the prime right endpoint is the largest
+    prime factor, since it divides the product and all prime factors are ≤ n+k. -/
+theorem gpfConsecutive_eq_of_prime_right (n k : ℕ) (hn : 1 ≤ n) (hprime : (n + k).Prime) :
+    gpfConsecutive n k = n + k := by
+  apply Nat.le_antisymm
+  · exact gpfConsecutive_le_right n k hn
+  · have hmem : n + k ∈ (consecutiveProduct n k).primeFactors := by
+      rw [Nat.mem_primeFactors]
+      exact ⟨hprime, dvd_consecutiveProduct_right n k,
+             by have := consecutiveProduct_pos n k hn; omega⟩
+    exact gpf_max (consecutiveProduct n k) (n + k) hmem
+
+/-- Bertrand's postulate implies that for every n ≥ 1, there exists k ≤ n with n+k prime
+    and gpfConsecutive n k = n+k. This gives a concrete lower bound: for any n, a window
+    of at most n+1 consecutive integers achieves GPF equal to the right endpoint. -/
+theorem gpfConsecutive_bertrand (n : ℕ) (hn : 1 ≤ n) :
+    ∃ k : ℕ, k ≤ n ∧ (n + k).Prime ∧ gpfConsecutive n k = n + k := by
+  obtain ⟨p, hp_prime, hn_lt_p, hp_le_2n⟩ :=
+    Nat.exists_prime_lt_and_le_two_mul n (by omega)
+  have hsum : n + (p - n) = p := by omega
+  refine ⟨p - n, by omega, ?_, ?_⟩
+  · rwa [hsum]
+  · exact gpfConsecutive_eq_of_prime_right n (p - n) hn (hsum ▸ hp_prime)
+
 end Erdos1201

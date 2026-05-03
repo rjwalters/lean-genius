@@ -458,6 +458,7 @@ import Proofs.CubeRoot9Irrational
 import Proofs.DeMoivre
 import Proofs.DeMoivreOQ01
 import Proofs.DeMoivreOQ02
+import Proofs.DeMoivreOQ02OQ02
 import Proofs.DeMoivreOQ03
 import Proofs.DeMoivreOQ03OQ01
 import Proofs.DenumerabilityRationals
@@ -872,6 +873,7 @@ import Proofs.Erdos1196Aristotle
 import Proofs.Erdos1196Problem
 import Proofs.Erdos119Problem
 import Proofs.Erdos11Problem
+import Proofs.Erdos1201Problem
 import Proofs.Erdos1202Problem
 import Proofs.Erdos1205Problem
 import Proofs.Erdos1206Problem

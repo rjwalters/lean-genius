@@ -1,0 +1,80 @@
+[
+  {
+    "id": "ann-dmo2-two-x-u",
+    "proofId": "de-moivre-oq-02-oq-02",
+    "range": {
+      "startLine": 36,
+      "endLine": 41
+    },
+    "type": "insight",
+    "title": "Key Lemma: 2X·U_k = U_{k+1} + U_{k-1}",
+    "content": "The identity `2X·U_k = U_{k+1} + U_{k-1}` is derived from Mathlib's `U_add_two` (which states U_{k+1} = 2X·U_k - U_{k-1}) by rearranging. In Lean, `have h := U_add_two (R := R) (k - 1)` gives `U_{k+1} = 2X·U_k - U_{k-1}`, and `linear_combination -h` closes the goal `2X·U_k = U_{k+1} + U_{k-1}`. This lemma is used three times: in the base case P(-1), and twice in each induction step.",
+    "mathContext": "From $U_{(k-1)+2} = 2X \\cdot U_{(k-1)+1} - U_{k-1}$, simplifying: $U_{k+1} = 2X \\cdot U_k - U_{k-1}$, so $2X \\cdot U_k = U_{k+1} + U_{k-1}$. This is the polynomial analog of $2\\cos(\\theta) \\cdot \\sin((k+1)\\theta) = \\sin((k+2)\\theta) + \\sin(k\\theta)$ (after multiplying by $\\sin\\theta$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "U_add_two",
+      "linear_combination",
+      "Chebyshev recurrence"
+    ]
+  },
+  {
+    "id": "ann-dmo2-paired-induction",
+    "proofId": "de-moivre-oq-02-oq-02",
+    "range": {
+      "startLine": 42,
+      "endLine": 88
+    },
+    "type": "technique",
+    "title": "Paired Induction: Q(m) = P(m) ∧ P(m-1)",
+    "content": "The Chebyshev recurrence T_{m+2} = 2X·T_{m+1} - T_m is second-order, meaning the induction step for P(m+1) needs BOTH P(m) and P(m-1). The standard solution is to carry a conjunction Q(m) = P(m) ∧ P(m-1) and prove Q by induction instead of P directly. The successor step Q(m) → Q(m+1) is easy: Q(m+1).2 = Q(m).1 (just shift the pair). The hard part is Q(m+1).1 = P(m+1), which uses T_{m+1} = 2X·T_m - T_{m-1} and `linear_combination`.",
+    "mathContext": "Goal at induction step: prove $2T_{m+1} \\cdot U_n = U_{m+1+n} + U_{n-m-1}$. Use $T_{m+1} = 2X \\cdot T_m - T_{m-1}$ so $2T_{m+1} \\cdot U_n = 2 \\cdot (2X \\cdot T_m - T_{m-1}) \\cdot U_n = 2X \\cdot (2T_m \\cdot U_n) - (2T_{m-1} \\cdot U_n)$. Apply IH: $= 2X \\cdot (U_{m+n} + U_{n-m}) - (U_{m-1+n} + U_{n-m+1})$. Apply two_X_U twice: $= (U_{m+n+1} + U_{m+n-1}) + (U_{n-m+1} + U_{n-m-1}) - U_{m-1+n} - U_{n-m+1}$. Cancel to get $U_{m+1+n} + U_{n-m-1}$ ✓. The `linear_combination` tactic finds this automatically.",
+    "significance": "high",
+    "relatedConcepts": [
+      "Int.induction_on",
+      "linear_combination",
+      "T_add_two",
+      "second-order recurrence",
+      "paired induction"
+    ]
+  },
+  {
+    "id": "ann-dmo2-t-neg1",
+    "proofId": "de-moivre-oq-02-oq-02",
+    "range": {
+      "startLine": 57,
+      "endLine": 63
+    },
+    "type": "insight",
+    "title": "T_{-1} = X: Inline Mini-Proof",
+    "content": "The base case P(-1) requires T_{-1} = X, which is not directly in Mathlib but follows from T_add_two at n=-1: T(1) = 2X·T(0) - T(-1) gives X = 2X - T(-1), so T(-1) = X. This mini-proof is done inline with `have hm1 : T R (-1 : ℤ) = X` using `T_add_two (R := R) (-1 : ℤ)` and `linear_combination -h`.",
+    "mathContext": "From $T_{(-1)+2} = 2X \\cdot T_{(-1)+1} - T_{-1}$, i.e., $T_1 = 2X \\cdot T_0 - T_{-1}$, using $T_1 = X$ and $T_0 = 1$: $X = 2X \\cdot 1 - T_{-1}$, so $T_{-1} = X$. Combined with `two_X_U n`: $2T_{-1} \\cdot U_n = 2X \\cdot U_n = U_{n+1} + U_{n-1}$, and $U_{-1+n} + U_{n-(-1)} = U_{n-1} + U_{n+1}$ ✓.",
+    "significance": "medium",
+    "relatedConcepts": [
+      "T_add_two",
+      "T_zero",
+      "T_one",
+      "negative integer Chebyshev",
+      "linear_combination"
+    ]
+  },
+  {
+    "id": "ann-dmo2-trig-form",
+    "proofId": "de-moivre-oq-02-oq-02",
+    "range": {
+      "startLine": 139,
+      "endLine": 171
+    },
+    "type": "insight",
+    "title": "From Polynomial to Trigonometric Identity",
+    "content": "The polynomial identity T_mul_U_product is evaluated at cos θ to get the trigonometric form. The key is that `Polynomial.eval (cos θ)` distributes over multiplication and addition, so `congr_arg (Polynomial.eval (cos θ)) h` and `simp only [eval_mul, eval_add, map_ofNat]` suffice. The trig spreading identity 2·cos θ·sin((n+1)θ) = sin((n+2)θ) + sin(nθ) then follows by substituting U_real_cos (which relates U_n(cos θ)·sin θ to sin((n+1)θ)).",
+    "mathContext": "The polynomial map `eval (cos θ) : ℝ[X] → ℝ` is a ring homomorphism, so it preserves all polynomial equalities. After evaluation: $2T_m(\\cos\\theta) \\cdot U_n(\\cos\\theta) = U_{m+n}(\\cos\\theta) + U_{n-m}(\\cos\\theta)$. Setting $m=1$ and using $T_1(\\cos\\theta) = \\cos\\theta$ gives $2\\cos\\theta \\cdot U_n(\\cos\\theta) = U_{n+1}(\\cos\\theta) + U_{n-1}(\\cos\\theta)$. Multiplying by $\\sin\\theta$ and using $U_k(\\cos\\theta) \\cdot \\sin\\theta = \\sin((k+1)\\theta)$ gives the spreading identity.",
+    "significance": "medium",
+    "relatedConcepts": [
+      "Polynomial.eval",
+      "congr_arg",
+      "U_real_cos",
+      "T_real_cos",
+      "ring homomorphism"
+    ]
+  }
+]
