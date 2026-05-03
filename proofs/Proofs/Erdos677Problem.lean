@@ -21,6 +21,7 @@ same set of prime factors.
 -/
 
 import Mathlib.Data.Nat.GCD.Basic
+import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
@@ -193,3 +194,48 @@ theorem prime_le_dvd_lcmInterval (n k p : ℕ) (hp : p.Prime) (hpk : p ≤ k) :
     p ∣ lcmInterval n k := by
   obtain ⟨i, hi, hpi⟩ := exists_dvd_in_range n k p hp.pos hpk
   exact dvd_trans hpi (dvd_lcmInterval n k i hi)
+
+/- ## Additional structural properties -/
+
+/-- `lcmInterval n k ≠ 0` for all `n`, `k`. -/
+theorem lcmInterval_ne_zero (n k : ℕ) : lcmInterval n k ≠ 0 := by
+  rcases Nat.eq_zero_or_pos k with rfl | hk
+  · simp [lcmInterval_zero]
+  · exact (lcmInterval_pos n k hk).ne'
+
+/-- Lower bound: `n + k ≤ lcmInterval n k` when `k > 0`. -/
+theorem le_lcmInterval (n k : ℕ) (hk : 0 < k) : n + k ≤ lcmInterval n k :=
+  Nat.le_of_dvd (lcmInterval_pos n k hk) (last_dvd_lcmInterval n k hk)
+
+/-- For `k = 2`: `M(n, 2) = (n+1)(n+2)`, since consecutive integers are coprime
+    and `lcm(m, n) = m * n` when `gcd(m, n) = 1`. -/
+theorem lcmInterval_two (n : ℕ) : lcmInterval n 2 = (n + 1) * (n + 2) := by
+  rw [show (2 : ℕ) = 1 + 1 from rfl, lcmInterval_succ, lcmInterval_one, Nat.lcm_comm]
+  exact (Nat.coprime_succ_self (n + 1)).lcm_eq_mul
+
+/-- Erdős #677 holds for `k = 1`: `M(m, 1) = m + 1 ≠ n + 1 = M(n, 1)` when `m ≥ n + 1`. -/
+theorem erdos677_k1 (m n : ℕ) (hm : n + 1 ≤ m) :
+    lcmInterval m 1 ≠ lcmInterval n 1 := by
+  simp only [lcmInterval_one]; omega
+
+/-- Erdős #677 holds for `k = 2`: `M(n, 2) = (n+1)(n+2)` is strictly increasing in `n`,
+    so `M(m, 2) > M(n, 2)` for any `m ≥ n + 2`. -/
+theorem erdos677_k2 (m n : ℕ) (hm : n + 2 ≤ m) :
+    lcmInterval m 2 ≠ lcmInterval n 2 := by
+  rw [lcmInterval_two, lcmInterval_two]
+  nlinarith [Nat.succ_pos n, Nat.succ_pos m]
+
+/- ## Factorization characterization -/
+
+/-- The factorization of `lcmInterval n k` equals the pointwise sup (max) of the
+    factorizations of all `k` consecutive integers `n+1, ..., n+k`.
+    This follows by induction from `factorization (lcm a b) = factorization a ⊔ factorization b`. -/
+theorem factorization_lcmInterval (n k : ℕ) :
+    (lcmInterval n k).factorization =
+    (Finset.range k).sup (fun i => (n + i + 1).factorization) := by
+  induction k with
+  | zero => simp [lcmInterval_zero]
+  | succ k ih =>
+    rw [lcmInterval_succ,
+        Nat.factorization_lcm (by omega) (lcmInterval_ne_zero n k),
+        ih, Finset.range_succ, Finset.sup_insert]
