@@ -98,13 +98,94 @@
   {
     "id": "ann-incomplete01-galois-sorry",
     "proofId": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
-    "range": { "startLine": 284, "endLine": 306 },
+    "range": { "startLine": 284, "endLine": 316 },
     "type": "insight",
     "title": "Remaining Sorry: Wantzel-Galois Equivalence",
-    "content": "The single remaining `sorry` is `wantzel_galois_iff`: $\\alpha$ is constructible if and only if the Galois group $\\mathrm{Gal}(\\mathrm{minpoly}(\\mathbb{Q}, \\alpha) / \\mathbb{Q})$ is a 2-group. This is the deep direction of Wantzel's theorem — it characterizes *all* constructible numbers, not just shows specific ones are non-constructible. Proving it requires the full Fundamental Theorem of Galois Theory, a characterization of 2-power degree extensions as towers of quadratics, and connecting those towers to the constructibility definition. The docstring estimates 500+ lines of new infrastructure, making it out of scope for this file.",
-    "mathContext": "A finite group $G$ is a **2-group** if $|G| = 2^k$ for some $k \\geq 0$. The Wantzel-Galois theorem states: $\\alpha \\in \\mathbb{C}$ is constructible iff $[\\mathbb{Q}(\\alpha):\\mathbb{Q}]$ is a power of 2 iff $\\mathrm{Gal}(f / \\mathbb{Q})$ is a 2-group, where $f = \\mathrm{minpoly}(\\mathbb{Q}, \\alpha)$. This equivalence requires: (1) that constructible $\\Leftrightarrow$ tower of quadratic extensions, (2) that $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\mid 2^n$ for some $n$ iff such a tower exists. Mathlib has `IsGalois`, `IntermediateField.orderIsoOfGal`, and Sylow theory, but connecting these to the custom `IsConstructible` requires substantial bridging lemmas. Note also that the `IsTwoGroup` definition here assumes `[Fintype G]` — for infinite Galois groups this would need to be adapted.",
+    "content": "The single remaining `sorry` is `wantzel_galois_iff`: $\\alpha$ is constructible if and only if the Galois group $\\mathrm{Gal}(\\mathrm{minpoly}(\\mathbb{Q}, \\alpha) / \\mathbb{Q})$ is a 2-group. This is the deep direction of Wantzel's theorem — it characterizes *all* constructible numbers, not just shows specific ones are non-constructible. Proving it requires the full Fundamental Theorem of Galois Theory, a characterization of 2-power degree extensions as towers of quadratics, and connecting those towers to the constructibility definition. The docstring estimates 500+ lines of new infrastructure, making it out of scope for this file. Lines 300–315 show the tail of a supporting divisibility chain: `hjoin_dvd` establishes that the join field ℚ⟮b⟯⊔ℚ⟮β⟯ has degree dividing 2^{j+1+k'}, and `hdvd_le` uses a tower law (via `IsScalarTower`) to pull back to ℚ⟮b+β⟯.",
+    "mathContext": "A finite group $G$ is a **2-group** if $|G| = 2^k$ for some $k \\geq 0$. The Wantzel-Galois theorem states: $\\alpha \\in \\mathbb{C}$ is constructible iff $[\\mathbb{Q}(\\alpha):\\mathbb{Q}]$ is a power of 2 iff $\\mathrm{Gal}(f / \\mathbb{Q})$ is a 2-group, where $f = \\mathrm{minpoly}(\\mathbb{Q}, \\alpha)$. This equivalence requires: (1) that constructible $\\Leftrightarrow$ tower of quadratic extensions, (2) that $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\mid 2^n$ for some $n$ iff such a tower exists. Mathlib has `IsGalois`, `IntermediateField.orderIsoOfGal`, and Sylow theory, but connecting these to the custom `IsConstructible` requires substantial bridging lemmas.",
     "significance": "context",
     "relatedConcepts": ["Galois group", "2-group", "FTGT", "Sylow theory", "IntermediateField", "IsGalois", "tower law"],
     "prerequisites": ["Fintype.card", "IsGalois", "minpoly", "Polynomial.Gal"]
+  },
+  {
+    "id": "ann-incomplete01-eisenstein-over-z-and-q",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
+    "range": { "startLine": 317, "endLine": 347 },
+    "type": "theorem",
+    "title": "Eisenstein Criterion: X³ − 2 Irreducible over ℤ and ℚ",
+    "content": "Part 3 (lines 317–347) establishes the irreducibility of $X^3 - 2$ over both ℤ and ℚ.\n\n**`cube_root_2_irred_int`** applies `Polynomial.irreducible_of_eisenstein_criterion` with prime ideal $p = 2\\mathbb{Z}$. The three Eisenstein conditions are verified:\n1. $p = 2\\mathbb{Z}$ is prime (by `Int.prime_iff_natAbs_prime`)\n2. The leading coefficient (1) is **not** in $2\\mathbb{Z}$\n3. All non-leading coefficients (0, 0, −2) lie in $2\\mathbb{Z}$ — verified by `interval_cases k` on the degree index\n4. The constant term −2 is **not** in $4\\mathbb{Z} = (2\\mathbb{Z})^2$\n5. The polynomial is primitive (monic, hence primitive)\n\n**`cube_root_2_minpoly_irred`** lifts to ℚ via Gauss's lemma: `IsPrimitive.Int.irreducible_iff_irreducible_map_cast` converts ℤ-irreducibility of a primitive polynomial to ℚ-irreducibility, via the cast `ℤ[X] → ℚ[X]` applied by `Polynomial.map (Int.castRingHom ℚ)`.",
+    "mathContext": "**Eisenstein criterion**: if $p$ is prime and for $f = a_n X^n + \\cdots + a_0 \\in \\mathbb{Z}[X]$: $p \\nmid a_n$, $p \\mid a_i$ for $i < n$, and $p^2 \\nmid a_0$, then $f$ is irreducible over $\\mathbb{Z}$ (and hence over $\\mathbb{Q}$ by Gauss's lemma, if $f$ is primitive). For $X^3 - 2$: $p = 2$, $a_3 = 1$, $a_2 = a_1 = 0$, $a_0 = -2$. Check: $2 \\nmid 1$, $2 \\mid 0, 0, -2$, $4 \\nmid -2$.",
+    "significance": "key",
+    "relatedConcepts": ["Eisenstein criterion", "Gauss's lemma", "primitive polynomial", "Polynomial.map"],
+    "prerequisites": [
+      "Polynomial.irreducible_of_eisenstein_criterion",
+      "IsPrimitive.Int.irreducible_iff_irreducible_map_cast",
+      "Ideal.span_singleton_prime",
+      "interval_cases"
+    ]
+  },
+  {
+    "id": "ann-incomplete01-degree-3-not-power-of-2",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
+    "range": { "startLine": 349, "endLine": 400 },
+    "type": "theorem",
+    "title": "Parts 4–5: Degree Computations and 3 ≠ 2^k",
+    "content": "Parts 4 and 5 (lines 349–400) compute polynomial degrees and prove the key arithmetic obstruction.\n\n**Degree computations** (Part 4): Three `norm_num` proofs compute that `natDegree` equals 3 for each minimal polynomial:\n- `cos20_minpoly_degree`: deg(8X³ − 6X − 1) = 3 (minimal polynomial of cos 20°)\n- `regular_7gon_poly_degree`: deg(8X³ + 4X² − 4X − 1) = 3 (minimal polynomial of cos(2π/7))\n- `cube_root_2_degree`: deg(X³ − 2) = 3\n\nAll use `natDegree_sub_eq_left_of_natDegree_lt` and `natDegree_mul` to simplify.\n\n**`three_ne_two_pow`** (Part 5): The core arithmetic fact: 3 ≠ 2^k for any k ∈ ℕ. Proof by contradiction:\n- If k ≥ 2 then 2^k ≥ 4 > 3, contradicting 3 = 2^k\n- If k ≤ 1 then `interval_cases k` checks k=0 (2^0=1≠3) and k=1 (2^1=2≠3) by `norm_num`\n\n**Three corollaries**: `cos20_degree_not_pow_two`, `three_not_pow_two`, `regular_7gon_impossible_degree` all apply the degree computation + `three_ne_two_pow` to conclude `¬ DegreePowerOfTwo p` for each polynomial.",
+    "mathContext": "$3 \\neq 2^k$ for any $k \\in \\mathbb{N}$, because $2^0=1, 2^1=2, 2^2=4, \\ldots$ The constructibility obstruction: if $\\alpha$ has minimal polynomial of degree 3 over $\\mathbb{Q}$, then $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = 3$ cannot divide $2^n$ for any $n$, so $\\alpha$ is not constructible.",
+    "significance": "key",
+    "relatedConcepts": ["polynomial degree", "power of 2", "constructibility obstruction", "Wantzel criterion"],
+    "prerequisites": [
+      "natDegree_sub_eq_left_of_natDegree_lt",
+      "interval_cases",
+      "DegreePowerOfTwo",
+      "three_ne_two_pow"
+    ]
+  },
+  {
+    "id": "ann-incomplete01-not-constructible-bad-degree",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
+    "range": { "startLine": 402, "endLine": 448 },
+    "type": "theorem",
+    "title": "Part 6: Main Theorem — Non-Constructibility from Degree Obstruction",
+    "content": "`not_constructible_of_bad_degree` (lines 402–448) is the central theorem of Part 6: if p is irreducible over ℚ and deg(p) is not a power of 2, then no root α of p in ℂ is constructible. This is the Wantzel criterion in its usable form.\n\nProof (4 steps):\n1. **Degree bound**: `isConstructible_algebraic_degree α hcα` extracts algebraicity + finrank ℚ ℚ⟮α⟯ ∣ 2^n from the constructibility hypothesis\n2. **Degree formula**: `IntermediateField.adjoin.finrank` gives natDegree(minpoly ℚ α) = finrank ℚ ℚ⟮α⟯\n3. **Divisibility**: `minpoly.dvd ℚ α hpα` gives minpoly ℚ α ∣ p\n4. **Irreducibility dispatch**: `hp.isUnit_or_isUnit hc` from p = minpoly · c gives two cases:\n   - minpoly is a unit → natDegree = 0 → finrank = 0 → 0 ∣ 2^n → contradiction\n   - c is a unit → natDegree p = natDegree(minpoly) ∣ 2^n → p has degree a power of 2 → contradicts `hdeg`\n\nThe final `Nat.dvd_prime_pow` extracts the specific exponent m.",
+    "mathContext": "If $p \\in \\mathbb{Q}[X]$ is irreducible and $\\deg p \\neq 2^k$ for all $k$, then any root $\\alpha \\in \\mathbb{C}$ is not constructible. Proof: $\\alpha$ constructible $\\Rightarrow [\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\mid 2^n \\Rightarrow \\deg(\\text{minpoly}(\\mathbb{Q},\\alpha)) \\mid 2^n$. Since $p$ irreducible and minpoly $\\mid p$, they are associates: $\\deg p = \\deg(\\text{minpoly}) \\mid 2^n$. But $\\deg p$ is not a power of 2, contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "isConstructible_algebraic_degree",
+      "minpoly.dvd",
+      "IntermediateField.adjoin.finrank",
+      "Irreducible.isUnit_or_isUnit",
+      "Wantzel criterion"
+    ],
+    "prerequisites": [
+      "minpoly.dvd",
+      "IntermediateField.adjoin.finrank",
+      "Nat.dvd_prime_pow",
+      "IsUnit.ne_zero",
+      "Polynomial.natDegree_eq_zero_of_isUnit"
+    ]
+  },
+  {
+    "id": "ann-incomplete01-three-impossibilities-closing",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
+    "range": { "startLine": 450, "endLine": 466 },
+    "type": "insight",
+    "title": "Part 7: Three Proved Classical Impossibility Results and Closing",
+    "content": "Part 7 (lines 450–466) delivers the three headline impossibility results as clean one-line alias theorems:\n\n- `angle_trisection_impossible_degree`: ¬ DegreePowerOfTwo(8X³−6X−1) — the minimal polynomial of cos(20°) has degree 3, blocking trisection of the 60° angle\n- `doubling_cube_impossible_degree`: ¬ DegreePowerOfTwo(X³−2) — ∛2 has minimal polynomial of degree 3, blocking cube doubling\n- `regular_7gon_construction_impossible`: ¬ DegreePowerOfTwo(8X³+4X²−4X−1) — cos(2π/7) has minimal polynomial of degree 3, blocking the regular heptagon\n\nAll three are definitional aliases of the Part 5 results (`cos20_degree_not_pow_two`, `three_not_pow_two`, `regular_7gon_impossible_degree`). Combined with `not_constructible_of_bad_degree` and the respective irreducibility theorems (Eisenstein + Gauss + Mathlib's existing facts), these complete the formalization with 0 sorries for the classical impossibility results.\n\nThe `end AngleTrisectionOQ02OQ01OQ02Incomplete01` closes the namespace at line 466.",
+    "mathContext": "The three Greek problems of antiquity proven impossible by Wantzel (1837):\n1. Trisecting a 60° angle requires constructing cos(20°), root of $8x^3 - 6x - 1 = 0$ (degree 3)\n2. Doubling the unit cube requires constructing $\\sqrt[3]{2}$, root of $x^3 - 2 = 0$ (degree 3)\n3. Constructing the regular heptagon (7-gon) requires cos(2π/7), root of $8x^3 + 4x^2 - 4x - 1 = 0$ (degree 3)\n\nIn all three cases, degree 3 is not a power of 2, so the Wantzel criterion rules out constructibility.",
+    "significance": "key",
+    "relatedConcepts": [
+      "problems of antiquity",
+      "angle trisection",
+      "doubling the cube",
+      "regular heptagon",
+      "Wantzel 1837"
+    ],
+    "prerequisites": [
+      "not_constructible_of_bad_degree",
+      "cube_root_2_minpoly_irred",
+      "cos20_degree_not_pow_two",
+      "three_not_pow_two"
+    ]
   }
 ]
