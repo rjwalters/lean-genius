@@ -2,7 +2,7 @@
   "id": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
   "title": "Completing the Wantzel-Galois Constructibility Proof",
   "slug": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
-  "description": "Completes the parent Wantzel-Galois proof (angle-trisection-oq-02-oq-01-oq-02) by redesigning IsConstructible (removing IsConstructible β precondition from sqrt_ext) to enable proper tower induction. Proves isConstructible_sqrt2, all concrete impossibility results (angle trisection, cube doubling, regular 7-gon). 3 sorries: hβ_dvd (tower via ℚ⟮a⟯), hjoin_dvd (needs stronger IH), wantzel_galois_iff (out-of-scope).",
+  "description": "Completes the parent Wantzel-Galois proof (angle-trisection-oq-02-oq-01-oq-02) by redesigning IsConstructible (removing IsConstructible β precondition from sqrt_ext) to enable proper tower induction. Proves isConstructible_sqrt2, all concrete impossibility results (angle trisection, cube doubling, regular 7-gon). 2 sorries: hjoin_dvd (needs stronger IH), wantzel_galois_iff (out-of-scope).",
   "meta": {
     "author": "Wantzel (1837), completion formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Straightedge_and_compass_construction",
@@ -17,10 +17,10 @@
     ],
     "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean",
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 2,
     "axiomCount": 0,
     "theoremCount": 19,
-    "lineCount": 383,
+    "lineCount": 438,
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.irreducible_of_eisenstein_criterion",
@@ -103,7 +103,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Reduces the parent's 5 sorries to 1 by: (1) redesigning IsConstructible to enable induction, (2) proving not_constructible_of_bad_degree via the rationality argument, (3) proving Eisenstein irreducibility for X³-2, (4) computing all three polynomial degrees. The remaining sorry (wantzel_galois_iff) requires the full Galois correspondence and is out of scope.",
+    "summary": "Reduces the parent's 5 sorries to 2 by: (1) redesigning IsConstructible to enable induction, (2) proving not_constructible_of_bad_degree via the rationality argument, (3) proving Eisenstein irreducibility for X³-2, (4) computing all three polynomial degrees. The remaining sorries (hjoin_dvd and wantzel_galois_iff) require a stronger induction hypothesis and the full Galois correspondence respectively.",
     "implications": "The three classical impossibility results — angle trisection, cube doubling, regular 7-gon — are now fully proved (0 axioms) in this file. The proof demonstrates that the IsConstructible definition choice is critical: existential vs explicit constructors has dramatic consequences for what can be proved by induction.",
     "openQuestions": [
       "Can wantzel_galois_iff be proved using Mathlib's IntermediateField.orderIsoOfGal and Sylow theory for 2-groups?",
@@ -136,12 +136,12 @@
   ],
   "leanFile": {
     "namespace": "AngleTrisectionOQ02OQ01OQ02Incomplete01",
-    "lineCount": 383,
+    "lineCount": 438,
     "axiomCount": 0,
     "theoremCount": 19,
     "definitionCount": 2,
     "path": "Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean",
-    "sorries": 3
+    "sorries": 2
   },
-  "sorries": 3
+  "sorries": 2
 }
