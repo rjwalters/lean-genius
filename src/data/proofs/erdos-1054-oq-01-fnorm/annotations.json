@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-erdos1054fnorm-defs",
+    "proofId": "erdos-1054-oq-01-fnorm",
+    "range": { "startLine": 40, "endLine": 56 },
+    "type": "definition",
+    "title": "Core Definitions: Sorted Divisors, Partial Sums, and f(n)",
+    "content": "Four fundamental definitions power this formalization. sortedDivisors(m) sorts the divisor multiset using Finset.sort with the natural order (≤). partialDivisorSums(m) computes the running prefix sums via List.scanl — the k-th entry is the sum of the k smallest divisors of m. IsRepresentable(n) asserts that n appears as some partial divisor sum of some m ≥ 1, formally capturing what it means to be in the range of f. Finally, computeF(n, bound) searches for the smallest such witness m using a Finset filter, providing a computable approximation to f(n).",
+    "mathContext": "\\text{partialDivisorSums}(m) = \\left[d_1,\\; d_1+d_2,\\; \\ldots,\\; \\sum_{i=1}^{\\tau(m)} d_i\\right]\\quad \\text{where } d_1 < d_2 < \\cdots < d_{\\tau(m)} \\text{ are the divisors of } m.",
+    "significance": "key",
+    "relatedConcepts": ["divisor function", "partial sums", "List.scanl", "Finset.sort"],
+    "prerequisites": ["elementary number theory", "Lean 4 list operations", "Mathlib.NumberTheory.Divisors"]
+  },
+  {
+    "id": "ann-erdos1054fnorm-prime-structure",
+    "proofId": "erdos-1054-oq-01-fnorm",
+    "range": { "startLine": 63, "endLine": 100 },
+    "type": "technique",
+    "title": "Prime Divisor Structure: p+1 is Always Representable",
+    "content": "The cleanest infinite family of representable numbers arises from primes. A prime p has exactly two divisors: 1 and p. So partialDivisorSums(p) = [1, 1+p], and p+1 is representable with witness m = p, giving f(p+1) ≤ p. The Lean proof of prime_divisors_eq uses Nat.Prime.eq_one_or_self_of_dvd — the defining property of primality — then constructs the sorted list [1, p] by verifying 1 < p (from p.two_le) to determine the sort order. The chain prime_divisors_eq → prime_sortedDivisors → prime_partialDivisorSums → representable_prime_plus_one is a clean compositional proof.",
+    "mathContext": "p \\text{ prime} \\implies \\text{divisors}(p) = \\{1, p\\} \\implies \\text{partialDivisorSums}(p) = [1,\\, p+1] \\implies f(p+1) \\leq p.",
+    "significance": "key",
+    "relatedConcepts": ["prime numbers", "Nat.Prime.eq_one_or_self_of_dvd", "representable families"],
+    "prerequisites": ["prime number theory", "Mathlib prime API"]
+  },
+  {
+    "id": "ann-erdos1054fnorm-pnt-density",
+    "proofId": "erdos-1054-oq-01-fnorm",
+    "range": { "startLine": 106, "endLine": 114 },
+    "type": "insight",
+    "title": "PNT Density: f(p+1)/p+1 < 1 on ~N/log N Values",
+    "content": "Theorem f_prime_plus_one_le gives a quantitative witness: f(p+1) ≤ p for every prime p, so f(n)/n ≤ (n-1)/n < 1 for n = p+1. By the Prime Number Theorem, there are ~N/log N primes up to N, so this bound applies to ~N/log N values n ≤ N. Although this is a sub-density-1 set (the primes have density 0), it is an infinite family where f is provably controlled. The Lean comment in this section explicitly notes the PNT connection, pointing toward the gap between this partial result and the full 'almost all' conjecture.",
+    "mathContext": "\\pi(N) \\sim \\frac{N}{\\log N} \\implies f(n) < n \\text{ for } \\sim \\frac{N}{\\log N} \\text{ values } n \\leq N.",
+    "significance": "key",
+    "relatedConcepts": ["prime number theorem", "asymptotic density", "natural density"],
+    "prerequisites": ["analytic number theory", "asymptotic analysis"]
+  },
+  {
+    "id": "ann-erdos1054fnorm-open-conjecture",
+    "proofId": "erdos-1054-oq-01-fnorm",
+    "range": { "startLine": 193, "endLine": 213 },
+    "type": "context",
+    "title": "Formal Encoding of the Open Conjecture (almost_all_little_o)",
+    "content": "The definition almost_all_little_o encodes the full open conjecture in Lean using a concrete arithmetic predicate. The statement says: for every ε > 0 and δ > 0, there exists N such that for all M ≥ N, fewer than δ·M integers in [0, M) satisfy f(n) ≥ ε·n. This is natural density 0 for the 'hard' set {n : f(n)/n ≥ ε}. The definition uses computeF (bounded search) to make it decidable — a key choice that ties the formalization to actual computation rather than an existential claim. This serves as the precise target statement for OQ-01.",
+    "mathContext": "\\forall \\varepsilon, \\delta > 0,\\; \\exists N,\\; \\forall M \\geq N:\\quad \\frac{\\#\\{n < M : f(n) \\geq \\varepsilon n\\}}{M} < \\delta.",
+    "significance": "context",
+    "relatedConcepts": ["natural density", "little-o notation", "Schnirelmann density", "open problems"],
+    "prerequisites": ["density in number theory", "epsilon-delta formulation"]
+  },
+  {
+    "id": "ann-erdos1054fnorm-scanl-infra",
+    "proofId": "erdos-1054-oq-01-fnorm",
+    "range": { "startLine": 259, "endLine": 338 },
+    "type": "technique",
+    "title": "Sigma Bound Infrastructure: Last Partial Sum Equals σ(m)",
+    "content": "Seven lemmas build the machinery for the sigma bound. The key algebraic fact is scanl_add_getLast (proved by induction): the last element of List.scanl (+) a l equals a + l.sum. Applied with a=0 and l = sortedDivisors(m), this gives: last partial divisor sum = sum of sorted divisors = σ(m). The auxiliary lemmas sortedDivisors_ne_nil and partialDivisorSums_ne_nil ensure getLast is well-typed. The final connection sortedDivisors_sum_eq equates the List.sum with Finset.sum id, bridging the list-based computation to Mathlib's arithmetic σ definition.",
+    "mathContext": "\\text{getLast}(\\text{scanl}(+,\\, 0,\\, l)) = \\sum_{x \\in l} x \\implies \\text{getLast}(\\text{partialDivisorSums}(m)) = \\sum_{d \\mid m} d = \\sigma(m).",
+    "significance": "supporting",
+    "relatedConcepts": ["List.scanl", "sigma function", "getLast", "divisor sum"],
+    "prerequisites": ["Lean 4 list lemmas", "Mathlib sigma function", "Finset.sum"]
+  },
+  {
+    "id": "ann-erdos1054fnorm-sigma-bound",
+    "proofId": "erdos-1054-oq-01-fnorm",
+    "range": { "startLine": 331, "endLine": 344 },
+    "type": "insight",
+    "title": "The Centerpiece: f(σ(m)) ≤ m via the Sigma Bound",
+    "content": "Theorem f_sigma_bound is the heart of this file. Its proof is elegant: since σ(m) is the last partial divisor sum of m, the value m itself witnesses that σ(m) is representable with witness ≤ m. Formally: f_sigma_bound provides w=m with w≤m, w≥1, and σ(m) ∈ partialDivisorSums(m). The mathematical consequence is powerful: for superabundant numbers m_k (where σ(m_k)/m_k grows like e^γ·log log m_k by Gronwall's theorem), the ratio f(σ(m_k))/σ(m_k) ≤ m_k/σ(m_k) → 0. This proves f(n) = o(n) along the σ-subsequence.",
+    "mathContext": "\\sigma(m) = \\text{getLast}(\\text{partialDivisorSums}(m)) \\implies f(\\sigma(m)) \\leq m \\implies \\frac{f(\\sigma(m))}{\\sigma(m)} \\leq \\frac{1}{\\sigma(m)/m} \\xrightarrow{m\\,\\text{superabundant}} 0.",
+    "significance": "key",
+    "relatedConcepts": ["sigma function", "superabundant numbers", "Gronwall theorem", "abundancy index"],
+    "prerequisites": ["multiplicative number theory", "asymptotic analysis"]
+  },
+  {
+    "id": "ann-erdos1054fnorm-abundancy",
+    "proofId": "erdos-1054-oq-01-fnorm",
+    "range": { "startLine": 350, "endLine": 395 },
+    "type": "concept",
+    "title": "Abundancy Index and Ratio Bounds for Specific Abundant Numbers",
+    "content": "A number m is abundant when σ(m) > 2m, i.e., abundancy index σ(m)/m > 2. The sigma bound immediately gives f(σ(m))/σ(m) < 1/2 for every abundant number. This section verifies concrete witnesses computationally via native_decide: σ(6)=12 (ratio f(12)/12 ≤ 1/2), σ(12)=28 (ratio f(28)/28 ≤ 3/7 < 1/2), σ(24)=60 (ratio ≤ 2/5), σ(120)=360 (ratio ≤ 1/3). The value m=120 is notable: it is the smallest number with 16 divisors and σ(120)/120 = 3, among the highest abundancy indices for its size.",
+    "mathContext": "\\frac{\\sigma(m)}{m} > 2 \\implies \\frac{f(\\sigma(m))}{\\sigma(m)} < \\frac{1}{2}. \\quad \\sigma(120)=360,\\; f(360) \\leq 120 \\implies \\frac{f(360)}{360} \\leq \\frac{1}{3}.",
+    "significance": "supporting",
+    "relatedConcepts": ["abundant numbers", "abundancy index", "highly composite numbers", "native_decide"],
+    "prerequisites": ["multiplicative number theory", "divisor sums"]
+  },
+  {
+    "id": "ann-erdos1054fnorm-density",
+    "proofId": "erdos-1054-oq-01-fnorm",
+    "range": { "startLine": 420, "endLine": 445 },
+    "type": "technique",
+    "title": "Density: Each m Generates τ(m) Representable Values",
+    "content": "Theorem partialSums_all_representable states that every element of partialDivisorSums(m) is representable with witness m — a trivially proved but conceptually important observation. Its companion partialDivisorSums_length shows the list has exactly τ(m) elements (the number of divisors). Together, these say: a single highly composite number m generates τ(m) distinct representable values simultaneously. For colossally abundant numbers, τ(m) grows faster than any power of log m, so representable numbers accumulate rapidly. The theorem f_witness_bound packages this into an abstract 'f(n) ≤ m' bound for any membership proof.",
+    "mathContext": "\\#\\text{partialDivisorSums}(m) = \\tau(m) \\implies \\text{each HCN produces } \\tau(m) \\text{ representable values. } \\tau(m) \\gg \\exp\\!\\left(c\\sqrt{\\log m}\\right).",
+    "significance": "key",
+    "relatedConcepts": ["highly composite numbers", "divisor counting function τ", "density of representable numbers"],
+    "prerequisites": ["multiplicative functions", "asymptotic divisor bounds"]
+  }
+]
