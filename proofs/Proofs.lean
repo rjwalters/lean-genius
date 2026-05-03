@@ -538,6 +538,7 @@ import Proofs.EhrhartPolynomials
 import Proofs.ElementaryQuadraticReciprocity
 import Proofs.ElementaryQuadraticReciprocityOQ01
 import Proofs.ElementaryQuadraticReciprocityOQ01OQ01
+import Proofs.ElementaryQuadraticReciprocityOQ01OQ02
 import Proofs.ElementaryQuadraticReciprocityOQ02
 import Proofs.ElementaryQuadraticReciprocityOQ03
 import Proofs.ElementaryQuadraticReciprocityOQ03OQ01

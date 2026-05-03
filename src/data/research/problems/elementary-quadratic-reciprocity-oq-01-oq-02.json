@@ -1,0 +1,224 @@
+{
+  "slug": "elementary-quadratic-reciprocity-oq-01-oq-02",
+  "title": "Can the character uniqueness argument be generalized to prove cubic or quarti...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Can the character uniqueness argument be generalized to prove cubic or quartic reciprocity? Cubic reciprocity requires $(\\mathbb{Z}[\\omega])^\\times$ for the Eisenstein integers — the cyclic group stru.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-03T11:41:44.693Z",
+    "iteration": 1,
+    "focus": "Cubic and quartic character construction complete; awaiting Docker build",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Constructed cubic/quartic characters as group homs; proved easy Euler criterion; axiomatized hard direction and cubic reciprocity. File in PR.",
+    "builtItems": [
+      "cubicChar : (ZMod p)ˣ →* (ZMod p)ˣ in ElementaryQuadraticReciprocityOQ01OQ02.lean:83",
+      "cubicChar_pow_three_eq_one : χ₃(a)³ = 1 via Fermat in :105",
+      "cubicChar_eq_one_of_cube : easy Euler criterion direction in :156",
+      "isCubicResidue_iff_cubicChar_one : cubic Euler iff (mod axiom) in :188",
+      "quarticChar : (ZMod p)ˣ →* (ZMod p)ˣ in :257",
+      "cubic_character_package + quartic_character_package : summary theorems in :376-391"
+    ],
+    "insights": [
+      "cubicChar = powMonoidHom((p-1)/3) is a well-typed group hom (ZMod p)ˣ →* (ZMod p)ˣ using CommMonoid instance",
+      "Easy Euler criterion: x³=a → a^((p-1)/3)=1 proved via Units.mk0 lift + pow_mul + units_pow_card_sub_one_eq_one",
+      "Cyclic kernel cardinality API (IsCyclic.exists_unique_subgroup_of_dvd) missing from Mathlib 4.26",
+      "Eisenstein integers ℤ[ω] not in Mathlib 4.26 — cubic reciprocity must be axiomatized",
+      "Quartic character χ₄ = powMonoidHom((p-1)/4) has identical proof structure to χ₃"
+    ],
+    "mathlibGaps": [
+      "Cyclic group kernel cardinality: Fintype.card {x : G | x^k=1} = gcd(k,|G|) for cyclic G",
+      "Eisenstein integers ℤ[ω] structure and prime theory not in Mathlib 4.26",
+      "Cubic residue symbol (ρ/π)₃ definition requires ℤ[ω] units"
+    ],
+    "nextSteps": [
+      "Submit cubicEuler_hard sorry to Aristotle for cyclic group kernel argument",
+      "Monitor Mathlib PRs for Eisenstein integer additions",
+      "Try proving cubicChar_kernel_card via Subgroup.card_eq_iff_eq_top or orderOf arguments"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "primes",
+    "modular-arithmetic",
+    "permutations",
+    "group-theory",
+    "open-question",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "elementary-quadratic-reciprocity",
+    "elementary-quadratic-reciprocity-oq-01",
+    "elementary-quadratic-reciprocity-oq-01-oq-01",
+    "elementary-quadratic-reciprocity-oq-02",
+    "elementary-quadratic-reciprocity-oq-03",
+    "elementary-quadratic-reciprocity-oq-03-oq-01",
+    "elementary-quadratic-reciprocity-oq-03-oq-01-oq-01",
+    "elementary-quadratic-reciprocity-oq-03-oq-01-oq-02",
+    "elementary-quadratic-reciprocity-oq-03-oq-02",
+    "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01",
+    "elementary-quadratic-reciprocity-oq-03-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T11:41:44.693Z",
+  "lastUpdate": "2026-05-03T11:41:44.693Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocity.lean",
+      "filename": "ElementaryQuadraticReciprocity.lean",
+      "lineCount": 358,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocity.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ01.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ01.lean",
+      "lineCount": 629,
+      "theoremCount": 31,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ01.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ01OQ01.lean",
+      "lineCount": 167,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ02.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ02.lean",
+      "lineCount": 176,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ02.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ03.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ03.lean",
+      "lineCount": 200,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ03OQ01.lean",
+      "lineCount": 312,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ01.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ03OQ01OQ01.lean",
+      "lineCount": 165,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ01OQ04.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ03OQ01OQ01OQ04.lean",
+      "lineCount": 148,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ02.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ03OQ01OQ02.lean",
+      "lineCount": 190,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ02.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ03OQ02.lean",
+      "lineCount": 224,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean",
+      "lineCount": 268,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ03.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ03OQ03.lean",
+      "lineCount": 103,
+      "theoremCount": 3,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ03.lean"
+    }
+  ]
+}
