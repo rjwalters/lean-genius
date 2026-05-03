@@ -403,4 +403,59 @@ The latter connects to the well-studied Dickman function and smooth number densi
 
 ---
 
+## Session 2026-05-04 (Session 9) - API Drift Fixes + 4 Sylvester-Schur Theorems
+
+**Mode**: REVISIT (RICH-tier: 85 knowledge items, ACT phase)
+**Outcome**: progress — 4 new theorems, 3 API drift fixes, PR created
+
+### What I Did
+- Reset worktree branch to origin/main (previous session left worktree in corrupted state with stale rebase)
+- Identified 3 pre-existing API drift errors in origin/main that blocked compilation:
+  1. `consecutiveProduct_one` used forward reference to `consecutiveProduct_succ` (line 129)
+  2. `Nat.coprime_succ_self` was removed from Mathlib (line 547)
+  3. `apply Finset.le_sup` needed explicit `f :=` form (line 614)
+- Fixed all 3 drift errors (no new theorem count from these)
+- Removed 3 duplicate theorem declarations (re-introduced by Session 6 PR #15337)
+- Proved **`gpfConsecutive_succ_succ_gt_k`**: Sylvester-Schur for n=k+2 via Bertrand
+  - Bertrand on k+1 gives prime p ∈ (k+1, 2(k+1)]; p lies in window [k+2, (k+2)+k]
+- Proved **`gpfConsecutive_prime_gt_k`**: For prime n>k, P(n,k) > k
+  - One-liner: `gpfConsecutive_ge_self_of_prime` gives P≥n>k
+- Proved **`erdos_1201_individual_threshold`**: ∀ n≥2, ε∈(0,1), ∃k, P(n,k) > n^(1-ε)
+  - Witness: k=n works by P(n,n) > n (Bertrand) > n^(1-ε) (rpow monotone)
+- Proved **`erdos_1201_good_set_mono`**: {n|P(n,k)>n^(1-ε)} is monotone in k
+  - One-liner: `gpfConsecutive_le_of_le_k` + transitivity
+- Updated meta.json: theoremCount 55→59, lineCount 779→833
+- Created PR on feature/researcher-11 branch
+
+### Key Findings
+- API drift: `Nat.coprime_succ_self` was removed — replace with gcd subtraction proof using `Nat.dvd_sub'`
+- API drift: bare `apply Finset.le_sup` fails — must use `exact Finset.le_sup (f := ...) (Finset.mem_range.mpr ...)`
+- `consecutiveProduct_one` can be proved directly: `simp [consecutiveProduct, Finset.prod_range_succ]`
+- Concurrent agents overwrite main repo working directory during Docker builds — race condition is persistent
+- `erdos_1201_good_set_mono` is the missing structural link: density claim at k₂ follows from k₁ ≤ k₂ for all n
+
+### Mathematical Note
+The 4 new theorems give increasingly specific instances of the Sylvester-Schur theorem:
+- `gpfConsecutive_succ_gt_k` (Session 1): n=k+1 case
+- `gpfConsecutive_succ_succ_gt_k` (Session 9): n=k+2 case
+- `gpfConsecutive_prime_gt_k` (Session 9): all prime n > k
+- Full Sylvester-Schur (n > k → P(n,k) > k) requires elementary number theory (~200+ lines)
+
+The `erdos_1201_individual_threshold` + `erdos_1201_good_set_mono` together show:
+for each n, the good set threshold is eventually met. What the full Erdős conjecture additionally needs
+is UNIFORM lower density 1-η, which requires analytic number theory.
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (833 lines, was 829 in origin/main with bugs)
+- `src/data/proofs/erdos-1201/meta.json` (theoremCount 55→59, lineCount 779→833)
+- `src/data/research/problems/erdos-1201.json` (updated knowledge)
+- `research/problems/erdos-1201/knowledge.md` (this entry)
+
+### Next Steps
+- Prove full Sylvester-Schur: P(n,k) > k for all n > k (~200+ lines elementary proof)
+- Density lower bounds: blocked on Dickman ρ function (>1000 lines infra)
+- Consider Aristotle submission for Sylvester-Schur general case
+
+---
+
 *Generated from erdosproblems.com on 2026-04-16*
