@@ -182,7 +182,7 @@
       "Can $\\text{PSL}(2,7)$ (order 168, the second smallest non-abelian simple group) be formally realized as a Galois group over $\\mathbb{Q}$? The standard approach uses the polynomial $x^7 - 7x + 3$, which has Galois group $\\text{PSL}(2,7)$.",
       "Can the quotient realizability theorem be applied constructively to derive new Galois groups from S5? (S5/A5 = C2 is trivial; more interesting quotients require larger realized groups.)",
       "The Inverse Galois Conjecture is stated but marked `sorry` (intentionally — it is open). Can partial results (e.g., all alternating groups are realizable via Hilbert's irreducibility theorem) be formalized as intermediate steps?",
-      "Can the solvability characterization be generalized to alternating groups: $A_n$ solvable $\\Leftrightarrow$ $n \\leq 4$? The forward direction (simplicity of $A_n$ for $n \\geq 5$ implies non-solvability) follows from Mathlib."
+      "The $A_n$ solvability characterization ($A_n$ solvable $\\Leftrightarrow$ $n \\leq 4$) is now formalized in this file (`an_solvable_iff`, Part XII). Can the classification be extended to other group families — for example, generalized symmetric groups $G(m, p, n)$ (complex reflection groups) or wreath products $S_m \\wr S_n$? Are there analogues of the $n \\leq 4$ threshold for these families?"
     ]
   },
   "crossReferences": [
