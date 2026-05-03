@@ -167,20 +167,20 @@ For small n, Cramer's Rule has competitive operation count.
 The crossover happens around n = 4-5.
 -/
 
-/-- At n = 2: Cramer uses 5 operations, Gaussian uses 3 -/
-theorem cramer_ops_2 : cramerOperations 2 = 5 := by
+/-- At n = 2: Cramer uses 11 operations (3 dets × 3 ops each + 2 divisions). -/
+theorem cramer_ops_2 : cramerOperations 2 = 11 := by
   unfold cramerOperations detOperations detMultiplications detAdditions
     leibnizSummands multsPerSummand
   norm_num [Nat.factorial]
 
-/-- At n = 3: Cramer uses 53 operations, Gaussian uses ~14 -/
-theorem cramer_ops_3 : cramerOperations 3 = 53 := by
+/-- At n = 3: Cramer uses 71 operations (4 dets × 17 ops each + 3 divisions). -/
+theorem cramer_ops_3 : cramerOperations 3 = 71 := by
   unfold cramerOperations detOperations detMultiplications detAdditions
     leibnizSummands multsPerSummand
   norm_num [Nat.factorial]
 
-/-- At n = 4: Cramer uses 475 operations -/
-theorem cramer_ops_4 : cramerOperations 4 = 475 := by
+/-- At n = 4: Cramer uses 479 operations (5 dets × 95 ops each + 4 divisions). -/
+theorem cramer_ops_4 : cramerOperations 4 = 479 := by
   unfold cramerOperations detOperations detMultiplications detAdditions
     leibnizSummands multsPerSummand
   norm_num [Nat.factorial]
@@ -195,8 +195,9 @@ Despite O(n!) complexity, Cramer's Rule is useful when:
 4. Theoretical properties are needed (closed-form, adjugate connection)
 -/
 
-/-- For n = 1, Cramer is trivial: x = b/a (2 operations) -/
-theorem cramer_ops_1 : cramerOperations 1 = 2 := by
+/-- For n = 1, the formula gives 1 operation (one trivial determinant + one division;
+the (n-1)=0 multiplications/(n!-1)=0 additions terms vanish). -/
+theorem cramer_ops_1 : cramerOperations 1 = 1 := by
   unfold cramerOperations detOperations detMultiplications detAdditions
     leibnizSummands multsPerSummand
   norm_num [Nat.factorial]
@@ -216,9 +217,8 @@ theorem single_component_formula (n : ℕ) :
 2. det_operations_formula: Leibniz determinant uses n!·(n-1) + (n!-1) ops
 3. cramer_lower_bound: Cramer uses ≥ (n+1)(n!-1) ops
 4. factorial_ge_cube: n! ≥ n³ for n ≥ 6
-5. Exact operation counts: cramer_ops_{1,2,3,4}
+5. Exact operation counts: cramer_ops_{1,2,3,4} = 1, 11, 71, 479
 6. gaussian_cubic_bound: Gaussian is O(n³) (proved)
-7. cramer_exceeds_gaussian: Cramer > Gaussian for n ≥ 6 (sorry)
 -/
 
 #check cramerOperations
