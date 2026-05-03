@@ -17,11 +17,11 @@
       "degree-sequences"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 6,
     "dateAdded": "2026-05-03",
     "axiomCount": 2,
     "assumptions": "2 axioms: directed_eulerian_iff (Hierholzer's algorithm for directed graph Eulerian circuit — requires graph connectivity infrastructure) and directed_euler_path_iff (Eulerian path degree characterization). All other results (handshaking, necessity, concrete examples, consequences) are proved from first principles.",
-    "lineCount": 390,
+    "lineCount": 848,
     "theoremCount": 8,
     "definitionCount": 8,
     "originalContributions": [
@@ -105,7 +105,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the directed Eulerian theorem. Key proved results: directed handshaking lemma (∑ outDeg = |E| = ∑ inDeg, via double-counting), necessity direction (Eulerian circuit → balanced degrees, via walk position bijection and closed-walk degree balance). 8 theorems proved from first principles, 2 axioms (Hierholzer sufficiency and Eulerian path characterization), 0 sorries, 390 lines.",
+    "summary": "Formalizes the directed Eulerian theorem. Key proved results: directed handshaking lemma (∑ outDeg = |E| = ∑ inDeg, via double-counting), necessity direction (Eulerian circuit → balanced degrees, via walk position bijection and closed-walk degree balance). 8 theorems proved from first principles, 2 axioms (Hierholzer sufficiency and Eulerian path characterization), 6 sorries (Hierholzer infrastructure helpers deferred), 848 lines.",
     "implications": "The directed Eulerian theorem underpins de Bruijn sequence construction (a de Bruijn graph is Eulerian), DNA fragment assembly algorithms, and Eulerian circuit algorithms in network flow. The degree-balance characterization is also the basis for Hierholzer's O(|E|) directed Eulerian circuit algorithm.",
     "openQuestions": [
       "Formalize Hierholzer's algorithm for constructing directed Eulerian circuits (eliminate directed_eulerian_iff axiom)",
@@ -115,12 +115,12 @@
   },
   "leanFile": {
     "namespace": "KonigsbergOQ01OQ02",
-    "lineCount": 390,
+    "lineCount": 848,
     "axiomCount": 2,
     "theoremCount": 8,
     "definitionCount": 10,
     "path": "Proofs/KonigsbergOQ01OQ02.lean",
-    "sorries": 0
+    "sorries": 6
   },
   "crossReferences": [
     {
@@ -134,5 +134,5 @@
       "description": "Directed Euler Paths: In-Degree/Out-Degree Characterization — related directed graph Eulerian theory."
     }
   ],
-  "sorries": 0
+  "sorries": 6
 }
