@@ -283,7 +283,7 @@ theorem cubicChar_kernel_card (h3 : p % 3 = 1) :
   have hgcd3 : Nat.gcd (p - 1) 3 = 3 :=
     Nat.dvd_antisymm (Nat.gcd_dvd_right _ _) (Nat.dvd_gcd h3dvd (dvd_refl 3))
   have hord3 : orderOf (g ^ 3) = cubExp p := by
-    rw [orderOf_pow, hordg, hgcd3]
+    rw [orderOf_pow, hordg, hgcd3]; rfl
   have hg3_pow : (g ^ 3) ^ cubExp p = 1 := by
     rw [← pow_mul, show 3 * cubExp p = p - 1 from cubExp_mul h3, ← hordg, pow_orderOf_eq_one]
   have hfilter_eq :
