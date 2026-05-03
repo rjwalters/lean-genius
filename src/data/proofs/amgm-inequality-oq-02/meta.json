@@ -164,7 +164,7 @@
     {
       "targetId": "amgm-inequality-oq-02-oq-03-oq-03",
       "relationship": "extended-by",
-      "description": "Full Maclaurin Chain (OQ-03-OQ-03) completes what this entry begins: once `maclaurin_step` Mₖ ≥ Mₖ₊₁ is available (proved by OQ-03), OQ-03-OQ-03 bootstraps it into the full transitive chain M_j ≥ M_k for all j ≤ k by induction on the gap (k - j). The `maclaurin_chain` theorem in this entry is axiomatized — OQ-03-OQ-03 proves it."
+      "description": "Full Maclaurin Chain (OQ-03-OQ-03) formalizes the transitive chain $M_j \\geq M_k$ for all $j \\leq k$ by induction on the gap $(k-j)$, using `maclaurin_step` from this entry. Conditionally verified (1 axiom: `maclaurin_step`); becomes fully axiom-free once `maclaurin_step_proved` from OQ-03 is substituted."
     }
   ],
   "overview": {
