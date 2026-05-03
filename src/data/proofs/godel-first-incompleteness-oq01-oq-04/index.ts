@@ -1,8 +1,8 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
+import sourceRaw from '../../../../proofs/Proofs/GodelFirstIncompletenessOQ01OQ04.lean?raw'
 
-// Type assertion for JSON import
 const meta = metaJson as unknown as {
   id: string
   title: string
@@ -15,9 +15,6 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-// Import the Lean source file
-const leanSource = () => import('../../../../proofs/Proofs/GodelFirstIncompletenessOQ01OQ04.lean?raw')
-
 export const proof: Proof = {
   id: meta.id,
   title: meta.title,
@@ -25,7 +22,7 @@ export const proof: Proof = {
   description: meta.description,
   meta: meta.meta,
   sections: meta.sections,
-  source: '', // Loaded dynamically
+  source: sourceRaw,
   overview: meta.overview,
   conclusion: meta.conclusion,
   crossReferences: meta.crossReferences,
