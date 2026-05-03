@@ -13681,29 +13681,24 @@ private lemma strictHookCells_card {μ : YoungDiagram} {i j : ℕ} (h : (i, j) �
     (strictHookCells μ i j).card = hookLength μ i j - 1 := by
   have hrow : j < μ.rowLen i := YoungDiagram.mem_iff_lt_rowLen.mp h
   have hcol : i < μ.colLen j := YoungDiagram.mem_iff_lt_colLen.mp h
-  have heq := hookLength_add_eq μ h
-  -- Arm and leg image sets are disjoint: arm cells have first coord = i,
-  -- leg cells have first coord ≥ i+1.
+  simp only [strictHookCells]
   have hdisj : Disjoint ((Finset.Ico (j + 1) (μ.rowLen i)).image (Prod.mk i))
-                        ((Finset.Ico (i + 1) (μ.colLen j)).image (fun r => (r, j))) := by
-    apply Finset.disjoint_left.mpr
-    rintro x hmem_arm hmem_leg
-    simp only [Finset.mem_image, Finset.mem_Ico] at hmem_arm hmem_leg
-    obtain ⟨s, ⟨hjs, _⟩, rfl⟩ := hmem_arm
-    obtain ⟨r, ⟨hir, _⟩, heq'⟩ := hmem_leg
-    simp only [Prod.mk.injEq] at heq'
+      ((Finset.Ico (i + 1) (μ.colLen j)).image (fun r => (r, j))) := by
+    simp only [Finset.disjoint_left, Finset.mem_image, Finset.mem_Ico]
+    rintro ⟨_, _⟩ ⟨s, ⟨-, -⟩, hs⟩ ⟨r, ⟨hr, -⟩, hc⟩
+    simp only [Prod.mk.injEq] at hs hc
     omega
-  rw [strictHookCells, Finset.card_union_of_disjoint hdisj,
+  rw [Finset.card_union_of_disjoint hdisj,
       Finset.card_image_of_injective _ (fun a b hab => (Prod.mk.inj hab).2),
       Finset.card_image_of_injective _ (fun a b hab => (Prod.mk.inj hab).1),
       Finset.card_Ico, Finset.card_Ico]
+  unfold hookLength armLen legLen
   omega
 
 /-- For a non-corner cell (i,j), strictHookCells is nonempty. -/
 private lemma strictHookCells_nonempty {μ : YoungDiagram} {i j : ℕ}
     (hmem : (i, j) ∈ μ) (hnc : ¬isCorner μ (i, j)) :
     (strictHookCells μ i j).Nonempty := by
-  -- ¬isCorner means (i,j+1) ∈ μ or (i+1,j) ∈ μ
   have hor : (i, j + 1) ∈ μ ∨ (i + 1, j) ∈ μ := by
     by_contra h
     push_neg at h
@@ -13721,18 +13716,14 @@ private lemma strictHookCells_hookLen_lt {μ : YoungDiagram} {i j : ℕ}
   have heq := hookLength_add_eq μ hmem
   simp only [strictHookCells, Finset.mem_union, Finset.mem_image, Finset.mem_Ico] at hy
   rcases hy with ⟨s, ⟨hjs, hsr⟩, rfl⟩ | ⟨r, ⟨hir, hrc⟩, rfl⟩
-  · -- arm cell (i, s): s ∈ Ico (j+1) (rowLen i), so s < rowLen i → (i,s) ∈ μ
-    have hs_mem : (i, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr hsr
+  · have hs_mem : (i, s) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr hsr
     have heq_y := hookLength_add_eq μ hs_mem
-    -- colLen non-increasing: colLen s ≤ colLen j since j ≤ s
     have hcol_anti : μ.colLen s ≤ μ.colLen j := by
       have := μ.transpose.rowLen_anti j s (by omega : j ≤ s)
       rwa [YoungDiagram.rowLen_transpose, YoungDiagram.rowLen_transpose] at this
     change hookLength μ i s < hookLength μ i j; omega
-  · -- leg cell (r, j): r ∈ Ico (i+1) (colLen j), so r < colLen j → (r,j) ∈ μ
-    have hr_mem : (r, j) ∈ μ := YoungDiagram.mem_iff_lt_colLen.mpr hrc
+  · have hr_mem : (r, j) ∈ μ := YoungDiagram.mem_iff_lt_colLen.mpr hrc
     have heq_y := hookLength_add_eq μ hr_mem
-    -- rowLen non-increasing: rowLen r ≤ rowLen i since i ≤ r
     have hrow_anti : μ.rowLen r ≤ μ.rowLen i := μ.rowLen_anti i r (by omega : i ≤ r)
     change hookLength μ r j < hookLength μ i j; omega
 
@@ -13758,48 +13749,43 @@ private lemma gnwProb_sum_corners (μ : YoungDiagram) :
   induction K with
   | zero =>
     intro x _ hK
-    -- hookLength ≥ 1 contradicts ≤ 0
     exact absurd hK (by have := hookLength_pos μ x.1 x.2; omega)
   | succ K ih =>
     intro x hx hK
     by_cases hcorn : isCorner μ x
-    · -- Corner case: gnwProb (K+1) x = if x = c then 1 else 0
+    · -- x is a corner: gnwProb (K+1) x = if x = c then 1 else 0
       have hxcorn : x ∈ corners μ := mem_corners.mpr hcorn
       have hfun : ∀ c ∈ (corners μ).attach, gnwProb μ c.val (K + 1) x =
                   if x = c.val then (1 : ℚ) else 0 := by
         intro c _
         have : gnwProb μ c.val (K + 1) x =
-               if isCorner μ x then (if x = c.val then (1:ℚ) else 0)
+               if isCorner μ x then (if x = c.val then (1 : ℚ) else 0)
                else (1 / ↑(strictHookCells μ x.1 x.2).card : ℚ) *
                     ∑ y ∈ strictHookCells μ x.1 x.2, gnwProb μ c.val K y := rfl
         rw [this, if_pos hcorn]
       rw [Finset.sum_congr rfl hfun]
-      -- x appears exactly once in (corners μ).attach; all other terms are 0
       refine (Finset.sum_eq_single_of_mem ⟨x, hxcorn⟩ (Finset.mem_attach _ _) ?_).trans (by simp)
       intro c _ hne
       exact if_neg (fun h : x = c.val => hne (Subtype.ext h.symm))
-    · -- Non-corner case: gnwProb (K+1) x = (1/|H*|) * Σ_{y∈H*} gnwProb K y
+    · -- x is not a corner: gnwProb (K+1) x = (1/|H*|) * Σ_y gnwProb K y
       have hH_ne := strictHookCells_nonempty hx hcorn
       have hcard_pos : 0 < (strictHookCells μ x.1 x.2).card := hH_ne.card_pos
-      have hcard_ne : (strictHookCells μ x.1 x.2).card ≠ 0 := hcard_pos.ne'
       have hN : (↑(strictHookCells μ x.1 x.2).card : ℚ) ≠ 0 :=
-        Nat.cast_ne_zero.mpr hcard_ne
+        Nat.cast_ne_zero.mpr hcard_pos.ne'
       have hfun : ∀ c ∈ (corners μ).attach, gnwProb μ c.val (K + 1) x =
                   (1 / ↑(strictHookCells μ x.1 x.2).card : ℚ) *
                   ∑ y ∈ strictHookCells μ x.1 x.2, gnwProb μ c.val K y := by
         intro c _
         have : gnwProb μ c.val (K + 1) x =
-               if isCorner μ x then (if x = c.val then (1:ℚ) else 0)
+               if isCorner μ x then (if x = c.val then (1 : ℚ) else 0)
                else (1 / ↑(strictHookCells μ x.1 x.2).card : ℚ) *
                     ∑ y ∈ strictHookCells μ x.1 x.2, gnwProb μ c.val K y := rfl
         rw [this, if_neg hcorn]
-      -- Factor constant out, swap sums, apply IH to each y
       rw [Finset.sum_congr rfl hfun, ← Finset.mul_sum, Finset.sum_comm]
       have hih : ∀ y ∈ strictHookCells μ x.1 x.2,
           ∑ c ∈ (corners μ).attach, gnwProb μ c.val K y = 1 := fun y hy =>
         ih y (strictHookCells_mem hy) (by have := strictHookCells_hookLen_lt hx hy; omega)
       rw [Finset.sum_congr rfl hih, Finset.sum_const_one]
-      -- (1/N) * ↑N = 1
       exact one_div_mul_cancel hN
 
 /-- GNW KEY theorem (Greene-Nijenhuis-Wilf 1979):
