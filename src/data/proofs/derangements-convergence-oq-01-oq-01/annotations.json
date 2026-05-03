@@ -86,5 +86,29 @@
       "omega tactic",
       "Int casting"
     ]
+  },
+  {
+    "id": "ann-dcoq01oq01-tighter-bounds",
+    "proofId": "derangements-convergence-oq-01-oq-01",
+    "range": {
+      "startLine": 125,
+      "endLine": 147
+    },
+    "type": "theorem",
+    "title": "Tighter Bounds: 1/4 for n≥3 and the Parametric Bound 1/k",
+    "content": "Section 4 provides two refinements of the main rate bound:\n\n**`derangements_quarter_bound`** (n ≥ 3): `|D(n) - n!/e| ≤ 1/4`. The proof reuses `derangements_rate_scaled` (giving ≤ 1/(n+1)) and `one_div_le_one_div_of_le` with `4 ≤ n+1`. This gives the best constant bound for 'small' n where 1/3 is not sharp enough.\n\n**`derangements_parametric_bound`** (k ≤ n+1, k > 0): `|D(n) - n!/e| ≤ 1/k`. This generalizes both the main theorem (k=3, n≥2) and the quarter bound (k=4, n≥3): for any k, as long as k ≤ n+1, the bound holds. The parametric form makes it easy to apply the theorem at a specific precision: to get error ≤ 0.01, take k=101 and n ≥ 100.\n\nThe chain is: `derangements_rate_scaled` (base, ≤ 1/(n+1)) → `derangements_nearest_integer` (k=3, n≥2, <1/2) → `derangements_quarter_bound` (k=4, n≥3, ≤1/4) → `derangements_parametric_bound` (general). Each is a 3-5 line `calc` proof via `one_div_le_one_div_of_le`.",
+    "mathContext": "Parametric bound: $k \\leq n+1 \\implies |D(n) - n!/e| \\leq 1/(n+1) \\leq 1/k$. Taking $k \\to \\infty$ gives $|D(n) - n!/e| \\to 0$, consistent with the convergence $D(n)/n! \\to e^{-1}$. At $n = 10$: error $\\leq 1/11 \\approx 0.091$; at $n = 100$: error $\\leq 1/101 \\approx 0.0099$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "derangements_rate_scaled (base bound 1/(n+1))",
+      "one_div_le_one_div_of_le (monotone reciprocal)",
+      "parametric error decay 1/n",
+      "derangements_convergence_rate in parent file"
+    ],
+    "prerequisites": [
+      "derangements_rate_scaled",
+      "one_div_le_one_div_of_le",
+      "Nat.cast_pos for positivity of k"
+    ]
   }
 ]
