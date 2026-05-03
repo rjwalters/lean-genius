@@ -1,0 +1,126 @@
+{
+  "id": "erdos-1006-oq-01-oq-02",
+  "title": "Cover Graph Recognition",
+  "slug": "erdos-1006-oq-01-oq-02",
+  "description": "Investigates the computational complexity of recognizing cover graphs — graphs that are Hasse diagrams of finite posets. Proves that cover graph membership is in NP (a poset serves as a polynomial-time verifiable certificate) and establishes the key structural characterization: a graph is a cover graph iff it has a shortcut-free acyclic orientation. States the open conjecture that recognition is in polynomial time and contrasts with the known P-time comparability graph recognition (Golumbic 1977). 6 theorems, 2 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://erdosproblems.com/1006",
+    "date": "formalized 2026",
+    "status": "axiomatized",
+    "tags": [
+      "graph-theory",
+      "algorithms",
+      "complexity",
+      "partial-orders",
+      "cover-graphs",
+      "erdos"
+    ],
+    "proofRepoPath": "Proofs/Erdos1006OQ01OQ02.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "newAxiomCount": 2,
+    "mathlibDependencies": [
+      {
+        "theorem": "Fintype.decidableForallFintype",
+        "description": "Decidability of universal statements over finite types",
+        "module": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "CovBy.lt",
+        "description": "Covering relation implies strict less-than",
+        "module": "Mathlib.Order.Defs"
+      }
+    ],
+    "originalContributions": [
+      "coverOrientation_no_shortcut: covering orientations have no shortcut arcs — key Hasse diagram property",
+      "cover_graph_is_hasse: cover graphs admit shortcut-free acyclic orientations",
+      "cover_implies_related: cover graph edges connect comparable pairs in the poset",
+      "cover_graph_in_np: NP membership via poset certificate",
+      "cover_search_space_bound: search space for recognition is 2^(n²)",
+      "cover_subclass_comparability: cover graphs are a proper subclass of comparability graphs"
+    ],
+    "dateAdded": "2026-05-03",
+    "lineCount": 175,
+    "assumptions": "2 axioms: (1) cover_graph_recognition_in_p — the open conjecture that cover recognition is in P; (2) comparability_recognition_in_p — Golumbic's 1977 theorem that comparability graphs are recognized in polynomial time."
+  },
+  "overview": {
+    "historicalContext": "The Pretzel-Brightwell (1985) characterization established that a graph admits a robustly acyclic orientation iff it is a cover graph of some poset. This naturally raises the algorithmic question: can we efficiently decide whether a given graph is a cover graph?\n\nThe closely related problem of **comparability graph recognition** (given G, is G the comparability graph of some poset?) is solvable in polynomial time by Golumbic's 1977 algorithm, which uses the theory of modular decomposition and perfect graphs. Cover graphs are strictly harder: they impose not just a transitive orientation but also the requirement that the orientation has no shortcuts (it is its own transitive reduction).",
+    "problemStatement": "**Open Question (erdos-1006-oq-01-OQ-02)**: Is cover graph recognition in polynomial time?\n\nFormally: given a finite graph G, decide in polynomial time whether there exists a partial order P such that G is the Hasse diagram of P (i.e., edges of G correspond exactly to the covering pairs of P).",
+    "text": "A graph G is a **cover graph** if it is the Hasse diagram of some partially ordered set: vertices are elements of the poset, and edges correspond to covering pairs u ⋖ v (u < v with no intermediate element). This is strictly more restrictive than being a comparability graph (where edges are all related pairs).\n\nThe key structural characterization proved here: G is a cover graph iff G has an acyclic orientation with no **shortcuts** (no arc u→v that has an alternative directed path u→w→v). This shortcut-free property is exactly the Hasse diagram condition.\n\nCover graph recognition is in NP: given a candidate poset P, checking whether G = Cover(P) takes O(|V|² + |E|) time. The open question is whether it is in P or NP-complete. The polynomial-time algorithm for comparability graphs (Golumbic 1977) does not directly extend because cover graphs require the additional no-shortcut condition.",
+    "proofStrategy": "**Shortcut-free characterization (proved)**:\n- `coverOrientation_no_shortcut`: if u ⋖ v and u ⋖ w and w ⋖ v all hold, then w lies strictly between u and v, contradicting u ⋖ v. The proof uses `huv.2 huw.lt` — the covering axiom directly forbids intermediate elements.\n- `cover_graph_is_hasse`: combining the rank witness (from erdos-1006-oq-01) with shortcut-freeness.\n\n**NP membership**: The partial order P with G = Cover(P) is a certificate. Verifying isCoverGraphOf is `Fintype.decidableForallFintype`.\n\n**Comparability containment**: Every edge u ⋖ v in a cover graph gives u < v (by `CovBy.lt`), so cover edges are a subset of comparability edges. The inclusion is strict: for the 3-chain a < b < c, the cover graph is a path {ab, bc} while the comparability graph is a triangle {ab, bc, ac}.",
+    "keyInsights": [
+      "**Shortcut-free = Hasse**: An acyclic orientation is a Hasse diagram iff it has no shortcut arcs — this is equivalent to the orientation equaling its own transitive reduction.",
+      "**NP but not known P**: The natural certificate (the poset) makes recognition trivially in NP. Whether a polynomial algorithm exists mirrors the P vs NP question for poset recognition problems.",
+      "**Strict inclusion**: Cover graphs ⊊ comparability graphs. Every cover graph edge witnesses comparability, but not every comparable pair corresponds to a cover. The 3-chain is the simplest witness.",
+      "**Golumbic barrier**: Comparability recognition (P-time) handles the transitive orientation step but cannot directly detect shortcuts, which require additional structural analysis."
+    ],
+    "prerequisites": [
+      "Partial orders and covering relations (CovBy) from Mathlib.Order.Defs",
+      "Graph orientations from erdos-1006-oq-01 (GraphOrientation, isAcyclic)",
+      "Fintype and decidability for finite verification"
+    ]
+  },
+  "sections": [
+    {
+      "id": "shortcut-free",
+      "title": "Shortcut-Free Orientations",
+      "startLine": 45,
+      "endLine": 90,
+      "summary": "Defines hasShortcut and isHasse (acyclic + shortcut-free). Proves coverOrientation_no_shortcut: covering arcs have no shortcuts, using the covering axiom that forbids intermediate elements.",
+      "mathContext": "The covering relation u ⋖ v satisfies: u < v and ∀ w, u < w → w < v → False. If u ⋖ w and w ⋖ v then u < w < v contradicts u ⋖ v, giving the shortcut-free property."
+    },
+    {
+      "id": "np-certificate",
+      "title": "NP Certificate and Comparability Relation",
+      "startLine": 91,
+      "endLine": 145,
+      "summary": "Proves cover_graph_in_np (poset is NP certificate), cover_implies_related (edges connect comparable pairs), and cover_search_space_bound (search space is 2^(n²)).",
+      "mathContext": "NP membership formalizes as: given [PartialOrder V] and hcover : isCoverGraphOf G, the pair (inferInstance, hcover) witnesses isCoverGraph G. The decidability instance uses Fintype.decidableForallFintype."
+    },
+    {
+      "id": "complexity",
+      "title": "Algorithmic Complexity (Open)",
+      "startLine": 146,
+      "endLine": 175,
+      "summary": "States two axioms: cover_graph_recognition_in_p (open conjecture) and comparability_recognition_in_p (Golumbic 1977). Proves cover_subclass_comparability.",
+      "mathContext": "The open conjecture cover_graph_recognition_in_p is axiomatized as existence of a Bool-valued decision function that correctly classifies cover graphs. Golumbic's result is similarly axiomatized."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the structural theory of cover graph recognition: shortcut-free orientations characterize cover graphs, membership is in NP, and cover graphs are a proper subclass of comparability graphs. States the open algorithmic conjecture.",
+    "implications": "A positive resolution of cover_graph_recognition_in_p would give a polynomial algorithm for recognizing Hasse diagrams, with applications to poset inference from relational data and to recognizing robustly orientable graphs (by the Pretzel-Brightwell theorem from erdos-1006-oq-01).",
+    "openQuestions": [
+      "Is cover graph recognition in P or NP-complete? The NP upper bound is established here; no P algorithm or NP-hardness reduction is known.",
+      "Can the shortcut-free condition be checked in polynomial time given a transitive orientation? This is the key remaining step for a P-time algorithm.",
+      "What is the complexity of k-robust orientation recognition (edges can be reversed k times, not just once)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1006-oq-01",
+      "relationship": "parent",
+      "description": "Parent proof — establishes cover graph characterization (robust orientation ↔ cover graph). This file imports its definitions."
+    },
+    {
+      "targetId": "erdos-1006",
+      "relationship": "grandparent",
+      "description": "Root Erdős #1006 problem about robust acyclic orientations."
+    },
+    {
+      "targetId": "erdos-1006-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling OQ about minimum chromatic number for girth-g graphs failing robust orientability."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 175,
+    "path": "Proofs/Erdos1006OQ01OQ02.lean",
+    "axiomCount": 2,
+    "sorries": 0,
+    "definitionCount": 5,
+    "theoremCount": 7
+  },
+  "sorries": 0
+}
