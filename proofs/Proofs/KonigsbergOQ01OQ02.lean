@@ -847,13 +847,12 @@ theorem euler_path_implies_degree_balance (G : DiGraph V) (s t : V) (hst : s ≠
     | cons a t => simp at hhead; exact hhead
   have hget_last : walk.get ⟨n, by omega⟩ = t := by
     have hne : walk ≠ [] := by intro h; simp [h] at hlen; omega
-    have := List.getLast?_eq_getLast hne
-    rw [← hlast] at this
-    have hgetlast : walk.getLast hne = walk.get ⟨n, by omega⟩ := by
-      simp [List.getLast_eq_get, List.get_eq_getElem]; congr 1; omega
-    rw [hgetlast] at this
-    have hsome : walk.getLast? = some t := hlast
-    rw [this] at hsome; exact Option.some.inj hsome
+    have hlast' : walk.getLast? = some t := hlast
+    rw [List.getLast?_eq_getLast hne] at hlast'
+    have hlast_eq : walk.getLast hne = t := Option.some.inj hlast'
+    have hgl := List.getLast_eq_get walk hne
+    have h_mid : walk.get ⟨walk.length - 1, by omega⟩ = t := hgl ▸ hlast_eq
+    convert h_mid using 2; omega
   -- The degree conditions follow from the open-walk counting lemmas:
   -- open_walk_first_source_excess → outDeg s = inDeg s + 1
   -- open_walk_last_target_excess  → inDeg t  = outDeg t + 1
