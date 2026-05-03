@@ -1,0 +1,225 @@
+{
+  "id": "buffons-needle-oq-02-oq-03",
+  "title": "Abstract Cauchy-Crofton Formula: E_μ[crossings] = α_n · length for Any Kinematic Measure in ℝⁿ",
+  "slug": "buffons-needle-oq-02-oq-03",
+  "description": "Formalizes the abstract Cauchy-Crofton formula in arbitrary dimension n: for any measure μ satisfying the single-segment calibration axiom, the expected crossing count for a polygonal path P depends only on total arc length—E_μ[crossings(P)] = α_n · length(P). Proves shape independence (two paths of equal length have equal expected crossings), path decomposition (additivity under concatenation), explicit values α₂ = 2/π, α₃ = 1/2, α₄ = 4/(3π), α₅ = 3/8, the step-2 decrease α_{n+2} < α_n for n ≥ 1, and the dimension comparison that higher-dimensional kinematic measures yield fewer expected crossings.",
+  "meta": {
+    "author": "Cauchy (1850), Crofton (1868); abstract formalization 2026",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Crofton_formula",
+    "date": "1868",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BuffonsNeedleOQ02OQ03.lean",
+    "tags": [
+      "probability",
+      "geometric-probability",
+      "integral-geometry",
+      "buffon",
+      "cauchy-crofton",
+      "kinematic-measure",
+      "hyperplanes",
+      "n-dimensional",
+      "linearity-of-expectation",
+      "shape-independence",
+      "dimension-comparison",
+      "arc-length"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.integral_add",
+        "description": "Linearity of integration: ∫ (f + g) = ∫ f + ∫ g for integrable f, g",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner"
+      },
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space ℝⁿ with standard inner product structure",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "Real.pi_gt_three",
+        "description": "π > 3, used for 4D vs 3D comparison",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
+      },
+      {
+        "theorem": "Real.pi_lt_four",
+        "description": "π < 4, used for 3D vs 2D comparison",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
+      },
+      {
+        "theorem": "Real.pi_lt_315",
+        "description": "π < 3.15, used for 5D vs 4D comparison",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
+      }
+    ],
+    "originalContributions": [
+      "AffineHyperplane n: type alias for EuclideanSpace ℝ (Fin n) × ℝ representing {x : ⟪x,ν⟫ = c}",
+      "LineSegment.crossing: indicator function for segment-hyperplane intersections",
+      "cauchy_crofton_polygonal: main theorem proving E_μ[crossings(P)] = α_n · length(P) by list induction + integral_add",
+      "crofton_shape_independence: two polygonal paths of equal arc length have equal expected crossings",
+      "crofton_append: additivity of expected crossings under path concatenation",
+      "crossingFactor_step2: step-2 recurrence α_{n+2} = (n/(n+1))·α_n for n ≥ 1",
+      "crossingFactor_succ_succ_lt: strict decrease α_{n+2} < α_n for n ≥ 1",
+      "kinematic_two_more_informative: 2D kinematic measure yields strictly more expected crossings than 3D for equal-length paths"
+    ],
+    "dateAdded": "2026-05-03",
+    "axiomCount": 3,
+    "lineCount": 286,
+    "assumptions": "3 axioms: kinematicMeasure (existence of kinematic measure on AffineHyperplane n), cauchy_crofton_segment (single-segment Cauchy-Crofton formula E_μ[crossing(s)] = α_n · length(s)), crossing_integrable (crossing indicator is integrable w.r.t. kinematic measure). No sorries.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Cauchy-Crofton formula is a centerpiece of integral geometry, named for Augustin-Louis Cauchy (1850) and Morgan Crofton (1868). Cauchy used measure-theoretic methods to compute surface areas via projections; Crofton applied this to compute lengths and curvatures via line intersections. The general form E[#(C ∩ H)] = c_μ · length(C) for any motion-invariant measure on hyperplanes was developed in the 20th century by Blaschke, Santaló, and others as part of kinematic integral geometry.\n\nThe abstract formulation—for any measure μ satisfying the single-segment formula—reveals that shape independence is a purely linear-algebraic consequence of the measure property, requiring no geometric structure beyond the calibration condition. The crossing factor α_n (previously studied in BuffonsNeedleOQ02OQ01.lean for the parallel-hyperplane case) appears here as the universal constant encoding the geometry of the kinematic measure in ℝⁿ.\n\nBuffon's 2D needle (α₂ = 2/π) and the 3D noodle (α₃ = 1/2) are the canonical instances. The abstract Cauchy-Crofton formula unifies these and extends to arbitrary dimensions, arbitrary motion-invariant measures, and arbitrary polygonal paths.",
+    "problemStatement": "**Theorem (Abstract Cauchy-Crofton Formula)**: Let μ be a measure on the space of affine hyperplanes in ℝⁿ satisfying the single-segment calibration axiom:\n\n  E_μ[#(s ∩ H)] = α_n · length(s)  for every segment s\n\nThen for any polygonal path P = s₁ ++ ... ++ s_k:\n\n  E_μ[#(P ∩ H)] = α_n · length(P)\n\nwhere length(P) = ∑ᵢ length(sᵢ) is total arc length and α_n is the n-dimensional Cauchy-Crofton constant:\n- α₂ = 2/π (Buffon 2D)\n- α₃ = 1/2 (Buffon 3D)\n- α_{n+2} = (n/(n+1)) · α_n (recurrence)\n\n**Corollary (Shape Independence)**: E_μ[#(P ∩ H)] depends only on total arc length, not the shape of P.",
+    "text": "Formalizes the abstract Cauchy-Crofton formula: for any kinematic measure μ satisfying the single-segment calibration, E_μ[crossings(P)] = α_n · length(P) for any polygonal path P. The key mathematical insight is that shape independence and the polygonal formula follow from linearity of expectation (integral_add) by list induction, without any additional geometric content. The file also proves explicit crossing factor values α₂ = 2/π, α₃ = 1/2, α₄ = 4/(3π), α₅ = 3/8, the step-2 decrease theorem (α_{n+2} < α_n for n ≥ 1), and the dimension comparison that 2D kinematic measures yield more expected crossings than 3D measures on equal-length paths.",
+    "proofStrategy": "**Part I (Definitions)**: Define AffineHyperplane n = EuclideanSpace ℝ (Fin n) × ℝ (representing {x : ⟪x,ν⟫ = c}) and LineSegment.crossing as the indicator function for endpoint-opposite-sides tests. Prove crossing ∈ [0,1].\n\n**Part II (Axioms)**: Axiomatize kinematicMeasure, the single-segment Cauchy-Crofton formula cauchy_crofton_segment, and crossing_integrable. These three axioms capture the entire geometric content; everything else is algebra.\n\n**Part III (Main Theorem)**: Prove cauchy_crofton_polygonal by list induction. Nil case: both sides are 0. Cons case: use simp_rw [totalCrossings_cons] to rewrite under the integral binder, then integral_add (linearity) decomposes into single-segment integral + induction hypothesis, and cauchy_crofton_segment closes the segment term.\n\n**Part IV (Consequences)**: Shape independence, zero-length case, singleton, equal segments, and path decomposition all follow immediately from the main theorem by rewriting and arithmetic.\n\n**Part V (Crossing Factor)**: Compute α₄, α₅ by unfolding the recurrence. Prove positivity by structural induction. Derive the step-2 recurrence α_{n+2} = (n/(n+1))·α_n for n ≥ 1 (verified directly for n=1, algebraically for n≥2). Prove strict decrease and dimension comparisons using π bounds (pi_lt_four, pi_gt_three, pi_lt_315).",
+    "keyInsights": [
+      "The entire shape independence result follows from linearity of the integral (integral_add) — no geometry needed beyond the single-segment axiom",
+      "simp_rw is essential vs rw for rewriting under integral binders (rewrites under the λ H)",
+      "The step-2 recurrence α_{n+2} = (n/(n+1))·α_n follows by substituting n+2 = (k+2)+2 into the step-4 formula and simplifying with push_cast; ring",
+      "Dimension comparisons use tight π bounds: 3D vs 2D from pi_lt_four (π < 4), 4D vs 3D from pi_gt_three (π > 3), 5D vs 4D from pi_lt_315 (π < 3.15)",
+      "The abstract formulation (any calibrated measure) reveals that Buffon's 2D and 3D formulas are special cases of the same linearity-of-expectation argument"
+    ],
+    "prerequisites": [
+      "Integral geometry (Cauchy-Crofton formula, kinematic measures)",
+      "Measure theory (Bochner integration, integrability)",
+      "Geometric probability (linearity of expectation, Buffon's needle)",
+      "Euclidean geometry (inner products, affine hyperplanes)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header: Abstract Cauchy-Crofton Setup",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Documents the abstract Cauchy-Crofton formula E_μ[crossings(P)] = c_μ · length(P), connection to prior Buffon work, and the five novel contributions: abstract formula, shape independence, crossing constant values, dimension comparison, and additive decomposition.",
+      "mathContext": "Abstract Cauchy-Crofton: for any measure $\\mu$ satisfying $E_\\mu[\\#(s \\cap H)] = \\alpha_n \\cdot \\ell(s)$ for segments, the expected crossing count for any polygonal path $P$ is $E_\\mu[\\#(P \\cap H)] = \\alpha_n \\cdot \\ell(P)$. Generalizes Buffon 2D ($\\alpha_2 = 2/\\pi$) and 3D ($\\alpha_3 = 1/2$)."
+    },
+    {
+      "id": "part-i",
+      "title": "Part I: Geometric Definitions",
+      "startLine": 48,
+      "endLine": 71,
+      "summary": "AffineHyperplane n = EuclideanSpace ℝ (Fin n) × ℝ (normal-offset pair). LineSegment n = pair of endpoints. LineSegment.length via dist. LineSegment.crossing: indicator (= 1 iff endpoints on opposite sides). crossing ∈ [0,1].",
+      "mathContext": "Affine hyperplane in $\\mathbb{R}^n$: pair $(\\nu, c)$ representing $\\{x : \\langle x, \\nu \\rangle_\\mathbb{R} = c\\}$. Crossing indicator: $\\mathbf{1}[(\\langle p, \\nu \\rangle - c)(\\langle q, \\nu \\rangle - c) < 0]$ detects endpoints on opposite sides by sign of the product of signed distances."
+    },
+    {
+      "id": "part-ii",
+      "title": "Part II: Kinematic Measure and Cauchy-Crofton Constant",
+      "startLine": 73,
+      "endLine": 109,
+      "summary": "crossingFactor definition (step-4 recurrence, base cases α₂=2/π, α₃=1/2). kinematicMeasure axiom. cauchy_crofton_segment axiom (single-segment formula). crossing_integrable axiom. simp lemmas for crossingFactor evaluation.",
+      "mathContext": "Cauchy-Crofton constant $\\alpha_n$: $\\alpha_2 = 2/\\pi$, $\\alpha_3 = 1/2$, $\\alpha_{n+4} = \\frac{n+2}{n+3}\\,\\alpha_{n+2}$. Three axioms: (1) $\\mu$ exists, (2) $\\int \\mathbf{1}[s \\cap H \\ne \\emptyset]\\,d\\mu(H) = \\alpha_n \\cdot \\ell(s)$ for segments, (3) integrability of the crossing indicator."
+    },
+    {
+      "id": "part-iii",
+      "title": "Part III: Polygonal Cauchy-Crofton Formula",
+      "startLine": 111,
+      "endLine": 161,
+      "summary": "totalCrossings and totalLength as List.sum. integrable_totalCrossings by induction. cauchy_crofton_polygonal (main theorem): induction + integral_add + cauchy_crofton_segment + IH.",
+      "mathContext": "Main theorem: $\\int \\#(P \\cap H)\\,d\\mu(H) = \\alpha_n \\cdot \\ell(P)$. Proof: list induction. Nil: $\\int 0 = 0 = \\alpha_n \\cdot 0$. Cons: $\\int (f_s + f_{\\text{rest}}) = \\int f_s + \\int f_{\\text{rest}} = \\alpha_n \\ell(s) + \\alpha_n \\ell(\\text{rest}) = \\alpha_n(\\ell(s) + \\ell(\\text{rest}))$ by integral_add + IH."
+    },
+    {
+      "id": "part-iv",
+      "title": "Part IV: Shape Independence and Key Consequences",
+      "startLine": 163,
+      "endLine": 200,
+      "summary": "crofton_shape_independence (equal length ⟹ equal expected crossings), crofton_zero_length, crofton_singleton, crofton_equal_segments, crofton_append (additivity under concatenation). All immediate from the main theorem.",
+      "mathContext": "Shape independence: $\\ell(P) = \\ell(Q) \\implies \\int \\#(P \\cap H) = \\int \\#(Q \\cap H)$. Additivity: $E_\\mu[\\#((P \\mathbin{++} Q) \\cap H)] = E_\\mu[\\#(P \\cap H)] + E_\\mu[\\#(Q \\cap H)]$."
+    },
+    {
+      "id": "part-v",
+      "title": "Part V: Crossing Factor Values and Dimension Comparison",
+      "startLine": 202,
+      "endLine": 285,
+      "summary": "crossingFactor_four (α₄ = 4/(3π)), crossingFactor_five (α₅ = 3/8), crossingFactor_pos (α_n > 0 for n ≥ 2), crossingFactor_step2 (α_{n+2} = (n/(n+1))·α_n), crossingFactor_succ_succ_lt (α_{n+2} < α_n for n ≥ 1), dimension comparisons (α₃ < α₂, α₄ < α₃, α₅ < α₄), kinematic_two_more_informative.",
+      "mathContext": "Crossing factor chain: $\\alpha_5 = \\frac{3}{8} < \\alpha_4 = \\frac{4}{3\\pi} < \\alpha_3 = \\frac{1}{2} < \\alpha_2 = \\frac{2}{\\pi}$. Proofs: $\\alpha_3 < \\alpha_2$ via $\\pi < 4$; $\\alpha_4 < \\alpha_3$ via $\\pi > 3$; $\\alpha_5 < \\alpha_4$ via $9\\pi < 32$ (using $\\pi < 3.15$). General decrease: $\\alpha_{n+2} = \\frac{n}{n+1}\\,\\alpha_n < \\alpha_n$ since $\\frac{n}{n+1} < 1$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The abstract Cauchy-Crofton formula is formalized with 3 axioms, 27 theorems, and 0 sorries. The proof that E_μ[crossings(P)] = α_n · length(P) for polygonal paths follows from the single-segment axiom by list induction and integral_add. Shape independence, path decomposition, crossing factor values, and dimension comparisons are derived as consequences.",
+    "implications": "**Mathematical Significance**:\n\n**1. Abstract Unification**\nBuffon's 2D and 3D formulas, and the n-dimensional noodle formula from BuffonsNeedleOQ02OQ01.lean, are all special cases of this abstract Cauchy-Crofton framework. The single-segment calibration axiom captures all the geometric content.\n\n**2. Shape Independence Demystified**\nThe proof reveals that shape independence is purely algebraic: it follows from linearity of integration (integral_add) by list induction. No additional geometry is required beyond the calibration condition.\n\n**3. Dimension Comparison Chain**\nThe strict decrease α₂ > α₃ > α₄ > α₅ and the general α_{n+2} < α_n for n ≥ 1 are now formally proved. In higher dimensions, the kinematic measure predicts fewer expected crossings.\n\n**4. Axiom Gap Identified**\nThe 3 axioms isolate exactly what Mathlib lacks: the kinematic measure on affine hyperplane spaces and the Cauchy-Crofton property. Full formalization requires integral geometry infrastructure (Haar measure on SE(n), Grassmannian measure).",
+    "openQuestions": [
+      "Prove cauchy_crofton_segment from the rotation-invariance and σ-finiteness of the kinematic measure, eliminating the axiom",
+      "Extend to smooth curves in ℝⁿ via C¹ approximation arguments",
+      "Asymptotic behavior of α_n: prove α_n ~ √(2/(πn)) as n → ∞",
+      "Connection to Hadwiger's theorem: α_n as an intrinsic volume coefficient"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "buffons-needle-oq-02",
+      "relationship": "extends",
+      "description": "Parent proof: 3D Buffon noodle formula E = L/(2d), α₃ = 1/2; this file abstracts to arbitrary kinematic measures in ℝⁿ"
+    },
+    {
+      "targetId": "buffons-needle-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Sibling: n-dimensional crossing factor recurrence α_{n+2} = (n/(n+1))·α_n; this file formalizes the abstract Cauchy-Crofton formula using those crossing factors"
+    },
+    {
+      "targetId": "buffons-needle-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Sibling: smooth 3D Buffon noodle via C¹ approximation; this file handles the abstract polygonal case in arbitrary dimension"
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "foundational",
+      "description": "Root ancestor: classical 2D Buffon's needle (α₂ = 2/π); the base case of the Cauchy-Crofton constant"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "foundational",
+      "description": "The properties of π appear in α₂ = 2/π, α₄ = 4/(3π) and the dimension comparisons using pi_lt_four, pi_gt_three, pi_lt_315"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Cauchy, A.-L.",
+      "title": "Mémoire sur la rectification des courbes et la quadrature des surfaces courbes",
+      "year": "1850",
+      "venue": "Mémoires de l'Académie des Sciences de Paris",
+      "note": "Original Cauchy formula: length of a convex body equals the average width; precursor to Cauchy-Crofton"
+    },
+    {
+      "authors": "Crofton, M. W.",
+      "title": "On the theory of local probability",
+      "year": "1868",
+      "venue": "Philosophical Transactions of the Royal Society of London, 158:181–199",
+      "note": "Crofton's integral formula for arc length as expected line crossings; established kinematic approach to geometric probability"
+    },
+    {
+      "authors": "Santaló, L. A.",
+      "title": "Integral Geometry and Geometric Probability",
+      "year": "1976",
+      "venue": "Addison-Wesley (Encyclopedia of Mathematics and its Applications, vol. 1)",
+      "note": "Definitive treatment of the Cauchy-Crofton formula in arbitrary dimension n including the kinematic measure and crossing factor recurrence"
+    },
+    {
+      "authors": "Klain, D. A. and Rota, G.-C.",
+      "title": "Introduction to Geometric Probability",
+      "year": "1997",
+      "venue": "Cambridge University Press (Lezioni Lincee)",
+      "note": "Modern introduction with clean presentation of the abstract Cauchy-Crofton framework and linearity of expectation proof"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory",
+      "BigOperators"
+    ],
+    "namespace": "BuffonsNeedleOQ02OQ03",
+    "lineCount": 286,
+    "axiomCount": 3,
+    "theoremCount": 27,
+    "definitionCount": 7,
+    "path": "Proofs/BuffonsNeedleOQ02OQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

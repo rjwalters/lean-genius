@@ -1,0 +1,59 @@
+{
+  "id": "buffons-needle-oq-02-oq-03",
+  "name": "Abstract Cauchy-Crofton formula for arbitrary kinematic measures in ℝⁿ",
+  "status": "completed",
+  "knowledge": {
+    "insights": [
+      "The entire polygonal Cauchy-Crofton formula follows from integral_add by list induction — linearity of expectation is the only tool needed beyond the single-segment axiom",
+      "simp_rw (not rw) is required for rewriting under integral binders in MeasureTheory",
+      "Step-2 recurrence α_{n+2} = (n/(n+1))·α_n follows from the step-4 recurrence by push_cast; ring for n≥2, and direct norm_num for n=1",
+      "Real.pi_lt_3141593 was removed from Mathlib v4.26.0; Real.pi_lt_315 is the correct bound to use (used in several gallery proofs)",
+      "Pattern matching in structural recursion requires explicit absurd cases for unreachable branches (| 0, h => absurd h (by omega))",
+      "Abstract formulation reveals Buffon 2D/3D are special cases of the same framework; shape independence is purely algebraic"
+    ],
+    "builtItems": [
+      "AffineHyperplane n: type alias EuclideanSpace ℝ (Fin n) × ℝ for {x : ⟪x,ν⟫ = c}",
+      "LineSegment.crossing: indicator function for endpoint-opposite-sides crossing test",
+      "totalCrossings / totalLength: list sums for polygonal paths",
+      "integrable_totalCrossings: integrability by list induction",
+      "cauchy_crofton_polygonal: main theorem E_μ[crossings(P)] = α_n · length(P) by induction + integral_add",
+      "crofton_shape_independence: equal arc length implies equal expected crossings",
+      "crofton_append: additivity under path concatenation",
+      "crossingFactor_step2: α_{n+2} = (n/(n+1))·α_n for n ≥ 1",
+      "crossingFactor_succ_succ_lt: strict decrease α_{n+2} < α_n for n ≥ 1",
+      "kinematic_two_more_informative: 2D kinematic measure gives more expected crossings than 3D",
+      "Dimension comparison chain: α₅ < α₄ < α₃ < α₂ proved using pi_lt_four, pi_gt_three, pi_lt_315",
+      "Gallery entry: src/data/proofs/buffons-needle-oq-02-oq-03/"
+    ],
+    "mathlibGaps": [
+      "Kinematic measure on space of affine hyperplanes (rotation+translation invariant measure on SE(n)/SE(n-1))",
+      "Cauchy-Crofton property as a theorem from motion invariance (need Haar measure on SE(n))",
+      "Grassmannian measure theory for integral geometry in Mathlib"
+    ],
+    "progressSummary": "COMPLETED: Abstract Cauchy-Crofton formula formalized with 3 axioms, 0 sorries, 27 theorems, 286 lines. Proves E_μ[crossings] = α_n · length for any polygonal path via linearity of expectation.",
+    "nextSteps": [
+      "Build kinematic measure from Haar measure on SE(n) to eliminate kinematicMeasure axiom",
+      "Prove cauchy_crofton_segment from rotation invariance to eliminate that axiom",
+      "Extend to smooth curves via C¹ approximation in arbitrary dimension"
+    ]
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ03.lean",
+      "filename": "BuffonsNeedleOQ02OQ03.lean",
+      "lineCount": 286,
+      "theoremCount": 27,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "buffons-needle",
+    "buffons-needle-oq-02",
+    "buffons-needle-oq-02-oq-01",
+    "buffons-needle-oq-02-oq-02"
+  ]
+}
