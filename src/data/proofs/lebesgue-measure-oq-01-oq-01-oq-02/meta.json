@@ -154,6 +154,12 @@
   "conclusion": {
     "summary": "The complete continuity characterization of Thomae's function is formally verified in Lean 4. The proof demonstrates that a formally verified epsilon-delta argument can cleanly handle the key challenge — using finiteness of low-denominator rationals to control the function value near irrationals. The biconditional `thomae_continuous_iff` is the main result: ContinuousAt thomae x ↔ Irrational x.",
     "significance": "This formalization adds a landmark real analysis example to the gallery. Thomae's function is historically significant as the prototype for understanding Riemann integrability beyond continuous functions, and its continuity characterization is a standard theorem in any real analysis course.",
-    "limitations": "The proof uses classical logic (noncomputable definition via `h.choose`). A constructive formalization would require a constructive characterization of the rational/irrational dichotomy."
+    "limitations": "The proof uses classical logic (noncomputable definition via `h.choose`). A constructive formalization would require a constructive characterization of the rational/irrational dichotomy.",
+    "implications": "The epsilon-delta approach — bounding the function by a threshold ε/2 and exploiting finiteness of the rational obstruction set — is a reusable pattern for other functions with countable discontinuity sets. The proof that Thomae's function is Riemann integrable (all discontinuities form a null set) follows directly from this continuity characterization. This formalization validates that Mathlib's `Irrational` API is expressive enough for density arguments in real analysis.",
+    "openQuestions": [
+      "Can Thomae's function be shown to be Riemann integrable in Lean 4, using the continuity-almost-everywhere result proved here together with the Lebesgue criterion?",
+      "Can a constructive proof be given for `thomae_irrational_continuous` that avoids classical choice (`h.choose`), using a computable approximation to the irrational?",
+      "Can the pattern (finite obstruction set → epsilon-delta continuity) be abstracted to a general Mathlib lemma about functions with countable jump discontinuities?"
+    ]
   }
 }
