@@ -281,6 +281,7 @@ import Proofs.BuffonsNeedleOQ01OQ02
 import Proofs.BuffonsNeedleOQ02
 import Proofs.BuffonsNeedleOQ02OQ01
 import Proofs.BuffonsNeedleOQ02OQ02
+import Proofs.BuffonsNeedleOQ02OQ03
 import Proofs.BuffonsNoodle
 import Proofs.BurnsideCounting
 import Proofs.BurnsideCountingOQ03
