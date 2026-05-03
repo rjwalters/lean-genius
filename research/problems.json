@@ -341,8 +341,8 @@
   },
   {
     "id": "basel-problem-oq-01",
-    "title": "Is ζ(5) irrational",
-    "description": "Is ζ(5) irrational? (ζ(3) was proved irrational by Apéry in 1978, but ζ(5) remains unknown)",
+    "title": "Is \u03b6(5) irrational",
+    "description": "Is \u03b6(5) irrational? (\u03b6(3) was proved irrational by Ap\u00e9ry in 1978, but \u03b6(5) remains unknown)",
     "source": {
       "proofId": "basel-problem",
       "proofTitle": "The Basel Problem: Sum of Reciprocal Squares",
@@ -364,8 +364,8 @@
   },
   {
     "id": "basel-problem-oq-02",
-    "title": "Are all odd zeta values ζ(2k+1) transcendental",
-    "description": "Are all odd zeta values ζ(2k+1) transcendental?",
+    "title": "Are all odd zeta values \u03b6(2k+1) transcendental",
+    "description": "Are all odd zeta values \u03b6(2k+1) transcendental?",
     "source": {
       "proofId": "basel-problem",
       "proofTitle": "The Basel Problem: Sum of Reciprocal Squares",
@@ -906,7 +906,7 @@
   {
     "id": "central-limit-theorem-oq-01",
     "title": "What happens when variance is infinite",
-    "description": "What happens when variance is infinite? This leads to stable distributions (Lévy alpha-stable) with heavier tails than the Gaussian.",
+    "description": "What happens when variance is infinite? This leads to stable distributions (L\u00e9vy alpha-stable) with heavier tails than the Gaussian.",
     "source": {
       "proofId": "central-limit-theorem",
       "proofTitle": "Central Limit Theorem",
@@ -928,7 +928,7 @@
   {
     "id": "central-limit-theorem-oq-02",
     "title": "Can CLT be generalized to dependent random variables",
-    "description": "Can CLT be generalized to dependent random variables? Yes, under mixing conditions—but the geometry becomes more complex.",
+    "description": "Can CLT be generalized to dependent random variables? Yes, under mixing conditions\u2014but the geometry becomes more complex.",
     "source": {
       "proofId": "central-limit-theorem",
       "proofTitle": "Central Limit Theorem",
@@ -1628,7 +1628,7 @@
     "description": "How can the pigeonhole argument be fully formalized with explicit pair tracking?",
     "source": {
       "proofId": "erdos-szekeres",
-      "proofTitle": "Erdős–Szekeres Theorem",
+      "proofTitle": "Erd\u0151s\u2013Szekeres Theorem",
       "type": "open-question"
     },
     "category": "extension",
@@ -1650,7 +1650,7 @@
     "description": "What is the complexity of finding the actual monotonic subsequence?",
     "source": {
       "proofId": "erdos-szekeres",
-      "proofTitle": "Erdős–Szekeres Theorem",
+      "proofTitle": "Erd\u0151s\u2013Szekeres Theorem",
       "type": "open-question"
     },
     "category": "extension",
@@ -1672,7 +1672,7 @@
     "description": "How does this generalize to higher dimensions (Ramsey numbers for hypergraphs)?",
     "source": {
       "proofId": "erdos-szekeres",
-      "proofTitle": "Erdős–Szekeres Theorem",
+      "proofTitle": "Erd\u0151s\u2013Szekeres Theorem",
       "type": "open-question"
     },
     "category": "generalization",
@@ -1690,8 +1690,8 @@
   },
   {
     "id": "euler-identity-oq-01",
-    "title": "Why do e, i, and π—defined so differently—combine so simply",
-    "description": "Why do e, i, and π—defined so differently—combine so simply? Is there a deeper explanation?",
+    "title": "Why do e, i, and \u03c0\u2014defined so differently\u2014combine so simply",
+    "description": "Why do e, i, and \u03c0\u2014defined so differently\u2014combine so simply? Is there a deeper explanation?",
     "source": {
       "proofId": "euler-identity",
       "proofTitle": "Euler's Identity",
@@ -2602,7 +2602,7 @@
     "description": "Can human mathematical reasoning genuinely transcend formal systems, or are we also bound by incompleteness?",
     "source": {
       "proofId": "godel-incompleteness",
-      "proofTitle": "Gödel's First Incompleteness Theorem",
+      "proofTitle": "G\u00f6del's First Incompleteness Theorem",
       "type": "open-question"
     },
     "category": "extension",
@@ -2624,7 +2624,7 @@
     "description": "Are there 'natural' mathematical statements (not self-referential) that are independent of standard axioms?",
     "source": {
       "proofId": "godel-incompleteness",
-      "proofTitle": "Gödel's First Incompleteness Theorem",
+      "proofTitle": "G\u00f6del's First Incompleteness Theorem",
       "type": "open-question"
     },
     "category": "extension",
@@ -2646,7 +2646,7 @@
     "description": "Could new axioms (like large cardinals) help us prove currently unprovable statements, and how do we know which axioms to trust?",
     "source": {
       "proofId": "godel-incompleteness",
-      "proofTitle": "Gödel's First Incompleteness Theorem",
+      "proofTitle": "G\u00f6del's First Incompleteness Theorem",
       "type": "open-question"
     },
     "category": "extension",
@@ -2776,8 +2776,8 @@
   },
   {
     "id": "harmonic-divergence-oq-01",
-    "title": "Is the Euler-Mascheroni constant γ ≈ 0",
-    "description": "Is the Euler-Mascheroni constant γ ≈ 0.5772 rational or irrational?",
+    "title": "Is the Euler-Mascheroni constant \u03b3 \u2248 0",
+    "description": "Is the Euler-Mascheroni constant \u03b3 \u2248 0.5772 rational or irrational?",
     "source": {
       "proofId": "harmonic-divergence",
       "proofTitle": "Divergence of the Harmonic Series",
@@ -2798,8 +2798,8 @@
   },
   {
     "id": "harmonic-divergence-oq-02",
-    "title": "What is the precise rate of convergence of H_n - ln(n) to γ",
-    "description": "What is the precise rate of convergence of H_n - ln(n) to γ?",
+    "title": "What is the precise rate of convergence of H_n - ln(n) to \u03b3",
+    "description": "What is the precise rate of convergence of H_n - ln(n) to \u03b3?",
     "source": {
       "proofId": "harmonic-divergence",
       "proofTitle": "Divergence of the Harmonic Series",
@@ -3773,7 +3773,7 @@
   {
     "id": "infinitude-primes-oq-01",
     "title": "Bertrand's Postulate: Is there always a prime between $n$ and $2n$",
-    "description": "Bertrand's Postulate: Is there always a prime between $n$ and $2n$? (Yes—proved by Chebyshev in 1852)",
+    "description": "Bertrand's Postulate: Is there always a prime between $n$ and $2n$? (Yes\u2014proved by Chebyshev in 1852)",
     "source": {
       "proofId": "infinitude-primes",
       "proofTitle": "Infinitude of Prime Numbers",
@@ -4163,7 +4163,7 @@
     "description": "How can we efficiently find Eulerian paths when they exist? (Hierholzer's algorithm solves this in linear time)",
     "source": {
       "proofId": "konigsberg",
-      "proofTitle": "Königsberg Bridges Problem",
+      "proofTitle": "K\u00f6nigsberg Bridges Problem",
       "type": "open-question"
     },
     "category": "extension",
@@ -4184,7 +4184,7 @@
     "description": "What's the analog of Eulerian paths for directed graphs? (In-degree must equal out-degree for all vertices except possibly two)",
     "source": {
       "proofId": "konigsberg",
-      "proofTitle": "Königsberg Bridges Problem",
+      "proofTitle": "K\u00f6nigsberg Bridges Problem",
       "type": "open-question"
     },
     "category": "extension",
@@ -4205,7 +4205,7 @@
     "description": "How does the problem generalize to hypergraphs or infinite graphs?",
     "source": {
       "proofId": "konigsberg",
-      "proofTitle": "Königsberg Bridges Problem",
+      "proofTitle": "K\u00f6nigsberg Bridges Problem",
       "type": "open-question"
     },
     "category": "generalization",
@@ -4226,7 +4226,7 @@
     "description": "What computational complexity does it take to count all Eulerian paths in a graph?",
     "source": {
       "proofId": "konigsberg",
-      "proofTitle": "Königsberg Bridges Problem",
+      "proofTitle": "K\u00f6nigsberg Bridges Problem",
       "type": "open-question"
     },
     "category": "extension",
@@ -5808,8 +5808,8 @@
   },
   {
     "id": "ramseys-theorem-oq-02",
-    "title": "Can we improve the upper bound R(r,s) ≤ C(r+s-2, r-1)",
-    "description": "Can we improve the upper bound R(r,s) ≤ C(r+s-2, r-1)?",
+    "title": "Can we improve the upper bound R(r,s) \u2264 C(r+s-2, r-1)",
+    "description": "Can we improve the upper bound R(r,s) \u2264 C(r+s-2, r-1)?",
     "source": {
       "proofId": "ramseys-theorem",
       "proofTitle": "Ramsey's Theorem",
@@ -6207,7 +6207,7 @@
   {
     "id": "sqrt2-irrational-oq-02",
     "title": "Are there irrational numbers that aren't roots of any polynomial",
-    "description": "Are there irrational numbers that aren't roots of any polynomial? Yes—transcendental numbers like $\\pi$ and $e$. Proving their irrationality is much harder.",
+    "description": "Are there irrational numbers that aren't roots of any polynomial? Yes\u2014transcendental numbers like $\\pi$ and $e$. Proving their irrationality is much harder.",
     "source": {
       "proofId": "sqrt2-irrational",
       "proofTitle": "Irrationality of Square Roots",
@@ -6493,7 +6493,7 @@
   {
     "id": "three-place-identity-oq-02",
     "title": "Etter's 'Stereo Equality Theorem' claims two separate equality predicates suf...",
-    "description": "Etter's 'Stereo Equality Theorem' claims two separate equality predicates suffice—can this be formalized?",
+    "description": "Etter's 'Stereo Equality Theorem' claims two separate equality predicates suffice\u2014can this be formalized?",
     "source": {
       "proofId": "three-place-identity",
       "proofTitle": "Universality of Three-Place Identity",
@@ -6540,8 +6540,8 @@
   },
   {
     "id": "triangle-inequality-oq-01",
-    "title": "How does the triangle inequality generalize to quasi-metrics (where d(x,y) ≠ ...",
-    "description": "How does the triangle inequality generalize to quasi-metrics (where d(x,y) ≠ d(y,x))?",
+    "title": "How does the triangle inequality generalize to quasi-metrics (where d(x,y) \u2260 ...",
+    "description": "How does the triangle inequality generalize to quasi-metrics (where d(x,y) \u2260 d(y,x))?",
     "source": {
       "proofId": "triangle-inequality",
       "proofTitle": "The Triangle Inequality",
@@ -6970,11 +6970,11 @@
   },
   {
     "id": "erdos-szekeres-incomplete-01",
-    "title": "Complete proof of Erdős–Szekeres Theorem",
+    "title": "Complete proof of Erd\u0151s\u2013Szekeres Theorem",
     "description": "This proof has 2 sorry statements that need to be filled in.",
     "source": {
       "proofId": "erdos-szekeres",
-      "proofTitle": "Erdős–Szekeres Theorem",
+      "proofTitle": "Erd\u0151s\u2013Szekeres Theorem",
       "type": "incomplete"
     },
     "category": "completion",
@@ -6993,11 +6993,11 @@
   },
   {
     "id": "erdos-szekeres-wip-01",
-    "title": "Complete Erdős–Szekeres Theorem (Work in Progress)",
+    "title": "Complete Erd\u0151s\u2013Szekeres Theorem (Work in Progress)",
     "description": "This proof is marked as work in progress and needs completion.",
     "source": {
       "proofId": "erdos-szekeres",
-      "proofTitle": "Erdős–Szekeres Theorem",
+      "proofTitle": "Erd\u0151s\u2013Szekeres Theorem",
       "type": "wip"
     },
     "category": "completion",
@@ -7213,8 +7213,8 @@
   },
   {
     "id": "geometric-series-oq-03",
-    "title": "What is the relationship to the Riemann zeta function ζ(s)",
-    "description": "What is the relationship to the Riemann zeta function ζ(s)?",
+    "title": "What is the relationship to the Riemann zeta function \u03b6(s)",
+    "description": "What is the relationship to the Riemann zeta function \u03b6(s)?",
     "source": {
       "proofId": "geometric-series",
       "proofTitle": "Sum of a Geometric Series",
@@ -7235,11 +7235,11 @@
   },
   {
     "id": "godel-incompleteness-oq-02",
-    "title": "What is the relationship between Gödel incompleteness, Turing undecidability,...",
-    "description": "What is the relationship between Gödel incompleteness, Turing undecidability, and Chaitin incompleteness?",
+    "title": "What is the relationship between G\u00f6del incompleteness, Turing undecidability,...",
+    "description": "What is the relationship between G\u00f6del incompleteness, Turing undecidability, and Chaitin incompleteness?",
     "source": {
       "proofId": "godel-incompleteness",
-      "proofTitle": "Gödel's First Incompleteness Theorem",
+      "proofTitle": "G\u00f6del's First Incompleteness Theorem",
       "type": "open-question"
     },
     "category": "connection",
@@ -7760,8 +7760,8 @@
   },
   {
     "id": "inclusion-exclusion-oq-02",
-    "title": "How does this connect to Möbius inversion on posets",
-    "description": "How does this connect to Möbius inversion on posets?",
+    "title": "How does this connect to M\u00f6bius inversion on posets",
+    "description": "How does this connect to M\u00f6bius inversion on posets?",
     "source": {
       "proofId": "inclusion-exclusion",
       "proofTitle": "Principle of Inclusion/Exclusion",
@@ -8049,7 +8049,10 @@
     ],
     "relatedProofs": [
       "picks-theorem"
-    ]
+    ],
+    "status": "completed",
+    "phase": "COMPLETED",
+    "progressSummary": "COMPLETE: GCD boundary formula proved with 0 axioms, 0 sorries. PR #15125."
   },
   {
     "id": "platonic-solids-oq-03",
@@ -8325,8 +8328,8 @@
   },
   {
     "id": "bertrands-postulate-oq-01",
-    "title": "Cramér's Conjecture: Are prime gaps bounded by O((log p)²)",
-    "description": "Cramér's Conjecture: Are prime gaps bounded by O((log p)²)?",
+    "title": "Cram\u00e9r's Conjecture: Are prime gaps bounded by O((log p)\u00b2)",
+    "description": "Cram\u00e9r's Conjecture: Are prime gaps bounded by O((log p)\u00b2)?",
     "source": {
       "proofId": "bertrands-postulate",
       "proofTitle": "Bertrand's Postulate",
@@ -8347,8 +8350,8 @@
   },
   {
     "id": "bertrands-postulate-oq-02",
-    "title": "Is there always a prime between n² and (n+1)² (Legendre's conjecture)",
-    "description": "Is there always a prime between n² and (n+1)² (Legendre's conjecture)?",
+    "title": "Is there always a prime between n\u00b2 and (n+1)\u00b2 (Legendre's conjecture)",
+    "description": "Is there always a prime between n\u00b2 and (n+1)\u00b2 (Legendre's conjecture)?",
     "source": {
       "proofId": "bertrands-postulate",
       "proofTitle": "Bertrand's Postulate",
@@ -8743,8 +8746,8 @@
   },
   {
     "id": "navier-stokes-regularity-oq-01",
-    "title": "Can B′ be proven in restricted settings (axisymmetric, periodic, finite energy)",
-    "description": "Can B′ be proven in restricted settings (axisymmetric, periodic, finite energy)?",
+    "title": "Can B\u2032 be proven in restricted settings (axisymmetric, periodic, finite energy)",
+    "description": "Can B\u2032 be proven in restricted settings (axisymmetric, periodic, finite energy)?",
     "source": {
       "proofId": "navier-stokes-regularity",
       "proofTitle": "Global Regularity for Navier-Stokes",
@@ -8765,8 +8768,8 @@
   },
   {
     "id": "navier-stokes-regularity-oq-02",
-    "title": "Can B′ be weakened to finitely many dyadic scales",
-    "description": "Can B′ be weakened to finitely many dyadic scales?",
+    "title": "Can B\u2032 be weakened to finitely many dyadic scales",
+    "description": "Can B\u2032 be weakened to finitely many dyadic scales?",
     "source": {
       "proofId": "navier-stokes-regularity",
       "proofTitle": "Global Regularity for Navier-Stokes",
@@ -8831,8 +8834,8 @@
   },
   {
     "id": "navier-stokes-regularity-oq-05",
-    "title": "Is there a Carleman-type argument that forces B′",
-    "description": "Is there a Carleman-type argument that forces B′?",
+    "title": "Is there a Carleman-type argument that forces B\u2032",
+    "description": "Is there a Carleman-type argument that forces B\u2032?",
     "source": {
       "proofId": "navier-stokes-regularity",
       "proofTitle": "Global Regularity for Navier-Stokes",
