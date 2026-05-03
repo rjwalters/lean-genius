@@ -44,7 +44,7 @@ noncomputable def gpfConsecutive (n k : ℕ) : ℕ :=
 /-- Upper density of a set S ⊆ ℕ: lim sup of |S ∩ [1,N]| / N. -/
 noncomputable def upperDensity (S : Set ℕ) : ℝ :=
   Filter.limsup (fun N : ℕ =>
-    ((Finset.Icc 1 N).filter (fun n => n ∈ S)).card / (N : ℝ))
+    (((Finset.Icc 1 N).filter (fun n => n ∈ S)).card : ℝ) / (N : ℝ))
   Filter.atTop
 
 /-
@@ -76,7 +76,8 @@ axiom erdos_1201_half_case (η : ℝ) (hη : 0 < η) :
 /-- For n ≥ 2, greatestPrimeFactor n is prime. -/
 theorem gpf_prime (n : ℕ) (hn : 2 ≤ n) : (greatestPrimeFactor n).Prime := by
   unfold greatestPrimeFactor
-  have h : n.primeFactors.Nonempty := Nat.primeFactors_nonempty.mpr (by omega)
+  have h : n.primeFactors.Nonempty :=
+    ⟨n.minFac, Nat.mem_primeFactors.mpr ⟨Nat.minFac_prime (by omega), Nat.minFac_dvd n, by omega⟩⟩
   rw [dif_pos h]
   exact Nat.prime_of_mem_primeFactors (Finset.max'_mem _ h)
 
@@ -84,7 +85,8 @@ theorem gpf_prime (n : ℕ) (hn : 2 ≤ n) : (greatestPrimeFactor n).Prime := by
 theorem gpf_mem_primeFactors (n : ℕ) (hn : 2 ≤ n) :
     greatestPrimeFactor n ∈ n.primeFactors := by
   unfold greatestPrimeFactor
-  have h : n.primeFactors.Nonempty := Nat.primeFactors_nonempty.mpr (by omega)
+  have h : n.primeFactors.Nonempty :=
+    ⟨n.minFac, Nat.mem_primeFactors.mpr ⟨Nat.minFac_prime (by omega), Nat.minFac_dvd n, by omega⟩⟩
   rw [dif_pos h]
   exact Finset.max'_mem _ h
 
@@ -129,19 +131,20 @@ theorem consecutiveProduct_pos (n k : ℕ) (hn : 1 ≤ n) : 0 < consecutiveProdu
 
 /-- n divides consecutiveProduct n k. -/
 theorem dvd_consecutiveProduct_left (n k : ℕ) : n ∣ consecutiveProduct n k := by
-  apply Finset.dvd_prod_of_mem
-  simp [Finset.mem_range]
+  simp only [consecutiveProduct]
+  have h := Finset.dvd_prod_of_mem (fun i => n + i) (Finset.mem_range.mpr (Nat.succ_pos k))
+  simpa using h
 
 /-- (n+k) divides consecutiveProduct n k. -/
 theorem dvd_consecutiveProduct_right (n k : ℕ) : n + k ∣ consecutiveProduct n k := by
-  apply Finset.dvd_prod_of_mem
-  simp [consecutiveProduct, Finset.mem_range]
+  simp only [consecutiveProduct]
+  exact Finset.dvd_prod_of_mem _ (Finset.mem_range.mpr (Nat.lt_succ_self k))
 
 /-- consecutiveProduct n k = n * consecutiveProduct (n+1) (k-1) for k ≥ 1. -/
 theorem consecutiveProduct_succ (n k : ℕ) :
     consecutiveProduct n (k + 1) = n * consecutiveProduct (n + 1) k := by
-  unfold consecutiveProduct
-  rw [Finset.range_succ', Finset.prod_insert (by simp)]
+  simp only [consecutiveProduct, Finset.prod_range_succ', Nat.add_zero]
+  rw [mul_comm]
   congr 1
   apply Finset.prod_congr rfl
   intro i _
@@ -163,26 +166,26 @@ theorem dvd_consecutiveProduct_of_dvd_lt (n k : ℕ) (p : ℕ) (hp : p ∣ conse
 theorem gpfConsecutive_mono (n k : ℕ) (hn : 2 ≤ n) :
     gpfConsecutive n k ≤ gpfConsecutive n (k + 1) := by
   unfold gpfConsecutive greatestPrimeFactor
-  have h1 : (consecutiveProduct n k).primeFactors.Nonempty := by
-    apply Nat.primeFactors_nonempty.mpr
-    have := consecutiveProduct_pos n k (by omega)
-    omega
+  have hcp1 : 2 ≤ consecutiveProduct n k :=
+    Nat.le_trans hn (Nat.le_of_dvd (consecutiveProduct_pos n k (by omega))
+      (dvd_consecutiveProduct_left n k))
+  have h1 : (consecutiveProduct n k).primeFactors.Nonempty :=
+    ⟨(consecutiveProduct n k).minFac,
+     Nat.mem_primeFactors.mpr ⟨Nat.minFac_prime (by omega), Nat.minFac_dvd _, by omega⟩⟩
   rw [dif_pos h1]
-  have h2 : (consecutiveProduct n (k + 1)).primeFactors.Nonempty := by
-    apply Nat.primeFactors_nonempty.mpr
-    have := consecutiveProduct_pos n (k + 1) (by omega)
-    omega
+  have hcp2 : 2 ≤ consecutiveProduct n (k + 1) :=
+    Nat.le_trans hn (Nat.le_of_dvd (consecutiveProduct_pos n (k + 1) (by omega))
+      (dvd_consecutiveProduct_left n (k + 1)))
+  have h2 : (consecutiveProduct n (k + 1)).primeFactors.Nonempty :=
+    ⟨(consecutiveProduct n (k + 1)).minFac,
+     Nat.mem_primeFactors.mpr ⟨Nat.minFac_prime (by omega), Nat.minFac_dvd _, by omega⟩⟩
   rw [dif_pos h2]
-  apply Finset.max'_le _ _ _ h2
+  apply Finset.max'_le h1
   intro p hp
-  apply Finset.le_max'
-  -- p ∈ (consecutiveProduct n (k+1)).primeFactors
-  -- from p ∈ (consecutiveProduct n k).primeFactors
+  apply Finset.le_max' h2
   rw [Nat.mem_primeFactors] at hp ⊢
   obtain ⟨hpp, hpdvd, hne⟩ := hp
-  refine ⟨hpp, ?_, by
-    have := consecutiveProduct_pos n (k + 1) (by omega); omega⟩
-  exact dvd_consecutiveProduct_of_dvd_lt n k p hpdvd
+  exact ⟨hpp, dvd_consecutiveProduct_of_dvd_lt n k p hpdvd, by omega⟩
 
 /-
 ## Large Prime Factor Criterion
@@ -199,10 +202,9 @@ theorem gpfConsecutive_large_of_prime_dvd (n k : ℕ) (p : ℕ)
     rw [Nat.mem_primeFactors]
     refine ⟨hp, ?_, by
       have := consecutiveProduct_pos n k (by omega); omega⟩
-    apply dvd_trans hpi
-    apply Finset.dvd_prod_of_mem
-    simp [consecutiveProduct, Finset.mem_range]
-    omega
+    exact dvd_trans hpi (by
+      simp only [consecutiveProduct]
+      exact Finset.dvd_prod_of_mem _ (Finset.mem_range.mpr (by omega)))
   have h_le := gpf_max (consecutiveProduct n k) p h_in_cf
   calc (n : ℝ) ^ (1 - ε) < (p : ℝ) := hpε
     _ ≤ (gpfConsecutive n k : ℝ) := by exact_mod_cast h_le
@@ -216,10 +218,9 @@ theorem consecutiveProduct_ge_n (n k : ℕ) (hn : 1 ≤ n) :
     n ≤ consecutiveProduct n k := by
   calc n = consecutiveProduct n 0 := (consecutiveProduct_zero n).symm
     _ ≤ consecutiveProduct n k := by
-        apply Finset.prod_le_prod_of_subset
-        · exact Finset.range_mono (by omega)
-        · intro i _
-          exact le_refl _
+        simp only [consecutiveProduct]
+        apply Finset.prod_le_prod_of_subset_of_one_le' (Finset.range_mono (by omega))
+        intro i _ _; omega
 
 /-- gpfConsecutive n k ≥ 2 when n ≥ 2. -/
 theorem gpfConsecutive_ge_two (n k : ℕ) (hn : 2 ≤ n) : 2 ≤ gpfConsecutive n k := by
@@ -232,12 +233,24 @@ theorem gpfConsecutive_ge_two (n k : ℕ) (hn : 2 ≤ n) : 2 ≤ gpfConsecutive 
 ## Comparison with ε = 1/2 case
 -/
 
-/-- The ε = 1/2 condition: P(n, k) > √n is equivalent to P(n,k)² > n when P(n,k) ≥ 1. -/
-theorem gpfConsecutive_half_iff (n k : ℕ) (hn : 2 ≤ n) :
+/-- The ε = 1/2 condition: P(n, k) > √n is equivalent to P(n,k)² > n, for all n ∈ ℕ. -/
+theorem gpfConsecutive_half_iff (n k : ℕ) :
     Real.sqrt n < (gpfConsecutive n k : ℝ) ↔
     n < (gpfConsecutive n k) ^ 2 := by
-  rw [← Real.sqrt_lt' (by positivity)]
-  simp [Real.sqrt_lt_sqrt_iff (by positivity)]
+  constructor
+  · intro h
+    have h1 : (n : ℝ) < (gpfConsecutive n k : ℝ) ^ 2 :=
+      calc (n : ℝ) = Real.sqrt n ^ 2 := (Real.sq_sqrt (Nat.cast_nonneg n)).symm
+        _ < _ := by nlinarith [Real.sqrt_nonneg (n : ℝ)]
+    exact_mod_cast h1
+  · intro h
+    by_cases hgpf : gpfConsecutive n k = 0
+    · simp [hgpf] at h
+    · have hgpf_pos : 0 < (gpfConsecutive n k : ℝ) := Nat.cast_pos.mpr (Nat.pos_of_ne_zero hgpf)
+      have h1 : (n : ℝ) < (gpfConsecutive n k : ℝ) ^ 2 := by exact_mod_cast h
+      calc Real.sqrt n < Real.sqrt ((gpfConsecutive n k : ℝ) ^ 2) :=
+            Real.sqrt_lt_sqrt (Nat.cast_nonneg n) h1
+        _ = gpfConsecutive n k := Real.sqrt_sq hgpf_pos.le
 
 /-- The ε = 1/2 partial result specializes to: ∀ η > 0, ∃ k, density of
     {n | gpfConsecutive n k² > n} ≥ 1 - η. -/
@@ -245,24 +258,9 @@ theorem erdos_1201_half_squared (η : ℝ) (hη : 0 < η) :
     ∃ k : ℕ,
       upperDensity {n : ℕ | n < (gpfConsecutive n k) ^ 2} ≥ 1 - η := by
   obtain ⟨k, hk⟩ := erdos_1201_half_case η hη
-  refine ⟨k, ?_⟩
-  have : {n : ℕ | Real.sqrt n < (gpfConsecutive n k : ℝ)} =
-         {n : ℕ | n < (gpfConsecutive n k) ^ 2} := by
-    ext n
-    constructor
-    · intro h
-      have hn2 : 2 ≤ n := by
-        by_contra hlt
-        push_neg at hlt
-        interval_cases n <;> simp [gpfConsecutive, consecutiveProduct, greatestPrimeFactor] at h ⊢
-      rwa [gpfConsecutive_half_iff n k hn2] at h
-    · intro h
-      have hn2 : 2 ≤ n := by
-        by_contra hlt
-        push_neg at hlt
-        interval_cases n <;> simp [gpfConsecutive, consecutiveProduct, greatestPrimeFactor] at h ⊢
-      rwa [← gpfConsecutive_half_iff n k hn2]
-  rwa [this] at hk
+  exact ⟨k, by rwa [show {n : ℕ | Real.sqrt ↑n < ↑(gpfConsecutive n k)} =
+                         {n : ℕ | n < (gpfConsecutive n k) ^ 2} from
+                   Set.ext (fun n => gpfConsecutive_half_iff n k)]⟩
 
 /-
 ## Bertrand's Postulate Consequences
@@ -315,9 +313,8 @@ theorem gpfConsecutive_ge_self_of_prime (n k : ℕ) (hn : n.Prime) :
     Generalizes dvd_consecutiveProduct_right (the i=k case). -/
 theorem dvd_consecutiveProduct_term (n k i : ℕ) (hi : i ≤ k) :
     n + i ∣ consecutiveProduct n k := by
-  apply Finset.dvd_prod_of_mem
-  simp [Finset.mem_range]
-  omega
+  simp only [consecutiveProduct]
+  exact Finset.dvd_prod_of_mem _ (Finset.mem_range.mpr (by omega))
 
 /-
 ## Infinitely Many n with Large GPF
@@ -337,5 +334,59 @@ theorem erdos_1201_infinitely_many (k : ℕ) (ε : ℝ) (hε₀ : 0 < ε) (_hε�
       < (n : ℝ) ^ (1 : ℝ) := Real.rpow_lt_rpow_of_exponent_lt hn1 (by linarith)
     _ = (n : ℝ) := Real.rpow_one _
     _ ≤ (gpfConsecutive n k : ℝ) := h_real
+
+/-
+## Upper Bounds and Tight Estimates
+-/
+
+/-- gpfConsecutive n 0 = greatestPrimeFactor n: window of width 0 is just the starting term. -/
+theorem gpfConsecutive_zero (n : ℕ) : gpfConsecutive n 0 = greatestPrimeFactor n := by
+  simp [gpfConsecutive, consecutiveProduct_zero]
+
+/-- If p is prime and divides ∏ i < k+1, (n+i), then p divides some n+i with i < k+1. -/
+private lemma prime_dvd_consecutive_range (n k : ℕ) (p : ℕ) (hp : p.Prime)
+    (h : p ∣ (Finset.range (k + 1)).prod (fun i => n + i)) :
+    ∃ i < k + 1, p ∣ n + i := by
+  induction k with
+  | zero => exact ⟨0, Nat.lt_succ_self 0, by simpa using h⟩
+  | succ k ih =>
+    rw [Finset.prod_range_succ] at h
+    rcases hp.dvd_mul.mp h with h1 | h2
+    · obtain ⟨i, hi, hpi⟩ := ih h1
+      exact ⟨i, Nat.lt_trans hi (Nat.lt_succ_self _), hpi⟩
+    · exact ⟨k + 1, Nat.lt_succ_self _, h2⟩
+
+/-- Upper bound: every prime factor of the window [n, n+k] is ≤ n+k, so P(n,k) ≤ n+k. -/
+theorem gpfConsecutive_upper_bound (n k : ℕ) (hn : 1 ≤ n) :
+    gpfConsecutive n k ≤ n + k := by
+  unfold gpfConsecutive greatestPrimeFactor
+  split_ifs with h
+  swap; · exact Nat.zero_le _
+  apply Finset.max'_le _ _ h
+  intro p hp
+  rw [Nat.mem_primeFactors] at hp
+  obtain ⟨hp_prime, hp_dvd, _⟩ := hp
+  have hdvd : ∃ i < k + 1, p ∣ n + i :=
+    prime_dvd_consecutive_range n k p hp_prime hp_dvd
+  obtain ⟨i, hi, hpi⟩ := hdvd
+  exact Nat.le_trans (Nat.le_of_dvd (by omega) hpi) (by omega)
+
+/-- Lower bound: if prime p divides term n+i in the window (i ≤ k), then p ≤ P(n,k). -/
+theorem le_gpfConsecutive_of_prime_dvd_term (n k i : ℕ) (hn : 1 ≤ n) (hi : i ≤ k) (p : ℕ)
+    (hp : p.Prime) (hpdvd : p ∣ n + i) : p ≤ gpfConsecutive n k := by
+  have hcp : 2 ≤ consecutiveProduct n k :=
+    Nat.le_trans hp.two_le
+      (Nat.le_trans (Nat.le_of_dvd (by omega) hpdvd)
+        (Nat.le_of_dvd (consecutiveProduct_pos n k hn)
+          (dvd_consecutiveProduct_term n k i hi)))
+  unfold gpfConsecutive
+  exact gpf_ge_prime_dvd (consecutiveProduct n k) p hcp hp
+    (dvd_trans hpdvd (dvd_consecutiveProduct_term n k i hi))
+
+/-- Tight Bertrand bound: for n ≥ 1, n < P(n,n) ≤ 2n (prime in Bertrand window). -/
+theorem gpfConsecutive_between (n : ℕ) (hn : 1 ≤ n) :
+    n < gpfConsecutive n n ∧ gpfConsecutive n n ≤ 2 * n := by
+  exact ⟨gpfConsecutive_self_gt n hn,
+         by have := gpfConsecutive_upper_bound n n hn; omega⟩
 
 end Erdos1201
