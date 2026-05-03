@@ -1,0 +1,150 @@
+{
+  "id": "erdos-1036-oq-01",
+  "title": "Erdős Problem #1036 OQ-01: Optimal Constant in Shelah's Theorem",
+  "slug": "erdos-1036-oq-01",
+  "description": "What is the optimal constant c' such that every non-Ramsey graph on n vertices has ≥ 2^{c'n} non-isomorphic induced subgraphs? Shelah (1998) guarantees c' > 0; random graphs suggest c' = 1 is achievable. OPEN.",
+  "meta": {
+    "author": "researcher-8",
+    "sourceUrl": "https://erdosproblems.com/1036",
+    "date": "2026-04-01",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1036Problem.lean",
+    "tags": [
+      "graph-theory",
+      "ramsey-theory",
+      "erdos",
+      "induced-subgraphs",
+      "combinatorics",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1036,
+    "erdosUrl": "https://erdosproblems.com/1036",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-04-01",
+    "dateUpdated": "2026-05-03",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 2,
+    "lineCount": 244,
+    "assumptions": "2 axioms: shelah_1998 (Shelah 1998 exponential lower bound) and nonRamseyExists (Erdős 1947, probabilistic method — non-Ramsey graphs exist for all c > 0). Note: numInducedSubgraphClasses is a placeholder (counts subsets, not isomorphism classes); correct formalization requires graph isomorphism quotient.",
+    "theoremCount": 9,
+    "definitionCount": 6,
+    "originalContributions": [
+      "optimalConstant: supremum of valid exponent constants c' for non-Ramsey(c) graphs",
+      "optimalConstant_pos: c' > 0 (lower bound from Shelah axiom)",
+      "optimalConstant_le_one: c' ≤ 1 (upper bound via non-Ramsey graph sampling)",
+      "optimalConstant_eq_one_placeholder: c' = 1 with placeholder numISC (placeholder artifact)",
+      "optimalConstantAtRandom: defines the open proposition that c = 2/log 2 achieves c' = 1",
+      "alon_hajnal_1991: sub-exponential Alon-Hajnal bound derived from Shelah"
+    ],
+    "proofStrategy": "Defines the optimal constant as a supremum over valid lower-bound exponents. Key insight: random graphs G(n,1/2) have max(ω,α) ~ 2 log₂ n and 2^n distinct induced subgraphs, suggesting c' = 1. Two bounds proved: optimalConstant_pos (Shelah guarantees c' > 0) and optimalConstant_le_one (non-Ramsey graphs on n vertices have ≤ 2^n induced subgraph classes, so c' ≤ 1). The true value of c' requires correct isomorphism-class counting; the current placeholder gives a trivial = 1 collapse."
+  },
+  "overview": {
+    "historicalContext": "Shelah (1998) proved that every non-Ramsey graph (with max(ω(G), α(G)) ≤ c log n) contains at least 2^{c'n} non-isomorphic induced subgraphs for some c' > 0 depending on c. The natural follow-up is: what is the best possible c'? Random graphs G(n,1/2) are non-Ramsey for c = 2/log₂ n and have almost all 2^n possible induced subgraph types (c' = 1 - o(1)). This suggests the optimal constant is c' = 1 (up to lower-order terms), but this remains open. The open question (oq-01) asks for the precise optimal constant as a function of c.",
+    "problemStatement": "**Open Question 01:** For a given c > 0, define the optimal constant\n\n$$c'(c) = \\sup\\{ c' \\geq 0 : \\text{every non-Ramsey}_c \\text{ graph on } n \\text{ vertices has} \\geq 2^{c'n} \\text{ non-isomorphic induced subgraphs}\\}$$\n\nWhat is $c'(c)$? Is $c'(c) = 1$ for all $c > 0$?\n\n**Known:** $c'(c) > 0$ (Shelah 1998) and $c'(c) \\leq 1$ (trivial: ≤ $2^n$ subsets). Random graphs suggest $c'(c) = 1 - o(1)$.",
+    "text": "What is the optimal constant c' such that every non-Ramsey graph on n vertices has ≥ 2^{c'n} non-isomorphic induced subgraphs? Bounds proved: 0 < c'(c) ≤ 1. Open: is c'(c) = 1?",
+    "proofStrategy": "The optimal constant c'(c) is defined as the supremum of valid exponent constants. Upper bound c'(c) ≤ 1: use nonRamseyExists to find a non-Ramsey graph G on n vertices; since the number of induced subgraph classes is at most the number of induced subgraphs (≤ 2^n), any c' > 1 fails. Lower bound c'(c) > 0: Shelah's theorem provides a specific c'' > 0. The definition uses Type (not Type*) for universe consistency in the sSup construction.",
+    "keyInsights": [
+      "**0 < c'(c) ≤ 1**: Lower bound from Shelah's theorem; upper bound from the trivial 2^n limit on induced subgraph classes",
+      "**Random graph suggestion**: G(n,1/2) achieves ~ (1-o(1))·2^n distinct induced subgraphs, suggesting c'(c) = 1 for c = 2/log 2",
+      "**Placeholder limitation**: The current formalization uses a placeholder for numInducedSubgraphClasses (counting all subsets) which trivially gives c' = 1 for all inputs. The true value requires a proper graph isomorphism quotient.",
+      "**Alon-Hajnal recovered**: The weaker sub-exponential bound of Alon-Hajnal (1991) is derived from Shelah using exp(t) ≥ t",
+      "**Complement symmetry**: If G is non-Ramsey, so is its complement, allowing WLOG arguments"
+    ],
+    "prerequisites": [
+      "Simple graphs and graph isomorphism",
+      "Clique and independence numbers",
+      "Ramsey theory (non-Ramsey graphs)",
+      "Induced subgraphs",
+      "Supremum of a bounded real set"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 28,
+      "endLine": 57,
+      "summary": "Defines cliqueNumber(G) = sSup of clique sizes, independenceNumber(G) = sSup of independent set sizes (= cliqueNumber of complement), IsNonRamsey(G,c) = max(ω(G),α(G)) ≤ c log n, and numInducedSubgraphClasses(G) = Fintype.card (Finset V) [PLACEHOLDER — counts subsets, not isomorphism classes].",
+      "mathContext": "Non-Ramsey condition: $\\omega(G) \\le c \\ln|V|$ and $\\alpha(G) \\le c \\ln|V|$ (using `Real.log` for natural log). Placeholder: $\\text{numISC}(G) = 2^{|V|}$ (all vertex subsets), not the true isomorphism quotient count. The placeholder makes all bounds trivially achievable."
+    },
+    {
+      "id": "axioms",
+      "title": "Axiomatized Results",
+      "startLine": 58,
+      "endLine": 73,
+      "summary": "Two axioms: shelah_1998 (for every c > 0, there exists c' > 0 such that every non-Ramsey(c) graph has ≥ 2^{c'n} induced subgraph classes) and nonRamseyExists (for every c > 0, there exist non-Ramsey(c) graphs — Erdős 1947 via probabilistic method).",
+      "mathContext": "shelah_1998: $\\forall c > 0,\\; \\exists c' > 0,\\; \\forall G \\text{ non-Ramsey}_c,\\; \\text{numISC}(G) \\ge 2^{c' \\cdot n}$. nonRamseyExists: $\\forall c > 0,\\; \\exists n \\ge 1,\\; \\exists G : \\text{SimpleGraph}(\\text{Fin } n),\\; \\text{IsNonRamsey}(G, c)$."
+    },
+    {
+      "id": "alon-hajnal",
+      "title": "Alon-Hajnal Sub-Exponential Bound",
+      "startLine": 74,
+      "endLine": 97,
+      "summary": "Theorem alon_hajnal_1991 (PROVED from shelah): for every c > 0 there exists c' > 0 such that every non-Ramsey(c) graph has ≥ c'n induced subgraph classes (linear lower bound). Derived using exp(t) ≥ t: since 2^{c''n} = exp(c''n·log 2) ≥ c''n·log 2.",
+      "mathContext": "$2^{c'' \\cdot n} = e^{c'' n \\ln 2} \\ge c'' n \\ln 2$ from `Real.add_one_le_exp`. Takes $c' = c'' \\cdot \\ln 2$ as the linear constant. This gives the 2^{c''n} ≥ c'·n lower bound in one calculation step."
+    },
+    {
+      "id": "optimal-constant",
+      "title": "Optimal Constant Definition and Bounds",
+      "startLine": 98,
+      "endLine": 161,
+      "summary": "Defines optimalConstant(c) = sSup of c' such that every non-Ramsey(c) graph has ≥ 2^{c'n} induced subgraph classes. Proves: (1) optimalConstant_pos (c' > 0, lower bound from Shelah); (2) optimalConstant_le_one (c' ≤ 1, upper bound from non-Ramsey graph sampling using numISC ≤ 2^n). Universe constraint: definition uses Type (not Type*) for sSup consistency.",
+      "mathContext": "c'(c) = sSup {c' | ∀ G : SimpleGraph V (V : Type), IsNonRamsey G c → numISC G ≥ 2^{c'·n}}. Lower bound: Shelah's c'' ∈ the set, BddAbove from upper bound, so sSup ≥ c'' > 0. Upper bound: from nonRamseyExists, take G on n vertices; numISC G = 2^n (placeholder); if c' > 1 then 2^n < 2^{c'n} for large n — contradiction via rpow_lt_rpow_of_exponent_lt."
+    },
+    {
+      "id": "placeholder",
+      "title": "Placeholder Collapse (Artifact)",
+      "startLine": 162,
+      "endLine": 210,
+      "summary": "With the placeholder numISC = 2^n (counting all subsets), optimalConstant c = 1 for all c > 0. Proved by showing 1 is in the optimality set (since 2^n = numISC G ≥ 2^{1·n} = 2^n, trivially equal). Also shows optimalConstantAtRandom holds trivially. NOTE: These results are PLACEHOLDER ARTIFACTS — the mathematical question requires proper isomorphism-class counting.",
+      "mathContext": "Placeholder collapse: numISC_cast_gen shows numISC G = 2^{|V|} for all G (since Finset V has cardinality 2^{|V|}). Then 1 is in the optimality set: numISC G ≥ 2^{1·n} iff 2^n ≥ 2^n — trivially true. Hence sSup ≥ 1, combined with ≤ 1 gives = 1. This is mathematically vacuous with the placeholder."
+    },
+    {
+      "id": "complement",
+      "title": "Complement Symmetry",
+      "startLine": 211,
+      "endLine": 244,
+      "summary": "Three theorems: cliqueNumber_compl (ω(Gᶜ) = α(G) by rfl), independenceNumber_compl (α(Gᶜ) = ω(G) via compl_compl), complement_nonramsey (IsNonRamsey G c → IsNonRamsey Gᶜ c). Summary theorem erdos_1036 reasserts Shelah's result.",
+      "mathContext": "$\\omega(G^c) = \\alpha(G)$ by definition (both use $G^c$-cliques). $\\alpha(G^c) = \\omega(G)$ since $(G^c)^c = G$: apply `compl_compl` inside the set equality. Non-Ramsey symmetry: the condition $\\max(\\omega, \\alpha) \\le c \\ln n$ is preserved since $\\omega(G^c) = \\alpha(G)$ and $\\alpha(G^c) = \\omega(G)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the open question about the optimal exponent in Shelah's theorem: for a non-Ramsey(c) graph, the largest c' with ≥ 2^{c'n} induced subgraph classes satisfies 0 < c'(c) ≤ 1. The Alon-Hajnal (1991) sub-exponential bound is derived from Shelah. The formalization uses a placeholder for numInducedSubgraphClasses (counting subsets, not isomorphism classes); replacing it with the correct definition would make optimalConstant_eq_one_placeholder non-trivial.",
+    "implications": "The optimal constant c'(c) characterizes how 'random-like' non-Ramsey graphs must be in terms of induced subgraph diversity. If c'(c) = 1, it means non-Ramsey graphs have nearly as many distinct induced subgraphs as random graphs — a strong structural consequence of avoiding large homogeneous sets.",
+    "openQuestions": [
+      "What is the exact value of c'(c) as a function of c?",
+      "Is c'(c) = 1 for all c > 0 (optimal constant achieved by random graphs)?",
+      "How does c'(c) depend on c — is it monotone? continuous?",
+      "Can numInducedSubgraphClasses be formalized as a proper isomorphism quotient in Lean 4?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1036",
+      "relationship": "extends",
+      "description": "Parent problem: the YES answer to Erdős #1036 (Shelah 1998). This OQ asks for the optimal constant in Shelah's exponential bound."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["SimpleGraph", "Real"],
+    "namespace": "Erdos1036",
+    "lineCount": 244,
+    "axiomCount": 2,
+    "sorries": 0,
+    "theoremCount": 9,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos1036Problem.lean"
+  },
+  "sorries": 0
+}
