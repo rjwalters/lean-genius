@@ -55,19 +55,24 @@
     ],
     "axiomCount": 1,
     "lineCount": 315,
-    "assumptions": "1 axiom: erdos_417_conjecture (Erdős conjecture that V(x)/V'(x) → ∞, OPEN). Previously had 3 axioms; erdos_417_limit_exists removed (inconsistent with conjecture), erdos_417_ratio_gt_one proved from conjecture."
+    "assumptions": "1 axiom: erdos_417_conjecture (Erdős conjecture that V(x)/V'(x) → ∞, OPEN). Previously had 3 axioms; erdos_417_limit_exists removed (inconsistent with conjecture), erdos_417_ratio_gt_one proved from conjecture.",
+    "theoremCount": 17
   },
   "overview": {
-    "historicalContext": "Erdős first posed this problem in [Er79e], asking about two natural counting functions for Euler's totient values. Given the set of all totient values, one can count how many appear among outputs of small inputs ($V'(x)$) versus how many totient values exist up to $x$ regardless of input size ($V(x)$). The question is whether these two counts grow at comparable rates.\n\nThe problem was revisited in Erdős and Graham [ErGr80] in their influential monograph on combinatorial number theory. In [Er98], Erdős went further and conjectured that $V(x)/V'(x)$ may actually tend to infinity, suggesting that the vast majority of totient values at most $x$ come from inputs much larger than $x$. This would be a striking statement about the structure of the totient function's range.\n\nThe problem connects to deep results on totient value density. Pillai (1929) first showed $V(x) = o(x)$. Erdős (1935) proved $V(x) \\sim cx/\\log x$. Ford (1998) determined the precise asymptotics: $V(x) = \\frac{x}{\\log x} \\exp(C_1(\\log_3 x)^2 + C_2 \\log_3 x + C_3)$. However, the relationship between $V(x)$ and $V'(x)$ remains open, as it requires understanding the **smallest preimage function** $m^*(n) = \\min\\{m : \\varphi(m) = n\\}$. Related questions appear in Problem #416, which concerns the structure of the totient range more directly.",
-    "problemStatement": "Let $V'(x) = |\\{\\varphi(m) : 1 \\le m \\le x\\}|$ count the distinct totient values achievable from inputs at most $x$, and let $V(x) = |\\{n \\le x : n = \\varphi(m) \\text{ for some } m\\}|$ count all totient values at most $x$. Does $\\lim_{x \\to \\infty} V(x)/V'(x)$ exist? Is it $> 1$? Erdős conjectured it may be $\\infty$.",
+    "historicalContext": "Erdős first posed this problem in [Er79e], asking about two natural counting functions for Euler's totient values. Given the set of all totient values, one can count how many appear among outputs of small inputs ($V'(x)$) versus how many totient values exist up to $x$ regardless of input size ($V(x)$). The question is whether these two counts grow at comparable rates.
+
+The problem was revisited in Erdős and Graham [ErGr80] in their influential monograph on combinatorial number theory. In [Er98], Erdős went further and conjectured that $V(x)/V'(x)$ may actually tend to infinity, suggesting that the vast majority of totient values at most $x$ come from inputs much larger than $x$. This would be a striking statement about the structure of the totient function's range.
+
+The problem connects to deep results on totient value density. Pillai (1929) first showed $V(x) = o(x)$. Erdős (1935) proved $V(x) \sim cx/\log x$. Ford (1998) determined the precise asymptotics: $V(x) = \frac{x}{\log x} \exp(C_1(\log_3 x)^2 + C_2 \log_3 x + C_3)$. However, the relationship between $V(x)$ and $V'(x)$ remains open, as it requires understanding the **smallest preimage function** $m^*(n) = \min\{m : \varphi(m) = n\}$. Related questions appear in Problem #416, which concerns the structure of the totient range more directly.",
+    "problemStatement": "Let $V'(x) = |\{\varphi(m) : 1 \le m \le x\}|$ count the distinct totient values achievable from inputs at most $x$, and let $V(x) = |\{n \le x : n = \varphi(m) \text{ for some } m\}|$ count all totient values at most $x$. Does $\lim_{x \to \infty} V(x)/V'(x)$ exist? Is it $> 1$? Erdős conjectured it may be $\infty$.",
     "text": "Does the limit V(x)/V'(x) exist, where V'(x) counts distinct totients from inputs at most x and V(x) counts all totient values at most x?",
-    "proofStrategy": "The formalization defines both counting functions $V'(x)$ and $V(x)$ using `Finset` operations on the range of Mathlib's `Nat.totient`. The `IsTotientValue` predicate captures membership in the totient range. We prove the trivial inequality $V'(x) \\le V(x)$, characterize which numbers are totient values (odd numbers $> 1$ are excluded, all powers of 2 and prime predecessors are included), and state the three open questions using `Filter.Tendsto` for limits and `Filter.atTop` for asymptotic behavior.",
+    "proofStrategy": "The formalization defines both counting functions $V'(x)$ and $V(x)$ using `Finset` operations on the range of Mathlib's `Nat.totient`. The `IsTotientValue` predicate captures membership in the totient range. We prove the trivial inequality $V'(x) \le V(x)$, characterize which numbers are totient values (odd numbers $> 1$ are excluded, all powers of 2 and prime predecessors are included), and state the three open questions using `Filter.Tendsto` for limits and `Filter.atTop` for asymptotic behavior.",
     "keyInsights": [
-      "**Trivial inequality $V'(x) \\le V(x)$**: Every totient from $m \\le x$ is also a totient value $\\le x$, but $V(x)$ may include totients from large $m > x$ (e.g., $\\varphi(2^{10}) = 512$ contributes to $V(600)$ but not $V'(600)$)",
-      "**Parity obstruction**: Odd numbers $> 1$ are never totient values because $\\varphi(m)$ is even for $m > 2$, so only even numbers and 1 can be totients---this eliminates roughly half of all integers from the range",
-      "**Smallest preimage problem**: The conjecture $V(x)/V'(x) \\to \\infty$ is equivalent to asking whether $m^*(n) = \\min\\{m : \\varphi(m) = n\\}$ is typically much larger than $n$, so that most totient values $n \\le x$ have $m^*(n) > x$",
-      "**Ford's precise asymptotics**: $V(x) = \\frac{x}{\\log x} \\exp(C_1(\\log_3 x)^2 + C_2 \\log_3 x + C_3)$ gives the exact order of the totient value counting function, but the analogous formula for $V'(x)$ is unknown",
-      "**Connection to Carmichael's conjecture**: The open conjecture that every totient value has multiplicity $\\ge 2$ (i.e., $|\\varphi^{-1}(n)| \\ne 1$ for all $n$) is related to the structure of preimages that drives the $V/V'$ ratio"
+      "**Trivial inequality $V'(x) \le V(x)$**: Every totient from $m \le x$ is also a totient value $\le x$, but $V(x)$ may include totients from large $m > x$ (e.g., $\varphi(2^{10}) = 512$ contributes to $V(600)$ but not $V'(600)$)",
+      "**Parity obstruction**: Odd numbers $> 1$ are never totient values because $\varphi(m)$ is even for $m > 2$, so only even numbers and 1 can be totients---this eliminates roughly half of all integers from the range",
+      "**Smallest preimage problem**: The conjecture $V(x)/V'(x) \to \infty$ is equivalent to asking whether $m^*(n) = \min\{m : \varphi(m) = n\}$ is typically much larger than $n$, so that most totient values $n \le x$ have $m^*(n) > x$",
+      "**Ford's precise asymptotics**: $V(x) = \frac{x}{\log x} \exp(C_1(\log_3 x)^2 + C_2 \log_3 x + C_3)$ gives the exact order of the totient value counting function, but the analogous formula for $V'(x)$ is unknown",
+      "**Connection to Carmichael's conjecture**: The open conjecture that every totient value has multiplicity $\ge 2$ (i.e., $|\varphi^{-1}(n)| \ne 1$ for all $n$) is related to the structure of preimages that drives the $V/V'$ ratio"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -78,77 +83,77 @@
     {
       "id": "imports",
       "title": "Imports and Namespace",
-      "summary": "Imports `Mathlib.Data.Nat.Totient` for $\\varphi$, `Finset` for finite counting, and `Filter` for asymptotic limits. Opens `Erdos417` namespace.",
+      "summary": "Imports `Mathlib.Data.Nat.Totient` for $\varphi$, `Finset` for finite counting, and `Filter` for asymptotic limits. Opens `Erdos417` namespace.",
       "startLine": 36,
       "endLine": 44,
-      "mathContext": "Mathematical content: Imports `Mathlib.Data.Nat.Totient` for $\\varphi$, `Finset` for finite counting, and `Filter` for asymptotic limits. Opens `Erdos417` namespace."
+      "mathContext": "Mathematical content: Imports `Mathlib.Data.Nat.Totient` for $\varphi$, `Finset` for finite counting, and `Filter` for asymptotic limits. Opens `Erdos417` namespace."
     },
     {
       "id": "definitions",
       "title": "Counting Functions",
-      "summary": "Defines $V'(x) = |\\text{image}(\\varphi, \\{1,\\ldots,x\\})|$ via `Finset.image`, the `IsTotientValue` predicate $\\exists m > 0,\\, \\varphi(m) = n$, and $V(x) = |\\{n \\le x : n \\in \\text{range}(\\varphi)\\}|$ via `Finset.filter`.",
+      "summary": "Defines $V'(x) = |\text{image}(\varphi, \{1,\ldots,x\})|$ via `Finset.image`, the `IsTotientValue` predicate $\exists m > 0,\, \varphi(m) = n$, and $V(x) = |\{n \le x : n \in \text{range}(\varphi)\}|$ via `Finset.filter`.",
       "startLine": 45,
       "endLine": 73,
-      "mathContext": "Defines $V'(x) = |\\text{image}(\\varphi, \\{1,\\ldots,x\\})|$ via `Finset.image`, the `IsTotientValue` predicate $\\exists m > 0,\\, \\varphi(m) = n$, and $V(x) = |\\{n \\le x : n \\in \\text{range}(\\varphi)\\}|$ via `Finset.filter`."
+      "mathContext": "Defines $V'(x) = |\text{image}(\varphi, \{1,\ldots,x\})|$ via `Finset.image`, the `IsTotientValue` predicate $\exists m > 0,\, \varphi(m) = n$, and $V(x) = |\{n \le x : n \in \text{range}(\varphi)\}|$ via `Finset.filter`."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "summary": "Proves $V'(x) \\le V(x)$ (sorry), `one_is_totient_value` ($\\varphi(1) = 1$), `two_is_totient_value` ($\\varphi(3) = 2$, sorry), and `odd_gt_one_not_totient` ($n > 1$ odd $\\Rightarrow \\neg\\text{IsTotientValue}(n)$, sorry).",
+      "summary": "Proves $V'(x) \le V(x)$ (sorry), `one_is_totient_value` ($\varphi(1) = 1$), `two_is_totient_value` ($\varphi(3) = 2$, sorry), and `odd_gt_one_not_totient` ($n > 1$ odd $\Rightarrow \neg\text{IsTotientValue}(n)$, sorry).",
       "startLine": 74,
       "endLine": 97,
-      "mathContext": "Proves $V'(x) \\le V(x)$ (sorry), `one_is_totient_value` ($\\varphi(1) = 1$), `two_is_totient_value` ($\\varphi(3) = 2$, sorry), and `odd_gt_one_not_totient` ($n > 1$ odd $\\Rightarrow \\neg\\text{IsTotientValue}(n)$, sorry)."
+      "mathContext": "Proves $V'(x) \le V(x)$ (sorry), `one_is_totient_value` ($\varphi(1) = 1$), `two_is_totient_value` ($\varphi(3) = 2$, sorry), and `odd_gt_one_not_totient` ($n > 1$ odd $\Rightarrow \neg\text{IsTotientValue}(n)$, sorry)."
     },
     {
       "id": "main-questions",
       "title": "The Main Questions",
-      "summary": "States three OPEN questions using `Filter.Tendsto`: (1) $\\lim V(x)/V'(x)$ exists, (2) $V(x)/V'(x) > 1$ eventually, (3) $V(x)/V'(x) \\to \\infty$ (Erdős's conjecture). All axiomatized.",
+      "summary": "States three OPEN questions using `Filter.Tendsto`: (1) $\lim V(x)/V'(x)$ exists, (2) $V(x)/V'(x) > 1$ eventually, (3) $V(x)/V'(x) \to \infty$ (Erdős's conjecture). All axiomatized.",
       "startLine": 98,
       "endLine": 127,
-      "mathContext": "Axiomatized: States three OPEN questions using `Filter.Tendsto`: (1) $\\lim V(x)/V'(x)$ exists, (2) $V(x)/V'(x) > 1$ eventually, (3) $V(x)/V'(x) \\to \\infty$ (Erdős's conjecture). All axiomatized."
+      "mathContext": "Axiomatized: States three OPEN questions using `Filter.Tendsto`: (1) $\lim V(x)/V'(x)$ exists, (2) $V(x)/V'(x) > 1$ eventually, (3) $V(x)/V'(x) \to \infty$ (Erdős's conjecture). All axiomatized."
     },
     {
       "id": "intuition",
       "title": "Intuition for the Conjecture",
-      "summary": "Explains why $V(x) \\gg V'(x)$: $\\varphi$ can be very small relative to its input (e.g., $\\varphi(2^{10}) = 512$), so totient values $\\le x$ arise from inputs $m \\gg x$.",
+      "summary": "Explains why $V(x) \gg V'(x)$: $\varphi$ can be very small relative to its input (e.g., $\varphi(2^{10}) = 512$), so totient values $\le x$ arise from inputs $m \gg x$.",
       "startLine": 128,
       "endLine": 150,
-      "mathContext": "Explains why $V(x) \\gg V'(x)$: $\\varphi$ can be very small relative to its input (e.g., $\\varphi($$2^{{10}$}$) = 512$), so totient values $\\le x$ arise from inputs $m \\gg x$."
+      "mathContext": "Explains why $V(x) \gg V'(x)$: $\varphi$ can be very small relative to its input (e.g., $\varphi($$2^{{10}$}$) = 512$), so totient values $\le x$ arise from inputs $m \gg x$."
     },
     {
       "id": "totient-structure",
       "title": "Totient Value Structure",
-      "summary": "Proves `pow_two_totient_value`: $\\varphi(2^{k+1}) = 2^k$ (sorry), and `prime_pred_totient_value`: $\\varphi(p) = p - 1$ for prime $p$ (complete proof via `totient_prime`).",
+      "summary": "Proves `pow_two_totient_value`: $\varphi(2^{k+1}) = 2^k$ (sorry), and `prime_pred_totient_value`: $\varphi(p) = p - 1$ for prime $p$ (complete proof via `totient_prime`).",
       "startLine": 151,
       "endLine": 165,
-      "mathContext": "Proves `pow_two_totient_value`: $\\varphi($$2^{{k+1}$}$) = $2^{k}$$ (sorry), and `prime_pred_totient_value`: $\\varphi(p) = p - 1$ for prime $p$ (complete proof via `totient_prime`)."
+      "mathContext": "Proves `pow_two_totient_value`: $\varphi($$2^{{k+1}$}$) = $2^{k}$$ (sorry), and `prime_pred_totient_value`: $\varphi(p) = p - 1$ for prime $p$ (complete proof via `totient_prime`)."
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Estimates",
-      "summary": "Discusses Ford's result $V(x) \\sim cx/\\log x$ and the difficulty of analyzing $V'(x)$ separately. The key challenge is understanding the smallest preimage function $m^*(n)$.",
+      "summary": "Discusses Ford's result $V(x) \sim cx/\log x$ and the difficulty of analyzing $V'(x)$ separately. The key challenge is understanding the smallest preimage function $m^*(n)$.",
       "startLine": 166,
       "endLine": 189,
-      "mathContext": "Mathematical content: Discusses Ford's result $V(x) \\sim cx/\\log x$ and the difficulty of analyzing $V'(x)$ separately. The key challenge is understanding the smallest preimage function $m^*(n)$."
+      "mathContext": "Mathematical content: Discusses Ford's result $V(x) \sim cx/\log x$ and the difficulty of analyzing $V'(x)$ separately. The key challenge is understanding the smallest preimage function $m^*(n)$."
     },
     {
       "id": "summary",
       "title": "Summary and Open Questions",
-      "summary": "`erdos_417_summary` packages $V'(x) \\le V(x)$ as a theorem. `erdos_417_open_questions` bundles all three conjectures into a single `Prop`. Related to OEIS A264810 and A061070.",
+      "summary": "`erdos_417_summary` packages $V'(x) \le V(x)$ as a theorem. `erdos_417_open_questions` bundles all three conjectures into a single `Prop`. Related to OEIS A264810 and A061070.",
       "startLine": 190,
       "endLine": 219,
-      "mathContext": "Verified: `erdos_417_summary` packages $V'(x) \\le V(x)$ as a theorem. `erdos_417_open_questions` bundles all three conjectures into a single `Prop`. Related to OEIS A264810 and A061070."
+      "mathContext": "Verified: `erdos_417_summary` packages $V'(x) \le V(x)$ as a theorem. `erdos_417_open_questions` bundles all three conjectures into a single `Prop`. Related to OEIS A264810 and A061070."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #417 investigates the ratio $V(x)/V'(x)$ of two counting functions for totient values. $V'(x)$ counts distinct totients achievable from inputs at most $x$, while $V(x)$ counts all totient values at most $x$. The trivial bound $V'(x) \\le V(x)$ holds, but whether the ratio converges, exceeds 1, or tends to infinity as Erdős conjectured in 1998 remains completely open.",
+    "summary": "Erdős Problem #417 investigates the ratio $V(x)/V'(x)$ of two counting functions for totient values. $V'(x)$ counts distinct totients achievable from inputs at most $x$, while $V(x)$ counts all totient values at most $x$. The trivial bound $V'(x) \le V(x)$ holds, but whether the ratio converges, exceeds 1, or tends to infinity as Erdős conjectured in 1998 remains completely open.",
     "implications": "Understanding this ratio would reveal how the totient function's range is generated: whether small inputs efficiently cover most totient values or whether most values arise from unexpectedly large preimages. A resolution would connect Ford's precise asymptotics for $V(x)$ with the distribution of the smallest preimage function $m^*(n)$, bridging multiplicative number theory with questions about preimage structure of arithmetic functions.",
     "openQuestions": [
-      "Does $\\lim_{x \\to \\infty} V(x)/V'(x)$ exist?",
+      "Does $\lim_{x \to \infty} V(x)/V'(x)$ exist?",
       "Is $V(x)/V'(x) > 1$ for all sufficiently large $x$?",
-      "Does $V(x)/V'(x) \\to \\infty$ as Erdős conjectured in [Er98]?",
+      "Does $V(x)/V'(x) \to \infty$ as Erdős conjectured in [Er98]?",
       "What are the precise asymptotics of $V'(x)$? Is $V'(x) = o(V(x))$?",
-      "How does the smallest preimage function $m^*(n) = \\min\\{m : \\varphi(m) = n\\}$ distribute relative to $n$?"
+      "How does the smallest preimage function $m^*(n) = \min\{m : \varphi(m) = n\}$ distribute relative to $n$?"
     ]
   },
   "crossReferences": [

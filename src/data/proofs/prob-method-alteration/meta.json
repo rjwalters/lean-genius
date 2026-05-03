@@ -50,13 +50,30 @@
       "Optimization of probability parameters"
     ],
     "assumptions": "0 axioms, 0 sorries. 2 theorems fully proved: alteration_principle and independent_set_bound. property_b_bound was converted to a block comment (needs hypergraph type for full formalization). All remaining theorems are machine-verified.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2
   },
   "overview": {
-    "historicalContext": "The alteration method, also called the deletion method, is a refinement of the basic probabilistic method developed by Erdos and collaborators in the 1960s and 1970s. While the first moment method requires the random construction to satisfy all constraints simultaneously, the alteration method relaxes this: start with a random object that is close to what we want, then deterministically fix the few violations.\n\nThe key insight is that if a random construction has few expected defects, we can afford to delete or modify the problematic parts while retaining most of the desirable structure. This two-phase approach -- random construction followed by deterministic alteration -- dramatically expands the range of existence results the probabilistic method can prove.\n\nClassic applications include the best known bounds for independent set size in sparse graphs, Property B of hypergraphs (2-colorability), and Ramsey multiplicity problems. The alteration method is particularly effective when we want a large structure (like an independent set) but the random approach occasionally includes unwanted elements (like adjacent vertices).",
-    "problemStatement": "Alteration Principle: Let $\\Omega$ be a random structure with a desired property measured by a value function $v(\\omega)$ and a defect count $d(\\omega)$. If $E[v(\\omega) - d(\\omega)] > t$, then there exists an altered structure with value exceeding $t$ and zero defects.\n\nApplication: Every graph $G$ on $n$ vertices with $m$ edges has an independent set of size at least $n^2/(2m + n)$.",
-    "text": "A formalization of the alteration (deletion) method, one of the core techniques in the probabilistic method toolkit. The file establishes three results in 61 lines with 0 sorries: (1) an `alteration_principle` theorem capturing the deterministic heart of the method — if $\\sum(\\text{good}(a) - \\text{bad}(a)) > 0$ over a nonempty finite set, then some element has positive net value; (2) an `independent_set_bound` proving that $d$-regular graphs on $n$ vertices have independent sets of size $\\geq \\lfloor n/(2d) \\rfloor$; and (3) a `property_b_bound` placeholder for the result that $k$-uniform hypergraphs with $m < 2^{k-1}$ edges are 2-colorable. The alteration principle is proved by contradiction via `Finset.sum_le_sum` and `linarith`. The independent set bound uses `Nat.max` to construct a witness. The Property B theorem currently proves `True` pending a Mathlib hypergraph type. The file is organized in the `ProbMethod.Alteration` namespace alongside the companion files for the expectation method, second moment method, Lovász Local Lemma, and applications.",
-    "proofStrategy": "The proof proceeds in two phases:\n\n1. **Random phase**: Select each vertex independently with probability $p$ (to be optimized). The expected number of selected vertices is $np$, and the expected number of edges within the selected set is $mp^2$.\n\n2. **Alteration phase**: For each edge within the selected set, delete one endpoint. This removes at most $mp^2$ vertices (in expectation) but eliminates all edges, yielding an independent set.\n\n3. **Counting**: The expected size of the resulting independent set is at least $np - mp^2$. By the first moment principle, some outcome achieves this bound.\n\n4. **Optimization**: Setting $p = n/(2m + n)$ maximizes $np - mp^2$, yielding the bound $n^2/(2m + n)$.\n\nFor Property B, the argument is similar: randomly 2-color vertices of a hypergraph, count monochromatic edges, and alter by recoloring vertices to break monochromatic edges.",
+    "historicalContext": "The alteration method, also called the deletion method, is a refinement of the basic probabilistic method developed by Erdos and collaborators in the 1960s and 1970s. While the first moment method requires the random construction to satisfy all constraints simultaneously, the alteration method relaxes this: start with a random object that is close to what we want, then deterministically fix the few violations.
+
+The key insight is that if a random construction has few expected defects, we can afford to delete or modify the problematic parts while retaining most of the desirable structure. This two-phase approach -- random construction followed by deterministic alteration -- dramatically expands the range of existence results the probabilistic method can prove.
+
+Classic applications include the best known bounds for independent set size in sparse graphs, Property B of hypergraphs (2-colorability), and Ramsey multiplicity problems. The alteration method is particularly effective when we want a large structure (like an independent set) but the random approach occasionally includes unwanted elements (like adjacent vertices).",
+    "problemStatement": "Alteration Principle: Let $\Omega$ be a random structure with a desired property measured by a value function $v(\omega)$ and a defect count $d(\omega)$. If $E[v(\omega) - d(\omega)] > t$, then there exists an altered structure with value exceeding $t$ and zero defects.
+
+Application: Every graph $G$ on $n$ vertices with $m$ edges has an independent set of size at least $n^2/(2m + n)$.",
+    "text": "A formalization of the alteration (deletion) method, one of the core techniques in the probabilistic method toolkit. The file establishes three results in 61 lines with 0 sorries: (1) an `alteration_principle` theorem capturing the deterministic heart of the method — if $\sum(\text{good}(a) - \text{bad}(a)) > 0$ over a nonempty finite set, then some element has positive net value; (2) an `independent_set_bound` proving that $d$-regular graphs on $n$ vertices have independent sets of size $\geq \lfloor n/(2d) \rfloor$; and (3) a `property_b_bound` placeholder for the result that $k$-uniform hypergraphs with $m < 2^{k-1}$ edges are 2-colorable. The alteration principle is proved by contradiction via `Finset.sum_le_sum` and `linarith`. The independent set bound uses `Nat.max` to construct a witness. The Property B theorem currently proves `True` pending a Mathlib hypergraph type. The file is organized in the `ProbMethod.Alteration` namespace alongside the companion files for the expectation method, second moment method, Lovász Local Lemma, and applications.",
+    "proofStrategy": "The proof proceeds in two phases:
+
+1. **Random phase**: Select each vertex independently with probability $p$ (to be optimized). The expected number of selected vertices is $np$, and the expected number of edges within the selected set is $mp^2$.
+
+2. **Alteration phase**: For each edge within the selected set, delete one endpoint. This removes at most $mp^2$ vertices (in expectation) but eliminates all edges, yielding an independent set.
+
+3. **Counting**: The expected size of the resulting independent set is at least $np - mp^2$. By the first moment principle, some outcome achieves this bound.
+
+4. **Optimization**: Setting $p = n/(2m + n)$ maximizes $np - mp^2$, yielding the bound $n^2/(2m + n)$.
+
+For Property B, the argument is similar: randomly 2-color vertices of a hypergraph, count monochromatic edges, and alter by recoloring vertices to break monochromatic edges.",
     "keyInsights": [
       "The two-phase approach (random + deterministic fix) handles constraints that pure randomness cannot satisfy simultaneously",
       "Deleting defects is often cheaper than avoiding them: if expected defects are few, the altered structure retains most of the random construction's value",
@@ -78,7 +95,7 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 13,
-      "summary": "Documentation header describing the alteration/deletion method and its three key results: the alteration principle, the independent set bound $\\alpha(G) \\geq n/(2d)$ for $d$-regular graphs, and Property B of hypergraphs.",
+      "summary": "Documentation header describing the alteration/deletion method and its three key results: the alteration principle, the independent set bound $\alpha(G) \geq n/(2d)$ for $d$-regular graphs, and Property B of hypergraphs.",
       "mathContext": "The alteration method is a two-phase refinement of the probabilistic method: (1) construct a random object, (2) deterministically remove violations to obtain a valid structure."
     },
     {
@@ -87,23 +104,23 @@
       "startLine": 14,
       "endLine": 19,
       "summary": "Imports Mathlib for access to `Finset`, `SimpleGraph`, and integer arithmetic. Opens the `ProbMethod.Alteration` namespace and brings `Finset` and `BigOperators` into scope for summation notation.",
-      "mathContext": "The `BigOperators` opening enables $\\sum_{a \\in S} f(a)$ notation (`Finset.sum`), essential for expressing expected value arguments in the probabilistic method."
+      "mathContext": "The `BigOperators` opening enables $\sum_{a \in S} f(a)$ notation (`Finset.sum`), essential for expressing expected value arguments in the probabilistic method."
     },
     {
       "id": "alteration-principle",
       "title": "Alteration Principle",
       "startLine": 20,
       "endLine": 39,
-      "summary": "Core theorem `alteration_principle`: if the $\\mathbb{Z}$-valued sum of `good` minus `bad` over a nonempty `Finset` is positive, then some element has positive net good value. Proved by contradiction using `Finset.sum_le_sum` and `linarith`.",
-      "mathContext": "For functions $\\text{good}, \\text{bad} : \\alpha \\to \\mathbb{N}$ on a nonempty finite set $S$, if $\\sum_{a \\in S} (\\text{good}(a) : \\mathbb{Z}) - \\sum_{a \\in S} (\\text{bad}(a) : \\mathbb{Z}) > 0$, then $\\exists a \\in S$ with $\\text{good}(a) > \\text{bad}(a)$."
+      "summary": "Core theorem `alteration_principle`: if the $\mathbb{Z}$-valued sum of `good` minus `bad` over a nonempty `Finset` is positive, then some element has positive net good value. Proved by contradiction using `Finset.sum_le_sum` and `linarith`.",
+      "mathContext": "For functions $\text{good}, \text{bad} : \alpha \to \mathbb{N}$ on a nonempty finite set $S$, if $\sum_{a \in S} (\text{good}(a) : \mathbb{Z}) - \sum_{a \in S} (\text{bad}(a) : \mathbb{Z}) > 0$, then $\exists a \in S$ with $\text{good}(a) > \text{bad}(a)$."
     },
     {
       "id": "independent-set-bound",
       "title": "Independent Set Bound via Alteration",
       "startLine": 40,
       "endLine": 51,
-      "summary": "Application to regular graphs: proves existence of a positive integer $k \\geq \\lfloor n/(2d) \\rfloor$ for a $d$-regular graph on $n$ vertices, as a simplified form of $\\alpha(G) \\geq n/(2d)$.",
-      "mathContext": "For a $d$-regular graph on $n$ vertices: $\\alpha(G) \\geq \\frac{n}{2d}$. Select each vertex with probability $p = 1/d$, delete one endpoint per surviving edge. Expected independent set size $\\geq np - \\frac{nd}{2}p^2 = \\frac{n}{2d}$."
+      "summary": "Application to regular graphs: proves existence of a positive integer $k \geq \lfloor n/(2d) \rfloor$ for a $d$-regular graph on $n$ vertices, as a simplified form of $\alpha(G) \geq n/(2d)$.",
+      "mathContext": "For a $d$-regular graph on $n$ vertices: $\alpha(G) \geq \frac{n}{2d}$. Select each vertex with probability $p = 1/d$, delete one endpoint per surviving edge. Expected independent set size $\geq np - \frac{nd}{2}p^2 = \frac{n}{2d}$."
     },
     {
       "id": "property-b",
@@ -111,7 +128,7 @@
       "startLine": 52,
       "endLine": 59,
       "summary": "Placeholder theorem `property_b_bound`: a $k$-uniform hypergraph with $m < 2^{k-1}$ edges is 2-colorable. Currently proves `True` because Mathlib lacks a standard hypergraph type. Closes the namespace.",
-      "mathContext": "Property B: for $k$-uniform hypergraphs with $m$ edges, random 2-coloring gives $\\mathbb{E}[\\text{mono edges}] = m \\cdot 2^{1-k}$. If $m < 2^{k-1}$, alteration yields a valid 2-coloring."
+      "mathContext": "Property B: for $k$-uniform hypergraphs with $m$ edges, random 2-coloring gives $\mathbb{E}[\text{mono edges}] = m \cdot 2^{1-k}$. If $m < 2^{k-1}$, alteration yields a valid 2-coloring."
     }
   ],
   "crossReferences": [
@@ -148,16 +165,28 @@
     {
       "targetId": "binomial-theorem",
       "relationship": "foundational",
-      "description": "Binomial coefficients underpin the probability calculations in the alteration method: random subset selection with probability $p$ creates a binomially distributed vertex count, and the expected edge count within the subset uses $\\binom{d}{2} p^2$ style calculations"
+      "description": "Binomial coefficients underpin the probability calculations in the alteration method: random subset selection with probability $p$ creates a binomially distributed vertex count, and the expected edge count within the subset uses $\binom{d}{2} p^2$ style calculations"
     }
   ],
   "conclusion": {
     "summary": "The alteration method extends the probabilistic method by introducing a deterministic correction phase after random construction. This two-step approach yields the classical independent set bound alpha(G) >= n^2/(2m+n) and Property B results for hypergraphs, demonstrating that approximate random solutions can be efficiently repaired.",
-    "implications": "This formalization provides:\n\n**1. Independent Set Bounds**\nThe bound alpha(G) >= n^2/(2m+n) is foundational in graph theory and algorithmic applications.\n\n**2. Hypergraph Coloring**\nProperty B results connect to set system colorability, a central topic in combinatorial set theory.\n\n**3. Algorithmic Paradigm**\nThe alteration method directly inspires randomized algorithms: generate a random solution, then greedily fix violations.\n\n**4. Bridge to Erdos Problems**\nMany Erdos problems on graph coloring and Ramsey multiplicity use alteration arguments that this library formalizes.",
+    "implications": "This formalization provides:
+
+**1. Independent Set Bounds**
+The bound alpha(G) >= n^2/(2m+n) is foundational in graph theory and algorithmic applications.
+
+**2. Hypergraph Coloring**
+Property B results connect to set system colorability, a central topic in combinatorial set theory.
+
+**3. Algorithmic Paradigm**
+The alteration method directly inspires randomized algorithms: generate a random solution, then greedily fix violations.
+
+**4. Bridge to Erdos Problems**
+Many Erdos problems on graph coloring and Ramsey multiplicity use alteration arguments that this library formalizes.",
     "openQuestions": [
       "How does the alteration method compare to the Lovász Local Lemma for sparse dependency structures? The LLL avoids alteration entirely by showing that a good object exists with positive probability, but requires a more delicate dependency analysis.",
-      "Can the independent set bound $\\alpha(G) \\geq n^2/(2m+n)$ be improved for triangle-free graphs? Shearer (1983) showed $\\alpha(G) \\geq \\Omega(n \\sqrt{\\log d}/d)$ for triangle-free $d$-regular graphs, but the optimal constant remains open.",
-      "What is the minimum number of edges in a $k$-uniform hypergraph without Property B? Erdős conjectured the threshold is $\\Theta(k^2 \\cdot 2^k)$, which was resolved by Radhakrishnan and Srinivasan (2000) up to logarithmic factors, but the exact constant is still unknown."
+      "Can the independent set bound $\alpha(G) \geq n^2/(2m+n)$ be improved for triangle-free graphs? Shearer (1983) showed $\alpha(G) \geq \Omega(n \sqrt{\log d}/d)$ for triangle-free $d$-regular graphs, but the optimal constant remains open.",
+      "What is the minimum number of edges in a $k$-uniform hypergraph without Property B? Erdős conjectured the threshold is $\Theta(k^2 \cdot 2^k)$, which was resolved by Radhakrishnan and Srinivasan (2000) up to logarithmic factors, but the exact constant is still unknown."
     ]
   },
   "leanFile": {

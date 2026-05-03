@@ -48,7 +48,8 @@
       "Modular arithmetic: quadratic residues, solutions of x² ≡ -1 (mod p²)",
       "Extremal combinatorics: maximum set sizes under product constraints"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 19
   },
   "crossReferences": [
     {
@@ -73,10 +74,16 @@
     }
   ],
   "overview": {
-    "historicalContext": "**Erdős and Sárközy** (1992) posed the problem of determining the maximum size of $A \\subseteq \\{1,\\ldots,N\\}$ such that $ab + 1$ is never squarefree for all $a, b \\in A$ (including $a = b$). The condition '$ab + 1$ is not squarefree' means there exists a prime $p$ with $p^2 \\mid ab + 1$.\n\nThe key construction exploits the arithmetic of $\\mathbb{Z}/25\\mathbb{Z}$: for $a \\equiv b \\equiv 7 \\pmod{25}$, we have $ab + 1 \\equiv 49 + 1 = 50 \\equiv 0 \\pmod{25}$, so $5^2 \\mid ab + 1$. Similarly, $18 \\equiv -7 \\pmod{25}$ gives $18^2 + 1 = 325 = 13 \\cdot 25$, so the same holds. The residues $7$ and $18 = 25 - 7$ are the two square roots of $-1$ modulo $25$ (since $7^2 = 49 \\equiv -1 \\pmod{25}$). This construction achieves $|A| = \\lfloor N/25 \\rfloor$.\n\n**Van Doorn** improved the upper bound to approximately $0.108N$ using an inclusion-exclusion argument over primes $p \\equiv 1 \\pmod{4}$: for each such prime, $a^2 + 1 \\equiv 0 \\pmod{p^2}$ has exactly 2 solutions mod $p^2$, contributing $2/p^2$ to the density. The sum $2\\sum_{p \\equiv 1(4)} 1/p^2 \\approx 0.108$ gives the bound. **Weisenberg** refined this further.\n\nFinally, **Sawhney** proved the exact answer: for all sufficiently large $N$, $\\max|A| = \\lfloor N/25 \\rfloor$, and the extremal sets are precisely $\\{n \\equiv 7 \\pmod{25}\\}$ and $\\{n \\equiv 18 \\pmod{25}\\}$. The proof uses modern tools from additive combinatorics to show that any near-extremal set must concentrate in one of these two residue classes.",
-    "problemStatement": "Determine $\\max|A|$ for $A \\subseteq \\{1,\\ldots,N\\}$ satisfying: for all $a, b \\in A$, $ab + 1$ is not squarefree (i.e., $\\exists p$ prime with $p^2 \\mid ab + 1$).",
+    "historicalContext": "**Erdős and Sárközy** (1992) posed the problem of determining the maximum size of $A \subseteq \{1,\ldots,N\}$ such that $ab + 1$ is never squarefree for all $a, b \in A$ (including $a = b$). The condition '$ab + 1$ is not squarefree' means there exists a prime $p$ with $p^2 \mid ab + 1$.
+
+The key construction exploits the arithmetic of $\mathbb{Z}/25\mathbb{Z}$: for $a \equiv b \equiv 7 \pmod{25}$, we have $ab + 1 \equiv 49 + 1 = 50 \equiv 0 \pmod{25}$, so $5^2 \mid ab + 1$. Similarly, $18 \equiv -7 \pmod{25}$ gives $18^2 + 1 = 325 = 13 \cdot 25$, so the same holds. The residues $7$ and $18 = 25 - 7$ are the two square roots of $-1$ modulo $25$ (since $7^2 = 49 \equiv -1 \pmod{25}$). This construction achieves $|A| = \lfloor N/25 \rfloor$.
+
+**Van Doorn** improved the upper bound to approximately $0.108N$ using an inclusion-exclusion argument over primes $p \equiv 1 \pmod{4}$: for each such prime, $a^2 + 1 \equiv 0 \pmod{p^2}$ has exactly 2 solutions mod $p^2$, contributing $2/p^2$ to the density. The sum $2\sum_{p \equiv 1(4)} 1/p^2 \approx 0.108$ gives the bound. **Weisenberg** refined this further.
+
+Finally, **Sawhney** proved the exact answer: for all sufficiently large $N$, $\max|A| = \lfloor N/25 \rfloor$, and the extremal sets are precisely $\{n \equiv 7 \pmod{25}\}$ and $\{n \equiv 18 \pmod{25}\}$. The proof uses modern tools from additive combinatorics to show that any near-extremal set must concentrate in one of these two residue classes.",
+    "problemStatement": "Determine $\max|A|$ for $A \subseteq \{1,\ldots,N\}$ satisfying: for all $a, b \in A$, $ab + 1$ is not squarefree (i.e., $\exists p$ prime with $p^2 \mid ab + 1$).",
     "text": "Max |A| with A ⊆ {1,...,N} and ab+1 never squarefree for a,b ∈ A. Extremal sets: {n ≡ 7 (mod 25)} or {n ≡ 18 (mod 25)}, giving N/25. Solved by Sawhney for large N.",
-    "proofStrategy": "The formalization defines `IsSquarefree` constructively and `HasNonSqfreeProductProp`. The extremal function `maxNonSqfreeSet` is defined as the Finset.sup of cardinalities over all qualifying subsets of $\\{1,\\ldots,N\\}$. The upper bound ($\\leq N$) is proved via an injection argument, and the lower bound ($\\geq \\lfloor N/25 \\rfloor$) is proved by constructing the mod-7 witness set. Three deep results remain axiomatized: van Doorn's upper bound ($\\leq 0.108N$), Sawhney's exact solution, and the structural characterization.",
+    "proofStrategy": "The formalization defines `IsSquarefree` constructively and `HasNonSqfreeProductProp`. The extremal function `maxNonSqfreeSet` is defined as the Finset.sup of cardinalities over all qualifying subsets of $\{1,\ldots,N\}$. The upper bound ($\leq N$) is proved via an injection argument, and the lower bound ($\geq \lfloor N/25 \rfloor$) is proved by constructing the mod-7 witness set. Three deep results remain axiomatized: van Doorn's upper bound ($\leq 0.108N$), Sawhney's exact solution, and the structural characterization.",
     "keyInsights": [
       "For a ≡ b ≡ 7 (mod 25), ab + 1 ≡ 49 + 1 = 50 ≡ 0 (mod 25), so 5² | ab + 1. The residue 7 satisfies 7² ≡ -1 (mod 25)",
       "The same holds for 18 ≡ -7 (mod 25) since 18² + 1 = 325 = 13 · 25. The pair {7, 18} are the two square roots of -1 in Z/25Z",
@@ -98,7 +105,7 @@
       "startLine": 1,
       "endLine": 20,
       "summary": "Problem statement, imports from Mathlib (Tactic, Nat.Basic, Nat.Prime.Basic).",
-      "mathContext": "Determine $\\max|A|$ for $A \\subseteq \\{1,\\ldots,N\\}$ with $\\forall a,b \\in A,\\ \\exists p$ prime: $p^2 \\mid ab+1$. Known answer: $\\lfloor N/25 \\rfloor$ for large $N$."
+      "mathContext": "Determine $\max|A|$ for $A \subseteq \{1,\ldots,N\}$ with $\forall a,b \in A,\ \exists p$ prime: $p^2 \mid ab+1$. Known answer: $\lfloor N/25 \rfloor$ for large $N$."
     },
     {
       "id": "definitions",
@@ -106,7 +113,7 @@
       "startLine": 21,
       "endLine": 58,
       "summary": "IsSquarefree, HasNonSqfreeProductProp, maxNonSqfreeSet (noncomputable def via Finset.sup over powerset), and maxNonSqfreeSet_le proved via injection x↦x-1.",
-      "mathContext": "$\\text{maxNonSqfreeSet}(N) := \\sup\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\ \\text{HasNonSqfreeProductProp}(A)\\}$. Upper bound $\\leq N$ proved by injecting $\\text{Icc}(1,N)$ into $\\text{range}(N)$ via $x \\mapsto x-1$."
+      "mathContext": "$\text{maxNonSqfreeSet}(N) := \sup\{|A| : A \subseteq \{1,\ldots,N\},\ \text{HasNonSqfreeProductProp}(A)\}$. Upper bound $\leq N$ proved by injecting $\text{Icc}(1,N)$ into $\text{range}(N)$ via $x \mapsto x-1$."
     },
     {
       "id": "mod25-construction",
@@ -114,7 +121,7 @@
       "startLine": 59,
       "endLine": 103,
       "summary": "mod25_achieves and mod25_achieves_18: proved 5² | ab+1 for both residue classes via ring arithmetic. five_prime, not_sqfree_of_five_sq_dvd, mod7/18_set_has_property: connect divisibility to HasNonSqfreeProductProp.",
-      "mathContext": "For $a \\equiv b \\equiv 7 \\pmod{25}$: $ab+1 \\equiv 50 \\equiv 0 \\pmod{25}$. For $a \\equiv b \\equiv 18 \\pmod{25}$: $ab+1 \\equiv 325 \\equiv 0 \\pmod{25}$. Both give $5^2 \\mid ab+1$, hence $\\neg\\text{IsSquarefree}(ab+1)$."
+      "mathContext": "For $a \equiv b \equiv 7 \pmod{25}$: $ab+1 \equiv 50 \equiv 0 \pmod{25}$. For $a \equiv b \equiv 18 \pmod{25}$: $ab+1 \equiv 325 \equiv 0 \pmod{25}$. Both give $5^2 \mid ab+1$, hence $\neg\text{IsSquarefree}(ab+1)$."
     },
     {
       "id": "lower-bound",
@@ -122,7 +129,7 @@
       "startLine": 104,
       "endLine": 154,
       "summary": "Defines mod7Set, proves it has the property and has cardinality ≥ N/25 via injection k↦25k+7. Concludes lower_bound: N/25 ≤ maxNonSqfreeSet(N) for N ≥ 25.",
-      "mathContext": "The injection $k \\mapsto 25k+7$ maps $\\{0,\\ldots,\\lfloor N/25\\rfloor - 1\\}$ into $\\{n \\in \\{1,\\ldots,N\\} : n \\equiv 7 \\pmod{25}\\}$. Combined with Finset.le_sup, this gives the lower bound on the extremal function."
+      "mathContext": "The injection $k \mapsto 25k+7$ maps $\{0,\ldots,\lfloor N/25\rfloor - 1\}$ into $\{n \in \{1,\ldots,N\} : n \equiv 7 \pmod{25}\}$. Combined with Finset.le_sup, this gives the lower bound on the extremal function."
     },
     {
       "id": "counting-solutions",
@@ -130,7 +137,7 @@
       "startLine": 235,
       "endLine": 280,
       "summary": "sq_neg_one_unique: in ZMod p, x²=-1 has at most 2 solutions (±a) via integral domain argument. sq_dvd_succ_mod_congruence: corollary for natural numbers via ZMod casting.",
-      "mathContext": "In the field $\\mathbb{F}_p$, $x^2 + 1 = 0$ has at most 2 roots since $(a-b)(a+b) = a^2 - b^2 = 0$ and $\\mathbb{F}_p$ has no zero divisors. This is step 1 of Van Doorn's density argument. Steps 2-4 (Hensel lifting, density counting, infinite sum) remain in the axiom."
+      "mathContext": "In the field $\mathbb{F}_p$, $x^2 + 1 = 0$ has at most 2 roots since $(a-b)(a+b) = a^2 - b^2 = 0$ and $\mathbb{F}_p$ has no zero divisors. This is step 1 of Van Doorn's density argument. Steps 2-4 (Hensel lifting, density counting, infinite sum) remain in the axiom."
     },
     {
       "id": "deep-results",
@@ -138,7 +145,7 @@
       "startLine": 282,
       "endLine": 289,
       "summary": "vanDoorn_upper_bound (0.108N), sawhney_solution (exact N/25), sawhney_structure (uniqueness of extremal sets). These require Hensel's lemma, density counting, and real analysis beyond current formalization.",
-      "mathContext": "Van Doorn: $|A|/N \\leq 2\\sum_{p \\equiv 1(4)} 1/p^2 \\approx 0.108$. Sawhney: $\\forall N \\geq N_0,\\ \\max|A| = \\lfloor N/25\\rfloor$, achieved only by $\\{n \\equiv 7\\}$ or $\\{n \\equiv 18\\} \\pmod{25}$."
+      "mathContext": "Van Doorn: $|A|/N \leq 2\sum_{p \equiv 1(4)} 1/p^2 \approx 0.108$. Sawhney: $\forall N \geq N_0,\ \max|A| = \lfloor N/25\rfloor$, achieved only by $\{n \equiv 7\}$ or $\{n \equiv 18\} \pmod{25}$."
     }
   ],
   "conclusion": {

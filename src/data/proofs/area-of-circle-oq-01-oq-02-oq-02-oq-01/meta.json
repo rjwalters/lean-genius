@@ -53,13 +53,22 @@
     "axiomCount": 5,
     "lineCount": 419,
     "assumptions": "Five axioms: (1) fourier_decomp_exists (Fourier decomposition for periodic C¹ functions), (2) exists_nice_reparam (arc-length reparametrization with zero mean), (3) wirtinger_sum_bound (Wirtinger applied to coordinate functions), (4) area_cauchy_schwarz_bound (Green’s theorem + Cauchy–Schwarz), (5) integral_cauchy_schwarz_sq (L² Cauchy–Schwarz). Of these, #1 and #3 are proved in AreaOfCircleOQ01OQ03.lean.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11
   },
   "overview": {
-    "historicalContext": "The isoperimetric inequality C² ≥ 4πA states that among all simple closed curves of given circumference, the circle encloses the maximum area. Known since antiquity (Zenodorus, ~200 BC), the first rigorous proof was given by Weierstrass (1870s) using the calculus of variations. Hurwitz (1901) gave a substantially simpler proof using Fourier analysis: the key insight is that Wirtinger’s inequality (itself a consequence of Parseval’s identity + integration by parts) provides the analytical bound that, combined with Cauchy-Schwarz, yields the geometric inequality. Wirtinger’s inequality — $\\int f^2 \\leq \\int (f’)^2$ for mean-zero periodic functions — was first proved in this context, though Wilhelm Wirtinger published it independently in 1904. The isoperimetric inequality has deep connections to Sobolev inequalities in PDE theory and to the Cheeger constant in Riemannian geometry.",
-    "problemStatement": "**Theorem (Isoperimetric Inequality)**: For any smooth closed plane curve with circumference $C$ and enclosed area $A$:\n$$C^2 \\geq 4\\pi A$$\nwith equality if and only if the curve is a circle.\n\n**Proof chain**: Parseval + IBP → Wirtinger → Arithmetic kernel → Isoperimetric inequality.",
+    "historicalContext": "The isoperimetric inequality C² ≥ 4πA states that among all simple closed curves of given circumference, the circle encloses the maximum area. Known since antiquity (Zenodorus, ~200 BC), the first rigorous proof was given by Weierstrass (1870s) using the calculus of variations. Hurwitz (1901) gave a substantially simpler proof using Fourier analysis: the key insight is that Wirtinger’s inequality (itself a consequence of Parseval’s identity + integration by parts) provides the analytical bound that, combined with Cauchy-Schwarz, yields the geometric inequality. Wirtinger’s inequality — $\int f^2 \leq \int (f’)^2$ for mean-zero periodic functions — was first proved in this context, though Wilhelm Wirtinger published it independently in 1904. The isoperimetric inequality has deep connections to Sobolev inequalities in PDE theory and to the Cheeger constant in Riemannian geometry.",
+    "problemStatement": "**Theorem (Isoperimetric Inequality)**: For any smooth closed plane curve with circumference $C$ and enclosed area $A$:
+$$C^2 \geq 4\pi A$$
+with equality if and only if the curve is a circle.
+
+**Proof chain**: Parseval + IBP → Wirtinger → Arithmetic kernel → Isoperimetric inequality.",
     "text": "Clean formalization of Hurwitz's 1901 Fourier-analytic proof of the isoperimetric inequality C² ≥ 4πA. The proof chains IBP for Fourier coefficients, Parseval’s identity, and Wirtinger’s inequality through an arithmetic kernel to the geometric conclusion.",
-    "proofStrategy": "**Layer 1 (Analytical)**: Wirtinger’s inequality from Fourier analysis. For a mean-zero 2π-periodic $C^1$ function $f$: $\\int_0^{2\\pi} f^2 \\leq \\int_0^{2\\pi} (f')^2$. Proof: from Parseval, $\\int f^2 = \\sum c_n^2$ and $\\int (f')^2 = \\sum n^2 c_n^2$. Mean zero gives $c_0 = 0$. For $n \\neq 0$, $n^2 \\geq 1$, so $n^2 c_n^2 \\geq c_n^2$.\n\n**Layer 2 (Algebraic)**: The arithmetic kernel. Given bounds from Wirtinger ($S_{xy} \\leq 2\\pi c^2$), Cauchy–Schwarz ($S^2 \\leq 2\\pi S_{xy}$, $2A \\leq cS$), chain: $S \\leq 2\\pi c$, $2A \\leq 2\\pi c^2$, $4\\pi A \\leq (2\\pi c)^2 = L^2$.\n\n**Layer 3 (Geometric)**: Reparametrize to constant speed, subtract means, apply Layers 1+2.",
+    "proofStrategy": "**Layer 1 (Analytical)**: Wirtinger’s inequality from Fourier analysis. For a mean-zero 2π-periodic $C^1$ function $f$: $\int_0^{2\pi} f^2 \leq \int_0^{2\pi} (f')^2$. Proof: from Parseval, $\int f^2 = \sum c_n^2$ and $\int (f')^2 = \sum n^2 c_n^2$. Mean zero gives $c_0 = 0$. For $n \neq 0$, $n^2 \geq 1$, so $n^2 c_n^2 \geq c_n^2$.
+
+**Layer 2 (Algebraic)**: The arithmetic kernel. Given bounds from Wirtinger ($S_{xy} \leq 2\pi c^2$), Cauchy–Schwarz ($S^2 \leq 2\pi S_{xy}$, $2A \leq cS$), chain: $S \leq 2\pi c$, $2A \leq 2\pi c^2$, $4\pi A \leq (2\pi c)^2 = L^2$.
+
+**Layer 3 (Geometric)**: Reparametrize to constant speed, subtract means, apply Layers 1+2.",
     "keyInsights": [
       "Wirtinger’s inequality reduces to n² ≥ 1 for nonzero integers via Fourier decomposition",
       "The arithmetic kernel is purely algebraic — no integrals or measures",
@@ -80,7 +89,7 @@
       "startLine": 51,
       "endLine": 90,
       "summary": "FourierDecomp structure packaging real Fourier coefficients with Parseval identities for f and f’. Axiom: every 2π-periodic C¹ function admits such a decomposition.",
-      "mathContext": "Fourier decomposition: $\\int f^2 = \\sum c_n^2$, $\\int (f')^2 = \\sum n^2 c_n^2$, $c_0 = \\frac{1}{\\sqrt{2\\pi}}\\int f$."
+      "mathContext": "Fourier decomposition: $\int f^2 = \sum c_n^2$, $\int (f')^2 = \sum n^2 c_n^2$, $c_0 = \frac{1}{\sqrt{2\pi}}\int f$."
     },
     {
       "id": "part-ii",
@@ -88,7 +97,7 @@
       "startLine": 92,
       "endLine": 136,
       "summary": "Wirtinger’s inequality: ∫f² ≤ ∫(f’)² for mean-zero periodic C¹ functions. Proved from Fourier decomposition via pointwise bound n²cₙ² ≥ cₙ².",
-      "mathContext": "For mean-zero $f$: $c_0 = 0$, so $\\sum n^2 c_n^2 \\geq \\sum c_n^2$ since $n^2 \\geq 1$ for $n \\neq 0$."
+      "mathContext": "For mean-zero $f$: $c_0 = 0$, so $\sum n^2 c_n^2 \geq \sum c_n^2$ since $n^2 \geq 1$ for $n \neq 0$."
     },
     {
       "id": "part-iii",
@@ -96,7 +105,7 @@
       "startLine": 138,
       "endLine": 190,
       "summary": "Purely algebraic deduction: from Wirtinger bounds + Cauchy–Schwarz, deduce 4πA ≤ L². Chain: S² ≤ (2πc)² → S ≤ 2πc → 2A ≤ 2πc² → 4πA ≤ L².",
-      "mathContext": "Arithmetic kernel: $S^2 \\leq 2\\pi \\cdot 2\\pi c^2 = (2\\pi c)^2$, so $S \\leq 2\\pi c$, giving $2A \\leq c \\cdot 2\\pi c = 2\\pi c^2$ and $4\\pi A \\leq (2\\pi c)^2 = L^2$."
+      "mathContext": "Arithmetic kernel: $S^2 \leq 2\pi \cdot 2\pi c^2 = (2\pi c)^2$, so $S \leq 2\pi c$, giving $2A \leq c \cdot 2\pi c = 2\pi c^2$ and $4\pi A \leq (2\pi c)^2 = L^2$."
     },
     {
       "id": "part-iv-v",
@@ -104,7 +113,7 @@
       "startLine": 192,
       "endLine": 258,
       "summary": "SmoothClosedCurve structure, circumference and area definitions, circle C² = 4πA equality, isoperimetric ratio I(circle) = 1.",
-      "mathContext": "Circle: $C = 2\\pi r$, $A = \\pi r^2$, $C^2 = 4\\pi^2 r^2 = 4\\pi A$. Isoperimetric ratio: $I(\\gamma) = C^2/(4\\pi A)$, $I(\\text{circle}) = 1$."
+      "mathContext": "Circle: $C = 2\pi r$, $A = \pi r^2$, $C^2 = 4\pi^2 r^2 = 4\pi A$. Isoperimetric ratio: $I(\gamma) = C^2/(4\pi A)$, $I(\text{circle}) = 1$."
     },
     {
       "id": "part-vi",
@@ -112,7 +121,7 @@
       "startLine": 260,
       "endLine": 306,
       "summary": "Square: C² > 4πA (via π < 4), I(square) = 4/π. Equilateral triangle ratio.",
-      "mathContext": "Square (side $s$): $C = 4s$, $A = s^2$, $C^2/(4\\pi A) = 16/(4\\pi) = 4/\\pi > 1$."
+      "mathContext": "Square (side $s$): $C = 4s$, $A = s^2$, $C^2/(4\pi A) = 16/(4\pi) = 4/\pi > 1$."
     },
     {
       "id": "part-vii",
@@ -120,12 +129,20 @@
       "startLine": 308,
       "endLine": 395,
       "summary": "Full isoperimetric theorem C² ≥ 4πA via reparametrization (axiom) + Wirtinger chain + arithmetic kernel. Five analytical axioms.",
-      "mathContext": "For smooth closed $\\gamma$ with $C > 0$: reparametrize to constant speed $c = C/(2\\pi)$ with zero mean, apply Wirtinger + Cauchy–Schwarz, feed into arithmetic kernel to get $4\\pi A \\leq C^2$."
+      "mathContext": "For smooth closed $\gamma$ with $C > 0$: reparametrize to constant speed $c = C/(2\pi)$ with zero mean, apply Wirtinger + Cauchy–Schwarz, feed into arithmetic kernel to get $4\pi A \leq C^2$."
     }
   ],
   "conclusion": {
     "summary": "The isoperimetric inequality C² ≥ 4πA is formalized following Hurwitz (1901) with 5 axioms, 0 sorries, 11 theorems. The Wirtinger inequality and arithmetic kernel are fully proved; axioms isolate the Fourier decomposition, reparametrization, and integral bounds.",
-    "implications": "**Mathematical Significance**:\n\n**1. Clean Proof Architecture**: The three-layer structure (Analytical → Algebraic → Geometric) makes the logical dependencies explicit.\n\n**2. Wirtinger from Fourier**: The pointwise argument n² ≥ 1 for n ≠ 0 gives a transparent proof of Wirtinger’s inequality.\n\n**3. Arithmetic Kernel**: The purely algebraic core is reusable for any isoperimetric-type inequality that reduces to the same bound structure.\n\n**4. Axiom Roadmap**: The 5 axioms provide a precise specification of what Mathlib infrastructure would eliminate them: Fourier decomposition (#1), inverse function theorem for arc-length (#2), Wirtinger application (#3), Green’s theorem (#4), L² Cauchy–Schwarz (#5).",
+    "implications": "**Mathematical Significance**:
+
+**1. Clean Proof Architecture**: The three-layer structure (Analytical → Algebraic → Geometric) makes the logical dependencies explicit.
+
+**2. Wirtinger from Fourier**: The pointwise argument n² ≥ 1 for n ≠ 0 gives a transparent proof of Wirtinger’s inequality.
+
+**3. Arithmetic Kernel**: The purely algebraic core is reusable for any isoperimetric-type inequality that reduces to the same bound structure.
+
+**4. Axiom Roadmap**: The 5 axioms provide a precise specification of what Mathlib infrastructure would eliminate them: Fourier decomposition (#1), inverse function theorem for arc-length (#2), Wirtinger application (#3), Green’s theorem (#4), L² Cauchy–Schwarz (#5).",
     "openQuestions": [
       "Prove the reparametrization axiom from the inverse function theorem in Mathlib",
       "Formalize Green’s theorem for smooth closed curves to eliminate axiom #4",

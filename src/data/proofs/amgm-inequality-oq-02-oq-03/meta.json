@@ -28,19 +28,22 @@
     "axiomCount": 1,
     "lineCount": 226,
     "assumptions": "1 axiom: newton_log_concavity (Newton's log-concavity of elementary symmetric polynomials, inherited from AmgmInequalityOQ02.lean). The maclaurin_step axiom is eliminated by this file — proved here as maclaurin_step_proved. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7
   },
   "overview": {
-    "historicalContext": "Newton's inequalities on log-concavity of elementary symmetric polynomials appear in Newton's Arithmetica Universalis (1707): if $e_k$ are elementary symmetric polynomials then $e_k^2 \\geq e_{k-1} e_{k+1}$ (with suitable normalization). Colin Maclaurin (1729) used these inequalities to establish the chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$, where $M_k = (e_k/\\binom{n}{k})^{1/k}$ is the $k$-th Maclaurin mean. This chain interpolates between the arithmetic mean ($M_1$) and geometric mean ($M_n$), giving a strengthening of AM-GM. The derivation via the power inequality $a_k^{k+1} \\geq a_{k+1}^k$ is standard, appearing in Hardy-Littlewood-Pólya 'Inequalities' (1934), §2.22. The key step — reducing the Maclaurin chain to log-concavity by induction — is the main content of this formalization. Newton's own proof was non-rigorous by modern standards; rigorous proofs using symmetric function theory became standard after the 19th century. The Lean formalization eliminates the `maclaurin_step` axiom from the parent file by carrying out this classical inductive derivation formally.",
-    "problemStatement": "**Maclaurin Step**: For non-negative reals $x_1, \\ldots, x_n$ and $1 \\leq k < n$:\n$$M_k = \\left(\\frac{e_k}{\\binom{n}{k}}\\right)^{1/k} \\geq \\left(\\frac{e_{k+1}}{\\binom{n}{k+1}}\\right)^{1/(k+1)} = M_{k+1}$$\nDerived from Newton's log-concavity of the normalized elementary symmetric polynomials.",
+    "historicalContext": "Newton's inequalities on log-concavity of elementary symmetric polynomials appear in Newton's Arithmetica Universalis (1707): if $e_k$ are elementary symmetric polynomials then $e_k^2 \geq e_{k-1} e_{k+1}$ (with suitable normalization). Colin Maclaurin (1729) used these inequalities to establish the chain $M_1 \geq M_2 \geq \cdots \geq M_n$, where $M_k = (e_k/\binom{n}{k})^{1/k}$ is the $k$-th Maclaurin mean. This chain interpolates between the arithmetic mean ($M_1$) and geometric mean ($M_n$), giving a strengthening of AM-GM. The derivation via the power inequality $a_k^{k+1} \geq a_{k+1}^k$ is standard, appearing in Hardy-Littlewood-Pólya 'Inequalities' (1934), §2.22. The key step — reducing the Maclaurin chain to log-concavity by induction — is the main content of this formalization. Newton's own proof was non-rigorous by modern standards; rigorous proofs using symmetric function theory became standard after the 19th century. The Lean formalization eliminates the `maclaurin_step` axiom from the parent file by carrying out this classical inductive derivation formally.",
+    "problemStatement": "**Maclaurin Step**: For non-negative reals $x_1, \ldots, x_n$ and $1 \leq k < n$:
+$$M_k = \left(\frac{e_k}{\binom{n}{k}}\right)^{1/k} \geq \left(\frac{e_{k+1}}{\binom{n}{k+1}}\right)^{1/(k+1)} = M_{k+1}$$
+Derived from Newton's log-concavity of the normalized elementary symmetric polynomials.",
     "text": "Proves the Maclaurin step inequality from Newton's log-concavity via the power inequality.",
-    "proofStrategy": "The key lemma is the **power inequality** $a_k^{k+1} \\geq a_{k+1}^k$ (where $a_k = e_k/\\binom{n}{k}$), proved by induction on $k$. The base case is trivial ($a_0 = 1$). The inductive step raises log-concavity to the $k$-th power and combines with the IH: $a_{k+1}^{2(k+1)} \\geq a_k^{k+1} \\cdot a_{k+2}^{k+1} \\geq a_{k+1}^k \\cdot a_{k+2}^{k+1}$, then cancels $a_{k+1}^k$. The Maclaurin step $M_k \\geq M_{k+1}$ follows by taking the $1/(k(k+1))$-th power.",
+    "proofStrategy": "The key lemma is the **power inequality** $a_k^{k+1} \geq a_{k+1}^k$ (where $a_k = e_k/\binom{n}{k}$), proved by induction on $k$. The base case is trivial ($a_0 = 1$). The inductive step raises log-concavity to the $k$-th power and combines with the IH: $a_{k+1}^{2(k+1)} \geq a_k^{k+1} \cdot a_{k+2}^{k+1} \geq a_{k+1}^k \cdot a_{k+2}^{k+1}$, then cancels $a_{k+1}^k$. The Maclaurin step $M_k \geq M_{k+1}$ follows by taking the $1/(k(k+1))$-th power.",
     "keyInsights": [
-      "The power inequality $a_k^{k+1} \\geq a_{k+1}^k$ is the natural bridge between Newton's log-concavity ($a_k^2 \\geq a_{k-1}a_{k+1}$) and the Maclaurin chain ($M_k = a_k^{1/k} \\geq a_{k+1}^{1/(k+1)} = M_{k+1}$): raising to the right powers makes the exponents cancel cleanly.",
-      "The induction telescopes: raising log-concavity $a_{k+1}^2 \\geq a_k a_{k+2}$ to the $(k+1)$-th power gives $a_{k+1}^{2(k+1)} \\geq a_k^{k+1} a_{k+2}^{k+1}$. The IH $a_k^{k+1} \\geq a_{k+1}^k$ then bounds $a_k^{k+1}$ from below, and canceling $a_{k+1}^k$ leaves exactly $a_{k+1}^{k+2} \\geq a_{k+2}^{k+1}$.",
-      "The zero case requires careful treatment: if $a_{k+1} = 0$, the goal $a_{k+1}^{k+2} \\geq a_{k+2}^{k+1}$ reduces to $0 \\geq a_{k+2}^{k+1}$, which holds only if $a_{k+2} = 0$ too. The `normElemSymm_zero_succ` lemma handles this: vanishing of $e_m$ propagates to $e_{m+1}$ for non-negative inputs.",
+      "The power inequality $a_k^{k+1} \geq a_{k+1}^k$ is the natural bridge between Newton's log-concavity ($a_k^2 \geq a_{k-1}a_{k+1}$) and the Maclaurin chain ($M_k = a_k^{1/k} \geq a_{k+1}^{1/(k+1)} = M_{k+1}$): raising to the right powers makes the exponents cancel cleanly.",
+      "The induction telescopes: raising log-concavity $a_{k+1}^2 \geq a_k a_{k+2}$ to the $(k+1)$-th power gives $a_{k+1}^{2(k+1)} \geq a_k^{k+1} a_{k+2}^{k+1}$. The IH $a_k^{k+1} \geq a_{k+1}^k$ then bounds $a_k^{k+1}$ from below, and canceling $a_{k+1}^k$ leaves exactly $a_{k+1}^{k+2} \geq a_{k+2}^{k+1}$.",
+      "The zero case requires careful treatment: if $a_{k+1} = 0$, the goal $a_{k+1}^{k+2} \geq a_{k+2}^{k+1}$ reduces to $0 \geq a_{k+2}^{k+1}$, which holds only if $a_{k+2} = 0$ too. The `normElemSymm_zero_succ` lemma handles this: vanishing of $e_m$ propagates to $e_{m+1}$ for non-negative inputs.",
       "The exponent arithmetic for the Maclaurin step is handled by rewriting $1/k = (k+1)/(k(k+1))$ and applying `rpow_natCast_mul` — the identity $(a^n)^r = a^{nr}$ in `Real.rpow` — then `rpow_le_rpow` for monotonicity. This algebraic manipulation is the main proof burden after the power inequality.",
-      "The remaining dependency `newton_log_concavity` is the deeper result: proving $a_k^2 \\geq a_{k-1} a_{k+1}$ for non-negative inputs requires a polarization argument (comparing a random pair to its average) and induction on $n$."
+      "The remaining dependency `newton_log_concavity` is the deeper result: proving $a_k^2 \geq a_{k-1} a_{k+1}$ for non-negative inputs requires a polarization argument (comparing a random pair to its average) and induction on $n$."
     ],
     "prerequisites": [
       "Elementary symmetric polynomials",
@@ -62,7 +65,7 @@
       "summary": "Defines normElemSymm k x = eₖ/C(n,k), proves normElemSymm_zero = 1, normElemSymm_nonneg ≥ 0, zero propagation (private), and newton_lc (restates newton_log_concavity for normalized inputs).",
       "startLine": 35,
       "endLine": 86,
-      "mathContext": "$a_k := e_k/\\binom{n}{k}$; $a_0 = 1$; $a_k \\geq 0$ for non-negative inputs. Zero propagation: $a_m = 0 \\Rightarrow a_{m+1} = 0$ (used as boundary case in the induction). Newton log-concavity: $a_k^2 \\geq a_{k-1} a_{k+1}$."
+      "mathContext": "$a_k := e_k/\binom{n}{k}$; $a_0 = 1$; $a_k \geq 0$ for non-negative inputs. Zero propagation: $a_m = 0 \Rightarrow a_{m+1} = 0$ (used as boundary case in the induction). Newton log-concavity: $a_k^2 \geq a_{k-1} a_{k+1}$."
     },
     {
       "id": "power-inequality",
@@ -70,7 +73,7 @@
       "summary": "Proves aₖ^{k+1} ≥ aₖ₊₁^k by induction on k. Base: trivial (a₀ = 1). Inductive step: raise Newton's log-concavity to (k+1)-th power, combine with IH to get a_{k+1}^{2(k+1)} ≥ a_{k+1}^k · a_{k+2}^{k+1}, then divide by a_{k+1}^k (or handle zero case via normElemSymm_zero_succ).",
       "startLine": 88,
       "endLine": 175,
-      "mathContext": "$a_k^{k+1} \\geq a_{k+1}^k$ where $a_k = e_k/\\binom{n}{k}$. The induction: raise $a_k^2 \\geq a_{k-1} a_{k+1}$ to the $k$-th power, use IH $a_{k-1}^k \\geq a_k^{k-1}$, and cancel. Zero case: if $a_{k+1} = 0$, then $a_{k+2} = 0$ by zero propagation, making the goal trivial."
+      "mathContext": "$a_k^{k+1} \geq a_{k+1}^k$ where $a_k = e_k/\binom{n}{k}$. The induction: raise $a_k^2 \geq a_{k-1} a_{k+1}$ to the $k$-th power, use IH $a_{k-1}^k \geq a_k^{k-1}$, and cancel. Zero case: if $a_{k+1} = 0$, then $a_{k+2} = 0$ by zero propagation, making the goal trivial."
     },
     {
       "id": "maclaurin-step",
@@ -78,7 +81,7 @@
       "summary": "Derives Mₖ ≥ Mₖ₊₁ from the power inequality by taking the 1/(k(k+1))-th root. Uses rpow_natCast_mul and rpow_le_rpow. Exponent algebra via field_simp: 1/k = (k+1)/(k(k+1)) and 1/(k+1) = k/(k(k+1)).",
       "startLine": 177,
       "endLine": 213,
-      "mathContext": "$M_k = a_k^{1/k} = (a_k^{k+1})^{1/(k(k+1))} \\geq (a_{k+1}^k)^{1/(k(k+1))} = a_{k+1}^{1/(k+1)} = M_{k+1}$. Lean: `rpow_natCast_mul` rewrites $(a^n)^r = a^{nr}$; `rpow_le_rpow` applies the monotonicity $a \\leq b \\Rightarrow a^r \\leq b^r$ for non-negative reals."
+      "mathContext": "$M_k = a_k^{1/k} = (a_k^{k+1})^{1/(k(k+1))} \geq (a_{k+1}^k)^{1/(k(k+1))} = a_{k+1}^{1/(k+1)} = M_{k+1}$. Lean: `rpow_natCast_mul` rewrites $(a^n)^r = a^{nr}$; `rpow_le_rpow` applies the monotonicity $a \leq b \Rightarrow a^r \leq b^r$ for non-negative reals."
     },
     {
       "id": "summary",
@@ -86,7 +89,7 @@
       "summary": "maclaurin_step_proved is a one-line wrapper around maclaurin_step_from_newton, explicitly marking the axiom elimination. The remaining dependency is newton_log_concavity (axiomatized in the parent file).",
       "startLine": 215,
       "endLine": 226,
-      "mathContext": "$M_k \\geq M_{k+1}$ for $k \\geq 1$ and non-negative inputs — proved, not assumed. The only remaining axiom is `newton_log_concavity`: $(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$."
+      "mathContext": "$M_k \geq M_{k+1}$ for $k \geq 1$ and non-negative inputs — proved, not assumed. The only remaining axiom is `newton_log_concavity`: $(e_k/\binom{n}{k})^2 \geq (e_{k-1}/\binom{n}{k-1})(e_{k+1}/\binom{n}{k+1})$."
     }
   ],
   "conclusion": {
@@ -107,17 +110,17 @@
     {
       "targetId": "amgm-inequality",
       "relationship": "foundational",
-      "description": "The Maclaurin chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ generalizes AM-GM: the endpoints give $M_1 = $ arithmetic mean $\\geq M_n = $ geometric mean"
+      "description": "The Maclaurin chain $M_1 \geq M_2 \geq \cdots \geq M_n$ generalizes AM-GM: the endpoints give $M_1 = $ arithmetic mean $\geq M_n = $ geometric mean"
     },
     {
       "targetId": "amgm-inequality-oq-02-oq-01",
       "relationship": "sibling",
-      "description": "Sibling OQ that proves the Newton-Girard identity $(\\sum x_i)^2 = \\sum x_i^2 + 2e_2$ — provides the elementary symmetric polynomial algebra used in the Maclaurin chain"
+      "description": "Sibling OQ that proves the Newton-Girard identity $(\sum x_i)^2 = \sum x_i^2 + 2e_2$ — provides the elementary symmetric polynomial algebra used in the Maclaurin chain"
     },
     {
       "targetId": "cauchy-schwarz",
       "relationship": "related",
-      "description": "Cauchy-Schwarz can be seen as a special case of Maclaurin's inequalities ($M_1 \\geq M_2$ for specific inputs), connecting the two fundamental inequalities of analysis"
+      "description": "Cauchy-Schwarz can be seen as a special case of Maclaurin's inequalities ($M_1 \geq M_2$ for specific inputs), connecting the two fundamental inequalities of analysis"
     },
     {
       "targetId": "amgm-inequality-oq-02-oq-03-oq-03",
@@ -162,7 +165,7 @@
       "title": "A Second Letter to Martin Folkes, Esq.",
       "year": "1729",
       "venue": "Philosophical Transactions of the Royal Society",
-      "note": "Original statement of the Maclaurin inequalities $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$"
+      "note": "Original statement of the Maclaurin inequalities $M_1 \geq M_2 \geq \cdots \geq M_n$"
     }
   ],
   "sorries": 0

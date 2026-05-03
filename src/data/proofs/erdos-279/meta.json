@@ -35,7 +35,8 @@
       "Clean separation of the covering property (IsCoveredBy, CoversEventually) from the density hypotheses"
     ],
     "assumptions": "2 axioms: ErdosProblem279 (main conjecture for k ≥ 3) and ErdosProblem279_generalized (generalization to dense sets). Both are open conjectures. The density conditions HasPrimeLikeDensity and HasLogLogDivergence use placeholder True bodies.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory'. The question asks whether arithmetic progressions with prime moduli can cover all large integers when the starting index is shifted by at least k steps. For k = 1 or k = 2, classical results on divergence of the harmonic sum over primes (Σ 1/p = ∞, proved by Euler in 1737) suffice to show covering. The case k ≥ 3 introduces a qualitatively different obstacle: the constraint t ≥ k means each prime p can only cover integers n ≡ aₚ (mod p) that are at least kp above the base residue, creating a 'gap' of size kp near the beginning of each progression. Erdős noted that even k = 3 seems difficult. The generalization to arbitrary dense sets (with prime-like counting function and log-log reciprocal divergence) was proposed to isolate the essential density condition from the specific arithmetic properties of primes.",
@@ -50,7 +51,7 @@
       "The problem connects to covering systems (Erdős 1950), Chinese Remainder Theorem constructions, and sieve methods — but none of these tools have been sufficient to resolve even k = 3"
     ],
     "prerequisites": [
-      "Residue classes: $a_p \\pmod{p}$ for primes $p$",
+      "Residue classes: $a_p \pmod{p}$ for primes $p$",
       "Covering systems: finite collections of congruences covering all integers",
       "Arithmetic progressions and prime moduli",
       "Density and covering arguments in additive number theory"
@@ -63,7 +64,7 @@
       "startLine": 1,
       "endLine": 23,
       "summary": "Documents Erdős Problem #279 on covering integers with shifted prime arithmetic progressions {aₚ + kp, aₚ + (k+1)p, ...} for all primes p. Even the k=3 case is open. Connection to Goldbach-type problems and Linnik's theorem on primes in progressions. Imports Mathlib.",
-      "mathContext": "The problem: $\\forall k \\geq 3$, $\\exists (a_p)_{p \\text{ prime}}$ s.t. $\\forall n \\gg 0$, $\\exists$ prime $p$, $\\exists t \\geq k$: $n = a_p + tp$. The shifted progression $\\{a_p + kp, a_p + (k+1)p, \\ldots\\}$ omits the first $k-1$ terms of the standard AP $\\{a_p, a_p + p, a_p + 2p, \\ldots\\}$."
+      "mathContext": "The problem: $\forall k \geq 3$, $\exists (a_p)_{p \text{ prime}}$ s.t. $\forall n \gg 0$, $\exists$ prime $p$, $\exists t \geq k$: $n = a_p + tp$. The shifted progression $\{a_p + kp, a_p + (k+1)p, \ldots\}$ omits the first $k-1$ terms of the standard AP $\{a_p, a_p + p, a_p + 2p, \ldots\}$."
     },
     {
       "id": "covering-setup",
@@ -79,7 +80,7 @@
       "startLine": 39,
       "endLine": 47,
       "summary": "Records the classical result: for k ≤ 2, any set with divergent reciprocal sum (including primes, since Σ 1/p = ∞) can cover all sufficiently large integers. Currently axiomatized with a placeholder body — the proof would require formalizing the greedy covering argument.",
-      "mathContext": "For $k \\leq 2$: $\\sum_{p \\text{ prime}} 1/p = \\infty$ (Euler, 1737) implies sufficient total coverage. Each prime $p$ covers a $1/p$ fraction of integers, and the divergent sum ensures every residue class is hit. The proof uses a greedy/probabilistic argument: randomly choosing $a_p$ uniformly in $\\{0, \\ldots, p-1\\}$ covers each $n$ with probability $1/p$, and $\\sum 1/p = \\infty$ implies almost sure coverage."
+      "mathContext": "For $k \leq 2$: $\sum_{p \text{ prime}} 1/p = \infty$ (Euler, 1737) implies sufficient total coverage. Each prime $p$ covers a $1/p$ fraction of integers, and the divergent sum ensures every residue class is hit. The proof uses a greedy/probabilistic argument: randomly choosing $a_p$ uniformly in $\{0, \ldots, p-1\}$ covers each $n$ with probability $1/p$, and $\sum 1/p = \infty$ implies almost sure coverage."
     },
     {
       "id": "density-conditions",
@@ -87,7 +88,7 @@
       "startLine": 48,
       "endLine": 60,
       "summary": "Defines two density conditions for the generalized conjecture: HasPrimeLikeDensity requiring |A ∩ [1,N]| ≥ c·N/log N for some c > 0 (matching the prime counting function up to a constant), and HasLogLogDivergence requiring that Σ_{n∈A,n≤N} 1/n exceeds log log N by an unbounded amount. Both are currently placeholder definitions.",
-      "mathContext": "Two density conditions isolating the essential properties of primes: (1) $|A \\cap [1,N]| \\geq c \\cdot N/\\log N$ matches the PNT ($\\pi(N) \\sim N/\\log N$). (2) $\\sum_{n \\in A, n \\leq N} 1/n - \\log\\log N \\to \\infty$ matches Mertens' theorem ($\\sum_{p \\leq N} 1/p \\sim \\log\\log N$). Both use placeholder `True` bodies pending formalization of asymptotic counting in Lean."
+      "mathContext": "Two density conditions isolating the essential properties of primes: (1) $|A \cap [1,N]| \geq c \cdot N/\log N$ matches the PNT ($\pi(N) \sim N/\log N$). (2) $\sum_{n \in A, n \leq N} 1/n - \log\log N \to \infty$ matches Mertens' theorem ($\sum_{p \leq N} 1/p \sim \log\log N$). Both use placeholder `True` bodies pending formalization of asymptotic counting in Lean."
     },
     {
       "id": "conjectures",
@@ -95,12 +96,20 @@
       "startLine": 61,
       "endLine": 79,
       "summary": "States ErdosProblem279 for general k ≥ 3 (existence of a covering residue choice), ErdosProblem279_k3 for the specific k = 3 case, the GeneralizedCovering definition using a choice function on an arbitrary set A, and ErdosProblem279_generalized asserting that any set with prime-like density and log-log divergence admits a covering.",
-      "mathContext": "Main conjecture: `axiom ErdosProblem279 (k : ℕ) (hk : 3 ≤ k) : ∃ a : ResidueChoice, CoversEventually a k`. The $k = 3$ instance follows by `le_refl 3`. The generalized conjecture replaces primes with arbitrary $A \\subseteq \\mathbb{N}$ satisfying density conditions, using `GeneralizedCovering A k` which existentially quantifies over a choice function on $A$."
+      "mathContext": "Main conjecture: `axiom ErdosProblem279 (k : ℕ) (hk : 3 ≤ k) : ∃ a : ResidueChoice, CoversEventually a k`. The $k = 3$ instance follows by `le_refl 3`. The generalized conjecture replaces primes with arbitrary $A \subseteq \mathbb{N}$ satisfying density conditions, using `GeneralizedCovering A k` which existentially quantifies over a choice function on $A$."
     }
   ],
   "conclusion": {
     "summary": "The formalization captures Erdős Problem 279 on covering integers with shifted prime progressions, including the resolved k ≤ 2 case, the open k ≥ 3 conjecture (especially k = 3), and the natural generalization to sets with prime-like density. The 0-sorry count reflects clean axiomatization, though the density conditions use placeholder definitions that await full formalization of asymptotic counting and logarithmic divergence.",
-    "implications": "**Theoretical Significance**: Resolution would have several implications:\n\n1. **Covering systems threshold:** The problem identifies the exact parameter $k$ at which shifted prime progressions lose covering power. For $k \\leq 2$, the divergence of $\\sum 1/p$ suffices; for $k \\geq 3$, this breaks down, revealing a phase transition in the covering capacity of prime-modulus arithmetic progressions.\n\n2. **Density vs structure in combinatorics:** The generalized conjecture asks whether prime-like density alone (without multiplicative structure) suffices for covering. An affirmative answer would classify covering capacity purely by growth rate, independent of arithmetic structure — a result of broad interest in additive combinatorics.\n\n3. **Connection to sieve theory:** The problem is related to Brun's sieve and the Selberg sieve, which estimate the number of integers NOT covered by certain prime progressions. Covering systems represent the 'dual' question: instead of estimating the sieve residue, we ask whether the sieve can be made to have zero residue.\n\n4. **Erdős covering system conjecture:** This problem belongs to the family of covering system questions initiated by Erdős (1950), who conjectured that for any $c > 0$, there exists a covering system with distinct moduli all exceeding $c$. That conjecture was resolved by Hough (2015), who proved no such covering system exists if all moduli exceed $10^{16}$. Problem 279 explores a different aspect: covering by prime moduli with shift constraints.",
+    "implications": "**Theoretical Significance**: Resolution would have several implications:
+
+1. **Covering systems threshold:** The problem identifies the exact parameter $k$ at which shifted prime progressions lose covering power. For $k \leq 2$, the divergence of $\sum 1/p$ suffices; for $k \geq 3$, this breaks down, revealing a phase transition in the covering capacity of prime-modulus arithmetic progressions.
+
+2. **Density vs structure in combinatorics:** The generalized conjecture asks whether prime-like density alone (without multiplicative structure) suffices for covering. An affirmative answer would classify covering capacity purely by growth rate, independent of arithmetic structure — a result of broad interest in additive combinatorics.
+
+3. **Connection to sieve theory:** The problem is related to Brun's sieve and the Selberg sieve, which estimate the number of integers NOT covered by certain prime progressions. Covering systems represent the 'dual' question: instead of estimating the sieve residue, we ask whether the sieve can be made to have zero residue.
+
+4. **Erdős covering system conjecture:** This problem belongs to the family of covering system questions initiated by Erdős (1950), who conjectured that for any $c > 0$, there exists a covering system with distinct moduli all exceeding $c$. That conjecture was resolved by Hough (2015), who proved no such covering system exists if all moduli exceed $10^{16}$. Problem 279 explores a different aspect: covering by prime moduli with shift constraints.",
     "openQuestions": [
       "Can shifted prime progressions with t ≥ 3 cover all sufficiently large integers?",
       "Does the generalization hold for all sets with prime-like density and log-log divergence?",

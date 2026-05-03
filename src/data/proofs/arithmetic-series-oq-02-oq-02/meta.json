@@ -47,19 +47,31 @@
     ],
     "lineCount": 154,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
-    "historicalContext": "The hockey stick identity (also called the Christmas stocking identity) has been known since at least the 17th century as a pattern in Pascal's triangle: summing entries along a diagonal yields the entry one step further on the next diagonal. The Vandermonde convolution identity $\\sum \\binom{m}{j}\\binom{s}{r-j} = \\binom{m+s}{r}$, first published by Alexandre-Théophile Vandermonde in 1772, is one of the most fundamental identities in combinatorics. The 'parallel' variant used here — summing products $\\binom{i+a}{a}\\binom{j+b}{b}$ over pairs with $i+j=n$ — is equivalent to the convolution of two negative binomial (simplicial) sequences and arises naturally in lattice path enumeration: the number of paths from $(0,0)$ to $(n,a+b+1)$ that must pass through a specific column decomposes as exactly this sum. The 2D hockey stick generalizes to triangular-region sums, counting lattice points in higher-dimensional simplicial polytopes.",
-    "problemStatement": "**2D Hockey Stick Identity**: For all natural numbers $a$, $b$, $n$:\n\n$$\\sum_{i+j \\leq n} \\binom{i+a}{a} \\cdot \\binom{j+b}{b} = \\binom{n+a+b+2}{a+b+2}$$\n\nThe proof reduces to the **parallel Vandermonde identity**:\n$$\\sum_{i+j=n} \\binom{i+a}{a} \\cdot \\binom{j+b}{b} = \\binom{n+a+b+1}{a+b+1}$$\n\nvia the 1D hockey stick applied to the inner sum.",
+    "historicalContext": "The hockey stick identity (also called the Christmas stocking identity) has been known since at least the 17th century as a pattern in Pascal's triangle: summing entries along a diagonal yields the entry one step further on the next diagonal. The Vandermonde convolution identity $\sum \binom{m}{j}\binom{s}{r-j} = \binom{m+s}{r}$, first published by Alexandre-Théophile Vandermonde in 1772, is one of the most fundamental identities in combinatorics. The 'parallel' variant used here — summing products $\binom{i+a}{a}\binom{j+b}{b}$ over pairs with $i+j=n$ — is equivalent to the convolution of two negative binomial (simplicial) sequences and arises naturally in lattice path enumeration: the number of paths from $(0,0)$ to $(n,a+b+1)$ that must pass through a specific column decomposes as exactly this sum. The 2D hockey stick generalizes to triangular-region sums, counting lattice points in higher-dimensional simplicial polytopes.",
+    "problemStatement": "**2D Hockey Stick Identity**: For all natural numbers $a$, $b$, $n$:
+
+$$\sum_{i+j \leq n} \binom{i+a}{a} \cdot \binom{j+b}{b} = \binom{n+a+b+2}{a+b+2}$$
+
+The proof reduces to the **parallel Vandermonde identity**:
+$$\sum_{i+j=n} \binom{i+a}{a} \cdot \binom{j+b}{b} = \binom{n+a+b+1}{a+b+1}$$
+
+via the 1D hockey stick applied to the inner sum.",
     "text": "The 2D hockey stick identity: summing products of simplicial numbers over a triangular region gives higher-dimensional simplicial numbers. Proved via the parallel Vandermonde convolution identity using nested induction with Pascal's recurrence.",
-    "proofStrategy": "**Nested induction** on $b$ then $n$.\n\nBase ($b=0$): reduces to the 1D hockey stick identity.\n\nStep ($b+1$, $n+1$): Pascal's identity decomposes $S_{b+1}(n+1-i)$ into $S_{b+1}(n-i) + S_b(n+1-i)$, splitting the sum into two parts resolved by the inner and outer induction hypotheses. These combine via the simplicial recurrence to close the proof.",
+    "proofStrategy": "**Nested induction** on $b$ then $n$.
+
+Base ($b=0$): reduces to the 1D hockey stick identity.
+
+Step ($b+1$, $n+1$): Pascal's identity decomposes $S_{b+1}(n+1-i)$ into $S_{b+1}(n-i) + S_b(n+1-i)$, splitting the sum into two parts resolved by the inner and outer induction hypotheses. These combine via the simplicial recurrence to close the proof.",
     "keyInsights": [
       "The parallel Vandermonde satisfies the same recurrence as simplicial numbers — its proof is essentially showing that two sequences obeying the same recurrence with the same base cases must be equal.",
-      "Pascal's identity on the second factor decomposes each term $S_a(i) \\cdot S_{b+1}(n+1-i)$ into two parts, each resolvable by a different induction hypothesis — the inner IH (on $n$) and the outer IH (on $b$).",
-      "The 2D hockey stick is the functional composition hockey_stick $\\circ$ parallel_vandermonde — a two-line proof demonstrating the power of modular theorem composition.",
-      "The proof carefully avoids natural number subtraction pitfalls: $n + 1 - i = (n - i) + 1$ is verified by `omega` rather than assumed, since $\\mathbb{N}$ subtraction is truncated.",
-      "The identity has a generating function interpretation: $(1-x)^{-(a+1)} \\cdot (1-x)^{-(b+1)} = (1-x)^{-(a+b+2)}$, which encodes the convolution as a product of formal power series."
+      "Pascal's identity on the second factor decomposes each term $S_a(i) \cdot S_{b+1}(n+1-i)$ into two parts, each resolvable by a different induction hypothesis — the inner IH (on $n$) and the outer IH (on $b$).",
+      "The 2D hockey stick is the functional composition hockey_stick $\circ$ parallel_vandermonde — a two-line proof demonstrating the power of modular theorem composition.",
+      "The proof carefully avoids natural number subtraction pitfalls: $n + 1 - i = (n - i) + 1$ is verified by `omega` rather than assumed, since $\mathbb{N}$ subtraction is truncated.",
+      "The identity has a generating function interpretation: $(1-x)^{-(a+1)} \cdot (1-x)^{-(b+1)} = (1-x)^{-(a+b+2)}$, which encodes the convolution as a product of formal power series."
     ],
     "prerequisites": [
       "Binomial coefficients",
@@ -74,7 +86,7 @@
       "startLine": 1,
       "endLine": 17,
       "summary": "States the open question (generalizing the hockey stick to multi-dimensional sums), and outlines the three main results: 1D hockey stick, parallel Vandermonde, and 2D hockey stick.",
-      "mathContext": "Introduces the generalization program: from the 1D hockey stick $\\sum_{i=0}^{n} \\binom{i+k}{k} = \\binom{n+k+1}{k+1}$ to the 2D identity $\\sum_{i+j \\leq n} \\binom{i+a}{a}\\binom{j+b}{b} = \\binom{n+a+b+2}{a+b+2}$, with the parallel Vandermonde convolution $\\sum_{i+j=n} \\binom{i+a}{a}\\binom{j+b}{b} = \\binom{n+a+b+1}{a+b+1}$ as the key intermediate identity."
+      "mathContext": "Introduces the generalization program: from the 1D hockey stick $\sum_{i=0}^{n} \binom{i+k}{k} = \binom{n+k+1}{k+1}$ to the 2D identity $\sum_{i+j \leq n} \binom{i+a}{a}\binom{j+b}{b} = \binom{n+a+b+2}{a+b+2}$, with the parallel Vandermonde convolution $\sum_{i+j=n} \binom{i+a}{a}\binom{j+b}{b} = \binom{n+a+b+1}{a+b+1}$ as the key intermediate identity."
     },
     {
       "id": "simplicial",
@@ -82,7 +94,7 @@
       "startLine": 18,
       "endLine": 48,
       "summary": "Self-contained definitions: simplicial k n = C(n+k, k), base cases (simp lemmas), Pascal recurrence, and the 1D hockey stick identity. All proved by straightforward induction.",
-      "mathContext": "Defines $S_k(n) = \\binom{n+k}{k}$, the $k$-th simplicial number sequence. Establishes Pascal's recurrence $S_{k+1}(n+1) = S_{k+1}(n) + S_k(n+1)$ and the 1D hockey stick $\\sum_{i=0}^{n} S_k(i) = S_{k+1}(n)$. These are the figurate numbers: $S_0(n) = 1$, $S_1(n) = n+1$ (counting), $S_2(n) = \\binom{n+2}{2}$ (triangular), $S_3(n) = \\binom{n+3}{3}$ (tetrahedral)."
+      "mathContext": "Defines $S_k(n) = \binom{n+k}{k}$, the $k$-th simplicial number sequence. Establishes Pascal's recurrence $S_{k+1}(n+1) = S_{k+1}(n) + S_k(n+1)$ and the 1D hockey stick $\sum_{i=0}^{n} S_k(i) = S_{k+1}(n)$. These are the figurate numbers: $S_0(n) = 1$, $S_1(n) = n+1$ (counting), $S_2(n) = \binom{n+2}{2}$ (triangular), $S_3(n) = \binom{n+3}{3}$ (tetrahedral)."
     },
     {
       "id": "parallel-vandermonde",
@@ -90,7 +102,7 @@
       "startLine": 49,
       "endLine": 99,
       "summary": "The main result: Σ_{i+j=n} S_a(i)·S_b(j) = S_{a+b+1}(n). Proved by nested induction on (b, n) with Pascal decomposition of S_{b+1}(n+1-i) into two terms, each resolved by a different induction hypothesis.",
-      "mathContext": "Proves the parallel Vandermonde convolution: $\\sum_{i+j=n} \\binom{i+a}{a}\\binom{j+b}{b} = \\binom{n+a+b+1}{a+b+1}$. The nested induction uses Pascal's identity $\\binom{j+b+1}{b+1} = \\binom{j+b}{b+1} + \\binom{j+b}{b}$ to split each summand, yielding two sums resolved by the inner hypothesis (on $n$) and outer hypothesis (on $b$). This is equivalent to the Cauchy product of generating functions $(1-x)^{-(a+1)} \\cdot (1-x)^{-(b+1)} = (1-x)^{-(a+b+2)}$."
+      "mathContext": "Proves the parallel Vandermonde convolution: $\sum_{i+j=n} \binom{i+a}{a}\binom{j+b}{b} = \binom{n+a+b+1}{a+b+1}$. The nested induction uses Pascal's identity $\binom{j+b+1}{b+1} = \binom{j+b}{b+1} + \binom{j+b}{b}$ to split each summand, yielding two sums resolved by the inner hypothesis (on $n$) and outer hypothesis (on $b$). This is equivalent to the Cauchy product of generating functions $(1-x)^{-(a+1)} \cdot (1-x)^{-(b+1)} = (1-x)^{-(a+b+2)}$."
     },
     {
       "id": "2d-hockey-stick",
@@ -98,7 +110,7 @@
       "startLine": 100,
       "endLine": 114,
       "summary": "hockey_stick_2d: Σ_{i+j≤n} S_a(i)·S_b(j) = S_{a+b+2}(n). Elegant two-line proof composing parallel_vandermonde with hockey_stick via simp_rw.",
-      "mathContext": "The 2D hockey stick: $\\sum_{i+j \\leq n} \\binom{i+a}{a}\\binom{j+b}{b} = \\binom{n+a+b+2}{a+b+2}$. The proof rewrites the triangular sum $\\sum_{m=0}^{n} \\left(\\sum_{i+j=m} S_a(i) S_b(j)\\right)$ using the parallel Vandermonde to get $\\sum_{m=0}^{n} S_{a+b+1}(m)$, then applies the 1D hockey stick. This two-line composition demonstrates that the 2D identity is simply $\\texttt{hockey\\_stick} \\circ \\texttt{parallel\\_vandermonde}$."
+      "mathContext": "The 2D hockey stick: $\sum_{i+j \leq n} \binom{i+a}{a}\binom{j+b}{b} = \binom{n+a+b+2}{a+b+2}$. The proof rewrites the triangular sum $\sum_{m=0}^{n} \left(\sum_{i+j=m} S_a(i) S_b(j)\right)$ using the parallel Vandermonde to get $\sum_{m=0}^{n} S_{a+b+1}(m)$, then applies the 1D hockey stick. This two-line composition demonstrates that the 2D identity is simply $\texttt{hockey\_stick} \circ \texttt{parallel\_vandermonde}$."
     },
     {
       "id": "special-cases",
@@ -106,7 +118,7 @@
       "startLine": 115,
       "endLine": 131,
       "summary": "parallel_vandermonde_left (a=0 reduces to hockey stick), plus concrete native_decide checks: S_2(2) = 6 and S_3(2) = 10.",
-      "mathContext": "Verifies degenerate cases: when $a = 0$, the parallel Vandermonde reduces to $\\sum_{i+j=n} \\binom{j+b}{b} = \\binom{n+b+1}{b+1}$, recovering the 1D hockey stick. Concrete checks: $S_2(2) = \\binom{4}{2} = 6$ (the 2nd triangular number) and $S_3(2) = \\binom{5}{3} = 10$ (the 2nd tetrahedral number), verified by $\\texttt{native\\_decide}$."
+      "mathContext": "Verifies degenerate cases: when $a = 0$, the parallel Vandermonde reduces to $\sum_{i+j=n} \binom{j+b}{b} = \binom{n+b+1}{b+1}$, recovering the 1D hockey stick. Concrete checks: $S_2(2) = \binom{4}{2} = 6$ (the 2nd triangular number) and $S_3(2) = \binom{5}{3} = 10$ (the 2nd tetrahedral number), verified by $\texttt{native\_decide}$."
     },
     {
       "id": "summary",
@@ -114,7 +126,7 @@
       "startLine": 132,
       "endLine": 154,
       "summary": "Recapitulates all 12 theorems with 0 sorries and 0 axioms, highlighting the nested induction strategy and the compositional proof of the 2D identity.",
-      "mathContext": "Summarizes the complete chain: $S_k(n) = \\binom{n+k}{k}$ (definition) $\\to$ Pascal's recurrence $\\to$ 1D hockey stick $\\sum S_k(i) = S_{k+1}(n)$ $\\to$ parallel Vandermonde $\\sum_{i+j=n} S_a(i) S_b(j) = S_{a+b+1}(n)$ $\\to$ 2D hockey stick $\\sum_{i+j \\leq n} S_a(i) S_b(j) = S_{a+b+2}(n)$. All 12 theorems verified with 0 sorries and 0 axioms."
+      "mathContext": "Summarizes the complete chain: $S_k(n) = \binom{n+k}{k}$ (definition) $\to$ Pascal's recurrence $\to$ 1D hockey stick $\sum S_k(i) = S_{k+1}(n)$ $\to$ parallel Vandermonde $\sum_{i+j=n} S_a(i) S_b(j) = S_{a+b+1}(n)$ $\to$ 2D hockey stick $\sum_{i+j \leq n} S_a(i) S_b(j) = S_{a+b+2}(n)$. All 12 theorems verified with 0 sorries and 0 axioms."
     }
   ],
   "conclusion": {

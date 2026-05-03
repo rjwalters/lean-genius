@@ -57,13 +57,42 @@
     ],
     "axiomCount": 2,
     "lineCount": 371,
-    "assumptions": "2 axiom(s): robin_inequality (equivalent to RH), average_sigma (deep analytic NT). conjecture_equiv_exp was proved from limit theory."
+    "assumptions": "2 axiom(s): robin_inequality (equivalent to RH), average_sigma (deep analytic NT). conjecture_equiv_exp was proved from limit theory.",
+    "theoremCount": 42
   },
   "overview": {
-    "historicalContext": "This problem appears in [ErGr80] (Erdős-Graham 1980) and is discussed in Guy's 'Unsolved Problems in Number Theory' as Problem B9. It was also studied in 'On the normal behavior of the iterates of some arithmetical functions' by Erdős, Granville, Pomerance, and Spiro (1990).\n\nThe sum of divisors function σ(n) is fundamental in number theory. The question asks whether the iterated application σₖ(n) grows faster than any exponential c^k.\n\nRelated to perfect numbers (σ(n) = 2n), aliquot sequences (s(n) = σ(n) - n), and the Catalan-Dickson conjecture on aliquot sequence termination.\n\nOEIS sequence A007497 records related data.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\nLet σ₁(n) = σ(n) be the sum of divisors function, and σₖ(n) = σ(σₖ₋₁(n)).\n\nIs it true that lim_{k → ∞} σₖ(n)^{1/k} = ∞ for all n ≥ 2?\n\n**Equivalent Formulation:** For all n ≥ 2 and all c > 0, we have σₖ(n) > c^k for sufficiently large k.\n\n**Background:**\n- σ(n) > n for all n > 1 (so iterates grow)\n- The question is whether growth is 'super-exponential'",
+    "historicalContext": "This problem appears in [ErGr80] (Erdős-Graham 1980) and is discussed in Guy's 'Unsolved Problems in Number Theory' as Problem B9. It was also studied in 'On the normal behavior of the iterates of some arithmetical functions' by Erdős, Granville, Pomerance, and Spiro (1990).
+
+The sum of divisors function σ(n) is fundamental in number theory. The question asks whether the iterated application σₖ(n) grows faster than any exponential c^k.
+
+Related to perfect numbers (σ(n) = 2n), aliquot sequences (s(n) = σ(n) - n), and the Catalan-Dickson conjecture on aliquot sequence termination.
+
+OEIS sequence A007497 records related data.",
+    "problemStatement": "**Problem Statement (OPEN)**
+
+Let σ₁(n) = σ(n) be the sum of divisors function, and σₖ(n) = σ(σₖ₋₁(n)).
+
+Is it true that lim_{k → ∞} σₖ(n)^{1/k} = ∞ for all n ≥ 2?
+
+**Equivalent Formulation:** For all n ≥ 2 and all c > 0, we have σₖ(n) > c^k for sufficiently large k.
+
+**Background:**
+- σ(n) > n for all n > 1 (so iterates grow)
+- The question is whether growth is 'super-exponential'",
     "text": "Does lim_{k → ∞} σₖ(n)^{1/k} = ∞ for all n ≥ 2, where σₖ is the k-th iterate of the sum of divisors function?",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Sum of Divisors:** Use Mathlib's ArithmeticFunction.sigma\n\n2. **Iteration:** Define sigmaIterate using Function.iterate\n\n3. **Growth Rate:** Define growthRate as σₖ(n)^{1/k}\n\n4. **Conjecture:** ErdosConjecture410 states growthRate → ∞\n\n5. **Related Concepts:** Perfect/abundant/deficient numbers, aliquot sequences\n\n6. **Multiplicativity:** σ is multiplicative with explicit prime power formula",
+    "proofStrategy": "**Formalization Approach**
+
+1. **Sum of Divisors:** Use Mathlib's ArithmeticFunction.sigma
+
+2. **Iteration:** Define sigmaIterate using Function.iterate
+
+3. **Growth Rate:** Define growthRate as σₖ(n)^{1/k}
+
+4. **Conjecture:** ErdosConjecture410 states growthRate → ∞
+
+5. **Related Concepts:** Perfect/abundant/deficient numbers, aliquot sequences
+
+6. **Multiplicativity:** σ is multiplicative with explicit prime power formula",
     "keyInsights": [
       "**Iterates Grow:** σₖ(n) → ∞ as k → ∞ since σ(m) > m for m > 1",
       "**Super-Exponential?:** The question is whether σₖ(n) > c^k for any c",
@@ -72,10 +101,10 @@
       "**Related Problems:** Aliquot sequences, Catalan-Dickson conjecture"
     ],
     "prerequisites": [
-      "Arithmetic functions: $\\sigma(n) = \\sum_{d \\mid n} d$ (sum of divisors)",
+      "Arithmetic functions: $\sigma(n) = \sum_{d \mid n} d$ (sum of divisors)",
       "Function iteration: $f^{[k]}$ denotes the $k$-th iterate of $f$",
       "Limits and growth rates: Filter.Tendsto for sequences tending to infinity",
-      "Multiplicative functions: $f(mn) = f(m)f(n)$ when $\\gcd(m,n) = 1$"
+      "Multiplicative functions: $f(mn) = f(m)f(n)$ when $\gcd(m,n) = 1$"
     ]
   },
   "sections": [
@@ -85,7 +114,7 @@
       "summary": "sigma_pos, sigma_gt_n, sigma_one, sigma_prime",
       "startLine": 33,
       "endLine": 56,
-      "mathContext": "$\\sigma(n) = \\sum_{d \\mid n} d$. Key bounds: $\\sigma(n) \\geq n + 1$ for $n > 1$, $\\sigma(p) = p + 1$."
+      "mathContext": "$\sigma(n) = \sum_{d \mid n} d$. Key bounds: $\sigma(n) \geq n + 1$ for $n > 1$, $\sigma(p) = p + 1$."
     },
     {
       "id": "iteration",
@@ -93,7 +122,7 @@
       "summary": "sigmaIterate, sigma_iterate_zero, sigma_iterate_succ",
       "startLine": 57,
       "endLine": 82,
-      "mathContext": "$\\sigma_k(n) = \\sigma^{[k]}(n)$. Recurrence: $\\sigma_0(n) = n$, $\\sigma_{k+1}(n) = \\sigma(\\sigma_k(n))$."
+      "mathContext": "$\sigma_k(n) = \sigma^{[k]}(n)$. Recurrence: $\sigma_0(n) = n$, $\sigma_{k+1}(n) = \sigma(\sigma_k(n))$."
     },
     {
       "id": "growth",
@@ -101,7 +130,7 @@
       "summary": "sigma_iterate_increasing, sigma_iterate_tendsto_infty",
       "startLine": 83,
       "endLine": 98,
-      "mathContext": "$\\sigma_k(n) < \\sigma_{k+1}(n)$ for $n > 1$ since $\\sigma(m) > m$ for $m > 1$."
+      "mathContext": "$\sigma_k(n) < \sigma_{k+1}(n)$ for $n > 1$ since $\sigma(m) > m$ for $m > 1$."
     },
     {
       "id": "conjecture",
@@ -109,7 +138,7 @@
       "summary": "growthRate, ErdosConjecture410, conjecture_equiv",
       "startLine": 99,
       "endLine": 117,
-      "mathContext": "Conjecture: $\\lim_{k \\to \\infty} \\sigma_k(n)^{1/k} = \\infty$ for all $n \\geq 2$."
+      "mathContext": "Conjecture: $\lim_{k \to \infty} \sigma_k(n)^{1/k} = \infty$ for all $n \geq 2$."
     },
     {
       "id": "bounds",
@@ -117,7 +146,7 @@
       "summary": "sigma_lower_bound, sigma_upper_bound, average_sigma",
       "startLine": 118,
       "endLine": 137,
-      "mathContext": "$\\sigma(n) \\geq n + 1$ (proved). Robin's bound: $\\sigma(n) < e^\\gamma n \\ln \\ln n$ for $n > 5040$ (equivalent to RH)."
+      "mathContext": "$\sigma(n) \geq n + 1$ (proved). Robin's bound: $\sigma(n) < e^\gamma n \ln \ln n$ for $n > 5040$ (equivalent to RH)."
     },
     {
       "id": "special-numbers",
@@ -125,7 +154,7 @@
       "summary": "IsPerfect, IsAbundant, IsDeficient, perfect_6, perfect_28",
       "startLine": 138,
       "endLine": 159,
-      "mathContext": "Perfect: $\\sigma(n) = 2n$. Abundant: $\\sigma(n) > 2n$. Deficient: $\\sigma(n) < 2n$."
+      "mathContext": "Perfect: $\sigma(n) = 2n$. Abundant: $\sigma(n) > 2n$. Deficient: $\sigma(n) < 2n$."
     },
     {
       "id": "aliquot",
@@ -133,7 +162,7 @@
       "summary": "aliquot, CatalanDicksonConjecture",
       "startLine": 160,
       "endLine": 178,
-      "mathContext": "$s(n) = \\sigma(n) - n$ (proper divisor sum). Catalan-Dickson conjecture: all aliquot sequences $n, s(n), s^2(n), \\ldots$ are eventually periodic."
+      "mathContext": "$s(n) = \sigma(n) - n$ (proper divisor sum). Catalan-Dickson conjecture: all aliquot sequences $n, s(n), s^2(n), \ldots$ are eventually periodic."
     },
     {
       "id": "examples",
@@ -148,7 +177,7 @@
       "summary": "sigma_multiplicative, sigma_prime_pow",
       "startLine": 199,
       "endLine": 213,
-      "mathContext": "$\\sigma(mn) = \\sigma(m)\\sigma(n)$ for $\\gcd(m,n) = 1$. $\\sigma(p^k) = \\frac{p^{k+1} - 1}{p - 1}$."
+      "mathContext": "$\sigma(mn) = \sigma(m)\sigma(n)$ for $\gcd(m,n) = 1$. $\sigma(p^k) = \frac{p^{k+1} - 1}{p - 1}$."
     },
     {
       "id": "status",

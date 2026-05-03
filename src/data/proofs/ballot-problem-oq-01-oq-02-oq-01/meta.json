@@ -25,10 +25,11 @@
     "dateAdded": "2026-04-12",
     "axiomCount": 0,
     "lineCount": 207,
-    "assumptions": "1 sorry: final ncard/ENNReal assembly for uniformOn_fiber_transfer' (Mathlib API navigation, not a mathematical gap)."
+    "assumptions": "1 sorry: final ncard/ENNReal assembly for uniformOn_fiber_transfer' (Mathlib API navigation, not a mathematical gap).",
+    "theoremCount": 7
   },
   "overview": {
-    "historicalContext": "The ballot problem originates with Joseph Bertrand (1887), who asked for the probability that a winning candidate leads throughout the count. The classical formula $(a-b)/(a+b)$ was proved elegantly by Désiré André using the reflection principle. The multi-candidate generalization asks: when one candidate faces $m-1$ opponents, does the same formula apply? The answer is yes, because only the total opponent vote count matters, not its distribution among opponents. The parent file (BallotProblemOQ01OQ02) established this reduction via a projection-and-fiber argument, proving that all fibers have equal cardinality through an explicit fiberSwap bijection. However, a gap remained: translating the combinatorial fact $|\\text{fiber}(t_1)| = |\\text{fiber}(t_2)|$ into the measure-theoretic statement $\\text{uniformOn}(\\text{MCS}, \\text{MSP}) = \\text{uniformOn}(\\text{CS}, \\text{SP})$. This file provides that bridge, requiring infrastructure for disjoint union cardinality in Mathlib's Set.ncard framework and ratio cancellation in ENNReal arithmetic.",
+    "historicalContext": "The ballot problem originates with Joseph Bertrand (1887), who asked for the probability that a winning candidate leads throughout the count. The classical formula $(a-b)/(a+b)$ was proved elegantly by Désiré André using the reflection principle. The multi-candidate generalization asks: when one candidate faces $m-1$ opponents, does the same formula apply? The answer is yes, because only the total opponent vote count matters, not its distribution among opponents. The parent file (BallotProblemOQ01OQ02) established this reduction via a projection-and-fiber argument, proving that all fibers have equal cardinality through an explicit fiberSwap bijection. However, a gap remained: translating the combinatorial fact $|\text{fiber}(t_1)| = |\text{fiber}(t_2)|$ into the measure-theoretic statement $\text{uniformOn}(\text{MCS}, \text{MSP}) = \text{uniformOn}(\text{CS}, \text{SP})$. This file provides that bridge, requiring infrastructure for disjoint union cardinality in Mathlib's Set.ncard framework and ratio cancellation in ENNReal arithmetic.",
     "problemStatement": "Prove uniformOn_fiber_transfer: the uniformOn probability of multiStaysPositive over multiCountedSequence equals the uniformOn probability of staysPositive over countedSequence.",
     "proofStrategy": "Decompose multiCountedSequence as a disjoint union of fibers over countedSequence targets. Since all fibers have equal ncard k (by fiber_card_uniform), both the numerator and denominator of the uniformOn fraction are k times the corresponding classical values. The k cancels, giving equality.",
     "keyInsights": [
@@ -46,7 +47,7 @@
       "startLine": 1,
       "endLine": 36,
       "summary": "Module docstring explaining the fiber transfer strategy: all fibers have equal ncard k (from fiber_card_uniform), so both numerator and denominator of uniformOn scale by k, which cancels.",
-      "mathContext": "For $\\text{uniformOn}(S, P) = |S \\cap P| / |S|$: decomposing $S = \\bigsqcup_t \\text{fiber}(t)$ with $|\\text{fiber}(t)| = k$ gives $|S| = k \\cdot |\\text{CS}|$ and $|S \\cap P| = k \\cdot |\\text{CS} \\cap \\text{SP}|$, so the ratio equals $|\\text{CS} \\cap \\text{SP}| / |\\text{CS}|$."
+      "mathContext": "For $\text{uniformOn}(S, P) = |S \cap P| / |S|$: decomposing $S = \bigsqcup_t \text{fiber}(t)$ with $|\text{fiber}(t)| = k$ gives $|S| = k \cdot |\text{CS}|$ and $|S \cap P| = k \cdot |\text{CS} \cap \text{SP}|$, so the ratio equals $|\text{CS} \cap \text{SP}| / |\text{CS}|$."
     },
     {
       "id": "abstract-counting",
@@ -54,7 +55,7 @@
       "startLine": 37,
       "endLine": 60,
       "summary": "General lemma: ncard of a disjoint union with uniform fiber sizes = k times number of fibers.",
-      "mathContext": "If $\\{S_i\\}_{i \\in I}$ are pairwise disjoint finite sets each with $|S_i| = k$, then $|\\bigcup_{i \\in I} S_i| = k \\cdot |I|$."
+      "mathContext": "If $\{S_i\}_{i \in I}$ are pairwise disjoint finite sets each with $|S_i| = k$, then $|\bigcup_{i \in I} S_i| = k \cdot |I|$."
     },
     {
       "id": "fiber-partition",
@@ -62,7 +63,7 @@
       "startLine": 62,
       "endLine": 112,
       "summary": "Three key structural lemmas: the multi-candidate set is the union of fibers, fibers are disjoint, and the positive intersection decomposes as the union of positive fibers.",
-      "mathContext": "The multi-candidate counted sequences decompose as $\\text{MCS} = \\bigsqcup_{t \\in \\text{CS}} \\text{fiber}(t)$, where $\\text{CS}$ is the classical counted sequences."
+      "mathContext": "The multi-candidate counted sequences decompose as $\text{MCS} = \bigsqcup_{t \in \text{CS}} \text{fiber}(t)$, where $\text{CS}$ is the classical counted sequences."
     },
     {
       "id": "ennreal-ratio",
@@ -70,7 +71,7 @@
       "startLine": 114,
       "endLine": 128,
       "summary": "If both numerator and denominator are k times respective values with k > 0, the ENNReal ratio is preserved.",
-      "mathContext": "For $k > 0$: $\\frac{k \\cdot c}{k \\cdot d} = \\frac{c}{d}$ in $[0, \\infty]$."
+      "mathContext": "For $k > 0$: $\frac{k \cdot c}{k \cdot d} = \frac{c}{d}$ in $[0, \infty]$."
     },
     {
       "id": "main-theorem",
@@ -78,7 +79,7 @@
       "startLine": 129,
       "endLine": 176,
       "summary": "uniformOn_fiber_transfer': the main theorem connecting all components. Has the remaining sorry for the final assembly step (ncard computation + ENNReal division).",
-      "mathContext": "The uniform probability over multi-candidate sequences equals the classical ballot probability: $\\text{uniformOn}(\\text{MCS}, \\text{MSP}) = \\text{uniformOn}(\\text{CS}, \\text{SP})$."
+      "mathContext": "The uniform probability over multi-candidate sequences equals the classical ballot probability: $\text{uniformOn}(\text{MCS}, \text{MSP}) = \text{uniformOn}(\text{CS}, \text{SP})$."
     },
     {
       "id": "summary",
@@ -86,7 +87,7 @@
       "startLine": 177,
       "endLine": 207,
       "summary": "Documents what is proved (fiber decomposition, disjointness, positive decomposition, ENNReal ratio) vs. remaining sorry steps (ncard_biUnion API, uniformOn assembly).",
-      "mathContext": "Pipeline: $\\text{fiber\\_card\\_uniform} \\xrightarrow{\\text{ncard\\_biUnion}} |\\text{MCS}| = k|\\text{CS}| \\xrightarrow{\\text{ENNReal}} \\text{uniformOn equality}$. Mathematical content complete; remaining work is Mathlib API navigation."
+      "mathContext": "Pipeline: $\text{fiber\_card\_uniform} \xrightarrow{\text{ncard\_biUnion}} |\text{MCS}| = k|\text{CS}| \xrightarrow{\text{ENNReal}} \text{uniformOn equality}$. Mathematical content complete; remaining work is Mathlib API navigation."
     }
   ],
   "crossReferences": [

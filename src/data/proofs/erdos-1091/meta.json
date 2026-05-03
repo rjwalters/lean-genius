@@ -60,16 +60,27 @@
     "dateAdded": "2026-01-26",
     "axiomCount": 5,
     "lineCount": 211,
-    "assumptions": "5 axioms: voss_two_diagonals (Voss 1982 main result), pentagonal_wheel_K4_free, pentagonal_wheel_chi_4, pentagonal_wheel_max_2_diagonals, erdos_1091_general_disproof (APSSV 2026 — general f(r)→∞ question is false). 0 sorries."
+    "assumptions": "5 axioms: voss_two_diagonals (Voss 1982 main result), pentagonal_wheel_K4_free, pentagonal_wheel_chi_4, pentagonal_wheel_max_2_diagonals, erdos_1091_general_disproof (APSSV 2026 — general f(r)→∞ question is false). 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
-    "historicalContext": "Erdos Problem #1091 concerns the structure of odd cycles in graphs that are K4-free (contain no complete graph on 4 vertices) but have high chromatic number. The problem has its roots in the broader question of how clique-freeness constrains graph structure when the chromatic number is large.\n\nThe Bollobas-Erdos conjecture proposed that K4-free graphs without odd cycles having diagonals must have very restricted structure: they are bipartite, have a cut vertex, or have a low-degree vertex. Larson (1979) proved this conjecture and established that every K4-free graph with chi >= 4 must contain an odd cycle with at least one diagonal.\n\nVoss (1982) significantly strengthened Larson's result by proving that at least TWO diagonals are guaranteed. This answered the specific question of Problem #1091 affirmatively. The pentagonal wheel W5 (a 5-cycle with a central hub vertex) serves as an extremal counterexample: it is K4-free with chi = 4, but every odd cycle has at most 2 diagonals, showing that 3 diagonals cannot be universally guaranteed and making Voss's bound tight.\n\nThe problem connects to Mycielski's classical construction, which shows that triangle-free (and hence K4-free) graphs can have arbitrarily high chromatic number. The general open question asks whether there exists f(r) -> infinity such that graphs with chi >= 4 that are locally 3-colorable (every subgraph on <= r vertices has chi <= 3) must contain odd cycles with >= f(r) diagonals. This remains one of the open parts of the problem.",
-    "problemStatement": "**Problem**: Let $G$ be a $K_4$-free graph with chromatic number 4. Must $G$ contain an odd cycle with at least two diagonals?\n\n**Answer**: YES (Voss 1982)\n\n**More General Question** (OPEN): Is there some $f(r) \\to \\infty$ such that every graph with $\\chi(G) \\geq 4$, in which every subgraph on $\\leq r$ vertices has $\\chi \\leq 3$, contains an odd cycle with at least $f(r)$ diagonals?",
+    "historicalContext": "Erdos Problem #1091 concerns the structure of odd cycles in graphs that are K4-free (contain no complete graph on 4 vertices) but have high chromatic number. The problem has its roots in the broader question of how clique-freeness constrains graph structure when the chromatic number is large.
+
+The Bollobas-Erdos conjecture proposed that K4-free graphs without odd cycles having diagonals must have very restricted structure: they are bipartite, have a cut vertex, or have a low-degree vertex. Larson (1979) proved this conjecture and established that every K4-free graph with chi >= 4 must contain an odd cycle with at least one diagonal.
+
+Voss (1982) significantly strengthened Larson's result by proving that at least TWO diagonals are guaranteed. This answered the specific question of Problem #1091 affirmatively. The pentagonal wheel W5 (a 5-cycle with a central hub vertex) serves as an extremal counterexample: it is K4-free with chi = 4, but every odd cycle has at most 2 diagonals, showing that 3 diagonals cannot be universally guaranteed and making Voss's bound tight.
+
+The problem connects to Mycielski's classical construction, which shows that triangle-free (and hence K4-free) graphs can have arbitrarily high chromatic number. The general open question asks whether there exists f(r) -> infinity such that graphs with chi >= 4 that are locally 3-colorable (every subgraph on <= r vertices has chi <= 3) must contain odd cycles with >= f(r) diagonals. This remains one of the open parts of the problem.",
+    "problemStatement": "**Problem**: Let $G$ be a $K_4$-free graph with chromatic number 4. Must $G$ contain an odd cycle with at least two diagonals?
+
+**Answer**: YES (Voss 1982)
+
+**More General Question** (OPEN): Is there some $f(r) \to \infty$ such that every graph with $\chi(G) \geq 4$, in which every subgraph on $\leq r$ vertices has $\chi \leq 3$, contains an odd cycle with at least $f(r)$ diagonals?",
     "text": "Must a K4-free graph with chi(G) = 4 contain an odd cycle with at least two diagonals? Answer: YES (Voss 1982). General f(r) question: OPEN.",
     "proofStrategy": "The formalization defines cycles as vertex lists with adjacency proofs, diagonals as non-consecutive edges, and the standard graph predicates (K4-free, chromatic number). Larson's and Voss's theorems are axiomatized. The pentagonal wheel is explicitly constructed as SimpleGraph (Fin 6) with verified symmetry and loop-freeness, and the impossibility of 3 diagonals is fully proved by contradiction. The general f(r) question is formalized using induced subgraphs for local colorability but left open.",
     "keyInsights": [
-      "**K4-free does not mean low chromatic number**: the pentagonal wheel is K4-free but has $\\chi = 4$, and Mycielski's construction gives triangle-free graphs with arbitrarily high $\\chi$",
-      "**Progressive strengthening**: 0 diagonals (trivial) $\\to$ 1 diagonal (Larson 1979) $\\to$ 2 diagonals (Voss 1982) $\\to$ not 3 diagonals (pentagonal wheel counterexample)",
+      "**K4-free does not mean low chromatic number**: the pentagonal wheel is K4-free but has $\chi = 4$, and Mycielski's construction gives triangle-free graphs with arbitrarily high $\chi$",
+      "**Progressive strengthening**: 0 diagonals (trivial) $\to$ 1 diagonal (Larson 1979) $\to$ 2 diagonals (Voss 1982) $\to$ not 3 diagonals (pentagonal wheel counterexample)",
       "**The Bollobas-Erdos structure theorem** shows that absence of odd cycles with diagonals in K4-free graphs forces extreme restrictions: bipartiteness, cut vertices, or low degree",
       "**The pentagonal wheel** $W_5 = C_5 + K_1$ is the extremal example achieving exactly 2 diagonals in every odd cycle, making Voss's bound tight",
       "**The general $f(r)$ question** explores the frontier between local and global colorability: how does the local structure (small subgraphs 3-colorable) constrain global cycle structure?",
@@ -102,7 +113,7 @@
       "title": "Part 2: Larson's Theorem (1979)",
       "startLine": 70,
       "endLine": 95,
-      "summary": "Larson's 1979 theorem: $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 1$ diagonal (documented in comments). `BollobasErdosAlternative` structure for the Bollobás-Erdős conjecture.",
+      "summary": "Larson's 1979 theorem: $K_4$-free, $\chi \geq 4$ implies odd cycle with $\geq 1$ diagonal (documented in comments). `BollobasErdosAlternative` structure for the Bollobás-Erdős conjecture.",
       "mathContext": "Larson's theorem is documented but not independently axiomatized; it follows as a corollary of `voss_two_diagonals`. `BollobasErdosAlternative` structure captures the structural alternatives."
     },
     {
@@ -110,40 +121,40 @@
       "title": "Part 3: Voss's Theorem (1982)",
       "startLine": 96,
       "endLine": 112,
-      "summary": "`voss_two_diagonals` (axiom): $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 2$ diagonals. `voss_implies_larson` (verified corollary via `Nat.le_of_succ_le`).",
-      "mathContext": "Axiomatized: `voss_two_diagonals` (axiom): $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 2$ diagonals. `voss_implies_larson` (verified corollary via `Nat.le_of_succ_le`)."
+      "summary": "`voss_two_diagonals` (axiom): $K_4$-free, $\chi \geq 4$ implies odd cycle with $\geq 2$ diagonals. `voss_implies_larson` (verified corollary via `Nat.le_of_succ_le`).",
+      "mathContext": "Axiomatized: `voss_two_diagonals` (axiom): $K_4$-free, $\chi \geq 4$ implies odd cycle with $\geq 2$ diagonals. `voss_implies_larson` (verified corollary via `Nat.le_of_succ_le`)."
     },
     {
       "id": "counterexample",
       "title": "Part 4: Pentagonal Wheel Counterexample",
       "startLine": 113,
       "endLine": 158,
-      "summary": "PentagonalWheel definition as SimpleGraph (Fin 6) with proved symmetry/loop-freeness. Axioms for $K_4$-free, $\\chi=4$, max 2 diagonals. Verified `three_diagonals_not_guaranteed` by contradiction with `omega`.",
-      "mathContext": "Axioms for $K_4$-free, $\\chi=4$, max 2 diagonals."
+      "summary": "PentagonalWheel definition as SimpleGraph (Fin 6) with proved symmetry/loop-freeness. Axioms for $K_4$-free, $\chi=4$, max 2 diagonals. Verified `three_diagonals_not_guaranteed` by contradiction with `omega`.",
+      "mathContext": "Axioms for $K_4$-free, $\chi=4$, max 2 diagonals."
     },
     {
       "id": "general-question",
       "title": "Part 5: General Question (OPEN)",
       "startLine": 159,
       "endLine": 176,
-      "summary": "IsLocallyColorable (induced subgraph coloring) and GeneralQuestion (existence of $f(r) \\to \\infty$). The main unsolved part of Problem #1091.",
-      "mathContext": "Mathematical content: IsLocallyColorable (induced subgraph coloring) and GeneralQuestion (existence of $f(r) \\to \\infty$). The main unsolved part of Problem #1091."
+      "summary": "IsLocallyColorable (induced subgraph coloring) and GeneralQuestion (existence of $f(r) \to \infty$). The main unsolved part of Problem #1091.",
+      "mathContext": "Mathematical content: IsLocallyColorable (induced subgraph coloring) and GeneralQuestion (existence of $f(r) \to \infty$). The main unsolved part of Problem #1091."
     },
     {
       "id": "related-results",
       "title": "Part 6: Related Results",
       "startLine": 177,
       "endLine": 190,
-      "summary": "`K4_free_high_chi_possible` (verified via PentagonalWheel), `mycielski_construction` (axiom: triangle-free graphs with arbitrary $\\chi$).",
-      "mathContext": "Axiomatized: `K4_free_high_chi_possible` (verified via PentagonalWheel), `mycielski_construction` (axiom: triangle-free graphs with arbitrary $\\chi$)."
+      "summary": "`K4_free_high_chi_possible` (verified via PentagonalWheel), `mycielski_construction` (axiom: triangle-free graphs with arbitrary $\chi$).",
+      "mathContext": "Axiomatized: `K4_free_high_chi_possible` (verified via PentagonalWheel), `mycielski_construction` (axiom: triangle-free graphs with arbitrary $\chi$)."
     },
     {
       "id": "summary",
       "title": "Part 7: Summary",
       "startLine": 191,
       "endLine": 195,
-      "summary": "`erdos_1091_summary` (verified): combines Voss ($\\geq 2$ guaranteed) and pentagonal wheel ($\\geq 3$ not guaranteed) into a single theorem.",
-      "mathContext": "Verified: `erdos_1091_summary` (verified): combines Voss ($\\geq 2$ guaranteed) and pentagonal wheel ($\\geq 3$ not guaranteed) into a single theorem."
+      "summary": "`erdos_1091_summary` (verified): combines Voss ($\geq 2$ guaranteed) and pentagonal wheel ($\geq 3$ not guaranteed) into a single theorem.",
+      "mathContext": "Verified: `erdos_1091_summary` (verified): combines Voss ($\geq 2$ guaranteed) and pentagonal wheel ($\geq 3$ not guaranteed) into a single theorem."
     }
   ],
   "conclusion": {
