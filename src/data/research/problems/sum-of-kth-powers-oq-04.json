@@ -7,7 +7,7 @@
   "path": "full",
   "problemStatement": {
     "formal": "\\frac{\\sum_{i=0}^{n-1} i^k}{n^{k+1}} \\to \\frac{1}{k+1} \\quad \\text{as } n \\to \\infty",
-    "plain": "Asymptotic leading term of Faulhaber's formula: the normalized power sum \u2211 i^k / n^{k+1} converges to 1/(k+1). Riemann sum interpretation \u2014 the discrete average matches \u222b\u2080\u00b9 x^k dx.",
+    "plain": "Asymptotic leading term of Faulhaber's formula: the normalized power sum ∑ i^k / n^{k+1} converges to 1/(k+1). Riemann sum interpretation — the discrete average matches ∫₀¹ x^k dx.",
     "whyMatters": [
       "Bridges the algebraic Faulhaber formula (Bernoulli polynomial closed form) with the analytic asymptotic expected from the Riemann sum.",
       "Demonstrates a clean Lean technique: derive an asymptotic from a closed-form algebraic identity by combining filter limits with monicity of the Bernoulli polynomial."
@@ -15,17 +15,17 @@
   },
   "knownResults": {
     "proven": [
-      "powerSumRatio_tendsto: \u2211 i^k / n^{k+1} \u2192 1/(k+1) (proved via Faulhaber + 1 axiom monic_poly_ratio_tendsto)",
+      "powerSumRatio_tendsto: ∑ i^k / n^{k+1} → 1/(k+1) (proved via Faulhaber + 1 axiom monic_poly_ratio_tendsto)",
       "powerSumRatio_k0: exact 1 for k=0 (Lean-proved)",
       "powerSumRatio_k1: exact (n-1)/(2n) via Gauss sum (Lean-proved)",
       "bernoulli_poly_leading: Bernoulli polynomial B_{k+1} has degree k+1 and leading coefficient 1 (Lean-proved from Mathlib's coeff_bernoulli; was previously an axiom)",
-      "const_div_pow_tendsto_zero: c/n^d \u2192 0 for d \u2265 1 over \u211a (Lean-proved)",
-      "gauss_sum_rat: 2 \u00b7 \u2211_{i<n} i = n(n-1) over \u211a (Lean-proved)"
+      "const_div_pow_tendsto_zero: c/n^d → 0 for d ≥ 1 over ℚ (Lean-proved)",
+      "gauss_sum_rat: 2 · ∑_{i<n} i = n(n-1) over ℚ (Lean-proved)"
     ],
     "open": [
-      "monic_poly_ratio_tendsto remains an axiom: for monic p of degree d, p(n)/n^d \u2192 1 over \u211a. Routine fact; provable by decomposing p = X^d + q with deg q < d and applying inv_tendsto_atTop term-wise. Removing this axiom converts the file from axiomatized to verified."
+      "monic_poly_ratio_tendsto remains an axiom: for monic p of degree d, p(n)/n^d → 1 over ℚ. Routine fact; provable by decomposing p = X^d + q with deg q < d and applying inv_tendsto_atTop term-wise. Removing this axiom converts the file from axiomatized to verified."
     ],
-    "goal": "Asymptotic formula formalized (DONE). Reducing to 0 axioms requires proving monic_poly_ratio_tendsto \u2014 mechanically tractable but Mathlib polynomial decomposition + filter API."
+    "goal": "Asymptotic formula formalized (DONE). Reducing to 0 axioms requires proving monic_poly_ratio_tendsto — mechanically tractable but Mathlib polynomial decomposition + filter API."
   },
   "currentState": {
     "phase": "DONE",
@@ -33,7 +33,7 @@
     "iteration": 2,
     "focus": "Axiomatized formalization complete. Single remaining axiom (monic_poly_ratio_tendsto) is the natural next reduction target.",
     "blockers": [],
-    "nextAction": "Optional follow-up: prove monic_poly_ratio_tendsto by induction on degree (split p = X^d + q, deg q < d, then p(n)/n^d = 1 + \u2211_i (q.coeff i)/n^{d-i} with each term \u2192 0).",
+    "nextAction": "Optional follow-up: prove monic_poly_ratio_tendsto by induction on degree (split p = X^d + q, deg q < d, then p(n)/n^d = 1 + ∑_i (q.coeff i)/n^{d-i} with each term → 0).",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -60,10 +60,10 @@
       "sorry eliminated: proved (n:Q)^d → ∞ using tendsto_atTop_atTop + exists_nat_gt + pow_le_pow_right₀"
     ],
     "mathlibGaps": [
-      "No direct Mathlib lemma for 'monic polynomial p, then p(n)/n^{natDegree p} \u2192 1 over \u211a'. Proving this would also be a clean Mathlib contribution."
+      "No direct Mathlib lemma for 'monic polynomial p, then p(n)/n^{natDegree p} → 1 over ℚ'. Proving this would also be a clean Mathlib contribution."
     ],
     "nextSteps": [
-      "DONE: const_div_pow_tendsto_zero is proved in the file (lines 88\u2013104).",
+      "DONE: const_div_pow_tendsto_zero is proved in the file (lines 88–104).",
       "Optional axiom-removal: prove monic_poly_ratio_tendsto via Polynomial.eraseLead decomposition + filter sum."
     ],
     "markdown": "# Knowledge Base: sum-of-kth-powers-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n",
@@ -121,13 +121,24 @@
     {
       "path": "Proofs/SumOfKthPowersOQ04.lean",
       "filename": "SumOfKthPowersOQ04.lean",
-      "lineCount": 171,
-      "theoremCount": 4,
-      "axiomCount": 1,
+      "lineCount": 194,
+      "theoremCount": 5,
+      "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 0,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfKthPowersOQ04.lean"
+    },
+    {
+      "path": "Proofs/SumOfKthPowersOQ04Aristotle.lean",
+      "filename": "SumOfKthPowersOQ04Aristotle.lean",
+      "lineCount": 32,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfKthPowersOQ04Aristotle.lean"
     }
   ]
 }

@@ -89,6 +89,9 @@
     "cayley-hamilton-minpoly-oq-05-oq-01-oq-03",
     "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
     "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-05",
     "cayley-hamilton-minpoly-oq-05-oq-02"
   ],
   "references": {
@@ -286,18 +289,18 @@
     {
       "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean",
       "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ04.lean",
-      "lineCount": 358,
-      "theoremCount": 9,
+      "lineCount": 288,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 13,
+      "sorryCount": 4,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean"
     },
     {
       "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean",
       "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean",
-      "lineCount": 291,
+      "lineCount": 307,
       "theoremCount": 5,
       "axiomCount": 1,
       "defCount": 2,
@@ -308,13 +311,46 @@
     {
       "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP02.lean",
       "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ04WIP02.lean",
-      "lineCount": 350,
+      "lineCount": 576,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP02.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP03.lean",
+      "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ04WIP03.lean",
+      "lineCount": 254,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP03.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean",
+      "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean",
+      "lineCount": 360,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean",
+      "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean",
+      "lineCount": 191,
+      "theoremCount": 1,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean"
     },
     {
       "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ02.lean",

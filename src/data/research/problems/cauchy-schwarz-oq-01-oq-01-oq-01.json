@@ -6,8 +6,8 @@
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "Given vectors u, v in a complex inner product space E over RCLike scalars, define orthogonal projection orthProj v u = (\u27ea v, u \u27eb / \u27ea v, v \u27eb) \u2022 v and residual orthResidual v u = u - orthProj v u. Show the projection pipeline yields a Gram-Schmidt orthogonalization for 2 and 3 vectors, with the key connection: Cauchy-Schwarz equality holds for (v, u) iff orthResidual v u = 0 iff u is a scalar multiple of v.",
-    "plain": "Can the complex Gram-Schmidt process be formalized using the Cauchy-Schwarz equality characterization? Yes \u2014 the orthogonal projection u \u21a6 u - (\u27ea v, u \u27eb / \u27ea v, v \u27eb) v is exactly the GS step, and CS equality detects when this step is trivial.",
+    "formal": "Given vectors u, v in a complex inner product space E over RCLike scalars, define orthogonal projection orthProj v u = (⟪ v, u ⟫ / ⟪ v, v ⟫) • v and residual orthResidual v u = u - orthProj v u. Show the projection pipeline yields a Gram-Schmidt orthogonalization for 2 and 3 vectors, with the key connection: Cauchy-Schwarz equality holds for (v, u) iff orthResidual v u = 0 iff u is a scalar multiple of v.",
+    "plain": "Can the complex Gram-Schmidt process be formalized using the Cauchy-Schwarz equality characterization? Yes — the orthogonal projection u ↦ u - (⟪ v, u ⟫ / ⟪ v, v ⟫) v is exactly the GS step, and CS equality detects when this step is trivial.",
     "whyMatters": [
       "Connects two classical inner product space results (Gram-Schmidt orthogonalization and Cauchy-Schwarz equality)",
       "Demonstrates that CS equality is exactly the residual-vanishing condition",
@@ -19,8 +19,8 @@
     "proven": [
       "projCoeff, orthProj, orthResidual definitions for complex inner product spaces",
       "gramSchmidt3: 3-vector Gram-Schmidt with pairwise orthogonality",
-      "cs_equality_iff_residual_zero: main connection theorem (CS equality \u21d4 residual = 0)",
-      "Pythagoras-based norm decrease: ||residual|| \u2264 ||u||"
+      "cs_equality_iff_residual_zero: main connection theorem (CS equality ⇔ residual = 0)",
+      "Pythagoras-based norm decrease: ||residual|| ≤ ||u||"
     ],
     "open": [],
     "goal": "Formalize complex Gram-Schmidt via CS equality (achieved)."
@@ -29,9 +29,9 @@
     "phase": "COMPLETED",
     "since": "2026-04-05T20:06:18-07:00",
     "iteration": 2,
-    "focus": "Completed \u2014 full formalization, 0 sorries, 0 axioms.",
+    "focus": "Completed — full formalization, 0 sorries, 0 axioms.",
     "blockers": [],
-    "nextAction": "None \u2014 completed.",
+    "nextAction": "None — completed.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -65,11 +65,35 @@
   ],
   "relatedProofs": [
     "cauchy-schwarz",
+    "cauchy-schwarz-integral",
+    "cauchy-schwarz-integral-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-03",
+    "cauchy-schwarz-integral-oq-01-oq-03-oq-01",
+    "cauchy-schwarz-integral-oq-02",
+    "cauchy-schwarz-integral-oq-02-oq-01",
+    "cauchy-schwarz-integral-oq-02-oq-02",
+    "cauchy-schwarz-integral-oq-02-oq-02-oq-01",
+    "cauchy-schwarz-integral-oq-03",
     "cauchy-schwarz-oq-01",
     "cauchy-schwarz-oq-01-oq-01",
+    "cauchy-schwarz-oq-01-oq-01-oq-01",
     "cauchy-schwarz-oq-01-oq-02",
     "cauchy-schwarz-oq-01-oq-03",
-    "cauchy-schwarz-oq-01-oq-04"
+    "cauchy-schwarz-oq-01-oq-04",
+    "cauchy-schwarz-oq-02",
+    "cauchy-schwarz-oq-02-oq-01",
+    "cauchy-schwarz-oq-03",
+    "cauchy-schwarz-oq-03-oq-01",
+    "cauchy-schwarz-oq-03-oq-02",
+    "cauchy-schwarz-oq-04",
+    "cauchy-schwarz-oq-04-oq-01"
   ],
   "references": {
     "papers": [],
@@ -168,6 +192,17 @@
       "sorryCount": 10,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01.lean",
+      "lineCount": 221,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 14,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01.lean"
     },
     {
       "path": "Proofs/CauchySchwarzIntegralOQ01OQ02.lean",

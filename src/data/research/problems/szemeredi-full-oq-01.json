@@ -85,7 +85,8 @@
     "formalization"
   ],
   "relatedProofs": [
-    "szemeredi-full"
+    "szemeredi-full",
+    "szemeredi-full-oq-02"
   ],
   "references": {
     "papers": [],
@@ -95,5 +96,18 @@
   "started": "2026-04-22T13:03:46.383Z",
   "lastUpdate": "2026-04-27T22:30:00.000Z",
   "significance": 9,
-  "tractability": 4
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/SzemerediFullOQ02.lean",
+      "filename": "SzemerediFullOQ02.lean",
+      "lineCount": 119,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediFullOQ02.lean"
+    }
+  ]
 }
