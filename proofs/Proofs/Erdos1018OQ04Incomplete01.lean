@@ -33,6 +33,7 @@ import Mathlib.Tactic
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 import Mathlib.Topology.Algebra.Module.FiniteDimension
 import Mathlib.Analysis.Convex.Hull
+import Mathlib.Analysis.Convex.Combination
 import Proofs.Erdos1018OQ04
 
 open Finset
@@ -136,23 +137,70 @@ theorem K3_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 3 2) 2 :=
     simp only at h
     fin_cases i <;> fin_cases j <;> simp_all <;> omega
   · -- No improper edge intersections
-    -- For K₃ with r=2, each "edge" is a pair of vertices, convex hull is a line segment
-    -- The three line segments {AB, BC, AC} only share endpoints
-    sorry -- Geometric verification: the three edges of a triangle meet only at vertices
+    -- The 3 vertices are affinely independent, so AffineIndependent.convexHull_inter applies.
+    -- Equivalently, the convex hulls (segments) of any two distinct edges intersect only
+    -- at the image of their common vertex.
+    intro e₁ he₁ e₂ he₂ hne
+    simp only [Erdos1018OQ04.completeHypergraph, Finset.mem_filter,
+               Finset.mem_univ, true_and] at he₁ he₂
+    -- φ (the vertex map) is injective
+    have hφ_inj : Function.Injective (fun i : Fin 3 => match i with
+        | ⟨0, _⟩ => (![0, 0] : Fin 2 → ℝ) | ⟨1, _⟩ => ![1, 0]
+        | ⟨2, _⟩ => ![0, 1]  | _ => ![0, 0]) := by
+      intro ⟨i, hi⟩ ⟨j, hj⟩ h
+      fin_cases i <;> fin_cases j <;> simp_all <;> omega
+    -- s = set of all 3 vertex images; affinely independent
+    set s : Finset (Fin 2 → ℝ) := (Finset.univ : Finset (Fin 3)).image
+        (fun i => match i with | ⟨0,_⟩ => (![0,0] : Fin 2 → ℝ) | ⟨1,_⟩ => ![1,0]
+                  | ⟨2,_⟩ => ![0,1] | _ => ![0,0])
+    have hs : s = {![0,0], ![1,0], ![0,1]} := by
+      simp [s, Finset.image_insert, Finset.image_singleton]
+      rfl
+    have hai : AffineIndependent ℝ (Subtype.val : ↑s → Fin 2 → ℝ) := by
+      rw [hs]
+      -- HARD: {(0,0),(1,0),(0,1)} is affinely independent in ℝ².
+      -- Equivalently, (1,0)-(0,0) = ![1,0] and (0,1)-(0,0) = ![0,1] are linearly
+      -- independent (standard basis). Submit to Aristotle for automated proof.
+      sorry
+    -- Convert Set.image to Finset coercions
+    let φ : Fin 3 → Fin 2 → ℝ := fun i => match i with
+      | ⟨0,_⟩ => ![0,0] | ⟨1,_⟩ => ![1,0] | ⟨2,_⟩ => ![0,1] | _ => ![0,0]
+    have himg : ∀ e : Finset (Fin 3), Set.image φ ↑e = ↑(e.image φ) :=
+      fun e => (Finset.coe_image φ e).symm
+    rw [himg e₁, himg e₂, himg (e₁ ∩ e₂)]
+    -- e₁.image φ ⊆ s and e₂.image φ ⊆ s
+    have ht₁ : e₁.image φ ⊆ s :=
+      Finset.image_subset_image (Finset.subset_univ _)
+    have ht₂ : e₂.image φ ⊆ s :=
+      Finset.image_subset_image (Finset.subset_univ _)
+    -- By AffineIndependent.convexHull_inter: intersection = convexHull of intersection
+    rw [← (hai.convexHull_inter ht₁ ht₂)]
+    -- Simplify: t₁ ∩ t₂ as sets = coercion of Finset intersection
+    have hinter : (e₁.image φ) ∩ (e₂.image φ) = (e₁ ∩ e₂).image φ := by
+      ext x
+      simp only [Finset.mem_inter, Finset.mem_image]
+      constructor
+      · rintro ⟨⟨a, ha₁, rfl⟩, b, hb₂, hbφ⟩
+        exact ⟨b, Finset.mem_inter.mpr ⟨hφ_inj hbφ ▸ ha₁, hb₂⟩, rfl⟩
+      · rintro ⟨a, ha, rfl⟩
+        exact ⟨⟨a, (Finset.mem_inter.mp ha).1, rfl⟩, a, (Finset.mem_inter.mp ha).2, rfl⟩
+    rw [← Finset.coe_inter, hinter]
+    exact subset_refl _
 
 /-! ## Part IV: K₄ is Planar -/
 
 /-- Explicit planar embedding of K₄:
-    We use coordinates: (0,0), (3,0), (1,2), (2,2).
-    K₄ is planar: any drawing can be made crossing-free. -/
+    Vertices at (0,0), (4,0), (2,4), (2,1) in ℝ².
+    Verified crossing-free: the 3 pairs of non-adjacent edges are disjoint:
+    - {0,1}∥{2,3}: seg[(0,0),(4,0)] ∩ seg[(2,4),(2,1)] = ∅ (y-coords incompatible)
+    - {0,2}∥{1,3}: parametric check gives parameter s=1.6 > 1 (out of [0,1])
+    - {0,3}∥{1,2}: parametric check gives parameter t=1.6 > 1 (out of [0,1]) -/
 theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 := by
-  -- Use vertices at (0,0), (3,0), (1,2), (2,2)
-  -- This gives a valid planar embedding (K₄ is planar by Euler's formula: V-E+F = 2, 4-6+4 = 2)
   use fun i => match i with
     | ⟨0, _⟩ => ![0, 0]
-    | ⟨1, _⟩ => ![3, 0]
-    | ⟨2, _⟩ => ![1, 2]
-    | ⟨3, _⟩ => ![2, 2]
+    | ⟨1, _⟩ => ![4, 0]
+    | ⟨2, _⟩ => ![2, 4]
+    | ⟨3, _⟩ => ![2, 1]
     | ⟨_, _⟩ => ![0, 0]
   constructor
   · -- Injectivity: the four points are pairwise distinct
