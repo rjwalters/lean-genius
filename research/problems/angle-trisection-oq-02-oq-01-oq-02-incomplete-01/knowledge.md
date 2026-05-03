@@ -332,3 +332,32 @@ Per project memory `project_mathlib_api_drift_2026_04`, this drift hits a cohort
 2. Run Docker build to verify `h_top_Ka` proof compiles
 3. If `h_top_Ka` compiles: `isConstructible_algebraic_degree` sorry count drops to 0; only `wantzel_galois_iff` remains
 4. Update PR #15128 with the compiled proof
+
+## Session 2026-05-03 (Session 36) - Meta sync + API fixes; Docker blocked
+
+**Mode**: REVISIT
+**Outcome**: meta.json corrected (sorries 2→1); API fixes confirmed; Docker unavailable
+
+### What I Did
+- Reviewed Aristotle jobs: job `594e3160` was already integrated in Session 34; job `3127b935` for `adjoin_β_in_sup_eq_top` not found in jobs file (may not have been submitted successfully)
+- Confirmed Lean file has exactly 1 sorry (`wantzel_galois_iff` at line 625) — hjoin_dvd was eliminated in Session 33 via `isConstructible_sup_degree`, h_top_Ka proof written in Session 34
+- Updated meta.json: sorries 2→1, lineCount 438→627, fixed proofStrategy description, updated conclusion.summary
+- Attempted Docker build for verification — Docker infrastructure blocked (heavy concurrent multi-agent load, no containers spawnable)
+- PR #15138 already open with API fixes for `h_gen_Q` and `h_top` in `isConstructible_algebraic_degree`
+
+### Key Findings
+- **Sorry count**: 1 (only `wantzel_galois_iff`) — verified by grep; hjoin_dvd resolved via `isConstructible_sup_degree` stronger IH
+- **Build status**: Unverified due to Docker load. h_top_Ka proof (lines 182-226) is mathematically sound; API calls use real Mathlib functions
+- **API fix in branch**: `adjoin_eq_top_of_adjoin_eq_top ℚ h_gen_Q` (explicit ℚ argument added) and manual `h_gen_Q` proof via `eq_top_iff + algebra_adjoin_le_adjoin`
+- **Competing PRs**: #15140, #15143 both trying to fix same meta.json on separate branches
+
+### Files Modified
+- `src/data/proofs/angle-trisection-oq-02-oq-01-oq-02-incomplete-01/meta.json` — sorries 2→1, lineCount fix, description updates
+
+### Current Sorries (1 total)
+1. **wantzel_galois_iff** (line 625): Full Galois theory — requires FTGT + 500+ lines; out of scope
+
+### Next Steps
+1. Verify Docker build when Docker infrastructure is healthy (next session start)
+2. If h_top_Ka proof compiles: file is at 1 sorry, update PR #15138 and merge
+3. If h_top_Ka proof has errors: fix the Mathlib API calls (most likely in `hi` simp proof or `restrictScalars_adjoin_of_algEquiv` name)

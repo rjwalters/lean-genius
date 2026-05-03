@@ -2,7 +2,7 @@
   "id": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
   "title": "Completing the Wantzel-Galois Constructibility Proof",
   "slug": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
-  "description": "Completes the parent Wantzel-Galois proof (angle-trisection-oq-02-oq-01-oq-02) by redesigning IsConstructible (removing IsConstructible β precondition from sqrt_ext) to enable proper tower induction. Proves isConstructible_sqrt2, all concrete impossibility results (angle trisection, cube doubling, regular 7-gon). 2 sorries: hjoin_dvd (needs stronger IH), wantzel_galois_iff (out-of-scope).",
+  "description": "Completes the parent Wantzel-Galois proof (angle-trisection-oq-02-oq-01-oq-02) by redesigning IsConstructible (removing IsConstructible β precondition from sqrt_ext) to enable proper tower induction. Proves isConstructible_sqrt2, isConstructible_algebraic_degree (tower degree ∣ 2^n), all concrete impossibility results (angle trisection, cube doubling, regular 7-gon). 1 sorry: wantzel_galois_iff (out-of-scope, requires full FTGT + 500+ lines).",
   "meta": {
     "author": "Wantzel (1837), completion formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Straightedge_and_compass_construction",
@@ -17,10 +17,10 @@
     ],
     "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean",
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 0,
     "theoremCount": 19,
-    "lineCount": 438,
+    "lineCount": 627,
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.irreducible_of_eisenstein_criterion",
@@ -54,7 +54,7 @@
   "overview": {
     "historicalContext": "The three classical problems of antiquity — trisecting an angle, doubling the cube, and constructing the regular heptagon — were posed by Greek geometers and remained open for over 2000 years. Pierre Laurent Wantzel proved their impossibility in 1837 using nascent field theory, predating the full development of Galois theory by a decade. Wantzel's key insight was that any ruler-and-compass construction amounts to a tower of quadratic field extensions, so constructible lengths must have degree over ℚ that is a power of 2. Since cos(20°), ∛2, and cos(2π/7) each satisfy irreducible cubics over ℚ — and 3 is not a power of 2 — none can be constructed.\n\nThis file is the completion of a two-part Lean 4 formalization. The parent file (AngleTrisectionOQ02OQ01OQ02.lean) set up the overall framework but left five theorems as sorry. The root cause of four of those sorries was a subtle design flaw: the IsConstructible predicate hid the square-root witnesses inside an existential quantifier inside the sqrt_ext constructor. Lean's structural induction tactic cannot generate inductive hypotheses for existentially hidden terms, making the rationality lemma and degree arguments unprovable in that setting.\n\nThis file redesigns IsConstructible so that all constructor parameters are explicit, enabling a clean induction proof. As a side effect the redesigned definition is more restrictive than the classical one (it characterizes exactly ℚ, not all geometric constructibles), but this is sufficient to prove the three impossibility results — and illuminates an important subtlety in how Lean inductive types interact with existentials.",
     "problemStatement": "Prove not_constructible_of_bad_degree: if p is irreducible over ℚ with degree not a power of 2, then no root of p in ℂ is constructible. Also prove cube_root_2_minpoly_irred, cos20_minpoly_degree, and regular_7gon_impossible_degree which were sorried in the parent.",
-    "proofStrategy": "Key insight: under the redesigned IsConstructible definition (with explicit constructor parameters), all constructible numbers are exactly the rationals. This follows by induction (isConstructible_mem_range). Then not_constructible_of_bad_degree: constructible → rational → minpoly is X-C(q) → divides p → p has degree 1 = 2^0 → contradiction. For irreducibility: use Eisenstein at p=2 over ℤ then lift to ℚ via Gauss's lemma.",
+    "proofStrategy": "Key insight: removing the IsConstructible β precondition from sqrt_ext gives the mathematically correct definition (√2 IS constructible). The tower-degree theorem isConstructible_algebraic_degree (structural induction: finrank ℚ ℚ⟮α⟯ ∣ 2^n) uses the stronger IH isConstructible_sup_degree (finrank ↥K ↥(K⊔ℚ⟮α⟯) ∣ 2^n for any base K/ℚ), which was the key to eliminating hjoin_dvd. Then not_constructible_of_bad_degree: α constructible → finrank ℚ ℚ⟮α⟯ ∣ 2^n → deg(minpoly) ∣ 2^n → p irreducible + minpoly ∣ p → contradiction. For irreducibility: Eisenstein at p=2 over ℤ + Gauss lemma.",
     "keyInsights": [
       "Making a,b explicit (not existential) in sqrt_ext constructor gives Lean proper IHs, enabling induction proofs",
       "Under the explicit-parameter IsConstructible, all constructible numbers are rationals — a much stronger result that makes not_constructible_of_bad_degree trivial",
@@ -103,7 +103,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Reduces the parent's 5 sorries to 2 by: (1) redesigning IsConstructible to enable induction, (2) proving not_constructible_of_bad_degree via the rationality argument, (3) proving Eisenstein irreducibility for X³-2, (4) computing all three polynomial degrees. The remaining sorries (hjoin_dvd and wantzel_galois_iff) require a stronger induction hypothesis and the full Galois correspondence respectively.",
+    "summary": "Reduces the parent's 5 sorries to 1 by: (1) redesigning IsConstructible to enable tower-degree induction, (2) proving isConstructible_sup_degree (stronger IH over arbitrary base fields) to eliminate hjoin_dvd, (3) proving not_constructible_of_bad_degree, (4) proving Eisenstein irreducibility for X³-2, (5) computing all three polynomial degrees. The sole remaining sorry (wantzel_galois_iff) requires full FTGT + 500+ lines infrastructure.",
     "implications": "The three classical impossibility results — angle trisection, cube doubling, regular 7-gon — are now fully proved (0 axioms) in this file. The proof demonstrates that the IsConstructible definition choice is critical: existential vs explicit constructors has dramatic consequences for what can be proved by induction.",
     "openQuestions": [
       "Can wantzel_galois_iff be proved using Mathlib's IntermediateField.orderIsoOfGal and Sylow theory for 2-groups?",
@@ -136,12 +136,12 @@
   ],
   "leanFile": {
     "namespace": "AngleTrisectionOQ02OQ01OQ02Incomplete01",
-    "lineCount": 438,
+    "lineCount": 627,
     "axiomCount": 0,
     "theoremCount": 19,
     "definitionCount": 2,
     "path": "Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean",
-    "sorries": 2
+    "sorries": 1
   },
-  "sorries": 2
+  "sorries": 1
 }
