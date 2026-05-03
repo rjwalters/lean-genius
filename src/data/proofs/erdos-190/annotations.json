@@ -207,5 +207,57 @@
       "base case"
     ],
     "prerequisites": []
+  },
+  {
+    "id": "erdos-190-conjecture-open",
+    "proofId": "erdos-190",
+    "range": {
+      "startLine": 250,
+      "endLine": 297
+    },
+    "type": "concept",
+    "title": "Open Conjecture H(k)^{1/k}/k → ∞ and Contextual Remarks",
+    "content": "`erdos190Conjecture` (lines 250–254) formalizes the main open question: for every M ∈ ℕ, eventually H(k)^{1/k}/k > M. Equivalently, H(k) grows faster than k^k — a super-exponential rate. The comment explicitly notes this is NOT axiomatized (a prior unsound `axiom erdos_190` was removed for soundness).\n\nLines 256–297 contain documentation sections for contextual connections:\n\n**Szemerédi connection** (262–269): Szemerédi's theorem (any dense subset of ℕ contains arbitrarily long APs) guarantees H(k) exists. For large enough N, either density forces a monochromatic AP (via Szemerédi) or many colors are needed, increasing the rainbow probability. This makes H(k) well-defined as a finite number.\n\n**Canonical vs Standard Ramsey** (271–277): Standard Ramsey theory seeks monochromatic structures; canonical Ramsey theory allows 'canonical patterns' like rainbow colorings. The canonical number H(k) is typically smaller than the standard W(k) for the same structure size because more pattern types are acceptable.\n\n**Why It Is Hard** (279–297): The challenge is getting precise asymptotics. The base growth H(k)^{1/k} → ∞ is 'not hard' (proved in the file via W_le_H + Berlekamp lower bound chain). The super-exponential rate H(k)^{1/k}/k → ∞ requires controlling the interplay between rainbow and monochromatic forcing, where pigeonhole arguments push toward monochromatic but rainbow requires many distinct colors.",
+    "mathContext": "Erdős's conjecture: $H(k)^{1/k} / k \\to \\infty$ as $k \\to \\infty$, i.e., $H(k) \\gg k^k$ eventually.\n\nKnown growth: $H(k) \\geq W(k) \\geq 2^{k/2}$ (from the Berlekamp lower bound on van der Waerden numbers), so $H(k)^{1/k} \\geq 2^{1/2} > 1$, confirming $H(k)^{1/k} \\to \\infty$. The conjecture strengthens this to super-polynomial in $k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "super-exponential growth",
+      "Szemerédi's theorem",
+      "canonical Ramsey theory",
+      "rainbow arithmetic progression",
+      "van der Waerden number"
+    ],
+    "prerequisites": [
+      "erdos190Conjecture",
+      "H_root_to_infinity",
+      "W_le_H"
+    ]
+  },
+  {
+    "id": "erdos-190-h-pos-summary-close",
+    "proofId": "erdos-190",
+    "range": {
+      "startLine": 299,
+      "endLine": 348
+    },
+    "type": "theorem",
+    "title": "H_pos Proof and erdos_190_summary Assembly",
+    "content": "**`H_pos`** (lines 308–316): Proves H(k) > 0 for k ≥ 1. Proof by contradiction: assume H(k) = 0. Then `Nat.find_spec (exists_canonical_threshold k)` gives that threshold 0 satisfies hasCanonicalAP for any coloring — in particular for the `Bool`-coloring and any function `Fin 0 → Fin k`. But `Fin.elim0` says no such function exists (Fin 0 is empty, Fin k nonempty for k ≥ 1), contradiction via applying `f ⟨0, by omega⟩` to get an element of Fin 0.\n\n**`erdos_190_summary`** (lines 336–343): The main assembly theorem, collecting three key proved facts into a single conjunction:\n1. H(k) > 0 for k ≥ 1 (via `H_pos`)\n2. H(k)^{1/k} → ∞ (via `H_root_to_infinity`)\n3. W(k) ≤ H(k) for k ≥ 3 (via `W_le_H`)\n\nThe main open conjecture (`erdos190Conjecture`) is noted separately at line 345: it remains unresolved and is not included in the summary conjunction, preserving soundness. The namespace closes at line 348.",
+    "mathContext": "The `Fin.elim0` argument: if `H(k) = 0` then the canonical threshold is 0, meaning for N=0 any coloring has a canonical AP. But a $k$-AP requires a map $f : \\text{Fin}\\, k \\to \\text{Fin}\\, 0$. For $k \\geq 1$, $\\text{Fin}\\, k$ is nonempty, so such a map would produce an element of $\\text{Fin}\\, 0 = \\emptyset$, contradiction.\n\nThe summary: $H(k) > 0$ and $H(k)^{1/k} \\to \\infty$ and $W(k) \\leq H(k)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fin.elim0",
+      "Nat.find_spec",
+      "canonical threshold",
+      "proof by contradiction",
+      "summary theorem"
+    ],
+    "prerequisites": [
+      "H_pos",
+      "H_root_to_infinity",
+      "W_le_H",
+      "Fin.elim0",
+      "Nat.find_spec"
+    ]
   }
 ]
