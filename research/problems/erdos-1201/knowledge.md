@@ -30,7 +30,37 @@ Is it true that for every $\epsilon,\eta>0$ there exists a $k$ such that the den
 
 ## Sessions
 
-(No research sessions yet)
+## Session 2026-05-03 (Session 1) - Bertrand Lower Bounds
+
+**Mode**: FRESH
+**Outcome**: progress — 2 new theorems proved, PR #15174 created
+
+### What I Did
+- Identified erdos-1201 as RICH-tier problem (37 knowledge items, 0 sorries, 1 axiom)
+- Analyzed Lean file: 19 existing theorems, well-structured, only missing Docker build verification
+- Added `import Mathlib.NumberTheory.Bertrand`
+- Proved `gpfConsecutive_self_gt (n ≥ 1) : n < gpfConsecutive n n`
+  - Key: Bertrand gives prime p ∈ (n, 2n]; p = n + (p-n) with p-n ≤ n appears in window
+  - Uses: Nat.exists_prime_lt_and_le_two_mul, Finset.dvd_prod_of_mem, gpf_max
+- Proved `gpfConsecutive_gt_n_of_large_window (n ≥ 2, k ≥ n) : n < gpfConsecutive n k`
+  - Induction on k-n using gpfConsecutive_mono
+- Updated gallery meta.json: theoremCount 14→21, lineCount 267→297, new Bertrand section
+- Created PR #15174
+
+### Key Findings
+- Mathlib.NumberTheory.Bertrand is available via `Nat.exists_prime_lt_and_le_two_mul`
+- The n+1 consecutive integers [n, 2n] always contain a Bertrand prime — clean formalization
+- `Finset.dvd_prod_of_mem` is the right tool for showing a specific factor divides the product
+- Bug caught: must bind hp_le (not use _) from Bertrand decomposition for omega to prove range membership
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (297 lines, was 266)
+- `src/data/proofs/erdos-1201/meta.json` (updated counts + Bertrand section)
+- `src/data/research/problems/erdos-1201.json` (updated knowledge)
+
+### Next Steps
+- Await CI/Docker build result for PR #15174
+- Potential: Sylvester-Schur theorem (gpfConsecutive n k > k for n ≥ k+1)
 
 ---
 
