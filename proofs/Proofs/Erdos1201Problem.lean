@@ -17,6 +17,7 @@ import Mathlib.Data.Nat.Factors
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
+import Mathlib.NumberTheory.Bertrand
 
 namespace Erdos1201
 
@@ -262,5 +263,35 @@ theorem erdos_1201_half_squared (η : ℝ) (hη : 0 < η) :
         interval_cases n <;> simp [gpfConsecutive, consecutiveProduct, greatestPrimeFactor] at h ⊢
       rwa [← gpfConsecutive_half_iff n k hn2]
   rwa [this] at hk
+
+/-
+## Bertrand's Postulate Consequences
+-/
+
+/-- By Bertrand's postulate, gpfConsecutive n n > n for n ≥ 1.
+    The window [n, 2n] always contains a prime exceeding n. -/
+theorem gpfConsecutive_self_gt (n : ℕ) (hn : 1 ≤ n) :
+    n < gpfConsecutive n n := by
+  obtain ⟨p, hp_prime, hn_lt, _⟩ := Nat.exists_prime_lt_and_le_two_mul n (by omega)
+  have h_mem : p - n ∈ Finset.range (n + 1) := Finset.mem_range.mpr (by omega)
+  have h_factor : (fun i => n + i) (p - n) = p := by omega
+  have h_dvd : p ∣ consecutiveProduct n n := by
+    unfold consecutiveProduct
+    have := Finset.dvd_prod_of_mem (fun i => n + i) h_mem
+    rwa [h_factor] at this
+  have h_pos : 0 < consecutiveProduct n n := consecutiveProduct_pos n n hn
+  have h_in : p ∈ (consecutiveProduct n n).primeFactors :=
+    Nat.mem_primeFactors.mpr ⟨hp_prime, h_dvd, h_pos.ne'⟩
+  exact Nat.lt_of_lt_of_le hn_lt (gpf_max (consecutiveProduct n n) p h_in)
+
+/-- For n ≥ 2 and k ≥ n, gpfConsecutive n k > n:
+    any window of length ≥ n starting at n ≥ 2 contains a prime > n. -/
+theorem gpfConsecutive_gt_n_of_large_window (n k : ℕ) (hn : 2 ≤ n) (hk : n ≤ k) :
+    n < gpfConsecutive n k := by
+  obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hk
+  induction d with
+  | zero => exact gpfConsecutive_self_gt n (by omega)
+  | succ d ih =>
+    exact Nat.lt_of_lt_of_le ih (gpfConsecutive_mono n (n + d) hn)
 
 end Erdos1201
