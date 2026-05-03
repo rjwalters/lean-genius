@@ -163,5 +163,107 @@
     "significance": "key",
     "relatedConcepts": ["differential Galois theory", "algebraic Galois theory", "Picard-Vessiot theory", "solvable groups"],
     "prerequisites": ["abel-ruffini-oq-04", "DiffField", "Risch criterion"]
+  },
+  {
+    "id": "ann-risch-pointwise-part5",
+    "proofId": "abel-ruffini-oq-09",
+    "range": {
+      "startLine": 380,
+      "endLine": 399
+    },
+    "type": "theorem",
+    "title": "Part V: Pointwise-to-Polynomial Reformulation",
+    "content": "Part V (380–399) bridges the pointwise and polynomial formulations of the Risch ODE.\n\n**`risch_pointwise_to_poly`** (386–393): If p'(x) − 2x·p(x) = 1 for ALL x : ℝ, then as polynomials `derivative p − C 2 * (X * p) = 1`. Uses `Polynomial.funext`: two polynomials over ℝ agreeing at every real point are equal (density of evaluation). The proof applies `funext`, then `simp` unfolds the polynomial eval, and `linarith` from the hypothesis h x.\n\n**`no_poly_risch_pointwise`** (396–399): The pointwise form of the main impossibility — no polynomial p has p'(x) − 2x·p(x) = 1 for all x. One-line proof: extract p from the existential, apply `risch_pointwise_to_poly` to get the polynomial form, then apply `no_poly_risch_soln`.",
+    "mathContext": "The `Polynomial.funext` lemma encodes the fact that ℝ is an infinite field: a polynomial over an infinite field that vanishes at every element is the zero polynomial. This allows converting pointwise function equalities into polynomial equalities, bridging analysis (pointwise) with algebra (polynomial ring).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Polynomial.funext",
+      "density of evaluation",
+      "no_poly_risch_soln",
+      "pointwise vs polynomial equality"
+    ],
+    "prerequisites": [
+      "Polynomial.funext",
+      "Polynomial.eval_sub",
+      "Polynomial.eval_mul",
+      "no_poly_risch_soln"
+    ]
+  },
+  {
+    "id": "ann-risch-degree-contrast-part6",
+    "proofId": "abel-ruffini-oq-09",
+    "range": {
+      "startLine": 401,
+      "endLine": 451
+    },
+    "type": "concept",
+    "title": "Part VI: Degree-Preserving vs Degree-Raising — The Key Asymmetry",
+    "content": "Part VI (401–451) makes the structural contrast explicit with four theorems.\n\nThe docstring (401–420) explains the key distinction:\n- **L₁[Q] = Q' + Q** (for g=x): degree-preserving operator. natDeg(Q'+Q) = natDeg(Q) since Q dominates Q'. Every polynomial R is in the image — ∫R(x)eˣdx is always elementary.\n- **L₂[Q] = Q' − 2xQ** (for g=−x²): degree-raising operator. natDeg(Q'−2xQ) = natDeg(Q)+1 since the −2xQ term dominates. No nonzero constant is in the image — ∫e^(−x²)dx is not elementary.\n\n**Four theorems** (422–450):\n1. `risch_g_linear_const`: L₁[1] = 1 (Q=1 solves Q'+Q=1 for R=1)\n2. `risch_g_linear_degree1`: L₁[X−1] = X (solves Q'+Q=X, encoding ∫xeˣdx=(x−1)eˣ+C)\n3. `risch_g_linear_constant_solvable`: L₁[C(c)] = C(c) for any constant c (degree 0 always in image of L₁)\n4. `gaussian_vs_linear_contrast`: Combines (3) with `no_poly_risch_constant` — for c≠0, (∃Q: L₁[Q]=C(c)) ∧ (¬∃Q: L₂[Q]=C(c)). The asymmetry in one statement.",
+    "mathContext": "The operators $L_1[Q] = Q' + Q$ and $L_2[Q] = Q' - 2xQ$ on $\\mathbb{R}[x]$ have opposite behaviors: $L_1$ preserves degree (surjective) while $L_2$ raises degree by 1 (never maps to constants). This degree analysis is the computational core of Liouville's theorem for the Gaussian integral.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Risch ODE",
+      "degree-preserving operator",
+      "degree-raising operator",
+      "risch_g_linear_degree1",
+      "gaussian_vs_linear_contrast"
+    ],
+    "prerequisites": [
+      "no_poly_risch_constant",
+      "Polynomial.derivative_X_pow",
+      "Polynomial.derivative_C",
+      "linear_combination"
+    ]
+  },
+  {
+    "id": "ann-risch-l1-surjectivity",
+    "proofId": "abel-ruffini-oq-09",
+    "range": {
+      "startLine": 452,
+      "endLine": 508
+    },
+    "type": "theorem",
+    "title": "Part VIb: L₁ is Surjective — All Polynomial Integrands Have Elementary Antiderivatives",
+    "content": "Part VIb (452–508) proves the positive result: L₁[Q] = Q' + Q surjects onto all of ℝ[x].\n\n**`risch_linear_surjective_monomial`** (476–488): For each monomial Xⁿ, there exists Q with Q'+Q = Xⁿ. Proof by strong induction:\n- Base (n=0): Q=1 works since 0+1=1.\n- Inductive step: given Qₙ with Qₙ'+Qₙ = Xⁿ, set Q_{n+1} = X^{n+1} − C(n+1)·Qₙ. Then L₁[Q_{n+1}] = (n+1)Xⁿ − (n+1)(Qₙ' + Qₙ) + X^{n+1} = X^{n+1} by IH. Proved via `linear_combination -C(n+1) * hQn`.\n\n**`risch_linear_surjective_all`** (493–507): L₁ surjects onto all polynomials. Proof by `Polynomial.induction_on'` (structural induction on polynomial = sums of monomials):\n- Addition: if Qp solves L₁[Qp]=p and Qq solves L₁[Qq]=q, then Qp+Qq solves L₁[Qp+Qq]=p+q (linearity).\n- Monomial: apply risch_linear_surjective_monomial, then scale by C(a) via linearity.\n\nSharp contrast: L₂ can never map onto nonzero constants, but L₁ maps onto everything.",
+    "mathContext": "L₁ surjectivity means $\\int p(x) e^x dx$ is always elementary for any polynomial $p$. The explicit antiderivative is $Q(x) e^x$ where $Q$ is found by the recurrence. For example: $Q_0=1$, $Q_1=x-1$, $Q_2=x^2-2x+2$, giving $\\int x^n e^x dx = Q_n(x)e^x + C$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "risch_linear_surjective_monomial",
+      "risch_linear_surjective_all",
+      "Polynomial.induction_on'",
+      "elementary antiderivative",
+      "recurrence"
+    ],
+    "prerequisites": [
+      "Polynomial.induction_on'",
+      "risch_linear_surjective_monomial",
+      "Polynomial.derivative_X_pow",
+      "linear_combination"
+    ]
+  },
+  {
+    "id": "ann-risch-final-summary",
+    "proofId": "abel-ruffini-oq-09",
+    "range": {
+      "startLine": 509,
+      "endLine": 541
+    },
+    "type": "insight",
+    "title": "Part VII: Abel-Ruffini Analogy Table and Final Summary Theorem",
+    "content": "Part VII (509–540) formalizes the analogy between Abel-Ruffini and Liouville impossibility.\n\nThe docstring (513–531) presents a comparison table showing the structural parallel:\n| Feature | Abel-Ruffini | Liouville |\n|---------|--------------|--------|\n| Question | Solvable by radicals? | Elementary integral? |\n| Yes condition | Galois group solvable | Integral has Liouville form |\n| No example | x⁵−x−1 (S₅) | e^(−x²) |\n| Obstruction | S₅ not solvable | Risch ODE has no rational soln |\n| Polynomial proof | A₅ is simple | L₂ raises degree |\n\nBoth impossibility proofs reduce to the same pattern: a polynomial algebra fact (simplicity of A₅ vs degree-raising of L₂) witnesses the impossibility, and the polynomial computation is formally verified.\n\n**`gaussian_risch_polynomial_obstruction_summary`** (536–538): One-line alias: `no_poly_risch_soln p hp`, packaging the core result as the named theorem 'gaussian Risch polynomial obstruction summary'. This is the file's headline theorem — the degree-raising argument fully formalized.\n\nThe namespace `end AbelRuffiniOQ09` closes at line 540.",
+    "mathContext": "Both Abel-Ruffini (algebraic Galois theory) and Liouville/Risch (differential Galois theory) are impossibility theorems proved via group-theoretic obstructions: $S_5$ is not solvable; the Picard-Vessiot group of $e^{-x^2}$ is $\\text{GL}_1$, not solvable. The polynomial algebra proof in this file is the 'elementary' verification that avoids full differential Galois theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "differential Galois theory",
+      "algebraic Galois theory",
+      "gaussian_risch_polynomial_obstruction_summary",
+      "Abel-Ruffini theorem",
+      "Liouville integration theorem"
+    ],
+    "prerequisites": [
+      "no_poly_risch_soln",
+      "gaussian_vs_linear_contrast",
+      "risch_linear_surjective_all"
+    ]
   }
 ]
