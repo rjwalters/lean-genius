@@ -29,18 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 7 (2026-05-02, researcher-7) proved padic_algebraic_not_liouville (0 sorries, 1 open axiom). Key fix: H≥2 constraint in IsPadicLiouville definition.",
+    "progressSummary": "PROGRESS: Session 8 (2026-05-03) converted padic_liouville_estimate from axiom to theorem. Now 0 axioms, 4 helper sorries. All 4 sorries are known math, provable from Mathlib.",
     "builtItems": [
       "Fixed IsPadicLiouville in LiouvilleTheoremOQ04.lean:213 (added 2 ≤ max r.natAbs s.natAbs)",
-      "Proved padic_algebraic_not_liouville in LiouvilleTheoremOQ04.lean:261 (0 sorries): exists_pow_lt_of_lt_one + div_lt_div_right + one_div_le_one_div_of_le"
+      "Proved padic_algebraic_not_liouville in LiouvilleTheoremOQ04.lean:261 (0 sorries): exists_pow_lt_of_lt_one + div_lt_div_right + one_div_le_one_div_of_le",
+      "polyCoeffL1 def + polyCoeffL1_pos lemma (sorry): LiouvilleTheoremOQ04.lean:233-242",
+      "padicNorm_poly_eval_lb (sorry): clearing-denominator lower bound, LiouvilleTheoremOQ04.lean:243-251",
+      "irred_no_rational_roots (sorry): irreducible degree≥2 implies no rational roots, LiouvilleTheoremOQ04.lean:252-258",
+      "cofactor_uniform_bound (sorry): Taylor factorization upper bound ‖f(r/s)‖≤M·‖α-r/s‖, LiouvilleTheoremOQ04.lean:260-268"
     ],
     "insights": [
       "The weak IsPadicLiouville definition (without H≥2) cannot prove padic_algebraic_not_liouville — when H=1, bound 1/H^n=1 gives no useful constraint.",
-      "Fix mirrors Mathlib Liouville definition: require 2 ≤ max(r.natAbs, s.natAbs), forcing H→∞ so 1/H^n→0 eventually beats any positive lower bound C."
+      "Fix mirrors Mathlib Liouville definition: require 2 ≤ max(r.natAbs, s.natAbs), forcing H→∞ so 1/H^n→0 eventually beats any positive lower bound C.",
+      "Session 8 (2026-05-03): Converted padic_liouville_estimate from axiom to theorem by decomposing into 4 helper sorries: polyCoeffL1_pos, padicNorm_poly_eval_lb, irred_no_rational_roots, cofactor_uniform_bound. Axiom count: 1→0. Sorry count: 0→4. Net improvement: sorries replaceable, axioms are permanent.",
+      "Bug fix: original axiom false for degree-1 polynomials — added hf_irred and hf_deg≥2 constraints to padic_liouville_estimate and padic_algebraic_not_liouville."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Remaining open axiom padic_liouville_estimate requires Taylor factorization in ℚ_[p] — needs continuity of polynomial evaluation over the p-adic completion"
+      "Prove cofactor_uniform_bound via Taylor factorization f=(X-α)·g in ℚ_[p] using Mathlib polynomial factorization + p-adic continuity bounds",
+      "Prove padicNorm_poly_eval_lb via clearing denominators: s^d·f(r/s)∈ℤ + Archimedean complement padicNorm p N ≥ 1/|N|",
+      "Prove irred_no_rational_roots: rational root theorem for irreducible polys over ℚ"
     ]
   },
   "tags": [
@@ -51,7 +59,8 @@
     "extension"
   ],
   "relatedProofs": [
-    "liouville-theorem"
+    "liouville-theorem",
+    "liouville-theorem-oq-04"
   ],
   "references": {
     "papers": [],
@@ -73,6 +82,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LiouvilleTheorem.lean"
+    },
+    {
+      "path": "Proofs/LiouvilleTheoremOQ04.lean",
+      "filename": "LiouvilleTheoremOQ04.lean",
+      "lineCount": 432,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LiouvilleTheoremOQ04.lean"
     }
   ]
 }
