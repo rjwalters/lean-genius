@@ -22,9 +22,13 @@
 -/
 import Mathlib
 
+noncomputable section
+
 namespace Nonderogatory.Backward
 
 open Matrix Polynomial
+
+attribute [local instance] Classical.propDecidable
 
 variable {K : Type*} [Field K] {n : ℕ}
 
@@ -357,7 +361,6 @@ theorem nonderogatory_has_cyclic_vector_infinite [Infinite K]
   haveI : Nontrivial (Fin n → K) := Function.nontrivial
   have hμ_not_unit : ¬IsUnit μ := by
     intro hu; exact absurd (natDegree_eq_zero_of_isUnit hu) (by omega)
-  haveI : DecidableEq K[X] := Classical.propDecidable
   set nf := (normalizedFactors μ).toFinset with nf_def
   let S : K[X] → Submodule K (Fin n → K) := fun q =>
     LinearMap.ker ((aeval M (μ / q) : Matrix (Fin n) (Fin n) K).mulVecLin)
@@ -541,3 +544,5 @@ theorem nilpotent_krylov_independent
 -/
 
 end Nonderogatory.Backward
+
+end -- noncomputable section
