@@ -1,0 +1,115 @@
+{
+  "id": "fundamental-arithmetic-oq-01-oq-01",
+  "title": "Self-Contained FTA via Finsupp Prime Exponent Maps",
+  "slug": "fundamental-arithmetic-oq-01-oq-01",
+  "description": "Proves the Fundamental Theorem of Arithmetic using Mathlib's Nat.factorization (the prime exponent map approach), entirely self-contained without importing the parent file. The key result is a uniqueness theorem: if f : ℕ →₀ ℕ has prime support and f.prod (·^·) = n, then f = n.factorization. This algebraic formulation complements the sorted-list approach of FundamentalArithmetic.lean.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-03",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FundamentalArithmeticOQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "factorization",
+      "finsupp",
+      "p-adic-valuation",
+      "unique-factorization",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-03",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 220,
+    "theoremCount": 12,
+    "originalContributions": [
+      "finsupp_prime_prod_factorization: key identity — (f.prod (·^·)).factorization = f when f has prime support",
+      "fta_uniqueness: uniqueness — only n.factorization satisfies prime support + Finsupp product = n",
+      "fundamental_theorem_of_arithmetic: ∃! f : ℕ →₀ ℕ with prime support and f.prod (·^·) = n",
+      "factorization_determines_number: factorization injectivity — equal factorizations imply equal numbers",
+      "factorization_eq_iff_valuations: m = n iff ∀ p, m.factorization p = n.factorization p",
+      "factorization_eq_zero_iff_one: n.factorization = 0 iff n = 1",
+      "fta_mem_support_iff_dvd: prime p divides n iff p ∈ n.factorization.support",
+      "coprime_factorization_disjoint: coprime numbers have disjoint factorization supports"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Fundamental Theorem of Arithmetic — every positive integer has a unique prime factorization — was explicitly proved by Gauss in Disquisitiones Arithmeticae (1801). Modern algebra rephrases this as: ℕ is a Unique Factorization Monoid (UFM). Mathlib implements two equivalent representations: (1) sorted lists via Nat.primeFactorsList, and (2) finite support functions via Nat.factorization : ℕ → (ℕ →₀ ℕ). The Finsupp approach naturally encodes the algebraic structure — factorization is a monoid homomorphism from (ℕ×,·) to (ℕ →₀ ℕ, +), and the exponents add under multiplication.",
+    "problemStatement": "Can the unique factorization theorem be proved in a self-contained way that avoids importing the parent FundamentalArithmetic.lean, using only Mathlib's Nat.factorization primitives? Specifically: does every positive natural n admit a UNIQUE representation as f.prod (·^·) where f : ℕ →₀ ℕ has prime support?",
+    "text": "Yes. The Finsupp-based FTA states: for every n ≠ 0, there exists a unique f : ℕ →₀ ℕ with (∀ p ∈ f.support, p.Prime) and f.prod (·^·) = n. The canonical witness is n.factorization, the Mathlib prime exponent map. The key algebraic lemma is: (f.prod (·^·)).factorization = f when f has prime support — proving that factorization and reconstruction are mutual inverses.",
+    "proofStrategy": "The proof proceeds in three stages: (1) Existence: Nat.factorization_prod_pow_eq_self gives n.factorization.prod (·^·) = n directly. (2) Key lemma: To show (f.prod (·^·)).factorization = f, apply Finsupp.ext and compute the a-component. Distribute factorization over the product using factorization_finset_prod, then use factorization_pow and Prime.factorization to reduce each term to an indicator function. Collapse with Finset.sum_ite_eq. (3) Uniqueness: Any g with g.prod (·^·) = n satisfies g = (g.prod (·^·)).factorization = n.factorization.",
+    "keyInsights": [
+      "Nat.factorization and Finsupp.prod (·^·) are mutual inverses on the space of prime-supported Finsupps — establishing a bijection between positive naturals and prime exponent maps",
+      "The factorization distributes over products: (∏ m ∈ s, m).factorization = ∑ m ∈ s, m.factorization (for nonzero m), proved by induction using Nat.factorization_mul",
+      "For prime p, p.factorization = Finsupp.single p 1 — so (p^k).factorization a = if p = a then k else 0, making the indicator-sum argument clean",
+      "The Finsupp representation is algebraically cleaner than the list representation: factorization(m·n) = factorization(m) + factorization(n) in the Finsupp sense, and coprimality is disjoint support"
+    ],
+    "prerequisites": [
+      "Finsupp: Lean 4 type for finitely-supported functions α →₀ M",
+      "Nat.factorization: the prime exponent map n ↦ (p ↦ v_p(n))",
+      "Nat.primeFactors: the finite set of prime divisors of n",
+      "Finsupp.prod: ∏ p ∈ f.support, g p (f p)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "helper",
+      "title": "Helper: Factorization Distributes Over Products",
+      "content": "We first prove that factorization distributes over Finset products of nonzero naturals: (∏ m ∈ s, m).factorization = ∑ m ∈ s, m.factorization. The proof is by induction on s using Nat.factorization_mul."
+    },
+    {
+      "id": "existence",
+      "title": "Existence: Reconstruction Formula",
+      "content": "Every positive natural n equals n.factorization.prod (·^·). This is Nat.factorization_prod_pow_eq_self from Mathlib — the reconstruction of n from its prime exponent map."
+    },
+    {
+      "id": "key-lemma",
+      "title": "Key Algebraic Lemma",
+      "content": "For any f : ℕ →₀ ℕ with prime support: (f.prod (·^·)).factorization = f. The proof applies Finsupp.ext and computes the a-component by distributing factorization over the product, using factorization_pow and Prime.factorization to reduce to indicator functions."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Uniqueness of the Representation",
+      "content": "If g has prime support and g.prod (·^·) = n, then g = n.factorization. Proof: g = (g.prod (·^·)).factorization = n.factorization, using the key lemma and the hypothesis."
+    },
+    {
+      "id": "fta",
+      "title": "Full FTA Statement",
+      "content": "∃! f : ℕ →₀ ℕ, (∀ p ∈ f.support, p.Prime) ∧ f.prod (·^·) = n. The canonical witness is n.factorization; uniqueness follows from the key lemma."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "content": "The factorization map is injective on positive naturals; m = n iff their factorizations agree at every prime; n = 1 iff factorization is zero; coprime numbers have disjoint factorization supports."
+    }
+  ],
+  "conclusion": "The FTA has a clean algebraic formulation via Finsupp: every positive natural has a unique prime exponent map. This self-contained proof avoids the parent file entirely, demonstrating that Mathlib's Nat.factorization machinery is sufficient to prove both existence and uniqueness from scratch. The key insight is that factorization and reconstruction are mutual inverses — a consequence of Nat.factorization_prod_pow_eq_self combined with the distribution of factorization over products.",
+  "leanFile": {
+    "path": "Proofs/FundamentalArithmeticOQ01OQ01.lean",
+    "namespace": "FundamentalArithmeticOQ01OQ01",
+    "sorryCount": 0,
+    "axiomCount": 0,
+    "lineCount": 220,
+    "theoremCount": 12
+  },
+  "crossReferences": [
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "parent",
+      "description": "Parent proof using the sorted-list approach (Nat.primeFactorsList)"
+    },
+    {
+      "id": "fundamental-arithmetic-oq-01",
+      "relationship": "sibling",
+      "description": "Multiplicative property of factorization — factorization(m·n) = factorization(m) + factorization(n)"
+    },
+    {
+      "id": "fundamental-arithmetic-oq-02",
+      "relationship": "sibling",
+      "description": "Failure of unique factorization in ℤ[√(-5)]"
+    }
+  ],
+  "sorries": []
+}
