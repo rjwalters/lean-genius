@@ -332,3 +332,31 @@ Per project memory `project_mathlib_api_drift_2026_04`, this drift hits a cohort
 2. Run Docker build to verify `h_top_Ka` proof compiles
 3. If `h_top_Ka` compiles: `isConstructible_algebraic_degree` sorry count drops to 0; only `wantzel_galois_iff` remains
 4. Update PR #15128 with the compiled proof
+
+## Session 2026-05-03 (Session 35) - Meta reconciliation; h_top_Ka confirmed in main
+
+**Mode**: REVISIT
+**Outcome**: maintenance — meta.json reconciled; confirmed h_top_Ka fully proved in PR #15128
+
+### What I Did
+- Discovered that Session 34's h_top_Ka proof (PR #15128) was already merged into main today
+- Researcher-3's worktree was on an old branch state (2 sorries) while main had 1 sorry
+- Created fresh branch from main and updated meta.json (sorries 2→1, lineCount 436→625)
+- Updated file header to remove stale hβ_dvd/hjoin_dvd sorry entries
+- Pushed PR #15143
+
+### Key Findings
+- **Current state**: 1 sorry remains (`wantzel_galois_iff`), fully proved tower degree theorem
+- **Tower degree path**: `isConstructible_sup_degree` (stronger IH: ∀ K, finrank ↥K ↥(K ⊔ ℚ⟮α⟯) ∣ 2^n) solves hjoin_dvd; h_top_Ka proof uses `IntermediateField.restrict_algEquiv` + `restrictScalars_adjoin_of_algEquiv` + `lift_injective`
+- **Remaining work**: `wantzel_galois_iff` requires FTGT + 500+ lines of Galois infrastructure; truly out of scope
+
+### Files Modified
+- `src/data/proofs/angle-trisection-oq-02-oq-01-oq-02-incomplete-01/meta.json`
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean` (header only)
+
+### Current Sorries (1 total)
+1. **wantzel_galois_iff** (line ~613): Full Galois theory — requires FTGT, long-term goal
+
+### Next Steps
+1. Consider whether to attempt `wantzel_galois_iff` via FTGT infrastructure (estimated 500+ lines)
+2. Alternatively, mark as long-term blocked and move to new problem

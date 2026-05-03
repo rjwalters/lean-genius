@@ -27,21 +27,14 @@ Session 29: Restored sessions 26-28 work (accidentally reverted in PR #12782).
 
 ## Remaining Sorries
 
-1. `hβ_dvd` (Step C): finrank ℚ ℚ⟮β⟯ ∣ 2^(j+1)
-   Proof plan: ℚ⟮a⟯ ≤ ℚ⟮β⟯, tower law gives finrank_β = [ℚ⟮β⟯:ℚ⟮a⟯] * 2^j.
-   β satisfies X²-a over ℚ⟮a⟯ → [ℚ⟮β⟯:ℚ⟮a⟯] ≤ 2 → [ℚ⟮β⟯:ℚ⟮a⟯] ∣ 2 → finrank_β ∣ 2^(j+1).
-   Needs: Algebra (↥ℚ⟮a⟯) (↥ℚ⟮β⟯) from ha_le_β, and simple extension fact
-   Module.finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ = natDegree (minpoly ↥ℚ⟮a⟯ β) (β generates ℚ⟮β⟯ over ℚ⟮a⟯).
-
-2. `hjoin_dvd` (Step D): finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+k+1)
-   Proof plan: tower via ℚ⟮β⟯ gives finrank_join = [join:ℚ⟮β⟯] * finrank_β.
-   Need [join:ℚ⟮β⟯] ∣ 2^k. This requires STRONGER IH for b: not just finrank ℚ ℚ⟮b⟯ ∣ 2^k,
-   but "for any K/ℚ, finrank K K⟮b⟯ divides a power of 2". Current IH is too weak.
-
-3. `wantzel_galois_iff` (out-of-scope): Requires full Galois correspondence + 2-group structure.
+1. `wantzel_galois_iff` (out-of-scope): Requires full Galois correspondence + 2-group structure.
    Estimated: 500+ lines of new Galois theory infrastructure. Out of scope.
 
-## Status: 3 sorries (2 targeted tower + 1 out-of-scope Galois), 0 axioms
+Previously resolved:
+- `hβ_dvd` (Step C): proved in Sessions 31-32 via tower law + minpoly degree bound (#15067, #15103)
+- `hjoin_dvd` (Step D): proved in Session 34 via stronger IH `isConstructible_sup_degree` (#15128)
+
+## Status: 1 sorry (wantzel_galois_iff, out-of-scope Galois), 0 axioms
 -/
 
 import Mathlib.FieldTheory.Galois.Basic

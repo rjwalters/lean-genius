@@ -2,7 +2,7 @@
   "id": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
   "title": "Completing the Wantzel-Galois Constructibility Proof",
   "slug": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
-  "description": "Completes the parent Wantzel-Galois proof (angle-trisection-oq-02-oq-01-oq-02) by redesigning IsConstructible (removing IsConstructible β precondition from sqrt_ext) to enable proper tower induction. Proves isConstructible_sqrt2, all concrete impossibility results (angle trisection, cube doubling, regular 7-gon). 2 sorries: hjoin_dvd (needs stronger IH), wantzel_galois_iff (out-of-scope).",
+  "description": "Completes the parent Wantzel-Galois proof (angle-trisection-oq-02-oq-01-oq-02) by redesigning IsConstructible (removing IsConstructible β precondition from sqrt_ext) to enable proper tower induction. Proves isConstructible_sqrt2, all concrete impossibility results (angle trisection, cube doubling, regular 7-gon). 1 sorry: wantzel_galois_iff (requires FTGT, out-of-scope). Tower degree theorem fully proved via stronger relative IH isConstructible_sup_degree.",
   "meta": {
     "author": "Wantzel (1837), completion formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Straightedge_and_compass_construction",
@@ -17,10 +17,10 @@
     ],
     "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean",
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 0,
-    "theoremCount": 19,
-    "lineCount": 436,
+    "theoremCount": 21,
+    "lineCount": 625,
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.irreducible_of_eisenstein_criterion",
@@ -69,36 +69,36 @@
     {
       "id": "constructible-redesign",
       "title": "Redesigned IsConstructible with Explicit Parameters",
-      "startLine": 61,
-      "endLine": 97,
-      "summary": "IsConstructible redefined: `sqrt_ext` takes explicit β, a, b without requiring `IsConstructible β` (the key fix). Under this definition √2 IS constructible. Proves `isConstructible_sqrt2` and `isConstructible_algebraic_degree`: constructibles are algebraic with `finrank ℚ ℚ⟮α⟯ ∣ 2^n`. This is the key structural improvement enabling `not_constructible_of_bad_degree`."
+      "startLine": 54,
+      "endLine": 96,
+      "summary": "IsConstructible redefined with explicit β, a, b in sqrt_ext (not existential). Proves isConstructible_rat, isConstructible_sqrt2. Key design change: removing IsConstructible β precondition from sqrt_ext to enable induction."
     },
     {
       "id": "eisenstein",
       "title": "Eisenstein Criterion — X³ - 2 is Irreducible",
-      "startLine": 103,
-      "endLine": 129,
+      "startLine": 445,
+      "endLine": 476,
       "summary": "Proves X³ - 2 irreducible over ℤ via Eisenstein at p=2, then lifts to ℚ using Gauss's lemma (IsPrimitive.Int.irreducible_iff_irreducible_map_cast)."
     },
     {
       "id": "degree-computations",
       "title": "Degree Computations",
-      "startLine": 135,
-      "endLine": 179,
-      "summary": "Computes natDegree = 3 for 8x³-6x-1 (cos(20°)), x³-2, and 8x³+4x²-4x-1 (cos(2π/7)). Proves 3 ≠ 2^k via Nat.pow_le_pow_right bound + interval_cases. Proves not_constructible_of_bad_degree fully."
+      "startLine": 477,
+      "endLine": 530,
+      "summary": "Computes natDegree = 3 for 8x³-6x-1 (cos(20°)), x³-2, and 8x³+4x²-4x-1 (cos(2π/7)). Proves 3 ≠ 2^k via Nat.pow_le_pow_right bound + interval_cases."
     },
     {
       "id": "impossibilities",
       "title": "Concrete Impossibility Results",
-      "startLine": 261,
-      "endLine": 279,
-      "summary": "Derives angle_trisection_impossible_degree, doubling_cube_impossible_degree, and regular_7gon_construction_impossible as direct applications."
+      "startLine": 581,
+      "endLine": 611,
+      "summary": "Derives not_constructible_of_bad_degree via tower degree theorem. Applies to prove angle_trisection_impossible_degree, doubling_cube_impossible_degree, regular_7gon_construction_impossible."
     },
     {
       "id": "galois-sorry",
       "title": "Galois Characterization (SORRY)",
-      "startLine": 280,
-      "endLine": 306,
+      "startLine": 613,
+      "endLine": 625,
       "summary": "States wantzel_galois_iff: α constructible ↔ Gal(minpoly(ℚ,α)) is a 2-group. Sorry remains; requires full FTGT + 500+ lines new infrastructure."
     }
   ],
