@@ -591,7 +591,37 @@ private lemma maxTrail_last_exhausted (E : Finset (V × V)) (v : V) :
 private lemma maxTrail_steps_in_E (E : Finset (V × V)) (v : V) :
     ∀ i, i + 1 < (maxTrail E v).length →
       ((maxTrail E v).get ⟨i, by omega⟩, (maxTrail E v).get ⟨i + 1, by omega⟩) ∈ E := by
-  sorry -- Provable by induction on E.card; deferred for brevity
+  induction h_n : E.card using Nat.strong_rec_on generalizing E v with
+  | _ n ih =>
+    intro i hi
+    unfold maxTrail at hi ⊢
+    by_cases hout : (E.filter (fun e => e.1 = v)).Nonempty
+    · simp only [hout, ↓reduceDite] at hi ⊢
+      simp only [List.length_cons] at hi
+      have he₀ : hout.choose ∈ E := (Finset.mem_filter.mp hout.choose_spec).1
+      have hv : hout.choose.1 = v := (Finset.mem_filter.mp hout.choose_spec).2
+      have hcard : (E.erase hout.choose).card < n :=
+        h_n ▸ Finset.card_erase_lt_of_mem he₀
+      cases i with
+      | zero =>
+        simp only [List.get_cons_zero, List.get_cons_succ]
+        -- Goal: (v, (maxTrail (E.erase e₀) e₀.2).get ⟨0, _⟩) ∈ E
+        -- (maxTrail (E.erase e₀) e₀.2).get ⟨0, _⟩ = e₀.2 by head lemma
+        have hne : maxTrail (E.erase hout.choose) hout.choose.2 ≠ [] :=
+          maxTrail_nonempty' _ _
+        have hhead := maxTrail_head' (E.erase hout.choose) hout.choose.2
+        match h_trail : maxTrail (E.erase hout.choose) hout.choose.2 with
+        | [] => exact absurd h_trail hne
+        | a :: rest =>
+          rw [h_trail] at hhead
+          simp only [List.head?_cons, Option.some.injEq] at hhead
+          rw [h_trail, List.get_cons_zero, hhead]
+          exact hv ▸ he₀
+      | succ j =>
+        simp only [List.get_cons_succ]
+        have hinner := ih _ hcard (E.erase hout.choose) hout.choose.2 rfl j (by omega)
+        exact Finset.mem_of_mem_erase hinner
+    · simp only [hout, ↓reduceDite, List.length_singleton] at hi; omega
 
 /-- No edge is used twice in maxTrail (distinct edges). -/
 private lemma maxTrail_steps_distinct (E : Finset (V × V)) (v : V) :
