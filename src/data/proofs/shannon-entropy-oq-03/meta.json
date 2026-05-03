@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lieb & Ruskai (1973)",
     "date": "1973",
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "information-theory",
       "analysis",
@@ -16,10 +16,10 @@
       "open-question"
     ],
     "proofRepoPath": "Proofs/ShannonEntropySSA.lean",
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "0 axioms. 1 sorry: strong subadditivity — needs conditional KL divergence ≥ 0. Entropy chain rule and subadditivity are fully proved.",
+    "assumptions": "0 axioms, 0 sorries. Complete proof of strong subadditivity via conditional KL divergence: define reference distribution q(x,y,z)=pXY(x,y)*pYZ(y,z)/pY(y), show KL sum ≥ 0 pointwise, lift to entropy deficit via marginal sum identities.",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum_nonneg",
@@ -40,12 +40,12 @@
     "originalContributions": [
       "Three-variable marginal distributions: marginalXY, marginalYZ, marginalY_3 with proved properties",
       "Entropy chain rule statement: H(X,Y) = H(Y) + H(X|Y)",
-      "Strong subadditivity statement with proof strategy via conditional KL divergence",
+      "Complete proof of strong subadditivity via conditional KL divergence: reference distribution q(x,y,z)=pXY*pYZ/pY, pointwise kl_term_bound, marginal lifting identity",
       "Conditioning reduces entropy (general): H(X|Y,Z) ≤ H(X|Y) from SSA",
       "Conditional MI non-negativity: I(X;Z|Y) ≥ 0 from SSA"
     ],
     "dateAdded": "2026-03-30",
-    "lineCount": 341,
+    "lineCount": 490,
     "theoremCount": 11,
     "definitionCount": 5,
     "mathlib_version": "4.26.0"
@@ -124,7 +124,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves the entropy chain rule and subadditivity of Shannon entropy, and states strong subadditivity. The chain rule H(X,Y) = H(Y) + H(X|Y) is proved via log splitting and marginal telescoping. Subadditivity follows from the chain rule and conditioning_reduces_entropy. SSA remains as the sole sorry — its proof requires formalizing conditional distributions and applying KL divergence non-negativity per-slice.",
+    "summary": "This formalization proves the entropy chain rule, subadditivity, and strong subadditivity of Shannon entropy. The chain rule H(X,Y) = H(Y) + H(X|Y) is proved via log splitting and marginal telescoping. Subadditivity follows from the chain rule. SSA is proved by defining the reference distribution q(x,y,z) = pXY(x,y)*pYZ(y,z)/pY(y), applying the pointwise KL bound pXYZ*log(pXYZ/q) ≥ pXYZ - q, summing (the net is 0 since both are probability distributions), then lifting the marginal-sum identities to connect the KL sum to the entropy deficit H(XY)+H(YZ)-H(XYZ)-H(Y).",
     "implications": "SSA has profound consequences across information theory, probability, and statistical mechanics. It implies all other linear entropy inequalities for three variables, and the quantum version (Lieb-Ruskai) underpins quantum error correction, entanglement theory, and the holographic entropy inequalities in quantum gravity.",
     "openQuestions": [
       "Can SSA be proved via a single weighted KL divergence inequality, or does it require summing over y-values?",
@@ -188,12 +188,12 @@
       "Finset"
     ],
     "namespace": "InformationTheory",
-    "lineCount": 341,
+    "lineCount": 490,
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 6,
     "path": "Proofs/ShannonEntropySSA.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "mainTheorems": [
     {
@@ -209,5 +209,5 @@
       "leanType": "shannonEntropy' pXYZ + shannonEntropy' (marginalY_3 pXYZ) ≤ shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ)"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
