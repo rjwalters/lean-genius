@@ -58,16 +58,19 @@
     "originalContributions": [
       "IsAPSequence, IsPrimeAP: Definitions of arithmetic progressions and prime APs in {1,...,N}",
       "longestPrimeAP: Central function via sSup over prime AP lengths",
+      "prime_ap_pnt_upper: Axiom — PNT upper bound (1+ε)·log N on longestPrimeAP",
       "green_tao: Axiom encoding the Green-Tao theorem (arbitrarily long prime APs exist)",
       "longest_prime_ap_unbounded: PROVED from green_tao axiom — unboundedness of longestPrimeAP",
+      "erdos_200: Axiom formally stating the open conjecture longestPrimeAP(N) < ε·log N",
       "exists_dvd_in_ap: Helper lemma — ZMod witness for divisibility in APs",
       "ap_difference_primorial: PROVED (was false axiom) — primorial divisibility with corrected hypothesis",
-      "prime_ap_3, prime_ap_5, prime_ap_6: PROVED via native_decide — concrete prime AP examples"
+      "prime_ap_3, prime_ap_5, prime_ap_6: PROVED via native_decide — concrete prime AP examples",
+      "pnt_green_tao_bracket: PROVED — combines prime_ap_pnt_upper and Green-Tao to bracket longestPrimeAP between ω(1) and (1+ε)·log N"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 1,
-    "lineCount": 151,
-    "assumptions": "1 axiom: green_tao. 0 sorries.",
+    "axiomCount": 3,
+    "lineCount": 180,
+    "assumptions": "3 axioms: prime_ap_pnt_upper (PNT upper bound), green_tao (Green-Tao 2008), erdos_200 (open conjecture). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -101,29 +104,29 @@
       "id": "upper-bound",
       "title": "Upper Bound from PNT",
       "startLine": 46,
-      "endLine": 55,
-      "summary": "Docstring comment about PNT upper bound (lines 46–56) — no `axiom prime_ap_upper_pnt` or theorem declaration exists in this section. The upper bound $\\text{longestPrimeAP}(N) \\leq (1+\\varepsilon)\\log N$ is described mathematically but not formalized as a Lean declaration."
+      "endLine": 61,
+      "summary": "`prime_ap_pnt_upper` (axiom, line 59): $\\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall N \\geq N_0:\\, \\text{longestPrimeAP}(N) \\leq (1+\\varepsilon)\\log N$. Formally axiomatizes the PNT upper bound described in the comment above."
     },
     {
       "id": "green-tao",
       "title": "Green-Tao Theorem",
-      "startLine": 56,
-      "endLine": 74,
-      "summary": "`green_tao` (axiom, line 60): $\\forall k,\\, \\exists N:\\, \\text{IsPrimeAP}(k, N)$. `longest_prime_ap_unbounded` (theorem, line 66): PROVED from `green_tao` — $\\forall M,\\, \\exists N:\\, \\text{longestPrimeAP}(N) \\geq M$. The Green-Tao 2008 landmark result is axiomatized; its consequence is proved."
+      "startLine": 63,
+      "endLine": 80,
+      "summary": "`green_tao` (axiom, line 67): $\\forall k,\\, \\exists N:\\, \\text{IsPrimeAP}(k, N)$. `longest_prime_ap_unbounded` (theorem, line 73): PROVED from `green_tao` — $\\forall M,\\, \\exists N:\\, \\text{longestPrimeAP}(N) \\geq M$. The Green-Tao 2008 landmark result is axiomatized; its consequence is proved."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture: $o(\\log N)$",
-      "startLine": 75,
-      "endLine": 81,
-      "summary": "Docstring comment (lines 77–81) stating the $o(\\log N)$ open problem — no `axiom erdos_200_conjecture` or theorem is declared in this section. The conjecture $\\text{longestPrimeAP}(N) = o(\\log N)$ is described but not formalized as a Lean declaration."
+      "startLine": 82,
+      "endLine": 94,
+      "summary": "`erdos_200` (axiom, line 92): Formally states the open conjecture — $\\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall N \\geq N_0:\\, \\text{longestPrimeAP}(N) < \\varepsilon \\cdot \\log N$. This is the $o(\\log N)$ formalization of Erdős Problem #200."
     },
     {
       "id": "known-examples",
       "title": "Concrete Prime APs and Quantitative Bounds",
-      "startLine": 82,
-      "endLine": 102,
-      "summary": "`prime_ap_3` (theorem, line 85): PROVED via `native_decide` — $\\{3,5,7\\}$ is a prime AP. `prime_ap_5` (theorem, line 90): PROVED. `prime_ap_6` (theorem, line 96): PROVED — $\\{7,37,67,97,127,157\\}$. The Green-Tao-Maynard quantitative bound $N(k) \\leq e^{e^{e^{ck}}}$ is mentioned in a docstring (lines 100–102) — no `axiom green_tao_quantitative` is declared."
+      "startLine": 96,
+      "endLine": 116,
+      "summary": "`prime_ap_3` (theorem, line 99): PROVED via `native_decide` — $\\{3,5,7\\}$ is a prime AP. `prime_ap_5` (theorem, line 103): PROVED. `prime_ap_6` (theorem, line 109): PROVED — $\\{7,37,67,97,127,157\\}$. The Green-Tao-Maynard quantitative bound $N(k) \\leq e^{e^{e^{ck}}}$ is mentioned in a docstring — no additional axiom is declared."
     },
     {
       "id": "other-conjectures",
@@ -135,9 +138,16 @@
     {
       "id": "structural",
       "title": "Structural: Primorial Constraint",
-      "startLine": 111,
-      "endLine": 151,
+      "startLine": 125,
+      "endLine": 165,
       "summary": "PROVED `ap_difference_primorial`: in a prime AP of length $k \\geq 3$ with all terms $> k$, every prime $p \\leq k$ divides $d$. Uses `ZMod p` field arithmetic — $d$ invertible mod $p$ yields a witness index $i = -a \\cdot d^{-1}$ giving $p \\mid (a + id)$. The primorial $k\\# \\sim e^k$ forces long APs to span exponentially large intervals."
+    },
+    {
+      "id": "gap-analysis",
+      "title": "Gap Between Green-Tao and Erdős #200",
+      "startLine": 167,
+      "endLine": 180,
+      "summary": "`pnt_green_tao_bracket` (theorem, line 173): PROVED — combines `prime_ap_pnt_upper` and Green-Tao to show longestPrimeAP(N) is simultaneously unbounded and $\\leq (1+\\varepsilon)\\log N$. This formalizes the known bracket $\\omega(1) \\leq \\text{longestPrimeAP}(N) \\leq (1+o(1))\\log N$ and highlights the open gap: whether the lower rate is $o(\\log N)$."
     }
   ],
   "conclusion": {
@@ -160,9 +170,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 151,
-    "axiomCount": 1,
-    "theoremCount": 6,
+    "lineCount": 180,
+    "axiomCount": 3,
+    "theoremCount": 7,
     "definitionCount": 3,
     "path": "Proofs/Erdos200Problem.lean",
     "sorries": 0

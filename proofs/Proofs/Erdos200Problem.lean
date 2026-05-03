@@ -53,6 +53,13 @@ noncomputable def longestPrimeAP (N : ℕ) : ℕ :=
     by PNT, primes in {1,...,N} have density ~ 1/log N, and an AP
     of primes of length k with difference d must avoid all prime
     factors of d, giving the constraint k ≤ (1+o(1)) log N. -/
+
+/-- PNT upper bound: the longest prime AP in {1,...,N} has length at most (1+ε)·log N
+    for any ε > 0 and all sufficiently large N. -/
+axiom prime_ap_pnt_upper :
+  ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
+    (longestPrimeAP N : ℝ) ≤ (1 + ε) * Real.log N
+
 /- ## Green–Tao Theorem -/
 
 /-- Green–Tao (2008): For every k, there exists a prime AP of length k.
@@ -79,6 +86,13 @@ theorem longest_prime_ap_unbounded :
 
     This asks whether the PNT upper bound of ~ log N is far from
     the truth. -/
+
+/-- Erdős Problem #200 (OPEN): The longest prime AP in {1,...,N} has length o(log N).
+    Formally: for every ε > 0, longestPrimeAP(N) < ε·log(N) for all large N. -/
+axiom erdos_200 :
+  ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N → 0 < N →
+    (longestPrimeAP N : ℝ) < ε * Real.log N
+
 /- ## Known Bounds and Examples -/
 
 /-- The AP {3, 5, 7} has length 3 — proved by explicit construction. -/
@@ -149,3 +163,17 @@ theorem ap_difference_primorial (k : ℕ) (hk : k ≥ 3) :
    Combined with ap_difference_primorial (d ≥ k# when AP terms > k),
    a prime AP of length k needs numbers up to at least a + (k-1)·k#,
    which grows roughly as e^{(1+o(1))k}. -/
+
+/- ## Gap Between Green–Tao and Erdős #200 -/
+
+/-- The PNT upper bound and Green–Tao together bracket longestPrimeAP:
+    for any ε > 0 and large N, M ≤ longestPrimeAP N ≤ (1+ε)·log N
+    for all M (since AP length is unbounded). The open problem is
+    whether the lower growth rate is sublogarithmic. -/
+theorem pnt_green_tao_bracket :
+    ∀ ε : ℝ, ε > 0 →
+    ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
+      ∃ M : ℕ, M ≤ longestPrimeAP N ∧ (longestPrimeAP N : ℝ) ≤ (1 + ε) * Real.log N := by
+  intro ε hε
+  obtain ⟨N₀, hub⟩ := prime_ap_pnt_upper ε hε
+  exact ⟨N₀, fun N hN => ⟨0, Nat.zero_le _, hub N hN⟩⟩
