@@ -40,7 +40,9 @@
       "**Prime case**: f(p+1) ≤ p for any prime p. Since divisors of p are {1, p}, partial sums are {1, p+1}. So p+1 is representable with f(p+1) ≤ p, giving f(p+1)/(p+1) < 1.",
       "**Density**: All partial divisor sums of any m are representable. By varying m, we cover a dense set of representable n.",
       "**Superabundant connection**: Along superabundant numbers m_k (where σ(m_k)/m_k → ∞), f(σ(m_k))/σ(m_k) ≤ m_k/σ(m_k) → 0, proving f(n) = o(n) along this subsequence.",
-      "**Gronwall's theorem and superabundance**: Gronwall's theorem states that lim sup_{n→∞} σ(n)/(n log log n) = e^γ ≈ 1.781. Superabundant numbers m_k maximize σ(m)/m; along these, σ(m_k)/m_k ~ e^γ log log m_k → ∞. The sigma bound gives f(σ(m_k))/σ(m_k) ≤ 1/(e^γ log log m_k) → 0, establishing f(n) = o(n) along this subsequence — the strongest o(n) result in the file."
+      "**Gronwall's theorem and superabundance**: Gronwall's theorem states that lim sup_{n→∞} σ(n)/(n log log n) = e^γ ≈ 1.781. Superabundant numbers m_k maximize σ(m)/m; along these, σ(m_k)/m_k ~ e^γ log log m_k → ∞. The sigma bound gives f(σ(m_k))/σ(m_k) ≤ 1/(e^γ log log m_k) → 0, establishing f(n) = o(n) along this subsequence — the strongest o(n) result in the file.",
+      "**Divisor count multiplies witnesses**: Each m ≥ 1 produces exactly τ(m) representable values (one per prefix sum of sorted divisors). For highly composite numbers, τ(m) can be superpolynomial in log m (colossally abundant numbers), making the representable set extremely dense near values of the form σ(m).",
+      "**2 and 5 are the only conjectured non-representable numbers**: Computationally, every n ≤ 50 except 2 and 5 is representable. Whether any non-representable n > 5 exists is part of the open problem; the finite exception set has not been proved."
     ]
   },
   "sections": [
@@ -94,7 +96,10 @@
       "Mathlib.Data.Real.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": ["Nat", "Finset"],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
     "namespace": "Erdos1054OQ01",
     "lineCount": 521,
     "axiomCount": 0,
@@ -107,12 +112,22 @@
     {
       "targetId": "erdos-1054",
       "relationship": "sub-question",
-      "description": "OQ-01: f(n) = o(n) structural results"
+      "description": "Base axiomatization of f(n); formalizes all three open questions and Tao's disproof of Part I"
     },
     {
       "targetId": "erdos-1054-oq-01",
       "relationship": "related",
-      "description": "Related formalization of Erdős #1054 OQ-01"
+      "description": "Companion formalization of Erdős #1054 OQ-01 using the density framework; sigma bound proved there too"
+    },
+    {
+      "targetId": "erdos-1054-oq-02",
+      "relationship": "related",
+      "description": "OQ-02: prime product witnesses qp; Goldbach connection to representability of all even n ≥ 4"
+    },
+    {
+      "targetId": "erdos-1054-construction-d",
+      "relationship": "related",
+      "description": "Construction D: prime square witnesses p²; proves 1+p+p² representable for all primes p"
     }
   ],
   "mainTheorems": [

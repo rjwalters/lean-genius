@@ -36,6 +36,30 @@
     "prerequisites": ["analytic number theory", "asymptotic analysis"]
   },
   {
+    "id": "ann-erdos1054fnorm-computational",
+    "proofId": "erdos-1054-oq-01-fnorm",
+    "range": { "startLine": 118, "endLine": 148 },
+    "type": "context",
+    "title": "Computational Verification of f(n) Values via native_decide",
+    "content": "These theorems use `native_decide` to verify specific values of `computeF`. The pattern reveals interesting behavior: for n = p+1 with p prime, f(n) is typically near p but can be much smaller (e.g., f(12) = 6, not 11, because 12 is the last partial sum of divisors of 6). `f_bounded_50` checks that f(n) ≤ 2n for all representable n ≤ 20. The `native_decide` tactic compiles the decision procedure to native code for fast evaluation of these finitely-checkable propositions.",
+    "mathContext": "f(12) = 6 \\text{ (not 11) because } \\text{partialDivisorSums}(6) = [1,3,6,12] \\text{ and } 12 \\in [1,3,6,12]. \\text{ But } f(32) = 31 = p \\text{ exactly, since div}(31) = \\{1,31\\}.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide tactic", "computeF function", "algorithmic number theory"],
+    "prerequisites": ["Lean 4 native_decide", "decidable propositions", "Finset.filter"]
+  },
+  {
+    "id": "ann-erdos1054fnorm-even-odd",
+    "proofId": "erdos-1054-oq-01-fnorm",
+    "range": { "startLine": 151, "endLine": 188 },
+    "type": "insight",
+    "title": "Dense Representability: Even and Odd Cases; Conjectured Exceptions {2,5}",
+    "content": "Theorems `even_representable_small` and `odd_representable_small` verify computationally that all even n ∈ {4,...,20} and all odd n ∈ {3,7,9,...,21} are representable. The noteworthy omissions are 2 and 5: 2 cannot be a partial sum (the smallest divisor of any m ≥ 1 is 1, but the second-smallest is at least 2, giving partial sums that jump from 1 directly to 1+2=3 at minimum), and 5 requires a delicate argument. Computationally {2,5} appear to be the only non-representable numbers, but this is not proved; whether any non-representable n > 5 exists is part of the open problem.",
+    "mathContext": "\\{n \\geq 1 : n \\text{ not representable}\\} \\overset{?}{=} \\{2, 5\\}. \\text{ All } n \\in \\{1, 3, 4, 6, 7, \\ldots, 21\\} \\setminus \\{2, 5\\} \\text{ verified representable.}",
+    "significance": "supporting",
+    "relatedConcepts": ["natural density", "non-representable numbers", "fin_cases tactic"],
+    "prerequisites": ["IsRepresentable definition", "native_decide", "Finset membership"]
+  },
+  {
     "id": "ann-erdos1054fnorm-open-conjecture",
     "proofId": "erdos-1054-oq-01-fnorm",
     "range": { "startLine": 193, "endLine": 213 },
@@ -46,6 +70,18 @@
     "significance": "context",
     "relatedConcepts": ["natural density", "little-o notation", "Schnirelmann density", "open problems"],
     "prerequisites": ["density in number theory", "epsilon-delta formulation"]
+  },
+  {
+    "id": "ann-erdos1054fnorm-one-in-sums",
+    "proofId": "erdos-1054-oq-01-fnorm",
+    "range": { "startLine": 217, "endLine": 253 },
+    "type": "technique",
+    "title": "Infrastructure: 1 is Always a Partial Divisor Sum",
+    "content": "The theorem `one_in_partial_sums` proves that 1 belongs to `partialDivisorSums m` for every m ≥ 1. The proof is non-trivial in Lean 4: it requires extracting the head of the sorted divisor list, proving the head equals 1 (since 1 is the smallest positive divisor of any m ≥ 1), and tracing through the `scanl` computation. The key step uses `Finset.pairwise_sort` sortedness: if the smallest sorted element d > 1, then 1 ∈ rest would precede d, contradicting the sorting order. Hence d = 1.",
+    "mathContext": "\\forall m \\geq 1:\\; 1 \\mid m \\implies 1 \\in \\text{divisors}(m) \\implies d_1 = 1 \\implies \\text{partialDivisorSums}(m)[0] = d_1 = 1.",
+    "significance": "supporting",
+    "relatedConcepts": ["sorted lists", "smallest divisor", "Finset.pairwise_sort", "List.scanl"],
+    "prerequisites": ["Nat.one_mem_divisors", "Finset.pairwise_sort", "List.exists_cons_of_ne_nil"]
   },
   {
     "id": "ann-erdos1054fnorm-scanl-infra",
