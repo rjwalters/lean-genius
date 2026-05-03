@@ -17,7 +17,7 @@
       "AngleTrisectionOQ05OQ01"
     ],
     "namespace": "AngleTrisectionOQ04OQ04",
-    "lineCount": 155,
+    "lineCount": 152,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 0,
@@ -75,8 +75,9 @@
       "IsTwoThreeNumber: marked-ruler degree characterization",
       "Prime divisibility: prime p | a·b implies p | a or p | b"
     ],
-    "lineCount": 155
+    "lineCount": 152
   },
+  "sorries": 0,
   "overview": "The constructibility hierarchy from the existing gallery places compass-and-straightedge, marked ruler (= 1-fold origami), and multi-fold origami at progressively more powerful levels. This entry proves the marked-ruler/multi-fold gap is strict by finding concrete witnesses.\n\nThe algebraic key: an n-gon is marked-ruler-constructible iff φ(n) | 2^a·3^b for some a, b (IsTwoThreeNumber). It is k-fold origami constructible iff φ(n) is p_{k+1}-smooth (IsKFoldConstructible). Whenever φ(n) has a prime factor q > 3, the n-gon is NOT marked-ruler-constructible but IS k-fold constructible for appropriate k.\n\n**11-gon**: φ(11) = 10 = 2·5. The factor 5 > 3 blocks neusis. But 5 ≤ 5 = p_2, so it IS 2-fold constructible.\n\n**23-gon**: φ(23) = 22 = 2·11. The factor 11 > 3 blocks neusis. But 11 ≤ 11 = p_4, so it IS 4-fold constructible.",
   "openQuestions": [
     {
