@@ -1,0 +1,153 @@
+{
+  "slug": "de-moivre-oq-02-oq-02",
+  "title": "Can the product-to-sum formula be extended to Chebyshev polynomials of the se...",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Can the product-to-sum formula be extended to Chebyshev polynomials of the second kind U_n?.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-03T11:41:44.692Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Gallery entry created (meta.json + annotations.json + index.ts). Lean file DeMoivreOQ02OQ02.lean: 9 theorems, 182 lines, 0 sorries, 0 axioms. Key result: T_mul_U_product (2\u00b7T_m\u00b7U_n = U_{m+n}+U_{n-m} in R[X]) proved by paired integer induction.",
+    "builtItems": [
+      "two_X_U (private lemma): 2\u00b7X\u00b7U_k = U_{k+1}+U_{k-1} in R[X] (DeMoivreOQ02OQ02.lean:37)",
+      "T_mul_U_product: 2\u00b7T_m\u00b7U_n = U_{m+n}+U_{n-m} in R[X] for any CommRing R (DeMoivreOQ02OQ02.lean:117)",
+      "chebyshev_T_U_product_to_sum: real evaluation at cos \u03b8 (DeMoivreOQ02OQ02.lean:139)",
+      "chebyshev_cos_U: 2\u00b7cos \u03b8\u00b7U_n(cos \u03b8) = U_{n+1}(cos \u03b8)+U_{n-1}(cos \u03b8) (DeMoivreOQ02OQ02.lean:148)",
+      "two_cos_sin_spreading: 2\u00b7cos \u03b8\u00b7sin((n+1)\u03b8) = sin((n+2)\u03b8)+sin(n\u03b8) (DeMoivreOQ02OQ02.lean:156)",
+      "demoivre_oq02oq02_summary: conjunction of cross formula and U recurrence (DeMoivreOQ02OQ02.lean:175)",
+      "Gallery entry: src/data/proofs/de-moivre-oq-02-oq-02/ (meta.json + annotations.json + index.ts)"
+    ],
+    "insights": [
+      "Polynomial cross product 2\u00b7T_m\u00b7U_n = U_{m+n}+U_{n-m} holds in any CommRing R, proved purely from T and U recurrences without trigonometric evaluation",
+      "Paired induction Q(m) = P(m) \u2227 P(m-1) is necessary because T recurrence T_{m+1}=2X\u00b7T_m-T_{m-1} requires two consecutive values",
+      "Helper lemma two_X_U (2\u00b7X\u00b7U_k = U_{k+1}+U_{k-1}) is a rearrangement of U_add_two with index shift \u2014 used in all three induction cases",
+      "The formula is asymmetric: U_{n-m} appears (not U_{m-n}), reflecting that U_{-k} \u2260 U_k for second-kind Chebyshev polynomials",
+      "Sine spreading identity 2\u00b7cos \u03b8\u00b7sin((n+1)\u03b8) = sin((n+2)\u03b8)+sin(n\u03b8) follows as corollary via U_real_cos; requires nlinarith with sin\u00b2+cos\u00b2=1",
+      "linear_combination closes all three induction steps (forward, backward, base) after substituting T/U recurrence hypotheses"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Verify Docker build of DeMoivreOQ02OQ02.lean to confirm no compilation errors",
+      "Potentially add U\u00b7U product formula: U_m\u00b7U_n = \u03a3_{k=0}^{min(m,n)} U_{m+n-2k} as a follow-up"
+    ]
+  },
+  "tags": [
+    "trigonometry",
+    "chebyshev-polynomials",
+    "de-moivre",
+    "composition",
+    "product-to-sum",
+    "parity",
+    "polynomial-roots",
+    "real-analysis",
+    "extension",
+    "research",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "de-moivre",
+    "de-moivre-oq-01",
+    "de-moivre-oq-02",
+    "de-moivre-oq-03",
+    "de-moivre-oq-03-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T11:41:44.691Z",
+  "lastUpdate": "2026-05-03T11:41:44.691Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/DeMoivre.lean",
+      "filename": "DeMoivre.lean",
+      "lineCount": 240,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivre.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ01.lean",
+      "filename": "DeMoivreOQ01.lean",
+      "lineCount": 232,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ01.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ02.lean",
+      "filename": "DeMoivreOQ02.lean",
+      "lineCount": 158,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ02.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ02OQ02.lean",
+      "filename": "DeMoivreOQ02OQ02.lean",
+      "lineCount": 183,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ03.lean",
+      "filename": "DeMoivreOQ03.lean",
+      "lineCount": 276,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ03.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ03OQ01.lean",
+      "filename": "DeMoivreOQ03OQ01.lean",
+      "lineCount": 75,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ03OQ01.lean"
+    }
+  ]
+}

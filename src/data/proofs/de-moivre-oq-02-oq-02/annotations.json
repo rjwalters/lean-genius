@@ -1,0 +1,161 @@
+[
+  {
+    "id": "ann-demoivre-oq02-02-01-overview",
+    "proofId": "de-moivre-oq-02-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Module Overview: Cross Product-to-Sum via Paired Induction",
+    "content": "This module proves the cross product-to-sum formula 2·T_m · U_n = U_{m+n} + U_{n-m} for Chebyshev polynomials. The T·T formula (from OQ-02) was 2·T_m·T_n = T_{m+n} + T_{m-n}; here the second factor is replaced by U_n of the second kind. The proof strategy is algebraic: prove the identity as a polynomial equation in R[X] for any CommRing R, then evaluate at cos θ. This avoids sin θ = 0 case analysis. The polynomial proof uses paired integer induction with invariant Q(m) = P(m) ∧ P(m-1).",
+    "mathContext": "Open question from OQ-02: does $2T_m(x)T_n(x) = T_{m+n}(x) + T_{m-n}(x)$ extend to $U_n$? Answer: $2T_m(x) \\cdot U_n(x) = U_{m+n}(x) + U_{n-m}(x)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Polynomial.Chebyshev.T",
+      "Polynomial.Chebyshev.U",
+      "paired-induction",
+      "cross-product-formula"
+    ],
+    "prerequisites": [
+      "Mathlib.RingTheory.Polynomial.Chebyshev",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev"
+    ]
+  },
+  {
+    "id": "ann-demoivre-oq02-02-02-helper",
+    "proofId": "de-moivre-oq-02-oq-02",
+    "range": {
+      "startLine": 36,
+      "endLine": 41
+    },
+    "type": "technique",
+    "title": "Key Helper: 2·X·U_k = U_{k+1} + U_{k-1}",
+    "content": "The private lemma `two_X_U` is the linchpin of the induction: it rearranges the U recurrence U_{k+2} = 2X·U_{k+1} - U_k as 2X·U_k = U_{k+1} + U_{k-1}. This is proved by `linear_combination -h` from the recurrence at k-1. The induction steps use this helper twice (once for U_{m+n} and once for U_{n-m}) to redistribute the 2X factor from the T recurrence. Without this helper the induction steps would require non-trivial manipulation of four U terms simultaneously.",
+    "mathContext": "$2X \\cdot U_k = U_{k+1} + U_{k-1}$: rearranges $U_{k+2} = 2X \\cdot U_{k+1} - U_k$ with index shift $k \\mapsto k-1$. Used as `two_X_U n k` in all three induction cases.",
+    "significance": "key",
+    "relatedConcepts": [
+      "U_add_two",
+      "linear_combination",
+      "index-shifting"
+    ],
+    "prerequisites": [
+      "Polynomial.Chebyshev.U_add_two",
+      "linear_combination tactic"
+    ]
+  },
+  {
+    "id": "ann-demoivre-oq02-02-03-induction-invariant",
+    "proofId": "de-moivre-oq-02-oq-02",
+    "range": {
+      "startLine": 43,
+      "endLine": 64
+    },
+    "type": "technique",
+    "title": "Paired Induction Invariant: Q(m) = P(m) ∧ P(m-1)",
+    "content": "The induction invariant Q(m) carries both P(m): 2·T_m·U_n = U_{m+n}+U_{n-m} and P(m-1) simultaneously. This is necessary because the T recurrence T_{m+1} = 2X·T_m - T_{m-1} requires knowledge of both m and m-1. The base case Q(0) proves P(0) (from T_zero = 1) and P(-1) (T_{-1} = X, then use two_X_U). Integer induction via `Int.induction_on` then handles all m ∈ ℤ with forward step Q(m)→Q(m+1) and backward step Q(m)→Q(m-1). The main theorem `T_mul_U_product` extracts P(m) from Q(m).1.",
+    "mathContext": "$Q(m) = P(m) \\wedge P(m-1)$ where $P(m): 2T_m \\cdot U_n = U_{m+n} + U_{n-m}$. Forward step uses $T_{m+1} = 2X \\cdot T_m - T_{m-1}$; backward step uses $T_{m-2} = 2X \\cdot T_{m-1} - T_m$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Int.induction_on",
+      "T_add_two",
+      "T_zero",
+      "T_one"
+    ],
+    "prerequisites": [
+      "Polynomial.Chebyshev.T_add_two",
+      "Int.induction_on with paired invariant"
+    ]
+  },
+  {
+    "id": "ann-demoivre-oq02-02-04-polynomial-main",
+    "proofId": "de-moivre-oq-02-oq-02",
+    "range": {
+      "startLine": 114,
+      "endLine": 126
+    },
+    "type": "concept",
+    "title": "Main Polynomial Identity: T_mul_U_product",
+    "content": "T_mul_U_product states 2·T_m · U_n = U_{m+n} + U_{n-m} as a theorem in R[X] for any CommRing R and integers m, n. The proof extracts Q(m).1 via `suffices h : Q n m from h.1`. This is the most general form: it holds in any commutative ring (not just ℝ), making it applicable to formal Chebyshev series over arbitrary coefficient rings. The identity is asymmetric: U_{n-m} appears (not U_{m-n}), reflecting that U_{-k} ≠ U_k in general for the second-kind polynomials.",
+    "mathContext": "$2T_m \\cdot U_n = U_{m+n} + U_{n-m}$ in $R[X]$ for any `CommRing R` and $m, n \\in \\mathbb{Z}$. Note asymmetry: $U_{n-m}$ not $U_{m-n}$ (since $U_{-k}(\\cos\\theta) = -U_{k-2}(\\cos\\theta)$ in general).",
+    "significance": "key",
+    "relatedConcepts": [
+      "chebyshev_T_U_product_to_sum",
+      "CommRing",
+      "Int.induction_on"
+    ],
+    "prerequisites": [
+      "Paired induction Q",
+      "T_mul_U_product uniquely extends T·T formula"
+    ]
+  },
+  {
+    "id": "ann-demoivre-oq02-02-05-real-form",
+    "proofId": "de-moivre-oq-02-oq-02",
+    "range": {
+      "startLine": 134,
+      "endLine": 146
+    },
+    "type": "concept",
+    "title": "Real Form: Cross Product-to-Sum at cos θ",
+    "content": "chebyshev_T_U_product_to_sum evaluates the polynomial identity at cos θ. The proof is a one-liner: apply T_mul_U_product (for R=ℝ), take congr_arg of eval at cos θ, then use simp to strip the Polynomial.eval wrapper and map_ofNat to handle the 2, then linarith. The key insight is that congr_arg converts a polynomial equality to a scalar equality, and simp normalizes the eval applications. No sin θ = 0 case analysis is needed because the polynomial proof already handled all cases.",
+    "mathContext": "$2T_m(\\cos\\theta) \\cdot U_n(\\cos\\theta) = U_{m+n}(\\cos\\theta) + U_{n-m}(\\cos\\theta)$ for all $m, n \\in \\mathbb{Z}$, $\\theta \\in \\mathbb{R}$. Proved by `congr_arg (Polynomial.eval (Real.cos θ))` on the polynomial identity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "T_mul_U_product",
+      "Polynomial.eval",
+      "congr_arg"
+    ],
+    "prerequisites": [
+      "T_mul_U_product",
+      "map_ofNat for ring morphisms",
+      "linarith"
+    ]
+  },
+  {
+    "id": "ann-demoivre-oq02-02-06-recurrence",
+    "proofId": "de-moivre-oq-02-oq-02",
+    "range": {
+      "startLine": 147,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "U Recurrence at cos: chebyshev_cos_U",
+    "content": "chebyshev_cos_U is the m=1 specialization: 2·cos θ·U_n(cos θ) = U_{n+1}(cos θ) + U_{n-1}(cos θ). This follows from chebyshev_T_U_product_to_sum with m=1, since T_1(cos θ) = cos θ (from T_real_cos at n=1: T_1(cos θ) = cos(1·θ) = cos θ). The convert tactic handles the cast arithmetic (1+n = n+1, n-1 = n-1). This recurrence at cos θ is the evaluation form of the polynomial recurrence U_{n+1} = 2X·U_n - U_{n-1}, rewritten as 2X·U_n = U_{n+1} + U_{n-1}.",
+    "mathContext": "$2\\cos\\theta \\cdot U_n(\\cos\\theta) = U_{n+1}(\\cos\\theta) + U_{n-1}(\\cos\\theta)$. Special case $m=1$ of the cross formula using $T_1(\\cos\\theta) = \\cos\\theta$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "chebyshev_T_U_product_to_sum",
+      "T_real_cos",
+      "convert tactic"
+    ],
+    "prerequisites": [
+      "chebyshev_T_U_product_to_sum",
+      "T_real_cos (T_1(cos θ) = cos θ)"
+    ]
+  },
+  {
+    "id": "ann-demoivre-oq02-02-07-sine-spreading",
+    "proofId": "de-moivre-oq-02-oq-02",
+    "range": {
+      "startLine": 155,
+      "endLine": 171
+    },
+    "type": "concept",
+    "title": "Sine Spreading: 2·cos θ·sin((n+1)θ) = sin((n+2)θ) + sin(nθ)",
+    "content": "two_cos_sin_spreading converts chebyshev_cos_U to trigonometric form using U_real_cos: U_n(cos θ)·sin θ = sin((n+1)θ). After substituting hcos (the U recurrence at cos), the proof rewrites U_{n+1} and U_{n-1} evaluations via their U_real_cos forms, adjusts cast arithmetic (hn1, hn2), then closes with nlinarith using sin²θ + cos²θ = 1 and the commutativity of sin θ factors. This identity says cosine modulation maps a sine harmonic to neighboring harmonics — the sine analog of the cosine product formula.",
+    "mathContext": "$2\\cos\\theta \\cdot \\sin((n+1)\\theta) = \\sin((n+2)\\theta) + \\sin(n\\theta)$. Derived from chebyshev_cos_U by $U_n(\\cos\\theta) \\cdot \\sin\\theta = \\sin((n+1)\\theta)$ (`U_real_cos`).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "chebyshev_cos_U",
+      "U_real_cos",
+      "Real.sin_sq_add_cos_sq",
+      "nlinarith"
+    ],
+    "prerequisites": [
+      "Polynomial.Chebyshev.U_real_cos",
+      "nlinarith with nonlinear hypotheses",
+      "Integer cast arithmetic (push_cast; ring)"
+    ]
+  }
+]
