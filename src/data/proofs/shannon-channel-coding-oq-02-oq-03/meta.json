@@ -41,7 +41,7 @@
     "assumptions": "1 new axiom: fano_mi_converse_bound (combines Fano inequality + memoryless channel MI subadditivity: log M ≤ n·C + 1 + P_e·log M). Plus axioms inherited from ShannonChannelCoding.lean via import.",
     "dateAdded": "2026-05-03",
     "axiomCount": 1,
-    "lineCount": 163,
+    "lineCount": 162,
     "prerequisites": [
       "Discrete memoryless channels and channel capacity (ShannonChannelCoding.lean)",
       "Block codes and rate definition",
@@ -156,7 +156,7 @@
   ],
   "leanFile": {
     "axiomCount": 1,
-    "lineCount": 163,
+    "lineCount": 162,
     "path": "Proofs/ShannonChannelCodingOQ02OQ03.lean",
     "sorries": 0,
     "definitionCount": 1,
