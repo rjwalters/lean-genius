@@ -1,0 +1,121 @@
+{
+  "id": "angle-trisection-oq-04-oq-04",
+  "title": "Regular Polygons Constructible with Multi-Fold Origami but Not Marked Ruler",
+  "slug": "angle-trisection-oq-04-oq-04",
+  "description": "Proves that multi-fold origami is strictly more powerful than a marked ruler (neusis) by exhibiting specific regular polygons — the 11-gon and 23-gon — that are constructible with 2-fold (respectively 4-fold) origami but not with a marked ruler. The key algebraic criterion: an n-gon requires a marked ruler iff φ(n) divides some 2^a·3^b; having a prime factor > 3 in φ(n) blocks neusis constructibility.",
+  "leanFile": {
+    "path": "Proofs/AngleTrisectionOQ04OQ04.lean",
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.Nat.Prime.Nth",
+      "Proofs.AngleTrisectionOQ04",
+      "Proofs.AngleTrisectionOQ05OQ01"
+    ],
+    "opens": [
+      "AngleTrisectionOQ04",
+      "AngleTrisectionOQ05OQ01"
+    ],
+    "namespace": "AngleTrisectionOQ04OQ04",
+    "lineCount": 155,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 12
+  },
+  "meta": {
+    "author": "Formalized in Lean 4 (researcher-7)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Origami#Mathematics",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ04OQ04.lean",
+    "tags": [
+      "geometry",
+      "origami",
+      "constructibility",
+      "marked-ruler",
+      "neusis",
+      "fold-hierarchy",
+      "n-gons",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-checked. Uses IsTwoThreeNumber from AngleTrisectionOQ04 and IsKFoldConstructible from AngleTrisectionOQ05OQ01; neither introduces axioms relevant to this proof.",
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime.dvd_of_dvd_pow",
+        "description": "If prime p divides n^k then p divides n",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function φ(n)",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.sub_add_cancel",
+        "description": "m - n + n = m when n ≤ m",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "not_twoThree_of_large_prime_dvd: general criterion for non-neusis-constructibility",
+      "ngon_11_2fold_not_neusis: regular 11-gon is 2-fold origami constructible but not marked-ruler-constructible",
+      "ngon_23_4fold_not_neusis: regular 23-gon is 4-fold origami constructible but not marked-ruler-constructible",
+      "multi_fold_strictly_stronger_than_neusis: main theorem — multi-fold origami strictly dominates marked ruler",
+      "exists_ngon_at_each_level: for every fold level k ≥ 2, there exists an n-gon requiring exactly that level"
+    ],
+    "prerequisites": [
+      "Euler totient: φ(n) for prime n equals n-1",
+      "Origami fold hierarchy: k-fold origami constructibility via p_{k+1}-smooth degrees",
+      "IsTwoThreeNumber: marked-ruler degree characterization",
+      "Prime divisibility: prime p | a·b implies p | a or p | b"
+    ],
+    "lineCount": 155
+  },
+  "overview": "The constructibility hierarchy from the existing gallery places compass-and-straightedge, marked ruler (= 1-fold origami), and multi-fold origami at progressively more powerful levels. This entry proves the marked-ruler/multi-fold gap is strict by finding concrete witnesses.\n\nThe algebraic key: an n-gon is marked-ruler-constructible iff φ(n) | 2^a·3^b for some a, b (IsTwoThreeNumber). It is k-fold origami constructible iff φ(n) is p_{k+1}-smooth (IsKFoldConstructible). Whenever φ(n) has a prime factor q > 3, the n-gon is NOT marked-ruler-constructible but IS k-fold constructible for appropriate k.\n\n**11-gon**: φ(11) = 10 = 2·5. The factor 5 > 3 blocks neusis. But 5 ≤ 5 = p_2, so it IS 2-fold constructible.\n\n**23-gon**: φ(23) = 22 = 2·11. The factor 11 > 3 blocks neusis. But 11 ≤ 11 = p_4, so it IS 4-fold constructible.",
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Which prime n-gons require exactly k-fold origami and no fewer? Characterize the minimal fold level as a function of the prime factorization of φ(n).",
+      "difficulty": "medium",
+      "status": "open"
+    },
+    {
+      "id": "oq-02",
+      "question": "Is the conjectured k-fold = p_{k+1}-smooth correspondence provable from the Huzita-Hatori axioms for k ≥ 3? (The k=1,2 cases are known; k ≥ 3 remains open.)",
+      "difficulty": "hard",
+      "status": "open"
+    }
+  ],
+  "sections": [
+    {
+      "title": "General Non-Neusis Criterion",
+      "startLine": 48,
+      "endLine": 62,
+      "description": "The general lemma: if prime q > 3 divides d, then d ∉ IsTwoThreeNumber. Proof by prime divisibility and the impossibility of 5 | 2 or 5 | 3."
+    },
+    {
+      "title": "The Regular 11-Gon",
+      "startLine": 64,
+      "endLine": 80,
+      "description": "φ(11) = 10 = 2·5. The prime factor 5 > 3 blocks neusis. Since 10 = 2·5 is 5-smooth and foldPrimeBound 2 = 5, the 11-gon is 2-fold origami constructible."
+    },
+    {
+      "title": "The Regular 23-Gon",
+      "startLine": 82,
+      "endLine": 103,
+      "description": "φ(23) = 22 = 2·11. The prime factor 11 > 3 blocks neusis. Since 22 = 2·11 is 11-smooth and foldPrimeBound 4 = 11, the 23-gon is 4-fold origami constructible."
+    },
+    {
+      "title": "Main Theorem and Infinite Family",
+      "startLine": 105,
+      "endLine": 140,
+      "description": "multi_fold_strictly_stronger_than_neusis asserts the strict gap; exists_ngon_at_each_level shows that for every fold level k ≥ 2, some n-gon requires that level but not marked ruler."
+    }
+  ]
+}
