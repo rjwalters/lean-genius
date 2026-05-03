@@ -1,0 +1,125 @@
+{
+  "id": "erdos-1001-oq-02-oq-01",
+  "title": "Erdős #1001 OQ-02-OQ-01: Sharpness of the O(log N / N) Rate",
+  "slug": "erdos-1001-oq-02-oq-01",
+  "description": "Is the O(A log N / N) convergence rate for |S(N,A,c) - f(A,c)| sharp? No — Walfisz's 1963 theorem on the average order of Euler's totient gives a strictly better rate O(A (log N)^(2/3) (log log N)^(4/3) / N). The parent proof used the elementary Mertens bound O(N log N); the Walfisz bound O(N (log N)^(2/3+ε)) is sharper by a factor of (log N)^(1/3).",
+  "meta": {
+    "author": "Walfisz (1963), sharpness analysis by researcher-9",
+    "sourceUrl": "https://erdosproblems.com/1001",
+    "date": "1963-2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1001OQ02OQ01.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "diophantine-approximation",
+      "rate-of-convergence",
+      "sharpness",
+      "walfisz",
+      "totient-function",
+      "research",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 4,
+    "axiomCount": 4,
+    "assumptions": "4 axioms: totient_sum_mertens_error (elementary Mertens O(N log N) error), totient_sum_walfisz_error (Walfisz 1963 O(N(logN)^(2/3)(loglogN)^(4/3))), rangeTotientSum_walfisz_error (Abel summation from Walfisz to range sum), convergence_rate_sharp (EST reduction to range sum with Walfisz bound). 4 sorries: walfisz_rate_isLittleO_mertens_rate, walfisz_full_rate_isLittleO_mertens_rate, sharp_rate_isLittleO_oq02_rate, improvement_factor_tends_to_zero — all real-analysis rpow comparisons, Aristotle candidates.",
+    "erdosNumber": 1001,
+    "erdosUrl": "https://erdosproblems.com/1001",
+    "mathlibDependencies": [
+      {
+        "theorem": "Asymptotics.IsBigO",
+        "description": "Big-O notation for asymptotic bounds",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Asymptotics.IsLittleO",
+        "description": "Little-o notation for strict asymptotic comparisons",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Real.tendsto_log_div_rpow_atTop",
+        "description": "log x / x^r → 0 for r > 0, used for improvement factor",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function φ(n)",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real power x^r for non-integer exponents like (log N)^(2/3)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "totient_sum_mertens_error: elementary Mertens O(N log N) partial totient sum error",
+      "totient_sum_walfisz_error: Walfisz's sharp O(N(logN)^(2/3)(loglogN)^(4/3)) bound",
+      "partialTotientSum: definition of Φ(n) = ∑_{y≤n} φ(y)",
+      "rangeTotientSum_walfisz_error: improved range sum error from Walfisz",
+      "walfisz_rate_isLittleO_mertens_rate: (logN)^(2/3)/N = o(logN/N)",
+      "oq02_rate_not_sharp: main result — O(logN/N) is not the tight rate",
+      "improvement_factor_tends_to_zero: the factor 1/(logN)^(1/3) → 0",
+      "erdos_1001_oq02_oq01_summary: existential witness for the sharper rate"
+    ],
+    "lineCount": 248,
+    "theoremCount": 7,
+    "defCount": 3
+  },
+  "overview": {
+    "historicalContext": "**From Rate to Sharp Rate: Mertens (1874) vs. Walfisz (1963)**\n\nThe parent problem OQ-02 established the rate O(A log N / N) for convergence of the diophantine approximation density S(N,A,c) to f(A,c). This rate came from the elementary Mertens error bound: ∑_{n≤x} φ(n) = (3/π²)x² + O(x log x), which dates to 1874 and follows from partial summation with the trivial estimate ∑_{n≤x} μ(n)/n = O(1).\n\nIn 1963, Walfisz proved a substantially sharper error bound: ∑_{n≤x} φ(n) = (3/π²)x² + O(x (log x)^(2/3) (log log x)^(4/3)). This used Vinogradov's method of exponential sums applied to the zero-free region for ζ(s): ζ(σ+it) ≠ 0 for σ > 1 - c/(log t)^(2/3) (log log t)^(1/3). The same exponent 2/3 appears in both the zero-free region and the error bound — a deep connection between zeros of the Riemann zeta function and the distribution of arithmetic functions.\n\nFor the diophantine approximation problem, the Walfisz bound propagates via Abel summation to give a rate O(A (log N)^(2/3) (log log N)^(4/3) / N), which is strictly smaller order than the O(A log N / N) rate from OQ-02. This definitively answers the sharpness question: the OQ-02 rate was not optimal.",
+    "problemStatement": "Given the O(A log N / N) rate proved in OQ-02, is this the best possible rate? Does |S(N,A,c) - f(A,c)| actually grow like log N / N for some parameter choice (A, c) in the EST regime?",
+    "text": "Sharpness of O(log N / N) rate. Answer: NO — the rate is strictly o(log N / N) by Walfisz's theorem. The true rate is O(A (log N)^(2/3) (log log N)^(4/3) / N).",
+    "proofStrategy": "Use Walfisz's 1963 sharp error bound for ∑_{n≤x} φ(n): E(N) = O(N (log N)^(2/3) (log log N)^(4/3)). Via Abel summation, this gives range sum error O((log N)^(2/3) (log log N)^(4/3) / N). The real analysis comparison (log N)^(2/3)/N = o(log N/N) — equivalently 1/(log N)^(1/3) → 0 — then gives the main result oq02_rate_not_sharp via transitivity.",
+    "keyInsights": [
+      "The O(log N/N) rate in OQ-02 came from the 150-year-old Mertens bound E(N) = O(N log N); Walfisz's 1963 work sharpens this to O(N (log N)^(2/3+ε)), answering the sharpness question negatively",
+      "The exponent 2/3 in Walfisz's bound is NOT coincidental — it equals the exponent in the Vinogradov-Korobov zero-free region for ζ(s), connecting the diophantine approximation rate to the zeros of the Riemann zeta function",
+      "The improvement factor 1/(log N)^(1/3) tends to 0 extremely slowly — at N = 10^100, the improvement is barely a factor of 6 — so OQ-02's bound is tight enough for all practical purposes, but mathematically it is not the tight rate",
+      "The proof uses IsLittleO transitivity: |S-f| = O(Walfisz rate) = o(OQ-02 rate), converting a quantitative improvement into a strict asymptotic comparison",
+      "Under RH, the expected sharp rate would be O(A √N log N / N) = O(A log N / √N), an improvement by √N — but this is conditional on RH and far beyond current methods"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 45,
+      "endLine": 90,
+      "summary": "Reuse of S, f, inESTRegime, densityConst, rangeTotientSum from OQ-02, plus new partialTotientSum.",
+      "mathContext": "The setup mirrors OQ-02: $S(N,A,c)$ measures the density of $\\alpha \\in (0,1)$ approximable by $x/y$ with $y \\in [N,cN]$; $f(A,c) = 12A\\log(c)/\\pi^2$ is the EST formula; $T(N,c) = \\sum_{y=N}^{cN} \\varphi(y)/y^2$ is the range totient sum. New: $\\Phi(n) = \\sum_{y \\leq n} \\varphi(y)$ is the partial totient sum whose error term $E(n) = \\Phi(n) - (3/\\pi^2)n^2$ is the subject of both Mertens' and Walfisz's bounds."
+    },
+    {
+      "id": "error-bounds",
+      "title": "Mertens vs. Walfisz Error Bounds",
+      "startLine": 95,
+      "endLine": 135,
+      "summary": "Axioms for both the elementary O(N log N) error (Mertens) and the sharp O(N (log N)^(2/3) (log log N)^(4/3)) error (Walfisz).",
+      "mathContext": "The Mertens bound $E(N) = O(N \\log N)$ is elementary (1874). The Walfisz bound $E(N) = O(N (\\log N)^{2/3} (\\log \\log N)^{4/3})$ (1963) requires the Vinogradov–Korobov zero-free region for $\\zeta(s)$. Both are axiomatized as neither appears in Mathlib v4.26."
+    },
+    {
+      "id": "rate-comparison",
+      "title": "Comparison of Error Rates",
+      "startLine": 140,
+      "endLine": 175,
+      "summary": "Proves (log N)^(2/3)/N = o(log N/N) — the core comparison showing Walfisz rate is strictly better.",
+      "mathContext": "The comparison reduces to $1/(\\log N)^{1/3} \\to 0$, proved from $\\operatorname{Real.tendsto\\_log\\_div\\_rpow\\_atTop}$ with exponent $p = 1/3$. Two sorries remain for the formal manipulation of $\\text{rpow}$ inequalities — these are Aristotle candidates."
+    },
+    {
+      "id": "range-sum-improvement",
+      "title": "Improved Range Sum Error",
+      "startLine": 178,
+      "endLine": 215,
+      "summary": "Axiom: Walfisz bound propagates via Abel summation to range totient sum.",
+      "mathContext": "The Abel summation argument follows the same template as OQ-02's $\\texttt{rangeTotientSum\\_error}$ but uses the Walfisz input $E(N) = O(N(\\log N)^{2/3}(\\log\\log N)^{4/3})$ rather than Mertens' $O(N \\log N)$. The result: $T(N,c) - (6/\\pi^2)\\log c = O((\\log N)^{2/3}(\\log\\log N)^{4/3}/N)$. Axiomatized pending the Abel summation implementation."
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result: Rate Not Sharp",
+      "startLine": 218,
+      "endLine": 248,
+      "summary": "Proves oq02_rate_not_sharp: |S(N,A,c) - f(A,c)| = o(A log N / N).",
+      "mathContext": "The main theorem combines: (1) the sharp rate axiom $|S-f| = O(A(\\log N)^{2/3}(\\log\\log N)^{4/3}/N)$, and (2) the comparison $(\\log N)^{2/3}(\\log\\log N)^{4/3}/N = o(\\log N/N)$, via $\\texttt{IsBigO.trans\\_isLittleO}$. This yields $|S-f| = o(A \\log N/N)$ — strictly better convergence than OQ-02's O bound."
+    }
+  ]
+}
