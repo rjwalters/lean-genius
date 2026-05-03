@@ -15,20 +15,20 @@
       "sumsets",
       "sidon-sets"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 14,
     "erdosUrl": "https://erdosproblems.com/14",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
-    "lineCount": 85,
+    "axiomCount": 2,
+    "lineCount": 110,
     "prerequisites": [
       "Additive combinatorics (sumsets and representation functions)",
       "Finite set theory",
       "Extremal combinatorics",
       "Probabilistic method"
     ],
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "2 axioms: ess_upper_lower_bound (Erdős-Sárközy-Szemerédi combined upper+lower bound) and erdos_freud_finite (Erdős-Freud finite analogue). Open conjectures Erdos14a and Erdos14b are formalized as Prop definitions. 0 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 1
   },
@@ -56,55 +56,55 @@
       "id": "header",
       "title": "Problem Statement and References",
       "startLine": 1,
-      "endLine": 22,
+      "endLine": 27,
       "summary": "Documents the two-part problem, references to Erdős [Er92c, Er97, Er97e], Erdős-Freud [ErFr91], and OEIS A143824.",
       "mathContext": "Mathematical content: Documents the two-part problem, references to Erdős [Er92c, Er97, Er97e], Erdős-Freud [ErFr91], and OEIS A143824."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
-      "startLine": 23,
-      "endLine": 29,
+      "startLine": 29,
+      "endLine": 34,
       "summary": "Imports Mathlib's asymptotics library and finset basics. Opens `Finset`, `Filter`, `Asymptotics` for `atTop`, `∀ᶠ`, `∃ᶠ`.",
       "mathContext": "Mathematical content: Imports Mathlib's asymptotics library and finset basics. Opens `Finset`, `Filter`, `Asymptotics` for `atTop`, `∀ᶠ`, `∃ᶠ`."
     },
     {
       "id": "unique-sums",
       "title": "Unique Sums Definition",
-      "startLine": 30,
-      "endLine": 39,
+      "startLine": 36,
+      "endLine": 44,
       "summary": "Defines `uniqueSums A` for finite $A$: integers with exactly one representation as $a+b$ ($a \\leq b$). Uses `Finset.filter` with `.card = 1`.",
       "mathContext": "Formal definition: Defines `uniqueSums A` for finite $A$: integers with exactly one representation as $a+b$ ($a \\leq b$). Uses `Finset.filter` with `.card = 1`."
     },
     {
       "id": "counting",
       "title": "Non-Unique Sum Counting Functions",
-      "startLine": 40,
-      "endLine": 51,
+      "startLine": 46,
+      "endLine": 56,
       "summary": "Defines `nonUniqueSumCount` (finite) and `nonUniqueSumCountInf` (infinite via `Set.ncard`) — the quantity $f_A(N) = |\\{1,\\ldots,N\\} \\setminus B|$.",
       "mathContext": "Formal definition: Defines `nonUniqueSumCount` (finite) and `nonUniqueSumCountInf` (infinite via `Set.ncard`) — the quantity $f_A(N) = |\\{1,\\ldots,N\\} \\setminus B|$."
     },
     {
       "id": "conjectures",
       "title": "Main Conjectures (14a and 14b)",
-      "startLine": 52,
-      "endLine": 66,
+      "startLine": 58,
+      "endLine": 73,
       "summary": "States (a) $f_A(N) \\gg N^{1/2-\\varepsilon}$ eventually and (b) $\\exists A$ with $f_A(N) = o(\\sqrt{N})$, using `∀ᶠ` and filter quantifiers.",
       "mathContext": "Mathematical content: States (a) $f_A(N) \\gg N^{1/2-\\varepsilon}$ eventually and (b) $\\exists A$ with $f_A(N) = o(\\sqrt{N})$, using `∀ᶠ` and filter quantifiers."
     },
     {
       "id": "ess-bounds",
       "title": "Erdős-Sárközy-Szemerédi Bounds",
-      "startLine": 67,
-      "endLine": 82,
+      "startLine": 75,
+      "endLine": 87,
       "summary": "Upper: $\\exists A$ with $f_A(N) \\leq CN^{1/2+\\varepsilon}$ eventually. Lower: same $A$ has $f_A(N) \\geq CN^{1/3-\\varepsilon}$ frequently.",
       "mathContext": "Mathematical content: Upper: $\\exists A$ with $f_A(N) \\leq CN^{1/2+\\varepsilon}$ eventually. Lower: same $A$ has $f_A(N) \\geq CN^{1/3-\\varepsilon}$ frequently."
     },
     {
       "id": "erdos-freud",
       "title": "Erdős-Freud Finite Analogue",
-      "startLine": 83,
-      "endLine": 85,
+      "startLine": 89,
+      "endLine": 93,
       "summary": "For $A \\subseteq \\{1,\\ldots,N\\}$, $\\exists A$ with $f_A(N) < 2^{3/2}\\sqrt{N}$. The constant $2\\sqrt{2}$ may be optimal.",
       "mathContext": "For $A \\subseteq \\{1,\\ldots,N\\}$, $\\exists A$ with $f_A(N) < $$2^{{3/2}$}$\\sqrt{N}$. The constant $2\\sqrt{2}$ may be optimal."
     }
@@ -121,7 +121,8 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Analysis.Asymptotics.Defs",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Tactic"
     ],
@@ -131,10 +132,10 @@
       "Asymptotics"
     ],
     "namespace": null,
-    "lineCount": 85,
-    "axiomCount": 0,
+    "lineCount": 110,
+    "axiomCount": 2,
     "theoremCount": 1,
-    "definitionCount": 4,
+    "definitionCount": 6,
     "path": "Proofs/Erdos14Problem.lean",
     "sorries": 0
   },
