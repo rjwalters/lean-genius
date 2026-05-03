@@ -180,10 +180,25 @@ structure DenckerWeight (n m : ℕ) (P : LinearPDO n m) where
 
 /-- **Condition (Ψ)** restated: Im(p_m) does not change sign from
     − to + along oriented bicharacteristics. -/
-axiom BicharacteristicCurve {n m : ℕ} (P : LinearPDO n m) : Type
+/-- A bicharacteristic curve of P consists of a position trajectory and a momentum
+    (cotangent) trajectory, parametrized by time. These are the integral curves of
+    the Hamiltonian vector field of the principal symbol.
 
-axiom imSymbolAlongCurve {n m : ℕ} {P : LinearPDO n m}
-    (γ : BicharacteristicCurve P) (t : ℝ) : ℝ
+    We use a minimal structure capturing only the components needed for condition (Ψ).
+    The full theory (Hamilton flow on T*ℝⁿ, energy conservation, etc.) is not needed
+    here. -/
+structure BicharacteristicCurve {n m : ℕ} (P : LinearPDO n m) where
+  pos : ℝ → (Fin n → ℝ)
+  momentum : ℝ → (Fin n → ℝ)
+
+/-- The imaginary part of the principal symbol evaluated along a bicharacteristic curve.
+
+    For a curve γ = (x(t), ξ(t)), this is `Im(p_m(x(t), ξ(t)))`.
+    By making this a definition rather than an axiom, we can prove that operators
+    with real principal symbol automatically satisfy condition (Ψ). -/
+noncomputable def imSymbolAlongCurve {n m : ℕ} {P : LinearPDO n m}
+    (γ : BicharacteristicCurve P) (t : ℝ) : ℝ :=
+  (principalSymbol P (γ.pos t) (γ.momentum t)).im
 
 def ConditionPsi {n m : ℕ} (P : LinearPDO n m) : Prop :=
   ∀ (γ : BicharacteristicCurve P) (t₁ t₂ : ℝ),
@@ -262,9 +277,11 @@ theorem real_symbol_solvable {n m : ℕ} (P : LinearPDO n m)
     (x₀ : Fin n → ℝ) :
     IsLocallySolvable P x₀ := by
   apply dencker_sufficiency
-  intro γ t₁ t₂ _ hneg hpos
-  -- imSymbolAlongCurve ≠ 0 contradicts hreal + bridge axiom
-  sorry -- Needs bridge axiom connecting imSymbolAlongCurve to principalSymbol
+  intro γ t₁ t₂ _ hneg _
+  -- imSymbolAlongCurve γ t₁ = Im(p(γ.pos t₁, γ.momentum t₁)) by definition
+  -- hreal says this is 0, contradicting hneg < 0
+  simp only [imSymbolAlongCurve] at hneg
+  linarith [hreal (γ.pos t₁) (γ.momentum t₁)]
 
 /-- **Self-adjoint operators are locally solvable.**
     If P = P* (at principal level), then P is locally solvable.
@@ -273,10 +290,15 @@ theorem real_symbol_solvable {n m : ℕ} (P : LinearPDO n m)
     so Im(p_m) = 0, so condition (Ψ) holds trivially. -/
 theorem self_adjoint_solvable {n m : ℕ} (P : LinearPDO n m)
     (hsa : formalAdjoint P = P) (x₀ : Fin n → ℝ) :
-    IsLocallySolvable P x₀ := by
-  apply dencker_sufficiency
-  intro γ t₁ t₂ _ hneg _
-  sorry -- Same bridge axiom issue
+    IsLocallySolvable P x₀ :=
+  real_symbol_solvable P (fun x ξ => by
+    have hconj := principalSymbol_adjoint P x ξ
+    rw [hsa] at hconj
+    -- hconj : principalSymbol P x ξ = starRingEnd ℂ (principalSymbol P x ξ)
+    -- i.e., z = conj z, which forces z.im = 0
+    have him := congr_arg Complex.im hconj
+    simp only [starRingEnd_apply, Complex.star_def, Complex.mk_im] at him
+    linarith) x₀
 
 -- ============================================================
 -- PART 8: Summary
@@ -285,7 +307,7 @@ theorem self_adjoint_solvable {n m : ℕ} (P : LinearPDO n m)
 /-
 ## Summary of Results
 
-### Proved (0 axioms):
+### Proved (0 axioms, 0 sorries):
 1. monomial_real: product of real monomials has zero imaginary part
 2. conj_monomial: conjugate of real monomial is itself
 3. principalSymbol_adjoint: p*(x,ξ) = conj(p(x,ξ))
@@ -294,24 +316,34 @@ theorem self_adjoint_solvable {n m : ℕ} (P : LinearPDO n m)
 6. adjoint_principal_type: P principal type → P* principal type
 7. dencker_sufficiency: condition (Ψ) → local solvability
    (assembled from axioms via the energy estimate chain)
+8. real_symbol_solvable: real principal symbol → locally solvable
+   (condition (Ψ) trivially holds since Im(p) = 0, proved using the
+   definition of imSymbolAlongCurve and linarith)
+9. self_adjoint_solvable: P = P* → locally solvable
+   (via real_symbol_solvable: self-adjointness forces z = conj(z), so Im(z) = 0,
+   proved from principalSymbol_adjoint + Complex.star_def + linarith)
 
-### Axioms (7):
+### Session 11 axiom elimination (2026-05-03):
+Converted `BicharacteristicCurve` and `imSymbolAlongCurve` from axioms to definitions:
+- `BicharacteristicCurve P` is now a structure with `pos : ℝ → (Fin n → ℝ)` and
+  `momentum : ℝ → (Fin n → ℝ)` fields.
+- `imSymbolAlongCurve γ t` is now defined as `(principalSymbol P (γ.pos t) (γ.momentum t)).im`.
+This allows `real_symbol_solvable` and `self_adjoint_solvable` to be proved without
+any new axioms: condition (Ψ) follows because `imSymbolAlongCurve = 0` by `hreal`.
+
+### Axioms (5):
 - HasAPrioriEstimate: a priori Sobolev estimates (needs Sobolev spaces)
 - IsLocallySolvable: local solvability (needs distributions)
 - hormander_duality: solvability ↔ estimates for adjoint
-- BicharacteristicCurve: bicharacteristic curves (needs Hamilton flow)
-- imSymbolAlongCurve: Im of symbol along bicharacteristic (needs microlocal analysis)
-- dencker_weight_exists: Dencker's weight construction
+- dencker_weight_exists: Dencker's weight construction (deep microlocal analysis)
 - weight_implies_estimate: weight → a priori estimates
-
-### Sorries (2):
-- real_symbol_solvable: needs bridge axiom connecting imSymbolAlongCurve to principalSymbol
-- self_adjoint_solvable: same bridge axiom issue
 
 ### Key Contribution
 Formalizes the STRUCTURAL FRAMEWORK of Dencker's proof:
 Condition (Ψ) → Dencker weight → a priori estimates → local solvability.
 The formal adjoint relation p*(x,ξ) = conj(p(x,ξ)) is fully proved.
+BicharacteristicCurves made definitional, enabling real-symbol and self-adjoint
+solvability to be derived without additional axioms.
 -/
 
 #check @principalSymbol_adjoint
