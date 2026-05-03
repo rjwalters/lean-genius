@@ -7,7 +7,7 @@
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem",
     "date": "formalized 2026",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "topology",
       "fixed-point",
@@ -19,10 +19,10 @@
       "axiom-elimination"
     ],
     "proofRepoPath": "Proofs/BrouwerFixedPointOQ01OQ02OQ03OQ01.lean",
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "theoremCount": 16,
+    "axiomCount": 1,
+    "theoremCount": 17,
     "mathlibDependencies": [
       {
         "theorem": "norm_add_sq_real",
@@ -68,8 +68,8 @@
       "brouwer_fixed_point_explicit: Brouwer FPT proved without retraction_construction axiom"
     ],
     "dateAdded": "2026-05-03",
-    "lineCount": 217,
-    "assumptions": "No new axioms introduced. This file eliminates the retraction_construction axiom from BrouwerFixedPoint.lean by proving it as a theorem. The proof uses only standard Mathlib lemmas for inner product spaces, norms, and continuity. The remaining axiom in the BFP chain is no_retraction_axiom (from BrouwerFixedPoint.lean), which requires algebraic topology (homology or degree theory)."
+    "lineCount": 214,
+    "assumptions": "1 axiom: no_retraction_axiom (from BrouwerFixedPoint.lean — the Brouwer no-retraction theorem, which requires algebraic topology/degree theory). This file proves retraction_construction as a theorem, reducing the axiom count from 2→1 in the BFP import chain."
   },
   "overview": {
     "historicalContext": "Brouwer's Fixed Point Theorem (1911) has several standard proof routes. The elementary route uses the No-Retraction Theorem and a geometric ray construction: given a continuous self-map f: Bⁿ→Bⁿ with no fixed point, define the retraction r(x) as the intersection of the ray from f(x) through x with the sphere Sⁿ⁻¹. This construction appears in every topology textbook (Munkres, Hatcher, etc.) but its explicit formalization requires solving a quadratic equation and proving continuous dependence of the root.\n\nBrouwerFixedPoint.lean (the parent gallery entry) axiomatizes this construction as `retraction_construction`: it states the existence of the retraction without proving it. This gallery entry eliminates that axiom by carrying out the explicit computation.",
@@ -152,12 +152,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 217,
+    "lineCount": 214,
     "path": "Proofs/BrouwerFixedPointOQ01OQ02OQ03OQ01.lean",
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 3,
-    "theoremCount": 16
+    "theoremCount": 17
   },
   "sorries": 0
 }

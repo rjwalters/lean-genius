@@ -1,31 +1,31 @@
 {
   "slug": "erdos-1149",
-  "title": "Erd\u0151s #1149",
+  "title": "Erdős #1149",
   "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\lim_{N \\to \\infty} \\frac{|\\{n \\leq N : \\gcd(n, \\lfloor n^\\alpha \\rfloor) = 1\\}|}{N} = \\frac{6}{\\pi^2}, \\quad \\alpha > 0,\\ \\alpha \\notin \\mathbb{Z}",
-    "plain": "For non-integer \u03b1 > 0, the natural density of integers n with gcd(n, \u230an^\u03b1\u230b) = 1 is 6/\u03c0\u00b2 \u2248 0.608. SOLVED by Bergelson-Richter (2017).",
+    "plain": "For non-integer α > 0, the natural density of integers n with gcd(n, ⌊n^α⌋) = 1 is 6/π² ≈ 0.608. SOLVED by Bergelson-Richter (2017).",
     "whyMatters": [
-      "Connects deterministic number theory to probabilistic heuristics: \u230an^\u03b1\u230b behaves as if independent of n for coprimality despite being a deterministic function.",
-      "Achieves exactly the classical 'random coprime probability' 6/\u03c0\u00b2 = 1/\u03b6(2), linking the result to the Euler product \u03a0_p (1 - 1/p\u00b2) and the Riemann zeta function at s=2.",
-      "Resolved a long-standing question of Erd\u0151s affirmatively, using ergodic theory and multiplicative functions along polynomial sequences.",
-      "Demonstrates that polynomial-like sequences \u230an^\u03b1\u230b (\u03b1 non-integer) satisfy strong arithmetic equidistribution properties."
+      "Connects deterministic number theory to probabilistic heuristics: ⌊n^α⌋ behaves as if independent of n for coprimality despite being a deterministic function.",
+      "Achieves exactly the classical 'random coprime probability' 6/π² = 1/ζ(2), linking the result to the Euler product Π_p (1 - 1/p²) and the Riemann zeta function at s=2.",
+      "Resolved a long-standing question of Erdős affirmatively, using ergodic theory and multiplicative functions along polynomial sequences.",
+      "Demonstrates that polynomial-like sequences ⌊n^α⌋ (α non-integer) satisfy strong arithmetic equidistribution properties."
     ]
   },
   "knownResults": {
     "proven": [
-      "Bergelson-Richter (2017): density of {n : gcd(n, \u230an^\u03b1\u230b) = 1} is 6/\u03c0\u00b2 for non-integer \u03b1 > 0",
-      "Ces\u00e0ro (1881): probability two random integers in [1,N]\u00b2 are coprime \u2192 6/\u03c0\u00b2 as N \u2192 \u221e (via Euler product)",
-      "Integer \u03b1: density = 0 since n | n^k forces gcd(n, n^k) = n > 1 for n > 1 (formalized as integer_alpha_trivial)"
+      "Bergelson-Richter (2017): density of {n : gcd(n, ⌊n^α⌋) = 1} is 6/π² for non-integer α > 0",
+      "Cesàro (1881): probability two random integers in [1,N]² are coprime → 6/π² as N → ∞ (via Euler product)",
+      "Integer α: density = 0 since n | n^k forces gcd(n, n^k) = n > 1 for n > 1 (formalized as integer_alpha_trivial)"
     ],
     "open": [
-      "Provability of random_coprime_density axiom from existing Mathlib: infrastructure (moebius_sum_divisors_eq, card_multiples, pairs_with_common_factor, hasSum_zeta_two) is in place; remaining work is the M\u00f6bius-Tannery asymptotic interchange |C(N)/N\u00b2 - \u03a3_{d\u2264N} \u03bc(d)/d\u00b2| \u2192 0",
-      "Quantitative error term: Bergelson-Richter is qualitative; sharp asymptotic |coprime count|/N = 6/\u03c0\u00b2 + O(N^{-c}) is open",
-      "Joint distribution: density of {n : gcd(n, \u230an^\u03b1\u230b) = d} for fixed d > 1",
-      "Multivariate version: {n : gcd(n, \u230an^{\u03b1_1}\u230b, ..., \u230an^{\u03b1_k}\u230b) = 1} for non-integer \u03b1_i"
+      "Provability of random_coprime_density axiom from existing Mathlib: infrastructure (moebius_sum_divisors_eq, card_multiples, pairs_with_common_factor, hasSum_zeta_two) is in place; remaining work is the Möbius-Tannery asymptotic interchange |C(N)/N² - Σ_{d≤N} μ(d)/d²| → 0",
+      "Quantitative error term: Bergelson-Richter is qualitative; sharp asymptotic |coprime count|/N = 6/π² + O(N^{-c}) is open",
+      "Joint distribution: density of {n : gcd(n, ⌊n^α⌋) = d} for fixed d > 1",
+      "Multivariate version: {n : gcd(n, ⌊n^{α_1}⌋, ..., ⌊n^{α_k}⌋) = 1} for non-integer α_i"
     ],
     "goal": "Currently 0 sorries, 2 axioms. Path to 1 axiom: prove random_coprime_density using existing moebius_sum_divisors_eq + card_multiples infrastructure plus Mathlib's hasSum_zeta_two. The bergelson_richter axiom (deep ergodic theory) is unlikely provable in Mathlib."
   },
@@ -33,7 +33,7 @@
     "phase": "ACT",
     "since": "2026-01-15T16:24:55.487Z",
     "iteration": 3,
-    "focus": "Path-to-proof for random_coprime_density: M\u00f6bius inversion infrastructure complete; remaining gap is M\u00f6bius-Tannery asymptotic interchange.",
+    "focus": "Path-to-proof for random_coprime_density: Möbius inversion infrastructure complete; remaining gap is Möbius-Tannery asymptotic interchange.",
     "blockers": [],
     "nextAction": "Prove random_coprime_density using moebius_sum_divisors_eq + hasSum_zeta_two + Tannery-style asymptotic interchange of summation and limit.",
     "attemptCounts": {
@@ -43,37 +43,37 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOMATIZED (0 sorries, 2 axioms): bergelson_richter (Bergelson-Richter ergodic theory result, deep, unlikely Mathlib-provable) and random_coprime_density (Ces\u00e0ro coprime density, infrastructure for proving from Mathlib is now in place \u2014 M\u00f6bius inversion + Basel + asymptotic interchange).",
+    "progressSummary": "AXIOMATIZED (0 sorries, 2 axioms): bergelson_richter (Bergelson-Richter ergodic theory result, deep, unlikely Mathlib-provable) and random_coprime_density (Cesàro coprime density, infrastructure for proving from Mathlib is now in place — Möbius inversion + Basel + asymptotic interchange).",
     "builtItems": [
       "one_isFloorPowerCoprime: n=1 always coprime (Erdos1149Problem.lean:55)",
-      "one_mem_coprimeFloorPowerSet: 1 \u2208 coprime set (Erdos1149Problem.lean:59)",
+      "one_mem_coprimeFloorPowerSet: 1 ∈ coprime set (Erdos1149Problem.lean:59)",
       "coprimeFloorPowerSet_nonempty: set nonempty (Erdos1149Problem.lean:63)",
       "coprime_of_floor_eq_one: floor=1 criterion (Erdos1149Problem.lean:68)",
-      "density_mem_Ioo: 6/\u03c0\u00b2 \u2208 (0,1) (Erdos1149Problem.lean:137)",
+      "density_mem_Ioo: 6/π² ∈ (0,1) (Erdos1149Problem.lean:137)",
       "bergelson_richter_density: HasNaturalDensity reformulation (Erdos1149Problem.lean:142)",
       "countCoprimePairs: Finset-based coprime pair counter (Erdos1149Problem.lean:170)",
       "coprime_pair_symm: coprimality symmetry (Erdos1149Problem.lean:176)",
       "countCoprimePairs_one: verified N=1 case (Erdos1149Problem.lean:180)"
     ],
     "insights": [
-      "Mathlib has hasSum_zeta_two (Basel problem: \u22111/n\u00b2 = \u03c0\u00b2/6) \u2014 key ingredient for proving random_coprime_density",
-      "Mathlib has ArithmeticFunction.moebius \u2014 needed for M\u00f6bius inversion in coprime pair counting",
-      "random_coprime_density could potentially be proved: needs M\u00f6bius inversion + hasSum_zeta_two + asymptotic analysis",
+      "Mathlib has hasSum_zeta_two (Basel problem: ∑1/n² = π²/6) — key ingredient for proving random_coprime_density",
+      "Mathlib has ArithmeticFunction.moebius — needed for Möbius inversion in coprime pair counting",
+      "random_coprime_density could potentially be proved: needs Möbius inversion + hasSum_zeta_two + asymptotic analysis",
       "bergelson_richter axiom is NOT provable from Mathlib (requires deep ergodic theory)",
       "n=1 is always coprime (Nat.coprime_one_left), floor=1 implies coprime (Nat.coprime_one_right)",
       "countCoprimePairs provides computable Finset-based infrastructure for future work on random_coprime_density",
-      "random_coprime_density axiom path-to-proof: combine moebius_sum_divisors_eq (already proved) + card_multiples + hasSum_zeta_two (Mathlib). Remaining gap is M\u00f6bius-Tannery asymptotic interchange \u2211_{d\u2264N} \u03bc(d)\u230aN/d\u230b\u00b2/N\u00b2 \u2192 \u2211_d \u03bc(d)/d\u00b2 = 1/\u03b6(2).",
-      "Aristotle companion file (Erdos1149Aristotle.lean) is fully proved (0 sorries) \u2014 all 14 supporting lemmas verified.",
+      "random_coprime_density axiom path-to-proof: combine moebius_sum_divisors_eq (already proved) + card_multiples + hasSum_zeta_two (Mathlib). Remaining gap is Möbius-Tannery asymptotic interchange ∑_{d≤N} μ(d)⌊N/d⌋²/N² → ∑_d μ(d)/d² = 1/ζ(2).",
+      "Aristotle companion file (Erdos1149Aristotle.lean) is fully proved (0 sorries) — all 14 supporting lemmas verified.",
       "JSON metadata reconciled 2026-04-27: actual sorryCount=0 in companion, line counts corrected (Problem 320, Aristotle 106)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Formalize M\u00f6bius-Tannery interchange: \u2211_{d=1}^N \u03bc(d)\u230aN/d\u230b\u00b2 / N\u00b2 \u2192 \u2211_d \u03bc(d)/d\u00b2 as N \u2192 \u221e",
-      "Connect \u2211_d \u03bc(d)/d\u00b2 = 1/\u03b6(2) using Mathlib's hasSum_zeta_two (Basel: \u22111/n\u00b2 = \u03c0\u00b2/6)",
-      "Identify countCoprimePairs N = \u2211_{d=1}^N \u03bc(d)\u230aN/d\u230b\u00b2 (counting identity via M\u00f6bius)",
+      "Formalize Möbius-Tannery interchange: ∑_{d=1}^N μ(d)⌊N/d⌋² / N² → ∑_d μ(d)/d² as N → ∞",
+      "Connect ∑_d μ(d)/d² = 1/ζ(2) using Mathlib's hasSum_zeta_two (Basel: ∑1/n² = π²/6)",
+      "Identify countCoprimePairs N = ∑_{d=1}^N μ(d)⌊N/d⌋² (counting identity via Möbius)",
       "Combine to prove random_coprime_density (eliminating one of the two axioms)"
     ],
-    "markdown": "# Erd\u0151s #1149 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #1149 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -97,18 +97,18 @@
     {
       "path": "Proofs/Erdos1149Aristotle.lean",
       "filename": "Erdos1149Aristotle.lean",
-      "lineCount": 106,
+      "lineCount": 107,
       "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1149Aristotle.lean"
     },
     {
       "path": "Proofs/Erdos1149Problem.lean",
       "filename": "Erdos1149Problem.lean",
-      "lineCount": 320,
+      "lineCount": 321,
       "theoremCount": 17,
       "axiomCount": 2,
       "defCount": 5,

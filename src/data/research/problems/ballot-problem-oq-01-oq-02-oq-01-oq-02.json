@@ -31,12 +31,12 @@
   "knowledge": {
     "progressSummary": "COMPLETE: ProbabilityTheory.uniformOn unfolds via simp only [ProbabilityTheory.uniformOn] to ncard ratio in ENNReal. Used ENNReal.div_eq_div_iff for cross-multiplication. uniformOn_fiber_transfer proved (0 sorries).",
     "builtItems": [
-      "ncard_biUnion_eq_of_uniform in BallotProblemOQ01OQ02OQ01.lean: ncard(\u22c3 fibers) = k * |I|",
+      "ncard_biUnion_eq_of_uniform in BallotProblemOQ01OQ02OQ01.lean: ncard(⋃ fibers) = k * |I|",
       "uniformOn_fiber_transfer' (complete, 0 sorries) in BallotProblemOQ01OQ02OQ01.lean:148"
     ],
     "insights": [
-      "ProbabilityTheory.uniformOn unfolds via simp only [ProbabilityTheory.uniformOn] to \u2191(S \u2229 P).ncard / \u2191S.ncard in ENNReal, consistent with its condCount-based definition.",
-      "ENNReal.div_eq_div_iff reduces fraction equality a/b = c/d to cross-multiplication a*d = c*b (when b,d \u2260 0, \u2260 \u221e).",
+      "ProbabilityTheory.uniformOn unfolds via simp only [ProbabilityTheory.uniformOn] to ↑(S ∩ P).ncard / ↑S.ncard in ENNReal, consistent with its condCount-based definition.",
+      "ENNReal.div_eq_div_iff reduces fraction equality a/b = c/d to cross-multiplication a*d = c*b (when b,d ≠ 0, ≠ ∞).",
       "Set.ncard_biUnion from Mathlib (with Finite index, pairwise disjoint, finite sets) works directly for the uniform fiber union decomposition.",
       "k > 0 (fiber nonemptiness) follows from surjectivity: fiber over any target t contains the sequence project^{-1}(t), which is inhabited."
     ],
@@ -56,6 +56,7 @@
     "ballot-problem-oq-01-oq-01",
     "ballot-problem-oq-01-oq-02",
     "ballot-problem-oq-01-oq-02-oq-01",
+    "ballot-problem-oq-01-oq-02-oq-01-oq-02",
     "ballot-problem-oq-01-oq-02-oq-04",
     "ballot-problem-oq-01-oq-04",
     "ballot-problem-oq-02",
@@ -124,24 +125,35 @@
     {
       "path": "Proofs/BallotProblemOQ01OQ02OQ01.lean",
       "filename": "BallotProblemOQ01OQ02OQ01.lean",
-      "lineCount": 209,
-      "theoremCount": 7,
+      "lineCount": 250,
+      "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 6,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean",
       "filename": "BallotProblemOQ01OQ02OQ01Aristotle.lean",
-      "lineCount": 109,
+      "lineCount": 113,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 4,
+      "sorryCount": 2,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ01OQ02.lean",
+      "filename": "BallotProblemOQ01OQ02OQ01OQ02.lean",
+      "lineCount": 199,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01OQ02.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ01OQ02OQ02.lean",
@@ -168,13 +180,24 @@
     {
       "path": "Proofs/BallotProblemOQ01OQ04.lean",
       "filename": "BallotProblemOQ01OQ04.lean",
-      "lineCount": 188,
-      "theoremCount": 9,
-      "axiomCount": 1,
-      "defCount": 5,
+      "lineCount": 74,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ04Core.lean",
+      "filename": "BallotProblemOQ01OQ04Core.lean",
+      "lineCount": 179,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04Core.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ01OQ04OQ01.lean",
@@ -234,22 +257,33 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
       "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 439,
+      "lineCount": 851,
       "theoremCount": 10,
       "axiomCount": 0,
-      "defCount": 5,
-      "sorryCount": 9,
+      "defCount": 6,
+      "sorryCount": 4,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean"
     },
     {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean",
+      "filename": "BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean",
+      "lineCount": 132,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean"
+    },
+    {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "filename": "BallotProblemOQ03OQ01OQ02.lean",
-      "lineCount": 10131,
-      "theoremCount": 64,
+      "lineCount": 399,
+      "theoremCount": 2,
       "axiomCount": 0,
-      "defCount": 10,
-      "sorryCount": 10,
+      "defCount": 0,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
     },
@@ -263,6 +297,17 @@
       "sorryCount": 4,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean",
+      "filename": "BallotProblemOQ03OQ01OQ02Helpers.lean",
+      "lineCount": 13838,
+      "theoremCount": 78,
+      "axiomCount": 0,
+      "defCount": 15,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ04.lean",
