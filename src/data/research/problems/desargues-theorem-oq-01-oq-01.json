@@ -1,0 +1,136 @@
+{
+  "slug": "desargues-theorem-oq-01-oq-01",
+  "title": "Can we formalize non-Desarguesian projective planes in Lean to demonstrate wh...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Can we formalize non-Desarguesian projective planes in Lean to demonstrate when the theorem fails?.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-03T11:41:44.692Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Moulton plane counterexample fully formalized in Lean 4 (0 sorries, 0 axioms, 260 lines). Desargues theorem failure proved via linear_combination + linarith contradiction.",
+    "builtItems": [
+      "onMoultonLine: piecewise Moulton line predicate (DesarguesTheoremOQ01OQ01.lean:8-12)",
+      "MoultonCollinear: three-point Moulton collinearity (DesarguesTheoremOQ01OQ01.lean:14-18)",
+      "desargues_fails: main theorem ¬MoultonCollinear P Q R (DesarguesTheoremOQ01OQ01.lean:~120)",
+      "moulton_counterexample: full certificate MoultonCollinear O A A prime ∧ ... ∧ ¬MoultonCollinear P Q R (DesarguesTheoremOQ01OQ01.lean:~240)"
+    ],
+    "insights": [
+      "The Moulton plane bending rule (slope halved on right half-plane) is the minimal perturbation that breaks Desargues while preserving affine plane axioms",
+      "P=(-17,9), Q=(27,17), R=(-6,11) are Euclidean-collinear (classical Desargues holds in R^2) but NOT Moulton-collinear — bending is only visible when testing collinearity of P,Q,R",
+      "Non-collinearity proof splits into two cases: m<=0 gives slope 2/11>0 contradiction via linarith; m>0 gives 11m=2 and 61m=16 which is impossible by linarith",
+      "linear_combination tactic handles division terms correctly: 2*(m/2*27)=27m is resolved internally by ring, making the proof clean",
+      "All perspectivity lemmas (OAA prime, OBB prime, OCC prime) verified by norm_num — no sorry needed for incidence checks"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "oq-01: Extend to projective completion (add line at infinity) and prove Desargues fails in projective Moulton plane",
+      "oq-02: Formalize smallest finite non-Desarguesian plane (Hall plane, order 9)"
+    ]
+  },
+  "tags": [
+    "projective-geometry",
+    "triangles",
+    "perspective",
+    "collinearity",
+    "concurrence",
+    "commutative-ring",
+    "linear-algebra",
+    "classic",
+    "research",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "desargues-theorem",
+    "desargues-theorem-oq-01",
+    "desargues-theorem-oq-02",
+    "desargues-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T11:41:44.692Z",
+  "lastUpdate": "2026-05-03T11:41:44.692Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/DesarguesTheorem.lean",
+      "filename": "DesarguesTheorem.lean",
+      "lineCount": 448,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheorem.lean"
+    },
+    {
+      "path": "Proofs/DesarguesTheoremOQ01.lean",
+      "filename": "DesarguesTheoremOQ01.lean",
+      "lineCount": 286,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/DesarguesTheoremOQ01OQ01.lean",
+      "filename": "DesarguesTheoremOQ01OQ01.lean",
+      "lineCount": 295,
+      "theoremCount": 29,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DesarguesTheoremOQ02.lean",
+      "filename": "DesarguesTheoremOQ02.lean",
+      "lineCount": 333,
+      "theoremCount": 35,
+      "axiomCount": 0,
+      "defCount": 21,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/DesarguesTheoremOQ04.lean",
+      "filename": "DesarguesTheoremOQ04.lean",
+      "lineCount": 416,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ04.lean"
+    }
+  ]
+}
