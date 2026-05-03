@@ -29,7 +29,7 @@
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 1,
-    "lineCount": 688,
+    "lineCount": 743,
     "assumptions": "1 axiom: feuerbach_3d_fails_general (existence of a non-orthocentric tetrahedron for which the (N\u2082\u2084, R/3)-sphere is not tangent to the insphere). Note: per the 2026-05-02 refutation, tangency also fails for many orthocentric tetrahedra, so the orthocentric hypothesis does not save the conjecture as originally stated. Two former axioms REMOVED as mathematically false (edge_midpoints_on_sphere, face_centroids_on_sphere). Five tangency theorems (feuerbach_3d_insphere, feuerbach_3d_exsphere_{A,B,C,D}) and the bundled feuerbach_3d_theorem REMOVED on 2026-05-02 after a closed-form counterexample at T\u2080 = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)) showed dist(N\u2082\u2084, I)\u00b2 = 3r\u00b2 \u2260 (R/3 \u2212 r)\u00b2. Net delta: 5 sorries \u2192 0.",
     "originalContributions": [
       "Complete 3D coordinate geometry infrastructure for tetrahedra in Lean 4",
@@ -39,7 +39,7 @@
       "Proof of the 3D Euler line relation: centroid divides circumcenter-Monge point segment in ratio 3:1",
       "Proof that the six edge midpoints of an orthocentric tetrahedron are equidistant from the centroid (the midedge-sphere result; also shown not to be Feuerbach-tangent at T\u2080)"
     ],
-    "theoremCount": 15
+    "theoremCount": 17
   },
   "overview": {
     "historicalContext": "Feuerbach's theorem (1822) that the nine-point circle is tangent to the incircle and all three excircles is considered one of the most beautiful results in classical triangle geometry. The natural question of its 3D analogue was studied by Court (1934) and Murakami (1952): for orthocentric tetrahedra, a sphere related to the circumcenter and Monge point should play the role of the nine-point circle. This formalization began with the candidate `(N\u2082\u2084, R/3)`-sphere (center = midpoint of circumcenter and Monge point, radius R/3 vs R/2 for the nine-point circle). Numerical experiments (sessions 1\u20132, April 2026) flagged the candidate as suspect; on 2026-05-02 a closed-form symbolic computation at the orthocentric tetrahedron T\u2080 = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)) refuted the candidate outright, and the previously sorry-stated tangency theorems were removed. Identifying and formalizing the correct 3D Feuerbach sphere \u2014 Murakami's construction uses face circumcircles \u2014 remains open.",
