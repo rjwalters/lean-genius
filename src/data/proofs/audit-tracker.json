@@ -13945,6 +13945,20 @@
         "meta.meta.sorries/axiomCount fields missing; leanFile.lineCount 140→156, theoremCount 12→13"
       ],
       "notes": "Fix PR #15099 in-flight; tracker PR #15105 in-flight"
+    },
+    "shannon-channel-coding-oq-02-oq-03": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-05-03T07:00:06Z",
+      "result": "clean"
+    },
+    "erdos-1201": {
+      "auditCount": 1,
+      "issues": [
+        "theoremCount 14→19: meta.json claims 14 theorems but Lean file has 19; lineCount 267→266 (trivial). Status/axioms/sorries correct. Research PR #15091 in flight will update meta."
+      ],
+      "lastAudited": "2026-05-03T07:03:19Z",
+      "result": "issues-found"
     }
   },
   "erdos-1097-oq-01": {
