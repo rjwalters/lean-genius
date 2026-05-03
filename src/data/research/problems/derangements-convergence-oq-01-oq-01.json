@@ -1,0 +1,32 @@
+{
+  "slug": "derangements-convergence-oq-01-oq-01",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "problemStatement": {
+    "formal": "\u2200 n \u2265 1, |(numDerangements n : \u211d) - (n.factorial : \u211d) / rexp 1| < 1/2",
+    "plain": "For all n \u2265 1, D(n) is the nearest integer to n!/e.",
+    "whyMatters": [
+      "The rounding formula D(n) = round(n!/e) provides a simple computation rule",
+      "The unique nearest integer property characterizes D(n) analytically"
+    ]
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 7 theorems proved, 0 sorries, 0 axioms. Fixed DerangementsConvergence.lean syntax and proved the nearest integer theorem.",
+    "builtItems": [
+      "derangements_rate_scaled: |D(n) - n!/e| \u2264 1/(n+1) for all n",
+      "derangements_nearest_integer: |D(n) - n!/e| < 1/2 for n \u2265 2",
+      "derangements_nearest_integer_n1: |D(1) - 1/e| < 1/2 via e > 2",
+      "derangements_nearest_all: |D(n) - n!/e| < 1/2 for all n \u2265 1",
+      "derangements_unique_nearest: D(n) is unique nearest natural to n!/e",
+      "derangements_quarter_bound and derangements_parametric_bound"
+    ],
+    "insights": [
+      "Rate scaling: multiply |D(n)/n! - e\u207b\u00b9| \u2264 1/(n+1)! by n! to get |D(n) - n!/e| \u2264 1/(n+1)",
+      "n=1 case uses Real.add_one_lt_exp one_ne_zero for strict e > 2",
+      "Integer gap lemma: omega closes |m-D(n)| < 1 \u2192 m = D(n) after Int casting",
+      "macOS sed silently fails on Unicode: use Python for \u2211 k in \u2192 \u2211 k \u2208 fixes"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  }
+}
