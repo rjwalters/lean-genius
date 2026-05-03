@@ -1,0 +1,86 @@
+{
+  "id": "ramseys-theorem-oq-02",
+  "title": "Ramsey Number R(3,3) = 6 Exactly (OQ-02)",
+  "slug": "ramseys-theorem-oq-02",
+  "description": "Proves R(3,3) = 6: every 2-coloring of K\u2086 has a monochromatic triangle (upper bound via pigeonhole), and K\u2085 has a triangle-free 2-coloring (lower bound from pentagon, inherited as axiom). 9 theorems, 0 sorries, 1 inherited axiom.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/RamseysTheoremOQ02.lean",
+    "tags": [
+      "combinatorics",
+      "ramsey-theory",
+      "graph-coloring",
+      "complete-graphs",
+      "pigeonhole"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 187,
+    "theoremCount": 9,
+    "assumptions": "Inherits 1 axiom(s) from parent import.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "R(3,3) = 6 is the simplest non-trivial Ramsey number: in any party of 6, some three people are mutual friends or mutual strangers. First proved by Ramsey (1930) and Greenwood-Gleason (1955).",
+    "problemStatement": "Prove R(3,3) = 6: every 2-coloring of K\u2086 contains a monochromatic triangle, and K\u2085 admits a triangle-free 2-coloring.",
+    "proofStrategy": "Upper: pick any vertex v in K\u2086, it has 5 neighbors. Pigeonhole: \u2265 3 neighbors are red-connected or \u2265 3 blue-connected. WLOG 3 red neighbors u\u2080,u\u2081,u\u2082: if any u\u1d62u\u2c7c is red \u2192 red triangle with v; if all blue \u2192 blue triangle {u\u2080,u\u2081,u\u2082}. Lower: pentagon Petersen graph (inherited axiom).",
+    "keyInsights": [
+      "**Pigeonhole step**: with 5 neighbors, some color appears at least 3 times (5 = 2\u00b72+1). This is the key step in the classical proof.",
+      "**Pentagon lower bound**: K\u2085 colored as the 5-cycle (pentagon) is triangle-free in red; the complementary K\u2085 coloring is triangle-free in blue. This witnesses R(3,3) > 5.",
+      "**Exact equality**: combining upper bound (K\u2086 always has monochromatic triangle) with lower bound (K\u2085 doesn't) gives R(3,3) = 6."
+    ]
+  },
+  "sections": [
+    {
+      "id": "ramseys_theorem_oq_02",
+      "title": "R(3,3) = 6 via Pigeonhole and Pentagon",
+      "startLine": 1,
+      "endLine": 187,
+      "summary": "pigeonhole_5. extract_three_distinct. HasRamseyProperty_Fin6_3_3 (upper bound). ramsey_3_3_exact: R(3,3) = 6.",
+      "mathContext": "$R(3,3) = 6$: every 2-coloring of $K_6$ has a monochromatic $K_3$."
+    }
+  ],
+  "conclusion": {
+    "summary": "9 theorems, 0 sorries, 1 inherited axiom (pentagon lower bound). R(3,3) = 6 proved exactly.",
+    "implications": "R(3,3) = 6 is the canonical example of Ramsey theory. This formalization demonstrates the pigeonhole technique that generalizes to all R(k,k).",
+    "openQuestions": [
+      "Can R(4,4) = 18 be formally proved?",
+      "Can the Ramsey multiplicity conjecture be formalized?",
+      "Can the lower bound R(k,k) \u2265 2^(k/2) be proved formally?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.RamseysTheorem"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 187,
+    "axiomCount": 1,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/RamseysTheoremOQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "sub-question",
+      "description": "OQ-02: R(3,3) = 6 exactly via pigeonhole and pentagon"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "ramsey_3_3_exact",
+      "type": "core",
+      "statement": "ramseyNumber 3 3 = 6",
+      "description": "Exact computation R(3,3) = 6.",
+      "significance": "Paradigmatic Ramsey number computation: simplest case demonstrating the pigeonhole argument"
+    }
+  ],
+  "sorries": 0
+}

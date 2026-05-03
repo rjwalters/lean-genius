@@ -1,0 +1,86 @@
+{
+  "id": "brouwer-fixed-point-oq-02-ext",
+  "title": "Brouwer OQ-02 Extensions: Contraction Uniqueness and Error Bounds",
+  "slug": "brouwer-fixed-point-oq-02-ext",
+  "description": "Proves contraction mapping uniqueness, a priori error bound |x \u2212 x*| \u2264 \u03b5/(1\u2212L), geometric convergence of iterates, and 1D Sperner's lemma (combinatorial backbone of Brouwer). 8 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BrouwerFixedPointOQ02Ext.lean",
+    "tags": [
+      "analysis",
+      "fixed-point-theory",
+      "contraction-mapping",
+      "error-bounds",
+      "sperner"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 204,
+    "theoremCount": 8,
+    "assumptions": "None. All 8 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Banach fixed-point theorem gives O(log 1/\u03b5) iterations for contractions. Error bounds and stability results quantify the PPAD-complexity perspective on approximate Brouwer fixed points.",
+    "problemStatement": "Prove uniqueness, error bounds, geometric convergence for contractions, and 1D Sperner's lemma as combinatorial backbone.",
+    "proofStrategy": "Uniqueness: |x-y| = |f(x)-f(y)| \u2264 L|x-y| < |x-y| \u2192 contradiction. Error: |x-x*| \u2264 |x-f(x)|/(1-L) \u2264 \u03b5/(1-L). Convergence: geometric ratio L^n. 1D Sperner: any walk from 0 to 1 must have odd crossings.",
+    "keyInsights": [
+      "**A priori bound**: |x - x*| \u2264 \u03b5/(1-L) for \u03b5-approximate fixed points gives the key estimate \u2014 to achieve precision \u03b4, approximate f within \u03b4(1-L).",
+      "**Geometric convergence**: n iterations give error \u2264 L^n\u00b7|x\u2080-x*|. The number of iterations is O(log(1/\u03b5)/log(1/L)) = O(log 1/\u03b5) since L < 1 is fixed.",
+      "**1D Sperner**: any 2-coloring of the path 0,1,...,n with color 0 at 0 and color 1 at n has an odd number of color-changing edges \u2014 the 1D case of Sperner's lemma."
+    ]
+  },
+  "sections": [
+    {
+      "id": "brouwer_fixed_point_oq_02_ext",
+      "title": "Contraction Uniqueness, Error Bounds, and 1D Sperner",
+      "startLine": 1,
+      "endLine": 204,
+      "summary": "contraction_fixed_point_unique. a_priori_error_bound: |x-x*| \u2264 \u03b5/(1-L). geometric_convergence. sperner_1d_odd_crossings.",
+      "mathContext": "$|x - x^*| \\leq \\varepsilon/(1-L)$ for $\\varepsilon$-approximate fixed points; $1$D Sperner: odd color-changes."
+    }
+  ],
+  "conclusion": {
+    "summary": "8 theorems, 0 sorries, 0 axioms. Contraction uniqueness, error bounds, convergence, and 1D Sperner proved.",
+    "implications": "These results justify the O(log 1/\u03b5) PPAD complexity for finding approximate contraction fixed points.",
+    "openQuestions": [
+      "Can the Krasnoselskii-Mann iteration be proved to converge for non-expansive maps?",
+      "Can the PPAD hardness of approximate Brouwer be reduced to this quantitative analysis?",
+      "Can Kakutani's fixed-point theorem (for set-valued maps) be proved in Lean?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 204,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/BrouwerFixedPointOQ02Ext.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point-oq-02",
+      "relationship": "sub-question",
+      "description": "OQ-02 extensions: quantitative contraction bounds and 1D Sperner"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "contraction_fixed_point_unique",
+      "type": "core",
+      "statement": "Unique fixed point for L < 1 contraction",
+      "description": "Contraction fixed point uniqueness.",
+      "significance": "Completes the quantitative picture for PPAD approximate Brouwer fixed point complexity"
+    }
+  ],
+  "sorries": 0
+}

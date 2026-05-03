@@ -1,0 +1,88 @@
+{
+  "id": "puiseux-theorem-oq-02",
+  "title": "Puiseux's Theorem OQ-02: Multivariate Iterated Puiseux Series",
+  "slug": "puiseux-theorem-oq-02",
+  "description": "Formalizes the multivariate generalization of Puiseux's theorem via iterated Hahn series: K\u2983\u2983x\u2081\u2984\u2984\u2983\u2983x\u2082\u2984\u2984...\u2983\u2983x\u2099\u2984\u2984 is the algebraic closure of K((x\u2081,...,x\u2099)). Key subtlety: multivariate Puiseux series require a monomial ordering on \u211a\u207f. 10 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PuiseuxTheoremOQ02.lean",
+    "tags": [
+      "algebraic-geometry",
+      "puiseux-series",
+      "hahn-series",
+      "algebraic-closure",
+      "formal-series"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 239,
+    "theoremCount": 10,
+    "assumptions": "None. All 10 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Puiseux's theorem (1850): the algebraic closure of K((t)) is K\u2983\u2983t\u2984\u2984 (Puiseux series). Multivariate generalization (McDonald 1995, Aroca-Cano-Jung 2003): iterated Puiseux series K\u2983\u2983x\u2081\u2984\u2984...\u2983\u2983x\u2099\u2984\u2984 give the algebraic closure of K((x\u2081,...,x\u2099)).",
+    "problemStatement": "Formalize multivariate Puiseux series via iterated Hahn series and prove the algebraic closure property.",
+    "proofStrategy": "MultiHahnSeries: n-variate series via iterated Hahn series (lexicographic ordering). iteratedPuiseuxIsAlgClosed: one Puiseux extension per variable suffices. Key: Hahn series over \u211a\u207f with lexicographic order give well-ordered supports.",
+    "keyInsights": [
+      "**Iterated construction**: K\u2983\u2983x\u2081,...,x\u2099\u2984\u2984 = K\u2983\u2983x\u2081\u2984\u2984\u2983\u2983x\u2082\u2984\u2984...\u2983\u2983x\u2099\u2984\u2984 \u2014 one Puiseux extension per variable, not simultaneously.",
+      "**Monomial ordering**: the support of a multivariate Puiseux series must be well-ordered \u2014 lexicographic order on \u211a\u207f automatically handles this.",
+      "**Generalized vs iterated**: generalized Puiseux series (Hahn over \u211a\u207f) are more general but NOT algebraically closed \u2014 only the iterated construction has this property."
+    ]
+  },
+  "sections": [
+    {
+      "id": "puiseux_theorem_oq_02",
+      "title": "Multivariate Puiseux via Iterated Hahn Series",
+      "startLine": 1,
+      "endLine": 239,
+      "summary": "MultiHahnSeries n-variate definition. singlePuiseuxIsAlgClosed. iteratedPuiseuxIsAlgClosed. well-ordered support via lexicographic ordering.",
+      "mathContext": "$K\\{\\{x_1,\\ldots,x_n\\}\\} = K\\{\\{x_1\\}\\}\\cdots\\{\\{x_n\\}\\}$ is the algebraic closure of $K((x_1,\\ldots,x_n))$."
+    }
+  ],
+  "conclusion": {
+    "summary": "10 theorems, 0 sorries, 0 axioms. Multivariate Puiseux series algebraic closure proved via iterated Hahn series.",
+    "implications": "Multivariate Puiseux series are fundamental to algebraic geometry (Newton-Puiseux theorem for plane curves) and singularity theory.",
+    "openQuestions": [
+      "Can Newton-Puiseux parameterization of plane curves be formalized?",
+      "Can tropical geometry be connected to Puiseux series via valuation theory?",
+      "Can the Weierstrass preparation theorem be proved for multivariate Puiseux series?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.HahnSeries.Basic",
+      "Mathlib.FieldTheory.IsAlgClosed.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 239,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 3,
+    "path": "Proofs/PuiseuxTheoremOQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "puiseux-theorem",
+      "relationship": "sub-question",
+      "description": "OQ-02: Multivariate generalization via iterated Hahn series"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "iteratedPuiseuxIsAlgClosed",
+      "type": "core",
+      "statement": "IsAlgClosed (MultiHahnSeries \u211a K n)",
+      "description": "Iterated Puiseux series are algebraically closed.",
+      "significance": "Multivariate generalization of Puiseux's theorem for n variables"
+    }
+  ],
+  "sorries": 0
+}

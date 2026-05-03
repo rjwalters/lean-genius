@@ -1,0 +1,86 @@
+{
+  "id": "erdos-31-primes-density",
+  "title": "Erd\u0151s #31: Primes Have Natural Density Zero",
+  "slug": "erdos-31-primes-density",
+  "description": "Proves primes have natural density zero: |{primes \u2264 N}| / N \u2192 0 as N \u2192 \u221e. Uses Chebyshev's theta bound \u03b8(N) \u2264 N\u00b7log(4) and the prime counting estimate \u03c0(N) \u2264 2N\u00b7log(4)/log(N) + \u221aN + 1. 9 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos31PrimesDensity.lean",
+    "tags": [
+      "number-theory",
+      "analytic-number-theory",
+      "prime-counting",
+      "density",
+      "chebyshev"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 235,
+    "theoremCount": 9,
+    "assumptions": "None. All 9 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "That primes have density zero (\u03c0(N)/N \u2192 0) follows from Chebyshev's estimates. The Prime Number Theorem gives the sharper \u03c0(N) ~ N/log(N), but density zero follows from the elementary \u03b8(N) \u2264 N\u00b7log(4).",
+    "problemStatement": "Prove the natural density of the prime numbers is 0: |{p \u2264 N : p prime}| / N \u2192 0.",
+    "proofStrategy": "chebyshevTheta_le: \u03b8(N) \u2264 N\u00b7log(4) (from primorial bound). primeCounting_le_chebyshev: \u03c0(N) \u2264 2N\u00b7log(4)/log(N) + \u221aN + 1. chebyshev_bound_tendsto_zero: the bound tends to 0. primes_density_zero follows.",
+    "keyInsights": [
+      "**Chebyshev's theta bound**: \u03b8(N) = \u03a3_{p\u2264N} log p \u2264 N\u00b7log(4) follows from the primorial (product of primes \u2264 N) being at most 4^N.",
+      "**Prime counting estimate**: \u03c0(N) \u2264 \u03b8(N)/log(\u221aN) + O(\u221aN) since each prime p > \u221aN contributes log(p) > log(\u221aN) to \u03b8.",
+      "**Density zero**: combining these, \u03c0(N)/N \u2264 2\u00b7log(4)/log(N) + 1/\u221aN \u2192 0, so primes have density 0 without PNT."
+    ]
+  },
+  "sections": [
+    {
+      "id": "erdos_31_primes_density",
+      "title": "Prime Density Zero via Chebyshev Bound",
+      "startLine": 1,
+      "endLine": 235,
+      "summary": "countingFn, HasDensity, HasDensityZero. countingFn_primes_le_primeCounting. chebyshevTheta_le. primeCounting_le_chebyshev. primes_density_zero.",
+      "mathContext": "$\\pi(N)/N \\leq 2\\log(4)/\\log(N) + 1/\\sqrt{N} \\to 0$."
+    }
+  ],
+  "conclusion": {
+    "summary": "9 theorems, 0 sorries, 0 axioms. Prime density 0 proved via Chebyshev's theta bound.",
+    "implications": "The elementary proof of prime density 0 showcases how Chebyshev's methods give quantitative prime number theory without the full PNT machinery.",
+    "openQuestions": [
+      "Can the Prime Number Theorem (\u03c0(N) ~ N/log(N)) be formalized?",
+      "Can the Siegel-Walfisz theorem be proved for primes in arithmetic progressions?",
+      "Can the Cram\u00e9r model predictions for prime gaps be formalized?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 235,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "path": "Proofs/Erdos31PrimesDensity.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-31",
+      "relationship": "extends",
+      "description": "Primes have density zero \u2014 supporting result for Erd\u0151s #31"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "primes_density_zero",
+      "type": "core",
+      "statement": "HasDensityZero {n : \u2115 | n.Prime}",
+      "description": "Prime numbers have natural density 0.",
+      "significance": "Elementary proof of prime density 0 without the Prime Number Theorem"
+    }
+  ],
+  "sorries": 0
+}

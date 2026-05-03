@@ -1,0 +1,88 @@
+{
+  "id": "erdos-436-improvements",
+  "title": "Erd\u0151s #436 Improvements: Euler Criterion and QR Multiplicativity",
+  "slug": "erdos-436-improvements",
+  "description": "Eliminates two axioms from Erdos436Problem using Mathlib's Legendre symbol: euler_criterion_backward (a^((p-1)/2) \u2261 1 mod p \u2192 a is a QR) and qr_product_non_residues (product of two QNRs is a QR). 8 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos436Improvements.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-residues",
+      "euler-criterion",
+      "legendre-symbol",
+      "field-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 158,
+    "theoremCount": 8,
+    "assumptions": "None. All 8 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Euler's criterion (1750): a is a quadratic residue mod prime p iff a^((p-1)/2) \u2261 1 (mod p). The forward direction (QR \u2192 congruence) is standard; the backward direction needs Mathlib's ZMod machinery.",
+    "problemStatement": "Prove the backward Euler criterion (a^((p-1)/2) \u2261 1 \u2192 QR) and QNR product rule using Mathlib's ZMod-based Legendre symbol.",
+    "proofStrategy": "euler_criterion_backward: use ZMod Legendre symbol machinery. If a^((p-1)/2) \u2261 1 mod p, then LegendreSymbol a p = 1, hence IsSquare in ZMod p, hence QR by definition. qr_product: Legendre symbol multiplicativity: (ab/p) = (a/p)(b/p); QNR\u00d7QNR = (-1)(-1) = 1 = QR.",
+    "keyInsights": [
+      "**ZMod bridge**: the \u2115-based definition of QR and the ZMod-based Legendre symbol need to be connected via an explicit bridge theorem.",
+      "**Legendre multiplicativity**: (ab/p) = (a/p)(b/p) is a key algebraic property of the Legendre symbol, enabling the QNR product rule.",
+      "**Euler criterion in ZMod**: a^((p-1)/2) in ZMod p equals the Legendre symbol {-1, 0, 1} \u2014 this is the key connection to Mathlib's infrastructure."
+    ]
+  },
+  "sections": [
+    {
+      "id": "erdos_436_improvements",
+      "title": "Euler Criterion Backward and QNR Product Rule",
+      "startLine": 1,
+      "endLine": 158,
+      "summary": "isSquare_to_kth_residue bridge. euler_criterion_backward. qr_product_non_residues via Legendre multiplicativity.",
+      "mathContext": "$a^{(p-1)/2} \\equiv 1 \\pmod p \\Rightarrow a$ QR; QNR $\\times$ QNR $=$ QR."
+    }
+  ],
+  "conclusion": {
+    "summary": "8 theorems, 0 sorries, 0 axioms. Two axioms from Erd\u0151s #436 eliminated via ZMod Legendre symbol.",
+    "implications": "The ZMod\u2194\u2115 bridge technique is broadly applicable to eliminate axioms in number theory formalizations that mix classical and modern presentations.",
+    "openQuestions": [
+      "Can all remaining axioms in Erd\u0151s #436 be eliminated?",
+      "Can the quadratic reciprocity law be derived from the Legendre symbol multiplicativity?",
+      "Can the Jacobi symbol extension to composite moduli be verified?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.LegendreSymbol.Basic",
+      "Mathlib.FieldTheory.Finite.Basic",
+      "Mathlib.Data.ZMod.Basic"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 158,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos436Improvements.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-436",
+      "relationship": "extends",
+      "description": "Improvements: axiom elimination for Euler criterion and QNR product"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "euler_criterion_backward",
+      "type": "core",
+      "statement": "a^((p-1)/2) \u2261 1 (mod p) \u2192 a is a QR mod p",
+      "description": "Backward direction of Euler's criterion for quadratic residues.",
+      "significance": "Eliminates axiom from Erd\u0151s #436 formalization using Mathlib Legendre symbol"
+    }
+  ],
+  "sorries": 0
+}

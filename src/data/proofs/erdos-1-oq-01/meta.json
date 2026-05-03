@@ -1,0 +1,87 @@
+{
+  "id": "erdos-1-oq-01",
+  "title": "Erd\u0151s #1 OQ-01: Sum Bound and Monotonicity for Distinct Subset Sums",
+  "slug": "erdos-1-oq-01",
+  "description": "Extends Erd\u0151s #1 with tighter results: sum(A) \u2265 2^n \u2212 1 for n-element DSS sets (sum bound), monotonicity (subsets of DSS sets are DSS), and the counting bound as a corollary. Small case verifications. 8 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "number-theory",
+      "erdos-problems",
+      "subset-sums",
+      "distinct-sums"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 147,
+    "theoremCount": 8,
+    "assumptions": "None. All 8 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erd\u0151s's $500 problem: for n elements with all 2^n subset sums distinct, must max(A) \u2265 c\u00b72^n? Dubroff-Fox-Xu (2021) proved the lower bound N \u2265 \u221a(2/\u03c0)\u00b72^n/\u221an. The Conway-Guy sequence gives N \u2264 0.22009\u00b72^n.",
+    "problemStatement": "Prove: (1) sum(A) \u2265 2^n \u2212 1 for n-element DSS sets (stronger than element-wise bound). (2) Subsets of DSS sets are DSS (monotonicity).",
+    "proofStrategy": "Sum bound: the 2^n distinct sums are non-negative integers in [0, sum(A)], so sum(A)+1 \u2265 2^n. Monotonicity: if distinct subsets of A have different sums, so do distinct subsets of B \u2286 A. Counting: max(A) \u2265 sum(A)/n \u2265 (2^n\u22121)/n.",
+    "keyInsights": [
+      "**Tighter sum bound**: sum(A) \u2265 2^n \u2212 1 is stronger than n\u00b7max(A) \u2265 2^n since max(A) \u2264 sum(A)/n (harmonic mean bound).",
+      "**Monotonicity**: DSS is preserved under taking subsets \u2014 key for inductive arguments about DSS set structure.",
+      "**Injection argument**: all 2^n subsets have distinct sums in [0, sum(A)] \u2192 sum(A) \u2265 2^n \u2212 1 by pigeonhole."
+    ]
+  },
+  "sections": [
+    {
+      "id": "erdos_1_oq_01",
+      "title": "Sum Bound and Monotonicity for Distinct Subset Sums",
+      "startLine": 1,
+      "endLine": 147,
+      "summary": "distinct_subset_sums_sum_bound: 2^n \u2264 sum(A)+1. dss_monotone: B \u2286 A \u2192 DSS(A) \u2192 DSS(B). counting_bound_corollary.",
+      "mathContext": "$|A| = n$, DSS $\\Rightarrow$ $\\text{sum}(A) \\geq 2^n - 1$; DSS sets are closed under subsets."
+    }
+  ],
+  "conclusion": {
+    "summary": "8 theorems, 0 sorries, 0 axioms. Sum bound 2^n \u2264 sum(A)+1 and DSS monotonicity proved.",
+    "implications": "The sum bound and monotonicity are structural results that constrain the shape of extremal DSS sets.",
+    "openQuestions": [
+      "Can the Dubroff-Fox-Xu bound N \u2265 2^n\u00b7\u221a(2/\u03c0)/\u221an be formally proved?",
+      "Can the Conway-Guy conjecture be verified computationally for all n \u2264 100?",
+      "Can the DSS condition be connected to B_h set theory?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos1Problem",
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 147,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos1OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "sub-question",
+      "description": "OQ-01: Sum bound 2^n \u2264 sum(A)+1 and monotonicity for DSS sets"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "distinct_subset_sums_sum_bound",
+      "type": "core",
+      "statement": "hasDistinctSubsetSums A \u2192 2^A.card \u2264 A.sum id + 1",
+      "description": "Sum lower bound for sets with distinct subset sums.",
+      "significance": "Tighter bound than element-wise max, useful for Erd\u0151s #1 structure theory"
+    }
+  ],
+  "sorries": 0
+}

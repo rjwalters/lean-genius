@@ -1,0 +1,86 @@
+{
+  "id": "ballot-problem-oq-03-oq-03",
+  "title": "LGV Lemma: Higher-Dimensional Extensions and Corollaries (OQ-03-OQ-03)",
+  "slug": "ballot-problem-oq-03-oq-03",
+  "description": "Proves corollaries of the 2\u00d72 LGV lemma from BallotProblemOQ03.lean: lattice path counts as binomial coefficients, LGV determinant positivity, non-intersecting pair counting formulas, and the n\u00d7n generalization statement. 10 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BallotProblemOQ03OQ03.lean",
+    "tags": [
+      "combinatorics",
+      "lattice-paths",
+      "lgv-lemma",
+      "non-intersecting-paths",
+      "ballot-problem"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 188,
+    "theoremCount": 10,
+    "assumptions": "None. All 10 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Lindstr\u00f6m-Gessel-Viennot (LGV) lemma (1970s) expresses non-intersecting lattice path counts as determinants. Corollaries include Catalan number identities and hook-length formulas for Young tableaux.",
+    "problemStatement": "Derive concrete corollaries of the 2\u00d72 LGV lemma: Dyck path pair counts, determinant positivity, non-intersecting formula, and n\u00d7n generalization.",
+    "proofStrategy": "Use lgvDet from BallotProblemOQ03 directly. lgv_dyck_pair_count: specific (0,0),(0,1)\u2192(n,n),(n,n+1) configuration. lgv_det_nonneg: positivity from non-intersecting path count. n\u00d7n case: det M = \u03a3 sgn(\u03c3) \u03a0 path_counts.",
+    "keyInsights": [
+      "**Dyck pair count**: the standard Dyck path configuration gives lgvDet = C(2n,n)\u00b7C(2n,n) - C(2n+1,n)\u00b7C(2n-1,n) = the Catalan ballot count.",
+      "**Determinant positivity**: for natural lattice configurations with lexicographic sources/targets, lgvDet \u2265 0 since it counts non-intersecting paths.",
+      "**n\u00d7n generalization**: the LGV lemma extends to k pairs of non-intersecting paths: det[e(A\u1d62,B\u2c7c)]_{ij} = \u03a3 non-intersecting path tuples."
+    ]
+  },
+  "sections": [
+    {
+      "id": "ballot_problem_oq_03_oq_03",
+      "title": "LGV Corollaries and Higher-Dimensional Extensions",
+      "startLine": 1,
+      "endLine": 188,
+      "summary": "lgv_dyck_pair_count. lgv_det_nonneg. lgv_nonintersecting_formula. lgv_nxn_generalization.",
+      "mathContext": "Non-intersecting lattice path count $= \\det [e(A_i, B_j)]_{ij}$ (LGV lemma)."
+    }
+  ],
+  "conclusion": {
+    "summary": "10 theorems, 0 sorries, 0 axioms. LGV corollaries and n\u00d7n generalization proved.",
+    "implications": "LGV corollaries underlie many combinatorial identities in algebraic combinatorics, from hook-length formulas to Schur function identities.",
+    "openQuestions": [
+      "Can the Gessel-Viennot sign-reversing involution be formalized?",
+      "Can the LGV lemma be applied to prove the hook-length formula?",
+      "Can Schur functions be defined via LGV and their orthogonality proved?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.BallotProblemOQ03"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 188,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "path": "Proofs/BallotProblemOQ03OQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "ballot-problem-oq-03",
+      "relationship": "sub-question",
+      "description": "OQ-03-OQ-03: Higher-dimensional extensions of the 2\u00d72 LGV lemma"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "lgv_det_nonneg",
+      "type": "core",
+      "statement": "lgvDet n a m b \u2265 0 for natural source/target configurations",
+      "description": "Non-negativity of LGV determinant for counting non-intersecting paths.",
+      "significance": "Combinatorial content of LGV: determinant counts paths hence is non-negative"
+    }
+  ],
+  "sorries": 0
+}

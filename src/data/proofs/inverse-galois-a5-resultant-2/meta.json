@@ -1,0 +1,86 @@
+{
+  "id": "inverse-galois-a5-resultant-2",
+  "title": "Inverse Galois A5: Sylvester Matrix Rows 5-8 for Resultant",
+  "slug": "inverse-galois-a5-resultant-2",
+  "description": "Computes Sylvester matrix rows 5-8 for the resultant of q = X\u2075 \u2212 5X\u2074 + 10X\u00b3 \u2212 10X\u00b2 + 25X \u2212 5 and its derivative. Supporting module for InverseGaloisA5Resultant.lean. 8 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InverseGaloisA5Resultant2.lean",
+    "tags": [
+      "galois-theory",
+      "resultant",
+      "sylvester-matrix",
+      "polynomial-roots",
+      "inverse-galois"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 68,
+    "theoremCount": 8,
+    "assumptions": "None. All 8 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The resultant of f and f' is the determinant of the Sylvester matrix. For the polynomial q = X\u2075 \u2212 5X\u2074 + ... \u2212 5 with Galois group A\u2085, computing the resultant proves q is square-free (distinct roots).",
+    "problemStatement": "Verify rows 5-8 of the 9\u00d79 Sylvester matrix for the resultant of q and q', using fin_cases and decide.",
+    "proofStrategy": "Each theorem r5, r6, r7, r8 states that the k-th row of the sylvester matrix matches the precomputed sylvM matrix. Proved by fin_cases j \u2227 simp computation using Lean's coeff extraction.",
+    "keyInsights": [
+      "**Sylvester matrix**: for deg(f) = m and deg(g) = n, the Sylvester matrix has m+n rows \u2014 here 5+4=9 rows for q and q'.",
+      "**Computational verification**: each row is verified by Lean's kernel \u2014 the decide tactic over Fin 9 checks all 9 entries mechanically.",
+      "**Resultant and discriminant**: Res(q, q') = (\u22121)^(n(n-1)/2) \u00b7 leading_coeff^(n-m) \u00b7 Disc(q). Non-zero resultant \u2194 q square-free \u2194 distinct roots."
+    ]
+  },
+  "sections": [
+    {
+      "id": "inverse_galois_a5_resultant_2",
+      "title": "Sylvester Matrix Rows 5-8 for Resultant of q and q'",
+      "startLine": 1,
+      "endLine": 68,
+      "summary": "sylvM: the 9\u00d79 Sylvester matrix. r5, r6, r7, r8: row verification theorems.",
+      "mathContext": "$\\text{sylvester}(q, q') = \\text{sylvM}$ (verified row by row via fin\\_cases)."
+    }
+  ],
+  "conclusion": {
+    "summary": "8 theorems, 0 sorries, 0 axioms. Sylvester matrix rows 5-8 verified computationally.",
+    "implications": "These row verifications contribute to the complete discriminant computation for q, supporting the A5 Galois group identification.",
+    "openQuestions": [
+      "Can the full discriminant \u0394(q) \u2260 0 be computed from all 9 rows?",
+      "Can the discriminant be connected to |Gal(q)|?",
+      "Can the full A5 Galois group proof be assembled from all the supporting lemmas?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 68,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 2,
+    "path": "Proofs/InverseGaloisA5Resultant2.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "inverse-galois",
+      "relationship": "extends",
+      "description": "Sylvester matrix rows 5-8 supporting A5 resultant computation"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "r5",
+      "type": "core",
+      "statement": "Row 5 of sylvester(q, q') equals sylvM row 5",
+      "description": "Mechanical verification of Sylvester matrix row 5 for the A5 Galois polynomial.",
+      "significance": "Supporting computation for InverseGaloisA5Resultant discriminant proof"
+    }
+  ],
+  "sorries": 0
+}

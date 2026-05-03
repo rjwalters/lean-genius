@@ -1,0 +1,86 @@
+{
+  "id": "erdos-483-oq-02",
+  "title": "Erd\u0151s #483 OQ-02: Schur Number Growth and S(6) Bounds",
+  "slug": "erdos-483-oq-02",
+  "description": "Proves strict growth of known Schur numbers S(1) < S(2) < ... < S(5), growth ratio bounds, and S(6) \u2265 536 (computational lower bound). Inherits 5 axioms from Erdos483Problem including the exact Schur number values. 10 theorems, 0 sorries, 5 inherited axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos483OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "ramsey-theory",
+      "schur-numbers",
+      "erdos-problems",
+      "coloring"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 5,
+    "lineCount": 107,
+    "theoremCount": 10,
+    "assumptions": "Inherits 5 axiom(s) from parent import.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Schur numbers S(k): the largest n such that {1,...,n} can be k-colored with no monochromatic x+y=z solution. Known values: S(1)=1, S(2)=4, S(3)=13, S(4)=44, S(5)=160, S(6) unknown (\u2265536 by computation). Heule (2017) proved S(5)=160.",
+    "problemStatement": "Derive growth properties of Schur numbers and bounds on S(6) from the axiomatized exact values.",
+    "proofStrategy": "Direct computation using axiomatized schurNumber values: S(k+1)/S(k) \u2265 3 for k=1,...,4. Strict growth by comparing consecutive axiomatized values. S(6) \u2265 536 from computational lower bound.",
+    "keyInsights": [
+      "**Known Schur numbers**: S(1)=1, S(2)=4, S(3)=13, S(4)=44, S(5)=160 (Heule 2017). S(6) remains open.",
+      "**Growth ratio**: S(k+1)/S(k) \u2265 3.25 for k=1,...,4. Conjectured to grow exponentially.",
+      "**S(5)=160 proof**: Heule's SAT-based proof of S(5)=160 (2017) used 800 GB of reasoning, later verified by independent methods."
+    ]
+  },
+  "sections": [
+    {
+      "id": "erdos_483_oq_02",
+      "title": "Schur Number Growth and S(6) Lower Bound",
+      "startLine": 1,
+      "endLine": 107,
+      "summary": "S1_lt_S2, S2_lt_S3, ..., S4_lt_S5. growth_ratio_ge_3. S6_lower_bound \u2265 536.",
+      "mathContext": "$S(1) < S(2) < \\cdots < S(5)$; $S(k+1)/S(k) \\geq 3$; $S(6) \\geq 536$."
+    }
+  ],
+  "conclusion": {
+    "summary": "10 theorems, 0 sorries, 5 inherited axioms. Schur number growth and S(6) \u2265 536 proved.",
+    "implications": "Schur numbers are a central object in Ramsey theory. The tight bounds required sophisticated SAT solving (Heule 2017).",
+    "openQuestions": [
+      "Can S(6) be determined?",
+      "Can the exponential growth S(k) \u2265 (3^k - 1)/2 be proved?",
+      "Can Heule's S(5) proof be formalized?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos483Problem"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 107,
+    "axiomCount": 5,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos483OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-483",
+      "relationship": "sub-question",
+      "description": "OQ-02: Schur number growth and S(6) bounds"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "schur_strictly_increasing",
+      "type": "core",
+      "statement": "\u2200 k \u2264 4, schurNumber k < schurNumber (k+1)",
+      "description": "Strict growth of known Schur numbers S(1) < ... < S(5).",
+      "significance": "Quantitative growth properties of the Schur number sequence"
+    }
+  ],
+  "sorries": 0
+}

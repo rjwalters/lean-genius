@@ -1,0 +1,88 @@
+{
+  "id": "minkowski-theorem-oq-02-oq-01",
+  "title": "Dirichlet Approximation via Minkowski: Axiom-Free Proof (OQ-02-OQ-01)",
+  "slug": "minkowski-theorem-oq-02-oq-01",
+  "description": "Eliminates all three axioms from MinkowskiTheoremOQ02 about the Dirichlet parallelogram: proves convexity (preimage of intervals), measurability (open set), and volume (shear map with |det|=1). 8 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MinkowskiTheoremOQ02OQ01.lean",
+    "tags": [
+      "number-theory",
+      "geometry-of-numbers",
+      "minkowski",
+      "dirichlet-approximation",
+      "convexity"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 268,
+    "theoremCount": 8,
+    "assumptions": "None. All 8 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Minkowski's theorem: a convex set symmetric about 0 with volume > 2\u207f contains a nonzero lattice point. Applied to the Dirichlet parallelogram {|x| < Q+1, |\u03b1x\u2212y| < 1/Q} to prove Dirichlet's approximation theorem |\u03b1 \u2212 p/q| < 1/(q\u00b7Q).",
+    "problemStatement": "Prove dirichletSet_convex, dirichletSet_measurable, and dirichletSet_volume for the Dirichlet parallelogram, eliminating all three axioms.",
+    "proofStrategy": "Measurability: the set is open (preimage of open Ioo intervals under continuous (x,y) \u2192 (x, \u03b1x\u2212y)). Convexity: linear preimage of convex Ioo intervals. Volume: shear map (x,y) \u2192 (x, \u03b1x\u2212y) has Jacobian 1 and maps S to rectangle (\u2212Q\u22121,Q+1)\u00d7(\u22121/Q,1/Q).",
+    "keyInsights": [
+      "**Shear map trick**: the shear (x,y) \u21a6 (x, \u03b1x-y) has |det|=1 (area-preserving) and maps the parallelogram to a rectangle with computable area.",
+      "**Openness gives measurability**: {|x| < Q+1, |\u03b1x\u2212y| < 1/Q} is an open set, hence measurable. No Carath\u00e9odory argument needed.",
+      "**Linear preimage convexity**: each condition is a preimage of an interval under a linear functional, and intersections of convex sets are convex."
+    ]
+  },
+  "sections": [
+    {
+      "id": "minkowski_theorem_oq_02_oq_01",
+      "title": "Dirichlet Parallelogram: Convexity, Measurability, Volume",
+      "startLine": 1,
+      "endLine": 268,
+      "summary": "dirichletSet_open \u2192 measurable. dirichletSet_convex via linear preimage. dirichletSet_volume via shear_map_volume.",
+      "mathContext": "$S = \\{(x,y): |x| < Q+1, |\\alpha x - y| < 1/Q\\}$: convex, measurable, $\\text{vol}(S) = 4(Q+1)/Q$."
+    }
+  ],
+  "conclusion": {
+    "summary": "8 theorems, 0 sorries, 0 axioms. All three Dirichlet parallelogram axioms eliminated.",
+    "implications": "The axiom-free proof makes the Dirichlet approximation theorem fully verified, with no assumptions about the parallelogram.",
+    "openQuestions": [
+      "Can higher-dimensional Dirichlet approximation be proved via Minkowski?",
+      "Can the Lov\u00e1sz local lemma be formalized for lattice problems?",
+      "Can the LLL lattice basis reduction algorithm be verified?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Convex.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 268,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 2,
+    "path": "Proofs/MinkowskiTheoremOQ02OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "minkowski-theorem",
+      "relationship": "sub-question",
+      "description": "OQ-02-OQ-01: Axiom-free Dirichlet parallelogram geometry"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "dirichletSet_volume",
+      "type": "core",
+      "statement": "volume dirichletSet Q \u03b1 = 4*(Q+1)/Q",
+      "description": "Volume computation for the Dirichlet parallelogram via shear map.",
+      "significance": "Eliminates the last axiom in the Minkowski\u2192Dirichlet approximation proof"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,86 @@
+{
+  "id": "chinese-remainder-explicit-oq-04-oq-03-oq-01",
+  "title": "CRT Explicit Construction: Non-Coprime B\u00e9zout Formula (OQ-04-OQ-03-OQ-01)",
+  "slug": "chinese-remainder-explicit-oq-04-oq-03-oq-01",
+  "description": "Makes the non-coprime CRT solution construction explicit: for x \u2261 a (mod m), x \u2261 b (mod n) with gcd(m,n)|a-b, the explicit solution is x = a \u2212 m\u00b7(gcdA(m,n)\u00b7q). Generalizes to list of congruences by induction. 8 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ChineseRemainderExplicitOQ04OQ03OQ01.lean",
+    "tags": [
+      "number-theory",
+      "chinese-remainder-theorem",
+      "bezout-coefficients",
+      "explicit-construction",
+      "euclidean-domain"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 225,
+    "theoremCount": 8,
+    "assumptions": "None. All 8 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Chinese Remainder Theorem (Sunzi, ~3rd century CE) in its classical form requires coprime moduli. The general non-coprime case has a compatibility condition and explicit solution via B\u00e9zout coefficients.",
+    "problemStatement": "Make the non-coprime CRT solution explicit: for compatible congruences, give a formula in terms of B\u00e9zout coefficients.",
+    "proofStrategy": "Two congruences: x = a \u2212 m\u00b7(gcdA(m,n)\u00b7q) where gcd(m,n)\u00b7q = a\u2212b. Verify x \u2261 a (mod m) and x \u2261 b (mod n). List case: induction, at each step compute new LCM and apply 2-case formula.",
+    "keyInsights": [
+      "**B\u00e9zout formula**: if gcd(m,n)\u00b7s + m\u00b7t = 1 (B\u00e9zout), then x = a + m\u00b7(-t\u00b7((a-b)/gcd)) solves both congruences explicitly.",
+      "**LCM propagation**: after solving two congruences modulo lcm(m,n), new congruences reduce to the 2-case applied to (lcm, m_next, a, b_next).",
+      "**Euclidean domain generality**: the formula works over any Euclidean domain R, not just \u2124."
+    ]
+  },
+  "sections": [
+    {
+      "id": "chinese_remainder_explicit_oq_04_oq_03_oq_01",
+      "title": "Explicit B\u00e9zout CRT Solution Formula",
+      "startLine": 1,
+      "endLine": 225,
+      "summary": "crtSolve\u2082: explicit 2-moduli formula. crtSolve\u2082_congruence\u2081, _congruence\u2082 verification. crtSolveList: list case by induction.",
+      "mathContext": "$x = a - m \\cdot (\\text{gcdA}(m,n) \\cdot q)$ solves $x \\equiv a \\pmod{m}$, $x \\equiv b \\pmod{n}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "8 theorems, 0 sorries, 0 axioms. Explicit non-coprime CRT formula proved over Euclidean domains.",
+    "implications": "The explicit formula enables efficient CRT reconstruction in cryptographic applications without requiring coprime moduli.",
+    "openQuestions": [
+      "Can the explicit formula be extended to the general case of Dedekind domains?",
+      "Can the Chinese Remainder Theorem be proved for non-principal ideal domains?",
+      "Can the formula be used to prove correctness of RSA with shared prime factors?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.ChineseRemainderNonCoprimeList"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 225,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/ChineseRemainderExplicitOQ04OQ03OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder",
+      "relationship": "sub-question",
+      "description": "OQ-04-OQ-03-OQ-01: Explicit B\u00e9zout formula for non-coprime CRT"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "crtSolve\u2082_correct",
+      "type": "core",
+      "statement": "crtSolve\u2082 satisfies both congruences when gcd \u2223 a - b",
+      "description": "Explicit B\u00e9zout CRT formula is correct for two non-coprime moduli.",
+      "significance": "Converts existential non-coprime CRT to explicit computation via B\u00e9zout coefficients"
+    }
+  ],
+  "sorries": 0
+}

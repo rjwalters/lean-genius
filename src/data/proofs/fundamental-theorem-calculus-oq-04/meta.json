@@ -1,0 +1,88 @@
+{
+  "id": "fundamental-theorem-calculus-oq-04",
+  "title": "FTC OQ-04: Banach-Valued Generalization via Bochner Integral",
+  "slug": "fundamental-theorem-calculus-oq-04",
+  "description": "Proves both FTC forms for vector-valued functions F: \u211d \u2192 E with E a Banach space using the Bochner integral. Concrete instances for \u211d \u00d7 \u211d-valued and (Fin n \u2192 \u211d)-valued functions. 10 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FundamentalTheoremCalculusOQ04.lean",
+    "tags": [
+      "analysis",
+      "calculus",
+      "bochner-integral",
+      "banach-spaces",
+      "vector-valued"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 176,
+    "theoremCount": 10,
+    "assumptions": "None. All 10 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Fundamental Theorem of Calculus for Bochner integrals (Lebesgue-Pettis theorem generalization) states: if F: \u211d \u2192 E has derivative f and f is Bochner integrable, then \u222b_a^b f dt = F(b) - F(a).",
+    "problemStatement": "Prove both FTC forms for Bochner integrals in Banach spaces, showing the \u211d \u2192 \u211d case is a special instance.",
+    "proofStrategy": "Use Mathlib's IntervalIntegral.FundThmCalculus which is already stated for arbitrary Banach spaces. ftc2_banach: \u222bf = F(b) - F(a). ftc1_banach: d/dx \u222b_a^x f = f(x). Concrete: \u211d \u00d7 \u211d and Fin n \u2192 \u211d instances.",
+    "keyInsights": [
+      "**Universal Banach statement**: Mathlib's FTC machinery is already parametric in E \u2014 the \u211d \u2192 \u211d case requires no special treatment.",
+      "**Bochner integral**: generalization of Lebesgue integral to Banach-valued functions. Measurability and integrability are stronger requirements than in the scalar case.",
+      "**Concrete instances**: ftc2_product (\u211d\u00d7\u211d-valued) and ftc2_pi (Fin n \u2192 \u211d-valued) demonstrate the generality."
+    ]
+  },
+  "sections": [
+    {
+      "id": "fundamental_theorem_calculus_oq_04",
+      "title": "FTC for Bochner Integrals in Banach Spaces",
+      "startLine": 1,
+      "endLine": 176,
+      "summary": "ftc2_banach: \u222bF' = F(b) - F(a). ftc1_banach: d/dx \u222b_a^x f = f(x). ftc2_product, ftc2_pi concrete instances.",
+      "mathContext": "$\\int_a^b F'(t)\\,dt = F(b) - F(a)$ for Bochner integrable $F': \\mathbb{R} \\to E$."
+    }
+  ],
+  "conclusion": {
+    "summary": "10 theorems, 0 sorries, 0 axioms. Banach-valued FTC proved via Bochner integral.",
+    "implications": "Banach-valued FTC is essential for differential equations in infinite-dimensional spaces (semigroup theory, PDEs).",
+    "openQuestions": [
+      "Can Gronwall's inequality be proved for Bochner-integrable functions?",
+      "Can the Picard-Lindel\u00f6f theorem be generalized to Banach-valued ODEs?",
+      "Can the Stokes theorem be proved for differential forms valued in Banach spaces?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 176,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "path": "Proofs/FundamentalTheoremCalculusOQ04.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "extends",
+      "description": "OQ-04: FTC generalized to Banach-valued functions via Bochner integral"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "ftc2_banach",
+      "type": "core",
+      "statement": "\u222b F' dt = F b - F a for Bochner integrable F': \u211d \u2192 E",
+      "description": "Second FTC for Bochner integrals in Banach spaces.",
+      "significance": "Generalizes FTC to vector-valued calculus, enabling applications in ODEs and PDE theory"
+    }
+  ],
+  "sorries": 0
+}

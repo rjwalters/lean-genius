@@ -1,0 +1,86 @@
+{
+  "id": "brouwer-fixed-point-oq-02-stability",
+  "title": "Brouwer OQ-02: Fixed Point Stability and Averaged Iteration",
+  "slug": "brouwer-fixed-point-oq-02-stability",
+  "description": "Proves fixed point stability (small perturbations move fixed points by \u2264 \u03b4/(1-L)), Krasnoselskii-Mann averaged iteration T(x) = (1-t)x + tf(x) preserves the interval and reduces Lipschitz constant, and geometric decay for monotone sequences. 8 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BrouwerFixedPointOQ02Stability.lean",
+    "tags": [
+      "analysis",
+      "fixed-point-theory",
+      "stability",
+      "krasnoselskii-mann",
+      "perturbation"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 198,
+    "theoremCount": 8,
+    "assumptions": "None. All 8 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Stability of fixed points under perturbation is essential for computational applications: small errors in f computation lead to small errors in the fixed point. Krasnoselskii-Mann averaging (1955, 1953) stabilizes non-contractive maps.",
+    "problemStatement": "Prove fixed point stability under \u03b4-perturbations and that Krasnoselskii-Mann averaging converts non-contractive maps to contractive ones.",
+    "proofStrategy": "Stability: |x*-y*| = |f(x*)-g(y*)| \u2264 |f(x*)-g(x*)| + |g(x*)-g(y*)| \u2264 \u03b4 + L|x*-y*|, giving |x*-y*| \u2264 \u03b4/(1-L). Averaging: T(x) = (1-t)x + tf(x) has Lipschitz constant (1-t+tL) = 1 - t(1-L) < 1.",
+    "keyInsights": [
+      "**Perturbation bound**: |x* - y*| \u2264 \u03b4/(1-L) when g is \u03b4-close to f. This justifies approximate oracle models in PPAD complexity.",
+      "**KM averaging**: T_t(x) = (1-t)x + tf(x) has Lipschitz 1-t(1-L). For t=1, this is the original contraction. For smaller t, it 'decelerates' convergence but handles near-contractions.",
+      "**Geometric decay**: monotone sequences bounded below decrease geometrically toward their infimum \u2014 the abstract template for convergence proofs."
+    ]
+  },
+  "sections": [
+    {
+      "id": "brouwer_fixed_point_oq_02_stability",
+      "title": "Stability Under Perturbation and Averaged Iteration",
+      "startLine": 1,
+      "endLine": 198,
+      "summary": "fixed_point_stability: |x*-y*| \u2264 \u03b4/(1-L). km_iteration_self_map. km_lipschitz: Lip(T_t) = 1-t(1-L). geometric_decay_lemma.",
+      "mathContext": "$|x^* - y^*| \\leq \\delta/(1-L)$; $\\text{Lip}(T_t) = 1-t(1-L) < 1$."
+    }
+  ],
+  "conclusion": {
+    "summary": "8 theorems, 0 sorries, 0 axioms. Fixed point stability and Krasnoselskii-Mann averaging proved.",
+    "implications": "These stability results justify the oracle model for approximate Brouwer computation: approximating f within \u03b4 is sufficient to find the fixed point within \u03b5.",
+    "openQuestions": [
+      "Can Krasnoselskii-Mann convergence for firmly non-expansive maps be formalized?",
+      "Can the Halpern iteration be proved to converge strongly?",
+      "Can the Douglas-Rachford splitting be verified?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 198,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/BrouwerFixedPointOQ02Stability.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point-oq-02",
+      "relationship": "sub-question",
+      "description": "OQ-02 stability: perturbation bounds and averaged iteration"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "fixed_point_stability",
+      "type": "core",
+      "statement": "\u2016f - g\u2016 \u2264 \u03b4 \u2192 |fixPt f - fixPt g| \u2264 \u03b4/(1-L)",
+      "description": "Fixed point stability under \u03b4-perturbation of f.",
+      "significance": "Oracle model justification for PPAD approximate fixed point computation"
+    }
+  ],
+  "sorries": 0
+}

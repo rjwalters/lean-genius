@@ -1,0 +1,87 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-01-oq-04",
+  "title": "Kronecker Symbol Fix and Mathlib Gap (OQ-03-OQ-01-OQ-01-OQ-04)",
+  "slug": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-01-oq-04",
+  "description": "Documents the Mathlib gap (no Kronecker symbol, only Jacobi for odd moduli). Provides corrected kroneckerTwoFixed using a % 8 = 7 instead of a % 8 = -1. Verifies against Mathlib's \u03c7\u2088 and proves full multiplicativity of the corrected definition. 11 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ01OQ04.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "kronecker-symbol",
+      "legendre-symbol",
+      "mathlib"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 148,
+    "theoremCount": 11,
+    "assumptions": "None. All 11 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Kronecker symbol extends the Jacobi symbol to all integers. Mathlib 4.26.0 has jacobiSym for odd moduli but no Kronecker symbol. The gallery's kroneckerSym has a correctness issue for a \u2261 7 (mod 8).",
+    "problemStatement": "Document the Mathlib gap, fix kroneckerTwo to correctly handle a \u2261 7 (mod 8), and verify multiplicativity.",
+    "proofStrategy": "The bug: T-div mod gives (7:\u2124) % 8 = 7 \u2260 -1, so the gallery's check a % 8 = -1 gives kroneckerTwo 7 = -1 but correct value is 1. Fix: check a % 8 = 7 instead. Multiplicativity proved case by case.",
+    "keyInsights": [
+      "**T-div vs Euclidean division**: in Lean, integers use truncated division mod, so (-1:\u2124) % 8 = -1 but 7 % 8 = 7 \u2260 -1. The original code assumed Euclidean mod.",
+      "**Mathlib gap**: jacobiSym covers odd moduli; the Kronecker symbol for modulus 2 requires special handling of the cases a \u2261 \u00b11 (mod 8) vs a \u2261 \u00b13 (mod 8).",
+      "**\u03c7\u2088 comparison**: Mathlib's character \u03c7\u2088: ZMod 8 \u2192 \u2124 provides ground truth for the corrected Kronecker(2) values."
+    ]
+  },
+  "sections": [
+    {
+      "id": "elementary_quadratic_reciprocity_oq_03_oq_01_oq_01_oq_04",
+      "title": "Kronecker Symbol Correction and Multiplicativity",
+      "startLine": 1,
+      "endLine": 148,
+      "summary": "mathlib_has_no_kronecker. kroneckerTwoFixed (corrected). kroneckerTwoFixed_verified: matches \u03c7\u2088. kroneckerTwoFixed_multiplicative.",
+      "mathContext": "$(a|2)_\\text{Kronecker}$: $+1$ if $a \\equiv \\pm 1 \\pmod 8$, $-1$ if $a \\equiv \\pm 3 \\pmod 8$, $0$ if $a \\equiv 0 \\pmod 2$."
+    }
+  ],
+  "conclusion": {
+    "summary": "11 theorems, 0 sorries, 0 axioms. Kronecker symbol correction and multiplicativity proved.",
+    "implications": "The corrected Kronecker symbol fills a genuine gap in Mathlib and could be contributed upstream.",
+    "openQuestions": [
+      "Can the full Kronecker symbol (for all moduli) be added to Mathlib?",
+      "Can the generalized quadratic reciprocity for Kronecker symbols be formalized?",
+      "Can the Jacobi symbol be unified with Kronecker in Lean?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 148,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 2,
+    "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ01OQ04.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "sub-question",
+      "description": "OQ-03-OQ-01-OQ-01-OQ-04: Kronecker symbol correction and Mathlib gap"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "kroneckerTwoFixed_multiplicative",
+      "type": "core",
+      "statement": "kroneckerTwoFixed (a*b) = kroneckerTwoFixed a * kroneckerTwoFixed b",
+      "description": "Multiplicativity of the corrected Kronecker symbol for modulus 2.",
+      "significance": "Fixes the T-div bug and proves the key algebraic property of the Kronecker symbol"
+    }
+  ],
+  "sorries": 0
+}

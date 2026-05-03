@@ -1,0 +1,87 @@
+{
+  "id": "binary-gcd-oq-03-oq-01",
+  "title": "Lehmer GCD OQ-03-OQ-01: Progress and Correctness of the Lehmer Step",
+  "slug": "binary-gcd-oq-03-oq-01",
+  "description": "Formalizes correctness of the Lehmer/Euclidean GCD step: progress (b + (a mod b) < a + b), GCD invariance (gcd(b, a mod b) = gcd(a,b)), and full algorithm correctness (lehmerGcd = Nat.gcd). 11 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BinaryGcdOQ03OQ01.lean",
+    "tags": [
+      "number-theory",
+      "algorithms",
+      "gcd",
+      "lehmer",
+      "euclidean-algorithm"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 240,
+    "theoremCount": 11,
+    "assumptions": "None. All 11 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Lehmer (1938) described an optimization of the Euclidean GCD algorithm for large integers using single-precision arithmetic for multiple steps. The mathematical core is the correctness of each Euclidean step (a,b) \u2192 (b, a mod b).",
+    "problemStatement": "Prove the Lehmer step is correct (GCD-invariant) and makes progress (strictly decreases a+b).",
+    "proofStrategy": "lehmerStep_gcd_invariant: gcd(b, a mod b) = gcd(a, b) from the Euclidean algorithm property. lehmerGcd_progress: (a mod b) < b \u2264 a \u2192 (a mod b) + b < a + b. lehmerGcd_correct: by well-founded induction, the iterated steps compute Nat.gcd.",
+    "keyInsights": [
+      "**GCD invariance**: gcd(a,b) = gcd(b, a mod b) is the classical Euclidean algorithm property, here applied to the Lehmer step.",
+      "**Progress via modular reduction**: a mod b < b, so b + (a mod b) < a + b when 0 < b \u2264 a. This ensures termination.",
+      "**Correctness by well-founded induction**: the Lehmer algorithm terminates (decreasing sum) and each step preserves GCD, so the final result equals Nat.gcd."
+    ]
+  },
+  "sections": [
+    {
+      "id": "binary_gcd_oq_03_oq_01",
+      "title": "Lehmer Step: GCD Invariance, Progress, Correctness",
+      "startLine": 1,
+      "endLine": 240,
+      "summary": "lehmerStep. lehmerStep_gcd_invariant. lehmerGcd_progress. lehmerGcd_correct: lehmerGcd a b = Nat.gcd a b.",
+      "mathContext": "$\\gcd(b, a \\bmod b) = \\gcd(a, b)$; $b + (a \\bmod b) < a + b$ for $0 < b \\leq a$."
+    }
+  ],
+  "conclusion": {
+    "summary": "11 theorems, 0 sorries, 0 axioms. Lehmer step correctness and progress proved.",
+    "implications": "The Lehmer GCD algorithm is fundamental to large-number arithmetic. This formalization verifies the core correctness invariant.",
+    "openQuestions": [
+      "Can the Sch\u00f6nhage-Strassen GCD algorithm be formalized?",
+      "Can the asymptotic complexity O((log n)\u00b2) be proved?",
+      "Can the Lehmer step be used to formalize GCD over Gaussian integers?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 240,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 1,
+    "path": "Proofs/BinaryGcdOQ03OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "binary-gcd",
+      "relationship": "sub-question",
+      "description": "OQ-03-OQ-01: Lehmer step correctness and progress"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "lehmerGcd_correct",
+      "type": "core",
+      "statement": "lehmerGcd a b = Nat.gcd a b",
+      "description": "Correctness of Lehmer GCD algorithm.",
+      "significance": "Mathematical core of Lehmer's 1938 optimization for large-number GCD computation"
+    }
+  ],
+  "sorries": 0
+}

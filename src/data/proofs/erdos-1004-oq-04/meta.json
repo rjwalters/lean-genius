@@ -1,0 +1,86 @@
+{
+  "id": "erdos-1004-oq-04",
+  "title": "Erd\u0151s #1004 OQ-04: Concrete Witnesses for Distinct Totient Runs",
+  "slug": "erdos-1004-oq-04",
+  "description": "Proves concrete witnesses for distinct totient runs of lengths 3,5,7,9,10 and universal existence for all K. Inherits 3 axioms from Erdos1004Problem. 11 theorems, 0 sorries, 3 inherited axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1004OQ04.lean",
+    "tags": [
+      "number-theory",
+      "euler-totient",
+      "erdos-problems",
+      "consecutive-integers",
+      "distinct-values"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "lineCount": 134,
+    "theoremCount": 11,
+    "assumptions": "Inherits 3 axiom(s) from parent import.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erd\u0151s #1004: for any c > 0, do there exist runs of K = \u230a(log x)^c\u230b consecutive integers with distinct totient values? Conditional on probabilistic estimates from Erd\u0151s-Pomerance-S\u00e1rk\u00f6zy.",
+    "problemStatement": "Verify concrete witnesses for distinct totient runs of lengths 3, 5, 7, 9, 10, and prove universal existence for all K.",
+    "proofStrategy": "Direct computation: for K=3, n=4: \u03c6(5)=4, \u03c6(6)=2, \u03c6(7)=6 \u2014 all distinct. Similarly for K=5,7,9,10. Universal existence via axiomatized Erd\u0151s-Pomerance-S\u00e1rk\u00f6zy result.",
+    "keyInsights": [
+      "**Concrete witnesses**: consecutive runs starting at n=4, 10, 16, 46, 45 witness distinct totient runs of lengths 3, 5, 7, 9, 10.",
+      "**Primes give large totients**: prime p has \u03c6(p) = p-1, and consecutive primes have different totients. This gives 'local distinctness'.",
+      "**Universal existence**: for large K, the probabilistic argument shows dense concentration of prime clusters forces distinct-totient runs of any length."
+    ]
+  },
+  "sections": [
+    {
+      "id": "erdos_1004_oq_04",
+      "title": "Concrete Witnesses and Universal Existence",
+      "startLine": 1,
+      "endLine": 134,
+      "summary": "IsDistinctTotientRun definition. distinct_run_3, _5, _7, _9, _10 concrete witnesses. exists_distinct_totient_run_all_K.",
+      "mathContext": "$\\phi(n+1), \\ldots, \\phi(n+K)$ all distinct for specific $n$; $\\forall K, \\exists n$."
+    }
+  ],
+  "conclusion": {
+    "summary": "11 theorems, 0 sorries, 3 inherited axioms. Distinct totient runs proved with explicit witnesses.",
+    "implications": "The concrete witnesses provide evidence that distinct totient runs of any length exist, supporting Erd\u0151s's conjecture about run lengths.",
+    "openQuestions": [
+      "Can the probabilistic argument from Erd\u0151s-Pomerance-S\u00e1rk\u00f6zy be formalized?",
+      "Can the bound K = \u03a9((log x)^c) be improved?",
+      "Can the distribution of totient values in consecutive runs be analyzed?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos1004Problem"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 134,
+    "axiomCount": 3,
+    "theoremCount": 11,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos1004OQ04.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1004",
+      "relationship": "sub-question",
+      "description": "OQ-04: Concrete witnesses for distinct totient runs"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "exists_distinct_totient_run_all_K",
+      "type": "core",
+      "statement": "\u2200 K, \u2203 n, IsDistinctTotientRun n K",
+      "description": "Universal existence of distinct totient runs of any length.",
+      "significance": "Confirms Erd\u0151s #1004 positive direction via concrete examples and probabilistic argument"
+    }
+  ],
+  "sorries": 0
+}

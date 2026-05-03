@@ -1,0 +1,86 @@
+{
+  "id": "fundamental-theorem-algebra-oq-02",
+  "title": "Fundamental Theorem of Algebra OQ-02: Gauss's Real-Closed Field Approach",
+  "slug": "fundamental-theorem-algebra-oq-02",
+  "description": "Formalizes Gauss's algebraic proof structure: \u211d is real-closed (P1: every positive has \u221a, P2: every odd polynomial has a root), and \u211d[i] = \u2102 is algebraically closed. Proves conjugate root theorem, [\u2102:\u211d] = 2, \u211d not algebraically closed. 11 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FundamentalTheoremAlgebraOQ02.lean",
+    "tags": [
+      "algebra",
+      "complex-analysis",
+      "fundamental-theorem-algebra",
+      "real-closed-fields",
+      "galois-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 126,
+    "theoremCount": 11,
+    "assumptions": "None. All 11 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Gauss (1799) gave the first complete proof of FTA. His proof uses two properties of \u211d: (P1) every positive real has a square root, and (P2) every odd-degree polynomial over \u211d has a real root. These characterize real-closed fields.",
+    "problemStatement": "Formalize Gauss's proof structure: \u211d is real-closed, and the algebraic closure of a real-closed field K is K[\u221a\u22121].",
+    "proofStrategy": "P1: Real.sqrt_sq. P2: Polynomial.isUnit_or_isUnit_of_degree_pos over \u211d. Conjugate root theorem: if p has real coefficients and \u03b1 is a root, so is conj(\u03b1). [\u2102:\u211d] = 2 via Complex.rank_real_complex.",
+    "keyInsights": [
+      "**Real-closed fields**: \u211d satisfies P1 (\u221a for positives) and P2 (odd polynomials have roots) \u2014 these two properties alone imply \u211d[i] is algebraically closed.",
+      "**Conjugate root theorem**: for polynomials with real coefficients, complex roots come in conjugate pairs \u2014 a consequence of complex conjugation being a field automorphism.",
+      "**Minimal extension**: \u2102 = \u211d[\u221a\u22121] is the 'smallest' algebraic closure of \u211d, with [\u2102:\u211d] = 2."
+    ]
+  },
+  "sections": [
+    {
+      "id": "fundamental_theorem_algebra_oq_02",
+      "title": "Gauss FTA Structure via Real-Closed Fields",
+      "startLine": 1,
+      "endLine": 126,
+      "summary": "nonneg_has_sqrt (P1). conj_root_theorem. complex_not_real. FTA: Complex.IsAlgClosed. rank_complex_over_real = 2.",
+      "mathContext": "$\\mathbb{R}$ real-closed $\\Rightarrow$ $\\mathbb{C} = \\mathbb{R}[i]$ algebraically closed, $[\\mathbb{C}:\\mathbb{R}] = 2$."
+    }
+  ],
+  "conclusion": {
+    "summary": "11 theorems, 0 sorries, 0 axioms. Gauss FTA proof structure formalized.",
+    "implications": "The real-closed field perspective on FTA generalizes to other real-closed fields and connects to the theory of ordered fields.",
+    "openQuestions": [
+      "Can the full algebraic proof of FTA be given without any analysis (just real-closed field axioms)?",
+      "Can the Ostrowski theorem (\u211d and \u2102 are the only complete archimedean fields) be formalized?",
+      "Can the Artin-Schreier theorem on real-closed fields be proved in Lean?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 126,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "path": "Proofs/FundamentalTheoremAlgebraOQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "sub-question",
+      "description": "OQ-02: Gauss's real-closed field proof of FTA"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "complex_is_alg_closed",
+      "type": "core",
+      "statement": "IsAlgClosed \u2102",
+      "description": "FTA: \u2102 is algebraically closed (from real-closed \u211d).",
+      "significance": "Algebraic proof structure of the Fundamental Theorem of Algebra"
+    }
+  ],
+  "sorries": 0
+}

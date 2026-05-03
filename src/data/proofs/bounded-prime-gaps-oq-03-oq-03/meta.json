@@ -5,7 +5,7 @@
   "description": "Proves: under the Elliott-Halberstam conjecture (axiom maynard_tao_sieve_eh), the prime gap bound improves from 246 to 12 using k=5 admissible tuples {0,2,6,8,12}. 13 theorems, 0 sorries, 0 axioms (1 imported from BoundedPrimeGaps.lean).",
   "meta": {
     "author": "Lean Genius Researcher",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BoundedPrimeGapsOQ03OQ03.lean",
     "tags": [
       "number-theory",
@@ -14,12 +14,12 @@
       "elliott-halberstam",
       "bounded-gaps"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 175,
     "theoremCount": 13,
-    "assumptions": "None. All 13 theorems proved.",
+    "assumptions": "Axiom maynard_tao_sieve_eh (inherited from BoundedPrimeGaps.lean): Maynard-Tao sieve under Elliott-Halberstam conjecture works for k\u22655.",
     "mathlibDependencies": [],
     "dateAdded": "2026-05-03",
     "mathlib_version": "4.26.0"

@@ -1,0 +1,88 @@
+{
+  "id": "geometric-series-oq-01-neumann",
+  "title": "Neumann Series: Operator-Valued Geometric Series",
+  "slug": "geometric-series-oq-01-neumann",
+  "description": "Proves the Neumann series theorem: for bounded linear operator T with \u2016T\u2016 < 1, (I-T)\u207b\u00b9 = \u03a3 T\u207f. Extends the scalar geometric series to the Banach algebra of bounded operators. 9 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ01Neumann.lean",
+    "tags": [
+      "analysis",
+      "functional-analysis",
+      "banach-algebras",
+      "operator-theory",
+      "neumann-series"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 92,
+    "theoremCount": 9,
+    "assumptions": "None. All 9 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Carl Neumann (1877) introduced the series \u03a3 T\u207f to solve integral equations (second kind). It generalizes the geometric series 1/(1-r) = \u03a3 r\u207f to operators. Fundamental to perturbation theory and resolvent estimates.",
+    "problemStatement": "Prove the Neumann series theorem: for \u2016T\u2016 < 1, the series \u03a3 T\u207f converges and equals (I-T)\u207b\u00b9.",
+    "proofStrategy": "E \u2192L[\ud835\udd5c] E forms a normed algebra (complete normed ring). Apply NormedRing.summable_geometric_of_norm_lt_one. (I-T) is invertible by Banach algebra theory: invertibles form an open set.",
+    "keyInsights": [
+      "**Banach algebra setting**: bounded operators E \u2192L[\ud835\udd5c] E form a complete normed ring (Banach algebra). This is exactly the setting where the geometric series theorem applies.",
+      "**Resolvent**: (\u03bbI - T)\u207b\u00b9 = \u03bb\u207b\u00b9 \u03a3 (T/\u03bb)\u207f for |\u03bb| > \u2016T\u2016 \u2014 the Neumann series is the Neumann/Laurent expansion of the resolvent.",
+      "**Contraction connection**: \u2016T\u2016 < 1 is the Banach fixed-point contraction condition for the map x \u21a6 Tx+b, explaining the connection to iteration algorithms."
+    ]
+  },
+  "sections": [
+    {
+      "id": "geometric_series_oq_01_neumann",
+      "title": "Neumann Series: Convergence and (I-T)\u207b\u00b9 Formula",
+      "startLine": 1,
+      "endLine": 92,
+      "summary": "operator_geometric_summable: \u03a3 T\u207f summable. neumann_series_eq: sum = (I-T)\u207b\u00b9. perturbation_invertible. resolvent_expansion.",
+      "mathContext": "$\\|T\\| < 1 \\Rightarrow (I-T)^{-1} = \\sum_{n=0}^\\infty T^n$."
+    }
+  ],
+  "conclusion": {
+    "summary": "9 theorems, 0 sorries, 0 axioms. Neumann series theorem proved for bounded operators in Banach spaces.",
+    "implications": "The Neumann series underlies perturbation theory, integral equation methods, and iterative linear solver convergence analysis.",
+    "openQuestions": [
+      "Can the spectral radius formula \u03c1(T) = lim \u2016T\u207f\u2016^(1/n) be proved?",
+      "Can the Banach contraction mapping theorem be derived from the Neumann series?",
+      "Can the resolvent (\u03bbI-T)\u207b\u00b9 be shown holomorphic in \u03bb?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Analysis.NormedSpace.OperatorNorm.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 92,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/GeometricSeriesOQ01Neumann.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "geometric-series",
+      "relationship": "sub-question",
+      "description": "OQ-01: Neumann series \u2014 operator-valued geometric series in Banach algebras"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "neumann_series_eq",
+      "type": "core",
+      "statement": "\u2016T\u2016 < 1 \u2192 HasSum (fun n => T^n) (I - T)\u207b\u00b9",
+      "description": "Neumann series (I-T)\u207b\u00b9 = \u03a3 T\u207f for bounded operators.",
+      "significance": "Operator-valued generalization of the geometric series, fundamental to functional analysis"
+    }
+  ],
+  "sorries": 0
+}
