@@ -325,3 +325,86 @@ vs (R/2 − r)² ≈ 1.286).
    T.toTetrahedron.twentyFourPointCenter T.toTetrahedron.incenter
    T.toTetrahedron.twentyFourPointRadius T.toTetrahedron.inradius`.
    Same √14 obstacle.
+
+---
+
+## Session 2026-05-03 (Session 4) — Formula Correction + Two New Theorems
+
+**Mode**: REVISIT (ACT phase, RICH knowledge tier)
+**Outcome**: Added 2 provable theorems, corrected 1 false docstring claim.
+
+### Mathematical Finding: R/2 Claim Is False
+
+The previous docstring for `edge_midpoints_equidist_from_centroid` claimed the
+common distance from G to edge midpoints is R/2. This is FALSE for the regular
+tetrahedron A=(1,1,1), B=(1,-1,-1), C=(-1,1,-1), D=(-1,-1,1):
+
+- G = O = (0,0,0), R = √3, R/2 = √3/2 ≈ 0.866
+- midpoint_AB = (1,0,0), dist(G, midpoint_AB) = 1 ≠ √3/2
+
+The CORRECT formula: dist²(G, M_AB) = (|AC|²+|BD|²)/16.
+
+Proof: G - M_AB = (C+D-A-B)/4 = ((C-A)+(D-B))/4. Squaring:
+|(C-A)+(D-B)|² = |C-A|² + 2(C-A)·(D-B) + |D-B|²
+= |AC|² + 0 + |BD|² (by AC⊥BD condition).
+
+For T₀: (|AC|²+|BD|²)/16 = 49/16 = R²/4 ✓ (R = 7/2)
+For regular: (8+8)/16 = 1 ≠ R²/4 = 3/4 ✗
+
+The R/2 formula holds for T₀ but NOT in general. The docstring is now corrected.
+
+### New Theorem: twentyFourPointCenter_is_2G_minus_O
+
+N₂₄ = 2G - O (proved by ring from definitions).
+
+Algebraically: N₂₄ = midpoint(O, 4G-3O) = (O+4G-3O)/2 = 2G-O.
+
+Consequence: for an orthocentric tetrahedron, the orthocenter H = 2G-O coincides
+with N₂₄. So `twentyFourPointCenter_is_2G_minus_O` confirms N₂₄ = H for
+orthocentric tetrahedra.
+
+### New Theorem: edge_midpoints_dist_sq_formula
+
+dist²(G, M_AB) = (|AC|² + |BD|²)/16 (using AC⊥BD)
+dist²(G, M_AC) = (|AB|² + |CD|²)/16 (using AB⊥CD)
+
+Proved by nlinarith using the orthocentric perpendicularity hypotheses.
+
+### Files Modified
+
+- `proofs/Proofs/FeuerbachsTheoremOQ02.lean`:
+  - Added `twentyFourPointCenter_is_2G_minus_O` theorem (lines ~548-558)
+  - Added `edge_midpoints_dist_sq_formula` theorem (lines ~645-656)
+  - Fixed PART 14 block comment (removed false R/2 claim)
+  - Fixed `edge_midpoints_equidist_from_centroid` docstring (corrected R/2 reference)
+  - Updated PART 15 summary (10 theorems listed, corrections noted)
+  - Line count: 688 → 743
+
+### Sorry / Axiom Delta
+
+- Sorries: 0 → 0 (no change)
+- Axioms: 1 → 1 (no change)
+- Theorems: 8 → 10 (+2)
+
+### Honest Assessment
+
+The two new theorems are algebraic/coordinatewise facts, provable by ring and
+nlinarith. They add genuine mathematical content:
+1. `twentyFourPointCenter_is_2G_minus_O` crystallizes the geometric identity.
+2. `edge_midpoints_dist_sq_formula` provides the exact value (not just equidistance),
+   and corrects an error in the prior docstring.
+
+The session does NOT close the remaining axiom `feuerbach_3d_fails_general`. That
+axiom requires exhibiting a concrete non-orthocentric tetrahedron, computing face
+areas (which involve sqrt), and showing the tangency condition fails. The sqrt in
+face areas makes this very hard to formalize without specialized algebraic-number
+arithmetic tactics.
+
+### Next Steps
+
+1. **feuerbach_3d_fails_general**: Still an axiom. Possible approach: find a
+   non-orthocentric tetrahedron where all face areas are rational (Pythagorean
+   condition: a²b²+b²c²+a²c² is a perfect square for the face BCD). This is
+   a number-theoretic search problem.
+2. **Murakami sphere**: Survey the face-circumcircle-based construction and
+   add it to the file's infrastructure.
