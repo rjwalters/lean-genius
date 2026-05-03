@@ -3,6 +3,7 @@
   "title": "Gödel's Diagonal Lemma: Fixed-Point Theorem Formalization",
   "slug": "godel-first-incompleteness-oq01-oq-04",
   "description": "Formalizes the Diagonal Lemma (Fixed-Point Lemma) as a general axiom and derives Gödel's First Incompleteness Theorem from it. Unlike the companion OQ-01 which takes G's self-reference as an axiom for a specific formula G=⟨42⟩, this file constructs G as the fixed point of ψ(x)=¬Prov(x) via the Diagonal Lemma, making G_self_reference a derived theorem rather than an axiom. Same axiom count (5), clearer mathematical structure.",
+  "sorries": 0,
   "meta": {
     "author": "Kurt Gödel (1931), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Diagonal_lemma",
