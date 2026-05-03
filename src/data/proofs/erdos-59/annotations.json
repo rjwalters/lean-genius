@@ -28,12 +28,12 @@
     "proofId": "erdos-59",
     "range": {
       "startLine": 32,
-      "endLine": 65
+      "endLine": 66
     },
     "type": "definition",
-    "title": "Core Definitions: Subgraph Containment, H-Free, Bipartiteness, Cycle Graphs",
-    "content": "**ContainsSubgraph**: $H \\subseteq G$ via injective homomorphism $f: V \\hookrightarrow V$ preserving adjacency.\n\n**IsFree**: $G$ is $H$-free if $\\neg(H \\subseteq G)$. The problem counts $H$-free labeled graphs on $n$ vertices.\n\n**IsBipartite**: $\\exists A, B$ partitioning $V$ with no edges within $A$ or $B$. Equivalent to no odd cycles.\n\n**cycleGraph** $C_n$ (axiomatized), with `odd_cycle_not_bipartite` and `even_cycle_bipartite`. **C6** $= C_6$ is the key counterexample; **K3** $= C_3$ satisfies the conjecture.",
-    "mathContext": "The subgraph containment relation used here is injection-based (not necessarily induced). For counting problems, this is the standard notion: $G$ is $H$-free if no subgraph of $G$ is isomorphic to $H$. The bipartite/non-bipartite dichotomy is fundamental: for non-bipartite $H$, the Turán number $\\text{ex}(n; H) = \\Theta(n^2)$ (by Turán's theorem for cliques, Bondy-Simonovits for general non-bipartite), so $2^{\\text{ex}(n;H)} = 2^{\\Theta(n^2)}$. For bipartite $H$, $\\text{ex}(n; H) = O(n^{2-\\varepsilon})$ (subquadratic), and the counting behavior is qualitatively different.",
+    "title": "Core Definitions: Subgraph Containment, H-Free, Bipartiteness, and Cycle Graphs",
+    "content": "**ContainsSubgraph**: $H \\subseteq G$ via injective map $f$ preserving adjacency (injection-based subgraph, not induced).\n\n**IsFree**: $G$ is $H$-free if $\\neg(H \\subseteq G)$.\n\n**IsBipartite**: $\\exists A, B$ partitioning $V$ with no edges within $A$ or $B$ — the set-based bipartition definition.\n\n**cycleGraph** $C_n$: concrete definition as a `SimpleGraph (Fin n)` where vertex $i$ is adjacent to $(i+1) \\bmod n$. Symmetry (`symm`) and looplessness (`loopless`) are proved inline. The concreteness (no axiom) enables the parity-based bipartiteness proofs that follow.",
+    "mathContext": "Injection-based subgraph containment is the standard for $H$-free counting: $G$ is $H$-free if no copy of $H$ appears as a (not necessarily induced) subgraph. The bipartite/non-bipartite dichotomy is fundamental: for non-bipartite $H$, the Turán density $\\pi(H) = \\lim_{n\\to\\infty} \\text{ex}(n;H)/\\binom{n}{2} > 0$ (Bondy-Simonovits), so $\\text{ex}(n;H) = \\Theta(n^2)$. For bipartite $H$, $\\pi(H) = 0$ and $\\text{ex}(n;H) = O(n^{2-\\varepsilon})$ is subquadratic. The cycle graph $C_n$ is defined using $\\bmod n$ adjacency — explicit enough to support the parity induction at lines 67-121.",
     "significance": "key",
     "relatedConcepts": [
       "subgraph isomorphism",
@@ -48,98 +48,124 @@
     ]
   },
   {
-    "id": "ann-59-counting",
+    "id": "ann-59-odd-cycle",
     "proofId": "erdos-59",
     "range": {
       "startLine": 67,
-      "endLine": 100
+      "endLine": 121
     },
-    "type": "definition",
-    "title": "Turán Numbers, Free Graph Counts, and Asymptotic Bound Definitions",
-    "content": "**turanNumber** $\\text{ex}(n; k)$: maximum edges in an $n$-vertex graph avoiding all $k$-vertex forbidden subgraphs. Axiomatized.\n\n**countFreeGraphs** $(n, k)$: number of labeled $H$-free graphs on $n$ vertices where $|V(H)| = k$. Axiomatized.\n\n**HasOptimalBound** $f \\leq 2^{(1+o(1))g}$: $\\forall \\varepsilon > 0, \\exists N_0, \\forall n \\geq N_0: f(n) \\leq 2^{(1+\\varepsilon)g(n)}$.\n\n**ExceedsOptimalBound**: $\\exists c > 0$ with $f(n) \\geq 2^{(1+c)g(n)}$ for infinitely many $n$.\n\n**HasPolynomialBound** $f = 2^{O(g)}$: $\\exists C > 0, N_0$ with $f(n) \\leq 2^{C \\cdot g(n)}$ for $n \\geq N_0$.",
-    "mathContext": "The conjecture $|\\{H\\text{-free graphs on } n \\text{ vertices}\\}| \\leq 2^{(1+o(1))\\text{ex}(n;H)}$ says the count is essentially $2^{\\text{ex}(n;H)}$. The trivial upper bound is $2^{\\binom{n}{2}}$ (all labeled graphs). For non-bipartite $H$: $\\text{ex}(n; H) = \\Theta(n^2)$, so $2^{\\text{ex}} = 2^{\\Theta(n^2)}$ — the bound says most of the $2^{\\binom{n}{2}}$ graphs are $H$-free. For bipartite $H$: $\\text{ex}(n; H) = O(n^{2-\\varepsilon})$ is subquadratic, so the bound would say far fewer graphs are $H$-free — and this is where it fails.",
+    "type": "proof",
+    "title": "odd_cycle_not_bipartite: Parity Induction and Closing-Edge Contradiction",
+    "content": "**Statement**: For odd $n \\geq 3$, $C_n$ is not bipartite.\n\n**Proof strategy**: Given any bipartition $(A, B)$ of $V(C_n)$, membership alternates: consecutive vertices must be in different parts (since they are adjacent). By induction on $k$: vertex $k$ is in $A$ iff $k$ is even (case $0 \\in A$) or vice versa. Since $n$ is odd, $n-1$ is even, so $n-1 \\in A$ (same case as vertex $0 \\in A$). But $n-1$ and $0$ are adjacent (closing edge: $(n-1+1) \\bmod n = 0$) — contradiction with no edges within $A$. The case $0 \\in B$ is symmetric.\n\nKey steps: `consec_adj` (consecutive vertices adjacent), `closing` (closing edge), `hn1_even` ($n-1$ even since $n$ odd), induction with `Nat.even_succ`, resolving by `mem`.resolve_{left,right}.",
+    "mathContext": "This is the standard proof that odd cycles are non-bipartite: in any proper 2-coloring of a cycle $C_n$, colors alternate, so the color of vertex $k$ is determined by the parity of $k$ and the starting color. After $n$ steps, vertex $n-1$ has the same parity as vertex $0$ iff $n$ is even — so odd cycles force a monochromatic edge. In Lean: the `mem` helper (every vertex is in $A \\cup B$) + induction on $k$ formalizes the alternation. The `Nat.even_succ` rewrite is the parity flip at each step.",
     "significance": "key",
     "relatedConcepts": [
-      "Turán number",
-      "graph enumeration",
-      "asymptotic analysis",
-      "o(1) notation"
+      "bipartite graphs",
+      "2-coloring",
+      "cycle parity",
+      "induction on natural numbers"
     ],
     "prerequisites": [
-      "extremal graph theory",
-      "labeled graph counting",
-      "real analysis"
+      "Nat.even_succ",
+      "Set.mem_union",
+      "SimpleGraph.Adj"
     ]
   },
   {
-    "id": "ann-59-results",
+    "id": "ann-59-even-cycle",
     "proofId": "erdos-59",
     "range": {
-      "startLine": 102,
-      "endLine": 131
-    },
-    "type": "concept",
-    "title": "Main Results: Erdős-Frankl-Rödl (1986) and Morris-Saxton Counterexample (2016)",
-    "content": "**erdos_frankl_rodl_nonbipartite**: For non-bipartite $H$, $|\\{H\\text{-free}\\}| \\leq 2^{(1+o(1))\\text{ex}(n;H)}$. The conjecture holds for the non-bipartite case.\n\n**morris_saxton_c6_counterexample**: $\\exists c > 0$ with $|\\{C_6\\text{-free}\\}| \\geq 2^{(1+c)\\text{ex}(n;C_6)}$ for infinitely many $n$. This DISPROVES the conjecture.\n\n**morris_saxton_conjecture** (OPEN): The weaker bound $2^{O(\\text{ex}(n;H))}$ holds for all $H$. Formalized as `HasPolynomialBound` for all $k$.",
-    "mathContext": "Erdős-Frankl-Rödl (1986): their proof uses the Szemerédi regularity lemma. For non-bipartite $H$, the Turán number $\\text{ex}(n; H) = (1 - 1/(\\chi(H)-1) + o(1))\\binom{n}{2}$, so the Turán density is positive. The regularity lemma shows that most $H$-free graphs look like the Turán graph, giving the $2^{(1+o(1))\\text{ex}}$ bound. Morris-Saxton (2016): for $C_6$, $\\text{ex}(n; C_6) = \\Theta(n^{4/3})$ (Kővári-Sós-Turán). They construct $C_6$-free graphs using algebraic methods (incidence geometry over finite fields), showing the count exceeds $2^{(1+c)n^{4/3}}$. The excess comes from the rich structure of $C_6$-free bipartite graphs built from projective planes.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Szemerédi regularity lemma",
-      "graph counting",
-      "algebraic constructions",
-      "projective planes"
-    ],
-    "prerequisites": [
-      "regularity lemma",
-      "Turán densities",
-      "Kővári-Sós-Turán bound"
-    ]
-  },
-  {
-    "id": "ann-59-resolution",
-    "proofId": "erdos-59",
-    "range": {
-      "startLine": 132,
+      "startLine": 122,
       "endLine": 172
     },
-    "type": "concept",
-    "title": "Problem Resolution and Bipartiteness of C_6",
-    "content": "**erdos_59_disproved** (1 sorry): $\\neg\\forall k, \\text{HasOptimalBound}(\\text{countFreeGraphs}(\\cdot, k), \\text{turanNumber}(\\cdot, k))$. Uses $k = 6$ and `morris_saxton_c6_counterexample` to derive a contradiction with the optimal bound. The sorry is in extracting a specific counterexample $n > N_0$ from the infinite set.\n\n**c6_is_bipartite**: $C_6$ is bipartite (even cycle). **k3_not_bipartite**: $K_3 = C_3$ is not bipartite (odd cycle).",
-    "mathContext": "The proof of `erdos_59_disproved` follows the standard contradiction pattern: assume the conjecture holds for all $k$, specialize to $k = 6$, then the optimal bound gives $|\\{C_6\\text{-free}\\}| \\leq 2^{(1+\\varepsilon)\\text{ex}(n;C_6)}$ for large $n$ (any $\\varepsilon > 0$), while Morris-Saxton gives $|\\{C_6\\text{-free}\\}| \\geq 2^{(1+c)\\text{ex}(n;C_6)}$ for infinitely many $n$. Choosing $\\varepsilon = c/2 < c$ yields the contradiction. The sorry is a technical gap: extracting an element from `Set.Infinite` that is also $\\geq N_0$.",
+    "type": "proof",
+    "title": "even_cycle_bipartite: Parity Partition, C6 and K3 Definitions",
+    "content": "**even_cycle_bipartite**: For even $n \\geq 3$, $C_n$ is bipartite. Explicit bipartition: $A = \\{i : \\text{Even}(i.\\text{val})\\}$, $B = \\{i : \\neg\\text{Even}(i.\\text{val})\\}$. Four goals: $A \\cup B = \\text{univ}$ (classical em), $A \\cap B = \\emptyset$ (even/odd disjoint), no edge within $A$ (adjacent vertices $(i,i+1)$ differ in parity; `Nat.mod_mod_of_dvd` handles the wrap-around when $2 \\mid n$), no edge within $B$ (symmetric).\n\n**C6** $= \\text{cycleGraph}\\, 6$: the key counterexample to Erdős #59.\n\n**K3** $= \\text{cycleGraph}\\, 3$: the triangle, satisfies the conjecture (non-bipartite).\n\nThe counting section header (lines 166-172) notes that `turanNumber` and `countFreeGraphs` are axiomatized due to computational intractability.",
+    "mathContext": "The parity partition works for even $C_n$ because the closing edge $(n-1, 0)$ has $n-1$ odd (since $n$ is even), so the closing edge goes between different parity classes. The key lemma is `Nat.mod_mod_of_dvd`: since $2 \\mid n$, modular arithmetic is compatible — specifically, $(i+1) \\bmod n \\bmod 2 = (i+1) \\bmod 2$ (no wrap creates a parity flip). This cleanly handles the edge case where $i = n-1$ and the next vertex is $0$. For $C_6$: the Levi graph of the Fano plane is $C_6$-free and shows $\\text{ex}(n; C_6) = \\Theta(n^{4/3})$, making it the canonical counterexample to Erdős #59.",
     "significance": "key",
     "relatedConcepts": [
-      "proof by contradiction",
-      "Set.Infinite",
-      "bipartite vs non-bipartite dichotomy"
+      "bipartite partition",
+      "modular arithmetic",
+      "even/odd parity",
+      "C6-free graphs"
     ],
     "prerequisites": [
-      "push_neg",
-      "Set.Infinite.nonempty",
-      "real arithmetic"
+      "Nat.mod_mod_of_dvd",
+      "Nat.even_iff",
+      "Set.mem_setOf_eq"
     ]
   },
   {
-    "id": "ann-59-turan-bounds",
+    "id": "ann-59-axioms-predicates",
     "proofId": "erdos-59",
     "range": {
       "startLine": 174,
       "endLine": 222
     },
+    "type": "definition",
+    "title": "Turán Numbers, Asymptotic Predicates, and Erdős-Frankl-Rödl/Morris-Saxton Axioms",
+    "content": "**turanNumber** and **countFreeGraphs**: axiomatized since computing extremal numbers and counting $H$-free graphs are computationally hard.\n\n**HasOptimalBound** $f \\leq 2^{(1+o(1))g}$: $\\forall \\varepsilon > 0, \\exists N_0, \\forall n \\geq N_0: f(n) \\leq 2^{(1+\\varepsilon)g(n)}$.\n\n**ExceedsOptimalBound**: $\\exists c > 0$ such that $\\{n : f(n) \\geq 2^{(1+c)g(n)}\\}$ is infinite.\n\n**HasPolynomialBound** $f = 2^{O(g)}$: $\\exists C > 0, N_0, \\forall n \\geq N_0: f(n) \\leq 2^{C \\cdot g(n)}$.\n\n**turanNumber_pos**: $\\text{ex}(n; k) > 0$ for $n \\geq k \\geq 3$ (any tree is $C_k$-free with edges).\n\n**erdos_frankl_rodl_nonbipartite** (axiom): for all $k$, $\\text{countFreeGraphs}(\\cdot, k) \\leq 2^{(1+o(1))\\text{turanNumber}(\\cdot, k)}$.\n\n**morris_saxton_c6_counterexample** (axiom): $\\text{ExceedsOptimalBound}(\\text{countFreeGraphs}(\\cdot, 6), \\text{turanNumber}(\\cdot, 6))$.",
+    "mathContext": "The three asymptotic predicates capture the three regimes: (1) HasOptimalBound — the conjecture's claimed bound ($2^{(1+o(1))\\text{ex}}$); (2) ExceedsOptimalBound — Morris-Saxton's counterexample (exceeds the conjectured bound by $2^{c \\cdot \\text{ex}}$); (3) HasPolynomialBound — the open Morris-Saxton conjecture ($2^{O(\\text{ex})}$). The `turanNumber_pos` axiom is critical for the main proof: it ensures the exponent comparison $2^{(1+c)t} > 2^{(1+c/2)t}$ is strict (requires $t > 0$). Without it, both bounds collapse to $1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán number",
+      "asymptotic notation",
+      "o(1) bound",
+      "graph enumeration"
+    ],
+    "prerequisites": [
+      "Set.Infinite",
+      "Real.rpow",
+      "extremal graph theory"
+    ]
+  },
+  {
+    "id": "ann-59-main-proof",
+    "proofId": "erdos-59",
+    "range": {
+      "startLine": 223,
+      "endLine": 278
+    },
+    "type": "proof",
+    "title": "morris_saxton_conjecture and erdos_59_disproved: The Main Contradiction Proof",
+    "content": "**morris_saxton_conjecture** (OPEN): $\\forall k, \\text{HasPolynomialBound}(\\text{countFreeGraphs}(\\cdot, k), \\text{turanNumber}(\\cdot, k))$. The weaker $2^{O(\\text{ex})}$ bound conjectured by Morris-Saxton (2016). Not proved here.\n\n**erdos_59_disproved**: $\\neg\\forall k, \\text{HasOptimalBound}(\\ldots)$. Proof:\n1. `push_neg`, witness $k = 6$\n2. Assume hopt: $\\text{HasOptimalBound}$ for $k=6$\n3. Extract $c > 0$ from `morris_saxton_c6_counterexample` (ExceedsOptimalBound)\n4. Get $N_0$ from `hopt (c/2)` (use $\\varepsilon = c/2 < c$)\n5. Extract $n > \\max(N_0, 6)$ from the infinite counterexample set via `hinf.exists_gt`\n6. `ht_pos`: $t = \\text{turanNumber}(n,6) > 0$ by `turanNumber_pos` (since $n \\geq 6 \\geq 3$)\n7. `hexp_strict`: $(1 + c/2) \\cdot t < (1+c) \\cdot t$ by `nlinarith` (since $c, t > 0$)\n8. `hpow_strict`: $2^{(1+c/2)t} < 2^{(1+c)t}$ by `Real.rpow_lt_rpow_of_exponent_lt`\n9. Contradiction: `hn_mem` gives $\\text{count} \\geq 2^{(1+c)t}$, `hbound` gives $\\text{count} \\leq 2^{(1+c/2)t}$",
+    "mathContext": "The proof resolves the key sorry from earlier drafts: the critical step `hinf.exists_gt (max N₀ 6)` uses `Set.Infinite.exists_gt` to extract a witness $n > \\max(N_0, 6)$ from the infinite counterexample set. The `max` witness simultaneously ensures $n \\geq N_0$ (for `hbound`) and $n \\geq 6$ (for `turanNumber_pos`). The `nlinarith` call closes the arithmetic gap: since $c > 0$ and $t > 0$, we have $(c/2) \\cdot t > 0$, so $(1+c) \\cdot t = (1+c/2) \\cdot t + (c/2) \\cdot t > (1+c/2) \\cdot t$. The strict monotonicity of $x \\mapsto 2^x$ (via `Real.rpow_lt_rpow_of_exponent_lt` with base $> 1$) then gives the contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.Infinite.exists_gt",
+      "Real.rpow_lt_rpow_of_exponent_lt",
+      "proof by contradiction",
+      "Morris-Saxton conjecture"
+    ],
+    "prerequisites": [
+      "Set.Infinite",
+      "Real.rpow",
+      "nlinarith",
+      "push_neg"
+    ]
+  },
+  {
+    "id": "ann-59-corollaries",
+    "proofId": "erdos-59",
+    "range": {
+      "startLine": 279,
+      "endLine": 337
+    },
     "type": "concept",
-    "title": "Classical Turán Bounds and Corollaries",
-    "content": "**turan_theorem**: $\\text{ex}(n; K_{r+1}) = (1 - 1/r)n^2/2 + O(n)$. The Turán graph $T(n,r)$ is the unique extremal graph.\n\n**kovari_sos_turan**: $\\text{ex}(n; C_{2k}) = O(n^{1+1/k})$ for $k \\geq 2$. This subquadratic bound is what makes the bipartite case qualitatively different.\n\n**non_bipartite_satisfies_conjecture** / **triangle_free_optimal**: Direct applications of `erdos_frankl_rodl_nonbipartite` confirming the conjecture for non-bipartite $H$ and specifically for $K_3$.",
-    "mathContext": "For $C_6$: $k = 3$ in KST gives $\\text{ex}(n; C_6) = O(n^{4/3})$. The matching lower bound $\\text{ex}(n; C_6) = \\Omega(n^{4/3})$ comes from incidence structures: the Levi graph of a projective plane $\\text{PG}(2, q)$ is $C_6$-free with $\\Theta(q^{4/3})$ edges (when $n = 2(q^2 + q + 1)$). The same algebraic structure that makes $\\text{ex}(n; C_6)$ large also creates many $C_6$-free graphs — this is the mechanism behind Morris-Saxton's counterexample. For non-bipartite $H$: $\\text{ex}(n; H) = \\Theta(n^2)$ (positive Turán density), so there are $\\sim 2^{\\Theta(n^2)}$ $H$-free graphs — essentially the same order as the Turán graph's neighborhoods.",
+    "title": "Bipartiteness Corollaries, Turán Bound Comments, and Problem Summary",
+    "content": "**c6_is_bipartite**: $C_6$ is bipartite (even cycle, $n=6$, $k=3$ gives `Even 6`). Uses `even_cycle_bipartite`.\n\n**k3_not_bipartite**: $K_3 = C_3$ is not bipartite (odd cycle, `Odd 3`). Uses `odd_cycle_not_bipartite`.\n\nComment stubs for **Turán's theorem** ($\\text{ex}(n; K_{r+1}) = (1-1/r)n^2/2$) and **Kővári-Sós-Turán** ($\\text{ex}(n; C_{2k}) = O(n^{1+1/k})$) — documented but not formalized.\n\n**non_bipartite_satisfies_conjecture** / **triangle_free_optimal**: direct corollaries via `erdos_frankl_rodl_nonbipartite`.\n\nSummary (lines 317-336): Problem Status DISPROVED. EFR (1986): TRUE for non-bipartite. Morris-Saxton (2016): FALSE for $C_6$. Open: does $2^{O(\\text{ex})}$ hold for all $H$?",
+    "mathContext": "The corollaries confirm the bipartite/non-bipartite dichotomy is correctly formalized. $C_6$ is even (bipartite, the counterexample), $K_3 = C_3$ is odd (non-bipartite, satisfies the conjecture). The KST bound $\\text{ex}(n; C_6) = O(n^{4/3})$ (from $k=3$: $O(n^{1+1/3}) = O(n^{4/3})$) is the reason $C_6$ is the simplest bipartite counterexample — this subquadratic Turán number creates the critical asymptotic gap. The Morris-Saxton conjecture ($2^{O(\\text{ex})}$ for all $H$) remains open as of 2026; it is the central open problem emerging from the disproof of Erdős #59.",
     "significance": "key",
     "relatedConcepts": [
       "Turán's theorem",
       "Kővári-Sós-Turán",
-      "Turán graph",
-      "projective planes"
+      "Morris-Saxton conjecture",
+      "non-bipartite graphs"
     ],
     "prerequisites": [
-      "extremal graph theory",
-      "asymptotic notation",
-      "complete multipartite graphs"
+      "even_cycle_bipartite",
+      "odd_cycle_not_bipartite",
+      "extremal graph theory"
     ]
   }
 ]
