@@ -152,8 +152,8 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
       adjoin_simple_le_iff.mpr ha_in_β
     -- Step B: b + β ∈ ℚ⟮b⟯ ⊔ ℚ⟮β⟯, hence ℚ⟮b+β⟯ ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯
     have hmem : b + β ∈ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯ : IntermediateField ℚ ℂ) :=
-      add_mem (mem_sup_left (mem_adjoin_simple_self ℚ b))
-              (mem_sup_right (mem_adjoin_simple_self ℚ β))
+      add_mem (le_sup_left (mem_adjoin_simple_self ℚ b))
+              (le_sup_right (mem_adjoin_simple_self ℚ β))
     have hle : (ℚ⟮(b + β)⟯ : IntermediateField ℚ ℂ) ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯ :=
       adjoin_simple_le_iff.mpr hmem
     -- Step C (sorry): finrank ℚ ℚ⟮β⟯ ∣ 2^(j+1)
@@ -172,18 +172,17 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
       haveI hST_aβ : IsScalarTower ℚ ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) :=
         IsScalarTower.of_algebraMap_eq (fun r =>
           Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
-      -- Tower law: finrank ℚ ℚ⟮β⟯ = finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ * finrank ℚ ↥ℚ⟮a⟯
-      rw [Module.finrank_mul_finrank ℚ ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯)]
-      rw [pow_succ]
-      -- Suffices: finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2 and finrank ℚ ↥ℚ⟮a⟯ ∣ 2^j
-      exact Nat.mul_dvd_mul
+      -- Tower law: finrank ℚ ℚ⟮β⟯ = finrank ℚ ↥ℚ⟮a⟯ * finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯
+      have htower := Module.finrank_mul_finrank ℚ ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯)
+      rw [htower, pow_succ]
+      -- Suffices: finrank ℚ ↥ℚ⟮a⟯ ∣ 2^j and finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2
+      exact Nat.mul_dvd_mul hj_dvd
         (by -- finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2
          -- β satisfies X² - a over ℚ⟮a⟯ (since β² = a ∈ ℚ⟮a⟯)
-         -- So minpoly ↥ℚ⟮a⟯ β divides X² - a, giving degree ≤ 2
-         -- For simple extension: finrank = natDegree(minpoly)
+         -- So minpoly ↥ℚ⟮a⟯ β divides X² - a, giving natDegree ≤ 2
+         -- For simple extension: finrank = natDegree(minpoly) ≤ 2
          -- Hence finrank ∣ 2
          sorry)
-        hj_dvd
     -- Step D (sorry): finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+k+1)
     -- Proof plan: tower through ℚ⟮β⟯:
     --   finrank_join = finrank ↥ℚ⟮β⟯ ↥(join) * finrank ℚ ↥ℚ⟮β⟯
@@ -204,8 +203,8 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
       haveI hST : IsScalarTower ℚ ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) :=
         IsScalarTower.of_algebraMap_eq (fun r =>
           Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
-      exact ⟨Module.finrank ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯),
-             (Module.finrank_mul_finrank ℚ ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯)).symm⟩
+      have htower := Module.finrank_mul_finrank ℚ ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯)
+      exact ⟨Module.finrank ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯), htower.symm⟩
     exact hdvd_le.trans hjoin_dvd
 
 -- ============================================================
@@ -329,14 +328,16 @@ theorem not_constructible_of_bad_degree {p : ℚ[X]} (hp : Irreducible p)
       Polynomial.natDegree_eq_zero_of_isUnit h1
     have h_fr_zero : Module.finrank ℚ ℚ⟮α⟯ = 0 := hmind ▸ hunit_zero
     rw [h_fr_zero] at hn_dvd
-    exact absurd (Nat.eq_zero_of_dvd_of_lt hn_dvd (Nat.two_pow_pos n)) one_ne_zero
+    exact absurd (Nat.zero_dvd.mp hn_dvd) (Nat.two_pow_pos n).ne'
   · -- c is a unit → natDegree p = natDegree (minpoly ℚ α) ∣ 2^n
     apply hdeg
     have hc_deg : c.natDegree = 0 := Polynomial.natDegree_eq_zero_of_isUnit h2
     have hne : minpoly ℚ α ≠ 0 := minpoly.ne_zero hint
     have hcne : c ≠ 0 := IsUnit.ne_zero h2
-    rw [hc, Polynomial.natDegree_mul hne hcne, hmind, hc_deg, add_zero] at hn_dvd
-    obtain ⟨m, _, hm_eq⟩ := (Nat.dvd_prime_pow (by norm_num : Nat.Prime 2)).mp hn_dvd
+    have hp_eq : p.natDegree = (minpoly ℚ α).natDegree := by
+      rw [hc, Polynomial.natDegree_mul hne hcne, hc_deg, add_zero]
+    have hp_dvd : p.natDegree ∣ 2 ^ n := by rw [hp_eq, hmind]; exact hn_dvd
+    obtain ⟨m, _, hm_eq⟩ := (Nat.dvd_prime_pow (by norm_num : Nat.Prime 2)).mp hp_dvd
     exact ⟨m, hm_eq⟩
 
 -- ============================================================
