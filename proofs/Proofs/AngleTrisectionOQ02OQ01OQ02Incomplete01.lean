@@ -179,11 +179,58 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
       exact Nat.mul_dvd_mul
         hj_dvd
         (by -- finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2
-         -- β satisfies X² - a over ℚ⟮a⟯ (since β² = a ∈ ℚ⟮a⟯)
-         -- So minpoly ↥ℚ⟮a⟯ β divides X² - a, giving degree ≤ 2
-         -- For simple extension: finrank = natDegree(minpoly)
-         -- Hence finrank ∣ 2
-         sorry)
+         -- Strategy: β generates ↥ℚ⟮β⟯ over ↥ℚ⟮a⟯, so
+         --   finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ = natDegree(minpoly ↥ℚ⟮a⟯ β).
+         --   minpoly divides X²-a (since β²=a ∈ ↥ℚ⟮a⟯), so degree ≤ 2.
+         --   degree ≥ 1, so degree ∈ {1,2}, hence finrank ∣ 2.
+         -- Set up generator β_sub = AdjoinSimple.gen ℚ β : ↥ℚ⟮β⟯
+         let β_sub := AdjoinSimple.gen ℚ β
+         let a_sub : ↥ℚ⟮a⟯ := AdjoinSimple.gen ℚ a
+         -- β is integral over ℚ
+         have hβ_int_Q : IsIntegral ℚ β := halg_β.isIntegral
+         -- β_sub is algebraic over ℚ (as element of ↥ℚ⟮β⟯)
+         have hβ_alg_sub : IsAlgebraic ℚ β_sub :=
+           (IntermediateField.isAlgebraic_adjoin_simple hβ_int_Q).isAlgebraic β_sub
+         -- β_sub generates ↥ℚ⟮β⟯ over ℚ (as IntermediateField ℚ ↥ℚ⟮β⟯)
+         have h_prim_Q : (ℚ⟮β_sub⟯ : IntermediateField ℚ ↥ℚ⟮β⟯) = ⊤ := by
+           rw [adjoin_simple_eq_top_iff_of_isAlgebraic hβ_alg_sub]
+           exact (IntermediateField.adjoin.powerBasis hβ_int_Q).adjoin_gen_eq_top
+         -- β_sub generates ↥ℚ⟮β⟯ over ↥ℚ⟮a⟯ (via tower ℚ → ↥ℚ⟮a⟯ → ↥ℚ⟮β⟯)
+         have h_prim_a : (↥ℚ⟮a⟯⟮β_sub⟯ : IntermediateField ↥ℚ⟮a⟯ ↥ℚ⟮β⟯) = ⊤ :=
+           IntermediateField.adjoin_eq_top_of_adjoin_eq_top ℚ h_prim_Q
+         -- β_sub satisfies X² - a_sub over ↥ℚ⟮a⟯ (since β² = a)
+         have hβ_sq_a : β_sub ^ 2 = algebraMap ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ a_sub := Subtype.ext <| by
+           simp only [map_pow, AdjoinSimple.coe_gen, hβ_sq,
+                      RingHom.algebraMap_toAlgebra, coe_inclusion, AdjoinSimple.coe_gen]
+         -- β_sub is integral over ↥ℚ⟮a⟯
+         have hβ_int_a : IsIntegral ↥ℚ⟮a⟯ β_sub :=
+           ⟨X ^ 2 - C a_sub, monic_X_pow_sub_C a_sub (by norm_num), by
+             rw [map_sub, map_pow, aeval_X, aeval_C, hβ_sq_a, sub_self]⟩
+         -- finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ = natDegree(minpoly ↥ℚ⟮a⟯ β_sub)
+         have h_finrank : Module.finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ =
+             (minpoly ↥ℚ⟮a⟯ β_sub).natDegree := by
+           have hf := IntermediateField.adjoin.finrank hβ_int_a
+           rw [h_prim_a, IntermediateField.finrank_top'] at hf
+           exact hf
+         -- minpoly divides X² - C a_sub
+         have h_dvd : minpoly ↥ℚ⟮a⟯ β_sub ∣ X ^ 2 - C a_sub :=
+           minpoly.dvd _ _ (by
+             rw [map_sub, map_pow, aeval_X, aeval_C, hβ_sq_a, sub_self])
+         -- natDegree(minpoly) ≤ 2
+         have h_ne : (X ^ 2 - C a_sub : Polynomial ↥ℚ⟮a⟯) ≠ 0 :=
+           (monic_X_pow_sub_C a_sub (by norm_num : (2 : ℕ) ≠ 0)).ne_zero
+         have h_deg_le : (minpoly ↥ℚ⟮a⟯ β_sub).natDegree ≤ 2 := by
+           calc (minpoly ↥ℚ⟮a⟯ β_sub).natDegree
+               ≤ (X ^ 2 - C a_sub : Polynomial ↥ℚ⟮a⟯).natDegree :=
+                 natDegree_le_of_dvd h_dvd h_ne
+             _ = 2 := natDegree_X_pow_sub_C
+         -- natDegree(minpoly) ≥ 1
+         have h_deg_pos : 0 < (minpoly ↥ℚ⟮a⟯ β_sub).natDegree :=
+           minpoly.natDegree_pos hβ_int_a
+         -- natDegree ∈ {1, 2} → natDegree ∣ 2
+         rw [h_finrank]
+         set n := (minpoly ↥ℚ⟮a⟯ β_sub).natDegree
+         interval_cases n <;> norm_num)
     -- Step D (sorry): finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+k+1)
     -- Proof plan: tower through ℚ⟮β⟯:
     --   finrank_join = finrank ↥ℚ⟮β⟯ ↥(join) * finrank ℚ ↥ℚ⟮β⟯
