@@ -190,8 +190,11 @@ theorem paramBisect_sign (f : ℝ → ℝ) (choices : ℕ → Bool) (n : ℕ) (p
 theorem paramBisect_width_tendsto_zero (choices : ℕ → Bool) (a b : ℝ) :
     Tendsto (fun n => (paramBisect choices n (a, b)).2 - (paramBisect choices n (a, b)).1)
       atTop (nhds 0) := by
-  simp_rw [paramBisect_width, div_eq_mul_inv, ← inv_pow, inv_eq_one_div]
-  have h : Tendsto (fun n : ℕ => (b - a) * (1 / 2) ^ n) atTop (nhds ((b - a) * 0)) :=
+  -- Rewrite width formula pointwise to avoid simp-loop between div_eq_mul_inv/inv_eq_one_div
+  have hw : ∀ n : ℕ, (paramBisect choices n (a, b)).2 - (paramBisect choices n (a, b)).1 =
+      (b - a) * (1 / 2 : ℝ) ^ n := fun n => by rw [paramBisect_width]; ring
+  simp_rw [hw]
+  have h : Tendsto (fun n : ℕ => (b - a) * (1 / 2 : ℝ) ^ n) atTop (nhds ((b - a) * 0)) :=
     tendsto_const_nhds.mul (tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num))
   simpa using h
 
@@ -209,16 +212,18 @@ theorem paramBisect_endpoints_converge (choices : ℕ → Bool) (a b : ℝ) (hab
       Tendsto (fun n => (paramBisect choices n (a, b)).2) atTop (nhds x) := by
   have hl_mono : Monotone (fun n => (paramBisect choices n (a, b)).1) :=
     fun m n hmn => (paramBisect_nested choices m n (a, b) hab hmn).1
-  have hl_bdd : BddAbove (Set.range (fun n => (paramBisect choices n (a, b)).1)) :=
-    ⟨b, fun _ ⟨n, hn⟩ => hn ▸ le_trans
-      (paramBisect_ordered choices n (a, b) hab)
-      (paramBisect_contained choices n a b hab).2⟩
+  have hl_bdd : BddAbove (Set.range (fun n => (paramBisect choices n (a, b)).1)) := by
+    refine ⟨b, ?_⟩
+    rintro _ ⟨n, rfl⟩
+    exact le_trans (paramBisect_ordered choices n (a, b) hab)
+      (paramBisect_contained choices n a b hab).2
   have hr_anti : Antitone (fun n => (paramBisect choices n (a, b)).2) :=
     fun m n hmn => (paramBisect_nested choices m n (a, b) hab hmn).2
-  have hr_bdd : BddBelow (Set.range (fun n => (paramBisect choices n (a, b)).2)) :=
-    ⟨a, fun _ ⟨n, hn⟩ => hn ▸ le_trans
-      (paramBisect_contained choices n a b hab).1
-      (paramBisect_ordered choices n (a, b) hab)⟩
+  have hr_bdd : BddBelow (Set.range (fun n => (paramBisect choices n (a, b)).2)) := by
+    refine ⟨a, ?_⟩
+    rintro _ ⟨n, rfl⟩
+    exact le_trans (paramBisect_contained choices n a b hab).1
+      (paramBisect_ordered choices n (a, b) hab)
   -- Classical completeness: bounded monotone/antitone sequences converge
   set xl := ⨆ n, (paramBisect choices n (a, b)).1
   set xr := ⨅ n, (paramBisect choices n (a, b)).2
@@ -251,8 +256,11 @@ theorem bisection_limit_is_root (f : ℝ → ℝ) (choices : ℕ → Bool) (a b 
   have h_sign_r : ∀ n, 0 ≤ f (paramBisect choices n (a, b)).2 :=
     fun n => (paramBisect_sign f choices n (a, b) hfa hfb (hcons n)).2
   have hlim_r : Tendsto (fun n => (paramBisect choices n (a, b)).2) atTop (nhds x) := by
+    have heq : (fun n => (paramBisect choices n (a, b)).2) =
+        (fun n => (paramBisect choices n (a, b)).2 - (paramBisect choices n (a, b)).1 +
+                  (paramBisect choices n (a, b)).1) := funext (fun n => by ring)
+    rw [heq]
     have h := (paramBisect_width_tendsto_zero choices a b).add hlim
-    simp only [sub_add_cancel] at h
     simpa using h
   have hfx_le : f x ≤ 0 :=
     le_of_tendsto (hf.tendsto x |>.comp hlim) (eventually_of_forall h_sign_l)
