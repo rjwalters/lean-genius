@@ -375,7 +375,7 @@ private theorem indicator_lp_hasSum_sf [SigmaFinite μ] [Fact (1 ≤ p)] (n : �
   have hμ_fin : ∑' i, μ (f i ∩ spanningSets μ n) ≠ ∞ := by
     rw [← measure_iUnion hdisj_Sn (fun i => hf_meas i |>.inter hS_meas)]
     exact ((measure_mono (Set.iUnion_subset (fun _ => Set.inter_subset_right))).trans_lt
-             (hS_fin n)).ne
+             (measure_spanningSets_lt_top μ n)).ne
   -- Step 1: coercion of partial sum = sum of indicators a.e.
   have hcoe_sum : ∀ S : Finset ℕ,
       ⇑(∑ i ∈ S, indicatorConstLp p (hf_meas i |>.inter hS_meas) (hfin_i i).ne 1) =ᵐ[μ]
