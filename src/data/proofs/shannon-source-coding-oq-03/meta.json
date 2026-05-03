@@ -108,11 +108,27 @@
     },
     {
       "id": "aep",
-      "title": "AEP Concentration and Typical Set",
+      "title": "AEP Concentration: Variance and Chebyshev Bound",
       "startLine": 244,
-      "endLine": 290,
-      "summary": "logVar, expVal_marginal_product (2D bilinear), empEnt_variance (fully proved), aep_concentration, typical_set_size_upper.",
-      "mathContext": "The AEP bounds via Chebyshev + variance factorization, and the typical set size upper bound."
+      "endLine": 380,
+      "summary": "logVar, expVal_marginal_product (2D bilinear), empEnt_variance = logVar/n (fully proved via diagonal/off-diagonal split), aep_concentration: P(|empEnt - H| > ε) ≤ logVar/(n·ε²).",
+      "mathContext": "The variance computation is the deepest result: $\\text{Var}[\\text{empEnt}] = \\text{logVar}/n$. Diagonal terms $E[(Z_j - H)^2] = \\text{logVar}$ use $\\texttt{expVal\\_marginal}$; off-diagonal cross terms $E[(Z_{j_1}-H)(Z_{j_2}-H)] = 0$ use $\\texttt{expVal\\_marginal\\_product}$ (independence) + mean-centering. Chebyshev then gives the explicit bound."
+    },
+    {
+      "id": "typical-set",
+      "title": "Typical Set: Definition and Size Upper Bound",
+      "startLine": 382,
+      "endLine": 421,
+      "summary": "typicalSet definition, typical_set_size_upper: |T_ε^(n)| ≤ exp(n·(H+ε)).",
+      "mathContext": "The typical set $T_\\varepsilon^{(n)} = \\{x : |\\text{empEnt}(x) - H(p)| \\leq \\varepsilon\\}$. Each $x \\in T_\\varepsilon^{(n)}$ satisfies $P(x) = e^{-n \\cdot \\text{empEnt}(x)} \\geq e^{-n(H+\\varepsilon)}$, so $|T_\\varepsilon^{(n)}| \\cdot e^{-n(H+\\varepsilon)} \\leq \\sum_{x \\in T} P(x) \\leq 1$, giving $|T_\\varepsilon^{(n)}| \\leq e^{n(H+\\varepsilon)}$. This is the achievability half of Shannon's source coding theorem."
+    },
+    {
+      "id": "concrete",
+      "title": "Concrete Verification: Fair Coin Sanity Check",
+      "startLine": 426,
+      "endLine": 445,
+      "summary": "uniformBin (fair Bernoulli), uniformBin_entropy: H(uniformBin) = log 2. Concrete instance confirming abstract definitions.",
+      "mathContext": "The fair coin distribution $p(0) = p(1) = 1/2$ on $\\text{Fin}\\,2$ satisfies $H = -2 \\cdot (1/2) \\log(1/2) = \\log 2 \\approx 0.693$. The $\\texttt{native\\_decide}$ verification confirms the discrete probability axioms and gives a sanity check that the abstract AEP applies to the simplest non-trivial example."
     }
   ],
   "crossReferences": [
@@ -130,6 +146,21 @@
       "targetId": "laws-of-large-numbers",
       "relationship": "related",
       "description": "The AEP is the information-theoretic LLN: -log P(X₁,...,Xₙ)/n → H(X)"
+    },
+    {
+      "targetId": "shannon-source-coding-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01 addresses the converse of the source coding theorem; AEP provides the achievability direction"
+    },
+    {
+      "targetId": "shannon-source-coding-oq-04",
+      "relationship": "sibling",
+      "description": "OQ-04 extends AEP to variable-length codes; this file provides the fixed-length foundation"
+    },
+    {
+      "targetId": "shannon-channel-coding",
+      "relationship": "related",
+      "description": "The AEP technique (typical sequences) is the core proof technique for Shannon's channel coding theorem"
     }
   ],
   "conclusion": {
@@ -137,7 +168,8 @@
     "implications": "The AEP is the cornerstone of information theory: it operationalizes entropy as the compression limit, provides the probability-1 characterization of typical sequences, and underpins both the achievability and converse of Shannon's source coding theorem.",
     "openQuestions": [
       "Can the AEP be extended to ergodic (non-i.i.d.) sources using Mathlib's ergodic theory?",
-      "Can the concentration bound logVar/(n·ε²) be tightened to an exact large-deviations rate using Cramér's theorem?"
+      "Can the concentration bound logVar/(n·ε²) be tightened to an exact large-deviations rate using Cramér's theorem?",
+      "Can the lower bound |T_ε^(n)| ≥ (1-δ)·exp(n·(H-ε)) for large n (the converse typical set bound) be formalized in Lean, closing the achievability–converse gap for the source coding theorem?"
     ]
   },
   "leanFile": {
