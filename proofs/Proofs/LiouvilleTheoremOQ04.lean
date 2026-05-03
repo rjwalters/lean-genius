@@ -239,7 +239,11 @@ noncomputable def polyCoeffL1 (f : ℤ[X]) : ℕ :=
 
 /-- The L1 norm is positive for nonzero polynomials. -/
 lemma polyCoeffL1_pos (f : ℤ[X]) (hf : f ≠ 0) : 0 < polyCoeffL1 f := by
-  sorry
+  simp only [polyCoeffL1]
+  apply Finset.sum_pos
+  · intro i hi
+    exact Int.natAbs_pos.mpr (mem_support_iff.mp hi)
+  · exact support_nonempty.mpr hf
 
 /-- **Clearing-denominator lower bound** on the p-adic norm of polynomial evaluation.
     For nonzero f ∈ ℤ[X] and rational r/s with f(r/s) ≠ 0 in ℚ:
@@ -255,7 +259,35 @@ lemma padicNorm_poly_eval_lb (f : ℤ[X]) (hf : f ≠ 0) (r s : ℤ) (hs : s ≠
 lemma irred_no_rational_roots (f : ℤ[X]) (hf_irred : Irreducible (f.map (algebraMap ℤ ℚ)))
     (hf_deg : 2 ≤ f.natDegree) (q : ℚ) :
     (f.map (algebraMap ℤ ℚ)).eval q ≠ 0 := by
-  sorry
+  intro hroot
+  -- Factor theorem: (X - q) divides fQ
+  have hdvd : (X - C q) ∣ f.map (algebraMap ℤ ℚ) := dvd_iff_isRoot.mpr hroot
+  obtain ⟨g, hfg⟩ := hdvd
+  -- fQ is nonzero (irreducible elements are nonzero)
+  have hfQ_ne : f.map (algebraMap ℤ ℚ) ≠ 0 := hf_irred.ne_zero
+  -- g ≠ 0 (else fQ = 0)
+  have hg_ne : g ≠ 0 := by
+    rintro rfl; simp only [mul_zero] at hfg; exact hfQ_ne hfg
+  -- natDegree of fQ ≥ 2 (map over injective ring hom preserves degree)
+  have hfQ_deg : 2 ≤ (f.map (algebraMap ℤ ℚ)).natDegree := by
+    have heq : (f.map (algebraMap ℤ ℚ)).natDegree = f.natDegree :=
+      natDegree_map_eq_of_injective (algebraMap ℤ ℚ).injective
+    omega
+  -- natDegree of the factorization: deg(fQ) = 1 + deg(g)
+  have hndeg : (f.map (algebraMap ℤ ℚ)).natDegree = 1 + g.natDegree := by
+    rw [hfg, natDegree_mul (X_sub_C_ne_zero q) hg_ne, natDegree_X_sub_C]
+  -- deg(g) ≥ 1
+  have hg_deg : 1 ≤ g.natDegree := by omega
+  -- X - C q is not a unit (degree 1 > 0)
+  have hXq_not_unit : ¬IsUnit (X - C q) :=
+    not_isUnit_of_degree_pos (by simp [degree_X_sub_C])
+  -- g is not a unit (degree ≥ 1 > 0)
+  have hg_not_unit : ¬IsUnit g :=
+    not_isUnit_of_degree_pos (by rw [degree_eq_natDegree hg_ne]; norm_cast; omega)
+  -- Irreducibility: one factor must be a unit → contradiction
+  rcases hf_irred.isUnit_or_isUnit hfg with h | h
+  · exact hXq_not_unit h
+  · exact hg_not_unit h
 
 /-- **Taylor factorization upper bound**: If f(α) = 0 in ℚ_[p], then by factoring
     f(x) = (x - α)·g(x) over ℚ_[p], we get ‖f(r/s)‖_p ≤ M · ‖α - r/s‖_p
