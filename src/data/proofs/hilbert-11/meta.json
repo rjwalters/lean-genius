@@ -15,7 +15,7 @@
       "advanced"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 7,
     "mathlibDependencies": [
       {
         "theorem": "QuadraticForm",
@@ -30,11 +30,11 @@
     ],
     "dateAdded": "2025-12-29",
     "hilbertNumber": 11,
-    "axiomCount": 5,
-    "lineCount": 494,
-    "assumptions": "5 axiom declarations: diagonalForm, sylvester_law_of_inertia, hasse_minkowski_alt, rational_classification_complete, selmer_curve_no_rational_points. Additionally, 5 theorem-stubs with vacuous True conclusions (proved by trivial, not genuine proofs): weak_hasse_principle, ternary_representation, witt_cancellation, dimension_five_always_isotropic, hilbert_reciprocity. Three definitions use True as a placeholder body (RepresentsZeroOverReals, RepresentsZeroOverPadic, HasseMinkowskiNumberField), so hasse_minkowski_alt reduces to IsIsotropic Q ↔ True — a vacuous axiom. HilbertSymbol is hardcoded to 1 as a placeholder. See Lean source for complete statements.",
+    "axiomCount": 3,
+    "lineCount": 498,
+    "assumptions": "3 axiom declarations: diagonalForm (existence of diagonal quadratic forms), sylvester_law_of_inertia (real classification by signature), selmer_curve_no_rational_points (Selmer's counterexample to Hasse for cubics). Two former axioms (hasse_minkowski_alt, rational_classification_complete) are now placeholder theorems with sorry, since their conclusions reduce to True ↔ True via True-placeholder definitions; converting to sorry makes the gap visible to #check_sorry instead of asserting a vacuous axiom. Five additional placeholder theorems carry sorry: weak_hasse_principle, ternary_representation, witt_cancellation, dimension_five_always_isotropic, hilbert_reciprocity (their formal statements depend on tensor products with R/Q_p that are not yet formalized). Three definitions still use True as a placeholder body (RepresentsZeroOverReals, RepresentsZeroOverPadic, HasseMinkowskiNumberField), and HilbertSymbol is hardcoded to 1. Only four_squares_connection is fully proved (via Mathlib's Nat.sum_four_squares).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Hilbert's 11th Problem, posed in his famous 1900 address at the International Congress of Mathematicians in Paris, asks for the classification of quadratic forms $Q(x_1, \\ldots, x_n) = \\sum a_{ij} x_i x_j$ with coefficients in algebraic number fields. The roots of this question trace to Gauss's *Disquisitiones Arithmeticae* (1801), which classified binary quadratic forms over $\\mathbb{Z}$ using genera and class numbers. Hermann Minkowski, Hilbert's close friend and colleague at Gottingen, proved the local-global principle for ternary quadratic forms in 1890 using his geometry of numbers. Helmut Hasse, a student of Kurt Hensel (inventor of $p$-adic numbers), extended this in his 1923 dissertation to all dimensions, establishing the full Hasse-Minkowski theorem: a quadratic form over $\\mathbb{Q}$ represents zero nontrivially if and only if it does so over $\\mathbb{R}$ and over $\\mathbb{Q}_p$ for every prime $p$. Ernst Witt developed the algebraic theory of quadratic forms in 1937, introducing the Witt ring $W(F)$ and proving Witt cancellation. James Sylvester's law of inertia (1852) had earlier provided the classification over $\\mathbb{R}$ via the signature $(p,q)$. The discovery by Ernst Selmer in 1951 that the cubic curve $3x^3 + 4y^3 + 5z^3 = 0$ violates the Hasse principle showed this beautiful local-global approach is special to quadratic forms. Yuri Manin's introduction of the Brauer-Manin obstruction (1970) provided a systematic explanation for such failures.",
@@ -83,26 +83,26 @@
     {
       "id": "hasse-minkowski",
       "title": "The Hasse-Minkowski Theorem",
-      "summary": "The central result. Defines `RepresentsZeroOverReals` and `RepresentsZeroOverPadic` (placeholder `True` pending tensor product formalization), states `HasseMinkowskiTheorem` as a `def`, and axiomatizes `hasse_minkowski_alt`: $Q$ is isotropic $\\iff$ locally isotropic everywhere.",
+      "summary": "The central result. Defines `RepresentsZeroOverReals` and `RepresentsZeroOverPadic` (placeholder `True` pending tensor product formalization), states `HasseMinkowskiTheorem` as a `def`, and gives `hasse_minkowski_alt` ($Q$ is isotropic $\\iff$ locally isotropic everywhere) as a placeholder theorem with `sorry`.",
       "startLine": 157,
-      "endLine": 210,
-      "mathContext": "Defines `RepresentsZeroOverReals` and `RepresentsZeroOverPadic` (placeholder `True` pending tensor product formalization), states `HasseMinkowskiTheorem` as a `def`, and axiomatizes `hasse_minkowski_alt`: $Q$ is isotropic $\\iff$ locally isotropic everywhere."
+      "endLine": 211,
+      "mathContext": "Defines `RepresentsZeroOverReals` and `RepresentsZeroOverPadic` (placeholder `True` pending tensor product formalization), states `HasseMinkowskiTheorem` as a `def`, and gives `hasse_minkowski_alt` ($Q$ is isotropic $\\iff$ locally isotropic everywhere) as a placeholder theorem with `sorry`."
     },
     {
       "id": "consequences",
       "title": "Consequences and Applications",
-      "summary": "Derives the weak Hasse principle (local representation of $a \\in \\mathbb{Q}^*$ implies global), ternary representation theorem, and axiomatizes **Lagrange's four squares theorem** (1770): $\\forall n \\in \\mathbb{N}, \\exists a,b,c,d \\in \\mathbb{Z}: n = a^2 + b^2 + c^2 + d^2$.",
-      "startLine": 211,
-      "endLine": 253,
-      "mathContext": "Derives the weak Hasse principle (local representation of $a \\in \\mathbb{Q}^*$ implies global), ternary representation theorem, and axiomatizes **Lagrange's four squares theorem** (1770): $\\forall n \\in \\mathbb{N}, \\exists a,b,c,d \\in \\mathbb{Z}: n = a^2 + b^2 + c^2 + d^2$."
+      "summary": "States the weak Hasse principle and ternary representation theorem as placeholder theorems with `sorry` (their formal statements depend on tensor products with $\\mathbb{R}/\\mathbb{Q}_p$ and on Hasse-Minkowski). Proves **Lagrange's four squares theorem** (1770): $\\forall n \\in \\mathbb{N}, \\exists a,b,c,d \\in \\mathbb{Z}: n = a^2 + b^2 + c^2 + d^2$ via Mathlib's `Nat.sum_four_squares`.",
+      "startLine": 212,
+      "endLine": 254,
+      "mathContext": "States the weak Hasse principle and ternary representation theorem as placeholder theorems with `sorry`. Proves **Lagrange's four squares theorem** via Mathlib."
     },
     {
       "id": "classification",
       "title": "Classification Results",
-      "summary": "Defines classification types: `realClassification` (signature), `finiteFieldClassification` (dimension + discriminant class), and `RationalClassification` (dimension, discriminant in $\\mathbb{Q}^*/\\mathbb{Q}^{*2}$, Hasse-Witt invariants $\\varepsilon_v$). Axiomatizes completeness of rational classification.",
-      "startLine": 254,
-      "endLine": 299,
-      "mathContext": "Defines classification types: `realClassification` (signature), `finiteFieldClassification` (dimension + discriminant class), and `RationalClassification` (dimension, discriminant in $\\mathbb{Q}^*/\\mathbb{Q}^{*2}$, Hasse-Witt invariants $\\varepsilon_v$). Axiomatizes completeness of rational classification."
+      "summary": "Defines classification types: `realClassification` (signature), `finiteFieldClassification` (dimension + discriminant class), and `RationalClassification` (dimension, discriminant in $\\mathbb{Q}^*/\\mathbb{Q}^{*2}$, Hasse-Witt invariants $\\varepsilon_v$). States completeness of rational classification as a placeholder theorem with `sorry`.",
+      "startLine": 255,
+      "endLine": 298,
+      "mathContext": "Defines classification types: `realClassification` (signature), `finiteFieldClassification` (dimension + discriminant class), and `RationalClassification` (dimension, discriminant in $\\mathbb{Q}^*/\\mathbb{Q}^{*2}$, Hasse-Witt invariants $\\varepsilon_v$). States completeness of rational classification as a placeholder theorem with `sorry`."
     },
     {
       "id": "witt-ring",
@@ -123,26 +123,26 @@
     {
       "id": "number-fields",
       "title": "Extensions to Number Fields",
-      "summary": "States the Hasse-Minkowski theorem for general number fields $K$. Proves **Meyer's theorem** for $\\dim \\geq 5$: forms in $\\geq 5$ variables are always isotropic over $\\mathbb{Q}_p$. Lists open problems: explicit algorithms, Langlands connections, function fields, higher reciprocity.",
+      "summary": "States the Hasse-Minkowski theorem for general number fields $K$. **Meyer's theorem** for $\\dim \\geq 5$ (every form in $\\geq 5$ variables is isotropic over $\\mathbb{Q}_p$) is stated as a placeholder theorem with `sorry`. Lists open problems: explicit algorithms, Langlands connections, function fields, higher reciprocity.",
       "startLine": 383,
-      "endLine": 420,
-      "mathContext": "States the Hasse-Minkowski theorem for general number fields $K$. Proves **Meyer's theorem** for $\\dim \\geq 5$: forms in $\\geq 5$ variables are always isotropic over $\\mathbb{Q}_p$."
+      "endLine": 423,
+      "mathContext": "States the Hasse-Minkowski theorem for general number fields $K$. **Meyer's theorem** for $\\dim \\geq 5$ stated as a placeholder theorem with `sorry`."
     },
     {
       "id": "hilbert-symbol",
       "title": "Hilbert Symbol and Reciprocity",
-      "summary": "Defines the **Hilbert symbol** $(a,b)_p \\in \\{\\pm 1\\}$ and states **Hilbert reciprocity**: $\\prod_v (a,b)_v = 1$, which generalizes quadratic reciprocity and connects quadratic forms to class field theory.",
-      "startLine": 421,
-      "endLine": 445,
-      "mathContext": "Defines the **Hilbert symbol** $(a,b)_p \\in \\{\\pm 1\\}$ and states **Hilbert reciprocity**: $\\prod_v (a,b)_v = 1$, which generalizes quadratic reciprocity and connects quadratic forms to class field theory."
+      "summary": "Defines the **Hilbert symbol** $(a,b)_p \\in \\{\\pm 1\\}$ (hardcoded to 1 as a placeholder) and states **Hilbert reciprocity** $\\prod_v (a,b)_v = 1$ as a placeholder theorem with `sorry`. The genuine theorem generalizes quadratic reciprocity and connects quadratic forms to class field theory.",
+      "startLine": 424,
+      "endLine": 449,
+      "mathContext": "Defines the **Hilbert symbol** $(a,b)_p \\in \\{\\pm 1\\}$ (hardcoded to 1) and states **Hilbert reciprocity** $\\prod_v (a,b)_v = 1$ as a placeholder theorem with `sorry`."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "The `hilbert11_summary` theorem (proved by `trivial`) synthesizes all components: Hasse-Minkowski theorem, classification theory, Witt ring, Hilbert symbol, Selmer counterexample, and open problems. Includes `#check` commands verifying key definitions.",
-      "startLine": 446,
-      "endLine": 494,
-      "mathContext": "The `hilbert11_summary` theorem (proved by `trivial`) synthesizes all components: Hasse-Minkowski theorem, classification theory, Witt ring, Hilbert symbol, Selmer counterexample, and open problems. Includes `#check` commands verifying key definitions."
+      "summary": "A `hilbert11_summary : (1 : ℕ) + 1 = 2` proved by `rfl` synthesizes all components in its docstring: Hasse-Minkowski theorem, classification theory, Witt ring, Hilbert symbol, Selmer counterexample, and open problems. Includes `#check` commands verifying key definitions.",
+      "startLine": 450,
+      "endLine": 498,
+      "mathContext": "A `hilbert11_summary : (1 : ℕ) + 1 = 2` proved by `rfl` synthesizes all components in its docstring. Includes `#check` commands verifying key definitions."
     }
   ],
   "conclusion": {
@@ -206,12 +206,12 @@
       "Matrix"
     ],
     "namespace": "Hilbert11QuadraticForms",
-    "lineCount": 494,
-    "axiomCount": 5,
-    "theoremCount": 7,
+    "lineCount": 498,
+    "axiomCount": 3,
+    "theoremCount": 9,
     "definitionCount": 17,
     "path": "Proofs/Hilbert11_QuadraticForms.lean",
-    "sorries": 0
+    "sorries": 7
   },
   "references": [
     {
@@ -249,5 +249,5 @@
       "leanType": "forall n : Nat, exists a b c d : Int, n = a^2 + b^2 + c^2 + d^2"
     }
   ],
-  "sorries": 0
+  "sorries": 7
 }
