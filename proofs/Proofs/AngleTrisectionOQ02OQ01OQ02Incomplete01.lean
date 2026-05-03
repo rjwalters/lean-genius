@@ -152,8 +152,8 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
       adjoin_simple_le_iff.mpr ha_in_β
     -- Step B: b + β ∈ ℚ⟮b⟯ ⊔ ℚ⟮β⟯, hence ℚ⟮b+β⟯ ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯
     have hmem : b + β ∈ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯ : IntermediateField ℚ ℂ) :=
-      add_mem (mem_sup_left (mem_adjoin_simple_self ℚ b))
-              (mem_sup_right (mem_adjoin_simple_self ℚ β))
+      add_mem (le_sup_left (mem_adjoin_simple_self ℚ b))
+              (le_sup_right (mem_adjoin_simple_self ℚ β))
     have hle : (ℚ⟮(b + β)⟯ : IntermediateField ℚ ℂ) ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯ :=
       adjoin_simple_le_iff.mpr hmem
     -- Step C (sorry): finrank ℚ ℚ⟮β⟯ ∣ 2^(j+1)
@@ -172,28 +172,56 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
       haveI hST_aβ : IsScalarTower ℚ ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) :=
         IsScalarTower.of_algebraMap_eq (fun r =>
           Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
-      -- Tower law: finrank ℚ ℚ⟮β⟯ = finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ * finrank ℚ ↥ℚ⟮a⟯
-      rw [Module.finrank_mul_finrank ℚ ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯)]
-      rw [pow_succ]
-      -- Suffices: finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2 and finrank ℚ ↥ℚ⟮a⟯ ∣ 2^j
-      exact Nat.mul_dvd_mul
+      -- Tower law: finrank ℚ ℚ⟮β⟯ = finrank ℚ ↥ℚ⟮a⟯ * finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯
+      have htower := Module.finrank_mul_finrank ℚ ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯)
+      rw [htower, pow_succ]
+      -- Suffices: finrank ℚ ↥ℚ⟮a⟯ ∣ 2^j and finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2
+      exact Nat.mul_dvd_mul hj_dvd
         (by -- finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2
          -- β satisfies X² - a over ℚ⟮a⟯ (since β² = a ∈ ℚ⟮a⟯)
-         -- So minpoly ↥ℚ⟮a⟯ β divides X² - a, giving degree ≤ 2
-         -- For simple extension: finrank = natDegree(minpoly)
+         -- So minpoly ↥ℚ⟮a⟯ β divides X² - a, giving natDegree ≤ 2
+         -- For simple extension: finrank = natDegree(minpoly) ≤ 2
          -- Hence finrank ∣ 2
          sorry)
-        hj_dvd
     -- Step D (sorry): finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+k+1)
-    -- Proof plan: tower through ℚ⟮β⟯:
-    --   finrank_join = finrank ↥ℚ⟮β⟯ ↥(join) * finrank ℚ ↥ℚ⟮β⟯
-    --   Need: finrank ↥ℚ⟮β⟯ ↥(join) ∣ 2^k
-    --   This is finrank ↥ℚ⟮β⟯ ↥ℚ⟮β⟯⟮b⟯ ∣ 2^k (since join = ℚ⟮β⟯ adjoin b).
-    --   REQUIRES STRONGER IH on b: not just finrank ℚ ℚ⟮b⟯ ∣ 2^k, but
-    --   ∀ (K : IntermediateField ℚ ℂ) with finrank ℚ K ∣ 2^m, finrank ↥K ↥(K⟮b⟯) ∣ 2^k.
-    --   Current IH (hk_dvd) is too weak — it only gives finrank ℚ ℚ⟮b⟯ ∣ 2^k.
+    --
+    -- MATHEMATICAL GAP ANALYSIS (Session 33, 2026-05-03):
+    --
+    -- Available Mathlib lemmas (Adjoin/Basic.lean, Algebra/Subalgebra/Rank.lean):
+    --   (i)  IntermediateField.finrank_sup_le :
+    --          finrank ℚ (F₁ ⊔ F₂) ≤ finrank ℚ F₁ * finrank ℚ F₂   [BOUND, not ∣]
+    --   (ii) Subalgebra.finrank_left_dvd_finrank_sup_of_free :
+    --          finrank ℚ ↥ℚ⟮β⟯ ∣ finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯)           [wrong direction]
+    --   (iii) Subalgebra.finrank_sup_eq_finrank_right_mul_finrank_of_free :
+    --          finrank ℚ (A ⊔ B) = finrank ℚ B * finrank B (adjoin B A)
+    --
+    -- The fundamental obstacle: (i) gives ≤ but we need ∣.
+    -- Concretely: finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ≤ 2^k * 2^(j+1) = 2^(j+k+1),
+    -- BUT "A ≤ 2^n" does NOT imply "A ∣ 2^n" without knowing A is a power of 2.
+    --
+    -- Using (iii): finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) = finrank ℚ ↥ℚ⟮β⟯ * r
+    --   where r = finrank ↥ℚ⟮β⟯ ↥(Algebra.adjoin ↥ℚ⟮β⟯ ↥ℚ⟮b⟯).
+    -- r ≤ finrank ℚ ↥ℚ⟮b⟯ = 2^m (by scalar restriction of ℚ-basis), but r ∤ 2^k
+    -- is not provable from hk_dvd alone: an irreducible factor of minpoly ℚ b over
+    -- the extension ↥ℚ⟮β⟯ may have degree NOT dividing deg(minpoly ℚ b) (e.g.,
+    -- X³ - 2 over ℝ factors as (X-∛2)(X²+∛2·X+∛4), degrees 1 and 2, both divide 3
+    -- in this case but the general argument fails for non-Galois extensions).
+    --
+    -- CORRECT FIX: reformulate the whole lemma to prove
+    --   "α is constructible → α ∈ F for some F with QuadraticTower ℚ ℂ F n"
+    -- (i.e., α lies in an EXACT quadratic tower). Then finrank ℚ F = 2^n exactly
+    -- (by quadratic_tower_degree from AngleTrisectionOQ02OQ04OQ01.lean), and
+    -- ℚ⟮α⟯ ≤ F gives finrank ℚ ↥ℚ⟮α⟯ ∣ 2^n by the tower law.
+    --
+    -- The QuadraticTower approach works for the sqrt_ext induction step because:
+    --   1. b ∈ F_b (QuadraticTower of height k)
+    --   2. a ∈ F_a (QuadraticTower of height j); β satisfies X²-a over F_a
+    --   3. F_a ⊔ F_b is inside a QuadraticTower of height j+k (tower merge lemma)
+    --   4. Adjoining β over (F_a ⊔ F_b) gives a tower of height j+k+1
+    --      since [F_ab(β) : F_ab] = 1 or 2 (β satisfies X²-a ∈ F_ab)
+    -- The "tower merge" requires ~80 lines by induction on QuadraticTower height.
     have hjoin_dvd : Module.finrank ℚ ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2 ^ (j + k + 1) := by
-      sorry
+      sorry -- BLOCKED: needs QuadraticTower reformulation (see analysis above)
     -- Step E: finrank ℚ ℚ⟮b+β⟯ ∣ finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) via tower law
     -- ℚ⟮b+β⟯ ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯ (hle) gives:
     --   finrank_join = finrank ↥ℚ⟮b+β⟯ ↥(join) * finrank ℚ ℚ⟮b+β⟯
@@ -204,8 +232,8 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
       haveI hST : IsScalarTower ℚ ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) :=
         IsScalarTower.of_algebraMap_eq (fun r =>
           Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
-      exact ⟨Module.finrank ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯),
-             (Module.finrank_mul_finrank ℚ ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯)).symm⟩
+      have htower := Module.finrank_mul_finrank ℚ ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯)
+      exact ⟨Module.finrank ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯), htower.symm⟩
     exact hdvd_le.trans hjoin_dvd
 
 -- ============================================================
@@ -329,14 +357,16 @@ theorem not_constructible_of_bad_degree {p : ℚ[X]} (hp : Irreducible p)
       Polynomial.natDegree_eq_zero_of_isUnit h1
     have h_fr_zero : Module.finrank ℚ ℚ⟮α⟯ = 0 := hmind ▸ hunit_zero
     rw [h_fr_zero] at hn_dvd
-    exact absurd (Nat.eq_zero_of_dvd_of_lt hn_dvd (Nat.two_pow_pos n)) one_ne_zero
+    exact absurd (Nat.zero_dvd.mp hn_dvd) (Nat.two_pow_pos n).ne'
   · -- c is a unit → natDegree p = natDegree (minpoly ℚ α) ∣ 2^n
     apply hdeg
     have hc_deg : c.natDegree = 0 := Polynomial.natDegree_eq_zero_of_isUnit h2
     have hne : minpoly ℚ α ≠ 0 := minpoly.ne_zero hint
     have hcne : c ≠ 0 := IsUnit.ne_zero h2
-    rw [hc, Polynomial.natDegree_mul hne hcne, hmind, hc_deg, add_zero] at hn_dvd
-    obtain ⟨m, _, hm_eq⟩ := (Nat.dvd_prime_pow (by norm_num : Nat.Prime 2)).mp hn_dvd
+    have hp_eq : p.natDegree = (minpoly ℚ α).natDegree := by
+      rw [hc, Polynomial.natDegree_mul hne hcne, hc_deg, add_zero]
+    have hp_dvd : p.natDegree ∣ 2 ^ n := by rw [hp_eq, hmind]; exact hn_dvd
+    obtain ⟨m, _, hm_eq⟩ := (Nat.dvd_prime_pow (by norm_num : Nat.Prime 2)).mp hp_dvd
     exact ⟨m, hm_eq⟩
 
 -- ============================================================
