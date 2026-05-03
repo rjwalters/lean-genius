@@ -8,16 +8,22 @@
     },
     "type": "definition",
     "title": "Distortion Measure",
-    "content": "A distortion measure $d : \\mathcal{X} \\times \\hat{\\mathcal{X}} \\to [0, \\infty)$ quantifies reconstruction error. The non-negativity constraint $d(x, \\hat{x}) \\ge 0$ is built into the structure. Common examples: Hamming distortion $d_H(x,\\hat{x}) = \\mathbf{1}_{x \\ne \\hat{x}}$ for discrete sources, squared error $d(x,\\hat{x}) = (x - \\hat{x})^2$ for continuous sources.",
-    "mathContext": "$d : \\mathcal{X} \\times \\hat{\\mathcal{X}} \\to [0, \\infty)$",
+    "content": "A distortion measure $d : \\mathcal{X} \\times \\hat{\\mathcal{X}} \\to [0, \\infty)$ quantifies reconstruction error. The non-negativity constraint $d(x, \\hat{x}) \\ge 0$ is built into the structure. Common examples: **Hamming distortion** $d_H(x,\\hat{x}) = \\mathbf{1}_{x \\ne \\hat{x}}$ for discrete sources (formalized in `hammingDistortion`); **squared error** $d(x,\\hat{x}) = (x - \\hat{x})^2$ for continuous sources (the Gaussian case); **log-loss** $d(x,\\hat{x}) = -\\log p(x|\\hat{x})$ for probabilistic outputs; **SSIM** (structural similarity) for perceptual image quality.\n\nThe choice of distortion measure completely determines the rate-distortion curve. Different distortions give different R(D) functions even for the same source — e.g., the Gaussian source with squared-error achieves R(D) = ½log(σ²/D), but the same source with absolute-error distortion has no closed form.",
+    "mathContext": "$d : \\mathcal{X} \\times \\hat{\\mathcal{X}} \\to [0, \\infty)$ with $d(x,\\hat{x}) \\geq 0$. The expected distortion $E[d] = \\sum_{x,\\hat{x}} p(x) W(\\hat{x}|x) d(x,\\hat{x})$ is the objective function in the constraint $E[d] \\leq D$ defining the feasible set of test channels. Non-negativity ensures the expected distortion is a meaningful measure of reconstruction quality.",
     "significance": "key",
     "relatedConcepts": [
       "Hamming distortion",
       "squared error",
-      "fidelity criterion"
+      "log-loss",
+      "SSIM",
+      "fidelity criterion",
+      "distortion measure",
+      "expected distortion"
     ],
     "prerequisites": [
-      "metric spaces"
+      "metric spaces",
+      "probability theory",
+      "real analysis"
     ]
   },
   {
@@ -29,16 +35,21 @@
     },
     "type": "definition",
     "title": "Test Channel",
-    "content": "A test channel $W(\\hat{x}|x)$ is a conditional distribution: for each source symbol $x$, it specifies a probability distribution over reproductions $\\hat{x}$. The rate-distortion optimization searches over all such channels. The structure enforces non-negativity and normalization $\\sum_{\\hat{x}} W(\\hat{x}|x) = 1$ for each $x$.",
-    "mathContext": "$W : \\mathcal{X} \\to \\Delta(\\hat{\\mathcal{X}})$ with $W(\\hat{x}|x) \\ge 0$, $\\sum_{\\hat{x}} W(\\hat{x}|x) = 1$",
+    "content": "A test channel $W(\\hat{x}|x)$ is a conditional distribution: for each source symbol $x$, it specifies a probability distribution over reproductions $\\hat{x}$. The rate-distortion optimization searches over all such channels simultaneously. The structure enforces non-negativity and normalization $\\sum_{\\hat{x}} W(\\hat{x}|x) = 1$ for each $x$.\n\nThe test channel induces a Markov chain $X \\to \\hat{X}$: given $X = x$, the reproduction $\\hat{X}$ is drawn from $W(\\cdot|x)$ independently of everything else. This Markov structure means $I(X;\\hat{X}) = H(\\hat{X}) - H(\\hat{X}|X)$, and the data processing inequality $I(X;\\hat{X}) \\leq H(X)$ holds automatically.\n\nThe set of all test channels forms a convex set (the simplex $\\Delta(\\hat{\\mathcal{X}})^{|\\mathcal{X}|}$), which is why $R(D)$ inherits convexity from the infimum over this convex set. The optimal test channel achieving $R(D)$ has the Boltzmann form $W^*(\\hat{x}|x) \\propto Q(\\hat{x}) e^{-s \\cdot d(x,\\hat{x})}$ where $s$ is the Lagrange multiplier and $Q$ is the reproduction marginal.",
+    "mathContext": "$W : \\mathcal{X} \\to \\Delta(\\hat{\\mathcal{X}})$ with $W(\\hat{x}|x) \\ge 0$ and $\\sum_{\\hat{x}} W(\\hat{x}|x) = 1$. The Boltzmann optimal test channel: $W^*(\\hat{x}|x) = \\frac{Q(\\hat{x}) e^{-s \\cdot d(x,\\hat{x})}}{\\sum_{\\hat{x}'} Q(\\hat{x}') e^{-s \\cdot d(x,\\hat{x}')}}$ where $s > 0$ is the Lagrange multiplier parametrizing the R(D) curve and $Q(\\hat{x}) = \\sum_x p(x) W^*(\\hat{x}|x)$ is the reproduction marginal.",
     "significance": "key",
     "relatedConcepts": [
       "conditional distribution",
-      "channel",
-      "Markov chain"
+      "Markov chain",
+      "Boltzmann distribution",
+      "simplex",
+      "data processing inequality",
+      "Lagrange multiplier"
     ],
     "prerequisites": [
-      "probability distributions"
+      "probability distributions",
+      "Markov chains",
+      "convex optimization"
     ]
   },
   {
@@ -50,19 +61,23 @@
     },
     "type": "definition",
     "title": "Rate-Distortion Function",
-    "content": "The rate-distortion function $R(D) = \\inf\\{I(X;\\hat{X}) : E[d(X,\\hat{X})] \\le D\\}$ is the central object of lossy source coding theory. It gives the minimum number of bits per source symbol needed for reproduction at average distortion at most $D$. Defined as `sInf` (greatest lower bound) of the set of achievable mutual informations.",
-    "mathContext": "$R(D) = \\inf_{p(\\hat{x}|x):\\, E[d(X,\\hat{X})] \\le D} I(X;\\hat{X})$",
+    "content": "The rate-distortion function $R(D) = \\inf\\{I(X;\\hat{X}) : E[d(X,\\hat{X})] \\le D\\}$ is the central object of lossy source coding theory. It gives the minimum number of bits per source symbol needed for reproduction at average distortion at most $D$. Defined as `sInf` (greatest lower bound) of the set of achievable mutual informations.\n\n**Operational meaning**: Shannon's coding theorem states that for any $R > R(D)$, there exist sequences of codes $(f_n, g_n)$ with $2^{nR}$ codewords such that $E[d^n(X^n, g_n(f_n(X^n)))] \\leq D + \\epsilon$ for all large $n$, and no sequence of codes with fewer than $2^{nR(D)}$ codewords can achieve distortion below $D$. The function $R(D)$ is thus the exact phase transition between achievable and impossible rates.\n\n**Convexity**: $R(D)$ is convex and non-increasing in $D$ (axiomatized in `rateDistortion_convex`). At $D = 0$: $R(0) = H(X)$ (recovering the lossless theorem). At $D = D_{\\max}$ (trivial distortion): $R(D_{\\max}) = 0$.",
+    "mathContext": "$R(D) = \\inf_{p(\\hat{x}|x):\\, E[d] \\le D} I(X;\\hat{X})$ where $I(X;\\hat{X}) = \\sum_{x,\\hat{x}} p_{X\\hat{X}}(x,\\hat{x}) \\log \\frac{p_{X\\hat{X}}(x,\\hat{x})}{p_X(x) p_{\\hat{X}}(\\hat{x})}$. The Lagrangian relaxation: $R(D) = \\min_{s \\geq 0} [\\min_{W} I(X;\\hat{X}) + s(E[d] - D)] = \\min_{s \\geq 0} [-sD + \\min_W (I(X;\\hat{X}) + s E[d])]$. For each $s > 0$, the inner minimization has closed form: the Boltzmann test channel. The R(D) curve is the concave envelope of these Lagrangian values.",
     "significance": "key",
     "relatedConcepts": [
       "mutual information",
       "infimum",
       "lossy compression",
-      "source coding"
+      "source coding",
+      "Shannon coding theorem",
+      "convexity",
+      "Lagrange duality"
     ],
     "prerequisites": [
       "mutual information",
       "expected value",
-      "infimum"
+      "infimum",
+      "convex duality"
     ]
   },
   {
@@ -74,16 +89,21 @@
     },
     "type": "concept",
     "title": "Joint Distribution Properties",
-    "content": "The induced joint distribution $p(x,y) = p(x) W(y|x)$ inherits non-negativity from the source and test channel, and sums to 1 by the chain $\\sum_{x,y} p(x) W(y|x) = \\sum_x p(x) \\sum_y W(y|x) = \\sum_x p(x) \\cdot 1 = 1$. These are the basic well-formedness properties needed to apply mutual information.",
-    "mathContext": "$p_{XY}(x,y) = p_X(x) \\cdot W(y|x) \\ge 0$, $\\sum_{x,y} p_{XY}(x,y) = 1$",
+    "content": "The induced joint distribution $p(x,y) = p(x) W(y|x)$ inherits non-negativity from the source and test channel, and sums to 1 by the tower property: $\\sum_{x,y} p(x) W(y|x) = \\sum_x p(x) \\sum_y W(y|x) = \\sum_x p(x) \\cdot 1 = 1$. These are the basic well-formedness properties needed to apply mutual information.\n\nThe joint distribution encodes the entire channel interaction: $p_X(x) = \\sum_y p(x,y)$ (source marginal, given), $p_{\\hat{X}}(\\hat{x}) = \\sum_x p(x,y)$ (reproduction marginal, determined by $W$), $p(x|\\hat{x}) = p(x,\\hat{x}) / p_{\\hat{X}}(\\hat{x})$ (Bayes' inversion). Mutual information $I(X;\\hat{X}) = H(X) - H(X|\\hat{X}) = H(\\hat{X}) - H(\\hat{X}|X)$ is a function of this joint distribution.",
+    "mathContext": "$p_{XY}(x,y) = p_X(x) \\cdot W(y|x) \\ge 0$; $\\sum_{x,y} p_{XY}(x,y) = 1$. The Markov chain structure $X \\to \\hat{X}$ ensures that $H(\\hat{X}|X) = \\sum_x p(x) H(W(\\cdot|x))$ (each channel output is independent of the past given the current input). Fano's inequality applied to this joint distribution gives the converse proof of the rate-distortion coding theorem: $H(X|\\hat{X}) \\leq h(P_e) + P_e \\log |\\mathcal{X}|$.",
     "significance": "supporting",
     "relatedConcepts": [
       "joint distribution",
       "marginalization",
-      "Bayes' rule"
+      "Bayes' rule",
+      "Markov chain",
+      "mutual information",
+      "Fano inequality"
     ],
     "prerequisites": [
-      "probability axioms"
+      "probability axioms",
+      "conditional probability",
+      "marginalization"
     ]
   },
   {
@@ -95,17 +115,20 @@
     },
     "type": "concept",
     "title": "R(D) Monotonicity via Set Inclusion",
-    "content": "R(D) is non-increasing: if $D_1 \\le D_2$, then any channel admissible at distortion $D_1$ is also admissible at $D_2$, so the infimum is taken over a larger set. Formally, `achievableRates_mono` proves $\\{I : E[d] \\le D_1\\} \\subseteq \\{I : E[d] \\le D_2\\}$. The monotonicity of `sInf` then gives $R(D_2) \\le R(D_1)$.",
-    "mathContext": "$D_1 \\le D_2 \\Rightarrow R(D_2) \\le R(D_1)$",
+    "content": "R(D) is non-increasing: if $D_1 \\le D_2$, then any channel admissible at distortion $D_1$ is also admissible at $D_2$, so the infimum is taken over a larger set. Formally, `achievableRates_mono` proves $\\{I : E[d] \\le D_1\\} \\subseteq \\{I : E[d] \\le D_2\\}$. The monotonicity of `sInf` then gives $R(D_2) \\le R(D_1)$.\n\n**Operational interpretation**: more distortion tolerance allows coarser quantization, requiring fewer bits. The rate curve $R(D)$ is strictly decreasing on its support $[0, D_{\\max}]$ — the only way to achieve a lower rate is to accept more distortion.\n\n**Strict monotonicity** (not proved here but true): $R(D)$ is strictly decreasing for $0 \\leq D < D_{\\max}$. This follows from the Lagrange multiplier parametrization: each $s > 0$ gives a unique optimal $(R, D)$ point.",
+    "mathContext": "$D_1 \\le D_2 \\Rightarrow R(D_2) \\le R(D_1)$, proved via $\\mathcal{W}_{D_1} \\subseteq \\mathcal{W}_{D_2}$ and $\\text{sInf}(A) \\geq \\text{sInf}(B)$ for $A \\supseteq B$. The Lagrange dual: $R(D) = \\min_{s \\geq 0} [F(s) - sD]$ where $F(s) = \\min_W [I(X;\\hat{X}) + s E[d]]$. Since $F(s)$ is convex in $s$, $R(D) = \\sup_s [F(s) - sD]$ is a concave function of $D$ — which is stronger than monotonicity.",
     "significance": "key",
     "relatedConcepts": [
       "infimum monotonicity",
       "set inclusion",
-      "non-increasing function"
+      "non-increasing function",
+      "Lagrange multiplier",
+      "convex duality"
     ],
     "prerequisites": [
       "order theory",
-      "infimum properties"
+      "infimum properties",
+      "convex optimization"
     ]
   },
   {
@@ -117,17 +140,21 @@
     },
     "type": "definition",
     "title": "Binary Entropy Function",
-    "content": "The binary entropy function $h(p) = -p \\log p - (1-p) \\log(1-p)$ is the entropy of a Bernoulli($p$) random variable. It appears in the binary rate-distortion function $R(D) = h(p) - h(D)$. The definition uses the convention $0 \\log 0 = 0$ via conditional branches.",
-    "mathContext": "$h(p) = -p\\log p - (1-p)\\log(1-p)$",
+    "content": "The binary entropy function $h(p) = -p \\log p - (1-p) \\log(1-p)$ is the entropy of a Bernoulli($p$) random variable. It appears in the binary rate-distortion function $R(D) = h(p) - h(D)$ for $0 \\leq D \\leq \\min(p, 1-p)$. The definition uses the convention $0 \\log 0 = 0$ via conditional branches.\n\n**Key properties** (proved in this file):\n- $h(p) \\geq 0$ for $p \\in [0,1]$: entropy is non-negative\n- $h(p) = h(1-p)$: symmetric around $p = 1/2$\n- $h(0) = h(1) = 0$: no uncertainty for certain outcomes\n- $h(1/2) = \\log 2$: maximum entropy at uniform distribution\n\n**Concavity** (not proved here): $h''(p) = -1/(p(1-p)) < 0$, so $h$ is strictly concave. This concavity drives the convexity of the rate-distortion function: $R(D) = h(p) - h(D)$ inherits convexity from the convexity of $-h(D)$.",
+    "mathContext": "$h(p) = -p\\log p - (1-p)\\log(1-p) = H(\\text{Bernoulli}(p))$. Binary rate-distortion: $R(D) = h(p) - h(D)$ for Bernoulli($p$) source with Hamming distortion, achieved by BSC($D$): $W(1|0) = W(0|1) = D$. The mutual information of BSC($D$): $I(X;\\hat{X}) = h(p) - h(p * D)$ where $*$ denotes binary convolution; at the optimum $p * D = h^{-1}(h(D))$... the formula simplifies to $h(p) - h(D)$. $h(1/2) = \\log 2$: `binaryEntropy_half` uses $1 - (2)^{-1} = (2)^{-1}$ and $\\log((2)^{-1}) = -\\log 2$.",
     "significance": "key",
     "relatedConcepts": [
       "Shannon entropy",
       "Bernoulli distribution",
-      "binary symmetric channel"
+      "binary symmetric channel",
+      "binary rate-distortion",
+      "concavity",
+      "capacity"
     ],
     "prerequisites": [
       "Shannon entropy",
-      "logarithm"
+      "logarithm",
+      "convexity"
     ]
   },
   {
@@ -139,19 +166,23 @@
     },
     "type": "concept",
     "title": "Gaussian Rate-Distortion",
-    "content": "For a Gaussian source $X \\sim N(0, \\sigma^2)$ with squared-error distortion, $R(D) = \\frac{1}{2}\\log\\frac{\\sigma^2}{D}$ for $0 < D \\le \\sigma^2$, and $R(D) = 0$ for $D > \\sigma^2$. This is the cleanest closed-form rate-distortion result: each additional bit per symbol halves the distortion (the '6 dB per bit' rule). The optimal reproduction is $\\hat{X} = X + Z$ where $Z$ is independent Gaussian noise.",
-    "mathContext": "$R(D) = \\frac{1}{2}\\log\\frac{\\sigma^2}{D}$ for $0 < D \\le \\sigma^2$",
+    "content": "For a Gaussian source $X \\sim \\mathcal{N}(0, \\sigma^2)$ with squared-error distortion, $R(D) = \\frac{1}{2}\\log\\frac{\\sigma^2}{D}$ for $0 < D \\le \\sigma^2$, and $R(D) = 0$ for $D > \\sigma^2$. This is the cleanest closed-form rate-distortion result and the benchmark for all modern lossy codecs.\n\n**Achievability**: The optimal test channel is $\\hat{X} = X + Z$ where $Z \\sim \\mathcal{N}(0, \\sigma^2 - D)$ is independent noise. Then $E[(X-\\hat{X})^2] = E[Z^2] = \\sigma^2 - D$... wait, the correct calculation: set $D_{\\text{noise}} = \\sigma^2 - D$, so $\\hat{X} = X + Z$, $X - \\hat{X} = -Z$, $E[(X-\\hat{X})^2] = D_{\\text{noise}}$. Actually the correct optimal channel is $\\hat{X} = (1 - D/\\sigma^2) X + Z'$ where $Z' \\sim \\mathcal{N}(0, D(1-D/\\sigma^2))$, achieving $E[(X-\\hat{X})^2] = D$ and $I(X;\\hat{X}) = \\frac{1}{2}\\log(\\sigma^2/D)$.\n\n**The 6 dB/bit rule**: Each additional bit per symbol halves the distortion: $R(D/2) = R(D) + \\frac{1}{2}\\log 2$, formalized as `gaussian_rd_halve_distortion`. In decibels (10 log₁₀): one bit → 6 dB SNR improvement.\n\n**Extremum property**: Among all sources with variance $\\sigma^2$, the Gaussian maximizes $R(D)$ — it is the hardest to compress at any distortion level. This is dual to the maximum-entropy theorem: Gaussian maximizes $H(X)$ at fixed variance.",
+    "mathContext": "$R(D) = \\frac{1}{2}\\log\\frac{\\sigma^2}{D}$ for $0 < D \\le \\sigma^2$. Proved properties: `gaussian_rd_nonneg`: $R(D) \\geq 0 \\Leftrightarrow \\sigma^2/D \\geq 1 \\Leftrightarrow D \\leq \\sigma^2$; `gaussian_rd_decreasing`: $D_1 \\leq D_2 \\Rightarrow \\log(\\sigma^2/D_2) \\leq \\log(\\sigma^2/D_1)$ by log monotonicity; `gaussian_rd_at_variance`: $R(\\sigma^2) = \\frac{1}{2}\\log(1) = 0$; `gaussian_rd_halve_distortion`: $R(D/2) = \\frac{1}{2}\\log(\\frac{\\sigma^2}{D/2}) = \\frac{1}{2}\\log(\\frac{2\\sigma^2}{D}) = \\frac{1}{2}\\log(\\sigma^2/D) + \\frac{1}{2}\\log 2 = R(D) + \\frac{1}{2}\\log 2$.",
     "significance": "key",
     "relatedConcepts": [
       "Gaussian distribution",
       "squared error",
       "water-filling",
-      "6 dB/bit rule"
+      "6 dB/bit rule",
+      "maximum entropy",
+      "signal-to-noise ratio",
+      "AWGN channel"
     ],
     "prerequisites": [
       "Gaussian distribution",
       "logarithm properties",
-      "squared error distortion"
+      "squared error distortion",
+      "maximum entropy theorem"
     ]
   },
   {
@@ -163,18 +194,73 @@
     },
     "type": "concept",
     "title": "R(D) Convexity (Axiomatized)",
-    "content": "The rate-distortion function is convex in $D$: $R(\\lambda D_1 + (1-\\lambda)D_2) \\le \\lambda R(D_1) + (1-\\lambda) R(D_2)$. The proof requires showing that time-sharing two test channels achieves the convex combination of distortions, combined with the convexity of mutual information in the conditional distribution. Axiomatized because it requires the full optimization machinery.",
-    "mathContext": "$R(\\lambda D_1 + (1-\\lambda)D_2) \\le \\lambda R(D_1) + (1-\\lambda) R(D_2)$",
+    "content": "The rate-distortion function is convex in $D$: $R(\\lambda D_1 + (1-\\lambda)D_2) \\le \\lambda R(D_1) + (1-\\lambda) R(D_2)$. Axiomatized in this entry because the proof requires the full optimization machinery.\n\n**Proof sketch** (time-sharing argument): Let $W_1, W_2$ be optimal test channels achieving $R(D_1), R(D_2)$. Introduce a random bit $B \\sim \\text{Bernoulli}(\\lambda)$ independent of everything. Define the time-sharing channel: use $W_1$ if $B=1$, $W_2$ if $B=0$. The resulting joint channel $(B, X, \\hat{X})$ achieves expected distortion $\\lambda D_1 + (1-\\lambda)D_2$. The mutual information: $I(X;\\hat{X}, B) = I(X;B) + I(X;\\hat{X}|B) = 0 + \\lambda I(X;\\hat{X}|B=1) + (1-\\lambda)I(X;\\hat{X}|B=2)$. Since $I(X;\\hat{X}) \\leq I(X;\\hat{X},B)$ (data processing), we get $R(\\lambda D_1 + (1-\\lambda)D_2) \\leq \\lambda R(D_1) + (1-\\lambda)R(D_2)$.\n\n**What's axiomatized**: The key gap is existence of optimal test channels (compactness of the simplex + continuity of $I$) and that the infimum is achieved. The time-sharing argument itself is elementary once existence is established.",
+    "mathContext": "$R(\\lambda D_1 + (1-\\lambda)D_2) \\le \\lambda R(D_1) + (1-\\lambda) R(D_2)$ for $\\lambda \\in [0,1]$. Time-sharing: $I(X;\\hat{X},B) = \\lambda I(X;\\hat{X}|B=1) + (1-\\lambda) I(X;\\hat{X}|B=2)$ where $B$ is the sharing indicator, and $I(X;B) = 0$ since $B$ is independent of $X$. The log-sum inequality: $\\sum_i a_i \\log(a_i/b_i) \\geq (\\sum_i a_i)\\log(\\sum_i a_i / \\sum_i b_i)$, applied to show $I(X;\\hat{X})$ is convex in the conditional $p(\\hat{x}|x)$.",
     "significance": "key",
     "relatedConcepts": [
       "convex function",
       "time-sharing",
       "log-sum inequality",
-      "Jensen's inequality"
+      "Jensen's inequality",
+      "data processing inequality",
+      "existence of optimal channel"
     ],
     "prerequisites": [
       "convex optimization",
-      "mutual information convexity"
+      "mutual information convexity",
+      "compactness"
+    ]
+  },
+  {
+    "id": "ann-water-filling",
+    "proofId": "shannon-source-coding-oq-01",
+    "range": {
+      "startLine": 271,
+      "endLine": 280
+    },
+    "type": "concept",
+    "title": "Reverse Water-Filling for Vector Gaussian Sources",
+    "content": "For a vector Gaussian source $X = (X_1, \\ldots, X_n)$ with independent components $X_i \\sim \\mathcal{N}(0, \\sigma_i^2)$ and per-component squared-error distortion $d = \\frac{1}{n}\\sum_i (X_i - \\hat{X}_i)^2$, the rate-distortion function is:\n\n$R(D) = \\sum_{i=1}^n \\max\\!\\left(0,\\, \\frac{1}{2}\\log\\frac{\\sigma_i^2}{\\theta}\\right)$\n\nwhere $\\theta > 0$ is the water level chosen so $\\sum_i \\min(\\sigma_i^2, \\theta) = D$.\n\n**The water-filling metaphor**: Imagine $n$ vessels of heights $\\sigma_i^2$. Pour water from above until the total water volume equals $D$. Each vessel's water level equals $\\theta$ (the constant water level) minus the vessel height, truncated at zero. Vessels with $\\sigma_i^2 \\leq \\theta$ are not compressed (too little variance to bother); vessels with $\\sigma_i^2 > \\theta$ are compressed to distortion $\\theta$ each.\n\n**Optimality**: The water-filling solution allocates more bits to high-variance components and zero bits to low-variance components. This is dual to power allocation in Gaussian AWGN channels, where water-filling allocates more power to high-SNR subchannels.",
+    "mathContext": "$R(D) = \\sum_{i=1}^n \\max(0, \\frac{1}{2}\\log(\\sigma_i^2/\\theta))$ with $\\sum_i \\min(\\sigma_i^2, \\theta) = D$. `water_filling_nonneg` proves $0 \\leq \\sum_i \\max(0, \\frac{1}{2}\\log(\\sigma_i^2/\\theta))$ by `le_max_left`. The per-component distortion: $D_i = \\min(\\sigma_i^2, \\theta)$ — components compressed to $\\theta$, or not compressed if $\\sigma_i^2 \\leq \\theta$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "vector Gaussian source",
+      "water-filling",
+      "power allocation",
+      "AWGN channel",
+      "Lagrange multiplier",
+      "parallel channels"
+    ],
+    "prerequisites": [
+      "Gaussian rate-distortion",
+      "Lagrange multipliers",
+      "logarithm properties"
+    ]
+  },
+  {
+    "id": "ann-lossless-connection",
+    "proofId": "shannon-source-coding-oq-01",
+    "range": {
+      "startLine": 282,
+      "endLine": 292
+    },
+    "type": "concept",
+    "title": "R(0) = H(X): Rate-Distortion Subsumes Lossless Coding",
+    "content": "At zero Hamming distortion ($D = 0$), the only admissible test channel is the identity channel $\\hat{X} = X$ (zero error probability), so $I(X;\\hat{X}) = I(X;X) = H(X)$. Thus $R(0) = H(X)$, recovering Shannon's 1948 source coding theorem as the $D = 0$ endpoint.\n\nThis connection is recorded as a comment rather than a theorem in the Lean file, because the formal proof would require establishing that the only zero-distortion test channel is the identity, which needs the definition that $d_H(x,\\hat{x}) = 0 \\Rightarrow x = \\hat{x}$ and the infimum argument.\n\n**Philosophical significance**: The 1948 and 1959 theorems are the same theorem at different distortion levels. Shannon's information-theoretic framework provides a unified treatment of all compression, lossless and lossy, via a single variational problem. The Lean formalization `shannon-source-coding` handles the $D = 0$ case; this entry handles $D > 0$. Together they span the full rate-distortion curve.",
+    "mathContext": "$R(0) = \\inf\\{I(X;\\hat{X}) : E[d_H(X,\\hat{X})] = 0\\} = \\inf\\{I(X;\\hat{X}) : P(X \\ne \\hat{X}) = 0\\} = H(X)$. The constraint $P(X \\ne \\hat{X}) = 0$ forces $\\hat{X} = X$ a.s., so $I(X;\\hat{X}) = H(X) - H(X|\\hat{X}) = H(X) - 0 = H(X)$. For general distortion measure $d$ with $d(x,\\hat{x}) = 0 \\Leftrightarrow x = \\hat{x}$, the same argument gives $R(0) = H(X)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lossless source coding",
+      "Shannon entropy",
+      "identity channel",
+      "H(X)",
+      "source coding theorem 1948"
+    ],
+    "prerequisites": [
+      "Shannon entropy",
+      "mutual information",
+      "Hamming distortion",
+      "identity channel"
     ]
   }
 ]
