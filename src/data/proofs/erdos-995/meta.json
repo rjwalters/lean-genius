@@ -63,7 +63,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 210,
-    "assumptions": "2 axioms: bound_gap_lower_exists, bound_gap_upper_universal. 0 sorries."
+    "assumptions": "2 axioms: bound_gap_lower_exists, bound_gap_upper_universal. 0 sorries.",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Erdős Problem #995 originated from Erdős's 1949 paper 'On the strong law of large numbers', where he discovered that sums ∑f({α n_k}) along lacunary sequences exhibit quasi-random behavior. A sequence n₁ < n₂ < ⋯ is lacunary (Hadamard gap condition) if n_{k+1}/n_k ≥ q > 1.\n\nThe connection to probability runs deep: Kac (1946) proved that cos(2πn_kα) behaves like independent random variables for lacunary {n_k}, satisfying a Central Limit Theorem. This suggested that lacunary sums should obey the Law of the Iterated Logarithm (LIL), giving the conjectured o(N√(log log N)) bound.\n\nErdős established both bounds: a constructive lower bound showing some lacunary sums grow as fast as N(log log N)^{1/2-ε}, and a universal upper bound of o(N(log N)^{1/2+ε}). In his 1964 Diophantine approximation paper, he stated his belief that the lower bound is closer to the truth.\n\nThe gap between (log log N)^{1/2} and (log N)^{1/2} has resisted 75+ years of effort. Partial progress by Berkes (1975), Philipp-Stout (1975), and Aistleitner-Berkes (2010) improved the upper bound in special cases, but the general gap remains one of the longest-standing open problems in metric number theory.",

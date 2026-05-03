@@ -20,7 +20,8 @@
     "axiomCount": 0,
     "lineCount": 318,
     "assumptions": "None. All theorems fully proved. mersenne_coprime_of_coprime proved via Euclidean algorithm on exponents (strong induction). primorial_growth_lower proved for k ≤ 6 (lookup table range). dynamicRange_le_pow, RNS encode/add/mul correctness all verified.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 31
   },
   "overview": {
     "historicalContext": "The Chinese Remainder Theorem (Sun Tzu, ~5th century AD) gave the first mathematical account of solving systems of congruences. Its use for representing large integers via residues was formalized in the modern Residue Number System (RNS) by Harvey Garner in 1959 ('The residue number system'), motivated by parallel arithmetic in early computers. Nikolai Szabó and Richard Tanaka's 1967 monograph 'Residue Arithmetic and Its Applications to Computer Technology' established the field. RNS processors were deployed in NASA applications and DSP hardware in the 1980s for real-time signal processing, where parallel channel arithmetic outperforms carry-propagation arithmetic. Mersenne-friendly bases (using 2^p - 1) were preferred in hardware because modular reduction reduces to bit shifts: x mod (2^p - 1) can be computed by adding the upper and lower halves repeatedly. The identity gcd(2^a - 1, 2^b - 1) = 2^gcd(a,b) - 1 — proved here via the Euclidean algorithm on exponents — ensures that Mersenne numbers at coprime exponents are coprime, a prerequisite for CRT.",

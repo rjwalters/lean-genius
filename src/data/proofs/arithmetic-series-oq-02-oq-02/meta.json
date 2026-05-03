@@ -47,7 +47,8 @@
     ],
     "lineCount": 154,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "The hockey stick identity (also called the Christmas stocking identity) has been known since at least the 17th century as a pattern in Pascal's triangle: summing entries along a diagonal yields the entry one step further on the next diagonal. The Vandermonde convolution identity $\\sum \\binom{m}{j}\\binom{s}{r-j} = \\binom{m+s}{r}$, first published by Alexandre-Théophile Vandermonde in 1772, is one of the most fundamental identities in combinatorics. The 'parallel' variant used here — summing products $\\binom{i+a}{a}\\binom{j+b}{b}$ over pairs with $i+j=n$ — is equivalent to the convolution of two negative binomial (simplicial) sequences and arises naturally in lattice path enumeration: the number of paths from $(0,0)$ to $(n,a+b+1)$ that must pass through a specific column decomposes as exactly this sum. The 2D hockey stick generalizes to triangular-region sums, counting lattice points in higher-dimensional simplicial polytopes.",

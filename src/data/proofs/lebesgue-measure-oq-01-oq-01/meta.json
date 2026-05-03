@@ -23,7 +23,8 @@
     "axiomCount": 0,
     "lineCount": 153,
     "assumptions": "0 axioms, 0 sorries. Fully verified.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Thomae's function was introduced by Carl Johannes Thomae in 1875 and later rediscovered independently many times, earning names like the 'popcorn function', 'raindrop function', and 'ruler function'. It was historically significant as an example of a function that is Riemann integrable despite having a dense set of discontinuities — challenging early intuitions about integration. Dirichlet's 1829 indicator function 1_ℚ, by contrast, is not Riemann integrable. Lebesgue's 1902 theory of integration finally unified these cases: both functions are zero a.e. (since ℚ has measure zero), so both have Lebesgue integral 0. The measure-zero argument, unavailable to Riemann, makes Lebesgue's approach dramatically simpler.",

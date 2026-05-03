@@ -47,7 +47,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 113,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in his work on additive representations of integers. The density of squarefree numbers is $6/\\pi^2 \\approx 0.608$, so heuristically most odd $n - 2^k$ should be squarefree for some $k$. Erdős proved the conjecture holds for almost all odd integers (density 1). The surprise came in 1998 when Andrew Granville and Kannan Soundararajan showed in their paper \"A binary additive problem of Erdős and the order of $2 \\bmod p^2$\" that the conjecture implies infinitely many primes are non-Wieferich — a deep open problem in its own right. Wieferich primes $p$ satisfy $2^{p-1} \\equiv 1 \\pmod{p^2}$; only 1093 (Meissner, 1913) and 3511 (Beeger, 1922) are known despite searches up to $6.7 \\times 10^{15}$. Computational verification has progressed from Odlyzko's $10^7$ bound to Hercher's 2024 verification up to $2^{50} \\approx 1.12 \\times 10^{15}$ using GPU parallelization, finding no counterexample.",

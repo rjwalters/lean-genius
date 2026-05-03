@@ -23,7 +23,8 @@
     "axiomCount": 3,
     "lineCount": 371,
     "assumptions": "3 axioms: ehsss_result (EHSSS partial result for delta>1/16), k4_free_triangle_free_subset (K4-free case for all delta>0), turan_k5_free (Turán bound: K5-free has ≤ 3n²/8 edges). erdos_533_conjecture converted from axiom to def (open conjecture should not be axiom-asserted). Neighborhood structure and K4-free neighborhood lemma proved.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 27
   },
   "overview": {
     "historicalContext": "This problem lies at the intersection of extremal graph theory and Ramsey theory. Erdős and his collaborators investigated how the exclusion of a complete subgraph K_r forces structural properties in dense graphs. By Turán's theorem (1941), a K₅-free graph on n vertices has at most 3n²/8 edges. The deeper question is whether K₅-freeness, combined with sufficient density, forces the existence of large subgraphs with even stronger properties—specifically, triangle-freeness. Erdős, Hajnal, Simonovits, Sós, and Szemerédi (EHSSS) proved this for edge density δ > 1/16 using the Szemerédi regularity lemma. The result was shown to hold for all δ > 0 when K₅ is replaced by K₄. However, the Erdős–Rogers construction (1962) shows the result fails for K₇-free graphs at density 1/4, establishing a phase transition somewhere between K₄ and K₇. Problem 533 asks whether K₅ falls on the 'good' side of this transition.",

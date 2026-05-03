@@ -67,7 +67,8 @@
         "id": "erdos-20",
         "relationship": "The sunflower lemma (Erdős-Ko-Rado) uses similar structural arguments about hypergraph intersections"
       }
-    ]
+    ],
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "This problem originates from Erdős's extensive work on extremal hypergraph theory during the late 1980s and early 1990s. The covering number (transversal number) τ(G) is a fundamental parameter in combinatorial optimization, dual to the matching number by König-type theorems. The question of how local structure constrains global covering was formalized by Erdős, Hajnal, and Tuza in their 1991 paper 'Local constraints ensuring small representing sets' published in the *Journal of Combinatorial Theory, Series A* (vol. 58, pp. 78-84). The problem sits at the intersection of Helly-type combinatorics (where local intersection properties imply global ones) and extremal set theory. András Hajnal was Erdős's longtime collaborator on set-theoretic combinatorics, while Zsolt Tuza contributed deep expertise in hypergraph transversals. The problem is reminiscent of the classical Helly theorem (1923), which states that for convex sets in $\\mathbb{R}^d$, pairwise intersection in every $d+1$ sets implies a common point. Here the 'dimension' is replaced by the uniformity $r$, and the threshold $3r-3$ plays the role of $d+1$. The bounds $(3/16)r \\le t(r) \\le (1/5)r$ have stood unchanged since 1991, making this one of the more persistent open problems in extremal hypergraph theory.",

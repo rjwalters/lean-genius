@@ -54,7 +54,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 224,
-    "assumptions": "3 axiom(s) and 0 sorry(s). See the Lean source for details."
+    "assumptions": "3 axiom(s) and 0 sorry(s). See the Lean source for details.",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "**Erdős Problem #986: Ramsey Number Lower Bounds**\n\nThis problem concerns asymptotic lower bounds for off-diagonal Ramsey numbers R(k,n) where k is fixed and n grows.\n\n**Key History:**\n- Erdős conjectured that R(k,n) ≫ n^(k-1)/(log n)^c for fixed k ≥ 3\n- Spencer (1977): Proved the conjecture for k = 3\n- Ajtai-Komlós-Szemerédi (1980): Upper bound R(k,n) ≪ n^(k-1)/(log n)^(k-2)\n- Bohman-Keevash (2010): Best general lower bound n^((k+1)/2)/...\n- Mattheus-Verstraete (2023): Major breakthrough proving k = 4 case\n\n**Mathematical Setting:**\nR(k,n) is the smallest N such that any 2-coloring of K_N edges contains a monochromatic K_k or K_n. The problem asks how fast R(k,n) grows for fixed k.",

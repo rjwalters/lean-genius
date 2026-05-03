@@ -57,7 +57,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 159,
-    "assumptions": "2 axioms: erdos_803_disproved, erdos_simonovits_polynomial. 0 sorries."
+    "assumptions": "2 axioms: erdos_803_disproved, erdos_simonovits_polynomial. 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "This problem concerns finding 'nearly regular' subgraphs in graphs with many edges. A graph H is D-balanced if its maximum degree is at most D times its minimum degree. Erdős asked whether graphs with n log n edges must contain O(1)-balanced subgraphs with m log m edges — a natural generalization of the Erdős-Simonovits result that works for polynomial density.\n\nThe question remained open until Alon (2008) constructed an elegant counterexample. He showed that for every D > 1, there exist graphs with n log n edges where every D-balanced subgraph has at most O(m√(log m)) edges — far fewer than the conjectured m log m. The gap between √(log m) and log m grows unboundedly.\n\nJanzer and Sudakov (2023) obtained the best positive result in the logarithmic density regime, achieving m√(log m)/(log log m)^(3/2) edges, nearly matching Alon's upper bound. This leaves only a (log log m)^(3/2) factor between the upper and lower bounds, suggesting the true answer is Θ(m√(log m)).",

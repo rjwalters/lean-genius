@@ -23,7 +23,8 @@
     "axiomCount": 0,
     "lineCount": 97,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "This problem asks for the minimum number of distinct circles determined by $n$ points in the plane, not all lying on a single circle. The question is a natural analogue of the Sylvester-Gallai problem for lines, where $n$ non-collinear points determine at least $n$ ordinary lines. For circles, three non-collinear points determine a unique circumcircle, so $n$ points produce at most $\\binom{n}{3}$ candidate circles, but many triples may share a circumcircle. P.D.T.A. Elliott proved in 1967 that for $n > 393$ non-degenerate points (not all concyclic, not all collinear), at least $\\binom{n-1}{2} = (n-1)(n-2)/2$ distinct circles arise. His proof used an inductive point-deletion argument. However, Beniamino Segre showed this bound fails for small $n$: projecting the 8 vertices of a cube onto a suitable plane produces 8 non-degenerate points with fewer than $\\binom{7}{2} = 21$ circles, because the cube's symmetry forces many triples to share circumcircles. The gap between Segre's counterexample and Elliott's threshold ($4 \\leq n \\leq 393$) remains open. The problem connects to Erdős Problems #104 (distinct distances) and #831, and to the broader program in incidence geometry studying how combinatorial structure constrains geometric configurations.",

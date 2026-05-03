@@ -51,7 +51,8 @@
     ],
     "axiomCount": 5,
     "lineCount": 192,
-    "assumptions": "5 axioms: smallestCollection, smallestCollectionMax, erdos_1950_lower_bound, vose_1985_upper_bound, averageCollection. See Lean source for complete statements."
+    "assumptions": "5 axioms: smallestCollection, smallestCollectionMax, erdos_1950_lower_bound, vose_1985_upper_bound, averageCollection. See Lean source for complete statements.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Egyptian fractions - sums of distinct unit fractions 1/n - were used by the ancient Egyptians, who typically represented fractions this way. A classical theorem states every positive rational can be expressed as an Egyptian fraction.\n\n**The Complexity Question**: Given a/b, what is the minimum number N(a,b) of terms needed? And what is the worst case N(b) = max N(a,b) over all numerators?\n\n**Erdős (1950)** established the first bounds in his Hungarian paper:\n- Lower bound: log log b ≪ N(b)\n- Upper bound: N(b) ≪ log b / log log b\n\n**Vose (1985)** dramatically improved the upper bound:\n- N(b) ≪ √(log b)\n\n**Current Gap**: log log b ≪ N(b) ≪ √(log b)\n\nThe problem asks whether the upper bound can be improved to match the lower bound, giving N(b) ≍ log log b. This would completely determine the growth rate.",

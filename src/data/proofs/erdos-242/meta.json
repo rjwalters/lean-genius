@@ -59,7 +59,8 @@
     "externalAttribution": "Proof structure adapted from github.com/Suro-One/auro-zera_Erdos-Straus_proof",
     "axiomCount": 1,
     "lineCount": 590,
-    "assumptions": "1 axiom: dyachenko_box (Dyachenko's Theorem 9.21, arXiv:2511.07465) asserting the existence of ED2 lattice box parameters for primes p = 1 mod 4. Used only for 6 hard residue classes mod 840: {1, 121, 169, 289, 361, 529}. All other cases fully proved."
+    "assumptions": "1 axiom: dyachenko_box (Dyachenko's Theorem 9.21, arXiv:2511.07465) asserting the existence of ED2 lattice box parameters for primes p = 1 mod 4. Used only for 6 hard residue classes mod 840: {1, 121, 169, 289, 361, 529}. All other cases fully proved.",
+    "theoremCount": 50
   },
   "overview": {
     "historicalContext": "The Erdős-Straus conjecture was posed by Paul Erdős and Ernst Straus in 1948. It asks whether every fraction 4/n with n >= 2 can be written as a sum of exactly three unit fractions.\n\nThis is one of the most famous unsolved problems in elementary number theory. Despite its simple statement, it has resisted proof for over 75 years. The conjecture has been verified computationally for all n up to 10^17 (over 100 quadrillion values), yet no general proof exists.\n\nThe problem is related to ancient Egyptian mathematics, where fractions were always written as sums of distinct unit fractions.",

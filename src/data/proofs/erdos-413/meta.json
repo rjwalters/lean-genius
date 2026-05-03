@@ -65,7 +65,8 @@
     "axiomCount": 1,
     "lineCount": 1115,
     "assumptions": "1 axiom: erdos_413_conjecture (open). Two former axioms (erdos_expProd_positive_density, selfridge_bigOmega_barrier) converted to Prop defs — known results not used by any theorem.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 109
   },
   "overview": {
     "historicalContext": "Erdős introduced the concept of 'barriers' for arithmetic functions in his 1979 paper on consecutive integers [Er79d]. A natural number $n$ is a *barrier* for a function $f$ if $m + f(m) \\leq n$ for all $m < n$ — meaning $n$ 'blocks' all trajectories of the iteration $m \\mapsto m + f(m)$ from below. This concept connects additive number theory to discrete dynamical systems.\n\nThe barrier question distinguishes slow-growing from fast-growing arithmetic functions. Euler's totient $\\varphi(n)$ and the sum-of-divisors $\\sigma_1(n)$ grow too quickly: since $\\varphi(n) \\geq 2$ for $n \\geq 3$ and $\\sigma_1(n) \\geq n + 1$ for $n \\geq 2$, neither can have barriers beyond small values. In contrast, $\\omega(n)$ (the number of distinct prime divisors) grows logarithmically — $\\omega(n) \\leq \\log_2 n$ — leaving room for barriers. Erdős proved that the exponent product function $F(n) = \\prod k_i$ (where $n = \\prod p_i^{k_i}$) has barriers with positive density, motivating the conjecture that $\\omega$ behaves similarly.\n\nSelfridge computed that 99840 is the largest $\\Omega$-barrier (counting prime factors with multiplicity) below $10^5$, showing that $\\Omega$-barriers become very sparse. OEIS A005236 lists $\\omega$-barriers: 1, 2, 4, 6, 12, 24, 30, 32, 48, 60, 64, 90, 120, 128, ... The problem connects to Erdős problems #412 (do all trajectories of $n \\mapsto n + \\omega(n)$ eventually merge?) and #414 (similar questions for other additive functions).",

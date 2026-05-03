@@ -2,9 +2,9 @@
   "id": "erdos-307-oq-02",
   "title": "Prime Reciprocal Products: Sorry Elimination",
   "slug": "erdos-307-oq-02",
-  "description": "Eliminates sorries and axioms from Erd\u0151s 307 formalization: proves product_rigidity (was axiom), one_helps_balance, and no_two_three_solution. Documents remaining work: p-adic disjointness and computational size bound.",
+  "description": "Eliminates sorries and axioms from Erdős 307 formalization: proves product_rigidity (was axiom), one_helps_balance, and no_two_three_solution. Documents remaining work: p-adic disjointness and computational size bound.",
   "meta": {
-    "author": "Research (sorry elimination for Erd\u0151s 307)",
+    "author": "Research (sorry elimination for Erdős 307)",
     "sourceUrl": "https://erdosproblems.com/307",
     "date": "2026",
     "status": "verified",
@@ -25,38 +25,39 @@
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "product_rigidity proved (was axiom in parent)",
-      "one_helps_balance: reciprocalSum P > 1 when 1 \u2208 P",
+      "one_helps_balance: reciprocalSum P > 1 when 1 ∈ P",
       "no_two_three_solution: no |P|=2, |Q|=3 prime solution",
       "Documentation of remaining work (p-adic, computational)"
-    ]
+    ],
+    "theoremCount": 5
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #307 asks whether two finite sets of primes $P, Q$ can satisfy $(\\sum_{p \\in P} 1/p)(\\sum_{q \\in Q} 1/q) = 1$. The problem sits in the tradition of Erd\u0151s's many conjectures on reciprocal sums of primes and Egyptian fraction representations, where harmonic divisibility constraints often force small or structured solutions. The condition requires the product of two reciprocal prime sums to equal exactly 1 over \u211a, creating strong arithmetic constraints: for example, the sum $\\sum_{p \\in P} 1/p$ must be a unit fraction or a product of such, and small primes (2, 3) play special roles since including them dominates the sum.\n\nThe parent formalization (OQ-01) axiomatized several partial results. This file (OQ-02) eliminates three of those axiomatic dependencies using Mathlib: product_rigidity (a structural biconditional that was over-axiomatized), one_helps_balance (showing how a single prime contributes to a balanced product), and no_two_three_solution (ruling out solutions where both 2 and 3 appear in the same set). The remaining open parts require p-adic disjointness arguments and computational size bounds on the prime sets.",
-    "problemStatement": "Can the sorry theorems in the Erd\u0151s 307 formalization be proved from Mathlib?",
+    "historicalContext": "Erdős Problem #307 asks whether two finite sets of primes $P, Q$ can satisfy $(\\sum_{p \\in P} 1/p)(\\sum_{q \\in Q} 1/q) = 1$. The problem sits in the tradition of Erdős's many conjectures on reciprocal sums of primes and Egyptian fraction representations, where harmonic divisibility constraints often force small or structured solutions. The condition requires the product of two reciprocal prime sums to equal exactly 1 over ℚ, creating strong arithmetic constraints: for example, the sum $\\sum_{p \\in P} 1/p$ must be a unit fraction or a product of such, and small primes (2, 3) play special roles since including them dominates the sum.\n\nThe parent formalization (OQ-01) axiomatized several partial results. This file (OQ-02) eliminates three of those axiomatic dependencies using Mathlib: product_rigidity (a structural biconditional that was over-axiomatized), one_helps_balance (showing how a single prime contributes to a balanced product), and no_two_three_solution (ruling out solutions where both 2 and 3 appear in the same set). The remaining open parts require p-adic disjointness arguments and computational size bounds on the prime sets.",
+    "problemStatement": "Can the sorry theorems in the Erdős 307 formalization be proved from Mathlib?",
     "text": "Proves 3 of 5 sorry/axiom targets. The remaining two (p-adic disjointness, computational size bound) require infrastructure not yet available.",
     "proofStrategy": "product_rigidity is a trivial iff. one_helps_balance splits the sum at 1. no_two_three_solution uses the tight bound on 3 primes.",
     "keyInsights": [
-      "product_rigidity was a trivial iff (a \u22c5 b = 1 \u2194 b = 1/a), not a deep result \u2014 unnecessary axiom eliminated",
-      "3 distinct primes have reciprocal sum \u2264 31/30 = 1/2 + 1/3 + 1/5 (maximum over {2,3,5})",
-      "Product of bounds: (\u2264 5/6)(\u2264 31/30) = 31/36 < 1, ruling out the |P|=2, |Q|=3 case",
-      "Pigeonhole on primes < 5: only 2 and 3 qualify, so among 3 distinct primes at least one is \u2265 5",
+      "product_rigidity was a trivial iff (a ⋅ b = 1 ↔ b = 1/a), not a deep result — unnecessary axiom eliminated",
+      "3 distinct primes have reciprocal sum ≤ 31/30 = 1/2 + 1/3 + 1/5 (maximum over {2,3,5})",
+      "Product of bounds: (≤ 5/6)(≤ 31/30) = 31/36 < 1, ruling out the |P|=2, |Q|=3 case",
+      "Pigeonhole on primes < 5: only 2 and 3 qualify, so among 3 distinct primes at least one is ≥ 5",
       "The remaining open cases require p-adic valuation theory (disjointness) and computational prime sum bounds (size lower bound)",
-      "The sum \u03a3_{p prime, p\u2264281} 1/p \u2248 2.009 \u2014 the computational bound needed to prove |P \u222a Q| \u2265 60"
+      "The sum Σ_{p prime, p≤281} 1/p ≈ 2.009 — the computational bound needed to prove |P ∪ Q| ≥ 60"
     ]
   },
   "sections": [
     {
       "id": "setup",
       "title": "Setup",
-      "summary": "Defines reciprocalSum, reciprocalProduct, and IsSetOfPrimes \u2014 the three basic predicates for the problem.",
+      "summary": "Defines reciprocalSum, reciprocalProduct, and IsSetOfPrimes — the three basic predicates for the problem.",
       "startLine": 22,
       "endLine": 40,
-      "mathContext": "Erd\u0151s #307 asks: do finite prime sets $P, Q$ with $(\\sum_{p \\in P} 1/p)(\\sum_{q \\in Q} 1/q) = 1$ exist? The reciprocal sum $\\Sigma_{1/P} = \\sum_{p \\in P} 1/p$ over rationals is the key object. Note: $1/2 + 1/3 + 1/5 + 1/7 + 1/11 + 1/13 + \\cdots$ diverges, but any finite sub-sum is $< \\infty$."
+      "mathContext": "Erdős #307 asks: do finite prime sets $P, Q$ with $(\\sum_{p \\in P} 1/p)(\\sum_{q \\in Q} 1/q) = 1$ exist? The reciprocal sum $\\Sigma_{1/P} = \\sum_{p \\in P} 1/p$ over rationals is the key object. Note: $1/2 + 1/3 + 1/5 + 1/7 + 1/11 + 1/13 + \\cdots$ diverges, but any finite sub-sum is $< \\infty$."
     },
     {
       "id": "three-primes",
       "title": "Bound for 3 Primes",
-      "summary": "Proves reciprocal_sum_two_primes_le (\u2264 5/6) and reciprocal_sum_three_primes_le (\u2264 31/30). Uses pigeonhole on primes < 5.",
+      "summary": "Proves reciprocal_sum_two_primes_le (≤ 5/6) and reciprocal_sum_three_primes_le (≤ 31/30). Uses pigeonhole on primes < 5.",
       "startLine": 42,
       "endLine": 149,
       "mathContext": "Among 3 distinct primes, at most 2 can be in $\\{2, 3\\}$ (only primes $< 5$), so at least one is $\\geq 5$. This gives: $\\Sigma_{1/Q} \\leq 1/2 + 1/3 + 1/5 = 31/30$. The `interval_cases` tactic handles the case analysis over primes $< 5$ (values 2, 3) automatically."
@@ -64,7 +65,7 @@
     {
       "id": "no-2-3",
       "title": "No |P|=2, |Q|=3 Solution",
-      "summary": "Proves no prime sets with |P|=2, |Q|=3 can satisfy (\u03a3 1/p)(\u03a3 1/q) = 1. Product of bounds: (5/6)(31/30) = 31/36 < 1.",
+      "summary": "Proves no prime sets with |P|=2, |Q|=3 can satisfy (Σ 1/p)(Σ 1/q) = 1. Product of bounds: (5/6)(31/30) = 31/36 < 1.",
       "startLine": 151,
       "endLine": 172,
       "mathContext": "$(\\Sigma_{1/P})(\\Sigma_{1/Q}) \\leq (5/6)(31/30) = 155/180 = 31/36 \\approx 0.861 < 1$. Since the product of two positive reciprocal sums never reaches 1 in this case, no solution exists. This is proved by `mul_le_mul` followed by `norm_num`."
@@ -72,33 +73,33 @@
     {
       "id": "one-helps",
       "title": "1 Helps Balance",
-      "summary": "Proves if 1 \u2208 P and |P| > 1 then \u03a3 1/P > 1. Splits sum at the element 1 (contributing reciprocal 1/1 = 1).",
+      "summary": "Proves if 1 ∈ P and |P| > 1 then Σ 1/P > 1. Splits sum at the element 1 (contributing reciprocal 1/1 = 1).",
       "startLine": 174,
       "endLine": 208,
       "mathContext": "$\\Sigma_{1/P} = 1/1 + \\sum_{p \\in P \\setminus \\{1\\}} 1/p = 1 + (\\text{positive}) > 1$. Note: 1 is not prime, but the problem may involve $1 \\in P$ in generalized form. The proof uses `Finset.add_sum_erase` to split the sum, then `Finset.sum_pos` for positivity."
     },
     {
       "id": "rigidity",
-      "title": "Product Rigidity (Axiom \u2192 Theorem)",
-      "summary": "Eliminates an unnecessary axiom: product = 1 iff sum Q = 1/sum P. This is just the algebraic fact a\u00b7b=1 \u2194 b=1/a.",
+      "title": "Product Rigidity (Axiom → Theorem)",
+      "summary": "Eliminates an unnecessary axiom: product = 1 iff sum Q = 1/sum P. This is just the algebraic fact a·b=1 ↔ b=1/a.",
       "startLine": 210,
       "endLine": 247,
-      "mathContext": "For $a > 0$: $a \\cdot b = 1 \\iff b = a^{-1}$. Since $\\Sigma_{1/P} > 0$ (nonempty set of primes), `field_simp` and `mul_inv_cancel` prove this directly. The parent formalization incorrectly made this an axiom \u2014 it was never a deep mathematical fact."
+      "mathContext": "For $a > 0$: $a \\cdot b = 1 \\iff b = a^{-1}$. Since $\\Sigma_{1/P} > 0$ (nonempty set of primes), `field_simp` and `mul_inv_cancel` prove this directly. The parent formalization incorrectly made this an axiom — it was never a deep mathematical fact."
     },
     {
       "id": "remaining",
       "title": "Remaining Open Goals",
-      "summary": "Documents the two remaining open goals: prime_sets_disjoint (requires p-adic valuation theory) and prime_set_size_lower_bound (requires computational verification of \u03a3_{p\u2264281} 1/p \u2265 2).",
+      "summary": "Documents the two remaining open goals: prime_sets_disjoint (requires p-adic valuation theory) and prime_set_size_lower_bound (requires computational verification of Σ_{p≤281} 1/p ≥ 2).",
       "startLine": 248,
       "endLine": 298,
-      "mathContext": "Two goals remain: (1) **Disjointness**: if $p_0 \\in P \\cap Q$, the $p_0$-adic valuation of $(\\Sigma_{1/P})(\\Sigma_{1/Q})$ would force a contradiction with the product equaling 1 \u2014 requires Mathlib's $p$-adic theory. (2) **Size bound**: the first 60 primes have $\\sum_{p \\leq 281} 1/p \\approx 2.009 > 2$, requiring verified computation or Mertens estimates."
+      "mathContext": "Two goals remain: (1) **Disjointness**: if $p_0 \\in P \\cap Q$, the $p_0$-adic valuation of $(\\Sigma_{1/P})(\\Sigma_{1/Q})$ would force a contradiction with the product equaling 1 — requires Mathlib's $p$-adic theory. (2) **Size bound**: the first 60 primes have $\\sum_{p \\leq 281} 1/p \\approx 2.009 > 2$, requiring verified computation or Mertens estimates."
     }
   ],
   "conclusion": {
     "summary": "3 of 5 sorry/axiom targets eliminated. Remaining: prime_sets_disjoint (p-adic theory) and prime_set_size_lower_bound (computation).",
     "openQuestions": [
       "Prove prime_sets_disjoint via Mathlib's p-adic valuation",
-      "Compute \u03a3_{p\u2264281} 1/p \u2265 2 for the size bound"
+      "Compute Σ_{p≤281} 1/p ≥ 2 for the size bound"
     ],
     "implications": "Sorry elimination is an important form of formalization progress. This file shows that some 'axioms' in early formalizations are actually provable theorems, and documents precisely which remaining goals require new Mathlib infrastructure (p-adic valuations, Mertens-type estimates for prime reciprocal sums)."
   },
@@ -106,7 +107,7 @@
     {
       "targetId": "erdos-307",
       "relationship": "parent-problem",
-      "description": "Parent: Erd\u0151s 307 formalization"
+      "description": "Parent: Erdős 307 formalization"
     }
   ],
   "leanFile": {

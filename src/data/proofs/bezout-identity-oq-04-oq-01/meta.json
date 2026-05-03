@@ -54,7 +54,8 @@
     "axiomCount": 2,
     "lineCount": 407,
     "assumptions": "Two axioms: snf_exists (every integer matrix has a Smith Normal Form) and snf_solvability_criterion (system Ax=b solvable iff invariant factors divide transformed RHS). Both are well-known theorems; constructive proofs would require implementing the full row/column reduction algorithm for ℤ-matrices.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12
   },
   "overview": {
     "historicalContext": "**Smith Normal Form** was introduced by Henry J.S. Smith in 1861 in his paper \"On Systems of Linear Indeterminate Equations and Congruences\" (Philosophical Transactions of the Royal Society, vol. 151). Smith developed the diagonal reduction to study systems of linear congruences modulo prime powers — the same setting where the structure theorem for abelian groups would later emerge.\n\nThe theory connects to three major mathematical traditions. First, **Hermite Normal Form** (Charles Hermite, 1851): an upper triangular form for integer matrices that predates SNF and remains algorithmically important for bases of integer lattices. SNF is a finer canonical form than HNF. Second, **the Structure Theorem for finitely generated abelian groups** (proved independently by Kronecker 1870 and Frobenius-Stickelberger 1879): every finitely generated abelian group G decomposes as ℤ/d₁ ⊕ ··· ⊕ ℤ/dₖ ⊕ ℤʳ with d₁|d₂|···|dₖ — exactly the invariant factors of any presentation matrix. Smith Normal Form is the constructive engine behind this theorem. Third, **algebraic topology** (20th century): the homology groups of a chain complex are computed via SNF of the boundary matrices, making SNF the fundamental algorithm in computational topology.\n\nThis generalizes Bézout's identity: for the 1×2 matrix [a, b], the sole invariant factor is gcd(a,b), and the SNF solvability criterion reduces to the classical condition gcd(a,b)|c.",

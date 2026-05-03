@@ -25,7 +25,8 @@
     "axiomCount": 4,
     "lineCount": 353,
     "assumptions": "4 axioms: ore_theorem, bondy_theorem, woodall_pancyclic, threshold_tight. See Lean source for complete statements.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 35
   },
   "overview": {
     "historicalContext": "This problem belongs to the rich tradition of extremal graph theory initiated by Turán (1941), who asked: how many edges can a graph on $n$ vertices have without containing a complete subgraph $K_r$? Erdős generalized this to cycles, asking: how many edges force a cycle of a specific length?\n\nThe Hamiltonian cycle case ($k=0$) was resolved by Ore (1961), who proved that if $\\deg(u) + \\deg(v) \\ge n$ for every pair of non-adjacent vertices, then the graph is Hamiltonian. Dirac (1952) had earlier shown that minimum degree $\\ge n/2$ suffices. These are the foundational results of Hamiltonian graph theory.\n\nBondy (1971) extended to $k=1$ and formulated his influential metaconjecture: 'almost any condition implying a graph is Hamiltonian also implies it is pancyclic (has cycles of all lengths $3, 4, \\ldots, n$).' Woodall (1972) proved the complete result for all $k$, showing $f(k) \\le 2k+3$, and confirmed Bondy's metaconjecture in this setting by proving pancyclicity from $3$ to $n-k$.\n\nErdős (1962) had earlier proved that $f(k)$ exists for all $k$ using a compactness argument, but determining its value required the structural analysis of Woodall. The edge threshold $\\binom{n-k-1}{2} + \\binom{k+2}{2} + 1$ is motivated by the extremal construction $K_{n-k-1} \\vee K_{k+2}$ (two cliques sharing a vertex), which has exactly $T(n,k) - 1$ edges and avoids $(n-k)$-cycles.",

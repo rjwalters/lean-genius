@@ -69,7 +69,8 @@
     "axiomCount": 0,
     "lineCount": 357,
     "assumptions": "Fully verified: 0 axioms, 0 sorries remain.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "**The Partial Derangement Formula**\n\nA derangement is a permutation with no fixed points. The hat-check problem asks: if n people throw their hats into a pile and each picks one at random, what is the probability that no one gets their own hat back? The answer is the derangement number $D(n) = n! \\sum_{k=0}^n (-1)^k/k!$.\n\nThe natural generalization asks: how many permutations of $n$ elements have **exactly $k$ fixed points**? The answer is:\n$$S(n,k) = \\binom{n}{k} \\cdot D(n-k)$$\n\nThe proof strategy is elegant:\n1. Choose which $k$ elements are fixed: $\\binom{n}{k}$ ways\n2. The remaining $n-k$ elements must form a derangement: $D(n-k)$ ways\n3. Total: $\\binom{n}{k} \\cdot D(n-k)$\n\nThis bijective proof is made precise in Lean 4 via an explicit `Equiv` between permutations with a given support and derangements of that support.",

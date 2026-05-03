@@ -60,7 +60,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 236,
-    "assumptions": "0 axioms, 0 sorries. Main theorems (alon_bohman_huang_2017, erw_conjecture_false) use True-stub proofs: ERW_conjecture is defined as True placeholder, so results are scaffold only."
+    "assumptions": "0 axioms, 0 sorries. Main theorems (alon_bohman_huang_2017, erw_conjecture_false) use True-stub proofs: ERW_conjecture is defined as True placeholder, so results are scaffold only.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "**Erdos Problem #807: Bipartite Decomposition**\n\nThis problem concerns the relationship between two fundamental graph parameters: the bipartition number and the independence number.\n\n**Key History:**\n- Katona, Recski, Wormald [KRW88]: Original conjecture formulation\n- Graham-Pollak (1971): Classic result that complete graphs need n-1 complete bipartite subgraphs\n- Alon [Al15] (2015): Disproved the conjecture\n- Alon, Bohman, Huang [ABH17] (2017): Strengthened the disproof\n\n**Mathematical Setting:**\n- tau(G) = bipartition number = minimum edge-disjoint complete bipartite subgraphs covering G\n- alpha(G) = independence number = size of largest independent set\n- G(n, 1/2) = Erdos-Renyi random graph with n vertices and edge probability 1/2\n\nThe conjecture asked whether tau(G) = n - alpha(G) almost surely for random graphs. This seemed plausible given connections to the Graham-Pollak theorem.",
@@ -188,17 +189,17 @@
     {
       "targetId": "erdos-578",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: graph-theory, probabilistic-combinatorics, random-graphs"
+      "description": "Related Erdős problem sharing themes: graph-theory, probabilistic-combinatorics, random-graphs"
     },
     {
       "targetId": "erdos-799",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: graph-theory, probabilistic-combinatorics, random-graphs"
+      "description": "Related Erdős problem sharing themes: graph-theory, probabilistic-combinatorics, random-graphs"
     },
     {
       "targetId": "erdos-1067",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: disproved, graph-theory"
+      "description": "Related Erdős problem sharing themes: disproved, graph-theory"
     }
   ],
   "sorries": 0

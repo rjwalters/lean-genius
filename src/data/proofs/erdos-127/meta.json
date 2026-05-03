@@ -22,7 +22,8 @@
     "axiomCount": 1,
     "lineCount": 78,
     "assumptions": "1 axiom: excessF (f(m) = maximum excess over Edwards bound — every m-edge graph has bipartite subgraph with edwardsBound(m) + f(m) edges). 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "Edwards (1973) proved a foundational result in extremal graph theory: every graph with $m$ edges contains a bipartite subgraph with at least $m/2 + (\\sqrt{8m+1} - 1)/8$ edges. His proof uses a simple but elegant greedy algorithm — assign each vertex to the side that maximizes the cut. The bound beats the trivial $m/2$ (from random partition) by $\\Theta(\\sqrt{m})$, and is tight for complete graphs $K_n$.\n\nErdős, Kohayakawa, and Gyárfás then asked a subtle question: is the Edwards bound tight for *all* values of $m$, or only at the triangular numbers $\\binom{n}{2}$? Formally, if $f(m)$ denotes the excess above Edwards' bound, is $f$ bounded or can it grow without limit?\n\nAlon (1996) resolved this by proving $f(n^2/2) \\ge c\\sqrt{n}$, showing that midway between consecutive triangular numbers, Edwards' bound can be substantially improved. He also proved $f(m) \\le C \\cdot m^{1/4}$, establishing that the excess grows at most like $m^{1/4}$. At $m = n^2/2$, both bounds give $\\Theta(\\sqrt{n})$, so the result is essentially sharp.",

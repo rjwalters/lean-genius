@@ -64,7 +64,8 @@
       "Lean 4 / Mathlib (Filter.Tendsto, Asymptotics.IsLittleO, Nat.Prime)"
     ],
     "lineCount": 299,
-    "assumptions": "1 axiom: small_prime_conjecture (conjectured). 1 sorry: conjecture_implies_question2. Proved question1_equiv (rpow/tendsto equivalence) and fixed smallestPrimeCongruentOne (Dirichlet's theorem from Mathlib)."
+    "assumptions": "1 axiom: small_prime_conjecture (conjectured). 1 sorry: conjecture_implies_question2. Proved question1_equiv (rpow/tendsto equivalence) and fixed smallestPrimeCongruentOne (Dirichlet's theorem from Mathlib).",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1979 [Er79e]. Prime chains arise from the multiplicative structure of cyclic groups: if p_{i+1} ≡ 1 (mod p_i), then Z/p_{i+1}Z contains a cyclic subgroup of order p_i.\n\nFord, Konyagin, and Luca [FKL10] conducted an extensive study of prime chain growth, establishing various bounds. The problem connects to Linnik's theorem on the least prime in arithmetic progressions.\n\nRelated: OEIS A061092, Cunningham chains. Cunningham chains, studied by A.J.C. Cunningham in 1881, are special prime chains of the form p, 2p+1, 4p+3, ... where each term is 2·(previous term)+1; these satisfy the divisibility condition and are the subject of longstanding conjectures about their unbounded length. Linnik's theorem (1944) guarantees the existence of primes in arithmetic progressions, and its quantitative form (Linnik's constant L, conjectured to equal 2) directly controls the greedy construction of prime chains.",

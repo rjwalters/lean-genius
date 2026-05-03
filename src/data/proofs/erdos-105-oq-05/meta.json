@@ -53,7 +53,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 206,
-    "assumptions": "2 axioms inherited from Erdos105Problem.lean: xichuan_counterexample (Xichuan's counterexample), beck_szemeredi_trotter_positive (positive result via Szemerédi-Trotter). 0 own axioms. 0 sorries. The previous transitive `axiom thresholdFunction` was replaced with a real `noncomputable def` in the parent Erdos105Problem.lean."
+    "assumptions": "2 axioms inherited from Erdos105Problem.lean: xichuan_counterexample (Xichuan's counterexample), beck_szemeredi_trotter_positive (positive result via Szemerédi-Trotter). 0 own axioms. 0 sorries. The previous transitive `axiom thresholdFunction` was replaced with a real `noncomputable def` in the parent Erdos105Problem.lean.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Erdős Problem #105 asks about rich lines avoiding obstacle points in R². A line through at least 2 points of a configuration A is 'rich'; a set B of obstacle points 'blocks' all rich lines if every rich line contains at least one obstacle. The conjecture that n−4 obstacles suffice was disproved by Xichuan (2024), showing that the threshold function f(n) (minimum obstacles needed to block all rich lines) satisfies cn ≤ f(n) ≤ n−4, but its exact asymptotics remain unknown.\n\nThe Szemerédi-Trotter theorem (1983) bounds the number of incidences between n points and m lines in R² to O(n^{2/3}m^{2/3} + n + m), implying that any point configuration has many 'ordinary' lines (through exactly 2 points). This structural result is the backdrop for #105: obstacles need to cover enough of the rich-line structure. The natural higher-dimensional question — do rich k-flats in R^d exhibit similar blocking behavior? — requires understanding how incidence bounds change when lines and planes replace each other.",

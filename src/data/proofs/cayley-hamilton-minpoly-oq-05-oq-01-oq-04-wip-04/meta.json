@@ -22,7 +22,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 359,
-    "assumptions": "None on the proof itself (axiom-free, sorry-free). The main theorem takes the prime power factorization of minpoly K M as a hypothesis (data: a finite indexed family of monic irreducibles p_i, exponents e_i, pairwise coprimality, and the equation minpoly K M = \u220f i, p i ^ e i). Eliminating this hypothesis to obtain the unconditional theorem requires applying UFD factorization for K[X], which is a separate (open) step.",
+    "assumptions": "None on the proof itself (axiom-free, sorry-free). The main theorem takes the prime power factorization of minpoly K M as a hypothesis (data: a finite indexed family of monic irreducibles p_i, exponents e_i, pairwise coprimality, and the equation minpoly K M = ∏ i, p i ^ e i). Eliminating this hypothesis to obtain the unconditional theorem requires applying UFD factorization for K[X], which is a separate (open) step.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -42,7 +42,7 @@
       },
       {
         "theorem": "UniqueFactorizationMonoid.irreducible_iff_prime",
-        "description": "In a UFD (like K[X]), irreducible \u21d4 prime; used to access Bezout via coprimality",
+        "description": "In a UFD (like K[X]), irreducible ⇔ prime; used to access Bezout via coprimality",
         "module": "Mathlib.RingTheory.UniqueFactorizationDomain"
       },
       {
@@ -52,7 +52,7 @@
       },
       {
         "theorem": "Finset.mul_prod_erase",
-        "description": "Splits \u220f i \u2208 s, f i as f j * \u220f i \u2208 s.erase j, f i for j \u2208 s; used to define the complementary product F_i",
+        "description": "Splits ∏ i ∈ s, f i as f j * ∏ i ∈ s.erase j, f i for j ∈ s; used to define the complementary product F_i",
         "module": "Mathlib.Algebra.BigOperators.Basic"
       },
       {
@@ -62,22 +62,23 @@
       },
       {
         "theorem": "Polynomial.natDegree_le_of_dvd",
-        "description": "If p \u2223 q and q \u2260 0 then natDegree p \u2264 natDegree q; closes the degree contradiction",
+        "description": "If p ∣ q and q ≠ 0 then natDegree p ≤ natDegree q; closes the degree contradiction",
         "module": "Mathlib.Algebra.Polynomial.Degree.Lemmas"
       }
-    ]
+    ],
+    "theoremCount": 8
   },
   "overview": {
-    "historicalContext": "The cyclic vector theorem for nonderogatory matrices (minpoly = charpoly) is classical, dating to Frobenius's rational canonical form (1879). The standard proof routes through the structure theorem for finitely generated modules over a principal ideal domain: K^n decomposes as a direct sum of cyclic K[X]-modules K[X]/(d_1) \u2295 \u2026 \u2295 K[X]/(d_r), and the nonderogatory hypothesis forces r = 1. As of Mathlib 4.26, this PID structure theorem has not been formalized. WIP01 sidestepped the gap with a single axiom (`nonderogatory_similar_to_companion`) capturing rational canonical form. This file (WIP04) eliminates that axiom by avoiding the structure theorem entirely: instead of decomposing K^n as a direct sum of submodules and tracking dimensions, it constructs explicit primary vectors via Bezout/CRT projections and deduces cyclicity from polynomial divisibility alone.",
-    "problemStatement": "Prove that a nonderogatory matrix M over any field K has a cyclic vector \u2014 a vector v such that {v, Mv, M\u00b2v, \u2026, M^(n-1)v} is a basis for K^n \u2014 without depending on the PID module structure theorem. WIP04 proves this under the hypothesis that the minimal polynomial is given as a product of pairwise coprime prime powers minpoly K M = \u220f_{i : Fin k} p_i^{e_i}. The fully unconditional theorem follows by applying UFD factorization for K[X] to obtain such a decomposition, which is left as a follow-up.",
-    "proofStrategy": "Two-step primary decomposition argument. STEP 1 (CONSTRUCT PRIMARY VECTORS): For each prime power factor p_i^{e_i}, define the complementary product F_i := \u220f_{j \u2260 i} p_j^{e_j}. Choose w_i so that (p_i^{e_i-1} \u00b7 F_i)(M) w_i \u2260 0 (which exists because that polynomial has degree < n = deg(minpoly)). Set v_i := F_i(M) w_i. Then p_i^{e_i}(M) v_i = 0 (because minpoly kills everything) and p_i^{e_i-1}(M) v_i \u2260 0 (by choice of w_i). The lemma `pow_irred_dvd_of_annihilated` (proved by induction on the exponent) then gives: any annihilator r of v_i is divisible by p_i^{e_i}. STEP 2 (COMBINE VIA CRT): Set v := \u2211_i v_i. Suppose r(M)v = 0 with deg(r) < n. For each i, the coprimality of p_i^{e_i} and F_i yields a Bezout identity a_i \u00b7 p_i^{e_i} + b_i \u00b7 F_i = 1, so the projection \u03c0_i := (b_i \u00b7 F_i)(M) is the identity on v_i and kills v_j for j \u2260 i. Since polynomial evaluation in M commutes with itself, \u03c0_i \u00b7 r(M) = r(M) \u00b7 \u03c0_i, so r(M) v_i = \u03c0_i(r(M) v) = \u03c0_i(0) = 0. By Step 1, p_i^{e_i} \u2223 r for every i; pairwise coprimality (`Finset.prod_dvd_of_coprime`) then gives \u220f_i p_i^{e_i} = minpoly \u2223 r, contradicting deg(r) < n.",
+    "historicalContext": "The cyclic vector theorem for nonderogatory matrices (minpoly = charpoly) is classical, dating to Frobenius's rational canonical form (1879). The standard proof routes through the structure theorem for finitely generated modules over a principal ideal domain: K^n decomposes as a direct sum of cyclic K[X]-modules K[X]/(d_1) ⊕ … ⊕ K[X]/(d_r), and the nonderogatory hypothesis forces r = 1. As of Mathlib 4.26, this PID structure theorem has not been formalized. WIP01 sidestepped the gap with a single axiom (`nonderogatory_similar_to_companion`) capturing rational canonical form. This file (WIP04) eliminates that axiom by avoiding the structure theorem entirely: instead of decomposing K^n as a direct sum of submodules and tracking dimensions, it constructs explicit primary vectors via Bezout/CRT projections and deduces cyclicity from polynomial divisibility alone.",
+    "problemStatement": "Prove that a nonderogatory matrix M over any field K has a cyclic vector — a vector v such that {v, Mv, M²v, …, M^(n-1)v} is a basis for K^n — without depending on the PID module structure theorem. WIP04 proves this under the hypothesis that the minimal polynomial is given as a product of pairwise coprime prime powers minpoly K M = ∏_{i : Fin k} p_i^{e_i}. The fully unconditional theorem follows by applying UFD factorization for K[X] to obtain such a decomposition, which is left as a follow-up.",
+    "proofStrategy": "Two-step primary decomposition argument. STEP 1 (CONSTRUCT PRIMARY VECTORS): For each prime power factor p_i^{e_i}, define the complementary product F_i := ∏_{j ≠ i} p_j^{e_j}. Choose w_i so that (p_i^{e_i-1} · F_i)(M) w_i ≠ 0 (which exists because that polynomial has degree < n = deg(minpoly)). Set v_i := F_i(M) w_i. Then p_i^{e_i}(M) v_i = 0 (because minpoly kills everything) and p_i^{e_i-1}(M) v_i ≠ 0 (by choice of w_i). The lemma `pow_irred_dvd_of_annihilated` (proved by induction on the exponent) then gives: any annihilator r of v_i is divisible by p_i^{e_i}. STEP 2 (COMBINE VIA CRT): Set v := ∑_i v_i. Suppose r(M)v = 0 with deg(r) < n. For each i, the coprimality of p_i^{e_i} and F_i yields a Bezout identity a_i · p_i^{e_i} + b_i · F_i = 1, so the projection π_i := (b_i · F_i)(M) is the identity on v_i and kills v_j for j ≠ i. Since polynomial evaluation in M commutes with itself, π_i · r(M) = r(M) · π_i, so r(M) v_i = π_i(r(M) v) = π_i(0) = 0. By Step 1, p_i^{e_i} ∣ r for every i; pairwise coprimality (`Finset.prod_dvd_of_coprime`) then gives ∏_i p_i^{e_i} = minpoly ∣ r, contradicting deg(r) < n.",
     "keyInsights": [
-      "The complementary-product construction v_i = F_i(M) w_i avoids the need to work with restrictions of M to primary subspaces. Crucially, the proof never establishes dim(ker(p_i^{e_i}(M))) = deg(p_i^{e_i}) \u2014 only annihilation/non-annihilation properties of v_i are used, not any dimension count.",
-      "The Bezout (CRT) projection \u03c0_i = (b_i \u00b7 F_i)(M) acts purely algebraically: it is the identity on ker(p_i^{e_i}(M)) and zero on ker(p_j^{e_j}(M)) for j \u2260 i, established directly from the Bezout identity without invoking any module-theoretic decomposition.",
-      "The prime power divisibility lemma `pow_irred_dvd_of_annihilated` is proved by induction on the exponent e: at the inductive step, a single application of p(M) shifts the witness from level e+1 to level e, yielding p \u2223 r as a base step and an inductive call on r/p.",
-      "The proof works over any field \u2014 including small finite fields like F_2 \u2014 because every step uses only Bezout in K[X], polynomial divisibility, and commutativity of polynomial evaluation. The classical union-avoidance argument (used in OQ-05-OQ-01 for infinite fields) and the rational canonical form (used in WIP01 as an axiom) are both bypassed.",
-      "The remaining gap to the unconditional theorem is purely the K[X]-factorization step: given a polynomial f \u2208 K[X], produce data k, p_i, e_i with f = \u220f_i p_i^{e_i}, p_i monic irreducible, pairwise coprime. This is an instance of UniqueFactorizationMonoid for K[X] and is a routine \u2014 if technical \u2014 Mathlib exercise.",
-      "**Mathlib upstream relevance.** The PID structure theorem for finitely generated modules (which would supply rational canonical form directly) has been an unmet Mathlib goal for years. The CRT-projection technique used here is the natural special case of that structure theorem when the module has a single generator (cyclic), and it generalizes to a module-theoretic statement: any K[X]-module killed by a product of pairwise coprime ideals decomposes as a direct sum over those ideals. WIP04's Bezout-based projection idiom is therefore not just a workaround for the missing PID theorem \u2014 it is one of the natural building blocks any future Mathlib proof of the structure theorem would have to formalize anyway, and could be extracted as a standalone lemma about cyclic K[X]-modules even before the full structure theorem lands."
+      "The complementary-product construction v_i = F_i(M) w_i avoids the need to work with restrictions of M to primary subspaces. Crucially, the proof never establishes dim(ker(p_i^{e_i}(M))) = deg(p_i^{e_i}) — only annihilation/non-annihilation properties of v_i are used, not any dimension count.",
+      "The Bezout (CRT) projection π_i = (b_i · F_i)(M) acts purely algebraically: it is the identity on ker(p_i^{e_i}(M)) and zero on ker(p_j^{e_j}(M)) for j ≠ i, established directly from the Bezout identity without invoking any module-theoretic decomposition.",
+      "The prime power divisibility lemma `pow_irred_dvd_of_annihilated` is proved by induction on the exponent e: at the inductive step, a single application of p(M) shifts the witness from level e+1 to level e, yielding p ∣ r as a base step and an inductive call on r/p.",
+      "The proof works over any field — including small finite fields like F_2 — because every step uses only Bezout in K[X], polynomial divisibility, and commutativity of polynomial evaluation. The classical union-avoidance argument (used in OQ-05-OQ-01 for infinite fields) and the rational canonical form (used in WIP01 as an axiom) are both bypassed.",
+      "The remaining gap to the unconditional theorem is purely the K[X]-factorization step: given a polynomial f ∈ K[X], produce data k, p_i, e_i with f = ∏_i p_i^{e_i}, p_i monic irreducible, pairwise coprime. This is an instance of UniqueFactorizationMonoid for K[X] and is a routine — if technical — Mathlib exercise.",
+      "**Mathlib upstream relevance.** The PID structure theorem for finitely generated modules (which would supply rational canonical form directly) has been an unmet Mathlib goal for years. The CRT-projection technique used here is the natural special case of that structure theorem when the module has a single generator (cyclic), and it generalizes to a module-theoretic statement: any K[X]-module killed by a product of pairwise coprime ideals decomposes as a direct sum over those ideals. WIP04's Bezout-based projection idiom is therefore not just a workaround for the missing PID theorem — it is one of the natural building blocks any future Mathlib proof of the structure theorem would have to formalize anyway, and could be extracted as a standalone lemma about cyclic K[X]-modules even before the full structure theorem lands."
     ]
   },
   "sections": [
@@ -107,11 +108,11 @@
     },
     {
       "id": "main-theorem",
-      "title": "III. Main Theorem \u2014 General Case",
+      "title": "III. Main Theorem — General Case",
       "startLine": 168,
       "endLine": 327,
-      "summary": "Proves nonderogatory_general_has_cyclic_vector: for any k \u2265 1 prime power factors with the listed coprimality, irreducibility, and product hypotheses, M has a cyclic vector. Constructs primary vectors v_i = F_i(M) w_i, takes v = \u2211 v_i, applies CRT projections to extract r(M) v_i = 0, then prime-power divisibility plus Finset.prod_dvd_of_coprime to derive minpoly \u2223 r and a degree contradiction.",
-      "mathContext": "The proof works in three blocks: degree bookkeeping (deg(p_i^{e_i-1} \u00b7 F_i) < n forces aeval-nonzero matrices), primary vector construction (per-index choice of w_i and v_i), and the CRT closure step (Bezout coefficients per index, projection identities, and the pairwise-coprime divisibility argument). Output: \u2203 v, IsCyclicVector M v."
+      "summary": "Proves nonderogatory_general_has_cyclic_vector: for any k ≥ 1 prime power factors with the listed coprimality, irreducibility, and product hypotheses, M has a cyclic vector. Constructs primary vectors v_i = F_i(M) w_i, takes v = ∑ v_i, applies CRT projections to extract r(M) v_i = 0, then prime-power divisibility plus Finset.prod_dvd_of_coprime to derive minpoly ∣ r and a degree contradiction.",
+      "mathContext": "The proof works in three blocks: degree bookkeeping (deg(p_i^{e_i-1} · F_i) < n forces aeval-nonzero matrices), primary vector construction (per-index choice of w_i and v_i), and the CRT closure step (Bezout coefficients per index, projection identities, and the pairwise-coprime divisibility argument). Output: ∃ v, IsCyclicVector M v."
     },
     {
       "id": "commentary",
@@ -124,10 +125,10 @@
   ],
   "conclusion": {
     "summary": "WIP04 proves the nonderogatory cyclic vector theorem for general k-fold prime power factorizations, axiom-free and sorry-free, using primary decomposition via Bezout projections. The construction avoids the PID module structure theorem (not in Mathlib 4.26) and eliminates the rational canonical form axiom from WIP01. The single remaining gap is producing the prime power factorization of minpoly K M from a Mathlib UFD instance.",
-    "implications": "Combined with WIP02 (squarefree case) and WIP03 (single prime power case), this completes the family-of-cases proof of the nonderogatory cyclic vector theorem under a factored-form hypothesis. The technique \u2014 primary vectors v_i = F_i(M) w_i plus CRT projections plus prime power divisibility \u2014 is a self-contained alternative to the PID structure theorem and could plausibly be ported to Mathlib as a lemma about cyclic K[X]-modules without first formalizing the full structure theorem.",
+    "implications": "Combined with WIP02 (squarefree case) and WIP03 (single prime power case), this completes the family-of-cases proof of the nonderogatory cyclic vector theorem under a factored-form hypothesis. The technique — primary vectors v_i = F_i(M) w_i plus CRT projections plus prime power divisibility — is a self-contained alternative to the PID structure theorem and could plausibly be ported to Mathlib as a lemma about cyclic K[X]-modules without first formalizing the full structure theorem.",
     "openQuestions": [
       "Can the factored-form hypothesis be eliminated by extracting the prime power decomposition of minpoly K M from `UniqueFactorizationMonoid (K[X])`? This is the next concrete step toward the unconditional theorem.",
-      "Does the primary-decomposition + CRT-projection technique generalize to other PIDs (e.g. \u2124-modules), giving a sorry-free proof of the structure theorem for finitely generated modules over a PID under analogous hypotheses?",
+      "Does the primary-decomposition + CRT-projection technique generalize to other PIDs (e.g. ℤ-modules), giving a sorry-free proof of the structure theorem for finitely generated modules over a PID under analogous hypotheses?",
       "Can the construction be made computationally explicit, producing a concrete cyclic vector rather than only an existence statement?"
     ]
   },
@@ -176,7 +177,7 @@
     {
       "targetId": "cayley-hamilton",
       "relationship": "uses",
-      "description": "Cayley\u2013Hamilton theorem: used implicitly via minpoly.aeval (minpoly(M) evaluates to zero) and the nonderogatory condition minpoly = charpoly."
+      "description": "Cayley–Hamilton theorem: used implicitly via minpoly.aeval (minpoly(M) evaluates to zero) and the nonderogatory condition minpoly = charpoly."
     }
   ],
   "sorries": 0

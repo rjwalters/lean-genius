@@ -64,7 +64,8 @@
     "axiomCount": 0,
     "lineCount": 222,
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. The core divisibility $|H| \\mid |G|$ delegates to Mathlib's `Subgroup.card_subgroup_dvd_card` (coset partition argument); all 11 theorems are pedagogical wrappers composing Mathlib lemmas (`orderOf_dvd_card`, `pow_card_eq_one`, `ZMod.card_units_eq_totient`, `isCyclic_of_prime_card`, etc.) with no custom axioms or definitions.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "Joseph-Louis Lagrange proved this theorem in 1771 in his *Reflexions sur la resolution algebrique des equations*, while studying permutation groups in connection with the solvability of polynomial equations by radicals. Lagrange observed that the number of 'values' (arrangements) of a rational function of the roots always divides $n!$, which is essentially the statement that subgroup orders divide the group order for symmetric groups. The theorem was not stated in the language of abstract groups (which didn't exist until the 1830s with Galois and later Cayley); Lagrange worked entirely with permutations. The abstract formulation emerged through the work of Galois (1832), Cayley (1854), and Jordan (1870). The coset-based proof — partitioning $G$ into translates $gH$ — is due to Dedekind. The theorem's converse is famously false: $A_4$ (order 12) has no subgroup of order 6, despite $6 | 12$. The Sylow theorems (1872) provide the best partial converse: subgroups of prime-power order $p^k | |G|$ always exist.",

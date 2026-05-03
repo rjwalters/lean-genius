@@ -57,7 +57,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 221,
-    "assumptions": "1 axiom: roney_dougal_tracey. 0 sorries."
+    "assumptions": "1 axiom: roney_dougal_tracey. 0 sorries.",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Counting subgroups of the symmetric group $S_n$ is a fundamental problem in combinatorial group theory, posed by Erdős and Turán. The problem has two parts: the asymptotic formula for $f(n) = |\\{H \\leq S_n\\}|$ and a 'statistical theorem on their order' (the distribution of $|H|$ as $H$ ranges over subgroups). The first breakthrough came from Pyber (1993), who established $\\log f(n) \\asymp n^2$ — the order of magnitude — using probabilistic arguments about the structure of maximal subgroups. The precise constant eluded researchers for 32 years. Roney-Dougal and Tracey (2025) finally proved $\\log f(n) = (1/16 + o(1))n^2$, showing the dominant contribution comes from elementary abelian 2-subgroups of the wreath product $(\\mathbb{Z}/2\\mathbb{Z}) \\wr S_{\\lfloor n/4 \\rfloor}$. The constant $1/16 = (1/4)^2$ is purely combinatorial: the number of subgroups of $(\\mathbb{Z}/2\\mathbb{Z})^k$ (counted by Gaussian binomial coefficients over $\\mathrm{GF}(2)$) grows as $2^{k^2/4}$, and with $k = n/4$ this gives $n^2/64 \\cdot \\log 2$, which (after careful bookkeeping) yields $n^2/16$.",

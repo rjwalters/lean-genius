@@ -59,7 +59,8 @@
     "axiomCount": 8,
     "lineCount": 236,
     "assumptions": "8 axiom(s) and 16 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 13
   },
   "overview": {
     "historicalContext": "The gap between chromatic number and clique number has been a central theme in graph theory since the 1940s. Tutte (1947) and Zykov (1949) independently constructed triangle-free graphs with arbitrarily large chromatic number, disproving the intuition that local sparsity implies easy colorability. Their recursive constructions showed $\\omega = 2$ is compatible with $\\chi = k$ for any $k$.\n\nErdős transformed the field in 1959 with his celebrated probabilistic proof that graphs of arbitrarily high girth and chromatic number exist—a non-constructive argument that stunned the mathematical community. This result, along with his asymptotic analysis, established $f(n) = \\Theta(n/(\\log n)^2)$ where $f(n) = \\max_{|V(G)|=n} \\chi(G)/\\omega(G)$. The lower bound comes from random graphs $G(n, n^{-1/2})$, which have $\\omega = O(\\sqrt{n} \\log n)$ and $\\chi = \\Omega(\\sqrt{n}/\\log n)$.\n\nMycielski (1955) gave the first explicit construction: a recursive family $M_k$ with $\\omega(M_k) = 2$ and $\\chi(M_k) = k$. Lovász (1978) proved $\\chi(K(n,k)) = n - 2k + 2$ for Kneser graphs using the Borsuk-Ulam theorem, founding topological combinatorics. The Strong Perfect Graph Theorem (Chudnovsky, Robertson, Seymour, Thomas 2006) characterized graphs where $\\chi = \\omega$ always holds, settling Berge's 1961 conjecture after 45 years.\n\nProblem #627 asks whether the normalized function $f(n)/(n/(\\log n)^2)$ converges. If the limit $L$ exists, it lies in $(\\log 2)^2 \\cdot [1/4, 1] \\approx [0.12, 0.48]$. The $4\\times$ gap between these bounds reflects deep uncertainty about the precise constant.",

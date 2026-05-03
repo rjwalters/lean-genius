@@ -37,7 +37,8 @@
     "axiomCount": 0,
     "lineCount": 425,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "The question 'what is the primitive concept of mathematics?' has occupied logicians since Frege. The standard answer—set membership—proved technically successful but philosophically troubling. Benacerraf's problem (why is 2 = {empty, {empty}} rather than {{empty}}?) suggests sets don't capture mathematical essence.\n\nTom Etter, working at the Boundary Institute, proposed a radical alternative: three-place relative identity Id(x,y,z)—read 'x regards y as identical to z'—is the true primitive, with existence derived as distinguishability from non-existence. This formalizes Gian-Carlo Rota's slogan 'Identity precedes existence.'",

@@ -55,7 +55,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 176,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "This problem involves 3-smooth numbers—positive integers whose only prime factors are 2 and 3 (i.e., numbers of the form 2^k · 3^l). Erdős asked whether, for any constant C > 0, the set of integers expressible as sums of distinct 3-smooth numbers with bounded ratio (largest ≤ C times smallest) has natural density zero.\n\nIn 1992, Erdős wrote about his 'silly conjecture' that every integer can be written as a sum of distinct 3-smooth numbers where no summand divides another. This was quickly proved by Jansen and others using a simple induction.\n\nThe main problem was resolved in 2025 by van Doorn and Everts, who proved that ALL integers can be represented with C = 6, completely disproving Erdős's conjecture—the set has density 1, not 0.\n\nThe optimal constant C* remains of interest: Erdős and Lewin (1996) showed C* > 2, and van Doorn and Everts showed C* ≥ 3. It is conjectured that C* > 3^10/2^14 ≈ 3.604 may suffice.",

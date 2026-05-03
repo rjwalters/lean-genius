@@ -63,7 +63,8 @@
       "Conditional expectation",
       "Lebesgue integration"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "The Optional Stopping Theorem emerged from the development of martingale theory in the 20th century. The term 'martingale' originally referred to a betting strategy (double after each loss), attested in French gambling parlance since the 18th century. Jean Ville formalized the mathematical concept in his 1939 thesis *Étude critique de la notion de collectif*, defining a martingale as a sequence of random variables whose conditional expectation equals the current value — the mathematical abstraction of a 'fair game.'\n\nJoseph Doob developed the theory comprehensively in his 1953 masterwork *Stochastic Processes*, establishing the Optional Stopping Theorem as a cornerstone: for any bounded stopping time $\\tau$ in a martingale, $E[X_\\tau] = E[X_0]$. This formalized the intuition that no stopping strategy can beat a fair game. Doob's theorem requires boundedness — a condition that rules out 'play until you win' strategies and ensures the expectations are well-defined.\n\nThe roots of the problem go deeper. Louis Bachelier's 1900 thesis *Théorie de la spéculation* applied proto-martingale reasoning to model stock prices as random walks — anticipating the efficient market hypothesis by over 50 years. Paul Lévy developed much of the probabilistic machinery in the 1930s that Doob later systematized.\n\nThis is Wiedijk's theorem #62 ('You cannot beat a fair game with any strategy'). The Optional Stopping Theorem is foundational for mathematical finance: the First Fundamental Theorem of Asset Pricing (Harrison-Pliska, 1979) shows that arbitrage-free prices are martingales under a risk-neutral measure, making the Optional Stopping Theorem the theoretical basis of derivative pricing.",

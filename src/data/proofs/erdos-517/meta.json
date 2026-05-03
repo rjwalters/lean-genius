@@ -1,10 +1,10 @@
 {
   "id": "erdos-517",
-  "title": "Erd\u0151s Problem #517: Lacunary Entire Functions and Value Distribution",
+  "title": "Erdős Problem #517: Lacunary Entire Functions and Value Distribution",
   "slug": "erdos-517",
-  "description": "Do entire functions with Fabry gaps (n\u2096/k \u2192 \u221e) assume every value infinitely often? The main conjecture is OPEN, but Biernacki proved the stronger Fej\u00e9r gap case.",
+  "description": "Do entire functions with Fabry gaps (nₖ/k → ∞) assume every value infinitely often? The main conjecture is OPEN, but Biernacki proved the stronger Fejér gap case.",
   "meta": {
-    "author": "Fej\u00e9r-P\u00f3lya Conjecture; Biernacki (1928) for Fej\u00e9r gaps",
+    "author": "Fejér-Pólya Conjecture; Biernacki (1928) for Fejér gaps",
     "sourceUrl": "https://erdosproblems.com/517",
     "date": "1928",
     "status": "axiomatized",
@@ -45,41 +45,42 @@
       }
     ],
     "originalContributions": [
-      "Clear formalization of Fabry and Fej\u00e9r gap conditions",
+      "Clear formalization of Fabry and Fejér gap conditions",
       "Statement of the open Fabry gap conjecture",
       "Biernacki's theorem as an axiom with educational documentation",
-      "Verified example showing exponential sequences have Fej\u00e9r gaps"
+      "Verified example showing exponential sequences have Fejér gaps"
     ],
     "dateAdded": "2025-12-22",
     "lineCount": 176,
     "prerequisites": [
       "Complex analysis: entire functions, power series",
-      "Lacunary (gap) series and Fabry/Fej\u00e9r gap conditions",
-      "Summability conditions (\u22111/n\u2096 convergence)",
+      "Lacunary (gap) series and Fabry/Fejér gap conditions",
+      "Summability conditions (∑1/nₖ convergence)",
       "Value distribution theory (Picard/Borel)",
       "Basic series convergence from Mathlib"
     ],
     "axiomCount": 1,
     "assumptions": [
-      "biernacki_theorem: Under Fej\u00e9r gaps (\u22111/n\u2096 < \u221e), entire functions assume every value infinitely often. Deep complex analysis result beyond Mathlib."
-    ]
+      "biernacki_theorem: Under Fejér gaps (∑1/nₖ < ∞), entire functions assume every value infinitely often. Deep complex analysis result beyond Mathlib."
+    ],
+    "theoremCount": 3
   },
   "overview": {
-    "historicalContext": "This problem concerns lacunary power series - series f(z) = \u2211 a\u2096z^{n\u2096} where the exponents have gaps. The question of how these gaps affect value distribution goes back to the early 20th century.\n\nFej\u00e9r (1908) proved that if \u22111/n\u2096 < \u221e, the function assumes every value at least once. Biernacki (1928) strengthened this to show every value is assumed infinitely often under the same condition.\n\nThe Fej\u00e9r-P\u00f3lya conjecture asks whether the weaker Fabry gap condition (n\u2096/k \u2192 \u221e) is sufficient. P\u00f3lya (1929) proved partial results for functions of finite order, but the general case remains open. This is a fundamental question connecting gap conditions in power series to complex function theory.",
-    "problemStatement": "**Conjecture (Fej\u00e9r-P\u00f3lya)**: Let $f(z) = \\sum_{k=1}^{\\infty} a_k z^{n_k}$ be an entire function with $a_k \\neq 0$. If the exponents satisfy the **Fabry gap condition** $n_k/k \\to \\infty$, does $f(z)$ assume every complex value infinitely often?\n\n**Status**: OPEN\n\n**Related Result (Biernacki 1928)**: Under the stronger **Fej\u00e9r gap condition** $\\sum 1/n_k < \\infty$, the answer is YES.",
-    "text": "Do entire functions with Fabry gaps (n\u2096/k \u2192 \u221e) assume every value infinitely often? The main conjecture is OPEN, but Biernacki proved the stronger Fej\u00e9r gap case.",
-    "proofStrategy": "We formalize both the open conjecture and the related solved result:\n\n1. **Gap Conditions**: Define HasFabryGaps (n\u2096/k \u2192 \u221e) and HasFejerGaps (\u22111/n\u2096 < \u221e)\n\n2. **Hierarchy**: Prove that Fej\u00e9r gaps imply Fabry gaps (the converse is false)\n\n3. **Open Conjecture**: State the Fabry gap conjecture as a Prop that can be true or false\n\n4. **Biernacki's Theorem**: State the solved Fej\u00e9r gap case as an axiom, since the complex analysis proof is beyond current Mathlib\n\n5. **Example**: Verify that n\u2096 = 2^k has Fej\u00e9r gaps, demonstrating the applicability of Biernacki's theorem",
+    "historicalContext": "This problem concerns lacunary power series - series f(z) = ∑ aₖz^{nₖ} where the exponents have gaps. The question of how these gaps affect value distribution goes back to the early 20th century.\n\nFejér (1908) proved that if ∑1/nₖ < ∞, the function assumes every value at least once. Biernacki (1928) strengthened this to show every value is assumed infinitely often under the same condition.\n\nThe Fejér-Pólya conjecture asks whether the weaker Fabry gap condition (nₖ/k → ∞) is sufficient. Pólya (1929) proved partial results for functions of finite order, but the general case remains open. This is a fundamental question connecting gap conditions in power series to complex function theory.",
+    "problemStatement": "**Conjecture (Fejér-Pólya)**: Let $f(z) = \\sum_{k=1}^{\\infty} a_k z^{n_k}$ be an entire function with $a_k \\neq 0$. If the exponents satisfy the **Fabry gap condition** $n_k/k \\to \\infty$, does $f(z)$ assume every complex value infinitely often?\n\n**Status**: OPEN\n\n**Related Result (Biernacki 1928)**: Under the stronger **Fejér gap condition** $\\sum 1/n_k < \\infty$, the answer is YES.",
+    "text": "Do entire functions with Fabry gaps (nₖ/k → ∞) assume every value infinitely often? The main conjecture is OPEN, but Biernacki proved the stronger Fejér gap case.",
+    "proofStrategy": "We formalize both the open conjecture and the related solved result:\n\n1. **Gap Conditions**: Define HasFabryGaps (nₖ/k → ∞) and HasFejerGaps (∑1/nₖ < ∞)\n\n2. **Hierarchy**: Prove that Fejér gaps imply Fabry gaps (the converse is false)\n\n3. **Open Conjecture**: State the Fabry gap conjecture as a Prop that can be true or false\n\n4. **Biernacki's Theorem**: State the solved Fejér gap case as an axiom, since the complex analysis proof is beyond current Mathlib\n\n5. **Example**: Verify that nₖ = 2^k has Fejér gaps, demonstrating the applicability of Biernacki's theorem",
     "keyInsights": [
       "**Lacunary series**: Power series with gaps in exponents have special properties. The 'density' of gaps determines value distribution behavior.",
-      "**Gap hierarchy**: Fej\u00e9r gaps (\u22111/n\u2096 < \u221e) \u2282 Fabry gaps (n\u2096/k \u2192 \u221e). The former is easier to analyze but more restrictive.",
+      "**Gap hierarchy**: Fejér gaps (∑1/nₖ < ∞) ⊂ Fabry gaps (nₖ/k → ∞). The former is easier to analyze but more restrictive.",
       "**Value distribution**: Picard's theorem says entire functions miss at most one value. Gap conditions can force every value to be assumed infinitely often.",
       "**The gap**: Despite 100+ years of study, we don't know if the weaker Fabry condition suffices for infinite value coverage.",
-      "**Nevanlinna-theoretic perspective**: The counting function $n(r,w)$ of $w$-points in $|z| < r$ grows without bound for each $w$ under Fej\u00e9r gaps. The open question is whether Fabry gaps \u2014 which only control the *rate* of exponent growth rather than their summability \u2014 still force this growth for every value simultaneously."
+      "**Nevanlinna-theoretic perspective**: The counting function $n(r,w)$ of $w$-points in $|z| < r$ grows without bound for each $w$ under Fejér gaps. The open question is whether Fabry gaps — which only control the *rate* of exponent growth rather than their summability — still force this growth for every value simultaneously."
     ],
     "prerequisites": [
       "Complex analysis: entire functions, power series",
-      "Lacunary (gap) series and Fabry/Fej\u00e9r gap conditions",
-      "Summability conditions (\u22111/n\u2096 convergence)",
+      "Lacunary (gap) series and Fabry/Fejér gap conditions",
+      "Summability conditions (∑1/nₖ convergence)",
       "Value distribution theory (Picard/Borel)",
       "Basic series convergence from Mathlib"
     ]
@@ -90,16 +91,16 @@
       "title": "File Headers and Imports",
       "startLine": 1,
       "endLine": 47,
-      "summary": "Aristotle proof attribution header, module docstring with problem statement, historical references (Fej\u00e9r 1908, Biernacki 1928, P\u00f3lya 1929), and Mathlib imports.",
-      "mathContext": "Problem: if $f(z) = \\sum a_k z^{n_k}$ is entire with Fabry gaps ($n_k/k \\to \\infty$), does $f$ assume every value infinitely often? **OPEN.** Solved under stronger Fej\u00e9r gaps ($\\sum 1/n_k < \\infty$)."
+      "summary": "Aristotle proof attribution header, module docstring with problem statement, historical references (Fejér 1908, Biernacki 1928, Pólya 1929), and Mathlib imports.",
+      "mathContext": "Problem: if $f(z) = \\sum a_k z^{n_k}$ is entire with Fabry gaps ($n_k/k \\to \\infty$), does $f$ assume every value infinitely often? **OPEN.** Solved under stronger Fejér gaps ($\\sum 1/n_k < \\infty$)."
     },
     {
       "id": "gap-conditions",
       "title": "Gap Conditions and Their Relationship",
       "startLine": 48,
       "endLine": 101,
-      "summary": "Defines HasFabryGaps (n\u2096/k \u2192 \u221e) and HasFejerGaps (\u22111/n\u2096 < \u221e), then proves HasFejerGaps.hasFabryGaps: Fej\u00e9r gaps imply Fabry gaps via a squeeze argument on (n\u2096)\u207b\u00b9\u00b7k \u2192 0. This theorem was proved by Aristotle.",
-      "mathContext": "Fabry: $n_k/k \\to \\infty$ (gaps grow superlinearly). Fej\u00e9r: $\\sum 1/n_k < \\infty$ (reciprocals summable). Implication: $\\sum 1/n_k < \\infty \\Rightarrow n_k/k \\to \\infty$. Proof: if $\\sum (n_k)^{-1}$ converges, a squeeze via $\\sum_{i \\in [k/2, k)} (n_i)^{-1} \\geq (k/2)(n_k)^{-1}$ shows $(n_k)^{-1} \\cdot k \\to 0$."
+      "summary": "Defines HasFabryGaps (nₖ/k → ∞) and HasFejerGaps (∑1/nₖ < ∞), then proves HasFejerGaps.hasFabryGaps: Fejér gaps imply Fabry gaps via a squeeze argument on (nₖ)⁻¹·k → 0. This theorem was proved by Aristotle.",
+      "mathContext": "Fabry: $n_k/k \\to \\infty$ (gaps grow superlinearly). Fejér: $\\sum 1/n_k < \\infty$ (reciprocals summable). Implication: $\\sum 1/n_k < \\infty \\Rightarrow n_k/k \\to \\infty$. Proof: if $\\sum (n_k)^{-1}$ converges, a squeeze via $\\sum_{i \\in [k/2, k)} (n_i)^{-1} \\geq (k/2)(n_k)^{-1}$ shows $(n_k)^{-1} \\cdot k \\to 0$."
     },
     {
       "id": "main-conjecture",
@@ -114,7 +115,7 @@
       "title": "Biernacki's Theorem (1928)",
       "startLine": 128,
       "endLine": 150,
-      "summary": "States Biernacki's theorem as an axiom: under Fej\u00e9r gaps, entire functions assume every value infinitely often. Axiomatized because the proof requires deep complex analysis (Picard theory, growth estimates) beyond Mathlib.",
+      "summary": "States Biernacki's theorem as an axiom: under Fejér gaps, entire functions assume every value infinitely often. Axiomatized because the proof requires deep complex analysis (Picard theory, growth estimates) beyond Mathlib.",
       "mathContext": "Axiom `biernacki_theorem`: $\\text{HasFejerGaps}(n) \\wedge (\\forall z,\\; \\sum a_k z^{n_k} = f(z)) \\Rightarrow \\forall w,\\; \\{z : f(z) = w\\}$ is infinite. Combines Picard's theorem, lacunary series boundary behavior, and growth analysis."
     },
     {
@@ -122,15 +123,15 @@
       "title": "Example: Exponential Gaps and Application",
       "startLine": 151,
       "endLine": 176,
-      "summary": "Verifies n\u2096 = 2^k has Fej\u00e9r gaps (geometric series \u22111/2^k converges), then applies Biernacki's theorem to conclude any entire function f(z) = \u2211 a\u2096z^{2^k} assumes every value infinitely often.",
+      "summary": "Verifies nₖ = 2^k has Fejér gaps (geometric series ∑1/2^k converges), then applies Biernacki's theorem to conclude any entire function f(z) = ∑ aₖz^{2^k} assumes every value infinitely often.",
       "mathContext": "$n_k = 2^k$: strictly increasing (powers of 2), and $\\sum 2^{-k} = 1 < \\infty$ (geometric series). By Biernacki: $\\forall w \\in \\mathbb{C},\\; |\\{z : f(z) = w\\}| = \\infty$ for any entire $f(z) = \\sum a_k z^{2^k}$."
     }
   ],
   "conclusion": {
-    "summary": "We formalize the Fej\u00e9r-P\u00f3lya conjecture on lacunary entire functions. The main question - whether Fabry gaps suffice for infinite value coverage - remains open after over a century. We state Biernacki's 1928 theorem for the stronger Fej\u00e9r gap condition and demonstrate its application to exponential sequences.",
+    "summary": "We formalize the Fejér-Pólya conjecture on lacunary entire functions. The main question - whether Fabry gaps suffice for infinite value coverage - remains open after over a century. We state Biernacki's 1928 theorem for the stronger Fejér gap condition and demonstrate its application to exponential sequences.",
     "implications": "This problem sits at the intersection of gap Tauberian theory and Nevanlinna theory. Its resolution would clarify the precise relationship between power series gaps and value distribution in complex analysis.",
     "openQuestions": [
-      "Does the Fabry gap condition n\u2096/k \u2192 \u221e imply every value is assumed infinitely often?",
+      "Does the Fabry gap condition nₖ/k → ∞ imply every value is assumed infinitely often?",
       "What is the weakest gap condition that guarantees infinite value coverage?",
       "Can techniques from Nevanlinna theory be extended to handle Fabry gaps?"
     ]
@@ -154,22 +155,22 @@
   },
   "references": [
     {
-      "authors": "Fej\u00e9r, Leopold",
-      "title": "\u00dcber die Wurzel vom kleinsten absoluten Betrage einer algebraischen Gleichung",
+      "authors": "Fejér, Leopold",
+      "title": "Über die Wurzel vom kleinsten absoluten Betrage einer algebraischen Gleichung",
       "year": "1908",
       "venue": "Mathematische Annalen, 65, pp. 413-423",
-      "note": "Proved entire functions with \u22111/n\u2096 < \u221e assume every value at least once"
+      "note": "Proved entire functions with ∑1/nₖ < ∞ assume every value at least once"
     },
     {
-      "authors": "Biernacki, Mieczys\u0142aw",
-      "title": "Sur les \u00e9quations alg\u00e9briques contenant des param\u00e8tres arbitraires",
+      "authors": "Biernacki, Mieczysław",
+      "title": "Sur les équations algébriques contenant des paramètres arbitraires",
       "year": "1928",
-      "venue": "Bulletin de l'Acad\u00e9mie Polonaise des Sciences",
-      "note": "Strengthened Fej\u00e9r's result: under \u22111/n\u2096 < \u221e, every value is assumed infinitely often"
+      "venue": "Bulletin de l'Académie Polonaise des Sciences",
+      "note": "Strengthened Fejér's result: under ∑1/nₖ < ∞, every value is assumed infinitely often"
     },
     {
-      "authors": "P\u00f3lya, George",
-      "title": "Untersuchungen \u00fcber L\u00fccken und Singularit\u00e4ten von Potenzreihen",
+      "authors": "Pólya, George",
+      "title": "Untersuchungen über Lücken und Singularitäten von Potenzreihen",
       "year": "1929",
       "venue": "Mathematische Zeitschrift, 29, pp. 549-640",
       "note": "Proved partial results for functions of finite order, posed the conjecture for the general Fabry case"
@@ -179,17 +180,17 @@
     {
       "targetId": "erdos-1116",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: complex-analysis, entire-functions, value-distribution"
+      "description": "Related Erdős problem sharing themes: complex-analysis, entire-functions, value-distribution"
     },
     {
       "targetId": "erdos-1117",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: complex-analysis, entire-functions, value-distribution"
+      "description": "Related Erdős problem sharing themes: complex-analysis, entire-functions, value-distribution"
     },
     {
       "targetId": "erdos-1115",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: complex-analysis, entire-functions"
+      "description": "Related Erdős problem sharing themes: complex-analysis, entire-functions"
     }
   ],
   "sorries": 0

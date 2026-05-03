@@ -33,7 +33,8 @@
     "parentProof": "erdos-909",
     "openQuestionType": "extension",
     "openQuestionOf": "erdos-909",
-    "lineCount": 255
+    "lineCount": 255,
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "Topological dimension theory has three classical formulations: the **small inductive dimension** (ind, Menger-Urysohn, 1920s), the **large inductive dimension** (Ind), and the **covering dimension** (dim, also called Čech-Lebesgue dimension), defined via finite open cover refinements. For separable metrizable spaces, all three coincide (a landmark theorem of 20th-century topology). The covering dimension of Euclidean space $\\mathbb{R}^n$ is $n$, and crucially $\\dim(X \\times Y) \\leq \\dim(X) + \\dim(Y)$ with equality for \"nice\" (e.g., compact metrizable) spaces.\n\n**Erdős Problem #909** asks: for which topological spaces $S$ does $\\dim(S \\times S) = \\dim(S)$? This property — **dimension-stability** — is impossible for compact metrizable manifolds (where dimension is additive) but possible for highly irregular spaces. **Anderson and Keisler** (1967) proved by construction that for every $n \\geq 1$, there exists a (necessarily non-metrizable or non-compact) topological space $S$ with $\\dim(S \\times S) = \\dim(S) = n$. Their construction uses descriptive set theory and is quite intricate.\n\nThe structural characterization of dimension-stable spaces remains open — which topological properties force or prevent this behavior? The spaces constructed by Anderson-Keisler are totally disconnected, and some evidence suggests that a structural criterion might involve transfinite inductive dimension or some notion of \"thinness\" that is preserved under self-products.",

@@ -46,7 +46,8 @@
     "axiomCount": 0,
     "lineCount": 101,
     "mathlib_version": "4.26.0",
-    "assumptions": "Fully verified: 0 axioms, 0 sorries remain."
+    "assumptions": "Fully verified: 0 axioms, 0 sorries remain.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "Dirichlet's theorem (1837) states that every arithmetic progression a, a+q, a+2q, ... with gcd(a,q) = 1 contains infinitely many primes. The general proof requires analytic number theory (L-functions, characters). However, certain special cases — including primes ≡ 3 (mod 4) — admit elementary proofs using Euclid-style constructions.\n\nThe key insight: if n ≡ 3 (mod 4) and n > 1, then n must have at least one prime factor ≡ 3 (mod 4). This is because any product of primes ≡ 1 (mod 4) is itself ≡ 1 (mod 4), so a number ≡ 3 (mod 4) cannot be composed entirely of such primes.",

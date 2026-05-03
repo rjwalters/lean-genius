@@ -23,7 +23,8 @@
     "erdosUrl": "https://erdosproblems.com/1217",
     "erdosProblemStatus": "solved",
     "axiomCount": 1,
-    "assumptions": "1 axiom(s) and 0 sorry(s). See the Lean source for the axiom declarations."
+    "assumptions": "1 axiom(s) and 0 sorry(s). See the Lean source for the axiom declarations.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Erdős Problem #1217 concerns sequences of positive integers and their 'upper log-log density': the quantity $\\limsup_{x\\to\\infty} \\frac{1}{\\log\\log x}\\sum_{a_n \\leq x} \\frac{1}{a_n}$. This measure is modeled on Mertens' second theorem, which states $\\sum_{p \\leq x} \\frac{1}{p} \\sim \\log\\log x$, so the primes are the canonical sequence with upper log-log density equal to 1. A sequence A has positive upper log-log density iff its reciprocal sums grow (at least along a subsequence of $x$ values) as fast as a positive fraction of the prime reciprocal sum. The problem references [ESS66], the paper of Erdős, Sárközy, and Sós from 1966, who proved a key result about sequences with this density condition.\n\nThe source problem statement in the Lean file and meta.json is severely corrupted (garbled by encoding issues), so the precise formulation cannot be recovered from the current source. Based on the fragments, the result concerns: given a sequence A with positive upper log-log density, one can extract a subsequence $\\{a_{n_i}\\}$ with some additional structural property (e.g., primitivity, or sum-free, or B₂) while preserving positive log-log density.\n\nThe Erdős-Sárközy-Sós 1966 collaboration was prolific in combinatorial number theory, covering Sidon sets, additive bases, primitive sets, and density problems. Their results on 'density-preserving' subsequence extraction are fundamental in the area. This problem is listed as solved on erdosproblems.com.",

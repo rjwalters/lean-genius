@@ -79,7 +79,8 @@
     "axiomCount": 0,
     "lineCount": 199,
     "mathlib_version": "4.26.0",
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "Carl Gustav Jacob Jacobi introduced the Jacobi symbol in 1837 as a natural extension of the Legendre symbol to composite odd moduli. Where the Legendre symbol $(a/p)$ is defined only for prime $p$, the Jacobi symbol $J(a,n) = \\prod_i (a/p_i)^{e_i}$ extends the definition to any odd $n = \\prod p_i^{e_i}$. This generalization proved essential for computational number theory: the Jacobi symbol can be computed efficiently via a generalized Euclidean algorithm without knowing the factorization of $n$, making it central to primality testing algorithms like Solovay-Strassen (1977) and the Miller-Rabin test.\n\nThe key theoretical result is that quadratic reciprocity extends: for coprime odd integers $m, n > 1$, we have $J(m,n) \\cdot J(n,m) = (-1)^{(m-1)/2 \\cdot (n-1)/2}$. The proof reduces to the prime case via the multiplicative structure of the Jacobi symbol. This generalization was implicit in Jacobi's work and made explicit by Eisenstein and later Kronecker.",

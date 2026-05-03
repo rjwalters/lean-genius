@@ -18,7 +18,8 @@
     "axiomCount": 0,
     "lineCount": 1077,
     "assumptions": "No axioms, no sorries. Main theorem riesz_lp_surjective_from_rn proved via signedMeasureOfFunctional + holder_extremizer_lq_bound + rn_deriv_memLq_from_trunc + integral_representation. Dead-path theorems (truncated_rn_deriv_lq_bound, rn_deriv_memLq) removed 2026-04-23.",
-    "dateAdded": "2026-04-13"
+    "dateAdded": "2026-04-13",
+    "theoremCount": 18
   },
   "overview": {
     "problemStatement": "Can Mathlib's Radon-Nikodým machinery (`MeasureTheory.SignedMeasure.rnDeriv`) be composed with $L^p$ membership to eliminate the surjectivity axiom `riesz_lp_surjective`?",

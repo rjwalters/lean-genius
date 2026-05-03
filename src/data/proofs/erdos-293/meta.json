@@ -54,7 +54,8 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 3,
     "lineCount": 121,
-    "assumptions": "3 axioms: v (minimum k-cycle covering function — axiomatized), vanDoorn_Tang_lower_bound (van Doorn-Tang lower bound), elementary_upper_bound (elementary upper bound v(k) ≤ k·c₀^{2^k}). 0 sorries."
+    "assumptions": "3 axioms: v (minimum k-cycle covering function — axiomatized), vanDoorn_Tang_lower_bound (van Doorn-Tang lower bound), elementary_upper_bound (elementary upper bound v(k) ≤ k·c₀^{2^k}). 0 sorries.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Egyptian fractions — sums of distinct unit fractions — have been studied since the Rhind Mathematical Papyrus (c. 1650 BCE). Erdős and Bleicher initiated the modern study of which denominators can appear in k-term decompositions of 1 in their 1975 paper, proving that v(k) grows at least as fast as k!.\n\nThe function v(k) captures a subtle combinatorial question: given k terms, what is the smallest denominator that is 'too large' to ever participate in a unit fraction decomposition of 1? The answer depends on the intricate interplay between denominator sizes and the constraint that their unit fractions sum to exactly 1.\n\nRecent progress by van Doorn and Tang (2025) dramatically improved the lower bound to e^{ck²}, far exceeding the factorial bound. However, the upper bound v(k) ≤ k · c₀^{2^k} (where c₀ ≈ 1.26408 is the Vardi constant) remains exponentially larger. The gap between e^{k²} and e^{2^k} is one of the largest in combinatorics, and Erdős conjectured the true growth rate is doubly exponential.",

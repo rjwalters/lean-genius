@@ -76,7 +76,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 301,
-    "assumptions": "2 axioms: gameValue (minimax game value function — axiomatized, exponential to compute), gameValue_upper (gameValue(n) ≤ (n+1)/2 upper bound). 0 sorries."
+    "assumptions": "2 axioms: gameValue (minimax game value function — axiomatized, exponential to compute), gameValue_upper (gameValue(n) ≤ (n+1)/2 upper bound). 0 sorries.",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "**The Antichain Saturation Game**\n\nErdős posed this problem in his 1992 survey paper [Er92c, p.47] \"Some of my favourite problems in various branches of combinatorics,\" published in Le Matematiche. The problem combines two rich mathematical traditions: the study of primitive sets (antichains under divisibility) and combinatorial game theory.\n\n**The Game and Its Rules**\n\nTwo players alternately choose integers from {2, 3, ..., n} to build a set A where no element divides another. The game ends when A becomes a maximal antichain — no further element can be added without creating a divisibility pair. One player (the Maximizer) wants the game to last as long as possible, while the other (the Minimizer) wants it to end quickly. Erdős asks: how many moves can the Maximizer guarantee?\n\n**Related Saturation Games**\n\nThis is a number-theoretic variant of Hajnal's triangle-free game, where players alternately add edges to a complete graph while keeping it triangle-free. For the graph version, Füredi and Seress (1991) proved the game lasts at least Omega(n log n) moves, while Biró, Horn, and Wildstrom (2016) showed the upper bound (26/121 + o(1))n². The divisibility antichain game remains much less understood — both of Erdős's specific questions are open.",

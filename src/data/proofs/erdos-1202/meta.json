@@ -52,7 +52,8 @@
       "Proved asympThreshold_pos: positivity of the threshold when parameters satisfy n > 1",
       "Proved asympThreshold_lt_m: threshold is strictly below m under the growth condition",
       "Axiomatized the solved threshold result with a precise quantitative statement despite source corruption"
-    ]
+    ],
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #1202 is part of the curated collection maintained at erdosproblems.com by Thomas Bloom, compiled from Erdős' extensive correspondence, conference talks, and papers spanning analytic number theory, combinatorial number theory, additive combinatorics, and graph theory.\n\nBased on legible fragments from the problem statement — parameters ε, η > 0, a set of k primes p₁ < ... < pₖ, the condition m > √(n log n), and the asymptotic k ≫_c m²/(n log n) — this problem falls in the analytic number theory / prime distribution category. Problems of this shape, asking whether density or count conditions can be met for prime sets, often connect to sieve theory, Chebyshev-type estimates, and the prime number theorem in arithmetic progressions.\n\nThe 'solved' status on erdosproblems.com indicates the mathematical answer is known. The asymptotic m²/(n log n) as a threshold is characteristic of second-moment sieve arguments: the expected number of prime pairs in an interval of length m within [1, n] is roughly m²/(n log n) by the prime number theorem, suggesting a connection to prime pair or prime distribution questions. The source problem statement is corrupted in the gallery entry due to LaTeX encoding issues; the precise formulation and solution reference require consulting the original source.",

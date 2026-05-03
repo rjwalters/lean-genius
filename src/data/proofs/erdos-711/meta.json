@@ -64,7 +64,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 333,
-    "assumptions": "4 axioms: selection_exists_for_any_start, erdos_pomerance_upper_bound_711, van_doorn_2026, second_conjecture_solved. 0 sorries."
+    "assumptions": "4 axioms: selection_exists_for_any_start, erdos_pomerance_upper_bound_711, van_doorn_2026, second_conjecture_solved. 0 sorries.",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Erdős and Pomerance (1980) introduced the two-parameter function f(n,m) generalizing f(n) = f(n,n) from Problem #710. While Problem #710 fixes the starting point at m = n, Problem #711 asks how the starting point affects the required interval length. They proved the uniform bound max_m f(n,m) ≪ n^{3/2} using a greedy construction, and Erdős offered 1000 rupees (~$78 in 1992) for proving either of two conjectures. In 2026, van Doorn resolved the second conjecture by proving f(n,m) - f(n,n) ≫ n·(log n / log log n) for suitably chosen m, published in Integers #A7. This quantitative bound shows the difference can actually dominate f(n,n) itself for large n, since log n / log log n ≫ √(log n). The first conjecture — improving n^{3/2} to n^{1+o(1)} — remains open and is one of the outstanding problems in multiplicative number theory.",

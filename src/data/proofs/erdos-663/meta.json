@@ -23,7 +23,8 @@
     "axiomCount": 0,
     "lineCount": 179,
     "assumptions": "None. All axioms eliminated: smallestMissingPrime defined via Nat.find, properties proved from definition. Open conjecture; supporting lemmas fully verified.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in connection with his broader program studying prime factors of products of consecutive integers, a theme running through dozens of his papers from the 1930s onward. The function $q(n,k)$, defined as the least prime not dividing $\\prod_{i=1}^{k}(n+i)$, captures the interplay between the prime number theorem and the arithmetic structure of consecutive integers. The weak bound $q(n,k) < (1+o(1))\\,k\\log n$ follows directly from the prime number theorem: among $k$ consecutive integers, every prime $p \\leq k$ must divide at least one term, and primes up to roughly $k\\log n$ are \"used up\" by the product. Erdős conjectured the much stronger bound $q(n,k) < (1+o(1))\\log n$, removing the factor of $k$ entirely. Terence Tao provided heuristic arguments supporting this conjecture based on probabilistic models of prime divisibility. The problem is closely related to Erdős Problem #457 on small prime divisors of consecutive products, and connects to classical work by Sylvester (1892) and Schur on prime factors in consecutive integer ranges, as well as Ingham's results on prime gaps.",

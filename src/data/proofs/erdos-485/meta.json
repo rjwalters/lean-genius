@@ -25,7 +25,8 @@
     "axiomCount": 1,
     "lineCount": 226,
     "assumptions": "1 axiom: schinzel_zannier_improved (Schinzel-Zannier 2009: f(k) ≫ log k). This deep algebraic result is not yet in Mathlib.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "The problem originates in the 1947 investigation by Rényi and Rédei on the multiplicative structure of polynomial term counts.  Erdős (1949) proved the upper bound f(k) < k^{1-c} for some c > 0, demonstrating that squaring can achieve genuinely sublinear term compression.  The conjecture that f(k) → ∞ is attributed to Erdős and Rényi, appearing as Problem 4.4 in Hayman's 'Research Problems in Function Theory' (1974).  Schinzel (1987) resolved the conjecture affirmatively, proving f(k) > (log log k)/log 2 via an algebraic height argument that bounds the number of coefficient cancellations by the algebraic complexity of the support set.  Schinzel and Zannier (2009) significantly improved this to f(k) ≫ log k, using the Skolem–Mahler–Lech theorem on zeros of linear recurrence sequences and techniques from the geometry of numbers.  The precise growth rate of f(k) remains unknown: the gap between the log k lower bound and the k^{1-c} upper bound is exponential.",

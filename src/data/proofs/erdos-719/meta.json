@@ -78,7 +78,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 546,
-    "assumptions": "1 axiom: erdos_sauer_conjecture (OPEN problem). Turán's theorem for graphs fully proved via Mathlib bridge."
+    "assumptions": "1 axiom: erdos_sauer_conjecture (OPEN problem). Turán's theorem for graphs fully proved via Mathlib bridge.",
+    "theoremCount": 20
   },
   "overview": {
     "historicalContext": "Turán's theorem (1941) determines the maximum number of edges in a triangle-free graph on $n$ vertices: $\\text{ex}_2(n; K_3) = \\lfloor n^2/4 \\rfloor$, achieved by the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. This foundational result of extremal graph theory was extended by the Erdős-Stone-Simonovits theorem (1966) to determine $\\text{ex}_2(n; H)$ for all non-bipartite graphs $H$.\n\nFor $r$-uniform hypergraphs with $r \\ge 3$, the Turán problem becomes dramatically harder. Even $\\text{ex}_3(n; K_4^3)$ — the 3-uniform analogue of the triangle Turán number — is a central open problem. Turán conjectured the extremal hypergraph is a specific 3-partite construction with $(5/9 + o(1))\\binom{n}{3}$ edges, but this remains unproven.\n\nErdős and Sauer (1981) posed Problem #719: can every $r$-uniform hypergraph on $n$ vertices be decomposed into at most $\\text{ex}_r(n; K_{r+1}^r)$ edge-disjoint pieces, where each piece is either a single $r$-edge ($K_r^r$) or a complete $(r+1)$-clique ($K_{r+1}^r$)? The conjecture connects two deep areas: Turán-type extremal theory (bounding edge counts) and decomposition theory (partitioning edge sets into canonical structures).\n\nFor $r = 2$, the conjecture asks whether every graph on $n$ vertices can be written as at most $\\lfloor n^2/4 \\rfloor$ edges and triangles — already non-trivial. For $r \\ge 3$, the conjecture is doubly open: the decomposition bound depends on a Turán number that is itself unknown. The problem remains OPEN.",

@@ -1,10 +1,10 @@
 {
   "id": "erdos-744",
-  "title": "Erd\u0151s Problem #744: Critical Graphs and Bipartition",
+  "title": "Erdős Problem #744: Critical Graphs and Bipartition",
   "slug": "erdos-744",
-  "description": "Does f_k(n) tend to infinity, where f_k(n) is the minimum edges to delete from a k-chromatic critical graph on n vertices to make it bipartite? Disproved by R\u00f6dl and Tuza (1985): f_k(n) = C(k-1,2) for large n.",
+  "description": "Does f_k(n) tend to infinity, where f_k(n) is the minimum edges to delete from a k-chromatic critical graph on n vertices to make it bipartite? Disproved by Rödl and Tuza (1985): f_k(n) = C(k-1,2) for large n.",
   "meta": {
-    "author": "R\u00f6dl-Tuza (1985 disproof), Erd\u0151s-Hajnal-Szemer\u00e9di (1982 conjecture)",
+    "author": "Rödl-Tuza (1985 disproof), Erdős-Hajnal-Szemerédi (1982 conjecture)",
     "sourceUrl": "https://erdosproblems.com/744",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos744Problem.lean",
@@ -54,23 +54,24 @@
       "f_4_eventually_3 and f_5_eventually_6 theorems",
       "complete_graph_edges theorem relating to binomial coefficients",
       "erdos_conjecture_false theorem: negation of the conjecture",
-      "f_k_formula theorem: general formula via R\u00f6dl-Tuza",
+      "f_k_formula theorem: general formula via Rödl-Tuza",
       "erdos_744_statement theorem: combined main result"
     ],
     "axiomCount": 2,
     "lineCount": 344,
-    "assumptions": "2 axioms: chromaticNumber, rodl_tuza_theorem. 1 sorries."
+    "assumptions": "2 axioms: chromaticNumber, rodl_tuza_theorem. 1 sorries.",
+    "theoremCount": 8
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #744 originates from a question posed by Erd\u0151s, Hajnal, and Szemer\u00e9di in the early 1980s (references [Er81] and [EHS82]). The problem concerns a fundamental question about the structure of k-chromatic critical graphs: how many edges must be removed to make such a graph bipartite? The function f_k(n) measures the minimum number of edge deletions needed across all k-critical graphs on n vertices.\n\nThe case k = 3 is trivial: the only 3-critical graphs are odd cycles, and removing any single edge yields a path (which is bipartite), so f_3(n) = 1. For k \u2265 4, early results were encouraging for the conjecture. Gallai (1968) established that f_4(n) \u2264 O(\u221an), and Lov\u00e1sz extended this to f_k(n) \u2264 O(n^{1-1/(k-2)}) for general k. Erd\u0151s and collaborators conjectured that f_k(n) \u2192 \u221e as n \u2192 \u221e, and specifically asked whether f_4(n) grows at least as fast as log(n).\n\nIn a surprising turn, R\u00f6dl and Tuza disproved the conjecture entirely in 1985. They showed that for every fixed k \u2265 3, the function f_k(n) is eventually constant: f_k(n) = C(k-1, 2) = (k-1)(k-2)/2 for all sufficiently large n. This means the non-bipartiteness of large k-critical graphs is concentrated in a bounded substructure, regardless of the total graph size.",
-    "problemStatement": "Let $f_k(n)$ be the minimum number of edges whose deletion makes a $k$-chromatic critical graph on $n$ vertices bipartite.\n\nDoes $f_k(n) \\to \\infty$ as $n \\to \\infty$?\n\n**Answer:** NO.\n\n**R\u00f6dl-Tuza Theorem (1985):** For all $k \\geq 3$ and sufficiently large $n$:\n$$f_k(n) = \\binom{k-1}{2} = \\frac{(k-1)(k-2)}{2}$$\n\nThe function is eventually constant, not unbounded.",
-    "text": "Does f_k(n) tend to infinity, where f_k(n) is the minimum edges to delete from a k-chromatic critical graph on n vertices to make it bipartite? Disproved by R\u00f6dl and Tuza (1985): f_k(n) = C(k-1,2) for large n.",
-    "proofStrategy": "The formalization proceeds in ten parts:\n\n1. **Graph foundations:** We define SimpleGraph' with an adjacency predicate and axiomatize the chromatic number.\n\n2. **Critical graphs:** A graph is k-critical if \u03c7(G) = k and removing any edge reduces the chromatic number. This captures the notion of \"minimal\" k-colorable graphs.\n\n3. **Bipartite characterization:** Bipartite graphs are defined as those with \u03c7(G) \u2264 2, with an axiom connecting this to the absence of odd cycles.\n\n4. **The f_k function:** We define f_k(n) using the known values from R\u00f6dl-Tuza, which gives f_k(n) = (k-1)(k-2)/2 for k \u2265 4.\n\n5. **Disproof:** We state the original conjecture formally, axiomatize the R\u00f6dl-Tuza theorem, and derive that the conjecture is false. We also show specific instances like f_4 = 3 and f_5 = 6.",
+    "historicalContext": "Erdős Problem #744 originates from a question posed by Erdős, Hajnal, and Szemerédi in the early 1980s (references [Er81] and [EHS82]). The problem concerns a fundamental question about the structure of k-chromatic critical graphs: how many edges must be removed to make such a graph bipartite? The function f_k(n) measures the minimum number of edge deletions needed across all k-critical graphs on n vertices.\n\nThe case k = 3 is trivial: the only 3-critical graphs are odd cycles, and removing any single edge yields a path (which is bipartite), so f_3(n) = 1. For k ≥ 4, early results were encouraging for the conjecture. Gallai (1968) established that f_4(n) ≤ O(√n), and Lovász extended this to f_k(n) ≤ O(n^{1-1/(k-2)}) for general k. Erdős and collaborators conjectured that f_k(n) → ∞ as n → ∞, and specifically asked whether f_4(n) grows at least as fast as log(n).\n\nIn a surprising turn, Rödl and Tuza disproved the conjecture entirely in 1985. They showed that for every fixed k ≥ 3, the function f_k(n) is eventually constant: f_k(n) = C(k-1, 2) = (k-1)(k-2)/2 for all sufficiently large n. This means the non-bipartiteness of large k-critical graphs is concentrated in a bounded substructure, regardless of the total graph size.",
+    "problemStatement": "Let $f_k(n)$ be the minimum number of edges whose deletion makes a $k$-chromatic critical graph on $n$ vertices bipartite.\n\nDoes $f_k(n) \\to \\infty$ as $n \\to \\infty$?\n\n**Answer:** NO.\n\n**Rödl-Tuza Theorem (1985):** For all $k \\geq 3$ and sufficiently large $n$:\n$$f_k(n) = \\binom{k-1}{2} = \\frac{(k-1)(k-2)}{2}$$\n\nThe function is eventually constant, not unbounded.",
+    "text": "Does f_k(n) tend to infinity, where f_k(n) is the minimum edges to delete from a k-chromatic critical graph on n vertices to make it bipartite? Disproved by Rödl and Tuza (1985): f_k(n) = C(k-1,2) for large n.",
+    "proofStrategy": "The formalization proceeds in ten parts:\n\n1. **Graph foundations:** We define SimpleGraph' with an adjacency predicate and axiomatize the chromatic number.\n\n2. **Critical graphs:** A graph is k-critical if χ(G) = k and removing any edge reduces the chromatic number. This captures the notion of \"minimal\" k-colorable graphs.\n\n3. **Bipartite characterization:** Bipartite graphs are defined as those with χ(G) ≤ 2, with an axiom connecting this to the absence of odd cycles.\n\n4. **The f_k function:** We define f_k(n) using the known values from Rödl-Tuza, which gives f_k(n) = (k-1)(k-2)/2 for k ≥ 4.\n\n5. **Disproof:** We state the original conjecture formally, axiomatize the Rödl-Tuza theorem, and derive that the conjecture is false. We also show specific instances like f_4 = 3 and f_5 = 6.",
     "keyInsights": [
       "**Critical Graph Structure:** A k-critical graph is one requiring exactly k colors, where every proper subgraph needs fewer. These are the 'minimal' examples of k-colorability.",
-      "**Odd Cycle Case (k=3):** The only 3-critical graphs are odd cycles. Removing one edge gives a path (bipartite), so f_3(n) = 1 \u2014 trivially bounded.",
-      "**R\u00f6dl-Tuza Surprise:** f_k(n) = C(k-1, 2) for large n. The non-bipartiteness doesn't spread as graphs grow; it stays concentrated in a clique of size k-1.",
-      "**Bounded vs. Unbounded:** Erd\u0151s expected f_k to grow without bound. The answer being a constant \u2014 the number of edges in K_{k-1} \u2014 was completely unexpected.",
+      "**Odd Cycle Case (k=3):** The only 3-critical graphs are odd cycles. Removing one edge gives a path (bipartite), so f_3(n) = 1 — trivially bounded.",
+      "**Rödl-Tuza Surprise:** f_k(n) = C(k-1, 2) for large n. The non-bipartiteness doesn't spread as graphs grow; it stays concentrated in a clique of size k-1.",
+      "**Bounded vs. Unbounded:** Erdős expected f_k to grow without bound. The answer being a constant — the number of edges in K_{k-1} — was completely unexpected.",
       "**Specific Values:** f_3 = 1, f_4 = 3, f_5 = 6, f_6 = 10, f_7 = 15, following the triangular number pattern C(k-1, 2)."
     ],
     "prerequisites": [
@@ -98,10 +99,10 @@
     {
       "id": "edge-deletion",
       "title": "Edge Deletion and f_k(n)",
-      "summary": "bipartitionNumber, f \u2014 the central function of the problem",
+      "summary": "bipartitionNumber, f — the central function of the problem",
       "startLine": 85,
       "endLine": 114,
-      "mathContext": "Mathematical content: bipartitionNumber, f \u2014 the central function of the problem"
+      "mathContext": "Mathematical content: bipartitionNumber, f — the central function of the problem"
     },
     {
       "id": "known-results",
@@ -114,14 +115,14 @@
     {
       "id": "original-conjecture",
       "title": "The Original Conjecture",
-      "summary": "erdosOriginalConjecture, erdosLogConjecture \u2014 what Erd\u0151s expected",
+      "summary": "erdosOriginalConjecture, erdosLogConjecture — what Erdős expected",
       "startLine": 147,
       "endLine": 170,
-      "mathContext": "Mathematical content: erdosOriginalConjecture, erdosLogConjecture \u2014 what Erd\u0151s expected"
+      "mathContext": "Mathematical content: erdosOriginalConjecture, erdosLogConjecture — what Erdős expected"
     },
     {
       "id": "rodl-tuza",
-      "title": "R\u00f6dl-Tuza Theorem (1985)",
+      "title": "Rödl-Tuza Theorem (1985)",
       "summary": "rodl_tuza_theorem axiom, f_4_eventually_3, f_5_eventually_6",
       "startLine": 171,
       "endLine": 213,
@@ -146,27 +147,27 @@
     {
       "id": "complete-picture",
       "title": "The Complete Picture",
-      "summary": "f_k_table, f_k_formula \u2014 table and general formula",
+      "summary": "f_k_table, f_k_formula — table and general formula",
       "startLine": 284,
       "endLine": 304,
-      "mathContext": "Mathematical content: f_k_table, f_k_formula \u2014 table and general formula"
+      "mathContext": "Mathematical content: f_k_table, f_k_formula — table and general formula"
     },
     {
       "id": "status",
       "title": "Problem Status and Main Statement",
-      "summary": "erdos_744_status, erdos_744_statement \u2014 summary theorem",
+      "summary": "erdos_744_status, erdos_744_statement — summary theorem",
       "startLine": 305,
       "endLine": 344,
-      "mathContext": "Verified: erdos_744_status, erdos_744_statement \u2014 summary theorem"
+      "mathContext": "Verified: erdos_744_status, erdos_744_statement — summary theorem"
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #744 asked whether f_k(n) \u2192 \u221e as n \u2192 \u221e, where f_k(n) measures the minimum edge deletions needed to make a k-critical graph bipartite. R\u00f6dl and Tuza disproved this in 1985, showing f_k(n) = C(k-1,2) = (k-1)(k-2)/2 for all sufficiently large n \u2014 a constant independent of the number of vertices.",
+    "summary": "Erdős Problem #744 asked whether f_k(n) → ∞ as n → ∞, where f_k(n) measures the minimum edge deletions needed to make a k-critical graph bipartite. Rödl and Tuza disproved this in 1985, showing f_k(n) = C(k-1,2) = (k-1)(k-2)/2 for all sufficiently large n — a constant independent of the number of vertices.",
     "implications": "**Theoretical Significance**: The disproof reveals a striking structural property of k-chromatic critical graphs: their non-bipartiteness is concentrated in a bounded region isomorphic to a complete graph on k-1 vertices.\n\nNo matter how large the critical graph grows, the same fixed number of edge deletions suffices to make it bipartite. This challenges the intuition that larger graphs should have more 'spread out' coloring obstructions.",
     "openQuestions": [
-      "What is the exact threshold N\u2080(k) beyond which f_k(n) = C(k-1, 2)?",
+      "What is the exact threshold N₀(k) beyond which f_k(n) = C(k-1, 2)?",
       "Do similar bounded-parameter phenomena hold for other graph coloring variants?",
-      "Can the R\u00f6dl-Tuza result be extended to list-chromatic or fractional chromatic critical graphs?"
+      "Can the Rödl-Tuza result be extended to list-chromatic or fractional chromatic critical graphs?"
     ]
   },
   "leanFile": {
@@ -195,17 +196,17 @@
     {
       "targetId": "erdos-1032",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: chromatic-number, critical-graphs, graph-theory"
+      "description": "Related Erdős problem sharing themes: chromatic-number, critical-graphs, graph-theory"
     },
     {
       "targetId": "erdos-1067",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: chromatic-number, disproved, graph-theory"
+      "description": "Related Erdős problem sharing themes: chromatic-number, disproved, graph-theory"
     },
     {
       "targetId": "erdos-110",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: chromatic-number, disproved, graph-theory"
+      "description": "Related Erdős problem sharing themes: chromatic-number, disproved, graph-theory"
     }
   ],
   "sorries": 1

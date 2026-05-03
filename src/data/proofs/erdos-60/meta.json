@@ -1,10 +1,10 @@
 {
   "id": "erdos-60",
-  "title": "Erd\u0151s Problem #60: Supersaturation of 4-Cycles",
+  "title": "Erdős Problem #60: Supersaturation of 4-Cycles",
   "slug": "erdos-60",
-  "description": "Does every graph on n vertices with > ex(n; C_4) edges contain \u03a9(n^{1/2}) copies of C_4? OPEN problem. Even proving \u2265 2 copies remains open. He-Ma-Yang (2021) confirmed for projective plane orders with even q.",
+  "description": "Does every graph on n vertices with > ex(n; C_4) edges contain Ω(n^{1/2}) copies of C_4? OPEN problem. Even proving ≥ 2 copies remains open. He-Ma-Yang (2021) confirmed for projective plane orders with even q.",
   "meta": {
-    "author": "Erd\u0151s-Simonovits",
+    "author": "Erdős-Simonovits",
     "sourceUrl": "https://erdosproblems.com/60",
     "date": "",
     "status": "axiomatized",
@@ -44,21 +44,22 @@
       "IsC4Copy: 4-cycle copy predicate",
       "C4Copies: set of all labeled C_4 copies",
       "countC4: unlabeled C_4 count (labeled/8)",
-      "exC4: Tur\u00e1n number axiom",
+      "exC4: Turán number axiom",
       "ExceedsTuranC4: supersaturation threshold predicate",
-      "erdos_60_conjecture: formal \u03a9(n^{1/2}) conjecture",
-      "two_copies_conjecture: weaker \u2265 2 copies conjecture",
+      "erdos_60_conjecture: formal Ω(n^{1/2}) conjecture",
+      "two_copies_conjecture: weaker ≥ 2 copies conjecture",
       "conjecture_implies_two_copies: Aristotle-proved implication"
     ],
     "axiomCount": 8,
     "lineCount": 386,
     "prerequisites": [
-      "Extremal graph theory (Tur\u00e1n-type problems)",
-      "4-cycles (C\u2084) in graphs",
-      "K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem",
+      "Extremal graph theory (Turán-type problems)",
+      "4-cycles (C₄) in graphs",
+      "Kővári-Sós-Turán theorem",
       "Zarankiewicz problem"
     ],
-    "assumptions": "8 axiom(s). No sorries. 0 sorries remain.(s) remain."
+    "assumptions": "8 axiom(s). No sorries. 0 sorries remain.(s) remain.",
+    "theoremCount": 10
   },
   "sections": [
     {
@@ -79,11 +80,11 @@
     },
     {
       "id": "turan",
-      "title": "Tur\u00e1n Number for $C_4$",
-      "summary": "Axiomatizes $\\text{ex}(n; C_4)$ and its asymptotics: $\\text{ex}(n; C_4) = \\frac{1}{2}(1+o(1))n^{3/2}$ via K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n (upper) and Reiman polarity graphs (lower).",
+      "title": "Turán Number for $C_4$",
+      "summary": "Axiomatizes $\\text{ex}(n; C_4)$ and its asymptotics: $\\text{ex}(n; C_4) = \\frac{1}{2}(1+o(1))n^{3/2}$ via Kővári-Sós-Turán (upper) and Reiman polarity graphs (lower).",
       "startLine": 62,
       "endLine": 87,
-      "mathContext": "Axiomatized: Axiomatizes $\\text{ex}(n; C_4)$ and its asymptotics: $\\text{ex}(n; C_4) = \\frac{1}{2}(1+o(1))n^{3/2}$ via K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n (upper) and Reiman polarity graphs (lower)."
+      "mathContext": "Axiomatized: Axiomatizes $\\text{ex}(n; C_4)$ and its asymptotics: $\\text{ex}(n; C_4) = \\frac{1}{2}(1+o(1))n^{3/2}$ via Kővári-Sós-Turán (upper) and Reiman polarity graphs (lower)."
     },
     {
       "id": "supersaturation",
@@ -96,10 +97,10 @@
     {
       "id": "conjecture",
       "title": "Main Conjecture (OPEN)",
-      "summary": "Formalizes Erd\u0151s Problem 60: $\\exists c > 0$ such that $|E(G)| > \\text{ex}(n; C_4) \\Rightarrow \\text{countC4}(G) \\geq c \\cdot n^{1/2}$. The $\\Omega(n^{1/2})$ bound is conjectured to be tight.",
+      "summary": "Formalizes Erdős Problem 60: $\\exists c > 0$ such that $|E(G)| > \\text{ex}(n; C_4) \\Rightarrow \\text{countC4}(G) \\geq c \\cdot n^{1/2}$. The $\\Omega(n^{1/2})$ bound is conjectured to be tight.",
       "startLine": 94,
       "endLine": 108,
-      "mathContext": "Bound: Formalizes Erd\u0151s Problem 60: $\\exists c > 0$ such that $|E(G)| > \\text{ex}(n; C_4) \\Rightarrow \\text{countC4}(G) \\geq c \\cdot n^{1/2}$. The $\\Omega(n^{1/2})$ bound is conjectured to be tight."
+      "mathContext": "Bound: Formalizes Erdős Problem 60: $\\exists c > 0$ such that $|E(G)| > \\text{ex}(n; C_4) \\Rightarrow \\text{countC4}(G) \\geq c \\cdot n^{1/2}$. The $\\Omega(n^{1/2})$ bound is conjectured to be tight."
     },
     {
       "id": "partial-results",
@@ -120,10 +121,10 @@
     {
       "id": "general-supersaturation",
       "title": "General Supersaturation Theorem",
-      "summary": "Axiomatizes the Erd\u0151s-Simonovits supersaturation theorem: exceeding $\\text{ex}(n; C_4)$ by factor $(1+\\varepsilon)$ forces $\\geq \\delta \\cdot n^2$ copies, giving a weaker but general bound.",
+      "summary": "Axiomatizes the Erdős-Simonovits supersaturation theorem: exceeding $\\text{ex}(n; C_4)$ by factor $(1+\\varepsilon)$ forces $\\geq \\delta \\cdot n^2$ copies, giving a weaker but general bound.",
       "startLine": 149,
       "endLine": 166,
-      "mathContext": "Axiomatizes the Erd\u0151s-Simonovits supersaturation theorem: exceeding $\\text{ex}(n; C_4)$ by factor $(1+\\varepsilon)$ forces $\\geq \\$\\delta$ \\cdot $n^{2}$$ copies, giving a weaker but general bound."
+      "mathContext": "Axiomatizes the Erdős-Simonovits supersaturation theorem: exceeding $\\text{ex}(n; C_4)$ by factor $(1+\\varepsilon)$ forces $\\geq \\$\\delta$ \\cdot $n^{2}$$ copies, giving a weaker but general bound."
     },
     {
       "id": "extremal-graphs",
@@ -143,32 +144,32 @@
     }
   ],
   "overview": {
-    "historicalContext": "**Supersaturation in Extremal Graph Theory (1966-2021)**\n\nThe **Tur\u00e1n problem** asks for the maximum number of edges in an $H$-free graph on $n$ vertices. For $C_4$, the answer is $\\text{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$, determined by **K\u0151v\u00e1ri, S\u00f3s, and Tur\u00e1n** (1954, upper bound) and **Reiman** (1958, lower bound via polarity graphs of projective planes). Brown (1966) gave an alternative algebraic construction.\n\n**Supersaturation** asks what happens just beyond the Tur\u00e1n threshold. **Erd\u0151s and Simonovits** (1966, published 1983) proved their foundational supersaturation theorem: exceeding $\\text{ex}(n; H)$ by a constant factor forces a positive density of $H$-copies. However, this says nothing about exceeding by just one edge.\n\nFor $C_4$, Erd\u0151s and Simonovits conjectured that a single extra edge forces $\\Omega(n^{1/2})$ copies \u2014 a much more delicate claim. Remarkably, they noted they could not even prove $\\geq 2$ copies. **He, Ma, and Yang** (2021) confirmed the conjecture for $n = q^2+q+1$ with even prime power $q$, using the uniqueness of extremal graphs for these parameters. The general case remains **OPEN**.",
+    "historicalContext": "**Supersaturation in Extremal Graph Theory (1966-2021)**\n\nThe **Turán problem** asks for the maximum number of edges in an $H$-free graph on $n$ vertices. For $C_4$, the answer is $\\text{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$, determined by **Kővári, Sós, and Turán** (1954, upper bound) and **Reiman** (1958, lower bound via polarity graphs of projective planes). Brown (1966) gave an alternative algebraic construction.\n\n**Supersaturation** asks what happens just beyond the Turán threshold. **Erdős and Simonovits** (1966, published 1983) proved their foundational supersaturation theorem: exceeding $\\text{ex}(n; H)$ by a constant factor forces a positive density of $H$-copies. However, this says nothing about exceeding by just one edge.\n\nFor $C_4$, Erdős and Simonovits conjectured that a single extra edge forces $\\Omega(n^{1/2})$ copies — a much more delicate claim. Remarkably, they noted they could not even prove $\\geq 2$ copies. **He, Ma, and Yang** (2021) confirmed the conjecture for $n = q^2+q+1$ with even prime power $q$, using the uniqueness of extremal graphs for these parameters. The general case remains **OPEN**.",
     "problemStatement": "**Open Problem**\n\nDoes every graph on $n$ vertices with $> \\text{ex}(n; C_4)$ edges contain $\\gg n^{1/2}$ copies of $C_4$? Even proving $\\geq 2$ copies is open.\n\nThe conjectured $\\Omega(n^{1/2})$ bound would be tight: polarity graphs show one can have $\\text{ex}(n; C_4)$ edges with zero 4-cycles, and perturbation arguments suggest only $O(n^{1/2})$ copies appear just above the threshold.",
-    "text": "Does every graph on n vertices with > ex(n; C_4) edges contain \u03a9(n^{1/2}) copies of C_4? OPEN problem. Even proving \u2265 2 copies remains open. He-Ma-Yang (2021) confirmed for projective plane orders with even q.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Cycle counting:** Define $C_4$ copies as ordered 4-tuples, count unlabeled copies by dividing by $|\\text{Aut}(C_4)| = 8$.\n2. **Tur\u00e1n number:** Axiomatize $\\text{ex}(n; C_4)$ with upper and lower asymptotic bounds.\n3. **Conjecture:** Formalize the $\\Omega(n^{1/2})$ supersaturation conjecture and the weaker two-copies conjecture.\n4. **Partial results:** Axiomatize He-Ma-Yang (2021) for projective plane orders with even $q$.\n5. **General framework:** Axiomatize the Erd\u0151s-Simonovits supersaturation theorem and polarity graph existence.\n6. **Aristotle proofs:** Automated proof of `conjecture_implies_two_copies` and supporting lemmas.",
+    "text": "Does every graph on n vertices with > ex(n; C_4) edges contain Ω(n^{1/2}) copies of C_4? OPEN problem. Even proving ≥ 2 copies remains open. He-Ma-Yang (2021) confirmed for projective plane orders with even q.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Cycle counting:** Define $C_4$ copies as ordered 4-tuples, count unlabeled copies by dividing by $|\\text{Aut}(C_4)| = 8$.\n2. **Turán number:** Axiomatize $\\text{ex}(n; C_4)$ with upper and lower asymptotic bounds.\n3. **Conjecture:** Formalize the $\\Omega(n^{1/2})$ supersaturation conjecture and the weaker two-copies conjecture.\n4. **Partial results:** Axiomatize He-Ma-Yang (2021) for projective plane orders with even $q$.\n5. **General framework:** Axiomatize the Erdős-Simonovits supersaturation theorem and polarity graph existence.\n6. **Aristotle proofs:** Automated proof of `conjecture_implies_two_copies` and supporting lemmas.",
     "keyInsights": [
-      "**Tur\u00e1n threshold:** $\\text{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$ from incidence geometry (polarity graphs of projective planes match the K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n upper bound)",
-      "**Conjectured supersaturation:** A single extra edge above $\\text{ex}(n; C_4)$ should force $\\Omega(n^{1/2})$ copies \u2014 tight by perturbation of extremal graphs",
+      "**Turán threshold:** $\\text{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$ from incidence geometry (polarity graphs of projective planes match the Kővári-Sós-Turán upper bound)",
+      "**Conjectured supersaturation:** A single extra edge above $\\text{ex}(n; C_4)$ should force $\\Omega(n^{1/2})$ copies — tight by perturbation of extremal graphs",
       "**Remarkable gap:** Even proving $\\geq 2$ copies from one extra edge is open, highlighting the difficulty of exact-threshold supersaturation",
       "**He-Ma-Yang (2021):** Confirmed the conjecture for even projective plane orders by exploiting the algebraic structure of the unique extremal graph",
       "**Aristotle contribution:** Automatically proved that the main conjecture implies the two-copies conjecture via contraposition"
     ],
     "prerequisites": [
-      "Extremal graph theory (Tur\u00e1n-type problems)",
-      "4-cycles (C\u2084) in graphs",
-      "K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem",
+      "Extremal graph theory (Turán-type problems)",
+      "4-cycles (C₄) in graphs",
+      "Kővári-Sós-Turán theorem",
       "Zarankiewicz problem"
     ]
   },
   "conclusion": {
-    "summary": "This formalization captures Erd\u0151s Problem #60, an open supersaturation problem in extremal graph theory. The conjecture asserts that exceeding $\\text{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$ edges forces $\\Omega(n^{1/2})$ copies of $C_4$. He-Ma-Yang (2021) confirmed this for projective plane orders with even $q$. Even the weaker claim of $\\geq 2$ copies remains open. Aristotle proved the logical implication between the conjectures.",
-    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Exact-threshold supersaturation:** Would establish precise quantitative behavior at the Tur\u00e1n threshold for $C_4$, a model case for general forbidden subgraph problems.\n**2. Extremal stability:** The conjecture is deeply connected to the uniqueness and rigidity of extremal $C_4$-free graphs.\n3. **Incidence geometry connections:** Resolution likely requires understanding the algebraic structure of polarity graphs and their perturbations.\n4. **General theory:** Could inform supersaturation bounds for other forbidden subgraphs beyond the Erd\u0151s-Simonovits constant-factor framework.",
+    "summary": "This formalization captures Erdős Problem #60, an open supersaturation problem in extremal graph theory. The conjecture asserts that exceeding $\\text{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$ edges forces $\\Omega(n^{1/2})$ copies of $C_4$. He-Ma-Yang (2021) confirmed this for projective plane orders with even $q$. Even the weaker claim of $\\geq 2$ copies remains open. Aristotle proved the logical implication between the conjectures.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Exact-threshold supersaturation:** Would establish precise quantitative behavior at the Turán threshold for $C_4$, a model case for general forbidden subgraph problems.\n**2. Extremal stability:** The conjecture is deeply connected to the uniqueness and rigidity of extremal $C_4$-free graphs.\n3. **Incidence geometry connections:** Resolution likely requires understanding the algebraic structure of polarity graphs and their perturbations.\n4. **General theory:** Could inform supersaturation bounds for other forbidden subgraphs beyond the Erdős-Simonovits constant-factor framework.",
     "openQuestions": [
-      "Prove the full \u03a9(n^{1/2}) bound for all n (the main conjecture)",
-      "Prove even \u2265 2 copies are guaranteed \u2014 remarkably still open",
+      "Prove the full Ω(n^{1/2}) bound for all n (the main conjecture)",
+      "Prove even ≥ 2 copies are guaranteed — remarkably still open",
       "Extend He-Ma-Yang to odd prime power projective plane orders",
-      "Determine the exact constant c in the lower bound countC4(G) \u2265 c\u00b7n^{1/2}",
+      "Determine the exact constant c in the lower bound countC4(G) ≥ c·n^{1/2}",
       "Does the conjecture generalize to C_6, C_8, and other even cycles?"
     ]
   },
@@ -193,7 +194,7 @@
     {
       "targetId": "erdos-22",
       "relationship": "related",
-      "description": "Problem #22 (Ramsey-Tur\u00e1n for K\u2084) and Problem #60 (supersaturation of C\u2084) are both extremal graph theory problems about counting specific subgraphs in dense graphs"
+      "description": "Problem #22 (Ramsey-Turán for K₄) and Problem #60 (supersaturation of C₄) are both extremal graph theory problems about counting specific subgraphs in dense graphs"
     },
     {
       "targetId": "erdos-24",
@@ -203,32 +204,32 @@
   ],
   "references": [
     {
-      "authors": "K\u0151v\u00e1ri, Tam\u00e1s; S\u00f3s, Vera T.; Tur\u00e1n, Paul",
+      "authors": "Kővári, Tamás; Sós, Vera T.; Turán, Paul",
       "title": "On a problem of K. Zarankiewicz",
       "year": "1954",
-      "venue": "Colloquium Mathematicum, vol. 3, pp. 50\u201357",
-      "note": "The KST theorem bounding the number of edges in C\u2084-free bipartite graphs \u2014 the extremal result underlying Problem #60"
+      "venue": "Colloquium Mathematicum, vol. 3, pp. 50–57",
+      "note": "The KST theorem bounding the number of edges in C₄-free bipartite graphs — the extremal result underlying Problem #60"
     },
     {
-      "authors": "Erd\u0151s, Paul; Simonovits, Mikl\u00f3s",
+      "authors": "Erdős, Paul; Simonovits, Miklós",
       "title": "Supersaturated graphs and hypergraphs",
       "year": "1983",
-      "venue": "Combinatorica, vol. 3, no. 2, pp. 181\u2013192",
-      "note": "Introduced supersaturation theory: how many copies of H appear when the number of edges exceeds the Tur\u00e1n number"
+      "venue": "Combinatorica, vol. 3, no. 2, pp. 181–192",
+      "note": "Introduced supersaturation theory: how many copies of H appear when the number of edges exceeds the Turán number"
     },
     {
       "key": "Re58",
-      "citation": "Reiman, I., \u00dcber ein Problem von K. Zarankiewicz, Acta Math. Acad. Sci. Hungar. 9 (1958), 269-273.",
+      "citation": "Reiman, I., Über ein Problem von K. Zarankiewicz, Acta Math. Acad. Sci. Hungar. 9 (1958), 269-273.",
       "type": "paper"
     },
     {
       "key": "KST54",
-      "citation": "K\u0151v\u00e1ri, T., S\u00f3s, V. T., and Tur\u00e1n, P., On a problem of K. Zarankiewicz, Colloq. Math. 3 (1954), 50-57.",
+      "citation": "Kővári, T., Sós, V. T., and Turán, P., On a problem of K. Zarankiewicz, Colloq. Math. 3 (1954), 50-57.",
       "type": "paper"
     },
     {
       "key": "ES83",
-      "citation": "Erd\u0151s, Paul and Simonovits, Mikl\u00f3s, Supersaturated graphs and hypergraphs, Combinatorica 3 (1983), 181-192.",
+      "citation": "Erdős, Paul and Simonovits, Miklós, Supersaturated graphs and hypergraphs, Combinatorica 3 (1983), 181-192.",
       "type": "paper"
     },
     {
@@ -243,7 +244,7 @@
     },
     {
       "key": "EP",
-      "citation": "Erd\u0151s Problems, Problem #60, https://erdosproblems.com/60.",
+      "citation": "Erdős Problems, Problem #60, https://erdosproblems.com/60.",
       "type": "website"
     }
   ],

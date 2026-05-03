@@ -56,7 +56,8 @@
     ],
     "lineCount": 159,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Divisibility rules using \"osculators\" (multipliers applied to the last digit) have roots in Martin Gardner's recreational mathematics and earlier work by V. Ramaswami Aiyar (1907). The positive osculator test ($d | n \\iff d | (\\lfloor n/10 \\rfloor + c \\cdot (n \\bmod 10))$ when $10c \\equiv 1 \\pmod{d}$) and the negative variant ($10c \\equiv -1 \\pmod{d}$) have traditionally been treated as separate rules. The parent formalization (divisibility-truncation-general) proved both cases independently, raising the natural question: can they be unified? This proof shows the answer is yes — the negative case is the positive case with $c$ negated, since $d | (10c_{\\text{neg}} + 1)$ implies $d | (10(-c_{\\text{neg}}) - 1)$. The unification reveals a deeper structure: positive and negative osculators are not independent constructions but additive inverses under the same modular arithmetic. Osculators are closely related to modular multiplicative inverses: the positive osculator $c_+$ satisfies $10c_+ \\equiv 1 \\pmod{d}$, making $c_+$ the multiplicative inverse of 10 in $\\mathbb{Z}/d\\mathbb{Z}$. The existence of such inverses (guaranteed by Bézout's identity when $\\gcd(10, d) = 1$) connects these recreational divisibility tricks to core algebraic number theory and the extended Euclidean algorithm.",

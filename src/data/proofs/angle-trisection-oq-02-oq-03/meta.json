@@ -64,7 +64,8 @@
       "Compass-and-straightedge constructibility criteria (from OQ-01, OQ-02)"
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 158
   },
   "overview": {
     "historicalContext": "The problem of constructing regular polygons with compass and straightedge is among the oldest in mathematics, originating with the ancient Greeks who could construct the equilateral triangle ($n=3$), square ($n=4$), regular pentagon ($n=5$), regular hexagon ($n=6$), and their doublings ($n=8, 10, 12, 15, 16, \\ldots$). Euclid's *Elements* (c. 300 BCE) contains constructions for these polygons, and for over 2000 years no fundamentally new constructions were found.\n\nOn March 30, 1796, at age 18, Carl Friedrich Gauss discovered that the regular 17-gon is constructible — the first new construction since antiquity. He recorded this in his mathematical diary (Notizenjournal) and was so proud of it that he requested a regular 17-gon be engraved on his tombstone (though the stonemason declined, saying it would look like a circle). This discovery convinced Gauss to pursue mathematics over philology. Gauss announced the result in *Disquisitiones Arithmeticae* (1801), Section VII, where he proved the constructibility criterion using his theory of Gaussian periods.\n\nPierre Wantzel completed the theorem in 1837 by proving the converse: non-constructibility when $\\varphi(n) \\neq 2^k$. Wantzel's proof also settled the impossibility of angle trisection and cube doubling, linking all three ancient problems to the algebraic theory of field extensions. The theorem connects three deep areas: Galois theory (the Galois group of cyclotomic polynomials), number theory (Euler's totient function and Fermat primes), and geometry (compass-and-straightedge constructions).",

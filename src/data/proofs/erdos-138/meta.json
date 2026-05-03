@@ -45,7 +45,8 @@
     "axiomCount": 8,
     "lineCount": 196,
     "assumptions": "8 axiom(s) and 1 sorry(s). Axioms: van_der_waerden_theorem, berlekamp_lower_bound, gowers_upper_bound, kozik_shabanov_lower_bound (bounds), and W_three=9, W_four=35, W_five=178, W_six=1132 (exact small values). The sorry marks an incomplete filter-limit implication proof.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Van der Waerden proved his theorem in 1927, answering a conjecture of Baudet. The original proof gave Ackermann-type bounds on W(k). Berlekamp (1968) gave the first strong lower bounds using finite field constructions: coloring integers by discrete logarithm mod p avoids long APs. Shelah (1988) obtained the first primitive recursive upper bound, and Gowers (2001) dramatically improved it to tower-of-height-5 using his uniformity norms, winning a Fields Medal partly for this work. Kozik and Shabanov (2016) established the current best general lower bound W(k) ≫ 2^k via the Lovász Local Lemma. Erdős posed this problem in 1980 with a $500 prize, asking whether W(k) grows faster than any exponential — the vast gap between known bounds remains one of the central open problems in Ramsey theory.",

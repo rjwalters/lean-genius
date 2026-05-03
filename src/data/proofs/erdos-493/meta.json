@@ -57,7 +57,8 @@
       "ring, linarith, fin_cases tactics"
     ],
     "lineCount": 93,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős Problem #493: Product Minus Sum Representation**\n\nThis problem appears in Erdős's 1961 paper [Er61] and is attributed to Andrzej Schinzel. It asks a natural question about integer expressibility: can every sufficiently large integer be written as the product of some integers (each $\\geq 2$) minus their sum?\n\n**The question:** Does there exist $k$ such that for all sufficiently large $n$, we can find $a_1, \\ldots, a_k \\geq 2$ with $n = \\prod a_i - \\sum a_i$?\n\n**The solution (Eli Seamans):** The answer is YES with $k = 2$. The elegant identity $n = 2(n+2) - (2 + (n+2))$ provides a constructive witness for every $n \\geq 0$. The key insight is that $ab - (a+b) = (a-1)(b-1) - 1$, so representing $n$ is equivalent to representing $n+1$ as a product of two positive integers — which is trivially possible.\n\n**Significance:** This is one of the simpler Erdős problems, but its formalization is notable: it is **fully verified** in Lean with 0 axioms and 0 sorries, making it one of the cleanest constructive proofs in the gallery.",

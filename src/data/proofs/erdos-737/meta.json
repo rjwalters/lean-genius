@@ -57,7 +57,8 @@
       "SimpleGraph type in Mathlib",
       "Compactness arguments in infinite combinatorics"
     ],
-    "assumptions": "5 axioms: chromaticNumber, hasCycleOfLength, edgeInCycleOfLength, and 2 more. See Lean source for complete statements."
+    "assumptions": "5 axioms: chromaticNumber, hasCycleOfLength, edgeInCycleOfLength, and 2 more. See Lean source for complete statements.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Erdős Problem #737 originates from a 1974 paper by Erdős, Hajnal, and Shelah in *Topics in Topology* (Keszthely Colloquium). They proved that any graph $G$ with chromatic number $\\chi(G) = \\aleph_1$ contains cycles of all sufficiently large lengths — a striking result connecting cardinal arithmetic to graph structure. They then posed the sharper question: can all these cycles be routed through a single edge?\n\nCarsten Thomassen answered YES in 1983 in a remarkably short paper in *Combinatorica* (just 2 pages). His proof uses a clever compactness argument: if no single edge works, one can construct an $\\aleph_1$-coloring from the local colorings of 'edge-avoiding subgraphs,' contradicting the chromatic number hypothesis.\n\nThe result sits in the broader context of infinite chromatic number theory, where the De Bruijn-Erdős theorem (1951) provides the bridge between finite and infinite: $\\chi(G) = \\sup\\{\\chi(H) : H \\text{ finite subgraph}\\}$. This means $\\chi(G) = \\aleph_1$ implies that for every $k$, some finite subgraph has chromatic number $> k$ — forcing rich combinatorial structure. The threshold at $\\aleph_1$ is essential: graphs with countable chromatic number (even $\\aleph_0$) need not contain all large cycles.\n\nThomassen later extended these ideas in his work on graph minors and cycle structures in infinite graphs, connecting to Robertson-Seymour theory and the Hadwiger conjecture for infinite graphs.",

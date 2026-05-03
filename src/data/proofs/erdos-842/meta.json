@@ -55,7 +55,8 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 3,
     "lineCount": 227,
-    "assumptions": "3 axioms: thg_3_colorable, thg_chromatic_number_le_3, thg_chromatic_number_ge_3. 0 sorries."
+    "assumptions": "3 axioms: thg_3_colorable, thg_chromatic_number_le_3, thg_chromatic_number_ge_3. 0 sorries.",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #842 asks whether a graph formed by taking n vertex-disjoint triangles and connecting all 3n vertices with a Hamiltonian cycle can always be properly 3-colored. Each triangle requires 3 colors on its own, and the question is whether the additional Hamiltonian cycle edges can be accommodated without needing a fourth color.\n\nThe problem reflects Erdős's interest in how structural constraints interact with chromatic properties. The key observation is that the cycle length 3n is divisible by 3, which enables a cyclic coloring pattern 0-1-2-0-1-2-... that closes consistently. The challenge is showing this pattern can always be arranged to simultaneously satisfy the triangle constraints.\n\nFleischner and Stiebitz resolved the problem affirmatively in their 1992 paper 'A solution to a colouring problem of P. Erdős' published in Discrete Mathematics. Their proof demonstrates that the graph structure is flexible enough for a 3-coloring to exist regardless of how the triangles are positioned along the Hamiltonian cycle.",

@@ -60,7 +60,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 249,
-    "assumptions": "3 axioms: erdos_1984_upper_bound, alon_erdos_1985, ratio_tends_to_infinity. 0 sorries."
+    "assumptions": "3 axioms: erdos_1984_upper_bound, alon_erdos_1985, ratio_tends_to_infinity. 0 sorries.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "**Erdős Problem #772: Sidon Sets in Bounded Convolution Sets**\n\nThis problem connects two important concepts in additive combinatorics: Sidon sets (where all pairwise sums are distinct) and sets with bounded convolution (where no sum is represented too many times).\n\n**Key History:**\n- Erdős (1984): Posed the problem and proved H_k(n) ≪ n^{2/3}\n- Alon-Erdős (1985): Proved the matching lower bound H_k(n) ≫_k n^{2/3}\n- The basic lower bound H_k(n) ≫ √n follows from Problem #530\n\n**Mathematical Setting:**\nLet H_k(n) be the maximum r such that any set A ⊆ ℕ with |A| = n and bounded convolution ‖1_A ∗ 1_A‖_∞ ≤ k contains a Sidon subset of size at least r. Erdős asked whether H_k(n)/√n → ∞, and whether H_k(n) > n^{1/2+c} for some c > 0.",

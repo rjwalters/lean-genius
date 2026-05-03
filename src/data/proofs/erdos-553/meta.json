@@ -48,7 +48,8 @@
     "axiomCount": 0,
     "lineCount": 210,
     "assumptions": "No axioms. 15 sorry(s) remain in the formalization.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Sós, motivated by the observation that additional colors in Ramsey problems can qualitatively change the asymptotics.  The 2-color off-diagonal Ramsey number R(3,n) — the minimum m such that any 2-coloring of K_m contains a red triangle or blue K_n — was bounded by Shearer (1983) as R(3,n) ≤ Cn²/log n using his celebrated entropy method, and by Kim (1995) as R(3,n) ≥ cn²/log n using the semi-random 'triangle-free process', establishing R(3,n) = Θ(n²/log n).  The 3-color variant R(3,3,n) was far less understood until Alon and Rödl (2005) proved R(3,3,n) ≍ n³(log n)^{O(1)}, confirming the Erdős–Sós conjecture that the ratio diverges.  Their proof combines dependent random choice (for the upper bound) with algebraic constructions based on norm graphs over finite fields (for the lower bound).  The result reveals that each additional triangle color adds a power of n to the Ramsey threshold — a striking structural phenomenon whose full generalization to r triangle colors remains open.",

@@ -46,7 +46,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 150,
-    "assumptions": "1 axiom: erdos_1079_summary. 0 sorries."
+    "assumptions": "1 axiom: erdos_1079_summary. 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Erdős Problem #1079 was posed by Erdős around 1975 (referenced in [Er75]) as a natural refinement of Turán's theorem. Turán's theorem says that a K_r-free graph on n vertices has at most ex(n, K_r) edges; Erdős asked whether having this many edges forces not just a global clique but also local density — specifically, a vertex whose neighborhood is itself Turán-dense for the next smaller clique.\n\nBollobás and Thomason proved the conjecture in 1981: if G has at least ex(n, K_r) edges and is not the Turán graph itself, then some vertex v with degree d = Ω_r(n) has at least ex(d, K_{r−1}) edges in its neighborhood. In 1983, Bondy strengthened this by showing that when G has strictly more than ex(n, K_r) edges, the maximum-degree vertex always works. This means one need not search for the right vertex — the most connected one is guaranteed to have a dense neighborhood.\n\nErdős described this result as 'a nice generalisation of Turán's theorem.' The Turán graph T(n, r−1) is the unique exception: its neighborhoods are themselves Turán graphs T(d, r−2), achieving exactly ex(d, K_{r−1}) edges rather than exceeding it. The result sits at the foundation of extremal graph theory and has influenced stability results and algorithmic approaches to finding dense substructures.",

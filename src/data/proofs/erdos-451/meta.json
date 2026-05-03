@@ -24,7 +24,8 @@
     "mathlib_version": "4.26.0",
     "axiomCount": 3,
     "lineCount": 185,
-    "assumptions": "3 axioms: nk, nk_gt_2k, nk_minimal. 0 sorries."
+    "assumptions": "3 axioms: nk, nk_gt_2k, nk_minimal. 0 sorries.",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "Erdős and Graham studied n_k, the smallest integer n > 2k such that the descending product (n-1)(n-2)⋯(n-k) has no prime factor in the interval (k, 2k). By Bertrand's postulate, such primes always exist, so avoidance is non-trivial. The question connects to the Chinese Remainder Theorem: for each Bertrand-range prime p, the condition p ∤ ∏(n-i) translates to a residue constraint n mod p ∈ {0, k+1, ..., p-1}, giving p-k 'safe' residues out of p possibilities.\n\nErdős and Graham proved n_k > k^{1+c} for some constant c > 0, showing the growth is superlinear. Adenwalla observed the upper bound n_k ≤ ∏_{k<p<2k} p = e^{O(k)} by taking n ≡ 0 (mod p) for all Bertrand-range primes via CRT. The exact growth rate between polynomial and exponential remains open.\n\nThe conjecture has two parts: (1) n_k is superpolynomial (n_k > k^d for every fixed d), and (2) n_k is sub-exponential (n_k < e^{o(k)}). Computed values include n_1=3, n_2=6, n_3=9, n_4=20, n_5=13, n_9=65, n_10=220, n_12=338, n_20=550. The formalization at 135 lines includes CRT structural lemmas and proved bounds.",

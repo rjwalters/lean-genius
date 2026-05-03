@@ -40,7 +40,8 @@
     "axiomCount": 0,
     "lineCount": 148,
     "assumptions": "No axioms. Historical bounds and open questions are stated as definitions/Prop, not axiom declarations.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "This problem concerns the **range of Euler's totient function** $\\varphi$. Not every positive integer is a totient value — for instance, $\\varphi(m)$ is even for all $m > 2$, so 3, 5, 7, ... are never totient values (the only odd totient value is 1).\n\n**Pillai (1929)** first proved that totient values have density 0: $V(x) = o(x)$, meaning most integers are not in the image of $\\varphi$. **Erdős (1935)** refined this to $V(x) = x \\cdot (\\log x)^{-1+o(1)}$, showing the density decays like $1/\\log x$ up to sub-polynomial corrections.\n\n**Maier and Pomerance (1988)** achieved a more precise formula: $V(x) = \\frac{x}{\\log x} \\cdot e^{(C+o(1))(\\log\\log\\log x)^2}$ for an explicit constant $C > 0$, revealing that the correction factor involves the triple logarithm. **Kevin Ford (1998)** obtained the tightest known bounds in his paper \"The distribution of totients\" (Ramanujan Journal), determining $V(x)$ up to constant factors with a formula involving $\\log\\log\\log x$ and $\\log\\log\\log\\log x$.\n\nDespite these remarkable results, the two specific questions Erdős asked remain open: whether $V(2x)/V(x) \\to 2$ (the doubling ratio) and whether an asymptotic formula $V(x) \\sim f(x)$ exists. Ford's $\\Theta$-bounds are not precise enough to answer either.",

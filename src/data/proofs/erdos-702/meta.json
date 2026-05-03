@@ -78,7 +78,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 155,
-    "assumptions": "1 axiom: frankl_theorem. 0 sorries."
+    "assumptions": "1 axiom: frankl_theorem. 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Erdős and Sós conjectured that for k ≥ 4, any k-uniform family over {1,...,n} with more than C(n-2, k-2) sets must contain two sets sharing exactly one element. The bound C(n-2, k-2) is natural: fixing two elements x, y and taking all k-sets containing both gives a family of this size where every pair shares at least {x, y}.\n\nKatona first proved the k = 4 case (unpublished). Frankl resolved the full conjecture in 1977 using the shifting (compression) technique — a method that systematically simplifies set families while preserving structural properties. His proof established the shifting technique as a central tool in extremal set theory.\n\nThe condition k ≥ 4 is necessary: for k = 3, large families avoiding singleton intersections exist beyond the C(n-2, 1) = n-2 bound, due to combinatorial designs (Steiner triple systems). The problem is closely related to #703, where Frankl and Rödl extended to general r-intersection avoidance.",

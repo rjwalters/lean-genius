@@ -1,10 +1,10 @@
 {
   "id": "erdos-881",
-  "title": "Erd\u0151s Problem #881: Minimal Additive Bases and Order Increase",
+  "title": "Erdős Problem #881: Minimal Additive Bases and Order Increase",
   "slug": "erdos-881",
   "description": "For a minimal additive basis of order k, must there exist an infinite subset whose removal yields a basis of order k+1?",
   "meta": {
-    "author": "Erd\u0151s (1998 problem)",
+    "author": "Erdős (1998 problem)",
     "sourceUrl": "https://erdosproblems.com/881",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos881Problem.lean",
@@ -56,15 +56,16 @@
     ],
     "axiomCount": 1,
     "lineCount": 243,
-    "assumptions": "1 axiom: erdos_881 (the open conjecture). Reduced from 2 by proving squares_basis_order_4 from Mathlib's Nat.sum_four_squares. Also fixed definition to use Multiset (was incorrectly using Finset, which disallows repeated elements needed for additive bases)."
+    "assumptions": "1 axiom: erdos_881 (the open conjecture). Reduced from 2 by proving squares_basis_order_4 from Mathlib's Nat.sum_four_squares. Also fixed definition to use Multiset (was incorrectly using Finset, which disallows repeated elements needed for additive bases).",
+    "theoremCount": 9
   },
   "overview": {
-    "historicalContext": "**Erd\u0151s Problem #881: Minimal Additive Bases**\n\nThis problem was posed by Erd\u0151s in 1998 [Er98] and explores the fine structure of additive bases.\n\n**Background:**\n- An additive basis of order k is a set A \u2282 \u2115 such that every sufficiently large natural number can be written as a sum of at most k elements from A\n- The classical example is Lagrange's four-square theorem: every positive integer is a sum of four squares\n- Waring's problem generalizes this: k-th powers form a basis of order g(k)\n\n**The Question:**\nFor a minimal basis (one where no infinite subset can be removed without increasing the order), does there always exist an infinite subset whose removal increases the order by exactly 1?\n\n**Status:** This problem remains OPEN with no known progress toward resolution.",
+    "historicalContext": "**Erdős Problem #881: Minimal Additive Bases**\n\nThis problem was posed by Erdős in 1998 [Er98] and explores the fine structure of additive bases.\n\n**Background:**\n- An additive basis of order k is a set A ⊂ ℕ such that every sufficiently large natural number can be written as a sum of at most k elements from A\n- The classical example is Lagrange's four-square theorem: every positive integer is a sum of four squares\n- Waring's problem generalizes this: k-th powers form a basis of order g(k)\n\n**The Question:**\nFor a minimal basis (one where no infinite subset can be removed without increasing the order), does there always exist an infinite subset whose removal increases the order by exactly 1?\n\n**Status:** This problem remains OPEN with no known progress toward resolution.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet $A \\subset \\mathbb{N}$ be an additive basis of order $k$ which is *minimal*, meaning that if $B \\subset A$ is any infinite subset, then $A \\setminus B$ is not a basis of order $k$.\n\n**Must there exist an infinite $B \\subset A$ such that $A \\setminus B$ is a basis of order $k+1$?**\n\nIntuitively: can we always find an infinite subset to remove that degrades the basis by exactly one order, not more?",
     "text": "For a minimal additive basis of order k, must there exist an infinite subset whose removal yields a basis of order k+1?",
     "proofStrategy": "**Formalization Approach**\n\nSince this is an open problem, we formalize:\n\n1. **Core Definitions:** Asymptotic additive basis of order k, minimal bases\n\n2. **Basic Properties:** Order 1 characterization, minimal bases are infinite, monotonicity, subset property\n\n3. **Main Conjecture:** The open problem as erdos881Conjecture\n\n4. **Weaker Version:** erdos881Weak asks if we can increase order by any finite amount\n\n5. **Examples:** Perfect squares (order 4 by Lagrange), k-th powers (Waring)\n\nThe key theorems beyond definitions use `sorry` as this remains unsolved.",
     "keyInsights": [
-      "**Additive Basis:** A set A is a basis of order k if every large n = a\u2081 + ... + a\u2c7c with a\u1d62 \u2208 A and j \u2264 k",
+      "**Additive Basis:** A set A is a basis of order k if every large n = a₁ + ... + aⱼ with aᵢ ∈ A and j ≤ k",
       "**Minimal Basis:** Cannot remove any infinite subset without increasing the order",
       "**The Conjecture:** Order always increases by exactly 1 under optimal removal",
       "**Weak Version:** Order increases by some finite m (implied by strong version)",
@@ -144,14 +145,14 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #881 asks whether minimal additive bases of order k always admit an infinite subset whose removal yields a basis of order exactly k+1. This elegant structural question about the 'graceful degradation' of minimal bases remains open.",
-    "implications": "**Theoretical Significance**: **Significance:**\n\n1. **Structural Understanding:** Would reveal regularity in minimal additive bases\n\n**2. Additive Number Theory:** Connects to Waring's problem and representation theory\n\n3. **Combinatorial Structure:** Understanding 'tightness' of minimal bases\n\n4. **Erd\u0151s-Tur\u00e1n Connection:** Related to conjectures on additive basis structure.",
+    "summary": "Erdős Problem #881 asks whether minimal additive bases of order k always admit an infinite subset whose removal yields a basis of order exactly k+1. This elegant structural question about the 'graceful degradation' of minimal bases remains open.",
+    "implications": "**Theoretical Significance**: **Significance:**\n\n1. **Structural Understanding:** Would reveal regularity in minimal additive bases\n\n**2. Additive Number Theory:** Connects to Waring's problem and representation theory\n\n3. **Combinatorial Structure:** Understanding 'tightness' of minimal bases\n\n4. **Erdős-Turán Connection:** Related to conjectures on additive basis structure.",
     "openQuestions": [
       "Are there minimal bases where no removal increases order by exactly 1?",
       "What is the structure of minimal bases for small orders (k=2,3,4)?",
       "Is the weak version (any finite increase) easier to prove?",
       "What special cases (like squares) might be tractable?",
-      "How does this relate to the Erd\u0151s-Tur\u00e1n conjecture on bases?"
+      "How does this relate to the Erdős-Turán conjecture on bases?"
     ]
   },
   "leanFile": {
@@ -177,17 +178,17 @@
     {
       "targetId": "erdos-38",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-basis, additive-combinatorics, number-theory"
+      "description": "Related Erdős problem sharing themes: additive-basis, additive-combinatorics, number-theory"
     },
     {
       "targetId": "erdos-40",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-basis, additive-combinatorics, number-theory"
+      "description": "Related Erdős problem sharing themes: additive-basis, additive-combinatorics, number-theory"
     },
     {
       "targetId": "erdos-871",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-basis, additive-combinatorics, number-theory"
+      "description": "Related Erdős problem sharing themes: additive-basis, additive-combinatorics, number-theory"
     }
   ],
   "sorries": 0

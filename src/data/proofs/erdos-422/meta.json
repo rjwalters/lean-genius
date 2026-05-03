@@ -51,7 +51,8 @@
     ],
     "axiomCount": 0,
     "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
-    "lineCount": 93
+    "lineCount": 93,
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "Douglas Hofstadter, famous for *Gödel, Escher, Bach* (1979), proposed this self-referential sequence and communicated it to Erdős. It appears in the Erdős–Graham monograph *Old and New Problems and Results in Combinatorial Number Theory* (1980) [ErGr80] and is listed as OEIS A005185.\n\nThe sequence $f(1) = f(2) = 1$, $f(n) = f(n - f(n-1)) + f(n - f(n-2))$ for $n > 2$ is remarkable because its most basic property—whether $f(n)$ is well-defined for all $n$—is unknown. The recursion is self-referential: to compute $f(n)$, one needs $f(n-1)$ and $f(n-2)$ to determine the indices $n - f(n-1)$ and $n - f(n-2)$, and then evaluates $f$ at those indices. If $f(n-1) \\geq n$ or $f(n-2) \\geq n$, the indices become non-positive and the recursion breaks down.\n\nComputationally, the sequence has been verified to be well-defined for billions of terms, and it appears to grow roughly linearly with a complicated local structure. The sequence begins $1, 1, 2, 3, 3, 4, 5, 7, 7, 8, \\ldots$ and exhibits no obvious pattern. It is one of the simplest self-referential recursions whose behavior resists all known analytical techniques, making it a paradigmatic example of 'simple to state, impossible to analyze.'\n\nThe self-referential nature of the recursion places this problem at the intersection of number theory, dynamical systems, and computability theory. Unlike the closely related Hofstadter $Q$-sequence ($Q(n) = Q(n - Q(n-1))$), which involves a single self-referential term, Problem #422 uses two such terms summed together, adding an additional layer of complexity.\n\n**Status**: OPEN — Well-definedness, surjectivity, and growth rate are all unknown.",

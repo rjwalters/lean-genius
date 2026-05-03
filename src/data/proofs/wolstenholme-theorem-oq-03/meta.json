@@ -50,7 +50,8 @@
       "Basic p-adic divisibility"
     ],
     "assumptions": "Four axioms: (1) Kummer's criterion for FLT via regular primes, (2) Bernoulli-harmonic connection, (3) Wolstenholme-Bernoulli equivalence for Wolstenholme primes, (4) Wiles' FLT for all primes. These represent deep results from algebraic number theory and modularity theory.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "In 1850, Ernst Kummer proved that Fermat's Last Theorem holds for all regular prime exponents, where a prime $p$ is regular if it does not divide the numerator of any Bernoulli number $B_{2k}$ for $1 \\leq k \\leq (p-3)/2$. This was the most significant progress on FLT between Fermat's marginal note (1637) and Wiles' complete proof (1995).\n\nThe connection to Wolstenholme's theorem runs through Bernoulli numbers. Wolstenholme's theorem ($C(2p-1,p-1) \\equiv 1 \\pmod{p^3}$) is equivalent to the harmonic sum $H_{p-1} \\equiv 0 \\pmod{p^2}$, which in turn relates to $B_{p-1} \\pmod{p}$. The deeper Wolstenholme primes ($C(2p-1,p-1) \\equiv 1 \\pmod{p^4}$) correspond to $p^2 \\mid B_{p-1}$.\n\nThus Bernoulli numbers form the bridge: Wolstenholme theory concerns $B_{p-1}$, while Kummer's criterion concerns $B_2, B_4, \\ldots, B_{p-3}$. Both are facets of the arithmetic of cyclotomic fields.",

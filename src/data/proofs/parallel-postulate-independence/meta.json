@@ -36,7 +36,8 @@
     "axiomCount": 5,
     "lineCount": 312,
     "assumptions": "5 axioms: euclidean_incidence_geometry, euclidean_satisfies_parallel_postulate, poincare_incidence_geometry, poincare_satisfies_hyperbolic_parallel, poincare_nontrivial. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "For over 2000 years — from Euclid (~300 BCE) through Ptolemy, Proclus, al-Haytham, Khayyam, Saccheri, Lambert, and Legendre — mathematicians tried to prove the Fifth Postulate from the other axioms. Bolyai and Lobachevsky independently developed hyperbolic geometry (1829-1832), and Beltrami (1868) proved its consistency by constructing models within Euclidean geometry. The independence follows by the soundness theorem: a model satisfying all axioms except the parallel postulate certifies it cannot be proved from the others. Klein (1871) and Poincaré (1882) gave further elegant models, and Hilbert (1899) provided the rigorous axiomatic framework. The discovery of non-Euclidean geometry was one of the most consequential events in the history of mathematics, reshaping the philosophy of mathematical truth and paving the way for Riemannian geometry and general relativity.",

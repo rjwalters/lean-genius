@@ -63,7 +63,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 387,
-    "assumptions": "0 axioms, 0 sorries. σ function properties, g(k)=k·σ(k) infrastructure, and f(n) ≤ √n bound fully proved. Open conjectures not formalized as axioms; badge updated from 'axiom' to 'wip'."
+    "assumptions": "0 axioms, 0 sorries. σ function properties, g(k)=k·σ(k) infrastructure, and f(n) ≤ √n bound fully proved. Open conjectures not formalized as axioms; badge updated from 'axiom' to 'wip'.",
+    "theoremCount": 19
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1060**\n\nThis problem appears as B11 in Richard Guy's collection 'Unsolved Problems in Number Theory' [Gu04], attributed to Erdős.\n\n**Key History:**\n- The problem concerns the multiplicative Diophantine equation k·σ(k) = n\n- Related to understanding the structure of the divisor function σ\n- Connected to OEIS sequence A327153\n\n**Mathematical Setting:**\nThe sum of divisors function σ(k) = Σ_{d|k} d is one of the most fundamental arithmetic functions. The product k·σ(k) combines multiplicative and additive structure in a subtle way.",

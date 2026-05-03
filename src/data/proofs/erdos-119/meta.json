@@ -23,7 +23,8 @@
     "axiomCount": 0,
     "lineCount": 97,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Erdős posed this three-part problem about the maximum modulus $M_n = \\max_{|z|=1} |\\prod(z - z_i)|$ for sequences of points on the unit circle. The problem asks how large $M_n$ must be, with three progressively stronger formulations.\n\nPart 1 was solved by Georg Wagner in 1980 in the Bulletin of the London Mathematical Society ('On a problem of Erdős in Diophantine approximation'). Wagner proved the quantitative bound $M_n > (\\log n)^c$ infinitely often, implying $\\limsup M_n = \\infty$. His method connected the polynomial maximum to Diophantine approximation properties of the root angles.\n\nPart 2 was solved by József Beck in his influential 1991 paper in the Annals of Mathematics ('The modulus of polynomials with zeros on the unit circle: A problem of Erdős'). Beck established $\\max_{n \\leq N} M_n > N^c$ for some $c > 0$, a major strengthening from logarithmic to polynomial growth. His proof introduced sophisticated techniques combining harmonic analysis with discrepancy theory.\n\nPart 3 remains open and carries a $100 Erdős prize. It asks whether the partial sums $\\sum_{k \\leq n} M_k$ grow like $n^{1+c}$ — a question about cumulative behavior rather than individual peaks. This is fundamentally harder than Parts 1-2 because it requires that $M_k$ is large 'on average', not just infinitely often.",

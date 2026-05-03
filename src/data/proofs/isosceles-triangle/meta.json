@@ -46,7 +46,8 @@
     "axiomCount": 0,
     "lineCount": 129,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "The isosceles triangle theorem appears as Proposition 5 in Book I of Euclid's *Elements* (c. 300 BCE), making it one of the earliest recorded proofs in mathematics. Euclid's original proof extended the equal sides beyond the base and used auxiliary triangles — an unnecessarily complex construction that became legendary for confusing students. The medieval Latin name **Pons Asinorum** ('Bridge of Asses') arose because this proposition was the first proof requiring non-trivial reasoning beyond direct axiom application, serving as the dividing line between students who could reason deductively and those who could not. Pappus of Alexandria (c. 340 AD) gave a beautifully simple alternative: consider triangle ABC congruent to triangle ACB by SAS, immediately yielding ∠ABC = ∠ACB. This 'self-congruence' argument is essentially the symmetry proof used in modern treatments. Proclus (c. 450 AD) offered yet another proof using angle bisectors. The theorem is #65 on Wiedijk's list of 100 formalized theorems. In Mathlib's formalization, the proof works in arbitrary inner product spaces over ℝ, not just the Euclidean plane — a significant generalization showing that the result depends only on the metric and inner product structure, not on dimension or specific coordinates.",

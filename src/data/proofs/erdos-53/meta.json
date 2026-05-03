@@ -28,7 +28,8 @@
       "Arithmetic combinatorics"
     ],
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "Erdős and Szemerédi posed this problem in 1983, asking whether sums and products of distinct elements from a finite integer set must be super-polynomially abundant. The question captures a deep principle in additive combinatorics: that additive and multiplicative structure in a set are fundamentally incompatible, so at least one of sums or products must be very rich. The problem is closely related to their more famous sum-product conjecture (Problem 52), which concerns pairwise operations $|A+A| + |A \\cdot A|$ rather than subset operations. Erdős and Szemerédi also established an upper bound, showing that arbitrarily large sets exist where the representable count is at most $\\exp(c(\\log|A|)^2 \\log\\log|A|)$, so the growth is subexponential. In 2003, Mei-Chu Chang resolved the problem affirmatively, proving that for every $k$, sufficiently large sets have at least $|A|^k$ representable integers. Chang's proof combined the Balog-Szemerédi-Gowers theorem with multiplicative energy estimates, building on the growing toolkit of additive combinatorics developed by Gowers, Bourgain, and others. The result confirmed that finite integer sets are inherently arithmetically rich when measured by subset operations.",

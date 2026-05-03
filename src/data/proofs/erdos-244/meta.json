@@ -75,7 +75,8 @@
     "axiomCount": 2,
     "lineCount": 233,
     "assumptions": "2 axioms: romanoff_theorem, ding_almost_all. See Lean source for complete statements.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "This problem was originally asked to Erdős by the Hungarian mathematician László Kalmár and explores the intersection of prime numbers with geometric progressions. Romanoff's 1934 paper in Mathematische Annalen established the foundational result for integer bases, using Selberg-type sieve methods to show that primes combined with powers of integers create sets of positive density. The problem connects to the older question of de Polignac (1849), who conjectured every odd number is p + 2^k — disproved by Crocker numbers like 127 and 149. The problem remained open for non-integer C for over 80 years until Ding's 2025 breakthrough, which uses measure-theoretic arguments to show the result holds for all C > 1 outside a Lebesgue-null exceptional set.",

@@ -55,7 +55,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 215,
-    "assumptions": "4 axioms: chungGraham_approx, newman_conjecture, chung_graham_theorem, and 1 more. See Lean source for complete statements."
+    "assumptions": "4 axioms: chungGraham_approx, newman_conjecture, chung_graham_theorem, and 1 more. See Lean source for complete statements.",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "This problem originated with Donald Newman, who conjectured that for any sequence x₁, x₂, ... in [0, 1], there must be infinitely many pairs (m, n) where |x_{m+n} - x_m| ≤ 1/(√5·n). The appearance of √5 is connected to the golden ratio φ = (1+√5)/2.\n\nFan Chung and Ronald Graham (1984) proved Newman's conjecture and found something remarkable: the optimal constant is not √5 but rather c = 1 + Σ_{k≥1} 1/F_{2k} ≈ 2.535, where F_m is the m-th Fibonacci number. Since c > √5 ≈ 2.236, their bound 1/c ≈ 0.394 is stronger than Newman's 1/√5 ≈ 0.447.\n\nThe Fibonacci connection is not coincidental. The golden ratio φ has continued fraction [1; 1, 1, 1, ...], making it the 'worst approximable' irrational number. Fibonacci numbers F_n/F_{n-1} give the best rational approximations to φ. This worst-case behavior for φ translates into the optimal constant for sequence approximation.",

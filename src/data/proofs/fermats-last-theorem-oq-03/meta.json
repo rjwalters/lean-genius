@@ -26,7 +26,8 @@
       "Small exponent solutions (n=1,2)",
       "Asymptotic FLT framework",
       "Modularity obstruction analysis"
-    ]
+    ],
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "**Fermat's Last Theorem (FLT)** has the longest pedigree of any modern mathematical result. Pierre de Fermat wrote in the margin of his copy of Diophantus (1637): \"I have discovered a truly remarkable proof which this margin is too small to contain.\" The claim: $x^n + y^n = z^n$ has no positive integer solutions for $n \\geq 3$.\n\nFor 358 years, generations of mathematicians proved special cases:\n- **Euler (1770)**: $n = 3$\n- **Dirichlet-Legendre (1825)**: $n = 5$\n- **Lamé (1839)**: $n = 7$\n- **Kummer (1847-1850)**: All regular primes; developed the theory of ideal numbers (predecessors of algebraic number theory) in the attempt\n\n**The revolutionary modern approach** came through algebraic geometry:\n- **Frey (1985)**: If $a^p + b^p = c^p$ then the elliptic curve $E: y^2 = x(x-a^p)(x+b^p)$ (the \"Frey curve\") has strange discriminant\n- **Ribet (1990)**: The Frey curve, if modular, would have a level-2 modular form — but no such form exists\n- **Wiles (1995)**: Every semistable elliptic curve over $\\mathbb{Q}$ is modular. Combined with Ribet, this proves FLT.\n\n**FLT over number fields**: The situation changes dramatically when we replace $\\mathbb{Q}$ with a general number field $K$:\n- Over fields with more units or roots of unity, \"unit solutions\" can exist\n- The Frey-Ribet approach requires **modularity of elliptic curves over $K$**, which is proved only in special cases\n- **Jarvis-Meekin (2004)**: FLT holds over $\\mathbb{Q}(\\sqrt{2})$ for regular primes $p \\geq 5$\n- **Freitas-Hung-Siksek (2015)**: Asymptotic FLT holds for 5/6 of squarefree $d > 0$ in $\\mathbb{Q}(\\sqrt{d})$, using base change and level-lowering over totally real fields",

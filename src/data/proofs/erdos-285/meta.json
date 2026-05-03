@@ -48,7 +48,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 374,
-    "assumptions": "1 axiom: martin_egyptian_fractions. See Lean source for the complete statement."
+    "assumptions": "1 axiom: martin_egyptian_fractions. See Lean source for the complete statement.",
+    "theoremCount": 21
   },
   "overview": {
     "historicalContext": "Egyptian fractions — sums of distinct unit fractions — date to ancient Egypt (the Rhind papyrus, ~1650 BCE). Every positive rational has infinitely many Egyptian fraction representations, but the question of how 'efficient' these can be remained open.\n\nErdős asked: if we want 1 = 1/n₁ + ··· + 1/nₖ with the smallest possible largest denominator nₖ, what is f(k)? The trivial lower bound f(k) ≥ (1+o(1))·e/(e-1)·k follows from the harmonic series.\n\nGreg Martin (2000) proved this bound is tight: f(k) = (1+o(1))·e/(e-1)·k. His paper 'Denser Egyptian Fractions' constructs explicit representations achieving this asymptotic.",

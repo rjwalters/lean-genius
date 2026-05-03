@@ -65,7 +65,8 @@
       "Combinatorics of set families (intersection properties)"
     ],
     "lineCount": 287,
-    "assumptions": "1 axiom (Komjáth's theorem for ≠1 case). The ≠2 upper bound (ℵ₀ suffices for countable I) is now proved."
+    "assumptions": "1 axiom (Komjáth's theorem for ≠1 case). The ≠2 upper bound (ℵ₀ suffices for countable I) is now proved.",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "Erdős Problem #603 originates from Péter Komjáth and was recorded in [Er87], Erdős's 1987 problem compilation. Komjáth, a leading Hungarian combinatorialist working in set-theoretic combinatorics, proposed this as a natural extension of his own theorem: for families of countably infinite sets with pairwise intersection size $\\neq 1$, exactly $\\aleph_0$ colors suffice to avoid monochromatic sets. The $\\neq 2$ variant remains open and is surprisingly resistant to the same techniques.\n\nThe problem sits at the intersection of infinite combinatorics and hypergraph coloring theory. In finite combinatorics, the chromatic number of hypergraphs with restricted edge intersections is well-studied — the Erdős–Ko–Rado theorem (1961) and the Sunflower Lemma (Erdős and Rado, 1960) are foundational results in this area. The infinite setting introduces cardinal arithmetic complications: the answer could be any finite number, $\\aleph_0$, or conceivably larger. The contrast between the $\\neq 1$ case (solved, $C = \\aleph_0$) and the $\\neq 2$ case (open) illustrates how sensitive these problems are to the exact intersection constraint.",

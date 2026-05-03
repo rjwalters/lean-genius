@@ -41,7 +41,8 @@
     "axiomCount": 1,
     "assumptions": "1 axiom declaration: roth_theorem (optimal exponent 2+epsilon). Previously axiomatized results now proved: liouville_approximation_theorem_axiom (via Mathlib's exists_pos_real_of_irrational_root + integer gap argument), liouville_uncountable_axiom (via Baire category), liouville_constant_irrational_axiom (via transcendence), liouville_add_rat_axiom (via LiouvilleWith.add_rat), liouville_mul_rat_axiom (via LiouvilleWith.rat_mul).",
     "lineCount": 528,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 17
   },
   "overview": {
     "historicalContext": "Joseph Liouville published his groundbreaking result in 1844 in the *Journal de Mathématiques Pures et Appliquées*, a journal he himself had founded in 1836. At the time, mathematicians strongly suspected that transcendental numbers existed — Euler had conjectured as much — but no one had produced a single example. Liouville's insight was indirect: rather than analyzing a specific constant, he identified a *structural property* (superpolynomial approximability by rationals) that forces transcendence. He then exhibited $L = \\sum 10^{-n!}$ as a concrete number with this property. This was nearly 30 years before Cantor's cardinality argument (1874) showed transcendentals are overwhelmingly common, and predated Hermite's proof that $e$ is transcendental (1873) and Lindemann's proof for $\\pi$ (1882). Liouville's method via Diophantine approximation remains the conceptual foundation for modern transcendence theory, influencing the Thue-Siegel-Roth progression that culminated in Roth's Fields Medal.",

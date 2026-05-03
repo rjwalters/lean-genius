@@ -66,7 +66,8 @@
     "axiomCount": 0,
     "lineCount": 247,
     "assumptions": "Fully verified: 0 axioms, 0 sorries remain.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #1006 asks about graphs where the chromatic number is less than the girth. The Fisher-Fraughnaugh-Langley-West (FFLLW) theorem (1997) establishes: if χ(G) < girth(G), then G admits a robustly acyclic orientation. The classical proof uses the coloring orientation: given col: V → {1,...,k}, orient u→v when col(u) < col(v). This orientation is acyclic (colors strictly increase), and the girth condition ensures no reversal creates a cycle.\n\nThis Lean 4 formalization uses a rank-based reformulation of robustly acyclic that makes the proof simpler: an arc is dependent if, for every consistent ranking of other arcs, the ranking forces rank(v) ≤ rank(u). Under this definition, the coloring orientation has NO dependent arcs regardless of girth.\n\nThe key insight revealed by the formalization: under the rank-based definition, FFLLW is a tautology for finite graphs — every finite graph is properly colorable (by colorable_of_fintype), and any properly colored graph has a robust orientation. The girth condition χ < girth is mathematically unnecessary for this formulation.",

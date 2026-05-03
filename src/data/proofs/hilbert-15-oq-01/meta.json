@@ -42,7 +42,8 @@
     "axiomCount": 0,
     "lineCount": 351,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. All results follow from the explicit multiplication table.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 22
   },
   "overview": {
     "historicalContext": "**Schubert calculus** was developed by Hermann Schubert in his 1879 book *Kalkül der abzählenden Geometrie*, providing a powerful method for counting geometric configurations: lines meeting other lines, conics tangent to given conics, surfaces of given degree containing given curves. Schubert's symbolic calculus produced correct answers through formal manipulation of 'condition symbols', but lacked rigorous foundations.\n\n**Hilbert's 15th problem** (1900): *\"To establish rigorously and with an exact determination of the limits of their validity those geometrical numbers which Schubert especially has determined on the basis of the so-called principle of special position.\"* In particular, Hilbert asked for a proof that the four lines theorem (exactly 2 lines meet 4 general lines in P³) is correct.\n\nThe modern resolution uses **Chow rings** A*(X) = ⊕ Aⁱ(X), where algebraic cycles of codimension i modulo rational equivalence form Aⁱ(X). For Grassmannians, Schubert classes form a ℤ-basis with multiplication governed by the **Littlewood–Richardson rule** (established rigorously by Schützenberger in 1977). **Kleiman's transversality theorem** (1974) provided the geometric foundation: general translates of Schubert varieties intersect transversally, so intersection numbers count geometric configurations.\n\nThis file provides the first fully machine-checked proof of the four lines theorem with 0 axioms and 0 sorries, formalizing the complete Chow ring A*(Gr(2,4)) — the intersection ring of lines in P³ — and answering Hilbert's 15th problem computationally for this case.",

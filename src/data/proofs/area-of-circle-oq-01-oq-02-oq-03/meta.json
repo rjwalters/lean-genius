@@ -79,7 +79,8 @@
     ],
     "dateAdded": "2026-04-04",
     "assumptions": "None. This is fully verified with 0 sorries and 0 axioms.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 14
   },
   "overview": {
     "historicalContext": "Archimedes (~250 BCE) computed the area of a circle using the **method of exhaustion** — a technique systematized by Eudoxus of Cnidus (~370 BCE). Inscribe a regular $n$-gon in a circle of radius $r$, compute its area as $\\frac{n}{2}r^2 \\sin(2\\pi/n)$, and let $n \\to \\infty$. As $n$ grows, the $n$-gon fills up the disk, and the area converges to $\\pi r^2$. Archimedes used $n = 96$ to establish $3\\frac{10}{71} < \\pi < 3\\frac{1}{7}$ in his *Measurement of a Circle*.\n\nThe method of exhaustion implicitly relies on what we now call the Archimedean property and completeness of $\\mathbb{R}$: the area cannot simultaneously be too large and too small, so it must equal $\\pi r^2$ exactly. Archimedes used both inscribed and circumscribed polygons in a double squeeze — a two-sided argument whose modern form is the squeeze theorem.\n\nTwenty-two centuries later, Newton and Leibniz developed the **Fundamental Theorem of Calculus** (FTC), yielding the same result through integration: since $A'(r) = 2\\pi r = C(r)$ (the circumference is the derivative of the enclosed area), we get $A(r) = \\int_0^r 2\\pi\\rho\\,d\\rho = \\pi r^2$. Cavalieri's earlier *indivisibles* (1635) and Wallis's infinite products (1656) were stepping stones between Archimedes and the FTC.\n\nThis file answers **OQ-01-OQ-02-OQ-03**: can these two methods be formally connected? Yes — both converge to $\\pi r^2$, and by Hausdorff uniqueness of limits in $\\mathbb{R}$, there is only one such value. The exhaustion sequence and the FTC integral are not just numerically equal but provably represent the same mathematical object.",

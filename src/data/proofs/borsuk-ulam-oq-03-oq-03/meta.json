@@ -58,7 +58,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 2633,
-    "assumptions": "1 axiom: tucker_2d_grid. See Lean source for the complete statement."
+    "assumptions": "1 axiom: tucker_2d_grid. See Lean source for the complete statement.",
+    "theoremCount": 123
   },
   "overview": {
     "historicalContext": "Tucker's lemma (1946) is the combinatorial analog of the Borsuk-Ulam theorem. While BU states that every continuous map from S^n to R^n has an antipodal pair, Tucker's lemma states that every antipodally-labeled triangulation of the disk has a complementary edge. The connection: discretize a continuous map via Tucker labeling, apply Tucker's lemma to find complementary edges, take limits to get exact antipodal pairs. This provides a constructive/combinatorial proof of BU, avoiding algebraic topology (degree theory, homology).",

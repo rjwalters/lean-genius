@@ -53,7 +53,8 @@
     "axiomCount": 4,
     "lineCount": 364,
     "assumptions": "4 axioms: gpf_eq_two_iff, consecutive_gpf_divides, tong_theorem, mahler_growth. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 18
   },
   "overview": {
     "historicalContext": "**Erdős Problem #649**\n\nThis problem asks whether all prime pairs can be realized as greatest prime factors of consecutive integers.\n\n**Key History:**\n- Erdős believed the problem was 'probably hopelessly difficult'\n- Multiple counterexamples discovered via modular arithmetic\n- Tong proved infinitely many pairs fail for any fixed p\n- Mahler (1935) studied growth of P(n(n+1))\n\n**The Counterexamples:**\n- (2, 7): 2^k ≢ -1 (mod 7) since ord_7(2) = 3 is odd\n- (19, 2): 2 is a primitive root mod 19\n- Infinitely many pairs via quadratic reciprocity obstructions",

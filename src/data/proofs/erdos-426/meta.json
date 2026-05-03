@@ -25,7 +25,8 @@
     "axiomCount": 4,
     "lineCount": 255,
     "assumptions": "4 axioms: CountUniqueSubgraphs, brouwer_1975, bradac_christoph_2024, original_question_false. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "This problem originated with Erdős and Entringer in 1972. They asked whether a graph could have as many unique subgraphs as there are non-isomorphic graphs (~ 2^(n choose 2)/n! by Pólya). Entringer-Erdős achieved 2^{(n choose 2) - O(n^{3/2})} unique subgraphs. Brouwer (1975) improved this to 2^{(n choose 2) - O(n)}/n!.\n\nErdős believed Brouwer's construction was essentially optimal and offered $25 for a proof. Spencer suggested the full bound might be achievable (Erdős offered $100 for such a construction). In 2024, Bradač and Christoph proved the answer is NO: f(n) = o(2^(n choose 2)/n!).",

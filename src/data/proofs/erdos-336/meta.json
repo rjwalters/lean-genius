@@ -54,7 +54,8 @@
     ],
     "axiomCount": 6,
     "lineCount": 161,
-    "assumptions": "6 axioms: grekos_lower_1988, nash_upper_1993, h_2, h_3, example_order_2, example_exact_order_3. 0 sorries."
+    "assumptions": "6 axioms: grekos_lower_1988, nash_upper_1993, h_2, h_3, example_order_2, example_exact_order_3. 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "This problem was introduced by Erdős and Graham in their 1980 paper 'On bases with an exact order'. A set A ⊆ ℕ is a basis of order r if every large integer can be written as a sum of at most r elements from A. It has exact order k if every large integer is a sum of exactly k elements. The function h(r) measures the maximum achievable exact order for a basis of order r.\n\nOrder and exact order can differ dramatically: the example A = ∪_{k≥0}(2^{2k}, 2^{2k+1}] has order 2 but exact order 3. Erdős-Graham established the initial bounds 1/4 ≤ lim h(r)/r² ≤ 5/4 and proved that A has exact order if and only if its consecutive differences are coprime.\n\nGrekos (1988) improved the lower bound to 1/3, and Nash (1993) improved the upper bound to 1/2. Plagne (2004) refined the lower-order terms. The exact value of the limit remains unknown, making this one of the longstanding open problems in additive combinatorics.",

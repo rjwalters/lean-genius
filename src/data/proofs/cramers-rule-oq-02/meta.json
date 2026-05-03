@@ -54,7 +54,8 @@
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
     "lineCount": 207,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 16
   },
   "overview": {
     "historicalContext": "**Cramer's Rule and Its Complexity**\n\nGabriel Cramer (1750) gave an elegant formula expressing each variable xᵢ of a linear system Ax = b as a ratio of determinants: xᵢ = det(Aᵢ)/det(A), where Aᵢ is A with the i-th column replaced by b. While theoretically beautiful, this formula requires computing n+1 determinants, each of which — via the Leibniz expansion over all n! permutations — takes n·n! multiplications. The total is (n+1)·n·n!.\n\n**The Computational Gap**\n\nGaussian elimination, by contrast, reduces the system to row echelon form in roughly n³/3 multiplications. The ratio (n+1)·n!/n² grows super-polynomially in n, creating an enormous efficiency gap for large systems. This is why Cramer's rule is taught as a theoretical tool but never used in practice for large systems.\n\n**Why Formalize This?**\n\nThis result is widely cited but rarely given a formal proof. The formalization makes the complexity gap precise and machine-checkable, and provides a clean Lean 4 library of factorial growth lemmas that may be useful in other algorithm complexity proofs.",

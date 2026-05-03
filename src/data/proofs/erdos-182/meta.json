@@ -86,7 +86,8 @@
         "description": "Original posing of the regular subgraph problem and the connected variant"
       }
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "**Erdős and Sauer** posed this problem in 1975, asking about the maximum edge density that avoids k-regular subgraphs.\n\n**Timeline**:\n- **1975**: Erdős poses the problem in 'Some recent progress on extremal problems in graph theory'\n- **1995**: **Pyber, Rödl, and Szemerédi** construct graphs with Ω(n log log n) edges and no 3-regular subgraph, establishing the lower bound\n- **2023**: **Janzer and Sudakov** prove the matching upper bound in 'Resolution of the Erdős-Sauer problem on regular subgraphs', completing the solution\n\n**Key insight**: The log log n factor arises from an iterative argument where each step reduces the graph while preserving structure. The iteration depth is O(log log n).",

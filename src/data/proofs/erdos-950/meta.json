@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 2,
     "lineCount": 225,
-    "assumptions": "2 axioms: de_bruijn_erdos_turan_sum, de_bruijn_erdos_turan_sum_sq. 0 sorries."
+    "assumptions": "2 axioms: de_bruijn_erdos_turan_sum, de_bruijn_erdos_turan_sum_sq. 0 sorries.",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "This problem concerns the function f(n) = ∑_{p<n} 1/(n−p), which measures how close n is to primes by weighting nearby primes more heavily. De Bruijn, Erdős, and Turán showed that ∑_{n<x} f(n) ~ x and ∑_{n<x} f(n)² ~ x, meaning f(n) averages to 1 and concentrates near 1. The three questions probe the extremal behavior. Functions measuring proximity of integers to primes connect to the Hardy-Ramanujan theorem on additive arithmetic functions and Cramér model of primes; the harmonic weighting 1/(n-p) echoes the classical harmonic series and Mertens theorem on ∑ 1/p. Understanding when f(n) is large or unusually small yields information about local prime gaps and prime distribution.",

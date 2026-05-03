@@ -25,7 +25,8 @@
     "axiomCount": 4,
     "lineCount": 129,
     "assumptions": "4 axioms: hasUnitEmbedding_exists, min_edges_dimension_4, k33_unique_minimum, and 1 more. See Lean source for complete statements.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "The notion of graph dimension was introduced by Erdős, Harary, and Tutte in their 1965 paper 'On the dimension of a graph,' published in *Mathematika*. They defined the dimension of a graph $G$ as the smallest $d$ such that $G$ can be embedded in $\\mathbb{R}^d$ with every edge realized as a unit-length segment. This concept connects combinatorial graph theory with the classical study of distance geometry, which traces back to Cayley (1841) and Menger (1928), who studied when a set of pairwise distances can be realized in Euclidean space.\n\nThe dimension ladder for complete graphs follows from regular simplex geometry: $K_2$ has dimension 1 (a single edge), $K_3$ has dimension 2 (equilateral triangle), $K_4$ has dimension 3 (regular tetrahedron), and in general $K_{n+1}$ has dimension $n$. But at dimension 4, the minimum-edge graph is *not* $K_5$ (which has 10 edges) but $K_{3,3}$, a bipartite graph with only 9 edges — a surprising break from the simplex pattern.\n\nErdős posed this specific question to Alexander Soifer in January 1992, asking for the minimum number of edges in a 4-dimensional graph. House resolved it in 2013 in 'A 4-dimensional graph has at least 9 edges' (*Discrete Mathematics*), proving the lower bound and showing $K_{3,3}$ is the unique achiever. Chaffee and Noble (2016) gave an alternative proof and extended the analysis to dimension 5, finding the minimum is 15 edges, achieved by both $K_6$ and the tripartite graph $K_{1,3,3}$. The loss of uniqueness at dimension 5 suggests the combinatorial landscape of minimum-edge embeddings grows rapidly with dimension.",

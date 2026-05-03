@@ -63,7 +63,8 @@
     "axiomCount": 0,
     "lineCount": 501,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 22
   },
   "overview": {
     "historicalContext": "Ceva's theorem was proved by Giovanni Ceva in 1678 (though Menelaus treated the dual result in ~100 AD). The Euclidean version states: in a triangle ABC, cevians AD, BE, CF are concurrent if and only if (BD/DC)·(CE/EA)·(AF/FB) = 1.\n\nThe generalization to non-Euclidean geometries replaces the ratio BD/DC with sin(BD)/sin(DC) (spherical) or sinh(BD)/sinh(DC) (hyperbolic), where the measures are now arc lengths or hyperbolic distances rather than Euclidean lengths.\n\nMenelaus's theorem is the 'dual': a transversal line cuts the sides of a triangle such that the SIGNED product of ratios equals -1 (rather than 1 for Ceva). The Ceva-Menelaus duality is a deep algebraic relationship: negating exactly one ratio converts one condition to the other.\n\nThe Gauss-Bonnet theorem (angle sum = π + κ·Area for constant curvature κ) ties everything together: it explains WHY spherical triangles have angle sum > π (positive curvature) and hyperbolic triangles have angle sum < π (negative curvature), and this angle sum directly relates to the 'excess' or 'defect' that appears in the non-Euclidean Ceva/Menelaus conditions.",

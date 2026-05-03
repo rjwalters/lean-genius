@@ -53,7 +53,8 @@
     "axiomCount": 0,
     "lineCount": 550,
     "assumptions": "0 axioms, 0 sorries. Core digit-sum congruence from Mathlib's Nat.modEq_digits_sum and Nat.dvd_iff_dvd_digits_sum.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 56
   },
   "overview": {
     "historicalContext": "Divisibility rules are among the oldest mathematical algorithms, with origins in ancient Babylonian, Indian, and Chinese mathematics. The digit-sum rule for 9 ('casting out nines') was known to Arab mathematicians by the 9th century and was described by al-Khwārizmī. The digit-sum rule for 3 follows from the same principle: $10 \\equiv 1 \\pmod{3}$, so $n \\equiv$ digit sum $\\pmod{3}$.\n\nThe truncation methods have a more recent history. The rule for 7 (subtract 2 times the last digit) and for 13 (add 4 times the last digit) appeared in recreational mathematics texts of the 19th and 20th centuries. Martin Gardner popularized many such rules in his *Scientific American* columns. The underlying principle is uniform: if $d \\mid (10c \\pm 1)$, then $d \\mid n \\iff d \\mid (\\lfloor n/10 \\rfloor \\pm c \\cdot (n \\bmod 10))$, since $n = 10q + r$ gives $10(q \\pm cr) = n \\pm (10c \\mp 1)r$.\n\nThe beautiful factorization $1001 = 7 \\times 11 \\times 13$ connects three truncation rules to a single fact: $1000 \\equiv -1$ modulo each of 7, 11, and 13, giving alternating 3-digit group tests for all three. Digital root theory (repeatedly summing digits until a single digit remains) provides a complete characterization: $\\text{dr}(n) = 1 + ((n-1) \\bmod 9)$ for $n > 0$, connecting elementary arithmetic to modular algebra.\n\nThis formalization verifies 56 theorems covering all three families, with 0 sorries and 0 axioms, building on Mathlib's `Nat.modEq_digits_sum` for the digit-sum foundation.",

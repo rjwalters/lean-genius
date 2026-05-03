@@ -54,7 +54,8 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 6,
     "lineCount": 127,
-    "assumptions": "6 axioms: maxIsoscelesSize, kelly_R2, croft_R3, and 3 more. See Lean source for complete statements."
+    "assumptions": "6 axioms: maxIsoscelesSize, kelly_R2, croft_R3, and 3 more. See Lean source for complete statements.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Erdős and Kelly posed Problem #503 in their 1947 paper on distances in point sets, asking for the maximum size of a subset of $\\mathbb{R}^n$ in which every triple of points forms an isosceles triangle. Kelly proved $f(2) = 6$, with the regular hexagon providing the extremal configuration in the plane—its high symmetry group ($D_6$) ensures every triple of vertices has at least two equal distances. H. T. Croft solved the three-dimensional case in 1962, showing $f(3) = 8$ using careful geometric constructions. In 1984, Aart Blokhuis established the general upper bound $f(n) \\leq \\binom{n+2}{2}$ using a linear algebra argument involving the dimension of the space of squared-distance polynomials. On the lower bound side, Ryan Alweiss constructed isosceles sets of size $\\binom{n+1}{2}$ using sums of standard basis vectors $e_i + e_j$ in $\\mathbb{R}^{n+1}$ (projected to $\\mathbb{R}^n$), and Weisenberg improved this by 1 to $\\binom{n+1}{2} + 1$. The gap between the bounds is $n$, growing linearly, and the exact value of $f(n)$ for any $n \\geq 4$ remains open. The problem connects to the broader Erdős distance theory, including questions about repeated distances and equidistant sets.",

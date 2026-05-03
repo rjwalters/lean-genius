@@ -60,7 +60,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 281,
-    "assumptions": "3 axioms: spencer_graph_construction, gao_upper_bound, gaoFunction_tendsto_infinity. 0 sorries."
+    "assumptions": "3 axioms: spencer_graph_construction, gao_upper_bound, gaoFunction_tendsto_infinity. 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős Problem #775**\n\nThis problem explores the combinatorial structure of hypergraphs, specifically asking about the diversity of clique sizes.\n\n**Key History:**\n- Moon and Moser (1965): Proved that graphs on n vertices have at most n - log₂n + O(1) different clique sizes\n- Spencer (1971): Constructed graphs achieving this optimal bound\n- Erdős: Constructed 3-uniform hypergraphs with n - log*n different clique sizes, and asked if n - O(1) is achievable\n- Gao (2025): Proved the answer is NO for all k ≥ 3\n\n**Mathematical Setting:**\nA k-uniform hypergraph has edges that are exactly k-element subsets of vertices. For k=2, this is an ordinary graph. A clique (maximal complete subgraph) is a set where every k-subset is an edge. The question asks: how many different sizes of cliques can coexist?",

@@ -34,7 +34,8 @@
       "Basic computability"
     ],
     "assumptions": "Two axioms: (1) Z Diophantine over Q implies H10/Q undecidable (reduction from MRDP), (2) Mazur's conjecture implies Z not Diophantine over Q (topological argument). The main question H10/Q remains OPEN.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "Hilbert's 10th problem asked (1900) for an algorithm to decide whether a Diophantine equation has integer solutions. After decades of work by Martin Davis, Hilary Putnam, and Julia Robinson, the problem was resolved negatively by Yuri Matiyasevich in 1970: the MRDP theorem shows every recursively enumerable set is Diophantine, making H10/$\\mathbb{Z}$ undecidable.\n\nThe analogous question over $\\mathbb{Q}$ — H10/$\\mathbb{Q}$ — remains one of the most important open problems at the intersection of number theory and mathematical logic. The standard approach to proving undecidability would be to show $\\mathbb{Z}$ is Diophantine over $\\mathbb{Q}$ (i.e., integrality can be detected by a polynomial equation with rational solutions). However, Barry Mazur (1992) conjectured that the topology of rational points on varieties prevents this: the real closure of $V(\\mathbb{Q})$ has finitely many connected components for any variety $V$, while $\\mathbb{Z} \\subset \\mathbb{R}$ has infinitely many.\n\nTwo landmark partial results narrow the gap: Bjorn Poonen (2009) proved H10 is undecidable over certain subrings of $\\mathbb{Q}$ (rings of $S$-integers), and Jochen Koenigsmann (2016) showed $\\mathbb{Z}$ is $\\forall\\exists$-definable in $\\mathbb{Q}$ — just one quantifier alternation away from Diophantine (purely existential) definability.",

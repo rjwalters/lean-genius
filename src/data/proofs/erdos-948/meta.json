@@ -57,7 +57,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 214,
-    "assumptions": "1 axiom: galvin_counterexample. 0 sorries."
+    "assumptions": "1 axiom: galvin_counterexample. 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1977 [Er77c], connecting to Hindman's theorem (1974) on IP sets. Hindman's theorem says any finite coloring of N has an infinite sequence whose finite subsums are monochromatic. Galvin provided a counterexample showing the monochromatic version with growth bounds is false. The problem relates to Erdős Problem #532. IP sets (named by Furstenberg for idempotent) are central to additive combinatorics and ergodic theory: Furstenberg and Weiss (1978) used IP sets to prove topological and measure-theoretic recurrence theorems. Hindman's theorem was later generalized in Gowers's combinatorial proof (2001) and placed in the broader context of the Hales-Jewett theorem.",

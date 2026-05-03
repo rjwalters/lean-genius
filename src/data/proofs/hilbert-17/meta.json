@@ -57,7 +57,8 @@
       "robinson_nonneg_aux: Robinson's polynomial is non-negative everywhere (Schur's inequality)",
       "robinson_not_sos_aux: Robinson's polynomial is not a sum of squares of polynomials (homogeneous form analysis)"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "Hilbert's 17th Problem emerged from a long investigation into the relationship between non-negativity and sums of squares. In 1888, Hilbert proved a remarkable non-constructive result: there exist non-negative polynomials that are not sums of squares of polynomials. He showed this happens in all but three exceptional cases — univariate polynomials, quadratic forms, and bivariate quartics — but gave no explicit example.\n\nIn his famous 1900 Paris lecture, Hilbert posed Problem 17: even if polynomial squares don't suffice, can every non-negative polynomial be written as a sum of squares of rational functions (quotients of polynomials)? This seemingly modest weakening turns out to be exactly right.\n\nEmil Artin resolved the problem affirmatively in 1927, as an application of his theory of formally real fields and real closures. The proof is a triumph of abstract algebra: if a non-negative polynomial were not a sum of squares of rational functions, one could construct an ordering of the function field making it negative, which contradicts non-negativity via the transfer principle for real closed fields.\n\nNearly 40 years after Hilbert's non-constructive existence proof, Theodore Motzkin (1967) gave the first explicit counterexample to polynomial SOS: M(x,y) = x⁴y² + x²y⁴ - 3x²y² + 1 is non-negative everywhere (by AM-GM) but cannot be decomposed as a sum of squared polynomials (by degree analysis). In the same year, Albrecht Pfister proved that at most 2^n rational function squares are needed for n-variable polynomials.",

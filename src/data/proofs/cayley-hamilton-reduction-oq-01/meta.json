@@ -59,7 +59,8 @@
     "axiomCount": 0,
     "lineCount": 304,
     "assumptions": "0 axioms, 0 sorries. Core reduction and nilpotency results rely on Mathlib's Cayley-Hamilton theorem (Matrix.aeval_self_charpoly). Original contributions include diagonal power induction proofs and degree bound arguments.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 14
   },
   "overview": {
     "historicalContext": "The Cayley-Hamilton theorem (1858) underpins efficient matrix computation. The open question from the cayley-hamilton-reduction gallery entry asks: 'Can this reduction be made computationally efficient for sparse matrices?' This formalization answers YES for four key sparse structures.\n\nFor dense n×n matrices, computing the characteristic polynomial requires O(n³) operations (via determinant expansion). For sparse/structured matrices, this drops dramatically:\n- Upper triangular: O(n) — just read the diagonal\n- Block triangular: O(Σ kᵢ³) where kᵢ are block sizes — up to O(n³/k²) savings for k blocks of equal size\n- Diagonal: O(n) — entry-wise computation\n\nThe Wiedemann algorithm (1986) exploits sparsity to compute charpolys in O(n²s) where s is sparsity, giving O(n²) for s = O(1) sparse matrices.",

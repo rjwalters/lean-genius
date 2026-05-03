@@ -46,7 +46,8 @@
     ],
     "axiomCount": 0,
     "assumptions": "None. Fully verified, 0 axioms, 0 sorries.",
-    "lineCount": 106
+    "lineCount": 106,
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Nicole Oresme (~1350) proved the harmonic series diverges by grouping terms: the second group contains 1/3+1/4 ≥ 1/2, the third has 1/5+...+1/8 ≥ 1/2, and each subsequent group of 2^k consecutive terms sums to at least 1/2 — so the total exceeds arbitrarily large multiples of 1/2. Oresme published this in 'Quaestiones super geometriam Euclidis', making it the oldest known proof of divergence of a series. Augustin-Louis Cauchy (1821) recognized this grouping as a general principle in his landmark 'Cours d'analyse de l'École Royale Polytechnique': for any nonneg antitone sequence f, the partial sums Σ f(n) grow without bound if and only if the condensed sums Σ 2^k·f(2^k) do. This transforms Oresme's ad hoc grouping into an exact biconditional characterization valid for p-series, logarithmic series, and entire hierarchies of borderline convergence rates.",

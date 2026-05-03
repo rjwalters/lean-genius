@@ -79,7 +79,8 @@
         "statement": "e n r <= e (n + 1) r",
         "description": "Monotonicity of e(n,r) in the number of vertices n. More vertices provide more room for edges, so the threshold is non-decreasing in n."
       }
-    ]
+    ],
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1987, building on the influential work of Ruzsa and Szemerédi from 1978 on triple systems. Their seminal paper proved that in any graph on n vertices where every edge is in at least one triangle, if the graph has o(n²) edges then one cannot guarantee that some edge is in many triangles — equivalently, e(n,r) = o(n²) for fixed r. This result is intimately connected to the triangle removal lemma, one of the cornerstones of extremal graph theory.\n\nThe problem asks two specific questions about the fine structure of the function e(n,r). Question 1 asks whether the absolute gap e(n,r+1) - e(n,r) grows without bound as n → ∞, meaning that requiring one additional triangle per edge always costs significantly more edges for large graphs. Question 2 asks whether the ratio e(n,r+1)/e(n,r) → 1, meaning that while the absolute cost may grow, the relative cost becomes negligible. If both are true, the thresholds grow at the same asymptotic rate but with unbounded absolute separation.\n\nThe known bounds place e(n,r) at roughly n²/log n from above and n^{2-o(1)} from below, leaving a significant gap even for the basic asymptotics. Both questions remain completely open. The problem connects to Turán-type extremal theory, the Szemerédi regularity lemma, and the broader study of how graph density forces local substructure.",

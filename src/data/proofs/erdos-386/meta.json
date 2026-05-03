@@ -24,7 +24,8 @@
     "axiomCount": 1,
     "lineCount": 139,
     "assumptions": "1 axiom: consecutivePrimeProd_squarefree (product of consecutive primes is squarefree). 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p. 74), asking whether binomial coefficients C(n,k) can equal products of consecutive primes p_i · p_{i+1} · ⋯ · p_j infinitely often. The question sits at the intersection of two deep streams: the prime factorization structure of binomial coefficients (studied since Kummer's 1852 theorem on p-adic valuations via carries in base-p addition) and the distribution of primorial quotients (products of consecutive primes). The known examples — C(21,2) = 210 = 2·3·5·7, C(7,3) = 35 = 5·7, C(10,4) = 210, C(14,4) = 1001 = 7·11·13, and C(15,6) = 5005 = 5·7·11·13 — all have small k ≤ 6 and n ≤ 21. The Sylvester–Schur theorem (1934) guarantees that C(n,k) always has a prime factor > k, providing a lower bound on the 'reach' of its prime factorization. Granville's work on the multiplicative structure of binomial coefficients (2000s) shows they are 'almost always' squarefree, but being a product of *consecutive* primes is a much stronger constraint that remains poorly understood.",

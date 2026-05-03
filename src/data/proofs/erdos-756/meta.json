@@ -75,7 +75,8 @@
     ],
     "axiomCount": 5,
     "lineCount": 268,
-    "assumptions": "5 axioms: hopf_pannwitz (largest distance multiplicity ≤ n), bhowmick_main (⌊n/4⌋ rich distances for large n), squareGrid (square grid construction), regularPolygon (regular polygon construction), latticeInDisk (lattice points in disk). No sorries."
+    "assumptions": "5 axioms: hopf_pannwitz (largest distance multiplicity ≤ n), bhowmick_main (⌊n/4⌋ rich distances for large n), squareGrid (square grid construction), regularPolygon (regular polygon construction), latticeInDisk (lattice points in disk). No sorries.",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "**Erdős Problem #756: Rich Distances in the Plane**\n\nThis problem, asked by Erdős and Pach, concerns distance multiplicities in finite point sets in the plane.\n\n**Historical Timeline:**\n- **1934:** Hopf and Pannwitz proved the largest distance among n points occurs at most n times (this is tight for regular polygons)\n- **Erdős-Pach:** Asked whether ALL other distances can have multiplicity > n (the \"strong\" form)\n- **2024:** Bhowmick answered affirmatively with an explicit construction achieving ⌊n/4⌋ rich distances\n- **2025:** Clemen, Dumitrescu, and Liu studied the square grid, finding superpolynomial richness\n\n**The Surprise:**\nDespite the classical Hopf-Pannwitz constraint on the largest distance, Bhowmick showed that MANY distances can be \"rich\" (occurring more than n times). The phenomenon is even stronger on structured sets like square grids.",

@@ -88,7 +88,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 406,
-    "assumptions": "0 axioms. 0 sorries. minkowski_from_holder_explicit proved via ENNReal.lintegral_Lp_add_le."
+    "assumptions": "0 axioms. 0 sorries. minkowski_from_holder_explicit proved via ENNReal.lintegral_Lp_add_le.",
+    "theoremCount": 13
   },
   "overview": {
     "historicalContext": "The Young-Hölder-Minkowski chain is one of the most important logical dependencies in modern analysis, developed over three decades by three mathematicians. Otto Hölder (1889) proved his inequality $\\int|fg| \\leq \\|f\\|_p \\|g\\|_q$ in a paper on mean values, though he stated it for sums rather than integrals. Hermann Minkowski (1896) proved the triangle inequality for $\\ell^p$ norms in his *Geometrie der Zahlen*, establishing that $\\ell^p$ is a genuine metric space for $p \\geq 1$ — the result that launches the theory of Banach spaces. William Henry Young (1912) later isolated the pointwise inequality $ab \\leq a^p/p + b^q/q$ as the analytic core underlying Hölder's proof, providing the cleanest derivation of Hölder's inequality via normalization.\n\nThe logical dependency runs: Young (pointwise) → Hölder (integral) → Minkowski (norm triangle inequality). The critical step from Hölder to Minkowski is the 'factoring trick': splitting $|f+g|^p$ into two products amenable to Hölder, then using the conjugate exponent identity $(p-1)q = p$ to simplify. This trick was systematized by Frigyes Riesz and others in the early 20th century as $L^p$ space theory matured. In modern formalization (Mathlib), the entire chain is buried inside the `NormedAddCommGroup` instance for `Lp` spaces, making it invisible. This file makes each step explicit, recovering the pedagogical clarity of the original development.",

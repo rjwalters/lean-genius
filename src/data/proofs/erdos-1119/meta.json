@@ -58,7 +58,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 133,
-    "assumptions": "3 axioms: IsEntire (entire function predicate — axiomatized), erdos_1964_wetzel (Erdős 1964 — if ¬CH then Wetzel families of entire functions are countable), easy_case (intermediate cardinality case ℵ₁ < m < 𝔠 via diagonalization). 0 sorries."
+    "assumptions": "3 axioms: IsEntire (entire function predicate — axiomatized), erdos_1964_wetzel (Erdős 1964 — if ¬CH then Wetzel families of entire functions are countable), easy_case (intermediate cardinality case ℵ₁ < m < 𝔠 via diagonalization). 0 sorries.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Erdős Problem #1119 generalizes Wetzel's 1963 question, which asked whether a family of entire functions with only countably many values at each point must itself be countable. Erdős solved Wetzel's problem in 1964 by showing the answer is equivalent to the negation of the Continuum Hypothesis: YES if 𝔠 > ℵ₁, but NO under CH. Problem #1119 extends this to arbitrary intermediate cardinals 𝔪 with ℵ₀ < 𝔪 < 𝔠.\n\nThe answer splits into two cases based on the cardinal successor 𝔪⁺. If 𝔪⁺ < 𝔠, the answer is YES — this was noted as 'easy to see' by Hayman (1974), using the identity theorem for entire functions (distinct entire functions agree on at most countably many points). The key insight is that a diagonalization argument over the value sets forces the family to be small.\n\nThe deep case occurs when 𝔪⁺ = 𝔠, particularly 𝔪 = ℵ₁ and 𝔠 = ℵ₂. Kumar and Shelah (2017) constructed a ZFC model where YES holds in this case, while Schilhan and Weinert (2024) constructed a different model where NO holds. Together, these results show the problem is independent of ZFC when 𝔪⁺ = 𝔠, completely resolving Erdős's question.",

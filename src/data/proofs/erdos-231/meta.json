@@ -52,7 +52,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 213,
-    "assumptions": "1 axiom: erdos_231_disproved (∀ k ≥ 4, no string of length 2^k-1 over k letters must contain an abelian square — Keränen 1992). See Lean source for complete statement."
+    "assumptions": "1 axiom: erdos_231_disproved (∀ k ≥ 4, no string of length 2^k-1 over k letters must contain an abelian square — Keränen 1992). See Lean source for complete statement.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "**Erdős Problem #231**\n\nThis problem concerns abelian squares in combinatorics on words.\n\n**History:**\n- Erdős initially conjectured YES: strings of length 2^k - 1 over k letters must contain abelian squares\n- De Bruijn and Erdős found counterexamples for k = 4\n- The question evolved: can infinite abelian-square-free strings exist?\n- Keränen (1992) constructed an infinite abelian-square-free string over 4 letters\n\n**Context:**\n- Thue (early 1900s) showed squarefree strings exist over 3 letters\n- Abelian-square-free is a STRONGER property\n- 4 letters are both necessary and sufficient for abelian-square-free strings",

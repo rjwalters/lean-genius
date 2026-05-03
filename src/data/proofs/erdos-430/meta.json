@@ -24,7 +24,8 @@
     "axiomCount": 1,
     "assumptions": "1 axiom: erdos_430_conjecture (the open conjecture: composites appear for large n). 0 sorries. Equivalence with Problem #385 fully proved. Sequence termination proved: greedySeq n n = 0.",
     "lineCount": 249,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdos and Graham in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' The construction defines a greedy sequence $a_0 = n-1, a_{k+1} = \\max\\{m < a_k : \\text{all prime factors of } m > n - m\\}$ and asks whether composites must eventually appear. John Selfridge performed extensive computational searches supporting the conjecture but reported that 'no proof is in sight.' Sarosh Adenwalla later made the crucial observation that Problem #430 is equivalent to the first part of Erdos Problem #385: for large $n$, there exists a composite $m < n$ with all prime factors exceeding $n - m$. The admissibility condition $p > n - m$ for all $p \\mid m$ makes $m$ an $(n-m)$-rough number in the sense of sieve theory. The connection to smooth and rough number distribution places this problem at the intersection of combinatorial number theory, sieve methods, and the distribution of primes in short intervals. By Bertrand's postulate, there is always a prime in $(n/2, n)$, so primes are always available as admissible terms --- the question is whether they suffice to fill the entire greedy sequence.",

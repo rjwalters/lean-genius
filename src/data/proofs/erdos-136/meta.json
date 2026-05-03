@@ -58,7 +58,8 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 4,
     "lineCount": 185,
-    "assumptions": "4 axioms: f_exists, erdos_gyarfas_lower_bound, erdos_gyarfas_upper_bound, bcdp_asymptotic. 0 sorries."
+    "assumptions": "4 axioms: f_exists, erdos_gyarfas_lower_bound, erdos_gyarfas_upper_bound, bcdp_asymptotic. 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "Erdős and Gyárfás introduced the function f(n,p,q), defined as the minimum number of colors needed to edge-color the complete graph Kₙ so that every Kₚ subgraph contains at least q distinct colors. For the specific case f(n,4,5), they proved the bounds (5/6)(n-1) < f(n) < n and computed f(9) = 8.\n\nThe problem remained open for 25 years until Bennett, Cushman, Dudek, and Pralat (2022) proved that f(n) ~ (5/6)n, confirming Erdős's intuition that the lower bound is asymptotically tight. Joos and Mubayi independently found a shorter proof using connections to hypergraph matching theory.\n\nThe constant 5/6 arises naturally from the structure of K₄: it has C(4,2) = 6 edges, and requiring at least 5 colors means at most one repeated color is allowed. The fraction 5/6 = 1 - 1/6 reflects this single 'defect' tolerance per K₄ subgraph.",

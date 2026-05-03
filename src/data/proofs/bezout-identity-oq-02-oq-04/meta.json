@@ -58,7 +58,8 @@
       "primitive_irreducible_is_prime: connecting IsPrimitive + Irreducible to Prime",
       "two_X_not_coprime_in_ZX: formal witness that ℤ[X] is not Bézout"
     ],
-    "assumptions": "No axioms. Core results (Gauss's lemma, content multiplicativity, Euclid's lemma over ℤ) are thin wrappers around Mathlib's IsPrimitive.mul, Polynomial.content_mul, irreducible_iff_prime, Prime.dvd_or_dvd, and IsCoprime.dvd_of_dvd_mul_left. Original contributions: poly_bezout_application (explicit linear_combination proof in the field case) and two_X_not_coprime_in_ZX (formal non-Bézout witness for ℤ[X])."
+    "assumptions": "No axioms. Core results (Gauss's lemma, content multiplicativity, Euclid's lemma over ℤ) are thin wrappers around Mathlib's IsPrimitive.mul, Polynomial.content_mul, irreducible_iff_prime, Prime.dvd_or_dvd, and IsCoprime.dvd_of_dvd_mul_left. Original contributions: poly_bezout_application (explicit linear_combination proof in the field case) and two_X_not_coprime_in_ZX (formal non-Bézout witness for ℤ[X]).",
+    "theoremCount": 7
   },
   "overview": {
     "problemStatement": "**Problem Statement**: Does the `linear_combination` tactic approach to Euclid's lemma (from bezout-identity-oq-02) scale to Gauss's lemma for polynomial rings?\n\n**Answer**: PARTIALLY. The approach scales to polynomial rings over fields (k[X] is a PID/Bézout domain). Over ℤ, the approach fails because ℤ[X] is not a Bézout domain — there is no Bézout identity for 2 and X in ℤ[X].",

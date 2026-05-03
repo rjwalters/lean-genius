@@ -42,7 +42,8 @@
     "axiomCount": 1,
     "lineCount": 173,
     "assumptions": "1 axiom: selberg_density_corrected (l ≥ 4) — the corrected Selberg density statement. 0 sorries. All failure lemmas proved by norm_num. Qualifying prime p=101 verified by interval_cases + norm_num.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "The Selberg sieve (1947) and related density results underpin much of analytic number theory. In the context of Erdős Problem #1059, the key density axiom claims that for each l, the factorial interval I(l) = (l!, (l+1)!] contains at least one 'qualifying prime' — a prime p where every p - k! (for k! < p) is composite. This axiom appears in Erdos1059OQ02.lean with threshold l ≥ 3.\n\nHowever, this is mathematically wrong for l = 3: the interval I(3) = (6, 24] contains exactly the primes 7, 11, 13, 17, 19, 23, and none of them qualify. Each fails because some p - k! is prime (e.g., 7 - 2 = 5 is prime). The correct threshold is l ≥ 4, with p = 101 being the first qualifying prime (in I(4) = (24, 120]).\n\nThis is a rare instance of discovering an explicit mathematical error in a formal proof file — the axiom was stated incorrectly, making it logically false (provably contradicted by the counterexample l = 3).",
@@ -118,7 +119,9 @@
       "Mathlib.Data.Nat.Prime.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": ["Nat"],
+    "opens": [
+      "Nat"
+    ],
     "namespace": "Erdos1059OQ02OQ01",
     "lineCount": 173,
     "axiomCount": 1,

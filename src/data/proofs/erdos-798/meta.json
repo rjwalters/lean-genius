@@ -62,7 +62,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 311,
-    "assumptions": "3 axiom(s) and 7 sorry(s). See the Lean source for details."
+    "assumptions": "3 axiom(s) and 7 sorry(s). See the Lean source for details.",
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "**Erdos Problem #798**\n\nThis problem concerns efficient coverage of lattice grids using lines.\n\n**Key History:**\n- Erdos & Purdy: Posed the problem and proved t(n) >> n^{2/3}\n- Alon (1991): Proved t(n) << n^{2/3} log n, resolving the problem\n\n**The Question:**\nGiven the n x n integer grid, what is the minimum number of points such that the lines they determine cover every grid point?\n\n**Mathematical Setting:**\n- Lattice: {1,...,n}^2 has n^2 points\n- Each pair of points determines a line\n- k points give at most C(k,2) = k(k-1)/2 lines",

@@ -53,7 +53,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 174,
-    "assumptions": "3 axiom(s): kemperman_1969, laczkovich_1984, convex_satisfies. See Lean source for complete statements."
+    "assumptions": "3 axiom(s): kemperman_1969, laczkovich_1984, convex_satisfies. See Lean source for complete statements.",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1125**\n\nThis problem originates from functional analysis and the study of generalized convexity. The inequality 2f(x) ≤ f(x+h) + f(x+2h) is a one-sided discrete convexity condition posed by Kemperman in 1969.\n\n**History:**\n- Kemperman (1969) posed the problem in Trans. Amer. Math. Soc. and proved YES if f is Lebesgue measurable\n- Erdős included it in his Scottish Book problems, writing \"if it were my problem I would offer $500 for it\"\n- Laczkovich (1984) proved YES unconditionally in Colloq. Math., pp. 109-115\n\n**Context:** Non-measurable functions can have exotic properties — for example, using the Axiom of Choice one can construct additive non-linear functions f(x+y) = f(x) + f(y). The surprise is that Kemperman's inequality is strong enough to force monotonicity even for such pathological functions, without any regularity assumption.",

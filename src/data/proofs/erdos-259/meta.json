@@ -48,7 +48,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 239,
-    "assumptions": "2 axioms: series_summable, chen_ruzsa_irrationality. 0 sorries."
+    "assumptions": "2 axioms: series_summable, chen_ruzsa_irrationality. 0 sorries.",
+    "theoremCount": 14
   },
   "overview": {
     "historicalContext": "This problem connects two fundamental concepts: the Möbius function μ(n), central to analytic number theory and the inclusion-exclusion principle, and irrationality of infinite series.\n\nThe Möbius function satisfies μ(n)² = 1 exactly when n is squarefree (has no repeated prime factors). Thus the sum ∑ μ(n)² · n/2ⁿ is really a sum over squarefree numbers.\n\nErdős posed this problem in 1988 and made the bolder conjecture that ANY infinite subseries over squarefree numbers should be irrational. Chen and Ruzsa proved both the original problem and this stronger conjecture in 1999.",

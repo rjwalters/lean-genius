@@ -49,7 +49,8 @@
     "axiomCount": 0,
     "lineCount": 249,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "The Principle of Mathematical Induction was rigorously formulated by Giuseppe Peano in 1889 as the fifth axiom in his axiomatization of the natural numbers. However, the technique of proving statements by establishing a base case and showing the step from n to n+1 has much older roots.\n\nPascal used induction explicitly in his 1665 'Traite du Triangle Arithmetique' to prove properties of binomial coefficients. Fermat used a form of infinite descent (essentially contrapositive induction) in his number-theoretic proofs. Even ancient Greek mathematicians like Euclid implicitly used inductive reasoning.\n\nIn modern type theory and proof assistants like Lean, induction is not just a proof technique but is built into the foundations: the natural numbers are an inductive type, and the induction principle is automatically generated as the recursor.",

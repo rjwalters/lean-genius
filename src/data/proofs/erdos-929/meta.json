@@ -23,7 +23,8 @@
     "axiomCount": 0,
     "lineCount": 377,
     "assumptions": "0 axioms, 0 sorries. Known bounds (rosser_lower from Rosser sieve, fgkmt_upper from Ford-Green-Konyagin-Maynard-Tao 2018) appear as docstring comments only — no axiom declarations. smooth_threshold_2 and smoothBlockSet_pos_density fully proved.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 19
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1976, motivated by his longstanding interest in the distribution of smooth (or friable) numbers — integers whose prime factors are all bounded. The study of smooth numbers dates back to Ramanujan (1917) who first investigated their counting function, later made precise by Dickman (1930) through his function $\\rho(u)$ estimating $\\Psi(x, x^{1/u})/x$. The connection to consecutive integers goes deeper: Størmer (1897) had already studied consecutive smooth numbers, and Erdős and others explored how many consecutive integers can share the property of having only small prime factors. The breakthrough of Ford, Green, Konyagin, Maynard, and Tao (2018) on large gaps between primes — settling a conjecture of Erdős on prime gap sizes — unexpectedly provided the best known upper bound on $S(k)$, connecting this problem to one of the central achievements in 21st-century analytic number theory.",

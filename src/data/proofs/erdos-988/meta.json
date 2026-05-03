@@ -59,7 +59,8 @@
     ],
     "axiomCount": 5,
     "lineCount": 228,
-    "assumptions": "5 axioms: roth_1954, schmidt_1969, min_discrepancy_tends_to_infinity, and 2 more. See Lean source for complete statements."
+    "assumptions": "5 axioms: roth_1954, schmidt_1969, min_discrepancy_tends_to_infinity, and 2 more. See Lean source for complete statements.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős Problem #988: Discrepancy on the Sphere**\n\nThis is a fundamental problem in discrepancy theory, asking whether finite point sets on the sphere can approximate uniform distribution arbitrarily well.\n\n**Key History:**\n- Erdős (1964): Posed the problem\n- Roth (1954): Proved the analogous result for the unit square with axis-aligned rectangles\n- Schmidt (1969): Proved for the sphere in any dimension\n\n**Mathematical Setting:**\nGiven n points on S², we measure 'discrepancy' by how much the point count in any spherical cap deviates from the expected fraction. Schmidt proved this deviation must grow as n → ∞.",

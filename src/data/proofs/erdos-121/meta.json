@@ -23,7 +23,8 @@
     "axiomCount": 0,
     "lineCount": 75,
     "assumptions": "0 axioms, 0 sorries. The key asymptotic results (f2_asymptotic, f3_full_density, f4_density_zero, etc.) appear as docstring comments in the Lean source but are not formally stated as axiom declarations.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "Erdős, Sós, and Sárközy studied the extremal function F_k(N), the maximum size of A ⊆ {1,...,N} with no k-element product of distinct elements forming a perfect square. They established F_2(N) ~ 6N/π² (exactly the squarefree integers, by Gegenbauer 1885), F_3(N) ~ N (full density), and F_4(N) = o(N) (density tending to zero). These results revealed a striking parity phenomenon: odd k appeared to allow near-full density while even k forced density to zero. Erdős conjectured this even/odd dichotomy persisted for all k, predicting F_{2k+1}(N) = (1−o(1))N for every k ≥ 1. The conjecture stood for decades until Tao's 2024 disproof: using the polynomial method and character sum estimates over finite fields, he showed F_k(N) ≤ (1−c_k)N for all k ≥ 4, definitively disproving the odd-k conjecture for k ≥ 5. The boundary between k = 3 (full density) and k = 4 (sub-full density) remains the central mystery.",

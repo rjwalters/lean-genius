@@ -58,7 +58,8 @@
     "axiomCount": 1,
     "lineCount": 186,
     "assumptions": "1 axiom(s) and 1 sorry(s).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "**Egyptian Fractions: From the Rhind Papyrus to Modern Additive Combinatorics**\n\nEgyptian fractions—sums of distinct unit fractions—are among the oldest objects in mathematics. The Rhind Mathematical Papyrus (c. 1650 BCE) contains extensive tables decomposing fractions 2/n into sums of unit fractions, showing the ancient Egyptians' systematic approach to this representation.\n\n**The Algorithmic Foundation**\n\nFibonacci rediscovered the greedy algorithm in his Liber Abaci (1202): to represent a/b, subtract the largest unit fraction 1/⌈b/a⌉ ≤ a/b and recurse. J.J. Sylvester independently studied this algorithm in 1880, proving termination. While the greedy algorithm always works, it can produce exponentially large denominators.\n\n**The Modern Problem (Bleicher-Erdős 1976)**\n\nBleicher and Erdős initiated the systematic study of D(b), proving D(b) ≪ b(log b)². The lower bound D(p) ≫ p log p for primes (from the harmonic sum argument: representing (p-1)/p requires multiples of p whose reciprocals sum to (p-1)/p²) showed the (log b)¹ factor is necessary. Erdős conjectured that D(b) ≪ b(log b)^{1+o(1)}.\n\n**The Solution and Improvements**\n\nYokota (1988) proved D(b) ≪ b(log b)(log log b)⁴(log log log b)², confirming the conjecture since iterated logarithms are (log b)^{o(1)}. Liu and Sawhney (2024) improved this to (log log b)³(log log log b)^{O(1)} using deep connections to additive combinatorics—specifically, showing that dense subsets of integers with large harmonic sums must contain subsets summing exactly to 1.",

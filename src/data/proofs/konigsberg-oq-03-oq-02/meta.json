@@ -38,7 +38,8 @@
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
     "lineCount": 184,
-    "assumptions": "0 axioms. 0 sorries. Pure definitions and basic properties."
+    "assumptions": "0 axioms. 0 sorries. Pure definitions and basic properties.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "The study of infinite Euler paths began with the Erdos-Grunwald-Weiszfeld theorem (1936), which extended Euler's 1736 finite result to countably infinite graphs: a connected countable graph has an Euler path if and only if it has at most 2 vertices of odd degree and every finite subgraph satisfies a parity condition. This was among the first rigorous results requiring infinite graph theory, predating much of the modern framework.\n\nFormalizing infinite paths in a proof assistant raises foundational questions about representation. The classical approach uses sequences (functions N -> V), while the coinductive approach uses streams (codata). In Lean 4, Stream' V is definitionally equivalent to N -> V by the unfolding of its fixpoint, so the choice is primarily ergonomic. The N-indexed approach chosen here avoids coinductive reasoning and works naturally with standard induction, Finset operations, and Mathlib's existing API.\n\nThe decomposition of 'exactly once' into 'at least once' (CoversEdge) and 'at most once' (IsEdgeInjective) follows a standard pattern in constructive mathematics: avoiding the existential-unique quantifier (exists-unique) which can require decidability. This design parallels how Mathlib handles uniqueness in other contexts -- splitting into existence and injectivity/uniqueness as separate propositions.",

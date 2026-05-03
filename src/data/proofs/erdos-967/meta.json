@@ -1,10 +1,10 @@
 {
   "id": "erdos-967",
-  "title": "Erd\u0151s Problem #967: Zeros of Generalized Dirichlet Sums",
+  "title": "Erdős Problem #967: Zeros of Generalized Dirichlet Sums",
   "slug": "erdos-967",
-  "description": "For integers 1 < a\u2081 < a\u2082 < ... with \u2211(1/a\u1d62) < \u221e, is 1 + \u2211\u2096 1/a\u2096^(1+it) \u2260 0 for all t \u2208 \u211d? Answer: NO - disproved by Yip (2025).",
+  "description": "For integers 1 < a₁ < a₂ < ... with ∑(1/aᵢ) < ∞, is 1 + ∑ₖ 1/aₖ^(1+it) ≠ 0 for all t ∈ ℝ? Answer: NO - disproved by Yip (2025).",
   "meta": {
-    "author": "Erd\u0151s-Ingham (1964 conjecture), Yip (2025 disproof)",
+    "author": "Erdős-Ingham (1964 conjecture), Yip (2025 disproof)",
     "sourceUrl": "https://erdosproblems.com/967",
     "date": "2025",
     "status": "axiomatized",
@@ -47,10 +47,10 @@
     ],
     "originalContributions": [
       "IntegerSequence structure: strictly increasing integers > 1",
-      "hasConvergentReciprocalSum: convergence condition \u2211(1/a\u1d62) < \u221e",
+      "hasConvergentReciprocalSum: convergence condition ∑(1/aᵢ) < ∞",
       "complexPow: complex power a^(1+it)",
       "reciprocalPow: term 1/a^(1+it) in the sum",
-      "generalizedDirichletSum: the sum 1 + \u2211\u2096 1/a\u2096^(1+it)",
+      "generalizedDirichletSum: the sum 1 + ∑ₖ 1/aₖ^(1+it)",
       "erdosInghamConjecture: the original conjecture",
       "finiteSequenceConjecture: the remaining open question",
       "sum235: the {2,3,5} special case",
@@ -63,15 +63,16 @@
     ],
     "axiomCount": 1,
     "lineCount": 240,
-    "assumptions": "1 axiom: yip_counterexample. 0 sorries."
+    "assumptions": "1 axiom: yip_counterexample. 0 sorries.",
+    "theoremCount": 5
   },
   "overview": {
-    "historicalContext": "**The Erd\u0151s-Ingham Paper (1964)**\n\nThis problem originates from 'Arithmetical Tauberian Theorems' by Erd\u0151s and Ingham (1964). They discovered a remarkable equivalence: the non-vanishing of 1 + \u2211\u2096 1/a\u2096^(1+it) for all t is equivalent to a Tauberian implication about functional equations. If f(x) + \u2211\u2096 f(x/a\u2096) = (C + o(1))x for non-decreasing f, does f(x) = (1 + o(1))x follow? The answer depends on whether the Dirichlet sum has zeros.\n\n**The Simplest Unsolved Case (1964-2025)**\n\nRemarkably, Erd\u0151s and Ingham could not resolve even the simplest finite case: {2, 3, 5}. Does 1 + 2^(-1-it) + 3^(-1-it) + 5^(-1-it) = 0 for some real t? This connects to deep questions in transcendence theory - specifically the Four Exponentials Conjecture. If 4EC holds, the {2,3,5} sum never vanishes.\n\n**Yip's Breakthrough (2025)**\n\nAfter 60 years, Chi Hoi Yip (arXiv:2512.16528) settled the infinite sequence case definitively: the conjecture is FALSE. For any nonzero t, Yip constructs a sequence where the sum equals zero. The construction exploits the oscillatory nature of a^(it) to achieve precise phase cancellation. However, the finite sequence case - including {2,3,5} - remains tantalizingly open.",
-    "problemStatement": "**Problem**: Let 1 < a\u2081 < a\u2082 < ... be integers with \u2211(1/a\u1d62) < \u221e. Is it true that for every t \u2208 \u211d:\n\n1 + \u2211\u2096 1/a\u2096^(1+it) \u2260 0?\n\n**Answer**: NO - The conjecture is FALSE.\n\nYip (2025) proved that for any nonzero real t, there exists a sequence with convergent reciprocal sum where the generalized Dirichlet sum equals zero.\n\n**Open Question**: Does the conjecture hold for finite sequences of integers?",
-    "text": "For integers 1 < a\u2081 < a\u2082 < ... with \u2211(1/a\u1d62) < \u221e, is 1 + \u2211\u2096 1/a\u2096^(1+it) \u2260 0 for all t \u2208 \u211d? Answer: NO - disproved by Yip (2025).",
-    "proofStrategy": "The formalization captures the problem structure:\n\n1. **Definitions**: Integer sequences, convergence conditions, complex powers a^(1+it)\n\n2. **The Sum**: generalizedDirichletSum(a, t) = 1 + \u2211\u2096 1/a\u2096^(1+it)\n\n3. **The Conjecture**: erdosInghamConjecture states the sum is never zero\n\n4. **The Disproof**: yip_counterexample axiom provides counterexamples for each t \u2260 0\n\n5. **Main Theorem**: erdos_967 proves \u00acerdosInghamConjecture\n\n6. **Special Cases**: The {2,3,5} case, t = 0 case, and finite sequences",
+    "historicalContext": "**The Erdős-Ingham Paper (1964)**\n\nThis problem originates from 'Arithmetical Tauberian Theorems' by Erdős and Ingham (1964). They discovered a remarkable equivalence: the non-vanishing of 1 + ∑ₖ 1/aₖ^(1+it) for all t is equivalent to a Tauberian implication about functional equations. If f(x) + ∑ₖ f(x/aₖ) = (C + o(1))x for non-decreasing f, does f(x) = (1 + o(1))x follow? The answer depends on whether the Dirichlet sum has zeros.\n\n**The Simplest Unsolved Case (1964-2025)**\n\nRemarkably, Erdős and Ingham could not resolve even the simplest finite case: {2, 3, 5}. Does 1 + 2^(-1-it) + 3^(-1-it) + 5^(-1-it) = 0 for some real t? This connects to deep questions in transcendence theory - specifically the Four Exponentials Conjecture. If 4EC holds, the {2,3,5} sum never vanishes.\n\n**Yip's Breakthrough (2025)**\n\nAfter 60 years, Chi Hoi Yip (arXiv:2512.16528) settled the infinite sequence case definitively: the conjecture is FALSE. For any nonzero t, Yip constructs a sequence where the sum equals zero. The construction exploits the oscillatory nature of a^(it) to achieve precise phase cancellation. However, the finite sequence case - including {2,3,5} - remains tantalizingly open.",
+    "problemStatement": "**Problem**: Let 1 < a₁ < a₂ < ... be integers with ∑(1/aᵢ) < ∞. Is it true that for every t ∈ ℝ:\n\n1 + ∑ₖ 1/aₖ^(1+it) ≠ 0?\n\n**Answer**: NO - The conjecture is FALSE.\n\nYip (2025) proved that for any nonzero real t, there exists a sequence with convergent reciprocal sum where the generalized Dirichlet sum equals zero.\n\n**Open Question**: Does the conjecture hold for finite sequences of integers?",
+    "text": "For integers 1 < a₁ < a₂ < ... with ∑(1/aᵢ) < ∞, is 1 + ∑ₖ 1/aₖ^(1+it) ≠ 0 for all t ∈ ℝ? Answer: NO - disproved by Yip (2025).",
+    "proofStrategy": "The formalization captures the problem structure:\n\n1. **Definitions**: Integer sequences, convergence conditions, complex powers a^(1+it)\n\n2. **The Sum**: generalizedDirichletSum(a, t) = 1 + ∑ₖ 1/aₖ^(1+it)\n\n3. **The Conjecture**: erdosInghamConjecture states the sum is never zero\n\n4. **The Disproof**: yip_counterexample axiom provides counterexamples for each t ≠ 0\n\n5. **Main Theorem**: erdos_967 proves ¬erdosInghamConjecture\n\n6. **Special Cases**: The {2,3,5} case, t = 0 case, and finite sequences",
     "keyInsights": [
-      "**Disproved Conjecture**: The Erd\u0151s-Ingham conjecture is FALSE for infinite sequences",
+      "**Disproved Conjecture**: The Erdős-Ingham conjecture is FALSE for infinite sequences",
       "**Yip's Construction (2025)**: For any nonzero t, there exists a counterexample sequence - the sequence depends on t",
       "**The {2,3,5} Mystery**: Whether 1 + 2^(-1-it) + 3^(-1-it) + 5^(-1-it) = 0 has solutions connects to the Four Exponentials conjecture",
       "**Tauberian Connection**: The no-zeros condition is equivalent to certain Tauberian implications about functional equations",
@@ -90,7 +91,7 @@
       "startLine": 30,
       "endLine": 50,
       "summary": "Defines IntegerSequence structure and convergence condition.",
-      "description": "An IntegerSequence is strictly increasing with all terms > 1. The convergence condition \u2211(1/a\u1d62) < \u221e ensures the Dirichlet series converges.",
+      "description": "An IntegerSequence is strictly increasing with all terms > 1. The convergence condition ∑(1/aᵢ) < ∞ ensures the Dirichlet series converges.",
       "mathContext": "Formal definition: Defines IntegerSequence structure and convergence condition."
     },
     {
@@ -99,12 +100,12 @@
       "startLine": 51,
       "endLine": 75,
       "summary": "Defines complex power a^(1+it) and the generalized Dirichlet sum.",
-      "description": "The key object is 1 + \u2211\u2096 1/a\u2096^(1+it), where a^(1+it) = a \u00b7 e^(it\u00b7log(a)) involves oscillating complex exponentials.",
+      "description": "The key object is 1 + ∑ₖ 1/aₖ^(1+it), where a^(1+it) = a · e^(it·log(a)) involves oscillating complex exponentials.",
       "mathContext": "Formal definition: Defines complex power a^(1+it) and the generalized Dirichlet sum."
     },
     {
       "id": "conjecture",
-      "title": "The Erd\u0151s-Ingham Conjecture",
+      "title": "The Erdős-Ingham Conjecture",
       "startLine": 76,
       "endLine": 96,
       "summary": "States the original conjecture and the finite sequence variant.",
@@ -116,9 +117,9 @@
       "title": "The {2, 3, 5} Case",
       "startLine": 97,
       "endLine": 117,
-      "summary": "The simplest case Erd\u0151s-Ingham couldn't resolve, connected to Four Exponentials.",
+      "summary": "The simplest case Erdős-Ingham couldn't resolve, connected to Four Exponentials.",
       "description": "Whether sum235(t) = 0 for some t is related to transcendence questions in number theory.",
-      "mathContext": "Mathematical content: The simplest case Erd\u0151s-Ingham couldn't resolve, connected to Four Exponentials."
+      "mathContext": "Mathematical content: The simplest case Erdős-Ingham couldn't resolve, connected to Four Exponentials."
     },
     {
       "id": "tauberian",
@@ -126,7 +127,7 @@
       "startLine": 118,
       "endLine": 132,
       "summary": "The connection to Tauberian theorems that motivated the problem.",
-      "description": "Erd\u0151s-Ingham proved the no-zeros condition is equivalent to certain asymptotic implications for functional equations.",
+      "description": "Erdős-Ingham proved the no-zeros condition is equivalent to certain asymptotic implications for functional equations.",
       "mathContext": "Verified: The connection to Tauberian theorems that motivated the problem."
     },
     {
@@ -135,7 +136,7 @@
       "startLine": 133,
       "endLine": 167,
       "summary": "Yip's theorem disproving the conjecture and the main result.",
-      "description": "For any t \u2260 0, there exists a sequence where the sum equals zero. This proves \u00acerdosInghamConjecture.",
+      "description": "For any t ≠ 0, there exists a sequence where the sum equals zero. This proves ¬erdosInghamConjecture.",
       "mathContext": "Verified: Yip's theorem disproving the conjecture and the main result."
     },
     {
@@ -167,10 +168,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #967 asked whether 1 + \u2211\u2096 1/a\u2096^(1+it) \u2260 0 for all convergent integer sequences and all real t. Yip (2025) proved this is FALSE - for any nonzero t, counterexample sequences exist. The finite sequence case remains open, with the {2,3,5} case connected to the Four Exponentials conjecture.",
-    "implications": "**Theoretical Significance**: Yip's result has several implications:\n\n1. **Tauberian Theory**: The Erd\u0151s-Ingham Tauberian equivalence no longer provides the hoped-for general result\n\n**2. Complex Analysis**: Shows oscillation in a^(it) factors can be exploited to create zeros\n\n3. **Transcendence Theory**: The finite case connects to deep questions about algebraic independence of logarithms.",
+    "summary": "Erdős Problem #967 asked whether 1 + ∑ₖ 1/aₖ^(1+it) ≠ 0 for all convergent integer sequences and all real t. Yip (2025) proved this is FALSE - for any nonzero t, counterexample sequences exist. The finite sequence case remains open, with the {2,3,5} case connected to the Four Exponentials conjecture.",
+    "implications": "**Theoretical Significance**: Yip's result has several implications:\n\n1. **Tauberian Theory**: The Erdős-Ingham Tauberian equivalence no longer provides the hoped-for general result\n\n**2. Complex Analysis**: Shows oscillation in a^(it) factors can be exploited to create zeros\n\n3. **Transcendence Theory**: The finite case connects to deep questions about algebraic independence of logarithms.",
     "openQuestions": [
-      "Does 1 + \u2211\u2096 1/a\u2096^(1+it) \u2260 0 hold for all finite sequences and all t?",
+      "Does 1 + ∑ₖ 1/aₖ^(1+it) ≠ 0 hold for all finite sequences and all t?",
       "Does 1 + 2^(-1-it) + 3^(-1-it) + 5^(-1-it) = 0 for some real t?",
       "What is the structure of Yip's counterexample sequences?",
       "Are there 'universal' counterexamples that work for multiple values of t?"
@@ -199,17 +200,17 @@
     {
       "targetId": "erdos-1048",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: complex-analysis, disproved"
+      "description": "Related Erdős problem sharing themes: complex-analysis, disproved"
     },
     {
       "targetId": "erdos-1081",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: disproved, number-theory"
+      "description": "Related Erdős problem sharing themes: disproved, number-theory"
     },
     {
       "targetId": "erdos-1115",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: complex-analysis, disproved"
+      "description": "Related Erdős problem sharing themes: complex-analysis, disproved"
     }
   ],
   "sorries": 0

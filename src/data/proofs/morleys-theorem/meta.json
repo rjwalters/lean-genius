@@ -55,7 +55,8 @@
     "axiomCount": 0,
     "lineCount": 532,
     "assumptions": "0 axioms. 0 sorries. Fully verified.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "Frank Morley (1860-1937), an English-American mathematician and professor at Johns Hopkins University, discovered this theorem in 1899. Despite centuries of intensive study of triangle geometry by mathematicians from Euclid to Euler, this beautiful property remained hidden until the dawn of the 20th century. It has been called 'the most remarkable theorem in elementary geometry discovered in the 20th century.'\n\nThe theorem wasn't discovered earlier because angle trisection is impossible with compass and straightedge alone — a fact proved by Pierre Wantzel in 1837 using Galois theory. The ancient Greeks, who could not construct the trisector configuration, never encountered the Morley triangle. The algebraic reason is that trisecting angle $\\theta$ requires solving the irreducible cubic $4\\cos^3\\phi - 3\\cos\\phi = \\cos\\theta$.\n\nMorley first communicated the result around 1899, but it was not published until 1929. Multiple elegant proofs have been found: trigonometric (direct computation), complex number coordinates, and John Conway's celebrated 'backward proof' which starts with the equilateral triangle and reconstructs the original. The formalization here follows Conway's approach using complex coordinates.\n\nMorley's theorem appears as #84 in Freek Wiedijk's list of 100 greatest theorems. It connects to angle trisection impossibility (#8 on the same list) through the triple angle formula $\\cos(3\\theta) = 4\\cos^3\\theta - 3\\cos\\theta$.",

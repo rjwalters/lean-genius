@@ -25,7 +25,8 @@
       "Orthonormal vectors have distance √2 (proved)",
       "√2 > 2/3 separation for disjoint balls (proved)",
       "Framework: impossibility → Gaussian → Wiener"
-    ]
+    ],
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "The question of extending Lebesgue measure to infinite dimensions was a central problem in 20th-century analysis. Wiener (1923) constructed the first rigorous measure on infinite-dimensional path space — the Wiener measure describing Brownian motion. Kolmogorov (1933) axiomatized probability theory, enabling rigorous treatment of infinite-dimensional random processes. The impossibility of a translation-invariant σ-finite measure was recognized as a fundamental obstruction by the mid-20th century. Gross (1967) gave the definitive framework: abstract Wiener spaces, where a Gaussian measure lives on a Banach space extension of a Hilbert space. This resolved the apparent paradox — Gaussian measures in infinite dimensions exist, but they cannot be defined on the Hilbert space itself (they 'spill over' into a larger space). The file formalizes the key argument: the orthonormal separation lemma, which shows that the balls B(eₙ, 1/3) centered at orthonormal vectors are disjoint (since ‖eₙ - eₘ‖ = √2 > 2/3), making an uncountable disjoint family with equal measure — forcing any translation-invariant σ-finite measure to assign measure 0 to each ball.",

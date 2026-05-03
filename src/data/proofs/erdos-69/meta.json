@@ -1,10 +1,10 @@
 {
   "id": "erdos-69",
-  "title": "Erd\u0151s Problem #69: Irrationality of Sum of Omega over Powers of 2",
+  "title": "Erdős Problem #69: Irrationality of Sum of Omega over Powers of 2",
   "slug": "erdos-69",
-  "description": "Is the sum of \u03c9(n)/2^n for n\u22652 irrational? Proved by Tao-Ter\u00e4v\u00e4inen (2025) via reduction to sum of 1/(2^p-1) over primes.",
+  "description": "Is the sum of ω(n)/2^n for n≥2 irrational? Proved by Tao-Teräväinen (2025) via reduction to sum of 1/(2^p-1) over primes.",
   "meta": {
-    "author": "Tao-Ter\u00e4v\u00e4inen (2025)",
+    "author": "Tao-Teräväinen (2025)",
     "sourceUrl": "https://erdosproblems.com/69",
     "date": "2025",
     "status": "axiomatized",
@@ -40,39 +40,40 @@
       }
     ],
     "originalContributions": [
-      "Formalization of Tao's identity: \u2211\u03c9(n)/2^n = \u22111/(2^p-1)",
+      "Formalization of Tao's identity: ∑ω(n)/2^n = ∑1/(2^p-1)",
       "Geometric series calculation for prime multiples",
       "Structure connecting Problem 69 to Problem 257"
     ],
     "axiomCount": 1,
     "lineCount": 189,
     "prerequisites": [
-      "Arithmetic functions (\u03c9, d, \u03a9) and prime factorization",
+      "Arithmetic functions (ω, d, Ω) and prime factorization",
       "Infinite series, absolute convergence, and summation interchange",
       "Geometric series formula",
       "Irrational numbers and irrationality proofs",
-      "Basic analytic number theory (for context on the Tao-Ter\u00e4v\u00e4inen result)"
+      "Basic analytic number theory (for context on the Tao-Teräväinen result)"
     ],
-    "assumptions": "1 axiom: primeSum_irrational (Tao-Ter\u00e4v\u00e4inen 2025: the sum \u2211 1/(2^p-1) over primes is irrational). Formalization awaits Mathlib support for correlations of multiplicative functions, the Matom\u00e4ki-Radziwi\u0142 theorem, and Nesterenko's algebraic independence theory."
+    "assumptions": "1 axiom: primeSum_irrational (Tao-Teräväinen 2025: the sum ∑ 1/(2^p-1) over primes is irrational). Formalization awaits Mathlib support for correlations of multiplicative functions, the Matomäki-Radziwił theorem, and Nesterenko's algebraic independence theory.",
+    "theoremCount": 5
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #69 (c. 1948) asks whether $\\sum_{n \\geq 2} \\omega(n)/2^n$ is irrational, where $\\omega(n)$ counts distinct prime divisors. Erd\u0151s had already proved that $\\sum d(n)/2^n$ is irrational, where $d(n)$ is the full divisor function ($d(n)$ counts divisors with multiplicity, while $\\omega(n)$ counts only distinct primes). The omega function is more subtle because it discards multiplicity information.\n\nThe key breakthrough was Tao's observation (c. 2024) that $\\sum \\omega(n)/2^n = \\sum_p 1/(2^p - 1)$, reducing Problem 69 to Problem 257 (irrationality of $\\sum 1/(2^p - 1)$). The identity follows from writing $\\omega(n) = \\sum_{p|n} 1$, swapping summation order (justified by absolute convergence), and recognizing the inner sum as a geometric series with ratio $2^{-p}$.\n\nPratt (2024) proved irrationality of $\\sum 1/(2^p - 1)$ conditional on a quantitative form of the Hardy-Littlewood prime $k$-tuples conjecture. Tao and Ter\u00e4v\u00e4inen (2025) removed this condition using deep results on correlations of multiplicative functions and the Matom\u00e4ki-Radziwi\\l\\l theorem on multiplicative functions in short intervals. Their proof ultimately connects to Nesterenko's theory of algebraic independence of values of modular forms \u2014 the same machinery that proves the algebraic independence of $\\pi$ and $e^\\pi$.\n\nThis formalization is notable because Aristotle (automated proof search) successfully proved the combinatorial identity `tao_identity`, while the deep irrationality result `primeSum_irrational` is stated as an axiom \u2014 reflecting the mathematical reality that the identity is elementary while the irrationality is frontier analytic number theory requiring formalization of the Matom\u00e4ki-Radziwi\u0142 theorem and Nesterenko's algebraic independence machinery.",
-    "problemStatement": "Is\n$$\\sum_{n \\geq 2} \\frac{\\omega(n)}{2^n}$$\nirrational, where $\\omega(n)$ counts the distinct prime divisors of $n$?\n\n**Answer:** Yes, proved by Tao-Ter\u00e4v\u00e4inen (2025).",
-    "text": "Is the sum of \u03c9(n)/2^n for n\u22652 irrational? Proved by Tao-Ter\u00e4v\u00e4inen (2025) via reduction to sum of 1/(2^p-1) over primes.",
-    "proofStrategy": "The proof has two key steps:\n\n1. **Tao's Identity**: By swapping the order of summation, \u2211\u03c9(n)/2^n = \u2211_p \u2211_{p|n} 1/2^n = \u2211_p 1/(2^p-1). The inner sum is a geometric series.\n\n2. **Irrationality**: The sum \u22111/(2^p-1) is irrational by Tao-Ter\u00e4v\u00e4inen's 2025 result, which uses deep analytic number theory (correlations of arithmetic functions).\n\nWe formalize the identity with proof and state the irrationality as an axiom.",
+    "historicalContext": "Erdős Problem #69 (c. 1948) asks whether $\\sum_{n \\geq 2} \\omega(n)/2^n$ is irrational, where $\\omega(n)$ counts distinct prime divisors. Erdős had already proved that $\\sum d(n)/2^n$ is irrational, where $d(n)$ is the full divisor function ($d(n)$ counts divisors with multiplicity, while $\\omega(n)$ counts only distinct primes). The omega function is more subtle because it discards multiplicity information.\n\nThe key breakthrough was Tao's observation (c. 2024) that $\\sum \\omega(n)/2^n = \\sum_p 1/(2^p - 1)$, reducing Problem 69 to Problem 257 (irrationality of $\\sum 1/(2^p - 1)$). The identity follows from writing $\\omega(n) = \\sum_{p|n} 1$, swapping summation order (justified by absolute convergence), and recognizing the inner sum as a geometric series with ratio $2^{-p}$.\n\nPratt (2024) proved irrationality of $\\sum 1/(2^p - 1)$ conditional on a quantitative form of the Hardy-Littlewood prime $k$-tuples conjecture. Tao and Teräväinen (2025) removed this condition using deep results on correlations of multiplicative functions and the Matomäki-Radziwi\\l\\l theorem on multiplicative functions in short intervals. Their proof ultimately connects to Nesterenko's theory of algebraic independence of values of modular forms — the same machinery that proves the algebraic independence of $\\pi$ and $e^\\pi$.\n\nThis formalization is notable because Aristotle (automated proof search) successfully proved the combinatorial identity `tao_identity`, while the deep irrationality result `primeSum_irrational` is stated as an axiom — reflecting the mathematical reality that the identity is elementary while the irrationality is frontier analytic number theory requiring formalization of the Matomäki-Radziwił theorem and Nesterenko's algebraic independence machinery.",
+    "problemStatement": "Is\n$$\\sum_{n \\geq 2} \\frac{\\omega(n)}{2^n}$$\nirrational, where $\\omega(n)$ counts the distinct prime divisors of $n$?\n\n**Answer:** Yes, proved by Tao-Teräväinen (2025).",
+    "text": "Is the sum of ω(n)/2^n for n≥2 irrational? Proved by Tao-Teräväinen (2025) via reduction to sum of 1/(2^p-1) over primes.",
+    "proofStrategy": "The proof has two key steps:\n\n1. **Tao's Identity**: By swapping the order of summation, ∑ω(n)/2^n = ∑_p ∑_{p|n} 1/2^n = ∑_p 1/(2^p-1). The inner sum is a geometric series.\n\n2. **Irrationality**: The sum ∑1/(2^p-1) is irrational by Tao-Teräväinen's 2025 result, which uses deep analytic number theory (correlations of arithmetic functions).\n\nWe formalize the identity with proof and state the irrationality as an axiom.",
     "keyInsights": [
-      "**Tao's identity**: \u2211\u03c9(n)/2^n = \u2211_p 1/(2^p-1) - a non-obvious equivalence via double sum interchange",
-      "**Geometric series**: For each prime p, summing 1/2^(pk) over k\u22651 gives 1/(2^p-1)",
+      "**Tao's identity**: ∑ω(n)/2^n = ∑_p 1/(2^p-1) - a non-obvious equivalence via double sum interchange",
+      "**Geometric series**: For each prime p, summing 1/2^(pk) over k≥1 gives 1/(2^p-1)",
       "**Reduction to Problem 257**: This transforms the original sum into the 'prime reciprocal' form",
       "**Analytic number theory**: The unconditional irrationality proof requires techniques beyond elementary methods",
-      "**Nesterenko's algebraic independence**: The resolution via modular form theory (same machinery as Erd\u0151s #250) shows that seemingly unrelated number-theoretic series are governed by common deep structures in transcendental number theory"
+      "**Nesterenko's algebraic independence**: The resolution via modular form theory (same machinery as Erdős #250) shows that seemingly unrelated number-theoretic series are governed by common deep structures in transcendental number theory"
     ],
     "prerequisites": [
-      "Arithmetic functions (\u03c9, d, \u03a9) and prime factorization",
+      "Arithmetic functions (ω, d, Ω) and prime factorization",
       "Infinite series, absolute convergence, and summation interchange",
       "Geometric series formula",
       "Irrational numbers and irrationality proofs",
-      "Basic analytic number theory (for context on the Tao-Ter\u00e4v\u00e4inen result)"
+      "Basic analytic number theory (for context on the Tao-Teräväinen result)"
     ]
   },
   "sections": [
@@ -89,7 +90,7 @@
       "title": "Sum Definitions: omegaSum and primeSum",
       "startLine": 45,
       "endLine": 52,
-      "summary": "`omegaSum` defines $\\sum_{n \\geq 2} \\omega(n)/2^n$ as `tsum` with index shift $n \\mapsto n+2$. `primeSum` defines $\\sum_p 1/(2^p - 1)$ over the prime subtype `{n : \u2115 | n.Prime}`.",
+      "summary": "`omegaSum` defines $\\sum_{n \\geq 2} \\omega(n)/2^n$ as `tsum` with index shift $n \\mapsto n+2$. `primeSum` defines $\\sum_p 1/(2^p - 1)$ over the prime subtype `{n : ℕ | n.Prime}`.",
       "mathContext": "The index shift `n + 2` avoids $n = 0, 1$ where $\\omega$ is trivially 0. The prime subtype sum over $\\{n : \\mathbb{N} \\mid \\text{Prime}\\,n\\}$ encodes the sum over the infinite set of primes via Lean's subtype mechanism."
     },
     {
@@ -105,25 +106,25 @@
       "title": "Tao's Identity (Proved by Aristotle)",
       "startLine": 91,
       "endLine": 164,
-      "summary": "`tao_identity : omegaSum = primeSum` \u2014 the central combinatorial identity, proved by Aristotle via automated proof search. The proof rewrites $\\omega(n)$ as $\\sum_{p|n} 1$, performs a Fubini-style summation interchange (justified by absolute convergence via `Summable.tsum_comm`), and applies `geometric_sum_over_multiples` to each inner sum.",
-      "mathContext": "$\\sum_{n \\geq 2} \\frac{\\omega(n)}{2^n} = \\sum_{n \\geq 2} \\frac{\\sum_{p|n} 1}{2^n} = \\sum_p \\sum_{k \\geq 1} \\frac{1}{2^{pk}} = \\sum_p \\frac{1}{2^p - 1}$\n\nThe summation interchange is the mathematical core \u2014 it requires absolute convergence of the double sum, proved by comparing $\\omega(n)/2^n \\leq n/2^n$ (since $\\omega(n) \\leq n$) and showing $\\sum n/2^n$ converges via the ratio test with limit $1/2$."
+      "summary": "`tao_identity : omegaSum = primeSum` — the central combinatorial identity, proved by Aristotle via automated proof search. The proof rewrites $\\omega(n)$ as $\\sum_{p|n} 1$, performs a Fubini-style summation interchange (justified by absolute convergence via `Summable.tsum_comm`), and applies `geometric_sum_over_multiples` to each inner sum.",
+      "mathContext": "$\\sum_{n \\geq 2} \\frac{\\omega(n)}{2^n} = \\sum_{n \\geq 2} \\frac{\\sum_{p|n} 1}{2^n} = \\sum_p \\sum_{k \\geq 1} \\frac{1}{2^{pk}} = \\sum_p \\frac{1}{2^p - 1}$\n\nThe summation interchange is the mathematical core — it requires absolute convergence of the double sum, proved by comparing $\\omega(n)/2^n \\leq n/2^n$ (since $\\omega(n) \\leq n$) and showing $\\sum n/2^n$ converges via the ratio test with limit $1/2$."
     },
     {
       "id": "irrationality",
       "title": "Irrationality and Main Theorem",
       "startLine": 165,
       "endLine": 189,
-      "summary": "`primeSum_irrational : Irrational primeSum` is the deep analytic result (sorry \u2014 Tao-Ter\u00e4v\u00e4inen 2025, beyond current Mathlib). `erdos_69 : Irrational omegaSum` combines `tao_identity` and `primeSum_irrational` in a two-line proof: rewrite via the identity, then apply irrationality.",
-      "mathContext": "The final proof: `rw [tao_identity]; exact primeSum_irrational`. This two-line argument is the entire reduction of Problem 69 to Problem 257 \u2014 the combinatorial identity does all the work, and the deep analytic number theory is encapsulated in the single sorry."
+      "summary": "`primeSum_irrational : Irrational primeSum` is the deep analytic result (sorry — Tao-Teräväinen 2025, beyond current Mathlib). `erdos_69 : Irrational omegaSum` combines `tao_identity` and `primeSum_irrational` in a two-line proof: rewrite via the identity, then apply irrationality.",
+      "mathContext": "The final proof: `rw [tao_identity]; exact primeSum_irrational`. This two-line argument is the entire reduction of Problem 69 to Problem 257 — the combinatorial identity does all the work, and the deep analytic number theory is encapsulated in the single sorry."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #69 is answered affirmatively: \u2211\u03c9(n)/2^n is irrational. The proof relies on Tao's elegant identity reducing it to Problem 257, which was settled by Tao-Ter\u00e4v\u00e4inen in 2025.",
-    "implications": "This result showcases the power of rewriting sums by exchanging order of summation. It connects the divisibility structure of integers (via \u03c9) to the distribution of primes.",
+    "summary": "Erdős Problem #69 is answered affirmatively: ∑ω(n)/2^n is irrational. The proof relies on Tao's elegant identity reducing it to Problem 257, which was settled by Tao-Teräväinen in 2025.",
+    "implications": "This result showcases the power of rewriting sums by exchanging order of summation. It connects the divisibility structure of integers (via ω) to the distribution of primes.",
     "openQuestions": [
       "Can the irrationality measure $\\mu$ of $\\sum \\omega(n)/2^n$ be bounded? An irrationality measure $\\mu$ means $|\\alpha - p/q| > q^{-\\mu - \\epsilon}$ for all $\\epsilon > 0$ and sufficiently large $q$. Nesterenko's algebraic independence methods might yield $\\mu < \\infty$, but no explicit bound is known.",
-      "Is $\\sum \\omega(n)/2^n$ transcendental? The Tao-Ter\u00e4v\u00e4inen proof establishes irrationality but not transcendence. The sum $\\sum 1/(2^p - 1)$ is closely related to the Erd\u0151s-Borwein constant $E = \\sum 1/(2^n - 1) \\approx 1.606695$, whose transcendence is also open.",
-      "Can the sorry for `primeSum_irrational` be eliminated by formalizing Tao-Ter\u00e4v\u00e4inen's proof? This would require formalizing: (a) the Matom\u00e4ki-Radziwi\\l\\l theorem on multiplicative functions in short intervals, (b) correlations of multiplicative functions, and (c) Nesterenko's algebraic independence machinery \u2014 representing years of formalization effort.",
+      "Is $\\sum \\omega(n)/2^n$ transcendental? The Tao-Teräväinen proof establishes irrationality but not transcendence. The sum $\\sum 1/(2^p - 1)$ is closely related to the Erdős-Borwein constant $E = \\sum 1/(2^n - 1) \\approx 1.606695$, whose transcendence is also open.",
+      "Can the sorry for `primeSum_irrational` be eliminated by formalizing Tao-Teräväinen's proof? This would require formalizing: (a) the Matomäki-Radziwi\\l\\l theorem on multiplicative functions in short intervals, (b) correlations of multiplicative functions, and (c) Nesterenko's algebraic independence machinery — representing years of formalization effort.",
       "Does the analogous identity hold for the big omega function $\\Omega(n)$ (counting prime factors with multiplicity)? If $\\sum \\Omega(n)/2^n = \\sum_p \\sum_{k \\geq 1} 1/(2^{p^k} - 1)$, is this sum also irrational?"
     ]
   },
@@ -136,7 +137,7 @@
     {
       "targetId": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The sum $\\sum_p 1/(2^p - 1)$ ranges over the infinite set of primes. The infinitude of primes ensures this is a genuine infinite series, not a finite sum \u2014 and the rapid growth of $2^p$ ensures convergence"
+      "description": "The sum $\\sum_p 1/(2^p - 1)$ ranges over the infinite set of primes. The infinitude of primes ensures this is a genuine infinite series, not a finite sum — and the rapid growth of $2^p$ ensures convergence"
     },
     {
       "targetId": "prime-reciprocal-divergence",
@@ -146,42 +147,42 @@
     {
       "targetId": "e-transcendental",
       "relationship": "thematic",
-      "description": "Both results concern irrationality/transcendence of specific infinite series. The transcendence of $e = \\sum 1/k!$ was proved by Hermite (1873); the irrationality of $\\sum \\omega(n)/2^n$ was proved by Tao-Ter\u00e4v\u00e4inen (2025) \u2014 both require going beyond elementary summation techniques"
+      "description": "Both results concern irrationality/transcendence of specific infinite series. The transcendence of $e = \\sum 1/k!$ was proved by Hermite (1873); the irrationality of $\\sum \\omega(n)/2^n$ was proved by Tao-Teräväinen (2025) — both require going beyond elementary summation techniques"
     },
     {
       "targetId": "sqrt2-irrational",
       "relationship": "thematic",
-      "description": "The simplest irrationality proof ($\\sqrt{2} \\notin \\mathbb{Q}$) uses a descent argument. The irrationality of $\\sum \\omega(n)/2^n$ requires far more sophisticated methods \u2014 deep analytic number theory rather than elementary algebra \u2014 illustrating the vast gap in difficulty between different irrationality results"
+      "description": "The simplest irrationality proof ($\\sqrt{2} \\notin \\mathbb{Q}$) uses a descent argument. The irrationality of $\\sum \\omega(n)/2^n$ requires far more sophisticated methods — deep analytic number theory rather than elementary algebra — illustrating the vast gap in difficulty between different irrationality results"
     }
   ],
   "references": [
     {
-      "authors": "Tao, Terence; Ter\u00e4v\u00e4inen, Joni",
+      "authors": "Tao, Terence; Teräväinen, Joni",
       "title": "The structure of correlations of multiplicative functions at almost all scales, with applications to the Chowla and Elliott conjectures",
       "year": "2025",
       "venue": "Annals of Mathematics (to appear)",
-      "note": "The unconditional proof that \u22111/(2^p-1) is irrational, settling Erd\u0151s Problem 257 and (via Tao's identity) Problem 69. Uses the Matom\u00e4ki-Radziwil\u0142 theorem on multiplicative functions in short intervals"
+      "note": "The unconditional proof that ∑1/(2^p-1) is irrational, settling Erdős Problem 257 and (via Tao's identity) Problem 69. Uses the Matomäki-Radziwilł theorem on multiplicative functions in short intervals"
     },
     {
       "authors": "Pratt, Kyle",
-      "title": "On the irrationality of certain Erd\u0151s series",
+      "title": "On the irrationality of certain Erdős series",
       "year": "2024",
       "venue": "arXiv preprint",
-      "note": "Proved irrationality of \u22111/(2^p-1) conditional on a quantitative Hardy-Littlewood prime k-tuples conjecture \u2014 the first conditional result toward Problem 69"
+      "note": "Proved irrationality of ∑1/(2^p-1) conditional on a quantitative Hardy-Littlewood prime k-tuples conjecture — the first conditional result toward Problem 69"
     },
     {
-      "authors": "Erd\u0151s, Paul",
+      "authors": "Erdős, Paul",
       "title": "On arithmetical properties of Lambert series",
       "year": "1948",
-      "venue": "Journal of the Indian Mathematical Society, vol. 12, pp. 63\u201366",
-      "note": "Proved \u2211d(n)/2^n is irrational (where d(n) is the divisor function), the direct precursor to Problem 69 which asks the same question for \u03c9(n)"
+      "venue": "Journal of the Indian Mathematical Society, vol. 12, pp. 63–66",
+      "note": "Proved ∑d(n)/2^n is irrational (where d(n) is the divisor function), the direct precursor to Problem 69 which asks the same question for ω(n)"
     },
     {
       "authors": "Nesterenko, Yuri V.",
       "title": "Modular functions and transcendence questions",
       "year": "1996",
-      "venue": "Sbornik: Mathematics, vol. 187, no. 9, pp. 1319\u20131348",
-      "note": "Proved the algebraic independence of \u03c0, e^\u03c0, and \u0393(1/4) using modular form theory \u2014 the same class of techniques that underlies the Tao-Ter\u00e4v\u00e4inen irrationality proof"
+      "venue": "Sbornik: Mathematics, vol. 187, no. 9, pp. 1319–1348",
+      "note": "Proved the algebraic independence of π, e^π, and Γ(1/4) using modular form theory — the same class of techniques that underlies the Tao-Teräväinen irrationality proof"
     }
   ],
   "leanFile": {

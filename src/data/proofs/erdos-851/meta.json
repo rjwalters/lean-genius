@@ -51,7 +51,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 163,
-    "assumptions": "1 axiom: lowerDensity. 0 sorries."
+    "assumptions": "1 axiom: lowerDensity. 0 sorries.",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "**Romanoff's Theorem (1934)** initiated the study of integers representable as 2^k + p where p is prime. Romanoff proved this set has positive lower density (approximately 0.0868).\n\n**Erdős's Question** generalizes this: if we allow n to have more prime factors (not just 1), can we cover almost all integers?\n\n**Timeline**:\n- 1934: Romanoff proves positive density for 2^k + p\n- 1979: Erdős-Odlyzko improve density bounds to ~0.0868\n- Present: The general conjecture remains **OPEN**\n\nThe problem connects to:\n- Additive number theory\n- Sieve methods\n- Covering congruences",

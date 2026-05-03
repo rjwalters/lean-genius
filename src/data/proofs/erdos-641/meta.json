@@ -50,7 +50,8 @@
     "relatedProblems": [],
     "axiomCount": 1,
     "lineCount": 239,
-    "assumptions": "1 axiom: jss_counterexample. 2 sorries."
+    "assumptions": "1 axiom: jss_counterexample. 2 sorries.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "**Chromatic Number and Forced Substructures**\n\nThe chromatic number $\\chi(G)$ is among the most studied graph invariants, and a central question in graph theory asks: what substructures does high chromatic number force? Ramsey theory (1930) showed large cliques or independent sets are unavoidable. Erdős (1959) used the probabilistic method to prove graphs with arbitrarily high $\\chi$ and girth exist, showing high $\\chi$ does not force short cycles. Gyárfás (1975) proved that high $\\chi$ forces long odd cycles or large cliques. Thomassen (1983) showed every graph with $\\chi \\geq k$ contains a cycle of length at least $k$.\n\n**The Erdős-Hajnal Question**: Erdős and Hajnal asked whether high $\\chi$ forces a much richer structure: $k$ edge-disjoint cycles sharing the exact same vertex set. The key observation is that $k$ such cycles form a $2k$-regular subgraph. So the question reduces to: does high $\\chi$ force regular subgraphs of fixed degree?\n\n**The Disproof**: Janzer, Steiner, and Sudakov (2024) constructed graphs with $\\chi \\geq c \\cdot \\log\\log n / \\log\\log\\log n$ that contain no 4-regular subgraph, disproving the conjecture even for $k = 2$. Their construction begins with random graphs $G(n,p)$ and carefully removes edges to destroy all 4-regular subgraphs while preserving high chromatic number. Kim's 1995 bound $\\chi = O(\\sqrt{n/\\log n})$ for triangle-free graphs provides context for how slowly chromatic number can grow.",

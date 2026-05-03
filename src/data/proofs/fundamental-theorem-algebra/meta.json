@@ -58,7 +58,8 @@
       "Polynomial degree and leading coefficient"
     ],
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. The core existence result delegates to Mathlib's `Complex.exists_root` (proved via Liouville's theorem: a non-vanishing polynomial yields a bounded entire function $1/p(z)$, contradicting Liouville). Original contributions (`no_roots_implies_constant`, `card_roots_eq_degree`, `monic_prod_roots`, `quadratic_has_root`) are pedagogical wrappers composing Mathlib's `IsAlgClosed` infrastructure.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "The Fundamental Theorem of Algebra has roots stretching back to the 16th century. Peter Rothe stated a version for real roots in 1608, and Albert Girard first conjectured the full result in his 1629 *Invention nouvelle en l'algèbre*: every polynomial of degree $n$ has $n$ roots (counting multiplicities, allowing 'impossible' — i.e., complex — solutions). The first serious proof attempt came from Jean le Rond d'Alembert in 1746, whose argument contained gaps that would take over a century to fill.\n\nLeonhard Euler (1749) gave an algebraic argument reducing the problem to showing that real polynomials of even degree factor over $\\mathbb{R}$, but his proof also had gaps for polynomials of degree $2^k$ with $k \\geq 3$. Joseph-Louis Lagrange (1772) and Pierre-Simon Laplace (1795) also attempted proofs with varying degrees of completeness.\n\nCarl Friedrich Gauss provided the first substantially correct proof in his 1799 doctoral dissertation *Demonstratio nova theorematis omnem functionem algebraicam rationalem integram unius variabilis in factores reales primi vel secundi gradus resolvi posse*. Gauss criticized d'Alembert's approach and used a topological argument about the winding number of a curve. He went on to publish three more proofs (1816, 1816, 1849), each using different techniques — the fourth was purely algebraic modulo the intermediate value theorem.\n\nDespite its name, the theorem is fundamentally analytic rather than algebraic. Every known proof requires the completeness of $\\mathbb{R}$ in some form — whether through complex analysis (Liouville's theorem), topology (winding numbers), or the intermediate value theorem. The Mathlib proof uses Liouville's theorem: if $p(z) \\neq 0$ everywhere, then $1/p(z)$ is a bounded entire function, hence constant by Liouville, contradicting $\\deg p \\geq 1$.\n\nThe theorem is #2 on Wiedijk's list of 100 theorems, reflecting its foundational importance. It underpins the algebraic closure of $\\mathbb{C}$, the spectral theorem in linear algebra, and the decomposition of rational functions into partial fractions.",
@@ -256,7 +257,10 @@
       "Mathlib.Algebra.Polynomial.Degree.Definitions",
       "Mathlib.FieldTheory.IsAlgClosed.Basic"
     ],
-    "opens": ["Polynomial", "Complex"],
+    "opens": [
+      "Polynomial",
+      "Complex"
+    ],
     "namespace": "FundamentalTheoremAlgebra",
     "lineCount": 214,
     "axiomCount": 0,

@@ -19,7 +19,8 @@
     "erdosUrl": "https://erdosproblems.com/1206",
     "erdosProblemStatus": "solved",
     "axiomCount": 2,
-    "assumptions": "2 axiom(s) and 0 sorry(s). See the Lean source for the axiom declarations."
+    "assumptions": "2 axiom(s) and 0 sorry(s). See the Lean source for the axiom declarations.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Erdős Problem #1206 concerns Sidon sets among cube numbers. A Sidon set (also called a B₂ set) is a set of integers where all pairwise sums are distinct—equivalently, all pairwise differences are distinct. Sidon introduced these in 1932 in connection with Fourier analysis. Erdős and Turán proved the fundamental bound: any Sidon subset of {1,...,N} has at most N^(1/2) + O(N^(1/4)) elements. Problem #1206 asks whether {1³, 2³, ..., N³} contains an unexpectedly large Sidon set of size ≫ N—much larger relative to the set's cardinality than the Erdős–Turán bound suggests for a generic subset of {1,...,N³}. The problem was marked solved on erdosproblems.com following work by Gabdullin and Konyagin (2024), who showed the short-interval cube set {n³ : N - cN^(1/2) ≤ n ≤ N} is Sidon. Garaev, Garayev, and Konyagin (2026) improved this to size ≫ N^(4/7-o(1)) for infinitely many N, using more refined estimates on the quadratic factor n² + nm + m². The problem is part of a broader Erdős program relating polynomial sequences to additive combinatorics, with analogues for squares (Problem #773) and linear sets (Problem #530).",

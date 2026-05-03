@@ -1,10 +1,10 @@
 {
   "id": "erdos-973",
-  "title": "Erd\u0151s Problem #973: Power Sums of Complex Numbers (Tur\u00e1n's Problem)",
+  "title": "Erdős Problem #973: Power Sums of Complex Numbers (Turán's Problem)",
   "slug": "erdos-973",
-  "description": "Does there exist C > 1 such that max|\u2211z_i^k| < C^{-n} for sequences with z\u2081 = 1 and |z_i| \u2265 1? OPEN for the original question; partial results known for unit disk (C \u2248 1.32) and unit circle (C \u2248 1.7455).",
+  "description": "Does there exist C > 1 such that max|∑z_i^k| < C^{-n} for sequences with z₁ = 1 and |z_i| ≥ 1? OPEN for the original question; partial results known for unit disk (C ≈ 1.32) and unit circle (C ≈ 1.7455).",
   "meta": {
-    "author": "Erd\u0151s, L. Erd\u0151s (1992), Tur\u00e1n",
+    "author": "Erdős, L. Erdős (1992), Turán",
     "sourceUrl": "https://erdosproblems.com/973",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos973Problem.lean",
@@ -41,18 +41,18 @@
       },
       {
         "theorem": "Real.exp",
-        "description": "Exponential function for Tur\u00e1n constant 2e",
+        "description": "Exponential function for Turán constant 2e",
         "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
       }
     ],
     "originalContributions": [
       "ComplexSeq, powerSum, HasFirstOne: sequence and power sum definitions",
       "AllModulusGeOne, AllOnUnitCircle, AllModulusLeOne: modulus constraints",
-      "maxPowerSum (axiom): max_{2\u2264k\u2264n+1} |\u2211 z_i^k| with specification axiom",
-      "ErdosQuestion973: formal problem statement for |z_i| \u2265 1 case",
-      "erdos_unit_disk_construction (axiom): C \u2248 1.32 for unit disk",
+      "maxPowerSum (axiom): max_{2≤k≤n+1} |∑ z_i^k| with specification axiom",
+      "ErdosQuestion973: formal problem statement for |z_i| ≥ 1 case",
+      "erdos_unit_disk_construction (axiom): C ≈ 1.32 for unit disk",
       "M2, l_erdos_1992_bounds (axiom): optimal constant for unit circle",
-      "turan_lower_bound (axiom): (2e)^{-(1+o(1))n} bound for |z_i| \u2265 1",
+      "turan_lower_bound (axiom): (2e)^{-(1+o(1))n} bound for |z_i| ≥ 1",
       "rootsOfUnitySequence, roots_on_circle (proved): extremal candidates",
       "dirichlet_power_sum_connection (axiom): link to L-functions",
       "erdos_973_unit_disk, erdos_973_turan_constrained (proved): derived results",
@@ -60,18 +60,19 @@
     ],
     "axiomCount": 4,
     "lineCount": 188,
-    "assumptions": "4 axioms: maxPowerSum, erdos_unit_disk_construction, l_erdos_1992_bounds, turan_lower_bound. 0 sorries."
+    "assumptions": "4 axioms: maxPowerSum, erdos_unit_disk_construction, l_erdos_1992_bounds, turan_lower_bound. 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #973 is part of Tur\u00e1n's power sum method, one of the most important tools in analytic number theory. The question asks whether, for sequences z_i with z\u2081 = 1 and |z_i| \u2265 1, the maximum of |\u2211 z_i^k| over 2 \u2264 k \u2264 n+1 can decay exponentially as C^{-n} for some universal C > 1. Hayman listed this as Problem 7.3 in his 1974 collection, attributing it to Erd\u0151s.\n\nThe answer depends critically on the modulus constraint. Erd\u0151s himself showed that for |z_i| \u2264 1 (the unit disk), such sequences exist with C \u2248 1.32. L. Erd\u0151s (1992) refined the picture for unit circle sequences (|z_i| = 1), proving tight bounds (1.746)^{-n} < M\u2082 < (1.745)^{-n} where M\u2082 is the optimal maximum power sum. For the original question with |z_i| \u2265 1, Tur\u00e1n's Theorem 6.1 gives a lower bound of (2e)^{-(1+o(1))n}, but the precise answer remains open.\n\nTur\u00e1n's power sum method connects to Dirichlet polynomials, L-function zero-free regions, and equidistribution theory. The problem illustrates how the geometry of the constraint set (disk, circle, or exterior) fundamentally changes the extremal behavior of power sums.",
-    "problemStatement": "Does there exist a constant C > 1 such that for every n \u2265 2, one can find a sequence z\u2081, ..., z_n \u2208 \u2102 with z\u2081 = 1 and |z_i| \u2265 1 satisfying max_{2 \u2264 k \u2264 n+1} |\u2211_{i=1}^n z_i^k| < C^{-n}?\n\n**Status: OPEN** (for |z_i| \u2265 1)\n\nKnown partial results:\n- Unit disk (|z_i| \u2264 1): YES, C \u2248 1.32 (Erd\u0151s)\n- Unit circle (|z_i| = 1): optimal C \u2248 1.7455 (L. Erd\u0151s 1992)\n- Outside disk (|z_i| \u2265 1): Tur\u00e1n's bound (2e)^{-(1+o(1))n} constrains from below",
-    "text": "Does there exist C > 1 such that max|\u2211z_i^k| < C^{-n} for sequences with z\u2081 = 1 and |z_i| \u2265 1? OPEN for the original question; partial results known for unit disk (C \u2248 1.32) and unit circle (C \u2248 1.7455).",
-    "proofStrategy": "The formalization defines ComplexSeq as Fin n \u2192 \u2102, with powerSum computing \u2211 z_i^k. The maxPowerSum function is axiomatized (since the supremum over a parametric range requires careful handling). Three key results are axiomatized: Erd\u0151s's unit disk construction (C \u2248 1.32), L. Erd\u0151s's unit circle bounds, and Tur\u00e1n's lower bound for |z_i| \u2265 1. The main theorem erdos_973 proves the AnswerSummary by composing these three axioms. Additional content includes roots of unity as extremal candidates (with a proved unit circle property) and the connection to Dirichlet polynomials.",
+    "historicalContext": "Erdős Problem #973 is part of Turán's power sum method, one of the most important tools in analytic number theory. The question asks whether, for sequences z_i with z₁ = 1 and |z_i| ≥ 1, the maximum of |∑ z_i^k| over 2 ≤ k ≤ n+1 can decay exponentially as C^{-n} for some universal C > 1. Hayman listed this as Problem 7.3 in his 1974 collection, attributing it to Erdős.\n\nThe answer depends critically on the modulus constraint. Erdős himself showed that for |z_i| ≤ 1 (the unit disk), such sequences exist with C ≈ 1.32. L. Erdős (1992) refined the picture for unit circle sequences (|z_i| = 1), proving tight bounds (1.746)^{-n} < M₂ < (1.745)^{-n} where M₂ is the optimal maximum power sum. For the original question with |z_i| ≥ 1, Turán's Theorem 6.1 gives a lower bound of (2e)^{-(1+o(1))n}, but the precise answer remains open.\n\nTurán's power sum method connects to Dirichlet polynomials, L-function zero-free regions, and equidistribution theory. The problem illustrates how the geometry of the constraint set (disk, circle, or exterior) fundamentally changes the extremal behavior of power sums.",
+    "problemStatement": "Does there exist a constant C > 1 such that for every n ≥ 2, one can find a sequence z₁, ..., z_n ∈ ℂ with z₁ = 1 and |z_i| ≥ 1 satisfying max_{2 ≤ k ≤ n+1} |∑_{i=1}^n z_i^k| < C^{-n}?\n\n**Status: OPEN** (for |z_i| ≥ 1)\n\nKnown partial results:\n- Unit disk (|z_i| ≤ 1): YES, C ≈ 1.32 (Erdős)\n- Unit circle (|z_i| = 1): optimal C ≈ 1.7455 (L. Erdős 1992)\n- Outside disk (|z_i| ≥ 1): Turán's bound (2e)^{-(1+o(1))n} constrains from below",
+    "text": "Does there exist C > 1 such that max|∑z_i^k| < C^{-n} for sequences with z₁ = 1 and |z_i| ≥ 1? OPEN for the original question; partial results known for unit disk (C ≈ 1.32) and unit circle (C ≈ 1.7455).",
+    "proofStrategy": "The formalization defines ComplexSeq as Fin n → ℂ, with powerSum computing ∑ z_i^k. The maxPowerSum function is axiomatized (since the supremum over a parametric range requires careful handling). Three key results are axiomatized: Erdős's unit disk construction (C ≈ 1.32), L. Erdős's unit circle bounds, and Turán's lower bound for |z_i| ≥ 1. The main theorem erdos_973 proves the AnswerSummary by composing these three axioms. Additional content includes roots of unity as extremal candidates (with a proved unit circle property) and the connection to Dirichlet polynomials.",
     "keyInsights": [
-      "**Three regimes:** The answer depends on the modulus constraint \u2014 unit disk, unit circle, and exterior give fundamentally different behavior",
-      "**Erd\u0151s's constant:** C \u2248 1.32 for unit disk sequences, proved constructively",
-      "**L. Erd\u0151s 1992:** Tight bounds (1.746)^{-n} < M\u2082 < (1.745)^{-n} for unit circle",
-      "**Tur\u00e1n's bound:** (2e)^{-(1+o(1))n} \u2248 (5.44)^{-(1+o(1))n} for |z_i| \u2265 1",
+      "**Three regimes:** The answer depends on the modulus constraint — unit disk, unit circle, and exterior give fundamentally different behavior",
+      "**Erdős's constant:** C ≈ 1.32 for unit disk sequences, proved constructively",
+      "**L. Erdős 1992:** Tight bounds (1.746)^{-n} < M₂ < (1.745)^{-n} for unit circle",
+      "**Turán's bound:** (2e)^{-(1+o(1))n} ≈ (5.44)^{-(1+o(1))n} for |z_i| ≥ 1",
       "**Dirichlet connection:** Power sums of n^{it} yield Dirichlet sums, linking to L-function theory"
     ],
     "prerequisites": [
@@ -90,34 +91,34 @@
     },
     {
       "id": "erdos-question",
-      "title": "Part II: The Erd\u0151s Question",
+      "title": "Part II: The Erdős Question",
       "startLine": 70,
       "endLine": 80,
-      "summary": "Formal statement ErdosQuestion973: \u2203 C > 1 with max power sum < C^{-n} for |z_i| \u2265 1.",
-      "mathContext": "Formal statement ErdosQuestion973: \u2203 C > 1 with max power sum < C^{-n} for |z_i| $\\geq$ 1."
+      "summary": "Formal statement ErdosQuestion973: ∃ C > 1 with max power sum < C^{-n} for |z_i| ≥ 1.",
+      "mathContext": "Formal statement ErdosQuestion973: ∃ C > 1 with max power sum < C^{-n} for |z_i| $\\geq$ 1."
     },
     {
       "id": "unit-disk",
-      "title": "Part III: Erd\u0151s's Construction (Unit Disk Case)",
+      "title": "Part III: Erdős's Construction (Unit Disk Case)",
       "startLine": 81,
       "endLine": 93,
-      "summary": "Axiom erdos_unit_disk_construction: C \u2248 1.32 works for |z_i| \u2264 1.",
-      "mathContext": "Axiom erdos_unit_disk_construction: C \u2248 1.32 works for |z_i| $\\leq$ 1."
+      "summary": "Axiom erdos_unit_disk_construction: C ≈ 1.32 works for |z_i| ≤ 1.",
+      "mathContext": "Axiom erdos_unit_disk_construction: C ≈ 1.32 works for |z_i| $\\leq$ 1."
     },
     {
       "id": "unit-circle",
-      "title": "Part IV: L. Erd\u0151s's Refinement (1992)",
+      "title": "Part IV: L. Erdős's Refinement (1992)",
       "startLine": 94,
       "endLine": 108,
-      "summary": "Defines M2 (infimum over unit circle sequences). Axiom l_erdos_1992_bounds: (1.746)^{-n} < M\u2082 < (1.745)^{-n}.",
-      "mathContext": "Formal definition: Defines M2 (infimum over unit circle sequences). Axiom l_erdos_1992_bounds: (1.746)^{-n} < M\u2082 < (1.745)^{-n}."
+      "summary": "Defines M2 (infimum over unit circle sequences). Axiom l_erdos_1992_bounds: (1.746)^{-n} < M₂ < (1.745)^{-n}.",
+      "mathContext": "Formal definition: Defines M2 (infimum over unit circle sequences). Axiom l_erdos_1992_bounds: (1.746)^{-n} < M₂ < (1.745)^{-n}."
     },
     {
       "id": "turan-bound",
-      "title": "Part V: Tur\u00e1n's Lower Bound",
+      "title": "Part V: Turán's Lower Bound",
       "startLine": 109,
       "endLine": 123,
-      "summary": "Axiom turan_lower_bound: for |z_i| \u2265 1, max power sum \u2265 (2e)^{-(1+o(1))n}. Defines turanConstant = 2e.",
+      "summary": "Axiom turan_lower_bound: for |z_i| ≥ 1, max power sum ≥ (2e)^{-(1+o(1))n}. Defines turanConstant = 2e.",
       "mathContext": "Axiom turan_lower_bound: for |z_i| $\\geq$ 1, max power sum $\\geq$ (2e)^{-(1+o(1))n}. Defines turanConstant = 2e."
     },
     {
@@ -154,13 +155,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #973 asks about minimizing power sums max|\u2211z_i^k| for sequences with z\u2081 = 1 and modulus constraints. The original question (|z_i| \u2265 1) remains open, but three partial results are formalized: Erd\u0151s's C \u2248 1.32 for the unit disk, L. Erd\u0151s's optimal C \u2248 1.7455 for the unit circle, and Tur\u00e1n's (2e)^{-n} lower bound for the exterior.",
-    "implications": "**Theoretical Significance**: Tur\u00e1n's power sum method is fundamental in analytic number theory.\n\nPower sum bounds directly relate to Dirichlet polynomial estimates, L-function zero-free regions, and equidistribution theory. The three-regime structure illustrates how geometry constrains extremal behavior.",
+    "summary": "Erdős Problem #973 asks about minimizing power sums max|∑z_i^k| for sequences with z₁ = 1 and modulus constraints. The original question (|z_i| ≥ 1) remains open, but three partial results are formalized: Erdős's C ≈ 1.32 for the unit disk, L. Erdős's optimal C ≈ 1.7455 for the unit circle, and Turán's (2e)^{-n} lower bound for the exterior.",
+    "implications": "**Theoretical Significance**: Turán's power sum method is fundamental in analytic number theory.\n\nPower sum bounds directly relate to Dirichlet polynomial estimates, L-function zero-free regions, and equidistribution theory. The three-regime structure illustrates how geometry constrains extremal behavior.",
     "openQuestions": [
-      "Does C > 1 exist for the original |z_i| \u2265 1 question?",
+      "Does C > 1 exist for the original |z_i| ≥ 1 question?",
       "Sharper bounds between 1.745 and 1.746 for unit circle?",
       "Explicit extremal sequences achieving the bounds?",
-      "Higher-dimensional generalizations of Tur\u00e1n's method?"
+      "Higher-dimensional generalizations of Turán's method?"
     ]
   },
   "leanFile": {
@@ -188,17 +189,17 @@
     {
       "targetId": "erdos-1117",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: complex-analysis, open"
+      "description": "Related Erdős problem sharing themes: complex-analysis, open"
     },
     {
       "targetId": "erdos-1137",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: analytic-number-theory, open"
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, open"
     },
     {
       "targetId": "erdos-114",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: complex-analysis, open"
+      "description": "Related Erdős problem sharing themes: complex-analysis, open"
     }
   ],
   "sorries": 0

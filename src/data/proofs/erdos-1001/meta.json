@@ -67,7 +67,8 @@
       "Euler's totient function and coprime density (6/pi^2)",
       "Basic ergodic theory (for Kesten-Sos proof method)"
     ],
-    "lineCount": 249
+    "lineCount": 249,
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "This problem originates in a 1958 paper by Erdős, Szüsz, and Turán, who studied the metric theory of Diophantine approximation — specifically, what fraction of real numbers $\\alpha \\in (0,1)$ can be well-approximated by rationals whose denominators lie in a prescribed range $[N, cN]$. They proved the explicit formula $f(A,c) = 12A\\log(c)/\\pi^2$ in a specific parameter regime, revealing a striking connection to the density of coprime pairs via Euler's formula $\\sum_{n=1}^\\infty 1/n^2 = \\pi^2/6$. The key advance came in 1966 when Harry Kesten and Vera T. Sós proved that the limit $\\lim_{N \\to \\infty} S(N,A,c)$ exists for all valid parameters, using ergodic-theoretic methods — a significant generalization since no explicit formula was needed. Later, Florin Boca (2008) gave an independent proof using the geometry of Farey fractions and their spacing statistics, while Xiong and Zaharescu (2006) provided yet another proof via continued fraction expansions. The problem illustrates a central theme in metric number theory: how measure-theoretic properties of approximation sets encode deep arithmetic structure.",

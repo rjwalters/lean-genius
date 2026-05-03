@@ -62,7 +62,8 @@
     "axiomCount": 0,
     "lineCount": 1416,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 56
   },
   "overview": {
     "historicalContext": "**From Ambiguity to AI Breakthrough**\n\nErdos Problem #728 was posed by Erdos, Graham, Ruzsa, and Straus in 1975. The original formulation was ambiguous - as written, it had trivial solutions. The AlphaProof team noted solutions with very large values of a and b, and the mathematical community debated the intended constraints.\n\nIn January 2026, after the problem statement was clarified to require a,b ≤ (1-ε)n, Kevin Barreto prompted GPT-5.2 which produced a complete solution. The proof was then formalized in Lean using Aristotle and simplified by Boris Alexeev.\n\n**Why This Matters**: Unlike Erdos #124 (which used known techniques in a novel combination), this solution appears genuinely new. Terence Tao noted it was 'not replicated in existing literature' - the clearest evidence yet that AI can generate original mathematics.\n\n**See Also**: [Erdos Problem #124](https://www.erdosproblems.com/124) was the first AI-autonomous solution (November 2025). Problem #728 represents the next milestone: AI producing novel mathematical content.",

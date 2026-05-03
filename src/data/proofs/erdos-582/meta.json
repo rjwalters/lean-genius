@@ -64,7 +64,8 @@
     ],
     "axiomCount": 5,
     "lineCount": 315,
-    "assumptions": "5 assumptions: 2 opaque constants (folkmanNumber_2_3_4, folkmanNumber) + 3 axioms (folkman_existence, folkman_lower_bound, folkman_upper_bound). 0 sorries."
+    "assumptions": "5 assumptions: 2 opaque constants (folkmanNumber_2_3_4, folkmanNumber) + 3 axioms (folkman_existence, folkman_lower_bound, folkman_upper_bound). 0 sorries.",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "**Erdos Problem #582: The Folkman Number**\n\nThis problem was first posed by Erdos and Hajnal in 1967 and asks a fundamental question in Ramsey theory: can we have a graph that avoids K4 (no 4-clique) yet still forces monochromatic triangles in every 2-coloring of its edges?\n\n**Historical Timeline:**\n- 1967: Erdos-Hajnal pose the question\n- 1970: Folkman proves existence (with astronomical bounds)\n- 1986: Frankl-Rodl prove f(2,3,4) <= 7x10^11\n- 1988: Spencer proves <= 3x10^9, winning Erdos's $100 prize\n- 2007: Lu gives explicit construction with <= 9697 vertices\n- 2008: Dudek-Rodl prove <= 941 (current record)\n\nThe number f(2,3,4), called the Folkman number, remains one of the most studied parameters in extremal graph theory.",

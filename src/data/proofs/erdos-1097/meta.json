@@ -33,7 +33,8 @@
         "id": "roth-theorem-k3",
         "relationship": "Roth's theorem guarantees 3-term APs in dense sets; this problem counts distinct common differences of such APs"
       }
-    ]
+    ],
+    "theoremCount": 23
   },
   "overview": {
     "text": "A 374-line formalization of Erdős Problem #1097 on counting distinct common differences in three-term arithmetic progressions within an $n$-element integer set $A$. Defines $D(A) = \\{d : \\exists a,\\; a, a+d, a+2d \\in A\\}$ and asks whether $|D(A)| = O(n^{3/2})$. The formalization proves 14 structural lemmas without axioms — including translation invariance ($D(A+c) = D(A)$), dilation covariance ($D(\\lambda A) = \\lambda \\cdot D(A)$), negation symmetry, subset monotonicity, and exact computations for small sets — then axiomatizes 6 established bounds: Katz-Tao's $O(n^{11/6})$ upper bound (1999, incidence geometry), Erdős-Spencer's $\\Omega(n^{3/2})$ (probabilistic), Erdős-Ruzsa's explicit $\\Omega(n^{4/3})$, Lemm's $\\Omega(n^{1.778})$ (2015, best human lower bound), DeepMind AlphaEvolve's marginal improvement (exponent > 1.77898, 2025), and Chan's equivalence to Bourgain's restricted sums-differences problem (linking discrete combinatorics to harmonic analysis). A summary theorem captures the current state: the critical exponent lies in $(1.778, 11/6]$, with resolution potentially impacting the Kakeya conjecture.",

@@ -53,7 +53,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 398,
-    "assumptions": "4 axioms, 0 sorries. Axioms: (1) sylvester_frobenius: G({a,b}) = ab - a - b for coprime a, b (Sylvester-Frobenius formula); (2) dixmier_lower_bound: g(k,n) ≥ ⌊(n-2)/(k-1)⌋·(n-k+1) - 1; (3) dixmier_upper_bound: g(k,n) ≤ (⌊(n-1)/(k-1)⌋ - 1)·n - 1 (Dixmier 1990 bounds); (4) erdos_433_solved: the asymptotic formula g(k,n) ~ n²/(k-1) holds. The g_two theorem (k=2 exact value n²-3n+1) has been proved."
+    "assumptions": "4 axioms, 0 sorries. Axioms: (1) sylvester_frobenius: G({a,b}) = ab - a - b for coprime a, b (Sylvester-Frobenius formula); (2) dixmier_lower_bound: g(k,n) ≥ ⌊(n-2)/(k-1)⌋·(n-k+1) - 1; (3) dixmier_upper_bound: g(k,n) ≤ (⌊(n-1)/(k-1)⌋ - 1)·n - 1 (Dixmier 1990 bounds); (4) erdos_433_solved: the asymptotic formula g(k,n) ~ n²/(k-1) holds. The g_two theorem (k=2 exact value n²-3n+1) has been proved.",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "**Erdős Problem #433**\n\nThis problem connects extremal combinatorics to the classical Frobenius number problem (also called the coin problem or money changing problem).\n\n**Key History:**\n- Sylvester-Frobenius (1884): G({a,b}) = ab - a - b for coprime a, b\n- Erdős-Graham (1972): First bounds g(k,n) < 2n²/k\n- Dixmier (1990): Proved exact asymptotic g(k,n) ~ n²/(k-1)\n\n**The Frobenius Problem:**\nGiven positive integers with gcd = 1, find the largest integer that cannot be represented as their non-negative linear combination. The \"Chicken McNugget\" problem is a famous example.",

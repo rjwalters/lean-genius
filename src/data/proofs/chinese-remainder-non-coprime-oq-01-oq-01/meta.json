@@ -54,7 +54,8 @@
     "axiomCount": 0,
     "lineCount": 249,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 22
   },
   "overview": {
     "historicalContext": "The Chinese Remainder Theorem (CRT) is one of the oldest results in number theory. The classical coprime version gives a unique solution modulo the product of moduli. The non-coprime generalization for two moduli is well-known: x ≡ a (mod m), x ≡ b (mod n) is solvable iff gcd(m,n) | (a-b), with solutions periodic modulo lcm(m,n).\n\nThe parent proof (OQ01) established three computational efficiency improvements for 2 non-coprime moduli. The natural follow-up: does this extend cleanly to k arbitrary moduli? The answer is yes, and the key insight is that Finset.lcm in ℤ's GCDMonoid directly encodes the k-fold LCM universality property.",

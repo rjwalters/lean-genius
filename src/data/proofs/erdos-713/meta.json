@@ -56,7 +56,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 195,
-    "assumptions": "2 axioms: extremalNumber, erdos_simonovits_counterexample. 0 sorries."
+    "assumptions": "2 axioms: extremalNumber, erdos_simonovits_counterexample. 0 sorries.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Erdős Problem #713 asks fundamental questions about the extremal number ex(n; G) for bipartite graphs G, where ex(n; G) is the maximum number of edges in an n-vertex G-free graph. For non-bipartite G, the Erdős-Stone-Simonovits theorem determines ex(n; G) up to lower-order terms. For bipartite G, we only know ex(n; G) = o(n²), and the precise growth rate is the subject of this problem.\n\nErdős initially conjectured (1967) that for every bipartite G, the exponent α in ex(n; G) ~ cn^α always has the restricted form 1+1/k or 2-1/k for integer k ≥ 2. This was natural given that ex(n; K_{s,t}) has exponent 2-1/s by the Kővári-Sós-Turán theorem. However, Erdős and Simonovits (1970) disproved this restricted form, finding bipartite graphs with other exponents.\n\nThe broader questions remain open and carry a $500 prize: Does every bipartite graph have a well-defined power-law exponent? Must such exponents be rational? Frankl-Füredi (1987) showed the analogous statement fails for k-uniform hypergraphs with k ≥ 5, and Füredi-Gerbner (2021) extended this to all k ≥ 5, but the graph case remains unresolved.",

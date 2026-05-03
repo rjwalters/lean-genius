@@ -24,7 +24,8 @@
     "axiomCount": 0,
     "lineCount": 161,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 17
   },
   "overview": {
     "historicalContext": "Erdős, Hardy, and Subbarao asked how many composite numbers divide n!+1 for some n. By Wilson's theorem, every prime p divides (p-1)!+1, and this property characterizes primes completely. For composites the situation is radically different: if u | n!+1 then u must be coprime to n!, forcing every prime factor of u to exceed n and hence u > n². This coprimality constraint severely limits which composites can appear. The known sequence 25, 121, 169, 437, ... (OEIS A256519) is extremely sparse — all known examples are prime powers or semiprimes whose prime factors happen to align with a single factorial. Subbarao connected these to Wilson pseudoprimes: composites that mimic primality in factorial arithmetic. The conjecture A(x) ≤ x^{o(1)} would confirm that this phenomenon is exceptionally rare, growing slower than any fixed power of x.",

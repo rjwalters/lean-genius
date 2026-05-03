@@ -64,7 +64,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 261,
-    "assumptions": "3 axiom(s) and 2 sorry(s). Axioms: sylvester_schur, erdos_1955_bound, jutila_ramachandra_shorey_bound. Sorries: f_sublinear (line 147), f_le_smooth_gap_succ (line 206)."
+    "assumptions": "3 axiom(s) and 2 sorry(s). Axioms: sylvester_schur, erdos_1955_bound, jutila_ramachandra_shorey_bound. Sorries: f_sublinear (line 147), f_le_smooth_gap_succ (line 206).",
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "This problem connects to a classical result by Sylvester (1892) and Schur (1929) showing that among any $k$ consecutive integers greater than $k$, at least one has a prime factor greater than $k$. Erdős published this as Problem #961, asking for better bounds on $f(k)$.\n\nErdős himself improved the bound in 1955 [Er55d] to $f(k) < 3k/\\log k$, showing sublinear growth. The strongest known result came from Jutila (1974) [Ju74] and independently Ramachandra–Shorey (1973) [RaSh73], who proved $f(k) \\ll \\frac{\\log\\log\\log k}{\\log\\log k} \\cdot \\frac{k}{\\log k}$ using sieve methods.\n\nThe problem is essentially equivalent to Problem #683, which asks about gaps between smooth numbers. The conjecture that $f(k)$ grows only polylogarithmically—$f(k) \\ll (\\log k)^C$—remains wide open. The gap between the known $O(k / \\text{polylog})$ and conjectured $O(\\text{polylog})$ is enormous.\n\nSmooth numbers play a central role in computational number theory: the quadratic sieve and number field sieve factoring algorithms depend on finding smooth numbers in specific ranges. Understanding the distribution of smooth numbers in short intervals is both a fundamental problem in analytic number theory and a question of practical importance.\n\n**Status**: OPEN — Polylogarithmic conjecture unresolved. Best known bound: $f(k) \\ll \\frac{\\log\\log\\log k}{\\log\\log k} \\cdot \\frac{k}{\\log k}$.",

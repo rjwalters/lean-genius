@@ -32,7 +32,8 @@
     ],
     "lineCount": 258,
     "assumptions": "1 axiom: bollobas_theorem. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Erdős and Stefan Burr conjectured in the early 1970s that high average degree forces cycles whose lengths come from any arithmetic progression containing even numbers. Béla Bollobás proved this in 1977, establishing one of the early landmarks of extremal graph theory. The result fits into a broader program initiated by Erdős studying which subgraphs are forced by graph density — a question whose definitive answer is the Erdős-Stone theorem (1946). The necessity of the 'contains even numbers' condition follows from a classical observation: complete bipartite graphs $K_{n,n}$ have average degree $n$ (arbitrarily large) but contain only even-length cycles — so odd-only progressions like $\\{3, 7, 11, \\ldots\\}$ cannot be forced by density alone. The Bondy-Simonovits theorem (1974) proved a related result: high minimum degree forces cycles of all sufficiently large even lengths. Bollobás's theorem is stronger in covering arbitrary progressions but requires average rather than minimum degree, connected via the subgraph extraction lemma ($\\bar{d}(G) \\geq 2k \\implies \\exists$ subgraph with $\\delta \\geq k$). The optimal dependence $c(P)$ on the progression parameters $a, d$ remains an open quantitative question.",

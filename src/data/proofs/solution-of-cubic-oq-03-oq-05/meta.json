@@ -31,7 +31,8 @@
         "id": "solution-of-cubic",
         "relationship": "Root: solution of the cubic equation"
       }
-    ]
+    ],
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "François Viète (1540–1603) discovered the fundamental relationship between the roots and coefficients of a polynomial in his posthumous *De Aequationum Recognitione et Emendatione* (1615). The formulas bearing his name connect the elementary symmetric polynomials $\\sigma_1 = \\sum r_i$, $\\sigma_2 = \\sum_{i<j} r_i r_j$, $\\sigma_3 = r_1 r_2 r_3$ to the coefficients of the polynomial. For the cubic $x^3 + ax^2 + bx + c$, they state $a = -\\sigma_1$, $b = \\sigma_2$, $c = -\\sigma_3$ — and the proof is simply the factored form $(x - r_1)(x - r_2)(x - r_3)$ expanded.\n\nVieta's formulas are the foundation of the **theory of symmetric polynomials**: the fact that every symmetric polynomial in $r_1, \\ldots, r_n$ can be expressed as a polynomial in $\\sigma_1, \\ldots, \\sigma_n$ (the fundamental theorem of symmetric polynomials, proved by Newton). This is the starting point for Galois theory, since the Galois group of a polynomial permutes its roots while preserving the coefficients (which are symmetric functions of the roots).\n\nClassically, the formulas were stated over $\\mathbb{C}$ or $\\mathbb{R}$. The Lean proof here works over any commutative ring $R$, making the formulas valid for polynomials with coefficients and roots in $\\mathbb{Z}$, $\\mathbb{Z}/p\\mathbb{Z}$, finite fields, or any algebraic structure satisfying the ring axioms.",

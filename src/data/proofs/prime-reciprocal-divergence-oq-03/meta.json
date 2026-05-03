@@ -57,7 +57,8 @@
     "axiomCount": 0,
     "lineCount": 388,
     "assumptions": "0 axioms. 0 sorries. Fully verified.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 13
   },
   "overview": {
     "historicalContext": "Erdős's 1938 paper 'Über die Reihe Σ1/p' (On the series Σ1/p) introduced a purely combinatorial proof that the sum of reciprocals of primes diverges. Euler had proved this in 1737 using his product formula for ζ(s) and analysis. Erdős's contribution was to show the result — and even the infinitude of primes — follows from simple counting: the squarefree decomposition k = b²·a shows that N-smooth numbers up to n number at most √n · 2^{π(N)}. If all primes were ≤ N, then [1..n] would be entirely smooth, but √n · 2^{π(N)} < n for large n — contradiction. The proof exemplified Erdős's 'BOOK proof' philosophy: find the most elegant, elementary argument. The squarefree decomposition it uses was known since Gauss; the smooth number counting bound prefigures the theory of friable numbers (Ψ(x, y)) central to modern analytic number theory and integer factorization algorithms (quadratic sieve, ECM).",

@@ -54,7 +54,8 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 4,
     "lineCount": 186,
-    "assumptions": "4 axiom(s). No sorries. 0 sorries remain.(s) remain."
+    "assumptions": "4 axiom(s). No sorries. 0 sorries remain.(s) remain.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "**Erdős Problem #809**\n\nThis problem connects Turán-type extremal graph theory with rainbow (anti-Ramsey) coloring theory.\n\n**Key History:**\n- Erdős [Er91]: Original formulation of the problem\n- Burr, Erdős, Graham, Sós: Proved quadratic lower bound F_k(n) ≫ n²\n- Current status: OPEN — the exact asymptotic constant remains unknown\n\n**Mathematical Setting:**\nThe edge threshold ⌊n²/4⌋ + 1 is chosen to be just above the Turán number for bipartite graphs: by Turán's theorem, any graph with more than ⌊n²/4⌋ edges must contain odd cycles. The question asks how many colors are needed to make every such odd cycle rainbow (no repeated colors).\n\nThe conjecture F_k(n) ~ n²/8 predicts the leading constant is 1/8, exactly half the Turán threshold constant 1/4. This suggests a deep structural connection between graph density and chromatic properties. The companion Problem #810 addresses related constraints on rainbow colorings.",

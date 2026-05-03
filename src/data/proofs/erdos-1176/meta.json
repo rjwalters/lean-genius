@@ -58,7 +58,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 225,
-    "assumptions": "1 axiom: hajnal_komjath_consistency_witness (consistency of positive answer to Erdős #1176 under set-theoretic forcing, Hajnal-Komlós). 0 sorries."
+    "assumptions": "1 axiom: hajnal_komjath_consistency_witness (consistency of positive answer to Erdős #1176 under set-theoretic forcing, Hajnal-Komlós). 0 sorries.",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "Erdős Problem #1176 was posed by Paul Erdős, Fred Galvin, and András Hajnal (referenced as [Va99, 7.93]). It asks whether every graph with chromatic number $\\aleph_1$ admits an edge coloring with $\\aleph_1$ colors such that any proper countable vertex coloring has a color class meeting all edge colors. The problem sits at the intersection of infinite graph theory, infinite combinatorics, and set theory.\n\nThe key known result is due to András Hajnal and Péter Komjáth, who proved the consistency of a positive answer: using set-theoretic forcing, they showed it is consistent with ZFC that such an edge coloring exists for every graph with $\\chi(G) = \\aleph_1$. This raises the intriguing possibility that the statement may be independent of ZFC — true in some models and false in others — placing it alongside famous independence results like the Continuum Hypothesis.\n\nThe problem is closely related to Erdős #919 (chromatic numbers on ordinal products), Erdős #83 (coloring problems for infinite graphs), and Erdős #888 (related partition problems). The interplay between vertex and edge colorings on uncountable-chromatic graphs connects to deep questions in partition calculus, a field developed extensively by Erdős, Rado, and their collaborators from the 1950s onward.",

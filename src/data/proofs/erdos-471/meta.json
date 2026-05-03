@@ -54,7 +54,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 274,
-    "assumptions": "2 axioms: vinogradov_smaller_primes (Vinogradov — three primes theorem with smaller primes bound), all_primes_in_QLim (all primes are in Q_lim). 0 sorries."
+    "assumptions": "2 axioms: vinogradov_smaller_primes (Vinogradov — three primes theorem with smaller primes bound), all_primes_in_QLim (all primes are in Q_lim). 0 sorries.",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #471 originates from a question of Stanisław Ulam, recorded by Erdős and Graham in their 1980 monograph [ErGr80, p.94]. The problem asks whether a simple iterative process on sets of primes — adding all primes expressible as sums of three distinct elements — can produce arbitrarily large sets starting from a finite seed.\n\nThe resolution came through a beautiful connection to analytic number theory. Rudi Mrazović and Vjekoslav Kovač observed that Vinogradov's three primes theorem (1937) implies the answer is YES: every sufficiently large odd integer is the sum of three primes, so every large prime can be decomposed into a sum of three strictly smaller primes. Noga Alon independently reached the same conclusion.\n\nThe proof strategy is elegant: take Q₀ = {primes ≤ N} where N is Vinogradov's threshold constant. Then by strong induction, any prime p > N decomposes as p = q₁ + q₂ + q₃ with smaller primes q₁, q₂, q₃ that are already in some earlier Qᵢ, so p enters the next stage. This means Q∞ actually contains ALL primes — a stronger result than Ulam originally asked for. The special case Q₀ = {3, 5, 7, 11} is conjectured to also generate all odd primes.",

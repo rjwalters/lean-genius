@@ -66,7 +66,8 @@
     "axiomCount": 0,
     "lineCount": 341,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 24
   },
   "overview": {
     "historicalContext": "The spherical law of cosines is one of the fundamental results of spherical trigonometry, with origins in Islamic mathematics. Al-Battani (~900 CE) gave early forms, and the result was systematically developed by Regiomontanus (1464), Euler (1781), and formalized in Todhunter's comprehensive treatise (1886).\n\nFor a spherical triangle on the unit sphere S² with arc-length sides a, b, c (measuring the central angle subtended) and dihedral angle C opposite side c:\n\n  cos(c) = cos(a)·cos(b) + sin(a)·sin(b)·cos(C)\n\nThis is the curved-space analogue of the planar law of cosines c² = a² + b² - 2ab·cos(C). In the small-angle limit (a, b, c → 0), the spherical formula reduces to the planar formula via Taylor expansion: cos(x) ≈ 1 - x²/2 and sin(x) ≈ x.\n\nSpherical trigonometry was essential for celestial navigation, astronomy, and cartography — the core computational tool of the Age of Exploration. Today it remains fundamental in geodesy, satellite navigation (GPS), crystallography, and computer graphics.",

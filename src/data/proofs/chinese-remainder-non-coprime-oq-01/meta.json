@@ -64,7 +64,8 @@
     "axiomCount": 0,
     "lineCount": 308,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 17
   },
   "overview": {
     "historicalContext": "The Chinese Remainder Theorem (CRT) is among the oldest results in number theory, with roots in ancient Chinese mathematics (Sunzi Suanjing, ~3rd century). The classical version requires coprime moduli: given m,n coprime and residues a,b, there is a unique x < mn with x ≡ a (mod m) and x ≡ b (mod n).\n\nThe NON-COPRIME generalization (solvable iff gcd(m,n) | (a-b), unique mod lcm(m,n)) is well-known but raises a practical question: can it be computed efficiently?\n\nFor naive implementation, the solution lives in [0, m*n), requiring O(log(m*n)) = O(log m + log n) bits. But the solution is actually periodic mod lcm(m,n), which can be gcd(m,n) times smaller.\n\nGarner (1959) observed that a mixed-radix decomposition x = c₁ + c₂*m keeps all intermediate arithmetic bounded by max(m,n), avoiding the m*n-bit bottleneck. This was a foundational insight for residue number systems (RNS) used in modern cryptographic hardware.",

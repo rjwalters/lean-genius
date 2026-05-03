@@ -50,7 +50,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 227,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "Erdos Problem #418 was posed by Erdos and Sierpinski. It asks whether there are infinitely many 'non-cototients' - positive integers that cannot be expressed as n - phi(n) for any n, where phi is Euler's totient function.\n\nThe cototient of n is n - phi(n), which counts the integers from 1 to n that share a common factor with n. Numbers not in the range of this function are called non-cototients.\n\nBrowkin and Schinzel provided an affirmative answer in 1995, proving that any integer of the form 2^k * 509203 (for k >= 1) is a non-cototient. The mysterious number 509203 has special properties related to covering systems.\n\nIt remains open whether non-cototients have positive density. The Browkin-Schinzel construction gives a sparse set (powers of 2 times a constant). A related problem about nonaliquots (numbers not of the form sigma(n) - n) was shown by Erdos to have positive density.",

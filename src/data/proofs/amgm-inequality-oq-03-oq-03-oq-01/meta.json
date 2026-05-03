@@ -21,7 +21,8 @@
     "dateAdded": "2026-04-13",
     "axiomCount": 0,
     "lineCount": 272,
-    "assumptions": "None. 0 sorries, 0 axioms. Complete formalization using Mathlib's Filter.Tendsto, Real.rpow, and Finset.sup'/inf'."
+    "assumptions": "None. 0 sorries, 0 axioms. Complete formalization using Mathlib's Filter.Tendsto, Real.rpow, and Finset.sup'/inf'.",
+    "theoremCount": 19
   },
   "overview": {
     "historicalContext": "The power mean (generalized mean) M_r(x₁,...,xₙ) = ((Σxᵢʳ)/n)^{1/r} interpolates continuously between the minimum (r → -∞), geometric mean (r → 0), arithmetic mean (r = 1), quadratic mean (r = 2), and maximum (r → +∞). Hardy, Littlewood, and Pólya established the monotonicity and limit behavior in their 1934 treatise 'Inequalities'. The formal verification of the limit cases requires combining squeeze theorem arguments with continuity of Real.rpow and the algebraic duality M_{-r}(x) = 1/M_r(1/x).",

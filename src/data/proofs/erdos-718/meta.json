@@ -54,7 +54,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 177,
-    "assumptions": "2 axioms: mader_1967, komlos_szemeredi_1996. 0 sorries."
+    "assumptions": "2 axioms: mader_1967, komlos_szemeredi_1996. 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős Problem #718: Subdivisions of Complete Graphs**\n\nThis problem concerns forced substructures in dense graphs, a central theme in extremal graph theory.\n\n**Key History:**\n- Dirac (1960): Proved 2n-2 edges forces a K₄ subdivision; conjectured 3n-5 forces K₅\n- Mader (1967): Proved exponential bound 2^{r choose 2} · n edges suffices for Kᵣ subdivision\n- Erdős, Hajnal, and Mader: Conjectured quadratic bound Cr²n suffices\n- Komlós-Szemerédi (1996): Proved the conjecture\n- Bollobás-Thomason (1996): Independent proof, also characterized highly linked graphs\n\n**Mathematical Setting:**\nA subdivision of a graph H replaces each edge with a path. A subdivision of Kᵣ (the complete graph on r vertices) is called a topological Kᵣ. The question asks: how many edges force a topological Kᵣ?",

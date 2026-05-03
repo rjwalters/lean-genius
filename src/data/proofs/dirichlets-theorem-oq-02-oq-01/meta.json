@@ -56,7 +56,8 @@
     "axiomCount": 4,
     "lineCount": 366,
     "assumptions": "4 axioms: L_function_functional_symmetry, classical_zero_free_region_dirichlet, L_function_nonzero_re_gt_one, GRH_effective_L_one_bound. 0 sorries remain.(s) remain.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 16
   },
   "overview": {
     "historicalContext": "The Riemann Hypothesis (1859) for the zeta function was generalized by Piltz (1884) to Dirichlet L-functions. GRH predicts that ALL non-trivial zeros of L(s, χ) for ANY Dirichlet character χ lie on the critical line Re(s) = 1/2.\n\nGRH is strictly stronger than RH: it addresses infinitely many L-functions, not just ζ(s). A proof of GRH would have immediate, dramatic consequences for prime distribution in arithmetic progressions, computational number theory, and cryptography.\n\nThe consequences are well-studied: under GRH, the error term in the PNT for APs improves from O(x · exp(-c√log x)) to O(√x · log x), Linnik's bound drops from the best unconditional exponent L ≤ 5 (Xylouris, 2011) to effectively L = 2, i.e., O(q² log² q). The Montgomery-Vaughan improvement (1977) of character sums from O(√q log q) to O(√q log log q) under GRH remains one of the deepest consequences.\n\nGRH also eliminates Siegel zeros entirely. Siegel's 1935 ineffective bound |L(1,χ)| ≫ q^{-ε} (with an uncomputable constant) is replaced under GRH by the effective bound |L(1,χ)| ≥ C/(log q)². Goldfeld (1985) resolved the class number problem using Gross-Zagier, but the unconditional bound h(d) ≫ (log|d|)^{1-ε} remains far weaker than the GRH prediction h(d) ≥ C√|d|/log|d|.",

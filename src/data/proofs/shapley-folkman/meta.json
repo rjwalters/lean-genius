@@ -78,7 +78,8 @@
       "theoremCount": 12,
       "definitionCount": 2
     },
-    "relatedProblems": []
+    "relatedProblems": [],
+    "theoremCount": 12
   },
   "overview": {
     "historicalContext": "The Shapley-Folkman lemma originated in 1966 from an exchange between Lloyd Shapley and Jon Folkman at the RAND Corporation. Shapley posed the question of bounding non-convexity in sums; Folkman provided the proof. The result was not published by either author but was communicated by Ross Starr, who applied it to prove that large economies have near-equilibria even when individual preferences are non-convex.\n\nStartr's 1969 paper 'Quasi-Equilibria in Markets with Non-Convex Preferences' in Econometrica brought the lemma to prominence in economics. The quantitative form (Shapley-Folkman-Starr theorem) bounds the Hausdorff distance between a Minkowski sum and its convex hull.\n\nThe lemma is standard in mathematical economics but remarkably little-known in pure mathematics, despite being elementary. Its proof uses the same Caratheodory reduction technique that underlies Caratheodory's and Radon's theorems. Starr called it 'one of the most useful results in convex analysis' for economics.\n\nAnderson (1978) used it to prove core convergence theorems. Mas-Colell (1978) applied it to existence of competitive equilibria. It remains a workhorse in general equilibrium theory, mechanism design, and optimization.",

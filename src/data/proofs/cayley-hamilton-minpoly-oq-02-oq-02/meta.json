@@ -60,7 +60,8 @@
     "axiomCount": 0,
     "lineCount": 390,
     "assumptions": "None. All theorems fully proved including minpoly computations via UFD divisor classification and intertwining constraint extraction via Fin 4 case analysis.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 16
   },
   "overview": {
     "historicalContext": "The question of when two matrices are similar is a central problem in linear algebra. Frobenius (1878) and Weierstrass showed that the rational canonical form (invariant factors) completely determines the similarity class. The Jordan normal form over algebraically closed fields gives an equivalent description via elementary divisors.\n\nIt is well-known that the minimal and characteristic polynomials are necessary but NOT sufficient invariants for similarity. The standard counterexample uses 4x4 nilpotent matrices of different Jordan types but the same minimal and characteristic polynomials.",

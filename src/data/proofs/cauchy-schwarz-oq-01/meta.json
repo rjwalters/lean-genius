@@ -55,7 +55,8 @@
     "axiomCount": 0,
     "lineCount": 138,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "**From Real to Complex: The Extension of Cauchy-Schwarz**\n\nThe Cauchy-Schwarz inequality originated in Augustin-Louis Cauchy's *Cours d'Analyse* (1821) as a finite-sum inequality: $(\\sum a_i b_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$ for real sequences. Viktor Bunyakovsky independently established the integral form in 1859, and Hermann Amandus Schwarz proved it for square-integrable functions in 1885 while studying minimal surfaces — hence the inequality is also called the Cauchy-Bunyakovsky-Schwarz inequality.\n\nThe extension to complex inner product spaces was driven by the development of functional analysis in the early 20th century. John von Neumann's axiomatization of quantum mechanics (*Mathematische Grundlagen der Quantenmechanik*, 1932) placed complex Hilbert spaces at the foundation of physics, making the complex Cauchy-Schwarz inequality $\\|\\langle u, v \\rangle_\\mathbb{C}\\| \\leq \\|u\\| \\cdot \\|v\\|$ a cornerstone result. The key subtlety is sesquilinearity: the complex inner product $\\langle u, v \\rangle_\\mathbb{C}$ is conjugate-linear in the first argument and linear in the second (by Mathlib convention), so one bounds the complex modulus $\\|\\langle u, v \\rangle_\\mathbb{C}\\|$ rather than the absolute value.\n\nMathlib's formalization achieves remarkable generality via the `RCLike` typeclass, which abstracts over $\\mathbb{R}$ and $\\mathbb{C}$ simultaneously. The single theorem `norm_inner_le_norm` subsumes both the real and complex cases, answering the open question affirmatively: no separate formalization is needed for complex inner product spaces.",
