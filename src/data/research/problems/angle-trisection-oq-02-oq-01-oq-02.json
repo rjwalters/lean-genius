@@ -29,12 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Survey of Wantzel-Galois characterization. Main gap: constructible number field definition not in Mathlib. Key lemma (divisors of 2^k are 2-powers) partially proved.",
+    "progressSummary": "PROGRESS: 3 more sorries proved (Eisenstein + degree). Main file now has 2 sorries: not_constructible_of_bad_degree (FTGT) and wantzel_galois_iff (Galois correspondence). PR #15175.",
     "builtItems": [
       "AngleTrisectionOQ02OQ01OQ02.lean: ~130 lines, 0 axioms, 2 sorries",
       "IsConstructibleFromQ: defined as finrank is power of 2",
       "two_group_gal_implies_degree_pow2: key lemma (partial)",
-      "galois_card_eq_finrank: from Mathlib"
+      "galois_card_eq_finrank: from Mathlib",
+      "cube_root_2_minpoly_irred proved in AngleTrisectionOQ02OQ01OQ02.lean: Eisenstein at p=2 over ℤ + IsPrimitive.Int.irreducible_iff_irreducible_map_cast to transfer to ℚ",
+      "cos20_minpoly_degree proved: deg(8x³-6x-1)=3 via norm_num",
+      "regular_7gon_impossible_degree proved: degree=3 inline + interval_cases"
     ],
     "insights": [
       "Main gap: IsConstructibleFromQ definition and equivalence with geometric construction",
