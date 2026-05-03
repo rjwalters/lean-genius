@@ -7,7 +7,7 @@
     "author": "Claude Shannon (1948), Brockway McMillan (1953), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Asymptotic_equipartition_property",
     "date": "1953",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/ShannonSourceCodingOQ03.lean",
     "tags": [
       "information-theory",
@@ -16,8 +16,8 @@
       "coding-theory",
       "advanced"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Algebra.BigOperators.Pi",
@@ -40,12 +40,12 @@
       "Proved expVal_empEnt: expected empirical entropy equals Shannon entropy, using expVal_marginal across all coordinates",
       "Proved aep_concentration: Chebyshev bound P(|empEnt - H| > ε) ≤ logVar/(n·ε²) (fixed bug in prior version)",
       "Proved typical_set_size_upper: |T_ε^(n)| ≤ exp(n·(H+ε)) without any axioms",
-      "One sorry remains: empEnt_variance (needs 2D marginal for i≠j cross-term independence)"
+      "Proved empEnt_variance: variance factorization E[(empEnt - H)²] = logVar/n via 2D marginal (expVal_marginal_product), centering Z = -log p - H, diagonal vs off-diagonal splitting"
     ],
     "assumptions": [],
     "dateAdded": "2026-05-03",
     "axiomCount": 0,
-    "lineCount": 355,
+    "lineCount": 476,
     "prerequisites": [
       "Shannon entropy H(X) = -∑ p(x) log p(x)",
       "Chebyshev's inequality for finite probability spaces",
@@ -110,7 +110,7 @@
       "title": "AEP Concentration and Typical Set",
       "startLine": 244,
       "endLine": 290,
-      "summary": "logVar, empEnt_variance (sorry), aep_concentration, typical_set_size_upper.",
+      "summary": "logVar, empEnt_variance (proved via 2D marginal factorization), aep_concentration, typical_set_size_upper.",
       "mathContext": "The AEP bounds via Chebyshev + variance factorization, and the typical set size upper bound."
     }
   ],
@@ -132,10 +132,10 @@
     }
   ],
   "conclusion": {
-    "summary": "The AEP is formalized for finite discrete memoryless sources: empirical entropy concentrates around H(p) with explicit Chebyshev bounds, and the typical set has size at most exp(n(H+ε)). One sorry remains for the variance factorization (cross-term independence).",
+    "summary": "The AEP is fully formalized for finite discrete memoryless sources: empirical entropy concentrates around H(p) with explicit Chebyshev bounds, and the typical set has size at most exp(n(H+ε)). All theorems are proved with 0 sorries and 0 axioms.",
     "implications": "The AEP is the cornerstone of information theory: it operationalizes entropy as the compression limit, provides the probability-1 characterization of typical sequences, and underpins both the achievability and converse of Shannon's source coding theorem.",
     "openQuestions": [
-      "Can empEnt_variance be proved via a 2D expVal_marginal (bilinear independence E[g(Xᵢ)h(Xⱼ)] = E[g(Xᵢ)]·E[h(Xⱼ)])?",
+      "The AEP for ergodic (non-i.i.d.) sources via Mathlib ergodic theory remains open.",
       "Can the AEP be extended to ergodic (non-i.i.d.) sources using Mathlib's ergodic theory?"
     ]
   },
@@ -143,12 +143,12 @@
     "imports": ["Mathlib"],
     "opens": ["Real", "Finset", "BigOperators"],
     "namespace": "AEPFormalization",
-    "lineCount": 355,
+    "lineCount": 476,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 13,
     "definitionCount": 6,
     "path": "Proofs/ShannonSourceCodingOQ03.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "references": [
     {
