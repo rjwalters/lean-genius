@@ -282,7 +282,7 @@ def rnsEncode (base : List ℕ) (x : ℕ) : List ℕ :=
 /-- Encoding preserves each residue. -/
 theorem rnsEncode_correct (base : List ℕ) (x : ℕ) (i : ℕ) (hi : i < base.length) :
     (rnsEncode base x).get ⟨i, by simp [rnsEncode]; omega⟩ = x % base.get ⟨i, hi⟩ := by
-  simp [rnsEncode, List.get_map]
+  simp [rnsEncode]
 
 /-- RNS addition: componentwise modular addition. -/
 def rnsAdd (base : List ℕ) (a b : List ℕ) : List ℕ :=
@@ -296,19 +296,23 @@ def rnsMul (base : List ℕ) (a b : List ℕ) : List ℕ :=
 theorem rnsAdd_correct (base : List ℕ) (x y : ℕ)
     (hbase : ∀ m ∈ base, m > 0) :
     rnsEncode base (x + y) = rnsAdd base (rnsEncode base x) (rnsEncode base y) := by
-  simp only [rnsEncode, rnsAdd, List.map_map]
-  congr 1
-  ext ⟨m, hm⟩
-  simp [Nat.add_mod]
+  induction base with
+  | nil => simp [rnsEncode, rnsAdd]
+  | cons m ms ih =>
+    simp only [rnsEncode, rnsAdd, List.map_cons, List.zip_cons_cons]
+    congr 1
+    exact Nat.add_mod x y m
 
 /-- RNS multiplication is correct: encode(x*y) = rnsMul(encode(x), encode(y)). -/
 theorem rnsMul_correct (base : List ℕ) (x y : ℕ)
     (hbase : ∀ m ∈ base, m > 0) :
     rnsEncode base (x * y) = rnsMul base (rnsEncode base x) (rnsEncode base y) := by
-  simp only [rnsEncode, rnsMul, List.map_map]
-  congr 1
-  ext ⟨m, hm⟩
-  simp [Nat.mul_mod]
+  induction base with
+  | nil => simp [rnsEncode, rnsMul]
+  | cons m ms ih =>
+    simp only [rnsEncode, rnsMul, List.map_cons, List.zip_cons_cons]
+    congr 1
+    exact Nat.mul_mod x y m
 
 #check @three_prime_coprime
 #check @mersenne_coprime_of_coprime
