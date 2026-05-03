@@ -45,9 +45,16 @@
 
 ### Files Modified
 
-- `proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean` (new, 250 lines)
+- `proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean` (new, 343 lines)
 - `proofs/Proofs.lean` (added import)
 - `src/data/proofs/cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01/meta.json` (new)
+- `src/data/research/problems/cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01.json` (new)
+
+### PR
+
+https://github.com/rjwalters/lean-genius/pull/15278 — branch `research/riesz-sigma-finite-complete`
+
+Docker build failed: DNS resolution failure for `github.com` inside container (network infrastructure issue, not code error). Code is a direct port of parent proof with `IsFiniteMeasure` dropped.
 
 ### Next Steps
 
@@ -59,3 +66,5 @@
 
 3. **Submit to Aristotle**: Both Step A and Step B are HARD (not OPEN). Good candidates
    for Aristotle proof search.
+
+4. **Verify build**: Re-run Docker build once network connectivity is restored.
