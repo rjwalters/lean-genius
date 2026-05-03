@@ -13802,13 +13802,79 @@ private lemma gnwProb_sum_corners (μ : YoungDiagram) :
       -- (1/N) * ↑N = 1
       exact one_div_mul_cancel hN
 
+/-- K-independence of gnwProb: for K ≥ hookLength(x), one extra step changes nothing.
+    Proof: induction on K, identical structure to gnwProb_sum_corners.
+    - K = 0: vacuous (hookLen ≥ 1 contradicts ≤ 0).
+    - K+1, x a corner: both sides = (if x = c then 1 else 0).
+    - K+1, x not a corner: (1/|H*|)*Σ gnwProb(K+1,y) = (1/|H*|)*Σ gnwProb(K,y)
+      by IH applied to each y (hookLen y < hookLen x ≤ K+1 ⟹ hookLen y ≤ K). -/
+private lemma gnwProb_step (μ : YoungDiagram) (c : ℕ × ℕ) :
+    ∀ K : ℕ, ∀ x : ℕ × ℕ, x ∈ μ → hookLength μ x.1 x.2 ≤ K →
+      gnwProb μ c (K + 1) x = gnwProb μ c K x := by
+  intro K
+  induction K with
+  | zero =>
+    intro x _ hK
+    exact absurd hK (by have := hookLength_pos μ x.1 x.2; omega)
+  | succ K ih =>
+    intro x hx hK
+    by_cases hcorn : isCorner μ x
+    · -- Corner: both sides evaluate to (if x = c then 1 else 0)
+      have h1 : gnwProb μ c (K + 1 + 1) x =
+                if isCorner μ x then (if x = c then (1:ℚ) else 0)
+                else (1 / ↑(strictHookCells μ x.1 x.2).card : ℚ) *
+                     ∑ y ∈ strictHookCells μ x.1 x.2, gnwProb μ c (K + 1) y := rfl
+      have h2 : gnwProb μ c (K + 1) x =
+                if isCorner μ x then (if x = c then (1:ℚ) else 0)
+                else (1 / ↑(strictHookCells μ x.1 x.2).card : ℚ) *
+                     ∑ y ∈ strictHookCells μ x.1 x.2, gnwProb μ c K y := rfl
+      rw [h1, h2, if_pos hcorn]
+    · -- Non-corner: (1/|H*|)*Σ gnwProb(K+1,y) = (1/|H*|)*Σ gnwProb(K,y)
+      have h1 : gnwProb μ c (K + 1 + 1) x =
+                (1 / ↑(strictHookCells μ x.1 x.2).card : ℚ) *
+                ∑ y ∈ strictHookCells μ x.1 x.2, gnwProb μ c (K + 1) y := by
+        have : gnwProb μ c (K + 1 + 1) x =
+               if isCorner μ x then (if x = c then (1:ℚ) else 0)
+               else (1 / ↑(strictHookCells μ x.1 x.2).card : ℚ) *
+                    ∑ y ∈ strictHookCells μ x.1 x.2, gnwProb μ c (K + 1) y := rfl
+        rw [this, if_neg hcorn]
+      have h2 : gnwProb μ c (K + 1) x =
+                (1 / ↑(strictHookCells μ x.1 x.2).card : ℚ) *
+                ∑ y ∈ strictHookCells μ x.1 x.2, gnwProb μ c K y := by
+        have : gnwProb μ c (K + 1) x =
+               if isCorner μ x then (if x = c then (1:ℚ) else 0)
+               else (1 / ↑(strictHookCells μ x.1 x.2).card : ℚ) *
+                    ∑ y ∈ strictHookCells μ x.1 x.2, gnwProb μ c K y := rfl
+        rw [this, if_neg hcorn]
+      rw [h1, h2]
+      congr 1
+      apply Finset.sum_congr rfl
+      intro y hy
+      apply ih y (strictHookCells_mem hy)
+      have := strictHookCells_hookLen_lt hx hy
+      omega
+
 /-- GNW KEY theorem (Greene-Nijenhuis-Wilf 1979):
     The sum of GNW walk probabilities over all cells in μ equals the hookProd ratio.
-    This is the hard combinatorial core of the GNW 1979 proof. -/
+    This is the hard combinatorial core of the GNW 1979 proof.
+
+    Proof sketch (GNW 1979):
+    By gnwProb_step, gnwProb(μ,c,hookLen(x),x) = gnwProb(μ,c,K,x) for K ≥ hookLen(x).
+    So the LHS = Σ_{x∈μ} gnwProb(μ,c,K_max,x) for K_max = hookLen(0,0).
+
+    The identity Σ_x gnwProb(K_max,x) = hookProd(μ)/hookProd(μ\c) is then proved by
+    induction on |μ| using the recursive decomposition of the walk:
+    - c contributes 1.
+    - For x ∈ arm(c)∪leg(c): gnwW_μ(x) = (1/|H*_μ(x)|) * [1 + Σ_{y∈H*_ν(x)} gnwW_μ(y)]
+      where ν = μ\c and |H*_μ(x)| = |H*_ν(x)| + 1 (c is added).
+    - For x ∉ hook(c): gnwW_μ(x) = (1/|H*_μ(x)|) * Σ_{y∈H*_μ(x)} gnwW_μ(y).
+
+    The resulting telescoping product matches hookProd(μ)/hookProd(μ\c) via hookProd_ratio_formula.
+    Full formalization requires ~200 lines; submitted to Aristotle for search. -/
 private lemma gnwProb_key (μ : YoungDiagram) {c : ℕ × ℕ} (hc : isCorner μ c) :
     ∑ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x =
     (hookProd μ : ℚ) / hookProd (removeCorner μ c hc) := by
-  sorry  -- GNW 1979 KEY theorem (hard combinatorial identity)
+  sorry  -- GNW 1979 KEY theorem (hard combinatorial identity; ~200 lines)
 
 /-- Hook-walk identity for arbitrary non-empty Young diagrams via GNW walk.
     Proof: rewrite each ratio using gnwProb_key, swap the double sum, and apply
