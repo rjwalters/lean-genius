@@ -1,0 +1,116 @@
+{
+  "id": "zsqrtd-neg-two",
+  "title": "ℤ[√−2]: Euclidean Domain and x² + 2y² Representations",
+  "slug": "zsqrtd-neg-two",
+  "description": "Formalizes ℤ[√−2] as a Euclidean domain with norm function z ↦ a² + 2b². Proves that primes p ≡ 3 (mod 8) can be represented as x² + 2y², using Legendre symbol and quadratic reciprocity. Consequence: such primes are sums of three squares. 20 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius ZsqrtdNegTwo",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ZsqrtdNegTwo.lean",
+    "tags": [
+      "number-theory",
+      "algebraic-number-theory",
+      "quadratic-forms",
+      "euclidean-domain",
+      "gaussian-integers",
+      "legendre-symbol"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 476,
+    "theoremCount": 20,
+    "assumptions": "None. All 20 theorems proved.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Zsqrtd",
+        "description": "ℤ[√d] rings for d = -2",
+        "module": "Mathlib.NumberTheory.Zsqrtd.Basic"
+      },
+      {
+        "theorem": "legendreSymbol",
+        "description": "Legendre symbol for quadratic residue check",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The ring ℤ[√−2] = {a + b√−2 : a,b ∈ ℤ} is a Euclidean domain with norm N(a+b√−2) = a²+2b². Being Euclidean, it is a PID and UFD. By analogy with Gaussian integers (ℤ[i], norm = a²+b²), a prime p is a norm in ℤ[√−2] iff -2 is a quadratic residue mod p iff p ≡ 1,3 (mod 8) by quadratic reciprocity. For primes p ≡ 3 (mod 8), p = a²+2b², which gives p = a²+b²+b² (sum of three squares).",
+    "problemStatement": "Prove: (1) ℤ[√−2] is Euclidean with norm N(a+b√−2) = a²+2b². (2) For prime p ≡ 3 (mod 8): p = a²+2b² for some a,b. (3) Such p is a sum of three squares.",
+    "proofStrategy": "Euclidean division: define x/y and x%y in ℤ[√−2] using rational arithmetic rounding. Prove N(x%y) < N(y) by estimating rounding errors. For p = a²+2b²: use the fact that -2 is a QR mod p (from p ≡ 3 mod 8 + quadratic reciprocity) to get p non-prime in ℤ[√−2], then factor p = π·π̄ giving p = N(π) = a²+2b².",
+    "keyInsights": [
+      "**Euclidean norm**: N(a+b√−2) = a²+2b². Division algorithm: N(x%y) < N(y) proved by showing the rounding error satisfies (r₁)²+2(r₂)² < 1 for r₁,r₂ ∈ (-1/2, 1/2].",
+      "**QR criterion**: -2 is a QR mod p iff p ≡ 1 or 3 (mod 8). For p ≡ 3 (mod 8): (-2/p) = 1 → p factors in ℤ[√−2] → p = a²+2b².",
+      "**Three squares**: If p = a²+2b², then p = a²+b²+b² is a sum of three squares.",
+      "**Units**: Units of ℤ[√−2] are ±1 (since N(u)=1 requires a²+2b²=1 with a,b∈ℤ, giving only (±1,0))."
+    ]
+  },
+  "sections": [
+    {
+      "id": "zsqrtd-structure",
+      "title": "Norm, Units, and Euclidean Division",
+      "startLine": 39,
+      "endLine": 250,
+      "summary": "norm_def', norm_nonneg', norm_eq_zero_iff'. isUnit_iff_norm_one: unit iff norm=1. units_eq: units are ±1. natCast_not_unit. Euclidean division: mod_def, sq_rounding_error_lt_one, norm_mod_lt.",
+      "mathContext": "$N(a+b\\sqrt{-2}) = a^2 + 2b^2$. Units: $\\{\\pm 1\\}$."
+    },
+    {
+      "id": "primes-representation",
+      "title": "Prime Representations and Three-Squares",
+      "startLine": 241,
+      "endLine": 476,
+      "summary": "sq_add_two_sq_of_nat_prime_of_not_irreducible. neg_two_is_qr_of_three_mod_eight. sq_add_two_sq_of_prime_three_mod_eight: p ≡ 3 mod 8 → p = a²+2b². prime_three_mod_eight_is_sum_three_sq: p ≡ 3 mod 8 → p = x²+y²+z².",
+      "mathContext": "For prime $p \\equiv 3 \\pmod{8}$: $\\left(\\frac{-2}{p}\\right) = 1$, so $p = a^2 + 2b^2 = a^2 + b^2 + b^2$."
+    }
+  ],
+  "conclusion": {
+    "summary": "ℤ[√−2] Euclidean domain theory proved: 20 theorems, 0 sorries, 0 axioms. Primes p ≡ 3 (mod 8) are x²+2y², hence sums of three squares.",
+    "implications": "This is a non-trivial application of algebraic number theory to a concrete representation problem. The Euclidean domain structure of ℤ[√−2] is more elementary than the Gaussian integers but uses the same framework.",
+    "openQuestions": [
+      "Can the full Legendre three-square theorem (n is not sum of three squares iff n = 4^a(8b+7)) be formalized using ℤ[√−2]?",
+      "Can the class number formula for ℤ[√−2] (h(-2)=1, PIDs) be proved in Lean?",
+      "Can representations by x²+ny² be systematically formalized for small n?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Zsqrtd.Basic",
+      "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "ZsqrtNegTwo",
+    "lineCount": 476,
+    "axiomCount": 0,
+    "theoremCount": 20,
+    "definitionCount": 4,
+    "path": "Proofs/ZsqrtdNegTwo.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "lagrange-four-squares-waring-g2",
+      "relationship": "related",
+      "description": "Legendre exclusion criterion and three-squares"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sq_add_two_sq_of_prime_three_mod_eight",
+      "type": "core",
+      "statement": "∀ p prime, p % 8 = 3 → ∃ a b, a^2 + 2*b^2 = p",
+      "description": "Primes p ≡ 3 (mod 8) are representable as x² + 2y².",
+      "significance": "Uses Euclidean domain structure of ℤ[√−2] and quadratic reciprocity"
+    },
+    {
+      "name": "prime_three_mod_eight_is_sum_three_sq",
+      "type": "corollary",
+      "statement": "∀ p prime, p % 8 = 3 → ∃ x y z, x^2 + y^2 + z^2 = p",
+      "description": "Primes p ≡ 3 (mod 8) are sums of three squares.",
+      "significance": "Direct corollary: p = a² + b² + b²"
+    }
+  ],
+  "sorries": 0
+}

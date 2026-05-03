@@ -1,0 +1,110 @@
+{
+  "id": "minpoly-charpoly",
+  "title": "Minimal Polynomial vs Characteristic Polynomial of Matrices",
+  "slug": "minpoly-charpoly",
+  "description": "Formalizes the fundamental relationship between minimal and characteristic polynomials of matrices: minpoly K M divides charpoly M, both are monic, minpoly annihilates M (Cayley-Hamilton variant), and roots of minpoly are roots of charpoly. 17 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius MinpolyCharpoly",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MinpolyCharpoly.lean",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "minimal-polynomial",
+      "characteristic-polynomial",
+      "cayley-hamilton",
+      "algebra"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 246,
+    "theoremCount": 17,
+    "assumptions": "None. All 17 theorems proved.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.charpoly",
+        "description": "Characteristic polynomial of a matrix",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "minpoly",
+        "description": "Minimal polynomial of a matrix",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The minimal polynomial of a matrix M over a field K is the monic polynomial of smallest degree that annihilates M. The Cayley-Hamilton theorem states charpoly(M) annihilates M. It follows that minpoly(M) | charpoly(M). Both are monic, and the eigenvalues (roots of charpoly) are also roots of minpoly.",
+    "problemStatement": "Prove: (1) minpoly K M divides charpoly M. (2) Both are monic. (3) charpoly annihilates M (Cayley-Hamilton). (4) minpoly degree ≤ dim(M). (5) Roots of minpoly are roots of charpoly.",
+    "proofStrategy": "Most results follow from Mathlib's minpoly and charpoly APIs. minpoly_dvd_charpoly: use minpoly.dvd and charpoly_monic. charpoly_annihilates: Matrix.aeval_self_charpoly. minpoly_annihilates: minpoly.aeval.",
+    "keyInsights": [
+      "**Divisibility**: minpoly(M) | charpoly(M) because charpoly(M)[M] = 0 (Cayley-Hamilton) and minpoly(M) divides any annihilating polynomial.",
+      "**Degree bounds**: deg(minpoly) ≤ n = dim(K^n) since the n+1 matrices {I, M, M², ..., M^n} are linearly dependent in Mat_n(K).",
+      "**Root relationship**: Every root of minpoly is a root of charpoly (divisibility). The converse may fail (Jordan blocks).",
+      "**Cayley-Hamilton**: charpoly(M)(M) = 0 — the matrix satisfies its own characteristic polynomial."
+    ]
+  },
+  "sections": [
+    {
+      "id": "annihilation-divisibility",
+      "title": "Annihilation and Divisibility",
+      "startLine": 49,
+      "endLine": 175,
+      "summary": "matrix_is_integral: M is integral (satisfies its charpoly). minpoly_dvd_charpoly: minpoly | charpoly. minpoly_monic, minpoly_degree_pos. minpoly_degree_le_charpoly_degree, minpoly_degree_le_dim. charpoly_annihilates, minpoly_annihilates, minpoly_divides_annihilator.",
+      "mathContext": "$\\text{minpoly}(M) \\mid \\text{charpoly}(M)$; $\\deg(\\text{minpoly}) \\leq n$."
+    },
+    {
+      "id": "roots-monicness",
+      "title": "Monicness, Roots, and LinMap Equivalence",
+      "startLine": 144,
+      "endLine": 246,
+      "summary": "charpoly_monic, both_monic. minpoly_root_is_charpoly_root: every eigenvalue is a root of minpoly. minpoly_eq_linmap_minpoly: matrix and linear map minpolys agree.",
+      "mathContext": "Every root of $\\text{charpoly}(M)$ is a root of $\\text{minpoly}(M)$, and vice versa."
+    }
+  ],
+  "conclusion": {
+    "summary": "Minpoly-charpoly relationship fully formalized: 17 theorems, 0 sorries, 0 axioms. Divisibility, annihilation, degree bounds, and root relationships all proved.",
+    "implications": "This provides the core infrastructure for Jordan normal form theory in Lean 4. The minpoly | charpoly relationship is fundamental to understanding diagonalizability (minpoly splits into distinct linear factors) vs. Jordan decomposition.",
+    "openQuestions": [
+      "Can the Jordan normal form theorem be formalized in Lean 4 using this infrastructure?",
+      "Can the characterization of diagonalizable matrices (minpoly has no repeated roots) be proved?",
+      "Can the rational canonical form (based on minpoly factorization) be formalized?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "MinpolyCharpoly",
+    "lineCount": 246,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 0,
+    "path": "Proofs/MinpolyCharpoly.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "minpoly_dvd_charpoly",
+      "type": "core",
+      "statement": "∀ K n, minpoly K M ∣ M.charpoly",
+      "description": "The minimal polynomial divides the characteristic polynomial.",
+      "significance": "Fundamental structural relationship between the two key polynomials"
+    },
+    {
+      "name": "charpoly_annihilates",
+      "type": "core",
+      "statement": "Matrix.aeval M M.charpoly = 0",
+      "description": "Cayley-Hamilton: every matrix satisfies its characteristic polynomial.",
+      "significance": "The starting point for the divisibility proof"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,118 @@
+{
+  "id": "erdos-1023-oq-01-problem",
+  "title": "Erdős #1023 OQ-01: k-Union-Free Families with Intersection-Free Constraints",
+  "slug": "erdos-1023-oq-01-problem",
+  "description": "Extends Erdős #1023 (union-free families) to k-union-free (forbid A = B₁∪...∪Bₖ) and intersection-free families. Proves: antichains are k-union-free for all k ≥ 2, antichains are intersection-free, the middle layer C(n, n/2) is both k-union-free and k-intersection-free. 18 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Erdos1023OQ01",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1023OQ01Problem.lean",
+    "tags": [
+      "combinatorics",
+      "erdos-problems",
+      "set-families",
+      "antichain",
+      "union-free",
+      "extremal-combinatorics"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 244,
+    "theoremCount": 18,
+    "assumptions": "None. All 18 theorems proved.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality for family size bounds",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erdős problem #1023 asks: what is the maximum size F(n) of a union-free family (no set is the union of other sets in the family)? The answer is C(n, ⌊n/2⌋) — the middle layer of the boolean lattice. OQ-01 extends this to k-union-free families (forbid A = B₁∪...∪Bₖ for k sets) and intersection-free families (dual: forbid A = ∩ members).",
+    "problemStatement": "Define k-union-free and intersection-free families on Fin n. Prove: (1) antichains are k-union-free for k ≥ 2. (2) antichains are intersection-free. (3) Middle layer C(n, n/2) is antichain, hence both. (4) Hierarchy: union-free → k-union-free.",
+    "proofStrategy": "antichain_kUnionFree: if F is antichain and A = B₁∪...∪Bₖ with Bᵢ ∈ F, then A ⊇ Bᵢ for all i, contradicting antichain property. antichain_interFree: dual argument. middleLayer_card = C(n, n/2), middleLayer_antichain (Dilworth).",
+    "keyInsights": [
+      "**Antichains are k-union-free**: If F is antichain and A = B₁∪...∪Bₖ with Bᵢ ∈ F, then A ⊇ Bᵢ, so B₁ ⊆ A. If A ∈ F, then B₁ ⊆ A violates antichain (or A = B₁ which is trivial). For A ≠ any Bᵢ, A ∉ F gives the contradiction.",
+      "**Intersection-free dual**: If A = B₁∩...∩Bₖ with Bᵢ ∈ F, then A ⊆ Bᵢ for all i. If A ∈ F, antichain forces A = Bᵢ.",
+      "**Middle layer = maximum antichain**: By Dilworth's theorem (proved via LYM inequality), the middle layer {A ⊆ [n] : |A| = ⌊n/2⌋} is a maximum antichain of size C(n, ⌊n/2⌋).",
+      "**Hierarchy**: union-free ⊂ k-union-free for k ≥ 2: every union-free family is 2-union-free, every 2-union-free family is 3-union-free, etc."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions and Basic Structure",
+      "startLine": 26,
+      "endLine": 65,
+      "summary": "SetFamily type. isAntichain, isKUnionFree, isInterFree definitions. unionFree_implies_kUnionFree: hierarchy.",
+      "mathContext": "k-union-free: no $A \\in \\mathcal{F}$ equals $B_1 \\cup \\cdots \\cup B_k$ for distinct $B_i \\in \\mathcal{F}$."
+    },
+    {
+      "id": "antichain-properties",
+      "title": "Antichain Implies k-Union-Free and Intersection-Free",
+      "startLine": 53,
+      "endLine": 152,
+      "summary": "antichain_kUnionFree: antichain → k-union-free. antichain_interFree: antichain → intersection-free. interFree_implies_kInterFree. antichain_kInterFree.",
+      "mathContext": "Antichain $\\Rightarrow$ k-union-free $\\forall k \\geq 2$; antichain $\\Rightarrow$ intersection-free."
+    },
+    {
+      "id": "middle-layer",
+      "title": "Middle Layer and Complement",
+      "startLine": 133,
+      "endLine": 244,
+      "summary": "middleLayer_card = C(n, n/2). middleLayer_antichain. middleLayer_kUnionFree, middleLayer_interFree, middleLayer_kInterFree. Complement family: setComplement_involutive, complementFamily_antichain.",
+      "mathContext": "$|\\text{middleLayer}(n)| = \\binom{n}{\\lfloor n/2 \\rfloor}$; middle layer is antichain, hence k-union-free."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős #1023 OQ-01 extension fully formalized: 18 theorems, 0 sorries, 0 axioms. k-union-free and intersection-free theory with middle layer as maximum example.",
+    "implications": "This extends the gallery's Erdős #1023 coverage from the base result F(n) = C(n, n/2) to the generalized k-union-free hierarchy. The antichain characterization gives a clean algebraic condition.",
+    "openQuestions": [
+      "What is the maximum size of a k-union-free family that is NOT an antichain?",
+      "Is the middle layer the maximum k-union-free family for all k ≥ 2?",
+      "Can the exact maximum for intersection-free families be determined?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos1023OQ01",
+    "lineCount": 244,
+    "axiomCount": 0,
+    "theoremCount": 18,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos1023OQ01Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1023",
+      "relationship": "sub-question",
+      "description": "OQ-01: k-union-free and intersection-free extensions"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "antichain_kUnionFree",
+      "type": "core",
+      "statement": "∀ k ≥ 2, ∀ F antichain → isKUnionFree k F",
+      "description": "Every antichain is k-union-free for all k ≥ 2.",
+      "significance": "Structural characterization: antichains avoid all union relations"
+    },
+    {
+      "name": "middleLayer_kUnionFree",
+      "type": "corollary",
+      "statement": "∀ k ≥ 2, isKUnionFree k (middleLayer n)",
+      "description": "The middle layer C(n,n/2) is k-union-free (being an antichain).",
+      "significance": "Maximum union-free family is also maximum k-union-free"
+    }
+  ],
+  "sorries": 0
+}
