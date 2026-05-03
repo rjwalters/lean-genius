@@ -846,8 +846,22 @@ structure DirectedCircuit (G : DiGraph V) where
 /-- Every non-empty balanced digraph has a directed circuit. -/
 theorem circuit_exists (G : DiGraph V) (hbal : IsEulerianBalanced G)
     (hne : G.edges.Nonempty) : Nonempty (DirectedCircuit G) := by
-  sorry -- Strategy: take v = first edge's source; maxTrail from v is closed (maxTrail_closed);
-        -- since v has outgoing edge e₀, trail length ≥ 2; steps_in_G via maxTrail_steps_in_E.
+  obtain ⟨e₀, he₀⟩ := hne
+  set v := e₀.1
+  have hout : (G.edges.filter (fun e => e.1 = v)).Nonempty :=
+    ⟨e₀, Finset.mem_filter.mpr ⟨he₀, rfl⟩⟩
+  have hinner_ne : maxTrail (G.edges.erase hout.choose) hout.choose.2 ≠ [] :=
+    maxTrail_nonempty' _ _
+  have hlen_ge2 : 2 ≤ (maxTrail G.edges v).length := by
+    unfold maxTrail
+    simp only [hout, ↓reduceDite, List.length_cons]
+    exact Nat.succ_le_succ (List.length_pos.mpr hinner_ne)
+  exact ⟨{
+    walk := maxTrail G.edges v,
+    head_eq_last := maxTrail_closed G hbal v,
+    length_ge_2 := hlen_ge2,
+    steps_in_G := fun i h => maxTrail_steps_in_E G.edges v i h
+  }⟩
 
 /-
   STEP 5: REMOVING A CIRCUIT PRESERVES BALANCE
@@ -872,11 +886,20 @@ private def DiGraph.removeEdgeSet (G : DiGraph V) (S : Finset (V × V)) : DiGrap
 /-- Removing the edges of a circuit from a balanced graph gives a balanced graph.
     Key: a circuit uses each vertex the same number of times as a source and as a target,
     so inDegree and outDegree both decrease by the same amount. -/
-theorem remove_circuit_balanced (G : DiGraph V) (C : DirectedCircuit G) :
+theorem remove_circuit_balanced (G : DiGraph V) (hbal : IsEulerianBalanced G)
+    (C : DirectedCircuit G)
+    (hdist : ∀ i j, i + 1 < C.walk.length → j + 1 < C.walk.length → i ≠ j →
+      (C.walk.get ⟨i, by omega⟩, C.walk.get ⟨i + 1, by omega⟩) ≠
+      (C.walk.get ⟨j, by omega⟩, C.walk.get ⟨j + 1, by omega⟩)) :
     IsEulerianBalanced (G.removeEdgeSet (walkEdges C.walk).toFinset) := by
-  sorry -- TODO: circuit passes through each vertex same #times as src and tgt;
-        -- inDeg/outDeg each decrease by same amount. Requires Finset sdiff/filter
-        -- distributivity API and closed_walk_balance on C.walk.
+  sorry -- Proof sketch: set S := (walkEdges C.walk).toFinset, n := C.walk.length - 1.
+        -- For each v: outDegree (G \ S) v = outDegree G v - |S.filter (·.1=v)|
+        --             inDegree  (G \ S) v = inDegree  G v - |S.filter (·.2=v)|
+        -- (using Finset.filter_sdiff and Finset.card_sdiff with S ⊆ G.edges)
+        -- Bijection i ↦ (walk[i],walk[i+1]) maps {i<n : walk[i]=v} → S.filter(·.1=v)
+        -- (injective by hdist, surjective by walkEdges def); similarly for target.
+        -- closed_walk_balance → |S.filter(·.1=v)| = |S.filter(·.2=v)|.
+        -- G balance gives outDegree G v = inDegree G v; subtract equal deltas.
 
 /-
   STEP 6: NECESSITY DIRECTION FOR EULERIAN PATHS
