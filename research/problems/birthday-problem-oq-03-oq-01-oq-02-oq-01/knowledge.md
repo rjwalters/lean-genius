@@ -372,3 +372,28 @@ delta this session (axiom remains, no new sorries).
 3. **Add Lemma B** as a one-liner once Lemma A is in.
 4. Hold off on Lemma C until Lemmas A+B are merged — the axiom can then be
    restated as "Lemma C only", isolating the Mathlib gap.
+
+---
+
+## Session 2026-05-03 (Session 4) — Lemmas A and B Implemented
+
+**Mode**: REVISIT (RICH knowledge tier, score 21)
+**Outcome**: PROGRESS — Lemma A (lambda_tendsto) and Lemma B (exp_lambda_tendsto) implemented; Docker build pending.
+
+### What I Did
+
+1. Confirmed `nc_div_pow_tendsto` from Session 3 is present (lines 365–372).
+2. `rpow23_atTop` (private): `d^(2/3) → +∞` extracted for reuse.
+3. `two_div_rpow23_tendsto_zero` (private): `2/d^(2/3) → 0` via `tendsto_inv_atTop_zero.comp`.
+4. `lambda_tendsto` (Lemma A): squeeze proof, `C(nc(d),3)/d² → c³/6` via `choose3_lb`/`choose3_ub` bounds and `(d^(2/3))^3 = d^2`.
+5. `exp_lambda_tendsto` (Lemma B): one-liner `Real.continuous_exp.tendsto.comp lambda_tendsto.neg`.
+
+### Files Modified
+
+- `proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean` (+89 lines)
+
+### Next Steps
+
+1. Verify Docker build succeeds; open PR.
+2. Restate axiom as Lemma C only: `P_no_triple(nc(d),d) → exp(-c³/6)`.
+3. Lemma C: method-of-factorial-moments (not in Mathlib 4.26).
