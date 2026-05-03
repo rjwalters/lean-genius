@@ -115,5 +115,14 @@
       "prerequisite": "Vitali's convergence theorem API",
       "answer": "YES — proved via unifIntegrable_const + unifTight_const + tendsto_Lp_of_tendsto_ae using |f - f·1_{Sₙ}| ≤ |f| as the dominator."
     }
-  ]
+  ],
+  "conclusion": {
+    "summary": "Reduces the sorry count for the sigma-finite Lp Riesz representation theorem from 3 to 1 across two sessions. Session 1 proved Step C (density extension via Lp.induction, showing IsFiniteMeasure was never needed for the CLM construction or the induction — SigmaFinite suffices). Session 2 proved Step B (Lp truncation convergence via tendsto_lintegral_of_dominated_convergence, using pointwise domination |f - f·1_{Sₙ}|^p ≤ |f|^p). Only Step A (localization_existence: constructing g ∈ Lq via the Lp restriction map Lp(μ) → Lp(μ.restrict S)) remains as a sorry, identified as the genuine Lean infrastructure gap.",
+    "implications": "This formalization isolates exactly which part of the sigma-finite Riesz theorem requires genuinely missing Lean infrastructure. Steps B (dominated convergence) and C (Lp.induction density extension) are now machine-verified for any SigmaFinite measure without IsFiniteMeasure. The remaining Step A gap is precisely the missing `Lp.restrict_comap` isometric embedding in Mathlib — a focused, well-defined infrastructure contribution that would close this sorry. The 3→1 sorry reduction demonstrates that the classical Folland §6.2 proof architecture is formalization-correct, with only one genuinely hard step.",
+    "openQuestions": [
+      "Can Step A (localization_existence) be completed by formalizing the Lp restriction map Lp(μ) → Lp(μ.restrict S) as an isometric embedding, applying the finite-measure Riesz theorem on each spanning set Sₙ, and gluing via monotone convergence?",
+      "Could an alternative approach via the Radon-Nikodym derivative (Halmos-Savage representation) avoid the Lp restriction map entirely, giving a direct construction of g ∈ Lq without localizing?",
+      "Would a Mathlib lemma `Lp.restrict_comap : Lp p (μ.restrict S) →L[𝕜] Lp p μ` (the isometric Lp restriction map) be accepted as a standalone Mathlib contribution, resolving the only remaining sorry in this file?"
+    ]
+  }
 }
