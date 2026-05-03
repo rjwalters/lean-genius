@@ -240,5 +240,79 @@
       "maxB2rSize",
       "maxDiffB2rSize"
     ]
+  },
+  {
+    "id": "ann-863-basic-lemmas",
+    "proofId": "erdos-863",
+    "range": {
+      "startLine": 96,
+      "endLine": 139
+    },
+    "type": "proof",
+    "title": "Basic Lemmas: Empty Sets, Card Bounds, and Subset Monotonicity",
+    "content": "**isB2r_empty / isDiffB2r_empty** (96-101): The empty set is $B_2[r]$ and diff-$B_2[r]$ for any $r$ — trivially since there are no pairs, `sumRepCount ∅ n = 0 ≤ r`. Proved by `simp [sumRepCount]`.\n\n**sumRepCount_le_card_sq / diffRepCount_le_card_sq** (103-114): Sum/diff representation counts are at most $|A|^2$. Proved by `Finset.card_filter_le` (filter ≤ product) + `Finset.card_product` ($|A \\times A| = |A|^2$). These serve as uniform upper bounds.\n\n**isB2r_subset / isDiffB2r_subset** (116-139): If $A$ is $B_2[r]$ and $A' \\subseteq A$, then $A'$ is $B_2[r]$. Proof: `sumRepCount A' n ≤ sumRepCount A n ≤ r` via `Finset.card_le_card (Finset.filter_subset_filter _ (Finset.product_subset_product hsub hsub))`. The product_subset_product lemma propagates subset inclusion through the Cartesian product.",
+    "mathContext": "Subset monotonicity is the key structural property of $B_2[r]$ sets: if $A$ is $B_2[r]$, then so are all subsets. This means the $B_2[r]$ property is an upper bound on representation counts, not a lower bound — removing elements can only decrease counts. The card bounds $\\text{sumRepCount}(A, n) \\le |A|^2$ follow from the fact that the pairs $(a, b)$ with $a + b = n$ form a subset of $A \\times A$. For Sidon sets ($r=1$), there is at most one such pair per sum, giving $|A|^2 \\ge \\sum_n \\mathbb{1}[\\text{sumRepCount}(A,n) \\ge 1] \\ge |\\{a+b : a,b \\in A\\}|$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.card_filter_le",
+      "Finset.product_subset_product",
+      "B₂[r] monotonicity",
+      "empty set"
+    ],
+    "prerequisites": [
+      "IsB2r",
+      "IsDiffB2r",
+      "sumRepCount",
+      "diffRepCount"
+    ]
+  },
+  {
+    "id": "ann-863-sidon-connection",
+    "proofId": "erdos-863",
+    "range": {
+      "startLine": 141,
+      "endLine": 183
+    },
+    "type": "theorem",
+    "title": "Sidon Set Connection: B₂[1] ↔ IsSidonSetLocal",
+    "content": "**IsSidonSetLocal** (146-150): All pairwise ordered sums are distinct — $a \\le b$, $c \\le d$, $a+b = c+d \\Rightarrow a=c, b=d$.\n\n**isB2r_one_iff_sidon** (159-183): $B_2[1] \\iff \\text{Sidon}$. Two directions:\n- Forward ($B_2[1] \\Rightarrow$ Sidon): Any two pairs $(a,b), (c,d)$ with $a+b=c+d$ are in the same filter set of sumRepCount. Since $|\\text{filter}| \\le 1$, they are equal by `Finset.card_le_one.mp`. Then `congr_arg Prod.fst/snd` extracts the components.\n- Backward (Sidon $\\Rightarrow B_2[1]$): `Finset.card_le_one` applied to the filter: any two members $(a,b), (c,d)$ have $a+b = c+d$ (same sum), so Sidon gives $a=c, b=d$, so they are equal as pairs. Close with `Prod.ext`.\n\nThis explicitly connects Erdős #863 (r=1 case) to Erdős #340 (Sidon sets).",
+    "mathContext": "The Sidon set condition `IsSidonSetLocal` matches the `IsSidonSet` definition in `Erdos340Problem.lean`. The biconditional confirms that $B_2[1]$ is not a new concept — it is the classical Sidon set (also called $B_2$ sets in the older literature, now called $B_2[1]$ to make the $r$ explicit). The connection is important: the classical Sidon density bound $|A| = O(n^{1/2})$ (proved in Erdős #340) applies to $B_2[1]$ sets, giving $c_1 = c'_1 = 1$ as axiomatized at line 68-74 of this file.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon sets",
+      "Erdős #340",
+      "sumRepCount",
+      "Finset.card_le_one"
+    ],
+    "prerequisites": [
+      "IsB2r",
+      "sumRepCount",
+      "Finset.card_le_one",
+      "Prod.ext"
+    ]
+  },
+  {
+    "id": "ann-863-singleton-lemmas",
+    "proofId": "erdos-863",
+    "range": {
+      "startLine": 185,
+      "endLine": 201
+    },
+    "type": "proof",
+    "title": "Singleton Lemmas: isB2r_singleton and isDiffB2r_singleton",
+    "content": "**isB2r_singleton** (185-192): $\\{a\\}$ is $B_2[r]$ for any $r \\ge 1$. Proof: `sumRepCount {a} n` is at most $|\\{a\\} \\times \\{a\\}| = 1 \\le r$ (using `hr : r ≥ 1`). The product `{a} ×ˢ {a}` has exactly 1 element, proved by `product_singleton_singleton`.\n\n**isDiffB2r_singleton** (194-201): Same for difference representation. Identical structure using `diffRepCount`.\n\nThese are the base cases for $B_2[r]$ sets — every singleton is in $B_2[r]$ for any $r \\ge 1$. Together with `isB2r_subset`, they show: any finite set with at most $r$ elements per equivalence class is $B_2[r]$, though this is stronger than needed here.",
+    "mathContext": "For a singleton $\\{a\\}$: the only pairs $(a', b')$ with $a', b' \\in \\{a\\}$ and $a' \\le b'$ are $(a, a)$ (one pair, if $a + a = n$, else zero pairs). So $\\text{sumRepCount}(\\{a\\}, n) \\le 1 \\le r$. The `product_singleton_singleton` lemma gives $|\\{a\\} \\times \\{a\\}| = 1$ directly. These singleton lemmas are used in Aristotle companion files (e.g., `isDiffB2r_singleton` and `isB2r_singleton` are among the 6 sorries that were proved in the companion file `Erdos863Aristotle.lean`).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.product_singleton_singleton",
+      "Finset.card_filter_le",
+      "B₂[r] base cases",
+      "Aristotle companion"
+    ],
+    "prerequisites": [
+      "IsB2r",
+      "IsDiffB2r",
+      "Finset.card_filter_le"
+    ]
   }
 ]
