@@ -1,0 +1,58 @@
+[
+  {
+    "id": "binary-gcd-algorithm",
+    "type": "insight",
+    "line": 87,
+    "title": "Stein's Binary GCD: Seven Branches",
+    "content": "The algorithm has seven mutually exclusive branches covering all cases for (a,b). The case split on parity is the key innovation: when both arguments are even, factor out 2; when one is even, discard the factor of 2 (coprime to the odd argument); when both are odd, reduce by subtraction and halving. The `termination_by a + b` declaration tells Lean the measure, and `omega` automatically verifies that each recursive call strictly decreases the sum."
+  },
+  {
+    "id": "well-founded-termination",
+    "type": "technique",
+    "line": 95,
+    "title": "Well-Founded Recursion on a+b",
+    "content": "Lean 4 requires explicit termination proofs for recursive functions. Here `termination_by a + b` specifies the decreasing measure. The `decreasing_by all_goals simp_wf; all_goals omega` proof obligation closes all seven branches: in the both-even case a/2+b/2=(a+b)/2 < a+b; in the even/odd cases one argument halves; in the both-odd case (b−a)/2+a < a+b (since b−a < b < b+a). The `omega` tactic handles all these linear arithmetic goals automatically."
+  },
+  {
+    "id": "coprimality-key",
+    "type": "lemma",
+    "line": 47,
+    "title": "gcd_two_mul_of_odd: The Central Reduction Step",
+    "content": "If b is odd, then gcd(2,b)=1 (they share no common factor), so gcd(2a,b) = gcd(a,b). This uses Nat.Coprime.gcd_mul_left_cancel: if k is coprime to b, then gcd(k·a,b) = gcd(a,b). The proof of coprimality uses Nat.coprime_two_right.mpr ∘ Nat.odd_iff.mpr: 2 is coprime to n exactly when n is odd. This step is what lets the algorithm ignore factors of 2 when the other argument is odd."
+  },
+  {
+    "id": "odd-subtraction-step",
+    "type": "lemma",
+    "line": 68,
+    "title": "gcd_odd_sub_half: Both-Odd Reduction",
+    "content": "When both a and b are odd with a ≤ b: gcd(a,(b−a)/2) = gcd(a,b). The proof has two steps: first, b−a is even (odd − odd = even), so b−a = 2·((b−a)/2); second, since a is odd, gcd(a,2·c) = gcd(a,c) by gcd_of_odd_two_mul; finally gcd(a,b−a) = gcd(a,b) by gcd_sub_right. The composition gives gcd(a,(b−a)/2) = gcd(a,2·((b−a)/2)) = gcd(a,b−a) = gcd(a,b)."
+  },
+  {
+    "id": "correctness-by-induction",
+    "type": "proof-structure",
+    "line": 106,
+    "title": "Correctness by Well-Founded Induction",
+    "content": "binaryGcd_eq_gcd is proved by structural induction following the algorithm's recursion. For each branch, the proof unfolds binaryGcd, applies split_ifs to expose the branch conditions, then either uses a base case (simp [h1]) or the induction hypothesis (rw [binaryGcd_eq_gcd ...]) followed by the relevant helper lemma. The mutual structure of the well-founded induction and the algorithm ensures that the IH is available exactly when needed — for each recursive call, the sum a+b is smaller."
+  },
+  {
+    "id": "bezout-via-reduction",
+    "type": "corollary",
+    "line": 169,
+    "title": "Bézout Corollary via Int.gcdA/gcdB",
+    "content": "Once binaryGcd a b = Nat.gcd a b is established, the Bézout corollary is immediate: use Int.gcd_eq_gcd_ab (a : ℤ) (b : ℤ), which states ↑(Int.gcd a b) = a * gcdA a b + b * gcdB a b. The proof just needs a cast: Nat.gcd a b casts to Int.gcd (↑a) (↑b) via Int.natCast_gcd (or hcast). This shows that the division-free algorithm preserves all algebraic properties of the GCD, including the existence of Bézout coefficients."
+  },
+  {
+    "id": "hardware-motivation",
+    "type": "context",
+    "line": 5,
+    "title": "Why Avoid Division in Hardware?",
+    "content": "On binary computers, integer division requires O(n) sequential steps (for n-bit integers), while right-shift (halving) and subtraction are O(1) bit operations available in a single clock cycle. Stein's algorithm replaces every modular reduction step in Euclid's algorithm with a subtraction and at least one halving, guaranteeing that a+b decreases geometrically. This makes the binary GCD roughly twice as fast as Euclid's algorithm on hardware without a hardware divider — which includes most microcontrollers and FPGAs."
+  },
+  {
+    "id": "gcd-double-double",
+    "type": "lemma",
+    "line": 37,
+    "title": "Even-Even Reduction: Factoring Out 2",
+    "content": "gcd(2a, 2b) = 2 · gcd(a, b) — this is Nat.gcd_mul_left 2 a b, which says gcd(k·a, k·b) = k · gcd(a,b) for any k. It's the cleanest of all the reductions and encodes the key divisibility fact: 2 divides gcd(2a,2b), and the remaining gcd is among the halved arguments."
+  }
+]
