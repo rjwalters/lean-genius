@@ -227,5 +227,30 @@
       "ErdosConjecture369",
       "balog_wooley_infinitely_many"
     ]
+  },
+  {
+    "id": "ann-e369-final",
+    "proofId": "erdos-369",
+    "range": {
+      "startLine": 132,
+      "endLine": 171
+    },
+    "type": "theorem",
+    "title": "ErdosConjecture369_k2, Balog-Wooley Partial Result, and consecutiveSmoothRun_1_2_2",
+    "content": "**ErdosConjecture369_k2** (134-140): The open k=2 special case: for any function `smoothBound` that grows without bound yet stays below n, there exists $N_0$ such that for all $n \\ge N_0$, consecutive $n^\\varepsilon$-smooth runs of length 2 exist in $\\{1, \\ldots, n\\}$. The `smoothBound` parameter abstracts over different choices of $\\varepsilon$.\n\n**Balog–Wooley partial result** (144-150, comment): Balog–Wooley (1998) proved there exist infinitely many $n$ such that both $n$ and $n+1$ are $n^\\varepsilon$-smooth (each $m$ is $m^\\varepsilon$-smooth). This gives infinitely many, not all sufficiently large $n$.\n\n**consecutiveSmoothRun_1_2_2** (163-169): The base example: $(1, 2)$ forms a run of 2 consecutive 2-smooth numbers. Proof: `1` is vacuously smooth (`isSmooth_one`); `2` is 2-smooth since any prime divisor of 2 is $\\le 2$. The `interval_cases i` tactic splits the finite range $i \\in \\{1, 2\\}$.",
+    "mathContext": "The gap between Balog–Wooley's infinitely-many result and the conjectured all-sufficiently-large is the crux of the difficulty. The k=2 conjecture says: for fixed $\\varepsilon > 0$, all large $n$ have a pair $(m, m+1)$ in $\\{1, \\ldots, n\\}$ that is both $n^\\varepsilon$-smooth. The `ErdosConjecture369_k2` formulation parameterizes over `smoothBound` (rather than a fixed $\\varepsilon$) to capture the $\\forall \\varepsilon$ quantifier cleanly. The `consecutiveSmoothRun_1_2_2` example is trivial but provides a sanity check — the smallest non-trivial consecutive smooth run.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ErdosConjecture369_k2",
+      "Balog-Wooley theorem",
+      "ConsecutiveSmoothRun",
+      "isSmooth_one",
+      "interval_cases"
+    ],
+    "prerequisites": [
+      "HasConsecutiveSmoothRun",
+      "ConsecutiveSmoothRun",
+      "isSmooth_one"
+    ]
   }
 ]
