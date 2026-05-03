@@ -39,7 +39,7 @@
       "twoRowYD: general 2-row Young diagram [a,b] for a≥b",
       "hookProd_twoRowYD: hookProd([a,b]) = (a+1).descFactorial b × (a-b)! × b! (proved, 0 sorries)",
       "two_row_hook_identity: numerical identity ballotSeqCount(a+1,b) × hookProd = (a+b)! (proved, 0 sorries)",
-      "hook_length_formula_two_row_gen: formula for general 2-row [a,b] (1 sorry: card_SYT_twoRowYD)",
+      "hook_length_formula_two_row_gen: formula for general 2-row [a,b] (proved, 0 sorries)",
       "Numerical verification: hook-length formula proved for (2,1), (2,2), (3,1), (3,2), (3,2,1), (4,3,2,1), (3,3), (4,4) shapes",
       "hook_length_formula_gHookYD: HLF for all generalized hook shapes [a, 1^b] (card = C(a+b-1,b), proved via double induction + inline bijection, 0 sorries)",
       "hookProd_ratio_formula: hookProd(μ)/hookProd(μ\\c) equals product over arm × product over leg (0 sorries — Finset.prod_union decomposition complete)",
@@ -91,10 +91,10 @@
       "LGV"
     ],
     "namespace": "HookLengthFormula",
-    "lineCount": 399,
+    "lineCount": 13749,
     "axiomCount": 0,
-    "sorries": 0,
-    "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
+    "sorries": 5,
+    "path": "Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean",
     "theoremCount": 482,
     "definitionCount": 22
   },
