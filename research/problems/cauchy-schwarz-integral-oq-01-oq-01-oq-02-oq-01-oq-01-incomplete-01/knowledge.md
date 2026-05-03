@@ -1,5 +1,40 @@
 # Lp Riesz Representation for Sigma-Finite Measures (Complete)
 
+---
+
+## Session 2026-05-03 (Session 2) — Step B Proved
+
+**Mode**: REVISIT (ACT)
+**Outcome**: progress — lp_truncation_tendsto_zero proved, 2 sorries → 1 sorry
+
+### What I Did
+
+1. **Proved `lp_truncation_tendsto_zero`** (~45 lines added):
+   - Strategy: `eLpNorm(gₙ) = (∫⁻ ‖gₙ‖^p dμ)^(1/p)`; show lintegral → 0; take 1/p power
+   - Step 1: Apply `tendsto_lintegral_of_dominated_convergence` with bound `‖f‖^p`
+     - AEMeasurable: via `.enorm.pow_const p.toReal`
+     - Domination: `|gₙ| ≤ |f|` pointwise (by cases on a ∈ Sₙ)
+     - Bound integrable: `eLpNorm f p μ < ∞`
+     - Pointwise → 0: from `pointwise_mul_indicator_tendsto` + nnnorm continuity + ENNReal rpow
+   - Step 2: `(∫⁻ →0)^(1/p) → 0` via `ENNReal.continuousAt_rpow_const (Or.inl hinv.le)`
+
+2. **1 sorry remains**: `localization_existence` (Step A, ~150 lines)
+   - Needs: Lp restriction map Lp(μ) → Lp(μ.restrict Sₙ), then finite-measure Riesz, MCT gluing
+   - Candidate for Aristotle submission
+
+### Key Findings
+
+- `tendsto_lintegral_of_dominated_convergence` — ENNReal DCT for lintegral
+- `ENNReal.continuousAt_rpow_const (Or.inl hr)` — continuity of x↦x^r at any point for r≥0
+- `AEStronglyMeasurable.enorm.pow_const` — measurability chain for ‖·‖₊^p (ℝ≥0∞-valued)
+- No Vitali's theorem needed — direct lintegral MCT approach is cleaner
+
+### Files Modified
+
+- `proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean` — +45 lines (Step B)
+- `src/data/research/problems/cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01.json`
+
+
 **Problem**: Complete the 3 HARD sorries in the parent gallery entry
 `cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01`.
 
