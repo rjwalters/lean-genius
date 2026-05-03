@@ -178,11 +178,65 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
       -- Suffices: finrank ℚ ↥ℚ⟮a⟯ ∣ 2^j and finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2
       exact Nat.mul_dvd_mul hj_dvd
         (by -- finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2
-         -- β satisfies X² - a over ℚ⟮a⟯ (since β² = a ∈ ℚ⟮a⟯)
-         -- So minpoly ↥ℚ⟮a⟯ β divides X² - a, giving natDegree ≤ 2
-         -- For simple extension: finrank = natDegree(minpoly) ≤ 2
-         -- Hence finrank ∣ 2
-         sorry)
+         -- β_in_β : the element β viewed in ↥(ℚ⟮β⟯)
+         let β_in_β : ↥(ℚ⟮β⟯) := ⟨β, mem_adjoin_simple_self ℚ β⟩
+         -- a_in_a : the element a viewed in ↥(ℚ⟮a⟯)
+         let a_in_a : ↥(ℚ⟮a⟯) := ⟨a, IntermediateField.mem_adjoin_simple_self ℚ a⟩
+         -- β is integral over ℚ
+         have hβ_int_ℚ : IsIntegral ℚ β := isAlgebraic_iff_isIntegral.mp halg_β
+         -- β_in_β is integral over ℚ (the algebraMap ↥(ℚ⟮β⟯) → ℂ is injective)
+         have hβ_int_inner_Q : IsIntegral ℚ β_in_β := by
+           rw [← isIntegral_algebraMap_iff (algebraMap ↥(ℚ⟮β⟯) ℂ).injective]
+           exact hβ_int_ℚ
+         -- β_in_β is integral over ↥(ℚ⟮a⟯) (tower: ℚ ≤ ↥ℚ⟮a⟯ ≤ ↥ℚ⟮β⟯)
+         have hβ_int : IsIntegral ↥(ℚ⟮a⟯) β_in_β := hβ_int_inner_Q.tower_top
+         -- PowerBasis: β generates ↥(ℚ⟮β⟯) over ℚ
+         let pb := IntermediateField.adjoin.powerBasis hβ_int_ℚ
+         have h_gen_eq : pb.gen = β_in_β := Subtype.ext rfl
+         -- Algebra.adjoin ℚ {β_in_β} = ⊤ in ↥(ℚ⟮β⟯)
+         have h_alg_top : Algebra.adjoin ℚ ({β_in_β} : Set ↥(ℚ⟮β⟯)) = ⊤ :=
+           h_gen_eq ▸ pb.adjoin_gen_eq_top
+         -- IntermediateField.adjoin ℚ {β_in_β} = ⊤
+         have h_gen_Q : IntermediateField.adjoin ℚ ({β_in_β} : Set ↥(ℚ⟮β⟯)) = ⊤ := by
+           rw [eq_top_iff]; intro x _
+           exact IntermediateField.algebra_adjoin_le_adjoin ℚ ({β_in_β} : Set ↥(ℚ⟮β⟯))
+             (h_alg_top ▸ Algebra.mem_top)
+         -- Lift: IntermediateField.adjoin ↥(ℚ⟮a⟯) {β_in_β} = ⊤
+         have h_top : IntermediateField.adjoin ↥(ℚ⟮a⟯) ({β_in_β} : Set ↥(ℚ⟮β⟯)) = ⊤ :=
+           IntermediateField.adjoin_eq_top_of_adjoin_eq_top ℚ h_gen_Q
+         -- finrank ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) = natDegree(minpoly ↥(ℚ⟮a⟯) β_in_β)
+         have h_finrank_eq : Module.finrank ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) =
+             (minpoly ↥(ℚ⟮a⟯) β_in_β).natDegree := by
+           have := IntermediateField.adjoin.finrank hβ_int
+           erw [h_top, IntermediateField.finrank_top'] at this
+           exact this
+         -- Annihilating polynomial: β_in_β satisfies X² - C(a_in_a) over ↥(ℚ⟮a⟯)
+         set p : Polynomial ↥(ℚ⟮a⟯) := Polynomial.X ^ 2 - Polynomial.C a_in_a with hp_def
+         have h_aeval : Polynomial.aeval β_in_β p = 0 := by
+           simp only [hp_def, map_sub, map_pow, Polynomial.aeval_X,
+             Polynomial.aeval_C, sub_eq_zero]
+           -- Goal: β_in_β ^ 2 = algebraMap ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) a_in_a
+           apply_fun Subtype.val using Subtype.val_injective
+           -- Goal in ℂ: (β_in_β ^ 2).val = (algebraMap ... a_in_a).val
+           simp only [SubsemiringClass.coe_pow, β_in_β, a_in_a,
+             RingHom.algebraMap_toAlgebra, IntermediateField.coe_inclusion,
+             Subtype.coe_mk, hβ_sq]
+         have h_deg_p : p.natDegree = 2 := by
+           apply Polynomial.natDegree_sub_eq_left_of_natDegree_lt
+           simp [Polynomial.natDegree_X_pow, Polynomial.natDegree_C]
+         have h_p_ne : p ≠ 0 := by
+           intro h; rw [h, Polynomial.natDegree_zero] at h_deg_p; omega
+         have h_dvd : minpoly ↥(ℚ⟮a⟯) β_in_β ∣ p := minpoly.dvd _ _ h_aeval
+         have h_pos : 1 ≤ (minpoly ↥(ℚ⟮a⟯) β_in_β).natDegree :=
+           minpoly.natDegree_pos hβ_int
+         have h_deg : (minpoly ↥(ℚ⟮a⟯) β_in_β).natDegree ≤ 2 :=
+           (Polynomial.natDegree_le_of_dvd h_dvd h_p_ne).trans (le_of_eq h_deg_p)
+         rw [h_finrank_eq]
+         have h_range : (minpoly ↥(ℚ⟮a⟯) β_in_β).natDegree = 1 ∨
+             (minpoly ↥(ℚ⟮a⟯) β_in_β).natDegree = 2 := by omega
+         rcases h_range with h | h
+         · exact h ▸ one_dvd 2
+         · exact h ▸ dvd_refl 2)
     -- Step D (sorry): finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+k+1)
     -- Proof plan: tower through ℚ⟮β⟯:
     --   finrank_join = finrank ↥ℚ⟮β⟯ ↥(join) * finrank ℚ ↥ℚ⟮β⟯
