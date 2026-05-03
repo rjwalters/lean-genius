@@ -74,7 +74,39 @@ theorem distance_sidon_size_bound {α : Type*} [MetricSpace α]
     (Q : Finset α) (hQ : IsDistanceSidon Q) :
     Q.card * (Q.card - 1) / 2 ≤
       ((Q ×ˢ Q).image (fun pq => dist pq.1 pq.2)).card := by
-  sorry
+  -- Suffices: Q.card*(Q.card-1) ≤ 2 * |image of Q×Q|, then omega handles the /2
+  suffices h : Q.card * (Q.card - 1) ≤
+      2 * ((Q ×ˢ Q).image fun pq => dist pq.1 pq.2).card by omega
+  -- Rewrite LHS as Q.offDiag.card (since card_offDiag gives s.card*(s.card-1))
+  rw [← Finset.card_offDiag]
+  -- Each distance value in the offDiag image appears for at most 2 pairs (a,b) and (b,a)
+  have hfiber : ∀ d ∈ Q.offDiag.image (fun pq => dist pq.1 pq.2),
+      (Q.offDiag.filter (fun pq => dist pq.1 pq.2 = d)).card ≤ 2 := by
+    intro d hd
+    obtain ⟨⟨a, b⟩, hmem, rfl⟩ := Finset.mem_image.mp hd
+    obtain ⟨ha, hb, _⟩ := Finset.mem_offDiag.mp hmem
+    -- Every element of the fiber is (a, b) or (b, a) by IsDistanceSidon
+    have hsub : Q.offDiag.filter (fun pq => dist pq.1 pq.2 = dist a b) ⊆
+        ({(a, b), (b, a)} : Finset (α × α)) := by
+      intro ⟨c, e⟩ hce
+      simp only [Finset.mem_filter, Finset.mem_offDiag] at hce
+      obtain ⟨⟨hc, he, _⟩, hdist⟩ := hce
+      rcases hQ c hc e he a ha b hb hdist with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> simp
+    exact (Finset.card_le_card hsub).trans
+      ((Finset.card_insert_le _ _).trans (by simp [Finset.card_singleton]))
+  -- offDiag.card ≤ 2 * (offDiag image).card  by the fiber bound
+  have hoff : Q.offDiag.card ≤
+      2 * (Q.offDiag.image fun pq => dist pq.1 pq.2).card :=
+    Finset.card_le_mul_card_image Q.offDiag (fun pq => dist pq.1 pq.2) hfiber
+  -- offDiag image ⊆ Q×Q image
+  have himg : (Q.offDiag.image fun pq => dist pq.1 pq.2).card ≤
+      ((Q ×ˢ Q).image fun pq => dist pq.1 pq.2).card := by
+    apply Finset.card_le_card
+    apply Finset.image_subset_image
+    intro ⟨c, e⟩ hce
+    simp only [Finset.mem_offDiag] at hce
+    exact Finset.mem_product.mpr ⟨hce.1, hce.2.1⟩
+  linarith
 
 /-! ## Known Asymptotic Bounds for F_d(n) (Axiomatized)
 
