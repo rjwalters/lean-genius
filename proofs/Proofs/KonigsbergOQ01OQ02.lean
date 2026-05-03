@@ -585,7 +585,46 @@ private lemma maxTrail_last_exhausted (E : Finset (V × V)) (v : V) :
       ∃ i, i + 1 < (maxTrail E v).length ∧
         (maxTrail E v).get ⟨i, by omega⟩ = e.1 ∧
         (maxTrail E v).get ⟨i + 1, by omega⟩ = e.2 := by
-  sorry -- Follows from maxTrailRem_last_no_out + maxTrail_used_eq; deferred
+  induction h_n : E.card using Nat.strong_rec_on generalizing E v with
+  | _ n ih =>
+    intro last_v e he hlast
+    by_cases hout : (E.filter (fun e' => e'.1 = v)).Nonempty
+    · have he₀ : hout.choose ∈ E := (Finset.mem_filter.mp hout.choose_spec).1
+      have hv : hout.choose.1 = v := (Finset.mem_filter.mp hout.choose_spec).2
+      have hcard : (E.erase hout.choose).card < n :=
+        h_n ▸ Finset.card_erase_lt_of_mem he₀
+      set e₀ := hout.choose
+      set inner := maxTrail (E.erase e₀) e₀.2
+      have hinner_ne : inner ≠ [] := maxTrail_nonempty' _ _
+      have hinner_len : 0 < inner.length := List.length_pos.mpr hinner_ne
+      have htrail : maxTrail E v = v :: inner := by
+        unfold maxTrail; simp only [hout, ↓reduceDite]
+      have htrail_len : (maxTrail E v).length = inner.length + 1 := by
+        rw [htrail]; simp
+      have hlast_eq : last_v = inner.getLast hinner_ne := by
+        simp only [last_v, htrail, List.getLast_cons hinner_ne]
+      have hinner_g0 : inner.get ⟨0, hinner_len⟩ = e₀.2 := by
+        cases h_i : inner with
+        | nil => exact absurd h_i hinner_ne
+        | cons a _ =>
+          have := maxTrail_head' (E.erase e₀) e₀.2
+          rw [h_i] at this; simp only [List.head?_cons, Option.some.injEq] at this
+          simp [this]
+      by_cases heq : e = e₀
+      · subst heq
+        refine ⟨0, by omega, ?_, ?_⟩
+        · rw [htrail, List.get_cons_zero]; exact hv.symm
+        · rw [htrail]; simp only [List.get_cons_succ]; exact hinner_g0
+      · have he_erase : e ∈ E.erase e₀ := Finset.mem_erase.mpr ⟨heq, he⟩
+        have hlast_inner : e.1 = inner.getLast hinner_ne := hlast.trans hlast_eq
+        obtain ⟨k, hk, hke1, hke2⟩ := ih _ hcard (E.erase e₀) e₀.2 rfl he_erase hlast_inner
+        refine ⟨k + 1, by omega, ?_, ?_⟩
+        · rw [htrail]; simp only [List.get_cons_succ]; exact hke1
+        · rw [htrail]; simp only [List.get_cons_succ]; exact hke2
+    · exfalso
+      have htrail_empty : maxTrail E v = [v] := by unfold maxTrail; simp [hout]
+      have hlast_v : last_v = v := by simp [last_v, htrail_empty]
+      exact hout ⟨e, Finset.mem_filter.mpr ⟨he, hlast.trans hlast_v⟩⟩
 
 /-- All steps of maxTrail E v use edges from E. -/
 private lemma maxTrail_steps_in_E (E : Finset (V × V)) (v : V) :
@@ -711,10 +750,82 @@ private lemma maxTrail_steps_distinct (E : Finset (V × V)) (v : V) :
 /-- In a balanced digraph G, the maximal greedy trail from any vertex v is closed. -/
 theorem maxTrail_closed (G : DiGraph V) (hbal : IsEulerianBalanced G) (v : V) :
     (maxTrail G.edges v).head? = (maxTrail G.edges v).getLast? := by
-  sorry -- Strategy: balance contradiction. If last ≠ start: src_count(last) = outDeg(last)
-        -- via maxTrail_last_exhausted + maxTrail_steps_distinct; tgt_count(last) ≤ inDeg(last)
-        -- via maxTrail_steps_in_E; tgt_count = src_count + 1 via open_walk_last_target_excess;
-        -- balance inDeg = outDeg → contradiction outDeg + 1 ≤ outDeg.
+  by_contra h_open
+  set trail := maxTrail G.edges v
+  have htrail_ne : trail ≠ [] := maxTrail_nonempty' _ _
+  have htrail_head : trail.head? = some v := maxTrail_head' G.edges v
+  set last_v := trail.getLast htrail_ne
+  have hlast_some : trail.getLast? = some last_v := List.getLast?_eq_getLast htrail_ne
+  rw [htrail_head, hlast_some] at h_open
+  have hvw : v ≠ last_v := fun h => h_open (congrArg some h)
+  -- Trail has length ≥ 2
+  have hlen_ge2 : 2 ≤ trail.length := by
+    by_contra hlt; push_neg at hlt
+    have hlen1 : trail.length = 1 := by have := List.length_pos.mpr htrail_ne; omega
+    obtain ⟨a, ha⟩ := List.length_eq_one.mp hlen1
+    have ha_eq : a = v := by rw [ha] at htrail_head; simp at htrail_head; exact htrail_head.symm
+    have : last_v = v := by simp only [last_v, ha, ha_eq, List.getLast_singleton]
+    exact hvw this.symm
+  set m := trail.length - 1
+  have hm_pos : 0 < m := by omega
+  have htrail_len : trail.length = m + 1 := by omega
+  have hget0 : trail.get ⟨0, by omega⟩ = v := by
+    cases trail with
+    | nil => exact absurd rfl htrail_ne
+    | cons a _ =>
+      simp only [List.head?_cons, Option.some.injEq] at htrail_head
+      simp [htrail_head]
+  have hgetm : trail.get ⟨m, by omega⟩ = last_v := by
+    simp only [last_v]
+    have h : trail.getLast? = some (trail.get ⟨m, by omega⟩) := by
+      rw [List.getLast?_eq_getLast htrail_ne]; congr 1
+      simp only [List.getLast_eq_getElem, List.get_eq_getElem]; congr 1; omega
+    rw [hlast_some] at h; exact (Option.some.inj h).symm
+  set src_filter := (Finset.range m).filter (fun i => trail.get ⟨i, by omega⟩ = last_v)
+  set tgt_filter := (Finset.range m).filter (fun i => trail.get ⟨i + 1, by omega⟩ = last_v)
+  -- tgt_count = src_count + 1 (open walk counting lemma)
+  have h_tgt_excess : tgt_filter.card = src_filter.card + 1 :=
+    open_walk_last_target_excess trail m hm_pos htrail_len last_v (hget0 ▸ hvw) hgetm
+  -- src_count = outDegree G last_v (bijection via maxTrail_last_exhausted + maxTrail_steps_distinct)
+  have hsrc_eq : src_filter.card = outDegree G last_v := by
+    unfold outDegree
+    apply Finset.card_bij (fun i hi =>
+      let hi' := (Finset.mem_filter.mp hi)
+      (trail.get ⟨i, by simp only [Finset.mem_range] at hi'; omega⟩,
+       trail.get ⟨i + 1, by simp only [Finset.mem_filter, Finset.mem_range] at hi; omega⟩))
+    · intro i hi
+      simp only [src_filter, Finset.mem_filter, Finset.mem_range] at hi
+      simp only [Finset.mem_filter]
+      exact ⟨maxTrail_steps_in_E G.edges v i (by omega), hi.2⟩
+    · intro i hi j hj heq
+      simp only [src_filter, Finset.mem_filter, Finset.mem_range] at hi hj
+      by_contra hij
+      exact maxTrail_steps_distinct G.edges v i j (by omega) (by omega) hij heq
+    · intro e he
+      simp only [Finset.mem_filter] at he
+      obtain ⟨k, hk, hke1, hke2⟩ := maxTrail_last_exhausted G.edges v e he.1 he.2
+      exact ⟨k, by simp [src_filter, Finset.mem_filter, Finset.mem_range, hke1]; omega,
+             Prod.ext hke1 hke2⟩
+  -- tgt_count ≤ inDegree G last_v (injection via maxTrail_steps_in_E + maxTrail_steps_distinct)
+  have htgt_le : tgt_filter.card ≤ inDegree G last_v := by
+    unfold inDegree
+    apply Finset.card_le_card_of_injOn
+      (fun i => (trail.get ⟨i, by
+          simp only [tgt_filter, Finset.mem_filter, Finset.mem_range]
+          intro h; exact ⟨h.1, h.2⟩⟩,
+        trail.get ⟨i + 1, by
+          simp only [tgt_filter, Finset.mem_filter, Finset.mem_range]
+          intro h; exact ⟨h.1, h.2⟩⟩))
+    · intro i hi
+      simp only [tgt_filter, Finset.mem_filter, Finset.mem_range] at hi
+      simp only [Finset.mem_filter]
+      exact ⟨maxTrail_steps_in_E G.edges v i (by omega), hi.2⟩
+    · intro i hi j hj heq
+      simp only [Set.mem_coe, tgt_filter, Finset.mem_filter, Finset.mem_range] at hi hj
+      by_contra hij
+      exact maxTrail_steps_distinct G.edges v i j (by omega) (by omega) hij heq
+  have hbal_lv : outDegree G last_v = inDegree G last_v := hbal last_v
+  omega
 
 /-
   STEP 4: CIRCUIT EXISTENCE
