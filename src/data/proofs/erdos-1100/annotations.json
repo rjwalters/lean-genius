@@ -383,5 +383,54 @@
       "propositional logic",
       "Lean tactic mode"
     ]
+  },
+  {
+    "id": "ann-e1100-examples-and-hardness",
+    "proofId": "erdos-1100",
+    "range": {
+      "startLine": 256,
+      "endLine": 291
+    },
+    "type": "concept",
+    "title": "Concrete Examples (n=6, n=12) and Structural Hardness",
+    "content": "**n = 6**: Divisors are 1, 2, 3, 6. Coprime consecutive pairs: (1,2) gcd=1 ✓, (2,3) gcd=1 ✓, (3,6) gcd=3 ✗. So τ⊥(6) = 2 = ω(6). Verified by `native_decide`.\n\n**n = 12**: Divisors are 1, 2, 3, 4, 6, 12. Coprime pairs: (1,2)✓, (2,3)✓, (3,4)✓, (4,6)✗, (6,12)✗. So τ⊥(12) = 3 > ω(12) = 2. Verified by `native_decide`.\n\n**Why Hard** (Part VII): Coprime consecutive divisors depend delicately on factorization. For $n = p_1^{a_1} \\cdots p_k^{a_k}$, consecutive divisors differ by multiplying/dividing by primes, and coprimality requires sharing no common prime. This creates intricate combinatorial constraints. The exponential bounds on $g(k)$ show the structure is neither trivial (τ⊥ = ω always) nor chaotic.",
+    "mathContext": "The examples illustrate the contrast: for $n=6 = 2 \\cdot 3$, all coprime consecutive pairs appear, so $\\tau_\\perp = \\omega = 2$. For $n=12 = 2^2 \\cdot 3$, the divisor 4 breaks the coprimality with 6 (both divisible by 2). `native_decide` works here because `omega` and `tauPerp` are decidable computations on small numbers. The structural hardness: knowing whether $\\tau_\\perp(n)/\\omega(n) \\to \\infty$ requires understanding the global structure of the divisor lattice, not just local prime factorization.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "consecutive divisors",
+      "coprimality",
+      "native_decide",
+      "divisor lattice"
+    ],
+    "prerequisites": [
+      "tauPerp definition",
+      "omega definition",
+      "native_decide"
+    ]
+  },
+  {
+    "id": "ann-e1100-final-summary",
+    "proofId": "erdos-1100",
+    "range": {
+      "startLine": 293,
+      "endLine": 328
+    },
+    "type": "theorem",
+    "title": "erdos_1100_summary: Problem Status and Combined Results",
+    "content": "**Status summary** (Part VIII comment): τ⊥(n)/ω(n) → ∞ for a.e. n is OPEN. τ⊥(n) < exp((log n)^o(1)) for all n is OPEN. For $g(k) = \\max_{\\omega(n)=k, n \\text{ squarefree}} \\tau_\\perp(n)$: $(\\sqrt{2})^k < g(k) < (2-c)^k$ is partially known.\n\n**erdos_1100_summary** (314-327): Combines three proved/axiomatized results:\n1. `tau_perp_lower_bound`: $\\tau_\\perp(n) \\ge \\omega(n)$ for all $n > 0$ (proved)\n2. `tau_perp_equality_infinitely_often`: $\\tau_\\perp(n) = \\omega(n)$ for infinitely many $n$ (proved via primes)\n3. `erdos_hall_max_lower_bound`: $\\max_{n < x} \\tau_\\perp(n) > \\exp((\\log \\log x)^{2-\\varepsilon})$ (axiomatized deep result)\n\nProof: direct conjunction of the three, using `constructor` twice + `exact`.",
+    "mathContext": "The Erdős-Hall bound `erdos_hall_max_lower_bound` requires a probabilistic argument over the integers up to $x$: showing that numbers with many coprime consecutive divisors exist densely enough. This is the content of Erdős and Hall's 1980 paper. The proved `tau_perp_equality_infinitely_often` uses primes: for a prime $p$, the divisors are $\\{1, p\\}$, and $(1, p)$ is coprime, so $\\tau_\\perp(p) = 1 = \\omega(p)$. The infinitely many primes give the infinitely many witnesses. The combined `erdos_1100_summary` is a junction point for all three results.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tau_perp_lower_bound",
+      "tau_perp_equality_infinitely_often",
+      "erdos_hall_max_lower_bound",
+      "problem status"
+    ],
+    "prerequisites": [
+      "tauPerp",
+      "omega",
+      "g function",
+      "Erdős-Hall bound"
+    ]
   }
 ]
