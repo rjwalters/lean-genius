@@ -292,7 +292,7 @@ theorem gpfConsecutive_gt_n_of_large_window (n k : ℕ) (hn : 2 ≤ n) (hk : n �
   induction d with
   | zero => exact gpfConsecutive_self_gt n (by omega)
   | succ d ih =>
-    exact Nat.lt_of_lt_of_le ih (gpfConsecutive_mono n (n + d) hn)
+    exact Nat.lt_of_lt_of_le (ih (by omega)) (gpfConsecutive_mono n (n + d) hn)
 
 /-
 ## Prime Start Lower Bound
@@ -316,7 +316,7 @@ theorem gpfConsecutive_ge_self_of_prime (n k : ℕ) (hn : n.Prime) :
 theorem dvd_consecutiveProduct_term (n k i : ℕ) (hi : i ≤ k) :
     n + i ∣ consecutiveProduct n k := by
   apply Finset.dvd_prod_of_mem
-  simp [consecutiveProduct, Finset.mem_range]
+  simp [Finset.mem_range]
   omega
 
 /-
@@ -325,7 +325,7 @@ theorem dvd_consecutiveProduct_term (n k i : ℕ) (hi : i ≤ k) :
 
 /-- For any fixed k and ε ∈ (0,1), infinitely many n satisfy P(n,k) > n^(1-ε).
     Every prime n satisfies P(n,k) ≥ n > n^(1-ε), so the set of good n contains all primes. -/
-theorem erdos_1201_infinitely_many (k : ℕ) (ε : ℝ) (hε₀ : 0 < ε) (hε₁ : ε < 1) :
+theorem erdos_1201_infinitely_many (k : ℕ) (ε : ℝ) (hε₀ : 0 < ε) (_hε₁ : ε < 1) :
     Set.Infinite {n : ℕ | (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ)} := by
   apply Nat.infinite_setOf_prime.mono
   intro n hn
