@@ -165,5 +165,31 @@
       "Real.log",
       "analytic number theory"
     ]
+  },
+  {
+    "id": "erdos-321-upper-and-conjecture",
+    "proofId": "erdos-321",
+    "range": {
+      "startLine": 161,
+      "endLine": 190
+    },
+    "type": "summary",
+    "title": "Upper Bound Axiom, Theta Theorem, and Main Conjecture",
+    "content": "Lines 161-190 contain the Bleicher–Erdős upper bound axiom, the Theta theorem, and the main conjecture statement.\n\n**bleicher_erdos_upper** (lines 163-165, axiom): R(N) ≤ C·(N/log N)·log(log N). This is the 1976 upper bound by Bleicher and Erdős, proved via a counting/pigeonhole argument: if A ⊆ {1,...,N} with all subset sums of 1/n distinct, then 2^|A| distinct values must fit within rationals having denominator lcm(1,...,N), giving |A| = O((N/log N)·log log N).\n\n**bleicher_erdos_theta** (lines 168-175, proved from axioms): Combines both bounds into R(N) = Θ(N/log N·log log N) — more precisely, c₁·N/log N ≤ R(N) ≤ c₂·(N/log N)·log log N. The proof is immediate: obtain the two existential witnesses and take N₀ = max(N₁, N₂).\n\n**erdos_321_asymptotics** (lines 185-188, the open problem): R(N) has some exact asymptotic — tautologically proved by taking f = maxDistinctReciprocal. The note explains the real problem: find an *explicit* closed-form. The gap between lower and upper is one log log N factor. Erdős conjectured the exact asymptotic is (N/log N)·Π_{i≥3} log_i N (iterated logarithms), but this remains open.\n\nThe formalization accurately represents the state of knowledge: two deep results axiomatized, one trivial tautology proved, and the hard open problem documented via the comment.",
+    "mathContext": "The exact asymptotic of $R(N)$ (unit fraction distinct-sum problem) is open. Best bounds: $R(N) \\sim C \\cdot N/\\log N$ (conjectured) vs. known $C_1 N/\\log N \\leq R(N) \\leq C_2 (N/\\log N) \\log\\log N$. The `bleicher_erdos_theta` theorem packages these as: $\\exists c_1, c_2 > 0, \\exists N_0, \\forall N \\geq N_0: c_1 N/\\log N \\leq R(N) \\leq c_2 (N/\\log N) \\log\\log N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bleicher-Erdős 1976",
+      "Theta notation",
+      "iterated logarithm conjecture",
+      "unit fraction distinct sums",
+      "open problem"
+    ],
+    "prerequisites": [
+      "bleicher_erdos_lower",
+      "bleicher_erdos_upper",
+      "maxDistinctReciprocal",
+      "Real.log"
+    ]
   }
 ]
