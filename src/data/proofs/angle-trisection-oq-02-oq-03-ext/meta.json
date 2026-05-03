@@ -45,7 +45,7 @@
       "**Arithmetic bridge**: φ(n) even for n≥3 (since -1 ∈ (ℤ/nℤ)* has order 2). So φ(n) = 2^k iff φ(n)/2 = 2^{k-1}. This connects the maximal real subfield degree to the cyclotomic degree.",
       "**Non-constructibility criterion**: If p | φ(n) for an odd prime p ≥ 3, then φ(n) is NOT a power of 2 — n-gon is not constructible. This handles all non-Fermat cases.",
       "**Complete n ∈ [3,50] table**: 17 constructible n-gons: n = 2^a × (distinct Fermat primes). The remaining 31 values all have odd prime divisors in φ(n).",
-      "**Fermat primes in range**: Only 3, 5, 17 appear as relevant Fermat primes for n ≤ 50. Products: 3×5=15, 3×17=51>50, 5×17=85>50, so 15 is the only Fermat-prime product ≤ 50."
+      "**Fermat primes in range**: Only 3, 5, 17 appear as relevant Fermat primes for n ≤ 50. Distinct-odd-Fermat-prime products in range: just 3×5=15 (since 3×17=51, 5×17=85, 3×5×17=255 all exceed 50). The remaining constructible n combine these with 2^a multipliers — e.g. 34=2×17, 30=2×3×5, 20=4×5, 24=8×3 — and pure powers of 2 (4, 8, 16, 32)."
     ]
   },
   "sections": [
@@ -123,7 +123,7 @@
       "significance": "Closes the gap between cyclotomic degree and real subfield degree"
     },
     {
-      "name": "constructibility_classification_3_50",
+      "name": "constructible_up_to_50",
       "type": "corollary",
       "statement": "Complete list of n ∈ [3,50] with TotientIsPow2 n",
       "description": "17 constructible regular polygons in range [3,50].",
