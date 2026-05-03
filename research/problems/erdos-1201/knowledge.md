@@ -264,4 +264,53 @@ These are all corollaries of the max formula but explicit enough to be directly 
 
 ---
 
+## Session 2026-05-03 (Session 6) - Window Extension, Concatenation, and Prime Term Bounds
+
+**Mode**: REVISIT
+**Outcome**: progress — 4 new theorems proved, PR created
+
+### What I Did
+- Proved `gpfConsecutive_succ_left (n k : ℕ) (hn : 2 ≤ n) : P(n,k+1) = max(gpf(n), P(n+1,k))`
+  - Left-endpoint extension: symmetric to `gpfConsecutive_succ_right`
+  - Proof: Nat.le_antisymm via sup inequalities; case split on i=0 vs i>0 for upper bound
+  - Key tactic: `rcases Nat.eq_zero_or_pos i with rfl | hpos` then `Finset.le_sup (f := ...)` with omega
+- Proved `gpfConsecutive_window_concat (n j k : ℕ) (hn : 2 ≤ n) : P(n,j+k+1) = max(P(n,j), P(n+j+1,k))`
+  - Window concatenation/splitting formula: [n,n+j+k+1] = [n,n+j] ∪ [n+j+1,n+j+k+1]
+  - Proof: `by_cases h : i ≤ j` splits the sup over the full range into two halves
+  - Both halves use `Finset.le_sup (f := ...)` with `congr 1; omega` to relate index arithmetic
+- Proved `gpfConsecutive_ge_prime_term (n k i : ℕ) (hn : 2 ≤ n) (hi : i ≤ k) (hprime : (n+i).Prime)`
+  - If window [n,n+k] contains prime n+i, then P(n,k) ≥ n+i
+  - Proof: `rw [← greatestPrimeFactor_prime _ hprime, gpfConsecutive_eq_sup_range]` then `Finset.le_sup (f := ...)`
+- Proved `erdos_1201_good_of_prime_in_window`: one-liner corollary bridging prime distribution to density
+  - If n+i is prime and n+i > n^(1-ε), then P(n,k) > n^(1-ε) — structural link to Erdős conjecture
+- Fixed API drift in `consecutiveProduct_succ` (induction proof for Lean 4.26.0 prod_range_succ issues)
+- Updated meta.json: 44→48 theorems, 662→754 lines, added window-extension-and-prime-terms section
+- Created PR on branch `research/erdos-1201-session-6b`
+
+### Key Findings
+- `gpfConsecutive_succ_left` and `gpfConsecutive_succ_right` are symmetric: together give full bilateral recursion
+- `gpfConsecutive_window_concat` generalizes both succ theorems: set j=0 gives succ_right; set k=0 gives left-split
+- `gpfConsecutive_ge_prime_term` is the cleanest statement of "prime term implies lower bound"
+- `erdos_1201_good_of_prime_in_window` shows that P(n,k) > n^(1-ε) follows from prime gaps <n^(1-ε) in [n,n+k]
+  - This is the link to Cramér-type prime gap conjectures
+
+### Mathematical Note
+The 4 Session 6 theorems together give a complete "window algebra":
+- Bilateral extension: P(n,k+1) = max(gpf(n), P(n+1,k)) AND P(n,k+1) = max(P(n,k), gpf(n+k+1))
+- Concatenation: P(n,j+k+1) = max(P(n,j), P(n+j+1,k)) — general window splitting
+- Prime term lower bound: prime in window → window GPF ≥ that prime
+- Sufficient condition for Erdős problem: prime > n^(1-ε) in window → n is good
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (734 lines, was 662, with all Mathlib 4.26.0 API drift fixes applied)
+- `src/data/proofs/erdos-1201/meta.json` (updated counts, new section)
+- `research/problems/erdos-1201/knowledge.md` (this entry)
+
+### Next Steps
+- `gpfConsecutive_window_concat` with j=0 gives a cleaner proof of `gpfConsecutive_succ_right` — potential refactor
+- Connect `erdos_1201_good_of_prime_in_window` to prime gap bounds: if primes gaps < n^(1-ε) for density-1 set, conjecture follows
+- Smooth number density: if k-smooth numbers in [N] have density ρ(1/ε) → density argument works (>1000 lines infra)
+
+---
+
 *Generated from erdosproblems.com on 2026-04-16*
