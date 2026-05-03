@@ -2,7 +2,7 @@
   "id": "konigsberg-oq-01-oq-02",
   "title": "Eulerian Paths in Directed Graphs",
   "slug": "konigsberg-oq-01-oq-02",
-  "description": "Extends the Eulerian circuit characterization to directed graphs. A weakly connected digraph has an Eulerian circuit iff every vertex has equal in-degree and out-degree; it has an Eulerian path from s to t iff outdeg(s)=indeg(s)+1, indeg(t)=outdeg(t)+1, and all other vertices are balanced. The directed handshaking lemma (\u2211 outDeg = |E| = \u2211 inDeg) and necessity direction (Eulerian circuit \u2192 balanced) are proved from first principles. 14 theorems (10 proved, 4 with sorries), 2 axioms (Hierholzer sufficiency and path characterization), Hierholzer infrastructure development in progress.",
+  "description": "Extends the Eulerian circuit characterization to directed graphs. A weakly connected digraph has an Eulerian circuit iff every vertex has equal in-degree and out-degree; it has an Eulerian path from s to t iff outdeg(s)=indeg(s)+1, indeg(t)=outdeg(t)+1, and all other vertices are balanced. The directed handshaking lemma (\u2211 outDeg = |E| = \u2211 inDeg) and necessity direction are proved from first principles. 16 theorems (15 proved, 1 with sorry), 2 axioms (Hierholzer sufficiency and path characterization). Key proofs: euler_path_implies_degree_balance proved via pigeonhole + open-walk counting; maxTrail infrastructure complete.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-05-03",
@@ -17,11 +17,11 @@
       "degree-sequences"
     ],
     "badge": "axiom",
-    "sorries": 6,
+    "sorries": 1,
     "dateAdded": "2026-05-03",
     "axiomCount": 2,
-    "assumptions": "2 axioms: directed_eulerian_iff (Hierholzer's algorithm for directed graph Eulerian circuit) and directed_euler_path_iff (Eulerian path degree characterization). 6 sorries: maxTrail_used_eq, maxTrail_last_exhausted (private deferred), maxTrail_closed, circuit_exists, remove_circuit_balanced, euler_path_implies_degree_balance (public theorem proofs in progress). All handshaking, necessity, examples, and open-walk counting lemmas fully proved.",
-    "lineCount": 826,
+    "assumptions": "2 axioms: directed_eulerian_iff (Hierholzer's algorithm for directed graph Eulerian circuit) and directed_euler_path_iff (Eulerian path degree characterization). 1 sorry: remove_circuit_balanced (removing a circuit preserves balance; proof sketch complete). Previously proved: maxTrail_last_exhausted, maxTrail_closed, circuit_exists, euler_path_implies_degree_balance (degree conditions for Eulerian paths, proved via pigeonhole counting + open-walk excess lemmas). maxTrail_used_eq removed (was unused dead code).",
+    "lineCount": 1071,
     "theoremCount": 14,
     "definitionCount": 10,
     "originalContributions": [

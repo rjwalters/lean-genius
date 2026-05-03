@@ -570,13 +570,6 @@ private lemma maxTrailRem_last_no_out (E : Finset (V × V)) (v : V) :
       simp only [List.getLast_singleton]
       simpa using hout
 
-/-- The edges used by maxTrail (= E \ remaining) are exactly E minus maxTrailRem. -/
-private lemma maxTrail_used_eq (E : Finset (V × V)) (v : V) :
-    E \ maxTrailRem E v =
-    (Finset.range ((maxTrail E v).length - 1)).image (fun i =>
-      ((maxTrail E v).get ⟨i, by omega⟩, (maxTrail E v).get ⟨i + 1, by omega⟩)) := by
-  sorry -- Provable by joint induction on E.card; deferred for brevity
-
 /-- Every edge from the last vertex in E appears as a trail step.
     Equivalently: maxTrailRem has no outgoing edges from the last vertex in E. -/
 private lemma maxTrail_last_exhausted (E : Finset (V × V)) (v : V) :
@@ -947,13 +940,131 @@ theorem euler_path_implies_degree_balance (G : DiGraph V) (s t : V) (hst : s ≠
       simp only [List.getLast_eq_getElem, List.get_eq_getElem]
       congr 1; omega
     rw [h2] at hlast; exact Option.some.inj hlast
-  -- The degree conditions follow from the open-walk counting lemmas:
-  -- open_walk_first_source_excess → outDeg s = inDeg s + 1
-  -- open_walk_last_target_excess  → inDeg t  = outDeg t + 1
-  -- closed-walk balance at interior vertices → IsBalanced v
-  -- Connecting walk-position counts to graph degrees requires unique coverage,
-  -- which follows from |walk| = |edges| + 1 + surjectivity (pigeonhole).
-  sorry
+  -- S = image of range n under the step function f
+  let f : ℕ → V × V := fun i =>
+    if h : i < n then (walk.get ⟨i, by omega⟩, walk.get ⟨i + 1, by omega⟩) else default
+  set S := (Finset.range n).image f with hS_def
+  -- Lift hcov to use n instead of walk.length - 1
+  have hcov_n : ∀ e ∈ G.edges, ∃ i, i < n ∧
+      walk.get ⟨i, by omega⟩ = e.1 ∧ walk.get ⟨i + 1, by omega⟩ = e.2 := by
+    intro e he
+    obtain ⟨i, hi, h1, h2⟩ := hcov e he
+    exact ⟨i, by omega, h1, h2⟩
+  -- G.edges ⊆ S (from coverage)
+  have hGS : G.edges ⊆ S := by
+    intro e he
+    obtain ⟨i, hi, h1, h2⟩ := hcov_n e he
+    refine Finset.mem_image.mpr ⟨i, Finset.mem_range.mpr hi, ?_⟩
+    simp only [f, hi, ↓reduceDite]; exact Prod.ext h1 h2
+  -- S.card ≤ n (image of set of size n)
+  have hSn : S.card ≤ n :=
+    Finset.card_image_le.trans (Finset.card_range n).le
+  -- G.edges = S
+  have hGS_eq : G.edges = S :=
+    Finset.eq_of_subset_of_card_le hGS (by omega)
+  -- S.card = n
+  have hScard : S.card = n := by rw [← hGS_eq]; omega
+  -- f is injective on range n (pigeonhole: surjective map of equal-size sets)
+  have hinj : Set.InjOn f ↑(Finset.range n) := by
+    apply Finset.card_image_iff_injOn.mp
+    rw [← hS_def, hScard, Finset.card_range]
+  -- hsteps: every step (walk[i], walk[i+1]) is in G.edges
+  have hsteps : ∀ i (hi : i < n),
+      (walk.get ⟨i, by omega⟩, walk.get ⟨i + 1, by omega⟩) ∈ G.edges := by
+    intro i hi
+    rw [hGS_eq]
+    refine Finset.mem_image.mpr ⟨i, Finset.mem_range.mpr hi, ?_⟩
+    simp [f, hi]
+  -- Injectivity of the step function
+  have hstep_inj : ∀ i j, i < n → j < n →
+      (walk.get ⟨i, by omega⟩, walk.get ⟨i + 1, by omega⟩) =
+      (walk.get ⟨j, by omega⟩, walk.get ⟨j + 1, by omega⟩) → i = j := by
+    intro i j hi hj heq
+    have hfi : f i = (walk.get ⟨i, by omega⟩, walk.get ⟨i + 1, by omega⟩) := by
+      simp [f, hi]
+    have hfj : f j = (walk.get ⟨j, by omega⟩, walk.get ⟨j + 1, by omega⟩) := by
+      simp [f, hj]
+    exact hinj (Finset.mem_coe.mpr (Finset.mem_range.mpr hi))
+               (Finset.mem_coe.mpr (Finset.mem_range.mpr hj))
+               (hfi.trans (heq.trans hfj.symm))
+  -- Derive unique coverage (∃!) from ordinary coverage + injectivity
+  have hcov' : ∀ e ∈ G.edges, ∃! i : ℕ, i < n ∧
+      walk.get ⟨i, by omega⟩ = e.1 ∧ walk.get ⟨i + 1, by omega⟩ = e.2 := by
+    intro e he
+    obtain ⟨i, hi, h1, h2⟩ := hcov_n e he
+    refine ⟨i, ⟨hi, h1, h2⟩, ?_⟩
+    intro j ⟨hj, hj1, hj2⟩
+    exact (hstep_inj i j hi hj (Prod.ext (h1.trans hj1.symm) (h2.trans hj2.symm))).symm
+  -- Express degrees as position-filter cardinalities
+  have h_out_s :
+      ((Finset.range n).filter fun i => walk.get ⟨i, by omega⟩ = s).card = outDegree G s :=
+    walk_source_eq_outDegree G walk n s hlen hcov' hsteps
+  have h_in_s :
+      ((Finset.range n).filter fun i => walk.get ⟨i + 1, by omega⟩ = s).card = inDegree G s :=
+    walk_target_eq_inDegree G walk n s hlen hcov' hsteps
+  have h_out_t :
+      ((Finset.range n).filter fun i => walk.get ⟨i, by omega⟩ = t).card = outDegree G t :=
+    walk_source_eq_outDegree G walk n t hlen hcov' hsteps
+  have h_in_t :
+      ((Finset.range n).filter fun i => walk.get ⟨i + 1, by omega⟩ = t).card = inDegree G t :=
+    walk_target_eq_inDegree G walk n t hlen hcov' hsteps
+  -- Open-walk excess counting at endpoints
+  have h_s_excess :
+      ((Finset.range n).filter fun i => walk.get ⟨i, by omega⟩ = s).card =
+      ((Finset.range n).filter fun i => walk.get ⟨i + 1, by omega⟩ = s).card + 1 :=
+    open_walk_first_source_excess walk n hn_ge_1 hlen s hget_head
+      (ne_of_eq_of_ne hget_last hst.symm)
+  have h_t_excess :
+      ((Finset.range n).filter fun i => walk.get ⟨i + 1, by omega⟩ = t).card =
+      ((Finset.range n).filter fun i => walk.get ⟨i, by omega⟩ = t).card + 1 :=
+    open_walk_last_target_excess walk n hn_ge_1 hlen t
+      (ne_of_eq_of_ne hget_head hst) hget_last
+  -- Parts 1 and 2 follow by arithmetic
+  refine ⟨by omega, by omega, ?_⟩
+  -- Part 3: interior vertices are balanced
+  intro v hvs hvt
+  unfold IsBalanced
+  have h_out_v :
+      ((Finset.range n).filter fun i => walk.get ⟨i, by omega⟩ = v).card = outDegree G v :=
+    walk_source_eq_outDegree G walk n v hlen hcov' hsteps
+  have h_in_v :
+      ((Finset.range n).filter fun i => walk.get ⟨i + 1, by omega⟩ = v).card = inDegree G v :=
+    walk_target_eq_inDegree G walk n v hlen hcov' hsteps
+  -- Source count = target count at interior vertex (bijection i ↦ i-1)
+  have h_v_bal :
+      ((Finset.range n).filter fun i => walk.get ⟨i, by omega⟩ = v).card =
+      ((Finset.range n).filter fun i => walk.get ⟨i + 1, by omega⟩ = v).card := by
+    set src_v := (Finset.range n).filter (fun i => walk.get ⟨i, by omega⟩ = v)
+    set tgt_v := (Finset.range n).filter (fun i => walk.get ⟨i + 1, by omega⟩ = v)
+    apply Finset.card_bij (fun i _ => i - 1)
+    · intro i hi
+      simp only [src_v, Finset.mem_filter, Finset.mem_range] at hi
+      obtain ⟨hi_lt, hi_v⟩ := hi
+      -- walk[0] = s ≠ v, so i ≥ 1
+      have hi1 : 1 ≤ i := by
+        by_contra h; push_neg at h
+        have hi0 : i = 0 := by omega
+        rw [hi0] at hi_v
+        exact hvs (hget_head.symm.trans hi_v).symm
+      simp only [tgt_v, Finset.mem_filter, Finset.mem_range]
+      refine ⟨by omega, ?_⟩
+      have heq : i - 1 + 1 = i := by omega
+      rw [heq]; exact hi_v
+    · intro i _ j _ h; omega
+    · intro j hj
+      simp only [tgt_v, Finset.mem_filter, Finset.mem_range] at hj
+      obtain ⟨hj_lt, hj_v⟩ := hj
+      -- walk[n] = t ≠ v, so j+1 < n
+      have hjn : j + 1 < n := by
+        by_contra h; push_neg at h
+        have hjn1 : j + 1 = n := by omega
+        have hwalkeq : walk.get ⟨j + 1, by omega⟩ = walk.get ⟨n, by omega⟩ :=
+          congr_arg walk.get (Fin.ext hjn1)
+        exact hvt (hj_v.symm.trans (hwalkeq.trans hget_last))
+      refine ⟨j + 1, ?_, by omega⟩
+      simp only [src_v, Finset.mem_filter, Finset.mem_range]
+      exact ⟨by omega, hj_v⟩
+  omega
 
 end HierholzerInfrastructure
 
