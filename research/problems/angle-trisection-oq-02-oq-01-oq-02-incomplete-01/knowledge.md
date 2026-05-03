@@ -267,3 +267,68 @@ Per project memory `project_mathlib_api_drift_2026_04`, this drift hits a cohort
 1. Submit `hβ_dvd` sub-sorry to Aristotle: context is `β : ℂ, a : ℂ, halg_β : IsAlgebraic ℚ β, hβ2 : β * β = a, hAlg_aβ : Algebra ↥ℚ⟮a⟯ ↥ℚ⟮β⟯, hST_aβ : IsScalarTower ℚ ↥ℚ⟮a⟯ ↥ℚ⟮β⟯, ha_le_β : ℚ⟮a⟯ ≤ ℚ⟮β⟯`; goal `finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2`
 2. For `hjoin_dvd`: consider reformulating with stronger IH (relative constructibility)
 3. After PR #15034 merges, continue proof work on hβ_dvd
+
+## Session 2026-05-03 (Session 33) - Eliminated hjoin_dvd via isConstructible_sup_degree
+
+**Mode**: REVISIT
+**Outcome**: progress — hjoin_dvd eliminated; h_top_Ka sorry remains
+
+### What I Did
+- Added `isConstructible_algebraic` (fully proved, ~10 lines): simple induction showing constructible numbers are algebraic
+- Added `isConstructible_sup_degree` (140 lines, 1 sorry `h_top_Ka`): stronger IH proving `∀ K, finrank ↥K ↥(K ⊔ ℚ⟮α⟯) ∣ 2^n` for any base K
+- Eliminated `hjoin_dvd` sorry in `isConstructible_algebraic_degree` by applying `isConstructible_sup_degree b hb ℚ⟮β⟯`, giving `finrank ↥ℚ⟮β⟯ ↥(ℚ⟮β⟯ ⊔ ℚ⟮b⟯) ∣ 2^k'`, then tower law
+- Pushed PR #15128
+
+### Key Findings
+- **hjoin_dvd pattern**: Apply `isConstructible_sup_degree b hb (ℚ⟮β⟯)` at K=ℚ⟮β⟯, use `sup_comm`, then `Module.finrank_mul_finrank ℚ ↥ℚ⟮β⟯ ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯)` + `Nat.mul_dvd_mul hβ_dvd hk'`
+- **h_top_Ka blocker**: `adjoin ↥K_a {β_in_Kaβ} = ⊤` in `IntermediateField ↥K_a ↥K_aβ` is blocked by Lean4 type-level issue: `↥K_a` (subtype of ℂ) ≠ any `IntermediateField ℚ ↥K_aβ` as Lean types, so `restrictScalars_adjoin` cannot be applied directly
+- **Proof plan for h_top_Ka**: `apply restrictScalars_injective ℚ; rw [restrictScalars_top]; rw [restrictScalars_adjoin K_a_inner {β_in_Kaβ}]` where `K_a_inner : IntermediateField ℚ ↥K_aβ` is K_a's image; then show `adjoin ℚ (↑K_a_inner ∪ {β_in_Kaβ}) = ⊤` since K_a_inner ∪ {β} generates K_aβ = K_a ⊔ ℚ⟮β⟯ over ℚ
+
+### Files Modified
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean`
+
+### Current Sorries (2 total)
+1. **h_top_Ka** (line ~179): `adjoin ↥K_a {β_in_Kaβ} = ⊤` in `IntermediateField ↥K_a ↥K_aβ`  — the only blocker for `isConstructible_sup_degree`
+2. **wantzel_galois_iff** (line ~579): Full Galois theory — long-term goal
+
+### Next Steps
+1. Submit `h_top_Ka` to Aristotle: `IntermediateField.adjoin ↥K_a ({β_in_Kaβ} : Set ↥K_aβ) = ⊤` where `K_a K_aβ : IntermediateField ℚ ℂ`, `K_aβ = K_a ⊔ ℚ⟮β⟯`, `β_in_Kaβ = ⟨β, le_sup_right (mem_adjoin_simple_self ℚ β)⟩`
+2. Try: `apply restrictScalars_injective ℚ; rw [restrictScalars_top]; ...` — may require `K_a_inner : IntermediateField ℚ ↥K_aβ` definition and `adjoin_adjoin_left`
+
+## Session 2026-05-03 (Session 34) - Aristotle Proves finrank_dvd_two; h_top_Ka Proof Attempt
+
+**Mode**: REVISIT
+**Outcome**: progress — `finrank_adjoin_β_over_adjoin_a_dvd_two` proved by Aristotle; full h_top_Ka proof written; `adjoin_β_in_sup_eq_top` submitted to Aristotle
+
+### What I Did
+- Retrieved Aristotle result for job `594e3160` (Session 32 submission): `finrank_adjoin_β_over_adjoin_a_dvd_two` proved
+- Integrated Aristotle proof into companion file (replaced sorry with full proof via tower law + minpoly comp + interval_cases)
+- Wrote full ~45-line proof of `h_top_Ka` in the main file using:
+  - `IntermediateField.restrict` to build `K_a_im : IntermediateField ℚ ↥K_aβ` (image of K_a)
+  - `IntermediateField.restrict_algEquiv` for the AlgEquiv ↥K_a ≃ₐ[ℚ] ↥K_a_im
+  - `restrictScalars_adjoin_of_algEquiv i hi` to switch the scalar field from ↥K_a to ↥K_a_im
+  - `restrictScalars_adjoin K_a_im` to get adjoin ℚ (↑K_a_im ∪ {β_in_Kaβ})
+  - `lift_injective K_aβ + lift_adjoin + lift_top` to reduce to ℂ
+  - `adjoin ℚ (↑K_a ∪ {β}) = K_a ⊔ ℚ⟮β⟯ = K_aβ` via `sup_le` + `adjoin.mono`
+- Added `adjoin_β_in_sup_eq_top` standalone lemma to companion file
+- Submitted new Aristotle job `3127b935` for `adjoin_β_in_sup_eq_top`
+
+### Key Findings
+- **Aristotle strategy for finrank_dvd_two**: Tower law `finrank ℚ ℚ⟮β⟯ = [ℚ⟮β⟯:ℚ⟮a⟯] * [ℚ⟮a⟯:ℚ]`. Upper bound via `minpoly ℚ β ∣ (minpoly ℚ a).comp(X²)`. Then `interval_cases [ℚ⟮β⟯:ℚ⟮a⟯]`.
+- **h_top_Ka proof key**: `IntermediateField.restrict h` converts `K_a : IntermediateField ℚ ℂ` with `h : K_a ≤ K_aβ` into `K_a_im : IntermediateField ℚ ↥K_aβ` — the crucial bridge that makes `restrictScalars_adjoin` applicable.
+- **Potential issue**: `hi : algebraMap ↥K_a ↥K_aβ = (algebraMap ↥K_a_im ↥K_aβ) ∘ i` may need more specific simp lemmas. Not yet verified by Docker build.
+
+### Files Modified
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean` — h_top_Ka full proof attempt
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle.lean` — finrank_dvd_two integrated; adjoin_β_in_sup_eq_top added
+- `research/aristotle-jobs.json` — new job `3127b935` added
+
+### Current Sorries (2 total)
+1. **h_top_Ka** (line ~182): Full proof written — needs Docker verification to confirm compilation
+2. **wantzel_galois_iff** (line ~579): Full Galois theory — long-term goal
+
+### Next Steps
+1. Check Aristotle job `3127b935` for `adjoin_β_in_sup_eq_top`
+2. Run Docker build to verify `h_top_Ka` proof compiles
+3. If `h_top_Ka` compiles: `isConstructible_algebraic_degree` sorry count drops to 0; only `wantzel_galois_iff` remains
+4. Update PR #15128 with the compiled proof
