@@ -35,6 +35,10 @@ find_repo_root() {
 REPO_ROOT="$(find_repo_root)"
 cd "$REPO_ROOT"
 
+# Pin gh to the correct repo — this repo has a mathlib-fork remote that gh
+# defaults to over origin, causing all pr commands to target the wrong repo.
+export GH_REPO="rjwalters/lean-genius"
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
