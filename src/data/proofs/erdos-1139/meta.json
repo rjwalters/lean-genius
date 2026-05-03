@@ -16,7 +16,7 @@
       "analytic-number-theory",
       "open-problem"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1139,
     "erdosUrl": "https://erdosproblems.com/1139",
@@ -49,9 +49,9 @@
       "erdos_1139: main conjecture lim sup gap/log k = ∞"
     ],
     "dateAdded": "2026-03-24",
-    "axiomCount": 0,
-    "lineCount": 178,
-    "assumptions": "0 axioms, 0 sorries. The open conjecture (lim sup of gaps / log k = ∞) and the Landau-Ramanujan density estimate are described in comments but are not formalized — no axiom declarations exist in the Lean file. 16 infrastructure theorems fully proved."
+    "axiomCount": 2,
+    "lineCount": 192,
+    "assumptions": "2 axioms: erdos_1139 (the open conjecture: lim sup gap/log k = ∞) and hardy_ramanujan_asymptotic (Landau-Ramanujan density: π₂(N) ~ cN log log N / log N). 16 theorems fully proved."
   },
   "overview": {
     "historicalContext": "Erdős #1139 asks about the distribution of gaps in the sequence of integers with at most 2 prime factors (primes and semiprimes). The study of almost-primes dates to Viggo Brun's 1915 sieve work, which first established that the sum of reciprocals of twin primes converges — in contrast to the divergent sum over primes. The counting function for integers with at most $k$ prime factors was studied by Landau (1900) and refined by Ramanujan, Sathe (1953), and Selberg (1954), giving the asymptotic $\\pi_2(N) \\sim cN \\log \\log N / \\log N$. Despite the almost-primes being denser than the primes by a factor of $\\log \\log N$, Erdős conjectured that their gaps still grow faster than $\\log k$. This is surprising: for primes, Cramér's conjecture predicts gaps of order $(\\log p)^2$, and one might expect the denser almost-prime sequence to have comparatively tamer gaps. The problem connects to Maier's 1985 theorem showing irregularities in prime distribution that defeat simple probabilistic models, and to the Jacobsthal function measuring maximal gaps in sieved sequences.",
@@ -152,8 +152,8 @@
     ],
     "opens": [],
     "namespace": "Erdos1139",
-    "lineCount": 178,
-    "axiomCount": 0,
+    "lineCount": 192,
+    "axiomCount": 2,
     "theoremCount": 16,
     "definitionCount": 6,
     "path": "Proofs/Erdos1139Problem.lean",
