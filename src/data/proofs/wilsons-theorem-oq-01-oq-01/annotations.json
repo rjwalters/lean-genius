@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-1",
+    "line": 42,
+    "type": "insight",
+    "content": "**563 is a Wilson prime**: 563² = 316,969 divides 562! + 1. This was first discovered by Goldberg in 1953 using early computing machinery, and is here verified for the first time in Lean 4. The `native_decide` tactic compiles the divisibility check to native code using GMP arbitrary-precision arithmetic, making the computation feasible despite 562! having over 1,300 digits."
+  },
+  {
+    "id": "ann-2",
+    "line": 52,
+    "type": "context",
+    "content": "**The rarity of Wilson primes**: After 13, the next Wilson prime is 563 — a gap of 550 primes. The verifications here confirm that 17, 19, 23, 29, 31, 37 are not Wilson primes. Each verification checks p² ∤ (p-1)! + 1 using `native_decide`. A complete verified search up to 563 would require checking all 102 primes between 13 and 563."
+  },
+  {
+    "id": "ann-3",
+    "line": 78,
+    "type": "proof-technique",
+    "content": "**Wilson primes are odd**: Since 2 is not a Wilson prime (verified in the parent file), and Wilson primes must be prime, and every prime other than 2 is odd, the claim follows immediately. In Lean: `hp.1.odd_of_ne_two (fun h => two_not_wilson_prime (h ▸ hp))`. The `▸` notation substitutes `p = 2` into `hp : IsWilsonPrime p` to get `IsWilsonPrime 2`, which contradicts `two_not_wilson_prime`."
+  },
+  {
+    "id": "ann-4",
+    "line": 84,
+    "type": "proof-technique",
+    "content": "**Lower bound ≥ 5 via interval_cases**: With `hlt : p < 5` and `hge2 : 2 ≤ p` (from primality), `interval_cases p` creates exactly three goals: p = 2, p = 3, p = 4. Cases 2 and 3 are eliminated by `two_not_wilson_prime` and `three_not_wilson_prime` (from parent). Case 4 is eliminated because 4 = 2² is not prime (`by decide`). This exhausts all cases and proves p ≥ 5."
+  },
+  {
+    "id": "ann-5",
+    "line": 103,
+    "type": "context",
+    "content": "**The heuristic for infinitely many Wilson primes**: Model W_p mod p as uniformly distributed on {0, ..., p-1}. Then each prime p contributes probability 1/p to being a Wilson prime. The expected count up to N is Σ_{p≤N} 1/p ≈ ln(ln(N)) by Mertens' theorem. For N = 2×10¹³, this predicts ≈ 3.1 Wilson primes — exactly matching the three known examples. While this heuristic is compelling, it does not constitute a proof."
+  },
+  {
+    "id": "ann-6",
+    "line": 115,
+    "type": "proof-technique",
+    "content": "**Cofinal via contradiction**: Assume no Wilson prime above N. Then every Wilson prime satisfies p ≤ N, so {p | IsWilsonPrime p} ⊆ {0,...,N} = Set.Iic N. Since Set.Iic N is finite, this makes the Wilson prime set finite — contradicting `wilson_primes_infinite_conj` (the axiom). The key lemma is `Set.Finite.subset (Set.finite_Iic N) ...`."
+  }
+]
