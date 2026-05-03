@@ -33,7 +33,9 @@
       "The density extension step (Step C) is a direct port of the parent proof: `Lp.induction` does not use `IsFiniteMeasure` — it only requires `SigmaFinite`. This makes Step C the cheapest of the three sorries (~50 lines) and confirms that sigma-finiteness is the right generality for the full theorem.",
       "The Lp restriction map infrastructure (`Lp(μ) → Lp(μ.restrict S)` isometric embedding and its adjoint) is the main Lean gap for Step A (~150 lines). This gap is not a mathematics problem but a Mathlib API coverage problem — the restriction map exists conceptually but is not yet in Mathlib as an isometric linear map.",
       "The sorry classification ('HARD not OPEN') is a mathematical contribution in its own right: it distinguishes between missing Lean infrastructure (a bounded, finite coding task) and genuinely unsolved mathematics. This taxonomy is essential for the gallery's curation of 'what's left to formalize' vs 'what's known to be unsolved'.",
-      "The `noncomputable` annotation is required because `Lp` spaces use `Classical.choice` in their construction — the Lp equivalence classes are defined via propositional choice. This is a recurring pattern in Mathlib's measure theory and is purely a definitional necessity, not a constructive weakness."
+      "The `noncomputable` annotation is required because `Lp` spaces use `Classical.choice` in their construction — the Lp equivalence classes are defined via propositional choice. This is a recurring pattern in Mathlib's measure theory and is purely a definitional necessity, not a constructive weakness.",
+      "**Radon-Nikodym as the mathematical engine**: The Lp Riesz representation theorem is essentially a corollary of the Radon-Nikodym theorem. Every continuous linear functional φ on Lp(μ) defines a signed measure ν via ν(E) = φ(1_E), absolutely continuous with respect to μ for E with μ(E) < ∞. Radon-Nikodym yields a density g = dν/dμ, which is then identified as the representing function in Lq via the Hölder bound ||φ|| ≤ ||g||_q. The sigma-finite extension in this file is precisely the step where the Radon-Nikodym argument must be glued over the exhaustion {Sₙ}.",
+      "**p = 2 and Hilbert space duality**: For p = 2 (so q = 2), the Riesz representation for L²(μ) becomes the Riesz-Fréchet theorem for Hilbert spaces: every continuous linear functional on a Hilbert space H is of the form x ↦ ⟨x, y⟩ for a unique y ∈ H. The L² case is the starting point from which the general Lp theory was developed (Riesz 1907, Fréchet 1907). Formalizing the sigma-finite L² case is strictly easier since the inner product structure gives self-duality directly, without needing the Hölder conjugate asymmetry."
     ]
   },
   "sections": [
@@ -99,6 +101,26 @@
       "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
       "relationship": "related",
       "description": "The grandparent file axiomatizing Lp surjectivity; the finite-measure parent proved it; this file aims to remove IsFiniteMeasure"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01",
+      "relationship": "foundational",
+      "description": "Hölder's inequality in eLpNorm form is the key analytic bound underlying the Lp Riesz representation: the integral estimate |∫fg dμ| ≤ ||f||_p · ||g||_q bounds the operator norm of the representing functional, establishing ||φ|| ≤ ||g||_q. Without Hölder, the identification of the dual space with Lq has no quantitative content."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-03",
+      "relationship": "related",
+      "description": "Complex-valued Hölder inequality (Nnnorm form): directly relevant to the open question about extending the sigma-finite Riesz representation to complex-valued Lp spaces. The real-valued argument in this file requires replacing absolute values with norms and tracking conjugates — the complex Hölder entry formalizes exactly the tools needed."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Riesz-Thorin interpolation theorem (from Hölder's inequality): connects to the Lp duality framework by showing that operators bounded on Lp and Lq are bounded on all Lr for r between p and q. The sigma-finite Riesz representation is compatible with Riesz-Thorin: once the dual of Lp is identified with Lq for all p > 1, interpolation applies to the operator ι: Lq → (Lp)* = Lq."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-02",
+      "relationship": "related",
+      "description": "Minkowski integral inequality (Lp triangle inequality): part of the Lp space infrastructure that underpins the Riesz representation. The Lp norm itself satisfies the triangle inequality via Minkowski's inequality — this is needed to verify that the representing functional g ↦ ∫fg is well-defined and continuous on the Banach space Lp(μ)."
     }
   ],
   "leanFile": {
