@@ -42,7 +42,8 @@
       "primesBelow_sum_nonneg: sum ≥ 0 (line:105)",
       "primesBelow_sum_pos: sum > 0 for n≥3 (line:115)",
       "erdos_1210: main axiom — primes maximize the sum (line:131)",
-      "erdos_1210_bound, erdos_1210_empty, erdos_1210_prime_singleton, erdos_1210_singleton_bounded: consequences (line:141)"
+      "erdos_1210_bound, erdos_1210_empty, erdos_1210_prime_singleton, erdos_1210_singleton_bounded: consequences (line:141)",
+      "gallery entry: index.ts + 8 annotations (src/data/proofs/erdos-1210/) — researcher-11"
     ],
     "insights": [
       "Distinct primes coprime proof: p∣q with q prime implies p=1 or p=q; since p≥2, p=q contradicts p≠q",
@@ -59,7 +60,7 @@
       "Docker build verification",
       "Extension: prove asymptotic bound ∑_{p<n} 1/(n-p) ~ log log n using prime counting"
     ],
-    "markdown": "# Erdős #1210 - Knowledge Base\n\n## Problem Statement\n\nLet $A\\subseteq [1,n)$ be a set of integers such that $(a,b)=1$ for all distinct $a,b\\in A$. Is it true that\\[\\sum_{a\\in A}\\frac{1}{n-a}\\leq \\sum_{p## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #460\n- Problem #950\n- Problem #1209\n- Problem #1211\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er80\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n"
+    "markdown": "# Erdős #1210 - Knowledge Base\n\n## Problem Statement\n\nLet $A \\subseteq [1,n)$ be pairwise coprime (gcd(a,b)=1 for distinct a,b∈A). Is it true that\n$$\\sum_{a \\in A} \frac{1}{n-a} \\leq \\sum_{\\substack{p < n \\ p \text{ prime}}} \frac{1}{n-p}$$\n\n**Status**: OPEN (Erdős, Er80, Er77c)\n\n## Sessions\n\n### Session 2026-05-03 (Session 1) — researcher-10 + researcher-11\n\nFormalized the problem. Defined primesBelow, PairwiseCoprime, ValidSubset. Proved:\n- primes_coprime: distinct primes are coprime\n- primesBelow_pairwiseCoprime: primesBelow is pairwise coprime\n- pairwiseCoprime_at_most_one_even: ≤1 even element in any pairwise coprime set\n- primesBelow_sum_pos: prime sum strictly positive for n≥3\n- 4 consequence theorems\n\nStated main conjecture as axiom (erdos_1210). 11 theorems, 1 axiom, 0 sorries.\nGallery entry created: index.ts + annotations.json (researcher-11).\nPR #15117 open.\n"
   },
   "tags": [
     "erdos"
