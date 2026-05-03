@@ -31,7 +31,7 @@
     "axiomCount": 1,
     "lineCount": 156,
     "assumptions": "1 axiom: squareful_sum_threshold (every n ≥ 120 is a sum of 3 squareful numbers). Computationally verified up to 1000.",
-    "theoremCount": 20
+    "theoremCount": 25
   },
   "overview": {
     "historicalContext": "Erdős Problem #1107 asks: for each r ≥ 2, is every sufficiently large integer the sum of at most 3 r-powerful numbers (numbers where every prime factor appears with exponent ≥ r)? The r=2 case (squareful/2-powerful numbers) was resolved by Heath-Brown (1988) using the theory of ternary quadratic forms — he proved that specific quadratic forms represent all large integers, which implies every large n is a sum of 3 squareful numbers.\n\nHowever, Heath-Brown's proof is non-effective: it does not give an explicit threshold N. The proof uses an indirect argument (showing the 'exceptions' are finite) without bounding how large the finite exceptional set can be. Making such results effective — finding the smallest N — is a separate, often computational, task.\n\nThis formalization bridges the gap: exhaustive computation in Lean (using `native_decide`) verifies every integer from 1 to 1000, identifying exactly {7, 15, 23, 87, 111, 119} as the exceptional set and establishing N=120 as the precise threshold. Combined with Heath-Brown's theorem (axiomatized) for n ≥ 120 in general, this gives the complete effective result.",
