@@ -73,6 +73,29 @@
     ]
   },
   {
+    "id": "ann-ptol-oq01-ccw-def",
+    "proofId": "ptolemys-theorem-oq-01",
+    "range": {
+      "startLine": 196,
+      "endLine": 212
+    },
+    "type": "definition",
+    "title": "sin_neg Helper and IsCCWOrder: CCW Angular Order on the Unit Circle",
+    "content": "**sin_neg_of_neg_of_neg_pi_lt**: For $x \\in (-\\pi, 0)$, $\\sin x < 0$. Proved by reflecting: $-x \\in (0, \\pi)$, so $\\sin(-x) > 0$ (via `Real.sin_pos_of_pos_of_lt_pi`), then `Real.sin_neg` gives $\\sin x < 0$. This helper handles the sign analysis needed for the CCW positivity argument.\n\n**IsCCWOrder** $(z_1, z_2, z_3, z_4)$: there exist angles $\\theta_1 < \\theta_2 < \\theta_3 < \\theta_4 < \\theta_1 + 2\\pi$ with $z_j = e^{i\\theta_j}$. The CCW condition encodes strict angular order around the circle. The strict inequalities ensure all half-angle differences $(\\theta_j - \\theta_k)/2$ are non-degenerate, enabling the sign analysis.",
+    "mathContext": "The CCW condition is the geometric input that makes the Ptolemy ratio positive. In Lean, it is encoded as existential witnesses for angles, which are then destructured (`obtain ⟨θ₁, θ₂, θ₃, θ₄, h₁₂, h₂₃, h₃₄, h₄₁, ...⟩`) in the main proof. The strict inequality $\\theta_4 < \\theta_1 + 2\\pi$ (rather than $\\leq$) prevents the degenerate case where all four points coincide. The half-angle differences $(\\theta_j - \\theta_k)/2$ all lie in $(-\\pi, 0)$ for CCW order, which is why `sin_neg_of_neg_of_neg_pi_lt` suffices.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.sin_pos_of_pos_of_lt_pi",
+      "Real.sin_neg",
+      "angular order",
+      "complex exponential"
+    ],
+    "prerequisites": [
+      "Real.sin_pos_of_pos_of_lt_pi",
+      "Complex.exp_mul_I"
+    ]
+  },
+  {
     "id": "ann-ptol-oq01-03",
     "proofId": "ptolemys-theorem-oq-01",
     "range": {
@@ -101,12 +124,12 @@
     "proofId": "ptolemys-theorem-oq-01",
     "range": {
       "startLine": 311,
-      "endLine": 380
+      "endLine": 382
     },
     "type": "theorem",
-    "title": "ptolemy_equality_for_unit_circle_ccw and ptolemy_equality_for_concyclic",
-    "content": "ptolemy_equality_for_unit_circle_ccw follows immediately from ptolemy_ratio_pos_of_ccw (gets t > 0) and ptolemy_equality_of_proportional (t ≥ 0 → equality). ptolemy_equality_for_concyclic normalizes concyclic points to the unit circle via w_i = (z_i - c)/r, applies the unit circle result, then uses ptolemy_iff_normalized (Ptolemy equality is invariant under translation and positive scaling) to transfer back.",
-    "mathContext": "ptolemy_iff_normalized is proved by showing (z_i-z_j)/r differs from z_i-z_j only by a factor of 1/r, so the Ptolemy inequality scales uniformly by 1/r² on both sides.",
+    "title": "ptolemy_equality_for_unit_circle_ccw, IsConcyclic₄, and ptolemy_iff_normalized",
+    "content": "**ptolemy_equality_for_unit_circle_ccw** (lines 327-343): For four unit-circle points in CCW order, Ptolemy equality holds. One-step proof: get $t > 0$ from `ptolemy_ratio_pos_of_ccw`, then apply `ptolemy_equality_of_proportional` with $t \\geq 0$.\n\n**IsConcyclic₄** (line 350-352): $z_1, z_2, z_3, z_4$ lie on a common circle — $\\exists c, r > 0$ with $\\|z_j - c\\| = r$ for all $j$.\n\n**concyclic_normalize_to_unit** (356-358): if $\\|z-c\\| = r > 0$, then $\\|(z-c)/r\\| = 1$. One line: `map_div₀ + norm_real + div_self`.\n\n**ptolemy_iff_normalized** (362-382): Ptolemy equality is invariant under translation $z_j \\mapsto z_j - c$ and positive scaling $z_j \\mapsto z_j/r$. Proof: $(z_i-c)/r - (z_j-c)/r = (z_i-z_j)/r$, so both sides scale by $1/r^2$; `field_simp` + `linarith` closes.",
+    "mathContext": "The normalization lemmas handle the bridge between general concyclic points and the unit circle case. `ptolemy_iff_normalized` is a biconditional: Ptolemy equality for $z_i$ iff for $(z_i-c)/r$. This enables the main theorem `ptolemy_equality_for_concyclic` (proved in lines 383-425) to normalize first, apply the unit circle result, then transfer back. The invariance under scaling follows because the Ptolemy equation is homogeneous of degree 2 on both sides.",
     "significance": "key",
     "relatedConcepts": [
       "ptolemy_equality_of_proportional",
@@ -116,6 +139,30 @@
     "prerequisites": [
       "ptolemy_ratio_pos_of_ccw",
       "PtolemysComplexProof.ptolemy_equality_of_proportional"
+    ]
+  },
+  {
+    "id": "ann-ptol-oq01-05",
+    "proofId": "ptolemys-theorem-oq-01",
+    "range": {
+      "startLine": 383,
+      "endLine": 482
+    },
+    "type": "theorem",
+    "title": "ptolemy_equality_for_concyclic: Full Proof, Numerical Examples, and Summary",
+    "content": "**ptolemy_equality_for_concyclic** (383-425): For four concyclic points in CCW convex position, Ptolemy equality holds. Structure:\n1. Destructure `hcyc` to get center $c$ and radius $r > 0$\n2. Prove $w_j := (z_j-c)/r$ are unit-circle points via `concyclic_normalize_to_unit`\n3. Simplify: $(z_i-c)/r - (z_j-c)/r = (z_i-z_j)/r$ to rewrite non-degeneracy hypotheses\n4. Apply `ptolemy_equality_for_unit_circle_ccw` to normalized points\n5. Transfer back via `← ptolemy_iff_normalized`\n\n**Numerical examples** (Part 6, lines 426-457):\n- Unit square $\\{1, i, -1, -i\\}$: Ptolemy equality $\\|1-(-1)\\|·\\|i-(-i)\\| = \\|1-i\\|·\\|{-1}-(-i)\\| + \\|i-(-1)\\|·\\|1-(-i)\\|$. Verified by `norm_num + Complex.abs_apply`.\n- Non-concyclic $\\{0, 1, 2, i\\}$: Ptolemy inequality is strict. Verified by `nlinarith + Real.sq_sqrt`.\n\n**Summary** (Part 7, lines 458-482): The complete characterization: concyclic CCW ↔ SameRay ↔ Ptolemy equality ↔ positive cross-ratio. The `#check` lines at 480-482 serve as sanity-check exports.",
+    "mathContext": "The `obtain ⟨_, hc1, hc2, hc3, hc4⟩ := hcyc.choose_spec.choose_spec` destructuring uses the fact that `IsConcyclic₄` is defined as a nested existential: `⟨c, r, hr, hc1, hc2, hc3, hc4⟩`. The `let c := hcyc.choose` / `let r := hcyc.choose_spec.choose` in the theorem statement allows access to witnesses in the proof. The unit square example is the classical verification: $C_4$ inscribed in the unit circle gives $2 \\cdot 2 = \\sqrt{2} \\cdot \\sqrt{2} + \\sqrt{2} \\cdot \\sqrt{2}$ i.e., $4 = 2 + 2$. The non-concyclic strict example uses $\\|0-2\\| \\cdot \\|1-i\\| = \\sqrt{5}$ vs $\\|0-1\\| \\cdot \\|2-i\\| + \\|1-2\\| \\cdot \\|0-i\\| = \\sqrt{5} + 1 > \\sqrt{5}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsConcyclic₄",
+      "cross-ratio",
+      "unit square Ptolemy",
+      "strict Ptolemy inequality"
+    ],
+    "prerequisites": [
+      "ptolemy_equality_for_unit_circle_ccw",
+      "ptolemy_iff_normalized",
+      "concyclic_normalize_to_unit"
     ]
   }
 ]
