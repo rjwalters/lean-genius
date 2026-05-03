@@ -163,5 +163,99 @@
       "startLine": 77,
       "endLine": 94
     }
+  },
+  {
+    "id": "ann-261-utility-partial-sum",
+    "proofId": "erdos-261",
+    "range": {
+      "startLine": 95,
+      "endLine": 125
+    },
+    "type": "proof-technique",
+    "title": "Utility Lemmas and Partial Sum Identity",
+    "content": "Lines 95-125 provide supporting infrastructure for the representability proofs.\n\n**recipPow2Sum_pair** (95-98): For distinct a ≠ b, the sum over {a,b} = w(a) + w(b). Proved by rw [Finset.sum_insert ...].\n\n**recipPow2Sum_le_of_subset** (101-107): Monotonicity — if S ⊆ T and all elements of T are ≥ 1, then recipPow2Sum S ≤ recipPow2Sum T. Uses Finset.sum_le_sum_of_subset_of_nonneg.\n\n**partial_sum_formula** (113-124): The KEY inductive identity: ∑_{k=1}^{n} k/2^k = 2 - (n+2)/2^n. Proved by induction: base case by simp+ring; inductive step rewrites pow_succ, push_cast, field_simp, ring. This is used in the Borwein-Loring telescoping argument.",
+    "mathContext": "The identity $\\sum_{k=1}^{n} \\frac{k}{2^k} = 2 - \\frac{n+2}{2^n}$ enables telescoping: $\\sum_{k=a+1}^{a+m} \\frac{k}{2^k} = \\frac{a+2}{2^a} - \\frac{a+m+2}{2^{a+m}}$.",
+    "significance": "structural",
+    "relatedConcepts": [
+      "partial_sum_formula",
+      "telescoping sums",
+      "Finset.sum_le_sum_of_subset_of_nonneg"
+    ],
+    "prerequisites": [
+      "recipPow2Sum",
+      "recipPow2Weight",
+      "Finset.sum_insert"
+    ]
+  },
+  {
+    "id": "ann-261-representations-and-borwein",
+    "proofId": "erdos-261",
+    "range": {
+      "startLine": 126,
+      "endLine": 253
+    },
+    "type": "proof-technique",
+    "title": "Concrete Representations and the Borwein-Loring Infinite Family",
+    "content": "Lines 126-253 form the core mathematical content.\n\n**Small cases** (128-170): representable_one (n=1 via {4,5,6}), representable_of_eq_weight (w(n)=w(m) transfers representability — since w(1)=w(2)=1/2), representable_two (from w(2)=w(1)), representable_three (n=3 via {4,6,8}). Each proof: refine with card, positivity, and sum-equality goals; sum equality by simp [sum_insert ... by decide] + norm_num.\n\n**icc_recipPow2_sum** (172-192, private): Telescoping — ∑_{k=a+1}^{a+m} k/2^k = (a+2)/2^a - (a+m+2)/2^{a+m}. Proved by induction on m with field_simp+ring.\n\n**borwein_loring_family** (200-226): For m ≥ 1, n = 2^{m+1}-m-2 is representable via Finset.Icc (n+1) (n+m). The sum telescopes to n/2^n using n+m+2 = 2^{m+1}.\n\n**borwein_loring_value_ge** (230-236, private): n = 2^{m+1}-m-2 ≥ m for m ≥ 1.",
+    "mathContext": "Borwein-Loring: $n_m = 2^{m+1}-m-2$ is representable via $\\{n_m+1, \\ldots, n_m+m\\}$. Telescoping: $\\frac{n+2}{2^n} - \\frac{2^{m+1}}{2^n \\cdot 2^m} = \\frac{n}{2^n} = w(n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Borwein-Loring family",
+      "icc_recipPow2_sum",
+      "consecutive blocks"
+    ],
+    "prerequisites": [
+      "partial_sum_formula",
+      "icc_recipPow2_sum",
+      "Finset.Icc"
+    ]
+  },
+  {
+    "id": "ann-261-cusick-and-instances",
+    "proofId": "erdos-261",
+    "range": {
+      "startLine": 254,
+      "endLine": 347
+    },
+    "type": "summary",
+    "title": "Cusick's Theorem, Small Cases 5-7, and Larger Borwein-Loring Instances",
+    "content": "Lines 254-347 complete the verified representability catalog.\n\n**cusick_infinitely_many** (241-248): For any N, take m = max(N,1) and n = 2^{m+1}-m-2 ≥ m ≥ N. Proves Cusick's 1986 result: infinitely many n are representable.\n\n**representable_four** (252): n=4 = 2³-2-2, Borwein-Loring m=2.\n\n**representable_five** (255-268): n=5 via {6,7,11,13,14} — 5-element witness verified by Finset.sum_insert chain + norm_num.\n\n**representable_six** (271-283): n=6 via {7,8,11,13,14}.\n\n**representable_seven** (287-301): n=7 via {8,9,11,15,20,21,24}.\n\n**representable_le_7** (303-312): Uses interval_cases n to dispatch all cases n=1..7.\n\n**representable_nine** (315-326): n=9 via {10,11,13,14}. (Note: n=8 is not individually proved.)\n\n**Borwein-Loring instances** (330-346): n=11 (m=3), n=26 (m=4), n=57 (m=5), n=120 (m=6) — all via borwein_loring_family.",
+    "mathContext": "Borwein-Loring values: $n_1=1, n_2=4, n_3=11, n_4=26, n_5=57, n_6=120$. Tengely-Ulas-Zygadło verified all $n \\leq 10000$ computationally.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cusick 1986",
+      "interval_cases",
+      "Borwein-Loring family",
+      "Tengely-Ulas-Zygadło"
+    ],
+    "prerequisites": [
+      "borwein_loring_family",
+      "borwein_loring_value_ge"
+    ]
+  },
+  {
+    "id": "ann-261-conjectures-incomplete",
+    "proofId": "erdos-261",
+    "range": {
+      "startLine": 348,
+      "endLine": 388
+    },
+    "type": "insight",
+    "title": "Erdős Conjectures and the Incomplete Continuum Definition",
+    "content": "Lines 348-388 formalize the three Erdős Problem 261 statements.\n\n**ErdosProblem261_infinitely_many** (352-355): Infinitely many n are representable — PROVED by cusick_infinitely_many.\n\n**IsInfiniteRep** (367-369): INCOMPLETE definition — missing the convergence condition ∑ a(k)/2^{a(k)} = x. The docstring (lines 360-366) honestly flags this: without Filter.Tendsto or tsum, IsInfiniteRep only asserts the sequence is positive and injective, not that it sums to x.\n\n**ErdosProblem261_continuum** (375-378): Strongest conjecture (uncountably many distinct representations of some rational x) — TRIVIALLY proved due to the incomplete definition. The proof takes x=0, f(t)(n)=n+1. Not mathematically meaningful.\n\n**ErdosProblem261_two_reps** (382-388): Weakened form (≥2 representations). Also trivially satisfiable.\n\nThis is an honest accounting of the formalization gap: the infinite-series part of Problem 261 awaits Mathlib's tsum API integration.",
+    "mathContext": "Complete intended definition: $\\text{IsInfiniteRep}(a,x) \\iff (\\forall i, 1 \\leq a_i) \\wedge (\\text{injective}\\ a) \\wedge \\sum_{i=0}^{\\infty} \\frac{a_i}{2^{a_i}} = x$. Erdős's Part 2 (every $n \\geq 1$ representable) and Part 3 (continuum of representations) both remain open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős Problem 261",
+      "incomplete formalization",
+      "tsum convergence",
+      "Filter.Tendsto",
+      "Cusick"
+    ],
+    "prerequisites": [
+      "cusick_infinitely_many",
+      "IsInfiniteRep",
+      "Mathlib.Topology.Algebra.InfiniteSum"
+    ]
   }
 ]
