@@ -1,8 +1,8 @@
 {
   "slug": "shannon-entropy-oq-03",
   "title": "Strong subadditivity $H(X,Y,Z) + H(Y) \\leq H(X,Y) + H(Y,Z)$ is a deeper inequ...",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,14 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved entropy_chain_rule (H(X,Y)=H(Y)+H(X|Y)) and subadditivity (H(X,Y)≤H(X)+H(Y)). 3→1 sorries. Remaining sorry: strong_subadditivity needs conditional distributions + per-slice KL divergence.",
+    "progressSummary": "COMPLETE: 0 sorries. Proved strong_subadditivity via conditional KL divergence: q(x,y,z)=pXY*pYZ/pY, pointwise kl_term_bound, marginal lifting. shannon-entropy-oq-03 fully verified.",
     "builtItems": [
       "def marginalXY, marginalYZ, marginalY: three-variable marginal distributions",
       "theorem strong_subadditivity (sorry): H(X,Y,Z)+H(Y) ≤ H(X,Y)+H(Y,Z) — Lieb-Ruskai",
       "theorem entropy_chain_rule (sorry): H(X,Y) = H(Y) + H(X|Y) — entropy decomposition",
       "theorem subadditivity (from entropy_chain_rule): H(X,Y) ≤ H(X) + H(Y)",
       "theorem entropy_chain_rule (proved): H(X,Y) = H(Y) + H(X|Y) — log splitting + marginal telescoping",
-      "theorem subadditivity (proved): H(X,Y) ≤ H(X) + H(Y) — from chain_rule + conditioning_reduces_entropy"
+      "theorem subadditivity (proved): H(X,Y) ≤ H(X) + H(Y) — from chain_rule + conditioning_reduces_entropy",
+      "strong_subadditivity in ShannonEntropySSA.lean:280-452",
+      "kl_term_bound (private local copy) in ShannonEntropySSA.lean:30-50"
     ],
     "insights": [
       "SSA is equivalent to I(X;Z|Y) ≥ 0 (conditional MI non-negativity)",
@@ -45,7 +47,8 @@
       "entropy_chain_rule is the key missing piece: H(X,Y) = H(Y) + H(X|Y). Proof: expand log p(x,y) = log p_Y(y) + log(p(x,y)/p_Y(y)) and collect terms.",
       "entropy_chain_rule proved: split log p(x,y) = log(p(x,y)/p_Y(y)) + log(p_Y(y)), telescoping sum gives marginal entropy",
       "subadditivity proved: chain_rule + conditioning_reduces_entropy from ShannonEntropy.lean via definitional equality bridge",
-      "SSA requires defining conditional joint p(x,z|y) = p(x,y,z)/p(y) per slice and applying mutual_info_nonneg"
+      "SSA requires defining conditional joint p(x,z|y) = p(x,y,z)/p(y) per slice and applying mutual_info_nonneg",
+      "SSA proved via reference distribution q(x,y,z)=pXY(x,y)*pYZ(y,z)/pY(y); KL sum ≥ 0 by pointwise bound; lifted to entropy deficit by marginal sum identities"
     ],
     "mathlibGaps": [],
     "nextSteps": [
