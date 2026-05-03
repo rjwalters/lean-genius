@@ -7081,9 +7081,12 @@
     },
     "erdos-446": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-03T11:47:18Z",
-      "result": "issues-fixed"
+      "auditCount": 4,
+      "lastAudited": "2026-05-03T03:18:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "Phantom axiom narrative: \"Historical axioms: Besicovitch/Erdős\" entry claimed axioms for docstring-only sections; ford section claimed phantom ford_2008_general axiom; delta originalContributions overstated constraints; section line ranges were stale by 10-25 lines."
+      ]
     },
     "erdos-447": {
       "agentId": "auditor-cycle-20-batch",
