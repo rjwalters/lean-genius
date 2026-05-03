@@ -38,7 +38,7 @@
     "keyInsights": [
       "**3-smooth numbers**: n = 2^u × 3^v are called '3-smooth' or '23-smooth'. The first few: 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, 27, ...",
       "**Pierpont primes**: p is Pierpont if p-1 is 3-smooth. Examples: 2 (p-1=1), 3 (p-1=2), 5 (p-1=4), 7 (p-1=6), 13 (p-1=12), 17 (p-1=16), 19 (p-1=18), 37 (p-1=36), 73 (p-1=72), 97 (p-1=96).",
-      "**Non-examples**: 11 (11-1=10=2×5, but 5 is not 3-smooth... wait, 5 IS a Pierpont prime — let me reconsider. Actually 10=2×5 and 5 is prime but not 2 or 3, so 10 is not 3-smooth). 23 (23-1=22=2×11, 11 is not 3-smooth).",
+      "**Non-examples**: 11 (11−1=10=2×5, not 3-smooth since 5∤{2,3}). 23 (23−1=22=2×11, not 3-smooth since 11∉{2,3}). Note: 5 itself IS a Pierpont prime (5−1=4=2²), but 10 is not 3-smooth because 5 appears as a factor of 10.",
       "**Neusis vs. compass-straightedge**: Neusis allows trisecting any angle (unlike compass-straightedge). Regular 7-gon is neusis-constructible (7-1=6=2×3 is 3-smooth) but not compass-straightedge constructible."
     ]
   },
@@ -72,12 +72,12 @@
       "title": "Neusis Constructibility for Specific Polygons",
       "startLine": 251,
       "endLine": 328,
-      "summary": "Proves neusis-constructibility for regular 7-, 9-, 13-, 19-, 37-gons (all prime factors are Pierpont). Proves non-constructibility for 11- and 23-gons (have non-Pierpont prime factors). Totient computations via native_decide.",
+      "summary": "Verifies that φ(7)=6, φ(9)=6, φ(13)=12, φ(19)=18, φ(37)=36 are 2-3 numbers (the number-theoretic condition for neusis constructibility per Gleason 1988). Verifies that φ(11)=10 and φ(23)=22 are NOT 2-3 numbers. Totient computations via native_decide. Note: geometric constructibility follows from these by Galois theory (not formalized here).",
       "mathContext": "$\\phi(7)=6=2\\times 3$ (3-smooth), $\\phi(9)=6$, $\\phi(13)=12=4\\times 3$, $\\phi(19)=18=2\\times 9$, $\\phi(37)=36=4\\times 9$. All 3-smooth. $\\phi(11)=10=2\\times 5$ NOT 3-smooth."
     }
   ],
   "conclusion": {
-    "summary": "The Pierpont prime criterion for neusis constructibility is fully formalized: 54 theorems, 0 sorries, 0 axioms. 12 Pierpont primes and 4 non-examples verified, plus neusis-constructibility for 7 specific polygon families.",
+    "summary": "The number-theoretic component of the Pierpont prime criterion is fully formalized: 54 theorems, 0 sorries, 0 axioms. 12 Pierpont primes and 4 non-examples verified, plus 3-smooth totient verification for 7 specific polygons. The geometric connection (n-gon is neusis-constructible iff φ(n) is 3-smooth) requires Galois theory and is stated but not proved in Lean.",
     "implications": "Pierpont primes are the neusis analog of Fermat primes. This formalization demonstrates that extending compass-and-straightedge constructibility to neusis is captured by a simple number-theoretic condition on the prime factorization.",
     "openQuestions": [
       "Are there infinitely many Pierpont primes? (Open — similar to Fermat primes problem)",
@@ -88,16 +88,19 @@
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Tactic"
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Tactic",
+      "Proofs.AngleTrisectionOQ04"
     ],
     "opens": [],
     "namespace": "AngleTrisectionOQ04OQ03",
     "lineCount": 328,
     "axiomCount": 0,
     "theoremCount": 54,
-    "definitionCount": 4,
+    "definitionCount": 2,
     "path": "Proofs/AngleTrisectionOQ04OQ03.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": ["Proofs/AngleTrisectionOQ04.lean"]
   },
   "crossReferences": [
     {
