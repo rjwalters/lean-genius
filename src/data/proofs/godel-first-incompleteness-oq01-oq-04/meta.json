@@ -124,7 +124,40 @@
     }
   ],
   "conclusion": {
-    "summary": "Demonstrates that Gödel's First Incompleteness Theorem follows from the Diagonal Lemma as a general principle, with G explicitly constructed rather than assumed.",
-    "openQuestions": []
-  }
+    "summary": "9 theorems, 0 sorries, 5 axioms. The Diagonal Lemma approach cleanly separates Gödel's theorem into three independent components (D1, the Diagonal Lemma, and ω-consistency), with G explicitly constructed as a fixed point rather than assumed. The G_self_reference property that OQ-01 axiomatized becomes a one-line theorem: (diagonal_lem ...).choose_spec.",
+    "implications": "The OQ-04 formalization demonstrates a proof-engineering principle: when an ad hoc axiom (OQ-01's G_self_reference for G=⟨42⟩) can be derived from a general principle (the Diagonal Lemma), the general principle is the right thing to axiomatize. This applies broadly to logical self-reference constructions — the same Diagonal Lemma axiom yields Tarski's undefinability theorem, Löb's theorem, and the consistency sentence. For Lean formalization of metamathematics, the pattern (axiom general_principle, use Classical.choose to extract instances) is a reusable template.",
+    "openQuestions": [
+      "Can the Diagonal Lemma itself be proved from first principles in Lean, using a formalization of primitive recursive arithmetic and Gödel's substitution function? This would reduce the axiom count from 5 to 3 (dropping diagonal_lem, neg_G_prov could follow from the object-level form).",
+      "Does Lean's Mathlib have (or could it gain) a library for provability logic GL, formalizing D1-D2-D3 and Löb's theorem? The prov_fixed_point_exists result here would be a consequence.",
+      "Can ω-consistency be replaced by Rosser's weaker condition (consistency alone, using a different self-referential sentence) in this formalization framework?"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "first_incompleteness",
+      "type": "core",
+      "statement": "Consistent → ¬ Complete",
+      "description": "Any consistent system satisfying D1 and the Diagonal Lemma is incomplete.",
+      "significance": "Main theorem: Gödel's First Incompleteness Theorem, derived from 5 axioms with G explicitly constructed"
+    },
+    {
+      "name": "G_spec",
+      "type": "core",
+      "statement": "(⊢ G) ↔ (⊢ ¬ᶠ Prov (godelNum G))",
+      "description": "G is provable iff ¬Prov(⌈G⌉) is provable — the self-reference property, derived as a theorem from the Diagonal Lemma.",
+      "significance": "Key improvement over OQ-01: G_self_reference becomes a one-line theorem, not an axiom"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "godel-first-incompleteness-oq01",
+      "relationship": "related",
+      "description": "OQ-01: takes G_self_reference as an axiom for G=⟨42⟩; this file derives it from the general Diagonal Lemma"
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Original gallery entry; OQ-01 and OQ-04 provide non-vacuous formalizations"
+    }
+  ]
 }
