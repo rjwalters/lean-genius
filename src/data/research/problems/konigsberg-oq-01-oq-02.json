@@ -1,0 +1,192 @@
+{
+  "slug": "konigsberg-oq-01-oq-02",
+  "title": "Extend to Eulerian paths in directed graphs: the characterization is $\\mathrm...",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in graph theory: Extend to Eulerian paths in directed graphs: the characterization is $\\mathrm....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-03T07:32:10.537Z",
+    "iteration": 1,
+    "focus": "Proved handshaking lemmas via indicator-function double-counting; 3 axioms remain (necessity, iff, path-iff)",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 5→2 axioms. PR #15170 proved sum_outDegree_eq_edgeCount, sum_inDegree_eq_edgeCount (handshaking, via Finset.sum_comm double-count), and eulerian_circuit_implies_balanced (necessity, via walk-position bijection + closed walk rotation). Remaining: directed_eulerian_iff (Hierholzer sufficiency, ~500+ lines) and directed_euler_path_iff.",
+    "builtItems": [
+      "sum_outDegree_eq_edgeCount: proved from first principles via Finset.card_biUnion in KonigsbergOQ01OQ02.lean:85-101",
+      "sum_inDegree_eq_edgeCount: proved from first principles via Finset.card_biUnion in KonigsbergOQ01OQ02.lean:106-121",
+      "sum_outDegree_eq_sum_inDegree: proved by transitivity through |E| in KonigsbergOQ01OQ02.lean:124-126",
+      "directedTriangle_handshaking: explicit verification of handshaking for 3-cycle (3 edges, sum outDeg = 3) in KonigsbergOQ01OQ02.lean:212-215",
+      "eulerian_balanced_sum_zero: if G has Eulerian circuit then ∑ outDeg = ∑ inDeg as integers in KonigsbergOQ01OQ02.lean:223-226",
+      "eulerian_balanced_implies_degree_balance: direct corollary from axiom in KonigsbergOQ01OQ02.lean:229-231",
+      "sum_outDegree_eq_edgeCount: proved in KonigsbergOQ01OQ02.lean:79 via Finset.sum_comm (not axiom)",
+      "sum_inDegree_eq_edgeCount: proved in KonigsbergOQ01OQ02.lean:91 via Finset.sum_comm (not axiom)",
+      "closed_walk_balance: private lemma KonigsbergOQ01OQ02.lean:128 — rotation bijection for closed walk",
+      "walk_source_eq_outDegree: private lemma KonigsbergOQ01OQ02.lean:175 — edge-position bijection for sources",
+      "walk_target_eq_inDegree: private lemma KonigsbergOQ01OQ02.lean:228 — edge-position bijection for targets",
+      "eulerian_circuit_implies_balanced: proved in KonigsbergOQ01OQ02.lean:273 (not axiom)"
+    ],
+    "insights": [
+      "sum_outDegree_eq_edgeCount can be proved by partitioning G.edges by first endpoint and applying Finset.card_biUnion — no axiom needed",
+      "sum_inDegree_eq_edgeCount follows the same Finset partition argument with second endpoint",
+      "The disjointness condition for Finset.card_biUnion requires: different vertices → different filter classes, proved via Finset.disjoint_left and Finset.mem_filter",
+      "The remaining 3 axioms (eulerian_circuit_implies_balanced, directed_eulerian_iff, directed_euler_path_iff) require deeper graph traversal infrastructure (walk bijection, Hierholzer algorithm) — deferred",
+      "Weak connectivity definition formalized as: for all u≠v there exists an undirected path in G (edges traversable in either direction)",
+      "Handshaking proved by Finset.sum_comm: expand |{e: e.1=v}| as ∑_e [e.1=v], swap sums, get ∑_e 1 = |E|. Cleaner than Finset.card_biUnion approach.",
+      "Necessity proved via ExistsUnique: strengthening HasEulerianCircuit with ∃! (unique position per edge) + hsteps (every walk step is an edge) enables Finset.card_bij and ExistsUnique.unique for injectivity.",
+      "closed_walk_balance: rotation bijection i ↦ (i=0 ? n-1 : i-1) sends source-count positions {i<n: walk[i]=v} to target-count positions {i<n: walk[i+1]=v}. Uses walk[0]=walk[n] for the i=0 case."
+    ],
+    "mathlibGaps": [
+      "No Mathlib gap for handshaking: Finset.card_biUnion + Finset.disjoint_left sufficed",
+      "Hierholzer algorithm (directed Eulerian circuit construction) not in Mathlib4 — needed for directed_eulerian_iff sufficiency",
+      "Walk bijection argument for necessity (each visit = one in-edge + one out-edge) needs List.get index theory — ~150 lines with dependent type complexity"
+    ],
+    "nextSteps": [
+      "Eliminate directed_eulerian_iff: formalize Hierholzer's algorithm for directed graphs (constructive sufficiency, ~500+ lines)",
+      "Eliminate directed_euler_path_iff: prove from directed_eulerian_iff by degree modification argument",
+      "Docker build verification needed for KonigsbergOQ01OQ02.lean (PR #15170 not verified to compile)"
+    ]
+  },
+  "tags": [
+    "graph-theory",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "konigsberg",
+    "konigsberg-oq-01",
+    "konigsberg-oq-01-oq-02",
+    "konigsberg-oq-02",
+    "konigsberg-oq-02-oq-01",
+    "konigsberg-oq-03",
+    "konigsberg-oq-03-oq-02",
+    "konigsberg-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T07:32:10.536Z",
+  "lastUpdate": "2026-05-03T10:45:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Konigsberg.lean",
+      "filename": "Konigsberg.lean",
+      "lineCount": 221,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Konigsberg.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ01.lean",
+      "filename": "KonigsbergOQ01.lean",
+      "lineCount": 405,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ01.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ01OQ02.lean",
+      "filename": "KonigsbergOQ01OQ02.lean",
+      "lineCount": 390,
+      "theoremCount": 8,
+      "axiomCount": 2,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ02.lean",
+      "filename": "KonigsbergOQ02.lean",
+      "lineCount": 814,
+      "theoremCount": 30,
+      "axiomCount": 2,
+      "defCount": 11,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ02.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ02OQ01.lean",
+      "filename": "KonigsbergOQ02OQ01.lean",
+      "lineCount": 955,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ02OQ01Aristotle.lean",
+      "filename": "KonigsbergOQ02OQ01Aristotle.lean",
+      "lineCount": 239,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ02OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ03.lean",
+      "filename": "KonigsbergOQ03.lean",
+      "lineCount": 75,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ03.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ03OQ02.lean",
+      "filename": "KonigsbergOQ03OQ02.lean",
+      "lineCount": 185,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ04.lean",
+      "filename": "KonigsbergOQ04.lean",
+      "lineCount": 339,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ04.lean"
+    }
+  ]
+}
