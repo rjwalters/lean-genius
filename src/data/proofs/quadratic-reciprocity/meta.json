@@ -61,7 +61,8 @@
       "**Second Supplementary Law** (`second_supplementary_law`): $(2/p) = (-1)^{(p^2-1)/8}$, so $2$ is a QR mod $p$ iff $p \\equiv \\pm 1 \\pmod{8}$. The mod-8 periodicity reflects the structure of $(\\mathbb{Z}/8\\mathbb{Z})^\\times \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2$.",
       "**Euler's Criterion** (`euler_criterion`): $(a/p) \\equiv a^{(p-1)/2} \\pmod{p}$. This converts the Legendre symbol into a computable quantity in $O(\\log p)$ multiplications via fast exponentiation. In Lean: `(legendreSym p a : ZMod p) = (a : ZMod p) ^ (p / 2)`.",
       "**Multiplicativity** (`legendre_mul`): $(ab/p) = (a/p)(b/p)$. The Legendre symbol is a group homomorphism $(\\mathbb{Z}/p\\mathbb{Z})^\\times \\to \\{\\pm 1\\}$, whose kernel is the index-2 subgroup of QRs. Combined with reciprocity and the supplements, this gives an Euclidean-algorithm-like procedure for computing any Legendre symbol.",
-      "**Higher Reciprocity and the Langlands Program:** Quadratic reciprocity is the $n=2$ case of Artin reciprocity (1927), which characterizes splitting of primes in abelian extensions of $\\mathbb{Q}$. The non-abelian generalization — the Langlands program — seeks reciprocity laws for all reductive groups, making QR the historical seed of the deepest current program in mathematics."
+      "**Higher Reciprocity and the Langlands Program:** Quadratic reciprocity is the $n=2$ case of Artin reciprocity (1927), which characterizes splitting of primes in abelian extensions of $\\mathbb{Q}$. The non-abelian generalization — the Langlands program — seeks reciprocity laws for all reductive groups, making QR the historical seed of the deepest current program in mathematics.",
+      "**QR as a GCD-like Algorithm (Formalized):** The main law, multiplicativity, and the supplementary laws combine into an $O(\\log \\min(p,q))$ algorithm for computing Legendre symbols — entirely analogous to the Euclidean algorithm for GCD. The reduction procedure: factor out powers of 2 (using the second supplementary law), apply multiplicativity to reduce to prime-sized inputs, flip $p \\leftrightarrow q$ via the main law (picking up a sign when both $\\equiv 3 \\pmod{4}$), and recurse. The gallery entry `quadratic-reciprocity-algorithm` formalizes this complete computation; `quadratic-reciprocity-algorithm-oq-01` extends it to the Jacobi symbol $(a/n)$ for composite moduli $n$, enabling efficient computation without factoring $n$."
     ],
     "prerequisites": [
       "Number theory (primes, divisibility, modular arithmetic)",
@@ -132,13 +133,28 @@
     "summary": "The Law of Quadratic Reciprocity is fully machine-verified using Mathlib's comprehensive number theory infrastructure (Wiedijk #7, 0 sorries, 0 axioms, 0 additional assumptions). The formalization captures all three components of the classical theory: the main law in four equivalent forms, both supplementary laws (plus their combination), Euler's criterion, and the multiplicativity of the Legendre symbol. Concrete example calculations verify the theorems at specific small primes, making the abstract formalism tangible.",
     "implications": "Quadratic reciprocity has far-reaching implications across mathematics:\n\n**1. Primality testing and cryptography**\nThe Solovay-Strassen and Miller-Rabin primality tests exploit Euler's criterion. Efficient Legendre/Jacobi symbol computation (via multiplicativity + reciprocity, an Euclidean-algorithm analogue) underlies many number-theoretic algorithms in cryptography.\n\n**2. Sums of squares and Diophantine equations**\nThe first supplementary law directly yields Fermat's two-square theorem: $p = a^2 + b^2$ iff $p = 2$ or $p \\equiv 1 \\pmod{4}$. More generally, QR determines which primes split in a given quadratic field $\\mathbb{Q}(\\sqrt{d})$.\n\n**3. Algebraic number theory and class field theory**\nArtin's general reciprocity law (1927) subsumes QR as its simplest non-trivial case. It characterizes the Frobenius element in abelian Galois groups and is the central theorem of class field theory. Hilbert's 9th problem asked for the most general reciprocity law — Artin answered it, and the non-abelian generalization is the Langlands program.\n\n**4. Structure of Galois groups**\nThe Legendre symbol $(\\cdot/p)$ is the unique non-trivial character of $\\text{Gal}(\\mathbb{Q}(\\sqrt{p^*})/\\mathbb{Q})$. Reciprocity expresses a symmetry of these Galois groups that is invisible from the definition.",
     "openQuestions": [
-      "What is the most elementary proof of quadratic reciprocity — and can it be fully formalized in Lean without Gauss sums?",
+      "What is the most elementary proof of quadratic reciprocity — and can it be fully formalized in Lean without Gauss sums? The gallery entry `elementary-quadratic-reciprocity` provides an elementary approach; comparing its Lean proof with the Mathlib-based formalization here reveals what infrastructure the non-Gauss-sum proof requires.",
       "The non-abelian Langlands program seeks to generalize reciprocity laws to all reductive groups over $\\mathbb{Q}$. Can Lean formalize the statement of the Langlands conjectures?",
-      "Can the Euclidean-algorithm-like computation of Legendre symbols (via multiplicativity + reciprocity) be formalized as a verified efficient algorithm in Lean?",
-      "The Jacobi symbol $(a/n)$ generalizes QR to composite moduli. Does the gallery have (or should it have) a formalization of the Jacobi symbol's reciprocity law?"
+      "**[Addressed in `quadratic-reciprocity-algorithm` and `quadratic-reciprocity-oq-03`]** The Euclidean-algorithm-like computation of Legendre symbols (via multiplicativity + reciprocity) has been formalized: `quadratic-reciprocity-oq-03` packages the core reduction lemmas (multiplicativity, first supplementary law, reciprocity swap), and `quadratic-reciprocity-algorithm` demonstrates the complete GCD-like procedure with verified examples showing $O(\\log \\min(p,q))$ reduction steps.",
+      "**[Addressed in `quadratic-reciprocity-algorithm-oq-01`]** The Jacobi symbol $(a/n)$ — the multiplicative generalization of the Legendre symbol to odd composite moduli — has been formalized: `quadratic-reciprocity-algorithm-oq-01` implements the Jacobi symbol as a recursive Lean function using QR for reduction, with sign factor functions, the `strip2` decomposition of even parts, and concrete verification examples."
     ]
   },
   "crossReferences": [
+    {
+      "targetId": "quadratic-reciprocity-oq-03",
+      "relationship": "extended-by",
+      "description": "Packages the core reduction lemmas that turn QR into a GCD-like algorithm: multiplicativity (`legendre_mul`), the first supplementary law (sign of $-1/p$), and the reciprocity swap. These are the building blocks assembled into the complete Legendre symbol algorithm in `quadratic-reciprocity-algorithm`."
+    },
+    {
+      "targetId": "quadratic-reciprocity-algorithm",
+      "relationship": "extended-by",
+      "description": "Demonstrates the complete Euclidean-algorithm-like procedure for computing Legendre symbols using QR + multiplicativity + supplementary laws. Directly answers the open question in this entry's conclusion about formalizing the $O(\\log \\min(p,q))$ reduction algorithm as a verified Lean procedure."
+    },
+    {
+      "targetId": "quadratic-reciprocity-algorithm-oq-01",
+      "relationship": "extended-by",
+      "description": "Implements the Jacobi symbol $(a/n)$ — the multiplicative generalization of the Legendre symbol to odd composite moduli $n$ — as a recursive Lean function using QR for reduction. Includes `strip2` decomposition, sign factor computation, and concrete verification. Directly answers the open question in this entry's conclusion about Jacobi symbol formalization."
+    },
     {
       "targetId": "elementary-quadratic-reciprocity",
       "relationship": "related",
