@@ -1,0 +1,128 @@
+[
+  {
+    "id": "ann-at4-overview",
+    "proofId": "angle-trisection-oq-04-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 46
+    },
+    "type": "context",
+    "title": "Constructibility Hierarchy: From Compass to Multi-Fold Origami",
+    "content": "This file sits at the top of the angle-trisection gallery's constructibility tower: compass ⊊ marked ruler ⊊ 2-fold origami ⊊ 3-fold ⊊ ⋯. The prior entries established each level; this entry proves the **marked-ruler/2-fold gap is strict**.\n\nThe algebraic translations (using Euler totient φ):\n\n| Tool | Condition on φ(n) | Examples of constructible n-gons |\n|------|--------------------|----------------------------------|\n| Compass-and-straightedge | φ(n) = 2^k (2-smooth) | 3, 4, 5, 6, 15, 17, 257, 65537 |\n| Marked ruler = 1-fold origami | φ(n) \\| 2^a·3^b (3-smooth) | 7, 9, 13, 14, 18, 19, 21 |\n| 2-fold origami | φ(n) is 5-smooth | **11**, 23, 25, 31, 33 |\n| 3-fold origami | φ(n) is 7-smooth | some n with 7 \\| φ(n) |\n| 4-fold origami | φ(n) is 11-smooth | **23**, others with 11 \\| φ(n) |\n\nThe 11-gon is the **minimal prime** regular polygon in the 2-fold/not-neusis class: φ(11) = 10 = 2·5, which is 5-smooth (fits 2-fold) but not 3-smooth (blocked for marked ruler). The 23-gon similarly witnesses the 4-fold/not-neusis gap.\n\n**Alperin-Lang 2006** established that single-fold origami (Huzita-Hatori axiom O6, the simultaneous tangent construction) is exactly as powerful as a marked ruler (neusis), so `IsTwoThreeNumber` captures both characterizations simultaneously.",
+    "mathContext": "$\\text{IsKFoldConstructible}(d, k) \\iff d \\text{ is } p_k\\text{-smooth}$, where $p_k = \\text{foldPrimeBound}(k) = \\text{Nat.nth Prime}(k)$ (the $k$-th prime with 1-indexing: $p_1=3, p_2=5, p_3=7, p_4=11,\\ldots$). Then $\\text{IsTwoThreeNumber}(d) \\iff d \\text{ is } 3\\text{-smooth} \\iff \\text{IsKFoldConstructible}(d, 1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gauss-Wantzel theorem (compass constructibility)",
+      "Pierpont primes (neusis constructibility)",
+      "Huzita-Hatori origami axioms",
+      "Alperin-Lang 2006 equivalence",
+      "smooth numbers and prime bounds"
+    ],
+    "prerequisites": [
+      "angle-trisection-oq-04 (IsTwoThreeNumber, neusis degrees)",
+      "angle-trisection-oq-05-oq-01 (IsKFoldConstructible, fold hierarchy)",
+      "Euler totient function φ(n)",
+      "Gauss-Wantzel constructibility criterion"
+    ]
+  },
+  {
+    "id": "ann-at4-criterion",
+    "proofId": "angle-trisection-oq-04-oq-04",
+    "range": {
+      "startLine": 48,
+      "endLine": 68
+    },
+    "type": "technique",
+    "title": "General Non-Neusis Criterion: Large Prime Factor Blocks Marked-Ruler",
+    "content": "**`not_twoThree_of_large_prime_dvd`** (lines 59–68) gives the fundamental obstruction: if a prime $q > 3$ divides $d$, then $d \\notin \\text{IsTwoThreeNumber}$.\n\nThe proof is a two-branch contradiction:\n1. Unfold `IsTwoThreeNumber d` to get $d \\mid 2^a \\cdot 3^b$ for some $a, b$\n2. Since $q \\mid d$, transitivity gives $q \\mid 2^a \\cdot 3^b$\n3. By `Nat.Prime.dvd_mul`: either $q \\mid 2^a$ or $q \\mid 3^b$\n4. In the first branch: $q \\mid 2^a$ and $q$ prime → $q \\mid 2$ → $q \\leq 2$ → contradiction with $q > 3$\n5. In the second branch: similarly $q \\leq 3$ → contradiction\n\nThis template is efficient: a single application of `dvd_trans` and `Prime.dvd_mul` plus `omega` closes both branches. The Lean code uses `rintro ⟨-, a, b, hdvd⟩` to destructure the IsTwoThreeNumber witness in one step.",
+    "mathContext": "The key Mathlib lemma chain: $q \\mid 2^a \\Rightarrow q \\mid 2$ (via `Nat.Prime.dvd_of_dvd_pow`) $\\Rightarrow q \\leq 2$ (via `Nat.le_of_dvd`). For `IsTwoThreeNumber`: $d \\mid n \\cdot (2^a \\cdot 3^b)$ for some $n$ (or $d \\mid 2^a \\cdot 3^b$ directly depending on the definition) — the existential $\\exists a b, d \\mid 2^a \\cdot 3^b$ means the leading divisibility step goes through `dvd_trans`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.Prime.dvd_of_dvd_pow",
+      "Nat.Prime.dvd_mul",
+      "IsTwoThreeNumber (AngleTrisectionOQ04)",
+      "omega tactic for arithmetic contradictions"
+    ],
+    "prerequisites": [
+      "Lean 4 rintro with anonymous constructor",
+      "Nat.le_of_dvd",
+      "dvd_trans"
+    ]
+  },
+  {
+    "id": "ann-at4-11gon",
+    "proofId": "angle-trisection-oq-04-oq-04",
+    "range": {
+      "startLine": 70,
+      "endLine": 84
+    },
+    "type": "insight",
+    "title": "The Regular 11-Gon: Minimal Witness for the Neusis/2-Fold Gap",
+    "content": "Three theorems establish the 11-gon as the canonical gap witness:\n\n**`ngon_11_not_neusis`** (lines 73–75): applies `not_twoThree_of_large_prime_dvd` with $q=5$ (prime, $5 > 3$, and $5 \\mid 10 = \\varphi(11)$). The proof is a single line via `totient_11_eq ▸` to rewrite the goal from $\\varphi(11) = 10$.\n\n**`ngon_11_2fold`** (lines 78–79): uses `degree_ten_2fold` from OQ05OQ01 to assert $\\text{IsKFoldConstructible}(10, 2)$. Since $\\text{foldPrimeBound}(2) = 5$ and $10 = 2 \\cdot 5$ is 5-smooth, this holds.\n\n**`ngon_11_2fold_not_neusis`** (lines 82–84): packages both into the conjunction $\\text{IsKFoldConstructible}(\\varphi(11), 2) \\wedge \\neg \\text{IsTwoThreeNumber}(\\varphi(11))$, the precise statement of the 11-gon witnessing the gap.\n\n**Why 11 is minimal**: among primes $p$, the 11-gon has the smallest $\\varphi(p) = p-1$ that is 5-smooth but not 3-smooth. The candidates are:\n- $\\varphi(7) = 6 = 2 \\cdot 3$ — 3-smooth, marked-ruler constructible\n- $\\varphi(11) = 10 = 2 \\cdot 5$ — first 5-smooth non-3-smooth case\n- $\\varphi(13) = 12 = 4 \\cdot 3$ — 3-smooth again",
+    "mathContext": "$\\varphi(11) = 10 = 2 \\cdot 5$. Smoothness: $\\text{rad}(10) = 2 \\cdot 5 \\leq 5 = p_2$, so 5-smooth. Not 3-smooth since $5 > 3$. Thus: marked-ruler blocked (5 > 3), but 2-fold origami works (5 = foldPrimeBound 2). Minimality among primes: next prime whose $\\varphi$ is 5-smooth but not 3-smooth after 11 is... $p=23$ ($\\varphi(23)=22=2 \\cdot 11$, but 11-smooth not 5-smooth). Actually among 5-smooth-but-not-3-smooth totients, $\\varphi(11)=10$ is the smallest.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ngon_11_2fold_not_neusis",
+      "degree_ten_2fold (AngleTrisectionOQ05OQ01)",
+      "fold_2_bound = 5",
+      "minimality among primes",
+      "Pierpont prime criterion"
+    ],
+    "prerequisites": [
+      "IsTwoThreeNumber definition",
+      "IsKFoldConstructible definition",
+      "foldPrimeBound 2 = 5",
+      "Nat.totient 11 = 10"
+    ]
+  },
+  {
+    "id": "ann-at4-23gon",
+    "proofId": "angle-trisection-oq-04-oq-04",
+    "range": {
+      "startLine": 86,
+      "endLine": 107
+    },
+    "type": "insight",
+    "title": "The Regular 23-Gon: Witnesses the Higher Fold-4 Gap",
+    "content": "The 23-gon provides a second witness at a higher level of the hierarchy.\n\n**`ngon_23_not_neusis`** (lines 89–91): analogous to the 11-gon proof; uses $q = 11$ (prime, $11 > 3$, $11 \\mid 22 = \\varphi(23)$).\n\n**`ngon_23_4fold`** (lines 94–102): more complex than the 11-gon case because $\\varphi(23) = 22 = 2 \\cdot 11$ doesn't reduce to a pre-proved lemma (unlike `degree_ten_2fold`). The proof explicitly:\n1. Rewrites the goal using `totient_23_eq`\n2. Uses `fold_4_bound` to replace `foldPrimeBound 4` by 11\n3. Factorizes `22 = 2 · 11` via `norm_num`\n4. Uses `Prime.dvd_mul` to case-split on whether $q \\mid 2$ or $q \\mid 11$\n5. In both branches, `Nat.le_of_dvd` shows $q \\leq 2$ or $q \\leq 11$, giving the smoothness bound\n\n**Why 23 at level 4**: $\\varphi(23) = 22 = 2 \\cdot 11$. Since 11 = foldPrimeBound(4), degree 22 is 11-smooth (fits 4-fold), but since 11 > 5 = foldPrimeBound(2), it's not 5-smooth (won't fit 2-fold). The prime 23 is the smallest prime whose $\\varphi$ requires exactly fold level 4.",
+    "mathContext": "$\\varphi(23) = 22 = 2 \\cdot 11$. Since $11 = \\text{foldPrimeBound}(4) = p_4$ (the 4th prime), $22$ is $p_4$-smooth. Since $11 > 5 = p_2$, $22$ is not 5-smooth, hence not 3-smooth — blocked for neusis. The factorization $22 = 2 \\cdot 11$ is key: all prime factors of 22 are $\\leq 11$, confirming 11-smoothness. In general, $\\varphi(p) = p-1$ for prime $p$; the minimal fold level for the $p$-gon is determined by the largest prime factor of $p-1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ngon_23_4fold_not_neusis",
+      "fold_4_bound = 11",
+      "degree_eleven_4fold (AngleTrisectionOQ05OQ01)",
+      "prime factorization of φ(p) = p-1",
+      "minimal fold level for prime n-gons"
+    ],
+    "prerequisites": [
+      "fold_4_bound = foldPrimeBound 4 = 11",
+      "Nat.totient 23 = 22",
+      "Nat.Prime.dvd_mul case split"
+    ]
+  },
+  {
+    "id": "ann-at4-main",
+    "proofId": "angle-trisection-oq-04-oq-04",
+    "range": {
+      "startLine": 109,
+      "endLine": 152
+    },
+    "type": "insight",
+    "title": "Main Theorem: Strict Gap and Infinite Witness Family",
+    "content": "Two theorems establish the full picture:\n\n**`multi_fold_strictly_stronger_than_neusis`** (lines 115–119): proves the existential $\\exists n \\geq 3$ constructible at some fold level $k \\geq 2$ but not by marked ruler. The 11-gon is the explicit witness: $n=11$, $k=2$. This is the headline theorem: 2-fold origami **strictly dominates** 1-fold origami (= marked ruler).\n\n**`exists_ngon_at_each_level`** (lines 123–135): for every $k \\geq 2$, there exists an $n$-gon constructible at fold level $k$ but not by marked ruler. The 11-gon works for ALL $k \\geq 2$ by the monotonicity of constructibility (`constructible_mono`): 2-fold $\\subseteq$ 3-fold $\\subseteq$ 4-fold $\\subseteq \\cdots$\n\nThe proof is by strong induction on $k$ via `induction j with zero/succ`, exploiting `constructible_mono : IsKFoldConstructible d k → IsKFoldConstructible d (k+1)`. The final step rewrites $k = (k-2) + 2$ using `Nat.sub_add_cancel`.\n\n**Mathematical content**: The theorem `exists_ngon_at_each_level` might seem to say all levels are the same (the 11-gon works everywhere ≥ 2), but notice it does **NOT** say the 11-gon requires fold level exactly 2 — only that it's constructible at each level $k \\geq 2$. The 23-gon separately witnesses that there exist polygons requiring fold level 4.",
+    "mathContext": "Monotonicity of constructibility: $\\text{IsKFoldConstructible}(d,k) \\Rightarrow \\text{IsKFoldConstructible}(d,k+1)$ because $\\text{foldPrimeBound}(k) \\leq \\text{foldPrimeBound}(k+1)$ (primes are strictly increasing). Formally: $d$ is $p_k$-smooth $\\Rightarrow$ $d$ is $p_{k+1}$-smooth. The `Nat.sub_add_cancel hk` step is needed since `induction j` produces `j + 2` but the goal has `k = (k-2)+2`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "constructible_mono (AngleTrisectionOQ05OQ01)",
+      "Nat.sub_add_cancel",
+      "fold hierarchy strict inclusions",
+      "infinite family of gap witnesses",
+      "existential witnesses vs minimal witnesses"
+    ],
+    "prerequisites": [
+      "constructible_mono monotonicity lemma",
+      "Lean 4 strong induction pattern",
+      "Nat.sub_add_cancel for index manipulation"
+    ]
+  }
+]
