@@ -235,7 +235,53 @@ axiom ultimate_l_implies_ch_consistent : UltimateLConjecture → RelativelyConsi
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
-PART VII: SUMMARY THEOREM
+PART VII: GENERALIZED CONTINUUM HYPOTHESIS
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-
+The **Generalized Continuum Hypothesis** (GCH) asserts that for every ordinal α,
+there is no cardinal strictly between ℵ_α and 2^ℵ_α, i.e., 2^ℵ_α = ℵ_{α+1}.
+
+GCH is STRICTLY STRONGER than CH:
+- GCH implies CH (take α = 0: 2^ℵ₀ = ℵ₁)
+- CH does NOT imply GCH (forcing can maintain CH while violating 2^ℵ₁ = ℵ₂)
+
+Gödel (1940) proved GCH is consistent with ZFC (holds in L).
+Cohen (1963) proved GCH can be violated (e.g., 2^ℵ₀ = ℵ₂ violates GCH at 0, but
+  a model with 2^ℵ₀ = ℵ₁ and 2^ℵ₁ = ℵ₃ satisfies CH but violates GCH).
+
+The Woodin Ultimate-L program aims to prove V = Ultimate-L implies GCH holds
+for all infinite cardinals.
+-/
+
+/-- Generalized Continuum Hypothesis: for each n, 2^ℵₙ = ℵₙ₊₁.
+    This is the countable case; the full GCH extends to all ordinals. -/
+def GCH : Prop :=
+  ∀ n : ℕ, (2 : Cardinal.{0}) ^ Cardinal.aleph n = Cardinal.aleph (n + 1)
+
+/-- GCH implies CH: the case n = 0 gives 2^ℵ₀ = ℵ₁, which is CH. -/
+theorem gch_implies_ch : GCH → CH := by
+  intro h
+  have h0 := h 0
+  simp only [Nat.zero_add, Cardinal.aleph_zero] at h0
+  -- h0 : 2 ^ ℵ₀ = Cardinal.aleph 1
+  unfold CH continuum aleph_one
+  exact h0
+
+/-- GCH implies CH and also decides all higher continua. -/
+theorem gch_decides_all_aleph (h : GCH) (n : ℕ) :
+    (2 : Cardinal.{0}) ^ Cardinal.aleph n = Cardinal.aleph (n + 1) :=
+  h n
+
+/-- Under GCH, 2^ℵₙ = ℵₙ₊₁ < ℵₙ₊₂: the continuum of ℵₙ stays below ℵₙ₊₂. -/
+theorem gch_continuum_below_aleph_add_two (h : GCH) (n : ℕ) :
+    (2 : Cardinal.{0}) ^ Cardinal.aleph n < Cardinal.aleph (n + 2) := by
+  rw [h n]
+  exact Cardinal.aleph_lt.mpr (by omega)
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART VIII: SUMMARY THEOREM
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-- **Main Result**: Standard large cardinal axioms (inaccessible, measurable)
