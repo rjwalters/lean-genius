@@ -12304,10 +12304,12 @@
       "result": "clean"
     },
     "liouville-theorem-oq-04": {
-      "auditCount": 1,
-      "issues": [],
-      "lastAudited": "2026-04-26T10:22:11Z",
-      "result": "issues-fixed"
+      "auditCount": 2,
+      "issues": [
+        "Issue #15044: meta claims 1 axiom / 0 sorries but Lean source has 0 axioms / 2 sorries (padicNorm_poly_eval_lb L255, cofactor_uniform_bound L306). Status/badge should change from axiomatized/axiom to formalized/wip."
+      ],
+      "lastAudited": "2026-05-03T03:32:48Z",
+      "result": "issues-found"
     },
     "lovasz-local-lemma": {
       "auditCount": 1,
