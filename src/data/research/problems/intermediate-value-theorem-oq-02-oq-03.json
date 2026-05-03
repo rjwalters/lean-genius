@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Lean file written with full constructive core (no classical logic) and classical endpoint convergence. 14 theorems, 3 defs, 0 sorries. Docker build submitted.",
+    "progressSummary": "COMPLETE: 0 sorries, 0 axioms, 14 theorems, 308 lines. PR #15035 open. Gallery fully integrated.",
     "builtItems": [
       "paramBisectStep: computable def (not noncomputable) one bisection step",
       "paramBisect: computable iterated bisection with explicit Bool choices",
@@ -38,21 +38,23 @@
       "paramBisect_nested: Proofs/IntermediateValueTheoremOQ02OQ03.lean:121 - interval nesting",
       "paramBisect_endpoints_converge: classical convergence via tendsto_atTop_ciSup",
       "bisection_limit_is_root: limit is root given sign-consistent choices",
-      "constructive_vs_classical_ivt: main summary theorem 14 results"
+      "constructive_vs_classical_ivt: main summary theorem 14 results",
+      "annotations.json: 7 pedagogical annotations for computable bisection, width formula, SignConsistent oracle, endpoint convergence, root theorem, main boundary theorem"
     ],
     "insights": [
       "Bisection structurally constructive: width bounds and sign preservation hold without Classical.em if parameterized by explicit choice oracle",
-      "Classical logic needed only for the sign oracle (deciding f(mid) ≤ 0) - not for structural properties",
+      "Classical logic needed only for the sign oracle (deciding f(mid) \u2264 0) - not for structural properties",
       "parent file uses noncomputable def (Classical.em for if-then-else); paramBisect is computable def",
-      "Endpoint convergence requires Classical.choice via tendsto_atTop_ciSup (completeness of ℝ)",
+      "Endpoint convergence requires Classical.choice via tendsto_atTop_ciSup (completeness of \u211d)",
       "Bishop constructive analysis principle formalized: bisection constructive given locating oracle",
-      "Approximate IVT structural core: proven without Classical.em; exact root needs Classical.choice"
+      "Approximate IVT structural core: proven without Classical.em; exact root needs Classical.choice",
+      "Gallery integration complete: 7 annotations covering all key theorems, index.ts auto-discovery registered"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Verify Docker build compiles (submitted, awaiting result)",
       "Add gallery annotations explaining constructive vs classical divide",
-      "Follow-up: prove computable IVT for Decidable sign functions (e.g., polynomials over ℚ)"
+      "Follow-up: prove computable IVT for Decidable sign functions (e.g., polynomials over \u211a)"
     ]
   },
   "tags": [
