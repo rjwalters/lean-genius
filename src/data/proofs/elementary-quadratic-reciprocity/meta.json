@@ -71,7 +71,9 @@
       "Eisenstein's Lemma converts residue counting to floor function sums",
       "The lattice point identity exploits coprimality: no integer point lies on the diagonal",
       "The geometric partition into two triangles corresponds to the two Legendre symbols",
-      "No Gauss sums, character theory, or algebraic number theory is needed"
+      "No Gauss sums, character theory, or algebraic number theory is needed",
+      "Eisenstein discovered two proofs of QR in 1844 at age 21 — this floor-sum proof and a separate Gauss-sum proof — publishing both in the same year and demonstrating that radically different elementary approaches coexist",
+      "The lattice diagonal argument is a discrete analog of computing the area of a rectangle by integrating from both axes; the same geometric duality reappears in Dedekind sums and the Dedekind $\\eta$-function reciprocity formula"
     ],
     "prerequisites": [
       "Legendre symbol (a/p) and basic properties",
@@ -150,9 +152,9 @@
     "summary": "This file presents Eisenstein's 1844 elementary proof of quadratic reciprocity, formalized in Lean 4 using Mathlib's infrastructure. The proof chain is fully verified with zero sorries, proceeding from Gauss's Lemma through Eisenstein's floor function reformulation to the lattice point counting argument.",
     "implications": "**Theoretical Significance**: The elementary proof demonstrates that one of number theory's deepest results can be established using only basic arithmetic and geometric counting.\n\n1. **Pedagogical value**: The clearest path from first principles to QR — only floor functions and lattice point counting are needed.\n2. **Historical significance**: Represents Eisenstein's 1844 simplification of Gauss's original proof (Gauss gave six proofs; this approach is the most accessible).\n3. **Proof technique**: Lattice point counting appears throughout analytic number theory — the same geometric idea underlies Minkowski's theorem on convex bodies.\n4. **Formalization insight**: Shows how Mathlib's Gauss-Eisenstein infrastructure supports multiple proof strategies for QR.",
     "openQuestions": [
-      "Can Zolotarev's permutation-based proof be formalized in Lean 4?",
-      "Can a Gauss sum proof be built using Mathlib's character infrastructure?",
-      "How many of the 240+ known QR proofs can be formalized?"
+      "[Addressed in `elementary-quadratic-reciprocity-oq-01`] Zolotarev's 1872 permutation-based proof uses the Legendre symbol as the signature of the multiplication-by-$a$ permutation on $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, offering a group-theoretic alternative to floor-sum counting.",
+      "[Addressed in `elementary-quadratic-reciprocity-oq-02`] The Gauss sum proof architecture axiomatizes the cyclotomic evaluation $\\sum_{a} (a/p) \\zeta^a$, providing the logical skeleton using Mathlib's character and cyclotomic infrastructure.",
+      "How many of the 240+ known QR proofs can be formalized in Lean 4? The Jacobi symbol generalization is addressed in `elementary-quadratic-reciprocity-oq-03`; further approaches (topological, cohomological) remain open formalization challenges."
     ]
   },
   "leanFile": {
@@ -174,6 +176,21 @@
     "sorries": 0
   },
   "crossReferences": [
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-01",
+      "relationship": "extended-by",
+      "description": "Zolotarev's 1872 permutation-based proof — formalizes the Legendre symbol as the signature of the multiplication-by-$a$ permutation on $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, offering a group-theoretic alternative to Eisenstein's floor-sum counting"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-02",
+      "relationship": "extended-by",
+      "description": "Gauss sum proof architecture — axiomatizes the cyclotomic approach using Mathlib's character infrastructure, providing the logical skeleton of the Gauss sum proof that Eisenstein himself discovered alongside this floor-sum proof"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-03",
+      "relationship": "extended-by",
+      "description": "Jacobi symbol extension — generalizes from the Legendre symbol (prime moduli) to the Jacobi symbol (composite odd moduli), enabling efficient QR-style computation without prime factorization"
+    },
     {
       "targetId": "quadratic-reciprocity",
       "relationship": "related",
