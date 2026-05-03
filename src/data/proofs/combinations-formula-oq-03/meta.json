@@ -2,7 +2,7 @@
   "id": "combinations-formula-oq-03",
   "title": "q-Analog Binomial Coefficients (Gaussian Binomial Coefficients)",
   "slug": "combinations-formula-oq-03",
-  "description": "Formalizes q-analog (Gaussian) binomial coefficients [n,k]_q over commutative rings. Proves: specialization [n,k]_1 = C(n,k), q-Pascal recurrences, absorption identity, symmetry [n,k]_q = [n,n-k]_q, column sum (q-hockey stick), q-Vandermonde identity. 24 theorems, 0 sorries, 0 axioms.",
+  "description": "Formalizes q-analog (Gaussian) binomial coefficients $[n,k]_q$ over arbitrary commutative rings. Proves the specialization $[n,k]_1 = C(n,k)$, q-Pascal recurrences, product formula, absorption identity, symmetry $[n,k]_q = [n,n-k]_q$, column sum (q-hockey stick), and q-Vandermonde identity. 24 theorems, 0 sorries, 0 axioms — all proved over CommRing without division, working even in the presence of zero divisors.",
   "meta": {
     "author": "Lean Genius CombinationsFormulaOQ03",
     "status": "verified",
@@ -13,86 +13,185 @@
       "gaussian-binomial",
       "number-theory",
       "algebra",
-      "quantum-groups"
+      "quantum-groups",
+      "finite-geometry"
     ],
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 750,
     "theoremCount": 24,
-    "assumptions": "None. All 24 theorems proved over arbitrary commutative rings.",
+    "assumptions": "None. All 24 theorems proved over arbitrary commutative rings with parameter q : R. No invertibility hypotheses; the division-free q-Pascal recurrence is used as the definition.",
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose",
-        "description": "Ordinary binomial coefficients for specialization theorem",
+        "description": "Ordinary binomial coefficients, used in the specialization theorem qBinom_at_one",
         "module": "Mathlib.Data.Nat.Choose.Basic"
       }
     ],
+    "originalContributions": [
+      "Division-free formalization of q-numbers, q-factorials, and q-binomial coefficients over arbitrary CommRing",
+      "Symmetry proof [n,k]_q = [n,n-k]_q via row absorption + geometric identity (no cancellation needed)",
+      "q-Hockey stick (column sum) identity with q-weighted summands",
+      "q-Vandermonde convolution identity in full generality",
+      "q=0 specialization connecting to the 'field with one element' F_1"
+    ],
     "dateAdded": "2026-05-03",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "prerequisites": [
+      "Polynomial rings and commutative ring theory",
+      "Finite field vector spaces (for geometric interpretation)",
+      "Natural number induction and arithmetic",
+      "Finset summation (for hockey stick and Vandermonde)"
+    ]
   },
   "overview": {
-    "historicalContext": "Gaussian binomial coefficients [n,k]_q were introduced by Gauss (1811) in his study of cyclotomic polynomials, and independently by Heine (1847) in the context of q-hypergeometric series. The central geometric interpretation — [n,k]_q counts k-dimensional subspaces of F_q^n — was recognized by Goldman and Rota (1970) as fundamental to the combinatorics of finite vector spaces. These coefficients pervade modern mathematics: they appear in Rogers-Ramanujan identities (1894/1919), MacMahon's partition theory, Kazhdan-Lusztig polynomials, quantum group representations (Jimbo and Drinfeld, 1985), and the cohomology ring of Grassmannian varieties. As q→1, [n,k]_q → C(n,k) (ordinary binomial coefficient). At q→0, [n,k]_q → 0 or 1 (indicator for k=0 or k=n). The q-Pascal recurrence (defining identity used here) works over any commutative ring, making the theory fully algebraic without requiring q to be a prime power or even nonzero.",
-    "problemStatement": "Define q-numbers [n]_q = 1 + q + q² + ... + q^{n-1} = (q^n - 1)/(q-1), q-factorials [n]_q! = [1]_q·[2]_q···[n]_q, and q-binomials [n,k]_q = [n]_q! / ([k]_q!·[n-k]_q!). Prove key identities without division (using q-Pascal recurrence as definition).",
-    "proofStrategy": "Define q_number and q_binomial over a CommRing using the q-Pascal recurrence (avoiding division). Key identities proved by induction on n: [n,0]_q = 1, [n,n]_q = 1, [n,k]_q = [n,n-k]_q (symmetry), [n,1]_q = [n]_q. Specialization at q=1 connects to ordinary binomial coefficients.",
+    "historicalContext": "The q-analog of a natural number $n$ is the polynomial $[n]_q = 1 + q + q^2 + \\cdots + q^{n-1}$, which reduces to $n$ when $q = 1$. Euler introduced q-series in his 1748 *Introductio in Analysin Infinitorum* while studying integer partitions: the number of partitions of an integer into at most $k$ parts, each of size at most $n$, equals the Gaussian binomial coefficient $\\binom{n+k}{k}_q$. This combinatorial interpretation was developed by MacMahon (1904) and connects q-binomials to weighted lattice-path counting — each lattice path from $(0,0)$ to $(n-k,k)$ is weighted by $q^{\\text{area below the path}}$, giving a polynomial whose coefficients count paths by enclosed area.\n\nGauss discovered the geometric interpretation in the early 19th century: over the finite field $\\mathbb{F}_q$ (with $q$ a prime power), the Gaussian binomial coefficient $\\binom{n}{k}_q$ counts the number of $k$-dimensional subspaces of the $n$-dimensional vector space $\\mathbb{F}_q^n$. This is the linear-algebraic analog of $\\binom{n}{k}$ counting $k$-element subsets of an $n$-element set — replacing sets with vector spaces and subsets with subspaces. The formalization verifies this interpretation concretely: over $\\mathbb{F}_2$, the projective plane $\\text{PG}(2,2)$ (the Fano plane) has $[3]_2 = 7$ points and $\\binom{3}{1}_2 = 7$ lines, verified by `native_decide`.\n\nHeinrich Heine (1846) systematically developed q-hypergeometric series, introducing the q-Pochhammer symbol $(a;q)_n = (1-a)(1-aq)\\cdots(1-aq^{n-1})$ and establishing the q-binomial theorem as a foundational identity. The Rogers-Ramanujan identities (discovered by Rogers 1894, rediscovered by Ramanujan 1913, proved by Rogers-Ramanujan 1919) are quintessential q-series results that connect partition theory to modular forms.\n\nThe contemporary significance of q-binomials stems primarily from quantum group theory. Vladimir Drinfeld and Michio Jimbo independently introduced quantum groups $U_q(\\mathfrak{g})$ in 1985-86 as q-deformations of universal enveloping algebras of semisimple Lie algebras. The parameter $q$ in 'quantum groups' is precisely the same $q$: the divided power elements in $U_q(\\mathfrak{g})$ use q-binomial coefficients $\\binom{n}{k}_q$ as structure constants. At $q = 1$, the quantum group recovers the classical Lie algebra. Jones's knot invariant (1984) and the HOMFLY polynomial also involve q-binomials through the Temperley-Lieb algebra, connecting combinatorics to low-dimensional topology.",
+    "problemStatement": "Define q-analogs of the fundamental combinatorial structures:\n- **q-numbers**: $[n]_q = 1 + q + q^2 + \\cdots + q^{n-1}$ (the q-analog of $n$)\n- **q-factorials**: $[n]_q! = [1]_q \\cdot [2]_q \\cdots [n]_q$ (the q-analog of $n!$)\n- **q-binomials**: $\\binom{n}{k}_q = [n]_q! / ([k]_q! \\cdot [n-k]_q!)$ — but define this division-free via the q-Pascal recurrence:\n  $$\\binom{n+1}{k+1}_q = \\binom{n}{k}_q + q^{k+1} \\binom{n}{k+1}_q$$\n\nProve: specialization at $q=1$ gives ordinary binomial coefficients; absorption, symmetry, column sum, and Vandermonde identities hold over any commutative ring.",
+    "proofStrategy": "The core design choice is to define `qBinom` via the q-Pascal recurrence rather than the factorial quotient formula. This makes the definition valid over any `CommRing` — avoiding division and handling zero divisors. The recurrence says: to choose $k+1$ items from $n+1$, either include item $n+1$ (giving $\\binom{n}{k}_q$ ways to choose the remaining $k$) or exclude item $n+1$ (giving $q^{k+1} \\binom{n}{k+1}_q$ ways, with the weight $q^{k+1}$ counting the 'rank' of the excluded item in the complementary choice).\n\nThe key identities are proved by induction on $n$ with two tools:\n1. **Row absorption** (`qBinom_row_absorption`): $\\binom{n}{k}_q \\cdot [n-k]_q = \\binom{n}{k+1}_q \\cdot [k+1]_q$. This is the commutative-ring substitute for factorial cancellation.\n2. **Geometric sum** (`qNumber_geometric`): $(q-1)[n]_q = q^n - 1$. This connects q-number arithmetic to ring power operations.\n\nThe **symmetry proof** is the most elegant: since $(q-1)([n,k]_q \\cdot [n-k]_q - [n,k+1]_q \\cdot [k+1]_q) = 0$ follows from row absorption (via the geometric identity), and the actual terms can be matched by the q-Pascal recurrence, the induction closes with `linear_combination`.\n\nThe **q-Vandermonde** proof uses induction on $m$, applying both q-Pascal identities and the inductive hypotheses at $(m, k)$ and $(m, k+1)$, then matching terms via `ring_nf` and `Finset.sum_congr`.",
     "keyInsights": [
-      "**Division-free definition**: Define [n,k]_q via the recurrence [n,k]_q = [n-1,k-1]_q + q^k·[n-1,k]_q. This works over any CommRing (no division needed), unlike the factorial formula.",
-      "**Geometric sum**: [n]_q·(q-1) = q^n - 1. This is the key property of q-numbers — a geometric series sum.",
-      "**Symmetry**: [n,k]_q = [n,n-k]_q. Follows from the recurrence by induction.",
-      "**q-Vandermonde**: [m+n,k]_q = Σ_j q^{j(m-k+j)} [m,k-j]_q [n,j]_q — a q-analog of the Vandermonde convolution.",
-      "**Subspace counting**: [n,k]_q = |Gr(k,F_q^n)| = number of k-dim subspaces of F_q^n.",
-      "**Commutative ring generality**: All theorems hold over any CommRing (not just fields). The q-Pascal definition avoids division by [k]_q! entirely, so q need not be a unit or prime power. This unlocks use in polynomial rings, p-adic integers, and formal power series."
+      "**Division-free definition over CommRing**: The q-binomial is defined via the recurrence $\\binom{n+1}{k+1}_q = \\binom{n}{k}_q + q^{k+1}\\binom{n}{k+1}_q$ (the q-Pascal identity). This avoids the factorial quotient formula, which requires division and fails over rings with zero divisors. Every theorem holds over arbitrary `CommRing R` — including $\\mathbb{Z}/n\\mathbb{Z}$, polynomial rings, and matrix rings — with no additional hypotheses.",
+      "**Subspace counting over finite fields**: Over $\\mathbb{F}_q$ ($q$ a prime power), $\\binom{n}{k}_q$ counts the $k$-dimensional subspaces of $\\mathbb{F}_q^n$. This is the linear-algebraic analog of $\\binom{n}{k}$ counting $k$-subsets: replace 'set' with 'vector space' and 'subset' with 'subspace'. The formalization verifies: $[3]_2 = 7$ (7 points in $\\text{PG}(2,2)$, the Fano plane), $[3 \\choose 2]_2 = 7$ (7 lines of the Fano plane), and $[4 \\choose 2]_2 = 35$ (35 two-dimensional subspaces of $\\mathbb{F}_2^4$).",
+      "**Polynomial structure and lattice path counting**: $\\binom{n}{k}_q$ is a polynomial in $q$ of degree $k(n-k)$ with non-negative integer coefficients. Each coefficient counts the number of $k$-element subsets of $\\{1, \\ldots, n\\}$ whose elements sum to a fixed value (equivalently, lattice paths from $(0,0)$ to $(n-k, k)$ enclosing a fixed area). The coefficients are symmetric and unimodal (a theorem of Sylvester 1878, proved via the hard Lefschetz theorem for the full cohomology of $\\text{Gr}(k, \\mathbb{C}^n)$). Example: $\\binom{5}{2}_q = 1 + q + 2q^2 + 2q^3 + 2q^4 + q^5 + q^6$ has coefficients $1,1,2,2,2,1,1$ — symmetric and unimodal with sum $C(5,2) = 10$.",
+      "**Symmetry proof without cancellation**: The identity $\\binom{n}{k}_q = \\binom{n}{n-k}_q$ cannot be proved by 'cancelling q-factorials' over a general CommRing (zero divisors prevent this). The Lean proof uses a certificate strategy: row absorption gives $\\binom{n}{k}_q \\cdot [n-k]_q = \\binom{n}{k+1}_q \\cdot [k+1]_q$, and the geometric identity $(q-1)[m]_q = q^m - 1$ allows expressing the difference of exponents as a ring element. The inductive step closes with `linear_combination qBinom q n k * g1 - qBinom q n (k + 1) * g2 - (q - 1) * ra`, a single linear algebra certificate.",
+      "**q-Pascal has two forms**: The first q-Pascal identity $\\binom{n+1}{k+1}_q = \\binom{n}{k}_q + q^{k+1}\\binom{n}{k+1}_q$ (Part III, defining recurrence) weights the second term by $q^{k+1}$. The second form $\\binom{n+1}{k+1}_q = q^{n-k}\\binom{n}{k}_q + \\binom{n}{k+1}_q$ (Part X) weights the first term by $q^{n-k}$. Both are q-analogs of the classical Pascal identity $C(n+1,k+1) = C(n,k) + C(n,k+1)$. The second form is derived from the first via symmetry ($\\binom{n+1}{k+1}_q = \\binom{n+1}{n-k}_q$) and is useful when reasoning about the 'lower diagonal' of the q-Pascal triangle.",
+      "**q-Hockey stick as a weighted column sum**: The identity $\\sum_{i=0}^{n} q^{(k+1)(n-i)} \\binom{i}{k}_q = \\binom{n+1}{k+1}_q$ is the q-analog of the classical hockey stick $\\sum_{i=k}^{n} C(i,k) = C(n+1,k+1)$. The weight $q^{(k+1)(n-i)}$ counts the 'distance to the end': as $i$ grows toward $n$, the weight decreases. Geometrically over $\\mathbb{F}_q$: $(k+1)$-dimensional subspaces of $\\mathbb{F}_q^{n+1}$ are classified by the index of their last basis vector; the weight $q^{(k+1)(n-i)}$ counts the number of completions, and $\\binom{i}{k}_q$ counts the choices in the first $i$ coordinates.",
+      "**q=0 specialization and the field with one element**: At $q=0$, the recurrence becomes $\\binom{n+1}{k+1}_0 = \\binom{n}{k}_0 + 0 = \\binom{n}{k}_0$, so by induction $\\binom{n}{k}_0 = 1$ for all $k \\leq n$. This reflects the 'field with one element' $\\mathbb{F}_1$: in the philosophy of Jacques Tits (1957) and subsequent work on the absolute Galois group $\\text{Gal}(\\overline{\\mathbb{F}_1}/\\mathbb{F}_1)$, the number of $k$-dimensional subspaces of $\\mathbb{F}_1^n$ is $\\binom{n}{k}_{q=0} = 1$ — meaning each subspace is uniquely determined, consistent with the idea that over $\\mathbb{F}_1$, linear algebra degenerates to set theory and vectors become elements.",
+      "**q-Vandermonde as subspace decomposition**: The identity $\\sum_{j=0}^{k} q^{(k-j)(m-j)} \\binom{m}{j}_q \\binom{n}{k-j}_q = \\binom{m+n}{k}_q$ counts $k$-dimensional subspaces of $\\mathbb{F}_q^{m+n}$ by their intersection with a fixed $m$-dimensional subspace: for each $j$, choose a $j$-dimensional subspace of the first $m$ coordinates ($\\binom{m}{j}_q$ ways), then complete to $k$ dimensions using the remaining $n$ coordinates ($\\binom{n}{k-j}_q$ ways), with $q^{(k-j)(m-j)}$ counting the number of ways the completion can be arranged to respect the split. At $q=1$, this reduces to Vandermonde's convolution $\\sum_j C(m,j)C(n,k-j) = C(m+n,k)$.",
+      "**Geometric sum identity as the algebraic engine**: The identity $(q-1)[n]_q = q^n - 1$ (equivalently $[n]_q = (q^n-1)/(q-1)$ when $q \\neq 1$) is the algebraic foundation of q-number arithmetic. It proves: (i) the geometric sum $1 + q + \\cdots + q^{n-1} = (q^n-1)/(q-1)$ via polynomial factoring; (ii) $[n]_q$ is divisible by $(q-k)$ in $\\mathbb{Z}[q]$ whenever $k \\mid n$ (cyclotomic divisibility); and (iii) $q^n - 1 = (q-1) \\cdot (1 + q + \\cdots + q^{n-1})$ is a polynomial identity over $\\mathbb{Z}$ that specializes correctly for every ring.",
+      "**Absorption identity and q-factorial duality**: The absorption identity $\\binom{n+1}{k+1}_q \\cdot [k+1]_q = [n+1]_q \\cdot \\binom{n}{k}_q$ is the q-analog of $C(n+1,k+1)(k+1) = (n+1)C(n,k)$. Together with the product formula $\\binom{n}{k}_q \\cdot [k]_q! \\cdot [n-k]_q! = [n]_q!$, it shows that q-binomials and q-factorials interact via the same duality as ordinary binomials and factorials. The absorption identity enables iterative constructions in quantum group representation theory: the divided powers $e^{(n)} = e^n/[n]_q!$ in $U_q(\\mathfrak{sl}_2)$ satisfy $e^{(m)} \\cdot e^{(n)} = \\binom{m+n}{m}_q \\cdot e^{(m+n)}$, a structural fact powered by absorption."
+    ],
+    "prerequisites": [
+      "Commutative ring theory (CommRing in Lean 4)",
+      "Natural number induction and arithmetic (omega tactic)",
+      "Finset sums and range manipulation",
+      "Classical binomial coefficients and Pascal's identity"
     ]
   },
   "sections": [
     {
-      "id": "q-numbers-factorials",
-      "title": "Parts I–II: q-Numbers and q-Factorials",
-      "startLine": 68,
-      "endLine": 147,
-      "summary": "Defines qNumber [n]_q (geometric sum) and qFactorial [n]_q!. Key theorems: qNumber_geometric (q-1)·[n]_q = q^n - 1, qNumber_split [a+b]_q = [a]_q + q^a·[b]_q, qFactorial_spec at q=1. Base infrastructure for all q-analog identities.",
-      "mathContext": "$[n]_q = 1 + q + \\cdots + q^{n-1}$; $(q-1)[n]_q = q^n - 1$; $[n]_q! = \\prod_{i=1}^n [i]_q$."
+      "id": "imports-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 67,
+      "summary": "Imports `Nat.Choose.Basic` (for ordinary binomial coefficients) and `Tactic`. Module docstring describes the q-analog development and lists all proved theorems. Namespace `QBinomialCoefficients` scopes all definitions and theorems. Variable declarations: `{R : Type*} [CommRing R]` — the entire development works over any commutative ring.",
+      "mathContext": "The namespace `QBinomialCoefficients` and the type variable `{R : Type*} [CommRing R]` with `variable {R : Type*} [CommRing R]` make all theorems fully universe-polymorphic and ring-polymorphic. Specializing $R = \\mathbb{Z}$ gives integer q-binomials; $R = \\mathbb{F}_q$ gives the subspace-counting interpretation; $R = \\mathbb{Z}[x]$ gives polynomial q-binomials."
     },
     {
-      "id": "q-binomial-defn",
-      "title": "Part III: q-Binomial Definition via Pascal Recurrence",
+      "id": "q-numbers",
+      "title": "Part I: q-Numbers",
+      "startLine": 68,
+      "endLine": 119,
+      "summary": "Defines `qNumber q n = 1 + q + q² + ... + q^{n-1}` recursively: `qNumber q 0 = 0`, `qNumber q (n+1) = 1 + q * qNumber q n`. Proves: boundary cases, geometric sum $(q-1)[n]_q = q^n - 1$, specialization $[n]_1 = n$, and splitting $[a+b]_q = [a]_q + q^a [b]_q$.",
+      "mathContext": "$[n]_q = \\sum_{i=0}^{n-1} q^i$. Key theorems: `qNumber_geometric`: $(q-1)[n]_q = q^n - 1$ (geometric series identity); `qNumber_at_one`: $[n]_1 = n$ as a ring element; `qNumber_add`: $[a+b]_q = [a]_q + q^a [b]_q$ (splitting the geometric series at position $a$)."
+    },
+    {
+      "id": "q-factorials",
+      "title": "Part II: q-Factorials",
+      "startLine": 120,
+      "endLine": 147,
+      "summary": "Defines `qFactorial q n = [1]_q · [2]_q · ... · [n]_q` recursively. Proves: `qFactorial_zero = 1`, recurrence, and specialization `qFactorial_at_one: [n]_1! = n!`.",
+      "mathContext": "$[n]_q! = \\prod_{i=1}^n [i]_q$. At $q=1$: $[n]_1! = n \\cdot (n-1)!\\cdots 1 = n!$. The proof `qFactorial_at_one` uses `qNumber_at_one` inductively: $[n+1]_1! = [n+1]_1 \\cdot [n]_1! = (n+1) \\cdot n! = (n+1)!$."
+    },
+    {
+      "id": "q-binomial-def",
+      "title": "Part III: q-Binomial Coefficients",
       "startLine": 148,
-      "endLine": 201,
-      "summary": "Defines qBinom via q-Pascal recurrence: qBinom q (n+1) (k+1) = qBinom q n k + q^(k+1) * qBinom q n (k+1). Boundary: [n,0]=[n,n]=1, [0,k+1]=0, [k>n]=0. Proves qBinom_one: [n,1]_q = [n]_q.",
-      "mathContext": "$\\binom{n+1}{k+1}_q = \\binom{n}{k}_q + q^{k+1} \\binom{n}{k+1}_q$; $\\binom{n}{0}_q = \\binom{n}{n}_q = 1$."
+      "endLine": 203,
+      "summary": "Defines `qBinom q n k` via q-Pascal recurrence: `qBinom q _ 0 = 1`, `qBinom q 0 (k+1) = 0`, `qBinom q (n+1) (k+1) = qBinom q n k + q^{k+1} * qBinom q n (k+1)`. Proves: `qBinom_zero_right`, `qBinom_zero_succ`, `qBinom_pascal`, `qBinom_eq_zero_of_lt` (k > n gives 0), `qBinom_self` ([n,n] = 1), `qBinom_one_right` ([n,1] = [n]_q).",
+      "mathContext": "The definition pattern-matches on $(n, k)$: the case `qBinom q (n+1) (k+1)` is the q-Pascal recurrence. `qBinom_one_right`: $\\binom{n}{1}_q = [n]_q$ counts the 1-dimensional subspaces (points) of projective space $\\text{PG}(n-1, \\mathbb{F}_q)$."
     },
     {
       "id": "specialization",
-      "title": "Part IV–VI: Specializations at q=1 and q=0",
-      "startLine": 202,
+      "title": "Part IV: Specialization at q = 1",
+      "startLine": 204,
+      "endLine": 222,
+      "summary": "The key consistency theorem `qBinom_at_one`: for all n, k, `qBinom (1:R) n k = (Nat.choose n k : R)`. Proof by double induction using q-Pascal at q=1 (where q^{k+1} = 1) and classical Pascal `Nat.choose_succ_succ`.",
+      "mathContext": "At $q=1$: $\\binom{n+1}{k+1}_1 = \\binom{n}{k}_1 + 1^{k+1} \\binom{n}{k+1}_1 = \\binom{n}{k}_1 + \\binom{n}{k+1}_1$, which is exactly Pascal's identity $C(n+1,k+1) = C(n,k) + C(n,k+1)$. The `push_cast` and `ring` tactics handle the $\\mathbb{N} \\to R$ cast."
+    },
+    {
+      "id": "product-formula",
+      "title": "Part V: Product Formula",
+      "startLine": 223,
+      "endLine": 284,
+      "summary": "Theorem `qBinom_product`: for k ≤ n, `qBinom q n k * qFactorial q k * qFactorial q (n-k) = qFactorial q n`. The q-analog of C(n,k)·k!·(n-k)! = n!. Proof by induction with algebraic step using `qNumber_add` to close the induction.",
+      "mathContext": "$\\binom{n}{k}_q \\cdot [k]_q! \\cdot [n-k]_q! = [n]_q!$. The proof does case analysis: $k=n$ (second term vanishes since $\\binom{n}{n+1}_q = 0$) and $k < n$ (use IH at $(n, k+1)$, then reassemble $[n-k]_q! = [n-k]_q \\cdot [n-k-1]_q!$ and apply `qNumber_add` to close with $(k+1) + (n-k) = n+1$)."
+    },
+    {
+      "id": "verifications",
+      "title": "Part VI: Concrete Verifications",
+      "startLine": 285,
       "endLine": 309,
-      "summary": "qBinom_at_one: qBinom 1 n k = Nat.choose n k. Concrete verifications: [4,2]_q = 1+q+q²+q³, [3,2]_q = 1+q+q². qBinom_zero: [n,k]_0 = [k=0 or k=n]. Validates the definition against classical and limiting cases.",
-      "mathContext": "$\\binom{n}{k}_1 = \\binom{n}{k}$; $\\binom{n}{k}_0 = [k=0 \\vee k=n]$."
+      "summary": "Four concrete examples: [2,1]_q = 1+q, [3,1]_q = 1+q+q², [3,2]_q = 1+q+q² (equal to [3,1], showing symmetry), [4,2]_q = 1+q+2q²+q³+q⁴. Each computed by simp/ring from the definition.",
+      "mathContext": "$\\binom{4}{2}_q = 1 + q + 2q^2 + q^3 + q^4$ has coefficient sum $1+1+2+1+1 = 6 = C(4,2)$ (specialization theorem). The '2' in $2q^2$ marks the unimodal peak. This polynomial of degree $2 \\cdot 2 = 4$ is the simplest non-trivial Gaussian binomial."
     },
     {
-      "id": "core-identities",
-      "title": "Parts VII–X: Absorption, Symmetry, and Product Formula",
+      "id": "absorption",
+      "title": "Parts VII–VIII: Absorption Identity",
       "startLine": 310,
-      "endLine": 579,
-      "summary": "qBinom_absorption: [n,k]_q·[k]_q = [n]_q·[n-1,k-1]_q. qBinom_symm: [n,k]_q = [n,n-k]_q. qBinom_product: [n,k]_q·[k]_q!·[n-k]_q! = [n]_q!. These validate the factorial quotient formula and establish structural symmetry.",
-      "mathContext": "$\\binom{n}{k}_q [k]_q = [n]_q \\binom{n-1}{k-1}_q$; $\\binom{n}{k}_q = \\binom{n}{n-k}_q$; $\\binom{n}{k}_q [k]_q! [n-k]_q! = [n]_q!$."
+      "endLine": 375,
+      "summary": "Theorem `qBinom_absorption`: for k ≤ n, `qBinom q (n+1) (k+1) * qNumber q (k+1) = qNumber q (n+1) * qBinom q n k`. Proof by induction using `linear_combination`. Classical recovery `absorption_at_one` derives C(n+1,k+1)(k+1) = (n+1)C(n,k) by specializing to ℤ at q=1. Concrete verifications at q=2 via `native_decide`.",
+      "mathContext": "The classical identity $C(n+1,k+1)(k+1) = (n+1)C(n,k)$ follows from the factorial formula: $C(n+1,k+1)(k+1) = \\frac{(n+1)!}{k!(n-k)!} = (n+1)C(n,k)$. The q-analog replaces factorials with q-factorials and gives the same structural relation. The `linear_combination` proof: the goal after expanding both Pascal identities is exactly $q \\cdot \\text{IH}(n,k) + q^{k+2} \\cdot \\text{IH}(n,k+1) - q \\cdot [n+1]_q \\cdot \\text{Pascal}(n,k)$."
     },
     {
-      "id": "advanced-identities",
-      "title": "Parts XI–XIII: Hockey Stick and q-Vandermonde",
-      "startLine": 580,
-      "endLine": 750,
-      "summary": "q-hockey stick (column sum): closed form for weighted column sums of q-binomials. q-Vandermonde (qBinom_vandermonde): [m+n,k]_q = Σ_j q^{j(m-k+j)}·[m,k-j]_q·[n,j]_q. These connect to Rogers-Ramanujan theory and quantum group representations.",
-      "mathContext": "$\\binom{m+n}{k}_q = \\sum_j q^{j(m-k+j)} \\binom{m}{k-j}_q \\binom{n}{j}_q$."
+      "id": "symmetry",
+      "title": "Part IX: Symmetry and Row Absorption",
+      "startLine": 376,
+      "endLine": 483,
+      "summary": "Lemmas `qNumber_add_pow` ([n]_q + q^n = [n+1]_q), `qBinom_penult` ([n+1,n]_q = [n+1]_q). Theorem `qBinom_row_absorption`: `qBinom q n k * qNumber q (n-k) = qBinom q n (k+1) * qNumber q (k+1)`. Main theorem `qBinom_symm`: [n,k]_q = [n,n-k]_q. Proof by induction using row absorption + geometric identity + `linear_combination`.",
+      "mathContext": "Row absorption: $\\binom{n}{k}_q [n-k]_q = \\binom{n}{k+1}_q [k+1]_q$ is the q-analog of $\\binom{n}{k}(n-k) = \\binom{n}{k+1}(k+1)$. The symmetry proof is the hardest theorem in the file: after Pascal expansion on both sides and IH substitution, the goal reduces to showing $\\binom{n}{k}_q \\cdot (q^{n-k} - 1) = \\binom{n}{k+1}_q \\cdot (q^{k+1} - 1)$, which follows from $(q-1) \\cdot \\text{row absorption}$ via the geometric identity."
+    },
+    {
+      "id": "second-pascal",
+      "title": "Part X: Second q-Pascal Identity",
+      "startLine": 484,
+      "endLine": 513,
+      "summary": "Theorem `qBinom_pascal'`: `qBinom q (n+1) (k+1) = q^{n-k} * qBinom q n k + qBinom q n (k+1)`. The alternative q-Pascal identity, derived via symmetry from the first. Handles boundary k=n separately.",
+      "mathContext": "The two q-Pascal identities: (1) $\\binom{n+1}{k+1}_q = \\binom{n}{k}_q + q^{k+1}\\binom{n}{k+1}_q$ (first form, the definition); (2) $\\binom{n+1}{k+1}_q = q^{n-k}\\binom{n}{k}_q + \\binom{n}{k+1}_q$ (second form). Setting $q=1$ gives $C(n+1,k+1) = C(n,k) + C(n,k+1)$ in both cases. The weight migrates from position $k+1$ to position $n-k$ under symmetry."
+    },
+    {
+      "id": "hockey-stick",
+      "title": "Part XI: Column Sum (q-Hockey Stick)",
+      "startLine": 514,
+      "endLine": 565,
+      "summary": "Theorem `qBinom_column_sum`: `∑_{i=0}^{n} q^{(k+1)(n-i)} * qBinom q i k = qBinom q (n+1) (k+1)`. Classical recovery `hockey_stick_at_one` at q=1 gives ∑_{i=0}^{n} C(i,k) = C(n+1,k+1). Proof factors out q^{k+1} from the sum and applies IH + Pascal.",
+      "mathContext": "The classical hockey stick $\\sum_{i=k}^{n} C(i,k) = C(n+1,k+1)$ (here written with $i$ from 0 to $n$, as $C(i,k) = 0$ for $i < k$) is visualized in Pascal's triangle: a diagonal segment plus its 'tip' forms a hockey-stick shape. The q-analog weights each term $C(i,k)_q$ by $q^{(k+1)(n-i)}$ — the exponent $(k+1)(n-i)$ counts a product of dimensions reflecting the 'gap' between position $i$ and $n$."
+    },
+    {
+      "id": "q-zero-verifications",
+      "title": "Parts XII: q=0 Specialization and Verifications",
+      "startLine": 566,
+      "endLine": 603,
+      "summary": "Theorem `qBinom_at_zero`: for k ≤ n, `qBinom (0:R) n k = 1`. Proof: at q=0, Pascal becomes [n+1,k+1]_0 = [n,k]_0 + 0^{k+1}·[n,k+1]_0 = [n,k]_0. By induction, all entries equal 1. Symmetry verifications: [4,1]=[4,3] and [5,2]=[5,3] via `qBinom_symm`.",
+      "mathContext": "At $q=0$: the q-Pascal triangle degenerates to a triangle of all 1s (for $k \\leq n$). This is the q=0 'Pascal triangle': every entry is 1 because $0^{k+1} = 0$ kills the second term. Geometrically: over $\\mathbb{F}_0$ (the 'field with one element'), there is exactly 1 way to choose a $k$-dimensional subspace."
+    },
+    {
+      "id": "vandermonde",
+      "title": "Part XIII: q-Vandermonde Identity",
+      "startLine": 604,
+      "endLine": 717,
+      "summary": "Theorem `qBinom_vandermonde`: `∑_{j=0}^{k} q^{(k-j)(m-j)} * [m,j]_q * [n,k-j]_q = [m+n,k]_q`. Classical recovery `vandermonde_at_one` at q=1 gives ∑ C(m,j)C(n,k-j) = C(m+n,k). Proof by induction on m with two IHs at (m,k) and (m,k+1).",
+      "mathContext": "Vandermonde's classical identity $\\sum_j C(m,j)C(n,k-j) = C(m+n,k)$ counts $k$-element subsets of an $(m+n)$-element set by the number $j$ chosen from the first $m$ elements. The q-analog replaces 'subsets' with 'subspaces': for $q$ a prime power, it counts $k$-dimensional subspaces of $\\mathbb{F}_q^{m+n}$ by their intersection dimension with a fixed $m$-dimensional coordinate subspace. The weight $q^{(k-j)(m-j)}$ counts the number of partial extensions."
+    },
+    {
+      "id": "fano-verifications",
+      "title": "Integer Verifications and Fano Plane",
+      "startLine": 718,
+      "endLine": 751,
+      "summary": "Six concrete verifications: [5,2]_1 = 10, [6,3]_1 = 20, [10,4]_1 = 210 (specialization); [3]_2 = 7 (points of Fano plane), [4]_3 = 40 (q-numbers); [3,1]_2 = 7 (lines of Fano plane), [4,2]_2 = 35 (subspaces of F_2^4). All by `native_decide` or `simp`.",
+      "mathContext": "The Fano plane is $\\text{PG}(2, \\mathbb{F}_2)$: a projective plane with 7 points and 7 lines, each line containing 3 points and each point on 3 lines. Its point count is $[3]_2 = 1 + 2 + 4 = 7$ and its line count is $\\binom{3}{1}_2 = [3]_2 = 7$. The 35 two-dimensional subspaces of $\\mathbb{F}_2^4$ are the lines and planes of $\\text{PG}(3, \\mathbb{F}_2)$."
     }
   ],
   "conclusion": {
-    "summary": "q-Analog binomial coefficient theory fully formalized: 24 theorems, 0 sorries, 0 axioms. All major identities proved over arbitrary commutative rings.",
-    "implications": "q-binomial coefficients appear throughout quantum groups, representation theory, and partition combinatorics. This formalization provides the algebraic foundation for q-analog generalizations of classical combinatorial identities.",
+    "summary": "This formalization develops q-analog binomial coefficient theory from scratch over arbitrary commutative rings, in 750 lines with zero sorries and zero axioms. The 24 theorems cover the complete identity landscape: the specialization connecting q-binomials to classical binomial coefficients, product formula and absorption identity relating to q-factorials, symmetry, the q-hockey stick column sum, and the q-Vandermonde convolution. The division-free approach (using the q-Pascal recurrence rather than the factorial quotient formula) makes every theorem valid over CommRing without invertibility hypotheses — a genuine generalization of the classical theory.\n\nThe concrete verifications ground the abstract theory: the Fano plane (7 points, 7 lines of PG(2, F_2)) and the 35 subspaces of F_2^4 are machine-checked instances of the subspace-counting interpretation. The formalization directly extends Wiedijk's theorem #58 (combinations formula) to the q-analog setting, providing the algebraic foundation needed for quantum group representation theory and q-hypergeometric combinatorics.",
+    "implications": "**Combinatorics and Finite Geometry**: q-binomial coefficients are the central objects of finite geometry. Counting $k$-dimensional subspaces of $\\mathbb{F}_q^n$ generalizes counting $k$-subsets of an $n$-set; the Grassmannian $\\text{Gr}(k, \\mathbb{F}_q^n)$ has $\\binom{n}{k}_q$ elements. This formalization provides the algebraic foundation for further Lean results in finite projective geometry — Fano plane properties, Singer cycles, and the theory of linear codes over finite fields.\n\n**Quantum Groups and Representation Theory**: The divided powers $e^{(n)} = e^n/[n]_q!$ in quantum groups $U_q(\\mathfrak{sl}_2)$ use q-factorials; their products $e^{(m)} \\cdot e^{(n)} = \\binom{m+n}{m}_q e^{(m+n)}$ use q-binomials. The Jones polynomial invariant of knots, the HOMFLY polynomial, and representation theory of quantum groups all reduce to q-binomial identities. This file provides the algebraic substrate for any Lean formalization of these areas.\n\n**Partition Theory and q-Series**: The Rogers-Ramanujan identities relate partition counts to q-series involving $\\binom{n}{k}_q$: $\\sum_n q^{n^2}/(q;q)_n = \\prod_{n \\geq 0} 1/((1-q^{5n+1})(1-q^{5n+4}))$. The q-Pochhammer symbol $(q;q)_n = [n]_q! \\cdot (1-q)^n$ connects the present formalization to partition identities. MacMahon's 'plane partitions' count is also a q-binomial coefficient.\n\n**Unimodality and Hard Lefschetz**: The coefficients of $\\binom{n}{k}_q$ as a polynomial in $q$ are symmetric and unimodal — a non-trivial theorem proved by Sylvester (1878) using a representation-theoretic argument later reframed via the hard Lefschetz theorem for the cohomology of the Grassmannian $\\text{Gr}(k, \\mathbb{C}^n)$. The Lean formalization of unimodality for $\\binom{n}{k}_q$ would be a high-value Mathlib contribution.\n\n**Cryptography and Coding Theory**: Linear codes over $\\mathbb{F}_q$ use q-binomials in their weight enumerators and minimum distance calculations. The $[n,k]_q$-dimensional Reed-Solomon codes and their subcodes have parameters expressed in terms of Gaussian binomials.",
     "openQuestions": [
-      "Can the subspace counting interpretation (|Gr(k, F_q^n)| = [n,k]_q) be formally proved in Lean 4?",
-      "Can the Rogers-Ramanujan identities be formalized using q-binomials?",
-      "Can the quantum group representations (using q-binomials as structure constants) be formalized?"
+      "Can the subspace-counting interpretation $\\binom{n}{k}_q = |\\text{Gr}(k, \\mathbb{F}_q^n)|$ be formally proved in Lean 4? This requires connecting `qBinom` to the cardinality of `Submodule.Grassmannian` in Mathlib, which currently lacks a `Fintype` instance for the finite-field Grassmannian.",
+      "Can the q-binomial theorem — $(1+x)(1+qx)\\cdots(1+q^{n-1}x) = \\sum_{k=0}^n \\binom{n}{k}_q q^{k(k-1)/2} x^k$ — be formalized as a polynomial identity in $\\mathbb{Z}[q][x]$? This is the q-analog of the binomial theorem and the foundational identity of q-hypergeometric series.",
+      "Can the Rogers-Ramanujan identities $\\sum_{n \\geq 0} q^{n^2}/(q;q)_n = \\prod_{n \\geq 0} 1/((1-q^{5n+1})(1-q^{5n+4}))$ be formalized in Lean 4 using this library as a foundation? These partition-theoretic identities require careful treatment of q-series convergence (as formal power series over $\\mathbb{Z}[[q]]$).",
+      "Can unimodality of the coefficients of $\\binom{n}{k}_q$ be proved in Lean 4? The classical proof uses the $\\mathfrak{sl}_2$-representation structure on the cohomology of $\\text{Gr}(k, \\mathbb{C}^n)$ (hard Lefschetz). An algebraic proof via the theory of symmetric functions (Schur polynomials) may be more accessible in Lean.",
+      "Can q-analog analogs of Stirling numbers — the q-Stirling numbers — be defined and their basic identities proved over CommRing? q-Stirling numbers appear in the expansion of falling q-factorial powers and in the theory of q-differential operators.",
+      "Can the quantum group $U_q(\\mathfrak{sl}_2)$ be partially formalized using this library? The key structure constant $e^{(m)} \\cdot e^{(n)} = \\binom{m+n}{m}_q e^{(m+n)}$ follows from `qBinom_absorption`; the commutation relation $[e,f^{(n)}] = f^{(n-1)} \\cdot [K; 1-n]_q$ (where $[K;m]_q$ is the q-integer operator) uses the full q-binomial theory."
     ]
   },
   "leanFile": {
@@ -100,12 +199,42 @@
       "Mathlib.Data.Nat.Choose.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": [],
-    "namespace": "",
+    "opens": ["Nat"],
+    "namespace": "QBinomialCoefficients",
     "lineCount": 750,
     "axiomCount": 0,
     "theoremCount": 24,
-    "definitionCount": 6,
+    "definitionCount": 3,
+    "mainTheorems": [
+      {
+        "name": "qBinom_at_one",
+        "type": "core",
+        "statement": "∀ (n k : ℕ), qBinom (1 : R) n k = (Nat.choose n k : R)",
+        "description": "At q=1, the Gaussian binomial reduces to the ordinary binomial coefficient.",
+        "significance": "Validates the q-analog as a genuine generalization of C(n,k)"
+      },
+      {
+        "name": "qBinom_symm",
+        "type": "core",
+        "statement": "∀ (n k : ℕ), k ≤ n → qBinom q n k = qBinom q n (n - k)",
+        "description": "Symmetry: [n,k]_q = [n,n-k]_q, proved without factorial cancellation.",
+        "significance": "Requires the row absorption certificate strategy over arbitrary CommRing"
+      },
+      {
+        "name": "qBinom_vandermonde",
+        "type": "core",
+        "statement": "∑ j ∈ Finset.range (k+1), q^((k-j)*(m-j)) * qBinom q m j * qBinom q n (k-j) = qBinom q (m+n) k",
+        "description": "q-Vandermonde convolution identity.",
+        "significance": "q-analog of Vandermonde's classical sum; subspace decomposition by intersection dimension"
+      },
+      {
+        "name": "qBinom_column_sum",
+        "type": "core",
+        "statement": "∑ i ∈ Finset.range (n+1), q^((k+1)*(n-i)) * qBinom q i k = qBinom q (n+1) (k+1)",
+        "description": "q-hockey stick (column sum) identity.",
+        "significance": "q-analog of the classical hockey stick identity ∑ C(i,k) = C(n+1,k+1)"
+      }
+    ],
     "path": "Proofs/CombinationsFormulaOQ03.lean",
     "sorries": 0
   },
@@ -113,38 +242,37 @@
     {
       "targetId": "combinations-formula",
       "relationship": "extends",
-      "description": "OQ-03: q-analog generalization of the main binomial coefficient formalization"
+      "description": "The parent entry formalizes classical binomial coefficients $C(n,k)$ and Pascal's identity. This entry generalizes to q-analogs: `qBinom_at_one` proves $\\binom{n}{k}_q \\to C(n,k)$ as $q \\to 1$, and every identity in the parent entry has a q-analog proved here"
     },
     {
       "targetId": "combinations-formula-oq-01",
-      "relationship": "sibling",
-      "description": "OQ-01: another sub-question of combinations-formula covering a complementary combinatorial identity"
+      "relationship": "related",
+      "description": "A sibling open question entry on combinations. Together with OQ-02 and OQ-03 (this entry), they form the combinations formula cluster exploring different generalizations of $C(n,k)$"
     },
     {
       "targetId": "combinations-formula-oq-02",
-      "relationship": "sibling",
-      "description": "OQ-02: sibling sub-question covering further combinatorial extensions"
+      "relationship": "related",
+      "description": "Another sibling entry in the combinations formula cluster; OQ-03 (this entry) is the q-analog specialization"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem $(1+x)^n = \\sum C(n,k) x^k$ has a q-analog: $(1+x)(1+qx)\\cdots(1+q^{n-1}x) = \\sum \\binom{n}{k}_q q^{k(k-1)/2} x^k$ (the q-binomial theorem). This entry provides `qBinom_at_one` which verifies the $q=1$ specialization; the general q-binomial theorem is an open question"
+    },
+    {
+      "targetId": "partition-theorem",
+      "relationship": "related",
+      "description": "Euler's partition theorem connects to q-series via $\\binom{n+k}{k}_q = $ (number of partitions of $m$ into at most $k$ parts each $\\leq n$, weighted by $q^m$). The q-generating function for such partitions is precisely the Gaussian binomial. `partition-theorem` formalizes the Rogers-Ramanujan-adjacent result that every partition into odd parts has the same count as partitions into distinct parts"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "The primitive root theorem — $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic — is used in the evaluation of $[n]_q$ at roots of unity: $[n]_{\\zeta_p} = 0$ if $p \\mid n$ and $[n]_{\\zeta_p} = n$ otherwise (where $\\zeta_p$ is a primitive $p$th root of unity). This specialization connects q-binomials to cyclotomic polynomials: $(q^n - 1)/(q-1) = \\prod_{d \\mid n, d > 1} \\Phi_d(q)$ factored by cyclotomic polynomials, and `qNumber_geometric` is the algebraic foundation"
     },
     {
       "targetId": "picks-theorem-oq-03",
       "relationship": "related",
-      "description": "Ehrhart polynomial theory also generalizes classical counting via polynomial q-analogs and generating functions"
-    }
-  ],
-  "mainTheorems": [
-    {
-      "name": "q_binomial_specialization",
-      "type": "core",
-      "statement": "∀ n k : ℕ, q_binomial 1 n k = Nat.choose n k",
-      "description": "At q=1, Gaussian binomial reduces to ordinary binomial coefficient.",
-      "significance": "Validates the q-analog as a genuine generalization of C(n,k)"
-    },
-    {
-      "name": "q_binomial_symm",
-      "type": "core",
-      "statement": "∀ n k : ℕ, q_binomial q n k = q_binomial q n (n-k)",
-      "description": "Symmetry of q-binomial coefficients.",
-      "significance": "q-analog of the symmetry C(n,k) = C(n,n-k)"
+      "description": "Ehrhart polynomials generalize the lattice-path interpretation of Gaussian binomials: $[n,k]_q$ enumerates lattice paths weighted by area, and Ehrhart polynomials count lattice points in integral dilations of polytopes. The q-binomial coefficient $\\binom{n}{k}_q$ is the Ehrhart polynomial of the hypersimplex $\\Delta_{k,n}$."
     }
   ],
   "sorries": 0
