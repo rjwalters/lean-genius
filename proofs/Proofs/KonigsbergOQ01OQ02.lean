@@ -76,14 +76,32 @@ def IsEulerianBalanced (G : DiGraph V) : Prop :=
 PART II: HANDSHAKING LEMMA FOR DIRECTED GRAPHS
 ══════════════════════════════════════════════════════════════ -/
 
-/-- **Directed Handshaking Lemma**: Sum of all out-degrees = |E| = sum of all in-degrees.
-    Each edge (u,v) contributes exactly 1 to outDegree(u) and 1 to inDegree(v).
-    (Axiomatized: the bijection proof requires Finset.card_biUnion infrastructure.) -/
-axiom sum_outDegree_eq_edgeCount (G : DiGraph V) :
-    ∑ v : V, outDegree G v = G.edges.card
+/-- **Directed Handshaking Lemma**: Sum of all out-degrees = |E|.
+    Proof: write each card-of-filter as a sum of indicators, swap summation order,
+    then evaluate the inner sum ∑ v, if e.1 = v then 1 else 0 = 1 via sum_ite_eq. -/
+theorem sum_outDegree_eq_edgeCount (G : DiGraph V) :
+    ∑ v : V, outDegree G v = G.edges.card := by
+  unfold outDegree
+  have step : ∀ v : V, (G.edges.filter fun e => e.1 = v).card =
+      ∑ e ∈ G.edges, if e.1 = v then 1 else 0 := fun v => by
+    rw [Finset.card_eq_sum_ones, Finset.sum_filter]
+  simp_rw [step]
+  rw [Finset.sum_comm]
+  simp only [Finset.sum_ite_eq, Finset.mem_univ, if_true]
+  exact Finset.card_eq_sum_ones.symm
 
-axiom sum_inDegree_eq_edgeCount (G : DiGraph V) :
-    ∑ v : V, inDegree G v = G.edges.card
+/-- Sum of all in-degrees = |E|.
+    Proof: same indicator-swap argument with second endpoint. -/
+theorem sum_inDegree_eq_edgeCount (G : DiGraph V) :
+    ∑ v : V, inDegree G v = G.edges.card := by
+  unfold inDegree
+  have step : ∀ v : V, (G.edges.filter fun e => e.2 = v).card =
+      ∑ e ∈ G.edges, if e.2 = v then 1 else 0 := fun v => by
+    rw [Finset.card_eq_sum_ones, Finset.sum_filter]
+  simp_rw [step]
+  rw [Finset.sum_comm]
+  simp only [Finset.sum_ite_eq, Finset.mem_univ, if_true]
+  exact Finset.card_eq_sum_ones.symm
 
 /-- Sum of out-degrees = sum of in-degrees. -/
 theorem sum_outDegree_eq_sum_inDegree (G : DiGraph V) :
@@ -173,6 +191,11 @@ theorem directedPath_path_degrees :
   · exact absurd rfl hv0
   · native_decide
   · exact absurd rfl hv2
+
+/-- Explicit verification: the directed 3-cycle has 3 edges, and ∑ outDeg = 3. -/
+theorem directedTriangle_handshaking :
+    ∑ v : Fin 3, outDegree directedTriangle v = directedTriangle.edges.card :=
+  sum_outDegree_eq_edgeCount directedTriangle
 
 /-
 ══════════════════════════════════════════════════════════════
