@@ -302,9 +302,7 @@ theorem gcd_aeval_mulVec_eq_zero {M : Matrix (Fin n) (Fin n) K}
   calc (aeval M d).mulVec v
       = (aeval M (EuclideanDomain.gcdA p μ * p +
           EuclideanDomain.gcdB p μ * μ)).mulVec v := by
-        congr 2
-        change EuclideanDomain.gcd p μ = _
-        rw [bezout]; ring
+        congr 2; rw [hd_def, bezout]; ring
     _ = (aeval M (EuclideanDomain.gcdA p μ * p)).mulVec v +
         (aeval M (EuclideanDomain.gcdB p μ * μ)).mulVec v := by
         rw [map_add, Matrix.add_mulVec]
