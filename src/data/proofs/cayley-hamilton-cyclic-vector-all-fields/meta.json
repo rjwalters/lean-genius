@@ -105,10 +105,9 @@
         }
     ],
     "conclusion": {
-        "summary": "V2 of this formalization eliminates the RCF similarity axiom, proving the cyclic vector theorem axiom-free via primary decomposition (WIP04). The single remaining sorry (monic_factored_form) is routine Mathlib API work, not a mathematical assumption.",
-        "implications": "The upgrade from V1 (1 axiom, 0 sorries) to V2 (0 axioms, 1 sorry) replaces a deep mathematical assumption (PID structure theorem, ~800 lines to formalize) with a routine API exercise (~50 lines of normalizedFactors navigation). The primary decomposition approach (Bezout projections + CRT) is the key innovation: it bypasses companion matrices entirely, working directly with polynomial annihilators.",
+        "summary": "V2 of this formalization eliminates the RCF similarity axiom, proving the cyclic vector theorem axiom-free via primary decomposition (WIP04). Fully machine-verified: 0 axioms, 0 sorries.",
+        "implications": "The upgrade from V1 (1 axiom, 0 sorries) to V2 (0 axioms, 0 sorries) replaces a deep mathematical assumption (PID structure theorem, ~800 lines to formalize) with a proved factorization bridge (monic_factored_form, ~100 lines of normalizedFactors navigation). The primary decomposition approach (Bezout projections + CRT) is the key innovation: it bypasses companion matrices entirely, working directly with polynomial annihilators.",
         "openQuestions": [
-            "Fill the monic_factored_form sorry using Mathlib's UniqueFactorizationMonoid.normalizedFactors API + Finset.equivFin. Estimated ~50 lines. Suitable for Aristotle submission.",
             "Can the factorization bridge be proved without Finset.equivFin? A direct Finset-indexed version of WIP04's theorem would eliminate the Fin k conversion overhead."
         ]
     },
@@ -160,7 +159,7 @@
         {
             "name": "CayleyHamiltonCyclicVectorAllFields.nonderogatory_has_cyclic_vector",
             "statement": "∀ (M : Matrix (Fin n) (Fin n) K), IsNonderogatory M → ∃ v, IsCyclicVector M v",
-            "description": "Main theorem: every nonderogatory matrix over ANY field has a cyclic vector. 0 axioms, 1 sorry (routine factorization bridge)."
+            "description": "Main theorem: every nonderogatory matrix over ANY field has a cyclic vector. 0 axioms, 0 sorries."
         },
         {
             "name": "CayleyHamiltonCyclicVectorAllFields.nonderogatory_has_cyclic_vector_finite",
@@ -173,5 +172,5 @@
             "description": "Polynomial annihilator characterization: cyclic iff not killed by any nonzero polynomial of degree < n."
         }
     ],
-    "sorries": 1
+    "sorries": 0
 }
