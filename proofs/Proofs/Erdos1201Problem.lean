@@ -355,6 +355,30 @@ theorem gpfConsecutive_gt_pred_self (n : ℕ) (hn : 2 ≤ n) :
   have h := gpfConsecutive_succ_gt_k (n - 1) (by omega)
   rwa [Nat.sub_add_cancel (by omega : 1 ≤ n)] at h
 
+/-- **Sylvester-Schur (n = k+2 case)**: For k ≥ 1, gpfConsecutive (k+2) k > k.
+    Bertrand's postulate gives prime p in (k+1, 2(k+1)] = (k+1, 2k+2].
+    Since p ≥ k+2 and p ≤ 2k+2 = (k+2)+k, p lies in the window [n, n+k]. -/
+theorem gpfConsecutive_succ_succ_gt_k (k : ℕ) (hk : 1 ≤ k) :
+    k < gpfConsecutive (k + 2) k := by
+  obtain ⟨p, hp_prime, hkp, hp_le⟩ := Nat.exists_prime_lt_and_le_two_mul (k + 1) (by omega)
+  exact gpfConsecutive_gt_k_of_prime_in_window (k + 2) k (by omega) p hp_prime
+    (by omega) (by omega)
+
+/-- **Sylvester-Schur (n = k+3 case)**: For k ≥ 1, gpfConsecutive (k+3) k > k.
+    Bertrand gives prime p in (k+2, 2(k+2)] = (k+2, 2k+4]. Since 2(k+2) = 2k+4 is
+    even and ≥ 6, it is composite, forcing p ≤ 2k+3 = (k+3)+k. Thus p lies in [k+3, 2k+3]. -/
+theorem gpfConsecutive_succ_succ_succ_gt_k (k : ℕ) (hk : 1 ≤ k) :
+    k < gpfConsecutive (k + 3) k := by
+  obtain ⟨p, hp_prime, hkp, hp_le⟩ := Nat.exists_prime_lt_and_le_two_mul (k + 2) (by omega)
+  have hp_ne : p ≠ 2 * (k + 2) := by
+    intro heq
+    subst heq
+    rcases hp_prime.eq_one_or_self_of_dvd 2 (dvd_mul_right 2 (k + 2)) with h | h
+    · norm_num at h
+    · omega
+  exact gpfConsecutive_gt_k_of_prime_in_window (k + 3) k (by omega) p hp_prime
+    (by omega) (by omega)
+
 /-
 ## Infinitely Many n with Large GPF
 -/
@@ -373,6 +397,53 @@ theorem erdos_1201_infinitely_many (k : ℕ) (ε : ℝ) (hε₀ : 0 < ε) (_hε�
       < (n : ℝ) ^ (1 : ℝ) := Real.rpow_lt_rpow_of_exponent_lt hn1 (by linarith)
     _ = (n : ℝ) := Real.rpow_one _
     _ ≤ (gpfConsecutive n k : ℝ) := h_real
+
+/-
+## Monotonicity in Window Width
+-/
+
+/-- **Good-set monotonicity (pointwise)**: if P(n,k) > n^(1-ε), then P(n,k+1) > n^(1-ε),
+    since gpfConsecutive is non-decreasing in k. -/
+theorem erdos_1201_good_implies_good_succ (n k : ℕ) (ε : ℝ) (hn : 2 ≤ n)
+    (hgood : (n : ℝ) ^ (1 - ε) < gpfConsecutive n k) :
+    (n : ℝ) ^ (1 - ε) < gpfConsecutive n (k + 1) :=
+  hgood.trans_le (by exact_mod_cast gpfConsecutive_mono n k hn)
+
+/-- **Good-set containment**: the set of n with P(n,k) > n^(1-ε) grows with k.
+    This is the key structural property: enlarging the window never removes good n. -/
+theorem erdos_1201_good_set_mono_k (ε : ℝ) (k : ℕ) :
+    {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε) < gpfConsecutive n k} ⊆
+    {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε) < gpfConsecutive n (k + 1)} := by
+  intro n ⟨hn2, hgood⟩
+  exact ⟨hn2, erdos_1201_good_implies_good_succ n k ε hn2 hgood⟩
+
+/-- **Upper density is monotone**: if S ⊆ T, then upperDensity S ≤ upperDensity T.
+    The counting function for S is dominated by that of T on every finite window,
+    so the limsup of the ratio is also dominated. -/
+theorem upperDensity_mono {S T : Set ℕ} (hST : S ⊆ T) :
+    upperDensity S ≤ upperDensity T := by
+  simp only [upperDensity]
+  apply Filter.limsup_le_limsup
+  · apply Filter.eventually_of_forall
+    intro N
+    rcases Nat.eq_zero_or_pos N with rfl | hN
+    · simp
+    · rw [div_le_div_right (Nat.cast_pos.mpr hN)]
+      exact_mod_cast Finset.card_le_card (Finset.filter_subset_filter _ hST)
+  · exact ⟨1, Filter.eventually_of_forall fun N => by
+      rcases Nat.eq_zero_or_pos N with rfl | hN
+      · simp
+      · apply div_le_one_of_le _ (Nat.cast_nonneg N)
+        exact_mod_cast (Finset.card_filter_le _ _).trans
+          (by simp [Finset.Nat.card_Icc])⟩
+
+/-- **Density monotonicity in k**: the upper density of the good set is non-decreasing
+    as the window width grows. Formally: more n satisfy P(n,k+1) > n^(1-ε) than P(n,k) > n^(1-ε).
+    This is the key density property that underpins the Erdős conjecture. -/
+theorem erdos_1201_density_mono_k (ε : ℝ) (k : ℕ) :
+    upperDensity {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε) < gpfConsecutive n k} ≤
+    upperDensity {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε) < gpfConsecutive n (k + 1)} :=
+  upperDensity_mono (erdos_1201_good_set_mono_k ε k)
 
 /-
 ## Upper Bounds and Tight Estimates
