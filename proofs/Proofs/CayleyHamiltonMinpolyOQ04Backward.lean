@@ -526,21 +526,16 @@ theorem nilpotent_krylov_independent
   - `linearIndependent_of_isCyclicVector`: IsCyclicVector → LI Krylov vectors
   - `gcd_aeval_mulVec_eq_zero`: if p(M)v=0, then gcd(p,μ)(M)v=0 via Bezout
 
-  **1 sorry** (API integration issue):
-  - `nonderogatory_has_cyclic_vector_infinite`: Mathematical proof is COMPLETE
-    (documented in comments). The sorry encapsulates interaction with the
-    `normalizedFactors` API from `UniqueFactorizationDomain.Basic`, which
-    cannot be imported without breaking existing proofs in this file
-    (DecidableEq instance conflict). Resolving requires either:
-    (a) Restructuring existing proofs to be robust to the import, or
-    (b) Moving the main theorem to a separate file with the UFD import.
+  - `nonderogatory_has_cyclic_vector_infinite`: normalizedFactors union-avoidance
+    + GCD/Bezout contradiction. Uses `open UniqueFactorizationMonoid` + explicit
+    `DecidableEq K[X]` instance.
 
   **Proof Architecture for Main Theorem** (nonderogatory → cyclic vector):
   1. deg(minpoly) = n ⟹ {I, M, ..., M^{n-1}} linearly independent [✓]
-  2. For each q ∈ normalizedFactors(μ), ker((μ/q)(M)) is proper [✓ modulo import]
-  3. Union avoidance gives v ∉ ⋃ ker((μ/q)(M)) [✓ modulo import]
+  2. For each q ∈ normalizedFactors(μ), ker((μ/q)(M)) is proper [✓]
+  3. Union avoidance gives v ∉ ⋃ ker((μ/q)(M)) [✓]
   4. GCD/Bezout: if p(M)v = 0, then gcd(p,μ)(M)v = 0 [✓]
-  5. Factor extraction: μ/gcd has irreducible factor q, giving d | (μ/q) [✓ modulo import]
+  5. Factor extraction: μ/gcd has irreducible factor q, giving d | (μ/q) [✓]
   6. Commutativity: d|μ/q and d(M)v=0 ⟹ (μ/q)(M)v=0 → contradiction [✓]
 -/
 
