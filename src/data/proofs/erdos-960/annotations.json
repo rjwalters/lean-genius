@@ -137,5 +137,57 @@
       "base case"
     ],
     "prerequisites": []
+  },
+  {
+    "id": "ann-960-threshold-r2-proof",
+    "proofId": "erdos-960",
+    "range": {
+      "startLine": 162,
+      "endLine": 199
+    },
+    "type": "proof-technique",
+    "title": "threshold_r2 Proof: sSup Argument for the r=2 Base Case",
+    "content": "Lines 162-199 contain the proof body of `threshold_r2`: for r=2 (pairs), the threshold is 0. The proof uses a conditional sSup argument.\n\n**Structure**: Set S = { m : ℕ | ∃ P : PointConfig with n points, no-k-collinear, ≥m ordinary lines, and no 2-element all-ordinary subset }. Then threshold 2 k n = sSup S, and we must show sSup S = 0.\n\n**Case 1** (S nonempty, lines 166-198): Apply `csSup_le hne` — enough to show every m ∈ S satisfies m ≤ 0. By contradiction: if m > 0, then ordinaryLineCount P ≥ m ≥ 1. By `ordinary_line_exists`, there exist points p, q with IsOrdinaryLine P p q. Then {p, q} is a 2-element all-ordinary subset — contradicting hno_pair from the definition of m ∈ S.\n\nThe proof that {p, q} is all-ordinary requires: (i) card {p,q} = 2 (via `Finset.card_pair hord.2.2.1`), (ii) both p, q ∈ P.points, (iii) ∀ a,b ∈ {p,q} with a≠b, IsOrdinaryLine P a b — handled by cases on which of p or q each element is, using `isOrdinaryLine_symm` for the reversed pair.\n\n**Case 2** (S empty, lines 196-198): If S = ∅, then sSup ∅ = ⊥ = 0 by `csSup_empty` + `bot_le`.",
+    "mathContext": "The key insight: for $r=2$, the 'threshold' asks for configurations where many ordinary lines exist but no 2-element all-ordinary subset. But any ordinary line $PQ$ immediately gives a 2-element all-ordinary subset $\\{P, Q\\}$ — so if ≥1 ordinary lines exist, such a subset exists. Hence threshold(2,k,n) = 0 for all k, n. The Sylvester–Gallai theorem guarantees ordinary lines exist for non-collinear configurations, but this theorem only needs: IF ordinary lines exist THEN 2-element subsets exist.",
+    "significance": "structural",
+    "relatedConcepts": [
+      "sSup",
+      "conditional sSup argument",
+      "ordinary_line_exists",
+      "isOrdinaryLine_symm",
+      "base case"
+    ],
+    "prerequisites": [
+      "ordinary_line_exists",
+      "Finset.card_pair",
+      "csSup_le",
+      "csSup_empty"
+    ]
+  },
+  {
+    "id": "ann-960-linear-closing",
+    "proofId": "erdos-960",
+    "range": {
+      "startLine": 200,
+      "endLine": 251
+    },
+    "type": "summary",
+    "title": "Green-Tao Context, Counting Lemma, Linear→Little-o, and Summary",
+    "content": "Lines 200-251 contain four items completing the formalization.\n\n**Green-Tao reference** (lines 200-203): Comment noting the Sylvester-Gallai / Green-Tao theorem (for n ≥ 13 non-collinear points, ≥n/2 ordinary lines; Green-Tao 2013, Acta Math. 208(1)). Not axiomatized since not used in any theorem.\n\n**ordinary_pairs_count** (lines 205-212): If S ⊆ P.points with |S| = r is all-ordinary, then |S×S| - |S| = r(r-1). The proof uses |S×S| = |S|² (Finset.card_product) and arithmetic. This counts the number of ordered (distinct) pairs in an all-ordinary set.\n\n**linear_implies_littleo** (lines 214-239): If f_{r,k}(n) ≤ Cn (linear), then f_{r,k}(n) = o(n²). The ε-witness is N₀ = ⌈C/ε⌉.toNat + 1. For n ≥ N₀: since n > C/ε, we have Cn < εn², so threshold(r,k,n) ≤ Cn < εn². The proof uses `Int.le_ceil`, `div_mul_cancel₀`, and `nlinarith` for the final arithmetic.\n\n**erdos_960_summary** (lines 243-249): The closing conjunction:\n1. For r ≥ 3, k ≥ 4: the little-o conjecture is FALSE (from `erdos_960_littleo_false`)\n2. For r = 2: threshold = 0 (from `threshold_r2`)\nThe summary highlights the disproof for r ≥ 3: the conjecture fails, even though the linear version is still open for small r and k.",
+    "mathContext": "The conjecture hierarchy: (linear) $f_{r,k}(n) \\leq Cn$ implies (little-o) $f_{r,k}(n) = o(n^2)$. Green-Tao (2013) proved the strict Erdős-Gallai conjecture: for $n \\geq 13$ non-collinear points, at least $n/2$ ordinary lines. Combined with the Sylvester-Gallai theorem, this characterizes when ordinary-line counts are large.",
+    "significance": "contextual",
+    "relatedConcepts": [
+      "Green-Tao theorem",
+      "ordinary lines",
+      "linear implies little-o",
+      "Erdős problem #960",
+      "disproof for r≥3"
+    ],
+    "prerequisites": [
+      "erdos_960_littleo_false",
+      "threshold_r2",
+      "linear_implies_littleo",
+      "Int.le_ceil"
+    ]
   }
 ]
