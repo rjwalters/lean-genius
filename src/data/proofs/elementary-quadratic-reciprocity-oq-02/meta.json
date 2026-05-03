@@ -42,7 +42,8 @@
       "The Frobenius σ_q acts as τ ↦ (q/p)·τ on ℚ(ζ_p), and also as τ ↦ τ^q by definition — comparing these two actions yields QR",
       "The axiom gauss_sum_sq isolates the hardest step: evaluating τ² in the cyclotomic field requires character orthogonality and Galois theory not yet in Mathlib in this form",
       "The first supplementary law (−1/p) = (−1)^((p−1)/2) falls out immediately from τ² = χ(−1)·p: the sign of τ² is χ(−1)",
-      "Gauss spent 4+ years proving τ² = χ(−1)·p after discovering QR; the evaluation connects to Weil's theorem on character sums over finite fields"
+      "Gauss spent 4+ years proving τ² = χ(−1)·p after discovering QR; the evaluation connects to Weil's theorem on character sums over finite fields",
+      "The bound $|\\tau|^2 = p$ is the simplest instance of Weil's theorem on exponential sums; Deligne's proof (1974) of the Weil conjectures for varieties over $\\mathbb{F}_p$ vastly generalizes this to $|\\sum_x \\chi(f(x))\\psi(g(x))| \\leq 2g\\sqrt{p}$, placing QR in the same conceptual family as the Riemann Hypothesis for curves"
     ],
     "prerequisites": [
       "Legendre symbol: (a/p) ∈ {−1, 0, 1} measuring quadratic residuosity mod p",
@@ -71,6 +72,11 @@
     "sorries": 0
   },
   "crossReferences": [
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "sibling",
+      "description": "The non-elementary QR formalization using Mathlib's `legendreSym.quadratic_reciprocity` directly — where that entry exposes the Mathlib API approach, this entry provides the conceptual skeleton of Gauss's own Proofs VI–VII via the cyclotomic character $\\tau^2 = \\chi(-1) \\cdot p$"
+    },
     {
       "targetId": "elementary-quadratic-reciprocity",
       "relationship": "extends",
