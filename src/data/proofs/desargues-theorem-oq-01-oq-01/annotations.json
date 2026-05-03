@@ -1,0 +1,152 @@
+[
+  {
+    "id": "ann-moulton-overview",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 62
+    },
+    "type": "context",
+    "title": "The Moulton Plane: A Non-Desarguesian Counterexample",
+    "content": "The file opens with a detailed docstring (lines 1–42) explaining the construction and result. The open question is whether Lean can formalize non-Desarguesian projective planes — the answer is YES via the Moulton plane (Moulton 1902).\n\n**Construction**: Points are ℝ×ℝ. Lines are 'bent' at the y-axis for positive slopes:\n- Vertical lines: {x = c}\n- Slope m ≤ 0: ordinary line y = mx + b\n- Slope m > 0: left half (x ≤ 0) uses slope m, right half (x > 0) uses slope m/2; both halves meet at y = b when x = 0\n\nThe docstring gives the explicit counterexample data: center O=(0,0), triangles ABC and A'B'C', intersection points P=(-17,9), Q=(27,17), R=(-6,11). These are Euclidean-collinear (classical Desargues holds in ℝ²) but NOT Moulton-collinear (Desargues fails in the Moulton plane).\n\n**Key definitions** (lines 54–62):\n- `onMoultonLine m b P`: P lies on the Moulton line with left-slope m and y-intercept b. Defined by a nested `if m ≤ 0 ... else if P.1 ≤ 0 ... else ...` — three cases depending on sign of slope and x-coordinate of point.\n- `MoultonCollinear P Q R`: P, Q, R lie on a common Moulton line — either all share the same x-coordinate (vertical), or there exist m, b with all three on `onMoultonLine m b`.",
+    "mathContext": "A **non-Desarguesian plane** is one satisfying all affine (or projective) plane axioms but where Desargues's theorem fails. Desargues's theorem: if triangles $ABC$ and $A'B'C'$ are in perspective from a point (all lines $AA'$, $BB'$, $CC'$ pass through one point), then the intersections of corresponding sides $AB \\cap A'B'$, $BC \\cap B'C'$, $CA \\cap C'A'$ are collinear (lie on a 'Desargues line'). The Moulton plane refutes this by bending lines differently in two half-planes.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Desargues's theorem",
+      "projective plane axioms",
+      "Moulton plane",
+      "affine perspective from a point",
+      "non-Desarguesian geometry"
+    ],
+    "prerequisites": [
+      "onMoultonLine",
+      "MoultonCollinear",
+      "ℝ × ℝ"
+    ]
+  },
+  {
+    "id": "ann-moulton-helper-lemmas",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 64,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Helper Lemmas: Constructing and Extracting onMoultonLine Membership",
+    "content": "Lines 64–101 contain six paired helper lemmas (three constructors + three extractors) for `onMoultonLine`. These form an API to avoid case-splitting on the `if-then-else` definition repeatedly.\n\n**Constructors** (introduce membership):\n- `onML_neg_slope`: from `h : P.2 = m*P.1 + b` and `m ≤ 0`, gives `onMoultonLine m b P`\n- `onML_pos_left`: from `m > 0`, `P.1 ≤ 0`, and ordinary equation, gives membership\n- `onML_pos_right`: from `m > 0`, `P.1 > 0`, and bent equation (slope m/2), gives membership\n\n**Extractors** (unfold membership to equation):\n- `onML_eq_neg`: from `onMoultonLine m b P` and `m ≤ 0`, extracts `P.2 = m*P.1 + b`\n- `onML_eq_pos_left`: from membership, `m > 0`, `P.1 ≤ 0`, extracts ordinary equation\n- `onML_eq_pos_right`: from membership, `m > 0`, `P.1 > 0`, extracts bent equation\n\nAll six proofs are single-line `simp [onMoultonLine, if_pos, if_neg]` rewrites that reduce to the relevant branch of the definition. The `open Classical` at line 46 enables classical reasoning (needed for decidable comparison of reals).",
+    "mathContext": "The `onMoultonLine` definition has three branches selected by `if m ≤ 0 then ... else if P.1 ≤ 0 then ... else ...`. In Lean 4, `simp [onMoultonLine, if_pos h]` simplifies using the truth of hypothesis `h`, reducing the three-branch definition to a single equation. The helper lemmas provide a stable interface so the `simp` calls are concentrated in one place.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "if_pos/if_neg simp lemmas",
+      "API design in Lean",
+      "definition unfolding"
+    ],
+    "prerequisites": [
+      "onMoultonLine",
+      "open Classical",
+      "simp"
+    ]
+  },
+  {
+    "id": "ann-moulton-points-and-perspectivity",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 92,
+      "endLine": 130
+    },
+    "type": "theorem",
+    "title": "Counterexample Points and Perspectivity from O",
+    "content": "Part II (92–101) defines the 10 explicit rational-coordinate points as private `def`s: center O=(0,0), triangle vertices A=(-2,3), B=(3,1), C=(0,-1), A'=(-4,6), B'=(9,3), C'=(0,-4), and intersection points P=(-17,9), Q=(27,17), R=(-6,11).\n\nPart III (103–130) proves perspectivity: the three pairs of corresponding vertices OAA', OBB', OCC' are Moulton-collinear.\n\n`collinear_OAA'`: O, A, A' lie on slope -3/2 line through origin. Slope is negative → ordinary Moulton line. All three satisfy y = (-3/2)x via `onML_neg_slope` + `ring`.\n\n`collinear_OBB'`: O, B, B' lie on Moulton line with left-slope 2/3 and intercept 0. O is at x=0 (boundary, uses `onML_pos_left`); B=(3,1) and B'=(9,3) are at x>0 (uses `onML_pos_right` with right-slope 1/3).\n\n`collinear_OCC'`: O, C, C' all have x=0 → vertical Moulton line. Uses the `left` branch of `MoultonCollinear` (x-coordinates all equal) plus `simp [O_pt, C_pt, C'_pt]`.",
+    "mathContext": "Two triangles are **in affine perspective from a point O** if the three lines joining corresponding vertices all pass through O. Here: $\\overrightarrow{OA} \\parallel \\overrightarrow{OA'}$ (same Moulton line), $\\overrightarrow{OB} \\parallel \\overrightarrow{OB'}$, $\\overrightarrow{OC} \\parallel \\overrightarrow{OC'}$. Desargues's theorem predicts that corresponding-side intersections $P = AB \\cap A'B'$, $Q = BC \\cap B'C'$, $R = CA \\cap C'A'$ are collinear — but in the Moulton plane they are not.",
+    "significance": "key",
+    "relatedConcepts": [
+      "affine perspective from a point",
+      "Moulton collinearity",
+      "perspectivity center"
+    ],
+    "prerequisites": [
+      "MoultonCollinear",
+      "onML_neg_slope",
+      "onML_pos_left",
+      "onML_pos_right"
+    ]
+  },
+  {
+    "id": "ann-moulton-intersection-lemmas",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 131,
+      "endLine": 211
+    },
+    "type": "concept",
+    "title": "Part IV: Verifying Intersection Points P, Q, R on Corresponding Sides",
+    "content": "Part IV (131–211) contains 14 one-line lemmas verifying that the intersection points P, Q, R each lie on both the original-triangle side and the corresponding primed-triangle side.\n\n**P = (-17, 9) on AB and A'B'** (138–160): Both AB (slope -2/5, intercept 11/5) and A'B' (slope -3/13, intercept 66/13) have negative slopes — ordinary Moulton lines. Each lemma uses `onML_neg_slope (by norm_num) _ (by simp [...]; ring)` to reduce to a linear arithmetic check.\n\n**Q = (27, 17) on BC and B'C'** (162–186): BC has left-slope 4/3 (intercept -1); B'C' has left-slope 14/9 (intercept -4). Q is at x=27>0 (right half), so uses `onML_pos_right` with right slopes 2/3 and 7/9 respectively. B is at x=3>0 (right half), C and C' are at x=0 (left boundary).\n\n**R = (-6, 11) on CA and C'A'** (188–210): CA has slope -2 (intercept -1); C'A' has slope -5/2 (intercept -4). Both have negative slopes → ordinary lines. R, C, C', A, A' are all at x ≤ 0, so all use `onML_neg_slope`.\n\nAll 14 proofs follow the same three-line pattern: choose the right helper (`onML_neg_slope` or `onML_pos_right`), verify the slope sign by `norm_num`, and verify the equation by `ring` after `simp` unfolds the coordinate definition.",
+    "mathContext": "The intersection points are computed by classical linear algebra (ordinary Euclidean intersections since all the relevant sides have consistent slope signs). For example, $P = AB \\cap A'B'$: slope of $AB$ is $(1-3)/(3-(-2)) = -2/5$, intercept $11/5$; slope of $A'B'$ is $(3-6)/(9-(-4)) = -3/13$, intercept $66/13$. Setting equal: $(-2/5)x + 11/5 = (-3/13)x + 66/13$ gives $x = -17$, $y = 9$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "intersection of lines",
+      "Moulton collinearity",
+      "norm_num + ring tactic combo"
+    ],
+    "prerequisites": [
+      "onML_neg_slope",
+      "onML_pos_right",
+      "onML_pos_left"
+    ]
+  },
+  {
+    "id": "ann-moulton-desargues-fails",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 212,
+      "endLine": 262
+    },
+    "type": "theorem",
+    "title": "Part V: Desargues Fails — P, Q, R Not Moulton-Collinear",
+    "content": "`desargues_fails` (232–261) is the mathematical heart: P=(-17,9), Q=(27,17), R=(-6,11) are NOT Moulton-collinear. The proof proceeds by case analysis on the two branches of `MoultonCollinear`:\n\n**Case 1 (vertical)**: P.1 = Q.1 would require -17 = 27 — `norm_num` contradiction.\n\n**Case 2 (non-vertical)**: A Moulton line with left-slope m and intercept b passes through P, Q, R. Sub-case on m:\n\n- **m ≤ 0** (ordinary line): Extract equations from P and Q via `onML_eq_neg`. From P: 9 = m(-17)+b; from Q: 17 = m(27)+b. Subtracting: 44m = 8 > 0, contradicting m ≤ 0 via `linarith`.\n\n- **m > 0** (bent line): P is at x=-17≤0 (left half, slope m); Q is at x=27>0 (right half, slope m/2); R is at x=-6≤0 (left half, slope m). Extract:\n  - hP': 9 = m(-17) + b\n  - hQ': 17 = (m/2)(27) + b\n  - hR': 11 = m(-6) + b\n  Two `linear_combination` steps close: (hP'−hR') gives 11m=2; (2hP'−2hQ') gives 61m=16. These are inconsistent: 61·(11m) = 122 but 11·(61m) = 176, so 122 = 176, contradiction by `linarith`.",
+    "mathContext": "The Moulton-collinearity failure is the key non-Euclidean feature: in ordinary Euclidean geometry, Desargues holds, and indeed P, Q, R are Euclidean-collinear (slope (17-9)/(27-(-17)) = 8/44 = 2/11). But in the Moulton plane, the bent lines for Q break the collinearity. The contradiction comes from the overconstrained linear system: slope m must simultaneously satisfy $11m = 2$ (from P and R) and $61m = 16$ (from P and Q, accounting for the m/2 bending), which is inconsistent.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linear_combination tactic",
+      "case analysis in Lean",
+      "Desargues failure",
+      "affine geometry"
+    ],
+    "prerequisites": [
+      "onML_eq_neg",
+      "onML_eq_pos_left",
+      "onML_eq_pos_right",
+      "linear_combination",
+      "linarith"
+    ]
+  },
+  {
+    "id": "ann-moulton-main-theorem",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 263,
+      "endLine": 298
+    },
+    "type": "theorem",
+    "title": "Part VI: Full Moulton Counterexample Assembly",
+    "content": "`moulton_counterexample` (268–295) is the top-level summary theorem, packaging 21 components into a single large conjunction:\n\n- **3 perspectivity lemmas**: `collinear_OAA'`, `collinear_OBB'`, `collinear_OCC'`\n- **18 incidence lemmas**: for each of the 6 sides (AB, A'B', BC, B'C', CA, C'A'), the intersection point P/Q/R and the two triangle vertices lie on that Moulton line\n- **1 non-collinearity**: `desargues_fails`\n\nThe proof is a term-mode conjunction using `⟨ ... , ... ⟩` to assemble all named lemmas. This style is idiomatic when all pieces are already proved as separate lemmas — no tactics needed.\n\nThe full theorem witnesses that the Moulton plane is a model of affine geometry in which Desargues's theorem fails, answering the open question affirmatively: non-Desarguesian planes can be formalized in Lean, and explicit counterexamples can be fully verified by the type checker.",
+    "mathContext": "The `moulton_counterexample` is a verified formal certificate: the machine has checked all 21 components simultaneously. This means: the Moulton plane satisfies all geometric incidence conditions for a Desargues counterexample. Combined with the result that Desargues holds in any coordinatizable plane (over a division ring), this formally establishes that the Moulton plane cannot be coordinatized by a division ring.",
+    "significance": "key",
+    "relatedConcepts": [
+      "formal certificate",
+      "conjunction assembly",
+      "Desargues counterexample",
+      "affine plane axioms",
+      "division ring coordinatization"
+    ],
+    "prerequisites": [
+      "collinear_OAA'",
+      "collinear_OBB'",
+      "collinear_OCC'",
+      "desargues_fails",
+      "P_on_AB",
+      "Q_on_BC",
+      "R_on_CA"
+    ]
+  }
+]
