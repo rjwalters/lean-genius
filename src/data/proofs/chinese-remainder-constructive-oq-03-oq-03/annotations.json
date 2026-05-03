@@ -1,96 +1,86 @@
-{
-  "id": "chinese-remainder-constructive-oq-03-oq-03",
-  "source": "lean-genius-researcher",
-  "annotations": [
-    {
-      "id": "ann-001",
-      "type": "theorem",
-      "lean": "theorem pow2_coprime_odd (k : ℕ) {m : ℕ} (hm : m % 2 = 1) :\n    Nat.Coprime (2 ^ k) m :=\n  Nat.Coprime.pow_left k (Nat.coprime_two_right.mpr (Nat.odd_iff.mpr hm))",
-      "line": 61,
-      "title": "Powers of 2 are coprime to odd numbers",
-      "body": "The fundamental coprimality result: 2^k and any odd number m have gcd 1. The proof chains three Mathlib lemmas: Nat.odd_iff converts the mod-2 condition to the Odd predicate, Nat.coprime_two_right.mpr gives Nat.Coprime 2 m when m is odd, and Nat.Coprime.pow_left lifts this to 2^k.",
-      "tags": ["coprimality", "power-of-2", "core-result"]
-    },
-    {
-      "id": "ann-002",
-      "type": "theorem",
-      "lean": "theorem pow2_not_coprime_pow2 {k j : ℕ} (hk : 1 ≤ k) (hj : 1 ≤ j) :\n    ¬ Nat.Coprime (2 ^ k) (2 ^ j)",
-      "line": 72,
-      "title": "Two positive powers of 2 are never coprime",
-      "body": "The uniqueness constraint: any two distinct powers of 2 share factor 2. Since 2 ∣ 2^k and 2 ∣ 2^j for k, j ≥ 1, we have 2 ∣ gcd(2^k, 2^j), so gcd ≥ 2 > 1. This explains why an RNS base can contain at most one power of 2.",
-      "tags": ["coprimality", "power-of-2", "uniqueness-constraint"]
-    },
-    {
-      "id": "ann-003",
-      "type": "definition",
-      "lean": "structure Pow2RNSBase where\n  power : ℕ\n  oddMods : List ℕ\n  power_pos : 1 ≤ power\n  mods_ge_three : ∀ m ∈ oddMods, 3 ≤ m\n  mods_odd : ∀ m ∈ oddMods, m % 2 = 1\n  mods_coprime : oddMods.Pairwise Nat.Coprime",
-      "line": 87,
-      "title": "The Pow2RNSBase structure",
-      "body": "A valid power-of-2 RNS base has one power-of-2 channel (exponent ≥ 1) and a list of odd channels (each ≥ 3, pairwise coprime). The constraints ensure: (1) the power-of-2 channel is ≥ 2, (2) each odd channel is a valid RNS channel, (3) the odd channels are mutually coprime. Together with pow2_coprime_odd, this makes the full list pairwise coprime.",
-      "tags": ["structure", "rns-base", "hardware"]
-    },
-    {
-      "id": "ann-004",
-      "type": "theorem",
-      "lean": "theorem Pow2RNSBase.pairwise_coprime (b : Pow2RNSBase) :\n    b.moduli.Pairwise Nat.Coprime",
-      "line": 103,
-      "title": "A Pow2RNSBase gives a pairwise coprime list",
-      "body": "The full moduli list [2^power, m₁, ..., mₙ] is pairwise coprime. Proof uses List.Pairwise.cons: the head (2^power) is coprime to each mᵢ via pow2_coprime_odd (since each mᵢ is odd by mods_odd), and the tail is pairwise coprime by mods_coprime.",
-      "tags": ["pairwise-coprimality", "rns-validity", "structure"]
-    },
-    {
-      "id": "ann-005",
-      "type": "theorem",
-      "lean": "theorem Pow2RNSBase.dynamicRange_eq (b : Pow2RNSBase) :\n    b.toRNSBase.dynamicRange = 2 ^ b.power * b.oddMods.prod",
-      "line": 130,
-      "title": "Dynamic range formula for power-of-2 RNS base",
-      "body": "The dynamic range (product of all moduli) factors as 2^power times the product of the odd moduli. For {4, 3, 5, 7}: range = 4 × 3 × 5 × 7 = 420. For {16, 3, 5, 7, 11, 13}: range = 16 × 15015 = 240240. The factored form makes the dependence on k explicit.",
-      "tags": ["dynamic-range", "product-formula", "hardware"]
-    },
-    {
-      "id": "ann-006",
-      "type": "example",
-      "lean": "theorem base_4_3_5_7_coprime : [4, 3, 5, 7].Pairwise Nat.Coprime := by decide\ntheorem base_4_3_5_7_range : [4, 3, 5, 7].prod = 420 := by norm_num",
-      "line": 141,
-      "title": "The base {4, 3, 5, 7}: range 420",
-      "body": "A concrete 4-channel RNS base with a power-of-2 channel: 4 = 2², with odd channels 3, 5, 7. Dynamic range 420. Compare with the prime base {2, 3, 5, 7} (range 210): replacing 2 with 4 doubles the range with the same channel count.",
-      "tags": ["concrete-example", "hardware", "4-channel"]
-    },
-    {
-      "id": "ann-007",
-      "type": "example",
-      "lean": "theorem base_16_3_5_7_11_13_coprime :\n    [16, 3, 5, 7, 11, 13].Pairwise Nat.Coprime := by decide\ntheorem base_16_3_5_7_11_13_range : [16, 3, 5, 7, 11, 13].prod = 240240 := by norm_num",
-      "line": 153,
-      "title": "The base {16, 3, 5, 7, 11, 13}: range 240240",
-      "body": "A 6-channel RNS base: 16 = 2⁴, with the first 5 odd primes. Dynamic range 240240. A hardware implementation would compute mod-16 via a 4-bit AND mask, while the 5 odd channels use standard modular arithmetic. The large range (up to 240240 representable values) makes this base suitable for DSP applications.",
-      "tags": ["concrete-example", "hardware", "6-channel", "dsp"]
-    },
-    {
-      "id": "ann-008",
-      "type": "theorem",
-      "lean": "theorem pow2_channel_doubles_range :\n    [4, 3, 5, 7].prod = 2 * [2, 3, 5, 7].prod := by norm_num",
-      "line": 160,
-      "title": "Replacing 2 with 4 doubles the dynamic range",
-      "body": "For the same 4 channels and same channel count, using 4 = 2² instead of 2 doubles the dynamic range from 210 to 420. This illustrates the general principle: replacing 2^j with 2^k (j < k) multiplies the range by 2^(k-j). The hardware overhead of the power-of-2 channel is essentially the same (bitwise AND with a wider mask).",
-      "tags": ["efficiency", "range-comparison", "hardware"]
-    },
-    {
-      "id": "ann-009",
-      "type": "theorem",
-      "lean": "theorem base_2_4_invalid : ¬ [2, 4].Pairwise Nat.Coprime := by decide\ntheorem base_4_8_invalid : ¬ [4, 8].Pairwise Nat.Coprime := by decide",
-      "line": 168,
-      "title": "Two powers of 2 make an invalid base",
-      "body": "Concrete witnesses for the uniqueness constraint. gcd(2, 4) = 2 ≠ 1 and gcd(4, 8) = 4 ≠ 1. These are verified by decide (kernel computation). The general case is proved by pow2_not_coprime_pow2.",
-      "tags": ["invalidity", "uniqueness-constraint", "counter-examples"]
-    },
-    {
-      "id": "ann-010",
-      "type": "theorem",
-      "lean": "theorem pow2_bit_length (k : ℕ) : Nat.log 2 (2 ^ k) = k :=\n  Nat.log_pow (by norm_num : 1 < 2) k",
-      "line": 188,
-      "title": "Hardware bit-width of the power-of-2 channel",
-      "body": "⌊log₂(2^k)⌋ = k, confirming that the 2^k channel requires a k-bit AND mask for modular reduction. The reduction x mod 2^k = x &&& (2^k - 1) uses a k-bit mask. This is a single instruction on modern hardware, making the power-of-2 channel the cheapest RNS channel to implement.",
-      "tags": ["hardware", "bit-operations", "efficiency"]
-    }
-  ]
-}
+[
+  {
+    "id": "ann-crt-pow2-intro",
+    "proofId": "chinese-remainder-constructive-oq-03-oq-03",
+    "range": { "startLine": 4, "endLine": 48 },
+    "type": "context",
+    "title": "Problem Setup: When Can 2^k Appear in an RNS Base?",
+    "content": "The file header poses the question: can the CRT-based RNS framework include a power-of-2 modulus? The answer is a clean YES, but with a structural constraint: exactly ONE power of 2 can appear. The reason is purely number-theoretic — gcd(2^a, 2^b) ≥ 2 for a, b ≥ 1, breaking the coprimality requirement, while gcd(2^k, m) = 1 for any odd m. The hardware motivation is strong: x mod 2^k reduces to a single bitwise AND operation, making the power-of-2 channel dramatically cheaper than a general modular reduction.",
+    "mathContext": "$\\gcd(2^k, m) = 1$ when $m$ is odd; $\\gcd(2^a, 2^b) = 2^{\\min(a,b)} \\geq 2$ when $a, b \\geq 1$. Dynamic range: $2^k \\cdot m_1 \\cdots m_n$ for a base $\\{2^k, m_1, \\ldots, m_n\\}$.",
+    "significance": "context",
+    "relatedConcepts": ["residue number system", "CRT", "coprimality", "hardware arithmetic", "bitwise AND"],
+    "prerequisites": ["chinese-remainder-constructive-oq-03", "Nat.Coprime", "ProbabilityTheory.uniformOn"]
+  },
+  {
+    "id": "ann-pow2-coprime-odd",
+    "proofId": "chinese-remainder-constructive-oq-03-oq-03",
+    "range": { "startLine": 58, "endLine": 68 },
+    "type": "technique",
+    "title": "pow2_coprime_odd: The Core Coprimality Fact",
+    "content": "This is the key enabling result: 2^k is coprime to any odd number m. The proof is a clean Mathlib chain: (1) `Nat.odd_iff.mpr` converts the mod-2 condition to `Odd m`; (2) `Nat.coprime_two_right.mpr` gives `Nat.Coprime 2 m` from `Odd m`; (3) `Nat.Coprime.pow_left` lifts the base case `Coprime 2 m` to `Coprime (2^k) m` for any k. The symmetric form `odd_coprime_pow2` follows immediately. These lemmas are the pillars on which the Pow2RNSBase structure stands.",
+    "mathContext": "$\\gcd(2^k, m) = 1 \\iff \\gcd(2, m) = 1 \\iff m \\text{ is odd}$. The Mathlib chain: `Odd m` $\\xrightarrow{\\text{coprime\\_two\\_right}}$ `Coprime 2 m` $\\xrightarrow{\\text{Coprime.pow\\_left}}$ `Coprime (2^k) m`.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.Coprime", "Nat.coprime_two_right", "Nat.Coprime.pow_left", "odd numbers", "gcd"],
+    "prerequisites": ["natural number coprimality", "Mathlib Nat.odd_iff", "Nat.Coprime.pow_left"]
+  },
+  {
+    "id": "ann-pow2-not-coprime",
+    "proofId": "chinese-remainder-constructive-oq-03-oq-03",
+    "range": { "startLine": 70, "endLine": 79 },
+    "type": "technique",
+    "title": "pow2_not_coprime_pow2: The Uniqueness Constraint",
+    "content": "Two positive powers of 2 are never coprime. The proof is a contradiction argument: if Coprime(2^k, 2^j) held, gcd(2^k, 2^j) = 1. But 2 ∣ 2^k (via dvd_pow_self with k ≥ 1) and 2 ∣ 2^j, so by Nat.dvd_gcd we'd have 2 ∣ 1, a contradiction. This single result implies the entire uniqueness constraint: an RNS base can contain at most one power of 2. The proof is purely constructive — it produces the divisibility witness 2.",
+    "mathContext": "$2 \\mid 2^k$ for all $k \\geq 1$, so $2 \\mid \\gcd(2^k, 2^j) \\geq 2 > 1$. Hence $\\gcd(2^k, 2^j) \\neq 1$ and the two values are not coprime.",
+    "significance": "key",
+    "relatedConcepts": ["dvd_pow_self", "Nat.dvd_gcd", "Nat.Coprime definition", "uniqueness of power-of-2 channel"],
+    "prerequisites": ["natural number divisibility", "Nat.Coprime as gcd = 1", "dvd_pow_self"]
+  },
+  {
+    "id": "ann-pow2rnsbase-structure",
+    "proofId": "chinese-remainder-constructive-oq-03-oq-03",
+    "range": { "startLine": 85, "endLine": 127 },
+    "type": "definition",
+    "title": "Pow2RNSBase: Structuring the Valid Power-of-2 RNS Base",
+    "content": "The Pow2RNSBase structure captures exactly the constraints needed for a valid power-of-2 RNS base: one power-of-2 channel (exponent ≥ 1), a list of odd channels (each ≥ 3, pairwise coprime). The key design choice is that pow2_coprime_odd handles ALL coprimality between the power-of-2 channel and the odd channels — no explicit hypothesis is needed for this cross-coprimality. The `pairwise_coprime` theorem assembles the full list using `List.Pairwise.cons`: head coprime to all tail elements (via pow2_coprime_odd), and tail pairwise coprime (from mods_coprime). The `toRNSBase` embedding then makes this a valid standard RNSBase.",
+    "mathContext": "$\\{2^k, m_1, \\ldots, m_n\\}$ valid RNS base iff: $k \\geq 1$, each $m_i \\geq 3$ odd, $m_i$ pairwise coprime. Then $\\gcd(2^k, m_i) = 1$ follows automatically from oddness. Dynamic range $= 2^k \\cdot \\prod_i m_i$.",
+    "significance": "key",
+    "relatedConcepts": ["Lean 4 structure", "RNSBase embedding", "List.Pairwise.cons", "modular arithmetic structure"],
+    "prerequisites": ["RNSBase structure from oq-03", "List.Pairwise", "Nat.Coprime"]
+  },
+  {
+    "id": "ann-concrete-examples",
+    "proofId": "chinese-remainder-constructive-oq-03-oq-03",
+    "range": { "startLine": 139, "endLine": 161 },
+    "type": "context",
+    "title": "Concrete Bases: {4,3,5,7}, {8,3,5,7,11}, {16,3,5,7,11,13}",
+    "content": "Three concrete RNS bases illustrate the power-of-2 channel in practice. All coprimality results are verified by `decide` (kernel computation), and all range calculations by `norm_num`. The bases show the exponential growth of dynamic range with k: {4,3,5,7} gives 420, {8,3,5,7,11} gives 9240, {16,3,5,7,11,13} gives 240240. The `pow2_channel_doubles_range` theorem makes the comparison explicit: replacing 2 with 4 in {2,3,5,7} doubles the range (210 → 420). A hardware implementation of {16,3,5,7,11,13} can represent integers 0-240239 using 6 channels, with the mod-16 channel handled by a 4-bit AND mask.",
+    "mathContext": "$|\\{4,3,5,7\\}| = 420 = 2 \\cdot 210 = 2 \\cdot |\\{2,3,5,7\\}|$. For $\\{16,3,5,7,11,13\\}$: range $= 16 \\times 3 \\times 5 \\times 7 \\times 11 \\times 13 = 240240$. General: $\\{2^k, m_1, \\ldots, m_n\\}$ has range $2^k \\cdot \\prod m_i = 2^{k-1} \\cdot \\prod(2m_i)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["decide tactic", "norm_num tactic", "RNS dynamic range", "hardware DSP"],
+    "prerequisites": ["Lean 4 decide", "List.prod", "Nat.Coprime for concrete values"]
+  },
+  {
+    "id": "ann-uniqueness-constraint",
+    "proofId": "chinese-remainder-constructive-oq-03-oq-03",
+    "range": { "startLine": 167, "endLine": 180 },
+    "type": "insight",
+    "title": "The Exactly-One-Power-of-2 Constraint: Concrete Witnesses and General Principle",
+    "content": "The uniqueness constraint is illustrated by three concrete counterexamples ({2,4}, {4,8}, {2,4,3,5}) verified by `decide`, then captured by the general theorem `exactly_one_pow2_allowed` as a direct application of pow2_not_coprime_pow2. The decide-based witnesses are particularly valuable: they show that the constraint is checkable by kernel computation, not requiring any mathematical insight about the specific case. The general theorem then explains WHY — no pair of positive powers of 2 can be coprime. Together, concrete witnesses + general principle form the complete picture.",
+    "mathContext": "$\\neg\\text{Coprime}(2^k, 2^j)$ for all $k, j \\geq 1$. Witnesses: $\\gcd(2,4) = 2$, $\\gcd(4,8) = 4$. In a valid RNS base, all pairs of moduli must satisfy $\\gcd(m_i, m_j) = 1$, so only one $2^k$ can appear.",
+    "significance": "supporting",
+    "relatedConcepts": ["RNS validity constraint", "decide tactic for coprimality", "gcd of powers of 2", "RNS hardware design"],
+    "prerequisites": ["pow2_not_coprime_pow2", "Nat.Coprime definition", "decide in Lean 4"]
+  },
+  {
+    "id": "ann-hardware-efficiency",
+    "proofId": "chinese-remainder-constructive-oq-03-oq-03",
+    "range": { "startLine": 186, "endLine": 203 },
+    "type": "insight",
+    "title": "Hardware Efficiency: Bitwise AND for Power-of-2 Reduction",
+    "content": "The hardware efficiency section formalizes the key practical insight: computing x mod 2^k is a single bitwise AND operation (x &&& (2^k - 1)), where (2^k - 1) is a k-bit mask of all 1s. The `pow2_bit_length` theorem confirms that 2^k requires exactly k bits to represent (Nat.log₂(2^k) = k), which gives the mask width. The `pow2_efficiency_example` makes the range doubling concrete: {4,3,5,7} achieves exactly 2× the range of {2,3,5,7} (420 vs 210). In hardware terms, the cost difference between a mod-2 channel (1-bit mask) and a mod-4 channel (2-bit mask) is negligible — one extra bit — but the range gain is 100%.",
+    "mathContext": "$x \\bmod 2^k = x \\mathbin{\\&\\&\\&} (2^k - 1)$ (bitwise AND with $k$-bit mask). $\\lfloor \\log_2(2^k) \\rfloor = k$. For $\\{4, 3, 5, 7\\}$ vs $\\{2, 3, 5, 7\\}$: $\\frac{420}{210} = 2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.log", "bitwise AND", "hardware modular arithmetic", "RNS efficiency", "DSP pipeline"],
+    "prerequisites": ["Nat.log_pow", "bitwise operations", "hardware arithmetic"]
+  }
+]

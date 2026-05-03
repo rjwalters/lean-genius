@@ -43,35 +43,40 @@
       "title": "Coprimality of Powers of 2 with Odd Numbers",
       "startLine": 54,
       "endLine": 79,
-      "summary": "Proves pow2_coprime_odd (2^k coprime to odd m), its symmetric form odd_coprime_pow2, and pow2_not_coprime_pow2 (two positive powers of 2 are not coprime). These are the core mathematical facts underlying the power-of-2 RNS constraint."
+      "summary": "Proves pow2_coprime_odd (2^k coprime to odd m), its symmetric form odd_coprime_pow2, and pow2_not_coprime_pow2 (two positive powers of 2 are not coprime). These are the core mathematical facts underlying the power-of-2 RNS constraint.",
+      "mathContext": "$\\gcd(2^k, m) = 1$ for odd $m$ (via Nat.Coprime.pow_left chain); $\\gcd(2^k, 2^j) \\geq 2$ for $k, j \\geq 1$ (via dvd_pow_self)."
     },
     {
       "id": "pow2-rns-structure",
       "title": "The Pow2RNSBase Structure",
       "startLine": 82,
       "endLine": 133,
-      "summary": "Defines Pow2RNSBase (power exponent ≥ 1, odd moduli ≥ 3, pairwise coprime odd moduli). Proves pairwise_coprime (the full base is pairwise coprime), moduli_ge_two (all moduli ≥ 2), toRNSBase embedding, and dynamicRange_eq (dynamic range = 2^power × product of odd moduli)."
+      "summary": "Defines Pow2RNSBase (power exponent ≥ 1, odd moduli ≥ 3, pairwise coprime odd moduli). Proves pairwise_coprime (the full base is pairwise coprime), moduli_ge_two (all moduli ≥ 2), toRNSBase embedding, and dynamicRange_eq (dynamic range = 2^power × product of odd moduli).",
+      "mathContext": "Pow2RNSBase.moduli $= [2^k, m_1, \\ldots, m_n]$ is pairwise coprime: $\\gcd(2^k, m_i) = 1$ (pow2_coprime_odd) and $\\gcd(m_i, m_j) = 1$ (mods_coprime). Dynamic range $= 2^k \\cdot \\prod_i m_i$."
     },
     {
       "id": "concrete-examples",
       "title": "Concrete Power-of-2 RNS Bases",
       "startLine": 136,
       "endLine": 161,
-      "summary": "Verifies three concrete bases by decide and norm_num: {4,3,5,7} (range 420), {8,3,5,7,11} (range 9240), {16,3,5,7,11,13} (range 240240). Proves pow2_channel_doubles_range showing {4,3,5,7} achieves 2× the range of {2,3,5,7}."
+      "summary": "Verifies three concrete bases by decide and norm_num: {4,3,5,7} (range 420), {8,3,5,7,11} (range 9240), {16,3,5,7,11,13} (range 240240). Proves pow2_channel_doubles_range showing {4,3,5,7} achieves 2× the range of {2,3,5,7}.",
+      "mathContext": "$4 \\times 3 \\times 5 \\times 7 = 420 = 2 \\times 210 = 2 \\times (2 \\times 3 \\times 5 \\times 7)$. $16 \\times 3 \\times 5 \\times 7 \\times 11 \\times 13 = 240240$."
     },
     {
       "id": "uniqueness-constraint",
       "title": "The Exactly-One-Power-of-2 Constraint",
       "startLine": 164,
       "endLine": 180,
-      "summary": "Proves invalidity of bases with two powers of 2: {2,4}, {4,8}, {2,4,3,5} all fail by decide. Proves the general principle exactly_one_pow2_allowed via pow2_not_coprime_pow2."
+      "summary": "Proves invalidity of bases with two powers of 2: {2,4}, {4,8}, {2,4,3,5} all fail by decide. Proves the general principle exactly_one_pow2_allowed via pow2_not_coprime_pow2.",
+      "mathContext": "$\\neg\\text{Coprime}(2^k, 2^j)$ for $k, j \\geq 1$: $\\gcd(2,4) = 2$, $\\gcd(4,8) = 4$. Consequence: at most one $2^k$ per RNS base."
     },
     {
       "id": "hardware-efficiency",
       "title": "Hardware Efficiency Results",
       "startLine": 183,
       "endLine": 195,
-      "summary": "Proves pow2_bit_length (Nat.log 2 (2^k) = k, formalizing the bit-width), and pow2_efficiency_example showing {4,3,5,7} achieves twice the range of {2,3,5,7} with the same channel count."
+      "summary": "Proves pow2_bit_length (Nat.log 2 (2^k) = k, formalizing the bit-width), and pow2_efficiency_example showing {4,3,5,7} achieves twice the range of {2,3,5,7} with the same channel count.",
+      "mathContext": "$\\lfloor \\log_2(2^k) \\rfloor = k$ (Nat.log_pow). $x \\bmod 2^k = x \\mathbin{\\&\\&\\&} (2^k - 1)$. Efficiency ratio: $420 / 210 = 2$."
     }
   ],
   "conclusion": {
@@ -79,7 +84,8 @@
     "implications": "Hardware RNS implementations can safely include a power-of-2 channel for efficient modular reduction via bitwise AND. The choice of k trades off dynamic range (larger k means more range) against channel width (k-bit AND mask). Using 4 instead of 2 as the power-of-2 channel doubles the dynamic range at no additional hardware cost for that channel.",
     "openQuestions": [
       "Can the framework be extended to mixed-radix representations where two power-of-2 channels appear at different levels of a hierarchical RNS structure?",
-      "What is the optimal choice of k in {2^k, m₁,...,mₙ} that maximizes dynamic range for a given total bit budget across all channels?"
+      "What is the optimal choice of k in {2^k, m₁,...,mₙ} that maximizes dynamic range for a given total bit budget across all channels?",
+      "Can the uniqueness constraint be generalized? For a prime p, at most how many distinct powers of p (i.e., p^a, p^b, ...) can appear in a valid pairwise coprime RNS base?"
     ]
   },
   "crossReferences": [
