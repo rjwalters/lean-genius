@@ -342,7 +342,7 @@ theorem no_poly_risch_soln :
   by_cases hp : p = 0
   · simp [hp] at h
   · have hlc : p.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.mpr hp
-    have hcoeff := congr_arg (fun q : Polynomial ℝ => q.coeff (p.natDegree + 1)) h
+    have hcoeff := Polynomial.ext_iff.mp h (p.natDegree + 1)
     rw [risch_ode_coeff_top, poly_one_coeff_pos _ (by omega)] at hcoeff
     exact absurd hcoeff (mul_ne_zero (by norm_num) hlc)
 
@@ -356,7 +356,7 @@ theorem no_poly_risch_constant (c : ℝ) (hc : c ≠ 0) :
   · simp [hp] at h
     exact hc (Polynomial.C_eq_zero.mp h.symm)
   · have hlc : p.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.mpr hp
-    have hcoeff := congr_arg (fun q : Polynomial ℝ => q.coeff (p.natDegree + 1)) h
+    have hcoeff := Polynomial.ext_iff.mp h (p.natDegree + 1)
     rw [risch_ode_coeff_top] at hcoeff
     simp only [Polynomial.coeff_C, Nat.succ_ne_zero, ↓reduceIte] at hcoeff
     exact absurd hcoeff (mul_ne_zero (by norm_num) hlc)
@@ -501,7 +501,8 @@ theorem risch_linear_surjective_all (p : Polynomial ℝ) :
   | monomial n a =>
     obtain ⟨Qn, hQn⟩ := risch_linear_surjective_monomial n
     refine ⟨Polynomial.C a * Qn, ?_⟩
-    simp only [Polynomial.derivative_mul, Polynomial.derivative_C, zero_mul, zero_add]
+    simp only [Polynomial.derivative_mul, Polynomial.derivative_C, zero_mul, zero_add,
+               Polynomial.monomial_eq_C_mul_X]
     linear_combination Polynomial.C a * hQn
 
 /-! ══════════════════════════════════════════════════════════════════
