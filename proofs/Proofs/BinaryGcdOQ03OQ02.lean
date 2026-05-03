@@ -784,83 +784,77 @@ theorem hgcdShift_top_lt (a b : ℕ) (h : hgcdThreshold ≤ max a b) :
     _ < max a b := Nat.div_lt_self hmax_pos h1lt2s
 
 -- ═══════════════════════════════════════════════════════════════
--- PART IX: SIZE REDUCTION CLAIM (joint bound — Step 4 proper)
+-- PART IX: SIZE REDUCTION (row-output bound, Step 4)
 -- ═══════════════════════════════════════════════════════════════
 
-/-! ### The joint size-reduction theorem
+/-! ### Corrected size-reduction theorem
 
-The complete Step 4 proof proceeds by strong induction on `max a b`,
-using `hgcdShift_top_lt` to ensure the induction measure decreases at
-each recursive call.
+**Correction** (Session 8): the original `hgcdMatrix_joint_bound`
+theorem (bounding the *column*-convention output `M.apply a b` by
+`2^(hgcdShift a b + 3)`) is **FALSE**.
 
-The proof requires one additional ingredient not yet in this file:
+Counterexample: `a = 37`, `b = 5`.  `hgcdShift 37 5 = 3`, so the
+claimed bound is `2^6 = 64`.  For any sufficient fuel `n`:
 
-**Quotient stability** (`hgcd_quotient_stable`, not yet proved):
-  The Euclidean quotients computed from the top-half approximations
-  `(a / 2^s, b / 2^s)` agree with the quotients from the full-precision
-  `(a, b)` for a sufficient number of steps.
+  `hgcdMatrix n 37 5 = ⟨1, -2, -7, 15⟩`
 
-  Formally: for each step k of `lehmerCofactors`:
-    `(aHi_k / bHi_k) = (a_k / b_k)`
-  where `aHi_k, bHi_k` are the approximation residues and `a_k, b_k`
-  are the full-precision Euclidean residues.
+  `M.apply 37 5 = (1·37 + (-2)·5, (-7)·37 + 15·5) = (27, -184)`
 
-  This is proved in Stehlé-Zimmermann (2004) using the approximation
-  quality bound from `topBitsApprox_lt` in `BinaryGcdOQ03.lean`. The
-  formalization bridges the ROW-convention output (which `entry_bound`
-  bounds) to the COLUMN-convention output `M.apply(a, b)` (what we
-  actually want to bound for size reduction).
+Since `|-184| = 184 > 64`, the column-output bound fails.
 
-**Proof sketch** (joint induction on `max a b`):
-  - Base (max a b < hgcdThreshold = 64):
-      M = lehmerCofactors 64 a b id.
-      Entry bound: entries ≤ max(a, b) < 64 from entry_bound_of_even/odd.
-      Output bound: M.apply(a, b) gives the Euclidean residues of (a, b),
-      which are bounded by max(a, b). (Requires quotient stability.)
-  - Recursive (hgcdThreshold ≤ max a b):
-      s = hgcdShift a b; M₁ = hgcdMatrix(a/2^s, b/2^s); M = M₂ · M₁.
-      By hgcdShift_top_lt: max(a/2^s, b/2^s) < max a b → IH applies.
-      IH on M₁ gives: entries(M₁) ≤ 2^(s₁+2) where s₁ = hgcdShift(a/2^s, b/2^s).
-      Full-precision apply via cofactor_apply_shift_decomp:
-        M₁.apply(a,b) = 2^s · M₁.apply(a/2^s, b/2^s) + M₁.apply(a%2^s, b%2^s).
-      Signal term: ≤ 2^s · 2^(s₁+2) ≈ 2^(3s/2 + 2) (IH output bound).
-      Error term: ≤ 2 · entries(M₁) · 2^s ≤ 2 · 2^(s₁+2) · 2^s ≈ 2^(3s/2+3).
-      Combined: max(|M₁.apply(a,b)|) ≤ 2^(3s/2 + 3).
-      IH on M₂ (applied to outputs of size ≤ 2^(3s/2+3)):
-        output M.apply(a,b) = M₂.apply(M₁.apply(a,b)) ≤ 2^s + (some additive term).
+The *row*-convention output is the correct quantity to bound:
+  `a * M.α + b * M.γ = 37·1 + 5·(-7) = 2`
+  `a * M.β + b * M.δ = 37·(-2) + 5·15 = 1`
+Both are ≤ `max 37 5 = 37`. This is the size-reduction invariant
+actually maintained by Schönhage's algorithm.
 
-  The constants above are schematic; Stehlé-Zimmermann give precise bounds
-  with C = O(1) for the binary-recursive variant.
+The correct theorem `hgcdMatrix_row_output_le` is stated below.
+Base case is proved; recursive case requires quotient stability (sorry). -/
 
-  **Classification**: HARD (requires new Lean infrastructure — quotient
-  stability proof + careful induction setup). Aristotle cannot help. -/
+/-- [Sorry] Row-convention size-reduction bound for HGCD.
 
-/-- [Sorry] HGCD joint size-reduction bound.
+    Let M = hgcdMatrix fuel a b.  The *row-convention* outputs
+      `ahat' := a * M.α + b * M.γ`  and  `bhat' := a * M.β + b * M.δ`
+    satisfy `max ahat'.natAbs bhat'.natAbs ≤ max a b`.
 
-    For sufficient fuel, the column output and all matrix entries of
-    `hgcdMatrix fuel a b` are bounded by `2 ^ (hgcdShift a b + 3)`.
+    This is NOT the column-convention output `M.apply a b = (M.α·a + M.β·b, M.γ·a + M.δ·b)`.
+    The column output is unbounded relative to `max a b` (see Part IX docstring).
 
-    The `+ 3` constant is conservative (absorbs rounding and two levels
-    of recursion); a tighter analysis would give `+ 2` or `+ 1`.
-    See the proof sketch in the PART IX docstring above.
+    **Base case proved** (max a b < hgcdThreshold):
+      M = lehmerCofactors hgcdThreshold a b id (by `hgcdMatrix_small`).
+      By `lehmerCofactors_id_apply_le`, row output ≤ max a b.
 
-    **Missing**: `hgcd_quotient_stable` — the quotient stability lemma
-    that connects the row-convention output (bounded by existing lemmas)
-    to the column-convention output `M.apply(a, b)`. -/
-theorem hgcdMatrix_joint_bound (fuel a b : ℕ) (hfuel : a + b ≤ fuel) :
-    let M := hgcdMatrix fuel a b
-    let s := hgcdShift a b
-    (M.apply (a : ℤ) (b : ℤ)).1.natAbs ≤ 2 ^ (s + 3) ∧
-    (M.apply (a : ℤ) (b : ℤ)).2.natAbs ≤ 2 ^ (s + 3) ∧
-    M.α.natAbs ≤ 2 ^ (s + 3) ∧
-    M.β.natAbs ≤ 2 ^ (s + 3) ∧
-    M.γ.natAbs ≤ 2 ^ (s + 3) ∧
-    M.δ.natAbs ≤ 2 ^ (s + 3) := by
-  sorry
+    **Recursive case** (sorry): requires *quotient stability* — that the
+    Lehmer quotients from the top-half approximation `(a/2^s, b/2^s)`
+    match full-precision Euclidean quotients for enough steps.
+    See Stehlé–Zimmermann (2004), §3. -/
+theorem hgcdMatrix_row_output_le (fuel a b : ℕ) (hfuel : a + b ≤ fuel) :
+    ((a : ℤ) * (hgcdMatrix fuel a b).α + (b : ℤ) * (hgcdMatrix fuel a b).γ).natAbs ≤ max a b ∧
+    ((a : ℤ) * (hgcdMatrix fuel a b).β + (b : ℤ) * (hgcdMatrix fuel a b).δ).natAbs ≤ max a b := by
+  induction fuel generalizing a b with
+  | zero =>
+    have ha : a = 0 := by omega
+    have hb : b = 0 := by omega
+    subst ha; subst hb
+    simp [hgcdMatrix_zero, CofactorMatrix.id]
+  | succ f ih =>
+    rw [hgcdMatrix_succ]
+    by_cases hsmall : max a b < hgcdThreshold
+    · -- Base case: fall back to Lehmer cofactors
+      rw [if_pos hsmall]
+      obtain ⟨ahat', bhat', h1, h2, hle⟩ := lehmerCofactors_id_apply_le hgcdThreshold a b
+      constructor
+      · rw [h1]; simp only [Int.natAbs_ofNat]
+        exact Nat.le_trans (Nat.le_max_left _ _) hle
+      · rw [h2]; simp only [Int.natAbs_ofNat]
+        exact Nat.le_trans (Nat.le_max_right _ _) hle
+    · -- Recursive case: requires quotient stability
+      rw [if_neg hsmall]
+      sorry
 
 /-! ## Summary
 
-**Proved (0 axioms, 0 sorries):**
+**Proved (0 axioms, 1 sorry):**
 
 1. **Composition law** (`cofactor_mul_apply`): cofactor multiplication
    composes the `apply` action correctly.
@@ -920,13 +914,16 @@ theorem hgcdMatrix_joint_bound (fuel a b : ℕ) (hfuel : a + b ≤ fuel) :
     from hgcdShift_pos, then `Nat.div_lt_self`.
 
 **Remaining for size reduction (1 sorry):**
-- `hgcdMatrix_joint_bound` (PART IX): the full joint bound —
-  output and entries ≤ 2^(s+3). The induction structure is set up by
-  `hgcdShift_top_lt` (proved above). The **missing piece** is quotient
-  stability: showing that Lehmer quotients computed from top-half
-  approximations match full-precision Euclidean quotients. This connects
-  the row-convention output (bounded by entry_bound_of_even/odd) to the
-  column-convention output (M.apply a b). See PART IX docstring.
+- `hgcdMatrix_row_output_le` (PART IX): the recursive case of the
+  row-output bound.  The base case (max a b < hgcdThreshold) is proved
+  using `hgcdMatrix_small` + `lehmerCofactors_id_apply_le`.  The
+  recursive case requires *quotient stability*: showing that Lehmer
+  quotients from the top-half approximation `(a/2^s, b/2^s)` match
+  full-precision Euclidean quotients.  See Stehlé–Zimmermann (2004).
+
+  Note: the previous `hgcdMatrix_joint_bound` (column-output bound) has
+  been **removed** — it was FALSE (counterexample: a=37, b=5, column
+  output |-184| = 184 > claimed bound 64).
 
 **Out of scope (deferred):**
 - Bit-complexity bound O(M(n)·log n): requires Mathlib infrastructure

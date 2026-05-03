@@ -412,3 +412,50 @@ The TIGHT bound requires max_entry ≤ 2^(N/4) — which comes from knowing the 
 
 2. **Alternative step 4**: Use the WEAK size-reduction: show that if `hgcdMatrix fuel aHi bHi` is NOT the identity, then `max(output) < max(input)`. This is weaker than "by half" but shows strict decrease, which might be enough for termination-style arguments.
 
+
+## Session 2026-05-03 (Session 8) — False Theorem Correction + Row-Output Bound
+
+**Mode**: REVISIT
+**Outcome**: CORRECTION + PROGRESS — removed false `hgcdMatrix_joint_bound`, proved base case of correct `hgcdMatrix_row_output_le`
+
+### What I Did
+
+- Session 7 found that `hgcdMatrix_joint_bound` is FALSE but lost edits before committing.
+  Session 8 re-implements the fix:
+  - Counterexample: a=37, b=5.
+  - `hgcdMatrix n 37 5 = ⟨1, -2, -7, 15⟩` for any sufficient n.
+  - Column output: `M.apply 37 5 = (1·37 + (-2)·5, (-7)·37 + 15·5) = (27, -184)`.
+  - Claimed bound: `2^(hgcdShift 37 5 + 3) = 2^6 = 64`.
+  - But `|-184| = 184 > 64` — theorem violated.
+- Removed `hgcdMatrix_joint_bound` from `BinaryGcdOQ03OQ02.lean`.
+- Added `hgcdMatrix_row_output_le` with base case proved (1 sorry: recursive case):
+  - The *row*-convention outputs `a * M.α + b * M.γ` and `a * M.β + b * M.δ`
+    are both bounded by `max a b`.
+  - Base case: uses `hgcdMatrix_small` + `lehmerCofactors_id_apply_le`.
+  - Recursive case: `sorry` — requires quotient stability.
+
+### Key Findings
+
+- Column convention `M.apply a b = (M.α·a + M.β·b, M.γ·a + M.δ·b)` is NOT the
+  right quantity for size reduction. It can grow as large as `max entry × max input`.
+- Row convention `(a·M.α + b·M.γ, a·M.β + b·M.δ)` IS bounded by `max a b` for the
+  base case. For a=37, b=5: row output is (2, 1), both ≤ 37 ✓.
+- The recursive case requires the Stehlé–Zimmermann quotient stability argument —
+  the same fundamental gap identified in Session 6.
+
+### Files Modified
+
+- `proofs/Proofs/BinaryGcdOQ03OQ02.lean` — PART IX rewritten: removed false
+  `hgcdMatrix_joint_bound`; added `hgcdMatrix_row_output_le` with base case proved.
+
+### Next Steps
+
+1. Prove the recursive case of `hgcdMatrix_row_output_le` via quotient stability.
+   See Stehlé–Zimmermann (2004) §3.
+2. Or find an inductive argument that avoids quotient stability entirely.
+
+### Honest Assessment
+
+Removing a false theorem is the primary contribution. The base case proof shows the
+corrected formulation is mathematically sound. The recursive sorry is the single
+remaining obstacle for the full size-reduction claim.
