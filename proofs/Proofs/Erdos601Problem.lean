@@ -151,7 +151,12 @@ noncomputable def omega1_pow_omega : Ordinal := ω₁ ^ ω
 /-- The hierarchy of ordinals approaching the critical point. -/
 theorem ordinal_hierarchy :
     ω < ω₁ ∧ ω₁ < ω₁ ^ ω ∧ ω₁ ^ ω < ω₁ ^ (ω + 1) ∧ ω₁ ^ (ω + 1) < criticalOrdinal := by
-  sorry
+  have h1 : (1 : Ordinal) < ω₁ := Ordinal.one_lt_omega.trans Ordinal.omega0_lt_omega1
+  refine ⟨Ordinal.omega0_lt_omega1, ?_, Ordinal.opow_lt_opow_right h1 (Ordinal.lt_succ ω), ?_⟩
+  · conv_lhs => rw [← Ordinal.opow_one ω₁]
+    exact Ordinal.opow_lt_opow_right h1 Ordinal.one_lt_omega
+  · unfold criticalOrdinal
+    exact Ordinal.opow_lt_opow_right h1 (Ordinal.lt_succ (ω + 1))
 
 /-- All countable ordinals satisfy P. -/
 theorem countable_ordinals (α : Ordinal) (hα : α.card ≤ ℵ₀) : PropertyP α := by
