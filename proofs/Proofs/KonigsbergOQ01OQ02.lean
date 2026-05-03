@@ -885,14 +885,121 @@ theorem remove_circuit_balanced (G : DiGraph V) (hbal : IsEulerianBalanced G)
       (C.walk.get ⟨i, by omega⟩, C.walk.get ⟨i + 1, by omega⟩) ≠
       (C.walk.get ⟨j, by omega⟩, C.walk.get ⟨j + 1, by omega⟩)) :
     IsEulerianBalanced (G.removeEdgeSet (walkEdges C.walk).toFinset) := by
-  sorry -- Proof sketch: set S := (walkEdges C.walk).toFinset, n := C.walk.length - 1.
-        -- For each v: outDegree (G \ S) v = outDegree G v - |S.filter (·.1=v)|
-        --             inDegree  (G \ S) v = inDegree  G v - |S.filter (·.2=v)|
-        -- (using Finset.filter_sdiff and Finset.card_sdiff with S ⊆ G.edges)
-        -- Bijection i ↦ (walk[i],walk[i+1]) maps {i<n : walk[i]=v} → S.filter(·.1=v)
-        -- (injective by hdist, surjective by walkEdges def); similarly for target.
-        -- closed_walk_balance → |S.filter(·.1=v)| = |S.filter(·.2=v)|.
-        -- G balance gives outDegree G v = inDegree G v; subtract equal deltas.
+  intro v
+  unfold IsBalanced inDegree outDegree
+  set walk := C.walk with hwalk_def
+  set n := walk.length - 1 with hn_def
+  set S := (walkEdges walk).toFinset with hS_def
+  have hlen : walk.length = n + 1 := by have := C.length_ge_2; omega
+  -- Reduce to goal about G.edges \ S
+  show ((G.edges \ S).filter fun e => e.2 = v).card =
+       ((G.edges \ S).filter fun e => e.1 = v).card
+  -- S ⊆ G.edges (circuit edges are graph edges)
+  have hS_sub : S ⊆ G.edges := by
+    intro e he
+    rw [hS_def, List.mem_toFinset] at he
+    simp only [walkEdges, List.mem_filterMap, List.mem_range] at he
+    obtain ⟨i, hi, h⟩ := he
+    have hlt : i + 1 < walk.length := by omega
+    simp only [hlt, ↓reduceDite, Option.some.injEq] at h
+    rw [← h]; exact C.steps_in_G i hlt
+  -- Closed walk: walk[0] = walk[n]
+  have hclosed : walk.get ⟨0, by omega⟩ = walk.get ⟨n, by omega⟩ := by
+    have hne : walk ≠ [] := by intro h; simp [h] at hlen
+    have h1 : walk.head? = some (walk.get ⟨0, by omega⟩) := by
+      cases walk with | nil => contradiction | cons a t => rfl
+    have h2 : walk.getLast? = some (walk.get ⟨n, by omega⟩) := by
+      rw [List.getLast?_eq_getLast hne]; congr 1
+      simp only [List.getLast_eq_getElem, List.get_eq_getElem]; congr 1; omega
+    rw [h1, h2] at C.head_eq_last; exact Option.some.inj C.head_eq_last
+  -- (A \ B).filter p = A.filter p \ B.filter p
+  have hfilt_in : (G.edges \ S).filter (fun e => e.2 = v) =
+                  G.edges.filter (fun e => e.2 = v) \ S.filter (fun e => e.2 = v) := by
+    ext x; simp only [Finset.mem_filter, Finset.mem_sdiff]
+    constructor
+    · rintro ⟨⟨hx, hxS⟩, hpx⟩; exact ⟨⟨hx, hpx⟩, fun ⟨h1, _⟩ => hxS h1⟩
+    · rintro ⟨⟨hx, hpx⟩, hxSp⟩; exact ⟨⟨hx, fun hxS => hxSp ⟨hxS, hpx⟩⟩, hpx⟩
+  have hfilt_out : (G.edges \ S).filter (fun e => e.1 = v) =
+                   G.edges.filter (fun e => e.1 = v) \ S.filter (fun e => e.1 = v) := by
+    ext x; simp only [Finset.mem_filter, Finset.mem_sdiff]
+    constructor
+    · rintro ⟨⟨hx, hxS⟩, hpx⟩; exact ⟨⟨hx, hpx⟩, fun ⟨h1, _⟩ => hxS h1⟩
+    · rintro ⟨⟨hx, hpx⟩, hxSp⟩; exact ⟨⟨hx, fun hxS => hxSp ⟨hxS, hpx⟩⟩, hpx⟩
+  rw [hfilt_in, hfilt_out]
+  -- Subset conditions for card_sdiff
+  have hSin_sub : S.filter (fun e => e.2 = v) ⊆ G.edges.filter (fun e => e.2 = v) :=
+    Finset.filter_subset_filter _ hS_sub
+  have hSout_sub : S.filter (fun e => e.1 = v) ⊆ G.edges.filter (fun e => e.1 = v) :=
+    Finset.filter_subset_filter _ hS_sub
+  rw [Finset.card_sdiff hSin_sub, Finset.card_sdiff hSout_sub]
+  -- Cardinality bounds for omega
+  have hSin_le : (S.filter fun e => e.2 = v).card ≤ (G.edges.filter fun e => e.2 = v).card :=
+    Finset.card_le_card hSin_sub
+  have hSout_le : (S.filter fun e => e.1 = v).card ≤ (G.edges.filter fun e => e.1 = v).card :=
+    Finset.card_le_card hSout_sub
+  -- G is balanced at v
+  have hbalv : (G.edges.filter fun e => e.2 = v).card = (G.edges.filter fun e => e.1 = v).card :=
+    hbal v
+  -- Membership in S: e ∈ S ↔ ∃ i < n, e = (walk[i], walk[i+1])
+  have hmem_S : ∀ e : V × V, e ∈ S ↔ ∃ i, i + 1 < walk.length ∧
+      e = (walk.get ⟨i, by omega⟩, walk.get ⟨i + 1, by omega⟩) := fun e => by
+    constructor
+    · intro he
+      rw [hS_def, List.mem_toFinset] at he
+      simp only [walkEdges, List.mem_filterMap, List.mem_range] at he
+      obtain ⟨i, hi, h⟩ := he
+      have hlt : i + 1 < walk.length := by omega
+      simp only [hlt, ↓reduceDite, Option.some.injEq] at h
+      exact ⟨i, hlt, h.symm⟩
+    · rintro ⟨i, hlt, rfl⟩
+      rw [hS_def, List.mem_toFinset]
+      simp only [walkEdges, List.mem_filterMap, List.mem_range]
+      exact ⟨i, by omega, by simp only [hlt, ↓reduceDite]⟩
+  -- Position bijection: {i<n : walk[i]=v} ≅ S.filter(·.1=v)
+  have hsrc : ((Finset.range n).filter (fun i => walk.get ⟨i, by omega⟩ = v)).card =
+              (S.filter (fun e => e.1 = v)).card :=
+    Finset.card_bij
+      (fun i hi =>
+        (walk.get ⟨i, by have := Finset.mem_range.mp (Finset.mem_filter.mp hi).1; omega⟩,
+         walk.get ⟨i + 1, by have := Finset.mem_range.mp (Finset.mem_filter.mp hi).1; omega⟩))
+      (fun i hi => Finset.mem_filter.mpr
+        ⟨(hmem_S _).mpr ⟨i,
+           by have := Finset.mem_range.mp (Finset.mem_filter.mp hi).1; omega, rfl⟩,
+         (Finset.mem_filter.mp hi).2⟩)
+      (fun i hi j hj heq => by
+        by_contra hne
+        exact absurd heq (hdist i j
+          (by have := Finset.mem_range.mp (Finset.mem_filter.mp hi).1; omega)
+          (by have := Finset.mem_range.mp (Finset.mem_filter.mp hj).1; omega) hne))
+      (fun e he => by
+        simp only [Finset.mem_filter] at he
+        obtain ⟨i, hlt, rfl⟩ := (hmem_S e).mp he.1
+        exact ⟨i, Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), he.2⟩, rfl⟩)
+  -- Position bijection: {i<n : walk[i+1]=v} ≅ S.filter(·.2=v)
+  have htgt : ((Finset.range n).filter (fun i => walk.get ⟨i + 1, by omega⟩ = v)).card =
+              (S.filter (fun e => e.2 = v)).card :=
+    Finset.card_bij
+      (fun i hi =>
+        (walk.get ⟨i, by have := Finset.mem_range.mp (Finset.mem_filter.mp hi).1; omega⟩,
+         walk.get ⟨i + 1, by have := Finset.mem_range.mp (Finset.mem_filter.mp hi).1; omega⟩))
+      (fun i hi => Finset.mem_filter.mpr
+        ⟨(hmem_S _).mpr ⟨i,
+           by have := Finset.mem_range.mp (Finset.mem_filter.mp hi).1; omega, rfl⟩,
+         (Finset.mem_filter.mp hi).2⟩)
+      (fun i hi j hj heq => by
+        by_contra hne
+        exact absurd heq (hdist i j
+          (by have := Finset.mem_range.mp (Finset.mem_filter.mp hi).1; omega)
+          (by have := Finset.mem_range.mp (Finset.mem_filter.mp hj).1; omega) hne))
+      (fun e he => by
+        simp only [Finset.mem_filter] at he
+        obtain ⟨i, hlt, rfl⟩ := (hmem_S e).mp he.1
+        exact ⟨i, Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), he.2⟩, rfl⟩)
+  -- Circuit balance: source count = target count at v (closed_walk_balance)
+  have hS_bal : (S.filter fun e => e.1 = v).card = (S.filter fun e => e.2 = v).card := by
+    have hpos := closed_walk_balance walk n hlen hclosed v
+    omega
+  omega
 
 /-
   STEP 6: NECESSITY DIRECTION FOR EULERIAN PATHS
