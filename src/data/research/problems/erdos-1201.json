@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 2: +5 theorems (gpfConsecutive_zero, gpfConsecutive_upper_bound, le_gpfConsecutive_of_prime_dvd_term, gpfConsecutive_between, plus dvd_consecutiveProduct_term + erdos_1201_infinitely_many from PR #15215). Total: 28 proved theorems. 1 axiom remains (erdos_1201_half_case).",
+    "progressSummary": "Session 3: +2 theorems (gpfConsecutive_eq_sup_range, gpfConsecutive_le_iff). Total: 37 proved theorems. Max formula and smooth-window reformulation now formalized.",
     "builtItems": [
       "greatestPrimeFactor: def using Nat.primeFactors.max' (Erdos1201Problem.lean:28)",
       "consecutiveProduct: def using Finset.range.prod (Erdos1201Problem.lean:32)",
@@ -64,7 +64,9 @@
       "prime_dvd_consecutive_range: private helper — prime divides range product → divides some term, proved by induction using Nat.Prime.dvd_mul",
       "gpfConsecutive_upper_bound: P(n,k) ≤ n+k — upper bound proved from first principles (inductive prime divisibility + Nat.le_of_dvd)",
       "le_gpfConsecutive_of_prime_dvd_term: lower bound — if prime p | n+i then p ≤ P(n,k), proved using gpf_ge_prime_dvd + dvd_consecutiveProduct_term",
-      "gpfConsecutive_between: Bertrand tight bounds n < P(n,n) ≤ 2n, combining gpfConsecutive_self_gt and gpfConsecutive_upper_bound"
+      "gpfConsecutive_between: Bertrand tight bounds n < P(n,n) ≤ 2n, combining gpfConsecutive_self_gt and gpfConsecutive_upper_bound",
+      "gpfConsecutive_eq_sup_range: P(n,k) = sup_{i≤k} GPF(n+i) — max formula proved by prime-factor union argument (Erdos1201Problem.lean:484)",
+      "gpfConsecutive_le_iff: P(n,k) ≤ t ↔ ∀i≤k, GPF(n+i) ≤ t — smooth-window reformulation (Erdos1201Problem.lean:507)"
     ],
     "insights": [
       "greatestPrimeFactor defined via Nat.primeFactors.max' — cleanly handles n=0,1 by returning 0",
@@ -81,7 +83,9 @@
       "Real.rpow_lt_rpow_of_exponent_lt gives x^a < x^b for x>1, a<b — key lemma for power comparisons in Lean",
       "gpfConsecutive_upper_bound proved by induction: prime divides product of range → prime divides some term (by Nat.Prime.dvd_mul at binary level). Clean alternative to Prime.dvd_finset_prod_iff.",
       "gpfConsecutive_between combines two different proof techniques: Bertrand lower bound (existence of prime) and double-counting upper bound (prime factor ≤ term).",
-      "The tight Bertrand bound n < P(n,n) ≤ 2n shows the self-window is optimal in the sense that any prime witnessing Bertrand must fall exactly in (n, 2n]."
+      "The tight Bertrand bound n < P(n,n) ≤ 2n shows the self-window is optimal in the sense that any prime witnessing Bertrand must fall exactly in (n, 2n].",
+      "Max formula: prime factors of a product are the union of prime factors of each factor, so GPF(product) = max GPF(factor) — key structural identity",
+      "Smooth-window equivalence: P(n,k) ≤ t iff all consecutive integers n+i (i≤k) are t-smooth, reformulating the Erdős density condition as density of smooth windows → 0"
     ],
     "mathlibGaps": [
       "No Mathlib lemma directly connecting upper density thresholds to prime gaps — needed for full conjecture",
