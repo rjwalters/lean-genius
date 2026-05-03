@@ -659,4 +659,96 @@ theorem erdos_1201_eq_right_infinite (k : ℕ) (hk : 0 < k) :
   rw [Nat.sub_add_cancel (by omega)]
   exact gpfConsecutive_eq_of_prime_right (p - k) k (by omega) hp_prime
 
+/-
+## Window Extension and Concatenation Formulas
+-/
+
+/-- Left-endpoint extension: P(n, k+1) = max(gpf(n), P(n+1, k)) for n ≥ 2.
+    Symmetric to gpfConsecutive_succ_right; the window [n, n+k+1] can be viewed as
+    prepending n to the tail window [n+1, n+k+1]. -/
+theorem gpfConsecutive_succ_left (n k : ℕ) (hn : 2 ≤ n) :
+    gpfConsecutive n (k + 1) = max (greatestPrimeFactor n) (gpfConsecutive (n + 1) k) := by
+  have hn1 : 2 ≤ n + 1 := by omega
+  apply Nat.le_antisymm
+  · rw [gpfConsecutive_eq_sup_range n (k + 1) hn]
+    apply Finset.sup_le
+    intro i hi
+    rw [Finset.mem_range] at hi
+    rcases Nat.eq_zero_or_pos i with rfl | hpos
+    · simp only [Nat.add_zero]; exact le_max_left _ _
+    · have heq : greatestPrimeFactor (n + i) = greatestPrimeFactor (n + 1 + (i - 1)) := by
+        congr 1; omega
+      rw [heq]
+      exact le_trans
+        (by rw [gpfConsecutive_eq_sup_range (n + 1) k hn1]
+            exact Finset.le_sup (f := fun j => greatestPrimeFactor (n + 1 + j))
+              (Finset.mem_range.mpr (by omega)))
+        (le_max_right _ _)
+  · apply max_le
+    · exact gpfConsecutive_ge_left n (k + 1) hn
+    · rw [gpfConsecutive_eq_sup_range (n + 1) k hn1, gpfConsecutive_eq_sup_range n (k + 1) hn]
+      apply Finset.sup_le
+      intro i hi
+      rw [Finset.mem_range] at hi
+      rw [show n + 1 + i = n + (i + 1) from by omega]
+      exact Finset.le_sup (f := fun j => greatestPrimeFactor (n + j))
+        (Finset.mem_range.mpr (by omega))
+
+/-- Window concatenation: P(n, j+k+1) = max(P(n,j), P(n+j+1,k)) for n ≥ 2.
+    The window [n, n+j+k+1] splits into halves [n, n+j] and [n+j+1, n+j+k+1].
+    The greatest prime factor of the full window is the max of both halves. -/
+theorem gpfConsecutive_window_concat (n j k : ℕ) (hn : 2 ≤ n) :
+    gpfConsecutive n (j + k + 1) = max (gpfConsecutive n j) (gpfConsecutive (n + j + 1) k) := by
+  have hn' : 2 ≤ n + j + 1 := by omega
+  apply Nat.le_antisymm
+  · rw [gpfConsecutive_eq_sup_range n (j + k + 1) hn]
+    apply Finset.sup_le
+    intro i hi
+    rw [Finset.mem_range] at hi
+    by_cases h : i ≤ j
+    · exact le_trans
+        (by rw [gpfConsecutive_eq_sup_range n j hn]
+            exact Finset.le_sup (f := fun m => greatestPrimeFactor (n + m))
+              (Finset.mem_range.mpr (by omega)))
+        (le_max_left _ _)
+    · push_neg at h
+      have heq : greatestPrimeFactor (n + i) = greatestPrimeFactor (n + j + 1 + (i - j - 1)) := by
+        congr 1; omega
+      rw [heq]
+      exact le_trans
+        (by rw [gpfConsecutive_eq_sup_range (n + j + 1) k hn']
+            exact Finset.le_sup (f := fun m => greatestPrimeFactor (n + j + 1 + m))
+              (Finset.mem_range.mpr (by omega)))
+        (le_max_right _ _)
+  · apply max_le
+    · rw [gpfConsecutive_eq_sup_range n j hn, gpfConsecutive_eq_sup_range n (j + k + 1) hn]
+      apply Finset.sup_le
+      intro i hi
+      rw [Finset.mem_range] at hi
+      exact Finset.le_sup (f := fun m => greatestPrimeFactor (n + m))
+        (Finset.mem_range.mpr (by omega))
+    · rw [gpfConsecutive_eq_sup_range (n + j + 1) k hn', gpfConsecutive_eq_sup_range n (j + k + 1) hn]
+      apply Finset.sup_le
+      intro i hi
+      rw [Finset.mem_range] at hi
+      rw [show n + j + 1 + i = n + (j + 1 + i) from by omega]
+      exact Finset.le_sup (f := fun m => greatestPrimeFactor (n + m))
+        (Finset.mem_range.mpr (by omega))
+
+/-- A prime term in the window gives a lower bound on the window GPF.
+    If n+i is prime (i ≤ k), then gpfConsecutive n k ≥ n+i. -/
+theorem gpfConsecutive_ge_prime_term (n k i : ℕ) (hn : 2 ≤ n) (hi : i ≤ k)
+    (hprime : (n + i).Prime) : n + i ≤ gpfConsecutive n k := by
+  rw [← greatestPrimeFactor_prime _ hprime, gpfConsecutive_eq_sup_range n k hn]
+  exact Finset.le_sup (f := fun j => greatestPrimeFactor (n + j))
+    (Finset.mem_range.mpr (by omega))
+
+/-- Sufficient condition for n to be good for the Erdős problem:
+    if the window [n, n+k] contains a prime p > n^(1-ε), then P(n,k) > n^(1-ε).
+    This is the structural link between prime distribution and the density result. -/
+theorem erdos_1201_good_of_prime_in_window (n k i : ℕ) (ε : ℝ) (hn : 2 ≤ n) (hi : i ≤ k)
+    (hprime : (n + i).Prime) (hlarge : (n : ℝ) ^ (1 - ε) < n + i) :
+    (n : ℝ) ^ (1 - ε) < gpfConsecutive n k :=
+  hlarge.trans_le (by exact_mod_cast gpfConsecutive_ge_prime_term n k i hn hi hprime)
+
 end Erdos1201
