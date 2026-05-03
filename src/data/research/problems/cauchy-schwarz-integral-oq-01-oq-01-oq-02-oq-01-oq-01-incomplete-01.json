@@ -1,0 +1,78 @@
+{
+  "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
+  "title": "Lp Riesz Representation for Sigma-Finite Measures (Complete)",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Lp Riesz Representation for Sigma-Finite Measures (Complete).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-03T11:21:07.632Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Step C (density extension) proved. 3 sorries -> 2 sorries. Main theorem assembled modulo localization_existence (Step A).",
+    "builtItems": [
+      "integrationCLM_sf: integration CLM for pure SigmaFinite mu",
+      "integral_representation_sf: density extension via Lp.induction",
+      "riesz_lp_surjective_sigma_finite: main theorem with Step C proved",
+      "mem_spanningSets_eventually + pointwise_mul_indicator_tendsto (ported)"
+    ],
+    "insights": [
+      "Step C (density extension) proved: Lp.induction is valid for SigmaFinite without IsFiniteMeasure",
+      "integrationCLM does not need IsFiniteMeasure — Holder inequality suffices",
+      "3 sorries reduced to 2: localization + Vitali remain; density extension proved"
+    ],
+    "mathlibGaps": [
+      "Lp restriction map Lp(mu) -> Lp(mu.restrict S) not available as isometric map",
+      "Vitali convergence theorem (tendsto_Lp_of_tendsto_ae) API verbosity for unifIntegrable + unifTight"
+    ],
+    "nextSteps": [
+      "Attempt lp_truncation_tendsto_zero using tendsto_Lp_of_tendsto_ae + unifIntegrable_of + unifTight_const",
+      "Search Mathlib for MeasureTheory.Lp.restrictMeasure for Step A localization",
+      "Consider Aristotle submission for both Step A and Step B"
+    ]
+  },
+  "tags": [
+    "functional-analysis",
+    "lp-spaces",
+    "riesz-representation",
+    "sigma-finite"
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz",
+    "cauchy-schwarz-integral",
+    "cauchy-schwarz-integral-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T11:21:07.632Z",
+  "lastUpdate": "2026-05-03T11:21:07.632Z",
+  "significance": 7,
+  "tractability": 4
+}

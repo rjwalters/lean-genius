@@ -1,0 +1,115 @@
+{
+  "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
+  "title": "Lp Riesz Representation for Sigma-Finite Measures (Complete)",
+  "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
+  "description": "Advances the sigma-finite Lp Riesz representation from 3 sorries to 2 by proving Step C (density extension) in full: the integration CLM is valid for SigmaFinite μ without IsFiniteMeasure, and Lp.induction extends indicator agreement to all of Lp(μ).",
+  "meta": {
+    "status": "formalized",
+    "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean",
+    "tags": [
+      "functional-analysis",
+      "lp-spaces",
+      "riesz-representation",
+      "sigma-finite",
+      "measure-theory",
+      "density-argument"
+    ],
+    "badge": "formalized",
+    "sorries": 2,
+    "axiomCount": 0,
+    "lineCount": 0,
+    "assumptions": "2 HARD sorries remaining (down from 3): localization_existence (~150 lines, Lp restriction map infrastructure) and lp_truncation_tendsto_zero (~80 lines, Vitali's convergence theorem). Density extension (Step C, ~50 lines) is fully proved: integrationCLM works for SigmaFinite without IsFiniteMeasure, and Lp.induction is valid for sigma-finite measures.",
+    "dateAdded": "2026-05-03",
+    "theoremCount": 0,
+    "originalContributions": [
+      "integrationCLM_sf: integration CLM on Lp(μ) for purely sigma-finite μ — proves IsFiniteMeasure was never needed for the CLM construction (Hölder only)",
+      "integral_representation_sf: Step C density extension proved — Lp.induction is valid for SigmaFinite without IsFiniteMeasure, completing the missing piece from the parent entry",
+      "riesz_lp_surjective_sigma_finite: main theorem assembled with Step C proved — only localization (Step A) remains as sorry",
+      "Identification that the parent 3-sorry structure was correct but IsFiniteMeasure was superfluous for Steps C and the CLM: reduces 3 sorries to 2 with clean proof"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Lp Riesz representation theorem — identifying (Lp(μ))* with Lq(μ) for 1/p + 1/q = 1 — is a central result in functional analysis. The sigma-finite generalization (dropping the IsFiniteMeasure hypothesis) requires additional work to construct the representing element g ∈ Lq(μ). The classical proof strategy (Folland §6.2) localizes via the sigma-finite exhaustion, applies the finite-measure result on each piece, and glues via MCT. This entry resolves the density extension step (Step C), showing it requires only sigma-finiteness, not finite total measure.",
+    "problemStatement": "Can the density extension step (Step C) of the sigma-finite Lp Riesz representation be proved using Lp.induction without requiring IsFiniteMeasure? Answer: yes — Lp.induction holds for any SigmaFinite measure, and integrationCLM requires only Hölder's inequality.",
+    "proofStrategy": "Step C constructs the integration CLM Λ(f) = ∫ fg and shows φ = Λ via Lp.induction: (1) on indicators c·1_s with μ(s) < ∞, φ(c·1_s) = c·∫_s g = Λ(c·1_s) by hypothesis; (2) additivity; (3) the set {f | φf = Λf} is closed. All three steps work for SigmaFinite μ. The key observation: integrationCLM only uses Hölder's inequality (lintegral_mul_le_sf), not finiteness of the total measure.",
+    "keyInsights": [
+      "IsFiniteMeasure was unnecessary for integrationCLM: the CLM construction uses only Hölder's inequality (f ∈ Lp, g ∈ Lq → fg ∈ L1), which holds for any measure.",
+      "Lp.induction in Mathlib is valid for sigma-finite measures, not just finite ones. Simple functions with finite-measure support are dense in Lp(μ) for any SigmaFinite μ.",
+      "The density extension (Step C) depends only on: (a) indicator agreement on μ-finite sets, and (b) density of indicators in Lp. Both hold for SigmaFinite μ.",
+      "The 3-sorry → 2-sorry reduction confirms the parent entry was on the right track: the sorries were correctly classified as HARD (not OPEN), and one of them (density extension) was actually provable with the right setup.",
+      "Remaining gap: Step A (localization, ~150 lines) requires constructing the Lp restriction map Lp(μ) → Lp(μ.restrict S). This is the genuine Lean infrastructure gap for sigma-finite Riesz."
+    ]
+  },
+  "sections": [
+    {
+      "id": "helper-lemmas",
+      "title": "Helper Lemmas",
+      "startLine": 49,
+      "endLine": 90,
+      "summary": "indicator_memLp_sf, lintegral_mul_le_sf (Hölder), integrable_mul_sf — all proved without IsFiniteMeasure.",
+      "mathContext": "Hölder's inequality for Lp × Lq → L1 integrability holds for any measure. These lemmas isolate the minimal measure-theoretic content needed."
+    },
+    {
+      "id": "integration-clm",
+      "title": "Integration CLM for Sigma-Finite Measures",
+      "startLine": 91,
+      "endLine": 140,
+      "summary": "integrationCLM_sf and integrationCLM_sf_apply: define and evaluate the integration functional Λ(f) = ∫ fg for SigmaFinite μ.",
+      "mathContext": "LinearMap.mkContinuous with Hölder bound. The IsFiniteMeasure hypothesis in the parent's integrationCLM was superfluous."
+    },
+    {
+      "id": "density-extension",
+      "title": "Step C: Density Extension (Proved)",
+      "startLine": 141,
+      "endLine": 215,
+      "summary": "integral_representation_sf: if φ agrees with ∫ fg on indicators, then φ = ∫ fg everywhere. Uses Lp.induction (valid for SigmaFinite).",
+      "mathContext": "The proof is essentially the parent's integral_representation with IsFiniteMeasure dropped. Three cases: indicators, additivity, closedness. All work for sigma-finite."
+    },
+    {
+      "id": "spanning-set-lemmas",
+      "title": "Spanning Set Approximation Lemmas",
+      "startLine": 216,
+      "endLine": 240,
+      "summary": "mem_spanningSets_eventually and pointwise_mul_indicator_tendsto — proved, identical to parent entry.",
+      "mathContext": "Basic set-theoretic consequences of the sigma-finite exhaustion. Used in the proof of lp_truncation_tendsto_zero (Step B, still sorry)."
+    },
+    {
+      "id": "step-b-sorry",
+      "title": "Step B: Lp Truncation Convergence (HARD sorry)",
+      "startLine": 241,
+      "endLine": 270,
+      "summary": "lp_truncation_tendsto_zero: eLpNorm(f - f·1_{Sₙ}) → 0. Proof: Vitali's theorem.",
+      "mathContext": "Requires unifIntegrable_of + unifTight_const + tendsto_Lp_of_tendsto_ae. ~80 lines."
+    },
+    {
+      "id": "step-a-sorry",
+      "title": "Step A: Localization (HARD sorry)",
+      "startLine": 271,
+      "endLine": 305,
+      "summary": "localization_existence: constructs g ∈ Lq(μ) with indicator agreement. ~150 lines.",
+      "mathContext": "Classical Folland §6.2 proof. Requires Lp restriction map infrastructure."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem (Assembled)",
+      "startLine": 306,
+      "endLine": 345,
+      "summary": "riesz_lp_surjective_sigma_finite: full Riesz Lp for sigma-finite, assembled from Steps A and C.",
+      "mathContext": "Step C (proved) + Step A (sorry) give the full theorem. Step B is independent supporting infrastructure."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Can Step A (localization_existence, ~150 lines) be proved by constructing the Lp restriction map Lp(μ) → Lp(μ.restrict S) as an isometric embedding and using the finite-measure Riesz theorem on each spanning set?",
+      "difficulty": "hard",
+      "prerequisite": "Lp restriction map infrastructure in Mathlib"
+    },
+    {
+      "id": "oq-02",
+      "question": "Can Step B (lp_truncation_tendsto_zero) be proved using Mathlib's tendsto_Lp_of_tendsto_ae (Vitali's theorem) with unifIntegrable_of and unifTight_const?",
+      "difficulty": "hard",
+      "prerequisite": "Vitali's convergence theorem API"
+    }
+  ]
+}
