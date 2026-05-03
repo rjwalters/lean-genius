@@ -731,4 +731,42 @@ theorem erdos_1201_good_of_prime_in_window (n k i : ℕ) (ε : ℝ) (hn : 2 ≤ 
     (n : ℝ) ^ (1 - ε) < gpfConsecutive n k :=
   hlarge.trans_le (by exact_mod_cast gpfConsecutive_ge_prime_term n k i hn hi hprime)
 
+/-
+## Two-Term Window: Relationship to Individual GPFs
+-/
+
+/-- consecutiveProduct n 1 = n * (n + 1). -/
+theorem consecutiveProduct_one (n : ℕ) : consecutiveProduct n 1 = n * (n + 1) := by
+  have := consecutiveProduct_succ n 0
+  rwa [consecutiveProduct_zero] at this
+
+/-- **Two-Term Window**: P(n, 1) = max(P(n), P(n+1)) for n ≥ 2.
+    The greatest prime factor of n*(n+1) equals the maximum of the per-term greatest prime
+    factors. The ≤ direction uses that any prime dividing n*(n+1) divides n or n+1
+    (by primality). The ≥ direction uses that gpf(n) and gpf(n+1) each divide the product. -/
+theorem gpfConsecutive_one_eq_max (n : ℕ) (hn : 2 ≤ n) :
+    gpfConsecutive n 1 = max (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) := by
+  have hn1 : 2 ≤ n + 1 := by omega
+  have hn_prod : 2 ≤ n * (n + 1) := by nlinarith
+  have h_eq : gpfConsecutive n 1 = greatestPrimeFactor (n * (n + 1)) := by
+    unfold gpfConsecutive; rw [consecutiveProduct_one]
+  rw [h_eq]
+  apply Nat.le_antisymm
+  · -- greatestPrimeFactor (n*(n+1)) ≤ max(gpf n, gpf(n+1)):
+    -- the gpf is prime and divides n*(n+1), so it divides n or n+1 by primality
+    have hprime : (greatestPrimeFactor (n * (n + 1))).Prime := gpf_prime (n * (n + 1)) hn_prod
+    have hdvd : greatestPrimeFactor (n * (n + 1)) ∣ n * (n + 1) := gpf_dvd (n * (n + 1)) hn_prod
+    rcases hprime.dvd_mul.mp hdvd with h | h
+    · exact le_trans (gpf_max n _ (Nat.mem_primeFactors.mpr ⟨hprime, h, by omega⟩))
+                     (le_max_left _ _)
+    · exact le_trans (gpf_max (n + 1) _ (Nat.mem_primeFactors.mpr ⟨hprime, h, by omega⟩))
+                     (le_max_right _ _)
+  · -- max(gpf n, gpf(n+1)) ≤ greatestPrimeFactor (n*(n+1)):
+    -- gpf n | n | n*(n+1) and gpf(n+1) | n+1 | n*(n+1)
+    apply max_le
+    · exact gpf_ge_prime_dvd (n * (n + 1)) _ hn_prod (gpf_prime n hn)
+        (dvd_trans (gpf_dvd n hn) (dvd_mul_right n (n + 1)))
+    · exact gpf_ge_prime_dvd (n * (n + 1)) _ hn_prod (gpf_prime (n + 1) hn1)
+        (dvd_trans (gpf_dvd (n + 1) hn1) (dvd_mul_left (n + 1) n))
+
 end Erdos1201
