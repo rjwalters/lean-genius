@@ -58,7 +58,7 @@ theorem omega_fold_of_kfold {d k : ℕ} (h : IsKFoldConstructible d k) :
 /-- Degree d is d-fold constructible when d ≥ 1:
     foldPrimeBound(d) = p_{d+1} ≥ d+2 > d ≥ any prime factor of d. -/
 theorem kfold_self {d : ℕ} (hd : d ≥ 1) : IsKFoldConstructible d d := by
-  refine ⟨by omega, by omega, hd, fun q hq hqd => ?_⟩
+  refine ⟨by omega, by omega, fun q hq hqd => ?_⟩
   have hqle : q ≤ d := Nat.le_of_dvd (by omega) hqd
   have hbound : d + 2 ≤ foldPrimeBound d := by
     unfold foldPrimeBound
