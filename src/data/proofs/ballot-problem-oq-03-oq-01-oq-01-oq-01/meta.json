@@ -23,7 +23,7 @@
     "dateAdded": "2026-04-23",
     "axiomCount": 0,
     "assumptions": "2 sorries remain: (1) jdt_weight_sum b≥2 — the general JDT seam bijection (~150-200 lines); (2) jacobi_trudi_ssyt_eq k≥3 — algebraic LGV + RSK (~300 lines). jdt_weight_sum_b_one proved (S17): b=1 bijection via Sym.cons/erase + Multiset.sort_cons (~100 lines). ssytSchurFin_two_row and ssytFin_two_row_eq_sum_colstrict proved. k=0,1,2 proved.",
-    "lineCount": 843,
+    "lineCount": 850,
     "theoremCount": 14,
     "definitionCount": 8,
     "originalContributions": [
@@ -78,7 +78,7 @@
       "Finset"
     ],
     "namespace": "JacobiTrudi",
-    "lineCount": 843,
+    "lineCount": 850,
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 6,
