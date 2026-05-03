@@ -28,7 +28,8 @@
     "axiomCount": 0,
     "lineCount": 241,
     "assumptions": "0 axiom declarations. 2 sorries remain.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "**Bipartite Extremal Numbers and the Zarankiewicz Problem**\n\nThe extremal number $\\text{ex}(n, H)$—the maximum edges in an $n$-vertex $H$-free graph—is central to Turán-type combinatorics. For bipartite $H$, the Kővári-Sós-Turán theorem (1954) gives the baseline: $\\text{ex}(n, K_{s,t}) = O(n^{2-1/s})$, yielding $O(n^{3/2})$ when $s = 2$.\n\nErdős and Simonovits introduced the **bipartite pair graph** $G_k$: $k$ primary vertices $\\{y_1, \\ldots, y_k\\}$ and $\\binom{k}{2}$ pair vertices, each connected to exactly one pair of primaries. This graph captures the incidence structure of pairs, making it a natural test case for whether the KST bound can be improved.\n\nThe $k = 3$ case is solved: $G_3 \\cong C_6$ (the 6-cycle), and Bondy-Simonovits (1974) proved $\\text{ex}(n, C_{2k}) = O(n^{1+1/k})$, giving $\\text{ex}(n, C_6) = O(n^{7/6})$ with $c_3 = 1/3$. For $k \\ge 4$, no improvement over the KST bound is known.\n\nErdős and Simonovits proved (unpublished) that if the conjecture holds, then $c_k \\to 0$ as $k \\to \\infty$, showing the $n^{3/2}$ barrier becomes tight for large $k$. The problem connects to the broader program of understanding which bipartite graphs have extremal numbers below the KST threshold—a question related to dependent random choice (Fox-Sudakov 2011) and algebraic constructions.",

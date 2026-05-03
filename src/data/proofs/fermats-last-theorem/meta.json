@@ -23,7 +23,7 @@
     "mathlibDependencies": [
       {
         "theorem": "FermatLastTheoremFor",
-        "description": "Predicate FermatLastTheoremFor n: \u2200 a b c : \u2124, a \u2260 0 \u2192 b \u2260 0 \u2192 c \u2260 0 \u2192 a^n + b^n \u2260 c^n",
+        "description": "Predicate FermatLastTheoremFor n: ∀ a b c : ℤ, a ≠ 0 → b ≠ 0 → c ≠ 0 → a^n + b^n ≠ c^n",
         "module": "Mathlib.NumberTheory.FLT.Basic"
       },
       {
@@ -33,13 +33,13 @@
       },
       {
         "theorem": "fermatLastTheoremThree",
-        "description": "FLT for n=3: Euler's proof using the Eisenstein integers \u2124[\u03c9] where \u03c9 = e^{2\u03c0i/3}",
+        "description": "FLT for n=3: Euler's proof using the Eisenstein integers ℤ[ω] where ω = e^{2πi/3}",
         "module": "Mathlib.NumberTheory.FLT.Three"
       }
     ],
     "originalContributions": [
       "Axiomatized proof structure following the Frey-Ribet-Wiles strategy with 5 axioms",
-      "Genuine proof that FLT reduces to prime exponents (flt_multiple: FermatLastTheoremFor n \u2192 FermatLastTheoremFor (m*n))",
+      "Genuine proof that FLT reduces to prime exponents (flt_multiple: FermatLastTheoremFor n → FermatLastTheoremFor (m*n))",
       "Pedagogical exposition of Frey curve construction, modularity, and Ribet's level-lowering in Lean docstrings"
     ],
     "dateAdded": "2025-12-22",
@@ -52,8 +52,9 @@
     "wiedijkNumber": 33,
     "axiomCount": 2,
     "lineCount": 201,
-    "assumptions": "2 axioms with real mathematical content: FLT_for_odd_primes (axiomatizes FermatLastTheoremFor p for odd primes p) and fermatLastTheoremFive (FermatLastTheoremFor 5). The n=3 and n=4 cases are fully proved via Mathlib. FreyCurve_is_semistable and RibetTheorem were placeholder True-stubs and have been replaced with documentation comments. 2 with real mathematical content: FLT_for_odd_primes (axiomatizes FermatLastTheoremFor p for odd primes p, the consequence of Modularity+Ribet) and fermatLastTheorem (the full FLT statement: \u2200 n \u2265 3, FermatLastTheoremFor n). 3 placeholder axioms concluding with True (FreyCurve_is_semistable, ModularityTheorem_semistable, RibetTheorem) \u2014 these serve as proof-structure markers documenting the Frey-Ribet-Wiles chain without encoding actual mathematical statements. The n=3 and n=4 cases are fully proved via Mathlib (fermatLastTheoremThree, fermatLastTheoremFour).",
-    "mathlib_version": "4.26.0"
+    "assumptions": "2 axioms with real mathematical content: FLT_for_odd_primes (axiomatizes FermatLastTheoremFor p for odd primes p) and fermatLastTheoremFive (FermatLastTheoremFor 5). The n=3 and n=4 cases are fully proved via Mathlib. FreyCurve_is_semistable and RibetTheorem were placeholder True-stubs and have been replaced with documentation comments. 2 with real mathematical content: FLT_for_odd_primes (axiomatizes FermatLastTheoremFor p for odd primes p, the consequence of Modularity+Ribet) and fermatLastTheorem (the full FLT statement: ∀ n ≥ 3, FermatLastTheoremFor n). 3 placeholder axioms concluding with True (FreyCurve_is_semistable, ModularityTheorem_semistable, RibetTheorem) — these serve as proof-structure markers documenting the Frey-Ribet-Wiles chain without encoding actual mathematical statements. The n=3 and n=4 cases are fully proved via Mathlib (fermatLastTheoremThree, fermatLastTheoremFour).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "In 1637, Pierre de Fermat wrote in the margin of his copy of Diophantus's *Arithmetica*: \"I have discovered a truly marvelous proof of this, which this margin is too narrow to contain.\" This tantalizing note launched 358 years of mathematical obsession.\n\nGenerations of mathematicians attacked the problem. Euler proved the case n=3 (1770). Sophie Germain developed techniques for certain primes (1823). Ernst Kummer's work on ideal class groups proved it for all regular primes (1850), but infinitely many cases remained.\n\nThe modern breakthrough came from an unexpected direction. In 1984, Gerhard Frey proposed that a counterexample to Fermat would yield an elliptic curve with impossible properties. Jean-Pierre Serre refined this, and in 1986, Ken Ribet proved the key connection: if Fermat's Last Theorem were false, it would contradict the Taniyama-Shimura-Weil conjecture about modular forms.\n\nAndrew Wiles, who had dreamed of proving FLT since childhood, worked in secret for seven years. In June 1993, he announced his proof of enough of the modularity conjecture to imply FLT. But a gap was found. After a year of anguish, Wiles and Richard Taylor patched the proof using a brilliant new technique. On October 25, 1994, the proof was complete. It was published in 1995, ending the longest-standing unsolved problem in mathematics.",
@@ -61,10 +62,10 @@
     "text": "A 204-line axiomatized formalization of Fermat's Last Theorem with 0 sorries and 5 axioms. Imports Mathlib's `FermatLastTheoremFor` (the statement predicate), `fermatLastTheoremFour` ($n=4$ by Fermat's infinite descent), and `fermatLastTheoremThree` ($n=3$ by Euler via Eisenstein integers). The file provides `fermat_four` and `fermat_three` as thin wrappers around these Mathlib results, `flt_multiple` as a genuine proof of the classical reduction to prime exponents, and three proof-structure axioms (FreyCurve_is_semistable, ModularityTheorem_semistable, RibetTheorem concluding with True) documenting the Frey-Ribet-Wiles chain. The axioms `FLT_for_odd_primes` (for odd prime exponents) and `fermatLastTheorem` (the full statement) encode the deep unformalized results. Lean docstrings trace each step: Frey curve construction, semi-stability, Ribet's level-lowering, and Taylor-Wiles patching.",
     "proofStrategy": "Wiles' proof proceeds by contradiction through a remarkable chain of ideas:\n\n1. **ASSUME** a counterexample exists: $a^n + b^n = c^n$ with $n > 2$ and $a, b, c$ positive integers.\n\n2. **CONSTRUCT** the Frey curve: From this hypothetical solution, build the elliptic curve\n   $$E: y^2 = x(x - a^n)(x + b^n)$$\n   This curve has unusual properties: it is semi-stable with discriminant divisible by enormous prime powers.\n\n3. **APPLY RIBET'S THEOREM** (1986): The Frey curve, if it existed, would be modular but have a conductor too small to match any modular form. This is impossible.\n\n4. **PROVE MODULARITY**: Wiles proves that all semistable elliptic curves over $\\mathbb{Q}$ are modular (the Taniyama-Shimura-Weil conjecture for semistable curves).\n\n5. **CONTRADICTION**: The Frey curve must be modular (by step 4), but cannot be modular (by step 3). Therefore, no counterexample exists.\n\nThe bulk of Wiles' 100+ page proof establishes the modularity theorem. The Taylor-Wiles patching method, developed to fix the gap, has become a fundamental tool in modern number theory.",
     "keyInsights": [
-      "**Frey Curve:** A counterexample $a^n + b^n = c^n$ yields the elliptic curve $E: y^2 = x(x - a^n)(x + b^n)$ with discriminant $\\Delta \\sim (abc)^{2n}$ \u2014 a curve with 'impossibly' large conductor for its simple equation.",
+      "**Frey Curve:** A counterexample $a^n + b^n = c^n$ yields the elliptic curve $E: y^2 = x(x - a^n)(x + b^n)$ with discriminant $\\Delta \\sim (abc)^{2n}$ — a curve with 'impossibly' large conductor for its simple equation.",
       "**Modularity = Arithmetic-Analysis Bridge:** Every elliptic curve $E/\\mathbb{Q}$ is modular: its $L$-function equals that of a weight-2 newform $f$. This connects Diophantine equations (arithmetic) to automorphic forms (analysis).",
-      "**Ribet's Theorem:** If $a^n + b^n = c^n$, the Frey curve's Galois representation $\\bar{\\rho}_{E,p}$ would arise from a weight-2 form of level 2 \u2014 but no such form exists (the space $S_2(\\Gamma_0(2))$ is zero-dimensional). Contradiction.",
-      "**Galois Representations:** The $p$-torsion $E[p]$ gives a 2-dimensional $\\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q})$-representation. Modularity means this representation 'comes from' a modular form \u2014 the bridge between geometry and number theory.",
+      "**Ribet's Theorem:** If $a^n + b^n = c^n$, the Frey curve's Galois representation $\\bar{\\rho}_{E,p}$ would arise from a weight-2 form of level 2 — but no such form exists (the space $S_2(\\Gamma_0(2))$ is zero-dimensional). Contradiction.",
+      "**Galois Representations:** The $p$-torsion $E[p]$ gives a 2-dimensional $\\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q})$-representation. Modularity means this representation 'comes from' a modular form — the bridge between geometry and number theory.",
       "**Taylor-Wiles Patching:** Wiles' proof of modularity uses deformation theory: parameterize all Galois representations with fixed residual $\\bar{\\rho}$ and show the deformation ring $R$ equals the Hecke algebra $\\mathbb{T}$ ($R = \\mathbb{T}$ theorem). Patching constructs auxiliary primes to control Selmer groups.",
       "**Scope of Modularity:** Wiles proved modularity for semistable curves. The full modularity theorem (Breuil-Conrad-Diamond-Taylor, 2001) extends to ALL elliptic curves over $\\mathbb{Q}$."
     ],
@@ -134,12 +135,12 @@
     {
       "targetId": "infinitude-primes",
       "relationship": "related",
-      "description": "The reduction to prime exponents relies on the structure of primes; FLT for n=4 and odd primes covers all n \u2265 3"
+      "description": "The reduction to prime exponents relies on the structure of primes; FLT for n=4 and odd primes covers all n ≥ 3"
     },
     {
       "targetId": "pythagorean-theorem",
       "relationship": "foundational",
-      "description": "The Pythagorean theorem establishes $a^2 + b^2 = c^2$ \u2014 Fermat's Last Theorem generalizes this from $n=2$ (infinitely many solutions: Pythagorean triples) to $n \\geq 3$ (no solutions). The contrast between richness at $n=2$ and emptiness at $n \\geq 3$ is the core mystery"
+      "description": "The Pythagorean theorem establishes $a^2 + b^2 = c^2$ — Fermat's Last Theorem generalizes this from $n=2$ (infinitely many solutions: Pythagorean triples) to $n \\geq 3$ (no solutions). The contrast between richness at $n=2$ and emptiness at $n \\geq 3$ is the core mystery"
     },
     {
       "targetId": "abel-ruffini",
@@ -154,12 +155,12 @@
     {
       "targetId": "pythagorean-triples",
       "relationship": "complementary",
-      "description": "Pythagorean triples $(a,b,c)$ with $a^2+b^2=c^2$ are completely classified: $a = m^2-n^2$, $b=2mn$, $c=m^2+n^2$. FLT shows the analogous equation $a^n+b^n=c^n$ has NO positive integer solutions for $n \\geq 3$ \u2014 the transition from rich structure at $n=2$ to emptiness at $n=3$ is the theorem's content"
+      "description": "Pythagorean triples $(a,b,c)$ with $a^2+b^2=c^2$ are completely classified: $a = m^2-n^2$, $b=2mn$, $c=m^2+n^2$. FLT shows the analogous equation $a^n+b^n=c^n$ has NO positive integer solutions for $n \\geq 3$ — the transition from rich structure at $n=2$ to emptiness at $n=3$ is the theorem's content"
     },
     {
       "targetId": "fundamental-theorem-algebra",
       "relationship": "related",
-      "description": "FTA guarantees all algebraic numbers embed in $\\mathbb{C}$, providing the complex-analytic tools for Wiles's proof. Modular forms are complex-analytic objects, and Galois representations act on number fields embedded in $\\mathbb{C}$ \u2014 FTA ensures this algebraic/analytic bridge exists"
+      "description": "FTA guarantees all algebraic numbers embed in $\\mathbb{C}$, providing the complex-analytic tools for Wiles's proof. Modular forms are complex-analytic objects, and Galois representations act on number fields embedded in $\\mathbb{C}$ — FTA ensures this algebraic/analytic bridge exists"
     },
     {
       "targetId": "quadratic-reciprocity",
@@ -169,7 +170,7 @@
     {
       "targetId": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "The failure of unique factorization in $\\mathbb{Z}[\\zeta_p]$ for irregular primes blocked Kummer's 1847 approach to FLT. FLT for regular primes succeeds because these rings retain unique factorization \u2014 illustrating that the arithmetic of number rings is the structural core of the problem"
+      "description": "The failure of unique factorization in $\\mathbb{Z}[\\zeta_p]$ for irregular primes blocked Kummer's 1847 approach to FLT. FLT for regular primes succeeds because these rings retain unique factorization — illustrating that the arithmetic of number rings is the structural core of the problem"
     },
     {
       "targetId": "birch-swinnerton-dyer",
@@ -184,7 +185,7 @@
     {
       "targetId": "kummer-theorem",
       "relationship": "historical",
-      "description": "Kummer's theorem on binomial coefficients and his 1847 work on cyclotomic fields and regular primes was the deepest 19th-century progress on FLT. He introduced ideal theory to repair the failure of unique factorization in $\\mathbb{Z}[\\zeta_p]$ \u2014 the same algebraic number theory that eventually evolved into the modular forms and Galois representations that Wiles used"
+      "description": "Kummer's theorem on binomial coefficients and his 1847 work on cyclotomic fields and regular primes was the deepest 19th-century progress on FLT. He introduced ideal theory to repair the failure of unique factorization in $\\mathbb{Z}[\\zeta_p]$ — the same algebraic number theory that eventually evolved into the modular forms and Galois representations that Wiles used"
     },
     {
       "targetId": "fermat-two-squares",
@@ -229,21 +230,21 @@
       "title": "Modular Forms and Fermat's Last Theorem",
       "year": "1997",
       "venue": "Springer",
-      "note": "Comprehensive technical account of Wiles's proof, based on the 1995 Boston conference \u2014 the standard reference for the complete mathematical details of the modularity theorem and its application to FLT"
+      "note": "Comprehensive technical account of Wiles's proof, based on the 1995 Boston conference — the standard reference for the complete mathematical details of the modularity theorem and its application to FLT"
     },
     {
       "authors": "Kummer, Ernst",
-      "title": "Beweis des Fermat'schen Satzes der Unm\u00f6glichkeit von x^\u03bb + y^\u03bb = z^\u03bb f\u00fcr eine unendliche Anzahl Primzahlen \u03bb",
+      "title": "Beweis des Fermat'schen Satzes der Unmöglichkeit von x^λ + y^λ = z^λ für eine unendliche Anzahl Primzahlen λ",
       "year": "1847",
-      "venue": "Monatsberichte der K\u00f6niglichen Preussischen Akademie der Wissenschaften zu Berlin, 132\u2013141",
-      "note": "Proof of FLT for regular primes using ideal factorization in cyclotomic fields \u2014 the deepest 19th-century progress, which introduced ideal theory and motivated Dedekind's algebraic number theory"
+      "venue": "Monatsberichte der Königlichen Preussischen Akademie der Wissenschaften zu Berlin, 132–141",
+      "note": "Proof of FLT for regular primes using ideal factorization in cyclotomic fields — the deepest 19th-century progress, which introduced ideal theory and motivated Dedekind's algebraic number theory"
     },
     {
       "authors": "Ribet, Kenneth A.",
-      "title": "On modular representations of Gal(Q\u0304/Q) arising from modular forms",
+      "title": "On modular representations of Gal(Q̄/Q) arising from modular forms",
       "year": "1990",
       "venue": "Inventiones Mathematicae 100(2): 431-476",
-      "note": "Proves the epsilon conjecture (now Ribet's theorem): if the Frey curve is modular, level-lowering forces it to correspond to a weight-2 form of level 2, which does not exist \u2014 the key link between modularity and FLT"
+      "note": "Proves the epsilon conjecture (now Ribet's theorem): if the Frey curve is modular, level-lowering forces it to correspond to a weight-2 form of level 2, which does not exist — the key link between modularity and FLT"
     },
     {
       "authors": "Frey, Gerhard",
@@ -261,7 +262,7 @@
     },
     {
       "authors": "Serre, Jean-Pierre",
-      "title": "Sur les repr\u00e9sentations modulaires de degr\u00e9 2 de Gal(Q\u0304/Q)",
+      "title": "Sur les représentations modulaires de degré 2 de Gal(Q̄/Q)",
       "year": "1987",
       "venue": "Duke Mathematical Journal 54(1): 179-230",
       "note": "Serre's conjecture (now Khare-Wintenberger theorem) on odd irreducible 2-dimensional Galois representations arising from modular forms. The 'epsilon conjecture' that Ribet proved is a key special case, and Serre's formulation gave Ribet the precise target: if the Frey curve is modular, level-lowering forces it to a form of level 2"

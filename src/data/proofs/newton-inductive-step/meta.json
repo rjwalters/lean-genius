@@ -45,7 +45,8 @@
       "The linear_combination tactic for polynomial identity verification"
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Newton's inequalities, discovered by Isaac Newton in the late 17th century, state that the elementary symmetric polynomials $e_k$ of $n$ real numbers satisfy the log-concavity condition $e_k^2 \\geq e_{k-1} \\cdot e_{k+1}$ (with appropriate normalizations). Newton proved this in the context of his work on the roots of polynomials, establishing a deep connection between the coefficients of a polynomial and the distribution of its roots. The inequalities were later generalized and studied by Maclaurin, who established the related Maclaurin inequalities.\n\nThe log-concavity of binomial coefficients — the fact that $\\binom{m}{k}^2 \\geq \\binom{m}{k-1} \\cdot \\binom{m}{k+1}$ — is a special case, corresponding to the elementary symmetric polynomials of the all-ones sequence $(1, 1, \\ldots, 1)$. The classical proof proceeds by induction on the number of variables, with the inductive step requiring a specific quartic inequality involving four consecutive binomial coefficients.\n\nThis module isolates and proves that key inequality using a technique based on the absorption identity $k \\cdot \\binom{m}{k} = (m-k+1) \\cdot \\binom{m}{k-1}$. By chaining three such identities (for the three consecutive pairs among $a, b, c, d$), the quartic inequality reduces to showing $r(k+r)^2 b^4 \\geq 0$ — a manifestly non-negative expression. This 'clear the denominators and verify a polynomial identity' paradigm is a powerful technique for formal verification of combinatorial inequalities, as it replaces factorial manipulations with polynomial arithmetic that can be handled by the `linear_combination` tactic.",

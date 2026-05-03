@@ -57,7 +57,8 @@
     "axiomCount": 0,
     "lineCount": 192,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "**Euclid's Lemma** is one of the oldest and most fundamental results in number theory, appearing in Euclid's *Elements* (~300 BCE) as Proposition VII.30: *'If a prime p divides the product a·b, then p divides a or p divides b.'* Euclid's original proof used the division algorithm and properties of proportions, without the modern algebraic language of Bézout coefficients.\n\nThe Bézout identity itself is named after **Étienne Bézout (1730–1783)**, though the key result — that gcd(a,b) can be expressed as an integer linear combination — was known to **Claude Gaspard Bachet de Méziriac (1624)** and even to **Aryabhata (~499 CE)** in the context of the Kuttaka algorithm for solving linear Diophantine equations.\n\nThe modern algebraic proof of Euclid's lemma via Bézout's identity: if gcd(p,a) = 1, get integers x, y with p·x + a·y = 1. Multiply by c: p·x·c + a·c·y = c. Since p | p·x·c and p | a·b (hypothesis gives a·b = p·k, so a·c·y = ...), deduce p | c. This argument abstracts to any **Bézout domain** or **principal ideal domain (PID)**.\n\nIn Lean 4, this argument is crystallized by the `coprime_iff_linear_combination` theorem: `Nat.Coprime a b ↔ ∃ x y : ℤ, a*x + b*y = 1`. This converts the arithmetic fact 'gcd = 1' into the algebraic witness needed for the proof. The `linear_combination` tactic then closes the goal in a single line by ring arithmetic.",

@@ -50,7 +50,8 @@
       "Optimization of probability parameters"
     ],
     "assumptions": "0 axioms, 0 sorries. 2 theorems fully proved: alteration_principle and independent_set_bound. property_b_bound was converted to a block comment (needs hypergraph type for full formalization). All remaining theorems are machine-verified.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "The alteration method, also called the deletion method, is a refinement of the basic probabilistic method developed by Erdos and collaborators in the 1960s and 1970s. While the first moment method requires the random construction to satisfy all constraints simultaneously, the alteration method relaxes this: start with a random object that is close to what we want, then deterministically fix the few violations.\n\nThe key insight is that if a random construction has few expected defects, we can afford to delete or modify the problematic parts while retaining most of the desirable structure. This two-phase approach -- random construction followed by deterministic alteration -- dramatically expands the range of existence results the probabilistic method can prove.\n\nClassic applications include the best known bounds for independent set size in sparse graphs, Property B of hypergraphs (2-colorability), and Ramsey multiplicity problems. The alteration method is particularly effective when we want a large structure (like an independent set) but the random approach occasionally includes unwanted elements (like adjacent vertices).",

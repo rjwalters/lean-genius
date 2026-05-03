@@ -59,7 +59,8 @@
     "axiomCount": 0,
     "lineCount": 313,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "Dirichlet's theorem (1837) was the first use of analytic methods to prove results about the distribution of primes. While Euclid had proved there are infinitely many primes (c. 300 BCE), Dirichlet showed something far more refined: primes are equidistributed among arithmetic progressions.\n\nThe proof required Dirichlet to invent entirely new mathematical machinery: Dirichlet characters (group homomorphisms from (Z/qZ)* to C*) and L-functions (infinite series generalizing the Riemann zeta function). These tools became foundational for all of analytic number theory.\n\nThe key difficulty is proving that L(1, chi) is not zero for non-principal characters chi. For real characters, this requires showing the residue at s=1 is positive, which Dirichlet accomplished through careful analysis.",

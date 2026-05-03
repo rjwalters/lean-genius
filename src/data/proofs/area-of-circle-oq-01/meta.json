@@ -50,7 +50,8 @@
       "Pi and trigonometric function properties"
     ],
     "assumptions": "0 axioms, 0 sorries. Main result is a direct application of Mathlib hasDerivAt_pow.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 18
   },
   "overview": {
     "historicalContext": "The relationship between a circle's area and circumference was understood by Archimedes of Syracuse (~287–212 BCE) in *Measurement of a Circle*: he viewed the disk as composed of infinitely many concentric rings, each of circumference $C(\\rho) = 2\\pi\\rho$, yielding $A(r) = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$. The inverse relationship $C = dA/dr$ follows by the Fundamental Theorem of Calculus, independently discovered by Newton and Leibniz in the 1660s–1680s. This elegant connection—that **boundary measure equals the derivative of enclosed measure**—generalizes to all dimensions: the surface area of an $n$-ball is the derivative of its volume with respect to radius, a fact formalized by Federer and Fleming in their 1960 foundational work on geometric measure theory. The isoperimetric equality $C^2 = 4\\pi A$ appearing as a corollary here is the equality case of the classical isoperimetric inequality, studied by Zenodorus (~200 BCE) and rigorously proved by Weierstrass (1870s) using the calculus of variations.",

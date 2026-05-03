@@ -64,7 +64,8 @@
       "Vieta's formulas for monic polynomials"
     ],
     "lineCount": 236,
-    "assumptions": "3 axioms: pommerenke_theorem, width, pommerenke_width_counterexample. 0 sorries."
+    "assumptions": "3 axioms: pommerenke_theorem, width, pommerenke_width_counterexample. 0 sorries.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Erdős, Fritz Herzog, and George Piranian posed this problem in their influential 1958 paper on the geometric properties of lemniscates — the sublevel sets $\\{z \\in \\mathbb{C} : |p(z)| \\leq 1\\}$ of monic polynomials $p$ of degree $n$. They conjectured that any such lemniscate of capacity 1 (i.e., leading coefficient 1) has both diameter $\\leq 2$ and width $\\leq 2$. Christian Pommerenke (1959) proved the disc containment conjecture: the lemniscate is always contained in a disc of radius 1, answering the diameter question affirmatively. However, he also showed the width conjecture is FALSE — there exist lemniscates of capacity 1 with width exceeding 2. The disc containment result connects to potential theory and the transfinite diameter of compact sets in $\\mathbb{C}$.",

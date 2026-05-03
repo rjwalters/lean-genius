@@ -1,10 +1,10 @@
 {
   "id": "erdos-1050",
-  "title": "Erd\u0151s Problem #1050: Irrationality of \u2211 1/(2^n - 3)",
+  "title": "Erdős Problem #1050: Irrationality of ∑ 1/(2^n - 3)",
   "slug": "erdos-1050",
-  "description": "Is \u2211_{n\u22651} 1/(2^n - 3) irrational? SOLVED by Borwein (1991): YES. More generally, \u2211 1/(q^n + r) is irrational for q \u2265 2 and rational r \u2260 0, r \u2260 -q^n.",
+  "description": "Is ∑_{n≥1} 1/(2^n - 3) irrational? SOLVED by Borwein (1991): YES. More generally, ∑ 1/(q^n + r) is irrational for q ≥ 2 and rational r ≠ 0, r ≠ -q^n.",
   "meta": {
-    "author": "Erd\u0151s (problem), Borwein (1991 proof)",
+    "author": "Erdős (problem), Borwein (1991 proof)",
     "sourceUrl": "https://erdosproblems.com/1050",
     "date": "1991",
     "status": "axiomatized",
@@ -46,16 +46,16 @@
       }
     ],
     "originalContributions": [
-      "General series T(q, r) = \u2211 1/(q^n + r)",
-      "Specific series S = \u2211 1/(2^n - 3)",
+      "General series T(q, r) = ∑ 1/(q^n + r)",
+      "Specific series S = ∑ 1/(2^n - 3)",
       "Convergence conditions for T(q, r)",
       "First terms computation",
       "Axiomatization of Borwein's irrationality theorem",
-      "Application to \u2211 1/(2^n - 3)",
-      "Related series: \u2211 1/(2^n - 1), \u2211 1/(2^n + 1)",
-      "Erd\u0151s's transcendence conjecture statement",
+      "Application to ∑ 1/(2^n - 3)",
+      "Related series: ∑ 1/(2^n - 1), ∑ 1/(2^n + 1)",
+      "Erdős's transcendence conjecture statement",
       "Connection to Problem #1049",
-      "Numerical approximation S \u2248 0.287"
+      "Numerical approximation S ≈ 0.287"
     ],
     "relatedProblems": [
       "erdos-1049",
@@ -64,19 +64,20 @@
     ],
     "axiomCount": 2,
     "lineCount": 483,
-    "assumptions": "2 axioms: borwein_irrationality (Borwein's 1991 Pad\u00e9 approximation result for T(q,r)), S_approx (numerical bounds 0.286 < S < 0.288). 0 sorries: T_summable (convergence of T(q,r)), S_first_terms (initial partial sum identity)."
+    "assumptions": "2 axioms: borwein_irrationality (Borwein's 1991 Padé approximation result for T(q,r)), S_approx (numerical bounds 0.286 < S < 0.288). 0 sorries: T_summable (convergence of T(q,r)), S_first_terms (initial partial sum identity).",
+    "theoremCount": 27
   },
   "overview": {
-    "historicalContext": "**From Lambert Series to Borwein's Theorem**\n\nThe study of series with exponential denominators began with Johann Heinrich Lambert's 1748 investigation of \u2211 q^n/(1-q^n) \u2014 the Lambert series \u2014 which he connected to the divisor function \u03c4(n). Euler recognized the identity \u2211 1/(q^n - 1) = \u2211 \u03c4(n)/q^n, linking these series to multiplicative number theory.\n\nIn 1948, Erd\u0151s published a foundational paper in the Journal of the Indian Mathematical Society proving that \u2211 1/(2^n - 1) is irrational. His method exploited the divisor function identity: if the sum were rational p/q, then \u2211 \u03c4(n)/2^n = p/q, and the arithmetic properties of \u03c4 (specifically, that \u03c4(n) is often large \u2014 on average log n) would produce contradictions modulo carefully chosen primes. This result established the Erd\u0151s-Borwein constant E \u2248 1.60669 as one of the first explicitly-defined irrationals in this family.\n\nErd\u0151s conjectured much more: that \u2211 1/(2^n + t) should be transcendental for every integer t \u2260 0. Problem #1050 asks specifically about the case t = -3, i.e., whether \u2211 1/(2^n - 3) is irrational.\n\n**Peter Borwein (1991)** proved the definitive irrationality result in Math. Proc. Cambridge Philos. Soc.: for any integer q \u2265 2 and rational r \u2260 0 (with r \u2260 -q^n for any n), the series \u2211 1/(q^n + r) is irrational. His proof used Pad\u00e9 approximation to the q-logarithm function log_q(1+x) = \u2211 (-x)^n/(q^n - 1), constructing rational approximants whose quality exceeds the Dirichlet threshold. This completely solved Problem #1050 and subsumed Erd\u0151s's 1948 result as a special case.\n\nThe stronger transcendence conjecture remains OPEN. Even for the Erd\u0151s-Borwein constant \u2211 1/(2^n - 1), transcendence has not been established. The methods of Mahler (1929) and Nishioka (1996) for q-series transcendence do not directly apply to these Lambert-type series, and fundamentally new techniques appear to be needed.",
-    "problemStatement": "**Problem Statement**\n\nIs the sum \u2211_{n=1}^\u221e 1/(2^n - 3) irrational?\n\n**Status**: SOLVED by Borwein (1991)\n\n**Answer**: YES\n\nThe series equals -1 + 1 + 1/5 + 1/13 + 1/29 + ... \u2248 0.287",
-    "text": "Is \u2211_{n\u22651} 1/(2^n - 3) irrational? SOLVED by Borwein (1991): YES. More generally, \u2211 1/(q^n + r) is irrational for q \u2265 2 and rational r \u2260 0, r \u2260 -q^n.",
-    "proofStrategy": "The formalization is organized around the parametric family T(q, r) = \u2211 1/(q^n + r), which provides a unified framework for all the irrationality results. **Layer 1 (Series Definition)**: Defines `T q r` as a tsum and the specific instance `S = T 2 (-3)`, with an alternative direct definition `sumTwoMinusThree` for computational access. **Layer 2 (Convergence)**: Establishes `T_summable` via comparison with the geometric series \u2211 1/q^n, with the pole-avoidance hypothesis r \u2260 -q^n ensuring well-definedness; specializes to `S_summable`. **Layer 3 (First Terms)**: Computes explicit values 2^n - 3 for small n, demonstrating the negative first term and exact cancellation pattern -1 + 1 = 0. **Layer 4 (Borwein's Theorem)**: Axiomatizes `borwein_irrationality` from Borwein (1991), the core engine that converts pole-avoidance + convergence into irrationality. **Layer 5 (Applications)**: Instantiates to prove `S_irrational`, then derives irrationality for \u2211 1/(2^n \u00b1 1) and \u2211 1/(3^n - 1) as further applications. **Layer 6 (Open Questions)**: States the Erd\u0151s transcendence conjecture and its general form, recording the conjecture's open status. **Layer 7 (Connections)**: Links to Problem #1049 via `T_eq_S_1049` showing T(q, -1) = S_{1049}(q), unifying the two problems. **Layer 8 (Numerical)**: Provides bounds 0.286 < S < 0.288 and OEIS connections.",
+    "historicalContext": "**From Lambert Series to Borwein's Theorem**\n\nThe study of series with exponential denominators began with Johann Heinrich Lambert's 1748 investigation of ∑ q^n/(1-q^n) — the Lambert series — which he connected to the divisor function τ(n). Euler recognized the identity ∑ 1/(q^n - 1) = ∑ τ(n)/q^n, linking these series to multiplicative number theory.\n\nIn 1948, Erdős published a foundational paper in the Journal of the Indian Mathematical Society proving that ∑ 1/(2^n - 1) is irrational. His method exploited the divisor function identity: if the sum were rational p/q, then ∑ τ(n)/2^n = p/q, and the arithmetic properties of τ (specifically, that τ(n) is often large — on average log n) would produce contradictions modulo carefully chosen primes. This result established the Erdős-Borwein constant E ≈ 1.60669 as one of the first explicitly-defined irrationals in this family.\n\nErdős conjectured much more: that ∑ 1/(2^n + t) should be transcendental for every integer t ≠ 0. Problem #1050 asks specifically about the case t = -3, i.e., whether ∑ 1/(2^n - 3) is irrational.\n\n**Peter Borwein (1991)** proved the definitive irrationality result in Math. Proc. Cambridge Philos. Soc.: for any integer q ≥ 2 and rational r ≠ 0 (with r ≠ -q^n for any n), the series ∑ 1/(q^n + r) is irrational. His proof used Padé approximation to the q-logarithm function log_q(1+x) = ∑ (-x)^n/(q^n - 1), constructing rational approximants whose quality exceeds the Dirichlet threshold. This completely solved Problem #1050 and subsumed Erdős's 1948 result as a special case.\n\nThe stronger transcendence conjecture remains OPEN. Even for the Erdős-Borwein constant ∑ 1/(2^n - 1), transcendence has not been established. The methods of Mahler (1929) and Nishioka (1996) for q-series transcendence do not directly apply to these Lambert-type series, and fundamentally new techniques appear to be needed.",
+    "problemStatement": "**Problem Statement**\n\nIs the sum ∑_{n=1}^∞ 1/(2^n - 3) irrational?\n\n**Status**: SOLVED by Borwein (1991)\n\n**Answer**: YES\n\nThe series equals -1 + 1 + 1/5 + 1/13 + 1/29 + ... ≈ 0.287",
+    "text": "Is ∑_{n≥1} 1/(2^n - 3) irrational? SOLVED by Borwein (1991): YES. More generally, ∑ 1/(q^n + r) is irrational for q ≥ 2 and rational r ≠ 0, r ≠ -q^n.",
+    "proofStrategy": "The formalization is organized around the parametric family T(q, r) = ∑ 1/(q^n + r), which provides a unified framework for all the irrationality results. **Layer 1 (Series Definition)**: Defines `T q r` as a tsum and the specific instance `S = T 2 (-3)`, with an alternative direct definition `sumTwoMinusThree` for computational access. **Layer 2 (Convergence)**: Establishes `T_summable` via comparison with the geometric series ∑ 1/q^n, with the pole-avoidance hypothesis r ≠ -q^n ensuring well-definedness; specializes to `S_summable`. **Layer 3 (First Terms)**: Computes explicit values 2^n - 3 for small n, demonstrating the negative first term and exact cancellation pattern -1 + 1 = 0. **Layer 4 (Borwein's Theorem)**: Axiomatizes `borwein_irrationality` from Borwein (1991), the core engine that converts pole-avoidance + convergence into irrationality. **Layer 5 (Applications)**: Instantiates to prove `S_irrational`, then derives irrationality for ∑ 1/(2^n ± 1) and ∑ 1/(3^n - 1) as further applications. **Layer 6 (Open Questions)**: States the Erdős transcendence conjecture and its general form, recording the conjecture's open status. **Layer 7 (Connections)**: Links to Problem #1049 via `T_eq_S_1049` showing T(q, -1) = S_{1049}(q), unifying the two problems. **Layer 8 (Numerical)**: Provides bounds 0.286 < S < 0.288 and OEIS connections.",
     "keyInsights": [
-      "**Pad\u00e9 Approximation as Irrationality Engine:** Borwein's proof constructs explicit rational approximants p_k/q_k to T(q,r) via Pad\u00e9 theory for the q-logarithm, achieving |T - p_k/q_k| < c^k for a constant c < 1. The exponential convergence rate contradicts the Dirichlet pigeonhole bound |T - p/q| \u2265 1/(qM) that would hold if T were rational. This is the same meta-strategy as Ap\u00e9ry's proof of \u03b6(3) \u2208 \u211d\\\u211a, but adapted to q-series rather than classical series.",
-      "**Cancellation and Effective Series:** The first two terms of S cancel exactly (-1 + 1 = 0), so S = \u2211_{n\u22653} 1/(2^n - 3) \u2248 0.287. This cancellation is a number-theoretic accident: it occurs because 2^1 = 2 < 3 < 4 = 2^2, making the denominator sequence cross zero between n = 1 and n = 2. For general r, the number of sign changes depends on when q^n first exceeds |r|.",
-      "**Unification via Parameter Space:** The family T(q, r) provides a two-dimensional parameter space in which Erd\u0151s's 1948 result (T(t, -1) for integer t) occupies a one-dimensional slice, and Problem #1050 (T(2, -3)) is a single point. Borwein's theorem proves irrationality across the entire parameter space (q \u2265 2, r \u2208 \u211a\\{0, -q^n}) simultaneously, demonstrating that the individual problems are manifestations of a single phenomenon.",
-      "**Irrationality vs Transcendence Gap:** The 35-year gap between Borwein's irrationality proof (1991) and the still-open transcendence conjecture reflects a fundamental methodological barrier. Irrationality requires only that rational approximations converge 'too fast' (one inequality), while transcendence requires ruling out all algebraic relations (infinitely many polynomial equations). The Mahler/Nishioka methods for q-series transcendence apply to functional equations f(q\u00b7z) = R(z, f(z)), but T(q, r) does not satisfy such an equation in a useful form.",
-      "**Shifted Mersenne Structure:** The denominators 2^n - 3 form a 'shifted Mersenne' sequence. Unlike Mersenne numbers 2^n - 1 (which connect to perfect numbers and for which primality testing is efficient via the Lucas-Lehmer test), the sequence 2^n - 3 has no known special primality structure. The series \u2211 1/(2^n - 3) thus occupies an intermediate position between the well-studied Erd\u0151s-Borwein constant and more exotic Lambert-type series."
+      "**Padé Approximation as Irrationality Engine:** Borwein's proof constructs explicit rational approximants p_k/q_k to T(q,r) via Padé theory for the q-logarithm, achieving |T - p_k/q_k| < c^k for a constant c < 1. The exponential convergence rate contradicts the Dirichlet pigeonhole bound |T - p/q| ≥ 1/(qM) that would hold if T were rational. This is the same meta-strategy as Apéry's proof of ζ(3) ∈ ℝ\\ℚ, but adapted to q-series rather than classical series.",
+      "**Cancellation and Effective Series:** The first two terms of S cancel exactly (-1 + 1 = 0), so S = ∑_{n≥3} 1/(2^n - 3) ≈ 0.287. This cancellation is a number-theoretic accident: it occurs because 2^1 = 2 < 3 < 4 = 2^2, making the denominator sequence cross zero between n = 1 and n = 2. For general r, the number of sign changes depends on when q^n first exceeds |r|.",
+      "**Unification via Parameter Space:** The family T(q, r) provides a two-dimensional parameter space in which Erdős's 1948 result (T(t, -1) for integer t) occupies a one-dimensional slice, and Problem #1050 (T(2, -3)) is a single point. Borwein's theorem proves irrationality across the entire parameter space (q ≥ 2, r ∈ ℚ\\{0, -q^n}) simultaneously, demonstrating that the individual problems are manifestations of a single phenomenon.",
+      "**Irrationality vs Transcendence Gap:** The 35-year gap between Borwein's irrationality proof (1991) and the still-open transcendence conjecture reflects a fundamental methodological barrier. Irrationality requires only that rational approximations converge 'too fast' (one inequality), while transcendence requires ruling out all algebraic relations (infinitely many polynomial equations). The Mahler/Nishioka methods for q-series transcendence apply to functional equations f(q·z) = R(z, f(z)), but T(q, r) does not satisfy such an equation in a useful form.",
+      "**Shifted Mersenne Structure:** The denominators 2^n - 3 form a 'shifted Mersenne' sequence. Unlike Mersenne numbers 2^n - 1 (which connect to perfect numbers and for which primality testing is efficient via the Lucas-Lehmer test), the sequence 2^n - 3 has no known special primality structure. The series ∑ 1/(2^n - 3) thus occupies an intermediate position between the well-studied Erdős-Borwein constant and more exotic Lambert-type series."
     ],
     "prerequisites": [
       "Irrationality and transcendence predicates (Mathlib.Data.Real.Irrational, Mathlib.RingTheory.Algebraic)",
@@ -89,10 +90,10 @@
     {
       "id": "series",
       "title": "The Series",
-      "summary": "Defines the general family T(q,r) = \u2211 1/(q^n + r) via tsum, the specific instance S = T(2, -3) for Problem #1050, the alternative definition sumTwoMinusThree for direct computation, and proves S_eq_sumTwoMinusThree (sorry)",
+      "summary": "Defines the general family T(q,r) = ∑ 1/(q^n + r) via tsum, the specific instance S = T(2, -3) for Problem #1050, the alternative definition sumTwoMinusThree for direct computation, and proves S_eq_sumTwoMinusThree (sorry)",
       "startLine": 26,
       "endLine": 45,
-      "mathContext": "Formal definition: Defines the general family T(q,r) = \u2211 1/(q^n + r) via tsum, the specific instance S = T(2, -3) for Problem #1050, and the alternative definition sumTwoMinusThree for direct computation"
+      "mathContext": "Formal definition: Defines the general family T(q,r) = ∑ 1/(q^n + r) via tsum, the specific instance S = T(2, -3) for Problem #1050, and the alternative definition sumTwoMinusThree for direct computation"
     },
     {
       "id": "convergence",
@@ -121,7 +122,7 @@
     {
       "id": "related",
       "title": "Related Series",
-      "summary": "Applies Borwein's theorem to three further series: sum_2n_minus_1_irrational (\u2211 1/(2^n-1), recovering Erdos 1948), sum_2n_plus_1_irrational (\u2211 1/(2^n+1)), sum_3n_minus_1_irrational (\u2211 1/(3^n-1)), and general_irrational for arbitrary valid parameters",
+      "summary": "Applies Borwein's theorem to three further series: sum_2n_minus_1_irrational (∑ 1/(2^n-1), recovering Erdos 1948), sum_2n_plus_1_irrational (∑ 1/(2^n+1)), sum_3n_minus_1_irrational (∑ 1/(3^n-1)), and general_irrational for arbitrary valid parameters",
       "startLine": 141,
       "endLine": 205,
       "mathContext": "Applies Borwein's theorem to three further series and provides a general instantiation for arbitrary valid parameters"
@@ -137,10 +138,10 @@
     {
       "id": "connection",
       "title": "Connection to #1049",
-      "summary": "Defines S_1049 t = \u2211 1/(t^n - 1) from Problem #1049, states T_eq_S_1049 showing T(q,-1) = S_1049(q) (sorry), and problems_related (sorry)",
+      "summary": "Defines S_1049 t = ∑ 1/(t^n - 1) from Problem #1049, states T_eq_S_1049 showing T(q,-1) = S_1049(q) (sorry), and problems_related (sorry)",
       "startLine": 237,
       "endLine": 257,
-      "mathContext": "Defines S_1049 t = \u2211 1/(t^n - 1) from Problem #1049, proves T_eq_S_1049 showing T(q,-1) = S_1049(q), and problems_related establishing that both problems are resolved by Borwein's single theorem"
+      "mathContext": "Defines S_1049 t = ∑ 1/(t^n - 1) from Problem #1049, proves T_eq_S_1049 showing T(q,-1) = S_1049(q), and problems_related establishing that both problems are resolved by Borwein's single theorem"
     },
     {
       "id": "numerical",
@@ -168,56 +169,56 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #1050 was SOLVED by Peter Borwein (1991). The sum S = \u2211_{n\u22651} 1/(2^n - 3) \u2248 0.287 is irrational. Borwein's theorem proves irrationality for the entire parametric family T(q, r) = \u2211 1/(q^n + r) whenever q \u2265 2 is an integer and r is a rational number with r \u2260 0 and r \u2260 -q^n for any n. This subsumes Erd\u0151s's 1948 result on \u2211 1/(2^n - 1) as the special case r = -1, and provides a unified irrationality framework connecting Problems #1049 and #1050. The formalization axiomatizes Borwein's Pad\u00e9 approximation result and derives irrationality for four specific series (r = -3, -1, +1 with q = 2, and r = -1 with q = 3), states the open transcendence conjecture, and establishes numerical bounds on S.",
-    "implications": "**Theoretical Significance**: Borwein's theorem reveals that irrationality of exponentially-denominated series is a generic phenomenon: for any fixed base q \u2265 2, the series T(q, r) is irrational for all but countably many rational values of r (the excluded poles r = -q^n).\n\nThis places these constants in the same irrationality class as classical constants like e and log 2, while the gap to transcendence \u2014 proved for e but open for any T(q, r) \u2014 highlights the methodological divide between irrationality (rational approximation quality) and transcendence (algebraic independence). The unification of Problems #1049 and #1050 through the T(q, r) family exemplifies how parametric generalization can resolve multiple Erd\u0151s problems simultaneously.",
+    "summary": "Erdős Problem #1050 was SOLVED by Peter Borwein (1991). The sum S = ∑_{n≥1} 1/(2^n - 3) ≈ 0.287 is irrational. Borwein's theorem proves irrationality for the entire parametric family T(q, r) = ∑ 1/(q^n + r) whenever q ≥ 2 is an integer and r is a rational number with r ≠ 0 and r ≠ -q^n for any n. This subsumes Erdős's 1948 result on ∑ 1/(2^n - 1) as the special case r = -1, and provides a unified irrationality framework connecting Problems #1049 and #1050. The formalization axiomatizes Borwein's Padé approximation result and derives irrationality for four specific series (r = -3, -1, +1 with q = 2, and r = -1 with q = 3), states the open transcendence conjecture, and establishes numerical bounds on S.",
+    "implications": "**Theoretical Significance**: Borwein's theorem reveals that irrationality of exponentially-denominated series is a generic phenomenon: for any fixed base q ≥ 2, the series T(q, r) is irrational for all but countably many rational values of r (the excluded poles r = -q^n).\n\nThis places these constants in the same irrationality class as classical constants like e and log 2, while the gap to transcendence — proved for e but open for any T(q, r) — highlights the methodological divide between irrationality (rational approximation quality) and transcendence (algebraic independence). The unification of Problems #1049 and #1050 through the T(q, r) family exemplifies how parametric generalization can resolve multiple Erdős problems simultaneously.",
     "openQuestions": [
-      "Is \u2211 1/(2^n + t) transcendental for every integer t \u2260 0? This is Erd\u0151s's original transcendence conjecture. Even the simplest case t = -1 (the Erd\u0151s-Borwein constant) remains unresolved.",
-      "What is the irrationality measure \u03bc(S) such that |S - p/q| < q^{-\u03bc} has only finitely many rational solutions p/q? Borwein's proof gives \u03bc \u2265 2 but the exact value is unknown.",
-      "Are the values T(q\u2081, r\u2081) and T(q\u2082, r\u2082) algebraically independent for distinct valid parameters (q\u2081, r\u2081) \u2260 (q\u2082, r\u2082)? Even linear independence over \u211a is not known in general.",
-      "Can Borwein's theorem be extended to complex r \u2208 \u2102 \\ \u211a? The Pad\u00e9 approximation technique works over \u211d; an extension to complex parameters would require complex-analytic methods.",
-      "Is there a closed-form expression for S = \u2211 1/(2^n - 3) in terms of known constants (\u03b8-functions, modular forms, etc.)? The transcendence conjecture would rule out algebraic expressions."
+      "Is ∑ 1/(2^n + t) transcendental for every integer t ≠ 0? This is Erdős's original transcendence conjecture. Even the simplest case t = -1 (the Erdős-Borwein constant) remains unresolved.",
+      "What is the irrationality measure μ(S) such that |S - p/q| < q^{-μ} has only finitely many rational solutions p/q? Borwein's proof gives μ ≥ 2 but the exact value is unknown.",
+      "Are the values T(q₁, r₁) and T(q₂, r₂) algebraically independent for distinct valid parameters (q₁, r₁) ≠ (q₂, r₂)? Even linear independence over ℚ is not known in general.",
+      "Can Borwein's theorem be extended to complex r ∈ ℂ \\ ℚ? The Padé approximation technique works over ℝ; an extension to complex parameters would require complex-analytic methods.",
+      "Is there a closed-form expression for S = ∑ 1/(2^n - 3) in terms of known constants (θ-functions, modular forms, etc.)? The transcendence conjecture would rule out algebraic expressions."
     ]
   },
   "crossReferences": [
     {
       "relationship": "sibling",
-      "description": "Problem #1049 asks about irrationality of \u2211 1/(t^n - 1) for rational t > 1. This is the special case T(t, -1) of the family T(q, r) studied here. Borwein's theorem resolves both problems simultaneously, and the formalization proves T_eq_S_1049 making the connection explicit.",
+      "description": "Problem #1049 asks about irrationality of ∑ 1/(t^n - 1) for rational t > 1. This is the special case T(t, -1) of the family T(q, r) studied here. Borwein's theorem resolves both problems simultaneously, and the formalization proves T_eq_S_1049 making the connection explicit.",
       "targetId": "erdos-1049"
     },
     {
       "relationship": "related",
-      "description": "Problem #1051 studies irrationality of \u2211 1/(a\u2099\u00b7a\u2099\u208a\u2081) for rapidly growing sequences \u2014 a different family of irrationality problems where the denominators grow super-exponentially rather than exponentially as in T(q, r).",
+      "description": "Problem #1051 studies irrationality of ∑ 1/(aₙ·aₙ₊₁) for rapidly growing sequences — a different family of irrationality problems where the denominators grow super-exponentially rather than exponentially as in T(q, r).",
       "targetId": "erdos-1051"
     },
     {
       "relationship": "related",
-      "description": "Problem #257 asks whether \u2211_{n\u2208A} 1/(2^n - 1) is irrational for every infinite set A of positive integers. This is a 'subset selection' variant of the Lambert series that Erd\u0151s proved irrational in 1948 (the case A = \u2115), which is T(2, -1) in our framework.",
+      "description": "Problem #257 asks whether ∑_{n∈A} 1/(2^n - 1) is irrational for every infinite set A of positive integers. This is a 'subset selection' variant of the Lambert series that Erdős proved irrational in 1948 (the case A = ℕ), which is T(2, -1) in our framework.",
       "targetId": "erdos-257"
     },
     {
       "targetId": "e-transcendental",
       "relationship": "related",
-      "description": "Hermite proved e transcendental (1873) using rapidly converging rational approximations \u2014 the same meta-strategy (approximation quality exceeding what rationality/algebraicity allows) that Borwein uses for T(q,r). The open transcendence conjecture for T(2,-3) would place it in the same class as e"
+      "description": "Hermite proved e transcendental (1873) using rapidly converging rational approximations — the same meta-strategy (approximation quality exceeding what rationality/algebraicity allows) that Borwein uses for T(q,r). The open transcendence conjecture for T(2,-3) would place it in the same class as e"
     },
     {
       "targetId": "hermite-lindemann",
       "relationship": "related",
-      "description": "Hermite-Lindemann proves e^\u03b1 transcendental for nonzero algebraic \u03b1. Erd\u0151s's transcendence conjecture for T(q,r) is of the same spirit: showing that a naturally-defined analytic quantity escapes the algebraic numbers. The gap between Borwein's irrationality (proved) and Erd\u0151s's transcendence (open) mirrors the historical gap between irrationality of e (Euler 1737) and transcendence (Hermite 1873)"
+      "description": "Hermite-Lindemann proves e^α transcendental for nonzero algebraic α. Erdős's transcendence conjecture for T(q,r) is of the same spirit: showing that a naturally-defined analytic quantity escapes the algebraic numbers. The gap between Borwein's irrationality (proved) and Erdős's transcendence (open) mirrors the historical gap between irrationality of e (Euler 1737) and transcendence (Hermite 1873)"
     },
     {
       "targetId": "sqrt2-irrational",
       "relationship": "foundational",
-      "description": "The irrationality of \u221a2 is the prototype for all irrationality proofs. Borwein's method for T(q,r) is a sophisticated descendant: where the proof for \u221a2 uses a descent argument, Borwein constructs Pad\u00e9 approximants whose convergence rate contradicts rationality \u2014 a quantitative generalization of the same logical structure"
+      "description": "The irrationality of √2 is the prototype for all irrationality proofs. Borwein's method for T(q,r) is a sophisticated descendant: where the proof for √2 uses a descent argument, Borwein constructs Padé approximants whose convergence rate contradicts rationality — a quantitative generalization of the same logical structure"
     },
     {
       "targetId": "liouville-theorem",
       "relationship": "related",
-      "description": "Liouville's approximation theorem bounds how well algebraic numbers can be approximated by rationals: |\u03b1 - p/q| > c/q^n for algebraic \u03b1 of degree n. Borwein's irrationality proof for T(q,r) works by showing the approximation quality EXCEEDS what any rational (degree 1) number allows \u2014 the same philosophy, specialized to degree 1"
+      "description": "Liouville's approximation theorem bounds how well algebraic numbers can be approximated by rationals: |α - p/q| > c/q^n for algebraic α of degree n. Borwein's irrationality proof for T(q,r) works by showing the approximation quality EXCEEDS what any rational (degree 1) number allows — the same philosophy, specialized to degree 1"
     },
     {
       "targetId": "nth-root-irrational",
       "relationship": "foundational",
-      "description": "The irrationality of $m^{1/n}$ for non-perfect-power $m$ is the simplest algebraic irrationality, proved by descent. Borwein's irrationality of $T(q,r)$ is a transcendental-function analogue: where $m^{1/n}$ is irrational because no rational satisfies $x^n = m$, the series $T(q,r)$ is irrational because its Pad\u00e9 approximants converge too quickly for any rational value \u2014 upgrading algebraic impossibility to analytic impossibility"
+      "description": "The irrationality of $m^{1/n}$ for non-perfect-power $m$ is the simplest algebraic irrationality, proved by descent. Borwein's irrationality of $T(q,r)$ is a transcendental-function analogue: where $m^{1/n}$ is irrational because no rational satisfies $x^n = m$, the series $T(q,r)$ is irrational because its Padé approximants converge too quickly for any rational value — upgrading algebraic impossibility to analytic impossibility"
     }
   ],
   "leanFile": {
@@ -237,7 +238,7 @@
       {
         "name": "erdos_1050",
         "statement": "Irrational S",
-        "description": "The capstone result: \u2211 1/(2^n - 3) is irrational"
+        "description": "The capstone result: ∑ 1/(2^n - 3) is irrational"
       },
       {
         "name": "S_irrational",
@@ -261,12 +262,12 @@
     },
     {
       "key": "Er48",
-      "citation": "Erd\u0151s, P. (1948). On arithmetical properties of Lambert series. J. Indian Math. Soc., 12:63-66.",
+      "citation": "Erdős, P. (1948). On arithmetical properties of Lambert series. J. Indian Math. Soc., 12:63-66.",
       "type": "paper"
     },
     {
       "key": "ErGr80",
-      "citation": "Erd\u0151s, P. and Graham, R. (1980). Old and new problems and results in combinatorial number theory, p. 62.",
+      "citation": "Erdős, P. and Graham, R. (1980). Old and new problems and results in combinatorial number theory, p. 62.",
       "type": "book"
     }
   ],

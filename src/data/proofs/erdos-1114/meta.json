@@ -56,7 +56,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 171,
-    "assumptions": "2 axioms: balint_theorem, quartic_gap_property. 0 sorries."
+    "assumptions": "2 axioms: balint_theorem, quartic_gap_property. 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1114** concerns the behavior of critical points of polynomials whose roots form arithmetic progressions. Erdős conjectured that the gaps between consecutive critical points exhibit a monotonicity property, communicating the conjecture personally to Bálint.\n\n**Key History:**\n- Erdős posed this problem, likely in the late 1950s, motivated by questions about root-derivative relationships\n- Bálint (1960) proved the conjecture: the gaps between consecutive zeros of f' increase monotonically from the midpoint outward\n- Lorch (1976) generalized the result to higher derivatives f'', f''', etc.\n\n**Mathematical Context:** By Rolle's theorem, a degree-(n+1) polynomial with n+1 distinct real roots has exactly n critical points (roots of its derivative). When the roots are evenly spaced, the polynomial inherits a symmetry about the midpoint of its root interval. This symmetry forces the critical points to cluster toward the center, making the gaps between them smallest near the middle and largest near the endpoints.",

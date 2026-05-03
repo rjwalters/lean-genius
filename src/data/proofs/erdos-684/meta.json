@@ -56,7 +56,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 401,
-    "assumptions": "2 axiom declarations: f_domain_large (for sufficiently large n, there exists k with smooth part > n²), mahler_ineffective (Mahler's classical bound: for fixed k₀ and ε>0, smooth part ≤ n^{1+ε} eventually). Former axiom f_property now proved from Nat.sInf_mem."
+    "assumptions": "2 axiom declarations: f_domain_large (for sufficiently large n, there exists k with smooth part > n²), mahler_ineffective (Mahler's classical bound: for fixed k₀ and ε>0, smooth part ≤ n^{1+ε} eventually). Former axiom f_property now proved from Nat.sInf_mem.",
+    "theoremCount": 12
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in [Er79d]. For binomial coefficient C(n,k), we decompose it as u·v where u is the k-smooth part (primes ≤ k) and v is the k-rough part (primes > k).\n\nThe function f(n) asks: how small can k be while still having the smooth part exceed n²?\n\nMahler's classical theorem gives an ineffective bound. Recent work by Tang & ChatGPT (2026) proved f(n) ≤ n^{30/43+o(1)}, with n^{2/3+o(1)} conditional on the Riemann Hypothesis.\n\nRemarkably, heuristic arguments by Sothanaphan & ChatGPT suggest f(n) ~ 2 log n for most n - vastly smaller than proven bounds!\n\nThe sequence f(n) is recorded in OEIS A392019.",

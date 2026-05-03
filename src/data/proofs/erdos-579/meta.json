@@ -23,7 +23,8 @@
     "axiomCount": 0,
     "lineCount": 72,
     "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "Erdős, Hajnal, Sós, and Szemerédi studied the relationship between forbidden subgraphs and independence numbers in dense graphs. The octahedron K₂,₂,₂ (complete tripartite graph with parts of size 2) has Turán density 1/8: the maximum number of edges in a K₂,₂,₂-free graph on n vertices is (1/8 + o(1))n². EHSS (1983) proved that for edge density exceeding this threshold (δ > 1/8), K₂,₂,₂-free graphs must have linear independence numbers α(G) ≥ c·n. The conjecture extends this to all δ > 0, asking whether even sub-Turán density K₂,₂,₂-free graphs are forced to have large independent sets. This parallels Problem #533 (triangle-free subsets in K₅-free graphs), forming part of a broader program in Ramsey-Turán theory that investigates how forbidden subgraph conditions interact with density to force structural properties.",

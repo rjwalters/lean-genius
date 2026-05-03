@@ -53,7 +53,8 @@
     ],
     "axiomCount": 6,
     "lineCount": 183,
-    "assumptions": "6 axioms: omega_1, omega_1_times_omega, omega_1_squared, partitionArrow, erdosHajnalTriangle, baumgartnerCounterexample. 0 sorries."
+    "assumptions": "6 axioms: omega_1, omega_1_times_omega, omega_1_squared, partitionArrow, erdosHajnalTriangle, baumgartnerCounterexample. 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Erdős Problem #597 originates from the study of partition calculus, a branch of infinite combinatorics developed by Erdős and Rado in the 1950s. The partition arrow notation α → (β, γ)² encodes a Ramsey-type statement: every 2-coloring of pairs from a set of order type α yields either a homogeneous set of type β or a copy of γ. This problem was posed by Erdős in [Er87] and referenced in [Va99, 7.84].\n\nErdős originally asked whether ω₁² → (ω₁ω, G)² holds for all K₄-free graphs G on at most ℵ₁ vertices. However, Baumgartner demonstrated a counterexample: the complete bipartite graph K_{ℵ₀,ℵ₀} is K₄-free (being bipartite, it is even triangle-free), yet ω₁² ↛ (ω₁ω, K_{ℵ₀,ℵ₀})². This forced a refinement of the conjecture to exclude K_{ℵ₀,ℵ₀} subgraphs.\n\nThe positive foundation comes from Erdős and Hajnal, who proved ω₁² → (ω₁ω, 3)² — the triangle case. The gap between the triangle (3 vertices) and K_{ℵ₀,ℵ₀} (infinitely many) is precisely where Problem #597 lives. The problem also asks specifically about finite K₄-free graphs G, which is a natural intermediate case. The problem may be sensitive to set-theoretic axioms beyond ZFC, as many partition relations at the level of ℵ₁ depend on assumptions like the Continuum Hypothesis or Martin's Axiom.",

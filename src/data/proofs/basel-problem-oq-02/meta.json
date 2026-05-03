@@ -54,7 +54,8 @@
     "axiomCount": 5,
     "lineCount": 348,
     "assumptions": "5 axiom(s): Lindemann (π transcendental), Apéry (ζ(3) irrational), Rivoal (infinitely many odd ζ irrational), Zudilin (one of ζ(5,7,9,11) irrational), Fischler-Sprang-Zudilin 2019 (quantitative: ≥(1-ε)·log(s)/(1+log 2) irrational odd ζ values among first s). Even-zeta transcendence (ζ(2), ζ(4)) fully proved from Lindemann axiom. Structural implications proved sorry-free. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 20
   },
   "overview": {
     "historicalContext": "The even zeta values ζ(2k) = rational × π^(2k) have been fully understood since Euler (1734) and Lindemann (1882): they are all transcendental. The odd zeta values ζ(2k+1) remain deeply mysterious. Not a single one has been proved transcendental. Even the weaker question of irrationality is largely open: Apéry (1978) proved ζ(3) irrational in a tour de force, Rivoal (2000) showed infinitely many odd ζ are irrational, and Zudilin (2001) pinpointed ζ(5,7,9,11) as containing at least one irrational. But beyond these partial results, specific odd zeta values remain out of reach.",

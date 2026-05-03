@@ -55,7 +55,8 @@
     "axiomCount": 0,
     "lineCount": 181,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 20
   },
   "overview": {
     "historicalContext": "The Cauchy-Schwarz inequality traces back to Augustin-Louis Cauchy (1821) for finite sums and Hermann Schwarz (1888) for integrals, with Viktor Bunyakovsky (1859) establishing the integral form independently. The extension from real to complex inner product spaces was clarified by John von Neumann's axiomatization of Hilbert spaces (1929), where the sesquilinearity of the complex inner product $\\langle f, g \\rangle = \\int \\bar{f} g \\, d\\mu$ introduces conjugation absent in the real case. The physics convention (conjugate-linear in the first argument) became standard through quantum mechanics, where $\\langle \\psi | \\phi \\rangle$ is the transition amplitude. In Mathlib, the `RCLike` typeclass (introduced to unify $\\mathbb{R}$ and $\\mathbb{C}$) enables stating the inequality once for all scalar fields. The bridge theorem `L2.inner_def` connecting abstract and integral forms is the crucial link that makes the transfer from abstract inner product space theory to concrete integral inequalities fully formal.",

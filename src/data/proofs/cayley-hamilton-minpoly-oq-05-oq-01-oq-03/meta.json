@@ -81,7 +81,8 @@
     "axiomCount": 0,
     "lineCount": 345,
     "assumptions": "None. All theorems fully proved. matrix_nonderogatory_implies_module uses the parent proof (CayleyHamiltonMinpolyOQ05OQ01). The incorrect structure_theorem_cyclic_iff was replaced with minpoly_minimal_degree (proved via minpoly.dvd).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 19
   },
   "overview": {
     "historicalContext": "The module-theoretic perspective on linear operators dates to Emmy Noether's foundational work on abstract algebra (1920s-30s). Given a linear endomorphism T on a K-vector space V, the space V acquires a K[X]-module structure via p * v = p(T)v. Under this identification, the 'nonderogatory' condition (minpoly = charpoly in finite dimensions) corresponds to V being a cyclic K[X]-module. This perspective is central to the structure theorem for finitely generated modules over PIDs, which gives the rational canonical form of a matrix. The infinite-dimensional extension raises new phenomena: the annihilator ideal can be trivial (no minimal polynomial), and the structure theorem for f.g. modules no longer directly applies.",

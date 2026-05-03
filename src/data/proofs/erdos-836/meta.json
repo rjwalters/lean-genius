@@ -59,7 +59,8 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 2,
     "lineCount": 270,
-    "assumptions": "2 axioms: question1_false, erdos_lovasz_bound. 0 sorries."
+    "assumptions": "2 axioms: question1_false, erdos_lovasz_bound. 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "This problem originates from Erdős and Shelah's study of hypergraph coloring, with key results appearing in the landmark 1975 paper by Erdős and Lovász, \"Problems and results on 3-chromatic hypergraphs and some related questions.\" The paper investigated the structural constraints imposed by chromatic number 3 on intersecting uniform hypergraphs, asking two fundamental questions about vertex count and edge intersection size.\n\nThe first question asked whether every r-uniform, intersecting, 3-chromatic hypergraph must have O(r²) vertices. Noga Alon provided a decisive counterexample using a partition-based construction: given a set X of size 2r-2 and the set Y of balanced partitions of X, the resulting hypergraph is r-uniform, intersecting, and 3-chromatic, but has approximately 4^r/√r vertices — exponentially larger than r². This was a major surprise, showing that the chromatic constraint allows far more complex structures than anticipated.\n\nThe second question asked whether two edges must share many vertices. Erdős and Lovász proved that in any r-uniform, intersecting, 3-chromatic hypergraph, some pair of edges must intersect in at least Ω(r/log r) vertices. Whether this bound can be improved to Ω(r) remains open. The Fano plane (projective plane of order 2) serves as an important extremal example: it is 3-uniform, intersecting, and 3-chromatic, with no two edges sharing r-1 = 2 vertices.",

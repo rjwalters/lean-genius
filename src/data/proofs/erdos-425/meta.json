@@ -1,10 +1,10 @@
 {
   "id": "erdos-425",
-  "title": "Erd\u0151s Problem #425: Multiplicative Sidon Sets",
+  "title": "Erdős Problem #425: Multiplicative Sidon Sets",
   "slug": "erdos-425",
-  "description": "Let F(n) be the maximum size of A \u2286 {1,...,n} such that all pairwise products ab (a < b) are distinct. Erd\u0151s proved \u03c0(n) + c\u2081\u00b7n^(3/4)\u00b7(log n)^(-3/2) \u2264 F(n) \u2264 \u03c0(n) + c\u2082\u00b7n^(3/4)\u00b7(log n)^(-3/2). The exact constant c (if it exists) is unknown. Alexander disproved the real version conjecture.",
+  "description": "Let F(n) be the maximum size of A ⊆ {1,...,n} such that all pairwise products ab (a < b) are distinct. Erdős proved π(n) + c₁·n^(3/4)·(log n)^(-3/2) ≤ F(n) ≤ π(n) + c₂·n^(3/4)·(log n)^(-3/2). The exact constant c (if it exists) is unknown. Alexander disproved the real version conjecture.",
   "meta": {
-    "author": "Paul Erd\u0151s",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/425",
     "date": "1968",
     "status": "axiomatized",
@@ -47,23 +47,24 @@
       "IsRMultiplicativeSidon for r-fold product distinctness",
       "RealMultSidon for real number version",
       "IsSidonSet for additive Sidon comparison",
-      "Erd\u0151s bounds axiom with n^(3/4)\u00b7(log n)^(-3/2) term",
+      "Erdős bounds axiom with n^(3/4)·(log n)^(-3/2) term",
       "Alexander construction disproving real conjecture"
     ],
     "axiomCount": 2,
     "lineCount": 264,
-    "assumptions": "2 axioms: erdos_bounds, alexander_construction. 0 sorries."
+    "assumptions": "2 axioms: erdos_bounds, alexander_construction. 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
-    "historicalContext": "Erd\u0151s introduced this problem in his 1968 paper \"On some applications of graph theory to number theoretic problems\" [Er68], where he established both upper and lower bounds for $F(n)$, the maximum size of a multiplicative Sidon subset of $\\{1,\\ldots,n\\}$. The bounds take the form $\\pi(n) + c_i n^{3/4}(\\log n)^{-3/2}$, showing that the prime counting function $\\pi(n)$ is the dominant term.\n\nThe problem was further discussed in Erd\u0151s (1973, 1977) and in the influential monograph of Erd\u0151s and Graham [ErGr80], where the real-number version was proposed: for $A \\subset [1,x]$ with $|ab - cd| \\ge 1$ for all distinct pairs, Erd\u0151s conjectured $\\max |A| = o(x)$. This conjecture was **disproved by Alexander** (reported in [ErGr80]), who showed that linear-sized sets $|A| \\ge cx$ are achievable using an exponential lifting of additive Sidon sets.\n\nThe connection between multiplicative and additive Sidon sets is central: taking logarithms converts products to sums, so $\\log(ab) = \\log a + \\log b$. Classical additive Sidon sets ($B_2$ sequences) have been studied since the 1930s by Sidon, Erd\u0151s, and Tur\u00e1n, with the maximum size being $(1 + o(1))\\sqrt{n}$ (Lindstr\u00f6m 1969). Whether the error term can be reduced to $O(n^\\varepsilon)$ is Erd\u0151s Problem #30, one of his most famous open questions (\\$1000 prize).",
+    "historicalContext": "Erdős introduced this problem in his 1968 paper \"On some applications of graph theory to number theoretic problems\" [Er68], where he established both upper and lower bounds for $F(n)$, the maximum size of a multiplicative Sidon subset of $\\{1,\\ldots,n\\}$. The bounds take the form $\\pi(n) + c_i n^{3/4}(\\log n)^{-3/2}$, showing that the prime counting function $\\pi(n)$ is the dominant term.\n\nThe problem was further discussed in Erdős (1973, 1977) and in the influential monograph of Erdős and Graham [ErGr80], where the real-number version was proposed: for $A \\subset [1,x]$ with $|ab - cd| \\ge 1$ for all distinct pairs, Erdős conjectured $\\max |A| = o(x)$. This conjecture was **disproved by Alexander** (reported in [ErGr80]), who showed that linear-sized sets $|A| \\ge cx$ are achievable using an exponential lifting of additive Sidon sets.\n\nThe connection between multiplicative and additive Sidon sets is central: taking logarithms converts products to sums, so $\\log(ab) = \\log a + \\log b$. Classical additive Sidon sets ($B_2$ sequences) have been studied since the 1930s by Sidon, Erdős, and Turán, with the maximum size being $(1 + o(1))\\sqrt{n}$ (Lindström 1969). Whether the error term can be reduced to $O(n^\\varepsilon)$ is Erdős Problem #30, one of his most famous open questions (\\$1000 prize).",
     "problemStatement": "Let $F(n) = \\max |A|$ where $A \\subseteq \\{1,\\ldots,n\\}$ and all products $ab$ ($a < b$) are distinct.\n\n**Questions:**\n1. Is there a constant $c$ such that $F(n) = \\pi(n) + (c + o(1)) n^{3/4}(\\log n)^{-3/2}$?\n2. For $r$-fold products, is $|A| \\le \\pi(n) + O(n^{(r+1)/(2r)})$?\n\n**Real Version:** What is $\\max |A|$ for $A \\subset [1,x]$ with $|ab - cd| \\ge 1$?\n\n**Status:** Integer order of magnitude known; exact constant OPEN. Real version: $o(x)$ conjecture is FALSE (Alexander).",
-    "text": "Let F(n) be the maximum size of A \u2286 {1,...,n} such that all pairwise products ab (a < b) are distinct. Erd\u0151s proved \u03c0(n) + c\u2081\u00b7n^(3/4)\u00b7(log n)^(-3/2) \u2264 F(n) \u2264 \u03c0(n) + c\u2082\u00b7n^(3/4)\u00b7(log n)^(-3/2). The exact constant c (if it exists) is unknown. Alexander disproved the real version conjecture.",
-    "proofStrategy": "The formalization builds from basic definitions to the main results:\n\n1. **Infrastructure**: `SubsetOfInterval`, `OrderedPair`, `ProductSet` using `Finset` operations\n2. **Core definitions**: `IsMultiplicativeSidon` (product injectivity), `IsMultiplicativeSidon'` (cardinality characterization)\n3. **Extremal function**: $F(n)$ via `Finset.sup'` over the powerset\n4. **Prime lower bound**: $F(n) \\ge \\pi(n)$ is discussed in source comments (docstring only; no Lean axiom `primes_are_sidon` is declared)\n5. **Erd\u0151s bounds**: Axiomatized $n^{3/4}(\\log n)^{-3/2}$ secondary term with constants $c_1, c_2$ (`erdos_bounds` axiom)\n6. **Generalizations**: $r$-fold products (`IsRMultiplicativeSidon`), real version (`RealMultSidon`)\n7. **Alexander's disproof**: Construction giving $|A| \\ge cx$ via exponential lifting of Sidon sets (`alexander_construction` axiom)\n8. **Additive connection**: `IsSidonSet` (additive $B_2$); log-conversion and classical $\\sqrt{n}$ bound are discussed in source comments only (no Lean declarations)",
+    "text": "Let F(n) be the maximum size of A ⊆ {1,...,n} such that all pairwise products ab (a < b) are distinct. Erdős proved π(n) + c₁·n^(3/4)·(log n)^(-3/2) ≤ F(n) ≤ π(n) + c₂·n^(3/4)·(log n)^(-3/2). The exact constant c (if it exists) is unknown. Alexander disproved the real version conjecture.",
+    "proofStrategy": "The formalization builds from basic definitions to the main results:\n\n1. **Infrastructure**: `SubsetOfInterval`, `OrderedPair`, `ProductSet` using `Finset` operations\n2. **Core definitions**: `IsMultiplicativeSidon` (product injectivity), `IsMultiplicativeSidon'` (cardinality characterization)\n3. **Extremal function**: $F(n)$ via `Finset.sup'` over the powerset\n4. **Prime lower bound**: $F(n) \\ge \\pi(n)$ is discussed in source comments (docstring only; no Lean axiom `primes_are_sidon` is declared)\n5. **Erdős bounds**: Axiomatized $n^{3/4}(\\log n)^{-3/2}$ secondary term with constants $c_1, c_2$ (`erdos_bounds` axiom)\n6. **Generalizations**: $r$-fold products (`IsRMultiplicativeSidon`), real version (`RealMultSidon`)\n7. **Alexander's disproof**: Construction giving $|A| \\ge cx$ via exponential lifting of Sidon sets (`alexander_construction` axiom)\n8. **Additive connection**: `IsSidonSet` (additive $B_2$); log-conversion and classical $\\sqrt{n}$ bound are discussed in source comments only (no Lean declarations)",
     "keyInsights": [
       "**Primes are the core**: Any large multiplicative Sidon set must contain almost all primes $\\le n$, since primes are the only elements whose products are guaranteed distinct (by unique factorization). The gap $F(n) - \\pi(n) = \\Theta(n^{3/4}(\\log n)^{-3/2})$ measures how many composites can be safely added",
       "**The $3/4$ exponent**: The secondary term $n^{3/4}(\\log n)^{-3/2}$ arises from a balance between the number of composite candidates ($\\sim n$) and the collision probability ($\\sim n^{-1/2}$ per element). The upper bound uses collision counting; the lower bound uses greedy construction",
       "**Alexander's exponential trick**: The real version is defeated by the map $b \\mapsto X e^{b/X^2}$, which converts additive Sidon structure (all sums distinct) into multiplicative separation ($|ab - cd| \\ge 1$). This shows the integer and real problems have fundamentally different behavior",
-      "**Logarithmic bridge**: $\\log(ab) = \\log a + \\log b$ converts multiplicative Sidon to additive Sidon, connecting to the rich theory of $B_2$ sequences and Erd\u0151s Problem #30 (\\$1000 prize for the $\\sqrt{n} + O(n^\\varepsilon)$ bound)",
+      "**Logarithmic bridge**: $\\log(ab) = \\log a + \\log b$ converts multiplicative Sidon to additive Sidon, connecting to the rich theory of $B_2$ sequences and Erdős Problem #30 (\\$1000 prize for the $\\sqrt{n} + O(n^\\varepsilon)$ bound)",
       "**$r$-fold hierarchy**: The conjectured bound $\\pi(n) + O(n^{(r+1)/(2r)})$ gives $3/4$ for pairwise products, $2/3$ for triple products, and approaches $1/2$ as $r \\to \\infty$---showing that higher-order distinctness constraints progressively restrict the set size"
     ],
     "prerequisites": [
@@ -99,7 +100,7 @@
     },
     {
       "id": "erdos-bounds",
-      "title": "Erd\u0151s's Bounds",
+      "title": "Erdős's Bounds",
       "summary": "Axiom: $\\exists\\, 0 < c_1 \\le c_2$ with $\\pi(n) + c_1 n^{3/4}(\\log n)^{-3/2} \\le F(n) \\le \\pi(n) + c_2 n^{3/4}(\\log n)^{-3/2}$. `MainQuestion`: does a single constant $c$ exist?",
       "startLine": 103,
       "endLine": 128,
@@ -116,15 +117,15 @@
     {
       "id": "real-version",
       "title": "The Real Number Version",
-      "summary": "`RealMultSidon`: $|ab - cd| \\ge 1$. Erd\u0151s conjectured $o(x)$---**DISPROVED** by Alexander via Sidon-to-exponential lifting giving $|A| \\ge cx$.",
+      "summary": "`RealMultSidon`: $|ab - cd| \\ge 1$. Erdős conjectured $o(x)$---**DISPROVED** by Alexander via Sidon-to-exponential lifting giving $|A| \\ge cx$.",
       "startLine": 156,
       "endLine": 187,
-      "mathContext": "Mathematical content: `RealMultSidon`: $|ab - cd| \\ge 1$. Erd\u0151s conjectured $o(x)$---**DISPROVED** by Alexander via Sidon-to-exponential lifting giving $|A| \\ge cx$."
+      "mathContext": "Mathematical content: `RealMultSidon`: $|ab - cd| \\ge 1$. Erdős conjectured $o(x)$---**DISPROVED** by Alexander via Sidon-to-exponential lifting giving $|A| \\ge cx$."
     },
     {
       "id": "sidon-connection",
       "title": "Connection to Additive Sidon Sets",
-      "summary": "`IsSidonSet` (additive $B_2$ def, line 196). Log-conversion and classical $\\sqrt{n}$ Sidon bound discussed in source comments (no Lean declarations `log_conversion` or `sidon_bound`). Links to Erd\u0151s Problem #30.",
+      "summary": "`IsSidonSet` (additive $B_2$ def, line 196). Log-conversion and classical $\\sqrt{n}$ Sidon bound discussed in source comments (no Lean declarations `log_conversion` or `sidon_bound`). Links to Erdős Problem #30.",
       "startLine": 188,
       "endLine": 210,
       "mathContext": "Formal definition: `IsSidonSet` (line 196). The log-conversion remark ($\\log(ab) = \\log a + \\log b$) and classical $\\sqrt{n}$ bound are docstring commentary only — no corresponding Lean declarations."
@@ -140,14 +141,14 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "`erdos_425_summary`: packages Erd\u0151s bounds $\\wedge$ Alexander construction. Proved by `\u27e8erdos_bounds, alexander_construction\u27e9`.",
+      "summary": "`erdos_425_summary`: packages Erdős bounds $\\wedge$ Alexander construction. Proved by `⟨erdos_bounds, alexander_construction⟩`.",
       "startLine": 226,
       "endLine": 264,
-      "mathContext": "Bound: `erdos_425_summary`: packages Erd\u0151s bounds $\\wedge$ Alexander construction. Proved by `\u27e8erdos_bounds, alexander_construction\u27e9`."
+      "mathContext": "Bound: `erdos_425_summary`: packages Erdős bounds $\\wedge$ Alexander construction. Proved by `⟨erdos_bounds, alexander_construction⟩`."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #425 studies multiplicative Sidon sets---subsets of $\\{1,\\ldots,n\\}$ where all pairwise products are distinct. Erd\u0151s (1968) proved tight bounds $F(n) = \\pi(n) + \\Theta(n^{3/4}(\\log n)^{-3/2})$, showing the primes form the core and approximately $n^{3/4}(\\log n)^{-3/2}$ composites can be added. Whether the constant converges is open. For the real version, Erd\u0151s's conjecture $\\max |A| = o(x)$ was disproved by Alexander using an exponential lifting of additive Sidon sets.",
+    "summary": "Erdős Problem #425 studies multiplicative Sidon sets---subsets of $\\{1,\\ldots,n\\}$ where all pairwise products are distinct. Erdős (1968) proved tight bounds $F(n) = \\pi(n) + \\Theta(n^{3/4}(\\log n)^{-3/2})$, showing the primes form the core and approximately $n^{3/4}(\\log n)^{-3/2}$ composites can be added. Whether the constant converges is open. For the real version, Erdős's conjecture $\\max |A| = o(x)$ was disproved by Alexander using an exponential lifting of additive Sidon sets.",
     "implications": "**Theoretical Significance**: This problem connects multiplicative and additive combinatorics through the logarithmic bridge.\n\nThe precise determination of the secondary term's constant would require understanding the fine structure of product collisions among composites. Alexander's construction demonstrates that the integer and real settings have fundamentally different extremal behavior, with the real case allowing linear-sized sets.",
     "openQuestions": [
       "Does the constant $c$ in $F(n) = \\pi(n) + (c + o(1)) n^{3/4}(\\log n)^{-3/2}$ exist?",
@@ -160,7 +161,7 @@
     {
       "targetId": "erdos-30",
       "relationship": "directly-related",
-      "description": "Additive Sidon sets (B\u2082 sequences); logarithmic conversion links multiplicative to additive. $1000 prize for \u221an + O(n^\u03b5) bound"
+      "description": "Additive Sidon sets (B₂ sequences); logarithmic conversion links multiplicative to additive. $1000 prize for √n + O(n^ε) bound"
     },
     {
       "targetId": "erdos-340",

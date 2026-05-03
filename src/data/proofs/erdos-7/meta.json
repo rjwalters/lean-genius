@@ -65,7 +65,8 @@
       "Least common multiples and divisibility"
     ],
     "assumptions": "3 axiom(s): balister_odd_squarefree, hough_nielsen, odd_covering_lcm_constraint. See Lean source for complete statements.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "Erdős Problem #7, also known as the Erdős-Selfridge Conjecture, asks whether there exists a covering system whose moduli are all odd. A covering system is a finite collection of congruence classes {aᵢ mod mᵢ} such that every integer belongs to at least one class. The simplest covering system uses moduli {2, 3, 4, 6, 12}, and all known constructions require at least one even modulus.\n\nSignificant partial results have been obtained. Hough and Nielsen (2019) proved that every covering system must contain at least one modulus divisible by 2 or 3, meaning an odd covering would necessarily include moduli divisible by 3. Balister, Bollobas, Morris, Sahasrabudhe, and Tiba (2022) proved the stronger result that no covering system exists with all moduli both odd and squarefree, ruling out a natural class of potential counterexamples.\n\nThe problem carries prizes from both Erdős ($25 for proving no odd covering exists) and Selfridge ($2000 specifically for an explicit construction). The LCM of any hypothetical odd covering must be divisible by 9 or 15, further constraining what such a system could look like. Despite these restrictions, the general conjecture remains open.",

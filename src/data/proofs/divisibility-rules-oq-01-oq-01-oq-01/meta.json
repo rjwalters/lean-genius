@@ -61,7 +61,8 @@
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
     "lineCount": 167,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "Digit divisibility rules have been known since antiquity: the rules '3 ∣ n iff 3 ∣ digit-sum' and '9 ∣ n iff 9 ∣ digit-sum' follow from $10 \\equiv 1 \\pmod{9}$. The rule for 11 uses alternating digits, reflecting $10 \\equiv -1 \\pmod{11}$. The general principle — that divisibility rules arise from $10^k \\equiv 1 \\pmod{d}$ — was implicit in these examples but rarely stated as a theorem before modern algebra.\n\nGauss connected the multiplicative order $\\mathrm{ord}_d(10)$ to the *reptend* (repeating block length) of the decimal expansion of $1/d$ in *Disquisitiones Arithmeticae* (1801), Section III. The same order governs both digit-block divisibility rules (formalized here) and repeating decimals: $1/7 = 0.\\overline{142857}$ has period 6 because $\\mathrm{ord}_7(10) = 6$.\n\nDivisibilityRulesOQ01OQ01 (the parent proof) established *existence* of a valid period via Euler's theorem ($k = \\varphi(d)$ always works). This file answers the natural follow-up open question: the *minimal* such $k$ is exactly $\\mathrm{ord}_d(10)$ = orderOf(10 : ZMod d).",

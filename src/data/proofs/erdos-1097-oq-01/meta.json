@@ -29,7 +29,8 @@
         "id": "erdos-1097",
         "relationship": "Parent problem: 3-term AP common differences"
       }
-    ]
+    ],
+    "theoremCount": 18
   },
   "overview": {
     "text": "A formalization generalizing Erdős Problem #1097 from 3-term to k-term arithmetic progressions. Defines IsKAP (k-term AP predicate), D_k(A) (common differences of k-APs), and proves 17 theorems without any axioms or sorries. Key results: D_k is anti-monotone in k (more terms demanded → fewer common differences), D_k(A) ⊆ D_3(A) for k ≥ 3, negation symmetry, subset monotonicity, and the quadratic upper bound |D_k(A)| ≤ |A|². Also proves the connection to the k=3 case via an iff characterizing IsKAP with k=3. States the open question: what is the growth exponent α(k) such that max_{|A|=n} |D_k(A)| = Θ(n^{α(k)})?",

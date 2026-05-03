@@ -94,7 +94,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 859,
-    "assumptions": "2 axioms: carlesonData (existence of universal Carleson constant C ≥ 0) and carleson_hunt_maximal (the Carleson-Hunt maximal inequality for the S* maximal operator on L²). The 4 previously axiomatized lemmas (trigPoly_exact_convergence, IsTrigPoly.memℒp_two, trigPoly_L2_approx, carlesonConstant_nonneg) were proved in PR #10486. 0 sorries."
+    "assumptions": "2 axioms: carlesonData (existence of universal Carleson constant C ≥ 0) and carleson_hunt_maximal (the Carleson-Hunt maximal inequality for the S* maximal operator on L²). The 4 previously axiomatized lemmas (trigPoly_exact_convergence, IsTrigPoly.memℒp_two, trigPoly_L2_approx, carlesonConstant_nonneg) were proved in PR #10486. 0 sorries.",
+    "theoremCount": 22
   },
   "overview": {
     "historicalContext": "**Carleson's Theorem (1966)**\n\nOne of the great achievements of 20th-century harmonic analysis. The question of whether Fourier series converge pointwise goes back to Fourier himself (1807) and was a central problem for over 150 years.\n\n**Timeline:**\n- **1807**: Fourier conjectured that every periodic function equals its Fourier series\n- **1829**: Dirichlet proved convergence for piecewise smooth functions\n- **1876**: du Bois-Reymond gave a continuous function whose Fourier series diverges at a point\n- **1923**: Kolmogorov constructed an L¹ function whose Fourier series diverges everywhere\n- **1926**: Kolmogorov asked: does Carleson's theorem hold for L²?\n- **1966**: **Carleson proved it**: L² Fourier series converge pointwise a.e.\n- **1968**: Hunt extended to Lp for all p > 1\n\nCarleson's proof introduced time-frequency analysis techniques that became foundational in modern harmonic analysis. The formal verification project (Carleson4) is ongoing work by Floris van Doorn et al.",

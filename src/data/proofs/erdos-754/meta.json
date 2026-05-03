@@ -65,7 +65,8 @@
       "Asymptotic notation (O, Θ)"
     ],
     "lineCount": 140,
-    "assumptions": "2 axioms: avis_erdos_pach_lower_bound, swanepoel_erdos_754. 0 sorries."
+    "assumptions": "2 axioms: avis_erdos_pach_lower_bound, swanepoel_erdos_754. 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "**Erdős Problem #754: Favorite Distances in ℝ⁴**\n\nThis problem asks about 'favorite distances' - the maximum number of points equidistant from a given point in a configuration.\n\n**Key History:**\n- Erdős (1994): Posed the problem about ℝ⁴\n- Avis-Erdős-Pach (1988): Proved n/2 + 2 ≤ f(n) ≤ (1+o(1))n/2\n- Swanepoel (2013): Completed the solution with f(n) = n/2 + O(1)\n\nThe lower bound of n/2 + 2 is achieved by placing n/2 points on each of two orthogonal great circles of the Clifford torus in ℝ⁴: every point on one circle is equidistant from all n/2 points on the other circle, so each point has at least n/2 favorite-distance equidistant neighbors. The problem is special to ℝ⁴ and higher dimensions; in ℝ² and ℝ³ the analogous favorite-distance problem has a different answer, reflecting how the intersection of spheres changes dimensionally.",

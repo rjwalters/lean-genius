@@ -23,7 +23,8 @@
     "axiomCount": 1,
     "lineCount": 148,
     "assumptions": "1 axiom: triple_10003. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Erdős, Graham, Ruzsa, and Straus posed this problem in their influential 1975 paper on the arithmetic properties of binomial coefficients, expressing 'no doubt' that infinitely many matching pairs exist. The conjecture connects to Kummer's theorem (1852), which characterizes $p \\mid \\binom{m+n}{m}$ via carries in base-$p$ addition — for central binomials, $p \\mid \\binom{2n}{n}$ iff some base-$p$ digit of $n$ exceeds $\\lceil p/2 \\rceil$. The known examples $(87, 88)$ and $(607, 608)$ were found by exhaustive computation of prime factorizations of central binomial coefficients — numbers with 52 and 364 digits respectively. The remarkable triple at $n = 10003, 10004, 10005$ shows that even three consecutive values can share prime divisor sets, requiring carry-pattern stability across all prime bases simultaneously. These examples are catalogued in OEIS A129515. The problem sits at the intersection of combinatorial number theory and computational mathematics, with connections to Bertrand's postulate (which guarantees 'middle primes' in $(n, 2n]$), Legendre's formula for $\\nu_p(n!)$, and the general question of how arithmetic functions behave on structured subsequences.",

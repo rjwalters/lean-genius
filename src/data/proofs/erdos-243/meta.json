@@ -49,7 +49,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 128,
-    "assumptions": "2 axioms: erdos_243, sylvester_sum_reciprocals. See Lean source for complete statements."
+    "assumptions": "2 axioms: erdos_243, sylvester_sum_reciprocals. See Lean source for complete statements.",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "Sylvester's sequence, introduced by James Joseph Sylvester in 1880, is one of the most remarkable integer sequences in mathematics. Starting with 2, each term is computed as sₙ₊₁ = sₙ² - sₙ + 1, giving the sequence 2, 3, 7, 43, 1807, 3263443, ... The terms grow doubly exponentially, yet the sum of reciprocals converges to exactly 1.\n\nThis property makes Sylvester's sequence central to the theory of Egyptian fractions—representations of rationals as sums of distinct unit fractions. The partial sums 1/2, 1/2 + 1/3 = 5/6, 1/2 + 1/3 + 1/7 = 41/42, etc., approach 1 faster than any other unit fraction series.\n\nErdős and Straus (1964) began investigating what makes Sylvester's sequence special. They proved partial results about sequences with similar growth rates. Badea (1993) showed that sequences summing to rationals with sufficiently fast growth must eventually follow the Sylvester recurrence. Problem #243 asks whether the specific growth condition aₙ/aₙ₋₁² → 1 combined with rational sum is enough to force Sylvester behavior.",

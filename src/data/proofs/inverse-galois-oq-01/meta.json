@@ -39,7 +39,8 @@
       }
     ],
     "lineCount": 723,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 40
   },
   "overview": {
     "historicalContext": "The Inverse Galois Problem — does every finite group appear as the Galois group of some extension of $\\mathbb{Q}$? — is one of the oldest and most important open questions in algebra. David Hilbert (1892) proved that all symmetric groups $S_n$ are Galois groups over $\\mathbb{Q}$ via his irreducibility theorem, establishing that the generic polynomial of degree $n$ has Galois group $S_n$. Emmy Noether (1918) proposed a strategy: if $G$ acts faithfully on a vector space $V$, is $k(V)^G$ purely transcendental over $k$? A positive answer (Noether's problem) would imply $G$ is a Galois group over $\\mathbb{Q}$, but Swan (1969) and Lenstra (1974) found counterexamples.\n\nIgor Shafarevich (1954) proved the deepest general result: every solvable group is a Galois group over $\\mathbb{Q}$. His proof uses class field theory and is highly non-constructive. For the non-solvable realm, progress has been case-by-case: Thompson (1984) proved the Monster group is realizable, and subsequent work by Malle, Matzat, and others has verified realizability for all but one of the 26 sporadic simple groups (the Mathieu group $M_{23}$ remains open as of 2024). All alternating groups $A_n$ are known to be realizable (Hilbert 1892 for $S_n$ implies $A_n$ by taking the discriminant).\n\nThis formalization explores the solvability frontier — the boundary at $n = 5$ where symmetric groups transition from solvable to non-solvable. It proves the complete characterization $S_n$ solvable $\\Leftrightarrow$ $n \\leq 4$, establishes that $A_5$ is simple, perfect, and not solvable, develops Galois-theoretic fixed field formulas, and states the full Inverse Galois Conjecture as an open problem.",

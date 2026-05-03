@@ -28,7 +28,8 @@
       "q-Pascal's rule in both dual forms",
       "q-Vandermonde identity statement with combinatorial interpretation",
       "Symmetry of Gaussian binomials proved"
-    ]
+    ],
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Gaussian binomial coefficients were introduced by Gauss in his 1808-1811 work on number theory, where he counted k-dimensional subspaces of F_q^n — a fundamental quantity in finite geometry. Alexandre-Théophile Vandermonde had earlier (1772) identified the classical convolution identity ∑ C(m,j)C(n,k-j) = C(m+n,k); Cauchy (1843) gave the q-analog in his mémoire on series, establishing ∑ q^{(k-j)(m-j)} [m,j]_q [n,k-j]_q = [m+n,k]_q. The extra q-power factor has a beautiful combinatorial meaning: it counts the relative positions of two complementary subspaces, a phenomenon with no classical analog.\n\nThe theory of q-analogs underwent a renaissance in the 20th century through George Andrews' work on partition theory (1976) and the emergence of quantum groups in mathematical physics (Jimbo-Drinfeld, 1985). Quantum groups deform classical Lie algebra symmetry by replacing integers n with q-numbers [n]_q, and q-binomial coefficients appear as the natural q-analog of binomial coefficients in representation theory. The q-Vandermonde identity is the 'mother of all q-identities': the Rogers-Ramanujan identities, q-Pfaff-Saalschütz, and many other results in the theory of basic hypergeometric series follow from it.\n\nThis formalization builds the complete q-analog infrastructure from scratch (qNat, qFactorial, gaussianBinomial) because Mathlib currently lacks these definitions in the required generality. The main theorem qBinom_vandermonde is proved by induction on m in CombinationsFormulaOQ03, using q-Pascal's rule; here we derive seven consequences including q-sum-of-squares, boundary cases, and concrete numerical verifications at q=2 via native_decide.",

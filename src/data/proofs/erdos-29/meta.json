@@ -30,7 +30,8 @@
       "Schnirelmann density",
       "Computational number theory"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12
   },
   "overview": {
     "historicalContext": "In 1932, the Hungarian mathematician Simon Sidon posed a question to Paul Erdős: can one explicitly construct a set $A \\subseteq \\mathbb{N}$ that is simultaneously an additive basis of order 2 ($A + A = \\mathbb{N}$) and 'economical' (the representation function $r_A(n)$ grows slower than any polynomial)?\n\nErdős, one of the most prolific mathematicians of the 20th century, proved that such sets **exist** using the probabilistic method: include $n \\in A$ with probability $p_n \\approx n^{-1/2+o(1)}$. A second-moment calculation shows that with positive probability, the random set satisfies both properties simultaneously. However, this argument is **non-constructive** — it guarantees existence without providing an algorithm to compute $A$.\n\nFor 90+ years, no explicit construction was known. The problem appeared on Erdős's list of $100 prize problems. The difficulty is that the two requirements — coverage (basis) and sparsity (economical) — pull in opposite directions: making $A$ denser helps coverage but hurts the representation count.\n\nIn 2024, Siddharth Jain, Huy Tuan Pham, Mehtaab Sawhney, and Dmitriy Zakharov (JPSZ) solved the problem with a breakthrough construction (arXiv:2405.08650). Their approach derandomizes Erdős's probabilistic argument using a carefully designed hash function, yielding a computable set with $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$ — far stronger than the required $o(n^\\varepsilon)$ for all $\\varepsilon > 0$. This resolved a 90+ year open problem and claimed Erdős's $100 prize.",

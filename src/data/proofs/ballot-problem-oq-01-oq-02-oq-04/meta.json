@@ -36,7 +36,8 @@
     "axiomCount": 0,
     "lineCount": 311,
     "assumptions": "0 sorries, 0 axioms. Counterexample verified by native_decide and norm_num. Structural theorems proved directly.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 24
   },
   "overview": {
     "historicalContext": "The classical ballot problem (Bertrand 1887, André 1887) asks: if candidate A receives a votes and candidate B receives b votes with a > b, what fraction of all vote orderings keep A strictly ahead throughout the count? The answer, (a-b)/(a+b), is proved via the reflection principle or cycle lemma.\n\nThe weighted ballot problem generalizes this by assigning non-unit weights to individual votes. This arises naturally in applications: weighted voting systems, continuous-time processes, and models where some voters have stronger preferences. The key question is whether the formula (W_A - W_B)/(W_A + W_B) (using total weights) remains valid.\n\nThe answer is NO: the classical formula breaks for non-uniform individual weights. The fundamental reason is that the classical proof (via the André cycle lemma or reflection principle) exploits the combinatorial symmetry of ±1 sequences — each ballot sequence has the same weight 1/(a+b)! — which fails when individual votes have different weights.",

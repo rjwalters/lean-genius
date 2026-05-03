@@ -26,7 +26,8 @@
     "axiomCount": 5,
     "lineCount": 170,
     "assumptions": "5 axioms: h, erdos_larson_bound, prime_power_planes_implies_unbounded, largestPrimeGap, h_correlates_with_prime_gap. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Erdős Problem #665, posed by Erdős and Larson, concerns pairwise balanced designs (PBDs) with nearly equal block sizes. A PBD for {1,...,n} is a collection of sets where every pair of elements appears in exactly one block, with block sizes between 2 and n-1. The question asks whether block sizes can all exceed √n - C for some absolute constant C. Erdős and Larson proved block sizes satisfy |Aᵢ| > √n - h(n) where h(n) ≪ n^{1/2-c}. The answer may be negative: Shrikhande and Singhi showed it is 'no' conditional on the prime power conjecture for projective planes. The problem is closely tied to understanding prime gaps in number theory, as near-square primes play a key role in projective plane constructions.",

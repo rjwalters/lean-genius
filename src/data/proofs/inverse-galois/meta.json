@@ -2,7 +2,7 @@
   "id": "inverse-galois",
   "title": "The Inverse Galois Problem",
   "slug": "inverse-galois",
-  "description": "A comprehensive formalization of the Inverse Galois Problem (1882 lines, 5 axioms). We prove explicit Galois group realizations for 23 finite groups including the first non-solvable case (A\u2085 via Gal(x\u2075-5x\u2074+10x\u00b3-10x\u00b2+25x-5) with Sylow-theoretic proof, Vandermonde discriminant analysis via \u2102 embedding and Sophie Germain identity), D\u2084 via X\u2074-2, F\u2082\u2080 via X\u2075-2, and a systematic census of all groups of order \u2264 8 via cyclotomic fields.",
+  "description": "A comprehensive formalization of the Inverse Galois Problem (1882 lines, 5 axioms). We prove explicit Galois group realizations for 23 finite groups including the first non-solvable case (A₅ via Gal(x⁵-5x⁴+10x³-10x²+25x-5) with Sylow-theoretic proof, Vandermonde discriminant analysis via ℂ embedding and Sophie Germain identity), D₄ via X⁴-2, F₂₀ via X⁵-2, and a systematic census of all groups of order ≤ 8 via cyclotomic fields.",
   "meta": {
     "author": "David Hilbert (1892), Igor Shafarevich (1954), various",
     "date": "1892",
@@ -48,7 +48,7 @@
       },
       {
         "theorem": "galCyclotomicEquivUnitsZMod",
-        "description": "Gal(Q(\u03b6\u2099)/Q) \u2245 (ZMod n)\u02e3 when cyclotomic poly is irreducible",
+        "description": "Gal(Q(ζₙ)/Q) ≅ (ZMod n)ˣ when cyclotomic poly is irreducible",
         "module": "Mathlib.NumberTheory.Cyclotomic.Gal"
       },
       {
@@ -63,17 +63,17 @@
       },
       {
         "theorem": "IsPrimitive.Int.irreducible_iff_irreducible_map_cast",
-        "description": "Gauss lemma: \u2124-irreducibility transfers to \u211a for primitive polynomials",
+        "description": "Gauss lemma: ℤ-irreducibility transfers to ℚ for primitive polynomials",
         "module": "Mathlib.RingTheory.Polynomial.GaussLemma"
       },
       {
         "theorem": "Equiv.Perm.not_solvable",
-        "description": "S_n is not solvable for n \u2265 5",
+        "description": "S_n is not solvable for n ≥ 5",
         "module": "Mathlib.GroupTheory.SpecificGroups.Alternating"
       },
       {
         "theorem": "alternatingGroup.isSimpleGroup_five",
-        "description": "A\u2085 is a simple group",
+        "description": "A₅ is a simple group",
         "module": "Mathlib.GroupTheory.SpecificGroups.Alternating"
       },
       {
@@ -86,31 +86,31 @@
       "Formal Lean statement of the Inverse Galois Conjecture",
       "Cyclotomic Galois theory for explicit abelian realizations",
       "Cyclotomic irreducibility proved via Polynomial.cyclotomic.irreducible_rat",
-      "Gal(X\u00b3-2/\u211a) \u2245 S\u2083 proved from scratch (coprimality argument for [K:\u211a]=6)",
-      "A\u2085 realization: Gal(x\u2075-5x\u2074+10x\u00b3-10x\u00b2+25x-5) \u2245 A\u2085 with full isomorphism proof",
-      "Eisenstein irreducibility for q at p=5 with Gauss lemma transfer \u2124\u2192\u211a",
-      "no_subgroup_order_15: Sylow theory + native_decide (no order-5/order-3 commutation in S\u2085)",
-      "no_subgroup_order_30: A\u2085 simplicity + sign homomorphism kernel analysis",
-      "D\u2084 realization via X\u2074-2 (680 lines, 0 axioms, 0 sorries)",
-      "F\u2082\u2080 (Frobenius) realization via X\u2075-2 (529 lines, 0 axioms, 0 sorries)",
-      "Systematic census: 14/15 groups of order \u2264 8 realized with sorry-free proofs (Q\u2088 unformalized)",
-      "Order 16 abelian groups: C\u2082\u00d7C\u2088 via (\u2124/32\u2124)\u02e3, C\u2082\u00b2\u00d7C\u2084 via (\u2124/40\u2124)\u02e3",
-      "Order 20-24 abelian groups: C\u2082\u00d7C\u2081\u2080 via (\u2124/33\u2124)\u02e3, C\u2084\u00d7C\u2086 via (\u2124/35\u2124)\u02e3",
-      "S_n solvable iff n \u2264 4 (sharp threshold, 59 theorems in extension file)",
+      "Gal(X³-2/ℚ) ≅ S₃ proved from scratch (coprimality argument for [K:ℚ]=6)",
+      "A₅ realization: Gal(x⁵-5x⁴+10x³-10x²+25x-5) ≅ A₅ with full isomorphism proof",
+      "Eisenstein irreducibility for q at p=5 with Gauss lemma transfer ℤ→ℚ",
+      "no_subgroup_order_15: Sylow theory + native_decide (no order-5/order-3 commutation in S₅)",
+      "no_subgroup_order_30: A₅ simplicity + sign homomorphism kernel analysis",
+      "D₄ realization via X⁴-2 (680 lines, 0 axioms, 0 sorries)",
+      "F₂₀ (Frobenius) realization via X⁵-2 (529 lines, 0 axioms, 0 sorries)",
+      "Systematic census: 14/15 groups of order ≤ 8 realized with sorry-free proofs (Q₈ unformalized)",
+      "Order 16 abelian groups: C₂×C₈ via (ℤ/32ℤ)ˣ, C₂²×C₄ via (ℤ/40ℤ)ˣ",
+      "Order 20-24 abelian groups: C₂×C₁₀ via (ℤ/33ℤ)ˣ, C₄×C₆ via (ℤ/35ℤ)ˣ",
+      "S_n solvable iff n ≤ 4 (sharp threshold, 59 theorems in extension file)",
       "23 groups realized with sorry-free proofs across orders 1-60",
       "Vandermonde permutation chain: gal_card_dvd_60 derived from transparent vandermondeProduct_sq_eq axiom",
-      "Order 20-24 extended census: C\u2082\u00b2\u00d7C\u2086 via (\u2124/84\u2124)\u02e3, C\u2084\u00d7C\u2086 via (\u2124/35\u2124)\u02e3",
-      "vandermondeProduct_sq_eq PROVED: VP\u00b2 = disc(q) via \u2102 embedding, Sophie Germain identity (y\u2074+4=(y\u00b2+2y+2)(y\u00b2-2y+2)), product-roots evaluation at Gaussian integers q(\u00b1I) and q(2\u00b1I)"
+      "Order 20-24 extended census: C₂²×C₆ via (ℤ/84ℤ)ˣ, C₄×C₆ via (ℤ/35ℤ)ˣ",
+      "vandermondeProduct_sq_eq PROVED: VP² = disc(q) via ℂ embedding, Sophie Germain identity (y⁴+4=(y²+2y+2)(y²-2y+2)), product-roots evaluation at Gaussian integers q(±I) and q(2±I)"
     ],
     "dateAdded": "2026-02-21",
     "researchStatus": "ongoing",
     "openQuestions": [
-      "Is M\u2082\u2083 (Mathieu group) realizable as a Galois group over \u211a?",
-      "Can Dedekind's theorem (mod-p factorization \u2192 cycle types) be formalized?",
-      "Can the discriminant\u2194alternating group connection be formalized?",
+      "Is M₂₃ (Mathieu group) realizable as a Galois group over ℚ?",
+      "Can Dedekind's theorem (mod-p factorization → cycle types) be formalized?",
+      "Can the discriminant↔alternating group connection be formalized?",
       "Can we formalize Shafarevich's theorem on solvable groups?",
       "Can we formalize the Kronecker-Weber theorem in Lean?",
-      "Can Q\u2088 (quaternion group) be explicitly realized? (last missing group of order \u2264 8)"
+      "Can Q₈ (quaternion group) be explicitly realized? (last missing group of order ≤ 8)"
     ],
     "lineCount": 1882,
     "mathlib_version": "4.26.0",
@@ -120,22 +120,23 @@
         "theoremCount": 106,
         "lineCount": 1882
       }
-    ]
+    ],
+    "theoremCount": 106
   },
   "overview": {
-    "historicalContext": "The Inverse Galois Problem (IGP) emerged naturally from Galois theory, which \u00c9variste Galois developed in 1832 (published posthumously). Galois theory provides a dictionary between field extensions and groups: every Galois extension K/F has a group Gal(K/F), and vice versa. But the 'vice versa' direction\u2014given a group G, finding K\u2014is the challenge.\n\nHilbert in 1892 proved that all symmetric groups S\u2099 are realizable using his irreducibility theorem. Shafarevich's 1954 theorem resolved all solvable groups. The problem remains open in general.\n\nThe IGP is intimately connected to understanding the absolute Galois group Gal(\u211a\u0304/\u211a), one of the most mysterious objects in mathematics. It is related to Grothendieck's 'Esquisse d'un Programme' (1984), which proposed using the IGP to understand the absolute Galois group via its action on algebraic curves.\n\nAs of 2026, the general problem remains unsolved, though most finite simple groups have been realized over \u211a. The holdout cases include certain sporadic simple groups.",
-    "problemStatement": "**The Inverse Galois Problem**: Does every finite group G occur as the Galois group Gal(K/\u211a) of some Galois extension K of \u211a?\n\nFormally: \u2200 (G : finite group), \u2203 (K : Galois extension of \u211a), Gal(K/\u211a) \u2245 G.\n\nGalois theory gives us a rich supply of examples. The cyclotomic field \u211a(\u03b6\u2099) has Galois group (\u2124/n\u2124)\u02e3. But can we realize EVERY finite group? The answer is unknown.\n\n**Known results**:\n- All abelian groups: Kronecker-Weber theorem gives all abelian extensions of \u211a as cyclotomic subfields\n- All solvable groups: Shafarevich (1954)\n- All symmetric groups S\u2099: Hilbert's irreducibility theorem\n- Most finite simple groups: case-by-case constructions\n- **Open**: the general case",
-    "text": "A comprehensive formalization of the Inverse Galois Problem across 6 Lean files (5879 lines, 313 theorems, 5 axioms). We prove explicit Galois group realizations for 23 finite groups including the first non-solvable case (A\u2085 via Gal(x\u2075-5x\u2074+10x\u00b3-10x\u00b2+25x-5) with Sylow-theoretic proof, Vandermonde discriminant analysis via \u2102 embedding and Sophie Germain identity), D\u2084 via X\u2074-2, F\u2082\u2080 via X\u2075-2, and a systematic census of all groups of order \u2264 8 via cyclotomic fields.",
-    "proofStrategy": "The formalization spans 6 Lean files (5879 lines total) with 313 theorems.\n\n**InverseGalois.lean** (1882 lines, 106 thms) is the main file: states the IGP, proves cyclotomic realizations for abelian groups via Gal(\u211a(\u03b6\u2099)/\u211a) \u2245 (\u2124/n\u2124)\u02e3, and builds a comprehensive census of 23 realized groups. Key proof: Gal(X\u00b3-2/\u211a) \u2245 S\u2083 from scratch using coprimality.\n\n**InverseGaloisA5.lean** (2067 lines, 85 thms) proves A\u2085 realizability \u2014 the first non-solvable case. Eisenstein irreducibility at p=5 (Gauss lemma transfer \u2124\u2192\u211a), |Gal|=60 via Sylow theory (no_subgroup_order_15 + no_subgroup_order_30), explicit Gal \u2245 A\u2085 isomorphism via index-2 detection. 0 sorries, 1 axiom (Dedekind's theorem).\n\n**InverseGaloisD4.lean** (682 lines, 27 thms) proves D\u2084 realizability via Gal(X\u2074-2/\u211a) with 0 axioms, 0 sorries.\n\n**InverseGaloisF20.lean** (529 lines, 27 thms) proves F\u2082\u2080 (Frobenius group) realizability via Gal(X\u2075-2/\u211a) with 0 axioms, 0 sorries.\n\n**AbelRuffiniGaloisExtensions.lean** (534 lines, 59 thms) proves the sharp solvability threshold: S_n solvable iff n \u2264 4.\n\n**AbelRuffini.lean** (185 lines, 9 thms) connects to Mathlib's Abel-Ruffini infrastructure.",
+    "historicalContext": "The Inverse Galois Problem (IGP) emerged naturally from Galois theory, which Évariste Galois developed in 1832 (published posthumously). Galois theory provides a dictionary between field extensions and groups: every Galois extension K/F has a group Gal(K/F), and vice versa. But the 'vice versa' direction—given a group G, finding K—is the challenge.\n\nHilbert in 1892 proved that all symmetric groups Sₙ are realizable using his irreducibility theorem. Shafarevich's 1954 theorem resolved all solvable groups. The problem remains open in general.\n\nThe IGP is intimately connected to understanding the absolute Galois group Gal(ℚ̄/ℚ), one of the most mysterious objects in mathematics. It is related to Grothendieck's 'Esquisse d'un Programme' (1984), which proposed using the IGP to understand the absolute Galois group via its action on algebraic curves.\n\nAs of 2026, the general problem remains unsolved, though most finite simple groups have been realized over ℚ. The holdout cases include certain sporadic simple groups.",
+    "problemStatement": "**The Inverse Galois Problem**: Does every finite group G occur as the Galois group Gal(K/ℚ) of some Galois extension K of ℚ?\n\nFormally: ∀ (G : finite group), ∃ (K : Galois extension of ℚ), Gal(K/ℚ) ≅ G.\n\nGalois theory gives us a rich supply of examples. The cyclotomic field ℚ(ζₙ) has Galois group (ℤ/nℤ)ˣ. But can we realize EVERY finite group? The answer is unknown.\n\n**Known results**:\n- All abelian groups: Kronecker-Weber theorem gives all abelian extensions of ℚ as cyclotomic subfields\n- All solvable groups: Shafarevich (1954)\n- All symmetric groups Sₙ: Hilbert's irreducibility theorem\n- Most finite simple groups: case-by-case constructions\n- **Open**: the general case",
+    "text": "A comprehensive formalization of the Inverse Galois Problem across 6 Lean files (5879 lines, 313 theorems, 5 axioms). We prove explicit Galois group realizations for 23 finite groups including the first non-solvable case (A₅ via Gal(x⁵-5x⁴+10x³-10x²+25x-5) with Sylow-theoretic proof, Vandermonde discriminant analysis via ℂ embedding and Sophie Germain identity), D₄ via X⁴-2, F₂₀ via X⁵-2, and a systematic census of all groups of order ≤ 8 via cyclotomic fields.",
+    "proofStrategy": "The formalization spans 6 Lean files (5879 lines total) with 313 theorems.\n\n**InverseGalois.lean** (1882 lines, 106 thms) is the main file: states the IGP, proves cyclotomic realizations for abelian groups via Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)ˣ, and builds a comprehensive census of 23 realized groups. Key proof: Gal(X³-2/ℚ) ≅ S₃ from scratch using coprimality.\n\n**InverseGaloisA5.lean** (2067 lines, 85 thms) proves A₅ realizability — the first non-solvable case. Eisenstein irreducibility at p=5 (Gauss lemma transfer ℤ→ℚ), |Gal|=60 via Sylow theory (no_subgroup_order_15 + no_subgroup_order_30), explicit Gal ≅ A₅ isomorphism via index-2 detection. 0 sorries, 1 axiom (Dedekind's theorem).\n\n**InverseGaloisD4.lean** (682 lines, 27 thms) proves D₄ realizability via Gal(X⁴-2/ℚ) with 0 axioms, 0 sorries.\n\n**InverseGaloisF20.lean** (529 lines, 27 thms) proves F₂₀ (Frobenius group) realizability via Gal(X⁵-2/ℚ) with 0 axioms, 0 sorries.\n\n**AbelRuffiniGaloisExtensions.lean** (534 lines, 59 thms) proves the sharp solvability threshold: S_n solvable iff n ≤ 4.\n\n**AbelRuffini.lean** (185 lines, 9 thms) connects to Mathlib's Abel-Ruffini infrastructure.",
     "keyInsights": [
-      "Cyclotomic fields provide a systematic source of abelian Galois groups over \u211a",
-      "The Galois group Gal(\u211a(\u03b6\u2099)/\u211a) \u2245 (\u2124/n\u2124)\u02e3 whenever the n-th cyclotomic polynomial is irreducible over \u211a",
+      "Cyclotomic fields provide a systematic source of abelian Galois groups over ℚ",
+      "The Galois group Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)ˣ whenever the n-th cyclotomic polynomial is irreducible over ℚ",
       "Eisenstein's criterion + Gauss lemma is a powerful tool for proving irreducibility of specific polynomials",
       "Sylow theory provides an elegant alternative to discriminant analysis for eliminating impossible Galois group orders",
-      "no_subgroup_order_15 in S\u2085: uses native_decide to verify no order-5 and order-3 elements commute",
-      "no_subgroup_order_30 in S\u2085: uses A\u2085 simplicity \u2014 any index-2 subgroup of A\u2085 would be normal, contradicting simplicity",
-      "The A\u2085 case demonstrates that going beyond Shafarevich's theorem requires fundamentally different techniques",
-      "The general case reduces to the question: does Gal(\u211a\u0304/\u211a) surject onto all finite groups?"
+      "no_subgroup_order_15 in S₅: uses native_decide to verify no order-5 and order-3 elements commute",
+      "no_subgroup_order_30 in S₅: uses A₅ simplicity — any index-2 subgroup of A₅ would be normal, contradicting simplicity",
+      "The A₅ case demonstrates that going beyond Shafarevich's theorem requires fundamentally different techniques",
+      "The general case reduces to the question: does Gal(ℚ̄/ℚ) surject onto all finite groups?"
     ],
     "prerequisites": [
       "Galois theory (field extensions, Galois groups, splitting fields)",
@@ -158,94 +159,94 @@
       "title": "Cyclotomic Fields Are Galois",
       "startLine": 82,
       "endLine": 121,
-      "summary": "CyclotomicField n \u211a is Galois over \u211a (IsCyclotomicExtension.isGalois), and its Galois group is abelian (commutative).",
+      "summary": "CyclotomicField n ℚ is Galois over ℚ (IsCyclotomicExtension.isGalois), and its Galois group is abelian (commutative).",
       "mathContext": "$\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}$ is a Galois extension with $\\operatorname{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q})$ abelian, since cyclotomic extensions are always Galois."
     },
     {
       "id": "galois-group-structure",
-      "title": "Galois Group \u2245 (ZMod n)\u02e3",
+      "title": "Galois Group ≅ (ZMod n)ˣ",
       "startLine": 122,
       "endLine": 170,
-      "summary": "The Galois group of the n-th cyclotomic polynomial is isomorphic to (ZMod n)\u02e3. Cyclotomic irreducibility proved via Polynomial.cyclotomic.irreducible_rat.",
-      "mathContext": "The Galois group of the n-th cyclotomic polynomial is isomorphic to (ZMod n)\u02e3. Cyclotomic irreducibility proved via Polynomial.cyclotomic.irreducible_rat."
+      "summary": "The Galois group of the n-th cyclotomic polynomial is isomorphic to (ZMod n)ˣ. Cyclotomic irreducibility proved via Polynomial.cyclotomic.irreducible_rat.",
+      "mathContext": "The Galois group of the n-th cyclotomic polynomial is isomorphic to (ZMod n)ˣ. Cyclotomic irreducibility proved via Polynomial.cyclotomic.irreducible_rat."
     },
     {
       "id": "s3-realization",
-      "title": "S\u2083 Realization via X\u00b3-2",
+      "title": "S₃ Realization via X³-2",
       "startLine": 367,
       "endLine": 700,
-      "summary": "Gal(X\u00b3-2/\u211a) \u2245 S\u2083 proved from scratch: Eisenstein irreducibility at p=2, 3||Gal| (prime degree), |Gal||6 (Gal \u21aa S\u2083), 2||Gal| (cube root of unity), coprimality gives |Gal|=6, bijectivity of galActionHom.",
+      "summary": "Gal(X³-2/ℚ) ≅ S₃ proved from scratch: Eisenstein irreducibility at p=2, 3||Gal| (prime degree), |Gal||6 (Gal ↪ S₃), 2||Gal| (cube root of unity), coprimality gives |Gal|=6, bijectivity of galActionHom.",
       "mathContext": "$\\operatorname{Gal}(\\mathbb{Q}(\\sqrt[3]{2}, \\zeta_3)/\\mathbb{Q}) \\cong S_3$. Eisenstein at $p=2$ gives irreducibility; $3 \\mid |\\operatorname{Gal}|$ (prime degree), $|\\operatorname{Gal}| \\mid 6$ ($\\operatorname{Gal} \\hookrightarrow S_3$), $2 \\mid |\\operatorname{Gal}|$ ($\\zeta_3 \\notin \\mathbb{Q}$), so $|\\operatorname{Gal}|=6$."
     },
     {
       "id": "a5-realization",
-      "title": "A\u2085 Realization (First Non-Solvable Group)",
+      "title": "A₅ Realization (First Non-Solvable Group)",
       "startLine": 1,
       "endLine": 992,
-      "summary": "In InverseGaloisA5.lean: A\u2085 \u2245 Gal(x\u2075-5x\u2074+10x\u00b3-10x\u00b2+25x-5/\u211a). Eisenstein irreducibility at p=5, |Gal|=60 via Sylow theory (no S\u2085 subgroups of order 15 or 30), explicit MulEquiv with alternatingGroup(Fin 5). 85 theorems, 1 axiom (Dedekind's theorem), 0 sorries. VP\u00b2 proved via \u2102 embedding + Sophie Germain identity.",
+      "summary": "In InverseGaloisA5.lean: A₅ ≅ Gal(x⁵-5x⁴+10x³-10x²+25x-5/ℚ). Eisenstein irreducibility at p=5, |Gal|=60 via Sylow theory (no S₅ subgroups of order 15 or 30), explicit MulEquiv with alternatingGroup(Fin 5). 85 theorems, 1 axiom (Dedekind's theorem), 0 sorries. VP² proved via ℂ embedding + Sophie Germain identity.",
       "file": "Proofs/InverseGaloisA5.lean",
       "mathContext": "$A_5 \\cong \\operatorname{Gal}(q/\\mathbb{Q})$ where $q = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$. Eisenstein at $p=5$; $|\\operatorname{Gal}| = 60$ by Sylow theory (no subgroups of order 15 or 30 in $S_5$); index-2 subgroup detection yields $\\operatorname{Gal} \\cong A_5$."
     },
     {
       "id": "d4-realization",
-      "title": "D\u2084 Realization via X\u2074-2",
+      "title": "D₄ Realization via X⁴-2",
       "startLine": 1,
       "endLine": 680,
-      "summary": "In InverseGaloisD4.lean: D\u2084 \u2245 Gal(X\u2074-2/\u211a). 27 theorems, 0 axioms, 0 sorries. Proves the dihedral group of order 8 is realizable as a Galois group over \u211a.",
+      "summary": "In InverseGaloisD4.lean: D₄ ≅ Gal(X⁴-2/ℚ). 27 theorems, 0 axioms, 0 sorries. Proves the dihedral group of order 8 is realizable as a Galois group over ℚ.",
       "file": "Proofs/InverseGaloisD4.lean",
       "mathContext": "$D_4 \\cong \\operatorname{Gal}(X^4 - 2 / \\mathbb{Q})$: the dihedral group of order 8 realized as the Galois group of the splitting field $\\mathbb{Q}(\\sqrt[4]{2}, i)$. Fully proved (0 axioms, 0 sorries)."
     },
     {
       "id": "f20-realization",
-      "title": "F\u2082\u2080 (Frobenius) Realization via X\u2075-2",
+      "title": "F₂₀ (Frobenius) Realization via X⁵-2",
       "startLine": 1,
       "endLine": 529,
-      "summary": "In InverseGaloisF20.lean: F\u2082\u2080 \u2245 Gal(X\u2075-2/\u211a). The Frobenius group of order 20 (the unique solvable transitive subgroup of S\u2085 of order 20). 27 theorems, 0 axioms, 0 sorries.",
+      "summary": "In InverseGaloisF20.lean: F₂₀ ≅ Gal(X⁵-2/ℚ). The Frobenius group of order 20 (the unique solvable transitive subgroup of S₅ of order 20). 27 theorems, 0 axioms, 0 sorries.",
       "file": "Proofs/InverseGaloisF20.lean",
       "mathContext": "$F_{20} \\cong \\operatorname{Gal}(X^5 - 2 / \\mathbb{Q})$: the Frobenius group $F_{20} = \\mathbb{Z}/5\\mathbb{Z} \\rtimes \\mathbb{Z}/4\\mathbb{Z}$, the unique solvable transitive subgroup of $S_5$ of order 20. Fully proved (0 axioms, 0 sorries)."
     },
     {
       "id": "group-census",
-      "title": "Realizability Census (Orders \u2264 8 and Beyond)",
+      "title": "Realizability Census (Orders ≤ 8 and Beyond)",
       "startLine": 1100,
       "endLine": 1530,
-      "summary": "Systematic census of all groups of order \u2264 8: 14 of 15 groups realized with sorry-free proofs. Only Q\u2088 (quaternion) remains. Extended census covers 21+ groups including order 16 (C\u2082\u00d7C\u2088, C\u2082\u00b2\u00d7C\u2084), order 20 (C\u2082\u00d7C\u2081\u2080), and order 24 (C\u2084\u00d7C\u2086). Uses cyclotomic fields with totient/exponent analysis and native_decide verification.",
+      "summary": "Systematic census of all groups of order ≤ 8: 14 of 15 groups realized with sorry-free proofs. Only Q₈ (quaternion) remains. Extended census covers 21+ groups including order 16 (C₂×C₈, C₂²×C₄), order 20 (C₂×C₁₀), and order 24 (C₄×C₆). Uses cyclotomic fields with totient/exponent analysis and native_decide verification.",
       "mathContext": "Realizability census: for $|G| \\leq 8$, 14 of 15 groups realized via $\\operatorname{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ and totient analysis. Extended to $C_2 \\times C_8$ via $(\\mathbb{Z}/32\\mathbb{Z})^{\\times}$, $C_2^2 \\times C_4$ via $(\\mathbb{Z}/40\\mathbb{Z})^{\\times}$, etc. Only $Q_8$ unformalized."
     },
     {
       "id": "sharp-threshold",
-      "title": "Sharp Threshold: S_n Solvable iff n \u2264 4",
+      "title": "Sharp Threshold: S_n Solvable iff n ≤ 4",
       "startLine": 158,
       "endLine": 1881,
-      "summary": "In AbelRuffiniGaloisExtensions.lean: S_n is solvable iff n \u2264 4. Uses Equiv.Perm.not_solvable for n \u2265 5. This is the fundamental threshold in the Abel-Ruffini theorem. 59 theorems, all fully proved.",
+      "summary": "In AbelRuffiniGaloisExtensions.lean: S_n is solvable iff n ≤ 4. Uses Equiv.Perm.not_solvable for n ≥ 5. This is the fundamental threshold in the Abel-Ruffini theorem. 59 theorems, all fully proved.",
       "file": "Proofs/AbelRuffiniGaloisExtensions.lean",
       "mathContext": "Sharp solvability threshold: $S_n$ is solvable $\\iff n \\leq 4$. For $n \\geq 5$, the commutator series $S_n \\supset A_n \\supset \\{e\\}$ fails since $A_n$ is simple and non-abelian. This is the group-theoretic core of Abel-Ruffini."
     }
   ],
   "conclusion": {
-    "summary": "The Inverse Galois Problem remains one of the great open questions in algebra. Across 5879 lines in 6 files (313 theorems, 5 axiom declarations, 0 sorries), we formalize: the IGP conjecture, cyclotomic Galois theory with Gal(\u211a(\u03b6\u2099)/\u211a) \u2245 (\u2124/n\u2124)\u02e3, explicit realizations for S\u2083 (X\u00b3-2), D\u2084 (X\u2074-2), F\u2082\u2080 (X\u2075-2), and A\u2085 (x\u2075-5x\u2074+10x\u00b3-10x\u00b2+25x-5), the sharp solvability threshold S_n solvable iff n \u2264 4, and a comprehensive census of 23 groups. The A\u2085 realization (2067 lines, 0 sorries, 1 axiom) is the crown jewel: the first non-solvable group realized, using Eisenstein's criterion, Sylow theory, Vandermonde discriminant analysis via \u2102 embedding and Sophie Germain identity, and the uniqueness of the index-2 subgroup A\u2085 in S\u2085. The 5 axioms represent the open conjecture itself and well-known theorems blocked on Mathlib infrastructure (Kronecker-Weber, Shafarevich, Hilbert irreducibility, Dedekind's theorem).",
-    "implications": "**Theoretical Significance**: The IGP has profound implications:\n\n1. **ABSOLUTE GALOIS GROUP**: A positive answer would mean the absolute Galois group Gal(\u211a\u0304/\u211a) surjects onto every finite group \u2014 revealing its structure.\n\n2. **GALOIS REPRESENTATIONS**: The IGP is connected to the theory of Galois representations, central to the Langlands program and the proof of Fermat's Last Theorem.\n\n**3. ARITHMETIC GEOMETRY**: Via Grothendieck's programme, the IGP connects to the study of algebraic curves and their fundamental groups.\n\n4. **ALGORITHM DESIGN**: Positive answers might come with explicit polynomial constructions, useful for cryptography and computation.\n\n5. **DIFFERENTIAL GALOIS THEORY**: The analogous question for differential equations (Kovacic's problem) has been solved, suggesting approaches for the classical case.",
+    "summary": "The Inverse Galois Problem remains one of the great open questions in algebra. Across 5879 lines in 6 files (313 theorems, 5 axiom declarations, 0 sorries), we formalize: the IGP conjecture, cyclotomic Galois theory with Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)ˣ, explicit realizations for S₃ (X³-2), D₄ (X⁴-2), F₂₀ (X⁵-2), and A₅ (x⁵-5x⁴+10x³-10x²+25x-5), the sharp solvability threshold S_n solvable iff n ≤ 4, and a comprehensive census of 23 groups. The A₅ realization (2067 lines, 0 sorries, 1 axiom) is the crown jewel: the first non-solvable group realized, using Eisenstein's criterion, Sylow theory, Vandermonde discriminant analysis via ℂ embedding and Sophie Germain identity, and the uniqueness of the index-2 subgroup A₅ in S₅. The 5 axioms represent the open conjecture itself and well-known theorems blocked on Mathlib infrastructure (Kronecker-Weber, Shafarevich, Hilbert irreducibility, Dedekind's theorem).",
+    "implications": "**Theoretical Significance**: The IGP has profound implications:\n\n1. **ABSOLUTE GALOIS GROUP**: A positive answer would mean the absolute Galois group Gal(ℚ̄/ℚ) surjects onto every finite group — revealing its structure.\n\n2. **GALOIS REPRESENTATIONS**: The IGP is connected to the theory of Galois representations, central to the Langlands program and the proof of Fermat's Last Theorem.\n\n**3. ARITHMETIC GEOMETRY**: Via Grothendieck's programme, the IGP connects to the study of algebraic curves and their fundamental groups.\n\n4. **ALGORITHM DESIGN**: Positive answers might come with explicit polynomial constructions, useful for cryptography and computation.\n\n5. **DIFFERENTIAL GALOIS THEORY**: The analogous question for differential equations (Kovacic's problem) has been solved, suggesting approaches for the classical case.",
     "openQuestions": [
-      "Does every finite group appear as a Galois group over \u211a?",
-      "Is the Mathieu group M\u2082\u2083 realizable over \u211a?",
-      "Can Q\u2088 (quaternion group) be explicitly realized? (last missing group of order \u2264 8)",
-      "Can Dedekind's theorem be formalized to eliminate the last A\u2085 axiom (three_dvd_gal_card)?",
+      "Does every finite group appear as a Galois group over ℚ?",
+      "Is the Mathieu group M₂₃ realizable over ℚ?",
+      "Can Q₈ (quaternion group) be explicitly realized? (last missing group of order ≤ 8)",
+      "Can Dedekind's theorem be formalized to eliminate the last A₅ axiom (three_dvd_gal_card)?",
       "Can we formalize Shafarevich's theorem on solvable groups?",
       "Can we formalize the Kronecker-Weber theorem in Lean/Mathlib?",
-      "What is the structure of Gal(\u211a\u0304/\u211a)?",
-      "Is there a uniform method to realize all finite groups over \u211a?"
+      "What is the structure of Gal(ℚ̄/ℚ)?",
+      "Is there a uniform method to realize all finite groups over ℚ?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "abel-ruffini",
       "relationship": "complementary",
-      "description": "Abel-Ruffini uses that S5 occurs as a Galois group; the Inverse Galois Problem asks which groups appear as Galois groups over Q \u2014 directly extending the question Abel-Ruffini raises about the structure of polynomial symmetry groups"
+      "description": "Abel-Ruffini uses that S5 occurs as a Galois group; the Inverse Galois Problem asks which groups appear as Galois groups over Q — directly extending the question Abel-Ruffini raises about the structure of polynomial symmetry groups"
     },
     {
       "targetId": "abel-ruffini-oq-04",
       "relationship": "related",
-      "description": "The OQ-04 extension of Abel-Ruffini exposes the A5 simplicity chain \u2014 the same A5 realization proved here via Gal(x^5-5x^4+10x^3-10x^2+25x-5) is the first non-solvable case"
+      "description": "The OQ-04 extension of Abel-Ruffini exposes the A5 simplicity chain — the same A5 realization proved here via Gal(x^5-5x^4+10x^3-10x^2+25x-5) is the first non-solvable case"
     },
     {
       "targetId": "lagrange-theorem",
@@ -255,7 +256,7 @@
     {
       "targetId": "sylow-theorems",
       "relationship": "foundational",
-      "description": "Sylow theorems are essential for the A5 realization \u2014 proving |Gal(q)| divides 60 and identifying the Galois group by its Sylow subgroup structure"
+      "description": "Sylow theorems are essential for the A5 realization — proving |Gal(q)| divides 60 and identifying the Galois group by its Sylow subgroup structure"
     },
     {
       "targetId": "fundamental-theorem-algebra",
@@ -296,7 +297,7 @@
       "name": "inverse_galois_sn",
       "type": "core",
       "description": "Every symmetric group S_n occurs as a Galois group over Q",
-      "leanType": "(n : Nat) -> exists K : IntermediateField Q, Gal(K/Q) \u2245 Perm (Fin n)"
+      "leanType": "(n : Nat) -> exists K : IntermediateField Q, Gal(K/Q) ≅ Perm (Fin n)"
     }
   ],
   "sorries": 0,

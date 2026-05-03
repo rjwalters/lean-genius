@@ -61,7 +61,8 @@
       "Path covers and vertex partitions",
       "Combinatorial lower bound constructions"
     ],
-    "lineCount": 286
+    "lineCount": 286,
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Gyárfás in 1995. They proved that 2√n monochromatic paths of the same color suffice and conjectured that √n is achievable. Earlier, Gerencsér and Gyárfás (1967) proved that just 2 paths suffice if colors can differ. The conjecture was finally resolved by Pokrovskiy, Versteegen, and Williams in 2024. The monochromatic path cover problem sits at the intersection of Ramsey theory and structural graph theory; the Gerencsér-Gyárfás theorem is a cornerstone of Ramsey multiplicity. When covering paths must share the same color, the structure becomes far more constrained, and the 2024 resolution used regularity lemma techniques and structural decomposition arguments to achieve the conjectured √n bound.",

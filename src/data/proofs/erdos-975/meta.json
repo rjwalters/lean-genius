@@ -49,7 +49,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 183,
-    "assumptions": "0 axioms, 0 sorries. Partial formalization: defines divisor sum functions and polynomial value framework. The main open bounds (vanDerCorput_lower_bound, erdos_upper_bound, erdos_975) are referenced in comments but not formalized as Lean axioms."
+    "assumptions": "0 axioms, 0 sorries. Partial formalization: defines divisor sum functions and polynomial value framework. The main open bounds (vanDerCorput_lower_bound, erdos_upper_bound, erdos_975) are referenced in comments but not formalized as Lean axioms.",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "The divisor function τ(n) counts how many positive integers divide n. Erdős Problem #975 asks whether the sum Σ_{n≤x} τ(f(n)) for an irreducible polynomial f has a precise asymptotic formula of the form c·x·log(x) for some constant c > 0.\n\nVan der Corput (1939) established the lower bound, showing the sum grows at least as fast as x log x. Erdős (1952) proved the matching upper bound using elementary methods, establishing that the growth is Θ(x log x).\n\nChristopher Hooley (1963) resolved the problem for irreducible quadratic polynomials, showing that an asymptotic formula exists with an explicit (though complicated) constant. The general case for higher-degree polynomials remains open.",

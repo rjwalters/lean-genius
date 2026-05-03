@@ -62,7 +62,8 @@
       "Covering and representation problems in additive number theory"
     ],
     "lineCount": 286,
-    "assumptions": "2 axioms: existence_of_counterexample (counterexample to the Erdős-Newman conjecture exists), erdos_newman_squares (squares form a counterexample). 0 sorries."
+    "assumptions": "2 axioms: existence_of_counterexample (counterexample to the Erdős-Newman conjecture exists), erdos_newman_squares (squares form a counterexample). 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "This problem belongs to the broader study of additive bases in combinatorial number theory, going back to Waring's problem (1770) and Schnirelmann's theorem (1933) on sumset density. Erdős and Newman (1977) studied the fundamental question: given a set $A \\subseteq \\mathbb{N}$, how sparse can $B$ be while still ensuring $A \\subseteq B + B$?\n\nThey proved two key results: (1) perfect squares can be represented as $B + B$ with $|B \\cap [1,N]| = o(\\sqrt{N})$, and (2) there exist zero-density sets $A$ where any covering $B$ must satisfy $|B \\cap [1,N]| \\geq c\\sqrt{N}$ infinitely often. Theorem 2 actually implies a negative answer to Problem #333, but this connection was apparently overlooked when Erdős and Graham stated the problem in [ErGr80]. The problem is related to Sidon sets ($B_2$ sequences), where $|B \\cap [1,N]| \\sim \\sqrt{N}$ is optimal.",

@@ -52,7 +52,8 @@
     "axiomCount": 3,
     "lineCount": 226,
     "assumptions": "3 axiom(s): cambie_no_y_for_all, cambie_small_epsilon, ford_divisor_distribution. See Lean source for complete statements.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 16
   },
   "overview": {
     "historicalContext": "Erdős Problem #450 appears in Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p.89). It asks about the density of integers having a 'medium-sized' divisor—one lying in the interval $(n, 2n)$—within short intervals $(x, x+y)$.\n\nThe problem connects to deep questions about the anatomy of integers studied by Erdős, Kac, Tenenbaum, and others. Kevin Ford's landmark paper 'The distribution of integers with a divisor in a given interval' (Annals of Mathematics, 2008) established precise asymptotics for the density of such integers, showing it behaves as $(\\log n)^{-\\delta} (\\log \\log n)^{-3/2}$ where $\\delta = 1 - \\frac{1 + \\log\\log 2}{\\log 2} \\approx 0.0861$.\n\nStijn Cambie made key observations on the problem: the 'for all $x$' interpretation fails when $\\varepsilon$ is not sufficiently small relative to the Ford density. The existential version (does there exist a good starting point $x$?) remains open.",

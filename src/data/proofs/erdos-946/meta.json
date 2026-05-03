@@ -47,7 +47,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 126,
-    "assumptions": "1 axiom: heathBrown_infinitely_many. See Lean source for complete statement."
+    "assumptions": "1 axiom: heathBrown_infinitely_many. See Lean source for complete statement.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Erdős Problem 946 was posed by Erdős and Mirsky in 1952. The divisor function τ(n) counts how many positive integers divide n. The question asks whether consecutive integers can have the same number of divisors, and if so, whether this happens infinitely often.\n\nThe breakthrough came in 1981 when Claudia Spiro proved that τ(n) = τ(n + 5040) infinitely often. The number 5040 = 7! was chosen for its many divisors. Heath-Brown improved her method in 1984 to prove the case τ(n) = τ(n + 1).\n\nSubsequent work established quantitative bounds: the count of such n ≤ x lies between x/(log log x)³ and x/√(log log x). Tao and Teräväinen (2025) showed the true asymptotic is c·x/√(log log x) for almost all x.",

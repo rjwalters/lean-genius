@@ -56,7 +56,8 @@
       "Cardinality of finite sets"
     ],
     "lineCount": 209,
-    "assumptions": "0 axioms, 0 sorries. All stated theorems fully proved."
+    "assumptions": "0 axioms, 0 sorries. All stated theorems fully proved.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "For a permutation π of {1,...,n}, the consecutive sums ∑_{i=u}^{v} π(i) range over O(n²) possible values (there are n(n+1)/2 intervals [u,v]). The quantity S(π) — the number of distinct values among these sums — measures how 'spread out' the sums are.\n\nErdős observed that the identity permutation has S(id) = o(n²) because its consecutive sums form arithmetic progressions with many coincidences. He conjectured this holds for ALL permutations — one of his rare spectacularly wrong conjectures.\n\nHegyvári (1986) gave the first counterexample, constructing a permutation with S(π) ≥ n²/18. Konieczny (2015) showed the conjecture is 'extremely false': there exist permutations achieving S(π) ≥ n²/4, which is asymptotically optimal since S(π) ≤ n²/2 trivially. The maximum f(n) = max_π S(π) satisfies 0.286n² ≤ f(n) ≤ 0.446n², with the lower bound coming from random permutations: for a random π, S(π) ∼ (1 + e⁻²)/4 · n² ≈ 0.284n². The connection to random permutations suggests that most permutations are far from Erdős's conjecture.",

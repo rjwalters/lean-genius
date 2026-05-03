@@ -25,7 +25,8 @@
     "axiomCount": 0,
     "lineCount": 210,
     "assumptions": "No axioms, no sorries. All 9 theorems fully proved. Key techniques: modByMonic_add_div for reduction; minpoly.dvd + Polynomial.natDegree_le_of_dvd for divisibility; Matrix.charpoly_of_upperTriangular for the triangular case.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Krylov subspace methods (Lanczos, GMRES, Wiedemann) exploit that sparse matrices have small effective minimal polynomial degree. For a nilpotent matrix M of nilpotency index k, the minimal polynomial is X^k — computable in O(1) operations once k is known. This makes the polynomial reduction p %ₘ minpoly(M) equivalent to p %ₘ X^k, which is just degree truncation. For structured sparse matrices in practice (banded, block triangular, nearly nilpotent), this gives dramatic speedups over general O(n³) charpoly computation.",

@@ -28,7 +28,8 @@
     "erdosUrl": "https://erdosproblems.com/94",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$44",
-    "lineCount": 212
+    "lineCount": 212,
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "**From Fishburn's Bound to the Exact Constant**\n\nErdős Problem #94 asks about the growth rate of ∑f(u)² for convex polygons. Fishburn (1995) proved this sum is O(n³) for any convex polygon configuration, and the regular n-gon achieves Θ(n³). The natural follow-up question OQ-02: what is the exact asymptotic constant c such that S(reg_n) ~ c·n³?\n\nFor the regular n-gon with n vertices, there are ⌊n/2⌋ distinct distances d₁ < d₂ < ... < d_{⌊n/2⌋}. Each distance d_k (for 2k ≠ n) has multiplicity exactly n — every vertex participates in exactly one pair at that distance in each direction. Only the diameter (when n is even, k = n/2) has multiplicity n/2. This gives ∑f(d_k)² ≈ ⌊n/2⌋·n² ≈ n³/2, suggesting c = 1/2.\n\nLeftmann and Theile (1995) extended Fishburn's bound to the no-three-collinear condition. The Erdős-Fishburn conjecture, which states the regular n-gon is the extremal configuration maximizing ∑f(u)², would imply that c = 1/2 is the universal optimal constant for all convex n-gons. This open problem connects quantitative extremal geometry to random structure conjectures.\n\n**Prize**: Erdős offered $44 for settling Problem #94; the exact constant question is the remaining open refinement.",

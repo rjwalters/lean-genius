@@ -25,7 +25,8 @@
     "axiomCount": 0,
     "lineCount": 99,
     "assumptions": "None. All results proved by computation (native_decide). Open conjecture; supporting lemmas fully verified.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #1059 asks whether infinitely many primes p satisfy the property that p − k! is composite for every k with k! < p. The problem reflects Erdős's lifelong interest in the distribution of primes and their gaps relative to factorials. Factorials grow extremely fast (n! ≥ 2^(n-1)), so the condition k! < p is satisfied by very few k: for p = 101, only k ≤ 4 (since 5! = 120 > 101). This sparsity makes the property non-trivial: out of these few subtractions, none should yield a prime.\n\nThe computational verification challenge is inherent to all such unbounded-quantifier properties: Lean's kernel cannot check 'for all k : ℕ' by inspection. The parent proof (Erdos1059Problem.lean) worked around this using hand-crafted `factorial_lt_bound` helpers and `interval_cases`, requiring ~10 lines per prime. OQ-05 eliminates this boilerplate by constructing a `Decidable` instance: once the quantifier is shown equivalent to a bounded form (using k ≤ k! from Mathlib), `native_decide` handles any specific prime in a single line.",

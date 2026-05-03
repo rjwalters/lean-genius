@@ -70,7 +70,8 @@
       "Modular arithmetic (Lucas' theorem)"
     ],
     "lineCount": 293,
-    "assumptions": "2 axioms: erdos_szekeres_exponential, min_gcd_growth. 0 sorries."
+    "assumptions": "2 axioms: erdos_szekeres_exponential, min_gcd_growth. 0 sorries.",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "**Erdős Problem #698**\n\nThis problem concerns GCDs of binomial coefficients in Pascal's triangle.\n\n**Key History:**\n- Erdős & Szekeres (1978): Posed the problem and observed gcd ≥ 2^i\n- They noted this bound is sharp for i=1, j=p, n=2p\n- Bergman (2011): Proved the minimum GCD grows like Ω(√n)\n\n**The Setting:**\nFor valid index pairs 2 ≤ i < j ≤ n/2, we study gcd(C(n,i), C(n,j)).\n\nThe study of divisibility properties of binomial coefficients has a long history, including Kummer's theorem (1852) which expresses the p-adic valuation of C(m+n, m) as the number of carries in base-p addition, and Lucas' theorem (1878) which gives C(n,k) mod p in terms of the base-p digits of n and k. These classical tools underpin Bergman's 2011 proof and reveal how the arithmetic structure of Pascal's triangle enforces non-trivial common factors.",

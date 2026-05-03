@@ -54,7 +54,8 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 1,
     "lineCount": 215,
-    "assumptions": "1 axiom: turanNumber. 0 sorries."
+    "assumptions": "1 axiom: turanNumber. 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Erdős and Simonovits conjectured in 1984 that the Turán number for any bipartite r-degenerate graph H satisfies ex(n;H) ≪ n^{2-1/r}. A graph is r-degenerate if every induced subgraph has a vertex of degree at most r. This elegant conjecture predicts that the extremal exponent depends only on the degeneracy parameter r, regardless of other structural properties of H. Erdős considered this problem important enough to offer a $500 prize for its resolution.\n\nThe best partial result was obtained by Alon, Krivelevich, and Sudakov (AKS) in 2003, who proved the weaker bound ex(n;H) ≪ n^{2-1/4r} using the dependent random choice technique. They also showed that the full conjectured bound holds in the special case where the maximum degree in one part of the bipartition equals r, which subsumes the classical Kővári-Sós-Turán theorem for complete bipartite graphs K_{r,s}.\n\nDespite decades of effort, the conjecture remains open even for r=2, where there is a substantial gap between the conjectured exponent 3/2 and the AKS bound 15/8. The difficulty lies in bridging local structure (degeneracy is a property of induced subgraphs) and global extremal behavior (Turán numbers depend on the entire graph). The problem is considered one of the most important open questions in extremal graph theory.",

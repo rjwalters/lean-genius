@@ -72,7 +72,8 @@
       "Basic Lean 4 induction and Fintype"
     ],
     "lineCount": 2922,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 138
   },
   "overview": {
     "historicalContext": "The classical ballot problem, posed by Joseph Bertrand in 1887, asks: if candidate A receives $p$ votes and candidate B receives $q < p$ votes, what is the probability that A leads throughout the count? Désiré André's reflection principle (1887) provided an elegant bijective proof, establishing $P = (p-q)/(p+q)$. This reflection argument became a cornerstone of combinatorial probability.\n\nBernt Lindström (1973) generalized the reflection principle to pairs of non-intersecting lattice paths, proving that the signed count of NI path pairs equals a 2×2 determinant of path counts. Ira Gessel and Gérard Viennot (1985) extended this to $r$-tuples of paths, yielding the LGV lemma: the signed count of non-intersecting path $r$-tuples equals the determinant of an $r \\times r$ matrix of individual path counts. The lemma has found applications in the theory of symmetric functions, plane partitions, and the counting of Standard Young Tableaux via the hook-length formula.",

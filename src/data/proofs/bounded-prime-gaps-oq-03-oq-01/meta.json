@@ -31,7 +31,8 @@
     "axiomCount": 2,
     "lineCount": 389,
     "assumptions": "2 axioms: minAdmissibleDiameter_50 (minimum diameter of admissible 50-tuple), diameter_upper_bound_exists (existence of diameter upper bound). 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 23
   },
   "overview": {
     "historicalContext": "The bounded gaps between primes saga is one of the great stories of 21st-century mathematics. In May 2013, Yitang Zhang stunned the mathematical world by proving that there are infinitely many pairs of primes differing by at most 70 million — the first finite bound ever established. Within months, James Maynard (then a postdoc at Montreal) and, independently, Terence Tao developed a radically simpler sieve-theoretic approach based on multidimensional Selberg sieve weights, reducing the bound below 600. The Polymath 8b collaborative project, coordinated online, then optimized every parameter: sieve weights, level of distribution, and crucially the admissible k-tuple used. Thomas Engelsma's exhaustive 2013 computation showed that the narrowest admissible 50-tuple has diameter exactly 246, and the Polymath team proved this suffices — yielding the current record of 246 for consecutive prime gaps. This file formalizes why 246 is a hard barrier for these methods.",

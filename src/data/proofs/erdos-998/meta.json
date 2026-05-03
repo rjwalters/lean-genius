@@ -60,7 +60,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 190,
-    "assumptions": "2 axioms: hecke_ostrowski, kesten_theorem. 0 sorries."
+    "assumptions": "2 axioms: hecke_ostrowski, kesten_theorem. 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Erdős Problem #998 was posed by **Paul Erdős** and **Péter Szüsz** in the 1960s, asking for a characterization of intervals with minimal discrepancy for irrational rotations. The study of equidistribution modulo 1 began with **Hermann Weyl**'s landmark 1916 paper 'Über die Gleichverteilung von Zahlen mod. Eins' in *Mathematische Annalen*, which proved that $\\{m\\alpha\\}$ is equidistributed in $[0,1)$ for irrational $\\alpha$—meaning the count of points in any interval is approximately proportional to its length, with $O(\\sqrt{n})$ error.\n\n**Erich Hecke** (1922) proved in 'Über analytische Funktionen und die Verteilung von Zahlen mod. eins' that intervals whose endpoints are $\\alpha$-orbit points (i.e., $u = \\{\\alpha k\\}$, $v = \\{\\alpha \\ell\\}$) enjoy the much stronger $O(1)$ discrepancy. **Alexander Ostrowski** (1927, 1930) extended this, establishing connections to continued fraction expansions and what is now called the Ostrowski numeration system. Erdős and Szüsz conjectured the converse: these are the *only* intervals with $O(1)$ discrepancy.\n\n**Harry Kesten** proved this in 'On a conjecture of Erdős and Szüsz related to uniform distribution mod 1' (*Acta Arithmetica* 12, 1966, pp. 193–212). Kesten's argument uses the three-distance theorem (Sós–Surányi–Świerczkowski, 1958) and properties of continued fraction convergents to show that non-orbit endpoints inevitably produce growing discrepancy. The result has connections to the theory of bounded remainder sets, Rauzy fractals, and substitution dynamical systems.",

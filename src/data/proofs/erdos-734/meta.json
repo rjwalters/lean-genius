@@ -1,10 +1,10 @@
 {
   "id": "erdos-734",
-  "title": "Erd\u0151s Problem #734: Pairwise Balanced Block Designs with Bounded Frequencies",
+  "title": "Erdős Problem #734: Pairwise Balanced Block Designs with Bounded Frequencies",
   "slug": "erdos-734",
-  "description": "Find a non-trivial PBD where all block sizes have O(n^{1/2}) frequency. OPEN. de Bruijn-Erd\u0151s (1948) implies some size must have high frequency on average.",
+  "description": "Find a non-trivial PBD where all block sizes have O(n^{1/2}) frequency. OPEN. de Bruijn-Erdős (1948) implies some size must have high frequency on average.",
   "meta": {
-    "author": "de Bruijn-Erd\u0151s (1948 lower bound), Erd\u0151s (1981 problem)",
+    "author": "de Bruijn-Erdős (1948 lower bound), Erdős (1981 problem)",
     "sourceUrl": "https://erdosproblems.com/734",
     "date": "1981",
     "status": "axiomatized",
@@ -54,25 +54,26 @@
       "blockSizesPresent: image of block cardinalities",
       "hasSquareRootBound: the O(n^{1/2}) frequency condition",
       "erdos734Question: formal statement of the open problem",
-      "deBruijn_erdos: m \u2265 n axiom for non-trivial PBDs",
+      "deBruijn_erdos: m ≥ n axiom for non-trivial PBDs",
       "pair counting identity: discussed in docstrings only, not formalized as axiom",
-      "erdos_734_summary: combining de Bruijn-Erd\u0151s and projective plane existence"
+      "erdos_734_summary: combining de Bruijn-Erdős and projective plane existence"
     ],
     "axiomCount": 2,
     "lineCount": 206,
-    "assumptions": "2 axioms: deBruijn_erdos, projective_plane_exists. 0 sorries."
+    "assumptions": "2 axioms: deBruijn_erdos, projective_plane_exists. 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
-    "historicalContext": "Erd\u0151s posed Problem #734 in his 1981 paper 'On the combinatorial problems which I would most like to see solved.' He asked whether, for all large n, there exists a non-trivial pairwise balanced block design (PBD) on n points where every block size t appears in at most O(n^{1/2}) blocks. Erd\u0151s wrote that this would 'probably not be very difficult to prove' but admitted he had been unsuccessful.\n\nThe foundational result for this problem is the de Bruijn-Erd\u0151s theorem (1948), which states that any non-trivial PBD on n points has at least n blocks. By a pigeonhole argument, since block sizes range from 2 to n, at least one size must appear with frequency proportional to \u221an. The question is whether ALL sizes can be kept at this threshold simultaneously.\n\nClassical constructions like projective and affine planes fail the frequency condition because they have uniform block size \u2014 all blocks are the same size, concentrating frequency in a single value. No construction achieving the O(\u221an) bound for all sizes is known, and the problem remains open. It connects to broader questions in combinatorial design theory about how block sizes can be distributed in balanced structures.",
-    "problemStatement": "**Problem Statement (Open)**\n\nFind, for all large n, a non-trivial pairwise balanced block design A\u2081,...,A\u2098 \u2286 {1,...,n} such that for all t, there are O(n^{1/2}) many blocks of size t.\n\n**Status: OPEN**\n\nKnown constructions (projective and affine planes) have uniform block size, which fails this criterion.",
-    "text": "Find a non-trivial PBD where all block sizes have O(n^{1/2}) frequency. OPEN. de Bruijn-Erd\u0151s (1948) implies some size must have high frequency on average.",
-    "proofStrategy": "The formalization defines PBD as a structure with pair coverage and non-emptiness, along with block size counting and the O(\u221an) frequency condition. The de Bruijn-Erd\u0151s lower bound and projective/affine plane existence are axiomatized. The pair counting identity is axiomatized. The summary theorem combines de Bruijn-Erd\u0151s with projective plane existence, with no trivial placeholders.",
+    "historicalContext": "Erdős posed Problem #734 in his 1981 paper 'On the combinatorial problems which I would most like to see solved.' He asked whether, for all large n, there exists a non-trivial pairwise balanced block design (PBD) on n points where every block size t appears in at most O(n^{1/2}) blocks. Erdős wrote that this would 'probably not be very difficult to prove' but admitted he had been unsuccessful.\n\nThe foundational result for this problem is the de Bruijn-Erdős theorem (1948), which states that any non-trivial PBD on n points has at least n blocks. By a pigeonhole argument, since block sizes range from 2 to n, at least one size must appear with frequency proportional to √n. The question is whether ALL sizes can be kept at this threshold simultaneously.\n\nClassical constructions like projective and affine planes fail the frequency condition because they have uniform block size — all blocks are the same size, concentrating frequency in a single value. No construction achieving the O(√n) bound for all sizes is known, and the problem remains open. It connects to broader questions in combinatorial design theory about how block sizes can be distributed in balanced structures.",
+    "problemStatement": "**Problem Statement (Open)**\n\nFind, for all large n, a non-trivial pairwise balanced block design A₁,...,Aₘ ⊆ {1,...,n} such that for all t, there are O(n^{1/2}) many blocks of size t.\n\n**Status: OPEN**\n\nKnown constructions (projective and affine planes) have uniform block size, which fails this criterion.",
+    "text": "Find a non-trivial PBD where all block sizes have O(n^{1/2}) frequency. OPEN. de Bruijn-Erdős (1948) implies some size must have high frequency on average.",
+    "proofStrategy": "The formalization defines PBD as a structure with pair coverage and non-emptiness, along with block size counting and the O(√n) frequency condition. The de Bruijn-Erdős lower bound and projective/affine plane existence are axiomatized. The pair counting identity is axiomatized. The summary theorem combines de Bruijn-Erdős with projective plane existence, with no trivial placeholders.",
     "keyInsights": [
-      "**de Bruijn-Erd\u0151s Bound:** Any non-trivial PBD on n points has at least n blocks",
-      "**Pigeonhole Consequence:** With \u2265 n blocks and \u2264 n-1 possible sizes, some size must have multiple blocks",
-      "**Classical Constructions Fail:** Projective planes have uniform block size, giving one size with \u226b \u221an blocks",
+      "**de Bruijn-Erdős Bound:** Any non-trivial PBD on n points has at least n blocks",
+      "**Pigeonhole Consequence:** With ≥ n blocks and ≤ n-1 possible sizes, some size must have multiple blocks",
+      "**Classical Constructions Fail:** Projective planes have uniform block size, giving one size with ≫ √n blocks",
       "**Spreading Challenge:** Need to find designs where sizes are spread out evenly",
-      "**Erd\u0151s's Expectation:** He thought this would be 'not very difficult' yet remained unsolved"
+      "**Erdős's Expectation:** He thought this would be 'not very difficult' yet remained unsolved"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -98,7 +99,7 @@
     },
     {
       "id": "de-bruijn-erdos",
-      "title": "de Bruijn-Erd\u0151s Theorem",
+      "title": "de Bruijn-Erdős Theorem",
       "summary": "deBruijn_erdos axiom: m ≥ n for non-trivial PBDs. some_size_frequent discussed in docstring but not formalized as axiom.",
       "startLine": 98,
       "endLine": 116,
@@ -106,7 +107,7 @@
     },
     {
       "id": "erdos-question",
-      "title": "The Erd\u0151s Question",
+      "title": "The Erdős Question",
       "summary": "hasSquareRootBound, erdos734Question definitions",
       "startLine": 117,
       "endLine": 136,
@@ -139,14 +140,14 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_734_summary combining de Bruijn-Erd\u0151s and projective planes",
+      "summary": "erdos_734_summary combining de Bruijn-Erdős and projective planes",
       "startLine": 177,
       "endLine": 206,
-      "mathContext": "Mathematical content: erdos_734_summary combining de Bruijn-Erd\u0151s and projective planes"
+      "mathContext": "Mathematical content: erdos_734_summary combining de Bruijn-Erdős and projective planes"
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #734 asks whether there exist non-trivial pairwise balanced block designs where every block size appears in O(n^{1/2}) blocks. The problem remains OPEN. de Bruijn-Erd\u0151s (1948) showed m \u2265 n for any PBD, implying some averaging constraint, but no construction achieving the bound is known. Classical constructions like projective planes fail because they have uniform block size.",
+    "summary": "Erdős Problem #734 asks whether there exist non-trivial pairwise balanced block designs where every block size appears in O(n^{1/2}) blocks. The problem remains OPEN. de Bruijn-Erdős (1948) showed m ≥ n for any PBD, implying some averaging constraint, but no construction achieving the bound is known. Classical constructions like projective planes fail because they have uniform block size.",
     "implications": "Resolution would advance combinatorial design theory by showing whether block sizes can be distributed uniformly in balanced structures. New construction techniques beyond classical designs would likely be needed.",
     "openQuestions": [
       "Does such a PBD exist for ANY n > 2?",
@@ -180,17 +181,17 @@
     {
       "targetId": "erdos-665",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: block-designs, combinatorics, design-theory, open"
+      "description": "Related Erdős problem sharing themes: block-designs, combinatorics, design-theory, open"
     },
     {
       "targetId": "erdos-722",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: block-designs, combinatorics, design-theory"
+      "description": "Related Erdős problem sharing themes: block-designs, combinatorics, design-theory"
     },
     {
       "targetId": "erdos-1014",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: combinatorics, open"
+      "description": "Related Erdős problem sharing themes: combinatorics, open"
     }
   ],
   "sorries": 0

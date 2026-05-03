@@ -21,7 +21,8 @@
     "axiomCount": 0,
     "lineCount": 330,
     "assumptions": "0 sorries, 0 axioms. All 9 theorems fully proved: martingale time-invariance (via setIntegral_eq), Gambler's Ruin formula (algebra), betting systems fail (sub/supermartingale sandwich via expected_stoppedValue_mono), option pricing neutrality, submartingale characterization (Mathlib iff), Doob's maximal inequality (conversion from Mathlib maximal_ineq). Note: FairGamesTheorem.lean has pre-existing build failures in Mathlib 4.26.0 due to IsStoppingTime API change from τ:Ω→ι to τ:Ω→WithTop ι.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "leanFile": {
     "imports": [

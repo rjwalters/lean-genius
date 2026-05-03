@@ -2,7 +2,7 @@
   "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
   "title": "Riesz Representation for Lp Spaces",
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
-  "description": "Can the Riesz representation theorem (Lp)* \u2245 Lq be derived from the eLpNorm H\u00f6lder inequality? Answer: partially \u2014 the embedding direction yes, surjectivity requires Radon-Nikod\u00fdm.",
+  "description": "Can the Riesz representation theorem (Lp)* ≅ Lq be derived from the eLpNorm Hölder inequality? Answer: partially — the embedding direction yes, surjectivity requires Radon-Nikodým.",
   "meta": {
     "status": "axiomatized",
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02.lean",
@@ -17,20 +17,21 @@
     "sorries": 0,
     "axiomCount": 1,
     "lineCount": 151,
-    "assumptions": "1 axiom: riesz_lp_surjective (the hard direction requiring Radon-Nikodym). L2 case fully proved via InnerProductSpace.toDual. Embedding direction proved via H\u00f6lder.",
-    "dateAdded": "2026-03-26"
+    "assumptions": "1 axiom: riesz_lp_surjective (the hard direction requiring Radon-Nikodym). L2 case fully proved via InnerProductSpace.toDual. Embedding direction proved via Hölder.",
+    "dateAdded": "2026-03-26",
+    "theoremCount": 8
   },
   "overview": {
-    "problemStatement": "Can the Riesz representation theorem $(L^p)^* \\cong L^q$ be derived from the $\\mathrm{eLpNorm}$ H\u00f6lder inequality?",
-    "text": "The Riesz representation theorem identifies the dual of $L^p$ with $L^q$ for conjugate exponents. H\u00f6lder's inequality provides the embedding direction; the surjectivity requires Radon-Nikod\u00fdm.",
-    "historicalContext": "The duality of $L^p$ spaces was established by Frigyes Riesz in 1910 for $L^2$ and extended to general $L^p$ ($1 < p < \\infty$) through the work of Riesz and others in the 1920s-1930s. The $L^2$ case is a direct consequence of the Fr\u00e9chet-Riesz theorem (1907), which characterizes the dual of any Hilbert space. The general case was completed by leveraging the Radon-Nikod\u00fdm theorem (1930), which Johann Radon proved for $\\mathbb{R}^n$ and Otton Nikod\u00fdm extended to abstract measure spaces. The interplay between H\u00f6lder's inequality (Otto H\u00f6lder, 1889) and the Radon-Nikod\u00fdm theorem in establishing $L^p$ duality is a foundational chapter in functional analysis, connecting the theories of integration, measure, and topological vector spaces.",
-    "proofStrategy": "The formalization splits the Riesz representation into two independent directions. The embedding $L^q \\hookrightarrow (L^p)^*$ follows from H\u00f6lder's inequality: each $g \\in L^q$ defines a bounded functional $\\Lambda_g(f) = \\int fg\\,d\\mu$ with $\\|\\Lambda_g\\| \\leq \\|g\\|_q$. For $L^2$, the Fr\u00e9chet-Riesz theorem (via Mathlib's `InnerProductSpace.toDual`) gives both directions simultaneously. For general $p$, surjectivity is axiomatized because the composition of Mathlib's Radon-Nikod\u00fdm machinery with $L^p$ membership proofs is not yet available in Lean 4.",
+    "problemStatement": "Can the Riesz representation theorem $(L^p)^* \\cong L^q$ be derived from the $\\mathrm{eLpNorm}$ Hölder inequality?",
+    "text": "The Riesz representation theorem identifies the dual of $L^p$ with $L^q$ for conjugate exponents. Hölder's inequality provides the embedding direction; the surjectivity requires Radon-Nikodým.",
+    "historicalContext": "The duality of $L^p$ spaces was established by Frigyes Riesz in 1910 for $L^2$ and extended to general $L^p$ ($1 < p < \\infty$) through the work of Riesz and others in the 1920s-1930s. The $L^2$ case is a direct consequence of the Fréchet-Riesz theorem (1907), which characterizes the dual of any Hilbert space. The general case was completed by leveraging the Radon-Nikodým theorem (1930), which Johann Radon proved for $\\mathbb{R}^n$ and Otton Nikodým extended to abstract measure spaces. The interplay between Hölder's inequality (Otto Hölder, 1889) and the Radon-Nikodým theorem in establishing $L^p$ duality is a foundational chapter in functional analysis, connecting the theories of integration, measure, and topological vector spaces.",
+    "proofStrategy": "The formalization splits the Riesz representation into two independent directions. The embedding $L^q \\hookrightarrow (L^p)^*$ follows from Hölder's inequality: each $g \\in L^q$ defines a bounded functional $\\Lambda_g(f) = \\int fg\\,d\\mu$ with $\\|\\Lambda_g\\| \\leq \\|g\\|_q$. For $L^2$, the Fréchet-Riesz theorem (via Mathlib's `InnerProductSpace.toDual`) gives both directions simultaneously. For general $p$, surjectivity is axiomatized because the composition of Mathlib's Radon-Nikodým machinery with $L^p$ membership proofs is not yet available in Lean 4.",
     "keyInsights": [
-      "H\u00f6lder's inequality gives the isometric embedding $L^q \\hookrightarrow (L^p)^*$ but NOT surjectivity \u2014 the two directions of the Riesz isomorphism require fundamentally different tools",
-      "The $L^2$ case is special: Hilbert space self-duality via the inner product gives both directions at once, bypassing the need for Radon-Nikod\u00fdm entirely",
-      "Surjectivity for general $L^p$ requires constructing the representing function via the Radon-Nikod\u00fdm derivative $g = d\\nu/d\\mu$ where $\\nu(E) = \\varphi(\\mathbf{1}_E)$",
-      "The generalization hierarchy Young \u2192 H\u00f6lder \u2192 Cauchy-Schwarz is concretely demonstrated: the $p=q=2$ specialization of H\u00f6lder recovers the integral Cauchy-Schwarz inequality",
-      "The H\u00f6lder embedding is always isometric (not merely bounded), as demonstrated by the dual norm tightness result $\\|\\Phi(g)\\| = \\|g\\|$ at $p=2$"
+      "Hölder's inequality gives the isometric embedding $L^q \\hookrightarrow (L^p)^*$ but NOT surjectivity — the two directions of the Riesz isomorphism require fundamentally different tools",
+      "The $L^2$ case is special: Hilbert space self-duality via the inner product gives both directions at once, bypassing the need for Radon-Nikodým entirely",
+      "Surjectivity for general $L^p$ requires constructing the representing function via the Radon-Nikodým derivative $g = d\\nu/d\\mu$ where $\\nu(E) = \\varphi(\\mathbf{1}_E)$",
+      "The generalization hierarchy Young → Hölder → Cauchy-Schwarz is concretely demonstrated: the $p=q=2$ specialization of Hölder recovers the integral Cauchy-Schwarz inequality",
+      "The Hölder embedding is always isometric (not merely bounded), as demonstrated by the dual norm tightness result $\\|\\Phi(g)\\| = \\|g\\|$ at $p=2$"
     ]
   },
   "sections": [
@@ -43,39 +44,39 @@
     },
     {
       "id": "l2-self-duality",
-      "title": "Part I: L\u00b2 Self-Duality via Fr\u00e9chet-Riesz",
+      "title": "Part I: L² Self-Duality via Fréchet-Riesz",
       "startLine": 38,
       "endLine": 66,
-      "summary": "Proves the complete L\u00b2 case: the Fr\u00e9chet-Riesz theorem gives $(L^2)^* \\cong L^2$ as an isometric isomorphism via the inner product, including surjectivity and the concrete integral formula."
+      "summary": "Proves the complete L² case: the Fréchet-Riesz theorem gives $(L^2)^* \\cong L^2$ as an isometric isomorphism via the inner product, including surjectivity and the concrete integral formula."
     },
     {
       "id": "holder-embedding",
-      "title": "Part II: H\u00f6lder-Based Embedding (Easy Direction)",
+      "title": "Part II: Hölder-Based Embedding (Easy Direction)",
       "startLine": 68,
       "endLine": 96,
-      "summary": "Establishes the embedding direction $L^q \\hookrightarrow (L^p)^*$ via H\u00f6lder's inequality at the lintegral level, plus the Cauchy-Schwarz specialization at $p=q=2$."
+      "summary": "Establishes the embedding direction $L^q \\hookrightarrow (L^p)^*$ via Hölder's inequality at the lintegral level, plus the Cauchy-Schwarz specialization at $p=q=2$."
     },
     {
       "id": "riesz-surjectivity",
       "title": "Part III: General Riesz Representation (Axiomatized)",
       "startLine": 97,
       "endLine": 121,
-      "summary": "States the hard direction (surjectivity) as an axiom: every bounded linear functional on $L^p$ is represented by an $L^q$ function. The classical proof route via Radon-Nikod\u00fdm is documented but not yet formalizable in Lean 4."
+      "summary": "States the hard direction (surjectivity) as an axiom: every bounded linear functional on $L^p$ is represented by an $L^q$ function. The classical proof route via Radon-Nikodým is documented but not yet formalizable in Lean 4."
     },
     {
       "id": "hierarchy-and-applications",
       "title": "Part IV: Hierarchy Summary and Applications",
       "startLine": 123,
       "endLine": 151,
-      "summary": "Maps the dependency chain (Young \u2192 H\u00f6lder \u2192 embedding, Radon-Nikod\u00fdm \u2192 surjectivity), proves the Cauchy-Schwarz bound on $L^2$ functions, and shows the H\u00f6lder embedding is isometric at $p=2$."
+      "summary": "Maps the dependency chain (Young → Hölder → embedding, Radon-Nikodým → surjectivity), proves the Cauchy-Schwarz bound on $L^2$ functions, and shows the Hölder embedding is isometric at $p=2$."
     }
   ],
   "conclusion": {
-    "summary": "This formalization provides a definitive answer to whether H\u00f6lder's inequality suffices for the Riesz representation theorem: it gives exactly one of the two directions. The embedding $L^q \\hookrightarrow (L^p)^*$ follows from H\u00f6lder, while surjectivity requires the independent machinery of Radon-Nikod\u00fdm. The $L^2$ case stands apart, resolved entirely by Hilbert space structure.",
-    "implications": "The result clarifies the logical dependencies within functional analysis: $L^p$ duality is not a single-tool theorem but requires the confluence of integration inequalities (H\u00f6lder) and measure-theoretic decomposition (Radon-Nikod\u00fdm). This decomposition is pedagogically valuable and reflects how the theorem is typically proved in graduate textbooks (e.g., Rudin's Real and Complex Analysis, Theorem 6.16).",
+    "summary": "This formalization provides a definitive answer to whether Hölder's inequality suffices for the Riesz representation theorem: it gives exactly one of the two directions. The embedding $L^q \\hookrightarrow (L^p)^*$ follows from Hölder, while surjectivity requires the independent machinery of Radon-Nikodým. The $L^2$ case stands apart, resolved entirely by Hilbert space structure.",
+    "implications": "The result clarifies the logical dependencies within functional analysis: $L^p$ duality is not a single-tool theorem but requires the confluence of integration inequalities (Hölder) and measure-theoretic decomposition (Radon-Nikodým). This decomposition is pedagogically valuable and reflects how the theorem is typically proved in graduate textbooks (e.g., Rudin's Real and Complex Analysis, Theorem 6.16).",
     "openQuestions": [
-      "Can Mathlib's Radon-Nikod\u00fdm machinery (`MeasureTheory.SignedMeasure.rnDeriv`) be composed with $L^p$ membership to eliminate the surjectivity axiom?",
-      "Does the isometric embedding $L^q \\hookrightarrow (L^p)^*$ extend to a formalized proof that equality in H\u00f6lder characterizes when $f = c|g|^{q/p} \\cdot \\mathrm{sgn}(g)$?",
+      "Can Mathlib's Radon-Nikodým machinery (`MeasureTheory.SignedMeasure.rnDeriv`) be composed with $L^p$ membership to eliminate the surjectivity axiom?",
+      "Does the isometric embedding $L^q \\hookrightarrow (L^p)^*$ extend to a formalized proof that equality in Hölder characterizes when $f = c|g|^{q/p} \\cdot \\mathrm{sgn}(g)$?",
       "Can the Riesz representation for $L^1$ (where $(L^1)^* \\cong L^\\infty$) be formalized, noting it requires $\\sigma$-finiteness?"
     ]
   },
@@ -93,12 +94,12 @@
     {
       "targetId": "cauchy-schwarz-integral-oq-01",
       "relationship": "extends",
-      "description": "H\u00f6lder's inequality as a generalization of Cauchy-Schwarz; this proof uses H\u00f6lder for the Riesz embedding direction"
+      "description": "Hölder's inequality as a generalization of Cauchy-Schwarz; this proof uses Hölder for the Riesz embedding direction"
     },
     {
       "targetId": "cauchy-schwarz-integral-oq-01-oq-02",
       "relationship": "related",
-      "description": "Riesz-Thorin interpolation from H\u00f6lder; a sibling application of H\u00f6lder to operator theory"
+      "description": "Riesz-Thorin interpolation from Hölder; a sibling application of Hölder to operator theory"
     }
   ],
   "leanFile": {
@@ -113,12 +114,12 @@
       {
         "name": "l2_riesz",
         "type": "core",
-        "description": "Fr\u00e9chet-Riesz for L2: isometric equivalence (L2)* \u2245 L2"
+        "description": "Fréchet-Riesz for L2: isometric equivalence (L2)* ≅ L2"
       },
       {
         "name": "holder_lintegral_conjugate",
         "type": "core",
-        "description": "H\u00f6lder's inequality for conjugate exponents at lintegral level"
+        "description": "Hölder's inequality for conjugate exponents at lintegral level"
       },
       {
         "name": "l2_inner_eq_integral",

@@ -61,7 +61,8 @@
     "axiomCount": 2,
     "lineCount": 392,
     "assumptions": "2 axiom(s) and 0 sorry(s). See the Lean source for details.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "**Erdős Problem #940: Density of Sums of r-Powerful Numbers**\n\nThis problem was posed by Erdős and Ivić, recorded in the 1986 Oberwolfach problem book, with roots in Erdős's 1976 paper on consecutive integers [Er76d]. It asks a fundamental question about the additive structure of powerful numbers.\n\n**Historical Timeline:**\n- 1976: Erdős claimed the $r = 2$ case was 'easy' and sketched a counting argument\n- 1986: Problem recorded in the Oberwolfach problem book (Erdős-Ivić)\n- 1986: Schinzel discovered an error in Erdős's original counting argument\n- 1988: Heath-Brown proved all large integers are sums of $\\le 3$ squarefull numbers (ternary quadratic forms)\n- 1994: Baker and Brüdern gave the first rigorous proof that sums of $\\le 2$ squarefull numbers have density 0\n\n**The Central Phenomenon:** There is a remarkable phase transition at 2-to-3 summands for squarefull numbers. With 2 summands, the representable set has density 0 (Baker-Brüdern). With 3 summands, all large integers are representable (Heath-Brown). The main conjecture asks whether a similar density-0 result holds for the diagonal case ($r$ summands of $r$-powerful numbers) when $r \\ge 3$.\n\n**Why is it hard?** The counting function for $r$-powerful numbers up to $N$ is $\\sim c_r N^{1/r}$. Naively, $r$ summands give $O(N^{r \\cdot 1/r}) = O(N)$ representations — exactly the boundary between sparse and dense! Proving $o(N)$ requires understanding cancellation in the overlap of different sum decompositions, which defeated Erdős's original approach.",

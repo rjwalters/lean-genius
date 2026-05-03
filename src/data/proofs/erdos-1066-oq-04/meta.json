@@ -30,7 +30,8 @@
       "Exact bounds for d=1,2,3: n/3, n/7, n/13",
       "Greedy weakens theorem: τ(d)+1 ≥ 3 for all d ≥ 1",
       "Independence ratio framework documenting the scaling question"
-    ]
+    ],
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "The study of unit distance graphs begins with Erdős's 1946 paper on the unit distance problem in the plane: how many unit distances can occur among $n$ points? The independence number $g(n)$ — the maximum $k$ such that any unit distance graph on $n$ separated points has an independent set of size $\\geq k$ — was introduced to capture the structural sparseness of unit distance graphs.\n\nThe **kissing number** $\\tau(d)$ is one of the most classical problems in geometry: how many non-overlapping unit spheres can simultaneously touch a central unit sphere in $\\mathbb{R}^d$? The 2D answer $\\tau(2) = 6$ is elementary (honeycomb packing). The 3D answer $\\tau(3) = 12$ was famously disputed between Newton (12) and Gregory (13) for nearly 300 years; it was settled by Schütte and van der Waerden in 1953. The exceptional cases $\\tau(8) = 240$ and $\\tau(24) = 196560$ were proved by Viazovska et al. in 2017 using modular forms — the latter being the densest sphere packing in 24 dimensions (Leech lattice), earning Viazovska the Fields Medal in 2022.\n\nFor $g_d(n)$ in higher dimensions, the greedy coloring bound $g_d(n) \\geq n/(\\tau(d)+1)$ is the most direct approach. In 2D, Swanepoel improved this to $g_2(n) \\geq (8/31)n \\approx 0.258n$, leveraging the specific structure of planar point sets. Erdős conjectured $\\lim g_2(n)/n = 1/3$, which remains open.",

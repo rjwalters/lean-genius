@@ -1,10 +1,10 @@
 {
   "id": "erdos-502",
-  "title": "Erd\u0151s Problem #502: Two-Distance Sets in Euclidean Space",
+  "title": "Erdős Problem #502: Two-Distance Sets in Euclidean Space",
   "slug": "erdos-502",
-  "description": "What is the maximum size f(n) of a set A \u2286 \u211d\u207f with exactly two distinct pairwise distances? Bannai\u2013Bannai\u2013Stanton proved f(n) \u2264 C(n+2,2); a projection construction gives f(n) \u2265 C(n+1,2). Status: SOLVED.",
+  "description": "What is the maximum size f(n) of a set A ⊆ ℝⁿ with exactly two distinct pairwise distances? Bannai–Bannai–Stanton proved f(n) ≤ C(n+2,2); a projection construction gives f(n) ≥ C(n+1,2). Status: SOLVED.",
   "meta": {
-    "author": "Erd\u0151s, Coxeter",
+    "author": "Erdős, Coxeter",
     "sourceUrl": "https://erdosproblems.com/502",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos502Problem.lean",
@@ -22,7 +22,8 @@
     "axiomCount": 2,
     "lineCount": 82,
     "assumptions": "2 axioms: lower_bound_improved, upper_bound_bbs. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2
   },
   "sections": [
     {
@@ -46,8 +47,8 @@
       "title": "The Binary Vector Construction",
       "startLine": 37,
       "endLine": 44,
-      "summary": "Constructs `binaryTwoVec n i j` \u2014 indicator vectors $e_i + e_j \\in \\{0,1\\}^n$ \u2014 forming a two-distance set with distances $\\sqrt{2}$ (one shared coordinate) and $2$ (disjoint supports), giving $\\binom{n}{2}$ points.",
-      "mathContext": "Constructs `binaryTwoVec n i j` \u2014 indicator vectors $e_i + e_j \\in \\{0,1\\}^n$ \u2014 forming a two-distance set with distances $\\sqrt{2}$ (one shared coordinate) and $2$ (disjoint supports), giving $\\binom{n}{2}$ points."
+      "summary": "Constructs `binaryTwoVec n i j` — indicator vectors $e_i + e_j \\in \\{0,1\\}^n$ — forming a two-distance set with distances $\\sqrt{2}$ (one shared coordinate) and $2$ (disjoint supports), giving $\\binom{n}{2}$ points.",
+      "mathContext": "Constructs `binaryTwoVec n i j` — indicator vectors $e_i + e_j \\in \\{0,1\\}^n$ — forming a two-distance set with distances $\\sqrt{2}$ (one shared coordinate) and $2$ (disjoint supports), giving $\\binom{n}{2}$ points."
     },
     {
       "id": "lower-bound",
@@ -59,7 +60,7 @@
     },
     {
       "id": "upper-bound",
-      "title": "Upper Bound \u2014 Bannai\u2013Bannai\u2013Stanton",
+      "title": "Upper Bound — Bannai–Bannai–Stanton",
       "startLine": 52,
       "endLine": 59,
       "summary": "The BBS theorem: $f(n) \\leq \\binom{n+2}{2}$. The proof associates to each point a polynomial vanishing on the other distance, bounding the dimension of the resulting polynomial space by $\\binom{n+2}{2}$.",
@@ -91,16 +92,16 @@
     }
   ],
   "overview": {
-    "historicalContext": "H.S.M. Coxeter posed this problem to Erd\u0151s around 1961, asking whether the maximum size of a two-distance set in $\\mathbb{R}^n$ is polynomial in $n$. Erd\u0151s initially believed he could prove $f(n) \\leq n^{O(1)}$ but discovered an error, leaving only exponential bounds. The question remained open until Bannai, Bannai, and Stanton (1983) proved $f(n) \\leq \\binom{n+2}{2}$ using the polynomial method: for a two-distance set with distances $d_1, d_2$, the polynomials $p_a(x) = (\\|x-a\\|^2 - d_1^2)(\\|x-a\\|^2 - d_2^2)$ are linearly independent in a space of dimension $\\binom{n+2}{2}$, yielding the bound. Blokhuis (1984) simplified the argument using linear algebra over the Gram matrix. In 2021, Petrov and Pohoata gave an even simpler proof leveraging the Croot\u2013Lev\u2013Pach polynomial method from additive combinatorics. For the lower bound, the binary vector construction $\\{e_i + e_j : i < j\\}$ gives $\\binom{n}{2}$ points; a clever projection into $\\mathbb{R}^n$ from $\\mathbb{R}^{n+1}$ improves this to $\\binom{n+1}{2}$. The exact value $f(n)$ is known only for small $n$: Kelly (1947) showed $f(2) = 5$ (regular pentagon), and $f(3) = 6$ is classical.",
-    "problemStatement": "Given n, find the maximum cardinality f(n) of a finite set A \u2286 \u211d\u207f such that the set of pairwise distances {|x-y| : x \u2260 y \u2208 A} has exactly two elements.",
-    "text": "What is the maximum size f(n) of a set A \u2286 \u211d\u207f with exactly two distinct pairwise distances? Bannai\u2013Bannai\u2013Stanton proved f(n) \u2264 C(n+2,2); a projection construction gives f(n) \u2265 C(n+1,2). Status: SOLVED.",
-    "proofStrategy": "The formalization defines the two-distance set property, constructs binary vectors as witnesses for the lower bound, and states the Bannai\u2013Bannai\u2013Stanton upper bound. The main theorem combines both into the sandwich $\\binom{n+1}{2} \\leq f(n) \\leq \\binom{n+2}{2}$. Small cases $f(2) = 5$ and $f(3) = 6$ are recorded as descriptive remarks but not formalized. Coxeter's polynomial growth question is resolved as a direct corollary of BBS.",
+    "historicalContext": "H.S.M. Coxeter posed this problem to Erdős around 1961, asking whether the maximum size of a two-distance set in $\\mathbb{R}^n$ is polynomial in $n$. Erdős initially believed he could prove $f(n) \\leq n^{O(1)}$ but discovered an error, leaving only exponential bounds. The question remained open until Bannai, Bannai, and Stanton (1983) proved $f(n) \\leq \\binom{n+2}{2}$ using the polynomial method: for a two-distance set with distances $d_1, d_2$, the polynomials $p_a(x) = (\\|x-a\\|^2 - d_1^2)(\\|x-a\\|^2 - d_2^2)$ are linearly independent in a space of dimension $\\binom{n+2}{2}$, yielding the bound. Blokhuis (1984) simplified the argument using linear algebra over the Gram matrix. In 2021, Petrov and Pohoata gave an even simpler proof leveraging the Croot–Lev–Pach polynomial method from additive combinatorics. For the lower bound, the binary vector construction $\\{e_i + e_j : i < j\\}$ gives $\\binom{n}{2}$ points; a clever projection into $\\mathbb{R}^n$ from $\\mathbb{R}^{n+1}$ improves this to $\\binom{n+1}{2}$. The exact value $f(n)$ is known only for small $n$: Kelly (1947) showed $f(2) = 5$ (regular pentagon), and $f(3) = 6$ is classical.",
+    "problemStatement": "Given n, find the maximum cardinality f(n) of a finite set A ⊆ ℝⁿ such that the set of pairwise distances {|x-y| : x ≠ y ∈ A} has exactly two elements.",
+    "text": "What is the maximum size f(n) of a set A ⊆ ℝⁿ with exactly two distinct pairwise distances? Bannai–Bannai–Stanton proved f(n) ≤ C(n+2,2); a projection construction gives f(n) ≥ C(n+1,2). Status: SOLVED.",
+    "proofStrategy": "The formalization defines the two-distance set property, constructs binary vectors as witnesses for the lower bound, and states the Bannai–Bannai–Stanton upper bound. The main theorem combines both into the sandwich $\\binom{n+1}{2} \\leq f(n) \\leq \\binom{n+2}{2}$. Small cases $f(2) = 5$ and $f(3) = 6$ are recorded as descriptive remarks but not formalized. Coxeter's polynomial growth question is resolved as a direct corollary of BBS.",
     "keyInsights": [
       "**Binary vector construction**: Vectors $e_i + e_j \\in \\{0,1\\}^n$ give distances $\\sqrt{2}$ (shared coordinate) or $2$ (disjoint), yielding $\\binom{n}{2}$ points; projection improves this to $\\binom{n+1}{2}$",
       "**Polynomial method for upper bound**: For distances $d_1, d_2$, the polynomials $p_a(x) = (\\|x-a\\|^2 - d_1^2)(\\|x-a\\|^2 - d_2^2)$ are linearly independent in $\\mathbb{R}[x_1,\\ldots,x_n]_{\\leq 2}$, whose dimension is $\\binom{n+2}{2}$",
-      "**Tight quadratic growth**: The gap $\\binom{n+2}{2} - \\binom{n+1}{2} = n+1$ is small, so $f(n) = \\frac{n^2}{2} + O(n)$ \u2014 the answer is known up to a linear correction",
+      "**Tight quadratic growth**: The gap $\\binom{n+2}{2} - \\binom{n+1}{2} = n+1$ is small, so $f(n) = \\frac{n^2}{2} + O(n)$ — the answer is known up to a linear correction",
       "**Exceptional small cases**: $f(2) = 5$ (regular pentagon, beating $\\binom{3}{2} = 3$) shows the lower bound is not always tight; by $n = 3$, $f(3) = 6 = \\binom{4}{2}$ matches the lower bound exactly",
-      "**Evolution of proof techniques**: From Erd\u0151s's failed polynomial attempt (1961) through BBS's Gram matrix method (1983) to Petrov\u2013Pohoata's Croot\u2013Lev\u2013Pach approach (2021) \u2014 each generation simplified the argument using new algebraic tools"
+      "**Evolution of proof techniques**: From Erdős's failed polynomial attempt (1961) through BBS's Gram matrix method (1983) to Petrov–Pohoata's Croot–Lev–Pach approach (2021) — each generation simplified the argument using new algebraic tools"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -108,12 +109,12 @@
     ]
   },
   "conclusion": {
-    "summary": "Erd\u0151s Problem #502 asks for the maximum two-distance set in $\\mathbb{R}^n$. The answer is $\\Theta(n^2)$: the Bannai\u2013Bannai\u2013Stanton upper bound $\\binom{n+2}{2}$ and the projection lower bound $\\binom{n+1}{2}$ sandwich $f(n)$ with an additive gap of $n+1$. The formalization captures both bounds, the binary vector construction, exact small-case values, and the historical resolution of Coxeter's polynomial growth question.",
-    "implications": "**Theoretical Significance**: The polynomial method, first applied here by Bannai\u2013Bannai\u2013Stanton, became one of the most powerful tools in combinatorial geometry.\n\nIts descendant, the Croot\u2013Lev\u2013Pach method (2016), resolved the cap set problem and led to Petrov\u2013Pohoata's simplified proof. The two-distance problem is a prototype for the general $k$-distance problem, where the polynomial method gives $f_k(n) \\leq \\binom{n+k}{k}$.",
+    "summary": "Erdős Problem #502 asks for the maximum two-distance set in $\\mathbb{R}^n$. The answer is $\\Theta(n^2)$: the Bannai–Bannai–Stanton upper bound $\\binom{n+2}{2}$ and the projection lower bound $\\binom{n+1}{2}$ sandwich $f(n)$ with an additive gap of $n+1$. The formalization captures both bounds, the binary vector construction, exact small-case values, and the historical resolution of Coxeter's polynomial growth question.",
+    "implications": "**Theoretical Significance**: The polynomial method, first applied here by Bannai–Bannai–Stanton, became one of the most powerful tools in combinatorial geometry.\n\nIts descendant, the Croot–Lev–Pach method (2016), resolved the cap set problem and led to Petrov–Pohoata's simplified proof. The two-distance problem is a prototype for the general $k$-distance problem, where the polynomial method gives $f_k(n) \\leq \\binom{n+k}{k}$.",
     "openQuestions": [
       "Is $f(n) = \\binom{n+1}{2}$ for all sufficiently large $n$? This would close the linear gap between upper and lower bounds",
       "What is the structure of extremal two-distance sets? Are they related to strongly regular graphs or spherical designs?",
-      "For $k$-distance sets ($k \\geq 3$), the gap between lower and upper bounds widens \u2014 can it be narrowed?",
+      "For $k$-distance sets ($k \\geq 3$), the gap between lower and upper bounds widens — can it be narrowed?",
       "Does the answer change for two-distance sets on the sphere $S^{n-1}$ versus all of $\\mathbb{R}^n$?"
     ]
   },
@@ -135,28 +136,28 @@
     "sorries": 0
   },
   "references": [
-    "Erd\u0151s (1961): original problem, posed by Coxeter",
+    "Erdős (1961): original problem, posed by Coxeter",
     "Kelly (1947): early two-distance results in the plane",
-    "Bannai\u2013Bannai\u2013Stanton (1983): upper bound C(n+2,2) via polynomial method",
+    "Bannai–Bannai–Stanton (1983): upper bound C(n+2,2) via polynomial method",
     "Blokhuis (1984): simplified BBS proof using linear algebra",
-    "Petrov\u2013Pohoata (2021): simpler proof via Croot\u2013Lev\u2013Pach polynomial method",
+    "Petrov–Pohoata (2021): simpler proof via Croot–Lev–Pach polynomial method",
     "https://erdosproblems.com/502"
   ],
   "crossReferences": [
     {
       "targetId": "erdos-103",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: distances, geometry"
+      "description": "Related Erdős problem sharing themes: distances, geometry"
     },
     {
       "targetId": "erdos-1127",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: distances, geometry"
+      "description": "Related Erdős problem sharing themes: distances, geometry"
     },
     {
       "targetId": "erdos-217",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: distances, geometry"
+      "description": "Related Erdős problem sharing themes: distances, geometry"
     }
   ],
   "sorries": 0

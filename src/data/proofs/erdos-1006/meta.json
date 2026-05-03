@@ -48,7 +48,8 @@
       "Girth definitions (hasGirthAtLeast, hasGirth) via SimpleGraph.Walk.IsCycle",
       "Robust acyclicity predicate (isRobustlyAcyclic) for orientation stability",
       "Main theorem ores_conjecture_false: derives contradiction from Nešetřil-Rödl at g=5"
-    ]
+    ],
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "This problem, credited to Ore by Erdős (1971), explores whether high-girth graphs have particularly stable acyclic orientations. Every graph admits an acyclic orientation (just order the vertices and direct edges from lower to higher), but some orientations are 'fragile' — reversing a single edge creates a directed cycle. Ore asked whether avoiding short cycles (girth > 4) guarantees the existence of a 'robust' orientation that stays acyclic after any single edge reversal.\n\nEarly counterexamples at small girth were known: Ore found a girth-4 graph without this property, and Gallai observed the Grötzsch graph (11 vertices, girth 4, chromatic number 4) also fails. These examples relied on high chromatic number relative to girth, suggesting that chromatic structure, not just cycle length, governs robust orientability.\n\nNešetřil and Rödl (1978) settled the question completely by proving counterexamples exist for ALL girths g ≥ 3. Their proof uses the probabilistic method: by the Erdős theorem on graphs with high girth and high chromatic number, such graphs exist, and their high chromatic number forces every acyclic orientation to contain a 'fragile' edge whose reversal creates a directed cycle. The formalization axiomatizes the Nešetřil-Rödl theorem and derives the falsity of Ore's conjecture as a corollary.",

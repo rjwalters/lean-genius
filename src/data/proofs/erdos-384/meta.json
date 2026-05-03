@@ -31,7 +31,8 @@
       "Basic Lean 4 tactics (native_decide, norm_num, interval_cases)"
     ],
     "lineCount": 235,
-    "assumptions": "1 axiom: ecklund_1969 (Ecklund 1969 — C(n,k) has a small prime divisor except for (7,3)). 0 sorries."
+    "assumptions": "1 axiom: ecklund_1969 (Ecklund 1969 — C(n,k) has a small prime divisor except for (7,3)). 0 sorries.",
+    "theoremCount": 12
   },
   "overview": {
     "historicalContext": "Paul Erdős and John Selfridge conjectured in the 1960s that every binomial coefficient C(n,k) with 1 < k < n−1 must have a prime divisor less than n/2. Earl Ecklund proved this in 1969 in the Pacific Journal of Mathematics, identifying C(7,3) = 35 = 5 × 7 as the unique exception — the only case where both prime factors exceed n/2. The proof relies on careful case analysis: for most n and k, Bertrand's postulate guarantees a prime in (n/2, n] dividing C(n,k), while small cases require individual verification. Kummer's 1852 theorem — that the p-adic valuation of C(n,k) equals the number of carries when adding k and n−k in base p — provides the key structural insight. Erdős and Selfridge later proposed stronger conjectures: that C(n,k) should have a prime divisor less than n/k when n > k², and Selfridge conjectured a threshold of 17.125k beyond which C(n,k) always has a prime ≤ n/k. These sharper bounds remain only partially resolved.",

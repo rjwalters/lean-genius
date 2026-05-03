@@ -56,7 +56,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 182,
-    "assumptions": "3 axioms: representationCount, hypothesisK_fails_for_3, erdos_chowla_bound. 0 sorries."
+    "assumptions": "3 axioms: representationCount, hypothesisK_fails_for_3, erdos_chowla_bound. 0 sorries.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "This problem connects to the classical theory of Waring's problem and the Hardy-Littlewood circle method. Hardy and Littlewood conjectured Hypothesis K: that r_k(n) = n^{o(1)} for k ≥ 3, meaning representations grow slower than any polynomial.\n\nMahler (1936) sensationally disproved this for cubes, showing r_3(n) ≫ n^{1/12} for infinitely many n. Erdős believed Hypothesis K fails for all k ≥ 4, but this remains open. Independently, Erdős and Chowla proved a weaker bound r_k(n) ≫ n^{c/log log n} for all k ≥ 3.\n\nThe weaker Hypothesis K* (bounding the sum Σ r_k(n)² ≪ N^{1+ε}) is probably true but unproven and very deep. Erdős and Graham noted it 'would suffice for most applications' of the original Hypothesis K.",

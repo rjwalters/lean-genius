@@ -29,7 +29,8 @@
     "axiomCount": 1,
     "lineCount": 199,
     "assumptions": "1 axiom: erdos_turan_upper. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "The study of Sidon sets ($B_2$ sets) began when the Hungarian mathematician Simon Sidon asked Erdős in 1932 about sets of integers with all pairwise sums distinct. Erdős and Turán (1941) proved the fundamental upper bound $F(N) = O(\\sqrt{N})$ by counting pairwise sums, and Singer (1938) achieved the matching lower bound $F(N) \\ge (1-o(1))\\sqrt{N}$ using perfect difference sets from finite projective geometry. Lindström (1969) refined the upper bound to $F(N) \\le \\sqrt{N} + N^{1/4} + 1$, and the gap between upper and lower bounds in the second-order term remains open (the '$\\sqrt{N} + 1/2$ vs $\\sqrt{N} + N^{1/4}$' question). Erdős posed Problem #155 around 1992, asking about the fine growth structure: since $F(N)$ increases by 1 only $\\sim \\sqrt{N}$ times in $[1,N]$, the increase points should be very sparse — heuristically spaced $\\sim \\sqrt{N}$ apart. The conjecture that $F(N+k) \\le F(N) + 1$ for fixed $k$ formalizes this, and the stronger form $k \\approx \\varepsilon\\sqrt{N}$ would nearly pin down the increase point distribution.",

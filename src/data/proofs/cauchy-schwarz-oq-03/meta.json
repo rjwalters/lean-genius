@@ -54,7 +54,8 @@
     "axiomCount": 0,
     "lineCount": 244,
     "assumptions": "0 axioms, 0 sorries. Core Hölder inequality derived from Mathlib's NNReal.inner_le_Lp_mul_Lq and ENNReal.lintegral_mul_le_Lp_mul_Lq. Lagrange identity proof of Cauchy-Schwarz is independent.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "**From Cauchy-Schwarz to Hölder: A Family of Inequalities**\n\nThe Cauchy-Schwarz inequality $(\\sum f_i g_i)^2 \\leq (\\sum f_i^2)(\\sum g_i^2)$ was discovered by Cauchy (1821) for finite sums and extended to integrals by Bunyakovsky (1859) and Schwarz (1885). In 1889, Otto Hölder proved its sweeping generalization:\n\n$$\\sum_{i} f_i g_i \\leq \\left(\\sum_i f_i^p\\right)^{1/p} \\cdot \\left(\\sum_i g_i^q\\right)^{1/q}$$\n\nfor any **conjugate exponents** $p, q > 1$ satisfying $\\frac{1}{p} + \\frac{1}{q} = 1$. Setting $p = q = 2$ recovers Cauchy-Schwarz.\n\n**The Open Question**: Can we build an elementary proof chain from Young's inequality through Hölder to Cauchy-Schwarz, showing CS as a special case?\n\n**The Answer**: YES — using Mathlib's `NNReal.inner_le_Lp_mul_Lq` as the core, the full chain is formalized: Young normalization → Hölder → Lagrange identity → Cauchy-Schwarz → abstract inner product spaces → Lebesgue integral form.",

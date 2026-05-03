@@ -60,7 +60,8 @@
     "axiomCount": 0,
     "lineCount": 195,
     "assumptions": "None — fully verified from Mathlib",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "The vanishing of unit ball volume in high dimensions was recognized in the early 20th century as part of the broader study of high-dimensional geometry. The formula $\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$ itself goes back to Schläfli (1858) and the systematic study of higher-dimensional Euclidean geometry. The phenomenon that $\\omega_n \\to 0$ — despite each $\\omega_n$ being the volume of a 'unit' ball — is a striking manifestation of the 'curse of dimensionality,' a term coined by Richard Bellman in 1961. Paul Lévy formalized concentration of measure on the sphere in his 1922 monograph, showing that for high-dimensional spheres, any measurable set of measure $\\geq 1/2$ has an $\\varepsilon$-neighborhood of measure $\\geq 1 - e^{-cn\\varepsilon^2}$. Vitali Milman and Gideon Schechtman later developed asymptotic geometric analysis in the 1980s-90s, generalizing these ideas to convex bodies. The result is now fundamental in statistics (curse of dimensionality for nearest-neighbor methods), machine learning (dimensionality reduction), and physics (behavior of ideal gases in the microcanonical ensemble).",

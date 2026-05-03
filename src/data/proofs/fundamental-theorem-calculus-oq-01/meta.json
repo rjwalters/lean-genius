@@ -42,7 +42,8 @@
     ],
     "dateAdded": "2026-03-22",
     "lineCount": 274,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "The Fundamental Theorem of Calculus in its classical Newton-Leibniz form (late 17th century) assumes the integrand is continuous. Throughout the 19th century, mathematicians including Cauchy, Riemann, and Darboux progressively weakened the hypotheses, but the question of the *minimal* regularity for the FTC remained open. Henri Lebesgue's 1904 thesis 'Leçons sur l'intégration et la recherche des fonctions primitives' introduced the concept of absolute continuity and proved that it is the *precise* necessary and sufficient condition: a function F satisfies ∫ₐᵇ F'(x)dx = F(b) - F(a) with the Lebesgue integral if and only if F is absolutely continuous. The sharpness of this characterization was demonstrated by the Cantor function (devil's staircase), constructed by Georg Cantor in 1884: a continuous, monotone function on [0,1] whose derivative is zero almost everywhere, yet whose net change is 1. Vitali (1905) independently arrived at similar results, and the modern proof uses the Vitali covering lemma as a key tool. The connection between absolute continuity of functions and absolute continuity of measures (via the Radon-Nikodym theorem) was later clarified by Nikodym (1930).",

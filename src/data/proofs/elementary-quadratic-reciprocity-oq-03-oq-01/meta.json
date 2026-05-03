@@ -85,7 +85,8 @@
     "axiomCount": 0,
     "lineCount": 311,
     "mathlib_version": "4.26.0",
-    "assumptions": "0 axioms, 0 sorries. All core results obtained via Mathlib's jacobiSym API (one-liner wrappers). Badge is mathlib, not verified, to reflect Mathlib dependency for all substantive content."
+    "assumptions": "0 axioms, 0 sorries. All core results obtained via Mathlib's jacobiSym API (one-liner wrappers). Badge is mathlib, not verified, to reflect Mathlib dependency for all substantive content.",
+    "theoremCount": 24
   },
   "overview": {
     "historicalContext": "The Jacobi symbol's value for computational number theory rests on its multiplicative structure: the facts that J(a*b, n) = J(a,n)*J(b,n) and J(a, m*n) = J(a,m)*J(a,n) mean that computing J(a,n) reduces to computing J(p,q) for primes p, q. Combined with periodicity (J(a,n) depends only on a mod n) and the supplements (J(-1,n) = chi_4(n), J(2,n) = chi_8(n)), this gives a Euclidean-algorithm-style computation in O(log^2 n) time without needing to factor n. This efficiency is what makes the Jacobi symbol the computational backbone of the Solovay-Strassen primality test (1977) and related algorithms.",

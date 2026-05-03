@@ -45,7 +45,8 @@
       "absorbing_pair_exists: triangle existence in dense regular graphs",
       "erdos_faudree_absorbing_pairs_ge: ≥n absorbing pairs per vertex",
       "HasAbsorbingStructure definition (absorbing lemma statement)"
-    ]
+    ],
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "The absorbing method was introduced by Rödl, Ruciński, and Szemerédi in their 2011 Annals of Mathematics paper on Dirac's theorem for hypergraphs, and has since become one of the most powerful tools in extremal combinatorics and Ramsey theory. The method guarantees the existence of a short 'absorbing structure' — a path or cycle that can be extended to cover any small additional vertex set — which allows one to convert approximate spanning results into exact ones. Erdős Problem #622 asks whether every Erdős-Faudree graph ($2n$ vertices, $(n+1)$-regular) decomposes into Hamiltonian cycles. Draganić, Keevash, and Müyesser (DKM 2025) resolved this affirmatively using the absorbing method. This Lean file formalizes the combinatorial infrastructure: the edge counting, the common neighborhood lower bound that provides $\\geq 2$ common neighbors for every pair of vertices, and the absorbing pair density result that gives $\\geq n$ absorbing triples per vertex — the quantitative input to DKM's probabilistic argument.",

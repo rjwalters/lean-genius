@@ -1,0 +1,163 @@
+{
+  "id": "erdos-1006-oq-04",
+  "title": "Erdős Problem #1006 OQ04: DAG Structure of the Coloring Orientation",
+  "slug": "erdos-1006-oq-04",
+  "description": "The coloring orientation (orient u→v when col(u) < col(v) for a proper k-coloring) forms a graded DAG: all arcs go strictly from lower to higher color level, color-0 vertices are sources, color-(k-1) vertices are sinks, and exactly one arc direction holds for each edge.",
+  "meta": {
+    "author": "Lean Genius (OQ04 of Erdős #1006)",
+    "sourceUrl": "https://erdosproblems.com/1006",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1006OQ04.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "acyclic-orientations",
+      "graph-coloring",
+      "dag",
+      "combinatorics"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "erdosNumber": 1006,
+    "erdosUrl": "https://erdosproblems.com/1006",
+    "erdosProblemStatus": "open",
+    "axiomCount": 0,
+    "lineCount": 163,
+    "theoremCount": 11,
+    "assumptions": "None. All 11 theorems are fully proved. Builds on coloringOrientation definition and acyclicity results from OQ03.",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.Coloring",
+        "description": "Proper graph colorings used to define the coloring orientation",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Coloring"
+      },
+      {
+        "theorem": "Fin.val",
+        "description": "Color values as natural numbers for ordering arcs",
+        "module": "Mathlib.Data.Fin.Basic"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1006 asks about *robustly acyclic orientations*: orientations where reversing any single arc preserves acyclicity. While this is open for general graphs, the coloring orientation (orient $u \\to v$ when $\\text{col}(u) < \\text{col}(v)$ for a proper $k$-coloring) provides an explicit, well-structured family of robustly acyclic orientations.\n\nThis file (OQ04) is the fourth in a series: OQ03 proved the coloring orientation is robustly acyclic and every finite graph admits such an orientation (via the four-color theorem / Mathlib's graph coloring). OQ04 goes further and characterizes the *internal structure* of these orientations — showing they are *graded DAGs* in the sense that every arc goes strictly from a lower color level to a higher one.\n\nThe graded DAG structure is the key reason why reversing any single arc preserves acyclicity: any directed path must monotonically increase in color value, so no cycle is possible even after a single reversal.",
+    "problemStatement": "For a proper $k$-coloring $\\text{col}: V \\to \\text{Fin}(k)$ of a simple graph $G$, the coloring orientation orients $u \\to v$ when $\\text{col}(u) < \\text{col}(v)$. Prove that this orientation forms a graded DAG: arcs go strictly from lower to higher color, color-0 vertices have no in-arcs (sources), color-$(k-1)$ vertices have no out-arcs (sinks), and for each edge exactly one arc direction holds.",
+    "proofStrategy": "The proofs follow directly from the definition of the coloring orientation and properties of `Fin k`. The rank strictness (`coloringOrientation_rank_strict`) comes from unpacking the arc definition. Sources and sinks are proved by `omega` from the rank bound. Arc direction equivalence (`coloringOrientation_arc_iff`) is a direct iff. Acyclicity is re-derived from the OQ03 result for consistency.",
+    "keyInsights": [
+      "**Graded DAG structure**: The coloring orientation is a *graded* DAG where the grade (level) of each vertex is its color value. All arcs go from level $i$ to level $j > i$. This is a much stronger structural property than mere acyclicity.",
+      "**Color 0 = source layer, color k-1 = sink layer**: The lowest color class forms the source layer (no incoming arcs) and the highest forms the sink layer (no outgoing arcs). This gives a natural topological sort of the orientation.",
+      "**Exactly one arc per edge**: For any edge $\\{u,v\\}$, since $\\text{col}(u) \\neq \\text{col}(v)$ (proper coloring), exactly one of $u \\to v$ or $v \\to u$ holds — determined by which color is smaller.",
+      "**Robust acyclicity explained**: The graded structure explains *why* the orientation is robustly acyclic: any directed path must strictly increase in color, so no path of length $\\geq 2$ can create a cycle even after reversing one arc (reversing $u \\to v$ creates a back-arc of length 1, which is not a cycle).",
+      "**Building on OQ03**: OQ04 restates `coloringOrientation_acyclic_via_rank` and `every_graph_has_robust` from OQ03, demonstrating that the new rank-based perspective subsumes and extends the earlier acyclicity results."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Docstring describing the coloring orientation construction and the 5 structural properties to be proved. Imports Erdos1006OQ03 for the coloringOrientation definition and related results.",
+      "mathContext": "The coloring orientation: given proper $k$-coloring $\\text{col}: V \\to \\text{Fin}(k)$, orient $u \\to v$ when $\\text{col}(u) < \\text{col}(v)$. Properties: rank strictness, source/sink structure, arc characterization, no back-arcs."
+    },
+    {
+      "id": "level-structure",
+      "title": "Part I: Level Structure",
+      "startLine": 31,
+      "endLine": 50,
+      "summary": "Three theorems: `coloringOrientation_rank_strict` (arcs go from lower to higher color), `coloringOrientation_has_rank` (color value is an explicit rank witness), `coloringOrientation_rank_lt_k` (all ranks < k). All proved directly from the arc definition and Fin.isLt.",
+      "mathContext": "If $(u \\to v)$ is an arc, then $\\text{col}(u) < \\text{col}(v)$ (rank strict). The function $v \\mapsto \\text{col}(v).\\text{val}$ is an explicit rank witness. All values are in $\\{0, \\ldots, k-1\\}$."
+    },
+    {
+      "id": "source-sink",
+      "title": "Part II: Source and Sink Structure",
+      "startLine": 51,
+      "endLine": 71,
+      "summary": "`color_zero_no_in_arc`: vertices with color 0 have no in-arcs (proved by `omega` — an in-arc would require color < 0). `color_max_no_out_arc`: vertices with color k-1 have no out-arcs (proved by `omega` — an out-arc would require color > k-1).",
+      "mathContext": "Color-0 vertices: $\\text{col}(v) = 0$ and $(u \\to v)$ would imply $\\text{col}(u) < 0$, contradiction. Color-$(k-1)$ vertices: $\\text{col}(v) = k-1$ and $(v \\to u)$ would imply $\\text{col}(u) > k-1 \\geq \\text{col}(u)$, contradicting Fin bound."
+    },
+    {
+      "id": "arc-direction",
+      "title": "Part III: Arc Direction Characterization",
+      "startLine": 72,
+      "endLine": 101,
+      "summary": "Three theorems: `coloringOrientation_arc_iff` (arc iff color ordering, for adjacent vertices), `coloringOrientation_no_back_arc` (no 2-cycles — omega contradiction from rank strict applied twice), `coloringOrientation_exactly_one_arc` (exactly one arc direction per edge, via covers from OQ03).",
+      "mathContext": "$(u \\to v) \\iff \\text{col}(u) < \\text{col}(v)$ for $u \\sim v$. For adjacent $u, v$: exactly one of $\\text{col}(u) < \\text{col}(v)$ or $\\text{col}(v) < \\text{col}(u)$ holds (since $\\text{col}(u) \\neq \\text{col}(v)$ by properness)."
+    },
+    {
+      "id": "no-same-level",
+      "title": "Part IV: No Same-Level Arcs",
+      "startLine": 102,
+      "endLine": 115,
+      "summary": "`coloringOrientation_different_colors`: arcs only exist between differently-colored vertices (col(u) ≠ col(v)). Proved from rank strictness via Nat.lt_irrefl.",
+      "mathContext": "$(u \\to v) \\Rightarrow \\text{col}(u) < \\text{col}(v) \\Rightarrow \\text{col}(u) \\neq \\text{col}(v)$. Equivalently, there are no 'horizontal' arcs between vertices at the same color level."
+    },
+    {
+      "id": "consistency-oq03",
+      "title": "Part V: Consistency with OQ03 Results",
+      "startLine": 116,
+      "endLine": 163,
+      "summary": "`coloringOrientation_acyclic_via_rank`: restates OQ03's acyclicity result through the rank lens. `every_graph_has_robust`: restates OQ03's main theorem. Both delegate to OQ03 directly.",
+      "mathContext": "Acyclicity follows from rank strictness: any directed path $v_0 \\to v_1 \\to \\cdots \\to v_n$ satisfies $\\text{col}(v_0) < \\text{col}(v_1) < \\cdots < \\text{col}(v_n)$, preventing cycles."
+    }
+  ],
+  "conclusion": {
+    "summary": "OQ04 characterizes the coloring orientation as a graded DAG: 11 theorems proved with 0 sorries and 0 axioms. The structural picture is complete — color values form a strict rank function, sources and sinks are characterized, arc directions are fully determined by color ordering, and the results are consistent with OQ03's robust acyclicity.",
+    "implications": "The graded DAG structure provides a satisfying explanation for why the coloring orientation is robustly acyclic: directed paths can only increase in level, making cycles impossible regardless of single-arc reversals. This structural insight connects Erdős's robust orientation problem to the theory of graded posets and Hasse diagrams.",
+    "openQuestions": [
+      "Can the graded DAG structure be used to directly prove Erdős #1006's open conjecture (characterizing graphs that admit robust orientations)?",
+      "What is the relationship between the chromatic number and the minimum depth (longest monotone path) of the coloring orientation DAG?",
+      "Can the coloring orientation be generalized to list colorings or fractional colorings?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos1006OQ03"
+    ],
+    "opens": ["SimpleGraph"],
+    "namespace": "Erdos1006OQ04",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos1006OQ04.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1006",
+      "relationship": "sub-question",
+      "description": "OQ04 of Erdős Problem #1006 on robust acyclic orientations"
+    },
+    {
+      "targetId": "erdos-1006-oq-02-oq-03",
+      "relationship": "builds-on",
+      "description": "Builds on OQ03's coloringOrientation definition and robust acyclicity theorems"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "coloringOrientation_rank_strict",
+      "type": "core",
+      "statement": "∀ {k} (col : G.Coloring (Fin k)) (u v : V), (coloringOrientation G col).arc u v → (col u).val < (col v).val",
+      "description": "Arcs go strictly from lower to higher color level.",
+      "significance": "Core rank property establishing graded DAG structure"
+    },
+    {
+      "name": "coloringOrientation_arc_iff",
+      "type": "core",
+      "statement": "∀ {k} (col : G.Coloring (Fin k)) (u v : V), G.Adj u v → ((coloringOrientation G col).arc u v ↔ (col u).val < (col v).val)",
+      "description": "Complete characterization of arc direction by color ordering.",
+      "significance": "Shows the orientation is fully determined by the coloring"
+    },
+    {
+      "name": "coloringOrientation_exactly_one_arc",
+      "type": "corollary",
+      "statement": "∀ {k} (col : G.Coloring (Fin k)) (u v : V), G.Adj u v → ((coloringOrientation G col).arc u v ∨ (coloringOrientation G col).arc v u)",
+      "description": "Every edge gets exactly one arc direction.",
+      "significance": "Confirms the orientation is total on edges"
+    }
+  ],
+  "sorries": 0
+}

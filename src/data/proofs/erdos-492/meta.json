@@ -25,7 +25,8 @@
     "axiomCount": 3,
     "lineCount": 315,
     "assumptions": "3 axioms: schmidt_counterexample, davenport_leveque, davenport_erdos. 6 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "**Erdős Problem #492** concerns the equidistribution of generalized fractional parts. For a strictly increasing sequence $A = \\{a_1 < a_2 < \\cdots\\}$ with $a_{n+1}/a_n \\to 1$ (unity ratio), define the **generalized fractional part** $f(x) = (x - a_i)/(a_{i+1} - a_i)$ for $x \\in [a_i, a_{i+1})$. Erdős conjectured that for almost all $\\alpha$, the sequence $f(\\alpha n)$ is **uniformly distributed** in $[0,1)$.\n\nThe history: **Le Veque** (1953) posed related problems, proving special cases. **Davenport-LeVeque** (1963, Michigan Math. J.) showed the conjecture holds when gaps are monotonically increasing. **Davenport-Erdős** (1963) proved it for sequences with $a_n \\gg n^{1/2+\\varepsilon}$. **Schmidt** (1969, Studia Sci. Math. Hungar.) finally **disproved** the general conjecture by constructing a unity ratio sequence with oscillating gaps for which equidistribution fails on a positive-measure set of $\\alpha$. The problem is thus **SOLVED** (negatively).",

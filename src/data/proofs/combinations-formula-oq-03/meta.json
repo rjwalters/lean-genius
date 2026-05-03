@@ -1,0 +1,119 @@
+{
+  "id": "combinations-formula-oq-03",
+  "title": "q-Analog Binomial Coefficients (Gaussian Binomial Coefficients)",
+  "slug": "combinations-formula-oq-03",
+  "description": "Formalizes q-analog (Gaussian) binomial coefficients [n,k]_q over commutative rings. Proves: specialization [n,k]_1 = C(n,k), q-Pascal recurrences, absorption identity, symmetry [n,k]_q = [n,n-k]_q, column sum (q-hockey stick), q-Vandermonde identity. 24 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius CombinationsFormulaOQ03",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ03.lean",
+    "tags": [
+      "combinatorics",
+      "q-analogs",
+      "gaussian-binomial",
+      "number-theory",
+      "algebra",
+      "quantum-groups"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 750,
+    "theoremCount": 24,
+    "assumptions": "None. All 24 theorems proved over arbitrary commutative rings.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Ordinary binomial coefficients for specialization theorem",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Gaussian binomial coefficient [n,k]_q counts the number of k-dimensional subspaces of an n-dimensional vector space over F_q. It was introduced by Gauss in the study of cyclotomic polynomials and appears throughout combinatorics: in the Rogers-Ramanujan identities, quantum group representations, and the theory of partitions. As q→1, [n,k]_q → C(n,k) (ordinary binomial coefficient).",
+    "problemStatement": "Define q-numbers [n]_q = 1 + q + q² + ... + q^{n-1} = (q^n - 1)/(q-1), q-factorials [n]_q! = [1]_q·[2]_q···[n]_q, and q-binomials [n,k]_q = [n]_q! / ([k]_q!·[n-k]_q!). Prove key identities without division (using q-Pascal recurrence as definition).",
+    "proofStrategy": "Define q_number and q_binomial over a CommRing using the q-Pascal recurrence (avoiding division). Key identities proved by induction on n: [n,0]_q = 1, [n,n]_q = 1, [n,k]_q = [n,n-k]_q (symmetry), [n,1]_q = [n]_q. Specialization at q=1 connects to ordinary binomial coefficients.",
+    "keyInsights": [
+      "**Division-free definition**: Define [n,k]_q via the recurrence [n,k]_q = [n-1,k-1]_q + q^k·[n-1,k]_q. This works over any CommRing (no division needed), unlike the factorial formula.",
+      "**Geometric sum**: [n]_q·(q-1) = q^n - 1. This is the key property of q-numbers — a geometric series sum.",
+      "**Symmetry**: [n,k]_q = [n,n-k]_q. Follows from the recurrence by induction.",
+      "**q-Vandermonde**: [m+n,k]_q = Σ_j q^{j(m-k+j)} [m,k-j]_q [n,j]_q — a q-analog of the Vandermonde convolution.",
+      "**Subspace counting**: [n,k]_q = |Gr(k,F_q^n)| = number of k-dim subspaces of F_q^n."
+    ]
+  },
+  "sections": [
+    {
+      "id": "q-numbers",
+      "title": "Parts I–II: q-Numbers and q-Factorials",
+      "startLine": 68,
+      "endLine": 148,
+      "summary": "Defines q_number [n]_q and q_factorial [n]_q!. Proves [0]_q=0, [1]_q=1, [n]_q·(q-1)=q^n-1. Base structure for q-analog theory.",
+      "mathContext": "$[n]_q = 1 + q + \\cdots + q^{n-1}$, $[n]_q! = \\prod_{i=1}^n [i]_q$."
+    },
+    {
+      "id": "q-binomial",
+      "title": "Parts III–IV: q-Binomial Coefficients and Specialization",
+      "startLine": 148,
+      "endLine": 224,
+      "summary": "Defines q_binomial [n,k]_q via q-Pascal recurrence. Boundary cases: [n,0]=[n,n]=1, [n,k]=0 for k>n. Specialization: [n,k]_1 = C(n,k).",
+      "mathContext": "$\\binom{n}{k}_q = \\binom{n-1}{k-1}_q + q^k \\binom{n-1}{k}_q$."
+    },
+    {
+      "id": "identities",
+      "title": "Parts V–XIII: Identities (Product, Absorption, Symmetry, Vandermonde)",
+      "startLine": 224,
+      "endLine": 750,
+      "summary": "Product formula. Absorption: [n,k]_q·[k]_q = [n]_q·[n-1,k-1]_q. Symmetry: [n,k]=[n,n-k]. q-Hockey stick (column sum). q=0 specialization. Symmetry verifications. q-Vandermonde.",
+      "mathContext": "$\\binom{n}{k}_q = \\binom{n}{n-k}_q$; q-Vandermonde: $\\binom{m+n}{k}_q = \\sum_j q^{j(m-k+j)} \\binom{m}{k-j}_q \\binom{n}{j}_q$."
+    }
+  ],
+  "conclusion": {
+    "summary": "q-Analog binomial coefficient theory fully formalized: 24 theorems, 0 sorries, 0 axioms. All major identities proved over arbitrary commutative rings.",
+    "implications": "q-binomial coefficients appear throughout quantum groups, representation theory, and partition combinatorics. This formalization provides the algebraic foundation for q-analog generalizations of classical combinatorial identities.",
+    "openQuestions": [
+      "Can the subspace counting interpretation (|Gr(k, F_q^n)| = [n,k]_q) be formally proved in Lean 4?",
+      "Can the Rogers-Ramanujan identities be formalized using q-binomials?",
+      "Can the quantum group representations (using q-binomials as structure constants) be formalized?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 750,
+    "axiomCount": 0,
+    "theoremCount": 24,
+    "definitionCount": 6,
+    "path": "Proofs/CombinationsFormulaOQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula",
+      "relationship": "extends",
+      "description": "OQ-03: q-analog generalization of binomial coefficients"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "q_binomial_specialization",
+      "type": "core",
+      "statement": "∀ n k : ℕ, q_binomial 1 n k = Nat.choose n k",
+      "description": "At q=1, Gaussian binomial reduces to ordinary binomial coefficient.",
+      "significance": "Validates the q-analog as a genuine generalization of C(n,k)"
+    },
+    {
+      "name": "q_binomial_symm",
+      "type": "core",
+      "statement": "∀ n k : ℕ, q_binomial q n k = q_binomial q n (n-k)",
+      "description": "Symmetry of q-binomial coefficients.",
+      "significance": "q-analog of the symmetry C(n,k) = C(n,n-k)"
+    }
+  ],
+  "sorries": 0
+}

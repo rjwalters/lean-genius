@@ -49,7 +49,8 @@
       "Axiomatized: Seiler (1982) cluster expansion result for general strong coupling families"
     ],
     "dateAdded": "2026-04-24",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 19
   },
   "overview": {
     "historicalContext": "The Yang-Mills transfer matrix mass gap at finite volume is a theorem: Δ_L = log(λ₀(L)/λ₁(L))/a > 0 for all L, by the Perron-Frobenius theorem. The deeper question is whether this gap remains bounded away from zero as L → ∞. Wilson's 1974 lattice formulation (Phys. Rev. D 10, 2445) made the strong-coupling expansion accessible: at large g² the partition function reduces to character expansions over single plaquettes, and the spectrum is dominated by the electric energy. Building on this, Osterwalder–Seiler (1978) established the reflection-positivity framework that makes the transfer matrix self-adjoint and Perron–Frobenius applicable. Brydges–Fröhlich–Seiler (1979) and Seiler (1982) proved the gap survives the infinite-volume limit in the strong coupling regime via convergent polymer (cluster) expansions. The general weak-coupling case, including the continuum limit a → 0, was elevated to a Clay Millennium Prize problem in 2000 (Jaffe–Witten). Numerical lattice QCD (Creutz 1980 and successors) has measured the gap to high precision, but a rigorous mathematical proof for SU(N) gauge theory at all couplings, with the continuum limit, remains open. This formalization proves the strong coupling L-independence exactly and axiomatizes the Seiler result, providing a verified anchor for the strong-coupling end of the conjectured uniform gap.",

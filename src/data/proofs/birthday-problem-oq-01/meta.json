@@ -1,0 +1,142 @@
+{
+  "id": "birthday-problem-oq-01",
+  "title": "Birthday Problem OQ01: Expected Number of Shared Birthday Pairs",
+  "slug": "birthday-problem-oq-01",
+  "description": "The expected number of shared birthday pairs among n people with d equally likely birthdays is C(n,2)/d = n(n-1)/(2d). Proved: formula, monotonicity, variance bounds, threshold computations (n=28 first exceeds 1 pair for d=365), and general threshold criterion.",
+  "meta": {
+    "author": "Lean Genius OQ-01",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BirthdayProblemOQ01.lean",
+    "tags": [
+      "probability",
+      "birthday-problem",
+      "combinatorics",
+      "expected-value",
+      "variance"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 513,
+    "theoremCount": 53,
+    "assumptions": "None. All 53 theorems fully proved using Mathlib combinatorics.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients for the C(n,2) formula",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation for the telescoping sum formula",
+        "module": "Mathlib.Data.Fintype.BigOperators"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The birthday problem asks: how many people are needed so that the probability two share a birthday exceeds 50%? The classic answer is 23 (for d=365 days). This file extends the analysis to the *expected* number of birthday pairs: E[X] = C(n,2)/d where X counts pairs sharing a birthday. For n=28 people and d=365 days, E[X] > 1 for the first time.",
+    "problemStatement": "For n people each with uniformly random birthday among d days, let X = number of pairs (i,j) sharing a birthday. Prove E[X] = C(n,2)/d = n(n-1)/(2d), and compute thresholds and variance bounds.",
+    "proofStrategy": "Define `expectedPairs n d = C(n,2) / d` as a rational function. Prove basic properties (nonnegativity, base cases) by computation. Monotonicity from monotonicity of C(n,2). The key identity `expectedPairs_succ`: E[n+1] = E[n] + n/d (each new person shares birthday with one of n existing with prob n/d). Variance bounds via `variancePairs_le_expected`.",
+    "keyInsights": [
+      "**Linearity of expectation**: E[X] = sum over all pairs of Pr[pair shares birthday] = C(n,2) × (1/d). No independence needed — linearity of expectation handles everything.",
+      "**Telescoping formula**: E[pairs with n people] = sum_{i=0}^{n-1} i/d = n(n-1)/(2d), proved by induction using `expectedPairs_succ`.",
+      "**Threshold n=28**: First n where E[X] > 1 for d=365. Different from the classic threshold n=23 (which is where probability of any pair > 50%).",
+      "**Variance ≤ Expected**: `variancePairs_le_expected` shows Var[X] ≤ E[X], proving X is well-concentrated around its mean."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 33,
+      "endLine": 44,
+      "summary": "Defines `expectedPairs n d = C(n,2) / d` and `variancePairs n d` as rationals.",
+      "mathContext": "$E[X_{n,d}] = \\binom{n}{2}/d = n(n-1)/(2d)$."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties and Formula",
+      "startLine": 45,
+      "endLine": 150,
+      "summary": "Nonnegativity, base cases (n=0,1,2), monotonicity, successor formula `expectedPairs_succ`, sum formula, rational formula `n*(n-1)/(2*d)`.",
+      "mathContext": "$E[n+1,d] = E[n,d] + n/d$; $E[n,d] = \\sum_{i=0}^{n-1} i/d = n(n-1)/(2d)$."
+    },
+    {
+      "id": "variance",
+      "title": "Variance Analysis",
+      "startLine": 147,
+      "endLine": 175,
+      "summary": "`variancePairs_nonneg`, `variancePairs_zero`, `variancePairs_one`, `variancePairs_le_expected` — variance is nonneg and at most the expected value.",
+      "mathContext": "$\\text{Var}[X] \\leq E[X]$ for the birthday pair count."
+    },
+    {
+      "id": "thresholds",
+      "title": "Threshold Computations (d=365)",
+      "startLine": 178,
+      "endLine": 255,
+      "summary": "Computes for d=365: std_expected_23, std_expected_28_gt_one (first n with E[X]>1), std_expected_27_lt_one, std_expected_28_exact, std_expected_40_gt_two, weekly_expected_5_gt_one (d=7). All proved by norm_num.",
+      "mathContext": "For $d=365$: $E[23] = 253/365 < 1$, $E[28] = 378/365 > 1$."
+    },
+    {
+      "id": "general",
+      "title": "General Threshold Criterion",
+      "startLine": 224,
+      "endLine": 513,
+      "summary": "`expectedPairs_pos` (E>0 when n≥2, d>0), `expectedPairs_gt_of_choose_gt` (E[X]>k when C(n,2)>k*d). Additional concrete examples for various d and n values.",
+      "mathContext": "$E[n,d] > k \\iff \\binom{n}{2} > k \\cdot d$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Expected birthday pairs fully formalized: 53 theorems, 0 sorries, 0 axioms. Formula E[X] = C(n,2)/d proved with monotonicity, variance bounds, and threshold computations.",
+    "implications": "The linearity-of-expectation approach provides clean proofs without independence assumptions. The variance bound shows birthday pair counts are well-concentrated, which has applications in collision probability analysis.",
+    "openQuestions": [
+      "Can the distribution of X (not just E[X]) be analyzed formally? The exact distribution follows a Poisson-binomial law.",
+      "Can the coupling between expected pairs and collision probability be formalized?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Fintype.BigOperators",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Choose.Sum",
+      "Mathlib.Algebra.Order.Field.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "BirthdayProblemOQ01",
+    "lineCount": 513,
+    "axiomCount": 0,
+    "theoremCount": 53,
+    "definitionCount": 7,
+    "path": "Proofs/BirthdayProblemOQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "birthday-problem",
+      "relationship": "extends",
+      "description": "Extends the birthday problem to expected number of shared pairs"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "expectedPairs_eq_rational",
+      "type": "core",
+      "statement": "∀ n d : ℕ, expectedPairs n d = n * (n - 1) / (2 * d)",
+      "description": "The closed-form formula E[X] = n(n-1)/(2d).",
+      "significance": "Main formula for expected birthday pairs"
+    },
+    {
+      "name": "std_expected_28_gt_one",
+      "type": "corollary",
+      "statement": "stdExpectedPairs 28 > 1",
+      "description": "With 28 people and d=365, expected pairs exceeds 1.",
+      "significance": "Concrete threshold computation"
+    }
+  ],
+  "sorries": 0
+}

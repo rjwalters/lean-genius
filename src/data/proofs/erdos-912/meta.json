@@ -2,9 +2,9 @@
   "id": "erdos-912",
   "title": "Distinct Exponents in Factorial Factorization",
   "slug": "erdos-912",
-  "description": "If n! = \u220f p\u1d62^{k\u1d62}, let h(n) count distinct exponents k\u1d62. Prove h(n) ~ c\u00b7\u221a(n/log n) for some c > 0. Known: h(n) \u224d \u221a(n/log n). Conjectured: c = \u221a(2\u03c0).",
+  "description": "If n! = ∏ pᵢ^{kᵢ}, let h(n) count distinct exponents kᵢ. Prove h(n) ~ c·√(n/log n) for some c > 0. Known: h(n) ≍ √(n/log n). Conjectured: c = √(2π).",
   "meta": {
-    "author": "Paul Erd\u0151s, John Selfridge",
+    "author": "Paul Erdős, John Selfridge",
     "sourceUrl": "https://erdosproblems.com/912",
     "date": "2026-03-12",
     "status": "axiomatized",
@@ -46,26 +46,27 @@
     ],
     "originalContributions": [
       "Lean formalization of h(n) counting distinct exponents",
-      "Formal statement of Erd\u0151s-Selfridge bounds",
-      "Erd\u0151s conjecture and Tao's conjectured constant",
+      "Formal statement of Erdős-Selfridge bounds",
+      "Erdős conjecture and Tao's conjectured constant",
       "Connection to Legendre's formula",
       "Proved erdos_selfridge_asymptotic by combining axiomatized bounds with max threshold"
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 2,
     "lineCount": 221,
-    "assumptions": "2 axioms: erdos_selfridge_lower_bound, erdos_selfridge_upper_bound. 0 sorries."
+    "assumptions": "2 axioms: erdos_selfridge_lower_bound, erdos_selfridge_upper_bound. 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erd\u0151s and Selfridge in their 1982 paper in Congressus Numerantium. They proved the asymptotic order h(n) \u224d \u221a(n/log n) using estimates from the prime number theorem and Legendre's formula (1808) for the p-adic valuation of factorials. The function h(n) is recorded as OEIS sequence A071626. The exact limiting constant remains open; Terence Tao developed a heuristic argument using Cram\u00e9r's random model for primes (1936), which suggests c = \u221a(2\u03c0) \u2248 2.506. This value arises from a central limit theorem argument applied to the distribution of exponents.",
-    "problemStatement": "Let n! = \u220f\u1d62 p\u1d62^{k\u1d62} be the prime factorization. Define h(n) as the count of distinct exponents k\u1d62. Prove there exists c > 0 such that h(n) ~ c\u00b7\u221a(n/log n) as n \u2192 \u221e.",
-    "text": "If n! = \u220f p\u1d62^{k\u1d62}, let h(n) count distinct exponents k\u1d62. Prove h(n) ~ c\u00b7\u221a(n/log n) for some c > 0. Known: h(n) \u224d \u221a(n/log n). Conjectured: c = \u221a(2\u03c0).",
-    "proofStrategy": "The formalization defines h(n) using p-adic valuations, states the Erd\u0151s-Selfridge bounds as axioms, and formally expresses the conjecture about the exact constant.",
+    "historicalContext": "This problem was posed by Erdős and Selfridge in their 1982 paper in Congressus Numerantium. They proved the asymptotic order h(n) ≍ √(n/log n) using estimates from the prime number theorem and Legendre's formula (1808) for the p-adic valuation of factorials. The function h(n) is recorded as OEIS sequence A071626. The exact limiting constant remains open; Terence Tao developed a heuristic argument using Cramér's random model for primes (1936), which suggests c = √(2π) ≈ 2.506. This value arises from a central limit theorem argument applied to the distribution of exponents.",
+    "problemStatement": "Let n! = ∏ᵢ pᵢ^{kᵢ} be the prime factorization. Define h(n) as the count of distinct exponents kᵢ. Prove there exists c > 0 such that h(n) ~ c·√(n/log n) as n → ∞.",
+    "text": "If n! = ∏ pᵢ^{kᵢ}, let h(n) count distinct exponents kᵢ. Prove h(n) ~ c·√(n/log n) for some c > 0. Known: h(n) ≍ √(n/log n). Conjectured: c = √(2π).",
+    "proofStrategy": "The formalization defines h(n) using p-adic valuations, states the Erdős-Selfridge bounds as axioms, and formally expresses the conjecture about the exact constant.",
     "keyInsights": [
       "h(n) counts distinct exponents in n!'s prime factorization",
-      "Erd\u0151s-Selfridge proved h(n) \u224d \u221a(n/log n) (asymptotic order)",
-      "The exact constant c in h(n) ~ c\u00b7\u221a(n/log n) is unknown",
-      "Tao's heuristic suggests c = \u221a(2\u03c0) via Cram\u00e9r model \u2014 the \u221a(2\u03c0) arises from CLT considerations on independent prime events",
+      "Erdős-Selfridge proved h(n) ≍ √(n/log n) (asymptotic order)",
+      "The exact constant c in h(n) ~ c·√(n/log n) is unknown",
+      "Tao's heuristic suggests c = √(2π) via Cramér model — the √(2π) arises from CLT considerations on independent prime events",
       "The formalization proves erdos_selfridge_asymptotic constructively by combining the two axiomatized bounds using max to unify thresholds"
     ],
     "prerequisites": [
@@ -84,10 +85,10 @@
     },
     {
       "id": "erdos-selfridge-bounds",
-      "title": "Erd\u0151s-Selfridge Bounds",
+      "title": "Erdős-Selfridge Bounds",
       "startLine": 84,
       "endLine": 119,
-      "summary": "Known asymptotic bounds h(n) \u224d \u221a(n/log n)",
+      "summary": "Known asymptotic bounds h(n) ≍ √(n/log n)",
       "mathContext": "Axioms: $\\exists c_1 > 0, h(n) \\geq c_1\\sqrt{n/\\log n}$ and $\\exists c_2 > 0, h(n) \\leq c_2\\sqrt{n/\\log n}$. Combined in `erdos_selfridge_asymptotic` using `max N_1 N_2`."
     },
     {
@@ -96,7 +97,7 @@
       "startLine": 120,
       "endLine": 150,
       "summary": "Formal statement of the conjecture and Tao's constant",
-      "mathContext": "`ErdosConjecture912`: $\\exists c > 0$, `Filter.Tendsto (h(n)/\u221a(n/log n)) atTop (nhds c)`. `taoConstant = \u221a(2\u03c0)`. `TaoConjecture`: the specific $c = \\sqrt{2\\pi}$ claim."
+      "mathContext": "`ErdosConjecture912`: $\\exists c > 0$, `Filter.Tendsto (h(n)/√(n/log n)) atTop (nhds c)`. `taoConstant = √(2π)`. `TaoConjecture`: the specific $c = \\sqrt{2\\pi}$ claim."
     },
     {
       "id": "related-properties",
@@ -132,12 +133,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #912 is OPEN. The asymptotic order h(n) \u224d \u221a(n/log n) is known (Erd\u0151s-Selfridge). The exact constant c in h(n) ~ c\u00b7\u221a(n/log n) remains unknown, with Tao conjecturing c = \u221a(2\u03c0) \u2248 2.506 based on the Cram\u00e9r model.",
+    "summary": "Erdős Problem #912 is OPEN. The asymptotic order h(n) ≍ √(n/log n) is known (Erdős-Selfridge). The exact constant c in h(n) ~ c·√(n/log n) remains unknown, with Tao conjecturing c = √(2π) ≈ 2.506 based on the Cramér model.",
     "implications": "This problem connects factorials, prime distribution, and asymptotic analysis. Solving it would require understanding the fine structure of how exponents distribute in factorial prime factorizations.",
     "openQuestions": [
-      "Does the limit c = lim h(n)/\u221a(n/log n) exist?",
-      "Is c = \u221a(2\u03c0) as Tao's heuristic suggests?",
-      "What are the precise values of c\u2081 and c\u2082 in the Erd\u0151s-Selfridge bounds?"
+      "Does the limit c = lim h(n)/√(n/log n) exist?",
+      "Is c = √(2π) as Tao's heuristic suggests?",
+      "What are the precise values of c₁ and c₂ in the Erdős-Selfridge bounds?"
     ]
   },
   "leanFile": {
@@ -163,21 +164,21 @@
   },
   "references": [
     {
-      "authors": "Erd\u0151s, P.",
+      "authors": "Erdős, P.",
       "title": "Miscellaneous problems in number theory",
       "year": "1982",
       "venue": "Congr. Numer. 34, 25-45",
-      "note": "Proved h(n) \u224d \u221a(n/log n) with Selfridge"
+      "note": "Proved h(n) ≍ √(n/log n) with Selfridge"
     },
     {
       "authors": "Legendre, A.-M.",
-      "title": "Essai sur la th\u00e9orie des nombres",
+      "title": "Essai sur la théorie des nombres",
       "year": "1808",
       "venue": "Courcier, Paris",
-      "note": "Legendre's formula for v_p(n!) = \u03a3 floor(n/p^j)"
+      "note": "Legendre's formula for v_p(n!) = Σ floor(n/p^j)"
     },
     {
-      "authors": "Cram\u00e9r, H.",
+      "authors": "Cramér, H.",
       "title": "On the order of magnitude of the difference between consecutive prime numbers",
       "year": "1936",
       "venue": "Acta Arith. 2, 23-46",
@@ -188,17 +189,17 @@
     {
       "targetId": "erdos-1056",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: factorials, number-theory"
+      "description": "Related Erdős problem sharing themes: factorials, number-theory"
     },
     {
       "targetId": "erdos-1058",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: factorials, number-theory"
+      "description": "Related Erdős problem sharing themes: factorials, number-theory"
     },
     {
       "targetId": "erdos-1059",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: factorials, number-theory"
+      "description": "Related Erdős problem sharing themes: factorials, number-theory"
     }
   ],
   "sorries": 0

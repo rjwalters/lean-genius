@@ -1,10 +1,10 @@
 {
   "id": "erdos-108",
-  "title": "Erd\u0151s Problem #108: High Chromatic Subgraphs with Large Girth",
+  "title": "Erdős Problem #108: High Chromatic Subgraphs with Large Girth",
   "slug": "erdos-108",
   "description": "For every r >= 4 and k >= 2, does there exist f(k,r) such that every graph with chromatic number >= f(k,r) contains a subgraph of girth >= r and chromatic number >= k?",
   "meta": {
-    "author": "R\u00f6dl (1977, r=4 case); general case resolved",
+    "author": "Rödl (1977, r=4 case); general case resolved",
     "sourceUrl": "https://erdosproblems.com/108",
     "date": "1977",
     "status": "axiomatized",
@@ -41,24 +41,25 @@
       }
     ],
     "originalContributions": [
-      "Formal statement of the Erd\u0151s-Hajnal conjecture in Lean 4",
-      "Axiomatization of the Erd\u0151s-Hajnal-R\u00f6dl theorem",
-      "Special case extraction for R\u00f6dl's r=4 theorem"
+      "Formal statement of the Erdős-Hajnal conjecture in Lean 4",
+      "Axiomatization of the Erdős-Hajnal-Rödl theorem",
+      "Special case extraction for Rödl's r=4 theorem"
     ],
     "axiomCount": 1,
     "lineCount": 142,
-    "assumptions": "1 axiom: erdos_hajnal_rodl_theorem. See Lean source for the complete statement."
+    "assumptions": "1 axiom: erdos_hajnal_rodl_theorem. See Lean source for the complete statement.",
+    "theoremCount": 2
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erd\u0151s and Hajnal in the 1960s, connecting two fundamental graph parameters: chromatic number and girth. The chromatic number measures global coloring complexity, while girth measures local sparsity (absence of short cycles).\n\nThe question asks whether high chromatic number forces the existence of subgraphs that are simultaneously highly chromatic AND locally sparse (large girth). This is surprising because high-girth graphs resemble trees locally, and trees are trivially 2-colorable.\n\nVojt\u011bch R\u00f6dl proved the r=4 case in 1977, showing that graphs with sufficiently high chromatic number must contain triangle-free subgraphs of arbitrarily high chromatic number. This connected to the classical Mycielski construction of triangle-free graphs with high chromatic number, but went further by showing such subgraphs exist inside ANY sufficiently chromatic graph.",
-    "problemStatement": "For every $r \\geq 4$ and $k \\geq 2$, is there a finite threshold $f(k,r)$ such that every graph $G$ with chromatic number $\\chi(G) \\geq f(k,r)$ contains a subgraph $H$ satisfying:\n- $g(H) \\geq r$ (girth at least $r$, meaning no cycles of length less than $r$)\n- $\\chi(H) \\geq k$ (chromatic number at least $k$)\n\n**Answer**: YES \u2014 R\u00f6dl (1977) proved the $r=4$ case; the general result follows from extensions of his probabilistic methods.",
+    "historicalContext": "This problem was posed by Erdős and Hajnal in the 1960s, connecting two fundamental graph parameters: chromatic number and girth. The chromatic number measures global coloring complexity, while girth measures local sparsity (absence of short cycles).\n\nThe question asks whether high chromatic number forces the existence of subgraphs that are simultaneously highly chromatic AND locally sparse (large girth). This is surprising because high-girth graphs resemble trees locally, and trees are trivially 2-colorable.\n\nVojtěch Rödl proved the r=4 case in 1977, showing that graphs with sufficiently high chromatic number must contain triangle-free subgraphs of arbitrarily high chromatic number. This connected to the classical Mycielski construction of triangle-free graphs with high chromatic number, but went further by showing such subgraphs exist inside ANY sufficiently chromatic graph.",
+    "problemStatement": "For every $r \\geq 4$ and $k \\geq 2$, is there a finite threshold $f(k,r)$ such that every graph $G$ with chromatic number $\\chi(G) \\geq f(k,r)$ contains a subgraph $H$ satisfying:\n- $g(H) \\geq r$ (girth at least $r$, meaning no cycles of length less than $r$)\n- $\\chi(H) \\geq k$ (chromatic number at least $k$)\n\n**Answer**: YES — Rödl (1977) proved the $r=4$ case; the general result follows from extensions of his probabilistic methods.",
     "text": "For every r >= 4 and k >= 2, does there exist f(k,r) such that every graph with chromatic number >= f(k,r) contains a subgraph of girth >= r and chromatic number >= k?",
     "proofStrategy": "The proof uses probabilistic methods and Ramsey-theoretic arguments:\n\n1. **Random subgraph selection**: Consider random vertex subsets of the original graph\n2. **Girth control**: With high probability, small subgraphs avoid short cycles\n3. **Chromatic preservation**: Carefully choose parameters so chromatic number is maintained\n4. **Iteration**: Combine multiple rounds to achieve both girth and chromatic bounds\n\nThe explicit bounds for f(k,r) involve tower functions, making direct formalization impractical. We axiomatize the main result and derive the r=4 special case.",
     "keyInsights": [
-      "**Chromatic number \u03c7(G)**: The minimum number of colors needed to color vertices so no adjacent vertices share a color. For complete graph K_n, \u03c7(K_n) = n.",
-      "**Girth g(G)**: Length of the shortest cycle. Girth \u2265 4 means triangle-free. Girth = \u221e for forests (no cycles).",
+      "**Chromatic number χ(G)**: The minimum number of colors needed to color vertices so no adjacent vertices share a color. For complete graph K_n, χ(K_n) = n.",
+      "**Girth g(G)**: Length of the shortest cycle. Girth ≥ 4 means triangle-free. Girth = ∞ for forests (no cycles).",
       "**The paradox resolved**: High girth graphs CAN have high chromatic number (Mycielski's construction), and this result shows such subgraphs are forced to exist in ANY highly chromatic graph.",
-      "**R\u00f6dl's r=4 case**: Every graph with \u03c7(G) \u2265 f(k,4) contains a triangle-free subgraph with \u03c7 \u2265 k. This is the most important special case.",
+      "**Rödl's r=4 case**: Every graph with χ(G) ≥ f(k,4) contains a triangle-free subgraph with χ ≥ k. This is the most important special case.",
       "**Open question**: The infinite version (whether graphs of infinite chromatic number contain subgraphs of infinite chromatic number and arbitrarily large girth) remains unsolved."
     ],
     "prerequisites": [
@@ -89,20 +90,20 @@
       "title": "Main Axiom",
       "startLine": 70,
       "endLine": 92,
-      "summary": "The Erd\u0151s-Hajnal-R\u00f6dl theorem stated as an axiom, with justification for why formalization is beyond current Mathlib.",
-      "mathContext": "The Erd\u0151s-Hajnal-R\u00f6dl theorem stated as an axiom, with justification for why formalization is beyond current Mathlib."
+      "summary": "The Erdős-Hajnal-Rödl theorem stated as an axiom, with justification for why formalization is beyond current Mathlib.",
+      "mathContext": "The Erdős-Hajnal-Rödl theorem stated as an axiom, with justification for why formalization is beyond current Mathlib."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 93,
       "endLine": 102,
-      "summary": "Erd\u0151s Problem #108 stated as a theorem, derived directly from the axiom.",
-      "mathContext": "Erd\u0151s Problem #108 stated as a theorem, derived directly from the axiom."
+      "summary": "Erdős Problem #108 stated as a theorem, derived directly from the axiom.",
+      "mathContext": "Erdős Problem #108 stated as a theorem, derived directly from the axiom."
     },
     {
       "id": "special-case",
-      "title": "R\u00f6dl's Theorem (r=4)",
+      "title": "Rödl's Theorem (r=4)",
       "startLine": 103,
       "endLine": 142,
       "summary": "The special case for r=4: triangle-free highly chromatic subgraphs. Historical note on Mycielski's construction.",
@@ -110,71 +111,71 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erd\u0151s Problem #108, which asks whether high chromatic number forces highly chromatic subgraphs of large girth. The answer is YES, first proved by R\u00f6dl for the r=4 case in 1977. We axiomatize the general Erd\u0151s-Hajnal-R\u00f6dl theorem and derive the key special cases.",
-    "implications": "**Theoretical Significance**: This result reveals a deep connection between global (chromatic number) and local (girth) graph properties.\n\nIt shows that chromatic complexity cannot be 'explained away' by local density\u2014even locally tree-like subgraphs can require many colors. The proof techniques (probabilistic method, Ramsey theory) are central to modern combinatorics.",
+    "summary": "We formalize Erdős Problem #108, which asks whether high chromatic number forces highly chromatic subgraphs of large girth. The answer is YES, first proved by Rödl for the r=4 case in 1977. We axiomatize the general Erdős-Hajnal-Rödl theorem and derive the key special cases.",
+    "implications": "**Theoretical Significance**: This result reveals a deep connection between global (chromatic number) and local (girth) graph properties.\n\nIt shows that chromatic complexity cannot be 'explained away' by local density—even locally tree-like subgraphs can require many colors. The proof techniques (probabilistic method, Ramsey theory) are central to modern combinatorics.",
     "openQuestions": [
       "What are the best explicit bounds for f(k,r)?",
       "Does every graph of infinite chromatic number contain a subgraph of infinite chromatic number and girth > k for all k?",
-      "Does lim_{k\u2192\u221e} f(k,r+1)/f(k,r) = \u221e as Erd\u0151s asked?"
+      "Does lim_{k→∞} f(k,r+1)/f(k,r) = ∞ as Erdős asked?"
     ]
   },
   "crossReferences": [
     {
       "relationship": "companion problem",
-      "description": "Erd\u0151s Problem #58 asks whether graphs with sufficiently high chromatic number must contain odd cycles of every length, a complementary question about how chromatic number forces cycle structure. Together with #108, it forms part of Erd\u0151s's program relating chromatic number to cycle properties.",
+      "description": "Erdős Problem #58 asks whether graphs with sufficiently high chromatic number must contain odd cycles of every length, a complementary question about how chromatic number forces cycle structure. Together with #108, it forms part of Erdős's program relating chromatic number to cycle properties.",
       "targetId": "erdos-58"
     },
     {
       "relationship": "closely related result",
-      "description": "Erd\u0151s Problem #57 addresses whether graphs of infinite chromatic number must contain odd cycles, an infinite analogue of the finite chromatic/cycle questions. The relationship between girth and chromatic number studied in #108 is directly relevant.",
+      "description": "Erdős Problem #57 addresses whether graphs of infinite chromatic number must contain odd cycles, an infinite analogue of the finite chromatic/cycle questions. The relationship between girth and chromatic number studied in #108 is directly relevant.",
       "targetId": "erdos-57"
     },
     {
       "relationship": "related conjecture",
-      "description": "The Erd\u0151s\u2013Hajnal Conjecture (#61) asks whether every graph with a forbidden induced subgraph has a large clique or independent set. It shares the theme of extracting structured subgraphs from dense/chromatic graphs, and Erd\u0151s and Hajnal are co-authors of both problems.",
+      "description": "The Erdős–Hajnal Conjecture (#61) asks whether every graph with a forbidden induced subgraph has a large clique or independent set. It shares the theme of extracting structured subgraphs from dense/chromatic graphs, and Erdős and Hajnal are co-authors of both problems.",
       "targetId": "erdos-61"
     },
     {
       "relationship": "shared technique",
-      "description": "Erd\u0151s Problem #77 concerns Ramsey number growth rates and relies on the same probabilistic method (random graph constructions) that underlies R\u00f6dl's proof of the r=4 case of #108. Both illustrate the power of the probabilistic method in extremal combinatorics.",
+      "description": "Erdős Problem #77 concerns Ramsey number growth rates and relies on the same probabilistic method (random graph constructions) that underlies Rödl's proof of the r=4 case of #108. Both illustrate the power of the probabilistic method in extremal combinatorics.",
       "targetId": "erdos-77"
     },
     {
       "relationship": "shared technique",
-      "description": "Erd\u0151s Problem #78 seeks constructive lower bounds for Ramsey numbers, using probabilistic arguments similar to those in the proof of #108. The girth control in #108's proof uses random subgraph selection analogous to Ramsey constructions.",
+      "description": "Erdős Problem #78 seeks constructive lower bounds for Ramsey numbers, using probabilistic arguments similar to those in the proof of #108. The girth control in #108's proof uses random subgraph selection analogous to Ramsey constructions.",
       "targetId": "erdos-78"
     },
     {
       "relationship": "related problem",
-      "description": "Erd\u0151s Problem #74 asks whether graphs of high chromatic number contain almost-bipartite subgraphs of high chromatic number\u2014a variant of the same theme in #108 where the structural constraint is near-bipartiteness rather than large girth.",
+      "description": "Erdős Problem #74 asks whether graphs of high chromatic number contain almost-bipartite subgraphs of high chromatic number—a variant of the same theme in #108 where the structural constraint is near-bipartiteness rather than large girth.",
       "targetId": "erdos-74"
     }
   ],
   "references": [
     {
       "authors": [
-        "V. R\u00f6dl"
+        "V. Rödl"
       ],
       "title": "On the chromatic number of subgraphs of a given graph",
       "venue": "Proceedings of the American Mathematical Society",
       "year": "1977",
       "volume": "64",
-      "pages": "370\u2013371",
+      "pages": "370–371",
       "doi": "10.1090/S0002-9939-1977-0469909-7",
-      "note": "Proves the r=4 case: every graph with sufficiently high chromatic number contains a triangle-free subgraph of chromatic number \u2265 k."
+      "note": "Proves the r=4 case: every graph with sufficiently high chromatic number contains a triangle-free subgraph of chromatic number ≥ k."
     },
     {
       "authors": [
-        "P. Erd\u0151s",
+        "P. Erdős",
         "A. Hajnal"
       ],
       "title": "On chromatic number of graphs and set-systems",
       "venue": "Acta Mathematica Hungarica",
       "year": "1966",
       "volume": "17",
-      "pages": "61\u201399",
+      "pages": "61–99",
       "doi": "10.1007/BF02020444",
-      "note": "Original paper posing the problem of high-chromatic subgraphs with large girth, establishing the foundational questions addressed in Erd\u0151s Problem #108."
+      "note": "Original paper posing the problem of high-chromatic subgraphs with large girth, establishing the foundational questions addressed in Erdős Problem #108."
     },
     {
       "authors": [
@@ -184,21 +185,21 @@
       "venue": "Colloquium Mathematicum",
       "year": "1955",
       "volume": "3",
-      "pages": "161\u2013162",
+      "pages": "161–162",
       "doi": "10.4064/cm-3-2-161-162",
       "note": "Mycielski's construction of triangle-free graphs with arbitrarily high chromatic number, a key precursor showing that high girth and high chromatic number are compatible."
     },
     {
       "authors": [
-        "P. Erd\u0151s"
+        "P. Erdős"
       ],
       "title": "Graph theory and probability",
       "venue": "Canadian Journal of Mathematics",
       "year": "1959",
       "volume": "11",
-      "pages": "34\u201338",
+      "pages": "34–38",
       "doi": "10.4153/CJM-1959-003-9",
-      "note": "Erd\u0151s's seminal paper introducing the probabilistic method in graph theory, used to construct graphs with high girth and high chromatic number, directly motivating the problem in #108."
+      "note": "Erdős's seminal paper introducing the probabilistic method in graph theory, used to construct graphs with high girth and high chromatic number, directly motivating the problem in #108."
     },
     {
       "authors": [
@@ -210,7 +211,7 @@
       "year": "2016",
       "edition": "4th",
       "isbn": "978-1-119-06195-3",
-      "note": "Comprehensive treatment of probabilistic techniques including the girth-chromatic number constructions and Lov\u00e1sz Local Lemma used in proofs related to #108. Chapter 5 covers high girth, high chromatic number graphs."
+      "note": "Comprehensive treatment of probabilistic techniques including the girth-chromatic number constructions and Lovász Local Lemma used in proofs related to #108. Chapter 5 covers high girth, high chromatic number graphs."
     }
   ],
   "leanFile": {

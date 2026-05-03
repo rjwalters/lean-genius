@@ -47,7 +47,8 @@
     ],
     "lineCount": 203,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "Romanoff (1934) proved that the set $\\{n : n = 2^k + p\\}$ has positive lower density among odd integers, using sieve methods and the prime number theorem to show that the 'expected count' of representations diverges. Erdős (1950) turned to the complementary question: what does the exceptional set $E$ look like? His key tool was covering congruences — systems of residue classes $\\{a_i \\pmod{m_i}\\}$ that tile $\\mathbb{Z}$. By choosing moduli $\\{2, 3, 4, 6, 8, 12, 24\\}$ (whose reciprocals sum to 1), Erdős arranged that for any $n$ in a particular residue class mod $\\text{lcm} = 24$, each $n - 2^k$ is divisible by a small prime. This forced an infinite AP into $E$. Erdős then conjectured — self-deprecatingly calling it 'rather silly' — that $E$ is essentially just this AP plus density-0 noise. After 73 years, Chen (2023) disproved this by showing $E$ contains infinitely many essentially independent APs, each contributing positive density. The exceptional set's structure is far richer than a single covering congruence produces.",

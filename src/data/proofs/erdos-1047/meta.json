@@ -60,7 +60,8 @@
     "axiomCount": 2,
     "lineCount": 252,
     "assumptions": "2 axioms: grunskyConjecture_false (Grunsky's conjecture is false — requires showing non-convexity for arbitrarily small c), goodman_counterexample (Goodman's polynomial has a non-convex lemniscate component at c = 5^(3/2)/4). All topological properties (closedness) and polynomial identities (monic, degree) are fully proved.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "**The Geometry of Polynomial Level Sets**\n\nThis problem originated with Helmut Grunsky and was reported by Erdős, Herzog, and Piranian in their 1958 paper 'Metric properties of polynomials' (EHP58). The question asks about the geometry of **polynomial lemniscates** — the level sets {z : |f(z)| ≤ c}.\n\nFor small c, the lemniscate breaks into separate components around each root. Near a simple root z₀, the component looks like a small disk: |z - z₀| ≤ c^(1/k) where k is multiplicity. Grunsky asked: must these components always be convex?\n\n**The Surprising Answer**: NO! The intuition that 'small regions around roots are nearly circular' breaks down when roots interact. Pommerenke (1961) gave the first counterexample, and Goodman (1966) provided explicit constructions including one with all simple roots.",

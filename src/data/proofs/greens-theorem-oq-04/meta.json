@@ -85,7 +85,8 @@
     "mathlib_version": "4.26.0",
     "additionalFiles": [
       "Proofs/GreensTheoremOQ03.lean"
-    ]
+    ],
+    "theoremCount": 23
   },
   "overview": {
     "historicalContext": "Green's theorem for multiply-connected regions is the natural generalization needed when the domain has holes (non-trivial topology). The classical treatment appears in Ahlfors' 'Complex Analysis' (1953) and Apostol's 'Mathematical Analysis' (1974). The key insight is that the boundary integral must account for all boundary components with correct orientation: the outer boundary counterclockwise, inner boundaries (holes) clockwise. This ensures the region always lies to the left of the traversed boundary.\n\nThe multiply-connected extension is foundational to:\n- **Complex analysis**: Cauchy's integral formula and the residue theorem require circulation around punctured disks\n- **De Rham cohomology**: Non-trivial first cohomology H^1(D) = R^n arises from n holes, with each hole contributing an independent 'period'\n- **Physics**: Gauss's law with interior conductors, the Aharonov-Bohm effect, and vortex dynamics in fluid mechanics all rely on this extension",

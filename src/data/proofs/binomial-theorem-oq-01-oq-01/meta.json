@@ -52,7 +52,8 @@
     ],
     "lineCount": 220,
     "assumptions": "0 axioms, 0 sorries. Core analytic convergence derived from Mathlib Real.one_add_rpow_hasFPowerSeriesOnBall_zero via binomialSeries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 17
   },
   "overview": {
     "historicalContext": "Newton discovered the generalized binomial theorem around 1665 during the *annus mirabilis*, extending the finite binomial sum $(1+x)^n = \\sum \\binom{n}{k} x^k$ to arbitrary real exponents via the infinite series $(1+x)^\\alpha = \\sum_{k=0}^{\\infty} \\binom{\\alpha}{k} x^k$ for $|x| < 1$. Newton communicated the result to Leibniz in 1676 via the famous *epistola prior* and *epistola posterior*, but publication was delayed until *De analysi* (1711) and *Methodus fluxionum* (1736, posthumous).\n\nThe first rigorous convergence proof was given by Abel in his 1826 *Journal für die reine und angewandte Mathematik* paper, using what is now called Abel's theorem on power series — the same paper that introduced the concept of uniform convergence. Cauchy had earlier attempted a proof in his *Cours d'analyse* (1821) but his treatment contained a gap (confusing pointwise and uniform convergence).\n\nThe analytic function theory perspective emerged from Euler and Cauchy's work on ODEs: the function $f(x) = (1+x)^\\alpha$ is the unique solution to the initial value problem $(1+x)f'(x) = \\alpha f(x)$, $f(0) = 1$. This ODE approach is elegant because it determines the power series coefficients via a single recurrence relation, from which all properties (convergence, functional equation, special values) follow. The case $\\alpha = 1/2$ gives the square root series $\\sqrt{1+x} = 1 + x/2 - x^2/8 + \\cdots$, which Newton himself used to compute $\\sqrt{3}$ to many decimal places.",

@@ -55,7 +55,8 @@
     "axiomCount": 0,
     "lineCount": 305,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 16
   },
   "overview": {
     "historicalContext": "The classical Chinese Remainder Theorem requires coprime moduli: gcd(m,n) = 1. But what happens when the moduli share common factors? The answer was implicit in Gauss's Disquisitiones Arithmeticae (1801), where he studied simultaneous congruences systematically, but the clean formulation as a solvability criterion was developed explicitly by Ore (1952) in the American Mathematical Monthly.\n\nThe generalization reveals that the coprimality condition in the classical CRT is not a fundamental requirement but rather a convenience: it guarantees that the compatibility condition gcd(m,n) | (a-b) is automatically satisfied. When moduli share factors, some systems of congruences become genuinely unsolvable — for example, x = 1 (mod 6) and x = 2 (mod 4) has no solution because gcd(6,4) = 2 does not divide 1-2 = -1.\n\nThe non-coprime CRT is essential in algebraic number theory (where ideals in number rings may share factors), coding theory (redundant residue number systems), and scheduling theory (aligning cycles with shared periods).",

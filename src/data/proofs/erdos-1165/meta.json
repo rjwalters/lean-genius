@@ -22,7 +22,8 @@
     "axiomCount": 5,
     "lineCount": 183,
     "assumptions": "5 axioms: VisitCount and FavouriteSites (random walk infrastructure), prob_favourite_count_io (probability of i.o. event), toth_favourite_sites_geq_4 (Tóth 2001), hao_li_okada_zheng_three_favourite_sites (Hao et al. 2024). All theorems fully proved from axioms (0 sorries).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "This problem originates from Erdős and Révész's study of random walk visit frequencies, catalogued as Problem 6.77 in Vatter's 1999 collection. The question asks about the number of 'favourite sites' — positions achieving the maximum visit count — for a random walk in ℤ². In one dimension, Bass and Griffin (1985) showed the maximum is achieved at a unique site for large n. The two-dimensional case is fundamentally different due to the marginal recurrence of ℤ² random walks. Tóth (2001, Annals of Probability) proved the upper bound: at most 3 favourite sites infinitely often. The matching lower bound took 23 years: Hao, Li, Okada, and Zheng (2024) proved that exactly 3 favourite sites occur infinitely often, completely resolving the problem.",

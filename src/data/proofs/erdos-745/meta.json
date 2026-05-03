@@ -48,7 +48,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 298,
-    "assumptions": "0 axioms, 0 sorries. critical_giant_size, komlos_sulyok_szemeredi, second_largest_lower_bound are theorem declarations using True-stub proofs (∃ c, c > 0 ∧ True), not real axiom declarations."
+    "assumptions": "0 axioms, 0 sorries. critical_giant_size, komlos_sulyok_szemeredi, second_largest_lower_bound are theorem declarations using True-stub proofs (∃ c, c > 0 ∧ True), not real axiom declarations.",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "**Erdős Problem #745: Random Graph Components**\n\nThis problem concerns the Erdős-Rényi random graph model G(n, p), one of the foundational models in probabilistic combinatorics.\n\n**Historical Timeline:**\n- 1959-1960: Erdős and Rényi introduce the random graph model G(n, p)\n- 1960: They discover the phase transition at p = 1/n\n- 1960s-70s: The structure of the giant component is studied\n- 1980: Komlós, Sulyok, and Szemerédi prove Erdős's conjecture about the second largest component\n- 1980s-90s: Łuczak and others refine understanding of the critical window\n\n**The Phase Transition:**\nAt p = 1/n, the random graph undergoes a dramatic change:\n- p < 1/n: All components small (size O(log n))\n- p = 1/n: Giant emerges with size Θ(n^{2/3})\n- p > 1/n: Unique giant of size Θ(n)",

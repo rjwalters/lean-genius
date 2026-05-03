@@ -58,7 +58,8 @@
     "axiomCount": 1,
     "lineCount": 281,
     "assumptions": "1 axiom(s). No sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 23
   },
   "overview": {
     "historicalContext": "This problem originates from Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (Monographie no. 28, L'Enseignement Mathématique, p.92). They introduced the $t$-smooth component of an integer — the largest divisor whose prime factors are all $< t$ — and asked whether the number of distinct smooth components in a short interval $\\{n+1, \\ldots, n+t\\}$ is linear in $t$.\n\nErdős and Graham proved the weaker bound $f(n,t) \\gg t/\\log t$ using sieve methods and multiplicative function estimates. The problem connects to the broader study of smooth (or 'friable') numbers, a central topic in analytic number theory with applications to cryptography (factoring algorithms like the number field sieve rely on smooth number density). Key related work includes Hildebrand's 1986 estimates for $\\Psi(x, y)$ (the count of $y$-smooth numbers up to $x$), Tenenbaum's probabilistic approach, and Ford's 2008 Annals paper on divisor distribution.\n\nThe problem remains OPEN: the logarithmic gap between the known $t/\\log t$ and the conjectured $t$ has not been closed.",

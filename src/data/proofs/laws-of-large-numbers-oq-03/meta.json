@@ -53,7 +53,8 @@
       "Telescoping identity for shifted Birkhoff sums",
       "Formal hierarchy: i.i.d. ⊂ mixing ⊂ ergodic ⊂ stationary",
       "Documented connection showing classical SLLN as special case of Birkhoff"
-    ]
+    ],
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Birkhoff's Ergodic Theorem (1931) is one of the foundational results of ergodic theory and mathematical physics. It extends the Strong Law of Large Numbers from independent to dependent random variables by replacing i.i.d. sampling with iteration of a measure-preserving transformation T — formalizing Boltzmann's ergodic hypothesis that time averages equal space averages. Von Neumann proved the L² mean ergodic theorem shortly before Birkhoff's almost-sure result in 1932; both appeared in the same issue of PNAS, their competition accelerating the field. Hopf's maximal ergodic lemma (1954) provided a cleaner proof route that is now standard. The theorem unifies several classical LLN results: the SLLN for i.i.d. sequences is the Bernoulli shift special case, and the ergodic theorem for continued fractions (Gauss-Kuzmin law) follows from the Gauss map being ergodic with respect to the Gauss measure.",

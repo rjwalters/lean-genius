@@ -23,7 +23,8 @@
     "axiomCount": 3,
     "lineCount": 348,
     "assumptions": "3 axioms: exists_canonical_threshold, vanDerWaerden_exists, H_root_to_infinity. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "This is a canonical Ramsey theory problem from Erdős-Graham [ErGr79, p.333; ErGr80, p.17]. Unlike van der Waerden numbers W(k) (which require monochromatic APs only), H(k) allows rainbow APs as an alternative 'win condition'. The existence of H(k) follows from Szemerédi's theorem: for N large enough, either pigeonhole forces a monochromatic AP, or the coloring uses enough colors for a rainbow AP. The known result H(k)^{1/k} → ∞ is relatively straightforward, but the stronger question H(k)^{1/k}/k → ∞ — equivalently, whether H(k) grows faster than k^k — remains open.",

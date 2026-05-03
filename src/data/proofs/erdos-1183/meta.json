@@ -59,7 +59,8 @@
       "Lattice theory (union/intersection closure)",
       "Pigeonhole principle",
       "Basic Ramsey theory concepts"
-    ]
+    ],
+    "theoremCount": 17
   },
   "overview": {
     "historicalContext": "Erdős and Ulam posed this problem in their 1978 survey [Er78, p.39] as a Ramsey-type question about the powerset lattice. The powerset 2^{[n]} has a natural lattice structure under ∪ and ∩, and any 2-coloring raises the question: how large a monochromatic sublattice must always exist? The trivial lower bound ⌈(n+1)/2⌉ comes from the nested chain ∅ ⊂ {1} ⊂ {1,2} ⊂ ... ⊂ {1,...,n}: by pigeonhole, one color class forms a monochromatic chain of this size, and any chain is a sublattice. Erdős and Ulam reported having 'no plausible conjecture' for the true order of magnitude. Howorka subsequently proved that F(n) > n^{ω(n)} under the special restriction that all same-size subsets receive the same color, but the general case remains open. The problem connects to Frankl's union-closed conjecture (1979, proved by Gilmer 2022 and strengthened by Sawin 2023) and to Dilworth's theorem on chain decompositions in partially ordered sets. For the Lean formalization, a key architectural correction was needed: the initial attempt defined f(n) via sInf (yielding 0, the infimum of a downward-closed set) rather than sSup (the supremum of achievable lower bounds).",

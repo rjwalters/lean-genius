@@ -1,10 +1,10 @@
 {
   "id": "erdos-1026",
-  "title": "Erd\u0151s Problem #1026: Monotonic Subsequence Sum Optimization",
+  "title": "Erdős Problem #1026: Monotonic Subsequence Sum Optimization",
   "slug": "erdos-1026",
-  "description": "For a sequence of distinct reals, determine max sum over monotonic subsequences. The optimal constant is c = 1: maxMonotonicSum \u2265 (1-o(1)) \u00b7 totalSum/\u221an. This is a weighted Erd\u0151s-Szekeres theorem.",
+  "description": "For a sequence of distinct reals, determine max sum over monotonic subsequences. The optimal constant is c = 1: maxMonotonicSum ≥ (1-o(1)) · totalSum/√n. This is a weighted Erdős-Szekeres theorem.",
   "meta": {
-    "author": "Erd\u0151s (1971 question), Tidor-Wang-Yang (2016 proof), Cambie, Hanani",
+    "author": "Erdős (1971 question), Tidor-Wang-Yang (2016 proof), Cambie, Hanani",
     "sourceUrl": "https://erdosproblems.com/1026",
     "date": "2016",
     "status": "axiomatized",
@@ -52,30 +52,31 @@
     "originalContributions": [
       "Formal definitions of RealSeq, Subsequence, IsIncreasing, IsDecreasing, IsMonotonic",
       "Definition of subsequenceSum and maxMonotonicSum",
-      "Statement of Erd\u0151s-Szekeres theorem (1935)",
+      "Statement of Erdős-Szekeres theorem (1935)",
       "Hanani's decomposition theorem (1957)",
-      "Formalization of the weighted Erd\u0151s-Szekeres theorem (Tidor-Wang-Yang 2016)",
+      "Formalization of the weighted Erdős-Szekeres theorem (Tidor-Wang-Yang 2016)",
       "Proof that optimal constant c = 1",
       "LIS/LDS bounds as corollaries"
     ],
     "dateAdded": "2025-12-28",
     "axiomCount": 1,
     "lineCount": 328,
-    "assumptions": "1 axiom: weighted_erdos_szekeres (deep: Tidor-Wang-Yang 2016). lis_lds_bound now proved from Erd\u0151s-Szekeres via sSup contradiction. erdos_szekeres proved from Mathlib (Theorems100.erdos_szekeres via Finset.orderEmbOfFin bridge).",
-    "mathlib_version": "4.26.0"
+    "assumptions": "1 axiom: weighted_erdos_szekeres (deep: Tidor-Wang-Yang 2016). lis_lds_bound now proved from Erdős-Szekeres via sSup contradiction. erdos_szekeres proved from Mathlib (Theorems100.erdos_szekeres via Finset.orderEmbOfFin bridge).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
-    "historicalContext": "**The Monotonic Subsequence Sum Problem**\n\nErd\u0151s (1971) posed this optimization problem: given a sequence of distinct real numbers, what is the maximum sum achievable by a monotonic subsequence?\n\n**Timeline:**\n- **1935**: Erd\u0151s-Szekeres prove every sequence of n\u00b2+1 elements has a monotonic subsequence of length n+1\n- **1957**: Hanani shows every sequence decomposes into \u2264 (\u221a2+o(1))\u221an monotonic parts, giving c \u2265 1/\u221a2\n- **1995**: Steele surveys variations on the Erd\u0151s-Szekeres theme, highlighting open weighted versions\n- **2016**: Tidor-Wang-Yang prove the weighted version, showing c = 1; Cambie independently conjectures and proves the upper bound c \u2264 1\n- **2017**: Wagner gives an independent proof via tournament theory\n\nThe problem sits at the intersection of extremal combinatorics and optimization. The classical Erd\u0151s-Szekeres theorem guarantees long monotonic subsequences; Erd\u0151s's question asks the deeper 'weighted' version: not just how many elements, but how much total value can a monotonic subsequence capture? The answer c = 1 is remarkably clean.",
-    "problemStatement": "**Problem Statement**\n\nLet x\u2081, ..., x\u2099 be distinct real numbers. Determine:\n\nmax(\u03a3 x_{i_r})\n\nwhere the maximum is over all monotonic (increasing or decreasing) subsequences.\n\n**Precise Formulation (van Doorn):**\nWhat is the largest c such that for all sequences,\n\nmax(\u03a3 x_{i_r}) \u2265 (c - o(1)) \u00b7 (1/\u221an) \u00b7 \u03a3 x\u1d62 ?\n\n**Answer:** c = 1\n\n**Weighted Erd\u0151s-Szekeres:**\nIf x\u2081, ..., x_{k\u00b2} are distinct positive reals with \u03a3x\u1d62 = 1, there exists a monotonic subsequence with sum \u2265 1/k.",
-    "text": "For a sequence of distinct reals, determine max sum over monotonic subsequences. The optimal constant is c = 1: maxMonotonicSum \u2265 (1-o(1)) \u00b7 totalSum/\u221an. This is a weighted Erd\u0151s-Szekeres theorem.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Sequences:** Define RealSeq, Subsequence with StrictMono indices\n\n2. **Monotonicity:** IsIncreasing, IsDecreasing, IsMonotonic predicates\n\n3. **Sums:** subsequenceSum, totalSum, maxMonotonicSum via sSup\n\n4. **Erd\u0151s-Szekeres:** The classical (r-1)(s-1)+1 bound (axiomatized)\n\n5. **Hanani:** Decomposition into \u2264 \u221a(2n) monotonic parts (axiomatized)\n\n6. **Main Bounds:** Hanani gives c \u2265 1/\u221a2, Cambie shows c \u2264 1\n\n7. **Tidor-Wang-Yang:** The weighted theorem proving c = 1 (axiomatized)\n\n8. **Main theorem:** erdos_1026 directly applies tidor_wang_yang\n\n9. **LIS/LDS:** Standard length bounds as corollaries",
+    "historicalContext": "**The Monotonic Subsequence Sum Problem**\n\nErdős (1971) posed this optimization problem: given a sequence of distinct real numbers, what is the maximum sum achievable by a monotonic subsequence?\n\n**Timeline:**\n- **1935**: Erdős-Szekeres prove every sequence of n²+1 elements has a monotonic subsequence of length n+1\n- **1957**: Hanani shows every sequence decomposes into ≤ (√2+o(1))√n monotonic parts, giving c ≥ 1/√2\n- **1995**: Steele surveys variations on the Erdős-Szekeres theme, highlighting open weighted versions\n- **2016**: Tidor-Wang-Yang prove the weighted version, showing c = 1; Cambie independently conjectures and proves the upper bound c ≤ 1\n- **2017**: Wagner gives an independent proof via tournament theory\n\nThe problem sits at the intersection of extremal combinatorics and optimization. The classical Erdős-Szekeres theorem guarantees long monotonic subsequences; Erdős's question asks the deeper 'weighted' version: not just how many elements, but how much total value can a monotonic subsequence capture? The answer c = 1 is remarkably clean.",
+    "problemStatement": "**Problem Statement**\n\nLet x₁, ..., xₙ be distinct real numbers. Determine:\n\nmax(Σ x_{i_r})\n\nwhere the maximum is over all monotonic (increasing or decreasing) subsequences.\n\n**Precise Formulation (van Doorn):**\nWhat is the largest c such that for all sequences,\n\nmax(Σ x_{i_r}) ≥ (c - o(1)) · (1/√n) · Σ xᵢ ?\n\n**Answer:** c = 1\n\n**Weighted Erdős-Szekeres:**\nIf x₁, ..., x_{k²} are distinct positive reals with Σxᵢ = 1, there exists a monotonic subsequence with sum ≥ 1/k.",
+    "text": "For a sequence of distinct reals, determine max sum over monotonic subsequences. The optimal constant is c = 1: maxMonotonicSum ≥ (1-o(1)) · totalSum/√n. This is a weighted Erdős-Szekeres theorem.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sequences:** Define RealSeq, Subsequence with StrictMono indices\n\n2. **Monotonicity:** IsIncreasing, IsDecreasing, IsMonotonic predicates\n\n3. **Sums:** subsequenceSum, totalSum, maxMonotonicSum via sSup\n\n4. **Erdős-Szekeres:** The classical (r-1)(s-1)+1 bound (axiomatized)\n\n5. **Hanani:** Decomposition into ≤ √(2n) monotonic parts (axiomatized)\n\n6. **Main Bounds:** Hanani gives c ≥ 1/√2, Cambie shows c ≤ 1\n\n7. **Tidor-Wang-Yang:** The weighted theorem proving c = 1 (axiomatized)\n\n8. **Main theorem:** erdos_1026 directly applies tidor_wang_yang\n\n9. **LIS/LDS:** Standard length bounds as corollaries",
     "keyInsights": [
-      "**Erd\u0151s-Szekeres Foundation:** Every sequence of (r-1)(s-1)+1 elements has an increasing subsequence of length r OR decreasing of length s",
-      "**Hanani's Decomposition:** At most (\u221a2 + o(1))\u221an monotonic subsequences cover any sequence",
-      "**The Pigeonhole Argument:** If k parts cover the sequence, one part has sum \u2265 totalSum/k",
-      "**Weighted Generalization:** The weighted Erd\u0151s-Szekeres is much stronger than just length bounds \u2014 it handles non-uniform weights where long subsequences might have small total value",
-      "**Tightness:** Cambie's construction shows c = 1 is optimal \u2014 interleaved increasing/decreasing blocks prevent any monotonic subsequence from capturing more than ~1/\u221an of the total",
-      "**LIS \u00d7 LDS \u2265 n:** A beautiful consequence of Erd\u0151s-Szekeres, connecting length bounds to the product structure"
+      "**Erdős-Szekeres Foundation:** Every sequence of (r-1)(s-1)+1 elements has an increasing subsequence of length r OR decreasing of length s",
+      "**Hanani's Decomposition:** At most (√2 + o(1))√n monotonic subsequences cover any sequence",
+      "**The Pigeonhole Argument:** If k parts cover the sequence, one part has sum ≥ totalSum/k",
+      "**Weighted Generalization:** The weighted Erdős-Szekeres is much stronger than just length bounds — it handles non-uniform weights where long subsequences might have small total value",
+      "**Tightness:** Cambie's construction shows c = 1 is optimal — interleaved increasing/decreasing blocks prevent any monotonic subsequence from capturing more than ~1/√n of the total",
+      "**LIS × LDS ≥ n:** A beautiful consequence of Erdős-Szekeres, connecting length bounds to the product structure"
     ],
     "prerequisites": [
       "StrictMono and StrictAnti (Mathlib.Order.Monotone.Basic)",
@@ -104,8 +105,8 @@
     },
     {
       "id": "erdos-szekeres",
-      "title": "The Erd\u0151s-Szekeres Theorem",
-      "summary": "Classical (r-1)(s-1)+1 bound and n\u00b2+1 corollary",
+      "title": "The Erdős-Szekeres Theorem",
+      "summary": "Classical (r-1)(s-1)+1 bound and n²+1 corollary",
       "startLine": 83,
       "endLine": 107,
       "mathContext": "Axiomatized: any injective $x: \\text{Fin}((r-1)(s-1)+1) \\to \\mathbb{R}$ has an increasing subsequence of length $r$ or decreasing of length $s$. Corollary: $k^2+1$ elements yield monotonic length $\\geq k+1$."
@@ -113,10 +114,10 @@
     {
       "id": "hanani",
       "title": "Hanani's Decomposition",
-      "summary": "MonotonicDecomposition structure and \u221a(2n) bound",
+      "summary": "MonotonicDecomposition structure and √(2n) bound",
       "startLine": 108,
       "endLine": 140,
-      "mathContext": "Structure with `numParts`, `parts : Fin p \u2192 \u03a3 m, Subsequence n m`, monotonicity, disjointness, covering. Hanani: $\\exists$ decomposition with $p \\leq \\sqrt{2n} + 1$. Dilworth variant: $p \\leq 2\\sqrt{n}$."
+      "mathContext": "Structure with `numParts`, `parts : Fin p → Σ m, Subsequence n m`, monotonicity, disjointness, covering. Hanani: $\\exists$ decomposition with $p \\leq \\sqrt{2n} + 1$. Dilworth variant: $p \\leq 2\\sqrt{n}$."
     },
     {
       "id": "max-sum",
@@ -129,14 +130,14 @@
     {
       "id": "bounds",
       "title": "The Main Conjecture",
-      "summary": "Hanani lower bound (c \u2265 1/\u221a2), Cambie upper bound (c \u2264 1)",
+      "summary": "Hanani lower bound (c ≥ 1/√2), Cambie upper bound (c ≤ 1)",
       "startLine": 160,
       "endLine": 186,
       "mathContext": "Lower: $\\text{maxMonotonicSum} \\geq S/(\\sqrt{2n}+1)$, so $c \\geq 1/\\sqrt{2}$. Upper: $\\forall \\varepsilon > 0,\\; \\exists$ seq with $\\text{maxMonotonicSum} \\leq (1+\\varepsilon) \\cdot S/\\sqrt{n}$, so $c \\leq 1$."
     },
     {
       "id": "weighted",
-      "title": "The Weighted Erd\u0151s-Szekeres Theorem",
+      "title": "The Weighted Erdős-Szekeres Theorem",
       "summary": "weighted_erdos_szekeres, tidor_wang_yang, optimal_constant_is_one",
       "startLine": 187,
       "endLine": 226,
@@ -148,7 +149,7 @@
       "summary": "LIS, LDS definitions and bounds",
       "startLine": 227,
       "endLine": 250,
-      "mathContext": "$\\text{LIS} = \\sup\\{m : \\exists \\text{ increasing subseq of length } m\\}$. $\\text{LIS} \\cdot \\text{LDS} \\geq n$ (Erd\u0151s-Szekeres). $\\max(\\text{LIS}, \\text{LDS}) \\geq \\sqrt{n}$."
+      "mathContext": "$\\text{LIS} = \\sup\\{m : \\exists \\text{ increasing subseq of length } m\\}$. $\\text{LIS} \\cdot \\text{LDS} \\geq n$ (Erdős-Szekeres). $\\max(\\text{LIS}, \\text{LDS}) \\geq \\sqrt{n}$."
     },
     {
       "id": "main",
@@ -160,8 +161,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #1026 asked for the maximum sum over monotonic subsequences. The optimal constant is c = 1: every sequence has a monotonic subsequence with sum at least (1-o(1)) \u00b7 totalSum/\u221an. This follows from the weighted Erd\u0151s-Szekeres theorem proved by Tidor-Wang-Yang (2016). Cambie's construction shows the bound is tight.",
-    "implications": "Extends Erd\u0151s-Szekeres from length bounds to weighted (sum) bounds \u2014 a qualitative strengthening\nConnects to Dilworth's theorem: the decomposition bounds come from antichain decomposition in the product order\nWagner's alternative proof via tournament coloring reveals a connection to directed graph theory\nAlgorithmic applications: finding optimal monotonic subsequences in O(n log n) via patience sorting\nRandom sequences achieve the extremal bounds asymptotically, connecting to probabilistic combinatorics",
+    "summary": "Erdős Problem #1026 asked for the maximum sum over monotonic subsequences. The optimal constant is c = 1: every sequence has a monotonic subsequence with sum at least (1-o(1)) · totalSum/√n. This follows from the weighted Erdős-Szekeres theorem proved by Tidor-Wang-Yang (2016). Cambie's construction shows the bound is tight.",
+    "implications": "Extends Erdős-Szekeres from length bounds to weighted (sum) bounds — a qualitative strengthening\nConnects to Dilworth's theorem: the decomposition bounds come from antichain decomposition in the product order\nWagner's alternative proof via tournament coloring reveals a connection to directed graph theory\nAlgorithmic applications: finding optimal monotonic subsequences in O(n log n) via patience sorting\nRandom sequences achieve the extremal bounds asymptotically, connecting to probabilistic combinatorics",
     "openQuestions": [
       "What is the exact extremal construction for small n?",
       "Does the bound extend to approximate monotonicity?",
@@ -173,79 +174,79 @@
   "crossReferences": [
     {
       "relationship": "extends",
-      "description": "The classical Erd\u0151s-Szekeres theorem is the length-based foundation; Problem 1026 is the weighted (sum-based) generalization, asking how much total value a monotonic subsequence can capture",
+      "description": "The classical Erdős-Szekeres theorem is the length-based foundation; Problem 1026 is the weighted (sum-based) generalization, asking how much total value a monotonic subsequence can capture",
       "targetId": "erdos-szekeres"
     },
     {
       "relationship": "analogous",
-      "description": "Both Ramsey theory and Erd\u0151s-Szekeres guarantee structured combinatorial objects; the weighted Erd\u0151s-Szekeres theorem follows a similar pigeonhole-over-partitions proof strategy",
+      "description": "Both Ramsey theory and Erdős-Szekeres guarantee structured combinatorial objects; the weighted Erdős-Szekeres theorem follows a similar pigeonhole-over-partitions proof strategy",
       "targetId": "ramseys-theorem"
     },
     {
       "relationship": "companion",
-      "description": "Erd\u0151s Problem #1030 studies Ramsey number growth rates using related extremal and probabilistic combinatorics techniques; both problems sit in Erd\u0151s's 1960s\u20131970s sequence-and-graph extremal work",
+      "description": "Erdős Problem #1030 studies Ramsey number growth rates using related extremal and probabilistic combinatorics techniques; both problems sit in Erdős's 1960s–1970s sequence-and-graph extremal work",
       "targetId": "erdos-1030"
     },
     {
       "relationship": "companion",
-      "description": "Neighboring Erd\u0151s problem on independent sets in pair functions; both appear in the same era of Erd\u0151s's work on combinatorial optimization and extremal set theory",
+      "description": "Neighboring Erdős problem on independent sets in pair functions; both appear in the same era of Erdős's work on combinatorial optimization and extremal set theory",
       "targetId": "erdos-1025"
     },
     {
       "relationship": "uses",
-      "description": "The asymptotic constant c = 1 and the \u221an normalization in the main theorem connect to Stirling-type asymptotics; Hanani's bound involves \u221a(2n) which mirrors the \u221a(2\u03c0n) in Stirling's formula",
+      "description": "The asymptotic constant c = 1 and the √n normalization in the main theorem connect to Stirling-type asymptotics; Hanani's bound involves √(2n) which mirrors the √(2πn) in Stirling's formula",
       "targetId": "stirling-formula"
     }
   ],
   "references": [
     {
-      "authors": "P. Erd\u0151s and G. Szekeres",
+      "authors": "P. Erdős and G. Szekeres",
       "title": "A combinatorial problem in geometry",
       "year": "1935",
-      "venue": "Compositio Mathematica, vol. 2, pp. 463\u2013470",
-      "note": "The foundational Erd\u0151s-Szekeres theorem: every sequence of (r-1)(s-1)+1 distinct reals contains an increasing subsequence of length r or a decreasing subsequence of length s"
+      "venue": "Compositio Mathematica, vol. 2, pp. 463–470",
+      "note": "The foundational Erdős-Szekeres theorem: every sequence of (r-1)(s-1)+1 distinct reals contains an increasing subsequence of length r or a decreasing subsequence of length s"
     },
     {
       "authors": "H. Hanani",
       "title": "On the number of monotone sequences",
       "year": "1957",
-      "venue": "Bulletin of the Research Council of Israel, vol. 7F, pp. 41\u201345",
-      "note": "Proves every sequence of n distinct reals can be partitioned into at most \u2308\u221a(2n)\u2309 monotone subsequences; yields the lower bound c \u2265 1/\u221a2 for the main constant"
+      "venue": "Bulletin of the Research Council of Israel, vol. 7F, pp. 41–45",
+      "note": "Proves every sequence of n distinct reals can be partitioned into at most ⌈√(2n)⌉ monotone subsequences; yields the lower bound c ≥ 1/√2 for the main constant"
     },
     {
       "authors": "J. Tidor, P. Wang, and D. Yang",
       "title": "1-color avoiding paths",
       "year": "2016",
       "venue": "arXiv preprint",
-      "note": "Proves the weighted Erd\u0151s-Szekeres theorem: for n = k\u00b2 distinct positive reals summing to 1, some monotone subsequence has sum \u2265 1/k; establishes the optimal constant c = 1"
+      "note": "Proves the weighted Erdős-Szekeres theorem: for n = k² distinct positive reals summing to 1, some monotone subsequence has sum ≥ 1/k; establishes the optimal constant c = 1"
     },
     {
       "authors": "J. M. Steele",
-      "title": "Variations on the monotone subsequence theme of Erd\u0151s and Szekeres",
+      "title": "Variations on the monotone subsequence theme of Erdős and Szekeres",
       "year": "1995",
-      "venue": "IMA Volumes in Mathematics and its Applications, vol. 72, pp. 111\u2013131",
+      "venue": "IMA Volumes in Mathematics and its Applications, vol. 72, pp. 111–131",
       "note": "Survey of probabilistic and extremal aspects of monotone subsequence problems; discusses connections to patience sorting, random permutations, and longest increasing subsequences"
     },
     {
       "authors": "R. P. Stanley",
       "title": "Increasing and decreasing subsequences and their variants",
       "year": "2007",
-      "venue": "Proceedings of the International Congress of Mathematicians, Madrid, pp. 545\u2013579",
+      "venue": "Proceedings of the International Congress of Mathematicians, Madrid, pp. 545–579",
       "note": "Surveys the deep connections between longest increasing subsequences, Young tableaux, the RSK correspondence, and random matrix theory; provides broad context for weighted subsequence problems"
     },
     {
       "authors": "H. Hanani",
       "title": "On the number of monotonic subsequences",
       "year": "1957",
-      "venue": "Bull. Research Council of Israel, 7F, 41\u201345",
-      "note": "Proved decomposition into \u2264 \u2308\u221a(2n)\u2309 monotonic subsequences, giving initial lower bound c \u2265 1/\u221a2"
+      "venue": "Bull. Research Council of Israel, 7F, 41–45",
+      "note": "Proved decomposition into ≤ ⌈√(2n)⌉ monotonic subsequences, giving initial lower bound c ≥ 1/√2"
     },
     {
       "authors": "S. Cambie",
       "title": "Monotonic subsequence sums",
       "year": "2016",
       "venue": "Unpublished",
-      "note": "Conjectured the weighted ES theorem and proved the upper bound c \u2264 1 via explicit construction"
+      "note": "Conjectured the weighted ES theorem and proved the upper bound c ≤ 1 via explicit construction"
     }
   ],
   "leanFile": {

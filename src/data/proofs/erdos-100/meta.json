@@ -59,7 +59,8 @@
       "strong_conjecture_fails_at_9: Derived failure of the strong conjecture at n=9",
       "conjecture_implies_kanold: Proved the linear conjecture implies Kanold's sublinear bound",
       "n_over_log_sublinear: Proved n/log n = o(n) using filter convergence"
-    ]
+    ],
+    "theoremCount": 14
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in the early 1990s as part of his extensive program on distance problems in discrete and combinatorial geometry. The question asks whether imposing integer-distance constraints on planar point sets forces the diameter to grow linearly with n. This connects to a rich tradition beginning with Erdős's 1946 paper on distinct distances, where he conjectured that n points in the plane determine at least ~n/√(log n) distinct distances. Kanold obtained the first non-trivial lower bound of n^(3/4) on the diameter using combinatorial counting. The landscape changed dramatically when Guth and Katz (2015) resolved Erdős's distinct distances conjecture up to a logarithmic factor, proving ≥ cn/log n distinct distances; this immediately implies diam ≥ cn/log n for restricted distance sets. On the upper-bound side, Piepmeyer constructed 9 points in the plane with all pairwise distances positive integers and diameter less than 5, showing the strong conjecture diam ≥ n-1 fails for small n. The problem also connects to the Erdős-Anning theorem (1945): any infinite set of points with all mutual distances integers must be collinear. The gap between n/log n and n remains one of the central open problems in combinatorial geometry.",

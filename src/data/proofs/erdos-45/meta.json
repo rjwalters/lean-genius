@@ -1,10 +1,10 @@
 {
   "id": "erdos-45",
-  "title": "Erd\u0151s #45: Monochromatic Egyptian Fractions",
+  "title": "Erdős #45: Monochromatic Egyptian Fractions",
   "slug": "erdos-45",
-  "description": "For k \u2265 2, does there exist n_k such that any k-coloring of proper divisors of n_k contains a monochromatic D' with \u03a3 1/d = 1? YES (Croot 2003). Bounds: n_k \u2248 exp(C^k) doubly exponential (Sawhney).",
+  "description": "For k ≥ 2, does there exist n_k such that any k-coloring of proper divisors of n_k contains a monochromatic D' with Σ 1/d = 1? YES (Croot 2003). Bounds: n_k ≈ exp(C^k) doubly exponential (Sawhney).",
   "meta": {
-    "author": "Paul Erd\u0151s, Ernest Croot, Mehtaab Sawhney",
+    "author": "Paul Erdős, Ernest Croot, Mehtaab Sawhney",
     "erdosNumber": 45,
     "status": "axiomatized",
     "tags": [
@@ -28,11 +28,11 @@
     "relatedProblems": [
       {
         "id": "erdos-444",
-        "relation": "Generalized divisor functions d_A(n); the reciprocal sum \u03c3_{-1}(n) central to #45 is the case s = -1 of the generalized divisor sum"
+        "relation": "Generalized divisor functions d_A(n); the reciprocal sum σ_{-1}(n) central to #45 is the case s = -1 of the generalized divisor sum"
       },
       {
         "id": "erdos-414",
-        "relation": "Iterated h(n) = n + \u03c4(n); shares the divisor function as core ingredient, studying dynamics vs. Ramsey theory"
+        "relation": "Iterated h(n) = n + τ(n); shares the divisor function as core ingredient, studying dynamics vs. Ramsey theory"
       },
       {
         "id": "erdos-381",
@@ -48,7 +48,8 @@
       "Coloring theorems"
     ],
     "assumptions": "3 axiom(s) and 0 sorry(s). See the Lean source for details.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3
   },
   "sections": [
     {
@@ -56,7 +57,7 @@
       "title": "Core Definitions",
       "startLine": 42,
       "endLine": 61,
-      "summary": "**properDivisors n** = {d : 1 < d < n, d | n}. **IsColoring k S c**: assignment of k colors. **IsMonochromatic c S**: all elements same color. **reciprocalSum S** = \u03a3 1/d over \u211a. These define the combinatorial setting for the Ramsey-type problem."
+      "summary": "**properDivisors n** = {d : 1 < d < n, d | n}. **IsColoring k S c**: assignment of k colors. **IsMonochromatic c S**: all elements same color. **reciprocalSum S** = Σ 1/d over ℚ. These define the combinatorial setting for the Ramsey-type problem."
     },
     {
       "id": "main-property",
@@ -70,41 +71,41 @@
       "title": "Croot's Existence Theorem (2003)",
       "startLine": 74,
       "endLine": 84,
-      "summary": "**croot_existence**: \u2200 k \u2265 2, \u2203 n_k with the k-Egyptian property. Proved using the probabilistic method on n = lcm(1,...,M). One `sorry` remains \u2014 the proof is non-constructive and uses deep probabilistic arguments."
+      "summary": "**croot_existence**: ∀ k ≥ 2, ∃ n_k with the k-Egyptian property. Proved using the probabilistic method on n = lcm(1,...,M). One `sorry` remains — the proof is non-constructive and uses deep probabilistic arguments."
     },
     {
       "id": "bounds",
       "title": "Sawhney's Doubly Exponential Bounds",
       "startLine": 85,
       "endLine": 104,
-      "summary": "**sawhney_upper_bound**: n_k \u2264 exp(C^k) via n = lcm(1,...,C^k). **sawhney_lower_bound**: n_k \u2265 exp(c^k) from the necessary condition \u03c3_{-1}(n) \u2265 k, which requires primes up to exp(exp(k)) by Mertens' theorem. The bounds match, establishing doubly exponential growth."
+      "summary": "**sawhney_upper_bound**: n_k ≤ exp(C^k) via n = lcm(1,...,C^k). **sawhney_lower_bound**: n_k ≥ exp(c^k) from the necessary condition σ_{-1}(n) ≥ k, which requires primes up to exp(exp(k)) by Mertens' theorem. The bounds match, establishing doubly exponential growth."
     },
     {
       "id": "basic-facts",
       "title": "Basic Facts and Proved Lemma",
       "startLine": 105,
       "endLine": 117,
-      "summary": "**divisor_reciprocal_sum**: \u03a3_{d|n} 1/d = \u03c3_{-1}(n). **egyptian_fraction_bound**: if \u03a3 1/d_i = 1 then each d_i \u2264 \u03a0 d_j \u2014 **proved by Aristotle** using `Finset.dvd_prod_of_mem` and `Nat.le_of_dvd`."
+      "summary": "**divisor_reciprocal_sum**: Σ_{d|n} 1/d = σ_{-1}(n). **egyptian_fraction_bound**: if Σ 1/d_i = 1 then each d_i ≤ Π d_j — **proved by Aristotle** using `Finset.dvd_prod_of_mem` and `Nat.le_of_dvd`."
     },
     {
       "id": "small-cases",
       "title": "Small Cases: k = 2",
       "startLine": 118,
       "endLine": 141,
-      "summary": "**case_k_2**: n = 120 = 2\u00b3\u00b73\u00b75 has the 2-Egyptian property. With \u03c3_{-1}(120) = 3 and 14 proper divisors, any 2-coloring forces a monochromatic Egyptian subset. The smallest known example for k = 2."
+      "summary": "**case_k_2**: n = 120 = 2³·3·5 has the 2-Egyptian property. With σ_{-1}(120) = 3 and 14 proper divisors, any 2-coloring forces a monochromatic Egyptian subset. The smallest known example for k = 2."
     }
   ],
   "overview": {
-    "historicalContext": "Erd\u0151s posed Problem #45 around 1995, connecting two of his favorite topics: **Egyptian fractions** (unit fraction representations, a subject he contributed to extensively) and **Ramsey theory** (unavoidable structures under colorings). The question asks whether highly composite numbers have enough divisor structure to force monochromatic Egyptian representations under any coloring. **Ernest Croot** resolved this affirmatively in his 2003 Annals of Mathematics paper 'On a coloring conjecture about unit fractions', using the probabilistic method. **Mehtaab Sawhney** later established tight doubly exponential bounds: n_k \u2248 exp(C^k). The doubly exponential growth is forced by the logarithmic growth of the reciprocal sum \u03c3_{-1}(n): to achieve \u03c3_{-1}(n) \u2265 k, one needs n divisible by primes up to exp(exp(k)).",
-    "problemStatement": "Let k \u2265 2. Is there an integer n_k such that for D = {d : 1 < d < n_k, d | n_k}, any k-coloring of D contains a monochromatic subset D' \u2286 D with \u03a3_{d \u2208 D'} 1/d = 1?",
-    "text": "For k \u2265 2, does there exist n_k such that any k-coloring of proper divisors of n_k contains a monochromatic D' with \u03a3 1/d = 1? YES (Croot 2003). Bounds: n_k \u2248 exp(C^k) doubly exponential (Sawhney).",
+    "historicalContext": "Erdős posed Problem #45 around 1995, connecting two of his favorite topics: **Egyptian fractions** (unit fraction representations, a subject he contributed to extensively) and **Ramsey theory** (unavoidable structures under colorings). The question asks whether highly composite numbers have enough divisor structure to force monochromatic Egyptian representations under any coloring. **Ernest Croot** resolved this affirmatively in his 2003 Annals of Mathematics paper 'On a coloring conjecture about unit fractions', using the probabilistic method. **Mehtaab Sawhney** later established tight doubly exponential bounds: n_k ≈ exp(C^k). The doubly exponential growth is forced by the logarithmic growth of the reciprocal sum σ_{-1}(n): to achieve σ_{-1}(n) ≥ k, one needs n divisible by primes up to exp(exp(k)).",
+    "problemStatement": "Let k ≥ 2. Is there an integer n_k such that for D = {d : 1 < d < n_k, d | n_k}, any k-coloring of D contains a monochromatic subset D' ⊆ D with Σ_{d ∈ D'} 1/d = 1?",
+    "text": "For k ≥ 2, does there exist n_k such that any k-coloring of proper divisors of n_k contains a monochromatic D' with Σ 1/d = 1? YES (Croot 2003). Bounds: n_k ≈ exp(C^k) doubly exponential (Sawhney).",
     "proofStrategy": "The formalization defines proper divisors, k-colorings, monochromatic subsets, reciprocal sums, and the k-Egyptian property in Lean 4. Croot's existence theorem is stated with one sorry (the probabilistic proof). Sawhney's upper and lower bounds are axiomatized. The file includes a basic lemma on divisor reciprocal sums (proved by `rfl`) and the Egyptian fraction bound (proved by Aristotle). The case k = 2 with n = 120 is axiomatized.",
     "keyInsights": [
-      "**Ramsey meets Egyptian fractions**: the problem asks for an unavoidable monochromatic structure (Ramsey) with a specific arithmetic property (\u03a3 1/d = 1, Egyptian)",
+      "**Ramsey meets Egyptian fractions**: the problem asks for an unavoidable monochromatic structure (Ramsey) with a specific arithmetic property (Σ 1/d = 1, Egyptian)",
       "**Probabilistic proof**: Croot's argument shows that for n = lcm(1,...,M), the density of Egyptian representations grows so fast that no coloring can avoid all of them",
-      "**Doubly exponential bounds are tight**: n_k \u2248 exp(C^k) because \u03c3_{-1}(n) grows only as log log n for 'optimal' n (via Mertens), so achieving \u03c3_{-1} \u2265 k forces n \u2265 exp(exp(k))",
-      "**Highly composite numbers are optimal**: numbers with many small prime factors (like 120 = 2\u00b3\u00b73\u00b75) maximize the reciprocal sum for their size",
-      "**Aristotle proved one lemma**: the bound d \u2264 \u03a0 d' for Egyptian fractions was automatically proved via Finset.dvd_prod_of_mem"
+      "**Doubly exponential bounds are tight**: n_k ≈ exp(C^k) because σ_{-1}(n) grows only as log log n for 'optimal' n (via Mertens), so achieving σ_{-1} ≥ k forces n ≥ exp(exp(k))",
+      "**Highly composite numbers are optimal**: numbers with many small prime factors (like 120 = 2³·3·5) maximize the reciprocal sum for their size",
+      "**Aristotle proved one lemma**: the bound d ≤ Π d' for Egyptian fractions was automatically proved via Finset.dvd_prod_of_mem"
     ],
     "prerequisites": [
       "Egyptian fractions and unit fraction decompositions",
@@ -114,10 +115,10 @@
     ]
   },
   "conclusion": {
-    "summary": "Erd\u0151s Problem #45 is SOLVED: for any k \u2265 2, there exists n_k such that any k-coloring of the proper divisors of n_k contains a monochromatic subset with reciprocal sum 1. Proved by Croot (2003) with tight doubly exponential bounds n_k \u2248 exp(C^k) by Sawhney.",
+    "summary": "Erdős Problem #45 is SOLVED: for any k ≥ 2, there exists n_k such that any k-coloring of the proper divisors of n_k contains a monochromatic subset with reciprocal sum 1. Proved by Croot (2003) with tight doubly exponential bounds n_k ≈ exp(C^k) by Sawhney.",
     "implications": "The result reveals a deep connection between the multiplicative structure of integers (divisors, reciprocal sums) and Ramsey-type combinatorics (unavoidable monochromatic structures). The doubly exponential growth demonstrates that forcing monochromatic Egyptian fractions is an inherently 'expensive' Ramsey property, much harder than classical Ramsey numbers which grow merely exponentially.",
     "openQuestions": [
-      "What is the exact value of the optimal constant C in n_k \u2248 exp(C^k)?",
+      "What is the exact value of the optimal constant C in n_k ≈ exp(C^k)?",
       "Can explicit (non-probabilistic) constructions achieve the k-Egyptian property?",
       "What is the smallest n_k for k = 2, 3, 4?",
       "Is there a 'strong' version: can we guarantee multiple disjoint monochromatic Egyptian subsets?",
@@ -154,24 +155,24 @@
   ],
   "references": [
     {
-      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
+      "authors": "Erdős, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "L'Enseignement Math\u00e9matique, Monographie no. 28, Geneva",
-      "note": "Comprehensive collection of Erd\u0151s-Graham problems including Egyptian fraction questions"
+      "venue": "L'Enseignement Mathématique, Monographie no. 28, Geneva",
+      "note": "Comprehensive collection of Erdős-Graham problems including Egyptian fraction questions"
     },
     {
       "authors": "Croot, Ernie",
       "title": "On a coloring conjecture about unit fractions",
       "year": "2003",
-      "venue": "Annals of Mathematics, vol. 157, no. 2, pp. 545\u2013556",
-      "note": "Major progress on the Erd\u0151s-Graham conjecture on monochromatic Egyptian fractions"
+      "venue": "Annals of Mathematics, vol. 157, no. 2, pp. 545–556",
+      "note": "Major progress on the Erdős-Graham conjecture on monochromatic Egyptian fractions"
     },
-    "Erd\u0151s, P. and Graham, R.L. (1980): 'Old and new problems and results in combinatorial number theory', Monographies de L'Enseignement Math\u00e9matique 28",
-    "Croot, E.S. (2003): 'On a coloring conjecture about unit fractions', Annals of Mathematics 157, 545\u2013556",
+    "Erdős, P. and Graham, R.L. (1980): 'Old and new problems and results in combinatorial number theory', Monographies de L'Enseignement Mathématique 28",
+    "Croot, E.S. (2003): 'On a coloring conjecture about unit fractions', Annals of Mathematics 157, 545–556",
     "Sawhney, M.: 'On the bounds for the monochromatic Egyptian fraction problem' (tight doubly exponential bounds)",
-    "Ramanujan, S. (1915): 'Highly composite numbers', Proc. London Math. Soc. 14, 347\u2013409",
-    "Mertens, F. (1874): 'Ein Beitrag zur analytischen Zahlentheorie', J. Reine Angew. Math. 78, 46\u201362",
+    "Ramanujan, S. (1915): 'Highly composite numbers', Proc. London Math. Soc. 14, 347–409",
+    "Mertens, F. (1874): 'Ein Beitrag zur analytischen Zahlentheorie', J. Reine Angew. Math. 78, 46–62",
     "https://erdosproblems.com/45"
   ],
   "sorries": 0

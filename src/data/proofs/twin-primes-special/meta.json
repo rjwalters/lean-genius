@@ -39,7 +39,8 @@
     "axiomCount": 1,
     "lineCount": 190,
     "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 16
   },
   "overview": {
     "historicalContext": "Twin primes have fascinated mathematicians since antiquity. The ancient Greeks knew about pairs like (3,5), (5,7), (11,13), and the pattern seems to continue indefinitely, though primes become increasingly sparse.\n\nThe Twin Prime Conjecture—that there are infinitely many twin prime pairs—remains one of the most famous open problems in mathematics. While Zhang Yitang's 2013 breakthrough showed there are infinitely many primes differing by at most 70 million (later reduced to 246 by the Polymath project), the gap of exactly 2 remains elusive.\n\nThis formalization proves a structural result: twin primes greater than 3 must have a specific form, constraining where to search for them.",

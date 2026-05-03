@@ -25,7 +25,8 @@
     "axiomCount": 6,
     "lineCount": 326,
     "assumptions": "6 axiom declarations: erdos_gallai_graphs (Erdős-Gallai theorem for graphs), luczak_mieczkowska (r=3 case, Łuczak-Mieczkowska 2014), huang_loh_sudakov (large n regime), frankl_upper_bound (Frankl's (k-1)·C(n-1,r-1) upper bound), construction1_lower (first extremal construction), construction2_lower (second extremal construction). 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Erdős posed this conjecture around 1965, asking for the maximum number of edges in an r-uniform hypergraph on n vertices with no k pairwise disjoint edges. For ordinary graphs (r=2), the answer was already known: the Erdős-Gallai theorem (1959) gives the exact value as max(C(2k-1,2), n(k-1) - C(k,2)). For r≥3, Erdős conjectured that the extremum is always achieved by one of two natural constructions: either taking all r-subsets of a (rk-1)-element set (too few vertices for k disjoint r-edges), or taking all r-subsets meeting a fixed (k-1)-element set (a 'sunflower' obstruction). The problem attracted decades of work. Kleitman (1968) proved an early upper bound. Bollobás, Daykin, and Erdős made further partial progress. Frankl (1987) proved the influential upper bound f(n;r,k) ≤ (k-1)·C(n-1,r-1) using the shifting technique. A major breakthrough came when Łuczak and Mieczkowska (2014) confirmed the conjecture for r=3 (3-uniform hypergraphs) using a sophisticated container method argument. Huang, Loh, and Sudakov (2012) proved the conjecture for sufficiently large n (n ≥ 3kr²) using dependent random choice. Frankl (2013, 2017) obtained further improvements. Despite this progress, the general conjecture remains open for r≥4 and is considered one of the most important problems in extremal set theory.",

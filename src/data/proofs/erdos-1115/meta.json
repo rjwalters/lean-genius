@@ -52,7 +52,8 @@
     "axiomCount": 3,
     "lineCount": 102,
     "assumptions": "3 axiom(s): arcLengthInDisk, hayman_theorem, goldberg_eremenko_counterexample. See Lean source for complete statements.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "**Asymptotic Curves for Entire Functions**\n\nThis problem concerns the geometry of **asymptotic curves** — paths in $\\mathbb{C}$ along which an entire function tends to infinity. The Denjoy-Carleman-Ahlfors theorem (1929) guarantees that an entire function of finite order $\\rho$ has at most $2\\rho$ finite asymptotic values, but the *shape* of the paths to $\\infty$ is a subtler question.\n\n**Historical timeline:**\n- **Hayman (1960):** Proved that if $\\log M(r) \\ll (\\log r)^2$, then $f \\to \\infty$ along a straight **ray**, so $\\ell(r) = r$ is achievable. This covers very slowly growing functions.\n- **Hayman (1974):** Listed the general question as Problem 2.41 in his book *Research Problems in Function Theory*, attributing it to Erdős.\n- **Gol'dberg and Eremenko (1979):** **Disproved** the general conjecture. For any function $\\varphi(r) \\to \\infty$ (no matter how slowly), they constructed entire functions with $\\log M(r) \\ll \\varphi(r)(\\log r)^2$ such that no escape path satisfies $\\ell(r) = O(r)$.\n\n**The sharp threshold:** $(\\log r)^2$ is the exact boundary. Below it, rays to infinity exist. Arbitrarily little above it, the level curves of $|f|$ can wind so many times that every path to infinity must spiral, accumulating superlinear arc length.\n\nThis is one of the clearest examples in analysis of a **sharp phase transition**: a single logarithmic parameter completely determines qualitative path behavior.",

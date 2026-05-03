@@ -59,7 +59,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 255,
-    "assumptions": "1 axiom: chen_ding_2022. 0 sorries."
+    "assumptions": "1 axiom: chen_ding_2022. 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "**Erdős Problem #237: Prime Plus Set Representations**\n\nThis problem belongs to a rich tradition of additive number theory questions about representing integers as sums involving primes. The classical prototype is Goldbach's conjecture (1742): every even integer $\\ge 4$ is a sum of two primes. Problem #237 generalizes this by replacing one of the primes with an element from a structured set $A$.\n\n**Key History:**\n- 1742: Goldbach conjectures $n = p_1 + p_2$ for even $n$\n- 1934: Romanov proves a positive proportion of integers are $p + 2^k$\n- 1937: Vinogradov proves the ternary Goldbach conjecture using the circle method\n- 1950: Erdős proves the representation count is unbounded when $A = \\{2^k\\}$ (powers of two), using sieve methods. He observes that the values $n - 2^k$ lie in distinct residue classes mod small primes\n- 1950s: Erdős poses the general question for sets with logarithmic density $|A \\cap [1,N]| \\gg \\log N$\n- 2022: Chen and Ding prove a dramatically stronger result — **any** infinite set $A$ has unbounded representation count, completely removing the density hypothesis\n\n**Related**: Erdős Problem #236 concerns a related question about sumsets with primes.",

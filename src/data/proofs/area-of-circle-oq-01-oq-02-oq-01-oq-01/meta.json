@@ -44,7 +44,8 @@
     "axiomCount": 0,
     "lineCount": 150,
     "assumptions": "None — fully verified from Mathlib",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "The volume of the unit $n$-ball $\\omega_n = \\pi^{n/2}/\\Gamma(n/2 + 1)$ is a fundamental constant whose formula dates to Dirichlet's 1839 work on multi-dimensional integrals, later refined by Schläfli (1852) in his studies of higher-dimensional geometry. The Gamma function $\\Gamma(z+1) = z\\cdot\\Gamma(z)$, discovered by Euler in 1729 as an extension of the factorial to non-integer arguments, provides the key structural identity. The two-step recurrence $\\omega_{n+2} = (2\\pi/(n+2))\\cdot\\omega_n$ is a folklore result that appears in various forms in analysis textbooks (e.g., Folland's 'Introduction to Partial Differential Equations', Stein and Shakarchi's 'Real Analysis'). A notable feature of the volume sequence is that $\\omega_n \\to 0$ as $n \\to \\infty$ — the unit ball becomes negligible in high dimensions, a phenomenon known as the 'curse of dimensionality' in statistics and machine learning.",

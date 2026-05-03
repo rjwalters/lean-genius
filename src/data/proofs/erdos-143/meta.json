@@ -1,8 +1,8 @@
 {
   "id": "erdos-143",
-  "title": "Erd\u0151s Problem #143: Sparseness of Dilation-Avoiding Sets",
+  "title": "Erdős Problem #143: Sparseness of Dilation-Avoiding Sets",
   "slug": "erdos-143",
-  "description": "If A \u2282 (1,\u221e) satisfies |kx - y| \u2265 1 for all distinct x,y \u2208 A and k \u2265 1, must A be sparse?",
+  "description": "If A ⊂ (1,∞) satisfies |kx - y| ≥ 1 for all distinct x,y ∈ A and k ≥ 1, must A be sparse?",
   "meta": {
     "author": "Koukoulopoulos-Lamzouri-Lichtman (2025)",
     "sourceUrl": "https://erdosproblems.com/143",
@@ -47,19 +47,20 @@
     ],
     "axiomCount": 3,
     "lineCount": 120,
-    "assumptions": "3 axiom(s): kll_theorem, well_separated_integers_primitive, erdos_1935_primitive. See Lean source for complete statements."
+    "assumptions": "3 axiom(s): kll_theorem, well_separated_integers_primitive, erdos_1935_primitive. See Lean source for complete statements.",
+    "theoremCount": 1
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #143 belongs to a family of questions about how structural constraints on sets force sparseness. A set $A \\subset (1, \\infty)$ is *well-separated under integer dilation* if $|kx - y| \\geq 1$ for all distinct $x, y \\in A$ and positive integers $k$ \u2014 no element can be close to any integer multiple of another. This condition arises naturally in the study of primitive sets, lattice-free configurations, and Diophantine approximation.\n\nFor **integer sets**, well-separation implies primitivity: if $a \\mid b$ with $b = ka$, then $|ka - b| = 0 < 1$, violating the condition. Erd\u0151s initiated the study of primitive sets in 1935, proving that for any infinite primitive set $A \\subset \\mathbb{N}$, the series $\\sum_{a \\in A} 1/(a \\log a)$ converges \u2014 a result that quantifies how sparse primitive sets must be. Felix Behrend independently obtained the density estimate $\\sum_{a \\leq x, a \\in A} 1/a \\ll \\sqrt{\\log x / \\log \\log x}$ in the same year. The question of whether these density bounds extend from primitive integer sets to the broader class of real well-separated sets remained open for nearly 90 years.\n\nThe breakthrough came in 2025 when Dimitris Koukoulopoulos, Youness Lamzouri, and Jared Duker Lichtman proved that for any well-separated set $A$, the partial reciprocal sum $\\sum_{x < n, x \\in A} 1/x = o(\\log n)$ \u2014 resolving the weakest of Erd\u0151s's three conjectures. Their proof uses a novel graph-theoretic approach: they construct a GCD graph on elements of $A$ and use structural properties of this graph together with bounds from multiplicative number theory to control the reciprocal sum. The two stronger conjectures \u2014 (i) that the lower density $\\liminf |A \\cap [1,x]|/x = 0$, and (ii) that $\\sum_{x \\in A} 1/(x \\log x)$ converges \u2014 remain open, with the $500 prize still partially unclaimed.\n\nThe problem connects to several areas of modern number theory: the structure of multiplicative functions (Hal\u00e1sz's theorem), sieve methods for controlling divisor sums, and the Hardy-Ramanujan theory of the number of prime factors.",
+    "historicalContext": "Erdős Problem #143 belongs to a family of questions about how structural constraints on sets force sparseness. A set $A \\subset (1, \\infty)$ is *well-separated under integer dilation* if $|kx - y| \\geq 1$ for all distinct $x, y \\in A$ and positive integers $k$ — no element can be close to any integer multiple of another. This condition arises naturally in the study of primitive sets, lattice-free configurations, and Diophantine approximation.\n\nFor **integer sets**, well-separation implies primitivity: if $a \\mid b$ with $b = ka$, then $|ka - b| = 0 < 1$, violating the condition. Erdős initiated the study of primitive sets in 1935, proving that for any infinite primitive set $A \\subset \\mathbb{N}$, the series $\\sum_{a \\in A} 1/(a \\log a)$ converges — a result that quantifies how sparse primitive sets must be. Felix Behrend independently obtained the density estimate $\\sum_{a \\leq x, a \\in A} 1/a \\ll \\sqrt{\\log x / \\log \\log x}$ in the same year. The question of whether these density bounds extend from primitive integer sets to the broader class of real well-separated sets remained open for nearly 90 years.\n\nThe breakthrough came in 2025 when Dimitris Koukoulopoulos, Youness Lamzouri, and Jared Duker Lichtman proved that for any well-separated set $A$, the partial reciprocal sum $\\sum_{x < n, x \\in A} 1/x = o(\\log n)$ — resolving the weakest of Erdős's three conjectures. Their proof uses a novel graph-theoretic approach: they construct a GCD graph on elements of $A$ and use structural properties of this graph together with bounds from multiplicative number theory to control the reciprocal sum. The two stronger conjectures — (i) that the lower density $\\liminf |A \\cap [1,x]|/x = 0$, and (ii) that $\\sum_{x \\in A} 1/(x \\log x)$ converges — remain open, with the $500 prize still partially unclaimed.\n\nThe problem connects to several areas of modern number theory: the structure of multiplicative functions (Halász's theorem), sieve methods for controlling divisor sums, and the Hardy-Ramanujan theory of the number of prime factors.",
     "problemStatement": "Let $A \\subset (1, \\infty)$ be a countably infinite set such that for all $x \\neq y \\in A$ and integers $k \\geq 1$ we have $|kx - y| \\geq 1$. Must $A$ be sparse?\n\n**Partially Solved (2025)**: Koukoulopoulos-Lamzouri-Lichtman proved that $\\sum_{x < n, x \\in A} \\frac{1}{x} = o(\\log n)$.\n\n**Still Open**: (i) $\\liminf |A \\cap [1,x]|/x = 0$? (ii) $\\sum_{x \\in A} \\frac{1}{x \\log x} < \\infty$?",
-    "text": "A 120-line formalization of Erd\u0151s Problem #143 ($500 prize, partially solved) on the sparseness of sets avoiding integer-dilation proximity. The file defines `WellSeparatedSet A` \u2014 the condition that $|kx - y| \\geq 1$ for all distinct $x, y \\in A$ and $k \\geq 1$ \u2014 and formalizes three progressively stronger sparseness conjectures: (i) zero lower density, (ii) convergence of $\\sum 1/(x \\log x)$, (iii) partial sums $\\sum_{x < n} 1/x = o(\\log n)$. The 2025 breakthrough of Koukoulopoulos, Lamzouri, and Lichtman resolving conjecture (iii) is axiomatized as `kll_theorem`. The file connects the real-valued problem to the classical theory of primitive integer sets via `IsPrimitiveSet` and axiomatizes Erd\u0151s's 1935 result on convergence of $\\sum 1/(n \\log n)$ for primitive sets. Three axioms encode results from multiplicative number theory and GCD graph theory; all definitions and the structural application (`erdos_143_partial`) are fully proved.",
+    "text": "A 120-line formalization of Erdős Problem #143 ($500 prize, partially solved) on the sparseness of sets avoiding integer-dilation proximity. The file defines `WellSeparatedSet A` — the condition that $|kx - y| \\geq 1$ for all distinct $x, y \\in A$ and $k \\geq 1$ — and formalizes three progressively stronger sparseness conjectures: (i) zero lower density, (ii) convergence of $\\sum 1/(x \\log x)$, (iii) partial sums $\\sum_{x < n} 1/x = o(\\log n)$. The 2025 breakthrough of Koukoulopoulos, Lamzouri, and Lichtman resolving conjecture (iii) is axiomatized as `kll_theorem`. The file connects the real-valued problem to the classical theory of primitive integer sets via `IsPrimitiveSet` and axiomatizes Erdős's 1935 result on convergence of $\\sum 1/(n \\log n)$ for primitive sets. Three axioms encode results from multiplicative number theory and GCD graph theory; all definitions and the structural application (`erdos_143_partial`) are fully proved.",
     "proofStrategy": "We formalize the definitions and axiomatize the main results:\n\n1. **WellSeparatedSet**: Captures the dilation-avoidance condition\n2. **Conjecture variants**: Three different sparseness conditions (i), (ii), (iii)\n3. **KLL Theorem**: The 2025 partial resolution as an axiom\n4. **Primitive sets**: Connection to the integer case\n\nThe KLL theorem is axiomatized because its proof requires GCD graph arguments and multiplicative number theory bounds not yet in Mathlib.",
     "keyInsights": [
-      "**Dilation avoidance**: The condition |kx - y| \u2265 1 prevents clustering around integer multiples",
+      "**Dilation avoidance**: The condition |kx - y| ≥ 1 prevents clustering around integer multiples",
       "**Primitive connection**: For integers, this implies no element divides another",
       "**Density questions**: Three levels of sparseness - lower density zero, series convergence, partial sum bounds",
       "**2025 breakthrough**: KLL proved the weakest form, opening the door to the stronger conjectures",
-      "**Hierarchy of sparseness**: The three conjectures form a strict hierarchy: $\\sum 1/(x\\log x) < \\infty$ implies $\\liminf |A \\cap [1,x]|/x = 0$ implies $\\sum_{x<n} 1/x = o(\\log n)$ \u2014 the KLL result resolves the weakest, leaving the two stronger forms as future targets"
+      "**Hierarchy of sparseness**: The three conjectures form a strict hierarchy: $\\sum 1/(x\\log x) < \\infty$ implies $\\liminf |A \\cap [1,x]|/x = 0$ implies $\\sum_{x<n} 1/x = o(\\log n)$ — the KLL result resolves the weakest, leaving the two stronger forms as future targets"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -99,7 +100,7 @@
       "startLine": 61,
       "endLine": 85,
       "summary": "The KLL theorem and its application",
-      "mathContext": "KLL theorem (Klurman-Lunnon-Lewko): if $A$ is well-separated, then $A(x) = o(x/\\sqrt{\\log x})$ \u2014 a density bound slightly better than trivial."
+      "mathContext": "KLL theorem (Klurman-Lunnon-Lewko): if $A$ is well-separated, then $A(x) = o(x/\\sqrt{\\log x})$ — a density bound slightly better than trivial."
     },
     {
       "id": "primitive-sets",
@@ -114,17 +115,17 @@
       "title": "Historical Results",
       "startLine": 98,
       "endLine": 120,
-      "summary": "Erd\u0151s 1935 theorem on primitive sets",
-      "mathContext": "Erd\u0151s (1935): primitive sets satisfy $\\sum_{a \\in A} 1/(a \\log a) < \\infty$. But this doesn't resolve $\\sum 1/a$ convergence for dilation-avoiding sets."
+      "summary": "Erdős 1935 theorem on primitive sets",
+      "mathContext": "Erdős (1935): primitive sets satisfy $\\sum_{a \\in A} 1/(a \\log a) < \\infty$. But this doesn't resolve $\\sum 1/a$ convergence for dilation-avoiding sets."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erd\u0151s Problem #143 on the sparseness of dilation-avoiding sets. The main theorem (KLL 2025) proves that partial reciprocal sums are o(log n), resolving one of Erd\u0151s's three conjectures. The stronger questions about lower density zero and series convergence remain open.",
-    "implications": "**Theoretical Significance**: The KLL resolution of conjecture (iii) establishes a fundamental dichotomy: sets satisfying the dilation-avoidance condition $|kx - y| \\geq 1$ cannot have reciprocal sums growing as fast as the harmonic series. Since $\\sum_{n \\leq N} 1/n \\sim \\log N$, the $o(\\log N)$ bound means well-separated sets are strictly sparser than the integers themselves.\n\nThe GCD graph technique introduced by KLL is novel: vertices are elements of $A$, with edges encoding dilation-proximity constraints. Graph-theoretic arguments (bounding clique numbers and chromatic numbers) then translate to density bounds. This approach may generalize to other Erd\u0151s-type density problems where multiplicative structure constrains additive density.\n\n**Connection to the Erd\u0151s conjecture on primitive sets**: Erd\u0151s conjectured (and Lichtman-Pomerance recently proved in 2019) that the maximum of $\\sum_{a \\in A} f(a)$ over primitive sets $A \\subset [1, N]$ is achieved by the set of primes \u2014 formalizing the intuition that primes are the 'densest' primitive set. Problem #143 asks whether this density constraint extends from integer primitive sets to the larger class of real well-separated sets.\n\n**Connections to sieve theory**: The well-separation condition $|kx - y| \\geq 1$ is reminiscent of sieve exclusion conditions, where elements are removed from a set based on divisibility or proximity constraints. The density bounds on well-separated sets may be approachable via large sieve inequalities or Selberg sieve methods.",
+    "summary": "We formalize Erdős Problem #143 on the sparseness of dilation-avoiding sets. The main theorem (KLL 2025) proves that partial reciprocal sums are o(log n), resolving one of Erdős's three conjectures. The stronger questions about lower density zero and series convergence remain open.",
+    "implications": "**Theoretical Significance**: The KLL resolution of conjecture (iii) establishes a fundamental dichotomy: sets satisfying the dilation-avoidance condition $|kx - y| \\geq 1$ cannot have reciprocal sums growing as fast as the harmonic series. Since $\\sum_{n \\leq N} 1/n \\sim \\log N$, the $o(\\log N)$ bound means well-separated sets are strictly sparser than the integers themselves.\n\nThe GCD graph technique introduced by KLL is novel: vertices are elements of $A$, with edges encoding dilation-proximity constraints. Graph-theoretic arguments (bounding clique numbers and chromatic numbers) then translate to density bounds. This approach may generalize to other Erdős-type density problems where multiplicative structure constrains additive density.\n\n**Connection to the Erdős conjecture on primitive sets**: Erdős conjectured (and Lichtman-Pomerance recently proved in 2019) that the maximum of $\\sum_{a \\in A} f(a)$ over primitive sets $A \\subset [1, N]$ is achieved by the set of primes — formalizing the intuition that primes are the 'densest' primitive set. Problem #143 asks whether this density constraint extends from integer primitive sets to the larger class of real well-separated sets.\n\n**Connections to sieve theory**: The well-separation condition $|kx - y| \\geq 1$ is reminiscent of sieve exclusion conditions, where elements are removed from a set based on divisibility or proximity constraints. The density bounds on well-separated sets may be approachable via large sieve inequalities or Selberg sieve methods.",
     "openQuestions": [
-      "Does liminf |A \u2229 [1,x]|/x = 0 for all well-separated A?",
-      "Does \u2211 1/(x log x) converge for all well-separated A?",
-      "Can the o(log n) bound be strengthened to O(log n / \u221a(log log n))?"
+      "Does liminf |A ∩ [1,x]|/x = 0 for all well-separated A?",
+      "Does ∑ 1/(x log x) converge for all well-separated A?",
+      "Can the o(log n) bound be strengthened to O(log n / √(log log n))?"
     ]
   },
   "crossReferences": [
@@ -136,7 +137,7 @@
     {
       "targetId": "prime-reciprocal-divergence",
       "relationship": "related",
-      "description": "The divergence of $\\sum 1/p$ over primes contrasts with the convergence of $\\sum 1/(p \\log p)$ \u2014 Erd\u0151s's 1935 result shows primitive sets (which include well-separated integer sets) have convergent $\\sum 1/(n \\log n)$, while the primes themselves form the 'densest' primitive set"
+      "description": "The divergence of $\\sum 1/p$ over primes contrasts with the convergence of $\\sum 1/(p \\log p)$ — Erdős's 1935 result shows primitive sets (which include well-separated integer sets) have convergent $\\sum 1/(n \\log n)$, while the primes themselves form the 'densest' primitive set"
     },
     {
       "targetId": "harmonic-divergence",
@@ -146,17 +147,17 @@
     {
       "targetId": "prime-number-theorem",
       "relationship": "related",
-      "description": "PNT gives $\\pi(x) \\sim x/\\log x$, establishing the density of primes. The primes form a primitive set (no prime divides another prime), and Erd\u0151s's 1935 theorem implies $\\sum 1/(p \\log p)$ converges \u2014 the same type of series convergence conjectured for well-separated sets in conjecture (ii)"
+      "description": "PNT gives $\\pi(x) \\sim x/\\log x$, establishing the density of primes. The primes form a primitive set (no prime divides another prime), and Erdős's 1935 theorem implies $\\sum 1/(p \\log p)$ converges — the same type of series convergence conjectured for well-separated sets in conjecture (ii)"
     },
     {
       "targetId": "erdos-4",
       "relationship": "related",
-      "description": "Erd\u0151s #4 concerns the additive structure of sets with constraints on sums and differences. Like #143, it asks how algebraic constraints (here dilation-avoidance, there sum-free conditions) force sparseness of the underlying set"
+      "description": "Erdős #4 concerns the additive structure of sets with constraints on sums and differences. Like #143, it asks how algebraic constraints (here dilation-avoidance, there sum-free conditions) force sparseness of the underlying set"
     },
     {
       "targetId": "erdos-36",
       "relationship": "related",
-      "description": "Both are Erd\u0151s problems about density constraints on number-theoretic sets. #36 concerns sets avoiding arithmetic progressions, #143 concerns sets avoiding integer dilation proximity \u2014 both instantiate the general theme of structural constraints forcing sparseness"
+      "description": "Both are Erdős problems about density constraints on number-theoretic sets. #36 concerns sets avoiding arithmetic progressions, #143 concerns sets avoiding integer dilation proximity — both instantiate the general theme of structural constraints forcing sparseness"
     },
     {
       "targetId": "roth-theorem-k3",
@@ -166,17 +167,17 @@
     {
       "targetId": "szemeredi-theorem",
       "relationship": "related",
-      "description": "Szemer\u00e9di's theorem (sets of positive upper density contain arbitrarily long arithmetic progressions) provides the paradigm for density-vs-structure results. Problem #143 asks a similar question: does the structural constraint of dilation-avoidance force zero density? The KLL result gives a partial answer"
+      "description": "Szemerédi's theorem (sets of positive upper density contain arbitrarily long arithmetic progressions) provides the paradigm for density-vs-structure results. Problem #143 asks a similar question: does the structural constraint of dilation-avoidance force zero density? The KLL result gives a partial answer"
     },
     {
       "targetId": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate (there is always a prime between $n$ and $2n$) implies that primes have positive lower density in logarithmic scale. For well-separated sets, the open conjecture (i) asks whether the lower density must be zero \u2014 a much stronger sparseness condition than what primes satisfy"
+      "description": "Bertrand's postulate (there is always a prime between $n$ and $2n$) implies that primes have positive lower density in logarithmic scale. For well-separated sets, the open conjecture (i) asks whether the lower density must be zero — a much stronger sparseness condition than what primes satisfy"
     },
     {
       "targetId": "erdos-25",
       "relationship": "related",
-      "description": "Erd\u0151s #25 concerns the distribution of prime gaps. Both #25 and #143 study how number-theoretic constraints affect the spacing and density of elements in structured sets"
+      "description": "Erdős #25 concerns the distribution of prime gaps. Both #25 and #143 study how number-theoretic constraints affect the spacing and density of elements in structured sets"
     }
   ],
   "references": [
@@ -188,25 +189,25 @@
       "note": "Proved conjecture (iii): for well-separated A, the partial reciprocal sum is o(log n). Uses GCD graph methods and multiplicative number theory"
     },
     {
-      "authors": "Erd\u0151s, Paul",
+      "authors": "Erdős, Paul",
       "title": "Note on sequences of integers no one of which is divisible by any other",
       "year": "1935",
-      "venue": "Journal of the London Mathematical Society, vol. 10, pp. 126\u2013128",
-      "note": "Proved that primitive integer sets satisfy \u2211 1/(n log n) < \u221e \u2014 the result axiomatized as erdos_1935_primitive"
+      "venue": "Journal of the London Mathematical Society, vol. 10, pp. 126–128",
+      "note": "Proved that primitive integer sets satisfy ∑ 1/(n log n) < ∞ — the result axiomatized as erdos_1935_primitive"
     },
     {
       "authors": "Behrend, Felix",
       "title": "On sequences of numbers not divisible one by another",
       "year": "1935",
-      "venue": "Journal of the London Mathematical Society, vol. 10, pp. 42\u201344",
-      "note": "Proved the density estimate \u2211_{n\u2264x} 1/n \u226a \u221a(log x / log log x) for primitive sets"
+      "venue": "Journal of the London Mathematical Society, vol. 10, pp. 42–44",
+      "note": "Proved the density estimate ∑_{n≤x} 1/n ≪ √(log x / log log x) for primitive sets"
     },
     {
       "authors": "Lichtman, Jared Duker; Pomerance, Carl",
-      "title": "The Erd\u0151s conjecture for primitive sets",
+      "title": "The Erdős conjecture for primitive sets",
       "year": "2019",
-      "venue": "Proceedings of the American Mathematical Society, vol. 147, pp. 4825\u20134836",
-      "note": "Proved that the primes maximize \u2211 f(a) over primitive sets \u2014 formalizing the intuition that primes are the densest primitive set"
+      "venue": "Proceedings of the American Mathematical Society, vol. 147, pp. 4825–4836",
+      "note": "Proved that the primes maximize ∑ f(a) over primitive sets — formalizing the intuition that primes are the densest primitive set"
     }
   ],
   "leanFile": {

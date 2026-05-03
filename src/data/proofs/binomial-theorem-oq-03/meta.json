@@ -71,7 +71,8 @@
     "axiomCount": 0,
     "lineCount": 588,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 33
   },
   "overview": {
     "historicalContext": "The binomial distribution — the probability of $k$ successes in $n$ independent Bernoulli trials — is one of the most fundamental objects in probability theory and combinatorics. **Jacob Bernoulli** established its core properties in *Ars Conjectandi* (published posthumously in 1713), where he proved the weak law of large numbers for Bernoulli trials. The algebraic connection to the binomial theorem $(x+y)^n = \\sum \\binom{n}{k} x^k y^{n-k}$ was already known to **Isaac Newton** (1665) and **Blaise Pascal** (1654), but Bernoulli was the first to interpret the expansion probabilistically. **Abraham de Moivre** (1733) proved the normal approximation $\\text{Bin}(n,p) \\approx \\mathcal{N}(np, np(1-p))$ for large $n$ (later generalized by **Pierre-Simon Laplace**). **Siméon Denis Poisson** (1837) proved the law of rare events: when $n \\to \\infty$ and $p = r/n$, $\\text{Bin}(n, r/n) \\to \\text{Poi}(r)$ pointwise. The absorption identity $k\\binom{n}{k} = n\\binom{n-1}{k-1}$ was known to **Leonhard Euler** and is the algebraic engine for computing moments. **Alexandre-Théophile Vandermonde** (1772) proved his convolution identity $\\binom{m+n}{k} = \\sum_j \\binom{m}{j}\\binom{n}{k-j}$, which translates directly to the reproductive property of the binomial family. This formalization proves all these results purely algebraically from the binomial theorem, including a first-principles proof of $(1+x/n)^n \\to e^x$ via the derivative of $\\log$ at 1 — a result not available in Mathlib v4.26.0.",

@@ -23,7 +23,8 @@
     "axiomCount": 1,
     "lineCount": 134,
     "assumptions": "1 axiom: brun_sieve_translation (Brun's sieve — deep sieve theory). 3 open conjectures converted from axioms to defs. squarefree_translation proved from Brun's sieve via prime-squares B-free set.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Erdős introduced the translation property in the 1970s as a measure of 'quasi-periodicity' for number-theoretic sets. A set A ⊆ ℕ has this property if every finite initial pattern of A reappears at some translate—weaker than periodicity but capturing a form of self-similarity. The key tool is Brun's sieve (1920), which establishes the property for B-free sets (integers avoiding divisibility by elements of B) when B is pairwise coprime with convergent reciprocal sum. This immediately gives the translation property for squarefree numbers (B = {p² : p prime}, where Σ 1/p² < ∞). Problem 675 asks three deeper questions: (1) Do sums of two squares have the property? This is non-trivial because sums of two squares have density C/√(log x) by the Landau-Ramanujan theorem and are defined by an exponent-parity condition (primes p ≡ 3 mod 4 must divide to even power), not a non-divisibility condition, so Brun's sieve does not directly apply. (2) For balanced partitions P ∪ Q of primes, can P-smooth numbers have the property? This connects to multiplicative number theory and Dickman's function. (3) For squarefree numbers, must the minimal translation t_n grow at least as exp(n^c)? The CRT gives an upper bound t_n ≤ e^{O(n)}, and the question is whether a matching lower bound holds, quantifying the local non-periodicity of the squarefree pattern.",

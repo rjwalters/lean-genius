@@ -24,7 +24,8 @@
     "mathlib_version": "4.26.0",
     "axiomCount": 2,
     "lineCount": 158,
-    "assumptions": "2 axioms: clemen_dumitrescu_liu (CDL 2025: ∃ universal C>0, ∀n≥2, gap ≥ C·n·log n), clemen_dumitrescu_liu_general (CDL 2025: ∃ universal C>0, rank-r gap ≥ C·n·log(n)/r). Both are deep results with correctly universally-quantified constants. ErdosProblem959 proved from CDL axiom."
+    "assumptions": "2 axioms: clemen_dumitrescu_liu (CDL 2025: ∃ universal C>0, ∀n≥2, gap ≥ C·n·log n), clemen_dumitrescu_liu_general (CDL 2025: ∃ universal C>0, rank-r gap ≥ C·n·log(n)/r). Both are deep results with correctly universally-quantified constants. ErdosProblem959 proved from CDL axiom.",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "Erdős studied the distribution of pairwise distances in planar point configurations extensively throughout his career. Among the many questions he raised, Problem 959 concerns not the count of distinct distances (as in the celebrated Erdős distinct distances problem, resolved by Guth and Katz in 2015) but rather the gap between the most frequent and second-most frequent distance in an n-point set.\n\nClemen, Dumitrescu, and Liu (2025) made the first substantial progress, proving that the maximum frequency gap can be as large as Ω(n log n) using explicit constructions. They further generalized the result to rank-r gaps: for 1 ≤ r ≤ log n, the gap between the r-th and (r+1)-th most frequent distances is Ω(n log n / r). This shows the frequency distribution is not flat even among the top-ranked distances.\n\nClemen, Dumitrescu, and Liu conjectured that the true order of the maximum frequency gap is n^{1+c/log log n} for some constant c > 0, which would be dramatically larger than n log n. This conjectured growth rate mirrors bounds appearing in other combinatorial geometry problems, such as the Elekes–Rónyai framework. The problem remains open.",

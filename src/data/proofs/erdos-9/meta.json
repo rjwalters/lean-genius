@@ -1,10 +1,10 @@
 {
   "id": "erdos-9",
-  "title": "Erd\u0151s Problem #9: Odd Integers Not of the Form p + 2^k + 2^l",
+  "title": "Erdős Problem #9: Odd Integers Not of the Form p + 2^k + 2^l",
   "slug": "erdos-9",
-  "description": "Is the upper density of odd integers not expressible as p + 2^k + 2^l positive? OPEN problem. Pan (2011) proved N^{1-\u03b5} growth but positive density remains unresolved.",
+  "description": "Is the upper density of odd integers not expressible as p + 2^k + 2^l positive? OPEN problem. Pan (2011) proved N^{1-ε} growth but positive density remains unresolved.",
   "meta": {
-    "author": "Erd\u0151s",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/9",
     "date": "1977",
     "status": "axiomatized",
@@ -61,17 +61,18 @@
       "Covering congruences",
       "Modular arithmetic"
     ],
-    "assumptions": "2 axioms: schinzel_infinite, form_in_every_arithmetic_progression. 0 sorries."
+    "assumptions": "2 axioms: schinzel_infinite, form_in_every_arithmetic_progression. 0 sorries.",
+    "theoremCount": 7
   },
   "overview": {
-    "historicalContext": "**Erd\u0151s Problem #9: Odd Integers Not of the Form $p + 2^k + 2^l$**\n\nThis problem sits in a rich tradition of questions about representing integers as sums involving primes and powers of 2, going back to the Goldbach conjecture and its variants.\n\n**Romanoff's Foundation (1934):** N. P. Romanoff proved that a positive proportion of positive integers can be written as $p + 2^k$ for some prime $p$ and non-negative integer $k$. This established that sums of primes and powers of 2 cover a 'large' set of integers.\n\n**The Covering System Connection:** In 1950, Erd\u0151s and van der Corput independently showed that $p + 2^k$ does NOT represent all integers \u2014 there are infinitely many exceptions. The proof uses **covering congruences**: a finite set of congruences that cover all integers, allowing one to construct arithmetic progressions where $n - 2^k$ is always composite.\n\n**Problem #9 and Its History:**\n- **1977**: Erd\u0151s posed Problem #9 in [Er77c], asking about representations $p + 2^k + 2^l$ for odd integers. Adding a second power of 2 makes the representation more flexible, but exceptional integers still exist.\n- **Schinzel** (date uncertain, credited by Erd\u0151s 1977): Proved the exceptional set $A$ is infinite.\n- **Crocker (1971)**: First quantitative bound: $|A \\cap \\{1,\\ldots,N\\}| \\gg \\log \\log N$, published in 'On a sum of a prime and two powers of two'.\n- **Pan (2011)**: Dramatic improvement to $|A \\cap \\{1,\\ldots,N\\}| \\gg N^{1-\\varepsilon}$ for any $\\varepsilon > 0$, bringing the count tantalizingly close to linear growth.\n\n**The Key Obstruction:** Erd\u0151s observed that covering system methods \u2014 the standard tool for showing non-representability \u2014 cannot work here because integers of the form $p + 2^k + 2^l$ exist in every arithmetic progression. This fundamentally limits the available proof techniques.\n\n**Problem Family:** This is part of a cluster of related Erd\u0151s problems: #10 (sums of a prime and $k$ powers of 2), #11 (squarefree + power of 2), and #16 (odd integers not of the form $2^k + p$, recently disproved by Chen in 2023).",
-    "problemStatement": "**Question (Erd\u0151s, OPEN):** Let $A$ be the set of odd positive integers not expressible as $p + 2^k + 2^l$ where $p$ is prime and $k, l \\geq 0$. Is the upper density of $A$ positive?\n\n**Formally:** Is $\\bar{d}(A) = \\limsup_{N \\to \\infty} \\frac{|A \\cap \\{1,\\ldots,N\\}|}{N} > 0$?\n\n**Known bounds on the counting function $|A \\cap \\{1,\\ldots,N\\}|$:**\n- Schinzel: $\\to \\infty$ (A is infinite)\n- Crocker (1971): $\\gg \\log \\log N$\n- Pan (2011): $\\gg N^{1-\\varepsilon}$ for any $\\varepsilon > 0$\n- **OPEN:** $\\gg N$ (positive density)?\n\n**First elements of $A$ (OEIS A006286):** 1, 3, 7, 127, 149, 251, 331, 337, 373, ...",
-    "text": "Is the upper density of odd integers not expressible as p + 2^k + 2^l positive? OPEN problem. Pan (2011) proved N^{1-\u03b5} growth but positive density remains unresolved.",
-    "proofStrategy": "**Formalization Approach**\n\nThe Lean formalization captures the full landscape of this open problem:\n\n1. **Core Representation:** `HasPrimePlusTwoPowersForm n` defines $n = p + 2^k + 2^l$ for prime $p$ and natural numbers $k, l$. The set $S$ collects representable integers, and $A$ collects odd positive exceptions.\n\n2. **Density Framework:** `countA N` counts elements of $A$ up to $N$ using `Nat.card`. The `upperDensity` is defined as $\\limsup_{N \\to \\infty} \\text{countA}(N)/N$ using Mathlib's `Filter.limsup`.\n\n3. **Axiomatized Deep Results:** Schinzel's infinitude (`schinzel_infinite`) is axiomatized. Crocker's $\\log \\log N$ bound and Pan's $N^{1-\\varepsilon}$ bound appear as docstring-only narrative \u2014 no axiom declarations follow those docstrings in the file.\n\n4. **Covering System Obstruction:** `form_in_every_arithmetic_progression` axiomatizes Erd\u0151s's observation that $S$ meets every arithmetic progression, with the derived theorem `S_intersects_all_progressions`.\n\n5. **Verified Examples:** The file constructively proves $1, 3 \\in A$ (exceptional) and $5, 9 \\in S$ (representable), grounding the abstract theory in concrete computations.\n\n6. **Special Case:** `prime_plus_one_power_in_S` proves that $p + 2^m \\in S$ when $m \\geq 1$, since $2^m = 2^{m-1} + 2^{m-1}$.",
+    "historicalContext": "**Erdős Problem #9: Odd Integers Not of the Form $p + 2^k + 2^l$**\n\nThis problem sits in a rich tradition of questions about representing integers as sums involving primes and powers of 2, going back to the Goldbach conjecture and its variants.\n\n**Romanoff's Foundation (1934):** N. P. Romanoff proved that a positive proportion of positive integers can be written as $p + 2^k$ for some prime $p$ and non-negative integer $k$. This established that sums of primes and powers of 2 cover a 'large' set of integers.\n\n**The Covering System Connection:** In 1950, Erdős and van der Corput independently showed that $p + 2^k$ does NOT represent all integers — there are infinitely many exceptions. The proof uses **covering congruences**: a finite set of congruences that cover all integers, allowing one to construct arithmetic progressions where $n - 2^k$ is always composite.\n\n**Problem #9 and Its History:**\n- **1977**: Erdős posed Problem #9 in [Er77c], asking about representations $p + 2^k + 2^l$ for odd integers. Adding a second power of 2 makes the representation more flexible, but exceptional integers still exist.\n- **Schinzel** (date uncertain, credited by Erdős 1977): Proved the exceptional set $A$ is infinite.\n- **Crocker (1971)**: First quantitative bound: $|A \\cap \\{1,\\ldots,N\\}| \\gg \\log \\log N$, published in 'On a sum of a prime and two powers of two'.\n- **Pan (2011)**: Dramatic improvement to $|A \\cap \\{1,\\ldots,N\\}| \\gg N^{1-\\varepsilon}$ for any $\\varepsilon > 0$, bringing the count tantalizingly close to linear growth.\n\n**The Key Obstruction:** Erdős observed that covering system methods — the standard tool for showing non-representability — cannot work here because integers of the form $p + 2^k + 2^l$ exist in every arithmetic progression. This fundamentally limits the available proof techniques.\n\n**Problem Family:** This is part of a cluster of related Erdős problems: #10 (sums of a prime and $k$ powers of 2), #11 (squarefree + power of 2), and #16 (odd integers not of the form $2^k + p$, recently disproved by Chen in 2023).",
+    "problemStatement": "**Question (Erdős, OPEN):** Let $A$ be the set of odd positive integers not expressible as $p + 2^k + 2^l$ where $p$ is prime and $k, l \\geq 0$. Is the upper density of $A$ positive?\n\n**Formally:** Is $\\bar{d}(A) = \\limsup_{N \\to \\infty} \\frac{|A \\cap \\{1,\\ldots,N\\}|}{N} > 0$?\n\n**Known bounds on the counting function $|A \\cap \\{1,\\ldots,N\\}|$:**\n- Schinzel: $\\to \\infty$ (A is infinite)\n- Crocker (1971): $\\gg \\log \\log N$\n- Pan (2011): $\\gg N^{1-\\varepsilon}$ for any $\\varepsilon > 0$\n- **OPEN:** $\\gg N$ (positive density)?\n\n**First elements of $A$ (OEIS A006286):** 1, 3, 7, 127, 149, 251, 331, 337, 373, ...",
+    "text": "Is the upper density of odd integers not expressible as p + 2^k + 2^l positive? OPEN problem. Pan (2011) proved N^{1-ε} growth but positive density remains unresolved.",
+    "proofStrategy": "**Formalization Approach**\n\nThe Lean formalization captures the full landscape of this open problem:\n\n1. **Core Representation:** `HasPrimePlusTwoPowersForm n` defines $n = p + 2^k + 2^l$ for prime $p$ and natural numbers $k, l$. The set $S$ collects representable integers, and $A$ collects odd positive exceptions.\n\n2. **Density Framework:** `countA N` counts elements of $A$ up to $N$ using `Nat.card`. The `upperDensity` is defined as $\\limsup_{N \\to \\infty} \\text{countA}(N)/N$ using Mathlib's `Filter.limsup`.\n\n3. **Axiomatized Deep Results:** Schinzel's infinitude (`schinzel_infinite`) is axiomatized. Crocker's $\\log \\log N$ bound and Pan's $N^{1-\\varepsilon}$ bound appear as docstring-only narrative — no axiom declarations follow those docstrings in the file.\n\n4. **Covering System Obstruction:** `form_in_every_arithmetic_progression` axiomatizes Erdős's observation that $S$ meets every arithmetic progression, with the derived theorem `S_intersects_all_progressions`.\n\n5. **Verified Examples:** The file constructively proves $1, 3 \\in A$ (exceptional) and $5, 9 \\in S$ (representable), grounding the abstract theory in concrete computations.\n\n6. **Special Case:** `prime_plus_one_power_in_S` proves that $p + 2^m \\in S$ when $m \\geq 1$, since $2^m = 2^{m-1} + 2^{m-1}$.",
     "keyInsights": [
-      "**Covering systems are powerless:** Erd\u0151s's crucial observation is that $S = \\{p + 2^k + 2^l\\}$ intersects every arithmetic progression $\\{a + nd\\}_{n \\geq 0}$. Since covering congruences work by finding progressions that avoid the target set, this approach fundamentally cannot prove positive density for $A$.",
+      "**Covering systems are powerless:** Erdős's crucial observation is that $S = \\{p + 2^k + 2^l\\}$ intersects every arithmetic progression $\\{a + nd\\}_{n \\geq 0}$. Since covering congruences work by finding progressions that avoid the target set, this approach fundamentally cannot prove positive density for $A$.",
       "**Pan's $N^{1-\\varepsilon}$ gap:** The bound $|A \\cap [1,N]| \\gg N^{1-\\varepsilon}$ is polynomially close to linear but does not imply positive density. For example, $N/\\log N$ grows faster than any $N^{1-\\varepsilon}$ but has density 0. Closing this gap requires genuinely new ideas.",
-      "**Romanoff-type hierarchy:** There is a natural hierarchy: Romanoff (1934) showed density$(\\{p + 2^k\\}) > 0$; adding a second power of 2 makes representation easier, yet exceptional odd integers persist \u2014 suggesting the obstacle is arithmetic rather than analytic.",
+      "**Romanoff-type hierarchy:** There is a natural hierarchy: Romanoff (1934) showed density$(\\{p + 2^k\\}) > 0$; adding a second power of 2 makes representation easier, yet exceptional odd integers persist — suggesting the obstacle is arithmetic rather than analytic.",
       "**Sparse but structured exceptions:** The OEIS sequence $A = \\{1, 3, 7, 127, 149, 251, \\ldots\\}$ grows extremely slowly. The jump from 7 to 127 suggests the exceptions become increasingly constrained by the growing availability of primes and power-of-2 combinations.",
       "**Proved small cases anchor the formalization:** The constructive proofs that $1, 3 \\in A$ (by showing $p + 2^k + 2^l \\geq 4$ for any prime $p$) and $5 = 3 + 2^0 + 2^0 \\in S$ demonstrate Lean 4's omega tactic for concrete number-theoretic bounds."
     ],
@@ -109,7 +110,7 @@
     },
     {
       "id": "question",
-      "title": "The Erd\u0151s Question (OPEN)",
+      "title": "The Erdős Question (OPEN)",
       "summary": "States `erdos_9_question` as `hasPositiveUpperDensity` and the equivalent `erdos_9_alt`: $\\exists \\delta > 0$ such that $\\text{countA}(N) \\geq \\delta N$ for all sufficiently large $N$ (using `Filter.Eventually`).",
       "startLine": 90,
       "endLine": 106,
@@ -118,18 +119,18 @@
     {
       "id": "known-results",
       "title": "Known Partial Results",
-      "summary": "Axiomatizes Schinzel's infinitude of $A$ (`schinzel_infinite`) and derives `A_unbounded` constructively from it. Crocker's bound $|A \\cap [1,N]| \\gg \\log \\log N$ (1971), Pan's bound $|A \\cap [1,N]| \\gg N^{1-\\varepsilon}$ (2011), and Pan's reformulation appear as orphan docstrings only \u2014 no axiom declarations follow those docstrings.",
+      "summary": "Axiomatizes Schinzel's infinitude of $A$ (`schinzel_infinite`) and derives `A_unbounded` constructively from it. Crocker's bound $|A \\cap [1,N]| \\gg \\log \\log N$ (1971), Pan's bound $|A \\cap [1,N]| \\gg N^{1-\\varepsilon}$ (2011), and Pan's reformulation appear as orphan docstrings only — no axiom declarations follow those docstrings.",
       "startLine": 107,
       "endLine": 156,
-      "mathContext": "Only `schinzel_infinite` is declared as an axiom in this section. Crocker's bound, Pan's bound, and Pan's reformulation are docstring-only narrative \u2014 they are not axiomatized."
+      "mathContext": "Only `schinzel_infinite` is declared as an axiom in this section. Crocker's bound, Pan's bound, and Pan's reformulation are docstring-only narrative — they are not axiomatized."
     },
     {
       "id": "covering",
       "title": "Covering System Obstruction",
-      "summary": "Axiomatizes Erd\u0151s's observation: $\\forall a, d \\geq 1, \\exists n \\in S$ with $n \\equiv a \\pmod{d}$. Derives `S_intersects_all_progressions`: $S \\cap \\{n : n \\equiv a \\pmod{d}\\} \\neq \\emptyset$, proving covering congruence methods are fundamentally inapplicable.",
+      "summary": "Axiomatizes Erdős's observation: $\\forall a, d \\geq 1, \\exists n \\in S$ with $n \\equiv a \\pmod{d}$. Derives `S_intersects_all_progressions`: $S \\cap \\{n : n \\equiv a \\pmod{d}\\} \\neq \\emptyset$, proving covering congruence methods are fundamentally inapplicable.",
       "startLine": 157,
       "endLine": 173,
-      "mathContext": "Axiomatizes Erd\u0151s's observation: $\\forall a, d \\geq 1, \\exists n \\in S$ with $n \\equiv a \\pmod{d}$. Derives `S_intersects_all_progressions`: $S \\cap \\{n : n \\equiv a \\pmod{d}\\} \\neq \\emptyset$, proving covering congruence methods are fundamentally inapplicable."
+      "mathContext": "Axiomatizes Erdős's observation: $\\forall a, d \\geq 1, \\exists n \\in S$ with $n \\equiv a \\pmod{d}$. Derives `S_intersects_all_progressions`: $S \\cap \\{n : n \\equiv a \\pmod{d}\\} \\neq \\emptyset$, proving covering congruence methods are fundamentally inapplicable."
     },
     {
       "id": "examples",
@@ -142,7 +143,7 @@
     {
       "id": "bounds",
       "title": "Linear Bound Implication",
-      "summary": "Docstring-only narrative explaining that a hypothetical linear lower bound $\\text{countA}(N) \\geq cN$ would imply `erdos_9_question`. No `improvement_would_solve` declaration exists in this file \u2014 the docstring is followed immediately by the Summary comment block.",
+      "summary": "Docstring-only narrative explaining that a hypothetical linear lower bound $\\text{countA}(N) \\geq cN$ would imply `erdos_9_question`. No `improvement_would_solve` declaration exists in this file — the docstring is followed immediately by the Summary comment block.",
       "startLine": 225,
       "endLine": 238,
       "mathContext": "No axiom declaration follows the docstring in this section. The narrative frames the open problem as closing the gap between Pan's $N^{1-\\varepsilon}$ and $\\Omega(N)$ growth, but this is expository only."
@@ -157,8 +158,8 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the full landscape of Erd\u0151s Problem #9, an open question in additive number theory asking whether odd integers not representable as $p + 2^k + 2^l$ have positive upper density. The Lean file axiomatizes the three major partial results (Schinzel's infinitude, Crocker's $\\log \\log N$ bound, Pan's $N^{1-\\varepsilon}$ bound), proves the covering system obstruction, and includes constructive examples. The problem remains open: Pan's 2011 bound is the state of the art, tantalizingly close to but not reaching positive density.",
-    "implications": "**Theoretical Significance**: **Connections to Other Areas**\n\n1. **Romanoff-type problems:** The foundational question '$p + 2^k$ covers a positive proportion of integers' (Romanoff 1934) is the parent problem. Adding more powers of 2 creates a hierarchy: Problem #10 asks about $p + \\sum 2^{k_i}$ for $k$ powers.\n\n2. **Covering congruences:** Erd\u0151s's observation that $S$ meets every arithmetic progression demonstrates a fundamental limitation of the covering system method, which has been central to number theory since Erd\u0151s's 1950 work on $p + 2^k$.\n\n3. **Analytic number theory:** The counting function bounds use sieve methods and exponential sum estimates.\n\nPan's improvement from $\\log \\log N$ to $N^{1-\\varepsilon}$ required substantial analytic machinery.\n\n4. **Density gap phenomenon:** The gap between $N^{1-\\varepsilon}$ and $cN$ growth appears in many number-theoretic contexts. Similar gaps arise in problems about almost-all vs. positive-density results.\n\n5. **Chen's 2023 breakthrough:** Problem #16 (odd integers not of the form $2^k + p$) was recently DISPROVED by Chen, showing such problems can have surprising resolutions.",
+    "summary": "This formalization captures the full landscape of Erdős Problem #9, an open question in additive number theory asking whether odd integers not representable as $p + 2^k + 2^l$ have positive upper density. The Lean file axiomatizes the three major partial results (Schinzel's infinitude, Crocker's $\\log \\log N$ bound, Pan's $N^{1-\\varepsilon}$ bound), proves the covering system obstruction, and includes constructive examples. The problem remains open: Pan's 2011 bound is the state of the art, tantalizingly close to but not reaching positive density.",
+    "implications": "**Theoretical Significance**: **Connections to Other Areas**\n\n1. **Romanoff-type problems:** The foundational question '$p + 2^k$ covers a positive proportion of integers' (Romanoff 1934) is the parent problem. Adding more powers of 2 creates a hierarchy: Problem #10 asks about $p + \\sum 2^{k_i}$ for $k$ powers.\n\n2. **Covering congruences:** Erdős's observation that $S$ meets every arithmetic progression demonstrates a fundamental limitation of the covering system method, which has been central to number theory since Erdős's 1950 work on $p + 2^k$.\n\n3. **Analytic number theory:** The counting function bounds use sieve methods and exponential sum estimates.\n\nPan's improvement from $\\log \\log N$ to $N^{1-\\varepsilon}$ required substantial analytic machinery.\n\n4. **Density gap phenomenon:** The gap between $N^{1-\\varepsilon}$ and $cN$ growth appears in many number-theoretic contexts. Similar gaps arise in problems about almost-all vs. positive-density results.\n\n5. **Chen's 2023 breakthrough:** Problem #16 (odd integers not of the form $2^k + p$) was recently DISPROVED by Chen, showing such problems can have surprising resolutions.",
     "openQuestions": [
       "Does the exceptional set $A$ have positive upper density $\\bar{d}(A) > 0$? Pan's $N^{1-\\varepsilon}$ bound leaves open whether $|A \\cap [1,N]| = \\Omega(N)$",
       "Can Pan's bound be strengthened to $|A \\cap [1,N]| \\gg N / (\\log N)^c$ for some $c > 0$? This intermediate bound would be a major step",
@@ -173,7 +174,7 @@
       },
       {
         "proofId": "erdos-11",
-        "relationship": "Problem #11 asks whether every odd $n > 1$ equals a squarefree number plus a power of 2 \u2014 a different representation involving primes (through squarefree factorization) and powers of 2"
+        "relationship": "Problem #11 asks whether every odd $n > 1$ equals a squarefree number plus a power of 2 — a different representation involving primes (through squarefree factorization) and powers of 2"
       },
       {
         "proofId": "erdos-16",
@@ -181,7 +182,7 @@
       },
       {
         "proofId": "erdos-221",
-        "relationship": "Problem #221 asks about additive complements to powers of 2 \u2014 what sparse sets $A$ make $A + \\{2^k\\}$ cover all large integers? Ruzsa's solution connects to the density questions underlying Problem #9"
+        "relationship": "Problem #221 asks about additive complements to powers of 2 — what sparse sets $A$ make $A + \\{2^k\\}$ cover all large integers? Ruzsa's solution connects to the density questions underlying Problem #9"
       },
       {
         "proofId": "dirichlets-theorem",
@@ -219,7 +220,7 @@
     {
       "targetId": "erdos-2",
       "relationship": "related",
-      "description": "Erd\u0151s's covering congruence technique (from Problem #2) is used to construct integers not representable as p + 2^k + 2^l"
+      "description": "Erdős's covering congruence technique (from Problem #2) is used to construct integers not representable as p + 2^k + 2^l"
     },
     {
       "targetId": "infinitude-primes",
@@ -230,23 +231,23 @@
   "references": [
     {
       "authors": "Romanoff, N. P.",
-      "title": "\u00dcber einige S\u00e4tze der additiven Zahlentheorie",
+      "title": "Über einige Sätze der additiven Zahlentheorie",
       "year": "1934",
-      "venue": "Mathematische Annalen, vol. 109, no. 1, pp. 668\u2013678",
+      "venue": "Mathematische Annalen, vol. 109, no. 1, pp. 668–678",
       "note": "Proved a positive proportion of integers are p + 2^a, the k=1 case that motivates Problem #9"
     },
     {
-      "authors": "Erd\u0151s, Paul",
+      "authors": "Erdős, Paul",
       "title": "On integers of the form 2^k + p and some related problems",
       "year": "1950",
-      "venue": "Summa Brasiliensis Mathematicae, vol. 2, pp. 113\u2013123",
+      "venue": "Summa Brasiliensis Mathematicae, vol. 2, pp. 113–123",
       "note": "Used covering congruences to construct non-representable integers, the technique underlying Problem #9"
     },
     {
       "authors": "Crocker, Roger",
       "title": "On the sum of a prime and of two powers of two",
       "year": "1971",
-      "venue": "Pacific Journal of Mathematics, vol. 36, pp. 103\u2013107",
+      "venue": "Pacific Journal of Mathematics, vol. 36, pp. 103–107",
       "note": "Early results on the p + 2^a + 2^b representation problem"
     }
   ],

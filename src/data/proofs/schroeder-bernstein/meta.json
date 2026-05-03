@@ -51,7 +51,8 @@
     ],
     "lineCount": 198,
     "assumptions": "0 axioms, 0 sorries. Core Schröder-Bernstein theorem (Function.Embedding.schroeder_bernstein, antisymm) from Mathlib; original work is corollaries and pedagogical infrastructure.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "The Schroeder-Bernstein theorem has a rich and tangled history, with at least four independent discoveries spanning two decades of foundational set theory.\n\n**Georg Cantor (1887)** stated the result without proof in a letter to Dedekind, recognizing its importance for his theory of transfinite cardinals. He relied on the well-ordering principle but sought a proof independent of this assumption.\n\n**Richard Dedekind (1887)** provided the first correct proof, using his chain theory (*Kettentheorie*): given injections $f: A \\to B$ and $g: B \\to A$, consider the chain $C = \\bigcup_{n=0}^{\\infty} (g \\circ f)^n(A \\setminus g(B))$. Then $h(a) = f(a)$ if $a \\in C$, $h(a) = g^{-1}(a)$ otherwise. Dedekind communicated this to Cantor but never published it; it was found in his *Nachlass* and published posthumously.\n\n**Ernst Schroder (1896)** published a proof that contained a gap identified by Alwin Korselt in 1902. Schroder's name persists in the theorem's attribution despite the flawed proof.\n\n**Felix Bernstein (1898)**, then a 19-year-old student of Cantor at Halle, presented a correct proof using the orbit decomposition that has become the standard textbook approach. His proof was published in Borel's *Lecons sur la theorie des fonctions* (1898).\n\nThe theorem holds in ZF (without choice), unlike many other results in cardinal arithmetic. The name varies by tradition: Cantor-Bernstein (Germany), Schroder-Bernstein (English-speaking countries), or Cantor-Bernstein-Schroder.",

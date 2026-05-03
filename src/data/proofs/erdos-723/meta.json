@@ -30,7 +30,8 @@
     ],
     "lineCount": 174,
     "assumptions": "1 axiom: bruck_ryser. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 13
   },
   "overview": {
     "historicalContext": "The study of finite projective planes traces back to Gino Fano's 1892 work on the smallest example (the Fano plane, order 2). Euler's 1782 conjecture on mutually orthogonal Latin squares (MOLS) is intimately connected: a set of $n-1$ MOLS of order $n$ is equivalent to a projective plane of order $n$. The prime power conjecture emerged as projective planes were constructed for all prime power orders via the Galois field construction PG(2,q), but no other orders were found. In 1949, R.H. Bruck and H.J. Ryser proved a necessary condition using algebraic number theory: if $n \\equiv 1,2 \\pmod{4}$, then $n$ must be expressible as a sum of two integer squares. Chowla and Ryser extended this in 1950 to the Bruck-Ryser-Chowla theorem for symmetric designs. The most dramatic result came from C.W.H. Lam, L. Thiel, and S. Swiercz, who in 1989 completed a massive computer search proving no projective plane of order 10 exists—consuming thousands of hours of Cray supercomputer time over nearly a decade. The Bruck-Ryser theorem does not rule out order 10 (since $10 = 1^2 + 3^2$), making Lam's result a tour de force of computational mathematics. Order 12 remains the smallest open case: $12 \\equiv 0 \\pmod{4}$ so Bruck-Ryser does not apply, and the search space is astronomically larger than order 10.",

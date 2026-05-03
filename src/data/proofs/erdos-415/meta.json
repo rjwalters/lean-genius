@@ -73,7 +73,8 @@
     "axiomCount": 1,
     "lineCount": 222,
     "assumptions": "1 axiom(s) and 14 sorry(s). See the Lean source for details.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 14
   },
   "overview": {
     "historicalContext": "This problem concerns the remarkable regularity of ordering patterns in sequences of Euler's totient function. Given k consecutive values φ(m+1), ..., φ(m+k), their relative ordering is one of k! possible permutations. Erdős asked: how large can k be such that ALL k! patterns appear somewhere in φ(1), ..., φ(n)?\n\nIn 1936, Erdős proved F(n) ≍ log log log n — an astonishingly slow growth rate, answering a question of Chowla. Sarvadaman Chowla had asked about consecutive values of arithmetic functions in the early 1930s at the Punjab University in Lahore. Erdős, then 23, solved the problem using sieve methods and published it in the Proceedings of the National Institute of Sciences of India.\n\nThe same triple-log behavior holds for other arithmetic functions like σ(n), τ(n), and ω(n), suggesting a universal phenomenon rooted in the combinatorial structure of arithmetic functions rather than any specific number-theoretic property.\n\nThe problem connects two seemingly unrelated areas: the combinatorics of permutation patterns (studied intensively since the Stanley-Wilf conjecture, proved by Marcus and Tardos in 2004) and the distribution of values of multiplicative functions (a central topic in analytic number theory since Erdős and Kac's foundational 1940 paper). Despite nearly 90 years of work, three fundamental questions remain open.",

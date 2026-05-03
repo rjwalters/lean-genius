@@ -25,7 +25,8 @@
     "axiomCount": 1,
     "lineCount": 166,
     "assumptions": "1 axiom(s) and 2 sorry(s). See the Lean source for details.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Erdős and Hajnal conjectured in 1966 that graphs with infinite chromatic number must have 'many' odd cycles, quantified by the divergence of the reciprocal sum ∑ 1/aᵢ. The conjecture sits in a hierarchy of increasingly strong claims: (1) infinitely many odd cycle lengths, (2) ∑ 1/aᵢ = ∞ (this problem), (3) positive upper density (Erdős 1981, OPEN), (4) upper density ≥ 1/2 (Erdős 1995-96, OPEN). The foundation is the classical bipartite characterization: χ(G) ≤ 2 iff no odd cycles. Problem #57 asks what happens at χ(G) = ∞. Liu and Montgomery solved it in 2020 using dependent random choice and structural decomposition techniques from extremal combinatorics. Their proof analyzes graphs lacking short odd cycles, showing that even in the high-girth regime (where odd cycles are sparse), the reciprocal sum still diverges. The result has connections to Ramsey theory and the Gyárfás-Sumner conjecture on χ-bounded classes.",

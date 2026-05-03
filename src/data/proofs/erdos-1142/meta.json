@@ -74,7 +74,8 @@
         "venue": "Acta Arithmetica 7: 67-70",
         "note": "Early discussion of the interaction between powers of two and prime residues, related to problem #1142."
       }
-    ]
+    ],
+    "theoremCount": 16
   },
   "overview": {
     "historicalContext": "Erdős Problem #1142 asks whether there are infinitely many integers $n$ such that $n - 2^k$ is prime for every power of two $2^k$ with $1 < 2^k < n$. The known values satisfying this property are $n \\in \\{4, 7, 15, 21, 45, 75, 105\\}$, catalogued as OEIS sequence A039669.\n\nMientka and Weitzenkamp (1969) performed an exhaustive search verifying that no other values exist up to $2^{44} \\approx 1.76 \\times 10^{13}$. Vaughan (1973) proved that the count of such $n$ up to $N$ is extremely sparse, establishing upper bounds on their density.\n\nErdős formulated a stronger conjecture: the number of $k$ with $1 \\leq k$ and $2^k < n$ for which $n - 2^k$ is prime is $o(\\log n)$. If true, this would imply that for large $n$, not all $\\lfloor \\log_2 n \\rfloor$ differences can simultaneously be prime, suggesting the set is finite. This connects to Erdős Problem #236 on the density of prime differences from powers of two.\n\nThe problem sits at the intersection of additive number theory and the distribution of primes, related to covering congruences and the Goldbach-type question of representing integers as sums/differences of primes and powers of two.",

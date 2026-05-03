@@ -71,7 +71,8 @@
         "id": "prime-number-theorem",
         "relationship": "This entry formalizes consequences of PNT for short interval prime counting"
       }
-    ]
+    ],
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "The Prime Number Theorem (PNT, 1896) tells us $\\pi(x) \\sim x/\\ln x$: primes up to $x$ are approximately $x/\\ln x$ in number. A natural refinement asks: how are primes distributed in short intervals $[x, x+h]$ for $h \\ll x$? The PNT heuristic predicts $h/\\ln x$ primes in such an interval. Whether this asymptotic actually holds — and for which $h$ — is the *short interval density question*.\n\nTwo distinct answers exist: **existence** (does the interval contain *at least one* prime?) and **density** (does the interval contain *approximately $h/\\ln x$* primes?). Baker-Harman-Pintz (2001) proved existence for $h = x^{0.525}$. The density question is harder: under the Riemann Hypothesis, von Koch's bound $|\\pi(x) - \\text{Li}(x)| = O(\\sqrt{x} \\log x)$ implies density holds for $h = x^{1/2+\\varepsilon}$. Unconditionally, Huxley (1972) proved density for $h = x^{7/12+\\varepsilon}$, and the current record stands at $h = x^{0.525+\\varepsilon}$ (matching BHP) for the density statement.\n\nThis formalization introduces formal Lean 4 infrastructure for the density question, proves the implication density $\\Rightarrow$ existence (a mathematical tautology), and formalizes the RH-conditional result as an axiom.",

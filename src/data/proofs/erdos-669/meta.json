@@ -53,7 +53,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 128,
-    "assumptions": "1 axiom: k3_limit. 0 sorries."
+    "assumptions": "1 axiom: k3_limit. 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "**Erdős Problem #669** concerns the maximum number of lines determined by point configurations in the plane, measured by how many points lie on each line. Two functions are studied: f_k(n) counts lines through exactly k points, while F_k(n) counts lines through at least k points. The problem asks for the asymptotic behavior of both as n grows.\n\nThe most celebrated special case is the **Orchard Problem** (k=3), which goes back to Sylvester in the 19th century: how many 3-point lines can n points determine? Burr, Grünbaum, and Sloane resolved this in their 1974 paper, proving that both f_3(n) and F_3(n) equal n²/6 up to an O(n) error term. Their proof uses elegant constructions from finite projective planes.\n\nFor general k, a trivial upper bound comes from double counting: each line with ≥ k points accounts for at least C(k,2) point-pairs, and there are only C(n,2) pairs total. This gives F_k(n) ≤ C(n,2)/C(k,2), or asymptotically F_k(n)/n² ≤ 1/(k(k-1)). Whether this bound is tight for all k remains an open problem. The conjecture is that lim f_k(n)/n² = lim F_k(n)/n² = 1/(k(k-1)) for all k ≥ 2.",

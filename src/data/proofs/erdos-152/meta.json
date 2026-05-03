@@ -22,7 +22,8 @@
     "axiomCount": 0,
     "lineCount": 470,
     "assumptions": "Fully verified (0 axioms, 0 sorries). gap_existence_pigeonhole proved via endpoint analysis and Sidon difference injectivity. Open conjecture; supporting lemmas fully verified.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős, Sárközy, and Sós in their 1994 paper 'On Sum Sets of Sidon Sets, I' in the Journal of Number Theory (pp. 329-347). They initiated a systematic study of the additive structure of Sidon sumsets, asking not just about the size of $A + A$ (which is exactly $\\binom{n+1}{2}$ for a Sidon set of size $n$) but about its fine structure — how the elements are distributed within their range.\n\nA Sidon set (also called a $B_2$ sequence) is a set where all pairwise sums are distinct: $a_1 + b_1 = a_2 + b_2$ implies $\\{a_1, b_1\\} = \\{a_2, b_2\\}$. Classical results show that a Sidon subset of $\\{1, \\ldots, N\\}$ has at most $\\sqrt{N} + O(N^{1/4})$ elements, so the sumset $A + A$ contains $\\sim N/2$ elements in an interval of length $\\sim 2N$ — density roughly $1/4$. This means roughly 3/4 of the interval is 'gaps', and the question is how many sumset elements are completely surrounded by these gaps.\n\nThe problem has a weak form (the isolated count grows without bound) and a strong form ($\\gg |A|^2$ isolated elements, meaning a positive fraction of the sumset is isolated). Neither version has been resolved. The pigeonhole principle gives at least one isolated element for $|A| \\geq 5$, but going from one to unboundedly many requires understanding the global distribution of sums, not just local density.",

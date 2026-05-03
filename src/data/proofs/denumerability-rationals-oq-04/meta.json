@@ -38,7 +38,8 @@
       "Constructive proof of algebraic numbers countability",
       "Finite roots per polynomial via FTA",
       "Choiceless argument documentation"
-    ]
+    ],
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Georg Cantor established in 1874 — in the same landmark paper that introduced the diagonal argument — that the algebraic numbers are countable while the reals are not. This dichotomy was revolutionary: it showed that the real line is populated almost entirely by transcendental numbers, yet until Liouville (1844) and later Hermite (1873, for $e$) and Lindemann (1882, for $\\pi$), no specific transcendental number was known. The constructive question addressed here — whether the countability of algebraic numbers can be proved without the axiom of choice — has roots in Hilbert's program and Bishop's constructive analysis. The key insight is that the three-step Cantor argument (polynomial enumeration, finite roots per polynomial, countable union) only requires countable choice at step 3, and that weak form of choice is provable in Lean's type-theoretic foundation without being an additional axiom.",

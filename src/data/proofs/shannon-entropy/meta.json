@@ -53,7 +53,8 @@
       "Data processing inequality and sufficient statistics"
     ],
     "assumptions": "0 sorries, 0 axioms. All theorems fully proved.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 23
   },
   "overview": {
     "historicalContext": "Claude Shannon's 1948 paper 'A Mathematical Theory of Communication' founded information theory and introduced entropy as the fundamental measure of information content. Shannon showed that the quantity H(X) = -sum p(x) log p(x) is the unique function (up to a constant) satisfying natural axioms for an information measure: continuity, monotonicity in the number of equally likely outcomes, and a composition law for sequential experiments.\n\nShannon entropy quantifies the irreducible uncertainty in a random variable, measured in bits (when using log base 2). A fair coin has entropy 1 bit; a deterministic variable has entropy 0. The entropy of English text is approximately 1.0-1.5 bits per character, far below the 4.7 bits per character of uniform random text, reflecting the redundancy of natural language.\n\nBeyond its foundational role in information theory, Shannon entropy has deep connections to thermodynamic entropy (via Boltzmann's formula), combinatorics (via the method of types), statistics (via maximum entropy distributions), and even pure mathematics (via the entropy method in additive combinatorics, used by Tao and others to prove sumset bounds).",

@@ -30,7 +30,8 @@
     "axiomCount": 5,
     "lineCount": 276,
     "assumptions": "5 axioms: n3_unique, n4_two_optima, kovacs_2024_n5_unique, and 2 more. See Lean source for complete statements.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "**Optimal Point Configurations**\n\nThe Erdős distinct distances problem asks: what is the minimum number of distinct distances among n points in the plane? This companion problem asks: for configurations achieving this minimum, are they unique up to similarity?\n\n**Small Cases**:\n- n=3: The equilateral triangle is uniquely optimal (1 distance)\n- n=4: Two non-similar optima exist - the square and two equilateral triangles sharing an edge\n- n=5: The regular pentagon is uniquely optimal (2 distances) - proved by an unnamed 'colleague from Zagreb', with published proof by Kovács (2024)\n- n=6 to 9: At least two non-similar examples exist for each\n\n**The Mystery**: Erdős remarked cryptically that n=5 uniqueness was proved by 'a colleague from Zagreb' whose letter he lost! Kovács finally published a proof in 2024.\n\n**The Conjecture**: For large n, there should be many non-similar optimal configurations.",

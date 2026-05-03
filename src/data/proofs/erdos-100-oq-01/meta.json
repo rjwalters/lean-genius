@@ -21,7 +21,8 @@
     "lineCount": 165,
     "assumptions": "Two sorries: (1) Piepmeyer's 9-point integer-distance configuration witness, (2) Anning–Erdős finiteness theorem.",
     "dateAdded": "2026-03-30",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #100 asks whether the diameter of an n-point integer distance set in ℝ² must grow at least linearly in n. The Anning–Erdős theorem (1945) first showed that infinite non-collinear integer distance sets are impossible, making the finite case the central question. Erdős (1986) conjectured a linear lower bound diam ≥ cn. The best confirmed lower bound comes from the Guth–Katz distinct distances theorem (2015, Annals of Mathematics): any n-point set in the plane determines at least cn/log n distinct distances, which via a geometric bridge gives diam ≥ cn/log n for integer distance sets. The gap between the known cn/log n bound and the conjectured cn bound is a multiplicative factor of log n, which grows without bound. Piepmeyer constructed a 9-point non-collinear integer distance set with small diameter, showing the diameter can be modest for moderate n. The minimum diameter for small n is tabulated in OEIS A186704. Closing the log n gap requires exploiting the arithmetic structure of integer distances — a constraint absent in the general distinct distances problem.",

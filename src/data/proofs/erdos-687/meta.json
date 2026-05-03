@@ -24,7 +24,8 @@
     "axiomCount": 4,
     "lineCount": 547,
     "assumptions": "4 axioms: jacobsthalY_eq_jacobsthal, iwaniec_upper, fgkmt_lower, maier_pomerance_conjecture. jacobsthalSet_bddAbove proved via CRT induction. erdos_687_conjecture proved from maier_pomerance_conjecture. Y(3) = 3 proved by parity-residue case analysis. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 26
   },
   "overview": {
     "historicalContext": "Erdős Problem #687 concerns the Jacobsthal function of the primorial, a central object in the theory of covering systems and prime gaps. Jacobsthal (1960) introduced g(n) as the largest gap between consecutive integers coprime to n. For the primorial P(x) = ∏_{p ≤ x} p, we have Y(x) = g(P(x)), connecting covering congruences to prime distribution. Iwaniec (1978) proved Y(x) ≪ x² using the Selberg sieve, a bound that has resisted improvement for nearly 50 years. Rankin (1938) gave the first non-trivial lower bound Y(x) ≫ x · log x · log log x · log log log log x / (log log log x)², which stood for decades. Ford, Green, Konyagin, Maynard, and Tao (2018), as part of their landmark work on large prime gaps, improved Rankin's bound by replacing the double-log denominator. Maier and Pomerance conjectured Y(x) ≪ x · (log x)^{2+o(1)}, which would nearly close the gap. Erdős offered $1,000 for proving Y(x) = o(x²), one of his largest prizes, reflecting the problem's depth and connection to the distribution of primes in arithmetic progressions, sieve methods, and the structure of smooth numbers.",

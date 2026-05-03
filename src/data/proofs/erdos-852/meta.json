@@ -25,7 +25,8 @@
     "lineCount": 247,
     "assumptions": "3 axioms: brun_sieve_divergence (Brun's sieve result), erdos852_lower_bound (OPEN conjecture), erdos852_upper_bound (OPEN conjecture). The function h(x) = maxDistinctRun and its properties (witness, optimality, bound) are now fully defined and proved.",
     "mathlib_version": "4.26.0",
-    "dateUpdated": "2026-03-28"
+    "dateUpdated": "2026-03-28",
+    "theoremCount": 25
   },
   "overview": {
     "historicalContext": "Erdős posed this question about the fine structure of prime gaps around 1985, building on decades of work on the distribution of primes. The prime gaps $d_n = p_{n+1} - p_n$ encode the local behavior of the prime counting function $\\pi(x)$. Cramér (1936) conjectured $\\max_{p_n \\leq x} d_n \\sim (\\log x)^2$, while Maier (1985) showed that primes exhibit unexpected irregularities in short intervals — the 'Maier phenomenon.' The function $h(x)$ introduced here measures a different aspect: the variability of consecutive gaps. Hardy and Littlewood's prime $k$-tuples conjecture (1923) predicts which gap patterns occur, and Brun's sieve (1919) — originally developed to bound twin primes — provides the key tool showing $h(x) \\to \\infty$. The problem connects to Gallagher's 1976 result that gaps between consecutive primes follow a Poisson distribution on average, and to the Erdős–Rankin construction (1938/1962) of large gaps. The interplay between the lower bound $(\\log x)^c$ and upper bound $o(\\log x)$ would pin down $h(x)$ as growing faster than any power of $\\log\\log x$ but slower than $\\log x$ — a narrow window reflecting the subtle balance between regularity and irregularity in the prime sequence.",

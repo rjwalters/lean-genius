@@ -44,7 +44,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 227,
-    "assumptions": "2 axioms: WeakABC, overholt_finitude. See Lean source for complete statements."
+    "assumptions": "2 axioms: WeakABC, overholt_finitude. See Lean source for complete statements.",
+    "theoremCount": 19
   },
   "overview": {
     "historicalContext": "The Brocard-Ramanujan conjecture is one of the oldest unsolved problems in number theory. Henri Brocard first posed it in 1876 and again in 1885, asking for which integers n is n! + 1 a perfect square. Srinivasa Ramanujan independently considered the same question.\n\nThree solutions are known: n = 4 (giving 5²), n = 5 (giving 11²), and n = 7 (giving 71²). These are called 'Brown numbers' after a 1974 paper by Paul Erdős and W. Obláth that connected them to this problem.\n\nErdős and Graham described the conjecture as 'almost certainly true but intractable at present.' Despite over 140 years of attention from mathematicians, no proof exists. Overholt (1993) showed that the ABC conjecture would imply only finitely many solutions exist, providing theoretical support for the conjecture.",

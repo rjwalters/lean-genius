@@ -22,7 +22,8 @@
     "lineCount": 506,
     "assumptions": "Three complexity-theoretic theorems (lr_saturation_theorem, lr_positivity_in_P, lr_counting_sharp_P_complete) prove `True` as explicit placeholders — the complexity theory formalism is not available in Lean/Mathlib. The 2-row LR coefficient computation (lrCoeff2) and full Gr(2,4) multiplication table are fully verified via native_decide.",
     "dateAdded": "2026-04-12",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 25
   },
   "overview": {
     "historicalContext": "Littlewood-Richardson coefficients c^nu_{lam,mu} are fundamental in algebraic combinatorics, governing the multiplication of Schur functions, tensor product decomposition of GL_n representations, and Schubert calculus on Grassmannians. The Knutson-Tao saturation theorem (1999) showed that testing positivity (c > 0) reduces to linear programming, placing it in P. Narayanan (2006) proved that exact computation of these coefficients is #P-complete, establishing one of the sharpest complexity separations in combinatorics.",

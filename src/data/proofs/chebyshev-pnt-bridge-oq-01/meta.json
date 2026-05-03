@@ -26,7 +26,8 @@
       "Chebyshev lower bound: 4^n ≤ (2n+1)·(2n)^π(2n) (proved)",
       "Carry term bound: ⌊2n/p^i⌋ - 2⌊n/p^i⌋ ≤ 1 (proved)",
       "Fixed primeCounting' → primeCounting bug in central binom bound"
-    ]
+    ],
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "Chebyshev (1852) used the factorization of C(2n,n) to bound the prime counting function π(x), predating the Prime Number Theorem by 44 years. His motivation was to prove Bertrand's postulate (stated by Bertrand in 1845): that for every n > 1 there exists a prime p with n < p ≤ 2n. The key observation — that each prime p contributes at most p^{⌊log_p(2n)⌋} ≤ 2n to C(2n,n) — was clarified by Kummer's 1852 theorem, which interprets v_p(C(2n,n)) as the number of carries in the base-p addition of n + n. Combining C(2n,n) ≤ (2n)^{π(2n)} with 4^n ≤ (2n+1)·C(2n,n) gives π(2n) ≥ n·log(4)/log(2n) — achievable without any analytic machinery. Erdős (1932) later gave an elegant proof of Bertrand's postulate refining the same bound.",

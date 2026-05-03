@@ -54,7 +54,8 @@
     "axiomCount": 0,
     "assumptions": "Fully verified: 0 axioms, 0 sorries remain.",
     "lineCount": 102,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "Archimedes of Syracuse (c. 287–212 BCE) computed the first rigorous bounds on π in his treatise 'Measurement of a Circle' (Κύκλου μέτρησις), Proposition 3. His method was to inscribe and circumscribe regular polygons around a unit circle, starting from a hexagon (whose perimeter gives the trivial bound π > 3) and doubling the number of sides four times: 6 → 12 → 24 → 48 → 96. For each doubling, he used the half-angle identity to compute the new polygon's side length from the previous one, requiring only square root extraction — which he approximated with remarkable ingenuity using rational bounds. The final result, 223/71 < π < 22/7, stood as the best known approximation for over 400 years until Ptolemy used a 360-gon to obtain π ≈ 3.14166. The upper bound 22/7 became so widely known that it remains the most common rational approximation of π today. In the 20th century, Dalzell (1944) and Niven (1947) independently discovered the elegant integral identity ∫₀¹ t⁴(1-t)⁴/(1+t²) dt = 22/7 − π, providing a one-line proof of the upper bound.",

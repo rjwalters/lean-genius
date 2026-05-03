@@ -60,7 +60,8 @@
     "axiomCount": 0,
     "lineCount": 123,
     "assumptions": "0 axioms, 0 sorries. Main result transported from Fin n via Fintype.equivFin and permutation conjugation from parent entry.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "**Generalizing the Partial Derangement Formula**\n\nThe study of derangements dates to Montmort's *problème des rencontres* (1708): if $n$ cards numbered 1 through $n$ are shuffled, what is the probability that no card lands in its original position? Euler (1753) derived the alternating series $D(n) = n! \\sum_{k=0}^n (-1)^k/k!$ and the recurrence $D(n) = (n-1)(D(n-1) + D(n-2))$.\n\nThe partial derangement formula $S(n,k) = \\binom{n}{k} \\cdot D(n-k)$ extends this to count permutations with *exactly* $k$ fixed points: choose which $k$ elements to fix, then derange the rest. The original formalization (derangements-oq-02) proved this for $\\text{Fin}\\, n$.\n\nThe natural question is: does the same formula hold for **any** finite type $\\alpha$, not just the canonical $\\text{Fin}\\, n$? The answer is yes, by a transport argument: every finite type $\\alpha$ is equivalent to $\\text{Fin}\\, |\\alpha|$ via `Fintype.equivFin`, and permutation conjugation via `Equiv.permCongr` preserves the fixed-point count.\n\nThis generalization is important because mathematical structures rarely come labeled as $\\text{Fin}\\, n$. Graph automorphisms, symmetries of geometric objects, and group actions all involve permutations of abstract finite sets.",

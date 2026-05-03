@@ -69,7 +69,8 @@
         "name": "komjath_consistency",
         "description": "Komjath's 1988 consistency result: it is consistent with ZFC that there exists a graph with chromatic number aleph-2 that has no subgraph with chromatic number aleph-1. The model is constructed by collapsing the continuum function so that 2^(aleph-0) = 2^(aleph-1) = 2^(aleph-2) = aleph-3, which defeats Galvin's set-theoretic implication."
       }
-    ]
+    ],
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "**Erdős Problem #739: Chromatic Numbers of Subgraphs**\n\nOriginating with Galvin (1973), this asks whether graphs with infinite chromatic number 𝔪 must have subgraphs of all smaller infinite chromatic numbers 𝔫 < 𝔪.\n\n**Galvin (1973):** Proved YES for 𝔪 = ℵ₀ — the only case provable in ZFC. Also observed that the induced subgraph version implies 2^κ < 2^ν for κ < ν.\n\n**Komjáth (1988):** Constructed models where the property fails: graphs with χ = ℵ₂ having no subgraph with χ = ℵ₁, in models where 2^ℵ₀ = 2^ℵ₁ = 2^ℵ₂ = ℵ₃.\n\n**Shelah (1990):** Under V=L, the property holds for 𝔪 = ℵ₂, 𝔫 = ℵ₁. This establishes set-theoretic independence.\n\n**Open:** Does GCH suffice?",

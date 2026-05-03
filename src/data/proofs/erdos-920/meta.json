@@ -25,7 +25,8 @@
     "axiomCount": 4,
     "lineCount": 203,
     "assumptions": "4 axioms: maxChromaticKFree, mattheus_verstraete_2023, general_lower_bound, RamseyNumber. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "The study of chromatic numbers of $K_k$-free graphs has a rich history intertwining graph coloring and Ramsey theory. Erdős initiated this line in 1959 when he used the probabilistic method to show $R(3,m) \\gg (m/\\log m)^2$, which implies $g_3(n) \\gg n^{1/2}/\\log n$. Graver and Yackel established the upper bound $g_k(n) \\ll (n \\log\\log n / \\log n)^{1-1/(k-1)}$ in 1968, published in the Journal of Combinatorial Theory. Shearer later improved the $k=3$ lower bound to $g_3(n) \\gg (n/\\log n)^{1/2}$, essentially resolving that case. For decades the general case $k \\geq 4$ remained open, with the best known lower bound exponent $1 - 2/(k+1)$ falling short of the conjectured $1 - 1/(k-1)$. The landscape changed dramatically in 2023 when Sam Mattheus and Jacques Verstraete proved $R(4,t) \\gg t^3/(\\log t)^4$ using algebraic geometry over finite fields, resolving the $k=4$ case with the optimal exponent $2/3$. Their work appeared in Annals of Mathematics and represents one of the major combinatorial breakthroughs of the decade. The problem for $k \\geq 5$ remains one of the central open questions in extremal combinatorics.",

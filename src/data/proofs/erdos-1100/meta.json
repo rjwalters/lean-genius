@@ -23,7 +23,8 @@
     "axiomCount": 0,
     "lineCount": 328,
     "assumptions": "0 axioms. 3 sorries: tau_perp_lower_bound (τ⊥(n) ≥ ω(n), basic coprimality bound), erdos_hall_max_lower_bound (max_{n<x} τ⊥(n) > exp((log log x)^(2−ε)), Erdős-Hall), and exponential growth bounds for the g(k) sequence.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and R. R. Hall in their 1978 paper *On some unconventional problems on the divisors of integers* (Acta Arithmetica). Hall was a specialist in multiplicative number theory at York, and this collaboration produced several problems exploring the fine structure of divisor sequences. The function $\\tau^{\\perp}(n)$ measures how often consecutive divisors in the increasing sequence $1 = d_1 < d_2 < \\cdots < d_{\\tau(n)} = n$ are coprime — a surprisingly subtle invariant. The trivial lower bound $\\tau^{\\perp}(n) \\geq \\omega(n)$ is immediate (each prime $p \\mid n$ contributes at least one coprime transition in the divisor list), and is tight infinitely often. The deeper questions concern whether $\\tau^{\\perp}(n)$ typically exceeds $\\omega(n)$ by a large factor. The exponential bounds on $g(k)$ are due to Erdős and Simonovits, who showed $\\sqrt{2}^k \\lesssim g(k) \\lesssim (2-c)^k$, revealing that the combinatorics of coprime transitions in divisor lattices is genuinely exponential but sub-maximal.",

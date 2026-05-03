@@ -58,7 +58,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 226,
-    "assumptions": "1 axiom(s). No sorries."
+    "assumptions": "1 axiom(s). No sorries.",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "This problem asks about the intersection of prime number theory and the floor function applied to irrational scaling. Given an irrational α > 1, we scale each prime p by α, take the floor, and ask whether infinitely many such values are also prime.\n\nVinogradov (1948) proved that the sequence {pα} is uniformly distributed for every irrational α, which answers a related but distinct question: there are infinitely many primes of the form p = ⌊nα⌋ (primes obtained as floors of scaled integers). However, Problem #972 asks the 'converse': starting with primes p, are the floors ⌊pα⌋ also often prime?\n\nThe distinction is subtle but fundamental. Vinogradov's result concerns which integers n produce primes when scaled, while Erdős's question concerns what happens when we scale primes specifically.",

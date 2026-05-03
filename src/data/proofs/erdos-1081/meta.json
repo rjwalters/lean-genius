@@ -59,7 +59,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 335,
-    "assumptions": "1 axiom: odoni_disproof. 0 sorries."
+    "assumptions": "1 axiom: odoni_disproof. 0 sorries.",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1081: Sums of Two Squarefull Numbers**\n\nThis problem concerns the asymptotic behavior of integers expressible as sums of two squarefull (powerful) numbers.\n\n**Key History:**\n- Erdős (1976): Conjectured A(x) ~ c·x/√(log x) for some constant c > 0\n- Odoni (1981): Disproved the conjecture, showing A(x) grows faster\n- Baker-Brüdern (1994): Improved bounds\n- Blomer (2004): Further refinements using quadratic forms\n- Blomer-Granville (2006): Determined the correct exponent α = 1 - 2^(-1/3) ≈ 0.206\n\n**Mathematical Setting:**\nA squarefull number m is one where every prime divisor p satisfies p² | m. Equivalently, m can be written as a²b³ for positive integers a, b. The sequence begins: 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, ...",

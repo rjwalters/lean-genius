@@ -60,7 +60,8 @@
       "Multiplicative functions and coprimality",
       "Rational number arithmetic for bounds"
     ],
-    "assumptions": "Open conjecture; supporting lemmas fully verified with 0 axioms and 0 sorries."
+    "assumptions": "Open conjecture; supporting lemmas fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Erdős studied the powerful part of integers — the product of all prime power factors p^k with k ≥ 2 — as a measure of how 'square-full' a number is. For a single integer n, Q₂(n) captures the contribution of repeated prime factors. When applied to products of consecutive integers n(n+1)···(n+ℓ), the powerful part reflects the distribution of large prime powers across nearby integers.\n\nMahler proved the fundamental lower bound: for every ℓ ≥ 1, there are infinitely many n with Q₂(n(n+1)···(n+ℓ)) ≥ n². This shows that the powerful part can be as large as n², at least infinitely often. Erdős then asked three progressively finer questions about the growth rate.\n\nErdős remarked that the problems 'seem very difficult to prove,' placing them among his harder conjectures in multiplicative number theory. The interplay between consecutive integers and prime factorization is subtle: while consecutive integers are coprime in pairs, products of several consecutive integers can accumulate large prime powers through coincidences in the prime factorization structure.",

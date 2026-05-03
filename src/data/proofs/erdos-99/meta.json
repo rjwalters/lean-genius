@@ -56,7 +56,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 179,
-    "assumptions": "1 axiom: case_n4_no_equilateral. 0 sorries."
+    "assumptions": "1 axiom: case_n4_no_equilateral. 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Erdős Problem #99 is a deceptively natural question in discrete geometry that has resisted resolution since it was posed in the 1990s ([Er94b], [Er95], [Er97e]). The problem asks whether optimal point configurations — sets of n points with minimum pairwise distance 1 that minimize the enclosing diameter — must contain unit equilateral triangles when n is large enough.\n\nThe conjecture draws on Thue's classical theorem (1910) that the densest packing of unit circles in the plane is achieved by the triangular (hexagonal) lattice, with density π/(2√3) ≈ 0.9069. Since diameter-minimizing configurations must pack points efficiently, they should resemble circular regions of the triangular lattice, which is built entirely from unit equilateral triangles. Erdős went further, conjecturing that (1-o(1))n points of any optimal configuration lie exactly on the triangular lattice.\n\nRemarkably, Erdős himself seemed uncertain about the conjecture's truth. He wrote: 'I could not prove it but felt that it should not be hard. To my great surprise both B. H. Sendov and M. Simonovits doubted the truth of this conjecture.' The prize structure reinforces this uncertainty: $100 for a counterexample but only $50 for a proof. The n=4 case provides concrete evidence that small optimal configurations (a unit square) can avoid equilateral triangles entirely. Bezdek and Fodor (1999) analyzed optimal configurations for small n, finding that triangular lattice structure emerges gradually.",

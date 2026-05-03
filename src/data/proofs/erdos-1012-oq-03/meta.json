@@ -54,7 +54,8 @@
       "Rédei's theorem (fully proved): tournament_path_insert (vertex insertion into directed path) + tournament_full_path_list (inductive construction) + list_path_to_hamiltonian (representation conversion)",
       "Moon-Moser theorem (fully proved): tournament_cycle_extendable (SC contradiction forces cycle growth) + grow_cycle_to_hamiltonian (well-founded induction with termination measure |V|-|cycle|)",
       "directed_hamiltonian_threshold (fully proved): arc count > (n-1)² + SC implies Hamiltonicity via probabilistic union bound over n! permutations (hamiltonian_of_few_missing_arcs, perm_arc_bad_card_le)"
-    ]
+    ],
+    "theoremCount": 27
   },
   "overview": {
     "prerequisites": [

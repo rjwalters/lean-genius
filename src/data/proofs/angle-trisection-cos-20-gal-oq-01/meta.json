@@ -50,7 +50,8 @@
         "description": "If p is irreducible and deg p is prime, then deg p divides |Gal|",
         "module": "Mathlib.FieldTheory.Galois.Basic"
       }
-    ]
+    ],
+    "theoremCount": 32
   },
   "overview": {
     "historicalContext": "The Galois group computation for cos(π/7) is a classical exercise in algebraic number theory, first implicit in Gauss's 1801 *Disquisitiones Arithmeticae* where he characterized constructible regular polygons. The regular heptagon (7-gon) is not constructible by straightedge and compass because [ℚ(cos(2π/7)):ℚ] = 3, which is not a power of 2 — precisely the fact this proof establishes. The minimal polynomial 8X³−4X²−4X+1 arises from the 14th cyclotomic field: cos(π/7) = (ζ₁₄ + ζ₁₄⁻¹)/2 where ζ₁₄ = e^{2πi/14}, and the maximal real subfield ℚ(ζ₁₄)⁺ = ℚ(cos(π/7)) has degree φ(14)/2 = 3 over ℚ. The three roots cos(π/7), cos(3π/7), cos(5π/7) form a single Galois orbit under the automorphism α ↦ 1−2α² (corresponding to ζ₁₄ ↦ ζ₁₄⁵), giving the cyclic Galois group ℤ/3ℤ. This computation is a key example in the theory of totally real abelian extensions.",
@@ -149,14 +150,18 @@
   ],
   "references": [
     {
-      "authors": ["I. Stewart"],
+      "authors": [
+        "I. Stewart"
+      ],
       "title": "Galois Theory",
       "year": "2015",
       "venue": "Chapman & Hall/CRC, 4th edition",
       "note": "Chapter 17: constructibility and Galois groups. The Galois group computation for cos(π/n) minimal polynomials follows the pattern developed here: irreducibility via Eisenstein, splitting field degree from explicit root formulas, and |Gal| = [K:ℚ] by separability."
     },
     {
-      "authors": ["I. M. Niven"],
+      "authors": [
+        "I. M. Niven"
+      ],
       "title": "Irrational Numbers",
       "year": "1956",
       "venue": "Carus Mathematical Monographs #11, MAA",

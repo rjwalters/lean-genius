@@ -58,7 +58,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 185,
-    "assumptions": "1 axiom: hegyvari_not_complete (Hegyváry — for α≥2 and k≥1, the sequence ⌊α^k·α⌋ is not a complete sequence). 0 sorries."
+    "assumptions": "1 axiom: hegyvari_not_complete (Hegyváry — for α≥2 and k≥1, the sequence ⌊α^k·α⌋ is not a complete sequence). 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "**Graham (1971)** first posed this question about representing integers using floor sequences. The problem connects representation theory with Diophantine approximation.\n\n**Hegyvári (1989)** made major progress:\n- POSITIVE: Complete when α is dyadic rational and β is not\n- NEGATIVE: Not complete when α ≥ 2 and β = 2ᵏα\n\n**Recent work**:\n- **Jiang-Ma (2024)** and **Fang-He (2025)** extended negative results to 1 < α < 2\n- **Van Doorn** proved completeness for α < 2 < β < 3\n\n**Measure theory**: Hegyvári (1991, 1994) proved continuum cardinality results about exceptional pairs.",

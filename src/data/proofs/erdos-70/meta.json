@@ -24,7 +24,8 @@
     "axiomCount": 0,
     "lineCount": 237,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Erdős Problem #70 belongs to partition calculus, the infinitary extension of Ramsey theory developed by Erdős and Rado in their foundational 1956 paper 'A partition calculus in set theory'. The arrow notation κ → (α, β)_k^n captures the idea that coloring n-element subsets of a κ-sized set forces monochromatic subsets of specified types. Erdős and Rado proved 𝔠 → (ω+n, 4)₂³ for 2 ≤ n < ω, establishing that the continuum satisfies non-trivial partition relations for 3-element subsets. The proof uses the stepping-up lemma, converting 2-dimensional partition relations to 3-dimensional ones at the cost of enlarging the ordinal parameter. The general case — whether 𝔠 → (β, n)₂³ holds for all countable ordinals β — remains completely open. This connects to deep questions about the combinatorial structure of the continuum. Under GCH, stronger partition relations hold, but the problem is formulated in ZFC. Todorčević's work on partition relations and Shelah's pcf theory have provided partial insights, but the gap between ω+n and arbitrary countable ordinals has not been bridged.",

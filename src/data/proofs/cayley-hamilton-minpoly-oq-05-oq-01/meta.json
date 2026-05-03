@@ -79,7 +79,8 @@
     "axiomCount": 0,
     "lineCount": 270,
     "assumptions": "Fully verified: 0 axioms, 0 sorries remain.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "The concept of nonderogatory matrices dates to Frobenius's 1878 work on the rational canonical form. Frobenius showed that every matrix over a field is similar to a block diagonal of companion matrices — one for each invariant factor — and that the matrix is nonderogatory precisely when there is a single block (i.e., the minimal polynomial equals the characteristic polynomial). The equivalence between the nonderogatory condition and the existence of a cyclic vector was made explicit in Hoffman and Kunze's influential 1961 textbook, where it serves as the bridge between the algebraic description ($\\mu_M = \\chi_M$) and the geometric one (existence of $v$ with $\\{v, Mv, \\ldots, M^{n-1}v\\}$ spanning $K^n$). The union avoidance argument used in this proof has an independent pedigree: it is the linear algebra analogue of the prime avoidance lemma in commutative algebra, first noted by E.D. Davis (1964). Over infinite fields, it says that finitely many proper subspaces cannot cover the full space — a fact with a pleasantly elementary proof via a line-counting argument. This result also connects to the Zariski topology: the set of cyclic vectors forms a Zariski-open (hence dense) subset of $K^n$ when $K$ is infinite.",

@@ -41,7 +41,8 @@
     ],
     "lineCount": 118,
     "assumptions": "1 axiom (szemeredi_k_ge_4) inherited from SzemerediTheorem.lean — requires hypergraph regularity for k≥4.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Szemerédi's theorem (1975) states that any set of integers with positive upper density contains arbitrarily long arithmetic progressions. The contrapositive — the density formulation — says that k-AP-free subsets of {1,...,N} must have density o(1): their fractional size |A|/N → 0 as N → ∞.\n\nFor k=3 (Roth, 1953), the density bound |A| = o(N) was proved using Fourier analysis. Mathlib 4 contains this: `rothNumberNat_isLittleO_id` states that the maximum size of a 3-AP-free subset of {0,...,N-1} is o(N) as N → ∞.\n\nGowers (2001) gave the first quantitative density bounds for general k, introducing the influential Gowers uniformity norms U^k. His proof shows that k-AP-free sets must be Gowers-uniform (U^{k-1} norm → 0), a stronger statement. However, Gowers norms are not yet in Mathlib 4.\n\nThe density formulation of Szemerédi's theorem is important as the 'quantitative face' of a result more commonly stated in its qualitative form. It connects to:\n- The Kelley-Meka breakthrough (2023) giving near-optimal bounds for k=3: |A| ≤ N exp(-c(log N)^{1/12})\n- The Green-Tao theorem (2004) on arithmetic progressions in the primes\n- Ergodic theory via the Furstenberg correspondence principle",

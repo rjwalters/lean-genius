@@ -47,7 +47,8 @@
       "Separation of the reciprocal condition and GCD coprimality as independent Lean predicates",
       "Concrete {3,4,7} verification axiomatized with Matrix.vecCons notation"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "Burr, Erdős, Graham, and Li (1996) [BEGL96] studied when digit-restricted numbers in multiple bases form complete sequences — i.e., represent all sufficiently large integers. A number has 'binary digits in base d' if all its base-d digits are 0 or 1, making it a sum of distinct powers of d. The key threshold is the reciprocal condition Σ1/(d_i - 1) ≥ 1. Pomerance proved this condition is NECESSARY: below the threshold, infinitely many integers are unrepresentable. The sufficiency (Q1) was proved via Alexeev's method and formalized in Lean. The stronger Q2 — using digits only from position k onward, with a coprimality condition — remains open, though verified for bases {3, 4, 7} where Σ1/(d_i - 1) = 1/2 + 1/3 + 1/6 = 1 exactly.",

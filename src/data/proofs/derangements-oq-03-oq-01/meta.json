@@ -57,7 +57,8 @@
       "Derangement counting formula D(n) = n! · ∑ (-1)^k/k!",
       "Summable series tail manipulation"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "The derangement ratio D(n)/n! = ∑_{k=0}^n (-1)^k/k! converges to 1/e, as established by Montmort (1708) and Euler (1751). The first-order convergence rate |D(n)/n! - 1/e| ≤ 1/(n+1)! was formalized in DerangementsOQ03. This entry refines that to a two-term asymptotic expansion, capturing the leading correction term and proving the bound is tight.\n\nThe expansion D(n)/n! = 1/e + (-1)^n/(n+1)! + O(1/(n+2)!) is a classical result from the theory of alternating series. Each additional term of the Taylor series for e^{-1} provides one more order of accuracy, with the error bounded by the next omitted term. This is a direct consequence of the Leibniz alternating series estimation theorem applied to e^{-1} = ∑ (-1)^k/k!.",

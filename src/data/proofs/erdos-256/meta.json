@@ -71,7 +71,8 @@
       "Asymptotic analysis (big-O notation, polynomial vs polylogarithmic growth)"
     ],
     "lineCount": 308,
-    "assumptions": "2 axiom(s): erdos_szekeres_lower (Erdős-Szekeres 1959) and belov_konyagin_bound (Belov-Konyagin 1996). No sorries."
+    "assumptions": "2 axiom(s): erdos_szekeres_lower (Erdős-Szekeres 1959) and belov_konyagin_bound (Belov-Konyagin 1996). No sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "This problem traces a 37-year arc through 20th-century harmonic analysis. Paul Erdős and George Szekeres introduced the function f(n) in 1959 in the Acad. Serbe Sci. Publ., proving the lower bound f(n) > √(2n) via a counting argument on roots of unity. Erdős himself obtained the first subexponential upper bound, showing log f(n) ≪ n^{1-c}. Frederick Atkinson improved this to n^{1/2} log n in 1961 using estimates on character sums. Andrew Odlyzko pushed the exponent further to n^{1/3}(log n)^{4/3} in 1982 with methods from analytic number theory. For two decades, the question remained: is the growth polynomial in n (as the upper bounds suggested) or could f(n) be even smaller? Alexander Belov and Sergei Konyagin settled this decisively in 1996 by constructing sequences of exponents for which the product maximum grows only polylogarithmically: log f(n) ≪ (log n)⁴. Their construction used sophisticated probabilistic and harmonic analysis techniques, answering Erdős's question in the negative. More recently, Jean Bourgain and Mei-Chu Chang (2018) studied the variant with distinct exponents, showing different but still subpolynomial behavior.",

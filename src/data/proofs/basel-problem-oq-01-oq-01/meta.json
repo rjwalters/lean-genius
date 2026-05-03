@@ -20,7 +20,8 @@
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
     "lineCount": 144,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "The Basel problem — computing $\\zeta(2) = \\sum_{n=1}^\\infty 1/n^2 = \\pi^2/6$ — was solved by Euler in 1735 and stands as one of the landmark achievements of 18th-century analysis. Euler also computed $\\zeta(2n)$ for all positive integers $n$ in terms of Bernoulli numbers and powers of $\\pi$. The odd zeta values $\\zeta(3), \\zeta(5), \\zeta(7), \\ldots$ remained mysterious: no closed forms are known, and their arithmetic nature (rational? irrational? transcendental?) was an open question for centuries. The first breakthrough came from Roger Apéry in 1978 when, at age 61, he stunned the mathematical world by proving $\\zeta(3)$ is irrational using an elementary but miraculous method: an explicit fast-converging rational approximation sequence. His proof was so surprising that Henri Cohen, who reconstructed it at the Journées Arithmétiques conference, reported that 'several people left the auditorium in a huff' upon seeing the formulas. Apéry's constant $\\zeta(3) \\approx 1.2020569\\ldots$ remains the only proved irrational among odd zeta values. For $\\zeta(5) \\approx 1.0369278\\ldots$, irrationality is still unknown. In 2000 Rivoal proved that infinitely many odd zeta values are irrational (the Ball-Rivoal theorem), and Zudilin (2001) improved this to show that at least one of $\\zeta(5), \\zeta(7), \\zeta(9), \\zeta(11)$ is irrational — but neither result pins down $\\zeta(5)$ specifically.",

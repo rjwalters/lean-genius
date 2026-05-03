@@ -76,7 +76,8 @@
     "axiomCount": 0,
     "lineCount": 262,
     "mathlib_version": "4.26.0",
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "Lodovico Ferrari (1522-1565), a student of Gerolamo Cardano, discovered the method for solving quartic equations around 1540 by reducing them to a cubic resolvent. Cardano published both Ferrari's quartic solution and his own cubic formula in *Ars Magna* (1545). The chain of reductions — quartic → resolvent cubic → depressed cubic → radicals — represents one of the great algebraic achievements of the Renaissance. The key insight of this file: Ferrari's resolvent cubic is not in Cardano's depressed form by default, but the Tschirnhaus-style substitution m = t − 5p/6 transforms it exactly. The primitive cube roots of unity ω = exp(2πi/3), satisfying ω³=1 and 1+ω+ω²=0, are essential for expressing all three Cardano roots of the depressed resolvent, corresponding to the three solutions of the original quartic.",

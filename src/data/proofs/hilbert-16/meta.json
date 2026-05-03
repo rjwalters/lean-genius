@@ -27,7 +27,8 @@
     "axiomCount": 9,
     "lineCount": 568,
     "assumptions": "9 axioms: hilbert_number_ge_witness, linear_no_limit_cycles_axiom, H1_eq_zero_axiom, H2_ge_4_axiom, H3_ge_13_axiom, Ecalle_Ilyashenko_axiom, and 3 more. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "Hilbert's 16th Problem, posed at the 1900 International Congress of Mathematicians in Paris, has two parts: Part A concerns the topology of real algebraic curves (Harnack's theorem, 1876, bounds the number of ovals), while Part B asks for the maximum number $H(n)$ of limit cycles of polynomial vector fields of degree $n$. Henri Poincare initiated the qualitative theory of differential equations in his 1881-1886 memoirs, introducing the concepts of limit cycles, index theory, and the classification of singular points. Ivar Bendixson extended this work in 1901, establishing the Poincare-Bendixson theorem that constrains 2D dynamics. Henri Dulac claimed in 1923 that polynomial vector fields have finitely many limit cycles, but gaps were found in his proof. The finiteness question remained open for 70 years until Jean Ecalle and Yulij Ilyashenko independently proved $H(n) < \\infty$ in 1991-1992 using resurgent functions and asymptotic analysis of Dulac maps, respectively (each proof exceeding 500 pages). Shi Songling proved $H(2) \\geq 4$ in 1980 by constructing a quadratic system with the '(3,1) distribution' of limit cycles. Even the exact value of $H(2)$ remains unknown after 125 years. The problem was also selected by Stephen Smale as his 13th problem for the 21st century.",

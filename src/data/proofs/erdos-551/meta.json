@@ -1,10 +1,10 @@
 {
   "id": "erdos-551",
-  "title": "Erd\u0151s #551: Ramsey Numbers for Cycles vs Complete Graphs",
+  "title": "Erdős #551: Ramsey Numbers for Cycles vs Complete Graphs",
   "slug": "erdos-551",
-  "description": "Prove R(C_k, K_n) = (k-1)(n-1) + 1 for k \u2265 n \u2265 3 (except n=k=3). Bondy-Erd\u0151s (1973): k > n\u00b2-2. Nikiforov (2005): k \u2265 4n+2. Keevash-Long-Skokan (2021): k \u2265 C log n / log log n.",
+  "description": "Prove R(C_k, K_n) = (k-1)(n-1) + 1 for k ≥ n ≥ 3 (except n=k=3). Bondy-Erdős (1973): k > n²-2. Nikiforov (2005): k ≥ 4n+2. Keevash-Long-Skokan (2021): k ≥ C log n / log log n.",
   "meta": {
-    "author": "Paul Erd\u0151s, Bondy, Nikiforov, Keevash, Long, Skokan",
+    "author": "Paul Erdős, Bondy, Nikiforov, Keevash, Long, Skokan",
     "sourceUrl": "https://erdosproblems.com/551",
     "date": "1973-2021",
     "status": "formalized",
@@ -23,18 +23,19 @@
     "axiomCount": 0,
     "lineCount": 604,
     "assumptions": "No axioms. 22 sorry(s) remain in the formalization.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 26
   },
   "overview": {
-    "historicalContext": "The asymmetric Ramsey number R(C_k, K_n) asks for the minimum N such that every 2-coloring of the edges of K_N contains either a red k-cycle or a blue n-clique. Erd\u0151s, Faudree, Rousseau, and Schelp conjectured in 1978 that R(C_k, K_n) = (k-1)(n-1) + 1 for all k \u2265 n \u2265 3, with a single exception at (k,n) = (3,3) where the formula gives 5 but the actual value is R(K_3, K_3) = 6. The lower bound comes from a beautiful construction: (n-1) disjoint copies of K_{k-1}, which has (k-1)(n-1) vertices, contains no C_k (each component is too small) and its complement contains no K_n (independence number n-1). Bondy and Erd\u0151s (1973) proved the formula for k > n\u00b2 - 2, a quadratic threshold. Nikiforov (2005) dramatically improved this to k \u2265 4n + 2 using spectral graph theory and eigenvalue bounds. Finally, Keevash, Long, and Skokan (2021) achieved the near-optimal threshold k \u2265 C log n / log log n using the stability method and extremal graph theory. The special case R(C_k, K_3) = 2k - 1 for k \u2265 4 was proved independently by Faudree-Schelp (1974) and Rosta (1973) using Dirac's theorem. The formalization includes a formally verified proof (by Aristotle) that the KLS threshold improves on Nikiforov's for n \u2265 100, using the bound e < 3.",
+    "historicalContext": "The asymmetric Ramsey number R(C_k, K_n) asks for the minimum N such that every 2-coloring of the edges of K_N contains either a red k-cycle or a blue n-clique. Erdős, Faudree, Rousseau, and Schelp conjectured in 1978 that R(C_k, K_n) = (k-1)(n-1) + 1 for all k ≥ n ≥ 3, with a single exception at (k,n) = (3,3) where the formula gives 5 but the actual value is R(K_3, K_3) = 6. The lower bound comes from a beautiful construction: (n-1) disjoint copies of K_{k-1}, which has (k-1)(n-1) vertices, contains no C_k (each component is too small) and its complement contains no K_n (independence number n-1). Bondy and Erdős (1973) proved the formula for k > n² - 2, a quadratic threshold. Nikiforov (2005) dramatically improved this to k ≥ 4n + 2 using spectral graph theory and eigenvalue bounds. Finally, Keevash, Long, and Skokan (2021) achieved the near-optimal threshold k ≥ C log n / log log n using the stability method and extremal graph theory. The special case R(C_k, K_3) = 2k - 1 for k ≥ 4 was proved independently by Faudree-Schelp (1974) and Rosta (1973) using Dirac's theorem. The formalization includes a formally verified proof (by Aristotle) that the KLS threshold improves on Nikiforov's for n ≥ 100, using the bound e < 3.",
     "problemStatement": "Prove $R(C_k, K_n) = (k-1)(n-1) + 1$ for $k \\geq n \\geq 3$, except when $n = k = 3$ where $R(C_3, K_3) = 6$. The lower bound comes from $(n-1)$ disjoint copies of $K_{k-1}$. The upper bound requires showing any graph on $(k-1)(n-1)+1$ vertices contains $C_k$ or its complement contains $K_n$.",
-    "text": "Prove R(C_k, K_n) = (k-1)(n-1) + 1 for k \u2265 n \u2265 3 (except n=k=3). Bondy-Erd\u0151s (1973): k > n\u00b2-2. Nikiforov (2005): k \u2265 4n+2. Keevash-Long-Skokan (2021): k \u2265 C log n / log log n.",
-    "proofStrategy": "The formalization defines cycle graphs $C_k$, complete graphs $K_n$, and formalizes containment of cycles and cliques via injective embeddings. The Ramsey number $R(C_k, K_n)$ is defined via `Nat.find`. The lower bound graph \u2014 $(n-1)$ disjoint copies of $K_{k-1}$ \u2014 is explicitly constructed with adjacency determined by integer division. Three progressively stronger theorems are stated: Bondy-Erd\u0151s (quadratic threshold), Nikiforov (linear threshold), and Keevash-Long-Skokan (near-logarithmic threshold). The theorem `kls_improves` was formally verified by Aristotle using the bound $e < 3$. Special cases include $R(C_k, K_3) = 2k-1$ and verified values $R(C_4, K_3) = 7$, $R(C_5, K_3) = 9$. Monotonicity in both parameters and the path-cycle upper bound method complete the picture.",
+    "text": "Prove R(C_k, K_n) = (k-1)(n-1) + 1 for k ≥ n ≥ 3 (except n=k=3). Bondy-Erdős (1973): k > n²-2. Nikiforov (2005): k ≥ 4n+2. Keevash-Long-Skokan (2021): k ≥ C log n / log log n.",
+    "proofStrategy": "The formalization defines cycle graphs $C_k$, complete graphs $K_n$, and formalizes containment of cycles and cliques via injective embeddings. The Ramsey number $R(C_k, K_n)$ is defined via `Nat.find`. The lower bound graph — $(n-1)$ disjoint copies of $K_{k-1}$ — is explicitly constructed with adjacency determined by integer division. Three progressively stronger theorems are stated: Bondy-Erdős (quadratic threshold), Nikiforov (linear threshold), and Keevash-Long-Skokan (near-logarithmic threshold). The theorem `kls_improves` was formally verified by Aristotle using the bound $e < 3$. Special cases include $R(C_k, K_3) = 2k-1$ and verified values $R(C_4, K_3) = 7$, $R(C_5, K_3) = 9$. Monotonicity in both parameters and the path-cycle upper bound method complete the picture.",
     "keyInsights": [
-      "The threshold progression is dramatic: $n^2 - 1$ (Bondy-Erd\u0151s 1973) $\\to$ $4n + 2$ (Nikiforov 2005) $\\to$ $C \\log n / \\log \\log n$ (KLS 2021) \u2014 from quadratic to near-logarithmic over 48 years",
+      "The threshold progression is dramatic: $n^2 - 1$ (Bondy-Erdős 1973) $\\to$ $4n + 2$ (Nikiforov 2005) $\\to$ $C \\log n / \\log \\log n$ (KLS 2021) — from quadratic to near-logarithmic over 48 years",
       "The lower bound graph $(n-1) \\sqcup K_{k-1}$ is simultaneously $C_k$-free (components too small for a $k$-cycle) and its complement is $K_n$-free (independence number $n-1$), giving $R(C_k, K_n) \\geq (k-1)(n-1) + 1$",
       "The exception at $(3,3)$: since $C_3 = K_3$, $R(C_3, K_3) = R(K_3, K_3) = 6$ by classical Ramsey theory, but the formula gives $(3-1)(3-1)+1 = 5$",
-      "For $n = 100$: Bondy-Erd\u0151s needs $k \\geq 9999$, Nikiforov needs $k \\geq 402$, KLS needs $k \\geq 3C$ \u2014 the improvement is thousandfold",
+      "For $n = 100$: Bondy-Erdős needs $k \\geq 9999$, Nikiforov needs $k \\geq 402$, KLS needs $k \\geq 3C$ — the improvement is thousandfold",
       "The triangle case $R(C_k, K_3) = 2k - 1$ for $k \\geq 4$ follows from Dirac's theorem: a graph on $2k-1$ vertices with no triangle in the complement has minimum degree $\\geq k$, hence a Hamiltonian cycle",
       "Aristotle formally verified `kls_improves`: for $n \\geq 100$, $\\log n / \\log \\log n < 4n + 2$, using $e < 3$ proved via Taylor expansion bounds"
     ],
@@ -42,7 +43,7 @@
       "Ramsey numbers ($R(G,H)$ for specific graphs)",
       "Cycle graphs ($C_k$) and complete graphs ($K_n$)",
       "Turan-type stability arguments",
-      "Szemer\u00e9di regularity lemma",
+      "Szemerédi regularity lemma",
       "Graph coloring (red-blue edge colorings)"
     ]
   },
@@ -74,7 +75,7 @@
     {
       "id": "conjecture",
       "title": "The Main Conjecture and Exception",
-      "summary": "ConjecturedFormula (k-1)(n-1)+1, MainConjecture for k \u2265 n \u2265 3 excluding (3,3), exception_3_3 showing R(C_3,K_3) = 6, formula_wrong_at_3_3 proved by native_decide",
+      "summary": "ConjecturedFormula (k-1)(n-1)+1, MainConjecture for k ≥ n ≥ 3 excluding (3,3), exception_3_3 showing R(C_3,K_3) = 6, formula_wrong_at_3_3 proved by native_decide",
       "startLine": 145,
       "endLine": 174,
       "mathContext": "Conjectured formula: $R(C_k, K_n) = (k-1)(n-1)+1$ for $k \\\\geq n \\\\geq 3$, $(k,n) \\\\neq (3,3)$. Exception: $R(K_3, K_3) = 6 \\\\neq 5$."
@@ -89,8 +90,8 @@
     },
     {
       "id": "bondy-erdos",
-      "title": "Bondy-Erd\u0151s (1973): Quadratic Threshold",
-      "summary": "bondy_erdos theorem for k > n\u00b2-2, BondyErdosThreshold definition, above_bondy_erdos_threshold corollary",
+      "title": "Bondy-Erdős (1973): Quadratic Threshold",
+      "summary": "bondy_erdos theorem for k > n²-2, BondyErdosThreshold definition, above_bondy_erdos_threshold corollary",
       "startLine": 243,
       "endLine": 267,
       "mathContext": "Bondy-Erdos (1973): formula holds for $k > n^2 - 2$. The first threshold result."
@@ -98,7 +99,7 @@
     {
       "id": "nikiforov",
       "title": "Nikiforov (2005): Linear Threshold",
-      "summary": "nikiforov theorem for k \u2265 4n+2, NikiforovThreshold definition, nikiforov_improves proved by omega for n \u2265 5",
+      "summary": "nikiforov theorem for k ≥ 4n+2, NikiforovThreshold definition, nikiforov_improves proved by omega for n ≥ 5",
       "startLine": 278,
       "endLine": 293,
       "mathContext": "Nikiforov (2005): formula holds for $k \\\\geq 4n + 2$. Significant improvement from $n^2$ to $4n$."
@@ -106,7 +107,7 @@
     {
       "id": "kls",
       "title": "Keevash-Long-Skokan (2021): Near-Logarithmic Threshold",
-      "summary": "keevash_long_skokan with existential constant C, KLSThreshold as log n / log log n, exp_one_lt_3 lemma via Taylor bounds, kls_improves PROVED by Aristotle for n \u2265 100",
+      "summary": "keevash_long_skokan with existential constant C, KLSThreshold as log n / log log n, exp_one_lt_3 lemma via Taylor bounds, kls_improves PROVED by Aristotle for n ≥ 100",
       "startLine": 312,
       "endLine": 358,
       "mathContext": "Keevash-Long-Skokan: formula holds for $k \\\\geq C\\\\log n / \\\\log\\\\log n$ for some constant $C$. Near-optimal threshold."
@@ -114,7 +115,7 @@
     {
       "id": "special-cases",
       "title": "Special Cases: Small Parameters and R(C_k, K_3)",
-      "summary": "cycle_3_is_triangle (C_3 = K_3), ramsey_C4_K3 = 7, ramsey_C5_K3 = 9, ramsey_Ck_K3 = 2k-1 for k \u2265 4 (triangle case via Dirac's theorem)",
+      "summary": "cycle_3_is_triangle (C_3 = K_3), ramsey_C4_K3 = 7, ramsey_C5_K3 = 9, ramsey_Ck_K3 = 2k-1 for k ≥ 4 (triangle case via Dirac's theorem)",
       "startLine": 376,
       "endLine": 420,
       "mathContext": "$R(C_4, K_3) = 7$, $R(C_5, K_3) = 9$. For $k \\\\geq 4$, $n = 3$: $R(C_k, K_3) = 2k-1$ (Faudree-Schelp)."
@@ -122,7 +123,7 @@
     {
       "id": "related",
       "title": "Related Questions: SmallestValidK and MinRamseyValue",
-      "summary": "SmallestValidK via Nat.find for threshold where formula holds, MinRamseyValue as infimum of R(C_k, K_n) over k \u2265 n, min_ramsey_achieved existence",
+      "summary": "SmallestValidK via Nat.find for threshold where formula holds, MinRamseyValue as infimum of R(C_k, K_n) over k ≥ n, min_ramsey_achieved existence",
       "startLine": 425,
       "endLine": 461,
       "mathContext": "SmallestValidK: the minimum $k$ where $(k-1)(n-1)+1$ holds for all $n$. Approaches 3 or 4 as theorems improve."
@@ -138,7 +139,7 @@
     {
       "id": "upper-bound",
       "title": "Upper Bound: Path-Cycle Method",
-      "summary": "upper_bound theorem R(C_k, K_n) \u2264 (k-1)(n-1)+1 for k \u2265 n \u2265 3 excluding (3,3), path_cycle_method establishing RamseyProperty for N \u2265 (k-1)(n-1)+1",
+      "summary": "upper_bound theorem R(C_k, K_n) ≤ (k-1)(n-1)+1 for k ≥ n ≥ 3 excluding (3,3), path_cycle_method establishing RamseyProperty for N ≥ (k-1)(n-1)+1",
       "startLine": 522,
       "endLine": 542,
       "mathContext": "$R(C_k, K_n) \\\\leq (k-1)(n-1)+1$ for $k \\\\geq n \\\\geq 3$, $(k,n) \\\\neq (3,3)$. Proved by stability + regularity arguments."
@@ -146,19 +147,19 @@
     {
       "id": "summary",
       "title": "Main Theorem, Current Best, and Asymptotic Resolution",
-      "summary": "main_theorem combining all progress (formula \u2194 k \u2265 SmallestValidK), current_best via KLS bound, solved_asymptotically showing formula holds for all but finitely many k per fixed n",
+      "summary": "main_theorem combining all progress (formula ↔ k ≥ SmallestValidK), current_best via KLS bound, solved_asymptotically showing formula holds for all but finitely many k per fixed n",
       "startLine": 560,
       "endLine": 604,
       "mathContext": "Conjectured: $R(C_k,K_n) = (k-1)(n-1)+1$ for $k \\\\geq n \\\\geq 3$, $(k,n) \\\\neq (3,3)$. Known thresholds: $k \\\\geq 4n+2$ (Nikiforov), $k \\\\geq C\\\\log n/\\\\log\\\\log n$ (KLS)."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #551 on R(C_k, K_n) = (k-1)(n-1) + 1 is SOLVED for sufficiently large parameters. The 604-line formalization captures the full 48-year progression: Bondy-Erd\u0151s (1973, quadratic threshold), Nikiforov (2005, linear threshold), and KLS (2021, near-logarithmic threshold). The lower bound construction via disjoint cliques, the (3,3) exception, the triangle case R(C_k, K_3) = 2k-1, monotonicity properties, and the path-cycle upper bound method are all formalized. Aristotle formally proved kls_improves and formula_mono; formula_wrong_at_3_3 was verified by native_decide.",
-    "implications": "**Theoretical Significance**: The near-logarithmic threshold from KLS essentially closes the problem: for any fixed n, the formula holds for all but at most O(log n / log log n) values of k.\n\nThe linear dependence on n in the formula (k-1)(n-1)+1 has a clean structural explanation via the disjoint cliques lower bound. The progression from quadratic to near-logarithmic thresholds illustrates how spectral methods (Nikiforov) and stability methods (KLS) can dramatically improve on classical combinatorial arguments (Bondy-Erd\u0151s).",
+    "summary": "Erdős Problem #551 on R(C_k, K_n) = (k-1)(n-1) + 1 is SOLVED for sufficiently large parameters. The 604-line formalization captures the full 48-year progression: Bondy-Erdős (1973, quadratic threshold), Nikiforov (2005, linear threshold), and KLS (2021, near-logarithmic threshold). The lower bound construction via disjoint cliques, the (3,3) exception, the triangle case R(C_k, K_3) = 2k-1, monotonicity properties, and the path-cycle upper bound method are all formalized. Aristotle formally proved kls_improves and formula_mono; formula_wrong_at_3_3 was verified by native_decide.",
+    "implications": "**Theoretical Significance**: The near-logarithmic threshold from KLS essentially closes the problem: for any fixed n, the formula holds for all but at most O(log n / log log n) values of k.\n\nThe linear dependence on n in the formula (k-1)(n-1)+1 has a clean structural explanation via the disjoint cliques lower bound. The progression from quadratic to near-logarithmic thresholds illustrates how spectral methods (Nikiforov) and stability methods (KLS) can dramatically improve on classical combinatorial arguments (Bondy-Erdős).",
     "openQuestions": [
-      "For fixed n, what is the exact smallest k\u2080(n) where R(C_k, K_n) = (k-1)(n-1)+1 for all k \u2265 k\u2080(n)?",
+      "For fixed n, what is the exact smallest k₀(n) where R(C_k, K_n) = (k-1)(n-1)+1 for all k ≥ k₀(n)?",
       "Can the KLS constant C be determined explicitly, and what is its optimal value?",
-      "What is the minimum of R(C_k, K_n) over k \u2265 n for fixed n \u2014 does it occur near k = n or at a larger value?",
+      "What is the minimum of R(C_k, K_n) over k ≥ n for fixed n — does it occur near k = n or at a larger value?",
       "Can the regularity-free approach (used by AKS for bipartite graphs in Problem #546) be adapted to the cycle-vs-clique setting?"
     ]
   },
@@ -186,17 +187,17 @@
     {
       "targetId": "erdos-570",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: cycles, graph-theory, ramsey-theory"
+      "description": "Related Erdős problem sharing themes: cycles, graph-theory, ramsey-theory"
     },
     {
       "targetId": "erdos-720",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: cycles, graph-theory, ramsey-theory"
+      "description": "Related Erdős problem sharing themes: cycles, graph-theory, ramsey-theory"
     },
     {
       "targetId": "erdos-1008",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: cycles, graph-theory"
+      "description": "Related Erdős problem sharing themes: cycles, graph-theory"
     },
     {
       "targetId": "ramseys-theorem",
@@ -206,15 +207,15 @@
     {
       "targetId": "erdos-szekeres",
       "relationship": "thematic",
-      "description": "The Erd\u0151s-Szekeres theorem on monotone subsequences is another foundational result in Ramsey theory, sharing the combinatorial paradigm of guaranteed structure in large systems"
+      "description": "The Erdős-Szekeres theorem on monotone subsequences is another foundational result in Ramsey theory, sharing the combinatorial paradigm of guaranteed structure in large systems"
     }
   ],
   "references": [
-    "Bondy, J.A.; Erd\u0151s, P. (1973): Ramsey numbers for cycles in graphs, J. Combin. Theory Ser. B 14, 46\u201354",
-    "Nikiforov, V. (2005): The cycle-complete graph Ramsey numbers, Combinatorics, Probability and Computing 14, 349\u2013370",
+    "Bondy, J.A.; Erdős, P. (1973): Ramsey numbers for cycles in graphs, J. Combin. Theory Ser. B 14, 46–54",
+    "Nikiforov, V. (2005): The cycle-complete graph Ramsey numbers, Combinatorics, Probability and Computing 14, 349–370",
     "Keevash, P.; Long, E.; Skokan, J. (2021): Cycle-complete graph Ramsey numbers, arXiv:2105.06939",
-    "Faudree, R.J.; Schelp, R.H. (1974): All Ramsey numbers for cycles in graphs, Discrete Math. 8, 313\u2013329",
-    "Erd\u0151s, P.; Faudree, R.J.; Rousseau, C.C.; Schelp, R.H. (1978): The Ramsey number for the pair complete graph-cycle",
+    "Faudree, R.J.; Schelp, R.H. (1974): All Ramsey numbers for cycles in graphs, Discrete Math. 8, 313–329",
+    "Erdős, P.; Faudree, R.J.; Rousseau, C.C.; Schelp, R.H. (1978): The Ramsey number for the pair complete graph-cycle",
     "https://erdosproblems.com/551"
   ],
   "sorries": 22
