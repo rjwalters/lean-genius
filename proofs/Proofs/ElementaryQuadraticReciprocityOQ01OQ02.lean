@@ -182,7 +182,7 @@ theorem cubicChar_eq_one_of_cube (h3 : p % 3 = 1) (a : (ZMod p)ˣ)
 theorem cubicEuler_hard {p : ℕ} [Fact p.Prime] (h3 : p % 3 = 1)
     (a : (ZMod p)ˣ) (hχ : cubicChar a = 1) : IsCubicResidue (a : ZMod p) := by
   -- (ZMod p)ˣ is cyclic: get a generator g
-  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (G := (ZMod p)ˣ)
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (ZMod p)ˣ)
   -- Write a = g^k for some integer k (generator spans the whole group)
   obtain ⟨k, hk⟩ : ∃ k : ℤ, g ^ k = a := by
     have := hg a; rwa [Subgroup.mem_zpowers_iff] at this
@@ -412,15 +412,18 @@ example : (7 : ℕ) % 3 = 1 := by norm_num
 example : cubExp 7 = 2 := by norm_num [cubExp]
 
 -- Cubic residues mod 7: cubes are {0, 1, 6} since 1³=1, 2³=1, 3³=6, 6³=6 (mod 7)
-example : IsCubicResidue (1 : ZMod 7) := ⟨1, by norm_num⟩
-example : IsCubicResidue (6 : ZMod 7) := ⟨3, by norm_num⟩  -- 3³ = 27 ≡ 6 mod 7
-example : IsCubicResidue (0 : ZMod 7) := ⟨0, by simp⟩
+example : IsCubicResidue (1 : ZMod 7) := by
+  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩; exact ⟨1, by decide⟩
+example : IsCubicResidue (6 : ZMod 7) := by
+  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩; exact ⟨3, by decide⟩  -- 3³ = 27 ≡ 6 mod 7
+example : IsCubicResidue (0 : ZMod 7) := by
+  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩; exact ⟨0, by simp⟩
 
 -- Euler criterion for p = 7: cubic residue iff a^2 ≡ 1 (mod 7)
-example : (1 : ZMod 7) ^ 2 = 1 := by norm_num  -- 1 is cubic residue ✓
-example : (6 : ZMod 7) ^ 2 = 1 := by norm_num  -- 6 is cubic residue ✓
-example : (2 : ZMod 7) ^ 2 ≠ 1 := by norm_num  -- 2 is NOT a cubic residue ✓
-example : (3 : ZMod 7) ^ 2 ≠ 1 := by norm_num  -- 3 is NOT a cubic residue ✓
+example : (1 : ZMod 7) ^ 2 = 1 := by decide  -- 1 is cubic residue ✓
+example : (6 : ZMod 7) ^ 2 = 1 := by decide  -- 6 is cubic residue ✓
+example : (2 : ZMod 7) ^ 2 ≠ 1 := by decide  -- 2 is NOT a cubic residue ✓
+example : (3 : ZMod 7) ^ 2 ≠ 1 := by decide  -- 3 is NOT a cubic residue ✓
 
 -- p = 13: 13 ≡ 1 (mod 3), cubExp 13 = 4
 example : (13 : ℕ) % 3 = 1 := by norm_num
