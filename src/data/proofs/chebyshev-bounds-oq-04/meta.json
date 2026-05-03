@@ -21,7 +21,7 @@
     "dateAdded": "2026-05-03",
     "axiomCount": 4,
     "assumptions": "4 axioms: (1) chebyshevPsi_doubling_le — ψ(2n) − ψ(n) ≤ 2n·log 2 via the central binomial coefficient C(2n,n) ≤ 4^n; (2) chebyshevPsi_upper_bound — ψ(n) ≤ 2n·log 2 by telescoping the doubling lemma; (3) chebyshevPsi_asymptotic — ψ(n)/n → 1, the Prime Number Theorem for ψ; (4) pnt_equivalence — ψ(n)/n → 1 ↔ π(n) ~ n/log n, the equivalence of PNT forms.",
-    "lineCount": 186,
+    "lineCount": 185,
     "theoremCount": 8,
     "definitionCount": 2,
     "originalContributions": [
@@ -113,7 +113,7 @@
   ],
   "leanFile": {
     "namespace": "ChebyshevBoundsOQ04",
-    "lineCount": 186,
+    "lineCount": 185,
     "path": "Proofs/ChebyshevBoundsOQ04.lean",
     "axiomCount": 4,
     "theoremCount": 8,
