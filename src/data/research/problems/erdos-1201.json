@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "48 theorems proved. Session 6: +4 window theorems (succ_left, window_concat, ge_prime_term, good_of_prime_in_window). 1 axiom remains (\u03b5=1/2 partial result).",
+    "progressSummary": "51 theorems proved, 0 sorries, 1 axiom (\u03b5=1/2 partial result, proved by Erd\u0151s). Sessions 5-7 combined: +10 new theorems including product formula, recursive window formulas, right-endpoint biconditional, infinite-set results, and window algebra (succ_left, window_concat, ge_prime_term, good_of_prime_in_window). All Mathlib 4.26.0 API drift fixed.",
     "builtItems": [
       "greatestPrimeFactor: def using Nat.primeFactors.max' (Erdos1201Problem.lean:28)",
       "consecutiveProduct: def using Finset.range.prod (Erdos1201Problem.lean:32)",
