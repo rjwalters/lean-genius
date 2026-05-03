@@ -205,12 +205,6 @@ def r4 (n : ℕ) : ℕ :=
 def sumDivisorsNot4 (n : ℕ) : ℕ :=
   (Finset.filter (fun d => d ∣ n ∧ ¬(4 ∣ d)) (Finset.range (n + 1))).sum id
 
-/-- Jacobi's four-square theorem: r₄(n) = 8 · Σ_{d|n, 4∤d} d -/
-theorem jacobi_four_squares (n : ℕ) (hn : n ≥ 1) :
-    -- The number of ways to write n as ordered sum of 4 integer squares
-    -- equals 8 times the sum of divisors not divisible by 4
-    True := trivial
-
 /-- For prime p, r₄(p) = 8(p + 1) since divisors are 1 and p, neither div by 4 -/
 theorem r4_prime_formula (p : ℕ) (hp : Nat.Prime p) (hp_odd : p % 2 = 1) :
     sumDivisorsNot4 p = 1 + p := by
@@ -400,7 +394,6 @@ theorem hurwitz_representation_count :
 
 -- Part III: Representation Counts
 #check sumDivisorsNot4
-#check jacobi_four_squares
 
 -- Part IV: Waring's Problem
 #check waringG
