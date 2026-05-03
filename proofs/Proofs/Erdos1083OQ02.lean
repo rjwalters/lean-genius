@@ -258,6 +258,62 @@ theorem sv_remaining_gap_fraction (d : ℕ) (hd : d ≥ 4) :
   ring
 
 /-
+## Partial Fractions Structure and SV Exponent Monotonicity
+
+The gap 2/(d(d+2)) has a partial fractions decomposition 1/d - 1/(d+2),
+revealing the telescoping structure behind its monotone decrease.
+Separately, the SV exponent 2(d+1)/(d(d+2)) itself is strictly decreasing
+in d — both the bound and the gap converge to 0 as d → ∞.
+-/
+
+/-- The gap decomposes via partial fractions: 2/(d(d+2)) = 1/d - 1/(d+2).
+    This is the key algebraic identity behind the telescoping structure and
+    the O(1/d²) asymptotic: the gap is a difference of consecutive unit fractions. -/
+theorem gap_partial_fractions (d : ℕ) (hd : d ≥ 1) :
+    2 / ((↑d : ℝ) * ((↑d : ℝ) + 2)) = 1 / (↑d : ℝ) - 1 / ((↑d : ℝ) + 2) := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  have hd_ne : (↑d : ℝ) ≠ 0 := ne_of_gt hd_pos
+  have hd2_ne : (↑d : ℝ) + 2 ≠ 0 := ne_of_gt hd2_pos
+  field_simp
+  ring
+
+/-- The SV exponent 2(d+1)/(d(d+2)) is itself strictly decreasing in d.
+    Both the conjecture exponent 2/d and the SV exponent tend to 0 as d → ∞.
+    Proof reduces to d²+3d+3 > 0 via cross-multiplication — true for all d ≥ 1. -/
+theorem sv_exponent_strictly_decreasing (d : ℕ) (hd : d ≥ 1) :
+    2 * ((↑d : ℝ) + 2) / (((↑d : ℝ) + 1) * ((↑d : ℝ) + 3)) <
+    2 * ((↑d : ℝ) + 1) / ((↑d : ℝ) * ((↑d : ℝ) + 2)) := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hd1_pos : (0 : ℝ) < (↑d : ℝ) + 1 := by linarith
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  have hd3_pos : (0 : ℝ) < (↑d : ℝ) + 3 := by linarith
+  rw [div_lt_div_iff (mul_pos hd1_pos hd3_pos) (mul_pos hd_pos hd2_pos)]
+  nlinarith [sq_nonneg (↑d : ℝ), Nat.cast_nonneg (α := ℝ) d]
+
+/-- For all d ≥ 4 (the valid range of the SV theorem), SV covers at least 2/3 of
+    the Erdős→conjecture gap. The threshold d=4 is exact: 4/(4+2) = 2/3. -/
+theorem sv_covers_two_thirds_all_d (d : ℕ) (hd : d ≥ 4) :
+    (d : ℝ) / ((↑d : ℝ) + 2) ≥ 2 / 3 := by
+  have hd_cast : (4 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  rw [ge_iff_le, div_le_div_iff (by norm_num : (0 : ℝ) < 3) hd2_pos]
+  linarith
+
+/-- Dimensional evaluations at d=5, extending the sequence d=2,3,4 already computed. -/
+theorem gap_formula_d5 : (2 : ℝ) / ((5 : ℝ) * ((5 : ℝ) + 2)) = 2 / 35 := by norm_num
+theorem sv_exponent_formula_d5 :
+    2 * ((5 : ℝ) + 1) / ((5 : ℝ) * ((5 : ℝ) + 2)) = 12 / 35 := by norm_num
+theorem sv_fraction_d5 : ((5 : ℝ) + 1) / ((5 : ℝ) + 2) = 6 / 7 := by norm_num
+theorem sv_progress_fraction_d5 : (5 : ℝ) / ((5 : ℝ) + 2) = 5 / 7 := by norm_num
+
+/-- The d=3 gap (2/15) exceeds the d=5 gap (2/35), consistent with gap_strictly_decreasing. -/
+theorem d3_gap_larger_than_d5 : (2 : ℝ) / 35 < 2 / 15 := by norm_num
+
+/-- The d=4 gap (1/12) exceeds the d=5 gap (2/35). -/
+theorem d4_gap_larger_than_d5 : (2 : ℝ) / 35 < 1 / 12 := by norm_num
+
+/-
 ## The Conjecture
 -/
 
@@ -349,21 +405,24 @@ State of Erdős #1083:
 
 Axiom count: 6 (f, erdos_lower, grid_upper, solymosi_vu, erdos_1083_conjecture, guth_katz)
 Sorry count: 0
-Proved: 28 theorems (gap analysis, exponent comparison, structural properties, progress fractions,
-         d=2 comparison)
+Proved: 39 theorems (gap analysis, exponent comparison, structural properties, progress fractions,
+         partial fractions, SV monotonicity, d=2 comparison)
 
 Key structural results:
 - sv_fraction_of_conjecture: SV exponent = (d+1)/(d+2) · (2/d)
 - gap_exceeds_reciprocal_sq + gap_below_twice_reciprocal_sq: 1/d² < gap < 2/d²
+- gap_partial_fractions: 2/(d(d+2)) = 1/d - 1/(d+2) (partial fractions decomposition)
 - gap_strictly_decreasing: gap(d) > gap(d+1) (converges to 0)
+- sv_exponent_strictly_decreasing: SV exponent 2(d+1)/(d(d+2)) itself strictly decreases in d
 - sv_fraction_increasing: (d+1)/(d+2) strictly increases toward 1
 - sv_improvement_over_erdos: SV improvement over Erdős = 1/(d+2)
 - sv_covers_d_over_d_plus_2_of_total_gap: SV closes d/(d+2) of full Erdős→conjecture gap
 - sv_remaining_gap_fraction: remaining open fraction = 2/(d+2)
+- sv_covers_two_thirds_all_d: for ALL d ≥ 4 (SV range), coverage ≥ 2/3
 - guth_katz_implies_erdos_d2: Guth-Katz resolves the d=2 case of Erdős #1083
 
 The gap 2/(d(d+2)) is precisely characterized: it lies in (1/d², 2/d²),
-strictly decreases with d, and vanishes asymptotically.
+strictly decreases with d, and vanishes asymptotically. Key: 2/(d(d+2)) = 1/d - 1/(d+2).
 The SV method closes d/(d+2) of the Erdős→conjecture gap (e.g., 2/3 for d=4, 5/6 for d=10).
 For d=2, Guth-Katz eliminates the gap entirely using polynomial partitioning.
 For d ≥ 4, no known approach eliminates the remaining 2/(d+2) fraction.

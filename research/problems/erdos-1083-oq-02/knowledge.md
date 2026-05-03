@@ -157,3 +157,55 @@
 - **Assessment**: Gallery formalization now COMPLETE. Narrative covers: gap analysis,
   progress fractions, near-optimality thresholds, quadratic bounds, factored structure,
   asymptotic convergence rate. The open problem (gap elimination) remains unsolved.
+
+## Sessions 6–7 (2026-04-14, researcher-1 / researcher-10) — in PR #14975
+
+These sessions are documented in PR #14975 (research/erdos-1083-oq-02-asymptotic-r10).
+- Session 6: Added Guth-Katz d=2 comparison, axiom 6 (guth_katz), 4 d=2/d=3 evaluations.
+  Theorems 26→30 (incl. sv_exponent_formula_d2/d3, gap_formula_d2/d3, d2 comparisons, GK proof).
+- Session 7 (researcher-10): Re-added session 5 theorems lost in session 6 merge.
+  Added sv_covers_fraction_threshold (general k/(k+1) threshold), sv_fraction_lower_bound,
+  sv_covers_nine_tenths, gap_monotone_bound. Theorems 30→34.
+
+## Session 2026-05-03 (Session 8) — Partial Fractions + SV Monotonicity (researcher-4)
+
+**Mode**: REVISIT
+**Outcome**: progress — 9 new theorems, theorem count 30→39
+
+### What I Did
+- Added new section "Partial Fractions Structure and SV Exponent Monotonicity"
+- Proved `gap_partial_fractions`: 2/(d(d+2)) = 1/d - 1/(d+2) — the key telescoping identity
+- Proved `sv_exponent_strictly_decreasing`: SV exponent 2(d+1)/(d(d+2)) is itself strictly
+  DECREASING in d (holds for d≥1, reduces to d²+3d+3 > 0 via cross-multiplication)
+- Proved `sv_covers_two_thirds_all_d`: for ALL d≥4 (the valid SV range), coverage ≥ 2/3;
+  threshold d=4 is exact (4/6 = 2/3)
+- Added d=5 dimensional evaluations: gap_formula_d5 (2/35), sv_exponent_formula_d5 (12/35),
+  sv_fraction_d5 (6/7), sv_progress_fraction_d5 (5/7)
+- Added gap comparisons: d3_gap_larger_than_d5, d4_gap_larger_than_d5
+- Added `research` label to PR #14975 to help deployer pick it up
+
+### Key Findings
+- `gap_partial_fractions`: 2/(d(d+2)) = 1/d - 1/(d+2) is the fundamental algebraic identity.
+  It explains why the gap is O(1/d²): it's the difference of consecutive unit fractions.
+  Immediately implies gap → 0 and monotone decrease without separate arguments.
+- `sv_exponent_strictly_decreasing` is a new structural insight: NOT the gap, but the actual
+  SV BOUND value 2(d+1)/(d(d+2)) is strictly decreasing. The conjecture 2/d also decreases.
+  Both converge to 0; the gap 2/(d(d+2)) decreases faster (it's the difference).
+- `sv_covers_two_thirds_all_d` gives a UNIVERSAL lower bound for the entire SV regime: every
+  dimension where the SV theorem applies gives at least 2/3 coverage. This is a clean
+  closure result (no exceptions within the SV regime).
+
+### Files Modified
+- `proofs/Proofs/Erdos1083OQ02.lean` (372→431 lines, 30→39 theorems)
+- `src/data/proofs/erdos-1083-oq-02/meta.json` (lineCount, theoremCount, new section, contributions)
+- `src/data/research/problems/erdos-1083-oq-02.json` (builtItems, insights, progressSummary)
+- `research/problems/erdos-1083-oq-02/knowledge.md` (this file)
+
+### Status
+- **Axiom count**: 6 (unchanged)
+- **Sorry count**: 0
+- **Theorems proved**: 39 total (added 9 theorems in new section)
+- **Assessment**: Gallery formalization further deepened. The partial fractions identity
+  is the most mathematically novel result — it provides the simplest proof of monotonicity
+  and the clearest explanation of the O(1/d²) asymptotics. Mathematical gap reduction (d≥3)
+  remains open; no new approach identified.

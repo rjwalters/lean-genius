@@ -39,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 25 theorems (was 23). Added threshold dimension bounds for 3/4 and 11/12 gap coverage. Formalization fully complete. Mathematical gap reduction OPEN.",
+    "progressSummary": "PROGRESS: 39 theorems (was 30). Added partial fractions identity, SV exponent monotonicity, universal coverage bound, d=5 evaluations. Formalization fully complete. Mathematical gap reduction OPEN.",
     "builtItems": [
       "Created Erdos1083OQ02.lean with SV bound formalization",
       "Proved sv_improves_erdos and sv_below_conjecture (exact exponent comparison)",
@@ -63,7 +63,11 @@
       "sv_fraction_of_conjecture: SV = (d+1)/(d+2) × (2/d) [Erdos1083OQ02.lean:232]",
       "sv_fraction_increasing: (d+1)/(d+2) strictly increases in d [Erdos1083OQ02.lean:243]",
       "sv_covers_three_quarters: d/(d+2)≥3/4 for d≥6 [Erdos1083OQ02.lean:258]",
-      "sv_covers_eleven_twelfths: d/(d+2)≥11/12 for d≥22 [Erdos1083OQ02.lean:268]"
+      "sv_covers_eleven_twelfths: d/(d+2)≥11/12 for d≥22 [Erdos1083OQ02.lean:268]",
+      "gap_partial_fractions: 2/(d(d+2)) = 1/d - 1/(d+2) — partial fractions decomposition [Erdos1083OQ02.lean:272]",
+      "sv_exponent_strictly_decreasing: SV exponent 2(d+1)/(d(d+2)) is itself strictly decreasing for d≥1 [Erdos1083OQ02.lean:284]",
+      "sv_covers_two_thirds_all_d: for ALL d≥4 (SV range), coverage ≥2/3; threshold exact at d=4 [Erdos1083OQ02.lean:296]",
+      "Dimensional evaluations at d=5: gap 2/35, SV exponent 12/35, SV fraction 6/7, progress 5/7 [Erdos1083OQ02.lean:304]"
     ],
     "insights": [
       "SV exponent 2(d+1)/(d(d+2)) is strictly between 1/d and 2/d for d≥4",
@@ -79,7 +83,9 @@
       "Gap tight bounds: 1/d² < 2/(d(d+2)) < 2/d² — gap is exactly order 1/d²",
       "Absolute gap is strictly decreasing: each additional dimension shrinks the gap",
       "General threshold pattern: d/(d+2)≥(k-1)/k ↔ d≥2(k-1); covers 3/4 for d≥6, 11/12 for d≥22",
-      "Formalization is complete: 25 theorems, 0 sorries, 5 axioms — gap reduction itself is genuinely open"
+      "Formalization is complete: 25 theorems, 0 sorries, 5 axioms — gap reduction itself is genuinely open",
+      "Partial fractions: 2/(d(d+2)) = 1/d - 1/(d+2); explains telescoping and O(1/d²) behavior at once",
+      "SV exponent itself is strictly DECREASING (not the gap, the actual bound value) — both conjecture and SV exponent tend to 0 as d→∞; the gap decreases faster"
     ],
     "mathlibGaps": [
       "No formalization of incidence geometry in ℝ^d",
