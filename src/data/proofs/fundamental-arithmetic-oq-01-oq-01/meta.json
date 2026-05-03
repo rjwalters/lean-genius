@@ -16,7 +16,7 @@
       "unique-factorization",
       "research"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-05-03",
     "axiomCount": 0,
@@ -26,7 +26,7 @@
     "originalContributions": [
       "finsupp_prime_prod_factorization: key identity — (f.prod (·^·)).factorization = f when f has prime support",
       "fta_uniqueness: uniqueness — only n.factorization satisfies prime support + Finsupp product = n",
-      "fundamental_theorem_of_arithmetic: ∃! f : ℕ →₀ ℕ with prime support and f.prod (·^·) = n",
+      "fundamental_theorem_of_arithmetic: ∃! f : ℕ →₀ ℕ with prime support and f.prod (·^·) = n (existence via Nat.factorization_prod_pow_eq_self; uniqueness via finsupp_prime_prod_factorization)",
       "factorization_determines_number: factorization injectivity — equal factorizations imply equal numbers",
       "factorization_eq_iff_valuations: m = n iff ∀ p, m.factorization p = n.factorization p",
       "factorization_eq_zero_iff_one: n.factorization = 0 iff n = 1",
