@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 3: +2 theorems (gpfConsecutive_eq_sup_range, gpfConsecutive_le_iff). Total: 37 proved theorems. Max formula and smooth-window reformulation now formalized.",
+    "progressSummary": "42 theorems proved. Session 4: +5 theorems (greatestPrimeFactor_prime, gpfConsecutive_prime_start, gpfConsecutive_one_eq_max, ge_left, ge_right). 1 axiom remains (ε=1/2 partial result).",
     "builtItems": [
       "greatestPrimeFactor: def using Nat.primeFactors.max' (Erdos1201Problem.lean:28)",
       "consecutiveProduct: def using Finset.range.prod (Erdos1201Problem.lean:32)",
@@ -66,7 +66,12 @@
       "le_gpfConsecutive_of_prime_dvd_term: lower bound — if prime p | n+i then p ≤ P(n,k), proved using gpf_ge_prime_dvd + dvd_consecutiveProduct_term",
       "gpfConsecutive_between: Bertrand tight bounds n < P(n,n) ≤ 2n, combining gpfConsecutive_self_gt and gpfConsecutive_upper_bound",
       "gpfConsecutive_eq_sup_range: P(n,k) = sup_{i≤k} GPF(n+i) — max formula proved by prime-factor union argument (Erdos1201Problem.lean:484)",
-      "gpfConsecutive_le_iff: P(n,k) ≤ t ↔ ∀i≤k, GPF(n+i) ≤ t — smooth-window reformulation (Erdos1201Problem.lean:507)"
+      "gpfConsecutive_le_iff: P(n,k) ≤ t ↔ ∀i≤k, GPF(n+i) ≤ t — smooth-window reformulation (Erdos1201Problem.lean:507)",
+      "greatestPrimeFactor_prime: for prime n, gpf(n)=n via Nat.primeFactors_prime singleton",
+      "gpfConsecutive_prime_start: P(n,0)=n for prime n, corollary of above",
+      "gpfConsecutive_one_eq_max: P(n,1)=max(gpf(n),gpf(n+1)) via gpfConsecutive_eq_sup_range at k=1",
+      "gpfConsecutive_ge_left: gpf(n) ≤ P(n,k) — left endpoint lower bound",
+      "gpfConsecutive_ge_right: gpf(n+k) ≤ P(n,k) — right endpoint lower bound"
     ],
     "insights": [
       "greatestPrimeFactor defined via Nat.primeFactors.max' — cleanly handles n=0,1 by returning 0",
@@ -85,7 +90,10 @@
       "gpfConsecutive_between combines two different proof techniques: Bertrand lower bound (existence of prime) and double-counting upper bound (prime factor ≤ term).",
       "The tight Bertrand bound n < P(n,n) ≤ 2n shows the self-window is optimal in the sense that any prime witnessing Bertrand must fall exactly in (n, 2n].",
       "Max formula: prime factors of a product are the union of prime factors of each factor, so GPF(product) = max GPF(factor) — key structural identity",
-      "Smooth-window equivalence: P(n,k) ≤ t iff all consecutive integers n+i (i≤k) are t-smooth, reformulating the Erdős density condition as density of smooth windows → 0"
+      "Smooth-window equivalence: P(n,k) ≤ t iff all consecutive integers n+i (i≤k) are t-smooth, reformulating the Erdős density condition as density of smooth windows → 0",
+      "Nat.primeFactors_prime hn gives {n} = primeFactors for prime n; max over singleton is n",
+      "The max formula gpfConsecutive_eq_sup_range specializes cleanly to k=1 giving P(n,1)=max(P(n),P(n+1))",
+      "Endpoint bounds (ge_left, ge_right) follow immediately from Finset.le_sup with range membership"
     ],
     "mathlibGaps": [
       "No Mathlib lemma directly connecting upper density thresholds to prime gaps — needed for full conjecture",
