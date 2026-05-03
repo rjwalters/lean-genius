@@ -58,7 +58,10 @@
       "The min'/max' endpoints of a Finset ℤ furnish constructive boundary witnesses without requiring connectivity or interval structure",
       "Finset.min'_lt_max'_of_card is exactly the cardinality fact that drives the |∂S| ≥ 2 bound — it is the only place |S| ≥ 2 is consumed",
       "Equality on intervals reduces to a four-way case analysis (x+1 or x-1 lands inside [a,b]; x is or is not in [a,b]); linarith handles all branches uniformly",
-      "The proof does not establish the full converse (|∂S| = 2 implies S is an interval), which would require additional compactness or connectivity reasoning — an open formalization challenge pointed to by this entry's open questions"
+      "The proof does not establish the full converse (|∂S| = 2 implies S is an interval), which would require additional compactness or connectivity reasoning — an open formalization challenge pointed to by this entry's open questions",
+      "**Compression technique and uniqueness of minimizers**: The key technique generalizing this 1D result to higher dimensions is 'compression' (also called 'pushing'): given any set S, replace it with an 'interval-shadow' in each coordinate direction — a set of equal size that is at least as spread as an interval slice. This replacement never increases the boundary, and iterating gives an interval. In 1D, this is visible directly: min(S)-1 and max(S)+1 are the unique boundary elements of any minimal set, forcing S to be an interval. Lean formalizations of the full uniqueness direction would expose exactly this compression structure.",
+      "**Base case of Bollobás-Leader d-dimensional induction**: The Bollobás-Leader (1991) proof that cubes minimize the boundary in ℤ^d proceeds by induction on d: slice S along the d-th coordinate into fibers S_k = {x : (x, k) ∈ S}, apply the (d-1)-dimensional result to each fiber, then apply this 1D result to the sizes |S_k| as a function of k. The 1D bound |∂(S_k sizes)| ≥ 2 (with equality at intervals) is literally the inductive base case — the proof in this file is not just a toy example but a structural ingredient of the full d-dimensional theorem.",
+      "**Discrete-to-continuous bridge and Lévy's concentration lemma**: The discrete isoperimetric inequality on {0,1}^n (Harper's theorem) implies exponential concentration: if S ⊆ {0,1}^n has measure ≥ 1/2 and S_t = {x : d(x,S) ≤ t} is the t-neighborhood, then P(S_t^c) ≤ 2e^{-2t²/n}. Passing n → ∞ (with rescaling) recovers the Gaussian measure concentration, the analytic base of the Central Limit Theorem. The 1D result in this file corresponds to n = 1 in this chain: |∂S| ≥ 2 is the n=1 instance of Harper's exact formula for the minimum boundary of a set of size k in {0,1}^n."
     ],
     "prerequisites": [
       "Finset basics (min', max', image, sdiff)",
@@ -136,6 +139,26 @@
       "targetId": "isoperimetric-theorem-oq-01",
       "relationship": "complements",
       "description": "Sibling open-question entry: OQ-01 covers curved-surface variants (sphere, hyperbolic plane), OQ-02 covers the discrete-lattice variant"
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-03",
+      "relationship": "discrete-analog-of",
+      "description": "The continuous isoperimetric inequality C² ≥ 4πA (for curves in the plane) is the 2D Euclidean analog of this 1D discrete result. Both state that among shapes of fixed 'volume' (area / cardinality), the 'round' shape (circle / interval) minimizes the 'boundary' (perimeter / edge boundary). The discrete and continuous proofs share the same philosophical structure — extract extremal witnesses, prove uniqueness — but different analytic tools."
+    },
+    {
+      "targetId": "herons-formula-oq-04",
+      "relationship": "related",
+      "description": "The triangle isoperimetric inequality (equilateral triangle maximizes area for fixed perimeter, proved via AM-GM) is another classical discrete/elementary isoperimetric result. While this file works in ℤ (1D, graph boundary), `herons-formula-oq-04` works in ℝ² (triangles, area maximization). Together they illustrate the isoperimetric principle — 'symmetric shapes are optimal' — across distinct settings."
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-02-oq-01",
+      "relationship": "related",
+      "description": "The Hurwitz (1901) proof of the isoperimetric inequality via integration-by-parts, Wirtinger's inequality, and Parseval's theorem gives an elegant Fourier-analytic approach to C² ≥ 4πA. The discrete analogue of Fourier analysis on ℤ (characters of ℤ/nℤ) underlies some proofs of Harper's theorem on the hypercube — the higher-dimensional extension of this 1D result. The Fourier-analytic and extremal-combinatorics perspectives meet in the study of Cheeger constants on graphs."
+    },
+    {
+      "targetId": "minkowski-fundamental-theorem",
+      "relationship": "related",
+      "description": "Minkowski's Fundamental Theorem (geometry of numbers) also concerns finite subsets of ℤ^d — it characterizes which convex bodies must contain lattice points. Both this entry and Minkowski's theorem are about the interaction between the discrete lattice ℤ^d and continuous geometric notions (boundary size / convex volume). In d ≥ 2, Bollobás-Leader and Minkowski converge on the theory of lattice polytopes and their boundary complexity."
     }
   ],
   "sorries": 0
