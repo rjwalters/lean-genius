@@ -17,7 +17,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 10,
+    "sorries": 9,
     "erdosNumber": 601,
     "erdosUrl": "https://erdosproblems.com/601",
     "erdosProblemStatus": "open",
@@ -61,8 +61,8 @@
       "GeneralConjecture: $500 prize problem"
     ],
     "axiomCount": 4,
-    "lineCount": 259,
-    "assumptions": "4 axioms: critical_case_open, MartinsAxiom, ordinal_ramsey, general_conjecture_open. 10 sorries remain.",
+    "lineCount": 264,
+    "assumptions": "4 axioms: critical_case_open, MartinsAxiom, ordinal_ramsey, general_conjecture_open. 9 sorries remain.",
     "theoremCount": 18
   },
   "sections": [
@@ -206,11 +206,11 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos601",
-    "lineCount": 259,
+    "lineCount": 264,
     "axiomCount": 4,
     "theoremCount": 18,
     "definitionCount": 13,
-    "sorries": 10,
+    "sorries": 9,
     "path": "Proofs/Erdos601Problem.lean"
   },
   "references": [
@@ -257,5 +257,5 @@
       "description": "Related Erdős problem sharing themes: graph-theory, open, set-theory"
     }
   ],
-  "sorries": 10
+  "sorries": 9
 }
