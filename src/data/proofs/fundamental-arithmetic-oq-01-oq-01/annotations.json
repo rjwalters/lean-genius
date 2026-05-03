@@ -58,5 +58,17 @@
     "significance": "supporting",
     "relatedConcepts": ["p-adic valuation", "coprimality via disjoint support", "Nat.Coprime", "Nat.coprime_iff_disjoint", "factorization injectivity"],
     "prerequisites": ["fta_reconstruction for the calc chain", "Finsupp.ext for support disjointness", "Nat.coprime_iff_disjoint from Mathlib"]
+  },
+  {
+    "id": "ann-computational-examples",
+    "proofId": "fundamental-arithmetic-oq-01-oq-01",
+    "range": { "startLine": 198, "endLine": 221 },
+    "type": "insight",
+    "title": "Part VII: Computational Examples via native_decide",
+    "content": "Five concrete examples verify the Finsupp factorization framework computationally:\n\n1. `(12).factorization = Finsupp.single 2 2 + Finsupp.single 3 1` — encoding 12 = 2²·3¹ as a Finsupp sum\n2. `(30).primeFactors = {2, 3, 5}` — the support of the factorization map\n3. `(Finsupp.single 2 2 + Finsupp.single 3 1).prod (·^·) = 12` — the reconstruction round-trip\n4. `(1).factorization = 0` — the empty factorization via `Nat.factorization_one`\n5. `Disjoint (12).factorization.support (35).factorization.support` — gcd(12,35)=1 witnessed by disjoint prime supports\n\nAll are closed by `native_decide` — kernel computation with compiled code. The 12/35 coprimality example concretely illustrates `coprime_factorization_disjoint` from Part VI.",
+    "mathContext": "$12 = 2^2 \\cdot 3^1$ so $f_{12} = \\{2 \\mapsto 2, 3 \\mapsto 1\\}$; $35 = 5 \\cdot 7$ so $f_{35} = \\{5 \\mapsto 1, 7 \\mapsto 1\\}$. Since $\\{2,3\\} \\cap \\{5,7\\} = \\emptyset$, $\\gcd(12,35)=1$. `native_decide` compiles these to native code and evaluates; it is fast but produces large proof terms — acceptable for ground-truth examples.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide", "Nat.factorization", "Finsupp.single", "Nat.factorization_one", "coprime_factorization_disjoint"],
+    "prerequisites": ["native_decide availability", "Finsupp arithmetic in Mathlib", "Nat.primeFactors"]
   }
 ]
