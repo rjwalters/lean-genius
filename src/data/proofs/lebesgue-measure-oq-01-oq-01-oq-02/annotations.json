@@ -8,18 +8,20 @@
     },
     "type": "definition",
     "title": "Thomae's Function via Classical Choice",
-    "content": "Thomae's function is defined by case-splitting on whether x is rational. If so, `h.choose` extracts a rational q with cast equal to x, and we return 1/q.den (the reduced denominator). Otherwise, return 0. The definition is noncomputable because it uses classical choice to extract the rational representative.",
+    "content": "Thomae's function is defined by case-splitting on whether x is rational. If so, `h.choose` extracts a rational q with cast equal to x, and we return 1/q.den (the reduced denominator). Otherwise, return 0. The definition is noncomputable because it uses classical choice to extract the rational representative. The `dif` variant (dependent if) is used because `h.choose` depends on the proof `h : ∃ q : ℚ, (q : ℝ) = x`.",
     "mathContext": "$$f(x) = \\begin{cases} \\frac{1}{q} & x = \\frac{p}{q} \\text{ in lowest terms}, \\\\ 0 & x \\in \\mathbb{R} \\setminus \\mathbb{Q}. \\end{cases}$$\nLean: `if h : ∃ q : ℚ, (q : ℝ) = x then 1 / (h.choose.den : ℝ) else 0`",
-    "significance": "supporting",
+    "significance": "key",
     "relatedConcepts": [
       "classical-choice",
       "rational-denominator",
-      "noncomputable-definition"
+      "noncomputable-definition",
+      "dependent-if (dif)"
     ],
     "prerequisites": [
       "Lean 4 classical choice (h.choose)",
       "Rat.den field (reduced denominator)",
-      "Rat.cast embedding ℚ → ℝ"
+      "Rat.cast embedding ℚ → ℝ",
+      "noncomputable in Lean 4"
     ]
   },
   {
@@ -29,21 +31,23 @@
       "startLine": 49,
       "endLine": 68
     },
-    "type": "theorem",
-    "title": "Basic Properties: Zero at Irrationals, Value at Rationals, Nonnegativity",
-    "content": "Three foundational properties are proved. (1) `thomae_irrational`: at irrational x, the `dif_neg` rewrite triggers the else branch giving 0. (2) `thomae_rat`: at rational q, `Rat.cast_inj.mp` proves uniqueness of the choice, recovering q itself; returns 1/q.den. (3) `thomae_nonneg`: both branches are nonneg, closed by `positivity`.",
+    "type": "technique",
+    "title": "Basic Properties: dif_neg/dif_pos Pattern for Thomae",
+    "content": "Three foundational properties are proved using the dif_neg/dif_pos rewriting technique. (1) `thomae_irrational`: at irrational x, `dif_neg` triggers the else branch giving 0. The proof of ¬∃ q, (q : ℝ) = x uses Irrational's definition directly. (2) `thomae_rat`: at rational q, `dif_pos hq` enters the if branch; `Rat.cast_inj.mp hq.choose_spec` proves uniqueness of the choice, recovering q itself and giving 1/q.den. (3) `thomae_nonneg`: both branches are nonneg, closed by `positivity` after `split_ifs`.",
     "mathContext": "- $f(x) = 0$ for $x \\notin \\mathbb{Q}$\n- $f(q) = 1/q.\\mathrm{den}$ for $q \\in \\mathbb{Q}$ (reduced)\n- $f(x) \\geq 0$ for all $x \\in \\mathbb{R}$\n\nKey: `Rat.cast_inj` ensures the classically chosen rational equals q, since the cast ℚ → ℝ is injective.",
     "significance": "supporting",
     "relatedConcepts": [
       "dif_neg",
       "dif_pos",
-      "rat-cast-injectivity",
-      "positivity-tactic"
+      "Rat.cast_inj",
+      "positivity-tactic",
+      "split_ifs"
     ],
     "prerequisites": [
       "Irrational definition in Mathlib",
       "Rat.cast_inj",
-      "positivity tactic"
+      "positivity tactic",
+      "dif_neg / dif_pos rewriting"
     ]
   },
   {
@@ -55,19 +59,21 @@
     },
     "type": "insight",
     "title": "Irrational Sequence Converging to a Rational",
-    "content": "The key tool for discontinuity: the sequence $y_n = r + \\sqrt{2}/(n+1)$ converges to $r$ and consists entirely of irrationals. Irrationality follows because if $y_n$ were rational, $\\sqrt{2} = (q - r)(n+1)$ would be rational (contradiction). Convergence follows from $\\sqrt{2}/(n+1) \\to 0$ using `tendsto_const_nhds.div_atTop`.",
+    "content": "The key tool for discontinuity: the sequence $y_n = r + \\sqrt{2}/(n+1)$ converges to $r$ and consists entirely of irrationals. Irrationality follows because if $y_n$ were rational, $\\sqrt{2} = (q - r)(n+1)$ would be rational (contradiction with `irrational_sqrt_two`). Convergence follows from $\\sqrt{2}/(n+1) \\to 0$ using `tendsto_const_nhds.div_atTop`. The proof delegates to `tendsto_atTop_add_const_right` for the denominator going to ∞.",
     "mathContext": "**Irrationality**: If $r + \\frac{\\sqrt{2}}{n+1} = q \\in \\mathbb{Q}$, then $\\sqrt{2} = (q - r)(n+1) \\in \\mathbb{Q}$ — contradiction.\n\n**Convergence**: $y_n = r + \\frac{\\sqrt{2}}{n+1} \\to r + 0 = r$ as $n \\to \\infty$.",
     "significance": "key",
     "relatedConcepts": [
-      "irrational-sqrt-two",
+      "irrational_sqrt_two",
       "tendsto",
-      "div-atTop",
-      "sequential-continuity"
+      "div_atTop",
+      "sequential-continuity",
+      "tendsto_atTop_add_const_right"
     ],
     "prerequisites": [
       "irrational_sqrt_two",
       "Filter.Tendsto",
-      "tendsto_natCast_atTop_atTop"
+      "tendsto_natCast_atTop_atTop",
+      "tendsto_const_nhds.div_atTop"
     ]
   },
   {
@@ -77,20 +83,47 @@
       "startLine": 97,
       "endLine": 113
     },
-    "type": "theorem",
-    "title": "Discontinuity at Every Rational",
-    "content": "For rational r, assume ContinuousAt thomae (r : ℝ). Composing the continuity hypothesis with the irrational sequence y_n → r gives thomae(y_n) → thomae(r) = 1/r.den. But thomae(y_n) = 0 for all n (each y_n is irrational). By `tendsto_nhds_unique`, 1/r.den = 0, contradicting positivity of the denominator.",
+    "type": "insight",
+    "title": "Discontinuity at Every Rational: Sequential Limit Uniqueness",
+    "content": "For rational r, assume ContinuousAt thomae (r : ℝ). Composing the continuity hypothesis with the irrational sequence y_n → r gives thomae(y_n) → thomae(r) = 1/r.den. But thomae(y_n) = 0 for all n (each y_n is irrational). By `tendsto_nhds_unique`, 1/r.den = 0, contradicting positivity of the denominator. The key Lean steps: `h.tendsto.comp hlim` builds the composed tendsto, `funext hzero` rewrites the sequence to the constant 0, and `tendsto_nhds_unique` gives the contradiction.",
     "mathContext": "**Sequential argument**: $f(y_n) = 0 \\to 0 \\neq 1/r.\\mathrm{den} = f(r)$. Formally:\n- `h.tendsto.comp hlim` gives thomae(y_n) → thomae(r)\n- Rewrite using `hzero` (thomae(y_n) = 0) gives constant 0 → 1/r.den\n- `tendsto_nhds_unique` gives 1/r.den = 0\n- `linarith [show 0 < 1/r.den from by positivity]` closes",
     "significance": "key",
     "relatedConcepts": [
       "sequential-continuity",
       "tendsto_nhds_unique",
-      "ContinuousAt.tendsto"
+      "ContinuousAt.tendsto",
+      "funext"
     ],
     "prerequisites": [
       "Filter.Tendsto.comp",
       "tendsto_nhds_unique",
-      "positivity"
+      "positivity",
+      "ContinuousAt definition"
+    ]
+  },
+  {
+    "id": "ann-rat-num-den-bridge",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 119,
+      "endLine": 125
+    },
+    "type": "technique",
+    "title": "rat_num_eq_mul_den: Bridging Rat.num to Real Coordinates",
+    "content": "This private bridge lemma proves `(q.num : ℝ) = (q : ℝ) * q.den` from the Mathlib identity `Rat.num_div_den q : (q.num : ℚ) / q.den = q`. The proof applies `(div_eq_iff hd).mp` to rearrange the rational identity, then `exact_mod_cast` to transport from ℚ to ℝ. The witness `hd : (q.den : ℚ) ≠ 0` uses `q.pos.ne'` (q.den > 0 as a Nat). This lemma is used in `finite_rat_bounded` where floor/ceiling bounds are computed in ℝ but must be compared against q.num (an integer): specifically, the bound `(x-1)*q.den ≤ q.num ≤ (x+1)*q.den` is derived from `(x-1) ≤ q ≤ (x+1)` by multiplying through by q.den.",
+    "mathContext": "From $q.\\mathrm{num} / q.\\mathrm{den} = q$ (rational identity) and $q.\\mathrm{den} \\neq 0$: $q.\\mathrm{num} = q \\cdot q.\\mathrm{den}$ in $\\mathbb{Q}$, hence in $\\mathbb{R}$. Used to derive: $x - 1 \\leq q \\leq x + 1 \\implies (x-1) \\cdot q.\\mathrm{den} \\leq q.\\mathrm{num} \\leq (x+1) \\cdot q.\\mathrm{den}$.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Rat.num_div_den",
+      "div_eq_iff",
+      "exact_mod_cast",
+      "Rat.pos (den > 0)"
+    ],
+    "prerequisites": [
+      "Rat.num_div_den Mathlib lemma",
+      "div_eq_iff",
+      "Nat.cast_pos + q.pos",
+      "exact_mod_cast for ℚ → ℝ"
     ]
   },
   {
@@ -100,21 +133,22 @@
       "startLine": 127,
       "endLine": 149
     },
-    "type": "lemma",
-    "title": "Finite Low-Denominator Rationals in Any Bounded Interval",
-    "content": "The key lemma for continuity at irrationals: for any x ∈ ℝ and N : ℕ, the set {q : ℚ | |q - x| ≤ 1 ∧ q.den ≤ N} is finite. Proof: for each denominator d ≤ N, the numerators p with |p/d - x| ≤ 1 lie in the integer interval [⌊(x-1)·d⌋, ⌈(x+1)·d⌉]. The full set is a finite biUnion over denominators.",
+    "type": "technique",
+    "title": "Finite Low-Denominator Rationals: Finset.biUnion over Denominators",
+    "content": "The key lemma for continuity at irrationals: for any x ∈ ℝ and N : ℕ, the set {q : ℚ | |q - x| ≤ 1 ∧ q.den ≤ N} is finite. Proof: for each denominator d ≤ N, the numerators p with |p/d - x| ≤ 1 lie in the integer interval [⌊(x-1)·d⌋, ⌈(x+1)·d⌉]. The full set is a finite biUnion over denominators. The Lean proof uses `Set.Finite.ofFinset` with the explicit Finset built as `(Finset.range (N + 1)).biUnion fun d => (Finset.Icc ⌊...⌋ ⌈...⌉).image fun n => (n : ℚ) / d`.",
     "mathContext": "For fixed $d \\leq N$: rationals $p/d$ in $[x-1, x+1]$ have $p \\in [\\lfloor(x-1)d\\rfloor, \\lceil(x+1)d\\rceil]$ — a finite integer range.\n$$\\{q \\in \\mathbb{Q} : |q - x| \\leq 1,\\, q.\\mathrm{den} \\leq N\\} \\subseteq \\bigcup_{d=1}^{N} \\left\\{\\frac{p}{d} : p \\in [\\lfloor(x-1)d\\rfloor, \\lceil(x+1)d\\rceil]\\right\\}$$\nKey Lean: `Finset.biUnion`, `Int.floor_le`, `Int.le_ceil`.",
     "significance": "key",
     "relatedConcepts": [
       "rational-approximation",
-      "Farey-sequence",
       "bounded-denominator",
-      "Finset.biUnion"
+      "Finset.biUnion",
+      "Set.Finite.ofFinset"
     ],
     "prerequisites": [
       "Rat.num_div_den",
       "Int.floor_le, Int.le_ceil",
-      "Finset.biUnion"
+      "Finset.biUnion",
+      "Set.Finite.ofFinset"
     ]
   },
   {
@@ -124,20 +158,22 @@
       "startLine": 152,
       "endLine": 162
     },
-    "type": "lemma",
-    "title": "Positive Minimum Distance from Irrational to Finite Set of Rationals",
-    "content": "For irrational x and any finite set S of rationals, there exists δ > 0 with δ ≤ |x - q| for all q ∈ S. Proved by induction on S: empty set gives δ = 1; for {a} ∪ S', combine δ₀ (from S') with |x - a| (positive since x ≠ a as x is irrational) using min.",
-    "mathContext": "$$\\exists \\delta > 0,\\, \\forall q \\in S,\\, \\delta \\leq |x - q|$$\nThis is a compactness/finiteness argument: a finite set of points all distinct from $x$ has positive minimum distance to $x$.",
+    "type": "technique",
+    "title": "pos_min_dist: Finset.induction_on for Minimum Distance",
+    "content": "For irrational x and any finite set S of rationals, there exists δ > 0 with δ ≤ |x - q| for all q ∈ S. Proved by `Finset.induction_on`: empty set gives δ = 1; for {a} ∪ S', combine δ₀ (from S') with |x - a| (positive since x ≠ a as x is irrational) using min. The irrational x ≠ a step uses `fun h => hx ⟨_, h.symm⟩` — if x = a, then x would be rational. The induction hypothesis is the key recursive piece: `lt_min hδ₀ (abs_pos ...)` builds the new minimum.",
+    "mathContext": "$$\\exists \\delta > 0,\\, \\forall q \\in S,\\, \\delta \\leq |x - q|$$\nThis is a compactness/finiteness argument: a finite set of points all distinct from $x$ has positive minimum distance to $x$. The key is $x \\notin \\mathbb{Q} \\implies x \\neq q$ for any $q \\in \\mathbb{Q}$.",
     "significance": "key",
     "relatedConcepts": [
       "minimum-distance",
-      "Finset.induction",
-      "irrational-separation"
+      "Finset.induction_on",
+      "irrational-separation",
+      "abs_pos"
     ],
     "prerequisites": [
       "Finset.induction_on",
       "abs_pos",
-      "sub_ne_zero"
+      "sub_ne_zero",
+      "lt_min for combining bounds"
     ]
   },
   {
@@ -147,22 +183,25 @@
       "startLine": 165,
       "endLine": 222
     },
-    "type": "theorem",
-    "title": "Continuity at Every Irrational: Epsilon-Delta Argument",
-    "content": "Main continuity result. Given irrational x and ε > 0: (1) Choose N with 1/(N+1) < ε using Archimedean property. (2) Let δ = min(δ₀, 1) where δ₀ is the positive min distance from x to the finite set S of rationals with denominator ≤ N near x. (3) For |y - x| < δ: if y is irrational, f(y) = 0 < ε; if y = p/q rational, then q.den > N (else y ∈ S, so |x - q| ≥ δ₀ ≥ |y - x|, contradiction), giving f(y) = 1/q.den ≤ 1/(N+1) < ε.",
+    "type": "insight",
+    "title": "Continuity at Every Irrational: Epsilon-Delta via Finite Denominator Control",
+    "content": "Main continuity result. Given irrational x and ε > 0: (1) Choose N with 1/(N+1) < ε using `exists_nat_gt`. (2) Build the finite set S of rationals with denominator ≤ N near x via `finite_rat_bounded`. (3) Get δ₀ > 0 from `pos_min_dist`. (4) Take δ = min(δ₀, 1). For |y - x| < δ: if y is irrational, f(y) = 0 < ε; if y = p/q rational with |y - x| < δ, then q must have q.den > N (else q ∈ S and |x - q| ≥ δ₀ contradicts |y - x| < δ₀), giving f(y) = 1/q.den ≤ 1/(N+1) < ε. The `by_cases hirr : Irrational y` is the case split that handles both branches.",
     "mathContext": "**Choosing δ**:\n1. $N$ with $1/(N+1) < \\varepsilon$ via `exists_nat_gt (1/ε)`\n2. $S = \\{q : |q - x| \\leq 1,\\, q.\\mathrm{den} \\leq N\\}$ finite by `finite_rat_bounded`\n3. $\\delta_0 > 0$ via `pos_min_dist hx S.toFinset`\n4. Take $\\delta = \\min(\\delta_0, 1)$\n\n**Case y rational, q.den > N**: $f(y) = 1/q.\\mathrm{den} \\leq 1/(N+1) < \\varepsilon$ ✓",
     "significance": "key",
     "relatedConcepts": [
       "epsilon-delta",
       "Metric.continuousAt_iff",
       "Archimedean-property",
-      "by-cases-irrational"
+      "by-cases-irrational",
+      "div_le_div_of_nonneg_left"
     ],
     "prerequisites": [
       "Metric.continuousAt_iff",
       "exists_nat_gt",
       "by_cases (Irrational y)",
-      "div_le_div_of_nonneg_left"
+      "div_le_div_of_nonneg_left",
+      "finite_rat_bounded",
+      "pos_min_dist"
     ]
   },
   {
@@ -172,21 +211,22 @@
       "startLine": 229,
       "endLine": 239
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Complete Characterization: Continuous Exactly at Irrationals",
-    "content": "The biconditional `thomae_continuous_iff` combines both directions. (→) Contrapositive: if x is rational, apply discontinuity at rationals. (←) If x is irrational, apply continuity at irrationals. The set of continuity points is exactly ℝ \\ ℚ — a dense Gδ set.",
+    "content": "The biconditional `thomae_continuous_iff` combines both directions. (→) Contrapositive: if x is rational (not Irrational), `simp only [Irrational, not_not]` extracts a rational q with (q : ℝ) = x, and `thomae_discontinuous_at_rat q` gives ¬ContinuousAt. (←) If x is irrational, `thomae_continuous_at_irrational` closes directly. The continuity set is exactly ℝ \\ ℚ — a dense Gδ set (countable intersection of open dense sets).",
     "mathContext": "$$\\mathrm{ContinuousAt}\\, f\\, x \\iff x \\in \\mathbb{R} \\setminus \\mathbb{Q}$$\nThe irrationals form a dense $G_\\delta$ set (countable intersection of open dense sets), while the rationals form a dense $F_\\sigma$ set. Thomae's function is the canonical example of a function whose continuity set is exactly the irrationals.",
     "significance": "key",
     "relatedConcepts": [
       "G-delta-set",
       "Baire-category",
       "continuity-set",
-      "dense-sets"
+      "dense-sets",
+      "Irrational-definition"
     ],
     "prerequisites": [
       "thomae_discontinuous_at_rat",
       "thomae_continuous_at_irrational",
-      "Irrational definition"
+      "Irrational definition (not ∃ q : ℚ, ...)"
     ]
   }
 ]
