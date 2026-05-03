@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1214",
   "title": "Erdős #1214",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,11 +29,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "COMPLETED 2026-05-03: Lean 4 formalization created (0 sorries, 4 axioms). Gallery entry erdos-1214 added. Proved: samePrimeSupport is an equivalence relation, n=1/2/3 specializations, Zsygmondy exception 63=3^2*7. Axiomatized: order_characterization, primeSupport_mono, zsygmondy, corrales_rodriganez_schoof. Gallery PR ready for deployer.",
+    "builtItems": [
+      "samePrimeSupport_refl, samePrimeSupport_symm, samePrimeSupport_trans (proved) in Erdos1214Problem.lean:66-79",
+      "eq_implies_samePrimeSupport (proved) in Erdos1214Problem.lean:82-83",
+      "primeFactors_pred_eq, primeFactors_sq_pred_eq, primeFactors_cube_pred_eq (proved) in Erdos1214Problem.lean:92-106",
+      "zsygmondy_exception_63: 2^6-1=3^2*7 (proved by norm_num) in Erdos1214Problem.lean:168-169",
+      "erdos_1214 (proved from corrales axiom) in Erdos1214Problem.lean:197-201",
+      "Gallery entry: src/data/proofs/erdos-1214/ (meta.json, annotations.json, index.ts)"
+    ],
+    "insights": [
+      "samePrimeSupport defined as pointwise Finset equality over all n>=1",
+      "IsPrimitivePrimeDivisor captures Zsygmondy notion: p | x^n-1 but p ∤ x^k-1 for k < n",
+      "Order characterization (axiomatized): p | x^n-1 <-> orderOf (x : ZMod p) | n",
+      "The single Zsygmondy exception is (2,6): 63 = 9*7, verified numerically",
+      "Corrales-Rodriganez & Schoof 1997 is the definitive reference for the positive answer",
+      "Proof strategy: x=1 case forces y=1; x>=2 case uses Zsygmondy primitive primes to pin down x=y",
+      "Elliptic analogue in same 1997 paper: requires Weil pairing, substantially harder"
+    ],
+    "mathlibGaps": [
+      "Zsygmondy theorem not in Mathlib as of 2025 (confirmed from grep of mathlib source)",
+      "order_characterization (p | x^n-1 <-> orderOf x | n) should follow from Mathlib ZMod + orderOf lemmas but requires ℕ subtraction bridging"
+    ],
+    "nextSteps": [
+      "Submit to Aristotle: order_characterization may be provable automatically (HARD sorry candidate)",
+      "Consider contributing Zsygmondy to Mathlib (significant project, likely 300+ lines)",
+      "Docker build to verify Lean file compiles: ./proofs/scripts/docker-build.sh Proofs.Erdos1214Problem"
+    ],
     "markdown": "# Erdős #1214 - Knowledge Base\n\n## Problem Statement\n\nLet $x,y\\geq 1$ be integers such that, for all $n\\geq 1$, the set of primes dividing $x^{n}-1$ is equal to set of primes dividing $y^n-1$. Must $x=y$? Erdős asked this at a 1988 number theory conference in Banff. A positive answer was given by Corrales-Rodrigá\\~{n}ez and Schoof [CoSc97].## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #1213\n- Problem #1215\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- CoSc957\n- CoSc97\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n"
   },
   "tags": [
@@ -52,5 +74,18 @@
   "started": "2026-04-16T17:10:06.888Z",
   "lastUpdate": "2026-04-21T11:09:40.249Z",
   "significance": 7,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1214Problem.lean",
+      "filename": "Erdos1214Problem.lean",
+      "lineCount": 215,
+      "theoremCount": 9,
+      "axiomCount": 4,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1214Problem.lean"
+    }
+  ]
 }

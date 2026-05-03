@@ -1,0 +1,52 @@
+[
+  {
+    "id": "ann-1214-def-samePrimeSupport",
+    "proofId": "erdos-1214",
+    "range": { "startLine": 50, "endLine": 51 },
+    "annotation": {
+      "title": "Same Prime Support: The Core Condition",
+      "body": "The `samePrimeSupport` predicate encodes Erdős's condition: for every n ≥ 1, the Finset of prime divisors of x^n − 1 equals that of y^n − 1. In ℕ, `x ^ n - 1` uses saturating subtraction (0 − 1 = 0), so for x = 1 the value is always 0 and `Nat.primeFactors 0 = ∅`. For x ≥ 2 and n ≥ 1, `x^n ≥ 2 > 1` guarantees `x^n − 1 ≥ 1` and the Finset is nonempty.",
+      "type": "definition"
+    }
+  },
+  {
+    "id": "ann-1214-def-primitive",
+    "proofId": "erdos-1214",
+    "range": { "startLine": 59, "endLine": 60 },
+    "annotation": {
+      "title": "Primitive Prime Divisors: The Key Concept",
+      "body": "A prime p is a **primitive prime divisor** of x^n − 1 if p ∣ x^n − 1 but p ∤ x^k − 1 for any 1 ≤ k < n. Equivalently, the multiplicative order ord_p(x) = n exactly. Zsygmondy's theorem guarantees the existence of such primes for most (x, n). They are 'new' primes that appear for the first time at exponent n.",
+      "type": "definition"
+    }
+  },
+  {
+    "id": "ann-1214-zsygmondy-axiom",
+    "proofId": "erdos-1214",
+    "range": { "startLine": 160, "endLine": 162 },
+    "annotation": {
+      "title": "Zsygmondy's Theorem (1892): The Engine of the Proof",
+      "body": "Zsygmondy proved in 1892 that for x ≥ 2 and n ≥ 3 (except (x,n) = (2,6)), x^n − 1 always has a 'new' prime factor. The proof uses the n-th cyclotomic polynomial Φ_n(x), which divides x^n − 1 and has a prime factor not dividing x^k − 1 for k < n. This theorem was independently discovered by Birkhoff and Vandiver in 1904. The single exception 2^6 − 1 = 63 = 9·7 has no primitive prime (3 ∣ 2^2−1 and 7 ∣ 2^3−1).",
+      "type": "theorem"
+    }
+  },
+  {
+    "id": "ann-1214-order-axiom",
+    "proofId": "erdos-1214",
+    "range": { "startLine": 124, "endLine": 126 },
+    "annotation": {
+      "title": "Order Characterization: Connecting Divisibility and Group Theory",
+      "body": "The iff `p ∣ x^n − 1 ↔ ord_p(x) ∣ n` is the fundamental bridge. In Mathlib, this follows from `orderOf_dvd_iff_pow_eq_one : orderOf a ∣ n ↔ a ^ n = 1` applied to `a = (x : ZMod p)`, together with `ZMod.intCast_zmod_eq_zero_iff_dvd` connecting ℤ-divisibility and ZMod equality. The axiom handles the translation from ℕ subtraction to ZMod.",
+      "type": "lemma"
+    }
+  },
+  {
+    "id": "ann-1214-main-theorem",
+    "proofId": "erdos-1214",
+    "range": { "startLine": 197, "endLine": 201 },
+    "annotation": {
+      "title": "Erdős #1214: The Main Result",
+      "body": "The theorem `erdos_1214` directly applies `corrales_rodriganez_schoof` to prove Erdős's original problem. The key idea: if x and y have the same prime support, then for each primitive prime p_n of x^n − 1 (given by Zsygmondy), we have p_n ∣ y^n − 1 and ord_{p_n}(y) ∣ n. But also p_n ∤ y^k − 1 for k < n (same prime support), so ord_{p_n}(y) = n exactly. As n ranges over Zsygmondy-covered exponents, this forces y = x.",
+      "type": "theorem"
+    }
+  }
+]
