@@ -1,0 +1,121 @@
+{
+  "id": "ballot-problem-oq-01-oq-02-oq-01-oq-02",
+  "title": "General Uniform Fiber Transfer: uniformOn Preserved for All Events",
+  "slug": "ballot-problem-oq-01-oq-02-oq-01-oq-02",
+  "description": "Answers OQ-01-OQ-02-OQ-01-OQ-02: Generalizes uniformOn_fiber_transfer from one specific ballot event to ALL events simultaneously. Proves: if f : α → β is surjective from A onto T (finite sets) with uniform fiber sizes k, then for ANY P ⊆ T, uniformOn A (f⁻¹'P) = uniformOn T P. 8 theorems, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "date": "2026-05-03",
+    "status": "verified",
+    "tags": [
+      "probability",
+      "combinatorics",
+      "ballot-problem",
+      "fiber-transfer",
+      "uniformOn",
+      "finite-sets"
+    ],
+    "proofRepoPath": "Proofs/BallotProblemOQ01OQ02OQ01OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-03",
+    "axiomCount": 0,
+    "lineCount": 198,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "assumptions": "None. 0 axioms, 0 sorries. Inherits from BallotProblemOQ01OQ02OQ01 (which has 0 axioms).",
+    "originalContributions": [
+      "preimage_inter_eq_iUnion: A ∩ f⁻¹'P = ⋃_{t∈P} (A ∩ f⁻¹'{t}) — fiber decomposition for any subset P",
+      "surjOn_fiber_decomp: when SurjOn, A = ⋃_{t∈T} (A ∩ f⁻¹'{t}) — full decomposition into fibers",
+      "singleton_fiber_disjoint: fibers over distinct points are disjoint (abstract version)",
+      "uniform_fiber_count: (A ∩ f⁻¹'P).ncard = k * P.ncard — quantitative fiber counting for any P ⊆ T",
+      "uniformOn_fiber_transfer_all: MAIN — for ANY P ⊆ T, uniform fibers preserve uniformOn probability",
+      "uniformOn_preserves_all_events: corollary asserting all-events preservation",
+      "uniformOn_complement_transfer: transfer holds for T \\ P (complement events)",
+      "uniformOn_union_transfer: transfer holds for P ∪ Q (union events)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The ballot problem OQ-01-OQ-02-OQ-01 proved that the multi-candidate ballot theorem follows from uniform fiber transfer: when a surjection has equal fiber sizes, it preserves the uniformOn probability of a specific event (ballot staysPositive). The natural follow-up question is whether this holds for ALL events simultaneously — this would give a single general theorem rather than a problem-specific one.",
+    "problemStatement": "Can the uniformOn_fiber_transfer pattern be generalized: if a surjective map between finite probability spaces has uniform fibers, does it preserve all event probabilities (not just uniformOn)?",
+    "text": "YES — uniform fiber surjections preserve uniformOn for ALL events. For any finite sets A, T, any surjection f : A → T with uniform fiber size k, and any event P ⊆ T: uniformOn A (f⁻¹'P) = uniformOn T P.",
+    "proofStrategy": "Fiber decomposition gives A = ⋃_{t∈T} (A ∩ f⁻¹'{t}) (using surjectivity) and A ∩ f⁻¹'P = ⋃_{t∈P} (A ∩ f⁻¹'{t}). Uniform counting (ncard_biUnion_eq_of_uniform) gives ncard(A) = k·ncard(T) and ncard(A ∩ f⁻¹'P) = k·ncard(P). The factor k cancels in the ENNReal ratio.",
+    "keyInsights": [
+      "The fiber decomposition argument works for ANY P ⊆ T, not just the specific ballot event — the key is that uniform fiber sizes allow the cancellation of k in numerator and denominator",
+      "SurjOn is needed to prove ncard(A) = k·ncard(T): without surjectivity, there could be 'missing' fibers",
+      "The abstract version uses ncard_biUnion_eq_of_uniform from BallotFiberTransfer, making the proof modular",
+      "Complement and union corollaries follow immediately from the main theorem — no additional work needed",
+      "The proof works for ANY α, β types with Finite hypotheses — it is fully type-parametric"
+    ],
+    "prerequisites": [
+      "BallotProblemOQ01OQ02OQ01: ncard_biUnion_eq_of_uniform — the fiber counting lemma",
+      "ProbabilityTheory.uniformOn: the conditional uniform distribution on finite sets",
+      "Set.SurjOn: surjectivity from A onto T",
+      "ENNReal.div_eq_div_iff: cross-multiplication for ENNReal fractions"
+    ]
+  },
+  "sections": [
+    {
+      "id": "fiber-geometry",
+      "title": "Fiber Geometry Lemmas",
+      "startLine": 30,
+      "endLine": 70,
+      "summary": "preimage_inter_eq_iUnion: A ∩ f⁻¹'P decomposes as ⋃ t∈P, A ∩ f⁻¹'{t}. surjOn_fiber_decomp: A decomposes as ⋃ t∈T, A ∩ f⁻¹'{t} when f is surjective. singleton_fiber_disjoint: distinct singletons give disjoint fibers.",
+      "mathContext": "$A \\cap f^{-1}(P) = \\bigcup_{t \\in P} (A \\cap f^{-1}(\\{t\\}))$ — the preimage of P decomposes into fibers over singletons, which are pairwise disjoint."
+    },
+    {
+      "id": "counting",
+      "title": "Uniform Fiber Counting",
+      "startLine": 75,
+      "endLine": 95,
+      "summary": "uniform_fiber_count: (A ∩ f⁻¹'P).ncard = k * P.ncard when fibers have uniform size k over T. Uses ncard_biUnion_eq_of_uniform from the parent.",
+      "mathContext": "$|A \\cap f^{-1}(P)| = k \\cdot |P|$ when $|A \\cap f^{-1}(\\{t\\})| = k$ for all $t \\in T$ and $P \\subseteq T$."
+    },
+    {
+      "id": "main",
+      "title": "Main Theorem: General Uniform Fiber Transfer",
+      "startLine": 100,
+      "endLine": 155,
+      "summary": "uniformOn_fiber_transfer_all: MAIN — for any surjection with uniform fibers, uniformOn A (f⁻¹'P) = uniformOn T P for ALL P ⊆ T. Proof: fiber counting gives ncard(A) = k·ncard(T) and ncard(A∩f⁻¹'P) = k·ncard(P), factor k cancels via ENNReal.div_eq_div_iff.",
+      "mathContext": "For surjective $f : A \\to T$ with $|A \\cap f^{-1}(\\{t\\})| = k$ for all $t \\in T$: $\\text{uniformOn}(A)(f^{-1}(P)) = \\frac{|A \\cap f^{-1}(P)|}{|A|} = \\frac{k|P|}{k|T|} = \\frac{|P|}{|T|} = \\text{uniformOn}(T)(P)$."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries: All-Events, Complement, Union",
+      "startLine": 160,
+      "endLine": 198,
+      "summary": "uniformOn_preserves_all_events: universal quantification over all P. uniformOn_complement_transfer: the complement T\\P is also transferred. uniformOn_union_transfer: finite unions P∪Q are transferred.",
+      "mathContext": "The main theorem immediately gives: complements, unions, and all Boolean combinations of events are preserved. This confirms that the map f is probability-preserving in the fullest sense for the discrete uniform distribution."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves the general uniform fiber transfer theorem: any surjection with equal fiber sizes preserves uniformOn for all events simultaneously. This answers OQ-01-OQ-02-OQ-01-OQ-02 with YES. Machine-verified with 0 axioms and 0 sorries.",
+    "implications": "This result shows that equal-fiber surjections are probability-preserving maps for the discrete uniform distribution. Combined with the ballot OQ-01 result, this gives a complete picture: the ballot projection preserves ALL conditional probabilities, not just the ones used in the ballot theorem. The proof technique (fiber decomposition + uniform counting + ENNReal ratio) is a general template applicable to any combinatorial probability argument involving equal-sized preimages.",
+    "openQuestions": [
+      "Can this be lifted to MeasureTheory.Measure.map: does a measurable equal-fiber map push the discrete uniform measure to the discrete uniform measure on the codomain?",
+      "For non-uniform fiber sizes, is there a characterization of which events P have their probability preserved?"
+    ]
+  },
+  "leanFile": {
+    "namespace": "BallotGeneralFiberTransfer",
+    "lineCount": 198,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/BallotProblemOQ01OQ02OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "ballot-problem-oq-01-oq-02-oq-01",
+      "relationship": "parent",
+      "description": "Uniform Fiber Transfer — proves this for ONE specific ballot event; this file generalizes to ALL events"
+    },
+    {
+      "targetId": "ballot-problem-oq-01-oq-02",
+      "relationship": "ancestor",
+      "description": "Multi-Candidate Ballot Theorem — the application that motivated the fiber transfer pattern"
+    }
+  ],
+  "sorries": 0
+}
