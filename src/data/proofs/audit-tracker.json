@@ -3230,9 +3230,9 @@
     },
     "erdos-1036": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T17:12:47Z",
-      "result": "clean"
+      "auditCount": 3,
+      "lastAudited": "2026-05-03T22:09:22Z",
+      "result": "issues-fixed"
     },
     "erdos-1037": {
       "agentId": "auditor-cycle-20-batch",
@@ -14133,6 +14133,18 @@
     "picks-theorem-oq-01-oq-02": {
       "auditCount": 1,
       "lastAudited": "2026-05-03T18:51:03Z",
+      "result": "clean",
+      "issues": []
+    },
+    "chinese-remainder-constructive-oq-03-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-03T21:58:23Z",
+      "result": "clean",
+      "issues": []
+    },
+    "desargues-theorem-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-03T22:01:42Z",
       "result": "clean",
       "issues": []
     }
