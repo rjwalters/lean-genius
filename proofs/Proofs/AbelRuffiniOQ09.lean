@@ -3,6 +3,7 @@ import Mathlib.Algebra.Polynomial.Basic
 import Mathlib.Algebra.Polynomial.Degree.Definitions
 import Mathlib.RingTheory.Algebraic.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+import Mathlib.Analysis.Calculus.Deriv.Polynomial
 import Mathlib.Tactic
 
 /-!
@@ -51,10 +52,9 @@ The operator L₁[Q] = Q' + Q preserves degree (unlike L₂[Q] = Q' - 2xQ which 
 
 ## Status
 
-- **Axiom count**: 3 (liouville_integration_theorem, risch_exp_criterion_gaussian,
-  gaussian_not_elementary)
+- **Axiom count**: 2 (liouville_integration_theorem, risch_exp_criterion_gaussian)
 - **Sorry count**: 0
-- **Theorems proved**: 16
+- **Theorems proved**: 21 (including gaussian_not_elementary, proved from polynomial degree obstruction)
 
 ## References
 
@@ -163,7 +163,7 @@ axiom liouville_integration_theorem
         IsLiouvilleForm g v₀ c v  -- g = v₀ + Σ cᵢ · ln(vᵢ) in the logarithmic extension
 
 /-! ══════════════════════════════════════════════════════════════════
-## Part III: Risch Criterion and Gaussian Non-Elementarity (Axioms)
+## Part III: Risch Criterion and Gaussian Non-Elementarity
 ══════════════════════════════════════════════════════════════════ -/
 
 /-- **Risch Criterion for ∫e^(-x²)dx**:
@@ -182,17 +182,107 @@ axiom risch_exp_criterion_gaussian :
     ∃ (F : ℝ → ℝ),
       (∀ x : ℝ, HasDerivAt F (Real.exp (-(x^2))) x) ∧ IsElementaryFn F
 
+/-- The Risch operator L[h] = h' - C(2)·X·h. -/
+private def rischOp (h : Polynomial ℝ) : Polynomial ℝ :=
+  Polynomial.derivative h - Polynomial.C 2 * (Polynomial.X * h)
+
+/-- Iterating L raises degree, so L^n(g) ≠ 0 whenever g ≠ 0. -/
+private lemma rischOp_iter_ne_zero (g : Polynomial ℝ) (hg : g ≠ 0) :
+    ∀ n : ℕ, rischOp^[n] g ≠ 0 := by
+  intro n
+  induction n with
+  | zero => simpa
+  | succ n ih =>
+    simp only [Function.iterate_succ_apply']
+    intro heq
+    have hdeg := risch_ode_raises_degree (rischOp^[n] g) ih
+    unfold rischOp at heq
+    rw [heq, Polynomial.natDegree_zero] at hdeg
+    exact Nat.not_lt_zero _ hdeg
+
+/-- HasDerivAt for h(t)·exp(-t²): derivative is L[h](x)·exp(-x²). -/
+private lemma hasDerivAt_mul_gauss (h : Polynomial ℝ) (x : ℝ) :
+    HasDerivAt (fun t => h.eval t * Real.exp (-(t ^ 2)))
+      ((rischOp h).eval x * Real.exp (-(x ^ 2))) x := by
+  have h1 : HasDerivAt (fun t => h.eval t) (h.derivative.eval x) x := h.hasDerivAt x
+  have hg : HasDerivAt (fun t : ℝ => -(t ^ 2)) (-2 * x) x := by
+    have h' := (hasDerivAt_pow 2 x).neg
+    simp only [Nat.cast_ofNat] at h'
+    have heq : -(2 * x ^ (2 - 1)) = -2 * x := by norm_num
+    rwa [heq] at h'
+  have h2 : HasDerivAt (fun t => Real.exp (-(t ^ 2)))
+      (Real.exp (-(x ^ 2)) * (-2 * x)) x :=
+    (Real.hasDerivAt_exp _).comp x hg
+  have h3 := h1.mul h2
+  convert h3 using 1
+  unfold rischOp
+  simp only [Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]
+  ring
+
+/-- The n-th real derivative of (f.eval) equals (L^n g).eval · exp(-·²)
+    whenever f.eval = g.eval · exp(-·²) pointwise. -/
+private lemma risch_iterate_eq (f g : Polynomial ℝ)
+    (h0 : ∀ x : ℝ, f.eval x = g.eval x * Real.exp (-(x ^ 2))) (n : ℕ) :
+    ∀ x : ℝ, (Polynomial.derivative^[n] f).eval x =
+              (rischOp^[n] g).eval x * Real.exp (-(x ^ 2)) := by
+  induction n with
+  | zero => simpa
+  | succ n ih =>
+    intro x
+    have hLHS : HasDerivAt (fun t => (Polynomial.derivative^[n] f).eval t)
+        ((Polynomial.derivative (Polynomial.derivative^[n] f)).eval x) x :=
+      (Polynomial.derivative^[n] f).hasDerivAt x
+    have hRHS : HasDerivAt (fun t => (rischOp^[n] g).eval t * Real.exp (-(t ^ 2)))
+        ((rischOp (rischOp^[n] g)).eval x * Real.exp (-(x ^ 2))) x :=
+      hasDerivAt_mul_gauss (rischOp^[n] g) x
+    have heq_fn : (fun t => (Polynomial.derivative^[n] f).eval t) =
+                  (fun t => (rischOp^[n] g).eval t * Real.exp (-(t ^ 2))) :=
+      funext ih
+    rw [heq_fn] at hLHS
+    have huniq := HasDerivAt.unique hLHS hRHS
+    rw [Function.iterate_succ_apply' Polynomial.derivative n f,
+        Function.iterate_succ_apply' rischOp n g]
+    exact huniq
+
 /-- **Gaussian integral is not elementary** (Liouville 1835).
     The antiderivative of e^(-x²) cannot be expressed as a rational function.
 
-    Proof sketch: Risch criterion reduces to finding rational Q with Q' - 2xQ = 1.
-    The polynomial obstruction (no_poly_risch_soln) handles polynomial Q.
-    Rational Q is axiomatized: partial fractions show poles of Q' and 2xQ
-    cannot cancel except when Q is polynomial, reducing to the proved case. -/
-axiom gaussian_not_elementary :
+    **Proof**: If d/dx[p(x)/q(x)] = e^(-x²) with q never vanishing, the quotient
+    rule gives f(x) = g(x)·e^(-x²) where f = p'q - pq' and g = q². The iterated
+    Risch operator L[h] = h' - 2xh satisfies d/dx[h·e^(-x²)] = L[h]·e^(-x²),
+    so differentiating n = deg(f)+1 times yields 0 = L^n(g)·e^(-x²). Since
+    e^(-x²) > 0 and L raises degree (so L^n(g) ≠ 0), this is a contradiction. -/
+theorem gaussian_not_elementary :
     ¬∃ (p q : Polynomial ℝ),
       (∀ x : ℝ, q.eval x ≠ 0) ∧
-      ∀ x : ℝ, HasDerivAt (fun t => p.eval t / q.eval t) (Real.exp (-(x^2))) x
+      ∀ x : ℝ, HasDerivAt (fun t => p.eval t / q.eval t) (Real.exp (-(x^2))) x := by
+  rintro ⟨p, q, hq, hderiv⟩
+  have hq_ne : q ≠ 0 := by intro h; simp [h] at hq
+  set f := Polynomial.derivative p * q - p * Polynomial.derivative q with hf_def
+  set g := q ^ 2 with hg_def
+  have hg_ne : g ≠ 0 := pow_ne_zero _ hq_ne
+  have hfg : ∀ x : ℝ, f.eval x = g.eval x * Real.exp (-(x ^ 2)) := by
+    intro x
+    have hdiv : HasDerivAt (fun t => p.eval t / q.eval t)
+        (((Polynomial.derivative p).eval x * q.eval x -
+          p.eval x * (Polynomial.derivative q).eval x) / q.eval x ^ 2) x :=
+      (p.hasDerivAt x).div (q.hasDerivAt x) (hq x)
+    have heq := HasDerivAt.unique hdiv (hderiv x)
+    have hqne : q.eval x ^ 2 ≠ 0 := pow_ne_zero _ (hq x)
+    rw [div_eq_iff hqne] at heq
+    simp only [hf_def, hg_def, Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_pow]
+    linear_combination heq
+  set n := f.natDegree + 1 with hn_def
+  have hzero : Polynomial.derivative^[n] f = 0 :=
+    Polynomial.iterate_derivative_eq_zero (Nat.lt_succ_self _)
+  have hiter := risch_iterate_eq f g hfg n
+  have hne : rischOp^[n] g ≠ 0 := rischOp_iter_ne_zero g hg_ne n
+  have hall : ∀ x : ℝ, (rischOp^[n] g).eval x = 0 := by
+    intro x
+    have := hiter x
+    rw [hzero, Polynomial.eval_zero] at this
+    exact (mul_eq_zero.mp this.symm).resolve_right (Real.exp_pos _).ne'
+  exact hne (Polynomial.funext hall)
 
 /-! ══════════════════════════════════════════════════════════════════
 ## Part IV: The Core Algebraic Proof — No Polynomial Risch Solution
