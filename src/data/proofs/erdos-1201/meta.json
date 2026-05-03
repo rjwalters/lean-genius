@@ -108,6 +108,14 @@
       "endLine": 514,
       "summary": "gpfConsecutive_eq_sup_range: P(n,k) = sup of individual GPFs. gpfConsecutive_le_iff: P(n,k) ≤ t iff all terms in window are t-smooth.",
       "mathContext": "$P(n,k) = \\sup_{0 \\leq i \\leq k} P(n+i)$. Equivalently, $P(n,k) \\leq t \\iff \\forall i \\leq k,\\, P(n+i) \\leq t$ (all terms are $t$-smooth). This connects the Erdős conjecture to Dickman's $\\rho$ function: density of $t$-smooth numbers in $[n, n+k]$."
+    },
+    {
+      "id": "prime-gpf",
+      "title": "GPF for Primes and Short Windows",
+      "startLine": 515,
+      "endLine": 555,
+      "summary": "greatestPrimeFactor_prime: P(n)=n for prime n. gpfConsecutive_prime_start: P(n,0)=n for prime n. gpfConsecutive_one_eq_max: P(n,1)=max(P(n),P(n+1)). gpfConsecutive_ge_left/right: window GPF bounds from endpoints.",
+      "mathContext": "For prime $n$: $P(n) = n$ (primeFactors is $\\{n\\}$, max = $n$). Length-2 window: $P(n,1) = \\max(P(n), P(n+1))$ (via max formula for $k=1$). Endpoint bounds: $P(n) \\leq P(n,k)$ and $P(n+k) \\leq P(n,k)$."
     }
   ],
   "conclusion": {
