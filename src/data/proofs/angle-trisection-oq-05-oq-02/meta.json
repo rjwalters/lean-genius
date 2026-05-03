@@ -37,16 +37,18 @@
     ]
   },
   "overview": {
-    "historicalContext": "K-fold origami constructibility formalizes the question: how many simultaneous paper folds are needed to solve a polynomial equation of degree d? Alperin-Lang (2006) showed: 1-fold solves all 3-smooth degrees (prime factors ⊆ {2,3}), 2-fold solves all 5-smooth degrees (prime factors ⊆ {2,3,5}). The conjectured pattern for k≥3 is: k-fold solves exactly the p_{k+1}-smooth degrees. This file addresses the existential question: does there always exist SOME k that works?",
+    "historicalContext": "The story of origami geometry begins with the classical Greek impossibility results. Gauss (1796) characterized ruler-and-compass constructible numbers as those in the tower of quadratic extensions of ℚ, and Wantzel (1837) proved rigorously that angle trisection and cube duplication are impossible with ruler and compass alone. The key obstruction: ruler-and-compass can only adjoin square roots, but trisection requires solving a cubic. Paper folding changes everything. A single Huzita-Hatori fold (1989–2001) simultaneously places two points onto two lines, solving systems of degree up to 3. Abe's 1980 method trisects any angle by origami. Beloch (1936) had already shown that single-fold origami can solve all cubic equations. The Huzita-Hatori axioms (H1–H7) give the full axiomatic foundation for single-fold origami, making the constructible numbers exactly the closure of ℚ under square roots and cube roots — strictly more powerful than ruler and compass. Alperin-Lang (2006) extended this to k simultaneous folds: k-fold origami corresponds to p_{k+1}-smooth degrees, where a degree is smooth if all its prime factors are at most p_{k+1} (the (k+1)-th prime). 1-fold gives the 3-smooth degrees (powers of 2 and 3); 2-fold gives the 5-smooth (regular numbers). For k ≥ 3, the sharp characterization is conjectured to be p_{k+1}-smooth. This file answers OQ-05-OQ-02: the existential question — does some fold level always work? Answer: YES, omega-fold origami (existential over all finite k) is algebraically complete, with degree 0 as the unique exception.",
     "problemStatement": "Can multi-fold origami solve ALL polynomial equations? More precisely, is omega-fold origami (allowing any finite number of simultaneous folds) algebraically complete — can it construct the roots of every polynomial of positive degree?",
     "text": "Omega-fold origami is algebraically complete: for every degree d > 0, there exists a fold level k such that d is k-fold constructible. The minimum fold level needed for degree d is at most d itself. The unique non-constructible degree is 0.",
     "proofStrategy": "Define IsOmegaFoldConstructible d := ∃ k, IsKFoldConstructible d k. For (←): IsKFoldConstructible requires d > 0 (via IsSmooth's positivity). For (→): use kfold_self — degree d is d-fold constructible because p_d ≥ d+2 > d bounds all prime factors of d. The sharp upper bound k ≤ d comes from Nat.add_two_le_nth_prime.",
     "keyInsights": [
-      "Omega-fold constructibility is the existential union: ∃ k, k-fold constructible — this collapses the infinite hierarchy to a single yes/no question",
-      "kfold_self uses the prime growth bound p_n ≥ n+2 (Bertrand's postulate direction from Mathlib): taking k = d ensures p_d ≥ d+2 > any prime factor of d",
-      "Degree 0 fails because IsSmooth requires d > 0 by definition — it's a definitional exclusion, not a deep theorem",
-      "The hierarchy characterization is symmetric: IsOmegaFoldConstructible d ↔ d > 0, and ¬IsOmegaFoldConstructible d ↔ d = 0",
-      "For prime p, the minimum fold level is exactly the prime index: the fold bound p_k is a staircase function of k, and p must be below the next stair"
+      "Omega-fold constructibility is the existential union: ∃ k, k-fold constructible — this collapses the infinite hierarchy to a single yes/no question, and the answer is 'yes iff d > 0'",
+      "kfold_self uses the prime growth bound p_n ≥ n+2 (a weak form of Bertrand's postulate from Mathlib as Nat.add_two_le_nth_prime): taking k = d ensures p_d ≥ d+2, bounding every prime factor of d below the fold threshold",
+      "Degree 0 fails because IsSmooth requires d > 0 by definition — this is a deliberate definitional choice, not a deep mathematical obstruction; there is no polynomial equation of degree 0 to solve",
+      "The sharp characterization IsOmegaFoldConstructible d ↔ d > 0 means omega-fold origami is exactly as powerful as classical algebra over ℕ: it can construct all positive degrees",
+      "For prime p = p_m, the minimum fold level is exactly m-1 (the prime's 0-based index): prime_kfold_iff_bound shows p is k-fold constructible iff p ≤ p_{k+1}, so the threshold is where p first appears in the prime sequence",
+      "Origami transcends the Galois-theoretic limitation that makes quintics unsolvable by radicals: Abel-Ruffini says the quintic has no radical formula, but omega-fold origami constructs quintic roots geometrically — these are different computational models",
+      "The fold hierarchy is a filtration: C_0 ⊆ C_1 ⊆ C_2 ⊆ ... ⊆ C_ω = ℕ_{>0}, where C_k is the class of k-fold constructible degrees; omega-fold is the colimit of this chain"
     ],
     "prerequisites": [
       "AngleTrisectionOQ05OQ01: IsKFoldConstructible, foldPrimeBound, kfold_self from eventually_constructible",
@@ -108,8 +110,10 @@
     "summary": "Omega-fold origami is algebraically complete: every polynomial equation of positive degree is solvable by some finite number of simultaneous origami folds. The sharp characterization is IsOmegaFoldConstructible d ↔ d > 0. Machine-verified with 0 axioms and 0 sorries.",
     "implications": "This resolves OQ-05-OQ-02 definitively: YES, multi-fold origami can solve ALL polynomial equations. The answer is optimal: the minimum fold level for degree d is at most d (and exactly d for prime degrees p = p_{d+1}). The result elevates origami to a complete computational model for polynomial root-finding, strictly beyond ruler-and-compass and even Neusis construction.",
     "openQuestions": [
-      "What is the exact minimum fold level min_k(d) = min{k : IsKFoldConstructible d k}? For prime p, this is exactly its index in the prime sequence. For composite d = p_1^{a_1}...p_r^{a_r}, is it determined by the largest prime factor?",
-      "Can the fold complexity min_k(d) be computed efficiently (in polynomial time in log d)?"
+      "What is the exact minimum fold level min_k(d) = min{k : IsKFoldConstructible d k} for composite d = p_1^{a_1}···p_r^{a_r}? The prime case is sharp: min_k(p_m) = m-1. For composites, is it determined solely by the largest prime factor (i.e., min_k(d) = min_k(max_prime_factor(d)))?",
+      "Can the fold complexity min_k(d) be computed in polynomial time in log d? This requires efficiently locating the largest prime factor of d in the prime sequence — related to prime counting functions and the Riemann Hypothesis.",
+      "Is the Alperin-Lang conjecture for k ≥ 3 provable in Lean without oracles? The conjecture states k-fold origami constructs exactly the p_{k+1}-smooth degrees, which would extend the exact characterization (proved for k=1,2) to all finite fold levels.",
+      "What is the constructibility power of 'infinite origami' — allowing countably many sequential (non-simultaneous) folds? Does it transcend omega-fold or coincide with it?"
     ]
   },
   "leanFile": {
