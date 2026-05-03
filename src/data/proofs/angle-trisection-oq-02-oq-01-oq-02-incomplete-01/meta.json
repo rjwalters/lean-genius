@@ -2,7 +2,7 @@
   "id": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
   "title": "Completing the Wantzel-Galois Constructibility Proof",
   "slug": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
-  "description": "Completes the parent Wantzel-Galois proof (angle-trisection-oq-02-oq-01-oq-02) by redesigning IsConstructible (removing IsConstructible β precondition from sqrt_ext) to enable proper tower induction. Proves isConstructible_sqrt2, all concrete impossibility results (angle trisection, cube doubling, regular 7-gon). 2 sorries: hjoin_dvd (needs stronger IH), wantzel_galois_iff (out-of-scope).",
+  "description": "Completes the parent Wantzel-Galois proof (angle-trisection-oq-02-oq-01-oq-02) by redesigning IsConstructible (removing IsConstructible β precondition from sqrt_ext) to enable proper tower induction. Proves isConstructible_sqrt2, all concrete impossibility results (angle trisection, cube doubling, regular 7-gon). 1 sorry remaining: wantzel_galois_iff (out-of-scope; requires full FTGT + Galois infrastructure). hjoin_dvd was resolved by strengthening the IH.",
   "meta": {
     "author": "Wantzel (1837), completion formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Straightedge_and_compass_construction",
@@ -17,10 +17,10 @@
     ],
     "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean",
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 0,
-    "theoremCount": 19,
-    "lineCount": 436,
+    "theoremCount": 21,
+    "lineCount": 625,
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.irreducible_of_eisenstein_criterion",
@@ -136,12 +136,12 @@
   ],
   "leanFile": {
     "namespace": "AngleTrisectionOQ02OQ01OQ02Incomplete01",
-    "lineCount": 436,
+    "lineCount": 625,
     "axiomCount": 0,
-    "theoremCount": 19,
+    "theoremCount": 21,
     "definitionCount": 2,
     "path": "Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean",
-    "sorries": 2
+    "sorries": 1
   },
-  "sorries": 2
+  "sorries": 1
 }
