@@ -38,48 +38,57 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The Gauss-Wantzel theorem (1837) characterizes constructible regular polygons: n-gon constructible iff n = 2^a × (Fermat primes). The algebraic proof goes: n-gon constructible iff [ℚ(cos 2π/n):ℚ] is a power of 2 iff φ(n) is a power of 2. The key arithmetic step — that φ(n)/2 is a power of 2 iff φ(n) is — requires knowing φ(n) is even for n ≥ 3, which follows because (ℤ/nℤ)* contains -1 as an element of order 2.",
+    "historicalContext": "Gauss announced in 1796 (at age 18) that the regular 17-gon is constructible with compass and straightedge, proving it in his 1801 Disquisitiones Arithmeticae. He identified the criterion: the n-gon is constructible iff n = 2^a × (distinct Fermat primes), where Fermat primes are primes of the form 2^{2^j}+1. Pierre Wantzel (1837) proved the converse (necessity), completing the characterization now called the Gauss-Wantzel theorem. The algebraic proof proceeds through three equivalences: (1) n-gon constructible iff [ℚ(cos 2π/n):ℚ] is a power of 2 (constructibility criterion); (2) [ℚ(cos 2π/n):ℚ] = φ(n)/2 (real subfield degree); (3) φ(n)/2 = 2^k iff φ(n) = 2^{k+1} (arithmetic step — proved here using Nat.totient_even). The arithmetic bridge in step (3) requires that φ(n) is always even for n ≥ 3, since -1 ∈ (ℤ/nℤ)* has order 2. Only 5 Fermat primes are known (3, 5, 17, 257, 65537); whether infinitely many exist remains open.",
     "problemStatement": "Prove: (1) φ(n) is a power of 2 iff φ(n)/2 is a power of 2 (for n ≥ 3). (2) A regular n-gon is constructible iff φ(n) is a power of 2. (3) Complete classification for n ∈ [3,50]: 17 constructible values (3,4,5,6,8,10,12,15,16,17,20,24,30,32,34,40,48).",
     "proofStrategy": "Section I: arithmetic of powers of 2 (pow2_of_half_pow2, totient_pow2_iff_half_pow2). Section II: non-constructibility via odd prime divisors (not_totient_pow2_of_odd_prime_dvd). Sections III-VI: batch verification via decide/native_decide for all n ∈ [3,50]. Section VII: summary with explicit constructible list.",
     "keyInsights": [
       "**Arithmetic bridge**: φ(n) even for n≥3 (since -1 ∈ (ℤ/nℤ)* has order 2). So φ(n) = 2^k iff φ(n)/2 = 2^{k-1}. This connects the maximal real subfield degree to the cyclotomic degree.",
       "**Non-constructibility criterion**: If p | φ(n) for an odd prime p ≥ 3, then φ(n) is NOT a power of 2 — n-gon is not constructible. This handles all non-Fermat cases.",
       "**Complete n ∈ [3,50] table**: 17 constructible n-gons: n = 2^a × (distinct Fermat primes). The remaining 31 values all have odd prime divisors in φ(n).",
-      "**Fermat primes in range**: Only 3, 5, 17 appear as relevant Fermat primes for n ≤ 50. Distinct-odd-Fermat-prime products in range: just 3×5=15 (since 3×17=51, 5×17=85, 3×5×17=255 all exceed 50). The remaining constructible n combine these with 2^a multipliers — e.g. 34=2×17, 30=2×3×5, 20=4×5, 24=8×3 — and pure powers of 2 (4, 8, 16, 32)."
+      "**Fermat primes in range**: Only 3, 5, 17 appear as relevant Fermat primes for n ≤ 50. Distinct-odd-Fermat-prime products in range: just 3×5=15 (since 3×17=51, 5×17=85, 3×5×17=255 all exceed 50). The remaining constructible n combine these with 2^a multipliers — e.g. 34=2×17, 30=2×3×5, 20=4×5, 24=8×3 — and pure powers of 2 (4, 8, 16, 32).",
+      "**Five-step proof decomposition**: Gauss-Wantzel splits into steps (a) [ℚ(ζₙ):ℚ] = φ(n) [Mathlib: IsCyclotomicExtension.finrank]; (b) cos(2π/n) generates ℚ(ζₙ)⁺ [geometric]; (c) [ℚ(cos 2π/n):ℚ] = φ(n)/2; (d) constructible ↔ power-of-2 degree [OQ02]; (e) φ(n)/2 = 2^k ↔ φ(n) = 2^{k+1} [THIS FILE]. Step (e) is the only purely arithmetic step — once (a)-(d) are assembled in Mathlib, step (e) is already done."
     ]
   },
   "sections": [
     {
       "id": "pow2-arithmetic",
-      "title": "Section I: Arithmetic of Powers of 2",
-      "startLine": 30,
-      "endLine": 78,
-      "summary": "pow2_of_half_pow2: m/2 = 2^k ⟹ m = 2^{k+1}. half_pow2_of_pow2. even_of_pow2_ge_two. totient_even_of_ge_three. totient_pow2_iff_half_pow2.",
-      "mathContext": "$\\varphi(n)$ even for $n \\geq 3$ (element $-1 \\in (\\mathbb{Z}/n\\mathbb{Z})^*$ has order 2). Key: $\\varphi(n) = 2^k \\iff \\varphi(n)/2 = 2^{k-1}$."
+      "title": "Section I: Arithmetic Bridge — φ(n)/2 = 2^(k−1) iff φ(n) = 2^k",
+      "startLine": 29,
+      "endLine": 76,
+      "summary": "pow2_of_half_pow2: 2|m and m/2=2^k ⟹ m=2^{k+1}. half_pow2_of_pow2. even_of_pow2_ge_two. totient_even_of_ge_three: 2|φ(n) for n≥3. totient_pow2_iff_half_pow2: the key arithmetic bridge iff theorem.",
+      "mathContext": "$\\varphi(n)$ even for $n \\geq 3$. Key: $\\varphi(n) = 2^k \\Leftrightarrow \\varphi(n)/2 = 2^{k-1}$ (using $k \\geq 1$ from $\\varphi(n) \\geq 2$)."
     },
     {
       "id": "non-constructibility",
-      "title": "Section II: Non-Constructibility via Odd Prime Divisors",
-      "startLine": 78,
-      "endLine": 158,
-      "summary": "not_totient_pow2_of_odd_prime_dvd: if odd prime p | φ(n), then ¬TotientIsPow2 n. Specific non-constructible proofs: n=7,9,11,13,14,18,19,21,22,23,25,26,27,28,29.",
-      "mathContext": "If $q | \\varphi(n)$ for odd prime $q$, then $\\varphi(n) \\neq 2^k$ for any $k$."
+      "title": "Section II: Non-Constructibility Criterion and Applications",
+      "startLine": 77,
+      "endLine": 157,
+      "summary": "TotientIsPow2 predicate. not_totient_pow2_of_odd_prime_dvd: general criterion. Applied to n=19,22,23,26,27,28,29 with explicit odd prime witnesses. Template: `not_totient_pow2_of_odd_prime_dvd (by decide) (by decide) (show q ∣ φ(n) by decide)`.",
+      "mathContext": "If odd prime $q \\mid \\varphi(n)$, then $\\varphi(n) \\neq 2^k$. Proof: $q \\mid 2^k$ $\\Rightarrow$ $q \\mid 2$ (Nat.Prime.dvd_of_dvd_pow) $\\Rightarrow$ $q = 2$, contradiction."
+    },
+    {
+      "id": "multiplicativity",
+      "title": "Sections IV–V: Totient Multiplicativity and Fermat Prime Characterization",
+      "startLine": 158,
+      "endLine": 208,
+      "summary": "totient_multiplicative: wraps Nat.totient_mul. totient_pow2_mul: TotientIsPow2 preserved under coprime products (φ(mn) = φ(m)φ(n) = 2^a·2^b = 2^{a+b}). not_totient_pow2_factor: contrapositive. totient_pow2_prime_iff: TotientIsPow2 p ↔ p-1 = 2^k (Fermat prime criterion).",
+      "mathContext": "$\\varphi$ multiplicative: $\\gcd(m,n)=1 \\Rightarrow \\varphi(mn) = \\varphi(m)\\varphi(n)$. Powers of 2 closed: $2^a \\cdot 2^b = 2^{a+b}$. Fermat prime: $p$ prime with $p-1 = 2^k$."
     },
     {
       "id": "classification",
-      "title": "Sections III–VI: Complete Classification for n ∈ [3,50]",
-      "startLine": 96,
-      "endLine": 276,
-      "summary": "All 17 constructible n ∈ [3,50] verified (TotientIsPow2). All 31 non-constructible verified. Totient of products and prime powers. Structural: TotientIsPow2 p ↔ p-1 = 2^k for primes p.",
-      "mathContext": "Constructible: $n \\in \\{3,4,5,6,8,10,12,15,16,17,20,24,30,32,34,40,48\\}$."
+      "title": "Section VI: Complete n ∈ [16,50] Classification",
+      "startLine": 209,
+      "endLine": 274,
+      "summary": "Constructible n ∈ [16,50]: 16,17,20,24,30,32,34,40,48 (TotientIsPow2 with witnesses k=3 or k=4). Non-constructible: 31,33,36,37,38,39,41,42,43,44,45,46,47,49,50 each with odd prime witness.",
+      "mathContext": "New constructible: $\\varphi(30) = 8 = 2^3$, $\\varphi(48) = 16 = 2^4$. Non-constructible: $3 \\mid \\varphi(31)=30$, $23 \\mid \\varphi(47)=46$."
     },
     {
       "id": "summary",
-      "title": "Section VII: Summary",
-      "startLine": 276,
+      "title": "Section VII: constructible_up_to_50 — All 17 Constructible n-gons",
+      "startLine": 275,
       "endLine": 297,
-      "summary": "Complete constructibility classification theorem: lists all constructible n in [3,50] and provides the structural characterization.",
-      "mathContext": "17 of 48 values in $[3,50]$ have $\\varphi(n)$ a power of 2."
+      "summary": "constructible_up_to_50: 17-component conjunction TotientIsPow2 n for each constructible n in [3,50]. Proved by refine with explicit exponent witnesses via decide.",
+      "mathContext": "17 constructible $n \\in [3,50]$: $\\{3,4,5,6,8,10,12,15,16,17,20,24,30,32,34,40,48\\}$. Each $\\varphi(n) = 2^k$; witnesses range from $k=1$ (n=3,4,6) to $k=4$ (n=17,32,34,40,48)."
     }
   ],
   "conclusion": {
@@ -106,12 +115,22 @@
     {
       "targetId": "angle-trisection-oq-02-oq-03",
       "relationship": "extends",
-      "description": "Extension of OQ02-OQ03: completes arithmetic bridge and n ∈ [3,50] classification"
+      "description": "Parent OQ02-OQ03 introduced the TotientIsPow2 predicate and initial classification; this extension completes the arithmetic bridge and the full n ∈ [3,50] classification"
     },
     {
       "targetId": "angle-trisection-oq-02",
-      "relationship": "sub-question",
-      "description": "OQ02: characterizing constructibility via degree conditions"
+      "relationship": "parent",
+      "description": "OQ02 characterizes constructibility via field extension degree: n-gon constructible iff [ℚ(cos 2π/n):ℚ] is a power of 2; this file provides the arithmetic step connecting that degree to φ(n)"
+    },
+    {
+      "targetId": "angle-trisection-oq-03",
+      "relationship": "related",
+      "description": "OQ03 proves the O(log d) halvings algorithm for checking constructibility; the TotientIsPow2 predicate proved here is what that algorithm decides, making the two files complementary (proof vs algorithm)"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "ancestor",
+      "description": "The root angle-trisection entry establishes the impossibility of trisecting a general 60° angle (3|φ(9)=6, so 9-gon is not constructible); the arithmetic machinery here applies directly to that impossibility argument"
     }
   ],
   "mainTheorems": [

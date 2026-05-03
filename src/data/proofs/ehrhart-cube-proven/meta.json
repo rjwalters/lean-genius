@@ -2,9 +2,9 @@
   "id": "ehrhart-cube-proven",
   "title": "Ehrhart Polynomial of the Unit Cube: First-Principles Proof",
   "slug": "ehrhart-cube-proven",
-  "description": "Proves the unit cube Ehrhart polynomial L([0,1]^d, n) = (n+1)^d from first principles using Mathlib's Fintype cardinality. Includes interior count (n-1)^d, boundary count, Ehrhart-Macdonald reciprocity, and Pick's formula for the unit square. Eliminates axioms in the cube case. 26 theorems, 0 sorries, 0 axioms.",
+  "description": "Proves the unit cube Ehrhart polynomial L([0,1]^d, n) = (n+1)^d from first principles using Mathlib's Fintype cardinality — no axioms, no sorry. Identifies lattice points of n·[0,1]^d with functions Fin d → Fin(n+1), derives interior count (n-1)^d, verifies Ehrhart-Macdonald reciprocity algebraically, derives Pick's formula for the dilated unit square, and proves the product formula L([0,1]^{a+b}, n) = L([0,1]^a, n)·L([0,1]^b, n). 26 theorems, 0 sorries, 0 axioms.",
   "meta": {
-    "author": "Lean Genius EhrhartCubeProven",
+    "author": "Eugène Ehrhart (1912–2000), formalized by Lean Genius",
     "status": "verified",
     "proofRepoPath": "Proofs/EhrhartCubeProven.lean",
     "tags": [
@@ -14,68 +14,122 @@
       "lattice-points",
       "cube",
       "pick-theorem",
-      "cardinality"
+      "cardinality",
+      "verified"
     ],
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 296,
     "theoremCount": 26,
-    "assumptions": "None. All 26 theorems proved from first principles.",
+    "assumptions": "None. All 26 theorems proved from first principles using only Mathlib's Fintype.card_fun and basic arithmetic.",
     "mathlibDependencies": [
       {
-        "theorem": "Fintype.card_fin",
-        "description": "Card(Fin n) = n for the cube lattice point count",
+        "theorem": "Fintype.card_fun",
+        "description": "Card(α → β) = Card(β)^Card(α) — the key lemma powering the main lattice-point count",
         "module": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "Fintype.card_fin",
+        "description": "Card(Fin n) = n",
+        "module": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "Nat.pow_lt_pow_left",
+        "description": "Strict monotonicity of n^d in n for fixed d ≥ 1",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
       }
+    ],
+    "originalContributions": [
+      "First-principles proof of L([0,1]^d, n) = (n+1)^d using Fintype bijection — no Ehrhart axioms",
+      "Interior lattice count (n-1)^d and Ehrhart-Macdonald reciprocity verified algebraically",
+      "Pick's formula for all dilated unit squares: n² = (n-1)² + 4n/2 - 1, proved by ring arithmetic",
+      "Product formula cube_product_formula and strict monotonicity — structural characterization of the cube Ehrhart function"
     ],
     "dateAdded": "2026-05-03",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The d-dimensional unit cube [0,1]^d dilated by n gives [0,n]^d. Its integer lattice points are {0,1,...,n}^d, which has (n+1)^d elements. This simple identity is the base case for all Ehrhart theory: L([0,1]^d, n) = (n+1)^d. The companion results — interior count (n-1)^d and Ehrhart-Macdonald reciprocity — then follow from elementary arithmetic. This file proves all these from Mathlib's Fintype cardinality lemmas, avoiding any axioms.",
-    "problemStatement": "Prove from first principles: (1) |n·[0,1]^d ∩ ℤ^d| = (n+1)^d. (2) Interior lattice points = (n-1)^d for n ≥ 1. (3) Boundary count = (n+1)^d - (n-1)^d. (4) Ehrhart-Macdonald reciprocity holds for the cube. (5) Pick's formula for the unit square.",
-    "proofStrategy": "The key insight: integer lattice points of n·[0,1]^d = {0,...,n}^d ≅ (Fin(n+1))^d. Use card_pi_fintype and card_fin to get |(Fin(n+1))^d| = (n+1)^d. Interior points are (Fin(n-1))^d ≅ {1,...,n-1}^d. All proofs use Fintype.card lemmas and basic algebra.",
+    "historicalContext": "Eugène Ehrhart (1912–2000) was a French mathematician who, while teaching at a lycée, spent the 1950s and 1960s studying lattice points in dilated polytopes. His key discovery — published in the 1962 paper *Sur les polyèdres rationnels homothétiques à n dimensions* — was that for any convex lattice polytope $P$, the function $n \\mapsto |nP \\cap \\mathbb{Z}^d|$ is a polynomial in $n$ of degree $\\dim P$, now called the **Ehrhart polynomial** $L(P, n)$.\n\nThe story of the unit cube is elementary: $n \\cdot [0,1]^d = [0,n]^d$ contains exactly $\\{0, 1, \\ldots, n\\}^d$ integer points, giving $(n+1)^d$. This is the simplest instance of Ehrhart's theorem — a polynomial of degree $d$ with leading coefficient $\\text{vol}([0,1]^d) = 1$ (the normalized volume), constant term 1, and all coefficients given by the binomial formula $\\binom{d}{k}$. The formula $(n+1)^d = \\sum_{k=0}^d \\binom{d}{k} n^k$ is just the binomial theorem.\n\nThe deeper structural results for the cube follow equally directly. The **interior lattice point polynomial** $L^*([0,1]^d, n) = (n-1)^d$ is the Ehrhart polynomial evaluated at $-n$ with a sign: $(-1)^d(1-n)^d = (n-1)^d$, confirming **Ehrhart-Macdonald reciprocity** (1971), which Ian Macdonald proved for all lattice polytopes. **Pick's theorem** (1899), Georg Pick's classical formula Area $= I + B/2 - 1$ for lattice polygons, appears as a specialization to $d=2$: the Ehrhart polynomial $(n+1)^2 = n^2 + 2n + 1$ encodes area (leading coefficient $n^2$), boundary (linear term $2n$, contributing $B/2 = 2n/2 = n$ boundary points per unit dilation), and Euler characteristic (constant 1).\n\nEhrhart's work was initially largely ignored — he was not in an academic research position and published primarily in the *Comptes Rendus*. Recognition came slowly: Richard Stanley's 1980 connection of Ehrhart theory to commutative algebra (via the Hilbert series of the associated graded ring), and Barvinok's 1994 polynomial-time algorithm for counting lattice points in polytopes of fixed dimension, transformed Ehrhart theory into a central tool in combinatorics, optimization, and algebraic geometry. Today it underpins integer programming via the theory of Ehrhart $h^*$-polynomials and applications to scheduling, network flows, and the geometry of numbers.",
+    "problemStatement": "For the $d$-dimensional unit cube $P = [0,1]^d$ and dilation parameter $n \\in \\mathbb{N}$:\n\n1. **Main count**: $L(P, n) = |n \\cdot P \\cap \\mathbb{Z}^d| = (n+1)^d$\n2. **Interior count**: $L^*(P, n) = |\\text{int}(n \\cdot P) \\cap \\mathbb{Z}^d| = (n-1)^d$\n3. **Boundary count**: $|\\partial(n \\cdot P) \\cap \\mathbb{Z}^d| = (n+1)^d - (n-1)^d$\n4. **Ehrhart polynomial**: $L(P, t) = (t+1)^d \\in \\mathbb{Q}[t]$, evaluating correctly at all $n \\in \\mathbb{N}$\n5. **Ehrhart-Macdonald reciprocity**: $(-1)^d L(P, -n) = L^*(P, n)$ (the interior polynomial)\n6. **Pick's formula for $d=2$**: $\\text{Area}(n \\cdot P) = L^*(n) + L(n)/2 - 1$ for all $n \\geq 1$\n7. **Product formula**: $L([0,1]^{a+b}, n) = L([0,1]^a, n) \\cdot L([0,1]^b, n)$",
+    "proofStrategy": "The unifying insight is the **type-theoretic bijection**: integer lattice points of $n \\cdot [0,1]^d = [0,n]^d$ correspond bijectively to functions $\\text{Fin}\\,d \\to \\text{Fin}(n+1)$. In Lean, `Fintype.card_fun` immediately gives $|\\text{Fin}\\,d \\to \\text{Fin}(n+1)| = (n+1)^d$. This single lemma powers all the main counting theorems.\n\n**Why `Fin d → Fin(n+1)` works**: A lattice point $(a_1, \\ldots, a_d) \\in \\{0,\\ldots,n\\}^d$ is exactly a function assigning to each coordinate index $i \\in \\{0,\\ldots,d-1\\} = \\text{Fin}\\,d$ a value $a_i \\in \\{0,\\ldots,n\\} = \\text{Fin}(n+1)$. Lean's `Fintype` infrastructure handles the cardinality computation mechanically.\n\n**Each main result**:\n- Lattice count: `cube_lattice_count` via `simp [Fintype.card_fun]` (one line)\n- Interior count: same pattern with `Fin(n-1)` instead of `Fin(n+1)`\n- Ehrhart polynomial: `cubeEhrhartPoly d = (X+1)^d`, verified by direct evaluation\n- Reciprocity: algebraic identity $(t-1)^d = (-1)^d(-(t-1))^d$, proved by `ring`\n- Pick's formula: arithmetic identity $n^2 = (n-1)^2 + 4n/2 - 1$, proved by `ring` after `push_cast`\n- Product formula: `pow_add` applied to $(n+1)^{a+b} = (n+1)^a \\cdot (n+1)^b$",
     "keyInsights": [
-      "**First-principles approach**: No axioms needed for the cube. The lattice point count follows directly from Fintype cardinality: n·[0,1]^d = {0,...,n}^d, so |lattice points| = (n+1)^d.",
-      "**Interior points**: Interior of n·[0,1]^d is (0,n)^d (open), with integer points {1,...,n-1}^d = (n-1)^d.",
-      "**Reciprocity check**: (-1)^d · L(-n) = (-1)^d · (-n+1)^d = (n-1)^d = L*(n). Verified algebraically for d=1,2,3.",
-      "**Pick's formula**: For the unit square [0,1]², Pick's formula A = I + B/2 - 1 gives 1 = 0 + 4/2 - 1 = 1. ✓"
+      "**Type-theoretic bijection as the unifying tool**: The identification $\\{0,\\ldots,n\\}^d \\cong (\\text{Fin}\\,d \\to \\text{Fin}(n+1))$ reduces the geometric lattice-point question to a purely combinatorial function-counting question. Mathlib's `Fintype.card_fun` then gives the answer in one `simp` step. No geometric machinery (convex hull, dilation map, rational polytope) is needed.",
+      "**Ehrhart theory without Ehrhart theory**: The file proves the cube Ehrhart polynomial axiom-free by sidestepping the general Ehrhart machinery entirely. The companion file `EhrhartPolynomialOQ03.lean` axiomatizes the counting function and polynomial; this file proves the same facts for the cube case from `Fintype.card_fun` alone, demonstrating that for *specific* polytopes with known combinatorial structure, general theorems (Ehrhart's existence theorem) are unnecessary.",
+      "**Reciprocity as a pure algebraic identity**: Ehrhart-Macdonald reciprocity for the cube reduces to $(t-1)^d = (-1)^d \\cdot (1-t)^d$ — a `ring` identity. The general proof for arbitrary lattice polytopes uses commutative algebra (Stanley's theorem on Cohen-Macaulay rings and the non-negativity of $h^*$-vectors). For the cube, the algebraic simplicity reflects the fact that the $h^*$-vector of the unit cube is the Eulerian number sequence $(A(d,0), A(d,1), \\ldots, A(d,d-1))$, which satisfies a palindrome symmetry by combinatorial arguments.",
+      "**Pick's theorem as an Ehrhart linear-term consequence**: Pick's theorem Area $= I + B/2 - 1$ for lattice polygons appears as a consequence of Ehrhart theory's general structure: the Ehrhart polynomial of a $d$-polytope has leading coefficient $=$ normalized volume and constant term $= 1$, with the linear term encoding the sum over codimension-1 faces. For the square $[0,1]^2$, the Ehrhart polynomial $(n+1)^2 = n^2 + 2n + 1$ has leading coefficient $1$ (area), constant $1$, and linear coefficient $2$ (encoding $B/2 = 2$ boundary lattice points per face at $n=1$). Pick's formula is thus an instance of the general Ehrhart theory of lattice polygons.",
+      "**Product formula reflects Cartesian product**: $L([0,1]^{a+b}, n) = L([0,1]^a, n) \\cdot L([0,1]^b, n)$ reflects the bijection $[0,n]^{a+b} \\cong [0,n]^a \\times [0,n]^b$. More generally, Ehrhart polynomials are **not** always multiplicative under Cartesian products for non-cube polytopes — the formula holds for the cube precisely because $(n+1)^{a+b} = (n+1)^a \\cdot (n+1)^b$. This multiplicativity is a special feature of the cube's structure as a direct product of intervals.",
+      "**Natural number subtraction and interior counting**: Lean's natural number subtraction (`n - 1` returns 0 for $n = 0$) is used deliberately in `cube_interior_count`: `Fintype.card (Fin d → Fin (n - 1))` gives 0 when $n = 0$ or $n = 1$ (since `Fin 0` is empty), correctly modeling that the open cube $(0,n)^d$ has no integer points for $n \\leq 1$. This is a case where Lean's truncated subtraction matches the mathematical intended semantics without a case split.",
+      "**Connecting to Barvinok's algorithm**: The unit cube's Ehrhart polynomial $(n+1)^d$ can be computed efficiently (in linear time in $d$) because it factors as a product of linear polynomials. Barvinok's 1994 algorithm handles general polytopes in fixed dimension $d$ with polynomial-time complexity (in the input size), using the theory of rational generating functions. The cube's polynomial $\\prod_{i=1}^d (n+1)$ is the trivial instance of this algorithm — each coordinate contributes an independent factor."
     ]
   },
   "sections": [
     {
-      "id": "lattice-count",
-      "title": "Sections I–III: Lattice Point, Interior, Boundary Counts",
+      "id": "section-i-lattice",
+      "title": "Section I: Lattice Point Counting from First Principles",
       "startLine": 31,
-      "endLine": 151,
-      "summary": "cube_lattice_count: |(n·[0,1]^d) ∩ ℤ^d| = (n+1)^d. cube_interior_count: |(n-interior)| = (n-1)^d. cube_boundary_count: = (n+1)^d - (n-1)^d.",
-      "mathContext": "$|n \\cdot [0,1]^d \\cap \\mathbb{Z}^d| = (n+1)^d$, interior $= (n-1)^d$."
+      "endLine": 71,
+      "summary": "Main theorem `cube_lattice_count`: `Fintype.card (Fin d → Fin (n+1)) = (n+1)^d` proved in one line via `simp [Fintype.card_fun]`. Concrete 3D verifications for n=0,1,2,3 giving 1, 8, 27, 64.",
+      "mathContext": "$|n \\cdot [0,1]^d \\cap \\mathbb{Z}^d| = |\\text{Fin}\\,d \\to \\text{Fin}(n+1)| = (n+1)^d$ via `Fintype.card_fun`."
     },
     {
-      "id": "reciprocity-picks",
-      "title": "Sections IV–VI: Ehrhart Agreement, Reciprocity, Pick's Theorem",
-      "startLine": 115,
-      "endLine": 250,
-      "summary": "cube_ehrhart_poly: agrees with (n+1)^d formula. cube_reciprocity: (-1)^d·L(-n) = L*(n) verified. cube_picks_2d: Pick's formula for unit square A = I + B/2 - 1.",
-      "mathContext": "Ehrhart-Macdonald: $L^*(n) = (-1)^d L(-n)$ for the cube."
+      "id": "section-ii-interior",
+      "title": "Section II: Interior Lattice Points",
+      "startLine": 74,
+      "endLine": 103,
+      "summary": "`cube_interior_count`: interior points = `(n-1)^d` (Lean natural subtraction). Degenerate cases: n≤1 gives 0 interior points. 3D checks: 2-dilate has 1 interior point, 3-dilate has 8.",
+      "mathContext": "$L^*([0,1]^d, n) = (n-1)^d$. For $n \\leq 1$: $\\text{Fin}(n-1) = \\text{Fin}\\,0$ is empty, giving 0."
     },
     {
-      "id": "arb-dim",
-      "title": "Section VII: Arbitrary Dimension",
-      "startLine": 215,
+      "id": "section-iii-boundary",
+      "title": "Section III: Boundary Points",
+      "startLine": 104,
+      "endLine": 113,
+      "summary": "`cube_3d_boundary_1`: concrete check that 3D unit cube has 8 boundary points (8 vertices). Boundary = total − interior = `(n+1)^d − (n-1)^d`.",
+      "mathContext": "Boundary = $(n+1)^d - (n-1)^d$. For $d=3, n=1$: $8 - 0 = 8$ (the 8 vertices of $[0,1]^3$)."
+    },
+    {
+      "id": "section-iv-poly",
+      "title": "Section IV: Ehrhart Polynomial Agreement",
+      "startLine": 114,
+      "endLine": 148,
+      "summary": "`cubeEhrhartPoly d = (X+1)^d : Polynomial ℚ`. Theorems: `cube_poly_eval` (evaluates to (n+1)^d), `cube_poly_agrees_with_count` (matches Fintype.card), `cube_poly_constant_term` (= 1 at 0).",
+      "mathContext": "$L([0,1]^d, t) = (t+1)^d \\in \\mathbb{Q}[t]$. Coefficients: $[t^k](t+1)^d = \\binom{d}{k}$."
+    },
+    {
+      "id": "section-v-reciprocity",
+      "title": "Section V: Ehrhart-Macdonald Reciprocity",
+      "startLine": 150,
+      "endLine": 183,
+      "summary": "`cube_reciprocity_algebraic`: identity $(t-1)^d = (-1)^d((-t)+1)^d$ over ℚ, proved by ring. `cube_reciprocity_nat`: specializes to n ∈ ℕ via push_cast and successor elimination.",
+      "mathContext": "Ehrhart-Macdonald: $(-1)^d L(-n) = (-1)^d(-n+1)^d = (n-1)^d = L^*(n)$."
+    },
+    {
+      "id": "section-vi-picks",
+      "title": "Section VI: Pick's Theorem for the Unit Square",
+      "startLine": 184,
+      "endLine": 234,
+      "summary": "Four theorems: `square_total` (4 points), `square_interior` (0), `square_picks` (1 = 0+4/2-1), `square_boundary_formula` (4n), `square_picks_general` (n² = (n-1)² + 4n/2 - 1 for all n ≥ 1).",
+      "mathContext": "Pick: Area$(n \\cdot [0,1]^2) = n^2 = (n-1)^2 + \\frac{4n}{2} - 1$. Linear coefficient 4 = perimeter of $[0,1]^2$."
+    },
+    {
+      "id": "section-vii-structure",
+      "title": "Section VII: Structural Properties — Product Formula and Monotonicity",
+      "startLine": 235,
       "endLine": 296,
-      "summary": "cube_ehrhart_d: general dimension formula and structural theorems.",
-      "mathContext": "$(n+1)^d$ for all $d \\in \\mathbb{N}$ and all $n \\geq 0$."
+      "summary": "`cube_product_formula`: L([0,1]^{a+b}, n) = L([0,1]^a, n)·L([0,1]^b, n) via pow_add. `cube_count_strict_mono`: (m+1)^d < (n+1)^d for m < n, d ≥ 1. Degenerate cases cube_0d (= 1) and cube_1d (= n+1).",
+      "mathContext": "Product: $(n+1)^{a+b} = (n+1)^a \\cdot (n+1)^b$. Monotone: `Nat.pow_lt_pow_left` with $m+1 < n+1$."
     }
   ],
   "conclusion": {
-    "summary": "Unit cube Ehrhart theory proved axiom-free: 26 theorems, 0 sorries, 0 axioms. The counts (n+1)^d, (n-1)^d, reciprocity, and Pick's formula all proved from Fintype cardinality.",
-    "implications": "This eliminates the last axiom in the unit cube case of the gallery's Ehrhart formalization. The first-principles approach demonstrates that for specific polytopes (like the cube), Ehrhart theory needs no assumptions — only basic set cardinality.",
+    "summary": "This formalization eliminates all axioms in the unit cube case of the gallery's Ehrhart theory. The 26 theorems (0 sorries, 0 axioms) span the full Ehrhart story for $[0,1]^d$: the main counting formula $(n+1)^d$, interior count $(n-1)^d$, Ehrhart-Macdonald reciprocity, Pick's theorem for the 2D case, and structural properties (product formula, monotonicity).\n\nThe key technical insight is the type-theoretic bijection $\\{0,\\ldots,n\\}^d \\cong (\\text{Fin}\\,d \\to \\text{Fin}(n+1))$, which lets `Fintype.card_fun` compute the cardinality in one `simp` step. This approach entirely bypasses the general Ehrhart existence theorem (which requires substantial algebraic geometry) — valid because the cube has an explicit, elementary lattice-point formula.\n\nThis file is a companion to `EhrhartPolynomialOQ03.lean` (which axiomatizes the counting function) and `PicksTheoremOQ03.lean` (which axiomatizes Pick's formula), providing axiom-free proofs for the cube case that validate those axioms concretely.",
+    "implications": "**Ehrhart theory without axioms for specific polytopes**: The cube example demonstrates a general principle: when a polytope has a simple, explicit lattice-point formula (as the cube does via $(n+1)^d$), Ehrhart's existence theorem is unnecessary — one can prove the polynomial directly from bijection principles. The same approach applies to cross-polytopes ($L([0,1]^d \\text{ cross-polytope}, n) = \\sum_{k=0}^d 2^k \\binom{d}{k} \\binom{n}{k}$) and other polytopes with explicit formulas.\n\n**Pick's theorem as Ehrhart specialization**: Pick's formula Area $= I + B/2 - 1$ is a consequence of the Ehrhart polynomial's coefficient structure. The gallery's Pick's theorem proof (`picks-theorem-oq-03`) proves Pick's formula by other means; this file recovers it as a ring identity from the cube's Ehrhart polynomial, showing the two approaches are equivalent for the square.\n\n**Barvinok and computational Ehrhart theory**: Barvinok's 1994 algorithm computes $L(P, n)$ in polynomial time (fixed $d$) via rational generating functions and signed decompositions. The cube's polynomial $(n+1)^d$ is the trivial case. Formalizing Barvinok's algorithm in Lean would require: (1) Brion's theorem on generating functions of polytopes, (2) the algorithmic theory of rational cone decompositions, (3) polynomial-time reduction of counting to evaluation of short rational functions. This would be a major verification project.\n\n**Ehrhart $h^*$-vectors and combinatorics**: The Ehrhart polynomial can be written in the basis $\\binom{n+d-k}{d}$: the coefficients $h^*_k$ form the **$h^*$-vector** of the polytope. For the unit cube, $h^*([0,1]^d) = (A(d,0), A(d,1), \\ldots, A(d,d-1))$ where $A(d,k)$ is the Eulerian number (permutations of $\\{1,\\ldots,d\\}$ with exactly $k$ descents). Stanley's theorem: $h^*_k \\geq 0$ for any lattice polytope. Formalizing the Eulerian number interpretation of the cube's $h^*$-vector would connect Ehrhart theory to combinatorial permutation statistics.",
     "openQuestions": [
-      "Can the simplex Ehrhart polynomial be proved axiom-free (currently axiomatized)?",
-      "Can all Ehrhart polynomials with specific vertex coordinates be proved from first principles?",
-      "Can the Barvinok algorithm be implemented and verified in Lean 4?"
+      "Can the simplex Ehrhart polynomial $L(\\Delta^d, n) = \\binom{n+d}{d}$ be proved axiom-free using a similar bijection (`Fintype.card_compl` or multiset cardinality)?",
+      "Can all Ehrhart polynomials for polytopes with explicitly known lattice-point formulas be proved from first principles, without the general Ehrhart existence theorem?",
+      "Can Barvinok's algorithm for computing lattice point counts of polytopes in fixed dimension be formalized in Lean 4? This requires rational generating functions, short rational function evaluation, and Brion's theorem.",
+      "Can the Eulerian number interpretation of the $h^*$-vector of the unit cube be formalized in Lean 4? Concretely: $\\sum_{n \\geq 0} L([0,1]^d, n) t^n = \\frac{\\sum_{k=0}^{d-1} A(d,k) t^k}{(1-t)^{d+1}}$ where $A(d,k)$ counts permutations of $\\{1,\\ldots,d\\}$ with exactly $k$ descents.",
+      "Can Pick's theorem for general lattice polygons (not just the unit square) be derived from a general Ehrhart polynomial existence theorem in Lean 4? The gallery's `picks-theorem-oq-03` axiomatizes Pick's formula; proving it from Ehrhart theory would require a formalization of the linear-term coefficient identity."
     ]
   },
   "leanFile": {
@@ -93,23 +147,54 @@
     {
       "targetId": "picks-theorem-oq-03",
       "relationship": "extends",
-      "description": "Axiom-free proof of the unit cube Ehrhart polynomial"
+      "description": "Proves Pick's formula axiom-free for the unit square as a corollary of Ehrhart theory (square_picks, square_picks_general). Validates the axiomatized Pick's theorem in picks-theorem-oq-03 concretely for the cube/square case."
+    },
+    {
+      "targetId": "picks-theorem",
+      "relationship": "related",
+      "description": "Pick's theorem (Wiedijk #57): Area = I + B/2 - 1 for lattice polygons. This file proves it for the unit square as a consequence of the Ehrhart polynomial (n+1)² — showing Pick's formula is an instance of Ehrhart theory's linear-term coefficient for d=2."
+    },
+    {
+      "targetId": "picks-theorem-oq-03-product",
+      "relationship": "related",
+      "description": "Ehrhart theory for product polytopes. The cube_product_formula in this file (L([0,1]^{a+b}, n) = L([0,1]^a, n) · L([0,1]^b, n)) is the unit cube instance of the general product formula for Ehrhart polynomials."
     }
   ],
   "mainTheorems": [
     {
       "name": "cube_lattice_count",
       "type": "core",
-      "statement": "∀ n d : ℕ, |n·[0,1]^d ∩ ℤ^d| = (n+1)^d",
-      "description": "The unit cube dilated by n has (n+1)^d lattice points.",
-      "significance": "Foundation of Ehrhart theory, proved from first principles"
+      "statement": "Fintype.card (Fin d → Fin (n + 1)) = (n + 1) ^ d",
+      "description": "The unit cube dilated by n has (n+1)^d lattice points. One-line proof via Fintype.card_fun.",
+      "significance": "Foundation of Ehrhart theory for the cube, proved from first principles"
     },
     {
-      "name": "cube_picks_2d",
+      "name": "cube_interior_count",
+      "type": "core",
+      "statement": "Fintype.card (Fin d → Fin (n - 1)) = (n - 1) ^ d",
+      "description": "Interior lattice points of the n-dilated unit cube = (n-1)^d.",
+      "significance": "Interior polynomial L*(P,n) for the cube"
+    },
+    {
+      "name": "cube_reciprocity_algebraic",
+      "type": "structural",
+      "statement": "(t - 1) ^ d = (-1 : ℚ) ^ d * ((-t) + 1) ^ d",
+      "description": "Ehrhart-Macdonald reciprocity for the cube: algebraic identity over ℚ.",
+      "significance": "Verifies the general Ehrhart-Macdonald theorem for the cube case"
+    },
+    {
+      "name": "square_picks_general",
       "type": "corollary",
-      "statement": "Pick's formula holds for the unit square: A = I + B/2 - 1",
-      "description": "Pick's formula derived as a corollary of the Ehrhart polynomial for d=2.",
-      "significance": "Connects Ehrhart theory to classical Pick's theorem"
+      "statement": "(n : ℚ)^2 = ((n-1 : ℕ) : ℚ)^2 + ((4*n : ℕ) : ℚ) / 2 - 1",
+      "description": "Pick's formula for all dilated unit squares: Area = Interior + Boundary/2 - 1.",
+      "significance": "Pick's theorem as a consequence of cube Ehrhart theory"
+    },
+    {
+      "name": "cube_product_formula",
+      "type": "structural",
+      "statement": "Fintype.card (Fin (a + b) → Fin (n + 1)) = Fintype.card (Fin a → Fin (n + 1)) * Fintype.card (Fin b → Fin (n + 1))",
+      "description": "Ehrhart polynomial of [0,1]^{a+b} is the product of those for [0,1]^a and [0,1]^b.",
+      "significance": "Product formula for cube Ehrhart polynomials"
     }
   ],
   "sorries": 0

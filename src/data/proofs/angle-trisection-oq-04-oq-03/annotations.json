@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-oq04oq03-context",
+    "proofId": "angle-trisection-oq-04-oq-03",
+    "range": { "startLine": 1, "endLine": 39 },
+    "type": "context",
+    "title": "Neusis vs. Compass-Straightedge: The Pierpont Prime Extension",
+    "content": "Compass-and-straightedge (C&S) constructions allow operations generating square roots: field extensions of degree 2 at each step. This gives the Fermat prime criterion (Gauss-Wantzel): n-gon C&S-constructible iff φ(n) is a power of 2. Neusis (marked ruler) constructions additionally allow conic intersections, generating degree-3 extensions. This extends the constructible class: n-gon neusis-constructible iff φ(n) = 2^u · 3^v (3-smooth), equivalently n = 2^a · 3^b × (distinct Pierpont primes). Gleason (1988) proved this in 'Angle Trisection, the Heptagon, and the Triskaidecagon.' The regular 7-gon is the canonical example: φ(7)=6=2·3 is 3-smooth (neusis-constructible) but 6 is not a power of 2 (not C&S-constructible). This file formalizes the number-theoretic component (Pierpont prime definitions and verification) but notes that the Galois-theoretic geometric step connecting φ(n) being 3-smooth to actual constructibility is not yet formalized.",
+    "mathContext": "C&S: $\\phi(n) = 2^k$ (Fermat prime criterion). Neusis: $\\phi(n) = 2^u \\cdot 3^v$ (Pierpont prime criterion). The extension class: Fermat primes $\\subset$ Pierpont primes (every Fermat prime $p = 2^{2^k}+1$ has $p-1 = 2^{2^k}$, which is 3-smooth). Additional Pierpont primes: $7$ (p-1=6=2·3), $19$ (p-1=18=2·3²), $37$ (p-1=36=4·9), $73$, $97$, $109$, $193$, ...",
+    "significance": "context",
+    "relatedConcepts": ["neusis construction (marked ruler)", "Gleason's theorem (1988)", "Pierpont prime", "3-smooth number", "compass-straightedge vs neusis comparison"],
+    "prerequisites": ["Gauss-Wantzel theorem (Fermat prime criterion)", "compass-straightedge constructibility", "neusis construction fundamentals", "Galois theory for cyclotomic fields"]
+  },
+  {
+    "id": "ann-oq04oq03-smooth",
+    "proofId": "angle-trisection-oq-04-oq-03",
+    "range": { "startLine": 44, "endLine": 138 },
+    "type": "definition",
+    "title": "Is23Smooth: 3-Smooth Numbers and Their Properties",
+    "content": "Is23Smooth n is defined as `0 < n ∧ ∃ a b : ℕ, n = 2^a * 3^b`. This captures exactly the 3-smooth (or 23-smooth) numbers: those whose prime factorization uses only 2 and 3. Fifteen specific 3-smooth numbers are verified: 1 (2⁰·3⁰), 2, 3, 4, 6, 8, 9, 12, 16, 18, 36, 72, 96, 108, 192 — corresponding to p-1 for the first 12 Pierpont primes. Two non-examples: not_is23Smooth_five proves 5 is not 3-smooth (5|5 but 5≠2,3, proved by prime_factor_not_two_three_of_smooth); not_is23Smooth_ten proves 10 is not 3-smooth (5|10, same helper). The key structural lemma is_23Smooth_mul: 3-smooth is closed under multiplication (concatenating exponents: 2^a·3^b × 2^c·3^d = 2^{a+c}·3^{b+d}). This closure property is what makes the totient condition φ(m)·φ(n) = φ(mn) (for coprime m,n) preserve 3-smoothness — enabling the Pierpont prime criterion to reduce to checking each prime factor.",
+    "mathContext": "$\\text{Is23Smooth}(n) \\Leftrightarrow n = 2^a \\cdot 3^b$ for some $a,b \\geq 0$. OEIS A003586. First few: 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, 27, 32, 36, 48, 54, 64, 72, 81, 96, ... Closed under $\\times$: $(2^a 3^b)(2^c 3^d) = 2^{a+c}3^{b+d}$.",
+    "significance": "key",
+    "relatedConcepts": ["3-smooth numbers (OEIS A003586)", "Is23Smooth closure under multiplication", "prime_factor_not_two_three_of_smooth (helper lemma)", "norm_num for arithmetic goals"],
+    "prerequisites": ["prime factorization of natural numbers", "existential witnesses with explicit exponents", "Nat.Prime.dvd_of_dvd_pow for prime powers"]
+  },
+  {
+    "id": "ann-oq04oq03-pierpont",
+    "proofId": "angle-trisection-oq-04-oq-03",
+    "range": { "startLine": 139, "endLine": 192 },
+    "type": "definition",
+    "title": "IsPierpontPrime: Definition and the 12 Verified Examples",
+    "content": "IsPierpontPrime p is `Nat.Prime p ∧ Is23Smooth (p - 1)`: a prime p such that p-1 = 2^u · 3^v. Each of the 12 verified Pierpont primes is proved as a conjunction of primality (by decide or norm_num) and Is23Smooth (p-1) (by the appropriate is23Smooth_* lemma). The pattern: isPierpontPrime_seven = ⟨by decide, is23Smooth_six⟩ since 7-1=6 and is23Smooth_six : Is23Smooth 6 provides 6=2¹·3¹. Larger primes use norm_num instead of decide (e.g., isPierpontPrime_seventythree: ⟨by norm_num, is23Smooth_seventytwo⟩). The 12 primes with their p-1 factorizations: 2(1), 3(2), 5(4=2²), 7(6=2·3), 13(12=4·3), 17(16=2⁴), 19(18=2·9), 37(36=4·9), 73(72=8·9), 97(96=32·3), 109(108=4·27), 193(192=64·3). Note that 17=2⁴+1 and 5=2²+1 are Fermat primes (powers of 2), while 7=2·3+1 and 19=2·3²+1 are Pierpont primes that are NOT Fermat primes.",
+    "mathContext": "$p$ Pierpont: $p$ prime and $p-1 = 2^u 3^v$. Note $p-1 = 2^{2^k}$ (Fermat) $\\Rightarrow$ $p-1$ is 3-smooth $\\Rightarrow$ $p$ is Pierpont. Converse false: $7-1=6=2\\cdot 3$ is 3-smooth but $6 \\neq 2^k$, so 7 is Pierpont but not Fermat.",
+    "significance": "key",
+    "relatedConcepts": ["IsPierpontPrime structure (pair: primality + 3-smooth p-1)", "decide for small primality", "norm_num for larger primality", "Fermat prime as special case of Pierpont"],
+    "prerequisites": ["Nat.Prime predicate in Mathlib", "Is23Smooth definition", "conjunction introduction ⟨hp, hs⟩"]
+  },
+  {
+    "id": "ann-oq04oq03-nonex",
+    "proofId": "angle-trisection-oq-04-oq-03",
+    "range": { "startLine": 193, "endLine": 248 },
+    "type": "technique",
+    "title": "Non-Pierpont Proofs and Fermat-is-Pierpont via Structural Reasoning",
+    "content": "Section §4 proves 4 non-examples. Each is_isPierpontPrime proof unifies with ⟨_, h⟩ (discarding the primality component) and then ⟨_, a, b, h⟩ (unfolding Is23Smooth to get n = 2^a · 3^b) and uses prime_factor_not_two_three_of_smooth with the explicit non-2-non-3 prime: 11→not_11 (5|10), 23→not_23 (11|22), 29→not_29 (7|28), 41→not_41 (5|40). Section §5 then proves structural properties. fermatPrime_is_pierpont: if p is prime and p = 2^{2^k}+1 then p is Pierpont, since p-1 = 2^{2^k} = 2^{2^k}·3⁰ is 3-smooth. The proof shows 2^{2^k}+1 - 1 = 2^{2^k} by Nat.add_sub_cancel then exhibits Is23Smooth witness ⟨1, 2^k, 0, by simp⟩. isPierpontPrime_totient_smooth: φ(p) = p-1 for prime p (Nat.totient_prime), so 3-smooth p-1 implies 3-smooth φ(p).",
+    "mathContext": "Non-examples: $p-1 = 10 = 2\\cdot5$ ($5\\nmid\\{2,3\\}$), $22 = 2\\cdot11$, $28 = 4\\cdot7$, $40 = 8\\cdot5$. Fermat: $p = 2^{2^k}+1 \\Rightarrow p-1 = 2^{2^k} = 2^{2^k}\\cdot3^0$ (3-smooth). $\\varphi(p) = p-1$ for prime $p$ (Nat.totient_prime).",
+    "significance": "supporting",
+    "relatedConcepts": ["prime_factor_not_two_three_of_smooth (shared helper)", "fermatPrime_is_pierpont (Fermat ⊂ Pierpont)", "Nat.totient_prime for φ(p)=p-1", "Nat.add_sub_cancel for p-1 simplification"],
+    "prerequisites": ["Is23Smooth non-smooth proofs", "dvd_trans for divisibility chaining", "existential witness pattern for Is23Smooth"]
+  },
+  {
+    "id": "ann-oq04oq03-neusis",
+    "proofId": "angle-trisection-oq-04-oq-03",
+    "range": { "startLine": 249, "endLine": 295 },
+    "type": "insight",
+    "title": "Neusis Constructibility Table: φ(n) 3-Smooth = n-gon Constructible by Neusis",
+    "content": "Section §6 verifies the neusis constructibility criterion for 7 specific polygons via their totient smoothness. Totients by native_decide: φ(7)=6, φ(9)=6, φ(13)=12, φ(19)=18, φ(37)=36, φ(11)=10, φ(23)=22. Constructible (3-smooth totient): 7-gon (6=2·3), 9-gon (6=2·3), 13-gon (12=4·3), 19-gon (18=2·9), 37-gon (36=4·9). Not constructible (non-3-smooth totient): 11-gon (10=2·5, has prime factor 5) and 23-gon (22=2·11, has prime factor 11). The proofs use `prime_factor_not_two_three_of_smooth` again for non-examples. The Gleason (1988) criterion states: IsTwoThreeNumber(φ(n)) ↔ n-gon is neusis-constructible — but Gleason's theorem is not formally proved in Lean here; only the number-theoretic verification is done.",
+    "mathContext": "Neusis-constructible: $\\phi(n) = 2^u \\cdot 3^v$. Table: 7-gon ($\\phi=6$✓), 9-gon ($\\phi=6$✓), 13-gon ($\\phi=12$✓), 19-gon ($\\phi=18$✓), 37-gon ($\\phi=36$✓). Not: 11-gon ($\\phi=10=2\\cdot5$✗), 23-gon ($\\phi=22=2\\cdot11$✗). Gleason: the 7-gon is the simplest non-C&S-constructible polygon that IS neusis-constructible.",
+    "significance": "key",
+    "relatedConcepts": ["Gleason's theorem (1988): φ(n) 3-smooth ↔ neusis-constructible", "IsTwoThreeNumber (parent framework)", "native_decide for totient computations", "the 7-gon: neusis but not C&S"],
+    "prerequisites": ["Pierpont prime criterion", "native_decide for totient evaluation", "prime_factor_not_two_three_of_smooth"]
+  },
+  {
+    "id": "ann-oq04oq03-summary",
+    "proofId": "angle-trisection-oq-04-oq-03",
+    "range": { "startLine": 296, "endLine": 328 },
+    "type": "context",
+    "title": "Summary: What's Proved vs. What Remains for Full Gleason Theorem",
+    "content": "The §7 summary documents both achievements and gaps. Proved: (1) 15 specific 3-smooth numbers verified (p-1 values for the 12 Pierpont primes); (2) 12 Pierpont primes verified with explicit witnessing exponents; (3) 4 non-Pierpont primes verified with explicit non-3-smooth witnesses; (4) Totient 3-smoothness for 5 neusis-constructible n-gons and non-smoothness for 2 non-constructible ones. Not proved: the Galois-theoretic connection from φ(n) being 3-smooth to actual geometric neusis-constructibility. This requires (a) Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)* with order φ(n), and (b) that Galois groups decomposable into degree-2 and degree-3 steps correspond to neusis constructions. Mathlib has the cyclotomic Galois machinery (IsCyclotomicExtension) but the geometric constructibility axioms for neusis are not yet in Mathlib.",
+    "mathContext": "Proved: $\\{p \\text{ Pierpont} : p \\leq 193\\}$ and $\\{n \\text{ s.t. } \\phi(n) \\text{ is 3-smooth} : n \\in \\{7,9,13,19,37\\}\\}$. Missing: Gleason's Galois-theoretic proof that $\\phi(n)$ 3-smooth $\\Rightarrow$ $n$-gon neusis-constructible (requires axiomatizing neusis constructions in Lean).",
+    "significance": "context",
+    "relatedConcepts": ["Gleason 1988 theorem (unformalized component)", "IsCyclotomicExtension.finrank in Mathlib", "neusis axiomatization gap", "Galois group decomposition into 2- and 3-steps"],
+    "prerequisites": ["Pierpont prime criterion (formalized)", "Galois theory for cyclotomic extensions", "axiomatizing geometric constructions in Lean 4"]
+  }
+]
