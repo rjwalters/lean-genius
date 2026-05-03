@@ -13747,6 +13747,14 @@
       "notes": "meta.json lineCount stale: 230 → 220 (file is 220 lines). Fixed in both meta.lineCount and leanFile.lineCount. All other fields verified clean: 3 sorries (lines 120/155/192) match meta, 0 axioms, 5 theorems, status/badge formalized appropriate for Tier C scaffold.",
       "auditCount": 1,
       "lastAudited": "2026-05-02T23:37:33Z"
+    },
+    "angle-trisection-oq-03-oq-01": {
+      "auditCount": 1,
+      "issues": [
+        "lineCount 123→150, theoremCount 13→12, all 5 section line ranges off by ~10 (file has been edited since enrichment); core integrity claims (verified/0 sorries/0 axioms) hold — fixed in PR"
+      ],
+      "result": "issues-fixed",
+      "lastAudited": "2026-05-03T03:37:43Z"
     }
   },
   "erdos-1097-oq-01": {
