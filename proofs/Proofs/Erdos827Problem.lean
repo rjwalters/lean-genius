@@ -13,11 +13,15 @@ The problem asks to determine n_k more precisely.
 
 Reference: https://erdosproblems.com/827
 
-Axioms: 4 (minimalNk, minimalNk_valid, minimalNk_sharp,
-  martinez_roldan_pensado)
-Proved: nk_ge_k (from valid + parabola GP construction),
-  nk_three (from ge_k + sharp + vacuous AllDistinctCircumradii for 3-sets),
-  nk_monotone (from valid + sharp + subset argument)
+Axioms: 2 (nk_exists_witness, martinez_roldan_pensado)
+  - nk_exists_witness: existence of the threshold n_k for each k ≥ 3
+  - martinez_roldan_pensado: the polynomial upper bound n_k ≪ k⁹
+
+Proved from these 2 axioms:
+  - minimalNk: defined as the infimum of valid thresholds (was an axiom)
+  - minimalNk_valid: the infimum is a valid threshold (was an axiom)
+  - minimalNk_sharp: the infimum is minimal (was an axiom)
+  - nk_ge_k, nk_three, nk_monotone, nkExists_of_axioms (unchanged)
 Sorries: 0
 -/
 
@@ -63,26 +67,44 @@ def AllDistinctCircumradii (S : Finset Point) : Prop :=
 
 /- ## The Minimal Number n_k -/
 
+/-- NkProperty k n: any n-point GP set contains a k-subset with all distinct circumradii. -/
+def NkProperty (k n : ℕ) : Prop :=
+  ∀ S : Finset Point, GeneralPosition S → n ≤ S.card →
+    ∃ T : Finset Point, T ⊆ S ∧ T.card = k ∧ AllDistinctCircumradii T
+
 /-- n_k exists: for each k, there is a threshold such that any set of
     that many points in general position contains a k-subset with all
     distinct circumradii. -/
-def NkExists (k : ℕ) : Prop :=
-  ∃ n : ℕ, ∀ S : Finset Point, GeneralPosition S → n ≤ S.card →
-    ∃ T : Finset Point, T ⊆ S ∧ T.card = k ∧ AllDistinctCircumradii T
+def NkExists (k : ℕ) : Prop := ∃ n : ℕ, NkProperty k n
 
-/-- n_k is the minimal such number. -/
-axiom minimalNk : ℕ → ℕ
+/-- Axiom 1: n_k exists for every k ≥ 3.
+    Proved by Martinez and Roldán-Pensado (correcting Erdős's 1978 argument). -/
+axiom nk_exists_witness (k : ℕ) (hk : 3 ≤ k) : ∃ n : ℕ, NkProperty k n
 
-/-- minimalNk k is a valid threshold. -/
-axiom minimalNk_valid (k : ℕ) (hk : 3 ≤ k) :
-    ∀ S : Finset Point, GeneralPosition S → minimalNk k ≤ S.card →
-      ∃ T : Finset Point, T ⊆ S ∧ T.card = k ∧ AllDistinctCircumradii T
+/-- n_k is defined as the infimum of valid thresholds.
+    By nk_exists_witness, this set is nonempty for k ≥ 3, so sInf is the minimum. -/
+noncomputable def minimalNk (k : ℕ) : ℕ := sInf {n : ℕ | NkProperty k n}
 
-/-- minimalNk k is minimal: there exist configurations with minimalNk k - 1
-    points that avoid k-subsets with all distinct circumradii. -/
-axiom minimalNk_sharp (k : ℕ) (hk : 3 ≤ k) :
-    ∃ S : Finset Point, GeneralPosition S ∧ S.card = minimalNk k - 1 ∧
-      ¬∃ T : Finset Point, T ⊆ S ∧ T.card = k ∧ AllDistinctCircumradii T
+/-- For k ≥ 3, the set of valid thresholds is nonempty. -/
+lemma nkProperty_nonempty (k : ℕ) (hk : 3 ≤ k) : {n : ℕ | NkProperty k n}.Nonempty :=
+  nk_exists_witness k hk
+
+/-- minimalNk k is a valid threshold: any GP set with minimalNk k points
+    contains a k-subset with all distinct circumradii.
+
+    Proof: the infimum of a nonempty set of ℕ belongs to the set. -/
+theorem minimalNk_valid (k : ℕ) (hk : 3 ≤ k) : NkProperty k (minimalNk k) :=
+  Nat.sInf_mem (nkProperty_nonempty k hk)
+
+/-- minimalNk k is minimal: n_k - 1 fails the threshold property.
+
+    Proof: if minimalNk k - 1 were valid, sInf ≤ minimalNk k - 1,
+    contradicting sInf = minimalNk k. -/
+theorem minimalNk_sharp (k : ℕ) (hk : 3 ≤ k) : ¬ NkProperty k (minimalNk k - 1) := by
+  intro h
+  have hle : minimalNk k ≤ minimalNk k - 1 :=
+    Nat.sInf_le (show (minimalNk k - 1) ∈ {n : ℕ | NkProperty k n} from h)
+  omega
 
 /- ## Main Problem -/
 
@@ -101,7 +123,7 @@ def MartinezBound : Prop :=
 noncomputable def erdosClaimedBound (k : ℕ) : ℕ :=
   k + 2 * (k - 1).choose 2 * (k - 1).choose 3
 
-/-- Martinez and Roldán-Pensado proved the corrected polynomial bound. -/
+/-- Axiom 2: Martinez and Roldán-Pensado proved the corrected polynomial bound. -/
 axiom martinez_roldan_pensado : MartinezBound
 
 /- ## Parabola GP Construction -/
@@ -172,8 +194,6 @@ theorem allDistinctCircumradii_of_card_three {T : Finset Point} (hT : T.card = 3
   intro p₁ hp₁ q₁ hq₁ r₁ hr₁ p₂ hp₂ q₂ hq₂ r₂ hr₂
     hpq₁ hqr₁ hpr₁ hpq₂ hqr₂ hpr₂ hneq
   exfalso; apply hneq
-  -- Both {p₁,q₁,r₁} and {p₂,q₂,r₂} are 3-distinct-element subsets of T
-  -- Since |T| = 3, each must equal T, so they're equal
   have mk_eq : ∀ (a b c : Point), a ∈ T → b ∈ T → c ∈ T →
       a ≠ b → b ≠ c → a ≠ c → ({a, b, c} : Finset Point) = T := by
     intro a b c ha hb hc hab hbc hac
@@ -195,46 +215,33 @@ theorem allDistinctCircumradii_of_card_three {T : Finset Point} (hT : T.card = 3
   exact (mk_eq p₁ q₁ r₁ hp₁ hq₁ hr₁ hpq₁ hqr₁ hpr₁).trans
         (mk_eq p₂ q₂ r₂ hp₂ hq₂ hr₂ hpq₂ hqr₂ hpr₂).symm
 
-/-- For k = 3, any 3 points in general position form a triangle with
-    exactly one circumradius, so n_3 = 3.
+/-- For k = 3, n_3 = 3.
 
-    Proof: nk_ge_k gives 3 ≤ minimalNk 3. For the upper bound, if
-    minimalNk 3 > 3 then minimalNk_sharp gives a GP set of size ≥ 3
-    with no good 3-subset. But any 3-element subset has
-    AllDistinctCircumradii vacuously (only one triple). Contradiction. -/
+    Proof: nk_ge_k gives 3 ≤ minimalNk 3. For the upper bound, NkProperty 3 3
+    holds since any 3-element subset has AllDistinctCircumradii vacuously.
+    So 3 ∈ {n | NkProperty 3 n}, giving minimalNk 3 ≤ 3 by sInf minimality. -/
 theorem nk_three : minimalNk 3 = 3 := by
-  have hge := nk_ge_k 3 (by omega)
-  suffices h : minimalNk 3 ≤ 3 by omega
-  by_contra hlt
-  push_neg at hlt
-  obtain ⟨S, hGP, hCard, hBad⟩ := minimalNk_sharp 3 (by omega)
-  obtain ⟨T, hTS, hTcard⟩ := Finset.exists_smaller_set S 3 (by omega)
-  exact hBad ⟨T, hTS, hTcard, allDistinctCircumradii_of_card_three hTcard⟩
+  apply Nat.le_antisymm _ (nk_ge_k 3 (by omega))
+  apply Nat.sInf_le
+  intro S hGP hCard
+  obtain ⟨T, hTS, hTcard⟩ := Finset.exists_smaller_set S 3 hCard
+  exact ⟨T, hTS, hTcard, allDistinctCircumradii_of_card_three hTcard⟩
 
 /- ## Monotonicity -/
 
 /-- n_k is monotone non-decreasing.
 
-    Proof: Assume for contradiction that n_{k₂} < n_{k₁}. By minimalNk_sharp,
-    there exists a GP set S of size n_{k₁} - 1 with no good k₁-subset.
-    Since |S| ≥ n_{k₂}, by minimalNk_valid there is a good k₂-subset T ⊆ S.
-    Since k₁ ≤ k₂ = |T|, we can take T' ⊆ T of size k₁. AllDistinctCircumradii
-    is inherited by subsets (fewer triples, same radii). So T' is a good k₁-subset
-    of S, contradicting the sharpness of S. -/
+    Proof: to show minimalNk k₁ ≤ minimalNk k₂, we show NkProperty k₁ (minimalNk k₂).
+    Any GP set S with |S| ≥ minimalNk k₂ contains a k₂-subset T (by minimalNk_valid k₂),
+    and any k₁-subset T' ⊆ T (with k₁ ≤ k₂) inherits AllDistinctCircumradii. -/
 theorem nk_monotone (k₁ k₂ : ℕ) (h : k₁ ≤ k₂) (hk : 3 ≤ k₁) :
     minimalNk k₁ ≤ minimalNk k₂ := by
-  by_contra hlt
-  push_neg at hlt
+  apply Nat.sInf_le
+  intro S hGP hCard
   have hk2 : 3 ≤ k₂ := le_trans hk h
-  obtain ⟨S, hGP, hCard, hBad⟩ := minimalNk_sharp k₁ hk
-  have hBig : minimalNk k₂ ≤ S.card := by omega
-  obtain ⟨T, hTS, hTcard, hTgood⟩ := minimalNk_valid k₂ hk2 S hGP hBig
+  obtain ⟨T, hTS, hTcard, hTgood⟩ := minimalNk_valid k₂ hk2 S hGP hCard
   obtain ⟨T', hT'T, hT'card⟩ := Finset.exists_smaller_set T k₁ (by omega)
-  have hT'good : AllDistinctCircumradii T' := by
-    intro p₁ hp₁ q₁ hq₁ r₁ hr₁ p₂ hp₂ q₂ hq₂ r₂ hr₂
-    exact hTgood p₁ (hT'T hp₁) q₁ (hT'T hq₁) r₁ (hT'T hr₁)
-      p₂ (hT'T hp₂) q₂ (hT'T hq₂) r₂ (hT'T hr₂)
-  exact hBad ⟨T', Finset.Subset.trans hT'T hTS, hT'card, hT'good⟩
+  exact ⟨T', Finset.Subset.trans hT'T hTS, hT'card, allDistinctCircumradii_subset hT'T hTgood⟩
 
 /- ## Structural Properties -/
 

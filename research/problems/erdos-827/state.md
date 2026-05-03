@@ -1,85 +1,65 @@
 # Current State
 
-**Phase**: AUDIT
-**Since**: 2026-04-27
-**Iteration**: 2
-**Last Updated**: 2026-04-27
+**Phase**: IN_PROGRESS
+**Since**: 2026-05-03T18:30:00Z
+**Iteration**: 3
+**Last Updated**: 2026-05-03
 
 ## Current Focus
 
-Metadata sync + axiom-elimination refactor planning. Lean file
-`proofs/Proofs/Erdos827Problem.lean` has 4 axioms, 14 theorems, 0 sorries —
-significantly more proved than the original metadata claimed (state.md and
-src/data JSON were stuck at iteration 1 / NEW phase despite multiple
-axiom-elimination PRs).
+Axiom-elimination refactor: 4 → 2 axioms by defining `minimalNk` via `sInf`
+and proving `minimalNk_valid`/`minimalNk_sharp` as theorems. Awaiting Docker
+build verification.
 
-## Axiom Inventory (4)
+## What Was Done
 
-1. `minimalNk : ℕ → ℕ` — opaque function (the threshold itself)
-2. `minimalNk_valid` — universal property of the threshold
-3. `minimalNk_sharp` — minimality property
-4. `martinez_roldan_pensado` — published bound: ∃ C > 0, ∀ k ≥ 3, minimalNk k ≤ C·k⁹
+Implemented the refactor planned in iteration 2:
 
-## Theorem Inventory (14)
+1. Added `NkProperty (k n : ℕ) : Prop` as an explicit standalone definition
+2. Changed `NkExists k` to `∃ n, NkProperty k n`
+3. Replaced axioms {`minimalNk`, `minimalNk_valid`, `minimalNk_sharp`} with:
+   - `axiom nk_exists_witness (k : ℕ) (hk : 3 ≤ k) : ∃ n, NkProperty k n`
+   - `noncomputable def minimalNk k := sInf {n | NkProperty k n}`
+   - `theorem minimalNk_valid` (from `Nat.sInf_mem`)
+   - `theorem minimalNk_sharp` (from `Nat.sInf_le` + omega)
+4. Simplified `nk_three` proof: directly shows `3 ∈ {n | NkProperty 3 n}` via
+   vacuous `AllDistinctCircumradii` for 3-element sets; no `by_contra` needed
+5. Simplified `nk_monotone` proof: directly shows `minimalNk k₂ ∈ {n | NkProperty k₁ n}`
+   by applying `minimalNk_valid k₂` then taking a k₁-subset; no `by_contra` needed
 
-Structural:
+## Axiom Inventory (2)
+
+1. `nk_exists_witness (k : ℕ) (hk : 3 ≤ k) : ∃ n, NkProperty k n`
+2. `martinez_roldan_pensado : MartinezBound`
+
+## Theorem Inventory (16)
+
+NEW:
+- `nkProperty_nonempty`: nonemptiness of the valid threshold set
+- `minimalNk_valid`: derived (was axiom)
+- `minimalNk_sharp`: derived (was axiom)
+
+Unchanged:
 - `parabolaPoint_injective`, `parabolaSet_card`, `parabolaSet_gp`
 - `distSq_comm`, `distSq_self`, `distSq_nonneg`, `distSq_eq_zero_iff`
 - `generalPosition_subset`, `allDistinctCircumradii_subset`
-
-Existence & combinatorial:
-- `nk_ge_k`: k ≤ minimalNk k via parabola GP construction
-- `allDistinctCircumradii_of_card_three`: vacuous case for |T|=3
-- `nk_three`: minimalNk 3 = 3
-- `nk_monotone`: k₁ ≤ k₂ → minimalNk k₁ ≤ minimalNk k₂
-- `nkExists_of_axioms`: NkExists k for k ≥ 3
-
-## Active Approach
-
-**Refactor opportunity** (not yet attempted; requires Docker to verify):
-
-The triple {minimalNk, minimalNk_valid, minimalNk_sharp} can be collapsed
-to **one** axiom plus a noncomputable definition:
-
-```lean
-def NkProperty (k n : ℕ) : Prop :=
-  ∀ S : Finset Point, GeneralPosition S → n ≤ S.card →
-    ∃ T : Finset Point, T ⊆ S ∧ T.card = k ∧ AllDistinctCircumradii T
-
-axiom nk_property_witness (k : ℕ) (hk : 3 ≤ k) : ∃ n, NkProperty k n
-
-noncomputable def minimalNk (k : ℕ) : ℕ :=
-  if h : ∃ n, NkProperty k n then Nat.find h else 0
-```
-
-Then `minimalNk_valid` follows from `Nat.find_spec`, and `minimalNk_sharp`
-follows from `Nat.find_min`. This reduces 4 → 2 axioms.
-
-Further: properly stating Martinez-Roldán-Pensado as a free-standing
-existence theorem with explicit polynomial witness *implies*
-`nk_property_witness`, so in principle the axiom count could drop to 1
-(the published MRP theorem itself).
+- `nk_ge_k`, `allDistinctCircumradii_of_card_three`
+- `nk_three` (simplified proof), `nk_monotone` (simplified proof)
+- `nkExists_of_axioms`
 
 ## Blockers
 
-- **Disk pressure**: 89% capacity, 1.6GB free. Cannot run Docker build to
-  verify a refactor PR (per memory, disk-full sessions corrupt containerd).
-- **Refactor scope**: switching to `Nat.find` requires updating proofs of
-  `nk_ge_k`, `nk_three`, `nk_monotone` (each consumes
-  `minimalNk_valid`/`_sharp`). Mechanical but needs build verification in
-  one PR.
+Docker build in progress. No blockers expected.
 
 ## Next Action
 
-1. Wait for disk pressure to clear (other agents complete or cleanup runs).
-2. Prototype Nat.find refactor in fresh worktree; verify with Docker.
-3. Submit refactor as separate PR (axiom count 4 → 2).
-
-For now: this audit + insight documentation lands the structural
-understanding so the next session can proceed directly to implementation.
+After Docker confirms 0 errors:
+1. Update meta.json (axiomCount 4 → 2, theoremCount 14 → 16)
+2. Commit, push, PR
+3. Update problem status to completed
 
 ## Attempt Counts
 
-- Total attempts: 2 (initial axiom-elimination wave + this audit)
-- Current approach attempts: 1 (audit/refactor planning)
-- Approaches tried: parabola GP construction (success), audit (in progress)
+- Total attempts: 3
+- Current approach attempts: 1 (sInf-based refactor)
+- Approaches tried: parabola GP construction, audit, sInf refactor
