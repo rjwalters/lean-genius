@@ -109,5 +109,30 @@
       "evenHarmonic_eq_half_harmonic",
       "bipartite_is_even"
     ]
+  },
+  {
+    "id": "ann-e65oq03-summary",
+    "proofId": "erdos-65-oq-03",
+    "range": {
+      "startLine": 229,
+      "endLine": 267
+    },
+    "type": "summary",
+    "title": "Summary: Erdős #65 OQ-03 Results and Architecture",
+    "content": "The closing summary (lines 234-260) catalogues the full formalization.\n\n**Definitions (4 new)**: partialHarmonic (H(m) = Σ 1/j), evenHarmonic (Σ 1/(2j) = H(m)/2), bipartiteCycleRecipSum (cycle reciprocal sum for K_{r,s}), evenCycleSum and oddCycleSum (contributions by parity).\n\n**1 axiom**: liu_montgomery_sharp — encodes the Liu-Montgomery 1984 result that the minimum cycle reciprocal sum is (1/2 - o(1))·log d. This is the deep published result that anchors the Erdős #65 bound; proving it from first principles would require serious analytic number theory.\n\n**15 proved theorems, 0 sorries**: The key chain:\n1. evenHarmonic_eq_half_harmonic: Σ 1/(2j) = (1/2)H(m) (algebraic)\n2. bipartiteCycleRecipSum_eq_half_shifted: K_{m,m} sum = (1/2)H'(m)\n3. bipartite_is_even: K_{m,m} is realised entirely by even cycles\n4. odd_cycle_increases_sum: non-bipartite graphs pay extra\n5. sharp_constant_achieved: the constant 1/2 is tight (via bipartite example)\n6. Concrete checks at m=4: H(4)=25/12, evenHarmonic=25/24, K_{4,4} sum=13/24\n\n**Why 1/2**: Even cycles of length 2j contribute 1/(2j) = (1/2)(1/j). Bipartite graphs have only even cycles (Erdős #59 parity lemma), so their sum is (1/2)·Σ 1/j. Non-bipartite adds more, so the minimum (over non-bipartite extremizers) is achieved by bipartite structure — giving exactly the 1/2 constant.\n\nThe #check commands (262-265) verify the four exported theorems: liu_montgomery_sharp, evenHarmonic_eq_half_harmonic, bipartiteCycleRecipSum_eq_half_shifted, sharp_constant_achieved.",
+    "mathContext": "Erdős #65 asks: what is $\\min_{G: \\text{deg} \\ge d} \\sum_{C: \\text{cycle}} \\frac{1}{|C|}$? The answer is $(\\frac{1}{2} - o(1)) \\log d$, sharp for $K_{d,d}$. The constant $1/2$ arises from $\\sum_{j=2}^{m} \\frac{1}{2j} = \\frac{1}{2}(H(m) - 1) \\sim \\frac{1}{2} \\ln m$.",
+    "significance": "foundational",
+    "relatedConcepts": [
+      "Erdős #65",
+      "cycle reciprocal sum",
+      "bipartite extremizer",
+      "Liu-Montgomery 1984",
+      "sharp constants"
+    ],
+    "prerequisites": [
+      "liu_montgomery_sharp",
+      "sharp_constant_achieved",
+      "erdos-59 parity lemma"
+    ]
   }
 ]
