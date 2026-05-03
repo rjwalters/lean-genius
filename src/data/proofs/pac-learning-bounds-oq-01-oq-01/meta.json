@@ -1,0 +1,206 @@
+{
+  "id": "pac-learning-bounds-oq-01-oq-01",
+  "title": "VC Dimension of Interval Classifiers on ℕ",
+  "slug": "pac-learning-bounds-oq-01-oq-01",
+  "description": "Concrete VC dimension calculation: interval classifiers on ℕ have VC dimension exactly 2. Shows every 2-point set is shattered (lower bound) and no 3-point set is shattered (upper bound via convexity). Advances pac-learning-bounds-oq-01 by computing VC dimension for the next natural hypothesis class beyond thresholds.",
+  "meta": {
+    "author": "Vapnik-Chervonenkis (1971), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vapnik%E2%80%93Chervonenkis_dimension",
+    "date": "1971",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PACLearningOQ01OQ01.lean",
+    "tags": [
+      "learning-theory",
+      "combinatorics",
+      "vc-dimension",
+      "cs-math-bridge"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries, 0 structure-encoded assumptions. The Shatters predicate and intervalClassifiers family are concrete definitions over ℕ. All theorems are fully proved using standard arithmetic, Finset reasoning, and omega.",
+    "dateAdded": "2026-05-03",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.mem_insert",
+        "description": "Membership in a Finset insert",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.mem_singleton",
+        "description": "Membership in a Finset singleton",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Set.mem_setOf_eq",
+        "description": "Membership in a set defined by a predicate",
+        "module": "Mathlib.Data.Set.Defs"
+      },
+      {
+        "theorem": "Nat.le_of_lt",
+        "description": "m < n implies m ≤ n",
+        "module": "Mathlib.Order.Defs"
+      },
+      {
+        "theorem": "omega",
+        "description": "Linear arithmetic decision procedure",
+        "module": "Mathlib.Tactic.Omega"
+      }
+    ],
+    "originalContributions": [
+      "intervalClassifiers: explicit family { x ↦ a ≤ x ∧ x ≤ b : a, b ∈ ℕ }, including empty intervals when b < a",
+      "interval_shatters_singleton: every singleton {a} is shattered, witnessed by [a,a] (include) or [a+1,a] (exclude)",
+      "interval_shatters_pair: every 2-element set {m,n} with m < n is shattered — four witnesses: [m,n] for {m,n}, [m,m] for {m}, [n,n] for {n}, [n+1,n] for ∅",
+      "interval_not_shatters_triple: the convexity obstruction — for a < b < c, the labeling T = {a,c} is unrealizable because any interval [l,r] containing a and c must satisfy l ≤ b ≤ r (by transitivity), so it necessarily includes b",
+      "interval_vcdim_bounds: combines lower and upper bounds — VC dim of intervals on ℕ is exactly 2"
+    ],
+    "prerequisites": [
+      "VC dimension and shattering",
+      "Basic Finset operations in Mathlib",
+      "pac-learning-bounds-oq-01 (threshold classifiers, VC dim 1)"
+    ],
+    "mathlib_version": "4.26.0",
+    "lineCount": 148,
+    "relatedProblems": [
+      {
+        "id": "pac-learning-bounds-oq-01",
+        "relationship": "Extends the hierarchy: thresholds (VC dim 1) → intervals (VC dim 2)"
+      },
+      {
+        "id": "pac-learning-bounds",
+        "relationship": "Concrete computation advancing the parent's OQ-01 about VC dimension of specific hypothesis classes"
+      }
+    ],
+    "theoremCount": 4
+  },
+  "crossReferences": [
+    {
+      "targetId": "pac-learning-bounds-oq-01",
+      "relationship": "extends",
+      "description": "Builds directly on the threshold (VC dim 1) result. Intervals are the natural next hypothesis class: they add one degree of freedom (a second endpoint) and gain one unit of VC dimension. The convexity obstruction for intervals is the precise analogue of the monotonicity obstruction for thresholds."
+    },
+    {
+      "targetId": "pac-learning-bounds",
+      "relationship": "advances",
+      "description": "Answers a second instance of OQ-01: VC dimension of interval classifiers is 2. Together with the threshold result (VC dim 1), this establishes a VC-dimension hierarchy matching the parameter-count of the hypothesis class."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Interval classifiers on ℕ — the family { x ↦ [a ≤ x ≤ b] } — are the canonical two-parameter hypothesis class in VC theory, and their VC dimension 2 is the standard textbook example after the one-parameter threshold case (VC dim 1). The proof template introduced here — 'shatter k points by free parameter choices; fail to shatter k+1 points by a convexity/monotonicity obstruction' — generalizes to axis-aligned rectangles in ℝ² (VC dim 4), half-spaces in ℝᵈ (VC dim d+1), and all convex bodies. The connection between VC dimension and parameter count is made precise by the theory of polynomial concept classes (Goldberg-Jerrum 1995): a class parameterized by d real numbers has VC dimension at most O(d log d). For intervals, d = 2 and VC dim = d exactly.\n\nThe PAC learning implication is concrete: interval classifiers on ℕ are PAC-learnable from O(1/ε) samples (realizable case) or O(1/ε²) samples (agnostic case). The ERM algorithm for intervals is the smallest interval containing all positive examples, which achieves the VC sample complexity bound exactly. This makes intervals the simplest two-parameter learnable class and the canonical example between thresholds and rectangles in the VC hierarchy.",
+    "problemStatement": "Define the interval hypothesis class on ℕ as $H_{int} = \\{x \\mapsto [a \\leq x \\leq b] : a, b \\in \\mathbb{N}\\}$ (where $[a \\leq x \\leq b]$ evaluates to true iff $a \\leq x \\wedge x \\leq b$). Compute its VC dimension.\n\nShow:\n1. (Lower bound) Every 2-element set $\\{m, n\\}$ with $m < n$ is shattered by $H_{int}$.\n2. (Upper bound) No 3-element set $\\{a, b, c\\}$ with $a < b < c$ is shattered.\n\nTogether these establish $\\operatorname{VCdim}(H_{int}) = 2$.",
+    "text": "Interval classifiers on ℕ have VC dimension exactly 2. Verified in Lean 4 with four theorems establishing the exact VC dimension via lower and upper bounds.",
+    "proofStrategy": "1. **Lower bound (pair shattering):** For any $m < n$, we exhibit four intervals covering all four subsets of $\\{m,n\\}$: $\\{m,n\\}$ realized by $[m,n]$; $\\{m\\}$ by $[m,m]$; $\\{n\\}$ by $[n,n]$; $\\emptyset$ by $[n+1,n]$ (empty since $n+1 > n$).\n\n2. **Upper bound (convexity obstruction):** For any $a < b < c$, the labeling $T = \\{a,c\\}$ is unrealizable. Suppose interval $[l,r]$ realizes $T$: then $a \\in [l,r]$ forces $l \\leq a$, and $c \\in [l,r]$ forces $c \\leq r$. But $l \\leq a < b < c \\leq r$ implies $l \\leq b \\leq r$, so $b \\in [l,r]$, contradicting $b \\notin T$.",
+    "keyInsights": [
+      "Intervals have exactly 2 free parameters (left and right endpoints), matching the VC dimension 2. This is not a coincidence: for 'simple' hypothesis classes parameterized by d real numbers, VC dimension typically equals d (thresholds d=1, intervals d=2, rectangles d=4 = 2×2 endpoints, half-spaces d+1 for d dimensions).",
+      "The convexity obstruction is the core of the upper bound. An interval [l,r] is a convex set in ℕ (closed under elements between l and r). Any convex set cannot independently label three collinear points — it must include the middle if it includes the extremes. This is the discrete analogue of the continuous fact that a convex set in ℝ cannot 'skip' over an interior point.",
+      "The empty interval [n+1, n] is a crucial feature of the definition. By allowing b < a (resulting in the empty set), intervalClassifiers can realize the empty subset ∅ of any finite set, completing the shattering of 2-element sets. Without empty intervals, we could only shatter sets where ∅ can be realized differently.",
+      "Comparison with thresholds: thresholds have 1 parameter and VC dim 1; intervals have 2 parameters and VC dim 2. The extra parameter allows realizing all 4 labelings of 2 points (not just 2 as for thresholds), while the interval convexity still blocks the 8th impossible labeling (middle-excluded) for 3 points.",
+      "Sauer-Shelah at VC dim 2: intervals have growth function Π_{H_{int}}(n) ≤ C(n,0) + C(n,1) + C(n,2) = O(n²). The exact growth function is Π_{H_{int}}(n) = C(n+1,2) + 1 = n(n+1)/2 + 1 (counting pairs of thresholds plus the empty interval), achieving the Sauer-Shelah bound up to constants."
+    ],
+    "prerequisites": [
+      "VC dimension and shattering",
+      "Basic Finset operations in Mathlib",
+      "Threshold classifier result (pac-learning-bounds-oq-01)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions: Shatters and Interval Classifiers",
+      "startLine": 20,
+      "endLine": 33,
+      "summary": "Defines the standard shattering predicate and the interval hypothesis class on ℕ. Empty intervals (b < a) are included via the condition a ≤ x ∧ x ≤ b which is vacuously false when b < a.",
+      "mathContext": "H shatters S iff ∀ T ⊆ S, ∃ h ∈ H : h ∩ S = T. Interval class: { {x | a ≤ x ≤ b} : a, b ∈ ℕ }."
+    },
+    {
+      "id": "singleton-lower",
+      "title": "Singleton Shattering (VC dim ≥ 1)",
+      "startLine": 38,
+      "endLine": 60,
+      "summary": "Every singleton {a} is shattered: [a,a] includes a; [a+1,a] excludes a.",
+      "mathContext": "∀ a ∈ ℕ: H_{int} shatters {a}."
+    },
+    {
+      "id": "pair-lower",
+      "title": "Pair Shattering (VC dim ≥ 2)",
+      "startLine": 65,
+      "endLine": 108,
+      "summary": "Every 2-element set {m,n} with m < n is shattered. Four cases by membership in T: {m,n}→[m,n], {m}→[m,m], {n}→[n,n], ∅→[n+1,n].",
+      "mathContext": "∀ m < n: H_{int} shatters {m,n}."
+    },
+    {
+      "id": "triple-upper",
+      "title": "No Triple Shattered — Convexity Obstruction (VC dim ≤ 2)",
+      "startLine": 113,
+      "endLine": 145,
+      "summary": "For a < b < c, the labeling T = {a,c} is unrealizable by any interval. Any [l,r] with l ≤ a and c ≤ r satisfies l ≤ b ≤ r by transitivity, so b is always included.",
+      "mathContext": "∀ a < b < c: ¬H_{int} shatters {a,b,c}."
+    },
+    {
+      "id": "combined",
+      "title": "Combined Bound (VC dim = 2)",
+      "startLine": 147,
+      "endLine": 158,
+      "summary": "Combined theorem: VC dim of intervals on ℕ equals 2 — pairs shattered, no triple shattered.",
+      "mathContext": "VCdim(H_{int}) = 2."
+    }
+  ],
+  "conclusion": {
+    "summary": "Interval classifiers on ℕ have VC dimension exactly 2. The convexity obstruction (no 3 collinear points shattered) is the key insight distinguishing intervals from the 1-parameter threshold class.",
+    "implications": "With threshold (VC dim 1) and interval (VC dim 2) both verified, the natural next steps are: axis-aligned rectangles in ℝ² (VC dim 4), half-spaces in ℝᵈ (VC dim d+1), and convex bodies in ℝᵈ (infinite VC dim). Each entry in this hierarchy is both a concrete learning-theory result and a test of Lean's capacity for geometric reasoning.",
+    "openQuestions": [
+      "Compute VC dim of axis-aligned rectangles on ℕ² (expected: 4). Requires 2D interval reasoning and a convexity argument in two dimensions simultaneously.",
+      "Compute VC dim of half-spaces in ℝ² (expected: 3 = d+1 for d=2). Requires linear algebra and general position in Lean — a major infrastructure milestone for geometric learning theory.",
+      "Prove the exact growth function for intervals: Π_{H_{int}}(n) = n(n+1)/2 + 1. This is the exact count of distinct label patterns realizable by intervals on n points, tightly matching the Sauer-Shelah bound.",
+      "Formalize PAC sample complexity for intervals: O(1/ε) realizable, O(1/ε²) agnostic, with explicit ERM algorithm (smallest interval containing all positive examples).",
+      "Prove that the Littlestone dimension of interval classifiers on ℕ is also 2 (unlike thresholds where Ldim=∞ but VC dim=1). Intervals are particularly nice: both VC and Littlestone dimension are 2, making them PAC-learnable AND online-learnable with finite mistake bounds."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Vapnik, V. N.; Chervonenkis, A. Ya.",
+      "title": "On the uniform convergence of relative frequencies of events to their probabilities",
+      "year": "1971",
+      "venue": "Theory of Probability and Its Applications, 16(2), 264–280",
+      "note": "Original definition of VC dimension. Thresholds and intervals are the canonical worked examples."
+    },
+    {
+      "authors": "Shalev-Shwartz, Shai; Ben-David, Shai",
+      "title": "Understanding Machine Learning: From Theory to Algorithms",
+      "year": "2014",
+      "venue": "Cambridge University Press",
+      "note": "Chapter 6 explicitly computes VC dim of threshold, interval, and rectangular classifiers using the same shattering + obstruction template used here."
+    },
+    {
+      "authors": "Blumer, A.; Ehrenfeucht, A.; Haussler, D.; Warmuth, M. K.",
+      "title": "Learnability and the Vapnik-Chervonenkis dimension",
+      "year": "1989",
+      "venue": "Journal of the ACM, 36(4), 929–965",
+      "note": "Fundamental Theorem of Statistical Learning: PAC learnability ↔ finite VC dimension. VCdim(H_{int}) = 2 implies intervals are PAC-learnable with polynomial sample complexity."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "interval_vcdim_bounds",
+      "type": "core",
+      "description": "VC dimension of interval classifiers on ℕ equals 2: every 2-element set (m < n) is shattered, and no 3-element set (a < b < c) is shattered.",
+      "leanType": "(∀ m n : ℕ, m < n → Shatters intervalClassifiers {m, n}) ∧ (∀ a b c : ℕ, a < b → b < c → ¬ Shatters intervalClassifiers {a, b, c})"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "LearningTheory.VCDimension",
+    "lineCount": 158,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 2,
+    "path": "Proofs/PACLearningOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
