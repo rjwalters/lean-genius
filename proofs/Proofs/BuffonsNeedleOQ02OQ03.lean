@@ -244,12 +244,4 @@ theorem alpha_decreasing : alpha 2 > alpha 3 := by norm_num [alpha_two, alpha_th
 theorem cauchy_crofton_reduces_to_buffon :
     alpha 2 = 2 / π := rfl
 
-/-- **Summary**: The Cauchy-Crofton formula for arbitrary measures σ on S^{n-1}:
-    For a segment [A, B] of length L = |B - A|:
-      crossingIntegral σ A B = ∫_{S^{n-1}} |⟪u, B-A⟫| dσ(u)
-    The classical formula (O(n)-invariant σ) gives:
-      crossingIntegral σ A B = α_n × L
-    where α_n = α(n) depends only on the dimension. -/
-theorem cauchy_crofton_summary (n : ℕ) : True := trivial
-
 end CauchyCrofton

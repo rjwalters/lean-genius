@@ -66,10 +66,10 @@
     ],
     "dateAdded": "2026-05-03",
     "axiomCount": 2,
-    "lineCount": 255,
+    "lineCount": 247,
     "assumptions": "2 axioms: cauchy_crofton_fubini (Fubini-Tonelli exchange for the crossing double integral over S^{n-1} × ℝ); isotropy_yields_alpha (O(n)-invariant sphere measures yield α_n factor). No sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 13
+    "theoremCount": 12
   },
   "overview": {
     "historicalContext": "Buffon's needle problem (1777) asked for the probability that a needle of length L crosses one of the parallel lines spaced distance d apart on a floor, obtaining 2L/(πd) — the first formula in geometric probability involving π. Cauchy (1832) proved the related mean-width formula for convex bodies: the average projected length determines surface area. Crofton (1868) unified and vastly generalized both: for any rectifiable curve in the plane, the expected number of crossings with a random line (from the kinematic, O(2)-invariant measure) equals 2L/π regardless of the curve's shape. This 'noodle theorem' (Barbier–Crofton) depends only on length, not geometry. Crofton's original formula used the kinematic measure on lines in ℝ²; Blaschke (1935) and Santaló (1953, 1976) extended it to higher dimensions using the group-theoretic framework of kinematic formulas, culminating in Santaló's monograph 'Integral Geometry and Geometric Probability' (1976).\n\nThe general Cauchy-Crofton formula proved here covers arbitrary Borel measures σ on S^{n-1}: for a fixed direction u, the measure of offsets t where H(u,t) crosses [A,B] equals |⟪u, B-A⟫| — this is the computational core. Integrating over u with measure σ gives ∫|⟪u, B-A⟫| dσ(u). For the O(n)-invariant (uniform) sphere measure, rotational symmetry forces this integral to depend only on ‖B-A‖, yielding α_n × ‖B-A‖ with α_2 = 2/π and α_3 = 1/2. The factor α_n = E[|u₁|] for u uniform on S^{n-1} decreases with dimension: α_n → 0 as n → ∞ (since |u₁| concentrates near 0 in high dimension by measure concentration).\n\nIn Lean 4, this file proves the crossing-measure lemma directly from Real.volume_Icc and max_sub_min_eq_abs — two classical real-analysis facts. The Fubini exchange (swapping dt and dσ integration) and the isotropy reduction are axiomatized, representing the measure-theoretic infrastructure not yet fully formalized in Mathlib. This approach demonstrates that the computationally hard part of integral geometry (the crossing-measure formula) is accessible in Lean 4, while the integration-order-exchange issues (Fubini) remain to be formalized as Mathlib's measure theory library grows.",
@@ -135,8 +135,8 @@
       "id": "part-vi",
       "title": "Part VI: Classical Consistency",
       "startLine": 228,
-      "endLine": 255,
-      "summary": "Recovers 2D (Buffon) and 3D (noodle) crossing factors as definitional equalities. Proves alpha_decreasing (α₂ > α₃) by norm_num. Summary theorem ties the framework together.",
+      "endLine": 247,
+      "summary": "Recovers 2D (Buffon) and 3D (noodle) crossing factors as definitional equalities. Proves alpha_decreasing (α₂ > α₃) by norm_num.",
       "mathContext": "Classical specializations: $n=2$ gives $E[\\text{crossings}] = \\frac{2}{\\pi} \\cdot \\frac{L}{d}$; $n=3$ gives $E[\\text{crossings}] = \\frac{1}{2} \\cdot \\frac{L}{d}$."
     }
   ],
@@ -195,9 +195,9 @@
     "imports": ["Mathlib"],
     "opens": ["MeasureTheory", "Real", "Set", "Finset"],
     "namespace": "CauchyCrofton",
-    "lineCount": 255,
+    "lineCount": 247,
     "axiomCount": 2,
-    "theoremCount": 13,
+    "theoremCount": 12,
     "definitionCount": 4,
     "path": "Proofs/BuffonsNeedleOQ02OQ03.lean",
     "sorries": 0
