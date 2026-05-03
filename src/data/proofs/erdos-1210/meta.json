@@ -28,7 +28,7 @@
     "theoremCount": 11
   },
   "overview": {
-    "historicalContext": "Erdős conjectured that among all pairwise coprime subsets A of {1,...,n-1}, the set of primes below n maximizes the sum ∑_{a∈A} 1/(n-a). This is an extremal problem connecting the arithmetic of pairwise coprime sets to harmonic analysis. The primes are in a sense the 'densest' pairwise coprime set, and this conjecture makes that precise through a weighted harmonic measure.",
+    "historicalContext": "Erdős conjectured that among all pairwise coprime subsets A of {1,...,n-1}, the set of primes below n maximizes the sum ∑_{a∈A} 1/(n-a). This is an extremal problem connecting the arithmetic of pairwise coprime sets to harmonic analysis. The primes are in a sense the 'densest' pairwise coprime set, and this conjecture makes that precise through a weighted harmonic measure.\n\nThe weight 1/(n-a) is largest when a is closest to n, so the question asks which pairwise coprime set best occupies the 'high' positions in {1,...,n-1}. Primes have the key advantage that they are uniformly spread across all residue classes — by Dirichlet's theorem, each arithmetic progression with gcd(a,d)=1 contains infinitely many primes. The conjecture appears in the Erdős problems database (#1210) as an open problem in combinatorial number theory, accessible to state but apparently requiring deep results about prime distribution or multiplicative number theory to resolve.",
     "problemStatement": "Let A ⊆ {1,...,n-1} be pairwise coprime (gcd(a,b)=1 for distinct a,b∈A). Is ∑_{a∈A} 1/(n-a) ≤ ∑_{p prime, p<n} 1/(n-p)?",
     "text": "Among all pairwise coprime subsets of {1,...,n-1}, the primes below n maximize ∑_{a∈A} 1/(n-a). Open conjecture of Erdős.",
     "proofStrategy": "Define primesBelow, PairwiseCoprime, ValidSubset. Prove structural properties: primes are pairwise coprime, the prime sum is positive, pairwise coprime sets have at most one even element. State the main conjecture as an axiom. Derive consequences including bounds for singletons.",
@@ -70,12 +70,20 @@
       "mathContext": "$0 < \\sum_{p \\in \\text{primesBelow}(n)} \\frac{1}{n-p}$ for $n \\geq 3$."
     },
     {
-      "id": "conjecture",
-      "title": "Main Conjecture and Consequences",
+      "id": "conjecture-axiom",
+      "title": "Main Conjecture (Axiom)",
       "startLine": 131,
+      "endLine": 155,
+      "summary": "States erdos_1210 as an axiom: for all n and all pairwise coprime A ⊆ {1,...,n-1}, ∑_{a∈A} 1/(n-a) ≤ ∑_{p<n prime} 1/(n-p).",
+      "mathContext": "$\\forall n, \\forall A \\subseteq [1,n)$ pairwise coprime: $\\sum_{a\\in A} \\frac{1}{n-a} \\leq \\sum_{p < n, p\\text{ prime}} \\frac{1}{n-p}$. Stated as axiom — the open conjecture."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences of the Conjecture",
+      "startLine": 156,
       "endLine": 178,
-      "summary": "States erdos_1210 axiom and derives consequences for empty set, prime singletons, and arbitrary singletons.",
-      "mathContext": "$\\sum_{a\\in A} \\frac{1}{n-a} \\leq \\sum_{p \\in \\text{primesBelow}(n)} \\frac{1}{n-p}$ for all pairwise coprime $A \\subseteq [1,n)$."
+      "summary": "Derives bounds for empty set (sum=0≤prime sum), prime singletons (trivially satisfy the bound), and arbitrary singletons {k} (using the axiom with A={k}).",
+      "mathContext": "Empty set: $\\sum_{a \\in \\emptyset} \\frac{1}{n-a} = 0 \\leq \\text{prime sum}$. Singleton $\\{k\\}$: $\\frac{1}{n-k} \\leq \\text{prime sum}$ — immediate from axiom with $|A|=1$."
     }
   ],
   "conclusion": {
