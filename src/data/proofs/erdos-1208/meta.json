@@ -17,10 +17,10 @@
       "incidence-geometry"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 2,
-    "lineCount": 137,
-    "assumptions": "2 axioms: fd2_lower_bound (Spencer–Szemerédi–Trotter lower bound F₂(n) ≥ Ω(n^(1/3))), fd2_upper_bound (grid construction upper bound F₂(n) ≤ O(n^(1/2))). 1 sorry in distance_sidon_size_bound.",
+    "lineCount": 169,
+    "assumptions": "2 axioms: fd2_lower_bound (Spencer–Szemerédi–Trotter lower bound F₂(n) ≥ Ω(n^(1/3))), fd2_upper_bound (grid construction upper bound F₂(n) ≤ O(n^(1/2))).",
     "erdosNumber": 1208,
     "erdosUrl": "https://erdosproblems.com/1208",
     "erdosProblemStatus": "open",
@@ -91,23 +91,23 @@
       "id": "size-bound",
       "title": "Size Bound: k(k-1)/2 Distinct Distances Required",
       "startLine": 58,
-      "endLine": 78,
-      "summary": "States (with sorry) the key lemma: a distance-Sidon subset Q of size k uses at least k(k-1)/2 distinct distances. This is the combinatorial heart: C(k,2) pairs each need a unique distance.",
-      "mathContext": "The sorry reflects that proving `Q.card * (Q.card - 1) / 2 ≤ (Q ×ˢ Q).image (dist).card` requires counting theory for Finset images. The relevant Mathlib lemmas would be `Finset.card_image_le` and injectivity arguments; the full proof requires showing the image-of-pairs is injective under IsDistanceSidon."
+      "endLine": 109,
+      "summary": "Proves the key lemma: a distance-Sidon subset Q of size k uses at least k(k-1)/2 distinct distances. Uses fiber bound: each distance value appears for at most 2 ordered pairs (a,b) and (b,a) by IsDistanceSidon.",
+      "mathContext": "Proved via `Finset.card_offDiag` + `Finset.card_le_mul_card_image` (fiber bound ≤ 2) + `Finset.card_le_card` (offDiag image ⊆ Q×Q image). No sorry remains."
     },
     {
       "id": "axioms",
       "title": "Axioms: Lower and Upper Bounds for F₂(n)",
-      "startLine": 79,
-      "endLine": 124,
+      "startLine": 111,
+      "endLine": 148,
       "summary": "Axiomatizes the two key bounds for d=2: fd2_lower_bound (Spencer–Szemerédi–Trotter 1984: F₂(n) ≥ Ω(n^{1/3})) and fd2_upper_bound (grid construction: ∃ n-point sets where every distance-Sidon subset has size ≤ O(n^{1/2})).",
       "mathContext": "fd2_lower_bound axiom: `∃ C > 0, ∀ n, ∀ P: Finset ℝ², |P|=n → ∃ Q⊆P, IsDistanceSidon Q ∧ C·n^{1/3} ≤ |Q|`. fd2_upper_bound: `∃ C > 0, ∀ n, ∃ P, |P|=n ∧ ∀ Q⊆P, IsDistanceSidon Q → |Q| ≤ C·n^{1/2}`. Both use EuclideanSpace ℝ (Fin 2) for the Euclidean plane."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: F₂(n) ≥ Ω(n^{1/3})",
-      "startLine": 125,
-      "endLine": 137,
+      "startLine": 149,
+      "endLine": 169,
       "summary": "Proves erdos_1208 as a one-line derivation from fd2_lower_bound: every n-point planar set contains a distance-Sidon subset of size ≥ Ω(n^{1/3}). The #check lines verify all key declarations.",
       "mathContext": "`theorem erdos_1208 := fd2_lower_bound`: the main result is immediate from the axiom, confirming the lower bound direction F₂(n) ≥ Ω(n^{1/3}). The upper bound from fd2_upper_bound is stated separately, showing the open gap [1/3, 1/2]."
     }
@@ -143,11 +143,11 @@
       "description": "Erdős #1202 (Prime Sets with Quantitative Density Conditions) is in the same Erdős 1200s cluster. Both #1202 and #1208 formalize open/solved Erdős problems with quantitative lower bound structure, both using axioms to capture deep results (sieve theory for #1202, Szemerédi-Trotter incidence bounds for #1208). The 1200-numbered problems in Erdős's archive span analytic number theory and combinatorial geometry, reflecting his unified interest in threshold phenomena."
     }
   ],
-  "sorries": 1,
+  "sorries": 0,
   "leanFile": {
     "axiomCount": 2,
-    "lineCount": 137,
-    "sorries": 1,
+    "lineCount": 169,
+    "sorries": 0,
     "path": "Proofs/Erdos1208Problem.lean",
     "definitionCount": 1,
     "theoremCount": 4
