@@ -32,14 +32,15 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Jacobi's four-square theorem states r₄(n) = 8·Σ_{d|n, 4∤d} d. This counts all representations including signs and orderings. The distribution among 'types' (sorted absolute values) is captured by the symmetry group: 2^k sign changes (k = number of nonzero components) times permutation count. The maximum contribution per type is 2^4 × 4! / (multiplicities) ≤ 384 when all four components are distinct and nonzero.",
+    "historicalContext": "Jacobi's four-square theorem (1829) states r₄(n) = 8·Σ_{d|n, 4∤d} d, proved using Jacobi theta functions: r₄(n) is the n-th Fourier coefficient of θ(q)⁴. Lagrange (1770) proved existence; Euler first studied r₄. The '8' factor mystified mathematicians until the group-theoretic perspective: the signed permutation symmetry group acting on a 4-tuple has order 2^k·(4!/∏mᵢ!) by orbit-stabilizer, and the representation count for each type is exactly this orbit size. This file analyzes HOW the total r₄(n) = 8σ*(n) splits among types: contributions range from 8 (single nonzero entry, like (0,0,0,k)) to 384 (all distinct nonzero, like (1,2,3,4)), a 24:1 ratio matching |S₄| = 4!. The connection to modular forms lies deeper: r₄(n) is multiplicative (via θ⁴ being a weight-2 Eisenstein series), which Jacobi's formula makes explicit through σ*.",
     "problemStatement": "For each representation type (a₁ ≤ a₂ ≤ a₃ ≤ a₄) with a₁²+a₂²+a₃²+a₄²=n, compute its contribution to r₄(n) via sign changes and permutations. Verify: type (0,0,0,1) → 8, type (0,0,1,1) → 24, type (0,1,1,1) → 32, type (0,0,1,2) → 48, type (1,1,1,1) → 8.",
     "proofStrategy": "Define RepType n as a structure with sorted components. Define contribution = signFactor × permutations where signFactor = 2^(nonzeroCount) and permutations = 4!/∏(multiplicity of each distinct value). Verify concrete instances via native_decide. Prove bounds: contribution ≤ 384.",
     "keyInsights": [
       "**Symmetry groups**: Each type (a₁,...,a₄) has symmetry group of order 2^k × ∏|orb|, where k = nonzero components. Max: (1,2,3,4) → 2^4 × 4! = 384.",
       "**Type contributions**: (0,0,0,a): 8 (sign of a). (0,0,a,a): 24 (6 perms × 4 signs). (0,a,a,a): 32 (4 perms × 8 signs). (a,a,a,a): 8 (1 perm × 8 signs). (0,0,a,b): 48. (a,b,c,d) all distinct: 384.",
       "**Bound**: contribution(t) ≤ 384 for all types, with equality when all four components are distinct and nonzero.",
-      "**Completeness**: distribution_complete verifies the contribution formula for all small n."
+      "**Completeness**: distribution_complete_1 through _10 verifies r₄(n) for n=1..7,9,10 via type enumeration.",
+      "**Growth and trivial types**: Every perfect square k² has trivial type (0,0,0,k) contributing exactly 8. Since r₄(n) ~ (π²/2)n on average and each type contributes at most 384, the average number of representation types per n grows linearly — the 24:1 symmetry ratio (= |S₄|) measures how much symmetry collapses the count."
     ]
   },
   "sections": [
@@ -61,11 +62,19 @@
     },
     {
       "id": "distribution-complete",
-      "title": "Parts 4–5: Complete Distribution Verification",
-      "startLine": 266,
+      "title": "Parts 4–7: Complete Distribution Verification and Structural Bounds",
+      "startLine": 228,
+      "endLine": 293,
+      "summary": "Structural bounds: nonzeroCount ≤ 4, signFactor ≤ 16, permutations ≤ 24, contribution ≤ 384. Sharpness: type (1,2,3,4) achieves 384. n4_type_weights: 33%/66% split for n=4.",
+      "mathContext": "$\\text{contribution}(t) \\leq 24 \\times 16 = 384$, sharp at $(1,2,3,4)$. Proof: $\\text{Nat.mul\\_le\\_mul}$ on the two sub-bounds."
+    },
+    {
+      "id": "trivial-types-patterns",
+      "title": "Parts 8–10: Perfect Squares, Completeness, and S₄ Symmetry",
+      "startLine": 294,
       "endLine": 400,
-      "summary": "distribution_complete_1 through distribution_complete_10: verifies contribution formula for all types. Symmetry ratio: 384/16 = 24. Trivial type computations.",
-      "mathContext": "All contributions verified by native_decide against the RepType structure."
+      "summary": "trivial_type(k) = (0,0,0,k) for n=k² always contributes 8 (verified k=1..5). distribution_complete_1..10 aliases all results. symmetry_ratio = 384/16 = 24 = |S₄|. Growth r₄(n) ~ (π²/2)n implies average linear growth in type count.",
+      "mathContext": "Trivial type: $\\frac{4!}{3!1!} \\cdot 2^1 = 8$. Symmetry ratio: $384/16 = 24 = |S_4|$. Average types per $n$: $r_4(n)/(384) \\sim \\frac{\\pi^2 n}{768}$."
     }
   ],
   "conclusion": {
