@@ -68,6 +68,30 @@
     "prerequisites": ["volumeSum definition", "Cube.side positivity", "Finset membership"]
   },
   {
+    "id": "ann-strict-volume-bound",
+    "proofId": "dissection-of-cubes-oq-01-oq-03",
+    "range": { "startLine": 111, "endLine": 158 },
+    "type": "theorem",
+    "title": "Strict Volume Bound: Each Cube Has Volume < 1 When |D| ≥ 2",
+    "content": "`volumeSum_pos` establishes strict positivity of the volume sum whenever the dissection is nonempty: extract any cube `c` with `Finset.Nonempty`, note `c.side^3 > 0` via `pow_pos`, then apply `Finset.single_le_sum`. The main theorem `cube_volume_lt_one_of_card_ge_two` uses a contradiction argument: if some cube had volume exactly 1, it would exhaust the full volume budget. `Finset.one_lt_card` extracts a second distinct cube; `Finset.sum_le_sum_of_subset_of_nonneg` on the pair gives `c.side³ + c'.side³ ≤ 1`, forcing `c'.side³ ≤ 0`. But `Cube.side_pos` gives `c'.side > 0`, so `c'.side³ > 0` — contradiction.",
+    "mathContext": "When $|D| \\geq 2$ and $\\sum_{c \\in D} c.\\text{side}^3 = 1$, suppose $c_0.\\text{side}^3 = 1$. Pick $c' \\in D \\setminus \\{c_0\\}$. Then $\\{c_0, c'\\} \\subseteq D$ and $c_0.\\text{side}^3 + c'.\\text{side}^3 \\leq \\sum_{D} = 1$, so $c'.\\text{side}^3 \\leq 0$. Since $c'.\\text{side} > 0$, $c'.\\text{side}^3 > 0$: contradiction. Thus every cube satisfies $c.\\text{side}^3 < 1$ when $|D| \\geq 2$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.one_lt_card", "Finset.sum_le_sum_of_subset_of_nonneg", "Cube.side_pos", "cube_volume_le_one"],
+    "prerequisites": ["cube_volume_le_one", "volumeSum_nonneg", "VolumeDissection.volume_constraint"]
+  },
+  {
+    "id": "ann-collision-bridge",
+    "proofId": "dissection-of-cubes-oq-01-oq-03",
+    "range": { "startLine": 163, "endLine": 169 },
+    "type": "insight",
+    "title": "Bridging OQ-01 to Volume-Constrained Dissections",
+    "content": "`volume_dissection_has_collision` is a one-line proof that calls `every_dissection_has_collision` from OQ-01 on `vd.dissection`. This demonstrates that the Wiedijk #82 impossibility result — \"every cube dissection has a collision pair\" — applies directly to VolumeDissection. Since VolumeDissection projects to CubeDissection, any theorem proven for all CubeDissections holds for every VolumeDissection. The two axioms underlying the collision theorem (smallest-cube and long-chains) are inherited unchanged.",
+    "mathContext": "Formally: $\\text{VolumeDissection} \\xrightarrow{.\\text{dissection}} \\text{CubeDissection}$. The theorem $\\text{every\\_dissection\\_has\\_collision} : \\forall d : \\text{CubeDissection}, d.\\text{cubes.Nonempty} \\to \\exists c_1\\, c_2,\\, \\text{IsCollisionPair}\\, d\\, c_1\\, c_2$ applies to $\\text{vd.dissection}$ directly. Combined with the volume constraint: a collision pair with side $s$ must satisfy $2s^3 \\leq 1$ (proved in the next section), giving $s \\leq 2^{-1/3} \\approx 0.794$.",
+    "significance": "key",
+    "relatedConcepts": ["every_dissection_has_collision", "IsCollisionPair", "CubeDissection", "VolumeDissection"],
+    "prerequisites": ["DissectionOfCubesOQ01 (every_dissection_has_collision)", "VolumeDissection.dissection projection"]
+  },
+  {
     "id": "ann-collision-volume",
     "proofId": "dissection-of-cubes-oq-01-oq-03",
     "range": {
@@ -89,6 +113,18 @@
       "collision_volume_bound",
       "volumeSum"
     ]
+  },
+  {
+    "id": "ann-min-cubes-union",
+    "proofId": "dissection-of-cubes-oq-01-oq-03",
+    "range": { "startLine": 200, "endLine": 224 },
+    "type": "technique",
+    "title": "Structural Lemmas: Minimum Cube Count and Volume Additivity",
+    "content": "`min_cubes_for_collision` proves any dissection with a collision pair has ≥ 2 cubes: extract the pair (c₁, c₂), form the 2-element subset {c₁, c₂}, compute its cardinality via `Finset.card_insert_of_notMem` and `hne`, then apply `Finset.card_le_card` to bound the dissection's card from below. `volumeSum_union` proves additivity over disjoint unions by unfolding to `Finset.sum_union`. `volumeSum_eq` is a trivial `rfl` lemma providing an explicit rewrite rule to replace `volumeSum cubes` with `∑ c ∈ cubes, c.side ^ 3`.",
+    "mathContext": "For a collision pair $(c_1, c_2)$ with $c_1 \\neq c_2$ both in $D$: $|D| \\geq |\\{c_1, c_2\\}| = 2$. Volume additivity: for disjoint $A, B \\subseteq \\text{Cube}$, $V(A \\cup B) = V(A) + V(B)$. This mirrors the measure-theoretic fact that volume is additive on disjoint sets, here at the discrete level of Finsets.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.card_le_card", "Finset.sum_union", "IsCollisionPair", "volumeSum additivity"],
+    "prerequisites": ["IsCollisionPair definition", "Finset.card API", "volumeSum definition"]
   },
   {
     "id": "ann-satisfiability",

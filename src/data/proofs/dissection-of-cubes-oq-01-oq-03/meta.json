@@ -7,7 +7,7 @@
     "author": "Lean Genius Researcher",
     "sourceUrl": "https://en.wikipedia.org/wiki/Squaring_the_square",
     "date": "2026-05-03",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/DissectionOfCubesOQ01OQ03.lean",
     "tags": [
       "geometry",
@@ -17,8 +17,10 @@
       "open-problem",
       "wiedijk-100"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
+    "axiomCount": 2,
+    "assumptions": "2 inherited axioms from DissectionOfCubes.lean (via DissectionOfCubesOQ01): (1) smaller_cube_above_axiom — the smallest cube on the bottom face has smaller cubes directly above it; (2) all_different_implies_long_chains_axiom — a dissection with all-different sizes has arbitrarily long decreasing chains. These underlie volume_dissection_has_collision (theorem 8) via every_dissection_has_collision. The remaining 13 theorems are axiom-free.",
     "mathlibDependencies": [
       {
         "theorem": "Finset.single_le_sum",
@@ -54,7 +56,7 @@
     "theoremCount": 14
   },
   "overview": {
-    "historicalContext": "The impossibility of dissecting a cube into finitely many smaller cubes of distinct sizes (Dehn 1903, Sprott 1939, Littlewood 1953) is listed as Theorem #82 in Freek Wiedijk's 'Formalizing 100 Theorems'. Littlewood's proof uses infinite descent: if a perfect cube dissection existed, the bottom face would require a 'squared square' (which exists) but the columns of cubes above the smallest square would force a smaller perfect cube dissection, contradicting minimality. The volumetric condition ∑ s_i³ = 1 is an implicit step in this argument — it is the necessary condition that the volumes of the cubes in the base layer of any would-be dissection must sum to the face area. This OQ-01-OQ-03 entry formalizes that volumetric condition as an explicit Lean 4 structure, upgrading the placeholder `covers_unit_cube : True` to the actual geometric constraint.",
+    "historicalContext": "The problem of dissecting a cube into finitely many smaller cubes dates to the early twentieth century. In 1900, Max Dehn proved that polyhedral dissections must preserve a certain additive invariant (now called the Dehn invariant), but cube dissections are subject to far stronger constraints. The analogous two-dimensional question — squaring the square — was long believed impossible until 1939, when Roland Brooks, Cedric Smith, Arthur Stone, and William Tutte discovered a perfect squared square (a square tiled by smaller squares of all distinct sizes) using the theory of electrical networks. In three dimensions, the cube dissection problem turns out to be genuinely impossible: no cube can be dissected into finitely many smaller cubes of all distinct sizes. The standard proof uses an infinite descent argument formalized by J.E. Littlewood in 1953: the smallest cube resting on the bottom face must be surrounded by taller cubes whose tops form a smaller tiled square, which in turn contains a yet smaller cube resting on its face, and so on recursively without end. Freek Wiedijk listed this impossibility as theorem #82 in his '100 Theorems' formalization project. The volumetric condition ∑ side³ = 1 is a necessary ingredient of this argument — a tiling must have total volume equal to the unit cube. This OQ-01-OQ-03 entry formalizes that volumetric condition as an explicit Lean 4 structure, replacing the placeholder `covers_unit_cube : True` with the actual geometric constraint, and proves 14 downstream theorems.",
     "problemStatement": "**Sub-question**: Can the volume constraint ∑_{c ∈ d.cubes} c.side³ = 1 be formally incorporated into the cube dissection structure?\n\n**Answer**: YES. We define VolumeDissection as CubeDissection + volume_constraint and prove 14 theorems connecting volume bounds to collision structure. Each cube in such a dissection has volume ≤ 1 and side ≤ 1. Any collision pair satisfies 2s³ ≤ 1 (equivalently s³ ≤ 1/2). The constraint is satisfiable: one unit cube witnesses it.",
     "text": "Defines VolumeDissection — a CubeDissection enriched with the necessary condition that cube volumes sum to 1. Proves bounding theorems (side ≤ 1, volume < 1 for dissections with ≥ 2 cubes) and connects the volume constraint to the collision structure from OQ-01.",
     "proofStrategy": "**Structure extension**: VolumeDissection wraps CubeDissection and adds volume_constraint : volumeSum dissection.cubes = 1.\n\n**Volume bounds**: From ∑ side³ = 1 with each term ≥ 0, Finset.single_le_sum gives c.side³ ≤ 1. The cubic bound side ≤ 1 follows from nlinarith with degree-3 witnesses.\n\n**Collision bounds**: Collision pairs (c₁, c₂) with c₁.side = c₂.side contribute 2·s³ to the volume sum. Since the total is 1, we get 2s³ ≤ 1, i.e., s³ ≤ 1/2.\n\n**Satisfiability**: One cube with side=1 at the origin satisfies covers_unit_cube (trivial), is contained in [0,1]³, and has volumeSum = 1.",
@@ -107,7 +109,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Proves that the volume constraint ∑ c.side³ = 1 can be formally incorporated into cube dissections via VolumeDissection. The 14 theorems establish volume bounds, connect the constraint to collision pairs (2s³ ≤ 1), and confirm satisfiability. All proofs are axiom-free — they use only Mathlib and the base dissection axioms.",
+    "summary": "Proves that the volume constraint ∑ c.side³ = 1 can be formally incorporated into cube dissections via VolumeDissection. The 14 theorems establish volume bounds, connect the constraint to collision pairs (2s³ ≤ 1), and confirm satisfiability. Volume bound proofs (theorems 1–7, 9–14) are axiom-free; the collision bridge (theorem 8, volume_dissection_has_collision) inherits 2 axioms from the base DissectionOfCubes.lean via every_dissection_has_collision.",
     "implications": "**Strengthening the geometric model**: VolumeDissection provides a more faithful model of cube dissections than the base CubeDissection (which has covers_unit_cube : True). Any result proved for VolumeDissection automatically applies to genuine cube tilings.\n\n**Collision bound sharpening**: The volume constraint gives 2s³ ≤ 1 for any collision pair, i.e., s ≤ 2^{-1/3} ≈ 0.794. Combined with the side ≤ 1 bound, this provides quantitative constraints on how large any repeated-size cube can be.",
     "openQuestions": [
       "Can the lower bound on collision pairs be sharpened using the volume constraint? OQ-01 gives ≥2; does ∑side³=1 force more?",
