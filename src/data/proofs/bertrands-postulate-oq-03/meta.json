@@ -126,7 +126,7 @@
       "title": "PNT Asymptotic Density (Axioms)",
       "startLine": 149,
       "endLine": 173,
-      "summary": "pnt_ratio_form (π(x) ~ x/ln x) and pnt_medium_interval_density — PNT-derived results axiomatized since PNT is not in base Mathlib.",
+      "summary": "Part 4 is reserved for PNT-based density results; no axioms are currently declared here (the section comment exists but contains no Lean declarations).",
       "mathContext": "$\\pi(x) \\sim x/\\ln x$ (PNT, Hadamard and de la Vallée Poussin, 1896). For intervals: $\\pi(x+h) - \\pi(x) \\sim h/\\ln x$ when $h = x^\\theta$ with $\\theta > 1/2$ (conditional on RH) or $\\theta > 0.525$ (unconditional, BHP)."
     },
     {
@@ -271,12 +271,12 @@
         "description": "π(2^m) ≥ m — iterated Bertrand gives logarithmic lower bound on primes up to 2^m"
       },
       {
-        "name": "primeCounting_log_lower_bound",
+        "name": "bertrand_density_lower_bound",
         "type": "proved",
         "description": "π(n) ≥ log₂(n) for n ≥ 2 — logarithmic lower bound on the prime counting function"
       },
       {
-        "name": "primeGapConjecture_mono",
+        "name": "prime_gap_conjecture_monotone",
         "type": "proved",
         "description": "PrimeGapConjecture is monotone: θ₁ ≤ θ₂ and PrimeGapConjecture(θ₁) → PrimeGapConjecture(θ₂)"
       },
