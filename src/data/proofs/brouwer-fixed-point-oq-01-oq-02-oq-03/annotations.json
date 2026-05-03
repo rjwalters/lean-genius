@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "Completing the Chain: BFPT from Singular Homology, 0 New Axioms",
+    "content": "This file answers the open question at the end of `BrouwerFixedPointOQ01OQ02.lean`: can Brouwer's Fixed Point Theorem be derived from `no_retraction_singular_homology`? The answer is yes, with **0 new axioms**. The proof reuses `Brouwer.retraction_construction` (already in `BrouwerFixedPoint.lean`) and bridges the two `Retraction` types via `toSingularRetraction`. The key insight is that `Brouwer.Retraction n` and `BrouwerOQ01OQ02.Retraction n` are definitionally identical — both `ClosedBall n` and `UnitSphere n` unfold to the same Mathlib terms.",
+    "mathContext": "The full chain: `singular_homology_retraction_split` (axiom in OQ01OQ02) → `no_retraction_singular_homology` (theorem in OQ01OQ02) → `brouwer_fixed_point_via_singular_homology` (theorem, this file). This replaces the opaque `no_retraction_axiom` in `BrouwerFixedPoint.lean` with a derived theorem that makes the homological obstruction explicit.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Brouwer Fixed Point Theorem",
+      "No-Retraction Theorem",
+      "singular homology",
+      "definitional equality"
+    ],
+    "prerequisites": [
+      "BrouwerFixedPoint.lean",
+      "BrouwerFixedPointOQ01OQ02.lean",
+      "retraction_construction axiom"
+    ]
+  },
+  {
+    "id": "ann-singular-retraction",
+    "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-03",
+    "range": {
+      "startLine": 58,
+      "endLine": 95
+    },
+    "type": "definition",
+    "title": "toSingularRetraction: Definitional Bridge Between Retraction Types",
+    "content": "`toSingularRetraction` converts a `Brouwer.Retraction n` to a `BrouwerOQ01OQ02.Retraction n`. Both structures have four identical fields: `toFun`, `continuous'`, `maps_to_sphere`, and `fixes_sphere`. Since `Brouwer.ClosedBall n = Metric.closedBall 0 1 = BrouwerOQ01OQ02.ClosedBall n` (both are plain `def`s reducing to the same term), and similarly for `UnitSphere`, Lean's kernel accepts the field assignment by δ-reduction. The proof `toSingularRetraction_toFun` shows the function is preserved: `rfl`.",
+    "mathContext": "In Lean 4, definitional equality (δ-reduction) means that unfolding definitions gives identical terms. Since both `ClosedBall n` definitions are `Metric.closedBall 0 1`, the types of `maps_to_sphere` and `fixes_sphere` are the same after unfolding. No cast or coercion is needed — the field assignment type-checks directly. This is the key insight that makes the bridge logically trivial.",
+    "significance": "key",
+    "relatedConcepts": [
+      "definitional equality",
+      "delta-reduction",
+      "structure field assignment",
+      "namespace isolation"
+    ],
+    "prerequisites": [
+      "Brouwer.Retraction",
+      "BrouwerOQ01OQ02.Retraction",
+      "Lean 4 definitional equality"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-03",
+    "range": {
+      "startLine": 97,
+      "endLine": 126
+    },
+    "type": "theorem",
+    "title": "BFPT via Singular Homology: 4-Step Proof",
+    "content": "`brouwer_fixed_point_via_singular_homology` is a 4-step proof. Step 1: `by_contra h` introduces `h : ¬Brouwer.HasFixedPoint n f`. Step 2: `let r_brouwer := Brouwer.retraction_construction f h` applies the existing ray-construction axiom to get `r_brouwer : Brouwer.Retraction n`. Step 3: `let r_sh := toSingularRetraction r_brouwer` converts to `BrouwerOQ01OQ02.Retraction n`. Step 4: `exact BrouwerOQ01OQ02.no_retraction_singular_homology n hn ⟨r_sh, trivial⟩` applies the singular homology no-retraction theorem for the contradiction.",
+    "mathContext": "The proof is a textbook instance of the BFPT equivalence argument: no fixed point → retraction → contradiction with no-retraction theorem. The key is that both the construction of the retraction (`retraction_construction`) and the no-retraction result (`no_retraction_singular_homology`) are available from imported files. This file only provides the bridge (`toSingularRetraction`) and the assembly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "by_contra",
+      "retraction_construction",
+      "toSingularRetraction",
+      "no_retraction_singular_homology"
+    ],
+    "prerequisites": [
+      "Brouwer.retraction_construction",
+      "BrouwerOQ01OQ02.no_retraction_singular_homology",
+      "toSingularRetraction"
+    ]
+  },
+  {
+    "id": "ann-equivalence",
+    "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-03",
+    "range": {
+      "startLine": 128,
+      "endLine": 171
+    },
+    "type": "concept",
+    "title": "Completing the Equivalence: No-Retraction ↔ BFPT",
+    "content": "The three theorems in Part III complete the bidirectional equivalence. `no_retraction_from_bfp` shows BFPT → no-retraction (trivially — `no_retraction_singular_homology` is already proved independently). `singular_homology_implies_bfp` is an alias making the chain explicit. `no_retraction_axiom_iff_sh` is the key structural result: the two no-retraction statements (via `Brouwer.Retraction` and `BrouwerOQ01OQ02.Retraction`) are equivalent. The proof of the iff is by mutual conversion using field assignment in both directions.",
+    "mathContext": "`no_retraction_axiom_iff_sh` formalizes the observation that the two no-retraction theorems are logically equivalent: any proof of one gives a proof of the other via the type conversion. This is the 'completeness' of the equivalence chain — both the axiomatic and the homological approaches are interchangeable for the purposes of BFPT.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "equivalence of no-retraction forms",
+      "iff proof",
+      "structural equivalence",
+      "axiom replacement"
+    ],
+    "prerequisites": [
+      "no_retraction_singular_homology",
+      "no_retraction_axiom",
+      "toSingularRetraction"
+    ]
+  }
+]
