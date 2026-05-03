@@ -12,6 +12,18 @@
     "prerequisites": ["BrouwerFixedPoint.lean", "BrouwerFixedPointOQ01OQ02.lean", "EuclideanSpace in Lean 4"]
   },
   {
+    "id": "ann-namespace-setup",
+    "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-03",
+    "range": {"startLine": 57, "endLine": 63},
+    "type": "technique",
+    "title": "Namespace and Linter Setup: Suppressing an Intentional Unused Variable",
+    "content": "`set_option linter.unusedVariables false` is required because `no_retraction_from_bfp` (Part III) has a BFP hypothesis `(_ : ∀ f : Brouwer.SelfMap n, Brouwer.HasFixedPoint n f)` that is deliberately unused — the no-retraction conclusion follows directly from singular homology axioms without invoking BFP. The linter would flag this as a warning without the suppression. The namespace `BrouwerOQ01OQ02OQ03` scopes all five theorems in this file. `open Metric Set` brings `closedBall`, `sphere`, and set-builder notation into scope, matching the conventions of the parent files.",
+    "mathContext": "In Lean 4, `set_option linter.unusedVariables false` suppresses diagnostics for bound variables appearing in a type but not in the proof term. The pattern `fun (_ : P) => proof_not_using_P` is logically sound but the linter warns. This is intentional here: the theorem has the correct logical type (BFP → no-retraction) but the proof is a direct shortcut via the stronger singular homology result.",
+    "significance": "supporting",
+    "relatedConcepts": ["Lean 4 linter", "unusedVariables", "namespace scoping", "open declaration in Lean 4"],
+    "prerequisites": ["Lean 4 set_option", "namespace in Lean 4", "Metric namespace in Mathlib"]
+  },
+  {
     "id": "ann-type-conversion",
     "proofId": "brouwer-fixed-point-oq-01-oq-02-oq-03",
     "range": {"startLine": 64, "endLine": 96},
