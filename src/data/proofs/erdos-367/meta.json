@@ -60,9 +60,14 @@
       "twoFullPart_prime: proved B₂(p) = 1 via squarefreePart computation",
       "twoFullPart_prime_sq: proved B₂(p²) = p² via squarefreePart computation",
       "strong_bound_k1: proved strongBound(1) via twoFullPart_le and Finset.prod_singleton",
-      "strong_bound_k2: proved strongBound(2) via twoFullPart_le, mul_le_mul, and nlinarith"
+      "strong_bound_k2: proved strongBound(2) via twoFullPart_le, mul_le_mul, and nlinarith",
+      "strongBound_implies_weakBound: proved via Real.rpow_natCast + rpow_le_rpow_of_exponent_le",
+      "weak_bound_k1: Erdős conjecture confirmed for k=1 via strongBound_implies_weakBound",
+      "weak_bound_k2: Erdős conjecture confirmed for k=2 via strongBound_implies_weakBound"
     ],
     "axiomCount": 1,
+    "lineCount": 436,
+    "theoremCount": 16,
     "prerequisites": [
       "Prime factorization and p-adic valuations",
       "Squarefree numbers and powerful (k-full) numbers",
@@ -235,9 +240,9 @@
       "Finset"
     ],
     "namespace": "Erdos367",
-    "lineCount": 408,
+    "lineCount": 436,
     "axiomCount": 1,
-    "theoremCount": 13,
+    "theoremCount": 16,
     "definitionCount": 10,
     "path": "Proofs/Erdos367Problem.lean",
     "sorries": 0

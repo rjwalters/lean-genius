@@ -247,13 +247,56 @@ theorem pointwise_mul_indicator_tendsto [SigmaFinite μ] (f : α → ℝ) (a : �
     This is independent of the main theorem; it establishes the analytic foundation
     for the localization gluing in Step A. -/
 theorem lp_truncation_tendsto_zero [SigmaFinite μ]
-    (p : ℝ≥0∞) (_ : 1 ≤ p) (hptop : p ≠ ⊤)
+    (p : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ ⊤)
     {f : α → ℝ} (hf : MemLp f p μ) :
     Tendsto
       (fun n : ℕ =>
         eLpNorm (fun a => f a - f a * (spanningSets μ n).indicator (1 : α → ℝ) a) p μ)
       atTop (nhds 0) := by
-  sorry
+  have hp0 : p ≠ 0 := ne_of_gt (lt_of_lt_of_le zero_lt_one hp)
+  have hpr : 0 < p.toReal := ENNReal.toReal_pos hp0 hptop
+  have hinv : 0 < p.toReal⁻¹ := inv_pos.mpr hpr
+  -- Strategy: eLpNorm = (∫⁻ ‖gₙ‖^p)^(1/p); show ∫⁻ → 0 by DCT; take 1/p power.
+  simp_rw [eLpNorm_eq_lintegral_rpow_nnnorm hp0 hptop, one_div]
+  -- Step 1: ∫⁻ ‖gₙ‖^p dμ → 0 via dominated convergence
+  have key : Tendsto (fun n =>
+      ∫⁻ a, (‖f a - f a * (spanningSets μ n).indicator (1 : α → ℝ) a‖₊ : ℝ≥0∞) ^ p.toReal ∂μ)
+      atTop (nhds 0) := by
+    rw [show (0 : ℝ≥0∞) = ∫⁻ a : α, (0 : ℝ≥0∞) ∂μ from by simp]
+    apply tendsto_lintegral_of_dominated_convergence (bound := fun a => (‖f a‖₊ : ℝ≥0∞) ^ p.toReal)
+    · -- AEMeasurable: ‖gₙ‖^p is measurable
+      intro n
+      exact ((hf.aestronglyMeasurable.sub
+        (hf.aestronglyMeasurable.mul
+          (measurable_const.indicator (measurableSet_spanningSets μ n) |>.aestronglyMeasurable))
+        ).enorm.pow_const p.toReal)
+    · -- Domination: |gₙ(a)|^p ≤ |f(a)|^p
+      intro n
+      filter_upwards [] with a
+      apply ENNReal.rpow_le_rpow _ (le_of_lt hpr)
+      simp only [ENNReal.coe_le_coe, Set.indicator_apply]
+      by_cases h : a ∈ spanningSets μ n <;> simp [h]
+    · -- ∫⁻ ‖f‖^p dμ < ∞
+      rw [← eLpNorm_eq_lintegral_rpow_nnnorm hp0 hptop]
+      exact hf.eLpNorm_lt_top.ne
+    · -- Pointwise a.e.: ‖gₙ(a)‖^p → 0
+      filter_upwards [] with a
+      have h1 : Tendsto (fun n => f a - f a * (spanningSets μ n).indicator (1 : α → ℝ) a)
+          atTop (nhds 0) := by
+        have h := (pointwise_mul_indicator_tendsto f a).const_sub (f a)
+        simpa only [sub_self] using h
+      have h2 : Tendsto (fun n => (‖f a - f a * (spanningSets μ n).indicator (1 : α → ℝ) a‖₊
+          : ℝ≥0∞)) atTop (nhds 0) := by
+        have := h1.nnnorm; simp only [nnnorm_zero] at this; exact_mod_cast this
+      have h3 : Tendsto (fun n => (‖f a - f a * (spanningSets μ n).indicator (1 : α → ℝ) a‖₊
+          : ℝ≥0∞) ^ p.toReal) atTop (nhds ((0 : ℝ≥0∞) ^ p.toReal)) :=
+        (ENNReal.continuousAt_rpow_const (Or.inl (le_of_lt hpr))).tendsto.comp h2
+      simpa [ENNReal.zero_rpow_of_pos hpr] using h3
+  -- Step 2: (xₙ)^(1/p) → 0 from xₙ → 0
+  have h4 : Tendsto (fun n => (∫⁻ a, (‖f a - f a * (spanningSets μ n).indicator (1 : α → ℝ) a‖₊
+      : ℝ≥0∞) ^ p.toReal ∂μ) ^ p.toReal⁻¹) atTop (nhds ((0 : ℝ≥0∞) ^ p.toReal⁻¹)) :=
+    (ENNReal.continuousAt_rpow_const (Or.inl hinv.le)).tendsto.comp key
+  simpa [ENNReal.zero_rpow_of_pos hinv] using h4
 
 -- ============================================================================
 -- § 5. Localization step (Step A — HARD sorry)
