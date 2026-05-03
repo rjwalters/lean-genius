@@ -79,7 +79,34 @@
     "lineCount": 152
   },
   "sorries": 0,
-  "overview": "The constructibility hierarchy from the existing gallery places compass-and-straightedge, marked ruler (= 1-fold origami), and multi-fold origami at progressively more powerful levels. This entry proves the marked-ruler/multi-fold gap is strict by finding concrete witnesses.\n\nThe algebraic key: an n-gon is marked-ruler-constructible iff φ(n) | 2^a·3^b for some a, b (IsTwoThreeNumber). It is k-fold origami constructible iff φ(n) is p_{k+1}-smooth (IsKFoldConstructible). Whenever φ(n) has a prime factor q > 3, the n-gon is NOT marked-ruler-constructible but IS k-fold constructible for appropriate k.\n\n**11-gon**: φ(11) = 10 = 2·5. The factor 5 > 3 blocks neusis. But 5 ≤ 5 = p_2, so it IS 2-fold constructible.\n\n**23-gon**: φ(23) = 22 = 2·11. The factor 11 > 3 blocks neusis. But 11 ≤ 11 = p_4, so it IS 4-fold constructible.",
+  "overview": {
+    "historicalContext": "The constructibility hierarchy for regular polygons has been progressively refined since Gauss (1796). The Gauss-Wantzel theorem (1837) characterizes compass-and-straightedge constructibility: an n-gon is constructible iff φ(n) = 2^k. Neusis (marked-ruler) construction, studied since antiquity (Archimedes trisection, Diocles cissoid), allows the Pierpont primes: n-gons with φ(n) | 2^a·3^b. The identification of single-fold origami (Huzita-Hatori axiom O6) with neusis was established by Alperin and Lang (2006). Multi-fold origami extends this further: k-fold origami with the p_{k+1}-smooth degree criterion was studied by Huzita, Alperin, and others in the 1980s–2000s. The strict gap between neusis and 2-fold origami, witnessed by the 11-gon (φ(11) = 10 = 2·5), is a concrete and computable consequence of this hierarchy.",
+    "problemStatement": "Which regular n-gons are constructible with 2-fold (or k-fold) origami but NOT with a marked ruler (neusis)? This file exhibits explicit witnesses: the regular 11-gon (2-fold constructible, not neusis-constructible) and the regular 23-gon (4-fold constructible, not neusis-constructible). The key criterion: if φ(n) has a prime factor q > 3, the n-gon is blocked for neusis but constructible at fold level k whenever q ≤ foldPrimeBound(k) = pₖ.",
+    "proofStrategy": "Three-step strategy for each witness: (1) Compute φ(n) explicitly via decide. (2) Not-neusis: apply not_twoThree_of_large_prime_dvd with q = the offending prime (q=5 for 11-gon, q=11 for 23-gon), which unfolds IsTwoThreeNumber, gets q | 2^a·3^b via dvd_trans, then derives q ≤ 2 or q ≤ 3 via Prime.dvd_of_dvd_pow + Nat.le_of_dvd, contradiction with q > 3. (3) K-fold constructible: show φ(n) is pₖ-smooth by factorizing and case-splitting. For the main theorem multi_fold_strictly_stronger_than_neusis, the 11-gon is the explicit existential witness. For exists_ngon_at_each_level, constructible_mono propagates 2-fold to all higher levels by induction on k.",
+    "keyInsights": [
+      "not_twoThree_of_large_prime_dvd provides a universal obstruction template: a prime q > 3 dividing φ(n) blocks neusis constructibility of any n-gon. The proof is a two-branch contradiction via Prime.dvd_of_dvd_pow + Nat.le_of_dvd.",
+      "The 11-gon is the minimal prime witness for the neusis/2-fold gap: φ(11) = 10 = 2·5. Among primes p, φ(p) = p-1; the smallest p with p-1 being 5-smooth but not 3-smooth is p=11 (since φ(7)=6=2·3 is 3-smooth; φ(11)=10=2·5 is not).",
+      "constructible_mono (IsKFoldConstructible d k → IsKFoldConstructible d (k+1)) is the key monotonicity property: since foldPrimeBound is the k-th prime (increasing), p_k-smooth implies p_{k+1}-smooth. This lets the 11-gon witness all levels k ≥ 2 via induction.",
+      "The Alperin-Lang 2006 equivalence (single-fold origami = neusis = marked ruler) means IsTwoThreeNumber captures three distinct classical tools simultaneously, so every non-neusis result applies to all three.",
+      "Lean proof pattern: totient_11_eq and totient_23_eq are proved by decide (kernel computation), then ▸ rewrites goals from φ(11) = 10 to the numerical case. The not_twoThree witness uses rintro ⟨-, a, b, hdvd⟩ to destructure IsTwoThreeNumber in one step."
+    ],
+    "prerequisites": [
+      "Euler totient function: φ(p) = p-1 for prime p",
+      "IsTwoThreeNumber from AngleTrisectionOQ04: d | 2^a·3^b",
+      "IsKFoldConstructible from AngleTrisectionOQ05OQ01: φ(n) is p_{k+1}-smooth",
+      "Nat.Prime.dvd_of_dvd_pow: prime q | n^k → q | n",
+      "constructible_mono: k-fold → (k+1)-fold constructible"
+    ]
+  },
+  "conclusion": {
+    "summary": "The regular 11-gon (φ(11) = 10 = 2·5) and 23-gon (φ(23) = 22 = 2·11) are proved to be constructible by multi-fold origami but not by a marked ruler. The general criterion not_twoThree_of_large_prime_dvd provides a universal obstruction template. The main theorem multi_fold_strictly_stronger_than_neusis exhibits the strict gap; exists_ngon_at_each_level extends it to all fold levels k ≥ 2 via monotonicity. 11 theorems, 0 sorries, 0 axioms.",
+    "implications": "This formalization establishes machine-verified witnesses for the strict inclusion in the constructibility hierarchy: compass ⊊ neusis ⊊ 2-fold origami. Combined with the Alperin-Lang equivalence, it shows that multi-fold origami (even at the 2-fold level) transcends all marked-ruler constructions. The proof framework also handles any prime n-gon: compute φ(n) = n-1, identify the largest prime factor q, and the fold level is min{k | q ≤ pₖ}.",
+    "openQuestions": [
+      "Characterize the minimal fold level for each prime n-gon as a function of the largest prime factor of φ(n) = n-1.",
+      "Is the k-fold = p_{k+1}-smooth correspondence provable from the Huzita-Hatori axioms for all k ≥ 3? (Known for k=1,2; open for k ≥ 3.)",
+      "Formalize the Alperin-Lang 2006 theorem directly: single-fold origami = neusis = IsTwoThreeNumber."
+    ]
+  },
   "openQuestions": [
     {
       "id": "oq-01",
@@ -99,25 +126,29 @@
       "title": "General Non-Neusis Criterion",
       "startLine": 48,
       "endLine": 62,
-      "description": "The general lemma: if prime q > 3 divides d, then d ∉ IsTwoThreeNumber. Proof by prime divisibility and the impossibility of 5 | 2 or 5 | 3."
+      "description": "The general lemma: if prime q > 3 divides d, then d ∉ IsTwoThreeNumber. Proof by prime divisibility and the impossibility of 5 | 2 or 5 | 3.",
+      "mathContext": "q > 3, q \\text{ prime}, q \\mid d \\implies d \\nmid 2^a \\cdot 3^b \\text{ for any } a, b. \\quad \\text{Via: } q \\mid d \\mid 2^a3^b \\implies q \\mid 2 \\text{ or } q \\mid 3 \\implies q \\leq 3, \\text{ contradiction.}"
     },
     {
       "title": "The Regular 11-Gon",
       "startLine": 64,
       "endLine": 80,
-      "description": "φ(11) = 10 = 2·5. The prime factor 5 > 3 blocks neusis. Since 10 = 2·5 is 5-smooth and foldPrimeBound 2 = 5, the 11-gon is 2-fold origami constructible."
+      "description": "φ(11) = 10 = 2·5. The prime factor 5 > 3 blocks neusis. Since 10 = 2·5 is 5-smooth and foldPrimeBound 2 = 5, the 11-gon is 2-fold origami constructible.",
+      "mathContext": "\\varphi(11) = 10 = 2 \\cdot 5. \\quad 5 > 3 \\implies \\text{not neusis}. \\quad \\text{foldPrimeBound}(2) = 5 \\text{ and } 5 \\mid 10 \\implies \\text{IsKFoldConstructible}(10, 2)."
     },
     {
       "title": "The Regular 23-Gon",
       "startLine": 82,
       "endLine": 103,
-      "description": "φ(23) = 22 = 2·11. The prime factor 11 > 3 blocks neusis. Since 22 = 2·11 is 11-smooth and foldPrimeBound 4 = 11, the 23-gon is 4-fold origami constructible."
+      "description": "φ(23) = 22 = 2·11. The prime factor 11 > 3 blocks neusis. Since 22 = 2·11 is 11-smooth and foldPrimeBound 4 = 11, the 23-gon is 4-fold origami constructible.",
+      "mathContext": "\\varphi(23) = 22 = 2 \\cdot 11. \\quad 11 > 3 \\implies \\text{not neusis}. \\quad \\text{foldPrimeBound}(4) = 11 \\text{ and all prime factors of } 22 \\leq 11 \\implies \\text{IsKFoldConstructible}(22, 4)."
     },
     {
       "title": "Main Theorem and Infinite Family",
       "startLine": 105,
       "endLine": 140,
-      "description": "multi_fold_strictly_stronger_than_neusis asserts the strict gap; exists_ngon_at_each_level shows that for every fold level k ≥ 2, some n-gon requires that level but not marked ruler."
+      "description": "multi_fold_strictly_stronger_than_neusis asserts the strict gap; exists_ngon_at_each_level shows that for every fold level k ≥ 2, some n-gon requires that level but not marked ruler.",
+      "mathContext": "\\exists n \\geq 3: \\text{IsKFoldConstructible}(\\varphi(n), k) \\wedge \\neg\\text{IsTwoThreeNumber}(\\varphi(n)). \\quad \\text{Witness: } n = 11 \\text{ for all } k \\geq 2 \\text{ (by constructible\\_mono induction).}"
     }
   ]
 }
