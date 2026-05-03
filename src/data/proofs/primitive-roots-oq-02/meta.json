@@ -64,6 +64,8 @@
     "text": "The prime factor testing criterion formalizes a key observation about cyclic groups: an element g has order exactly n iff g^n = 1 AND g^(n/q) ≠ 1 for every prime q dividing n. The proof uses the fundamental divisibility structure of cyclic groups: every proper divisor d of n (with d ∣ n) must divide n/q for some prime q ∣ n, so testing n/q for primes q covers all cases.\n\nFor primitive roots mod p: n = p-1, and Fermat's little theorem gives g^(p-1) = 1 automatically. So only the 'not too small order' condition needs to be checked, and the prime factor test does exactly that.",
     "proofStrategy": "**Three-step structure:**\n\n1. **General lemma** (`orderOf_eq_of_prime_factor_test`): For any finite group G and g ∈ G, if g^n = 1 and g^(n/q) ≠ 1 for all primes q | n, then orderOf g = n. Proof: show n | orderOf g. If orderOf g < n, let q = minFac(n/orderOf g); then orderOf g | n/q, so g^(n/q) = 1, contradiction.\n\n2. **Primitive root application** (`isGenerator_iff_prime_factor_test`): Specialize to G = (ZMod p)ˣ, n = p-1. Forward direction: if orderOf g = p-1 but g^((p-1)/q) = 1, then orderOf g ≤ (p-1)/q < p-1, contradiction. Backward direction: apply the general lemma with Fermat's little theorem providing g^(p-1) = 1.\n\n3. **primeFactors form** (`isGenerator_iff_primeFactors_test`): Restate using Nat.primeFactors, which is the computable set of prime divisors.",
     "keyInsights": [
+      "The Diffie-Hellman key exchange (1976) depends on this testing criterion for parameter generation: Alice and Bob need a generator $g$ of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, verified efficiently by the prime factor test. Security rests on the discrete logarithm problem — recovering $k$ from $g^k \\bmod p$ — which has no known polynomial-time algorithm.",
+      "Pohlig-Hellman reduction (1978): if $p-1 = \\prod q_i^{e_i}$ factors into small primes ('$B$-smooth'), discrete logs can be computed in time $O(\\sum e_i(\\log p + \\sqrt{q_i}))$ via CRT decomposition. This is why cryptographic primes use $p = 2q+1$ with $q$ prime ('safe primes'): $p-1 = 2q$ has only large prime factors, defeating Pohlig-Hellman.",
       "The key insight: every proper divisor d of n (with d < n, d | n) divides n/q for SOME prime q | n. Proof: n/d > 1 has a prime factor q; then d | n/q. This means the prime factor test at n/q catches ALL elements with order < n.",
       "Fermat's little theorem gives g^(p-1) = 1 for free, reducing the test to only the 'order is not smaller than p-1' condition.",
       "The number of distinct prime factors of p-1 is O(log(p-1)) = O(log p), so only O(log p) modular exponentiations are needed per candidate.",
@@ -128,6 +130,21 @@
     ]
   },
   "crossReferences": [
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem (subgroup order divides group order) guarantees that every element of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ satisfies $g^{p-1} = 1$ — this is Fermat's little theorem and the starting point of the testing criterion. Without Lagrange, the prime factor test's base case ($g^{p-1} = 1$) would need a separate proof."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "The number of primitive roots mod $p$ is exactly $\\varphi(p-1)$ — the Euler totient of $p-1$. The density $\\varphi(p-1)/(p-1)$ governs how quickly random search finds a generator; the Mertens-type bound $\\varphi(n)/n \\geq C/\\log\\log n$ implies expected $O(\\log\\log p)$ trials."
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Primitive roots underpin the Legendre symbol: if $g$ is a generator of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ and $a = g^k$, then $(a/p) = 1$ iff $k$ is even — this is Euler's criterion $(a/p) = a^{(p-1)/2}$ translated into the cyclic group language. The prime factor testing criterion here gives an efficient way to find the $g$ that makes this characterization effective."
+    },
     {
       "targetId": "primitive-roots",
       "relationship": "extends",
