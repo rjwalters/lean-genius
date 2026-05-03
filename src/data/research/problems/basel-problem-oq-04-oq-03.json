@@ -1,8 +1,8 @@
 {
   "slug": "basel-problem-oq-04-oq-03",
   "title": "Cesàro Theorem: Density of Coprime Pairs equals 6/π²",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -39,24 +39,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (1 axiom): moebius_dirichlet_series_at_two proved via LSeries_zeta_mul_Lseries_moebius. Only coprime_pair_density_limit remains (dominated convergence).",
+    "progressSummary": "COMPLETE: 0 axioms, 0 sorries. All three steps proved in 3 sessions (2026-04-26 to 2026-05-03).",
     "builtItems": [
-      "countCoprimePairs_moebius: BaselProblemOQ04OQ03.lean (finite Fubini over Möbius)",
-      "cesaro_coprime_density: main theorem via 2 axioms",
-      "Proved moebius_dirichlet_series_at_two in BaselProblemOQ04OQ03.lean:249-295 (axiom eliminated)"
+      "countCoprimePairs_moebius: BaselProblemOQ04OQ03.lean (finite Fubini over Möbius) — Session 1",
+      "cesaro_coprime_density: main theorem, axiom-free — Session 3",
+      "moebius_dirichlet_series_at_two proved in BaselProblemOQ04OQ03.lean:249-295 — Session 2",
+      "nat_div_div_tendsto: private lemma proving ⌊N/d⌋/N → 1/d via ε-N analysis — Session 3",
+      "coprime_pair_density_limit proved via Tannery dominated convergence — Session 3"
     ],
     "insights": [
       "Finite Fubini approach works: swap sums over divisors and pairs to get Möbius decomposition",
-      "Two axioms bottleneck: (1) HasSum of Möbius Dirichlet series, (2) density limit itself",
-      "moebius_dirichlet_series_at_two needs Euler product identity + convergence - deep analytic NT",
-      "moebius_dirichlet_series_at_two proved: L(ζ,2)*L(μ,2)=1 + riemannZeta_two + Complex.hasSum_ofReal → HasSum μ(d)/d² = 6/π²"
+      "moebius_dirichlet_series_at_two proved: L(ζ,2)*L(μ,2)=1 + riemannZeta_two + Complex.hasSum_ofReal → HasSum μ(d)/d² = 6/π²",
+      "Tannery's dominated convergence (Mathlib.Analysis.Normed.Group.Tannery) directly applies: bound=1/d², summable=hasSum_zeta_two",
+      "Key: d>N ⟹ ⌊N/d⌋=0 so tail vanishes, reducing tsum to finite Icc 1 N sum for N≥1",
+      "abs_moebius_le_one from Mathlib gives |μ(d)|≤1, combined with ⌊N/d⌋/N≤1/d for domination bound"
     ],
-    "mathlibGaps": [
-      "coprime_pair_density_limit: dominated convergence for series via tsum/tendsto machinery"
-    ],
-    "nextSteps": [
-      "Eliminate coprime_pair_density_limit: dominated convergence with dominator 1/d², Σ 1/d² < ∞ by hasSum_zeta_two, |μ(d)/d²| ≤ 1/d²"
-    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
     "markdown": "# Knowledge Base: basel-problem-oq-04-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -176,9 +175,9 @@
     {
       "path": "Proofs/BaselProblemOQ04OQ03.lean",
       "filename": "BaselProblemOQ04OQ03.lean",
-      "lineCount": 413,
-      "theoremCount": 21,
-      "axiomCount": 2,
+      "lineCount": 558,
+      "theoremCount": 23,
+      "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
@@ -196,5 +195,5 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ05.lean"
     }
   ],
-  "lastUpdate": "2026-05-03T12:00:00.000Z"
+  "lastUpdate": "2026-05-03T22:00:00.000Z"
 }

@@ -6,8 +6,8 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-26",
-    "status": "axiomatized",
-    "note": "axiom count reduced 2→1: moebius_dirichlet_series_at_two proved via LSeries_zeta_mul_Lseries_moebius (2026-05-03)",
+    "status": "verified",
+    "note": "all axioms eliminated (2026-05-03): moebius_dirichlet_series_at_two proved via LSeries_zeta_mul_Lseries_moebius; coprime_pair_density_limit proved via Tannery dominated convergence",
     "proofRepoPath": "Proofs/BaselProblemOQ04OQ03.lean",
     "tags": [
       "number-theory",
@@ -18,7 +18,7 @@
       "coprimality",
       "basel-problem"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "dateAdded": "2026-04-26",
     "mathlibDependencies": [
@@ -47,14 +47,16 @@
       "Möbius decomposition: countCoprimePairs(N) = Σ_{d≤N} μ(d)⌊N/d⌋² (combinatorial identity via Möbius inversion)",
       "coprime_iff_moebius_sum: 1_{gcd(m,n)=1} = Σ_{d|gcd(m,n)} μ(d) (coprimality detector)",
       "card_pairs_divisible: |{(m,n)∈[N]² : d|m, d|n}| = ⌊N/d⌋² (counting lemma)",
-      "moebius_dirichlet_series_at_two: HasSum axiom for Σ μ(d)/d² = 6/π²",
+      "moebius_dirichlet_series_at_two: proved HasSum for Σ μ(d)/d² = 6/π² via LSeries_zeta_mul_Lseries_moebius and riemannZeta_two",
+      "nat_div_div_tendsto: proved ⌊N/d⌋/N → 1/d via explicit ε-N argument using N%d < d",
+      "coprime_pair_density_limit: proved density limit via Tannery dominated convergence with bound 1/d²",
       "Numerical verification for N=1,2,3,4,5,10 via native_decide",
       "Density bounds: 3/8 < 6/π² < 2/3 (from π > 3 and π < 4)"
     ],
-    "axiomCount": 1,
-    "lineCount": 412,
-    "assumptions": "1 axiom: coprime_pair_density_limit — the density limit theorem using dominated convergence with dominator 1/d² (Σ μ(d)/d²=6/π² is now proved via L-series).",
-    "theoremCount": 21
+    "axiomCount": 0,
+    "lineCount": 558,
+    "assumptions": "No axioms. Proof complete: Möbius decomposition + Dirichlet series L(μ,2)=6/π² (via LSeries identity) + Tannery dominated convergence for density limit.",
+    "theoremCount": 22
   },
   "overview": {
     "historicalContext": "Ernesto Cesàro (1885) first explicitly stated that the probability that two randomly chosen positive integers are coprime equals 6/π² = 1/ζ(2) ≈ 0.6079. The result connects three branches of mathematics: combinatorics (coprimality, Möbius function), analysis (convergent series, Basel problem), and probability (natural density).\n\nThe mathematical insight is elegant: for each prime p, the probability that p divides both m and n is 1/p², so the probability that p does NOT divide their gcd is (1 - 1/p²). By the Chinese Remainder Theorem, coprimality with respect to different primes is independent, so the probability that gcd(m,n)=1 is ∏_p (1 - 1/p²) = 1/ζ(2) = 6/π².\n\nThis connects to the Basel problem (Euler, 1734): ∑_{n=1}^∞ 1/n² = π²/6, making the density the reciprocal 6/π². The Möbius function μ(n) provides the formal proof tool: the identity 1_{n=1} = Σ_{d|n} μ(d) converts coprimality detection into a finite sum, enabling the counting argument.\n\nThe result was generalized in the 20th century: Bergelson and Richter (2017) showed that for non-integer α > 0, the density of {n : gcd(n, ⌊n^α⌋) = 1} is also 6/π² (Erdős #1149 in our gallery).",
@@ -149,11 +151,10 @@
     }
   ],
   "conclusion": {
-    "summary": "A formal proof that the natural density of coprime pairs equals 6/π². The Möbius decomposition identity is established combinatorially; the density limit is axiomatized with 2 axioms covering the Dirichlet series and dominated convergence. Small cases verified by computation.",
+    "summary": "A complete formal proof that the natural density of coprime pairs equals 6/π², with 0 axioms and 0 sorries. The Möbius decomposition identity is established combinatorially; the Dirichlet series Σμ(d)/d²=6/π² is proved via L-series product L(μ,s)·ζ(s)=1; and the density limit uses Tannery's theorem with the Basel sum as dominator.",
     "openQuestions": [
-      "Can the dominated convergence argument for coprime_pair_density_limit be formalized using Mathlib tendsto_tsum or measure theory on ℕ?",
-      "Can the finite sum exchange sorry in countCoprimePairs_moebius be proved using Finset.sum_comm in Lean 4? (Already proved!)",
-      "Can the dominated convergence argument be formalized using Mathlib MeasureTheory.integral_dominated_convergence applied to counting measure on ℕ?"
+      "What is the rate of convergence: |countCoprimePairs(N)/N² - 6/π²| = O(log N / N)?",
+      "Can the proof technique generalize to the joint density of k-tuples of pairwise coprime integers?"
     ],
     "implications": "This result is the probabilistic heart of the Basel problem: the density 6/π² = 1/ζ(2) shows that the Basel series sum (π²/6) directly controls the probability of coprimality. It generalizes to all number fields and connects to Dirichlet L-functions."
   },
@@ -190,6 +191,7 @@
       "Mathlib.Data.Nat.GCD.Basic",
       "Mathlib.Topology.Algebra.InfiniteSum.Basic",
       "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Analysis.Normed.Group.Tannery",
       "Mathlib.Tactic"
     ],
     "opens": [
@@ -201,9 +203,9 @@
       "ArithmeticFunction"
     ],
     "namespace": "BaselProblemOQ04OQ03",
-    "lineCount": 470,
-    "axiomCount": 1,
-    "theoremCount": 22,
+    "lineCount": 558,
+    "axiomCount": 0,
+    "theoremCount": 23,
     "definitionCount": 1,
     "sorries": 0,
     "path": "Proofs/BaselProblemOQ04OQ03.lean"
