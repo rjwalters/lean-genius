@@ -174,14 +174,56 @@ private lemma isConstructible_sup_degree (α : ℂ) (h : IsConstructible α) :
         rw [← isIntegral_algebraMap_iff (algebraMap ↥K_aβ ℂ).injective]; exact hβ_int_ℚ
       have hβ_int_Ka : IsIntegral ↥K_a β_in_Kaβ := hβ_int_ℚβ.tower_top
       -- β generates K_aβ over K_a because K_aβ = K_a ⊔ ℚ⟮β⟯ = K_a(β).
-      -- Proof plan: apply restrictScalars_injective ℚ, then rw [restrictScalars_top].
-      -- LHS = (adjoin ↥K_a {β_in_Kaβ}).restrictScalars ℚ.
-      -- By restrictScalars_adjoin: = adjoin ℚ (↑K_a_image ∪ {β_in_Kaβ}) in IntermField ℚ ↥K_aβ.
-      -- This equals ⊤ because K_a_image ∪ {β} generates K_aβ = K_a ⊔ ℚ⟮β⟯ over ℚ.
-      -- Blocker: restrictScalars_adjoin needs K' : IntermediateField ℚ ↥K_aβ with ↥K' = ↥K_a,
-      -- but ↥K_a and ↥K' are distinct Lean types (subtypes of ℂ vs ↥K_aβ respectively).
+      -- Proof: restrictScalars_injective + restrict (image of K_a in ↥K_aβ) + lift_injective.
+      -- K_a_im = K_a.restrict le_sup_left : IntermediateField ℚ ↥K_aβ (image of K_a in K_aβ)
+      -- restrictScalars_adjoin_of_algEquiv (restrict_algEquiv) converts ↥K_a → ↥K_a_im base
+      -- restrictScalars_adjoin K_a_im gives adjoin ℚ (↑K_a_im ∪ {β_in_Kaβ}) = ⊤ in IF ℚ ↥K_aβ
+      -- lift_adjoin + lift_top: adjoin ℚ (Subtype.val '' ...) = K_a ⊔ ℚ⟮β⟯ = K_aβ in IF ℚ ℂ
       have h_top_Ka : IntermediateField.adjoin ↥K_a ({β_in_Kaβ} : Set ↥K_aβ) = ⊤ := by
-        sorry -- K_aβ = K_a⊔ℚ⟮β⟯ = K_a(β); β generates K_aβ/K_a
+        -- K_a_im = image of K_a in ↥K_aβ, as IntermediateField ℚ ↥K_aβ
+        let K_a_im : IntermediateField ℚ ↥K_aβ :=
+          IntermediateField.restrict (le_sup_left (b := ℚ⟮β⟯))
+        -- AlgEquiv ↥K_a ≃ₐ[ℚ] ↥K_a_im (K_a is isomorphic to its image in K_aβ)
+        let i : ↥K_a ≃ₐ[ℚ] ↥K_a_im :=
+          IntermediateField.restrict_algEquiv (le_sup_left (b := ℚ⟮β⟯))
+        -- Algebra/ScalarTower for K_a_im ≤ K_aβ
+        haveI hAlg_Kaim : Algebra ↥K_a_im ↥K_aβ :=
+          (IntermediateField.val K_a_im).toAlgebra
+        haveI hST_Kaim : IsScalarTower ℚ ↥K_a_im ↥K_aβ :=
+          IsScalarTower.of_algebraMap_eq (fun r =>
+            Subtype.ext (by simp [K_a_im, hAlg_Kaim, RingHom.algebraMap_toAlgebra]))
+        -- Key: algebraMap ↥K_a ↥K_aβ = (algebraMap ↥K_a_im ↥K_aβ) ∘ i
+        have hi : algebraMap ↥K_a ↥K_aβ = (algebraMap ↥K_a_im ↥K_aβ) ∘ i := by
+          funext x
+          simp [i, K_a_im, IntermediateField.restrict_algEquiv, AlgEquiv.ofInjectiveField,
+                hAlg_KaKaβ, hAlg_Kaim, RingHom.algebraMap_toAlgebra, IntermediateField.val]
+        -- Apply restrictScalars_injective ℚ to reduce goal to IntermediateField ℚ ↥K_aβ
+        apply (IntermediateField.restrictScalars_injective ℚ)
+        rw [IntermediateField.restrictScalars_top]
+        -- Convert ↥K_a-adjoin to ↥K_a_im-adjoin via AlgEquiv
+        rw [IntermediateField.restrictScalars_adjoin_of_algEquiv i hi,
+            IntermediateField.restrictScalars_adjoin K_a_im]
+        -- Apply lift_injective K_aβ to reduce goal to IntermediateField ℚ ℂ
+        apply (IntermediateField.lift_injective K_aβ)
+        rw [IntermediateField.lift_top, IntermediateField.lift_adjoin]
+        -- Compute the image under Subtype.val
+        have hval_Ka_im : Subtype.val '' (K_a_im : Set ↥K_aβ) = (K_a : Set ℂ) := by
+          ext x; simp [K_a_im, IntermediateField.restrict, IntermediateField.mem_restrict]
+        have hval_β : Subtype.val '' ({β_in_Kaβ} : Set ↥K_aβ) = ({β} : Set ℂ) := by
+          simp [β_in_Kaβ]
+        rw [Set.image_union, hval_Ka_im, hval_β]
+        -- adjoin ℚ (↑K_a ∪ {β}) = K_a ⊔ ℚ⟮β⟯ = K_aβ
+        apply le_antisymm
+        · apply IntermediateField.adjoin_le_iff.mpr
+          intro x hx
+          rcases Set.mem_union.mp hx with hxa | hxβ
+          · exact le_sup_left hxa
+          · exact le_sup_right (Set.mem_singleton_iff.mp hxβ ▸ mem_adjoin_simple_self ℚ β)
+        · apply sup_le
+          · rw [← IntermediateField.adjoin_self ℚ K_a]
+            exact IntermediateField.adjoin.mono ℚ _ _ Set.subset_union_left
+          · change IntermediateField.adjoin ℚ {β} ≤ _
+            exact IntermediateField.adjoin.mono ℚ _ _ Set.subset_union_right
       have h_finrank_eq : Module.finrank ↥K_a ↥K_aβ =
           (minpoly ↥K_a β_in_Kaβ).natDegree := by
         have := IntermediateField.adjoin.finrank hβ_int_Ka
