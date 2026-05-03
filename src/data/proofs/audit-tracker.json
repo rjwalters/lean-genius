@@ -9524,10 +9524,12 @@
       "issues": []
     },
     "erdos-770": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T17:21:50Z",
-      "result": "clean"
+      "auditCount": 3,
+      "lastAudited": "2026-05-03T08:10:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "theoremCount 80→74: meta.meta.theoremCount and leanFile.theoremCount overcounted by 6 after PR #15094 merged"
+      ]
     },
     "erdos-771": {
       "agentId": "auditor-cycle-20-batch",
