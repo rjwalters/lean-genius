@@ -72,6 +72,7 @@
       "tao_heuristic_bound definition: q ≪ (log log n / log log log n) · log n",
       "chebyshev_theta definition: Chebyshev function θ(x)",
       "erdos457_conjecture definition: related lower bound conjecture",
+      "iterated_log_sublinear theorem: C·(loglog n / logloglog n) < (1/2)·log n eventually (fully proved via Real.tendsto_log_div_rpow_atTop and Filter composition, no sorry, no axiom)",
       "conjectures_compatible theorem: compatibility of #457 and #1181 (fully proved, no sorry)",
       "tao_implies_erdos1181 theorem: tao_heuristic_bound implies erdos1181_conjecture (fully proved, no sorry)"
     ],

@@ -23,7 +23,7 @@
     "id": "ann-e1181-consec-prod",
     "proofId": "erdos-1181",
     "range": {
-      "startLine": 37,
+      "startLine": 36,
       "endLine": 39
     },
     "type": "definition",
@@ -41,7 +41,7 @@
     "id": "ann-e1181-q-def",
     "proofId": "erdos-1181",
     "range": {
-      "startLine": 48,
+      "startLine": 49,
       "endLine": 58
     },
     "type": "definition",
@@ -59,13 +59,13 @@
     "id": "ann-e1181-trivial-bound",
     "proofId": "erdos-1181",
     "range": {
-      "startLine": 83,
-      "endLine": 96
+      "startLine": 80,
+      "endLine": 100
     },
     "type": "theorem",
     "title": "Trivial Upper Bound via Primorials",
     "content": "**q(n, log n) ≤ (1+o(1))(log n)²**\n\n**Argument:** All primes p < q(n,k) divide ∏(n+i). Their product (the primorial) satisfies:\n- primorial(q) ≤ ∏(n+i) ≤ (n+k)^k\n- log(primorial(q)) = θ(q) ~ q (by PNT)\n- So q ~ k · log(n+k)\n\nFor k = ⌊log n⌋: q ≤ (1+o(1)) · log n · log(n + log n) ≈ (1+o(1))(log n)².",
-    "mathContext": "This uses the Prime Number Theorem in the form θ(x) ~ x, where θ is the Chebyshev function.",
+    "mathContext": "This uses the Prime Number Theorem in the form θ(x) ~ x, where θ is the Chebyshev function. The bound is tight: the constant 1 cannot be easily improved without new ideas.",
     "significance": "key",
     "relatedConcepts": [
       "Chebyshev function",
@@ -80,7 +80,7 @@
     "id": "ann-e1181-conjecture",
     "proofId": "erdos-1181",
     "range": {
-      "startLine": 109,
+      "startLine": 103,
       "endLine": 112
     },
     "type": "theorem",
@@ -98,17 +98,60 @@
     "id": "ann-e1181-tao",
     "proofId": "erdos-1181",
     "range": {
-      "startLine": 122,
-      "endLine": 126
+      "startLine": 119,
+      "endLine": 128
     },
     "type": "concept",
     "title": "Tao's Heuristic Bound",
-    "content": "**Tao's heuristic:** q(n, log n) ≪ (log log n / log log log n) · log n.\n\nThis probabilistic prediction, if true, would be dramatically stronger than the (1-c)(log n)² conjecture, since (log log n / log log log n) · log n grows much slower than (log n)².\n\nThe tao_implies_erdos1181 theorem demonstrates this implication (with a sorry for the asymptotic comparison).",
-    "mathContext": "The heuristic comes from modeling the divisibility of consecutive products by random model arguments.",
+    "content": "**Tao's heuristic:** q(n, log n) ≪ (log log n / log log log n) · log n.\n\nThis probabilistic prediction, if true, would be dramatically stronger than the (1-c)(log n)² conjecture, since (log log n / log log log n) · log n grows much slower than (log n)².\n\n**Key implication:** tao_implies_erdos1181 proves Tao's heuristic → Erdős #1181. The critical lemma iterated_log_sublinear (C · loglog n / logloglog n < (1/2) · log n eventually) is fully proved using Mathlib asymptotics.",
+    "mathContext": "The heuristic comes from modeling the divisibility of consecutive products by random model arguments. It is consistent with but much stronger than the Erdős conjecture.",
     "significance": "key",
     "relatedConcepts": [
       "Probabilistic number theory",
-      "Random models"
+      "Random models",
+      "Iterated logarithm"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e1181-iterated-log",
+    "proofId": "erdos-1181",
+    "range": {
+      "startLine": 129,
+      "endLine": 183
+    },
+    "type": "theorem",
+    "title": "Iterated Logarithm Sublinearity (Proved)",
+    "content": "**iterated_log_sublinear:** For any C > 0, C · (log log n / log log log n) < (1/2) · log n eventually.\n\nThis is the key technical lemma enabling tao_implies_erdos1181. **Proof strategy:**\n1. log(log n)/log n → 0 (from Real.tendsto_log_div_rpow_atTop with p=1)\n2. Compose with log n → ∞: log(log n)/log n → 0 as n → ∞\n3. Extract: eventually log(log n) < (1/(2C)) · log n\n4. Eventually log(log(log n)) ≥ 1 (triple iterated log → ∞)\n5. Combine: C · (loglog/logloglog) ≤ C · loglog < (1/2) · log n\n\n**Fully proved** using Mathlib's Real.tendsto_log_div_rpow_atTop and Filter.eventually_atTop.",
+    "mathContext": "Real.tendsto_log_div_rpow_atTop 1 one_pos gives log(x)/x → 0. Composing with log n → ∞ yields log(log n)/log n → 0. The triple log eventually exceeding 1 follows from composing Real.tendsto_log_atTop three times with tendsto_natCast_atTop_atTop.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.atTop",
+      "Real.tendsto_log_div_rpow_atTop",
+      "Iterated logarithm",
+      "Asymptotic comparison"
+    ],
+    "prerequisites": [
+      "Real analysis",
+      "Filter theory"
+    ]
+  },
+  {
+    "id": "ann-e1181-tao-implies",
+    "proofId": "erdos-1181",
+    "range": {
+      "startLine": 187,
+      "endLine": 200
+    },
+    "type": "theorem",
+    "title": "Tao's Heuristic Implies Erdős #1181",
+    "content": "**tao_implies_erdos1181:** If Tao's heuristic bound holds then Erdős #1181 follows with c = 1/2.\n\n**Proof:** Given q ≤ C · (loglog n / logloglog n) · log n (Tao) and C · (loglog n / logloglog n) < (1/2) · log n (iterated_log_sublinear), we get q < (1/2) · (log n)² = (1 - 1/2) · (log n)².\n\n**Calc chain:** q ≤ C·(loglog/logloglog)·log n < (1/2)·log n·log n = (1/2)·(log n)²",
+    "mathContext": "The nlinarith step closes C·(loglog/logloglog)·log n < (1/2)·log n·log n given the upper bound on C·(loglog/logloglog) and log n > 0 from n ≥ 3.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Asymptotic implication",
+      "Consecutive products",
+      "Filter.atTop"
     ],
     "prerequisites": []
   },
@@ -116,13 +159,13 @@
     "id": "ann-e1181-chebyshev",
     "proofId": "erdos-1181",
     "range": {
-      "startLine": 153,
-      "endLine": 156
+      "startLine": 216,
+      "endLine": 219
     },
     "type": "definition",
     "title": "Chebyshev Theta Function",
     "content": "**θ(x) = ∑_{p ≤ x, p prime} log p**\n\nThe Chebyshev theta function sums log p over all primes up to x. By the Prime Number Theorem, θ(x)/x → 1 as x → ∞.\n\nThis function connects primorials to the consecutive product: log(primorial(q)) = θ(q), and θ(q) ~ q by PNT.",
-    "mathContext": "Defined using Finset.Icc 2 ⌊x⌋₊ filtered by primality, summing Real.log.",
+    "mathContext": "Defined using Finset.Icc 2 ⌊x⌋₊ filtered by primality, summing Real.log. Used in the primorial bound argument for the trivial (1+o(1))(log n)² upper bound.",
     "significance": "key",
     "relatedConcepts": [
       "Prime Number Theorem",
@@ -131,5 +174,24 @@
     "prerequisites": [
       "Analytic number theory"
     ]
+  },
+  {
+    "id": "ann-e1181-compat",
+    "proofId": "erdos-1181",
+    "range": {
+      "startLine": 240,
+      "endLine": 263
+    },
+    "type": "theorem",
+    "title": "Problems #457 and #1181 Are Compatible",
+    "content": "**conjectures_compatible:** If Erdős #457 (q ≥ (2+ε) log n infinitely often) and Erdős #1181 (q < (1-c)(log n)² eventually) both hold, then there exist infinitely many n satisfying both simultaneously.\n\n**Proof:** The upper bound holds on a cofinite set (all but finitely many n), while the lower bound holds on an infinite set. An infinite set minus a finite set remains infinite (Set.Infinite.diff).\n\nThis shows the two conjectures are not contradictory: together they would sandwich q between Ω(log n) and O((log n)²) infinitely often.",
+    "mathContext": "Filter.eventually_atTop gives N such that the upper bound holds for all n ≥ N. The complement set {n : upper bound fails} ⊆ [0, N) is finite. Set.Infinite.diff removes a finite set from an infinite one.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.Infinite.diff",
+      "Filter.eventually_atTop",
+      "Erdős #457"
+    ],
+    "prerequisites": []
   }
 ]
