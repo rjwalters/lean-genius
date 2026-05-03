@@ -3072,10 +3072,11 @@
       "result": "clean"
     },
     "erdos-1018-oq-04-incomplete-01": {
-      "auditCount": 6,
+      "auditCount": 7,
       "issues": [],
-      "lastAudited": "2026-04-04T23:23:29Z",
-      "result": "clean"
+      "lastAudited": "2026-05-03T02:20:45Z",
+      "result": "issues-fixed",
+      "notes": "PR #15021: stale sorry/lineCount after #14937 (top.sorries 4→3, leanFile.sorries 4→3, lineCount 279→287, narrative 5→3)"
     },
     "erdos-1019": {
       "agentId": "auditor-cycle-20-batch",
