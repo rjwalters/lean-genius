@@ -239,7 +239,8 @@ theorem isCubicResidue_iff_cubicChar_one (h3 : p % 3 = 1) (a : (ZMod p)ˣ) :
 -- PART 6: Character Uniqueness Framework
 -- ============================================================
 
-/-- **Character uniqueness comparison**:
+/-
+  Character uniqueness comparison:
 
     Quadratic case (parent file OQ01 — the Zolotarev argument):
     - The Legendre symbol is the UNIQUE non-trivial quadratic character
@@ -260,8 +261,8 @@ theorem isCubicResidue_iff_cubicChar_one (h3 : p % 3 = 1) (a : (ZMod p)ˣ) :
     | 3     | 2 nontrivial | CR: (π/ρ)₃ = (ρ/π)₃ | ℤ[ω] (Eisenstein) |
     | 4     | 3 nontrivial | QR4: (π/ρ)₄ = (ρ/π)₄·i^... | ℤ[i] (biquadratic) |
 
-    This table is the "generalized character uniqueness" answering the open question. -/
-theorem character_uniqueness_comparison : True := trivial
+    This table is the "generalized character uniqueness" answering the open question.
+-/
 
 /-- The cardinality of the cubic character kernel (provable without axiom):
     |{a ∈ (ZMod p)ˣ | cubicChar a = 1}| = (p-1)/3 when p ≡ 1 (mod 3).
