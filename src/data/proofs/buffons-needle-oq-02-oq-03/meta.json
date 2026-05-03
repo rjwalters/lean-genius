@@ -1,0 +1,206 @@
+{
+  "id": "buffons-needle-oq-02-oq-03",
+  "title": "Cauchy-Crofton Formula for Arbitrary Measures on S^{n-1}",
+  "slug": "buffons-needle-oq-02-oq-03",
+  "description": "Proves the general Cauchy-Crofton formula for arbitrary Borel measures on the unit sphere S^{n-1} in EuclideanSpace. The crossing measure lemma |{t : H(u,t) crosses [A,B]}| = |⟪u, B-A⟫| is proved directly from Mathlib's Real.volume_Icc and max_sub_min_eq_abs. The Fubini exchange and isotropy factor α_n are axiomatized. Classical cases α₂ = 2/π and α₃ = 1/2 are recovered, and the noodle theorem (additivity over polygonal paths) is proved.",
+  "meta": {
+    "author": "Cauchy (1832), Crofton (1868); n-dimensional formalization 2026",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Buffon%27s_noodle#Crofton_formula",
+    "date": "1868",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BuffonsNeedleOQ02OQ03.lean",
+    "tags": [
+      "probability",
+      "geometric-probability",
+      "integral-geometry",
+      "cauchy-crofton",
+      "buffon",
+      "measure-theory",
+      "euclidean-space",
+      "hyperplanes",
+      "fubini",
+      "isotropy",
+      "n-dimensional"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.volume_Icc",
+        "description": "Lebesgue measure of a closed interval [a,b] equals b - a",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "max_sub_min_eq_abs",
+        "description": "max(a,b) - min(a,b) = |a - b|",
+        "module": "Mathlib.Order.MinMax"
+      },
+      {
+        "theorem": "inner_sub_right",
+        "description": "Linearity of inner product on the right: ⟪u, B - A⟫ = ⟪u, B⟫ - ⟪u, A⟫",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.integral_congr",
+        "description": "Integral is unchanged by a.e. pointwise equality",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner"
+      },
+      {
+        "theorem": "ENNReal.ofReal",
+        "description": "Embedding of nonneg reals into extended nonneg reals",
+        "module": "Mathlib.Topology.Algebra.Order.LiminfLimsup"
+      }
+    ],
+    "originalContributions": [
+      "crossing_measure_eq_inner: Lebesgue measure of {t : H(u,t) crosses [A,B]} = |⟪u,B⟫ - ⟪u,A⟫| (proved)",
+      "crossing_measure_eq_inner_diff: restatement as |⟪u, B-A⟫| using inner_sub_right (proved)",
+      "crossingIntegral: the σ-weighted crossing integral ∫_{S^{n-1}} |⟪u,B-A⟫| dσ(u) (defined)",
+      "cauchy_crofton_fubini: Fubini exchange between dt and dσ integrals (axiomatized)",
+      "isotropy_yields_alpha: for O(n)-invariant σ, crossing integral = α_n × ‖B-A‖ (axiomatized)",
+      "alpha: dimension-dependent crossing factor with α₂ = 2/π, α₃ = 1/2 (defined)",
+      "crossingIntegral_smul: scaling lemma for segment dilation (proved)",
+      "crossingIntegral_symm: symmetry [A,B] = [B,A] for the crossing integral (proved)",
+      "crossingIntegral_polygonal: noodle theorem — additivity over polygonal path segments (proved)",
+      "alpha_decreasing: α₂ > α₃ (proved)",
+      "buffon_2d/3d_crossing_factor: classical cases recovered as definitional equalities (proved)"
+    ],
+    "dateAdded": "2026-05-03",
+    "axiomCount": 2,
+    "lineCount": 255,
+    "assumptions": "2 axioms: cauchy_crofton_fubini (Fubini-Tonelli exchange for the crossing double integral over S^{n-1} × ℝ); isotropy_yields_alpha (O(n)-invariant sphere measures yield α_n factor). No sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12
+  },
+  "overview": {
+    "historicalContext": "Cauchy (1832) observed that for convex bodies the mean width determines the surface area up to a constant. Crofton (1868) systematized this into his formula: for any curve of length L in the plane, the expected number of crossings with a random line is 2L/π. Blaschke, Santaló, and others extended the formula to arbitrary dimensions and arbitrary Borel measures on the sphere. This file formalizes the abstract framework: the key crossing-measure lemma (|{t : H(u,t) crosses [A,B]}| = |⟪u,B-A⟫|) is proved directly in Lean, while the Fubini exchange and isotropy reduction are axiomatized.",
+    "problemStatement": "**Theorem (Cauchy-Crofton)**: For any Borel measure σ on S^{n-1} and segment [A, B] in ℝⁿ:\n\n$$\\int_{S^{n-1}} |\\langle u, B-A\\rangle|\\, d\\sigma(u) = \\iint_{S^{n-1} \\times \\mathbb{R}} \\mathbf{1}[H_{u,t} \\text{ crosses } [A,B]]\\, dt\\, d\\sigma(u)$$\n\nFor O(n)-invariant σ (uniform sphere measure) this equals α_n × ‖B - A‖, where α₂ = 2/π (Buffon 2D) and α₃ = 1/2 (3D noodle).",
+    "text": "Formalizes the Cauchy-Crofton integral geometry formula in EuclideanSpace ℝ (Fin n). The crossing measure lemma — that the Lebesgue measure of offsets t where hyperplane H(u,t) crosses segment [A,B] equals |⟪u, B-A⟫| — is proved directly from Mathlib. The Fubini exchange and O(n)-invariance reduction are axiomatized. Classical 2D (Buffon) and 3D (noodle) cases are recovered.",
+    "proofStrategy": "**Part I (Hyperplane Parameterization)**: Define Hyperplane(u, t) = {x : ⟪u,x⟫ = t} and the crossing condition min(u·A, u·B) ≤ t ≤ max(u·A, u·B).\n\n**Part II (Crossing Measure Lemma)**: The crossing set is an interval [min(u·A, u·B), max(u·A, u·B)] of Lebesgue measure max - min = |u·B - u·A| = |⟪u, B-A⟫|. Proved via Real.volume_Icc and max_sub_min_eq_abs.\n\n**Part III (Fubini Exchange)**: Axiomatize the swap of dt and dσ integration, expressing crossingIntegral as ∫_{S^{n-1}} |⟪u,B-A⟫| dσ.\n\n**Parts IV-V (Linearity and Isotropy)**: Scale invariance, symmetry, polygonal additivity (noodle theorem), and the isotropy reduction crossingIntegral = α_n × L for O(n)-invariant σ.\n\n**Part VI (Classical Cases)**: α₂ = 2/π and α₃ = 1/2 recovered by definition; α₂ > α₃ proved by norm_num.",
+    "keyInsights": [
+      "The crossing-measure lemma is the computational heart: the measure of {t : H(u,t) ∩ [A,B] ≠ ∅} equals |⟪u,B-A⟫| by elementary real analysis (max - min = |difference|)",
+      "The Fubini exchange (integrating over hyperplane offsets then directions) is the measure-theoretic core; it requires σ-finiteness and measurability of the crossing count",
+      "O(n)-invariance of the sphere measure forces the integral to depend only on |B-A|, yielding a dimension-specific constant α_n",
+      "α₂ = 2/π comes from ∫₀^π |cos θ| dθ/π; α₃ = 1/2 from the sphere average E[|u₁|] on S²",
+      "The noodle theorem (polygonal additivity) follows from linearity of the inner product integral over segments"
+    ],
+    "prerequisites": [
+      "Inner product spaces (EuclideanSpace, inner product properties)",
+      "Measure theory (Lebesgue measure on ℝ, Borel measures, Fubini's theorem)",
+      "Integral geometry basics (Cauchy-Crofton setup)",
+      "Buffon's needle/noodle results in 2D and 3D (BuffonsNeedle.lean, BuffonsNeedleOQ02.lean)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "part-i",
+      "title": "Part I: Hyperplane Parameterization",
+      "startLine": 51,
+      "endLine": 76,
+      "summary": "Defines Hyperplane(n) with normal u and offset t; Segment(n) with start A and finish B; the crossing predicate min(u·A, u·B) ≤ t ≤ max(u·A, u·B); and a Decidable instance.",
+      "mathContext": "$H(u,t) = \\{x \\in \\mathbb{R}^n : \\langle u, x\\rangle = t\\}$ parameterized by unit normal $u \\in S^{n-1}$ and offset $t \\in \\mathbb{R}$."
+    },
+    {
+      "id": "part-ii",
+      "title": "Part II: The Crossing Measure Lemma",
+      "startLine": 78,
+      "endLine": 117,
+      "summary": "Proves crossing_measure_eq_inner: the Lebesgue measure of the crossing set {t : H(u,t) crosses [A,B]} equals |⟪u,B⟫ - ⟪u,A⟫|. Proved via Real.volume_Icc and max_sub_min_eq_abs. Restated as |⟪u, B-A⟫| via inner linearity.",
+      "mathContext": "Key computation: $\\lambda(\\{t : H(u,t) \\text{ crosses } [A,B]\\}) = \\max(u\\cdot A, u\\cdot B) - \\min(u\\cdot A, u\\cdot B) = |u\\cdot B - u\\cdot A| = |\\langle u, B-A\\rangle|$."
+    },
+    {
+      "id": "part-iii",
+      "title": "Part III: The Cauchy-Crofton Formula",
+      "startLine": 118,
+      "endLine": 156,
+      "summary": "Defines crossingIntegral σ A B = ∫_{S^{n-1}} |⟪u,B-A⟫| dσ. Axiomatizes the Fubini exchange: crossingIntegral equals the double integral of the crossing measure over S^{n-1} × ℝ.",
+      "mathContext": "$\\text{crossingIntegral}(\\sigma, A, B) = \\int_{S^{n-1}} |\\langle u, B-A\\rangle|\\, d\\sigma(u) = \\int_{S^{n-1}} \\lambda(\\{t : H(u,t) \\text{ crosses } [A,B]\\})\\, d\\sigma(u)$."
+    },
+    {
+      "id": "part-iv",
+      "title": "Part IV: Linearity — Noodle Theorem",
+      "startLine": 157,
+      "endLine": 192,
+      "summary": "Proves crossingIntegral_smul (scaling by c multiplies by |c|), crossingIntegral_symm (symmetry [A,B] = [B,A]), and crossingIntegral_polygonal (additivity over polygonal path segments — the noodle theorem).",
+      "mathContext": "For a polygonal path $P_0 \\to P_1 \\to \\cdots \\to P_k$: $\\sum_i \\text{crossingIntegral}(P_i, P_{i+1}) = \\text{crossingIntegral of the whole path}$."
+    },
+    {
+      "id": "part-v",
+      "title": "Part V: Isotropy and α_n",
+      "startLine": 193,
+      "endLine": 225,
+      "summary": "Defines alpha n: ℝ with α₁ = 1, α₂ = 2/π, α₃ = 1/2. Axiomatizes isotropy_yields_alpha: for O(n)-invariant σ, crossingIntegral σ A B = alpha(n+1) × ‖B-A‖. Proves alpha_two and alpha_three by rfl.",
+      "mathContext": "$\\alpha_n = \\mathbb{E}_{u \\sim \\sigma}[|u_1|]$ for uniform $\\sigma$ on $S^{n-1}$. Values: $\\alpha_2 = 2/\\pi$, $\\alpha_3 = 1/2$."
+    },
+    {
+      "id": "part-vi",
+      "title": "Part VI: Classical Consistency",
+      "startLine": 228,
+      "endLine": 255,
+      "summary": "Recovers 2D (Buffon) and 3D (noodle) crossing factors as definitional equalities. Proves alpha_decreasing (α₂ > α₃) by norm_num. Summary theorem ties the framework together.",
+      "mathContext": "Classical specializations: $n=2$ gives $E[\\text{crossings}] = \\frac{2}{\\pi} \\cdot \\frac{L}{d}$; $n=3$ gives $E[\\text{crossings}] = \\frac{1}{2} \\cdot \\frac{L}{d}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Cauchy-Crofton formula for arbitrary measures on S^{n-1} is formalized in n-dimensional EuclideanSpace. The crossing-measure computation is fully proved; the Fubini exchange and isotropy reduction are axiomatized with clear statements of the required measure-theoretic hypotheses. Classical 2D and 3D Buffon formulas are recovered as special cases.",
+    "significance": "This provides the abstract framework unifying all Buffon-type results: the 2D needle, 3D noodle, and their higher-dimensional analogues follow from a single integral geometry identity. The key crossing-measure lemma demonstrates that Mathlib's real analysis infrastructure is sufficient for non-trivial integral geometry computations.",
+    "openQuestions": [
+      {
+        "id": "oq-01",
+        "text": "Can the Fubini exchange axiom be proved using Mathlib's MeasureTheory.MeasurePreserving and Fubini-Tonelli infrastructure?",
+        "difficulty": "hard",
+        "area": "measure-theory"
+      },
+      {
+        "id": "oq-02",
+        "text": "Can isotropy_yields_alpha be proved using the O(n) Haar measure and change-of-variables in Mathlib?",
+        "difficulty": "hard",
+        "area": "representation-theory"
+      }
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "buffons-needle",
+      "relationship": "special-case",
+      "description": "2D Buffon formula E = 2L/(πd); α₂ = 2/π recovered as a special case"
+    },
+    {
+      "id": "buffons-needle-oq-02",
+      "relationship": "special-case",
+      "description": "3D noodle formula E = L/(2d); α₃ = 1/2 recovered as a special case"
+    },
+    {
+      "id": "buffons-needle-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Smooth 3D Buffon-Barbier for C¹ curves; Cauchy-Crofton framework applies"
+    }
+  ],
+  "references": [
+    {
+      "author": "Crofton, M. W.",
+      "title": "On the Theory of Local Probability",
+      "year": "1868",
+      "journal": "Philosophical Transactions of the Royal Society",
+      "note": "First systematic statement of the Cauchy-Crofton formula"
+    },
+    {
+      "author": "Santaló, L. A.",
+      "title": "Integral Geometry and Geometric Probability",
+      "year": "1976",
+      "publisher": "Addison-Wesley",
+      "note": "Standard reference for the general formula and kinematic measure"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["MeasureTheory", "Real", "Set", "Finset"],
+    "namespace": "CauchyCrofton",
+    "lineCount": 255,
+    "axiomCount": 2,
+    "theoremCount": 12,
+    "definitionCount": 4,
+    "path": "Proofs/BuffonsNeedleOQ02OQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
