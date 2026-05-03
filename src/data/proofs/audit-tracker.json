@@ -300,11 +300,9 @@
     },
     "angle-trisection-oq-02-oq-01-oq-02-incomplete-01": {
       "auditCount": 3,
-      "issues": [
-        "sorry count mismatch: claimed 2, actual 1 (wantzel_galois_iff only); lineCount stale 436→625, theoremCount stale 19→21. Fixes in PRs #15140 and #15155."
-      ],
-      "lastAudited": "2026-05-03T09:09:49Z",
-      "result": "issues-found"
+      "issues": [],
+      "lastAudited": "2026-05-03T11:30:00Z",
+      "result": "issues-fixed"
     },
     "angle-trisection-oq-02-oq-02": {
       "auditCount": 2,
@@ -13956,11 +13954,9 @@
     },
     "erdos-1201": {
       "auditCount": 1,
-      "issues": [
-        "theoremCount 14→19: meta.json claims 14 theorems but Lean file has 19; lineCount 267→266 (trivial). Status/axioms/sorries correct. Research PR #15091 in flight will update meta."
-      ],
-      "lastAudited": "2026-05-03T07:03:19Z",
-      "result": "issues-found"
+      "issues": [],
+      "lastAudited": "2026-05-03T11:30:00Z",
+      "result": "issues-fixed"
     },
     "cantor-diagonalization-oq-01-oq-02": {
       "auditCount": 1,
