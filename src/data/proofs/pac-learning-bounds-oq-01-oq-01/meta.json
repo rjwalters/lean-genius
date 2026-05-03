@@ -55,7 +55,7 @@
       "Interval convexity argument"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 101,
+    "lineCount": 104,
     "relatedProblems": [
       {
         "id": "pac-learning-bounds-oq-01",
@@ -66,8 +66,8 @@
         "relationship": "Answers a specific instance of OQ-01: computes VC dimension of interval classifiers"
       }
     ],
-    "theoremCount": 4,
-    "definitionCount": 2
+    "theoremCount": 3,
+    "definitionCount": 1
   },
   "crossReferences": [
     {
@@ -84,7 +84,7 @@
   "overview": {
     "historicalContext": "Interval classifiers are the second rung on the VC dimension ladder, after threshold classifiers (VC dim 1). The result VC dim(intervals on ℕ) = 2 is a standard textbook example, appearing in every PAC learning course as the first demonstration that convexity constrains shattering. The proof technique — any interval containing the two endpoints of a triple must contain the middle point — is the prototype for the general principle that convex sets in ℝ cannot shatter 3 or more collinear points.",
     "problemStatement": "Define interval classifiers on ℕ as $H_{int} = \\{[a,b] : a \\leq b, a,b \\in \\mathbb{N}\\}$ where $[a,b] = \\{x \\in \\mathbb{N} : a \\leq x \\leq b\\}$. Compute its VC dimension.\n\nShow:\n1. (Lower bound) Every 2-element set $\\{a, b\\}$ with $a < b$ is shattered by $H_{int}$.\n2. (Upper bound) No 3-element set $\\{a, b, c\\}$ with $a < b < c$ is shattered.",
-    "text": "Interval classifiers on ℕ have VC dimension exactly 2. Verified in Lean 4 with four theorems: a helper lemma, pair-shatters, triple-not-shatters, and combined. The upper-bound proof uses the convexity obstruction: any interval containing the endpoints of a triple must contain the middle element.",
+    "text": "Interval classifiers on ℕ have VC dimension exactly 2. Verified in Lean 4 with three theorems: pair-shatters, triple-not-shatters, and combined. The upper-bound proof uses the convexity obstruction: any interval containing the endpoints of a triple must contain the middle element.",
     "proofStrategy": "1. **Lower bound (pair shattering):** For $a < b$, we exhibit four interval witnesses, one for each labeling of $\\{a,b\\}$: $[a,b]$ labels both, $[a,a]$ labels only $a$, $[b,b]$ labels only $b$, and $[b+1,b]$ (empty) labels neither.\n\n2. **Upper bound (no triple shattered):** For $a < b < c$, the adversarial labeling $T = \\{a, c\\}$ (include endpoints, exclude middle) cannot be realized. If $[l,r]$ contains $a$ then $l \\leq a$; if $[l,r]$ contains $c$ then $r \\geq c$. Since $a < b < c$, we get $l \\leq a < b < c \\leq r$, forcing $b \\in [l,r]$, contradicting $b \\notin T$.",
     "keyInsights": [
       "The 4-witness lower bound for pairs covers all 4 labeling cases: {a,b}, {a}, {b}, ∅. The empty interval [b+1,b] handles the all-negative case cleanly.",
@@ -103,7 +103,7 @@
       "id": "header",
       "title": "File Header and Imports",
       "startLine": 1,
-      "endLine": 17,
+      "endLine": 18,
       "summary": "Imports Mathlib and PACLearningOQ01 (for the Shatters predicate), opens the LearningTheory.VCDimension namespace.",
       "mathContext": "Reuses the Shatters predicate from the parent OQ-01 entry."
     },
@@ -111,23 +111,15 @@
       "id": "definition",
       "title": "intervalClassifiers Definition",
       "startLine": 19,
-      "endLine": 22,
+      "endLine": 24,
       "summary": "Defines intervalClassifiers as { h | ∃ a b : ℕ, h = {x | a ≤ x ∧ x ≤ b} }. The empty interval (a > b) is included implicitly.",
       "mathContext": "$H_{int} = \\{[a,b] : a,b \\in \\mathbb{N}\\}$ where $[a,b]$ is empty when $a > b$."
     },
     {
-      "id": "helper",
-      "title": "Membership Helper Lemma",
-      "startLine": 24,
-      "endLine": 26,
-      "summary": "mem_interval_iff unfolds set-comprehension membership to the conjunction l ≤ x ∧ x ≤ r for cleaner proof steps.",
-      "mathContext": "$x \\in \\{y \\mid l \\leq y \\wedge y \\leq r\\} \\iff l \\leq x \\wedge x \\leq r$."
-    },
-    {
       "id": "lower-bound",
       "title": "Pair Shattering (VC dim ≥ 2)",
-      "startLine": 28,
-      "endLine": 58,
+      "startLine": 25,
+      "endLine": 59,
       "summary": "Case-splits on membership of a and b in T, providing four interval witnesses covering all labelings of {a,b}.",
       "mathContext": "$\\forall a < b : H_{int}$ shatters $\\{a,b\\}$."
     },
@@ -142,8 +134,8 @@
     {
       "id": "combined",
       "title": "Combined Bound (VC dim = 2)",
-      "startLine": 98,
-      "endLine": 101,
+      "startLine": 97,
+      "endLine": 104,
       "summary": "interval_vcdim_two bundles pair-shatters and triple-not-shatters into a single VC dimension statement.",
       "mathContext": "$\\operatorname{VCdim}(H_{int}) = 2$."
     }
@@ -167,10 +159,10 @@
       "Finset"
     ],
     "namespace": "LearningTheory.VCDimension",
-    "lineCount": 101,
+    "lineCount": 104,
     "axiomCount": 0,
-    "theoremCount": 4,
-    "definitionCount": 2,
+    "theoremCount": 3,
+    "definitionCount": 1,
     "path": "Proofs/PACLearningOQ01OQ01.lean",
     "sorries": 0
   },
