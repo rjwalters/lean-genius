@@ -1017,3 +1017,39 @@ already proved in sessions 15-16.
 2. Alternative: submit b≥2 sorry to Aristotle (it is a HARD sorry for a known
    combinatorial result).
 3. Long-term: `jacobi_trudi_ssyt_eq` k ≥ 3 (RSK bijection, ~300 lines).
+
+---
+
+## Session 2026-05-03 (Session 18) — Bijection non-injectivity analysis
+
+**Mode**: REVISIT (RICH, score 95)
+**Outcome**: blocked — confirmed non-injectivity of "first violation" map for b ≥ 2
+
+### Key Finding: "First Violation" Map is Non-Injective
+
+Explicitly verified with M = {1,2,3,4}, a=2, b=2:
+- T={1,2} (Q={1,2}, P={3,4}): first violation c=0, move Q.sort[0]=1 → P'={1,3,4}, Q'={2}
+- T={2,3} (Q={2,3}, P={1,4}): first violation c=1, move Q.sort[1]=3 → P'={1,3,4}, Q'={2}
+
+Both map to the same (P',Q') = ({1,3,4}, {2}). The map is 2:1, not a bijection.
+
+This non-injectivity holds even within the same fiber (same total multiset M={1,2,3,4}).
+
+### Why Alternative Maps Also Fail
+
+- "Move Q.sort[0]" (minimum): T={1,3} and T={2,3} both map to Q'={3} split.
+- "Move Q.sort[b-1]" (maximum): T={1,2} and T={1,3} both map to Q'={1} split.
+
+The correct bijection requires a more subtle construction — likely the Bender-Knuth involution or the dual RSK bijection for 1-row tableaux.
+
+### Status
+
+The b ≥ 2 sorry is BLOCKED on constructing the correct bijection. The correct bijection likely exists (counts match: 4 bad (2,2) splits of M={1,2,3,4} = 4 all (3,1) splits) but requires non-obvious construction.
+
+Recommend: submit to Aristotle as a HARD sorry, or investigate Bender-Knuth/RSK literature for 1-row tableaux.
+
+### Next Steps
+
+1. Look up "Bender-Knuth involution for 2-row SSYT" — this likely gives the correct bijection.
+2. Alternative: try proof by induction where the inductive step reduces b≥2 to b=1.
+3. Alternative: find an algebraic proof (MvPolynomial evaluation argument).
