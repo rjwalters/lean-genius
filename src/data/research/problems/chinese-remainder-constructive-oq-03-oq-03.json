@@ -1,0 +1,147 @@
+{
+  "slug": "chinese-remainder-constructive-oq-03-oq-03",
+  "title": "Can the RNS framework be extended to handle bases with 2 as a modulus — where...",
+  "phase": "NEW",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Can the RNS framework be extended to handle bases with 2 as a modulus — where the standard CRT requires extra care — for hardware implementations that use power-of-2 channels?.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-03T11:41:44.691Z",
+    "iteration": 1,
+    "focus": "Proof complete and PR submitted",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 203-line fully verified Lean 4 proof, 0 sorries, 0 axioms, 18 theorems",
+    "builtItems": [
+      "theorem pow2_coprime_odd in Proofs/ChineseRemainderConstructiveOQ03OQ03.lean:57",
+      "theorem pow2_not_coprime_pow2 in Proofs/ChineseRemainderConstructiveOQ03OQ03.lean:63",
+      "structure Pow2RNSBase in Proofs/ChineseRemainderConstructiveOQ03OQ03.lean:82",
+      "theorem Pow2RNSBase.pairwise_coprime in Proofs/ChineseRemainderConstructiveOQ03OQ03.lean:98",
+      "theorem Pow2RNSBase.dynamicRange_eq in Proofs/ChineseRemainderConstructiveOQ03OQ03.lean:128",
+      "examples base_4_3_5_7, base_8_3_5_7_11, base_16_3_5_7_11_13 with ranges 420, 9240, 240240",
+      "Fix to parent file: induction-based rnsAdd_correct and rnsMul_correct in Proofs/ChineseRemainderConstructiveOQ03.lean:299"
+    ],
+    "insights": [
+      "pow2_coprime_odd proved cleanly via Nat.Coprime.pow_left + Nat.coprime_two_right: the base case coprime(2, odd m) lifts to any power of 2",
+      "pow2_not_coprime_pow2 proved via dvd_pow_self: 2 divides 2^k for k>=1, so 2 divides gcd(2^k, 2^j), making gcd >= 2, breaking coprimality",
+      "Pow2RNSBase structure separates two concerns: pow2 channel coprime with all odd channels (proved once) vs odd channels pairwise coprime (assumed as hypothesis)",
+      "Exactly one power-of-2 constraint is tight: using 4 instead of 2 doubles dynamic range with no extra hardware cost for that channel",
+      "Parent file ChineseRemainderConstructiveOQ03.lean had API drift: ext <m,hm> failed because simp+congr produced maps over different list element types (N vs N x N x N). Fixed via induction on base list"
+    ],
+    "mathlibGaps": [
+      "List.zip + List.map over heterogeneous types requires induction; congr 1 fails when maps are over lists of different element types"
+    ],
+    "nextSteps": [
+      "Open question: extend to mixed-radix hierarchical RNS where two powers of 2 appear at different levels",
+      "Open question: optimal choice of k in {2^k, m1...mn} maximizing dynamic range for fixed total bit budget"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "modular-arithmetic",
+    "algorithms",
+    "classical",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "chinese-remainder-constructive",
+    "chinese-remainder-constructive-oq-03",
+    "chinese-remainder-constructive-oq-04",
+    "chinese-remainder-constructive-oq-04-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T11:41:44.691Z",
+  "lastUpdate": "2026-05-03T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/ChineseRemainderConstructive.lean",
+      "filename": "ChineseRemainderConstructive.lean",
+      "lineCount": 417,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructive.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ03.lean",
+      "filename": "ChineseRemainderConstructiveOQ03.lean",
+      "lineCount": 319,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ03.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ03OQ03.lean",
+      "filename": "ChineseRemainderConstructiveOQ03OQ03.lean",
+      "lineCount": 204,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ04.lean",
+      "filename": "ChineseRemainderConstructiveOQ04.lean",
+      "lineCount": 157,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ04.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ04OQ03.lean",
+      "filename": "ChineseRemainderConstructiveOQ04OQ03.lean",
+      "lineCount": 100,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ04OQ04.lean",
+      "filename": "ChineseRemainderConstructiveOQ04OQ04.lean",
+      "lineCount": 123,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ04OQ04.lean"
+    }
+  ]
+}
