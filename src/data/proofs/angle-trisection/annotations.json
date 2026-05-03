@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Mathlib and PiTranscendental Imports",
-    "content": "Six imports: `SpecialFunctions.Trigonometric.Basic` (for `cos`, `cos_three_mul`, `cos_pi_div_three`), `IntermediateField.Basic` (field extensions), `IrreducibleRing` and `Degree.Definitions` (polynomial irreducibility and degree), `Tactic` (proof automation including `norm_num`, `ring`, `omega`), and `Proofs.PiTranscendental` (the project's own proof that π is transcendental over ℤ, lifted to ℚ).",
-    "mathContext": "The imports provide the complete algebraic toolkit: trigonometric identities for deriving the polynomial, polynomial degree computations for the irreducibility argument, and Lindemann's theorem ($\\pi$ transcendental) for squaring the circle.",
+    "content": "Seven imports: `SpecialFunctions.Trigonometric.Basic` (for `cos`, `cos_three_mul`, `cos_pi_div_three`), `IntermediateField.Basic` (field extensions), `IrreducibleRing` and `Degree.Definitions` (polynomial irreducibility and degree), `Tactic` (proof automation including `norm_num`, `ring`, `omega`), `Proofs.PiTranscendental` (the project's own proof that $\\pi$ is transcendental over $\\mathbb{Q}$), and `Proofs.AngleTrisectionCos20Gal` (companion file: 474 lines proving irreducibility of $8x^3-6x-1$ via Eisenstein criterion and computing $|\\text{Gal}| = 3$).",
+    "mathContext": "The imports provide the complete algebraic toolkit: trigonometric identities for deriving the polynomial, polynomial degree computations for the irreducibility argument, Lindemann's theorem ($\\pi$ transcendental) for squaring the circle, and the companion `AngleTrisectionCos20Gal` module that contains the core irreducibility proof via Eisenstein criterion on the shifted polynomial $X^3 - 6X^2 + 9X - 3$ (Eisenstein at $p = 3$).",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -299,7 +299,7 @@
     "type": "concept",
     "title": "Angle Trisection is Impossible",
     "content": "`cos_20_degree_over_Q` restates `trisectionPolynomial_degree` (degree = 3) for clarity. `angle_trisection_impossible` proves $\\neg\\,\\text{IsConstructible}(\\cos(20°), 3)$ — a one-liner delegating to `degree_three_not_constructible`.\n\nThis is the culmination: cos(20°) satisfies an irreducible degree-3 polynomial, constructible numbers have degree dividing $2^n$, and $3 \\nmid 2^n$. The proof is completely elementary once the pieces are assembled.",
-    "mathContext": "The chain: $\\cos(20°)$ is a root of $8x^3 - 6x - 1$ (proved) $\\Rightarrow$ minimal polynomial has degree 3 (from irreducibility axiom) $\\Rightarrow$ $3 \\nmid 2^n$ (proved) $\\Rightarrow$ not constructible.",
+    "mathContext": "The chain: $\\cos(20°)$ is a root of $8x^3 - 6x - 1$ (proved via triple-angle formula) $\\Rightarrow$ polynomial is irreducible over $\\mathbb{Q}$ (proved via Eisenstein criterion in companion file) $\\Rightarrow$ minimal polynomial degree is 3 $\\Rightarrow$ $3 \\nmid 2^n$ (proved) $\\Rightarrow$ not constructible.",
     "significance": "key",
     "prerequisites": [
       "ann-cos-20-equation",
