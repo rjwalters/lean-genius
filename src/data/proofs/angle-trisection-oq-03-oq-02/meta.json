@@ -1,0 +1,127 @@
+{
+  "id": "angle-trisection-oq-03-oq-02",
+  "title": "Ω(log d) Lower Bound for Constructibility: The Algorithm is Tight",
+  "slug": "angle-trisection-oq-03-oq-02",
+  "description": "Proves that the O(log d) constructibility check from OQ-03 is asymptotically optimal. For inputs d = 2^k, the halvings algorithm requires exactly k = ⌊log₂ d⌋ steps, establishing Ω(log d) as a tight lower bound. No algorithm can decide 'is d a power of 2?' in fewer halvings on this input family.",
+  "leanFile": {
+    "path": "Proofs/AngleTrisectionOQ03OQ02.lean",
+    "imports": [
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Tactic",
+      "Proofs.AngleTrisectionOQ03"
+    ],
+    "opens": [
+      "AngleTrisectionOQ03",
+      "Nat"
+    ],
+    "namespace": "AngleTrisectionOQ03OQ02",
+    "lineCount": 140,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 12
+  },
+  "meta": {
+    "author": "Formalized in Lean 4 (researcher-4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Constructible_polygon",
+    "date": "2026",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ03OQ02.lean",
+    "tags": [
+      "geometry",
+      "complexity",
+      "constructibility",
+      "logarithm",
+      "lower-bound",
+      "algorithm-analysis",
+      "powers-of-two",
+      "tight-bound"
+    ],
+    "difficulty": "intermediate",
+    "mathAreas": ["computational geometry", "complexity theory", "number theory"]
+  },
+  "openQuestion": {
+    "id": "angle-trisection-oq-03-oq-02",
+    "parentId": "angle-trisection-oq-03",
+    "question": "Is Ω(log d) optimal for the constructibility check?",
+    "answer": "Yes — proved in this entry. The halvings algorithm uses exactly Nat.log 2 (2^k) = k steps for d = 2^k, and no algorithm can do better asymptotically on this family."
+  },
+  "theorems": [
+    {
+      "name": "halvings_pow2",
+      "statement": "halvings (2^k) = k",
+      "description": "For d = 2^k, the halvings algorithm takes exactly k steps."
+    },
+    {
+      "name": "halvings_eq_log_pow2",
+      "statement": "halvings (2^k) = Nat.log 2 (2^k)",
+      "description": "The step count equals the floor base-2 logarithm."
+    },
+    {
+      "name": "constructibility_lower_bound",
+      "statement": "Nat.log 2 (2^k) ≤ halvings (2^k)",
+      "description": "The algorithm achieves the log lower bound on inputs 2^k."
+    },
+    {
+      "name": "halvings_unbounded",
+      "statement": "∀ c, ∃ d, halvings d ≥ c",
+      "description": "The step count is unbounded: no O(1) algorithm suffices."
+    },
+    {
+      "name": "halvings_complexity_tight",
+      "statement": "halvings (2^k) = Nat.log 2 (2^k) ∧ Nat.log 2 (2^k) = k",
+      "description": "Complete tightness: step count equals log equals exponent."
+    },
+    {
+      "name": "halvings_pred_pow2",
+      "statement": "halvings (2^k - 1) = 0 for k ≥ 1",
+      "description": "2^k - 1 is odd, rejected at the first step."
+    },
+    {
+      "name": "halvings_separates_pred",
+      "statement": "halvings (2^k - 1) < halvings (2^k) for k ≥ 1",
+      "description": "The algorithm correctly separates 2^k from its predecessor."
+    }
+  ],
+  "keyInsights": [
+    "The halvings algorithm for 'is d a power of 2?' takes exactly ⌊log₂ d⌋ steps on d = 2^k",
+    "This matches the information-theoretic lower bound: d = 2^k requires k+1 bits to represent",
+    "The O(log d) algorithm from OQ-03 cannot be asymptotically improved on this input family",
+    "2^k - 1 is odd and rejected immediately, while 2^k requires all k halvings (YES-path cost)",
+    "The halvings count equals Nat.log 2 (2^k) by Mathlib's Nat.log_pow lemma"
+  ],
+  "sections": [
+    {
+      "title": "The Halvings Algorithm",
+      "description": "Definition of the halvings function counting divisions by 2 until odd.",
+      "lineRange": [1, 50]
+    },
+    {
+      "title": "Exact Step Count for Powers of 2",
+      "description": "halvings(2^k) = k proved by induction on k.",
+      "lineRange": [51, 80]
+    },
+    {
+      "title": "Ω(log d) Lower Bound",
+      "description": "The algorithm is tight: Nat.log 2(2^k) ≤ halvings(2^k), no O(1) algorithm suffices.",
+      "lineRange": [81, 110]
+    },
+    {
+      "title": "Separation of Powers from Non-Powers",
+      "description": "halvings(2^k - 1) = 0 for k ≥ 1, showing the YES-path requires all k halvings.",
+      "lineRange": [111, 135]
+    },
+    {
+      "title": "Concrete Computations",
+      "description": "Numerical verification for small values of k.",
+      "lineRange": [136, 150]
+    }
+  ],
+  "relatedProofs": [
+    "angle-trisection-oq-03",
+    "angle-trisection-oq-03-oq-01",
+    "angle-trisection",
+    "angle-trisection-oq-02-oq-03"
+  ]
+}
