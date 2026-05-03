@@ -260,6 +260,8 @@ import Proofs.BoundedPrimeGapsTPC
 import Proofs.BrouwerFixedPoint
 import Proofs.BrouwerFixedPointOQ01
 import Proofs.BrouwerFixedPointOQ01OQ02
+import Proofs.BrouwerFixedPointOQ01OQ02OQ03
+import Proofs.BrouwerFixedPointOQ01OQ02OQ03OQ01
 import Proofs.BrouwerFixedPointOQ01OQ03
 import Proofs.BrouwerFixedPointOQ02
 import Proofs.BrouwerFixedPointOQ02Ext
