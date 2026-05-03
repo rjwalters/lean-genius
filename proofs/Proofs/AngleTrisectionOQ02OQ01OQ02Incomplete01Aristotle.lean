@@ -39,4 +39,20 @@ theorem finrank_adjoin_β_over_adjoin_a_dvd_two
     Module.finrank ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) ∣ 2 := by
   sorry
 
+/-- Compositum degree divisibility (char 0 / separable case).
+    For intermediate fields K, L of ℂ over ℚ:
+    [K ⊔ L : K] divides [L : ℚ].
+
+    Proof sketch:
+    - K ⊔ L = adjoin K (L : Set ℂ)
+    - A basis of L over ℚ spans K ⊔ L over K (surjection K ⊗_ℚ L → K ⊔ L)
+    - In char 0 (separable), [K⊔L : K] = [L : K ∩ L]
+    - And [L : K ∩ L] ∣ [L : ℚ] by the tower K ∩ L ≤ L ≤ ℂ. -/
+theorem finrank_sup_dvd_finrank_right
+    (K L : IntermediateField ℚ ℂ)
+    [FiniteDimensional ℚ ↥K] [FiniteDimensional ℚ ↥L]
+    [Algebra ↥K ↥(K ⊔ L)] [IsScalarTower ℚ ↥K ↥(K ⊔ L)] :
+    Module.finrank ↥K ↥(K ⊔ L) ∣ Module.finrank ℚ ↥L := by
+  sorry
+
 end AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle

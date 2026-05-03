@@ -235,16 +235,39 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
          rcases h_range with h | h
          · exact h ▸ one_dvd 2
          · exact h ▸ dvd_refl 2)
-    -- Step D (sorry): finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+k+1)
-    -- Proof plan: tower through ℚ⟮β⟯:
-    --   finrank_join = finrank ↥ℚ⟮β⟯ ↥(join) * finrank ℚ ↥ℚ⟮β⟯
-    --   Need: finrank ↥ℚ⟮β⟯ ↥(join) ∣ 2^k
-    --   This is finrank ↥ℚ⟮β⟯ ↥ℚ⟮β⟯⟮b⟯ ∣ 2^k (since join = ℚ⟮β⟯ adjoin b).
-    --   REQUIRES STRONGER IH on b: not just finrank ℚ ℚ⟮b⟯ ∣ 2^k, but
-    --   ∀ (K : IntermediateField ℚ ℂ) with finrank ℚ K ∣ 2^m, finrank ↥K ↥(K⟮b⟯) ∣ 2^k.
-    --   Current IH (hk_dvd) is too weak — it only gives finrank ℚ ℚ⟮b⟯ ∣ 2^k.
+    -- Step D (1 sorry): finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+k+1)
+    -- Proof plan (tower through ℚ⟮b⟯):
+    --   finrank_join = finrank ↥ℚ⟮b⟯ ↥(join) * finrank ℚ ↥ℚ⟮b⟯
+    --   finrank ℚ ↥ℚ⟮b⟯ ∣ 2^k (hk_dvd)
+    --   finrank ↥ℚ⟮b⟯ ↥(join) ∣ finrank ℚ ↥ℚ⟮β⟯ ∣ 2^(j+1) (compositum divisibility sorry)
+    --   Product ∣ 2^(j+1) * 2^k = 2^(j+k+1)
+    --   The compositum divisibility [K⊔L:K] ∣ [L:ℚ] is a standard char-0 result.
     have hjoin_dvd : Module.finrank ℚ ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2 ^ (j + k + 1) := by
-      sorry
+      -- Set up tower: ℚ → ℚ⟮b⟯ → ℚ⟮b⟯ ⊔ ℚ⟮β⟯
+      haveI hAlg_bJ : Algebra ↥(ℚ⟮b⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) :=
+        (IntermediateField.inclusion le_sup_left).toAlgebra
+      haveI hST_bJ : IsScalarTower ℚ ↥(ℚ⟮b⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) :=
+        IsScalarTower.of_algebraMap_eq (fun r =>
+          Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
+      have htower := Module.finrank_mul_finrank ℚ ↥(ℚ⟮b⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯)
+      -- Compositum divisibility (sorry): [ℚ⟮b⟯ ⊔ ℚ⟮β⟯ : ℚ⟮b⟯] ∣ [ℚ⟮β⟯ : ℚ]
+      -- This is a standard result in characteristic 0: for intermediate fields K, L
+      -- over ℚ inside ℂ, finrank K (K ⊔ L) ∣ finrank ℚ L.
+      -- Proof sketch: K ⊔ ℚ⟮β⟯ = adjoin K {β}; a basis of ℚ⟮β⟯ over ℚ spans
+      -- adjoin K {β} over K (by linearization), so [K⊔ℚ⟮β⟯:K] ≤ [ℚ⟮β⟯:ℚ];
+      -- the divisibility follows because [K⊔ℚ⟮β⟯:K] = [ℚ⟮β⟯ : K∩ℚ⟮β⟯]
+      -- divides [ℚ⟮β⟯:ℚ] by the tower K∩ℚ⟮β⟯ ≤ ℚ⟮β⟯.
+      have h_comp_dvd : Module.finrank ↥(ℚ⟮b⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣
+          Module.finrank ℚ ↥(ℚ⟮β⟯) := by
+        sorry
+      -- Combine: [ℚ⟮b⟯⊔ℚ⟮β⟯:ℚ] = [ℚ⟮b⟯⊔ℚ⟮β⟯:ℚ⟮b⟯] * [ℚ⟮b⟯:ℚ]
+      --        ∣ [ℚ⟮β⟯:ℚ] * [ℚ⟮b⟯:ℚ] ∣ 2^(j+1) * 2^k = 2^(j+k+1)
+      calc Module.finrank ℚ ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯)
+          = Module.finrank ↥(ℚ⟮b⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) * Module.finrank ℚ ↥(ℚ⟮b⟯) := htower
+        _ ∣ Module.finrank ℚ ↥(ℚ⟮β⟯) * Module.finrank ℚ ↥(ℚ⟮b⟯) :=
+            Nat.mul_dvd_mul h_comp_dvd (dvd_refl _)
+        _ ∣ 2 ^ (j + 1) * 2 ^ k := Nat.mul_dvd_mul hβ_dvd hk_dvd
+        _ = 2 ^ (j + k + 1) := by ring
     -- Step E: finrank ℚ ℚ⟮b+β⟯ ∣ finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) via tower law
     -- ℚ⟮b+β⟯ ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯ (hle) gives:
     --   finrank_join = finrank ↥ℚ⟮b+β⟯ ↥(join) * finrank ℚ ℚ⟮b+β⟯
