@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-problem-context",
+    "proofId": "erdos-1201",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "context",
+    "title": "Erdős #1201: Greatest Prime Factor of Consecutive Products",
+    "content": "P(n,k) denotes the greatest prime factor of the product n(n+1)···(n+k). Erdős conjectured that for any tolerance ε > 0 and density target η > 0, long enough windows guarantee P(n,k) > n^(1-ε) for almost all starting points n. The ε=1/2 case (square root threshold) was proved by Erdős himself. The full conjecture is open. This formalization captures the conjecture, the partial result as an axiom, and 19 structural theorems about GPF and consecutive products.",
+    "mathContext": "$P(n,k) = \\max\\{p \\text{ prime} : p \\mid n(n+1)\\cdots(n+k)\\}$. Conjecture: $\\forall \\varepsilon, \\eta > 0, \\exists k: \\overline{d}(\\{n : P(n,k) > n^{1-\\varepsilon}\\}) \\geq 1-\\eta$. Known: holds for $\\varepsilon = 1/2$ (Erdős). Connection: $P(n) \\to \\infty$ is easy; the density statement is hard.",
+    "significance": "Places Erdős #1201 in the context of smooth number theory: the conjecture says products of k+1 consecutive integers are rarely very smooth, which is a multiplicative analogue of Dirichlet's theorem on primes in progressions.",
+    "relatedConcepts": ["greatest-prime-factor", "smooth-numbers", "upper-density", "Sylvester-Schur-theorem"],
+    "prerequisites": ["analytic-number-theory", "smooth-number-theory", "Filter.limsup"]
+  },
+  {
+    "id": "ann-core-definitions",
+    "proofId": "erdos-1201",
+    "range": { "startLine": 27, "endLine": 48 },
+    "type": "definition",
+    "title": "Core Definitions: greatestPrimeFactor, consecutiveProduct, upperDensity",
+    "content": "greatestPrimeFactor n is defined via Nat.primeFactors.max' with a guard for the empty case (n ≤ 1 returns 0). consecutiveProduct n k is Finset.prod over range(k+1) of (n+i). upperDensity uses Filter.limsup at Filter.atTop — the standard formalization of lim sup of a sequence of ratios. The noncomputable annotations are necessary because greatestPrimeFactor and upperDensity involve Classical.choice through Finset.max' and Filter.limsup.",
+    "mathContext": "$\\text{gpf}(n) = \\max(n.\\text{primeFactors}) \\text{ if nonempty, else } 0$. $\\text{consec}(n,k) = \\prod_{i=0}^{k}(n+i)$. $\\overline{d}(S) = \\limsup_{N\\to\\infty} \\frac{|S \\cap [1,N]|}{N}$. The upperDensity uses real division: $\\text{card}/N \\in \\mathbb{R}$.",
+    "significance": "The Lean definitions faithfully capture the mathematical objects. The noncomputable guard on greatestPrimeFactor is unavoidable: finding the maximum of a Finset requires classical decidability.",
+    "relatedConcepts": ["Nat.primeFactors", "Finset.max'", "Filter.limsup", "Filter.atTop"],
+    "prerequisites": ["Mathlib.Data.Nat.Factors", "Mathlib.Data.Finset.Basic", "Filter.limsup"]
+  },
+  {
+    "id": "ann-conjecture-axiom",
+    "proofId": "erdos-1201",
+    "range": { "startLine": 54, "endLine": 70 },
+    "type": "definition",
+    "title": "Main Conjecture and the ε=1/2 Axiom",
+    "content": "ErdosProblem1201 is a Prop (not a theorem) — it records the open conjecture in Lean's type system. The axiom erdos_1201_half_case captures Erdős's proven partial result: for every η > 0 there exists k such that {n | P(n,k) > √n} has upper density ≥ 1-η. Encoding known results as axioms is the correct approach for axiomatized gallery entries: it allows all downstream theorems to compile while being transparent about what has not been machine-verified.",
+    "mathContext": "$\\text{ErdosProblem1201} := \\forall \\varepsilon \\in (0,1), \\eta > 0, \\exists k: \\overline{d}(\\{n : P(n,k) > n^{1-\\varepsilon}\\}) \\geq 1-\\eta$. Axiom: $\\forall \\eta > 0, \\exists k: \\overline{d}(\\{n : \\sqrt{n} < P(n,k)\\}) \\geq 1-\\eta$ (ε=1/2 case, Erdős).",
+    "significance": "The 1-axiom design is minimal: exactly one assumption encodes the one known result. The main conjecture is a definition (Prop), not an axiom — this correctly reflects that ErdosProblem1201 is unproved.",
+    "relatedConcepts": ["axiomatized-formalization", "partial-result", "open-conjecture", "lim-sup-density"],
+    "prerequisites": ["ErdosProblem1201", "erdos_1201_half_case", "upperDensity"]
+  },
+  {
+    "id": "ann-gpf-properties",
+    "proofId": "erdos-1201",
+    "range": { "startLine": 76, "endLine": 114 },
+    "type": "technique",
+    "title": "GPF Properties: Primality, Divisibility, Maximality",
+    "content": "Six theorems establish that greatestPrimeFactor n behaves correctly for n ≥ 2: (1) gpf_prime: P(n) is prime. (2) gpf_mem_primeFactors: P(n) ∈ n.primeFactors. (3) gpf_dvd: P(n) | n. (4) gpf_le: P(n) ≤ n (from divisibility). (5) gpf_ge_two: P(n) ≥ 2 (since P(n) is prime). (6) gpf_max: if p ∈ n.primeFactors then p ≤ P(n) — maximality. All proofs go through Finset.max'_mem and Finset.le_max'.",
+    "mathContext": "For $n \\geq 2$: $P(n) \\in n.\\text{primeFactors}$, $P(n) \\mid n$, $2 \\leq P(n) \\leq n$. Maximality: $\\forall p \\in n.\\text{primeFactors}: p \\leq P(n)$. These follow from $\\text{Finset.max'}$ being the maximum of a finite set.",
+    "significance": "These lemmas are the interface that all downstream results use — establishing P(n) as the canonical maximum prime divisor.",
+    "relatedConcepts": ["Nat.primeFactors", "Finset.max'", "prime-divisor", "maximality"],
+    "prerequisites": ["Nat.prime_of_mem_primeFactors", "Finset.max'_mem", "Finset.le_max'", "Nat.mem_primeFactors"]
+  },
+  {
+    "id": "ann-consecutive-product",
+    "proofId": "erdos-1201",
+    "range": { "startLine": 118, "endLine": 185 },
+    "type": "technique",
+    "title": "Consecutive Product: Recursion, Divisibility, Monotonicity",
+    "content": "The section proves five structural facts: (1) consecutiveProduct_zero: product of 1 integer is n. (2) consecutiveProduct_pos: positive for n ≥ 1. (3) dvd_consecutiveProduct_left/right: n and n+k both divide the product. (4) consecutiveProduct_succ: the key recursion n(n+1)···(n+k+1) = n · (n+1)···(n+k). (5) gpfConsecutive_mono: GPF is non-decreasing in window size — the central monotonicity result.",
+    "mathContext": "$\\text{consec}(n,0) = n$. $\\text{consec}(n,k+1) = n \\cdot \\text{consec}(n+1,k)$. $n \\mid \\text{consec}(n,k)$ and $(n+k) \\mid \\text{consec}(n,k)$. Monotonicity: $P(n,k) \\leq P(n,k+1)$ because $\\text{consec}(n,k) \\mid \\text{consec}(n,k+1)$, so every prime factor of the smaller product is also a prime factor of the larger one.",
+    "significance": "Monotonicity in k is crucial for the conjecture: it says extending the window can only help find large prime factors. The proof uses Finset.range_subset and Finset.prod_dvd_prod_of_subset.",
+    "relatedConcepts": ["Finset.prod", "divisibility-in-products", "gpf-monotonicity", "window-extension"],
+    "prerequisites": ["Finset.dvd_prod_of_mem", "Finset.prod_dvd_prod_of_subset", "Nat.mem_primeFactors"]
+  },
+  {
+    "id": "ann-large-prime-criterion",
+    "proofId": "erdos-1201",
+    "range": { "startLine": 187, "endLine": 208 },
+    "type": "technique",
+    "title": "Large Prime Factor Criterion: gpfConsecutive_large_of_prime_dvd",
+    "content": "gpfConsecutive_large_of_prime_dvd is the key sufficient condition: if there exists a prime p ≤ n+k such that p | n+i for some i ≤ k and p > n^(1-ε), then P(n,k) > n^(1-ε). The proof shows p ∈ (consecutiveProduct n k).primeFactors (using Finset.dvd_prod_of_mem with index i), then applies gpf_max. The calc block combines the hypotheses directly.",
+    "mathContext": "If $p$ prime, $p \\mid n+i$ for some $i \\leq k$, $p > n^{1-\\varepsilon}$: then $p \\in \\text{primeFactors}(\\text{consec}(n,k))$ (since $p \\mid n+i \\mid \\prod_{j=0}^{k}(n+j)$), so $P(n,k) \\geq p > n^{1-\\varepsilon}$. This is the standard 'witness' argument.",
+    "significance": "Provides the concrete path to proving the conjecture: find a prime in the window larger than the threshold, and you're done. The density question reduces to: how often does such a prime exist?",
+    "relatedConcepts": ["prime-witness", "prime-in-window", "smooth-number-threshold"],
+    "prerequisites": ["gpf_max", "Finset.dvd_prod_of_mem", "Nat.mem_primeFactors"]
+  },
+  {
+    "id": "ann-half-case-equivalence",
+    "proofId": "erdos-1201",
+    "range": { "startLine": 231, "endLine": 265 },
+    "type": "technique",
+    "title": "ε=1/2 Case: sqrt(n) < P(n,k) ↔ n < P(n,k)²",
+    "content": "gpfConsecutive_half_iff proves the biconditional: Real.sqrt n < gpfConsecutive n k ↔ n < (gpfConsecutive n k)². The proof uses Real.sqrt_lt' (sqrt is monotone) and simp on sqrt_lt_sqrt_iff. erdos_1201_half_squared then applies the axiom to produce the squared-GPF density statement. The set equality step uses ext + interval_cases for small n (0, 1) where the condition degenerates.",
+    "mathContext": "$P(n,k) > \\sqrt{n} \\iff P(n,k)^2 > n$ (for $P(n,k) \\geq 1$). Proof: $\\sqrt{n} < P(n,k) \\iff n < P(n,k)^2$ by squaring (both sides non-negative). The interval_cases n tactic handles $n \\in \\{0, 1\\}$ as base cases.",
+    "significance": "The squared form is cleaner for number-theoretic arguments — it avoids square roots in subsequent reasoning. The translation between sqrt and squared forms is a common technique in analytic number theory.",
+    "relatedConcepts": ["Real.sqrt", "square-root-threshold", "analytic-number-theory-technique"],
+    "prerequisites": ["Real.sqrt_lt'", "Real.sqrt_lt_sqrt_iff", "erdos_1201_half_case"]
+  },
+  {
+    "id": "ann-bertrand-application",
+    "proofId": "erdos-1201",
+    "range": { "startLine": 267, "endLine": 300 },
+    "type": "insight",
+    "title": "Bertrand's Postulate: Wide Windows Always Have a Large Prime",
+    "content": "gpfConsecutive_gt_n_of_wide proves that if the window [n, n+k] has width k ≥ n, then P(n,k) > n. By Bertrand's postulate (Nat.exists_prime_lt_and_le_two_mul), there exists a prime p with n < p ≤ 2n ≤ n+k. This prime p divides n+i for i = p-n (via Finset.dvd_prod_of_mem). So GPF ≥ p > n. The earlier gpfConsecutive_ge_self_of_prime shows GPF ≥ n when n itself is prime.",
+    "mathContext": "Bertrand's Postulate: $\\forall n \\geq 1, \\exists p$ prime with $n < p \\leq 2n$. Corollary: for window width $k \\geq n$, $[n, n+k] \\supseteq [n+1, 2n]$ contains Bertrand's prime $p$. So $p \\mid (n+p-n)$ and $p > n$, giving $P(n,k) \\geq p > n$. This is the ε=0 case (up to a constant) of the full conjecture.",
+    "significance": "The Bertrand application shows the ε=0 case is easy: any window of width ≥ n contains a prime >n. The conjecture's depth is in getting primes >n^(1-ε) for small ε and in controlling density, not just existence.",
+    "relatedConcepts": ["Bertrand-postulate", "Nat.exists_prime_lt_and_le_two_mul", "prime-in-interval", "window-width"],
+    "prerequisites": ["Nat.exists_prime_lt_and_le_two_mul", "Finset.dvd_prod_of_mem", "consecutiveProduct_ge_n"]
+  }
+]

@@ -1,0 +1,144 @@
+{
+  "id": "erdos-1201",
+  "title": "Greatest Prime Factor of Consecutive Products",
+  "slug": "erdos-1201",
+  "description": "Let P(n,k) be the greatest prime factor of n(n+1)\u00b7\u00b7\u00b7(n+k). Erd\u0151s conjectured that for every \u03b5,\u03b7>0 there exists k such that P(n,k) > n^(1-\u03b5) for a set of n of upper density \u2265 1-\u03b7. The \u03b5=1/2 case (P(n,k) > \u221an) was proved by Erd\u0151s.",
+  "meta": {
+    "author": "Erd\u0151s",
+    "sourceUrl": "https://erdosproblems.com/1201",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1201Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "greatest-prime-factor",
+      "consecutive-integers",
+      "upper-density",
+      "analytic-number-theory"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1201,
+    "erdosUrl": "https://erdosproblems.com/1201",
+    "erdosProblemStatus": "open",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: erdos_1201_half_case (the \u03b5=1/2 partial result, proved by Erd\u0151s). The main conjecture ErdosProblem1201 is open. All structural theorems are fully proved.",
+    "lineCount": 505,
+    "mathlib_version": "4.26.0",
+    "theoremCount": 37
+  },
+  "overview": {
+    "historicalContext": "Erd\u0151s posed this problem about the greatest prime factor of products of consecutive integers. The greatest prime factor P(n) satisfies P(n) \u2192 \u221e as n \u2192 \u221e, but its distribution among products of consecutive integers is much subtler. The \u03b5=1/2 case was established by Erd\u0151s: there exist arbitrarily long windows of consecutive integers containing a prime exceeding \u221an. The full conjecture\u2014that large prime factors dominate for almost all starting points n, for any threshold n^(1-\u03b5)\u2014remains open.",
+    "problemStatement": "For every \u03b5,\u03b7 > 0 there exists k such that the upper density of {n | P(n,k) > n^(1-\u03b5)} is at least 1-\u03b7, where P(n,k) is the greatest prime factor of n(n+1)\u00b7\u00b7\u00b7(n+k).",
+    "text": "Let P(n,k) be the greatest prime factor of n(n+1)\u00b7\u00b7\u00b7(n+k). The main conjecture says for every \u03b5,\u03b7>0 there exists k such that {n | P(n,k) > n^(1-\u03b5)} has upper density \u2265 1-\u03b7. Erd\u0151s proved the \u03b5=1/2 case.",
+    "proofStrategy": "We define greatestPrimeFactor using Nat.primeFactors.max', consecutiveProduct as a Finset.prod, and upperDensity via Filter.limsup. The main conjecture and known partial result (\u03b5=1/2) are formalized. The \u03b5=1/2 result is an axiom; all structural properties are proved.",
+    "keyInsights": [
+      "greatestPrimeFactor n \u2208 n.primeFactors and divides n whenever n \u2265 2",
+      "gpfConsecutive is monotone in k: increasing window length can only increase the greatest prime factor",
+      "The \u03b5=1/2 case P(n,k) > \u221an is equivalent to P(n,k)\u00b2 > n",
+      "gpfConsecutive_large_of_prime_dvd gives a sufficient criterion: any prime p in the window with p > n^(1-\u03b5) witnesses the condition",
+      "The full conjecture requires analytic number theory; no elementary proof is known"
+    ],
+    "prerequisites": [
+      "Analytic number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 27,
+      "endLine": 48,
+      "summary": "Defines greatestPrimeFactor, consecutiveProduct, gpfConsecutive, and upperDensity.",
+      "mathContext": "$P(n) = \\max(n.\\text{primeFactors})$, $P(n,k) = P(n(n+1)\\cdots(n+k))$, upper density via $\\limsup_{N\\to\\infty} |S \\cap [1,N]|/N$."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture and Partial Result",
+      "startLine": 54,
+      "endLine": 69,
+      "summary": "ErdosProblem1201 (open) and erdos_1201_half_case axiom (\u03b5=1/2 proved by Erd\u0151s).",
+      "mathContext": "$\\forall\\varepsilon,\\eta>0\\,\\exists k: \\overline{d}(\\{n : P(n,k)>n^{1-\\varepsilon}\\})\\geq 1-\\eta$. Axiomatized: $\\forall\\eta>0\\,\\exists k: \\overline{d}(\\{n : P(n,k)>\\sqrt{n}\\})\\geq 1-\\eta$."
+    },
+    {
+      "id": "gpf-properties",
+      "title": "Properties of Greatest Prime Factor",
+      "startLine": 74,
+      "endLine": 114,
+      "summary": "Primality, divisibility, maximality, and bounds for greatestPrimeFactor.",
+      "mathContext": "$P(n)$ is prime, $P(n) \\mid n$, $P(n) \\leq n$, $P(n) \\geq 2$ for $n \\geq 2$. Any prime divisor $p \\mid n$ satisfies $p \\leq P(n)$."
+    },
+    {
+      "id": "consecutive-properties",
+      "title": "Properties of Consecutive Products",
+      "startLine": 118,
+      "endLine": 159,
+      "summary": "Recursion, positivity, divisibility, and monotonicity of consecutiveProduct.",
+      "mathContext": "$\\prod_{i=0}^{k+1}(n+i) = n \\cdot \\prod_{i=0}^{k}(n+1+i)$. Both $n$ and $n+k$ divide the product. The product is positive for $n \\geq 1$."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity and Growth",
+      "startLine": 161,
+      "endLine": 229,
+      "summary": "gpfConsecutive_mono and gpfConsecutive_large_of_prime_dvd: the key structural theorems.",
+      "mathContext": "$P(n,k) \\leq P(n,k+1)$. If $p$ is prime with $p \\mid n+i$ for some $i \\leq k$ and $p > n^{1-\\varepsilon}$, then $P(n,k) > n^{1-\\varepsilon}$."
+    },
+    {
+      "id": "half-case",
+      "title": "The \u03b5=1/2 Case",
+      "startLine": 231,
+      "endLine": 266,
+      "summary": "Equivalence of sqrt condition and squared GPF condition; specialization of partial result.",
+      "mathContext": "$P(n,k) > \\sqrt{n} \\iff P(n,k)^2 > n$. The \u03b5=1/2 axiom specializes to: $\\forall\\eta>0\\,\\exists k: \\overline{d}(\\{n: n < P(n,k)^2\\}) \\geq 1-\\eta$."
+    },
+    {
+      "id": "bounds",
+      "title": "Upper Bounds and Tight Estimates",
+      "startLine": 342,
+      "endLine": 395,
+      "summary": "gpfConsecutive_zero (base case), prime_dvd_consecutive_range (induction helper), gpfConsecutive_upper_bound (P(n,k) \u2264 n+k), le_gpfConsecutive_of_prime_dvd_term (lower bound from divisibility), gpfConsecutive_between (Bertrand tight bound n < P(n,n) \u2264 2n).",
+      "mathContext": "$P(n,0) = \\mathrm{gpf}(n)$. $P(n,k) \\leq n+k$ (every prime factor of any term $n+i$ is $\\leq n+i \\leq n+k$). If prime $p \\mid n+i$ for $i \\leq k$, then $p \\leq P(n,k)$. By Bertrand: $n < P(n,n) \\leq 2n$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erd\u0151s Problem 1201 on greatest prime factors of consecutive products, the partial \u03b5=1/2 result, and 37 structural theorems. 0 sorries, 1 axiom (the partial result). Includes consecutiveProduct_one (P(n,1)=n(n+1)), gpfConsecutive_one_eq_max (GPF of two-term product equals max of individual GPFs), and gpfConsecutive_bertrand (Bertrand tight bounds).",
+    "implications": "Resolution would advance our understanding of the distribution of prime factors in consecutive integer products and connect to the Sylvester-Schur theorem and smooth number theory.",
+    "openQuestions": [
+      "Does the full conjecture hold for all \u03b5 > 0?",
+      "What is the optimal window size k needed for density 1-\u03b7?",
+      "Is there a connection to Bertrand's postulate for the \u03b5=1 case?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factors",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic",
+      "Mathlib.NumberTheory.Bertrand"
+    ],
+    "opens": [],
+    "namespace": "Erdos1201",
+    "lineCount": 505,
+    "axiomCount": 1,
+    "theoremCount": 37,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos1201Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-677",
+      "relationship": "related",
+      "description": "Related Erd\u0151s problem on LCM of consecutive integers \u2014 both study multiplicative structure of consecutive integer blocks"
+    },
+    {
+      "targetId": "erdos-1083-oq-02",
+      "relationship": "related",
+      "description": "Related problem on distinct distances \u2014 both involve upper density arguments and structural results about infinite sets"
+    }
+  ],
+  "sorries": 0
+}
