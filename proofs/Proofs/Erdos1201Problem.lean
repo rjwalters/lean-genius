@@ -294,4 +294,17 @@ theorem gpfConsecutive_gt_n_of_large_window (n k : ℕ) (hn : 2 ≤ n) (hk : n �
   | succ d ih =>
     exact Nat.lt_of_lt_of_le ih (gpfConsecutive_mono n (n + d) hn)
 
+/-
+## Prime Start Lower Bound
+-/
+
+/-- For prime n and any window width k, gpfConsecutive n k ≥ n.
+    Since n is prime and n divides the consecutive product (as its first term),
+    n is a prime factor of the product, so the greatest prime factor is ≥ n. -/
+theorem gpfConsecutive_ge_self_of_prime (n k : ℕ) (hn : n.Prime) :
+    n ≤ gpfConsecutive n k := by
+  have h_cp_ge_n := consecutiveProduct_ge_n n k (by linarith [hn.two_le])
+  exact gpf_ge_prime_dvd (consecutiveProduct n k) n
+    (le_trans hn.two_le h_cp_ge_n) hn (dvd_consecutiveProduct_left n k)
+
 end Erdos1201
