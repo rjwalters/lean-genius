@@ -72,9 +72,21 @@
     "prerequisites": ["character sums", "algebraic number theory", "Galois theory", "Eisenstein integers"]
   },
   {
+    "id": "ann-eqr-oq02-axioms-examples",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-02",
+    "range": { "startLine": 376, "endLine": 434 },
+    "type": "insight",
+    "title": "Cubic Reciprocity Axioms and Concrete Verification Examples",
+    "content": "**Axiomatic cubic reciprocity (lines 375–402)**: `cubicResidueSymbol` (axiom, line 378) defines the cubic residue symbol for an Eisenstein prime π and integer a; it returns the unique cube root of unity with a^((N(π)−1)/3) ≡ (a/π)₃ (mod π). `cubic_reciprocity` (axiom, line 399) states the full Cubic Reciprocity Law: for distinct primary Eisenstein primes π and ρ, (ρ/π)₃ = (π/ρ)₃. The Jacobi sum proof strategy is documented in lines 380–398 (Jacobi sum J(χₚ,χₚ), Frobenius, symmetry argument).\n\n**PART 9: Concrete Examples** (lines 404–434): verification by norm_num:\n- p = 7 (≡ 1 mod 3): cubExp = 2; cubic residues mod 7 are {0,1,6} — verified: 1³=1 and 3³=27≡6 (mod 7)\n- Euler criterion for p=7: a is cubic residue iff a² ≡ 1 (mod 7) — 1²≡1 ✓, 6²≡1 ✓, 2²≡4≠1 ✓, 3²≡2≠1 ✓\n- p = 13: cubExp = 4, quartExp = 3\n\nAll examples closed by `norm_num`.",
+    "mathContext": "$N(\\pi) = \\pi \\bar{\\pi}$ is the norm in $\\mathbb{Z}[\\omega]$. For Eisenstein prime $\\pi$ above rational prime $p \\equiv 1 \\pmod{3}$: $N(\\pi) = p$. The cubic residue symbol $(a/\\pi)_3 \\in \\{1, \\omega, \\omega^2\\}$ (cube roots of unity). **Cubic Reciprocity** (Eisenstein 1844): for distinct primary Eisenstein primes, $(\\rho/\\pi)_3 = (\\pi/\\rho)_3$. Compare with QR: the quadratic Legendre symbol satisfies $(p/q)(q/p) = (-1)^{(p-1)(q-1)/4}$; cubic reciprocity has the simpler form of perfect symmetry.",
+    "significance": "supporting",
+    "relatedConcepts": ["EisensteinPrime", "cubicResidueSymbol", "cubic_reciprocity", "Jacobi sums", "norm_num examples"],
+    "prerequisites": ["EisensteinPrime structure", "cubic character construction (Part 2)", "ZMod norm_num"]
+  },
+  {
     "id": "ann-eqr-oq02-summary-packages",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-02",
-    "range": { "startLine": 376, "endLine": 391 },
+    "range": { "startLine": 436, "endLine": 461 },
     "type": "context",
     "title": "Character Package Summary: Assembling the Full Results",
     "content": "`cubic_character_package` and `quartic_character_package` are summary theorems bundling all proved properties for p ≡ 1 (mod 3) and p ≡ 1 (mod 4) respectively. Each package states: (1) the character is a group homomorphism, (2) the character cubed/quarted equals 1, and (3) the Euler criterion iff (modulo the hard direction axiom). These packages make the results easy to apply without knowing the internal structure. The pattern of 'packing theorems' is a good Lean 4 design choice: it provides a clean API for downstream proofs.",
