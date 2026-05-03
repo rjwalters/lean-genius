@@ -336,7 +336,7 @@ private theorem indicator_lp_hasSum_sf [SigmaFinite μ] [Fact (1 ≤ p)] (n : �
   -- Identify each term with indicatorConstLp
   let hfin_i : ∀ i, μ (f i ∩ spanningSets μ n) < ⊤ := fun i =>
     (measure_mono Set.inter_subset_right).trans_lt (measure_spanningSets_lt_top μ n)
-  let hfin_U : μ (⋃ i, f i ∩ spanningSets μ n) < ⊤ :=
+  let hfin_U : μ ((⋃ i, f i) ∩ spanningSets μ n) < ⊤ :=
     (measure_mono Set.inter_subset_right).trans_lt (measure_spanningSets_lt_top μ n)
   have hS_meas : MeasurableSet (spanningSets μ n) := measurableSet_spanningSets μ n
   have hg_eq : ∀ i,
@@ -385,13 +385,14 @@ private theorem indicator_lp_hasSum_sf [SigmaFinite μ] [Fact (1 ≤ p)] (n : �
       ∑ i ∈ S, indicatorConstLp p (hf_meas i |>.inter hS_meas) (hfin_i i).ne 1 =
       indicatorConstLp p
         (S.measurableSet_biUnion (fun i _ => hf_meas i |>.inter hS_meas))
-        (((measure_mono Set.inter_subset_right).trans_lt (measure_spanningSets_lt_top μ n)).ne)
+        (((measure_mono (Set.iUnion₂_subset (fun i _ => Set.inter_subset_right))).trans_lt
+           (measure_spanningSets_lt_top μ n)).ne)
         1 := fun S =>
     Lp.ext (by
       filter_upwards [hcoe_sum S,
                       indicatorConstLp_coeFn
                         (hs := S.measurableSet_biUnion (fun i _ => hf_meas i |>.inter hS_meas))
-                        (hμs := ((measure_mono Set.inter_subset_right).trans_lt
+                        (hμs := ((measure_mono (Set.iUnion₂_subset (fun i _ => Set.inter_subset_right))).trans_lt
                                   (measure_spanningSets_lt_top μ n)).ne)] with x hS hU
       rw [hS, hU]
       simp_rw [← Set.inter_iUnion₂]
