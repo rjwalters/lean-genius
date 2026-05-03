@@ -51,7 +51,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The converse to the channel coding theorem is one of Shannon's fundamental results (1948): no communication system can reliably transmit information at rates exceeding channel capacity. While the achievability direction (constructing good codes below capacity) is often emphasized, the converse is equally important — it establishes capacity as the true fundamental limit.\n\nThe standard proof of the converse uses Fano's inequality, which bounds the conditional entropy H(W|Ŵ) in terms of the error probability P_e. Since H(W) = log M (uniform source) and I(W;Y^n) ≤ n·C (memoryless channel + data processing), we get: log M = I(W;Y^n) + H(W|Y^n) ≤ n·C + H(W|Ŵ) ≤ n·C + 1 + P_e·log M. Rearranging: P_e ≥ 1 - (n·C+1)/(n·R). For n large enough, this is bounded below by (R-C)/(2R).",
+    "historicalContext": "Claude Shannon's 1948 paper 'A Mathematical Theory of Communication' introduced both the channel coding theorem (achievability) and its converse in a single landmark paper. The converse — that no code can achieve reliable communication above capacity — is arguably the more fundamental result: it establishes capacity C as a hard upper limit, not merely an achievable benchmark. Shannon's original proof of the converse used a combinatorial counting argument; the modern form using Fano's inequality became standard through the work of Feinstein (1954) and Wolf/Fano in the 1950s.\n\nRobert Fano (1952) proved the inequality that bears his name: for any random variables W (input) and Ŵ (estimate), H(W|Ŵ) ≤ H_b(P_e) + P_e·log(M-1), where H_b is the binary entropy. Combined with Shannon's chain rule H(W) = I(W;Y^n) + H(W|Y^n), this yields a clean algebraic bound. The 'strong converse' — that P_e → 1 as n → ∞ for any rate R > C, not just P_e bounded away from 0 — was proved by Wolfowitz (1957) and requires a more refined argument. This formalization proves the weaker (but classical) asymptotic converse, with an explicit quantitative threshold N = ⌈2/(R-C)⌉.",
     "problemStatement": "**Channel Coding Converse (Asymptotic)**:\nFor any discrete memoryless channel with capacity $C$ and any rate $R > C$, there exists $\\delta > 0$ and $N \\in \\mathbb{N}$ such that for all $n \\geq N$, any block code of length $n$ with rate $\\geq R$ satisfies:\n$$P_e \\geq \\delta = \\frac{R-C}{2R} > 0$$\nSpecifically, $N = \\lceil 2/(R-C) \\rceil$ suffices.",
     "text": "Proves the asymptotic channel coding converse: error probability is bounded away from zero at rates above capacity.",
     "proofStrategy": "The proof has four stages:\n\n1. **Combined bound (axiom)**: fano_mi_converse_bound axiomatizes the three information-theoretic steps that together give log M ≤ n·C + 1 + P_e·log M. The three steps are: (i) H(W) = log M for uniform sources, (ii) I(W;Y^n) ≤ n·C by memoryless channel MI chain rule, (iii) H(W|Ŵ) ≤ 1 + P_e·log M by Fano's inequality with h(P_e) ≤ log 2 ≤ 1 nat.\n\n2. **Algebraic bound (converse_from_combined_bound)**: From log M ≤ n·C + 1 + P_e·log M and log M ≥ n·R, derive P_e ≥ 1 - (n·C+1)/(n·R). The main step is (1-P_e)·log M ≤ n·C+1, combined with log M ≥ n·R to get (1-P_e)·n·R ≤ n·C+1.\n\n3. **Threshold bound (threshold_bound)**: Show that for n ≥ 2/(R-C), we have (R-C)/(2R) ≤ 1 - (n·C+1)/(n·R). The key algebraic fact is n·(R-C) ≥ 2 implies n·R² ≥ n·C·R + 2R, which gives the bound after clearing denominators.\n\n4. **Main theorem**: Combine steps 2 and 3 to get P_e ≥ (R-C)/(2R) for all n ≥ ⌈2/(R-C)⌉.",
@@ -76,7 +76,8 @@
       "startLine": 33,
       "endLine": 37,
       "description": "Defines codeErrorProb: the average fraction of messages decoded incorrectly by a specific decoder.",
-      "summary": "Defines the average error probability of a block code with given encoder and decoder."
+      "summary": "Defines the average error probability of a block code with given encoder and decoder.",
+      "mathContext": "$P_e = \\frac{1}{M}\\sum_{i=1}^M \\Pr[\\hat{W} \\neq i \\mid W=i]$"
     },
     {
       "id": "fano-mi-axiom",
@@ -84,7 +85,8 @@
       "startLine": 51,
       "endLine": 56,
       "description": "Axiomatizes the three-step information-theoretic argument: H(W)=log M, I(W;Y^n)≤n·C, H(W|Ŵ)≤1+P_e·log M. Together these give log M ≤ n·C + 1 + P_e·log M.",
-      "summary": "Key axiom combining Fano inequality and memoryless channel MI bound."
+      "summary": "Key axiom combining Fano inequality and memoryless channel MI bound.",
+      "mathContext": "Axiom: $\\log M \\leq nC + 1 + P_e \\log M$"
     },
     {
       "id": "algebraic-converse",
@@ -92,7 +94,8 @@
       "startLine": 61,
       "endLine": 79,
       "description": "From the Fano-MI bound and the rate condition log M ≥ n·R, derives P_e ≥ 1 - (n·C+1)/(n·R) by algebraic manipulation.",
-      "summary": "Derives the P_e lower bound from the combined Fano-MI inequality."
+      "summary": "Derives the P_e lower bound from the combined Fano-MI inequality.",
+      "mathContext": "$\\log M \\geq nR,\\; \\log M \\leq nC+1+P_e\\log M \\implies P_e \\geq 1 - \\frac{nC+1}{nR}$"
     },
     {
       "id": "threshold-lemma",
@@ -100,7 +103,8 @@
       "startLine": 82,
       "endLine": 104,
       "description": "For n ≥ 2/(R-C), proves (R-C)/(2R) ≤ 1 - (n·C+1)/(n·R) by clearing denominators and using the key polynomial inequality n·R² ≥ n·C·R + 2R.",
-      "summary": "Shows the gap (R-C)/(2R) appears once n exceeds the threshold 2/(R-C)."
+      "summary": "Shows the gap (R-C)/(2R) appears once n exceeds the threshold 2/(R-C).",
+      "mathContext": "$n(R-C) \\geq 2 \\implies \\frac{R-C}{2R} \\leq 1 - \\frac{nC+1}{nR}$"
     },
     {
       "id": "delta-pos",
@@ -108,7 +112,8 @@
       "startLine": 107,
       "endLine": 109,
       "description": "The gap δ = (R-C)/(2R) is strictly positive when R > C.",
-      "summary": "δ > 0 whenever the rate exceeds capacity."
+      "summary": "δ > 0 whenever the rate exceeds capacity.",
+      "mathContext": "$\\delta = \\frac{R-C}{2R} > 0 \\iff R > C$"
     },
     {
       "id": "rate-log-lemma",
@@ -116,7 +121,8 @@
       "startLine": 112,
       "endLine": 118,
       "description": "Translates the rate condition R ≤ rate_of_code into the log form n·R ≤ log M needed for the main proof.",
-      "summary": "Converts rate ≥ R into the log M ≥ n·R inequality."
+      "summary": "Converts rate ≥ R into the log M ≥ n·R inequality.",
+      "mathContext": "$R \\leq \\frac{\\log M}{n} \\iff nR \\leq \\log M$"
     },
     {
       "id": "main-theorem",
@@ -124,7 +130,8 @@
       "startLine": 131,
       "endLine": 163,
       "description": "The main theorem: for R > C, the gap δ = (R-C)/(2R) is positive and any code with rate ≥ R and block length n ≥ ⌈2/(R-C)⌉ has error probability ≥ δ.",
-      "summary": "Main result: P_e ≥ (R-C)/(2R) for sufficiently long codes at rates above capacity."
+      "summary": "Main result: P_e ≥ (R-C)/(2R) for sufficiently long codes at rates above capacity.",
+      "mathContext": "$\\forall n \\geq \\lceil 2/(R-C) \\rceil,\\; \\text{rate} \\geq R \\implies P_e \\geq \\frac{R-C}{2R}$"
     }
   ],
   "conclusion": {
