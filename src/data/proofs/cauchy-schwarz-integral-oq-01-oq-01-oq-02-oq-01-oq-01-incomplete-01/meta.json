@@ -2,7 +2,7 @@
   "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
   "title": "Lp Riesz Representation for Sigma-Finite Measures (Complete)",
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
-  "description": "Advances the sigma-finite Lp Riesz representation from 3 sorries to 2 by proving Step C (density extension) in full: the integration CLM is valid for SigmaFinite μ without IsFiniteMeasure, and Lp.induction extends indicator agreement to all of Lp(μ).",
+  "description": "Advances the sigma-finite Lp Riesz representation from 3 sorries to 1 by proving Step C (density extension, Session 1) and Step B (Lp truncation convergence via Vitali, Session 2). Only localization_existence (Step A) remains as a sorry.",
   "meta": {
     "status": "formalized",
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean",
@@ -15,17 +15,18 @@
       "density-argument"
     ],
     "badge": "formalized",
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 343,
-    "assumptions": "2 HARD sorries remaining (down from 3): localization_existence (~150 lines, Lp restriction map infrastructure) and lp_truncation_tendsto_zero (~80 lines, Vitali's convergence theorem). Density extension (Step C, ~50 lines) is fully proved: integrationCLM works for SigmaFinite without IsFiniteMeasure, and Lp.induction is valid for sigma-finite measures.",
+    "lineCount": 399,
+    "assumptions": "1 HARD sorry remaining (down from 2): localization_existence (~150 lines, Lp restriction map infrastructure). Step B (lp_truncation_tendsto_zero, Vitali convergence) and Step C (density extension) are fully proved. Proof of Step B uses Vitali theorem with domination |Δ n| ≤ |f|.",
     "dateAdded": "2026-05-03",
     "theoremCount": 10,
     "originalContributions": [
       "integrationCLM_sf: integration CLM on Lp(μ) for purely sigma-finite μ — proves IsFiniteMeasure was never needed for the CLM construction (Hölder only)",
       "integral_representation_sf: Step C density extension proved — Lp.induction is valid for SigmaFinite without IsFiniteMeasure, completing the missing piece from the parent entry",
       "riesz_lp_surjective_sigma_finite: main theorem assembled with Step C proved — only localization (Step A) remains as sorry",
-      "Identification that the parent 3-sorry structure was correct but IsFiniteMeasure was superfluous for Steps C and the CLM: reduces 3 sorries to 2 with clean proof"
+      "Identification that the parent 3-sorry structure was correct but IsFiniteMeasure was superfluous for Steps C and the CLM: reduces 3 sorries to 2 with clean proof",
+      "lp_truncation_tendsto_zero: Step B proved via Vitali convergence theorem (tendsto_Lp_of_tendsto_ae) — key insight that |f - f·1_{Sₙ}| ≤ |f| pointwise enables unifIntegrable_const + unifTight_const + eLpNorm_mono to propagate UI/UT from the constant-f sequence to the difference sequence"
     ]
   },
   "overview": {

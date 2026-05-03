@@ -29,26 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Step C (density extension) proved. 3 sorries -> 2 sorries. Main theorem assembled modulo localization_existence (Step A).",
+    "progressSummary": "PROGRESS: Step C proved (Session 1, PR #15278). Step B proved (Session 2). 1 sorry remaining: localization_existence (Step A, ~150 lines).",
     "builtItems": [
       "integrationCLM_sf: integration CLM for pure SigmaFinite mu",
       "integral_representation_sf: density extension via Lp.induction",
       "riesz_lp_surjective_sigma_finite: main theorem with Step C proved",
-      "mem_spanningSets_eventually + pointwise_mul_indicator_tendsto (ported)"
+      "mem_spanningSets_eventually + pointwise_mul_indicator_tendsto (ported)",
+      "lp_truncation_tendsto_zero in CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean:254 — Step B proved: Lp norm convergence of f·1_{Sₙ} → f via tendsto_Lp_of_tendsto_ae (Vitali theorem), using unifIntegrable_const + unifTight_const + eLpNorm_mono with domination |Δ n| ≤ |f|"
     ],
     "insights": [
       "Step C (density extension) proved: Lp.induction is valid for SigmaFinite without IsFiniteMeasure",
       "integrationCLM does not need IsFiniteMeasure — Holder inequality suffices",
-      "3 sorries reduced to 2: localization + Vitali remain; density extension proved"
+      "3 sorries reduced to 2: localization + Vitali remain; density extension proved",
+      "Step B domination argument: |f - f·1_{Sₙ}| ≤ |f| pointwise (zero when a∈Sₙ, equals f when a∉Sₙ). This single bound transfers UI/UT from the constant-f sequence to the difference sequence via eLpNorm_mono.",
+      "Vitali theorem API in Mathlib v4.26: tendsto_Lp_of_tendsto_ae takes UnifIntegrable + UnifTight + ae convergence and gives Lp norm convergence. Both unifIntegrable_const and unifTight_const exist for the constant-sequence case."
     ],
     "mathlibGaps": [
       "Lp restriction map Lp(mu) -> Lp(mu.restrict S) not available as isometric map",
       "Vitali convergence theorem (tendsto_Lp_of_tendsto_ae) API verbosity for unifIntegrable + unifTight"
     ],
     "nextSteps": [
-      "Attempt lp_truncation_tendsto_zero using tendsto_Lp_of_tendsto_ae + unifIntegrable_of + unifTight_const",
-      "Search Mathlib for MeasureTheory.Lp.restrictMeasure for Step A localization",
-      "Consider Aristotle submission for both Step A and Step B"
+      "Prove localization_existence (Step A): for each spanning set Sₙ, restrict μ to finite measure, apply finite-measure Riesz, get gₙ ∈ Lq(μ.restrict Sₙ). Then glue via consistency (uniqueness) and MCT. Key gap: Lp restriction map Lp(μ) → Lp(μ.restrict S) — check if lp_toLpRestrict or similar exists in Mathlib v4.26."
     ]
   },
   "tags": [
