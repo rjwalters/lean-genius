@@ -79,15 +79,15 @@ theorem distSq_pos_of_ne {p q : Point2} (h : p ≠ q) : 0 < distSq p q := by
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #661**: Is F(2n) = o(f(2n))?
+/- **Erdős Problem #661**: Is F(2n) = o(f(2n))?
     Equivalently, can bipartite arrangements achieve
     asymptotically fewer distinct distances than general
     point configurations? -/
 /- ## Known Bounds -/
 
-/-- **Guth–Katz (2015)**: f(2n) ≳ n/log n. The minimum number
+/- **Guth–Katz (2015)**: f(2n) ≳ n/log n. The minimum number
     of distinct distances among 2n points is Ω(n/log n). -/
-/-- **Lattice Upper Bound**: f(2n) ≲ n/√(log n) from the integer
+/- **Lattice Upper Bound**: f(2n) ≲ n/√(log n) from the integer
     lattice. Thus the question asks if F(2n) = o(n/√(log n)). -/
 /- ## Basic Bounds -/
 
