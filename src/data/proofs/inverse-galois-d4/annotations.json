@@ -108,25 +108,79 @@
     "proofId": "inverse-galois-d4",
     "range": {
       "startLine": 254,
-      "endLine": 682
+      "endLine": 395
     },
     "type": "insight",
     "title": "The ℝ-Embedding Argument: Ruling Out |Gal| = 4",
-    "content": "The core novel argument:\n\n**`fourthRootOfTwo`** (line 296): defined as $\\sqrt{\\sqrt{2}}$ in ℝ using `Real.sqrt`. Proved: $(\\sqrt{\\sqrt{2}})^4 = 2$ via `Real.sq_sqrt` applied twice.\n\n**`embedAdjoinRootX4Sub2InReal`** (lines 309–314): constructs a ring homomorphism $\\mathbb{Q}(\\sqrt[4]{2}) \\to \\mathbb{R}$ via `AdjoinRoot.lift`, mapping the root $\\sqrt[4]{2}$ to `fourthRootOfTwo`. This is the critical step: it shows $\\text{AdjoinRoot}(X^4-2) \\hookrightarrow \\mathbb{R}$.\n\n**`x_sq_add_1_no_root_in_adjoin_root_x4_sub_2`** (lines 323–329): if $\\beta^2 + 1 = 0$ in $\\text{AdjoinRoot}(X^4-2)$, then $f(\\beta)^2 + 1 = 0$ in $\\mathbb{R}$ (where $f$ is the ring map), contradicting $x^2 + 1 > 0$ for all real $x$.\n\n**`x4_sub_2_gal_card_ne_four`** (lines 347+): if $|\\text{Gal}| = 4$, then $[\\text{SF}:\\mathbb{Q}] = 4 = [\\text{AdjoinRoot}:\\mathbb{Q}]$, so the natural map $\\text{AdjoinRoot} \\to \\text{SF}$ is an isomorphism (injective linear map between equal-dimensional spaces). But SF contains a root of $X^2+1$ (Part III), while AdjoinRoot does not. Contradiction. Hence $|\\text{Gal}| \\neq 4$.\n\nCombined with $4 \\mid |\\text{Gal}|$ and $|\\text{Gal}| \\mid 24$: $|\\text{Gal}| \\in \\{8, 12, 24\\}$. The upper bound $[\\text{SF}:\\mathbb{Q}] = 8$ (tower $2 \\times 4$) gives $|\\text{Gal}| = 8$.",
-    "mathContext": "Ring map existence: $\\text{AdjoinRoot}(f) = \\mathbb{Q}[X]/(f) \\cong \\mathbb{Q}[\\alpha]$ where $f(\\alpha) = 0$. `AdjoinRoot.lift` takes a ring map $\\phi: \\mathbb{Q} \\to R$ and an element $a \\in R$ with $f(a) = 0$, producing $\\mathbb{Q}[\\alpha] \\to R$ mapping $\\alpha \\mapsto a$. Injectivity follows because $\\mathbb{Q}[\\alpha]$ is a field (as $f$ is irreducible) and any ring map from a field is injective. The surjectivity follows from $\\dim_{\\mathbb{Q}}(\\text{AdjoinRoot}) = 4 = \\dim_{\\mathbb{Q}}(\\text{SF})$ when $|\\text{Gal}| = 4$.",
+    "content": "The critical lower bound argument shows |Gal| ≠ 4:\n\n**`fourthRootOfTwo`** (line 296): defined as √(√2) in ℝ via Real.sqrt. Proved: (√(√2))⁴ = 2 using Real.sq_sqrt twice.\n\n**`embedAdjoinRootX4Sub2InReal`** (lines 309-314): constructs a ring hom AdjoinRoot(X⁴-2) →+* ℝ via `AdjoinRoot.lift` mapping the abstract root to fourthRootOfTwo. Since AdjoinRoot(f) = ℚ[X]/(f) and f(fourthRootOfTwo) = 0, this is a valid algebra map. Any ring map from a field is injective, so AdjoinRoot(X⁴-2) ↪ ℝ.\n\n**`x_sq_add_1_no_root_in_adjoin_root_x4_sub_2`** (lines 323-329): if β²+1 = 0 in AdjoinRoot, then embedding(β)²+1 = 0 in ℝ. But x²+1 ≥ 1 > 0 for all x ∈ ℝ (via `sq_nonneg` + `linarith`). Contradiction.\n\n**`x4_sub_2_gal_card_ne_four`** (lines 347-394): if |Gal| = 4, then [SF:ℚ] = 4 = [AdjoinRoot:ℚ]. The inclusion AdjoinRoot → SF is injective (field maps are injective) and between equal-dimensional spaces, so it is surjective (rank-nullity: dim(range) = 4 = dim(SF)). But SF contains a root ω of X²+1 (from Part III), and ω pulls back through the surjection to a root of X²+1 in AdjoinRoot — contradiction with the no-root theorem.",
+    "mathContext": "AdjoinRoot.lift: given $\\phi: F \\to R$ and $a \\in R$ with $f(a) = 0$, constructs $F[X]/(f) \\to R$ mapping $[X] \\mapsto a$. Injectivity of field maps: $\\ker$ of any ring map $K \\to R$ (with $K$ a field) is $\\{0\\}$ or $K$; since $1 \\neq 0$ in $R$, ker $= \\{0\\}$. Surjectivity: injective $\\mathbb{Q}$-linear map $\\phi: V \\to W$ with $\\dim V = \\dim W < \\infty$ is surjective by rank-nullity ($\\text{rank} = 4 - 0 = 4 = \\dim W$).",
     "significance": "key",
     "relatedConcepts": [
       "AdjoinRoot.lift (Mathlib)",
-      "Real.sqrt properties (Real.sq_sqrt)",
-      "injective linear map between equal dimensions is surjective",
-      "x4_sub_2_gal_card_ne_four (core theorem)",
-      "adjoin_root_x4_sub_2_finrank = 4"
+      "Real.sqrt (Real.sq_sqrt)",
+      "rank-nullity for equal-dimension spaces",
+      "x4_sub_2_gal_card_ne_four",
+      "sq_nonneg + linarith for x²+1 > 0"
     ],
     "prerequisites": [
       "AdjoinRoot API in Mathlib",
-      "Real.sqrt and its algebraic properties",
-      "LinearMap.bijective_of_finrank_eq",
-      "linarith for sq_nonneg contradictions"
+      "Real.sqrt algebraic properties",
+      "LinearMap.finrank_range_add_finrank_ker",
+      "RingHom.injective for field source"
+    ]
+  },
+  {
+    "id": "ann-igd4-upper-bound",
+    "proofId": "inverse-galois-d4",
+    "range": {
+      "startLine": 396,
+      "endLine": 644
+    },
+    "type": "technique",
+    "title": "Upper Bound: All Roots of X⁴-2 Lie in ℚ(α,ω), Giving |Gal| | 8",
+    "content": "Three auxiliary lemmas then the key divisibility theorem:\n\n**`fourth_root_unity_sq`** (lines 400-407): c⁴ = 1 ↔ c²=1 or c²+1=0. Proof: c⁴-1 = (c²-1)(c²+1) = 0 by ring, then mul_eq_zero.\n\n**`fourth_root_unity_cases`** (lines 411-420): c⁴=1 → c ∈ {1, -1} or c²+1=0. Proof: from fourth_root_unity_sq, case c²=1 splits further into c=1 or c=-1 via (c-1)(c+1)=0.\n\n**`roots_in_adjoin`** (lines 439-538): every root r of X⁴-2 lies in ℚ⟮α,ω⟯ (the field generated by a fixed root α and a primitive 4th root ω of X²+1). The key: (r/α)⁴ = r⁴/α⁴ = 2/2 = 1, so r/α ∈ {1,-1,ω,-ω} by fourth_root_unity_cases, giving r ∈ {α,-α,ωα,-ωα} ⊂ ℚ⟮α,ω⟯.\n\n**`x4_sub_2_gal_card_dvd_8`** (lines 541-644): |Gal| | 8. From roots_in_adjoin, adjoin_alpha_omega_eq_top proves SF = ℚ⟮α,ω⟯. The tower law [SF:ℚ] = [SF:ℚ(α)] · [ℚ(α):ℚ] = [SF:ℚ(α)] · 4. To show [SF:ℚ(α)] | 2: ω satisfies X²+1 over ℚ(α), so minpoly(ℚ(α), ω) | X²+1 (degree 2); hence [ℚ(α)(ω):ℚ(α)] | 2. Since SF = ℚ(α,ω) = ℚ(α)(ω), this gives [SF:ℚ] | 8.",
+    "mathContext": "Fourth roots of unity: solutions to $c^4 = 1$ in a field $K$ are $\\{1, -1, \\omega, -\\omega\\}$ where $\\omega^2 = -1$ (if $\\text{char}(K) \\neq 2$). The roots of $X^4-2$ are $\\{\\alpha, i\\alpha, -\\alpha, -i\\alpha\\}$ in $\\mathbb{C}$, corresponding to the four values of $r/\\alpha \\in \\{1, i, -1, -i\\}$. Tower bound: $[\\mathbb{Q}(\\alpha, \\omega) : \\mathbb{Q}] \\leq [\\mathbb{Q}(\\alpha)(\\omega) : \\mathbb{Q}(\\alpha)] \\cdot [\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\leq 2 \\cdot 4 = 8$ since $\\min\\text{poly}(\\mathbb{Q}(\\alpha), \\omega) \\mid X^2+1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fourth_root_unity_cases",
+      "roots_in_adjoin",
+      "adjoin_alpha_omega_eq_top",
+      "IntermediateField.adjoin.finrank",
+      "minpoly.dvd"
+    ],
+    "prerequisites": [
+      "Field arithmetic: mul_eq_zero, ring",
+      "IntermediateField.adjoin in Mathlib",
+      "Module.finrank tower law",
+      "minpoly.dvd + natDegree_le_of_dvd",
+      "interval_cases tactic for finite case enumeration"
+    ]
+  },
+  {
+    "id": "ann-igd4-main-result",
+    "proofId": "inverse-galois-d4",
+    "range": {
+      "startLine": 645,
+      "endLine": 682
+    },
+    "type": "insight",
+    "title": "The Main Result: Three Constraints Pin |Gal| = 8 (D₄ Realization)",
+    "content": "The main theorem `x4_sub_2_gal_card` (lines 657-666) combines three constraints:\n1. `four_dvd_x4_sub_2_gal_card`: 4 | n (lower bound from degree)\n2. `x4_sub_2_gal_card_dvd_8`: n | 8 (upper bound from root structure)\n3. `x4_sub_2_gal_card_ne_four`: n ≠ 4 (ℝ-embedding rules out order 4)\n\nFrom (1)+(2): n ∈ {4, 8}. From (3): n = 8. The proof uses `interval_cases n` after establishing 4 ≤ n ≤ 8, which reduces to checking each of {4,5,6,7,8} — a finite tactic that closes by `simp_all`.\n\n`d4_realizable` (lines 671-680) packages the result into the existential form: ∃ K, ..., Fintype.card (K ≃ₐ[ℚ] K) = 8. The witness is the splitting field of X⁴-2 with the IsGalois instance. D₄ is the unique transitive subgroup of S₄ of order 8, so this identifies the Galois group as D₄.",
+    "mathContext": "The three-constraint squeeze: $4 \\mid n$ and $n \\mid 8$ gives $n \\in \\{4, 8\\}$; $n \\neq 4$ pins $n = 8$. This is the cleanest form of the argument. The `interval_cases` tactic materializes this: after `4 ≤ n` and `n ≤ 8`, it generates 5 goals ($n = 4, 5, 6, 7, 8$) and closes them by `simp_all` using the divisibility and inequality constraints.",
+    "significance": "key",
+    "relatedConcepts": [
+      "interval_cases tactic",
+      "d4_realizable (existential form)",
+      "IsGalois typeclass",
+      "D₄ as subgroup of S₄",
+      "Nat.le_of_dvd"
+    ],
+    "prerequisites": [
+      "four_dvd_x4_sub_2_gal_card",
+      "x4_sub_2_gal_card_dvd_8",
+      "x4_sub_2_gal_card_ne_four",
+      "interval_cases tactic",
+      "IsGalois in Mathlib"
     ]
   }
 ]
