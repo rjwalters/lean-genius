@@ -557,4 +557,50 @@ theorem gpfConsecutive_ge_right (n k : ℕ) (hn : 2 ≤ n) :
   apply Finset.le_sup
   exact Finset.mem_range.mpr (Nat.lt_succ_self k)
 
+/-
+## GPF of Products
+-/
+
+/-- The greatest prime factor of a product a*b equals the maximum of the individual
+    greatest prime factors: gpf(a*b) = max(gpf(a), gpf(b)) for a, b ≥ 2.
+
+    Key: any prime p dividing a*b must divide a or b (by primality), giving the ≤ direction.
+    The ≥ direction follows because gpf(a) | a | a*b, so gpf(a) ≤ gpf(a*b). -/
+theorem greatestPrimeFactor_mul (a b : ℕ) (ha : 2 ≤ a) (hb : 2 ≤ b) :
+    greatestPrimeFactor (a * b) = max (greatestPrimeFactor a) (greatestPrimeFactor b) := by
+  have hab : 2 ≤ a * b := by nlinarith
+  apply Nat.le_antisymm
+  · have hp := gpf_prime _ hab
+    rcases hp.dvd_mul.mp (gpf_dvd _ hab) with h | h
+    · exact le_trans (gpf_max a _ (Nat.mem_primeFactors.mpr ⟨hp, h, by omega⟩)) (le_max_left _ _)
+    · exact le_trans (gpf_max b _ (Nat.mem_primeFactors.mpr ⟨hp, h, by omega⟩)) (le_max_right _ _)
+  · apply max_le
+    · exact gpf_ge_prime_dvd _ _ hab (gpf_prime a ha) (dvd_trans (gpf_dvd a ha) (dvd_mul_right a b))
+    · exact gpf_ge_prime_dvd _ _ hab (gpf_prime b hb) (dvd_trans (gpf_dvd b hb) (dvd_mul_left b a))
+
+/-
+## General Monotonicity and Recursive Formula
+-/
+
+/-- **General k-monotonicity**: gpfConsecutive n k₁ ≤ gpfConsecutive n k₂ for k₁ ≤ k₂.
+    Extends the one-step `gpfConsecutive_mono` to arbitrary window extensions.
+    Proof: the sup over range(k₁+1) ≤ sup over range(k₂+1) by subset monotonicity. -/
+theorem gpfConsecutive_le_of_le_k (n : ℕ) (hn : 2 ≤ n) {k₁ k₂ : ℕ} (hk : k₁ ≤ k₂) :
+    gpfConsecutive n k₁ ≤ gpfConsecutive n k₂ := by
+  rw [gpfConsecutive_eq_sup_range n k₁ hn, gpfConsecutive_eq_sup_range n k₂ hn]
+  apply Finset.sup_le
+  intro i hi
+  apply Finset.le_sup
+  rw [Finset.mem_range] at hi ⊢
+  omega
+
+/-- **One-Step Recursive Formula**: P(n, k+1) = max(P(n, k), gpf(n+k+1)) for n ≥ 2.
+    Extending the window by one term on the right adds at most one new maximal prime factor.
+    This gives a clean recursion: the window GPF grows by absorbing the right endpoint's GPF. -/
+theorem gpfConsecutive_succ_right (n k : ℕ) (hn : 2 ≤ n) :
+    gpfConsecutive n (k + 1) = max (gpfConsecutive n k) (greatestPrimeFactor (n + k + 1)) := by
+  rw [gpfConsecutive_eq_sup_range n (k + 1) hn, gpfConsecutive_eq_sup_range n k hn,
+      show k + 1 + 1 = (k + 1) + 1 from rfl, Finset.range_succ, Finset.sup_insert]
+  simp only [show n + (k + 1) = n + k + 1 from by ring, sup_comm, sup_eq_max]
+
 end Erdos1201
