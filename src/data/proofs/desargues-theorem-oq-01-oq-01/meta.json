@@ -58,7 +58,8 @@
       "The bending rule (slope halved on right half-plane) is the minimal perturbation that breaks Desargues while preserving the affine plane axioms",
       "All side-intersection computations use only negative-slope or same-half-plane Moulton lines, so P, Q, R are computed by ordinary linear algebra — the bending is only visible when testing collinearity of P, Q, R",
       "The non-collinearity proof splits cleanly into two linarith calls: one for m ≤ 0 and one for m > 0, each deriving a numeric contradiction from the three point equations",
-      "P, Q, R ARE Euclidean-collinear (slope 2/11), confirming classical Desargues holds in ℝ² — only the Moulton plane's bent lines reveal the failure"
+      "P, Q, R ARE Euclidean-collinear (slope 2/11), confirming classical Desargues holds in ℝ² — only the Moulton plane's bent lines reveal the failure",
+      "The algebraic connection: Desargues iff coordinatizable by a division ring (Wedderburn 1905 / Hilbert 1901). The Moulton plane's violation of Desargues reflects a non-associativity in the ternary ring that arises from the piecewise multiplication by 1/2 at the y-axis"
     ],
     "prerequisites": [
       "Classical.propDecidable for if-then-else on real inequalities",
@@ -68,23 +69,63 @@
   },
   "sections": [
     {
-      "title": "Moulton Line Definition",
-      "content": "The key definition is `onMoultonLine m b P : Prop` — a piecewise predicate using classical if-then-else. For m ≤ 0 it reduces to the ordinary line equation P.2 = m·P.1 + b. For m > 0 with P.1 ≤ 0, same formula. For m > 0 with P.1 > 0, the slope is halved: P.2 = (m/2)·P.1 + b."
+      "id": "moulton-structure",
+      "title": "Part I: Moulton Line Structure",
+      "startLine": 48,
+      "endLine": 89,
+      "summary": "Defines onMoultonLine m b P (piecewise: ordinary for m≤0, bent for m>0 at x=0 boundary), MoultonCollinear (vertical or exists m,b), and six helper lemmas as constructors/destructors for the piecewise predicate.",
+      "mathContext": "Moulton line: $y = mx+b$ for $x \\leq 0$ and $y = \\frac{m}{2}x+b$ for $x > 0$ (when $m > 0$). The boundary $x=0$ is consistent: both halves give $y = b$. Helper lemmas avoid repeated case splits."
     },
     {
-      "title": "Perspectivity Verification",
-      "content": "Triangles ABC and A'B'C' are in affine Moulton perspective from O = (0,0). Line OAA' has slope -3/2 ≤ 0 (ordinary). Line OBB' has left-slope 2/3 > 0; O is at the boundary x=0, B and B' are at x > 0 with right-slope 1/3 each. Line OCC' is vertical x=0. All verified by norm_num."
+      "id": "counterexample-points",
+      "title": "Part II: Counterexample Points",
+      "startLine": 90,
+      "endLine": 102,
+      "summary": "10 private point definitions: O=(0,0), A=(-2,3), B=(3,1), C=(0,-1), A'=(-4,6), B'=(9,3), C'=(0,-4), P=(-17,9), Q=(27,17), R=(-6,11).",
+      "mathContext": "Rational coordinates: all 10 points have integer or half-integer coordinates in $\\mathbb{Q} \\subset \\mathbb{R}$, enabling exact arithmetic by norm_num."
     },
     {
-      "title": "Intersection Points",
-      "content": "P = (-17, 9) is the intersection of lines AB (slope -2/5) and A'B' (slope -3/13) — both ordinary Moulton lines. Q = (27, 17) is the intersection of lines BC (right half, right-slope 2/3) and B'C' (right half, right-slope 7/9) — both on the positive half-plane. R = (-6, 11) is the intersection of CA (slope -2) and C'A' (slope -5/2) — both ordinary."
+      "id": "perspectivity",
+      "title": "Part III: Perspectivity from O",
+      "startLine": 103,
+      "endLine": 130,
+      "summary": "collinear_OAA' (slope -3/2, ordinary), collinear_OBB' (left-slope 2/3, right-slope 1/3, bent), collinear_OCC' (vertical). Establishes that ABC and A'B'C' are in Moulton perspective from O=(0,0).",
+      "mathContext": "Three qualitatively distinct Moulton collinearities: negative slope (ordinary), positive slope with a right-half-plane point (bent), vertical. Each requires different onML_* lemmas."
     },
     {
-      "title": "Desargues Failure",
-      "content": "The proof of ¬ MoultonCollinear P Q R proceeds by contradiction. Vertical case: P.1 = -17 ≠ 27 = Q.1, immediate. Ordinary (m ≤ 0): the slope constraint forces m = 2/11 > 0, contradicting m ≤ 0. Bent (m > 0): P.1 = -17 and R.1 = -6 are both ≤ 0 while Q.1 = 27 > 0. The P and Q equations give m = 16/61 uniquely. Substituting into R's equation yields 725/61 ≠ 11 = 671/61."
+      "id": "intersection-points",
+      "title": "Part IV: Intersection Points",
+      "startLine": 131,
+      "endLine": 211,
+      "summary": "14 incidence lemmas placing P, Q, R on the six pairs of corresponding sides. P and R lie on negative-slope ordinary Moulton lines; Q lies on positive-slope lines at x>0 (right half).",
+      "mathContext": "Side slopes: $AB: -2/5$, $A'B': -3/13$, $CA: -2$, $C'A': -5/2$ (all $\\leq 0$, ordinary). $BC$: left $4/3$, right $2/3$; $B'C'$: left $14/9$, right $7/9$. $Q=(27,17)$ at $x > 0$."
+    },
+    {
+      "id": "desargues-fails",
+      "title": "Part V: Desargues Fails",
+      "startLine": 212,
+      "endLine": 262,
+      "summary": "desargues_fails: ¬ MoultonCollinear P Q R by contradiction. Vertical case: P.1≠Q.1. m≤0 case: linarith from slope of PQ = 2/11 > 0. m>0 case: linear_combination gives 11m=2 and 61m=16, contradicted by linarith.",
+      "mathContext": "$m \\leq 0$: slope $PQ = 8/44 = 2/11 > 0$, contradicts $m \\leq 0$. $m > 0$: P and R on left ($x \\leq 0$), Q on right ($x > 0$) — system $\\{9=-17m+b,\\; 17=27m/2+b,\\; 11=-6m+b\\}$ gives $11m=2$ and $61m=16$; contradiction $122 = 176$."
+    },
+    {
+      "id": "full-certificate",
+      "title": "Part VI: Full Counterexample Certificate",
+      "startLine": 263,
+      "endLine": 297,
+      "summary": "moulton_counterexample packages all 22 conjuncts (3 perspectivity + 18 incidence + 1 non-collinearity) as a single anonymous constructor. No tactics needed — pure term-mode proof.",
+      "mathContext": "Formal certificate: $\\forall$ claims are machine-verified by norm_num + ring + linarith. The statement is an explicit conjunction covering all incidence data of the Desargues counterexample."
     }
   ],
-  "conclusion": "The Moulton plane provides a fully formalized, axiom-free counterexample to Desargues's theorem in an affine plane over ℝ. Combined with the existing desargues-theorem-oq-01 proof (which proves Desargues over any commutative ring using homogeneous coordinates), this gives a complete picture: Desargues holds in coordinate planes over fields/division rings, and fails in planes with weaker coordinatization. The formalization uses only Mathlib's real arithmetic and tactic library — no topology, no continuity, no algebraic geometry.",
+  "conclusion": {
+    "summary": "The Moulton plane provides a fully formalized, axiom-free counterexample to Desargues's theorem in an affine plane over ℝ. The main theorem `desargues_fails` is proved by a two-case linarith argument requiring only rational arithmetic. The full certificate `moulton_counterexample` packages 22 machine-verified incidence and non-incidence conditions.",
+    "implications": "Combined with desargues-theorem-oq-01 (which proves Desargues over any commutative ring using homogeneous coordinates), this gives a complete picture: Desargues holds in coordinate planes over fields/division rings and fails in planes with weaker coordinatization. The formalization uses only Mathlib's real arithmetic and tactic library — no topology, no continuity, no algebraic geometry. The Lean proof demonstrates that the entire classical independence argument can be mechanized with 260 lines and no axioms beyond Lean's logical foundation.",
+    "openQuestions": [
+      "Can the Moulton plane be extended to a projective plane (adding a line at infinity) and the failure of Desargues proved in the projective completion?",
+      "Can the smallest finite non-Desarguesian projective plane (order 9, the Hall plane) be formalized in Lean using nearfield coordinatization?",
+      "Can the algebraic equivalence (Desargues ↔ coordinatizable by a division ring) be formalized in Lean, completing the characterization theorem?"
+    ]
+  },
   "mainTheorems": [
     {
       "name": "desargues_fails",

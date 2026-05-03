@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-moulton-plane-context",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 46 },
+    "type": "context",
+    "title": "Desargues's Theorem: Provable from ℝ³ but Not from Plane Axioms",
+    "content": "Desargues's theorem (1639) states: if two triangles in a projective plane are in perspective from a point, then their corresponding sides meet in three collinear points. In 3D projective space, this follows from the incidence axioms alone via a lifting argument: project the triangles into two non-coplanar planes in ℝ³, where the intersection lines are forced to meet on the line of intersection of those planes. In a projective PLANE (2D), no such lift is available, and the theorem is not derivable from the projective plane axioms alone.\n\nThe Moulton plane (1902) demonstrates this independence. It takes Cartesian points ℝ² but modifies lines with positive slope: on the right half-plane (x > 0), the slope is halved. This preserves the affine plane axioms (every pair of points determines a unique line; every pair of non-parallel lines meets in a unique point) but breaks Desargues. The connection to algebra (Wedderburn 1905, Hilbert 1901): a projective plane satisfies Desargues iff it can be coordinatized by a division ring (skew field). The Moulton plane's broken coordinatization reflects the failure of the 'little Desargues' condition in the positive-slope half-plane.",
+    "mathContext": "Desargues: If $O, A, B, C, A', B', C'$ are points with $O, A, A'$ collinear, $O, B, B'$ collinear, $O, C, C'$ collinear (perspectivity from $O$), then $AB \\cap A'B'$, $BC \\cap B'C'$, $CA \\cap C'A'$ are collinear. Fails in the Moulton plane because the modification of lines with positive slope disrupts the collinearity of the three intersection points.",
+    "significance": "context",
+    "relatedConcepts": ["Desargues's theorem", "projective plane axioms", "division ring coordinatization", "desargues-theorem-oq-01", "Hilbert's axioms"],
+    "prerequisites": ["Desargues's theorem statement", "affine and projective plane axioms", "Wedderburn-Artin for Desarguesian planes"]
+  },
+  {
+    "id": "ann-moulton-line-definition",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": { "startLine": 48, "endLine": 89 },
+    "type": "definition",
+    "title": "onMoultonLine: Piecewise Slope Bending at the y-Axis",
+    "content": "`onMoultonLine m b P` is defined piecewise by classical if-then-else. For m ≤ 0: P lies on the ordinary line P.2 = m·P.1 + b. For m > 0 and P.1 ≤ 0 (left half-plane): same formula. For m > 0 and P.1 > 0 (right half-plane): slope is halved, P.2 = (m/2)·P.1 + b. The boundary point (P.1 = 0) is consistent: both formulas give P.2 = b.\n\n`MoultonCollinear P Q R` takes the disjunction: either all three points share the same x-coordinate (vertical line), or there exist m and b such that all three lie on `onMoultonLine m b`. The six helper lemmas (`onML_neg_slope`, `onML_pos_left`, `onML_pos_right`, `onML_eq_neg`, `onML_eq_pos_left`, `onML_eq_pos_right`) split the piecewise definition into constructors and destructors, avoiding repeated if-then-else case splits in the proof goals.",
+    "mathContext": "Moulton line with left-slope $m$ and intercept $b$: $y = mx+b$ for $x \\leq 0$, and $y = \\frac{m}{2}x + b$ for $x > 0$ (when $m > 0$). Both halves pass through $(0, b)$: continuity at $x=0$. The bending factor $1/2$ is arbitrary — any $c \\in (0,1)$ would work. Factor $1/2$ makes the counterexample arithmetic clean.",
+    "significance": "key",
+    "relatedConcepts": ["onMoultonLine", "MoultonCollinear", "Classical.propDecidable", "piecewise function in Lean 4"],
+    "prerequisites": ["Classical.propDecidable for if-then-else on real propositions", "Lean 4 def with if-then-else on Prop"]
+  },
+  {
+    "id": "ann-perspectivity-verification",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": { "startLine": 103, "endLine": 130 },
+    "type": "technique",
+    "title": "Perspectivity from O: Three Distinct Moulton-Collinearity Arguments",
+    "content": "The three perspectivity lemmas illustrate the three qualitatively different cases of Moulton collinearity:\n\n`collinear_OAA'` (slope -3/2): m ≤ 0, so it's an ordinary line. All three points O=(0,0), A=(-2,3), A'=(-4,6) are on the left-half plane or the boundary. Proved by `onML_neg_slope` applied to each — one `norm_num` to verify m ≤ 0, one `ring` for the linear equation.\n\n`collinear_OBB'` (left-slope 2/3): m > 0. O is at x=0 (left boundary, `onML_pos_left`); B=(3,1) and B'=(9,3) are at x > 0 (`onML_pos_right` with right slope 1/3). Each call requires: `norm_num` for m > 0, `norm_num` for the x-sign condition, `ring` for the equation. The right-slope equations are y = (1/3)·x + 0 = x/3: B has y=1=3/3 ✓, B' has y=3=9/3 ✓.\n\n`collinear_OCC'` (vertical x=0): The `left` branch of MoultonCollinear. All three have P.1 = 0, closed by `simp`.",
+    "mathContext": "Three perspectivity lines: $OAA'$ on $y = -\\frac{3}{2}x$ (slope $-3/2$); $OBB'$ on $y = \\frac{2}{3}x$ (left) / $y = \\frac{1}{3}x$ (right); $OCC'$ on $x = 0$ (vertical). Each verified in one `right` + `exact` + three `onML_*` calls.",
+    "significance": "supporting",
+    "relatedConcepts": ["MoultonCollinear", "onML_neg_slope", "onML_pos_left", "onML_pos_right", "norm_num"],
+    "prerequisites": ["onMoultonLine definition", "six onML_* helper lemmas", "norm_num for rational arithmetic"]
+  },
+  {
+    "id": "ann-intersection-incidence",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": { "startLine": 131, "endLine": 211 },
+    "type": "technique",
+    "title": "Intersection Points: Why Ordinary Linear Algebra Computes P, Q, R",
+    "content": "The 14 incidence lemmas verify that P, Q, R lie on the six corresponding-side Moulton lines. The key insight: all six sides (AB, A'B', BC, B'C', CA, C'A') are either negative-slope Moulton lines (coinciding with ordinary lines) or positive-slope lines whose intersection points happen to lie in the appropriate half-plane where the Moulton formula is still ordinary.\n\nSpecifically: P=(-17,9) lies on AB (slope -2/5 ≤ 0, ordinary) and A'B' (slope -3/13 ≤ 0, ordinary). R=(-6,11) lies on CA (slope -2 ≤ 0) and C'A' (slope -5/2 ≤ 0). Q=(27,17) lies on BC (left-slope 4/3 > 0, but Q is at x=27 > 0, so right-slope 2/3 applies) and B'C' (left-slope 14/9 > 0, Q at x=27 > 0, right-slope 7/9).\n\nThis is the crucial geometric insight: the bending is INVISIBLE when computing P and R (which lie on negative-slope lines), and VISIBLE only when testing whether P, Q, R themselves are collinear under a bent line.",
+    "mathContext": "Side slopes: $AB$: $m=-2/5$, $A'B'$: $m=-3/13$, $CA$: $m=-2$, $C'A'$: $m=-5/2$ (all $\\leq 0$, ordinary). $BC$: left-slope $4/3$, right-slope $2/3$; $B'C'$: left-slope $14/9$, right-slope $7/9$. Intersection $Q = (27, 17)$ is at $x > 0$, so both $BC$ and $B'C'$ behave with their halved slopes at $Q$.",
+    "significance": "key",
+    "relatedConcepts": ["onML_neg_slope", "onML_pos_right", "intersection computation", "P_on_AB", "Q_on_BC"],
+    "prerequisites": ["onMoultonLine piecewise definition", "Linear algebra: two-equation solve for intersection", "norm_num for rational coordinate verification"]
+  },
+  {
+    "id": "ann-desargues-fails-proof",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": { "startLine": 212, "endLine": 262 },
+    "type": "proof",
+    "title": "desargues_fails: The Two-Case linarith Contradiction",
+    "content": "`desargues_fails` proves ¬ MoultonCollinear P Q R by contradiction via `intro h; rcases h`.\n\n**Vertical case** (P.1 = Q.1 = R.1): P.1 = -17 ≠ 27 = Q.1, closed by `norm_num` after `simp`.\n\n**Non-vertical case** (obtains m, b, hP, hQ, hR): Case split on m ≤ 0 vs m > 0.\n- `m ≤ 0`: Both hP and hQ give ordinary line equations via `onML_eq_neg`. P at (-17,9): 9 = m(-17)+b. Q at (27,17): 17 = m(27)+b. Subtracting: 8 = 44m. Since m ≤ 0, 44m ≤ 0 < 8 — `linarith` closes it.\n- `m > 0`: P.1 = -17 ≤ 0 and R.1 = -6 ≤ 0 use left formula; Q.1 = 27 > 0 uses right formula. Extract equations: 9 = m(-17)+b (from hP), 17 = (m/2)(27)+b (from hQ), 11 = m(-6)+b (from hR). Two linear_combination calls: `h1 : 11m = 2` (from hP - hR) and `h2 : 61m = 16` (from 2·hP - 2·hQ). Contradiction: 61×2 = 122 ≠ 11×16 = 176, i.e., 61×(11m) = 11×(61m) → 122 = 176. `linarith` from h1 and h2.",
+    "mathContext": "Key arithmetic: $m \\leq 0$ case — slope $PQ = (17-9)/(27-(-17)) = 8/44 = 2/11 > 0$, contradiction. $m > 0$ case — from $9 = -17m+b$ and $11 = -6m+b$: $-11m = 2 \\Rightarrow m = 2/11$... wait: $h_1: 11m = 2$ from $(9-11) = m(-17+6) = -11m$, so $-11m = -2 \\Rightarrow 11m = 2$. From $9 = -17m+b$ and $17 = 27m/2 + b$: $h_2: 61m = 16$ (multiply through). Then $61 \\times (11m) = 61 \\times 2 = 122$ and $11 \\times (61m) = 11 \\times 16 = 176$: contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["linarith", "linear_combination", "onML_eq_neg", "onML_eq_pos_left", "onML_eq_pos_right"],
+    "prerequisites": ["onML_eq_* helper lemmas", "linarith for linear arithmetic", "linear_combination tactic for exact linear equality manipulation"]
+  },
+  {
+    "id": "ann-moulton-certificate",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": { "startLine": 263, "endLine": 297 },
+    "type": "insight",
+    "title": "moulton_counterexample: A Formal Geometry Certificate with All Incidence Data",
+    "content": "`moulton_counterexample` bundles all 22 conjuncts into a single proof term: the 3 perspectivity lemmas, the 18 incidence lemmas (P on AB and A'B', etc.), and `desargues_fails`. The proof is a single anonymous constructor `⟨collinear_OAA', collinear_OBB', ...⟩` — no tactics needed once all lemmas are established.\n\nThis pattern — a large conjunction packaging a formal counterexample — serves as a **geometry certificate**: a single Lean term whose type is a completely explicit, machine-verified statement of the failure of Desargues's theorem. Any user can check the statement by reading the type and trust that the proof verifies all arithmetic claims (slopes, intersections, non-collinearity) to arbitrary precision.\n\nCompared to the classical pen-and-paper proof, the Lean version is longer but more reliable: every rational arithmetic step is verified by `norm_num` (which does exact rational computation), not floating-point approximation. The `linarith` contradiction is also exact: no numerical error can hide an arithmetic mistake.",
+    "mathContext": "Certificate structure: $\\{\\text{perspectivity}\\} \\cup \\{P, Q, R \\text{ on respective side pairs}\\} \\cup \\{\\neg\\text{MoultonCollinear}(P,Q,R)\\}$. All 22 conditions verified exactly by norm_num + ring + linarith. No floating-point: all coordinates are rational ($\\mathbb{Q} \\subset \\mathbb{R}$).",
+    "significance": "key",
+    "relatedConcepts": ["formal counterexample certificate", "anonymous constructor", "norm_num exact arithmetic", "Lean 4 large conjunction"],
+    "prerequisites": ["All 25 preceding lemmas", "Lean 4 anonymous constructor syntax ⟨_, _, ...⟩", "Conjunction introduction"]
+  }
+]
