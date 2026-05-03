@@ -122,11 +122,45 @@ lemma empEnt_eq_neg_log_joint {D : DiscreteDist k} {n : ℕ} {x : Fin n → Fin 
 noncomputable def expVal (D : DiscreteDist k) (n : ℕ) (f : (Fin n → Fin k) → ℝ) : ℝ :=
   ∑ x : Fin n → Fin k, jointProb D n x * f x
 
-/-- Expected value of a marginal function: E[g(Xᵢ)] = ∑_x p(x) g(x) for each i. -/
+/-- Helper: sum of the product weight over all sequences = 1 (unfolds jointProb). -/
+lemma prod_sum_one (D : DiscreteDist k) (m : ℕ) :
+    ∑ x' : Fin m → Fin k, ∏ j : Fin m, D.p (x' j) = 1 := by
+  have := jointProb_sum_one D m; simp only [jointProb] at this; exact this
+
+/-- Expected value of a marginal function: E[g(Xᵢ)] = ∑_x p(x) g(x) for each i.
+    Proved by induction on n: split off the first coordinate via Fintype.sum_piFinset_succ. -/
 lemma expVal_marginal (D : DiscreteDist k) (n : ℕ) (g : Fin k → ℝ) (i : Fin n) :
     expVal D n (fun x => g (x i)) = ∑ a : Fin k, D.p a * g a := by
   simp only [expVal, jointProb]
-  sorry -- requires joint-to-marginal factorization: ∑_{x} (∏_j p(x_j)) * g(x_i) = ∑_a p(a) * g(a)
+  induction n with
+  | zero => exact i.elim0
+  | succ m ih =>
+    rw [Fintype.sum_piFinset_succ]
+    -- After this, sum is over a : Fin k and x' : Fin m → Fin k, with f(Fin.cons a x')
+    cases i using Fin.cases with
+    | zero =>
+      -- i = 0: (Fin.cons a x') 0 = a
+      simp_rw [Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ]
+      -- Goal: ∑ a, ∑ x', (D.p a * ∏ j, D.p (x' j)) * g a = ∑ a, D.p a * g a
+      congr 1; ext a
+      calc ∑ x' : Fin m → Fin k, (D.p a * ∏ j : Fin m, D.p (x' j)) * g a
+          = ∑ x', (D.p a * g a) * ∏ j, D.p (x' j) := by congr 1; ext x'; ring
+        _ = (D.p a * g a) * ∑ x', ∏ j, D.p (x' j) := by rw [← Finset.sum_mul]
+        _ = D.p a * g a := by rw [prod_sum_one, mul_one]
+    | succ i' =>
+      -- i = i'.succ: (Fin.cons a x') i'.succ = x' i'
+      simp_rw [Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ]
+      -- Goal: ∑ a, ∑ x', (D.p a * ∏ j, D.p (x' j)) * g (x' i') = ∑ a, D.p a * g a
+      have step : ∀ a : Fin k,
+          ∑ x' : Fin m → Fin k, (D.p a * ∏ j : Fin m, D.p (x' j)) * g (x' i') =
+          D.p a * ∑ b : Fin k, D.p b * g b := by
+        intro a
+        calc ∑ x', (D.p a * ∏ j, D.p (x' j)) * g (x' i')
+            = ∑ x', D.p a * ((∏ j, D.p (x' j)) * g (x' i')) := by congr 1; ext x'; ring
+          _ = D.p a * ∑ x', (∏ j, D.p (x' j)) * g (x' i') := by rw [← Finset.mul_sum]
+          _ = D.p a * ∑ b, D.p b * g b := by rw [ih i']
+      simp_rw [step]
+      rw [← Finset.sum_mul, D.sum_one, one_mul]
 
 /-- Expected negative log-prob at each coordinate equals the entropy. -/
 lemma expVal_neg_log (D : DiscreteDist k) (n : ℕ) (i : Fin n) :
@@ -139,18 +173,34 @@ lemma expVal_neg_log (D : DiscreteDist k) (n : ℕ) (i : Fin n) :
   · simp [ha]
   · simp [ha, mul_comm]
 
+/-- -shannonH unfolds to ∑ a, D.p a * log(D.p a) (using Real.log 0 = 0). -/
+lemma neg_shannonH_eq (D : DiscreteDist k) :
+    -shannonH D = ∑ a : Fin k, D.p a * Real.log (D.p a) := by
+  simp only [shannonH, neg_neg]
+  apply Finset.sum_congr rfl; intro a _
+  by_cases ha : D.p a = 0 <;> simp [ha]
+
 /-- **Key theorem**: E[empEnt(X₁,...,Xₙ)] = H(p). -/
 theorem expVal_empEnt (D : DiscreteDist k) (n : ℕ) :
     expVal D n (empEnt D n) = shannonH D := by
   by_cases hn : n = 0
   · simp [hn, expVal, empEnt, shannonH]
-  · simp only [empEnt, expVal, neg_mul, ← Finset.mul_sum, ← Finset.sum_mul]
-    rw [show -(1 : ℝ) / n = -1 / n from by ring]
-    rw [show (∑ x : Fin n → Fin k, (∏ i, D.p (x i)) * (∑ i : Fin n, Real.log (D.p (x i)))) =
-        ↑n * (-shannonH D) from ?_]
-    · field_simp; ring
-    · -- Expand the sum and use marginal independence
-      sorry
+  · have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn
+    -- E[empEnt] = ∑_x P(x) * (-(1/n) * ∑_j log p(x_j))
+    --           = (1/n) * ∑_j E[-log p(X_j)]  = (1/n) * n * H(p) = H(p)
+    have marginal : ∀ j : Fin n,
+        ∑ x : Fin n → Fin k, (∏ i, D.p (x i)) * Real.log (D.p (x j)) =
+        ∑ a : Fin k, D.p a * Real.log (D.p a) :=
+      fun j => by have := expVal_marginal D n (fun a => Real.log (D.p a)) j
+                  simp only [expVal, jointProb] at this; exact this
+    simp only [expVal, empEnt, jointProb]
+    simp_rw [show ∀ x : Fin n → Fin k,
+      (∏ i, D.p (x i)) * (-(1 / ↑n) * ∑ j : Fin n, Real.log (D.p (x j))) =
+      -(1 / ↑n) * ∑ j : Fin n, ((∏ i, D.p (x i)) * Real.log (D.p (x j)))
+      from fun x => by rw [Finset.mul_sum]; ring]
+    rw [← Finset.mul_sum, Finset.sum_comm]
+    simp_rw [marginal, neg_shannonH_eq]
+    simp [Finset.sum_const, Fintype.card_fin, nsmul_eq_mul, hn']
 
 -- ════════════════════════════════════════════════════════════════
 -- SECTION IV: Chebyshev's Inequality (Finite Probability Space)
@@ -198,10 +248,12 @@ theorem aep_concentration (D : DiscreteDist k) {n : ℕ} (hn : 0 < n)
     ∑ x ∈ Finset.univ.filter (fun x => ε < |empEnt D n x - shannonH D|),
         jointProb D n x ≤
     logVar D / ((n : ℝ) * ε^2) := by
+  -- Chebyshev: P(|empEnt - H| > ε) ≤ E[(empEnt-H)²]/ε² = (logVar/n)/ε² = logVar/(n·ε²)
   have hChebyshev := chebyshev_finite D n (empEnt D n) (shannonH D) ε hε
-  rw [expVal_empEnt] at hChebyshev  -- replaces expVal with shannonH
-  sorry -- actually this rw doesn't apply here; need empEnt_variance
-  -- The full proof: Chebyshev gives ≤ Var/ε², Var = logVar/n, so ≤ logVar/(n·ε²)
+  rw [empEnt_variance] at hChebyshev
+  -- Now hChebyshev : ∑ ... ≤ (logVar D / ↑n) / ε^2
+  -- Goal:            ∑ ... ≤ logVar D / ((↑n) * ε^2)
+  rwa [div_div] at hChebyshev
 
 -- ════════════════════════════════════════════════════════════════
 -- SECTION VI: Typical Set

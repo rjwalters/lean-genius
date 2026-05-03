@@ -16,22 +16,24 @@
     ],
     "proofRepoPath": "Proofs/ShannonSourceCodingOQ03.lean",
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 1,
     "axiomCount": 0,
-    "assumptions": "3 sorries: (1) expVal_marginal — marginal factorization of joint expectation over i.i.d. product measure; (2) empEnt_variance — variance of empirical entropy = logVar/n (i.i.d. sum variance formula); (3) aep_concentration — the main AEP concentration bound (follows from Chebyshev + variance sorry). All structural theorems (Chebyshev's inequality, typical set size bound) are proved without sorry.",
+    "assumptions": "1 sorry: empEnt_variance — variance of empirical entropy = logVar/n (independence factorization for variance of i.i.d. sum). All other theorems proved: expVal_marginal (proved by induction via Fintype.sum_piFinset_succ + Fin.cases), expVal_empEnt (proved using expVal_marginal and marginal log-expectation), aep_concentration (proved from Chebyshev + empEnt_variance via div_div). Structural theorems (Chebyshev's inequality, typical set size bound) proved without sorry.",
     "originalContributions": [
       "DiscreteDist structure: finite probability distributions with nonneg + sum_one",
       "jointProb: i.i.d. joint distribution over n-block sequences",
       "empEnt: empirical entropy -(1/n) log P(x) for n-sequences",
+      "expVal_marginal: E[g(X_i)] = ∑_a p(a) g(a) — marginal factorization proved by induction (Fintype.sum_piFinset_succ + Fin.cases)",
+      "expVal_empEnt: E[empEnt] = H(p) — proved using expVal_marginal and marginal log-expectation",
       "chebyshev_finite: Chebyshev's inequality for finite probability spaces (proved)",
       "typical_prob_lower_bound: each typical sequence satisfies P(x) ≥ exp(-n(H+ε)) (proved)",
       "typical_set_size_upper: |T_ε^n| ≤ exp(n(H(p)+ε)) (proved)",
       "logVar: variance of -log p(X) — the AEP concentration parameter",
-      "AEP → source coding connection documented with achievability argument"
+      "aep_concentration: P(|empEnt-H| > ε) ≤ logVar/(n·ε²) — proved from Chebyshev + empEnt_variance"
     ],
     "dateAdded": "2026-05-03",
-    "lineCount": 309,
-    "theoremCount": 14,
+    "lineCount": 361,
+    "theoremCount": 15,
     "definitionCount": 8,
     "mathlib_version": "4.26.0"
   },
@@ -82,16 +84,18 @@
   "leanFile": {
     "imports": ["Mathlib"],
     "namespace": "AEPFormalization",
-    "lineCount": 309,
+    "lineCount": 361,
     "axiomCount": 0,
-    "sorryCount": 3,
-    "theoremCount": 14,
+    "sorryCount": 1,
+    "theoremCount": 15,
     "definitionCount": 8,
     "keyTheorems": [
+      "expVal_marginal: E[g(X_i)] = ∑_a p(a) g(a) — proved by induction",
+      "expVal_empEnt: E[empEnt] = H(p) — proved",
       "chebyshev_finite: P(|f-μ| > ε) ≤ E[(f-μ)²] / ε² for finite probability spaces",
       "typical_prob_lower_bound: x ∈ T_ε → P(x) ≥ exp(-n(H+ε))",
       "typical_set_size_upper: |T_ε^n| ≤ exp(n·(H(p)+ε))",
-      "aep_concentration: P(|empEnt-H| > ε) ≤ logVar/(n·ε²) [sorry in variance]"
+      "aep_concentration: P(|empEnt-H| > ε) ≤ logVar/(n·ε²) [depends on empEnt_variance sorry]"
     ]
   }
 }
