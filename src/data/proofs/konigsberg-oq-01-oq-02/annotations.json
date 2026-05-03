@@ -144,5 +144,71 @@
       "native_decide: native compilation for decidable propositions on finite types",
       "exact_mod_cast: coercion from ℕ to ℤ arithmetic"
     ]
+  },
+  {
+    "id": "ann-koe02-open-walk-counting",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": { "startLine": 391, "endLine": 504 },
+    "type": "proof-technique",
+    "title": "Part VII: Open-Walk Counting Lemmas (Hierholzer Infrastructure)",
+    "content": "Lines 391-504 develop the key counting lemmas for Hierholzer's sufficiency theorem.\n\n**Part VII overview** (388-406): The section develops: (1) open-walk counting, (2) greedy maxTrail, (3) maxTrail_closed, (4) circuit_exists, (5) remove_circuit_balanced, (6) euler_path_implies_degree_balance. The splicing step (combining component circuits into one Eulerian circuit) remains axiomatized.\n\n**open_walk_last_target_excess** (423-462, private): For an open walk v₀→…→vₙ with v₀ ≠ w = vₙ, the target-count of w in the walk exceeds its source-count by 1. Proof: the bijection i ↦ i+1 maps (target positions of w) \\ {n-1} onto (source positions of w), and position n-1 is an extra target (walk[n]=w). Uses Finset.card_bij with explicit injectivity, membership, and surjectivity goals.\n\n**open_walk_first_source_excess** (466-504, private): Symmetric lemma — for an open walk starting at w (w ≠ last), source-count of w exceeds target-count by 1. Proof: bijection j ↦ j-1 maps (S \\ {0}) → T; position 0 is the extra source occurrence.",
+    "mathContext": "For a walk $v_0, v_1, \\ldots, v_n$ with $v_0 \\neq v_n = w$:\n$|\\{i < n : v_{i+1} = w\\}| = |\\{i < n : v_i = w\\}| + 1$\nProof: biject $T \\setminus \\{n-1\\} \\to S$ by $i \\mapsto i+1$; position $n-1$ is the extra target.",
+    "significance": "structural",
+    "relatedConcepts": [
+      "open walk counting",
+      "Finset.card_bij",
+      "Hierholzer's theorem",
+      "degree imbalance"
+    ],
+    "prerequisites": [
+      "List.get",
+      "Finset.range",
+      "Finset.card_bij"
+    ]
+  },
+  {
+    "id": "ann-koe02-maxtrail",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": { "startLine": 505, "endLine": 619 },
+    "type": "proof-technique",
+    "title": "Greedy maxTrail: Definition, Properties, and Closed-Circuit Theorem",
+    "content": "Lines 505-619 build the greedy trail construction and prove it closes in a balanced graph.\n\n**maxTrail** (516-522): Noncomputable well-founded definition. At vertex v: if any outgoing edge exists, pick one (hout.choose), remove it, recurse from e.2. Terminates by Finset.card_erase_lt_of_mem (edge count strictly decreases).\n\n**maxTrailRem** (525-530): The remaining edges after maxTrail terminates. Same recursion structure.\n\n**maxTrail properties** (532-601, private): maxTrail_nonempty', maxTrail_head' (head = v), maxTrailRem_subset, maxTrailRem_last_no_out (last vertex has no remaining outgoing edges — the maximality condition). maxTrail_used_eq and maxTrail_last_exhausted and maxTrail_steps_in_E have sorry (deferred: proved by joint induction on E.card). maxTrail_steps_distinct is also sorry.\n\n**maxTrail_closed** (619-715): KEY THEOREM. In a balanced digraph G, maxTrail G.edges v is a closed walk (head = last). Proof by balance contradiction: if last_v ≠ v, then by maximality all outgoing edges of last_v were used (src_count = outDegree(last_v)); by open_walk_last_target_excess, tgt_count = src_count + 1; but tgt_count ≤ inDegree(last_v) = outDegree(last_v) (balance) — contradiction.",
+    "mathContext": "Hierholzer's algorithm: (1) start a trail greedily; (2) in a balanced graph, it must close (proved by degree contradiction); (3) if edges remain, extend from a vertex already on the circuit. The greedy closure (maxTrail_closed) is the technical heart of step (1).",
+    "significance": "key",
+    "relatedConcepts": [
+      "maxTrail",
+      "Hierholzer's algorithm",
+      "well-founded recursion",
+      "balance contradiction",
+      "open_walk_last_target_excess"
+    ],
+    "prerequisites": [
+      "IsEulerianBalanced",
+      "Finset.card_erase_lt_of_mem",
+      "open_walk_last_target_excess"
+    ]
+  },
+  {
+    "id": "ann-koe02-circuit-suffix",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": { "startLine": 620, "endLine": 848 },
+    "type": "summary",
+    "title": "Circuit Existence, Balance Preservation, and Path Necessity",
+    "content": "Lines 620-848 complete the Hierholzer infrastructure with three additional theorems.\n\n**DirectedCircuit structure** (738-743): A closed trail of length ≥ 2 with all steps in G.edges.\n\n**circuit_exists** (746-763): Every non-empty balanced digraph has a directed circuit. Proof: any vertex v with an outgoing edge serves as start; maxTrail G.edges v is closed by maxTrail_closed and has length ≥ 2 (since e₀ forces the trail to extend). Returns a Nonempty DirectedCircuit.\n\n**remove_circuit_balanced** (788-792, SORRY): Removing a circuit's edges from a balanced graph preserves balance. Deferred: requires Finset sdiff/filter API + closed_walk_balance applied to the circuit.\n\n**euler_path_implies_degree_balance** (806-844, SORRY): Necessity for Eulerian PATHS (not circuits): if G has an Eulerian path s→t (s≠t), then outDeg(s) = inDeg(s)+1, inDeg(t) = outDeg(t)+1, and all other vertices are balanced. The proof sketch (lines 838-843) connects walk-position counts to graph degrees via the open-walk counting lemmas + unique edge coverage (pigeonhole from |walk|=|edges|+1).\n\nThe section ends at line 848 with `end HierholzerInfrastructure` and `end KonigsbergOQ01OQ02`. 2 sorries remain (remove_circuit_balanced, euler_path_implies_degree_balance) plus 3 sorry'd supporting lemmas (maxTrail_used_eq, maxTrail_last_exhausted, maxTrail_steps_in_E, maxTrail_steps_distinct).",
+    "mathContext": "Status: 6 sorries remain in the file (2 axioms from Parts I-VI + 4 sorry'd lemmas in HierholzerInfrastructure). The full Eulerian circuit characterization requires: (a) maxTrail_closed (proved), (b) circuit_exists (proved), (c) remove_circuit_balanced (sorry), (d) Hierholzer splicing (axiomatized). Steps (a)+(b)+(c)+(d) together give the sufficiency direction of the Euler-Hierholzer theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "DirectedCircuit",
+      "circuit_exists",
+      "Hierholzer's algorithm",
+      "euler_path_implies_degree_balance",
+      "Eulerian path"
+    ],
+    "prerequisites": [
+      "maxTrail_closed",
+      "IsEulerianBalanced",
+      "open_walk_last_target_excess",
+      "open_walk_first_source_excess"
+    ]
   }
 ]
