@@ -2,7 +2,7 @@
   "slug": "erdos-1018-oq-04-incomplete-01",
   "title": "Complete hypergraph non-planar density proof",
   "phase": "NEW",
-  "status": "in-progress",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,33 +29,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS 2026-05-02: Proved r2_implies_main_r2 sorry (4\u21923 sorries). isEmbeddableConc and isEmbeddable have identical definition bodies, so definitional equality allows exact proof. Remaining 3 sorries: K\u2083/K\u2084 geometric verifications and Euler's formula.",
+    "progressSummary": "BLOCKED: K3_planar + K4_planar both proved in PR #14976 (Sessions 3-3b). Only planar_graphs_edge_bound (Euler formula) remains — needs Euler V-E+F=2, not in Mathlib, >1000L. Session 4 confirmed: nothing actionable remains.",
     "builtItems": [
       "Created Erdos1018OQ04Incomplete01.lean with 11 theorems, 1 axiom, 7 sorries",
       "Defined isEmbeddableConc with concrete vertex map + simplex separation condition",
       "Proved embeddable_injective and embeddable_mono (higher dim helps)",
       "Provided explicit coordinates for K3_planar and K4_planar (injectivity proved)",
-      "Proved dense_graph_not_planar: n^{1+\u03b5} > 3n eventually (using n^\u03b5 \u2192 \u221e)",
+      "Proved dense_graph_not_planar: n^{1+ε} > 3n eventually (using n^ε → ∞)",
       "Proved K5_edges=10, K3_edges=3, K4_edges=6",
       "Created src/data/proofs/erdos-1018-oq-04-incomplete-01/ gallery entry",
-      "Replaced Erdos1018OQ04.isEmbeddable sorry-def with concrete definition (vertex map + convex hull edge separation). Eliminates sorry-def cascade \u2014 downstream proofs can now reason about geometric embeddings.",
-      "Proved r2_implies_main_r2 in Erdos1018OQ04Incomplete01.lean \u2014 definitional equality between isEmbeddableConc and isEmbeddable"
+      "Replaced Erdos1018OQ04.isEmbeddable sorry-def with concrete definition (vertex map + convex hull edge separation). Eliminates sorry-def cascade — downstream proofs can now reason about geometric embeddings.",
+      "Proved r2_implies_main_r2 in Erdos1018OQ04Incomplete01.lean — definitional equality between isEmbeddableConc and isEmbeddable"
     ],
     "insights": [
       "Parent Erdos1018OQ04.lean has isEmbeddable := sorry, making all dependent results vacuous",
-      "New concrete definition: isEmbeddableConc via vertex maps to Fin d \u2192 \u211d with convex hull separation",
-      "K\u2083 planar with explicit coords: (0,0),(1,0),(0,1); K\u2084 with (0,0),(3,0),(1,2),(2,2)",
-      "Dense graphs (n^{1+\u03b5} edges) exceed planar bound 3n-6 eventually (n^\u03b5 \u2192 \u221e)",
-      "Kostochka-Pyber (r=2, 1988): dense graphs contain non-planar subgraphs on O_\u03b5(1) vertices",
+      "New concrete definition: isEmbeddableConc via vertex maps to Fin d → ℝ with convex hull separation",
+      "K₃ planar with explicit coords: (0,0),(1,0),(0,1); K₄ with (0,0),(3,0),(1,2),(2,2)",
+      "Dense graphs (n^{1+ε} edges) exceed planar bound 3n-6 eventually (n^ε → ∞)",
+      "Kostochka-Pyber (r=2, 1988): dense graphs contain non-planar subgraphs on O_ε(1) vertices",
       "Geometric crossing sorries remain: need convex hull intersection theory from Mathlib",
       "Sorry-defs (def := sorry) are worse than axiom: they make the type opaque so no proof can reason through them. Replacing with a concrete def using available Mathlib API (convexHull, Set.image) unblocks downstream work.",
       "r2_implies_main_r2 was marked sorry because comment said isEmbeddable was a sorry-def, but it had been fixed to a concrete definition with identical body to isEmbeddableConc. Definitional equality + criticalDim 2 = 2 closes the proof."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Fill convex hull intersection sorries using Mathlib convex set theory",
-      "Find Mathlib definition for turanNumber (extremal graph theory)",
-      "Verify injectivity proofs compile (Fin.val_mk and fin_cases)"
+      "Wait for Euler formula to land in Mathlib (tracked as open issue)",
+      "Alternatively, axiomatize planar_graphs_edge_bound and mark as axiom"
     ]
   },
   "tags": [
