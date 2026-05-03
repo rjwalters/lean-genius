@@ -1,0 +1,86 @@
+{
+  "id": "bounded-prime-gaps-tpc",
+  "title": "Twin Prime Conjecture: Index-Value Equivalence Bridge",
+  "slug": "bounded-prime-gaps-tpc",
+  "description": "Proves the full logical equivalence between TPC (prime indices) and existence of infinitely many twin prime pairs (prime values). Key results: nthPrime_surjective, no prime between twin primes, twin_primes_are_consecutive, tpc_iff_twin_prime_pairs. 13 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BoundedPrimeGapsTPC.lean",
+    "tags": [
+      "number-theory",
+      "prime-numbers",
+      "twin-primes",
+      "bounded-prime-gaps",
+      "erdos-problems"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 282,
+    "theoremCount": 13,
+    "assumptions": "None. All 13 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Twin Prime Conjecture (TPC) states there are infinitely many primes p with p+2 also prime. BoundedPrimeGaps.lean quantifies over prime *indices* (primeGap n = 2), while the classical formulation quantifies over prime *values*. This file proves these are equivalent.",
+    "problemStatement": "Prove TPC (formulated via prime indices) \u2194 infinitely many twin prime pairs (formulated via prime values).",
+    "proofStrategy": "For p prime and p+2 prime with p \u2265 3: p is odd, p+1 is even \u2265 4, hence composite. No prime strictly between p and p+2. Therefore nthPrime(k+1) = p+2 when nthPrime(k) = p. This is the index-value bridge.",
+    "keyInsights": [
+      "**No intermediate prime**: for twin primes p, p+2 with p \u2265 3, the only integer between them is p+1 which is even \u2265 4, hence composite.",
+      "**Consecutiveness**: twin primes are necessarily consecutive in the prime sequence (nthPrime(k), nthPrime(k+1)).",
+      "**Surjectivity**: every prime is nthPrime(k) for some k \u2014 this is the other direction of the bridge."
+    ]
+  },
+  "sections": [
+    {
+      "id": "bounded_prime_gaps_tpc",
+      "title": "Index-Value Bridge for Twin Prime Conjecture",
+      "startLine": 1,
+      "endLine": 282,
+      "summary": "nthPrime_surjective. no_prime_strictly_between_twin. twin_primes_are_consecutive. prime_pairs_implies_tpc. tpc_iff_twin_prime_pairs.",
+      "mathContext": "TPC $\\Leftrightarrow$ $\\forall N$, $\\exists n \\geq N$, Prime $n$ and Prime $(n+2)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "13 theorems, 0 sorries, 0 axioms. Complete index-value equivalence for the Twin Prime Conjecture proved.",
+    "implications": "This equivalence allows results proved in terms of prime indices (primeGap n) to be transferred to the classical statement about prime values.",
+    "openQuestions": [
+      "Can the Goldbach conjecture be similarly bridged between index and value formulations?",
+      "Can the Green-Tao theorem (primes contain arithmetic progressions) be formalized?",
+      "Can the prime constellation conjectures be unified via this framework?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.BoundedPrimeGaps"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 282,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 0,
+    "path": "Proofs/BoundedPrimeGapsTPC.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "extends",
+      "description": "TPC index-value bridge completing the logical equivalence"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "tpc_iff_twin_prime_pairs",
+      "type": "core",
+      "statement": "TwinPrimeConjecture \u2194 \u2200 N, \u2203 n \u2265 N, Prime n \u2227 Prime (n+2)",
+      "description": "Full equivalence between index-formulated TPC and value-formulated twin prime conjecture.",
+      "significance": "Closes the logical gap between two formulations of the Twin Prime Conjecture"
+    }
+  ],
+  "sorries": 0
+}

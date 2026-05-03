@@ -1,0 +1,86 @@
+{
+  "id": "sperner-mathlib",
+  "title": "Sperner's Lemma via Door-Counting Parity (Abstract CellComplex)",
+  "slug": "sperner-mathlib",
+  "description": "Proves Sperner's lemma for finite cell families with adjacency axioms using door-counting parity. Key results: even cardinality of fixed-point-free involutions (useful for Tucker's lemma/Borsuk-Ulam), door-count parity equals surjectivity, exists_panchromatic when boundary doors are odd. 17 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SpernerMathlib.lean",
+    "tags": [
+      "combinatorics",
+      "topology",
+      "sperner",
+      "parity",
+      "cell-complex"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 898,
+    "theoremCount": 17,
+    "assumptions": "None. All 17 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Sperner's lemma (1928): in any Sperner-labeled triangulation, the number of fully-labeled simplices is odd. The door-counting proof is purely combinatorial and works for abstract cell families satisfying adjacency axioms, without geometric structure.",
+    "problemStatement": "Prove Sperner's lemma via door-counting for abstract finite cell families with face-sharing adjacency axioms.",
+    "proofStrategy": "Define 'doors' as edges colored with all d+1 colors. Interior doors pair via the adjacency involution (even count). Per-cell: #door positions is odd iff coloring is surjective. Sum: panchromatic count \u2261 boundary door count (mod 2). If boundary has odd doors, a panchromatic cell exists.",
+    "keyInsights": [
+      "**Abstract adjacency interface**: each cell has d+1 faces indexed by Fin(d+1). adj s k returns Some(s',k') or none \u2014 enough structure for the parity proof.",
+      "**Involution parity lemma**: even_card_fpf_invol is useful beyond Sperner (Tucker's lemma, Borsuk-Ulam).",
+      "**Boundary door count**: with a Sperner coloring, every boundary door lies on the last face (boundary_doors_on_last_face)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "sperner_mathlib",
+      "title": "Abstract Door-Counting Sperner Proof",
+      "startLine": 1,
+      "endLine": 898,
+      "summary": "even_card_fpf_invol, door_count_parity, sperner_parity, exists_panchromatic, boundary_doors_on_last_face.",
+      "mathContext": "Panchromatic count $\\equiv$ boundary door count $\\pmod{2}$; odd boundary $\\Rightarrow$ $\\exists$ panchromatic cell."
+    }
+  ],
+  "conclusion": {
+    "summary": "17 theorems, 0 sorries, 0 axioms. Abstract Sperner's lemma proved for any cell family satisfying door-counting axioms.",
+    "implications": "This abstract formulation makes Sperner's lemma applicable to any finite combinatorial structure satisfying the adjacency axioms, enabling diverse topological applications.",
+    "openQuestions": [
+      "Can Tucker's lemma be proved from this abstract framework?",
+      "Can the Z/2-index theorem be derived from even_card_fpf_invol?",
+      "Can the Borsuk-Ulam theorem be proved via this abstract door-counting?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 898,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 4,
+    "path": "Proofs/SpernerMathlib.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "sperner-ndim",
+      "relationship": "extends",
+      "description": "Abstract door-counting Sperner proof for CellComplex families"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "Sperner.exists_panchromatic",
+      "type": "core",
+      "statement": "Odd boundary door count \u2192 \u2203 panchromatic cell",
+      "description": "Abstract Sperner's lemma via door-counting parity for any CellComplex.",
+      "significance": "Foundation for all concrete Sperner instances in this formalization project"
+    }
+  ],
+  "sorries": 0
+}

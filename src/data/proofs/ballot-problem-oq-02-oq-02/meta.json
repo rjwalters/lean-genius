@@ -1,0 +1,88 @@
+{
+  "id": "ballot-problem-oq-02-oq-02",
+  "title": "Ballot Problem OQ-02-OQ-02: First Passage Time via csInf Theory",
+  "slug": "ballot-problem-oq-02-oq-02",
+  "description": "Proves the firstPassageTime axiom from BallotProblemOQ02.lean under natural hypotheses using csInf theory. Key subtlety: sInf \u2205 = 0 in \u211d makes the axiom technically false without nonemptiness. Proves both directions under correct hypotheses: hitting set is closed, maxEvent \u2286 {FPT \u2264 T}, and the axiom holds when the hitting set is nonempty. 13 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BallotProblemOQ02OQ02.lean",
+    "tags": [
+      "probability",
+      "stochastic-processes",
+      "ballot-problem",
+      "first-passage-time",
+      "infimum"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 186,
+    "theoremCount": 13,
+    "assumptions": "None. All 13 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The first passage time T_a = inf{t \u2265 0 : W(t) \u2265 a} for Brownian motion is central to ballot problems and optional stopping. The equivalence {T_a \u2264 T} = {max W_t \u2265 a} requires careful treatment in formal mathematics.",
+    "problemStatement": "Prove {T_a \u2264 T} = {max W_t \u2265 a} under appropriate hypotheses, eliminating the axiom firstPassageTime_eq_maxEvent from BallotProblemOQ02.lean.",
+    "proofStrategy": "Two directions: (maxEvent \u2286 FPT \u2264 T) always holds. For (FPT \u2264 T \u2192 maxEvent): requires nonemptiness of the hitting set (sInf \u2205 = 0 is the key subtlety). IVT: if W(0) < a \u2264 W(T), there's a crossing in (0,T].",
+    "keyInsights": [
+      "**sInf \u2205 = 0 subtlety**: in Lean's reals, csInf of the empty set is 0 (classical convention). This makes the firstPassageTime of a path that never reaches level a equal to 0 \u2264 T, but such paths are NOT in maxEvent \u2014 the axiom is false without nonemptiness.",
+      "**Hitting set is closed**: for continuous paths, {t \u2265 0 : W(t,\u03c9) \u2265 a} is a closed set (preimage of closed set under continuous function).",
+      "**IVT**: when W(0) < a \u2264 W(T,\u03c9), continuity of paths gives a first crossing time in (0,T] via IVT."
+    ]
+  },
+  "sections": [
+    {
+      "id": "ballot_problem_oq_02_oq_02",
+      "title": "First Passage Time Characterization via csInf",
+      "startLine": 1,
+      "endLine": 186,
+      "summary": "antiDiff setup. hitting_set_closed. maxEvent_subset_fpt. fpt_implies_maxEvent (nonemptiness hypothesis). axiom_holds_nonempty.",
+      "mathContext": "$\\{\\omega : T_a(\\omega) \\leq T\\} = \\{\\omega : \\max_{t \\leq T} W_t(\\omega) \\geq a\\}$ when hitting set nonempty."
+    }
+  ],
+  "conclusion": {
+    "summary": "13 theorems, 0 sorries, 0 axioms. First passage time axiom proved from csInf theory under nonemptiness hypothesis.",
+    "implications": "The careful treatment of the sInf \u2205 = 0 issue illustrates a subtle difference between classical and Lean formulations of stochastic process theory.",
+    "openQuestions": [
+      "Can the axiom be eliminated completely (without nonemptiness) by using a convention-consistent sInf?",
+      "Can the reflection principle for Brownian motion be formally proved?",
+      "Can Doob's optional stopping theorem be formalized?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.MeasureSpace",
+      "Mathlib.Topology.Order.IntermediateValue",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 186,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 2,
+    "path": "Proofs/BallotProblemOQ02OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "ballot-problem-oq-02",
+      "relationship": "sub-question",
+      "description": "OQ-02-OQ-02: Proving the firstPassageTime axiom from csInf theory"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "firstPassageTime_eq_maxEvent",
+      "type": "core",
+      "statement": "{FPT \u2264 T} = maxEvent when hitting set nonempty",
+      "description": "First passage time characterization via csInf under nonemptiness hypothesis.",
+      "significance": "Eliminates the firstPassageTime axiom from BallotProblemOQ02.lean under correct hypotheses"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,89 @@
+{
+  "id": "gauss-wilson-non-cyclic",
+  "title": "Non-Cyclic (ZMod n)\u02e3: 2-Torsion Bound and Wilson's Theorem",
+  "slug": "gauss-wilson-non-cyclic",
+  "description": "Proves: for n \u2265 3, if (ZMod n)\u02e3 is non-cyclic then there exists x with x\u00b2 = 1, x \u2260 \u00b11. Builds infrastructure for units of ZMod n and characterizes when Wilson's product has extra square roots of unity. 9 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GaussWilsonNonCyclic.lean",
+    "tags": [
+      "number-theory",
+      "group-theory",
+      "modular-arithmetic",
+      "wilson-theorem",
+      "cyclic-groups"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 324,
+    "theoremCount": 9,
+    "assumptions": "None. All 9 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Wilson's theorem: (p-1)! \u2261 -1 (mod p) for prime p. For composite n, (n-1)! \u2261 0 (mod n). The cyclic structure of (ZMod n)\u02e3 (cyclic iff n = 1, 2, 4, p^k, or 2p^k) determines whether -1 is the 'only' primitive element.",
+    "problemStatement": "Prove: if (ZMod n)\u02e3 is non-cyclic then there exists x: ZMod n with x\u00b2 = 1 and x \u2260 \u00b11.",
+    "proofStrategy": "A non-cyclic group has more than 2 solutions to x\u00b2 = 1 (since cyclic groups of even order have exactly 2). The extra solutions are units x \u2260 \u00b11 with x\u00b2 = 1. Lift from ZMod n to (ZMod n)\u02e3.",
+    "keyInsights": [
+      "**Cyclic vs. non-cyclic**: (ZMod n)\u02e3 is cyclic iff n \u2208 {1, 2, 4, p^k, 2p^k} for odd prime p. Non-cyclic n (e.g., n = 8, 15, 24) have extra x with x\u00b2 = 1.",
+      "**2-torsion count**: in a cyclic group of even order, the 2-torsion subgroup has exactly 2 elements (\u00b11). Non-cyclic means more 2-torsion.",
+      "**Wilson product**: for composite n, Wilson's product changes from -1 to 0 or other values depending on the structure of (ZMod n)\u02e3."
+    ]
+  },
+  "sections": [
+    {
+      "id": "gauss_wilson_non_cyclic",
+      "title": "Non-Cyclic Unit Groups and Extra Square Roots of Unity",
+      "startLine": 1,
+      "endLine": 324,
+      "summary": "unitOfSqEqOne lift. unitOfSqEqOne_sq, ne_one, ne_neg_one. non_cyclic_implies_extra_2torsion.",
+      "mathContext": "$\\neg$IsCyclic $(\\mathbb{Z}/n)^\\times$ $\\Rightarrow$ $\\exists x$, $x^2 = 1$, $x \\neq \\pm 1$ in $\\mathbb{Z}/n$."
+    }
+  ],
+  "conclusion": {
+    "summary": "9 theorems, 0 sorries, 0 axioms. Non-cyclic (ZMod n)\u02e3 implies existence of extra square roots of unity beyond \u00b11.",
+    "implications": "This result explains why Wilson's theorem (product of units = -1) only holds for primes and prime powers: for other n, the extra 2-torsion elements make the product \u2260 -1.",
+    "openQuestions": [
+      "Can Wilson's theorem be generalized to characterize all n with \u03a0(ZMod n)\u02e3 = -1?",
+      "Can the structure of (ZMod n)\u02e3 be fully classified in Lean?",
+      "Can the non-cyclic condition be characterized arithmetically (in terms of n)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.RingTheory.ZMod.UnitsCyclic",
+      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 324,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "path": "Proofs/GaussWilsonNonCyclic.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "extends",
+      "description": "Non-cyclic (ZMod n)\u02e3 gives extra square roots of unity beyond \u00b11"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "non_cyclic_implies_extra_2torsion",
+      "type": "core",
+      "statement": "\u00acIsCyclic (ZMod n)\u02e3 \u2192 \u2203 x : ZMod n, x\u00b2 = 1 \u2227 x \u2260 1 \u2227 x \u2260 -1",
+      "description": "Non-cyclic unit group implies extra square roots of unity.",
+      "significance": "Characterizes when Wilson's product structure changes from the prime case"
+    }
+  ],
+  "sorries": 0
+}

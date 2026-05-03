@@ -1,0 +1,86 @@
+{
+  "id": "cube-root-2-irrational-oq-03",
+  "title": "Algebraic Degree of n-th Roots: Non-Perfect-Power Criterion (OQ-03)",
+  "slug": "cube-root-2-irrational-oq-03",
+  "description": "Proves: if m has a prime factor p with p | m but p\u00b2 \u2224 m, then X^n - m is irreducible over \u211a (Eisenstein criterion), minpoly \u211a (m^(1/n)) = X^n - m, and [\u211a(m^(1/n)) : \u211a] = n. 12 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CubeRoot2IrrationalOQ03.lean",
+    "tags": [
+      "number-theory",
+      "algebraic-number-theory",
+      "field-extensions",
+      "eisenstein",
+      "irrationality"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 205,
+    "theoremCount": 12,
+    "assumptions": "None. All 12 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The irrationality of \u221b2 follows from [\u211a(\u221b2):\u211a] = 3 (Eisenstein's criterion). This file generalizes: any n-th root of a non-perfect-power has algebraic degree exactly n.",
+    "problemStatement": "Prove: for m with square-free prime factor p (p | m, p\u00b2 \u2224 m) and n \u2265 2, the extension [\u211a(m^(1/n)):\u211a] = n.",
+    "proofStrategy": "Eisenstein criterion at prime p: X^n - m satisfies the conditions (p | -m = constant term, p \u2224 leading coeff = 1, p\u00b2 \u2224 m). Irreducibility \u2192 minpoly = X^n - m \u2192 degree = n.",
+    "keyInsights": [
+      "**Eisenstein at p**: X^n - m is irreducible over \u211a when p | m and p\u00b2 \u2224 m. This is Eisenstein's criterion with the 'right' prime p.",
+      "**Non-perfect-power connection**: if m = k^n for some integer k, then v_p(m) = n\u00b7v_p(k) \u2265 n \u2265 2 for any prime p | k. Conversely, having v_p(m) = 1 means m is not a perfect n-th power.",
+      "**Examples**: \u221b6, \u221b10, \u2075\u221a12, \u221c30 all have algebraic degree equal to the root (Eisenstein at p = 2 or 3 respectively)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "cube_root_2_irrational_oq_03",
+      "title": "Eisenstein Irreducibility and Algebraic Degree",
+      "startLine": 1,
+      "endLine": 205,
+      "summary": "X^n - m irreducible (Eisenstein). minpoly_eq_Xn_sub_m. field_extension_degree_eq_n. concrete examples: \u221b6, \u221b10, \u2075\u221a12.",
+      "mathContext": "$[\\mathbb{Q}(m^{1/n}) : \\mathbb{Q}] = n$ when $\\exists p$ prime: $p \\mid m$, $p^2 \\nmid m$."
+    }
+  ],
+  "conclusion": {
+    "summary": "12 theorems, 0 sorries, 0 axioms. Algebraic degree = n for non-perfect-power n-th roots proved via Eisenstein's criterion.",
+    "implications": "This result cleanly characterizes when n-th roots are algebraically independent \u2014 exactly the non-perfect-power condition.",
+    "openQuestions": [
+      "Can the result be extended to n-th roots over arbitrary number fields?",
+      "Can the algebraic degree be computed for composite radicals like \u221b2 + \u221b3?",
+      "Can Eisenstein's criterion be formalized for p-adic irreducibility?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 205,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "path": "Proofs/CubeRoot2IrrationalOQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cube-root-2-irrational",
+      "relationship": "sub-question",
+      "description": "OQ-03: General algebraic degree theorem for n-th roots"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "field_extension_degree_eq_n",
+      "type": "core",
+      "statement": "p | m, p\u00b2 \u2224 m \u2192 [\u211a(m^(1/n)) : \u211a] = n",
+      "description": "Algebraic degree of n-th root via Eisenstein's criterion.",
+      "significance": "Generalizes \u221b2 irrationality to all non-perfect-power n-th roots"
+    }
+  ],
+  "sorries": 0
+}

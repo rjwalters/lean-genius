@@ -1,0 +1,86 @@
+{
+  "id": "tractatus-quantifiers",
+  "title": "Tractatus Logico-Philosophicus: First-Order Quantifiers (TLP 5.52)",
+  "slug": "tractatus-quantifiers",
+  "description": "Extends the propositional calculus formalization with first-order quantifiers. Formalizes TLP 5.52 (quantifiers as N-operator applications), evaluation over arbitrary domains, and truth-functional compositionality for the extended language. Uses HOAS for binding. 12 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/TractatusQuantifiers.lean",
+    "tags": [
+      "logic",
+      "philosophy",
+      "tractatus",
+      "quantifiers",
+      "first-order-logic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 289,
+    "theoremCount": 12,
+    "assumptions": "None. All 12 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Wittgenstein's Tractatus (1921) claims all logic reduces to the N-operator applied to sets of propositions. TLP 5.52: quantifiers are N applied to all values of a propositional function. For infinite domains this claim is philosophically contentious (Geach 1981, Soames 1983).",
+    "problemStatement": "Formalize TLP 5.52: extend propositional Tractatus to first-order logic with quantifiers over arbitrary domains, using HOAS for binding.",
+    "proofStrategy": "FOProp S D parameterized by states S and domain D. Binding via Lean functions (HOAS): \u2200x.P(x) represented as D \u2192 FOProp S D. Evaluation over finite/infinite domains. Truth-functional compositionality proved by structural induction.",
+    "keyInsights": [
+      "**HOAS for binding**: using Lean functions as binding avoids variable-name bookkeeping but creates induction challenges (no surjective recursion over function-type constructors).",
+      "**Finite vs. infinite domain**: for finite domains, quantifiers are equivalent to N-operator finite conjunctions/disjunctions. For infinite domains, Wittgenstein's claim is problematic.",
+      "**Compositionality**: FOProp satisfies compositional truth conditions \u2014 a prerequisite for TLP's claim that logic is truth-functional."
+    ]
+  },
+  "sections": [
+    {
+      "id": "tractatus_quantifiers",
+      "title": "First-Order Extension: FOProp, Quantifiers, Compositionality",
+      "startLine": 1,
+      "endLine": 289,
+      "summary": "FOProp S D with HOAS. eval_foprop. universalClosureComposite. truth_functional_compositionality.",
+      "mathContext": "TLP 5.52: $\\forall x.P(x) = N(\\{P(a) : a \\in D\\})$ for finite domain $D$."
+    }
+  ],
+  "conclusion": {
+    "summary": "12 theorems, 0 sorries, 0 axioms. First-order quantifier extension of Tractatus formalization with compositionality proved.",
+    "implications": "This formalization makes precise what TLP 5.52 claims formally, enabling computational philosophy: machine verification of Wittgenstein's logical theses.",
+    "openQuestions": [
+      "Can the N-operator connection be formalized (TLP 5.502)?",
+      "Can Wittgenstein's picture theory of meaning be formalized in Lean?",
+      "Can the distinction between showing and saying be formalized?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.TractatusOntology"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 289,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 4,
+    "path": "Proofs/TractatusQuantifiers.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "tractatus-ontology",
+      "relationship": "extends",
+      "description": "First-order extension of propositional Tractatus formalization"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "truth_functional_compositionality",
+      "type": "core",
+      "statement": "Evaluation of FOProp is compositional over the propositional connectives",
+      "description": "Truth-functional compositionality for first-order Tractatus propositions.",
+      "significance": "Formal verification of Wittgenstein's core logical claim about quantifiers"
+    }
+  ],
+  "sorries": 0
+}

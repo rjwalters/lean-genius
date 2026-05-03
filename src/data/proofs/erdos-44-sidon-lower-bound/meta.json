@@ -1,0 +1,87 @@
+{
+  "id": "erdos-44-sidon-lower-bound",
+  "title": "Erd\u0151s #44: Sidon Set Lower Bound via Modular Parabola",
+  "slug": "erdos-44-sidon-lower-bound",
+  "description": "Proves: for any N \u2265 1, there exists a Sidon set A \u2286 {1,...,N} with |A| \u2265 \u230a\u221aN\u230b/2 \u2212 1. Construction: the modular parabola S_p = {2ap + (a\u00b2 mod p) : a = 0,...,p-1} is a Sidon set with p elements. 11 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos44SidonLowerBound.lean",
+    "tags": [
+      "number-theory",
+      "additive-combinatorics",
+      "sidon-sets",
+      "erdos-problems",
+      "lower-bounds"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 292,
+    "theoremCount": 11,
+    "assumptions": "None. All 11 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erd\u0151s #44: what is the maximum size of a Sidon set in {1,...,N}? Sidon (1932) and Erd\u0151s-Tur\u00e1n (1941): the answer is \u0398(\u221aN). The modular parabola gives the lower bound; the upper bound follows from counting distinct sums.",
+    "problemStatement": "Prove existence of Sidon sets in {1,...,N} of size \u2265 \u230a\u221aN\u230b/2 \u2212 1 via the modular parabola construction.",
+    "proofStrategy": "For prime p: S_p = {2ap + (a\u00b2 mod p) + 1 : a = 0,...,p-1}. Sidon property: if f(a)+f(b) = f(c)+f(d), the factor-of-2 ensures exact integer quotient \u2192 a+b \u2261 c+d (mod p) and (a-c)(a+c-b-d) \u2261 0 (mod p), giving {a,b} = {c,d}. Size: p elements in [1, 2p\u00b2 - p].",
+    "keyInsights": [
+      "**Factor-of-2 trick**: using 2ap instead of ap ensures no 'carry' in the sum equation, making the modular argument exact.",
+      "**Modular parabola**: the function f(a) = 2ap + (a\u00b2 mod p) is injective and Sidon by a quadratic residue argument mod p.",
+      "**Prime density**: by Bertrand's postulate, for any N, there's a prime p with \u230a\u221a(N/2)\u230b \u2264 p \u2264 \u221aN, giving a Sidon set of size \u2265 p \u2265 \u230a\u221aN\u230b/2."
+    ]
+  },
+  "sections": [
+    {
+      "id": "erdos_44_sidon_lower_bound",
+      "title": "Modular Parabola Sidon Construction",
+      "startLine": 1,
+      "endLine": 292,
+      "summary": "modParabolaFn, modParabola. modParabolaFn_strictMono. modParabola_sidon. modParabola_bound. sidon_lower_bound_exists.",
+      "mathContext": "$\\exists A \\subseteq \\{1,\\ldots,N\\}$, $A$ Sidon, $|A| \\geq \\lfloor\\sqrt{N}\\rfloor/2 - 1$."
+    }
+  ],
+  "conclusion": {
+    "summary": "11 theorems, 0 sorries, 0 axioms. Modular parabola Sidon construction gives \u03a9(\u221aN) lower bound.",
+    "implications": "The \u0398(\u221aN) bound for Sidon sets is tight: both upper and lower bounds are now formally verified.",
+    "openQuestions": [
+      "Can the optimal constant in the \u221aN bound be determined?",
+      "Can the Erd\u0151s-Tur\u00e1n conjecture (Sidon sets have \u0398(\u221aN) density) be formalized?",
+      "Can the modular parabola construction be extended to higher-order Sidon (B_k) sets?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.Erdos340GreedySidon"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 292,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 2,
+    "path": "Proofs/Erdos44SidonLowerBound.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-44",
+      "relationship": "extends",
+      "description": "Modular parabola Sidon construction giving \u03a9(\u221aN) lower bound"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sidon_lower_bound_exists",
+      "type": "core",
+      "statement": "\u2200 N \u2265 1, \u2203 Sidon A \u2286 {1,...,N} with |A| \u2265 \u221aN/2 \u2212 1",
+      "description": "\u03a9(\u221aN) lower bound for Sidon sets via modular parabola.",
+      "significance": "Erd\u0151s-Tur\u00e1n lower bound: Sidon sets of size \u0398(\u221aN) exist"
+    }
+  ],
+  "sorries": 0
+}

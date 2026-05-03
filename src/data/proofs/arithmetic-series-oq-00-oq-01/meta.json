@@ -1,0 +1,88 @@
+{
+  "id": "arithmetic-series-oq-00-oq-01",
+  "title": "Bijective Proof of Nicomachus's Theorem (OQ-00-OQ-01)",
+  "slug": "arithmetic-series-oq-00-oq-01",
+  "description": "Provides a bijective proof of Nicomachus's theorem: 1\u00b3 + 2\u00b3 + ... + n\u00b3 = (1+2+...+n)\u00b2 = T(n)\u00b2. The bijection maps [k]\u00b3 = Fin k \u00d7 Fin k \u00d7 Fin k to a 'gnomon' in the T(n) \u00d7 T(n) square. 11 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArithmeticSeriesOQ00OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "number-theory",
+      "nicomachus",
+      "bijective-proof",
+      "cube-sums"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 283,
+    "theoremCount": 11,
+    "assumptions": "None. All 11 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Nicomachus of Gerasa (c. 100 CE) observed that 1\u00b3+2\u00b3+...+n\u00b3 = (1+2+...+n)\u00b2. The bijective proof via 'staircase squares' (gnomons) was known to ancient mathematicians and provides geometric insight beyond algebraic identity.",
+    "problemStatement": "Give a bijective proof that the n-th cube sum equals the n-th triangular square: [1]\u00b3\u2294[2]\u00b3\u2294...\u2294[n]\u00b3 \u2245 [T(n)]\u00b2.",
+    "proofStrategy": "The k-th gnomon in T(n)\u00d7T(n): cells at positions with T(k-1) \u2264 max(row,col) < T(k). The k-th cube [k]\u00b3 = Fin k \u00d7 Fin k \u00d7 Fin k bijects with the k-th gnomon via an explicit construction.",
+    "keyInsights": [
+      "**Gnomon decomposition**: T(k)\u00b2 - T(k-1)\u00b2 = k\u00b3 (algebraic identity). Each gnomon has exactly k\u00b3 cells, matching the k-th cube.",
+      "**Bijective proof**: explicit bijection Fin k \u00d7 Fin k \u00d7 Fin k \u2192 gnomon_k. The bijection maps (a,b,c) to a cell in the T(n)\u00d7T(n) grid.",
+      "**Staircase square**: the T(n) \u00d7 T(n) square decomposes into n gnomons, each corresponding to a cube [k]\u00b3 \u2014 this is the geometric visualization."
+    ]
+  },
+  "sections": [
+    {
+      "id": "arithmetic_series_oq_00_oq_01",
+      "title": "Gnomon Bijection for Nicomachus's Theorem",
+      "startLine": 1,
+      "endLine": 283,
+      "summary": "gnomon_k_card: gnomon has k\u00b3 cells. cube_to_gnomon bijection. nicomachus_bijective: [1]\u00b3\u2294...\u2294[n]\u00b3 \u2245 [T(n)]\u00b2.",
+      "mathContext": "$\\bigsqcup_{k=1}^n [k]^3 \\cong [T(n)]^2$ where $T(n) = \\binom{n+1}{2}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "11 theorems, 0 sorries, 0 axioms. Bijective proof of Nicomachus's theorem via gnomon decomposition.",
+    "implications": "Bijective proofs of algebraic identities reveal the combinatorial reason behind the identity, not just its algebraic truth.",
+    "openQuestions": [
+      "Can the bijective proof be generalized to higher power sums?",
+      "Can the pattern \u03a3k^p = (polynomial in T(n))^q be formally explored?",
+      "Can the staircase square bijection be visualized as a formal commutative diagram?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Fintype.BigOperators",
+      "Mathlib.Tactic",
+      "Proofs.ArithmeticSeriesOQ00"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 283,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 2,
+    "path": "Proofs/ArithmeticSeriesOQ00OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "sub-question",
+      "description": "OQ-00-OQ-01: Bijective Nicomachus proof via gnomon decomposition"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "nicomachus_bijective",
+      "type": "core",
+      "statement": "Bijection: \u2294_{k=1}^{n} Fin k \u00d7 Fin k \u00d7 Fin k \u2245 Fin T(n) \u00d7 Fin T(n)",
+      "description": "Bijective proof of Nicomachus's theorem via gnomon decomposition.",
+      "significance": "Geometric insight: each k-cube fills exactly one gnomon in the triangular square"
+    }
+  ],
+  "sorries": 0
+}

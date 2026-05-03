@@ -1,0 +1,86 @@
+{
+  "id": "borsuk-ulam-oq-03-oq-04",
+  "title": "Quantitative 1D Borsuk-Ulam: Effective Antipodal Bound (OQ-03-OQ-04)",
+  "slug": "borsuk-ulam-oq-03-oq-04",
+  "description": "Proves effective bounds on antipodal pair location for K-Lipschitz functions: if |f(1)-f(-1)| = \u03b4 > 0, any antipodal zero x\u2080 of f-f(-\u00b7) lies in [-1+\u03b4/(2K), 1-\u03b4/(2K)]. 14 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BorsukUlamOQ03OQ04.lean",
+    "tags": [
+      "analysis",
+      "topology",
+      "borsuk-ulam",
+      "lipschitz",
+      "quantitative-bounds"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 236,
+    "theoremCount": 14,
+    "assumptions": "None. All 14 theorems proved.",
+    "mathlibDependencies": [],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Borsuk-Ulam theorem guarantees existence of an antipodal pair (f(x) = f(-x)) for any continuous f: S\u207f \u2192 \u211d\u207f. The quantitative version asks: where must the antipodal pair lie?",
+    "problemStatement": "For a K-Lipschitz f with |f(1)-f(-1)| = \u03b4 > 0, prove any antipodal zero x\u2080 satisfies x\u2080 \u2208 [-1+\u03b4/(2K), 1-\u03b4/(2K)].",
+    "proofStrategy": "antiDiff g(x) = f(x) - f(-x) is 2K-Lipschitz and satisfies g(x\u2080)=0, |g(1)|=\u03b4. Then \u03b4 = |g(1)-g(x\u2080)| \u2264 2K\u00b7(1-x\u2080) gives x\u2080 \u2264 1-\u03b4/(2K). Similarly for the lower bound.",
+    "keyInsights": [
+      "**Antisymmetric difference**: g(x) = f(x) - f(-x) satisfies g(-x) = -g(x), so its zeros are antipodal pairs.",
+      "**Lipschitz bound**: |g(1) - g(x\u2080)| \u2264 2K\u00b7|1-x\u2080| bounds the distance between x\u2080 and the boundary 1.",
+      "**Two-sided bound**: applying the same argument at -1 gives the symmetric lower bound."
+    ]
+  },
+  "sections": [
+    {
+      "id": "borsuk_ulam_oq_03_oq_04",
+      "title": "Effective Antipodal Location via Lipschitz Bound",
+      "startLine": 1,
+      "endLine": 236,
+      "summary": "antiDiff, antiDiff_antisymm. K_Lipschitz for g. antipodal_location_bound: x\u2080 \u2208 [-1+\u03b4/(2K), 1-\u03b4/(2K)].",
+      "mathContext": "$x_0 \\in [-1 + \\delta/(2K),\\; 1 - \\delta/(2K)]$ for antipodal $x_0$ when $K$-Lipschitz $f$ has $|f(1)-f(-1)| = \\delta$."
+    }
+  ],
+  "conclusion": {
+    "summary": "14 theorems, 0 sorries, 0 axioms. Effective antipodal location bounds proved for K-Lipschitz functions.",
+    "implications": "Quantitative Borsuk-Ulam results are important for algorithmic applications (approximate fixed points) and for understanding how 'topologically necessary' points are distributed.",
+    "openQuestions": [
+      "Can similar effective bounds be proved in higher dimensions?",
+      "Can the bound be improved for smoother functions?",
+      "Can the PPAD complexity of finding the antipodal pair be analyzed via this bound?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 236,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 2,
+    "path": "Proofs/BorsukUlamOQ03OQ04.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "sub-question",
+      "description": "OQ-03-OQ-04: Effective location bound for antipodal pairs"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "antipodal_location_bound",
+      "type": "core",
+      "statement": "K-Lipschitz f, |f(1)-f(-1)|=\u03b4 \u2192 antipodal x\u2080 \u2208 [-1+\u03b4/(2K), 1-\u03b4/(2K)]",
+      "description": "Effective bound on location of antipodal pairs for Lipschitz functions.",
+      "significance": "Quantitative strengthening of the 1D Borsuk-Ulam theorem"
+    }
+  ],
+  "sorries": 0
+}

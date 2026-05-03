@@ -1,7 +1,7 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import sourceRaw from '../../../../proofs/Proofs/WolstenholmeTheoremOQ02.lean?raw'
+import sourceRaw from '../../../../proofs/Proofs/BallotProblemOQ02OQ02.lean?raw'
 
 const meta = metaJson as unknown as {
   id: string; title: string; slug: string; description: string
@@ -9,11 +9,11 @@ const meta = metaJson as unknown as {
   overview?: ProofOverview; conclusion?: ProofConclusion; crossReferences?: CrossReference[]
 }
 
-export const wolstenholmeTheoremOQ02Proof: Proof = {
+export const ballotProblemOQ02OQ02Proof: Proof = {
   id: meta.id, title: meta.title, slug: meta.slug, description: meta.description,
   meta: meta.meta, sections: meta.sections, source: sourceRaw,
   overview: meta.overview, conclusion: meta.conclusion, crossReferences: meta.crossReferences,
 }
-export const wolstenholmeTheoremOQ02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
-export const wolstenholmeTheoremOQ02Data: ProofData = { proof: wolstenholmeTheoremOQ02Proof, annotations: wolstenholmeTheoremOQ02Annotations }
-export default wolstenholmeTheoremOQ02Data
+export const ballotProblemOQ02OQ02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
+export const ballotProblemOQ02OQ02Data: ProofData = { proof: ballotProblemOQ02OQ02Proof, annotations: ballotProblemOQ02OQ02Annotations }
+export default ballotProblemOQ02OQ02Data
