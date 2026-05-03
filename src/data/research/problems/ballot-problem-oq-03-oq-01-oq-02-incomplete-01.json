@@ -1,0 +1,81 @@
+{
+  "slug": "ballot-problem-oq-03-oq-01-oq-02-incomplete-01",
+  "title": "Hook-Length Formula via LGV Lemma (Complete Proof)",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Hook-Length Formula via LGV Lemma (Complete Proof).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-03T12:00:00.000Z",
+    "iteration": 2,
+    "focus": "Proved 4/5 sorries. Only gnwProb_key (GNW 1979 KEY theorem) remains.",
+    "blockers": [
+      "gnwProb_key: GNW 1979 KEY theorem requires RSK/bijection argument ~300+ lines"
+    ],
+    "nextAction": "Write stability lemma and attempt inductive proof of gnwProb_key",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 4/5 sorries proved. Only gnwProb_key remains (GNW 1979 KEY theorem).",
+    "builtItems": [
+      "strictHookCells_card: Helpers.lean:13680 - card(H*(i,j)) = h(i,j) - 1",
+      "strictHookCells_nonempty: Helpers.lean:13699 - non-corner implies H* nonempty",
+      "strictHookCells_hookLen_lt: Helpers.lean:13713 - y in H*(x) implies h(y)<h(x)",
+      "gnwProb_sum_corners: Helpers.lean:13745 - sum_c P_c(x)=1 proved by K-induction"
+    ],
+    "insights": [
+      "gnwProb_sum_corners proof: K-induction + sum_eq_single_of_mem (corner) + swap sums + IH (non-corner)",
+      "Count insight: #{non-corner x: y in H*(x)} = y.1+y.2 for y=(a,b) since no corners in arm/leg",
+      "Harmonic identity: (h(x)-1)*P_c(x) = sum_{y in H*(x)} P_c(y) follows from stability",
+      "gnwProb_key equivalent to: Pr[walk from uniform x ends at c] = f(mu-c)/f(mu)",
+      "GNW 1979 proof uses RSK correspondence - hard to formalize directly in Lean",
+      "Stability: P_c(K,x) = P_c(h(x),x) for K>=h(x) - provable by strong induction on h(x)"
+    ],
+    "mathlibGaps": [
+      "No Mathlib lemma for GNW hook-walk probability formula",
+      "RSK correspondence not in Mathlib (would need 1000+ lines to formalize)"
+    ],
+    "nextSteps": [
+      "Prove gnwProb_stable: K>=h(x) implies gnwProb K = gnwProb h(x)",
+      "Attempt gnwProb_key by strong induction on mu.card",
+      "Consider Novelli-Pak-Stoyanovskii explicit formula approach (~300 lines)",
+      "Submit gnwProb_key to Aristotle as HARD sorry for overnight processing"
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "young-tableaux",
+    "hook-length-formula",
+    "lgv-lemma"
+  ],
+  "relatedProofs": [
+    "ballot-problem",
+    "ballot-problem-oq-03",
+    "ballot-problem-oq-03-oq-01",
+    "ballot-problem-oq-03-oq-01-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T11:21:07.473Z",
+  "lastUpdate": "2026-05-03T12:00:00.000Z",
+  "significance": 8,
+  "tractability": 5
+}
