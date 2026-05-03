@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-erdos1054fnorm-preamble",
+    "proofId": "erdos-1054-oq-01-fnorm",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "context",
+    "title": "Module Overview: Partial Progress on Erdős #1054 OQ-01",
+    "content": "The module docstring maps out eight results proved in the file, making the scope clear before any formal code appears. The partial progress framing is deliberate: OQ-01 asks whether f(n)/n → 0 for almost all n, which remains fully open. What the file achieves is proving f(n) = o(n) along specific infinite subsequences — not density 1. The eight items form a ladder: prime structure (I-II) → computational evidence (III-VI) → sigma bound f(σ(m)) ≤ m (VII-IX) → full representability (X-XII). The sigma bound is the mathematical centrepiece; all subsequent results either feed into it or flow from it. The 'Status: Partial progress on OPEN problem' flag is an explicit honesty marker — the gallery entry is `verified` (0 sorries, 0 axioms), but the open problem itself is not solved.",
+    "mathContext": "The function $f(n) = \\min\\{m \\geq 1 : n \\in \\text{partialDivisorSums}(m)\\}$ is defined on representable $n$. Erdős OQ-01 conjectures that $f(n)/n \\to 0$ for almost all $n$ (i.e., $\\#\\{n \\leq N : f(n) \\geq \\varepsilon n\\}/N \\to 0$ for every $\\varepsilon > 0$).",
+    "significance": "context",
+    "relatedConcepts": ["Erdős #1054", "open problems", "f(n) function", "partial progress"],
+    "prerequisites": ["Erdős problem catalog", "natural density", "asymptotic notation"]
+  },
+  {
     "id": "ann-erdos1054fnorm-defs",
     "proofId": "erdos-1054-oq-01-fnorm",
     "range": { "startLine": 40, "endLine": 56 },
@@ -86,7 +98,7 @@
   {
     "id": "ann-erdos1054fnorm-scanl-infra",
     "proofId": "erdos-1054-oq-01-fnorm",
-    "range": { "startLine": 259, "endLine": 338 },
+    "range": { "startLine": 259, "endLine": 330 },
     "type": "technique",
     "title": "Sigma Bound Infrastructure: Last Partial Sum Equals σ(m)",
     "content": "Seven lemmas build the machinery for the sigma bound. The key algebraic fact is scanl_add_getLast (proved by induction): the last element of List.scanl (+) a l equals a + l.sum. Applied with a=0 and l = sortedDivisors(m), this gives: last partial divisor sum = sum of sorted divisors = σ(m). The auxiliary lemmas sortedDivisors_ne_nil and partialDivisorSums_ne_nil ensure getLast is well-typed. The final connection sortedDivisors_sum_eq equates the List.sum with Finset.sum id, bridging the list-based computation to Mathlib's arithmetic σ definition.",
@@ -120,6 +132,18 @@
     "prerequisites": ["multiplicative number theory", "divisor sums"]
   },
   {
+    "id": "ann-erdos1054fnorm-scanl-ge-infra",
+    "proofId": "erdos-1054-oq-01-fnorm",
+    "range": { "startLine": 396, "endLine": 419 },
+    "type": "technique",
+    "title": "scanl_add_ge_init: Every Accumulation Dominates Its Seed",
+    "content": "The lemma `scanl_add_ge_init` is a structural lower bound on List.scanl (+): every element produced by `l.scanl (· + ·) a` is ≥ a. The proof is by list induction. Base case: the empty scanl [a] has only a ≥ a. Inductive step: for cons d t, the scanl starts with a and continues with `t.scanl (· + ·) (a+d)`. The inductive hypothesis gives every element of the tail ≥ a+d ≥ a. This lemma is the key enabler for `partialSums_all_representable` (line 420): it ensures the positive-seed condition for membership checks is satisfied by all partial sums when a=1 is passed.",
+    "mathContext": "\\forall a,\\, \\forall l,\\, \\forall x \\in \\text{List.scanl}(+,\\, a,\\, l):\\; x \\geq a.\\quad \\text{In particular, all partial divisor sums of } m \\geq 1 \\text{ are} \\geq 1.",
+    "significance": "technical",
+    "relatedConcepts": ["List.scanl", "induction on lists", "lower bounds", "IsRepresentable"],
+    "prerequisites": ["Lean 4 list induction", "List.scanl definition", "Nat.le_add_right"]
+  },
+  {
     "id": "ann-erdos1054fnorm-density",
     "proofId": "erdos-1054-oq-01-fnorm",
     "range": { "startLine": 420, "endLine": 445 },
@@ -130,5 +154,17 @@
     "significance": "key",
     "relatedConcepts": ["highly composite numbers", "divisor counting function τ", "density of representable numbers"],
     "prerequisites": ["multiplicative functions", "asymptotic divisor bounds"]
+  },
+  {
+    "id": "ann-erdos1054fnorm-sigma-values",
+    "proofId": "erdos-1054-oq-01-fnorm",
+    "range": { "startLine": 447, "endLine": 521 },
+    "type": "insight",
+    "title": "σ-Image Representability and the Mathematical Synthesis",
+    "content": "Theorem `sigma_values_representable` explicitly verifies that the first 14 values in the range of σ are representable, providing a computational cross-check of the general sigma bound via concrete witnesses. The witnesses are deliberately varied — e.g., σ(6)=12 uses m=6, but σ(16)=31 uses the prime witness m=31 — demonstrating the complementarity of the sigma bound and prime families. The closing summary block (lines 477-521) integrates all 19 proved theorems into a coherent mathematical narrative. It explicitly identifies the gap between the file's results (f(n) = o(n) on two infinite subsequences) and the full OQ-01 conjecture (f(n) = o(n) for almost all n), and names the remaining open questions including whether {2,5} are the only non-representable numbers.",
+    "mathContext": "Both main subsequences together cover roughly $\\pi(N) + \\#\\{m \\leq N : \\sigma(m) \\leq N\\}$ representable values up to $N$; the latter grows like $N \\cdot (1 - 1/e^\\gamma \\log\\log N)^{-1}$ by the Mertens-type bound on $\\sigma$-values, giving density converging to 1 but not equal to 1 on any fixed finite initial segment.",
+    "significance": "key",
+    "relatedConcepts": ["sigma function range", "representability", "open problem summary", "Gronwall theorem"],
+    "prerequisites": ["sigma_values_representable theorem", "Erdős #1054 open questions"]
   }
 ]
