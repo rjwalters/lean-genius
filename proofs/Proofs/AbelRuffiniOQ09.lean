@@ -91,14 +91,14 @@ theorem constants_zero {F : Type*} [DiffField F] : isConst (0 : F) := by
   unfold isConst
   have h := DiffField.deriv_add (0 : F) 0
   simp only [add_zero] at h
-  linarith
+  linear_combination -h
 
 /-- D(1) = 0: one is a constant. Proof: D(1·1) = D(1)·1 + 1·D(1) → D(1) = 0. -/
 theorem constants_one {F : Type*} [DiffField F] : isConst (1 : F) := by
   unfold isConst
   have h := DiffField.deriv_mul (1 : F) 1
   simp only [mul_one, one_mul] at h
-  linarith
+  linear_combination -h
 
 /-- Constants are closed under addition. -/
 theorem constants_add {F : Type*} [DiffField F] {f g : F}
@@ -120,7 +120,7 @@ theorem deriv_neg {F : Type*} [DiffField F] (f : F) :
   have h0 : DiffField.deriv (0 : F) = 0 := constants_zero
   have h := DiffField.deriv_add f (-f)
   rw [add_neg_cancel, h0] at h
-  linarith
+  linear_combination h.symm
 
 /-- D(f - g) = D(f) - D(g). -/
 theorem deriv_sub {F : Type*} [DiffField F] (f g : F) :
@@ -181,6 +181,96 @@ axiom risch_exp_criterion_gaussian :
         2 * x * p.eval x * q.eval x = q.eval x ^ 2) ↔
     ∃ (F : ℝ → ℝ),
       (∀ x : ℝ, HasDerivAt F (Real.exp (-(x^2))) x) ∧ IsElementaryFn F
+
+/-! ══════════════════════════════════════════════════════════════════
+## Part IV: The Core Algebraic Proof — No Polynomial Risch Solution
+══════════════════════════════════════════════════════════════════ -/
+
+/-!
+### Coefficient Extraction: The Algebraic Heart of the Obstruction
+
+The key identity: for any polynomial p,
+  coeff(p' - C(2)·X·p, natDeg(p) + 1) = -2 · leadingCoeff(p).
+
+**Proof**:
+- coeff(derivative p, natDeg+1) = (natDeg+2) · coeff(p, natDeg+2) = 0
+  (coefficient above degree is zero)
+- coeff(C(2)·X·p, natDeg+1) = 2 · coeff(X·p, natDeg+1) = 2 · coeff(p, natDeg)
+  = 2 · leadingCoeff(p)
+- Net: 0 - 2·leadingCoeff(p) = -2·leadingCoeff(p).
+
+This identity forces a contradiction: if p' - 2xp = 1 (a degree-0 polynomial),
+then the coefficient of the LHS at natDeg+1 is -2·leadingCoeff(p), while the RHS
+has coefficient 0. So leadingCoeff(p) = 0, but p ≠ 0 — contradiction.
+-/
+
+/-- The coefficient of X^(natDegree p + 1) in (derivative p - C 2 · (X · p))
+    equals -2 · leadingCoeff(p). -/
+theorem risch_ode_coeff_top (p : Polynomial ℝ) :
+    (Polynomial.derivative p - Polynomial.C 2 * (Polynomial.X * p)).coeff
+      (p.natDegree + 1) = -2 * p.leadingCoeff := by
+  simp only [Polynomial.coeff_sub, Polynomial.coeff_C_mul, Polynomial.coeff_X_mul,
+             Polynomial.coeff_derivative]
+  have h0 : p.coeff (p.natDegree + 2) = 0 :=
+    Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)
+  push_cast
+  rw [h0, zero_mul, zero_sub]
+  simp only [Polynomial.leadingCoeff]
+  ring
+
+/-- The constant polynomial 1 has coefficient 0 at any position ≥ 1. -/
+theorem poly_one_coeff_pos (n : ℕ) (hn : 0 < n) : (1 : Polynomial ℝ).coeff n = 0 := by
+  rw [Polynomial.coeff_one]
+  simp [Nat.pos_iff_ne_zero.mp hn]
+
+/-- **No polynomial satisfies the Risch ODE for the Gaussian**: p' - C(2)·X·p ≠ 1.
+
+    The operator L[p] = p' - 2·X·p raises degree by 1 for any nonzero p,
+    so its image (polynomials of degree ≥ 1) never contains the constant 1.
+
+    **Proof**:
+    - For p = 0: L[0] = 0 ≠ 1.
+    - For p ≠ 0: leadingCoeff(p) ≠ 0.
+      Coefficient at natDeg(p)+1: LHS gives -2·leadingCoeff(p) (by risch_ode_coeff_top),
+      RHS gives 0 (by poly_one_coeff_pos). So -2·leadingCoeff(p) = 0, forcing
+      leadingCoeff(p) = 0 — contradiction. -/
+theorem no_poly_risch_soln :
+    ∀ p : Polynomial ℝ, Polynomial.derivative p - Polynomial.C 2 * (Polynomial.X * p) ≠ 1 := by
+  intro p h
+  by_cases hp : p = 0
+  · simp [hp] at h
+  · have hlc : p.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.mpr hp
+    have hcoeff := Polynomial.ext_iff.mp h (p.natDegree + 1)
+    rw [risch_ode_coeff_top, poly_one_coeff_pos _ (by omega)] at hcoeff
+    exact absurd hcoeff (mul_ne_zero (by norm_num) hlc)
+
+/-- No polynomial satisfies L[p] = C(c) for any nonzero constant c.
+    The Risch operator's image avoids all nonzero constants. -/
+theorem no_poly_risch_constant (c : ℝ) (hc : c ≠ 0) :
+    ∀ p : Polynomial ℝ,
+      Polynomial.derivative p - Polynomial.C 2 * (Polynomial.X * p) ≠ Polynomial.C c := by
+  intro p h
+  by_cases hp : p = 0
+  · simp [hp] at h
+    exact hc (Polynomial.C_eq_zero.mp h.symm)
+  · have hlc : p.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.mpr hp
+    have hcoeff := Polynomial.ext_iff.mp h (p.natDegree + 1)
+    rw [risch_ode_coeff_top] at hcoeff
+    simp only [Polynomial.coeff_C, Nat.succ_ne_zero, ↓reduceIte] at hcoeff
+    exact absurd hcoeff (mul_ne_zero (by norm_num) hlc)
+
+/-- The Risch operator strictly raises degree:
+    For p ≠ 0, natDegree(L[p]) > natDegree(p).
+    Proved by the nonzero coefficient at natDeg(p)+1. -/
+theorem risch_ode_raises_degree (p : Polynomial ℝ) (hp : p ≠ 0) :
+    p.natDegree < (Polynomial.derivative p - Polynomial.C 2 * (Polynomial.X * p)).natDegree := by
+  have hlc : p.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.mpr hp
+  have hne : (Polynomial.derivative p - Polynomial.C 2 * (Polynomial.X * p)).coeff
+               (p.natDegree + 1) ≠ 0 := by
+    rw [risch_ode_coeff_top]
+    exact mul_ne_zero (by norm_num) hlc
+  calc p.natDegree < p.natDegree + 1 := Nat.lt_succ_self _
+    _ ≤ _ := Polynomial.le_natDegree_of_ne_zero hne
 
 /-- The Risch operator L[h] = h' - C(2)·X·h. -/
 private def rischOp (h : Polynomial ℝ) : Polynomial ℝ :=
@@ -282,97 +372,8 @@ theorem gaussian_not_elementary :
     have := hiter x
     rw [hzero, Polynomial.eval_zero] at this
     exact (mul_eq_zero.mp this.symm).resolve_right (Real.exp_pos _).ne'
-  exact hne (Polynomial.funext hall)
+  exact hne (Polynomial.funext (fun x => (hall x).trans (Polynomial.eval_zero x).symm))
 
-/-! ══════════════════════════════════════════════════════════════════
-## Part IV: The Core Algebraic Proof — No Polynomial Risch Solution
-══════════════════════════════════════════════════════════════════ -/
-
-/-!
-### Coefficient Extraction: The Algebraic Heart of the Obstruction
-
-The key identity: for any polynomial p,
-  coeff(p' - C(2)·X·p, natDeg(p) + 1) = -2 · leadingCoeff(p).
-
-**Proof**:
-- coeff(derivative p, natDeg+1) = (natDeg+2) · coeff(p, natDeg+2) = 0
-  (coefficient above degree is zero)
-- coeff(C(2)·X·p, natDeg+1) = 2 · coeff(X·p, natDeg+1) = 2 · coeff(p, natDeg)
-  = 2 · leadingCoeff(p)
-- Net: 0 - 2·leadingCoeff(p) = -2·leadingCoeff(p).
-
-This identity forces a contradiction: if p' - 2xp = 1 (a degree-0 polynomial),
-then the coefficient of the LHS at natDeg+1 is -2·leadingCoeff(p), while the RHS
-has coefficient 0. So leadingCoeff(p) = 0, but p ≠ 0 — contradiction.
--/
-
-/-- The coefficient of X^(natDegree p + 1) in (derivative p - C 2 · (X · p))
-    equals -2 · leadingCoeff(p). -/
-theorem risch_ode_coeff_top (p : Polynomial ℝ) :
-    (Polynomial.derivative p - Polynomial.C 2 * (Polynomial.X * p)).coeff
-      (p.natDegree + 1) = -2 * p.leadingCoeff := by
-  simp only [Polynomial.coeff_sub, Polynomial.coeff_C_mul, Polynomial.coeff_X_mul,
-             Polynomial.coeff_derivative]
-  have h0 : p.coeff (p.natDegree + 2) = 0 :=
-    Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)
-  push_cast
-  rw [h0, zero_mul, zero_sub]
-  simp only [Polynomial.leadingCoeff]
-  ring
-
-/-- The constant polynomial 1 has coefficient 0 at any position ≥ 1. -/
-theorem poly_one_coeff_pos (n : ℕ) (hn : 0 < n) : (1 : Polynomial ℝ).coeff n = 0 := by
-  rw [Polynomial.coeff_one]
-  simp [Nat.pos_iff_ne_zero.mp hn]
-
-/-- **No polynomial satisfies the Risch ODE for the Gaussian**: p' - C(2)·X·p ≠ 1.
-
-    The operator L[p] = p' - 2·X·p raises degree by 1 for any nonzero p,
-    so its image (polynomials of degree ≥ 1) never contains the constant 1.
-
-    **Proof**:
-    - For p = 0: L[0] = 0 ≠ 1.
-    - For p ≠ 0: leadingCoeff(p) ≠ 0.
-      Coefficient at natDeg(p)+1: LHS gives -2·leadingCoeff(p) (by risch_ode_coeff_top),
-      RHS gives 0 (by poly_one_coeff_pos). So -2·leadingCoeff(p) = 0, forcing
-      leadingCoeff(p) = 0 — contradiction. -/
-theorem no_poly_risch_soln :
-    ∀ p : Polynomial ℝ, Polynomial.derivative p - Polynomial.C 2 * (Polynomial.X * p) ≠ 1 := by
-  intro p h
-  by_cases hp : p = 0
-  · simp [hp] at h
-  · have hlc : p.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.mpr hp
-    have hcoeff := Polynomial.ext_iff.mp h (p.natDegree + 1)
-    rw [risch_ode_coeff_top, poly_one_coeff_pos _ (by omega)] at hcoeff
-    exact absurd hcoeff (mul_ne_zero (by norm_num) hlc)
-
-/-- No polynomial satisfies L[p] = C(c) for any nonzero constant c.
-    The Risch operator's image avoids all nonzero constants. -/
-theorem no_poly_risch_constant (c : ℝ) (hc : c ≠ 0) :
-    ∀ p : Polynomial ℝ,
-      Polynomial.derivative p - Polynomial.C 2 * (Polynomial.X * p) ≠ Polynomial.C c := by
-  intro p h
-  by_cases hp : p = 0
-  · simp [hp] at h
-    exact hc (Polynomial.C_eq_zero.mp h.symm)
-  · have hlc : p.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.mpr hp
-    have hcoeff := Polynomial.ext_iff.mp h (p.natDegree + 1)
-    rw [risch_ode_coeff_top] at hcoeff
-    simp only [Polynomial.coeff_C, Nat.succ_ne_zero, ↓reduceIte] at hcoeff
-    exact absurd hcoeff (mul_ne_zero (by norm_num) hlc)
-
-/-- The Risch operator strictly raises degree:
-    For p ≠ 0, natDegree(L[p]) > natDegree(p).
-    Proved by the nonzero coefficient at natDeg(p)+1. -/
-theorem risch_ode_raises_degree (p : Polynomial ℝ) (hp : p ≠ 0) :
-    p.natDegree < (Polynomial.derivative p - Polynomial.C 2 * (Polynomial.X * p)).natDegree := by
-  have hlc : p.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.mpr hp
-  have hne : (Polynomial.derivative p - Polynomial.C 2 * (Polynomial.X * p)).coeff
-               (p.natDegree + 1) ≠ 0 := by
-    rw [risch_ode_coeff_top]
-    exact mul_ne_zero (by norm_num) hlc
-  calc p.natDegree < p.natDegree + 1 := Nat.lt_succ_self _
-    _ ≤ _ := Polynomial.le_natDegree_of_ne_zero hne
 
 /-! ══════════════════════════════════════════════════════════════════
 ## Part V: Pointwise Reformulation
@@ -501,8 +502,8 @@ theorem risch_linear_surjective_all (p : Polynomial ℝ) :
   | monomial n a =>
     obtain ⟨Qn, hQn⟩ := risch_linear_surjective_monomial n
     refine ⟨Polynomial.C a * Qn, ?_⟩
-    simp only [Polynomial.derivative_mul, Polynomial.derivative_C, zero_mul, zero_add,
-               Polynomial.monomial_eq_C_mul_X]
+    simp only [Polynomial.derivative_mul, Polynomial.derivative_C, zero_mul, zero_add]
+    rw [← Polynomial.C_mul_X_pow_eq_monomial]
     linear_combination Polynomial.C a * hQn
 
 /-! ══════════════════════════════════════════════════════════════════
