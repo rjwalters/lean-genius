@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1201",
   "title": "Erdős #1201",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,10 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
+    "progressSummary": "COMPLETE: Gallery entry finalized. Lean formalization: 14 structural theorems, 1 axiom (ε=1/2 partial result), 0 sorries, 266 lines. PR #15109 (code + meta.json) merged. annotations.json + index.ts added in Session 1 (2026-05-03).",
+    "builtItems": [
+      "annotations.json: 9 annotations covering all 6 sections (src/data/proofs/erdos-1201/annotations.json)",
+      "index.ts: gallery entry exports (src/data/proofs/erdos-1201/index.ts)"
+    ],
+    "insights": [
+      "Gallery entry for erdos-1201 existed (meta.json merged in PR #15109) but was missing annotations.json and index.ts",
+      "Lean file uses Filter.limsup for upper density — matching standard analytic number theory definition",
+      "gpfConsecutive_large_of_prime_dvd is the key structural lemma connecting prime distribution in windows to the density condition",
+      "ε=1/2 case axiomatized (Erdős proved it via smooth number theory); full conjecture stated as def ErdosProblem1201"
+    ],
+    "mathlibGaps": [
+      "Smooth number theory (Dickman ρ function) not in Mathlib — blocks proving ε=1/2 case from first principles",
+      "No Mathlib lemma connecting upper density to prime gaps directly"
+    ],
     "nextSteps": [],
     "markdown": "# Erdős #1201 - Knowledge Base\n\n## Problem Statement\n\nIs it true that for every $\\epsilon,\\eta>0$ there exists a $k$ such that the density of $n$ for which\\[P(n(n+1)\\cdots(n+k))>n^{1-\\epsilon}\\]is at least $1-\\eta$ (where $P(m)$ is the greatest prime divisor of $m$)? Erdős wrote he could prove this for $\\epsilon=1/2$.## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #62\n- Problem #2\n- Problem #1200\n- Problem #1202\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n"
   },

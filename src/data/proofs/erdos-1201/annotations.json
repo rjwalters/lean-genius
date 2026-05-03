@@ -1,0 +1,209 @@
+[
+  {
+    "id": "ann-e1201-header",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Statement: Greatest Prime Factor of Consecutive Products",
+    "content": "Erdős Problem #1201 asks whether long products of consecutive integers almost always contain a large prime factor. Formally: for every ε, η > 0, does there exist k such that the upper density of {n | P(n,k) > n^(1-ε)} is at least 1-η? Here P(n,k) denotes the greatest prime factor of n(n+1)···(n+k). The partial result for ε=1/2 was proved by Erdős himself: there exist windows of consecutive integers where the product exceeds n^(1/2). The full conjecture for arbitrary ε remains open.",
+    "mathContext": "$P(n,k) = \\max\\{p \\text{ prime} : p \\mid n(n+1)\\cdots(n+k)\\}$. The conjecture: $\\forall \\varepsilon, \\eta > 0,\\,\\exists k: \\overline{d}(\\{n : P(n,k) > n^{1-\\varepsilon}\\}) \\geq 1-\\eta$ where $\\overline{d}(S) = \\limsup_{N\\to\\infty} |S\\cap[1,N]|/N$. Erdős proved the $\\varepsilon=1/2$ case, implying that for large enough windows, the product is almost never $\\sqrt{n}$-smooth.",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth numbers",
+      "upper density",
+      "greatest prime factor",
+      "consecutive integers",
+      "analytic number theory"
+    ],
+    "prerequisites": [
+      "prime numbers",
+      "natural density",
+      "smooth number theory"
+    ]
+  },
+  {
+    "id": "ann-e1201-gpf-def",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 27,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "greatestPrimeFactor: The GPF Function",
+    "content": "The `greatestPrimeFactor n` (GPF) function extracts the largest prime divisor of n using Mathlib's `Nat.primeFactors` (the finset of prime factors) and `Finset.max'` (the maximum of a nonempty finset). The `if h : n.primeFactors.Nonempty` guard handles the base cases n=0 and n=1, where no prime divides n, returning 0 by convention. For n ≥ 2, the finset is nonempty and `max'` extracts the largest element.\n\nThis noncomputable definition works with `Real.sqrt` and real-valued density arguments later in the file.",
+    "mathContext": "$\\text{gpf}(n) = \\begin{cases} 0 & \\text{if } n \\leq 1 \\\\ \\max\\{p \\text{ prime} : p \\mid n\\} & \\text{if } n \\geq 2 \\end{cases}$. In Lean: `n.primeFactors = {p : ℕ | p.Prime ∧ p ∣ n}` as a `Finset ℕ`. `Finset.max' S h` returns the maximum of nonempty `S`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.primeFactors",
+      "Finset.max'",
+      "prime factorization"
+    ],
+    "prerequisites": [
+      "Lean 4 Finset API",
+      "Mathlib prime definitions"
+    ]
+  },
+  {
+    "id": "ann-e1201-consec-def",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 32,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "consecutiveProduct and gpfConsecutive",
+    "content": "`consecutiveProduct n k` computes n(n+1)···(n+k) using `Finset.prod` over the range {0,1,...,k}, mapping i ↦ n+i. This is a computable definition (no `noncomputable` needed) since it's a finite product of natural numbers.\n\n`gpfConsecutive n k` simply applies `greatestPrimeFactor` to the consecutive product. This is the main quantity studied in Erdős Problem 1201: P(n,k) in the problem statement.\n\n`upperDensity` captures the lim sup density of a set of naturals using `Filter.limsup` — a measure-theoretic tool from Mathlib's filter library for asymptotic analysis.",
+    "mathContext": "$\\text{consecutiveProduct}(n,k) = \\prod_{i=0}^{k}(n+i) = n(n+1)\\cdots(n+k)$. In Lean: `(Finset.range (k+1)).prod (fun i => n+i)`. Upper density: $\\overline{d}(S) = \\limsup_{N\\to\\infty} \\frac{|S \\cap \\{1,\\ldots,N\\}|}{N}$, formalized as `Filter.limsup` over `Filter.atTop`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.prod",
+      "Filter.limsup",
+      "Filter.atTop",
+      "upper density"
+    ],
+    "prerequisites": [
+      "Lean 4 filter library",
+      "Mathlib real analysis"
+    ]
+  },
+  {
+    "id": "ann-e1201-conjecture",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 54,
+      "endLine": 70
+    },
+    "type": "concept",
+    "title": "The Conjecture and the ε=1/2 Axiom",
+    "content": "`ErdosProblem1201` is stated as a Lean `def` (a proposition) rather than an `axiom` — it is the open conjecture we cannot yet prove. The ε=1/2 partial result `erdos_1201_half_case` IS axiomatized: Erdős proved it using analytic number theory (properties of the Dickman function and smooth number densities), but the full proof requires infrastructure not currently in Mathlib.\n\nThe key distinction: `ErdosProblem1201` universally quantifies over ε, while the axiom fixes ε=1/2. The two differ: for ε very small (say ε=0.01), the condition P(n,k) > n^0.99 is much harder to achieve than P(n,k) > √n.",
+    "mathContext": "The conjecture in the def: $\\forall \\varepsilon \\in (0,1),\\, \\forall \\eta > 0,\\, \\exists k: \\overline{d}(\\{n : P(n,k) > n^{1-\\varepsilon}\\}) \\geq 1-\\eta$. The axiom: $\\forall \\eta > 0,\\, \\exists k: \\overline{d}(\\{n : P(n,k) > \\sqrt{n}\\}) \\geq 1-\\eta$. At $\\varepsilon = 1/2$: $n^{1-\\varepsilon} = n^{1/2} = \\sqrt{n}$, so these match.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open conjecture",
+      "Dickman function",
+      "smooth number density",
+      "ε-smoothness"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "smooth number theory",
+      "Dickman ρ function"
+    ]
+  },
+  {
+    "id": "ann-e1201-gpf-props",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 75,
+      "endLine": 113
+    },
+    "type": "proof",
+    "title": "GPF Properties: Primality, Divisibility, and Maximality",
+    "content": "Six theorems establish the basic properties of `greatestPrimeFactor`:\n\n- **gpf_prime**: gpf(n) is prime for n ≥ 2. Proof: `n.primeFactors.Nonempty` when n ≥ 2, and `Nat.prime_of_mem_primeFactors` applies to any element of `primeFactors`.\n- **gpf_dvd**: gpf(n) divides n. Extracted from `n.primeFactors` membership via `Nat.mem_primeFactors`.\n- **gpf_le**: gpf(n) ≤ n. Follows from divisibility: if p | n then p ≤ n (when n ≥ 1).\n- **gpf_ge_two**: gpf(n) ≥ 2. Since gpf(n) is prime, it has `.two_le`.\n- **gpf_max**: Any p ∈ n.primeFactors satisfies p ≤ gpf(n). From `Finset.le_max'`.\n- **gpf_ge_prime_dvd**: If p is prime and p | n, then p ≤ gpf(n). Uses membership in `primeFactors`.",
+    "mathContext": "For $n \\geq 2$: $\\text{gpf}(n)$ is prime, $\\text{gpf}(n) \\mid n$, $2 \\leq \\text{gpf}(n) \\leq n$, and $\\forall p$ prime with $p \\mid n: p \\leq \\text{gpf}(n)$. These follow from $\\text{primeFactors}(n)$ being a nonempty finset when $n \\geq 2$ and $\\max'$ being the actual maximum.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.primeFactors",
+      "Finset.le_max'",
+      "Nat.prime_of_mem_primeFactors",
+      "divisibility"
+    ],
+    "prerequisites": [
+      "prime number theory",
+      "Lean 4 Finset API"
+    ]
+  },
+  {
+    "id": "ann-e1201-consec-props",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 119,
+      "endLine": 158
+    },
+    "type": "proof",
+    "title": "Consecutive Product Properties: Recursion and Divisibility",
+    "content": "Key structural properties of `consecutiveProduct n k`:\n\n- **consecutiveProduct_zero**: n(n+0) = n. Base case via `simp`.\n- **consecutiveProduct_pos**: The product is positive when n ≥ 1. All factors n+i ≥ 1 > 0.\n- **dvd_consecutiveProduct_left**: n | n(n+1)···(n+k). Uses `Finset.dvd_prod_of_mem` with i=0.\n- **dvd_consecutiveProduct_right**: n+k | n(n+1)···(n+k). Uses `Finset.dvd_prod_of_mem` with i=k.\n- **consecutiveProduct_succ**: Recursion n(n+1)···(n+k+1) = n · (n+1)(n+2)···(n+k+1).\n- **dvd_consecutiveProduct_of_dvd_lt**: If p | consecutiveProduct n k, then p | consecutiveProduct n (k+1). The product grows monotonically in k.\n\nThe last lemma is critical for the monotonicity proof.",
+    "mathContext": "$n \\mid \\prod_{i=0}^{k}(n+i)$ since $n = n+0$ is one of the factors. Similarly $(n+k) \\mid \\prod_{i=0}^{k}(n+i)$. The product satisfies $\\prod_{i=0}^{k+1}(n+i) = n \\cdot \\prod_{i=1}^{k+1}(n+i)$ (recursion removing the first factor). Monotonicity: $\\prod_{i=0}^{k}(n+i) \\mid \\prod_{i=0}^{k+1}(n+i)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.dvd_prod_of_mem",
+      "Finset.prod_range_succ",
+      "divisibility in products"
+    ],
+    "prerequisites": [
+      "Lean 4 Finset API",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-e1201-monotone",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 161,
+      "endLine": 185
+    },
+    "type": "proof",
+    "title": "gpfConsecutive_mono: Increasing Window Size Increases GPF",
+    "content": "**gpfConsecutive_mono**: gpfConsecutive n k ≤ gpfConsecutive n (k+1). This says the greatest prime factor can only increase (or stay the same) when we extend the window by one term.\n\nThe proof works by showing every prime factor of consecutiveProduct n k is also a prime factor of consecutiveProduct n (k+1). Since consecutiveProduct n k divides consecutiveProduct n (k+1), any prime dividing the smaller product also divides the larger one. The max over a larger set is at least as large.\n\nIn Lean: `Finset.max'_le` bounds the max of the k-term factors by showing each factor appears in the (k+1)-term factors, then `Finset.le_max'` shows the (k+1)-max is at least as large.",
+    "mathContext": "Since $n(n+1)\\cdots(n+k) \\mid n(n+1)\\cdots(n+k+1)$ (by multiplication by $n+k+1$), every prime factor of the left product is a prime factor of the right. Therefore $\\text{primeFactors}(\\text{product}_k) \\subseteq \\text{primeFactors}(\\text{product}_{k+1})$, giving $\\max(\\text{primeFactors}_k) \\leq \\max(\\text{primeFactors}_{k+1})$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.max'_le",
+      "Finset.le_max'",
+      "monotonicity",
+      "prime factor inheritance"
+    ],
+    "prerequisites": [
+      "Finset max lemmas",
+      "divisibility and prime factors"
+    ]
+  },
+  {
+    "id": "ann-e1201-large-prime",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 190,
+      "endLine": 208
+    },
+    "type": "proof",
+    "title": "gpfConsecutive_large_of_prime_dvd: The Key Criterion",
+    "content": "**gpfConsecutive_large_of_prime_dvd** is the central lemma connecting prime distribution to the Erdős conjecture. It says: if some prime p > n^(1-ε) divides one of the terms n+i in the window, then gpfConsecutive n k > n^(1-ε).\n\nThe proof:\n1. Show p ∈ (consecutiveProduct n k).primeFactors: since p | n+i and n+i | consecutiveProduct n k (from `Finset.dvd_prod_of_mem`), p | consecutiveProduct n k, and p is prime.\n2. Apply gpf_max: every member of primeFactors is ≤ gpf, so p ≤ gpfConsecutive n k.\n3. Chain: n^(1-ε) < p ≤ gpfConsecutive n k.\n\nThis lemma reduces the Erdős conjecture to: does almost every starting point n have a prime > n^(1-ε) in the window [n, n+k]? That's the analytical core of the problem.",
+    "mathContext": "If $p$ is prime, $p \\mid n+i$ for some $i \\leq k$, and $p > n^{1-\\varepsilon}$, then: $p \\mid n+i \\mid \\prod_{j=0}^{k}(n+j)$, so $p \\in \\text{primeFactors}(\\text{prod})$, giving $P(n,k) \\geq p > n^{1-\\varepsilon}$. In Lean: `Finset.dvd_prod_of_mem` with membership witness `i ∈ Finset.range(k+1)`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.dvd_prod_of_mem",
+      "prime distribution in intervals",
+      "smooth number avoidance"
+    ],
+    "prerequisites": [
+      "prime factor chain lemma",
+      "Finset product divisibility"
+    ]
+  },
+  {
+    "id": "ann-e1201-half-iff",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 234,
+      "endLine": 265
+    },
+    "type": "proof",
+    "title": "The ε=1/2 Reformulation: √n vs. P(n,k)²",
+    "content": "**gpfConsecutive_half_iff** shows that P(n,k) > √n iff P(n,k)² > n (for n ≥ 2). This purely algebraic reformulation avoids working with square roots in the density argument.\n\n**erdos_1201_half_squared** then combines this equivalence with the `erdos_1201_half_case` axiom to derive: for every η > 0, there exists k such that upper density of {n | P(n,k)² > n} ≥ 1 - η. The proof uses `Set.ext` to show the two sets are equal (via the iff), then applies the axiom.\n\nThe `interval_cases n` tactic handles the degenerate cases n=0 and n=1 where the square root condition needs special treatment (gpf of 0 or 1 is 0).",
+    "mathContext": "For $n \\geq 2$ and $P = P(n,k) \\geq 2$: $P > \\sqrt{n} \\iff P^2 > n$ (since $\\sqrt{n} \\geq 0$ and $P \\geq 0$, squaring is monotone). In Lean: `Real.sqrt_lt'` and `Real.sqrt_lt_sqrt_iff`. The `interval_cases n` tactic decides the finitely many cases $n \\in \\{0,1\\}$ with `simp` on unfolded definitions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.sqrt",
+      "Real.sqrt_lt'",
+      "Set.ext",
+      "interval_cases tactic"
+    ],
+    "prerequisites": [
+      "square root in Mathlib",
+      "real analysis basics"
+    ]
+  }
+]
