@@ -17,10 +17,10 @@
     "badge": "formalized",
     "sorries": 2,
     "axiomCount": 0,
-    "lineCount": 0,
+    "lineCount": 343,
     "assumptions": "2 HARD sorries remaining (down from 3): localization_existence (~150 lines, Lp restriction map infrastructure) and lp_truncation_tendsto_zero (~80 lines, Vitali's convergence theorem). Density extension (Step C, ~50 lines) is fully proved: integrationCLM works for SigmaFinite without IsFiniteMeasure, and Lp.induction is valid for sigma-finite measures.",
     "dateAdded": "2026-05-03",
-    "theoremCount": 0,
+    "theoremCount": 10,
     "originalContributions": [
       "integrationCLM_sf: integration CLM on Lp(μ) for purely sigma-finite μ — proves IsFiniteMeasure was never needed for the CLM construction (Hölder only)",
       "integral_representation_sf: Step C density extension proved — Lp.induction is valid for SigmaFinite without IsFiniteMeasure, completing the missing piece from the parent entry",
