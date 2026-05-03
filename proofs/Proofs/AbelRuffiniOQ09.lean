@@ -316,7 +316,7 @@ theorem risch_ode_coeff_top (p : Polynomial ℝ) :
   have h0 : p.coeff (p.natDegree + 2) = 0 :=
     Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)
   push_cast
-  rw [h0, mul_zero, zero_sub]
+  rw [h0, zero_mul, zero_sub]
   simp only [Polynomial.leadingCoeff]
   ring
 
