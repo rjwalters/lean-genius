@@ -314,7 +314,7 @@ theorem gcd_aeval_mulVec_eq_zero {M : Matrix (Fin n) (Fin n) K}
     _ = (aeval M (EuclideanDomain.gcdA p μ)).mulVec ((aeval M p).mulVec v) +
         (aeval M (EuclideanDomain.gcdB p μ)).mulVec ((aeval M μ).mulVec v) := by
         rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
-    _ = 0 := by rw [hp_ann, hμ_ann, Matrix.zero_mulVec, Matrix.mulVec_zero, add_zero]
+    _ = 0 := by simp [hp_ann, hμ_ann, Matrix.zero_mulVec, Matrix.mulVec_zero]
 
 -- ============================================================
 -- PART IV-C: Kernel Properness Helper
