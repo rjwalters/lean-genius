@@ -603,4 +603,60 @@ theorem gpfConsecutive_succ_right (n k : ℕ) (hn : 2 ≤ n) :
       show k + 1 + 1 = (k + 1) + 1 from rfl, Finset.range_succ, Finset.sup_insert]
   simp only [show n + (k + 1) = n + k + 1 from by ring, sup_comm, sup_eq_max]
 
+/-
+## Right-Endpoint Biconditional and Infinite Sets
+-/
+
+/-- **Right-Endpoint Biconditional**: P(n,k) = n+k ↔ (n+k).Prime.
+    The upper bound gpfConsecutive_upper_bound (P ≤ n+k) is achieved exactly when the right
+    endpoint n+k is prime. Forward: gpfConsecutive is always prime (as the greatest prime factor
+    of a ≥ 2 number), so P(n,k) = n+k forces n+k to be prime.
+    Backward: gpfConsecutive_eq_of_prime_right.
+
+    Together with gpfConsecutive_upper_bound, this gives a complete tight characterization:
+    P(n,k) < n+k when n+k is composite, and P(n,k) = n+k when n+k is prime. -/
+theorem gpfConsecutive_eq_right_iff (n k : ℕ) (hn : 1 ≤ n) (hnk : 2 ≤ n + k) :
+    gpfConsecutive n k = n + k ↔ (n + k).Prime := by
+  constructor
+  · intro h
+    have hcp_ge : 2 ≤ consecutiveProduct n k :=
+      le_trans hnk (Nat.le_of_dvd (consecutiveProduct_pos n k hn)
+        (dvd_consecutiveProduct_right n k))
+    have hprime : (gpfConsecutive n k).Prime := by
+      unfold gpfConsecutive; exact gpf_prime _ hcp_ge
+    rwa [h] at hprime
+  · exact gpfConsecutive_eq_of_prime_right n k hn
+
+/-- For any fixed k, the set {n | n+k is prime} is infinite. Since for every N there is a prime
+    p > N+k, the element n = p-k satisfies n+k = p (prime) and n > N.
+
+    Combined with gpfConsecutive_eq_right_iff, this implies the set where P(n,k) achieves its
+    maximum n+k is also infinite (see erdos_1201_eq_right_infinite). -/
+theorem erdos_1201_prime_right_infinite (k : ℕ) :
+    Set.Infinite {n : ℕ | (n + k).Prime} := by
+  apply Set.infinite_of_not_bddAbove
+  rw [not_bddAbove_iff]
+  intro N
+  obtain ⟨p, hp_ge, hp_prime⟩ := Nat.exists_infinite_primes (N + k + 1)
+  refine ⟨p - k, ?_, by omega⟩
+  simp only [Set.mem_setOf_eq]
+  rwa [Nat.sub_add_cancel (by omega)]
+
+/-- For any k ≥ 1, infinitely many n satisfy P(n,k) = n+k: the upper bound is achieved
+    infinitely often. Whenever n+k is prime (infinitely often by erdos_1201_prime_right_infinite),
+    we have P(n,k) = n+k by gpfConsecutive_eq_right_iff.
+
+    This complements erdos_1201_infinitely_many (which uses prime STARTS n to witness P > n^(1-ε)):
+    here we use prime ENDS n+k to witness P = n+k. -/
+theorem erdos_1201_eq_right_infinite (k : ℕ) (hk : 0 < k) :
+    Set.Infinite {n : ℕ | gpfConsecutive n k = n + k} := by
+  apply Set.infinite_of_not_bddAbove
+  rw [not_bddAbove_iff]
+  intro N
+  obtain ⟨p, hp_ge, hp_prime⟩ := Nat.exists_infinite_primes (max N 1 + k + 1)
+  refine ⟨p - k, ?_, by omega⟩
+  simp only [Set.mem_setOf_eq]
+  rw [Nat.sub_add_cancel (by omega)]
+  exact gpfConsecutive_eq_of_prime_right (p - k) k (by omega) hp_prime
+
 end Erdos1201
