@@ -521,7 +521,12 @@ theorem greatestPrimeFactor_prime (n : ℕ) (hn : n.Prime) : greatestPrimeFactor
   unfold greatestPrimeFactor
   have hne : n.primeFactors.Nonempty :=
     ⟨n, Nat.mem_primeFactors.mpr ⟨hn, dvd_refl n, hn.pos.ne'⟩⟩
-  simp only [dif_pos hne, Nat.primeFactors_prime hn, Finset.max'_singleton]
+  rw [dif_pos hne, Nat.primeFactors_prime hn]
+  apply Nat.le_antisymm
+  · apply Finset.max'_le
+    intro x hx
+    exact (Finset.mem_singleton.mp hx).le
+  · exact Finset.le_max' _ n (Finset.mem_singleton_self n)
 
 /-- For a prime n, gpfConsecutive n 0 = n: the zero-width window contains only n. -/
 theorem gpfConsecutive_prime_start (n : ℕ) (hn : n.Prime) : gpfConsecutive n 0 = n := by
@@ -532,17 +537,18 @@ theorem gpfConsecutive_prime_start (n : ℕ) (hn : n.Prime) : gpfConsecutive n 0
     are disjoint (consecutive integers are coprime), the product's GPF comes from one term. -/
 theorem gpfConsecutive_one_eq_max (n : ℕ) (hn : 2 ≤ n) :
     gpfConsecutive n 1 = max (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) := by
-  rw [gpfConsecutive_eq_sup_range n 1 hn,
-      show (Finset.range (1 + 1) : Finset ℕ) = {0, 1} from by decide,
-      Finset.sup_insert, Finset.sup_singleton]
-  simp [sup_eq_max, Nat.add_zero]
+  rw [gpfConsecutive_eq_sup_range n 1 hn]
+  simp only [show 1 + 1 = 2 from rfl, show (Finset.range 2 : Finset ℕ) = {0, 1} from by decide,
+             Finset.sup_insert, Finset.sup_singleton]
+  simp only [Nat.add_zero, sup_eq_max]
 
 /-- P(n, k) ≥ gpf(n): the window GPF is at least the GPF of the left endpoint. -/
 theorem gpfConsecutive_ge_left (n k : ℕ) (hn : 2 ≤ n) :
     greatestPrimeFactor n ≤ gpfConsecutive n k := by
-  rw [gpfConsecutive_eq_sup_range n k hn, ← Nat.add_zero n]
-  apply Finset.le_sup
-  exact Finset.mem_range.mpr (Nat.succ_pos k)
+  rw [gpfConsecutive_eq_sup_range n k hn]
+  have h := Finset.le_sup (f := fun i => greatestPrimeFactor (n + i))
+              (Finset.mem_range.mpr (Nat.succ_pos k))
+  simpa using h
 
 /-- P(n, k) ≥ gpf(n+k): the window GPF is at least the GPF of the right endpoint. -/
 theorem gpfConsecutive_ge_right (n k : ℕ) (hn : 2 ≤ n) :
