@@ -13893,11 +13893,12 @@
       "result": "clean"
     },
     "angle-trisection-oq-04-oq-04": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [
-        "missing top-level sorries field; lineCount stale 155->152"
+        "missing top-level sorries field; lineCount stale 155->152",
+        "leanFile.theoremCount stale 12→11; PR #15106"
       ],
-      "lastAudited": "2026-05-03T08:00:00Z",
+      "lastAudited": "2026-05-03T06:29:52Z",
       "result": "issues-fixed"
     },
     "binary-gcd-oq-03-oq-02": {
@@ -13935,6 +13936,15 @@
       ],
       "lastAudited": "2026-05-03T08:00:00Z",
       "result": "issues-fixed"
+    },
+    "angle-trisection-oq-03-oq-02": {
+      "auditCount": 4,
+      "lastAudited": "2026-05-03T06:29:52Z",
+      "result": "issues-found",
+      "issues": [
+        "meta.meta.sorries/axiomCount fields missing; leanFile.lineCount 140→156, theoremCount 12→13"
+      ],
+      "notes": "Fix PR #15099 in-flight; tracker PR #15105 in-flight"
     }
   },
   "erdos-1097-oq-01": {
