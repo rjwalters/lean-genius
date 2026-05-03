@@ -1,0 +1,69 @@
+[
+  {
+    "id": "ann-volume-sum-def",
+    "proofId": "dissection-of-cubes-oq-01-oq-03",
+    "range": {
+      "startLine": 59,
+      "endLine": 67
+    },
+    "type": "definition",
+    "title": "volumeSum and VolumeDissection",
+    "content": "`volumeSum` computes ∑ c.side³ using Mathlib's BigOperators `∑ c ∈ cubes, c.side ^ 3`. `VolumeDissection` extends `CubeDissection` with the field `volume_constraint : volumeSum dissection.cubes = 1`, replacing the placeholder `covers_unit_cube : True` with the necessary geometric condition that cube volumes sum to 1.",
+    "mathContext": "For axis-aligned cubes in ℝ³, a cube with side length $s$ has volume $s^3$. If finitely many cubes tile the unit cube $[0,1]^3$ with disjoint interiors, the volumes must sum to $\\text{vol}([0,1]^3) = 1$. The constraint $\\sum_{c} c.\\text{side}^3 = 1$ is a necessary condition for any valid tiling.",
+    "significance": "key",
+    "relatedConcepts": [
+      "CubeDissection",
+      "covers_unit_cube",
+      "Finset.sum"
+    ],
+    "prerequisites": [
+      "DissectionOfCubes (CubeDissection structure)",
+      "Mathlib BigOperators (∑ notation)"
+    ]
+  },
+  {
+    "id": "ann-volume-bounds",
+    "proofId": "dissection-of-cubes-oq-01-oq-03",
+    "range": {
+      "startLine": 92,
+      "endLine": 110
+    },
+    "type": "proof",
+    "title": "Volume and Side Bounds from Constraint",
+    "content": "`cube_volume_le_one` uses `Finset.single_le_sum`: since each term is nonneg and the total is 1, every individual term is ≤ 1. `cube_side_le_one` then derives `c.side ≤ 1` from `c.side³ ≤ 1` and `c.side > 0` using `nlinarith` with the hint `sq_nonneg (c.side - 1)`, which expands to `c.side² - 2·c.side + 1 ≥ 0` and enables cubic arithmetic.",
+    "mathContext": "From $\\sum s_i^3 = 1$ with each $s_i^3 \\geq 0$, we get $s_k^3 \\leq 1$ for each $k$. Since $s_k > 0$ (positivity axiom), $s_k^3 \\leq 1$ implies $s_k \\leq 1$. The algebraic step: if $s > 1$ then $(s-1)^2 \\geq 0$ gives $s^2 \\geq 2s - 1$, so $s^3 = s \\cdot s^2 \\geq s(2s-1) = 2s^2 - s > 2(1) - s > 1$ for $s > 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.single_le_sum",
+      "nlinarith",
+      "cube positivity"
+    ],
+    "prerequisites": [
+      "volumeSum_nonneg",
+      "VolumeDissection.volume_constraint"
+    ]
+  },
+  {
+    "id": "ann-collision-volume",
+    "proofId": "dissection-of-cubes-oq-01-oq-03",
+    "range": {
+      "startLine": 172,
+      "endLine": 202
+    },
+    "type": "theorem",
+    "title": "Collision Pairs and Volume: 2s³ ≤ 1",
+    "content": "`collision_volume_bound` proves that for any collision pair (c₁, c₂) — two distinct cubes with c₁.side = c₂.side = s — we have 2s³ ≤ 1. The proof: both cubes are in the dissection, so their total volume c₁.side³ + c₂.side³ = 2s³ is bounded by volumeSum = 1. `collision_side_le_half_cbrt` immediately gives s³ ≤ 1/2.",
+    "mathContext": "If two distinct cubes with the same side length $s$ appear in a VolumeDissection, they each contribute $s^3$ to the sum $\\sum c_i^3 = 1$. Since all other terms are nonneg, $2s^3 \\leq 1$, i.e., $s \\leq 2^{-1/3} \\approx 0.7937$. This is a quantitative upper bound on how large any repeated-size cube can be in a volume-constrained dissection.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsCollisionPair",
+      "every_dissection_has_collision",
+      "Finset.sum_le_sum_of_subset_of_nonneg"
+    ],
+    "prerequisites": [
+      "DissectionOfCubesOQ01 (IsCollisionPair definition)",
+      "collision_volume_bound",
+      "volumeSum"
+    ]
+  }
+]
