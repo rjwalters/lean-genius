@@ -6,8 +6,8 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\u2203 f : {l : List \u2124 // IsBalancedPath l n} \u2192 {l : List \u2124 // IsDyckPath l n} \u00d7 Fin (n+1), Function.Bijective f",
-    "plain": "Prove the Chung-Feller bijection: the map sending a balanced path l to (chungFellerRot(l).tail, upstepsAboveAxis(l)) is a bijection between balanced paths of length 2n and Dyck paths of length 2n \u00d7 {0,...,n}.",
+    "formal": "∃ f : {l : List ℤ // IsBalancedPath l n} → {l : List ℤ // IsDyckPath l n} × Fin (n+1), Function.Bijective f",
+    "plain": "Prove the Chung-Feller bijection: the map sending a balanced path l to (chungFellerRot(l).tail, upstepsAboveAxis(l)) is a bijection between balanced paths of length 2n and Dyck paths of length 2n × {0,...,n}.",
     "whyMatters": [
       "Proves the uniform distribution of balanced lattice paths over n+1 types",
       "Eliminates the axiom chung_feller_uniform from the parent file BallotProblemOQ01OQ04.lean",
@@ -35,20 +35,20 @@
   "knowledge": {
     "progressSummary": "COMPLETED 2026-04-27 (stale-pool cleanup). chung_feller_uniform' was proved in PR #11300 closing the bijectivity/uniformity sorries. File is now sorry-free with 0 axioms, 11 theorems, 1164 lines. JSON leanFile sorryCount/theoremCount/lineCount updated to actual values.",
     "builtItems": [
-      "upstepsAboveAxis_le_n: type k \u2264 n for balanced path (well-types Fin(n+1) component)",
-      "chungFellerRot_tail_is_balanced: tail of rotation is balanced (count1=n, count-1=n, all \u00b11)",
+      "upstepsAboveAxis_le_n: type k ≤ n for balanced path (well-types Fin(n+1) component)",
+      "chungFellerRot_tail_is_balanced: tail of rotation is balanced (count1=n, count-1=n, all ±1)",
       "chungFellerRot_tail_is_dyck: tail of rotation is a DYCK PATH (forward direction complete)",
-      "chungFellerMap: bijection candidate fully well-typed (IsDyckPath \u00d7 Fin(n+1))",
+      "chungFellerMap: bijection candidate fully well-typed (IsDyckPath × Fin(n+1))",
       "chungFellerRot_head_eq_one: good rotation starts with 1 [inherited]",
-      "chungFellerRot_tail_nonneg_prefixSum: tail prefix sums \u2265 0 [inherited]",
+      "chungFellerRot_tail_nonneg_prefixSum: tail prefix sums ≥ 0 [inherited]",
       "chungFellerRot_tail_type_eq_n: tail upstepsAboveAxis = n [inherited]"
     ],
     "insights": [
       "The Chung-Feller bijection f(l) = (chungFellerRot(l).tail, upstepsAboveAxis(l)) is now FULLY well-typed",
       "Forward direction: any balanced path maps to a Dyck path via the good rotation",
-      "Key blocker: type-distinctness under rotation \u2014 different 1-position rotations of (1::D) must give distinct path types",
+      "Key blocker: type-distinctness under rotation — different 1-position rotations of (1::D) must give distinct path types",
       "Computational verification confirms the bijection works for n=2: types {0,1,2} all achieved",
-      "The rotation map sends type k to type n (Dyck) \u2014 verified for specific examples",
+      "The rotation map sends type k to type n (Dyck) — verified for specific examples",
       "The hard core is the type-shift analysis: between 1-positions p_j and p_{j+1}, the prefix sum relationship determines type change"
     ],
     "mathlibGaps": [
@@ -75,6 +75,7 @@
     "ballot-problem-oq-01-oq-01",
     "ballot-problem-oq-01-oq-02",
     "ballot-problem-oq-01-oq-02-oq-01",
+    "ballot-problem-oq-01-oq-02-oq-01-oq-02",
     "ballot-problem-oq-01-oq-02-oq-04",
     "ballot-problem-oq-01-oq-04",
     "ballot-problem-oq-02",
@@ -143,24 +144,35 @@
     {
       "path": "Proofs/BallotProblemOQ01OQ02OQ01.lean",
       "filename": "BallotProblemOQ01OQ02OQ01.lean",
-      "lineCount": 209,
-      "theoremCount": 7,
+      "lineCount": 250,
+      "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 6,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean",
       "filename": "BallotProblemOQ01OQ02OQ01Aristotle.lean",
-      "lineCount": 109,
+      "lineCount": 113,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 4,
+      "sorryCount": 2,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ01OQ02.lean",
+      "filename": "BallotProblemOQ01OQ02OQ01OQ02.lean",
+      "lineCount": 199,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01OQ02.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ01OQ02OQ02.lean",
@@ -187,22 +199,33 @@
     {
       "path": "Proofs/BallotProblemOQ01OQ04.lean",
       "filename": "BallotProblemOQ01OQ04.lean",
-      "lineCount": 188,
-      "theoremCount": 9,
-      "axiomCount": 1,
-      "defCount": 5,
+      "lineCount": 74,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04.lean"
     },
     {
-      "path": "Proofs/BallotProblemOQ01OQ04OQ01.lean",
-      "filename": "BallotProblemOQ01OQ04OQ01.lean",
-      "lineCount": 1164,
+      "path": "Proofs/BallotProblemOQ01OQ04Core.lean",
+      "filename": "BallotProblemOQ01OQ04Core.lean",
+      "lineCount": 179,
       "theoremCount": 11,
       "axiomCount": 0,
-      "defCount": 3,
+      "defCount": 5,
       "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04Core.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ04OQ01.lean",
+      "filename": "BallotProblemOQ01OQ04OQ01.lean",
+      "lineCount": 1165,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04OQ01.lean"
     },
@@ -253,22 +276,33 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
       "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 439,
+      "lineCount": 851,
       "theoremCount": 10,
       "axiomCount": 0,
-      "defCount": 5,
-      "sorryCount": 9,
+      "defCount": 6,
+      "sorryCount": 4,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean"
     },
     {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean",
+      "filename": "BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean",
+      "lineCount": 132,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean"
+    },
+    {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "filename": "BallotProblemOQ03OQ01OQ02.lean",
-      "lineCount": 10131,
-      "theoremCount": 64,
+      "lineCount": 399,
+      "theoremCount": 2,
       "axiomCount": 0,
-      "defCount": 10,
-      "sorryCount": 10,
+      "defCount": 0,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
     },
@@ -282,6 +316,17 @@
       "sorryCount": 4,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean",
+      "filename": "BallotProblemOQ03OQ01OQ02Helpers.lean",
+      "lineCount": 13838,
+      "theoremCount": 78,
+      "axiomCount": 0,
+      "defCount": 15,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ04.lean",

@@ -129,7 +129,10 @@
     "blocked-on-mathlib"
   ],
   "relatedProofs": [
+    "erdos-2",
+    "erdos-26",
     "erdos-262",
+    "erdos-263",
     "erdos-264"
   ],
   "references": {
@@ -158,22 +161,22 @@
     {
       "path": "Proofs/Erdos263Aristotle.lean",
       "filename": "Erdos263Aristotle.lean",
-      "lineCount": 147,
+      "lineCount": 148,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos263Aristotle.lean"
     },
     {
       "path": "Proofs/Erdos263Problem.lean",
       "filename": "Erdos263Problem.lean",
-      "lineCount": 792,
+      "lineCount": 793,
       "theoremCount": 19,
       "axiomCount": 0,
       "defCount": 19,
-      "sorryCount": 4,
+      "sorryCount": 5,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos263Problem.lean"
     }

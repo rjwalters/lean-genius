@@ -7,7 +7,7 @@
   "path": "full",
   "problemStatement": {
     "formal": "\\forall d \\geq 3, A \\subset \\mathbb{R}^d \\text{ non-degenerate with } |A|=n, B \\text{ disjoint from } A \\text{ with } |B|=n-(d+1): \\exists \\text{ rich 2-flat (3 non-collinear points of } A) \\text{ avoiding } B?",
-    "plain": "Higher-dimensional generalization of Erdős #105: does the rich-line vs obstacle phenomenon extend from R^2 to R^d (d \u2265 3)? In particular, do rich 2-flats (affine planes containing 3 non-collinear configuration points) avoid n-(d+1) obstacle points?",
+    "plain": "Higher-dimensional generalization of Erdős #105: does the rich-line vs obstacle phenomenon extend from R^2 to R^d (d ≥ 3)? In particular, do rich 2-flats (affine planes containing 3 non-collinear configuration points) avoid n-(d+1) obstacle points?",
     "whyMatters": [
       "Erdős #105 was disproved by Xichuan (2024) in R^2; whether the natural lifting to R^d also fails is open and connects to higher-dimensional incidence geometry (Guth-Katz, polynomial method).",
       "Establishes the Lean infrastructure (PointD, LineD, TwoFlat, NonDegenerateD) for any future work on rich k-flats in R^d."
@@ -15,14 +15,14 @@
   },
   "knownResults": {
     "proven": [
-      "rich_line_exists_d: any \u22652 points in R^d trivially yield a rich line (Lean-proved, this work)",
+      "rich_line_exists_d: any ≥2 points in R^d trivially yield a rich line (Lean-proved, this work)",
       "higher_dim_d2_is_original: the d=2 case of higherDimLineConjecture is logically equivalent to the original Erdős-Purdy conjecture (Lean-proved, this work)",
       "unblocked_monotone_line/twoflat: shrinking the obstacle set preserves unblocked-ness (Lean-proved, this work)",
       "Xichuan (2024): n-(d+1) obstacles can suffice to block all rich lines in R^2 (counterexample inherited as axiom xichuan_counterexample from parent)",
       "Beck-Szemerédi-Trotter positive bound in R^2: cn obstacles are insufficient (axiom beck_szemeredi_trotter_positive from parent)"
     ],
     "open": [
-      "Does the Xichuan disproof in R^2 lift to R^d for d \u2265 3? (counterexample_lifts is stated as a Prop but unproved \u2014 the naive embedding R^d \u2192 R^(d+1) fails because added points break non-degeneracy in the new dimension)",
+      "Does the Xichuan disproof in R^2 lift to R^d for d ≥ 3? (counterexample_lifts is stated as a Prop but unproved — the naive embedding R^d → R^(d+1) fails because added points break non-degeneracy in the new dimension)",
       "Does the Beck-Szemerédi-Trotter positive bound generalize to R^d? Szemerédi-Trotter has no direct higher-dim analog; Guth-Katz polynomial method may apply.",
       "What is the true asymptotic of the threshold function f_d(n)?",
       "For rich 2-flats in R^3, what is the obstacle threshold?"
@@ -36,7 +36,7 @@
     "focus": "Axiomatized framework complete. No further mechanical progress possible without major new mathematics on higher-dimensional incidence geometry.",
     "blockers": [
       "Underlying problem is OPEN: Erdős #105 is open in R^2; higher-dim analog (OQ-05) is even more open.",
-      "counterexample_lifts is non-trivial: the obvious embedding R^d \u2192 R^(d+1) appending 0 fails because the embedded set lies in a hyperplane (breaks NonDegenerateD), and adding a single off-hyperplane point introduces unblocked rich lines through the new point."
+      "counterexample_lifts is non-trivial: the obvious embedding R^d → R^(d+1) appending 0 fails because the embedded set lies in a hyperplane (breaks NonDegenerateD), and adding a single off-hyperplane point introduces unblocked rich lines through the new point."
     ],
     "nextAction": "Mark complete. Reopen only if Mathlib ships higher-dimensional incidence bounds (Guth-Katz formalization) that would enable proving counterexample_lifts or a partial richTwoFlatConjecture result.",
     "attemptCounts": {
@@ -93,9 +93,13 @@
     "erdos-1052",
     "erdos-1053",
     "erdos-1054",
+    "erdos-1054-construction-d",
     "erdos-1054-oq-01",
+    "erdos-1054-oq-01-fnorm",
+    "erdos-1054-oq-02",
     "erdos-1055",
     "erdos-1056",
+    "erdos-1056-oq-01",
     "erdos-1057",
     "erdos-1058",
     "erdos-1059",
@@ -435,10 +439,10 @@
     {
       "path": "Proofs/Erdos105Problem.lean",
       "filename": "Erdos105Problem.lean",
-      "lineCount": 292,
+      "lineCount": 306,
       "theoremCount": 3,
-      "axiomCount": 3,
-      "defCount": 14,
+      "axiomCount": 2,
+      "defCount": 15,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos105Problem.lean"

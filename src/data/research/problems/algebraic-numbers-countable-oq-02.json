@@ -47,7 +47,8 @@
     "algebraic-numbers-countable",
     "algebraic-numbers-countable-oq-02",
     "algebraic-numbers-countable-oq-02-oq-02",
-    "algebraic-numbers-countable-oq-04"
+    "algebraic-numbers-countable-oq-04",
+    "algebraic-numbers-countable-oq-05"
   ],
   "references": {
     "papers": [],
@@ -118,13 +119,24 @@
     {
       "path": "Proofs/AlgebraicNumbersCountableOQ04.lean",
       "filename": "AlgebraicNumbersCountableOQ04.lean",
-      "lineCount": 641,
-      "theoremCount": 12,
-      "axiomCount": 4,
+      "lineCount": 759,
+      "theoremCount": 13,
+      "axiomCount": 3,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ04.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ05.lean",
+      "filename": "AlgebraicNumbersCountableOQ05.lean",
+      "lineCount": 297,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ05.lean"
     }
   ]
 }

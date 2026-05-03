@@ -57,7 +57,8 @@
   },
   "tags": [],
   "relatedProofs": [
-    "liouville-theorem"
+    "liouville-theorem",
+    "liouville-theorem-oq-04"
   ],
   "references": {
     "papers": [],
@@ -77,6 +78,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LiouvilleTheorem.lean"
+    },
+    {
+      "path": "Proofs/LiouvilleTheoremOQ04.lean",
+      "filename": "LiouvilleTheoremOQ04.lean",
+      "lineCount": 529,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 7,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LiouvilleTheoremOQ04.lean"
     }
   ]
 }
