@@ -17,7 +17,7 @@
       "wiedijk-100",
       "approximation"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -105,7 +105,7 @@
     "historicalContext": "Abraham de Moivre discovered the leading form $(n/e)^n \\sqrt{n}$ around 1721 while studying the normal distribution as an approximation to the binomial. James Stirling refined this in his 1730 book *Methodus Differentialis*, identifying the constant $\\sqrt{2\\pi}$ and the full asymptotic series $n! \\sim \\sqrt{2\\pi n}(n/e)^n(1 + \\frac{1}{12n} + \\frac{1}{288n^2} - \\cdots)$.\n\nThe formula is intimately connected to the Wallis product ($\\pi/2 = \\prod_{n=1}^\\infty \\frac{4n^2}{4n^2-1}$, John Wallis 1656), which provides the $\\pi$ factor through factorial ratios. Euler later extended Stirling's formula to the Gamma function: $\\Gamma(x+1) \\sim \\sqrt{2\\pi x}(x/e)^x$ for large real $x$, revealing it as a fundamental statement about the growth of the Gamma function along the real axis.",
     "problemStatement": "**Theorem (Stirling, 1730)**: As n approaches infinity:\n\n$$n! \\sim \\sqrt{2\\pi n} \\cdot \\left(\\frac{n}{e}\\right)^n$$\n\nMore precisely, the ratio n!/[sqrt(2*pi*n) * (n/e)^n] approaches 1.\n\nThis is Wiedijk's 100 Theorems #90.",
     "text": "A formalization of Stirling's approximation (Wiedijk #90) with 0 sorries, 0 axioms (verified). Defines `stirlingSeq n` = $n!/(\\sqrt{2n} \\cdot (n/e)^n)$ and proves `stirling_tendsto_sqrt_pi` ($\\text{stirlingSeq} \\to \\sqrt{\\pi}$) via Mathlib's `Stirling.tendsto_stirlingSeq_sqrt_pi`, which uses the Wallis product $\\pi/2 = \\prod_n 4n^2/(4n^2-1)$. Derives the classical form `stirling_asymptotic` ($n!/[\\sqrt{2\\pi n}(n/e)^n] \\to 1$) and practical bounds `stirling_lower_bound`/`stirling_upper_bound`. Includes concrete verifications: $10! = 3628800$ within 0.84% of Stirling, $100!$ ratio verification. Commentary traces from de Moivre's 1721 discovery through Stirling's identification of $\\sqrt{2\\pi}$ to the full asymptotic series.",
-    "proofStrategy": "**Via the Wallis Product**:\n\n1. Define stirlingSeq(n) = n!/[sqrt(2n) * (n/e)^n]\n2. Show stirlingSeq converges to sqrt(pi)\n3. This is proved using the Wallis product: pi/2 = prod_n (4n^2)/(4n^2-1)\n4. The asymptotic equivalence follows immediately",
+    "proofStrategy": "**Via Mathlib's Stirling module** (which uses the Wallis Product):\n\n1. Define stirlingSeq(n) = n!/[sqrt(2n) * (n/e)^n]\n2. Show stirlingSeq converges to sqrt(pi) — via `Stirling.tendsto_stirlingSeq_sqrt_pi` from Mathlib\n3. Derive n! ~ sqrt(2*pi*n)*(n/e)^n — via `Stirling.factorial_isEquivalent_stirling` from Mathlib\n4. Original contributions: pedagogical presentation, bounds for applications, and connection to binomial coefficient approximations",
     "keyInsights": [
       "The Stirling sequence $S_n = n! / (\\sqrt{2n} \\cdot (n/e)^n)$ converges to $\\sqrt{\\pi}$, not 1 — the factor of $\\sqrt{2}$ is absorbed when combining with $\\sqrt{2n}$ to give $\\sqrt{2\\pi n}$",
       "Multiplying $S_n \\to \\sqrt{\\pi}$ by $\\sqrt{2n}$ gives $n!/(n/e)^n \\to \\sqrt{2\\pi n}$, which is exactly Stirling's formula",
