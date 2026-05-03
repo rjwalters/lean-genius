@@ -134,5 +134,32 @@
       "endLine": 425
     },
     "lineRange": [397, 425]
+  },
+  {
+    "mathContext": "Budan's theorem (1807) predates Sturm's (1829) and uses the derivative tower p, p', p'', ..., p^(n). The number of sign variations in this sequence at a decreases to b by at least the number of roots in (a,b], with excess always even. Sturm replaced the derivative tower with a GCD-based sequence that is 'tighter', giving an exact count rather than an upper bound.",
+    "significance": "contextual",
+    "relatedConcepts": [
+      "Budan's theorem",
+      "Sturm's theorem",
+      "root counting",
+      "derivative tower",
+      "GCD sequence",
+      "sign variations"
+    ],
+    "prerequisites": [
+      "sturmVariations definition",
+      "rootsInInterval definition",
+      "squarefree polynomials"
+    ],
+    "content": "The closing comparison (lines 429-456) contextualizes Sturm's theorem within the root-counting tradition. Key contrast:\n\n• Budan (1807): uses the FULL derivative tower [p, p', ..., p^(n)]. Always n+1 terms, O(n) evaluations. Gives an UPPER BOUND: budanCount(a) - budanCount(b) ≥ rootsInInterval(a,b), with the excess always even.\n\n• Sturm (1829): uses a TRUNCATED GCD sequence [p, p', -(p mod p'), ...]. At most n+1 terms (often fewer), O(n²) GCD steps. Gives an EXACT COUNT for squarefree polynomials.\n\nThe algebraic insight: Sturm's GCD structure eliminates the 'slack' in Budan's count by forcing consecutive sequence elements to have opposite signs at interior roots — a property not guaranteed by pure differentiation. The parity relationship budanCount - sturmVariations ≡ 0 (mod 2) holds for squarefree polynomials, connecting both theorems.",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 426,
+      "endLine": 458
+    },
+    "lineRange": [426, 458],
+    "id": "ann-descartes-sturm-budan",
+    "title": "Sturm vs Budan: Two Approaches to Root Counting",
+    "type": "insight"
   }
 ]
