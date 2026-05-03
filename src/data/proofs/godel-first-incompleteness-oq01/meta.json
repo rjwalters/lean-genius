@@ -55,7 +55,7 @@
         "note": "Pedagogical scaffold using Provable := fun _ => False; this file makes the proofs non-vacuous"
       }
     ],
-    "theoremCount": 7
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Gödel's First Incompleteness Theorem (1931) established that any consistent formal system capable of expressing basic arithmetic contains statements that are neither provable nor refutable within the system. This shattered Hilbert's program — the dream of a complete, consistent, finitely axiomatizable foundation for mathematics.\n\nThe standard formalization challenge is that a complete proof requires thousands of lines of infrastructure: formal syntax for first-order arithmetic, Gödel numbering via prime factorization, primitive recursive functions, Σ₁⁰-completeness, and the Diagonal Lemma. Paulson's formalization in Isabelle spans ~15,000 lines.\n\nTwo approaches exist for gallery-style formalizations:\n1. **Pedagogical scaffold** (GodelIncompleteness.lean): Define Provable := fun _ => False and write the proof structure as comments. All theorems hold vacuously.\n2. **Axiomatic treatment** (this file): Declare Provable as an opaque axiom, state the key properties as explicit axioms, and prove First Incompleteness as a genuine logical consequence.\n\nThis file takes the axiomatic approach. The axioms precisely encode what Gödel's construction provides: representability (D1), the diagonal lemma (G_self_reference and neg_G_prov_G), and ω-consistency. The proofs are real deductions from these axioms, not type-level trivialities.",
@@ -171,6 +171,6 @@
     "sorries": 0,
     "path": "Proofs/GodelFirstIncompletenessOQ01.lean",
     "definitionCount": 6,
-    "theoremCount": 7
+    "theoremCount": 5
   }
 }
