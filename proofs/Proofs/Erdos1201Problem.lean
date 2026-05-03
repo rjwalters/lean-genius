@@ -851,4 +851,86 @@ theorem gpfConsecutive_one_eq_max (n : ℕ) (hn : 2 ≤ n) :
     · exact gpf_ge_prime_dvd (n * (n + 1)) _ hn_prod (gpf_prime (n + 1) hn1)
         (dvd_trans (gpf_dvd (n + 1) hn1) (dvd_mul_left (n + 1) n))
 
+/-
+## Two-Term Window: Relationship to Individual GPFs
+-/
+
+/-- consecutiveProduct n 1 = n * (n + 1). -/
+theorem consecutiveProduct_one (n : ℕ) : consecutiveProduct n 1 = n * (n + 1) := by
+  have := consecutiveProduct_succ n 0
+  rwa [consecutiveProduct_zero] at this
+
+/-- **Two-Term Window**: P(n, 1) = max(P(n), P(n+1)) for n ≥ 2.
+    The greatest prime factor of n*(n+1) equals the maximum of the per-term greatest prime
+    factors. The ≤ direction uses that any prime dividing n*(n+1) divides n or n+1
+    (by primality). The ≥ direction uses that gpf(n) and gpf(n+1) each divide the product. -/
+theorem gpfConsecutive_one_eq_max (n : ℕ) (hn : 2 ≤ n) :
+    gpfConsecutive n 1 = max (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) := by
+  have hn1 : 2 ≤ n + 1 := by omega
+  have hn_prod : 2 ≤ n * (n + 1) := by nlinarith
+  have h_eq : gpfConsecutive n 1 = greatestPrimeFactor (n * (n + 1)) := by
+    unfold gpfConsecutive; rw [consecutiveProduct_one]
+  rw [h_eq]
+  apply Nat.le_antisymm
+  · -- greatestPrimeFactor (n*(n+1)) ≤ max(gpf n, gpf(n+1)):
+    -- the gpf is prime and divides n*(n+1), so it divides n or n+1 by primality
+    have hprime : (greatestPrimeFactor (n * (n + 1))).Prime := gpf_prime (n * (n + 1)) hn_prod
+    have hdvd : greatestPrimeFactor (n * (n + 1)) ∣ n * (n + 1) := gpf_dvd (n * (n + 1)) hn_prod
+    rcases hprime.dvd_mul.mp hdvd with h | h
+    · exact le_trans (gpf_max n _ (Nat.mem_primeFactors.mpr ⟨hprime, h, by omega⟩))
+                     (le_max_left _ _)
+    · exact le_trans (gpf_max (n + 1) _ (Nat.mem_primeFactors.mpr ⟨hprime, h, by omega⟩))
+                     (le_max_right _ _)
+  · -- max(gpf n, gpf(n+1)) ≤ greatestPrimeFactor (n*(n+1)):
+    -- gpf n | n | n*(n+1) and gpf(n+1) | n+1 | n*(n+1)
+    apply max_le
+    · exact gpf_ge_prime_dvd (n * (n + 1)) _ hn_prod (gpf_prime n hn)
+        (dvd_trans (gpf_dvd n hn) (dvd_mul_right n (n + 1)))
+    · exact gpf_ge_prime_dvd (n * (n + 1)) _ hn_prod (gpf_prime (n + 1) hn1)
+        (dvd_trans (gpf_dvd (n + 1) hn1) (dvd_mul_left (n + 1) n))
+
+/-
+## Structural Decomposition: GPF Localization
+-/
+
+/-- For n ≥ 2, the greatest prime factors of n and n+1 are coprime.
+    Since gcd(n, n+1) = 1 and gpf(n) ∣ n, gpf(n+1) ∣ n+1, the gcd of the gpfs divides 1. -/
+theorem gpfConsecutive_one_coprime (n : ℕ) (hn : 2 ≤ n) :
+    Nat.Coprime (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) := by
+  have hdn : greatestPrimeFactor n ∣ n := gpf_dvd n hn
+  have hdn1 : greatestPrimeFactor (n + 1) ∣ n + 1 := gpf_dvd (n + 1) (by omega)
+  have hcop : Nat.Coprime n (n + 1) := Nat.coprime_succ_self n
+  have h1 : Nat.gcd (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) ∣ n :=
+    dvd_trans (Nat.gcd_dvd_left _ _) hdn
+  have h2 : Nat.gcd (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) ∣ n + 1 :=
+    dvd_trans (Nat.gcd_dvd_right _ _) hdn1
+  exact Nat.dvd_one.mp (hcop ▸ Nat.dvd_gcd h1 h2)
+
+/-- For n ≥ 2, greatestPrimeFactor n ≠ greatestPrimeFactor (n + 1).
+    If equal to p ≥ 2, then gcd(p, p) = p ≥ 2 contradicts the coprimality above. -/
+theorem gpfConsecutive_one_ne (n : ℕ) (hn : 2 ≤ n) :
+    greatestPrimeFactor n ≠ greatestPrimeFactor (n + 1) := by
+  intro h
+  have hcop := gpfConsecutive_one_coprime n hn
+  have hge : 2 ≤ greatestPrimeFactor n := gpf_ge_two n hn
+  have heq : Nat.gcd (greatestPrimeFactor n) (greatestPrimeFactor n) = 1 := h ▸ hcop
+  rw [Nat.gcd_self] at heq
+  omega
+
+/-- **GPF Localization**: When gpfConsecutive n k > k, the GPF comes from a single term.
+    Since p = P(n,k) > k divides the product, it divides some term n+j (j ≤ k).
+    As p > k ≥ any difference of indices, p divides at most one term, so p = gpf(n+j). -/
+theorem gpfConsecutive_eq_term_gpf (n k : ℕ) (hn : 2 ≤ n) (hk : k < gpfConsecutive n k) :
+    ∃ j ≤ k, gpfConsecutive n k = greatestPrimeFactor (n + j) := by
+  have hcp : 2 ≤ consecutiveProduct n k :=
+    le_trans hn (consecutiveProduct_ge_n n k (by omega))
+  have hp : (gpfConsecutive n k).Prime := gpf_prime _ hcp
+  have hdvd : gpfConsecutive n k ∣ consecutiveProduct n k := gpf_dvd _ hcp
+  obtain ⟨j, hj_lt, hpj⟩ := prime_dvd_consecutive_range n k _ hp hdvd
+  have hnj : 2 ≤ n + j := by omega
+  exact ⟨j, by omega, Nat.le_antisymm
+    (gpf_ge_prime_dvd (n + j) _ hnj hp hpj)
+    (gpf_ge_prime_dvd _ (greatestPrimeFactor (n + j)) hcp (gpf_prime _ hnj)
+      (dvd_trans (gpf_dvd _ hnj) (dvd_consecutiveProduct_term n k j (by omega))))⟩
+
 end Erdos1201
