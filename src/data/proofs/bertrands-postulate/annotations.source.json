@@ -124,6 +124,32 @@
     ]
   },
   {
+    "id": "ann-no-largest-prime",
+    "proofId": "bertrands-postulate",
+    "anchor": {
+      "type": "declaration",
+      "name": "no_largest_prime_via_bertrand",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "No Largest Prime (Three-Line Proof via Bertrand)",
+    "content": "`no_largest_prime_via_bertrand` proves that no largest prime exists — one of the cleanest corollaries of Bertrand's Postulate. The 3-line proof: assume for contradiction that $p$ is the largest prime. `primes_infinite_via_bertrand p` gives a prime $q > p$. But $h_{\\text{largest}}$ says $q \\leq p$. These contradict via `omega`.\n\nThe simplicity conceals the depth of Bertrand underlying it: the only fact needed is $\\exists q, \\text{Prime}(q) \\land q > p$, which is exactly what `primes_infinite_via_bertrand` provides by applying Bertrand's Postulate with $n = p$.",
+    "mathContext": "Euclid's classical proof of infinitude of primes: assume $p_1, \\ldots, p_k$; consider $N = p_1 \\cdots p_k + 1$; any prime factor of $N$ is new. Bertrand gives a shorter route: apply Bertrand with $n = p$ to get a prime $q > p$. The contrast: Euclid's argument is constructive (builds a new prime from old ones), while Bertrand's argument is existential (asserts existence without an explicit construction). Both proofs establish the same result but Bertrand's is 3 lines vs. Euclid's multi-step argument. The proof-by-contradiction structure here (`intro ⟨p, _, h_largest⟩; obtain ...; omega`) is a template for many impossibility results.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "no_largest_prime_via_bertrand",
+      "primes_infinite_via_bertrand",
+      "Euclid's infinitude of primes",
+      "proof by contradiction",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "primes_infinite_via_bertrand",
+      "obtain tactic for existentials",
+      "omega for arithmetic contradictions"
+    ]
+  },
+  {
     "id": "ann-erdos-proof",
     "proofId": "bertrands-postulate",
     "anchor": {
