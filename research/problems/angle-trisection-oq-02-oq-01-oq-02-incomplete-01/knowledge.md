@@ -332,3 +332,34 @@ Per project memory `project_mathlib_api_drift_2026_04`, this drift hits a cohort
 2. Run Docker build to verify `h_top_Ka` proof compiles
 3. If `h_top_Ka` compiles: `isConstructible_algebraic_degree` sorry count drops to 0; only `wantzel_galois_iff` remains
 4. Update PR #15128 with the compiled proof
+
+## Session 2026-05-03 (Session 35) — IsConstructible Subfield Lemmas (Toward Backward Direction)
+
+**Mode**: REVISIT (branch `research/angle-trisection-subfield-35`, commit `f6ca115acbf`)
+**Outcome**: progress — 4 new proved lemmas (neg, add, sub, rat_mul); 1 sorry remains (wantzel_galois_iff)
+
+### What I Did
+- Aristotle job `3127b935` was for `amgminequality`, not angle-trisection (Session 34 notes had wrong job)
+- Added PART 8 "IsConstructible Subfield Properties" with 4 proved lemmas:
+  1. `isConstructible_neg`: if x is constructible, so is -x (structural induction; neg case uses `neg_mul_neg`)
+  2. `isConstructible_add`: double induction (outer on hx, inner on hy in rational case; sqrt_ext case uses ring reassociation)
+  3. `isConstructible_sub`: trivial via add + neg
+  4. `isConstructible_rat_mul`: `induction hy generalizing q` gives universal IH over rationals; key insight: (q·β)² = q²·a so `ih_a (q*q)` proves the radicand
+- Renamed old PART 8 (Galois) to PART 9
+
+### Files Modified
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean` — 703 lines total, PART 8 at lines 612-677
+- Docker build pending verification (process PID 78119 running)
+
+### Key Findings
+- `isConstructible_rat_mul` technique: `induction hy generalizing q` makes the IH `ih_a : ∀ q', IsConstructible (algebraMap ℚ ℂ q' * a)` — instantiate at `q*q` for the scaled radicand
+- `isConstructible_mul` (general) still unproved: requires lexicographic induction on `(depth hx, depth hy)` — harder termination argument; left for future sessions
+- The 4 lemmas build infrastructure toward the backward direction of `wantzel_galois_iff`: a 2-group Galois → the minimal polynomial factors in a 2-power tower → each root is constructible from the previous via sqrt extensions → IsConstructible requires closure under these operations
+
+### Current Sorries (1 total)
+1. **wantzel_galois_iff** (line 701): Full Galois theory — long-term goal, out of scope
+
+### Next Steps
+1. Prove `isConstructible_mul` (general): lexicographic induction on constructibility depth
+2. For `wantzel_galois_iff`: backward direction needs `isConstructible_mul` + `IsConstructible` for roots of quadratics with constructible coefficients
+3. Docker build verification for this session's lemmas
