@@ -197,13 +197,11 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
          have h_alg_top : Algebra.adjoin ℚ ({β_in_β} : Set ↥(ℚ⟮β⟯)) = ⊤ :=
            h_gen_eq ▸ pb.adjoin_gen_eq_top
          -- IntermediateField.adjoin ℚ {β_in_β} = ⊤
-         have h_gen_Q : IntermediateField.adjoin ℚ ({β_in_β} : Set ↥(ℚ⟮β⟯)) = ⊤ := by
-           rw [eq_top_iff]; intro x _
-           exact IntermediateField.algebra_adjoin_le_adjoin ℚ ({β_in_β} : Set ↥(ℚ⟮β⟯))
-             (h_alg_top ▸ Algebra.mem_top)
+         have h_gen_Q : IntermediateField.adjoin ℚ ({β_in_β} : Set ↥(ℚ⟮β⟯)) = ⊤ :=
+           IntermediateField.adjoin_eq_top_of_algebra h_alg_top
          -- Lift: IntermediateField.adjoin ↥(ℚ⟮a⟯) {β_in_β} = ⊤
          have h_top : IntermediateField.adjoin ↥(ℚ⟮a⟯) ({β_in_β} : Set ↥(ℚ⟮β⟯)) = ⊤ :=
-           IntermediateField.adjoin_eq_top_of_adjoin_eq_top ℚ h_gen_Q
+           IntermediateField.adjoin_eq_top_of_adjoin_eq_top h_gen_Q
          -- finrank ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) = natDegree(minpoly ↥(ℚ⟮a⟯) β_in_β)
          have h_finrank_eq : Module.finrank ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) =
              (minpoly ↥(ℚ⟮a⟯) β_in_β).natDegree := by
