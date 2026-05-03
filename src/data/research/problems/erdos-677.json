@@ -1,13 +1,13 @@
 {
   "slug": "erdos-677",
-  "title": "Erdős #677",
+  "title": "Erd\u0151s #677",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "(LaTeX not available)",
-    "plain": "Let $M(n,k)=[n+1,\\ldots,n+k]$ be the least common multiple of $\\{n+1,\\ldots,n+k\\}$. Is it true that for all $m\\geq n+k$\\[M(n,k) \\neq M(m,k)?\\] The Thue-Siegel theorem implies that, for fixed $k$, there are only finitely many $m,n$ such that $m\\geq n+k$ and $M(n,k)=M(m,k)$. In general, how many solutions does $M(n,k)=M(m,l)$ have when $m\\geq n+k$ and $l>1$? Erdős expects very few (and none when $l\\geq k$). The only solutions Erdős knew were $M(4,3)=M(13,2)$ and $M(3,4)=M(19,2)$. In [Er79d] Erd...",
+    "plain": "Let $M(n,k)=[n+1,\\ldots,n+k]$ be the least common multiple of $\\{n+1,\\ldots,n+k\\}$. Is it true that for all $m\\geq n+k$\\[M(n,k) \\neq M(m,k)?\\] The Thue-Siegel theorem implies that, for fixed $k$, there are only finitely many $m,n$ such that $m\\geq n+k$ and $M(n,k)=M(m,k)$. In general, how many solutions does $M(n,k)=M(m,l)$ have when $m\\geq n+k$ and $l>1$? Erd\u0151s expects very few (and none when $l\\geq k$). The only solutions Erd\u0151s knew were $M(4,3)=M(13,2)$ and $M(3,4)=M(19,2)$. In [Er79d] Erd...",
     "whyMatters": []
   },
   "knownResults": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 7 structural lemmas: recursion, element divisibility, monotonicity in k, consecutive product recursion/positivity. Total: 15 theorems, 1 axiom, 0 sorries.",
+    "progressSummary": "PROGRESS: Conjecture proved for k=1, k=2. Factorization formula proved. 23 theorems, 1 axiom (Thue-Siegel), 0 sorries.",
     "builtItems": [
       "Proved lcmInterval_example1/2 by native_decide",
       "Proved lcmInterval_dvd_product by Finset.induction_on",
@@ -40,20 +40,31 @@
       "lcmInterval_dvd_add: general divisibility monotonicity (Erdos677Problem.lean:145)",
       "last_dvd_lcmInterval: largest element divides (Erdos677Problem.lean:154)",
       "consecutiveProduct_succ: recursion (Erdos677Problem.lean:162)",
-      "consecutiveProduct_pos: positivity (Erdos677Problem.lean:169)"
+      "consecutiveProduct_pos: positivity (Erdos677Problem.lean:169)",
+      "lcmInterval_ne_zero: M(n,k) != 0 (helper for factorization theorem, Erdos677Problem.lean:201)",
+      "le_lcmInterval: n+k <= M(n,k) for k > 0 (lower bound, Erdos677Problem.lean:207)",
+      "lcmInterval_two: M(n,2) = (n+1)*(n+2) via Nat.Coprime.lcm_eq_mul (Erdos677Problem.lean:212)",
+      "erdos677_k1: conjecture PROVED for k=1 via lcmInterval_one + omega (Erdos677Problem.lean:217)",
+      "erdos677_k2: conjecture PROVED for k=2 via lcmInterval_two + nlinarith (Erdos677Problem.lean:223)",
+      "factorization_lcmInterval: factorization = Finset.sup of factorizations, induction on k (Erdos677Problem.lean:233)"
     ],
     "insights": [
-      "lcmInterval_example1/2 are pure computations — lcm(5,6,7)=210=lcm(14,15) and lcm(4,5,6,7)=420=lcm(20,21), provable by native_decide",
+      "lcmInterval_example1/2 are pure computations \u2014 lcm(5,6,7)=210=lcm(14,15) and lcm(4,5,6,7)=420=lcm(20,21), provable by native_decide",
       "lcmInterval_dvd_product follows from Finset.induction + Nat.lcm_dvd + dvd_mul_right",
       "lcmInterval_pos follows from lcmInterval_dvd_product + consecutiveProduct positivity (each factor n+i+1 > 0)",
       "lcmInterval_succ: recursion formula M(n,k+1) = lcm(n+k+1, M(n,k)) via Finset.fold_insert",
       "dvd_lcmInterval: each element n+i+1 divides M(n,k), proved by induction on k using lcmInterval_succ",
       "lcmInterval_dvd_add: M(n,k) | M(n,k+j) for all j, via transitive divisibility chain",
-      "consecutiveProduct_succ and consecutiveProduct_pos: recursion and positivity for consecutive products"
+      "consecutiveProduct_succ and consecutiveProduct_pos: recursion and positivity for consecutive products",
+      "erdos677_k1 PROVED: M(m,1) = m+1 is injective, so conjecture holds for k=1 trivially from lcmInterval_one",
+      "erdos677_k2 PROVED: gcd(n+1,n+2) = 1 implies M(n,2) = (n+1)(n+2), strictly increasing so M(m,2) > M(n,2) for m >= n+2",
+      "factorization_lcmInterval PROVED: (lcmInterval n k).factorization = (Finset.range k).sup (fun i => (n+i+1).factorization) \u2014 the key structural identity that v_p(M(n,k)) = max over i of v_p(n+i+1)",
+      "Lower bound: n+k divides M(n,k), so n+k <= M(n,k) for k > 0 \u2014 proved as le_lcmInterval",
+      "lcmInterval_ne_zero: M(n,k) != 0 for all n,k \u2014 base case 1 != 0, inductive step from pos"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #677 - Knowledge Base\n\n## Problem Statement\n\nLet $M(n,k)=[n+1,\\ldots,n+k]$ be the least common multiple of $\\{n+1,\\ldots,n+k\\}$. Is it true that for all $m\\geq n+k$\\[M(n,k) \\neq M(m,k)?\\] The Thue-Siegel theorem implies that, for fixed $k$, there are only finitely many $m,n$ such that $m\\geq n+k$ and $M(n,k)=M(m,k)$. In general, how many solutions does $M(n,k)=M(m,l)$ have when $m\\geq n+k$ and $l>1$? Erdős expects very few (and none when $l\\geq k$). The only solutions Erdős knew were $M(4,3)=M(13,2)$ and $M(3,4)=M(19,2)$. In [Er79d] Erdős conjectures the stronger fact that (aside from a finite number of exceptions) if $k>2$ and $m\\geq n+k$ then $\\prod_{i\\leq k}(n+i)$ and $\\prod_{i\\leq k}(m+i)$ cannot have the same set of prime factors. See also [678], [686], and [850]. This is discussed in problem B35 of Guy's collection [Gu04]. View the LaTeX source This page was last edited 30 September 2025.\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #678\n- Problem #686\n- Problem #850\n- Problem #676\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79\n- Er79d\n- ErGr80\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
+    "markdown": "# Erd\u0151s #677 - Knowledge Base\n\n## Problem Statement\n\nLet $M(n,k)=[n+1,\\ldots,n+k]$ be the least common multiple of $\\{n+1,\\ldots,n+k\\}$. Is it true that for all $m\\geq n+k$\\[M(n,k) \\neq M(m,k)?\\] The Thue-Siegel theorem implies that, for fixed $k$, there are only finitely many $m,n$ such that $m\\geq n+k$ and $M(n,k)=M(m,k)$. In general, how many solutions does $M(n,k)=M(m,l)$ have when $m\\geq n+k$ and $l>1$? Erd\u0151s expects very few (and none when $l\\geq k$). The only solutions Erd\u0151s knew were $M(4,3)=M(13,2)$ and $M(3,4)=M(19,2)$. In [Er79d] Erd\u0151s conjectures the stronger fact that (aside from a finite number of exceptions) if $k>2$ and $m\\geq n+k$ then $\\prod_{i\\leq k}(n+i)$ and $\\prod_{i\\leq k}(m+i)$ cannot have the same set of prime factors. See also [678], [686], and [850]. This is discussed in problem B35 of Guy's collection [Gu04]. View the LaTeX source This page was last edited 30 September 2025.\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #678\n- Problem #686\n- Problem #850\n- Problem #676\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79\n- Er79d\n- ErGr80\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
     "erdos"
@@ -76,8 +87,8 @@
     {
       "path": "Proofs/Erdos677Problem.lean",
       "filename": "Erdos677Problem.lean",
-      "lineCount": 196,
-      "theoremCount": 17,
+      "lineCount": 241,
+      "theoremCount": 23,
       "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 0,
