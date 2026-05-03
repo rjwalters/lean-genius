@@ -357,6 +357,98 @@ theorem quarticChar_eq_one_of_quarticResidue (h4 : p % 4 = 1)
     _ = 1 := ZMod.units_pow_card_sub_one_eq_one p xu
 
 -- ============================================================
+-- PART 7b: Quartic Euler Criterion (Hard Direction) and Kernel
+-- ============================================================
+
+/-- **Euler Criterion (hard direction, quartic)**: χ₄(a) = 1 ⟹ a is a quartic residue.
+
+    Proof via discrete logarithm in the cyclic group (ZMod p)ˣ:
+    - Get generator g with orderOf g = p - 1
+    - Write a = g^k for integer k
+    - quarticChar a = 1 ⟹ g^(k*(p-1)/4) = 1 ⟹ (p-1) | k*(p-1)/4 ⟹ 4 | k
+    - Write k = 4j, then a = (g^j)^4, so a is a quartic residue -/
+theorem quarticEuler_hard {p : ℕ} [Fact p.Prime] (h4 : p % 4 = 1)
+    (a : (ZMod p)ˣ) (hχ : quarticChar a = 1) : IsQuarticResidue (a : ZMod p) := by
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (ZMod p)ˣ)
+  obtain ⟨k, hk⟩ : ∃ k : ℤ, g ^ k = a := by
+    have := hg a; rwa [Subgroup.mem_zpowers_iff] at this
+  have hcard : Fintype.card (ZMod p)ˣ = p - 1 := by
+    rw [ZMod.card_units_eq_totient, Nat.totient_prime (Fact.out)]
+  have hord : orderOf g = p - 1 := by
+    rw [← hcard]; exact orderOf_eq_card_of_forall_mem_zpowers hg
+  have hquartPos : (quartExp p : ℤ) ≠ 0 := by
+    have : 0 < quartExp p := Nat.div_pos
+      (Nat.le_of_dvd (Nat.sub_pos_of_lt (Fact.out : Nat.Prime p).one_lt)
+        (four_dvd_of_congr_one h4))
+      (by norm_num)
+    exact_mod_cast this.ne'
+  have hpow_eq : g ^ (k * ↑(quartExp p)) = 1 := by
+    have h1 : (g ^ k) ^ (quartExp p : ℕ) = 1 := by
+      rw [hk, ← quarticChar_apply]; exact hχ
+    rwa [← zpow_natCast, ← zpow_mul] at h1
+  have hdvd : (↑(p - 1) : ℤ) ∣ k * ↑(quartExp p) := by
+    have := orderOf_dvd_of_zpow_eq_one hpow_eq
+    rwa [hord] at this
+  have hquart4 : (↑(p - 1) : ℤ) = 4 * ↑(quartExp p) := by
+    exact_mod_cast (quartExp_mul h4).symm
+  have h4k : (4 : ℤ) ∣ k := by
+    rw [hquart4] at hdvd
+    obtain ⟨m, hm⟩ := hdvd
+    exact ⟨m, mul_right_cancel₀ hquartPos
+      (calc k * ↑(quartExp p) = m * (4 * ↑(quartExp p)) := hm
+        _ = 4 * m * ↑(quartExp p) := by ring)⟩
+  obtain ⟨j, hj⟩ := h4k
+  have hquartic : (g ^ j : (ZMod p)ˣ) ^ (4 : ℕ) = a := by
+    have hmid : g ^ (j * 4 : ℤ) = a := by
+      rw [← hk, hj, show (4 : ℤ) * j = j * 4 from by ring]
+    rw [← zpow_natCast, ← zpow_mul]
+    exact hmid
+  exact ⟨(g ^ j : (ZMod p)ˣ), by
+    rw [← Units.val_pow_eq_pow_val]
+    exact congr_arg Units.val hquartic⟩
+
+/-- **Complete Euler Criterion for quartic residues** (fully proved):
+    For prime p ≡ 1 (mod 4), a unit is a quartic residue iff χ₄(a) = 1. -/
+theorem isQuarticResidue_iff_quarticChar_one (h4 : p % 4 = 1) (a : (ZMod p)ˣ) :
+    IsQuarticResidue (a : ZMod p) ↔ quarticChar a = 1 :=
+  ⟨quarticChar_eq_one_of_quarticResidue h4 a, quarticEuler_hard h4 a⟩
+
+/-- The cardinality of the quartic character kernel:
+    |{a ∈ (ZMod p)ˣ | quarticChar a = 1}| = (p-1)/4 when p ≡ 1 (mod 4).
+
+    Proof mirrors `cubicChar_kernel_card`: sandwich between IsCyclic.card_pow_eq_one_le
+    (upper bound k) and an injection of [0, k) via the element g^4 of order k = (p-1)/4. -/
+theorem quarticChar_kernel_card (h4 : p % 4 = 1) :
+    Fintype.card {a : (ZMod p)ˣ | quarticChar a = 1} = (p - 1) / 4 := by
+  have h4dvd : 4 ∣ p - 1 := four_dvd_of_congr_one h4
+  have hquartpos : 0 < quartExp p :=
+    Nat.div_pos (Nat.le_of_dvd (by have := hp.out.one_lt; omega) h4dvd) (by norm_num)
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (ZMod p)ˣ)
+  have hcardG : Fintype.card (ZMod p)ˣ = p - 1 := by
+    rw [ZMod.card_units_eq_totient]; exact Nat.totient_prime hp.out
+  have hordg : orderOf g = p - 1 := by
+    rw [orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card, hcardG]
+  have hgcd4 : Nat.gcd (p - 1) 4 = 4 :=
+    Nat.dvd_antisymm (Nat.gcd_dvd_right _ _) (Nat.dvd_gcd h4dvd (dvd_refl 4))
+  have hord4 : orderOf (g ^ 4) = quartExp p := by
+    rw [orderOf_pow, hordg, hgcd4]; rfl
+  have hg4_pow : (g ^ 4) ^ quartExp p = 1 := by
+    rw [← pow_mul, show 4 * quartExp p = p - 1 from quartExp_mul h4, ← hordg, pow_orderOf_eq_one]
+  have hfilter_eq :
+      (Finset.univ.filter fun a : (ZMod p)ˣ => a ^ quartExp p = 1).card = quartExp p := by
+    apply Nat.le_antisymm (IsCyclic.card_pow_eq_one_le hquartpos)
+    apply Finset.le_card_of_inj_on_range (fun k => (g ^ 4) ^ k)
+    · intro k _
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      rw [← pow_mul, Nat.mul_comm, pow_mul, hg4_pow, one_pow]
+    · intro k₁ hk₁ k₂ hk₂ heq
+      exact pow_injOn_Iio_orderOf
+        (Set.mem_Iio.mpr (hord4 ▸ hk₁)) (Set.mem_Iio.mpr (hord4 ▸ hk₂)) heq
+  rw [Fintype.card_subtype]
+  simp only [quarticChar_apply]
+  exact hfilter_eq
+
+-- ============================================================
 -- PART 8: Cubic Reciprocity (Axiomatized with Strategy)
 -- ============================================================
 
@@ -444,20 +536,27 @@ end Examples
     For any prime p ≡ 1 (mod 3):
     1. cubicChar : (ZMod p)ˣ →* (ZMod p)ˣ is a group homomorphism
     2. Every image satisfies (cubicChar a)³ = 1
-    3. a is a cubic residue iff cubicChar a = 1 (easy direction proved; hard axiomatized) -/
+    3. a is a cubic residue iff cubicChar a = 1 (both directions proved) -/
 theorem cubic_character_package (h3 : p % 3 = 1) :
     (∀ a b : (ZMod p)ˣ, cubicChar (a * b) = cubicChar a * cubicChar b) ∧
     (∀ a : (ZMod p)ˣ, cubicChar a ^ 3 = 1) ∧
-    (∀ a : (ZMod p)ˣ, IsCubicResidue (a : ZMod p) → cubicChar a = 1) :=
+    (∀ a : (ZMod p)ˣ, IsCubicResidue (a : ZMod p) ↔ cubicChar a = 1) :=
   ⟨cubicChar_mul, cubicChar_pow_three_eq_one h3,
-   fun a => cubicChar_eq_one_of_cube h3 a⟩
+   fun a => isCubicResidue_iff_cubicChar_one h3 a⟩
 
-/-- **Quartic character package**: parallel to cubic character. -/
+/-- **Quartic character package** (complete): parallel to cubic character, both directions.
+    For any prime p ≡ 1 (mod 4):
+    1. quarticChar : (ZMod p)ˣ →* (ZMod p)ˣ is a group homomorphism
+    2. Every image satisfies (quarticChar a)⁴ = 1
+    3. a is a quartic residue iff quarticChar a = 1 (both directions proved)
+    4. The kernel has cardinality (p-1)/4 -/
 theorem quartic_character_package (h4 : p % 4 = 1) :
     (∀ a b : (ZMod p)ˣ, quarticChar (a * b) = quarticChar a * quarticChar b) ∧
     (∀ a : (ZMod p)ˣ, quarticChar a ^ 4 = 1) ∧
-    (∀ a : (ZMod p)ˣ, IsQuarticResidue (a : ZMod p) → quarticChar a = 1) :=
+    (∀ a : (ZMod p)ˣ, IsQuarticResidue (a : ZMod p) ↔ quarticChar a = 1) ∧
+    Fintype.card {a : (ZMod p)ˣ | quarticChar a = 1} = (p - 1) / 4 :=
   ⟨quarticChar.map_mul, quarticChar_pow_four_eq_one h4,
-   fun a => quarticChar_eq_one_of_quarticResidue h4 a⟩
+   fun a => isQuarticResidue_iff_quarticChar_one h4 a,
+   quarticChar_kernel_card h4⟩
 
 end CubicCharacter
