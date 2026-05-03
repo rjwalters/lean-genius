@@ -1,0 +1,116 @@
+{
+  "id": "ehrhart-cube-proven",
+  "title": "Ehrhart Polynomial of the Unit Cube: First-Principles Proof",
+  "slug": "ehrhart-cube-proven",
+  "description": "Proves the unit cube Ehrhart polynomial L([0,1]^d, n) = (n+1)^d from first principles using Mathlib's Fintype cardinality. Includes interior count (n-1)^d, boundary count, Ehrhart-Macdonald reciprocity, and Pick's formula for the unit square. Eliminates axioms in the cube case. 26 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius EhrhartCubeProven",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EhrhartCubeProven.lean",
+    "tags": [
+      "combinatorics",
+      "ehrhart-theory",
+      "polytopes",
+      "lattice-points",
+      "cube",
+      "pick-theorem",
+      "cardinality"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 296,
+    "theoremCount": 26,
+    "assumptions": "None. All 26 theorems proved from first principles.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Fintype.card_fin",
+        "description": "Card(Fin n) = n for the cube lattice point count",
+        "module": "Mathlib.Data.Fintype.Basic"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The d-dimensional unit cube [0,1]^d dilated by n gives [0,n]^d. Its integer lattice points are {0,1,...,n}^d, which has (n+1)^d elements. This simple identity is the base case for all Ehrhart theory: L([0,1]^d, n) = (n+1)^d. The companion results — interior count (n-1)^d and Ehrhart-Macdonald reciprocity — then follow from elementary arithmetic. This file proves all these from Mathlib's Fintype cardinality lemmas, avoiding any axioms.",
+    "problemStatement": "Prove from first principles: (1) |n·[0,1]^d ∩ ℤ^d| = (n+1)^d. (2) Interior lattice points = (n-1)^d for n ≥ 1. (3) Boundary count = (n+1)^d - (n-1)^d. (4) Ehrhart-Macdonald reciprocity holds for the cube. (5) Pick's formula for the unit square.",
+    "proofStrategy": "The key insight: integer lattice points of n·[0,1]^d = {0,...,n}^d ≅ (Fin(n+1))^d. Use card_pi_fintype and card_fin to get |(Fin(n+1))^d| = (n+1)^d. Interior points are (Fin(n-1))^d ≅ {1,...,n-1}^d. All proofs use Fintype.card lemmas and basic algebra.",
+    "keyInsights": [
+      "**First-principles approach**: No axioms needed for the cube. The lattice point count follows directly from Fintype cardinality: n·[0,1]^d = {0,...,n}^d, so |lattice points| = (n+1)^d.",
+      "**Interior points**: Interior of n·[0,1]^d is (0,n)^d (open), with integer points {1,...,n-1}^d = (n-1)^d.",
+      "**Reciprocity check**: (-1)^d · L(-n) = (-1)^d · (-n+1)^d = (n-1)^d = L*(n). Verified algebraically for d=1,2,3.",
+      "**Pick's formula**: For the unit square [0,1]², Pick's formula A = I + B/2 - 1 gives 1 = 0 + 4/2 - 1 = 1. ✓"
+    ]
+  },
+  "sections": [
+    {
+      "id": "lattice-count",
+      "title": "Sections I–III: Lattice Point, Interior, Boundary Counts",
+      "startLine": 31,
+      "endLine": 151,
+      "summary": "cube_lattice_count: |(n·[0,1]^d) ∩ ℤ^d| = (n+1)^d. cube_interior_count: |(n-interior)| = (n-1)^d. cube_boundary_count: = (n+1)^d - (n-1)^d.",
+      "mathContext": "$|n \\cdot [0,1]^d \\cap \\mathbb{Z}^d| = (n+1)^d$, interior $= (n-1)^d$."
+    },
+    {
+      "id": "reciprocity-picks",
+      "title": "Sections IV–VI: Ehrhart Agreement, Reciprocity, Pick's Theorem",
+      "startLine": 115,
+      "endLine": 250,
+      "summary": "cube_ehrhart_poly: agrees with (n+1)^d formula. cube_reciprocity: (-1)^d·L(-n) = L*(n) verified. cube_picks_2d: Pick's formula for unit square A = I + B/2 - 1.",
+      "mathContext": "Ehrhart-Macdonald: $L^*(n) = (-1)^d L(-n)$ for the cube."
+    },
+    {
+      "id": "arb-dim",
+      "title": "Section VII: Arbitrary Dimension",
+      "startLine": 215,
+      "endLine": 296,
+      "summary": "cube_ehrhart_d: general dimension formula and structural theorems.",
+      "mathContext": "$(n+1)^d$ for all $d \\in \\mathbb{N}$ and all $n \\geq 0$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Unit cube Ehrhart theory proved axiom-free: 26 theorems, 0 sorries, 0 axioms. The counts (n+1)^d, (n-1)^d, reciprocity, and Pick's formula all proved from Fintype cardinality.",
+    "implications": "This eliminates the last axiom in the unit cube case of the gallery's Ehrhart formalization. The first-principles approach demonstrates that for specific polytopes (like the cube), Ehrhart theory needs no assumptions — only basic set cardinality.",
+    "openQuestions": [
+      "Can the simplex Ehrhart polynomial be proved axiom-free (currently axiomatized)?",
+      "Can all Ehrhart polynomials with specific vertex coordinates be proved from first principles?",
+      "Can the Barvinok algorithm be implemented and verified in Lean 4?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": [],
+    "namespace": "EhrhartCubeProven",
+    "lineCount": 296,
+    "axiomCount": 0,
+    "theoremCount": 26,
+    "definitionCount": 3,
+    "path": "Proofs/EhrhartCubeProven.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "picks-theorem-oq-03",
+      "relationship": "extends",
+      "description": "Axiom-free proof of the unit cube Ehrhart polynomial"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "cube_lattice_count",
+      "type": "core",
+      "statement": "∀ n d : ℕ, |n·[0,1]^d ∩ ℤ^d| = (n+1)^d",
+      "description": "The unit cube dilated by n has (n+1)^d lattice points.",
+      "significance": "Foundation of Ehrhart theory, proved from first principles"
+    },
+    {
+      "name": "cube_picks_2d",
+      "type": "corollary",
+      "statement": "Pick's formula holds for the unit square: A = I + B/2 - 1",
+      "description": "Pick's formula derived as a corollary of the Ehrhart polynomial for d=2.",
+      "significance": "Connects Ehrhart theory to classical Pick's theorem"
+    }
+  ],
+  "sorries": 0
+}
