@@ -31,7 +31,7 @@
     "lineCount": 221,
     "assumptions": "3 axioms: ulamSeq, ulamSeq_initial, ulamSeq_strictMono. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 19
+    "theoremCount": 20
   },
   "overview": {
     "historicalContext": "Stanisław Ulam introduced this sequence in 1964 as part of his broad program of studying simple recursive constructions with complex emergent behavior. The Ulam sequence U(1,2) begins 1, 2, 3, 4, 6, 8, 11, 13, 16, 18, 26, 28, ... (OEIS A002858), where each term is the smallest integer expressible as a sum of two distinct earlier terms in exactly one way. The number 5 is excluded because 5 = 1+4 = 2+3 has two representations.\n\nErdős asked whether the Ulam sequence has positive density — i.e., whether the proportion of integers in the sequence stays bounded away from zero. Empirical computation suggests the density converges to approximately 0.0739, but proving this rigorously is remarkably difficult. The sequence exhibits quasi-periodic behavior that resists standard analytic methods.\n\nSteinerberger (2015) discovered a stunning hidden regularity: the Fourier transform of the characteristic function of U(1,2) has a single dominant frequency at 2π/λ where λ ≈ 2.5714. This suggests the sequence has deep quasi-crystalline structure, connecting to aperiodic tilings and mathematical physics. Despite this empirical understanding, proving positive density remains open.",
@@ -141,7 +141,7 @@
     "namespace": "Erdos342",
     "lineCount": 221,
     "axiomCount": 3,
-    "theoremCount": 19,
+    "theoremCount": 20,
     "definitionCount": 11,
     "path": "Proofs/Erdos342Problem.lean",
     "sorries": 0

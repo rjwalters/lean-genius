@@ -44,7 +44,7 @@
       "orbit_ne structured proof: decomposes original sorry into FreeGroup.Reduced/Chain bridge (1 sorry), anyInv+encoding contradiction (1 sorry), integer-real orbit bridge (1 sorry)",
       "free_group_paradoxical (proved): F�� is paradoxical under its own left regular action — B = W(a) ∪ W(a⁻¹), C = W(b) ∪ W(b⁻¹) are disjoint, each equidecomposable to F₂ via the cover lemmas"
     ],
-    "theoremCount": 40
+    "theoremCount": 52
   },
   "overview": {
     "historicalContext": "The Banach-Tarski paradox (1924) is one of the most counterintuitive results in mathematics: the closed unit ball in ℝ³ can be decomposed into finitely many pieces (5 suffice) and those pieces reassembled — using only rotations and translations — into two complete copies of the original ball. This appears to violate conservation of volume, but the pieces are non-measurable sets (constructed using the Axiom of Choice) to which Lebesgue measure cannot be assigned.\n\nThe paradox has a precise 1914 predecessor: Felix Hausdorff's *Grundzüge der Mengenlehre* proved that the 2-sphere $S^2$ minus a countable set $D$ admits a paradoxical decomposition under $\\text{SO}(3)$. The key algebraic ingredient was Hausdorff's discovery that $\\text{SO}(3)$ contains a free subgroup of rank 2: rotations $\\varphi$ (by $\\arccos(1/3)$ around the $z$-axis) and $\\psi$ (by $\\arccos(1/3)$ around the $x$-axis) generate a free group, proved by an algebraic-number-theoretic argument — nontrivial words produce vectors with irrational coordinates that can never equal the identity.\n\nBanach and Tarski extended this in 1924 by handling the exceptional countable set $D$ (via a Hilbert-hotel argument: any countably infinite set under a fixed rotation of infinite order can be rearranged to absorb one more point) and by extending from $S^2$ to the full ball $B^3$ via a cone construction. The Straus–von Neumann optimization later showed 5 pieces suffice; whether 4 pieces can suffice for the full ball remains open (Dougherty–Foreman 1992 showed 4 pieces suffice using sets with the Baire property).\n\nThe conceptual unification came from Alfred Tarski. In 1938 ('Algebraische Fassung des Maßproblems') he proved the fundamental equivalence: a group $G$ is *amenable* — admits a finitely-additive left-invariant probability measure on all its subsets — if and only if no $G$-set is paradoxical. M. M. Day named the property 'amenable' in 1949. The chain $F_2 \\hookrightarrow \\text{SO}(3) \\Rightarrow \\text{SO}(3)$ non-amenable $\\Rightarrow B^3$ paradoxical is then the clean conceptual proof.\n\nThe 2D case is fundamentally different: $\\text{SO}(2)$ is abelian (hence amenable), so no paradoxical decomposition of bounded plane sets can exist using rotations. Robert Solovay proved in 1970 that, assuming an inaccessible cardinal, ZF is consistent with every subset of $\\mathbb{R}$ being Lebesgue measurable — in which model the Banach-Tarski paradox fails, confirming the Axiom of Choice is essential. In 1990, Miklós Laczkovich showed the disk can be 'squared' via translations only, but with infinitely many pieces — a different phenomenon, provable in ZF.",
@@ -216,7 +216,7 @@
     "namespace": "BanachTarski",
     "lineCount": 1517,
     "axiomCount": 1,
-    "theoremCount": 40,
+    "theoremCount": 52,
     "definitionCount": 20,
     "path": "Proofs/LebesgueMeasureOQ06.lean",
     "sorries": 0

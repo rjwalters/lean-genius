@@ -31,7 +31,7 @@
     "lineCount": 296,
     "assumptions": "None. All auxiliary theorems proved. Q_n regularity and edge count (n·2^n directed edges) proved for all n via bit-flip bijection. Main conjecture stated as Prop definition (open problem). Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 16
+    "theoremCount": 17
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in his collection on extremal graph theory: given a graph $G$ on $2^n$ vertices with minimum degree $\\delta(G) > (1-c) \\cdot 2^n$, must $G$ contain the $n$-dimensional hypercube $Q_n$? The question sits at the intersection of **Turán-type** extremal theory and **hypercube combinatorics**. Classical results like **Dirac's theorem** (1952) show $\\delta \\geq n/2$ forces a Hamiltonian cycle; the **Komlós–Sárközy–Szemerédi theorem** (1995) extends this to bounded-degree spanning subgraphs. Since $Q_n$ is $n$-regular with $2^n$ vertices, a positive answer would place it in the KSS family. Conlon (2009) proved partial embedding results for hypergraphs, and the edge-extremal variant — determining $\\mathrm{ex}(N, Q_n)$ — is Erdős Problem #576.",
@@ -215,7 +215,7 @@
     "namespace": null,
     "lineCount": 296,
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 17,
     "definitionCount": 8,
     "path": "Proofs/Erdos1035Problem.lean",
     "sorries": 0

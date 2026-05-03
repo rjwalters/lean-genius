@@ -34,7 +34,7 @@
         "relationship": "OQ-02-OQ-01 proves Budan's building blocks; Sturm's exact count goes further, using GCD-based sequences instead of derivative towers."
       }
     ],
-    "theoremCount": 22
+    "theoremCount": 28
   },
   "overview": {
     "historicalContext": "Jacques Charles François Sturm (1829) published the theorem bearing his name as a response to a challenge: given a polynomial equation with real coefficients, how many real roots does it have in a given interval? His elegant answer used a GCD-based sequence (now called the Sturm sequence) to give an exact count via sign-variation differences — the first constructive, computable solution to this classical problem. The theorem appeared in Sturm's 1829 paper 'Mémoire sur la résolution des équations numériques' and immediately became the standard tool for real root counting. It was later extended by Sylvester (1853) and connected to the Hermite quadratic forms theory, which gives the number of real roots via the signature of a quadratic form over ℚ — a bridge between polynomial analysis and number theory.",
@@ -52,7 +52,7 @@
     "namespace": "SturmTheorem",
     "lineCount": 458,
     "axiomCount": 1,
-    "theoremCount": 22,
+    "theoremCount": 28,
     "defCount": 8,
     "sorries": 0,
     "mainTheorems": [

@@ -25,7 +25,7 @@
     "lineCount": 382,
     "assumptions": "gb_local (local Gauss-Bonnet: angle excess = integrated curvature, for each geodesic triangle), spherical/flat/hyperbolic curvature formulas (K=1/r², K=0, K=-1 respectively), discrete_gb (discrete Gauss-Bonnet for triangulations: total excess = 2π·χ). All are classical theorems of differential geometry requiring Riemannian geometry infrastructure not yet in Mathlib.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 25
+    "theoremCount": 26
   },
   "overview": {
     "historicalContext": "The triangle angle sum theorem (α+β+γ=π) has been known since antiquity as a characterization of Euclidean geometry. Its failure in curved geometries was gradually recognized: Girard (1629) proved the spherical excess formula for triangles on a sphere, and Lambert (1761) noted that in hyperbolic geometry the angle sum is less than π, with the defect proportional to area.\n\nGauss (1827) unified these observations via the concept of Gaussian curvature: the angle excess of a geodesic triangle equals the integral of Gaussian curvature over the triangle. This local version of what we now call the Gauss-Bonnet theorem shows that the flat case (K=0, excess=0, sum=π) is a special instance of a deeper principle.\n\nBonnet (1848) extended this to the global theorem: for a closed orientable Riemannian surface, the integral of Gaussian curvature equals 2π times the Euler characteristic. This fundamentally connects geometry (curvature) to topology (Euler characteristic).",
@@ -142,7 +142,7 @@
     "axiomCount": 0,
     "sorries": 0,
     "path": "Proofs/TriangleAngleSumOQ02.lean",
-    "theoremCount": 25,
+    "theoremCount": 26,
     "definitionCount": 2
   },
   "references": [

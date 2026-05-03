@@ -28,7 +28,7 @@
       "Brouwer from Kakutani corollary",
       "Nash equilibrium existence sketch"
     ],
-    "theoremCount": 3
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Shizuo Kakutani's 1941 paper 'A Generalization of Brouwer's Fixed Point Theorem' (Duke Mathematical Journal) extended Brouwer's theorem to set-valued maps (correspondences), replacing the continuity requirement with upper hemicontinuity. Kakutani's motivation was to provide a cleaner proof of the minimax theorem (von Neumann 1928) for zero-sum games. The theorem became famous nine years later when John Nash (1950) used it to prove the existence of Nash equilibria in finite n-player games, for which Nash received the 1994 Nobel Prize in Economics. The key insight of Nash's proof is that the 'best response correspondence' — mapping each strategy profile to the set of profiles where every player is best-responding — satisfies exactly the Kakutani conditions when strategy spaces are taken to be simplices of mixed strategies. The Kakutani fixed point theorem was itself later generalized to infinite-dimensional spaces by Glicksberg (1952) and Fan (1952), and to locally convex topological vector spaces by the Fan-Kakutani theorem. In modern mathematics, it appears in general equilibrium theory (Arrow-Debreu model, 1954), mechanism design, and social choice theory.",
@@ -127,7 +127,7 @@
     "namespace": "KakutaniFixedPoint",
     "lineCount": 168,
     "axiomCount": 1,
-    "theoremCount": 3,
+    "theoremCount": 4,
     "definitionCount": 7,
     "path": "Proofs/SchauderFixedPointOQ03.lean",
     "sorries": 0

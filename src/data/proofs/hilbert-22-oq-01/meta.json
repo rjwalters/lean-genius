@@ -26,7 +26,7 @@
       "Enriques-Kodaira surface classification",
       "Analogy table: 1D uniformization → higher-dim Kodaira"
     ],
-    "theoremCount": 1
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "The uniformization theorem — proved independently by Poincaré and Koebe in 1907 — gives a complete classification of simply connected Riemann surfaces: every one is biholomorphic to the sphere S², the complex plane ℂ, or the unit disk 𝔻. This trichotomy corresponds to positive, zero, and negative curvature. In higher dimensions, no single theorem achieves a comparable classification. The Kodaira dimension κ(X) — introduced by Kunihiko Kodaira in a landmark series of papers (1960–1969) — provides the right invariant: it measures the growth rate of pluricanonical sections and takes values in {-∞, 0, 1, ..., dim X}. For complex surfaces (dim 2), Kodaira completed the Enriques classification into 8 topological-algebraic classes. In 1977, Shing-Tung Yau proved the Calabi conjecture (Fields Medal 1982), establishing existence of Kähler-Einstein metrics on manifolds with non-positive first Chern class — the higher-dimensional 'hyperbolic metric' analogue. Shoshichi Kobayashi introduced his eponymous hyperbolicity in 1967 as the direct generalization of the 'hyperbolic type' in uniformization: a manifold is Kobayashi hyperbolic if every entire holomorphic curve is constant. The Lang conjecture (1986) predicts that manifolds of general type (κ = dim) are Kobayashi hyperbolic.",
@@ -108,7 +108,7 @@
     "namespace": "Hilbert22OQ01",
     "lineCount": 155,
     "axiomCount": 0,
-    "theoremCount": 1,
+    "theoremCount": 2,
     "definitionCount": 3,
     "path": "Proofs/Hilbert22OQ01.lean",
     "sorries": 0
