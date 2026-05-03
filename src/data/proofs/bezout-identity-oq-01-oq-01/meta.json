@@ -101,7 +101,7 @@
       "id": "properties",
       "title": "GCD Properties",
       "startLine": 148,
-      "endLine": 176,
+      "endLine": 167,
       "summary": "Four derived theorems establishing that binaryGcd inherits all GCD properties from Nat.gcd: symmetry (binaryGcd_comm), left and right divisibility, and universality (any common divisor k divides binaryGcd a b)."
     },
     {
@@ -121,12 +121,12 @@
   ],
   "openQuestions": [
     {
-      "id": "binary-gcd-oq-01-oq-01-oq-01",
+      "id": "bezout-identity-oq-01-oq-01-oq-01",
       "question": "Can the complexity bound be formalized? Stein's algorithm runs in O(log²(max(a,b))) bit operations. Can this be proved in Lean using a bit-length measure on a+b?",
       "status": "open"
     },
     {
-      "id": "binary-gcd-oq-01-oq-01-oq-02",
+      "id": "bezout-identity-oq-01-oq-01-oq-02",
       "question": "Can binaryGcd be extended to integers? The natural extension handles signs separately: binaryGcd |a| |b| gives the GCD magnitude. Does this compose cleanly with Int.gcdA/gcdB to give a binary extended GCD?",
       "status": "open"
     }
