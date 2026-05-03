@@ -97,7 +97,7 @@ theorem distance_sidon_size_bound {α : Type*} [MetricSpace α]
   -- offDiag.card ≤ 2 * (offDiag image).card  by the fiber bound
   have hoff : Q.offDiag.card ≤
       2 * (Q.offDiag.image fun pq => dist pq.1 pq.2).card :=
-    Finset.card_le_mul_card_image Q.offDiag (fun pq => dist pq.1 pq.2) hfiber
+    Finset.card_le_mul_card_image Q.offDiag 2 hfiber
   -- offDiag image ⊆ Q×Q image
   have himg : (Q.offDiag.image fun pq => dist pq.1 pq.2).card ≤
       ((Q ×ˢ Q).image fun pq => dist pq.1 pq.2).card := by
