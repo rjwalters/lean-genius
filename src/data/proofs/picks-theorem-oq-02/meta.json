@@ -1,0 +1,137 @@
+{
+  "id": "picks-theorem-oq-02",
+  "title": "GCD Boundary Formula for Lattice Points on a Segment",
+  "slug": "picks-theorem-oq-02",
+  "description": "Proves the GCD boundary formula: the segment from (0,0) to (a,b) contains exactly gcd(a,b)+1 integer lattice points, parameterized by k ↦ (k·(a/g), k·(b/g)) for k=0,...,g. Complete proof: injectivity of the parameterization (at least one of a/g or b/g is positive), and completeness via coprimality (gcd(a/g, b/g)=1 forces p|x from x·q=y·p). 12 theorems, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-03",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PicksTheoremOQ02.lean",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "picks-theorem",
+      "lattice-geometry",
+      "gcd",
+      "coprimality"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-03",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 215,
+    "theoremCount": 12,
+    "definitionCount": 2,
+    "originalContributions": [
+      "card_segmentPoints: the GCD boundary formula — gcd(a,b)+1 lattice points on segment (0,0)→(a,b)",
+      "onSegment_mem_segmentPoints: completeness — every segment lattice point is parameterized by some k",
+      "segmentPoint_on_segment: soundness — every parameterized point lies on the segment",
+      "segmentMap_injective: injectivity — the map k ↦ (k·(a/g), k·(b/g)) is injective when gcd>0",
+      "onSegment_iff_mem: complete membership characterization combining soundness and completeness",
+      "segment_coprime: when gcd(a,b)=1, the only lattice points are the two endpoints",
+      "segment_diagonal: the diagonal (0,0)→(a,a) has a+1 lattice points",
+      "pick_edge_contribution: each edge contributes gcd(|Δx|,|Δy|) to Pick's boundary count B"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The GCD boundary formula is a classical result in lattice geometry, underlying Pick's theorem (1899): for a lattice polygon with area A, interior lattice points I, and boundary lattice points B, we have A = I + B/2 - 1. The boundary count B = Σ gcd(|Δxᵢ|, |Δyᵢ|) summed over edges, since each edge from (x₁,y₁) to (x₂,y₂) contributes gcd(|x₂-x₁|, |y₂-y₁|) points when shared endpoints are accounted for. The formula connects elementary number theory (coprimality, Euclidean algorithm) with two-dimensional geometry.",
+    "problemStatement": "Formalize the GCD boundary formula: the number of integer lattice points on the segment from (0,0) to (a,b) is gcd(a,b)+1. Prove completeness (every lattice point is parameterized) using coprimality of a/g and b/g.",
+    "text": "The segment from (0,0) to (a,b) contains exactly gcd(a,b)+1 lattice points: the points (k·(a/g), k·(b/g)) for k=0,1,...,g where g=gcd(a,b). These are all lattice points on the segment and there are no others.",
+    "proofStrategy": "Define segmentPoints as the image of {0,...,g} under k ↦ (k·(a/g), k·(b/g)). Prove injectivity: at least one of a/g or b/g is positive when g>0, so the map is injective on first or second component. Prove completeness via coprimality: from x·b = y·a with a=g·p, b=g·q and gcd(p,q)=1, we derive x·q = y·p (dividing by g), then p | x·q with p⊥q gives p | x, so x = k·p and y = k·q for some k ≤ g.",
+    "keyInsights": [
+      "The parameterization k ↦ (k·(a/g), k·(b/g)) is injective because when g = gcd(a,b) > 0, at least one of a/g or b/g is positive: if a/g = 0 then a=0 so g=b and b/g = b/b = 1 > 0",
+      "Coprimality of a/g and b/g (via Nat.coprime_div_gcd_div_gcd) is the key to completeness: from x·q = y·p with gcd(p,q)=1, deduce p | x, giving the unique k",
+      "The formula gcd(a,b)+1 is consistent at the boundary cases: gcd(0,0)=0 gives 1 point {(0,0)}; gcd(a,a)=a gives a+1 diagonal points; gcd(p,q)=1 coprime gives 2 endpoints",
+      "The proof works over ℕ directly without needing ℤ, handling the a=0 and b=0 cases separately from the generic coprimality argument",
+      "The edge contribution to Pick's theorem is gcd(|Δx|,|Δy|) (= card-1): this is the number of shared-endpoint-excluded lattice points on each edge"
+    ],
+    "prerequisites": [
+      "GCD and coprimality: Nat.gcd, Nat.Coprime, Nat.coprime_div_gcd_div_gcd",
+      "Divisibility: Nat.Coprime.dvd_of_dvd_mul_right, Nat.mul_div_cancel'",
+      "Finset image cardinality: Finset.card_image_of_injective"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 40,
+      "endLine": 55,
+      "summary": "Defines onSegment (collinearity + bounds) and segmentPoints (image of {0,...,g} under the parameterization k ↦ (k·(a/g), k·(b/g))).",
+      "mathContext": "$\\text{segmentPoints}(a,b) = \\{(k \\cdot a/g, k \\cdot b/g) : k = 0,\\ldots,g\\}$ where $g = \\gcd(a,b)$."
+    },
+    {
+      "id": "soundness",
+      "title": "Soundness: Parameterized Points Are on Segment",
+      "startLine": 60,
+      "endLine": 95,
+      "summary": "segmentPoint_on_segment: (k·(a/g), k·(b/g)) satisfies collinearity (via calc with ring) and bounds (k ≤ g gives k·(a/g) ≤ g·(a/g) = a). mem_segmentPoints_on_segment follows.",
+      "mathContext": "$k \\cdot (a/g) \\cdot b = k \\cdot (a/g) \\cdot (g \\cdot (b/g)) = k \\cdot (b/g) \\cdot (g \\cdot (a/g)) = k \\cdot (b/g) \\cdot a$."
+    },
+    {
+      "id": "injectivity",
+      "title": "Injectivity of the Parameterization",
+      "startLine": 99,
+      "endLine": 120,
+      "summary": "segmentMap_injective: case split on a/g=0 vs a/g>0. When a=0, g=b and b/g=1, use second component. When a/g>0, use first component with Nat.eq_of_mul_eq_mul_right.",
+      "mathContext": "Either $a/g > 0$ (use $k_1 \\cdot (a/g) = k_2 \\cdot (a/g) \\Rightarrow k_1 = k_2$) or $a=0$ so $g=b$ and $b/g=1$ (use $k_1 = k_2$)."
+    },
+    {
+      "id": "main",
+      "title": "GCD Boundary Formula",
+      "startLine": 124,
+      "endLine": 132,
+      "summary": "card_segmentPoints: when gcd=0 (a=b=0), exactly 1 point. When gcd>0, injectivity gives card = card(range(g+1)) = g+1.",
+      "mathContext": "$|\\text{segmentPoints}(a,b)| = \\gcd(a,b) + 1$."
+    },
+    {
+      "id": "completeness",
+      "title": "Completeness: All Segment Points Parameterized",
+      "startLine": 138,
+      "endLine": 185,
+      "summary": "onSegment_mem_segmentPoints: three cases. gcd=0: trivial. a=0: k=y works directly. a>0: coprimality argument using Nat.coprime_div_gcd_div_gcd and Nat.Coprime.dvd_of_dvd_mul_right.",
+      "mathContext": "From $x \\cdot q = y \\cdot p$ and $\\gcd(p,q)=1$: $p \\mid x \\cdot q$ so $p \\mid x$, giving $x = kp$, $y = kq$, $k \\leq g$."
+    },
+    {
+      "id": "applications",
+      "title": "Special Cases and Pick's Formula",
+      "startLine": 187,
+      "endLine": 215,
+      "summary": "segment_coprime (2 endpoints), segment_diagonal (a+1 points), three concrete examples, pick_edge_contribution and interior_segment_count for Pick's theorem boundary formula.",
+      "mathContext": "$B = \\sum_i \\gcd(|\\Delta x_i|, |\\Delta y_i|)$, with each edge contributing $\\text{card} - 1 = \\gcd(a,b)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully proves the GCD boundary formula for lattice points on a segment: card(segmentPoints(a,b)) = gcd(a,b)+1. The proof is machine-verified with 0 axioms and 0 sorries. Key techniques: Finset.card_image_of_injective for the cardinality, Nat.coprime_div_gcd_div_gcd + Nat.Coprime.dvd_of_dvd_mul_right for completeness. 12 theorems, 2 definitions, 215 lines.",
+    "implications": "This formula is the foundation of the boundary count B in Pick's theorem. A polygon with n edges, each going from (xᵢ,yᵢ) to (xᵢ₊₁,yᵢ₊₁), has boundary count B = Σ gcd(|Δxᵢ|, |Δyᵢ|). With this formula formalized, a constructive proof of Pick's theorem (as opposed to the axiomatized version) requires formalizing triangulation of lattice polygons.",
+    "openQuestions": [
+      "Can Pick's theorem itself be fully proved in Lean by combining this GCD formula with a triangulation argument (ear-clipping or diagonal decomposition)?",
+      "Generalize to lattice points in a tetrahedron: the number of integer points on the segment from (0,0,0) to (a,b,c) is gcd(a,b,c)+1",
+      "Ehrhart polynomial generalization: for a lattice polytope P, the count of lattice points in tP is a polynomial in t (Pick is the t=1, d=2 case)"
+    ]
+  },
+  "leanFile": {
+    "namespace": "PicksTheoremOQ02",
+    "lineCount": 215,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 2,
+    "path": "Proofs/PicksTheoremOQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "picks-theorem-oq-01",
+      "relationship": "parent",
+      "description": "Pick's Theorem via Triangulation — the OQ about whether the GCD formula can give a constructive proof of Pick's theorem."
+    },
+    {
+      "targetId": "picks-theorem",
+      "relationship": "ancestor",
+      "description": "Pick's Theorem — the original formalization whose boundary count B uses the GCD formula proved here."
+    }
+  ],
+  "sorries": 0
+}
