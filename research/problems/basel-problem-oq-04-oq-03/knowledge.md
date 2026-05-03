@@ -4,6 +4,53 @@
 
 ---
 
+## Session 2026-05-03 (Session 2) — Prove moebius_dirichlet_series_at_two
+
+**Mode**: REVISIT (ACT)
+**Outcome**: Axiom eliminated — moebius_dirichlet_series_at_two now proved. 2 → 1 axioms.
+
+### What I Did
+
+1. **Identified the proof path via Mathlib LSeries**:
+   - `Mathlib.NumberTheory.LSeries.Dirichlet` (imported via `EulerProduct.DirichletLSeries`) contains:
+     - `LSeries_zeta_mul_Lseries_moebius {s} (hs : 1 < s.re) : L ↗ζ s * L ↗μ s = 1`
+     - `LSeriesSummable_moebius_iff : LSeriesSummable ↗μ s ↔ 1 < s.re`
+     - `LSeries_zeta_eq_riemannZeta {s} (hs) : L ↗ζ s = riemannZeta s`
+   - `Complex.hasSum_ofReal : HasSum (fun x => (f x : ℂ)) x ↔ HasSum f x`
+   - `Complex.cpow_two : x ^ (2 : ℂ) = x ^ (2 : ℕ)` (for term computation)
+
+2. **Wrote the proof** (in BaselProblemOQ04OQ03.lean:249-295):
+   - At s=2: `L(ζ,2) * L(μ,2) = 1` and `L(ζ,2) = π²/6` → `L(μ,2) = 6/π²`
+   - Package as `LSeriesHasSum ↗μ 2 (6/π²)` via `hmu_sum.LSeriesHasSum`
+   - Show term equality: `LSeries.term ↗μ 2 n = ((μ n : ℝ)/n² : ℂ)` via `cpow_two` + `push_cast`
+   - Convert via `Complex.hasSum_ofReal.mp`
+
+3. **Added `open scoped LSeries.notation`** to enable `↗` and `L` notation
+
+### Key Findings
+
+- `LSeries.Dirichlet` was already transitively imported via `EulerProduct.DirichletLSeries`
+- No new imports needed — all tools were already available
+- `SummationFilter` abstraction in recent Mathlib: `HasSum` now uses `unconditional` filter by default,
+  compatible with `Complex.hasSum_ofReal`
+- `mul_left_cancel₀` approach for algebraic inversion in ℂ (field axioms)
+- `LSeries.term_zero` and `term_of_ne_zero` are the key term API lemmas
+
+### Files Modified
+
+- `proofs/Proofs/BaselProblemOQ04OQ03.lean` — axiom → theorem for moebius_dirichlet_series_at_two
+- `src/data/proofs/basel-problem-oq-04-oq-03/meta.json` — axiomCount 2→1
+
+### Next Steps
+
+1. Eliminate `coprime_pair_density_limit`:
+   - Key: `∑' d, μ(d) * (⌊N/d⌋/N)² → ∑' d, μ(d)/d²` as N → ∞
+   - Uses: dominated convergence with dominator `1/d²` (summable by `hasSum_zeta_two`)
+   - Bound: `|⌊N/d⌋/N - 1/d| ≤ 1/(dN)` → `|μ(d)*(⌊N/d⌋/N)² - μ(d)/d²| ≤ O(1/(d²N))`
+   - Mathlib: `tendsto_tsum_of_dominated_convergence` or similar
+
+---
+
 ## Problem Understanding
 
 Goal: lim_{N→∞} |{(m,n) : 1≤m,n≤N, gcd(m,n)=1}| / N² = 6/π²
