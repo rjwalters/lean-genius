@@ -286,7 +286,7 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
              (minpoly ↥(ℚ⟮a⟯) β_in_β).natDegree = 2 := by omega
          rcases h_range with h | h
          · exact h ▸ one_dvd 2
-         · exact h ▸ dvd_refl 2)
+         · exact h ▸ dvd_refl _)
     -- Step D: finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+1+k') via stronger IH applied at K = ℚ⟮β⟯
     -- Tower ℚ ≤ ℚ⟮β⟯ ≤ ℚ⟮b⟯⊔ℚ⟮β⟯: tower law + isConstructible_sup_degree b hb ℚ⟮β⟯
     haveI hAlg_βjoin : Algebra ↥(ℚ⟮β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) :=
