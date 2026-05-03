@@ -288,30 +288,34 @@ lemma irred_no_rational_roots (f : ℤ[X]) (hf_irred : Irreducible (f.map (algeb
     rw [Polynomial.natDegree_map_eq_of_injective (algebraMap ℤ ℚ).injective] at hfmap_deg
     linarith
 
-/-- **Taylor factorization upper bound**: If f(α) = 0 in ℚ_[p], then by factoring
-    f(x) = (x - α)·g(x) over ℚ_[p], we get ‖f(r/s)‖_p ≤ M · ‖α - r/s‖_p
-    where M is a uniform bound on ‖g(r/s)‖_p (via p-adic ultrametric continuity). -/
+/-- **Taylor factorization upper bound**: If f(α) = 0 in ℚ_[p], then factoring
+    f(x) = (x - α)·g(x) over ℚ_[p] gives ‖f(r/s)‖_p ≤ M · H^{d-1} · ‖α - r/s‖_p.
+
+    The cofactor g has ℚ_[p]-coefficients; for integer r/s, ‖r/s‖_p ≤ H (by the
+    Archimedean complement), so ‖g(r/s)‖_p ≤ C_g · H^{d-1}.  Combining:
+      ‖f(r/s)‖_p = ‖r/s - α‖_p · ‖g(r/s)‖_p ≤ C_g · H^{d-1} · ‖α - r/s‖_p.
+    Note: the bound is NOT uniform in H — the cofactor grows with the height. -/
 lemma cofactor_uniform_bound (α : ℚ_[p]) (f : ℤ[X])
     (hf_root : (f.map (algebraMap ℤ ℚ_[p])).eval α = 0) :
     ∃ M : ℝ, 0 < M ∧ ∀ r s : ℤ, s ≠ 0 →
       ‖((f.map (algebraMap ℤ ℚ_[p])).eval ((r : ℚ_[p]) / s))‖ ≤
-        M * ‖α - (r : ℚ_[p]) / s‖ := by
+        M * (max r.natAbs s.natAbs : ℝ) ^ (f.natDegree - 1) * ‖α - (r : ℚ_[p]) / s‖ := by
   sorry
 
 /-- **P-adic Liouville Estimate** (proved from helper lemmas above):
     If α ∈ ℚ_[p] is a root of irreducible f ∈ ℤ[X] of degree d ≥ 2,
     then ∃ C > 0 such that ∀ r, s : ℤ with s ≠ 0:
-      C / max(|r|, |s|)^d ≤ ‖α - r/s‖_p
+      C / max(|r|, |s|)^(2d-1) ≤ ‖α - r/s‖_p
 
-    Combines cofactor_uniform_bound + padicNorm_poly_eval_lb + irred_no_rational_roots.
-    With C = 1/(M · polyCoeffL1(f)):
-      1/(L·H^d) ≤ ‖f(r/s)‖_p ≤ M·‖α - r/s‖_p  →  C/H^d ≤ ‖α - r/s‖_p -/
+    Proof chain with C = 1/(M · polyCoeffL1(f)):
+      1/(L·H^d) ≤ ‖f(r/s)‖_p ≤ M·H^{d-1}·‖α-r/s‖_p  →  C/H^{2d-1} ≤ ‖α-r/s‖_p
+    (The exponent 2d-1 arises from d (lower bound) + (d-1) (cofactor growth).) -/
 theorem padic_liouville_estimate (α : ℚ_[p]) (f : ℤ[X])
     (hf_root : (f.map (algebraMap ℤ ℚ_[p])).eval α = 0)
     (hf_irred : Irreducible (f.map (algebraMap ℤ ℚ)))
     (hf_deg : 2 ≤ f.natDegree) :
     ∃ C : ℝ, 0 < C ∧ ∀ r s : ℤ, s ≠ 0 →
-      C / (max r.natAbs s.natAbs : ℝ) ^ f.natDegree ≤ ‖α - (r : ℚ_[p]) / s‖ := by
+      C / (max r.natAbs s.natAbs : ℝ) ^ (2 * f.natDegree - 1) ≤ ‖α - (r : ℚ_[p]) / s‖ := by
   have hf_ne : f ≠ 0 := by rintro rfl; simp at hf_deg
   obtain ⟨M, hM, hcofactor⟩ := cofactor_uniform_bound p α f hf_root
   have hL_pos : (0 : ℝ) < (polyCoeffL1 f : ℝ) := by exact_mod_cast polyCoeffL1_pos f hf_ne
@@ -324,28 +328,37 @@ theorem padic_liouville_estimate (α : ℚ_[p]) (f : ℤ[X])
   have hH_pos : (0 : ℝ) < (max r.natAbs s.natAbs : ℝ) :=
     by exact_mod_cast Nat.lt_of_lt_of_le hs_pos (le_max_right _ _)
   have hHd_pos : (0 : ℝ) < (max r.natAbs s.natAbs : ℝ) ^ f.natDegree := pow_pos hH_pos _
-  have hLH_pos : (0 : ℝ) < (polyCoeffL1 f : ℝ) * (max r.natAbs s.natAbs : ℝ) ^ f.natDegree :=
-    mul_pos hL_pos hHd_pos
-  -- chain: 1/(L·H^d) ≤ ‖f(r/s)‖_p ≤ M·‖α - r/s‖_p
-  have hchain : 1 / ((polyCoeffL1 f : ℝ) * (max r.natAbs s.natAbs : ℝ) ^ f.natDegree) ≤
-      M * ‖α - (r : ℚ_[p]) / s‖ := le_trans hlb hub
-  -- Rearrange: 1/(M·L·H^d) ≤ ‖α - r/s‖_p = C/H^d ≤ ‖α - r/s‖_p
+  have hHd1_pos : (0 : ℝ) < (max r.natAbs s.natAbs : ℝ) ^ (f.natDegree - 1) := pow_pos hH_pos _
+  have hH2d1_pos : (0 : ℝ) < (max r.natAbs s.natAbs : ℝ) ^ (2 * f.natDegree - 1) := pow_pos hH_pos _
   have hML_pos : (0 : ℝ) < M * (polyCoeffL1 f : ℝ) := mul_pos hM hL_pos
-  have h_rearrange : 1 / (M * (polyCoeffL1 f : ℝ) * (max r.natAbs s.natAbs : ℝ) ^ f.natDegree) ≤
-      ‖α - (r : ℚ_[p]) / s‖ := by
-    rw [div_le_iff (mul_pos hML_pos hHd_pos)]
-    have := mul_le_mul_of_nonneg_right hchain (le_of_lt hHd_pos)
-    linarith [mul_comm M ‖α - (r : ℚ_[p]) / s‖, norm_nonneg (α - (r : ℚ_[p]) / s)]
-  calc 1 / (M * (polyCoeffL1 f : ℝ)) / (max r.natAbs s.natAbs : ℝ) ^ f.natDegree
-      = 1 / (M * (polyCoeffL1 f : ℝ) * (max r.natAbs s.natAbs : ℝ) ^ f.natDegree) := by ring
+  have hLHd_pos : (0 : ℝ) < (polyCoeffL1 f : ℝ) * (max r.natAbs s.natAbs : ℝ) ^ f.natDegree :=
+    mul_pos hL_pos hHd_pos
+  -- chain: 1/(L·H^d) ≤ ‖f(r/s)‖_p ≤ M·H^{d-1}·‖α - r/s‖_p
+  have hchain : 1 / ((polyCoeffL1 f : ℝ) * (max r.natAbs s.natAbs : ℝ) ^ f.natDegree) ≤
+      M * (max r.natAbs s.natAbs : ℝ) ^ (f.natDegree - 1) * ‖α - (r : ℚ_[p]) / s‖ :=
+    le_trans hlb hub
+  -- Multiply chain by L·H^d: 1 ≤ M·L·H^{d+(d-1)}·‖α-r/s‖_p = M·L·H^{2d-1}·‖α-r/s‖_p
+  have hexp : 2 * f.natDegree - 1 = f.natDegree + (f.natDegree - 1) := by omega
+  set H := (max r.natAbs s.natAbs : ℝ)
+  set L := (polyCoeffL1 f : ℝ)
+  have h_rearrange : 1 / (M * L * H ^ (2 * f.natDegree - 1)) ≤ ‖α - (r : ℚ_[p]) / s‖ := by
+    rw [div_le_iff (mul_pos hML_pos hH2d1_pos), hexp, pow_add]
+    have hLHd_inv : 1 / (L * H ^ f.natDegree) * (L * H ^ f.natDegree) = 1 :=
+      div_mul_cancel₀ 1 (ne_of_gt hLHd_pos)
+    calc 1 = 1 / (L * H ^ f.natDegree) * (L * H ^ f.natDegree) := hLHd_inv.symm
+      _ ≤ M * H ^ (f.natDegree - 1) * ‖α - (r : ℚ_[p]) / s‖ * (L * H ^ f.natDegree) :=
+            mul_le_mul_of_nonneg_right hchain (by positivity)
+      _ = M * L * (H ^ f.natDegree * H ^ (f.natDegree - 1)) * ‖α - (r : ℚ_[p]) / s‖ := by ring
+  calc 1 / (M * L) / H ^ (2 * f.natDegree - 1)
+      = 1 / (M * L * H ^ (2 * f.natDegree - 1)) := by ring
     _ ≤ ‖α - (r : ℚ_[p]) / s‖ := h_rearrange
 
 
 /-- **Main Result**: Every p-adic algebraic number is NOT p-adically Liouville.
 
-    Proof: If α is algebraic of degree d, the Liouville estimate gives C/H^d ≤ ‖α - r/s‖
-    for all r/s. Pick n₀ with 2^n₀ > 1/C. Apply the Liouville condition with n = n₀ + d
-    to get r, s with H ≥ 2 and ‖α - r/s‖ < 1/H^(n₀+d). Combining:
+    Proof: The Liouville estimate gives C/H^(2d-1) ≤ ‖α - r/s‖ for all r/s.
+    Pick n₀ with 2^n₀ > 1/C. Apply the Liouville condition with n = n₀ + (2d-1)
+    to get r, s with H ≥ 2 and ‖α - r/s‖ < 1/H^(n₀+(2d-1)). Combining:
       C < 1/H^n₀ ≤ 1/2^n₀ < C (from n₀ choice). Contradiction. -/
 theorem padic_algebraic_not_liouville
     (α : ℚ_[p]) (f : ℤ[X])
@@ -357,23 +370,25 @@ theorem padic_algebraic_not_liouville
   obtain ⟨C, hC, hbound⟩ := padic_liouville_estimate p α f hf_root hf_irred hf_deg
   -- Pick n₀ such that (1/2)^n₀ < C, equivalently 2^n₀ > 1/C
   obtain ⟨n₀, hn₀⟩ := exists_pow_lt_of_lt_one hC (by norm_num : (1 / 2 : ℝ) < 1)
-  -- Apply the Liouville condition with n = n₀ + f.natDegree
-  obtain ⟨r, s, hs, hH2, _hgcd, happrox⟩ := hLiou (n₀ + f.natDegree)
+  -- let k := 2*d-1 be the exponent in the Liouville estimate
+  set k : ℕ := 2 * f.natDegree - 1 with hk_def
+  -- Apply the Liouville condition with n = n₀ + k
+  obtain ⟨r, s, hs, hH2, _hgcd, happrox⟩ := hLiou (n₀ + k)
   -- Work with H : ℕ := max r.natAbs s.natAbs
   set H : ℕ := max r.natAbs s.natAbs with hH_def
   -- H ≥ 2 (from Liouville condition), so (H : ℝ) ≥ 2
   have hH_ge2 : (2 : ℝ) ≤ (H : ℝ) := by exact_mod_cast hH2
   have hH_pos : (0 : ℝ) < (H : ℝ) := lt_of_lt_of_le (by norm_num) hH_ge2
-  have hHd_pos : (0 : ℝ) < (H : ℝ) ^ f.natDegree := pow_pos hH_pos _
-  -- Lower bound from estimate: C / H^d ≤ ‖α - r/s‖
-  have hlower : C / (H : ℝ) ^ f.natDegree ≤ ‖α - (r : ℚ_[p]) / s‖ := hbound r s hs
-  -- Combine with Liouville upper bound to get C / H^d < 1 / H^(n₀+d)
-  have hcomb : C / (H : ℝ) ^ f.natDegree < 1 / (H : ℝ) ^ (n₀ + f.natDegree) :=
+  have hHk_pos : (0 : ℝ) < (H : ℝ) ^ k := pow_pos hH_pos _
+  -- Lower bound from estimate: C / H^k ≤ ‖α - r/s‖
+  have hlower : C / (H : ℝ) ^ k ≤ ‖α - (r : ℚ_[p]) / s‖ := hbound r s hs
+  -- Combine with Liouville upper bound to get C / H^k < 1 / H^(n₀+k)
+  have hcomb : C / (H : ℝ) ^ k < 1 / (H : ℝ) ^ (n₀ + k) :=
     lt_of_le_of_lt hlower happrox
-  -- H^(n₀+d) = H^n₀ * H^d, so 1/H^(n₀+d) = (1/H^n₀) / H^d
+  -- H^(n₀+k) = H^n₀ * H^k, so 1/H^(n₀+k) = (1/H^n₀) / H^k
   rw [pow_add, ← div_div] at hcomb
-  -- Cancel H^d from both sides: C < 1/H^n₀
-  have hC_lt : C < 1 / (H : ℝ) ^ n₀ := (div_lt_div_right hHd_pos).mp hcomb
+  -- Cancel H^k from both sides: C < 1/H^n₀
+  have hC_lt : C < 1 / (H : ℝ) ^ n₀ := (div_lt_div_right hHk_pos).mp hcomb
   -- H ≥ 2 implies H^n₀ ≥ 2^n₀, so 1/H^n₀ ≤ 1/2^n₀
   have h2n0_le : (2 : ℝ) ^ n₀ ≤ (H : ℝ) ^ n₀ :=
     pow_le_pow_left (by norm_num) hH_ge2 n₀
