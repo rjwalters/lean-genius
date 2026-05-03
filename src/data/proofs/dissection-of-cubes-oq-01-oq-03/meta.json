@@ -54,7 +54,7 @@
     "theoremCount": 14
   },
   "overview": {
-    "historicalContext": "The base Wiedijk #82 formalization uses covers_unit_cube : True as a placeholder — it records that cubes should cover the unit cube but does not enforce it. OQ-01 asked whether every nonempty dissection has a collision pair (same-size distinct cubes); the answer is YES. OQ-01-OQ-03 asks: can we incorporate the geometric covering condition — specifically, that the volumes sum to 1 — into the structure?",
+    "historicalContext": "The impossibility of dissecting a cube into finitely many smaller cubes of distinct sizes (Dehn 1903, Sprott 1939, Littlewood 1953) is listed as Theorem #82 in Freek Wiedijk's 'Formalizing 100 Theorems'. Littlewood's proof uses infinite descent: if a perfect cube dissection existed, the bottom face would require a 'squared square' (which exists) but the columns of cubes above the smallest square would force a smaller perfect cube dissection, contradicting minimality. The volumetric condition ∑ s_i³ = 1 is an implicit step in this argument — it is the necessary condition that the volumes of the cubes in the base layer of any would-be dissection must sum to the face area. This OQ-01-OQ-03 entry formalizes that volumetric condition as an explicit Lean 4 structure, upgrading the placeholder `covers_unit_cube : True` to the actual geometric constraint.",
     "problemStatement": "**Sub-question**: Can the volume constraint ∑_{c ∈ d.cubes} c.side³ = 1 be formally incorporated into the cube dissection structure?\n\n**Answer**: YES. We define VolumeDissection as CubeDissection + volume_constraint and prove 14 theorems connecting volume bounds to collision structure. Each cube in such a dissection has volume ≤ 1 and side ≤ 1. Any collision pair satisfies 2s³ ≤ 1 (equivalently s³ ≤ 1/2). The constraint is satisfiable: one unit cube witnesses it.",
     "text": "Defines VolumeDissection — a CubeDissection enriched with the necessary condition that cube volumes sum to 1. Proves bounding theorems (side ≤ 1, volume < 1 for dissections with ≥ 2 cubes) and connects the volume constraint to the collision structure from OQ-01.",
     "proofStrategy": "**Structure extension**: VolumeDissection wraps CubeDissection and adds volume_constraint : volumeSum dissection.cubes = 1.\n\n**Volume bounds**: From ∑ side³ = 1 with each term ≥ 0, Finset.single_le_sum gives c.side³ ≤ 1. The cubic bound side ≤ 1 follows from nlinarith with degree-3 witnesses.\n\n**Collision bounds**: Collision pairs (c₁, c₂) with c₁.side = c₂.side contribute 2·s³ to the volume sum. Since the total is 1, we get 2s³ ≤ 1, i.e., s³ ≤ 1/2.\n\n**Satisfiability**: One cube with side=1 at the origin satisfies covers_unit_cube (trivial), is contained in [0,1]³, and has volumeSum = 1.",
@@ -78,28 +78,32 @@
       "title": "Volume Sum Definition and Basics",
       "startLine": 54,
       "endLine": 85,
-      "summary": "Defines volumeSum as ∑ c.side³ and VolumeDissection structure. Proves nonneg, singleton, and insert lemmas."
+      "summary": "Defines volumeSum as ∑ c.side³ and VolumeDissection structure. Proves nonneg, singleton, and insert lemmas.",
+      "mathContext": "$\\text{volumeSum}(S) = \\sum_{c \\in S} c.\\text{side}^3$. VolumeDissection: CubeDissection + $\\text{volumeSum}(D.\\text{cubes}) = 1$."
     },
     {
       "id": "volume-bounds",
       "title": "Volume Bounds",
       "startLine": 86,
       "endLine": 158,
-      "summary": "cube_volume_le_one, cube_side_le_one, volumeSum_pos, cube_volume_lt_one_of_card_ge_two."
+      "summary": "cube_volume_le_one, cube_side_le_one, volumeSum_pos, cube_volume_lt_one_of_card_ge_two.",
+      "mathContext": "$s_i^3 \\leq 1$ for all $i$ (Finset.single_le_sum). $s_i \\leq 1$ follows from $s_i > 0$ and $s_i^3 \\leq 1$ via nlinarith. Strict bound: if $|D| \\geq 2$ then $s_i^3 < 1$."
     },
     {
       "id": "collision-structure",
       "title": "Collision Structure",
       "startLine": 159,
       "endLine": 199,
-      "summary": "Bridges to OQ-01: volume_dissection_has_collision, collision_volume_bound (2s³ ≤ 1), collision_side_le_half_cbrt."
+      "summary": "Bridges to OQ-01: volume_dissection_has_collision, collision_volume_bound (2s³ ≤ 1), collision_side_le_half_cbrt.",
+      "mathContext": "For collision pair with $c_1.\\text{side} = c_2.\\text{side} = s$: $2s^3 \\leq \\sum s_i^3 = 1$, so $s \\leq 2^{-1/3} \\approx 0.794$."
     },
     {
       "id": "decomposition",
       "title": "Min Cubes and Volume Decomposition",
       "startLine": 200,
       "endLine": 256,
-      "summary": "min_cubes_for_collision, volumeSum_union, volumeSum_eq, volume_constraint_satisfiable."
+      "summary": "min_cubes_for_collision, volumeSum_union, volumeSum_eq, volume_constraint_satisfiable.",
+      "mathContext": "$\\text{volumeSum}(A \\cup B) = \\text{volumeSum}(A) + \\text{volumeSum}(B)$ (disjoint). Witness: one unit cube with $\\text{volumeSum} = 1^3 = 1$."
     }
   ],
   "conclusion": {

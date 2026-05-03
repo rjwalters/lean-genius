@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-cube-dissection-setup",
+    "proofId": "dissection-of-cubes-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 52 },
+    "type": "context",
+    "title": "From Placeholder to Real Constraint: The OQ-01-OQ-03 Question",
+    "content": "The base Wiedijk #82 formalization has `covers_unit_cube : True` — a placeholder that acknowledges cubes should cover the unit cube but does not enforce it. The OQ-01 chain proved that every nonempty dissection has a collision pair. OQ-01-OQ-03 asks: can we incorporate the geometric covering condition — specifically the volumetric necessary condition ∑ c.side³ = 1 — into the formal structure? This file answers YES by defining VolumeDissection as CubeDissection plus the volume_constraint field, then proving all the downstream consequences.",
+    "mathContext": "A perfect cube dissection tiles $[0,1]^3$ with finitely many non-overlapping cubes of distinct sizes. Necessary condition: $\\sum_{c \\in D} (\\text{side}(c))^3 = \\text{vol}([0,1]^3) = 1$. The Wiedijk #82 impossibility states no such dissection exists; this file formalizes the volumetric structure without yet proving impossibility.",
+    "significance": "context",
+    "relatedConcepts": ["dissection-of-cubes", "dissection-of-cubes-oq-01", "Wiedijk #82", "CubeDissection", "covers_unit_cube"],
+    "prerequisites": ["DissectionOfCubes base structure", "DissectionOfCubesOQ01 (collision pairs)"]
+  },
+  {
     "id": "ann-volume-sum-def",
     "proofId": "dissection-of-cubes-oq-01-oq-03",
     "range": {
@@ -44,6 +56,18 @@
     ]
   },
   {
+    "id": "ann-volume-sum-basic-lemmas",
+    "proofId": "dissection-of-cubes-oq-01-oq-03",
+    "range": { "startLine": 68, "endLine": 91 },
+    "type": "technique",
+    "title": "Basic volumeSum Lemmas: Nonnegativity, Singleton, Insert",
+    "content": "`volumeSum_nonneg` proves ∑ c.side³ ≥ 0 using `Finset.sum_nonneg` with `pow_nonneg` and cube side positivity. `volumeSum_singleton` specializes to {c}: ∑_{x∈{c}} x.side³ = c.side³ using `Finset.sum_singleton`. `volumeSum_insert` gives the recursion formula for adding a cube to a set: ∑_{x∈insert(c,S)} = c.side³ + ∑_{x∈S} when c ∉ S, using `Finset.sum_insert`. These are the algebraic infrastructure on which all subsequent bounds rely.",
+    "mathContext": "$\\text{volumeSum}(\\{c\\}) = c.\\text{side}^3$. $\\text{volumeSum}(S \\cup \\{c\\}) = c.\\text{side}^3 + \\text{volumeSum}(S)$ when $c \\notin S$. $\\text{volumeSum}(S) \\geq 0$ since each $s_i > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.sum_nonneg", "Finset.sum_singleton", "Finset.sum_insert", "BigOperators"],
+    "prerequisites": ["volumeSum definition", "Cube.side positivity", "Finset membership"]
+  },
+  {
     "id": "ann-collision-volume",
     "proofId": "dissection-of-cubes-oq-01-oq-03",
     "range": {
@@ -65,5 +89,17 @@
       "collision_volume_bound",
       "volumeSum"
     ]
+  },
+  {
+    "id": "ann-satisfiability",
+    "proofId": "dissection-of-cubes-oq-01-oq-03",
+    "range": { "startLine": 225, "endLine": 256 },
+    "type": "insight",
+    "title": "Satisfiability: The One-Cube Witness and Decomposition Lemmas",
+    "content": "`volume_constraint_satisfiable` exhibits a VolumeDissection: one cube with side=1 at the origin. The proof checks: (1) covers_unit_cube is trivially True; (2) the cube is in [0,1]³; (3) volumeSum {c} = c.side³ = 1³ = 1. Supporting lemmas `volumeSum_union` and `volumeSum_eq` establish that the volume sum is additive over disjoint unions and equals a scalar-multiple formula. The one-cube witness is the trivial dissection — the unit cube itself — which satisfies the volume constraint but trivially (no proper dissection).",
+    "mathContext": "Witness: $D = \\{\\text{cube with side} = 1\\}$, $\\text{volumeSum}(D) = 1^3 = 1$. Decomposition: $\\text{volumeSum}(A \\cup B) = \\text{volumeSum}(A) + \\text{volumeSum}(B)$ for disjoint $A, B$ (Finset.sum_union).",
+    "significance": "supporting",
+    "relatedConcepts": ["volume_constraint_satisfiable", "volumeSum_union", "Finset.sum_union", "satisfiability witness"],
+    "prerequisites": ["volumeSum_singleton", "Finset.sum_union (disjoint)", "VolumeDissection structure"]
   }
 ]
