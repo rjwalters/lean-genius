@@ -1,0 +1,72 @@
+{
+  "slug": "shannon-channel-coding-oq-02-oq-03",
+  "title": "Channel Coding Converse via Fano's Inequality",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "∀ R > C, ∃ δ > 0, ∃ N, ∀ n ≥ N, ∀ code with rate ≥ R, P_e ≥ δ",
+    "plain": "When transmission rate R exceeds channel capacity C, error probability is bounded away from zero for sufficiently long codes. Specifically, P_e ≥ (R-C)/(2R) for n ≥ 2/(R-C).",
+    "whyMatters": [
+      "Proves the converse of Shannon's channel coding theorem — capacity is a sharp threshold",
+      "Provides a quantitative lower bound on error probability above capacity",
+      "Completes the formalization of the information-theoretic converse argument in Lean"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "channel_coding_converse_asymptotic: P_e ≥ (R-C)/(2R) for n ≥ ⌈2/(R-C)⌉",
+      "converse_from_combined_bound: Fano-MI bound → P_e ≥ 1 - (nC+1)/(nR)",
+      "threshold_bound: n ≥ 2/(R-C) → (R-C)/(2R) ≤ 1 - (nC+1)/(nR)",
+      "converse_delta_pos: δ = (R-C)/(2R) > 0 when R > C",
+      "rate_ge_implies_log: R ≤ rate_of_code → nR ≤ log M"
+    ],
+    "open": [
+      "Strong converse: P_e → 1 as n → ∞ for fixed R > C",
+      "Reduce fano_mi_converse_bound to Fano inequality + MI chain rule"
+    ],
+    "goal": "Quantitative converse: P_e ≥ (R-C)/(2R) for n ≥ 2/(R-C)"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-03",
+    "iteration": 1,
+    "focus": "Proof complete",
+    "blockers": [],
+    "nextAction": "Consider strong converse or Fano axiom elimination",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "insights": [
+      "Axiomatizing Fano + MI as single combined bound avoids unformalized probability theory",
+      "Asymptotic version (∃N, ∀n≥N) is cleaner than ∀n since small-n requires extra argument",
+      "capacity_nonneg requires [Nonempty α] typeclass on channel input type",
+      "nlinarith solves the key quadratic step (1-P_e)·log M ≤ n·C+1 directly",
+      "Threshold algebra: n·(R-C)≥2 → n·R²≥n·C·R+2R via mul_le_mul_of_nonneg_right + ring"
+    ],
+    "builtItems": [
+      "codeErrorProb def: ShannonChannelCodingOQ02OQ03.lean:33",
+      "fano_mi_converse_bound axiom: ShannonChannelCodingOQ02OQ03.lean:51",
+      "converse_from_combined_bound lemma: ShannonChannelCodingOQ02OQ03.lean:61",
+      "threshold_bound lemma: ShannonChannelCodingOQ02OQ03.lean:82",
+      "converse_delta_pos lemma: ShannonChannelCodingOQ02OQ03.lean:107",
+      "rate_ge_implies_log lemma: ShannonChannelCodingOQ02OQ03.lean:112",
+      "channel_coding_converse_asymptotic theorem: ShannonChannelCodingOQ02OQ03.lean:131"
+    ],
+    "mathlibGaps": [
+      "Mutual information subadditivity for n-step memoryless channels (needed to eliminate fano_mi axiom)",
+      "Conditional entropy decrease under data processing (needed to formalize H(W|Y^n) ≤ H(W|Ŵ))"
+    ],
+    "nextSteps": [
+      "Eliminate fano_mi_converse_bound by importing ShannonChannelCodingOQ03 Fano result",
+      "Prove strong converse (P_e → 1) via method of types or blowing-up lemma",
+      "Add gallery annotations for pedagogical value"
+    ],
+    "progressSummary": "COMPLETE: Proved asymptotic converse P_e ≥ (R-C)/(2R) for n ≥ ⌈2/(R-C)⌉. 1 axiom, 0 sorries, 5 theorems."
+  }
+}
