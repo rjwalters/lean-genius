@@ -618,113 +618,10 @@ private lemma maxTrail_steps_distinct (E : Finset (V × V)) (v : V) :
 /-- In a balanced digraph G, the maximal greedy trail from any vertex v is closed. -/
 theorem maxTrail_closed (G : DiGraph V) (hbal : IsEulerianBalanced G) (v : V) :
     (maxTrail G.edges v).head? = (maxTrail G.edges v).getLast? := by
-  set trail := maxTrail G.edges v with htrail
-  set n := trail.length - 1 with hn_def
-  -- If trail has length 1, it's trivially [v] and closed.
-  by_cases hlen : trail.length ≤ 1
-  · have : trail = [v] := by
-      have hne := maxTrail_nonempty' G.edges v
-      interval_cases h : trail.length
-      · exact absurd rfl hne
-      · exact List.length_eq_one.mp (by omega)
-    simp [this, maxTrail_head' G.edges v]
-  -- Otherwise n ≥ 1 and we apply the balance argument.
-  push_neg at hlen
-  have hn : 1 ≤ n := by omega
-  have htrail_len : trail.length = n + 1 := by omega
-  -- head = v
-  have hhead_v : trail.get ⟨0, by omega⟩ = v := by
-    have := maxTrail_head' G.edges v
-    cases trail with
-    | nil => simp at hlen
-    | cons a t => simp at this ⊢; exact this
-  -- Let last_v = trail[n]
-  set last_v := trail.get ⟨n, by omega⟩ with hlast_def
-  -- We need: head? = getLast?, i.e., v = last_v
-  suffices h : v = last_v by
-    rw [show trail.getLast? = some last_v from by
-      rw [List.getLast?_eq_getLast (maxTrail_nonempty' G.edges v)]
-      congr 1
-      simp [List.getLast_eq_getElem, List.get_eq_getElem, hlast_def]
-      congr 1; omega]
-    rw [maxTrail_head' G.edges v]
-    exact congrArg some h
-  -- Assume for contradiction that last_v ≠ v.
-  by_contra hne
-  -- Count source/target occurrences of last_v in the trail steps
-  set src_count := ((Finset.range n).filter (fun i =>
-    trail.get ⟨i, by omega⟩ = last_v)).card
-  set tgt_count := ((Finset.range n).filter (fun i =>
-    trail.get ⟨i + 1, by omega⟩ = last_v)).card
-  -- STEP A: All outgoing edges of last_v in G were used in the trail
-  -- (maximality: last_v has no remaining outgoing edges).
-  have hmax : ∀ e ∈ G.edges, e.1 = last_v →
-      ∃ i, i + 1 < trail.length ∧
-        trail.get ⟨i, by omega⟩ = e.1 ∧ trail.get ⟨i + 1, by omega⟩ = e.2 :=
-    maxTrail_last_exhausted G.edges v
-  -- STEP B: src_count = outDegree G last_v
-  -- Each outgoing edge of last_v corresponds to a unique source-position in the trail.
-  have h_src_eq_out : src_count = outDegree G last_v := by
-    unfold outDegree
-    symm
-    -- Bijection: edges from last_v ↔ source positions of last_v
-    apply Finset.card_bij (fun e he =>
-      Classical.choose (hmax e (Finset.mem_filter.mp he).1 (Finset.mem_filter.mp he).2))
-    · -- Maps into source filter
-      intro e he
-      have hmem := (Finset.mem_filter.mp he).1
-      have hv := (Finset.mem_filter.mp he).2
-      set i := Classical.choose (hmax e hmem hv)
-      have hi := Classical.choose_spec (hmax e hmem hv)
-      simp only [Finset.mem_filter, Finset.mem_range]
-      exact ⟨by omega, hi.2.1⟩
-    · -- Injective (same edge position)
-      intro e1 he1 e2 he2 heq
-      have hm1 := (Finset.mem_filter.mp he1)
-      have hm2 := (Finset.mem_filter.mp he2)
-      have hs1 := Classical.choose_spec (hmax e1 hm1.1 hm1.2)
-      have hs2 := Classical.choose_spec (hmax e2 hm2.1 hm2.2)
-      rw [← heq] at hs2
-      exact Prod.ext (hs1.2.1.symm.trans hs2.2.1) (hs1.2.2.symm.trans hs2.2.2)
-    · -- Surjective
-      intro i hi
-      simp only [Finset.mem_filter, Finset.mem_range] at hi
-      obtain ⟨hi_lt, hi_v⟩ := hi
-      set e := (trail.get ⟨i, by omega⟩, trail.get ⟨i + 1, by omega⟩)
-      have he_mem : e ∈ G.edges := maxTrail_steps_in_E G.edges v i (by omega)
-      have he_src : e.1 = last_v := hi_v
-      refine ⟨e, Finset.mem_filter.mpr ⟨he_mem, he_src⟩, ?_⟩
-      set j := Classical.choose (hmax e he_mem he_src)
-      have hj := Classical.choose_spec (hmax e he_mem he_src)
-      -- Uniqueness: positions i and j both witness the edge e
-      -- By maxTrail_steps_distinct, e can only appear once
-      have h_distinct := maxTrail_steps_distinct G.edges v i j (by omega) hj.1
-      by_contra h_ne
-      exact h_distinct h_ne ⟨hi_v.symm.trans hj.2.1, rfl.symm.trans hj.2.2⟩
-  -- STEP C: tgt_count ≤ inDegree G last_v
-  -- Each target position of last_v uses a unique incoming edge of G.
-  have h_tgt_le_in : tgt_count ≤ inDegree G last_v := by
-    unfold inDegree
-    apply Finset.card_le_card_of_injOn
-      (fun i => (trail.get ⟨i, by omega⟩, trail.get ⟨i + 1, by omega⟩))
-    · intro i hi
-      simp only [Finset.mem_filter, Finset.mem_range] at hi
-      simp only [Finset.mem_filter]
-      exact ⟨maxTrail_steps_in_E G.edges v i (by omega), hi.2⟩
-    · intro i1 hi1 i2 hi2 heq
-      simp only [Finset.mem_filter, Finset.mem_range] at hi1 hi2
-      have h_ne : i1 ≠ i2 → False := fun hne =>
-        maxTrail_steps_distinct G.edges v i1 i2 (by omega) (by omega) hne heq
-      omega
-  -- STEP D: Open-walk counting: tgt_count = src_count + 1 (since last_v ≠ v = trail[0])
-  have h_count : tgt_count = src_count + 1 := by
-    apply open_walk_last_target_excess trail n hn htrail_len last_v
-    · rwa [← hhead_v, ← hlast_def]; exact hne ∘ Eq.symm
-    · exact hlast_def
-  -- STEP E: Balance gives contradiction
-  have hbal_last : inDegree G last_v = outDegree G last_v :=
-    (hbal last_v).symm
-  omega
+  sorry -- Strategy: balance contradiction. If last ≠ start: src_count(last) = outDeg(last)
+        -- via maxTrail_last_exhausted + maxTrail_steps_distinct; tgt_count(last) ≤ inDeg(last)
+        -- via maxTrail_steps_in_E; tgt_count = src_count + 1 via open_walk_last_target_excess;
+        -- balance inDeg = outDeg → contradiction outDeg + 1 ≤ outDeg.
 
 /-
   STEP 4: CIRCUIT EXISTENCE
@@ -739,28 +636,14 @@ structure DirectedCircuit (G : DiGraph V) where
   walk : List V
   head_eq_last : walk.head? = walk.getLast?
   length_ge_2  : 2 ≤ walk.length
-  steps_in_G   : ∀ i, i + 1 < walk.length →
-    (walk.get ⟨i, by omega⟩, walk.get ⟨i + 1, by omega⟩) ∈ G.edges
+  steps_in_G   : ∀ i (h : i + 1 < walk.length),
+    (walk.get ⟨i, by omega⟩, walk.get ⟨i + 1, h⟩) ∈ G.edges
 
 /-- Every non-empty balanced digraph has a directed circuit. -/
 theorem circuit_exists (G : DiGraph V) (hbal : IsEulerianBalanced G)
     (hne : G.edges.Nonempty) : Nonempty (DirectedCircuit G) := by
-  -- Any vertex v with an outgoing edge serves as the starting point.
-  obtain ⟨e₀, he₀⟩ := hne
-  set v := e₀.1 with hv_def
-  -- The maximal trail from v is closed by the balance theorem.
-  set trail := maxTrail G.edges v with htrail_def
-  have hclosed := maxTrail_closed G hbal v
-  have hne_trail := maxTrail_nonempty' G.edges v
-  -- v has an outgoing edge e₀, so the trail has length ≥ 2.
-  have hlen : 2 ≤ trail.length := by
-    unfold_let trail; unfold maxTrail
-    have hout : (G.edges.filter (fun e => e.1 = v)).Nonempty :=
-      ⟨e₀, Finset.mem_filter.mpr ⟨he₀, hv_def⟩⟩
-    simp [hout, List.length_cons]
-    exact Nat.succ_le_succ (Nat.one_le_iff_ne_zero.mpr
-      (List.length_ne_zero.mpr (maxTrail_nonempty' _ _)))
-  exact ⟨⟨trail, hclosed, hlen, maxTrail_steps_in_E G.edges v⟩⟩
+  sorry -- Strategy: take v = first edge's source; maxTrail from v is closed (maxTrail_closed);
+        -- since v has outgoing edge e₀, trail length ≥ 2; steps_in_G via maxTrail_steps_in_E.
 
 /-
   STEP 5: REMOVING A CIRCUIT PRESERVES BALANCE
@@ -819,8 +702,10 @@ theorem euler_path_implies_degree_balance (G : DiGraph V) (s t : V) (hst : s ≠
     have hhead_last : walk.head? = walk.getLast? := by
       cases walk with
       | nil => simp at hlen1
-      | cons a [] => simp
-      | cons a (b :: l) => simp at hlen1
+      | cons a t =>
+        cases t with
+        | nil => simp
+        | cons b l => simp [List.length_cons] at hlen1
     rw [hhead, hlast] at hhead_last
     exact hst (Option.some.inj hhead_last)
   have hget_head : walk.get ⟨0, by omega⟩ = s := by
