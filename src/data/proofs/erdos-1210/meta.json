@@ -1,0 +1,116 @@
+{
+  "id": "erdos-1210",
+  "title": "Pairwise Coprime Subset Sum Inequality",
+  "slug": "erdos-1210",
+  "description": "Let A ⊆ {1,...,n-1} be pairwise coprime. Is ∑_{a∈A} 1/(n-a) ≤ ∑_{p prime, p<n} 1/(n-p)? Erdős conjectured the primes maximize this weighted harmonic sum among all pairwise coprime subsets.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1210",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1210Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "coprime",
+      "primes",
+      "harmonic-sums",
+      "extremal-combinatorics"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1210,
+    "erdosUrl": "https://erdosproblems.com/1210",
+    "erdosProblemStatus": "open",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: erdos_1210 (the main conjecture: primes maximize ∑ 1/(n-a) among pairwise coprime subsets of [1,n)). All 11 structural theorems are fully proved.",
+    "lineCount": 178,
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11
+  },
+  "overview": {
+    "historicalContext": "Erdős conjectured that among all pairwise coprime subsets A of {1,...,n-1}, the set of primes below n maximizes the sum ∑_{a∈A} 1/(n-a). This is an extremal problem connecting the arithmetic of pairwise coprime sets to harmonic analysis. The primes are in a sense the 'densest' pairwise coprime set, and this conjecture makes that precise through a weighted harmonic measure.",
+    "problemStatement": "Let A ⊆ {1,...,n-1} be pairwise coprime (gcd(a,b)=1 for distinct a,b∈A). Is ∑_{a∈A} 1/(n-a) ≤ ∑_{p prime, p<n} 1/(n-p)?",
+    "text": "Among all pairwise coprime subsets of {1,...,n-1}, the primes below n maximize ∑_{a∈A} 1/(n-a). Open conjecture of Erdős.",
+    "proofStrategy": "Define primesBelow, PairwiseCoprime, ValidSubset. Prove structural properties: primes are pairwise coprime, the prime sum is positive, pairwise coprime sets have at most one even element. State the main conjecture as an axiom. Derive consequences including bounds for singletons.",
+    "keyInsights": [
+      "Distinct primes are coprime: p∣q with p,q prime implies p=q (by primality of q), so any two distinct primes are coprime",
+      "Any pairwise coprime set has at most one even element (since two even numbers share factor 2)",
+      "The prime sum is strictly positive for n≥3 since 2<n contributes the term 1/(n-2)>0",
+      "The conjecture is tight when A = {primes < n}, since the prime set achieves equality by construction",
+      "Singletons {k} for any k∈[1,n) satisfy the inequality (via the axiom), giving a uniform bound"
+    ],
+    "prerequisites": [
+      "Number theory (primes, coprimality, divisibility)",
+      "Real analysis (harmonic sums, inequalities)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 50,
+      "endLine": 64,
+      "summary": "Defines primesBelow, PairwiseCoprime, ValidSubset.",
+      "mathContext": "$\\text{primesBelow}(n) = \\{p < n : p \\text{ prime}\\}$. $\\text{PairwiseCoprime}(A)$: $\\gcd(a,b)=1$ for distinct $a,b\\in A$."
+    },
+    {
+      "id": "prime-properties",
+      "title": "Properties of Primes and Coprimality",
+      "startLine": 66,
+      "endLine": 102,
+      "summary": "Proves primes are pairwise coprime, primesBelow is valid and nonempty for n≥3, and pairwise coprime sets have ≤1 even element.",
+      "mathContext": "Distinct primes are coprime. $|\\text{primesBelow}(n)| \\geq 1$ for $n \\geq 3$ (since $2 \\in \\text{primesBelow}(n)$). $|\\{a \\in A : 2 \\mid a\\}| \\leq 1$ for pairwise coprime $A$."
+    },
+    {
+      "id": "sum-bounds",
+      "title": "Sum Bounds",
+      "startLine": 104,
+      "endLine": 130,
+      "summary": "Proves the prime sum is nonneg and strictly positive.",
+      "mathContext": "$0 < \\sum_{p \\in \\text{primesBelow}(n)} \\frac{1}{n-p}$ for $n \\geq 3$."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture and Consequences",
+      "startLine": 131,
+      "endLine": 178,
+      "summary": "States erdos_1210 axiom and derives consequences for empty set, prime singletons, and arbitrary singletons.",
+      "mathContext": "$\\sum_{a\\in A} \\frac{1}{n-a} \\leq \\sum_{p \\in \\text{primesBelow}(n)} \\frac{1}{n-p}$ for all pairwise coprime $A \\subseteq [1,n)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 1210 on the optimality of primes for the weighted harmonic sum ∑ 1/(n-a) over pairwise coprime sets. 11 structural theorems proved, 1 axiom (the open conjecture), 0 sorries.",
+    "implications": "Resolution would advance our understanding of extremal properties of pairwise coprime sets and connect to Mertens' theorem and related prime counting results.",
+    "openQuestions": [
+      "Is ∑_{a∈A} 1/(n-a) ≤ ∑_{p<n} 1/(n-p) for all pairwise coprime A?",
+      "What is the growth rate of ∑_{p<n} 1/(n-p) as n → ∞?",
+      "Do other 'optimal' pairwise coprime sets exist for related sums?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Nat", "BigOperators"],
+    "namespace": "Erdos1210",
+    "lineCount": 178,
+    "axiomCount": 1,
+    "theoremCount": 11,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos1210Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1201",
+      "relationship": "related",
+      "description": "Related Erdős problem — both study multiplicative structure and density of sets with prime-factor constraints"
+    }
+  ],
+  "sorries": 0
+}
