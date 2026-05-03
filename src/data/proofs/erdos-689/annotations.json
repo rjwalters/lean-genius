@@ -308,5 +308,27 @@
     "prerequisites": [
       "IsRFoldCover"
     ]
+  },
+  {
+    "id": "ann-e689-mertens-proof-and-closing",
+    "proofId": "erdos-689",
+    "range": { "startLine": 142, "endLine": 179 },
+    "type": "proof-technique",
+    "title": "Mertens Divergence Proof and Closing Corollaries",
+    "content": "Lines 142-179 complete the Mertens divergence argument and add two closing corollaries.\n\n**Mertens divergence proof conclusion** (142-163): The erdos_689_mertens theorem (∑ 1/p diverges) is proved from the not_summable_iff_tendsto_nat_atTop_of_nonneg path:\n1. Define the indicator function: ({p : ℕ | p.Prime}.indicator fun n => 1/n)\n2. Show it's nonneg (Set.indicator_apply_nonneg + positivity)\n3. Rewrite not-summable + nonneg as partial sums → ∞\n4. Get N: for all n ≥ N, partial sum ≥ C+1\n5. Convert indicator sum to sum over (Finset.range n).filter Nat.Prime\n6. Show (range n).filter Prime ⊆ primesUpTo n (membership condition)\n7. Apply Finset.sum_le_sum_of_subset_of_nonneg for the monotone bound\n8. Close with linarith: C < C+1 ≤ filter_sum ≤ primesUpTo_sum\n\n**jacobsthal_connection** (168-172): The r=1 special case of erdos_689_r_fold. For large n, a 1-fold covering of {1,...,n} by primes ≤ n exists. Proved by rw [Filter.eventually_atTop] + erdos_689_r_fold 1.\n\n**green_variant_r10** (176-179): Ben Green's Problem 45 variant with r=10. Proved by erdos_689_r_fold 10. The file ends here (no explicit `end` namespace).",
+    "mathContext": "The Mertens third theorem states $\\sum_{p \\leq x} 1/p \\sim \\log\\log x$, which implies divergence. Lean proof: uses `not_summable_iff_tendsto_nat_atTop_of_nonneg` from Mathlib to convert 'the series diverges' into 'partial sums are unbounded', then applies Finset subset monotonicity to transfer the bound from `(range n).filter Prime` to `primesUpTo n`.",
+    "significance": "structural",
+    "relatedConcepts": [
+      "Mertens divergence",
+      "not_summable_iff_tendsto",
+      "Set.indicator",
+      "jacobsthal_connection",
+      "Ben Green's problems"
+    ],
+    "prerequisites": [
+      "not_summable_iff_tendsto_nat_atTop_of_nonneg",
+      "Finset.sum_le_sum_of_subset_of_nonneg",
+      "erdos_689_r_fold"
+    ]
   }
 ]
