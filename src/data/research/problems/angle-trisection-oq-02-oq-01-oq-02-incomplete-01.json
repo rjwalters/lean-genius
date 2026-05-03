@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 1 sorry remains (wantzel_galois_iff, out-of-scope FTGT). Tower degree theorem fully proved via isConstructible_sup_degree (stronger relative IH). PRs #15034 #15067 #15103 #15128 eliminated all tower sorries.",
+    "progressSummary": "PROGRESS: 1 sorry remains (wantzel_galois_iff, out-of-scope FTGT+Galois). New lemma isConstructible_map proved (Session 36). Detailed proof strategy documented for both → and ← directions.",
     "builtItems": [
       "isConstructible_mem_range: all constructible numbers are rational (Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:89)",
       "not_constructible_of_bad_degree: proved via rationality + minpoly.eq_X_sub_C (line 179)",
@@ -50,7 +50,8 @@
       "Session 29: not_constructible_of_bad_degree: Dvd-based proof using isConstructible_algebraic_degree",
       "Session 32 PR #15034: 4 API drift fixes applied to AngleTrisectionOQ02OQ01OQ02Incomplete01.lean, file compiles",
       "finrank_adjoin_β_over_adjoin_a_dvd_two: PROVED by Aristotle job 594e3160 (2026-05-03)",
-      "h_top_Ka full proof attempt in AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:182 (Session 34, unverified)"
+      "h_top_Ka full proof attempt in AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:182 (Session 34, unverified)",
+      "isConstructible_map: ∀ (σ : ℂ →ₐ[ℚ] ℂ), IsConstructible α → IsConstructible (σ α). Proved by induction. (AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:114-124)"
     ],
     "insights": [
       "IsConstructible with existential sqrt_ext blocks induction — must make a,b explicit constructor params to get proper IHs",
@@ -78,7 +79,8 @@
       "Session 32: Nat.eq_zero_of_dvd_of_lt removed; replacement is Nat.zero_dvd.mp when hypothesis is 0 dvd n",
       "restrict_algEquiv bridge: IntermediateField.restrict h converts K_a:IntermediateField ℚ ℂ into K_a_im:IntermediateField ℚ ↥K_aβ, enabling restrictScalars_adjoin_of_algEquiv to switch scalar field",
       "Aristotle finrank strategy: tower law + minpoly ℚ β ∣ (minpoly ℚ a).comp(X²) + interval_cases proves finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2",
-      "h_top_Ka proved via IntermediateField.restrict + restrict_algEquiv + restrictScalars_adjoin_of_algEquiv + lift_injective pattern (Session 34, PR #15128)"
+      "h_top_Ka proved via IntermediateField.restrict + restrict_algEquiv + restrictScalars_adjoin_of_algEquiv + lift_injective pattern (Session 34, PR #15128)",
+      "Session 36: isConstructible_map: IsConstructible preserved by ℚ-algebra maps ℂ→ℂ (induction on sqrt_ext: σ(β·β)=σ(a) gives sqrt_ext (σβ) (σa) (σb)). Key for wantzel_galois_iff → direction."
     ],
     "mathlibGaps": [
       "isConstructible_algebraic_degree: tower degree induction — IsConstructible α → IsAlgebraic ℚ α ∧ ∃ n, finrank ℚ ℚ⟮α⟯ = 2^n. Needs FiniteDimensional.finrank_mul_finrank + IntermediateField tower lemmas. Estimated ~120 lines.",
@@ -86,9 +88,9 @@
       "finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2 requires showing βelement generates ↥ℚ⟮β⟯ over ↥ℚ⟮a⟯ (adjoin = top in IntermediateField ↥ℚ⟮a⟯ ↥ℚ⟮β⟯)"
     ],
     "nextSteps": [
-      "Check Aristotle job 3127b935 for adjoin_β_in_sup_eq_top",
-      "Run Docker build to verify h_top_Ka proof (restrict + restrictScalars_adjoin_of_algEquiv strategy)",
-      "If h_top_Ka compiles: update PR #15128; only wantzel_galois_iff sorry remains"
+      "wantzel_galois_iff → direction: All roots of p in ℂ are constructible via isConstructible_map + IsAlgClosed.lift extension. Then tower argument gives [splitting field:ℚ] = 2^m.",
+      "wantzel_galois_iff ← direction: |p.Gal| = 2^k → FTGT gives tower with [K_{i+1}:K_i]=2 → each step is adjoin square root → IsConstructible via sqrt_ext induction.",
+      "Key Lean gap for both directions: IsAlgClosed.lift for extending ℚ-algebra maps to ℂ→ℂ; also tower induction for finrank product."
     ]
   },
   "tags": [

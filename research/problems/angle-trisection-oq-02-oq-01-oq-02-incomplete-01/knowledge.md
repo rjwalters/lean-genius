@@ -360,3 +360,33 @@ Per project memory `project_mathlib_api_drift_2026_04`, this drift hits a cohort
 ### Next Steps
 1. Consider whether to attempt `wantzel_galois_iff` via FTGT infrastructure (estimated 500+ lines)
 2. Alternatively, mark as long-term blocked and move to new problem
+
+## Session 2026-05-03 (Session 36) - isConstructible_map: Galois Invariance Lemma
+
+**Mode**: REVISIT
+**Outcome**: progress — `isConstructible_map` proved; detailed proof strategy documented for `wantzel_galois_iff`
+
+### What I Did
+- Proved `isConstructible_map`: ∀ (σ : ℂ →ₐ[ℚ] ℂ), IsConstructible α → IsConstructible (σ α)
+  - Proof: induction on IsConstructible; rational case: σ(algebraMap ℚ ℂ q) = algebraMap ℚ ℂ q; sqrt_ext case: σ(b+β) = σ(b)+σ(β), σ(β)·σ(β) = σ(β·β) = σ(a)
+- Documented detailed proof strategy for both directions of wantzel_galois_iff in the file docstring
+- Updated meta.json: theoremCount 21→22, lineCount 618→658
+
+### Key Findings
+- **isConstructible_map correctness**: The proof is ~8 lines; AlgHom.commutes handles the rational case; map_mul + congr_arg handles the sqrt_ext case. The lemma is genuinely provable without sorry.
+- **→ direction strategy**: (1) For each root β of p in ℂ, use IsAlgClosed.lift to extend ℚ(α)→ℂ (sending α↦β) to σ: ℂ→ℂ; then isConstructible_map σ gives IsConstructible β. (2) Tower law: each step [K(βᵢ):K] ≤ [ℚ(βᵢ):ℚ] | 2^n, product = 2-power = |p.Gal|.
+- **← direction strategy**: |p.Gal| = 2^k → by FTGT + Sylow: composition series with all index-2 subgroups → tower of degree-2 extensions ℚ ⊂ K₁ ⊂ ... ⊂ splitting field → each step is adjoin of square root → by sqrt_ext induction: any element of splitting field is IsConstructible.
+- **Key Lean gaps**: IsAlgClosed.lift for extension of maps; tower induction for product of 2-powers; FTGT + composition series.
+- **Estimated remaining work**: ~200 lines for →, ~300 lines for ←. Genuinely out of scope for single session.
+
+### Files Modified
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean` — isConstructible_map lemma + updated docstrings
+- `src/data/proofs/angle-trisection-oq-02-oq-01-oq-02-incomplete-01/meta.json` — counts updated
+
+### Current Sorries (1 total)
+1. **wantzel_galois_iff** (line ~643): Full Galois theory — proof strategy now documented, key infrastructure (isConstructible_map) proved
+
+### Next Steps
+1. → direction: Prove `isConstructible_map_algHom` variant for splitting field embeddings using IsAlgClosed.lift
+2. Then prove "all roots of p constructible" and tower argument for finrank
+3. ← direction requires FTGT composition series (much harder, requires Sylow + IntermediateField correspondence)
