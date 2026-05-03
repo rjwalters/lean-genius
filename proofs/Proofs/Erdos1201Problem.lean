@@ -273,12 +273,12 @@ theorem erdos_1201_half_squared (η : ℝ) (hη : 0 < η) :
 theorem gpfConsecutive_self_gt (n : ℕ) (hn : 1 ≤ n) :
     n < gpfConsecutive n n := by
   obtain ⟨p, hp_prime, hn_lt, _⟩ := Nat.exists_prime_lt_and_le_two_mul n (by omega)
-  have h_mem : p - n ∈ Finset.range (n + 1) := Finset.mem_range.mpr (by omega)
-  have h_factor : (fun i => n + i) (p - n) = p := by omega
+  -- p ∈ (n, 2n], so p = n + (p - n) with 1 ≤ p - n ≤ n
   have h_dvd : p ∣ consecutiveProduct n n := by
     unfold consecutiveProduct
-    have := Finset.dvd_prod_of_mem (fun i => n + i) h_mem
-    rwa [h_factor] at this
+    have heq : p = n + (p - n) := by omega
+    rw [heq]
+    exact Finset.dvd_prod_of_mem (fun i => n + i) (Finset.mem_range.mpr (by omega))
   have h_pos : 0 < consecutiveProduct n n := consecutiveProduct_pos n n hn
   have h_in : p ∈ (consecutiveProduct n n).primeFactors :=
     Nat.mem_primeFactors.mpr ⟨hp_prime, h_dvd, h_pos.ne'⟩
