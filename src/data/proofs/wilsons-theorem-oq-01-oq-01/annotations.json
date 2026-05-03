@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-wilson-prime-563-axiom",
+    "proofId": "wilsons-theorem-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "context",
+    "title": "Why 563 Requires an Axiom: The Limits of native_decide",
+    "content": "The third Wilson prime 563 is formalized as `axiom fiveHundredSixtyThree_is_wilson_prime : IsWilsonPrime 563` rather than proved by `native_decide`, because 562! has over 1,300 decimal digits — the GMP arbitrary-precision computation is feasible as a stand-alone program but exceeds Lean's kernel evaluation budget. The result was first verified by Goldberg (1953) using early electronic computers, making it one of the earliest computer-assisted number theory results. The docstring records this computational history directly in the Lean source, pairing the axiom declaration with its external verification evidence. This is the standard practice for 'computationally verified but kernel-unprovable' facts in Lean 4 formalization.",
+    "mathContext": "$p$ is a Wilson prime iff $p^2 \\mid (p-1)! + 1$. Here $563^2 = 316{,}969$ and $562!$ has 1{,}300+$ digits. Goldberg (1953) computed $562! + 1 \\equiv 0 \\pmod{316{,}969}$ by machine. The IsWilsonPrime predicate packages both primality and the divisibility: `IsWilsonPrime p = (Nat.Prime p \\land p^2 \\mid (p-1)!+1)`.",
+    "significance": "context",
+    "relatedConcepts": ["IsWilsonPrime", "native_decide limitations", "axiom vs theorem in Lean 4", "Wilson quotient"],
+    "prerequisites": ["Wilson's theorem: (p-1)! ≡ -1 (mod p) for primes p", "IsWilsonPrime definition from parent file WilsonsTheoremOQ01"]
+  },
+  {
+    "id": "ann-infinite-conjecture-heuristic",
+    "proofId": "wilsons-theorem-oq-01-oq-01",
+    "range": { "startLine": 37, "endLine": 51 },
+    "type": "insight",
+    "title": "The Wilson Prime Heuristic: Why log log N Is the Expected Count",
+    "content": "The axiom `infinitely_many_wilson_primes` is supported by the strongest heuristic in analytic number theory for such conjectures: treat W_p mod p as pseudorandom on {0,...,p-1}. Each prime p independently becomes a Wilson prime with probability 1/p. The expected number of Wilson primes up to N is then Σ_{p ≤ N} 1/p ≈ ln(ln(N)) by Mertens' theorem (1874). For N = 2×10¹³ this gives ln(ln(2×10¹³)) ≈ 3.08 — strikingly consistent with the three known examples. The same heuristic applies to Wieferich primes (treated later in the file), which have two known examples and expected count ~ln(ln(N)). The docstring in the Lean source is unusually detailed for an axiom — it provides the full heuristic derivation, analogizing to Wieferich primes and noting the Euler 1737 divergence of Σ 1/p as the foundational step.",
+    "mathContext": "Wilson quotient: $W_p = \\frac{(p-1)!+1}{p} \\in \\mathbb{Z}$. If $W_p \\bmod p \\sim \\text{Uniform}\\{0,\\ldots,p-1\\}$, then $\\Pr[p \\mid W_p] = 1/p$. Expected Wilson primes to $N$: $\\sum_{p \\leq N} \\frac{1}{p} \\approx \\ln\\ln N$ (Mertens 1874). For $N = 2 \\times 10^{13}$: $\\ln\\ln(2\\times10^{13}) \\approx 3.08$. Compare 3 known Wilson primes.",
+    "significance": "key",
+    "relatedConcepts": ["Wilson quotient", "Mertens' theorem", "pseudorandomness heuristic", "Wieferich primes", "Dirichlet series"],
+    "prerequisites": ["Wilson quotient W_p = ((p-1)!+1)/p", "Mertens' theorem: Σ_{p≤N} 1/p ≈ ln ln N", "Euler's divergence of Σ 1/p (1737)"]
+  },
+  {
+    "id": "ann-three-known-wilson-primes",
+    "proofId": "wilsons-theorem-oq-01-oq-01",
+    "range": { "startLine": 53, "endLine": 66 },
+    "type": "proof",
+    "title": "Assembling the Three Known Wilson Primes in One Theorem",
+    "content": "`three_known_wilson_primes` packages all three known Wilson primes into a single conjunction: `IsWilsonPrime 5 ∧ IsWilsonPrime 13 ∧ IsWilsonPrime 563`. The proof is purely structural: `⟨five_is_wilson_prime, thirteen_is_wilson_prime, fiveHundredSixtyThree_is_wilson_prime⟩` — the first two come from the parent file WilsonsTheoremOQ01 (proved by `native_decide`), the third from the axiom in this file. The companion `fiveHundredSixtyThree_prime_and_wilson` unfolds the IsWilsonPrime predicate into its two components (primality + divisibility), making it directly usable in downstream proofs. `five_sixty_three_prime` is proved separately by `norm_num` — a cheap computational verification that doesn't require the Wilson axiom.",
+    "mathContext": "Three known Wilson primes: $5$ ($4!+1=25=5^2$, trivially $5^2 \\mid 25$), $13$ ($12!+1 = 479{,}001{,}601 = 169 \\times 2{,}834{,}319 + ?$, verified by native_decide), $563$ ($562!+1 \\equiv 0 \\pmod{563^2}$, Goldberg 1953). No fourth Wilson prime known below $2 \\times 10^{13}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["IsWilsonPrime", "five_is_wilson_prime", "thirteen_is_wilson_prime", "norm_num", "conjunction introduction"],
+    "prerequisites": ["WilsonsTheoremOQ01: five_is_wilson_prime and thirteen_is_wilson_prime", "fiveHundredSixtyThree_is_wilson_prime axiom"]
+  },
+  {
+    "id": "ann-conjecture-consequences",
+    "proofId": "wilsons-theorem-oq-01-oq-01",
+    "range": { "startLine": 68, "endLine": 91 },
+    "type": "proof",
+    "title": "Deriving Consequences: Unboundedness and the Fourth Wilson Prime",
+    "content": "`wilson_primes_unbounded` is a direct unpacking of the axiom: the axiom `infinitely_many_wilson_primes` already asserts `∀ N, ∃ p > N, Nat.Prime p ∧ IsWilsonPrime p`; the theorem just project the second component `hpwilson.2 : p^2 ∣ (p-1)!+1` out of IsWilsonPrime. `at_least_four_wilson_primes` is more interesting: it instantiates the axiom at N=563 to get a fourth Wilson prime p₄ > 563, then proves p₄ ≠ 5, p₄ ≠ 13, p₄ ≠ 563 by `intro heq; simp [← heq] at h` — rewriting the inequality `p₄ > 563` with the equality assumption to derive `563 < 563`, `13 < 13`, or `5 < 5`, which `simp` closes by `lt_irrefl`. The known Wilson primes 5, 13, 563 come from the conjunction `three_known_wilson_primes`.",
+    "mathContext": "From $\\forall N, \\exists p > N, p \\text{ Wilson prime}$: take $N = 563$, get $p_4 > 563$. Then $p_4 \\neq 5, 13, 563$ since $p_4 > 563 > 13 > 5$. So $\\{5, 13, 563, p_4\\}$ are 4 distinct Wilson primes. Unboundedness: $\\sup\\{p : p \\text{ Wilson prime}\\} = +\\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["infinitely_many_wilson_primes axiom", "IsWilsonPrime", "obtain tactic", "simp with rewrite"],
+    "prerequisites": ["infinitely_many_wilson_primes axiom", "three_known_wilson_primes", "Lean 4 omega/simp for inequality contradictions"]
+  },
+  {
+    "id": "ann-wilson-quotient-reformulation",
+    "proofId": "wilsons-theorem-oq-01-oq-01",
+    "range": { "startLine": 92, "endLine": 105 },
+    "type": "insight",
+    "title": "The Wilson Quotient: An Alternative Characterization",
+    "content": "The Wilson quotient W_p = ((p-1)!+1)/p is an integer for every prime p (Wilson's theorem guarantees exact divisibility). A prime p is a Wilson prime iff p | W_p — i.e., the quotient is itself divisible by p. This characterization is formalized via `isWilsonPrime_iff_quotient` from the parent file. `five_sixty_three_divides_wilson_quotient` applies this to verify that 563 | W_{563} using the axiom. `infinitely_many_primes_divide_wilson_quotient` then shows: under the infinite conjecture, infinitely many primes divide their own Wilson quotient. This connects Wilson primes to a natural question about divisibility of arithmetic quotients, analogous to asking when a prime divides ((2^(p-1)-1)/p) in the Wieferich context.",
+    "mathContext": "$W_p = \\frac{(p-1)!+1}{p} \\in \\mathbb{Z}$ (integer by Wilson). $p$ is Wilson iff $p \\mid W_p$: $p^2 \\mid (p-1)!+1 \\Leftrightarrow p \\mid \\frac{(p-1)!+1}{p} = W_p$. Under the axiom: $\\forall N, \\exists p > N, p \\mid W_p$.",
+    "significance": "key",
+    "relatedConcepts": ["wilsonQuotient", "isWilsonPrime_iff_quotient", "Wilson's theorem", "Wieferich quotient"],
+    "prerequisites": ["Wilson's theorem from parent file", "wilsonQuotient definition in WilsonsTheoremOQ01", "isWilsonPrime_iff_quotient lemma"]
+  },
+  {
+    "id": "ann-wieferich-analogy",
+    "proofId": "wilsons-theorem-oq-01-oq-01",
+    "range": { "startLine": 107, "endLine": 128 },
+    "type": "insight",
+    "title": "Wieferich Primes: The Parallel Open Problem",
+    "content": "The file closes with a definition and two theorems for Wieferich primes, making the structural analogy with Wilson primes explicit and formal. A Wieferich prime satisfies p² | 2^(p-1) - 1 — the same second-power strengthening pattern, applied to Fermat's little theorem (2^(p-1) ≡ 1 mod p) instead of Wilson's theorem. The only known Wieferich primes are 1093 (Meissner 1913) and 3511 (Beeger 1922). Both `wieferich_1093` and `wieferich_3511` are proved by `native_decide` (unlike 563 for Wilson, which required an axiom) because 2^1092 mod 1093² is a manageable computation. The structural parallel: (1) definition as p² | X where X ≡ 0 (mod p) by a classical theorem, (2) finitely many known examples, (3) ln ln N expected count, (4) open conjecture of infinitude, (5) connection to deeper number theory (Wieferich primes ↔ ABC conjecture and Fermat's Last Theorem).",
+    "mathContext": "Wilson: $p^2 \\mid (p-1)!+1$. Wieferich: $p^2 \\mid 2^{p-1}-1$. Both follow Fermat/Wilson's theorem pattern strengthened to $p^2$. Known: Wilson $= \\{5,13,563\\}$, Wieferich $= \\{1093, 3511\\}$. Expected count to $N$: $\\ln\\ln N$ for both. Wieferich connection: if $p$ is a Wieferich prime, then $p$ does not satisfy the ABC-conjecture-based obstruction to FLT first case.",
+    "significance": "context",
+    "relatedConcepts": ["IsWieferichPrime", "Fermat's little theorem", "ABC conjecture", "Fermat's Last Theorem first case", "norm_num vs native_decide"],
+    "prerequisites": ["Fermat's little theorem: 2^(p-1) ≡ 1 (mod p)", "native_decide for 1093 and 3511 (smaller than 563's Wilson computation)"]
+  }
+]
