@@ -70,7 +70,8 @@
     "axiomCount": 0,
     "lineCount": 257,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11
   },
   "overview": {
     "historicalContext": "**Euclid's Elements, Book IX, Proposition 14** states: 'If a number be the least that is measured by prime numbers, it will not be measured by any other prime number except those originally measuring it.' This is the uniqueness of prime factorization, proved by Euclid himself using what we now call Euclid's Lemma (Elements VII.30).\n\n**Carl Friedrich Gauss** gave the first modern complete proof of the Fundamental Theorem of Arithmetic in his *Disquisitiones Arithmeticae* (1801, Article 16), establishing both existence and uniqueness with full rigor for all positive integers.\n\nThe modern algebraic perspective reveals that FTA holds in any **Unique Factorization Domain (UFD)**. The key ingredient is always some form of Euclid's Lemma: if an irreducible element divides a product, it divides one factor. In ℤ, this follows from Bézout's identity; in polynomial rings, from the Euclidean algorithm for polynomials.\n\nThis formalization makes the proof chain completely explicit in Lean 4: **Bézout's Identity** (encoded as `IsCoprime` / `Nat.Coprime`) → **Euclid's Lemma** (`euclids_lemma_prime`) → **FTA Uniqueness** (`fta_uniqueness`) → **Full FTA** (`fta_from_euclid`).",

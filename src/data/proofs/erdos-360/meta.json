@@ -59,7 +59,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 170,
-    "assumptions": "4 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "assumptions": "4 axiom(s) and 2 sorry(s). See the Lean source for details.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős Problem #360**\n\nThis problem asks about partitioning integers to avoid subset sums, a fundamental question in additive combinatorics with connections to Ramsey theory.\n\n**Key History:**\n- Erdős and Graham (1980): Original problem in \"Old and new problems and results in combinatorial number theory\"\n- Alon-Erdős (1996): Proved f(n) = n^{1/3+o(1)}, establishing cube-root growth\n- Vu (2007): Improved lower bound to n^{1/3}/log n\n- Conlon-Fox-Pham (2021): Determined exact order up to constants\n\n**Mathematical Setting:**\nGiven n, we want to partition {1,2,...,n-1} into the minimum number of classes such that no class contains distinct elements summing to n. This is a Ramsey-type problem about avoiding specific additive structures.",

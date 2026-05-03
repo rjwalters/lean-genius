@@ -48,7 +48,8 @@
       "Completing the square and factorization techniques"
     ],
     "assumptions": "6 axioms: ferrari_factorization_forward, ferrari_factorization_backward, quartic_has_four_roots, biquadratic_forward, biquadratic_backward, ferrari_roots_verify. 3 axioms proved: depressed_quartic_forward/backward (ring identity), resolvent_cubic_has_root (FTA).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "The quartic formula represents the culmination of Renaissance algebra. While Cardano's Ars Magna (1545) is famous for the cubic formula, it was his student Lodovico Ferrari who, at age 18, discovered how to solve the quartic by reducing it to a cubic.\n\nThe key insight is brilliant: by adding a parameter m and completing the square, the quartic can be written as a difference of squares, which factors. Finding the right m requires solving a cubic equation (the 'resolvent cubic'). This creates a tower of solutions:\n- Quadratic: Direct formula\n- Cubic: Cardano's formula\n- Quartic: Ferrari's method (uses cubic)\n- Quintic and beyond: Abel-Ruffini (1824) proves no general formula exists!\n\nThis historical sequence explains why we can solve up to degree 4 but not degree 5+: the Galois groups S2, S3, S4 are solvable, but S5 is not.",

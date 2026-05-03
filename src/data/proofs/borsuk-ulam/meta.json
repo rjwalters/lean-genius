@@ -62,7 +62,8 @@
         "relationship": "Extension of borsuk ulam"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "The Borsuk-Ulam theorem was conjectured by Stanisław Ulam and proved by Karol Borsuk in 1933, published in *Fundamenta Mathematicae* — the journal founded in 1920 by the Lwów-Warsaw school of mathematicians (Kuratowski, Sierpiński, Mazurkiewicz) that became the world center of point-set and algebraic topology. The theorem has a beautifully intuitive interpretation: at any given moment, there exist two antipodal points on Earth that have exactly the same temperature AND atmospheric pressure.\n\nBorsuk's original proof used the degree theory of continuous maps: an antipodal-preserving map $S^n \\to S^n$ has odd degree, and the nonexistence of an odd map $S^n \\to S^{n-1}$ follows from comparing cohomology rings. Modern proofs use three main approaches: (1) covering spaces via the double cover $S^n \\to \\mathbb{RP}^n$ and $\\pi_1(\\mathbb{RP}^n) \\cong \\mathbb{Z}/2\\mathbb{Z}$; (2) $\\mathbb{Z}/2$-homology and the transfer; (3) the Tucker lemma (a combinatorial analog, proved by Ky Fan 1952).\n\nWhat makes Borsuk-Ulam remarkable is its extraordinary range of applications. In 1978, László Lovász used it to prove Kneser's conjecture — that the chromatic number of the Kneser graph $KG(n,k)$ is $n - 2k + 2$ — launching the field of **topological combinatorics**. It implies the ham sandwich theorem (any $n$ measurable sets in $\\mathbb{R}^n$ can be simultaneously bisected by a hyperplane) and has applications to fair division (envy-free cake cutting), discrete geometry, and even economics (equilibrium existence). Jiří Matoušek's *Using the Borsuk-Ulam Theorem* (2003) surveys dozens of applications across mathematics.",

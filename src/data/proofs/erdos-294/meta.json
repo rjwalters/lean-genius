@@ -57,7 +57,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 4,
     "assumptions": "4 axiom declarations: t_func_exists (t(N) exists for all N), erdos_graham_1980 (upper bound t(N) << N/log N), liu_sawhney_2024 (matching lower bound pinning t(N) up to polylog factors), f_func_exists (f(n) exists for n>=6). Former axioms egyptian_236, t_func_characterization, t_2, t_6_lower, harmonic_asymptotic, almost_all_work, t_f_relationship, greedy_terminates now proved as theorems or definitions.",
-    "lineCount": 306
+    "lineCount": 306,
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "**Ancient Origins**\\n\\nEgyptian fractions date to the Rhind Papyrus (c. 1650 BCE), where ancient Egyptians expressed fractions exclusively as sums of distinct unit fractions. This representation system persisted for millennia and influenced Greek and medieval mathematics.\\n\\n**The Erdős-Graham Monograph (1980)**\\n\\nPaul Erdős and Ronald Graham introduced Problem #294 in their influential monograph 'Old and new problems and results in combinatorial number theory.' They defined t(N) as the smallest starting point from which no Egyptian representation of 1 exists using denominators in [t, N]. They proved t(N) ≪ N/log N but confessed they had 'no idea' of the true asymptotic behavior.\\n\\n**The 44-Year Wait**\\n\\nFor over four decades, the lower bound remained elusive. The gap between the trivial lower bound and Erdős-Graham's upper bound was enormous—no one knew if t(N) grew like √N, N/log N, or something in between.\\n\\n**Liu-Sawhney Resolution (2024)**\\n\\nYifan Liu and Mehtaab Sawhney finally resolved the problem in 2024, proving t(N) ≫ N/((log N)(log log N)³(log log log N)^O(1)). This matches Erdős-Graham's upper bound up to polylogarithmic factors, settling one of the longest-standing open problems in combinatorial number theory.",

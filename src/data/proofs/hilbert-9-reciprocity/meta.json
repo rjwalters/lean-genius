@@ -45,7 +45,8 @@
     "assumptions": "1 axiom: ArtinSymbol. No sorries.",
     "proofRepoPath": "Proofs/Hilbert9Reciprocity.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 259
+    "lineCount": 259,
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "In his 1900 address, Hilbert posed 23 problems to guide 20th-century mathematics. The ninth problem asked: 'For any given number field, to find the most general reciprocity law which governs the behavior of the n-th power residue symbol.'\n\nThe path to the answer:\n- **Gauss (1796)**: Proved quadratic reciprocity, the n=2 case\n- **Eisenstein, Jacobi (1840s)**: Cubic and quartic reciprocity\n- **Hilbert (1897)**: First general reciprocity law for cyclotomic fields\n- **Takagi (1920)**: Developed class field theory\n- **Artin (1927)**: Proved the definitive general reciprocity law\n\nArtin's theorem shows that all reciprocity laws arise from the structure of Galois groups of abelian extensions, unified through the Artin symbol.",
@@ -125,42 +126,42 @@
       "authors": "Hilbert, David",
       "title": "Mathematische Probleme",
       "year": "1900",
-      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu G\u00f6ttingen, 253\u2013297",
+      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Göttingen, 253–297",
       "note": "The original lecture listing 23 problems that would shape 20th century mathematics"
     },
     {
       "authors": "Artin, Emil",
-      "title": "Beweis des allgemeinen Reziprozit\u00e4tsgesetzes",
+      "title": "Beweis des allgemeinen Reziprozitätsgesetzes",
       "year": "1927",
-      "venue": "Abhandlungen aus dem mathematischen Seminar der Universit\u00e4t Hamburg 5, 353\u2013363",
-      "note": "Proved the general reciprocity law for number fields using the Artin map \u2014 the main achievement toward Hilbert's 9th problem"
+      "venue": "Abhandlungen aus dem mathematischen Seminar der Universität Hamburg 5, 353–363",
+      "note": "Proved the general reciprocity law for number fields using the Artin map — the main achievement toward Hilbert's 9th problem"
     }
   ],
   "crossReferences": [
     {
       "targetId": "quadratic-reciprocity",
       "relationship": "foundational",
-      "description": "Gauss's quadratic reciprocity law is the starting point for Hilbert's 9th problem: the 9th asks for the most general reciprocity law, of which quadratic reciprocity is the simplest case \u2014 the full answer came through class field theory and the Langlands program"
+      "description": "Gauss's quadratic reciprocity law is the starting point for Hilbert's 9th problem: the 9th asks for the most general reciprocity law, of which quadratic reciprocity is the simplest case — the full answer came through class field theory and the Langlands program"
     },
     {
       "targetId": "fermats-last-theorem",
       "relationship": "related",
-      "description": "Wiles's proof of FLT (1995) uses the modularity of Galois representations, which is deeply connected to the reciprocity laws sought by Hilbert's 9th \u2014 the Langlands program (generalizing the 9th) provided key ideas for Wiles's approach"
+      "description": "Wiles's proof of FLT (1995) uses the modularity of Galois representations, which is deeply connected to the reciprocity laws sought by Hilbert's 9th — the Langlands program (generalizing the 9th) provided key ideas for Wiles's approach"
     },
     {
       "targetId": "kroneckers-jugendtraum",
       "relationship": "complementary",
-      "description": "Kronecker's Jugendtraum (Hilbert's 12th) and the 9th are closely related: the 12th asks about generating abelian extensions via special values, while the 9th asks about the reciprocity laws governing these extensions \u2014 class field theory resolves both"
+      "description": "Kronecker's Jugendtraum (Hilbert's 12th) and the 9th are closely related: the 12th asks about generating abelian extensions via special values, while the 9th asks about the reciprocity laws governing these extensions — class field theory resolves both"
     },
     {
       "targetId": "riemann-hypothesis",
       "relationship": "related",
-      "description": "The Riemann hypothesis concerns the zeta function, whose generalization to L-functions is central to the reciprocity laws of the 9th \u2014 the Langlands program connects automorphic L-functions to Galois representations via reciprocity"
+      "description": "The Riemann hypothesis concerns the zeta function, whose generalization to L-functions is central to the reciprocity laws of the 9th — the Langlands program connects automorphic L-functions to Galois representations via reciprocity"
     },
     {
       "targetId": "abel-ruffini",
       "relationship": "related",
-      "description": "Abel-Ruffini uses non-solvability of S_5 to block radical solutions. The 9th problem's reciprocity laws describe when and how Galois groups control arithmetic \u2014 both connect Galois theory to fundamental algebraic questions"
+      "description": "Abel-Ruffini uses non-solvability of S_5 to block radical solutions. The 9th problem's reciprocity laws describe when and how Galois groups control arithmetic — both connect Galois theory to fundamental algebraic questions"
     },
     {
       "targetId": "euler-totient",

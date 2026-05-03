@@ -55,7 +55,8 @@
     "axiomCount": 0,
     "lineCount": 228,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "**Hölder's 1889 Generalization**\n\nOtto Hölder proved his integral inequality in 1889, generalizing the Cauchy-Schwarz inequality by allowing different exponents $p$ and $q$ satisfying $1/p + 1/q = 1$:\n\n$$\\int |fg| \\, d\\mu \\leq \\left(\\int |f|^p \\, d\\mu\\right)^{1/p} \\cdot \\left(\\int |g|^q \\, d\\mu\\right)^{1/q}$$\n\nThe case $p = q = 2$ recovers the Cauchy-Schwarz inequality (Bunyakovsky, 1859; Schwarz, 1885). This answers the open question: **Cauchy-Schwarz is the symmetric special case of Hölder**, arising when both functions are measured with the same $L^2$ norm.\n\n**Hierarchy of Inequalities**\n\nThe proof builds on Young's inequality $ab \\leq a^p/p + b^q/q$ (pointwise), integrates to get Hölder (global), and the triangle inequality for $L^p$ norms (Minkowski's inequality) follows in turn.",

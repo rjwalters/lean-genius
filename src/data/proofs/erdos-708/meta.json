@@ -57,7 +57,8 @@
     ],
     "axiomCount": 5,
     "lineCount": 184,
-    "assumptions": "5 axioms: g_exists, g_two, g_three, erdos_suranyi_lower, c. 0 sorries."
+    "assumptions": "5 axioms: g_exists, g_two, g_three, erdos_suranyi_lower, c. 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #708 concerns divisibility of products by consecutive integers. The function g(n) measures the minimum number of consecutive integers needed so that their product is divisible by the product of any n given integers ≥ 2. Gallai first considered such problems, establishing g(2) = 2 and g(3) ≥ 4.\n\nErdős and Surányi (1959) made the key contributions: they proved g(3) = 4 and established the lower bound g(n) ≥ (2 - o(1))n using an elegant construction based on products of prime pairs. Specifically, they chose A = {p_i · p_j : i ≠ j} for carefully chosen primes p_1 < ... < p_ℓ with 2p₁² > p_ℓ², forcing the prime factors to be spread across many distinct primes.\n\nErdős offered '$100 or 1000 rupees, whichever is more' in 1992 for a proof or disproof that g(n) ≤ (2 + o(1))n. Combined with the Erdős-Surányi lower bound, this would determine the asymptotic behavior as g(n) = (2 + o(1))n. The problem remains open after over 60 years.",

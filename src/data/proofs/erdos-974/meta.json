@@ -59,7 +59,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 196,
-    "assumptions": "3 axioms: power_sum_roots_of_unity, turan_conjecture, tijdeman_1966_odd. 0 sorries."
+    "assumptions": "3 axioms: power_sum_roots_of_unity, turan_conjecture, tijdeman_1966_odd. 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős Problem #974: Power Sums and Roots of Unity**\n\nThis elegant problem connects complex analysis with algebra through power sums. It originates from a conjecture by Turán, with Erdős posing a stronger version.\n\n**Key History:**\n- Turán: Original conjecture about infinitely many zero tuples\n- Erdős: Speculated that TWO such tuples might suffice\n- Tijdeman (1966): Proved the strong form in full generality\n- Hu, Tang, Zhang: Independent proof via comments\n\n**Mathematical Setting:**\nGiven z₁, ..., zₙ ∈ ℂ with z₁ = 1, the power sums sₖ = Σ zᵢᵏ encode algebraic information about the configuration. The question asks: when can many consecutive power sums vanish?",

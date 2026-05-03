@@ -61,7 +61,8 @@
     "axiomCount": 0,
     "lineCount": 207,
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. All results follow from Mathlib's group action theory.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 15
   },
   "overview": {
     "historicalContext": "The orbit-stabilizer theorem emerged from the work of Cauchy, Jordan, and Frobenius on permutation groups in the 19th century. Cauchy (1845) proved that primes dividing |G| yield elements of that order. Frobenius developed the theory of group actions systematically, leading to the orbit-stabilizer decomposition. The theorem unifies Lagrange's theorem, Burnside's counting lemma, the class equation, and the fixed-point theorems for p-groups into a single principle This file (OQ-02) formalizes the orbit-stabilizer theorem as a follow-up open question: given the Lean 4 proof of Lagrange's theorem in the parent file, can the orbit-stabilizer identity be derived cleanly using the same coset machinery? The answer is yes, using Mathlib's Subgroup.card_eq_card_quotient_mul_card and MulAction.orbit_eq_univ.",

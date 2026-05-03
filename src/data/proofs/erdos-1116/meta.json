@@ -62,7 +62,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 379,
-    "assumptions": "2 axioms: goldberg_toppila_existence (Gol'dberg-Toppila construction, deep result), polynomial_not_extreme (FTA-based, needs algebraic closure). 4 former axioms proved: exp_not_extreme (exp never 0), nevanlinna_deficiency_sum/first_main_theorem_heuristic (trivial from placeholder defs), oscillation_key_insight (derived from main existence)."
+    "assumptions": "2 axioms: goldberg_toppila_existence (Gol'dberg-Toppila construction, deep result), polynomial_not_extreme (FTA-based, needs algebraic closure). 4 former axioms proved: exp_not_extreme (exp never 0), nevanlinna_deficiency_sum/first_main_theorem_heuristic (trivial from placeholder defs), oscillation_key_insight (derived from main existence).",
+    "theoremCount": 13
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1116**\n\nThis problem explores extreme behavior in the value distribution of entire functions, a fundamental topic in complex analysis.\n\n**Key History:**\n- Problem 1.25 in Hayman [Ha74], attributed to Erdős\n- Gol'dberg [Go78]: \"Counting functions of sequences of a-points for entire functions\" - constructed entire functions with extreme value distribution\n- Toppila [To76]: \"On the counting function for the a-values of a meromorphic function\" - independent construction\n\n**Mathematical Setting:**\n- n(r, a) = number of solutions to f(z) = a in |z| < r\n- Question: Can n(r, a)/n(r, b) be unbounded for ALL pairs a ≠ b?\n- Surprising because Nevanlinna theory says values are typically taken with equal frequency on average",

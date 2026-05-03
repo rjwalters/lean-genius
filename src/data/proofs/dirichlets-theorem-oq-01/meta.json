@@ -77,7 +77,8 @@
     "axiomCount": 5,
     "lineCount": 705,
     "assumptions": "5 axioms: siegel_theorem, grh_implies_no_siegel_zeros, landau_page_theorem, and 2 more. See Lean source for complete statements.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 31
   },
   "overview": {
     "historicalContext": "Dirichlet's 1837 theorem that L(1, χ) ≠ 0 for non-trivial characters was the key analytic step for proving infinitely many primes in arithmetic progressions. But knowing L(1, χ) is nonzero doesn't tell us HOW SMALL it can be. This quantitative question turned out to be extraordinarily deep.\n\nIn 1935, Siegel proved (ineffectively!) that L(1, χ) > C(ε)/q^ε for any fixed ε > 0, where C(ε) is a positive constant. The catch: the proof of C(ε) > 0 is non-constructive (it uses a 'Siegel zero repulsion' argument). No one has ever been able to make it effective.\n\nThe term 'Siegel zero' refers to a hypothetical real zero of L(s, χ) very close to s = 1. If such a zero β exists with β > 1 - c/log(q), then by the mean value theorem L(1, χ) ~ (1-β) is exponentially small, contradicting what's needed for primes in progressions.\n\nThe Landau-Page theorem (proved by Landau in 1918 and Page in 1935) shows at most ONE primitive real character per conductor range can have a Siegel zero. This 'exceptional character' phenomenon is the heart of the open question.",

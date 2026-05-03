@@ -86,7 +86,8 @@
         "description": "Reindexing finite products via an equivalence",
         "module": "Mathlib.Algebra.BigOperators.Group.Finset.Defs"
       }
-    ]
+    ],
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "The classical proof of the nonderogatory cyclic vector theorem uses the structure theorem for finitely generated modules over a principal ideal domain (PID), specifically the cyclic decomposition K^n ≅ K[X]/(d₁) ⊕ … ⊕ K[X]/(dᵣ). When minpoly = charpoly (the nonderogatory condition), this decomposition forces r = 1, giving a cyclic K[X]-module structure. Mathlib 4.26 does not include the PID structure theorem for modules, so this proof was historically blocked. WIP02–WIP04 of this cluster developed an alternative approach using Bezout/CRT projections and primary decomposition, culminating in WIP04 which proves the theorem axiom-free given the factorization of minpoly K M as input. This file (WIP05) closes the loop by extracting the factorization automatically using UniqueFactorizationMonoid.normalizedFactors — the fact that K[X] is a UFD when K is a field. The result is the fully general theorem with no input beyond the matrix and the nonderogatory hypothesis.",

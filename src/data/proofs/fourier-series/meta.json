@@ -97,7 +97,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 451,
-    "assumptions": "0 axioms. Fully verified."
+    "assumptions": "0 axioms. Fully verified.",
+    "theoremCount": 15
   },
   "overview": {
     "historicalContext": "**Fourier Series — Wiedijk #76**\n\nFourier series are one of the most important tools in mathematical analysis, decomposing periodic functions into sums of sines and cosines (or complex exponentials).\n\n**Historical Development:**\n- **Joseph Fourier (1807)** introduced the series in his work on heat conduction, published fully in *Théorie analytique de la chaleur* (1822)\n- **Dirichlet (1829)** gave the first rigorous convergence proof for piecewise smooth functions\n- **Paul du Bois-Reymond (1876)** showed a continuous function whose Fourier series diverges at a point\n- **Lennart Carleson (1966)** proved the landmark result that Fourier series of $L^2$ functions converge pointwise almost everywhere\n\n**Modern formalization:** Mathlib formalizes Fourier series on `AddCircle T` (= $\\mathbb{R}/T\\mathbb{Z}$) with normalized Haar measure. The key objects are `fourierCoeff`, `fourier` (monomials), and `fourierBasis` (Hilbert basis for $L^2$). This formalization proves $L^2$ convergence, Parseval's theorem, Bessel's inequality, and uniqueness.",

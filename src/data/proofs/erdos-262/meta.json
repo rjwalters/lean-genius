@@ -64,7 +64,8 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 2,
     "lineCount": 177,
-    "assumptions": "2 axioms: erdos_1975 (Erdős 1975 — double exponential sequence is an irrationality sequence), factorial_not_irrationality (factorial sequence is not an irrationality sequence). 0 sorries."
+    "assumptions": "2 axioms: erdos_1975 (Erdős 1975 — double exponential sequence is an irrationality sequence), factorial_not_irrationality (factorial sequence is not an irrationality sequence). 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "**Erdős Problem #262: Irrationality Sequences**\n\nAn 'irrationality sequence' is a strictly increasing sequence a₁ < a₂ < ... of positive integers such that the weighted sum Σ 1/(t_n · a_n) is irrational for every choice of positive integers t_n. Erdős asked in the 1970s: how slowly can such a sequence grow?\n\n**Historical Development:**\n- **1975:** Erdős proved that the doubly exponential sequence a_n = 2^{2^n} is an irrationality sequence, establishing a concrete example. The factorial sequence n! is a natural non-example — choosing t_n = n+1 makes the sum telescope to a rational value.\n- **1991:** Hančl essentially solved the problem by proving that any irrationality sequence must satisfy limsup (log₂ log₂ a_n)/n ≥ 1. This means growth must be at least doubly exponential.\n\n**Significance:**\nThe result shows that irrationality sequences occupy a very narrow range in the hierarchy of integer growth rates. Only sequences growing at least as fast as 2^{2^{cn}} (for some c > 0) can force all weighted sums to be irrational. Slower growth always permits clever choices of multipliers t_n that produce rational sums.",

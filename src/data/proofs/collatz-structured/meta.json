@@ -33,20 +33,21 @@
     "axiomCount": 1,
     "lineCount": 207,
     "assumptions": "1 axiom: collatz_conjecture. See Lean source for the complete statement.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 18
   },
   "overview": {
-    "historicalContext": "The Collatz conjecture was proposed by Lothar Collatz in 1937 while a student at the University of Hamburg, though he did not publish it formally. The problem spread informally through mathematicians' conversations, acquiring many names: the 3n+1 problem, the Syracuse problem (after the University of Syracuse where it was studied in the 1950s), Kakutani's problem (Shizuo Kakutani circulated it in the 1960s), Hasse's algorithm, and Ulam's problem.\n\nThe first serious mathematical study was by Crandall (1978), who proved that if a non-trivial cycle exists, it must have length at least 275,000. Computational verification has been pushed progressively further: Oliveira e Silva verified the conjecture for all $n < 5.764 \\times 10^{18}$ (approximately $2^{62}$) by 2009, and subsequent work has extended this to $n < 2^{68}$ (approximately $2.95 \\times 10^{20}$).\n\nTheoretical progress has been limited but significant. Terras (1976) proved that the 'stopping time' (steps until the iterate drops below $n$) is finite for a set of natural numbers with density 1. Krasikov and Lagarias (2003) showed that $|\\{n \\leq x : \\text{some iterate} < n\\}| > x^{0.84}$ for large $x$. The strongest result to date is Tao's 2019 breakthrough: almost all Collatz orbits (in the sense of logarithmic density) attain values arbitrarily close to 1.\n\nConway (1972) proved a striking negative result: generalizations of the Collatz map (so-called 'periodically linear functions') can simulate any Turing machine, making the generalized 3n+1 problem algorithmically undecidable. This suggests that no single proof technique may suffice for the original conjecture. Paul Erd\u0151s famously remarked: 'Mathematics is not yet ready for such problems.'",
+    "historicalContext": "The Collatz conjecture was proposed by Lothar Collatz in 1937 while a student at the University of Hamburg, though he did not publish it formally. The problem spread informally through mathematicians' conversations, acquiring many names: the 3n+1 problem, the Syracuse problem (after the University of Syracuse where it was studied in the 1950s), Kakutani's problem (Shizuo Kakutani circulated it in the 1960s), Hasse's algorithm, and Ulam's problem.\n\nThe first serious mathematical study was by Crandall (1978), who proved that if a non-trivial cycle exists, it must have length at least 275,000. Computational verification has been pushed progressively further: Oliveira e Silva verified the conjecture for all $n < 5.764 \\times 10^{18}$ (approximately $2^{62}$) by 2009, and subsequent work has extended this to $n < 2^{68}$ (approximately $2.95 \\times 10^{20}$).\n\nTheoretical progress has been limited but significant. Terras (1976) proved that the 'stopping time' (steps until the iterate drops below $n$) is finite for a set of natural numbers with density 1. Krasikov and Lagarias (2003) showed that $|\\{n \\leq x : \\text{some iterate} < n\\}| > x^{0.84}$ for large $x$. The strongest result to date is Tao's 2019 breakthrough: almost all Collatz orbits (in the sense of logarithmic density) attain values arbitrarily close to 1.\n\nConway (1972) proved a striking negative result: generalizations of the Collatz map (so-called 'periodically linear functions') can simulate any Turing machine, making the generalized 3n+1 problem algorithmically undecidable. This suggests that no single proof technique may suffice for the original conjecture. Paul Erdős famously remarked: 'Mathematics is not yet ready for such problems.'",
     "problemStatement": "**The Collatz Function**:\n$$f(n) = \\begin{cases} n/2 & \\text{if } n \\text{ is even} \\\\ 3n+1 & \\text{if } n \\text{ is odd} \\end{cases}$$\n\n**The Conjecture**: For every positive integer n, repeatedly applying f eventually reaches 1.\n\n**What We Prove**:\n- Powers of 2: 2^k reaches 1 in k steps\n- Closure: if n reaches 1, so does 2^m * n\n- Specific verified values: 3, 5, 6, 7, 9, 27",
     "text": "A 207-line formalization of partial results toward the Collatz conjecture, proving the conjecture for an important infinite family: all numbers of the form $2^m \\cdot n$ where $n$ has been computationally verified. The file defines the Collatz function as a piecewise map on $\\mathbb{N}$, establishes `ReachesOne` as the existential predicate $\\exists k,\\, f^{(k)}(n) = 1$, proves `collatz_pow_two` ($f^{(k)}(2^k) = 1$ for $k \\geq 1$) by induction, and derives the closure property `reaches_one_pow_two_mul` (if $n$ reaches 1, so does $2^m \\cdot n$) by iterating through the even case $f(2n) = n$. Specific values 3, 5, 6, 7, 9, and 27 are verified via `native_decide`, with 27's 111-step trajectory (reaching maximum 9232) being a famous example of the conjecture's unpredictable dynamics. The full conjecture $\\forall n \\geq 1,\\, \\text{ReachesOne}(n)$ is stated as an axiom.",
     "proofStrategy": "The key insight is that powers of 2 are trivial:\n\n$$2^k \\to 2^{k-1} \\to \\cdots \\to 2 \\to 1$$\n\nEach step halves the value. This is proven by induction on k.\n\nFor the closure property: if n reaches 1 in k steps, then 2n reaches 1 in k+1 steps (first step halves 2n to n).\n\nFor specific values like 27, we use `native_decide` to computationally verify the entire trajectory.",
     "keyInsights": [
-      "**Powers of 2 as the Attractor:** Every power of 2 reaches 1 by pure halving: $2^k \\to 2^{k-1} \\to \\cdots \\to 1$. The Collatz conjecture is equivalent to: every trajectory eventually hits a power of 2. The inductive proof `collatz_pow_two` is clean \u2014 the base case $f(2) = 1$ and the step $f(2^{k+1}) = 2^k$ make the argument transparent",
-      "**Closure Reduces to Odd Numbers:** The property $f(2n) = n$ means doubling adds exactly one step. By `reaches_one_pow_two_mul`, verifying one odd number covers infinitely many even numbers. This partitions the conjecture into odd residues \u2014 only odd starting values contribute new information",
+      "**Powers of 2 as the Attractor:** Every power of 2 reaches 1 by pure halving: $2^k \\to 2^{k-1} \\to \\cdots \\to 1$. The Collatz conjecture is equivalent to: every trajectory eventually hits a power of 2. The inductive proof `collatz_pow_two` is clean — the base case $f(2) = 1$ and the step $f(2^{k+1}) = 2^k$ make the argument transparent",
+      "**Closure Reduces to Odd Numbers:** The property $f(2n) = n$ means doubling adds exactly one step. By `reaches_one_pow_two_mul`, verifying one odd number covers infinitely many even numbers. This partitions the conjecture into odd residues — only odd starting values contribute new information",
       "**27's Dramatic Orbit:** Starting from $n = 27$, the trajectory climbs to 9232 (over 340 times the starting value) before descending to 1 in 111 steps. This illustrates the conjecture's difficulty: even tiny inputs can produce wildly unpredictable orbits, and no known function predicts the stopping time from the starting value",
       "**No Non-Trivial Cycles:** The conjecture is equivalent to: the only cycle is $1 \\to 4 \\to 2 \\to 1$. Crandall (1978) showed any non-trivial cycle must have length $> 275{,}000$, and Eliahou (1993) improved this to $> 10^7$. The file's axiom `collatz_conjecture` subsumes both the 'eventually reaches 1' and 'no other cycles' formulations",
-      "**`native_decide` as a Proof Engine:** Lean's `native_decide` tactic compiles the Collatz iteration to native machine code, efficiently verifying trajectories like 27's 111 steps. Each `use k; native_decide` proof provides a certificate: the witness $k$ and a verified computation that $f^{(k)}(n) = 1$. This transforms the proof assistant into a trajectory checker \u2014 the proof is the computation",
-      "**Undecidability of Generalizations:** Conway (1972) proved that generalized Collatz maps (piecewise linear functions with periodic modular conditions) can simulate arbitrary Turing machines, making the halting problem for generalized 3n+1 undecidable. The original conjecture may escape this barrier \u2014 its specific structure might admit a proof \u2014 but Conway's result cautions against hoping for a simple resolution",
+      "**`native_decide` as a Proof Engine:** Lean's `native_decide` tactic compiles the Collatz iteration to native machine code, efficiently verifying trajectories like 27's 111 steps. Each `use k; native_decide` proof provides a certificate: the witness $k$ and a verified computation that $f^{(k)}(n) = 1$. This transforms the proof assistant into a trajectory checker — the proof is the computation",
+      "**Undecidability of Generalizations:** Conway (1972) proved that generalized Collatz maps (piecewise linear functions with periodic modular conditions) can simulate arbitrary Turing machines, making the halting problem for generalized 3n+1 undecidable. The original conjecture may escape this barrier — its specific structure might admit a proof — but Conway's result cautions against hoping for a simple resolution",
       "**Tao's Density Result:** Tao (2019) proved that for any function $f(n) \\to \\infty$, the set of $n$ whose Collatz orbit never drops below $f(n)$ has logarithmic density 0. This is the strongest known result, showing 'almost all' numbers satisfy a strong form of the conjecture, but it does not rule out a sparse set of counterexamples"
     ],
     "prerequisites": [
@@ -77,7 +78,7 @@
       "title": "Reaching 1",
       "startLine": 57,
       "endLine": 77,
-      "summary": "Defines `collatzIter k n := f^k(n)` via `Function.iterate` and `ReachesOne n := \u2203 k, collatzIter k n = 1`. Proves the iteration unfold lemma `collatzIter_succ`.",
+      "summary": "Defines `collatzIter k n := f^k(n)` via `Function.iterate` and `ReachesOne n := ∃ k, collatzIter k n = 1`. Proves the iteration unfold lemma `collatzIter_succ`.",
       "mathContext": "`ReachesOne n` asserts $\\exists k \\in \\mathbb{N},\\, f^{(k)}(n) = 1$ where $f^{(k)}$ denotes $k$-fold iteration. The Collatz conjecture is: $\\forall n \\geq 1,\\, \\text{ReachesOne}(n)$."
     },
     {
@@ -86,7 +87,7 @@
       "startLine": 78,
       "endLine": 110,
       "summary": "Proves `collatz_pow_two`: for $k \\geq 1$, $f^{(k)}(2^k) = 1$, by induction on $k$. Base: $f(2) = 1$. Step: $f(2^{k+1}) = 2^k$ since $2^{k+1}$ is even, then apply the induction hypothesis.",
-      "mathContext": "$f^{(k)}(2^k) = 1$ for $k \\geq 1$. The trajectory is purely halving: $2^k \\to 2^{k-1} \\to \\cdots \\to 2 \\to 1$. This is the simplest infinite family for which the conjecture holds \u2014 every Collatz trajectory that reaches a power of 2 will then descend to 1."
+      "mathContext": "$f^{(k)}(2^k) = 1$ for $k \\geq 1$. The trajectory is purely halving: $2^k \\to 2^{k-1} \\to \\cdots \\to 2 \\to 1$. This is the simplest infinite family for which the conjecture holds — every Collatz trajectory that reaches a power of 2 will then descend to 1."
     },
     {
       "id": "closure",
@@ -94,7 +95,7 @@
       "startLine": 111,
       "endLine": 134,
       "summary": "Proves `reaches_one_double` (if ReachesOne n then ReachesOne (2*n)) and `reaches_one_pow_two_mul` (if ReachesOne n then ReachesOne (2^m * n)). The key insight: $f(2n) = n$, so doubling adds exactly one step.",
-      "mathContext": "If $f^{(k)}(n) = 1$, then $f^{(k+m)}(2^m \\cdot n) = 1$, because $f(2^m \\cdot n) = 2^{m-1} \\cdot n$, $f^{(2)}(2^m \\cdot n) = 2^{m-2} \\cdot n$, etc. This means verifying ReachesOne for odd numbers suffices \u2014 all their even multiples are automatically covered."
+      "mathContext": "If $f^{(k)}(n) = 1$, then $f^{(k+m)}(2^m \\cdot n) = 1$, because $f(2^m \\cdot n) = 2^{m-1} \\cdot n$, $f^{(2)}(2^m \\cdot n) = 2^{m-2} \\cdot n$, etc. This means verifying ReachesOne for odd numbers suffices — all their even multiples are automatically covered."
     },
     {
       "id": "verified-cases",
@@ -102,17 +103,17 @@
       "startLine": 135,
       "endLine": 207,
       "summary": "Computational verification via `native_decide` for specific values: 3 (7 steps), 5 (5 steps), 6 (8 steps), 7 (16 steps), 9 (19 steps), 27 (111 steps, reaching max value 9232).",
-      "mathContext": "The trajectory of 27: $27 \\to 82 \\to 41 \\to 124 \\to \\cdots \\to 9232 \\to \\cdots \\to 1$ takes 111 steps and reaches a maximum of 9232 \u2014 over 340 times the starting value. The `native_decide` tactic compiles the iteration to native code, efficiently verifying all 111 steps."
+      "mathContext": "The trajectory of 27: $27 \\to 82 \\to 41 \\to 124 \\to \\cdots \\to 9232 \\to \\cdots \\to 1$ takes 111 steps and reaches a maximum of 9232 — over 340 times the starting value. The `native_decide` tactic compiles the iteration to native code, efficiently verifying all 111 steps."
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves the Collatz conjecture for an important infinite family: all numbers of the form 2^m * n where we've verified n reaches 1. The closure property is key\u2014once we verify any odd number, all its multiples by powers of 2 are covered.\n\nThe proof for powers of 2 is clean and illustrative: each application of the Collatz function halves the value until we reach 1. The specific verifications (especially 27's 111 steps) demonstrate how Lean's native_decide can handle substantial computations.",
-    "implications": "**Theoretical Significance:**\n\n1. **INFINITE FAMILY COVERAGE**: The closure property `reaches_one_pow_two_mul` means each verified odd number $n$ covers the infinite family $\\{2^m \\cdot n : m \\geq 0\\}$. The six verified odd numbers (1, 3, 5, 7, 9, 27) thus cover infinitely many starting values, illustrating how structural theorems amplify computational verification.\n\n2. **PROOF-CARRYING COMPUTATION**: Each `native_decide` proof is both a mathematical certificate and a computation. The witness $k$ in `use k; native_decide` is the stopping time, and the tactic verifies $f^{(k)}(n) = 1$ by executing all $k$ steps. This pattern \u2014 stating the answer, then verifying computationally \u2014 is a powerful paradigm for number-theoretic verification in Lean.\n\n3. **DYNAMICAL SYSTEMS PERSPECTIVE**: The Collatz map is a piecewise-linear dynamical system on $\\mathbb{N}$. The 'hailstone' behavior of trajectories (rising, then falling to 1) suggests ergodic-theoretic structure. Tao's 2019 result uses a stochastic model: treating the parity of iterates as approximately random, the expected logarithmic change per step is $\\frac{1}{2}\\log_2(1/2) + \\frac{1}{2}\\log_2(3) \\approx -0.208$, predicting trajectories should shrink on average \u2014 consistent with the conjecture.\n\n4. **UNDECIDABILITY AND INDEPENDENCE**: Conway's 1972 result that generalized 3n+1 problems are undecidable raises the possibility that the Collatz conjecture itself might be independent of ZFC. If true, this would make it a natural number-theoretic statement that is true (if verified for all $n$) but unprovable \u2014 a concrete G\u00f6delian phenomenon far simpler than the typical independence results from set theory.\n\n5. **THE 27 EXAMPLE**: The trajectory of 27 ($27 \\to 82 \\to 41 \\to 124 \\to \\cdots \\to 9232 \\to \\cdots \\to 1$, 111 steps, max value 9232) demonstrates that even small starting values produce wildly unpredictable orbits. The ratio max/start $= 9232/27 \\approx 342$ shows the map can amplify values by orders of magnitude before convergence.",
+    "summary": "This formalization proves the Collatz conjecture for an important infinite family: all numbers of the form 2^m * n where we've verified n reaches 1. The closure property is key—once we verify any odd number, all its multiples by powers of 2 are covered.\n\nThe proof for powers of 2 is clean and illustrative: each application of the Collatz function halves the value until we reach 1. The specific verifications (especially 27's 111 steps) demonstrate how Lean's native_decide can handle substantial computations.",
+    "implications": "**Theoretical Significance:**\n\n1. **INFINITE FAMILY COVERAGE**: The closure property `reaches_one_pow_two_mul` means each verified odd number $n$ covers the infinite family $\\{2^m \\cdot n : m \\geq 0\\}$. The six verified odd numbers (1, 3, 5, 7, 9, 27) thus cover infinitely many starting values, illustrating how structural theorems amplify computational verification.\n\n2. **PROOF-CARRYING COMPUTATION**: Each `native_decide` proof is both a mathematical certificate and a computation. The witness $k$ in `use k; native_decide` is the stopping time, and the tactic verifies $f^{(k)}(n) = 1$ by executing all $k$ steps. This pattern — stating the answer, then verifying computationally — is a powerful paradigm for number-theoretic verification in Lean.\n\n3. **DYNAMICAL SYSTEMS PERSPECTIVE**: The Collatz map is a piecewise-linear dynamical system on $\\mathbb{N}$. The 'hailstone' behavior of trajectories (rising, then falling to 1) suggests ergodic-theoretic structure. Tao's 2019 result uses a stochastic model: treating the parity of iterates as approximately random, the expected logarithmic change per step is $\\frac{1}{2}\\log_2(1/2) + \\frac{1}{2}\\log_2(3) \\approx -0.208$, predicting trajectories should shrink on average — consistent with the conjecture.\n\n4. **UNDECIDABILITY AND INDEPENDENCE**: Conway's 1972 result that generalized 3n+1 problems are undecidable raises the possibility that the Collatz conjecture itself might be independent of ZFC. If true, this would make it a natural number-theoretic statement that is true (if verified for all $n$) but unprovable — a concrete Gödelian phenomenon far simpler than the typical independence results from set theory.\n\n5. **THE 27 EXAMPLE**: The trajectory of 27 ($27 \\to 82 \\to 41 \\to 124 \\to \\cdots \\to 9232 \\to \\cdots \\to 1$, 111 steps, max value 9232) demonstrates that even small starting values produce wildly unpredictable orbits. The ratio max/start $= 9232/27 \\approx 342$ shows the map can amplify values by orders of magnitude before convergence.",
     "openQuestions": [
-      "Does every positive integer reach 1? (The full Collatz conjecture \u2014 verified computationally up to $2^{68}$, shown for logarithmic density 1 by Tao 2019, but no proof for all $n$)",
+      "Does every positive integer reach 1? (The full Collatz conjecture — verified computationally up to $2^{68}$, shown for logarithmic density 1 by Tao 2019, but no proof for all $n$)",
       "Are there cycles other than $4 \\to 2 \\to 1$? Crandall (1978) proved any non-trivial cycle has length $> 275{,}000$; Eliahou (1993) improved this to $> 10^7$. Can Lean verify a lower bound on cycle length?",
       "What is the growth rate of the average stopping time $\\sigma(n)$? Empirically $\\sigma(n) \\sim 6.95 \\log_2(n)$ (consistent with the stochastic model), but this is not proved. Can the expected logarithmic shrinkage of $-0.208$ per step be formalized?",
-      "Is there a closed-form expression for the stopping time of Mersenne-like numbers $2^n - 1$? These are always odd and produce interesting trajectories \u2014 the stopping time appears to grow linearly in $n$ but this is unproven",
+      "Is there a closed-form expression for the stopping time of Mersenne-like numbers $2^n - 1$? These are always odd and produce interesting trajectories — the stopping time appears to grow linearly in $n$ but this is unproven",
       "Is the Collatz conjecture independent of Peano Arithmetic or ZFC? Conway's 1972 undecidability result for generalized 3n+1 maps suggests this is possible. Can proof-theoretic techniques establish a lower bound on the proof complexity of the conjecture?"
     ]
   },
@@ -120,17 +121,17 @@
     {
       "targetId": "erdos-410",
       "relationship": "related",
-      "description": "Erd\u0151s problem #410 concerns iterated sum-of-divisors and iterated arithmetic functions \u2014 the same iterative dynamics paradigm as Collatz, where repeated application of a simple arithmetic function produces complex, unpredictable orbits"
+      "description": "Erdős problem #410 concerns iterated sum-of-divisors and iterated arithmetic functions — the same iterative dynamics paradigm as Collatz, where repeated application of a simple arithmetic function produces complex, unpredictable orbits"
     },
     {
       "targetId": "halting-problem",
       "relationship": "thematic",
-      "description": "Conway (1972) proved that generalizations of the 3n+1 problem are algorithmically undecidable \u2014 the halting problem for generalized Collatz maps is unsolvable. This directly parallels Turing's halting problem and suggests the full conjecture may resist proof within standard frameworks"
+      "description": "Conway (1972) proved that generalizations of the 3n+1 problem are algorithmically undecidable — the halting problem for generalized Collatz maps is unsolvable. This directly parallels Turing's halting problem and suggests the full conjecture may resist proof within standard frameworks"
     },
     {
       "targetId": "godel-incompleteness",
       "relationship": "thematic",
-      "description": "The Collatz conjecture is a candidate for a natural number-theoretic statement that might be independent of Peano Arithmetic or ZFC. If true but unprovable, it would be a striking concrete instance of G\u00f6delian incompleteness \u2014 a simple $\\Pi^0_2$ statement ($\\forall n\\, \\exists k\\, f^{(k)}(n) = 1$) escaping formal provability"
+      "description": "The Collatz conjecture is a candidate for a natural number-theoretic statement that might be independent of Peano Arithmetic or ZFC. If true but unprovable, it would be a striking concrete instance of Gödelian incompleteness — a simple $\\Pi^0_2$ statement ($\\forall n\\, \\exists k\\, f^{(k)}(n) = 1$) escaping formal provability"
     },
     {
       "targetId": "infinitude-primes",
@@ -150,7 +151,7 @@
     {
       "targetId": "divisibility-by-3",
       "relationship": "foundational",
-      "description": "The Collatz map's odd branch $n \\to 3n + 1$ always produces an even number (since $3n + 1$ is even when $n$ is odd), immediately followed by at least one halving. Divisibility properties and modular arithmetic underlie the trajectory analysis \u2014 the residue of $n$ modulo small primes (especially 2 and 3) governs the short-term behavior of the Collatz map"
+      "description": "The Collatz map's odd branch $n \\to 3n + 1$ always produces an even number (since $3n + 1$ is even when $n$ is odd), immediately followed by at least one halving. Divisibility properties and modular arithmetic underlie the trajectory analysis — the residue of $n$ modulo small primes (especially 2 and 3) governs the short-term behavior of the Collatz map"
     },
     {
       "targetId": "ramseys-theorem",
@@ -176,26 +177,26 @@
       "authors": "Lagarias, Jeffrey C.",
       "title": "The 3x + 1 Problem and its Generalizations",
       "year": "1985",
-      "venue": "The American Mathematical Monthly 92(1), 3\u201323",
-      "note": "Comprehensive survey of the Collatz problem covering iteration statistics, density results, and connections to ergodic theory \u2014 the standard introductory reference"
+      "venue": "The American Mathematical Monthly 92(1), 3–23",
+      "note": "Comprehensive survey of the Collatz problem covering iteration statistics, density results, and connections to ergodic theory — the standard introductory reference"
     },
     {
       "authors": "Tao, Terence",
       "title": "Almost all orbits of the Collatz map attain almost bounded values",
       "year": "2022",
       "venue": "Forum of Mathematics, Pi 10, e12",
-      "note": "Proved that almost all positive integers (in logarithmic density) eventually reach values arbitrarily close to 1 \u2014 the strongest known result toward the conjecture, using entropy decrement arguments and stochastic modeling of parity sequences"
+      "note": "Proved that almost all positive integers (in logarithmic density) eventually reach values arbitrarily close to 1 — the strongest known result toward the conjecture, using entropy decrement arguments and stochastic modeling of parity sequences"
     },
     {
       "authors": "Conway, John H.",
       "title": "Unpredictable Iterations",
       "year": "1972",
-      "venue": "Proceedings of the 1972 Number Theory Conference, University of Colorado, pp. 49\u201352",
+      "venue": "Proceedings of the 1972 Number Theory Conference, University of Colorado, pp. 49–52",
       "note": "Proved that generalized Collatz maps (periodically linear functions) can simulate Turing machines, making the halting problem for generalized 3n+1 undecidable. The key negative result suggesting the original conjecture may be extremely difficult or even independent of standard axioms"
     },
     {
       "authors": "Lagarias, Jeffrey C.",
-      "title": "The 3x + 1 Problem: An Annotated Bibliography (1963\u20131999)",
+      "title": "The 3x + 1 Problem: An Annotated Bibliography (1963–1999)",
       "year": "2003",
       "venue": "arXiv:math/0309224",
       "note": "Exhaustive annotated bibliography of over 100 papers on the Collatz conjecture, organized by approach: computational verification, density results, generalizations, ergodic theory, p-adic analysis, and connections to undecidability"
@@ -204,14 +205,14 @@
       "authors": "Terras, Riho",
       "title": "A stopping time problem on the positive integers",
       "year": "1976",
-      "venue": "Acta Arithmetica 30, 241\u2013252",
-      "note": "Proved that the stopping time (first iterate below n) is finite for a set of integers with density 1 \u2014 the first rigorous density result for the Collatz conjecture"
+      "venue": "Acta Arithmetica 30, 241–252",
+      "note": "Proved that the stopping time (first iterate below n) is finite for a set of integers with density 1 — the first rigorous density result for the Collatz conjecture"
     },
     {
       "authors": "Crandall, Richard E.",
       "title": "On the '3x + 1' Problem",
       "year": "1978",
-      "venue": "Mathematics of Computation 32(144), 1281\u20131292",
+      "venue": "Mathematics of Computation 32(144), 1281–1292",
       "note": "Proved that any non-trivial cycle of the Collatz map must have length greater than 275,000, and provided computational verification for small values"
     }
   ],
@@ -220,19 +221,19 @@
       "name": "collatz_pow_two",
       "type": "core",
       "description": "f^k(2^k) = 1 for k >= 1: powers of 2 reach 1 in exactly k steps",
-      "leanType": "(k : \u2115) \u2192 k \u2265 1 \u2192 collatzIter k (2^k) = 1"
+      "leanType": "(k : ℕ) → k ≥ 1 → collatzIter k (2^k) = 1"
     },
     {
       "name": "reaches_one_pow_two_mul",
       "type": "core",
       "description": "If n reaches 1, then 2^m * n reaches 1 (closure under powers-of-2 multiplication)",
-      "leanType": "(m : \u2115) \u2192 ReachesOne n \u2192 ReachesOne (2^m * n)"
+      "leanType": "(m : ℕ) → ReachesOne n → ReachesOne (2^m * n)"
     },
     {
       "name": "collatz_conjecture",
       "type": "axiom",
       "description": "The full Collatz conjecture (stated as an axiom): every positive integer eventually reaches 1",
-      "leanType": "\u2200 n : \u2115, n \u2265 1 \u2192 ReachesOne n"
+      "leanType": "∀ n : ℕ, n ≥ 1 → ReachesOne n"
     }
   ],
   "sorries": 0

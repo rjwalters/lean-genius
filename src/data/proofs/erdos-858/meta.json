@@ -24,7 +24,8 @@
     "axiomCount": 1,
     "lineCount": 348,
     "assumptions": "1 axiom: alexander_1966. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12
   },
   "overview": {
     "historicalContext": "Erdős Problem #858 concerns sets $A \\subseteq \\{1,\\ldots,N\\}$ where no element $at = b$ holds with $a,b \\in A$ and $\\text{spf}(t) > a$ (spf = smallest prime factor). This is a weakening of the **primitive set condition** (no element divides another). The **weighted reciprocal sum** $(1/\\log N) \\sum_{n \\in A} 1/n$ is the quantity of interest. **Alexander** (1966, *Acta Arithmetica*) first proved this sum is $o(1)$; **Erdős–Sárközi–Szemerédi** (1968, *J. London Math. Soc.*) gave an independent proof by different methods. For the stronger primitive condition, **Behrend** (1935) showed the quantitative bound $O(1/\\sqrt{\\log\\log N})$. The problem is fully resolved: the maximum is $o(1)$, with no known sharp quantitative bound for the weaker condition.",

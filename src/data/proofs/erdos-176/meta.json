@@ -78,7 +78,8 @@
         "description": "Proves the Erdős Discrepancy Conjecture: every infinite ±1 sequence has unbounded discrepancy on homogeneous APs"
       }
     ],
-    "assumptions": "3 axioms: satisfiesNkl_exists, spencer_1973, alpha_c_exists. 0 sorries."
+    "assumptions": "3 axioms: satisfiesNkl_exists, spencer_1973, alpha_c_exists. 0 sorries.",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "**Erdős Problem #176** concerns the discrepancy of ±1 colorings with respect to arithmetic progressions. This is a fundamental problem in Ramsey theory and combinatorial number theory.\n\n**Historical Development:**\n- **1963 (Erdős):** Proved exponential lower bounds N(k,ck) > (1+α_c)^k.\n- **1973 (Spencer):** Gave exact formula for N(k,1): if k = 2^t·m with m odd, then N(k,1) = 2^t(k-1) + 1.\n- **1980 (Erdős-Graham):** Stated that 'no decent bound' is known even for N(k,2).\n\nThe problem connects to van der Waerden numbers: when ℓ = k, N(k,k) equals the van der Waerden number W(k).",

@@ -58,7 +58,8 @@
       "binaryGcdSteps_exceeds_log_by_one: exact equality log₂(2^n - 1) + 1 = binaryGcdSteps 1 (2^n - 1) for n ≥ 2",
       "Computational verification for n = 1,2,3,4,6,8 via native_decide"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "Josef Stein introduced the Binary GCD algorithm in 1967 (*Journal of Computational Physics* 1:397–405) as a hardware-friendly alternative to Euclid's algorithm: it replaces division by shifts and subtractions, operations native to binary processors. Stein's original paper analyzed the algorithm's correctness but did not provide a sharp complexity bound. Later analyses established the upper bound of $O(\\log(\\max(a,b)))$ steps — see Knuth, *The Art of Computer Programming* Vol. 2, §4.5.2.\n\nThe *tight lower bound* — proving the algorithm is $\\Omega(\\log b)$ in the worst case and cannot be improved by a constant factor — requires exhibiting an infinite family of inputs that each take $\\Theta(\\log b)$ steps. The family $(1, 2^n - 1)$ is the canonical hard case: since $2^n - 1$ is always odd, every step takes the 'both odd' branch, reducing $(1, 2^n-1) \\to (1, 2^{n-1}-1) \\to \\cdots \\to (1, 0)$ in exactly $n$ steps with no shortcuts.\n\nThis formalization is the first machine-checked proof of the tight lower bound for Binary GCD in Lean 4. It converts the informal $\\Omega(\\log b)$ argument into a verified exact equality $\\text{binaryGcdSteps}(1, 2^n-1) = n$, with a formal connection to $\\lfloor\\log_2(2^n-1)\\rfloor = n-1$.",

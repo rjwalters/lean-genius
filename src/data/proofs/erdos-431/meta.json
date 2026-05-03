@@ -59,7 +59,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 213,
-    "assumptions": "3 axioms: elsholtz_harper_2015 (Elsholtz-Harper 2015 — tight growth bounds for inverse Goldbach pairs), elsholtz_2001 (Elsholtz 2001 — no inverse Goldbach triple exists), tao_ziegler_2023 (Tao-Ziegler 2023 — infinite sets with restricted sums in primes). 0 sorries."
+    "assumptions": "3 axioms: elsholtz_harper_2015 (Elsholtz-Harper 2015 — tight growth bounds for inverse Goldbach pairs), elsholtz_2001 (Elsholtz 2001 — no inverse Goldbach triple exists), tao_ziegler_2023 (Tao-Ziegler 2023 — infinite sets with restricted sums in primes). 0 sorries.",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "This is known as Ostmann's 'inverse Goldbach problem', first posed in the 1950s. While Goldbach conjectured that every even number greater than 2 is a sum of two primes (Primes + Primes ⊇ evens), Ostmann asked the reverse: can A + B equal the primes (up to finite exceptions) for some infinite sets A, B? The question was taken up by Erdős, who conjectured the answer is NO.\n\nThe best partial result is due to Elsholtz and Harper (2015), who proved that if such A, B exist, they must satisfy extremely restrictive growth bounds: for large x, x^{1/2}/(log x · log log x) ≪ |A ∩ [1,x]| ≪ x^{1/2} · log log x, and similarly for B. This severely constrains the search space. Earlier, Elsholtz (2001) completely resolved the three-set case: no triple A, B, C with |A|, |B|, |C| ≥ 2 can satisfy A + B + C = Primes (mod finite).\n\nTao and Ziegler (2023) proved a positive result in the opposite direction: there exist infinite B, C such that the restricted sumset {b_i + c_j : i < j} is entirely contained in the primes. This does not contradict the conjecture since inclusion is weaker than equality. The problem remains one of the central open questions in additive prime number theory.",

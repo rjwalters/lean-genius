@@ -52,7 +52,8 @@
       "Lean 4 and Mathlib: Finset.sum, StrictMono, Set.Finite, and noncomputable definitions"
     ],
     "lineCount": 125,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this in their 1980 monograph, asking about the interplay between multiplicative growth rates and additive completeness. The ratio limit 2 is the critical threshold for subset sum completeness: powers of 2 give every natural number via binary representation ($P(\\{1,2,4,8,\\ldots\\}) = \\mathbb{N}$), but small perturbations can destroy this. The question asks whether a sequence growing at rate 2 can be made 'robustly complete' — not just complete, but maintaining density-1 subset sums even after removing finitely many terms. This robustness requirement is much stronger than simple completeness and connects to the stability theory of additive representations. The problem was solved affirmatively by ebarschkis, building on ideas from Terence Tao and Wouter van Doorn. The construction carefully perturbs powers of 2 to create controlled redundancy: each integer has many different subset sum representations, so deleting finitely many terms still leaves enough representations to cover almost all integers.",

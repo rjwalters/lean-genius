@@ -26,7 +26,8 @@
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
     "lineCount": 177,
-    "assumptions": ""
+    "assumptions": "",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "GCD computation is one of the oldest algorithms in mathematics, appearing in Euclid's Elements (~300 BC) as 'anthyphairesis' (mutual subtraction). Euclid's algorithm computes gcd(a,b) by repeatedly replacing the larger number with its remainder modulo the smaller — elegant, but division is expensive on binary hardware (requiring multiple clock cycles versus a single bit shift for halving). Josef Stein published the Binary GCD algorithm in 1967, crediting Israeli programmers who had used it on early computers where integer division was slow or unavailable. The algorithm replaces all division with three bit-manipulation identities: gcd(2a,2b) = 2·gcd(a,b), gcd(2a,b) = gcd(a,b) when b is odd (since gcd(2,odd)=1), and gcd(a-b,b) = gcd(a,b). When both arguments are odd, their difference is even (odd minus odd = even), so a halving step always follows the subtraction, and the sum a+b strictly decreases in every recursive call. Modern implementations in the GNU Multiple Precision Arithmetic Library (GMP) and LLVM use variants of this algorithm, often outperforming the Euclidean method by 2-3× on 64-bit hardware where integer division latency can be 20-90 clock cycles versus 1 cycle for bit shifts. The Lean 4 formalization exploits the equation compiler's `binaryGcd.induct` principle — automatically generated from the well-founded recursive definition — providing one induction case per algorithm branch for a proof that mirrors the algorithm's structure exactly.",

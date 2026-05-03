@@ -22,7 +22,8 @@
     "lineCount": 191,
     "assumptions": "2 axioms: (1) kst_trivial_bound — Kővári-Sós-Turán O(n^{3/2}) upper bound (proven 1954, axiomatized); (2) probabilistic_lower_bound — ex(n, G_k) ≥ c·n^{3/2-1/(k-1)} (probabilistic method, axiomatized). 4 sorries in dependency chain: 4 in this file + 2 in parent Erdos1021Problem.lean (k3_case_solved, trivial_bound).",
     "dateAdded": "2026-04-03",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "Erdős Problem #1021 asks whether ex(n, G_k) ≪ n^{3/2-c_k} for some c_k > 0, where G_k is the bipartite pair graph. OQ-01 focuses on the weaker question: is ex(n, G_k) = o(n^{3/2}) for any k ≥ 4? The k=3 case is settled since G_3 ≅ C_6 and Bondy-Simonovits proved ex(n,C_6) ≪ n^{7/6}. For k ≥ 4, even the weak o(n^{3/2}) form is completely open. The Kővári-Sós-Turán theorem gives a trivial O(n^{3/2}) upper bound (since G_k contains K_{2,C(k,2)}), and the probabilistic method gives ex(n,G_k) ≥ c·n^{3/2-1/(k-1)} as a lower bound. This lower bound exponent approaches 3/2 as k → ∞, making the problem harder for larger k.",

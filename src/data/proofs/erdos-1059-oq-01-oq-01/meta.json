@@ -84,7 +84,8 @@
         "relationship": "Grandparent: main Erdős 1059 conjecture"
       }
     ],
-    "assumptions": "2 axioms: (1) strong_selberg_density — for l ≥ 3, qualifyingInLevel(l)·(l+1) ≥ primesInLevel(l)·l, capturing the Selberg sieve's prediction that the qualifying fraction approaches 1; (2) primes_growth_in_levels — for l ≥ 3, primesInLevel(l) ≥ l, an extremely weak consequence of PNT."
+    "assumptions": "2 axioms: (1) strong_selberg_density — for l ≥ 3, qualifyingInLevel(l)·(l+1) ≥ primesInLevel(l)·l, capturing the Selberg sieve's prediction that the qualifying fraction approaches 1; (2) primes_growth_in_levels — for l ≥ 3, primesInLevel(l) ≥ l, an extremely weak consequence of PNT.",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "Erdős Problem 1059 asks whether infinitely many primes p satisfy p - k! composite for all k with k! < p. The connection to sieve theory is natural: the Selberg sieve (1947) provides upper bounds on sets defined by local divisibility conditions, while the Brun-Titchmarsh inequality bounds primes in arithmetic progressions. This investigation arose from a natural question in the formalization chain: can the density-1 conjecture for qualifying primes be derived from the Selberg sieve framework already formalized in OQ-02? The weak Selberg axiom (at least one qualifying prime per primorial interval) provably gives only infinitely many qualifying primes — not density 1. The ratio of qualifying primes to all primes from this bound tends to 0. This file bridges the gap by introducing a quantitatively stronger axiom, motivated by the Selberg sieve's level-wise density predictions. The surplus-accumulation proof technique used here has parallels in classical analytic number theory, where Tauberian arguments convert asymptotic information at discrete points to continuous density estimates.",

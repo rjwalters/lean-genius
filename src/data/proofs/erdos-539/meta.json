@@ -60,7 +60,8 @@
       "Additive combinatorics fundamentals",
       "Arithmetic and geometric progressions"
     ],
-    "lineCount": 188
+    "lineCount": 188,
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Erdős posed Problem #539 in [Er73] (1973), asking about the minimum size of {a/gcd(a,b) : a,b ∈ A} over all n-element sets A ⊆ N. Erdős-Szemerédi established n^{1/2} ≪ h(n) ≪ n^{1-c}, Freiman-Lev improved the upper bound to n^{2/3}, and Granville-Roesler provided a geometric reformulation. The exact behavior of h(n) remains unknown, with the true exponent between 1/2 and 2/3. The study of GCD-reduced quotients connects to the multiplicative structure of integer sets and to Freiman-type theorems in additive combinatorics, which characterize sets with small sumsets as approximate arithmetic progressions. The geometric reformulation by Granville and Roesler relates the problem to lattice point distributions and convex geometry.",

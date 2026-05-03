@@ -30,7 +30,8 @@
       "card_composition_zero: unique composition of 0",
       "dice_six_rolls_all_different: multinomial({0..5}, 1) * 1 = 6!",
       "sum_composition_eq_piAntidiag_sum: sum transfer via the equivalence"
-    ]
+    ],
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "The multinomial distribution requires a Fintype instance for its support type (Composition n k) to construct a Mathlib PMF (probability mass function). Composition n k is the type of ways to write n as an ordered sum of k positive naturals — the classical 'compositions' counted by the stars and bars formula C(n-1, k-1). A Fintype instance is needed to enumerate all compositions and compute the PMF denominator.\n\nThe `piAntidiag` construction in Mathlib provides a finset of functions f : ι → ℕ summing to n with support ⊆ s. The question 'Can the Fintype instance for Composition be proved efficiently using piAntidiag?' was posed as an open question from BinomialTheoremOQ02OQ01OQ01. The key insight is that `Finset.mem_piAntidiag` characterises exactly the conditions in the Composition structure (function support and total sum), making the bijection immediate rather than requiring a custom inductive construction.",

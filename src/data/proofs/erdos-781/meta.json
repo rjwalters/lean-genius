@@ -54,7 +54,8 @@
     ],
     "axiomCount": 5,
     "assumptions": "5 axioms (BEF_lower_bound, alon_spencer_cubic, f_1, f_2, f_3) and 0 sorries. Key bounds axiomatized from Brown-Erdos-Freedman (1990) and Alon-Spencer (1989). The disproof theorem is fully proved from axiomatized small values.",
-    "lineCount": 265
+    "lineCount": 265,
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "**Erdős Problem #781: Descending Waves in 2-Colorings**\n\nThis problem concerns monochromatic patterns in 2-colorings of integers, specifically \"descending waves\" where successive gaps are non-increasing.\n\n**Key History:**\n- Brown, Erdős, Freedman (1990): Introduced the problem, proved k² - k + 1 ≤ f(k) ≤ (k³ - 4k + 9)/3\n- Alon, Spencer (1989): DISPROVED the conjecture by showing f(k) ≫ k³\n\n**Mathematical Setting:**\nA descending wave x₁ < x₂ < ... < xₖ satisfies x_j ≥ (x_{j-1} + x_{j+1})/2 for all interior points. Equivalently, the gaps (x_{i+1} - x_i) form a non-increasing sequence.",

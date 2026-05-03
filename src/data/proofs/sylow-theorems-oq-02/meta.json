@@ -55,7 +55,8 @@
     ],
     "assumptions": "5 axioms encoding deep profinite group theory results: (1) Sylow pro-p existence via Zorn's lemma on closed pro-p subgroups, (2) conjugacy via finite approximation and compactness, (3) Frattini argument for profinite groups, (4) projection of Sylow pro-p subgroups to p-groups in finite quotients, (5) trivial intersection of Sylow subgroups for distinct primes.",
     "dateAdded": "2026-03-25",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Jean-Pierre Serre (born 1926) generalized the Sylow theorems to profinite groups in his foundational 1965 work 'Cohomologie Galoisienne'. A profinite group is a compact, Hausdorff, totally disconnected topological group — equivalently, an inverse limit of finite groups. The absolute Galois group Gal(k̄/k) of any field is profinite, making pro-p Sylow theory essential for Galois cohomology and class field theory.\n\nThe pro-p Sylow theorem states that every profinite group G has maximal pro-p closed subgroups (the Sylow pro-p subgroups), that these are all conjugate, and that they arise as inverse limits of the finite Sylow p-subgroups in the quotient system of G. The existence proof uses Zorn's lemma on the poset of closed pro-p subgroups, with compactness guaranteeing that the closure of a chain's union is still pro-p.",

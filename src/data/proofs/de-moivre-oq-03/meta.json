@@ -62,7 +62,8 @@
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
     "lineCount": 275,
-    "assumptions": "0 axioms, 0 sorries. Fractional powers via Mathlib's cpow_def_of_ne_zero and exp/log. Original root enumeration and distinctness proofs."
+    "assumptions": "0 axioms, 0 sorries. Fractional powers via Mathlib's cpow_def_of_ne_zero and exp/log. Original root enumeration and distinctness proofs.",
+    "theoremCount": 14
   },
   "overview": {
     "historicalContext": "De Moivre's theorem (1707) states that $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ for integer $n$. Abraham de Moivre, a French Huguenot mathematician exiled to England, published this result in the *Philosophical Transactions* of the Royal Society. While the integer case follows by induction on Euler's formula $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$ (1748), the extension to fractional exponents $p/q$ introduces the fundamental complication of **multi-valuedness**: $z^{p/q}$ has exactly $q$ distinct values, reflecting the $q$-fold covering of $\\mathbb{C}^*$ by itself. This multi-valuedness was first systematically studied by Euler and later by Cauchy and Riemann, who introduced branch cuts and Riemann surfaces to resolve it. The modern approach defines $z^w = \\exp(w \\log z)$ and selects a **principal branch** via the principal logarithm ($-\\pi < \\arg z \\leq \\pi$). This formalization bridges classical root extraction with Mathlib's principal-branch `cpow`, providing the first complete formal treatment of fractional De Moivre including root enumeration, distinctness, and consistency.",

@@ -62,7 +62,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 210,
-    "assumptions": "1 axiom (open conjecture: infinitely many good values). All verifiable results are fully proved."
+    "assumptions": "1 axiom (open conjecture: infinitely many good values). All verifiable results are fully proved.",
+    "theoremCount": 35
   },
   "overview": {
     "historicalContext": "Erdős Problem #1141 asks whether infinitely many natural numbers n have the property that n - k² is prime for every k coprime to n with k² < n. The problem connects primality testing to quadratic residues and coprimality structure, sitting at the intersection of additive and multiplicative number theory.\n\nThe known good values form OEIS sequence A214583, comprising 41 terms: 3, 4, 6, 8, 12, ..., 930, 1722. Strikingly, all known good values except 3 are even, and many are highly composite numbers (24, 30, 60, 90, 180, 252, 360, 570). This pattern has a natural explanation: highly composite n have small Euler totient ratio φ(n)/n, meaning fewer coprime k values, and hence fewer simultaneous primality conditions to satisfy.\n\nAn exhaustive computational search found no further good values between 1722 and 10^10, suggesting the sequence may be finite. ChatGPT-Tang proved that the counting function satisfies #{n ≤ N : IsGood(n)} = O(N^{1/2+o(1)}), a density bound consistent with finiteness but insufficient to prove it. The sparse distribution and gap beyond 1722 make this one of the more enigmatic Erdős problems — the answer 'finitely many' seems likely but is unproved.",

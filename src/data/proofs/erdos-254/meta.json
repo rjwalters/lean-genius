@@ -1,8 +1,8 @@
 {
   "id": "erdos-254",
-  "title": "Erd\u0151s Problem #254: Subset Sum Representation",
+  "title": "Erdős Problem #254: Subset Sum Representation",
   "slug": "erdos-254",
-  "description": "If A \u2286 \u2115 has unbounded growth in dyadic intervals and \u03a3{\u03b8n} = \u221e for all \u03b8 \u2208 (0,1), must every sufficiently large integer be a sum of distinct elements of A? Cassels (1960) proved a related result under stronger hypotheses.",
+  "description": "If A ⊆ ℕ has unbounded growth in dyadic intervals and Σ{θn} = ∞ for all θ ∈ (0,1), must every sufficiently large integer be a sum of distinct elements of A? Cassels (1960) proved a related result under stronger hypotheses.",
   "meta": {
     "author": "Cassels (1960, partial); OPEN in full generality",
     "sourceUrl": "https://erdosproblems.com/254",
@@ -25,17 +25,18 @@
     "axiomCount": 4,
     "lineCount": 185,
     "assumptions": "4 axioms: cassels_theorem, powers_of_2_growth, powers_of_2_irrationality, powers_of_2_representation. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1
   },
   "overview": {
-    "historicalContext": "**Erd\u0151s Problem #254** was posed by Paul Erd\u0151s in 1961, connecting additive combinatorics with Diophantine approximation. Given $A \\subseteq \\mathbb{N}$ with (1) unbounded growth in dyadic intervals: $|A \\cap [x, 2x]| \\to \\infty$, and (2) an irrationality condition: $\\sum_{n \\in A} \\|\\theta n\\| = \\infty$ for all $\\theta \\in (0,1)$, Erd\u0151s conjectured every sufficiently large integer is a sum of distinct elements of $A$.\n\nJ.W.S. Cassels proved a related result in his 1960 paper 'On the representation of integers as the sums of distinct summands taken from a fixed set' (Acta Sci. Math. Szeged, 111-124). Cassels's theorem replaces condition (1) with the stronger logarithmic growth $|A \\cap [x, 2x]|/\\log\\log x \\to \\infty$ and uses the weaker $L^2$ condition $\\sum \\|\\theta n\\|^2 = \\infty$. His proof employs Fourier analysis on the circle $\\mathbb{R}/\\mathbb{Z}$, using the exponential sum $\\sum_{n \\in A} e^{2\\pi i \\theta n}$ to control the number of representations.\n\nThe problem in its original form remains **open**. The gap between Erd\u0151s's weak conditions and Cassels's stronger ones is the central challenge: Erd\u0151s requires no growth rate at all, only unboundedness, which is too weak for Cassels's Fourier-analytic approach to apply directly.",
+    "historicalContext": "**Erdős Problem #254** was posed by Paul Erdős in 1961, connecting additive combinatorics with Diophantine approximation. Given $A \\subseteq \\mathbb{N}$ with (1) unbounded growth in dyadic intervals: $|A \\cap [x, 2x]| \\to \\infty$, and (2) an irrationality condition: $\\sum_{n \\in A} \\|\\theta n\\| = \\infty$ for all $\\theta \\in (0,1)$, Erdős conjectured every sufficiently large integer is a sum of distinct elements of $A$.\n\nJ.W.S. Cassels proved a related result in his 1960 paper 'On the representation of integers as the sums of distinct summands taken from a fixed set' (Acta Sci. Math. Szeged, 111-124). Cassels's theorem replaces condition (1) with the stronger logarithmic growth $|A \\cap [x, 2x]|/\\log\\log x \\to \\infty$ and uses the weaker $L^2$ condition $\\sum \\|\\theta n\\|^2 = \\infty$. His proof employs Fourier analysis on the circle $\\mathbb{R}/\\mathbb{Z}$, using the exponential sum $\\sum_{n \\in A} e^{2\\pi i \\theta n}$ to control the number of representations.\n\nThe problem in its original form remains **open**. The gap between Erdős's weak conditions and Cassels's stronger ones is the central challenge: Erdős requires no growth rate at all, only unboundedness, which is too weak for Cassels's Fourier-analytic approach to apply directly.",
     "problemStatement": "Let $A\\subseteq \\mathbb{N}$ be such that\\[\\lvert A\\cap [1,2x]\\rvert -\\lvert A\\cap [1,x]\\rvert \\to \\infty\\textrm{ as }x\\to \\infty\\]and\\[\\sum_{n\\in A} \\{ \\theta n\\}=\\infty\\]for every $\\theta\\in (0,1)$, where $\\{x\\}$ is the distance of $x$ from the nearest integer. Then every sufficiently large integer is the sum of distinct elements of $A$.\n\n\n\nCassels \\cite{Ca60} proved this under the alternative hypotheses\\[\\lim \\frac{\\lvert A\\cap [1,2x]\\rvert -\\lvert A\\cap [1,x]\\rvert}{\\log\\log x}=\\infty\\]and\\[\\sum_{n\\in A} \\{ \\theta n\\}^2=\\infty\\]for every $\\theta\\in (0,1)$.\n\n\n\n\nReferences\n\n\n[Ca60] Cassels, J. W. S., On the representation of integers as the sums of distinct summands taken from a fixed set. Acta Sci. Math. (Szeged) (1960), 111-124.",
-    "text": "If A \u2286 \u2115 has unbounded growth in dyadic intervals and \u03a3{\u03b8n} = \u221e for all \u03b8 \u2208 (0,1), must every sufficiently large integer be a sum of distinct elements of A? Cassels (1960) proved a related result under stronger hypotheses.",
-    "proofStrategy": "The formalization defines the two key conditions (growth and irrationality) and states both Erd\u0151s's open conjecture and Cassels's proved theorem. The growth condition requires |A \u2229 [1,2x]| - |A \u2229 [1,x]| \u2192 \u221e, ensuring A has elements spread across all dyadic intervals. The irrationality condition \u03a3{\u03b8n} = \u221e prevents A from being too concentrated modulo any irrational. Cassels's stronger version replaces these with logarithmic growth rate and L\u00b2 summability. Powers of 2 serve as a concrete example satisfying all conditions.",
+    "text": "If A ⊆ ℕ has unbounded growth in dyadic intervals and Σ{θn} = ∞ for all θ ∈ (0,1), must every sufficiently large integer be a sum of distinct elements of A? Cassels (1960) proved a related result under stronger hypotheses.",
+    "proofStrategy": "The formalization defines the two key conditions (growth and irrationality) and states both Erdős's open conjecture and Cassels's proved theorem. The growth condition requires |A ∩ [1,2x]| - |A ∩ [1,x]| → ∞, ensuring A has elements spread across all dyadic intervals. The irrationality condition Σ{θn} = ∞ prevents A from being too concentrated modulo any irrational. Cassels's stronger version replaces these with logarithmic growth rate and L² summability. Powers of 2 serve as a concrete example satisfying all conditions.",
     "keyInsights": [
       "**Growth condition**: Requires unbounded elements in every dyadic interval [x, 2x], ensuring the set A spreads out at all scales",
-      "**Irrationality condition**: \u03a3{\u03b8n} = \u221e for all \u03b8 \u2208 (0,1) prevents A from concentrating near multiples of any irrational, connecting to equidistribution theory",
-      "**Cassels's theorem**: Proved under strictly stronger hypotheses \u2014 logarithmic growth rate and L\u00b2 summability \u2014 but Erd\u0151s's weaker conditions remain open",
+      "**Irrationality condition**: Σ{θn} = ∞ for all θ ∈ (0,1) prevents A from concentrating near multiples of any irrational, connecting to equidistribution theory",
+      "**Cassels's theorem**: Proved under strictly stronger hypotheses — logarithmic growth rate and L² summability — but Erdős's weaker conditions remain open",
       "**Powers of 2 example**: The set {1, 2, 4, 8, ...} satisfies all conditions, and every positive integer is a sum of distinct powers of 2 (binary representation)",
       "**Additive combinatorics meets Diophantine approximation**: The problem bridges two major branches of number theory"
     ],
@@ -47,7 +48,7 @@
   "sections": [
     {
       "id": "erd-s-problem-254-sumset-repre",
-      "title": "Erd\u0151s Problem #254: Sumset Representation from Growth and Irrationality Conditions",
+      "title": "Erdős Problem #254: Sumset Representation from Growth and Irrationality Conditions",
       "startLine": 1,
       "endLine": 36,
       "summary": "Header documenting the problem statement, Cassels's partial result, and references [Er61], [Ca60].",
@@ -66,8 +67,8 @@
       "title": "The Growth Condition",
       "startLine": 55,
       "endLine": 66,
-      "summary": "Formalizes the weak growth condition: $|A \\cap [x, 2x]| \\to \\infty$ as $x \\to \\infty$ \u2014 enough elements in each dyadic interval.",
-      "mathContext": "Mathematical content: Formalizes the weak growth condition: $|A \\cap [x, 2x]| \\to \\infty$ as $x \\to \\infty$ \u2014 enough elements in each dyadic interval."
+      "summary": "Formalizes the weak growth condition: $|A \\cap [x, 2x]| \\to \\infty$ as $x \\to \\infty$ — enough elements in each dyadic interval.",
+      "mathContext": "Mathematical content: Formalizes the weak growth condition: $|A \\cap [x, 2x]| \\to \\infty$ as $x \\to \\infty$ — enough elements in each dyadic interval."
     },
     {
       "id": "the-irrationality-condition",
@@ -82,16 +83,16 @@
       "title": "Subset Sum Representation",
       "startLine": 83,
       "endLine": 94,
-      "summary": "Defines `IsSubsetSum(A, n)` \u2014 $n = \\sum_{a \\in S} a$ for finite $S \\subseteq A$ \u2014 and `RepresentsAllLarge(A)` \u2014 all large integers are representable.",
-      "mathContext": "Formal definition: Defines `IsSubsetSum(A, n)` \u2014 $n = \\sum_{a \\in S} a$ for finite $S \\subseteq A$ \u2014 and `RepresentsAllLarge(A)` \u2014 all large integers are representable."
+      "summary": "Defines `IsSubsetSum(A, n)` — $n = \\sum_{a \\in S} a$ for finite $S \\subseteq A$ — and `RepresentsAllLarge(A)` — all large integers are representable.",
+      "mathContext": "Formal definition: Defines `IsSubsetSum(A, n)` — $n = \\sum_{a \\in S} a$ for finite $S \\subseteq A$ — and `RepresentsAllLarge(A)` — all large integers are representable."
     },
     {
       "id": "the-conjecture",
       "title": "The Conjecture",
       "startLine": 95,
       "endLine": 109,
-      "summary": "States Erd\u0151s's **open** conjecture: growth + irrationality $\\Rightarrow$ every large integer is a subset sum of $A$.",
-      "mathContext": "Mathematical content: States Erd\u0151s's **open** conjecture: growth + irrationality $\\Rightarrow$ every large integer is a subset sum of $A$."
+      "summary": "States Erdős's **open** conjecture: growth + irrationality $\\Rightarrow$ every large integer is a subset sum of $A$.",
+      "mathContext": "Mathematical content: States Erdős's **open** conjecture: growth + irrationality $\\Rightarrow$ every large integer is a subset sum of $A$."
     },
     {
       "id": "cassels-s-theorem-1960",
@@ -119,12 +120,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #254 remains open in its original form. Cassels (1960) proved subset sum representation under stronger growth and irrationality conditions. The formalization captures both the open conjecture and Cassels's theorem, with powers of 2 as a verified example.",
+    "summary": "Erdős Problem #254 remains open in its original form. Cassels (1960) proved subset sum representation under stronger growth and irrationality conditions. The formalization captures both the open conjecture and Cassels's theorem, with powers of 2 as a verified example.",
     "implications": "Resolving this conjecture would deepen our understanding of when subset sum representations exist, with implications for additive combinatorics and equidistribution theory.",
     "openQuestions": [
-      "Does Erd\u0151s's conjecture hold with the original weaker growth and irrationality conditions?",
+      "Does Erdős's conjecture hold with the original weaker growth and irrationality conditions?",
       "What is the weakest irrationality condition that suffices for subset sum representation?",
-      "Can the threshold N\u2080 (above which all integers are representable) be bounded effectively?"
+      "Can the threshold N₀ (above which all integers are representable) be bounded effectively?"
     ]
   },
   "leanFile": {
@@ -152,17 +153,17 @@
     {
       "targetId": "erdos-321",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, open, subset-sums"
+      "description": "Related Erdős problem sharing themes: number-theory, open, subset-sums"
     },
     {
       "targetId": "erdos-345",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, open, subset-sums"
+      "description": "Related Erdős problem sharing themes: number-theory, open, subset-sums"
     },
     {
       "targetId": "erdos-432",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, open, sumsets"
+      "description": "Related Erdős problem sharing themes: number-theory, open, sumsets"
     }
   ],
   "references": [

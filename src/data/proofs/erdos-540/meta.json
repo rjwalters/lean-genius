@@ -53,7 +53,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 160,
-    "assumptions": "2 axioms: olson_prime_case, szemeredi_general_case. 0 sorries."
+    "assumptions": "2 axioms: olson_prime_case, szemeredi_general_case. 0 sorries.",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "The Erdős-Heilbronn conjecture was posed in 1964 and asks whether large subsets of cyclic groups necessarily contain non-empty zero-sum subsets. The precise question is: does there exist a constant c such that any A ⊆ ℤ/Nℤ with |A| > c·√N must contain a non-empty subset summing to 0 mod N? The conjecture sits at the foundation of additive combinatorics, connecting subset sum problems to group structure.\n\nOlson made the first breakthrough in 1968, proving the conjecture for prime N with the constant √2: any subset of ℤ/pℤ of size exceeding √(2p) must contain a zero-sum subset. His proof used polynomial methods. Szemerédi then settled the general case in 1970, proving the conjecture for all N by showing that large subsets in any cyclic group have this property. This resolved Problem #540 completely.\n\nSubsequent work refined the constants. Hamidoune and Zémor (1996) showed that (1+o(1))·√(2N) works asymptotically for arbitrary finite abelian groups. Balandraud (2012) achieved the definitive result for primes: √(2p) is the exact threshold, meaning sets just below this size can avoid zero-sums, but any set at or above it cannot. The optimal constant is thus √2 for primes and asymptotically √2 in general.",

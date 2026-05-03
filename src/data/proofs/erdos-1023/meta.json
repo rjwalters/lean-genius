@@ -27,7 +27,8 @@
     "axiomCount": 5,
     "lineCount": 366,
     "assumptions": "5 axioms: problem_447_solution, stirling_central, asymptoticConstant, and 2 more. See Lean source for complete statements.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 17
   },
   "overview": {
     "historicalContext": "Erdős Problem #1023 asks about union-free families: collections of subsets of {1,...,n} where no member equals the union of other members. This is a fundamental question in extremal set theory, connecting to Sperner's theorem and the study of antichains. Erdős posed the question of whether the maximum size F(n) grows asymptotically as c · 2^n / √n for some constant c > 0.\n\nThe key insight is that antichains (families where no set contains another) are automatically union-free, since a union of two or more distinct sets strictly contains each of them. By Sperner's theorem, the largest antichain in the power set of {1,...,n} is the middle layer consisting of all sets of size ⌊n/2⌋, which has C(n, ⌊n/2⌋) elements. This gives the lower bound F(n) ≥ C(n, ⌊n/2⌋).\n\nErdős and Kleitman proved the matching upper bound F(n) ≤ C(n, ⌊n/2⌋), establishing that F(n) = C(n, ⌊n/2⌋) exactly. By Stirling's approximation, C(n, ⌊n/2⌋) ~ √(2/π) · 2^n / √n, confirming the conjectured asymptotic form with c = √(2/π) ≈ 0.798. Hunter later observed that this result also follows from the solution to Erdős Problem #447 on 2-union-free families, since every union-free family is 2-union-free.",

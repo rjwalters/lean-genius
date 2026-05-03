@@ -59,7 +59,8 @@
     "dateAdded": "2025-12-29",
     "lineCount": 358,
     "assumptions": "1 axiom: greens_theorem_rectangle. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "George Green (1793–1841) was a self-taught British mathematician who published his landmark 'An Essay on the Application of Mathematical Analysis to the Theories of Electricity and Magnetism' in 1828, printed privately in only 52 copies. The work introduced what is now called Green's theorem, Green's function, and the concept of potential. It was largely ignored until William Thomson (Lord Kelvin) rediscovered it in 1845 and brought it to wider attention.\n\nThe theorem is the 2-dimensional special case of the generalized Stokes' theorem $\\int_{\\partial M} \\omega = \\int_M d\\omega$, first stated in full generality by Élie Cartan in the language of differential forms. In the standard formulation, it relates the circulation $\\oint_C \\mathbf{F} \\cdot d\\mathbf{r}$ of a vector field around a closed curve to the integral of the curl over the enclosed region.\n\nGreen's theorem is fundamental to electromagnetism (Maxwell's equations), fluid dynamics (vorticity and circulation), and complex analysis (Cauchy's integral theorem as a consequence). It appears as #21 on Wiedijk's list of 100 greatest theorems.",

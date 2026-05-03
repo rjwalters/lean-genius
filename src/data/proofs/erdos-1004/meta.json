@@ -23,7 +23,8 @@
     "axiomCount": 3,
     "lineCount": 609,
     "assumptions": "Three axioms: EPS87 upper bound (eps87_theorem: consolidated existential for constant, threshold, and bound), existence of fixed-length distinct runs (longer_runs_need_larger_n), and asymptotic count of distinct totient values (distinct_totients_asymptotic, Erdős 1935/Ford 1998). eps87_constant, eps87_threshold derived as noncomputable defs; eps87_constant_pos, eps87_upper_bound derived as theorems. 0 sorries remain.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 30
   },
   "overview": {
     "historicalContext": "Euler's totient function $\\varphi(n)$ — counting integers $1 \\leq k \\leq n$ coprime to $n$ — has been studied since Euler's 1763 work on modular arithmetic. Its value distribution is rich: by the prime number theorem, $\\varphi(p) = p - 1$ for primes, but composite numbers introduce collisions like $\\varphi(3) = \\varphi(4) = \\varphi(6) = 2$. Carmichael conjectured in 1907 that every value in the range of $\\varphi$ is attained at least twice, a conjecture still open after over a century. In their influential 1987 paper \"On locally repeated values of certain arithmetic functions, III,\" Erdős, Pomerance, and Sárközy (EPS) studied how often consecutive values of $\\varphi$ can be distinct. They proved the striking upper bound: if $\\varphi(n+1), \\ldots, \\varphi(n+K)$ are all distinct, then $K \\leq n/\\exp(c(\\log n)^{1/3})$ for some $c > 0$. This uses deep results on smooth number estimates (related to the de Bruijn $\\Psi$ function). Problem 1004 asks whether the complementary lower bound holds: can we always find runs of length $(\\log x)^c$ with distinct totient values? The analogous Problem 945 asks the same for the divisor function $\\tau(n)$. Both remain open.",

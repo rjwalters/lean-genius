@@ -63,7 +63,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 256,
-    "assumptions": "3 axioms: liuSawhney_constant_bounds (0.9 < c < 0.92), liuSawhney_asymptotic (full exponential growth rate 2^{(c+o(1))N}), erdos_297_answer (subexponential growth confirmed). See Lean source for complete statements."
+    "assumptions": "3 axioms: liuSawhney_constant_bounds (0.9 < c < 0.92), liuSawhney_asymptotic (full exponential growth rate 2^{(c+o(1))N}), erdos_297_answer (subexponential growth confirmed). See Lean source for complete statements.",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "**Erdős Problem #297: Egyptian Fractions Summing to 1**\n\nThis problem, originally posed by Erdős and Graham [ErGr80, p.36], asks a deceptively simple counting question: among all subsets of {1,...,N}, how many have the property that the sum of their reciprocals equals exactly 1? Examples include {1}, {2,3,6}, and {2,4,5,20}.\n\nThe key question was the exponential growth rate: does the count grow like 2^{cN} for some constant c < 1 (meaning exponentially fewer than all 2^N subsets), or does it approach 2^N (meaning \"most\" subsets work)? The intuition that c < 1 comes from the divergence of the harmonic series: since the expected harmonic sum of a random subset is approximately (log N)/2, which grows without bound, most random subsets vastly overshoot the target of 1.\n\nA precursor appeared on MathOverflow in 2017, when Mikhail Tikhomirov asked about subsets with sum at most 1. Lucia, RaphaelB4, and js21 sketched proofs of the correct asymptotic for that variant, building confidence that c < 1 for the exact-sum version too.",

@@ -64,7 +64,8 @@
     ],
     "axiomCount": 4,
     "assumptions": "4 axiom declarations: dickman_function (Dickman rho function definition), infinitely_many_exist (Schinzel/Meza: infinitely many consecutive smooth pairs exist), teravainen_log_density (Teravaeinen 2018: logarithmic density equals rho(1/alpha)*rho(1/beta)), wang_conditional (Wang 2021: natural density under Elliott-Halberstam conjecture). Former axioms lpf_divides, lpf_prime, lpf_of_prime, dickman_at_one, dickman_at_two, dickman_positive, dickman_decreasing, dickman_theorem, elliott_halberstam_conjecture, schinzel_product now proved as theorems or definitions.",
-    "lineCount": 259
+    "lineCount": 259,
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Smooth numbers — integers whose prime factors are all 'small' — have been central to analytic number theory since Karl Dickman's 1930 paper 'On the frequency of numbers containing prime factors of a certain relative magnitude', which established the density $\\rho(1/\\alpha)$ for $\\alpha$-smooth numbers. The Dickman function $\\rho$ was later studied rigorously by Nicolaas de Bruijn (1951), who gave precise asymptotic expansions. Erdős Problem #928 asks about a natural bivariate extension: when both $n$ and $n+1$ are smooth. The heuristic that consecutive integers should behave independently (since $\\gcd(n, n+1) = 1$) suggests density $\\rho(1/\\alpha)\\rho(1/\\beta)$. Andrzej Schinzel (1967) proved infinitely many such pairs exist using sieve methods applied to $P(n(n+1))$. The breakthrough came from Joni Teräväinen (2018), who established the logarithmic density using the pretentious approach to multiplicative functions developed by Granville and Soundararajan. Zhiwei Wang (2021) proved the natural density conditionally, assuming the Elliott-Halberstam conjecture for friable integers. The unconditional natural density remains one of the most natural open questions in the theory of smooth numbers.",

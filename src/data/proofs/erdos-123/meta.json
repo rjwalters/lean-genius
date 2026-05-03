@@ -1,10 +1,10 @@
 {
   "id": "erdos-123",
-  "title": "Erd\u0151s #123: d-Complete Sequences",
+  "title": "Erdős #123: d-Complete Sequences",
   "slug": "erdos-123",
-  "description": "Is the set {a^i\u00b7b^j\u00b7c^k : i,j,k \u2265 0} d-complete for pairwise coprime a,b,c? OPEN in general; {2^k\u00b73^l} case is SOLVED.",
+  "description": "Is the set {a^i·b^j·c^k : i,j,k ≥ 0} d-complete for pairwise coprime a,b,c? OPEN in general; {2^k·3^l} case is SOLVED.",
   "meta": {
-    "author": "Erd\u0151s-Lewin",
+    "author": "Erdős-Lewin",
     "sourceUrl": "https://erdosproblems.com/123",
     "date": "1992",
     "status": "axiomatized",
@@ -24,19 +24,20 @@
     "axiomCount": 3,
     "lineCount": 318,
     "assumptions": "3 axiom(s): powers23_repr, erdos_123_conjecture, erdos_lewin_357. See Lean source for complete statements.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 22
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #123 concerns d-complete sequences \u2014 sets where every sufficiently large integer is the sum of distinct elements forming a divisibility antichain (no element divides another). Erd\u0151s introduced this concept in 1992, calling it a 'nice and difficult' problem.\n\nThe simplest case {2^k \u00b7 3^l} (3-smooth numbers) was quickly proved by Jansen using an elegant even/odd induction: for even n, halve and double all summands; for odd n, subtract the largest power of 3 and recurse on the even remainder. The parity separation \u2014 3 provides odd elements while 2 provides the doubling \u2014 is the key insight.\n\nErd\u0151s and Lewin (1996) extended this to {3^i \u00b7 5^j \u00b7 7^k} using more complex residue analysis, since all three generators are odd (no parity trick available). The general conjecture for arbitrary pairwise coprime triples remains OPEN.\n\nThe formalization was processed by Aristotle, which verified the structural lemmas (divisibility characterization, antichain preservation, parity arguments) but flagged the main representation lemma powers23_repr as an unexpected axiom \u2014 the full Finset bookkeeping was not completed.",
-    "problemStatement": "Let a, b, c be three pairwise coprime integers > 1. Is the set {a^i \u00b7 b^j \u00b7 c^k : i, j, k \u2265 0} d-complete?\n\nA set A is **d-complete** if every sufficiently large integer n can be written as n = a\u2081 + a\u2082 + \u22ef + a_r where a_i \u2208 A, the a_i are distinct, and no a_i divides a_j for i \u2260 j.\n\n**Status**: OPEN in general. Specific cases like {2^k \u00b7 3^l} and {3^i \u00b7 5^j \u00b7 7^k} are SOLVED.",
-    "text": "Is the set {a^i\u00b7b^j\u00b7c^k : i,j,k \u2265 0} d-complete for pairwise coprime a,b,c? OPEN in general; {2^k\u00b73^l} case is SOLVED.",
-    "proofStrategy": "The formalization proves {2^k \u00b7 3^l} is d-complete via a layered approach: (1) Define IsDComplete using Filter.Eventually atTop, Finset, IsAntichain (\u00b7 \u2223 \u00b7), and Finset.sum id. (2) Define Powers23 = {n | \u2203 k l, n = 2^k * 3^l}. (3) Prove the divisibility characterization Powers23_dvd_iff (fully verified): 2^k\u2081\u00b73^l\u2081 | 2^k\u2082\u00b73^l\u2082 iff k\u2081 \u2264 k\u2082 \u2227 l\u2081 \u2264 l\u2082, using coprimality of 2 and 3. (4) Prove antichain helper Powers23_antichain_pair. (5) Define largestPow3 and prove parity lemmas (pow_three_odd, odd_sub_largest_pow3_even). (6) Axiomatize powers23_repr (the inductive step). (7) Prove powers_2_3_dComplete from powers23_repr. (8) State the OPEN general conjecture erdos_123_conjecture and axiomatize erdos_lewin_357.",
+    "historicalContext": "Erdős Problem #123 concerns d-complete sequences — sets where every sufficiently large integer is the sum of distinct elements forming a divisibility antichain (no element divides another). Erdős introduced this concept in 1992, calling it a 'nice and difficult' problem.\n\nThe simplest case {2^k · 3^l} (3-smooth numbers) was quickly proved by Jansen using an elegant even/odd induction: for even n, halve and double all summands; for odd n, subtract the largest power of 3 and recurse on the even remainder. The parity separation — 3 provides odd elements while 2 provides the doubling — is the key insight.\n\nErdős and Lewin (1996) extended this to {3^i · 5^j · 7^k} using more complex residue analysis, since all three generators are odd (no parity trick available). The general conjecture for arbitrary pairwise coprime triples remains OPEN.\n\nThe formalization was processed by Aristotle, which verified the structural lemmas (divisibility characterization, antichain preservation, parity arguments) but flagged the main representation lemma powers23_repr as an unexpected axiom — the full Finset bookkeeping was not completed.",
+    "problemStatement": "Let a, b, c be three pairwise coprime integers > 1. Is the set {a^i · b^j · c^k : i, j, k ≥ 0} d-complete?\n\nA set A is **d-complete** if every sufficiently large integer n can be written as n = a₁ + a₂ + ⋯ + a_r where a_i ∈ A, the a_i are distinct, and no a_i divides a_j for i ≠ j.\n\n**Status**: OPEN in general. Specific cases like {2^k · 3^l} and {3^i · 5^j · 7^k} are SOLVED.",
+    "text": "Is the set {a^i·b^j·c^k : i,j,k ≥ 0} d-complete for pairwise coprime a,b,c? OPEN in general; {2^k·3^l} case is SOLVED.",
+    "proofStrategy": "The formalization proves {2^k · 3^l} is d-complete via a layered approach: (1) Define IsDComplete using Filter.Eventually atTop, Finset, IsAntichain (· ∣ ·), and Finset.sum id. (2) Define Powers23 = {n | ∃ k l, n = 2^k * 3^l}. (3) Prove the divisibility characterization Powers23_dvd_iff (fully verified): 2^k₁·3^l₁ | 2^k₂·3^l₂ iff k₁ ≤ k₂ ∧ l₁ ≤ l₂, using coprimality of 2 and 3. (4) Prove antichain helper Powers23_antichain_pair. (5) Define largestPow3 and prove parity lemmas (pow_three_odd, odd_sub_largest_pow3_even). (6) Axiomatize powers23_repr (the inductive step). (7) Prove powers_2_3_dComplete from powers23_repr. (8) State the OPEN general conjecture erdos_123_conjecture and axiomatize erdos_lewin_357.",
     "keyInsights": [
-      "**d-completeness combines additive and multiplicative constraints**: Representations must be antichain sums \u2014 distinct elements where no element divides another. This mixes additive number theory (sums) with divisibility structure (antichains in the partial order).",
+      "**d-completeness combines additive and multiplicative constraints**: Representations must be antichain sums — distinct elements where no element divides another. This mixes additive number theory (sums) with divisibility structure (antichains in the partial order).",
       "**Parity separation via coprimality**: The {2,3} proof works because 2 provides the doubling operation (preserves membership and antichains) while 3 provides odd elements for parity adjustment. This clean separation relies on gcd(2,3) = 1 and 2 being the unique even prime.",
-      "**Product order characterizes divisibility**: For 3-smooth numbers, 2^a\u00b73^b | 2^c\u00b73^d iff (a,b) \u2264 (c,d) componentwise. Antichains in the divisibility order correspond to incomparable pairs in \u2115\u00b2, making the antichain condition geometric.",
+      "**Product order characterizes divisibility**: For 3-smooth numbers, 2^a·3^b | 2^c·3^d iff (a,b) ≤ (c,d) componentwise. Antichains in the divisibility order correspond to incomparable pairs in ℕ², making the antichain condition geometric.",
       "**Doubling preserves antichains**: If S is a divisibility antichain, then 2S is also an antichain (by cancellation: a|b iff 2a|2b). This structural lemma is the engine of the even-case induction.",
-      "**General case resists the parity trick**: For odd triples like {5,7,11}, no generator has a parity role. The Erd\u0151s-Lewin proof of {3,5,7} uses Chinese Remainder Theorem-style residue analysis, but a uniform approach for all coprime triples remains elusive."
+      "**General case resists the parity trick**: For odd triples like {5,7,11}, no generator has a parity role. The Erdős-Lewin proof of {3,5,7} uses Chinese Remainder Theorem-style residue analysis, but a uniform approach for all coprime triples remains elusive."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -50,21 +51,21 @@
       "title": "Core Definitions",
       "startLine": 26,
       "endLine": 40,
-      "summary": "IsDComplete (\u2200\u1da0 n in atTop, \u2203 antichain sum), Powers23 = {2^k \u00b7 3^l}"
+      "summary": "IsDComplete (∀ᶠ n in atTop, ∃ antichain sum), Powers23 = {2^k · 3^l}"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties of Powers23",
       "startLine": 41,
       "endLine": 69,
-      "summary": "Membership lemmas (1, 2, 3, 4, 6, 8, 9 \u2208 Powers23), double_mem_Powers23, pow_two/three_mem_Powers23"
+      "summary": "Membership lemmas (1, 2, 3, 4, 6, 8, 9 ∈ Powers23), double_mem_Powers23, pow_two/three_mem_Powers23"
     },
     {
       "id": "divisibility",
       "title": "Divisibility Characterization",
       "startLine": 70,
       "endLine": 132,
-      "summary": "Powers23_dvd_iff (2^k\u2081\u00b73^l\u2081 | 2^k\u2082\u00b73^l\u2082 \u2194 k\u2081\u2264k\u2082 \u2227 l\u2081\u2264l\u2082, fully proved), Powers23_antichain_pair"
+      "summary": "Powers23_dvd_iff (2^k₁·3^l₁ | 2^k₂·3^l₂ ↔ k₁≤k₂ ∧ l₁≤l₂, fully proved), Powers23_antichain_pair"
     },
     {
       "id": "induction-helpers",
@@ -78,7 +79,7 @@
       "title": "Main Theorem",
       "startLine": 181,
       "endLine": 222,
-      "summary": "powers23_repr (axiom: \u2200 n \u2265 1, \u2203 antichain representation), powers_2_3_dComplete (proved from axiom)"
+      "summary": "powers23_repr (axiom: ∀ n ≥ 1, ∃ antichain representation), powers_2_3_dComplete (proved from axiom)"
     },
     {
       "id": "general-conjecture",
@@ -96,11 +97,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #123 asks whether {a^i \u00b7 b^j \u00b7 c^k} is d-complete for all pairwise coprime a, b, c > 1. The formalization proves the {2^k \u00b7 3^l} case via even/odd induction exploiting the parity separation between generators 2 and 3. The divisibility characterization (product order on exponent pairs) and antichain preservation under doubling are fully verified. The general conjecture and the Erd\u0151s-Lewin {3,5,7} result are axiomatized. The one axiom (powers23_repr) captures the inductive step whose full Finset bookkeeping was not completed.",
-    "implications": "**Theoretical Significance**: The d-completeness framework connects additive number theory with lattice theory and divisibility.\n\nThe proof technique \u2014 using coprimality to create a parity-based modular decomposition \u2014 suggests that d-completeness may hold whenever the generators provide sufficient 'modular coverage'. For three pairwise coprime generators a, b, c, the Chinese Remainder Theorem guarantees representability of residues mod abc, but translating this to d-complete representations requires controlling the antichain condition, which is the main open challenge.",
+    "summary": "Erdős Problem #123 asks whether {a^i · b^j · c^k} is d-complete for all pairwise coprime a, b, c > 1. The formalization proves the {2^k · 3^l} case via even/odd induction exploiting the parity separation between generators 2 and 3. The divisibility characterization (product order on exponent pairs) and antichain preservation under doubling are fully verified. The general conjecture and the Erdős-Lewin {3,5,7} result are axiomatized. The one axiom (powers23_repr) captures the inductive step whose full Finset bookkeeping was not completed.",
+    "implications": "**Theoretical Significance**: The d-completeness framework connects additive number theory with lattice theory and divisibility.\n\nThe proof technique — using coprimality to create a parity-based modular decomposition — suggests that d-completeness may hold whenever the generators provide sufficient 'modular coverage'. For three pairwise coprime generators a, b, c, the Chinese Remainder Theorem guarantees representability of residues mod abc, but translating this to d-complete representations requires controlling the antichain condition, which is the main open challenge.",
     "openQuestions": [
       "Is the general conjecture true for all pairwise coprime a, b, c > 1? (The main OPEN problem)",
-      "What is the threshold N\u2080 beyond which all n \u2265 N\u2080 have d-complete representations from PowersABC(a,b,c)?",
+      "What is the threshold N₀ beyond which all n ≥ N₀ have d-complete representations from PowersABC(a,b,c)?",
       "Can the proof be extended from 3 to 4 or more coprime generators?",
       "Is there a uniform approach (not relying on case-specific modular arithmetic) for all pairwise coprime triples?",
       "What is the connection between d-completeness and Brown's criterion for complete sequences?"
@@ -127,26 +128,26 @@
     {
       "targetId": "erdos-11",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, number-theory"
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
     },
     {
       "targetId": "erdos-1103",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, number-theory"
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
     },
     {
       "targetId": "erdos-1107",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, number-theory"
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
     }
   ],
   "references": [
     {
       "key": "Er62b",
       "authors": [
-        "P. Erd\u0151s"
+        "P. Erdős"
       ],
-      "title": "On a problem of Gr\u00fcnbaum",
+      "title": "On a problem of Grünbaum",
       "venue": "Canadian Mathematical Bulletin",
       "year": "1964",
       "volume": "7",

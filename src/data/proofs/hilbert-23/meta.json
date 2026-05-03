@@ -47,7 +47,8 @@
     "axiomCount": 1,
     "lineCount": 328,
     "assumptions": "Structure-encoded assumption: smooth : True in Lagrangian structure (smoothness condition). euler_lagrange_weak_form and hilbert_23_status were converted to block comments. The calculus_of_variations_active theorem proves only (1:ℕ)+1=2. The Euler-Lagrange equation and Pontryagin maximum principle remain as comment documentation. Classified axiomatized: main variational results are not formalized.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Hilbert's twenty-third problem (1900) is unique among the 23 problems: it is not a specific question but a **research program**. Hilbert called for 'further development of the methods of the calculus of variations.'\n\nThe calculus of variations originated with the brachistochrone problem (1696): what curve allows fastest descent under gravity? Bernoulli's solution led to a new field of mathematics.\n\nMajor developments responding to Hilbert's call:\n\n- **Direct Methods** (Hilbert 1900, Tonelli 1920s): Prove existence without solving ODEs\n- **Weak Solutions** (Sobolev 1930s): Generalized derivatives in Sobolev spaces\n- **Optimal Control** (Pontryagin 1956): Control theory via the maximum principle\n- **Geometric Measure Theory** (Federer-Fleming 1960s): Minimal surfaces and currents\n- **Gamma-Convergence** (De Giorgi 1970s): Variational limits and homogenization",

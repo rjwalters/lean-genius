@@ -24,7 +24,8 @@
     "axiomCount": 9,
     "assumptions": "9 axioms: lambda_2_2, lambda_3_2, lambda_4_2, lambda_5_2, lambda_6_2, lambda_7_2, and 3 more. 0 sorries.",
     "lineCount": 686,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 49
   },
   "overview": {
     "historicalContext": "D.H. Lehmer and Emma Lehmer initiated this problem in their 1962 paper 'On runs of residues,' proving $\\Lambda(2,2) = 9$ with an elegant argument exploiting Legendre symbol multiplicativity. In the 1960s, extensive machine computations by Dunton, Bierstedt, Mills, Brillhart, Selfridge, and the Lehmers found exact values $\\Lambda(k, 2)$ for $k \\leq 7$ and $\\Lambda(3, 3) = 23532$ --- among the earliest applications of electronic computers to number theory. The Lehmers also proved the remarkable parity dichotomy: $\\Lambda(k, 3) = \\infty$ for all even $k$, since $(-1)^k = 1$ creates a structural obstruction. Graham (1964) proved the definitive result that $\\Lambda(k, m) = \\infty$ for $m \\geq 4$, making $m \\leq 3$ the only interesting cases. The major breakthrough came from Hildebrand (1991), who used character sum estimates and the large sieve inequality to prove $\\Lambda(k, 2) < \\infty$ for all $k$, completely resolving Question 1. The remaining open question --- whether $\\Lambda(k, 3)$ is finite for odd $k \\geq 5$ --- lies at the boundary of current analytic number theory, as Hildebrand's methods do not extend from $m = 2$ to $m = 3$.",

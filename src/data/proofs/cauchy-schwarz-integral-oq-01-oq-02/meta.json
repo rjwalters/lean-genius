@@ -1,8 +1,8 @@
 {
   "id": "cauchy-schwarz-integral-oq-01-oq-02",
-  "title": "Riesz-Thorin Interpolation from H\u00f6lder's Inequality",
+  "title": "Riesz-Thorin Interpolation from Hölder's Inequality",
   "slug": "cauchy-schwarz-integral-oq-01-oq-02",
-  "description": "Formalizes the connection between H\u00f6lder's inequality and the Riesz-Thorin interpolation theorem, showing H\u00f6lder provides endpoint estimates while the full proof requires the three-lines lemma.",
+  "description": "Formalizes the connection between Hölder's inequality and the Riesz-Thorin interpolation theorem, showing Hölder provides endpoint estimates while the full proof requires the three-lines lemma.",
   "meta": {
     "author": "Riesz (1927), Thorin (1948), formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Riesz%E2%80%93Thorin_theorem",
@@ -24,12 +24,12 @@
     "mathlibDependencies": [
       {
         "theorem": "ENNReal.lintegral_mul_le_Lp_mul_Lq",
-        "description": "H\u00f6lder's inequality for the extended Lebesgue integral",
+        "description": "Hölder's inequality for the extended Lebesgue integral",
         "module": "Mathlib.MeasureTheory.Integral.MeanInequalities"
       },
       {
         "theorem": "Real.HolderConjugate",
-        "description": "H\u00f6lder conjugate exponent pair structure",
+        "description": "Hölder conjugate exponent pair structure",
         "module": "Mathlib.Analysis.MeanInequalities"
       },
       {
@@ -46,36 +46,37 @@
     "originalContributions": [
       "Interpolated exponent infrastructure (interpRecip, interpExp) with positivity proofs",
       "Conjugate preservation under interpolation (interpRecip_sum_conj)",
-      "Interpolated norm bound M\u2080^(1-\u03b8)\u00b7M\u2081^\u03b8 with log-convexity proof",
+      "Interpolated norm bound M₀^(1-θ)·M₁^θ with log-convexity proof",
       "Monotonicity of interpolated norm (interpNorm_mono_of_le)",
       "Scaling and submultiplicativity of interpolated norm (interpNorm_scale, interpNorm_mul)",
       "Weighted AM-GM for interpolated norm (interpNorm_am_gm)",
       "Hadamard three-lines lemma statement with strip geometry (closedStrip, openStrip)",
-      "Three-lines \u2192 log-convexity bridge theorem",
+      "Three-lines → log-convexity bridge theorem",
       "LpLqBounded structure for operator norm bounds",
-      "H\u00f6lder as endpoint bound for Riesz-Thorin (holder_gives_endpoint)",
+      "Hölder as endpoint bound for Riesz-Thorin (holder_gives_endpoint)",
       "Hausdorff-Young exponent computation and norm bound",
       "Young's convolution inequality exponent conditions and concrete examples",
       "Interpolation space embedding exponent difference",
       "Formal statement of Riesz-Thorin theorem (axiom: requires three-lines lemma)",
-      "Complete documentation of H\u00f6lder \u2192 Riesz-Thorin proof hierarchy"
+      "Complete documentation of Hölder → Riesz-Thorin proof hierarchy"
     ],
     "dateAdded": "2026-03-06",
     "axiomCount": 2,
     "lineCount": 600,
     "assumptions": "2 axiom(s): hadamard_three_lines, riesz_thorin. See Lean source for complete statements.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 29
   },
   "overview": {
-    "historicalContext": "**Riesz-Thorin Interpolation (1927/1948)**\n\nMarcel Riesz proved the first interpolation theorem for bilinear forms in 1927. Olof Thorin simplified and extended the proof in 1948 using the Hadamard three-lines lemma from complex analysis.\n\nThe theorem states: if a linear operator T is bounded from $L^{p_0}$ to $L^{q_0}$ with norm $M_0$, and from $L^{p_1}$ to $L^{q_1}$ with norm $M_1$, then for any $\\theta \\in [0,1]$, T is bounded from $L^{p_\\theta}$ to $L^{q_\\theta}$ with norm $\\leq M_0^{1-\\theta} \\cdot M_1^\\theta$, where the interpolated exponents satisfy $1/p_\\theta = (1-\\theta)/p_0 + \\theta/p_1$.\n\n**Connection to H\u00f6lder**: H\u00f6lder's inequality provides the endpoint estimates (the $M_0$ and $M_1$ bounds), while the three-lines lemma provides the interpolation between endpoints.",
-    "problemStatement": "**Open Question (OQ-01-OQ-02)**\n\nCan Riesz-Thorin interpolation be derived from H\u00f6lder's inequality in Lean 4?\n\n**Answer**: Partially. H\u00f6lder provides crucial ingredients:\n1. Endpoint operator norm bounds ($\\|Tf\\|_q \\leq M \\cdot \\|f\\|_p$)\n2. $L^p$ space structure (Minkowski's inequality)\n3. $L^p$-$L^q$ duality\n\nBut the full Riesz-Thorin proof additionally requires the Hadamard three-lines lemma (complex analysis), which is not yet in Mathlib.",
-    "text": "Formalizes the connection between H\u00f6lder's inequality and the Riesz-Thorin interpolation theorem, showing H\u00f6lder provides endpoint estimates while the full proof requires the three-lines lemma.",
-    "proofStrategy": "**Formalization Strategy**\n\n1. **Exponent interpolation**: Define $1/p_\\theta = (1-\\theta)/p_0 + \\theta/p_1$ and prove positivity, endpoint recovery, and conjugate preservation.\n\n2. **Norm bound infrastructure**: Define $M_\\theta = M_0^{1-\\theta} \\cdot M_1^\\theta$ and prove log-convexity, monotonicity, and endpoint recovery.\n\n3. **H\u00f6lder connection**: Show that H\u00f6lder's inequality gives the endpoint operator norm bounds.\n\n4. **Riesz-Thorin statement**: Axiomatize the full theorem (requires three-lines lemma).\n\n5. **Consequences**: Derive Hausdorff-Young exponents as a corollary.",
+    "historicalContext": "**Riesz-Thorin Interpolation (1927/1948)**\n\nMarcel Riesz proved the first interpolation theorem for bilinear forms in 1927. Olof Thorin simplified and extended the proof in 1948 using the Hadamard three-lines lemma from complex analysis.\n\nThe theorem states: if a linear operator T is bounded from $L^{p_0}$ to $L^{q_0}$ with norm $M_0$, and from $L^{p_1}$ to $L^{q_1}$ with norm $M_1$, then for any $\\theta \\in [0,1]$, T is bounded from $L^{p_\\theta}$ to $L^{q_\\theta}$ with norm $\\leq M_0^{1-\\theta} \\cdot M_1^\\theta$, where the interpolated exponents satisfy $1/p_\\theta = (1-\\theta)/p_0 + \\theta/p_1$.\n\n**Connection to Hölder**: Hölder's inequality provides the endpoint estimates (the $M_0$ and $M_1$ bounds), while the three-lines lemma provides the interpolation between endpoints.",
+    "problemStatement": "**Open Question (OQ-01-OQ-02)**\n\nCan Riesz-Thorin interpolation be derived from Hölder's inequality in Lean 4?\n\n**Answer**: Partially. Hölder provides crucial ingredients:\n1. Endpoint operator norm bounds ($\\|Tf\\|_q \\leq M \\cdot \\|f\\|_p$)\n2. $L^p$ space structure (Minkowski's inequality)\n3. $L^p$-$L^q$ duality\n\nBut the full Riesz-Thorin proof additionally requires the Hadamard three-lines lemma (complex analysis), which is not yet in Mathlib.",
+    "text": "Formalizes the connection between Hölder's inequality and the Riesz-Thorin interpolation theorem, showing Hölder provides endpoint estimates while the full proof requires the three-lines lemma.",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **Exponent interpolation**: Define $1/p_\\theta = (1-\\theta)/p_0 + \\theta/p_1$ and prove positivity, endpoint recovery, and conjugate preservation.\n\n2. **Norm bound infrastructure**: Define $M_\\theta = M_0^{1-\\theta} \\cdot M_1^\\theta$ and prove log-convexity, monotonicity, and endpoint recovery.\n\n3. **Hölder connection**: Show that Hölder's inequality gives the endpoint operator norm bounds.\n\n4. **Riesz-Thorin statement**: Axiomatize the full theorem (requires three-lines lemma).\n\n5. **Consequences**: Derive Hausdorff-Young exponents as a corollary.",
     "keyInsights": [
-      "**H\u00f6lder is necessary but not sufficient**: H\u00f6lder gives endpoint bounds, but the interpolation between endpoints requires the Hadamard three-lines lemma from complex analysis.",
-      "**Exponent interpolation preserves conjugacy**: If (p\u2080,q\u2080) and (p\u2081,q\u2081) are H\u00f6lder conjugate pairs, then the interpolated pair (p_\u03b8,q_\u03b8) is also H\u00f6lder conjugate. This is proved algebraically.",
-      "**Log-convexity is the key property**: The norm bound M\u2080^(1-\u03b8)\u00b7M\u2081^\u03b8 is log-convex (linear in log scale), which is sharper than convexity.",
-      "**Hausdorff-Young follows by interpolating L\u00b9\u2192L\u221e and L\u00b2\u2192L\u00b2**: The Fourier transform satisfies \u2016f\u0302\u2016_\u221e \u2264 \u2016f\u2016_1 (trivial) and \u2016f\u0302\u2016_2 = \u2016f\u2016_2 (Plancherel). Riesz-Thorin interpolates to get \u2016f\u0302\u2016_{p'} \u2264 \u2016f\u2016_p for 1 \u2264 p \u2264 2.",
+      "**Hölder is necessary but not sufficient**: Hölder gives endpoint bounds, but the interpolation between endpoints requires the Hadamard three-lines lemma from complex analysis.",
+      "**Exponent interpolation preserves conjugacy**: If (p₀,q₀) and (p₁,q₁) are Hölder conjugate pairs, then the interpolated pair (p_θ,q_θ) is also Hölder conjugate. This is proved algebraically.",
+      "**Log-convexity is the key property**: The norm bound M₀^(1-θ)·M₁^θ is log-convex (linear in log scale), which is sharper than convexity.",
+      "**Hausdorff-Young follows by interpolating L¹→L∞ and L²→L²**: The Fourier transform satisfies ‖f̂‖_∞ ≤ ‖f‖_1 (trivial) and ‖f̂‖_2 = ‖f‖_2 (Plancherel). Riesz-Thorin interpolates to get ‖f̂‖_{p'} ≤ ‖f‖_p for 1 ≤ p ≤ 2.",
       "**The three-lines lemma gap**: The key missing piece for a full proof is the Hadamard three-lines lemma, which bounds the maximum of an analytic function on a strip by its boundary values."
     ],
     "prerequisites": [
@@ -90,7 +91,7 @@
       "title": "Module Overview",
       "startLine": 1,
       "endLine": 47,
-      "summary": "Documentation of Riesz-Thorin interpolation and its relationship to H\u00f6lder.",
+      "summary": "Documentation of Riesz-Thorin interpolation and its relationship to Hölder.",
       "mathContext": "Riesz-Thorin: if $T: L^{p_i} \\to L^{q_i}$ with bounds $M_i$, then $T: L^{p_\\theta} \\to L^{q_\\theta}$ with bound $M_0^{1-\\theta} M_1^\\theta$."
     },
     {
@@ -106,15 +107,15 @@
       "title": "Part II: Conjugate Exponent Preservation",
       "startLine": 101,
       "endLine": 126,
-      "summary": "Interpolated reciprocals sum to 1 when endpoints are H\u00f6lder conjugate.",
+      "summary": "Interpolated reciprocals sum to 1 when endpoints are Hölder conjugate.",
       "mathContext": "$1/p_i + 1/q_i = 1 \\Rightarrow 1/p_\\theta + 1/q_\\theta = 1$."
     },
     {
       "id": "endpoint-bounds",
-      "title": "Part III: H\u00f6lder-Based Endpoint Bounds",
+      "title": "Part III: Hölder-Based Endpoint Bounds",
       "startLine": 127,
       "endLine": 161,
-      "summary": "Defines LpLqBounded. Proves identity operator and H\u00f6lder endpoint bounds.",
+      "summary": "Defines LpLqBounded. Proves identity operator and Hölder endpoint bounds.",
       "mathContext": "$\\|Tf\\|_{q_i} \\leq M_i \\|f\\|_{p_i}$ at endpoints."
     },
     {
@@ -122,7 +123,7 @@
       "title": "Part IV: Log-Convexity of Norm Bound",
       "startLine": 162,
       "endLine": 247,
-      "summary": "interpNorm = M\u2080^(1-\u03b8)\u00b7M\u2081^\u03b8. Log-convexity, monotonicity, AM-GM, submultiplicativity.",
+      "summary": "interpNorm = M₀^(1-θ)·M₁^θ. Log-convexity, monotonicity, AM-GM, submultiplicativity.",
       "mathContext": "$\\log M_\\theta = (1-\\theta)\\log M_0 + \\theta \\log M_1$ (log-convex)."
     },
     {
@@ -143,11 +144,11 @@
     },
     {
       "id": "holder-connection",
-      "title": "Part VII: H\u00f6lder Connection",
+      "title": "Part VII: Hölder Connection",
       "startLine": 359,
       "endLine": 399,
-      "summary": "H\u00f6lder gives endpoint bounds. Chain: H\u00f6lder \u2192 endpoints \u2192 three-lines \u2192 Riesz-Thorin.",
-      "mathContext": "H\u00f6lder provides endpoint estimates; three-lines interpolates."
+      "summary": "Hölder gives endpoint bounds. Chain: Hölder → endpoints → three-lines → Riesz-Thorin.",
+      "mathContext": "Hölder provides endpoint estimates; three-lines interpolates."
     },
     {
       "id": "hausdorff-young",
@@ -178,13 +179,13 @@
       "title": "Part XI: Summary",
       "startLine": 549,
       "endLine": 600,
-      "summary": "Verification checklist and H\u00f6lder hierarchy documentation.",
-      "mathContext": "Cauchy-Schwarz $\\subset$ H\u00f6lder $\\to$ Riesz-Thorin $\\to$ Hausdorff-Young + Young."
+      "summary": "Verification checklist and Hölder hierarchy documentation.",
+      "mathContext": "Cauchy-Schwarz $\\subset$ Hölder $\\to$ Riesz-Thorin $\\to$ Hausdorff-Young + Young."
     }
   ],
   "conclusion": {
-    "summary": "This file partially answers OQ-01-OQ-02: H\u00f6lder's inequality provides the endpoint operator norm bounds and Lp space structure that Riesz-Thorin interpolation requires, but the full proof additionally needs the Hadamard three-lines lemma (complex analysis). The formalization includes 0 sorries, 2 axioms (hadamard_three_lines, riesz_thorin), and 28 proved theorems covering interpolation infrastructure, log-convexity, Hausdorff-Young exponents, Young's convolution, and space inclusions.",
-    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Partial derivation**: H\u00f6lder \u2192 endpoint bounds \u2192 Riesz-Thorin (with three-lines lemma) \u2192 Hausdorff-Young. H\u00f6lder is necessary but not sufficient alone.\n\n**2. Missing piece**: The Hadamard three-lines lemma for analytic functions on a strip is the key gap. Adding this to Mathlib would enable a complete Riesz-Thorin proof.\n\n3. **Proof hierarchy**: Young \u2192 H\u00f6lder \u2192 Minkowski \u2192 Lp structure \u2192 Riesz-Thorin endpoints + three-lines \u2192 interpolation \u2192 Hausdorff-Young.\n\n4. **Applications**: Riesz-Thorin yields Young's convolution inequality, Hausdorff-Young, and boundedness of Hilbert/Riesz transforms on intermediate Lp spaces.",
+    "summary": "This file partially answers OQ-01-OQ-02: Hölder's inequality provides the endpoint operator norm bounds and Lp space structure that Riesz-Thorin interpolation requires, but the full proof additionally needs the Hadamard three-lines lemma (complex analysis). The formalization includes 0 sorries, 2 axioms (hadamard_three_lines, riesz_thorin), and 28 proved theorems covering interpolation infrastructure, log-convexity, Hausdorff-Young exponents, Young's convolution, and space inclusions.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Partial derivation**: Hölder → endpoint bounds → Riesz-Thorin (with three-lines lemma) → Hausdorff-Young. Hölder is necessary but not sufficient alone.\n\n**2. Missing piece**: The Hadamard three-lines lemma for analytic functions on a strip is the key gap. Adding this to Mathlib would enable a complete Riesz-Thorin proof.\n\n3. **Proof hierarchy**: Young → Hölder → Minkowski → Lp structure → Riesz-Thorin endpoints + three-lines → interpolation → Hausdorff-Young.\n\n4. **Applications**: Riesz-Thorin yields Young's convolution inequality, Hausdorff-Young, and boundedness of Hilbert/Riesz transforms on intermediate Lp spaces.",
     "openQuestions": [
       "Can the Hadamard three-lines lemma be formalized in Lean 4 using Mathlib's complex analysis?",
       "Can the Marcinkiewicz interpolation theorem (weaker: only weak-type bounds) be formalized?",
@@ -212,7 +213,7 @@
   "references": [
     {
       "authors": "M. Riesz",
-      "title": "Sur les maxima des formes bilin\u00e9aires et sur les fonctionnelles lin\u00e9aires",
+      "title": "Sur les maxima des formes bilinéaires et sur les fonctionnelles linéaires",
       "year": "1927",
       "venue": "Acta Mathematica",
       "note": "Original interpolation theorem for bilinear forms"
@@ -221,7 +222,7 @@
       "authors": "G.O. Thorin",
       "title": "Convexity theorems generalizing those of M. Riesz and Hadamard",
       "year": "1948",
-      "venue": "Meddelanden fr\u00e5n Lunds Universitets Matematiska Seminarium",
+      "venue": "Meddelanden från Lunds Universitets Matematiska Seminarium",
       "note": "Simplified proof via complex analysis (three-lines lemma)"
     },
     {
@@ -241,7 +242,7 @@
     {
       "targetId": "cauchy-schwarz-integral-oq-01-oq-01",
       "relationship": "sibling",
-      "description": "Sibling open question from the same parent: H\u00f6lder's Inequality in eLpNorm Form"
+      "description": "Sibling open question from the same parent: Hölder's Inequality in eLpNorm Form"
     },
     {
       "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
@@ -251,12 +252,12 @@
     {
       "targetId": "cauchy-schwarz-integral",
       "relationship": "ancestor",
-      "description": "The Bunyakovsky-Schwarz integral inequality is the L\u00b2 special case of H\u00f6lder's inequality that this entry generalizes via Riesz-Thorin interpolation to arbitrary Lp spaces"
+      "description": "The Bunyakovsky-Schwarz integral inequality is the L² special case of Hölder's inequality that this entry generalizes via Riesz-Thorin interpolation to arbitrary Lp spaces"
     },
     {
       "targetId": "cauchy-schwarz",
       "relationship": "ancestor",
-      "description": "The discrete Cauchy-Schwarz inequality \u2014 the finite-dimensional inner product space origin of the entire H\u00f6lder/interpolation hierarchy formalized in this entry's Riesz-Thorin theorem"
+      "description": "The discrete Cauchy-Schwarz inequality — the finite-dimensional inner product space origin of the entire Hölder/interpolation hierarchy formalized in this entry's Riesz-Thorin theorem"
     }
   ],
   "sorries": 0

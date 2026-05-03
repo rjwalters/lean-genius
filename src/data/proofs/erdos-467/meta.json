@@ -52,7 +52,8 @@
     "axiomCount": 1,
     "lineCount": 250,
     "assumptions": "1 axiom: erdos_467_conjecture (the main open conjecture). CRT and Mertens estimate now fully proved.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 23
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph (p.93), asking whether the redundancy in prime residue classes — captured by the divergence of $\\sum 1/p$ — is sufficient to split primes into two halves that each independently cover everything. The original quantifier structure is subtle: 'for sufficiently large $x$' means $\\exists X,\\, \\forall x \\geq X$. The problem connects covering congruences (a classical Erdős theme) to the Chinese Remainder Theorem and Mertens' product estimates.",

@@ -68,7 +68,8 @@
       "Comparison test for series convergence"
     ],
     "lineCount": 680,
-    "assumptions": "1 axiom: erdos_68 (OPEN conjecture). Previously had perturbation_difference axiom, now proved via exp(1) bounds + factorialSum bounds."
+    "assumptions": "1 axiom: erdos_68 (OPEN conjecture). Previously had perturbation_difference axiom, now proved via exp(1) bounds + factorialSum bounds.",
+    "theoremCount": 33
   },
   "overview": {
     "historicalContext": "Erdős Problem #68 asks whether Σ_{n≥2} 1/(n!-1) is irrational. The problem appears in Erdős's papers from 1968, 1988, 1990, and 1997.\n\nDesmond Weisenberg observed that the sum can be rewritten as a double sum: Σ 1/(n!-1) = Σ_n Σ_k 1/(n!)^k, using the geometric series 1/(x-1) = Σ x^{-k}.\n\nErdős actually conjectured something stronger: that Σ 1/(n!+t) is transcendental for every integer t. The t=-1 case is this problem.\n\nThe decimal expansion is OEIS sequence A331373: 1.25349875... The difficulty contrasts sharply with the number e = Σ 1/n!, whose irrationality has been known since Euler (1737) and transcendence since Hermite (1873). The small perturbation of replacing n! with n!-1 disrupts the telescoping and algebraic identities that make e accessible, placing this problem beyond current methods in transcendence theory.",

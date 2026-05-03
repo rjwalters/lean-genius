@@ -68,7 +68,8 @@
     "axiomCount": 2,
     "lineCount": 556,
     "assumptions": "0 sorries remain. 2 axiom declarations: pham_zakharov_upper_bound (Pham-Zakharov 2024 upper bound), csaba_lower_bound (Csaba polynomial lower bound).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 26
   },
   "overview": {
     "historicalContext": "Erdős posed this problem around 1975, asking for the growth rate of the maximum non-dividing subset of $\\{1,\\ldots,N\\}$. He originally conjectured $F(N) < (\\log N)^{O(1)}$, i.e., that non-dividing sets must be extremely sparse. Straus dramatically disproved this by constructing non-dividing sets of size $\\exp(c\\sqrt{\\log N})$ with $c = \\sqrt{2/\\log 2} \\approx 1.699$, showing they are far denser than polylogarithmic. Erdős then asked the refined question: 'Is $F(N) > N^{1/2-o(1)}$?' This stood open for decades. Erdős, Lev, Rauzy, Sandor, and Sarkozy (ELRSS, 1999) proved the first strong upper bound $F(N) < 3\\sqrt{N} + 1$, and Csaba provided a polynomial lower bound $F(N) \\gg N^{1/5}$. The breakthrough came from Pham and Zakharov (2024), who proved $F(N) \\leq N^{1/4+o(1)}$ via a surprising connection: every non-dividing set is non-averaging (no element is the average of others), so upper bounds on non-averaging sets from additive combinatorics apply. Since $N^{1/4} < N^{1/2-\\varepsilon}$, the original question was answered NO. However, the exact growth rate remains open: the gap between $\\exp(c\\sqrt{\\log N})$ (subexponential lower bound from Straus) and $N^{1/4+o(1)}$ (polynomial upper bound from Pham-Zakharov) is enormous. Whether $F$ grows polynomially or subexponentially is completely unknown.",

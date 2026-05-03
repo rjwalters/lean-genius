@@ -46,7 +46,8 @@
       "Field extension degree: [ℚ(m^(1/n)) : ℚ] = n",
       "Non-perfect-power criterion: p | m but p² ∤ m implies m is not a perfect n-th power",
       "Concrete examples: ∛6, ∛10, ⁵√12, ∜30"
-    ]
+    ],
+    "theoremCount": 21
   },
   "overview": {
     "historicalContext": "Eisenstein's irreducibility criterion, published in 1850 by Ferdinand Gotthold Max Eisenstein (1823–1852) — a student of Gauss who died at age 29 — is one of the most powerful elementary tools in algebraic number theory. The criterion appeared around the same time in related work by Theodor Schönemann (1848), making it a case of simultaneous discovery. For a polynomial $X^n - m$, the criterion applies at any prime $p$ with $p \\mid m$ but $p^2 \\nmid m$, yielding irreducibility over $\\mathbb{Z}$.\n\nGauss's lemma — that primitive $\\mathbb{Z}$-irreducible polynomials are $\\mathbb{Q}$-irreducible — appears in Gauss's *Disquisitiones Arithmeticae* (1801, Art. 42). The combination of Eisenstein over $\\mathbb{Z}$ and transfer via Gauss's lemma is the canonical approach to proving irreducibility of $X^n - m$ over $\\mathbb{Q}$, and forms a reusable template in Dedekind's algebraic number theory.\n\nThis result generalizes the fundamental examples ($\\mathrm{minpoly}_{\\mathbb{Q}}(\\sqrt{2}) = X^2 - 2$, $\\mathrm{minpoly}_{\\mathbb{Q}}(\\sqrt[3]{2}) = X^3 - 2$) to all $n$-th roots of numbers with a squarefree prime factor, and is the key step in determining the Galois group of the splitting field of $X^n - m$ over $\\mathbb{Q}$.",

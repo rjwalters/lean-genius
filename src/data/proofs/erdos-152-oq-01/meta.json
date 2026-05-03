@@ -23,7 +23,8 @@
     "axiomCount": 0,
     "lineCount": 319,
     "assumptions": "None. All results fully proved. Open conjecture; supporting lemmas fully verified.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "Erdős Problem #152 asks about the structure of sumsets of Sidon sets. A Sidon set (B₂ set) has the property that all pairwise sums are distinct. This implies |A+A| = n(n+1)/2 for |A|=n. The sumset A+A occupies a range of size ~n², so there must be many gaps. This open question strengthens the pigeonhole argument from ≥ 1 to ≥ 2 isolated elements. Sidon sets were introduced by Simon Sidon in 1932 in the context of harmonic analysis and Fourier series; Erdős gave the first combinatorial treatment and proved the bound |A| = O(N^{1/2}) for Sidon subsets of {1,...,N} in 1944.",

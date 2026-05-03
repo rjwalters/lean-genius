@@ -29,7 +29,8 @@
       "d-torus definition and minimum modulus",
       "Dimension effect: n^d₁ < n^d₂ for d₁ < d₂",
       "Square-root cancellation analysis"
-    ]
+    ],
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Littlewood polynomials — polynomials with all coefficients in $\\{-1, +1\\}$ — have been studied since J.E. Littlewood's 1966 conjectures on their $L^4$ norms on the unit circle. Erdős Problem 525 (posed in the 1950s–60s) asks about the minimum modulus $m(f) = \\min_{|z|=1} |f(z)|$ for degree-$n$ Littlewood polynomials: can it be made as small as $n^{-1/2}$? The 1D problem was progressively resolved: Konyagin (1994) established $m(f) \\leq n^{-1/2+o(1)}$ almost surely for random sign choices, and Konyagin-Schlag (1999) gave the matching lower bound; Cook and Nguyen (2021) completed the picture with a precise limiting distribution. The multivariate generalization — polynomials on the $d$-torus $\\mathbb{T}^d$ with $\\pm 1$ coefficients on $n^d$ monomials — replaces the unit circle with a higher-dimensional torus and asks whether the square-root cancellation principle $m(f) \\approx n^{-d/2}$ still governs the minimum modulus. This problem for $d \\geq 2$ remains largely open.",

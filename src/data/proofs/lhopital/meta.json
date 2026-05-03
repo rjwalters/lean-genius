@@ -54,7 +54,8 @@
       "Basic real analysis: squeeze theorem and limit arithmetic"
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Johann Bernoulli discovered this rule around 1694 as part of his work on infinitesimal calculus, and communicated it privately to Guillaume de l'Hôpital, a French marquis and amateur mathematician. L'Hôpital paid Bernoulli an annual retainer of 300 livres for exclusive rights to Bernoulli's results, and published the rule in his 1696 textbook *Analyse des Infiniment Petits pour l'Intelligence des Lignes Courbes* — the first calculus textbook ever printed. After l'Hôpital's death in 1704, Bernoulli publicly claimed credit, sparking one of mathematics' most famous priority disputes. The rule became central to 18th-century analysis: Euler extended it systematically in his *Introductio in analysin infinitorum* (1748), and Cauchy later placed it on rigorous foundations using his generalized Mean Value Theorem. Today the result is a standard tool in real analysis and appears as entry #64 on Wiedijk's list of 100 greatest theorems. Mathlib formalizes several variants covering right limits, left limits, and limits at infinity.",

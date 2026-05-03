@@ -68,7 +68,8 @@
     ],
     "lineCount": 192,
     "assumptions": "None. Open conjecture; supporting lemmas fully verified.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 13
   },
   "overview": {
     "historicalContext": "Erdős posed this problem with Graham [ErGr80, p.61] and revisited it in [Er88c, p.102]. It belongs to a rich family of open irrationality problems about arithmetic sums. Euler's totient function φ(n), which counts integers coprime to n, has been studied since Euler (1763). The series ∑ φ(n)/2^n converges rapidly since φ(n) ≤ n and ∑ n/2^n = 2.\n\nThe decimal expansion is OEIS A256936, approximately 1.3240. Despite substantial progress on irrationality of specific constants (e^π: Nesterenko 1996, ζ(3): Apéry 1979), series involving multiplicative arithmetic functions like φ remain largely intractable. The problem is related to questions about ∑ f(n)/b^n for various arithmetic functions f and bases b.",

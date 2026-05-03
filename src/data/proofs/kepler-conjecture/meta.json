@@ -41,7 +41,8 @@
     "axiomCount": 10,
     "lineCount": 430,
     "assumptions": "10 axioms: hexagonalDensity2D_lt_one, thues_theorem, fccDensity_lt_one, and 7 more. See Lean source for complete statements.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "In 1611, Johannes Kepler conjectured that the face-centered cubic arrangement — the way grocers stack oranges — achieves the maximum possible density for packing congruent spheres in three-dimensional space. This seemingly simple question resisted proof for nearly 400 years.\n\nCarl Friedrich Gauss (1831) proved the weaker result that FCC is optimal among lattice packings, where sphere centers form a regular lattice. Axel Thue (1892) solved the two-dimensional analogue, showing that hexagonal packing is optimal for disks in the plane, with a rigorous proof later completed by László Fejes Tóth (1940).\n\nThe full Kepler Conjecture was finally proven by Thomas Hales in 1998, using a computer-assisted approach. The proof, spanning 250+ pages of mathematics and 40,000+ lines of computer code, reduced the problem to verifying approximately 5000 linear programming problems via a Delaunay star decomposition. After a four-year review by 12 referees, the proof was published in the Annals of Mathematics in 2005, though the referees noted they were '99% certain' of correctness — prompting Hales to pursue formal verification.\n\nThe Flyspeck project (2014) formally verified Hales' proof in HOL Light, making it the first major computer-assisted proof to receive full formal verification. In 2016, Maryna Viazovska solved the sphere packing problem in dimension 8 (E₈ lattice) and, with collaborators, dimension 24 (Leech lattice), using a groundbreaking technique based on modular forms. She received the 2022 Fields Medal for this work.",

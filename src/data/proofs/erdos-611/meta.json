@@ -55,7 +55,8 @@
     "axiomCount": 5,
     "lineCount": 245,
     "assumptions": "5 axiom(s) and 13 sorries. See the Lean source for details.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "Erdős Problem #611 refines Problem #610 by asking how large clique sizes constrain the clique transversal number τ(G). Erdős, Gallai, and Tuza (1992) proved the key inequality: if every maximal clique has ≥ k vertices, then τ ≤ n - √(kn). For linear clique size k = cn, this gives τ ≤ (1-√c)n, answering Question 1 affirmatively. The deeper Question 2 asks for the threshold function k_c(n) — the minimum clique size forcing τ < (1-c)n. The lower bound k_c(n) ≥ n^{c'/log log n} comes from probabilistic constructions (random graphs with controlled clique sizes). Bollobás and Erdős found the exact threshold for the extreme case τ = 1: if all cliques have ≥ n + 3 - 2√n vertices, a single vertex hits every clique. This threshold is optimal — the constant 3 is exact, with extremal graphs showing τ = 2 just below the threshold. The problem connects clique structure to hypergraph transversal theory and the probabilistic method.",

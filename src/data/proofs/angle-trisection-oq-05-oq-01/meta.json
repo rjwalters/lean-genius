@@ -58,7 +58,8 @@
     "axiomCount": 0,
     "lineCount": 294,
     "assumptions": "None. 0 axioms, 0 sorries. All results follow from the IsKFoldConstructible definition. The definition itself encodes the conjectured pattern for k ≥ 3 (which is mathematically open).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 30
   },
   "overview": {
     "historicalContext": "The classical ruler-and-compass constructibility theorem (Gauss-Wantzel, 1837) characterizes constructible lengths via 2-power field extensions, explaining why angle trisection is impossible with classical tools. Origami (paper folding) strictly extends this: the Huzita-Hatori axioms, formalized in the 1990s, enable construction of cube roots and, as Alperin proved (2000) and Alperin-Lang systematized (2006), solve all cubic and quartic equations. Single-fold origami corresponds to 3-smooth degrees (field extensions of degree $2^a 3^b$) and two-fold origami to 5-smooth degrees ($2^a 3^b 5^c$). The natural conjecture is that each additional simultaneous fold unlocks the next prime: $k$-fold origami $\\leftrightarrow$ $p_{k+1}$-smooth degrees, giving the hierarchy compass $\\subsetneq$ 1-fold $\\subsetneq$ 2-fold $\\subsetneq$ 3-fold $\\subsetneq \\cdots$, each level solving polynomial equations of one higher prime degree. This conjecture for $k \\geq 3$ remains open as of 2026.",

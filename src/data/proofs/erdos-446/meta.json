@@ -54,7 +54,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 139,
-    "assumptions": "4 axioms: delta, deltaR, ford_2008_main, ford_2008_disproof. 0 sorries."
+    "assumptions": "4 axioms: delta, deltaR, ford_2008_main, ford_2008_disproof. 0 sorries.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Erdős Problem #446 studies the density of integers having a divisor in the interval (n, 2n), a question with a remarkable 74-year history spanning from Besicovitch to Ford. Besicovitch (1934) first showed liminf δ(n) = 0, and Erdős (1935) strengthened this to δ(n) → 0. In 1960, Erdős found the correct exponent: δ(n) = (log n)^{-α + o(1)} where α = 1 - (1 + log log 2)/log 2 ≈ 0.08607.\n\nThe problem has two parts. The first asks for the exact growth rate of δ(n). Kevin Ford resolved this completely in a 2008 Annals of Mathematics paper, proving δ(n) ≍ 1/((log n)^α (log log n)^{3/2}). The secondary (log log n)^{3/2} correction factor refined Erdős's 1960 estimate. Tenenbaum (1984) had made partial progress with improved bounds in Compositio Math.\n\nThe second part asks whether δ₁(n) = o(δ(n)), i.e., whether integers with exactly one divisor in (n, 2n) are negligible. Erdős was \"quite sure\" this was true at Oberwolfach in 1986, but noted that \"recent results of Tenenbaum throw some doubt on this.\" His doubt was prescient: Ford proved δ₁(n) is NOT o(δ(n)), and in fact δᵣ(n) ≫ᵣ δ(n) for all r ≥ 1, meaning the divisor count distribution is surprisingly flat.",

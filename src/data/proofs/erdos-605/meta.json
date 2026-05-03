@@ -61,7 +61,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 250,
-    "assumptions": "1 axiom: erdos_605_superlinear (superlinear growth of D repeated distances for D>1, Swanepoel-Valtr result). Problem solved. 0 sorries."
+    "assumptions": "1 axiom: erdos_605_superlinear (superlinear growth of D repeated distances for D>1, Swanepoel-Valtr result). Problem solved. 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "**The Unit Distance Problem on Spheres**\n\nErdős Problem #605 extends the classical unit distance problem from the plane to spherical surfaces. The unit distance problem asks: among n points in ℝ², how many pairs can be at the same distance? For the plane, the answer grows slightly superlinearly. Erdős asked whether the spherical version also admits superlinear growth.\n\n**Key Historical Developments:**\n\n- **1989**: Erdős, Hickerson, and Pach proved the first superlinear bound u_D(n) ≫ n·log*(n) for spheres of radius D > 1, where log* is the iterated logarithm. This resolved the problem affirmatively, though the growth rate log*(n) is incredibly slow.\n- **2004**: Swanepoel and Valtr significantly improved the lower bound to u_D(n) ≫ n·√(log n), using algebraic constructions on the sphere.\n- **Special case D = √2**: The sphere of radius √2 is uniquely suited for these constructions because it can inscribe a cube. For this radius, the tight bound u(n) ≍ n^{4/3} is achieved, matching the general upper bound from incidence geometry.",

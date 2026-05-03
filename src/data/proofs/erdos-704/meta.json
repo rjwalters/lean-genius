@@ -53,7 +53,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 154,
-    "assumptions": "4 axioms: frankl_wilson_1981, larman_rogers_1972, de_grey_2018, hadwiger_nelson_upper. 0 sorries."
+    "assumptions": "4 axioms: frankl_wilson_1981, larman_rogers_1972, de_grey_2018, hadwiger_nelson_upper. 0 sorries.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "**Erdős Problem #704: Chromatic Number of Unit Distance Graphs**\n\nThis problem generalizes the famous Hadwiger-Nelson problem to higher dimensions.\n\n**Key History:**\n- Hadwiger (1945) and Nelson (1950): Posed the n=2 case\n- Larman-Rogers (1972): Proved upper bound χ(Gₙ) ≤ (3+o(1))ⁿ\n- Frankl-Wilson (1981): Proved lower bound χ(Gₙ) ≥ (1+o(1))·1.2ⁿ\n- de Grey (2018): Improved n=2 lower bound to 5 using 1581-vertex graph\n- Prosanov (2020): Alternative proof of Larman-Rogers bound\n\n**Mathematical Setting:**\nThe unit distance graph Gₙ has all points in ℝⁿ as vertices, with edges between points at distance exactly 1. The chromatic number χ(Gₙ) is the minimum colors needed to color all points so no two adjacent points share a color.",

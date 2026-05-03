@@ -62,7 +62,8 @@
     ],
     "axiomCount": 6,
     "lineCount": 224,
-    "assumptions": "6 axioms: d_2_2, d_3_2, d_4_2, wagon_1980, d_3_3_bound, nguyen_scott_seymour_2024. 0 sorries."
+    "assumptions": "6 axioms: d_2_2, d_3_2, d_4_2, wagon_1980, d_3_3_bound, nguyen_scott_seymour_2024. 0 sorries.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1111: Anticomplete High-Chromatic Subgraphs**\n\nThis problem was posed by El Zahar and Erdős in 1985.\n\n**Key History:**\n- **Wagon (1980):** Bound implying d(t, 2) ≤ C(t, 2) + 1\n- **El Zahar-Erdős (1985):** Original problem, reduction to t ≤ c, bounds for c = 3\n- **Nguyen-Scott-Seymour (2024):** Strengthened existence with minimum degree constraint\n\n**Mathematical Context:**\nHigh chromatic number with bounded clique number forces rich structure. This problem asks what anticomplete high-chromatic substructures must exist.",

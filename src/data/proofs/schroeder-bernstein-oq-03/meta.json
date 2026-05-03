@@ -51,7 +51,8 @@
     ],
     "openProblems": [
       "Hard direction of Myhill's theorem: construct computable bijection from computable injections via back-and-forth priority argument (~200 lines of Partrec-based formalization)"
-    ]
+    ],
+    "theoremCount": 14
   },
   "overview": {
     "historicalContext": "John Myhill (1923–1987) published his isomorphism theorem in 1955 as part of developing the theory of creative sets and degrees of unsolvability. The theorem arose from the study of one-one reducibility ($\\leq_1$), a refinement of many-one reducibility where the reduction function must be injective. Myhill's key insight was that $p \\equiv_1 q$ — equivalence under mutual one-one reducibility — is precisely captured by the existence of a computable permutation mapping $p$ to $q$. This is the effective analogue of the classical Cantor-Schröder-Bernstein theorem: just as two classical injections yield a classical bijection, two computable injections yield a computable bijection. The back-and-forth proof technique Myhill used is a simplified version of what would become the priority method — the same back-and-forth orbit analysis Friedberg and Muchnik would generalize in 1956 to solve Post's problem (the existence of incomparable Turing degrees). Rogers' *Theory of Recursive Functions and Effective Computability* (MIT Press, 1967, §7.4, Theorem VII) gave the classical treatment, and Soare's *Turing Computability* (Springer, 2016, Chapter 3) is the modern reference. Formalizing this theorem in Lean 4 requires Mathlib's `Partrec` and `Computable` typeclasses, which were introduced to handle the boundary between total and partial recursive functions.",

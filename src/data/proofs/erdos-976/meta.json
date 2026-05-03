@@ -55,7 +55,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "lineCount": 175,
-    "assumptions": "1 axiom: tenenbaum_bound. 0 sorries."
+    "assumptions": "1 axiom: tenenbaum_bound. 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "**The Founding Result (1922)**\n\nTrygve Nagell and Giovanni Ricci independently established the first non-trivial lower bound in 1922: for any irreducible polynomial f of degree d ≥ 2, F_f(n) ≫ n log n. This showed that polynomial products must contain larger prime factors than typical integers of comparable size.\n\n**Erdős's Sieve Improvement (1952) and Tenenbaum's Resolution (1990)**\n\nErdős applied his sieve methods in 1952, proving F_f(n) ≫ n(log n)^{log log log n}. In 1965, Erdős claimed the much stronger bound n·exp((log n)^c) but never published the proof, which was later found to be flawed. Gérald Tenenbaum finally proved this bound rigorously in 1990 using sophisticated large sieve inequalities, while Erdős and Schinzel published a weaker bound the same year.\n\n**The Gap Remains (Present)**\n\nDespite Tenenbaum's breakthrough, an enormous gap persists between the known bound n·exp((log n)^c) and the conjectured polynomial growth n^{1+c} or n^d. The sub-polynomial factor exp((log n)^c) grows faster than any power of log n but slower than any power n^ε. Resolving this gap remains one of the major open problems in analytic number theory.",

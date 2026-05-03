@@ -34,7 +34,8 @@
     "axiomCount": 0,
     "lineCount": 452,
     "assumptions": "0 axioms, 0 sorries. All theorems fully verified. Takes Sperner lemma (sperner_ndim) as a hypothesis parameter, cleanly separating combinatorial and analytical arguments.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 13
   },
   "overview": {
     "historicalContext": "The displacement coloring is the standard elementary bridge between Sperner's lemma and Brouwer's fixed point theorem, avoiding algebraic topology entirely. Brouwer's 1911 original proof used degree theory and topological invariants inaccessible to undergraduates; the combinatorial route via Sperner (1928) provides a purely elementary alternative. Given a continuous self-map f of the simplex, one colors grid vertices by the index of the most negative barycentric displacement component d_k = f(v)_k - v_k. This construction appears in most combinatorial topology textbooks and was used by Cohen (1967) and Su (1999) to give self-contained proofs of Brouwer's theorem accessible without algebraic topology prerequisites.",

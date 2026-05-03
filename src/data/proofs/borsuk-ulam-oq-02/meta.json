@@ -87,7 +87,8 @@
     "axiomCount": 1,
     "lineCount": 389,
     "assumptions": "1 axiom encoding the core ℤ/2 equivariant Borsuk-Ulam vanishing result (z2_equivariant_borsuk_ulam). No structure-encoded assumptions.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 18
   },
   "overview": {
     "historicalContext": "Karol Borsuk proved his famous theorem in 1933: every continuous function from the n-sphere to n-dimensional Euclidean space sends some antipodal pair to the same point. The antipodal map x ↦ -x generates a free action of ℤ/2 on the sphere.\n\nIn the equivariant reformulation, saying f(x) = f(-x) for some x is equivalent to saying the 'difference function' g(x) = f(x) - f(-x) vanishes — and g is **odd**, meaning g(-x) = -g(x). An odd continuous function is exactly a **ℤ/2-equivariant** map when ℝⁿ carries the negation action.\n\nThis perspective opened the door to sweeping generalizations: replace ℤ/2 with other groups G, replace the sphere with other G-spaces, and ask when equivariant maps must vanish.\n\n**1954 — Yang's theorem**: For any prime p, consider ℤ/p acting on S^(2n-1) ⊂ ℂⁿ by rotating each coordinate by ω = e^(2πi/p). Any equivariant continuous map f: S^(2n-1) → S^(2n-3) (same group action, lower-dimensional sphere) must vanish. This is the Yang-Borsuk theorem.\n\n**1983 — Dold's theorem**: Using cohomological index theory (generalizing the ℤ/2 index of Fadell-Husseini), Dold gave a universal obstruction: if G acts freely on a highly connected space X, and Y has too low cohomological complexity, then no G-equivariant map X → Y exists.\n\n**Today**: For non-prime group orders, non-free actions, and general compact Lie groups, equivariant Borsuk-Ulam theorems become increasingly subtle. The optimal dimensional bounds are open for non-free actions.",

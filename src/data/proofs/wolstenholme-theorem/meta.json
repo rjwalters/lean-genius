@@ -41,7 +41,8 @@
       "Fermat quotients and p-adic analysis",
       "Babbage's theorem (mod p^2 congruence)"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 17
   },
   "overview": {
     "historicalContext": "Charles Babbage observed in 1819 that $\\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^2}$ for primes $p \\geq 3$, as part of his study of the difference engine and computational number theory. Joseph Wolstenholme strengthened this in 1862 to $\\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^3}$ for primes $p \\geq 5$, discovering an unexpectedly deep divisibility property of central binomial coefficients.\n\nThe theorem is equivalent to the statement that the numerator of the harmonic sum $H_{p-1} = 1 + \\frac{1}{2} + \\cdots + \\frac{1}{p-1}$, when written in lowest terms, is divisible by $p^2$. This connects to Fermat quotients: $q_p(a) = (a^{p-1} - 1)/p$, since Wolstenholme's theorem implies $q_p(2) \\equiv 0 \\pmod{p}$. Primes where the congruence holds modulo $p^4$ are called Wolstenholme primes; only two are known: 16843 and 2124679 (McIntosh, 1995). It is conjectured (but unproved) that infinitely many exist. The theorem has been central to $p$-adic analysis and the study of Bernoulli numbers.",

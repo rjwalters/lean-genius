@@ -41,7 +41,8 @@
     "axiomCount": 1,
     "lineCount": 1092,
     "assumptions": "1 axiom (euler_formula_axiom: V-E+F=2 for PolyhedralGraph, needed because Mathlib lacks planarity). The constructive ConstructiblePoly proof is axiom-free.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 65
   },
   "overview": {
     "historicalContext": "Euler discovered this formula in 1758 while studying polyhedra, though René Descartes had noticed a closely related result in 1639 (remaining unpublished until 1860). The formula V - E + F = 2 is one of the most beautiful results in mathematics, connecting three apparently unrelated counts — vertices, edges, and faces — through a single universal constant.\n\nCauchy provided the first rigorous proof in 1813 using triangulation, reducing a general polyhedron to the sphere. Legendre gave an independent spherical geometry proof the same year. The formula is equivalent to the topological statement that every convex polyhedron is homeomorphic to a sphere, whose Euler characteristic χ = 2. Poincaré generalized this in 1895 to all compact orientable surfaces: χ = 2 − 2g for genus g, founding algebraic topology. The Euler characteristic became the first example of a topological invariant preserved under continuous deformation.",

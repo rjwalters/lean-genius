@@ -1,10 +1,10 @@
 {
   "id": "erdos-941",
-  "title": "Erd\u0151s Problem #941: Sums of Three Powerful Numbers",
+  "title": "Erdős Problem #941: Sums of Three Powerful Numbers",
   "slug": "erdos-941",
-  "description": "Are all large integers the sum of at most three powerful numbers (p | n \u2192 p\u00b2 | n)? SOLVED: YES (Heath-Brown 1988). Every sufficiently large integer is the sum of at most 3 powerful numbers.",
+  "description": "Are all large integers the sum of at most three powerful numbers (p | n → p² | n)? SOLVED: YES (Heath-Brown 1988). Every sufficiently large integer is the sum of at most 3 powerful numbers.",
   "meta": {
-    "author": "Erd\u0151s-Ivi\u0107 (1986, problem), Heath-Brown (1988, proof)",
+    "author": "Erdős-Ivić (1986, problem), Heath-Brown (1988, proof)",
     "sourceUrl": "https://erdosproblems.com/941",
     "date": "1988",
     "status": "axiomatized",
@@ -27,7 +27,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
-        "description": "Primality predicate for the powerful number definition (p | n \u2192 p\u00b2 | n)",
+        "description": "Primality predicate for the powerful number definition (p | n → p² | n)",
         "module": "Mathlib.Data.Nat.Basic"
       },
       {
@@ -48,7 +48,7 @@
     ],
     "originalContributions": [
       "IsPowerful, IsPowerfulAlt: powerful number definitions",
-      "powerful_iff_alt: equivalence n = a\u00b2b\u00b3",
+      "powerful_iff_alt: equivalence n = a²b³",
       "one_is_powerful, square_is_powerful, cube_is_powerful",
       "powerful_mul: product closure",
       "IsSumOf3Powerful, IsSumOf3PowerfulOrZero",
@@ -59,17 +59,18 @@
     ],
     "axiomCount": 4,
     "lineCount": 324,
-    "assumptions": "4 axiom(s) and 0 sorry(s)."
+    "assumptions": "4 axiom(s) and 0 sorry(s).",
+    "theoremCount": 11
   },
   "overview": {
-    "historicalContext": "**Erd\u0151s Problem #941: Sums of Three Powerful Numbers**\n\nThis problem was posed by Erd\u0151s and Ivi\u0107 at the 1986 Oberwolfach conference, asking whether every sufficiently large integer is the sum of at most three powerful (squarefull) numbers.\n\n**Historical Timeline:**\n- 1970: Golomb proved the characterization $n$ is powerful $\\iff$ $n = a^2 b^3$ for some $a, b \\ge 1$\n- 1976: Erd\u0151s studied the distribution of powerful numbers and their additive properties in [Er76d]\n- 1986: Erd\u0151s and Ivi\u0107 formally posed the question at Oberwolfach\n- 1988: Heath-Brown proved the affirmative answer using ternary quadratic forms\n- 1994: Baker and Br\u00fcdern proved the complementary result that sums of $\\le 2$ powerful numbers have density 0 (Problem #940)\n\n**Heath-Brown's Method:** The proof uses deep results from the theory of ternary quadratic forms. The key idea is to write $n = a^2 + b^2 c^3 + d^2 e^3$ where each summand is automatically powerful (squarefull). Representing $n$ in this form reduces to showing that a certain ternary quadratic form represents $n$, which Heath-Brown establishes using the Hasse principle and Siegel's mass formula for ternary forms.\n\n**The Threshold Mystery:** Heath-Brown's proof is ineffective \u2014 it shows a threshold $N_0$ exists but does not compute it. The ineffectivity comes from the use of Siegel's theorem on ternary forms, which involves class number estimates with ineffective constants. Computing $N_0$ explicitly would require effective bounds in the Hasse principle.\n\n**Phase Transition:** Combined with Baker-Br\u00fcdern (1994), we know: sums of $\\le 2$ powerful numbers have density 0, but sums of $\\le 3$ powerful numbers contain all large integers. This sharp 2-to-3 transition is the central phenomenon in the additive theory of powerful numbers.",
+    "historicalContext": "**Erdős Problem #941: Sums of Three Powerful Numbers**\n\nThis problem was posed by Erdős and Ivić at the 1986 Oberwolfach conference, asking whether every sufficiently large integer is the sum of at most three powerful (squarefull) numbers.\n\n**Historical Timeline:**\n- 1970: Golomb proved the characterization $n$ is powerful $\\iff$ $n = a^2 b^3$ for some $a, b \\ge 1$\n- 1976: Erdős studied the distribution of powerful numbers and their additive properties in [Er76d]\n- 1986: Erdős and Ivić formally posed the question at Oberwolfach\n- 1988: Heath-Brown proved the affirmative answer using ternary quadratic forms\n- 1994: Baker and Brüdern proved the complementary result that sums of $\\le 2$ powerful numbers have density 0 (Problem #940)\n\n**Heath-Brown's Method:** The proof uses deep results from the theory of ternary quadratic forms. The key idea is to write $n = a^2 + b^2 c^3 + d^2 e^3$ where each summand is automatically powerful (squarefull). Representing $n$ in this form reduces to showing that a certain ternary quadratic form represents $n$, which Heath-Brown establishes using the Hasse principle and Siegel's mass formula for ternary forms.\n\n**The Threshold Mystery:** Heath-Brown's proof is ineffective — it shows a threshold $N_0$ exists but does not compute it. The ineffectivity comes from the use of Siegel's theorem on ternary forms, which involves class number estimates with ineffective constants. Computing $N_0$ explicitly would require effective bounds in the Hasse principle.\n\n**Phase Transition:** Combined with Baker-Brüdern (1994), we know: sums of $\\le 2$ powerful numbers have density 0, but sums of $\\le 3$ powerful numbers contain all large integers. This sharp 2-to-3 transition is the central phenomenon in the additive theory of powerful numbers.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $n$ be a powerful number if $p \\mid n \\Rightarrow p^2 \\mid n$ for every prime $p$. Are all sufficiently large positive integers the sum of at most three powerful numbers?\n\n**Answer: YES** (Heath-Brown 1988)\n\nEvery sufficiently large positive integer can be written as $a + b + c$ where each of $a, b, c$ is either 0 or a powerful number.",
-    "text": "Are all large integers the sum of at most three powerful numbers (p | n \u2192 p\u00b2 | n)? SOLVED: YES (Heath-Brown 1988). Every sufficiently large integer is the sum of at most 3 powerful numbers.",
-    "proofStrategy": "**Formalization Strategy**\n\n1. **Powerful Numbers:** `IsPowerful` ($p \\mid n \\Rightarrow p^2 \\mid n$) and `IsPowerfulAlt` ($n = a^2 b^3$), with `powerful_iff_alt` (sorry) connecting them\n2. **Structural Properties:** `one_is_powerful`, `square_is_powerful`, `cube_is_powerful`, `powerful_mul` (all proved) \u2014 establishing the multiplicative monoid structure\n3. **Sum Framework:** `IsSumOfKPowerful` (general $k$), `IsSumOf3Powerful` (exactly 3), `IsSumOf3PowerfulOrZero` (at most 3)\n4. **Main Question:** `ErdosIvicQuestion` ($\\exists N, \\forall n \\ge N$, representable)\n5. **Heath-Brown:** `heath_brown_theorem` axiom resolving the question affirmatively\n6. **Asymptotics:** `numRepresentations` and `powerful_density` (axiom, $\\sim c\\sqrt{x}$)\n7. **Generalization:** `IsRPowerful r n` and `generalizedQuestion r k` connecting to Problems #940 and #1107",
+    "text": "Are all large integers the sum of at most three powerful numbers (p | n → p² | n)? SOLVED: YES (Heath-Brown 1988). Every sufficiently large integer is the sum of at most 3 powerful numbers.",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **Powerful Numbers:** `IsPowerful` ($p \\mid n \\Rightarrow p^2 \\mid n$) and `IsPowerfulAlt` ($n = a^2 b^3$), with `powerful_iff_alt` (sorry) connecting them\n2. **Structural Properties:** `one_is_powerful`, `square_is_powerful`, `cube_is_powerful`, `powerful_mul` (all proved) — establishing the multiplicative monoid structure\n3. **Sum Framework:** `IsSumOfKPowerful` (general $k$), `IsSumOf3Powerful` (exactly 3), `IsSumOf3PowerfulOrZero` (at most 3)\n4. **Main Question:** `ErdosIvicQuestion` ($\\exists N, \\forall n \\ge N$, representable)\n5. **Heath-Brown:** `heath_brown_theorem` axiom resolving the question affirmatively\n6. **Asymptotics:** `numRepresentations` and `powerful_density` (axiom, $\\sim c\\sqrt{x}$)\n7. **Generalization:** `IsRPowerful r n` and `generalizedQuestion r k` connecting to Problems #940 and #1107",
     "keyInsights": [
       "**Golomb's characterization**: A number $n$ is powerful if and only if $n = a^2 b^3$ for some $a, b \\ge 1$. The proof uses the division algorithm on prime exponents: $e_i = 2q_i + 3r_i$ with $r_i \\in \\{0, 1\\}$",
       "**Counting function**: The number of powerful numbers $\\le x$ is $\\sim \\frac{\\zeta(3/2)}{\\zeta(3)} \\sqrt{x} \\approx 2.173\\sqrt{x}$. This sublinear growth ($x^{1/2}$) means powerful numbers are sparse, yet 3 summands suffice to represent all large integers",
-      "**Phase transition at 2-to-3 summands**: Sums of $\\le 2$ powerful numbers have density 0 (Baker-Br\u00fcdern 1994), but sums of $\\le 3$ contain all large integers (Heath-Brown 1988). The transition is sharp and mirrors similar phenomena in Waring-type problems",
+      "**Phase transition at 2-to-3 summands**: Sums of $\\le 2$ powerful numbers have density 0 (Baker-Brüdern 1994), but sums of $\\le 3$ contain all large integers (Heath-Brown 1988). The transition is sharp and mirrors similar phenomena in Waring-type problems",
       "**Ternary quadratic form method**: Heath-Brown's proof writes $n = a^2 + b^2 c^3 + d^2 e^3$ and applies the Hasse principle for ternary forms. The ineffective Siegel bound means the threshold $N_0$ is not explicitly computable",
       "**r-Powerful generalization**: For $r$-powerful numbers ($p \\mid n \\Rightarrow p^r \\mid n$), the counting function is $\\sim c_r x^{1/r}$, and Problem #1107 asks for the minimal basis order. The diagonal case $k = r$ is exactly Problem #940"
     ],
@@ -81,7 +82,7 @@
   "sections": [
     {
       "id": "erd-s-problem-941-sums-of-thre",
-      "title": "Erd\u0151s Problem #941: Sums of Three Powerful Numbers",
+      "title": "Erdős Problem #941: Sums of Three Powerful Numbers",
       "startLine": 1,
       "endLine": 37,
       "summary": "Header comment documenting the problem source, statement ($p \\mid n \\Rightarrow p^2 \\mid n$), SOLVED status (Heath-Brown 1988), and connections to Problems #940 and #1107. Imports `Nat.Basic`, `Nat.Factorization.Basic`, `NumberTheory.Divisors`, and `Finset.Basic`.",
@@ -113,7 +114,7 @@
     },
     {
       "id": "the-erd-s-ivi-question",
-      "title": "The Erd\u0151s-Ivi\u0107 Question",
+      "title": "The Erdős-Ivić Question",
       "startLine": 126,
       "endLine": 142,
       "summary": "Defines `ErdosIvicQuestion`: $\\exists N, \\forall n \\ge N$, `IsSumOf3PowerfulOrZero n`. Also `ErdosIvicQuestion'` with explicit existentials. Both capture the 'all sufficiently large integers' quantifier.",
@@ -161,13 +162,13 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erd\u0151s Problem #941 on sums of three powerful numbers. Heath-Brown's 1988 theorem (axiomatized) resolves the Erd\u0151s-Ivi\u0107 question affirmatively: every sufficiently large integer is the sum of at most 3 powerful numbers. The formalization includes two equivalent definitions of powerful numbers (IsPowerful and IsPowerfulAlt), structural properties (multiplicative monoid, proved for 1, sorry for squares/cubes/products), the sum representation framework, counting functions, and the r-powerful generalization connecting to Problems #940 and #1107. 0 sorries remain. All structural lemmas (square_is_powerful, cube_is_powerful, powerful_mul, powerful_iff_alt, one_is_powerful) are fully proved.",
-    "implications": "**Theoretical Significance**: **Connections to Number Theory**\n\n1. **Ternary Quadratic Forms**: Heath-Brown's proof reduces the representation problem to the theory of ternary quadratic forms, connecting additive number theory to algebraic geometry\n2. **Phase Transition**: The 2-to-3 summand transition (density 0 for 2, density 1 for 3) is a prototype for threshold phenomena in additive combinatorics\n**3. Problem #940**: The companion problem asks whether the diagonal case (r summands of r-powerful numbers) has density 0 for r \u2265 3 \u2014 still OPEN\n4. **Problem #1107**: The natural generalization asks for the minimal k such that all large integers are sums of \u2264 k r-powerful numbers\n5. **Waring's Problem**: Since perfect r-th powers are r-powerful, Waring-type results are special cases of powerful number sum problems.",
+    "summary": "The formalization captures Erdős Problem #941 on sums of three powerful numbers. Heath-Brown's 1988 theorem (axiomatized) resolves the Erdős-Ivić question affirmatively: every sufficiently large integer is the sum of at most 3 powerful numbers. The formalization includes two equivalent definitions of powerful numbers (IsPowerful and IsPowerfulAlt), structural properties (multiplicative monoid, proved for 1, sorry for squares/cubes/products), the sum representation framework, counting functions, and the r-powerful generalization connecting to Problems #940 and #1107. 0 sorries remain. All structural lemmas (square_is_powerful, cube_is_powerful, powerful_mul, powerful_iff_alt, one_is_powerful) are fully proved.",
+    "implications": "**Theoretical Significance**: **Connections to Number Theory**\n\n1. **Ternary Quadratic Forms**: Heath-Brown's proof reduces the representation problem to the theory of ternary quadratic forms, connecting additive number theory to algebraic geometry\n2. **Phase Transition**: The 2-to-3 summand transition (density 0 for 2, density 1 for 3) is a prototype for threshold phenomena in additive combinatorics\n**3. Problem #940**: The companion problem asks whether the diagonal case (r summands of r-powerful numbers) has density 0 for r ≥ 3 — still OPEN\n4. **Problem #1107**: The natural generalization asks for the minimal k such that all large integers are sums of ≤ k r-powerful numbers\n5. **Waring's Problem**: Since perfect r-th powers are r-powerful, Waring-type results are special cases of powerful number sum problems.",
     "openQuestions": [
       "What is the smallest threshold $N_0$ such that all $n \\ge N_0$ are sums of $\\le 3$ powerful numbers? (ineffective in Heath-Brown's proof)",
       "How does the average number of representations $r_3(n)$ grow? Is it $\\Theta(n^{1/2})$ or faster?",
       "For $r$-powerful numbers with $r \\ge 3$, what is the minimal basis order $k(r)$ such that all large integers are sums of $\\le k(r)$ $r$-powerful numbers?",
-      "Does the Baker-Br\u00fcdern density-0 result for 2 squarefull summands extend to 2 cubefull summands (the $r = 3, k = 2$ case)?"
+      "Does the Baker-Brüdern density-0 result for 2 squarefull summands extend to 2 cubefull summands (the $r = 3, k = 2$ case)?"
     ]
   },
   "leanFile": {
@@ -189,17 +190,17 @@
     {
       "targetId": "erdos-937",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, powerful-numbers, solved"
+      "description": "Related Erdős problem sharing themes: number-theory, powerful-numbers, solved"
     },
     {
       "targetId": "erdos-942",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, powerful-numbers, squarefull"
+      "description": "Related Erdős problem sharing themes: number-theory, powerful-numbers, squarefull"
     },
     {
       "targetId": "erdos-943",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-representation, number-theory, powerful-numbers"
+      "description": "Related Erdős problem sharing themes: additive-representation, number-theory, powerful-numbers"
     }
   ],
   "sorries": 0

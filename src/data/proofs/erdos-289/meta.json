@@ -23,7 +23,8 @@
     "axiomCount": 0,
     "lineCount": 135,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory,' which collected hundreds of open problems from Erdős's vast collaboration network. The question sits at the intersection of Egyptian fraction theory (expressing rationals as sums of unit fractions, a tradition dating to the Rhind Papyrus c. 1650 BCE) and combinatorial constraints on intervals. Hickerson and Montgomery demonstrated feasibility by constructing 5 non-adjacent intervals [2,7], [9,10], [17,18], [34,35], [84,85] with reciprocal sum exactly 2. The non-adjacency constraint is the essential difficulty: without it, one can decompose any unit fraction representation by splitting and merging adjacent intervals. The problem connects to Croot's 2003 resolution of the Erdős–Graham conjecture (that $\\{n+1, \\ldots, 2n\\}$ contains a subset whose reciprocals sum to 1 for large $n$) and to the broader Egyptian fraction tradition studied by Erdős, Straus, and Graham.",

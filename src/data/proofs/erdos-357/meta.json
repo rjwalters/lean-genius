@@ -56,7 +56,8 @@
     ],
     "axiomCount": 3,
     "assumptions": "3 axioms: weisenberg_lower_bound (f(n) ≥ (2+o(1))√n via B₂ sequences), hegyvari_bounds ((1/3+o(1))n ≤ g(n) ≤ (2/3+o(1))n, Hegyvári 1986), infinite_set_lower_density_zero (proved: any infinite A with distinct consecutive sums has lower density 0). 0 sorries.",
-    "lineCount": 137
+    "lineCount": 137,
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "Erdős Problem #357 was posed in Erdős's 1977 paper 'Problems and results on combinatorial number theory III.' Given a strictly increasing sequence $1 \\leq a_1 < a_2 < \\cdots < a_k \\leq n$, consider all 'consecutive sums' $\\sum_{i=u}^{v} a_i$ for $1 \\leq u \\leq v \\leq k$. There are $k(k+1)/2$ such sums. The function $f(n)$ measures the maximum $k$ for which all these sums can be distinct.\n\nWeisenberg connected this to **Sidon sets** (B₂ sequences), introduced by Simon Sidon in the 1930s and studied by Erdős and Turán (1941). Any B₂ set — where all pairwise sums $a_i + a_j$ (with $i \\ne j$) are distinct — automatically has distinct consecutive sums, because consecutive sums are differences of partial sums and hence determined by pairs. Since the largest B₂ set in $[1,n]$ has size $(1+o(1))\\sqrt{n}$ (Erdős–Turán 1941), this gives $f(n) \\geq (2+o(1))\\sqrt{n}$.\n\nHegyvári (1986) studied the **non-monotone variant** $g(n)$ in 'On consecutive sums in sequences' (Acta Math. Hungar. 48, 193–200), proving $(1/3+o(1))n \\leq g(n) \\leq (2/3+o(1))n$. The dramatic contrast — $g(n) = \\Theta(n)$ vs. conjectured $f(n) = o(n)$ — shows that strict monotonicity is the fundamental constraint.",

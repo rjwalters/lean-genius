@@ -51,7 +51,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 207,
-    "assumptions": "2 axioms: selfridge_straus_k2_not_power2 (Selfridge-Straus: k=2 case, not a power of 2), gordon_fraenkel_straus_main (Gordon-Fraenkel-Straus main theorem). 0 sorries."
+    "assumptions": "2 axioms: selfridge_straus_k2_not_power2 (Selfridge-Straus: k=2 case, not a power of 2), gordon_fraenkel_straus_main (Gordon-Fraenkel-Straus main theorem). 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Erdős Problem #494 asks about reconstructing finite sets from their k-sums. Given A = {z1, ..., zn} in the complex plane, the k-sum multiset Ak contains all sums z_i1 + ... + z_ik where the indices are distinct.\n\nThe problem was systematically studied by Selfridge and Straus in 1958, who completely solved the k=2 case and established results for k=3,4. They showed that for k=2, a set is determined by its pairwise sums if and only if |A| is not a power of 2.\n\nThe general case for k > 2 was resolved by Gordon, Fraenkel, and Straus in 1962, who proved that for each k > 2, uniqueness holds for all sufficiently large sets. However, small counterexamples exist: Kruyt showed |A| = k fails (rotation around centroid), and Tao showed |A| = 2k fails (negation of zero-sum sets).\n\nErdős also asked about products instead of sums. Steinerberger showed this version is FALSE with an explicit counterexample using 6th roots of unity.",

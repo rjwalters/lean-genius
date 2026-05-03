@@ -69,7 +69,8 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 2,
     "lineCount": 1099,
-    "assumptions": "2 axioms: korselt_backward, infinitely_many_carmichaels. 0 sorries."
+    "assumptions": "2 axioms: korselt_backward, infinitely_many_carmichaels. 0 sorries.",
+    "theoremCount": 66
   },
   "overview": {
     "historicalContext": "Carmichael numbers are composite integers that perfectly mimic primes under Fermat's test: $a^n \\equiv a \\pmod{n}$ for all $a$. Korselt characterized them in 1899 (squarefree with $(p-1) \\mid (n-1)$ for all prime divisors $p$), but the first example $561 = 3 \\times 11 \\times 17$ was only found by R.D. Carmichael in 1910. Erdős (1956) gave the first non-trivial upper bound on their counting function using sieve methods, showing $C(x) < x \\cdot \\exp(-c \\cdot \\frac{\\log x \\cdot \\log\\log\\log x}{\\log\\log x})$. For decades, it was unknown whether infinitely many exist. The breakthrough came in 1994 when Alford, Granville, and Pomerance proved $C(x) \\to \\infty$, establishing $C(x) > x^{2/7}$. Harman (2008) improved the lower bound exponent to $0.33336704$, and Lichtman (2022) pushed it to $0.3389$. Pomerance's (1989) heuristic predicts $C(x) \\sim x \\cdot \\exp(-\\frac{\\log x \\cdot \\log\\log\\log x}{\\log\\log x})$, matching Erdős's upper bound. The conjecture $C(x) = x^{1-o(1)}$ remains wide open, with a vast gap between the known lower bound exponent $\\approx 0.34$ and the conjectured behavior.",

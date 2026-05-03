@@ -64,7 +64,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 227,
-    "assumptions": "4 axioms: HasPosDensity (positive natural density predicate), upperDensity (limsup density function), bloom_2021 (Bloom 2021: every positive-density set contains a 3-term arithmetic progression), pos_dens_implies_pos_upper (positive density implies positive upper density). 0 sorries."
+    "assumptions": "4 axioms: HasPosDensity (positive natural density predicate), upperDensity (limsup density function), bloom_2021 (Bloom 2021: every positive-density set contains a 3-term arithmetic progression), pos_dens_implies_pos_upper (positive density implies positive upper density). 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "This problem connects to the ancient tradition of **Egyptian fractions** - representing numbers as sums of distinct unit fractions 1/n. The Rhind papyrus (~1650 BCE) contains extensive tables of Egyptian fraction representations.\n\n**Erdős's Question**: Given a set A of positive integers with positive density (meaning a positive proportion of all integers up to N are in A, in the limit), must A contain a finite subset whose reciprocals sum to exactly 1?\n\n**The Prize**: Erdős offered $500 for a proof - one of his famous monetary prizes.\n\n**The Breakthrough**: Thomas Bloom resolved this in 2021 (arXiv:2112.03726), proving that even the weaker condition of positive UPPER density suffices.\n\n**Formalization**: Remarkably, Bloom and Bhavik Mehta formalized the complete proof in Lean 3, creating ~10,000 lines of verified code at github.com/b-mehta/unit-fractions.",

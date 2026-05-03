@@ -53,7 +53,8 @@
       "Asymptotic density of integer sequences",
       "Extremal combinatorics"
     ],
-    "assumptions": "2 axioms: davenport_erdos_behrend_thick (Davenport-Erdős-Behrend thick set result), van_doorn_thick_counterexample (van Doorn counterexample for thick sets). 0 sorries."
+    "assumptions": "2 axioms: davenport_erdos_behrend_thick (Davenport-Erdős-Behrend thick set result), van_doorn_thick_counterexample (van Doorn counterexample for thick sets). 0 sorries.",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Erdős Problem #26 was posed by Erdős and Tenenbaum and concerns the relationship between \"thick\" sequences (those with divergent reciprocal sums) and \"Behrend\" sequences (those whose multiples cover almost all integers).\n\nThe Davenport-Erdős theorem (1951) established that every Behrend sequence must be thick, but the converse was unknown: if A is thick, must some shift A+k be Behrend?\n\nRuzsa provided the first counterexample using a clever construction involving prime residues. His sequence was not thick, so Van Doorn later modified the construction to produce a thick counterexample, definitively disproving the conjecture.",

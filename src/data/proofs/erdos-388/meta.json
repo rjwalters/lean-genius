@@ -24,7 +24,8 @@
     "axiomCount": 0,
     "lineCount": 111,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Paul Erdős posed this problem in the 1970s–1980s as part of his systematic investigation of Diophantine equations involving products of consecutive integers. The foundational result in this area is the Erdős–Selfridge theorem (1975, Illinois J. Math.), which proved that a product of two or more consecutive positive integers is never a perfect power — settling a conjecture that had been open since the 19th century (partial results by Obláth, 1956). Problem #388 asks the next natural question: when can two *disjoint* blocks of consecutive integers have the same product? The connection to factorials $(m+1) \\cdots (m+k) = (m+k)!/m!$ means this is equivalent to asking when two factorial ratios can be equal. The threshold $k > 3$ is essential because for small $k$, parametric families of solutions exist. The problem also connects to the Brocard–Ramanujan problem ($n! + 1 = m^2$) and to Erdős Problems #363 and #931 on related product identities.",

@@ -52,7 +52,8 @@
     "axiomCount": 2,
     "lineCount": 86,
     "assumptions": "2 axioms: f, erdos_straus_upper_bound. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "**The Distinct Distance Subset Problem**\n\nErdős posed Problem #1088 in 1975, asking a Ramsey-type question in discrete geometry: how many points in $\\mathbb{R}^d$ guarantee the existence of an $n$-point subset where all $\\binom{n}{2}$ pairwise distances are distinct? This is fundamentally different from Problem #1083 (which asks for the minimum number of distinct distances in the entire point set): here we seek a *subset* with a *complete* set of distinct distances.\n\nThe problem has a rich history of partial results:\n\n**Exact values:**\n- **Erdős** proved $f_2(3) = 7$: the regular hexagon (6 vertices, only 2 distinct distances) shows $f_2(3) > 6$, and any 7 planar points contain a scalene triangle.\n- **Croft (1962)** proved $f_3(3) = 9$: the cube (8 vertices, only 3 distinct distances: edge, face diagonal, space diagonal) shows $f_3(3) > 8$.\n\n**Asymptotic results:**\n- **One dimension:** $f_1(n) \\asymp n^2$, related to Sidon sets and $B_2$ sequences.\n- **Three-point case:** $f_d(3) = d^2/2 + O(d)$, showing quadratic growth in dimension.\n- **Erdős-Straus:** $f_d(n) \\leq c_n^d$ for a constant $c_n$ depending on $n$, giving an exponential upper bound.\n\nThe central open question is whether the exponential dependence on $d$ is necessary: can $c_n$ be taken arbitrarily close to 1 (i.e., is $f_d(n) = 2^{o(d)}$)?",

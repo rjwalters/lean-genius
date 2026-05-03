@@ -73,7 +73,8 @@
     ],
     "axiomCount": 5,
     "lineCount": 202,
-    "assumptions": "5 axioms: almost_all_small, kashin_theorem, konyagin_upper_bound, cook_nguyen_lambda, cook_nguyen_distribution. 0 sorries."
+    "assumptions": "5 axioms: almost_all_small, kashin_theorem, konyagin_upper_bound, cook_nguyen_lambda, cook_nguyen_distribution. 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "**Erdős Problem #525: Littlewood Polynomials**\n\nLittlewood polynomials have coefficients ±1. The minimum modulus m(f) = min_{|z|=1} |f(z)| measures how close the polynomial gets to 0 on the unit circle.\n\n**Historical Timeline:**\n- 1966: Littlewood conjectured m(f) = o(1) almost surely\n- 1987: Kashin proved Littlewood's conjecture\n- 1994: Konyagin showed m(f) ≤ n^{-1/2+o(1)}\n- 1999: Konyagin-Schlag proved lower tail bounds, showing -1/2 is tight\n- 2021: Cook-Nguyen identified the exact limiting distribution\n\n**Key Concept:** Random Littlewood polynomials (Kac polynomials with Rademacher coefficients) have a universal limiting distribution for their minimum modulus.",

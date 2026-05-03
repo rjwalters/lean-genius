@@ -84,7 +84,8 @@
     "axiomCount": 0,
     "lineCount": 233,
     "assumptions": "20 sorry(s). No axioms.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 21
   },
   "overview": {
     "historicalContext": "Erdős posed this problem about G(n) = Σ dᵢ/dᵢ₊₁ in the late 1970s, asking two questions: whether G(n) → ∞ for almost all n (trivially yes), and what is the asymptotic formula for Σ G(n). The problem connects to deep questions about the multiplicative structure of integers.\n\nTerence Tao established the key bounds τ(n/m)/m ≤ G(n) ≤ τ(n), showing G(n) is controlled by the divisor function. For even n (density 1/2 of integers), taking m = 2 gives G(n) ≥ τ(n)/4, immediately implying G(n) → ∞ almost surely since τ(n) → ∞ for almost all n by Hardy-Ramanujan.\n\nErdős and Tenenbaum proved the deeper result that G(n)/τ(n) has a continuous distribution function — analogous to the Erdős-Kac theorem for ω(n). This means the 'efficiency' of divisor ratio accumulation has well-defined statistics. The asymptotic Σ G(n) ~ c X log X parallels Dirichlet's Σ τ(n) ~ X log X, with the exact constant c still unknown.",

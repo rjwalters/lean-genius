@@ -58,7 +58,8 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 0,
     "lineCount": 58,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "theoremCount": 0
   },
   "overview": {
     "historicalContext": "Pál Turán posed this problem in 1941, making it one of the oldest open problems in extremal combinatorics. He constructed a $K_4^{(3)}$-free 3-uniform hypergraph with $(5/9+o(1))\\binom{n}{3}$ edges by partitioning vertices into 3 equal parts and taking all triples not contained in a single part. He conjectured this is optimal: $\\pi(K_4^{(3)}) = 5/9$. Erdős championed the problem from the 1960s onward (formulating it in 1961, 1971, 1974, 1981) and offered \\$500 for its resolution—hence its number as Problem #500. De Caen (1994) proved $\\pi \\leq 1/\\sqrt{2} \\approx 0.707$ using algebraic methods. Alexander Razborov's revolutionary flag algebra method (2007, applied to this problem in 2010) dramatically improved the upper bound to $\\pi \\leq 0.5611666\\ldots$, narrowing the gap to $\\approx 0.006$. The Katona–Nemetz–Simonovits theorem (1964) guarantees the Turán density exists. Despite 80+ years of effort, the problem remains wide open and is often called the most important unsolved problem in extremal combinatorics.",

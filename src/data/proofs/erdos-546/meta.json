@@ -1,10 +1,10 @@
 {
   "id": "erdos-546",
-  "title": "Erd\u0151s #546: Ramsey Numbers and Edge Count",
+  "title": "Erdős #546: Ramsey Numbers and Edge Count",
   "slug": "erdos-546",
-  "description": "For a graph G with no isolated vertices and m edges, is R(G) \u2264 2^{O(\u221am)}? Solved by Sudakov (2011). The \u22653 color version remains open.",
+  "description": "For a graph G with no isolated vertices and m edges, is R(G) ≤ 2^{O(√m)}? Solved by Sudakov (2011). The ≥3 color version remains open.",
   "meta": {
-    "author": "Paul Erd\u0151s, Benny Sudakov",
+    "author": "Paul Erdős, Benny Sudakov",
     "sourceUrl": "https://erdosproblems.com/546",
     "date": "1984-2011",
     "status": "axiomatized",
@@ -23,7 +23,8 @@
     "axiomCount": 10,
     "lineCount": 199,
     "assumptions": "10 axiom(s) and 0 sorry(s). See the Lean source for details.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2
   },
   "sections": [
     {
@@ -32,15 +33,15 @@
       "startLine": 1,
       "endLine": 33,
       "summary": "Problem header, Mathlib imports for SimpleGraph, real power functions, and namespace/variable setup",
-      "mathContext": "#546: R(G) \u2264 2^{O(\u221am)} for no-isolated-vertex graphs."
+      "mathContext": "#546: R(G) ≤ 2^{O(√m)} for no-isolated-vertex graphs."
     },
     {
       "id": "graph-definitions",
       "title": "Graph Definitions",
       "startLine": 35,
       "endLine": 55,
-      "summary": "Defines edgeCount (|E(G)|), NoIsolatedVertices (min degree \u2265 1), complementGraph, and IsBipartite",
-      "mathContext": "Input parameters for Sudakov bound: m = |E(G)|, \u03b4(G) \u2265 1."
+      "summary": "Defines edgeCount (|E(G)|), NoIsolatedVertices (min degree ≥ 1), complementGraph, and IsBipartite",
+      "mathContext": "Input parameters for Sudakov bound: m = |E(G)|, δ(G) ≥ 1."
     },
     {
       "id": "ramsey-numbers",
@@ -55,24 +56,24 @@
       "title": "Sudakov's Theorem (2011)",
       "startLine": 71,
       "endLine": 91,
-      "summary": "Defines SudakovBound, axiomatizes sudakov_theorem (R(G) \u2264 2^{C\u221am}) and sudakov_bound_tight (K_n achieves lower bound)",
-      "mathContext": "Sudakov 2011: R(G) \u2264 2^{C\u221am}. Tight: K_n achieves 2^{\u03a9(\u221am)}."
+      "summary": "Defines SudakovBound, axiomatizes sudakov_theorem (R(G) ≤ 2^{C√m}) and sudakov_bound_tight (K_n achieves lower bound)",
+      "mathContext": "Sudakov 2011: R(G) ≤ 2^{C√m}. Tight: K_n achieves 2^{Ω(√m)}."
     },
     {
       "id": "bipartite-case",
       "title": "Bipartite Case (AKS 2003)",
       "startLine": 93,
       "endLine": 100,
-      "summary": "Axiomatizes aks_bipartite_bound: R(G) \u2264 2^{O(\u221am)} for bipartite G, proved 8 years before the general case",
-      "mathContext": "AKS 2003: bipartite R(G) \u2264 2^{O(\u221am)} via dependent random choice."
+      "summary": "Axiomatizes aks_bipartite_bound: R(G) ≤ 2^{O(√m)} for bipartite G, proved 8 years before the general case",
+      "mathContext": "AKS 2003: bipartite R(G) ≤ 2^{O(√m)} via dependent random choice."
     },
     {
       "id": "multicolor",
       "title": "Multi-Color Generalization (Open)",
       "startLine": 102,
       "endLine": 115,
-      "summary": "MultiColorConjecture and ThreeColorConjecture: does R_r(G) \u2264 2^{O(\u221am)} for r \u2265 3? Complement argument fails for 3+ colors",
-      "mathContext": "OPEN: r \u2265 3 color Ramsey. Complement fails."
+      "summary": "MultiColorConjecture and ThreeColorConjecture: does R_r(G) ≤ 2^{O(√m)} for r ≥ 3? Complement argument fails for 3+ colors",
+      "mathContext": "OPEN: r ≥ 3 color Ramsey. Complement fails."
     },
     {
       "id": "specific-graphs",
@@ -87,15 +88,15 @@
       "title": "Ramsey Bounds for Sparse Graphs",
       "startLine": 149,
       "endLine": 165,
-      "summary": "Axiomatizes path_ramsey_linear (R(P_n) \u2264 2n-1), cycle_ramsey_linear (R(C_n) \u2264 2n-1), and probabilistic_lower_bound (R(G) \u2265 c\u221am)",
-      "mathContext": "Paths/cycles: linear R. Probabilistic: R(G) \u2265 c\u221am."
+      "summary": "Axiomatizes path_ramsey_linear (R(P_n) ≤ 2n-1), cycle_ramsey_linear (R(C_n) ≤ 2n-1), and probabilistic_lower_bound (R(G) ≥ c√m)",
+      "mathContext": "Paths/cycles: linear R. Probabilistic: R(G) ≥ c√m."
     },
     {
       "id": "problem-545",
       "title": "Connection to Problem #545",
       "startLine": 167,
       "endLine": 175,
-      "summary": "Problem545Conjecture: precise exponent R(G) \u2264 C_\u03b5 \u00b7 2^{(1/2+\u03b5) log m} refinement of Sudakov",
+      "summary": "Problem545Conjecture: precise exponent R(G) ≤ C_ε · 2^{(1/2+ε) log m} refinement of Sudakov",
       "mathContext": "#545: precise exponent. Related open problem."
     },
     {
@@ -103,20 +104,20 @@
       "title": "Main Results",
       "startLine": 177,
       "endLine": 199,
-      "summary": "erdos_546_solved (= sudakov_theorem) and erdos_546_tight (combining upper and lower bounds into \u0398(\u221am) statement)",
-      "mathContext": "SOLVED: R(G) = 2^{\u0398(\u221am)}. Upper: Sudakov. Lower: probabilistic."
+      "summary": "erdos_546_solved (= sudakov_theorem) and erdos_546_tight (combining upper and lower bounds into Θ(√m) statement)",
+      "mathContext": "SOLVED: R(G) = 2^{Θ(√m)}. Upper: Sudakov. Lower: probabilistic."
     }
   ],
   "overview": {
-    "historicalContext": "Paul Erd\u0151s posed this problem in 1984, asking whether the Ramsey number of a graph with m edges is at most exponential in \u221am. The bipartite case was proved in 2003 by Noga Alon, Michael Krivelevich, and Benny Sudakov using the dependent random choice technique \u2014 a powerful probabilistic method that selects vertices with many common neighbors by random sampling and then removes 'bad' vertices. Sudakov generalized this to all graphs in 2011, combining dependent random choice with a regularity-based embedding argument. The bound is tight: Erd\u0151s's 1947 probabilistic lower bound shows R(K_n) \u2265 2^{n/2}, and since K_n has m = n(n-1)/2 edges, this gives R(K_n) \u2265 2^{\u0398(\u221am)}. Earlier, Gerencs\u00e9r and Gy\u00e1rf\u00e1s (1967) had shown that sparse graphs like paths have linear Ramsey numbers R(P_n) = \u230a3(n-1)/2\u230b + 1, far below the exponential bound. The multi-color version (r \u2265 3 colors) remains a major open problem: Sudakov's proof exploits the complement structure of 2-colorings, which has no analog for 3+ colors. The companion Problem #545 asks for the precise exponent in the bound.",
+    "historicalContext": "Paul Erdős posed this problem in 1984, asking whether the Ramsey number of a graph with m edges is at most exponential in √m. The bipartite case was proved in 2003 by Noga Alon, Michael Krivelevich, and Benny Sudakov using the dependent random choice technique — a powerful probabilistic method that selects vertices with many common neighbors by random sampling and then removes 'bad' vertices. Sudakov generalized this to all graphs in 2011, combining dependent random choice with a regularity-based embedding argument. The bound is tight: Erdős's 1947 probabilistic lower bound shows R(K_n) ≥ 2^{n/2}, and since K_n has m = n(n-1)/2 edges, this gives R(K_n) ≥ 2^{Θ(√m)}. Earlier, Gerencsér and Gyárfás (1967) had shown that sparse graphs like paths have linear Ramsey numbers R(P_n) = ⌊3(n-1)/2⌋ + 1, far below the exponential bound. The multi-color version (r ≥ 3 colors) remains a major open problem: Sudakov's proof exploits the complement structure of 2-colorings, which has no analog for 3+ colors. The companion Problem #545 asks for the precise exponent in the bound.",
     "problemStatement": "Let $G$ be a graph with no isolated vertices and $m$ edges. Is $R(G) \\leq 2^{O(\\sqrt{m})}$? Equivalently, is $\\log_2 R(G) = O(\\sqrt{m})$?",
-    "text": "For a graph G with no isolated vertices and m edges, is R(G) \u2264 2^{O(\u221am)}? Solved by Sudakov (2011). The \u22653 color version remains open.",
+    "text": "For a graph G with no isolated vertices and m edges, is R(G) ≤ 2^{O(√m)}? Solved by Sudakov (2011). The ≥3 color version remains open.",
     "proofStrategy": "The formalization defines Ramsey numbers via subgraph containment in 2-colored complete graphs, states Sudakov's theorem (2011) and its tightness, formalizes the AKS bipartite case (2003), the open multi-color conjecture, specific graph classes (paths, cycles, complete bipartite), probabilistic lower bounds, and the connection to Problem #545 on precise exponents.",
     "keyInsights": [
-      "**Edge count alone controls Ramsey complexity**: $R(G) \\leq 2^{C\\sqrt{m}}$ depends only on $m = |E(G)|$, not on the graph's structure \u2014 a remarkable universality result showing all graphs with $m$ edges have comparable Ramsey numbers (up to exponential factors)",
-      "**Dependent random choice as proof engine**: Sudakov's proof and the earlier AKS bipartite result both use dependent random choice \u2014 selecting random vertex subsets with high co-degree, then cleaning up to embed the target graph \u2014 making this technique central to modern Ramsey theory",
+      "**Edge count alone controls Ramsey complexity**: $R(G) \\leq 2^{C\\sqrt{m}}$ depends only on $m = |E(G)|$, not on the graph's structure — a remarkable universality result showing all graphs with $m$ edges have comparable Ramsey numbers (up to exponential factors)",
+      "**Dependent random choice as proof engine**: Sudakov's proof and the earlier AKS bipartite result both use dependent random choice — selecting random vertex subsets with high co-degree, then cleaning up to embed the target graph — making this technique central to modern Ramsey theory",
       "**Tight for dense graphs, loose for sparse**: Complete graphs $K_n$ achieve $R(K_n) = 2^{\\Theta(\\sqrt{m})}$, matching the bound, while paths satisfy $R(P_n) = O(n) = O(m)$, showing the bound is exponentially loose for sparse graphs",
-      "**Multi-color gap**: The 2-color proof exploits $G \\cup \\overline{G} = K_N$ (complementation), which fails for $r \\geq 3$ colors \u2014 extending to 3+ colors requires fundamentally new ideas and remains one of the main open problems in Ramsey theory",
+      "**Multi-color gap**: The 2-color proof exploits $G \\cup \\overline{G} = K_N$ (complementation), which fails for $r \\geq 3$ colors — extending to 3+ colors requires fundamentally new ideas and remains one of the main open problems in Ramsey theory",
       "**Connection to Problem #545**: The precise exponent question asks whether $\\log_2 R(G) \\leq (1/2 + o(1)) \\log_2 m$, a subtle refinement of Sudakov's $O(\\sqrt{m})$ that would pin down the exact growth rate"
     ],
     "prerequisites": [
@@ -127,13 +128,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Erd\u0151s Problem #546 on Ramsey numbers and edge count is solved in the 2-color case by Sudakov (2011): R(G) \u2264 2^{O(\u221am)} for all graphs G with m edges and no isolated vertices. The formalization captures the complete picture including tightness via Erd\u0151s's 1947 probabilistic argument, the earlier AKS bipartite result (2003), linear bounds for sparse graphs, and the open multi-color conjecture.",
+    "summary": "Erdős Problem #546 on Ramsey numbers and edge count is solved in the 2-color case by Sudakov (2011): R(G) ≤ 2^{O(√m)} for all graphs G with m edges and no isolated vertices. The formalization captures the complete picture including tightness via Erdős's 1947 probabilistic argument, the earlier AKS bipartite result (2003), linear bounds for sparse graphs, and the open multi-color conjecture.",
     "implications": "Sudakov's theorem establishes edge count as the fundamental parameter controlling Ramsey complexity, unifying a wide range of graph Ramsey results. The dependent random choice technique it employs has become one of the most important tools in extremal and probabilistic combinatorics, with applications far beyond Ramsey theory.",
     "openQuestions": [
-      "Does R_r(G) \u2264 2^{O(\u221am)} hold for r \u2265 3 colors? (The multi-color conjecture)",
-      "What is the precise constant C in Sudakov's bound 2^{C\u221am}?",
-      "Can the exponent 1/2 in \u221am be verified precisely? (Problem #545)",
-      "For which graph families is the exponential bound far from tight \u2014 can intermediate growth rates occur?"
+      "Does R_r(G) ≤ 2^{O(√m)} hold for r ≥ 3 colors? (The multi-color conjecture)",
+      "What is the precise constant C in Sudakov's bound 2^{C√m}?",
+      "Can the exponent 1/2 in √m be verified precisely? (Problem #545)",
+      "For which graph families is the exponential bound far from tight — can intermediate growth rates occur?"
     ]
   },
   "leanFile": {
@@ -156,11 +157,11 @@
     "sorries": 0
   },
   "references": [
-    "Erd\u0151s (1984): Original problem on Ramsey numbers and edge count",
-    "Erd\u0151s (1947): A combinatorial problem in geometry (probabilistic lower bound for R(K_n))",
-    "Alon-Krivelevich-Sudakov (2003): Tur\u00e1n numbers of bipartite graphs and related Ramsey-type questions, Combinatorics Probability and Computing",
+    "Erdős (1984): Original problem on Ramsey numbers and edge count",
+    "Erdős (1947): A combinatorial problem in geometry (probabilistic lower bound for R(K_n))",
+    "Alon-Krivelevich-Sudakov (2003): Turán numbers of bipartite graphs and related Ramsey-type questions, Combinatorics Probability and Computing",
     "Sudakov (2011): A note on odd cycle-complete graph Ramsey numbers, Electronic J. Combinatorics",
-    "Gerencs\u00e9r-Gy\u00e1rf\u00e1s (1967): On Ramsey-type problems, Annales Univ. Sci. Budapest",
+    "Gerencsér-Gyárfás (1967): On Ramsey-type problems, Annales Univ. Sci. Budapest",
     "Conlon-Fox-Sudakov (2015): Recent developments in graph Ramsey theory, Surveys in Combinatorics",
     "https://erdosproblems.com/546"
   ],
@@ -168,17 +169,17 @@
     {
       "targetId": "erdos-1014",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
     },
     {
       "targetId": "erdos-1030",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
     },
     {
       "targetId": "erdos-1105",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
     }
   ],
   "sorries": 0

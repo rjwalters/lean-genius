@@ -47,7 +47,8 @@
     "axiomCount": 0,
     "lineCount": 160,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Wilson's theorem has a fascinating multicultural history:\n\n- **Ibn al-Haytham (c. 1000 CE)**: First stated the theorem in his work on optics and number theory, making this one of the earliest primality characterizations\n- **John Wilson (1770)**: Rediscovered and conjectured the result while a student at Cambridge\n- **Edward Waring (1770)**: Published Wilson's conjecture in his book 'Meditationes Algebraicae'\n- **Joseph-Louis Lagrange (1771)**: Provided the first proof, establishing the result rigorously\n\nThe theorem reveals a beautiful algebraic structure: in the multiplicative group (Z/pZ)*, every element pairs with its inverse, leaving only the self-inverse elements 1 and -1 to contribute to the final product.",

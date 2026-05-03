@@ -1,10 +1,10 @@
 {
   "id": "binary-gcd-oq-03",
-  "title": "Lehmer-Sch\u00f6nhage Hybrid GCD Algorithm",
+  "title": "Lehmer-Schönhage Hybrid GCD Algorithm",
   "slug": "binary-gcd-oq-03",
-  "description": "Formalizes Lehmer's GCD acceleration (1938): extract top bits, run Euclidean on small approximations to get a 2\u00d72 cofactor matrix, then apply it to full-precision inputs. Proves the core GCD invariance theorem for det \u00b11 integer matrices via Cramer's rule.",
+  "description": "Formalizes Lehmer's GCD acceleration (1938): extract top bits, run Euclidean on small approximations to get a 2×2 cofactor matrix, then apply it to full-precision inputs. Proves the core GCD invariance theorem for det ±1 integer matrices via Cramer's rule.",
   "meta": {
-    "author": "Lehmer (1938), Sch\u00f6nhage (1971), formalized in Lean 4",
+    "author": "Lehmer (1938), Schönhage (1971), formalized in Lean 4",
     "date": "1938",
     "status": "verified",
     "tags": [
@@ -17,45 +17,46 @@
     "badge": "original",
     "sorries": 0,
     "originalContributions": [
-      "dvd_of_det_unit: Cramer's rule for det \u00b11 matrices \u2014 divisors of linear combinations are divisors of the originals",
-      "common_divisors_preserved: det \u00b11 matrices preserve the set of common divisors",
-      "gcd_cofactor_eq: Int.gcd(\u03b1a+\u03b2b, \u03b3a+\u03b4b) = Nat.gcd(a, b) when det = \u00b11",
-      "lehmerCofactors_det_unit: Lehmer cofactor accumulation maintains det = \u00b11",
+      "dvd_of_det_unit: Cramer's rule for det ±1 matrices — divisors of linear combinations are divisors of the originals",
+      "common_divisors_preserved: det ±1 matrices preserve the set of common divisors",
+      "gcd_cofactor_eq: Int.gcd(αa+βb, γa+δb) = Nat.gcd(a, b) when det = ±1",
+      "lehmerCofactors_det_unit: Lehmer cofactor accumulation maintains det = ±1",
       "euclidGcd_eq_gcd: correctness of the Euclidean fallback",
       "lehmerGcd: complete hybrid algorithm definition with top-bit extraction and cofactor matrices"
     ],
     "dateAdded": "2026-04-12",
     "axiomCount": 0,
     "lineCount": 490,
-    "assumptions": ""
+    "assumptions": "",
+    "theoremCount": 15
   },
   "overview": {
-    "historicalContext": "Derrick Henry Lehmer proposed his GCD acceleration in 1938, motivated by the observation that the leading digits of two numbers determine the first several quotients in the Euclidean algorithm. Instead of performing expensive full-precision divisions, Lehmer's method extracts the top w bits of a and b, runs the cheap single-precision Euclidean algorithm on these approximations, and records the sequence of quotients as a 2\u00d72 integer cofactor matrix M = [[\u03b1,\u03b2],[\u03b3,\u03b4]]. One matrix-vector multiply (a',b') = M\u00b7(a,b) then performs all those quotient steps at once on the full-precision numbers. Arnold Sch\u00f6nhage (1971) took this further: by recursively applying Lehmer's idea (computing HGCD on the top half of the bits, applying, then recursing), one achieves O(M(n) log n) bit complexity using fast multiplication M(n). The GMP library's mpn_gcd uses this Lehmer-Sch\u00f6nhage hybrid, switching between plain Euclidean (\u226464 bits), Lehmer's method (64\u2013few thousand bits), and recursive HGCD (very large inputs). The key mathematical invariant is that unimodular matrices (det = \u00b11) preserve GCD \u2014 a direct consequence of Cramer's rule showing the inverse exists over \u2124.",
-    "problemStatement": "Formalize the Lehmer-Sch\u00f6nhage hybrid GCD algorithm in Lean 4, proving that cofactor matrices with determinant \u00b11 preserve GCD and that the hybrid algorithm correctly computes Nat.gcd.",
-    "proofStrategy": "The formalization is structured in layers: (1) Define CofactorMatrix as a structure with four integer fields plus determinant, multiplication, and application operations. (2) Prove the core GCD invariance via Cramer's rule: if det(M) = \u00b11, then any common divisor of M\u00b7(a,b) is a common divisor of (a,b) and vice versa, hence Int.gcd is preserved. (3) Define the Lehmer inner loop that runs Euclidean steps on small approximations, accumulating cofactors, and prove it maintains det = \u00b11 by induction. (4) Define the full hybrid: for large inputs, extract top bits, compute cofactors, apply; for small inputs, use standard Euclidean GCD (proved correct separately).",
+    "historicalContext": "Derrick Henry Lehmer proposed his GCD acceleration in 1938, motivated by the observation that the leading digits of two numbers determine the first several quotients in the Euclidean algorithm. Instead of performing expensive full-precision divisions, Lehmer's method extracts the top w bits of a and b, runs the cheap single-precision Euclidean algorithm on these approximations, and records the sequence of quotients as a 2×2 integer cofactor matrix M = [[α,β],[γ,δ]]. One matrix-vector multiply (a',b') = M·(a,b) then performs all those quotient steps at once on the full-precision numbers. Arnold Schönhage (1971) took this further: by recursively applying Lehmer's idea (computing HGCD on the top half of the bits, applying, then recursing), one achieves O(M(n) log n) bit complexity using fast multiplication M(n). The GMP library's mpn_gcd uses this Lehmer-Schönhage hybrid, switching between plain Euclidean (≤64 bits), Lehmer's method (64–few thousand bits), and recursive HGCD (very large inputs). The key mathematical invariant is that unimodular matrices (det = ±1) preserve GCD — a direct consequence of Cramer's rule showing the inverse exists over ℤ.",
+    "problemStatement": "Formalize the Lehmer-Schönhage hybrid GCD algorithm in Lean 4, proving that cofactor matrices with determinant ±1 preserve GCD and that the hybrid algorithm correctly computes Nat.gcd.",
+    "proofStrategy": "The formalization is structured in layers: (1) Define CofactorMatrix as a structure with four integer fields plus determinant, multiplication, and application operations. (2) Prove the core GCD invariance via Cramer's rule: if det(M) = ±1, then any common divisor of M·(a,b) is a common divisor of (a,b) and vice versa, hence Int.gcd is preserved. (3) Define the Lehmer inner loop that runs Euclidean steps on small approximations, accumulating cofactors, and prove it maintains det = ±1 by induction. (4) Define the full hybrid: for large inputs, extract top bits, compute cofactors, apply; for small inputs, use standard Euclidean GCD (proved correct separately).",
     "keyInsights": [
-      "The core theorem dvd_of_det_unit uses Cramer's rule: given M\u00b7(a,b) = (u,v) with det \u00b11, we recover a = \u03b4u - \u03b2v and b = \u03b1v - \u03b3u (times det). Since det = \u00b11, the factor vanishes and any divisor of (u,v) divides (a,b).",
+      "The core theorem dvd_of_det_unit uses Cramer's rule: given M·(a,b) = (u,v) with det ±1, we recover a = δu - βv and b = αv - γu (times det). Since det = ±1, the factor vanishes and any divisor of (u,v) divides (a,b).",
       "The gcd_cofactor_eq proof is a clean application of Nat.dvd_antisymm: forward uses dvd_of_det_unit + Int.gcd_dvd_{left,right}, backward uses common_divisors_preserved + Int.dvd_gcd.",
-      "Each Lehmer inner step computes M' = M \u00b7 [[0,1],[1,-q]], flipping the determinant sign (det = -1 for the step matrix). After k steps, det = (-1)^k, always \u00b11.",
-      "The hybrid uses fuel-based termination with Nat.gcd as fallback at fuel 0 \u2014 this is sound because Nat.gcd is the target value. In practice, sufficient fuel is always available since each step reduces the input.",
+      "Each Lehmer inner step computes M' = M · [[0,1],[1,-q]], flipping the determinant sign (det = -1 for the step matrix). After k steps, det = (-1)^k, always ±1.",
+      "The hybrid uses fuel-based termination with Nat.gcd as fallback at fuel 0 — this is sound because Nat.gcd is the target value. In practice, sufficient fuel is always available since each step reduces the input.",
       "Top-bit extraction via topBits(n, w) = (n / 2^shift, shift) where shift = max(0, bitlength(n) - w) ensures the approximation fits in w bits while preserving the quotient structure."
     ]
   },
   "sections": [
     {
       "id": "cofactor-matrices",
-      "title": "Part I: 2\u00d72 Integer Cofactor Matrices",
+      "title": "Part I: 2×2 Integer Cofactor Matrices",
       "startLine": 33,
       "endLine": 70,
-      "summary": "Defines CofactorMatrix structure with \u03b1, \u03b2, \u03b3, \u03b4 fields. Includes identity, determinant, multiplication, and application. Proves det(Id)=1 and det(M\u00b7N)=det(M)\u00b7det(N).",
+      "summary": "Defines CofactorMatrix structure with α, β, γ, δ fields. Includes identity, determinant, multiplication, and application. Proves det(Id)=1 and det(M·N)=det(M)·det(N).",
       "mathContext": "A cofactor matrix $M = \\begin{pmatrix} \\alpha & \\beta \\\\ \\gamma & \\delta \\end{pmatrix}$ tracks how $(a,b)$ transforms through Euclidean steps. The identity matrix leaves $(a,b)$ unchanged. Matrix multiplication composes transformations."
     },
     {
       "id": "gcd-invariance",
-      "title": "Part II: GCD Invariance Under Det \u00b11 Matrices",
+      "title": "Part II: GCD Invariance Under Det ±1 Matrices",
       "startLine": 72,
       "endLine": 158,
-      "summary": "Core theoretical results. dvd_of_det_unit: Cramer's rule for divisibility. common_divisors_preserved: iff between Nat and Int divisibility. gcd_cofactor_eq: Int.gcd(\u03b1a+\u03b2b, \u03b3a+\u03b4b) = Nat.gcd(a,b) for det \u00b11 matrices.",
+      "summary": "Core theoretical results. dvd_of_det_unit: Cramer's rule for divisibility. common_divisors_preserved: iff between Nat and Int divisibility. gcd_cofactor_eq: Int.gcd(αa+βb, γa+δb) = Nat.gcd(a,b) for det ±1 matrices.",
       "mathContext": "If $\\det(M) = \\pm 1$, then $M$ is invertible over $\\mathbb{Z}$, so $\\gcd(\\alpha a + \\beta b, \\gamma a + \\delta b) = \\gcd(a, b)$. The proof uses Cramer's rule: $a = \\delta u - \\beta v$ and $b = \\alpha v - \\gamma u$ when $\\det = 1$."
     },
     {
@@ -71,7 +72,7 @@
       "title": "Part IV: Determinant Preservation",
       "startLine": 220,
       "endLine": 253,
-      "summary": "lehmerInnerStep_det: each step flips det sign. lehmerCofactors_det_unit: after any number of steps from Id, det remains \u00b11. Proved by induction on fuel.",
+      "summary": "lehmerInnerStep_det: each step flips det sign. lehmerCofactors_det_unit: after any number of steps from Id, det remains ±1. Proved by induction on fuel.",
       "mathContext": "Since $\\det(S_q) = -1$ for each step, $\\det(M') = \\det(M) \\cdot \\det(S_q) = -\\det(M)$. Starting from $\\det(I) = 1$, the determinant alternates $1, -1, 1, -1, \\ldots$, always $\\pm 1$."
     },
     {
@@ -92,7 +93,7 @@
     },
     {
       "id": "hybrid-algorithm",
-      "title": "Part VII: The Lehmer-Sch\u00f6nhage Hybrid GCD",
+      "title": "Part VII: The Lehmer-Schönhage Hybrid GCD",
       "startLine": 308,
       "endLine": 370,
       "summary": "Defines lehmerReduce (one Lehmer step or Euclidean fallback), lehmerThreshold (64), and lehmerGcd (the full hybrid with fuel-based termination). For large inputs: extract top bits, compute cofactors, apply. For small inputs: Euclidean.",
@@ -141,11 +142,11 @@
     }
   ],
   "conclusion": {
-    "summary": "A complete Lean 4 formalization of the Lehmer-Sch\u00f6nhage hybrid GCD algorithm. The core result is gcd_cofactor_eq: applying a 2\u00d72 integer matrix with determinant \u00b11 preserves GCD, proved via Cramer's rule (dvd_of_det_unit). The formalization includes the full algorithm: cofactor matrix accumulation on small approximations (with det \u00b11 tracking), top-bit extraction, a hybrid dispatcher, and Euclidean GCD for small inputs. 15 theorems, 13 definitions, 0 axioms, 0 sorries.",
-    "implications": "The GCD invariance theorem (gcd_cofactor_eq) is the theoretical foundation for all matrix-based GCD acceleration: Lehmer's method, Sch\u00f6nhage's HGCD, and the algorithms used in GMP, FLINT, and other arbitrary-precision libraries. The dvd_of_det_unit lemma is also useful outside GCD: it applies to any lattice reduction or continued fraction computation involving unimodular matrices. The formalization demonstrates how to verify algorithm optimizations by separating the mathematical invariant (det \u00b11 preserves GCD) from the implementation details (top-bit extraction, threshold switching).",
+    "summary": "A complete Lean 4 formalization of the Lehmer-Schönhage hybrid GCD algorithm. The core result is gcd_cofactor_eq: applying a 2×2 integer matrix with determinant ±1 preserves GCD, proved via Cramer's rule (dvd_of_det_unit). The formalization includes the full algorithm: cofactor matrix accumulation on small approximations (with det ±1 tracking), top-bit extraction, a hybrid dispatcher, and Euclidean GCD for small inputs. 15 theorems, 13 definitions, 0 axioms, 0 sorries.",
+    "implications": "The GCD invariance theorem (gcd_cofactor_eq) is the theoretical foundation for all matrix-based GCD acceleration: Lehmer's method, Schönhage's HGCD, and the algorithms used in GMP, FLINT, and other arbitrary-precision libraries. The dvd_of_det_unit lemma is also useful outside GCD: it applies to any lattice reduction or continued fraction computation involving unimodular matrices. The formalization demonstrates how to verify algorithm optimizations by separating the mathematical invariant (det ±1 preserves GCD) from the implementation details (top-bit extraction, threshold switching).",
     "openQuestions": [
       "Can the full end-to-end correctness of lehmerGcd be proved, including the progress guarantee that each Lehmer step strictly reduces a + b?",
-      "Can Sch\u00f6nhage's recursive HGCD (half-GCD) be formalized, achieving O(M(n) log n) bit complexity through recursive cofactor matrix computation on the top half of the bits?"
+      "Can Schönhage's recursive HGCD (half-GCD) be formalized, achieving O(M(n) log n) bit complexity through recursive cofactor matrix computation on the top half of the bits?"
     ]
   },
   "leanFile": {
@@ -167,17 +168,17 @@
     {
       "name": "dvd_of_det_unit",
       "type": "core",
-      "description": "Cramer's rule for det \u00b11: divisors of M\u00b7(a,b) are divisors of (a,b)"
+      "description": "Cramer's rule for det ±1: divisors of M·(a,b) are divisors of (a,b)"
     },
     {
       "name": "gcd_cofactor_eq",
       "type": "core",
-      "description": "GCD invariance: Int.gcd(\u03b1a+\u03b2b, \u03b3a+\u03b4b) = Nat.gcd(a,b) for det \u00b11"
+      "description": "GCD invariance: Int.gcd(αa+βb, γa+δb) = Nat.gcd(a,b) for det ±1"
     },
     {
       "name": "lehmerCofactors_det_unit",
       "type": "supporting",
-      "description": "Lehmer cofactor accumulation maintains det = \u00b11"
+      "description": "Lehmer cofactor accumulation maintains det = ±1"
     },
     {
       "name": "euclidGcd_eq_gcd",

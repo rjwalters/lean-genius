@@ -43,7 +43,8 @@
     "axiomCount": 0,
     "lineCount": 154,
     "assumptions": "0 axioms, 0 sorries. S₂ via CommGroup instance, S₃ via decide on derived series, S₄ via native_decide. Classification theorem combines with Mathlib's Equiv.Perm.not_solvable.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "The solvability of symmetric groups is the algebraic heart of the Abel-Ruffini theorem and its converse. Lagrange (1770) studied resolvents and permutation groups to understand polynomial roots, observing that degree 2, 3, and 4 equations have explicit radical solutions — the quadratic formula (antiquity), Cardano's cubic formula (1545), and Ferrari's quartic formula (1545). Ruffini (1799) attempted the first proof that degree 5 is unsolvable but left gaps. Abel (1824) gave the first complete proof of the Abel-Ruffini theorem.\n\nGalois (1832) revolutionized the subject by establishing the correspondence between polynomial solvability and group solvability: a polynomial is solvable by radicals if and only if its Galois group is a solvable group. He identified that Sₙ (n ≥ 5) is not solvable because A₅ (order 60) is the smallest non-abelian simple group — its derived series stalls at [A₅, A₅] = A₅, never reaching {e}.\n\nFor n ≤ 4, the complete composition factor towers are: S₂ ⊵ {e} (factor ℤ/2ℤ), S₃ ⊵ A₃ ⊵ {e} (factors ℤ/2ℤ, ℤ/3ℤ), S₄ ⊵ A₄ ⊵ V₄ ⊵ {e} (factors ℤ/2ℤ, ℤ/3ℤ, ℤ/2ℤ, ℤ/2ℤ). The Klein four-group V₄ ≅ ℤ/2ℤ × ℤ/2ℤ plays a starring role for the quartic: it is the unique normal subgroup of S₄ that is not contained in A₄, enabling the extra solvability step. The Jordan-Hölder theorem (1870s) then establishes that all composition factors of a solvable group must be cyclic of prime order, perfectly matching the towers above.",

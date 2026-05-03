@@ -81,7 +81,8 @@
         "description": "The Kővári-Sós-Turán theorem giving ex(n; K_{s,t}) = O(n^{2-1/s}), the key tool for bipartite Turán numbers"
       }
     ],
-    "assumptions": "3 axiom(s): erdos_stone_domination, folklore_counterexample_infinite, family_le_members. See Lean source for complete statements."
+    "assumptions": "3 axiom(s): erdos_stone_domination, folklore_counterexample_infinite, family_le_members. See Lean source for complete statements.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Erdős and Miklós Simonovits posed this problem in their 1982 survey [ErSi82] on extremal graph theory. The question is motivated by the Erdős-Stone theorem (1946), which determines $\\mathrm{ex}(n; H) = (1 - 1/(\\chi(H)-1) + o(1))\\binom{n}{2}$ for non-bipartite $H$, making the domination question trivial when all forbidden graphs have $\\chi \\geq 3$. The difficulty lies entirely in the bipartite case, where the Zarankiewicz problem (Kővári-Sós-Turán 1954) gives $\\mathrm{ex}(n; K_{s,t}) = O(n^{2-1/s})$ but precise asymptotics are often unknown. The problem connects to Simonovits's broader program of understanding when extremal functions for families are 'simple' — determined by a single member rather than requiring the full family structure.",

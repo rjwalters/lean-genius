@@ -67,7 +67,8 @@
     "axiomCount": 3,
     "lineCount": 277,
     "assumptions": "3 axiom(s) and 16 sorry(s). See the Lean source for details.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 19
   },
   "overview": {
     "historicalContext": "Erdős, Fon-Der-Flaass, Kostochka, and Tuza introduced this problem in 1992, studying the covering function f(k,r) for k-uniform set families with the r-wise pair intersection property. They determined exact values for r = 3, 4, 5, 6, revealing a striking pattern of decreasing coefficients: c₃ = 2, c₄ = 3/2, c₅ = 5/4, c₆ = 1.\n\nThe r-wise pair property is a Helly-type condition: it requires that any r sets in the family are linked by a common pair intersecting all of them. As r increases, the condition becomes stronger, forcing more structure on the family and enabling smaller covering sets. The sequence of exact values suggests a regular pattern, but no general formula has been established.\n\nThe problem connects to several important themes in combinatorics: the sunflower lemma (Erdős-Rado 1960), Helly-type theorems, hypergraph transversal theory, and the recently improved sunflower bounds (Alweiss-Lovett-Wu-Zhang 2020). The open questions about f(k,7) and general asymptotics probe the fundamental limits of covering efficiency under structural constraints.",

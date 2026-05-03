@@ -76,7 +76,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 355,
-    "assumptions": "1 axiom: erdos_1148. See Lean source for the complete statement."
+    "assumptions": "1 axiom: erdos_1148. See Lean source for the complete statement.",
+    "theoremCount": 31
   },
   "overview": {
     "historicalContext": "Erdős Problem #1148 asks whether every sufficiently large integer $n$ can be written as $n = x^2 + y^2 - z^2$ with the strict bound $\\max(x^2, y^2, z^2) \\leq n$. This problem sits at the intersection of additive number theory and the classical theory of quadratic forms. The question is related to the broader study of representations by ternary quadratic forms, where the Hardy–Littlewood circle method provides asymptotic formulas for the number of representations of large integers. Without the bound constraint, every positive integer $n \\not\\equiv 0 \\pmod{4}$ is representable as a difference of two squares via $n = ((n+1)/2)^2 - ((n-1)/2)^2$ for odd $n$. The strict bound $\\max(x^2, y^2, z^2) \\leq n$ makes the problem substantially harder: it restricts the search space to $(\\lfloor\\sqrt{n}\\rfloor + 1)^3 = O(n^{3/2})$ triples. The Fermat–Euler theorem on sums of two squares (a positive integer $m$ is a sum of two squares iff every prime $p \\equiv 3 \\pmod{4}$ divides $m$ to even power) plays a key role, since the problem reduces to finding $z \\leq \\sqrt{n}$ such that $n + z^2$ is a sum of two bounded squares. Computational searches show that 6563 is the largest known non-representable integer, suggesting the threshold $N_0 \\leq 6564$. The problem remains open as of 2025.",

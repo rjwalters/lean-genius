@@ -23,9 +23,9 @@
     "lineCount": 149,
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries. Uses only basic logic and function theory from Mathlib.",
     "originalContributions": [
-      "Core: lawvere_fixpoint \u2014 the general Lawvere fixed-point theorem via diagonal construction g(a) = f(e(a)(a))",
-      "Core: not_has_no_fixpoint / bnot_has_no_fixpoint \u2014 negation has no fixed point in Prop or Bool (via cast/self-application)",
-      "Corollary: cantor, cantor_no_surjection, cantor_bool, russell \u2014 four instances of Lawvere for different choices of B and f",
+      "Core: lawvere_fixpoint — the general Lawvere fixed-point theorem via diagonal construction g(a) = f(e(a)(a))",
+      "Core: not_has_no_fixpoint / bnot_has_no_fixpoint — negation has no fixed point in Prop or Bool (via cast/self-application)",
+      "Corollary: cantor, cantor_no_surjection, cantor_bool, russell — four instances of Lawvere for different choices of B and f",
       "Infrastructure: no_surjection_if_no_fixpoint (contrapositive), diagonal_not_in_range (explicit construction)"
     ],
     "dateAdded": "2026-03-24",
@@ -56,19 +56,20 @@
         "id": "halting-problem",
         "relationship": "The Bool variant (cantor_bool) mirrors the diagonal pattern used in Turing's halting argument, though this file formalizes the algebraic structure rather than the full computational undecidability result"
       }
-    ]
+    ],
+    "theoremCount": 10
   },
   "overview": {
     "problemStatement": "Prove the Lawvere fixed-point theorem as a categorical generalization of Cantor's diagonal argument: if a surjection $e : A \\to (A \\to B)$ exists, then every endomorphism $f : B \\to B$ has a fixed point. Derive Cantor's theorem as a corollary.",
-    "historicalContext": "Georg Cantor published his diagonal argument in 1891, proving that the set of all infinite binary sequences is uncountable. The argument was revolutionary: it showed that infinite sets come in different sizes, settling debates about the nature of infinity. Bertrand Russell discovered his paradox in 1901 by applying the diagonal idea to the set of all sets that don't contain themselves, exposing a fundamental flaw in naive set theory. In 1936, Alan Turing proved the unsolvability of the halting problem using an essentially identical diagonal construction. F. William Lawvere, in his 1969 paper 'Diagonal arguments and cartesian closed categories' (published in *Reprints in Theory and Applications of Categories*, No. 15), showed that all these results are instances of a single fixed-point theorem in cartesian closed categories. Lawvere's insight was that the diagonal construction $g(a) = f(e(a)(a))$ captures the common structure: what varies between Cantor, Russell, Turing, and G\u00f6del is only the choice of the codomain $B$ and the fixed-point-free endomorphism $f$. Noson Yanofsky later extended this perspective in his 2003 paper 'A Universal Approach to Self-Referential Paradoxes, Incompleteness and Fixed Points', systematically cataloguing the instances.",
+    "historicalContext": "Georg Cantor published his diagonal argument in 1891, proving that the set of all infinite binary sequences is uncountable. The argument was revolutionary: it showed that infinite sets come in different sizes, settling debates about the nature of infinity. Bertrand Russell discovered his paradox in 1901 by applying the diagonal idea to the set of all sets that don't contain themselves, exposing a fundamental flaw in naive set theory. In 1936, Alan Turing proved the unsolvability of the halting problem using an essentially identical diagonal construction. F. William Lawvere, in his 1969 paper 'Diagonal arguments and cartesian closed categories' (published in *Reprints in Theory and Applications of Categories*, No. 15), showed that all these results are instances of a single fixed-point theorem in cartesian closed categories. Lawvere's insight was that the diagonal construction $g(a) = f(e(a)(a))$ captures the common structure: what varies between Cantor, Russell, Turing, and Gödel is only the choice of the codomain $B$ and the fixed-point-free endomorphism $f$. Noson Yanofsky later extended this perspective in his 2003 paper 'A Universal Approach to Self-Referential Paradoxes, Incompleteness and Fixed Points', systematically cataloguing the instances.",
     "text": "A 149-line verified formalization of the Lawvere fixed-point theorem (1969) with 0 sorries and 0 axioms. The main theorem states: if $e : A \\to (A \\to B)$ is surjective, then every $f : B \\to B$ has a fixed point. The proof constructs the diagonal function $g(a) = f(e(a)(a))$ and uses surjectivity to find $a_0$ with $e(a_0) = g$, yielding $f(g(a_0)) = g(a_0)$. Five corollaries follow: Cantor's theorem for Prop, Cantor's theorem for Bool, Russell's paradox, the contrapositive (no fixed-point-free endomorphism implies no surjection), and an explicit diagonal non-membership result.",
     "proofStrategy": "1. **Lawvere's diagonal trick**: Given surjective $e : A \\to (A \\to B)$ and $f : B \\to B$, define $g(a) = f(e(a)(a))$. By surjectivity, $\\exists a_0$ with $e(a_0) = g$. Then $e(a_0)(a_0) = g(a_0) = f(e(a_0)(a_0))$, so $e(a_0)(a_0)$ is a fixed point of $f$.\n\n2. **Cantor from Lawvere**: Take $B = \\mathrm{Prop}$ and $f = \\neg$. Since $\\neg$ has no fixed point ($\\neg p = p$ leads to contradiction via self-application), Lawvere implies no surjection $A \\to (A \\to \\mathrm{Prop})$ exists.\n\n3. **Negation has no fixed point**: If $\\neg p = p$, cast along this equality to get $p \\to \\neg p$ and $\\neg p \\to p$. Define $\\neg p$ by $\\lambda h. (\\mathrm{cast}\\, h^{-1}\\, h)\\, h$, then derive contradiction.",
     "keyInsights": [
-      "**One Proof, Many Theorems**: Lawvere's fixed-point theorem unifies Cantor's diagonal argument and Russell's paradox as direct instances, and captures the algebraic pattern underlying the halting problem and G\u00f6del's incompleteness. Each is an instance with different $B$ and $f$: Cantor uses $B = \\mathrm{Prop}$, $f = \\neg$; the Bool variant ($f = !$) mirrors the halting argument's structure; Russell uses the identity surjection. Note: the Bool variant demonstrates the diagonal pattern but is not itself a formalization of Turing's undecidability result, which requires additional computational machinery.",
+      "**One Proof, Many Theorems**: Lawvere's fixed-point theorem unifies Cantor's diagonal argument and Russell's paradox as direct instances, and captures the algebraic pattern underlying the halting problem and Gödel's incompleteness. Each is an instance with different $B$ and $f$: Cantor uses $B = \\mathrm{Prop}$, $f = \\neg$; the Bool variant ($f = !$) mirrors the halting argument's structure; Russell uses the identity surjection. Note: the Bool variant demonstrates the diagonal pattern but is not itself a formalization of Turing's undecidability result, which requires additional computational machinery.",
       "**The Diagonal is Universal**: The construction $g(a) = f(e(a)(a))$ is the categorical essence of all diagonal arguments. It extracts the common pattern from seemingly different impossibility proofs into a single 3-line proof.",
       "**Self-Application is the Key**: The proof of `not_has_no_fixpoint` uses the same self-application trick as Russell's paradox: if $\\neg p = p$, then $p$ can be applied to itself via cast, producing both $p$ and $\\neg p$. This is the type-theoretic core of all diagonal arguments.",
-      "**Surjectivity is the Barrier**: Cantor's theorem is not about size per se \u2014 it's about the impossibility of a certain surjection. This formulation makes the logical content precise without appealing to cardinal arithmetic.",
-      "**Constructive vs. Contradictory Forms**: The formalization presents both styles: `cantor` derives a contradiction from a hypothetical surjection, while `diagonal_not_in_range` constructively exhibits a function outside the range of any given $e$. The constructive form is stronger \u2014 it produces an explicit witness rather than merely refuting an assumption."
+      "**Surjectivity is the Barrier**: Cantor's theorem is not about size per se — it's about the impossibility of a certain surjection. This formulation makes the logical content precise without appealing to cardinal arithmetic.",
+      "**Constructive vs. Contradictory Forms**: The formalization presents both styles: `cantor` derives a contradiction from a hypothetical surjection, while `diagonal_not_in_range` constructively exhibits a function outside the range of any given $e$. The constructive form is stronger — it produces an explicit witness rather than merely refuting an assumption."
     ],
     "prerequisites": [
       "Surjectivity and function spaces (A -> (A -> B))",
@@ -144,8 +145,8 @@
     }
   ],
   "conclusion": {
-    "summary": "The Lawvere fixed-point theorem reveals the common structure behind Cantor's diagonal argument, Russell's paradox, the halting problem, and G\u00f6del's incompleteness theorem. All are instances of the principle that surjectivity onto a function space is incompatible with fixed-point-free endomorphisms.",
-    "implications": "This formalization demonstrates that impossibility results in set theory, logic, and computation share a single categorical root. The 3-line proof of the Lawvere theorem shows that the deep content is in the diagonal construction $g(a) = f(e(a)(a))$ \u2014 everything else is a choice of $B$ and $f$. The type-theoretic presentation avoids the set-theoretic machinery of cardinal arithmetic entirely, showing these results are consequences of pure logic.",
+    "summary": "The Lawvere fixed-point theorem reveals the common structure behind Cantor's diagonal argument, Russell's paradox, the halting problem, and Gödel's incompleteness theorem. All are instances of the principle that surjectivity onto a function space is incompatible with fixed-point-free endomorphisms.",
+    "implications": "This formalization demonstrates that impossibility results in set theory, logic, and computation share a single categorical root. The 3-line proof of the Lawvere theorem shows that the deep content is in the diagonal construction $g(a) = f(e(a)(a))$ — everything else is a choice of $B$ and $f$. The type-theoretic presentation avoids the set-theoretic machinery of cardinal arithmetic entirely, showing these results are consequences of pure logic.",
     "openQuestions": [
       "Can the Lawvere fixed-point theorem be formalized in a topos-theoretic setting in Lean, recovering the original categorical generality beyond type theory?",
       "Is there a constructive analogue of Lawvere's theorem that works in a predicative type theory without propositional extensionality?",
@@ -171,7 +172,7 @@
     {
       "targetId": "godel-incompleteness",
       "relationship": "related",
-      "description": "G\u00f6del's incompleteness theorem can be viewed as a Lawvere instance where the surjection encodes formulas as numbers and f maps provability to its negation"
+      "description": "Gödel's incompleteness theorem can be viewed as a Lawvere instance where the surjection encodes formulas as numbers and f maps provability to its negation"
     }
   ],
   "leanFile": {
@@ -193,22 +194,22 @@
       "authors": "F. W. Lawvere",
       "title": "Diagonal arguments and cartesian closed categories",
       "year": "1969",
-      "venue": "Reprints in Theory and Applications of Categories, No. 15, 1\u201313 (2006 reprint of 1969 original)",
-      "note": "The original categorical fixed-point theorem: surjectivity of A \u2192 B^A implies every endomorphism of B has a fixed point. Shows Cantor, Russell, G\u00f6del, and Tarski are all instances."
+      "venue": "Reprints in Theory and Applications of Categories, No. 15, 1–13 (2006 reprint of 1969 original)",
+      "note": "The original categorical fixed-point theorem: surjectivity of A → B^A implies every endomorphism of B has a fixed point. Shows Cantor, Russell, Gödel, and Tarski are all instances."
     },
     {
       "authors": "G. Cantor",
-      "title": "\u00dcber eine elementare Frage der Mannigfaltigkeitslehre",
+      "title": "Über eine elementare Frage der Mannigfaltigkeitslehre",
       "year": "1891",
-      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung, 1, 75\u201378",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung, 1, 75–78",
       "note": "The original diagonal argument showing the real numbers are uncountable: the set of all binary sequences cannot be listed, because the anti-diagonal sequence differs from every listed sequence."
     },
     {
       "authors": "N. Yanofsky",
       "title": "A universal approach to self-referential paradoxes, incompleteness and fixed points",
       "year": "2003",
-      "venue": "Bulletin of Symbolic Logic, 9(3), 362\u2013386",
-      "note": "Systematic catalogue of Lawvere instances: Cantor, Russell, Richard, Berry, K\u00f6nig, Turing, G\u00f6del, Tarski \u2014 all derived from a single diagonal lemma in cartesian closed categories."
+      "venue": "Bulletin of Symbolic Logic, 9(3), 362–386",
+      "note": "Systematic catalogue of Lawvere instances: Cantor, Russell, Richard, Berry, König, Turing, Gödel, Tarski — all derived from a single diagonal lemma in cartesian closed categories."
     }
   ],
   "sorries": 0

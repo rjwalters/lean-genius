@@ -50,7 +50,8 @@
     "axiomCount": 11,
     "lineCount": 251,
     "assumptions": "11 axiom(s) and 8 sorries(s). See the Lean source for details.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Erdos proposed this inequality in 1935 in the American Mathematical Monthly (Problem 3740). Louis Mordell proved it in 1937 in the Mathematical Gazette using trigonometric identities and AM-GM. David Barrow independently gave a more elementary proof in the same year in the American Mathematical Monthly. Since then, many alternative proofs have appeared: Kazarinoff (1957) used the law of cosines, Bankoff (1958) gave a particularly elegant simplification, and Avez (1993) found a proof using only the triangle inequality. The result is now considered one of the most beautiful inequalities in plane geometry, appearing in Bottema's 'Geometric Inequalities' (1969) and Mitrinovic's 'Recent Advances in Geometric Inequalities' (1989). The constant 2 is optimal, attained for equilateral triangles with $P$ at the center.",

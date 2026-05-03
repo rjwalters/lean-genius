@@ -27,7 +27,8 @@
       "Max hyperplanes C(n,d), extremal bound n < C(n,d)",
       "Sylvester-Gallai higher-dim framework",
       "Achievable set analysis"
-    ]
+    ],
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "J.J. Sylvester posed the problem in 1893: given $n$ points in the plane, not all collinear, must there exist a line passing through exactly two of them? The problem was forgotten until 1940, when Erdős re-posed it. T. Gallai proved it affirmatively in 1944 (with a simpler proof by L.M. Kelly), giving the Sylvester-Gallai theorem. Motzkin generalized it to higher dimensions in 1951. The quantitative version — how many 'ordinary lines' (through exactly 2 points) must exist? — was studied by Kelly-Moser (1958), who gave a lower bound of $n/2 - 1$. A conjecture of Dirac and Motzkin (1951) that the bound is $\\lfloor n/2 \\rfloor$ was settled only in 2013 by Green and Tao, building on their additive combinatorics work. Erdős Problem 606 asks specifically about which line counts are achievable: the achievable set is not the full interval between minimum and maximum, and characterizing these gaps in the plane ($d=2$) and higher dimensions ($d \\geq 3$) remains open.",

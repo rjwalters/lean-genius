@@ -42,7 +42,8 @@
       "abel-ruffini-galois-extensions",
       "abel-ruffini-oq-04",
       "abel-ruffini-oq-04-oq-03"
-    ]
+    ],
+    "theoremCount": 14
   },
   "overview": {
     "historicalContext": "Erland Samuel Bring (1786, *Meletemata quaedam mathematica circa transformationem aequationum algebraicarum*, Lund University dissertation) showed that any quintic can be reduced to the normal form $y^5 + py + q = 0$. Bring worked 38 years before Abel's impossibility proof (1824) and 46 years before Galois's group theory (1832) — entirely without any notion of Galois group or group theory. His reduction is a feat of pure algebraic manipulation, showing that the quintic's apparent 5 parameters can be reduced to 2 via Tschirnhaus substitutions. George Jerrard (1834, *An Essay on the Resolution of Equations*) independently rediscovered and popularized the result.\n\nThe import of Bring's work shifted dramatically after Galois. What Bring showed algebraically (the quintic has a simplest form) became the exact setup Galois theory requires: the generic Bring-Jerrard quintic $y^5 + py + q = 0$ has Galois group $S_5$ over $\\mathbb{Q}(p, q)$, and $S_5$ is not solvable by Abel-Ruffini. The Bring-Jerrard form thus makes the Abel-Ruffini impossibility *uniform*: any quintic can first be reduced to Bring-Jerrard form, and then the uniform Galois argument applies.\n\nThe **Bring radical** BR$(t)$ — the unique real root of $x^5 + x + t = 0$ — was studied by Charles Hermite (1858) and Felix Klein (1884). Klein's masterwork *Vorlesungen über das Ikosaeder* (1884) connected the icosahedral symmetry group $A_5 \\cong I_{60}$ (the 60-element rotation group of the icosahedron) to the quintic: via the substitution $x = j^{1/5}$ (where $j(\\tau)$ is the modular $j$-function), the quintic's five roots correspond to the five icosahedron vertices in a specific orientation. This transforms the quintic into a problem in elliptic function theory, giving the 'transcendental' solution via hypergeometric functions ${}_{2}F_{1}$ that bypasses the radical barrier. King's *Beyond the Quartic Equation* (1996) is the modern reference for this approach.",
@@ -234,56 +235,72 @@
   ],
   "references": [
     {
-      "authors": ["E. S. Bring"],
+      "authors": [
+        "E. S. Bring"
+      ],
       "title": "Meletemata quaedam mathematica circa transformationem aequationum algebraicarum",
       "year": "1786",
       "venue": "Lund University doctoral dissertation",
       "note": "First showed that any quintic can be reduced to the form x⁵ + px + q via Tschirnhaus transformations. Bring worked 38 years before Abel's impossibility proof and 46 years before Galois's group theory — entirely by algebraic manipulation."
     },
     {
-      "authors": ["G. B. Jerrard"],
+      "authors": [
+        "G. B. Jerrard"
+      ],
       "title": "An Essay on the Resolution of Equations",
       "year": "1859",
       "venue": "Taylor and Francis, London",
       "note": "Independently rediscovered and popularized Bring's reduction. Jerrard's 1834 paper first brought the result to wider attention, though Bring's priority was later established by Hermite. Jerrard also attempted (incorrectly) to solve the general quintic, but his reduction method was valid."
     },
     {
-      "authors": ["C. Hermite"],
+      "authors": [
+        "C. Hermite"
+      ],
       "title": "Sur la résolution de l'équation du cinquième degré",
       "year": "1858",
       "venue": "Comptes rendus de l'Académie des Sciences, vol. 46, pp. 508–515",
       "note": "Pioneering work showing that the general quintic CAN be solved via elliptic modular functions, bypassing the radical barrier established by Abel-Ruffini. Uses Jacobi theta functions to express the Bring radical, prefiguring Klein's 1884 icosahedral approach. Together with Bring 1786 and Klein 1884, this establishes the three-act structure of the quintic story: Bring's algebraic reduction, Hermite's transcendental solution, and Klein's geometric synthesis via the icosahedron."
     },
     {
-      "authors": ["F. Klein"],
+      "authors": [
+        "F. Klein"
+      ],
       "title": "Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade",
       "year": "1884",
       "venue": "Teubner, Leipzig (English translation: Lectures on the Icosahedron, 1888)",
       "note": "Connected the quintic to the symmetries of the icosahedron (rotation group ≅ A₅) and solved it via theta functions. Showed the Bring radical BR(t) can be expressed as a hypergeometric function ₂F₁(1/5, 2/5; 1; t). Connected icosahedral symmetry (A₅ ≅ I₆₀) to the quintic via the modular j-function, providing a transcendental solution via hypergeometric functions that bypasses the radical barrier."
     },
     {
-      "authors": ["M. L. Glasser"],
+      "authors": [
+        "M. L. Glasser"
+      ],
       "title": "The quadratic formula made hard: A less radical approach to solving equations",
       "year": "1994",
       "venue": "arXiv:math/9411224",
       "note": "Derives the explicit hypergeometric formula $\\mathrm{BR}(t) = -\\frac{t}{4} \\cdot {}_4F_3(\\frac{1}{5}, \\frac{2}{5}, \\frac{3}{5}, \\frac{4}{5}; \\frac{1}{2}, \\frac{3}{4}, \\frac{5}{4}; -\\frac{3125 t^4}{256})$ for the Bring radical, generalized to $n$-th degree principal forms. The four upper hypergeometric parameters $\\frac{k}{5}$ for $k = 1, 2, 3, 4$ encode the cyclic $\\mathbb{Z}/5\\mathbb{Z}$ structure underlying the quintic — directly connecting this entry's Bring radical to the cyclotomic theory invoked in Vandermonde's 1771 cyclotomic radical formula."
     },
     {
-      "authors": ["R. B. King"],
+      "authors": [
+        "R. B. King"
+      ],
       "title": "Beyond the Quartic Equation",
       "year": "1996",
       "venue": "Birkhäuser, Boston",
       "note": "Modern treatment of the Bring-Jerrard reduction, icosahedral equation, and the complete transcendental solution of the quintic. Develops the connection between the Bring radical, hypergeometric functions, and Klein's icosahedral theory."
     },
     {
-      "authors": ["J. M. Borwein and P. B. Borwein"],
+      "authors": [
+        "J. M. Borwein and P. B. Borwein"
+      ],
       "title": "Pi and the AGM: A Study in Analytic Number Theory and Computational Complexity",
       "year": "1987",
       "venue": "Wiley",
       "note": "Comprehensive treatment of elliptic modular functions and their computational applications, including the Bring radical's connection to $j(\\tau)$ and $\\theta$-functions. Provides high-precision numerical algorithms for evaluating BR$(t)$ via theta function expansions, complementing the Glasser-King hypergeometric series for moderate $|t|$."
     },
     {
-      "authors": ["P. Pesic"],
+      "authors": [
+        "P. Pesic"
+      ],
       "title": "Abel's Proof: An Essay on the Sources and Meaning of Mathematical Unsolvability",
       "year": "2003",
       "venue": "MIT Press",

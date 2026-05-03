@@ -76,7 +76,8 @@
     "axiomCount": 0,
     "lineCount": 349,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "**Bézout's identity** states that for any integers a, b, there exist x, y with ax + by = gcd(a, b). The deeper question — answered here — is: **what is the complete set of solutions to ax + by = c?**\n\nThe answer, known since at least the 19th century, is that solutions form a **1-dimensional arithmetic lattice**. If (x₀, y₀) is one solution, all solutions are parameterized by t ∈ ℤ as:\n  (x₀ + (b/d)t,  y₀ - (a/d)t)\nwhere d = gcd(a, b). This is sometimes called the **parametric solution** or **general solution** of the linear Diophantine equation.\n\nThe **GCD ideal characterization** — that d = gcd(a,b) iff d is the minimum positive linear combination and divides all linear combinations — connects the number-theoretic definition with the algebraic concept of an **ideal generator** in ℤ.",

@@ -52,7 +52,8 @@
       "Moser-Tardos resampling algorithm (constructive LLL)"
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 25
   },
   "overview": {
     "historicalContext": "The Lovasz Local Lemma (LLL), proved by Paul Erdos and Laszlo Lovasz in 1975, is widely regarded as the crown jewel of the probabilistic method. It addresses a fundamental limitation of the basic probabilistic method: when bad events are not independent, the naive union bound can be far too pessimistic.\n\nThe LLL shows that if each bad event has small probability and is independent of most other bad events, then with positive probability none of the bad events occur. The precise condition involves a dependency graph: each event must be independent of all events not in its neighborhood, and the probabilities must satisfy a system of inequalities involving the graph structure.\n\nThe symmetric form of the LLL is especially elegant: if each event has probability at most p and depends on at most d other events, and if ep(d+1) <= 1 (where e is Euler's number), then all bad events can be simultaneously avoided. This clean criterion is remarkably powerful.\n\nIn 2010, Moser and Tardos gave a constructive proof of the LLL via a resampling algorithm, resolving a long-standing question about whether the non-constructive existence proof could be made algorithmic. Their proof showed that repeated resampling of violated constraints converges rapidly.",

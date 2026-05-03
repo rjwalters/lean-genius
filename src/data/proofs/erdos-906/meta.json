@@ -55,7 +55,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 168,
-    "assumptions": "4 axioms: iteratedDeriv, polynomial_trivial, exp_is_entire, exp_is_transcendental. 0 sorries."
+    "assumptions": "4 axioms: iteratedDeriv, polynomial_trivial, exp_is_entire, exp_is_transcendental. 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "This problem lies in the intersection of complex analysis and the theory of entire functions. An **entire function** is one that is holomorphic (complex differentiable) on all of ℂ - examples include polynomials, exp, sin, and cos. A **transcendental** entire function is one that is not a polynomial.\n\nThe problem asks about a very strong property: for ANY infinite subsequence of derivative orders n₁ < n₂ < ..., the union of zeros of f^{(nₖ)} should be dense in ℂ. This means no matter how sparse a subsequence you choose, you can find zeros of those derivatives arbitrarily close to any point.\n\nErdős wrote in 1982 that this was 'solved in the affirmative more than ten years ago' but gave no reference. He seemed to attribute it to Barth and Schneider (1972), but their paper 'On a problem of Erdős concerning zeros of derivatives' contains no such result. The formal-conjectures project marks this as OPEN due to no verified proof.",

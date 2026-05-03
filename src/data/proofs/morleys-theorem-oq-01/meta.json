@@ -41,7 +41,8 @@
       "Morley side length formula symmetry and positivity",
       "Reduction: equilateral follows from symmetric side formula",
       "Product-to-sum trig identities for the verification"
-    ]
+    ],
+    "theoremCount": 15
   },
   "overview": {
     "historicalContext": "Morley's theorem — that the intersections of adjacent trisectors of any triangle form an equilateral triangle — was discovered by Frank Morley around 1899 but not published until 1929. Despite its elementary statement, it resisted conventional proof for decades; Morley himself described it as a theorem that 'cannot be proved by elementary methods'. The first published proofs (by Naraniengar in 1909 and Taylor-Marr in 1914) were trigonometric and non-trivial. John Conway's 'backward construction' proof (c. 1995) is celebrated for its conceptual elegance: by reversing the question — starting from the equilateral Morley triangle and constructing the original — he reduced the hard direction to a verification. The construction attaches three isoceles 'ear' triangles to the equilateral core, and the fundamental identity α/3 + β/3 + γ/3 = π/3 (for any triangle) provides the exact apex angles needed to make it work. This file formalizes Conway's approach in Lean 4, proving all the supporting lemmas (0 axioms, 0 sorries). The remaining step — the coordinate computation verifying the side length formula 8R·sin(α/3)·sin(β/3)·sin(γ/3) — is finite and mechanical but substantial.",

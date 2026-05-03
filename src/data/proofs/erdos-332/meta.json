@@ -65,7 +65,8 @@
       "Additive combinatorics: difference sets, syndetic sets",
       "Ergodic theory basics: Furstenberg correspondence principle (for context)"
     ],
-    "lineCount": 254
+    "lineCount": 254,
+    "theoremCount": 20
   },
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* [ErGr80], building on the classical study of difference sets pioneered by Khintchine (1930s) and Følner (1954). The key known result is due to Karel Prikry, who proved that positive upper density of $A$ guarantees $D(A)$ has bounded gaps (syndeticity); related work by Robert Tijdeman and Cameron Stewart refined the quantitative bounds on the gap parameter $M$ in terms of the density $\\delta$. The problem connects deeply to Hillel Furstenberg's 1977 correspondence principle (*Journal d'Analyse Mathématique*), which translates combinatorial density questions into ergodic theory — Prikry's theorem follows from Poincaré recurrence in the associated measure-preserving system. The open question of finding the *weakest* sufficient condition sits within the broader program of understanding how density forces structure: Szemerédi's theorem (1975) shows positive density forces arithmetic progressions, and the Green–Tao theorem (2008) extends this to the primes. Problem #332 asks the analogous question for difference sets rather than progressions.",

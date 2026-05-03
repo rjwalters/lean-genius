@@ -1,10 +1,10 @@
 {
   "id": "amgm-inequality-oq-03-oq-04",
-  "title": "R\u00e9nyi Entropy and Power Mean Monotonicity: A Unified Equivalence",
+  "title": "Rényi Entropy and Power Mean Monotonicity: A Unified Equivalence",
   "slug": "amgm-inequality-oq-03-oq-04",
-  "description": "The weighted power mean M_r(p,p) (with a probability distribution serving as both weights and values) is increasing in r if and only if the R\u00e9nyi entropy H_\u03b1(p) is decreasing in \u03b1. These are not separate facts \u2014 they are the same statement expressed in different notation, unified by the identity H_\u03b1(p) = \u2212log(M_{\u03b1\u22121}(p,p)). This formalization proves the identity and the full biconditional equivalence, with 0 sorries and 0 axioms.",
+  "description": "The weighted power mean M_r(p,p) (with a probability distribution serving as both weights and values) is increasing in r if and only if the Rényi entropy H_α(p) is decreasing in α. These are not separate facts — they are the same statement expressed in different notation, unified by the identity H_α(p) = −log(M_{α−1}(p,p)). This formalization proves the identity and the full biconditional equivalence, with 0 sorries and 0 axioms.",
   "meta": {
-    "author": "R\u00e9nyi (1961), Hardy-Littlewood-P\u00f3lya (1934); equivalence formalized here",
+    "author": "Rényi (1961), Hardy-Littlewood-Pólya (1934); equivalence formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/R%C3%A9nyi_entropy",
     "date": "1961",
     "status": "verified",
@@ -44,7 +44,7 @@
       },
       {
         "theorem": "Real.log_le_log",
-        "description": "log monotone: a \u2264 b \u2192 0 < a \u2192 log a \u2264 log b",
+        "description": "log monotone: a ≤ b → 0 < a → log a ≤ log b",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       },
       {
@@ -54,37 +54,38 @@
       }
     ],
     "originalContributions": [
-      "renyiEntropy: Definition of H_\u03b1(p) = (1/(1-\u03b1)) \u00b7 log(\u03a3 p\u1d62^\u03b1) for \u03b1 \u2260 1",
-      "selfPowerMean: Definition of M_r(p,p) = (\u03a3 p\u1d62\u00b7p\u1d62^r)^(1/r) (distribution as own weights and values)",
-      "renyi_sum_eq_powerMean_sum: \u03a3 p\u1d62\u00b7p\u1d62^(\u03b1-1) = \u03a3 p\u1d62^\u03b1 (key algebraic bridge via rpow_add)",
-      "renyi_eq_neg_log_powerMean: H_\u03b1(p) = -log(M_{\u03b1-1}(p,p)) (main identity, fully proved)",
+      "renyiEntropy: Definition of H_α(p) = (1/(1-α)) · log(Σ pᵢ^α) for α ≠ 1",
+      "selfPowerMean: Definition of M_r(p,p) = (Σ pᵢ·pᵢ^r)^(1/r) (distribution as own weights and values)",
+      "renyi_sum_eq_powerMean_sum: Σ pᵢ·pᵢ^(α-1) = Σ pᵢ^α (key algebraic bridge via rpow_add)",
+      "renyi_eq_neg_log_powerMean: H_α(p) = -log(M_{α-1}(p,p)) (main identity, fully proved)",
       "renyi_monotone_iff_powerMean_monotone: Full biconditional equivalence of the two monotonicity statements",
-      "renyi_two_eq_neg_log_collision: H_2(p) = -log(\u03a3 p\u1d62\u00b2) = -log(collision probability)",
-      "Key insight: H decreasing \u2194 M increasing follows from negating both sides of log(M_{\u03b1-1}) \u2264 log(M_{\u03b2-1})"
+      "renyi_two_eq_neg_log_collision: H_2(p) = -log(Σ pᵢ²) = -log(collision probability)",
+      "Key insight: H decreasing ↔ M increasing follows from negating both sides of log(M_{α-1}) ≤ log(M_{β-1})"
     ],
     "dateAdded": "2026-04-21",
     "lineCount": 232,
     "prerequisites": [
-      "Probability distributions and R\u00e9nyi entropy (information theory)",
+      "Probability distributions and Rényi entropy (information theory)",
       "Power means and AM-GM inequality (analysis)",
       "Real logarithm and exponential functions (Mathlib)"
-    ]
+    ],
+    "theoremCount": 10
   },
   "overview": {
-    "historicalContext": "R\u00e9nyi entropy H_\u03b1(p) was introduced by Alfr\u00e9d R\u00e9nyi in 1961 as a generalization of Shannon entropy. The weighted power mean M_r was studied by Hardy, Littlewood, and P\u00f3lya (1934), who proved it is increasing in r. These two monotonicity results appear in different literature streams \u2014 information theory and classical analysis \u2014 and are rarely unified.\n\nThe key connection is that when a probability distribution p is used as both weights and values in the power mean, we get the 'self-power mean' M_r(p,p). The identity H_\u03b1(p) = \u2212log(M_{\u03b1\u22121}(p,p)) then shows the two monotonicity results are literally the same inequality expressed in different notation.\n\nThis file formalizes this unification: the biconditional M_r(p,p) increasing in r \u2194 H_\u03b1(p) decreasing in \u03b1.",
-    "problemStatement": "**Open Question**: Are the two classical monotonicity results \u2014 power mean monotonicity M_r \u2264 M_s (r \u2264 s) and R\u00e9nyi entropy monotonicity H_\u03b1 \u2265 H_\u03b2 (\u03b1 \u2264 \u03b2) \u2014 actually the same result?\n\n**Resolution**: Yes. For a probability distribution p with p\u1d62 > 0:\n\n$$H_\\alpha(p) = \\frac{1}{1-\\alpha}\\log\\sum_i p_i^\\alpha = -\\log\\left(\\sum_i p_i \\cdot p_i^{\\alpha-1}\\right)^{1/(\\alpha-1)} = -\\log M_{\\alpha-1}(p,p)$$\n\nSo H_\u03b1 is decreasing in \u03b1 if and only if M_r(p,p) is increasing in r.",
-    "text": "R\u00e9nyi entropy H_\u03b1(p) is decreasing in \u03b1 if and only if the self-power mean M_r(p,p) is increasing in r. These are the same fact in different notation, unified by the identity H_\u03b1(p) = \u2212log(M_{\u03b1\u22121}(p,p)).",
-    "proofStrategy": "The proof has three parts:\n\n1. **Algebraic identity** (renyi_sum_eq_powerMean_sum): Show \u03a3 p\u1d62\u00b7p\u1d62^(\u03b1-1) = \u03a3 p\u1d62^\u03b1 using p\u1d62\u00b7p\u1d62^(\u03b1-1) = p\u1d62^(1+(\u03b1-1)) = p\u1d62^\u03b1 via `Real.rpow_add`.\n\n2. **Main identity** (renyi_eq_neg_log_powerMean): Using the algebraic identity, rewrite log(M_{\u03b1-1}) = log((\u03a3 p\u1d62^\u03b1)^(1/(\u03b1-1))) = (1/(\u03b1-1))\u00b7log(\u03a3 p\u1d62^\u03b1) via `Real.log_rpow`. Then arithmetic shows this equals \u2212H_\u03b1(p).\n\n3. **Biconditional** (renyi_monotone_iff_powerMean_monotone): Both directions use the identity:\n   - (\u2192): H_{r+1} \u2264 H_{t+1} means \u2212log(M_t) \u2264 \u2212log(M_r), flip to get M_r \u2264 M_t via exp/log round-trip\n   - (\u2190): M_{\u03b1-1} \u2264 M_{\u03b2-1} means log(M_{\u03b1-1}) \u2264 log(M_{\u03b2-1}), negate to get H_\u03b1 \u2265 H_\u03b2",
+    "historicalContext": "Rényi entropy H_α(p) was introduced by Alfréd Rényi in 1961 as a generalization of Shannon entropy. The weighted power mean M_r was studied by Hardy, Littlewood, and Pólya (1934), who proved it is increasing in r. These two monotonicity results appear in different literature streams — information theory and classical analysis — and are rarely unified.\n\nThe key connection is that when a probability distribution p is used as both weights and values in the power mean, we get the 'self-power mean' M_r(p,p). The identity H_α(p) = −log(M_{α−1}(p,p)) then shows the two monotonicity results are literally the same inequality expressed in different notation.\n\nThis file formalizes this unification: the biconditional M_r(p,p) increasing in r ↔ H_α(p) decreasing in α.",
+    "problemStatement": "**Open Question**: Are the two classical monotonicity results — power mean monotonicity M_r ≤ M_s (r ≤ s) and Rényi entropy monotonicity H_α ≥ H_β (α ≤ β) — actually the same result?\n\n**Resolution**: Yes. For a probability distribution p with pᵢ > 0:\n\n$$H_\\alpha(p) = \\frac{1}{1-\\alpha}\\log\\sum_i p_i^\\alpha = -\\log\\left(\\sum_i p_i \\cdot p_i^{\\alpha-1}\\right)^{1/(\\alpha-1)} = -\\log M_{\\alpha-1}(p,p)$$\n\nSo H_α is decreasing in α if and only if M_r(p,p) is increasing in r.",
+    "text": "Rényi entropy H_α(p) is decreasing in α if and only if the self-power mean M_r(p,p) is increasing in r. These are the same fact in different notation, unified by the identity H_α(p) = −log(M_{α−1}(p,p)).",
+    "proofStrategy": "The proof has three parts:\n\n1. **Algebraic identity** (renyi_sum_eq_powerMean_sum): Show Σ pᵢ·pᵢ^(α-1) = Σ pᵢ^α using pᵢ·pᵢ^(α-1) = pᵢ^(1+(α-1)) = pᵢ^α via `Real.rpow_add`.\n\n2. **Main identity** (renyi_eq_neg_log_powerMean): Using the algebraic identity, rewrite log(M_{α-1}) = log((Σ pᵢ^α)^(1/(α-1))) = (1/(α-1))·log(Σ pᵢ^α) via `Real.log_rpow`. Then arithmetic shows this equals −H_α(p).\n\n3. **Biconditional** (renyi_monotone_iff_powerMean_monotone): Both directions use the identity:\n   - (→): H_{r+1} ≤ H_{t+1} means −log(M_t) ≤ −log(M_r), flip to get M_r ≤ M_t via exp/log round-trip\n   - (←): M_{α-1} ≤ M_{β-1} means log(M_{α-1}) ≤ log(M_{β-1}), negate to get H_α ≥ H_β",
     "keyInsights": [
-      "**Same statement, different notation**: The monotonicity of power means and the monotonicity of R\u00e9nyi entropy are literally the same inequality \u2014 one phrased in terms of the sum, one in terms of the logarithm.",
-      "**Self-power mean**: When a probability distribution serves as both weights and values (M_r(p,p)), the power mean sum simplifies: \u03a3 p\u1d62\u00b7p\u1d62^r = \u03a3 p\u1d62^(r+1). This is the bridge between R\u00e9nyi sums and power mean sums.",
-      "**Algebraic key**: The identity p\u1d62\u00b7p\u1d62^(\u03b1-1) = p\u1d62^\u03b1 (from rpow_add) is the entire algebraic content. All else is logarithm/exponential manipulation.",
-      "**Collision entropy**: H_2(p) = \u2212log(\u03a3 p\u1d62\u00b2) = \u2212log(collision probability) is the negative log of the probability that two independent samples agree. This is M_1(p,p), the arithmetic self-mean.",
-      "**Log as the bridge**: The identity H_\u03b1 = \u2212log(M_{\u03b1\u22121}) is not coincidental \u2014 the logarithm converts the multiplicative structure of power means (geometric scaling) into the additive structure of entropy. This explains why both objects behave as 'size measures' of a distribution: negating a monotone log-function reverses order, which is exactly the sign flip between 'M increasing' and 'H decreasing'.",
-      "The R\u00e9nyi entropy \\alpha(p) = \\frac{1}{1-\\alpha} \\log \\sum_i p_i^\\alpha$ unifies information-theoretic measures: $ counts support size (Hartley entropy),  = -\\sum p_i \\log p_i$ is Shannon entropy (limit $\\alpha \\to 1$),  = -\\log \\sum p_i^2$ is collision entropy (related to birthday paradox probability), and \\infty = -\\log \\max_i p_i$ is min-entropy. The equivalence with power mean monotonicity (this entry) gives a unified proof: \\alpha \\geq H_\\beta$ iff $\\alpha \\leq \\beta$ iff \\alpha \\leq M_\\beta$, and all three orderings follow from the convexity of  \\mapsto t^\\alpha$ for $\\alpha > 1$."
+      "**Same statement, different notation**: The monotonicity of power means and the monotonicity of Rényi entropy are literally the same inequality — one phrased in terms of the sum, one in terms of the logarithm.",
+      "**Self-power mean**: When a probability distribution serves as both weights and values (M_r(p,p)), the power mean sum simplifies: Σ pᵢ·pᵢ^r = Σ pᵢ^(r+1). This is the bridge between Rényi sums and power mean sums.",
+      "**Algebraic key**: The identity pᵢ·pᵢ^(α-1) = pᵢ^α (from rpow_add) is the entire algebraic content. All else is logarithm/exponential manipulation.",
+      "**Collision entropy**: H_2(p) = −log(Σ pᵢ²) = −log(collision probability) is the negative log of the probability that two independent samples agree. This is M_1(p,p), the arithmetic self-mean.",
+      "**Log as the bridge**: The identity H_α = −log(M_{α−1}) is not coincidental — the logarithm converts the multiplicative structure of power means (geometric scaling) into the additive structure of entropy. This explains why both objects behave as 'size measures' of a distribution: negating a monotone log-function reverses order, which is exactly the sign flip between 'M increasing' and 'H decreasing'.",
+      "The Rényi entropy \\alpha(p) = \\frac{1}{1-\\alpha} \\log \\sum_i p_i^\\alpha$ unifies information-theoretic measures: $ counts support size (Hartley entropy),  = -\\sum p_i \\log p_i$ is Shannon entropy (limit $\\alpha \\to 1$),  = -\\log \\sum p_i^2$ is collision entropy (related to birthday paradox probability), and \\infty = -\\log \\max_i p_i$ is min-entropy. The equivalence with power mean monotonicity (this entry) gives a unified proof: \\alpha \\geq H_\\beta$ iff $\\alpha \\leq \\beta$ iff \\alpha \\leq M_\\beta$, and all three orderings follow from the convexity of  \\mapsto t^\\alpha$ for $\\alpha > 1$."
     ],
     "prerequisites": [
-      "Information theory (R\u00e9nyi entropy)",
+      "Information theory (Rényi entropy)",
       "Analysis (power means, AM-GM)",
       "Real logarithm and power functions"
     ]
@@ -95,8 +96,8 @@
       "title": "Overview and Mathematical Context",
       "startLine": 1,
       "endLine": 51,
-      "summary": "Header documenting the connection between R\u00e9nyi entropy and power means",
-      "mathContext": "The identity H_\u03b1(p) = -log(M_{\u03b1-1}(p,p)) unifies two monotonicity results from information theory and analysis"
+      "summary": "Header documenting the connection between Rényi entropy and power means",
+      "mathContext": "The identity H_α(p) = -log(M_{α-1}(p,p)) unifies two monotonicity results from information theory and analysis"
     },
     {
       "id": "definitions",
@@ -104,54 +105,54 @@
       "startLine": 57,
       "endLine": 71,
       "summary": "renyiEntropy and selfPowerMean definitions",
-      "mathContext": "H_\u03b1(p) = (1/(1-\u03b1)) \u00b7 log(\u03a3 p\u1d62^\u03b1); M_r(p,p) = (\u03a3 p\u1d62\u00b7p\u1d62^r)^(1/r)"
+      "mathContext": "H_α(p) = (1/(1-α)) · log(Σ pᵢ^α); M_r(p,p) = (Σ pᵢ·pᵢ^r)^(1/r)"
     },
     {
       "id": "algebraic-identity",
       "title": "Part II: Key Algebraic Identity",
       "startLine": 77,
       "endLine": 90,
-      "summary": "\u03a3 p\u1d62\u00b7p\u1d62^(\u03b1-1) = \u03a3 p\u1d62^\u03b1 proved via rpow_add",
-      "mathContext": "p\u1d62 \u00b7 p\u1d62^(\u03b1-1) = p\u1d62^(1 + (\u03b1-1)) = p\u1d62^\u03b1 by Real.rpow_add"
+      "summary": "Σ pᵢ·pᵢ^(α-1) = Σ pᵢ^α proved via rpow_add",
+      "mathContext": "pᵢ · pᵢ^(α-1) = pᵢ^(1 + (α-1)) = pᵢ^α by Real.rpow_add"
     },
     {
       "id": "positivity",
       "title": "Part III: Positivity Lemmas",
       "startLine": 96,
       "endLine": 109,
-      "summary": "R\u00e9nyi sum and self-power mean are positive for positive distributions",
-      "mathContext": "0 < \u03a3 p\u1d62^\u03b1 and 0 < M_r(p,p) for p\u1d62 > 0 and s nonempty"
+      "summary": "Rényi sum and self-power mean are positive for positive distributions",
+      "mathContext": "0 < Σ pᵢ^α and 0 < M_r(p,p) for pᵢ > 0 and s nonempty"
     },
     {
       "id": "main-identity",
-      "title": "Part IV: Main Identity H_\u03b1 = \u2212log(M_{\u03b1\u22121})",
+      "title": "Part IV: Main Identity H_α = −log(M_{α−1})",
       "startLine": 115,
       "endLine": 134,
       "summary": "renyi_eq_neg_log_powerMean: the central unifying theorem",
-      "mathContext": "H_\u03b1(p) = (1/(1-\u03b1))\u00b7log(\u03a3 p\u1d62^\u03b1) = -log((\u03a3 p\u1d62^\u03b1)^(1/(\u03b1-1))) = -log(M_{\u03b1-1}(p,p))"
+      "mathContext": "H_α(p) = (1/(1-α))·log(Σ pᵢ^α) = -log((Σ pᵢ^α)^(1/(α-1))) = -log(M_{α-1}(p,p))"
     },
     {
       "id": "equivalence",
       "title": "Part V: Equivalence of Monotonicity",
       "startLine": 140,
       "endLine": 206,
-      "summary": "Full biconditional: H decreasing \u2194 M increasing",
+      "summary": "Full biconditional: H decreasing ↔ M increasing",
       "mathContext": "Three theorems: one direction, the other direction, and the biconditional renyi_monotone_iff_powerMean_monotone"
     },
     {
       "id": "applications",
-      "title": "Part VI: Applications \u2014 Collision Entropy (H\u2082 = \u2212log P[X=Y])",
+      "title": "Part VI: Applications — Collision Entropy (H₂ = −log P[X=Y])",
       "startLine": 210,
       "endLine": 232,
       "summary": "H_2 = -log(collision probability) = -log(M_1(p,p))",
-      "mathContext": "H_2(p) = -log(\u03a3 p\u1d62\u00b2); collision probability interpretation; connection to arithmetic self-mean"
+      "mathContext": "H_2(p) = -log(Σ pᵢ²); collision probability interpretation; connection to arithmetic self-mean"
     }
   ],
   "conclusion": {
-    "summary": "We formalize the equivalence between power mean monotonicity and R\u00e9nyi entropy monotonicity. The central result is the identity H_\u03b1(p) = \u2212log(M_{\u03b1\u22121}(p,p)), proved using Real.rpow_add and Real.log_rpow. The biconditional equivalence of the two monotonicity statements is then a formal consequence, using the exp/log round-trip and neg_le_neg.",
-    "implications": "**Theoretical unification**: Two central results from different fields \u2014 information theory (R\u00e9nyi entropy decreases in order) and analysis (power means increase in order) \u2014 are the same statement. This unification clarifies why both results have similar proofs and suggests a common generalization.\n\n**Information geometry**: The identity H_\u03b1 = \u2212log(M_{\u03b1-1}) places R\u00e9nyi entropy in the context of power mean geometry, connecting it to questions about convexity and interpolation between entropy measures.",
+    "summary": "We formalize the equivalence between power mean monotonicity and Rényi entropy monotonicity. The central result is the identity H_α(p) = −log(M_{α−1}(p,p)), proved using Real.rpow_add and Real.log_rpow. The biconditional equivalence of the two monotonicity statements is then a formal consequence, using the exp/log round-trip and neg_le_neg.",
+    "implications": "**Theoretical unification**: Two central results from different fields — information theory (Rényi entropy decreases in order) and analysis (power means increase in order) — are the same statement. This unification clarifies why both results have similar proofs and suggests a common generalization.\n\n**Information geometry**: The identity H_α = −log(M_{α-1}) places Rényi entropy in the context of power mean geometry, connecting it to questions about convexity and interpolation between entropy measures.",
     "openQuestions": [
-      "Can the full power mean monotonicity M_r \u2264 M_s (for r \u2264 s with mixed signs) be incorporated into the R\u00e9nyi entropy framework?",
+      "Can the full power mean monotonicity M_r ≤ M_s (for r ≤ s with mixed signs) be incorporated into the Rényi entropy framework?",
       "Is there an analogous identity for the Tsallis entropy (which uses arithmetic instead of geometric operations)?",
       "Does the equivalence extend to infinite-dimensional probability distributions (measure theory setting)?"
     ]
@@ -160,7 +161,7 @@
     {
       "targetId": "amgm-inequality-oq-03",
       "relationship": "parent",
-      "description": "Power mean monotonicity M_r \u2264 M_s for weighted power means \u2014 the companion result this proof connects to R\u00e9nyi entropy"
+      "description": "Power mean monotonicity M_r ≤ M_s for weighted power means — the companion result this proof connects to Rényi entropy"
     },
     {
       "targetId": "amgm-inequality",
@@ -170,22 +171,22 @@
     {
       "targetId": "shannon-entropy",
       "relationship": "extended-by",
-      "description": "Shannon entropy (p) = -\\sum p_i \\log p_i$ is the $\\alpha = 1$ limit of R\u00e9nyi entropy: $\\lim_{\\alpha \\to 1} H_\\alpha(p) = H(p)$. This entry proves R\u00e9nyi monotonicity for $\\alpha \\neq 1$; Shannon entropy is the limiting case at the boundary, connected via the power mean limit $\\lim_{r \\to 0} M_r = GM$ (the logarithm of the geometric mean appears in the Shannon entropy formula)."
+      "description": "Shannon entropy (p) = -\\sum p_i \\log p_i$ is the $\\alpha = 1$ limit of Rényi entropy: $\\lim_{\\alpha \\to 1} H_\\alpha(p) = H(p)$. This entry proves Rényi monotonicity for $\\alpha \\neq 1$; Shannon entropy is the limiting case at the boundary, connected via the power mean limit $\\lim_{r \\to 0} M_r = GM$ (the logarithm of the geometric mean appears in the Shannon entropy formula)."
     },
     {
       "targetId": "amgm-inequality-oq-03-oq-02",
       "relationship": "foundational",
-      "description": "Power Mean Limit $\\lim_{r \\to 0} M_r = GM$ connects to R\u00e9nyi entropy via the identity  = \\lim_{\\alpha \\to 1} H_\\alpha = -\\log GM(p)$ when the $ are positive weights summing to 1. This entry's power-mean monotonicity for  \\neq 0$ complements the limit entry's treatment of the  = 0$ crossover point, together characterizing the complete R\u00e9nyi entropy ordering including the Shannon entropy limit."
+      "description": "Power Mean Limit $\\lim_{r \\to 0} M_r = GM$ connects to Rényi entropy via the identity  = \\lim_{\\alpha \\to 1} H_\\alpha = -\\log GM(p)$ when the $ are positive weights summing to 1. This entry's power-mean monotonicity for  \\neq 0$ complements the limit entry's treatment of the  = 0$ crossover point, together characterizing the complete Rényi entropy ordering including the Shannon entropy limit."
     },
     {
       "targetId": "amgm-inequality-oq-03-oq-03",
       "relationship": "foundational",
-      "description": "Power Mean Extreme Cases ( \\to \\max$ and  \\to \\min$) correspond to the R\u00e9nyi entropy endpoints: \\infty = -\\log M_{+\\infty}(p) = -\\log \\max_i p_i$ (min-entropy) and {-\\infty} = -\\log M_{-\\infty}(p) = -\\log \\min_i p_i$ (max-entropy). This entry's equivalence between power mean and R\u00e9nyi monotonicity extends to these extreme cases via the results formalized in amgm-inequality-oq-03-oq-03."
+      "description": "Power Mean Extreme Cases ( \\to \\max$ and  \\to \\min$) correspond to the Rényi entropy endpoints: \\infty = -\\log M_{+\\infty}(p) = -\\log \\max_i p_i$ (min-entropy) and {-\\infty} = -\\log M_{-\\infty}(p) = -\\log \\min_i p_i$ (max-entropy). This entry's equivalence between power mean and Rényi monotonicity extends to these extreme cases via the results formalized in amgm-inequality-oq-03-oq-03."
     },
     {
       "targetId": "amgm-inequality-oq-03-oq-01",
       "relationship": "related",
-      "description": "Negative Power Mean Monotonicity ( \\leq M_s$ for  \\leq s < 0$) corresponds to the R\u00e9nyi entropy ordering for /bin/zsh < \\alpha < \\beta < 1$: larger $\\alpha$ gives smaller entropy. This entry handles the full equivalence; amgm-inequality-oq-03-oq-01 provides the monotonicity for the negative-$ regime that corresponds to $\\alpha < 1$ in the R\u00e9nyi entropy formula."
+      "description": "Negative Power Mean Monotonicity ( \\leq M_s$ for  \\leq s < 0$) corresponds to the Rényi entropy ordering for /bin/zsh < \\alpha < \\beta < 1$: larger $\\alpha$ gives smaller entropy. This entry handles the full equivalence; amgm-inequality-oq-03-oq-01 provides the monotonicity for the negative-$ regime that corresponds to $\\alpha < 1$ in the Rényi entropy formula."
     }
   ],
   "sorries": 0,

@@ -78,7 +78,8 @@
     "axiomCount": 0,
     "lineCount": 187,
     "assumptions": "0 axioms, 0 sorries. Inductive proof reduces k-moduli case to (k-1)-moduli case + a single 2-moduli combination via crt_iscop.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "**The k-Moduli Chinese Remainder Theorem**\n\nThe original CRT (Sun Tzu, ~3rd century CE) was stated for a small number of explicit moduli — Sun Tzu's Suanjing problem 26 asks for a number with remainders 2, 3, 2 when divided by 3, 5, 7. The systematic statement for arbitrary finitely many pairwise coprime moduli was developed by Qin Jiushao (Mathematical Treatise in Nine Sections, 1247), who gave the first general algorithm.\n\nThe modern formulation indexes moduli by a finite set (typically Fin k or a list) and is proved by induction: combine the inductive solution for the first $k$ moduli with the new modulus via the 2-moduli CRT. This formalization follows that pattern, building directly on the Bézout-based 2-moduli result `crt_iscop` from the parent entry. The key inductive ingredient is that the new modulus is coprime with the product of the previous $k$ moduli, established via `IsCoprime.prod_right`.",

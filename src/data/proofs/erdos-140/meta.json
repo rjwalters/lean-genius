@@ -32,7 +32,8 @@
     ],
     "lineCount": 313,
     "assumptions": "1 axiom: kelley_meka (Kelley-Meka theorem — three-term AP-free sets have size exp(-c√log n)). 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #140 traces a 70-year arc in additive combinatorics. Klaus Friedrich Roth (1953) introduced Fourier-analytic methods (the Hardy–Littlewood circle method adapted to finite settings) to prove $r_3(N) = o(N)$, earning him part of the 1958 Fields Medal. Progress stalled for decades until Jean Bourgain (2008) refined the density-increment strategy to reach $O(N/\\sqrt{\\log\\log N})$. Tom Sanders (2011) achieved the first bound with $\\log N$ in the denominator — $O(N(\\log\\log N)^5/\\log N)$ — by introducing quasi-polynomial Bohr set methods. Thomas Bloom and Olof Sisask (2020) broke through $O(N/(\\log N)^{1+c})$ using entropy-increment arguments. Finally, Zander Kelley and Raghu Meka (2023) proved $r_3(N) = O(N/(\\log N)^C)$ for all $C > 0$, resolving Erdős's $500 conjecture. Their proof introduced a novel spectral approach using large-deviation estimates for convolutions on $\\mathbb{F}_3^n$, bypassing traditional density-increment iteration. The result was hailed as one of the major breakthroughs in combinatorics of the 2020s. The gap with Behrend's 1946 lower bound $\\Omega(N/\\exp(c\\sqrt{\\log N}))$ remains a central open problem.",

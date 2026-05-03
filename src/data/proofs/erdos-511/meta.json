@@ -62,7 +62,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 285,
-    "assumptions": "2 axioms (polya_diameter_bound, pommerenke_theorem). 0 sorries."
+    "assumptions": "2 axioms (polya_diameter_bound, pommerenke_theorem). 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős Problem #511: Polynomial Lemniscates**\n\nThis problem concerns the geometry of sublevel sets of complex polynomials, known as lemniscates. For a monic polynomial f(z) ∈ ℂ[z] of degree n, the set {z ∈ ℂ : |f(z)| < 1} forms an interesting geometric region whose shape depends on the roots of f.\n\n**Origins and Development:**\n- Erdős, Herzog, and Piranian (1958) posed the original questions about sums of diameters\n- This specific form appears as Problem 4.9 in Hayman (1974)\n- Erdős (1961) asked the weaker version formalized here\n\n**The Key Players:**\n- Pólya (1928): Proved no component can have diameter > 4\n- Pommerenke (1961): Disproved the bounded components conjecture\n- Huang (2025): Independent rediscovery of Pommerenke's result\n\nThe polynomial f(z) = z^n - 1 creates n 'petal'-shaped regions meeting at the origin, providing key examples.",

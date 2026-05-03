@@ -53,7 +53,8 @@
     ],
     "axiomCount": 5,
     "lineCount": 214,
-    "assumptions": "5 axioms: euler_k4_l2, oblath_k5_l2, oblath_k3_l3, oblath_k3_l4, oblath_k3_l5. 0 sorries."
+    "assumptions": "5 axioms: euler_k4_l2, oblath_k5_l2, oblath_k3_l3, oblath_k3_l4, oblath_k3_l5. 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "This problem asks whether products of arithmetic progressions can be perfect powers. The question has a rich history dating back to Euler.\n\n**Historical Timeline**:\n- **18th century**: Euler proved that four terms in AP cannot have product equal to a perfect square\n- **1951**: Obláth extended this to five terms (squares) and three terms (cubes through 5th powers)\n- **1975**: Erdős and Selfridge proved the landmark result that consecutive integers' product is never a perfect power\n\n**The Constraint gcd(n,d) = 1**: This \"primitive\" condition is essential. If gcd(n,d) = g > 1, then g^k divides the product, which could trivially create powers. The primitive case is the hard one.\n\n**Why This Matters**: The question connects to deep problems about the multiplicative structure of integers. Products of nearly-coprime factors having highly structured prime factorizations (like perfect powers) is extremely rare.",

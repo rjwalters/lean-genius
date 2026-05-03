@@ -50,7 +50,8 @@
     ],
     "axiomCount": 5,
     "lineCount": 207,
-    "assumptions": "5 axioms: erdos_graham_1980, twofold_eq_kfold, threefold_eq_kfold, bhj_r_lacunary, chen_r2_bound. 0 sorries."
+    "assumptions": "5 axioms: erdos_graham_1980, twofold_eq_kfold, threefold_eq_kfold, bhj_r_lacunary, chen_r2_bound. 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1112** originates from a remark in Erdős and Graham's 1980 monograph \"Old and New Problems and Results in Combinatorial Number Theory.\" The problem asks about the interplay between lacunary sequences (exponentially growing, very sparse sequences) and k-fold sumsets of sequences with bounded consecutive gaps.\n\nThe core question is a generalization of a result Erdős and Graham proved for k=2: if B is sufficiently lacunary (specifically, 2-lacunary with b₁ ≥ 5), then one can find a sequence A with gaps in [2,3] such that A+A avoids B entirely. They noted that 'whether such behavior can hold for A+A+A (or more summands) is not known.'\n\n**Key Historical Developments:**\n- **1980 (Erdős-Graham):** Proved r₂(2,3) = 2, meaning 2-lacunary sequences can be avoided by 2-fold sumsets with [2,3] gaps.\n- **1997 (Bollobás-Hegyvári-Jin):** Proved the striking negative result that r₃(2,3) does NOT exist - no matter how lacunary B is, any A with [2,3] gaps will have A+A+A intersecting B.\n- **2000 (Chen):** Generalized the k=2 case, showing r₂(a,b) ≤ 2 whenever b ≠ 2a.\n- **2021 (Tang-Yang):** Further technical non-existence results for k ≥ 3.",

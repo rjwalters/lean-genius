@@ -61,7 +61,8 @@
       }
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "Georg Cantor published the diagonal argument in 1891 in *Über eine elementare Frage der Mannigfaltigkeitslehre*, though he had already proven the uncountability of the reals in 1874 using a nested-intervals argument. The 1891 proof was revolutionary in its simplicity and generality: it works not just for $\\mathbb{R}$ but for any set $S$ versus $S \\to \\{0,1\\}$ (the power set), immediately giving $|S| < |2^S|$ for all sets $S$.\n\nCantor's work was the most controversial mathematics of its era. Leopold Kronecker called him a 'corrupter of youth'; Henri Poincaré considered set theory a 'disease' from which mathematics would eventually recover. But David Hilbert declared: 'No one shall expel us from the paradise that Cantor has created.' Cantor suffered repeated nervous breakdowns, possibly exacerbated by the opposition, and spent his final years in a sanatorium (died 1918).\n\nThe diagonal argument's influence is incalculable. Richard's paradox (1905) and Berry's paradox use diagonal-like constructions. Kurt Gödel used a self-referential diagonal construction in his incompleteness theorems (1931): the sentence 'this sentence is unprovable' diagonalizes over all proofs. Alan Turing (1936) used a diagonal argument to prove the undecidability of the halting problem: the machine that asks 'does this machine halt on itself?' diagonalizes over all Turing machines. Paul Cohen's forcing (1963), which proved the independence of the continuum hypothesis, also relies on diagonal arguments. The technique is arguably the single most important proof method in mathematical logic.",
@@ -306,25 +307,25 @@
         "name": "cantor_diagonalization",
         "type": "original",
         "description": "No surjection from N to binary sequences (N -> Bool)",
-        "leanType": "\u00ac Function.Surjective f (where f : \u2115 \u2192 BinarySeq)"
+        "leanType": "¬ Function.Surjective f (where f : ℕ → BinarySeq)"
       },
       {
         "name": "cantor_powerset",
         "type": "original",
         "description": "Cantor's theorem: no surjection from S to P(S) for any type S",
-        "leanType": "(S : Type*) \u2192 \u00ac \u2203 f : S \u2192 Set S, Function.Surjective f"
+        "leanType": "(S : Type*) → ¬ ∃ f : S → Set S, Function.Surjective f"
       },
       {
         "name": "reals_uncountable",
         "type": "original",
         "description": "The real numbers are uncountable",
-        "leanType": "\u00ac Countable \u211d"
+        "leanType": "¬ Countable ℝ"
       },
       {
         "name": "diagonal_set_paradox",
         "type": "original",
         "description": "Russell-Cantor diagonal set paradox: the anti-diagonal set is not in range of any f",
-        "leanType": "(S : Type*) \u2192 (f : S \u2192 Set S) \u2192 \u2203 T : Set S, T \u2209 Set.range f"
+        "leanType": "(S : Type*) → (f : S → Set S) → ∃ T : Set S, T ∉ Set.range f"
       }
     ],
     "path": "Proofs/CantorDiagonalization.lean",
@@ -334,20 +335,20 @@
     {
       "name": "cantor_diagonalization",
       "type": "core",
-      "description": "No surjection from \u2115 to binary sequences \u2014 the canonical diagonal argument",
-      "leanType": "\u00ac Function.Surjective f (where f : \u2115 \u2192 BinarySeq)"
+      "description": "No surjection from ℕ to binary sequences — the canonical diagonal argument",
+      "leanType": "¬ Function.Surjective f (where f : ℕ → BinarySeq)"
     },
     {
       "name": "cantor_powerset",
       "type": "key",
       "description": "Cantor's theorem: no surjection from any type S to its power set P(S)",
-      "leanType": "(S : Type*) \u2192 \u00ac \u2203 f : S \u2192 Set S, Function.Surjective f"
+      "leanType": "(S : Type*) → ¬ ∃ f : S → Set S, Function.Surjective f"
     },
     {
       "name": "reals_uncountable",
       "type": "key",
-      "description": "The real numbers are uncountable (\u211d is not Countable)",
-      "leanType": "\u00ac Countable \u211d"
+      "description": "The real numbers are uncountable (ℝ is not Countable)",
+      "leanType": "¬ Countable ℝ"
     }
   ],
   "sorries": 0

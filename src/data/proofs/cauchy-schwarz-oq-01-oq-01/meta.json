@@ -60,7 +60,8 @@
     "axiomCount": 0,
     "lineCount": 185,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "**When Does Equality Hold in Cauchy-Schwarz?**\n\nThe Cauchy-Schwarz inequality has a remarkable history spanning three independent discoveries. Augustin-Louis Cauchy proved the finite sum version in his 1821 *Cours d'Analyse*: $(\\sum a_i b_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$. Viktor Bunyakovsky extended it to integrals in 1859, and Hermann Amandus Schwarz independently proved the integral version in 1885 while studying minimal surfaces.\n\nThe equality condition — that equality holds if and only if the vectors are linearly dependent — was understood from the beginning for finite-dimensional real spaces, where it amounts to the geometric statement that the angle between two vectors is 0 or π. For complex inner product spaces, the characterization requires allowing the proportionality constant to be complex ($u = cv$ with $c \\in \\mathbb{C}$), reflecting the richer scalar structure.\n\nThe proof technique here — orthogonal projection followed by the Pythagorean theorem — is due to Schwarz himself and predates the Gram-Schmidt process (1907). The projection coefficient $c = \\langle v,u\\rangle/\\langle v,v\\rangle$ is the best approximation of $u$ in the span of $v$, connecting CS equality to approximation theory and least squares. In quantum mechanics, this characterization identifies when two state vectors represent the same physical state (up to global phase $e^{i\\theta}$), a foundational concept in the theory of projective Hilbert spaces.",

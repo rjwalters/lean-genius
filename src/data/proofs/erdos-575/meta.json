@@ -1,17 +1,17 @@
 {
   "id": "erdos-575",
-  "title": "Bipartite Tur\u00e1n Numbers Dominate",
+  "title": "Bipartite Turán Numbers Dominate",
   "slug": "erdos-575",
-  "description": "For a finite family F of graphs containing a bipartite member, does some bipartite G \u2208 F satisfy ex(n;G) \u226a ex(n;F)? That is, does a single bipartite graph control the extremal function? Erd\u0151s\u2013Simonovits (1982).",
+  "description": "For a finite family F of graphs containing a bipartite member, does some bipartite G ∈ F satisfy ex(n;G) ≪ ex(n;F)? That is, does a single bipartite graph control the extremal function? Erdős–Simonovits (1982).",
   "meta": {
-    "author": "Erd\u0151s, Simonovits",
+    "author": "Erdős, Simonovits",
     "sourceUrl": "https://erdosproblems.com/575",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos575Problem.lean",
     "tags": [
       "erdos",
       "extremal graph theory",
-      "Tur\u00e1n numbers",
+      "Turán numbers",
       "bipartite graphs",
       "combinatorics"
     ],
@@ -23,20 +23,21 @@
     "axiomCount": 0,
     "lineCount": 89,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1
   },
   "overview": {
-    "historicalContext": "Erd\u0151s and Simonovits posed this problem in 1982 as part of their systematic investigation of extremal functions for graph families. The question sits at the crossroads of two regimes in extremal graph theory. For non-bipartite forbidden graphs, the Erd\u0151s\u2013Stone\u2013Simonovits theorem (1966) determines ex(n; H) up to the o(n\u00b2) error, and the answer depends only on the chromatic number \u03c7(H). But when the forbidden family contains a bipartite graph, the extremal function drops to o(n\u00b2) and the precise order of growth depends on the fine structure of the forbidden graph \u2014 a much harder problem. Simonovits had earlier (1966) shown that for a single forbidden bipartite graph the extremal function exhibits polynomial growth n^{1+c} for some c < 1, but determining this exponent remains open in most cases. Problem #575 asks whether, for families, the analysis reduces to a single bipartite member: a powerful structural simplification if true. The conjecture has been verified for families of complete bipartite graphs and certain degenerate families, but the general case remains open after four decades.",
+    "historicalContext": "Erdős and Simonovits posed this problem in 1982 as part of their systematic investigation of extremal functions for graph families. The question sits at the crossroads of two regimes in extremal graph theory. For non-bipartite forbidden graphs, the Erdős–Stone–Simonovits theorem (1966) determines ex(n; H) up to the o(n²) error, and the answer depends only on the chromatic number χ(H). But when the forbidden family contains a bipartite graph, the extremal function drops to o(n²) and the precise order of growth depends on the fine structure of the forbidden graph — a much harder problem. Simonovits had earlier (1966) shown that for a single forbidden bipartite graph the extremal function exhibits polynomial growth n^{1+c} for some c < 1, but determining this exponent remains open in most cases. Problem #575 asks whether, for families, the analysis reduces to a single bipartite member: a powerful structural simplification if true. The conjecture has been verified for families of complete bipartite graphs and certain degenerate families, but the general case remains open after four decades.",
     "problemStatement": "For a finite family $\\mathcal{F}$ of graphs with at least one bipartite member, does there exist a bipartite $G \\in \\mathcal{F}$ such that $\\mathrm{ex}(n; G) = O(\\mathrm{ex}(n; \\mathcal{F}))$?",
-    "text": "For a finite family F of graphs containing a bipartite member, does some bipartite G \u2208 F satisfy ex(n;G) \u226a ex(n;F)? That is, does a single bipartite graph control the extremal function? Erd\u0151s\u2013Simonovits (1982).",
-    "proofStrategy": "The formalization sets up the foundational framework for extremal graph numbers: the Tur\u00e1n number ex(n; H), the family extremal function ex(n; F), and the bipartite graph predicate. It then states the Erd\u0151s\u2013Simonovits conjecture and provides supporting context through the Erd\u0151s\u2013Stone\u2013Simonovits theorem (for the non-bipartite regime) and the K\u0151v\u00e1ri\u2013S\u00f3s\u2013Tur\u00e1n bound (for the bipartite regime), along with key structural properties of family extremal functions.",
+    "text": "For a finite family F of graphs containing a bipartite member, does some bipartite G ∈ F satisfy ex(n;G) ≪ ex(n;F)? That is, does a single bipartite graph control the extremal function? Erdős–Simonovits (1982).",
+    "proofStrategy": "The formalization sets up the foundational framework for extremal graph numbers: the Turán number ex(n; H), the family extremal function ex(n; F), and the bipartite graph predicate. It then states the Erdős–Simonovits conjecture and provides supporting context through the Erdős–Stone–Simonovits theorem (for the non-bipartite regime) and the Kővári–Sós–Turán bound (for the bipartite regime), along with key structural properties of family extremal functions.",
     "keyInsights": [
-      "The Erd\u0151s\u2013Stone\u2013Simonovits theorem $\\mathrm{ex}(n; H) = (1 - 1/(\\chi(H)-1) + o(1))n^2/2$ completely solves the non-bipartite case, making the bipartite regime the central open frontier",
-      "The K\u0151v\u00e1ri\u2013S\u00f3s\u2013Tur\u00e1n bound $\\mathrm{ex}(n; K_{s,t}) \\le c \\cdot n^{2-1/s}$ forces bipartite Tur\u00e1n numbers to be subquadratic, but the exact exponents remain unknown for most bipartite graphs",
-      "The conjecture would reduce the family Tur\u00e1n problem to the single-graph Tur\u00e1n problem: a powerful structural reduction analogous to how the Erd\u0151s\u2013Stone theorem reduces the non-bipartite case to chromatic number",
+      "The Erdős–Stone–Simonovits theorem $\\mathrm{ex}(n; H) = (1 - 1/(\\chi(H)-1) + o(1))n^2/2$ completely solves the non-bipartite case, making the bipartite regime the central open frontier",
+      "The Kővári–Sós–Turán bound $\\mathrm{ex}(n; K_{s,t}) \\le c \\cdot n^{2-1/s}$ forces bipartite Turán numbers to be subquadratic, but the exact exponents remain unknown for most bipartite graphs",
+      "The conjecture would reduce the family Turán problem to the single-graph Turán problem: a powerful structural reduction analogous to how the Erdős–Stone theorem reduces the non-bipartite case to chromatic number",
       "Monotonicity $\\mathrm{ex}(n; \\mathcal{F}) \\le \\min_{H \\in \\mathcal{F}} \\mathrm{ex}(n; H)$ provides one direction; the conjecture asserts the reverse (up to constants) holds for some bipartite member",
       "Connected to the rational exponent conjecture: if $\\mathrm{ex}(n; H) = \\Theta(n^{1+a/b})$ for rational $a/b$, then Problem #575 would imply the same rational exponent structure for families",
-      "Related to Problem #180 on Tur\u00e1n densities for families, which addresses the complementary question for non-bipartite forbidden graphs"
+      "Related to Problem #180 on Turán densities for families, which addresses the complementary question for non-bipartite forbidden graphs"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -49,28 +50,28 @@
       "title": "Problem Statement and Background",
       "startLine": 1,
       "endLine": 30,
-      "summary": "Docstring stating the problem, historical background on the Erd\u0151s\u2013Stone\u2013Simonovits theorem and the bipartite regime, and imports of Mathlib's SimpleGraph and Finset modules."
+      "summary": "Docstring stating the problem, historical background on the Erdős–Stone–Simonovits theorem and the bipartite regime, and imports of Mathlib's SimpleGraph and Finset modules."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 31,
       "endLine": 52,
-      "summary": "Defines the Tur\u00e1n extremal number ex(n; H) as a supremum over edge counts, the family extremal function ex(n; F) using a predicate-based forbidden subgraph condition, and the bipartite graph predicate via 2-colorability."
+      "summary": "Defines the Turán extremal number ex(n; H) as a supremum over edge counts, the family extremal function ex(n; F) using a predicate-based forbidden subgraph condition, and the bipartite graph predicate via 2-colorability."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 53,
       "endLine": 67,
-      "summary": "States the Erd\u0151s\u2013Simonovits conjecture (Problem #575): for any finite family F containing a bipartite graph, some bipartite member G \u2208 F satisfies ex(n; G) = O(ex(n; F)). Axiomatized as True due to the complexity of formalizing graph homomorphisms."
+      "summary": "States the Erdős–Simonovits conjecture (Problem #575): for any finite family F containing a bipartite graph, some bipartite member G ∈ F satisfies ex(n; G) = O(ex(n; F)). Axiomatized as True due to the complexity of formalizing graph homomorphisms."
     },
     {
       "id": "context",
-      "title": "Erd\u0151s\u2013Stone\u2013Simonovits and K\u0151v\u00e1ri\u2013S\u00f3s\u2013Tur\u00e1n",
+      "title": "Erdős–Stone–Simonovits and Kővári–Sós–Turán",
       "startLine": 68,
       "endLine": 83,
-      "summary": "States the Erd\u0151s\u2013Stone\u2013Simonovits theorem for non-bipartite graphs (Tur\u00e1n density = 1 \u2212 1/(\u03c7\u22121)) and the K\u0151v\u00e1ri\u2013S\u00f3s\u2013Tur\u00e1n upper bound for complete bipartite Tur\u00e1n numbers, establishing the two asymptotic regimes."
+      "summary": "States the Erdős–Stone–Simonovits theorem for non-bipartite graphs (Turán density = 1 − 1/(χ−1)) and the Kővári–Sós–Turán upper bound for complete bipartite Turán numbers, establishing the two asymptotic regimes."
     },
     {
       "id": "properties",
@@ -81,12 +82,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erd\u0151s Problem #575 on whether a single bipartite graph in a finite forbidden family controls the order of magnitude of the family extremal function. The formalization provides the definitional framework (Tur\u00e1n number, family extremal function, bipartite predicate) and supporting context (Erd\u0151s\u2013Stone\u2013Simonovits for the non-bipartite regime, K\u0151v\u00e1ri\u2013S\u00f3s\u2013Tur\u00e1n for bipartite bounds).",
-    "implications": "**Theoretical Significance**: A positive answer would yield a powerful structural reduction in extremal graph theory: the Tur\u00e1n problem for any family containing a bipartite graph would reduce to determining ex(n; G) for a single bipartite G.\n\nThis mirrors how the Erd\u0151s\u2013Stone\u2013Simonovits theorem reduces the non-bipartite family Tur\u00e1n problem to chromatic number. It would also imply that the rational exponent structure (if it exists for individual bipartite graphs) extends to families.",
+    "summary": "Formalizes Erdős Problem #575 on whether a single bipartite graph in a finite forbidden family controls the order of magnitude of the family extremal function. The formalization provides the definitional framework (Turán number, family extremal function, bipartite predicate) and supporting context (Erdős–Stone–Simonovits for the non-bipartite regime, Kővári–Sós–Turán for bipartite bounds).",
+    "implications": "**Theoretical Significance**: A positive answer would yield a powerful structural reduction in extremal graph theory: the Turán problem for any family containing a bipartite graph would reduce to determining ex(n; G) for a single bipartite G.\n\nThis mirrors how the Erdős–Stone–Simonovits theorem reduces the non-bipartite family Turán problem to chromatic number. It would also imply that the rational exponent structure (if it exists for individual bipartite graphs) extends to families.",
     "openQuestions": [
-      "Does a single bipartite member always dominate the family extremal function, as Erd\u0151s and Simonovits conjectured in 1982?",
+      "Does a single bipartite member always dominate the family extremal function, as Erdős and Simonovits conjectured in 1982?",
       "For which specific families can the controlling bipartite member be identified explicitly?",
-      "What is the relationship between this conjecture and the rational exponent conjecture for bipartite Tur\u00e1n numbers?",
+      "What is the relationship between this conjecture and the rational exponent conjecture for bipartite Turán numbers?",
       "Can the conjecture be established for families of bounded degeneracy or bounded maximum degree?"
     ]
   },
@@ -111,12 +112,12 @@
     {
       "targetId": "erdos-574",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-neighbor"
+      "description": "Related Erdős problem sharing themes: number-neighbor"
     },
     {
       "targetId": "erdos-576",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-neighbor"
+      "description": "Related Erdős problem sharing themes: number-neighbor"
     }
   ],
   "sorries": 0

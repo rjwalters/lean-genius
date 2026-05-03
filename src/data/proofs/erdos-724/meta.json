@@ -60,7 +60,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 309,
-    "assumptions": "4 axioms: mols_upper_bound (f(n) ≤ n-1 for n ≥ 2), mols_prime_power (f(p^k) = p^k-1 for prime powers, achieved by finite field construction), bose_parker_shrikhande (Bose-Parker-Shrikhande 1960: f(n) ≥ 2 for n ≥ 7 with n ≡ 2 mod 4), beth_1983 (Beth 1983 lower bound exponent). 0 sorries."
+    "assumptions": "4 axioms: mols_upper_bound (f(n) ≤ n-1 for n ≥ 2), mols_prime_power (f(p^k) = p^k-1 for prime powers, achieved by finite field construction), bose_parker_shrikhande (Bose-Parker-Shrikhande 1960: f(n) ≥ 2 for n ≥ 7 with n ≡ 2 mod 4), beth_1983 (Beth 1983 lower bound exponent). 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "**Erdős Problem #724: Mutually Orthogonal Latin Squares**\n\nThis problem concerns the growth rate of f(n), the maximum number of mutually orthogonal Latin squares (MOLS) of order n. Latin squares have been studied since Euler's time, and MOLS have deep connections to finite geometry, coding theory, and experimental design.\n\n**Historical Milestones:**\n- **Euler (1782)**: Conjectured f(n) = 1 for n ≡ 2 (mod 4), meaning no two orthogonal Latin squares exist for these orders\n- **Bose, Parker, Shrikhande (1960)**: Disproved Euler's conjecture by showing f(n) ≥ 2 for all n ≥ 7\n- **Chowla, Erdős, Straus (1960)**: Proved f(n) ≫ n^(1/91), establishing the first polynomial lower bound\n- **Wilson (1974)**: Improved to f(n) ≫ n^(1/17)\n- **Beth (1983)**: Current best bound f(n) ≫ n^(1/14.8)\n\n**Mathematical Significance:**\nMOLS are equivalent to several important structures: affine planes, projective planes, transversal designs, and certain error-correcting codes. The maximum f(n) = n - 1 is achieved exactly when n is a prime power, corresponding to the existence of a projective plane of order n.",

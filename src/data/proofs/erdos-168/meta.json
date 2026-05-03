@@ -1,6 +1,6 @@
 {
   "id": "erdos-168",
-  "title": "Erd\u0151s Problem #168: {n, 2n, 3n}-Free Sets",
+  "title": "Erdős Problem #168: {n, 2n, 3n}-Free Sets",
   "slug": "erdos-168",
   "description": "Let F(N) be the maximum size of a subset of {1,...,N} avoiding {n, 2n, 3n} triples. What is lim F(N)/N? Is it irrational?",
   "meta": {
@@ -48,25 +48,26 @@
     "originalContributions": [
       "Definition of {n, 2n, 3n}-free sets (ContainsTriple, IsTripleFree)",
       "Definition of F(N) as maximum cardinality",
-      "Proved: density_bounded (0 \u2264 F(N)/N \u2264 1)",
-      "Proved: F_monotone (F(N) \u2264 F(N+1))",
-      "Proved: simple_lower_bound (F(N) \u2265 2N/3 - 1)",
+      "Proved: density_bounded (0 ≤ F(N)/N ≤ 1)",
+      "Proved: F_monotone (F(N) ≤ F(N+1))",
+      "Proved: simple_lower_bound (F(N) ≥ 2N/3 - 1)",
       "Axiomatized GSW limit theorem (`gsw_limit_exists`) and the 0.55N density lower bound (`better_construction`)",
       "Formalized the irrationality question"
     ],
     "axiomCount": 2,
     "lineCount": 181,
-    "assumptions": "2 axioms: gsw_limit_exists, better_construction. 0 sorries."
+    "assumptions": "2 axioms: gsw_limit_exists, better_construction. 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
-    "historicalContext": "This problem concerns the maximum size of subsets avoiding 'ternary' arithmetic progressions of the form {n, 2n, 3n}. Graham, Spencer, and Witsenhausen (1977) proved the limit lim F(N)/N exists and gave a formula involving 3-smooth numbers.\n\nThe 3-smooth numbers are numbers of the form 2^a \u00b7 3^b: 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, ...\n\nThe limit formula is L = (1/3) \u00b7 \u03a3_{k \u2208 K} 1/d_k where d_1 < d_2 < ... are the 3-smooth numbers and K is determined by a greedy algorithm.\n\nEberhard computed the numerical value as approximately 0.5564. Erd\u0151s asked whether this limit is irrational\u2014this remains open.",
+    "historicalContext": "This problem concerns the maximum size of subsets avoiding 'ternary' arithmetic progressions of the form {n, 2n, 3n}. Graham, Spencer, and Witsenhausen (1977) proved the limit lim F(N)/N exists and gave a formula involving 3-smooth numbers.\n\nThe 3-smooth numbers are numbers of the form 2^a · 3^b: 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, ...\n\nThe limit formula is L = (1/3) · Σ_{k ∈ K} 1/d_k where d_1 < d_2 < ... are the 3-smooth numbers and K is determined by a greedy algorithm.\n\nEberhard computed the numerical value as approximately 0.5564. Erdős asked whether this limit is irrational—this remains open.",
     "problemStatement": "**Question**: Let $F(N)$ be the maximum size of a subset of $\\{1, \\ldots, N\\}$ containing no triple $\\{n, 2n, 3n\\}$. \n\n(i) What is $\\lim_{N \\to \\infty} F(N)/N$?\n\n(ii) Is this limit irrational?\n\n**Answers**:\n- (i) The limit exists (GSW 1977) and equals approximately **0.5564**\n- (ii) **OPEN** - irrationality is not known\n\n**Lower bound**: $F(N) \\geq 2N/3 - 1$ (remove all multiples of 3)",
     "text": "Let F(N) be the maximum size of a subset of {1,...,N} avoiding {n, 2n, 3n} triples. What is lim F(N)/N? Is it irrational?",
-    "proofStrategy": "We formalize the problem and known results:\n\n1. **ContainsTriple**: A set contains some {n, 2n, 3n}\n2. **IsTripleFree**: A set avoids all such triples\n3. **F(N)**: Maximum cardinality of triple-free subsets of {1,...,N}\n4. **density_bounded**: Prove 0 \u2264 F(N)/N \u2264 1\n5. **F_monotone**: Prove F(N) \u2264 F(N+1)\n6. **simple_lower_bound**: Prove F(N) \u2265 2N/3 - 1\n7. **better_construction**: Axiomatize the existence of a triple-free subset of {1,...,N} with cardinality \u2265 0.55N (the known better construction; \u22480.5564 appears only in docstrings)\n8. **gsw_limit_exists**: Axiomatize that the limit exists\n9. **IrrationalityQuestion**: Formalize the open irrationality question",
+    "proofStrategy": "We formalize the problem and known results:\n\n1. **ContainsTriple**: A set contains some {n, 2n, 3n}\n2. **IsTripleFree**: A set avoids all such triples\n3. **F(N)**: Maximum cardinality of triple-free subsets of {1,...,N}\n4. **density_bounded**: Prove 0 ≤ F(N)/N ≤ 1\n5. **F_monotone**: Prove F(N) ≤ F(N+1)\n6. **simple_lower_bound**: Prove F(N) ≥ 2N/3 - 1\n7. **better_construction**: Axiomatize the existence of a triple-free subset of {1,...,N} with cardinality ≥ 0.55N (the known better construction; ≈0.5564 appears only in docstrings)\n8. **gsw_limit_exists**: Axiomatize that the limit exists\n9. **IrrationalityQuestion**: Formalize the open irrationality question",
     "keyInsights": [
       "**{n, 2n, 3n} triples**: These are 'multiplicative' arithmetic progressions with ratio 2, not additive.",
-      "**Simple construction**: Removing multiples of 3 gives a triple-free set of size \u2248 2N/3.",
-      "**3-smooth connection**: The limit formula involves the 3-smooth numbers 2^a \u00b7 3^b.",
+      "**Simple construction**: Removing multiples of 3 gives a triple-free set of size ≈ 2N/3.",
+      "**3-smooth connection**: The limit formula involves the 3-smooth numbers 2^a · 3^b.",
       "**Numerical value**: The limit is approximately 0.5564, better than the 2/3 lower bound.",
       "**Open problem**: Whether the limit is irrational remains unknown."
     ],
@@ -103,14 +104,14 @@
       "title": "Lower Bound Constructions",
       "startLine": 111,
       "endLine": 140,
-      "summary": "Prove F(N) \u2265 2N/3 - 1 and axiomatize 0.55 bound."
+      "summary": "Prove F(N) ≥ 2N/3 - 1 and axiomatize 0.55 bound."
     },
     {
       "id": "irrationality",
       "title": "Irrationality Question",
       "startLine": 141,
       "endLine": 149,
-      "summary": "Formalize Erd\u0151s's open question on irrationality."
+      "summary": "Formalize Erdős's open question on irrationality."
     },
     {
       "id": "examples",
@@ -121,13 +122,13 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erd\u0151s Problem #168 on {n, 2n, 3n}-free sets. The Lean proof establishes the basic properties (bounded density, monotonicity), proves lower bounds, axiomatizes the GSW limit theorem, and formalizes the open irrationality question.",
-    "implications": "This problem connects extremal set theory with the structure of 3-smooth numbers. The formula L = (1/3) \u00b7 \u03a3 1/d_k shows how multiplicative structure (powers of 2 and 3) governs the density of triple-free sets.",
+    "summary": "We formalize Erdős Problem #168 on {n, 2n, 3n}-free sets. The Lean proof establishes the basic properties (bounded density, monotonicity), proves lower bounds, axiomatizes the GSW limit theorem, and formalizes the open irrationality question.",
+    "implications": "This problem connects extremal set theory with the structure of 3-smooth numbers. The formula L = (1/3) · Σ 1/d_k shows how multiplicative structure (powers of 2 and 3) governs the density of triple-free sets.",
     "openQuestions": [
       "Is the limit lim F(N)/N irrational?",
       "What is the exact computational complexity of determining F(N)?",
       "Are there similar results for {n, 2n, 4n} or other multiplicative patterns?",
-      "What is the optimal constant in F(N) \u2265 cN for finite N?"
+      "What is the optimal constant in F(N) ≥ cN for finite N?"
     ]
   },
   "leanFile": {
@@ -152,24 +153,24 @@
     {
       "targetId": "erdos-1054",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: density, number-theory"
+      "description": "Related Erdős problem sharing themes: density, number-theory"
     },
     {
       "targetId": "erdos-1062",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: extremal-combinatorics, number-theory"
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory"
     },
     {
       "targetId": "erdos-1064",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: density, number-theory"
+      "description": "Related Erdős problem sharing themes: density, number-theory"
     }
   ],
   "references": [
     {
       "key": "RS04",
       "authors": [
-        "V. R\u00f6dl",
+        "V. Rödl",
         "J. Skokan"
       ],
       "title": "Regularity lemma for k-uniform hypergraphs",

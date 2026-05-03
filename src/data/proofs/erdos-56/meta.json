@@ -59,7 +59,8 @@
       "Extremal combinatorics",
       "Number-theoretic density"
     ],
-    "assumptions": "1 axiom: erdos_56_disproved. See Lean source for the complete statement."
+    "assumptions": "1 axiom: erdos_56_disproved. See Lean source for the complete statement.",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #56 addresses a fundamental question in combinatorial number theory: how large can a subset of {1,...,N} be if we forbid too many pairwise coprime elements?\n\nThe conjecture seemed natural: take all multiples of the first k primes (2, 3, 5, ..., p_k). Any k+1 numbers from this set must include two that share a prime factor, so they can't all be pairwise coprime. Erdős conjectured this construction was optimal.\n\nSurprisingly, Ahlswede and Khachatrian disproved this in 1994, finding a counterexample at k=212. However, they later proved (1995) that Erdős's conjecture IS true when N is sufficiently large relative to k. This reveals a subtle phase transition in the problem's behavior.",

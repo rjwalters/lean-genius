@@ -56,7 +56,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 225,
-    "assumptions": "3 axioms: chromaticNumber, problem_464_result, katznelson_theorem. 0 sorries."
+    "assumptions": "3 axioms: chromaticNumber, problem_464_result, katznelson_theorem. 0 sorries.",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "Erdős Problem #894 asks whether Cayley graphs on ℤ defined by lacunary sequences have finite chromatic number. A sequence A = {n₁ < n₂ < ...} is lacunary if n_{k+1} ≥ (1+ε)n_k for some ε > 0. The connection to Diophantine approximation was observed by Katznelson (2001): if there exists an irrational θ such that all multiples θ·n_k stay bounded away from integers, then coloring by position on the circle (mod 1) gives a valid finite coloring.\n\nPeres and Schlag (2010) resolved both this problem and the closely related Problem #464 simultaneously. They proved that O(ε⁻¹ log(1/ε)) colors suffice for a lacunary sequence with ratio (1+ε), and that this bound is essentially optimal. Their proof combined harmonic analysis and metric number theory.\n\nThe formalization proves the main theorem (lacunary_finitely_colorable) from two axiomatized results: Problem #464's guarantee of a badly approximable irrational, and Katznelson's observation that this yields a valid coloring. Several proved results include exponential growth of lacunary sequences, the Cayley graph construction with proved symmetry, the logical implication from Problem #464 to #894, and special cases for powers of 2 and 3.",

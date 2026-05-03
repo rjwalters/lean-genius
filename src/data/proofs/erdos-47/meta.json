@@ -60,7 +60,8 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 1,
     "assumptions": "1 axiom: bloom_theorem. 0 sorries.",
-    "lineCount": 132
+    "lineCount": 132,
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Erdős posed Problem #47 in the 1960s, asking whether sets of positive integers with large reciprocal sums must contain subsets whose reciprocals sum to exactly 1—an Egyptian fraction representation. The problem connects to a rich tradition going back to the Rhind Papyrus (c. 1650 BCE), where ancient Egyptians expressed fractions as sums of unit fractions. Erdős and Graham conjectured that the threshold should be around $(\\log \\log N)^2$. Thomas Bloom resolved the conjecture affirmatively in his landmark 2021 paper [Bl21], using the Hardy–Littlewood circle method combined with structural results on additive energy. Mehtaab Liu and Ashwin Sawhney [LiSa24] subsequently improved Bloom's quantitative bound from $(\\log N)^{1-o(1)}$ down to $(\\log N)^{4/5+o(1)}$, a dramatic polynomial improvement. Carl Pomerance showed that sets with $\\sum 1/a \\approx (\\log \\log N)^2$ can avoid unit fraction subsets, establishing that Erdős's conjectured threshold is essentially tight. The gap between $(\\log \\log N)^2$ and $(\\log N)^{4/5}$ remains one of the central open quantitative questions in combinatorial number theory.",

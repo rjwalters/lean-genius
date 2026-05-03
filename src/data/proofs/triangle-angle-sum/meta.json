@@ -47,7 +47,8 @@
     "axiomCount": 0,
     "lineCount": 157,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "The triangle angle sum theorem is one of the oldest results in all of mathematics. Euclid proved it as Proposition 32 of Book I of the *Elements* (c. 300 BCE) by constructing a line through one vertex parallel to the opposite side and using the alternate interior angle theorem. The proof depends critically on Euclid's fifth postulate (the parallel postulate), making this theorem a touchstone for the foundations of geometry.\n\nThe theorem's central role became apparent in the 19th century when mathematicians discovered non-Euclidean geometries. In 1823, János Bolyai and (independently) Nikolai Lobachevsky showed that if the parallel postulate is dropped, consistent geometries exist where the angle sum of a triangle is *less* than $\\pi$ (hyperbolic geometry). Bernhard Riemann's 1854 lecture described geometries where the sum *exceeds* $\\pi$ (elliptic/spherical geometry). The **angular defect** $\\pi - (\\alpha + \\beta + \\gamma)$ turned out to equal the integral of Gaussian curvature over the triangle's interior (the Gauss-Bonnet theorem), connecting this elementary result to deep differential geometry.\n\nThis is entry #27 on Freek Wiedijk's list of 100 greatest theorems. The formalization in Lean works in an abstract inner product space via Mathlib's `EuclideanGeometry.angle` function, which measures the angle at the middle point of three points in an affine space. The proof is a direct application of Mathlib's `angle_add_angle_add_angle_eq_pi`, with several original corollaries including the exterior angle theorem and the right triangle special case.",

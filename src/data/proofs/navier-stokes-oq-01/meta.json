@@ -2,7 +2,7 @@
   "id": "navier-stokes-oq-01",
   "title": "2D Navier-Stokes: Quantitative Enstrophy Decay and Energy Identity",
   "slug": "navier-stokes-oq-01",
-  "description": "For 2D incompressible Navier-Stokes with Poincar\u00e9 inequality, can we formalize quantitative enstrophy decay and the exact integrated energy identity? We prove: (1) E(t) \u2264 E(s)\u00b7exp(-2\u03bd\u03bc\u2081(t-s)) for all 0 \u2264 s \u2264 t (uniform decay), (2) \u222b\u2080\u1d40 -2\u03bdP(t) dt = E(T) - E(0) (FTC applied to the enstrophy ODE), and (3) \u222b\u2080\u1d40 2\u03bdP dt \u2264 E(0) (total dissipation bounded by initial enstrophy).",
+  "description": "For 2D incompressible Navier-Stokes with Poincaré inequality, can we formalize quantitative enstrophy decay and the exact integrated energy identity? We prove: (1) E(t) ≤ E(s)·exp(-2νμ₁(t-s)) for all 0 ≤ s ≤ t (uniform decay), (2) ∫₀ᵀ -2νP(t) dt = E(T) - E(0) (FTC applied to the enstrophy ODE), and (3) ∫₀ᵀ 2νP dt ≤ E(0) (total dissipation bounded by initial enstrophy).",
   "meta": {
     "author": "Ladyzhenskaya (1969)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Navier%E2%80%93Stokes_equations",
@@ -26,38 +26,38 @@
     "mathlibDependencies": [
       {
         "theorem": "intervalIntegral.integral_eq_sub_of_hasDerivAt_of_le",
-        "description": "Fundamental Theorem of Calculus (part 2): if F is continuous on [a,b] and has derivative f on (a,b), then \u222b\u2090\u1d47 f = F(b) - F(a)",
+        "description": "Fundamental Theorem of Calculus (part 2): if F is continuous on [a,b] and has derivative f on (a,b), then ∫ₐᵇ f = F(b) - F(a)",
         "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic"
       },
       {
         "theorem": "Real.exp_add",
-        "description": "Exponential function addition law: exp(a+b) = exp(a)\u00b7exp(b), used in chaining decay bounds",
+        "description": "Exponential function addition law: exp(a+b) = exp(a)·exp(b), used in chaining decay bounds",
         "module": "Mathlib.Analysis.SpecialFunctions.Exp"
       },
       {
         "theorem": "AntitoneOn.antitone",
-        "description": "Antitone functions preserve order, used to bound the integrating factor g(t) = E(t)\u00b7exp(ct)",
+        "description": "Antitone functions preserve order, used to bound the integrating factor g(t) = E(t)·exp(ct)",
         "module": "Mathlib.Order.Monotone.Basic"
       },
       {
         "theorem": "antitoneOn_of_deriv_nonpos",
-        "description": "A differentiable function with nonpositive derivative is antitone, used for g'(t) \u2264 0",
+        "description": "A differentiable function with nonpositive derivative is antitone, used for g'(t) ≤ 0",
         "module": "Mathlib.Analysis.Calculus.Monotone"
       },
       {
-        "theorem": "div_le_of_le_mul\u2080",
-        "description": "Division bound: 0 \u2264 a \u2192 0 \u2264 b \u2192 c \u2264 b\u00b7a \u2192 c/a \u2264 b, used in enstrophy ratio bound",
+        "theorem": "div_le_of_le_mul₀",
+        "description": "Division bound: 0 ≤ a → 0 ≤ b → c ≤ b·a → c/a ≤ b, used in enstrophy ratio bound",
         "module": "Mathlib.Algebra.Order.Field.Basic"
       }
     ],
     "originalContributions": [
-      "Theorem enstrophy_uniform_decay: E(t) \u2264 E(s)\u00b7exp(-2\u03bd\u03bc\u2081(t-s)) for any 0 \u2264 s \u2264 t, via integrating factor g(t) = E(t)\u00b7exp(2\u03bd\u03bc\u2081t) shown antitone",
-      "Theorem enstrophy_ratio_bound: E(t)/E(s) \u2264 exp(-2\u03bd\u03bc\u2081(t-s)) when E(s) > 0, quantifying the fractional decay",
-      "Theorem enstrophy_monotone_comparison: chained decay E(t) \u2264 E(r)\u00b7exp(-2\u03bd\u03bc\u2081(t-r)) for r \u2264 s \u2264 t, via exp addition law",
+      "Theorem enstrophy_uniform_decay: E(t) ≤ E(s)·exp(-2νμ₁(t-s)) for any 0 ≤ s ≤ t, via integrating factor g(t) = E(t)·exp(2νμ₁t) shown antitone",
+      "Theorem enstrophy_ratio_bound: E(t)/E(s) ≤ exp(-2νμ₁(t-s)) when E(s) > 0, quantifying the fractional decay",
+      "Theorem enstrophy_monotone_comparison: chained decay E(t) ≤ E(r)·exp(-2νμ₁(t-r)) for r ≤ s ≤ t, via exp addition law",
       "Structure GlobalNSSolution2DRegular: extends GlobalNSSolution2D with ContinuousOn palinstrophy P, enabling FTC application",
-      "Theorem enstrophy_integral_identity: \u222b\u2080\u1d40 -2\u03bdP(t) dt = E(T) - E(0), FTC applied to the enstrophy ODE E' = -2\u03bdP",
-      "Theorem enstrophy_dissipation_formula: E(0) - E(T) = \u222b\u2080\u1d40 2\u03bdP(t) dt, the exact dissipation accounting",
-      "Theorem total_dissipation_bound: \u222b\u2080\u1d40 2\u03bdP(t) dt \u2264 E(0), total dissipation bounded by initial enstrophy"
+      "Theorem enstrophy_integral_identity: ∫₀ᵀ -2νP(t) dt = E(T) - E(0), FTC applied to the enstrophy ODE E' = -2νP",
+      "Theorem enstrophy_dissipation_formula: E(0) - E(T) = ∫₀ᵀ 2νP(t) dt, the exact dissipation accounting",
+      "Theorem total_dissipation_bound: ∫₀ᵀ 2νP(t) dt ≤ E(0), total dissipation bounded by initial enstrophy"
     ],
     "dateAdded": "2026-02-26",
     "lineCount": 21111,
@@ -68,24 +68,25 @@
         "relationship": "Extension of the base Navier-Stokes formalization with quantitative enstrophy decay between arbitrary times and exact integrated energy identities"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 846
   },
   "overview": {
-    "historicalContext": "The two-dimensional Navier-Stokes equations have been known to have global smooth solutions since Ladyzhenskaya's work in 1969. The key is that vortex stretching \u2014 the primary mechanism that might cause blowup in 3D \u2014 is absent in 2D. In 2D, the vorticity \u03c9 satisfies a transport-diffusion equation without the dangerous (\u03c9\u00b7\u2207)u stretching term.\n\nThe enstrophy E(t) = \u222b|\u03c9(x,t)|\u00b2 dx is the squared L\u00b2 norm of vorticity. In 2D, enstrophy satisfies the ODE dE/dt = -2\u03bdP where P = \u222b|\u2207\u03c9|\u00b2 is the palinstrophy. Under a Poincar\u00e9 inequality P \u2265 \u03bc\u2081E (where \u03bc\u2081 is the first eigenvalue of -\u0394 on the domain), this becomes dE/dt \u2264 -2\u03bd\u03bc\u2081E, giving exponential decay.\n\nThis formalization extends the existing NavierStokes.lean (which already proved the asymptotic bound E(t) \u2264 E(0)\u00b7exp(-2\u03bd\u03bc\u2081t)) with new quantitative results: decay between arbitrary times, exact FTC integration of the enstrophy ODE, and total dissipation bounds.",
-    "problemStatement": "**Open Question (navier-stokes-oq-01)**: For 2D incompressible Navier-Stokes with Poincar\u00e9 inequality, can we formalize:\n\n(a) **Quantitative inter-time decay**: E(t) \u2264 E(s)\u00b7exp(-2\u03bd\u03bc\u2081(t-s)) for any 0 \u2264 s \u2264 t, not just t compared to 0?\n\n(b) **Exact integrated identity**: The enstrophy ODE E' = -2\u03bdP can be integrated exactly: \u222b\u2080\u1d40 -2\u03bdP(t) dt = E(T) - E(0)?\n\n(c) **Total dissipation bound**: The cumulative dissipation \u222b\u2080\u1d40 2\u03bdP dt is bounded by E(0)?\n\n**Answer: YES** \u2014 all three can be formalized in Lean 4 with 0 axioms and 0 sorries, using the integrating factor method and the Fundamental Theorem of Calculus.",
+    "historicalContext": "The two-dimensional Navier-Stokes equations have been known to have global smooth solutions since Ladyzhenskaya's work in 1969. The key is that vortex stretching — the primary mechanism that might cause blowup in 3D — is absent in 2D. In 2D, the vorticity ω satisfies a transport-diffusion equation without the dangerous (ω·∇)u stretching term.\n\nThe enstrophy E(t) = ∫|ω(x,t)|² dx is the squared L² norm of vorticity. In 2D, enstrophy satisfies the ODE dE/dt = -2νP where P = ∫|∇ω|² is the palinstrophy. Under a Poincaré inequality P ≥ μ₁E (where μ₁ is the first eigenvalue of -Δ on the domain), this becomes dE/dt ≤ -2νμ₁E, giving exponential decay.\n\nThis formalization extends the existing NavierStokes.lean (which already proved the asymptotic bound E(t) ≤ E(0)·exp(-2νμ₁t)) with new quantitative results: decay between arbitrary times, exact FTC integration of the enstrophy ODE, and total dissipation bounds.",
+    "problemStatement": "**Open Question (navier-stokes-oq-01)**: For 2D incompressible Navier-Stokes with Poincaré inequality, can we formalize:\n\n(a) **Quantitative inter-time decay**: E(t) ≤ E(s)·exp(-2νμ₁(t-s)) for any 0 ≤ s ≤ t, not just t compared to 0?\n\n(b) **Exact integrated identity**: The enstrophy ODE E' = -2νP can be integrated exactly: ∫₀ᵀ -2νP(t) dt = E(T) - E(0)?\n\n(c) **Total dissipation bound**: The cumulative dissipation ∫₀ᵀ 2νP dt is bounded by E(0)?\n\n**Answer: YES** — all three can be formalized in Lean 4 with 0 axioms and 0 sorries, using the integrating factor method and the Fundamental Theorem of Calculus.",
     "text": "A 21,110-line formalization extending the base Navier-Stokes entry with quantitative enstrophy decay and exact energy identities for 2D incompressible flow. Uses three nested structures: `GlobalNSSolution2D` (enstrophy ODE $E' = -2\\nu P$), `GlobalNSSolution2DPoincare` (adds $P \\geq \\mu_1 E$), and `GlobalNSSolution2DRegular` (adds $\\text{ContinuousOn}\\, P$). Proves: (1) $E(t) \\leq E(s) e^{-2\\nu\\mu_1(t-s)}$ for all $0 \\leq s \\leq t$ via the integrating factor $g(t) = E(t) e^{2\\nu\\mu_1 t}$ shown to be antitone; (2) $\\int_0^T (-2\\nu P) = E(T) - E(0)$ via the FTC lemma `integral_eq_sub_of_hasDerivAt_of_le` with careful handling of the open-interval derivative condition; (3) $\\int_0^T 2\\nu P \\leq E(0)$ (total dissipation bounded by initial enstrophy, since $E(T) \\geq 0$). Zero axioms, zero sorries.",
-    "proofStrategy": "**Key structures**:\n- `GlobalNSSolution2D`: has fields E (enstrophy), P (palinstrophy), \u03bd (viscosity), enstrophy_ode (E' = -2\u03bdP)\n- `GlobalNSSolution2DPoincare`: extends with Poincar\u00e9 constant \u03bc\u2081 and P \u2265 \u03bc\u2081E  \n- `GlobalNSSolution2DRegular`: extends with ContinuousOn P, enabling FTC\n\n**Strategy for enstrophy_uniform_decay**:\n1. Define integrating factor g(t) = E(t)\u00b7exp(2\u03bd\u03bc\u2081t)\n2. Show g'(t) = E'(t)\u00b7exp(...) + E(t)\u00b72\u03bd\u03bc\u2081\u00b7exp(...) = (-2\u03bdP + 2\u03bd\u03bc\u2081E)\u00b7exp(...) \u2264 0\n3. g antitone: g(t) \u2264 g(s)\n4. Multiply by exp(-2\u03bd\u03bc\u2081t): E(t) \u2264 E(s)\u00b7exp(-2\u03bd\u03bc\u2081(t-s))\n\n**Strategy for enstrophy_integral_identity**:\n1. Apply `intervalIntegral.integral_eq_sub_of_hasDerivAt_of_le` (FTC with ContinuousOn + HasDerivAt on open interval)\n2. ContinuousOn E on Icc 0 T from E_cont\n3. HasDerivAt E (-2\u03bdP t) on Ioo 0 T from enstrophy_ode (requires t > 0)\n4. IntervalIntegrable from continuousOn_const.mul P_cont\n\n**Strategy for total_dissipation_bound**:\n1. From enstrophy_dissipation_formula: E(0) - E(T) = \u222b 2\u03bdP\n2. E(T) \u2265 0 (from E_nonneg)\n3. Conclude \u222b 2\u03bdP \u2264 E(0) by linarith",
+    "proofStrategy": "**Key structures**:\n- `GlobalNSSolution2D`: has fields E (enstrophy), P (palinstrophy), ν (viscosity), enstrophy_ode (E' = -2νP)\n- `GlobalNSSolution2DPoincare`: extends with Poincaré constant μ₁ and P ≥ μ₁E  \n- `GlobalNSSolution2DRegular`: extends with ContinuousOn P, enabling FTC\n\n**Strategy for enstrophy_uniform_decay**:\n1. Define integrating factor g(t) = E(t)·exp(2νμ₁t)\n2. Show g'(t) = E'(t)·exp(...) + E(t)·2νμ₁·exp(...) = (-2νP + 2νμ₁E)·exp(...) ≤ 0\n3. g antitone: g(t) ≤ g(s)\n4. Multiply by exp(-2νμ₁t): E(t) ≤ E(s)·exp(-2νμ₁(t-s))\n\n**Strategy for enstrophy_integral_identity**:\n1. Apply `intervalIntegral.integral_eq_sub_of_hasDerivAt_of_le` (FTC with ContinuousOn + HasDerivAt on open interval)\n2. ContinuousOn E on Icc 0 T from E_cont\n3. HasDerivAt E (-2νP t) on Ioo 0 T from enstrophy_ode (requires t > 0)\n4. IntervalIntegrable from continuousOn_const.mul P_cont\n\n**Strategy for total_dissipation_bound**:\n1. From enstrophy_dissipation_formula: E(0) - E(T) = ∫ 2νP\n2. E(T) ≥ 0 (from E_nonneg)\n3. Conclude ∫ 2νP ≤ E(0) by linarith",
     "keyInsights": [
-      "The integrating factor g(t) = E(t)\u00b7exp(2\u03bd\u03bc\u2081t) is the key to proving decay between arbitrary times s \u2264 t, not just from time 0",
-      "enstrophy_uniform_decay generalizes the existing enstrophy_exponential_decay_exact theorem by replacing the fixed start time 0 with an arbitrary s \u2265 0",
+      "The integrating factor g(t) = E(t)·exp(2νμ₁t) is the key to proving decay between arbitrary times s ≤ t, not just from time 0",
+      "enstrophy_uniform_decay generalizes the existing enstrophy_exponential_decay_exact theorem by replacing the fixed start time 0 with an arbitrary s ≥ 0",
       "FTC via `integral_eq_sub_of_hasDerivAt_of_le` requires HasDerivAt only on the open interval Ioo 0 T, avoiding the issue that enstrophy_ode needs t > 0",
       "GlobalNSSolution2DRegular adds ContinuousOn P as a minimal regularity requirement for FTC integration of the enstrophy ODE",
-      "The total dissipation bound \u222b\u2080\u1d40 2\u03bdP \u2264 E(0) is immediate from the energy identity and E(T) \u2265 0: all enstrophy dissipated over any finite time comes from the initial enstrophy"
+      "The total dissipation bound ∫₀ᵀ 2νP ≤ E(0) is immediate from the energy identity and E(T) ≥ 0: all enstrophy dissipated over any finite time comes from the initial enstrophy"
     ],
     "prerequisites": [
       "Real analysis (continuity, differentiability, integration)",
       "ODE theory (Gronwall-type inequalities, integrating factors)",
-      "Functional analysis (Poincar\u00e9 inequality, Sobolev spaces)",
+      "Functional analysis (Poincaré inequality, Sobolev spaces)",
       "Fluid dynamics (enstrophy, palinstrophy, vorticity)",
       "Familiarity with Lean 4 and Mathlib"
     ]
@@ -96,21 +97,21 @@
       "title": "Uniform Exponential Decay Between Times",
       "startLine": 2489,
       "endLine": 2561,
-      "summary": "enstrophy_uniform_decay: E(t) \u2264 E(s)\u00b7exp(-2\u03bd\u03bc\u2081(t-s)) for 0 \u2264 s \u2264 t. Generalizes the s=0 case. Key technique: integrating factor g(t) = E(t)\u00b7exp(ct) is antitone via g'(t) \u2264 0."
+      "summary": "enstrophy_uniform_decay: E(t) ≤ E(s)·exp(-2νμ₁(t-s)) for 0 ≤ s ≤ t. Generalizes the s=0 case. Key technique: integrating factor g(t) = E(t)·exp(ct) is antitone via g'(t) ≤ 0."
     },
     {
       "id": "ratio-bound",
       "title": "Enstrophy Ratio Bound",
       "startLine": 2562,
       "endLine": 2578,
-      "summary": "enstrophy_ratio_bound: E(t)/E(s) \u2264 exp(-2\u03bd\u03bc\u2081(t-s)) when E(s) > 0. Derives from uniform decay using div_le_of_le_mul\u2080."
+      "summary": "enstrophy_ratio_bound: E(t)/E(s) ≤ exp(-2νμ₁(t-s)) when E(s) > 0. Derives from uniform decay using div_le_of_le_mul₀."
     },
     {
       "id": "chained-decay",
       "title": "Chained Exponential Decay",
       "startLine": 2579,
       "endLine": 2603,
-      "summary": "enstrophy_monotone_comparison: for r \u2264 s \u2264 t, E(t) \u2264 E(r)\u00b7exp(-2\u03bd\u03bc\u2081(t-r)). Uses exp_add to combine two steps of uniform decay."
+      "summary": "enstrophy_monotone_comparison: for r ≤ s ≤ t, E(t) ≤ E(r)·exp(-2νμ₁(t-r)). Uses exp_add to combine two steps of uniform decay."
     },
     {
       "id": "regular-structure",
@@ -124,24 +125,24 @@
       "title": "Integrated Enstrophy Identity via FTC",
       "startLine": 2615,
       "endLine": 2638,
-      "summary": "enstrophy_integral_identity: \u222b\u2080\u1d40 -2\u03bdP(t) dt = E(T) - E(0). Applies integral_eq_sub_of_hasDerivAt_of_le with ContinuousOn E on Icc and HasDerivAt on Ioo 0 T."
+      "summary": "enstrophy_integral_identity: ∫₀ᵀ -2νP(t) dt = E(T) - E(0). Applies integral_eq_sub_of_hasDerivAt_of_le with ContinuousOn E on Icc and HasDerivAt on Ioo 0 T."
     },
     {
       "id": "dissipation-formula",
       "title": "Enstrophy Dissipation Formula and Total Bound",
       "startLine": 2639,
       "endLine": 21110,
-      "summary": "enstrophy_dissipation_formula: E(0) - E(T) = \u222b\u2080\u1d40 2\u03bdP dt (enstrophy decrease = integrated dissipation). total_dissipation_bound: \u222b\u2080\u1d40 2\u03bdP \u2264 E(0) (cumulative dissipation bounded by initial enstrophy)."
+      "summary": "enstrophy_dissipation_formula: E(0) - E(T) = ∫₀ᵀ 2νP dt (enstrophy decrease = integrated dissipation). total_dissipation_bound: ∫₀ᵀ 2νP ≤ E(0) (cumulative dissipation bounded by initial enstrophy)."
     }
   ],
   "conclusion": {
-    "summary": "This formalization answers the open question affirmatively: all three quantitative results \u2014 inter-time decay, integrated energy identity, and total dissipation bound \u2014 can be formalized in Lean 4 with 0 axioms and 0 sorries. The key tools are the integrating factor method (for decay between arbitrary times) and the FTC via `intervalIntegral.integral_eq_sub_of_hasDerivAt_of_le` (for the integrated identity).",
-    "implications": "**Theoretical Significance**: **For 2D fluid mechanics**: The enstrophy_uniform_decay theorem provides a precise Lyapunov function argument: g(t) = E(t)\u00b7exp(2\u03bd\u03bc\u2081t) is nonincreasing, certifying exponential stability of the zero state.\n\n**For Mathlib**: The correct FTC lemma for enstrophy integration is `integral_eq_sub_of_hasDerivAt_of_le` (not the simpler `integral_eq_sub_of_hasDerivAt`), because the enstrophy ODE holds for t > 0 but not necessarily at t = 0.\n\nThis version requires ContinuousOn on the closed interval [0,T] and HasDerivAt only on the open interval (0,T).\n\n**For Navier-Stokes research**: These results form part of the infrastructure for more advanced 2D results, such as proving the Ladyzhenskaya inequality in Lean 4 and connecting 2D global regularity to Fourier space energy cascades.\n\n**For the 3D problem**: The 2D results demonstrate that the enstrophy framework works cleanly in Lean 4. The 3D case differs because vortex stretching prevents the Poincar\u00e9 bound P \u2265 \u03bc\u2081E from giving exponential decay.",
+    "summary": "This formalization answers the open question affirmatively: all three quantitative results — inter-time decay, integrated energy identity, and total dissipation bound — can be formalized in Lean 4 with 0 axioms and 0 sorries. The key tools are the integrating factor method (for decay between arbitrary times) and the FTC via `intervalIntegral.integral_eq_sub_of_hasDerivAt_of_le` (for the integrated identity).",
+    "implications": "**Theoretical Significance**: **For 2D fluid mechanics**: The enstrophy_uniform_decay theorem provides a precise Lyapunov function argument: g(t) = E(t)·exp(2νμ₁t) is nonincreasing, certifying exponential stability of the zero state.\n\n**For Mathlib**: The correct FTC lemma for enstrophy integration is `integral_eq_sub_of_hasDerivAt_of_le` (not the simpler `integral_eq_sub_of_hasDerivAt`), because the enstrophy ODE holds for t > 0 but not necessarily at t = 0.\n\nThis version requires ContinuousOn on the closed interval [0,T] and HasDerivAt only on the open interval (0,T).\n\n**For Navier-Stokes research**: These results form part of the infrastructure for more advanced 2D results, such as proving the Ladyzhenskaya inequality in Lean 4 and connecting 2D global regularity to Fourier space energy cascades.\n\n**For the 3D problem**: The 2D results demonstrate that the enstrophy framework works cleanly in Lean 4. The 3D case differs because vortex stretching prevents the Poincaré bound P ≥ μ₁E from giving exponential decay.",
     "openQuestions": [
-      "Can the Ladyzhenskaya inequality \u2016u\u2016\u2084 \u2264 C\u2016u\u2016\u2082^{1/2}\u2016\u2207u\u2016\u2082^{1/2} be formalized in Lean 4 using Mathlib's Sobolev space infrastructure?",
+      "Can the Ladyzhenskaya inequality ‖u‖₄ ≤ C‖u‖₂^{1/2}‖∇u‖₂^{1/2} be formalized in Lean 4 using Mathlib's Sobolev space infrastructure?",
       "Can the 2D Navier-Stokes existence theorem be stated and proved axiom-free? (Requires weak solutions, Galerkin approximation, compactness arguments)",
-      "Can the optimal Poincar\u00e9 constant \u03bc\u2081 be characterized as the smallest eigenvalue of -\u0394 on the domain? (Requires spectral theory for bounded domains)",
-      "What is the rate of enstrophy decay for turbulent 2D flows without Poincar\u00e9 inequality? (E(t) \u2192 0 but perhaps not exponentially)"
+      "Can the optimal Poincaré constant μ₁ be characterized as the smallest eigenvalue of -Δ on the domain? (Requires spectral theory for bounded domains)",
+      "What is the rate of enstrophy decay for turbulent 2D flows without Poincaré inequality? (E(t) → 0 but perhaps not exponentially)"
     ]
   },
   "leanFile": {
@@ -202,12 +203,12 @@
     {
       "targetId": "fundamental-theorem-calculus",
       "relationship": "foundational",
-      "description": "The enstrophy integral identity directly applies the FTC (integral_eq_sub_of_hasDerivAt_of_le) to convert the pointwise ODE E'(t) = -2\u03bdP(t) into the global identity \u222b\u2080\u1d40 -2\u03bdP = E(T) - E(0)"
+      "description": "The enstrophy integral identity directly applies the FTC (integral_eq_sub_of_hasDerivAt_of_le) to convert the pointwise ODE E'(t) = -2νP(t) into the global identity ∫₀ᵀ -2νP = E(T) - E(0)"
     },
     {
       "targetId": "navier-stokes-existence",
       "relationship": "related",
-      "description": "Existence theory for Navier-Stokes solutions \u2014 the solutions whose enstrophy decay properties are formalized here"
+      "description": "Existence theory for Navier-Stokes solutions — the solutions whose enstrophy decay properties are formalized here"
     },
     {
       "targetId": "cauchy-schwarz-integral",

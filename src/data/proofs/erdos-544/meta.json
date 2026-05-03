@@ -22,7 +22,8 @@
     "axiomCount": 3,
     "lineCount": 65,
     "assumptions": "3 axioms: ramsey3, ramsey3_mono, ramsey3_val_3. 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Erdős and Sós asked whether the consecutive differences $R(3,k+1) - R(3,k)$ tend to infinity, and whether the growth is sublinear in $k$. The asymptotic behaviour of $R(3,k)$ has a rich history: **Erdős** established early bounds using the probabilistic method; **Shearer** (1983) proved $R(3,k) \\leq Ck^2/\\log k$; **Kim** (1995) proved the matching lower bound $R(3,k) \\geq ck^2/\\log k$ via the triangle-free process, a landmark in probabilistic combinatorics. Most recently, **Campos–Griffiths–Morris–Sahasrabudhe** (2023, *Ann. Math.*) sharpened the upper bound constant to within a factor of 4. The average consecutive difference is thus $\\Theta(k/\\log k)$, but the pointwise behaviour of individual differences remains an open problem.",

@@ -59,7 +59,8 @@
         "description": "If IsCoprime a b then IsCoprime (a^m) (b^n) for any naturals m, n",
         "module": "Mathlib.RingTheory.Coprime.Lemmas"
       }
-    ]
+    ],
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "The cyclic vector theorem — that every nonderogatory matrix has a cyclic vector — is a classical result in linear algebra connected to the rational canonical form (Frobenius normal form). A matrix $M \\in M_n(K)$ is nonderogatory if its minimal polynomial equals its characteristic polynomial (both of degree $n$); a vector $v$ is cyclic if $\\{v, Mv, M^2v, \\ldots, M^{n-1}v\\}$ is a basis. The theorem is classical over $\\mathbb{C}$ and over infinite fields via a dimension argument: the vectors failing to be cyclic form a finite union of proper subspaces, which cannot cover all of $K^n$ when $K$ is infinite (or has more than $n$ elements). The question investigated in this OQ-04 is whether the theorem still holds over very small finite fields, such as $\\mathbb{F}_2$ with only 2 elements and $n = 2$ dimensions. The key insight is that the theorem is TRUE over ALL fields — union avoidance is merely one proof technique; the algebraic structure (module theory over the PID $K[X]$) gives a field-independent proof. The module-theoretic proof connects the cyclic vector question to the structure theorem for finitely generated modules over a PID: $K^n$ as a $K[X]$-module decomposes as $K[X]/(d_1) \\oplus \\cdots \\oplus K[X]/(d_r)$ (invariant factor decomposition), and nonderogatory forces $r = 1$, making $V \\cong K[X]/(\\text{minpoly})$ — a cyclic module.",

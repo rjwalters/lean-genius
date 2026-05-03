@@ -40,7 +40,8 @@
     "dateAdded": "2026-03-12",
     "axiomCount": 0,
     "lineCount": 134,
-    "assumptions": "0 axioms, 0 sorries. Core Leibniz formula (Real.tendsto_sum_pi_div_four) from Mathlib; original work is pedagogical infrastructure and convergence rate analysis."
+    "assumptions": "0 axioms, 0 sorries. Core Leibniz formula (Real.tendsto_sum_pi_div_four) from Mathlib; original work is pedagogical infrastructure and convergence rate analysis.",
+    "theoremCount": 14
   },
   "overview": {
     "historicalContext": "The Leibniz series $\\pi/4 = 1 - 1/3 + 1/5 - 1/7 + \\cdots$ was discovered by Gottfried Wilhelm Leibniz in 1674, though the result was known earlier to the Kerala school mathematician Madhava of Sangamagrama (c. 1350). It converges painfully slowly: about $10^6$ terms yield only 6 correct digits of $\\pi$. The rate $\\Theta(1/N)$ makes it useless for practical computation.\n\nJohn Machin (1706), a professor at Gresham College, London, discovered that $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$, achieving exponential convergence by evaluating the arctangent Taylor series at arguments much smaller than 1. This idea spawned an entire family of **Machin-like formulas** that dominated $\\pi$ computation for over 250 years. William Shanks used Machin's formula to compute 707 digits of $\\pi$ in 1873 (though 526 were later found incorrect by D.F. Ferguson in 1944).\n\nThe alternating series estimation theorem — the core result formalized here — dates to Leibniz himself and was later made rigorous by Abel and Dirichlet in the 19th century. The open question asks: what is the optimal convergence rate achievable by arctangent-based series? We formalize the answer: the Leibniz series converges at rate exactly $\\Theta(1/N)$, while $\\arctan(1/m)$ series with $m > 1$ converge geometrically at rate $O(1/m^{2N})$.",

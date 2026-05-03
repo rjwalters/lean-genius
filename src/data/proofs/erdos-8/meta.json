@@ -53,7 +53,8 @@
       "Modular arithmetic"
     ],
     "assumptions": "2 axioms: hough_minimum_modulus (deep result, Hough 2015), density_conjecture_false (deep result). erdos_8_resolution now proved from bottleneck_counterexample + hough_minimum_modulus.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Graham in their 1980 book on combinatorial number theory. They conjectured that any finite coloring of the integers must admit a covering system whose moduli are all the same color.\n\nThe conjecture remained open until 2015, when Bob Hough's breakthrough on the minimum modulus problem for covering systems provided the key insight. Hough showed that the minimum modulus is bounded by 616,000, which creates a structural bottleneck exploitable to construct counterexamples.",

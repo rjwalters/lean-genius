@@ -54,7 +54,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 128,
-    "assumptions": "3 axioms: ramseyNumber, two_color_odd_cycle, two_color_triangle. 0 sorries."
+    "assumptions": "3 axioms: ramseyNumber, two_color_odd_cycle, two_color_triangle. 0 sorries.",
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "Erdős Problem #554 was posed by Erdős and Graham in 1981 as part of their influential work on Ramsey theory. The problem concerns the growth rates of multicolor Ramsey numbers for different graph families. In the classical 2-color setting, Ramsey numbers for odd cycles were completely determined by Bondy and Erdős in 1973: R(C_{2n+1}; 2) = 4n + 1 for n >= 2. This showed that odd cycle Ramsey numbers are much smaller than triangle Ramsey numbers even for 2 colors (R(K_3; 2) = 6).\n\nThe natural question is whether this gap persists and widens as the number of colors grows. Erdős and Graham conjectured that the ratio R(C_{2n+1}; k) / R(K_3; k) tends to 0 as k tends to infinity, for any fixed n >= 2. This would mean that, in some precise sense, odd cycles are 'much easier' to find monochromatically than triangles in multicolor settings.\n\nThe conjecture remains OPEN as of 2026, even for the simplest case n = 2 (the pentagon C_5). It is deeply connected to fundamental questions about how graph structure affects Ramsey-theoretic complexity. All odd cycles have chromatic number 3, the same as the triangle K_3, yet the conjecture predicts dramatically different Ramsey behavior.",

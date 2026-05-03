@@ -90,7 +90,8 @@
       "Divisibility and powers (dvd_pow_self)"
     ],
     "lineCount": 320,
-    "assumptions": "2 axioms (bergelson_richter, random_coprime_density). The main density theorem is axiomatized (deep ergodic theory); all supporting lemmas are fully proved including Möbius inversion identity, card_multiples, and pairs_with_common_factor."
+    "assumptions": "2 axioms (bergelson_richter, random_coprime_density). The main density theorem is axiomatized (deep ergodic theory); all supporting lemmas are fully proved including Möbius inversion identity, card_multiples, and pairs_with_common_factor.",
+    "theoremCount": 17
   },
   "overview": {
     "summary": "Formalizes Erdős Problem #1149, solved by Bergelson and Richter (2017): for non-integer α > 0, the natural density of integers n with gcd(n, ⌊n^α⌋) = 1 is exactly 6/π². The main theorem is axiomatized (deep ergodic theory), with 16 proved theorems including density bounds, coprime set properties, Möbius inversion identity, coprime pair counting via Finset bijections, and integer exponent exclusion. 0 sorries, 2 axioms.",

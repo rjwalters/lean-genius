@@ -24,7 +24,8 @@
     "axiomCount": 4,
     "lineCount": 246,
     "assumptions": "4 axiom(s). No sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Erdos posed this problem at the Oberwolfach mathematics research institute in 1986, inspired by the interplay between the partition function's analytic properties and multiplicative number theory. The partition function $p(n)$ — counting unordered sums of positive integers equaling $n$ — had been studied since Euler's pioneering work on generating functions in the 1740s. Hardy and Ramanujan's 1918 asymptotic formula $p(n) \\sim \\frac{1}{4n\\sqrt{3}}e^{\\pi\\sqrt{2n/3}}$, obtained via the circle method, revealed that $p(n)$ grows sub-exponentially but faster than any polynomial.\n\nThe first question ($F(n) \\to \\infty$) was resolved quickly: Schinzel noted in the Oberwolfach problem book that this follows from combining the Hardy-Ramanujan asymptotic with Tijdeman's 1973 result showing that sequences growing at least exponentially must accumulate infinitely many distinct prime factors. Full details appear on page 69 of the 1990 paper by Erdos and Ivic.\n\nSchinzel and Wirsing (1987) proved the quantitative lower bound $F(n) \\gg \\log n$, but the gap between $\\log n$ and the conjectured $n$ remains enormous. A breakthrough came with Ken Ono's 2000 result (using modular forms and Galois representations) that every prime divides $p(n)$ for a positive density of $n$, extending Ramanujan's classical congruences for $p = 5, 7, 11$.",

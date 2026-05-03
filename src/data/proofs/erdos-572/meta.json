@@ -54,7 +54,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 307,
-    "assumptions": "3 axioms: benson_k3 (C₆ lower bound), benson_k5 (C₁₀ lower bound), lazebnik_ustimenko_woldar (general LUW bound). 0 sorries."
+    "assumptions": "3 axioms: benson_k3 (C₆ lower bound), benson_k5 (C₁₀ lower bound), lazebnik_ustimenko_woldar (general LUW bound). 0 sorries.",
+    "theoremCount": 8
   },
   "overview": {
     "historicalContext": "**Extremal Graph Theory and Even Cycles**\n\nThis problem concerns the Turán-type extremal function ex(n; H), which asks for the maximum number of edges in an n-vertex graph containing no copy of H. For even cycles C_{2k}, this is one of the central open problems in extremal graph theory.\n\n**Historical Timeline:**\n- 1938: Erdős and Klein showed ex(n; C_4) ~ n^{3/2}, related to finite projective planes\n- 1964: Erdős conjectured ex(n; C_{2k}) >> n^{1+1/k} for k >= 3\n- 1966: Benson proved the conjecture for k=3 (girth 8) and k=5 (girth 12) using generalized polygons\n- 1974: Bondy-Simonovits proved the upper bound ex(n; C_{2k}) << kn^{1+1/k}\n- 1995: Lazebnik-Ustimenko-Woldar proved a weaker general lower bound\n\n**The Gap:**\nFor k=4 and k >= 6, the conjectured lower bound n^{1+1/k} remains unproved. The LUW bound gives n^{1+2/(3k-3+ν)} which is strictly weaker.",

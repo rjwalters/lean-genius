@@ -23,7 +23,8 @@
     "axiomCount": 2,
     "lineCount": 510,
     "assumptions": "2 axioms: gallagher_conditional (RH→exponential distribution), average_normalized_gap (PNT). Previously 5 axioms: density_at_infinity proved via Markov, small_gaps_exist proved via Cesàro contrapositive, large_gaps_exist proved.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 28
   },
   "overview": {
     "historicalContext": "**From Cramér's Model to the Distribution of Prime Gaps**\n\n**Harald Cramér** introduced his groundbreaking probabilistic model in 1936, treating each integer $n$ as independently prime with probability $1/\\log n$. Under this model, normalized prime gaps $g_n / \\log p_n$ follow an **exponential distribution** with CDF $f(c) = 1 - e^{-c}$. Cramér's model has been remarkably successful at predicting prime gap statistics, though it is known to fail for some finer questions (Maier's theorem, 1985).\n\n**Erdős** asked in the 1930s–1940s whether the **natural density** $f(c) = \\lim_{N \\to \\infty} \\#\\{n \\leq N : g_n/\\log n < c\\}/N$ exists for all $c \\geq 0$ and defines a continuous function. This combines an existence question (does the proportion converge?) with a regularity question (is the limit continuous in $c$?).\n\n**Patrick Gallagher** (1976) proved the exponential distribution conjecture conditional on the **Riemann Hypothesis**, using the Hardy–Littlewood prime $k$-tuples conjecture structure. His result shows that if RH holds, then $f(c) = 1 - e^{-c}$ exactly.\n\nPartial unconditional progress includes: **Goldston–Pintz–Yıldırım** (2009) proved $\\liminf g_n/\\log p_n = 0$; **Maynard** and **Tao** (2014) proved bounded gaps $\\liminf g_n \\leq 246$; **Ford–Green–Konyagin–Tao** (2016) and **Maynard** (2016) improved Rankin's large gap bound. Related problems include Erdős #233 (sum of squared gaps) and #5 (large prime gaps).",

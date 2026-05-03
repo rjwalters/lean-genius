@@ -53,7 +53,8 @@
     "axiomCount": 0,
     "lineCount": 235,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "The divisibility-by-3 rule is one of the oldest and most widely known divisibility tests. It has been used across cultures for mental arithmetic and checking calculations for centuries.\n\nThe rule appears in various ancient mathematical traditions, as the observation that 10 ≡ 1 (mod 3) makes the test particularly natural for base-10 arithmetic. This same principle gives us the divisibility-by-9 rule (since 10 ≡ 1 (mod 9) as well) and the technique of 'casting out nines' for verifying arithmetic.\n\nThe mathematical generalization states: for any base b and divisor d where b ≡ 1 (mod d), a number is divisible by d if and only if its digit sum (in base b) is divisible by d.",

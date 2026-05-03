@@ -58,7 +58,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 278,
-    "assumptions": "4 axioms: sqrt_gives_infinity, four_ninths_gives_infinity, bounded_gaps_implies_limsup_infinity, zhang_bounded_gaps. 0 sorries."
+    "assumptions": "4 axioms: sqrt_gives_infinity, four_ninths_gives_infinity, bounded_gaps_implies_limsup_infinity, zhang_bounded_gaps. 0 sorries.",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "**Divisor Functions and Factorials**\n\nThis problem studies how the divisor function τ(n) = number of divisors of n behaves when applied to factorials. The ratio F(f,n) = τ((n+⌊f(n)⌋)!)/τ(n!) measures how much τ grows when we extend from n! to a slightly larger factorial.\n\n**Key Paper:**\nErdős, Graham, Ivić, and Pomerance (1996) established the fundamental bounds in their paper \"On the number of divisors of n!\". They showed that:\n- lim F(n^{1/2}, n) = ∞ (and n^{1/2} can be improved to n^{1/2-c})\n- liminf F(c log n, n) = 1 for any c > 0\n- lim F(n^{4/9}, n) = ∞\n\n**Connection to Prime Gaps:**\nVan Doorn noted that bounded prime gaps (now known to exist by Zhang's theorem) imply limsup F(g(n), n) = ∞ for any g(n) → ∞. Cramér's conjecture would give even stronger results.",

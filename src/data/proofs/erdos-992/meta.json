@@ -62,7 +62,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 2,
     "lineCount": 162,
-    "assumptions": "2 axioms: baker_1981, erdos_gal_lacunary. 0 sorries."
+    "assumptions": "2 axioms: baker_1981, erdos_gal_lacunary. 0 sorries.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "**The Discrepancy Problem**\\n\\nThe discrepancy D(N) measures how far the sequence {αxₙ} deviates from uniform distribution on [0,1]. For any interval I ⊆ [0,1], we compare the count of fractional parts landing in I to the expected count |I|·N.\\n\\n**Early Results (1949-1950)**\\n\\nErdős-Koksma and Cassels independently proved D(N) ≪ √N·(log N)^{5/2+o(1)} for almost all α. This was a breakthrough establishing that typical multipliers give good distribution.\\n\\n**Baker's Improvement (1981)**\\n\\nBaker reduced the logarithmic exponent from 5/2 to 3/2, proving D(N) ≪ √N·(log N)^{3/2+o(1)}. This remains the best known bound for general sequences.\\n\\n**Lacunary Case (Erdős-Gál)**\\n\\nFor lacunary sequences where xₙ₊₁/xₙ > λ > 1, Erdős and Gál proved the much stronger bound D(N) ≪ √N·(log log N)^{O(1)}. This suggests the conjecture might be true.\\n\\n**The Open Question**\\n\\nCan we achieve D(N) ≪ √N·(log N)^{o(1)} or even √N·(log log N)^{O(1)} for all sequences? The gap from (log N)^{3/2} to o(1) is substantial.",

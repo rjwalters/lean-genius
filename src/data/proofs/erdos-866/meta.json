@@ -55,7 +55,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 85,
-    "assumptions": "0 axioms. 0 sorries. All results formalized without axioms."
+    "assumptions": "0 axioms. 0 sorries. All results formalized without axioms.",
+    "theoremCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #866 originates from the work of Choi, Erdős, and Szemerédi on sumsets and additive combinatorics, building on their unpublished manuscript 'On sums and products of integers.' The problem asks: how large must a subset A of {1,...,2N} be to guarantee that some k integers have all their pairwise sums in A?\n\nThe foundational observation is the odd numbers construction: the set {1, 3, 5, ..., 2N-1} has N elements but avoids all pairwise sums (since odd + odd = even). This shows the threshold must be at least 1 above N. For k=3, the exact answer is g₃(N) = 2, proved via a complementary pairs pigeonhole argument.\n\nThe most striking feature is the phase transition as k increases: g₃ = 2 (constant), g₄ ≤ 2032 (bounded constant, van Doorn), g₅ ≍ log N (logarithmic), g₆ ≍ √N (polynomial). The general upper bound g_k(N) ≪ N^{1-2^{-k}} (Choi–Erdős–Szemerédi) shows the exponent approaches 1 geometrically, while the lower bound g_k(N) > N^{1-ε} for large k shows the threshold eventually approaches N.\n\nThis growth rate transition—from constant through logarithmic and polynomial to nearly linear—is rare in combinatorics and reflects deep structural changes in the extremal problem. The gap between upper and lower bounds for intermediate and large k remains one of the central open questions in additive combinatorics.",

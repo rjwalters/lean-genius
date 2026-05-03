@@ -54,7 +54,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 166,
-    "assumptions": "2 axioms: mod4_example, selfridge_construction. 0 sorries."
+    "assumptions": "2 axioms: mod4_example, selfridge_construction. 0 sorries.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Erdős Problem #786 was posed around 1965 and appears in several of Erdős's papers from 1965, 1969, and 1973. The problem asks about 'multiplicative cardinality sets' - sets where equal products must come from equal numbers of factors.\n\nThe simplest example is integers ≡ 2 (mod 4), which achieves density 1/4. Each such integer has exactly one factor of 2, so a product of k elements has exactly k factors of 2, forcing equal products to have equal factor counts.\n\nSelfridge constructed a more sophisticated example achieving density 1/e - ε for any ε > 0. His construction uses consecutive primes p₁ < ... < pₖ where the sum of reciprocals crosses 1, and takes integers divisible by exactly one of these primes.\n\nRuzsa reportedly proved an upper bound showing density 1 is impossible (size ≤ (1-c)N for some c > 0), but this proof was never published.",

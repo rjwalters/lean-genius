@@ -51,7 +51,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 205,
-    "assumptions": "3 axiom(s): duke_erdos_1982, duke_erdos_rodl_1984, fox_sudakov_2008. See Lean source for complete statements."
+    "assumptions": "3 axiom(s): duke_erdos_1982, duke_erdos_rodl_1984, fox_sudakov_2008. See Lean source for complete statements.",
+    "theoremCount": 1
   },
   "overview": {
     "historicalContext": "Richard Duke and Paul Erdős asked in the early 1980s whether dense graphs must contain large subgraphs with strong cycle connectivity properties. Specifically, for a graph G with n vertices and δn² edges, they sought subgraphs where any two edges lie on a short common cycle. This question connects edge density to local cycle structure, a fundamental theme in extremal graph theory.\n\nDuke and Erdős proved the first statement (H₁) in 1982 when n is sufficiently large for fixed δ, but the real challenge lies in the regime where δ depends on n. In 1984, Duke, Erdős, and Rödl proved the H₁ statement uniformly with a weaker exponent: δ⁵n² edges instead of the conjectured δ³n². This remains the best known uniform bound for H₁. Jacob Fox and Benny Sudakov made further progress in 2008, proving the H₂ statement (8-cycle connectivity with δ²n² edges) when δ > n^{-1/5}.\n\nThe full conjecture remains open. The gap between the known δ⁵ exponent and the conjectured δ³ for H₁ is substantial, and extending Fox-Sudakov's H₂ result below the n^{-1/5} threshold is a major challenge. The sparse regime where δ = n^{-c} for c > 0 is where new ideas are needed.",

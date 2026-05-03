@@ -76,7 +76,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 808,
-    "assumptions": "3 axioms: hasBV_implies_rightLimit_exists, hasBV_implies_leftLimit_exists, dirichlet_localization. Bessel's inequality and Parseval's theorem are now fully proved using Mathlib's hasSum_sq_fourierCoeff."
+    "assumptions": "3 axioms: hasBV_implies_rightLimit_exists, hasBV_implies_leftLimit_exists, dirichlet_localization. Bessel's inequality and Parseval's theorem are now fully proved using Mathlib's hasSum_sq_fourierCoeff.",
+    "theoremCount": 31
   },
   "overview": {
     "historicalContext": "**Dirichlet's Theorem on Fourier Convergence (1829)**\n\nPeter Gustav Lejeune Dirichlet gave the first rigorous conditions under which a Fourier series converges pointwise. His result was a breakthrough: Fourier had claimed (1807) that *every* function could be expanded as a Fourier series, but Dirichlet showed this requires regularity conditions.\n\n**Key insight**: For functions of bounded variation, the Fourier partial sums S_N f(x) converge at every point to the average of the left and right limits (f(x+) + f(x-))/2. At continuity points, this is just f(x).\n\nThis is the third open question from the Fourier series gallery entry: *Can the Dirichlet conditions for pointwise convergence be formalized using Mathlib's piecewise-smooth framework?*",

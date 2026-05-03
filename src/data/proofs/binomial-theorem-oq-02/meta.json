@@ -57,7 +57,8 @@
     "dateAdded": "2026-02-23",
     "axiomCount": 0,
     "lineCount": 280,
-    "assumptions": "0 axioms, 0 sorries. Core multinomial theorem derived from Mathlib's Finset.sum_pow_eq_sum_piAntidiag; most coefficient properties also from Mathlib."
+    "assumptions": "0 axioms, 0 sorries. Core multinomial theorem derived from Mathlib's Finset.sum_pow_eq_sum_piAntidiag; most coefficient properties also from Mathlib.",
+    "theoremCount": 17
   },
   "overview": {
     "historicalContext": "The **multinomial theorem** is a natural generalization of the binomial theorem, extending from two variables to any finite number. While the binomial theorem $(x+y)^n = \\sum_{k=0}^n \\binom{n}{k} x^k y^{n-k}$ has been known since antiquity, the multinomial generalization appears prominently in the works of **Leibniz** and **Johann Bernoulli** in the 17th century.\n\nThe key insight is that expanding $(x_1 + x_2 + \\cdots + x_m)^n$ by distributing generates all monomials $x_1^{k_1} x_2^{k_2} \\cdots x_m^{k_m}$ with $k_1 + k_2 + \\cdots + k_m = n$. Each such monomial appears exactly $\\frac{n!}{k_1! k_2! \\cdots k_m!}$ times, which is the **multinomial coefficient**.\n\nThe formal connection to the binomial theorem is clean: the multinomial theorem for a 2-element set $\\{a, b\\}$ reduces exactly to the binomial theorem, with multinomial coefficients becoming binomial coefficients $\\binom{n}{k}$. Moreover, the proof proceeds by **induction on the number of variables**, using the binomial theorem at each step to split off one variable — making the binomial theorem literally the engine driving the multinomial proof.",

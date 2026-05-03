@@ -72,7 +72,8 @@
     "axiomCount": 0,
     "lineCount": 217,
     "assumptions": "0 axioms, 0 sorries. Abstract minpoly invariance derived from Mathlib's minpoly.algEquiv_eq and minpoly.algHom_eq. Original contribution is the conjAlgEquiv construction connecting abstract theory to matrix similarity.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "**Minimal Polynomial as a K-Algebra Invariant**\n\nThe minimal polynomial $\\mu_x$ of an element $x$ in a $K$-algebra $R$ is the monic generator of the ideal $\\ker(\\text{ev}_x : K[X] \\to R)$. A natural question is: if $\\varphi : R \\xrightarrow{\\sim} S$ is a $K$-algebra isomorphism, does $\\mu_{\\varphi(x)} = \\mu_x$?\n\nThe answer is YES, and it follows from a simple observation: polynomial evaluation commutes with algebra homomorphisms. If $\\varphi$ is a $K$-algebra map, then $\\text{ev}_{\\varphi(x)}(p) = \\varphi(\\text{ev}_x(p))$ for any $p \\in K[X]$. So if $\\mu_x$ annihilates $x$, it also annihilates $\\varphi(x)$, and vice versa when $\\varphi$ is injective.\n\nMatrix similarity ($B = P^{-1}AP$) is a special case: the conjugation map $A \\mapsto P^{-1}AP$ is a $K$-algebra automorphism of $M_n(K)$. By the abstract result, similar matrices share the same minimal polynomial.\n\nThis formalization upgrades the conjugation from an AlgHom (as in OQ-02) to an AlgEquiv (the correct abstraction), and derives the matrix result as a one-line corollary of Mathlib's `minpoly.algEquiv_eq`.",

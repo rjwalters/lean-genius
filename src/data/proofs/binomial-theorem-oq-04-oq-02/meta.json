@@ -51,7 +51,8 @@
     "axiomCount": 0,
     "lineCount": 111,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "Vandermonde's identity $\\binom{m+n}{r} = \\sum_{i+j=r} \\binom{m}{i}\\binom{n}{j}$ was published by Alexandre-Théophile Vandermonde in 1772, though instances appear in Chu Shih-Chieh's 'Precious Mirror of the Four Elements' (1303). The identity is one of the most fundamental in combinatorics, encoding the fact that choosing $r$ items from $m+n$ objects is equivalent to choosing some from the first $m$ and the rest from the last $n$. The algebraic proof via coefficient comparison — factoring $(1+X)^{m+n}$ as $(1+X)^m \\cdot (1+X)^n$ and equating coefficients of $X^r$ — is perhaps the most elegant approach, reducing the combinatorial identity to the monoid law $a^{m+n} = a^m \\cdot a^n$ and the Cauchy product formula for polynomial multiplication. This proof technique, sometimes called the 'generating function method', has become a standard tool in algebraic combinatorics.",

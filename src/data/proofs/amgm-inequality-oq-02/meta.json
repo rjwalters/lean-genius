@@ -98,7 +98,8 @@
     ],
     "lineCount": 543,
     "assumptions": "2 axioms: (1) newton_log_concavity — for non-negative inputs, the normalized elementary symmetric sequence is log-concave: (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1)). Classical result proved by polarization + induction (Hardy-Littlewood-Pólya §2.22), not yet in Mathlib. (2) maclaurin_step — Mₖ ≥ Mₖ₊₁ where Mₖ = (eₖ/C(n,k))^(1/k). Follows from newton_log_concavity + monotonicity of t^(1/k). Note: the k=1 case of Newton's inequality (newton_k1) is proved without axioms. 0 sorries remain.(s) remain.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 25
   },
   "crossReferences": [
     {

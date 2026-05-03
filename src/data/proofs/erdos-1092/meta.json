@@ -23,7 +23,8 @@
     "axiomCount": 0,
     "lineCount": 160,
     "assumptions": "0 axioms, 0 sorries. 5 structural theorems fully proved. 2 True-stub documentation markers for disproved claims (Q1, Q2 refuted by Rödl 1982). Main conjectures removed; file is primarily graph coloring infrastructure. Open conjecture; supporting lemmas fully verified.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "Erdős, Hajnal, and Szemerédi introduced this problem as part of their investigation into when local chromatic structure forces global coloring bounds. The function $f_r(n)$ captures a 'local-to-global' threshold: if every subgraph of an $n$-vertex graph can be made $r$-colorable by deleting at most $k$ edges, what is the largest $k$ that still forces $\\chi(G) \\leq r+1$? Rödl's 1982 construction provided a crucial upper bound, showing $f_2(n) = O(n \\cdot (\\log n)^2)$ via probabilistic and algebraic techniques. Tang subsequently observed that Rödl's construction directly addresses Question 1, providing evidence that $f_2(n) \\gg n$ may be false. The problem connects to broader themes in extremal graph theory: the interplay between local substructure (each piece is nearly $r$-colorable) and global properties (the whole graph has bounded chromatic number). Similar local-to-global phenomena appear in Szemerédi's regularity lemma, Brooks' theorem ($\\chi \\leq \\Delta + 1$ from local degree bounds), and Johansson's theorem ($\\chi = O(\\Delta/\\log \\Delta)$ for triangle-free graphs). The problem also relates to Erdős Problem #744, which considers variant chromatic decomposition thresholds.",

@@ -38,7 +38,8 @@
       "Demonstration that square_nonneg generalizes without additional axioms",
       "Independent case-analysis proof for LinearOrderedRing",
       "AM-GM variant via the Cauchy-Schwarz trick"
-    ]
+    ],
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "The non-negativity of squares ($0 \\leq x^2$) is one of the oldest and most fundamental properties in ordered algebra. The rigorous axiomatization of ordered fields began with Artin and Schreier's work in the 1920s characterizing 'formally real' fields — those where $-1$ is not a sum of squares. Their 1926 theorem shows that an ordered field must be formally real, and every formally real field admits an ordering. The abstract hierarchy of ordered algebraic structures (ordered semigroup, ordered ring, ordered field) was systematized in 20th-century algebra. Lean's Mathlib formalizes this hierarchy precisely: `OrderedSemiring`, `LinearOrderedSemiring`, `LinearOrderedRing`, `LinearOrderedCommRing`, `LinearOrderedField`, with `mul_self_nonneg` living at the `LinearOrderedSemiring` level. This is notably weaker than a full ring — semirings lack subtraction — and the result holds even there. This file answers the open question from the parent `sqrt2-examples` entry by confirming the maximum generalization.",

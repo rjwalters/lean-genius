@@ -58,7 +58,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 228,
-    "assumptions": "2 axioms: maxValidSize, primes_satisfy_condition. 0 sorries."
+    "assumptions": "2 axioms: maxValidSize, primes_satisfy_condition. 0 sorries.",
+    "theoremCount": 4
   },
   "overview": {
     "historicalContext": "Erdős Problem #888 was posed by Erdős, Sárközy, and Sós. It asks about the maximum size of subsets of {1,...,n} with a specific multiplicative constraint.\n\n**Key results**:\n- **Sárközy**: Proved |A| = o(n), meaning the maximum grows sublinearly. This uses counting arguments involving the multiplicative structure of integers.\n- **Prime construction**: The set of primes up to n satisfies the condition, giving |A| ≥ π(n) ~ n/log n by the Prime Number Theorem.\n\n**Why primes work**: If four distinct primes p₁ ≤ p₂ ≤ p₃ ≤ p₄ have p₁p₂p₃p₄ square, each prime must appear an even number of times. With distinct primes, this is impossible. With equal primes, ad = bc trivially holds.\n\nThe exact asymptotic for the maximum remains **OPEN** - it lies somewhere between n/log n and o(n).",

@@ -30,7 +30,8 @@
     ],
     "lineCount": 432,
     "assumptions": "0 axioms, 0 sorries. divisor_density_ford was planned as an axiom but is referenced only in comments — no actual axiom declaration exists in the Lean file. 31+ infrastructure theorems fully proved.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 33
   },
   "overview": {
     "historicalContext": "Erdős Problem #693, from [Er79e], asks about the distribution of integers with medium-sized divisors. Related to Problem #446 and classical questions about divisor distribution, the Hooley divisor function, and sieve methods. The Hooley Δ-function, introduced by Christopher Hooley in the 1970s, measures how concentrated the divisors of an integer are in short intervals, and is central to quantifying divisor regularity. Erdős had a lifelong interest in the fine distribution of divisors; his work with Kac and with Tenenbaum in the 1980s established probabilistic models for how divisors spread across intervals, laying the groundwork for problems like #693. The conjecture that gaps between elements of A are polylogarithmically bounded would confirm a strong uniformity in how divisibility by medium-sized numbers propagates through {n, …, n^k}.",

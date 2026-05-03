@@ -56,7 +56,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 126,
-    "assumptions": "1 axiom: egrs_theorem. See Lean source for the complete statement."
+    "assumptions": "1 axiom: egrs_theorem. See Lean source for the complete statement.",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "**Kummer's Theorem (1852)** connects binomial coefficient divisibility to digit carries: the exact power of prime p dividing C(m,k) equals the number of carries when adding k + (m-k) in base p.\n\n**EGRS Theorem (1975)**: Erdős, Graham, Ruzsa, and Straus proved that for any two odd primes p and q, infinitely many n have C(2n,n) coprime to pq.\n\n**The Open Case**: The question for THREE primes (105 = 3 × 5 × 7) remains **OPEN**.\n\n**Connection to Digits**: C(2n,n) coprime to p iff n has only 'small' digits (0, 1, ..., (p-1)/2) in base p. For 105, this means simultaneously:\n- Only digits {0,1} in base 3\n- Only digits {0,1,2} in base 5\n- Only digits {0,1,2,3} in base 7",

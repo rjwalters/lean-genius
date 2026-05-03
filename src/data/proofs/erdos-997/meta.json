@@ -76,7 +76,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 321,
-    "assumptions": "1 axiom: CLLW_theorem. 0 sorries."
+    "assumptions": "1 axiom: CLLW_theorem. 0 sorries.",
+    "theoremCount": 5
   },
   "overview": {
     "historicalContext": "**Erdős Problem #997: Well-Distributed Sequences and Prime Multiples**\n\nThe concept of well-distributed sequences was introduced by Hlawka and Petersen in 1955, strengthening the classical notion of equidistribution. A sequence is well-distributed if it becomes uniformly distributed at a rate that is uniform over all starting points.\n\n**Erdős's Work:**\n- Erdős proved that for any lacunary sequence (nₖ), the sequence {αnₖ} is not well-distributed for almost all α\n- In 1964, he claimed to have proved existence of an irrational α for which {αpₙ} is not well-distributed\n- He retracted this claim in 1985, memorably writing \"The theorem is no doubt correct... but I never was able to reconstruct my 'proof' which perhaps never existed\"\n\n**2024 Breakthrough:**\nChampagne, Le, Liu, and Wooley proved that such an α does exist, validating Erdős's intuition after 60 years.\n\n**Current Status:**\nThe existence question is resolved, but Erdős's full problem—whether this holds for ALL α—remains open.",

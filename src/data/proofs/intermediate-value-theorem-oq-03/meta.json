@@ -26,7 +26,8 @@
       "1D Brouwer from IVT via g(x) = f(x) - x (fully proved)",
       "IVT fails for norm-preserving maps on S¹ (no zero exists on the unit circle)",
       "Dimensional hierarchy: IVT ⟺ Brouwer in 1D, IVT ⊊ Brouwer in nD ≥ 2, Schauder needed in ∞D"
-    ]
+    ],
+    "theoremCount": 2
   },
   "overview": {
     "historicalContext": "The **Brouwer Fixed Point Theorem** was proved by L.E.J. Brouwer in 1911 using degree theory — a topological invariant that counts how many times a map winds around a point. Brouwer's original proof was non-constructive (later results showed that the fixed point cannot be computed in general). The 1D case was long known: it is exactly the Intermediate Value Theorem applied to g(x) = f(x) - x, a reduction that appears in calculus textbooks of the 19th century.\n\nThe relationship between IVT and Brouwer illuminates a fundamental transition in mathematics: from **analysis** (continuous functions and sign changes) to **topology** (degree theory and homology groups). The IVT is about 0-dimensional topology — it detects when a connected set crosses zero. Brouwer's theorem is about n-dimensional topology — it detects when a map cannot be contracted to a point.\n\nKey historical milestones:\n- **1817**: Bolzano stated the IVT for continuous functions (Cauchy's 1821 rigorous proof)\n- **1911**: Brouwer proved the n-dimensional fixed point theorem via degree theory\n- **1928**: Sperner's combinatorial lemma gave an elementary proof\n- **1930**: Schauder extended Brouwer to infinite-dimensional compact convex sets\n- **1941**: Kakutani extended to multivalued maps (used in Nash's equilibrium proof)",

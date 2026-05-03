@@ -80,7 +80,8 @@
     "axiomCount": 0,
     "lineCount": 131,
     "assumptions": "0 axioms, 0 sorries. Uses Mathlib's minpoly.unique for minimal polynomial characterization and wraps Matrix.minpoly_dvd_charpoly.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "**Similarity Invariance of the Minimal Polynomial**\n\nTwo matrices $A$ and $B$ are *similar* if $B = P^{-1}AP$ for some invertible matrix $P$. Similarity is the natural equivalence relation on matrices over a field: it corresponds to change of basis for a linear map. A fundamental fact is that similar matrices share all their intrinsic invariants — determinant, trace, characteristic polynomial, and minimal polynomial.\n\nThe minimal polynomial $\\mu_M$ is the monic polynomial of least degree annihilating $M$, i.e., the generator of the kernel of the evaluation map $K[X] \\to M_n(K)$, $p \\mapsto p(M)$. That $\\mu_A = \\mu_B$ for similar $A, B$ follows from the observation that any polynomial relation $p(A) = 0$ immediately gives $p(B) = p(P^{-1}AP) = P^{-1}p(A)P = 0$, since polynomial evaluation commutes with conjugation by an invertible matrix.\n\nThis invariance is key to the Jordan canonical form theory (Jordan, 1870): similar matrices share all elementary divisors, and the minimal polynomial determines the sizes of the largest Jordan blocks per eigenvalue. The result was well-known to Frobenius and Weierstrass by the 1880s.\n\nThis Lean 4 formalization establishes the result by defining the conjugation map as a $K$-algebra endomorphism and applying Mathlib's `Polynomial.aeval_algHom_apply`.",

@@ -34,7 +34,8 @@
     "axiomCount": 0,
     "lineCount": 182,
     "assumptions": "Fully verified: 0 axioms, 0 sorries remain.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6
   },
   "overview": {
     "historicalContext": "The tension between classical existence proofs and constructive algorithms is one of the deepest themes in the foundations of mathematics. Euclid's original algorithm (c. 300 BCE) in Book VII of the Elements was inherently constructive — it computed the GCD by iterated subtraction. The extended Euclidean algorithm, which produces Bézout coefficients $x, y$ such that $ax + by = \\gcd(a,b)$, was developed by Étienne Bézout in 1779 and later formalized by Bachet and others. In modern proof assistants like Lean 4, the classical axiom of choice (via `Exists.choose`) allows extracting witnesses from existence proofs but marks definitions as `noncomputable`, preventing evaluation. This formalization demonstrates a general technique in constructive algebra: replacing choice-extracted witnesses with decidable operations (here, integer division) to recover computability while preserving correctness. The approach connects to Bishop's constructive mathematics program and the Curry-Howard correspondence, where computational content is extracted from proofs.",

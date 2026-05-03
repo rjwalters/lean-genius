@@ -58,7 +58,8 @@
     ],
     "lineCount": 264,
     "assumptions": "0 axioms, 0 sorries. Core convergence result (newton_generalized_binomial) derived from Mathlib Real.one_add_rpow_hasFPowerSeriesOnBall_zero; standard binomial theorem uses Mathlib add_pow.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "theoremCount": 19
   },
   "overview": {
     "historicalContext": "Isaac Newton discovered the generalized binomial theorem around 1665 while still a student at Cambridge, publishing it in 1676 in his famous *Epistola Prior* and *Epistola Posterior* to Leibniz via Henry Oldenburg. For natural exponents $n$, the binomial theorem $(1+x)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^k$ was already known to al-Karajī (c. 1000 CE) and Blaise Pascal (1654). Newton's breakthrough was extending this to arbitrary real (and later complex) exponents $\\alpha$, yielding the infinite series $(1+x)^\\alpha = \\sum_{k=0}^{\\infty} \\binom{\\alpha}{k} x^k$ converging for $|x| < 1$.\n\nThe generalized binomial coefficient $\\binom{\\alpha}{k} = \\prod_{i=0}^{k-1} (\\alpha - i) / k!$ reduces to the usual $\\binom{n}{k}$ when $\\alpha = n \\in \\mathbb{N}$ (terminating at $k > n$), but produces infinite non-terminating series for fractional $\\alpha$. Newton used this to compute $\\sqrt{2}$ and $\\pi$ to many decimal places. Abel (1826) gave the first rigorous proof of convergence, and the result became a cornerstone of analysis, appearing in Taylor series theory and the theory of formal power series.",

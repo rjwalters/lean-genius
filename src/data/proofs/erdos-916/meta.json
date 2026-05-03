@@ -55,7 +55,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 284,
-    "assumptions": "3 axiom(s): dirac_k4_subdivision, thomassen_cycle_structure, triply_adjacent_implies_k4. See Lean source for complete statements."
+    "assumptions": "3 axiom(s): dirac_k4_subdivision, thomassen_cycle_structure, triply_adjacent_implies_k4. See Lean source for complete statements.",
+    "theoremCount": 9
   },
   "overview": {
     "historicalContext": "**Erdős Problem #916**\n\nThis problem from Erdős [Er67b] asks about the structure of graphs with a specific edge density. The question builds on earlier work by Gabriel Andrew Dirac.\n\n**Key History:**\n- Dirac (1960): Proved that every graph with n vertices and 2n-2 edges contains a subgraph homeomorphic to K₄ (the complete graph on 4 vertices)\n- Erdős (1967): Asked whether a stronger result holds - must such graphs contain a cycle with a vertex having 3 adjacencies to it?\n- Thomassen (1974): Proved the affirmative answer in \"A minimal condition implying a special K₄-subdivision in a graph\"\n\n**Mathematical Setting:**\nThe problem sits at the intersection of extremal graph theory and structural graph theory. The edge count 2n-2 represents a natural threshold - it's roughly twice the number needed for connectivity (n-1 for a tree), and this density forces rich structural properties.",
