@@ -143,6 +143,27 @@
     ]
   },
   {
+    "id": "ann-concrete-verifications",
+    "proofId": "combinations-formula-oq-03",
+    "range": { "startLine": 285, "endLine": 309 },
+    "type": "context",
+    "title": "Part VI: Concrete Polynomial Computations",
+    "content": "Four `example` statements compute specific Gaussian binomial polynomials in an arbitrary `CommRing R`:\n\n- `qBinom q 2 1 = 1 + q`: $\\binom{2}{1}_q = [2]_q = 1 + q$ — the number of 1-dimensional subspaces of $\\mathbb{F}_q^2$ (the projective line PG(1,q), which has $q+1$ points).\n- `qBinom q 3 1 = 1 + q + q²`: $\\binom{3}{1}_q = [3]_q = 1 + q + q^2$ — points of the projective plane PG(2,q).\n- `qBinom q 3 2 = 1 + q + q²`: $\\binom{3}{2}_q = 1 + q + q^2$ — lines of PG(2,q). **Equal to** $\\binom{3}{1}_q$, directly illustrating the symmetry $\\binom{n}{k}_q = \\binom{n}{n-k}_q$.\n- `qBinom q 4 2 = 1 + q + 2q² + q³ + q⁴`: $\\binom{4}{2}_q = 1 + q + 2q^2 + q^3 + q^4$ — the simplest non-trivial Gaussian binomial with a repeated coefficient. Degree $2 \\times 2 = 4$, coefficients $[1,1,2,1,1]$ — symmetric and unimodal, summing to $C(4,2) = 6$.\n\nEach is proved by `simp [qBinom]` or `rw [qBinom_one_right, ...]` followed by `ring`, unfolding the recurrence directly.",
+    "mathContext": "The polynomial $\\binom{4}{2}_q = 1 + q + 2q^2 + q^3 + q^4$ encodes: 1 partition of size 0, 1 of size 1, 2 of size 2, 1 of size 3, and 1 of size 4 fitting in a $2 \\times 2$ box — these are all partitions $\\lambda \\subseteq \\{(i,j) : 1 \\leq i,j \\leq 2\\}$: $\\emptyset$, $\\{(1,1)\\}$, $\\{(1,1),(1,2)\\}$ and $\\{(1,1),(2,1)\\}$ (two of size 2), $\\{(1,1),(1,2),(2,1)\\}$, and $\\{(1,1),(1,2),(2,1),(2,2)\\}$. The coefficient of $q^k$ counts the number of $2$-element subsets of $\\{1,2,3,4\\}$ whose elements sum to $k+3$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "projective line PG(1,q)",
+      "q-binomial polynomial coefficients",
+      "unimodal sequences",
+      "lattice path counting"
+    ],
+    "prerequisites": [
+      "qBinom_one_right",
+      "qNumber_succ",
+      "simp lemma unfolding"
+    ]
+  },
+  {
     "id": "ann-absorption",
     "proofId": "combinations-formula-oq-03",
     "range": { "startLine": 310, "endLine": 374 },
@@ -206,6 +227,27 @@
     ]
   },
   {
+    "id": "ann-second-pascal",
+    "proofId": "combinations-formula-oq-03",
+    "range": { "startLine": 484, "endLine": 513 },
+    "type": "theorem",
+    "title": "Second q-Pascal Identity: Symmetric Recurrence",
+    "content": "Theorem `qBinom_pascal'`: for $k+1 \\leq n+1$,\n$$\\binom{n+1}{k+1}_q = q^{n-k} \\cdot \\binom{n}{k}_q + \\binom{n}{k+1}_q.$$\n\nThis is the **second q-Pascal identity**, complementing the defining recurrence $\\binom{n+1}{k+1}_q = \\binom{n}{k}_q + q^{k+1}\\binom{n}{k+1}_q$ (first identity). The two forms differ in which term carries the $q$-weight: the first weights the 'lower' term ($\\binom{n}{k+1}_q$) by $q^{k+1}$; the second weights the 'upper' term ($\\binom{n}{k}_q$) by $q^{n-k}$.\n\n**Proof strategy**: Apply symmetry twice and the first Pascal identity:\n1. Rewrite $\\binom{n+1}{k+1}_q = \\binom{n+1}{n-k}_q$ by `qBinom_symm`.\n2. For the non-boundary case, write $n-k = (n-k-1)+1$ to apply `qBinom_pascal`.\n3. Rewrite $\\binom{n}{n-k-1}_q = \\binom{n}{k+1}_q$ and $\\binom{n}{n-k}_q = \\binom{n}{k}_q$ by `qBinom_symm`.\n4. Close with `ring`.\n\n**Classical limit**: At $q=1$, both identities collapse to $C(n+1,k+1) = C(n,k) + C(n,k+1)$, since $q^{k+1} = q^{n-k} = 1$.",
+    "mathContext": "The two q-Pascal forms arise from two complementary subspace decompositions:\n- **First form**: $\\binom{n+1}{k+1}_q = \\binom{n}{k}_q + q^{k+1}\\binom{n}{k+1}_q$. Count $(k+1)$-subspaces of $\\mathbb{F}_q^{n+1}$ by whether the last standard basis vector $e_{n+1}$ is in the subspace: yes ($\\binom{n}{k}_q$ ways to choose the other $k$ basis vectors from $\\mathbb{F}_q^n$) or no ($q^{k+1}$ coset representatives times $\\binom{n}{k+1}_q$).\n- **Second form**: $\\binom{n+1}{k+1}_q = q^{n-k}\\binom{n}{k}_q + \\binom{n}{k+1}_q$. Count by whether $e_1$ is in the subspace: no ($q^{n-k}$ cosets times $\\binom{n}{k}_q$) or yes ($\\binom{n}{k+1}_q$).\n\nThe weight $q^{n-k}$ in the second form is the 'gap to the end': it encodes the complementary $(n-k)$-dimensional factor.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pascal's identity symmetry",
+      "q-Pascal triangle",
+      "subspace decomposition by basis vector",
+      "qBinom_symm"
+    ],
+    "prerequisites": [
+      "qBinom_symm",
+      "qBinom_pascal",
+      "Nat.eq_or_lt_of_le"
+    ]
+  },
+  {
     "id": "ann-hockey-stick",
     "proofId": "combinations-formula-oq-03",
     "range": { "startLine": 518, "endLine": 565 },
@@ -245,6 +287,27 @@
       "qBinom_pascal",
       "zero_pow",
       "add_zero"
+    ]
+  },
+  {
+    "id": "ann-symmetry-verifications",
+    "proofId": "combinations-formula-oq-03",
+    "range": { "startLine": 583, "endLine": 606 },
+    "type": "context",
+    "title": "Part XII: Symmetry and Row Absorption Verifications",
+    "content": "Three concrete verification examples exercising `qBinom_symm` and `qBinom_row_absorption`:\n\n**Symmetry examples** (over arbitrary `CommRing R`):\n- `qBinom q 4 1 = qBinom q 4 3`: $\\binom{4}{1}_q = [4]_q = 1+q+q^2+q^3 = \\binom{4}{3}_q$ — proved directly by `qBinom_symm q 4 1 (by omega)`.\n- `qBinom q 5 2 = qBinom q 5 3`: $\\binom{5}{2}_q = 1+q+2q^2+2q^3+2q^4+q^5+q^6 = \\binom{5}{3}_q$ — proved by `qBinom_symm q 5 2 (by omega)`.\n\n**Row absorption** (over $\\mathbb{Z}$ at $q=2$):\n- $\\binom{4}{1}_2 \\cdot [3]_2 = \\binom{4}{2}_2 \\cdot [2]_2$ — verified by `native_decide`. Concretely: $15 \\cdot 7 = 35 \\cdot 3 = 105$. This validates row absorption numerically: $[4]_2 \\cdot [3]_2 = 15 \\cdot 7$ and $[4,2]_2 \\cdot [2]_2 = 35 \\cdot 3$, both giving 105.\n\nThese verifications ensure the main theorems produce correct values on specific inputs, bridging the abstract inductive proofs to computable instances.",
+    "mathContext": "The symmetry $\\binom{5}{2}_q = \\binom{5}{3}_q$: explicitly, $\\binom{5}{2}_q = 1+q+2q^2+2q^3+2q^4+q^5+q^6$ has coefficients $[1,1,2,2,2,1,1]$ — degree $2 \\times 3 = 6$, symmetric, unimodal. The sum of coefficients is $C(5,2) = 10$. Over $\\mathbb{F}_2$: $\\binom{5}{2}_2 = 1+2+8+16+32+32+64 = 155$ counts the 2-dimensional subspaces of $\\mathbb{F}_2^5$, and $\\binom{5}{3}_2 = 155$ counts the 3-dimensional subspaces — by duality (orthogonal complement), these are in bijection.",
+    "significance": "context",
+    "relatedConcepts": [
+      "orthogonal complement duality",
+      "native_decide verification",
+      "unimodal polynomial coefficients",
+      "row absorption identity"
+    ],
+    "prerequisites": [
+      "qBinom_symm",
+      "qBinom_row_absorption",
+      "native_decide"
     ]
   },
   {
