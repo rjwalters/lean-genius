@@ -48,7 +48,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: GNW infrastructure added (session 37). hook_walk_identity_gnw PROVED. Remaining: gnwProb_key (GNW 1979 KEY), gnwProb_sum_corners (standard induction), 3 TRIVIAL lemmas. Dispatcher sorry-free.",
+    "progressSummary": "PROGRESS: gnwProb_step proved; gnwProb_key (1 sorry) remains -- GNW 1979 ~200 lines needed",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -136,7 +136,8 @@
       "strictHookCells: arm+leg strict hook cells def (Helpers:13666)",
       "strictHookCells_mem: proved — each strict hook cell is in μ (Helpers:13671)",
       "gnwProb: GNW walk probability by Nat.rec on K bound (Helpers:13698)",
-      "hook_walk_identity_gnw: PROVED via gnwProb_key + gnwProb_sum_corners + sum_comm (Helpers:13727)"
+      "hook_walk_identity_gnw: PROVED via gnwProb_key + gnwProb_sum_corners + sum_comm (Helpers:13727)",
+      "gnwProb_step in BallotProblemOQ03OQ01OQ02Helpers.lean:13811"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -218,7 +219,9 @@
       "GNW structure: hook_walk_identity_gnw proved once gnwProb_key and gnwProb_sum_corners accepted; proof uses sum_comm to swap Σ_c Σ_x",
       "Dispatcher hook_walk_identity now sorry-free; sorries isolated to PART XXVI GNW infrastructure",
       "gnwProb_sum_corners is HARD but NOT the GNW KEY step — it is a standard induction on hookLen bound K (~50 lines)",
-      "gnwProb_key (GNW 1979 KEY) is the sole mathematically deep sorry; 3 TRIVIAL supporting lemmas also remain"
+      "gnwProb_key (GNW 1979 KEY) is the sole mathematically deep sorry; 3 TRIVIAL supporting lemmas also remain",
+      "gnwProb_step proved: gnwProb(K+1,x)=gnwProb(K,x) for K≥hookLen(x); mirrors gnwProb_sum_corners",
+      "gnwProb_stable consequence: gnwProb(K,x) is constant for K≥hookLen(x); enables uniform-K reformulation of gnwProb_key"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
@@ -229,7 +232,8 @@
       "Submit strictHookCells_card/nonempty/hookLen_lt to Aristotle (TRIVIAL)",
       "Prove gnwProb_sum_corners manually: induction on K, ~50 lines",
       "Tackle gnwProb_key (GNW 1979 KEY): hard combinatorial identity, core of GNW 1979",
-      "Create PR for feature/researcher-6 → main with current PART XXVI skeleton"
+      "Create PR for feature/researcher-6 → main with current PART XXVI skeleton",
+      "Prove gnwProb_key via arm/leg decomposition: arm cells (c.1,s) have g(c.1,s)=∏hookLen/(hookLen-1) telescoping, sum over all cells=G"
     ]
   },
   "tags": [

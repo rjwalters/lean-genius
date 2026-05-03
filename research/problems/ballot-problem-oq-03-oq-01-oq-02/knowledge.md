@@ -924,3 +924,66 @@ File at 14022 lines remains beyond practical Docker 32GB build envelope. The edi
 2. Submit sorries 3–5 to Aristotle (likely fast proofs)
 3. Tackle `gnwProb_sum_corners` manually (standard induction on K, ~50 lines)
 4. `gnwProb_key` is the remaining hard mathematical content (GNW 1979)
+
+---
+
+## Session 2026-05-03 (Session 38) — Add gnwProb_step; deep analysis of gnwProb_key
+
+**Mode**: FRESH (claimed `ballot-problem-oq-03-oq-01-oq-02-incomplete-01`)
+**Outcome**: PROGRESS — gnwProb_step proved; gnwProb_key still sorry but documented
+
+### What I Did
+
+1. **Verified current sorry state**: Only `gnwProb_key` remains (line 13877 in worktree, 13872 in main). `gnwProb_sum_corners`, `strictHookCells_*` are all proved.
+
+2. **Proved `gnwProb_step`** (~55 lines): For K ≥ hookLength(x), gnwProb(μ,c,K+1,x) = gnwProb(μ,c,K,x). Proof exactly mirrors gnwProb_sum_corners structure:
+   - K=0: vacuous (hookLen ≥ 1 contradicts ≤ 0)
+   - K+1, corner x: both sides = if x=c then 1 else 0
+   - K+1, non-corner x: (1/|H*|)*Σ_y gnwProb(K+1,y) = (1/|H*|)*Σ_y gnwProb(K,y) via IH on hookLen(y) ≤ K
+
+3. **Deep mathematical analysis of gnwProb_key** — verified the identity on examples:
+   - μ={00,01}: Σ gnwW = 2 = hookProd/hookProd(ν). ✓
+   - μ={00,01,02} (one-row): Σ gnwW = 3. ✓
+   - L-shape {00,01,10}: Σ gnwW = 3/2 (with gnwW(10)=0, gnwW(00)=1/2). ✓
+   - 2×2 box: Σ gnwW = 4 (all cells have gnwW=1). ✓
+
+4. **gnwProb_stable consequence**: By iterating gnwProb_step, gnwProb(K,x) = gnwProb(hookLen(x),x) for all K ≥ hookLen(x). So LHS of gnwProb_key = Σ_x gnwProb(K_max,x) for K_max = hookLen(0,0).
+
+5. **Created PR #15311** (feature/researcher-4) with gnwProb_step.
+
+### Why gnwProb_key is hard
+
+The GNW 1979 identity requires a non-trivial proof. Approaches ruled out this session:
+- **Induction on K** (uniform): S_K doesn't stabilize at G for all K ≥ 1; it converges monotonically to G as K → hookLen_max. Not a simple induction.
+- **Induction on |μ|**: Relating gnwW_μ(x) to gnwW_ν(x) (ν = μ\c) requires understanding how H*(x) changes when c is removed, and the probability in μ vs ν are different processes.
+- **Algebraic closed form**: B(y) = Σ_{x: y∈H*(x)} 1/|H*(x)| involves complex sums that don't obviously telescope.
+
+The GNW 1979 paper uses a specific weighted-path counting argument that's elegant but requires ~200 lines to formalize.
+
+### Proof Strategy for gnwProb_key (Future Sessions)
+
+The cleanest path (per GNW 1979):
+
+1. Define g(x) = gnwProb(μ,c,hookLen(x),x) (using gnwProb_step).
+2. Show g satisfies recurrence: g(c) = 1, g(x) = (1/(hookLen(x)-1)) * Σ_{y∈H*(x)} g(y) for non-corner x.
+3. Show hookProd_ratio_formula gives the unique solution:
+   - For arm cells (c.1,s): g(c.1,s) = ∏_{t=s+1}^{c.2-1} hookLen(c.1,t)/(hookLen(c.1,t)-1) * hookLen(c.1,c.2-1)/(hookLen(c.1,c.2-1)-1)
+   - This telescopes.
+4. Sum g over all μ cells = hookProd(μ)/hookProd(μ\c) via telescoping product = hookProd_ratio_formula.
+
+Key intermediate lemma needed: For arm cell (c.1,s), g(c.1,s) = ∏_{t=s}^{c.2-1} hookLen(c.1,t)/(hookLen(c.1,t)-1) * ∏_{r=0}^{c.1-1} hookLen(r,c.2)/(hookLen(r,c.2)-1).
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean` (+68 lines: gnwProb_step + enriched gnwProb_key docstring)
+
+### Next Steps
+
+1. **Implement gnwProb_stable** from gnwProb_step (3-5 lines by induction)
+2. **Prove gnwProb_key via arm/leg decomposition**: prove arm and leg cells have computable gnwW, then sum = G
+3. **Alternative**: Submit to Aristotle with companion file exposing hook_walk_identity as a standalone theorem
+
+### Sorry Count: 1
+
+- `gnwProb_key` (line 13877 in worktree): GNW 1979 key identity, ~200 lines to prove
+
