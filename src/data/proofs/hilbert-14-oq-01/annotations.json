@@ -1,110 +1,276 @@
 [
   {
+    "id": "ann-h14oq01-overview",
+    "proofId": "hilbert-14-oq-01",
+    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 70
+    },
+    "title": "Hilbert's 14th Problem: Non-Reductive Groups and the Grosshans Criterion",
+    "content": "The module docstring frames the core question of Hilbert's 14th problem in the non-reductive case: for which non-reductive algebraic groups G is the invariant ring R^G always finitely generated? For reductive groups, the answer is always YES (Hilbert-Mumford-Haboush). For non-reductive groups, finite generation depends on both the group and its action. The deepest known characterization is Grosshans's theorem (1997): for a closed subgroup H of a reductive group G, k[V]^H is finitely generated for ALL G-representations V iff k[G/H] is finitely generated (i.e., H is a 'Grosshans subgroup'). The classification table shows: finite groups always give fg invariants (Reynolds averaging); G_a acting on ≤3 variables always gives fg (Weitzenböck-Seshadri); G_a^n (n≥13) sometimes doesn't (Nagata's counterexample). Formalization status: infrastructure (InvariantSubset, ReynoldsOperator, invariantSubring) is proved with 0 sorries; Grosshans characterization and observable subgroup criterion are axiomatized due to missing AlgebraicGroup/GITQuotient Mathlib infrastructure.",
+    "mathContext": "Grosshans (1997): $H \\leq G$ reductive closed $\\Rightarrow$ ($k[V]^H$ f.g. for all $G$-reps $V$) $\\iff$ $k[G/H]$ f.g. (i.e., $G/H$ is quasi-affine). Key examples: $G_a = (k,+)$ (1-dim unipotent) has f.g. invariants for $n \\leq 3$ variables (Weitzenböck 1932, Seshadri 1962) but not always for $n \\geq 4$ (Daigle-Freudenburg 1999, $n=4$) or $n \\geq 14$ (Nagata 1959, explicit counterexample).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hilbert's 14th problem",
+      "Grosshans subgroups",
+      "Reynolds operators",
+      "Nagata counterexample",
+      "Weitzenböck's theorem",
+      "reductive vs non-reductive groups"
+    ],
+    "prerequisites": [
+      "algebraic groups",
+      "invariant theory",
+      "finitely generated algebras",
+      "geometric invariant theory (GIT)"
+    ]
+  },
+  {
     "id": "ann-h14oq01-invariant-subset",
     "proofId": "hilbert-14-oq-01",
-    "range": { "startLine": 71, "endLine": 73 },
     "type": "definition",
-    "title": "The Invariant Subset R^G: Fixed Points of a Group Action",
-    "content": "`InvariantSubset G R` is the set of elements r ∈ R such that g • r = r for all g ∈ G. This is the ring-theoretic formalization of 'G-fixed points', the central object of invariant theory. The definition uses Lean 4's `Set R` type with predicate `{r : R | ∀ g : G, g • r = r}`, requiring `MulAction G R` to be in scope.",
-    "mathContext": "$R^G = \\{r \\in R \\mid \\forall g \\in G,\\ g \\cdot r = r\\}$. For a polynomial ring $R = k[x_1,\\ldots,x_n]$ with $G$ acting by coordinate transformations, $R^G$ is the ring of polynomials invariant under all group elements. Hilbert's 14th problem asks: when is $R^G$ finitely generated as a $k$-algebra? The answer is 'always' for reductive $G$ (Hilbert-Mumford-Haboush) and 'sometimes' for non-reductive $G$.",
-    "significance": "key",
-    "relatedConcepts": ["G-invariant-elements", "fixed-point-subring", "MulAction", "Hilbert-14th-problem"],
-    "prerequisites": ["MulAction typeclass in Mathlib", "Set predicate notation", "group actions on rings"]
+    "range": {
+      "startLine": 71,
+      "endLine": 94
+    },
+    "title": "Invariant Subset and Basic Membership Lemmas",
+    "content": "`InvariantSubset G R` is the set {r ∈ R | ∀ g, g • r = r} — elements unchanged by every group element. Two immediately proved lemmas: `mem_invariant_zero` (0 is invariant, using `smul_zero g`) and `mem_invariant_one` (1 is invariant, if the action preserves 1). These use Mathlib's `SMulZeroClass` typeclass for the zero case. The Reynolds operator (defined next) is then a linear retraction onto this set. The docstring for `ReynoldsOperator` (lines 86-93) explains the key conceptual point: reductive groups always have Reynolds operators (via Haar measure averaging), while non-reductive groups generally do not — which is the root cause of finite generation failures.",
+    "mathContext": "$R^G = \\{r \\in R : g \\cdot r = r \\; \\forall g \\in G\\}$. A Reynolds operator $\\rho : R \\to R^G$ is a linear retraction satisfying $\\rho(sr) = s\\rho(r)$ for $s \\in R^G$ (the key module-over-$R^G$ condition). For $G$ reductive in characteristic 0: $\\rho(f) = \\int_G g \\cdot f \\, dg$ (Haar measure average). Non-reductive groups (like $G_a$) have no Haar measure in this sense.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "G-invariant elements",
+      "Reynolds operators",
+      "SMulZeroClass",
+      "group actions on rings"
+    ],
+    "prerequisites": [
+      "group actions",
+      "MulAction typeclass",
+      "commutative rings"
+    ]
   },
   {
     "id": "ann-h14oq01-reynolds-structure",
     "proofId": "hilbert-14-oq-01",
-    "range": { "startLine": 95, "endLine": 107 },
     "type": "definition",
-    "title": "Reynolds Operator: The Linear Retraction Enabling Finite Generation",
-    "content": "`ReynoldsOperator G R` is a structure encoding a projection ρ : R → R satisfying: (1) ρ is the identity on R^G; (2) ρ maps into R^G; (3) ρ is additive; (4) ρ commutes with multiplication by invariants: ρ(s·r) = s·ρ(r) for s ∈ R^G. These four axioms are precisely what make the invariant ring R^G a finitely generated R^G-module: for any r ∈ R, `ρ(r)` is in R^G and the module structure is controlled.",
-    "mathContext": "A Reynolds operator is a splitting of the inclusion $R^G \\hookrightarrow R$ as $R^G$-modules. The key algebraic consequence: if $R$ is a finitely generated $R^G$-algebra and $\\rho$ is a Reynolds operator, then $R^G$ is Noetherian. Proof: $R^G = \\rho(R)$ is a direct summand as $R^G$-module; apply the Noetherian quotient theorem. Reductive groups always admit Reynolds operators (averaging over Haar measure in char 0, Haboush's theorem in general). Non-reductive groups generally do NOT — this is WHY their invariant rings can fail finite generation.",
+    "range": {
+      "startLine": 95,
+      "endLine": 107
+    },
+    "title": "ReynoldsOperator: Axioms for a Linear Retraction onto Invariants",
+    "content": "The `ReynoldsOperator` structure axiomatizes the key properties needed for Hilbert's finiteness theorem. It has five fields: `proj` (the retraction map), `proj_invariant` (identity on R^G), `proj_mem` (maps into R^G), `proj_add` (additivity), and `proj_mul_inv` (commutes with multiplication by invariants: ρ(s·r) = s·ρ(r) for s ∈ R^G). The last axiom is the crucial algebraic property: it makes R^G-modules from R-modules. This is why Reynolds operators imply Hilbert's theorem: if R is a finitely generated G-algebra over R^G with a Reynolds operator, then R^G is also finitely generated (as a direct summand argument).",
+    "mathContext": "Reynolds operator $\\rho : R \\to R^G$ satisfies: (i) $\\rho|_{R^G} = \\text{id}$; (ii) $\\text{im}(\\rho) \\subseteq R^G$; (iii) $\\rho$ is additive; (iv) $\\rho(s \\cdot r) = s \\cdot \\rho(r)$ for $s \\in R^G$. Axiom (iv) makes $\\rho$ an $R^G$-module map. Hilbert's theorem: if $R^G$ has a Reynolds operator and $R$ is Noetherian, then $R^G$ is f.g. over $k$.",
     "significance": "key",
-    "relatedConcepts": ["Reynolds-operator", "linear-retraction", "reductive-groups", "Hilbert-finiteness-theorem", "module-splitting"],
-    "prerequisites": ["CommRing in Mathlib", "MulAction typeclass", "structure syntax in Lean 4", "R^G-module structure"]
+    "relatedConcepts": [
+      "linear retraction",
+      "module over invariant ring",
+      "Hilbert's finiteness theorem",
+      "Haar measure",
+      "direct summand"
+    ],
+    "prerequisites": [
+      "ring theory",
+      "module theory",
+      "group actions on algebras"
+    ]
   },
   {
     "id": "ann-h14oq01-reynolds-idempotent",
     "proofId": "hilbert-14-oq-01",
-    "range": { "startLine": 110, "endLine": 113 },
     "type": "theorem",
-    "title": "Reynolds Operator is Idempotent: ρ ∘ ρ = ρ",
-    "content": "`reynolds_idempotent` proves ρ.proj (ρ.proj r) = ρ.proj r for any r : R. The proof is `ρ.proj_invariant _ (ρ.proj_mem r)`: since `ρ.proj r` is already in R^G (by `proj_mem`), and `proj_invariant` says ρ is the identity on R^G, applying ρ again gives the same element. This is the hallmark of a projection / retraction: projecting twice is the same as projecting once.",
-    "mathContext": "$\\rho \\circ \\rho = \\rho$ since $\\text{Im}(\\rho) = R^G = \\text{Fix}(\\rho)$. Algebraically: ρ is an idempotent in $\\text{End}_k(R)$. This means $R$ splits as $R = R^G \\oplus \\ker(\\rho)$ as $k$-vector spaces (though not necessarily as rings). The one-line proof `ρ.proj_invariant _ (ρ.proj_mem r)` elegantly shows that both fields of the structure conspire to give idempotency: `proj_mem` says the output is invariant, and `proj_invariant` says ρ fixes invariants.",
+    "range": {
+      "startLine": 110,
+      "endLine": 113
+    },
+    "title": "Reynolds Operator is Idempotent",
+    "content": "`reynolds_idempotent` proves ρ(ρ(r)) = ρ(r): the composition ρ ∘ ρ = ρ. This follows immediately from `proj_invariant`: ρ(r) ∈ R^G, so ρ fixes it. The proof is one line: `ρ.proj_invariant _ (ρ.proj_mem r)`. Idempotency characterizes projections algebraically — it confirms that R^G is a retract of R.",
+    "mathContext": "$\\rho^2 = \\rho$ follows from $\\text{im}(\\rho) = R^G$ and $\\rho|_{R^G} = \\text{id}$. In category theory, $\\rho$ is a split epimorphism $R \\twoheadrightarrow R^G$ and $R^G \\hookrightarrow R$ is a split monomorphism.",
     "significance": "supporting",
-    "relatedConcepts": ["idempotent-map", "projection", "retraction", "direct-sum-decomposition"],
-    "prerequisites": ["proj_invariant field of ReynoldsOperator", "proj_mem field of ReynoldsOperator"]
+    "relatedConcepts": [
+      "idempotent maps",
+      "projections",
+      "split exact sequences",
+      "retract"
+    ],
+    "prerequisites": [
+      "ReynoldsOperator definition",
+      "proj_invariant and proj_mem"
+    ]
   },
   {
     "id": "ann-h14oq01-invariant-subring",
     "proofId": "hilbert-14-oq-01",
-    "range": { "startLine": 127, "endLine": 134 },
     "type": "definition",
-    "title": "R^G as a Subring: The Algebraic Structure of Invariants",
-    "content": "`invariantSubring G R` constructs a `Subring R` with carrier `InvariantSubset G R`. The proof obligations are: `zero_mem'` (smul_zero), `one_mem'` (smul_one), `add_mem'` (rw [smul_add, ha g, hb g]), `mul_mem'` (rw [smul_mul', ha g, hb g]), `neg_mem'` (rw [smul_neg, ha g]). Each uses the distributivity laws from `DistribMulAction G R` and `MulDistribMulAction G R`.",
-    "mathContext": "The invariant set $R^G$ is a subring: if $g \\cdot a = a$ and $g \\cdot b = b$, then $g \\cdot (a+b) = g\\cdot a + g\\cdot b = a+b$, $g \\cdot (ab) = (g\\cdot a)(g\\cdot b) = ab$, $g\\cdot(-a) = -(g\\cdot a) = -a$. This requires the action to be by ring automorphisms, encoded by `DistribMulAction` (distributes over $+$) and `MulDistribMulAction` (distributes over $\\cdot$). The `Subring R` type in Mathlib packages these closure properties cleanly.",
+    "range": {
+      "startLine": 115,
+      "endLine": 154
+    },
+    "title": "Invariant Subring and Finite-Group Reynolds Sum Setup",
+    "content": "`invariantSubring` (lines 127-134) proves that R^G forms a subring of R when G acts by ring automorphisms: the carrier is InvariantSubset G R, and closure under +, ·, neg, 0, 1 is verified using `smul_add`, `smul_mul'`, `smul_neg`, `smul_zero`, `smul_one` from `DistribMulAction` and `MulDistribMulAction`. PART I-C (lines 136-154) opens a section for finite groups: the variables G (finite group) and R (commutative ring with DistribMulAction + MulDistribMulAction) are fixed. The `reynoldsSum` (defined at line 155) will be Σ_{g ∈ G} g•r — this section header sets up the context for the averaged Reynolds operator construction.",
+    "mathContext": "For $G$ acting by ring automorphisms: $R^G$ is a subring because $g \\cdot (r + s) = g \\cdot r + g \\cdot s$ and $g \\cdot (rs) = (g \\cdot r)(g \\cdot s)$. The Noether averaging for finite groups: if $|G|$ is invertible in $R$, then $\\rho(f) = (1/|G|) \\sum_{g \\in G} g \\cdot f$ is a Reynolds operator.",
     "significance": "supporting",
-    "relatedConcepts": ["Subring", "DistribMulAction", "MulDistribMulAction", "ring-automorphisms"],
-    "prerequisites": ["Subring in Mathlib.RingTheory.Subring.Basic", "DistribMulAction typeclass", "smul_add, smul_mul', smul_neg lemmas"]
+    "relatedConcepts": [
+      "Subring structure",
+      "DistribMulAction",
+      "MulDistribMulAction",
+      "Noether averaging",
+      "finite group Reynolds operator"
+    ],
+    "prerequisites": [
+      "ring theory",
+      "group actions preserving ring structure",
+      "Fintype in Lean 4"
+    ]
   },
   {
     "id": "ann-h14oq01-reynolds-sum",
     "proofId": "hilbert-14-oq-01",
-    "range": { "startLine": 155, "endLine": 156 },
     "type": "definition",
-    "title": "reynoldsSum: The Unnormalized Reynolds Operator for Finite Groups",
-    "content": "`reynoldsSum r = ∑ g : G, g • r` is the sum of all group translates of r. This is the canonical construction of a Reynolds operator for finite groups: dividing by |G| (when invertible in R) gives a true Reynolds operator. The `noncomputable` qualifier is needed because the sum over `Fintype G` uses classical logic. The key downstream theorems show it maps into invariants, is additive, and equals |G|·r on invariants.",
-    "mathContext": "$\\rho_{\\text{sum}}(r) = \\sum_{g \\in G} g \\cdot r$. For char 0 or char not dividing $|G|$: the normalized $\\rho(r) = \\frac{1}{|G|}\\rho_{\\text{sum}}(r)$ is a Reynolds operator. The averaging trick: left translation by any fixed $h$ permutes $G$, so $h \\cdot \\rho_{\\text{sum}}(r) = \\sum_g (hg) \\cdot r = \\sum_{g'} g' \\cdot r = \\rho_{\\text{sum}}(r)$. This is the finite group analogue of integration over Haar measure.",
+    "range": {
+      "startLine": 155,
+      "endLine": 156
+    },
+    "title": "Reynolds Sum: Group-Orbit Average",
+    "content": "The unnormalized Reynolds operator for finite groups: `reynoldsSum r = Σ_{g : G} g • r`, the sum of all group translates. Dividing by |G| (when invertible in R) gives the actual Reynolds operator. This is `noncomputable` because summing over a Fintype is not generally decidable. The Reynolds sum is the canonical way to project any element of R to something G-invariant.",
+    "mathContext": "$\\text{reynoldsSum}(r) = \\sum_{g \\in G} g \\cdot r \\in R$. When $|G|$ is invertible in $R$: $\\rho(r) = (1/|G|) \\cdot \\text{reynoldsSum}(r)$ is a Reynolds operator.",
     "significance": "key",
-    "relatedConcepts": ["averaging-operator", "finite-group-Reynolds", "BigOperators", "Haar-measure-analogue"],
-    "prerequisites": ["Fintype.card", "BigOperators (∑ notation)", "Finset.univ", "noncomputable in Lean 4"]
+    "relatedConcepts": [
+      "group orbit sum",
+      "Haar measure discrete",
+      "Finset.sum",
+      "BigOperators"
+    ],
+    "prerequisites": [
+      "Fintype",
+      "BigOperators",
+      "noncomputable"
+    ]
   },
   {
     "id": "ann-h14oq01-reynolds-sum-invariant",
     "proofId": "hilbert-14-oq-01",
-    "range": { "startLine": 161, "endLine": 167 },
     "type": "theorem",
-    "title": "reynoldsSum Maps into Invariants: The Reindexing Argument",
-    "content": "`reynoldsSum_mem_invariant r` proves `reynoldsSum r ∈ InvariantSubset G R`. The proof: expand the sum, push the scalar through (`Finset.smul_sum`), use `← mul_smul` to write as `(a·g) • r`, then apply `Equiv.sum_comp (Equiv.mulLeft a) (· • r)` — left multiplication by a is a bijection on G, so summing over G and over aG gives the same result.",
-    "mathContext": "$a \\cdot \\rho_{\\text{sum}}(r) = \\sum_g a \\cdot (g \\cdot r) = \\sum_g (ag) \\cdot r = \\sum_{g'} g' \\cdot r = \\rho_{\\text{sum}}(r)$ where the third step reindexes $g \\mapsto ag$ (a bijection). The Lean proof uses `Equiv.sum_comp` to formalize the bijection argument. This is the standard averaging trick: left translation by a fixed group element permutes the group, so the sum is invariant. `Equiv.mulLeft a : G ≃ G` encodes the bijection $g \\mapsto ag$.",
+    "range": {
+      "startLine": 161,
+      "endLine": 167
+    },
+    "title": "Reynolds Sum Maps into Invariants",
+    "content": "`reynoldsSum_mem_invariant` proves that the Reynolds sum is G-invariant: a • (Σ_g g•r) = Σ_g g•r for all a ∈ G. The proof uses `Equiv.sum_comp (Equiv.mulLeft a)`: left multiplication by a is a bijection on G, so Σ_{g∈G} (ag)•r = Σ_{g∈G} g•r. In Lean: `rw [Finset.smul_sum]; simp_rw [← mul_smul]; exact Equiv.sum_comp ...`. This is the key property justifying the Reynolds sum as a projection onto R^G.",
+    "mathContext": "For $a \\in G$: $a \\cdot \\sum_{g \\in G} g \\cdot r = \\sum_{g \\in G} (ag) \\cdot r = \\sum_{g' \\in G} g' \\cdot r$ (substituting $g' = ag$, using that left-multiplication is bijective on $G$). This is the orbit-sum invariance — a discrete version of Haar measure invariance.",
     "significance": "key",
-    "relatedConcepts": ["reindexing-argument", "Equiv.mulLeft", "Equiv.sum_comp", "Finset.smul_sum"],
-    "prerequisites": ["Equiv.mulLeft in Mathlib", "Equiv.sum_comp", "mul_smul lemma", "Finset.smul_sum"]
+    "relatedConcepts": [
+      "Equiv.mulLeft",
+      "Equiv.sum_comp",
+      "Finset.smul_sum",
+      "group translation invariance"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "Equiv.sum_comp",
+      "mul_smul"
+    ]
   },
   {
     "id": "ann-h14oq01-reynolds-on-invariant",
     "proofId": "hilbert-14-oq-01",
-    "range": { "startLine": 178, "endLine": 183 },
     "type": "theorem",
-    "title": "Reynolds Sum on Invariants: ρ_sum(r) = |G| · r",
-    "content": "`reynoldsSum_on_invariant r hr` proves that for r ∈ R^G, `reynoldsSum r = Fintype.card G • r`. Proof: since `g • r = r` for all g (by `hr`), the sum `∑_g g • r = ∑_g r = |G| • r`. The `simp_rw [hr']` rewrites each `g • r` with `r`, then `Finset.sum_const` and `Finset.card_univ` compute the constant sum.",
-    "mathContext": "$\\rho_{\\text{sum}}(r) = |G| \\cdot r$ for $r \\in R^G$. This shows the normalized $\\rho = \\frac{1}{|G|}\\rho_{\\text{sum}}$ satisfies $\\rho(r) = r$ for $r \\in R^G$ — i.e., it is the identity on invariants, confirming it is a Reynolds operator. The condition 'char not dividing $|G|$' ensures $|G|^{-1}$ exists in $R$. The Lean proof uses `nsmul` ($\\mathbb{N}$-scalar multiplication) since $|G|$ is a natural number, and `Finset.sum_const` converts a constant sum to scalar multiplication.",
+    "range": {
+      "startLine": 169,
+      "endLine": 201
+    },
+    "title": "Reynolds Sum: Additivity, Retraction, Zero, Neg, and Multiplicativity",
+    "content": "Five theorems completing the Reynolds sum infrastructure: `reynoldsSum_add` (additivity from `smul_add` + `Finset.sum_add_distrib`); `reynoldsSum_on_invariant` (on invariant r: reynoldsSum(r) = |G|·r, since g•r = r for all g, so Σ_g g•r = Σ_g r = |G|·r); `reynoldsSum_zero` (= 0 via `smul_zero`); `reynoldsSum_neg` (= -reynoldsSum(r) via `Finset.sum_neg_distrib`); `reynoldsSum_mul_invariant` (if s ∈ R^G: reynoldsSum(s·r) = s·reynoldsSum(r), from `smul_mul'` + `Finset.mul_sum`). Together these confirm the Reynolds sum is additive and commutes with R^G-multiplication — the axioms of a Reynolds operator (up to normalization by |G|).",
+    "mathContext": "Key: $\\text{rS}(sr) = s \\cdot \\text{rS}(r)$ for $s \\in R^G$ because $g \\cdot (sr) = (g \\cdot s)(g \\cdot r) = s(g \\cdot r)$ (using $s$ invariant). Also: $\\text{rS}(r)|_{r \\in R^G} = |G| \\cdot r$. If $|G|$ invertible: $(1/|G|) \\cdot \\text{rS}$ is the true Reynolds operator.",
     "significance": "key",
-    "relatedConcepts": ["Finset.sum_const", "Fintype.card", "nsmul", "Reynolds-normalization"],
-    "prerequisites": ["Finset.sum_const in Mathlib", "Finset.card_univ", "InvariantSubset definition", "nsmul notation"]
+    "relatedConcepts": [
+      "additive maps",
+      "module homomorphism",
+      "Finset.mul_sum",
+      "smul_mul'",
+      "Reynolds operator axioms"
+    ],
+    "prerequisites": [
+      "reynoldsSum definition",
+      "Finset.sum_add_distrib",
+      "Finset.sum_neg_distrib"
+    ]
   },
   {
     "id": "ann-h14oq01-grosshans-class",
     "proofId": "hilbert-14-oq-01",
-    "range": { "startLine": 219, "endLine": 221 },
     "type": "insight",
-    "title": "GrosshansSubgroup: The Key Concept for Non-Reductive Invariant Theory",
-    "content": "`GrosshansSubgroup G H` is a typeclass with field `quotient_fg : True` — a placeholder for the true statement that k[G/H] is finitely generated, which requires AlgebraicGroup infrastructure not yet in Mathlib. Despite being a stub, the `class` declaration makes the concept a first-class Lean object: theorems can be stated as 'assuming [GrosshansSubgroup G H], then...' and Lean will track the dependency.",
-    "mathContext": "$H \\leq G$ is a Grosshans subgroup iff $k[G]^H$ (invariants under right $H$-action) is finitely generated as a $k$-algebra, equivalently iff $k[G/H]$ is finitely generated. Grosshans (1997): this condition is equivalent to $k[V]^H$ being finitely generated for ALL $G$-representations $V$ (when $G$ is reductive). The criterion reduces an infinite family of questions (one per representation) to a single question about $G/H$. Known Grosshans subgroups: finite groups, tori, unipotent radicals of parabolics (Seshadri), observable subgroups.",
+    "range": {
+      "startLine": 203,
+      "endLine": 242
+    },
+    "title": "GrosshansSubgroup Typeclass and Grosshans's Characterization Theorem",
+    "content": "PART II: `GrosshansSubgroup G H` is a typeclass with a single field `quotient_fg : True` (placeholder for the actual condition that k[G]^H is finitely generated — this requires AlgebraicGroup infrastructure not yet in Mathlib). The docstring (lines 207-218) explains: H is Grosshans in G if the coordinate ring k[G/H] is finitely generated as a k-algebra, equivalently G/H is quasi-affine. `grosshans_characterization` (lines 223-242) is Grosshans's 1997 theorem: for a reductive G and closed H ≤ G, k[V]^H is f.g. for all G-representations V iff H is Grosshans. The proof direction 'Grosshans ⟹ fg invariants' uses transfer (embedding k[V]^H into k[G×^H V]) plus Hilbert's theorem for the reductive quotient. Due to missing AlgebraicGroup infrastructure, both the class and theorem are axiomatized via `True`.",
+    "mathContext": "Grosshans (1997): $H \\leq G$ reductive closed subgroup. TFAE: (1) $H$ is Grosshans (i.e., $k[G]^H$ is f.g.); (2) $k[V]^H$ is f.g. for ALL $G$-representations $V$; (3) $G/H$ is quasi-affine (i.e., $G/H \\hookrightarrow \\overline{G/H}$ open with $\\overline{G/H}$ affine). Reference: Grosshans, *Algebraic Homogeneous Spaces and Invariant Theory*, Springer LNM 1673 (1997).",
     "significance": "key",
-    "relatedConcepts": ["Grosshans-criterion", "k[G/H]", "fg-invariants", "non-reductive-invariant-theory", "AlgebraicGroup-gap"],
-    "prerequisites": ["typeclass syntax in Lean 4", "Subgroup G", "AlgebraicGroup (missing from Mathlib)", "coordinate ring concept"]
+    "relatedConcepts": [
+      "Grosshans theorem",
+      "quasi-affine varieties",
+      "coordinate rings",
+      "observable subgroups",
+      "GIT quotients"
+    ],
+    "prerequisites": [
+      "algebraic groups",
+      "geometric invariant theory",
+      "finitely generated algebras",
+      "AlgebraicGroup (Mathlib gap)"
+    ]
   },
   {
     "id": "ann-h14oq01-finite-group-grosshans",
     "proofId": "hilbert-14-oq-01",
-    "range": { "startLine": 256, "endLine": 258 },
     "type": "theorem",
-    "title": "Finite Groups Are Always Grosshans Subgroups",
-    "content": "`finite_group_grosshans G H [Fintype H]` proves `GrosshansSubgroup G H` trivially (since the class field is `True`). The mathematical content: for finite H, k[G/H] ≅ k[G]^H has a basis indexed by the (finitely many) cosets, so it is finitely generated. In characteristic not dividing |H|, the averaging operator (1/|H|)·Σ_{h∈H} h also gives a Reynolds operator directly (the `reynoldsSum` construction from this file).",
-    "mathContext": "Finite $H \\leq G$ $\\Rightarrow$ Grosshans: $k[G/H]$ is finitely generated because there are finitely many cosets. More concretely: $R^H$ is a module over $R^G$, and by the Reynolds sum, $R^H$ is a finitely generated $R^G$-module whenever $R$ is (Hilbert's theorem applied to the finite orbit). This is the simplest non-trivial case of Grosshans's theorem. For $H$ finite, invariant theory is always well-behaved: $R^H$ is fg if $R$ is fg as a $k$-algebra.",
+    "range": {
+      "startLine": 244,
+      "endLine": 258
+    },
+    "title": "Finite Groups and Tori are Grosshans Subgroups",
+    "content": "`finite_group_grosshans` (lines 248-258): any finite subgroup H of a group G is a Grosshans subgroup (proved trivially as `⟨trivial⟩` since the class has placeholder field). The mathematical content in the docstring: k[G]^H ≅ k[G/H] has finitely many cosets, so it is finitely generated; in char 0, finite groups also have Reynolds operators (averaging by 1/|H|). The `reductive_subgroup_grosshans` (lines 260-271) states that reductive subgroups are Grosshans (also trivially proved, needs actual ReductiveGroup hypothesis).",
+    "mathContext": "Finite $H \\leq G$: $|G/H|$ is finite (= $|G|/|H|$ for finite $G$), so $k[G/H] = k^{|G/H|}$ is f.g. In characteristic 0: Reynolds operator is $\\rho(f) = (1/|H|) \\sum_{h \\in H} h \\cdot f$. For reductive $H \\leq G$ reductive: $k[V]^H$ is always f.g. by Hilbert-Mumford-Haboush applied to $H$.",
     "significance": "supporting",
-    "relatedConcepts": ["finite-groups-Reynolds", "coset-space", "Fintype-H", "averaging-operator"],
-    "prerequisites": ["GrosshansSubgroup typeclass", "Fintype H", "Reynolds averaging for finite groups"]
+    "relatedConcepts": [
+      "finite subgroups",
+      "Reynolds operator for finite groups",
+      "reductive subgroups",
+      "Hilbert-Mumford-Haboush"
+    ],
+    "prerequisites": [
+      "GrosshansSubgroup typeclass",
+      "Fintype",
+      "reductive algebraic groups"
+    ]
+  },
+  {
+    "id": "ann-h14oq01-ga-and-summary",
+    "proofId": "hilbert-14-oq-01",
+    "type": "insight",
+    "range": {
+      "startLine": 259,
+      "endLine": 323
+    },
+    "title": "G_a Case, Part IV Summary, and the Absence of Group-Theoretic Characterization",
+    "content": "Lines 259-323 cover the G_a = (k, +) case and the Part IV summary. The G_a docstring (lines 273-286) gives the classification: for G_a acting on k[x₁,...,xₙ], invariants are f.g. for n ≤ 3 (Weitzenböck 1932, Seshadri 1962), not always for n = 4 (Daigle-Freudenburg 1999), and Nagata's counterexample uses G_a^13 ≤ GL_32. Part IV summary (lines 292-321) gives the complete characterization: sufficient conditions for fg invariants (Grosshans subgroup, finite H, G_a on ≤3 vars, H with Reynolds operator), necessary conditions for non-fg (non-reductive H, non-Grosshans, representation 'large enough'), and three open problems. The key conclusion: **there is no purely group-theoretic characterization** — the same non-reductive group can give fg invariants for some representations and non-fg for others. Characterization is representation-dependent (Grosshans's theorem gives the embedding-dependent answer).",
+    "mathContext": "Nagata's counterexample (1959): $G_a^{13}$ acts on $k^{32}$; the invariant ring $k[x_1,\\ldots,x_{32}]^{G_a^{13}}$ is NOT finitely generated. Daigle-Freudenburg (1999): 4-variable counterexample for $G_a$-action. Weitzenböck (1932): $G_a$ acting on $k[V]$ with $\\dim V \\leq 3$ always gives f.g. invariants. Open: does a purely group-theoretic criterion exist? Is the Grosshans condition decidable for unipotent groups?",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nagata's counterexample",
+      "Daigle-Freudenburg counterexample",
+      "Weitzenböck's theorem",
+      "locally nilpotent derivations",
+      "G_a-invariant rings",
+      "Makar-Limanov invariant"
+    ],
+    "prerequisites": [
+      "algebraic groups G_a",
+      "locally nilpotent derivations",
+      "polynomial invariant rings",
+      "Grosshans criterion"
+    ]
   }
 ]
