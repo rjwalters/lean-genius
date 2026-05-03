@@ -295,11 +295,11 @@ theorem eulerian_circuit_implies_balanced (G : DiGraph V) :
       cases walk with
       | nil => exact absurd rfl hne
       | cons a t => rfl
-    -- getLast? via List.getLast?_eq_getLast and List.getLast_eq_get
+    -- getLast? via List.getLast?_eq_getLast and List.getLast_eq_getElem
     have h2 : walk.getLast? = some (walk.get ⟨n, by omega⟩) := by
       rw [List.getLast?_eq_getLast hne]
       congr 1
-      simp only [List.getLast_eq_get, List.get_eq_getElem]
+      simp only [List.getLast_eq_getElem, List.get_eq_getElem]
       congr 1
       omega
     rw [h1, h2] at hclosed
@@ -645,7 +645,7 @@ theorem maxTrail_closed (G : DiGraph V) (hbal : IsEulerianBalanced G) (v : V) :
     rw [show trail.getLast? = some last_v from by
       rw [List.getLast?_eq_getLast (maxTrail_nonempty' G.edges v)]
       congr 1
-      simp [List.getLast_eq_get, List.get_eq_getElem, hlast_def]
+      simp [List.getLast_eq_getElem, List.get_eq_getElem, hlast_def]
       congr 1; omega]
     rw [maxTrail_head' G.edges v]
     exact congrArg some h
@@ -803,7 +803,7 @@ theorem remove_circuit_balanced (G : DiGraph V) (C : DirectedCircuit G) :
     have h2 : C.walk.getLast? = some (C.walk.get ⟨n, by omega⟩) := by
       rw [List.getLast?_eq_getLast hne]
       congr 1
-      simp only [List.getLast_eq_get, List.get_eq_getElem]
+      simp only [List.getLast_eq_getElem, List.get_eq_getElem]
       congr 1; omega
     rw [h1, h2] at this; exact Option.some.inj this
   -- The circuit edges from v equal those into v (circuit balance)
@@ -847,12 +847,12 @@ theorem euler_path_implies_degree_balance (G : DiGraph V) (s t : V) (hst : s ≠
     | cons a t => simp at hhead; exact hhead
   have hget_last : walk.get ⟨n, by omega⟩ = t := by
     have hne : walk ≠ [] := by intro h; simp [h] at hlen; omega
-    have hlast' : walk.getLast? = some t := hlast
-    rw [List.getLast?_eq_getLast hne] at hlast'
-    have hlast_eq : walk.getLast hne = t := Option.some.inj hlast'
-    have hgl := List.getLast_eq_get walk hne
-    have h_mid : walk.get ⟨walk.length - 1, by omega⟩ = t := hgl ▸ hlast_eq
-    convert h_mid using 2; omega
+    have h2 : walk.getLast? = some (walk.get ⟨n, by omega⟩) := by
+      rw [List.getLast?_eq_getLast hne]
+      congr 1
+      simp only [List.getLast_eq_getElem, List.get_eq_getElem]
+      congr 1; omega
+    rw [h2] at hlast; exact Option.some.inj hlast
   -- The degree conditions follow from the open-walk counting lemmas:
   -- open_walk_first_source_excess → outDeg s = inDeg s + 1
   -- open_walk_last_target_excess  → inDeg t  = outDeg t + 1
