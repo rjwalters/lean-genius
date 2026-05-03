@@ -13945,6 +13945,17 @@
         "meta.meta.sorries/axiomCount fields missing; leanFile.lineCount 140→156, theoremCount 12→13"
       ],
       "notes": "Fix PR #15099 in-flight; tracker PR #15105 in-flight"
+    },
+    "erdos-1006-oq-01-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-03T06:49:07Z",
+      "result": "issues-found",
+      "issues": [
+        "leanFile.theoremCount: 10 but actual is 9 named theorems (True stub example over-counted)",
+        "meta.theoremCount: 7 (stale, should be 9)",
+        "description: claims '10 theorems' (should be 9)",
+        "True stub: `example : True := trivial` at line 122 (orphaned placeholder). Fix in PR #15112."
+      ]
     }
   },
   "erdos-1097-oq-01": {
