@@ -56,10 +56,10 @@
       "Bridge lemma zmod_pow_eq_one_of_dvd: converts nat divisibility to ZMod equality"
     ],
     "axiomCount": 0,
-    "lineCount": 495,
-    "assumptions": "None. 77 theorems fully verified with 0 axioms and 0 sorries. The open density question (Q1) is stated as a comment only. Open conjecture; supporting lemmas fully verified.",
+    "lineCount": 531,
+    "assumptions": "None. 80 theorems fully verified with 0 axioms and 0 sorries. The open density question (Q1) is stated as a comment only. Open conjecture; supporting lemmas fully verified. New: hMinK_prime_minus_one proves h(p-1)=p for all primes p; hMinK_unbounded proves Q2 (upper half: h(n) is unbounded).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 77
+    "theoremCount": 80
   },
   "sections": [
     {
@@ -117,6 +117,14 @@
       "startLine": 363,
       "endLine": 484,
       "summary": "Proves `gcdPowerSeq_at_succ_eq_one`: for all $n \\geq 1$, $\\gcd(2^n-1, \\ldots, (n+1)^n-1) = 1$, giving $h(n) \\leq n+1$. The proof eliminates all prime divisors: primes $q \\leq n+1$ are in the fold and self-refute ($q \\mid q^n$ and $q \\mid q^n-1$ gives $q \\mid 1$); primes $q > n+1$ would give $n+1$ distinct roots of $X^n - 1$ in $\\mathbb{Z}/q\\mathbb{Z}$, violating the degree-$n$ polynomial root bound. Corollary: `h_eq_succ_of_prime` gives $h(n) = n+1$ when $n+1$ is prime."
+    },
+    {
+      "id": "fermat-formula",
+      "title": "Fermat Formula and Unboundedness",
+      "startLine": 497,
+      "endLine": 531,
+      "summary": "PROVED: `hMinK_prime_minus_one` — for every prime $p$, $h(p-1) = p$. PROVED: `hMinK_succ_of_prime` — $h(n) = n+1$ iff $n+1$ is prime (formal statement). PROVED: `hMinK_unbounded` — for any $M$, $\\exists n$ with $h(n) > M$.",
+      "mathContext": "For prime $p$: (i) $h(p-1) \\leq p$ because $\\gcd(2^{p-1}-1, \\ldots, p^{p-1}-1) = 1$ by `gcdPowerSeq_at_succ_eq_one`. (ii) $h(p-1) \\geq p$: for any $k < p$, Fermat gives $p \\mid \\gcd(2^{p-1}-1, \\ldots, k^{p-1}-1)$ so the gcd is not 1. Unboundedness follows: for any $M$, take a prime $p > M$ (by `Nat.exists_infinite_primes`); then $h(p-1) = p > M$."
     }
   ],
   "overview": {
@@ -139,7 +147,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #770 is fully verified with 0 axioms and 0 sorries. Contains computation of h(n) for n = 1..12 via native_decide, Fermat-based structural theorems, gcd monotonicity, polynomial root counting argument for h(n) ≤ n+1, and the formal definition hMinK with its properties. Open questions Q2/Q3 are stated as comments only.",
+    "summary": "Erdős Problem #770 is fully verified with 0 axioms and 0 sorries. Contains computation of h(n) for n = 1..12 via native_decide, Fermat-based structural theorems, gcd monotonicity, polynomial root counting argument for h(n) ≤ n+1, and the formal definition hMinK with its properties. New: hMinK_prime_minus_one proves h(p-1) = p for all primes p; hMinK_unbounded proves that h is unbounded (resolving Q2's upper half).",
     "implications": "**Theoretical Significance**: Understanding h(n) would illuminate the arithmetic structure of exponential sequences modulo primes.\n\nThe density question connects to the distribution of smooth numbers and Fermat quotients. The largest-prime characterization would link h(n) to the factorization of n+1, bridging analytic and algebraic number theory.",
     "openQuestions": [
       "Does the natural density of {n : h(n) = p} exist for each prime p? If so, what is its value?",
@@ -198,9 +206,9 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 495,
+    "lineCount": 531,
     "axiomCount": 0,
-    "theoremCount": 77,
+    "theoremCount": 80,
     "definitionCount": 2,
     "path": "Proofs/Erdos770Problem.lean",
     "sorries": 0
