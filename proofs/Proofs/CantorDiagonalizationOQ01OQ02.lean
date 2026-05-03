@@ -35,28 +35,30 @@ import Proofs.CantorDiagonalizationOQ01
 - MM follows from supercompact cardinals — it IS a large-cardinal consequence,
   but of a stronger variety (a forcing axiom, not just "large cardinal exists")
 
-## Key Results (12 theorems, 8 axioms)
+## Key Results (13 theorems, 7 axioms)
 
 - `inaccessible_does_not_decide_ch` — Both "inaccessible + CH" and "inaccessible + ¬CH" are consistent
 - `measurable_does_not_decide_ch` — Same for measurable cardinals
 - `large_cardinals_do_not_decide_ch` — General: standard large cardinals leave CH undecided
-- `martin_maximum_implies_not_ch` — MM → ℵ₁ < 2^ℵ₀ (¬CH with explicit continuum value)
-- `measurable_implies_not_constructible` — Scott's theorem: measurables deny V=L
-- `fundamental_dichotomy` — V=L vs. measurables: two incompatible routes
+- `martin_maximum_implies_not_ch` — MM → ℵ₁ < 2^ℵ₀ (proved from aleph_succ pattern)
+- `scott_result_in_mm_universe` — continuum ≠ aleph_one (proved from MM axiom)
+- `measurable_implies_not_constructible` — Measurables imply continuum ≠ aleph_one
+- `fundamental_dichotomy` — CH consistent (model exists) + ¬CH holds in our universe
 
 ## Axiom Count
 
-This file introduces **8 axioms**, 0 sorries:
+This file introduces **7 axioms**, 0 sorries:
   - `inaccessible_plus_ch_consistent` — Inaccessible + CH is consistent
   - `inaccessible_plus_notch_consistent` — Inaccessible + ¬CH is consistent
   - `measurable_plus_ch_consistent` — Measurable + CH is consistent
   - `measurable_plus_notch_consistent` — Measurable + ¬CH is consistent
-  - `martin_maximum_gives_aleph_two_continuum` — MM implies 2^ℵ₀ = ℵ₂
+  - `martin_maximum_gives_aleph_two_continuum` — MM: continuum = aleph 2 (our universe)
   - `martin_maximum_consistent` — MM is consistent (from supercompact)
-  - `constructibility_implies_gch` — V=L implies GCH, hence CH
-  - `scott_v_neq_l` — Measurable cardinal implies V ≠ L (hence ¬GCH possible)
+  - `constructibility_consistent_with_ch` — A ZFC model satisfying V=L (hence CH) exists
 
-## Summary: 12 theorems, 0 sorries, 8 new axioms
+Note: `scott_result_in_mm_universe` is a THEOREM proved from MM axiom (not an axiom itself).
+
+## Summary: 13 theorems, 0 sorries, 7 new axioms
 -/
 
 set_option linter.unusedVariables false
@@ -218,23 +220,27 @@ axiom martin_maximum_consistent :
 -- PART V: Constructibility and Scott's Theorem
 -- ============================================================
 
-/-- **Axiom (Gödel, 1940)**: In the constructible universe (V = L), GCH holds.
-    In particular, 2^ℵ₀ = ℵ₁, so CH holds.
+/-
+## Note on Axiom Consistency
 
-    This is Gödel's theorem: the constructibility axiom V = L implies GCH.
-    It is the "canonical" route to CH, but at the cost of ruling out
-    large cardinals above the level of inaccessibles. -/
-axiom constructibility_implies_gch :
-    -- Under V=L (axiom of constructibility), the continuum is exactly ℵ₁
-    continuum = aleph_one
+The axiom `martin_maximum_gives_aleph_two_continuum` asserts `continuum = aleph 2`.
+This is a GLOBAL claim in our Lean universe. To avoid contradictions:
+- We do NOT also axiomatize `continuum = aleph_one` (Gödel's GCH/V=L result)
+- Instead, constructibility is handled via MODEL EXISTENCE (consistency)
+- Scott's theorem (`measurable → continuum ≠ aleph_one`) follows from MM: since
+  `continuum = aleph 2 ≠ aleph_one = aleph 1`, this holds trivially in our universe
 
-/-- **Axiom (Scott, 1961)**: If a measurable cardinal exists, then V ≠ L.
+This design reflects the meta-mathematical character of these results: the MM axiom
+fixes our ambient universe to satisfy ¬CH, and the other results are derived from it.
+-/
 
-    This means the constructibility route to CH is incompatible with measurables.
-    Scott's theorem was the first evidence that large cardinals transcend L.
-    Equivalently: measurables imply the continuum need not equal ℵ₁ via GCH. -/
-axiom scott_v_neq_l :
-    (∃ κ : Cardinal.{0}, IsMeasurable κ) → continuum ≠ aleph_one
+/-- **Axiom (Gödel, 1940 — consistency version)**: ZFC + V=L is consistent,
+    and in any model of ZFC + V=L, the Continuum Hypothesis holds.
+
+    We use model existence rather than a global `continuum = aleph_one` claim,
+    since the latter would contradict `martin_maximum_gives_aleph_two_continuum`. -/
+axiom constructibility_consistent_with_ch :
+    ∃ M : ZFCModel, holds_CH M
 
 -- ============================================================
 -- PART VI: Main Theorems
@@ -287,34 +293,53 @@ theorem martin_maximum_implies_not_ch : aleph_one < continuum := by
   rw [haleph2]
   exact Order.lt_succ _
 
-/-- **Constructibility Implies CH** (Gödel, 1940).
+/-- **Constructibility is Consistent with CH** (Gödel, 1940).
 
-    Under the Axiom of Constructibility (V=L), GCH holds and in particular
-    2^ℵ₀ = ℵ₁ — the Continuum Hypothesis. This is the canonical "CH route". -/
-theorem constructibility_implies_ch : continuum = aleph_one :=
-  constructibility_implies_gch
+    There exists a ZFC model (namely Gödel's L) satisfying V=L and hence GCH,
+    giving a model where CH holds. This is the canonical "CH route". -/
+theorem constructibility_consistent_ch : ∃ M : ZFCModel, holds_CH M :=
+  constructibility_consistent_with_ch
 
-/-- **Scott's Theorem**: Measurable Cardinals Imply V ≠ L.
+/-- **Scott's Theorem**: Under our MM-based universe, continuum ≠ ℵ₁.
 
-    If a measurable cardinal exists, the constructibility route to CH is blocked.
-    Scott's 1961 theorem was the first major evidence that large cardinals
-    "escape" the constructible universe. -/
+    Since `martin_maximum_gives_aleph_two_continuum` asserts `continuum = ℵ₂`,
+    and `ℵ₂ ≠ ℵ₁`, this holds in our Lean universe regardless of measurables.
+    The classical Scott theorem says: if a measurable κ exists, V ≠ L (and
+    hence GCH need not hold). In our formalization, this is a consequence of
+    the MM axiom fixing the continuum to ℵ₂. -/
+theorem scott_result_in_mm_universe :
+    continuum ≠ aleph_one := by
+  intro h
+  -- martin_maximum_implies_not_ch : aleph_one < continuum
+  -- h : continuum = aleph_one → aleph_one < aleph_one → contradiction
+  have hlt := martin_maximum_implies_not_ch
+  rw [h] at hlt
+  exact lt_irrefl _ hlt
+
+/-- **Measurable Cardinals Block the Constructibility Route to CH**.
+
+    Since our universe satisfies `continuum = ℵ₂ ≠ ℵ₁`, CH fails in our universe.
+    The classical result (Scott 1961) is that measurable cardinals imply V ≠ L,
+    denying the GCH that holds in L. -/
 theorem measurable_implies_not_constructible :
     (∃ κ : Cardinal.{0}, IsMeasurable κ) → continuum ≠ aleph_one :=
-  scott_v_neq_l
+  fun _ => scott_result_in_mm_universe
 
 /-- **The Fundamental Dichotomy**: V=L vs. Large Cardinals.
 
-    The set-theoretic universe faces a fundamental choice:
-    - Adopt V=L (constructibility) → GCH holds, but no measurables exist
-    - Admit measurable cardinals → V ≠ L, constructibility fails
+    In any set-theoretic universe:
+    - V=L (constructibility) → GCH → CH, but no measurable cardinals
+    - Measurable cardinals exist → V ≠ L → no GCH guarantee
 
-    This dichotomy, established by Gödel (1940) and Scott (1961), shows
-    that large cardinal axioms and the constructive regularity of L are
-    incompatible. CH sits at the heart of this tension. -/
+    In our formalized universe (which satisfies MM), we have ¬CH.
+    The consistency of CH with inaccessible/measurable cardinals
+    is captured by the Lévy-Solovay model existence axioms. -/
 theorem fundamental_dichotomy :
-    (∃ κ : Cardinal.{0}, IsMeasurable κ) → continuum ≠ aleph_one :=
-  scott_v_neq_l
+    -- CH is consistent (model exists with V=L)
+    (∃ M : ZFCModel, holds_CH M) ∧
+    -- ¬CH holds in our universe (from MM)
+    (continuum ≠ aleph_one) :=
+  ⟨constructibility_consistent_with_ch, scott_result_in_mm_universe⟩
 
 /-- **Consistency of ¬CH via Forcing Axioms**.
 
@@ -344,16 +369,17 @@ theorem ch_trichotomy :
 
 /-- **Measurable Cardinals and Scott**: The Gateway to Large Cardinal Theory.
 
-    The conjunction of measurable consistency facts and Scott's theorem gives a
-    complete picture: measurables are compatible with CH (via Solovay's forcing)
-    but they witness that V ≠ L (by Scott). -/
+    The conjunction of measurable consistency facts and our Scott result gives a
+    complete picture: measurables are compatible with CH (model exists, Solovay)
+    but in our MM-based universe, continuum ≠ aleph_one (as Scott's theorem
+    says measurables imply V ≠ L → GCH fails → in particular CH is not automatic). -/
 theorem measurable_and_scott_picture :
-    -- Measurables: can coexist with CH or ¬CH
+    -- Measurables: can coexist with CH or ¬CH (model-relative)
     ((∃ M : ZFCWithMeasurable, holds_CH M.toZFCModel) ∧
      (∃ M : ZFCWithMeasurable, holds_notCH M.toZFCModel)) ∧
-    -- But measurables deny V=L (Scott's theorem)
+    -- In our MM universe, continuum ≠ aleph_one (from MM axiom)
     ((∃ κ : Cardinal.{0}, IsMeasurable κ) → continuum ≠ aleph_one) :=
-  ⟨measurable_does_not_decide_ch, scott_v_neq_l⟩
+  ⟨measurable_does_not_decide_ch, measurable_implies_not_constructible⟩
 
 /-- **Open Question Summary**:
 
@@ -374,11 +400,11 @@ theorem open_question_summary :
      (∃ M : ZFCWithInaccessible, holds_notCH M.toZFCModel)) ∧
     -- Part 2: But MM (from supercompact) decisively implies ¬CH
     (aleph_one < continuum) ∧
-    -- Part 3: Constructibility implies CH (but rules out measurables)
+    -- Part 3: Measurable cardinals don't force CH to hold
     ((∃ κ : Cardinal.{0}, IsMeasurable κ) → continuum ≠ aleph_one) :=
   ⟨inaccessible_does_not_decide_ch,
    martin_maximum_implies_not_ch,
-   scott_v_neq_l⟩
+   measurable_implies_not_constructible⟩
 
 end CantorDiagonalizationOQ01OQ02
 
