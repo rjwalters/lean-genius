@@ -299,12 +299,12 @@
       "result": "clean"
     },
     "angle-trisection-oq-02-oq-01-oq-02-incomplete-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [
-        "sorry count mismatch: claimed 3 actual 2; lineCount stale 383->438"
+        "sorry count mismatch: claimed 2, actual 1 (wantzel_galois_iff only); lineCount stale 436→625, theoremCount stale 19→21. Fixes in PRs #15140 and #15155."
       ],
-      "lastAudited": "2026-05-03T08:00:00Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-05-03T09:09:49Z",
+      "result": "issues-found"
     },
     "angle-trisection-oq-02-oq-02": {
       "auditCount": 2,
