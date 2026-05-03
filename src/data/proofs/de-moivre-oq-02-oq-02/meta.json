@@ -41,7 +41,8 @@
       "**linear_combination for the induction step**: After setting up T(m+1) = 2X·T(m) - T(m-1) and the two key lemma instances, `linear_combination` finds the right coefficient combination to close the goal.",
       "**Polynomial over CommRing R**: The identity holds in R[X] for any commutative ring, not just ℝ. This generality is achieved by using `variable {R : Type*} [CommRing R]` and working with polynomial equality throughout.",
       "**T_{-1} = X**: The base case P(-1) requires T_{-1} = X, which itself needs a mini induction via T_add_two at -1: T(1) = 2X·T(0) - T(-1) gives X = 2X·1 - T(-1), so T(-1) = X.",
-      "**No sin θ = 0 case analysis**: Converting to the trig form via polynomial evaluation avoids the singularity sin θ = 0 that would arise from U_real_cos directly."
+      "**No sin θ = 0 case analysis**: Converting to the trig form via polynomial evaluation avoids the singularity sin θ = 0 that would arise from U_real_cos directly.",
+      "**two_X_U powers all three cases**: The helper lemma $2X \\cdot U_k = U_{k+1} + U_{k-1}$ (a rearrangement of the U recurrence) is applied exactly twice per induction step — once at index $m+n$ and once at $n-m$ (or their shifted versions). This precise re-use is what makes `linear_combination` close all three cases automatically."
     ]
   },
   "leanFile": {
@@ -76,7 +77,8 @@
       "**Polynomial identity, not trigonometric**: The formula holds in R[X] for any CommRing R, proved without evaluating at cos θ.",
       "**Paired induction carries two consecutive cases**: The Chebyshev recurrence is second-order, so maintaining Q(m) = P(m) ∧ P(m-1) makes the induction step immediate.",
       "**linear_combination**: The polynomial ring structure allows `linear_combination` to find the right coefficient combination automatically, eliminating tedious algebraic manipulation.",
-      "**T_{-1} = X**: An auxiliary result proved inline from T_add_two, enabling the negative induction base."
+      "**T_{-1} = X**: An auxiliary result proved inline from T_add_two, enabling the negative induction base.",
+      "**two_X_U powers all three induction cases**: The helper lemma $2X \\cdot U_k = U_{k+1} + U_{k-1}$ (a rearrangement of the U recurrence) is applied exactly twice per induction step — once at index $m+n$ and once at $n-m$ (or their shifted variants). This precision makes `linear_combination` close each case automatically."
     ],
     "prerequisites": [
       "Chebyshev recurrences T_add_two and U_add_two",
@@ -87,20 +89,44 @@
   },
   "sections": [
     {
-      "id": "polynomial-identity",
-      "title": "Polynomial Identity Section",
-      "summary": "Proves 2·T_m·U_n = U_{m+n} + U_{n-m} in R[X] for any CommRing R. Private infrastructure: two_X_U (key lemma), P/Q definitions, Q_zero/Q_succ/Q_pred lemmas. Public: T_mul_U_product.",
-      "startLine": 31,
-      "endLine": 126,
-      "mathContext": "$2T_m \\cdot U_n = U_{m+n} + U_{n-m}$ in $R[X]$ for any commutative ring $R$. Proved by paired integer induction: $Q(m) = P(m) \\wedge P(m-1)$ where $P(m) = (2T_m \\cdot U_n = U_{m+n} + U_{n-m})$."
+      "id": "preamble",
+      "title": "Preamble: Module Overview and Mathematical Context",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Imports Mathlib, opens Polynomial/Chebyshev/Real namespaces, and introduces the open question: can the T×T product-to-sum formula extend to the T×U mixed setting? States the answer and proof strategy (paired integer induction).",
+      "mathContext": "$T_n(\\cos\\theta) = \\cos(n\\theta)$ and $U_n(\\cos\\theta)\\sin\\theta = \\sin((n+1)\\theta)$. The T×T formula $2T_m \\cdot T_n = T_{m+n} + T_{m-n}$ follows from $2\\cos(m\\theta)\\cos(n\\theta) = \\cos((m+n)\\theta) + \\cos((m-n)\\theta)$. The T×U formula $2T_m \\cdot U_n = U_{m+n} + U_{n-m}$ requires algebraic proof."
     },
     {
-      "id": "real-evaluation",
-      "title": "Real Evaluation and Trig Identities",
-      "summary": "Evaluates the polynomial identity at cos θ to get the real form. Derives: chebyshev_T_U_product_to_sum (eval form), chebyshev_cos_U (m=1 specialization: 2·cos·U_n = U_{n+1} + U_{n-1}), two_cos_sin_spreading (trig: 2·cos θ·sin((n+1)θ) = sin((n+2)θ) + sin(nθ)).",
+      "id": "key-lemma",
+      "title": "Key Lemma: 2·X·U_k = U_{k+1} + U_{k-1}",
+      "startLine": 31,
+      "endLine": 64,
+      "summary": "Proves the engine lemma two_X_U: 2X·U_k = U_{k+1} + U_{k-1} by rearranging the U recurrence U_{k+2} = 2X·U_{k+1} - U_k. Also defines induction predicates P (the main identity at index m) and Q (paired conjunction P(m) ∧ P(m-1)), and proves the base case Q_zero covering P(0) and P(-1). The P(-1) base uses T_{-1} = X (itself derived from T_add_two at -1).",
+      "mathContext": "$2X \\cdot U_k = U_{k+1} + U_{k-1}$ follows from $U_{k+1} = 2X \\cdot U_k - U_{k-1}$. Base case $P(-1)$: $2T_{-1} \\cdot U_n = 2X \\cdot U_n = U_{n+1} + U_{n-1}$, since $T_{-1} = X$."
+    },
+    {
+      "id": "induction-steps",
+      "title": "Induction Steps: Q_succ and Q_pred",
+      "startLine": 65,
+      "endLine": 126,
+      "summary": "Q_succ proves Q(m+1) from Q(m): uses T_{m+1} = 2X·T_m - T_{m-1}, applies two_X_U twice (at m+n and n-m), then closes with linear_combination. Q_pred proves Q(m-1) from Q(m): symmetric argument with T_{m-2} = 2X·T_{m-1} - T_m and two_X_U twice (at m-1+n and n-m+1). Main theorem T_mul_U_product assembles all parts via Int.induction_on.",
+      "mathContext": "Successor step: $2T_{m+1} \\cdot U_n = 2(2X \\cdot T_m - T_{m-1}) \\cdot U_n = 2X(2T_m \\cdot U_n) - (2T_{m-1} \\cdot U_n)$. By $P(m)$ and $P(m-1)$, plus $2X \\cdot U_k = U_{k+1} + U_{k-1}$ twice: $= U_{m+n+1} + U_{n-m-1} = U_{(m+1)+n} + U_{n-(m+1)}$ ✓."
+    },
+    {
+      "id": "real-evaluation-main",
+      "title": "Real Evaluation: chebyshev_T_U_product_to_sum and chebyshev_cos_U",
       "startLine": 128,
-      "endLine": 181,
-      "mathContext": "Evaluating at $x = \\cos\\theta$: $2T_m(\\cos\\theta) \\cdot U_n(\\cos\\theta) = U_{m+n}(\\cos\\theta) + U_{n-m}(\\cos\\theta)$. The $m=1$ case: $2\\cos\\theta \\cdot U_n(\\cos\\theta) = U_{n+1}(\\cos\\theta) + U_{n-1}(\\cos\\theta)$. Multiplying by $\\sin\\theta$: $2\\cos\\theta \\cdot \\sin((n+1)\\theta) = \\sin((n+2)\\theta) + \\sin(n\\theta)$."
+      "endLine": 154,
+      "summary": "Evaluates T_mul_U_product at x = cos θ to derive chebyshev_T_U_product_to_sum (the real form). Specializes to m=1 using T_1(cos θ) = cos θ to get chebyshev_cos_U: 2·cos θ·U_n(cos θ) = U_{n+1}(cos θ) + U_{n-1}(cos θ).",
+      "mathContext": "Polynomial evaluation: $\\mathrm{eval}(\\cos\\theta, 2T_m \\cdot U_n) = 2T_m(\\cos\\theta) \\cdot U_n(\\cos\\theta) = U_{m+n}(\\cos\\theta) + U_{n-m}(\\cos\\theta)$. The $m=1$ specialization uses $T_1(\\cos\\theta) = \\cos\\theta$."
+    },
+    {
+      "id": "trig-spreading",
+      "title": "Trig Identity: 2·cos θ·sin((n+1)θ) = sin((n+2)θ) + sin(nθ)",
+      "startLine": 155,
+      "endLine": 182,
+      "summary": "Converts chebyshev_cos_U to pure trigonometric form via U_real_cos (U_n(cos θ)·sin θ = sin((n+1)θ)). Uses nlinarith with sin²θ + cos²θ = 1 to handle the sin θ factors. Final theorem demoivre_oq02oq02_summary collects the main results.",
+      "mathContext": "From $U_n(\\cos\\theta) \\cdot \\sin\\theta = \\sin((n+1)\\theta)$: multiply $2\\cos\\theta \\cdot U_n(\\cos\\theta) = U_{n+1}(\\cos\\theta) + U_{n-1}(\\cos\\theta)$ by $\\sin\\theta$ to get $2\\cos\\theta \\cdot \\sin((n+1)\\theta) = \\sin((n+2)\\theta) + \\sin(n\\theta)$."
     }
   ],
   "conclusion": {
