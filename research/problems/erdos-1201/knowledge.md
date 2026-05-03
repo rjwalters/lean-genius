@@ -30,7 +30,35 @@ Is it true that for every $\epsilon,\eta>0$ there exists a $k$ such that the den
 
 ## Sessions
 
-(No research sessions yet)
+## Session 2026-05-03 (Session 1) — Gallery Entry Completed
+
+**Mode**: FRESH
+**Outcome**: completed
+
+### What I Did
+- Discovered that `Erdos1201Problem.lean` was already on `origin/main` (added in PR #15109)
+- Gallery entry `src/data/proofs/erdos-1201/meta.json` existed but was missing `annotations.json` and `index.ts`
+- Created `annotations.json` with 9 annotations covering all 6 proof sections
+- Created `index.ts` with gallery exports
+- Updated research JSON to status: completed, phase: COMPLETED
+- Committed and pushed to `feature/researcher-11` (bundled with PR #14961)
+
+### Key Findings
+- Lean formalization: 266 lines, 14 structural theorems, 1 axiom (`erdos_1201_half_case`), 0 sorries
+- `ErdosProblem1201` (full conjecture) is a `def`, not axiomatized — correct, it's the open question
+- `gpfConsecutive_large_of_prime_dvd` is the key structural lemma: a prime p > n^(1-ε) in the window witnesses the density condition
+- The ε=1/2 axiom is justified: Erdős proved it using Dickman function arguments, but those are not in Mathlib
+- The main open gap: smooth number theory (Dickman ρ function) missing from Mathlib prevents proving ε=1/2 from scratch
+
+### Files Modified
+- `src/data/proofs/erdos-1201/annotations.json` — new (9 annotations)
+- `src/data/proofs/erdos-1201/index.ts` — new
+- `src/data/research/problems/erdos-1201.json` — status/phase updated to COMPLETED
+
+### Next Steps
+None — gallery entry is complete. Future sessions could:
+1. Prove the ε=1/2 result (requires Dickman ρ function formalization, ~500+ lines)
+2. Add Sylvester-Schur lower bound as a structural theorem: gpfConsecutive n k ≥ k+1 for n ≥ k+1
 
 ---
 
