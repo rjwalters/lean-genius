@@ -1,0 +1,277 @@
+{
+  "id": "abel-ruffini-oq-09",
+  "title": "Liouville's Theorem on Integration: The Gaussian Integral is Not Elementary",
+  "slug": "abel-ruffini-oq-09",
+  "description": "Formalizes the algebraic core of Liouville's 1835 theorem that ∫e^(-x²)dx cannot be expressed in elementary terms. Proves no polynomial satisfies the Risch ODE p' - 2xp = 1 by a degree-raising argument: the operator L[p] = p' - 2xp raises polynomial degree by 1, so its image avoids all nonzero constants. Introduces differential fields, develops the degree-raising vs degree-preserving operator dichotomy, and axiomatizes the full Risch criterion and Gaussian non-elementarity. The polynomial obstruction (fully proved) is the algebraic core of Liouville's theorem.",
+  "meta": {
+    "author": "Liouville (1835), Risch (1969)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Liouville%27s_theorem_(differential_algebra)",
+    "date": "1835",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AbelRuffiniOQ09.lean",
+    "tags": [
+      "algebra",
+      "differential-algebra",
+      "galois-theory",
+      "integration",
+      "polynomial",
+      "transcendental"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "assumptions": "3 axioms: liouville_integration_theorem (structural form of elementary antiderivatives requires differential Galois/Picard-Vessiot theory not in Mathlib), risch_exp_criterion_gaussian (Risch criterion: ∫e^(-x²)dx elementary iff rational Q with Q'-2xQ=1; requires partial fraction analysis), gaussian_not_elementary (∫e^(-x²) has no elementary antiderivative expressible as a rational function; the main theorem). The polynomial obstruction (no polynomial p satisfies p'-2xp=1) is fully proved without axioms.",
+    "dateAdded": "2026-05-03",
+    "lineCount": 435,
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "risch_ode_coeff_top: coefficient identity showing L[p] = p'-C(2)·X·p has coefficient -2·leadingCoeff(p) at degree natDeg(p)+1 — the key lemma driving the degree-raising argument",
+      "no_poly_risch_soln: fully machine-checked proof that no polynomial p satisfies p' - 2xp = 1, via the degree-raising operator argument",
+      "no_poly_risch_constant: generalization — L[p] avoids all nonzero constants",
+      "risch_ode_raises_degree: formal statement that L strictly raises polynomial degree",
+      "gaussian_vs_linear_contrast: side-by-side comparison of degree-raising (L₂: Gaussian) vs degree-preserving (L₁: linear exponent) operators, with explicit solutions for the elementary case",
+      "DiffField typeclass: basic differential field infrastructure with proved constants_zero/one/add/mul and deriv_neg/sub",
+      "risch_linear_surjective_monomial: L₁[Q]=Q'+Q is surjective onto every monomial X^n — proved by induction using recurrence Q_{n+1}=X^{n+1}-C(n+1)·Q_n",
+      "risch_linear_surjective_all: L₁ is surjective onto ALL polynomials — proved by linearity (Polynomial.induction_on') using monomial surjectivity"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.derivative",
+        "description": "Formal derivative of polynomials",
+        "module": "Mathlib.Algebra.Polynomial.Derivative"
+      },
+      {
+        "theorem": "Polynomial.leadingCoeff_ne_zero",
+        "description": "Leading coefficient nonzero iff polynomial nonzero",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Definitions"
+      },
+      {
+        "theorem": "Polynomial.coeff_eq_zero_of_natDegree_lt",
+        "description": "Coefficient above degree is zero",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      },
+      {
+        "theorem": "Polynomial.funext",
+        "description": "Two polynomials agreeing at all real points are equal",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      },
+      {
+        "theorem": "Polynomial.le_natDegree_of_ne_zero",
+        "description": "Nonzero coefficient witness bounds natDegree from below",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Definitions"
+      }
+    ],
+    "prerequisites": [
+      "Polynomial algebra (derivative, degree, leading coefficient)",
+      "Differential fields and derivations",
+      "Risch algorithm basics",
+      "Lean 4 and Mathlib"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Abel-Ruffini for polynomial equations; this is the integration analog — both are Galois-theoretic impossibility results. Algebraic Galois theory (solvable groups) vs differential Galois theory (Picard-Vessiot groups)"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "related",
+      "description": "Exposes the group-theoretic Abel-Ruffini chain; this entry parallels it for differential algebra — the polynomial degree-raising argument mirrors the A₅ simplicity argument"
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "related",
+      "description": "The OTHER Liouville theorem (approximation/transcendence, 1844). Both are by Liouville but in different mathematical areas: the approximation theorem bounds rational approximation to algebraic numbers; this entry concerns which functions have elementary antiderivatives (1835 result)"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Joseph Liouville proved in 1835 (published 1840) that ∫e^(-x²)dx cannot be expressed as an elementary function — a result now understood as the first theorem of differential Galois theory. This predates Galois theory itself becoming widely known, and Liouville's proof was purely algebraic, working in what would later be called differential fields. The Gaussian integral ∫e^(-x²)dx = √π/2 (over all reals) had been known since the 18th century via contour integration and probability, but the impossibility of finding an elementary antiderivative was first rigorously established by Liouville. The modern treatment via the Risch algorithm (1969) transforms Liouville's structural theorem into a decision procedure: given any elementary function, one can decide in finite time whether its antiderivative is elementary. This decision procedure underlies symbolic integration in every major computer algebra system (Mathematica, Maple, Sage). The Risch algorithm's key criterion — that ∫R·e^g is elementary iff a certain ODE Q' + Q·g' = R has a rational solution — reduces the problem of finding an elementary antiderivative to solving a first-order linear ODE over rational functions.",
+    "problemStatement": "Which functions have antiderivatives expressible in elementary terms? Liouville's theorem (1835/1840) gives a complete structural answer: if f ∈ F has an elementary antiderivative, that antiderivative must have the Liouville form g = v₀ + Σcᵢ·ln(vᵢ) where vᵢ ∈ F and cᵢ are constants. In particular, this theorem implies ∫e^(-x²)dx is not elementary, proved via the Risch criterion: the nonexistence of a rational Q with Q' - 2xQ = 1.",
+    "text": "Formalizes the polynomial obstruction to the Gaussian integral's elementarity. The core result — that no polynomial p satisfies p' - 2xp = 1 — is fully machine-verified. The proof proceeds by the degree-raising argument: the operator L[p] = p' - 2xp raises polynomial degree by exactly 1 for any nonzero p (proved in risch_ode_coeff_top), so L's image consists entirely of polynomials of degree ≥ 1 and therefore never reaches the constant polynomial 1. The full Risch criterion and Gaussian non-elementarity are axiomatized, with the gap (polynomial → rational case) documented. The differential field infrastructure is developed from scratch since Mathlib has no Picard-Vessiot theory.",
+    "proofStrategy": "The polynomial obstruction proof is purely algebraic. For any polynomial p, compute the coefficient of X^(natDeg p + 1) in L[p] = derivative p - C(2) * X * p: this coefficient is -2 * leadingCoeff(p) (proved in risch_ode_coeff_top by simp + push_cast + ring). If L[p] = 1, the coefficient of X^(natDeg p + 1) in 1 is 0, forcing -2 * leadingCoeff(p) = 0, hence leadingCoeff(p) = 0 — contradicting p ≠ 0. For p = 0, L[0] = 0 ≠ 1 directly. The Risch criterion axiom then connects polynomial non-solvability to rational non-solvability; full rational analysis requires partial fraction theory not in Mathlib. The elementary contrast (∫e^x dx is elementary) is formalized: for L₁[Q] = Q' + Q, Q = C(c) solves L₁[Q] = C(c) since C(c)' = 0, making L₁ surjective onto constants.",
+    "keyInsights": [
+      "The operator L₂[Q] = Q' - 2xQ raises polynomial degree by 1 (the -2xQ term dominates), so its image avoids all degree-0 polynomials — this is the algebraic core of the Gaussian's non-elementarity",
+      "In contrast, L₁[Q] = Q' + Q preserves degree (the Q term dominates Q'), so every constant polynomial is in its image — this is why ∫e^x dx is always elementary for any polynomial integrand",
+      "The degree-raising vs degree-preserving dichotomy exactly captures the structural difference between ∫e^(-x²) and ∫e^x as integration problems",
+      "The Risch algorithm (1969) reduces the question 'is ∫f·e^g elementary?' to 'does Q' + Q·g' = f have a rational solution?' — an algebraically decidable problem",
+      "The polynomial case (proved here) and the rational case (axiomatized) together establish the Gaussian's non-elementarity; the gap from polynomial to rational requires partial fraction analysis showing poles cannot cancel",
+      "The Abel-Ruffini analogy is structural: A₅ simplicity (algebraic Galois) corresponds to the degree-raising operator (differential Galois), both witnessing an obstruction to expressibility in a prescribed form",
+      "Differential fields — fields with a derivation satisfying the Leibniz rule — are the natural setting, and constants (elements with zero derivative) form a subfield. Mathlib lacks Picard-Vessiot theory for a full machine-verified proof"
+    ],
+    "prerequisites": [
+      "Polynomial algebra (derivative, degree, leading coefficient)",
+      "Differential fields and derivations (introduced from scratch in this file)",
+      "Risch algorithm basics (optional, for full context)",
+      "Lean 4 and Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Background",
+      "startLine": 1,
+      "endLine": 71,
+      "summary": "Module documentation covering Liouville's integration theorem, the Risch algorithm, the core polynomial obstruction, and the elementary contrast. Imports Polynomial.Derivative, Polynomial.Basic, Polynomial.Degree.Definitions, RingTheory.Algebraic.Basic, Analysis.SpecialFunctions.ExpDeriv, and Tactic.",
+      "mathContext": "The central object: the operator L₂[Q] = Q' - 2xQ (Risch ODE for ∫e^(-x²)dx). Core result: no polynomial lies in L₂⁻¹(1). Contrast: L₁[Q] = Q' + Q (Risch ODE for ∫e^x dx) has 1 in its image."
+    },
+    {
+      "id": "diff-field",
+      "title": "Differential Fields",
+      "startLine": 73,
+      "endLine": 129,
+      "summary": "Introduces the DiffField typeclass (a field with a derivation satisfying Leibniz rule) and proves basic identities: constants_zero (D(0)=0), constants_one (D(1)=0), constants_add/mul (constants closed under +,×), deriv_neg (D(-f)=-D(f)), deriv_sub (D(f-g)=D(f)-D(g)).",
+      "mathContext": "A **differential field** (F, +, ×, D) satisfies: D(f+g) = D(f)+D(g) and D(fg) = D(f)g + fD(g). Constants are {f : D(f) = 0}. Basic identities proved from these two axioms alone."
+    },
+    {
+      "id": "liouville-axiom",
+      "title": "Liouville Integration Theorem (Axiom)",
+      "startLine": 130,
+      "endLine": 183,
+      "summary": "Axiomatizes the structural Liouville theorem: if f ∈ F has an elementary antiderivative g, then g = v₀ + Σcᵢ·ln(vᵢ) with vᵢ ∈ F and cᵢ constants. Also axiomatizes the Risch criterion for ∫e^(-x²) and the Gaussian non-elementarity.",
+      "mathContext": "**Liouville (1835)**: If D(g) = f and g is elementary over F, then g = v₀ + Σcᵢ ln(vᵢ). Requires Picard-Vessiot theory (no Mathlib formalization). **Risch criterion**: ∫e^(-x²) is elementary iff ∃ rational Q/R with (Q/R)' - 2x(Q/R) = 1. **Gaussian non-elementarity**: ∫e^(-x²) is not a rational function."
+    },
+    {
+      "id": "core-proof",
+      "title": "The Polynomial Risch Obstruction (Fully Proved)",
+      "startLine": 184,
+      "endLine": 295,
+      "summary": "The mathematical heart: proves no polynomial satisfies the Risch ODE. risch_ode_coeff_top: coefficient at natDeg+1 of L[p] equals -2·leadingCoeff(p). poly_one_coeff_pos: constant 1 has zero coefficient at position ≥1. no_poly_risch_soln: main result, by contradiction on leadingCoeff. no_poly_risch_constant: generalization to all nonzero constants. risch_ode_raises_degree: formal degree-raising statement.",
+      "mathContext": "Key identity: (p' - C(2)·X·p).coeff(natDeg p + 1) = -2·leadingCoeff(p). Proof: coeff(p', natDeg+1) = (natDeg+2)·coeff(p, natDeg+2) = 0 (above degree); coeff(C(2)·X·p, natDeg+1) = 2·coeff(p, natDeg) = 2·leadingCoeff(p). Net: 0 - 2·lc = -2·lc. If this equals 0 (as required for L[p] = 1), then lc = 0, contradicting p ≠ 0."
+    },
+    {
+      "id": "pointwise",
+      "title": "Pointwise Reformulation",
+      "startLine": 274,
+      "endLine": 296,
+      "summary": "risch_pointwise_to_poly: converts pointwise equality (∀x, p'(x) - 2x·p(x) = 1) to polynomial identity using Polynomial.funext (density argument: two polynomials agreeing everywhere on ℝ are equal). no_poly_risch_pointwise: pointwise formulation of the main obstruction.",
+      "mathContext": "**Polynomial.funext** (Mathlib): If f(x) = g(x) for all x : ℝ, then f = g as polynomials. This uses the fact that ℝ is infinite — a polynomial with infinitely many roots is identically zero."
+    },
+    {
+      "id": "contrast",
+      "title": "Elementary Contrast: The Linear Exponent Case",
+      "startLine": 297,
+      "endLine": 347,
+      "summary": "Shows that for g = x (linear exponent), the Risch ODE Q' + Q = R IS solvable for every polynomial R: risch_g_linear_const (Q=1 solves for R=1), risch_g_linear_degree1 (Q=X-1 solves for R=X, the ∫xeˣ formula), risch_g_linear_constant_solvable (Q=C(c) solves for R=C(c)). gaussian_vs_linear_contrast packages the dichotomy as a conjunction.",
+      "mathContext": "For L₁[Q] = Q' + Q: C(c)' + C(c) = 0 + C(c) = C(c) for any constant c. So L₁ maps constants to themselves — the degree-0 case is handled by Q being constant. This contrasts with L₂ where the -2xQ term forces degree to increase."
+    },
+    {
+      "id": "surjectivity",
+      "title": "L₁ is Surjective onto All Polynomials",
+      "startLine": 348,
+      "endLine": 403,
+      "summary": "risch_linear_surjective_monomial: for each n, ∃Q with Q' + Q = X^n (induction via recurrence Q_{n+1} = X^{n+1} - C(n+1)·Q_n). risch_linear_surjective_all: L₁ is surjective onto ALL polynomials (by Polynomial.induction_on' linearity). This completes the contrast: L₁ maps onto every polynomial, while L₂ misses all nonzero constants.",
+      "mathContext": "Recurrence Q_0=1; Q_{n+1}=X^{n+1}-C(n+1)·Q_n satisfies Q_{n+1}'+Q_{n+1}=X^{n+1} by induction. For the full polynomial case, linearity: L₁[C(a)·Q]=C(a)·L₁[Q] and L₁[P+Q]=L₁[P]+L₁[Q] allow reduction to monomials. Together: ∫p(x)eˣdx is elementary for EVERY polynomial p."
+    },
+    {
+      "id": "analogy",
+      "title": "Abel-Ruffini Analogy and Summary",
+      "startLine": 404,
+      "endLine": 435,
+      "summary": "Documents the structural analogy between Abel-Ruffini (algebraic Galois theory) and Liouville (differential Galois theory). gaussian_risch_polynomial_obstruction_summary: final packaged theorem stating ¬∃p, p' - C(2)·X·p = 1.",
+      "mathContext": "The pattern: Abel-Ruffini (A₅ simplicity → no radical formula for quintic) mirrors Liouville (degree-raising operator → no elementary integral for Gaussian). Both are Galois-theoretic impossibility results where the obstruction is witnessed by a polynomial algebra fact."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalization of the polynomial obstruction to the Gaussian integral's elementarity. The main theorem (no_poly_risch_soln) is fully machine-checked: no polynomial p satisfies p' - 2xp = 1. The proof uses a clean degree-raising argument. New in this session: L₁[Q]=Q'+Q is proved surjective onto all polynomials (risch_linear_surjective_monomial + risch_linear_surjective_all), completing the contrast with L₂. Three axioms cover the full Liouville-Risch theory (structural form of elementary integrals, Risch criterion, Gaussian non-elementarity), documenting the gap requiring Picard-Vessiot theory not yet in Mathlib. Total: 20 theorems, 3 axioms, 0 sorries, 435 lines.",
+    "implications": "**Theoretical Significance**: Liouville's integration theorem inaugurated differential algebra and the Risch decision procedure (1969), which underlies symbolic integration in all major computer algebra systems. The degree-raising operator argument is a model case of how algebraic structure (polynomial degree) witnesses transcendence. The structural analogy with Abel-Ruffini (both are Galois-theoretic impossibility results proved by polynomial algebra arguments) is formalized explicitly. The formalization also provides a clean pedagogical development of differential field basics and the Risch criterion framework.",
+    "openQuestions": [
+      "Reduce the axiom count: extend the polynomial obstruction to rational functions using partial fraction analysis. Key step: if Q = p/q (in lowest terms) satisfies Q' - 2xQ = 1, then poles of Q' must cancel with poles of 2xQ; analyzing the pole order at each root of q leads to a contradiction. This requires Mathlib's partial fraction decomposition.",
+      "Formalize Liouville's structure theorem: prove (not axiomatize) that elementary antiderivatives have the form g = v₀ + Σcᵢln(vᵢ). This requires formalizing Picard-Vessiot theory — a substantial Mathlib project (>1000 lines), but the foundation laid here (DiffField, constants) is the first step.",
+      "Generalize to the full Risch algorithm: formalize that ∫R(x)e^(g(x)) is elementary iff Q' + Qg' = R has a rational solution, and prove decidability. This would make the gallery entry a verified decision procedure.",
+      "Formalize the explicit integration-by-parts formula: the polynomial Q solving Q'+Q=p is Q=∑ₖ(-1)ᵏ·p^(k) (alternating sum of derivatives of p). This would give an explicit closed-form witness, not just an existence proof. Requires finite sum manipulation in Lean.",
+      "Connect to differential Galois groups: formalize that the differential Galois group of e^(-x²) is ℂ* (multiplicative group), a non-solvable algebraic group, which is why its Picard-Vessiot extension admits no elementary integral — the full Picard-Vessiot version of the obstruction."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Polynomial.Derivative",
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Algebra.Polynomial.Degree.Definitions",
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Polynomial",
+      "Real"
+    ],
+    "namespace": "AbelRuffiniOQ09",
+    "lineCount": 435,
+    "axiomCount": 3,
+    "theoremCount": 20,
+    "definitionCount": 2,
+    "path": "Proofs/AbelRuffiniOQ09.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "no_poly_risch_soln",
+      "type": "core",
+      "description": "No polynomial p satisfies the Risch ODE p' - C(2)·X·p = 1. This is the polynomial obstruction to the Gaussian integral's elementarity.",
+      "leanType": "∀ p : Polynomial ℝ, Polynomial.derivative p - Polynomial.C 2 * (Polynomial.X * p) ≠ 1"
+    },
+    {
+      "name": "risch_ode_coeff_top",
+      "type": "key-lemma",
+      "description": "The coefficient of X^(natDegree p + 1) in (derivative p - C 2 · (X · p)) equals -2 · leadingCoeff(p). This is the algebraic identity driving the degree-raising argument.",
+      "leanType": "(Polynomial.derivative p - Polynomial.C 2 * (Polynomial.X * p)).coeff (p.natDegree + 1) = -2 * p.leadingCoeff"
+    },
+    {
+      "name": "risch_ode_raises_degree",
+      "type": "structural",
+      "description": "The Risch operator L strictly raises polynomial degree: for p ≠ 0, natDegree(L[p]) > natDegree(p).",
+      "leanType": "(p : Polynomial ℝ) → (hp : p ≠ 0) → p.natDegree < (Polynomial.derivative p - Polynomial.C 2 * (Polynomial.X * p)).natDegree"
+    },
+    {
+      "name": "gaussian_vs_linear_contrast",
+      "type": "key",
+      "description": "Packages the asymmetry: for g=x, L₁[Q] = Q'+Q = C(c) HAS polynomial solutions; for g=-x², L₂[Q] = Q'-2xQ = C(c) has NONE (for c≠0). This is the formalized structural explanation for why ∫e^(-x²) is not elementary while ∫e^x is.",
+      "leanType": "(c : ℝ) → (hc : c ≠ 0) → (∃ Q : Polynomial ℝ, Polynomial.derivative Q + Q = Polynomial.C c) ∧ (¬∃ Q : Polynomial ℝ, Polynomial.derivative Q - Polynomial.C 2 * (Polynomial.X * Q) = Polynomial.C c)"
+    },
+    {
+      "name": "gaussian_risch_polynomial_obstruction_summary",
+      "type": "summary",
+      "description": "Summary theorem: no polynomial p satisfies the Risch ODE for the Gaussian.",
+      "leanType": "¬∃ p : Polynomial ℝ, Polynomial.derivative p - Polynomial.C 2 * (Polynomial.X * p) = 1"
+    }
+  ],
+  "references": [
+    {
+      "key": "Li35",
+      "citation": "Liouville, J. (1835). Mémoire sur les transcendantes elliptiques considérées comme fonctions de leur amplitude. Journal de l'École Polytechnique, 23, 37–83.",
+      "type": "paper"
+    },
+    {
+      "key": "Li40",
+      "citation": "Liouville, J. (1840). Sur la classification des transcendantes et sur l'impossibilité d'exprimer les racines de certaines équations en fonction finie explicite des coefficients. Journal de Mathématiques Pures et Appliquées, 2(4), 523–547.",
+      "type": "paper"
+    },
+    {
+      "key": "Ri69",
+      "citation": "Risch, R.H. (1969). The problem of integration in finite terms. Transactions of the American Mathematical Society, 139, 167–189.",
+      "type": "paper"
+    },
+    {
+      "key": "Br05",
+      "citation": "Bronstein, M. (2005). Symbolic Integration I: Transcendental Functions, 2nd ed. Springer.",
+      "type": "book"
+    },
+    {
+      "key": "Si90",
+      "citation": "Singer, M.F. (1990). Formal solutions of differential equations. Journal of Symbolic Computation, 10(1), 59–94.",
+      "type": "paper"
+    },
+    {
+      "key": "Ma89",
+      "citation": "Magid, A.R. (1994). Lectures on Differential Galois Theory. American Mathematical Society University Lecture Series 7.",
+      "type": "book"
+    },
+    {
+      "key": "Ko86",
+      "citation": "Kovacic, J.J. (1986). An algorithm for solving second order linear homogeneous differential equations. Journal of Symbolic Computation, 2(1), 3–43.",
+      "type": "paper"
+    }
+  ],
+  "sorries": 0
+}
