@@ -249,6 +249,7 @@ theorem schurComp3_mul_eq_minor_det (A : Matrix (Fin 3) (Fin 3) F)
     schurComp3 A * A 2 2 = (block3 A 0 0).det := by
   simp only [schurComp3, block3_00_det]
   field_simp
+  ring
 
 -- ============================================================
 -- PART VI: The 3×3 Cramer's Rule
