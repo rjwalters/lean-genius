@@ -403,4 +403,48 @@ The latter connects to the well-studied Dickman function and smooth number densi
 
 ---
 
+## Session 2026-05-04 (Session 8) - Sylvester-Schur Extensions and Density Monotonicity
+
+**Mode**: REVISIT
+**Outcome**: progress — 6 new theorems proved (55→61), 1 bug fixed
+
+### What I Did
+- Fixed pre-existing duplicate declaration bug: `gpfConsecutive_eq_right_iff`,
+  `erdos_1201_prime_right_infinite`, `erdos_1201_eq_right_infinite` were each declared twice
+- Proved **`gpfConsecutive_succ_succ_gt_k`** (Sylvester-Schur n=k+2):
+  - Bertrand for k+1 gives prime p in (k+1, 2k+2] = [k+2, 2k+2] ⊆ [n, n+k]; use `gpfConsecutive_gt_k_of_prime_in_window`
+- Proved **`gpfConsecutive_succ_succ_succ_gt_k`** (Sylvester-Schur n=k+3):
+  - Bertrand for k+2 gives prime p in (k+2, 2k+4]. Since 2k+4=2(k+2) is composite (even, ≥6), p ≤ 2k+3 = (k+3)+k
+  - Key: `hp_prime.eq_one_or_self_of_dvd 2 (dvd_mul_right 2 (k+2))` rules out p = 2(k+2) being prime
+- Proved **`erdos_1201_good_implies_good_succ`** (good-set pointwise monotonicity in k):
+  - One-liner: `hgood.trans_le (by exact_mod_cast gpfConsecutive_mono n k hn)`
+- Proved **`erdos_1201_good_set_mono_k`** (set containment as k grows):
+  - The good set {n | P(n,k) > n^(1-ε)} ⊆ {n | P(n,k+1) > n^(1-ε)} for all ε, k
+- Proved **`upperDensity_mono`** (upper density monotone for set inclusion):
+  - `Filter.limsup_le_limsup` with IsCoboundedUnder (density ≥ 0) + IsBoundedUnder (density ≤ 1)
+  - Key pattern from Erdos25LogDensity: IsCoboundedUnder is 2nd arg, IsBoundedUnder is 3rd arg
+- Proved **`erdos_1201_density_mono_k`** (density non-decreasing in window width):
+  - One-liner: `upperDensity_mono (erdos_1201_good_set_mono_k ε k)`
+- Fixed IsCoboundedUnder argument order bug in `upperDensity_mono` (third commit)
+
+### Key Findings
+- Sylvester-Schur for n=k+3 requires ruling out 2(k+2) being prime — handled by primality of 2
+- `Filter.limsup_le_limsup` argument order: (≤ᶠ condition, IsCoboundedUnder f, IsBoundedUnder g)
+  - Different from intuition: IsCoboundedUnder for the SMALLER function, IsBoundedUnder for LARGER
+  - IsCoboundedUnder for density: `use 0; intro a ha; by_contra; get N with densityFun N ≤ a; linarith`
+- General Sylvester-Schur (n > k+3): needs Chebyshev/Hanson's theorem, not just Bertrand — HARD
+- Docker build twice timed out at 60 min (file is 861 lines with many complex theorems)
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (850→861 lines, 55→61 theorems, 0 sorries)
+- `src/data/proofs/erdos-1201/meta.json` (theoremCount 55→61, lineCount 779→861)
+- `research/problems/erdos-1201/knowledge.md` (this entry)
+- `src/data/research/problems/erdos-1201.json` (updated knowledge)
+
+### Next Steps
+- Full Sylvester-Schur (n > k): needs Hanson's theorem (P(n,k) ≥ n^{1/(k+1)}) or Ramachandra's work
+- Density lower bounds: requires Dickman ρ function (>1000 lines infra, truly blocked)
+
+---
+
 *Generated from erdosproblems.com on 2026-04-16*
