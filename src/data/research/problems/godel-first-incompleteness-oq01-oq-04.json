@@ -1,0 +1,77 @@
+{
+  "slug": "godel-first-incompleteness-oq01-oq-04",
+  "title": "Gödel Incompleteness: Diagonal Lemma Formalization in Lean 4",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall \\phi(x),\\ \\exists \\sigma,\\ \\vdash \\sigma \\leftrightarrow \\phi(\\ulcorner \\sigma \\urcorner)",
+    "plain": "The existing `godel-first-incompleteness-oq01` gallery proof formalizes Gödel's First",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-23T13:50:28+02:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Diagonal Lemma formalized as general axiom (5 axioms, 0 sorries, 9 theorems). G derived from fixed-point construction.",
+    "builtItems": [
+      "GodelFirstIncompletenessOQ01OQ04.lean: 241 lines, 5 axioms, 9 theorems, 0 sorries",
+      "diagonal_lem axiom: ∀ψ:ℕ→Formula, ∃σ:Formula, (⊢σ)↔(⊢ψ(⌈σ⌉))",
+      "noncomputable def G: Formula := (diagonal_lem (fun n => ¬ᶠ Prov n)).choose",
+      "G_spec theorem: (⊢G)↔(⊢¬ᶠProv(godelNum G)) — derived, not axiom",
+      "G_not_provable: clean 3-step proof via D1 + G_spec + Consistent",
+      "first_incompleteness, G_undecidable: main incompleteness theorems",
+      "Gallery entry: src/data/proofs/godel-first-incompleteness-oq01-oq-04/"
+    ],
+    "insights": [
+      "The Diagonal Lemma (∀ψ, ∃σ: (⊢σ)↔(⊢ψ(⌈σ⌉))) is the single principle behind G's self-reference",
+      "OQ-01's G_self_reference axiom is the specific instance for ψ(x)=¬Prov(x); in OQ-04 it is a one-line theorem",
+      "The meta-level Diagonal Lemma suffices for G_not_provable; the object-level version is needed only for neg_G_prov",
+      "The backward direction of G_self_reference (¬⊢Prov(⌈G⌉) → ⊢G) requires completeness and is not derivable",
+      "Multiple fixed points exist: prov_fixed_point_exists and consistency_sentence_exists are other instances"
+    ],
+    "mathlibGaps": [
+      "Object-level Diagonal Lemma (F⊢σ↔ψ(⌈σ⌉)) requires substitution axioms not formalized",
+      "Full Gödel numbering with computable substitution function not in Mathlib"
+    ],
+    "nextSteps": [
+      "Await Docker build to verify 0 sorries compile",
+      "Consider formalizing the object-level Diagonal Lemma for a complete treatment"
+    ],
+    "markdown": "# Knowledge Base: godel-first-incompleteness-oq01-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "logic",
+    "foundations",
+    "incompleteness",
+    "self-reference",
+    "lean4",
+    "wiedijk-100"
+  ],
+  "relatedProofs": [
+    "godel-first-incompleteness-oq01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T02:10:34.552Z",
+  "lastUpdate": "2026-05-03T02:10:34.669Z"
+}

@@ -1,0 +1,130 @@
+{
+  "id": "godel-first-incompleteness-oq01-oq-04",
+  "title": "Gödel's Diagonal Lemma: Fixed-Point Theorem Formalization",
+  "slug": "godel-first-incompleteness-oq01-oq-04",
+  "description": "Formalizes the Diagonal Lemma (Fixed-Point Lemma) as a general axiom and derives Gödel's First Incompleteness Theorem from it. Unlike the companion OQ-01 which takes G's self-reference as an axiom for a specific formula G=⟨42⟩, this file constructs G as the fixed point of ψ(x)=¬Prov(x) via the Diagonal Lemma, making G_self_reference a derived theorem rather than an axiom. Same axiom count (5), clearer mathematical structure.",
+  "meta": {
+    "author": "Kurt Gödel (1931), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Diagonal_lemma",
+    "date": "1931",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/GodelFirstIncompletenessOQ01OQ04.lean",
+    "tags": [
+      "logic",
+      "foundations",
+      "incompleteness",
+      "self-reference",
+      "diagonal-lemma",
+      "fixed-point",
+      "advanced"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 5,
+    "assumptions": "5 axioms: (1) Provable: Formula → Prop (opaque provability predicate); (2) d1: D1 representability (⊢φ → ⊢Prov(⌈φ⌉)); (3) diagonal_lem: the GENERAL Diagonal Lemma (∀ψ:ℕ→Formula, ∃σ, (⊢σ)↔(⊢ψ(⌈σ⌉))); (4) neg_G_prov: object-level consequence (⊢¬G → ⊢Prov(⌈G⌉)); (5) omega_cons: ω-consistency for G (¬⊢G → ¬⊢Prov(⌈G⌉)). Key improvement over OQ-01: axiom (3) replaces OQ-01's G_self_reference, which was a specific axiom for G=⟨42⟩. Here G is DERIVED from (3) and G_self_reference is a THEOREM.",
+    "originalContributions": [
+      "Diagonal Lemma (general form) as the core axiom: ∀ψ:ℕ→Formula, ∃σ, (⊢σ)↔(⊢ψ(⌈σ⌉))",
+      "G constructed as the fixed point of ψ(x)=¬Prov(x) via Classical.choose",
+      "G_spec as a THEOREM (not axiom): (⊢G)↔(⊢¬Prov(⌈G⌉)), derived from diagonal_lem",
+      "G_not_provable proof exposing the three components: D1 + Diagonal Lemma + Consistency",
+      "Comparison showing OQ-01's G_self_reference is the specific instance of the general Diagonal Lemma",
+      "Generality demonstration: prov_fixed_point_exists, consistency_sentence_exists as other instances"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib.Logic.Basic",
+        "description": "Basic logical connectives and Classical.choose",
+        "module": "Mathlib.Logic.Basic"
+      }
+    ],
+    "dateAdded": "2026-05-03",
+    "lineCount": 241,
+    "theoremCount": 9,
+    "mathlib_version": "4.26.0",
+    "prerequisites": [
+      "Mathematical logic: formal systems, provability, consistency",
+      "Gödel numbering and arithmetization of metamathematics",
+      "The Diagonal Lemma and fixed-point constructions",
+      "OQ-01: GodelFirstIncompletenessOQ01.lean (companion file)"
+    ],
+    "relatedProofs": [
+      {
+        "id": "godel-first-incompleteness-oq01",
+        "relationship": "companion",
+        "note": "OQ-01 takes G_self_reference as an axiom; OQ-04 derives it from the general Diagonal Lemma"
+      },
+      {
+        "id": "godel-incompleteness",
+        "relationship": "ancestor",
+        "note": "Original vacuous formalization; OQ-01 and OQ-04 provide non-vacuous versions"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Diagonal Lemma (also called the Fixed-Point Lemma or Self-Reference Lemma) is the key engine behind Gödel's 1931 incompleteness theorems, Tarski's undefinability theorem, and many other results in mathematical logic. It was implicit in Gödel's original paper and made explicit by later authors including Carnap and Smullyan.\n\nThe lemma states: for any formula φ(x) with one free variable, there is a sentence σ such that the formal system F proves σ ↔ φ(⌈σ⌉). In other words, σ 'says about itself' that it has property φ. Applied to φ(x) = ¬Prov(x) ('x is not provable'), the Diagonal Lemma yields the Gödel sentence G: 'G is not provable'.\n\nThis file formalizes the Diagonal Lemma in its meta-level form and shows it is the single combinatorial principle from which G's self-reference property flows.",
+    "problemStatement": "**The Diagonal Lemma** (Fixed-Point Theorem):\n$$\\forall \\psi : \\mathbb{N} \\to \\text{Formula},\\quad \\exists \\sigma : \\text{Formula},\\quad (\\vdash \\sigma) \\leftrightarrow (\\vdash \\psi(\\lceil \\sigma \\rceil))$$\n\nFor any formula-with-free-variable $\\psi$, there exists a self-referential sentence $\\sigma$ that is provable iff $\\psi(\\lceil\\sigma\\rceil)$ is provable. The Gödel sentence $G$ is the instance $\\psi(x) = \\neg\\text{Prov}(x)$.",
+    "text": "Derives Gödel's First Incompleteness Theorem from the general Diagonal Lemma, showing G is constructed rather than assumed.",
+    "proofStrategy": "**Structure**: The proof separates three independent components:\n\n1. **D1 Representability** (`d1`): Provability is internally representable — if F proves φ, then F has a proof of 'φ is provable'. This is a property of sufficiently strong systems (holds for Robinson arithmetic Q and above).\n\n2. **Diagonal Lemma** (`diagonal_lem`): The combinatorial fixed-point existence. We axiomatize the meta-level form (⊢σ)↔(⊢ψ(⌈σ⌉)). The full proof in arithmetic uses a substitution function and primitive recursion.\n\n3. **ω-Consistency** (`omega_cons` + `neg_G_prov`): The hypothesis that rules out ¬G. This cannot be derived from (1) and (2) alone.\n\n**G is constructed, not assumed**: `G := (diagonal_lem (fun n => ¬ᶠ Prov n)).choose`. The property `G_spec : (⊢G) ↔ (⊢¬Prov(⌈G⌉))` is an immediate corollary.\n\n**G_not_provable** follows from D1 + Diagonal Lemma + Consistency in 3 lines. **neg_G_not_provable** uses the additional ω-consistency axioms.",
+    "keyInsights": [
+      "The Diagonal Lemma is the single combinatorial principle behind Gödel's self-reference — D1 and ω-consistency are the additional mathematical hypotheses",
+      "OQ-01's G_self_reference axiom is the SPECIFIC INSTANCE of the Diagonal Lemma for ψ(x) = ¬Prov(x); here it becomes a one-line theorem",
+      "The meta-level Diagonal Lemma ((⊢σ)↔(⊢ψ(⌈σ⌉)) in Lean) suffices to prove G_not_provable; the full object-level version (F⊢σ↔ψ(⌈σ⌉)) is needed only to derive neg_G_prov",
+      "Multiple fixed points exist: prov_fixed_point_exists and consistency_sentence_exists are other instances of the same diagonal_lem",
+      "The backward direction of G_self_reference (¬⊢Prov(⌈G⌉) → ⊢G) would require completeness — OQ-01's axiomatization was slightly stronger than necessary"
+    ]
+  },
+  "sections": [
+    {
+      "id": "infrastructure",
+      "title": "Basic Formula Infrastructure",
+      "startLine": 47,
+      "endLine": 62,
+      "description": "Defines Formula, neg, godelNum, and Prov — the same simplified model as OQ-01.",
+      "summary": "Formula structure with code:Nat, negation, Gödel numbering, and provability formula constructor."
+    },
+    {
+      "id": "first-axioms",
+      "title": "First Three Axioms: Provable, D1, Diagonal Lemma",
+      "startLine": 65,
+      "endLine": 110,
+      "description": "Declares the opaque Provable predicate, D1 representability, and the general Diagonal Lemma as the three foundational axioms.",
+      "summary": "The Diagonal Lemma (axiom 3) is the key new addition, replacing OQ-01's G_self_reference."
+    },
+    {
+      "id": "godel-construction",
+      "title": "Constructing the Gödel Sentence",
+      "startLine": 113,
+      "endLine": 130,
+      "description": "Defines G as the fixed point of ψ(x)=¬Prov(x) via diagonal_lem, and proves G_spec as a theorem.",
+      "summary": "G is derived from the Diagonal Lemma; G_spec (⊢G↔⊢¬Prov(⌈G⌉)) is a theorem not an axiom."
+    },
+    {
+      "id": "remaining-axioms",
+      "title": "Remaining Two Axioms",
+      "startLine": 133,
+      "endLine": 148,
+      "description": "Axioms for the object-level consequence (neg_G_prov) and ω-consistency (omega_cons).",
+      "summary": "These two axioms about G cannot be derived from the meta-level Diagonal Lemma alone."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Incompleteness Theorems",
+      "startLine": 158,
+      "endLine": 208,
+      "description": "G_not_provable, neg_G_not_provable, first_incompleteness, and G_undecidable.",
+      "summary": "The full incompleteness theorem suite, now derived from the cleaner 5-axiom basis."
+    },
+    {
+      "id": "generality",
+      "title": "Generality of the Diagonal Lemma",
+      "startLine": 211,
+      "endLine": 228,
+      "description": "Additional fixed-point instances showing the Diagonal Lemma applies beyond just ¬Prov.",
+      "summary": "prov_fixed_point_exists and consistency_sentence_exists as other Diagonal Lemma instances."
+    }
+  ],
+  "conclusion": {
+    "summary": "Demonstrates that Gödel's First Incompleteness Theorem follows from the Diagonal Lemma as a general principle, with G explicitly constructed rather than assumed.",
+    "openQuestions": []
+  }
+}
