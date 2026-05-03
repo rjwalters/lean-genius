@@ -17,11 +17,11 @@
       "AngleTrisectionOQ03"
     ],
     "namespace": "AngleTrisectionOQ03OQ01",
-    "lineCount": 123,
+    "lineCount": 150,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 2,
-    "theoremCount": 13
+    "theoremCount": 12
   },
   "meta": {
     "author": "Formalized in Lean 4 (researcher-4)",
@@ -117,32 +117,32 @@
   "sections": [
     {
       "title": "Part I: Computable Decision Functions",
-      "lineStart": 24,
-      "lineEnd": 51,
+      "lineStart": 31,
+      "lineEnd": 58,
       "description": "Defines ngonConstructible : ℕ → Bool and proves its correctness"
     },
     {
       "title": "Part II: Program Evaluation",
-      "lineStart": 54,
-      "lineEnd": 80,
+      "lineStart": 60,
+      "lineEnd": 89,
       "description": "#eval commands showing the program computing concrete constructibility answers"
     },
     {
       "title": "Part III: Verified Enumeration",
-      "lineStart": 82,
-      "lineEnd": 100,
+      "lineStart": 91,
+      "lineEnd": 110,
       "description": "native_decide proof that constructibleNgons 100 = [3,4,5,...,96] (exactly 24 polygons)"
     },
     {
       "title": "Part IV: Fermat Prime Verification",
-      "lineStart": 102,
-      "lineEnd": 120,
+      "lineStart": 112,
+      "lineEnd": 131,
       "description": "All five known Fermat primes verified as constructible via decide and native_decide"
     },
     {
       "title": "Part V: Structural Consequences",
-      "lineStart": 122,
-      "lineEnd": 139,
+      "lineStart": 133,
+      "lineEnd": 149,
       "description": "Deductions about the structure of constructible polygons"
     }
   ]
