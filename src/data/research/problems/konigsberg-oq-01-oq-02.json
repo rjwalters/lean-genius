@@ -29,40 +29,47 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 5→2 axioms. PR #15170 proved sum_outDegree_eq_edgeCount, sum_inDegree_eq_edgeCount (handshaking, via Finset.sum_comm double-count), and eulerian_circuit_implies_balanced (necessity, via walk-position bijection + closed walk rotation). Remaining: directed_eulerian_iff (Hierholzer sufficiency, ~500+ lines) and directed_euler_path_iff.",
+    "progressSummary": "PROGRESS: 5→2 axioms (Session 2). Session 3 adds 478 lines of Hierholzer infrastructure: maxTrail construction (terminates by edge count), maxTrail_closed PROVED (balance contradiction), circuit_exists PROVED, open-walk counting lemmas PROVED. Remaining axioms: directed_eulerian_iff (needs circuit-splicing) and directed_euler_path_iff.",
     "builtItems": [
-      "sum_outDegree_eq_edgeCount: proved from first principles via Finset.card_biUnion in KonigsbergOQ01OQ02.lean:85-101",
-      "sum_inDegree_eq_edgeCount: proved from first principles via Finset.card_biUnion in KonigsbergOQ01OQ02.lean:106-121",
-      "sum_outDegree_eq_sum_inDegree: proved by transitivity through |E| in KonigsbergOQ01OQ02.lean:124-126",
-      "directedTriangle_handshaking: explicit verification of handshaking for 3-cycle (3 edges, sum outDeg = 3) in KonigsbergOQ01OQ02.lean:212-215",
-      "eulerian_balanced_sum_zero: if G has Eulerian circuit then ∑ outDeg = ∑ inDeg as integers in KonigsbergOQ01OQ02.lean:223-226",
-      "eulerian_balanced_implies_degree_balance: direct corollary from axiom in KonigsbergOQ01OQ02.lean:229-231",
-      "sum_outDegree_eq_edgeCount: proved in KonigsbergOQ01OQ02.lean:79 via Finset.sum_comm (not axiom)",
-      "sum_inDegree_eq_edgeCount: proved in KonigsbergOQ01OQ02.lean:91 via Finset.sum_comm (not axiom)",
+      "sum_outDegree_eq_edgeCount: proved via Finset.sum_comm double-count in KonigsbergOQ01OQ02.lean:79",
+      "sum_inDegree_eq_edgeCount: proved via Finset.sum_comm double-count in KonigsbergOQ01OQ02.lean:91",
+      "sum_outDegree_eq_sum_inDegree: proved by transitivity through |E| in KonigsbergOQ01OQ02.lean:103",
       "closed_walk_balance: private lemma KonigsbergOQ01OQ02.lean:128 — rotation bijection for closed walk",
       "walk_source_eq_outDegree: private lemma KonigsbergOQ01OQ02.lean:175 — edge-position bijection for sources",
       "walk_target_eq_inDegree: private lemma KonigsbergOQ01OQ02.lean:228 — edge-position bijection for targets",
-      "eulerian_circuit_implies_balanced: proved in KonigsbergOQ01OQ02.lean:273 (not axiom)"
+      "eulerian_circuit_implies_balanced: proved in KonigsbergOQ01OQ02.lean:273 (necessity, not axiom)",
+      "open_walk_last_target_excess: private lemma KonigsbergOQ01OQ02.lean:423 — for open walk u→w, target-count(w) = source-count(w) + 1, proved via Finset.card_bij",
+      "open_walk_first_source_excess: private lemma KonigsbergOQ01OQ02.lean:466 — for open walk u→w, source-count(u) = target-count(u) + 1, proved via Finset.card_bij",
+      "maxTrail: noncomputable def KonigsbergOQ01OQ02.lean:516 — greedy trail, terminates by Finset.card_erase_lt_of_mem",
+      "maxTrailRem: noncomputable def KonigsbergOQ01OQ02.lean:525 — remaining edges after maxTrail",
+      "maxTrailRem_subset: proved KonigsbergOQ01OQ02.lean:540 — rem ⊆ original (by Nat.strong_rec_on)",
+      "maxTrailRem_last_no_out: proved KonigsbergOQ01OQ02.lean:554 — last vertex has no outgoing edges in rem",
+      "maxTrail_closed: PROVED KonigsbergOQ01OQ02.lean:619 — in balanced digraph, maximal trail is a closed circuit (balance contradiction)",
+      "circuit_exists: PROVED KonigsbergOQ01OQ02.lean:746 — every non-empty balanced digraph has a directed circuit",
+      "DirectedCircuit: structure KonigsbergOQ01OQ02.lean:738",
+      "DiGraph.removeEdgeSet: def KonigsbergOQ01OQ02.lean:781",
+      "remove_circuit_balanced: KonigsbergOQ01OQ02.lean:788 — removing circuit preserves balance (1 sorry in circuit-balance sub-lemma)"
     ],
     "insights": [
-      "sum_outDegree_eq_edgeCount can be proved by partitioning G.edges by first endpoint and applying Finset.card_biUnion — no axiom needed",
-      "sum_inDegree_eq_edgeCount follows the same Finset partition argument with second endpoint",
-      "The disjointness condition for Finset.card_biUnion requires: different vertices → different filter classes, proved via Finset.disjoint_left and Finset.mem_filter",
-      "The remaining 3 axioms (eulerian_circuit_implies_balanced, directed_eulerian_iff, directed_euler_path_iff) require deeper graph traversal infrastructure (walk bijection, Hierholzer algorithm) — deferred",
-      "Weak connectivity definition formalized as: for all u≠v there exists an undirected path in G (edges traversable in either direction)",
-      "Handshaking proved by Finset.sum_comm: expand |{e: e.1=v}| as ∑_e [e.1=v], swap sums, get ∑_e 1 = |E|. Cleaner than Finset.card_biUnion approach.",
-      "Necessity proved via ExistsUnique: strengthening HasEulerianCircuit with ∃! (unique position per edge) + hsteps (every walk step is an edge) enables Finset.card_bij and ExistsUnique.unique for injectivity.",
-      "closed_walk_balance: rotation bijection i ↦ (i=0 ? n-1 : i-1) sends source-count positions {i<n: walk[i]=v} to target-count positions {i<n: walk[i+1]=v}. Uses walk[0]=walk[n] for the i=0 case."
+      "Handshaking proved by Finset.sum_comm: expand |{e: e.1=v}| as ∑_e [e.1=v], swap sums, get ∑_e 1 = |E|.",
+      "Necessity proved via ExistsUnique + Finset.card_bij + closed walk rotation bijection.",
+      "closed_walk_balance: rotation bijection i ↦ (i=0 ? n-1 : i-1) for the closed-walk position shift.",
+      "maxTrail termination: Finset.card_erase_lt_of_mem gives strict decrease; well-founded on Finset.card.",
+      "maxTrail_closed proof strategy: balance contradiction. If last ≠ start: (1) maximality → all outgoing edges of last were used, (2) steps_distinct → each edge appears once, (3) open_walk_last_target_excess → tgt_count = src_count + 1, (4) tgt_count ≤ inDegree (injection), (5) balance: inDegree = outDegree. Contradiction: outDegree + 1 ≤ outDegree.",
+      "maxTrailRem_last_no_out proved by Nat.strong_rec_on; the inductive step follows from the recursive structure of maxTrail.",
+      "Circuit splicing is the remaining piece: take circuit from circuit_exists, find first vertex on the circuit that has remaining outgoing edges, splice the two circuits. This is the Hierholzer loop.",
+      "HasEulerianPath lacks ∃! unique coverage; adding it would enable euler_path_implies_degree_balance via walk bijection + open-walk counting."
     ],
     "mathlibGaps": [
-      "No Mathlib gap for handshaking: Finset.card_biUnion + Finset.disjoint_left sufficed",
-      "Hierholzer algorithm (directed Eulerian circuit construction) not in Mathlib4 — needed for directed_eulerian_iff sufficiency",
-      "Walk bijection argument for necessity (each visit = one in-edge + one out-edge) needs List.get index theory — ~150 lines with dependent type complexity"
+      "No Mathlib gap for handshaking or necessity: all proved from scratch.",
+      "Hierholzer circuit-splicing not in Mathlib4 — the remaining step to close directed_eulerian_iff.",
+      "HasEulerianPath needs ∃! unique coverage to support the walk-bijection necessity proof."
     ],
     "nextSteps": [
-      "Eliminate directed_eulerian_iff: formalize Hierholzer's algorithm for directed graphs (constructive sufficiency, ~500+ lines)",
-      "Eliminate directed_euler_path_iff: prove from directed_eulerian_iff by degree modification argument",
-      "Docker build verification needed for KonigsbergOQ01OQ02.lean (PR #15170 not verified to compile)"
+      "Prove maxTrail_steps_in_E, maxTrail_steps_distinct, maxTrail_used_eq, maxTrail_last_exhausted — each ~30 lines of strong induction",
+      "Once inductive helpers are proved, only circuit-splicing remains for directed_eulerian_iff",
+      "Prove remove_circuit_balanced circuit-balance sub-lemma using closed_walk_balance",
+      "For directed_euler_path_iff: strengthen HasEulerianPath with ∃!, then apply open-walk counting lemmas"
     ]
   },
   "tags": [
@@ -114,11 +121,11 @@
     {
       "path": "Proofs/KonigsbergOQ01OQ02.lean",
       "filename": "KonigsbergOQ01OQ02.lean",
-      "lineCount": 390,
-      "theoremCount": 8,
+      "lineCount": 867,
+      "theoremCount": 13,
       "axiomCount": 2,
-      "defCount": 9,
-      "sorryCount": 0,
+      "defCount": 14,
+      "sorryCount": 6,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ01OQ02.lean"
     },
