@@ -267,3 +267,48 @@ Per project memory `project_mathlib_api_drift_2026_04`, this drift hits a cohort
 1. Submit `hβ_dvd` sub-sorry to Aristotle: context is `β : ℂ, a : ℂ, halg_β : IsAlgebraic ℚ β, hβ2 : β * β = a, hAlg_aβ : Algebra ↥ℚ⟮a⟯ ↥ℚ⟮β⟯, hST_aβ : IsScalarTower ℚ ↥ℚ⟮a⟯ ↥ℚ⟮β⟯, ha_le_β : ℚ⟮a⟯ ≤ ℚ⟮β⟯`; goal `finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2`
 2. For `hjoin_dvd`: consider reformulating with stronger IH (relative constructibility)
 3. After PR #15034 merges, continue proof work on hβ_dvd
+
+## Session 33 (2026-05-03) — hjoin_dvd Tower Structure Proved
+
+**Mode**: REVISIT (RICH problem, continuing from Session 32)
+**Outcome**: PROGRESS — hjoin_dvd now has a complete proof structure with 1 targeted sorry
+
+### What I Did
+- Replaced `hjoin_dvd : sorry` with tower proof through ℚ⟮b⟯:
+  1. Set up `Algebra ↥ℚ⟮b⟯ ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯)` and `IsScalarTower ℚ ↥ℚ⟮b⟯ ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯)`
+  2. Tower: `finrank ℚ (ℚ⟮b⟯⊔ℚ⟮β⟯) = finrank ↥ℚ⟮b⟯ (ℚ⟮b⟯⊔ℚ⟮β⟯) * finrank ℚ ℚ⟮b⟯`
+  3. `h_comp_dvd : finrank ↥ℚ⟮b⟯ (ℚ⟮b⟯⊔ℚ⟮β⟯) ∣ finrank ℚ ℚ⟮β⟯` (sorry — char-0 compositum divisibility)
+  4. `calc`: product ∣ `finrank ℚ ℚ⟮β⟯ * finrank ℚ ℚ⟮b⟯ ∣ 2^(j+1) * 2^k = 2^(j+k+1)`
+- Added `finrank_sup_dvd_finrank_right` to Aristotle companion file
+- Updated knowledge.json with new progress summary and insights
+
+### Key Finding: Correct Sorry Structure
+
+The old comment said "REQUIRES STRONGER IH" for the tower-through-ℚ⟮β⟯ approach.
+The new approach (tower through ℚ⟮b⟯) avoids the stronger IH: instead it uses
+the standard char-0 compositum divisibility `[K⊔L:K] | [L:F]`.
+
+The key insight:
+```
+[ℚ⟮b⟯⊔ℚ⟮β⟯:ℚ] = [ℚ⟮b⟯⊔ℚ⟮β⟯:ℚ⟮b⟯] * [ℚ⟮b⟯:ℚ]
+              ∣ [ℚ⟮β⟯:ℚ] * [ℚ⟮b⟯:ℚ]   (by h_comp_dvd + IH)
+              ∣ 2^(j+1) * 2^k = 2^(j+k+1)
+```
+
+### Compositum Divisibility Gap
+
+`h_comp_dvd : Module.finrank ↥ℚ⟮b⟯ ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ Module.finrank ℚ ↥ℚ⟮β⟯`
+
+Mathematical proof: In char 0 (separable), `[K⊔L:K] = [L:K∩L]`, which divides `[L:ℚ]` by tower. Mathlib has `finrank_sup_le` (≤, not ∣). The divisibility requires either the separability/intersection formula or a Galois argument.
+
+Submitted as `finrank_sup_dvd_finrank_right` to Aristotle companion (existing job `594e3160`).
+
+### Files Modified
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean` — hjoin_dvd proof skeleton
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle.lean` — new companion theorem
+- `src/data/research/problems/angle-trisection-oq-02-oq-01-oq-02-incomplete-01.json` — metadata
+
+### Next Steps
+1. `h_comp_dvd`: Aristotle job `594e3160` (re-submitted companion with new theorem)
+2. If Aristotle fails `h_comp_dvd`: build via intersection field `K∩L` + `finrank_dvd_of_le_right`
+3. `wantzel_galois_iff`: out of scope (500+ Galois theory lines)
