@@ -102,4 +102,44 @@ may have density 0 (primes have density 0 by PNT). Positive density requires smo
 
 ---
 
+## Session 2026-05-03 (Session 3) - Max Formula and Smooth-Window Reformulation
+
+**Mode**: REVISIT
+**Outcome**: progress — 2 new theorems proved, PR created
+
+### What I Did
+- Identified gap: no lemma connecting P(n,k) to individual-term GPFs
+- Proved `gpfConsecutive_eq_sup_range (n ≥ 2) : P(n,k) = sup_{i≤k} GPF(n+i)`
+  - Key: prime factors of a product = union of prime factors of factors → GPF(product) = max GPF(term)
+  - ≤ direction: GPF of product divides some term via `prime_dvd_consecutive_range`, so ≤ sup
+  - ≥ direction: each term's GPF divides the term which divides the product, so ≤ GPF(product)
+- Proved `gpfConsecutive_le_iff : P(n,k) ≤ t ↔ ∀ i ≤ k, GPF(n+i) ≤ t`
+  - Immediate corollary of max formula via `Finset.sup_le_iff`
+  - Reformulates "P(n,k) is small" as "every integer in [n, n+k] is t-smooth"
+- Updated meta.json: 35→37 theorems, 472→514 lines, new max-formula section
+- Updated research JSON: added 2 builtItems, 2 insights, updated progressSummary
+
+### Key Findings
+- `Finset.sup_le_iff` and `Finset.le_sup` work cleanly for ℕ with `OrderBot` (0)
+- The max formula is the bridge between product-level and term-level properties
+- Smooth-window reformulation: "n fails Erdős condition" = "window [n, n+k] is fully t-smooth"
+  — this connects to Dickman's ρ function and opens the density estimation approach
+
+### Mathematical Note
+`gpfConsecutive_le_iff` reveals the structure of the Erdős conjecture: proving density → 1
+reduces to showing the density of n where ALL of n, n+1, ..., n+k are n^ε-smooth
+goes to 0 as k → ∞. This is plausible from smooth number theory (ρ(1/ε) density of
+n^ε-smooth numbers among [1,n]) but requires quantitative estimates not in Mathlib.
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (514 lines, was 472)
+- `src/data/proofs/erdos-1201/meta.json` (updated counts, new section)
+- `src/data/research/problems/erdos-1201.json` (updated knowledge)
+
+### Next Steps
+- Sylvester-Schur: for n > k, n(n+1)···(n+k-1) has a prime factor > k
+- Prove `gpfConsecutive_pos_density_of_smooth_bound`: if k-smooth density < η then good set ≥ 1-η
+
+---
+
 *Generated from erdosproblems.com on 2026-04-16*
