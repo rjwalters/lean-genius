@@ -192,22 +192,23 @@ def HasseMinkowskiTheorem : Prop :=
     RepresentsZeroNontrivially Q ↔
       (RepresentsZeroOverReals Q ∧ ∀ p : ℕ, [Fact (Nat.Prime p)] → RepresentsZeroOverPadic Q p)
 
-/-- **Axiom: Hasse-Minkowski Theorem (Alternative Formulation)**
+/-- **Hasse-Minkowski Theorem (Alternative Formulation, placeholder)**
 
     A nondegenerate quadratic form over ℚ is isotropic if and only if
     it is locally isotropic everywhere (over ℝ and all ℚₚ).
 
-    **Why axiomatized**: The Hasse-Minkowski theorem is one of the deepest
-    results in arithmetic theory of quadratic forms. A complete proof requires:
-    - p-adic analysis and Hensel's lemma
-    - Local classification of quadratic forms over ℚₚ
-    - Product formula for Hilbert symbols
-    - Global-to-local techniques via idelic methods or class field theory
-
-    Proven by Minkowski (1890) for ternary forms, generalized by Hasse (1923). -/
-axiom hasse_minkowski_alt (Q : QuadraticForm ℚ (Fin n → ℚ)) :
+    **Status**: Placeholder `sorry`. Because `RepresentsZeroOverReals` and
+    `RepresentsZeroOverPadic` are defined as `True` pending tensor products
+    with ℝ/ℚₚ, this statement currently reduces to `IsIsotropic Q ↔ True`,
+    which is mathematically false. We mark it as `sorry` (instead of an
+    `axiom`) so the gap is visible to `#check_sorry` and gallery sorry
+    counters. A genuine proof requires p-adic analysis, local classification,
+    and the product formula for Hilbert symbols — proven by Minkowski (1890)
+    for ternary forms, generalized by Hasse (1923). -/
+theorem hasse_minkowski_alt (Q : QuadraticForm ℚ (Fin n → ℚ)) :
     IsIsotropic Q ↔ (RepresentsZeroOverReals Q ∧
-      ∀ p : ℕ, [Fact (Nat.Prime p)] → RepresentsZeroOverPadic Q p)
+      ∀ p : ℕ, [Fact (Nat.Prime p)] → RepresentsZeroOverPadic Q p) := by
+  sorry
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART IV: CONSEQUENCES AND APPLICATIONS
@@ -226,16 +227,16 @@ If Q represents a ∈ ℚ* locally everywhere, then Q represents a globally.
 
 This is sometimes called "weak approximation" for quadratic forms. -/
 theorem weak_hasse_principle (Q : QuadraticForm ℚ (Fin n → ℚ)) (a : ℚ) (ha : a ≠ 0) :
-    -- If Q represents a over ℝ and all ℚₚ, then Q represents a over ℚ
+    -- Conclusion is `True` placeholder until weak approximation is formalized.
     True := by
-  trivial -- Follows from Hasse-Minkowski applied to Q - a·x₀²
+  sorry -- Should follow from Hasse-Minkowski applied to Q - a·x₀² (placeholder)
 
 /-- **Ternary Forms**: A ternary quadratic form over ℚ represents every rational
     number that it represents locally. -/
 theorem ternary_representation (Q : QuadraticForm ℚ (Fin 3 → ℚ)) (a : ℚ) :
-    -- For ternary forms, local representation implies global representation
+    -- Conclusion is `True` placeholder until local-global for ternary forms is formalized.
     True := by
-  trivial -- Key application of Hasse-Minkowski
+  sorry -- Key application of Hasse-Minkowski (placeholder)
 
 /-- **Four Squares Theorem (Lagrange)**
 
@@ -280,21 +281,20 @@ structure RationalClassification where
   hasseWittAtInfinity : ℤ  -- ±1
   hasseWittAtPrimes : ℕ → ℤ  -- ±1 for each prime, 1 for almost all
 
-/-- **Axiom: Rational Quadratic Form Classification**
+/-- **Rational Quadratic Form Classification (placeholder)**
 
     Two quadratic forms over ℚ are equivalent if and only if they have the same
     dimension, discriminant (in ℚ*/ℚ*²), and Hasse-Witt invariants at all places.
 
-    **Why axiomatized**: The complete classification theorem requires:
-    - Full development of Hasse-Witt invariants and their product formula
-    - Local classification at each prime (using p-adic valuations)
-    - Global assembly via strong approximation or class field theory
-    - Careful treatment of the discriminant in the square-class group
-
-    This is a consequence of the Hasse-Minkowski theorem together with
-    local classification results. -/
-axiom rational_classification_complete (Q₁ Q₂ : QuadraticForm ℚ (Fin n → ℚ)) :
-    AreEquivalent Q₁ Q₂ ↔ True  -- Should compare classifications; placeholder
+    **Status**: Placeholder `sorry`. The right-hand side is currently `True`,
+    so the statement reduces to `AreEquivalent Q₁ Q₂ ↔ True`, which is
+    mathematically false. We mark it as `sorry` (instead of an `axiom`) so
+    the gap is visible to `#check_sorry` and gallery sorry counters. A
+    genuine classification requires Hasse-Witt invariants, local
+    classification at each prime, and global assembly via class field theory. -/
+theorem rational_classification_complete (Q₁ Q₂ : QuadraticForm ℚ (Fin n → ℚ)) :
+    AreEquivalent Q₁ Q₂ ↔ True := by
+  sorry
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART VI: WITT RING STRUCTURE
@@ -315,9 +315,9 @@ If Q₁ ⊥ Q ≅ Q₂ ⊥ Q (orthogonal sum), then Q₁ ≅ Q₂.
 This allows "cancellation" of common summands in quadratic form equations. -/
 theorem witt_cancellation {F : Type*} [Field F] [CharZero F] (n m : ℕ)
     (Q₁ Q₂ Q : QuadraticForm F (Fin n → F)) :
-    -- If Q₁ ⊥ Q ≅ Q₂ ⊥ Q then Q₁ ≅ Q₂
+    -- Conclusion is `True` placeholder until Witt's theorem is formalized.
     True := by
-  trivial -- Witt's theorem (1937)
+  sorry -- Witt's theorem (1937) (placeholder)
 
 /-- The hyperbolic plane H = ⟨1, -1⟩ is the basic "trivial" quadratic form. -/
 def hyperbolicPlane (F : Type*) [Field F] : QuadraticForm F (Fin 2 → F) :=
@@ -404,8 +404,11 @@ over any local field (this is Meyer's theorem for p-adics). -/
 theorem dimension_five_always_isotropic (p : ℕ) [Fact (Nat.Prime p)]
     (Q : QuadraticForm ℚ (Fin 5 → ℚ)) :
     RepresentsZeroOverPadic Q p := by
-  -- Meyer's theorem: forms in ≥ 5 variables are isotropic over ℚₚ
-  trivial
+  -- Meyer's theorem: forms in ≥ 5 variables are isotropic over ℚₚ.
+  -- Conclusion currently unfolds to `True` since `RepresentsZeroOverPadic` is a
+  -- placeholder definition; we mark this as `sorry` until the proper formal
+  -- statement (via tensor products with ℚₚ) is in place.
+  sorry
 
 /-- **Open Problem**: Full classification of quadratic forms over general
     number fields remains an active area of research. -/
@@ -435,10 +438,11 @@ def HilbertSymbol (a b : ℚ) (p : ℕ) [Fact (Nat.Prime p)] : ℤ :=
 
 This is a generalization of quadratic reciprocity. -/
 theorem hilbert_reciprocity (a b : ℚ) (ha : a ≠ 0) (hb : b ≠ 0) :
-    -- Product of all Hilbert symbols equals 1
+    -- Conclusion is `True` placeholder until the product formula for Hilbert
+    -- symbols is formalized.
     True := by
-  -- Consequence of global class field theory
-  trivial
+  -- Consequence of global class field theory (placeholder)
+  sorry
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART X: SUMMARY
