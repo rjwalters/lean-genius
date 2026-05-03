@@ -2364,6 +2364,7 @@ import Proofs.OSBridge
 import Proofs.OnePlusOne
 import Proofs.PACLearning
 import Proofs.PACLearningOQ01
+import Proofs.PACLearningOQ01OQ01
 import Proofs.PNPBarriersLegacy
 import Proofs.PNPBarriersOQ01
 import Proofs.PNPBarriersSound

@@ -1,0 +1,186 @@
+{
+  "id": "pac-learning-bounds-oq-01-oq-01",
+  "title": "VC Dimension of Interval Classifiers on ℕ",
+  "slug": "pac-learning-bounds-oq-01-oq-01",
+  "description": "Proves VC dimension of interval classifiers on ℕ equals 2: every 2-element set is shattered (lower bound), and no 3-element set is shattered (upper bound via the convexity obstruction). Extends pac-learning-bounds-oq-01 (VC dim of thresholds = 1) to the next rung of the hypothesis class hierarchy.",
+  "meta": {
+    "author": "Vapnik-Chervonenkis (1971), Blumer et al. (1989), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vapnik%E2%80%93Chervonenkis_dimension",
+    "date": "1971",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PACLearningOQ01OQ01.lean",
+    "tags": [
+      "learning-theory",
+      "combinatorics",
+      "vc-dimension",
+      "cs-math-bridge",
+      "interval-classifiers"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries, 0 structure-encoded assumptions. intervalClassifiers is a concrete definition over ℕ. All theorems (pair-shatters, triple-doesn't-shatter, combined bound) are fully proved using standard arithmetic and Finset reasoning.",
+    "dateAdded": "2026-05-03",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.mem_insert",
+        "description": "Membership in a Finset insert",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.mem_singleton",
+        "description": "Membership in a Finset singleton",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Set.mem_setOf_eq",
+        "description": "Membership in a set comprehension",
+        "module": "Mathlib.Data.Set.Defs"
+      },
+      {
+        "theorem": "Nat.le_of_lt",
+        "description": "Weak inequality from strict inequality on ℕ",
+        "module": "Mathlib.Data.Nat.Defs"
+      }
+    ],
+    "originalContributions": [
+      "intervalClassifiers: explicit family { [a,b] : a b ∈ ℕ } with empty interval [b+1,b] for the all-negative labeling",
+      "interval_shatters_pair: every {a,b} (a < b) is shattered — 4 witnesses covering all labelings: [a,b] for {a,b}, [a,a] for {a}, [b,b] for {b}, [b+1,b] for ∅",
+      "interval_not_shatters_triple: for a < b < c, the labeling {a,c} is unrealizable — any interval containing a and c must contain b (convexity/monotone-interval obstruction)",
+      "interval_vcdim_two: combined statement VCdim = 2"
+    ],
+    "prerequisites": [
+      "VC dimension and shattering (pac-learning-bounds-oq-01)",
+      "Basic Finset operations in Mathlib",
+      "Interval convexity argument"
+    ],
+    "mathlib_version": "4.26.0",
+    "lineCount": 101,
+    "relatedProblems": [
+      {
+        "id": "pac-learning-bounds-oq-01",
+        "relationship": "Extends the threshold VC-dim-1 result to interval classifiers (VC dim 2)"
+      },
+      {
+        "id": "pac-learning-bounds",
+        "relationship": "Answers a specific instance of OQ-01: computes VC dimension of interval classifiers"
+      }
+    ],
+    "theoremCount": 4,
+    "definitionCount": 2
+  },
+  "crossReferences": [
+    {
+      "targetId": "pac-learning-bounds-oq-01",
+      "relationship": "extends",
+      "description": "Builds on the threshold VC-dimension-1 proof, reusing the Shatters predicate and adding the interval class with VC dim 2."
+    },
+    {
+      "targetId": "pac-learning-bounds",
+      "relationship": "answers",
+      "description": "Answers OQ-01 for interval classifiers: VC dim computation is tractable in Lean."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Interval classifiers are the second rung on the VC dimension ladder, after threshold classifiers (VC dim 1). The result VC dim(intervals on ℕ) = 2 is a standard textbook example, appearing in every PAC learning course as the first demonstration that convexity constrains shattering. The proof technique — any interval containing the two endpoints of a triple must contain the middle point — is the prototype for the general principle that convex sets in ℝ cannot shatter 3 or more collinear points.",
+    "problemStatement": "Define interval classifiers on ℕ as $H_{int} = \\{[a,b] : a \\leq b, a,b \\in \\mathbb{N}\\}$ where $[a,b] = \\{x \\in \\mathbb{N} : a \\leq x \\leq b\\}$. Compute its VC dimension.\n\nShow:\n1. (Lower bound) Every 2-element set $\\{a, b\\}$ with $a < b$ is shattered by $H_{int}$.\n2. (Upper bound) No 3-element set $\\{a, b, c\\}$ with $a < b < c$ is shattered.",
+    "text": "Interval classifiers on ℕ have VC dimension exactly 2. Verified in Lean 4 with four theorems: a helper lemma, pair-shatters, triple-not-shatters, and combined. The upper-bound proof uses the convexity obstruction: any interval containing the endpoints of a triple must contain the middle element.",
+    "proofStrategy": "1. **Lower bound (pair shattering):** For $a < b$, we exhibit four interval witnesses, one for each labeling of $\\{a,b\\}$: $[a,b]$ labels both, $[a,a]$ labels only $a$, $[b,b]$ labels only $b$, and $[b+1,b]$ (empty) labels neither.\n\n2. **Upper bound (no triple shattered):** For $a < b < c$, the adversarial labeling $T = \\{a, c\\}$ (include endpoints, exclude middle) cannot be realized. If $[l,r]$ contains $a$ then $l \\leq a$; if $[l,r]$ contains $c$ then $r \\geq c$. Since $a < b < c$, we get $l \\leq a < b < c \\leq r$, forcing $b \\in [l,r]$, contradicting $b \\notin T$.",
+    "keyInsights": [
+      "The 4-witness lower bound for pairs covers all 4 labeling cases: {a,b}, {a}, {b}, ∅. The empty interval [b+1,b] handles the all-negative case cleanly.",
+      "The convexity obstruction for triples: any interval containing two non-adjacent points of a sorted triple must contain the middle. This is the discrete analogue of the fact that intervals in ℝ are convex, and no convex set can exclude a point between two others it contains.",
+      "The proof reuses the Shatters predicate from PACLearningOQ01, showing the namespace is correctly organized for hierarchy of VC dimension results.",
+      "VCdim(intervals) = 2 is the characteristic example showing that adding one parameter (going from one threshold to two endpoints) exactly increases the VC dimension by 1."
+    ],
+    "prerequisites": [
+      "VC dimension and shattering",
+      "pac-learning-bounds-oq-01 (thresholds, VC dim 1)",
+      "Basic Finset operations in Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "File Header and Imports",
+      "startLine": 1,
+      "endLine": 17,
+      "summary": "Imports Mathlib and PACLearningOQ01 (for the Shatters predicate), opens the LearningTheory.VCDimension namespace.",
+      "mathContext": "Reuses the Shatters predicate from the parent OQ-01 entry."
+    },
+    {
+      "id": "definition",
+      "title": "intervalClassifiers Definition",
+      "startLine": 19,
+      "endLine": 22,
+      "summary": "Defines intervalClassifiers as { h | ∃ a b : ℕ, h = {x | a ≤ x ∧ x ≤ b} }. The empty interval (a > b) is included implicitly.",
+      "mathContext": "$H_{int} = \\{[a,b] : a,b \\in \\mathbb{N}\\}$ where $[a,b]$ is empty when $a > b$."
+    },
+    {
+      "id": "helper",
+      "title": "Membership Helper Lemma",
+      "startLine": 24,
+      "endLine": 26,
+      "summary": "mem_interval_iff unfolds set-comprehension membership to the conjunction l ≤ x ∧ x ≤ r for cleaner proof steps.",
+      "mathContext": "$x \\in \\{y \\mid l \\leq y \\wedge y \\leq r\\} \\iff l \\leq x \\wedge x \\leq r$."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Pair Shattering (VC dim ≥ 2)",
+      "startLine": 28,
+      "endLine": 58,
+      "summary": "Case-splits on membership of a and b in T, providing four interval witnesses covering all labelings of {a,b}.",
+      "mathContext": "$\\forall a < b : H_{int}$ shatters $\\{a,b\\}$."
+    },
+    {
+      "id": "upper-bound",
+      "title": "No Triple Shattered (VC dim ≤ 2)",
+      "startLine": 60,
+      "endLine": 96,
+      "summary": "Uses adversarial labeling {a,c} to derive contradiction: any interval containing a and c must contain b.",
+      "mathContext": "$\\forall a < b < c : \\neg H_{int}$ shatters $\\{a,b,c\\}$."
+    },
+    {
+      "id": "combined",
+      "title": "Combined Bound (VC dim = 2)",
+      "startLine": 98,
+      "endLine": 101,
+      "summary": "interval_vcdim_two bundles pair-shatters and triple-not-shatters into a single VC dimension statement.",
+      "mathContext": "$\\operatorname{VCdim}(H_{int}) = 2$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Interval classifiers on ℕ have VC dimension exactly 2. The proof extends the threshold VC-dimension-1 template, adding one parameter (endpoint pair) and one dimension.",
+    "implications": "Establishes the VC dim = 2 baseline for interval-based learning, enabling PAC sample complexity bounds of O(2/ε) for interval learning. The convexity obstruction technique generalizes to higher dimensions.",
+    "openQuestions": [
+      "Compute VC dim of axis-aligned rectangles in ℕ² (expected: 4). Would need a 5-point obstruction via the corners-plus-center configuration.",
+      "Prove the Sauer-Shelah lemma: for VC dim ≤ 2, growth function ≤ n²/2 + n/2 + 1.",
+      "Generalize intervalClassifiers to arbitrary totally ordered sets and prove VC dim = 2 in that generality.",
+      "Formalize the PAC sample complexity bound: O(2/ε · log(1/δ)) samples suffice to learn any interval with accuracy ε and confidence 1-δ."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.PACLearningOQ01"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "LearningTheory.VCDimension",
+    "lineCount": 101,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 2,
+    "path": "Proofs/PACLearningOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "interval_vcdim_two",
+      "type": "core",
+      "description": "VC dimension of interval classifiers on ℕ equals 2: every 2-element set is shattered, and no 3-element set is.",
+      "leanType": "(∀ a b, a < b → Shatters intervalClassifiers {a, b}) ∧ (∀ a b c, a < b → b < c → ¬ Shatters intervalClassifiers {a, b, c})"
+    }
+  ],
+  "sorries": 0
+}

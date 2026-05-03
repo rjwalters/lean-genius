@@ -1,0 +1,44 @@
+[
+  {
+    "id": "ann-interval-def",
+    "proofId": "pac-learning-bounds-oq-01-oq-01",
+    "range": {
+      "startLine": 19,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "intervalClassifiers: Intervals as Hypothesis Class",
+    "content": "An interval classifier on ℕ is parameterized by two endpoints $a \\leq b$ and classifies $x$ as positive iff $a \\leq x \\leq b$. The definition includes 'empty' intervals where $a > b$ (which classify no point as positive), providing the all-negative witness for the ∅ subset in the shattering argument.\n\nThis family has VC dimension 2: strictly larger than threshold classifiers (VC dim 1) because we have two free parameters instead of one, and strictly smaller than the full power set because intervals are convex.",
+    "mathContext": "$H_{int} = \\{[a,b] : a,b \\in \\mathbb{N}\\}$, VC dim = 2.",
+    "significance": "key",
+    "relatedConcepts": ["intervalClassifiers", "thresholdClassifiers", "VC dimension hierarchy"]
+  },
+  {
+    "id": "ann-pair-shattering",
+    "proofId": "pac-learning-bounds-oq-01-oq-01",
+    "range": {
+      "startLine": 28,
+      "endLine": 58
+    },
+    "type": "proof-technique",
+    "title": "Four-Witness Lower Bound",
+    "content": "The lower bound proof case-splits on whether $a$ and $b$ belong to the target labeling $T$, producing four witnesses:\n\n| $T$ | Witness interval | Rationale |\n|-----|------------------|-----------|\n| $\\{a,b\\}$ | $[a,b]$ | Contains both endpoints |\n| $\\{a\\}$ | $[a,a]$ | Contains only $a$ |\n| $\\{b\\}$ | $[b,b]$ | Contains only $b$ |\n| $\\emptyset$ | $[b+1,b]$ | Empty (since $b+1 > b$) |\n\nThis exhausts all $2^2 = 4$ labelings of $\\{a,b\\}$, proving $H_{int}$ shatters $\\{a,b\\}$.",
+    "mathContext": "$\\forall a < b$: 4 witnesses cover all $2^2 = 4$ subsets of $\\{a,b\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["interval_shatters_pair", "shattering lower bound", "empty interval trick"]
+  },
+  {
+    "id": "ann-convexity-obstruction",
+    "proofId": "pac-learning-bounds-oq-01-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 96
+    },
+    "type": "proof-technique",
+    "title": "Convexity Obstruction for Triples",
+    "content": "The upper bound uses the adversarial labeling $T = \\{a, c\\}$ (include endpoints, exclude the middle element $b$). The argument:\n\n1. If $[l,r]$ realizes $T$ on $\\{a,b,c\\}$, then $l \\leq a$ (since $a \\in T$) and $r \\geq c$ (since $c \\in T$).\n2. Since $a < b < c$, we get $l \\leq a < b < c \\leq r$.\n3. Therefore $l \\leq b \\leq r$, meaning $b \\in [l,r]$.\n4. But $b \\notin T = \\{a,c\\}$ — contradiction.\n\nThis is the *convexity obstruction*: any interval is convex (contains all integers between its endpoints), so it cannot include two elements while skipping one in between.",
+    "mathContext": "$l \\leq a < b < c \\leq r \\Rightarrow l \\leq b \\wedge b \\leq r$ — interval convexity forces $b \\in [l,r]$.",
+    "significance": "key",
+    "relatedConcepts": ["interval_not_shatters_triple", "convexity obstruction", "adversarial labeling"]
+  }
+]
