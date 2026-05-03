@@ -32,14 +32,15 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erdős problem #1054 defines f(n) as the minimal m such that the sum of the k smallest divisors of m equals n (where k is the number of divisors). The open question OQ-01 asks whether f(n)/n → 0 for 'almost all' n (i.e., whether f(n) = o(n)). This file proves structural bounds showing f(σ(m)) ≤ m, which establishes f(n) = o(n) along the sequence of σ-values (sum-of-divisors function values) of superabundant numbers.",
+    "historicalContext": "Erdős problem #1054 was posed by Paul Erdős as part of his extensive catalog of problems on additive and multiplicative properties of integers. The function f(n) — the minimal m whose k smallest divisors (where k = τ(m)) sum to n — is tied to the rich theory of highly composite numbers. Highly composite numbers were introduced by Ramanujan in 1915 as numbers with more divisors than any smaller positive integer; they form the natural 'fertile' values where partial divisor sums are large. Superabundant numbers, characterized by Alaoglu and Erdős in 1944, maximize the abundancy index σ(m)/m among all integers up to m; Gronwall's theorem (1913) shows lim sup σ(n)/(n log log n) = e^γ ≈ 1.781. OQ-01 asks whether f(n)/n → 0 for almost all n. This file proves f(σ(m)) ≤ m, which combined with Gronwall's theorem shows f(n) = o(n) along the σ-subsequence of superabundant numbers. The full OQ-01 (density 1 result) remains open.",
     "problemStatement": "For Erdős #1054: f(n) = min{m : some k smallest divisors of m sum to n}. Prove: (1) f(p+1) ≤ p for primes p. (2) f(σ(m)) ≤ m. (3) Density results showing representable numbers are dense.",
     "proofStrategy": "For primes p: divisors of p are {1, p}, so partial divisor sums of p are {1, p+1}. Thus p+1 is representable with f(p+1) ≤ p. The sigma bound: σ(m) = Σ_{d|m} d = last partial divisor sum of m, so f(σ(m)) ≤ m. All partial sums of divisors are representable. Density: even and odd representability proved for n ≤ 50.",
     "keyInsights": [
       "**Key sigma bound**: f(σ(m)) ≤ m for all m ≥ 1. The sum σ(m) = Σ_{d|m} d appears as the last element of the sorted partial divisor sums of m. Hence m 'witnesses' that σ(m) is representable with f(σ(m)) ≤ m.",
       "**Prime case**: f(p+1) ≤ p for any prime p. Since divisors of p are {1, p}, partial sums are {1, p+1}. So p+1 is representable with f(p+1) ≤ p, giving f(p+1)/(p+1) < 1.",
       "**Density**: All partial divisor sums of any m are representable. By varying m, we cover a dense set of representable n.",
-      "**Superabundant connection**: Along superabundant numbers m_k (where σ(m_k)/m_k → ∞), f(σ(m_k))/σ(m_k) ≤ m_k/σ(m_k) → 0, proving f(n) = o(n) along this subsequence."
+      "**Superabundant connection**: Along superabundant numbers m_k (where σ(m_k)/m_k → ∞), f(σ(m_k))/σ(m_k) ≤ m_k/σ(m_k) → 0, proving f(n) = o(n) along this subsequence.",
+      "**Gronwall's theorem and superabundance**: Gronwall's theorem states that lim sup_{n→∞} σ(n)/(n log log n) = e^γ ≈ 1.781. Superabundant numbers m_k maximize σ(m)/m; along these, σ(m_k)/m_k ~ e^γ log log m_k → ∞. The sigma bound gives f(σ(m_k))/σ(m_k) ≤ 1/(e^γ log log m_k) → 0, establishing f(n) = o(n) along this subsequence — the strongest o(n) result in the file."
     ]
   },
   "sections": [
