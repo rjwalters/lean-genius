@@ -1,0 +1,123 @@
+{
+  "slug": "cramers-rule-oq-01-oq-02-oq-01",
+  "title": "Can the quasideterminant theory extend to 3×3 and n×n matrices using recursive quasideterminants",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For F a Field or D a DivisionRing, define qdet3 A i j for a 3×3 matrix, prove qdet3 · minor_det = det(A), and show consistency between the field (det-ratio) and division-ring (Schur complement) definitions.",
+    "plain": "Can the 2×2 quasideterminant theory (CramersRuleOQ01OQ02) extend to 3×3 matrices? Does the Schur complement recurrence generalize, and do the commutative and non-commutative definitions remain consistent at 3×3?",
+    "whyMatters": [
+      "The Gelfand-Retakh recursive principle claims quasideterminants extend to all n×n matrices inductively",
+      "Verifying the 3×3 case confirms the recursion bottoms out correctly at 2×2",
+      "Applications to quaternionic linear systems, quantum groups, and non-commutative symmetric functions"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "block3 A i j: complementary 2×2 submatrix defined via Fin.succAbove (12 entry lemmas, all rfl)",
+      "Three minor determinant formulas (block3_00_det, block3_11_det, block3_22_det)",
+      "qdet3 A i j = det(A) / det(block3 A i j) over a field",
+      "qdet3_mul_minor_eq_det: qdet3 · minor_det = det(A) (core identity)",
+      "qdet3_00_schur_expand: explicit Schur complement expansion",
+      "qdet3_00_schur_nodiv: division-free form (polynomial identity)",
+      "schurComp3: Schur complement of lower-right 2×2 block = qdet00(block3 A 0 0)",
+      "qdet3_00_nc: non-commutative (0,0)-quasideterminant via Schur complement inverse",
+      "qdet3_00_nc_eq_qdet3: consistency over fields (field_simp + ring)",
+      "schurComp3_mul_eq_minor_det: q · A22 = det(block3 A 0 0)",
+      "cramer_rule_3x3: A · (det⁻¹ · cramer b) = b using Matrix.mulVec_cramer",
+      "qdet3_recurrence_summary: conjunction of all three key facts"
+    ],
+    "open": [
+      "Non-commutative definitions for the remaining 8 off-diagonal quasideterminants (|A|_01, |A|_10, etc.)",
+      "n×n inductive formalization with full recursive quasideterminant definition",
+      "Non-commutative Cayley-Hamilton via quasideterminants"
+    ],
+    "goal": "Prove 3×3 Schur complement recurrence and consistency with 0 sorries, 0 axioms"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-03T00:00:00Z",
+    "iteration": 1,
+    "focus": "Formalization complete: 312 lines, 20 theorems, 5 definitions, 0 sorries, 0 axioms.",
+    "blockers": [],
+    "nextAction": "None - research complete. Open questions documented for future work.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 3×3 quasideterminant theory. 312 lines, 20 theorems, 5 defs, 0 sorries, 0 axioms. Two-layer approach: field (det-ratio) + division ring (Schur complement). Consistency proved via field_simp+ring.",
+    "builtItems": [
+      "CramersRuleOQ01OQ02OQ01.lean: 312 lines, 20 theorems, 5 defs, 0 sorries",
+      "Gallery data: meta.json, annotations.json (7 annotations), index.ts",
+      "Definitions: block3, qdet3, schurComp3, qdet3_00_nc",
+      "Key theorem: qdet3_recurrence_summary (consistency + core identity + schur interpretation)",
+      "cramer_rule_3x3 via Matrix.mulVec_cramer"
+    ],
+    "insights": [
+      "Fin.succAbove evaluates definitionally on small Fin types — all 12 block3 entry lemmas are rfl",
+      "Core identity qdet3 · minor_det = det(A) is immediate from div_mul_cancel₀, no ring arithmetic needed",
+      "The non-commutative Schur inverse of a 2×2 matrix nests the qdet00 (Schur complement) as its own ingredient — this is the recursion",
+      "Consistency over fields (nc = commutative) reduces to field_simp+ring after unfolding all definitions",
+      "schurComp3 A = qdet00(block3 A 0 0) — the recursion: 3×3 qdet uses 2×2 qdet as subroutine",
+      "Matrix.mulVec_cramer is the key Mathlib lemma for Cramer's rule: A.mulVec (A.cramer b) = A.det • b"
+    ],
+    "mathlibGaps": [
+      "No quasideterminant definitions in Mathlib — custom defs needed (now provided)",
+      "No 3×3 non-commutative inverse formula in Mathlib — built via explicit Schur formula"
+    ],
+    "nextSteps": [
+      "Formalize off-diagonal 3×3 quasideterminants (|A|_01, |A|_10, etc.) with non-commutative definitions",
+      "Attempt n×n inductive formalization using recursion on matrix size",
+      "Investigate Cayley-Hamilton via quasideterminant characteristic polynomial"
+    ],
+    "markdown": "# Knowledge Base: cramers-rule-oq-01-oq-02-oq-01\n\n## Problem\n\nExtend 2×2 quasideterminant theory to 3×3 via Schur complement recurrence.\n\n## Outcome: COMPLETED\n\n312 lines, 20 theorems, 5 definitions, 0 sorries, 0 axioms.\n\n## Key Insight\n\nThe recursion is: qdet3_00_nc(A) uses (block3 A 0 0)^{-Schur}, whose Schur complement entry is exactly schurComp3 = qdet00(block3 A 0 0) from the 2×2 theory. The recursion bottoms out correctly.\n\n## Technique Index\n\n- Entry lemmas: `rfl` (definitional evaluation of Fin.succAbove)\n- Core identity: `div_mul_cancel₀`\n- Schur expansion: `field_simp; ring`\n- Consistency: `field_simp; ring` after unfolding\n- Cramer: `Matrix.mulVec_cramer`\n"
+  },
+  "tags": [
+    "non-commutative",
+    "linear-algebra",
+    "division-rings",
+    "quasideterminants",
+    "recursion",
+    "schur-complement"
+  ],
+  "relatedProofs": [
+    "cramers-rule",
+    "cramers-rule-oq-01",
+    "cramers-rule-oq-01-oq-02",
+    "cramers-rule-oq-01-oq-03",
+    "cramers-rule-oq-02",
+    "cramers-rule-oq-03"
+  ],
+  "references": {
+    "papers": [
+      "Gelfand-Retakh 1991: Determinants of matrices over noncommutative rings",
+      "Gelfand-Retakh-Serconek-Wilson 2005: Quasideterminants"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.Matrix.Adjugate",
+      "Mathlib.LinearAlgebra.Matrix.NonsingularInverse",
+      "Mathlib.Tactic"
+    ]
+  },
+  "started": "2026-05-03T00:00:00.000Z",
+  "lastUpdate": "2026-05-03T00:00:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/CramersRuleOQ01OQ02OQ01.lean",
+      "filename": "CramersRuleOQ01OQ02OQ01.lean",
+      "lineCount": 312,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ02OQ01.lean"
+    }
+  ]
+}
