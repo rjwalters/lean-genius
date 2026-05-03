@@ -1,17 +1,16 @@
 /-
   Aristotle targets for AreaOfCircleOQ05OQ01 (Polar-Coordinate Proof of Gaussian Integral)
-  Routine integration API steps for automated proof search.
-  See AreaOfCircleOQ05OQ01.lean for the main formalization.
+  These are the 2 remaining proof obligations — both product-measure integrability conditions.
 
-  The four sorry steps bridge the polar-coordinate proof chain:
-    (∫ e^{-x²})²
-      = ∫∫ e^{-(x²+y²)}      [Section I: Fubini]
-      = ∫_polar r·e^{-r²}    [Section II: polar change of variables]
-      = (∫_0^∞ r·e^{-r²}) · (∫_{-π}^{π} 1)   [Section V: separation]
-      = (1/2) · 2π = π       [Sections III, IV]
+  Proved so far (no longer sorried in main file):
+    - angular_integral (∫_{-π}^π 1 = 2π): proved via set_integral_const + volume_Ioo
+    - double_integral_eq_polar: proved via integral_comp_polarCoord_symm + set_integral_congr
+    - gaussian_sq_eq_double_integral: proved structurally via integral_prod + ring
+    - polar_integral_factorization: proved structurally via restrict_prod + integral_prod + ring
 
-  All four targets are technical integration API steps, not open conjectures.
-  The main theorem chain (via rw) already compiles; only the four steps are sorry'd.
+  Remaining sorries (both are product integrability conditions):
+    TARGET 1: gaussian_product_integrable — exp(-x²)·exp(-y²) integrable on ℝ² product measure
+    TARGET 2: radial_product_integrable  — r·exp(-r²) integrable on Ioi(0) × Ioo(-π,π)
 -/
 import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
 import Mathlib.Analysis.SpecialFunctions.PolarCoord
@@ -26,87 +25,51 @@ noncomputable section
 namespace AreaOfCircleOQ05OQ01Aristotle
 
 /-
-HELPER: exp(-x²-y²) = exp(-x²) * exp(-y²).
-Key algebraic identity for Fubini step.
--/
-lemma rexp_neg_sum_sq (x y : ℝ) :
-    rexp (-(x ^ 2 + y ^ 2)) = rexp (-(x ^ 2)) * rexp (-(y ^ 2)) := by
-  rw [neg_add, Real.exp_add]
-
-/-
-HELPER: The measure of the angular domain Ioo(-π, π) is 2π.
-Used in both angular_integral and polar_integral_factorization.
--/
-lemma volume_angular_domain :
-    (volume (Ioo (-Real.pi) Real.pi)).toReal = 2 * Real.pi := by
-  rw [Real.volume_Ioo]
-  rw [ENNReal.toReal_ofReal (by linarith [Real.pi_pos])]
-  ring
-
-/-
-HELPER: Pythagorean identity in polar coordinates.
-(r·cos θ)² + (r·sin θ)² = r²
--/
-lemma polar_sum_sq (r θ : ℝ) :
-    (r * Real.cos θ) ^ 2 + (r * Real.sin θ) ^ 2 = r ^ 2 := by
-  have h := Real.cos_sq_add_sin_sq θ
-  nlinarith [sq_nonneg (r * Real.cos θ), sq_nonneg (r * Real.sin θ),
-             sq_nonneg r, sq_nonneg (Real.cos θ), sq_nonneg (Real.sin θ)]
-
-/-
 TARGET 1
-(∫ exp(-x²))² = ∫_{ℝ×ℝ} exp(-(x²+y²)) dxdy.
+exp(-x²)·exp(-y²) is integrable on ℝ² with the product Lebesgue measure.
 
-Strategy: integral_prod_mul (Fubini) converts the product of two independent
-integrals to a double integral. Use rexp_neg_sum_sq to rewrite the integrand.
-Specifically: (∫ f(x)) * (∫ g(y)) = ∫ (x,y), f(x)*g(y) when f, g integrable.
-Here f = g = exp(-·²), and exp(-x²-y²) = exp(-x²)*exp(-y²) by rexp_neg_sum_sq.
+This is needed for the Fubini step:
+  ∫∫ exp(-x²-y²) dxdy = (∫ exp(-x²) dx)²
+
+Strategy: Use Integrable.prod_mul or Integrable.comp_fst/comp_snd:
+  - hf : Integrable (fun x => rexp (-(x^2)))
+  - Then (fun p => rexp(-p.1^2) * rexp(-p.2^2)) is integrable on volume.prod volume
+    via Integrable.prod_mul (or Measurable.integrable on product, or norm-based bound).
+Context: integrable_exp_neg_mul_sq gives integrability of each factor separately.
 -/
-theorem gaussian_sq_eq_double_integral :
-    (∫ x : ℝ, rexp (-(x ^ 2))) ^ 2 =
-    ∫ p : ℝ × ℝ, rexp (-(p.1 ^ 2 + p.2 ^ 2)) := by
+theorem gaussian_product_integrable :
+    Integrable (fun p : ℝ × ℝ => rexp (-(p.1 ^ 2)) * rexp (-(p.2 ^ 2)))
+      (volume.prod volume) := by
+  have hf : Integrable (fun x : ℝ => rexp (-(x ^ 2))) := by
+    have h := integrable_exp_neg_mul_sq (by norm_num : (0 : ℝ) < 1)
+    simp_rw [one_mul] at h; exact h
   sorry
 
 /-
 TARGET 2
-∫_{ℝ×ℝ} exp(-(x²+y²)) = ∫_{polarCoord.target} r · exp(-r²) drdθ.
+r·exp(-r²) is integrable on Ioi(0) × Ioo(-π,π) with the product of restricted measures.
 
-Strategy: Apply integral_comp_polarCoord_symm to change variables to polar.
-The Jacobian factor is r = p.1. After substitution:
-  f(polarCoord.symm (r,θ)) = f(r·cosθ, r·sinθ) = exp(-((r·cosθ)²+(r·sinθ)²))
-                            = exp(-r²)   [by polar_sum_sq]
-So: ∫ p, p.1 • f(polarCoord.symm p) = ∫ p, f p, giving the result.
+This is needed for the Fubini step in polar_integral_factorization:
+  ∫_{Ioi(0) × Ioo(-π,π)} r·exp(-r²) d(r,θ) = (∫_{Ioi 0} r·exp(-r²) dr) · (∫_{Ioo(-π,π)} 1 dθ)
+
+Strategy:
+  - hrad : Integrable (fun r => r * rexp (-(r^2))) (volume.restrict (Ioi 0))
+    (proved by contradiction: integral_undef h ▸ radial_integral_eq ▸ norm_num)
+  - volume (Ioo (-π) π) < ∞ (it equals ENNReal.ofReal (2π))
+  - So the product is integrable via Integrable.prod_mul or Integrable.of_finite_measure
+    combined with hrad
 -/
-theorem double_integral_eq_polar :
-    ∫ p : ℝ × ℝ, rexp (-(p.1 ^ 2 + p.2 ^ 2)) =
-    ∫ p in polarCoord.target, p.1 * rexp (-(p.1 ^ 2)) := by
-  sorry
-
-/-
-TARGET 3
-∫_{-π}^{π} 1 dθ = 2π.
-
-Strategy: set_integral_const gives ∫ x in s, c = (μ s).toReal • c.
-Then Real.volume_Ioo gives volume(Ioo(-π,π)) = ENNReal.ofReal(2π).
-ENNReal.toReal_ofReal (with 2π ≥ 0) completes the calculation.
--/
-theorem angular_integral : ∫ θ in Ioo (-Real.pi) Real.pi, (1 : ℝ) = 2 * Real.pi := by
-  rw [set_integral_const, smul_eq_mul, mul_one]
-  exact volume_angular_domain
-
-/-
-TARGET 4
-∫_{polarCoord.target} r · exp(-r²) = (∫_{r>0} r·exp(-r²)) · (∫_{-π}^{π} 1).
-
-Strategy: polarCoord.target = Ioi 0 ×ˢ Ioo(-π,π) by definition.
-The integrand r·exp(-r²) factors as (r·exp(-r²)) · 1 (independent of θ).
-Apply Fubini (MeasureTheory.integral_prod) on the product measure
-Ioi(0) ×ˢ Ioo(-π,π) with the product Lebesgue measure.
--/
-theorem polar_integral_factorization :
-    ∫ p in polarCoord.target, p.1 * rexp (-(p.1 ^ 2)) =
-    (∫ r in Ioi (0 : ℝ), r * rexp (-(r ^ 2))) *
-    (∫ θ in Ioo (-Real.pi) Real.pi, (1 : ℝ)) := by
+theorem radial_product_integrable :
+    Integrable (fun p : ℝ × ℝ => p.1 * rexp (-(p.1 ^ 2)))
+      ((volume.restrict (Ioi (0 : ℝ))).prod (volume.restrict (Ioo (-Real.pi) Real.pi))) := by
+  have hrad : Integrable (fun r : ℝ => r * rexp (-(r ^ 2))) (volume.restrict (Ioi 0)) := by
+    by_contra h
+    have := GaussianIntegralCircle.radial_integral
+    simp only [integral_undef h] at this
+    norm_num at this
+  have h_fin : (volume (Ioo (-Real.pi) Real.pi)) < ⊤ := by
+    rw [Real.volume_Ioo]
+    exact ENNReal.ofReal_lt_top
   sorry
 
 end AreaOfCircleOQ05OQ01Aristotle
