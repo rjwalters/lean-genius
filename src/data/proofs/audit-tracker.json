@@ -13963,8 +13963,10 @@
     "cantor-diagonalization-oq-01-oq-02": {
       "auditCount": 1,
       "lastAudited": "2026-05-03T08:07:53Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [
+        "axiomCount claimed 6, actual 7 — corrected to 7"
+      ]
     },
     "abel-ruffini-oq-09": {
       "auditCount": 1,
