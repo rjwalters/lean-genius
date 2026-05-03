@@ -57,32 +57,44 @@
     {
       "id": "helper",
       "title": "Helper: Factorization Distributes Over Products",
-      "content": "We first prove that factorization distributes over Finset products of nonzero naturals: (∏ m ∈ s, m).factorization = ∑ m ∈ s, m.factorization. The proof is by induction on s using Nat.factorization_mul."
+      "startLine": 34,
+      "endLine": 50,
+      "summary": "Proves factorization distributes over Finset products of nonzero naturals: (∏ m ∈ s, m).factorization = ∑ m ∈ s, m.factorization. Proof by induction on s using Nat.factorization_mul."
     },
     {
       "id": "existence",
-      "title": "Existence: Reconstruction Formula",
-      "content": "Every positive natural n equals n.factorization.prod (·^·). This is Nat.factorization_prod_pow_eq_self from Mathlib — the reconstruction of n from its prime exponent map."
+      "title": "Existence: Reconstruction and Support",
+      "startLine": 52,
+      "endLine": 81,
+      "summary": "Proves fta_reconstruction (n.factorization.prod (·^·) = n), fta_support_eq_primeFactors, fta_support_prime, and fta_mem_support_iff_dvd — establishing n.factorization as the canonical prime exponent map."
     },
     {
       "id": "key-lemma",
       "title": "Key Algebraic Lemma",
-      "content": "For any f : ℕ →₀ ℕ with prime support: (f.prod (·^·)).factorization = f. The proof applies Finsupp.ext and computes the a-component by distributing factorization over the product, using factorization_pow and Prime.factorization to reduce to indicator functions."
+      "startLine": 83,
+      "endLine": 118,
+      "summary": "For any f : ℕ →₀ ℕ with prime support: (f.prod (·^·)).factorization = f. Applies Finsupp.ext, distributes factorization over the product, and uses factorization_pow + Prime.factorization to reduce to an indicator-sum argument."
     },
     {
       "id": "uniqueness",
       "title": "Uniqueness of the Representation",
-      "content": "If g has prime support and g.prod (·^·) = n, then g = n.factorization. Proof: g = (g.prod (·^·)).factorization = n.factorization, using the key lemma and the hypothesis."
+      "startLine": 120,
+      "endLine": 131,
+      "summary": "If g has prime support and g.prod (·^·) = n, then g = n.factorization. Follows directly from the key lemma via a two-step calc."
     },
     {
       "id": "fta",
       "title": "Full FTA Statement",
-      "content": "∃! f : ℕ →₀ ℕ, (∀ p ∈ f.support, p.Prime) ∧ f.prod (·^·) = n. The canonical witness is n.factorization; uniqueness follows from the key lemma."
+      "startLine": 133,
+      "endLine": 154,
+      "summary": "∃! f : ℕ →₀ ℕ, (∀ p ∈ f.support, p.Prime) ∧ f.prod (·^·) = n. The canonical witness is n.factorization; uniqueness follows from the key lemma."
     },
     {
       "id": "corollaries",
-      "title": "Corollaries",
-      "content": "The factorization map is injective on positive naturals; m = n iff their factorizations agree at every prime; n = 1 iff factorization is zero; coprime numbers have disjoint factorization supports."
+      "title": "Corollaries and Examples",
+      "startLine": 156,
+      "endLine": 219,
+      "summary": "Injectivity of factorization on positive naturals; m = n iff factorizations agree at every prime; n = 1 iff factorization is zero; coprime numbers have disjoint factorization supports. Includes native_decide examples for 12, 30, and coprimality."
     }
   ],
   "conclusion": "The FTA has a clean algebraic formulation via Finsupp: every positive natural has a unique prime exponent map. This self-contained proof avoids the parent file entirely, demonstrating that Mathlib's Nat.factorization machinery is sufficient to prove both existence and uniqueness from scratch. The key insight is that factorization and reconstruction are mutual inverses — a consequence of Nat.factorization_prod_pow_eq_self combined with the distribution of factorization over products.",
