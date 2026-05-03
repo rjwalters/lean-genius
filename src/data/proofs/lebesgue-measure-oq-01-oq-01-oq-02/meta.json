@@ -134,6 +134,23 @@
       "tags": ["riemann-integration", "lebesgue-criterion", "measure-zero"]
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "lebesgue-measure-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "The parent proof showing the Lebesgue integral of Thomae's function is 0; this file proves the continuity characterization that explains why (discontinuities form a null set)."
+    },
+    {
+      "targetId": "erdos-1054-oq-01-fnorm",
+      "relationship": "thematic",
+      "description": "Both define functions by number-theoretic properties of rationals (denominator structure) and study their analytic behavior; Thomae's function and the partial-divisor-sum function share the theme of arithmetic-defined real functions."
+    },
+    {
+      "targetId": "derangements-convergence-oq-01-oq-01",
+      "relationship": "thematic",
+      "description": "Both use the real-analytic epsilon-delta framework in Lean 4 and both concern the interface between combinatorial/number-theoretic definitions and real analysis — Thomae's discontinuity set vs derangements' rounding theorem."
+    }
+  ],
   "conclusion": {
     "summary": "The complete continuity characterization of Thomae's function is formally verified in Lean 4. The proof demonstrates that a formally verified epsilon-delta argument can cleanly handle the key challenge — using finiteness of low-denominator rationals to control the function value near irrationals. The biconditional `thomae_continuous_iff` is the main result: ContinuousAt thomae x ↔ Irrational x.",
     "significance": "This formalization adds a landmark real analysis example to the gallery. Thomae's function is historically significant as the prototype for understanding Riemann integrability beyond continuous functions, and its continuity characterization is a standard theorem in any real analysis course.",

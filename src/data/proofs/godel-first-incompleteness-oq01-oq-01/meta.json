@@ -134,6 +134,16 @@
       "targetId": "godel-first-incompleteness-oq01",
       "relationship": "parent",
       "description": "Gödel's original 1931 proof using ω-consistency and 5 axioms; Rosser's improvement in this file reduces to 3 axioms and plain consistency."
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "ancestor",
+      "description": "Pedagogical scaffold using Provable := fun _ => False; establishes the proof architecture that this file builds on."
+    },
+    {
+      "targetId": "erdos-1210",
+      "relationship": "thematic",
+      "description": "Both concern unprovability and open conjectures; Erdős #1210 is an open number-theory problem while Rosser's theorem proves undecidability of self-referential arithmetic sentences."
     }
   ],
   "mainTheorems": [
