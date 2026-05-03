@@ -2194,10 +2194,12 @@
       "result": "clean"
     },
     "cramers-rule-oq-01-oq-03": {
-      "auditCount": 3,
-      "issues": [],
-      "lastAudited": "2026-04-03T11:26:09Z",
-      "result": "clean"
+      "auditCount": 4,
+      "issues": [
+        "cramer_ops_{1,2,3,4} prove arithmetically false equalities (1=2, 11=5, 71=53, 479=475); status verified/original suspect — file likely fails to compile but build-safe-subset masks failures. Issue #15032."
+      ],
+      "lastAudited": "2026-05-03T02:50:00Z",
+      "result": "issues-found"
     },
     "cramers-rule-oq-01-oq-04": {
       "auditCount": 2,
