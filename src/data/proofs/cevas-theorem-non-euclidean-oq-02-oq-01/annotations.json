@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-01",
+    "line": 55,
+    "type": "insight",
+    "content": "sin_is_odd is the foundational property enabling the signed-ratio framework. For external division of arc BC at D, the signed arc lengths BD and DC have opposite signs. Since sin(-x) = -sin(x), the ratio sin(BD)/sin(DC) is negative for external division, just as BD/DC < 0 in Euclidean geometry."
+  },
+  {
+    "id": "ann-02",
+    "line": 63,
+    "type": "technique",
+    "content": "sin_pos_of_proper_arc uses Real.sin_pos_of_pos_of_lt_pi from Mathlib. The range (0,π) exactly captures proper undirected side lengths of non-degenerate spherical triangles: sides can't be 0 (collapsed vertex) or π (antipodal vertices)."
+  },
+  {
+    "id": "ann-03",
+    "line": 75,
+    "type": "insight",
+    "content": "sin_neg_of_neg_arc leverages the oddness of sin: sin(x) = -sin(-x) for x < 0, and -x ∈ (0,π), so sin(-x) > 0 and sin(x) < 0. This symmetric argument means sin is nonzero on all of (-π,π) except 0 — exactly the signed arc lengths of a proper spherical triangle."
+  },
+  {
+    "id": "ann-04",
+    "line": 100,
+    "type": "technique",
+    "content": "The algebraic core uses field_simp with [hb, hd, hf] to tell Lean the denominators are nonzero, then ring to combine the three division products into one. This is more robust than manual div_mul_div_comm rewrites."
+  },
+  {
+    "id": "ann-05",
+    "line": 105,
+    "type": "insight",
+    "content": "After normalizing to a*c*e/(b*d*f) = -1, div_eq_iff converts to a*c*e = -1*(b*d*f). The goal a*c*e = -(b*d*f) differs by -1*x = -x, which linarith handles. This two-step pattern (field_simp + linarith) avoids needing ring in the iff proof."
+  },
+  {
+    "id": "ann-06",
+    "line": 161,
+    "type": "mathematical",
+    "content": "The main theorem spherical_menelaus is a one-line proof: it immediately delegates to menelaus_algebraic_core with the SphericalMenelausConfig's three sin nonzero hypotheses. This is the power of the 'measure function' abstraction — the geometric content is in the config struct, the algebra is factored out."
+  },
+  {
+    "id": "ann-07",
+    "line": 193,
+    "type": "comparison",
+    "content": "Compare hyperbolic vs spherical domain conditions: hyperbolic Menelaus requires dc ≠ 0 (since sinh(x) = 0 ↔ x = 0), while spherical requires sin(dc) ≠ 0 (since sin(x) = 0 ↔ x ∈ πℤ). For proper triangles with dc ∈ (0,π), sin(dc) > 0 automatically — the spherical condition is no harder to satisfy in practice."
+  },
+  {
+    "id": "ann-08",
+    "line": 212,
+    "type": "example",
+    "content": "The midpoint example (BD = DC) reduces to a 2-factor Menelaus condition. This mirrors the hyperbolic midpoint example in the parent file. Geometrically: if D is the arc midpoint of BC, then sin(BD) = sin(DC), so the first ratio is 1, and collinearity of D, E, F is equivalent to E and F satisfying the 2-factor condition alone."
+  },
+  {
+    "id": "ann-09",
+    "line": 247,
+    "type": "insight",
+    "content": "menelaus_measure_universality shows the algebraic core holds for ANY function m: ℝ → ℝ (not just sin or sinh). This means the Menelaus condition can be instantiated with exponential measures, polynomial measures, or any other suitable function. The only geometric requirement is m(denominator) ≠ 0."
+  },
+  {
+    "id": "ann-10",
+    "line": 260,
+    "type": "mathematical",
+    "content": "The Ceva–Menelaus duality theorem proves both conditions simultaneously: product = +1 (Ceva, concurrent cevians) and product = -1 (Menelaus, collinear transversal). Both hold for sin ratios on the same spherical triangle. The algebraic difference is just the target value, reflecting the deep projective duality between points on a line and lines through a point."
+  }
+]
