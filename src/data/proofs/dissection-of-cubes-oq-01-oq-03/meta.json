@@ -7,7 +7,7 @@
     "author": "Lean Genius Researcher",
     "sourceUrl": "https://en.wikipedia.org/wiki/Squaring_the_square",
     "date": "2026-05-03",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/DissectionOfCubesOQ01OQ03.lean",
     "tags": [
       "geometry",
@@ -17,8 +17,10 @@
       "open-problem",
       "wiedijk-100"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
+    "axiomCount": 2,
+    "assumptions": "2 inherited axioms from DissectionOfCubes.lean: (1) smaller_cube_above_axiom — the smallest cube on the bottom face has smaller cubes directly above it; (2) all_different_implies_long_chains_axiom — a dissection with all different sizes has arbitrarily long decreasing chains. These underlie the collision existence theorem (volume_dissection_has_collision) via every_dissection_has_collision.",
     "mathlibDependencies": [
       {
         "theorem": "Finset.single_le_sum",
@@ -49,7 +51,6 @@
       "volume_constraint_satisfiable: explicit witness (one unit cube)"
     ],
     "dateAdded": "2026-05-03",
-    "axiomCount": 0,
     "lineCount": 256,
     "theoremCount": 14
   },
@@ -103,7 +104,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Proves that the volume constraint ∑ c.side³ = 1 can be formally incorporated into cube dissections via VolumeDissection. The 14 theorems establish volume bounds, connect the constraint to collision pairs (2s³ ≤ 1), and confirm satisfiability. All proofs are axiom-free — they use only Mathlib and the base dissection axioms.",
+    "summary": "Proves that the volume constraint ∑ c.side³ = 1 can be formally incorporated into cube dissections via VolumeDissection. The 14 theorems establish volume bounds, connect the constraint to collision pairs (2s³ ≤ 1), and confirm satisfiability. Volume bound proofs (theorems 1–7, 9–14) are axiom-free; the collision bridge (theorem 8, volume_dissection_has_collision) inherits 2 axioms from the base DissectionOfCubes.lean.",
     "implications": "**Strengthening the geometric model**: VolumeDissection provides a more faithful model of cube dissections than the base CubeDissection (which has covers_unit_cube : True). Any result proved for VolumeDissection automatically applies to genuine cube tilings.\n\n**Collision bound sharpening**: The volume constraint gives 2s³ ≤ 1 for any collision pair, i.e., s ≤ 2^{-1/3} ≈ 0.794. Combined with the side ≤ 1 bound, this provides quantitative constraints on how large any repeated-size cube can be.",
     "openQuestions": [
       "Can the lower bound on collision pairs be sharpened using the volume constraint? OQ-01 gives ≥2; does ∑side³=1 force more?",
