@@ -41,6 +41,67 @@ Key infrastructure already available:
 
 > **Note**: 4 older sessions archived to `sessions/` directory.
 
+## Session 2026-05-03 (Session 38) — Prove GNW infrastructure sorries
+
+**Mode**: REVISIT (RICH knowledge tier, score 174)
+**Outcome**: PROGRESS — 4 sorries proved; Helpers now has 1 sorry (gnwProb_key only)
+
+### What I Did
+
+1. Read current state of `BallotProblemOQ03OQ01OQ02Helpers.lean` PART XXVI (GNW scaffold
+   added in session 37, PR #14938). Found 4 solvable sorries + 1 hard sorry.
+
+2. Proved `strictHookCells_card`:
+   - Arm image and leg image are disjoint (first coord i vs. r>i → omega)
+   - Card = arm_card + leg_card = (rowLen i - j - 1) + (colLen j - i - 1) = hookLength - 1
+   - Used `Finset.card_image_of_injective`, `Finset.card_Ico`, `hookLength_add_eq`, omega
+
+3. Proved `strictHookCells_nonempty`:
+   - ¬isCorner → (i,j+1) ∈ μ ∨ (i+1,j) ∈ μ (by by_contra + push_neg + exact hnc ⟨...⟩)
+   - Each case gives a witness in the arm or leg Ico image
+
+4. Proved `strictHookCells_hookLen_lt`:
+   - Arm cell (i,s) with s>j: hookLength(i,s) + i + s + 1 = rowLen i + colLen s ≤ rowLen i + colLen j
+     since colLen is anti-monotone (via rowLen_transpose + μ.transpose.rowLen_anti)
+     Combined with s>j gives hookLength(i,s) < hookLength(i,j)
+   - Leg cell (r,j) with r>i: similar via μ.rowLen_anti
+
+5. Proved `gnwProb_sum_corners` (induction on K):
+   - Base K=0: hookLength_pos contradicts ≤0
+   - Corner case: unfold gnwProb; sum_attach → sum_ite_eq → mem_corners gives 1
+   - Non-corner: unfold gnwProb; simp_rw expand; ← mul_sum; sum_comm; IH each y;
+     sum_const_one; field_simp [hcard_ne]
+
+6. Remaining sorry: `gnwProb_key` (GNW 1979 hard identity: sum over μ of gnwProb = hookProd ratio)
+
+### Key Findings
+
+- `μ.transpose.rowLen_anti j s` gives `μ.colLen s ≤ μ.colLen j` via `rowLen_transpose` rewrites
+- `unfold gnwProb; simp [hcx]` is safe (no loop risk from omitting gnwProb from simp set)
+- `gnwProb_sum_corners` (~35 lines) captures the "sum of walk probabilities = 1" half of GNW
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean` (4 sorries → 1 sorry; +82 lines)
+
+### Next Steps
+
+1. Submit `gnwProb_key` to Aristotle (unlikely to succeed but worth trying)
+2. The genuinely hard sorry: formalize the GNW 1979 inclusion-exclusion argument showing
+   ∑_{x∈μ} gnwProb(μ,c,hookLen(x),x) = hookProd(μ) / hookProd(μ\c)
+3. Verify Docker build succeeds for the 4 new proofs
+
+---
+
+## Session 2026-05-03 (Session 37) — GNW skeleton + dispatcher sorry-free
+
+**Mode**: REVISIT
+**Outcome**: PROGRESS — dispatcher sorry-free via gnwProb_key; 5 sorries in Helpers PART XXVI
+
+(Session notes archived; see sessions/ directory)
+
+---
+
 ## Session 2026-05-02 (Session 35) — Modularize: Helpers + Main split
 
 **Mode**: FRESH (claimed from pool, RICH knowledge tier, score 163)
