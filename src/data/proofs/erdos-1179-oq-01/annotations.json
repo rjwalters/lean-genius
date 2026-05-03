@@ -279,5 +279,136 @@
       "correction term",
       "Erdős Problem #543 analogy"
     ]
+  },
+  {
+    "id": "ann-e1179-character-infrastructure",
+    "proofId": "erdos-1179-oq-01",
+    "range": {
+      "startLine": 214,
+      "endLine": 301
+    },
+    "type": "concept",
+    "title": "ψp Character Infrastructure: Six Private Lemmas",
+    "content": "Lines 214–301 develop six private lemmas establishing that ψp(x) = ωp^{val(x)} is a multiplicative character of ZMod p. The lemmas form a complete algebraic package:\n\n1. `ψp_norm`: ‖ψp(x)‖ = 1 — ψp takes values on the unit circle\n2. `ψp_zero`: ψp(0) = 1 — maps the identity to 1 (character axiom)\n3. `ωp_pow_mod`: ωp^{a%p} = ωp^a — periodicity, since ωp^p = 1\n4. `ψp_add`: ψp(x+y) = ψp(x)·ψp(y) — additivity, proved by `ZMod.val_add` + `ωp_pow_mod`\n5. `ψp_neg_mul`: ψp(-x)·ψp(x) = 1 — follows from ψp_add and ψp_zero\n6. `ψp_sum`: ψp(∑ f) = ∏ ψp(f i) — distributivity over sums, by `Finset.cons_induction`\n\nThe crowning result `character_orthogonality` (lines 246–301) proves the Fourier key: Σ_j ψp(j·c) = p if c=0, and 0 if c≠0. The c=0 case: each term is ψp(0)=1, sum=p. The c≠0 case: (1) ψp(c) ≠ 1 because val(c)·2πi/p can only equal 2πni if p|val(c), contradicting 0<val(c)<p; (2) the sum S satisfies ψp(c)·S = S by a reindexing shift via `Finset.sum_equiv (Equiv.addRight 1)`; (3) therefore (ψp(c)-1)·S=0 and ψp(c)≠1 forces S=0.",
+    "mathContext": "$\\psi_p : \\mathbb{Z}/p\\mathbb{Z} \\to \\mathbb{C}^\\times$, $\\psi_p(x) = \\omega_p^{\\text{val}(x)}$ where $\\omega_p = e^{2\\pi i/p}$. Character orthogonality: $\\sum_{j \\in \\mathbb{Z}/p\\mathbb{Z}} \\psi_p(jc) = \\begin{cases} p & c=0 \\\\ 0 & c \\neq 0 \\end{cases}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirichlet character",
+      "Pontryagin duality",
+      "geometric series",
+      "character orthogonality"
+    ],
+    "prerequisites": [
+      "ZMod.val_add",
+      "ZMod.val_zero",
+      "Finset.sum_equiv",
+      "Equiv.addRight",
+      "Complex.exp_eq_one_iff"
+    ]
+  },
+  {
+    "id": "ann-e1179-fourier-expansion",
+    "proofId": "erdos-1179-oq-01",
+    "range": {
+      "startLine": 303,
+      "endLine": 373
+    },
+    "type": "theorem",
+    "title": "reprCount Fourier Expansion: 8-Step Proof",
+    "content": "`reprCount_fourier_expansion` (lines 303–373) establishes the Fourier inversion formula for representation counts in ℤ/pℤ:\n\n  F_A(g) = (1/p) ∑_j ω^{val(-j·g)} · ∏_{a∈A} (1 + ω^{val(j·a)})\n\nThe proof is a structured 8-step rewriting argument:\n\n1. **Replace ω^{val(·)} with ψp**: `hψp_eq` makes the character interpretation explicit\n2. **Expand products**: `Finset.prod_add` gives ∏(1+f(a)) = ∑_{S⊆A} ∏_{a∈S} f(a)\n3. **Distribute** ψp(-j·g) into the powerset sum via `Finset.mul_sum`\n4. **Collapse inner product**: ∏_{a∈S} ψp(j·a) = ψp(j · ∑_{a∈S} a) via `ψp_sum`\n5. **Combine characters**: ψp(-j·g) · ψp(j·∑S) = ψp(j·(∑S - g)) via `ψp_add`\n6. **Swap sums**: `Finset.sum_comm` exchanges the j-sum and the powerset sum\n7. **Apply orthogonality**: `character_orthogonality` kills all terms with ∑S ≠ g\n8. **Read off**: the remaining sum counts subsets with ∑S = g, which is `reprCount`\n\nThis is the discrete Fourier transform approach that underlies the entire Erdős-Rényi method for uniform subset sum representations.",
+    "mathContext": "$(\\text{reprCount} A g : \\mathbb{C}) = \\frac{1}{p} \\sum_{j \\in \\mathbb{Z}/p\\mathbb{Z}} \\omega_p^{\\text{val}(-jg)} \\prod_{a \\in A}(1 + \\omega_p^{\\text{val}(ja)})$\n\nDerived via: $\\frac{1}{p} \\sum_j \\sum_{S \\subseteq A} \\psi_p(j(\\Sigma S - g)) = \\sum_{S \\subseteq A} [\\Sigma S = g] = F_A(g)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "discrete Fourier transform",
+      "Fourier inversion",
+      "subset sum generating function",
+      "Finset.prod_add"
+    ],
+    "prerequisites": [
+      "reprCount_fourier_expansion",
+      "character_orthogonality",
+      "ψp_sum",
+      "Finset.sum_comm",
+      "Finset.prod_add"
+    ]
+  },
+  {
+    "id": "ann-e1179-norm-cosine-bounds",
+    "proofId": "erdos-1179-oq-01",
+    "range": {
+      "startLine": 374,
+      "endLine": 465
+    },
+    "type": "concept",
+    "title": "Norm-Cosine Bridge: |1+ω^m| = 2|cos(πm/p)|",
+    "content": "Lines 374–465 establish the geometric bound that converts character norms to cosine values.\n\n**`fourier_j_zero_term`** (374–383): When j=0, the Fourier term equals 2^k (the trivial-character contribution), since ω^{val(0·a)} = ω^0 = 1 and ∏(1+1) = 2^k.\n\n**`val_mul_nonzero`** (385–393): For j,a ≠ 0 in ℤ/pℤ (p prime), val(j·a) ≠ 0. Proof: if val(j·a)=0 then j·a=0 in ZMod p, but ZMod p is an integral domain (p prime), contradiction.\n\n**`norm_one_add_ωp_pow`** (395–428): The double-angle identity ‖1 + e^{2iα}‖ = 2|cos α|, instantiated as ‖1 + ωp^m‖ = 2|cos(πm/p)|. Proof strategy: set α = πm/p, write ωp^m = e^{2αi}, then show both sides squared are equal via\n  - LHS² = (1+cos 2α)² + sin²(2α)\n  - RHS² = 4cos²α\n  - Key: cos(2α) = 2cos²α - 1 (`Real.cos_two_mul`) and Pythagorean identity, combined by `nlinarith`.\n\n**`abs_cos_mul_pi_div_le`** (430–465): For m ∈ {1,...,p-1}: |cos(πm/p)| ≤ cos(π/p). Uses strict monotone decrease of cos on [0,π] (`Real.strictAntiOn_cos`) twice: once to get cos(πm/p) ≤ cos(π/p) (upper bound), and once via the reflection cos(π-π/p) = -cos(π/p) ≤ cos(πm/p) (lower bound). The reflection argument exploits m ≤ p-1, i.e. πm/p ≤ π - π/p.",
+    "mathContext": "$\\|1 + e^{2i\\alpha}\\| = 2|\\cos \\alpha|$ (double-angle identity)\n\n$\\|1 + \\omega_p^m\\| = 2|\\cos(\\pi m/p)|$\n\nFor $m \\in \\{1,\\ldots,p-1\\}$: $|\\cos(\\pi m/p)| \\leq \\cos(\\pi/p) < 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "double-angle identity",
+      "strictAntiOn_cos",
+      "Fourier product bound",
+      "cosine monotonicity"
+    ],
+    "prerequisites": [
+      "Real.cos_two_mul",
+      "Real.sin_sq_add_cos_sq",
+      "Real.strictAntiOn_cos",
+      "Complex.exp_ofReal_mul_I_re",
+      "nlinarith"
+    ]
+  },
+  {
+    "id": "ann-e1179-product-and-error-bound",
+    "proofId": "erdos-1179-oq-01",
+    "range": {
+      "startLine": 467,
+      "endLine": 643
+    },
+    "type": "theorem",
+    "title": "Fourier Product Bound and Full Error Assembly",
+    "content": "Lines 467–643 contain two theorems that together assemble the complete Fourier error bound.\n\n**`fourier_product_bound`** (467–528): For j ≠ 0 and A of size k:\n  ∏_{a∈A} ‖1 + ω^{val(ja)}‖ ≤ 2^k · |cos(π/p)|^{k-1}\n\nProof: rewrite each factor as 2|cos(πval(ja)/p)| via `norm_one_add_ωp_pow`, factor out 2^k via `Finset.prod_mul_distrib`, then bound the cosine product. Case split on 0∈A: if 0∈A, erase it (contributing factor 1), leaving k-1 nonzero elements each bounded by |cos(π/p)| via `abs_cos_mul_pi_div_le`. If 0∉A, all k elements are bounded, but use `pow_le_pow_of_le_one` to drop from exponent k to k-1.\n\n**`abs_cos_pi_div_prime_lt_one`** (534–554): |cos(π/p)| < 1 for any prime p. For p=2: cos(π/2)=0. For p≥3: 0 < π/p < π, and cos is strictly <1 on (0,π] and strictly >-1 on [0,π). Uses `Real.strictAntiOn_cos` with π/p vs 0 and π/p vs π.\n\n**`fourier_error_bound`** (556–642): The main error theorem:\n  |F_A(g) - 2^k/p| ≤ (p-1) · |cos(π/p)|^{k-1} · (2^k/p)\n\nThis corrects the original axiom which lacked the 2^k/p factor (counterexample: A={1,2} in ℤ/3ℤ gives error 2/3 but old bound was (p-1)cos²(π/3) = 1/2 < 2/3). Proof: extract j=0 term via `fourier_j_zero_term`, bound remaining p-1 terms by `norm_sum_le` + `fourier_product_bound`, multiply by 1/p (from `hS_card = p-1`), and reassemble as a single `calc` chain bridging ℂ norms to ℝ absolute values.",
+    "mathContext": "$|F_A(g) - 2^k/p| \\leq (p-1) \\cdot |\\cos(\\pi/p)|^{k-1} \\cdot \\frac{2^k}{p}$\n\nDecomposition: $F_A(g) = \\frac{1}{p}(f(0) + \\sum_{j \\neq 0} f(j))$ where $f(0) = 2^k$ and $\\|f(j)\\| \\leq 2^k |\\cos(\\pi/p)|^{k-1}$. Thus $|F_A(g) - 2^k/p| \\leq \\frac{1}{p} \\cdot (p-1) \\cdot 2^k |\\cos(\\pi/p)|^{k-1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fourier error bound",
+      "triangle inequality for sums",
+      "character sum bound",
+      "norm_sum_le"
+    ],
+    "prerequisites": [
+      "fourier_product_bound",
+      "norm_one_add_ωp_pow",
+      "abs_cos_mul_pi_div_le",
+      "Finset.add_sum_erase",
+      "norm_sum_le"
+    ]
+  },
+  {
+    "id": "ann-e1179-decay-and-summary",
+    "proofId": "erdos-1179-oq-01",
+    "range": {
+      "startLine": 644,
+      "endLine": 709
+    },
+    "type": "theorem",
+    "title": "Geometric Decay Theorem and Closing Summary",
+    "content": "**`erdos_renyi_decay`** (644–689): The core Erdős-Rényi (1965) result — for any ε>0, there exists a constant C such that for k ≥ ⌊log₂ p⌋ + C, any A of size k in ℤ/pℤ satisfies:\n  |F_A(g) - 2^k/p| ≤ ε · (2^k/p)  for all g\n\nThis says F_A(g) is within relative error ε of the uniform value 2^k/p. Proof:\n1. `abs_cos_pi_div_prime_lt_one` gives |cos(π/p)| < 1\n2. `exists_pow_lt_of_lt_one` (Archimedean) gives K₀ with |cos(π/p)|^K₀ < ε/(p-1)\n3. Set C = K₀+1; for k ≥ ⌊log₂ p⌋ + C, we have k-1 ≥ K₀\n4. Apply `fourier_error_bound` and bound the (p-1)·|cos|^{k-1} factor: (p-1)·|cos|^{k-1} ≤ (p-1)·|cos|^{K₀} < (p-1)·ε/(p-1) = ε\n\nThe `⌊log₂ p⌋` offset ensures 2^k ≥ p (so the distribution 2^k/p ≥ 1 per element on average), though this lower bound is not used directly in the inequality.\n\n**`second_order_hierarchy`** (695–707): One-line wrapper: `bounded_implies_sublinear gEps ε`, packaging the main proved result for the gallery as a clean named theorem.\n\nThe comment (lines 695–704) summarizes the proof's contribution: the hierarchy O(1) ⟹ o(log N) is proved; the Fourier decay `erdos_renyi_decay` is fully verified; the open question is which of the three candidates is the true rate.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists C:\\; k \\geq \\lfloor \\log_2 p \\rfloor + C \\Rightarrow |F_A(g) - 2^k/p| \\leq \\varepsilon \\cdot 2^k/p$\n\nGeometric decay: $(p-1)|\\cos(\\pi/p)|^{k-1} \\to 0$ since $|\\cos(\\pi/p)| < 1$ for all primes $p$. For $k \\approx 2\\log_2 p + C$, the error drops below any prescribed $\\varepsilon$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "geometric decay",
+      "Archimedean property",
+      "exists_pow_lt_of_lt_one",
+      "Erdős-Rényi method",
+      "uniform representation"
+    ],
+    "prerequisites": [
+      "fourier_error_bound",
+      "abs_cos_pi_div_prime_lt_one",
+      "exists_pow_lt_of_lt_one",
+      "pow_le_pow_of_le_one",
+      "Nat.clog"
+    ]
   }
 ]
