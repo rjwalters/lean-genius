@@ -43,10 +43,6 @@
       "ramseyNumber axiomatization: k-color Ramsey number R(G; k) as ℕ → ℕ → ℕ",
       "triangleRamsey and oddCycleRamsey definitions",
       "erdosConjecture554: ratio-limit formulation using rational arithmetic",
-      "triangle_ramsey_exponential: R(K_3; k) >= 2^k lower bound",
-      "triangle_ramsey_upper: existence of exponential upper bound",
-      "oddCycle_ramsey_upper: R(C_{2n+1}; k) <= (2n+1)^k",
-      "oddCycle_ramsey_lower: linear lower bound k*(2n) + 1",
       "two_color_odd_cycle: R(C_{2n+1}; 2) = 4n+1 (Bondy-Erdős 1973)",
       "two_color_pentagon_ratio: verified 2-color values from axioms",
       "pentagon_is_special_case: C_5 case follows from full conjecture",
@@ -78,36 +74,36 @@
     {
       "id": "ramsey-framework",
       "title": "Part I: Ramsey Number Framework",
-      "startLine": 24,
-      "endLine": 46,
+      "startLine": 22,
+      "endLine": 39,
       "summary": "Axiomatizes Ramsey numbers, defines triangleRamsey and oddCycleRamsey."
     },
     {
       "id": "conjecture",
       "title": "Part II: The Conjecture",
-      "startLine": 47,
-      "endLine": 63,
+      "startLine": 40,
+      "endLine": 55,
       "summary": "States erdosConjecture554: the ratio R(C_{2n+1};k)/R(K_3;k) -> 0 as k -> infinity."
     },
     {
       "id": "known-bounds",
       "title": "Part III: Known Bounds",
-      "startLine": 64,
-      "endLine": 99,
-      "summary": "Exponential bounds for triangle Ramsey numbers, upper and lower bounds for odd cycle Ramsey numbers."
+      "startLine": 56,
+      "endLine": 67,
+      "summary": "Documented bounds (not yet formalized): exponential lower bound for triangle Ramsey numbers and polynomial bounds for odd cycle Ramsey numbers. This section contains only docstring comments, no Lean declarations."
     },
     {
       "id": "two-color",
       "title": "Part IV: Classical 2-Color Results",
-      "startLine": 100,
-      "endLine": 125,
+      "startLine": 68,
+      "endLine": 92,
       "summary": "2-color results: R(C_{2n+1}; 2) = 4n+1, R(K_3; 2) = 6, and verified pentagon ratio."
     },
     {
       "id": "pentagon-case",
       "title": "Part V: The Pentagon Case",
-      "startLine": 126,
-      "endLine": 128,
+      "startLine": 94,
+      "endLine": 110,
       "summary": "The simplest open case C_5 and proof it follows from the full conjecture."
     }
   ],
