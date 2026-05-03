@@ -924,3 +924,59 @@ File at 14022 lines remains beyond practical Docker 32GB build envelope. The edi
 2. Submit sorries 3–5 to Aristotle (likely fast proofs)
 3. Tackle `gnwProb_sum_corners` manually (standard induction on K, ~50 lines)
 4. `gnwProb_key` is the remaining hard mathematical content (GNW 1979)
+4. `gnwProb_key` is the remaining hard mathematical content (GNW 1979)
+
+---
+
+## Session 2026-05-03 (Session 38) — Prove 4 GNW infrastructure lemmas; 5 → 1 sorry
+
+**Mode**: REVISIT (RICH knowledge tier, score 174)
+**Outcome**: PROGRESS — 4 sorries proved; gnwProb_key is now the sole remaining sorry
+
+### What I Did
+
+1. Checked pool and Aristotle status; found no pending jobs; claimed problem.
+
+2. Identified the 4 provable sorries in PART XXVI:
+   - `strictHookCells_card` (TRIVIAL): arm/leg image disjointness + card_Ico + omega
+   - `strictHookCells_nonempty` (TRIVIAL): non-corner → arm or leg neighbor exists in μ
+   - `strictHookCells_hookLen_lt` (TRIVIAL): hookLength_add_eq + rowLen_mono (transpose for colLen) + omega
+   - `gnwProb_sum_corners` (HARD, ~50 lines): induction on K
+
+3. Wrote all four proofs in `BallotProblemOQ03OQ01OQ02Helpers.lean` PART XXVI:
+   - `strictHookCells_card`: uses `Finset.card_union_of_disjoint`, `Finset.card_image_of_injective`, `Finset.card_Ico`. Disjointness: arm cells have first coord = i; leg cells have first coord r > i → contradiction by omega.
+   - `strictHookCells_nonempty`: simp on `isCorner` definition, rcases gives arm-neighbor or leg-neighbor, provide witness directly via `Finset.mem_image_of_mem`.
+   - `strictHookCells_hookLen_lt`: `hookLength_add_eq` for both cells, `YoungDiagram.rowLen_mono` (for leg), transpose trick `YoungDiagram.rowLen_mono (μ := μ.transpose)` + `rowLen_transpose` (for arm colLen monotonicity), omega closes goal.
+   - `gnwProb_sum_corners`: induction on K; base vacuous (hookLength_pos + omega); succ: `by_cases hcorner`; corner case uses `Finset.sum_attach` + `Finset.sum_ite_eq`; non-corner case: `← Finset.mul_sum`, `Finset.sum_comm`, `Finset.sum_congr rfl` to apply IH, `field_simp` to close arithmetic.
+
+4. Committed to `feature/researcher-6` (commit 72a42483f4) and opened PR #14958.
+
+5. Updated meta.json (sorries 5 → 1) and knowledge JSON.
+
+### Key Findings
+
+- `colLen` monotonicity must be derived via `μ.transpose.rowLen` — `YoungDiagram.colLen_mono` doesn't exist; use `rowLen_mono (μ := μ.transpose)` + `simp [rowLen_transpose]`
+- `gnwProb_sum_corners` proof structure: corner case is simply `sum_ite_eq` (unique indicator); non-corner case is: factor scalar, swap sums, IH, arithmetic
+- Lean worktree trap: edit files in `.loom/worktrees/researcher-N/` — editing main repo paths fails silently when daemon resets
+
+### Files Modified (in worktree)
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean` (+86 lines, 5 sorries → 1)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json` (sorries 5→1, description/assumptions updated)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` (knowledge updated)
+
+### Sorry Count: 5 → 1
+
+- ✓ PROVED: `strictHookCells_card`
+- ✓ PROVED: `strictHookCells_nonempty`
+- ✓ PROVED: `strictHookCells_hookLen_lt`
+- ✓ PROVED: `gnwProb_sum_corners`
+- `gnwProb_key` (GNW 1979 KEY theorem): sole remaining sorry
+
+### Next Steps
+
+1. Prove `gnwProb_key`: `∑ x ∈ μ.cells, gnwProb μ c hookLen(x) x = hookProd μ / hookProd(μ\c)`
+   - Strategy: induction on μ.card with corner removal
+   - Base case: μ = {c} is a single cell, gnwProb = 1, hookProd ratio = 1/1 = 1 ✓
+   - Inductive step: split μ.cells into {c} ∪ non-corner cells, use corner recursion
+   - Hard: requires careful manipulation of hookProd after corner removal
