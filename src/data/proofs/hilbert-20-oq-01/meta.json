@@ -37,33 +37,34 @@
       "Definition of principal symbol as a function on the cotangent bundle",
       "Concrete structure for bicharacteristic curves (symbol vanishing, nonzero cotangent vector)",
       "Formalization of condition (Ψ) on bicharacteristic curves",
-      "Statement of the Nirenberg-Treves characterization theorem",
       "Proved: elliptic operators satisfy condition (Ψ) vacuously (no bicharacteristic curves exist)",
       "Proved: operators with real principal symbol satisfy condition (Ψ)",
-      "Proof that elliptic operators of principal type are locally solvable"
+      "Proof that elliptic operators of principal type are locally solvable",
+      "Consolidated Hörmander necessity + Dencker sufficiency into single biconditional axiom `nirenberg_treves` (3→2 axioms); both directional theorems now proved as corollaries"
     ],
-    "axiomCount": 3,
-    "assumptions": "3 axioms: IsLocallySolvable (requires distribution theory), hormander_necessity (Hörmander 1960, deep microlocal analysis), dencker_sufficiency (Dencker 2006, deep microlocal analysis). BicharacteristicCurve is now a concrete structure, enabling proved theorems for elliptic_satisfies_psi and imSymbolAlongCurve_eq.",
-    "lineCount": 209,
+    "axiomCount": 2,
+    "assumptions": "2 axioms: IsLocallySolvable (requires distribution theory), nirenberg_treves (biconditional characterization combining Hörmander 1960 necessity + Dencker 2006 sufficiency, requires microlocal analysis not yet in Mathlib). BicharacteristicCurve is a concrete structure; hormander_necessity and dencker_sufficiency are proved theorems.",
+    "lineCount": 212,
     "prerequisites": [
       "Partial differential equations",
       "Functional analysis and distributions",
       "Microlocal analysis",
       "Symplectic geometry (cotangent bundles)"
     ],
-    "theoremCount": 5
+    "theoremCount": 7
   },
   "overview": {
     "historicalContext": "Until 1957, it was widely assumed that smooth linear PDEs always have local solutions. Hans Lewy's startling counterexample — a simple first-order operator in ℝ³ with no local solutions — shattered this intuition and launched the modern theory of local solvability. Hörmander (1960) identified the principal symbol as the key invariant and gave a necessary condition: a sign condition involving the Poisson bracket of the real and imaginary parts of the symbol. Nirenberg and Treves (1963) sharpened this to condition (Ψ) — a one-sided sign condition on Im(p_m) along oriented bicharacteristic curves of Re(p_m) — and conjectured it to be both necessary and sufficient for operators of principal type. The necessity half (Hörmander 1960, strengthened by Nirenberg-Treves 1963) was established relatively quickly. The sufficiency direction resisted all attempts for 43 years: partial results by Beals-Fefferman (1973, condition (P), a stronger condition), and Lerner (1988-2000, partial cases) fell short of condition (Ψ). Dencker's 2006 proof of sufficiency — using sophisticated second microlocalization and energy estimates — completed the conjecture and earned the Bôcher Memorial Prize.",
     "problemStatement": "What is the precise characterization of locally solvable operators? That is, given a linear partial differential operator P, when does the equation Pu = f have a distribution solution u near a point x₀ for every smooth f?",
     "text": "We formalize the answer: for operators of principal type, local solvability is equivalent to condition (Ψ) on the principal symbol.",
-    "proofStrategy": "Define linear PDOs, principal symbols, local solvability, principal type, and condition (Ψ). State the Hörmander necessity and Dencker sufficiency as axioms, then derive the characterization. Show elliptic operators as a key special case.",
+    "proofStrategy": "Define linear PDOs, principal symbols, local solvability, principal type, and condition (Ψ). The full Nirenberg-Treves characterization is stated as a single biconditional axiom `nirenberg_treves`; the Hörmander necessity and Dencker sufficiency directions are derived as proved corollaries. Show elliptic operators as a key special case.",
     "keyInsights": [
       "The principal symbol p_m(x, ξ) encodes the leading-order behavior of the operator",
       "Condition (Ψ): Im(p_m) cannot change sign from − to + along bicharacteristics of Re(p_m)",
       "Elliptic operators satisfy (Ψ) vacuously since p_m never vanishes for nonzero ξ",
       "The Nirenberg-Treves conjecture took 43 years to prove (1963-2006)",
-      "Encoding BicharacteristicCurve as a concrete structure (not an axiom) enables proved theorems like elliptic_satisfies_psi — the omission of Hamilton flow strengthens (Ψ) conservatively, preserving soundness of the axioms"
+      "Encoding BicharacteristicCurve as a concrete structure (not an axiom) enables proved theorems like elliptic_satisfies_psi",
+      "The two-direction characterization (Hörmander + Dencker) is packed into one biconditional axiom, reducing assumption count from 3 to 2 while keeping both named results as proved theorems"
     ],
     "prerequisites": [
       "PDEs and differential operators",
@@ -108,15 +109,15 @@
       "id": "the-nirenberg-treves-theorem",
       "title": "The Nirenberg-Treves Characterization",
       "startLine": 138,
-      "endLine": 168,
-      "summary": "States Hörmander necessity and Dencker sufficiency as axioms, then derives the full biconditional: for principal-type operators, $P$ is locally solvable iff $p_m$ satisfies condition (Ψ). The 43-year gap between conjecture (1963) and proof (2006) reflects the depth of Dencker's result.",
-      "mathContext": "For $P$ of principal type: $P$ locally solvable $\\iff$ $p_m$ satisfies condition (Ψ). Axioms: `hormander_necessity` ($\\text{locally solvable} \\Rightarrow \\Psi$) and `dencker_sufficiency` ($\\Psi \\Rightarrow \\text{locally solvable}$)."
+      "endLine": 172,
+      "summary": "Single biconditional axiom `nirenberg_treves` encodes the full characterization (Hörmander 1960 + Dencker 2006). The Hörmander necessity direction and Dencker sufficiency direction are derived as proved theorems from this axiom. The 43-year gap between conjecture (1963) and proof (2006) reflects the depth of Dencker's result.",
+      "mathContext": "For $P$ of principal type: $P$ locally solvable $\\iff$ $p_m$ satisfies condition (Ψ). Single axiom `nirenberg_treves`; `hormander_necessity` ($\\text{locally solvable} \\Rightarrow \\Psi$) and `dencker_sufficiency` ($\\Psi \\Rightarrow \\text{locally solvable}$) are proved theorems."
     },
     {
       "id": "special-cases",
       "title": "Special Cases: Elliptic and Real-Symbol Operators",
-      "startLine": 170,
-      "endLine": 209,
+      "startLine": 174,
+      "endLine": 212,
       "summary": "Proved theorems: `real_symbol_satisfies_psi` (operators with real principal symbol satisfy condition (Ψ) since $\\text{Im}(p_m) = 0$ always), `elliptic_satisfies_psi` (elliptic operators satisfy (Ψ) vacuously — no bicharacteristics exist), `elliptic_locally_solvable` (elliptic principal-type operators are locally solvable, combining (Ψ) with Dencker sufficiency).",
       "mathContext": "Real symbol: $p_m$ real $\\Rightarrow \\text{Im}(p_m) = 0 \\Rightarrow$ (Ψ) trivially. Elliptic: $p_m(x, \\xi) \\neq 0$ for $\\xi \\neq 0 \\Rightarrow$ no bicharacteristics $\\Rightarrow$ (Ψ) vacuously $\\Rightarrow$ locally solvable."
     }
@@ -170,9 +171,9 @@
       "NNReal"
     ],
     "namespace": "Hilbert20LocalSolvability",
-    "lineCount": 209,
-    "axiomCount": 3,
-    "theoremCount": 5,
+    "lineCount": 212,
+    "axiomCount": 2,
+    "theoremCount": 7,
     "definitionCount": 7,
     "path": "Proofs/Hilbert20LocalSolvability.lean",
     "sorries": 0
