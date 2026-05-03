@@ -492,13 +492,13 @@ theorem risch_linear_surjective_monomial (n : ℕ) :
 theorem risch_linear_surjective_all (p : Polynomial ℝ) :
     ∃ Q : Polynomial ℝ, Polynomial.derivative Q + Q = p := by
   induction p using Polynomial.induction_on' with
-  | h_add p q hp hq =>
+  | add p q hp hq =>
     obtain ⟨Qp, hQp⟩ := hp
     obtain ⟨Qq, hQq⟩ := hq
     exact ⟨Qp + Qq, by
       simp only [Polynomial.derivative_add]
       linear_combination hQp + hQq⟩
-  | h_monomial n a =>
+  | monomial n a =>
     obtain ⟨Qn, hQn⟩ := risch_linear_surjective_monomial n
     refine ⟨Polynomial.C a * Qn, ?_⟩
     simp only [Polynomial.derivative_mul, Polynomial.derivative_C, zero_mul, zero_add]
