@@ -1,0 +1,92 @@
+[
+  {
+    "id": "ann-4k3oq03-key-contrast",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 51,
+      "endLine": 54
+    },
+    "type": "concept",
+    "title": "Why the 3 (mod 4) Argument Fails Here",
+    "content": "For primes ≡ 3 (mod 4), the proof uses multiplicative closure: products of integers ≡ 1 (mod 4) stay ≡ 1 (mod 4), so a number ≡ 3 (mod 4) must have a prime factor ≡ 3. This fails for ≡ 1 (mod 4): products of primes ≡ 3 can also be ≡ 1 (e.g., 3×3 = 9 ≡ 1). The fix uses Euler's quadratic residue criterion instead of multiplicative congruences.",
+    "mathContext": "The group $(\\mathbb{Z}/4\\mathbb{Z})^* = \\{1, 3\\}$ has order 2. The element 3 has order 2, so 3² ≡ 1. This means products of primes ≡ 3 (mod 4) can be ≡ 1 (mod 4), blocking the multiplicative argument for the p ≡ 1 case.",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiplicative group mod 4",
+      "quadratic residues",
+      "Euler's criterion"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "multiplicative groups"
+    ]
+  },
+  {
+    "id": "ann-4k3oq03-issquare",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 55,
+      "endLine": 64
+    },
+    "type": "tactic",
+    "title": "Constructing IsSquare(-1) from Divisibility",
+    "content": "The tactic constructs the witness k for IsSquare(-1 : ZMod p): since p ∣ k²+1, we have k²+1 ≡ 0 (mod p), so k² ≡ -1 (mod p). In ZMod p, this means (k : ZMod p)² = -1, i.e., -1 = (k : ZMod p) * (k : ZMod p), which is exactly IsSquare(-1).",
+    "mathContext": "IsSquare x means ∃ r, x = r * r. We use k as the witness: IsSquare(-1 : ZMod p) is witnessed by (k : ZMod p) since k² ≡ -1 (mod p).",
+    "significance": "high",
+    "relatedConcepts": [
+      "IsSquare",
+      "ZMod",
+      "quadratic residues"
+    ],
+    "prerequisites": [
+      "ZMod arithmetic",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-4k3oq03-euler-criterion",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 65,
+      "endLine": 70
+    },
+    "type": "concept",
+    "title": "Euler's Criterion via Mathlib",
+    "content": "Mathlib's Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one encodes Euler's criterion: if -1 is a square in ZMod p (for an odd prime p), then p ≢ 3 (mod 4). Combined with the fact that odd primes satisfy p % 4 ∈ {1, 3}, this gives p ≡ 1 (mod 4).",
+    "mathContext": "Euler's criterion: for an odd prime p, (-1/p) = (-1)^((p-1)/2). So -1 is a QR mod p iff (p-1)/2 is even, iff 4 | p-1, iff p ≡ 1 (mod 4). Equivalently, -1 is NOT a QR iff p ≡ 3 (mod 4). Mathlib proves the latter as mod_four_ne_three_of_dvd_isSquare_neg_one.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's criterion",
+      "Legendre symbol",
+      "quadratic reciprocity"
+    ],
+    "prerequisites": [
+      "Fermat's little theorem",
+      "quadratic residues",
+      "ZMod"
+    ]
+  },
+  {
+    "id": "ann-4k3oq03-construction",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 84,
+      "endLine": 87
+    },
+    "type": "concept",
+    "title": "The Construction: N = (2·(n+1)!)² + 1",
+    "content": "N = (2·(n+1)!)² + 1 is the key construction. It is odd (even² + 1), greater than 1, and all its odd prime factors p satisfy p ∣ k²+1 where k = 2·(n+1)!. By Euler's criterion, this forces p ≡ 1 (mod 4). The factorial ensures all primes ≤ n+1 divide (n+1)! and hence cannot divide N without also dividing 1.",
+    "mathContext": "N = (2k)² + 1 where k = (n+1)!. Any prime p dividing N satisfies p ∣ (2k)² + 1. Since p ≠ 2 (N is odd), Euler's criterion gives p ≡ 1 (mod 4). The bound p > n comes from: p ≤ n+1 ⟹ p ∣ (n+1)! ⟹ p ∣ (2(n+1)!)² ⟹ p ∣ N - (2(n+1)!)² = 1, contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euclid's argument",
+      "factorial divisibility",
+      "sum of two squares"
+    ],
+    "prerequisites": [
+      "prime factorization",
+      "factorial divisibility",
+      "modular arithmetic"
+    ]
+  }
+]

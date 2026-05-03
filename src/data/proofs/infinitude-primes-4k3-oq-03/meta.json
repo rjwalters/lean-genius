@@ -1,0 +1,122 @@
+{
+  "id": "infinitude-primes-4k3-oq-03",
+  "title": "Infinitely Many Primes ≡ 1 (mod 4): Euler's Criterion Proof",
+  "slug": "infinitude-primes-4k3-oq-03",
+  "description": "Answers Open Question 3 from 'Infinitely Many Primes ≡ 3 (mod 4)': proves there are infinitely many primes ≡ 1 (mod 4) using Euler's quadratic residue criterion. The construction N = (2·(n+1)!)² + 1 forces all odd prime factors to satisfy p ≡ 1 (mod 4), since p ∣ k²+1 means -1 is a square mod p, which Euler's criterion equates to p ≡ 1 (mod 4). This is the harder companion to the elementary 3 (mod 4) case: no product-mod-4 argument suffices; quadratic residues are essential. 3 theorems, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-03",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InfinitudePrimes4k3OQ03.lean",
+    "tags": [
+      "number-theory",
+      "prime-numbers",
+      "modular-arithmetic",
+      "quadratic-residues",
+      "euler-criterion",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-03",
+    "axiomCount": 0,
+    "assumptions": "None. Uses Mathlib's Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one (Euler's criterion for -1 being a quadratic residue).",
+    "lineCount": 88,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "originalContributions": [
+      "prime_dvd_sq_add_one_mod_four: if odd prime p divides k²+1 then p ≡ 1 (mod 4)",
+      "infinitely_many_primes_1_mod_4: for any n, exists prime p > n with p ≡ 1 (mod 4)",
+      "primes_1_mod_4_infinite: the set {p prime : p ≡ 1 (mod 4)} is infinite"
+    ]
+  },
+  "overview": {
+    "historicalContext": "This answers the natural companion question to Euclid's argument for primes $\\equiv 3 \\pmod 4$: can the same elementary approach handle primes $\\equiv 1 \\pmod 4$? The answer requires a genuinely different ingredient: Euler's criterion (1748) that $-1$ is a quadratic residue modulo an odd prime $p$ if and only if $p \\equiv 1 \\pmod 4$. This criterion was proved by Euler using Fermat's little theorem (order of the multiplicative group is $p-1$, and $-1$ has order 2, so it lies in a square iff $2 \\mid (p-1)/2$ iff $4 \\mid p-1$). The construction $N = (2 \\cdot (n+1)!)^2 + 1$ is the key: every prime factor $p$ of $N$ satisfies $p \\mid k^2 + 1$ for $k = 2 \\cdot (n+1)!$, forcing $p \\equiv 1 \\pmod 4$ via Euler's criterion. This argument appears in Hardy & Wright's *An Introduction to the Theory of Numbers* and is the prototypical example of how quadratic residues unlock arithmetic progressions beyond the reach of multiplicative congruence arguments.",
+    "problemStatement": "Open Question 3 from `infinitude-primes-4k3`: prove there are infinitely many primes $p \\equiv 1 \\pmod{4}$ using an elementary argument. Formally: $\\forall n : \\mathbb{N},\\ \\exists p : \\mathbb{N},\\ \\text{Prime}(p) \\wedge p > n \\wedge p \\equiv 1 \\pmod{4}$.",
+    "text": "The key asymmetry between the two cases: for $p \\equiv 3 \\pmod 4$, a simple product-mod-4 argument works (the set $\\{1, 3\\}$ under multiplication mod 4 means any integer $\\equiv 3 \\pmod 4$ must have an odd number of prime factors $\\equiv 3 \\pmod 4$). For $p \\equiv 1 \\pmod 4$, no such direct argument exists — products of primes $\\equiv 3 \\pmod 4$ can also be $\\equiv 1 \\pmod 4$ (e.g., $3 \\times 3 = 9 \\equiv 1$). The fix: use $N = (2 \\cdot (n+1)!)^2 + 1$. Any prime $p \\mid N$ satisfies $p \\mid k^2 + 1$ where $k = 2(n+1)!$, so $k^2 \\equiv -1 \\pmod p$, making $-1$ a square mod $p$. Euler's criterion then gives $p \\equiv 1 \\pmod 4$. The bound $p > n$ follows from the usual factorial argument: if $p \\leq n+1$ then $p \\mid (n+1)!$, so $p \\mid 2(n+1)!$, so $p \\mid N - (2(n+1)!)^2 = 1$, contradicting primality.",
+    "proofStrategy": "Lean proof: `prime_dvd_sq_add_one_mod_four` constructs `IsSquare (-1 : ZMod p)` using $k$ as witness (from $k^2 + 1 \\equiv 0 \\pmod p$), then applies Mathlib's `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one`. Main theorem: `exists_odd_prime_factor` gives an odd prime dividing $N$ (which is odd), then `prime_dvd_sq_add_one_mod_four` gives $p \\equiv 1 \\pmod 4$, and contradiction for $p \\leq n$ via `Nat.dvd_factorial` and `Nat.Prime.not_dvd_one`.",
+    "keyInsights": [
+      "The Euclid-style argument for $p \\equiv 3 \\pmod 4$ uses the multiplicative closure $1 \\cdot 1 \\equiv 1 \\pmod 4$; this fails for $p \\equiv 1 \\pmod 4$ because $3 \\cdot 3 \\equiv 1 \\pmod 4$, so a product of primes $\\equiv 3$ can be $\\equiv 1$.",
+      "The construction $N = (2k)^2 + 1$ is the key: any prime factor $p$ of $N$ satisfies $p \\mid (2k)^2 + 1$, i.e., $(2k)^2 \\equiv -1 \\pmod p$, making $-1$ a square mod $p$. This is a genuine quadratic constraint, not a multiplicative congruence.",
+      "Euler's criterion ($-1$ is a square mod $p$ iff $p \\equiv 1 \\pmod 4$) is the bridge between the divisibility condition and the modular constraint. In Mathlib, this is `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one` from `Mathlib.NumberTheory.SumTwoSquares`.",
+      "The use of $(2 \\cdot (n+1)!)^2 + 1$ rather than $(p_1 \\cdots p_k)^2 + 1$ avoids the finiteness assumption: we directly construct a number with prime factors $\\equiv 1 \\pmod 4$ exceeding $n$, without needing to assume finiteness of the set of such primes.",
+      "This is a special case of Dirichlet's theorem on primes in arithmetic progressions, but requires none of the analytic machinery (L-functions, Dirichlet characters). The same quadratic residue ingredient underlies Fermat's two-square theorem: primes $\\equiv 1 \\pmod 4$ are exactly those expressible as $a^2 + b^2$."
+    ],
+    "prerequisites": [
+      "Euler's criterion: -1 is a QR mod p iff p ≡ 1 (mod 4) for odd primes p",
+      "Mathlib: Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one from Mathlib.NumberTheory.SumTwoSquares",
+      "ZMod arithmetic: ZMod.natCast_zmod_eq_zero_iff_dvd, Fact (Nat.Prime p)",
+      "Factorial divisibility: Nat.dvd_factorial"
+    ]
+  },
+  "conclusion": {
+    "summary": "Proves infinitely many primes $\\equiv 1 \\pmod 4$ via $N = (2 \\cdot (n+1)!)^2 + 1$ and Euler's quadratic residue criterion. Answers OQ-03 from `infinitude-primes-4k3`. 3 theorems, 0 axioms, fully machine-verified. The proof is the definitive answer to why the elementary $p \\equiv 3$ argument does not directly extend: quadratic residues are necessary and sufficient.",
+    "implications": "Together with `infinitude-primes-4k3`, this proof covers all non-trivial residue classes mod 4 by elementary means: $p \\equiv 1$ needs Euler's criterion; $p \\equiv 3$ needs only product-mod-4 arithmetic. This contrast illustrates the general phenomenon in Dirichlet's theorem: some arithmetic progressions admit purely multiplicative proofs, others require deeper algebraic machinery. The quadratic residue criterion used here is the same ingredient underlying Fermat's two-square theorem and the splitting of primes in the Gaussian integers $\\mathbb{Z}[i]$.",
+    "openQuestions": [
+      "Can Fermat's theorem on sums of two squares be formalized using this same Mathlib infrastructure: $p \\equiv 1 \\pmod 4 \\iff p = a^2 + b^2$? Mathlib already has the criterion (`Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one`); the remaining step is constructing the explicit decomposition.",
+      "What is the density of primes $\\equiv 1 \\pmod 4$ among all primes? Dirichlet's theorem guarantees density $1/\\phi(4) = 1/2$, but proving this requires analytic tools (L-functions, Prime Number Theorem for arithmetic progressions) far beyond the elementary methods here."
+    ]
+  },
+  "leanFile": {
+    "namespace": "InfinitudePrimes4k3OQ03",
+    "lineCount": 88,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/InfinitudePrimes4k3OQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes-4k3",
+      "relationship": "parent",
+      "description": "Source of Open Question 3: the companion proof for primes ≡ 3 (mod 4) using a simpler multiplicative argument — this proof answers that entry's third open question."
+    },
+    {
+      "targetId": "infinitude-primes-4k1",
+      "relationship": "sibling",
+      "description": "Standalone gallery entry for the same theorem with fuller annotations, more theorems (5 vs 3), and cross-references to Fermat's two-square theorem and Dirichlet's theorem."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "ancestor",
+      "description": "The base infinitude of primes (Euclid's proof) — this proof extends the Euclid factorial construction to force a specific residue class."
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem (1837) generalizes this to all arithmetic progressions a (mod m) with gcd(a,m)=1; the present proof is an elementary special case for a=1, m=4."
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-imports",
+      "title": "Imports and Context",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Imports Mathlib's SumTwoSquares (for Euler's criterion), prime and factorial infrastructure, and ZMod. Module docstring explains this answers OQ-03 from infinitude-primes-4k3, and contrasts the p ≡ 3 (multiplicative, no QR) vs p ≡ 1 (requires Euler's criterion) cases."
+    },
+    {
+      "id": "sec-key-lemma",
+      "title": "Key Lemma: Odd Primes Dividing k² + 1 Are ≡ 1 (mod 4)",
+      "startLine": 51,
+      "endLine": 71,
+      "summary": "prime_dvd_sq_add_one_mod_four: if an odd prime p divides k²+1, then p ≡ 1 (mod 4). Proof: constructs IsSquare(-1 : ZMod p) from the divisibility (k is the witness: k² = -1 in ZMod p), applies Mathlib's Euler criterion to get p ≢ 3 (mod 4), then casework on {1,3} gives p ≡ 1."
+    },
+    {
+      "id": "sec-helper",
+      "title": "Helper: Odd Numbers Have Odd Prime Factors",
+      "startLine": 73,
+      "endLine": 79,
+      "summary": "exists_odd_prime_factor: any odd number > 1 has an odd prime factor. Uses Nat.exists_prime_and_dvd for existence, then shows factor cannot be 2 (contradicts oddness)."
+    },
+    {
+      "id": "sec-main",
+      "title": "Main Theorem and Infinitude",
+      "startLine": 81,
+      "endLine": 102,
+      "summary": "infinitely_many_primes_1_mod_4: for every n, exists prime p > n with p ≡ 1 (mod 4). Construction N = (2(n+1)!)²+1 (odd, > 1), factor p via exists_odd_prime_factor, apply key lemma for p ≡ 1 mod 4, derive p > n by contradiction via Nat.dvd_factorial + not_dvd_one. primes_1_mod_4_infinite follows via Set.infinite_iff_exists_gt."
+    }
+  ],
+  "sorries": 0
+}

@@ -54,7 +54,7 @@
     "openQuestions": [
       "Prove Dirichlet's theorem in full generality: infinitely many primes in any AP $\\{a + nd : n \\geq 0\\}$ with $\\gcd(a,d) = 1$. This requires Dirichlet characters $\\chi : (\\mathbb{Z}/d\\mathbb{Z})^* \\to \\mathbb{C}^*$ and $L$-functions $L(s, \\chi) = \\sum_{n=1}^\\infty \\chi(n)/n^s$. Formalizing the non-vanishing $L(1, \\chi) \\neq 0$ for non-principal $\\chi$ is the key analytic step.",
       "Formalize the equidistribution: primes $\\equiv a \\pmod d$ (with $\\gcd(a,d)=1$) have density $1/\\phi(d)$ among all primes (Dirichlet's theorem in its quantitative form, equivalent to the Prime Number Theorem for arithmetic progressions).",
-      "Prove the infinitude of primes $\\equiv 1 \\pmod 4$ elementarily: this requires showing that for any finite set $\\{p_1,\\ldots,p_k\\}$ of primes $\\equiv 1 \\pmod 4$, the number $N = 4(p_1 \\cdots p_k)^2 + 1$ has a prime factor $\\equiv 1 \\pmod 4$. This uses Fermat's theorem: $(-1|p) = 1$ iff $p \\equiv 1 \\pmod 4$."
+      "**[Proved in `infinitude-primes-4k3-oq-03`]** Prove the infinitude of primes $\\equiv 1 \\pmod 4$ elementarily: this requires showing that for any $n$, the number $N = (2 \\cdot (n+1)!)^2 + 1$ has a prime factor $\\equiv 1 \\pmod 4$. This uses Fermat's theorem (Euler's criterion): $-1$ is a quadratic residue mod $p$ iff $p \\equiv 1 \\pmod 4$. The machine-verified proof is in `infinitude-primes-4k3-oq-03` (also see the fuller `infinitude-primes-4k1`)."
     ]
   },
   "leanFile": {
@@ -68,9 +68,14 @@
   },
   "crossReferences": [
     {
+      "targetId": "infinitude-primes-4k3-oq-03",
+      "relationship": "child",
+      "description": "Answers Open Question 3: proves infinitely many primes ≡ 1 (mod 4) using N = (2·(n+1)!)²+1 and Euler's quadratic residue criterion (Fermat's theorem)."
+    },
+    {
       "targetId": "infinitude-primes-4k1",
       "relationship": "sibling",
-      "description": "Companion proof for primes ≡ 1 (mod 4) — requires more machinery (Fermat's two-square theorem or quadratic reciprocity) compared to the elementary 3 mod 4 proof here."
+      "description": "Standalone gallery entry for primes ≡ 1 (mod 4) with fuller annotations — the same result as infinitude-primes-4k3-oq-03 but with more extensive commentary."
     },
     {
       "targetId": "infinitude-primes",
