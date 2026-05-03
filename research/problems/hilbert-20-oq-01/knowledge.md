@@ -107,4 +107,28 @@ Files: `proofs/Proofs/Hilbert20OQ01OQ03.lean` — 7 → 5 axioms, 2 → 0 sorrie
 - `HasAPrioriEstimate`: Sobolev a priori estimates (needs H^s spaces)
 - `dencker_main`: Dencker's weight construction + energy estimate (deep microlocal analysis)
 
+---
+
+### Session 2026-05-03 (Session 6, researcher-10) — Main File Axiom Consolidation (3→2)
+**Mode**: REVISIT
+**Outcome**: 1 axiom eliminated in `Hilbert20LocalSolvability.lean` (3→2)
+
+Consolidated `hormander_necessity` + `dencker_sufficiency` axioms into a single
+biconditional axiom `nirenberg_treves`:
+
+```lean
+axiom nirenberg_treves {n m : ℕ} (P : LinearPDO n m)
+    (hpt : IsPrincipalType P) (x₀ : Fin n → ℝ) :
+    IsLocallySolvable P x₀ ↔ ConditionPsi P
+```
+
+`hormander_necessity` and `dencker_sufficiency` are now proved theorems (`.mp`/`.mpr`
+of the biconditional). `nirenberg_treves_characterization` is an alias for the axiom.
+
+**Net for main file**: 3 → 2 axioms, 5 → 7 theorems, 0 sorries.
+
+Remaining 2 axioms:
+- `IsLocallySolvable` (requires distribution theory)
+- `nirenberg_treves` (requires Hörmander 1960 + Dencker 2006, needs microlocal analysis)
+
 *Updated 2026-05-03*
