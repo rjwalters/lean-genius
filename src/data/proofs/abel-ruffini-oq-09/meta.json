@@ -22,7 +22,7 @@
     "axiomCount": 3,
     "assumptions": "3 axioms: liouville_integration_theorem (structural form of elementary antiderivatives requires differential Galois/Picard-Vessiot theory not in Mathlib), risch_exp_criterion_gaussian (Risch criterion: ∫e^(-x²)dx elementary iff rational Q with Q'-2xQ=1; requires partial fraction analysis), gaussian_not_elementary (∫e^(-x²) has no elementary antiderivative expressible as a rational function; the main theorem). The polynomial obstruction (no polynomial p satisfies p'-2xp=1) is fully proved without axioms.",
     "dateAdded": "2026-05-03",
-    "lineCount": 379,
+    "lineCount": 435,
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "risch_ode_coeff_top: coefficient identity showing L[p] = p'-C(2)·X·p has coefficient -2·leadingCoeff(p) at degree natDeg(p)+1 — the key lemma driving the degree-raising argument",
@@ -30,7 +30,9 @@
       "no_poly_risch_constant: generalization — L[p] avoids all nonzero constants",
       "risch_ode_raises_degree: formal statement that L strictly raises polynomial degree",
       "gaussian_vs_linear_contrast: side-by-side comparison of degree-raising (L₂: Gaussian) vs degree-preserving (L₁: linear exponent) operators, with explicit solutions for the elementary case",
-      "DiffField typeclass: basic differential field infrastructure with proved constants_zero/one/add/mul and deriv_neg/sub"
+      "DiffField typeclass: basic differential field infrastructure with proved constants_zero/one/add/mul and deriv_neg/sub",
+      "risch_linear_surjective_monomial: L₁[Q]=Q'+Q is surjective onto every monomial X^n — proved by induction using recurrence Q_{n+1}=X^{n+1}-C(n+1)·Q_n",
+      "risch_linear_surjective_all: L₁ is surjective onto ALL polynomials — proved by linearity (Polynomial.induction_on') using monomial surjectivity"
     ],
     "mathlibDependencies": [
       {
@@ -154,22 +156,30 @@
       "mathContext": "For L₁[Q] = Q' + Q: C(c)' + C(c) = 0 + C(c) = C(c) for any constant c. So L₁ maps constants to themselves — the degree-0 case is handled by Q being constant. This contrasts with L₂ where the -2xQ term forces degree to increase."
     },
     {
+      "id": "surjectivity",
+      "title": "L₁ is Surjective onto All Polynomials",
+      "startLine": 348,
+      "endLine": 403,
+      "summary": "risch_linear_surjective_monomial: for each n, ∃Q with Q' + Q = X^n (induction via recurrence Q_{n+1} = X^{n+1} - C(n+1)·Q_n). risch_linear_surjective_all: L₁ is surjective onto ALL polynomials (by Polynomial.induction_on' linearity). This completes the contrast: L₁ maps onto every polynomial, while L₂ misses all nonzero constants.",
+      "mathContext": "Recurrence Q_0=1; Q_{n+1}=X^{n+1}-C(n+1)·Q_n satisfies Q_{n+1}'+Q_{n+1}=X^{n+1} by induction. For the full polynomial case, linearity: L₁[C(a)·Q]=C(a)·L₁[Q] and L₁[P+Q]=L₁[P]+L₁[Q] allow reduction to monomials. Together: ∫p(x)eˣdx is elementary for EVERY polynomial p."
+    },
+    {
       "id": "analogy",
       "title": "Abel-Ruffini Analogy and Summary",
-      "startLine": 348,
-      "endLine": 379,
+      "startLine": 404,
+      "endLine": 435,
       "summary": "Documents the structural analogy between Abel-Ruffini (algebraic Galois theory) and Liouville (differential Galois theory). gaussian_risch_polynomial_obstruction_summary: final packaged theorem stating ¬∃p, p' - C(2)·X·p = 1.",
       "mathContext": "The pattern: Abel-Ruffini (A₅ simplicity → no radical formula for quintic) mirrors Liouville (degree-raising operator → no elementary integral for Gaussian). Both are Galois-theoretic impossibility results where the obstruction is witnessed by a polynomial algebra fact."
     }
   ],
   "conclusion": {
-    "summary": "Formalization of the polynomial obstruction to the Gaussian integral's elementarity. The main theorem (no_poly_risch_soln) is fully machine-checked: no polynomial p satisfies p' - 2xp = 1. The proof uses a clean degree-raising argument. Three axioms cover the full Liouville-Risch theory (structural form of elementary integrals, Risch criterion, Gaussian non-elementarity), documenting the gap requiring Picard-Vessiot theory not yet in Mathlib. The DiffField typeclass and 6 basic identities provide elementary differential algebra infrastructure. Total: 18 theorems, 3 axioms, 0 sorries, 379 lines.",
+    "summary": "Formalization of the polynomial obstruction to the Gaussian integral's elementarity. The main theorem (no_poly_risch_soln) is fully machine-checked: no polynomial p satisfies p' - 2xp = 1. The proof uses a clean degree-raising argument. New in this session: L₁[Q]=Q'+Q is proved surjective onto all polynomials (risch_linear_surjective_monomial + risch_linear_surjective_all), completing the contrast with L₂. Three axioms cover the full Liouville-Risch theory (structural form of elementary integrals, Risch criterion, Gaussian non-elementarity), documenting the gap requiring Picard-Vessiot theory not yet in Mathlib. Total: 20 theorems, 3 axioms, 0 sorries, 435 lines.",
     "implications": "**Theoretical Significance**: Liouville's integration theorem inaugurated differential algebra and the Risch decision procedure (1969), which underlies symbolic integration in all major computer algebra systems. The degree-raising operator argument is a model case of how algebraic structure (polynomial degree) witnesses transcendence. The structural analogy with Abel-Ruffini (both are Galois-theoretic impossibility results proved by polynomial algebra arguments) is formalized explicitly. The formalization also provides a clean pedagogical development of differential field basics and the Risch criterion framework.",
     "openQuestions": [
       "Reduce the axiom count: extend the polynomial obstruction to rational functions using partial fraction analysis. Key step: if Q = p/q (in lowest terms) satisfies Q' - 2xQ = 1, then poles of Q' must cancel with poles of 2xQ; analyzing the pole order at each root of q leads to a contradiction. This requires Mathlib's partial fraction decomposition.",
       "Formalize Liouville's structure theorem: prove (not axiomatize) that elementary antiderivatives have the form g = v₀ + Σcᵢln(vᵢ). This requires formalizing Picard-Vessiot theory — a substantial Mathlib project (>1000 lines), but the foundation laid here (DiffField, constants) is the first step.",
       "Generalize to the full Risch algorithm: formalize that ∫R(x)e^(g(x)) is elementary iff Q' + Qg' = R has a rational solution, and prove decidability. This would make the gallery entry a verified decision procedure.",
-      "Extend the elementary contrast: prove that ∫p(x)eˣdx is elementary for every polynomial p by showing L₁[Q] = Q' + Q is surjective onto polynomials. The proof is an induction on degree using the explicit formula via integration by parts.",
+      "Formalize the explicit integration-by-parts formula: the polynomial Q solving Q'+Q=p is Q=∑ₖ(-1)ᵏ·p^(k) (alternating sum of derivatives of p). This would give an explicit closed-form witness, not just an existence proof. Requires finite sum manipulation in Lean.",
       "Connect to differential Galois groups: formalize that the differential Galois group of e^(-x²) is ℂ* (multiplicative group), a non-solvable algebraic group, which is why its Picard-Vessiot extension admits no elementary integral — the full Picard-Vessiot version of the obstruction."
     ]
   },
@@ -187,9 +197,9 @@
       "Real"
     ],
     "namespace": "AbelRuffiniOQ09",
-    "lineCount": 379,
+    "lineCount": 435,
     "axiomCount": 3,
-    "theoremCount": 18,
+    "theoremCount": 20,
     "definitionCount": 2,
     "path": "Proofs/AbelRuffiniOQ09.lean",
     "sorries": 0

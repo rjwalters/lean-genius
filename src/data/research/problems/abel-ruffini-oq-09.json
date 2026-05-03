@@ -1,8 +1,8 @@
 {
   "slug": "abel-ruffini-oq-09",
   "title": "Differential Galois theory and Liouville's theorem on integration: The di...",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved polynomial Risch obstruction (no p satisfies p'-2xp=1). 3 axioms for full Liouville/Risch theory. Gallery entry created.",
+    "progressSummary": "COMPLETE: 20 theorems (was 18). Added risch_linear_surjective_monomial and risch_linear_surjective_all: L\u2081 is surjective onto all polynomials, completing the L\u2081/L\u2082 contrast. 3 axioms, 0 sorries, 435 lines.",
     "builtItems": [
       "DiffField typeclass: field with derivation (2 axioms: additivity + Leibniz). File: Proofs/AbelRuffiniOQ09.lean:79",
       "constants_zero/one/add/mul: constants form a subfield. Lines 90-113",
@@ -41,7 +41,9 @@
       "risch_pointwise_to_poly + no_poly_risch_pointwise: pointwise \u2194 polynomial form. Lines 282-295",
       "risch_g_linear_const/degree1/constant_solvable: explicit solutions for \u222be^x case. Lines 319-335",
       "gaussian_vs_linear_contrast: conjunction packaging the L\u2081 vs L\u2082 dichotomy. Line 341",
-      "Gallery entry: src/data/proofs/abel-ruffini-oq-09/ (meta.json, annotations.json, index.ts, tacticStates.json)"
+      "Gallery entry: src/data/proofs/abel-ruffini-oq-09/ (meta.json, annotations.json, index.ts, tacticStates.json)",
+      "risch_linear_surjective_monomial: L\u2081[Q]=Q'+Q surjective onto X^n via induction with recurrence Q_{n+1}=X^{n+1}-C(n+1)\u00b7Q_n [AbelRuffiniOQ09.lean:372]",
+      "risch_linear_surjective_all: L\u2081 surjective onto all polynomials by Polynomial.induction_on' + linearity [AbelRuffiniOQ09.lean:389]"
     ],
     "insights": [
       "The operator L[p] = p' - C(2)\u00b7X\u00b7p raises polynomial degree by exactly 1 for any nonzero p (L is degree-raising), so its image consists only of polynomials of degree \u2265 1, excluding all nonzero constants",
@@ -49,7 +51,8 @@
       "For g = x (linear exponent), L\u2081[Q] = Q'+Q preserves degree (Q dominates Q'), so L\u2081 is surjective onto constants \u2014 \u222be^x is elementary. This degree-preserving vs degree-raising dichotomy is the structural explanation",
       "Polynomial.funext allows converting pointwise ODE equalities to polynomial ring equalities, using \u211d being an infinite integral domain",
       "Mathlib has no Picard-Vessiot / differential Galois theory, requiring 3 axioms: Liouville structure theorem, Risch criterion, and Gaussian non-elementarity",
-      "The Abel-Ruffini/Liouville analogy is structural: A\u2085 simplicity (algebraic Galois) corresponds to degree-raising of L\u2082 (differential Galois) \u2014 both witness obstruction to expressibility in prescribed form"
+      "The Abel-Ruffini/Liouville analogy is structural: A\u2085 simplicity (algebraic Galois) corresponds to degree-raising of L\u2082 (differential Galois) \u2014 both witness obstruction to expressibility in prescribed form",
+      "L\u2081[Q]=Q'+Q is surjective onto ALL polynomials: proved by induction Q_{n+1}=X^{n+1}-C(n+1)\u00b7Q_n and linearity. Completes the contrast: L\u2081 onto everything, L\u2082 onto nothing nonzero-constant."
     ],
     "mathlibGaps": [
       "Mathlib has no Picard-Vessiot theory (Picard-Vessiot extensions, differential Galois groups) \u2014 estimated >1000 lines to formalize the Liouville structure theorem",
@@ -57,9 +60,8 @@
       "No Mathlib theorem directly proving the Gaussian's non-elementarity (axiomatized here)"
     ],
     "nextSteps": [
-      "Reduce axiomCount from 3 to 1: extend polynomial obstruction to rational functions via partial fractions (pole cancellation argument), proving Risch criterion is equivalent to polynomial case",
-      "Build DiffField instances for \u211d(x) with standard derivative \u2014 connect abstract DiffField to concrete calculus",
-      "Prove L\u2081 surjectivity (\u222bp(x)e\u02e3 elementary for all polynomials p) by induction on degree with explicit solution formula"
+      "Reduce axiom count by formalizing the rational case of the Risch criterion using Mathlib partial fractions",
+      "Formalize explicit integration-by-parts formula: Q solving Q'+Q=p is Q=sum_k (-1)^k * p^(k)"
     ]
   },
   "tags": [
