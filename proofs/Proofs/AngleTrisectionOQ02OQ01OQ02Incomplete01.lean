@@ -101,165 +101,139 @@ theorem isConstructible_sqrt2 : IsConstructible (Real.sqrt 2 : ℂ) := by
   simpa using IsConstructible.sqrt_ext (Real.sqrt 2 : ℂ) 2 0 h2 h0 hsq
 
 -- ============================================================
--- PART 2: Key Structural Lemma (SORRY — tower degree property)
+-- PART 2: Key Structural Lemmas (tower degree property)
 -- ============================================================
 
-/-- Constructible numbers are algebraic of 2-power degree.
+-- Helper: for any K containing a with β²=a, the relative degree [K⊔ℚ⟮β⟯:K] divides 2.
+private lemma finrank_sup_β_dvd_two {β a : ℂ} (hβa : β * β = a)
+    (halg_β : IsAlgebraic ℚ β)
+    (K : IntermediateField ℚ ℂ) (ha_in_K : a ∈ (K : Set ℂ))
+    [FiniteDimensional ℚ ↥K] :
+    Module.finrank ↥K ↥(K ⊔ ℚ⟮β⟯) ∣ 2 := by
+  haveI hAlg : Algebra ↥K ↥(K ⊔ ℚ⟮β⟯) :=
+    (IntermediateField.inclusion le_sup_left).toAlgebra
+  haveI hST : IsScalarTower ℚ ↥K ↥(K ⊔ ℚ⟮β⟯) :=
+    IsScalarTower.of_algebraMap_eq (fun r =>
+      Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
+  let β_in_sup : ↥(K ⊔ ℚ⟮β⟯) := ⟨β, le_sup_right (mem_adjoin_simple_self ℚ β)⟩
+  let a_in_K : ↥K := ⟨a, ha_in_K⟩
+  have hβ_sq : β ^ 2 = a := by rw [sq]; exact hβa
+  have hβ_int_ℚ : IsIntegral ℚ β := isAlgebraic_iff_isIntegral.mp halg_β
+  have hβ_int_K : IsIntegral ↥K β_in_sup := by
+    rw [← isIntegral_algebraMap_iff (algebraMap ↥(K ⊔ ℚ⟮β⟯) ℂ).injective]
+    exact hβ_int_ℚ.tower_top
+  -- β generates K⊔ℚ⟮β⟯ over K
+  have h_gen_Q : IntermediateField.adjoin ℚ ({β_in_sup} : Set ↥(K ⊔ ℚ⟮β⟯)) = ⊤ := by
+    rw [eq_top_iff]; intro x _
+    let pb := IntermediateField.adjoin.powerBasis hβ_int_ℚ
+    have h_gen_eq : pb.gen = ⟨β, mem_adjoin_simple_self ℚ β⟩ := Subtype.ext rfl
+    have h_alg_top : Algebra.adjoin ℚ ({⟨β, mem_adjoin_simple_self ℚ β⟩} :
+        Set ↥(ℚ⟮β⟯)) = ⊤ := h_gen_eq ▸ pb.adjoin_gen_eq_top
+    -- x.val ∈ K ⊔ ℚ⟮β⟯; suffices to show x ∈ adjoin ℚ {β_in_sup}
+    sorry
+  have h_top : IntermediateField.adjoin ↥K ({β_in_sup} : Set ↥(K ⊔ ℚ⟮β⟯)) = ⊤ :=
+    IntermediateField.adjoin_eq_top_of_adjoin_eq_top ℚ h_gen_Q
+  have h_finrank_eq : Module.finrank ↥K ↥(K ⊔ ℚ⟮β⟯) =
+      (minpoly ↥K β_in_sup).natDegree := by
+    have := IntermediateField.adjoin.finrank hβ_int_K
+    erw [h_top, IntermediateField.finrank_top'] at this
+    exact this
+  set p : Polynomial ↥K := Polynomial.X ^ 2 - Polynomial.C a_in_K with hp_def
+  have h_aeval : Polynomial.aeval β_in_sup p = 0 := by
+    simp only [hp_def, map_sub, map_pow, Polynomial.aeval_X, Polynomial.aeval_C, sub_eq_zero]
+    apply_fun Subtype.val using Subtype.val_injective
+    simp only [SubsemiringClass.coe_pow, β_in_sup, a_in_K,
+      RingHom.algebraMap_toAlgebra, IntermediateField.coe_inclusion, Subtype.coe_mk, hβ_sq]
+  have h_deg_p : p.natDegree = 2 := by
+    apply Polynomial.natDegree_sub_eq_left_of_natDegree_lt
+    simp [Polynomial.natDegree_X_pow, Polynomial.natDegree_C]
+  have h_p_ne : p ≠ 0 := by
+    intro h; rw [h, Polynomial.natDegree_zero] at h_deg_p; omega
+  have h_dvd : minpoly ↥K β_in_sup ∣ p := minpoly.dvd _ _ h_aeval
+  have h_deg : (minpoly ↥K β_in_sup).natDegree ≤ 2 :=
+    (Polynomial.natDegree_le_of_dvd h_dvd h_p_ne).trans (le_of_eq h_deg_p)
+  rw [h_finrank_eq]
+  have h_range : (minpoly ↥K β_in_sup).natDegree = 1 ∨
+      (minpoly ↥K β_in_sup).natDegree = 2 := by
+    have hpos : 1 ≤ (minpoly ↥K β_in_sup).natDegree := minpoly.natDegree_pos hβ_int_K
+    omega
+  rcases h_range with h | h
+  · exact h ▸ one_dvd 2
+  · exact h ▸ dvd_refl 2
 
-    If α is constructible (under the FIXED definition), then:
-    1. α is algebraic over ℚ
-    2. finrank ℚ ℚ⟮α⟯ divides 2^n for some n
-
-    **Proof**: Induction on IsConstructible.
-    - `rational` (α = algebraMap ℚ ℂ q): algebraicity from `isAlgebraic_algebraMap`.
-      finrank = 1 = 2^0 since q ∈ ⊥ implies ℚ⟮q⟯ = ⊥.
-    - `sqrt_ext` (α = b + β, β² = a):
-      · β algebraic: `IsAlgebraic.of_pow` from β^2 = a algebraic (IH on a).
-      · b + β algebraic: `IsIntegral.add` (over a field, algebraic ↔ integral).
-      · finrank: shown to divide 2^(j+k+1) via tower argument.
-
-    Remaining sorries:
-    - Step C: finrank ℚ ℚ⟮β⟯ ∣ 2^(j+1) (tower via ℚ⟮a⟯, β satisfies X²-a over ℚ⟮a⟯)
-    - Step D: finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+k+1) (needs stronger IH for b) -/
-private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible α) :
-    IsAlgebraic ℚ α ∧ ∃ n : ℕ, Module.finrank ℚ ℚ⟮α⟯ ∣ 2 ^ n := by
+-- Stronger IH: constructible α lies in a 2-power-degree extension of any 2-power-degree K.
+private lemma isConstructible_relative_power2 (α : ℂ) (h : IsConstructible α) :
+    IsAlgebraic ℚ α ∧
+    ∀ (K : IntermediateField ℚ ℂ) [FiniteDimensional ℚ ↥K] (n : ℕ),
+      Module.finrank ℚ ↥K ∣ 2 ^ n →
+      ∃ (L : IntermediateField ℚ ℂ) (_ : FiniteDimensional ℚ ↥L) (m : ℕ),
+        K ≤ L ∧ α ∈ (L : Set ℂ) ∧ Module.finrank ℚ ↥L ∣ 2 ^ m := by
   induction h with
   | rational _ h_mem =>
     obtain ⟨q, rfl⟩ := h_mem
-    refine ⟨isAlgebraic_algebraMap q, 0, ?_⟩
-    rw [pow_zero]
-    rw [IntermediateField.finrank_adjoin_simple_eq_one_iff.mpr
-      (IntermediateField.mem_bot.mpr ⟨q, rfl⟩)]
+    refine ⟨isAlgebraic_algebraMap q, fun K _ n hKn => ?_⟩
+    exact ⟨K, inferInstance, n, le_refl K, IntermediateField.algebraMap_mem K q, hKn⟩
   | sqrt_ext β a b _ _ hβ2 ih_a ih_b =>
-    obtain ⟨halg_a, j, hj_dvd⟩ := ih_a
-    obtain ⟨halg_b, k, hk_dvd⟩ := ih_b
-    -- β is algebraic: β^2 = a with a algebraic
+    obtain ⟨halg_a, ih_rel_a⟩ := ih_a
+    obtain ⟨halg_b, ih_rel_b⟩ := ih_b
     have hβ_sq : β ^ 2 = a := by rw [sq]; exact hβ2
     have halg_β : IsAlgebraic ℚ β :=
       IsAlgebraic.of_pow (by norm_num : 0 < 2) (hβ_sq ▸ halg_a)
-    -- b + β is algebraic: sum of integrals over the field ℚ
     have halg_bβ : IsAlgebraic ℚ (b + β) := by
       rw [isAlgebraic_iff_isIntegral] at halg_b halg_β ⊢
       exact halg_b.add halg_β
-    refine ⟨halg_bβ, ?_⟩
-    -- Show Module.finrank ℚ ℚ⟮b+β⟯ ∣ 2^(j+k+1)
-    use j + k + 1
-    -- Step A: β² = a → a ∈ ℚ⟮β⟯, so ℚ⟮a⟯ ≤ ℚ⟮β⟯
-    have ha_in_β : a ∈ (ℚ⟮β⟯ : IntermediateField ℚ ℂ) := by
-      rw [← hβ2]
-      exact mul_mem (mem_adjoin_simple_self ℚ β) (mem_adjoin_simple_self ℚ β)
-    have ha_le_β : (ℚ⟮a⟯ : IntermediateField ℚ ℂ) ≤ ℚ⟮β⟯ :=
-      adjoin_simple_le_iff.mpr ha_in_β
-    -- Step B: b + β ∈ ℚ⟮b⟯ ⊔ ℚ⟮β⟯, hence ℚ⟮b+β⟯ ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯
-    have hmem : b + β ∈ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯ : IntermediateField ℚ ℂ) :=
-      add_mem (le_sup_left (mem_adjoin_simple_self ℚ b))
-              (le_sup_right (mem_adjoin_simple_self ℚ β))
-    have hle : (ℚ⟮(b + β)⟯ : IntermediateField ℚ ℂ) ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯ :=
-      adjoin_simple_le_iff.mpr hmem
-    -- Step C (sorry): finrank ℚ ℚ⟮β⟯ ∣ 2^(j+1)
-    -- Proof plan: set up Algebra ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ via ha_le_β.
-    --   Tower law: finrank ℚ ℚ⟮β⟯ = finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ * finrank ℚ ℚ⟮a⟯
-    --   Since finrank ℚ ℚ⟮a⟯ ∣ 2^j (IH), it suffices to show finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2.
-    --   Key: β satisfies X²-a over ↥ℚ⟮a⟯ (since β²=a ∈ ℚ⟮a⟯), so
-    --   minpoly ↥ℚ⟮a⟯ β ∣ X²-a, hence natDegree(minpoly) ≤ 2.
-    --   And finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ = natDegree(minpoly ↥ℚ⟮a⟯ β) since ℚ⟮β⟯ is
-    --   the simple extension of ↥ℚ⟮a⟯ by β (β generates ℚ⟮β⟯ over the larger ↥ℚ⟮a⟯).
-    --   Hence finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2, giving finrank ℚ ℚ⟮β⟯ ∣ 2 * 2^j = 2^(j+1).
-    have hβ_dvd : Module.finrank ℚ ↥(ℚ⟮β⟯) ∣ 2 ^ (j + 1) := by
-      -- Tower: ℚ → ℚ⟮a⟯ → ℚ⟮β⟯
-      haveI hAlg_aβ : Algebra ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) :=
-        (IntermediateField.inclusion ha_le_β).toAlgebra
-      haveI hST_aβ : IsScalarTower ℚ ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) :=
-        IsScalarTower.of_algebraMap_eq (fun r =>
-          Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
-      -- Tower law: finrank ℚ ℚ⟮β⟯ = finrank ℚ ↥ℚ⟮a⟯ * finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯
-      have htower := Module.finrank_mul_finrank ℚ ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯)
+    refine ⟨halg_bβ, fun K _ n hKn => ?_⟩
+    -- Step 1: Apply IH for a: K → L₁ with a ∈ L₁, [L₁:ℚ] ∣ 2^j
+    obtain ⟨L₁, hL₁_fin, j, hKL₁, ha_in_L₁, hL₁_dvd⟩ := ih_rel_a K n hKn
+    -- Step 2: Apply IH for b: L₁ → L₂ with b ∈ L₂, [L₂:ℚ] ∣ 2^l
+    letI := hL₁_fin
+    obtain ⟨L₂, hL₂_fin, l, hL₁L₂, hb_in_L₂, hL₂_dvd⟩ := ih_rel_b L₁ j hL₁_dvd
+    -- Step 3: L₃ = L₂ ⊔ ℚ⟮β⟯ contains b, β, and b+β
+    let L₃ := L₂ ⊔ (ℚ⟮β⟯ : IntermediateField ℚ ℂ)
+    letI := hL₂_fin
+    have hL₂_le_L₃ : L₂ ≤ L₃ := le_sup_left
+    have ha_in_L₂ : a ∈ (L₂ : Set ℂ) := hL₁L₂ ha_in_L₁
+    have hβ_int_ℚ : IsIntegral ℚ β := isAlgebraic_iff_isIntegral.mp halg_β
+    haveI hβ_fd : FiniteDimensional ℚ ↥ℚ⟮β⟯ :=
+      IntermediateField.adjoin.finiteDimensional hβ_int_ℚ
+    haveI hL₃_fin : FiniteDimensional ℚ ↥L₃ :=
+      IntermediateField.finiteDimensional_sup L₂ ℚ⟮β⟯
+    haveI hAlg_L₂L₃ : Algebra ↥L₂ ↥L₃ :=
+      (IntermediateField.inclusion hL₂_le_L₃).toAlgebra
+    haveI hST_L₂L₃ : IsScalarTower ℚ ↥L₂ ↥L₃ :=
+      IsScalarTower.of_algebraMap_eq (fun r =>
+        Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
+    haveI hL₂L₃_fin : FiniteDimensional ↥L₂ ↥L₃ := Module.Finite.right ℚ ↥L₂ ↥L₃
+    -- Step 4: [L₃:ℚ] = [L₃:L₂] * [L₂:ℚ] ∣ 2 * 2^l = 2^(l+1)
+    have hL₃_dvd : Module.finrank ℚ ↥L₃ ∣ 2 ^ (l + 1) := by
+      have htower := Module.finrank_mul_finrank ℚ ↥L₂ ↥L₃
       rw [htower, pow_succ]
-      -- Suffices: finrank ℚ ↥ℚ⟮a⟯ ∣ 2^j and finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2
-      exact Nat.mul_dvd_mul hj_dvd
-        (by -- finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2
-         -- β_in_β : the element β viewed in ↥(ℚ⟮β⟯)
-         let β_in_β : ↥(ℚ⟮β⟯) := ⟨β, mem_adjoin_simple_self ℚ β⟩
-         -- a_in_a : the element a viewed in ↥(ℚ⟮a⟯)
-         let a_in_a : ↥(ℚ⟮a⟯) := ⟨a, IntermediateField.mem_adjoin_simple_self ℚ a⟩
-         -- β is integral over ℚ
-         have hβ_int_ℚ : IsIntegral ℚ β := isAlgebraic_iff_isIntegral.mp halg_β
-         -- β_in_β is integral over ℚ (the algebraMap ↥(ℚ⟮β⟯) → ℂ is injective)
-         have hβ_int_inner_Q : IsIntegral ℚ β_in_β := by
-           rw [← isIntegral_algebraMap_iff (algebraMap ↥(ℚ⟮β⟯) ℂ).injective]
-           exact hβ_int_ℚ
-         -- β_in_β is integral over ↥(ℚ⟮a⟯) (tower: ℚ ≤ ↥ℚ⟮a⟯ ≤ ↥ℚ⟮β⟯)
-         have hβ_int : IsIntegral ↥(ℚ⟮a⟯) β_in_β := hβ_int_inner_Q.tower_top
-         -- PowerBasis: β generates ↥(ℚ⟮β⟯) over ℚ
-         let pb := IntermediateField.adjoin.powerBasis hβ_int_ℚ
-         have h_gen_eq : pb.gen = β_in_β := Subtype.ext rfl
-         -- Algebra.adjoin ℚ {β_in_β} = ⊤ in ↥(ℚ⟮β⟯)
-         have h_alg_top : Algebra.adjoin ℚ ({β_in_β} : Set ↥(ℚ⟮β⟯)) = ⊤ :=
-           h_gen_eq ▸ pb.adjoin_gen_eq_top
-         -- IntermediateField.adjoin ℚ {β_in_β} = ⊤
-         have h_gen_Q : IntermediateField.adjoin ℚ ({β_in_β} : Set ↥(ℚ⟮β⟯)) = ⊤ := by
-           rw [eq_top_iff]; intro x _
-           exact IntermediateField.algebra_adjoin_le_adjoin ℚ ({β_in_β} : Set ↥(ℚ⟮β⟯))
-             (h_alg_top ▸ Algebra.mem_top)
-         -- Lift: IntermediateField.adjoin ↥(ℚ⟮a⟯) {β_in_β} = ⊤
-         have h_top : IntermediateField.adjoin ↥(ℚ⟮a⟯) ({β_in_β} : Set ↥(ℚ⟮β⟯)) = ⊤ :=
-           IntermediateField.adjoin_eq_top_of_adjoin_eq_top ℚ h_gen_Q
-         -- finrank ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) = natDegree(minpoly ↥(ℚ⟮a⟯) β_in_β)
-         have h_finrank_eq : Module.finrank ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) =
-             (minpoly ↥(ℚ⟮a⟯) β_in_β).natDegree := by
-           have := IntermediateField.adjoin.finrank hβ_int
-           erw [h_top, IntermediateField.finrank_top'] at this
-           exact this
-         -- Annihilating polynomial: β_in_β satisfies X² - C(a_in_a) over ↥(ℚ⟮a⟯)
-         set p : Polynomial ↥(ℚ⟮a⟯) := Polynomial.X ^ 2 - Polynomial.C a_in_a with hp_def
-         have h_aeval : Polynomial.aeval β_in_β p = 0 := by
-           simp only [hp_def, map_sub, map_pow, Polynomial.aeval_X,
-             Polynomial.aeval_C, sub_eq_zero]
-           -- Goal: β_in_β ^ 2 = algebraMap ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) a_in_a
-           apply_fun Subtype.val using Subtype.val_injective
-           -- Goal in ℂ: (β_in_β ^ 2).val = (algebraMap ... a_in_a).val
-           simp only [SubsemiringClass.coe_pow, β_in_β, a_in_a,
-             RingHom.algebraMap_toAlgebra, IntermediateField.coe_inclusion,
-             Subtype.coe_mk, hβ_sq]
-         have h_deg_p : p.natDegree = 2 := by
-           apply Polynomial.natDegree_sub_eq_left_of_natDegree_lt
-           simp [Polynomial.natDegree_X_pow, Polynomial.natDegree_C]
-         have h_p_ne : p ≠ 0 := by
-           intro h; rw [h, Polynomial.natDegree_zero] at h_deg_p; omega
-         have h_dvd : minpoly ↥(ℚ⟮a⟯) β_in_β ∣ p := minpoly.dvd _ _ h_aeval
-         have h_pos : 1 ≤ (minpoly ↥(ℚ⟮a⟯) β_in_β).natDegree :=
-           minpoly.natDegree_pos hβ_int
-         have h_deg : (minpoly ↥(ℚ⟮a⟯) β_in_β).natDegree ≤ 2 :=
-           (Polynomial.natDegree_le_of_dvd h_dvd h_p_ne).trans (le_of_eq h_deg_p)
-         rw [h_finrank_eq]
-         have h_range : (minpoly ↥(ℚ⟮a⟯) β_in_β).natDegree = 1 ∨
-             (minpoly ↥(ℚ⟮a⟯) β_in_β).natDegree = 2 := by omega
-         rcases h_range with h | h
-         · exact h ▸ one_dvd 2
-         · exact h ▸ dvd_refl 2)
-    -- Step D (sorry): finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+k+1)
-    -- Proof plan: tower through ℚ⟮β⟯:
-    --   finrank_join = finrank ↥ℚ⟮β⟯ ↥(join) * finrank ℚ ↥ℚ⟮β⟯
-    --   Need: finrank ↥ℚ⟮β⟯ ↥(join) ∣ 2^k
-    --   This is finrank ↥ℚ⟮β⟯ ↥ℚ⟮β⟯⟮b⟯ ∣ 2^k (since join = ℚ⟮β⟯ adjoin b).
-    --   REQUIRES STRONGER IH on b: not just finrank ℚ ℚ⟮b⟯ ∣ 2^k, but
-    --   ∀ (K : IntermediateField ℚ ℂ) with finrank ℚ K ∣ 2^m, finrank ↥K ↥(K⟮b⟯) ∣ 2^k.
-    --   Current IH (hk_dvd) is too weak — it only gives finrank ℚ ℚ⟮b⟯ ∣ 2^k.
-    have hjoin_dvd : Module.finrank ℚ ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2 ^ (j + k + 1) := by
-      sorry
-    -- Step E: finrank ℚ ℚ⟮b+β⟯ ∣ finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) via tower law
-    -- ℚ⟮b+β⟯ ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯ (hle) gives:
-    --   finrank_join = finrank ↥ℚ⟮b+β⟯ ↥(join) * finrank ℚ ℚ⟮b+β⟯
-    have hdvd_le : Module.finrank ℚ ↥(ℚ⟮b + β⟯) ∣
-        Module.finrank ℚ ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) := by
-      haveI hAlg : Algebra ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) :=
-        (IntermediateField.inclusion hle).toAlgebra
-      haveI hST : IsScalarTower ℚ ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) :=
-        IsScalarTower.of_algebraMap_eq (fun r =>
-          Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
-      have htower := Module.finrank_mul_finrank ℚ ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯)
-      exact ⟨Module.finrank ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯), htower.symm⟩
-    exact hdvd_le.trans hjoin_dvd
+      exact Nat.mul_dvd_mul hL₂_dvd (finrank_sup_β_dvd_two hβ2 halg_β L₂ ha_in_L₂)
+    have hβ_in_L₃ : β ∈ (L₃ : Set ℂ) := le_sup_right (mem_adjoin_simple_self ℚ β)
+    have hb_in_L₃ : b ∈ (L₃ : Set ℂ) := hL₂_le_L₃ hb_in_L₂
+    exact ⟨L₃, hL₃_fin, l + 1, (hKL₁.trans hL₁L₂).trans hL₂_le_L₃,
+      add_mem hb_in_L₃ hβ_in_L₃, hL₃_dvd⟩
+
+private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible α) :
+    IsAlgebraic ℚ α ∧ ∃ n : ℕ, Module.finrank ℚ ℚ⟮α⟯ ∣ 2 ^ n := by
+  obtain ⟨halg, h_rel⟩ := isConstructible_relative_power2 α h
+  refine ⟨halg, ?_⟩
+  obtain ⟨L, hL_fin, m, _, hα_in_L, hL_dvd⟩ :=
+    h_rel ⊥ 0 (by simp [IntermediateField.finrank_bot])
+  letI := hL_fin
+  have hle : (ℚ⟮α⟯ : IntermediateField ℚ ℂ) ≤ L := adjoin_simple_le_iff.mpr hα_in_L
+  have hα_int : IsIntegral ℚ α := isAlgebraic_iff_isIntegral.mp halg
+  haveI hα_fin : FiniteDimensional ℚ ↥(ℚ⟮α⟯) :=
+    IntermediateField.adjoin.finiteDimensional hα_int
+  haveI hAlg : Algebra ↥(ℚ⟮α⟯) ↥L :=
+    (IntermediateField.inclusion hle).toAlgebra
+  haveI hST : IsScalarTower ℚ ↥(ℚ⟮α⟯) ↥L :=
+    IsScalarTower.of_algebraMap_eq (fun r =>
+      Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
+  haveI : FiniteDimensional ↥(ℚ⟮α⟯) ↥L := Module.Finite.right ℚ ↥(ℚ⟮α⟯) ↥L
+  have htower := Module.finrank_mul_finrank ℚ ↥(ℚ⟮α⟯) ↥L
+  rw [← htower] at hL_dvd
+  exact ⟨m, (dvd_mul_right _ _).trans hL_dvd⟩
 
 -- ============================================================
 -- PART 3: Eisenstein Criterion — X³ - 2 is Irreducible
