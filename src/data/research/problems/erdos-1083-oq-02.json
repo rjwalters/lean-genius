@@ -39,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 25 theorems (was 23). Added threshold dimension bounds for 3/4 and 11/12 gap coverage. Formalization fully complete. Mathematical gap reduction OPEN.",
+    "progressSummary": "PROGRESS: 34 theorems (was 30). Added general threshold framework sv_covers_fraction_threshold, sv_fraction_lower_bound (O(1/d) rate), sv_covers_nine_tenths, gap_monotone_bound. Formalization complete.",
     "builtItems": [
       "Created Erdos1083OQ02.lean with SV bound formalization",
       "Proved sv_improves_erdos and sv_below_conjecture (exact exponent comparison)",
@@ -63,7 +63,11 @@
       "sv_fraction_of_conjecture: SV = (d+1)/(d+2) × (2/d) [Erdos1083OQ02.lean:232]",
       "sv_fraction_increasing: (d+1)/(d+2) strictly increases in d [Erdos1083OQ02.lean:243]",
       "sv_covers_three_quarters: d/(d+2)≥3/4 for d≥6 [Erdos1083OQ02.lean:258]",
-      "sv_covers_eleven_twelfths: d/(d+2)≥11/12 for d≥22 [Erdos1083OQ02.lean:268]"
+      "sv_covers_eleven_twelfths: d/(d+2)≥11/12 for d≥22 [Erdos1083OQ02.lean:268]",
+      "sv_fraction_lower_bound: (d+1)/(d+2) ≥ 1-1/d for d ≥ 2 [Erdos1083OQ02.lean]",
+      "sv_covers_fraction_threshold: d/(d+2) ≥ (k-1)/k when d+2 ≥ 2k [Erdos1083OQ02.lean]",
+      "sv_covers_nine_tenths: d≥18 → SV coverage ≥ 9/10 [Erdos1083OQ02.lean]",
+      "gap_monotone_bound: gap(d) ≤ gap(N) for d ≥ N ≥ 4 [Erdos1083OQ02.lean]"
     ],
     "insights": [
       "SV exponent 2(d+1)/(d(d+2)) is strictly between 1/d and 2/d for d≥4",
@@ -79,7 +83,10 @@
       "Gap tight bounds: 1/d² < 2/(d(d+2)) < 2/d² — gap is exactly order 1/d²",
       "Absolute gap is strictly decreasing: each additional dimension shrinks the gap",
       "General threshold pattern: d/(d+2)≥(k-1)/k ↔ d≥2(k-1); covers 3/4 for d≥6, 11/12 for d≥22",
-      "Formalization is complete: 25 theorems, 0 sorries, 5 axioms — gap reduction itself is genuinely open"
+      "Formalization is complete: 25 theorems, 0 sorries, 5 axioms — gap reduction itself is genuinely open",
+      "sv_covers_fraction_threshold: general d/(d+2) ≥ (k-1)/k iff d+2 ≥ 2k — unifies all threshold bounds",
+      "sv_fraction_lower_bound: (d+1)/(d+2) ≥ 1-1/d (O(1/d) convergence rate) — key identity: deficit = gap 2/(d(d+2))",
+      "gap_monotone_bound: factorization (d-N)(d+N+2) ≥ 0 for d ≥ N yields monotonicity of gap"
     ],
     "mathlibGaps": [
       "No formalization of incidence geometry in ℝ^d",
