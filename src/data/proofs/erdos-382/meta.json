@@ -66,7 +66,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 659,
-    "assumptions": "1 axiom: ramachandra_bound. 0 sorries."
+    "assumptions": "1 axiom: ramachandra_bound. 0 sorries.",
+    "theoremCount": 18
   },
   "overview": {
     "historicalContext": "Erdős Problem #382 originates from the 1980 monograph by Erdős and Graham [ErGr80], which systematically cataloged open problems in combinatorial number theory. The problem studies the factorization structure of products of consecutive integers u·(u+1)·...·v, specifically asking about the exponent of the largest prime divisor.\n\nThe key constraint is that the largest prime p dividing the product must appear with exponent ≥ 2. Since p² must divide some integer in [u,v], this forces p ≤ √v, meaning the interval [u,v] is 'prime-free' above √v. The problem asks two questions: whether v−u grows subpolynomially in v, and whether v−u can be arbitrarily large.\n\nRamachandra established the best known upper bound v−u ≤ v^{1/2+o(1)}, using techniques from the distribution of primes in short intervals. Cramér's famous conjecture on prime gaps would imply the stronger result that v−u = v^o(1). Cambie's heuristic analysis suggests that v−u can indeed be arbitrarily large, but both questions remain open.",
@@ -194,6 +195,8 @@
       "Mathlib.Order.Interval.Finset.Nat",
       "Mathlib.Data.Real.Basic",
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Deriv",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics",
       "Mathlib.NumberTheory.Bertrand",
       "Mathlib.Tactic"
     ],
