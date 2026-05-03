@@ -21,6 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/852",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
+    "theoremCount": 20,
     "lineCount": 247,
     "assumptions": "3 axioms: brun_sieve_divergence (Brun's sieve result), erdos852_lower_bound (OPEN conjecture), erdos852_upper_bound (OPEN conjecture). The function h(x) = maxDistinctRun and its properties (witness, optimality, bound) are now fully defined and proved.",
     "mathlib_version": "4.26.0",
@@ -137,7 +138,7 @@
     "namespace": null,
     "lineCount": 247,
     "axiomCount": 3,
-    "theoremCount": 25,
+    "theoremCount": 20,
     "definitionCount": 5,
     "path": "Proofs/Erdos852Problem.lean",
     "sorries": 0
