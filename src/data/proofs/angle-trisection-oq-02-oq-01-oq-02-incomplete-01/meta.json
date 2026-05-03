@@ -2,7 +2,7 @@
   "id": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
   "title": "Completing the Wantzel-Galois Constructibility Proof",
   "slug": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
-  "description": "Completes the parent Wantzel-Galois proof (angle-trisection-oq-02-oq-01-oq-02) by redesigning IsConstructible (removing IsConstructible β precondition from sqrt_ext) to enable proper tower induction. Proves isConstructible_sqrt2, all concrete impossibility results (angle trisection, cube doubling, regular 7-gon). 1 sorry: wantzel_galois_iff (requires FTGT, out-of-scope). Tower degree theorem fully proved via stronger relative IH isConstructible_sup_degree.",
+  "description": "Completes the parent Wantzel-Galois proof (angle-trisection-oq-02-oq-01-oq-02) by redesigning IsConstructible (removing IsConstructible β precondition from sqrt_ext) to enable proper tower induction. Proves isConstructible_sqrt2, all concrete impossibility results (angle trisection, cube doubling, regular 7-gon). 1 sorry: wantzel_galois_iff (requires FTGT, out-of-scope). New: isConstructible_map (Galois invariance). New: isConstructible_map (Galois invariance). Tower degree theorem fully proved via stronger relative IH isConstructible_sup_degree.",
   "meta": {
     "author": "Wantzel (1837), completion formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Straightedge_and_compass_construction",
@@ -19,8 +19,8 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "theoremCount": 21,
-    "lineCount": 618,
+    "theoremCount": 22,
+    "lineCount": 658,
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.irreducible_of_eisenstein_criterion",
@@ -136,9 +136,9 @@
   ],
   "leanFile": {
     "namespace": "AngleTrisectionOQ02OQ01OQ02Incomplete01",
-    "lineCount": 618,
+    "lineCount": 658,
     "axiomCount": 0,
-    "theoremCount": 21,
+    "theoremCount": 22,
     "definitionCount": 2,
     "path": "Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean",
     "sorries": 1
