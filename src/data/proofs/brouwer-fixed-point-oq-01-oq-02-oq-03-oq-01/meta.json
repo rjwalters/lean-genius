@@ -22,7 +22,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 17,
     "mathlibDependencies": [
       {
         "theorem": "norm_add_sq_real",
@@ -68,7 +68,7 @@
       "brouwer_fixed_point_explicit: Brouwer FPT proved without retraction_construction axiom"
     ],
     "dateAdded": "2026-05-03",
-    "lineCount": 217,
+    "lineCount": 214,
     "assumptions": "No new axioms introduced. This file eliminates the retraction_construction axiom from BrouwerFixedPoint.lean by proving it as a theorem. The proof uses only standard Mathlib lemmas for inner product spaces, norms, and continuity. The remaining axiom in the BFP chain is no_retraction_axiom (from BrouwerFixedPoint.lean), which requires algebraic topology (homology or degree theory)."
   },
   "overview": {
@@ -152,12 +152,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 217,
+    "lineCount": 214,
     "path": "Proofs/BrouwerFixedPointOQ01OQ02OQ03OQ01.lean",
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 3,
-    "theoremCount": 16
+    "theoremCount": 17
   },
   "sorries": 0
 }

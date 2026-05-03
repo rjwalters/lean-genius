@@ -1,6 +1,6 @@
 {
   "slug": "erdos-938",
-  "title": "Erd\u0151s #938",
+  "title": "Erdős #938",
   "phase": "COMPLETED",
   "status": "completed",
   "tier": "A",
@@ -41,19 +41,19 @@
     "insights": [
       "7 axioms total: 4 are enumeration axioms (nthPowerful + properties), 3 are deep/open results",
       "The 4 enumeration axioms CAN be eliminated: define nthPowerful using Nat.nth or Set.Nat.nth from Mathlib if available, or build from well-ordering",
-      "powerfulSet is provably infinite: contains all perfect squares k\u00b2 (if p|k\u00b2 then p|k so p\u00b2|k\u00b2)",
-      "Powerful is decidable for fixed n: check primes up to n for p\u00b2|n condition",
+      "powerfulSet is provably infinite: contains all perfect squares k² (if p|k² then p|k so p²|k²)",
+      "Powerful is decidable for fixed n: check primes up to n for p²|n condition",
       "erdos_938 (open conjecture), erdos_364_conjecture (open), powerful_count_asymptotic (deep analytic NT) cannot be proved from Mathlib",
       "The file has 0 sorries despite metadata claiming 1 - the open problem uses axiom, not sorry",
       "Nat.nth provides clean enumeration API: nth_strictMono, nth_mem_of_infinite, nth_count are the key lemmas",
       "pow_pos (not Nat.pos_pow_of_pos) is the correct Mathlib name for 0 < a^n given 0 < a",
       "interval_cases needs explicit upper bounds from Nat.le_of_dvd when dealing with prime/divisibility hypotheses",
-      "Sorry count in metadata is 1 but there are 0 actual sorries \u2014 the word appears in a docstring comment",
+      "Sorry count in metadata is 1 but there are 0 actual sorries — the word appears in a docstring comment",
       "All 3 axioms are appropriate: 2 open problems + 1 deep analytic number theory result"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erd\u0151s #938 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{n_1<n_2<\\cdots\\}$ be the sequence of powerful numbers (if $p\\mid n$ then $p^2\\mid n$).\n\nAre there only finitely many three-term progressions of consecutive terms $n_k,n_{k+1},n_{k+2}$?\n\n\n\nErd\\H{o}s also conjectured (see [364]) that there are no triples of powerful numbers of the shape $n,n+1,n+2$.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #364\n- Problem #937\n- Problem #939\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er76d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #938 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{n_1<n_2<\\cdots\\}$ be the sequence of powerful numbers (if $p\\mid n$ then $p^2\\mid n$).\n\nAre there only finitely many three-term progressions of consecutive terms $n_k,n_{k+1},n_{k+2}$?\n\n\n\nErd\\H{o}s also conjectured (see [364]) that there are no triples of powerful numbers of the shape $n,n+1,n+2$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #364\n- Problem #937\n- Problem #939\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er76d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -77,7 +77,7 @@
       "path": "Proofs/Erdos938Problem.lean",
       "filename": "Erdos938Problem.lean",
       "lineCount": 219,
-      "theoremCount": 4,
+      "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 13,
       "sorryCount": 0,

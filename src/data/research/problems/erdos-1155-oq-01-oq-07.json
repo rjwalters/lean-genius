@@ -17,7 +17,7 @@
   },
   "knownResults": {
     "proven": [
-      "r = 3 (triangle removal): f_3(n) = n^{3/2 + o(1)} (Bohman-Fonoberova-Llad\u00f3, 2015)",
+      "r = 3 (triangle removal): f_3(n) = n^{3/2 + o(1)} (Bohman-Fonoberova-Lladó, 2015)",
       "Exponent 2-2/(r+1) is strictly monotone increasing in r and bounded in [1, 2)",
       "Conjecture is equivalent to upper Theta-bound AND lower Theta-bound (decomposition)",
       "Conjecture follows from convergence f_r(n)/n^{\\alpha} \\to L > 0",
@@ -76,16 +76,20 @@
     "seeker-selected"
   ],
   "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-115",
     "erdos-1155",
     "erdos-1155-oq-01",
     "erdos-1155-oq-01-oq-01",
     "erdos-1155-oq-01-oq-06",
+    "erdos-1155-oq-01-oq-07",
     "erdos-1155-oq-02"
   ],
   "references": {
     "papers": [
-      "Bohman, T., Fonoberova, M., Llad\u00f3, A. (2015). The triangle-free process and the Ramsey number R(3,k). Memoirs of the AMS / arXiv:1302.5963 — proves f_3(n) = n^{3/2 + o(1)}.",
-      "Erd\u0151s, P., Suen, S., Winkler, P. (1995). On the size of a random maximal graph. Random Structures & Algorithms — early analysis of the triangle removal process."
+      "Bohman, T., Fonoberova, M., Lladó, A. (2015). The triangle-free process and the Ramsey number R(3,k). Memoirs of the AMS / arXiv:1302.5963 — proves f_3(n) = n^{3/2 + o(1)}.",
+      "Erdős, P., Suen, S., Winkler, P. (1995). On the size of a random maximal graph. Random Structures & Algorithms — early analysis of the triangle removal process."
     ],
     "urls": [
       "https://erdosproblems.com/1155"
@@ -159,9 +163,9 @@
     {
       "path": "Proofs/Erdos1155Problem.lean",
       "filename": "Erdos1155Problem.lean",
-      "lineCount": 225,
-      "theoremCount": 7,
-      "axiomCount": 6,
+      "lineCount": 231,
+      "theoremCount": 8,
+      "axiomCount": 5,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

@@ -49,7 +49,8 @@
     "abel-ruffini-oq-04-oq-02-oq-02",
     "abel-ruffini-oq-04-oq-02-oq-03",
     "abel-ruffini-oq-04-oq-03",
-    "abel-ruffini-oq-04-oq-07"
+    "abel-ruffini-oq-04-oq-07",
+    "abel-ruffini-oq-09"
   ],
   "references": {
     "papers": [],
@@ -64,7 +65,7 @@
     {
       "path": "Proofs/AbelRuffini.lean",
       "filename": "AbelRuffini.lean",
-      "lineCount": 186,
+      "lineCount": 188,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 0,
@@ -152,8 +153,8 @@
     {
       "path": "Proofs/AbelRuffiniOQ04OQ03.lean",
       "filename": "AbelRuffiniOQ04OQ03.lean",
-      "lineCount": 166,
-      "theoremCount": 6,
+      "lineCount": 243,
+      "theoremCount": 8,
       "axiomCount": 1,
       "defCount": 0,
       "sorryCount": 0,
@@ -170,6 +171,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ07.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ09.lean",
+      "filename": "AbelRuffiniOQ09.lean",
+      "lineCount": 449,
+      "theoremCount": 20,
+      "axiomCount": 3,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ09.lean"
     }
   ]
 }

@@ -31,29 +31,29 @@
   "knowledge": {
     "progressSummary": "PROGRESS: FTA proved via Finsupp approach. 12 theorems, 0 sorries, 0 axioms. Key result: finsupp_prime_prod_factorization (factorization of Finsupp prime power product = original Finsupp), plus uniqueness and existence FTA. Docker build pending.",
     "builtItems": [
-      "factorization_finset_prod: helper lemma (\u220f m \u2208 s, m).factorization = \u2211 m \u2208 s, m.factorization",
-      "fta_reconstruction: n.factorization.prod (\u00b7^\u00b7) = n (Nat.factorization_prod_pow_eq_self)",
+      "factorization_finset_prod: helper lemma (∏ m ∈ s, m).factorization = ∑ m ∈ s, m.factorization",
+      "fta_reconstruction: n.factorization.prod (·^·) = n (Nat.factorization_prod_pow_eq_self)",
       "fta_support_eq_primeFactors: support = primeFactors",
       "fta_support_prime: elements of factorization support are prime",
-      "fta_mem_support_iff_dvd: p \u2208 support \u2194 p \u2223 n (for prime p)",
-      "finsupp_prime_prod_factorization: KEY LEMMA \u2014 (f.prod (\u00b7^\u00b7)).factorization = f",
-      "fta_uniqueness: g.prod(\u00b7^\u00b7) = n with prime support \u2192 g = n.factorization",
-      "fundamental_theorem_of_arithmetic: \u2203! f with prime support and f.prod(\u00b7^\u00b7) = n",
+      "fta_mem_support_iff_dvd: p ∈ support ↔ p ∣ n (for prime p)",
+      "finsupp_prime_prod_factorization: KEY LEMMA — (f.prod (·^·)).factorization = f",
+      "fta_uniqueness: g.prod(·^·) = n with prime support → g = n.factorization",
+      "fundamental_theorem_of_arithmetic: ∃! f with prime support and f.prod(·^·) = n",
       "factorization_determines_number: injectivity of factorization on positive naturals",
-      "factorization_eq_iff_valuations: m = n \u2194 \u2200 p, m.factorization p = n.factorization p",
-      "factorization_eq_zero_iff_one: factorization = 0 \u2194 n = 1",
-      "coprime_factorization_disjoint: coprime \u2192 disjoint factorization supports"
+      "factorization_eq_iff_valuations: m = n ↔ ∀ p, m.factorization p = n.factorization p",
+      "factorization_eq_zero_iff_one: factorization = 0 ↔ n = 1",
+      "coprime_factorization_disjoint: coprime → disjoint factorization supports"
     ],
     "insights": [
-      "Nat.factorization and Finsupp.prod (\u00b7^\u00b7) are mutual inverses on prime-supported Finsupps",
+      "Nat.factorization and Finsupp.prod (·^·) are mutual inverses on prime-supported Finsupps",
       "factorization_finset_prod (distribution over products) proved by induction using Nat.factorization_mul",
-      "For prime p: (p^k).factorization a = if p = a then k else 0 \u2014 key for indicator-sum uniqueness argument",
-      "finsupp_prime_prod_factorization is the algebraic core: (f.prod (\u00b7^\u00b7)).factorization = f for prime-support f",
-      "The Finsupp FTA (\u2203! f with prime support and f.prod(\u00b7^\u00b7) = n) has the canonical witness n.factorization"
+      "For prime p: (p^k).factorization a = if p = a then k else 0 — key for indicator-sum uniqueness argument",
+      "finsupp_prime_prod_factorization is the algebraic core: (f.prod (·^·)).factorization = f for prime-support f",
+      "The Finsupp FTA (∃! f with prime support and f.prod(·^·) = n) has the canonical witness n.factorization"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Docker build pending \u2014 verify Lean proof compiles"
+      "Docker build pending — verify Lean proof compiles"
     ]
   },
   "tags": [
@@ -67,6 +67,7 @@
   "relatedProofs": [
     "fundamental-arithmetic",
     "fundamental-arithmetic-oq-01",
+    "fundamental-arithmetic-oq-01-oq-01",
     "fundamental-arithmetic-oq-02"
   ],
   "references": {

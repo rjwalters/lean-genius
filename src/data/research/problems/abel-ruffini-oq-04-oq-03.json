@@ -32,29 +32,29 @@
     "progressSummary": "COMPLETE (axiomatized): Galois criterion in 242 lines, 1 axiom. Forward direction = Mathlib. Reverse direction = axiom requiring Kummer composition (cyclic case in Mathlib via KummerExtension; assembly step not yet there). New axiom-free corollaries not_isSolvable_gal_of_perm_iso and not_solvableByRad_of_perm_gal give Abel-Ruffini via S_n isomorphism using only the forward direction.",
     "builtItems": [
       "AbelRuffiniOQ04OQ03.lean: 152 lines, 7 theorems, 1 axiom",
-      "galois_criterion: full iff (solvable by radicals \u2194 solvable Galois group)",
+      "galois_criterion: full iff (solvable by radicals ↔ solvable Galois group)",
       "galois_criterion_rationals: specialization to Q",
       "solvable_gal_means_radical_formula: converse of Abel-Ruffini",
       "Gallery data: meta.json",
       "AbelRuffiniOQ04OQ03.lean expanded to 242 lines, 8 theorems, 1 axiom",
-      "not_isSolvable_gal_of_perm_iso: Gal(q) \u2243* Equiv.Perm (Fin n) \u2227 n \u2265 5 \u2192 \u00ac IsSolvable q.Gal (axiom-free)",
-      "not_solvableByRad_of_perm_gal: Gal(q) \u2243* Equiv.Perm (Fin n) \u2227 n \u2265 5 \u2192 \u00ac IsSolvableByRad F \u03b1 (axiom-free)",
+      "not_isSolvable_gal_of_perm_iso: Gal(q) ≃* Equiv.Perm (Fin n) ∧ n ≥ 5 → ¬ IsSolvable q.Gal (axiom-free)",
+      "not_solvableByRad_of_perm_gal: Gal(q) ≃* Equiv.Perm (Fin n) ∧ n ≥ 5 → ¬ IsSolvableByRad F α (axiom-free)",
       "Refined axiom docstring referencing Mathlib.FieldTheory.KummerExtension, isCyclic_tfae, autEquivRootsOfUnity"
     ],
     "insights": [
-      "Forward direction (solvable by radicals \u2192 solvable Galois group) is in Mathlib as solvableByRad.isSolvable_prime",
-      "Reverse direction (solvable Galois group \u2192 solvable by radicals) requires Kummer theory: cyclic Galois extensions over fields with roots of unity are radical",
+      "Forward direction (solvable by radicals → solvable Galois group) is in Mathlib as solvableByRad.isSolvable_prime",
+      "Reverse direction (solvable Galois group → solvable by radicals) requires Kummer theory: cyclic Galois extensions over fields with roots of unity are radical",
       "Reverse needs CharZero (or char not dividing group order) for roots of unity to exist",
       "Full iff criterion stated as galois_criterion with 1 axiom for the reverse direction",
       "Mathlib.FieldTheory.KummerExtension provides the cyclic case (isCyclic_tfae) needed for the reverse direction; what's missing is the composition step assembling cyclic extensions into a radical tower from a solvable group's composition series",
-      "Pure-group-theoretic transport: solvable_of_surjective lets us push solvability across MulEquiv between Gal(q) and Equiv.Perm (Fin n), so the axiom-free Abel-Ruffini test reduces to constructing a permutation iso (e.g. via Mathlib's galActionHom_bijective_of_prime_degree for irreducible quintics over \u211a with two non-real roots)",
+      "Pure-group-theoretic transport: solvable_of_surjective lets us push solvability across MulEquiv between Gal(q) and Equiv.Perm (Fin n), so the axiom-free Abel-Ruffini test reduces to constructing a permutation iso (e.g. via Mathlib's galActionHom_bijective_of_prime_degree for irreducible quintics over ℚ with two non-real roots)",
       "The contrapositive abel_ruffini_as_galois_special_case does NOT need [CharZero F] because it only invokes the forward direction; the CharZero hypothesis was an unnecessary remnant from threading through the iff form"
     ],
     "mathlibGaps": [
       "Kummer theory for cyclic extensions (needed for reverse direction of Galois criterion)"
     ],
     "nextSteps": [
-      "Optional Mathlib contribution: formalize Kummer composition (assemble cyclic Kummer extensions into a radical tower from a solvable group's composition series) \u2014 would eliminate the remaining axiom"
+      "Optional Mathlib contribution: formalize Kummer composition (assemble cyclic Kummer extensions into a radical tower from a solvable group's composition series) — would eliminate the remaining axiom"
     ],
     "markdown": "# Knowledge Base: abel-ruffini-oq-04-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -69,7 +69,8 @@
     "abel-ruffini-oq-04-oq-02-oq-02",
     "abel-ruffini-oq-04-oq-02-oq-03",
     "abel-ruffini-oq-04-oq-03",
-    "abel-ruffini-oq-04-oq-07"
+    "abel-ruffini-oq-04-oq-07",
+    "abel-ruffini-oq-09"
   ],
   "references": {
     "papers": [],
@@ -82,7 +83,7 @@
     {
       "path": "Proofs/AbelRuffini.lean",
       "filename": "AbelRuffini.lean",
-      "lineCount": 186,
+      "lineCount": 188,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 0,
@@ -170,8 +171,8 @@
     {
       "path": "Proofs/AbelRuffiniOQ04OQ03.lean",
       "filename": "AbelRuffiniOQ04OQ03.lean",
-      "lineCount": 166,
-      "theoremCount": 6,
+      "lineCount": 243,
+      "theoremCount": 8,
       "axiomCount": 1,
       "defCount": 0,
       "sorryCount": 0,
@@ -188,6 +189,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ07.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ09.lean",
+      "filename": "AbelRuffiniOQ09.lean",
+      "lineCount": 449,
+      "theoremCount": 20,
+      "axiomCount": 3,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ09.lean"
     }
   ]
 }
