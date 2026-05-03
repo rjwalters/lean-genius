@@ -1,0 +1,140 @@
+{
+  "id": "inclusion-exclusion-oq-01-oq-01",
+  "title": "General Inclusion-Exclusion for k Sets",
+  "slug": "inclusion-exclusion-oq-01-oq-01",
+  "description": "Proves the general inclusion-exclusion formula for k finite sets using Mathlib's Finset.inclusion_exclusion_card_biUnion. Establishes the inductive step (adding one more set to a union), the complementary counting form, explicit 2/3/4-set specializations, and the first Bonferroni inequality (union bound). 13 theorems, 0 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-05",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InclusionExclusionGeneral.lean",
+    "tags": [
+      "combinatorics",
+      "inclusion-exclusion",
+      "bonferroni-inequalities",
+      "finset",
+      "counting"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-03",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using Mathlib's Finset.inclusion_exclusion_card_biUnion and standard Finset lemmas.",
+    "lineCount": 276,
+    "theoremCount": 13,
+    "definitionCount": 0,
+    "originalContributions": [
+      "general_inclusion_exclusion: wraps Mathlib's alternating-sum formula as a clean theorem",
+      "card_biUnion_insert: inductive step — |⋃_{i∈insert j s} Sᵢ| = |⋃_{i∈s} Sᵢ| + |Sⱼ| - |⋃_{i∈s}(Sᵢ ∩ Sⱼ)|",
+      "biUnion_inter_right: distributivity of ∩ over ⋃ — (⋃_{i∈s} Sᵢ) ∩ B = ⋃_{i∈s}(Sᵢ ∩ B)",
+      "union_bound: first Bonferroni inequality — |⋃_{i∈s} Sᵢ| ≤ Σ_{i∈s} |Sᵢ|",
+      "four_set_inclusion_exclusion: explicit 4-set IE formula built by composing the 3-set and 2-set cases",
+      "card_sdiff_biUnion_int: complementary counting — |U \\ ⋃_{i∈s} Sᵢ| = |U| - |⋃_{i∈s} Sᵢ| (in ℤ)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The general form of the inclusion-exclusion principle was developed independently by Daniel da Silva (1854) and Joseph Sylvester (1883). For a family of n finite sets {A₁,...,Aₙ}, the cardinality of their union follows the alternating sum: |⋃ᵢ Aᵢ| = Σ|Aᵢ| - Σ|Aᵢ∩Aⱼ| + Σ|Aᵢ∩Aⱼ∩Aₖ| - ... This extends the two-set formula (|A∪B| = |A|+|B|-|A∩B|) to arbitrary finite families. The complementary form — counting elements in a universe that avoid all 'bad' sets — is the foundation of sieve methods in number theory, from the Sieve of Eratosthenes to the large sieve. The Bonferroni inequalities (1936) give one-sided truncations of the IE formula, essential in probability theory (union bound = first Bonferroni inequality). Mathlib 4 formalizes the general formula in Combinatorics.Enumerative.InclusionExclusion via Finset.inclusion_exclusion_card_biUnion.",
+    "problemStatement": "Formalize the general inclusion-exclusion principle for k finite sets: |⋃_{i∈s} Sᵢ| = Σ_{∅≠t⊆s} (-1)^(|t|+1) |⋂_{i∈t} Sᵢ|. Also prove the inductive characterization (adding one set), the complementary counting form, and the first Bonferroni inequality.",
+    "text": "The proof has eight parts. Part I wraps Mathlib's `inclusion_exclusion_card_biUnion` into a clean statement. Part II establishes the key inductive step: distributing ∩ over ⋃ (biUnion_inter_right) enables reducing |⋃_{i∈insert j s} Sᵢ| to |⋃_{i∈s} Sᵢ| + |Sⱼ| - |⋃_{i∈s}(Sᵢ∩Sⱼ)|. Part III handles base cases (empty and singleton index sets). Part IV specializes the general formula to two and three sets. Part V proves the Bonferroni union bound by induction: |S_a ∪ ⋃_{i∈s} Sᵢ| ≤ |S_a| + Σ_{i∈s}|Sᵢ|. Part VI covers complementary counting. Part VII proves the explicit four-set IE formula by composing the two-set and three-set cases.",
+    "proofStrategy": "The main theorem (general_inclusion_exclusion) is a one-line application of Mathlib's result. The inductive step (card_biUnion_insert) uses biUnion_inter_right to distribute intersection, then card_union_step and linarith. The three-set formula needs three distributivity steps: (A∪B)∩C=(A∩C)∪(B∩C), each proved by ext+simp+tauto. The four-set formula chains the three-set and two-set formulas with further intersection distributivity steps, closed by linarith. The union bound uses biUnion induction with card_union_le at each step.",
+    "keyInsights": [
+      "Mathlib provides inclusion_exclusion_card_biUnion — the general formula is not new work, but the file makes it accessible and provides derived forms (inductive step, complementary, Bonferroni) that are harder to use directly from Mathlib.",
+      "biUnion_inter_right (distributivity of ∩ over ⋃) is the key enabling lemma: it converts a question about (⋃ Sᵢ) ∩ B into questions about each Sᵢ ∩ B separately, which is the heart of the inductive proof.",
+      "Working in ℤ (not ℕ) for cardinality formulas avoids natural-number underflow: intermediate steps can have negative values, and omega closes all arithmetic goals uniformly.",
+      "The four-set formula is proved by composition, not by hand: the two-set and three-set lemmas combine via distributivity, avoiding the error-prone manual alternating sum. This pattern generalizes to any fixed k.",
+      "The union bound (Bonferroni first inequality) is the most practically important result: it says you never overcount by ignoring intersections. Proved by induction using only card_union_le at each step."
+    ],
+    "prerequisites": [
+      "Finset.inclusion_exclusion_card_biUnion (Mathlib: general IE formula)",
+      "Finset.card_union_add_card_inter (two-set IE)",
+      "Finset.card_sdiff_add_card_eq_card (sdiff complement identity)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Machine-verified general inclusion-exclusion for k finite sets: alternating sum over the powerset of the index set, inductive characterization, complementary counting, explicit 2/3/4-set formulas, and the Bonferroni union bound. 13 theorems, 0 definitions, 0 axioms, 276 lines.",
+    "implications": "This formalization completes the structural picture of inclusion-exclusion: Mathlib provides the raw alternating sum, and this file adds the inductive step, complementary counting form, and Bonferroni inequality that are needed in practice. The biUnion_inter_right distributivity lemma and card_biUnion_insert inductive step are building blocks for more advanced sieve-method formalizations.",
+    "openQuestions": [
+      "Formalize Möbius inversion as a consequence of general IE: if f(n) = Σ_{d|n} g(d), then g(n) = Σ_{d|n} μ(d)f(n/d), connecting the IE alternating sum to the Möbius function on the divisibility poset.",
+      "Prove the second Bonferroni inequality: |⋃_{i∈s} Sᵢ| ≥ Σ|Sᵢ| - Σ|Sᵢ∩Sⱼ|, and characterize when the bound is tight (disjoint families)."
+    ]
+  },
+  "leanFile": {
+    "namespace": "InclusionExclusionGeneral",
+    "lineCount": 276,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 0,
+    "path": "Proofs/InclusionExclusionGeneral.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "extends",
+      "description": "parent: the base IE file proves the two-set and three-set cases; this file proves the general k-set formula using Mathlib"
+    },
+    {
+      "targetId": "inclusion-exclusion-oq-01",
+      "relationship": "related",
+      "description": "sibling: applies IE to number theory (totient, surjections, derangements); this file proves the abstract general formula"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-ie-general-header",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Imports Mathlib.Combinatorics.Enumerative.InclusionExclusion and establishes the variable context. Documents the 8-part structure: general formula, inductive step, base cases, 2/3-set specializations, Bonferroni, complementary counting, 4-set case, concrete examples."
+    },
+    {
+      "id": "sec-ie-general-formula",
+      "title": "Part I: The General Formula",
+      "startLine": 44,
+      "endLine": 69,
+      "summary": "Wraps Mathlib's inclusion_exclusion_card_biUnion into general_inclusion_exclusion: (↑|⋃_{i∈s} Sᵢ| : ℤ) = Σ_{∅≠t⊆s} (-1)^(|t|+1) * ↑|⋂_{i∈t} Sᵢ|. The alternating sum ranges over all nonempty subsets of the index set."
+    },
+    {
+      "id": "sec-ie-inductive",
+      "title": "Part II: Inductive Step",
+      "startLine": 70,
+      "endLine": 110,
+      "summary": "Proves biUnion_inter_right (distributivity of ∩ over ⋃) and card_biUnion_insert (inductive step: |⋃_{i∈insert j s} Sᵢ| = |⋃_{i∈s} Sᵢ| + |Sⱼ| - |⋃_{i∈s}(Sᵢ∩Sⱼ)|). These are the building blocks for an inductive proof of IE."
+    },
+    {
+      "id": "sec-ie-base",
+      "title": "Part III: Base Cases",
+      "startLine": 111,
+      "endLine": 127,
+      "summary": "Proves card_biUnion_empty (empty index set gives union of cardinality 0) and card_biUnion_singleton (singleton index gives cardinality of that set). These check the formula degenerates correctly."
+    },
+    {
+      "id": "sec-ie-specializations",
+      "title": "Parts IV: 2-Set and 3-Set Specializations",
+      "startLine": 128,
+      "endLine": 156,
+      "summary": "Proves two_set_from_general (|A∪B|=|A|+|B|-|A∩B| in ℤ) and three_set_from_general (full 3-set IE). The three-set case requires distributivity: (A∪B)∩C=(A∩C)∪(B∩C), proved by ext+simp+tauto."
+    },
+    {
+      "id": "sec-ie-bonferroni",
+      "title": "Part V: Bonferroni Inequalities",
+      "startLine": 157,
+      "endLine": 185,
+      "summary": "Proves union_bound (first Bonferroni: |⋃_{i∈s} Sᵢ| ≤ Σ_{i∈s}|Sᵢ|) by induction using card_union_le, and union_lower_bound (|A∪B| ≥ max(|A|,|B|)). The union bound is also known as Boole's inequality."
+    },
+    {
+      "id": "sec-ie-complementary",
+      "title": "Part VI: Complementary Counting",
+      "startLine": 186,
+      "endLine": 212,
+      "summary": "Proves card_sdiff_biUnion_int (|U \\ ⋃_{i∈s} Sᵢ| = |U| - |⋃_{i∈s} Sᵢ| in ℤ) and card_complement_two (|U\\(A∪B)| = |U|-|A|-|B|+|A∩B|). This is the form of IE used in sieve methods."
+    },
+    {
+      "id": "sec-ie-four-set",
+      "title": "Parts VII–VIII: Four-Set Formula and Examples",
+      "startLine": 213,
+      "endLine": 276,
+      "summary": "Proves four_set_inclusion_exclusion by composing the three-set and two-set formulas with four intersection distributivity steps, closed by linarith. Includes three concrete examples verified by native_decide."
+    }
+  ]
+}
