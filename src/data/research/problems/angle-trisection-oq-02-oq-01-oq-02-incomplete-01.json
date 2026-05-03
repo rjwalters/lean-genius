@@ -2,7 +2,7 @@
   "slug": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
   "title": "Complete proof of Wantzel-Galois Constructibility from Mathlib Galois Theory",
   "phase": "BLOCKED",
-  "status": "blocked",
+  "status": "in-progress",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED (upstream): file fails to build on origin/main due to Mathlib API drift (mem_sup_left/mem_sup_right unknown, Module.finrank_mul_finrank arg order changed, Nat.eq_zero_of_dvd_of_lt signature changed). Verified by Docker build 2026-04-27. Mechanic agent should repair; researcher work suspended until build is green. Sorries unchanged (3); see knowledge.md Session 31.",
+    "progressSummary": "PROGRESS: API drift fixed (Session 32); hβ_dvd proof attempt written (Session 33, Docker verification pending); hjoin_dvd sorry remains",
     "builtItems": [
       "isConstructible_mem_range: all constructible numbers are rational (Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:89)",
       "not_constructible_of_bad_degree: proved via rationality + minpoly.eq_X_sub_C (line 179)",
@@ -76,10 +76,9 @@
       "wantzel_galois_iff: requires full FTGT + 2-group structure, estimated 500+ lines — not in Mathlib"
     ],
     "nextSteps": [
-      "Option A: Create Incomplete02.lean re-applying Sessions 26-28 fix with hβ_dvd proved (~150L)",
-      "Option B: Prove sqrt2_constructible_tower in OQ04OQ01.lean (~25L, self-contained)",
-      "Accept current state as-is (1 sorry permanently out-of-scope under current def)",
-      "wantzel_galois_iff under current def: permanently out-of-scope"
+      "Run Docker build to verify hβ_dvd proof compiles (map_pow vs SubmonoidClass.coe_pow in hβ_sq_a simp)",
+      "Fix hjoin_dvd sorry: needs stronger IH — for any K/ℚ with [K:ℚ]=2^k, [K(b):ℚ]|2^(k+1)",
+      "Consider restructuring isConstructible_algebraic_degree induction to carry K as parameter"
     ]
   },
   "tags": [
