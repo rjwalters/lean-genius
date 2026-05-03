@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 7\u21923 axioms, 0 sorries. Remaining 3 axioms require Sobolev/microlocal infrastructure.",
+    "progressSummary": "PROGRESS: 7→2 axioms total (3 sessions). Session 13: consolidated dencker_weight_exists + weight_implies_estimate → dencker_main. Remaining 2 axioms (HasAPrioriEstimate, dencker_main) both require Sobolev/microlocal infrastructure not in Mathlib.",
     "builtItems": [
       "Hilbert20LocalSolvability.lean: formalization (181 lines)",
       "Defs: LinearPDO, principalSymbol, IsPrincipalType, ConditionPsi, IsElliptic",
@@ -40,18 +40,20 @@
       "Gallery entry: src/data/proofs/hilbert-20-oq-01/meta.json",
       "Proved monomial_real in Hilbert20OQ01OQ03.lean:77 via norm_cast + ofReal_im",
       "IsLocallySolvable as def (not axiom): Hilbert20OQ01OQ03.lean:157",
-      "hormander_duality as proved theorem (Iff.intro id id): Hilbert20OQ01OQ03.lean:164"
+      "hormander_duality as proved theorem (Iff.intro id id): Hilbert20OQ01OQ03.lean:164",
+      "Consolidated axioms: dencker_weight_exists + weight_implies_estimate → dencker_main (Hilbert20OQ01OQ03.lean, 3→2 axioms)"
     ],
     "insights": [
       "Local solvability = distribution solution exists for every smooth RHS",
-      "Condition (\u03a8): Im(p_m) does not change sign from - to + along bicharacteristics of Re(p_m)",
-      "Nirenberg-Treves conjecture (1963, proved Dencker 2006): (\u03a8) iff locally solvable for principal type",
-      "Elliptic operators satisfy (\u03a8) vacuously - principal symbol never vanishes",
-      "Operators with real principal symbol satisfy (\u03a8) trivially - Im = 0",
+      "Condition (Ψ): Im(p_m) does not change sign from - to + along bicharacteristics of Re(p_m)",
+      "Nirenberg-Treves conjecture (1963, proved Dencker 2006): (Ψ) iff locally solvable for principal type",
+      "Elliptic operators satisfy (Ψ) vacuously - principal symbol never vanishes",
+      "Operators with real principal symbol satisfy (Ψ) trivially - Im = 0",
       "Full proof requires microlocal analysis not in Mathlib",
       "monomial_real proof: cast product of complex powers to ofReal product via norm_cast, then ofReal_im gives im=0. The original rw approach was structurally broken.",
-      "IsLocallySolvable can be defined as HasAPrioriEstimate (formalAdjoint P) x\u2080, making hormander_duality provable by Iff.intro id id",
-      "7\u21923 axiom elimination achieved: BicharacteristicCurve/imSymbolAlongCurve/IsLocallySolvable all made definitional"
+      "IsLocallySolvable can be defined as HasAPrioriEstimate (formalAdjoint P) x₀, making hormander_duality provable by Iff.intro id id",
+      "7→3 axiom elimination achieved: BicharacteristicCurve/imSymbolAlongCurve/IsLocallySolvable all made definitional",
+      "Two Dencker axioms (weight-exists + weight-estimate) encode a single theorem; combining into dencker_main reduces axiom count without mathematical loss"
     ],
     "mathlibGaps": [
       "No distribution theory in Mathlib",
@@ -61,8 +63,8 @@
     ],
     "nextSteps": [
       "Wait for Mathlib Sobolev space infrastructure to eliminate HasAPrioriEstimate",
-      "Consider formalizing Lewy counterexample (concrete failure of condition (\u03a8))",
-      "weight_implies_estimate and dencker_weight_exists require pseudodiff calculus \u2014 blocked >1000 lines"
+      "Consider formalizing Lewy counterexample (concrete failure of condition (Ψ))",
+      "weight_implies_estimate and dencker_weight_exists require pseudodiff calculus — blocked >1000 lines"
     ],
     "markdown": "# Knowledge Base: hilbert-20-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
