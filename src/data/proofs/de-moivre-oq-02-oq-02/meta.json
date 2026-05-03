@@ -108,7 +108,8 @@
     "implications": "**Theoretical Significance**\n\n1. **Over any CommRing R**: Unlike the parent OQ-02 (which uses trigonometry and is specific to ℝ), this identity holds algebraically in any commutative ring — broader generality.\n\n2. **Basis for U×U product formula**: The T×U cross-product can serve as a building block for the U×U product formula $U_m \\cdot U_n = \\sum_{k=0}^{\\min(m,n)} U_{m+n-2k}$ via recurrence matching.\n\n3. **Sin spreading identity**: The trig corollary $2\\cos\\theta \\cdot \\sin((n+1)\\theta) = \\sin((n+2)\\theta) + \\sin(n\\theta)$ is an important building block for Fourier-type series manipulations.",
     "openQuestions": [
       "Can the U×U product formula U_m · U_n = ∑_{k=0}^{min(m,n)} U_{m+n-2k} be proved by recurrence matching over ℝ[X]?",
-      "Can the T×U cross-product be proved over a more general setting (e.g., Chebyshev polynomials over ℤ)?"
+      "Can the T×U cross-product be proved over a more general setting (e.g., Chebyshev polynomials over ℤ)?",
+      "Does a T×V cross-product formula hold for the third-kind Chebyshev polynomials V_n (satisfying V_n(cos θ) = cos((n+½)θ)/cos(θ/2))?"
     ]
   },
   "relatedProblems": [
@@ -126,7 +127,12 @@
     {
       "targetId": "de-moivre-oq-01",
       "relationship": "sibling",
-      "description": "OQ-01 established T_n(cos θ) = cos(nθ); U_real_cos (U_n(cos θ)·sin θ = sin((n+1)θ)) is the second-kind analog."
+      "description": "OQ-01 established T_n(cos θ) = cos(nθ); U_real_cos (U_n(cos θ)·sin θ = sin((n+1)θ)) is the second-kind analog used here."
+    },
+    {
+      "targetId": "de-moivre-oq-03",
+      "relationship": "related",
+      "description": "OQ-03 explores further Chebyshev product identities; the T×U cross-product formula here is a stepping stone to U×U and higher mixed-kind formulas."
     }
   ],
   "references": [
