@@ -338,4 +338,58 @@ theorem erdos_1201_infinitely_many (k : ℕ) (ε : ℝ) (hε₀ : 0 < ε) (_hε�
     _ = (n : ℝ) := Real.rpow_one _
     _ ≤ (gpfConsecutive n k : ℝ) := h_real
 
+/-
+## Upper Bounds and Tight Estimates
+-/
+
+/-- gpfConsecutive n 0 = greatestPrimeFactor n: window of width 0 is just the starting term. -/
+theorem gpfConsecutive_zero (n : ℕ) : gpfConsecutive n 0 = greatestPrimeFactor n := by
+  simp [gpfConsecutive, consecutiveProduct_zero]
+
+/-- If p is prime and divides ∏ i < k+1, (n+i), then p divides some n+i with i < k+1. -/
+private lemma prime_dvd_consecutive_range (n k : ℕ) (p : ℕ) (hp : p.Prime)
+    (h : p ∣ (Finset.range (k + 1)).prod (fun i => n + i)) :
+    ∃ i < k + 1, p ∣ n + i := by
+  induction k with
+  | zero => exact ⟨0, Nat.lt_succ_self 0, by simpa using h⟩
+  | succ k ih =>
+    rw [Finset.prod_range_succ] at h
+    rcases hp.dvd_mul.mp h with h1 | h2
+    · obtain ⟨i, hi, hpi⟩ := ih h1
+      exact ⟨i, Nat.lt_trans hi (Nat.lt_succ_self _), hpi⟩
+    · exact ⟨k + 1, Nat.lt_succ_self _, h2⟩
+
+/-- Upper bound: every prime factor of the window [n, n+k] is ≤ n+k, so P(n,k) ≤ n+k. -/
+theorem gpfConsecutive_upper_bound (n k : ℕ) (hn : 1 ≤ n) :
+    gpfConsecutive n k ≤ n + k := by
+  unfold gpfConsecutive greatestPrimeFactor
+  split_ifs with h
+  swap; · exact Nat.zero_le _
+  apply Finset.max'_le _ _ h
+  intro p hp
+  rw [Nat.mem_primeFactors] at hp
+  obtain ⟨hp_prime, hp_dvd, _⟩ := hp
+  have hdvd : ∃ i < k + 1, p ∣ n + i :=
+    prime_dvd_consecutive_range n k p hp_prime hp_dvd
+  obtain ⟨i, hi, hpi⟩ := hdvd
+  exact Nat.le_trans (Nat.le_of_dvd (by omega) hpi) (by omega)
+
+/-- Lower bound: if prime p divides term n+i in the window (i ≤ k), then p ≤ P(n,k). -/
+theorem le_gpfConsecutive_of_prime_dvd_term (n k i : ℕ) (hn : 1 ≤ n) (hi : i ≤ k) (p : ℕ)
+    (hp : p.Prime) (hpdvd : p ∣ n + i) : p ≤ gpfConsecutive n k := by
+  have hcp : 2 ≤ consecutiveProduct n k :=
+    Nat.le_trans hp.two_le
+      (Nat.le_trans (Nat.le_of_dvd (by omega) hpdvd)
+        (Nat.le_of_dvd (consecutiveProduct_pos n k hn)
+          (dvd_consecutiveProduct_term n k i hi)))
+  unfold gpfConsecutive
+  exact gpf_ge_prime_dvd (consecutiveProduct n k) p hcp hp
+    (dvd_trans hpdvd (dvd_consecutiveProduct_term n k i hi))
+
+/-- Tight Bertrand bound: for n ≥ 1, n < P(n,n) ≤ 2n (prime in Bertrand window). -/
+theorem gpfConsecutive_between (n : ℕ) (hn : 1 ≤ n) :
+    n < gpfConsecutive n n ∧ gpfConsecutive n n ≤ 2 * n := by
+  exact ⟨gpfConsecutive_self_gt n hn,
+         by have := gpfConsecutive_upper_bound n n hn; omega⟩
+
 end Erdos1201

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 24 theorems. Added dvd_consecutiveProduct_term (any term n+i divides product for i\u2264k) and erdos_1201_infinitely_many ({n : P(n,k)>n^(1-\u03b5)} is infinite for fixed k, \u03b5). 0 sorries, 1 axiom. Docker build verified.",
+    "progressSummary": "Session 2: +5 theorems (gpfConsecutive_zero, gpfConsecutive_upper_bound, le_gpfConsecutive_of_prime_dvd_term, gpfConsecutive_between, plus dvd_consecutiveProduct_term + erdos_1201_infinitely_many from PR #15215). Total: 28 proved theorems. 1 axiom remains (erdos_1201_half_case).",
     "builtItems": [
       "greatestPrimeFactor: def using Nat.primeFactors.max' (Erdos1201Problem.lean:28)",
       "consecutiveProduct: def using Finset.range.prod (Erdos1201Problem.lean:32)",
@@ -59,7 +59,12 @@
       "gpfConsecutive_self_gt: gpfConsecutive n n > n for n \u2265 1 via Bertrand (Erdos1201Problem.lean:268)",
       "gpfConsecutive_gt_n_of_large_window: gpfConsecutive n k > n for n \u2265 2, k \u2265 n via induction (Erdos1201Problem.lean:281)",
       "dvd_consecutiveProduct_term: (n+i) \u2223 consecutiveProduct n k for i\u2264k (Erdos1201Problem.lean:313)",
-      "erdos_1201_infinitely_many: {n | P(n,k) > n^(1-\u03b5)} is infinite for any fixed k, \u03b5\u2208(0,1) \u2014 proved via prime subset (Erdos1201Problem.lean:323)"
+      "erdos_1201_infinitely_many: {n | P(n,k) > n^(1-\u03b5)} is infinite for any fixed k, \u03b5\u2208(0,1) \u2014 proved via prime subset (Erdos1201Problem.lean:323)",
+      "gpfConsecutive_zero: P(n,0) = gpf(n) \u2014 base case proved by simp using consecutiveProduct_zero",
+      "prime_dvd_consecutive_range: private helper \u2014 prime divides range product \u2192 divides some term, proved by induction using Nat.Prime.dvd_mul",
+      "gpfConsecutive_upper_bound: P(n,k) \u2264 n+k \u2014 upper bound proved from first principles (inductive prime divisibility + Nat.le_of_dvd)",
+      "le_gpfConsecutive_of_prime_dvd_term: lower bound \u2014 if prime p | n+i then p \u2264 P(n,k), proved using gpf_ge_prime_dvd + dvd_consecutiveProduct_term",
+      "gpfConsecutive_between: Bertrand tight bounds n < P(n,n) \u2264 2n, combining gpfConsecutive_self_gt and gpfConsecutive_upper_bound"
     ],
     "insights": [
       "greatestPrimeFactor defined via Nat.primeFactors.max' \u2014 cleanly handles n=0,1 by returning 0",
@@ -73,17 +78,20 @@
       "gpfConsecutive_gt_n_of_large_window: for n \u2265 2 and k \u2265 n, the lower bound generalizes by induction using gpfConsecutive_mono \u2014 any window of at least n consecutive integers starting at n \u2265 2 has GPF > n",
       "For prime n: P(n,k) \u2265 n > n^(1-\u03b5) for any \u03b5>0, so all primes witness the density condition",
       "Infinite set result (erdos_1201_infinitely_many) is the weakest non-trivial partial result \u2014 density would require quantitative control",
-      "Real.rpow_lt_rpow_of_exponent_lt gives x^a < x^b for x>1, a<b \u2014 key lemma for power comparisons in Lean"
+      "Real.rpow_lt_rpow_of_exponent_lt gives x^a < x^b for x>1, a<b \u2014 key lemma for power comparisons in Lean",
+      "gpfConsecutive_upper_bound proved by induction: prime divides product of range \u2192 prime divides some term (by Nat.Prime.dvd_mul at binary level). Clean alternative to Prime.dvd_finset_prod_iff.",
+      "gpfConsecutive_between combines two different proof techniques: Bertrand lower bound (existence of prime) and double-counting upper bound (prime factor \u2264 term).",
+      "The tight Bertrand bound n < P(n,n) \u2264 2n shows the self-window is optimal in the sense that any prime witnessing Bertrand must fall exactly in (n, 2n]."
     ],
     "mathlibGaps": [
       "No Mathlib lemma directly connecting upper density thresholds to prime gaps \u2014 needed for full conjecture",
       "Smooth number theory (Dickman's function \u03c1(u)) not formalized in Mathlib \u2014 needed for quantitative density estimates"
     ],
     "nextSteps": [
-      "Docker build to verify the Lean file compiles (with new Bertrand theorems)",
-      "Potential: prove connection to Sylvester-Schur theorem (every product of k consecutive integers \u2265 k+1 has a prime factor > k)",
-      "Connection to Sylvester-Schur: for n>k, product n...(n+k-1) has a prime factor >k \u2014 formalizable from Mathlib?",
-      "Quantitative density: lower bound on |{n\u2264N : P(n,k)>n^(1-\u03b5)}|/N for fixed k \u2014 requires smooth number estimates"
+      "Prove gpfConsecutive_one_eq_max: P(n,1) = max(gpf(n), gpf(n+1)) using coprimality of consecutive integers",
+      "Prove gpfConsecutive_tight_window: for k < n-1, it is possible that P(n,k) \u2264 \u221an (no Bertrand guarantee)",
+      "Connect to Sylvester-Schur: any product of k+1 consecutive integers > k has a prime factor > k",
+      "Investigate the density of n where P(n,1) > \u221an as a step toward the half-case axiom"
     ],
     "markdown": "# Erd\u0151s #1201 - Knowledge Base\n\n## Problem Statement\n\nIs it true that for every $\\epsilon,\\eta>0$ there exists a $k$ such that the density of $n$ for which\\[P(n(n+1)\\cdots(n+k))>n^{1-\\epsilon}\\]is at least $1-\\eta$ (where $P(m)$ is the greatest prime divisor of $m$)? Erd\u0151s wrote he could prove this for $\\epsilon=1/2$.## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #62\n- Problem #2\n- Problem #1200\n- Problem #1202\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n"
   },
@@ -93,7 +101,8 @@
   "relatedProofs": [
     "erdos-1",
     "erdos-12",
-    "erdos-120"
+    "erdos-120",
+    "erdos-1201"
   ],
   "references": {
     "papers": [],
@@ -108,10 +117,10 @@
     {
       "path": "Proofs/Erdos1201Problem.lean",
       "filename": "Erdos1201Problem.lean",
-      "lineCount": 267,
-      "theoremCount": 14,
+      "lineCount": 342,
+      "theoremCount": 24,
       "axiomCount": 1,
-      "defCount": 4,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1201Problem.lean"
