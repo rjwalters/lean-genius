@@ -91,7 +91,9 @@
       "Quadratic reciprocity J(m,n)·J(n,m) = (-1)^((m-1)/2·(n-1)/2) holds for all coprime odd m,n > 1, not just primes — the proof reduces to the prime case via multiplicativity.",
       "J(a,n) = -1 guarantees a is a non-residue mod n, but J(a,n) = 1 for composite n does NOT guarantee a is a QR — this asymmetry is critical for primality testing algorithms.",
       "The Jacobi symbol can be computed in O(log² n) time via a generalized Euclidean algorithm, without factoring n — making it the computational backbone of Solovay-Strassen primality testing.",
-      "The supplements J(-1,n) and J(2,n) follow from their Legendre symbol analogues via multiplicativity over the prime factorization of n."
+      "The supplements J(-1,n) and J(2,n) follow from their Legendre symbol analogues via multiplicativity over the prime factorization of n.",
+      "The Kronecker symbol extends the Jacobi symbol to even moduli and negative integers: $\\left(\\frac{D}{n}\\right)$ for any discriminant $D$ and any $n$. It governs the splitting of primes in $\\mathbb{Q}(\\sqrt{D})$ and appears directly in the Dirichlet class number formula $h(D) = \\frac{w\\sqrt{|D|}}{2\\pi} L(1, \\chi_D)$ where $\\chi_D(n) = \\left(\\frac{D}{n}\\right)$.",
+      "Hilbert symbols $(a,b)_v$ for $v$-adic fields are the local version of the Jacobi symbol: they equal $\\pm 1$ measuring whether $ax^2 + by^2 = z^2$ has a non-trivial $v$-adic solution. The product formula $\\prod_v (a,b)_v = 1$ over all places is the $n=2$ case of the Artin reciprocity law, encoding global-local duality in class field theory."
     ],
     "prerequisites": [
       "Number theory (quadratic residues, Jacobi symbol)",
@@ -142,6 +144,16 @@
     }
   ],
   "crossReferences": [
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-02",
+      "relationship": "sibling",
+      "description": "Gauss sum proof architecture — the third independent QR pathway (alongside Eisenstein and Zolotarev). The Gauss sum $\\tau^2 = \\chi(-1) \\cdot p$ connects to Jacobi sum theory: Jacobi sums $J(\\chi_1, \\chi_2) = \\sum_a \\chi_1(a)\\chi_2(1-a)$ are products of Gauss sums and encode the structure of the Jacobi symbol in the analytic framework"
+    },
+    {
+      "targetId": "quadratic-reciprocity-algorithm-oq-01",
+      "relationship": "related",
+      "description": "Verified Jacobi symbol computation algorithm — implements the recursive O(log² n) computation using multiplicativity and the QR-based reduction step; directly formalizes the efficient algorithm whose existence this entry motivates theoretically"
+    },
     {
       "targetId": "elementary-quadratic-reciprocity",
       "relationship": "extends",
