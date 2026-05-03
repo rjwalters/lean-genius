@@ -237,21 +237,381 @@ theorem K3_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 3 2) 2 :=
     We use coordinates: (0,0), (3,0), (1,2), (2,2).
     K₄ is planar: any drawing can be made crossing-free. -/
 theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 := by
-  -- Use vertices at (0,0), (3,0), (1,2), (2,2)
-  -- This gives a valid planar embedding (K₄ is planar by Euler's formula: V-E+F = 2, 4-6+4 = 2)
+  -- Vertices: φ0=(0,0), φ1=(2,0), φ2=(1,2), φ3=(1,1).
+  -- φ3 lies strictly inside triangle φ0φ1φ2, so all 6 edges cross-free.
+  -- Hyperplanes: e01→y=0, e02→2x-y=0, e03→x-y=0,
+  --              e12→2x+y=4, e13→x+y=2, e23→x=1.
+  -- Non-adjacent pairs {e01,e23},{e02,e13},{e03,e12} derive contradictions from two constraints.
   use fun i => match i with
     | ⟨0, _⟩ => ![0, 0]
-    | ⟨1, _⟩ => ![3, 0]
+    | ⟨1, _⟩ => ![2, 0]
     | ⟨2, _⟩ => ![1, 2]
-    | ⟨3, _⟩ => ![2, 2]
+    | ⟨3, _⟩ => ![1, 1]
     | ⟨_, _⟩ => ![0, 0]
   constructor
-  · -- Injectivity: the four points are pairwise distinct
+  · -- Injectivity
     intro ⟨i, hi⟩ ⟨j, hj⟩ h
     simp only at h
     fin_cases i <;> fin_cases j <;> simp_all (config := { decide := true }) <;> omega
   · -- Edge separation
-    sorry -- K₄ planarity requires checking 6 edges don't improperly cross
+    let φ : Fin 4 → Fin 2 → ℝ := fun i => match i with
+      | ⟨0, _⟩ => ![0, 0] | ⟨1, _⟩ => ![2, 0]
+      | ⟨2, _⟩ => ![1, 2] | ⟨3, _⟩ => ![1, 1] | ⟨_, _⟩ => ![0, 0]
+    -- If a linear functional f equals cv on all generators, it equals cv on the hull.
+    have proj_const : ∀ (e : Finset (Fin 4)) (f : (Fin 2 → ℝ) → ℝ) (cv : ℝ),
+        IsLinearMap ℝ f → (∀ v ∈ e, f (φ v) = cv) →
+        ∀ y ∈ convexHull ℝ (Set.image φ ↑e), f y = cv := by
+      intro e f cv hlin hconst y hy
+      apply convexHull_min _ _ hy
+      · rintro z ⟨v, hv, rfl⟩; exact hconst v (Finset.mem_coe.mp hv)
+      · intro p hp q hq s t hs ht hst
+        simp only [Set.mem_setOf_eq] at *
+        rw [hlin.1, hlin.2, hlin.2, hp, hq]; simp only [smul_eq_mul]; nlinarith
+    -- If f ≥ c on all generators, then f ≥ c on the hull.
+    have proj_lb : ∀ (e : Finset (Fin 4)) (f : (Fin 2 → ℝ) → ℝ) (c : ℝ),
+        IsLinearMap ℝ f → (∀ v ∈ e, f (φ v) ≥ c) →
+        ∀ y ∈ convexHull ℝ (Set.image φ ↑e), f y ≥ c := by
+      intro e f c hlin hlo y hy
+      apply convexHull_min _ _ hy
+      · rintro z ⟨v, hv, rfl⟩; exact hlo v (Finset.mem_coe.mp hv)
+      · intro p hp q hq s t hs ht hst
+        simp only [Set.mem_setOf_eq] at *
+        rw [hlin.1, hlin.2, hlin.2]; simp only [smul_eq_mul]; nlinarith
+    -- If f ≤ c on all generators, then f ≤ c on the hull.
+    have proj_ub : ∀ (e : Finset (Fin 4)) (f : (Fin 2 → ℝ) → ℝ) (c : ℝ),
+        IsLinearMap ℝ f → (∀ v ∈ e, f (φ v) ≤ c) →
+        ∀ y ∈ convexHull ℝ (Set.image φ ↑e), f y ≤ c := by
+      intro e f c hlin hup y hy
+      apply convexHull_min _ _ hy
+      · rintro z ⟨v, hv, rfl⟩; exact hup v (Finset.mem_coe.mp hv)
+      · intro p hp q hq s t hs ht hst
+        simp only [Set.mem_setOf_eq] at *
+        rw [hlin.1, hlin.2, hlin.2]; simp only [smul_eq_mul]; nlinarith
+    intro e₁ he₁ e₂ he₂ hne
+    simp only [Erdos1018OQ04.completeHypergraph, Finset.mem_filter, Finset.mem_univ,
+               true_and] at he₁ he₂
+    obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp he₁
+    obtain ⟨c, d, hcd, rfl⟩ := Finset.card_eq_two.mp he₂
+    fin_cases a <;> fin_cases b <;> fin_cases c <;> fin_cases d <;>
+    simp_all only [Fin.mk.injEq, ne_eq, not_false_eq_true, Finset.mem_insert,
+                   Finset.mem_singleton, forall_eq_or_imp, forall_eq] <;>
+    intro x ⟨hx₁, hx₂⟩ <;>
+    simp only [convexHull_singleton, Set.mem_singleton_iff] <;>
+    (first
+    -- Adjacent pairs: two hyperplane constraints determine the shared vertex.
+    -- e01(y=0) ∩ e02(2x-y=0) → vertex 0=(0,0)
+    | (have hy : x 1 = 0 := proj_const _ (fun v => v 1) 0
+          ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+          (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have h2xy : 2 * x 0 - x 1 = 0 := proj_const _ (fun v => 2 * v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (have h2xy : 2 * x 0 - x 1 = 0 := proj_const _ (fun v => 2 * v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hy : x 1 = 0 := proj_const _ (fun v => v 1) 0
+          ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+          (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    -- e01(y=0) ∩ e03(x-y=0) → vertex 0=(0,0)
+    | (have hy : x 1 = 0 := proj_const _ (fun v => v 1) 0
+          ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+          (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hxy : x 0 - x 1 = 0 := proj_const _ (fun v => v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (have hxy : x 0 - x 1 = 0 := proj_const _ (fun v => v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hy : x 1 = 0 := proj_const _ (fun v => v 1) 0
+          ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+          (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    -- e01(y=0) ∩ e12(2x+y=4) → vertex 1=(2,0)
+    | (have hy : x 1 = 0 := proj_const _ (fun v => v 1) 0
+          ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+          (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hsum : 2 * x 0 + x 1 = 4 := proj_const _ (fun v => 2 * v 0 + v 1) 4
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (have hsum : 2 * x 0 + x 1 = 4 := proj_const _ (fun v => 2 * v 0 + v 1) 4
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hy : x 1 = 0 := proj_const _ (fun v => v 1) 0
+          ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+          (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    -- e01(y=0) ∩ e13(x+y=2) → vertex 1=(2,0)
+    | (have hy : x 1 = 0 := proj_const _ (fun v => v 1) 0
+          ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+          (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hxy : x 0 + x 1 = 2 := proj_const _ (fun v => v 0 + v 1) 2
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (have hxy : x 0 + x 1 = 2 := proj_const _ (fun v => v 0 + v 1) 2
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hy : x 1 = 0 := proj_const _ (fun v => v 1) 0
+          ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+          (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    -- e02(2x-y=0) ∩ e03(x-y=0) → vertex 0=(0,0)
+    | (have h2xy : 2 * x 0 - x 1 = 0 := proj_const _ (fun v => 2 * v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hxy : x 0 - x 1 = 0 := proj_const _ (fun v => v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (have hxy : x 0 - x 1 = 0 := proj_const _ (fun v => v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have h2xy : 2 * x 0 - x 1 = 0 := proj_const _ (fun v => 2 * v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    -- e02(2x-y=0) ∩ e12(2x+y=4) → vertex 2=(1,2)
+    | (have h2xy : 2 * x 0 - x 1 = 0 := proj_const _ (fun v => 2 * v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hsum : 2 * x 0 + x 1 = 4 := proj_const _ (fun v => 2 * v 0 + v 1) 4
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (have hsum : 2 * x 0 + x 1 = 4 := proj_const _ (fun v => 2 * v 0 + v 1) 4
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have h2xy : 2 * x 0 - x 1 = 0 := proj_const _ (fun v => 2 * v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    -- e02(2x-y=0) ∩ e23(x=1) → vertex 2=(1,2)
+    | (have h2xy : 2 * x 0 - x 1 = 0 := proj_const _ (fun v => 2 * v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hx1 : x 0 = 1 := proj_const _ (fun v => v 0) 1
+          ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (have hx1 : x 0 = 1 := proj_const _ (fun v => v 0) 1
+          ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have h2xy : 2 * x 0 - x 1 = 0 := proj_const _ (fun v => 2 * v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    -- e03(x-y=0) ∩ e13(x+y=2) → vertex 3=(1,1)
+    | (have hxy : x 0 - x 1 = 0 := proj_const _ (fun v => v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hxy2 : x 0 + x 1 = 2 := proj_const _ (fun v => v 0 + v 1) 2
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (have hxy2 : x 0 + x 1 = 2 := proj_const _ (fun v => v 0 + v 1) 2
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hxy : x 0 - x 1 = 0 := proj_const _ (fun v => v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    -- e03(x-y=0) ∩ e23(x=1) → vertex 3=(1,1)
+    | (have hxy : x 0 - x 1 = 0 := proj_const _ (fun v => v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hx1 : x 0 = 1 := proj_const _ (fun v => v 0) 1
+          ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (have hx1 : x 0 = 1 := proj_const _ (fun v => v 0) 1
+          ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hxy : x 0 - x 1 = 0 := proj_const _ (fun v => v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    -- e12(2x+y=4) ∩ e13(x+y=2) → vertex 1=(2,0)
+    | (have hsum : 2 * x 0 + x 1 = 4 := proj_const _ (fun v => 2 * v 0 + v 1) 4
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hxy2 : x 0 + x 1 = 2 := proj_const _ (fun v => v 0 + v 1) 2
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (have hxy2 : x 0 + x 1 = 2 := proj_const _ (fun v => v 0 + v 1) 2
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hsum : 2 * x 0 + x 1 = 4 := proj_const _ (fun v => 2 * v 0 + v 1) 4
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    -- e12(2x+y=4) ∩ e23(x=1) → vertex 2=(1,2)
+    | (have hsum : 2 * x 0 + x 1 = 4 := proj_const _ (fun v => 2 * v 0 + v 1) 4
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hx1 : x 0 = 1 := proj_const _ (fun v => v 0) 1
+          ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (have hx1 : x 0 = 1 := proj_const _ (fun v => v 0) 1
+          ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hsum : 2 * x 0 + x 1 = 4 := proj_const _ (fun v => 2 * v 0 + v 1) 4
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    -- e13(x+y=2) ∩ e23(x=1) → vertex 3=(1,1)
+    | (have hxy2 : x 0 + x 1 = 2 := proj_const _ (fun v => v 0 + v 1) 2
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hx1 : x 0 = 1 := proj_const _ (fun v => v 0) 1
+          ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    | (have hx1 : x 0 = 1 := proj_const _ (fun v => v 0) 1
+          ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hxy2 : x 0 + x 1 = 2 := proj_const _ (fun v => v 0 + v 1) 2
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       funext ⟨i, hi⟩; fin_cases i <;>
+       simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+    -- Non-adjacent pair e01(y=0) ∩ e23(x=1,y≥1): y=0 but hull(e23) has y≥1 → contradiction
+    | (have hy0 : x 1 = 0 := proj_const _ (fun v => v 1) 0
+          ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+          (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hylb : x 1 ≥ 1 := proj_lb _ (fun v => v 1) 1
+          ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+          (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       linarith)
+    | (have hylb : x 1 ≥ 1 := proj_lb _ (fun v => v 1) 1
+          ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+          (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hy0 : x 1 = 0 := proj_const _ (fun v => v 1) 0
+          ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩
+          (by rintro v hv; fin_cases v <;> simp_all [φ, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       linarith)
+    -- Non-adjacent pair e02(2x-y=0) ∩ e13(x+y=2): forces x=2/3 but hull(e13) has x≥1 → contradiction
+    | (have h2xy : 2 * x 0 - x 1 = 0 := proj_const _ (fun v => 2 * v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hxy2 : x 0 + x 1 = 2 := proj_const _ (fun v => v 0 + v 1) 2
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       have hxlb : x 0 ≥ 1 := proj_lb _ (fun v => v 0) 1
+          ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       linarith)
+    | (have hxy2 : x 0 + x 1 = 2 := proj_const _ (fun v => v 0 + v 1) 2
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have h2xy : 2 * x 0 - x 1 = 0 := proj_const _ (fun v => 2 * v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       have hxlb : x 0 ≥ 1 := proj_lb _ (fun v => v 0) 1
+          ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       linarith)
+    -- Non-adjacent pair e03(x-y=0) ∩ e12(2x+y=4): forces x=4/3 but hull(e03) has x≤1 → contradiction
+    | (have hxy : x 0 - x 1 = 0 := proj_const _ (fun v => v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hsum : 2 * x 0 + x 1 = 4 := proj_const _ (fun v => 2 * v 0 + v 1) 4
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       have hxub : x 0 ≤ 1 := proj_ub _ (fun v => v 0) 1
+          ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       linarith)
+    | (have hsum : 2 * x 0 + x 1 = 4 := proj_const _ (fun v => 2 * v 0 + v 1) 4
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₁
+       have hxy : x 0 - x 1 = 0 := proj_const _ (fun v => v 0 - v 1) 0
+          ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       have hxub : x 0 ≤ 1 := proj_ub _ (fun v => v 0) 1
+          ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩
+          (by rintro v hv; fin_cases v <;>
+              simp_all [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]) x hx₂
+       linarith))
 
 /-! ## Part V: Graph Case Recovery -/
 
