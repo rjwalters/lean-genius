@@ -239,7 +239,12 @@ noncomputable def polyCoeffL1 (f : ℤ[X]) : ℕ :=
 
 /-- The L1 norm is positive for nonzero polynomials. -/
 lemma polyCoeffL1_pos (f : ℤ[X]) (hf : f ≠ 0) : 0 < polyCoeffL1 f := by
-  sorry
+  unfold polyCoeffL1
+  obtain ⟨i, hi⟩ := Polynomial.support_nonempty.mpr hf
+  have hcoeff_pos : 0 < (f.coeff i).natAbs :=
+    Int.natAbs_pos.mpr (Polynomial.mem_support_iff.mp hi)
+  exact Nat.lt_of_lt_of_le hcoeff_pos
+    (Finset.single_le_sum (fun j _ => Nat.zero_le _) hi)
 
 /-- **Clearing-denominator lower bound** on the p-adic norm of polynomial evaluation.
     For nonzero f ∈ ℤ[X] and rational r/s with f(r/s) ≠ 0 in ℚ:
@@ -255,7 +260,33 @@ lemma padicNorm_poly_eval_lb (f : ℤ[X]) (hf : f ≠ 0) (r s : ℤ) (hs : s ≠
 lemma irred_no_rational_roots (f : ℤ[X]) (hf_irred : Irreducible (f.map (algebraMap ℤ ℚ)))
     (hf_deg : 2 ≤ f.natDegree) (q : ℚ) :
     (f.map (algebraMap ℤ ℚ)).eval q ≠ 0 := by
-  sorry
+  intro hroot
+  -- f.map alg ≠ 0: natDegree (f.map) = natDegree f ≥ 2, so not zero
+  have hf_ne : f.map (algebraMap ℤ ℚ) ≠ 0 := by
+    intro h
+    have : (f.map (algebraMap ℤ ℚ)).natDegree = 0 := by simp [h]
+    rw [Polynomial.natDegree_map_eq_of_injective (algebraMap ℤ ℚ).injective] at this
+    linarith
+  -- (X - C q) divides f.map since q is a root
+  have hdvd : (X - C q) ∣ f.map (algebraMap ℤ ℚ) := dvd_iff_isRoot.mpr hroot
+  obtain ⟨g, hg⟩ := hdvd
+  have hXCq_ne : (X - C q : ℚ[X]) ≠ 0 := X_sub_C_ne_zero q
+  have hg_ne : g ≠ 0 := by
+    intro h; rw [h, mul_zero] at hg; exact hf_ne hg
+  -- By irreducibility of f.map, one factor must be a unit
+  rcases hf_irred.2 (X - C q) g hg with h1 | h2
+  · -- (X - C q) is a unit → natDegree = 0, but natDegree (X - C q) = 1
+    obtain ⟨c, _, hc_eq⟩ := Polynomial.isUnit_iff.mp h1
+    have hd0 : (X - C q : ℚ[X]).natDegree = 0 := by rw [hc_eq]; exact natDegree_C _
+    have hd1 : (X - C q : ℚ[X]).natDegree = 1 := natDegree_X_sub_C q
+    omega
+  · -- g is a unit → natDegree g = 0 → natDegree (f.map) = 1, but f.natDegree ≥ 2
+    obtain ⟨c, _, hc_eq⟩ := Polynomial.isUnit_iff.mp h2
+    have hg0 : g.natDegree = 0 := by rw [hc_eq]; exact natDegree_C _
+    have hfmap_deg : (f.map (algebraMap ℤ ℚ)).natDegree = 1 := by
+      rw [hg, natDegree_mul hXCq_ne hg_ne, natDegree_X_sub_C, hg0]
+    rw [Polynomial.natDegree_map_eq_of_injective (algebraMap ℤ ℚ).injective] at hfmap_deg
+    linarith
 
 /-- **Taylor factorization upper bound**: If f(α) = 0 in ℚ_[p], then by factoring
     f(x) = (x - α)·g(x) over ℚ_[p], we get ‖f(r/s)‖_p ≤ M · ‖α - r/s‖_p
