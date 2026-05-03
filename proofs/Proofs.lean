@@ -2379,6 +2379,7 @@ import Proofs.PiTranscendental
 import Proofs.PicksTheorem
 import Proofs.PicksTheoremOQ01
 import Proofs.PicksTheoremOQ01OQ01
+import Proofs.PicksTheoremOQ02
 import Proofs.PicksTheoremOQ03
 import Proofs.PicksTheoremOQ03CrossPoly
 import Proofs.PicksTheoremOQ03Ext
