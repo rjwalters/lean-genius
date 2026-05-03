@@ -230,4 +230,38 @@ These are all corollaries of the max formula but explicit enough to be directly 
 
 ---
 
+## Session 2026-05-03 (Session 7) - Right-Endpoint Biconditional and Infinite Sets
+
+**Mode**: REVISIT
+**Outcome**: progress — 3 new theorems proved, PR created (Docker verification pending)
+
+### What I Did
+- Selected erdos-1201 as RICH-tier (score 73), highest priority among available problems
+- Assessed frontier: Sessions 1-6 built 44 theorems. Next-step was right-endpoint biconditional
+- Proved `gpfConsecutive_eq_right_iff (n k hn hnk)`: P(n,k) = n+k ↔ (n+k).Prime
+  - Forward: gpfConsecutive is prime (gpf_prime); if it equals n+k then n+k is prime
+  - Backward: direct from `gpfConsecutive_eq_of_prime_right`
+  - This closes the biconditional: upper bound achieved exactly at prime right endpoints
+- Proved `erdos_1201_prime_right_infinite (k)`: {n | (n+k).Prime}.Infinite
+  - Via `Set.infinite_of_not_bddAbove`: for any N, prime p ≥ N+k+1 gives n = p-k in the set
+- Proved `erdos_1201_eq_right_infinite (k hk)`: {n | P(n,k) = n+k}.Infinite
+  - Same unbounded argument using `gpfConsecutive_eq_of_prime_right` for prime right endpoints
+- Updated meta.json: 44→47 theorems, 606→662 lines
+
+### Key Findings
+- `gpfConsecutive_eq_right_iff` is the sharp biconditional: P < n+k (composite), P = n+k (prime)
+- `Set.infinite_of_not_bddAbove` + `not_bddAbove_iff` + `Nat.exists_infinite_primes` is the canonical infinite-set pattern
+- The two theorems complement `erdos_1201_infinitely_many` (prime starts) with prime ends witnesses
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (662 lines, was 606)
+- `src/data/proofs/erdos-1201/meta.json` (47 theorems, 662 lines)
+- `src/data/research/problems/erdos-1201.json` (updated knowledge)
+
+### Next Steps
+- Full Sylvester-Schur: P(n,k) > k for ALL n > k (requires binomial machinery)
+- Density lower bounds: requires Dickman ρ function (>1000 lines infra, truly blocked)
+
+---
+
 *Generated from erdosproblems.com on 2026-04-16*
