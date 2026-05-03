@@ -1,0 +1,207 @@
+{
+  "slug": "cevas-theorem-oq-01-oq-03",
+  "title": "Complete Routh's theorem formula for general parameters (not just 1/3)",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Already verified in gallery.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-03T07:32:10.535Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Routh theorem for general parameters. 14 theorems, 0 sorries, 0 axioms. PR #15173.",
+    "builtItems": [
+      "w₁_pos, w₂_pos, w₃_pos: denominator positivity lemmas in CevasTheoremOQ01OQ03.lean",
+      "stdP, stdQ, stdR: explicit intersection formulas as noncomputable defs",
+      "stdP_on_AD, stdP_on_BE: P lies on both cevians AD and BE",
+      "stdQ_on_BE, stdQ_on_CF: Q lies on both cevians BE and CF",
+      "stdR_on_CF, stdR_on_AD: R lies on both cevians CF and AD",
+      "routh_theorem_std: main theorem — signedArea(P,Q,R) = routhRatio × signedArea(A,B,C)",
+      "routh_area_explicit: explicit form (divides by std area = 1)",
+      "routh_medial_thirds_area: verified 1/7 ratio for d=e=f=1/3",
+      "routh_concurrent_area_zero: inner triangle degenerates when cevians concurrent",
+      "routhRatio_nonneg: area ratio is nonnegative",
+      "routh_asymmetric_example: d=1/2, e=1/3, f=1/4 gives 1/10",
+      "routh_zero_iff: equivalence with Ceva condition",
+      "Gallery entry: src/data/proofs/cevas-theorem-oq-01-oq-03/"
+    ],
+    "insights": [
+      "Intersection formulas: P=((1-d)(1-e)/w₁, d(1-e)/w₁), Q=(ef/w₂, (1-e)(1-f)/w₂), R=(f(1-d)/w₃, fd/w₃)",
+      "Denominator positivity: w₁=1-e+de, w₂=1-f+ef, w₃=1-d+fd are all positive for d,e,f in (0,1)",
+      "Main proof strategy: field_simp clears denominators, ring closes degree-6 polynomial identity",
+      "routhRatio = 0 iff Ceva condition (def = (1-d)(1-e)(1-f)) — degenerate case proven",
+      "routhRatio >= 0 always (squared numerator / positive denominator)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "geometry",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "cevas-theorem",
+    "cevas-theorem-non-euclidean",
+    "cevas-theorem-non-euclidean-oq-02",
+    "cevas-theorem-oq-01",
+    "cevas-theorem-oq-02",
+    "cevas-theorem-oq-02-oq-01",
+    "cevas-theorem-oq-02-oq-01-oq-02",
+    "cevas-theorem-oq-02-oq-01-oq-03",
+    "cevas-theorem-oq-02-oq-02",
+    "cevas-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-03T07:32:10.534Z",
+  "lastUpdate": "2026-05-03T07:32:10.534Z",
+  "completed": "2026-05-03T07:32:10.534Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/CevasTheorem.lean",
+      "filename": "CevasTheorem.lean",
+      "lineCount": 264,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheorem.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclidean.lean",
+      "filename": "CevasTheoremNonEuclidean.lean",
+      "lineCount": 528,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclidean.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclideanOQ02.lean",
+      "filename": "CevasTheoremNonEuclideanOQ02.lean",
+      "lineCount": 234,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ02.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ01.lean",
+      "filename": "CevasTheoremOQ01.lean",
+      "lineCount": 908,
+      "theoremCount": 39,
+      "axiomCount": 0,
+      "defCount": 22,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ02.lean",
+      "filename": "CevasTheoremOQ02.lean",
+      "lineCount": 502,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ02OQ01.lean",
+      "filename": "CevasTheoremOQ02OQ01.lean",
+      "lineCount": 263,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ02OQ01OQ02.lean",
+      "filename": "CevasTheoremOQ02OQ01OQ02.lean",
+      "lineCount": 302,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ02OQ01OQ03.lean",
+      "filename": "CevasTheoremOQ02OQ01OQ03.lean",
+      "lineCount": 297,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ02OQ02.lean",
+      "filename": "CevasTheoremOQ02OQ02.lean",
+      "lineCount": 321,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ04.lean",
+      "filename": "CevasTheoremOQ04.lean",
+      "lineCount": 243,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremSinRatio.lean",
+      "filename": "CevasTheoremSinRatio.lean",
+      "lineCount": 146,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremSinRatio.lean"
+    }
+  ]
+}

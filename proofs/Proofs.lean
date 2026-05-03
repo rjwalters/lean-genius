@@ -392,6 +392,7 @@ import Proofs.CevasTheorem
 import Proofs.CevasTheoremNonEuclidean
 import Proofs.CevasTheoremNonEuclideanOQ02
 import Proofs.CevasTheoremOQ01
+import Proofs.CevasTheoremOQ01OQ03
 import Proofs.CevasTheoremOQ02
 import Proofs.CevasTheoremOQ02OQ01
 import Proofs.CevasTheoremOQ02OQ01OQ02
