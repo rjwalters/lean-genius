@@ -511,4 +511,44 @@ theorem gpfConsecutive_le_iff (n k : ℕ) (hn : 2 ≤ n) (t : ℕ) :
   · intro h i hi; exact h i (Finset.mem_range.mpr (by omega))
   · intro h i hi; rw [Finset.mem_range] at hi; exact h i (by omega)
 
+/-
+## Greatest Prime Factor for Primes and Short Windows
+-/
+
+/-- For a prime n, greatestPrimeFactor n = n:
+    the prime factorization of a prime is {n}, so its maximum is n itself. -/
+theorem greatestPrimeFactor_prime (n : ℕ) (hn : n.Prime) : greatestPrimeFactor n = n := by
+  unfold greatestPrimeFactor
+  have hne : n.primeFactors.Nonempty :=
+    ⟨n, Nat.mem_primeFactors.mpr ⟨hn, dvd_refl n, hn.pos.ne'⟩⟩
+  simp only [dif_pos hne, Nat.primeFactors_prime hn, Finset.max'_singleton]
+
+/-- For a prime n, gpfConsecutive n 0 = n: the zero-width window contains only n. -/
+theorem gpfConsecutive_prime_start (n : ℕ) (hn : n.Prime) : gpfConsecutive n 0 = n := by
+  rw [gpfConsecutive_zero, greatestPrimeFactor_prime n hn]
+
+/-- P(n, 1) = max(gpf(n), gpf(n+1)): the length-2 window's GPF is the maximum
+    of the individual greatest prime factors. Since prime factor sets of n and n+1
+    are disjoint (consecutive integers are coprime), the product's GPF comes from one term. -/
+theorem gpfConsecutive_one_eq_max (n : ℕ) (hn : 2 ≤ n) :
+    gpfConsecutive n 1 = max (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) := by
+  rw [gpfConsecutive_eq_sup_range n 1 hn,
+      show (Finset.range (1 + 1) : Finset ℕ) = {0, 1} from by decide,
+      Finset.sup_insert, Finset.sup_singleton]
+  simp [sup_eq_max, Nat.add_zero]
+
+/-- P(n, k) ≥ gpf(n): the window GPF is at least the GPF of the left endpoint. -/
+theorem gpfConsecutive_ge_left (n k : ℕ) (hn : 2 ≤ n) :
+    greatestPrimeFactor n ≤ gpfConsecutive n k := by
+  rw [gpfConsecutive_eq_sup_range n k hn, ← Nat.add_zero n]
+  apply Finset.le_sup
+  exact Finset.mem_range.mpr (Nat.succ_pos k)
+
+/-- P(n, k) ≥ gpf(n+k): the window GPF is at least the GPF of the right endpoint. -/
+theorem gpfConsecutive_ge_right (n k : ℕ) (hn : 2 ≤ n) :
+    greatestPrimeFactor (n + k) ≤ gpfConsecutive n k := by
+  rw [gpfConsecutive_eq_sup_range n k hn]
+  apply Finset.le_sup
+  exact Finset.mem_range.mpr (Nat.lt_succ_self k)
+
 end Erdos1201
