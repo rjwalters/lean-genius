@@ -3,6 +3,7 @@
   "title": "Schönhage's Recursive HGCD: GCD Preservation and Matrix Invariants",
   "slug": "binary-gcd-oq-03-oq-02",
   "description": "Formalizes Schönhage's recursive half-GCD (HGCD) in Lean 4, extending the Lehmer hybrid (BinaryGcdOQ03) with the full recursive structure. Proves GCD preservation, the determinant invariant, the matrix-vector row convention, entry bounds via Cramer's rule, and perturbation infrastructure toward size reduction. One sorry remains for the recursive case of the row-output size-reduction bound.",
+  "sorries": 1,
   "meta": {
     "author": "Schönhage (1971), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Half-GCD_algorithm",
@@ -20,7 +21,7 @@
     "badge": "partial",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 936,
+    "lineCount": 1020,
     "dateAdded": "2026-05-03",
     "assumptions": "",
     "mathlibDependencies": [
