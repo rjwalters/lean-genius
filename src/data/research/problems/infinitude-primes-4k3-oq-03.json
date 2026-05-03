@@ -1,0 +1,89 @@
+{
+  "slug": "infinitude-primes-4k3-oq-03",
+  "title": "Infinitely Many Primes ≡ 1 (mod 4) — Elementary Proof",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{There are infinitely many primes } p \\equiv 1 \\pmod{4}",
+    "plain": "The gallery proves infinitely many primes $\\equiv 3 \\pmod 4$ (a straightforward Euclid-style argument). Primes $\\equiv 1 \\pmod 4$ are harder: the standard proof uses Fermat's theorem that $-1$ is a quadratic residue mod $p$ if and only if $p \\equiv 1 \\pmod 4$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "infinitely_many_primes_1_mod_4: for any n, there exists a prime p > n with p ≡ 1 (mod 4)",
+      "primes_1_mod_4_infinite: the set {p prime | p ≡ 1 mod 4} is infinite",
+      "no_largest_prime_1_mod_4: there is no largest prime ≡ 1 (mod 4)"
+    ],
+    "open": [],
+    "goal": "COMPLETE — proved in gallery entry infinitude-primes-4k1"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-03T04:30:00+02:00",
+    "iteration": 2,
+    "focus": "Proof complete in InfinitudePrimes4k1.lean; gallery entry infinitude-primes-4k1 is verified.",
+    "blockers": [],
+    "nextAction": "None — completed.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Proved in proofs/Proofs/InfinitudePrimes4k1.lean (0 sorries, 0 axioms, 5 theorems, 177 lines). Gallery entry infinitude-primes-4k1 is verified with original badge.",
+    "builtItems": [
+      "prime_dvd_sq_add_one_mod_four: if odd prime p | k²+1 then p ≡ 1 (mod 4) — InfinitudePrimes4k1.lean:44",
+      "exists_odd_prime_factor: every odd number > 1 has an odd prime factor — InfinitudePrimes4k1.lean:79",
+      "infinitely_many_primes_1_mod_4: ∀ n, ∃ prime p > n with p ≡ 1 (mod 4) — InfinitudePrimes4k1.lean:91",
+      "primes_1_mod_4_infinite: the set of primes ≡ 1 (mod 4) is infinite — InfinitudePrimes4k1.lean:143",
+      "no_largest_prime_1_mod_4: no largest prime ≡ 1 (mod 4) — InfinitudePrimes4k1.lean:149"
+    ],
+    "insights": [
+      "Key lemma: if prime q | a²+1 then a²≡-1 (mod q), so -1 is a square in ZMod q, so q≡1 (mod 4) by Euler's criterion (Mathlib: Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one)",
+      "Construction: N = (2·(n+1)!)² + 1 is odd and >1, so has an odd prime factor p. By key lemma p≡1 mod 4. If p≤n then p|(n+1)! forces p|1, contradiction.",
+      "The Lean proof uses Mathlib.NumberTheory.SumTwoSquares for the Euler criterion; no custom analytic machinery needed.",
+      "The ≡1 mod 4 and ≡3 mod 4 cases together cover all non-trivial residue classes mod 4 by elementary proofs, complementing each other in the gallery."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: infinitude-primes-4k3-oq-03\n\n**STATUS: COMPLETE** — See gallery entry `infinitude-primes-4k1`.\n\n## Proof\n\nFile: `proofs/Proofs/InfinitudePrimes4k1.lean` (177 lines, 5 theorems, 0 axioms, 0 sorries)\n\n### Key Lemma\nIf odd prime p | k²+1, then p ≡ 1 (mod 4).\n- k²≡-1 (mod p) → -1 is a square in ZMod p → p≡1 (mod 4) by Euler's criterion\n- Mathlib: `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one` from SumTwoSquares\n\n### Construction\nN = (2·(n+1)!)² + 1 is odd, >1, so has an odd prime factor p.\nBy key lemma p≡1 mod 4. If p≤n then p|(n+1)! forces p|N-(2(n+1)!)²=1, contradiction.\n"
+  },
+  "tags": [
+    "number-theory",
+    "elementary",
+    "modular-arithmetic",
+    "quadratic-residues",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "infinitude-primes",
+    "infinitude-primes-4k3",
+    "infinitude-primes-4k1"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one"
+    ]
+  },
+  "started": "2026-05-03T02:10:34.552Z",
+  "lastUpdate": "2026-05-03T04:30:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/InfinitudePrimes4k1.lean",
+      "filename": "InfinitudePrimes4k1.lean",
+      "lineCount": 177,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1.lean"
+    }
+  ]
+}
