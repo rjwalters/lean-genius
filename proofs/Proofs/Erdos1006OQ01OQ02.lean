@@ -198,4 +198,64 @@ theorem cover_subclass_comparability [PartialOrder V]
     ∀ u v, G.Adj u v → (u < v ∨ v < u) :=
   fun u v hadj => cover_implies_related hcover hadj
 
+/-
+## K₃: Strict Separation Between Cover and Comparability Graphs
+
+The triangle K₃ (= ⊤ : SimpleGraph (Fin 3)) is a comparability graph but NOT a cover graph.
+This concretely proves that the inclusion cover ⊊ comparability is strict, as mentioned in the
+comment above. The standard order 0 < 1 < 2 on Fin 3 makes K₃ a comparability graph; but no
+partial order can make K₃ a cover graph, since any two covering edges forming a chain forbid
+the third edge from being a covering relation.
+-/
+
+/-- K₃ is a comparability graph: the standard linear order on Fin 3 (0 < 1 < 2) makes all
+    distinct pairs comparable, so every edge of K₃ is witnessed by a comparability relation. -/
+theorem k3_is_comparability_graph : isComparabilityGraph (⊤ : SimpleGraph (Fin 3)) :=
+  ⟨inferInstance, fun u v => by
+    simp only [SimpleGraph.top_adj]
+    exact ⟨fun h => lt_or_gt_of_ne h,
+           fun h => h.elim ne_of_lt (fun hvu => hvu.ne')⟩⟩
+
+/-- K₃ is NOT a cover graph: no partial order on 3 vertices has all three pairs as covering
+    relations. Core argument: x ⋖ y and y ⋖ z immediately forbid x ⋖ z (since y lies strictly
+    between x and z). With three covering edges required, any orientation of the three covering
+    relations either produces a 3-chain (making the long edge non-covering) or a directed cycle
+    (impossible in a partial order). -/
+theorem k3_not_cover_graph : ¬isCoverGraph (⊤ : SimpleGraph (Fin 3)) := by
+  intro ⟨_, hcover⟩
+  -- x ⋖ y and y ⋖ z is impossible alongside x ⋖ z: y lies strictly between x and z
+  have no_chain : ∀ x y z : Fin 3, x ⋖ y → y ⋖ z → ¬(x ⋖ z) := fun x y z hxy hyz hxz =>
+    hxz.2 hxy.lt hyz.lt
+  -- All pairs in K₃ must have a covering relation
+  have cov : ∀ i j : Fin 3, i ≠ j → (i ⋖ j ∨ j ⋖ i) := fun i j hij =>
+    (hcover i j).mp hij
+  -- 8-way case split on orientations of covering edges {0,1}, {0,2}, {1,2}
+  rcases cov 0 1 (by decide) with h01 | h01 <;>
+  rcases cov 0 2 (by decide) with h02 | h02 <;>
+  rcases cov 1 2 (by decide) with h12 | h12
+  -- (0⋖1, 0⋖2, 1⋖2): chain 0<1<2 violates 0⋖2
+  · exact no_chain 0 1 2 h01 h12 h02
+  -- (0⋖1, 0⋖2, 2⋖1): chain 0<2<1 violates 0⋖1
+  · exact no_chain 0 2 1 h02 h12 h01
+  -- (0⋖1, 2⋖0, 1⋖2): cycle 2<0<1<2 gives 2<2
+  · exact absurd (h02.lt.trans (h01.lt.trans h12.lt)) (lt_irrefl 2)
+  -- (0⋖1, 2⋖0, 2⋖1): chain 2<0<1 violates 2⋖1
+  · exact no_chain 2 0 1 h02 h01 h12
+  -- (1⋖0, 0⋖2, 1⋖2): chain 1<0<2 violates 1⋖2
+  · exact no_chain 1 0 2 h01 h02 h12
+  -- (1⋖0, 0⋖2, 2⋖1): cycle 1<0<2<1 gives 1<1
+  · exact absurd (h01.lt.trans (h02.lt.trans h12.lt)) (lt_irrefl 1)
+  -- (1⋖0, 2⋖0, 1⋖2): chain 1<2<0 violates 1⋖0
+  · exact no_chain 1 2 0 h12 h02 h01
+  -- (1⋖0, 2⋖0, 2⋖1): chain 2<1<0 violates 2⋖0
+  · exact no_chain 2 1 0 h12 h01 h02
+
+/-- Strict separation: the inclusion of cover graphs in comparability graphs is proper.
+    The triangle K₃ (3 vertices, all pairs connected) is a comparability graph
+    (via the linear order 0 < 1 < 2) but not a cover graph (proved above). -/
+theorem cover_strictly_subset_comparability :
+    ∃ (W : Type) (_ : Fintype W) (H : SimpleGraph W),
+      isComparabilityGraph H ∧ ¬isCoverGraph H :=
+  ⟨Fin 3, inferInstance, ⊤, k3_is_comparability_graph, k3_not_cover_graph⟩
+
 end Erdos1006OQ01OQ02

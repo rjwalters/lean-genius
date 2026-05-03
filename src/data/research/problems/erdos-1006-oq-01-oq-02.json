@@ -7,24 +7,30 @@
     "formal": ""
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Gallery entry created (Erdos1006OQ01OQ02.lean, 7 theorems, 2 axioms, 0 sorries). Proved shortcut-free property of Hasse orientations and NP membership. Stated open P-time conjecture and Golumbic 1977 comparability recognition.",
+    "progressSummary": "PROGRESS: 10 theorems (was 7). Added k3_is_comparability_graph, k3_not_cover_graph (8-case proof), cover_strictly_subset_comparability. Strict separation between cover and comparability graphs formally proved. 2 axioms, 0 sorries, 261 lines.",
     "builtItems": [
       "coverOrientation_no_shortcut: cover orientations are shortcut-free (Erdos1006OQ01OQ02.lean)",
       "cover_graph_is_hasse: cover graphs admit Hasse-like acyclic orientations (Erdos1006OQ01OQ02.lean)",
       "cover_implies_related: cover graph edges connect comparable pairs in the poset (Erdos1006OQ01OQ02.lean)",
       "cover_graph_in_np: NP membership via poset certificate (Erdos1006OQ01OQ02.lean)",
       "cover_search_space_bound: search space 2^(n^2) (Erdos1006OQ01OQ02.lean)",
-      "cover_subclass_comparability: cover graphs are strictly contained in comparability graphs"
+      "cover_subclass_comparability: cover graphs are strictly contained in comparability graphs",
+      "k3_is_comparability_graph: K₃ is a comparability graph via standard linear order on Fin 3 (Erdos1006OQ01OQ02.lean:213)",
+      "k3_not_cover_graph: K₃ is NOT a cover graph — 8-case proof exhausting orientations of covering edges (Erdos1006OQ01OQ02.lean:224)",
+      "cover_strictly_subset_comparability: strict separation witness, K₃ is comparability but not cover (Erdos1006OQ01OQ02.lean:256)"
     ],
     "insights": [
       "Cover graphs != comparability graphs: cover uses covering arcs only, comparability uses all related pairs; 3-chain distinguishes them",
       "Shortcut-free = Hasse: an acyclic orientation is a Hasse diagram iff it has no shortcut arcs (its own transitive reduction)",
       "NP membership is trivial: the poset P is a certificate that can be verified by checking isCoverGraphOf",
-      "CovBy.2 applies directly: if u covers v and u covers w, then huv.2 huw.lt : not(w < v), proving no shortcuts"
+      "CovBy.2 applies directly: if u covers v and u covers w, then huv.2 huw.lt : not(w < v), proving no shortcuts",
+      "K₃ separates cover from comparability: any 2 covering edges x⋖y, y⋖z form a chain forbidding x⋖z. On K₃ this creates a contradiction in all 8 covering-direction assignments.",
+      "8-case proof structure: each case is either no_chain (chain forces missing edge) or lt_irrefl (cycle gives x<x), covering all orientations of 3 covering edges on 3 vertices.",
+      "CovBy.2 accessor gives ∀ c, a < c → ¬(c < b) — the key tool proving no_chain and the strict separation."
     ],
     "mathlibGaps": [
       "DecidableRel G.Adj not automatic for SimpleGraph; needs explicit instance for decidability",
-      "pow_mul needed in simp for (2^n)^n = 2^(n*n) \u2014 simp alone may not close the goal"
+      "pow_mul needed in simp for (2^n)^n = 2^(n*n) — simp alone may not close the goal"
     ],
     "nextSteps": [
       "Run docker build to verify Lean file compiles with 0 sorries",
