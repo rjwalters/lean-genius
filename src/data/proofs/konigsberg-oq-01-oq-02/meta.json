@@ -19,10 +19,10 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-05-03",
-    "axiomCount": 5,
-    "assumptions": "5 axioms: sum_outDegree_eq_edgeCount and sum_inDegree_eq_edgeCount (directed handshaking lemma — requires Finset.card_biUnion infrastructure), eulerian_circuit_implies_balanced (necessity direction), directed_eulerian_iff (full characterization), directed_euler_path_iff (path characterization). All 5 theorems and 2 concrete examples are fully proved.",
-    "lineCount": 193,
-    "theoremCount": 5,
+    "axiomCount": 3,
+    "assumptions": "3 axioms: eulerian_circuit_implies_balanced (necessity direction), directed_eulerian_iff (full iff via Hierholzer), directed_euler_path_iff (path from s to t). The two directed handshaking lemmas are proved from first principles using indicator-function double-counting and Finset.sum_comm.",
+    "lineCount": 216,
+    "theoremCount": 8,
     "definitionCount": 8,
     "originalContributions": [
       "sum_outDegree_eq_sum_inDegree: directed handshaking — sum of out-degrees equals sum of in-degrees, proved from the two counting axioms",
@@ -30,7 +30,8 @@
       "directedPath_path_degrees: the directed path A→B→C satisfies the Eulerian path degree conditions: outdeg(A)=indeg(A)+1, indeg(C)=outdeg(C)+1, and B is balanced",
       "eulerian_balanced_sum_zero: if G has an Eulerian circuit then ∑ outDeg = ∑ inDeg as integers",
       "eulerian_balanced_implies_degree_balance: if G has an Eulerian circuit then every vertex v has inDeg(v) = outDeg(v)"
-    ]
+    ],
+    "description": "Extends the Eulerian circuit characterization to directed graphs. Proves the directed handshaking lemma (∑ outDeg = |E| = ∑ inDeg) from first principles via indicator-function double-counting. 8 theorems proved, 3 axioms."
   },
   "overview": {
     "historicalContext": "Euler's 1736 result on the Königsberg bridges established the theory of Eulerian paths in undirected graphs. The directed analogue is a natural extension: in a directed graph, an Eulerian circuit requires that each vertex has equal in-degree and out-degree (one incoming edge matched with one outgoing edge at each visit). The sufficiency direction follows from Hierholzer's algorithm (1873) adapted to directed graphs. The directed Eulerian path characterization (where source and sink have degrees differing by 1) generalizes naturally and has applications in de Bruijn sequences, genome assembly, and routing problems.",
@@ -62,40 +63,40 @@
     {
       "id": "handshaking",
       "title": "Directed Handshaking Lemma",
-      "startLine": 78,
-      "endLine": 92,
-      "summary": "Axiomatizes sum_outDegree_eq_edgeCount and sum_inDegree_eq_edgeCount. Proves sum_outDegree_eq_sum_inDegree by transitivity.",
+      "startLine": 79,
+      "endLine": 113,
+      "summary": "Proves sum_outDegree_eq_edgeCount and sum_inDegree_eq_edgeCount by indicator-function double-counting and Finset.sum_comm. Proves sum_outDegree_eq_sum_inDegree by transitivity.",
       "mathContext": "$\\sum_{v} \\text{outDeg}(v) = |E| = \\sum_{v} \\text{inDeg}(v)$."
     },
     {
       "id": "necessity",
       "title": "Necessity: Balance Required for Eulerian Circuit",
-      "startLine": 98,
-      "endLine": 109,
+      "startLine": 116,
+      "endLine": 130,
       "summary": "Defines HasEulerianCircuit as a closed walk covering all edges. Axiomatizes eulerian_circuit_implies_balanced.",
       "mathContext": "If $G$ has an Eulerian circuit then $\\text{inDeg}(v) = \\text{outDeg}(v)$ for all $v$."
     },
     {
       "id": "characterization",
       "title": "Directed Eulerian Theorem and Path Characterization",
-      "startLine": 114,
-      "endLine": 144,
+      "startLine": 134,
+      "endLine": 168,
       "summary": "Defines IsWeaklyConnected and HasEulerianPath. Axiomatizes directed_eulerian_iff and directed_euler_path_iff.",
       "mathContext": "$G$ has an Eulerian circuit $\\iff$ $\\text{IsEulerianBalanced}(G)$ (given weak connectivity). $G$ has Eulerian path $s \\to t$ $\\iff$ $\\text{outDeg}(s) = \\text{inDeg}(s)+1$, $\\text{inDeg}(t) = \\text{outDeg}(t)+1$, and all others balanced."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
-      "startLine": 151,
-      "endLine": 175,
-      "summary": "Defines directedTriangle (Fin 3, edges {(0,1),(1,2),(2,0)}) and directedPath (Fin 3, edges {(0,1),(1,2)}). Proves directedTriangle_balanced by native_decide and directedPath_path_degrees by case analysis.",
+      "startLine": 171,
+      "endLine": 203,
+      "summary": "Defines directedTriangle and directedPath (Fin 3). Proves directedTriangle_balanced, directedPath_path_degrees, and directedTriangle_handshaking via sum_outDegree_eq_edgeCount.",
       "mathContext": "Directed 3-cycle: all vertices balanced ($\\text{in} = \\text{out} = 1$). Directed path $0 \\to 1 \\to 2$: $\\text{outDeg}(0) = 1 = \\text{inDeg}(0)+1$, $\\text{inDeg}(2) = 1 = \\text{outDeg}(2)+1$, vertex 1 balanced."
     },
     {
       "id": "consequences",
       "title": "Consequences",
-      "startLine": 182,
-      "endLine": 193,
+      "startLine": 206,
+      "endLine": 216,
       "summary": "Proves eulerian_balanced_sum_zero and eulerian_balanced_implies_degree_balance from the axioms.",
       "mathContext": "Eulerian circuit $\\Rightarrow$ $\\sum_v \\text{outDeg}(v) = \\sum_v \\text{inDeg}(v)$ (as integers). Eulerian circuit $\\Rightarrow$ $\\text{inDeg}(v) = \\text{outDeg}(v)$ for all $v$."
     }
@@ -111,9 +112,9 @@
   },
   "leanFile": {
     "namespace": "KonigsbergOQ01OQ02",
-    "lineCount": 193,
-    "axiomCount": 5,
-    "theoremCount": 5,
+    "lineCount": 216,
+    "axiomCount": 3,
+    "theoremCount": 8,
     "definitionCount": 8,
     "path": "Proofs/KonigsbergOQ01OQ02.lean",
     "sorries": 0
