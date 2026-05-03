@@ -19,8 +19,8 @@
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": null,
-    "axiomCount": 6,
-    "assumptions": "6 axioms: levy_solovay_inaccessible_ch/not_ch (Lévy-Solovay 1967: small forcing preserves inaccessibility), levy_solovay_measurable_ch/not_ch (Lévy-Solovay: small forcing preserves measurability), mm_consistent (Foreman-Magidor-Shelah 1988: MM consistent with ZFC+supercompact), ma_consistent (Martin-Solovay: MA consistent with ZFC), ultimate_l_implies_ch_consistent (Woodin program: open).",
+    "axiomCount": 7,
+    "assumptions": "7 axioms: levy_solovay_inaccessible_ch (Lévy-Solovay 1967: inaccessible + CH consistent), levy_solovay_inaccessible_not_ch (Lévy-Solovay 1967: inaccessible + ¬CH consistent), levy_solovay_measurable_ch (Lévy-Solovay: measurable + CH consistent), levy_solovay_measurable_not_ch (Lévy-Solovay: measurable + ¬CH consistent), mm_consistent (Foreman-Magidor-Shelah 1988: MM consistent with ZFC+supercompact), ma_consistent (Martin-Solovay: MA consistent with ZFC), ultimate_l_implies_ch_consistent (Woodin program: open).",
     "lineCount": 260,
     "mathlib_version": "4.26.0",
     "theoremCount": 11
@@ -85,7 +85,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the large cardinal landscape around CH: standard large cardinals leave CH undecided (Lévy-Solovay, axiomatized), while forcing axioms (MM, MA) decide ¬CH (proved). 0 sorries, 6 axioms, 11 theorems.",
+    "summary": "Formalizes the large cardinal landscape around CH: standard large cardinals leave CH undecided (Lévy-Solovay, axiomatized), while forcing axioms (MM, MA) decide ¬CH (proved). 0 sorries, 7 axioms, 11 theorems.",
     "implications": "The formalization clarifies the precise boundary: set-theoretic 'size' axioms (large cardinals) don't decide CH, but 'saturation' axioms (forcing axioms) do.",
     "openQuestions": [
       "Does the Woodin Ultimate-L program succeed in settling CH canonically as true?",
@@ -105,7 +105,7 @@
     "opens": ["Cardinal", "ContinuumHypothesis"],
     "namespace": "CantorDiagOQ01OQ02",
     "lineCount": 260,
-    "axiomCount": 6,
+    "axiomCount": 7,
     "theoremCount": 11,
     "definitionCount": 8,
     "path": "Proofs/CantorDiagonalizationOQ01OQ02.lean",
