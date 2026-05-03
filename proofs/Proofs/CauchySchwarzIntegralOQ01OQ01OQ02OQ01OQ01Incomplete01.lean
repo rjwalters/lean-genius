@@ -329,7 +329,7 @@ theorem lp_truncation_tendsto_zero [SigmaFinite μ]
     Apply φ (CLM) to get the functional HasSum. -/
 private theorem indicator_lp_hasSum_sf [SigmaFinite μ] [Fact (1 ≤ p)] (n : ℕ)
     {f : ℕ → Set α} (hf_meas : ∀ i, MeasurableSet (f i))
-    (hf_disj : Pairwise (Disjoint on f)) :
+    (hf_disj : Pairwise (fun i j => Disjoint (f i) (f j))) :
     HasSum
       (fun i => (memLp_indicator_const p (hf_meas i |>.inter (measurableSet_spanningSets μ n)) 1
                    (Or.inr ((measure_mono Set.inter_subset_right).trans_lt
@@ -366,7 +366,7 @@ private theorem indicator_lp_hasSum_sf [SigmaFinite μ] [Fact (1 ≤ p)] (n : �
   simp_rw [hg_eq, ← Set.iUnion_inter, hgU_eq]
   -- Rewrite as indicatorConstLp convergence via tendsto_indicatorConstLp_set
   -- Partial sums: ∑_{i∈S} 1_{fᵢ∩Sₙ} = 1_{(⋃_{i∈S} fᵢ)∩Sₙ} (disjoint)
-  have hdisj_Sn : Pairwise (Disjoint on (fun i => f i ∩ spanningSets μ n)) :=
+  have hdisj_Sn : Pairwise (fun i j => Disjoint (f i ∩ spanningSets μ n) (f j ∩ spanningSets μ n)) :=
     fun i j hij => Disjoint.mono Set.inter_subset_left Set.inter_subset_left (hf_disj hij)
   have hμ_fin : ∑' i, μ (f i ∩ spanningSets μ n) ≠ ∞ := by
     rw [← measure_iUnion hdisj_Sn (fun i => hf_meas i |>.inter hS_meas)]
@@ -460,7 +460,6 @@ theorem localization_existence
   -- Spanning-set abbreviations
   have hS_meas : ∀ n, MeasurableSet (spanningSets μ n) := measurableSet_spanningSets μ
   have hS_fin : ∀ n, μ (spanningSets μ n) < ⊤ := measure_spanningSets_lt_top μ
-  have hS_mono : ∀ m n, m ≤ n → spanningSets μ m ⊆ spanningSets μ n := spanningSets_mono μ
   -- For any measurable E, 1_{E∩Sₙ} ∈ Lp(μ)
   have hmemLp : ∀ n (E : Set α) (hE : MeasurableSet E),
       MemLp ((E ∩ spanningSets μ n).indicator (1 : α → ℝ)) p μ := fun n E hE =>
@@ -468,7 +467,7 @@ theorem localization_existence
       (Or.inr ((measure_mono Set.inter_subset_right).trans_lt (hS_fin n)).ne)
   -- Step 1: For each n, construct signed measure ν_n(E) = φ(1_{E∩Sₙ})
   -- σ-additivity follows from `indicator_lp_hasSum_sf` + CLM continuity
-  have hσadd : ∀ n ⦃f : ℕ → Set α⦄ (_ : Pairwise (Disjoint on f))
+  have hσadd : ∀ n ⦃f : ℕ → Set α⦄ (_ : Pairwise (fun i j => Disjoint (f i) (f j)))
       (hfm : ∀ i, MeasurableSet (f i)),
       HasSum (fun i => φ ((hmemLp n (f i) (hfm i)).toLp _))
              (φ ((hmemLp n (⋃ i, f i) (MeasurableSet.iUnion hfm)).toLp _)) := by
@@ -561,49 +560,13 @@ theorem localization_existence
     -- eLpNorm g q μ ≤ ‖φ‖₊ by lintegral_iSup + Fatou: ∫|g|^q ≤ liminf ∫|gₙ|^q ≤ ‖φ‖^q
   -- Step 7: Indicator agreement — φ(1_E) = ∫_E g dμ for μ(E) < ∞
   refine ⟨g, hg_lq, fun E hE hfin => ?_⟩
-  -- 1_{E∩Sₙ} → 1_E in Lp(μ) (since μ(E) < ∞ and E∩Sₙ ↑ E)
-  -- This follows from `lp_truncation_tendsto_zero` applied to 1_E:
-  -- eLpNorm (1_E - 1_E · 1_{Sₙ}) → 0, i.e., eLpNorm (1_{E\Sₙ}) → 0
-  have hLp_conv : Tendsto
-      (fun n => φ ((hmemLp n E hE).toLp _))
-      atTop (𝓝 (φ ((memLp_indicator_const p hE 1 (Or.inr hfin)).toLp _))) := by
-    apply φ.continuous.continuousAt.tendsto.comp
-    -- Goal: tendsto (fun n => (hmemLp n E hE).toLp _) atTop
-    --         (𝓝 ((memLp_indicator_const p hE 1 (Or.inr hfin)).toLp _))
-    -- i.e., eLpNorm (1_E - 1_{E∩Sₙ}) p μ → 0
-    rw [tendsto_nhds_iff_tendsto_nhds_norm]
-    have hmem : MemLp (E.indicator (1 : α → ℝ)) p μ :=
-      memLp_indicator_const p hE 1 (Or.inr hfin)
-    have htend := lp_truncation_tendsto_zero p (le_of_lt hp1) hptop hmem
-    -- lp_truncation gives eLpNorm (1_E - 1_E·1_{Sₙ}) → 0
-    -- The difference 1_E - 1_{E∩Sₙ} = 1_{E\Sₙ} = (1_E)(1 - 1_{Sₙ})
-    sorry  -- [MEDIUM] relate hmemLp n E hE to the truncation convergence
-  -- From R-N: φ(1_{E∩Sₙ}) = νn n E = ∫_{E∩Sₙ} gₙ dμ = ∫_{E∩Sₙ} g dμ
-  have hstep : ∀ n, φ ((hmemLp n E hE).toLp _) = ∫ a in E ∩ spanningSets μ n, g a ∂μ := by
-    intro n
-    rw [hνn_eq n E hE]
-    -- νn n E = φ(1_{E∩Sₙ})... wait, we need νn n (E∩Sₙ) not νn n E
-    -- Actually: (hmemLp n E hE).toLp _ represents 1_{E∩Sₙ} in Lp
-    -- and νn n E = φ(1_{E∩Sₙ}) by definition, so hνn_eq gives this
-    -- But we also need νn n E = ∫_E gₙ, which is hgn_rn n E hE
-    rw [← hgn_rn n E hE]
-    rw [hνn_eq n E hE]
-    -- Now need: ∫_E gₙ dμ = ∫_{E∩Sₙ} g dμ
-    -- Step: ∫_E gₙ = ∫_{E∩Sₙ} gₙ (since gₙ is supported on Sₙ after R-N... hmm not exactly)
-    -- Actually: νn n E = φ(1_{E∩Sₙ}), not φ(1_E) in general
-    -- So ∫_E gₙ = νn n E = φ(1_{E∩Sₙ})
-    -- And ∫_{E∩Sₙ} g dμ = ∫_{E∩Sₙ} gₙ dμ (by consistency) = ∫_E ... hmm
-    -- This needs: ∫_{E∩Sₙ} g dμ = ∫_E gₙ dμ
-    -- = νn n E = φ(1_{E∩Sₙ}) ✓
-    sorry  -- [MEDIUM] ∫_E gₙ = ∫_{E∩Sₙ} g from hconsist + integral_restrict
-  -- φ(1_{E∩Sₙ}) = ∫_{E∩Sₙ} g dμ → ∫_E g dμ by monotone convergence
-  have hMCT : Tendsto (fun n => ∫ a in E ∩ spanningSets μ n, g a ∂μ)
-      atTop (𝓝 (∫ a in E, g a ∂μ)) := by
-    sorry  -- [MEDIUM] DCT: |g|·1_{E∩Sₙ} ≤ |g|·1_E ∈ L1 (since g∈Lq, 1_E∈Lp, Hölder)
-  -- Combine: lhs = lim_n φ(1_{E∩Sₙ}) = lim_n ∫_{E∩Sₙ} g = ∫_E g = rhs
-  have hstep' : Tendsto (fun n => φ ((hmemLp n E hE).toLp _)) atTop (𝓝 (∫ a in E, g a ∂μ)) :=
-    (tendsto_congr hstep).mpr hMCT
-  exact tendsto_nhds_unique hLp_conv hstep'
+  -- Proof strategy (3 medium steps):
+  -- (A) 1_{E∩Sₙ} → 1_E in Lp (μ(E)<∞, E∩Sₙ↑E): via lp_truncation_tendsto_zero + CLM
+  --     → φ(1_{E∩Sₙ}) → φ(1_E)
+  -- (B) φ(1_{E∩Sₙ}) = νn n E = ∫_E gₙ dμ (R-N) = ∫_{E∩Sₙ} g dμ (consistency+restrict)
+  -- (C) ∫_{E∩Sₙ} g → ∫_E g by DCT (|g|·1_E ∈ L1 since g∈Lq, 1_E∈Lp, Hölder)
+  -- Steps A,B,C give: φ(1_E) = lim φ(1_{E∩Sₙ}) = lim ∫_{E∩Sₙ} g = ∫_E g
+  sorry  -- [MEDIUM×3] indicator agreement; uses hgn_rn, hconsist, hg_eq, lp_truncation
 
 -- ============================================================================
 -- § 6. Main theorem — Step C proved, structure complete
