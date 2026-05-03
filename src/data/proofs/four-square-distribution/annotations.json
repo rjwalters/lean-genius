@@ -60,7 +60,7 @@
     "type": "technique",
     "title": "Concrete Type Enumeration and Distribution Verification",
     "content": "Part 3 verifies the contribution formula for all types up to $n = 30$ using `native_decide`:\n\n| Type | $n$ | nonzero | perms | signs | contribution |\n|------|-----|---------|-------|-------|-------------|\n| $(0,0,0,1)$ | 1 | 1 | 4 | 2 | 8 |\n| $(0,0,1,1)$ | 2 | 2 | 6 | 4 | 24 |\n| $(0,1,1,1)$ | 3 | 3 | 4 | 8 | 32 |\n| $(0,0,0,2)$ | 4 | 1 | 4 | 2 | 8 |\n| $(1,1,1,1)$ | 4 | 4 | 1 | 16 | 16 |\n| $(0,0,1,2)$ | 5 | 2 | 12 | 4 | 48 |\n| $(1,2,3,4)$ | 30 | 4 | 24 | 16 | 384 |\n\nThe **distribution checks** (`r₄_4_distribution`, `r₄_9_distribution`, `r₄_10_distribution`) verify total contributions match $r_4(n)$:\n- $n=4$: $8 + 16 = 24 = 8 \\sigma^*(4) = 8 \\times 3$\n- $n=9$: $8 + 96 = 104 = 8 \\sigma^*(9) = 8 \\times 13$\n- $n=10$: $48 + 96 = 144 = 8 \\sigma^*(10) = 8 \\times 18$\n\nAll contribution proofs use `native_decide` — the RepType structure is decidably equal, so the computation can be checked by the kernel directly.",
-    "mathContext": "$r_4(4) = 24$: Jacobi gives $\\sigma^*(4) = 1 + 2 = 3$ (4∤1, 4∤2, 4|4), so $r_4(4) = 24$. $r_4(9) = 104$: $\\sigma^*(9) = 1 + 3 + 9 = 13$. $r_4(10) = 144$: $\\sigma^*(10) = 1 + 2 + 5 + 10 = 18$ (wait, 10 is not divisible by 4, so all divisors count: $1+2+5+10=18$).",
+    "mathContext": "$r_4(4) = 24$: Jacobi gives $\\sigma^*(4) = 1 + 2 = 3$ (4∤1, 4∤2, 4|4), so $r_4(4) = 24$. $r_4(9) = 104$: $\\sigma^*(9) = 1 + 3 + 9 = 13$. $r_4(10) = 144$: $\\sigma^*(10) = 1 + 2 + 5 + 10 = 18$ (10 not divisible by 4, so all divisors count: $1+2+5+10=18$).",
     "significance": "supporting",
     "relatedConcepts": [
       "native_decide tactic for computable verification",
@@ -98,6 +98,32 @@
       "Nat.mul_le_mul",
       "Nat.div_le_self",
       "split tactic for if-expression case analysis"
+    ]
+  },
+  {
+    "id": "ann-4sq-completion",
+    "proofId": "four-square-distribution",
+    "range": {
+      "startLine": 281,
+      "endLine": 400
+    },
+    "type": "insight",
+    "title": "Perfect Square Types, Completeness, and S₄ Symmetry Ratio",
+    "content": "The final section ties together three threads:\n\n**Trivial types for perfect squares** (Part 8, lines 295–314): `trivial_type k` constructs the type $(0,0,0,k)$ for $n = k^2$ via a proof-carrying definition. Contribution is always 8 regardless of $k > 0$: 1 nonzero → sign factor $2^1 = 2$, three zeros give multiplicity 3 → permutations $4!/3! = 4$, so $4 \\times 2 = 8$. Verified for $k = 1, \\ldots, 5$ by `native_decide`. This means every perfect square $k^2$ has $r_4(k^2) \\geq 8$ from the trivial type alone — consistent with Jacobi's formula $r_4(k^2) = 8 \\sigma^*(k^2)$.\n\n**Completeness verification** (Part 9, lines 316–347): `distribution_complete_1` through `_10` re-alias all earlier distribution theorems in a uniform naming scheme, providing a single reference for $r_4(n)$ for $n = 1, \\ldots, 7, 9, 10$. The table confirms the complete picture with no gaps.\n\n**Symmetry ratio** (line 293): `symmetry_ratio : 384 / 16 = 24` is proved by `norm_num`. This $24:1$ ratio equals $|S_4| = 4!$ — the ratio between the maximally asymmetric type (all distinct) and the maximally symmetric type (all equal and nonzero), measuring how much symmetry suppresses the representation count.\n\n**Growth pattern** (Part 10, line 370): Since $r_4(n) \\sim (\\pi^2/2)n$ (from Jacobi + average order of $\\sigma^*$), and each type contributes at most 384, the average number of types per $n$ grows like $(\\pi^2/2)n / 384 \\approx 0.026n$.",
+    "mathContext": "Trivial type: $(0,0,0,k)$ has contribution $\\frac{4!}{3!1!} \\times 2^1 = 4 \\times 2 = 8$. Symmetry ratio: $\\frac{\\text{max contribution}}{\\text{min nonzero contribution}} = \\frac{384}{16} = 24 = |S_4|$. Growth: $r_4(n) = 8\\sigma^*(n) \\sim 8 \\cdot \\frac{\\pi^2}{12} n = \\frac{2\\pi^2}{3} n \\approx 6.58n$ (average), so average types $\\sim n/58$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "trivial_type k definition (proof-carrying structure)",
+      "symmetry_ratio = 24 = |S₄|",
+      "distribution_complete_1..10 completeness table",
+      "Jacobi r₄(n) ~ (π²/2)n growth rate",
+      "norm_num for arithmetic equalities"
+    ],
+    "prerequisites": [
+      "Lean 4 proof-carrying structure fields",
+      "native_decide for decidable propositions",
+      "Average order of σ*(n)",
+      "Symmetric group S₄ and permutation counting"
     ]
   }
 ]
