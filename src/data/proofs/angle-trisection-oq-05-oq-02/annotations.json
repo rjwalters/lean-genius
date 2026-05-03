@@ -1,0 +1,123 @@
+[
+  {
+    "id": "ann-nth-prime-is-prime",
+    "proofId": "angle-trisection-oq-05-oq-02",
+    "range": {
+      "startLine": 29,
+      "endLine": 31
+    },
+    "type": "theorem",
+    "title": "foldPrimeBound j is Prime",
+    "content": "A one-liner using `Nat.nth_mem_of_infinite Nat.infinite_setOf_prime j`. The argument: `foldPrimeBound j = Nat.nth Nat.Prime j` is the j-th element of the set `{n | Nat.Prime n}`, and `Nat.nth_mem_of_infinite` says the n-th element of an infinite set satisfies the defining predicate. The hypothesis `Nat.infinite_setOf_prime` is Euclid's theorem in Mathlib. This unlocks the key property used throughout: foldPrimeBound j has a unique prime factorization consisting of just itself.",
+    "mathContext": "Since $\\text{foldPrimeBound}(j) = \\text{Nat.nth Nat.Prime } j$ is defined as the $j$-th member of $\\{n \\mid \\text{Nat.Prime}(n)\\}$, membership gives primality directly. The infinitude of primes (Euclid, ~300 BC) is the enabling hypothesis.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.nth_mem_of_infinite",
+      "Nat.infinite_setOf_prime",
+      "Euclid's theorem",
+      "prime enumeration"
+    ],
+    "prerequisites": [
+      "foldPrimeBound definition from OQ01",
+      "Nat.nth API",
+      "infinitude of primes"
+    ]
+  },
+  {
+    "id": "ann-not-constructible-below",
+    "proofId": "angle-trisection-oq-05-oq-02",
+    "range": {
+      "startLine": 35,
+      "endLine": 47
+    },
+    "type": "theorem",
+    "title": "Lower Bound on Fold Level: j-th Prime Needs ≥ j Folds",
+    "content": "The proof follows a clean diagonal argument. Suppose foldPrimeBound j is k-fold constructible with k < j. Then IsSmooth (foldPrimeBound k) (foldPrimeBound j) holds, meaning every prime factor of foldPrimeBound j is ≤ foldPrimeBound k. But foldPrimeBound j is prime (nth_prime_is_prime) and divides itself (dvd_refl), so the smoothness condition gives foldPrimeBound j ≤ foldPrimeBound k. Meanwhile, since k < j and foldPrimeBound is strictly monotone (Nat.nth_strictMono on the infinite set of primes), we have foldPrimeBound k < foldPrimeBound j. Contradiction by linarith.",
+    "mathContext": "The key chain: (1) $p_j$ is prime $\\Rightarrow$ $p_j$ divides itself $\\Rightarrow$ smoothness gives $p_j \\leq p_k$. (2) $k < j$ and strict monotonicity give $p_k < p_j$. These contradict. The argument is essentially the statement that a prime cannot be bounded by a smaller prime.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.nth_strictMono",
+      "dvd_refl",
+      "nth_prime_is_prime",
+      "strict monotonicity",
+      "diagonal argument"
+    ],
+    "prerequisites": [
+      "foldPrimeBound strict monotonicity",
+      "nth_prime_is_prime",
+      "IsKFoldConstructible destructuring"
+    ]
+  },
+  {
+    "id": "ann-constructible-at",
+    "proofId": "angle-trisection-oq-05-oq-02",
+    "range": {
+      "startLine": 49,
+      "endLine": 64
+    },
+    "type": "theorem",
+    "title": "Upper Bound on Fold Level: j-th Prime Needs ≤ j Folds (Exact Level)",
+    "content": "To show foldPrimeBound j is j-fold constructible, we need IsSmooth (foldPrimeBound j) (foldPrimeBound j). Positivity follows from primality (primes are positive). For the smoothness condition: given any prime q dividing foldPrimeBound j, since foldPrimeBound j is prime (nth_prime_is_prime), its only divisors are 1 and itself. Since q is prime, q ≠ 1, so q = foldPrimeBound j, hence q ≤ foldPrimeBound j. The `eq_one_or_self_of_dvd` lemma from Mathlib handles the case split cleanly. Combined with the lower bound theorem, `prime_exact_fold_level` gives EXACTLY j folds for j ≥ 2.",
+    "mathContext": "IsSmooth$(p_j, p_j)$: the only prime dividing $p_j$ is $p_j$ itself (by primality), and $p_j \\leq p_j$. Together with `nth_prime_not_constructible_below`, this gives: $\\text{min\\_folds}(p_j) = j$ for $j \\geq 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.Prime.eq_one_or_self_of_dvd",
+      "prime_exact_fold_level",
+      "exact fold level",
+      "IsSmooth self-smoothness"
+    ],
+    "prerequisites": [
+      "nth_prime_is_prime",
+      "IsSmooth definition",
+      "primality and divisors"
+    ]
+  },
+  {
+    "id": "ann-algebraic-completeness",
+    "proofId": "angle-trisection-oq-05-oq-02",
+    "range": {
+      "startLine": 68,
+      "endLine": 76
+    },
+    "type": "theorem",
+    "title": "Main Theorem: Algebraic Completeness of Multi-fold Origami",
+    "content": "The main theorem is a one-liner wrapping `eventually_constructible` from AngleTrisectionOQ05OQ01. The proof there takes k = d as the witness: all prime factors q of d satisfy q ≤ d (since q divides d), and Nat.add_two_le_nth_prime gives foldPrimeBound(d) = p_d ≥ d+2 > d, so all prime factors of d lie below the prime bound, making d a p_d-smooth number. The completeness result shows the multi-fold hierarchy is not just a proper subset of algebra — it covers all of it.",
+    "mathContext": "Answer to OQ02: YES, multi-fold origami is algebraically complete. $\\forall d > 0, \\exists k \\geq 1, \\text{IsKFoldConstructible}(d, k)$. Witness: $k = d$. Proof: $q \\mid d \\Rightarrow q \\leq d < d+2 \\leq p_d = \\text{foldPrimeBound}(d)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "eventually_constructible",
+      "Nat.add_two_le_nth_prime",
+      "algebraic completeness",
+      "origami completeness",
+      "prime bound witness"
+    ],
+    "prerequisites": [
+      "AngleTrisectionOQ05OQ01.eventually_constructible",
+      "prime bound growth rate"
+    ]
+  },
+  {
+    "id": "ann-min-folds-unbounded",
+    "proofId": "angle-trisection-oq-05-oq-02",
+    "range": {
+      "startLine": 80,
+      "endLine": 89
+    },
+    "type": "theorem",
+    "title": "Infinite Strict Hierarchy: No Finite Fold Level Suffices",
+    "content": "Proves that for any bound K, the prime p_{K+1} is a degree requiring > K folds. The proof: take d = foldPrimeBound (K+1). For k = 0: not constructible since k ≥ 1 is required. For k ≥ 1 with k ≤ K: k < K+1, so by nth_prime_not_constructible_below, foldPrimeBound(K+1) is not k-fold constructible. This shows the strictly increasing chain 1-fold ⊊ 2-fold ⊊ 3-fold ⊊ ··· never stabilizes.",
+    "mathContext": "The strict chain $\\text{KFold}(1) \\subsetneq \\text{KFold}(2) \\subsetneq \\text{KFold}(3) \\subsetneq \\cdots$ is infinite: for each level $K$, the prime $p_{K+1}$ falls outside all levels up to $K$. Equivalently: $\\sup_d \\text{min\\_folds}(d) = \\infty$ (the minimum fold level function is unbounded).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "nth_prime_not_constructible_below",
+      "infinite strict hierarchy",
+      "fold level unboundedness",
+      "infinitude of primes consequence"
+    ],
+    "prerequisites": [
+      "nth_prime_not_constructible_below",
+      "nth_prime_is_prime",
+      "Nat.eq_zero_or_pos case split"
+    ]
+  }
+]
