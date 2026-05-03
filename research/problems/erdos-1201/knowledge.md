@@ -302,7 +302,7 @@ The 4 Session 6 theorems together give a complete "window algebra":
 - Sufficient condition for Erdős problem: prime > n^(1-ε) in window → n is good
 
 ### Files Modified
-- `proofs/Proofs/Erdos1201Problem.lean` (754 lines, was 662)
+- `proofs/Proofs/Erdos1201Problem.lean` (734 lines, was 662, with all Mathlib 4.26.0 API drift fixes applied)
 - `src/data/proofs/erdos-1201/meta.json` (updated counts, new section)
 - `research/problems/erdos-1201/knowledge.md` (this entry)
 
