@@ -21,6 +21,7 @@
     "badge": "verified",
     "sorries": 0,
     "dateAdded": "2026-05-03",
+    "mathlib_version": "4.26.0",
     "axiomCount": 0,
     "assumptions": "None. Fully verified from Mathlib.",
     "lineCount": 272,
@@ -110,8 +111,8 @@
     }
   ],
   "conclusion": {
-    "statement": "The spherical Menelaus theorem is proved: a great circle transversal meets arcs BC, CA, AB at collinear points D, E, F if and only if sin(BD)/sin(DC) · sin(CE)/sin(EA) · sin(AF)/sin(FB) = -1.",
-    "significance": "Completes the Euclidean/Hyperbolic/Spherical Menelaus triad. Confirms that the unified 'measure function' framework handles all three non-Euclidean analogues, with sin as the spherical measure. Establishes that sin's oddness — not injectivity — is what matters for the signed ratio framework.",
+    "summary": "The spherical Menelaus theorem is proved: a great circle transversal meets arcs BC, CA, AB at collinear points D, E, F if and only if sin(BD)/sin(DC) · sin(CE)/sin(EA) · sin(AF)/sin(FB) = -1. 10 theorems, 0 sorries, 0 axioms.",
+    "implications": "Completes the Euclidean/Hyperbolic/Spherical Menelaus triad. Confirms that the unified 'measure function' framework handles all three non-Euclidean analogues, with sin as the spherical measure. Establishes that sin's oddness — not injectivity — is what matters for the signed ratio framework. The menelaus_measure_universality theorem further shows the algebraic core is independent of any specific geometry: it holds for any function m with nonzero denominator values.",
     "openQuestions": [
       "Can the geometric interpretation (D, E, F collinear ↔ product = -1) be fully formalized in Lean using an explicit spherical triangle model (e.g., via unit vectors and great circles)?",
       "Does the spherical Menelaus theorem specialize to a formula for the spherical law of sines when applied to the medial triangle?"
@@ -119,17 +120,17 @@
   },
   "crossReferences": [
     {
-      "id": "cevas-theorem-non-euclidean-oq-02",
+      "targetId": "cevas-theorem-non-euclidean-oq-02",
       "relationship": "parent",
       "description": "Hyperbolic Menelaus theorem via sinh — this file is the spherical analogue"
     },
     {
-      "id": "cevas-theorem-non-euclidean",
+      "targetId": "cevas-theorem-non-euclidean",
       "relationship": "grandparent",
       "description": "Abstract spherical Ceva theorem via arc lengths"
     },
     {
-      "id": "cevas-theorem-oq-02-oq-01",
+      "targetId": "cevas-theorem-oq-02-oq-01",
       "relationship": "sibling",
       "description": "Spherical Ceva via unit vectors — uses the same sin-ratio formula for the Ceva product"
     }
