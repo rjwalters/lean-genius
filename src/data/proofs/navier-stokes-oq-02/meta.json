@@ -59,7 +59,7 @@
       "Theorem continuous_dependence_2d: for any ε > 0, threshold δ = ε·exp(-C·E(0)·T) gives W(0) ≤ δ implies W(t) ≤ ε, establishing Hadamard well-posedness"
     ],
     "dateAdded": "2026-02-28",
-    "lineCount": 21110,
+    "lineCount": 21111,
     "assumptions": "1 structure-encoded assumption: NSSolutionPair2D.stability_estimate (Ladyzhenskaya stability estimate W'(t) ≤ C·E(t)·W(t), the core PDE estimate — mathematically known but not formalized in this file)",
     "mathlib_version": "4.26.0",
     "theoremCount": 846
