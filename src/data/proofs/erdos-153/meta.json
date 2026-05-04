@@ -21,8 +21,8 @@
     "erdosUrl": "https://erdosproblems.com/153",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "lineCount": 494,
-    "assumptions": "1 axiom(s) and 0 sorry(s). Axioms: erdos_153_conjecture (main open conjecture). Proved: sidon_sumset_card (exact cardinality), sidon_sumset_card_eq, sidon_distinct_differences (B₂ distinct differences), sidon_density_bound (√N density), sidon_sumset_range, average_gap_bounded, ess_1994_result, infinite_sidon_gap_from_finite.",
+    "lineCount": 544,
+    "assumptions": "1 axiom(s) and 0 sorry(s). Axioms: erdos_153_conjecture (main open conjecture). Proved: sidon_sumset_card (exact cardinality), sidon_sumset_card_eq, sidon_distinct_differences (B₂ distinct differences), sidon_density_bound (√N density), sidon_sumset_range, average_gap_bounded, ess_1994_result, infinite_sidon_gap_from_finite, sumset_nonempty, sumset_min', sumset_max', sumset_span.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -139,9 +139,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 494,
+    "lineCount": 544,
     "axiomCount": 1,
-    "theoremCount": 18,
+    "theoremCount": 22,
     "definitionCount": 8,
     "path": "Proofs/Erdos153Problem.lean",
     "sorries": 0
