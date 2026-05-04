@@ -81,6 +81,7 @@
   ],
   "relatedProofs": [
     "chebyshev-bounds",
+    "chebyshev-bounds-oq-04",
     "chebyshev-pnt-bridge",
     "prime-number-theorem"
   ],
@@ -114,6 +115,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChebyshevBounds.lean"
+    },
+    {
+      "path": "Proofs/ChebyshevBoundsOQ04.lean",
+      "filename": "ChebyshevBoundsOQ04.lean",
+      "lineCount": 317,
+      "theoremCount": 9,
+      "axiomCount": 3,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChebyshevBoundsOQ04.lean"
+    },
+    {
+      "path": "Proofs/ChebyshevBoundsOQ04Aristotle.lean",
+      "filename": "ChebyshevBoundsOQ04Aristotle.lean",
+      "lineCount": 30,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChebyshevBoundsOQ04Aristotle.lean"
     }
   ]
 }
