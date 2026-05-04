@@ -1,0 +1,107 @@
+{
+  "id": "dirichlets-theorem-oq-01-oq-01",
+  "title": "Do Siegel Zeros Exist? Consequences in Both Worlds",
+  "slug": "dirichlets-theorem-oq-01-oq-01",
+  "description": "The central open question in analytic number theory: do 'Siegel zeros' — real zeros of Dirichlet L-functions in the region (1 - c/log(q), 1) — actually exist? This formalization explores both worlds: World A (Siegel zeros exist) and World B (the SiegelZeroConjecture holds), proving consequences of each including the Linnik bound connection, Landau-Page uniqueness, Deuring-Heilbronn repulsion, and the GRH → SZC implication chain.",
+  "meta": {
+    "field": "Analytic Number Theory",
+    "difficulty": "research",
+    "status": "axiomatized",
+    "badge": "axiom",
+    "axiomCount": 7,
+    "openProblems": [
+      "Whether the SiegelZeroConjecture holds",
+      "Whether Linnik's exponent L = 2 is achievable unconditionally",
+      "Whether Siegel's theorem can be made effective without exceptions"
+    ],
+    "assumptions": [
+      "linnik_bound: Linnik's theorem (L exists, not in Mathlib)",
+      "effective_linnik_no_siegel: No Siegel zeros implies L = 2 (not in Mathlib)",
+      "siegel_theorem: Siegel's ineffective lower bound (from DirichletsTheoremOQ01)",
+      "grh_implies_no_siegel_zeros: GRH eliminates Siegel zeros (from DirichletsTheoremOQ01)",
+      "landau_page_theorem: Landau-Page uniqueness of exceptional conductor (from DirichletsTheoremOQ01)",
+      "deuring_heilbronn_repulsion: Deuring-Heilbronn repulsion (from DirichletsTheoremOQ01)",
+      "tatuzawa_theorem: Tatuzawa single-exception theorem (from DirichletsTheoremOQ01)"
+    ],
+    "tags": ["dirichlet", "l-functions", "siegel-zeros", "linnik", "analytic-number-theory", "open-question"],
+    "sorries": 0
+  },
+  "leanFile": {
+    "path": "Proofs/DirichletsTheoremOQ01OQ01.lean",
+    "namespace": "DirichletsTheoremOQ01OQ01",
+    "imports": [
+      "Proofs.DirichletsTheoremOQ01",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Nat", "Real", "Filter", "DirichletCharacter", "Topology", "DirichletsTheoremOQ01"],
+    "lineCount": 335,
+    "axiomCount": 2,
+    "theoremCount": 20,
+    "definitionCount": 1,
+    "sorries": 0
+  },
+  "overview": {
+    "summary": "This file directly addresses the question 'Do Siegel zeros exist?' by formalizing the consequences of each answer. The two worlds explored are: World A (Siegel zeros exist, ¬SiegelZeroConjecture) and World B (no Siegel zeros, SiegelZeroConjecture). Key results include: the MVT-Siegel combination constraining how close a Siegel zero can be to 1; Linnik's theorem and its L=2 improvement under no Siegel zeros; the Landau-Page uniqueness of exceptional conductors per region; and the Deuring-Heilbronn repulsion phenomenon showing Siegel zeros are 'self-limiting'.",
+    "keyInsight": "Even in World A, Siegel's ineffective lower bound prevents L(1,χ) from being exactly zero (nonvanishing holds unconditionally), but it can be exponentially small — smaller than any power of 1/log(q). The effective bound C/log(q)² from GRH is what the Siegel zero problem is about.",
+    "historicalContext": "The Siegel zero problem traces to Carl Ludwig Siegel's 1935 theorem giving an ineffective lower bound on L(1,χ). The term 'Siegel zero' was coined for the potential zeros in (1-c/log(q), 1) whose existence Siegel's method cannot rule out. Heath-Brown (1992) connected Linnik's constant to Siegel zeros. Xylouris (2011) proved L ≤ 5 for Linnik's theorem. The question remains open as of 2026."
+  },
+  "sections": [
+    {
+      "title": "Consequences of World A: Siegel Zeros Exist",
+      "description": "If a Siegel zero β exists, it must satisfy positive distance from 1 (by definition), and Siegel's theorem gives a lower floor for (1-β)·M via the MVT bound. Tatuzawa's theorem still provides effective bounds for all but one conductor.",
+      "theorems": ["siegel_zero_positive_gap", "siegel_zero_distance_lower_bound", "tatuzawa_single_exception", "world_a_nonvanishing_persists"]
+    },
+    {
+      "title": "Linnik's Theorem and the Siegel Zero Connection",
+      "description": "Linnik's theorem bounds the smallest prime in an arithmetic progression by q^L. The exponent L is directly related to how bad Siegel zeros can be: no Siegel zeros gives L = 2 (up to a constant). We axiomatize Linnik's bound and the L=2 improvement under SiegelZeroConjecture.",
+      "theorems": ["linnik_implies_dirichlet_existence", "world_b_linnik_exponent_two"]
+    },
+    {
+      "title": "Landau-Page and Exceptional Conductor Uniqueness",
+      "description": "Landau-Page theorem says at most one conductor per region can have a Siegel zero. Combined with Deuring-Heilbronn repulsion, this means Siegel zeros are 'self-limiting': one zero forces all others away from 1.",
+      "theorems": ["unique_exceptional_conductor_per_region", "other_conductors_zero_free_near_one", "exceptional_conductor_siegel_floor", "siegel_zero_creates_repulsion_region"]
+    },
+    {
+      "title": "Structural Equivalences and the Hierarchy",
+      "description": "The known implications: GRH → SiegelZeroConjecture (standard range) → Nonvanishing. Each is strictly weaker than the previous. The Siegel zero question is exactly the gap between the first and last steps.",
+      "theorems": ["grh_implies_no_siegel_zeros_standard", "szc_implies_L_one_pos", "nonvanishing_unconditional", "three_tier_hierarchy"]
+    },
+    {
+      "title": "World B Improvements",
+      "description": "Under SiegelZeroConjecture, the primeCountAP monotonicity holds for all moduli, the Siegel bound is the same (but effectively computable), and Siegel zeros cannot exist in the critical strip.",
+      "theorems": ["world_b_primeCountAP_mono", "world_b_siegel_bound_effective", "siegel_zero_in_critical_strip"]
+    },
+    {
+      "title": "The Open Question — Formal Statement",
+      "description": "The SiegelZeroExistenceQuestion is trivially decidable classically (one side holds), but its mathematical content is determining WHICH side. We summarize what IS known (nonvanishing, Siegel ineffective bound, Linnik) and what remains open (effective bounds for all conductors, Linnik L=2).",
+      "theorems": ["siegel_zero_question_classical", "state_of_knowledge", "grh_world_summary"]
+    }
+  ],
+  "conclusion": {
+    "summary": "This file formalizes the landscape of knowledge about Siegel zero existence: the complete formalization shows that while L(1,χ) ≠ 0 is proved, whether Siegel zeros exist remains open. The two axioms (Linnik bound, effective Linnik under SZC) represent infrastructure not yet in Mathlib. Key proved results: Landau-Page uniqueness of exceptional conductors, Deuring-Heilbronn repulsion from a Siegel zero, GRH eliminates zeros in standard range, Tatuzawa has at most one exception, Linnik implies Dirichlet existence.",
+    "openQuestions": [
+      "Does the SiegelZeroConjecture hold? (The central question — almost certainly YES under GRH, but unknown unconditionally)",
+      "Is there an effective version of Siegel's theorem with no exceptions? (Would imply Linnik L=2 and extended Siegel-Walfisz)",
+      "What is the precise relationship between Linnik's constant L and the depth of Siegel zeros?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "dirichlets-theorem-oq-01",
+      "relationship": "parent",
+      "description": "Parent file establishing Siegel zeros framework, IsSiegelZero definition, and the five key axioms (Siegel's theorem, GRH conditional, Landau-Page, Deuring-Heilbronn, Tatuzawa)"
+    },
+    {
+      "id": "dirichlets-theorem-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "GRH for Dirichlet L-functions — the hypothesis that would imply SiegelZeroConjecture via grh_implies_no_siegel_zeros_standard"
+    }
+  ],
+  "originalContributions": [
+    "Linnik bound connection: axiomatized L ≤ 2 implication from no Siegel zeros (effective_linnik_no_siegel)",
+    "Landau-Page uniqueness restated as other_conductors_zero_free_near_one: explicit uniqueness of exceptional conductor",
+    "Three-tier hierarchy theorem: GRH → SZC (standard range) → Nonvanishing in one clean proof",
+    "siegel_zero_distance_lower_bound: MVT + Siegel combination showing (1-β)·M > C(ε)/N^ε",
+    "state_of_knowledge: summary theorem cataloging proved vs open results"
+  ]
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "siegel-zero-existence-question",
+    "line": 45,
+    "type": "insight",
+    "title": "The Central Question",
+    "body": "The SiegelZeroConjecture asks whether every real primitive Dirichlet character χ of conductor q has L(s,χ) ≠ 0 in the region (1 - c/log(q), 1). This is equivalent to asking whether the effective Siegel theorem holds for ALL conductors without a single exception. The consensus (under GRH) is yes, but it is genuinely open unconditionally."
+  },
+  {
+    "id": "two-worlds-structure",
+    "line": 55,
+    "type": "mathematical",
+    "title": "World A vs World B Dichotomy",
+    "body": "The file organizes results around two worlds. In World A (¬SZC), a Siegel zero exists: L(1,χ) can be exponentially small (smaller than any q^{-ε}), but the Deuring-Heilbronn repulsion makes that conductor unique per region. In World B (SZC), all conductors are 'generic': effective bounds, Linnik L=2, extended Siegel-Walfisz all follow. The key tool for each world is different — Tatuzawa for World A, the effective zero-free region for World B."
+  },
+  {
+    "id": "linnik-siegel-connection",
+    "line": 115,
+    "type": "mathematical",
+    "title": "Linnik's Theorem and Siegel Zeros",
+    "body": "Linnik's 1944 theorem states the smallest prime p ≡ a (mod q) satisfies p ≤ C·q^L for some absolute L. The exponent L is controlled by how bad Siegel zeros can be: current best is L ≤ 5 (Xylouris 2011). If no Siegel zeros exist (World B), then the effective zero-free region for all moduli gives L = 2, matching what GRH would give. The axiom effective_linnik_no_siegel captures this connection."
+  },
+  {
+    "id": "landau-page-uniqueness",
+    "line": 155,
+    "type": "mathematical",
+    "title": "Landau-Page: At Most One Exception Per Region",
+    "body": "The Landau-Page theorem (axiomatized in the parent file) says at most one conductor N ≤ Q can have a zero in (1 - c/log(Q), 1). This uniqueness result, proved here as unique_exceptional_conductor_per_region and other_conductors_zero_free_near_one, shows Siegel zeros are 'self-limiting': if one exists, all other L-functions near that region get pushed to a wider zero-free band."
+  },
+  {
+    "id": "deuring-heilbronn-consequence",
+    "line": 190,
+    "type": "mathematical",
+    "title": "Deuring-Heilbronn Repulsion",
+    "body": "The theorem siegel_zero_creates_repulsion_region formalizes a key property of Siegel zeros: a zero at β₁ for conductor N₁ forces ALL other L-function zeros ρ to satisfy Re(ρ) < 1 - c₀·(1-β₁)/log(Q). The closer β₁ is to 1, the wider this zero-free region for other characters. This 'repulsion' phenomenon, due to Deuring (1933) and Heilbronn (1934), is why having one Siegel zero actually HELPS some analytic estimates."
+  },
+  {
+    "id": "three-tier-hierarchy",
+    "line": 230,
+    "type": "mathematical",
+    "title": "The Hierarchy: GRH → SZC → Nonvanishing",
+    "body": "The three_tier_hierarchy theorem captures the logical chain: GRH (no zeros with Re(s) ∈ (1/2,1)) implies SiegelZeroConjecture for the standard c < log(N)/2 range, because any Siegel zero in that range would lie in (1/2, 1) where GRH prohibits zeros. And SZC implies positive L-values via the proved nonvanishing theorem. The Siegel zero question is exactly the gap between GRH and unconditional nonvanishing."
+  }
+]
