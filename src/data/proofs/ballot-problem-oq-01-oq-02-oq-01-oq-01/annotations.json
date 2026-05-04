@@ -1,0 +1,61 @@
+{
+  "source": "manual",
+  "annotations": [
+    {
+      "id": "uniform-fiber-counting-motivation",
+      "type": "motivation",
+      "title": "Why Uniform Fiber Counting Matters",
+      "content": "When a function f : α → β sends a finite set s surjectively onto t, with every fiber f⁻¹{y} having the same size k, the count of s decomposes cleanly as k × |t|. This is the combinatorial fact underlying many symmetry arguments: the ballot problem's probability transfer, the orbit-counting formula, and the category-theoretic notion of a uniformly-fibered map.",
+      "mathContext": "This is a strengthening of the obvious fact that |s| = Σ_{y∈t} |f⁻¹{y} ∩ s|: when the summands are all equal to k, the sum collapses to k × |t|. The key Mathlib lemmas are Finset.card_biUnion (disjoint union = sum of cards) and Finset.sum_const (constant sum = count × value)."
+    },
+    {
+      "id": "finset-form-for-mathlib",
+      "type": "insight",
+      "title": "The Finset Form is Most Natural for Mathlib",
+      "content": "Mathlib's combinatorics machinery is primarily Finset-based. The theorem Finset.card_biUnion_of_uniform slots naturally alongside Finset.card_biUnion in Mathlib.Data.Finset.Card. The proof is a two-line composition: card_biUnion + sum_const.",
+      "mathContext": "Finset.card_biUnion says (s.biUnion f).card = ∑ i ∈ s, (f i).card under disjointness. Finset.sum_const says ∑ _ ∈ s, k = s.card • k. Together they give the uniform case in 3 rewrites."
+    },
+    {
+      "id": "pairwise-disjoint-api",
+      "type": "technique",
+      "title": "PairwiseDisjoint as the Canonical Disjointness API",
+      "content": "Mathlib uses Set.PairwiseDisjoint as the canonical way to express that a family of sets is pairwise disjoint. The Form 1b theorem converts from this to the explicit ∀ x ∈ s, ∀ y ∈ s, x ≠ y → Disjoint form that Finset.card_biUnion expects.",
+      "mathContext": "Set.PairwiseDisjoint s f ↔ s.Pairwise (Disjoint on f). The coercion (s : Set ι) converts from Finset membership to Set membership, allowing PairwiseDisjoint to be applied to Finset-indexed families."
+    },
+    {
+      "id": "surjection-corollary",
+      "type": "result",
+      "title": "Surjection Corollary: The Structural Version",
+      "content": "The surjection form ncard_surjOn_uniform_fiber is the most useful statement for applications: given any surjection f : α → β from s to t with equal-sized fibers, s.ncard = k * t.ncard. The proof decomposes s as a disjoint union of fibers over t using the surjectivity condition.",
+      "mathContext": "The decomposition s = ⋃ y ∈ t, f⁻¹{y} ∩ s follows from SurjOn: every x ∈ s satisfies f x ∈ t, so x ∈ f⁻¹{f x} ∩ s. The fibers are pairwise disjoint because f⁻¹{y₁} ∩ f⁻¹{y₂} = ∅ when y₁ ≠ y₂."
+    },
+    {
+      "id": "ratio-preservation",
+      "type": "result",
+      "title": "Ratio Preservation: The Ballot Problem Core",
+      "content": "The theorem ncard_ratio_preserved_of_uniform_fiber proves ncard(f⁻¹P ∩ s) × |t| = ncard(P ∩ t) × |s| for any event P ⊆ β. This is exactly the ncard version of the ballot problem's uniformOn_fiber_transfer: the fraction of favorable outcomes is the same whether we count in the source or the target.",
+      "mathContext": "Proof: both sides equal k × |P ∩ t| × |t| after applying ncard_surjOn_uniform_fiber twice — once to f : s → t and once to f : f⁻¹P ∩ s → P ∩ t. The surjectivity of the restricted map follows from SurjOn."
+    },
+    {
+      "id": "mathlib-placement-discussion",
+      "type": "insight",
+      "title": "Where These Lemmas Would Live in Mathlib",
+      "content": "Finset.card_biUnion_of_uniform belongs in Mathlib.Data.Finset.Card, after Finset.card_biUnion. Set.ncard_biUnion_of_uniform belongs in Mathlib.Data.Set.Card, after Set.ncard_biUnion. The surjection corollary could live in Mathlib.Data.Set.Function or as a corollary to the set version.",
+      "mathContext": "Similar lemmas already in Mathlib: Finset.card_sigma (card of sigma type under uniform fibers gives s.card * k, essentially the same theorem), Set.ncard_biUnion (the non-uniform version, of which this is the uniform special case)."
+    },
+    {
+      "id": "connection-to-orbit-counting",
+      "type": "motivation",
+      "title": "Connection to Orbit Counting and Burnside's Lemma",
+      "content": "The uniform fiber theorem is the combinatorial core of orbit counting: if a group G acts on X with all orbits of size |G|/|Stab|, then the map X → X/G has uniform fibers. Burnside's lemma (|orbits| = average fixed points) is a weighted generalization where fibers can have different sizes.",
+      "mathContext": "For a free group action (trivial stabilizers), every orbit has size |G|, and |X| = |G| × |orbits|. This is exactly ncard_surjOn_uniform_fiber with k = |G| and t = X/G. The orbit-stabilizer theorem (|orbit| × |stab| = |G|) is the non-uniform generalization."
+    },
+    {
+      "id": "compute-examples",
+      "type": "example",
+      "title": "Computational Verification",
+      "content": "The file includes three decide-verified examples: three disjoint pairs {0,1}, {2,3}, {4,5} have biUnion of size 6 = 2 × 3; four disjoint triples have size 12 = 3 × 4; and the theorem itself applied to the concrete Finset {0,1,2} with pairs {2i, 2i+1} gives 6 = 2 × 3.",
+      "mathContext": "These examples use native_decide or decide for concrete Finset computations. The theorem application example shows the proof obligation: must verify the disjointness condition (no overlap between pairs {2i, 2i+1} for distinct i) and uniform size condition (each pair has card 2)."
+    }
+  ]
+}

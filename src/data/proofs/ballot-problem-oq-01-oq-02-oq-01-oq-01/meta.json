@@ -1,0 +1,68 @@
+{
+  "id": "ballot-problem-oq-01-oq-02-oq-01-oq-01",
+  "title": "Uniform Fiber Counting: A Mathlib Contribution",
+  "slug": "ballot-problem-oq-01-oq-02-oq-01-oq-01",
+  "parent": "ballot-problem-oq-01-oq-02-oq-01",
+  "status": "verified",
+  "badge": "original",
+  "summary": "The ncard_biUnion_eq_of_uniform lemma, originally proved as a helper for the multi-candidate ballot problem, is isolated here in three Mathlib-ready forms: a Finset.card version, a Set.ncard version using PairwiseDisjoint, and a surjection corollary showing that uniform fiber maps preserve probability ratios.",
+  "problemStatement": {
+    "informal": "If a family of pairwise-disjoint finite sets all have the same cardinality k, does their disjoint union have cardinality k times the number of sets? And could this abstract lemma be contributed to Mathlib?",
+    "formal": "theorem Finset.card_biUnion_of_uniform (s : Finset ι) (f : ι → Finset α) (hdisj : ∀ x ∈ s, ∀ y ∈ s, x ≠ y → Disjoint (f x) (f y)) (k : ℕ) (hk : ∀ i ∈ s, (f i).card = k) : (s.biUnion f).card = k * s.card"
+  },
+  "tags": [
+    "combinatorics",
+    "finset",
+    "cardinality",
+    "set-theory",
+    "mathlib-contribution"
+  ],
+  "difficulty": "intermediate",
+  "topics": ["Combinatorics", "Cardinality", "Finset Theory"],
+  "openQuestions": [],
+  "leanFile": {
+    "path": "proofs/Proofs/BallotProblemOQ01OQ02OQ01OQ01.lean",
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "lineCount": 168
+  },
+  "meta": {
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "lineCount": 168
+  },
+  "sorries": [],
+  "assumptions": [],
+  "overview": "This entry answers whether the abstract uniform-fiber counting lemma (ncard_biUnion_eq_of_uniform, first proved as a helper in the multi-candidate ballot theorem) could be contributed to Mathlib. The answer is yes: the lemma has natural Finset.card and Set.ncard forms that slot naturally into Mathlib.Data.Finset.Card and Mathlib.Data.Set.Card alongside existing biUnion counting theorems. A surjection corollary makes the probability-theoretic application (uniform fiber maps preserve ratios) explicit.",
+  "sections": [
+    {
+      "title": "Finset Version",
+      "description": "The primary Mathlib contribution candidate. If a family of pairwise-disjoint Finsets indexed by s all have card k, then their biUnion has card k * s.card. Proved via Finset.card_biUnion and Finset.sum_const.",
+      "theorems": ["Finset.card_biUnion_of_uniform", "Finset.card_biUnion_of_pairwiseDisjoint_uniform"]
+    },
+    {
+      "title": "Set Version",
+      "description": "The Set.ncard analogue using Set.PairwiseDisjoint and Set.Finite. Uses Set.ncard_biUnion to reduce to Finset summation, then collapses via Finset.sum_const.",
+      "theorems": ["Set.ncard_biUnion_of_uniform"]
+    },
+    {
+      "title": "Surjection Corollary",
+      "description": "If f : α → β maps s surjectively onto t with all fibers f⁻¹{y} ∩ s having ncard k, then s.ncard = k * t.ncard. Decomposes s as a disjoint union of fibers and applies Set.ncard_biUnion_of_uniform.",
+      "theorems": ["ncard_surjOn_uniform_fiber"]
+    },
+    {
+      "title": "Ratio Preservation",
+      "description": "The combinatorial core of the ballot probability transfer: for any event P ⊆ β, ncard(f⁻¹P ∩ s) * t.ncard = ncard(P ∩ t) * s.ncard. This is the ncard version of the uniformOn_fiber_transfer theorem.",
+      "theorems": ["ncard_ratio_preserved_of_uniform_fiber"]
+    },
+    {
+      "title": "Computational Examples",
+      "description": "Concrete instances: 3 disjoint pairs give biUnion of size 6; 4 disjoint triples give size 12; direct theorem application verified by decide.",
+      "theorems": []
+    }
+  ]
+}
