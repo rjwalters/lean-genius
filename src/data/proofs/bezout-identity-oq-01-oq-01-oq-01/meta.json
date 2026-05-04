@@ -1,0 +1,118 @@
+{
+  "id": "bezout-identity-oq-01-oq-01-oq-01",
+  "title": "Binary GCD O(log² n) Bit Complexity",
+  "slug": "bezout-identity-oq-01-oq-01-oq-01",
+  "description": "Formalizes the O(log²(max(a,b))) bit-operation complexity bound for Stein's binary GCD algorithm. Proves that the step count is at most 2·(log₂ a + log₂ b) + 2, then combines with an axiomatized per-step bit cost to derive the O(log²) total bound.",
+  "meta": {
+    "author": "Josef Stein (1967), complexity analysis formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Binary_GCD_algorithm",
+    "date": "1967",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ01OQ01OQ01.lean",
+    "parentProofId": "bezout-identity-oq-01-oq-01",
+    "tags": [
+      "number-theory",
+      "algorithms",
+      "complexity",
+      "logarithm",
+      "binary-arithmetic",
+      "well-founded-recursion",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "dateAdded": "2026-05-04",
+    "lineCount": 242,
+    "theoremCount": 3,
+    "definitionCount": 2,
+    "assumptions": "stepBitOps_le: each recursive step uses at most 3·(log₂(max a b)+1) bit operations (one comparison, one subtraction or shift, one parity test). This models the idealized bit-RAM cost; it is independent of Lean's actual computation.",
+    "originalContributions": [
+      "binaryGcdSteps: counts recursive calls, mirrors binaryGcd branching exactly, terminates by well-founded recursion on a+b",
+      "binaryGcdSteps_le_log: step count ≤ 2·(log₂ a + log₂ b) + 2 — proved by strong induction, each branch peels one bit from log₂ a or log₂ b via log_div_two and log_odd_sub_half",
+      "totalBitOps: noncomputable definition — binaryGcdSteps a b × (3·(log₂(max a b)+1))",
+      "binaryGcd_log_sq_complexity: total bit ops ≤ (2·(log₂ a + log₂ b) + 2)·(3·(log₂(max a b)+1))",
+      "binaryGcd_log_sq_bound: O(log²) corollary — total bit ops ≤ 6·(log₂(max a b)+1)²"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.log_div_two",
+        "description": "log₂(n/2) = log₂ n - 1 for n ≥ 2",
+        "module": "Mathlib.Data.Nat.Log"
+      },
+      {
+        "theorem": "Nat.log_mono",
+        "description": "m ≤ n → log₂ m ≤ log₂ n",
+        "module": "Mathlib.Data.Nat.Log"
+      },
+      {
+        "theorem": "Nat.log_pos",
+        "description": "1 < b → 1 < n → 0 < log b n",
+        "module": "Mathlib.Data.Nat.Log"
+      }
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Knuth analyzed Stein's binary GCD algorithm in TAOCP Vol. 2, §4.5.2, establishing that it runs in O(log²(max(a,b))) bit operations. The analysis proceeds in two stages: first, bounding the number of recursive calls by O(log(max(a,b))); second, bounding the bit cost of each call by O(log(max(a,b))). Combining these gives the O(log²) total. The step-count bound is elementary — each call strips at least one bit from one of the inputs — but formalizing it requires careful case analysis across all seven branches of the algorithm. The per-step bit cost is more subtle and depends on the machine model: on a word-RAM with O(1) arithmetic, each step is O(1); on a bit-RAM where word operations cost proportional to the word length, each step costs O(log n) bits.",
+    "problemStatement": "The parent entry `bezout-identity-oq-01-oq-01` proved that Stein's binary GCD is correct: $\\text{binaryGcd}(a,b) = \\gcd(a,b)$. A natural follow-up is whether the $O(\\log^2(\\max(a,b)))$ complexity bound can be formalized in Lean 4. This entry answers YES: the step-count bound $\\text{steps}(a,b) \\leq 2(\\log_2 a + \\log_2 b) + 2$ is fully proved. The per-step bit cost is axiomatized as $\\text{stepBitOps}(a,b) \\leq 3(\\log_2(\\max a b) + 1)$, giving a total bound of $6(\\log_2(\\max a b)+1)^2 = O(\\log^2 n)$.",
+    "proofStrategy": "The main theorem `binaryGcdSteps_le_log` uses strong induction on the sum a+b (matching the termination measure of the algorithm). In each of the seven branches, the proof shows that the logarithm measure decreases by at least 1: in the both-even branch, each argument loses one bit (log₂(a/2) = log₂ a − 1); in the even-one-odd branches, the even argument loses one bit; in the both-odd branches, the subtraction (b−a)/2 loses one bit from b since b−a is even and strictly less than 2b, so log₂((b−a)/2) ≤ log₂ b − 1. The helper lemmas log_div_two and log_odd_sub_half formalize these bit-dropping steps. Once the step bound is proved, `binaryGcd_log_sq_complexity` multiplies by the per-step cost axiom and `binaryGcd_log_sq_bound` simplifies using log₂ a + log₂ b ≤ 2·log₂(max a b).",
+    "keyInsights": [
+      "Step-count bound via bit measure: the invariant M(a,b) = log₂ a + log₂ b drops by ≥ 1 per recursive call, bounding the total steps by 2·(log₂ a + log₂ b) + 2 — this is the discrete analog of a Lyapunov function argument",
+      "Odd-minus-odd halves the log: if b is odd and a < b, then (b−a) is even and (b−a)/2 < b/2, so log₂((b−a)/2) ≤ log₂ b − 1 — this is the most delicate case, formalized in log_odd_sub_half",
+      "Two-stage complexity: step count × per-step cost = O(log n) × O(log n) = O(log² n); the separation into two stages makes the argument modular and allows the per-step model to be replaced without re-proving the step count",
+      "Per-step axiomatization: the bit cost of each step (one comparison + one shift/subtraction + one parity test) is axiomatized as 3·(log₂(max a b)+1); this is the only non-constructive element — the step count itself is fully proved",
+      "Verification by native_decide: three concrete examples (binaryGcdSteps 12 8 = 5, etc.) serve as sanity checks that the step counter matches the algorithm's actual behavior"
+    ]
+  },
+  "sections": [
+    {
+      "id": "step-counter",
+      "title": "Step Counter Definition",
+      "startLine": 44,
+      "endLine": 66,
+      "summary": "Defines binaryGcdSteps : ℕ → ℕ → ℕ mirroring all seven branches of binaryGcd exactly. Terminates by well-founded recursion on a+b via the same argument as the algorithm itself."
+    },
+    {
+      "id": "log-helpers",
+      "title": "Logarithm Helper Lemmas",
+      "startLine": 67,
+      "endLine": 103,
+      "summary": "Four private lemmas: log_div_two (log₂(n/2) = log₂ n − 1 for n ≥ 2), log_mono (log monotone), log_odd_sub_half ((b−a)/2 drops log₂ b by 1 when b is odd and a < b), log_odd_sub_half_left (symmetric case)."
+    },
+    {
+      "id": "step-bound",
+      "title": "Step Count Bound",
+      "startLine": 105,
+      "endLine": 188,
+      "summary": "binaryGcdSteps_le_log: binaryGcdSteps a b ≤ 2·(log₂ a + log₂ b) + 2. Proved by strong induction on a+b with case analysis over the seven algorithm branches, each peeling one bit from the logarithm measure."
+    },
+    {
+      "id": "bit-complexity",
+      "title": "Bit Complexity Model and O(log² n) Bound",
+      "startLine": 190,
+      "endLine": 242,
+      "summary": "Axiomatizes the per-step bit cost (stepBitOps, stepBitOps_le). Defines totalBitOps and proves binaryGcd_log_sq_complexity (explicit bound) and binaryGcd_log_sq_bound (O(log²) corollary: ≤ 6·(log₂(max a b)+1)²)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Binary GCD runs in O(log²(max(a,b))) bit operations.",
+    "significance": "The formalization separates the combinatorial step-count argument (fully proved) from the per-step bit-cost model (axiomatized). The step count bound is the non-trivial part: it requires showing that every branch of Stein's algorithm strictly decreases the logarithm measure, including the delicate odd-minus-odd halving case. The result confirms that binary GCD has the same asymptotic bit complexity as Euclid's algorithm.",
+    "openQuestions": [
+      "Can stepBitOps_le be eliminated by defining a more explicit bit-level computation model in Lean 4?",
+      "Does the analysis extend to the HGCD (half-GCD) algorithm of Schönhage, giving O(M(n) log n) complexity where M(n) is the multiplication cost?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "bezout-identity-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "Correctness of Stein's binary GCD algorithm — this entry extends it with complexity analysis"
+    },
+    {
+      "id": "binary-gcd-oq-03-oq-02",
+      "relationship": "related",
+      "description": "Schönhage's HGCD algorithm — a more sophisticated recursive GCD with better asymptotic complexity"
+    }
+  ]
+}
