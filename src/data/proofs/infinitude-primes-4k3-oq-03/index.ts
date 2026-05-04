@@ -1,6 +1,7 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsData from './annotations.json'
+import sourceRaw from '../../../../proofs/Proofs/InfinitudePrimes4k3OQ03.lean?raw'
 
 const meta = metaJson as unknown as {
   id: string
@@ -23,7 +24,7 @@ export const infinitudePrimes4k3OQ03Proof: Proof = {
   description: meta.description,
   meta: meta.meta,
   sections: meta.sections ?? [],
-  source: '',
+  source: sourceRaw,
   overview: meta.overview,
   conclusion: meta.conclusion,
   crossReferences: meta.crossReferences,
@@ -34,11 +35,7 @@ export const infinitudePrimes4k3OQ03Annotations = annotations
 export const infinitudePrimes4k3OQ03Data: ProofData = {
   proof: infinitudePrimes4k3OQ03Proof,
   annotations,
-}
-
-export async function getProofSource(): Promise<string> {
-  const src = await import('/proofs/Proofs/InfinitudePrimes4k3OQ03.lean?raw')
-  return src.default
+  tacticStates: [],
 }
 
 export default infinitudePrimes4k3OQ03Data
