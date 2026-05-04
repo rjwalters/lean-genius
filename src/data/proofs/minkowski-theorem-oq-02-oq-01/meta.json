@@ -1,0 +1,67 @@
+{
+  "id": "minkowski-theorem-oq-02-oq-01",
+  "title": "Dirichlet's Approximation Theorem via Minkowski: Axiom-Free Proof",
+  "slug": "minkowski-theorem-oq-02-oq-01",
+  "description": "An axiom-free proof of Dirichlet's approximation theorem using Minkowski's lattice point theorem. Eliminates three geometric axioms from the previous formalization by proving: (1) the Dirichlet parallelogram is open (hence measurable), (2) it is convex (preimage of Ioo under linear functionals), and (3) its volume is 4(Q+1)/Q (via a shear map with determinant 1). Machine-checked with 0 axioms, 0 sorries.",
+  "meta": {
+    "status": "verified",
+    "badge": "original",
+    "axiomCount": 0,
+    "sorryCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "lineCount": 267,
+    "leanFile": "proofs/Proofs/MinkowskiTheoremOQ02OQ01.lean",
+    "imports": [
+      "Mathlib.Analysis.Convex.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.MeasureTheory.Group.GeometryOfNumbers",
+      "Mathlib.Algebra.Module.ZLattice.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "tags": ["number-theory", "dirichlet", "minkowski", "approximation", "measure-theory", "geometry-of-numbers"],
+    "assumptions": []
+  },
+  "sections": [
+    {
+      "id": "dirichlet-set",
+      "title": "The Dirichlet Parallelogram",
+      "description": "Definition of dirichletSet α Q = {(x,y) : |x| < Q+1 ∧ |αx-y| < 1/Q} and proof of central symmetry (dirichletSet_symmetric): if (x,y) ∈ S then (-x,-y) ∈ S.",
+      "theorems": ["dirichletSet", "dirichletSet_symmetric"]
+    },
+    {
+      "id": "geometric-properties",
+      "title": "Measurability, Convexity, and Volume",
+      "description": "Three properties needed for Minkowski's theorem: dirichletSet_measurable (the set is open — preimage of Ioo × Ioo under continuous maps), dirichletSet_convex (convex — each condition is the preimage of Ioo under a linear functional), and dirichletSet_volume (volume = 4(Q+1)/Q, proved by composing with the shear map T(x,y)=(x,αx-y) which has det=1 and maps S to the rectangle (-Q-1,Q+1)×(-1/Q,1/Q)).",
+      "theorems": ["dirichletSet_measurable", "dirichletSet_convex", "dirichletSet_volume"]
+    },
+    {
+      "id": "minkowski-application",
+      "title": "Dirichlet Approximation via Minkowski",
+      "description": "The chain: dirichletSet_volume_gt_four (for Q ≥ 1, volume = 4(Q+1)/Q > 4, satisfying Minkowski's volume condition), then dirichlet_approximation (Minkowski gives a nonzero lattice point (p,q) ∈ S, giving 0 < |q| ≤ Q and |qα-p| < 1/Q), and finally dirichlet_from_minkowski_axiom_free (the clean statement: for α ∈ ℝ and Q ≥ 1, ∃ p q : ℤ, 0 < q ≤ Q ∧ |q*α - p| < 1/Q).",
+      "theorems": ["dirichletSet_volume_gt_four", "dirichlet_approximation", "dirichlet_from_minkowski_axiom_free"]
+    }
+  ],
+  "overview": {
+    "summary": "Dirichlet's approximation theorem (1842) states that for any real α and integer Q ≥ 1, there exist integers p, q with 0 < q ≤ Q and |qα - p| < 1/Q. Equivalently, α can be approximated by rationals p/q with error < 1/(qQ). The Minkowski proof uses the lattice point theorem: the Dirichlet parallelogram S = {|x| < Q+1, |αx-y| < 1/Q} is symmetric, convex, and has volume > 4, so it contains a nonzero lattice point (p,q) which gives the approximation.",
+    "approach": "The previous proof (`minkowski-theorem-oq-02`) had three axioms about the Dirichlet parallelogram. This file eliminates all three: measurability follows because S is open (intersection of two open sets defined by strict inequalities on continuous functions); convexity follows because each inequality defines a convex set (preimage of an open interval under a linear functional); volume uses the shear map T(x,y) = (x, αx-y) with |det T| = 1, which maps S bijectively to the rectangle (-Q-1,Q+1)×(-1/Q,1/Q) with area 4(Q+1)/Q.",
+    "significance": "Dirichlet's approximation theorem is one of the cornerstones of Diophantine approximation. It implies the pigeonhole principle argument for rational approximability, and is the foundation for continued fraction approximation theory. The Minkowski proof is the cleanest — it makes the geometry of approximation explicit and generalizes immediately to simultaneous approximation in higher dimensions. This fully verified version demonstrates that the axiomatic treatment was unnecessary: the geometric facts about the Dirichlet set are provable from Mathlib's existing measure theory and convexity infrastructure."
+  },
+  "conclusion": {
+    "summary": "Dirichlet's approximation theorem is now machine-checked with zero axioms using Minkowski's lattice point theorem, with all three geometric properties of the Dirichlet parallelogram verified from first principles via Mathlib's measure theory.",
+    "openQuestions": [
+      "Can this approach extend to simultaneous Dirichlet approximation: for α₁,...,αₙ ∈ ℝ and Q ≥ 1, ∃ q with 0 < q ≤ Q^n and |qαᵢ - pᵢ| < 1/Q for all i?",
+      "Can the best approximation exponent (Dirichlet exponent μ(α) = 1 for Lebesgue a.e. α) be formalized using this infrastructure?",
+      "The Hurwitz theorem strengthens Dirichlet: for irrational α, infinitely many p/q satisfy |α - p/q| < 1/(√5 · q²). Can the √5 bound be proved using Minkowski's theorem in the appropriate region?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "minkowski-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Eliminates the three geometric axioms from the previous axiomatized proof"
+    }
+  ]
+}
