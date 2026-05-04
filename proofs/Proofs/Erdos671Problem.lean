@@ -22,10 +22,7 @@
   Tags: analysis, interpolation, approximation-theory
 -/
 
-import Mathlib.Analysis.SpecialFunctions.Polynomials.Basic
-import Mathlib.Topology.ContinuousFunction.Basic
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos671
 
