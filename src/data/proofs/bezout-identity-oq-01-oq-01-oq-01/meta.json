@@ -97,6 +97,7 @@
   ],
   "conclusion": {
     "summary": "Binary GCD runs in O(log²(max(a,b))) bit operations.",
+    "implications": "This formalization establishes that Stein's binary GCD algorithm achieves the same O(log² n) asymptotic bit complexity as Euclid's algorithm, confirming binary GCD as a practical and theoretically sound alternative. The modular two-stage proof structure (step count fully verified, per-step cost axiomatized) provides a template for formalizing complexity bounds of other recursive algorithms in Lean 4.",
     "significance": "The formalization separates the combinatorial step-count argument (fully proved) from the per-step bit-cost model (axiomatized). The step count bound is the non-trivial part: it requires showing that every branch of Stein's algorithm strictly decreases the logarithm measure, including the delicate odd-minus-odd halving case. The result confirms that binary GCD has the same asymptotic bit complexity as Euclid's algorithm.",
     "openQuestions": [
       "Can stepBitOps_le be eliminated by defining a more explicit bit-level computation model in Lean 4?",
