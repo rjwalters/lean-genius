@@ -1,38 +1,74 @@
 [
   {
-    "id": "ann-dirichlet-main",
-    "type": "theorem",
-    "label": "dirichlet_from_minkowski_axiom_free",
-    "title": "Dirichlet's Approximation Theorem (Axiom-Free)",
-    "body": "dirichlet_from_minkowski_axiom_free: for any α : ℝ and Q : ℕ with Q ≥ 1, ∃ p q : ℤ, 0 < q ∧ q ≤ Q ∧ |q*α - p| < 1/Q. Proved fully from first principles: the Dirichlet parallelogram S is open (measurable), convex, has volume 4(Q+1)/Q > 4, so Minkowski's theorem gives a nonzero lattice point (p,q) ∈ S, which exactly witnesses the approximation.",
-    "location": { "line": 260 },
-    "tags": ["main-theorem", "dirichlet", "approximation", "axiom-free"]
+    "id": "ann-mink-oq01-header",
+    "proofId": "minkowski-theorem-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "context",
+    "title": "Axiom Elimination: Three Geometric Facts Proved",
+    "content": "The parent formalization `MinkowskiTheoremOQ02.lean` proved Dirichlet's theorem via Minkowski's lattice point theorem but left three geometric facts as axioms: measurability, convexity, and volume of the Dirichlet parallelogram. This file eliminates all three axioms using Mathlib's measure theory and convexity infrastructure — making the proof fully machine-verified with 0 axioms.",
+    "mathContext": "The three previously axiomatized properties of $S = \\{(x,y) : |x| < Q+1,\\ |\\alpha x - y| < 1/Q\\}$ are: (1) $S$ is Lebesgue measurable; (2) $S$ is convex; (3) $\\text{vol}(S) = 4(Q+1)/Q$. Once proved, Minkowski's theorem applies directly: a symmetric convex set with volume $> 4 \\cdot \\text{vol}(\\mathcal{F})$ (where $\\mathcal{F}$ is a fundamental domain) must contain a nonzero lattice point.",
+    "significance": "context",
+    "relatedConcepts": ["Dirichlet's approximation theorem", "Minkowski's lattice point theorem", "Lebesgue measure", "convex sets"],
+    "prerequisites": ["Dirichlet's approximation theorem", "Minkowski's theorem", "Lebesgue measure theory"]
   },
   {
-    "id": "ann-volume-computation",
-    "type": "theorem",
-    "label": "dirichletSet_volume",
-    "title": "Volume of the Dirichlet Parallelogram",
-    "body": "dirichletSet_volume: volume(dirichletSet α Q) = 4*(Q+1)/Q. Proved via the shear map T(x,y) = (x, αx-y), which has |det T| = 1 (the matrix [[1,0],[α,-1]] has det = -1). T maps the parallelogram S to the axis-aligned rectangle (-Q-1,Q+1)×(-1/Q,1/Q) (area = 2(Q+1)×2/Q = 4(Q+1)/Q). Since T is a measure-preserving bijection, vol(S) = vol(rectangle).",
-    "location": { "line": 170 },
-    "tags": ["volume", "measure-theory", "shear-map"]
-  },
-  {
-    "id": "ann-convexity",
-    "type": "theorem",
-    "label": "dirichletSet_convex",
-    "title": "Convexity of the Dirichlet Parallelogram",
-    "body": "dirichletSet_convex: the set {(x,y) : |x| < Q+1 ∧ |αx-y| < 1/Q} is convex. Proved by showing each of the two conditions defines a convex set: |f(v)| < c is the preimage of Ioo(-c,c) under the continuous linear functional f, and intersections of convex sets are convex.",
-    "location": { "line": 130 },
-    "tags": ["convexity", "geometry", "linear-functional"]
-  },
-  {
-    "id": "ann-dirichlet-set",
+    "id": "ann-mink-oq01-dirichlet-set",
+    "proofId": "minkowski-theorem-oq-02-oq-01",
+    "range": { "startLine": 36, "endLine": 54 },
     "type": "definition",
-    "label": "dirichletSet",
-    "title": "The Dirichlet Parallelogram",
-    "body": "dirichletSet α Q = {v : Fin 2 → ℝ | |v 0| < Q+1 ∧ |α*(v 0) - v 1| < 1/Q}. This is the set of real pairs (x,y) satisfying both: x is within Q+1 of the origin, and y is within 1/Q of αx. Geometrically, it is a parallelogram (a sheared rectangle) symmetric about the origin with area 4(Q+1)/Q.",
-    "location": { "line": 42 },
-    "tags": ["definition", "dirichlet", "parallelogram"]
+    "title": "The Dirichlet Parallelogram and Its Symmetry",
+    "content": "The `dirichletSet α Q` is defined as pairs (x,y) with |x| < Q+1 and |αx-y| < 1/Q. It is encoded as a subset of `Fin 2 → ℝ` (vectors indexed by Fin 2). The theorem `dirichletSet_symmetric` proves central symmetry: if v ∈ S then -v ∈ S. This is required by Minkowski's theorem (symmetric means -S = S).",
+    "mathContext": "The set $S_Q(\\alpha) = \\{(x, y) \\in \\mathbb{R}^2 : |x| < Q+1,\\ |\\alpha x - y| < 1/Q\\}$ is a parallelogram: it is the image of the rectangle $(-Q-1, Q+1) \\times (-1/Q, 1/Q)$ under the inverse shear $(x, t) \\mapsto (x, \\alpha x - t)$. Central symmetry $-S = S$ holds because $|-(-x)| = |x|$ and $|\\alpha(-x) - (-y)| = |-(\\alpha x - y)| = |\\alpha x - y|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["central symmetry", "parallelogram", "Minkowski's theorem prerequisites"],
+    "prerequisites": ["Fin-indexed vectors in Lean 4", "Minkowski's theorem hypotheses"]
+  },
+  {
+    "id": "ann-mink-oq01-measurability",
+    "proofId": "minkowski-theorem-oq-02-oq-01",
+    "range": { "startLine": 56, "endLine": 69 },
+    "type": "technique",
+    "title": "Measurability via Openness",
+    "content": "The `dirichletSet_measurable` proof shows that S is measurable by showing it is open. The key: S equals the intersection of two preimages of open intervals under continuous maps. Specifically, S = (v ↦ v 0)⁻¹(Ioo(-Q-1, Q+1)) ∩ (v ↦ αv0-v1)⁻¹(Ioo(-1/Q, 1/Q)). Open preimages of open sets under continuous maps are open, and open sets are measurable.",
+    "mathContext": "The proof uses: `isOpen_Ioo.preimage (continuous_apply 0)` for the first factor and `isOpen_Ioo.preimage (continuous_const.mul ... .sub ...)` for the second. In general, $f^{-1}(U)$ is open when $f$ is continuous and $U$ is open. Open sets are Borel measurable (`IsOpen.measurableSet`).",
+    "significance": "key",
+    "relatedConcepts": ["Lebesgue measurability", "open sets", "preimage of open set", "continuous functions"],
+    "prerequisites": ["Mathlib MeasureTheory", "IsOpen.measurableSet", "continuous_apply in Lean 4"]
+  },
+  {
+    "id": "ann-mink-oq01-convexity",
+    "proofId": "minkowski-theorem-oq-02-oq-01",
+    "range": { "startLine": 71, "endLine": 85 },
+    "type": "technique",
+    "title": "Convexity via Linear Preimages",
+    "content": "The `dirichletSet_convex` proof uses the algebraic characterization: a set defined by |f(v)| < c (where f is linear) is convex, because it equals f⁻¹(Ioo(-c,c)) and Ioo is convex. The two conditions |x| < Q+1 and |αx-y| < 1/Q are each preimages of Ioo under linear maps (`LinearMap.proj 0` and `α • proj 0 - proj 1`). Intersections of convex sets are convex.",
+    "mathContext": "Key Mathlib lemmas: `(convex_Ioo _ _).linear_preimage _` — the preimage of a convex set under a linear map is convex. In Lean 4: `LinearMap.proj (R := ℝ) (φ := fun _ : Fin 2 => ℝ) 0` is the projection $(x, y) \\mapsto x$, and $\\alpha \\cdot \\text{proj}_0 - \\text{proj}_1$ is the linear functional $(x, y) \\mapsto \\alpha x - y$. Their Ioo preimages are convex, and the intersection of two convex sets is convex by `Convex.inter`.",
+    "significance": "key",
+    "relatedConcepts": ["convex sets", "linear preimage", "LinearMap.proj", "Convex.inter"],
+    "prerequisites": ["Mathlib Convex API", "LinearMap in Lean 4"]
+  },
+  {
+    "id": "ann-mink-oq01-volume",
+    "proofId": "minkowski-theorem-oq-02-oq-01",
+    "range": { "startLine": 87, "endLine": 140 },
+    "type": "insight",
+    "title": "Volume via the Shear Map (det = -1)",
+    "content": "The `dirichletSet_volume` proof uses the shear map T(x,y) = (x, αx-y), which maps S bijectively to the rectangle R = (-Q-1,Q+1)×(-1/Q,1/Q). Since det(T) = -1, |det(T)| = 1, so T is measure-preserving. The volume of R is 2(Q+1) × 2/Q = 4(Q+1)/Q. In Lean, `map_matrix_volume_pi_eq_smul_volume_pi` combined with `|det| = 1` gives the measure-preserving property, and `volume_pi_Ioo` computes the rectangle's volume.",
+    "mathContext": "The shear matrix is $T = \\begin{pmatrix} 1 & 0 \\\\ \\alpha & -1 \\end{pmatrix}$, with $\\det T = 1 \\cdot (-1) - 0 \\cdot \\alpha = -1$. Since $|\\det T| = 1$, the pushforward of Lebesgue measure under $T$ equals Lebesgue measure: $T_* \\lambda = \\lambda$. So $\\lambda(S) = \\lambda(T^{-1}(R)) = \\lambda(R) = 2(Q+1) \\cdot (2/Q) = 4(Q+1)/Q$. This volume exceeds 4 for all $Q \\geq 1$ since $(Q+1)/Q > 1$.",
+    "significance": "key",
+    "relatedConcepts": ["shear map", "determinant", "measure-preserving maps", "volume computation"],
+    "prerequisites": ["Mathlib MeasureTheory", "Matrix.det API in Lean 4", "map_matrix_volume_pi_eq_smul_volume_pi"]
+  },
+  {
+    "id": "ann-mink-oq01-main-theorem",
+    "proofId": "minkowski-theorem-oq-02-oq-01",
+    "range": { "startLine": 157, "endLine": 267 },
+    "type": "insight",
+    "title": "Minkowski's Theorem Applied to Get the Approximation",
+    "content": "The main theorem `dirichlet_approximation` applies Minkowski's lattice point theorem from Mathlib: since S is symmetric, convex, open, and has volume > 4 (= 2² × vol(fundamental domain)), it must contain a nonzero integer lattice point (c₀, c₁) ∈ ℤ². Setting q = |c₀| and p = sign(c₀)·c₁ gives the Dirichlet approximation. The proof must extract integer coordinates from the Submodule.span ℤ (standard basis), then show c₀ ≠ 0 (otherwise the lattice point would be zero).",
+    "mathContext": "Minkowski's theorem (Mathlib's `ZSpan.isAddFundamentalDomain'` + `Measure.addFundamentalDomain.addEquiv`): for the standard $\\mathbb{Z}^2$ lattice with fundamental domain $[0,1)^2$ of volume 1, any symmetric convex set with volume $> 4 \\cdot 1 = 4$ contains a nonzero lattice point. The gallery export `dirichlet_from_minkowski_axiom_free` wraps the internal theorem in a clean signature: $\\forall \\alpha, Q \\geq 1,\\ \\exists p, q \\in \\mathbb{Z},\\ 1 \\leq q \\leq Q \\wedge |\\alpha q - p| < 1/Q$.",
+    "significance": "key",
+    "relatedConcepts": ["Minkowski's theorem", "ZSpan", "integer lattice", "fundamental domain"],
+    "prerequisites": ["Mathlib ZSpan API", "Geometry of Numbers", "Submodule.span ℤ in Lean 4"]
   }
 ]

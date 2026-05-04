@@ -2,61 +2,20 @@
   "id": "minkowski-theorem-oq-02-oq-01",
   "title": "Dirichlet's Approximation Theorem via Minkowski: Axiom-Free Proof",
   "slug": "minkowski-theorem-oq-02-oq-01",
-  "description": "An axiom-free proof of Dirichlet's approximation theorem using Minkowski's lattice point theorem. Eliminates three geometric axioms from the previous formalization by proving: (1) the Dirichlet parallelogram is open (hence measurable), (2) it is convex (preimage of Ioo under linear functionals), and (3) its volume is 4(Q+1)/Q (via a shear map with determinant 1). Machine-checked with 0 axioms, 0 sorries.",
+  "description": "An axiom-free proof of Dirichlet's approximation theorem using Minkowski's lattice point theorem. Eliminates three geometric axioms from the previous formalization by proving: (1) the Dirichlet parallelogram is open (hence measurable), (2) it is convex (preimage of Ioo under linear functionals), and (3) its volume is 4(Q+1)/Q (via a shear map with determinant -1). Machine-checked with 0 axioms, 0 sorries.",
   "meta": {
     "status": "verified",
     "badge": "original",
     "axiomCount": 0,
-    "sorryCount": 0,
+    "sorries": 0,
     "theoremCount": 7,
     "definitionCount": 1,
     "lineCount": 267,
-    "leanFile": "proofs/Proofs/MinkowskiTheoremOQ02OQ01.lean",
-    "imports": [
-      "Mathlib.Analysis.Convex.Basic",
-      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
-      "Mathlib.MeasureTheory.Group.GeometryOfNumbers",
-      "Mathlib.Algebra.Module.ZLattice.Basic",
-      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Tactic"
-    ],
+    "proofRepoPath": "Proofs/MinkowskiTheoremOQ02OQ01.lean",
     "tags": ["number-theory", "dirichlet", "minkowski", "approximation", "measure-theory", "geometry-of-numbers"],
-    "assumptions": [],
-    "sorries": 0
-  },
-  "sections": [
-    {
-      "id": "dirichlet-set",
-      "title": "The Dirichlet Parallelogram",
-      "description": "Definition of dirichletSet α Q = {(x,y) : |x| < Q+1 ∧ |αx-y| < 1/Q} and proof of central symmetry (dirichletSet_symmetric): if (x,y) ∈ S then (-x,-y) ∈ S.",
-      "theorems": ["dirichletSet", "dirichletSet_symmetric"]
-    },
-    {
-      "id": "geometric-properties",
-      "title": "Measurability, Convexity, and Volume",
-      "description": "Three properties needed for Minkowski's theorem: dirichletSet_measurable (the set is open — preimage of Ioo × Ioo under continuous maps), dirichletSet_convex (convex — each condition is the preimage of Ioo under a linear functional), and dirichletSet_volume (volume = 4(Q+1)/Q, proved by composing with the shear map T(x,y)=(x,αx-y) which has det=1 and maps S to the rectangle (-Q-1,Q+1)×(-1/Q,1/Q)).",
-      "theorems": ["dirichletSet_measurable", "dirichletSet_convex", "dirichletSet_volume"]
-    },
-    {
-      "id": "minkowski-application",
-      "title": "Dirichlet Approximation via Minkowski",
-      "description": "The chain: dirichletSet_volume_gt_four (for Q ≥ 1, volume = 4(Q+1)/Q > 4, satisfying Minkowski's volume condition), then dirichlet_approximation (Minkowski gives a nonzero lattice point (p,q) ∈ S, giving 0 < |q| ≤ Q and |qα-p| < 1/Q), and finally dirichlet_from_minkowski_axiom_free (the clean statement: for α ∈ ℝ and Q ≥ 1, ∃ p q : ℤ, 0 < q ≤ Q ∧ |q*α - p| < 1/Q).",
-      "theorems": ["dirichletSet_volume_gt_four", "dirichlet_approximation", "dirichlet_from_minkowski_axiom_free"]
-    }
-  ],
-  "overview": {
-    "summary": "Dirichlet's approximation theorem (1842) states that for any real α and integer Q ≥ 1, there exist integers p, q with 0 < q ≤ Q and |qα - p| < 1/Q. Equivalently, α can be approximated by rationals p/q with error < 1/(qQ). The Minkowski proof uses the lattice point theorem: the Dirichlet parallelogram S = {|x| < Q+1, |αx-y| < 1/Q} is symmetric, convex, and has volume > 4, so it contains a nonzero lattice point (p,q) which gives the approximation.",
-    "approach": "The previous proof (`minkowski-theorem-oq-02`) had three axioms about the Dirichlet parallelogram. This file eliminates all three: measurability follows because S is open (intersection of two open sets defined by strict inequalities on continuous functions); convexity follows because each inequality defines a convex set (preimage of an open interval under a linear functional); volume uses the shear map T(x,y) = (x, αx-y) with |det T| = 1, which maps S bijectively to the rectangle (-Q-1,Q+1)×(-1/Q,1/Q) with area 4(Q+1)/Q.",
-    "significance": "Dirichlet's approximation theorem is one of the cornerstones of Diophantine approximation. It implies the pigeonhole principle argument for rational approximability, and is the foundation for continued fraction approximation theory. The Minkowski proof is the cleanest — it makes the geometry of approximation explicit and generalizes immediately to simultaneous approximation in higher dimensions. This fully verified version demonstrates that the axiomatic treatment was unnecessary: the geometric facts about the Dirichlet set are provable from Mathlib's existing measure theory and convexity infrastructure."
-  },
-  "conclusion": {
-    "summary": "Dirichlet's approximation theorem is now machine-checked with zero axioms using Minkowski's lattice point theorem, with all three geometric properties of the Dirichlet parallelogram verified from first principles via Mathlib's measure theory.",
-    "openQuestions": [
-      "Can this approach extend to simultaneous Dirichlet approximation: for α₁,...,αₙ ∈ ℝ and Q ≥ 1, ∃ q with 0 < q ≤ Q^n and |qαᵢ - pᵢ| < 1/Q for all i?",
-      "Can the best approximation exponent (Dirichlet exponent μ(α) = 1 for Lebesgue a.e. α) be formalized using this infrastructure?",
-      "The Hurwitz theorem strengthens Dirichlet: for irrational α, infinitely many p/q satisfy |α - p/q| < 1/(√5 · q²). Can the √5 bound be proved using Minkowski's theorem in the appropriate region?"
-    ]
+    "assumptions": "No axioms. All results proved from first principles using Mathlib.",
+    "author": "Lean Genius Researcher",
+    "dateAdded": "2026"
   },
   "crossReferences": [
     {
@@ -64,5 +23,79 @@
       "relationship": "extends",
       "description": "Eliminates the three geometric axioms from the previous axiomatized proof"
     }
-  ]
+  ],
+  "overview": {
+    "historicalContext": "Dirichlet's approximation theorem (1842) is one of the cornerstones of Diophantine approximation: for any real $\\alpha$ and positive integer $Q$, there exist integers $p, q$ with $1 \\leq q \\leq Q$ and $|q\\alpha - p| < 1/Q$. Equivalently, $\\alpha$ can be approximated by rationals $p/q$ with error less than $1/(qQ)$. Dirichlet's original proof used the pigeonhole principle — partitioning $[0,1)$ into $Q$ intervals and applying pigeonhole to the $Q+1$ values $\\{k\\alpha\\} = k\\alpha \\bmod 1$ for $k = 0, 1, \\ldots, Q$.\n\nMinkowski's theorem (1896) provides a geometric proof: the **Dirichlet parallelogram** $S = \\{(x,y) \\in \\mathbb{R}^2 : |x| < Q+1,\\ |\\alpha x - y| < 1/Q\\}$ is a symmetric, convex set with area $4(Q+1)/Q > 4$. By Minkowski's lattice point theorem (a convex symmetric set with volume exceeding $2^n$ times the fundamental domain must contain a nonzero lattice point), $S$ contains a nonzero integer point $(q, p) \\in \\mathbb{Z}^2 \\setminus \\{0\\}$. The membership conditions directly give $0 < |q| \\leq Q$ and $|\\alpha q - p| < 1/Q$.\n\nThe parent formalization `minkowski-theorem-oq-02` left three geometric properties of $S$ as axioms. This file eliminates all three using Mathlib's measure theory and convexity infrastructure.",
+    "problemStatement": "For any $\\alpha \\in \\mathbb{R}$ and positive integer $Q \\geq 1$, prove that there exist integers $q, p$ with $1 \\leq q \\leq Q$ and $$|\\alpha q - p| < \\frac{1}{Q}$$ without invoking any axioms about the geometry of the Dirichlet parallelogram.\n\nIn Lean: `dirichlet_from_minkowski_axiom_free : ∀ (α : ℝ) (Q : ℕ), 0 < Q → ∃ (q p : ℤ), 1 ≤ q ∧ q ≤ Q ∧ |α * q - p| < 1/Q`",
+    "proofStrategy": "The proof has three layers. The **geometric layer** establishes properties of the Dirichlet parallelogram $S_{\\alpha,Q}$: (1) **Measurability**: $S$ is open — it is the intersection of two preimages of open intervals under continuous maps. (2) **Convexity**: Each defining inequality $|f(v)| < c$ (for linear $f$) is a preimage of the convex set $(-c,c)$ under $f$, hence convex; intersections of convex sets are convex. (3) **Volume**: The shear map $T(x,y) = (x, \\alpha x - y)$ has $|\\det T| = 1$ (det $= -1$), so it is measure-preserving; $T$ maps $S$ bijectively to the rectangle $(-Q-1,Q+1)\\times(-1/Q,1/Q)$ of area $2(Q+1)\\cdot 2/Q = 4(Q+1)/Q$.\n\nThe **volume inequality layer** proves $4(Q+1)/Q > 4$ for $Q \\geq 1$ (since $(Q+1)/Q > 1$), satisfying Minkowski's volume condition.\n\nThe **lattice point extraction layer** applies Mathlib's geometry of numbers (`ZSpan.isAddFundamentalDomain'`) to get a nonzero lattice point $(c_0, c_1) \\in S \\cap (\\mathbb{Z}^2 \\setminus \\{0\\})$. From membership, $|c_0| < Q+1$ (so $|c_0| \\leq Q$) and $|\\alpha c_0 - c_1| < 1/Q$. Since the point is nonzero and $c_0 = 0$ would force $c_1 = 0$ (via $|c_1| < 1/Q \\leq 1$ for $Q \\geq 1$), we have $c_0 \\neq 0$. Setting $q = |c_0|$ and $p = \\text{sign}(c_0) \\cdot c_1$ gives the required approximation.",
+    "keyInsights": [
+      "Measurability via openness is the cleanest path: rather than constructing a Borel-measurable set directly, showing the set is open (a special case of measurability) uses only elementary facts about preimages of open intervals under continuous functions. In Lean, `IsOpen.measurableSet` immediately converts openness to measurability.",
+      "Convexity via linear preimages avoids any coordinate computation: the key Mathlib lemma `(convex_Ioo _ _).linear_preimage _` proves that $f^{-1}(\\text{Ioo}(-c,c))$ is convex for any linear $f$. The Dirichlet parallelogram is the intersection of two such preimages, giving convexity in two lines.",
+      "The shear map $T(x,y) = (x, \\alpha x - y)$ has a beautiful property: it maps the tilted parallelogram $S$ exactly to the axis-aligned rectangle $(-Q-1, Q+1) \\times (-1/Q, 1/Q)$, while being measure-preserving (|det| = 1). This converts the volume of an awkward tilted set to the volume of a rectangle — computable by `volume_pi_Ioo`.",
+      "Extracting integer coordinates from Minkowski's theorem requires care: Mathlib's `ZSpan` produces a point in the $\\mathbb{Z}$-span of the standard basis, represented as $\\sum_i c_i \\cdot e_i$ for integers $c_i$. Extracting $c_0$ and $c_1$ from this span representation requires computing `Pi.basisFun` values explicitly via `Pi.basisFun_apply` and unfolding the sum.",
+      "The case $c_0 = 0$ requires a separate argument: if $c_0 = 0$ then the membership condition gives $|c_1| < 1/Q \\leq 1$, so $c_1 = 0$ (the only integer in $(-1, 1)$), contradicting the nonzero requirement. This case analysis is necessary because Minkowski's theorem does not directly ensure the first coordinate is nonzero."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Header, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Problem statement: this file eliminates the three geometric axioms (measurability, convexity, volume) from the parent MinkowskiTheoremOQ02 formalization. Imports from Mathlib: convex analysis, Lebesgue measure, geometry of numbers, ZLattice, matrix determinants, and tactics. Opens MeasureTheory, Set, Real namespaces."
+    },
+    {
+      "id": "dirichlet-set-def",
+      "title": "Part 1: The Dirichlet Parallelogram",
+      "startLine": 36,
+      "endLine": 54,
+      "summary": "Defines `dirichletSet α Q = {v : Fin 2 → ℝ | |v 0| < Q+1 ∧ |α*(v 0) - v 1| < 1/Q}`. Proves `dirichletSet_symmetric`: central symmetry (v ∈ S → -v ∈ S) by showing both inequalities are preserved under negation via `abs_neg`."
+    },
+    {
+      "id": "measurability",
+      "title": "Part 2–3: Measurability",
+      "startLine": 56,
+      "endLine": 69,
+      "summary": "Proves `dirichletSet_measurable`: S is measurable because it is open. S equals the intersection of (v ↦ v 0)⁻¹(Ioo(-Q-1,Q+1)) and (v ↦ αv0-v1)⁻¹(Ioo(-1/Q,1/Q)). Both are open (preimages of open intervals under continuous maps), and their intersection is open, hence measurable via IsOpen.measurableSet."
+    },
+    {
+      "id": "convexity",
+      "title": "Part 4: Convexity",
+      "startLine": 71,
+      "endLine": 85,
+      "summary": "Proves `dirichletSet_convex`: S is convex. S equals the intersection of preimages of Ioo under two linear maps (proj 0 for |x| < Q+1, and α•proj0 - proj1 for |αx-y| < 1/Q). Each preimage of Ioo(-c,c) under a linear functional is convex (convex_Ioo.linear_preimage), and the intersection of convex sets is convex."
+    },
+    {
+      "id": "volume",
+      "title": "Part 5–6: Volume Computation",
+      "startLine": 87,
+      "endLine": 155,
+      "summary": "Two theorems: `dirichletSet_volume` (volume = 4(Q+1)/Q via the shear map T(x,y)=(x,αx-y) with det=-1, which is measure-preserving and maps S to rectangle (-Q-1,Q+1)×(-1/Q,1/Q); uses `map_matrix_volume_pi_eq_smul_volume_pi` and `volume_pi_Ioo`) and `dirichletSet_volume_gt_four` (volume > 4 for Q ≥ 1, since (Q+1)/Q > 1; uses ENNReal.ofReal_lt_ofReal_iff)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part 7: Main Theorem and Gallery Export",
+      "startLine": 157,
+      "endLine": 267,
+      "summary": "The main theorem `dirichlet_approximation` applies Minkowski's theorem (via ZSpan.isAddFundamentalDomain'): S is symmetric, convex, measurable, with volume > 4 > 4·vol(fundamental domain), so it contains a nonzero ℤ²-lattice point. Extracts integer coordinates via Pi.basisFun, shows c₀ ≠ 0, and produces q = |c₀|, p = sign(c₀)·c₁. The gallery export `dirichlet_from_minkowski_axiom_free` wraps this in a clean ∃-statement."
+    }
+  ],
+  "conclusion": {
+    "summary": "Dirichlet's approximation theorem is machine-checked with zero axioms using Minkowski's lattice point theorem. All three previously axiomatized geometric properties of the Dirichlet parallelogram (measurability, convexity, volume $= 4(Q+1)/Q$) are now proved from first principles using Mathlib's measure theory and convexity infrastructure. The proof demonstrates that the geometry of Diophantine approximation is fully formalizable without additional axioms.",
+    "implications": "This verification shows that the entire Minkowski-based proof of Dirichlet's theorem lies within Mathlib's existing infrastructure, with no gaps requiring axioms. The key tools — measure-preserving linear maps, preimages of convex sets under linear functionals, and the geometry of numbers — are all available in Mathlib. The proof strategy (openness ⇒ measurability, linear preimage ⇒ convexity, shear ⇒ volume) is a template for eliminating similar axioms in related Diophantine approximation results. Dirichlet's theorem is foundational for continued fraction theory, the three-distance theorem, and Hurwitz's theorem — all of which could potentially be formalized using this infrastructure.",
+    "openQuestions": [
+      "Can this approach extend to simultaneous Dirichlet approximation: for $\\alpha_1, \\ldots, \\alpha_n \\in \\mathbb{R}$ and $Q \\geq 1$, there exist $q, p_i$ with $1 \\leq q \\leq Q^n$ and $|q\\alpha_i - p_i| < 1/Q$ for all $i$? The Minkowski argument generalizes to $n+1$ dimensions, and Mathlib's geometry of numbers supports arbitrary dimension.",
+      "The Hurwitz theorem strengthens Dirichlet for irrationals: infinitely many $p/q$ satisfy $|\\alpha - p/q| < 1/(\\sqrt{5}\\,q^2)$, and $\\sqrt{5}$ is sharp. Can the $\\sqrt{5}$ bound be proved via Minkowski applied to the appropriate elliptical region? The region would be $\\{(x,y) : |qx - p| < \\epsilon,\\ q > 0\\}$ with careful volume computation.",
+      "Can the Dirichlet exponent $\\mu(\\alpha) = 1$ (Lebesgue a.e.) be formalized? This requires showing that for Lebesgue-a.e. $\\alpha$, the bound $|\\alpha - p/q| < 1/q^{1+\\epsilon}$ has only finitely many solutions for any $\\epsilon > 0$ — a result of Khintchine (1924) that uses the Borel-Cantelli lemma."
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/MinkowskiTheoremOQ02OQ01.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 267,
+    "theoremCount": 7,
+    "definitionCount": 1
+  },
+  "sorries": 0
 }
