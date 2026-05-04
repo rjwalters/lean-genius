@@ -1,1 +1,166 @@
-[]
+[
+  {
+    "id": "ann-lgv-header",
+    "proofId": "combinations-formula-oq-01-oq-04",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "context",
+    "title": "The LGV Lemma: Determinants as Path Counts",
+    "content": "The Lindström-Gessel-Viennot Lemma is one of the most powerful combinatorial tools of the 20th century. It states that a determinant of binomial coefficient entries — seemingly a purely algebraic object — always has a concrete combinatorial meaning: it counts non-intersecting lattice path tuples. This file builds on BallotProblemOQ03OQ02.lean, which contains the full Gessel-Viennot involution proof. Here we re-export the core theorem and demonstrate it with concrete 1×1 and 2×2 configurations.",
+    "mathContext": "Main statement: Let $M_{ij} = \\binom{m + b_j - a_i}{m}$ for sources $a_1 < \\cdots < a_r$ and targets $b_1 < \\cdots < b_r$. Then $\\det(M) = \\#\\{\\text{non-intersecting path }r\\text{-tuples}\\}$. Each path goes from $(0, a_i)$ to $(m, b_i)$ using $m$ East and $(b_i - a_i)$ North steps.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Lindström (1973) and Gessel-Viennot (1985) involution",
+      "Lattice paths with East and North steps",
+      "Binomial coefficient as path count C(m+b-a, m)",
+      "Non-intersecting path tuples"
+    ],
+    "prerequisites": [
+      "Binomial coefficient C(n,k) counts k-element subsets of {1,...,n}",
+      "Lattice path from (0,a) to (m,b) has m East + (b-a) North steps",
+      "Determinant Leibniz formula: Σ_{σ} sgn(σ) ∏ᵢ M_{i,σ(i)}"
+    ]
+  },
+  {
+    "id": "ann-lgv-core-theorem",
+    "proofId": "combinations-formula-oq-01-oq-04",
+    "range": { "startLine": 44, "endLine": 59 },
+    "type": "insight",
+    "title": "Core LGV Theorem: One-Line Delegation to Gessel-Viennot Involution",
+    "content": "lgv_determinant_formula is a one-line proof: it simply delegates to LGV.lgv_lemma_rxr from the parent file. This thin wrapper serves a critical purpose — it exposes the theorem in the CombinationsFormulaOQ01OQ04 namespace with the standard algebraic combinatorics formulation, decoupling the downstream users from the involution machinery in BallotProblemOQ03OQ02. Similarly, lgv_det_nonneg delegates to pathMatrix_det_nonneg, making the non-negativity consequence immediately accessible.",
+    "mathContext": "The Gessel-Viennot involution (proved in BallotProblemOQ03OQ02) works as follows: expand $\\det(M) = \\sum_{\\sigma \\in S_r} \\text{sgn}(\\sigma) \\prod_i M_{i,\\sigma(i)}$. Each term corresponds to an $r$-tuple where path $i$ runs from $a_i$ to $b_{\\sigma(i)}$. For non-identity $\\sigma$, some paths must intersect; the involution pairs each intersecting tuple with one of opposite sign. Only the identity permutation contributes: $\\text{sgn}(\\text{id}) \\prod_i M_{i,i} = \\prod_i C(m + b_i - a_i, m)$... but wait, that's the product, not the sum over non-intersecting tuples. The full argument: the non-intersecting identity-permutation tuples sum to the total count.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LGV.lgv_lemma_rxr (parent theorem)",
+      "Gessel-Viennot sign-reversing involution",
+      "LGVConfig r structure",
+      "niTupleCount and pathMatrix"
+    ],
+    "prerequisites": [
+      "BallotProblemOQ03OQ02.lean: LGV namespace",
+      "LGVConfig r: configuration with r sources and r targets",
+      "wellFormed condition: max(sources) ≤ min(targets)"
+    ]
+  },
+  {
+    "id": "ann-lgv-one-by-one",
+    "proofId": "combinations-formula-oq-01-oq-04",
+    "range": { "startLine": 65, "endLine": 82 },
+    "type": "technique",
+    "title": "1×1 Case: The Trivial Non-Intersecting Tuple",
+    "content": "The 1×1 case is the degenerate but instructive base case: a single path from y=a to y=b is always trivially non-intersecting with itself. The theorem lgv_one_by_one reduces to simp after unfolding the matrix determinant for 1×1 matrices (Matrix.det_fin_one) and the path count definition. This case verifies that the LGV framework correctly handles r=1: the determinant is just the single matrix entry M_{11} = C(m+b-a, m).",
+    "mathContext": "For $r=1$: $M = [C(m + b - a, m)]$. $\\det(M) = M_{00} = C(m+b-a,m)$. A single path from $(0,a)$ to $(m,b)$ uses $m$ East and $(b-a)$ North steps; the count is $\\binom{m+(b-a)}{m}$. There is exactly one non-intersecting 1-tuple (a trivial statement). Lean: \\texttt{simp [LGV.pathMatrix, Matrix.det\\_fin\\_one, Matrix.of\\_apply, lgvConfig1]}.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Matrix.det_fin_one: det of 1×1 matrix is its single entry",
+      "lgvConfig1: Lean structure for 1×1 LGV setup",
+      "Catalan numbers (appear for specific 1×1 parameters)"
+    ],
+    "prerequisites": [
+      "Matrix.det_fin_one lemma",
+      "Fin 1 type (only element is ⟨0, rfl⟩)",
+      "lgvConfig1 structure definition"
+    ]
+  },
+  {
+    "id": "ann-lgv-config2",
+    "proofId": "combinations-formula-oq-01-oq-04",
+    "range": { "startLine": 88, "endLine": 116 },
+    "type": "technique",
+    "title": "2×2 Configuration: Adjacent Sources and Targets",
+    "content": "lgvConfig2 defines the canonical 2×2 LGV configuration with consecutive sources [a, a+1] and consecutive targets [b, b+1]. Well-formedness requires a+1 ≤ b, meaning the higher source doesn't reach the lower target. The proof of strict monotonicity for sources and targets uses fin_cases on Fin 2 (two cases each) combined with simp and omega. This is a standard pattern in Lean 4 for verifying properties of small finite index types.",
+    "mathContext": "Sources: $a_0 = a$, $a_1 = a+1$ (using Lean's 0-indexed Fin 2). Targets: $b_0 = b$, $b_1 = b+1$. Strict monotonicity: $a_0 < a_1$ and $b_0 < b_1$. Well-formedness: $\\max(a_0, a_1) = a+1 \\leq b = \\min(b_0, b_1)$, which requires $a+1 \\leq b$. The path matrix: $M = \\begin{pmatrix} \\binom{m+b-a}{m} & \\binom{m+b+1-a}{m} \\\\ \\binom{m+b-1-a}{m} & \\binom{m+b-a}{m} \\end{pmatrix}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "fin_cases tactic for small finite types",
+      "Fin 2 indexing (0 and 1)",
+      "Matrix.cons_val_zero / cons_val_one for vector access",
+      "well-formed LGV configuration"
+    ],
+    "prerequisites": [
+      "Fin 2 type and Matrix.cons notation for 2-vectors",
+      "fin_cases, simp, omega tactic combination",
+      "LGVConfig r structure fields"
+    ]
+  },
+  {
+    "id": "ann-lgv-example1",
+    "proofId": "combinations-formula-oq-01-oq-04",
+    "range": { "startLine": 122, "endLine": 138 },
+    "type": "insight",
+    "title": "Example 1: 6 Non-Intersecting Path Pairs (m=2)",
+    "content": "The first concrete example demonstrates the LGV formula with m=2, sources=[0,1], targets=[2,3]. The path matrix entries are C(4,2)=6, C(5,2)=10, C(3,2)=3, C(4,2)=6. The determinant is 36-30=6, verified by native_decide. The derived count of non-intersecting pairs uses the LGV theorem (lgv_determinant_formula) to convert the determinant computation into the path-tuple count. The exact_mod_cast handles the ℤ-to-ℕ coercion.",
+    "mathContext": "Paths from $(0,0)$ to $(2,2)$: $\\binom{4}{2}=6$ paths. Paths from $(0,1)$ to $(2,3)$: $\\binom{4}{2}=6$. Paths from $(0,0)$ to $(2,3)$: $\\binom{5}{2}=10$. Paths from $(0,1)$ to $(2,2)$: $\\binom{3}{2}=3$. det = $6 \\cdot 6 - 10 \\cdot 3 = 36 - 30 = 6$. The $10 \\cdot 3 = 30$ off-diagonal product counts cross-paired paths (path 1: (0,0)→(2,3) and path 2: (0,1)→(2,2)), which must intersect and cancel via the involution.",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide tactic for concrete computation",
+      "exact_mod_cast for ℤ↔ℕ coercion",
+      "Cancellation of intersecting path pairs in Gessel-Viennot involution"
+    ],
+    "prerequisites": [
+      "Matrix.det_fin_two: 2×2 determinant formula ad-bc",
+      "native_decide: decision procedure for decidable propositions",
+      "lgv_determinant_formula for the count derivation"
+    ]
+  },
+  {
+    "id": "ann-lgv-example2",
+    "proofId": "combinations-formula-oq-01-oq-04",
+    "range": { "startLine": 144, "endLine": 158 },
+    "type": "insight",
+    "title": "Example 2: 50 Non-Intersecting Path Pairs (m=3)",
+    "content": "The second example uses a larger grid (m=3) with sources=[0,1], targets=[3,4]. The path count grows significantly: C(6,3)=20, C(7,3)=35, C(5,3)=10. det = 400-350=50, verified by native_decide. This example illustrates how quickly the non-intersecting path count grows with the grid size — going from m=2 (det=6) to m=3 (det=50) increases the count by over 8×, reflecting the combinatorial explosion in path counts.",
+    "mathContext": "$M = \\begin{pmatrix} \\binom{6}{3} & \\binom{7}{3} \\\\ \\binom{5}{3} & \\binom{6}{3} \\end{pmatrix} = \\begin{pmatrix} 20 & 35 \\\\ 10 & 20 \\end{pmatrix}$. $\\det = 400 - 350 = 50$. Ratio: 50/6 ≈ 8.3. In general, for adjacent sources $[0,1]$ and targets $[m,m+1]$, the determinant is $\\binom{2m}{m}^2 - \\binom{2m+1}{m}\\binom{2m-1}{m}$. This equals the Catalan-related quantity $\\binom{2m}{m}/(m+1)$... actually this specific formula gives the Catalan number! $C_m = \\binom{2m}{m}/(m+1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Catalan numbers as special cases of LGV determinants",
+      "Growth rate of binomial determinants",
+      "native_decide for large numerical computations"
+    ],
+    "prerequisites": [
+      "C(6,3) = 20, C(7,3) = 35, C(5,3) = 10 (binomial values)",
+      "Matrix.det_fin_two formula",
+      "lgv_determinant_formula and exact_mod_cast"
+    ]
+  },
+  {
+    "id": "ann-lgv-wellformed-failure",
+    "proofId": "combinations-formula-oq-01-oq-04",
+    "range": { "startLine": 161, "endLine": 176 },
+    "type": "technique",
+    "title": "Well-Formedness Failure: When the Involution Breaks",
+    "content": "lgv_2x2_not_wellFormed_when_b_zero demonstrates a failure case: when b=0 so both sources and targets are [0,1], the well-formedness condition fails because source 1 = 1 > 0 = target 0. Without well-formedness, the Gessel-Viennot involution is not well-defined — paths from source 1 can arrive at target 0, which is below source 0, creating geometric configurations the involution cannot handle. The proof extracts the (1,0) entry of the well-formedness predicate and derives a contradiction via omega.",
+    "mathContext": "Well-formedness requires $\\text{sources}[i] \\leq \\text{targets}[j]$ for all $i, j$. With $b=0$: $\\text{sources}[1] = a+1 = 1$ and $\\text{targets}[0] = b = 0$. So $1 > 0$, violating well-formedness. If we tried to apply LGV anyway, the determinant for $\\begin{pmatrix} \\binom{m}{m} & \\binom{m+1}{m} \\\\ \\binom{m-1}{m} & \\binom{m}{m} \\end{pmatrix}$ would involve $\\binom{m-1}{m} = 0$ (choosing more elements than available), giving $\\det = 1 \\cdot 1 - 1 \\cdot 0 = 1$. But the LGV interpretation would fail.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "LGVConfig.wellFormed predicate",
+      "Gessel-Viennot involution requires sources ≤ targets",
+      "omega for linear arithmetic contradictions"
+    ],
+    "prerequisites": [
+      "LGVConfig.wellFormed: ∀ i j, sources[i] ≤ targets[j]",
+      "fin_cases on Fin 2",
+      "omega for contradiction from ≤ assumptions"
+    ]
+  },
+  {
+    "id": "ann-lgv-natural",
+    "proofId": "combinations-formula-oq-01-oq-04",
+    "range": { "startLine": 179, "endLine": 189 },
+    "type": "insight",
+    "title": "Determinant Is Always a Natural Number: An Existential Certificate",
+    "content": "lgv_det_is_natural packages the LGV theorem as an existential statement: for any well-formed LGV configuration, there exists a natural number n such that det(pathMatrix) = n. This is proved by exhibiting n = niTupleCount and applying lgv_lemma_rxr symmetrically. The statement is conceptually important: it provides a uniform certificate for non-negativity that applies to all r×r binomial determinants simultaneously, without needing to compute each determinant explicitly.",
+    "mathContext": "The proof is: $\\exists n : \\mathbb{N},\\ \\det(M) = \\uparrow n$, witnessed by $n = \\texttt{niTupleCount}(\\text{cfg})$. From $\\texttt{lgv\\_lemma\\_rxr}$: $(\\uparrow\\texttt{niTupleCount}) = \\det(M)$. Reversing: $\\det(M) = \\uparrow\\texttt{niTupleCount}$. This is a statement in $\\mathbb{Z}$ (determinants are integers) asserting the value equals a coerced natural number, which implies non-negativity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "niTupleCount: Nat count of non-intersecting tuples",
+      "Int vs Nat coercion (↑ : ℕ → ℤ)",
+      "Existential witness in Lean 4 (⟨n, proof⟩)",
+      "Total positivity of binomial matrices"
+    ],
+    "prerequisites": [
+      "lgv_lemma_rxr: (niTupleCount : ℤ) = det(pathMatrix)",
+      "Existential introduction: ⟨witness, proof⟩",
+      ".symm to reverse an equation"
+    ]
+  }
+]

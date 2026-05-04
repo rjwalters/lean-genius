@@ -1,0 +1,146 @@
+[
+  {
+    "id": "ann-locq04oq02-header",
+    "proofId": "law-of-cosines-oq-04-oq-02",
+    "range": { "startLine": 1, "endLine": 40 },
+    "type": "context",
+    "title": "From Stewart's Theorem to Angle Bisector: The Setup",
+    "content": "This file sits one level below LawOfCosinesOQ04.lean in the cevian hierarchy. The parent proved Stewart's theorem b²m + c²n = a(d² + mn) from the law of cosines. This file exploits a single additional geometric fact — the angle bisector theorem m·b = n·c — to derive the angle bisector length formula. The entire derivation is algebraic: no trigonometry, no case splits, just polynomial arithmetic once the ratio constraints are in place.",
+    "mathContext": "**Parent result (Stewart's theorem):** $b^2 m + c^2 n = a(t^2 + mn)$, where $t$ is the cevian length, $m = BD$, $n = DC$, $m+n = a$. **New geometric input:** the angle bisector satisfies $\\frac{BD}{DC} = \\frac{AB}{AC} = \\frac{c}{b}$, i.e., $mb = nc$. **Goal:** derive $t^2(b+c)^2 = bc((b+c)^2 - a^2)$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Stewart's theorem",
+      "angle bisector theorem",
+      "cevian in a triangle",
+      "algebraic proof by polynomial witnesses"
+    ],
+    "prerequisites": [
+      "Triangle sides: a = BC, b = CA, c = AB",
+      "Cevian: line segment from a vertex to the opposite side",
+      "Stewart's theorem (parent file LawOfCosinesOQ04.lean)"
+    ]
+  },
+  {
+    "id": "ann-locq04oq02-ratio-m",
+    "proofId": "law-of-cosines-oq-04-oq-02",
+    "range": { "startLine": 50, "endLine": 65 },
+    "type": "technique",
+    "title": "Bisector Ratio Lemmas: Eliminating m and n Individually",
+    "content": "The angle bisector theorem gives m·b = n·c and m+n = a. From these two equations alone, we can express m and n in terms of a, b, c: m = ac/(b+c) and n = ab/(b+c). Rather than introducing fractions (which would require b+c ≠ 0 and complicate the proof), the lemmas use cleared-denominator forms: m·(b+c) = a·c and n·(b+c) = a·b. Both are proved in one line by linear_combination — the proofs are just specific linear combinations of the two hypotheses.",
+    "mathContext": "**bisector_ratio_m:** $m(b+c) = mb + mc = nc + mc = c(m+n) = ca$. Lean witness: \\texttt{linear\\_combination c * ha + hbis} where \\texttt{ha : m+n=a} and \\texttt{hbis : mb=nc}. This computes $(c \\cdot (m+n-a)) + (mb - nc) = c \\cdot 0 + 0 = 0$. **bisector_ratio_n:** $n(b+c) = nb + nc = nb + mb = b(m+n) = ba$. Witness: \\texttt{linear\\_combination b * ha - hbis}.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "angle bisector theorem (Euclid VI.3)",
+      "cleared-denominator form",
+      "linear_combination tactic",
+      "Gröbner basis perspective"
+    ],
+    "prerequisites": [
+      "linear_combination tactic in Lean 4",
+      "angle bisector theorem: BD/DC = AB/AC"
+    ]
+  },
+  {
+    "id": "ann-locq04oq02-bisector-product",
+    "proofId": "law-of-cosines-oq-04-oq-02",
+    "range": { "startLine": 67, "endLine": 74 },
+    "type": "insight",
+    "title": "Segment Product Identity: The Key Intermediate Step",
+    "content": "The product m·n appears in Stewart's theorem (as the 'mn' term). This lemma computes m·n·(b+c)² = a²·bc by multiplying the two ratio lemmas: m·(b+c) = a·c times n·(b+c) = a·b gives m·n·(b+c)² = a²·bc. This identity is the bridge between the angle bisector constraint and the main formula — it allows the mn term in Stewart's theorem to be expressed purely in terms of a, b, c.",
+    "mathContext": "$(m(b+c)) \\cdot (n(b+c)) = (ac)(ab)$, so $mn(b+c)^2 = a^2 bc$. Lean witness: \\texttt{linear\\_combination n*(b+c)*hm + a*c*hn}, where \\texttt{hm : m(b+c)=ac} and \\texttt{hn : n(b+c)=ab}. To verify: $n(b+c) \\cdot (m(b+c) - ac) + ac \\cdot (n(b+c) - ab) = mn(b+c)^2 - acn(b+c) + acn(b+c) - a^2bc = mn(b+c)^2 - a^2bc$. Setting this to 0 gives the identity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "product of cevian segments",
+      "Ptolemy's theorem (related product identities)",
+      "algebraic witness for product identities"
+    ],
+    "prerequisites": [
+      "bisector_ratio_m and bisector_ratio_n lemmas",
+      "linear_combination with products of hypotheses"
+    ]
+  },
+  {
+    "id": "ann-locq04oq02-main-theorem",
+    "proofId": "law-of-cosines-oq-04-oq-02",
+    "range": { "startLine": 80, "endLine": 105 },
+    "type": "insight",
+    "title": "Main Result: Multiply-Then-Cancel Strategy",
+    "content": "The central proof uses a multiply-then-cancel strategy: instead of directly proving t²(b+c)² = bc((b+c)²-a²), it first proves a·(t²(b+c)²) = a·(bc((b+c)²-a²)) — an equation with a·(goal) on each side — via linear_combination with a polynomial witness built from Stewart's theorem and the three ratio lemmas. Since a > 0, cancel a via mul_left_cancel₀ to obtain the goal. This avoids any division and keeps everything in the polynomial ring.",
+    "mathContext": "The witness is $-(b+c)^2 \\cdot h_{\\text{stewart}} + b^2(b+c) \\cdot h_m + c^2(b+c) \\cdot h_n - a \\cdot h_{mn}$. Expanding: $-(b+c)^2[b^2m+c^2n-a(t^2+mn)] + b^2(b+c)[m(b+c)-ac] + c^2(b+c)[n(b+c)-ab] - a[mn(b+c)^2-a^2bc]$. After expansion, all terms involving $m$ and $n$ cancel, leaving $a \\cdot [t^2(b+c)^2 - bc((b+c)^2-a^2)]$. Setting this to 0 and dividing by $a$ gives the formula. The \\texttt{mul\\_left\\_cancel₀} call handles the cancellation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "mul_left_cancel₀ in Lean 4 Mathlib",
+      "polynomial witness for linear_combination",
+      "Stewart's theorem",
+      "Gröbner basis reduction"
+    ],
+    "prerequisites": [
+      "Stewart's theorem (hstewart hypothesis)",
+      "bisector_ratio_m, bisector_ratio_n, bisector_product lemmas",
+      "linear_combination tactic with polynomial coefficients",
+      "mul_left_cancel₀: a ≠ 0 → a*x = a*y → x = y"
+    ]
+  },
+  {
+    "id": "ann-locq04oq02-ratio-form",
+    "proofId": "law-of-cosines-oq-04-oq-02",
+    "range": { "startLine": 107, "endLine": 120 },
+    "type": "technique",
+    "title": "Ratio Form: Dividing by (b+c)²",
+    "content": "The ratio form t² = bc((b+c)²-a²)/(b+c)² is the classically stated formula. It follows immediately from the cleared-denominator form by dividing both sides by (b+c)², which is nonzero since b+c > 0. Lean uses field_simp to handle the division algebraically and linarith to close the arithmetic goal. The positivity tactic proves (b+c)² ≠ 0 from hbc_pos: 0 < b+c.",
+    "mathContext": "From $t^2(b+c)^2 = bc((b+c)^2-a^2)$ and $(b+c)^2 \\neq 0$: divide both sides to get $t^2 = \\frac{bc((b+c)^2-a^2)}{(b+c)^2}$. This is the form used in most geometry textbooks. Note that when $a = b+c$ (degenerate triangle), the right side is 0, consistent with $t = 0$. When $a < b+c$ (triangle inequality), the right side is positive, consistent with $t > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "field_simp tactic",
+      "positivity tactic for nonnegativity",
+      "triangle inequality (a < b+c ensures t² > 0)"
+    ],
+    "prerequisites": [
+      "angle_bisector_squared theorem",
+      "field_simp and linarith tactics",
+      "hbc_pos: 0 < b+c"
+    ]
+  },
+  {
+    "id": "ann-locq04oq02-geometric-version",
+    "proofId": "law-of-cosines-oq-04-oq-02",
+    "range": { "startLine": 126, "endLine": 144 },
+    "type": "insight",
+    "title": "Full Geometric Version: Composing the Two Parent Theorems",
+    "content": "angle_bisector_length is the full geometric theorem that a user would apply in a geometry proof. It takes the law-of-cosines sub-triangle hypotheses (as in the parent file) plus the angle bisector constraint, composes stewarts_theorem from the parent namespace to get Stewart's theorem, then applies angle_bisector_squared. The proof is a two-line composition: derive hstewart, then apply the algebra. This demonstrates the layered structure: law of cosines → Stewart's theorem → angle bisector formula.",
+    "mathContext": "The hypotheses mirror those in LawOfCosinesOQ04.lean: $c^2 = t^2 + m^2 - 2tmu$ (law of cosines in triangle ABD with $u = \\cos(\\angle BDA)$) and $b^2 = t^2 + n^2 + 2tnu$ (supplementary angle in triangle ACD). The proof calls \\texttt{stewarts\\_theorem} from the \\texttt{StewartsTheorem} namespace (opened at the top of the file) and passes the result to \\texttt{angle\\_bisector\\_squared}.",
+    "significance": "key",
+    "relatedConcepts": [
+      "theorem composition in Lean 4",
+      "namespace import (open StewartsTheorem)",
+      "modular proof structure",
+      "law of cosines for sub-triangles"
+    ],
+    "prerequisites": [
+      "angle_bisector_squared theorem (same file)",
+      "stewarts_theorem from LawOfCosinesOQ04.lean",
+      "law of cosines hypotheses for sub-triangles"
+    ]
+  },
+  {
+    "id": "ann-locq04oq02-special-cases",
+    "proofId": "law-of-cosines-oq-04-oq-02",
+    "range": { "startLine": 148, "endLine": 173 },
+    "type": "context",
+    "title": "Special Cases: Equilateral, 3-4-5, and Isoceles Triangles",
+    "content": "Three special cases verify the formula concretely. The equilateral case (a=b=c=s) gives 4t²s² = 3s⁴, i.e., t = s√3/2, the standard altitude-bisector of an equilateral triangle. The 3-4-5 right triangle gives 49t² = 288, i.e., t = 12√2/7. The isoceles case (b=c) gives 4t²b² = b²(4b²-a²), i.e., 4t² = 4b²-a², which matches the altitude formula for isoceles triangles. All three are proved by nlinarith from the specialized form of the main formula.",
+    "mathContext": "**Equilateral ($a=b=c=s$):** $t^2(2s)^2 = s^2(4s^2-s^2) = 3s^4$, so $4t^2 = 3s^2$, giving $t = s\\sqrt{3}/2$. **3-4-5 ($b=4, c=3, a=5$):** $t^2 \\cdot 49 = 12 \\cdot 24 = 288$, so $t = \\sqrt{288/49} = 12\\sqrt{2}/7 \\approx 2.43$. **Isoceles ($b=c$):** $t^2 \\cdot 4b^2 = b^2(4b^2-a^2)$, so $4t^2 = 4b^2-a^2$ (when $b>0$). This matches $t^2 = b^2 - (a/2)^2$, consistent with the Pythagorean theorem for the isoceles case (the bisector is also the altitude).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "equilateral triangle geometry",
+      "Pythagorean triple (3-4-5)",
+      "isoceles triangle altitude-bisector",
+      "nlinarith for nonlinear arithmetic"
+    ],
+    "prerequisites": [
+      "angle_bisector_squared (main theorem)",
+      "nlinarith tactic for nonlinear goals",
+      "sq_nonneg, sq_pos_of_pos for nonnegativity hints"
+    ]
+  }
+]
