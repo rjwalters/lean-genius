@@ -49,7 +49,8 @@
       "**Bochner integral over zero measure is zero**: `integral_zero_measure` handles the general integrand case without any integrability hypothesis",
       "**No MeasurableSet hypothesis needed**: For the forward direction (null → zero integral), measurability of S is not required",
       "**The Dirichlet case is a special case**: ℚ is countable → measure zero → integral of 𝟙_ℚ is zero, all subsumed by the general theorem",
-      "**L¹ is a space of a.e.-equivalence classes**: This result is a cornerstone of why L¹(μ) is defined as equivalence classes rather than actual functions"
+      "**L¹ is a space of a.e.-equivalence classes**: This result is a cornerstone of why L¹(μ) is defined as equivalence classes rather than actual functions",
+      "**Five-part pedagogical hierarchy**: Parts I–V form a conceptual ladder from abstract (any measure space) to concrete (OQ-01 as corollary): Part I establishes the abstract result; Part II specializes to ℝ; Part III handles countable unions; Part IV reveals the a.e. invariance principle; Part V closes the loop by deriving OQ-01's Dirichlet result as a one-line corollary"
     ],
     "prerequisites": [
       "Lebesgue measure on ℝ",
@@ -63,7 +64,8 @@
     "implications": "This result is foundational for Lebesgue integration theory:\n\n- **L¹ theory**: Functions equal a.e. have the same integral; L¹(μ) consists of a.e.-equivalence classes\n- **Cantor set**: The Cantor set is closed, uncountable, and perfect, yet has measure zero; its indicator function integrates to zero\n- **Fubini-Tonelli**: Null sets in product measures correspond to a.e. negligible cross-sections\n- **Radon-Nikodym**: Absolutely continuous measures satisfy ν ≪ μ iff μ(S)=0 implies ν(S)=0",
     "openQuestions": [
       "Can the converse be formalized: for measurable S, if ∫ f·𝟙_S dμ = 0 for all bounded f, then μ(S) = 0?",
-      "Can the result be extended to the non-σ-finite setting using inner regularity of the Lebesgue measure?"
+      "Can the result be extended to the non-σ-finite setting using inner regularity of the Lebesgue measure?",
+      "Can the Cantor set's uncountability and measure-zero property be used in this framework to provide a machine-verified example showing that null sets can be uncountable?"
     ]
   },
   "leanFile": {
@@ -106,6 +108,14 @@
       "endLine": 210,
       "summary": "Changing a function on a null set doesn't affect the integral; a.e.-zero functions integrate to zero.",
       "mathContext": "If $f = g$ off a null set $S$, then $\\int f \\, d\\mu = \\int g \\, d\\mu$. This is the abstract principle behind all null-set invisibility."
+    },
+    {
+      "id": "sec-subsumes",
+      "title": "Part V: Subsumes OQ-01 Results",
+      "startLine": 213,
+      "endLine": 240,
+      "summary": "Shows the Dirichlet function result (OQ-01) as a one-line corollary: ∫_{[0,1]} 𝟙_ℚ dλ = 0 via integral_indicator_of_null_on_set with S = ℚ. Closing SUMMARY comment lists all 15 theorems.",
+      "mathContext": "OQ-01 special case: $\\int_{[0,1]} \\mathbf{1}_{\\mathbb{Q}} \\, d\\lambda = 0$. Proof: `Set.countable_range (Rat.cast : ℚ → ℝ) |>.measure_zero volume` gives $\\lambda(\\mathbb{Q}) = 0$, then `integral_indicator_of_null_on_set` closes the argument."
     }
   ],
   "crossReferences": [
