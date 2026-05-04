@@ -1,0 +1,92 @@
+[
+  {
+    "id": "ann-fpf-invol",
+    "type": "theorem",
+    "label": "even_card_fpf_invol",
+    "title": "Fixed-Point-Free Involution Has Even Cardinality",
+    "body": "A fixed-point-free involution f on a finset S has even cardinality. The proof proceeds by strong induction: pick any x ∈ S, let y = f(x) ≠ x, remove both to get S' ⊂ S, apply the inductive hypothesis to S', and recover S.card = S'.card + 2.",
+    "location": { "line": 59 },
+    "tags": ["combinatorics", "involution", "parity", "induction"]
+  },
+  {
+    "id": "ann-sum-one",
+    "type": "lemma",
+    "label": "exists_of_sum_eq_one",
+    "title": "Sum-to-One Has a Unique Unit Element",
+    "body": "If nonneg naturals indexed by a finset sum to 1, exactly one element equals 1 and all others are 0. Used in the pigeonhole argument for surjective colorings.",
+    "location": { "line": 127 },
+    "tags": ["combinatorics", "pigeonhole"]
+  },
+  {
+    "id": "ann-door-parity",
+    "type": "theorem",
+    "label": "door_count_parity",
+    "title": "Door Count Parity Equals Surjectivity",
+    "body": "For a coloring f : Fin(d+1) → Fin(d+1), the number of 'door positions' k such that removing k still covers all other colors has the same parity as the surjectivity indicator (1 if f is surjective, 0 otherwise). The proof considers three cases: f not surjective (0 doors), f surjective with an identity-like structure (1 door = odd), and f surjective in general (pigeonhole gives exactly 2 preimage points for one color, yielding even door count).",
+    "location": { "line": 0 },
+    "tags": ["combinatorics", "door", "surjection", "parity"]
+  },
+  {
+    "id": "ann-isdoor-adj",
+    "type": "theorem",
+    "label": "isDoor_iff_of_adj",
+    "title": "Door Symmetry via Adjacency",
+    "body": "If cells s and s' are adjacent through faces k and k' respectively, sharing all vertices except the k-th of s and k'-th of s', then (s, k) is a door if and only if (s', k') is a door. This is the key symmetry that pairs interior doors.",
+    "location": { "line": 0 },
+    "tags": ["adjacency", "door", "symmetry"]
+  },
+  {
+    "id": "ann-interior-even",
+    "type": "theorem",
+    "label": "even_card_interior_doors",
+    "title": "Interior Doors Come in Pairs",
+    "body": "The total count of interior doors (where the adjacent face exists) is even. The proof applies even_card_fpf_invol to the pairing map (s, k) ↦ adj(s, k) on interior doors, using isDoor_iff_of_adj to show the image is always a door and the involution has no fixed points.",
+    "location": { "line": 0 },
+    "tags": ["parity", "interior", "door", "involution"]
+  },
+  {
+    "id": "ann-sperner-parity",
+    "type": "theorem",
+    "label": "sperner_parity",
+    "title": "Sperner Parity: Panchromatic Count ≡ Boundary Door Count (mod 2)",
+    "body": "The number of panchromatic cells is congruent to the number of boundary doors modulo 2. The proof sums door counts across all cells: interior doors cancel in pairs, and each panchromatic cell contributes an odd number of doors (via door_count_parity), while non-panchromatic cells contribute an even number.",
+    "location": { "line": 0 },
+    "tags": ["sperner", "parity", "panchromatic", "door-counting"]
+  },
+  {
+    "id": "ann-exists-panchromatic",
+    "type": "theorem",
+    "label": "exists_panchromatic",
+    "title": "Odd Boundary Doors Imply a Panchromatic Cell",
+    "body": "If the number of boundary doors is odd, then at least one panchromatic cell exists. This is the main existential form of Sperner's lemma, following immediately from sperner_parity: if boundary doors are odd and panchromatic count ≡ boundary doors (mod 2), then panchromatic count is odd, hence positive.",
+    "location": { "line": 0 },
+    "tags": ["sperner", "existence", "panchromatic"]
+  },
+  {
+    "id": "ann-sperner-coloring",
+    "type": "theorem",
+    "label": "boundary_doors_on_last_face",
+    "title": "Sperner Coloring: Boundary Doors on the Last Face",
+    "body": "With a Sperner coloring—where each boundary vertex is labeled by a color not equal to the face it's missing—every boundary door occurs at the last face position. This geometric constraint is what makes the boundary door count checkable from the simplex boundary alone.",
+    "location": { "line": 0 },
+    "tags": ["sperner-coloring", "boundary", "geometric"]
+  },
+  {
+    "id": "ann-boundary-odd",
+    "type": "theorem",
+    "label": "boundary_doors_odd_of_last_face",
+    "title": "Sperner Coloring Gives Odd Boundary Door Count",
+    "body": "Under a Sperner coloring, the count of boundary doors is odd. Combined with boundary_doors_on_last_face and exists_panchromatic, this completes the proof that every Sperner-colored triangulation contains a panchromatic cell.",
+    "location": { "line": 0 },
+    "tags": ["sperner-coloring", "boundary", "odd"]
+  },
+  {
+    "id": "ann-interval-example",
+    "type": "note",
+    "label": "IntervalExample",
+    "title": "Concrete 1-Dimensional Verification",
+    "body": "The IntervalExample section instantiates the abstract cell complex with intervals [i, i+1] for i < m, faces indexed by Fin 2 (endpoints), and adjacency connecting consecutive segments. An example theorem shows exists_panchromatic applies when boundary colorings differ—concretely illustrating that the abstract axioms are satisfiable and the theorem is nontrivial.",
+    "location": { "line": 883 },
+    "tags": ["example", "interval", "1-dimensional"]
+  }
+]
