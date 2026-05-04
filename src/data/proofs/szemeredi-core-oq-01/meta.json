@@ -17,28 +17,48 @@
       "Proofs.SzemerediCore",
       "Proofs.SzemerediRegularity"
     ],
-    "tags": ["combinatorics", "szemer-edi", "regularity", "energy-increment", "graph-theory"],
+    "tags": [
+      "combinatorics",
+      "szemer-edi",
+      "regularity",
+      "energy-increment",
+      "graph-theory"
+    ],
     "assumptions": [],
-    "sorries": 0
+    "sorries": 0,
+    "proofRepoPath": "Proofs/SzemerediCoreOQ01.lean"
   },
   "sections": [
     {
       "id": "edge-density-algebra",
       "title": "Edge Density Algebra",
       "description": "Foundational algebraic identities for edge density: symmetry d(A,B)=d(B,A) (edgeDensity_symm), convexity when splitting the second argument (density_sq_convex_right), non-decrease under splitting both parts (sub4pair_energy_lower_bound), weighted-average identity for unions (edgeDensity_union_weighted_avg), and the exact excess formula when A is split into A' and A\\A' (energy_excess_A_split).",
-      "theorems": ["edgeDensity_symm", "density_sq_convex_right", "sub4pair_energy_lower_bound", "edgeDensity_union_weighted_avg", "energy_excess_A_split"]
+      "theorems": [
+        "edgeDensity_symm",
+        "density_sq_convex_right",
+        "sub4pair_energy_lower_bound",
+        "edgeDensity_union_weighted_avg",
+        "energy_excess_A_split"
+      ]
     },
     {
       "id": "variance-decomposition",
       "title": "Variance Decomposition for Four Subpairs",
       "description": "The δ-decomposition of energy over four subpairs {A',A\\A'} × {B',B\\B'}: a 2D weighted-average identity (four_subpair_edge_count_identity), a variance formula expressing the energy excess in terms of squared density deviations (four_subpair_deviation_identity), and the per-pair lower bound showing each irregular pair contributes ≥ 2|A'||B'|(d(A',B')-d(A,B))²/n² to the energy excess (four_subpair_excess_lb).",
-      "theorems": ["four_subpair_edge_count_identity", "four_subpair_deviation_identity", "four_subpair_excess_lb"]
+      "theorems": [
+        "four_subpair_edge_count_identity",
+        "four_subpair_deviation_identity",
+        "four_subpair_excess_lb"
+      ]
     },
     {
       "id": "energy-increment",
       "title": "Energy Increment Theorem",
       "description": "The main results: energy_increment_packaging (block-decomposition core — separates the ε⁶ increment from the block-energy accounting) and energy_increment_step (assembles the full argument from an irregular pair witness, combining the quantitative bound |A'|·|B'|·(d(A',B')-d(A,B))² > ε⁶·n² with the packaging lemma to produce a refined partition with energy ≥ E + ε⁶).",
-      "theorems": ["energy_increment_packaging", "energy_increment_step"]
+      "theorems": [
+        "energy_increment_packaging",
+        "energy_increment_step"
+      ]
     }
   ],
   "overview": {
@@ -71,5 +91,13 @@
       "description": "The energy increment step is the key engine for proving Szemerédi's theorem on arithmetic progressions"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/SzemerediCoreOQ01.lean",
+    "lineCount": 843,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "axiomCount": 0,
+    "sorries": 0
+  }
 }
