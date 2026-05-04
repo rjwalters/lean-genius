@@ -536,6 +536,7 @@ import Proofs.DivisibilityTruncationGeneralOQ01
 import Proofs.DivisibilityTruncationGeneralOQ03
 import Proofs.ETranscendentalOQ01
 import Proofs.ETranscendentalOQ01OQ01
+import Proofs.ETranscendentalOQ02
 import Proofs.ETranscendentalOQ03
 import Proofs.EhrhartCubeProven
 import Proofs.EhrhartPolynomialOQ03
