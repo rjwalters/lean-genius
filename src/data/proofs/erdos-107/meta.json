@@ -16,7 +16,7 @@
       "convex-geometry"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 1,
     "erdosNumber": 107,
     "erdosUrl": "https://erdosproblems.com/107",
     "erdosProblemStatus": "open",
@@ -63,8 +63,8 @@
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 6,
-    "lineCount": 243,
-    "assumptions": "6 axioms (deep combinatorial bounds: f(4)=5, f(5)=9, Erdos-Szekeres bounds, Suk/HMPT bounds). 2 sorries (f_3_value and cardSet_three_lower_bound require EuclideanSpace API beyond current scope). f_finite proved from ersz_lower_bound by contradiction.",
+    "lineCount": 249,
+    "assumptions": "6 axioms (deep combinatorial bounds: f(4)=5, f(5)=9, Erdos-Szekeres bounds, Suk/HMPT bounds). 1 sorry: f_3_value (requires EuclideanSpace API beyond current scope). f_finite proved from ersz_lower_bound by contradiction.",
     "mathlib_version": "4.26.0",
     "theoremCount": 12
   },
@@ -209,8 +209,8 @@
   "sorries": 2,
   "leanFile": {
     "axiomCount": 6,
-    "lineCount": 243,
-    "sorries": 2,
+    "lineCount": 249,
+    "sorries": 1,
     "path": "Proofs/Erdos107Problem.lean",
     "definitionCount": 6,
     "theoremCount": 12
