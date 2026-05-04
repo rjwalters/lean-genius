@@ -1,0 +1,96 @@
+{
+  "id": "lagrange-theorem-oq-02-oq-01",
+  "title": "Burnside's Counting Lemma from Orbit-Stabilizer",
+  "slug": "lagrange-theorem-oq-02-oq-01",
+  "description": "Proves Burnside's counting lemma — ∑_g |Fix(g)| = |X/G|·|G| — by deriving it from the orbit-stabilizer theorem. The proof exhibits three key steps: double-counting pairs (g,x) with g•x=x, conjugation isomorphisms showing stabilizer sizes are constant within orbits, and the orbit-stabilizer identity |Orb(x)|·|Stab(x)|=|G|.",
+  "meta": {
+    "author": "Burnside (1897), Cauchy (1845), Frobenius (1887)",
+    "date": "2026-05-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeTheoremOQ02OQ01.lean",
+    "tags": [
+      "group-theory",
+      "group-actions",
+      "combinatorics",
+      "orbit-stabilizer",
+      "burnside",
+      "fixed-points",
+      "counting",
+      "polya-enumeration"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-04",
+    "axiomCount": 0,
+    "assumptions": "None — fully verified. Imports LagrangeTheoremOQ02 for card_orbit_mul_card_stabilizer.",
+    "lineCount": 170,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "originalContributions": [
+      "doubleCounting_equiv: bijection (Σg,Fix(g)) ≃ (Σx,Stab(x)) (line 55)",
+      "fixedBy_sum_eq_stabilizer_sum: ∑_g |Fix(g)| = ∑_x |Stab(x)| (line 65)",
+      "stabilizer_conj_equiv: Stab(g•x) ≃ Stab(x) via conjugation h↦g⁻¹hg (line 79)",
+      "card_stabilizer_smul: equal stabilizer sizes in same orbit (line 103)",
+      "card_stabilizer_eq_of_orbit: uniform stabilizer cardinality in orbits (line 110)",
+      "card_stab_mul_card_orbit: |Stab(x)|·|Orb(x)|=|G| from parent (line 122)",
+      "burnside_counting_lemma: main Burnside theorem (line 37)",
+      "burnside_from_orbit_stabilizer: summary with proof chain (line 155)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Burnside's lemma — also called the Cauchy-Frobenius theorem — was discovered independently by Cauchy (1845) and Frobenius (1887) before Burnside popularized it in his 1897 book *Theory of Groups of Finite Order*. Despite being misattributed to Burnside (who credited Frobenius), the result is central to combinatorial group theory. It counts orbits of a group action by averaging fixed-point counts over the group, a technique underlying Pólya's enumeration theorem for counting distinct configurations up to symmetry (necklaces, graphs, chemical isomers, etc.).",
+    "problemStatement": "**Open Question (OQ-01 from lagrange-theorem-oq-02)**: Formalize Burnside's counting lemma directly from the orbit-stabilizer theorem.\n\n**Answer**: Yes. Three key steps:\n1. **Double-counting**: `doubleCounting_equiv` gives `(Σ g, fixedBy X g) ≃ (Σ x, stabilizer G x)`, so `∑_g |Fix(g)| = ∑_x |Stab(x)|`.\n2. **Conjugation**: `stabilizer_conj_equiv g x : stabilizer G (g•x) ≃ stabilizer G x` shows all orbit elements have equal stabilizer size.\n3. **Orbit-stabilizer**: `card_stab_mul_card_orbit` gives `|Stab(x)| · |Orb(x)| = |G|`, so each orbit contributes |G| to the sum.\n\nSumming over orbits: `∑_x |Stab(x)| = |G| · |X/G|`. Combined with step 1: Burnside's lemma.",
+    "text": "Burnside's counting lemma follows from the orbit-stabilizer theorem via three steps: double-counting fixed-point pairs, conjugation isomorphisms for stabilizers in the same orbit, and the fundamental |Orb|·|Stab|=|G| identity.",
+    "proofStrategy": "Three-step derivation: (1) doubleCounting_equiv swaps the grouping; (2) stabilizer_conj_equiv shows Stab(g•x) ≅ Stab(x); (3) card_stab_mul_card_orbit gives per-orbit contribution = |G|.",
+    "significance": "Burnside's lemma is the foundation of Pólya enumeration theory, used to count distinct combinatorial configurations under symmetry."
+  },
+  "leanFile": {
+    "path": "Proofs/LagrangeTheoremOQ02OQ01.lean",
+    "lineCount": 170,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "axiomCount": 0,
+    "sorryCount": 0,
+    "isAristotle": false
+  },
+  "sections": [
+    {
+      "title": "Burnside's Counting Lemma",
+      "content": "∑_{g∈G} |{x : g•x=x}| = |X/G| · |G|",
+      "lean": "theorem burnside_counting_lemma"
+    },
+    {
+      "title": "Double-Counting Bijection",
+      "content": "Pairs (g,x) with g•x=x biject between (Σg,Fix(g)) and (Σx,Stab(x))",
+      "lean": "def doubleCounting_equiv"
+    },
+    {
+      "title": "Conjugation Isomorphism",
+      "content": "Stab(g•x) ≃ Stab(x) via h ↦ g⁻¹hg — stabilizer sizes constant in orbits",
+      "lean": "def stabilizer_conj_equiv"
+    },
+    {
+      "title": "Orbit-Stabilizer Bridge",
+      "content": "|Stab(x)| · |Orb(x)| = |G|, so each orbit contributes |G| to the stabilizer sum",
+      "lean": "theorem card_stab_mul_card_orbit"
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "lagrange-theorem-oq-02-oq-01-oq-01",
+      "question": "Formalize Pólya's enumeration theorem as a weighted generalization of Burnside.",
+      "difficulty": "hard",
+      "why": "Pólya's theorem is the main combinatorial application of Burnside's lemma."
+    }
+  ],
+  "keyInsights": [
+    "The double-counting bijection (Σg,Fix(g)) ≃ (Σx,Stab(x)) is the algebraic heart — it swaps the role of g and x.",
+    "Conjugation isomorphism Stab(g•x) ≃ Stab(x) makes stabilizer sizes an orbit invariant.",
+    "The orbit-stabilizer theorem (parent file) provides |Orb|·|Stab|=|G| for the per-orbit contribution."
+  ],
+  "relatedProofs": [
+    "lagrange-theorem-oq-02",
+    "burnside-counting",
+    "lagrange-theorem-oq-03"
+  ]
+}

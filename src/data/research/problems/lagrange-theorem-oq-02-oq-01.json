@@ -1,0 +1,64 @@
+{
+  "slug": "lagrange-theorem-oq-02-oq-01",
+  "title": "Formalize Burnside's counting lemma directly from orbit-stabilizer",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\sum_{g \\in G} |\\{x \\in X : g \\cdot x = x\\}| = |X/G| \\cdot |G|",
+    "plain": "Formalize Burnside's counting lemma directly from orbit-stabilizer: |X/G| = (1/|G|) * ∑_{g∈G} |Fix(g)|",
+    "whyMatters": ["Burnside's lemma underlies Pólya enumeration theory for counting combinatorial configurations under symmetry"]
+  },
+  "knownResults": {
+    "proven": ["Burnside's counting lemma from Mathlib", "double-counting bijection", "conjugation isomorphism for stabilizers"],
+    "open": [],
+    "goal": "Prove ∑_g |Fix(g)| = |X/G|·|G| from orbit-stabilizer"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-04T20:00:00.000Z",
+    "iteration": 1,
+    "focus": "Completed — 0 sorries, 0 axioms",
+    "blockers": [],
+    "nextAction": "None — complete",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Burnside's counting lemma proved from orbit-stabilizer. 0 sorries, 0 axioms, 170 lines.",
+    "builtItems": [
+      "doubleCounting_equiv: bijection (Σg,Fix(g)) ≃ (Σx,Stab(x)) (LagrangeTheoremOQ02OQ01.lean:55)",
+      "stabilizer_conj_equiv: Stab(g•x) ≃ Stab(x) via conjugation h↦g⁻¹hg (line 79)",
+      "burnside_counting_lemma: ∑_g |Fix(g)| = |X/G|·|G| (line 37)",
+      "fixedBy_sum_eq_stabilizer_sum: double-counting identity (line 65)",
+      "card_stab_mul_card_orbit: orbit-stabilizer restated for Fintype.card (line 122)"
+    ],
+    "insights": [
+      "double-counting bijection (Σg,Fix(g)) ≃ (Σx,Stab(x)) formalizes the pair-swap argument",
+      "conjugation isomorphism Stab(g•x) ≃ Stab(x) via h↦g⁻¹hg gives orbit-uniform stabilizer sizes",
+      "MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group is the Mathlib theorem for the main result",
+      "mem_stabilizer_iff is Iff.rfl so round-trips in doubleCounting_equiv are definitional rfl"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": ["seeker-selected", "gallery-extracted"],
+  "relatedProofs": [
+    "lagrange-theorem-oq-02",
+    "burnside-counting",
+    "lagrange-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": ["MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group"]
+  },
+  "started": "2026-05-04T20:00:00.000Z",
+  "lastUpdate": "2026-05-04T20:30:00.000Z",
+  "significance": 6,
+  "tractability": 8
+}

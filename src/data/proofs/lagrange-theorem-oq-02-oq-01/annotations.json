@@ -1,0 +1,25 @@
+{
+  "source": "generated",
+  "annotations": [
+    {
+      "line": 37,
+      "type": "key-insight",
+      "content": "Main theorem is one line — the substance is in the three lemmas that make explicit HOW orbit-stabilizer implies Burnside."
+    },
+    {
+      "line": 55,
+      "type": "technique",
+      "content": "doubleCounting_equiv formalizes the classical trick of counting {(g,x) : g•x=x} two ways — by fixing g or by fixing x."
+    },
+    {
+      "line": 79,
+      "type": "key-insight",
+      "content": "stabilizer_conj_equiv: if h fixes g•x, then g⁻¹hg fixes x. This is why stabilizer sizes are constant within each orbit."
+    },
+    {
+      "line": 122,
+      "type": "dependency",
+      "content": "card_stab_mul_card_orbit restates parent orbit-stabilizer theorem (Nat.card → Fintype.card conversion)."
+    }
+  ]
+}
