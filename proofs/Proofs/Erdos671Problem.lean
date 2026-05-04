@@ -203,7 +203,31 @@ theorem q2_implies_q1 (h : Question2) : Question1 := by
 noncomputable def chebyshevNodes (n : ℕ) : InterpolationPoints n where
   points := fun k => Real.cos ((2 * k.val + 1) * Real.pi / (2 * n))
   in_interval := fun k => Real.cos_mem_Icc _
-  distinct := by sorry
+  distinct := by
+    intro k j hkj heq
+    apply hkj
+    have hn_pos : (0 : ℝ) < 2 * n := by
+      have : 0 < n := k.pos; positivity
+    have hk_in : (2 * (k.val : ℝ) + 1) * Real.pi / (2 * n) ∈ Set.Icc 0 Real.pi := by
+      constructor
+      · positivity
+      · rw [div_le_one (by positivity)]
+        have : (k.val : ℝ) < n := by exact_mod_cast k.isLt
+        nlinarith [Real.pi_pos]
+    have hj_in : (2 * (j.val : ℝ) + 1) * Real.pi / (2 * n) ∈ Set.Icc 0 Real.pi := by
+      constructor
+      · positivity
+      · rw [div_le_one (by positivity)]
+        have : (j.val : ℝ) < n := by exact_mod_cast j.isLt
+        nlinarith [Real.pi_pos]
+    have h_angle : (2 * (k.val : ℝ) + 1) * Real.pi / (2 * n) =
+                  (2 * (j.val : ℝ) + 1) * Real.pi / (2 * n) :=
+      Real.strictAntiOn_cos.injOn hk_in hj_in heq
+    have h_val : (k.val : ℝ) = j.val := by
+      have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
+      field_simp [hpi, hn_pos.ne'] at h_angle
+      linarith
+    exact Fin.ext (by exact_mod_cast h_val)
 
 /-- Equidistant nodes: x_k = -1 + 2k/(n-1). -/
 noncomputable def equidistantNodes (n : ℕ) (hn : n ≥ 2) : InterpolationPoints n where
