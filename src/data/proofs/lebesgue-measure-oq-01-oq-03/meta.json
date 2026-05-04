@@ -68,11 +68,19 @@
   },
   "leanFile": {
     "namespace": "LebesgueMeasureOQ01OQ03",
-    "lineCount": 240,
+    "lineCount": 244,
     "axiomCount": 0,
     "sorryCount": 0,
     "theoremCount": 15,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "path": "Proofs/LebesgueMeasureOQ01OQ03.lean",
+    "sorries": 0,
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Integral.Bochner.Set",
+      "Mathlib.Tactic"
+    ]
   },
   "sections": [
     {
