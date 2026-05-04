@@ -25,6 +25,7 @@
     "lineCount": 230,
     "theoremCount": 19,
     "definitionCount": 3,
+    "parentProofId": "cevas-theorem-oq-01",
     "originalContributions": [
       "routh_theorem_std: Routh's area formula — signedArea(P,Q,R) = routhRatio(d,e,f) * signedArea(A,B,C) for general parameters",
       "routh_area_explicit: explicit form giving signedArea(P,Q,R) = routhRatio(d,e,f) directly",
@@ -36,7 +37,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Routh's theorem (1891) extends Ceva's theorem: when three cevians of a triangle are not concurrent, they form an inner triangle. Edward John Routh, the British mathematician, derived the area ratio formula connecting the inner triangle's area to the original. The formula shows that the area ratio depends only on the parameter values d, e, f at which the cevians divide the opposite sides.",
+    "historicalContext": "Routh's theorem (1891) extends Ceva's theorem: when three cevians of a triangle are not concurrent, they form an inner triangle. Edward John Routh (1831–1907), the British mathematician and physicist who won the Smith's Prize at Cambridge, derived the area ratio formula connecting the inner triangle's area to the original. The formula shows that the area ratio depends only on the parameter values d, e, f at which the cevians divide the opposite sides. The most famous special case is d = e = f = 1/3 (trisection of each side), giving an inner triangle of area 1/7 of the original — a result that has appeared in mathematical olympiad competitions worldwide. The concurrent case (Ceva's condition def = (1-d)(1-e)(1-f)) degenerates to area ratio 0, connecting Routh's theorem directly to Ceva's theorem (1678) as its non-concurrent generalization.",
     "problemStatement": "For cevian parameters d, e, f ∈ (0,1), compute the area of the inner triangle formed by the pairwise intersections of cevians AD, BE, CF in terms of the original triangle's area. Prove that the ratio equals (def-(1-d)(1-e)(1-f))² / ((1-e+de)(1-f+ef)(1-d+fd)).",
     "proofStrategy": "Work in the standard triangle A=(0,0), B=(1,0), C=(0,1). The three cevian intersection points P, Q, R are computed explicitly as rational functions of d, e, f via linear system solving. The signed area formula reduces to a single polynomial identity after clearing denominators, proved by field_simp + ring.",
     "keyInsights": [
@@ -94,7 +95,8 @@
     "implications": "This result completes the formalization of classical planar geometry via cevian theory. The Routh formula generalizes Ceva's theorem (ratio = 0 case) and connects to other triangle area formulas. It provides a computational tool for polygon area calculations in lattice geometry.",
     "openQuestions": [
       "Can Routh's theorem be generalized to higher-dimensional simplices? For a d-simplex with cevians from each vertex to the opposite face, is there an analogous interior volume formula?",
-      "Ehrhart generalization: does Routh's formula have an Ehrhart polynomial interpretation for dilations of the inner triangle?"
+      "Ehrhart generalization: does Routh's formula have an Ehrhart polynomial interpretation for dilations of the inner triangle?",
+      "Can Routh's theorem be proved using mass-point geometry or barycentric coordinates in a way that makes the polynomial identity self-evident rather than relying on field_simp + ring?"
     ]
   },
   "crossReferences": [
