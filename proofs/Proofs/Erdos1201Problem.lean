@@ -1049,6 +1049,11 @@ theorem erdos_1201_conjecture_large_eps (ε η : ℝ) (hε_lb : 1 / 2 ≤ ε) (h
     rw [Real.sqrt_eq_rpow] at hn
     exact (Real.rpow_le_rpow_of_exponent_le hn1 (by linarith)).trans_lt hn
 
+/-- For n ≥ 1, the window [n, n+2] (3 consecutive integers) always has a largest prime factor > 2.
+    Immediate from Sylvester-Schur for prime window size 3 (k=2, k+1=3 is prime). -/
+theorem gpfConsecutive_two_gt_two (n : ℕ) (hn : 1 ≤ n) : 2 < gpfConsecutive n 2 :=
+  gpfConsecutive_gt_k_of_prime_succ n 2 hn (by norm_num)
+
 /-- **Individual Threshold**: For each n ≥ 2 and ε ∈ (0,1), some finite window makes n "good".
     Specifically window k = n works: P(n,n) > n > n^(1-ε) by Bertrand's postulate.
     The CONJECTURE asks for a FIXED window working for density-1 of all n simultaneously. -/
@@ -1070,5 +1075,20 @@ theorem erdos_1201_good_set_mono (ε : ℝ) {k₁ k₂ : ℕ} (hk : k₁ ≤ k�
     (h : (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k₁ : ℝ)) :
     (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k₂ : ℝ) :=
   h.trans_le (by exact_mod_cast gpfConsecutive_le_of_le_k n hn hk)
+
+/-- **Formal reduction to ε < 1/2**: The Erdős conjecture is equivalent to its restriction to
+    ε ∈ (0, 1/2). The case ε ∈ [1/2, 1) is already settled by `erdos_1201_conjecture_large_eps`. -/
+theorem erdos_1201_equiv_small_eps :
+    ErdosProblem1201 ↔
+    ∀ (ε η : ℝ) (hε₀ : 0 < ε) (hε₁ : ε < 1 / 2) (hη : 0 < η),
+      ∃ k : ℕ, upperDensity {n : ℕ | (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ)} ≥ 1 - η := by
+  constructor
+  · intro h ε η hε₀ hε₁ hη
+    exact h ε η hε₀ (by linarith) hη
+  · intro h ε η hε₀ hε₁ hη
+    by_cases hε_half : 1 / 2 ≤ ε
+    · exact erdos_1201_conjecture_large_eps ε η hε_half hε₁ hη
+    · push_neg at hε_half
+      exact h ε η hε₀ hε_half hη
 
 end Erdos1201
