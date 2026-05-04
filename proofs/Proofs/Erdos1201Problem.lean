@@ -379,30 +379,11 @@ theorem gpfConsecutive_succ_succ_succ_gt_k (k : ℕ) (hk : 1 ≤ k) :
   exact gpfConsecutive_gt_k_of_prime_in_window (k + 3) k (by omega) p hp_prime
     (by omega) (by omega)
 
-/-- Among any m consecutive integers starting at n (for m ≥ 1), some term is divisible by m.
-    Key: k+1 consecutive integers cover all residue classes mod m exactly once. -/
-private lemma exists_dvd_in_consecutive (n m : ℕ) (hm : 0 < m) : ∃ i < m, m ∣ n + i := by
-  refine ⟨(m - n % m) % m, Nat.mod_lt _ hm, ?_⟩
-  rcases Nat.eq_zero_or_pos (n % m) with h | h
-  · simpa [h, Nat.sub_zero, Nat.mod_self] using Nat.dvd_of_mod_eq_zero h
-  · rw [Nat.mod_eq_of_lt (by have := Nat.mod_lt n hm; omega)]
-    have heq : n + (m - n % m) = m * (n / m + 1) := by
-      have := Nat.div_add_mod n m; omega
-    exact heq ▸ dvd_mul_right m _
-
-/-- **Sylvester-Schur (prime window size)**: When k+1 is prime, P(n, k) ≥ k+1 for all n ≥ 1.
-    Among any k+1 consecutive integers, the complete residue system mod k+1 guarantees one
-    is divisible by k+1, which is a prime factor > k of the consecutive product. -/
-theorem gpfConsecutive_ge_succ_k_of_prime (n k : ℕ) (hn : 1 ≤ n) (hk1 : (k + 1).Prime) :
-    k + 1 ≤ gpfConsecutive n k := by
-  obtain ⟨i, hi_lt, hi_dvd⟩ := exists_dvd_in_consecutive n (k + 1) (Nat.succ_pos k)
-  exact le_gpfConsecutive_of_prime_dvd_term n k i hn (by omega) (k + 1) hk1 hi_dvd
-
-/-- **Sylvester-Schur (prime window size, strict)**: When k+1 is prime, k < P(n, k) for all n ≥ 1.
-    Covers all prime-predecessor k: k = 1, 2, 4, 6, 10, 12, 16, 18, ... -/
-theorem gpfConsecutive_gt_k_of_prime_succ (n k : ℕ) (hn : 1 ≤ n) (hk1 : (k + 1).Prime) :
+/-- **Sylvester-Schur (prime start)**: When n is prime and k < n, P(n,k) > k.
+    Since n is prime, gpf(n) = n ≥ P(n,k); combined with k < n this gives k < P(n,k). -/
+theorem gpfConsecutive_prime_gt_k (n k : ℕ) (hn_prime : n.Prime) (hnk : k < n) :
     k < gpfConsecutive n k :=
-  Nat.lt_of_lt_of_le (Nat.lt_succ_self k) (gpfConsecutive_ge_succ_k_of_prime n k hn hk1)
+  lt_of_lt_of_le hnk (gpfConsecutive_ge_self_of_prime n k hn_prime)
 
 /-
 ## Infinitely Many n with Large GPF
@@ -594,6 +575,30 @@ theorem le_gpfConsecutive_of_prime_dvd_term (n k i : ℕ) (hn : 1 ≤ n) (hi : i
   unfold gpfConsecutive
   exact gpf_ge_prime_dvd (consecutiveProduct n k) p hcp hp
     (dvd_trans hpdvd (dvd_consecutiveProduct_term n k i hi))
+
+/-- Among any m consecutive integers starting at n (for m ≥ 1), some term is divisible by m.
+    Key: k+1 consecutive integers cover all residue classes mod k+1 exactly once. -/
+private lemma exists_dvd_in_consecutive (n m : ℕ) (hm : 0 < m) : ∃ i < m, m ∣ n + i := by
+  rcases Nat.eq_zero_or_pos (n % m) with h | h
+  · exact ⟨0, hm, Nat.dvd_of_mod_eq_zero h⟩
+  · have hlt : n % m < m := Nat.mod_lt n hm
+    refine ⟨m - n % m, Nat.sub_lt hm h, Nat.dvd_of_mod_eq_zero ?_⟩
+    rw [Nat.add_mod, Nat.mod_eq_of_lt (Nat.sub_lt hm h),
+        Nat.add_sub_cancel' (Nat.le_of_lt hlt), Nat.mod_self]
+
+/-- **Sylvester-Schur (prime window size)**: When k+1 is prime, P(n, k) ≥ k+1 for all n ≥ 1.
+    Among any k+1 consecutive integers, the complete residue system mod k+1 guarantees one
+    is divisible by k+1, which is a prime factor > k of the consecutive product. -/
+theorem gpfConsecutive_ge_succ_k_of_prime (n k : ℕ) (hn : 1 ≤ n) (hk1 : (k + 1).Prime) :
+    k + 1 ≤ gpfConsecutive n k := by
+  obtain ⟨i, hi_lt, hi_dvd⟩ := exists_dvd_in_consecutive n (k + 1) (Nat.succ_pos k)
+  exact le_gpfConsecutive_of_prime_dvd_term n k i hn (by omega) (k + 1) hk1 hi_dvd
+
+/-- **Sylvester-Schur (prime window size, strict)**: When k+1 is prime, k < P(n, k) for all n ≥ 1.
+    Covers all prime-predecessor k: k = 1, 2, 4, 6, 10, 12, 16, 18, ... -/
+theorem gpfConsecutive_gt_k_of_prime_succ (n k : ℕ) (hn : 1 ≤ n) (hk1 : (k + 1).Prime) :
+    k < gpfConsecutive n k :=
+  Nat.lt_of_lt_of_le (Nat.lt_succ_self k) (gpfConsecutive_ge_succ_k_of_prime n k hn hk1)
 
 /-- Tight Bertrand bound: for n ≥ 1, n < P(n,n) ≤ 2n (prime in Bertrand window). -/
 theorem gpfConsecutive_between (n : ℕ) (hn : 1 ≤ n) :
@@ -954,16 +959,13 @@ theorem gpfConsecutive_eq_term_gpf (n k : ℕ) (hn : 2 ≤ n) (hk : k < gpfConse
 /-- The consecutive product n(n+1)···(n+k) equals the descending factorial (n+k)↓(k+1). -/
 private lemma consecutiveProduct_eq_descFactorial (n k : ℕ) :
     consecutiveProduct n k = (n + k).descFactorial (k + 1) := by
-  induction k with
-  | zero => simp [consecutiveProduct_zero, Nat.descFactorial_one]
-  | succ k ih =>
-    have hright : consecutiveProduct n (k + 1) = consecutiveProduct n k * (n + k + 1) := by
-      simp only [consecutiveProduct, Finset.prod_range_succ]; ring
-    have hstep : (n + (k + 1)).descFactorial (k + 2) =
-        (n + k + 1) * (n + k).descFactorial (k + 1) := by
-      rw [show n + (k + 1) = n + k + 1 from by ring, Nat.descFactorial_succ]
-      congr 1; omega
-    rw [hright, ih, hstep]; ring
+  simp only [consecutiveProduct]
+  rw [Nat.descFactorial_eq_prod_range]
+  rw [← Finset.prod_range_reflect (fun j => n + j) (k + 1)]
+  apply Finset.prod_congr rfl
+  intro i hi
+  rw [Finset.mem_range] at hi
+  omega
 
 /-- **(k+1)! divides every product of k+1 consecutive integers**, for any starting point n.
     This is the identity n(n+1)···(n+k) = C(n+k, k+1) · (k+1)!, which follows from
@@ -1000,7 +1002,10 @@ theorem gpfConsecutive_gt_half_k (n k : ℕ) (hn : 1 ≤ n) (hk : 2 ≤ k) :
     le_trans (by omega) (Nat.self_le_factorial (k + 1))
   have hcp_ge2 : 2 ≤ consecutiveProduct n k :=
     Nat.le_trans hfact_ge2 (Nat.le_of_dvd (consecutiveProduct_pos n k hn) hfact_dvd)
-  linarith [gpf_ge_prime_dvd _ _ hcp_ge2 hp_prime hp_dvd_cp, show k < 2 * p from by omega]
+  have hge : p ≤ gpfConsecutive n k := by
+    unfold gpfConsecutive; exact gpf_ge_prime_dvd _ _ hcp_ge2 hp_prime hp_dvd_cp
+  have hlt : k < 2 * p := by omega
+  linarith
 
 /-- **Threshold Bound**: If n^(1-ε) < k/2, then P(n,k) > n^(1-ε).
     Combining `gpfConsecutive_gt_half_k` (P > k/2) with the hypothesis n^(1-ε) < k/2
@@ -1043,5 +1048,47 @@ theorem erdos_1201_conjecture_large_eps (ε η : ℝ) (hε_lb : 1 / 2 ≤ ε) (h
   · have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn_pos
     rw [Real.sqrt_eq_rpow] at hn
     exact (Real.rpow_le_rpow_of_exponent_le hn1 (by linarith)).trans_lt hn
+
+/-- For n ≥ 1, the window [n, n+2] (3 consecutive integers) always has a largest prime factor > 2.
+    Immediate from Sylvester-Schur for prime window size 3 (k=2, k+1=3 is prime). -/
+theorem gpfConsecutive_two_gt_two (n : ℕ) (hn : 1 ≤ n) : 2 < gpfConsecutive n 2 :=
+  gpfConsecutive_gt_k_of_prime_succ n 2 hn (by norm_num)
+
+/-- **Individual Threshold**: For each n ≥ 2 and ε ∈ (0,1), some finite window makes n "good".
+    Specifically window k = n works: P(n,n) > n > n^(1-ε) by Bertrand's postulate.
+    The CONJECTURE asks for a FIXED window working for density-1 of all n simultaneously. -/
+theorem erdos_1201_individual_threshold (n : ℕ) (hn : 2 ≤ n) (ε : ℝ)
+    (hε₀ : 0 < ε) (hε₁ : ε < 1) :
+    ∃ k : ℕ, (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ) := by
+  refine ⟨n, ?_⟩
+  have h_gt : n < gpfConsecutive n n := gpfConsecutive_self_gt n (by omega)
+  have h_ncast : (1 : ℝ) < (n : ℝ) := by exact_mod_cast (show 1 < n from by omega)
+  have h_bound : (n : ℝ) ^ (1 - ε) < (n : ℝ) :=
+    calc (n : ℝ) ^ (1 - ε) < (n : ℝ) ^ (1 : ℝ) :=
+          Real.rpow_lt_rpow_of_exponent_lt h_ncast (by linarith)
+      _ = (n : ℝ) := Real.rpow_one _
+  linarith [show (n : ℝ) ≤ gpfConsecutive n n from by exact_mod_cast h_gt.le]
+
+/-- **Good Set Monotonicity (pointwise)**: if n is good for window k₁, it's good for all k₂ ≥ k₁.
+    Generalization of `erdos_1201_good_set_mono_k` from k → k+1 to arbitrary k₁ ≤ k₂. -/
+theorem erdos_1201_good_set_mono (ε : ℝ) {k₁ k₂ : ℕ} (hk : k₁ ≤ k₂) (n : ℕ) (hn : 2 ≤ n)
+    (h : (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k₁ : ℝ)) :
+    (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k₂ : ℝ) :=
+  h.trans_le (by exact_mod_cast gpfConsecutive_le_of_le_k n hn hk)
+
+/-- **Formal reduction to ε < 1/2**: The Erdős conjecture is equivalent to its restriction to
+    ε ∈ (0, 1/2). The case ε ∈ [1/2, 1) is already settled by `erdos_1201_conjecture_large_eps`. -/
+theorem erdos_1201_equiv_small_eps :
+    ErdosProblem1201 ↔
+    ∀ (ε η : ℝ) (hε₀ : 0 < ε) (hε₁ : ε < 1 / 2) (hη : 0 < η),
+      ∃ k : ℕ, upperDensity {n : ℕ | (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ)} ≥ 1 - η := by
+  constructor
+  · intro h ε η hε₀ hε₁ hη
+    exact h ε η hε₀ (by linarith) hη
+  · intro h ε η hε₀ hε₁ hη
+    by_cases hε_half : 1 / 2 ≤ ε
+    · exact erdos_1201_conjecture_large_eps ε η hε_half hε₁ hη
+    · push_neg at hε_half
+      exact h ε η hε₀ hε_half hη
 
 end Erdos1201
