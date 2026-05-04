@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "61 theorems, 0 sorries, 1 axiom. Session 8: +6 theorems, +1 duplicate fix, +1 IsCoboundedUnder order fix",
+    "progressSummary": "69 theorems, 0 sorries, 1 axiom. Session 10: +8 theorems (factorial divisibility + epsilon-monotonicity). Open problem reduced to e in (0,1/2).",
     "builtItems": [
       "greatestPrimeFactor: def using Nat.primeFactors.max' (Erdos1201Problem.lean:28)",
       "consecutiveProduct: def using Finset.range.prod (Erdos1201Problem.lean:32)",
@@ -87,7 +87,15 @@
       "erdos_1201_good_implies_good_succ: pointwise good-set mono in k (Session 8) in Erdos1201Problem.lean:407",
       "erdos_1201_good_set_mono_k: set-level good-set containment (Session 8) in Erdos1201Problem.lean:414",
       "upperDensity_mono: density monotone for set inclusion via limsup_le_limsup (Session 8) in Erdos1201Problem.lean:423",
-      "erdos_1201_density_mono_k: density non-decreasing in k (Session 8) in Erdos1201Problem.lean:443"
+      "erdos_1201_density_mono_k: density non-decreasing in k (Session 8) in Erdos1201Problem.lean:443",
+      "factorial_dvd_consecutiveProduct: (k+1)! | n(n+1)...(n+k) for all n,k",
+      "gpfConsecutive_ge_factorial_gpf: P(n,k) >= GPF((k+1)!) for n>=1, k>=1",
+      "gpfConsecutive_gt_half_k: 2*P(n,k) > k for ALL n>=1, k>=2 (universal, no n>k condition)",
+      "erdos_1201_threshold_bound: n^(1-e) < k/2 implies P(n,k) > n^(1-e)",
+      "erdos_1201_good_set_mono_eps: e <= e prime implies good(e) subset good(e prime)",
+      "erdos_1201_density_mono_eps: density non-decreasing in e",
+      "erdos_1201_trivially_good_of_large_eps: e >= 1 implies automatically good",
+      "erdos_1201_conjecture_large_eps: conjecture for e >= 1/2 follows from axiom; open problem reduces to e in (0,1/2)"
     ],
     "insights": [
       "greatestPrimeFactor defined via Nat.primeFactors.max' — cleanly handles n=0,1 by returning 0",
@@ -122,7 +130,11 @@
       "Window algebra complete: bilateral extension + splitting + prime term bound",
       "Filter.limsup_le_limsup arg order: IsCoboundedUnder for smaller f, IsBoundedUnder for larger g",
       "IsCoboundedUnder for density: use 0; intro a ha; by_contra; obtain N; linarith [density_nonneg N]",
-      "Sylvester-Schur n=k+3: rule out p=2(k+2) prime via prime.eq_one_or_self_of_dvd 2 (dvd_mul_right)"
+      "Sylvester-Schur n=k+3: rule out p=2(k+2) prime via prime.eq_one_or_self_of_dvd 2 (dvd_mul_right)",
+      "Factorial divisibility approach: (k+1)! | product gives UNIVERSAL bound P(n,k) > k/2 without n>k restriction",
+      "Sylvester-Schur general case follows from factorial approach: among any k+1 consecutive ints, one has prime factor via (k+1)! divisibility",
+      "Epsilon-monotonicity: The open problem needs only be proved for e in (0,1/2); the e >= 1/2 case follows from Erdos known result",
+      "Threshold sufficient condition: n^(1-e) < k/2 is a sufficient condition for n to be good, giving an explicit parameter range"
     ],
     "mathlibGaps": [
       "No Mathlib lemma directly connecting upper density thresholds to prime gaps — needed for full conjecture",
