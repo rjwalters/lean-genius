@@ -1,0 +1,58 @@
+{
+  "annotations": [
+    {
+      "id": "annotation-1",
+      "type": "keyInsight",
+      "lineStart": 68,
+      "lineEnd": 102,
+      "title": "Parity via ZMod 2: tail sum is odd",
+      "body": "The core insight: T = ε₂+...+εₙ (sum of n-1 values each ±1) is odd. Since (-1) ≡ 1 (mod 2) and (+1) ≡ 1 (mod 2), every term contributes 1 in ZMod 2. The total is (n-1)·1 ≡ n-1 ≡ 1 (mod 2) because n is even. An odd integer is nonzero.",
+      "mathContext": "ZMod 2 arithmetic: in characteristic 2, -1 = 1, so both +1 and -1 cast to 1. This makes parity arguments for ±1 sums particularly clean."
+    },
+    {
+      "id": "annotation-2",
+      "type": "proofTechnique",
+      "lineStart": 105,
+      "lineEnd": 127,
+      "title": "Sum split using Fin.sum_univ_succ",
+      "body": "The signed sum over Fin n is split into the first term (index 0, which has z₀=1) and the remaining n-1 terms (each with zᵢ=i). Fin.sum_univ_succ handles this for Fin (n-1+1) = Fin n.",
+      "mathContext": "Fin.sum_univ_succ: ∑ i : Fin (n+1), f i = f 0 + ∑ i : Fin n, f i.succ. Used with n replaced by n-1."
+    },
+    {
+      "id": "annotation-3",
+      "type": "keyInsight",
+      "lineStart": 130,
+      "lineEnd": 155,
+      "title": "normSq = 1 + T² bounds the complex norm",
+      "body": "For the split form e₀ + i·T: normSq = e₀² + T². Since e₀ ∈ {-1,1} we have e₀² = 1. Since T ≠ 0 is an integer, T² ≥ 1. Therefore normSq ≥ 2, and Complex.abs = √(normSq) ≥ √2.",
+      "mathContext": "Complex.normSq_apply gives normSq as re² + im². For a + i·b (a,b : ℤ): re = a, im = b, so normSq = a² + b²."
+    },
+    {
+      "id": "annotation-4",
+      "type": "historicalContext",
+      "lineStart": 1,
+      "lineEnd": 25,
+      "title": "The Carnielli-Carolino counterexample (2011)",
+      "body": "Erdős originally asked: can P(|ε₁z₁+...+εₙzₙ| ≤ 1) ≥ c/n always hold? Carnielli and Carolino showed in 2011 that for z₁=1 and z₂=...=zₙ=i (n even), the sum is always at least √2 in absolute value, so the probability of ≤1 is 0, refuting the conjecture. The revised threshold √2 was then shown correct by HJNS 2024.",
+      "mathContext": "The √2 threshold comes from |1 + i·m|² = 1 + m² ≥ 2 for m ∈ ℤ\\ {0}, i.e., the minimum nonzero complex integer of the form a + bi (a,b ∈ ℤ) has |a+bi| ≥ √2 (achieved by ±1 ± i)."
+    },
+    {
+      "id": "annotation-5",
+      "type": "proofTechnique",
+      "lineStart": 155,
+      "lineEnd": 164,
+      "title": "Integer T ≠ 0 implies T² ≥ 1 in ℝ",
+      "body": "Since T : ℤ with T ≠ 0, we have |T| ≥ 1 (smallest nonzero absolute value of an integer). Cast to ℝ: |(T:ℝ)| ≥ 1. Then (T:ℝ)² = |(T:ℝ)|² ≥ 1² = 1. Key: Int.one_le_natAbs bridges ℤ nonzero to ℕ natAbs ≥ 1.",
+      "mathContext": "Int.one_le_natAbs : a ≠ 0 → 1 ≤ a.natAbs. Combined with Int.cast_natAbs and exact_mod_cast to transfer to ℝ."
+    },
+    {
+      "id": "annotation-6",
+      "type": "keyInsight",
+      "lineStart": 158,
+      "lineEnd": 164,
+      "title": "Consequence: original problem is FALSE",
+      "body": "From counterexample_always_large_proved, we immediately get that for n=2, the configuration z₁=1, z₂=i gives P(|sum|≤1) = 0 (no sign vectors achieve this), so no c > 0 can make P ≥ c/n hold. This is erdos_original_false_proved, proved without any axioms.",
+      "mathContext": "The consequence uses Real.sqrt_lt_sqrt to show √2 > 1, then linarith to conclude the probability cannot equal c/2 for any c > 0."
+    }
+  ]
+}
