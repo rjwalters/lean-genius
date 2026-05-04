@@ -24,6 +24,18 @@
     "prerequisites": ["Classical.propDecidable for if-then-else on real propositions", "Lean 4 def with if-then-else on Prop"]
   },
   {
+    "id": "ann-counterexample-points",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": { "startLine": 90, "endLine": 102 },
+    "type": "definition",
+    "title": "10 Explicit Integer Points: Exact Arithmetic and Scalar-Multiple Structure",
+    "content": "The counterexample uses 10 private point definitions with integer coordinates: center O=(0,0), triangles A=(-2,3), B=(3,1), C=(0,-1) and A'=(-4,6), B'=(9,3), C'=(0,-4), and the three intersection points P=(-17,9), Q=(27,17), R=(-6,11). All are marked `private` to scope them to the MoultonPlane namespace. Integer coordinates are essential for the proof strategy: all incidence checks and the non-collinearity contradiction use `norm_num`, which does exact rational arithmetic, unlike floating-point. A key observation: A'=2A, B'=3B, C'=4C — all are scalar multiples of the originals from O=(0,0). This immediately explains why OAA', OBB', OCC' are collinear (O, X, cX are collinear for any scalar c), though the formalization still uses the full Moulton-collinearity apparatus.",
+    "mathContext": "Points: $O=(0,0)$, $A=(-2,3)$, $B=(3,1)$, $C=(0,-1)$, $A'=(-4,6)=2A$, $B'=(9,3)=3B$, $C'=(0,-4)=4C$. Intersections: $P = AB \\cap A'B' = (-17,9)$, $Q = BC \\cap B'C' = (27,17)$, $R = CA \\cap C'A' = (-6,11)$. Scalar structure means $O, A, A'$ collinear trivially ($(0,0)$, $(-2,3)$, $(-4,6)$: same direction).",
+    "significance": "supporting",
+    "relatedConcepts": ["private definitions in Lean 4", "norm_num exact rational arithmetic", "scalar multiples and collinearity", "counterexample coordinate design"],
+    "prerequisites": ["ℝ² coordinate pair notation (Prod ℝ ℝ)", "Lean 4 private def", "norm_num for integer arithmetic"]
+  },
+  {
     "id": "ann-perspectivity-verification",
     "proofId": "desargues-theorem-oq-01-oq-01",
     "range": { "startLine": 103, "endLine": 130 },
