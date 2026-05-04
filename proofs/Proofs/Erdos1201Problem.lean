@@ -379,6 +379,31 @@ theorem gpfConsecutive_succ_succ_succ_gt_k (k : ℕ) (hk : 1 ≤ k) :
   exact gpfConsecutive_gt_k_of_prime_in_window (k + 3) k (by omega) p hp_prime
     (by omega) (by omega)
 
+/-- Among any m consecutive integers starting at n (for m ≥ 1), some term is divisible by m.
+    Key: k+1 consecutive integers cover all residue classes mod m exactly once. -/
+private lemma exists_dvd_in_consecutive (n m : ℕ) (hm : 0 < m) : ∃ i < m, m ∣ n + i := by
+  refine ⟨(m - n % m) % m, Nat.mod_lt _ hm, ?_⟩
+  rcases Nat.eq_zero_or_pos (n % m) with h | h
+  · simpa [h, Nat.sub_zero, Nat.mod_self] using Nat.dvd_of_mod_eq_zero h
+  · rw [Nat.mod_eq_of_lt (by have := Nat.mod_lt n hm; omega)]
+    have heq : n + (m - n % m) = m * (n / m + 1) := by
+      have := Nat.div_add_mod n m; omega
+    exact heq ▸ dvd_mul_right m _
+
+/-- **Sylvester-Schur (prime window size)**: When k+1 is prime, P(n, k) ≥ k+1 for all n ≥ 1.
+    Among any k+1 consecutive integers, the complete residue system mod k+1 guarantees one
+    is divisible by k+1, which is a prime factor > k of the consecutive product. -/
+theorem gpfConsecutive_ge_succ_k_of_prime (n k : ℕ) (hn : 1 ≤ n) (hk1 : (k + 1).Prime) :
+    k + 1 ≤ gpfConsecutive n k := by
+  obtain ⟨i, hi_lt, hi_dvd⟩ := exists_dvd_in_consecutive n (k + 1) (Nat.succ_pos k)
+  exact le_gpfConsecutive_of_prime_dvd_term n k i hn (by omega) (k + 1) hk1 hi_dvd
+
+/-- **Sylvester-Schur (prime window size, strict)**: When k+1 is prime, k < P(n, k) for all n ≥ 1.
+    Covers all prime-predecessor k: k = 1, 2, 4, 6, 10, 12, 16, 18, ... -/
+theorem gpfConsecutive_gt_k_of_prime_succ (n k : ℕ) (hn : 1 ≤ n) (hk1 : (k + 1).Prime) :
+    k < gpfConsecutive n k :=
+  Nat.lt_of_lt_of_le (Nat.lt_succ_self k) (gpfConsecutive_ge_succ_k_of_prime n k hn hk1)
+
 /-
 ## Infinitely Many n with Large GPF
 -/
@@ -690,14 +715,12 @@ theorem gpfConsecutive_one_eq_max (n : ℕ) (hn : 2 ≤ n) :
     Since gcd(n, n+1) = 1 and gpf(n) ∣ n, gpf(n+1) ∣ n+1, the gcd of the gpfs divides 1. -/
 theorem gpfConsecutive_one_coprime (n : ℕ) (hn : 2 ≤ n) :
     Nat.Coprime (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) := by
-  have hdn : greatestPrimeFactor n ∣ n := gpf_dvd n hn
-  have hdn1 : greatestPrimeFactor (n + 1) ∣ n + 1 := gpf_dvd (n + 1) (by omega)
-  have hcop : Nat.Coprime n (n + 1) := Nat.coprime_succ_self_right n
-  have h1 : Nat.gcd (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) ∣ n :=
-    dvd_trans (Nat.gcd_dvd_left _ _) hdn
-  have h2 : Nat.gcd (greatestPrimeFactor n) (greatestPrimeFactor (n + 1)) ∣ n + 1 :=
-    dvd_trans (Nat.gcd_dvd_right _ _) hdn1
-  exact Nat.dvd_one.mp (hcop ▸ Nat.dvd_gcd h1 h2)
+  have hcop : Nat.Coprime n (n + 1) := by
+    rw [Nat.Coprime]
+    apply Nat.dvd_one.mp
+    have h := Nat.dvd_sub' (Nat.gcd_dvd_right n (n + 1)) (Nat.gcd_dvd_left n (n + 1))
+    rwa [show n + 1 - n = 1 from by omega] at h
+  exact (hcop.coprime_dvd_left (gpf_dvd n hn)).coprime_dvd_right (gpf_dvd (n + 1) (by omega))
 
 /-- For n ≥ 2, greatestPrimeFactor n ≠ greatestPrimeFactor (n + 1).
     If equal to p ≥ 2, then gcd(p, p) = p ≥ 2 contradicts the coprimality above. -/
@@ -991,26 +1014,6 @@ theorem erdos_1201_threshold_bound (n k : ℕ) (ε : ℝ) (hn : 1 ≤ n) (hk : 2
       by exact_mod_cast gpfConsecutive_gt_half_k n k hn hk
     linarith
   linarith
-
-/-
-## Monotonicity in ε (Smaller ε Is Harder)
--/
-
-/-- **ε-Monotonicity of good set**: for ε ≤ ε', the ε-good set ⊆ ε'-good set.
-    Since ε ≤ ε' implies 1-ε ≥ 1-ε', and n ≥ 1, we have n^(1-ε) ≥ n^(1-ε').
-    So the harder condition P(n,k) > n^(1-ε) implies the easier P(n,k) > n^(1-ε'). -/
-theorem erdos_1201_good_set_mono_eps (k : ℕ) (ε ε' : ℝ) (h : ε ≤ ε') :
-    {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ)} ⊆
-    {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε') < (gpfConsecutive n k : ℝ)} := by
-  intro n ⟨hn2, hgood⟩
-  exact ⟨hn2, (Real.rpow_le_rpow_of_exponent_le
-    (by exact_mod_cast (show 1 ≤ n by omega)) (by linarith)).trans_lt hgood⟩
-
-/-- Upper density of the good set is non-decreasing in ε. -/
-theorem erdos_1201_density_mono_eps (k : ℕ) (ε ε' : ℝ) (h : ε ≤ ε') :
-    upperDensity {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε) < (gpfConsecutive n k : ℝ)} ≤
-    upperDensity {n : ℕ | 2 ≤ n ∧ (n : ℝ) ^ (1 - ε') < (gpfConsecutive n k : ℝ)} :=
-  upperDensity_mono (erdos_1201_good_set_mono_eps k ε ε' h)
 
 /-- For ε ≥ 1, any n ≥ 2 is automatically good: n^(1-ε) ≤ n^0 = 1 < 2 ≤ P(n,k). -/
 theorem erdos_1201_trivially_good_of_large_eps (n k : ℕ) (ε : ℝ) (hn : 2 ≤ n) (hε : 1 ≤ ε) :
