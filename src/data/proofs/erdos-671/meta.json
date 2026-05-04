@@ -18,7 +18,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 23,
+    "sorries": 19,
     "erdosNumber": 671,
     "erdosUrl": "https://erdosproblems.com/671",
     "erdosProblemStatus": "open",
@@ -63,8 +63,8 @@
       "MainConjecture definition: Q1 iff Q2?"
     ],
     "axiomCount": 3,
-    "lineCount": 249,
-    "assumptions": "3 axiom(s) and 23 sorry(s). See the Lean source for details.",
+    "lineCount": 259,
+    "assumptions": "3 axiom(s) and 19 sorry(s). See the Lean source for details.",
     "theoremCount": 14
   },
   "overview": {
@@ -91,43 +91,43 @@
   "sections": [
     {
       "id": "lagrange-setup",
-      "title": "§I-II: Interpolation Points and Lagrange Basis",
+      "title": "\u00a7I-II: Interpolation Points and Lagrange Basis",
       "startLine": 34,
       "endLine": 75,
-      "summary": "Defines InterpolationPoints (n points in [-1,1], distinct), PointSequence, and the Lagrange basis polynomial lagrangeBasis. Proves lagrangeBasis_self (p_i(a_i)=1) and lagrangeBasis_other (p_i(a_j)=0 for i≠j). Defines lagrangeInterp as the weighted sum and proves it reproduces function values at nodes.",
+      "summary": "Defines InterpolationPoints (n points in [-1,1], distinct), PointSequence, and the Lagrange basis polynomial lagrangeBasis. Proves lagrangeBasis_self (p_i(a_i)=1) and lagrangeBasis_other (p_i(a_j)=0 for i\u2260j). Defines lagrangeInterp as the weighted sum and proves it reproduces function values at nodes.",
       "mathContext": "The Lagrange basis polynomial $p_i^n(x) = \\prod_{j \\neq i} \\frac{x - a_j^n}{a_i^n - a_j^n}$ has degree $n-1$ and satisfies $p_i^n(a_j^n) = \\delta_{ij}$ (Kronecker delta). The interpolation operator $L^n f(x) = \\sum_{i=1}^n f(a_i^n) p_i^n(x)$ is the unique degree-$(n-1)$ polynomial agreeing with $f$ at all $n$ nodes."
     },
     {
       "id": "lebesgue-function",
-      "title": "§III: The Lebesgue Function and Constant",
+      "title": "\u00a7III: The Lebesgue Function and Constant",
       "startLine": 77,
       "endLine": 96,
-      "summary": "Defines lebesgueFunction λ_n(x) = Σ|p_i^n(x)| and lebesgueConstant Λ_n = sup_x λ_n(x). Proves lebesgueFunction_ge_one (λ_n(x) ≥ 1 whenever x is a node). These measure the worst-case amplification of interpolation errors.",
+      "summary": "Defines lebesgueFunction \u03bb_n(x) = \u03a3|p_i^n(x)| and lebesgueConstant \u039b_n = sup_x \u03bb_n(x). Proves lebesgueFunction_ge_one (\u03bb_n(x) \u2265 1 whenever x is a node). These measure the worst-case amplification of interpolation errors.",
       "mathContext": "The Lebesgue constant $\\Lambda_n = \\sup_{x \\in [-1,1]} \\sum_{i=1}^n |p_i^n(x)|$ controls interpolation error: $\\|f - L^n f\\|_\\infty \\leq (1 + \\Lambda_n) \\inf_p \\|f - p\\|_\\infty$ over degree-$(n-1)$ polynomials $p$. Chebyshev nodes minimize $\\Lambda_n$, giving $\\Lambda_n \\sim \\frac{2}{\\pi} \\ln n$; equidistant nodes give $\\Lambda_n \\sim \\frac{2^n}{en \\ln n}$ (exponential growth)."
     },
     {
       "id": "bernstein-erdos-vertesi",
-      "title": "§IV-V: Bernstein's Theorem and Erdős–Vértesi",
+      "title": "\u00a7IV-V: Bernstein's Theorem and Erd\u0151s\u2013V\u00e9rtesi",
       "startLine": 97,
       "endLine": 122,
-      "summary": "Axiomatizes bernstein (1931): for ANY point sequence, there exists x₀ ∈ [-1,1] with limsup λ_n(x₀) = ∞. Axiomatizes erdos_vertesi (1980): for any sequence, there exists a continuous f such that limsup |L^n f(x)| = ∞ for almost every x ∈ [-1,1]. Also proves lebesgueConstant_growth: Λ_n ≥ (2/π)ln(n) - 2 for n ≥ 2.",
-      "mathContext": "Bernstein (1931) showed $\\Lambda_n \\to \\infty$ for ANY point sequence — no optimal nodes exist in the pointwise sense. Erdős and Vértesi (1980) strengthened this: divergence occurs for measure-1 set of $x$. The growth bound $\\Lambda_n \\geq \\frac{2}{\\pi} \\ln n - 2$ is universal; it holds with equality (up to $O(1)$) for Chebyshev nodes."
+      "summary": "Axiomatizes bernstein (1931): for ANY point sequence, there exists x\u2080 \u2208 [-1,1] with limsup \u03bb_n(x\u2080) = \u221e. Axiomatizes erdos_vertesi (1980): for any sequence, there exists a continuous f such that limsup |L^n f(x)| = \u221e for almost every x \u2208 [-1,1]. Also proves lebesgueConstant_growth: \u039b_n \u2265 (2/\u03c0)ln(n) - 2 for n \u2265 2.",
+      "mathContext": "Bernstein (1931) showed $\\Lambda_n \\to \\infty$ for ANY point sequence \u2014 no optimal nodes exist in the pointwise sense. Erd\u0151s and V\u00e9rtesi (1980) strengthened this: divergence occurs for measure-1 set of $x$. The growth bound $\\Lambda_n \\geq \\frac{2}{\\pi} \\ln n - 2$ is universal; it holds with equality (up to $O(1)$) for Chebyshev nodes."
     },
     {
       "id": "open-questions",
-      "title": "§VI-VII: Question 1 and Question 2",
+      "title": "\u00a7VI-VII: Question 1 and Question 2",
       "startLine": 123,
       "endLine": 155,
-      "summary": "States Question1 (does there exist a sequence where limsup λ_n(x) = ∞ yet L^n f(x) → f(x) for every continuous f at some x?) and Question2 (same with limsup λ_n(x) = ∞ for ALL x). Both axiomatized as open. Proves q2_implies_q1: Question2 is strictly stronger than Question1.",
-      "mathContext": "Question 1 asks: can the Lebesgue function be unbounded pointwise yet interpolation still converge? Question 2 is the global version. The implication $Q_2 \\Rightarrow Q_1$ is immediate. Both questions probe the boundary between pointwise Lebesgue function growth and interpolation convergence — asking whether $\\limsup \\lambda_n(x) = \\infty$ is compatible with $L^n f(x) \\to f(x)$."
+      "summary": "States Question1 (does there exist a sequence where limsup \u03bb_n(x) = \u221e yet L^n f(x) \u2192 f(x) for every continuous f at some x?) and Question2 (same with limsup \u03bb_n(x) = \u221e for ALL x). Both axiomatized as open. Proves q2_implies_q1: Question2 is strictly stronger than Question1.",
+      "mathContext": "Question 1 asks: can the Lebesgue function be unbounded pointwise yet interpolation still converge? Question 2 is the global version. The implication $Q_2 \\Rightarrow Q_1$ is immediate. Both questions probe the boundary between pointwise Lebesgue function growth and interpolation convergence \u2014 asking whether $\\limsup \\lambda_n(x) = \\infty$ is compatible with $L^n f(x) \\to f(x)$."
     },
     {
       "id": "special-sequences-conjecture",
-      "title": "§VIII-XII: Special Sequences and Main Conjecture",
+      "title": "\u00a7VIII-XII: Special Sequences and Main Conjecture",
       "startLine": 153,
       "endLine": 249,
-      "summary": "Defines chebyshevNodes (optimal: $x_k = \\cos((2k+1)π/2n)$) and equidistantNodes (divergent: $x_k = -1 + 2k/(n-1)$). Axiomatizes equidistant_diverges, faber (Faber's theorem: no universal convergent sequence), and measure-theoretic results. States MainConjecture about pointwise convergence for Chebyshev nodes.",
-      "mathContext": "Chebyshev nodes $x_k = \\cos\\frac{(2k-1)\\pi}{2n}$ minimize $\\|\\omega_n\\|_\\infty$ where $\\omega_n(x) = \\prod_{i=1}^n (x-x_i)$, giving the smallest possible max interpolation error for polynomials. Faber's theorem (1914): there is NO point sequence for which $L^n f \\to f$ uniformly for every continuous $f$ — universal convergent interpolation is impossible."
+      "summary": "Defines chebyshevNodes (optimal: $x_k = \\cos((2k+1)\u03c0/2n)$) and equidistantNodes (divergent: $x_k = -1 + 2k/(n-1)$). Axiomatizes equidistant_diverges, faber (Faber's theorem: no universal convergent sequence), and measure-theoretic results. States MainConjecture about pointwise convergence for Chebyshev nodes.",
+      "mathContext": "Chebyshev nodes $x_k = \\cos\\frac{(2k-1)\\pi}{2n}$ minimize $\\|\\omega_n\\|_\\infty$ where $\\omega_n(x) = \\prod_{i=1}^n (x-x_i)$, giving the smallest possible max interpolation error for polynomials. Faber's theorem (1914): there is NO point sequence for which $L^n f \\to f$ uniformly for every continuous $f$ \u2014 universal convergent interpolation is impossible."
     }
   ],
   "conclusion": {
@@ -145,29 +145,29 @@
     "imports": [],
     "opens": [],
     "namespace": null,
-    "lineCount": 249,
+    "lineCount": 259,
     "axiomCount": 3,
     "theoremCount": 14,
     "definitionCount": 10,
-    "sorries": 23,
+    "sorries": 19,
     "path": "Proofs/Erdos671Problem.lean"
   },
   "crossReferences": [
     {
       "targetId": "erdos-1130",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: analysis, approximation-theory, interpolation, lebesgue-function"
+      "description": "Related Erd\u0151s problem sharing themes: analysis, approximation-theory, interpolation, lebesgue-function"
     },
     {
       "targetId": "erdos-1132",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: analysis, interpolation, lebesgue-function, open"
+      "description": "Related Erd\u0151s problem sharing themes: analysis, interpolation, lebesgue-function, open"
     },
     {
       "targetId": "erdos-1131",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: approximation-theory, interpolation, open"
+      "description": "Related Erd\u0151s problem sharing themes: approximation-theory, interpolation, open"
     }
   ],
-  "sorries": 23
+  "sorries": 19
 }

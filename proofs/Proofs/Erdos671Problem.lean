@@ -22,10 +22,7 @@
   Tags: analysis, interpolation, approximation-theory
 -/
 
-import Mathlib.Analysis.SpecialFunctions.Polynomials.Basic
-import Mathlib.Topology.ContinuousFunction.Basic
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos671
 
@@ -50,12 +47,22 @@ noncomputable def lagrangeBasis (pts : InterpolationPoints n) (i : Fin n) : Poly
 /-- p_i^n(a_i) = 1. -/
 theorem lagrangeBasis_self (pts : InterpolationPoints n) (i : Fin n) :
     (lagrangeBasis pts i).eval (pts.points i) = 1 := by
-  sorry
+  simp only [lagrangeBasis, Polynomial.eval_prod, Polynomial.eval_mul,
+             Polynomial.eval_C, Polynomial.eval_sub, Polynomial.eval_X]
+  apply Finset.prod_eq_one
+  intro j hj
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hj
+  have h : pts.points i - pts.points j ≠ 0 :=
+    sub_ne_zero.mpr (pts.distinct i j hj.symm)
+  field_simp [h]
 
 /-- p_i^n(a_j) = 0 for j ≠ i. -/
 theorem lagrangeBasis_other (pts : InterpolationPoints n) (i j : Fin n) (hij : i ≠ j) :
     (lagrangeBasis pts i).eval (pts.points j) = 0 := by
-  sorry
+  simp only [lagrangeBasis, Polynomial.eval_prod, Polynomial.eval_mul,
+             Polynomial.eval_C, Polynomial.eval_sub, Polynomial.eval_X]
+  apply Finset.prod_eq_zero (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hij.symm⟩)
+  simp [sub_self]
 
 /- ## Part II: Lagrange Interpolation -/
 
@@ -66,7 +73,10 @@ noncomputable def lagrangeInterp (pts : InterpolationPoints n) (f : ℝ → ℝ)
 /-- L^n interpolates f at the nodes: L^n f(a_i) = f(a_i). -/
 theorem lagrangeInterp_at_node (pts : InterpolationPoints n) (f : ℝ → ℝ) (i : Fin n) :
     lagrangeInterp pts f (pts.points i) = f (pts.points i) := by
-  sorry
+  unfold lagrangeInterp
+  rw [Finset.sum_eq_single_of_mem i (Finset.mem_univ _)
+    (fun k _ hki => by rw [lagrangeBasis_other pts k i hki, mul_zero])]
+  rw [lagrangeBasis_self, mul_one]
 
 /-- L^n f is a polynomial of degree ≤ n - 1. -/
 theorem lagrangeInterp_degree (pts : InterpolationPoints n) (f : ℝ → ℝ) :
@@ -155,7 +165,7 @@ theorem q2_implies_q1 (h : Question2) : Question1 := by
 /-- Chebyshev nodes: x_k = cos((2k-1)π / 2n). -/
 noncomputable def chebyshevNodes (n : ℕ) : InterpolationPoints n where
   points := fun k => Real.cos ((2 * k.val + 1) * Real.pi / (2 * n))
-  in_interval := by sorry
+  in_interval := fun k => Real.cos_mem_Icc _
   distinct := by sorry
 
 /-- Equidistant nodes: x_k = -1 + 2k/(n-1). -/
