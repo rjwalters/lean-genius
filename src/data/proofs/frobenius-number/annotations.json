@@ -1,0 +1,56 @@
+[
+  {
+    "id": "ann-representable",
+    "type": "definition",
+    "label": "Representable",
+    "title": "Representable as Non-Negative Linear Combination",
+    "body": "Representable a b n := ∃ x y : ℕ, n = a*x + b*y. This is the coin representation: can you make n cents using only a-cent and b-cent coins? The Frobenius number is the largest n that is NOT representable.",
+    "location": { "line": 43 },
+    "tags": ["definition", "representable", "coin-problem"]
+  },
+  {
+    "id": "ann-frobenius-def",
+    "type": "definition",
+    "label": "frobeniusNumber",
+    "title": "Frobenius Number Definition",
+    "body": "frobeniusNumber a b := a * b - a - b. For coprime a, b, this equals (a-1)(b-1) - 1 and is the largest non-representable natural number. The famous Chicken McNugget example: a=6, b=9 (not coprime), but for a=6, b=7 (coprime): g = 42-6-7 = 29.",
+    "location": { "line": 0 },
+    "tags": ["definition", "frobenius-number"]
+  },
+  {
+    "id": "ann-sylvester",
+    "type": "theorem",
+    "label": "sylvester_frobenius",
+    "title": "Sylvester's Theorem",
+    "body": "For gcd(a,b) = 1 with a,b ≥ 1: (1) frobeniusNumber a b is not representable, and (2) every n > frobeniusNumber a b is representable. The proof uses Bezout's identity to show every residue class mod a contains a representable multiple of b within the right range.",
+    "location": { "line": 0 },
+    "tags": ["sylvester", "main-theorem", "frobenius"]
+  },
+  {
+    "id": "ann-large-rep",
+    "type": "theorem",
+    "label": "large_representable",
+    "title": "Large Integers Are Representable",
+    "body": "For n > frobeniusNumber a b = ab - a - b with gcd(a,b) = 1: n is representable. The proof finds the unique residue r of n mod a, then uses the Bezout identity to write r ≡ b*k (mod a) for some k, and checks that the corresponding representation stays within nonneg bounds.",
+    "location": { "line": 0 },
+    "tags": ["representability", "threshold"]
+  },
+  {
+    "id": "ann-not-rep",
+    "type": "theorem",
+    "label": "frobenius_not_representable",
+    "title": "Frobenius Number Is Not Representable",
+    "body": "The specific value ab - a - b is NOT representable by coprime a and b. The proof shows that any representation a*x + b*y = ab - a - b with x,y ≥ 0 leads to a contradiction, since all solutions to a*x + b*y = ab - a - b over ℤ have at least one negative component.",
+    "location": { "line": 0 },
+    "tags": ["non-representable", "key-lemma"]
+  },
+  {
+    "id": "ann-count",
+    "type": "definition",
+    "label": "numNonRepresentable",
+    "title": "Counting Non-Representable Integers",
+    "body": "numNonRepresentable a b counts positive integers that are not representable. For coprime a, b, this equals (a-1)(b-1)/2. The frobenius_consecutive theorem characterizes the structure of representable integers near the Frobenius number.",
+    "location": { "line": 0 },
+    "tags": ["counting", "non-representable"]
+  }
+]
