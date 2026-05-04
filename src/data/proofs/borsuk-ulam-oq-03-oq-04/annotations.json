@@ -1,38 +1,152 @@
 [
   {
-    "id": "ann-quantitative-bu",
-    "type": "theorem",
-    "label": "quantitative_borsuk_ulam_1d",
-    "title": "Quantitative 1D Borsuk-Ulam",
-    "body": "quantitative_borsuk_ulam_1d: for K-Lipschitz f and any antipodal zero x₀ (f(x₀)=f(-x₀)) with |f(1)-f(-1)| = δ, we have |x₀| ≤ 1 - δ/(2K). The proof: antiDiff g = f(x) - f(-x) is 2K-Lipschitz with g(1)=δ, g(x₀)=0. Then δ = |g(1)-g(x₀)| ≤ 2K·|1-x₀| = 2K·(1-x₀), giving x₀ ≤ 1-δ/(2K). By symmetry (antiDiff antisymmetry), also x₀ ≥ -1+δ/(2K).",
-    "location": { "line": 100 },
-    "tags": ["main-theorem", "borsuk-ulam", "quantitative", "lipschitz"]
-  },
-  {
-    "id": "ann-anti-diff-lipschitz",
-    "type": "theorem",
-    "label": "antisymm_diff_lipschitz_two",
-    "title": "Antisymmetric Difference is 2K-Lipschitz",
-    "body": "antisymm_diff_lipschitz_two: if f is K-Lipschitz, then antiDiff f (= f(x) - f(-x)) is 2K-Lipschitz. This is the key amplification: the Lipschitz constant doubles because negating x contributes another factor of K. The factor of 2 is tight — for f(x) = Kx, antiDiff(x) = 2Kx has constant 2K.",
-    "location": { "line": 65 },
-    "tags": ["lipschitz", "anti-diff", "amplification"]
-  },
-  {
-    "id": "ann-bisection",
-    "type": "theorem",
-    "label": "antipodal_within_epsilon",
-    "title": "Bisection Finds Antipodal Pair Within ε",
-    "body": "antipodal_within_epsilon: for K-Lipschitz f with δ>0 and any ε>0, the bisection algorithm finds x' with |x' - x₀| < ε (where x₀ is an antipodal zero) in O(log(1/ε)) steps. The algorithm maintains a bracket [a,b] containing a zero of antiDiff, halving at each step. After n steps, the bracket has length ≤ 2/2ⁿ, giving the midpoint error ≤ 1/2ⁿ.",
-    "location": { "line": 195 },
-    "tags": ["bisection", "algorithm", "effective"]
-  },
-  {
-    "id": "ann-anti-diff-def",
+    "id": "ann-bu-antidiff-def",
+    "proofId": "borsuk-ulam-oq-03-oq-04",
+    "range": { "startLine": 27, "endLine": 43 },
     "type": "definition",
-    "label": "antiDiff",
-    "title": "Antisymmetric Difference",
-    "body": "antiDiff f = fun x => f x - f (-x). This is the antisymmetric part of f: antiDiff(-x) = -antiDiff(x). Antipodal zeros of f (where f(x₀) = f(-x₀)) correspond exactly to zeros of antiDiff. The IVT applies because antiDiff(-1) = f(-1)-f(1) and antiDiff(1) = f(1)-f(-1) have opposite signs when δ > 0.",
-    "location": { "line": 25 },
-    "tags": ["definition", "antisymmetric", "antipodal"]
+    "title": "antiDiff: converting antipodal equality to zero-finding",
+    "content": "Defines `antiDiff f x = f x - f(-x)` and proves four fundamental properties. The key connection: `antiDiff_zero_iff` shows that zeros of antiDiff correspond exactly to antipodal pairs of f. The antisymmetry `antiDiff(-x) = -antiDiff(x)` ensures g(-1) = -g(1) = -δ, giving the sign change needed for IVT. The sum identity `g(-1) + g(1) = 0` is derived immediately from antisymmetry.",
+    "mathContext": "The antisymmetric decomposition: any function $f$ splits as $f = f_e + f_o$ where $f_e(x) = (f(x)+f(-x))/2$ is even and $f_o(x) = (f(x)-f(-x))/2$ is odd. The `antiDiff` is $2f_o$: it captures all the antisymmetric information. Antipodal pairs $(x_0, -x_0)$ with $f(x_0)=f(-x_0)$ are exactly the zeros of $f_o$ (equivalently, antiDiff), where $f$ restricted to $\\{x,-x\\}$ takes a single value.",
+    "significance": "key",
+    "relatedConcepts": [
+      "antisymmetric decomposition",
+      "zero-finding reduction",
+      "IVT setup",
+      "antipodal maps"
+    ],
+    "prerequisites": [
+      "Function.comp",
+      "sub_eq_zero",
+      "neg_neg"
+    ]
+  },
+  {
+    "id": "ann-bu-lipschitz-amplification",
+    "proofId": "borsuk-ulam-oq-03-oq-04",
+    "range": { "startLine": 48, "endLine": 55 },
+    "type": "technique",
+    "title": "Lipschitz constant doubles: antiDiff is (K+K)-Lipschitz",
+    "content": "Proves that if f is K-Lipschitz, then `antiDiff f` is (K+K)-Lipschitz. The proof factors through Lean's `LipschitzWith`: `f∘neg` is Lipschitz because LipschitzWith.id.neg gives that negation is 1-Lipschitz, so f∘neg is K·1=K-Lipschitz by composition. Then `hf.sub h_neg'` (Lipschitz subtraction) gives (K+K)-Lipschitz for the difference.",
+    "mathContext": "For Lipschitz functions: $|f(x) - f(y)| \\leq K|x-y|$ and $|f(-x) - f(-y)| \\leq K|{-x}-(-y)| = K|x-y|$. By the triangle inequality: $|g(x) - g(y)| = |(f(x)-f(-x)) - (f(y)-f(-y))| \\leq K|x-y| + K|x-y| = 2K|x-y|$. The factor of 2 is tight: for $f(x) = Kx$, $g(x) = 2Kx$ achieves constant $2K$. In Lean 4, `NNReal` arithmetic means $(K+K : \\text{NNReal})$ equals $2K$ definitionally.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LipschitzWith.comp",
+      "LipschitzWith.sub",
+      "LipschitzWith.id.neg",
+      "NNReal arithmetic"
+    ],
+    "prerequisites": [
+      "LipschitzWith",
+      "LipschitzWith.sub",
+      "LipschitzWith.comp",
+      "NNReal"
+    ]
+  },
+  {
+    "id": "ann-bu-ivt-existence",
+    "proofId": "borsuk-ulam-oq-03-oq-04",
+    "range": { "startLine": 59, "endLine": 71 },
+    "type": "concept",
+    "title": "IVT gives the antipodal zero",
+    "content": "Proves `antiDiff_has_zero`: for continuous f, antiDiff has a zero in [-1,1]. The proof cases on whether g(-1) ≤ 0 or g(-1) > 0. If g(-1) ≤ 0: since g(-1)+g(1)=0, we get g(1)≥0, so IVT (`intermediate_value_Icc`) finds a zero. If g(-1) > 0: then g(1) < 0, so IVT from the right (`intermediate_value_Icc'`) finds a zero. Both cases use continuity of g, which follows from continuity of f.",
+    "mathContext": "The 1D Borsuk-Ulam theorem is a direct corollary of IVT: $g = f - f\\circ\\text{neg}$ is continuous, $g(-1) + g(1) = 0$, so they have opposite signs (or one is zero). In Lean, `intermediate_value_Icc hab hg.continuousOn ⟨h, by linarith⟩` requires: (1) the interval $[-1,1]$ is valid ($-1 \\leq 1$), (2) $g$ is continuous on $[-1,1]$, (3) the value $0$ lies between $g(-1)$ and $g(1)$. The case split handles whether $g(-1) \\leq 0$ or $g(-1) > 0$ to present IVT with the correct sign orientation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Intermediate Value Theorem",
+      "continuous functions on compact intervals",
+      "sign change argument",
+      "1D Borsuk-Ulam"
+    ],
+    "prerequisites": [
+      "intermediate_value_Icc",
+      "intermediate_value_Icc'",
+      "Continuous.continuousOn",
+      "Continuous.sub",
+      "continuous_neg"
+    ]
+  },
+  {
+    "id": "ann-bu-main-theorem",
+    "proofId": "borsuk-ulam-oq-03-oq-04",
+    "range": { "startLine": 75, "endLine": 122 },
+    "type": "insight",
+    "title": "Quantitative bound: Lipschitz forces antipodal pairs away from boundary",
+    "content": "The main theorem `quantitative_borsuk_ulam_1d` combines IVT (existence of x₀ with g(x₀)=0) with the Lipschitz distance bound on g. For the upper bound: `hg_lip.dist_le_mul x₀ 1` gives `dist(g(x₀), g(1)) ≤ 2K · dist(x₀, 1)`. Since g(x₀)=0 and |g(1)|=δ, this is `δ ≤ 2K(1-x₀)`, giving x₀ ≤ 1 - δ/(2K). The lower bound is symmetric via antiDiff antisymmetry.",
+    "mathContext": "The key identity: Lipschitz condition $|g(1) - g(x_0)| \\leq 2K|1 - x_0|$ with $|g(1)| = \\delta$ and $g(x_0) = 0$ gives $\\delta \\leq 2K(1-x_0)$. Rearranging: $x_0 \\leq 1 - \\delta/(2K)$. In Lean, `Real.dist_eq` rewrites `dist` to `|·|`, then `abs_of_nonpos` and `abs_of_nonneg` simplify the absolute values given the interval membership of $x_0$. The `nlinarith` call closes the nonlinear arithmetic from `δ/2K ≤ 1-x_0`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LipschitzWith.dist_le_mul",
+      "Real.dist_eq",
+      "field_simp for division",
+      "nlinarith"
+    ],
+    "prerequisites": [
+      "LipschitzWith.dist_le_mul",
+      "antiDiff_has_zero",
+      "antiDiff_zero_iff",
+      "antiDiff_antisymm",
+      "Real.dist_eq"
+    ]
+  },
+  {
+    "id": "ann-bu-tightness",
+    "proofId": "borsuk-ulam-oq-03-oq-04",
+    "range": { "startLine": 126, "endLine": 131 },
+    "type": "context",
+    "title": "Tightness: f(x)=x achieves the bound exactly",
+    "content": "Proves `antipodal_location_tight`: for f(x)=x with K=1 and δ=2, the bound gives x₀ ∈ [-1+1, 1-1] = {0}. The proof is a one-line `norm_num` witnessing x₀=0. This confirms the bound δ/(2K) cannot be improved: there exist K-Lipschitz functions where the antipodal pair is exactly at 1 - δ/(2K).",
+    "mathContext": "For $f(x) = x$: $K = 1$, $\\delta = |f(1) - f(-1)| = |1-(-1)| = 2$, bound is $\\delta/(2K) = 1$. The guaranteed interval is $[-1+1, 1-1] = \\{0\\}$. And indeed $f(0) = 0 = f(-0)$. More generally, for $f(x) = c + Kx$ with $c$ chosen so $\\delta = |f(1)-f(-1)| = 2K$, the bound gives interval $\\{0\\}$, achieved exactly. This shows the factor of $2K$ in the denominator is optimal.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "tightness of Lipschitz bounds",
+      "optimality of constants",
+      "linear functions"
+    ],
+    "prerequisites": [
+      "norm_num"
+    ]
+  },
+  {
+    "id": "ann-bu-bisection-induction",
+    "proofId": "borsuk-ulam-oq-03-oq-04",
+    "range": { "startLine": 159, "endLine": 182 },
+    "type": "technique",
+    "title": "Bisection bracket induction: width halves each step",
+    "content": "Proves `bisection_bracket_induction` by induction on n: given a bracket [a,b] with g(a)≤0≤g(b), there exists a sub-bracket [aₙ,bₙ] ⊂ [a,b] of width (b-a)/2^n still containing a zero. The inductive step uses `bisection_step` to pick either [aₙ, midpoint] or [midpoint, bₙ] as the new bracket, each of half the width. The base case is trivial (n=0 gives the original bracket).",
+    "mathContext": "The bisection invariant: after $n$ steps, we have $[a_n, b_n] \\subset [a,b]$ with $g(a_n) \\leq 0 \\leq g(b_n)$ and $b_n - a_n = (b-a)/2^n$. By `bracket_zero` (IVT on a bracket), there is a zero in $[a_n, b_n]$. The midpoint error bound: $|x_0 - \\text{mid}| \\leq (b_n - a_n)/2 = (b-a)/2^{n+1}$. For $[a,b] = [-1,1]$, this gives $|x_0 - \\text{mid}| \\leq 1/2^n$ after $n$ steps.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "bisection algorithm",
+      "bracket method for zero finding",
+      "induction on depth",
+      "IVT on sub-intervals"
+    ],
+    "prerequisites": [
+      "bisection_step",
+      "bracket_zero",
+      "intermediate_value_Icc",
+      "Nat.recOn"
+    ]
+  },
+  {
+    "id": "ann-bu-epsilon-localization",
+    "proofId": "borsuk-ulam-oq-03-oq-04",
+    "range": { "startLine": 221, "endLine": 230 },
+    "type": "insight",
+    "title": "ε-localization: choosing n = ⌈log₂(1/ε)⌉",
+    "content": "Proves `antipodal_within_epsilon`: for any ε > 0, there exists a midpoint within ε of an antipodal pair. The proof uses `exists_pow_lt_of_lt_one hε (1/2 < 1)` to find n with (1/2)^n < ε, then applies `antipodal_midpoint_error` with that n. The key identity `1/2^n = (1/2)^n` connects the bisection error bound to the geometric series.",
+    "mathContext": "The number of steps needed: $n = \\lceil \\log_2(1/\\varepsilon) \\rceil$ since $(1/2)^n < \\varepsilon$ iff $n > \\log_2(1/\\varepsilon)$. In Lean, `exists_pow_lt_of_lt_one` (from Mathlib's `Order.BoundedOrder`) provides the existence of such $n$ without computing it explicitly. The algorithm is thus effective but not constructive in the usual sense: we know $n$ exists but don't have a computable formula for the exact $n$ achieving $\\varepsilon$-precision.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exists_pow_lt_of_lt_one",
+      "geometric series",
+      "logarithmic complexity",
+      "epsilon-delta localization"
+    ],
+    "prerequisites": [
+      "exists_pow_lt_of_lt_one",
+      "antipodal_midpoint_error",
+      "antipodal_bisection_localization"
+    ]
   }
 ]
