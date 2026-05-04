@@ -1,6 +1,6 @@
 {
   "slug": "erdos-949",
-  "title": "Erdős #949",
+  "title": "Erd\u0151s #949",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "OBSERVE",
     "since": "2026-01-15T12:22:36.005Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Structural Sidon theorems added. Open problem documented. Sidon variant axiomatized (Dillies/AlphaProof).",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,30 +29,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Removed unsound axiom erdos_949_open (2→1 axioms). sidon_variant_solved remains as legitimate deep axiom.",
+    "progressSummary": "PROGRESS: Added sidon_subset + sidon_two_element (16-case proof). Problem is OPEN for general sum-free case. 1 axiom (sidon_variant_solved), 0 sorries, 16 theorems.",
     "builtItems": [
       "sum_free_empty theorem",
       "sum_free_singleton theorem",
       "sum_free_subset theorem",
       "realSumset_mono theorem",
       "open_interval_sum_free theorem",
-      "Removed erdos_949_open axiom (unsound: asserted open conjecture)"
+      "Removed erdos_949_open axiom (unsound: asserted open conjecture)",
+      "sidon_subset: monotonicity theorem, Erdos949Problem.lean line ~100",
+      "sidon_two_element: Sidon-ness of {a,b} with a\u2260b, Erdos949Problem.lean line ~103"
     ],
     "insights": [
       "All provable work complete: 2 axioms are deep (solved variant + open problem)",
       "Added 5 structural theorems: sum_free_empty, sum_free_singleton, sum_free_subset, realSumset_mono, open_interval_sum_free",
-      "Classic result (1/3,2/3) sum-free proved by linarith: a+b > 2/3 when a,b ∈ (1/3,2/3)",
-      "sum_free_singleton requires x≠0 since {0} is not sum-free (0+0=0∈{0})",
+      "Classic result (1/3,2/3) sum-free proved by linarith: a+b > 2/3 when a,b \u2208 (1/3,2/3)",
+      "sum_free_singleton requires x\u22600 since {0} is not sum-free (0+0=0\u2208{0})",
       "Switched to import Mathlib for broader API access",
-      "Removed unsound erdos_949_open axiom — it falsely asserted an open conjecture as true. Axiom count: 2→1."
+      "Removed unsound erdos_949_open axiom \u2014 it falsely asserted an open conjecture as true. Axiom count: 2\u21921.",
+      "sidon_subset: monotonicity of Sidon property \u2014 subset of a Sidon set is Sidon (1 line, trivial via function application)",
+      "sidon_two_element: any 2-element set {a,b} with a\u2260b is Sidon \u2014 proved by 16-case analysis, each non-trivial case derives a=b from heq/hxy/hzw via linarith or le_antisymm"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Explore Sidon set construction: {3^k | k ∈ ℕ} is Sidon in ℝ",
+      "Explore Sidon set construction: {3^k | k \u2208 \u2115} is Sidon in \u211d",
       "Prove realSumset_empty, realSumset_singleton",
       "Connect IsSumFreeSet to Mathlib SumFree predicate if it exists"
     ],
-    "markdown": "# Erdős #949 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $S\\subset \\mathbb{R}$ be a set containing no solutions to $a+b=c$. Must there be a set $A\\subseteq \\mathbb{R}\\backslash S$ of cardinality continuum such that $A+A\\subseteq \\mathbb{R}\\backslash S$?\n\n\n\nErd\\H{o}s suggests that if the answer is no one could consider the variant where we assume that $S$ is Sidon (i.e. all $a+b$ with $a,b\\in S$ are distinct, aside from the trivial coincidences).\n\nIn the comments Dillies gives a positive proof of this, found by AlphaProof: in other words, if $S\\subset \\mathbb{R}$ is a Sidon set then there exists $A\\subseteq \\mathbb{R}\\backslash S$ of cardinality continuum such that $A+A\\subseteq \\mathbb{R}\\backslash S$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #948\n- Problem #950\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erd\u0151s #949 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $S\\subset \\mathbb{R}$ be a set containing no solutions to $a+b=c$. Must there be a set $A\\subseteq \\mathbb{R}\\backslash S$ of cardinality continuum such that $A+A\\subseteq \\mathbb{R}\\backslash S$?\n\n\n\nErd\\H{o}s suggests that if the answer is no one could consider the variant where we assume that $S$ is Sidon (i.e. all $a+b$ with $a,b\\in S$ are distinct, aside from the trivial coincidences).\n\nIn the comments Dillies gives a positive proof of this, found by AlphaProof: in other words, if $S\\subset \\mathbb{R}$ is a Sidon set then there exists $A\\subseteq \\mathbb{R}\\backslash S$ of cardinality continuum such that $A+A\\subseteq \\mathbb{R}\\backslash S$.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #948\n- Problem #950\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
