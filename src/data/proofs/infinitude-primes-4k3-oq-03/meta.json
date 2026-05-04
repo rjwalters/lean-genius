@@ -16,6 +16,7 @@
       "quadratic-residues"
     ],
     "proofRepoPath": "Proofs/InfinitudePrimes4k3OQ03.lean",
+    "parentProofId": "infinitude-primes-4k3",
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
@@ -66,12 +67,28 @@
       "mathContext": "The comparison table shows N = 4(n+1)! − 1 (for ≡ 3) vs N = (2(n+1)!)² + 1 (for ≡ 1). Both are elementary, but the 1 mod 4 case requires Euler's criterion for quadratic residues."
     },
     {
-      "id": "main-theorems",
-      "title": "Classification Theorems",
-      "startLine": 53,
+      "id": "infinitely-many-1-mod-4",
+      "title": "infinitely_many_primes_1_mod_4: Main Theorem",
+      "startLine": 55,
+      "endLine": 66,
+      "summary": "Direct answer to OQ-03: ∀ n, ∃ prime p > n with p ≡ 1 (mod 4). Proved by delegation to InfinitudePrimes4k1.infinitely_many_primes_1_mod_4 — the construction N = (2(n+1)!)² + 1 provides a prime factor ≡ 1 (mod 4) via Euler's criterion.",
+      "mathContext": "$\\forall n \\in \\mathbb{N}, \\exists p$ prime$: p > n \\wedge p \\equiv 1 \\pmod 4$. Delegation to InfinitudePrimes4k1 which uses $N = (2(n+1)!)^2 + 1$ and Euler's criterion."
+    },
+    {
+      "id": "both-classes-infinite",
+      "title": "both_classes_infinite and odd_prime_mod_four_classification",
+      "startLine": 68,
+      "endLine": 82,
+      "summary": "Two results: (1) both Set.Infinite {p | p ≡ 1 mod 4} and Set.Infinite {p | p ≡ 3 mod 4} — proved by combining InfinitudePrimes4k1 and InfinitudePrimes4k3; (2) every odd prime is ≡ 1 or ≡ 3 mod 4 — a basic modular arithmetic fact.",
+      "mathContext": "$\\{p \\text{ prime} \\mid p \\equiv 1 \\pmod 4\\}$ and $\\{p \\text{ prime} \\mid p \\equiv 3 \\pmod 4\\}$ are both Set.Infinite. Every odd prime $p$ has $p \\% 4 \\in \\{1, 3\\}$ since $p$ odd $\\Rightarrow$ $p \\% 2 = 1$ $\\Rightarrow$ $p \\% 4 \\neq 0, 2$."
+    },
+    {
+      "id": "constructions-cover",
+      "title": "constructions_cover_all_odd_primes: Disjunctive Classification",
+      "startLine": 84,
       "endLine": 103,
-      "summary": "Four theorems: infinitely_many_primes_1_mod_4 (imports from 4k1), both_classes_infinite (conjunction of 4k1 and 4k3 results), odd_prime_mod_four_classification (every odd prime is ≡ 1 or ≡ 3 mod 4), constructions_cover_all_odd_primes (both Euclid constructions cover all odd primes).",
-      "mathContext": "The classification theorem uses InfinitudePrimes4k3.prime_mod_four (proved in the parent file). The conjunction both_classes_infinite packages the key result: both infinite, together covering all odd primes."
+      "summary": "For every odd prime p, exhibits it as a member of one of the two infinite families, with explicit witnesses. Uses rcases on odd_prime_mod_four_classification to split p ≡ 1 vs p ≡ 3, then supplies witness n=0, q=p in each branch.",
+      "mathContext": "$\\forall p$ odd prime: $(p\\%4=1 \\wedge \\exists n, q > n, q\\%4=1, q=p) \\vee (p\\%4=3 \\wedge \\exists n, q > n, q\\%4=3, q=p)$. Witness: $n=0$, $q=p$; valid since $p \\geq 2 > 0$ by `Prime.two_le`."
     }
   ],
   "conclusion": {
@@ -79,7 +96,8 @@
     "implications": "This completes the elementary approach to Dirichlet's theorem for the mod-4 case. The two proofs (InfinitudePrimes4k3 for ≡ 3 and InfinitudePrimes4k1 for ≡ 1) together provide a fully formalized elementary classification of primes by residue mod 4, with no analytic number theory required.",
     "openQuestions": [
       "Can similar elementary arguments prove infinitely many primes ≡ 1 (mod 3)? (No — this requires quadratic reciprocity or L-functions, since there is no simple Euclid-type construction.)",
-      "What is the minimum Mathlib infrastructure needed to prove infinitely many primes in any AP {a + nd} with gcd(a,d) = 1 elementarily? Dirichlet's original proof uses L-functions; are there elementary proofs for other small moduli (5, 8, 12)?"
+      "What is the minimum Mathlib infrastructure needed to prove infinitely many primes in any AP {a + nd} with gcd(a,d) = 1 elementarily? Dirichlet's original proof uses L-functions; are there elementary proofs for other small moduli (5, 8, 12)?",
+      "Can Fermat's theorem on sums of two squares (every prime p ≡ 1 mod 4 is a sum of two squares) be formalized using only the infrastructure developed in InfinitudePrimes4k1, or does it require the full Gaussian integer machinery already in Mathlib?"
     ]
   },
   "crossReferences": [
