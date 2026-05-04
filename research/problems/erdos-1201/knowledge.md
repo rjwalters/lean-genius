@@ -617,3 +617,46 @@ The latter connects to the well-studied Dickman function and smooth number densi
 - Full Sylvester-Schur for ALL k+1 (composite): needs binomial machinery — HARD
 - The conditional proof `erdos_1201_conditional_proof` points to the precise hypothesis needed
 - Density lower bounds for ε < 1/2: Dickman ρ function — truly BLOCKED (>1000 lines infra)
+
+---
+
+## Session 2026-05-04 (Session 14) - Density Complement and Smooth-Decay Conditional
+
+**Mode**: REVISIT (branch research/erdos-1201-session-12b, extending PR #15461)
+**Outcome**: progress — 4 new theorems (83→87), 1 sorry submitted to Aristotle
+
+### What I Did
+- Continued from session 13 (83 theorems, branch research/erdos-1201-session-12b)
+- Added 4 new structural theorems formalizing the density reduction:
+  1. **`erdos_1201_good_prime_k0`**: all primes are good for k=0 (no sorry)
+     - `(n : ℝ)^(1-ε) < gpfConsecutive n 0` for prime n and ε ∈ (0,1)
+     - Uses `greatestPrimeFactor_prime` + `Real.rpow_lt_rpow_of_exponent_lt`
+  2. **`upperDensity_compl_ge`**: complement density lower bound (1 sorry → Aristotle)
+     - `1 - upperDensity S ≤ upperDensity Sᶜ`
+     - Shows density_S + density_Sᶜ = 1 for each N ≥ 1 exactly
+     - Sorry: limsup sub-additivity `limsup f + limsup g ≥ limsup(f+g)`
+  3. **`erdos_1201_from_bad_density_bound`**: bad density → good density bound (no sorry)
+     - If density(bad smooth windows) ≤ η then density(good n) ≥ 1-η
+     - Key direction: bad ⊆ complement(good) via `erdos_1201_not_good_smooth_window`
+     - Then `upperDensity_mono` + `upperDensity_compl_ge` give the lower bound
+  4. **`erdos_1201_smooth_decay_implies_conjecture`**: formal reduction (no sorry)
+     - ErdosProblem1201 ↔ smooth-window density decays to 0 as k→∞
+     - One-line wrapper around `erdos_1201_from_bad_density_bound`
+
+### Key Findings
+- The reduction `ErdosProblem1201 ← smooth-decay` makes the Dickman gap mathematically precise
+- `upperDensity_compl_ge` depends only on limsup sub-additivity — standard real analysis
+- The n < 2 edge case (gpfConsecutive 0 k = 0) is avoided by proving bad ⊆ complement(good)
+  rather than trying to show complement(bad) ⊆ good (which fails for n=0,1)
+- Limsup sub-additivity `limsup(f+g) ≤ limsup f + limsup g` is the only remaining sorry
+
+### Files Modified
+- `proofs/Proofs/Erdos1201Problem.lean` (1153→1241 lines, 83→87 theorems, 1 sorry)
+- `src/data/proofs/erdos-1201/meta.json` (theoremCount 87, lineCount 1241, sorries 1)
+- `research/problems/erdos-1201/knowledge.md` (this entry)
+- `src/data/research/problems/erdos-1201.json` (updated knowledge)
+
+### Next Steps
+- Submit `upperDensity_compl_ge` sorry (limsup sub-additivity) to Aristotle
+- Full Sylvester-Schur for ALL k+1 composite: truly hard (Chebyshev/binomial machinery)
+- Density lower bounds for ε < 1/2: Dickman ρ function — truly BLOCKED (>1000 lines infra)
