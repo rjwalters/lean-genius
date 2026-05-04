@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "ballot-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "context",
+    "title": "Extending Cycle Lemma Beyond {+1,-k}",
+    "content": "The Dvoretzky-Motzkin cycle lemma (1947) applies specifically to {+1,-k} sequences. This file systematically investigates which weaker conditions on the step alphabet still yield cycle lemma behavior. Two cases emerge: (1) unit-decrement sequences (steps ≥ -1) retain a downward IVT property that explains the lower bound mechanism; (2) all-positive sequences (steps > 0) give maximum count = length. The contrast with {+1,-k} (count = sum S) reveals that the step alphabet is structurally determinative.",
+    "mathContext": "For $\\{+1,-k\\}$: $|\\text{goodRotations}| = \\sum l = S$. For steps $> 0$: $|\\text{goodRotations}| = |l| = n$. The gap between $S$ and $n$ measures how positive-heavy the sequence is.",
+    "significance": "context",
+    "relatedConcepts": ["Dvoretzky-Motzkin cycle lemma", "prefix sum", "cyclic rotation", "good rotation"],
+    "prerequisites": ["ballot-problem-oq-01-oq-01", "BallotProblemOQ01OQ01.lean"]
+  },
+  {
+    "id": "ann-step-bound",
+    "proofId": "ballot-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 39, "endLine": 47 },
+    "type": "technique",
+    "title": "Unit-Decrement Bound: Prefix Sums Drop by At Most 1",
+    "content": "The step bound lemma `unit_decrement_step_bound` establishes the fundamental property of unit-decrement sequences: each step can decrease the prefix sum by at most 1. The proof is direct: `List.sum_take_succ` gives prefixSum(j+1) = prefixSum(j) + l[j], and since l[j] ≥ -1 by hypothesis, the inequality follows immediately by `linarith`. This one-step bound is what makes the downward IVT work: you cannot skip an integer level going down.",
+    "mathContext": "$\\text{prefixSum}(j+1) = \\text{prefixSum}(j) + l_j \\geq \\text{prefixSum}(j) - 1$",
+    "significance": "supporting",
+    "relatedConcepts": ["List.sum_take_succ", "prefixSum", "unit-decrement", "linarith"],
+    "prerequisites": ["List.getElem_mem", "Lean 4 linarith tactic"]
+  },
+  {
+    "id": "ann-downward-ivt",
+    "proofId": "ballot-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 49, "endLine": 100 },
+    "type": "insight",
+    "title": "Leftmost Crossing: The Key to Downward IVT",
+    "content": "The downward IVT `unit_decrement_downward_ivt` is the core theorem: if the prefix sum exceeds v at position i but is ≤ v at position j > i, then some k ∈ (i, j] achieves exactly v. The proof uses a leftmost-crossing argument via `Finset.min'`: let S be positions in (i, j] with prefix sum ≤ v, and kstar = min S. By minimality, kstar-1 has prefix sum > v. By the step bound (step ≥ -1), prefix sum at kstar ≥ (v+1) + (-1) = v. Combined with membership in S: prefix sum at kstar = v exactly. No induction needed — the min argument is cleaner.",
+    "mathContext": "Let $S = \\{k \\in (i,j] : \\text{PS}(k) \\leq v\\}$, $k^* = \\min S$. Then $\\text{PS}(k^*-1) > v$ (minimality) and $\\text{PS}(k^*) \\geq \\text{PS}(k^*-1) - 1 > v - 1$. So $\\text{PS}(k^*) \\geq v$. With $\\text{PS}(k^*) \\leq v$: $\\text{PS}(k^*) = v$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.min'", "leftmost crossing", "discrete IVT", "Finset.min'_le"],
+    "prerequisites": ["Finset.min' API", "Finset.mem_filter", "Finset.mem_Ico"]
+  },
+  {
+    "id": "ann-levels-achieved",
+    "proofId": "ballot-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 102, "endLine": 126 },
+    "type": "insight",
+    "title": "All Levels Achieved: IVT from 0 to rightmostMinPos",
+    "content": "The consequence `unit_decrement_levels_achieved` applies the downward IVT globally: for any target level v ∈ [minPrefixSum, 0], some prefix achieves exactly v. For v = 0, position 0 works (prefixSum 0 = 0 by `prefixSum_zero`). For v < 0, the IVT is applied between position 0 (where prefix sum = 0 > v) and `rightmostMinPos l` (where prefix sum = minPrefixSum ≤ v). The key insight: `rightmostMinPos l > 0` because if position 0 achieved the min, that min would be ≥ 0 = prefixSum(0), contradicting v < 0.",
+    "mathContext": "Apply IVT with $i = 0$ ($\\text{PS}(0) = 0 > v$) and $j = \\text{rightmostMinPos}(l)$ ($\\text{PS}(j) = \\text{minPrefixSum}(l) \\leq v$). Result: $\\exists k \\leq |l|$, $\\text{PS}(k) = v$.",
+    "significance": "key",
+    "relatedConcepts": ["rightmostMinPos", "minPrefixSum", "prefixSum_zero", "downward IVT"],
+    "prerequisites": ["unit_decrement_downward_ivt", "prefixSum_rightmostMinPos"]
+  },
+  {
+    "id": "ann-strict-mono",
+    "proofId": "ballot-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 132, "endLine": 151 },
+    "type": "technique",
+    "title": "All-Positive: Strict Monotonicity by Induction",
+    "content": "For sequences with all steps > 0, prefix sums are strictly increasing. The step theorem `all_positive_prefixSum_step` gives strict increase per step (by `linarith` from 0 < l[j]). Global strict monotonicity `all_positive_prefixSum_strictMono` is proved by induction on j: base case omega, inductive step chains the one-step increase with `lt_trans`. This two-lemma structure (one-step then global) is clean because `lt_trans` composes strict inequalities directly.",
+    "mathContext": "$i < j \\Rightarrow \\text{prefixSum}(i) < \\text{prefixSum}(j)$ proved by induction: $\\text{PS}(i) < \\text{PS}(j') < \\text{PS}(j'+1)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["strict monotonicity", "lt_trans", "Nat.eq_or_lt_of_le", "List.sum_take_succ"],
+    "prerequisites": ["all_positive_prefixSum_step", "induction on Nat"]
+  },
+  {
+    "id": "ann-all-rotations-good",
+    "proofId": "ballot-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 172, "endLine": 197 },
+    "type": "insight",
+    "title": "All Rotations Good: Non-Wrapping vs Wrapping Split",
+    "content": "The key theorem `all_positive_all_rotations_good` proves that every rotation is good when all steps are positive. For a rotation starting at position i, a prefix of length j decomposes into a non-wrapping or wrapping piece depending on whether i+j ≤ l.length. Non-wrapping: strict monotonicity gives prefixSum(i) < prefixSum(i+j), so the partial sum is positive by linarith. Wrapping: the wrapped prefix sum is ≥ 0 (non-negative prefix sums), and prefixSum(i) < l.sum (interior bound), so l.sum + wrapped - prefixSum(i) > 0. Both cases are discharged by `linarith` after establishing the key inequalities.",
+    "mathContext": "Non-wrapping ($i+j \\leq n$): $\\text{PS}(i+j) - \\text{PS}(i) > 0$ by strict mono. Wrapping ($i+j > n$): $\\text{PS}(i+j-n) \\geq 0$ and $\\text{PS}(i) < \\text{sum}(l)$ gives $\\text{PS}(i+j-n) + \\text{sum}(l) - \\text{PS}(i) > 0$.",
+    "significance": "key",
+    "relatedConcepts": ["cyclic rotation", "isGoodRotation", "cyclicRotation_prefixSum", "wrapping prefix"],
+    "prerequisites": ["all_positive_prefixSum_strictMono", "all_positive_prefixSum_lt_sum", "all_positive_prefixSum_nonneg"]
+  },
+  {
+    "id": "ann-goodrotations-card",
+    "proofId": "ballot-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 199, "endLine": 210 },
+    "type": "technique",
+    "title": "Cardinality Proof: goodRotations = range l.length",
+    "content": "The cardinality theorem `all_positive_goodRotations_card` proves |goodRotations l| = l.length by establishing set equality: goodRotations l = Finset.range l.length. The ext + simp approach unfolds the definition of goodRotations (positions i < l.length where isGoodRotation holds) and matches it against range. The `exact ⟨fun ⟨hi, _⟩ => hi, fun hi => ⟨hi, all_positive_all_rotations_good l h_step i hi⟩⟩` shows the bijection: good rotation iff valid index (since all valid rotations are good). `Finset.card_range` finishes.",
+    "mathContext": "$\\text{goodRotations}(l) = \\{i < |l| : \\text{isGoodRotation}(l,i)\\} = \\{i < |l|\\} = \\text{range}(|l|)$, so $|\\text{goodRotations}(l)| = |l|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.card_range", "goodRotations", "Finset.ext", "isGoodRotation"],
+    "prerequisites": ["all_positive_all_rotations_good", "Finset.mem_filter", "Finset.mem_range"]
+  }
+]
