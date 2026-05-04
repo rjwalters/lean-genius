@@ -30,14 +30,9 @@ References:
 - Erdős, P. and Graham, R. (1980): Old and new problems in combinatorial number theory
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Rat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Data.Nat.Prime.Basic
+import Mathlib
 
-open Finset BigOperators
+open Finset BigOperators Real
 
 namespace Erdos318
 
@@ -168,11 +163,46 @@ def counterexampleSet (m : ℕ) : Set ℕ :=
 
 /--
 **Counterexample has positive density:**
-The set of odd numbers plus one even has density 1/2.
+The set of odd numbers plus one even has density ≥ 1/4.
+Proof: odd numbers in {0,...,n} number (n+1)/2 ≥ n/4 elements; all are in the set.
 -/
 theorem counterexample_positive_density (m : ℕ) (hm : m ≥ 1) :
     hasPositiveDensity (counterexampleSet m) := by
-  sorry
+  -- Use density δ = 1/4 and threshold N = 2
+  refine ⟨1/4, by norm_num, 2, fun n hn => ?_⟩
+  -- All odd numbers are in counterexampleSet m
+  have h_sub : (Finset.range (n + 1)).filter (fun k => k % 2 = 1) ⊆
+               (Finset.range (n + 1)).filter (· ∈ counterexampleSet m) := by
+    intro k hk
+    simp only [Finset.mem_filter] at hk ⊢
+    exact ⟨hk.1, Or.inl hk.2⟩
+  have h_card : (Finset.filter (fun k => k % 2 = 1) (Finset.range (n + 1))).card ≤
+                (Finset.filter (· ∈ counterexampleSet m) (Finset.range (n + 1))).card :=
+    Finset.card_le_card h_sub
+  -- Count of odds in range(n+1) = (n+1)/2
+  have h_odd_count : (Finset.filter (fun k => k % 2 = 1) (Finset.range (n + 1))).card =
+                     (n + 1) / 2 := by
+    have key : ∀ k : ℕ, ((Finset.range k).filter (fun j => j % 2 = 1)).card = k / 2 := by
+      intro k
+      induction k with
+      | zero => simp
+      | succ j ihj =>
+        rw [Finset.range_succ, Finset.filter_insert]
+        split_ifs with hmod
+        · rw [Finset.card_insert_of_not_mem (by simp [Finset.mem_filter, Finset.mem_range])]
+          omega
+        · omega
+    exact key (n + 1)
+  -- (n+1)/2 * 4 ≥ n, so ((n+1)/2 : ℕ) : ℝ ≥ 1/4 * n
+  have h_nat : (n + 1) / 2 * 4 ≥ n := by omega
+  have h_real : ((n + 1) / 2 : ℕ) : ℝ ≥ 1 / 4 * n := by
+    have h : (n : ℝ) ≤ 4 * (((n + 1) / 2 : ℕ) : ℝ) := by exact_mod_cast h_nat
+    linarith
+  calc ((Finset.filter (· ∈ counterexampleSet m) (Finset.range (n + 1))).card : ℝ)
+      ≥ ((Finset.filter (fun k => k % 2 = 1) (Finset.range (n + 1))).card : ℝ) := by
+          exact_mod_cast h_card
+    _ = ((n + 1) / 2 : ℕ) := by exact_mod_cast h_odd_count
+    _ ≥ 1 / 4 * n := h_real
 
 /--
 **Counterexample fails P₁:**
@@ -211,10 +241,46 @@ def squaresExcludingOne : Set ℕ :=
 **Why exclude 1:**
 We must exclude 1 because ∑_{k≥2} 1/k² < 1, so no finite sum of
 +1/k² terms can equal any sum involving -1/1 = -1.
+Proof: ∑_{k≥2} 1/k² = π²/6 - 1, and π < 3.15 gives π²/6 - 1 < 1.
 -/
 theorem sum_reciprocal_squares_less_than_one :
     ∑' (k : ℕ), (if k ≥ 2 then (1 : ℝ) / k^2 else 0) < 1 := by
-  sorry
+  -- Full Basel sum = π²/6
+  have h_full_sum : ∑' n : ℕ, (1 : ℝ) / n^2 = Real.pi^2 / 6 := hasSum_zeta_two.tsum_eq
+  -- The k<2 part HasSum 1: n=0 gives 0, n=1 gives 1
+  have h_lt2_hassum : HasSum (fun n : ℕ => if n < 2 then (1 : ℝ) / n^2 else 0) 1 := by
+    have heq : (fun n : ℕ => if n < 2 then (1 : ℝ) / n^2 else 0) = fun n => if n = 1 then 1 else 0 := by
+      ext n; rcases n with _ | _ | n
+      · norm_num
+      · norm_num
+      · simp [show ¬(n + 2 < 2) from by omega, show ¬(n + 2 = 1) from by omega]
+    rw [heq]
+    exact hasSum_single 1 (fun b hb => if_neg hb)
+  -- Summability of each piece
+  have h_summ_ge2 : Summable (fun n : ℕ => if n ≥ 2 then (1 : ℝ) / n^2 else 0) :=
+    Summable.of_nonneg_of_le
+      (fun n => by split_ifs <;> norm_num)
+      (fun n => by split_ifs <;> [exact le_refl _; exact div_nonneg one_pos.le (sq_nonneg _)])
+      hasSum_zeta_two.summable
+  have h_summ_lt2 := h_lt2_hassum.summable
+  -- Decompose: 1/n² = (k≥2 part) + (k<2 part)
+  have h_split : ∀ n : ℕ, (1 : ℝ) / n^2 =
+      (if n ≥ 2 then (1 : ℝ) / n^2 else 0) + (if n < 2 then (1 : ℝ) / n^2 else 0) := by
+    intro n
+    by_cases h : n ≥ 2
+    · simp [h, show ¬(n < 2) from by omega]
+    · simp [h, show n < 2 from by omega]
+  -- Add the two tsum pieces to get the full sum
+  have h_add := tsum_add h_summ_ge2 h_summ_lt2
+  simp_rw [← h_split] at h_add
+  -- The k≥2 sum = π²/6 - 1
+  have h_val : ∑' n : ℕ, (if n ≥ 2 then (1 : ℝ) / n^2 else 0) = Real.pi^2 / 6 - 1 := by
+    have hlt2 := h_lt2_hassum.tsum_eq
+    linarith [h_add.trans h_full_sum, hlt2]
+  rw [h_val]
+  -- π < 3.15 ⟹ π²/6 - 1 < 9.9225/6 - 1 < 1
+  have hpi := Real.pi_lt_315
+  nlinarith [Real.pi_pos]
 
 /--
 **Erdős Problem #318: Squares Case (OPEN)**
@@ -239,11 +305,33 @@ axiom squares_case_open :
 If ∑_{n ∈ S} f(n)/n = 0, then ∑_{n ∈ S} f(n) · (∏_{m ∈ S} m)/n = 0.
 
 This transforms the rational equation into an integer equation.
+Proof: n | P = ∏_{m∈S} m for each n ∈ S, so f(n)*P/n is exact. The sum
+cast to ℚ equals (∑ f(n)/n) * P = 0; injectivity ℤ → ℚ gives the ℤ result.
 -/
 theorem zero_sum_integer_form (S : Finset ℕ) (f : ℕ → ℤ) (hS : S.Nonempty)
     (h0 : ∀ n ∈ S, n ≠ 0) (hzero : signedUnitSum S f = 0) :
     ∑ n ∈ S, f n * (∏ m ∈ S, m) / n = 0 := by
-  sorry
+  -- Each n ∈ S divides ∏ m ∈ S, m as integers
+  have h_dvd_nat : ∀ n ∈ S, n ∣ ∏ m ∈ S, m := fun n hn => Finset.dvd_prod_of_mem _ hn
+  -- Rewrite: f n * P / n = f n * (P / n) since n | P (exact integer division)
+  have h_exact : ∀ n ∈ S, f n * ↑(∏ m ∈ S, m) / (n : ℤ) = f n * (↑(∏ m ∈ S, m) / (n : ℤ)) := by
+    intro n hn
+    have hdvd : (n : ℤ) ∣ ↑(∏ m ∈ S, m) := by exact_mod_cast h_dvd_nat n hn
+    rw [Int.mul_ediv_assoc _ hdvd]
+  simp_rw [Finset.sum_congr rfl h_exact]
+  -- Apply injectivity ℤ → ℚ, then use signedUnitSum = 0
+  apply_fun (Int.cast : ℤ → ℚ) using Int.cast_injective
+  push_cast
+  simp only [Int.cast_sum, Int.cast_mul]
+  conv_lhs =>
+    arg 2; ext n
+    rw [show (f n : ℚ) * (↑(∏ m ∈ S, m) / ↑n) =
+             ((f n : ℚ) / ↑n) * ↑(∏ m ∈ S, m) from by ring]
+  rw [← Finset.sum_mul]
+  have hsu : ∑ n ∈ S, (f n : ℚ) / ↑n = 0 := by
+    have : signedUnitSum S f = ∑ n ∈ S, (f n : ℚ) / ↑n := rfl
+    rw [← this]; exact hzero
+  rw [hsu, zero_mul]
 
 /--
 **Parity obstruction:**
