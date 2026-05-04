@@ -2,6 +2,56 @@
 
 ---
 
+## Session 2026-05-04 (Session 3) — extByZeroCLM + Localization Structure
+
+**Mode**: REVISIT (ACT)
+**Outcome**: progress — extByZeroCLM proved, localization structure wired to finite-measure Riesz
+
+### What I Did
+
+1. **Proved `eLpNorm_indicator_eq_restrict_loc`**: (~8 lines)
+   - Key identity: `eLpNorm (S.indicator f) p μ = eLpNorm f p (μ.restrict S)`
+   - Proof: rewrite integrand as `S.indicator (‖f·‖₊^p)`, apply `lintegral_indicator`
+
+2. **Proved `memLp_indicator_of_restrict_loc`**: (~6 lines)
+   - `MemLp f p (μ.restrict S)` → `MemLp (S.indicator f) p μ`
+   - Uses `aestronglyMeasurable_indicator_iff hS` + eLpNorm identity
+
+3. **Proved `extByZeroCLM`**: (~35 lines)
+   - Isometric CLM: `Lp ℝ p (μ.restrict S) →L[ℝ] Lp ℝ p μ`
+   - `map_add'`: uses `Measure.ae_restrict_iff' hS` to convert μ.restrict S a.e. → μ a.e.
+   - `map_smul'`: same pattern
+   - Bound: `‖extByZeroCLM f‖ ≤ 1 * ‖f‖` via eLpNorm_indicator_eq_restrict_loc
+
+4. **Wired localization_existence to finite-measure Riesz**: (~15 lines structure)
+   - For each n: `haveI : IsFiniteMeasure (μ.restrict Sₙ)` from `measure_spanningSets_lt_top`
+   - `φₙ = φ.comp extByZeroCLM` as CLM on `Lp(μ.restrict Sₙ)`
+   - `RieszLpSurjectivity.riesz_lp_surjective_from_rn p q hp1 hptop hpq φₙ` gives gₙ
+   - One sorry remains: MCT/consistency for global g ∈ Lq(μ)
+
+5. **Added `import Proofs.CauchySchwarzIntegralOQ01OQ01OQ02OQ01`** to access `riesz_lp_surjective_from_rn`
+
+### Key Findings
+
+- `Measure.ae_restrict_iff' hS`: converts `∀ᵐ a ∂(μ.restrict S), P a` to `∀ᵐ a ∂μ, a ∈ S → P a`
+  This is the key bridge for map_add'/map_smul' in extByZeroCLM
+- `aestronglyMeasurable_indicator_iff hS`: AEStronglyMeasurable iff for indicator
+- `lintegral_indicator hS`: key identity for eLpNorm of indicator
+- `IsFiniteMeasure (μ.restrict Sₙ)` can be established with `Measure.restrict_apply_univ + measure_spanningSets_lt_top`
+
+### Files Modified
+
+- `proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean` — extByZeroCLM + localization structure
+- `src/data/research/problems/cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01.json`
+
+### Next Steps
+
+1. Verify Docker build compiles (extByZeroCLM proof may need adjustments)
+2. Prove MCT/consistency: gₙ consistent a.e. (Lq uniqueness on finite measure), uniform bound ‖gₙ‖ ≤ ‖φ‖, MCT for g ∈ Lq(μ)
+3. Prove indicator agreement: 1_{E∩Sₙ} → 1_E in Lp → φ continuity → agreement
+
+---
+
 ## Session 2026-05-03 (Session 2) — Step B Proved
 
 **Mode**: REVISIT (ACT)
