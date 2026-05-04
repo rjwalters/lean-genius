@@ -32,6 +32,7 @@ import Proofs.AmgmInequalityOQ02OQ01OQ02
 import Proofs.AmgmInequalityOQ02OQ01OQ02OQ01
 import Proofs.AmgmInequalityOQ02OQ01OQ02OQ01Aristotle
 import Proofs.AmgmInequalityOQ02OQ01OQ02OQ01OQ01
+import Proofs.AmgmInequalityOQ02OQ01OQ02OQ01OQ03
 import Proofs.AmgmInequalityOQ02OQ02
 import Proofs.AmgmInequalityOQ02OQ03
 import Proofs.AmgmInequalityOQ02OQ03OQ03
@@ -646,6 +647,7 @@ import Proofs.Erdos1023OQ01Problem
 import Proofs.Erdos1023Problem
 import Proofs.Erdos1024Problem
 import Proofs.Erdos1025Problem
+import Proofs.Erdos1026OQ03
 import Proofs.Erdos1026Problem
 import Proofs.Erdos1027Aristotle
 import Proofs.Erdos1027OQ01
